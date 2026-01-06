@@ -1,4 +1,31 @@
-import type { GitHubReleaseInfo } from '@/types/github'
+import type { GitHubReleaseInfo, GitHubAsset } from '@/types/github'
+
+/**
+ * Helper to create a mock GitHub asset with all required fields
+ */
+function createMockAsset(
+  id: number,
+  name: string,
+  size: number,
+  content_type: string = 'application/octet-stream'
+): GitHubAsset {
+  return {
+    id,
+    name,
+    content_type,
+    size,
+    browser_download_url: `https://github.com/wcpos/electron/releases/download/v1.8.2/${name}`,
+    url: `https://api.github.com/repos/wcpos/electron/releases/assets/${id}`,
+    node_id: `RA_${id}`,
+    label: null,
+    state: 'uploaded',
+    download_count: 100,
+    created_at: '2026-01-05T18:40:35Z',
+    updated_at: '2026-01-05T18:40:35Z',
+    uploader: null,
+    digest: null,
+  }
+}
 
 /**
  * Mock GitHub release data for testing
@@ -9,118 +36,13 @@ export const mockRelease: GitHubReleaseInfo = {
   body: 'Release notes for version 1.8.2\n\n- Bug fixes\n- Performance improvements',
   publishedAt: '2026-01-05T18:40:35Z',
   assets: [
-    {
-      id: 1,
-      name: 'WooCommerce-POS-darwin-arm64-1.8.2.zip',
-      content_type: 'application/zip',
-      size: 116087844,
-      browser_download_url:
-        'https://github.com/wcpos/electron/releases/download/v1.8.2/WooCommerce-POS-darwin-arm64-1.8.2.zip',
-      url: 'https://api.github.com/repos/wcpos/electron/releases/assets/1',
-      node_id: 'RA_1',
-      label: null,
-      state: 'uploaded',
-      download_count: 100,
-      created_at: '2026-01-05T18:40:35Z',
-      updated_at: '2026-01-05T18:40:35Z',
-      uploader: null,
-    },
-    {
-      id: 2,
-      name: 'WooCommerce-POS-darwin-x64-1.8.2.zip',
-      content_type: 'application/zip',
-      size: 120000000,
-      browser_download_url:
-        'https://github.com/wcpos/electron/releases/download/v1.8.2/WooCommerce-POS-darwin-x64-1.8.2.zip',
-      url: 'https://api.github.com/repos/wcpos/electron/releases/assets/2',
-      node_id: 'RA_2',
-      label: null,
-      state: 'uploaded',
-      download_count: 50,
-      created_at: '2026-01-05T18:40:35Z',
-      updated_at: '2026-01-05T18:40:35Z',
-      uploader: null,
-    },
-    {
-      id: 3,
-      name: 'WooCommerce-POS-Setup-1.8.2.exe',
-      content_type: 'application/octet-stream',
-      size: 130000000,
-      browser_download_url:
-        'https://github.com/wcpos/electron/releases/download/v1.8.2/WooCommerce-POS-Setup-1.8.2.exe',
-      url: 'https://api.github.com/repos/wcpos/electron/releases/assets/3',
-      node_id: 'RA_3',
-      label: null,
-      state: 'uploaded',
-      download_count: 200,
-      created_at: '2026-01-05T18:40:35Z',
-      updated_at: '2026-01-05T18:40:35Z',
-      uploader: null,
-    },
-    {
-      id: 4,
-      name: 'RELEASES',
-      content_type: 'application/octet-stream',
-      size: 85,
-      browser_download_url:
-        'https://github.com/wcpos/electron/releases/download/v1.8.2/RELEASES',
-      url: 'https://api.github.com/repos/wcpos/electron/releases/assets/4',
-      node_id: 'RA_4',
-      label: null,
-      state: 'uploaded',
-      download_count: 150,
-      created_at: '2026-01-05T18:40:35Z',
-      updated_at: '2026-01-05T18:40:35Z',
-      uploader: null,
-    },
-    {
-      id: 5,
-      name: 'WooCommercePOS-1.8.2-full.nupkg',
-      content_type: 'application/octet-stream',
-      size: 137091237,
-      browser_download_url:
-        'https://github.com/wcpos/electron/releases/download/v1.8.2/WooCommercePOS-1.8.2-full.nupkg',
-      url: 'https://api.github.com/repos/wcpos/electron/releases/assets/5',
-      node_id: 'RA_5',
-      label: null,
-      state: 'uploaded',
-      download_count: 100,
-      created_at: '2026-01-05T18:40:35Z',
-      updated_at: '2026-01-05T18:40:35Z',
-      uploader: null,
-    },
-    {
-      id: 6,
-      name: 'WooCommerce-POS-1.8.2.AppImage',
-      content_type: 'application/octet-stream',
-      size: 140000000,
-      browser_download_url:
-        'https://github.com/wcpos/electron/releases/download/v1.8.2/WooCommerce-POS-1.8.2.AppImage',
-      url: 'https://api.github.com/repos/wcpos/electron/releases/assets/6',
-      node_id: 'RA_6',
-      label: null,
-      state: 'uploaded',
-      download_count: 75,
-      created_at: '2026-01-05T18:40:35Z',
-      updated_at: '2026-01-05T18:40:35Z',
-      uploader: null,
-    },
-    {
-      id: 7,
-      name: 'WooCommerce-POS-arm64-1.8.2.dmg',
-      content_type: 'application/octet-stream',
-      size: 118000000,
-      browser_download_url:
-        'https://github.com/wcpos/electron/releases/download/v1.8.2/WooCommerce-POS-arm64-1.8.2.dmg',
-      url: 'https://api.github.com/repos/wcpos/electron/releases/assets/7',
-      node_id: 'RA_7',
-      label: null,
-      state: 'uploaded',
-      download_count: 80,
-      created_at: '2026-01-05T18:40:35Z',
-      updated_at: '2026-01-05T18:40:35Z',
-      uploader: null,
-    },
+    createMockAsset(1, 'WooCommerce-POS-darwin-arm64-1.8.2.zip', 116087844, 'application/zip'),
+    createMockAsset(2, 'WooCommerce-POS-darwin-x64-1.8.2.zip', 120000000, 'application/zip'),
+    createMockAsset(3, 'WooCommerce-POS-Setup-1.8.2.exe', 130000000),
+    createMockAsset(4, 'RELEASES', 85),
+    createMockAsset(5, 'WooCommercePOS-1.8.2-full.nupkg', 137091237),
+    createMockAsset(6, 'WooCommerce-POS-1.8.2.AppImage', 140000000),
+    createMockAsset(7, 'WooCommerce-POS-arm64-1.8.2.dmg', 118000000),
   ],
 }
 

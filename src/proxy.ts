@@ -2,13 +2,13 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
 /**
- * Middleware for hostname-based routing
+ * Proxy for hostname-based routing (Next.js 16+)
  *
  * Handles multiple domains pointing to the same Vercel deployment:
  * - updates.wcpos.com: Only allows /api/* routes (public update API)
  * - wcpos.com: Allows all routes (main site, dashboard, etc.)
  */
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const hostname = request.headers.get('host') || ''
   const { pathname } = request.nextUrl
 

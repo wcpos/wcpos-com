@@ -9,8 +9,6 @@ import type {
   ElectronUpdateResponseV2,
   ElectronUpdateResponseLegacy,
   ElectronErrorResponse,
-  Platform,
-  PLATFORM_MAPPINGS,
 } from '@/types/electron'
 
 const ELECTRON_REPO = 'electron'
