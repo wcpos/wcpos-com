@@ -1,14 +1,19 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
+import { SessionService } from '@/services/core/auth/session-service'
 
 /**
- * Proxy for hostname-based routing (Next.js 16+)
+ * Proxy for hostname-based routing and authentication (Next.js 16+)
  *
- * Handles multiple domains pointing to the same Vercel deployment:
+ * Handles:
+ * - Multiple domains pointing to the same Vercel deployment
+ * - Route protection for admin and dashboard areas
+ *
+ * Domains:
  * - updates.wcpos.com: Only allows /api/* routes (public update API)
  * - wcpos.com: Allows all routes (main site, dashboard, etc.)
  */
-export function proxy(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const hostname = request.headers.get('host') || ''
   const { pathname } = request.nextUrl
 
@@ -30,7 +35,6 @@ export function proxy(request: NextRequest) {
 
     // Allow health check at root for monitoring
     if (pathname === '/') {
-      // Return a simple health response for the updates subdomain root
       return NextResponse.json(
         {
           service: 'wcpos-updates',
@@ -48,7 +52,46 @@ export function proxy(request: NextRequest) {
     return NextResponse.redirect(redirectUrl, 301)
   }
 
-  // For main domain (wcpos.com), allow everything
+  // Protect admin routes - require admin role
+  if (pathname.startsWith('/admin')) {
+    const session = await SessionService.validateSession(request)
+
+    if (!session) {
+      const loginUrl = new URL('/login', request.url)
+      loginUrl.searchParams.set('redirect', pathname)
+      return NextResponse.redirect(loginUrl)
+    }
+
+    if (session.role !== 'admin') {
+      // Non-admin users go to their dashboard
+      return NextResponse.redirect(new URL('/dashboard', request.url))
+    }
+
+    // Refresh session if needed
+    const refreshResponse = await SessionService.updateSessionMiddleware(request)
+    if (refreshResponse) {
+      return refreshResponse
+    }
+  }
+
+  // Protect dashboard routes - require any authenticated user
+  if (pathname.startsWith('/dashboard')) {
+    const session = await SessionService.validateSession(request)
+
+    if (!session) {
+      const loginUrl = new URL('/login', request.url)
+      loginUrl.searchParams.set('redirect', pathname)
+      return NextResponse.redirect(loginUrl)
+    }
+
+    // Refresh session if needed
+    const refreshResponse = await SessionService.updateSessionMiddleware(request)
+    if (refreshResponse) {
+      return refreshResponse
+    }
+  }
+
+  // For main domain (wcpos.com), allow everything else
   return NextResponse.next()
 }
 
@@ -56,4 +99,3 @@ export const config = {
   // Match all routes except static files
   matcher: ['/((?!_next/static|_next/image|favicon.ico).*)'],
 }
-
