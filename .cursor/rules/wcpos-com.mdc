@@ -1,0 +1,92 @@
+---
+description: WCPOS Website & API context for AI agents
+globs:
+alwaysApply: true
+---
+
+# WCPOS Website (wcpos-com)
+
+## What This Is
+
+Next.js 16 application that serves as the main customer-facing website for WCPOS. Handles:
+- Marketing site at `wcpos.com`
+- Electron desktop app update distribution
+- Pro plugin update distribution & license validation
+- Admin dashboard for analytics and user management
+
+## System Context
+
+See `wcpos-infra/ARCHITECTURE.md` for the full WCPOS ecosystem.
+
+- **Deployed to**: Vercel
+- **Domains**: `wcpos.com`, `beta.wcpos.com` (staging)
+- **Database**: Vercel Postgres (hosted) or local PostgreSQL for dev
+- **ORM**: Drizzle ORM
+
+## Tech Stack
+
+- **Framework**: Next.js 16 (App Router, Turbopack)
+- **UI**: React 19, Tailwind CSS v4, Radix UI, shadcn/ui components
+- **Database**: Drizzle ORM + PostgreSQL
+- **Testing**: Vitest (unit), Playwright (e2e)
+- **Package Manager**: pnpm
+
+## Key API Routes
+
+| Route | Purpose |
+|-------|---------|
+| `/api/electron/[platform]/[version]` | Desktop app update checks |
+| `/api/electron/download/[platform]` | Desktop app download redirects |
+| `/api/pro/update/[version]` | Pro plugin update checks |
+| `/api/pro/download/[version]` | Pro plugin download |
+| `/api/pro/license/*` | License validation (activate/deactivate/status) |
+| `/api/health` | Health check endpoint |
+
+## External Integrations
+
+- **GitHub API**: Fetches releases for Electron app and Pro plugin (`@octokit/rest`)
+- **License Server**: Validates licenses via `license.wcpos.com` (Keygen API)
+
+## Development
+
+```bash
+pnpm install     # Install dependencies
+pnpm dev         # Start dev server (Turbopack)
+pnpm test:unit   # Run unit tests
+pnpm test:e2e    # Run Playwright tests
+pnpm db:studio   # Open Drizzle Studio
+```
+
+## Environment Variables
+
+Key environment variables (see Vercel dashboard):
+- `POSTGRES_URL` - Vercel Postgres connection string
+- `GITHUB_PAT` - GitHub Personal Access Token for releases API
+- `AUTH_SECRET` - JWT secret for admin authentication
+
+## Structure
+
+```
+src/
+├── app/                    # Next.js App Router pages
+│   ├── (auth)/            # Auth pages (login)
+│   ├── admin/             # Admin dashboard
+│   └── api/               # API routes
+├── components/            # React components
+│   ├── admin/             # Admin-specific components
+│   └── ui/                # shadcn/ui components
+├── services/              # Server-side services
+│   ├── api/               # Public API exports
+│   └── core/              # Internal services
+│       ├── external/      # Third-party clients (GitHub, License)
+│       ├── business/      # Business logic
+│       └── database/      # Drizzle connection & schema
+├── types/                 # TypeScript types
+└── utils/                 # Utility functions
+```
+
+## Related Projects
+
+- `wcpos-infra` - Backend infrastructure (Medusa, Keygen, etc.)
+- `monorepo-v2` - The Electron/mobile app that calls these APIs
+- `woocommerce-pos-pro` - The Pro plugin that calls these APIs
