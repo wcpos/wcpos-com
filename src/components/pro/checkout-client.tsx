@@ -6,12 +6,13 @@ import { StripeProvider } from './stripe-provider'
 import { PayPalProvider } from './paypal-provider'
 import { CheckoutForm } from './checkout-form'
 import { PayPalButton } from './paypal-button'
+import { BTCPayButton } from './btcpay-button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { ArrowLeft, Loader2, CheckCircle, CreditCard } from 'lucide-react'
+import { ArrowLeft, Loader2, CheckCircle, CreditCard, Bitcoin } from 'lucide-react'
 import Link from 'next/link'
 
 interface CartItem {
@@ -40,11 +41,12 @@ interface Cart {
   payment_sessions?: PaymentSession[]
 }
 
-type PaymentMethod = 'stripe' | 'paypal'
+type PaymentMethod = 'stripe' | 'paypal' | 'btcpay'
 
-// Check if PayPal is configured
-const isPayPalEnabled = Boolean(process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID)
+// Check which payment methods are configured
 const isStripeEnabled = Boolean(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
+const isPayPalEnabled = Boolean(process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID)
+const isBTCPayEnabled = Boolean(process.env.NEXT_PUBLIC_BTCPAY_ENABLED)
 
 export function CheckoutClient() {
   const searchParams = useSearchParams()
@@ -316,7 +318,13 @@ export function CheckoutClient() {
 
           {/* Payment method tabs */}
           <Tabs value={paymentMethod} onValueChange={handlePaymentMethodChange}>
-            <TabsList className="grid w-full grid-cols-2">
+            <TabsList className={`grid w-full ${
+              [isStripeEnabled, isPayPalEnabled, isBTCPayEnabled].filter(Boolean).length === 3
+                ? 'grid-cols-3'
+                : [isStripeEnabled, isPayPalEnabled, isBTCPayEnabled].filter(Boolean).length === 2
+                  ? 'grid-cols-2'
+                  : 'grid-cols-1'
+            }`}>
               {isStripeEnabled && (
                 <TabsTrigger value="stripe" disabled={isProcessing}>
                   <CreditCard className="h-4 w-4 mr-2" />
@@ -326,6 +334,12 @@ export function CheckoutClient() {
               {isPayPalEnabled && (
                 <TabsTrigger value="paypal" disabled={isProcessing}>
                   PayPal
+                </TabsTrigger>
+              )}
+              {isBTCPayEnabled && (
+                <TabsTrigger value="btcpay" disabled={isProcessing}>
+                  <Bitcoin className="h-4 w-4 mr-2" />
+                  Bitcoin
                 </TabsTrigger>
               )}
             </TabsList>
@@ -360,6 +374,21 @@ export function CheckoutClient() {
                     onError={handleError}
                   />
                 </PayPalProvider>
+              </TabsContent>
+            )}
+
+            {isBTCPayEnabled && (
+              <TabsContent value="btcpay" className="mt-4">
+                <div className="space-y-4">
+                  <p className="text-sm text-muted-foreground text-center">
+                    Pay with Bitcoin, Lightning Network, or other cryptocurrencies
+                  </p>
+                  <BTCPayButton
+                    cartId={cart.id}
+                    onSuccess={handleSuccess}
+                    onError={handleError}
+                  />
+                </div>
               </TabsContent>
             )}
           </Tabs>
