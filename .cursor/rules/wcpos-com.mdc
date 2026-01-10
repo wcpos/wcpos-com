@@ -25,43 +25,48 @@ See `wcpos-infra/ARCHITECTURE.md` for the full WCPOS ecosystem.
 
 ## Tech Stack
 
-- **Framework**: Next.js 16 (App Router, Turbopack, PPR)
+- **Framework**: Next.js 16 (App Router, Turbopack)
 - **UI**: React 19, Tailwind CSS v4, Radix UI, shadcn/ui components
 - **Database**: Drizzle ORM + PostgreSQL
 - **Testing**: Vitest (unit), Playwright (e2e)
 - **Package Manager**: pnpm
 
-## Partial Pre-Rendering (PPR)
+## ⚠️ AI Agent: ALWAYS Test Before Committing
 
-We use Next.js bleeding-edge features including **Partial Pre-Rendering (PPR)**. This is critical for performance and SEO.
+**Before committing any changes, you MUST run:**
 
-### How PPR Works
+```bash
+pnpm build   # Must pass - catches Next.js config issues
+pnpm lint    # Must pass - catches code quality issues
+```
 
-PPR combines static and dynamic rendering in the same route:
-1. **Static shell** - Pre-rendered at build time (fast initial load)
-2. **Dynamic holes** - Streamed in at request time via `<Suspense>`
+If the build fails, fix the issues before committing. Do NOT push broken code to trigger CI failures.
 
-### Enabling PPR
+## Caching & Rendering
+
+Next.js 16 has moved PPR into `cacheComponents`. However, `cacheComponents` is not compatible with `revalidate` route segment configs that we use for API routes. 
+
+**Current approach**: We use standard Next.js caching without `cacheComponents`:
+
+### Route Segment Config
 
 ```typescript
-// next.config.ts
-const nextConfig = {
-  experimental: {
-    ppr: 'incremental', // Enable incremental adoption
-  },
-}
+// Force static generation (no dynamic APIs)
+export const dynamic = 'force-static'
 
-// In each route that should use PPR:
-// app/pro/page.tsx
-export const experimental_ppr = true
+// Force dynamic rendering
+export const dynamic = 'force-dynamic'
+
+// Revalidate cached data every N seconds
+export const revalidate = 3600 // 1 hour
 ```
 
 ### What Should Be Static vs Dynamic
 
-| Static (Pre-rendered) | Dynamic (Suspense Boundary) |
-|-----------------------|-----------------------------|
+| Static (Pre-rendered) | Dynamic (force-dynamic) |
+|-----------------------|-------------------------|
 | Marketing pages (/, /features, /pricing) | User-specific data (cart, auth state) |
-| Product information from Medusa | Real-time prices (if currency varies) |
+| Product information from Medusa | Real-time API responses |
 | Documentation content | Checkout forms |
 | Navigation, footer, layout shells | Admin dashboard data |
 | SEO metadata | Session-dependent UI |
@@ -69,9 +74,6 @@ export const experimental_ppr = true
 ### Pattern: Static Shell with Dynamic Holes
 
 ```tsx
-// app/pro/page.tsx
-export const experimental_ppr = true
-
 import { Suspense } from 'react'
 import { ProductGrid } from '@/components/pro/product-grid'
 import { CartSummary } from '@/components/pro/cart-summary'
@@ -102,30 +104,6 @@ These APIs make a component dynamic (wrap with Suspense):
 - `headers()` - Reading request headers
 - `searchParams` - URL search parameters in page props
 - `unstable_noStore()` - Explicit opt-out of caching
-
-### Best Practices
-
-1. **Default to static** - Most content should be pre-rendered
-2. **Wrap dynamic components in Suspense** - Provides loading UI and enables streaming
-3. **Use skeleton loaders** - Good UX while dynamic content loads
-4. **Keep dynamic boundaries small** - The smaller the dynamic hole, the faster the page feels
-5. **Test with `next build`** - Check terminal output for static vs dynamic routes
-
-### Route Segment Config
-
-```typescript
-// Force static generation (no dynamic APIs)
-export const dynamic = 'force-static'
-
-// Force dynamic rendering
-export const dynamic = 'force-dynamic'
-
-// Revalidate cached data every N seconds
-export const revalidate = 3600 // 1 hour
-
-// Enable PPR for this route
-export const experimental_ppr = true
-```
 
 ## Key API Routes
 

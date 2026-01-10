@@ -1,9 +1,6 @@
 import { getWcposProProducts } from '@/services/core/external/medusa-client'
 import { PricingCard } from '@/components/pro/pricing-card'
 
-// Enable Partial Pre-Rendering for this route
-export const experimental_ppr = true
-
 export const metadata = {
   title: 'WooCommerce POS Pro - Premium Features',
   description:
