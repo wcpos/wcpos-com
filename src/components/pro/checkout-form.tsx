@@ -7,8 +7,6 @@ import {
   useElements,
 } from '@stripe/react-stripe-js'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 
 interface CheckoutFormProps {
   cartId: string
@@ -25,7 +23,6 @@ export function CheckoutForm({
 }: CheckoutFormProps) {
   const stripe = useStripe()
   const elements = useElements()
-  const [email, setEmail] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -40,23 +37,11 @@ export function CheckoutForm({
     setError(null)
 
     try {
-      // Update cart with email
-      const updateResponse = await fetch('/api/store/cart', {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ cartId, email }),
-      })
-
-      if (!updateResponse.ok) {
-        throw new Error('Failed to update cart with email')
-      }
-
       // Confirm payment with Stripe
       const { error: stripeError, paymentIntent } = await stripe.confirmPayment({
         elements,
         confirmParams: {
           return_url: `${window.location.origin}/pro/checkout/success`,
-          receipt_email: email,
         },
         redirect: 'if_required',
       })
@@ -99,27 +84,9 @@ export function CheckoutForm({
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      <div className="space-y-2">
-        <Label htmlFor="email">Email address</Label>
-        <Input
-          id="email"
-          type="email"
-          placeholder="you@example.com"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <p className="text-sm text-muted-foreground">
-          Your license key will be sent to this email
-        </p>
-      </div>
-
-      <div className="space-y-2">
-        <Label>Payment details</Label>
-        <div className="border rounded-md p-4">
-          <PaymentElement />
-        </div>
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div className="border rounded-md p-4">
+        <PaymentElement />
       </div>
 
       {error && (
@@ -132,14 +99,10 @@ export function CheckoutForm({
         type="submit"
         className="w-full"
         size="lg"
-        disabled={!stripe || !elements || isLoading || !email}
+        disabled={!stripe || !elements || isLoading}
       >
         {isLoading ? 'Processing...' : `Pay ${formatAmount(amount, currency)}`}
       </Button>
-
-      <p className="text-xs text-center text-muted-foreground">
-        Secure payment powered by Stripe
-      </p>
     </form>
   )
 }

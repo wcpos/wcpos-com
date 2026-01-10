@@ -3,10 +3,15 @@
 import { useEffect, useState, useCallback } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { StripeProvider } from './stripe-provider'
+import { PayPalProvider } from './paypal-provider'
 import { CheckoutForm } from './checkout-form'
+import { PayPalButton } from './paypal-button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { ArrowLeft, Loader2, CheckCircle } from 'lucide-react'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { ArrowLeft, Loader2, CheckCircle, CreditCard } from 'lucide-react'
 import Link from 'next/link'
 
 interface CartItem {
@@ -17,29 +22,45 @@ interface CartItem {
   total: number
 }
 
+interface PaymentSession {
+  provider_id: string
+  data: {
+    client_secret?: string
+    id?: string
+  }
+}
+
 interface Cart {
   id: string
+  email?: string
   items: CartItem[]
   total: number
   currency_code: string
-  payment_session?: {
-    provider_id: string
-    data: {
-      client_secret?: string
-    }
-  }
+  payment_session?: PaymentSession
+  payment_sessions?: PaymentSession[]
 }
+
+type PaymentMethod = 'stripe' | 'paypal'
+
+// Check if PayPal is configured
+const isPayPalEnabled = Boolean(process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID)
+const isStripeEnabled = Boolean(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
 
 export function CheckoutClient() {
   const searchParams = useSearchParams()
   const variantId = searchParams.get('variant')
 
   const [cart, setCart] = useState<Cart | null>(null)
+  const [email, setEmail] = useState('')
   const [clientSecret, setClientSecret] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(true)
+  const [isProcessing, setIsProcessing] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [orderComplete, setOrderComplete] = useState(false)
   const [orderId, setOrderId] = useState<string | null>(null)
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>(
+    isStripeEnabled ? 'stripe' : 'paypal'
+  )
 
   const initializeCheckout = useCallback(async () => {
     if (!variantId) {
@@ -79,7 +100,7 @@ export function CheckoutClient() {
 
       const { cart: cartWithItem } = await itemResponse.json()
 
-      // Initialize payment sessions
+      // Initialize payment sessions (this creates sessions for all available providers)
       const sessionsResponse = await fetch('/api/store/cart/payment-sessions', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -90,28 +111,8 @@ export function CheckoutClient() {
         throw new Error('Failed to initialize payment')
       }
 
-      // Select Stripe as payment provider
-      const selectResponse = await fetch('/api/store/cart/payment-sessions', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          cartId: cartWithItem.id,
-          provider_id: 'stripe',
-        }),
-      })
-
-      if (!selectResponse.ok) {
-        throw new Error('Failed to select payment method')
-      }
-
-      const { cart: finalCart } = await selectResponse.json()
-
-      setCart(finalCart)
-
-      // Get client secret from payment session
-      if (finalCart.payment_session?.data?.client_secret) {
-        setClientSecret(finalCart.payment_session.data.client_secret)
-      }
+      const { cart: cartWithSessions } = await sessionsResponse.json()
+      setCart(cartWithSessions)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to initialize checkout')
     } finally {
@@ -119,13 +120,82 @@ export function CheckoutClient() {
     }
   }, [variantId])
 
+  // Select payment provider when method changes
+  const selectPaymentMethod = useCallback(
+    async (method: PaymentMethod) => {
+      if (!cart) return
+
+      setIsProcessing(true)
+      setError(null)
+
+      try {
+        const response = await fetch('/api/store/cart/payment-sessions', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            cartId: cart.id,
+            provider_id: method,
+          }),
+        })
+
+        if (!response.ok) {
+          throw new Error(`Failed to select ${method} payment`)
+        }
+
+        const { cart: updatedCart } = await response.json()
+        setCart(updatedCart)
+
+        // For Stripe, get the client secret
+        if (method === 'stripe' && updatedCart.payment_session?.data?.client_secret) {
+          setClientSecret(updatedCart.payment_session.data.client_secret)
+        }
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to select payment method')
+      } finally {
+        setIsProcessing(false)
+      }
+    },
+    [cart]
+  )
+
   useEffect(() => {
     initializeCheckout()
   }, [initializeCheckout])
 
+  // Select default payment method after cart is loaded
+  useEffect(() => {
+    if (cart && !cart.payment_session && isStripeEnabled) {
+      selectPaymentMethod('stripe')
+    }
+  }, [cart, selectPaymentMethod])
+
+  const handlePaymentMethodChange = (value: string) => {
+    const method = value as PaymentMethod
+    setPaymentMethod(method)
+    selectPaymentMethod(method)
+  }
+
   const handleSuccess = (newOrderId: string) => {
     setOrderId(newOrderId)
     setOrderComplete(true)
+  }
+
+  const handleError = (errorMessage: string) => {
+    setError(errorMessage)
+  }
+
+  const updateEmail = async () => {
+    if (!cart || !email) return
+
+    try {
+      await fetch('/api/store/cart', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ cartId: cart.id, email }),
+      })
+    } catch {
+      // Email update failed, but we can continue
+    }
   }
 
   if (isLoading) {
@@ -137,7 +207,7 @@ export function CheckoutClient() {
     )
   }
 
-  if (error) {
+  if (error && !cart) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[400px]">
         <p className="text-destructive mb-4">{error}</p>
@@ -160,9 +230,7 @@ export function CheckoutClient() {
           Your license key has been sent to your email.
         </p>
         {orderId && (
-          <p className="text-sm text-muted-foreground mb-6">
-            Order ID: {orderId}
-          </p>
+          <p className="text-sm text-muted-foreground mb-6">Order ID: {orderId}</p>
         )}
         <Button asChild>
           <Link href="/">Return to Home</Link>
@@ -171,11 +239,11 @@ export function CheckoutClient() {
     )
   }
 
-  if (!cart || !clientSecret) {
+  if (!cart) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[400px]">
         <p className="text-muted-foreground mb-4">
-          Unable to initialize payment. Please try again.
+          Unable to initialize checkout. Please try again.
         </p>
         <Button asChild variant="outline">
           <Link href="/pro">
@@ -186,6 +254,12 @@ export function CheckoutClient() {
       </div>
     )
   }
+
+  const formatCurrency = (amount: number) =>
+    new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: cart.currency_code.toUpperCase(),
+    }).format(amount)
 
   return (
     <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
@@ -199,44 +273,100 @@ export function CheckoutClient() {
             <div key={item.id} className="flex justify-between py-2">
               <div>
                 <p className="font-medium">{item.title}</p>
-                <p className="text-sm text-muted-foreground">
-                  Qty: {item.quantity}
-                </p>
+                <p className="text-sm text-muted-foreground">Qty: {item.quantity}</p>
               </div>
-              <p className="font-medium">
-                {new Intl.NumberFormat('en-US', {
-                  style: 'currency',
-                  currency: cart.currency_code.toUpperCase(),
-                }).format(item.total)}
-              </p>
+              <p className="font-medium">{formatCurrency(item.total)}</p>
             </div>
           ))}
           <div className="border-t mt-4 pt-4 flex justify-between font-bold">
             <span>Total</span>
-            <span>
-              {new Intl.NumberFormat('en-US', {
-                style: 'currency',
-                currency: cart.currency_code.toUpperCase(),
-              }).format(cart.total)}
-            </span>
+            <span>{formatCurrency(cart.total)}</span>
           </div>
         </CardContent>
       </Card>
 
-      {/* Payment Form */}
+      {/* Payment */}
       <Card>
         <CardHeader>
           <CardTitle>Payment</CardTitle>
         </CardHeader>
-        <CardContent>
-          <StripeProvider clientSecret={clientSecret}>
-            <CheckoutForm
-              cartId={cart.id}
-              amount={cart.total}
-              currency={cart.currency_code}
-              onSuccess={handleSuccess}
+        <CardContent className="space-y-6">
+          {/* Email input */}
+          <div className="space-y-2">
+            <Label htmlFor="email">Email address</Label>
+            <Input
+              id="email"
+              type="email"
+              placeholder="you@example.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              onBlur={updateEmail}
+              required
             />
-          </StripeProvider>
+            <p className="text-sm text-muted-foreground">
+              Your license key will be sent to this email
+            </p>
+          </div>
+
+          {error && (
+            <div className="bg-destructive/10 text-destructive p-3 rounded-md text-sm">
+              {error}
+            </div>
+          )}
+
+          {/* Payment method tabs */}
+          <Tabs value={paymentMethod} onValueChange={handlePaymentMethodChange}>
+            <TabsList className="grid w-full grid-cols-2">
+              {isStripeEnabled && (
+                <TabsTrigger value="stripe" disabled={isProcessing}>
+                  <CreditCard className="h-4 w-4 mr-2" />
+                  Card
+                </TabsTrigger>
+              )}
+              {isPayPalEnabled && (
+                <TabsTrigger value="paypal" disabled={isProcessing}>
+                  PayPal
+                </TabsTrigger>
+              )}
+            </TabsList>
+
+            {isStripeEnabled && (
+              <TabsContent value="stripe" className="mt-4">
+                {clientSecret ? (
+                  <StripeProvider clientSecret={clientSecret}>
+                    <CheckoutForm
+                      cartId={cart.id}
+                      amount={cart.total}
+                      currency={cart.currency_code}
+                      onSuccess={handleSuccess}
+                    />
+                  </StripeProvider>
+                ) : (
+                  <div className="flex justify-center py-8">
+                    <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+                  </div>
+                )}
+              </TabsContent>
+            )}
+
+            {isPayPalEnabled && (
+              <TabsContent value="paypal" className="mt-4">
+                <PayPalProvider>
+                  <PayPalButton
+                    cartId={cart.id}
+                    amount={cart.total}
+                    currency={cart.currency_code}
+                    onSuccess={handleSuccess}
+                    onError={handleError}
+                  />
+                </PayPalProvider>
+              </TabsContent>
+            )}
+          </Tabs>
+
+          <p className="text-xs text-center text-muted-foreground">
+            Secure payment processing
+          </p>
         </CardContent>
       </Card>
     </div>
