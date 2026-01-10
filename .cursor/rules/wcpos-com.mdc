@@ -25,11 +25,107 @@ See `wcpos-infra/ARCHITECTURE.md` for the full WCPOS ecosystem.
 
 ## Tech Stack
 
-- **Framework**: Next.js 16 (App Router, Turbopack)
+- **Framework**: Next.js 16 (App Router, Turbopack, PPR)
 - **UI**: React 19, Tailwind CSS v4, Radix UI, shadcn/ui components
 - **Database**: Drizzle ORM + PostgreSQL
 - **Testing**: Vitest (unit), Playwright (e2e)
 - **Package Manager**: pnpm
+
+## Partial Pre-Rendering (PPR)
+
+We use Next.js bleeding-edge features including **Partial Pre-Rendering (PPR)**. This is critical for performance and SEO.
+
+### How PPR Works
+
+PPR combines static and dynamic rendering in the same route:
+1. **Static shell** - Pre-rendered at build time (fast initial load)
+2. **Dynamic holes** - Streamed in at request time via `<Suspense>`
+
+### Enabling PPR
+
+```typescript
+// next.config.ts
+const nextConfig = {
+  experimental: {
+    ppr: 'incremental', // Enable incremental adoption
+  },
+}
+
+// In each route that should use PPR:
+// app/pro/page.tsx
+export const experimental_ppr = true
+```
+
+### What Should Be Static vs Dynamic
+
+| Static (Pre-rendered) | Dynamic (Suspense Boundary) |
+|-----------------------|-----------------------------|
+| Marketing pages (/, /features, /pricing) | User-specific data (cart, auth state) |
+| Product information from Medusa | Real-time prices (if currency varies) |
+| Documentation content | Checkout forms |
+| Navigation, footer, layout shells | Admin dashboard data |
+| SEO metadata | Session-dependent UI |
+
+### Pattern: Static Shell with Dynamic Holes
+
+```tsx
+// app/pro/page.tsx
+export const experimental_ppr = true
+
+import { Suspense } from 'react'
+import { ProductGrid } from '@/components/pro/product-grid'
+import { CartSummary } from '@/components/pro/cart-summary'
+
+export default function ProPage() {
+  return (
+    <div>
+      {/* Static: Pre-rendered at build time */}
+      <h1>WCPOS Pro</h1>
+      <p>Get the most out of your POS with Pro features.</p>
+      
+      {/* Static: Products fetched at build time */}
+      <ProductGrid />
+      
+      {/* Dynamic: Cart state requires request-time data */}
+      <Suspense fallback={<CartSkeleton />}>
+        <CartSummary />
+      </Suspense>
+    </div>
+  )
+}
+```
+
+### Dynamic APIs Trigger Dynamic Rendering
+
+These APIs make a component dynamic (wrap with Suspense):
+- `cookies()` - Reading cookies
+- `headers()` - Reading request headers
+- `searchParams` - URL search parameters in page props
+- `unstable_noStore()` - Explicit opt-out of caching
+
+### Best Practices
+
+1. **Default to static** - Most content should be pre-rendered
+2. **Wrap dynamic components in Suspense** - Provides loading UI and enables streaming
+3. **Use skeleton loaders** - Good UX while dynamic content loads
+4. **Keep dynamic boundaries small** - The smaller the dynamic hole, the faster the page feels
+5. **Test with `next build`** - Check terminal output for static vs dynamic routes
+
+### Route Segment Config
+
+```typescript
+// Force static generation (no dynamic APIs)
+export const dynamic = 'force-static'
+
+// Force dynamic rendering
+export const dynamic = 'force-dynamic'
+
+// Revalidate cached data every N seconds
+export const revalidate = 3600 // 1 hour
+
+// Enable PPR for this route
+export const experimental_ppr = true
+```
 
 ## Key API Routes
 
@@ -40,18 +136,24 @@ See `wcpos-infra/ARCHITECTURE.md` for the full WCPOS ecosystem.
 | `/api/pro/update/[version]` | Pro plugin update checks |
 | `/api/pro/download/[version]` | Pro plugin download |
 | `/api/pro/license/*` | License validation (activate/deactivate/status) |
+| `/api/store/cart/*` | Medusa cart operations (proxy) |
 | `/api/health` | Health check endpoint |
 
 ## External Integrations
 
 - **GitHub API**: Fetches releases for Electron app and Pro plugin (`@octokit/rest`)
 - **License Server**: Validates licenses via `license.wcpos.com` (Keygen API)
+- **Medusa API**: Commerce operations via `store-api.wcpos.com`
+- **Stripe**: Payment processing for Pro licenses
+- **PayPal**: Alternative payment method
+- **BTCPayServer**: Bitcoin payments
 
 ## Development
 
 ```bash
 pnpm install     # Install dependencies
 pnpm dev         # Start dev server (Turbopack)
+pnpm build       # Production build (check PPR output)
 pnpm test:unit   # Run unit tests
 pnpm test:e2e    # Run Playwright tests
 pnpm db:studio   # Open Drizzle Studio
@@ -63,6 +165,11 @@ Key environment variables (see Vercel dashboard):
 - `POSTGRES_URL` - Vercel Postgres connection string
 - `GITHUB_PAT` - GitHub Personal Access Token for releases API
 - `AUTH_SECRET` - JWT secret for admin authentication
+- `MEDUSA_BACKEND_URL` - Medusa Store API URL
+- `MEDUSA_PUBLISHABLE_KEY` - Medusa publishable API key
+- `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` - Stripe client key
+- `NEXT_PUBLIC_PAYPAL_CLIENT_ID` - PayPal client ID
+- `NEXT_PUBLIC_BTCPAY_ENABLED` - Enable Bitcoin payments
 
 ## Structure
 
@@ -71,14 +178,16 @@ src/
 ├── app/                    # Next.js App Router pages
 │   ├── (auth)/            # Auth pages (login)
 │   ├── admin/             # Admin dashboard
+│   ├── pro/               # Pro purchase/checkout
 │   └── api/               # API routes
 ├── components/            # React components
 │   ├── admin/             # Admin-specific components
+│   ├── pro/               # Pro page components
 │   └── ui/                # shadcn/ui components
 ├── services/              # Server-side services
 │   ├── api/               # Public API exports
 │   └── core/              # Internal services
-│       ├── external/      # Third-party clients (GitHub, License)
+│       ├── external/      # Third-party clients (GitHub, License, Medusa)
 │       ├── business/      # Business logic
 │       └── database/      # Drizzle connection & schema
 ├── types/                 # TypeScript types
