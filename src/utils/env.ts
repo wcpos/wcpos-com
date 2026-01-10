@@ -8,6 +8,10 @@ const envSchema = z.object({
   // GitHub Personal Access Token (optional but recommended for higher rate limits)
   GITHUB_PAT: z.string().optional(),
 
+  // Medusa Store API
+  MEDUSA_BACKEND_URL: z.string().default('https://store-api.wcpos.com'),
+  MEDUSA_PUBLISHABLE_KEY: z.string().optional(),
+
   // Node environment
   NODE_ENV: z
     .enum(['development', 'production', 'test'])
