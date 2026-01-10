@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { cacheLife } from 'next/cache'
 import { proService } from '@/services/core/business/pro-service'
 
 /**
@@ -19,11 +20,20 @@ interface RouteParams {
   }>
 }
 
+/**
+ * Cached function to get update info
+ */
+async function getCachedUpdateInfo(version: string) {
+  'use cache'
+  cacheLife('api-short')
+  return proService.getUpdateInfo(version)
+}
+
 export async function GET(request: Request, { params }: RouteParams) {
   const { version } = await params
 
   try {
-    const result = await proService.getUpdateInfo(version)
+    const result = await getCachedUpdateInfo(version)
 
     return NextResponse.json(result, { status: result.status })
   } catch (error) {
@@ -34,7 +44,4 @@ export async function GET(request: Request, { params }: RouteParams) {
     )
   }
 }
-
-// Cache for 5 minutes
-export const revalidate = 300
 

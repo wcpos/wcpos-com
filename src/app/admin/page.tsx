@@ -1,3 +1,5 @@
+import { Suspense } from 'react'
+import { connection } from 'next/server'
 import { Activity, AlertCircle, Users, Zap } from 'lucide-react'
 import { AdminHeader } from '@/components/admin/header'
 import { StatCard } from '@/components/admin/stat-card'
@@ -7,7 +9,10 @@ import { VersionChart } from '@/components/admin/charts/version-chart'
 import { RecentErrors } from '@/components/admin/recent-errors'
 import { AnalyticsService } from '@/services/core/analytics/analytics-service'
 
-export default async function AdminDashboard() {
+async function DashboardContent() {
+  // Signal dynamic rendering before accessing Date.now()
+  await connection()
+  
   // Fetch all data in parallel
   const [stats, platformData, versionData, requestsData, recentErrors] =
     await Promise.all([
@@ -19,6 +24,77 @@ export default async function AdminDashboard() {
     ])
 
   return (
+    <>
+      {/* Stats Grid */}
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        <StatCard
+          title="Total Requests"
+          value={stats.totalRequests.toLocaleString()}
+          description="from last week"
+          icon={Activity}
+          trend={{
+            value: stats.requestsTrend,
+            isPositive: stats.requestsTrend >= 0,
+          }}
+        />
+        <StatCard
+          title="Errors"
+          value={stats.totalErrors}
+          description="from last week"
+          icon={AlertCircle}
+          trend={{
+            value: stats.errorsTrend,
+            isPositive: stats.errorsTrend <= 0,
+          }}
+        />
+        <StatCard
+          title="Unique Users"
+          value={stats.uniqueUsers}
+          description="today"
+          icon={Users}
+        />
+        <StatCard
+          title="Active Today"
+          value={stats.activeToday}
+          description="requests"
+          icon={Zap}
+        />
+      </div>
+
+      {/* Charts Row */}
+      <div className="grid gap-4 md:grid-cols-4">
+        <RequestsChart data={requestsData} />
+      </div>
+
+      {/* Distribution Charts */}
+      <div className="grid gap-4 md:grid-cols-4">
+        <PlatformChart data={platformData} />
+        <VersionChart data={versionData} />
+      </div>
+
+      {/* Recent Errors */}
+      <div className="grid gap-4 md:grid-cols-4">
+        <RecentErrors errors={recentErrors} />
+      </div>
+    </>
+  )
+}
+
+function DashboardSkeleton() {
+  return (
+    <div className="space-y-6">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        {[...Array(4)].map((_, i) => (
+          <div key={i} className="h-32 animate-pulse rounded-lg bg-muted" />
+        ))}
+      </div>
+      <div className="h-64 animate-pulse rounded-lg bg-muted" />
+    </div>
+  )
+}
+
+export default function AdminDashboard() {
+  return (
     <div className="flex flex-col">
       <AdminHeader
         title="Dashboard"
@@ -26,57 +102,9 @@ export default async function AdminDashboard() {
       />
 
       <div className="flex-1 space-y-6 p-6">
-        {/* Stats Grid */}
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          <StatCard
-            title="Total Requests"
-            value={stats.totalRequests.toLocaleString()}
-            description="from last week"
-            icon={Activity}
-            trend={{
-              value: stats.requestsTrend,
-              isPositive: stats.requestsTrend >= 0,
-            }}
-          />
-          <StatCard
-            title="Errors"
-            value={stats.totalErrors}
-            description="from last week"
-            icon={AlertCircle}
-            trend={{
-              value: stats.errorsTrend,
-              isPositive: stats.errorsTrend <= 0,
-            }}
-          />
-          <StatCard
-            title="Unique Users"
-            value={stats.uniqueUsers}
-            description="today"
-            icon={Users}
-          />
-          <StatCard
-            title="Active Today"
-            value={stats.activeToday}
-            description="requests"
-            icon={Zap}
-          />
-        </div>
-
-        {/* Charts Row */}
-        <div className="grid gap-4 md:grid-cols-4">
-          <RequestsChart data={requestsData} />
-        </div>
-
-        {/* Distribution Charts */}
-        <div className="grid gap-4 md:grid-cols-4">
-          <PlatformChart data={platformData} />
-          <VersionChart data={versionData} />
-        </div>
-
-        {/* Recent Errors */}
-        <div className="grid gap-4 md:grid-cols-4">
-          <RecentErrors errors={recentErrors} />
-        </div>
+        <Suspense fallback={<DashboardSkeleton />}>
+          <DashboardContent />
+        </Suspense>
       </div>
     </div>
   )

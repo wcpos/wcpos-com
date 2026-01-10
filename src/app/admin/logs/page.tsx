@@ -1,3 +1,4 @@
+import { Suspense } from 'react'
 import { AdminHeader } from '@/components/admin/header'
 import { LogsService } from '@/services/core/logs/logs-service'
 import { LogsTable } from './logs-table'
@@ -11,7 +12,7 @@ interface LogsPageProps {
   }>
 }
 
-export default async function LogsPage({ searchParams }: LogsPageProps) {
+async function LogsContent({ searchParams }: LogsPageProps) {
   const params = await searchParams
   const page = parseInt(params.page || '1', 10)
   const search = params.search || ''
@@ -28,6 +29,24 @@ export default async function LogsPage({ searchParams }: LogsPageProps) {
   ])
 
   return (
+    <LogsTable
+      logs={logsData.logs}
+      total={logsData.total}
+      page={logsData.page}
+      pageSize={logsData.pageSize}
+      totalPages={logsData.totalPages}
+      platforms={platforms}
+      currentFilters={{ search, platform, level }}
+    />
+  )
+}
+
+function LogsSkeleton() {
+  return <div className="h-96 animate-pulse rounded-lg bg-muted" />
+}
+
+export default function LogsPage({ searchParams }: LogsPageProps) {
+  return (
     <div className="flex flex-col">
       <AdminHeader
         title="API Logs"
@@ -35,15 +54,9 @@ export default async function LogsPage({ searchParams }: LogsPageProps) {
       />
 
       <div className="flex-1 p-6">
-        <LogsTable
-          logs={logsData.logs}
-          total={logsData.total}
-          page={logsData.page}
-          pageSize={logsData.pageSize}
-          totalPages={logsData.totalPages}
-          platforms={platforms}
-          currentFilters={{ search, platform, level }}
-        />
+        <Suspense fallback={<LogsSkeleton />}>
+          <LogsContent searchParams={searchParams} />
+        </Suspense>
       </div>
     </div>
   )

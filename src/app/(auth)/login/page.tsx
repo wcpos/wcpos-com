@@ -1,9 +1,13 @@
+import { Suspense } from 'react'
 import { redirect } from 'next/navigation'
 import { SessionService } from '@/services/core/auth/session-service'
 import { LoginForm } from './login-form'
 
-export default async function LoginPage() {
-  // If already logged in, redirect to dashboard
+/**
+ * Dynamic component that checks session and redirects if logged in
+ * Wrapped in Suspense at page level for PPR
+ */
+async function SessionCheck() {
   const session = await SessionService.getSession()
   if (session) {
     if (session.role === 'admin') {
@@ -11,9 +15,17 @@ export default async function LoginPage() {
     }
     redirect('/dashboard')
   }
+  return null
+}
 
+export default function LoginPage() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+      {/* Dynamic session check - streams after static shell */}
+      <Suspense fallback={null}>
+        <SessionCheck />
+      </Suspense>
+      
       <div className="w-full max-w-md space-y-8 rounded-2xl border border-slate-700 bg-slate-800/50 p-8 backdrop-blur-sm">
         {/* Logo */}
         <div className="flex flex-col items-center space-y-2">

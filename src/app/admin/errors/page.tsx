@@ -1,3 +1,4 @@
+import { Suspense } from 'react'
 import { AdminHeader } from '@/components/admin/header'
 import { LogsService } from '@/services/core/logs/logs-service'
 import { LogsTable } from '../logs/logs-table'
@@ -10,7 +11,7 @@ interface ErrorsPageProps {
   }>
 }
 
-export default async function ErrorsPage({ searchParams }: ErrorsPageProps) {
+async function ErrorsContent({ searchParams }: ErrorsPageProps) {
   const params = await searchParams
   const page = parseInt(params.page || '1', 10)
   const search = params.search || ''
@@ -26,6 +27,24 @@ export default async function ErrorsPage({ searchParams }: ErrorsPageProps) {
   ])
 
   return (
+    <LogsTable
+      logs={logsData.logs}
+      total={logsData.total}
+      page={logsData.page}
+      pageSize={logsData.pageSize}
+      totalPages={logsData.totalPages}
+      platforms={platforms}
+      currentFilters={{ search, platform, level: 'error' }}
+    />
+  )
+}
+
+function ErrorsSkeleton() {
+  return <div className="h-96 animate-pulse rounded-lg bg-muted" />
+}
+
+export default function ErrorsPage({ searchParams }: ErrorsPageProps) {
+  return (
     <div className="flex flex-col">
       <AdminHeader
         title="Error Logs"
@@ -33,15 +52,9 @@ export default async function ErrorsPage({ searchParams }: ErrorsPageProps) {
       />
 
       <div className="flex-1 p-6">
-        <LogsTable
-          logs={logsData.logs}
-          total={logsData.total}
-          page={logsData.page}
-          pageSize={logsData.pageSize}
-          totalPages={logsData.totalPages}
-          platforms={platforms}
-          currentFilters={{ search, platform, level: 'error' }}
-        />
+        <Suspense fallback={<ErrorsSkeleton />}>
+          <ErrorsContent searchParams={searchParams} />
+        </Suspense>
       </div>
     </div>
   )

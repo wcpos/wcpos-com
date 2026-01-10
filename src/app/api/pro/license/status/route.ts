@@ -37,6 +37,5 @@ export async function GET(request: Request) {
   }
 }
 
-// No caching for license status - must be real-time
-export const revalidate = 0
+// No caching for license status - dynamic by default with cacheComponents
 

@@ -42,68 +42,86 @@ pnpm lint    # Must pass - catches code quality issues
 
 If the build fails, fix the issues before committing. Do NOT push broken code to trigger CI failures.
 
-## Caching & Rendering
+## Partial Pre-Rendering (PPR) with Cache Components
 
-Next.js 16 has moved PPR into `cacheComponents`. However, `cacheComponents` is not compatible with `revalidate` route segment configs that we use for API routes. 
+We use Next.js 16's `cacheComponents` for Partial Pre-Rendering. This enables static shells with dynamic holes streamed at request time.
 
-**Current approach**: We use standard Next.js caching without `cacheComponents`:
-
-### Route Segment Config
+### Configuration
 
 ```typescript
-// Force static generation (no dynamic APIs)
-export const dynamic = 'force-static'
-
-// Force dynamic rendering
-export const dynamic = 'force-dynamic'
-
-// Revalidate cached data every N seconds
-export const revalidate = 3600 // 1 hour
+// next.config.ts
+const nextConfig = {
+  cacheComponents: true,
+  cacheLife: {
+    'api-short': { stale: 300, revalidate: 60, expire: 3600 },
+  },
+}
 ```
+
+### Key Concepts
+
+1. **All pages are dynamic by default** - No `export const dynamic` needed
+2. **Use `'use cache'` + `cacheLife()`** - To cache API data fetching
+3. **Wrap dynamic content in `<Suspense>`** - Creates streaming boundaries
+4. **Use `connection()`** - Before `Date.now()` or other time-based operations
 
 ### What Should Be Static vs Dynamic
 
-| Static (Pre-rendered) | Dynamic (force-dynamic) |
-|-----------------------|-------------------------|
-| Marketing pages (/, /features, /pricing) | User-specific data (cart, auth state) |
-| Product information from Medusa | Real-time API responses |
-| Documentation content | Checkout forms |
-| Navigation, footer, layout shells | Admin dashboard data |
-| SEO metadata | Session-dependent UI |
+| Static (Page Shell) | Dynamic (Suspense Boundary) |
+|---------------------|-----------------------------|
+| Hero sections, headings | User-specific data (cart, session) |
+| Navigation, footer | Real-time API responses |
+| Static marketing content | Admin dashboard stats |
+| SEO metadata | Anything using Date.now() |
 
 ### Pattern: Static Shell with Dynamic Holes
 
 ```tsx
 import { Suspense } from 'react'
-import { ProductGrid } from '@/components/pro/product-grid'
-import { CartSummary } from '@/components/pro/cart-summary'
+import { connection } from 'next/server'
 
-export default function ProPage() {
+// Dynamic component - uses Date.now() or fetches data
+async function DashboardStats() {
+  await connection() // Signal dynamic BEFORE Date.now()
+  const stats = await fetchStats()
+  return <StatsGrid stats={stats} />
+}
+
+// Static page shell with dynamic hole
+export default function DashboardPage() {
   return (
     <div>
-      {/* Static: Pre-rendered at build time */}
-      <h1>WCPOS Pro</h1>
-      <p>Get the most out of your POS with Pro features.</p>
+      {/* Static: Pre-rendered at build */}
+      <h1>Dashboard</h1>
       
-      {/* Static: Products fetched at build time */}
-      <ProductGrid />
-      
-      {/* Dynamic: Cart state requires request-time data */}
-      <Suspense fallback={<CartSkeleton />}>
-        <CartSummary />
+      {/* Dynamic: Streamed at request time */}
+      <Suspense fallback={<StatsSkeleton />}>
+        <DashboardStats />
       </Suspense>
     </div>
   )
 }
 ```
 
-### Dynamic APIs Trigger Dynamic Rendering
+### Caching API Data
 
-These APIs make a component dynamic (wrap with Suspense):
+```typescript
+import { cacheLife } from 'next/cache'
+
+async function getCachedData() {
+  'use cache'
+  cacheLife('api-short')  // Use profile from next.config.ts
+  return fetchFromExternalAPI()
+}
+```
+
+### Dynamic APIs (Must be in Suspense)
+
 - `cookies()` - Reading cookies
-- `headers()` - Reading request headers
-- `searchParams` - URL search parameters in page props
-- `unstable_noStore()` - Explicit opt-out of caching
+- `headers()` - Reading request headers  
+- `searchParams` - URL search parameters
+- `connection()` - Signals dynamic rendering
+- `Date.now()` / `new Date()` - Must call `connection()` first
 
 ## Key API Routes
 

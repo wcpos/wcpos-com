@@ -1,3 +1,4 @@
+import { Suspense } from 'react'
 import { getWcposProProducts } from '@/services/core/external/medusa-client'
 import { PricingCard } from '@/components/pro/pricing-card'
 
@@ -7,7 +8,10 @@ export const metadata = {
     'Unlock the full potential of WooCommerce POS with Pro features including advanced reporting, multi-outlet support, and priority support.',
 }
 
-export default async function ProPage() {
+/**
+ * Dynamic component that fetches products from Medusa
+ */
+async function PricingSection() {
   const products = await getWcposProProducts()
 
   // Sort products: yearly first, then lifetime
@@ -17,6 +21,40 @@ export default async function ProPage() {
     return 0
   })
 
+  if (products.length === 0) {
+    return (
+      <div className="text-center py-12">
+        <p className="text-muted-foreground">
+          Pricing information is currently unavailable. Please try again
+          later.
+        </p>
+      </div>
+    )
+  }
+
+  return (
+    <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto items-start">
+      {sortedProducts.map((product) => (
+        <PricingCard
+          key={product.id}
+          product={product}
+          featured={product.handle === 'wcpos-pro-yearly'}
+        />
+      ))}
+    </div>
+  )
+}
+
+function PricingSkeleton() {
+  return (
+    <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto items-start">
+      <div className="h-96 animate-pulse rounded-lg bg-muted" />
+      <div className="h-96 animate-pulse rounded-lg bg-muted" />
+    </div>
+  )
+}
+
+export default function ProPage() {
   return (
     <main className="min-h-screen bg-gradient-to-b from-background to-muted/20">
       {/* Hero Section */}
@@ -30,26 +68,11 @@ export default async function ProPage() {
         </p>
       </section>
 
-      {/* Pricing Section */}
+      {/* Pricing Section - Dynamic */}
       <section className="container mx-auto px-4 pb-16">
-        {products.length === 0 ? (
-          <div className="text-center py-12">
-            <p className="text-muted-foreground">
-              Pricing information is currently unavailable. Please try again
-              later.
-            </p>
-          </div>
-        ) : (
-          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto items-start">
-            {sortedProducts.map((product) => (
-              <PricingCard
-                key={product.id}
-                product={product}
-                featured={product.handle === 'wcpos-pro-yearly'}
-              />
-            ))}
-          </div>
-        )}
+        <Suspense fallback={<PricingSkeleton />}>
+          <PricingSection />
+        </Suspense>
       </section>
 
       {/* Features Section */}

@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { cacheLife } from 'next/cache'
 import { electronService } from '@/services/core/business/electron-service'
 
 /**
@@ -21,13 +22,22 @@ interface RouteParams {
   }>
 }
 
+/**
+ * Cached function to get download URL
+ */
+async function getCachedDownloadUrl(platform: string, version: string) {
+  'use cache'
+  cacheLife('api-short')
+  return electronService.getDownloadUrl(platform, version)
+}
+
 export async function GET(request: Request, { params }: RouteParams) {
   const { platform } = await params
   const { searchParams } = new URL(request.url)
   const version = searchParams.get('version') || 'latest'
 
   try {
-    const result = await electronService.getDownloadUrl(platform, version)
+    const result = await getCachedDownloadUrl(platform, version)
 
     // Check if it's an error response
     if (typeof result === 'object' && 'error' in result) {
@@ -44,7 +54,4 @@ export async function GET(request: Request, { params }: RouteParams) {
     )
   }
 }
-
-// Enable ISR-style caching - revalidate every 5 minutes
-export const revalidate = 300
 

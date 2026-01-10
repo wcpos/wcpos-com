@@ -79,6 +79,5 @@ export async function GET(request: Request, { params }: RouteParams) {
   }
 }
 
-// No caching for downloads
-export const revalidate = 0
+// No caching for downloads - dynamic by default with cacheComponents
 

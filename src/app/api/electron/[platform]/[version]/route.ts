@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { cacheLife } from 'next/cache'
 import { electronService } from '@/services/core/business/electron-service'
 
 /**
@@ -23,11 +24,20 @@ interface RouteParams {
   }>
 }
 
+/**
+ * Cached function to fetch latest update
+ */
+async function getCachedUpdate(platform: string, version: string) {
+  'use cache'
+  cacheLife('api-short')
+  return electronService.getLatestUpdate(platform, version)
+}
+
 export async function GET(request: Request, { params }: RouteParams) {
   const { platform, version } = await params
 
   try {
-    const result = await electronService.getLatestUpdate(platform, version)
+    const result = await getCachedUpdate(platform, version)
 
     // Check if it's an error response
     if ('error' in result) {
@@ -49,7 +59,4 @@ export async function GET(request: Request, { params }: RouteParams) {
     )
   }
 }
-
-// Enable ISR-style caching - revalidate every 5 minutes
-export const revalidate = 300
 
