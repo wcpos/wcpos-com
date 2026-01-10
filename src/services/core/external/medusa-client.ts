@@ -36,9 +36,14 @@ async function medusaFetch<T>(
 ): Promise<T> {
   const url = `${env.MEDUSA_BACKEND_URL}${endpoint}`
 
-  const headers: HeadersInit = {
+  const headers: Record<string, string> = {
     'Content-Type': 'application/json',
-    ...options.headers,
+  }
+
+  // Merge any headers from options
+  if (options.headers) {
+    const optHeaders = options.headers as Record<string, string>
+    Object.assign(headers, optHeaders)
   }
 
   // Add publishable API key if available

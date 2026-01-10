@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState, useCallback } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
 import { StripeProvider } from './stripe-provider'
 import { CheckoutForm } from './checkout-form'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -31,10 +31,8 @@ interface Cart {
 }
 
 export function CheckoutClient() {
-  const router = useRouter()
   const searchParams = useSearchParams()
   const variantId = searchParams.get('variant')
-  const productHandle = searchParams.get('product')
 
   const [cart, setCart] = useState<Cart | null>(null)
   const [clientSecret, setClientSecret] = useState<string | null>(null)
