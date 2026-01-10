@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { Check } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
@@ -85,11 +86,16 @@ export function PricingCard({
       </CardContent>
       <CardFooter>
         <Button
+          asChild
           className="w-full"
           size="lg"
           variant={featured ? 'default' : 'outline'}
         >
-          Get Started
+          <Link
+            href={`/pro/checkout?variant=${variant?.id}&product=${product.handle}`}
+          >
+            Get Started
+          </Link>
         </Button>
       </CardFooter>
     </Card>

@@ -6,6 +6,12 @@ import type {
   MedusaProductsResponse,
   MedusaProductResponse,
   MedusaRegionsResponse,
+  MedusaCart,
+  MedusaCartResponse,
+  CreateCartInput,
+  AddLineItemInput,
+  UpdateCartInput,
+  CompleteCartResponse,
 } from '@/types/medusa'
 
 /**
@@ -195,7 +201,140 @@ export function clearProductCache(): void {
   productCache.clear()
 }
 
+// ============================================================================
+// Cart Management
+// ============================================================================
+
+/**
+ * Create a new cart
+ */
+export async function createCart(input: CreateCartInput = {}): Promise<MedusaCart | null> {
+  try {
+    const response = await medusaFetch<MedusaCartResponse>('/store/carts', {
+      method: 'POST',
+      body: JSON.stringify(input),
+    })
+    return response.cart
+  } catch (error) {
+    console.error('[MedusaClient] Failed to create cart:', error)
+    return null
+  }
+}
+
+/**
+ * Get a cart by ID
+ */
+export async function getCart(cartId: string): Promise<MedusaCart | null> {
+  try {
+    const response = await medusaFetch<MedusaCartResponse>(`/store/carts/${cartId}`)
+    return response.cart
+  } catch (error) {
+    console.error(`[MedusaClient] Failed to get cart ${cartId}:`, error)
+    return null
+  }
+}
+
+/**
+ * Add a line item to a cart
+ */
+export async function addLineItem(
+  cartId: string,
+  item: AddLineItemInput
+): Promise<MedusaCart | null> {
+  try {
+    const response = await medusaFetch<MedusaCartResponse>(
+      `/store/carts/${cartId}/line-items`,
+      {
+        method: 'POST',
+        body: JSON.stringify(item),
+      }
+    )
+    return response.cart
+  } catch (error) {
+    console.error('[MedusaClient] Failed to add line item:', error)
+    return null
+  }
+}
+
+/**
+ * Update cart (email, addresses)
+ */
+export async function updateCart(
+  cartId: string,
+  input: UpdateCartInput
+): Promise<MedusaCart | null> {
+  try {
+    const response = await medusaFetch<MedusaCartResponse>(`/store/carts/${cartId}`, {
+      method: 'POST',
+      body: JSON.stringify(input),
+    })
+    return response.cart
+  } catch (error) {
+    console.error('[MedusaClient] Failed to update cart:', error)
+    return null
+  }
+}
+
+/**
+ * Initialize payment sessions for a cart
+ */
+export async function createPaymentSessions(cartId: string): Promise<MedusaCart | null> {
+  try {
+    const response = await medusaFetch<MedusaCartResponse>(
+      `/store/carts/${cartId}/payment-sessions`,
+      {
+        method: 'POST',
+      }
+    )
+    return response.cart
+  } catch (error) {
+    console.error('[MedusaClient] Failed to create payment sessions:', error)
+    return null
+  }
+}
+
+/**
+ * Select a payment session provider
+ */
+export async function setPaymentSession(
+  cartId: string,
+  providerId: string
+): Promise<MedusaCart | null> {
+  try {
+    const response = await medusaFetch<MedusaCartResponse>(
+      `/store/carts/${cartId}/payment-session`,
+      {
+        method: 'POST',
+        body: JSON.stringify({ provider_id: providerId }),
+      }
+    )
+    return response.cart
+  } catch (error) {
+    console.error('[MedusaClient] Failed to set payment session:', error)
+    return null
+  }
+}
+
+/**
+ * Complete a cart (finalize payment and create order)
+ */
+export async function completeCart(cartId: string): Promise<CompleteCartResponse | null> {
+  try {
+    const response = await medusaFetch<CompleteCartResponse>(
+      `/store/carts/${cartId}/complete`,
+      {
+        method: 'POST',
+      }
+    )
+    return response
+  } catch (error) {
+    console.error('[MedusaClient] Failed to complete cart:', error)
+    return null
+  }
+}
+
 export const medusaClient = {
+  // Products
   getProducts,
   getWcposProProducts,
   getProductByHandle,
@@ -204,4 +343,12 @@ export const medusaClient = {
   formatPrice,
   getVariantPrice,
   clearProductCache,
+  // Cart
+  createCart,
+  getCart,
+  addLineItem,
+  updateCart,
+  createPaymentSessions,
+  setPaymentSession,
+  completeCart,
 }

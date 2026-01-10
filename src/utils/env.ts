@@ -12,6 +12,9 @@ const envSchema = z.object({
   MEDUSA_BACKEND_URL: z.string().default('https://store-api.wcpos.com'),
   MEDUSA_PUBLISHABLE_KEY: z.string().optional(),
 
+  // Stripe (client-side publishable key)
+  NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: z.string().optional(),
+
   // Node environment
   NODE_ENV: z
     .enum(['development', 'production', 'test'])

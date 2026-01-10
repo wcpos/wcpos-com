@@ -106,3 +106,62 @@ export interface MedusaRegion {
 export interface MedusaRegionsResponse {
   regions: MedusaRegion[]
 }
+
+// Cart creation/update types
+export interface CreateCartInput {
+  region_id?: string
+  email?: string
+  items?: Array<{
+    variant_id: string
+    quantity: number
+  }>
+}
+
+export interface AddLineItemInput {
+  variant_id: string
+  quantity: number
+}
+
+export interface UpdateCartInput {
+  email?: string
+  billing_address?: MedusaAddress
+  shipping_address?: MedusaAddress
+}
+
+export interface MedusaAddress {
+  first_name?: string
+  last_name?: string
+  address_1?: string
+  address_2?: string
+  city?: string
+  country_code?: string
+  province?: string
+  postal_code?: string
+  phone?: string
+}
+
+export interface MedusaPaymentCollection {
+  id: string
+  status: string
+  payment_sessions: MedusaPaymentSession[]
+}
+
+export interface MedusaOrder {
+  id: string
+  status: string
+  email: string
+  currency_code: string
+  total: number
+  items: MedusaCartItem[]
+  created_at: string
+}
+
+export interface MedusaOrderResponse {
+  order: MedusaOrder
+}
+
+export interface CompleteCartResponse {
+  type: 'order' | 'cart' | 'swap'
+  order?: MedusaOrder
+  cart?: MedusaCart
+}
