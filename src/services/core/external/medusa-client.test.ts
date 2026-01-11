@@ -120,7 +120,7 @@ describe('medusaClient', () => {
       expect(products).toHaveLength(2)
       expect(products[0].title).toBe('WCPOS Pro Yearly')
       expect(mockFetch).toHaveBeenCalledWith(
-        'https://store-api.wcpos.com/store/products?status=published&fields=*variants.prices',
+        'https://store-api.wcpos.com/store/products?fields=*variants.prices',
         expect.objectContaining({
           headers: expect.objectContaining({
             'Content-Type': 'application/json',
