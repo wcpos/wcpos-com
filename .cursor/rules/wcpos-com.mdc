@@ -31,16 +31,76 @@ See `wcpos-infra/ARCHITECTURE.md` for the full WCPOS ecosystem.
 - **Testing**: Vitest (unit), Playwright (e2e)
 - **Package Manager**: pnpm
 
-## ⚠️ AI Agent: ALWAYS Test Before Committing
+## ⚠️ AI Agent: Testing Requirements
+
+### MANDATORY: Test Before Every Commit
 
 **Before committing any changes, you MUST run:**
 
 ```bash
-pnpm build   # Must pass - catches Next.js config issues
-pnpm lint    # Must pass - catches code quality issues
+pnpm build      # Must pass - catches Next.js config issues
+pnpm lint       # Must pass - catches code quality issues
+pnpm test:unit  # Must pass - catches logic errors
 ```
 
-If the build fails, fix the issues before committing. Do NOT push broken code to trigger CI failures.
+If ANY test fails, fix the issues before committing. Do NOT push broken code.
+
+### MANDATORY: Write Tests for New Features
+
+**Every feature/change MUST have corresponding tests:**
+
+| Change Type | Required Tests |
+|-------------|----------------|
+| New API route | Unit tests for service logic + e2e test for endpoint |
+| New page | E2e test verifying content loads correctly |
+| New component | Unit test if complex logic, e2e test for user-facing |
+| External API integration | Unit tests with mocks, e2e smoke test |
+| Bug fix | Regression test that would catch the bug |
+
+### Test File Locations
+
+```
+src/
+├── services/
+│   └── core/external/
+│       ├── medusa-client.ts       # Service
+│       └── medusa-client.test.ts  # Unit tests (colocated)
+e2e/
+├── homepage.spec.ts               # Page tests
+├── pro.spec.ts                    # /pro page tests
+└── api/
+    └── electron.spec.ts           # API route tests
+```
+
+### Example: Testing External API Integrations
+
+When integrating with external APIs (Medusa, Keygen, GitHub):
+
+```typescript
+// Unit test with mocks - test error handling
+it('returns empty array when API rejects missing key', async () => {
+  mockFetch.mockResolvedValueOnce({
+    ok: false,
+    status: 401,
+    text: async () => '{"message":"Invalid API key"}',
+  })
+
+  const result = await getProducts()
+  expect(result).toEqual([])
+})
+
+// E2e test - verify page doesn't show error message
+test('does NOT show error message when products load', async ({ page }) => {
+  await page.goto('/pro')
+  await expect(page.getByText('unavailable')).not.toBeVisible()
+})
+```
+
+### When to Run Full Test Suite
+
+- `pnpm test:unit` - Run after every file change
+- `pnpm test:e2e` - Run before pushing (or in CI)
+- `pnpm build` - Run before every commit
 
 ## Partial Pre-Rendering (PPR) with Cache Components
 

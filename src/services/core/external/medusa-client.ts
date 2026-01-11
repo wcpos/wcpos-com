@@ -101,18 +101,28 @@ export async function getWcposProProducts(): Promise<MedusaProduct[]> {
     // Check cache first
     const cached = productCache.get('wcpos-pro')
     if (cached && Date.now() - cached.timestamp < CACHE_TTL_MS) {
+      console.log('[MedusaClient] Returning cached WCPOS Pro products:', cached.data.length)
       return cached.data
     }
+
+    // Debug: Log environment configuration
+    console.log('[MedusaClient] Fetching products from:', env.MEDUSA_BACKEND_URL)
+    console.log('[MedusaClient] Publishable key present:', !!env.MEDUSA_PUBLISHABLE_KEY)
+    console.log('[MedusaClient] Key prefix:', env.MEDUSA_PUBLISHABLE_KEY?.substring(0, 10) + '...')
 
     // Fetch products with wcpos-pro handle prefix
     const response = await medusaFetch<MedusaProductsResponse>(
       '/store/products?status=published&fields=*variants.prices'
     )
 
+    console.log('[MedusaClient] Total products returned:', response.products?.length ?? 0)
+
     // Filter to only WCPOS Pro products
     const wcposProducts = response.products.filter(
       (p) => p.handle?.startsWith('wcpos-pro-')
     )
+
+    console.log('[MedusaClient] WCPOS Pro products found:', wcposProducts.length)
 
     // Update cache
     productCache.set('wcpos-pro', {
@@ -123,6 +133,8 @@ export async function getWcposProProducts(): Promise<MedusaProduct[]> {
     return wcposProducts
   } catch (error) {
     console.error('[MedusaClient] Failed to fetch WCPOS Pro products:', error)
+    console.error('[MedusaClient] Backend URL was:', env.MEDUSA_BACKEND_URL)
+    console.error('[MedusaClient] Key was present:', !!env.MEDUSA_PUBLISHABLE_KEY)
     return []
   }
 }

@@ -142,6 +142,19 @@ describe('medusaClient', () => {
       expect(products).toEqual([])
     })
 
+    it('returns empty array when API rejects missing publishable key', async () => {
+      mockFetch.mockResolvedValueOnce({
+        ok: false,
+        status: 401,
+        text: async () =>
+          '{"type":"not_allowed","message":"A valid publishable key is required"}',
+      })
+
+      const products = await getProducts()
+
+      expect(products).toEqual([])
+    })
+
     it('uses cache on subsequent calls', async () => {
       mockFetch.mockResolvedValueOnce({
         ok: true,

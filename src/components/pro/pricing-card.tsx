@@ -49,6 +49,7 @@ export function PricingCard({
 
   return (
     <Card
+      data-testid="pricing-card"
       className={`relative flex flex-col ${
         featured
           ? 'border-primary shadow-lg scale-105'
