@@ -1,11 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server'
 import {
-  createPaymentSessions,
-  setPaymentSession,
+  initializePayment,
 } from '@/services/core/external/medusa-client'
 
 /**
- * POST /api/store/cart/payment-sessions - Initialize payment sessions
+ * POST /api/store/cart/payment-sessions - Initialize payment for a cart
+ * 
+ * This uses the Medusa v2 payment flow:
+ * 1. Creates a payment collection for the cart
+ * 2. Initializes a payment session with Stripe
+ * 3. Returns the client_secret for Stripe.js
  */
 export async function POST(request: NextRequest) {
   try {
@@ -19,31 +23,18 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // If provider_id is specified, set the payment session
-    if (provider_id) {
-      const cart = await setPaymentSession(cartId, provider_id)
+    // Initialize payment and get client secret
+    const providerId = provider_id || 'pp_stripe_stripe'
+    const result = await initializePayment(cartId, providerId)
 
-      if (!cart) {
-        return NextResponse.json(
-          { error: 'Failed to set payment session' },
-          { status: 500 }
-        )
-      }
-
-      return NextResponse.json({ cart })
-    }
-
-    // Otherwise, create payment sessions
-    const cart = await createPaymentSessions(cartId)
-
-    if (!cart) {
+    if (!result) {
       return NextResponse.json(
-        { error: 'Failed to create payment sessions' },
+        { error: 'Failed to initialize payment' },
         { status: 500 }
       )
     }
 
-    return NextResponse.json({ cart })
+    return NextResponse.json(result)
   } catch (error) {
     console.error('[API] Error with payment sessions:', error)
     return NextResponse.json(

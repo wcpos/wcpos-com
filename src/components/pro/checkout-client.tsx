@@ -102,19 +102,27 @@ export function CheckoutClient() {
 
       const { cart: cartWithItem } = await itemResponse.json()
 
-      // Initialize payment sessions (this creates sessions for all available providers)
+      // Initialize payment with Stripe (Medusa v2 flow)
       const sessionsResponse = await fetch('/api/store/cart/payment-sessions', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ cartId: cartWithItem.id }),
+        body: JSON.stringify({ 
+          cartId: cartWithItem.id,
+          provider_id: 'pp_stripe_stripe',
+        }),
       })
 
       if (!sessionsResponse.ok) {
         throw new Error('Failed to initialize payment')
       }
 
-      const { cart: cartWithSessions } = await sessionsResponse.json()
-      setCart(cartWithSessions)
+      const paymentResult = await sessionsResponse.json()
+      setCart(paymentResult.cart)
+      
+      // Set the client secret for Stripe
+      if (paymentResult.clientSecret) {
+        setClientSecret(paymentResult.clientSecret)
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to initialize checkout')
     } finally {
@@ -122,13 +130,29 @@ export function CheckoutClient() {
     }
   }, [variantId])
 
+  // Map frontend payment method names to Medusa provider IDs
+  const getProviderId = (method: PaymentMethod): string => {
+    switch (method) {
+      case 'stripe':
+        return 'pp_stripe_stripe'
+      case 'paypal':
+        return 'pp_paypal_paypal'
+      case 'btcpay':
+        return 'pp_btcpay_btcpay'
+      default:
+        return 'pp_stripe_stripe'
+    }
+  }
+
   // Select payment provider when method changes
+  // Note: This creates a NEW payment collection/session each time
   const selectPaymentMethod = useCallback(
     async (method: PaymentMethod) => {
       if (!cart) return
 
       setIsProcessing(true)
       setError(null)
+      setClientSecret(null) // Clear old secret
 
       try {
         const response = await fetch('/api/store/cart/payment-sessions', {
@@ -136,7 +160,7 @@ export function CheckoutClient() {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             cartId: cart.id,
-            provider_id: method,
+            provider_id: getProviderId(method),
           }),
         })
 
@@ -144,12 +168,12 @@ export function CheckoutClient() {
           throw new Error(`Failed to select ${method} payment`)
         }
 
-        const { cart: updatedCart } = await response.json()
-        setCart(updatedCart)
+        const paymentResult = await response.json()
+        setCart(paymentResult.cart)
 
-        // For Stripe, get the client secret
-        if (method === 'stripe' && updatedCart.payment_session?.data?.client_secret) {
-          setClientSecret(updatedCart.payment_session.data.client_secret)
+        // For Stripe, set the client secret
+        if (method === 'stripe' && paymentResult.clientSecret) {
+          setClientSecret(paymentResult.clientSecret)
         }
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Failed to select payment method')
@@ -164,12 +188,8 @@ export function CheckoutClient() {
     initializeCheckout()
   }, [initializeCheckout])
 
-  // Select default payment method after cart is loaded
-  useEffect(() => {
-    if (cart && !cart.payment_session && isStripeEnabled) {
-      selectPaymentMethod('stripe')
-    }
-  }, [cart, selectPaymentMethod])
+  // Note: We initialize payment during cart creation, so no need to auto-select here
+  // The clientSecret is already set from initializeCheckout
 
   const handlePaymentMethodChange = (value: string) => {
     const method = value as PaymentMethod

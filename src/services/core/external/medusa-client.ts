@@ -284,43 +284,105 @@ export async function updateCart(
 }
 
 /**
- * Initialize payment sessions for a cart
+ * Payment Collection response type for Medusa v2
  */
-export async function createPaymentSessions(cartId: string): Promise<MedusaCart | null> {
-  try {
-    const response = await medusaFetch<MedusaCartResponse>(
-      `/store/carts/${cartId}/payment-sessions`,
-      {
-        method: 'POST',
+interface PaymentCollectionResponse {
+  payment_collection: {
+    id: string
+    currency_code: string
+    amount: number
+    status?: string
+    payment_sessions?: Array<{
+      id: string
+      provider_id: string
+      status: string
+      data?: {
+        client_secret?: string
+        id?: string
+        [key: string]: unknown
       }
-    )
-    return response.cart
-  } catch (error) {
-    console.error('[MedusaClient] Failed to create payment sessions:', error)
-    return null
+    }>
   }
 }
 
 /**
- * Select a payment session provider
+ * Payment initialization result
  */
-export async function setPaymentSession(
+export interface PaymentInitResult {
+  cart: MedusaCart
+  paymentCollectionId: string
+  clientSecret: string | null
+  paymentSessionId: string | null
+}
+
+/**
+ * Initialize payment for a cart (Medusa v2 flow)
+ * 1. Creates a payment collection for the cart
+ * 2. Initializes payment session with specified provider
+ * 3. Returns cart + client_secret for Stripe.js
+ */
+export async function initializePayment(
   cartId: string,
-  providerId: string
-): Promise<MedusaCart | null> {
+  providerId: string = 'pp_stripe_stripe'
+): Promise<PaymentInitResult | null> {
   try {
-    const response = await medusaFetch<MedusaCartResponse>(
-      `/store/carts/${cartId}/payment-session`,
+    // Step 1: Create payment collection for the cart
+    const collectionResponse = await medusaFetch<PaymentCollectionResponse>(
+      '/store/payment-collections',
+      {
+        method: 'POST',
+        body: JSON.stringify({ cart_id: cartId }),
+      }
+    )
+
+    const paymentCollectionId = collectionResponse.payment_collection.id
+
+    // Step 2: Initialize payment session with the provider
+    const sessionResponse = await medusaFetch<PaymentCollectionResponse>(
+      `/store/payment-collections/${paymentCollectionId}/payment-sessions`,
       {
         method: 'POST',
         body: JSON.stringify({ provider_id: providerId }),
       }
     )
-    return response.cart
+
+    // Extract client_secret from payment session data
+    const paymentSession = sessionResponse.payment_collection.payment_sessions?.[0]
+    const clientSecret = paymentSession?.data?.client_secret || null
+    const paymentSessionId = paymentSession?.id || null
+
+    // Step 3: Get the updated cart
+    const cartResponse = await medusaFetch<MedusaCartResponse>(`/store/carts/${cartId}`)
+
+    return {
+      cart: cartResponse.cart,
+      paymentCollectionId,
+      clientSecret,
+      paymentSessionId,
+    }
   } catch (error) {
-    console.error('[MedusaClient] Failed to set payment session:', error)
+    console.error('[MedusaClient] Failed to initialize payment:', error)
     return null
   }
+}
+
+/**
+ * @deprecated Use initializePayment instead - this is for backwards compatibility
+ */
+export async function createPaymentSessions(cartId: string): Promise<MedusaCart | null> {
+  const result = await initializePayment(cartId)
+  return result?.cart || null
+}
+
+/**
+ * @deprecated Use initializePayment instead - this is for backwards compatibility
+ */
+export async function setPaymentSession(
+  cartId: string,
+  providerId: string
+): Promise<MedusaCart | null> {
+  const result = await initializePayment(cartId, providerId)
+  return result?.cart || null
 }
 
 /**
@@ -356,7 +418,10 @@ export const medusaClient = {
   getCart,
   addLineItem,
   updateCart,
+  // Payment (Medusa v2)
+  initializePayment,
+  completeCart,
+  // @deprecated
   createPaymentSessions,
   setPaymentSession,
-  completeCart,
 }

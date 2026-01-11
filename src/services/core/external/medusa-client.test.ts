@@ -338,8 +338,36 @@ describe('medusaClient', () => {
       })
     })
 
-    describe('createPaymentSessions', () => {
-      it('initializes payment sessions', async () => {
+    describe('createPaymentSessions (v2 flow)', () => {
+      it('creates payment collection and initializes session', async () => {
+        // Mock 1: Create payment collection
+        mockFetch.mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({
+            payment_collection: {
+              id: 'pay_col_123',
+              currency_code: 'usd',
+              amount: 129,
+            },
+          }),
+        })
+        // Mock 2: Initialize payment session
+        mockFetch.mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({
+            payment_collection: {
+              id: 'pay_col_123',
+              payment_sessions: [
+                {
+                  id: 'payses_123',
+                  provider_id: 'pp_stripe_stripe',
+                  data: { client_secret: 'pi_secret_123' },
+                },
+              ],
+            },
+          }),
+        })
+        // Mock 3: Get updated cart
         mockFetch.mockResolvedValueOnce({
           ok: true,
           json: async () => ({ cart: mockCart }),
@@ -348,25 +376,42 @@ describe('medusaClient', () => {
         const cart = await createPaymentSessions('cart_123')
 
         expect(cart).not.toBeNull()
-        expect(mockFetch).toHaveBeenCalledWith(
-          'https://store-api.wcpos.com/store/carts/cart_123/payment-sessions',
-          expect.objectContaining({ method: 'POST' })
-        )
+        expect(mockFetch).toHaveBeenCalledTimes(3)
       })
     })
 
-    describe('setPaymentSession', () => {
-      it('selects a payment provider', async () => {
-        const cartWithSession = {
-          ...mockCart,
-          payment_session: { provider_id: 'stripe' },
-        }
+    describe('setPaymentSession (v2 flow)', () => {
+      it('initializes payment with specified provider', async () => {
+        // Mock 1: Create payment collection
         mockFetch.mockResolvedValueOnce({
           ok: true,
-          json: async () => ({ cart: cartWithSession }),
+          json: async () => ({
+            payment_collection: { id: 'pay_col_123' },
+          }),
+        })
+        // Mock 2: Initialize session with provider
+        mockFetch.mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({
+            payment_collection: {
+              id: 'pay_col_123',
+              payment_sessions: [
+                {
+                  id: 'payses_123',
+                  provider_id: 'pp_stripe_stripe',
+                  data: { client_secret: 'pi_secret_123' },
+                },
+              ],
+            },
+          }),
+        })
+        // Mock 3: Get cart
+        mockFetch.mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({ cart: mockCart }),
         })
 
-        const cart = await setPaymentSession('cart_123', 'stripe')
+        const cart = await setPaymentSession('cart_123', 'pp_stripe_stripe')
 
         expect(cart).not.toBeNull()
       })
