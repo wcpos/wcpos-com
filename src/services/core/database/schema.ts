@@ -40,7 +40,12 @@ export const users = pgTable('users', {
     .primaryKey()
     .$defaultFn(() => createId()),
   email: varchar('email', { length: 255 }).notNull().unique(),
-  password: text('password'), // null for OAuth-only users
+  password: text('password'), // null for OAuth-only users or MedusaJS-only auth
+  
+  // MedusaJS Integration
+  medusaCustomerId: text('medusa_customer_id').unique(), // Reference to MedusaJS customer
+  
+  // Basic user info (kept for session management and WCPOS-specific features)
   firstName: varchar('first_name', { length: 100 }),
   lastName: varchar('last_name', { length: 100 }),
   role: userRoleEnum('role').notNull().default('user'),
@@ -51,9 +56,11 @@ export const users = pgTable('users', {
   passwordResetToken: text('password_reset_token'),
   passwordResetExpires: timestamp('password_reset_expires'),
   lastLoginAt: timestamp('last_login_at'),
-  // OAuth provider IDs
+  
+  // OAuth provider IDs (for linking accounts)
   googleId: text('google_id'),
   githubId: text('github_id'),
+  
   createdAt: timestamp('created_at').notNull().defaultNow(),
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
 })
