@@ -4,7 +4,7 @@ import { AccountOverview } from '@/components/account/account-overview'
 import { RecentOrders } from '@/components/account/recent-orders'
 import { LicenseStatus } from '@/components/account/license-status'
 
-export default async function AccountPage() {
+async function AccountContent() {
   // Get user data - this will be dynamic
   const user = await AuthService.getCurrentUser()
   
@@ -45,5 +45,29 @@ export default async function AccountPage() {
         </Suspense>
       </div>
     </div>
+  )
+}
+
+export default function AccountPage() {
+  return (
+    <Suspense fallback={
+      <div className="space-y-6">
+        <div className="space-y-2">
+          <div className="h-8 bg-gray-200 rounded animate-pulse" />
+          <div className="h-4 bg-gray-200 rounded animate-pulse w-2/3" />
+        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2">
+            <div className="h-48 bg-white rounded-lg border animate-pulse" />
+          </div>
+          <div>
+            <div className="h-48 bg-white rounded-lg border animate-pulse" />
+          </div>
+        </div>
+        <div className="h-64 bg-white rounded-lg border animate-pulse" />
+      </div>
+    }>
+      <AccountContent />
+    </Suspense>
   )
 }

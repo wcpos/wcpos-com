@@ -4,11 +4,7 @@ import { AuthService } from '@/services/core/auth/auth-service'
 import { AccountHeader } from '@/components/account/account-header'
 import { AccountSidebar } from '@/components/account/account-sidebar'
 
-export default async function AccountLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+async function AuthenticatedLayout({ children }: { children: React.ReactNode }) {
   // Check authentication - this will be dynamic
   const user = await AuthService.getCurrentUser()
   
@@ -42,5 +38,24 @@ export default async function AccountLayout({
         </main>
       </div>
     </div>
+  )
+}
+
+export default function AccountLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-2 text-gray-600">Loading...</p>
+        </div>
+      </div>
+    }>
+      <AuthenticatedLayout>{children}</AuthenticatedLayout>
+    </Suspense>
   )
 }
