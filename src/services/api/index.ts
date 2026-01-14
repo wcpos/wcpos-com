@@ -4,13 +4,10 @@
  * This file exports services for use by server components.
  * All exports here are safe to use in server components and server actions.
  *
- * Usage:
- * import { electronService } from '@/services/api'
- *
- * Note: For public API routes, import directly from core/business/
+ * Note: For public API routes, import directly from core/
  * to avoid circular dependencies.
  */
 
 // Re-export services for server component usage
-export { electronService } from '../core/business/electron-service'
+// Services will be added here as needed
 

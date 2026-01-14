@@ -80,8 +80,9 @@ export class SessionService {
       })
 
       return payload as unknown as SessionData
-    } catch (error) {
-      console.error('[SessionService] Invalid session:', error)
+    } catch {
+      // During prerendering, cookies() will reject - this is expected
+      // Silently return null for any cookie-related errors during build
       return null
     }
   }
