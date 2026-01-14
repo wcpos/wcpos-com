@@ -18,6 +18,8 @@ const mockUser: User = {
   passwordResetToken: null,
   passwordResetExpires: null,
   lastLoginAt: new Date('2026-01-10T10:00:00Z'),
+  googleId: null,
+  githubId: null,
   createdAt: new Date('2025-01-01T00:00:00Z'),
   updatedAt: new Date('2026-01-10T10:00:00Z'),
 }
