@@ -3,36 +3,15 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { ShoppingBag, ExternalLink, Eye } from 'lucide-react'
 import Link from 'next/link'
+import { UnifiedCustomerService } from '@/services/customer/unified-customer-service'
 
 interface RecentOrdersProps {
   userId: string
 }
 
-// Mock data for now - in the future this would connect to MedusaJS
-const mockOrders = [
-  {
-    id: 'order_1',
-    number: '#WCP-001',
-    date: '2024-01-10',
-    status: 'completed',
-    total: '$99.00',
-    items: ['WCPOS Pro License (1 year)']
-  },
-  {
-    id: 'order_2', 
-    number: '#WCP-002',
-    date: '2024-01-05',
-    status: 'processing',
-    total: '$199.00',
-    items: ['WCPOS Pro License (2 years)', 'Priority Support']
-  }
-]
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function RecentOrders({ userId }: RecentOrdersProps) {
-  // TODO: In the future, fetch orders from MedusaJS API
-  // For now, we'll use mock data
-  const orders = mockOrders
+  // Fetch recent orders from MedusaJS
+  const orders = await UnifiedCustomerService.getCustomerOrders(userId, 5) // Get last 5 orders
 
   if (!orders.length) {
     return (
@@ -90,25 +69,32 @@ export async function RecentOrders({ userId }: RecentOrdersProps) {
             <div key={order.id} className="border rounded-lg p-4">
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center space-x-3">
-                  <div className="font-medium">{order.number}</div>
-                  <Badge className={statusColors[order.status as keyof typeof statusColors]}>
+                  <div className="font-medium">#{order.display_id}</div>
+                  <Badge className={statusColors[order.status as keyof typeof statusColors] || 'bg-gray-100 text-gray-800'}>
                     {order.status}
                   </Badge>
                 </div>
                 <div className="text-sm text-gray-600">
-                  {new Date(order.date).toLocaleDateString()}
+                  {new Date(order.created_at).toLocaleDateString()}
                 </div>
               </div>
               
               <div className="text-sm text-gray-600 mb-2">
-                {order.items.join(', ')}
+                {order.items.map(item => item.title).join(', ')}
               </div>
               
               <div className="flex items-center justify-between">
-                <div className="font-medium">{order.total}</div>
-                <Button variant="outline" size="sm">
-                  <Eye className="mr-2 h-4 w-4" />
-                  View Details
+                <div className="font-medium">
+                  {new Intl.NumberFormat('en-US', {
+                    style: 'currency',
+                    currency: order.currency_code.toUpperCase(),
+                  }).format(order.total / 100)}
+                </div>
+                <Button variant="outline" size="sm" asChild>
+                  <Link href={`/account/orders/${order.id}`}>
+                    <Eye className="mr-2 h-4 w-4" />
+                    View Details
+                  </Link>
                 </Button>
               </div>
             </div>

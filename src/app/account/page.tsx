@@ -1,22 +1,28 @@
 import { Suspense } from 'react'
-import { AuthService } from '@/services/core/auth/auth-service'
+import { UnifiedCustomerService } from '@/services/customer/unified-customer-service'
 import { AccountOverview } from '@/components/account/account-overview'
 import { RecentOrders } from '@/components/account/recent-orders'
 import { LicenseStatus } from '@/components/account/license-status'
 
 async function AccountContent() {
-  // Get user data - this will be dynamic
-  const user = await AuthService.getCurrentUser()
+  // Get unified customer data (wcpos-com + MedusaJS)
+  const customer = await UnifiedCustomerService.getCurrentCustomer()
   
-  if (!user) {
+  if (!customer) {
     return null // Layout will handle redirect
   }
+
+  // Use MedusaJS customer data if available, fallback to wcpos-com data
+  const displayName = customer.medusaCustomer?.first_name || customer.firstName || customer.email
+  const fullName = customer.medusaCustomer 
+    ? `${customer.medusaCustomer.first_name || ''} ${customer.medusaCustomer.last_name || ''}`.trim()
+    : `${customer.firstName || ''} ${customer.lastName || ''}`.trim()
 
   return (
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-gray-900">
-          Welcome back, {user.firstName || user.email}
+          Welcome back, {displayName}
         </h1>
         <p className="text-gray-600">
           Manage your account, orders, and licenses
@@ -27,21 +33,21 @@ async function AccountContent() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2">
           <Suspense fallback={<div className="h-48 bg-white rounded-lg border animate-pulse" />}>
-            <AccountOverview user={user} />
+            <AccountOverview user={customer} />
           </Suspense>
         </div>
         
         <div>
           <Suspense fallback={<div className="h-48 bg-white rounded-lg border animate-pulse" />}>
-            <LicenseStatus userId={user.id} />
+            <LicenseStatus userId={customer.id} />
           </Suspense>
         </div>
       </div>
 
-      {/* Recent Orders - dynamic content */}
+      {/* Recent Orders - dynamic content from MedusaJS */}
       <div>
         <Suspense fallback={<div className="h-64 bg-white rounded-lg border animate-pulse" />}>
-          <RecentOrders userId={user.id} />
+          <RecentOrders userId={customer.id} />
         </Suspense>
       </div>
     </div>
