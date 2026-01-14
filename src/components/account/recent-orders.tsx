@@ -28,6 +28,7 @@ const mockOrders = [
   }
 ]
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function RecentOrders({ userId }: RecentOrdersProps) {
   // TODO: In the future, fetch orders from MedusaJS API
   // For now, we'll use mock data
@@ -47,13 +48,13 @@ export async function RecentOrders({ userId }: RecentOrdersProps) {
             <ShoppingBag className="mx-auto h-12 w-12 text-gray-400 mb-4" />
             <h3 className="text-lg font-medium text-gray-900 mb-2">No orders found</h3>
             <p className="text-gray-600 mb-4">
-              You haven't placed any orders yet.
+              You haven&apos;t placed any orders yet.
             </p>
             <Button asChild>
-              <a href="/#pricing" className="inline-flex items-center">
+              <Link href="/#pricing" className="inline-flex items-center">
                 <ExternalLink className="mr-2 h-4 w-4" />
                 Browse Products
-              </a>
+              </Link>
             </Button>
           </div>
         </CardContent>

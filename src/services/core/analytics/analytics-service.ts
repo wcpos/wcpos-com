@@ -62,7 +62,6 @@ export class AnalyticsService {
     try {
       const now = new Date()
       const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
-      const yesterday = new Date(today.getTime() - 24 * 60 * 60 * 1000)
       const lastWeek = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000)
       const twoWeeksAgo = new Date(today.getTime() - 14 * 24 * 60 * 60 * 1000)
 

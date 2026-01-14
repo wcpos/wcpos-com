@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -32,13 +33,13 @@ export async function LicenseStatus({ userId }: LicenseStatusProps) {
             <Key className="mx-auto h-12 w-12 text-gray-400 mb-4" />
             <h3 className="text-lg font-medium text-gray-900 mb-2">No licenses found</h3>
             <p className="text-gray-600 mb-4">
-              You don't have any active licenses yet.
+              You don&apos;t have any active licenses yet.
             </p>
             <Button asChild>
-              <a href="/#pricing" className="inline-flex items-center">
+              <Link href="/#pricing" className="inline-flex items-center">
                 <ExternalLink className="mr-2 h-4 w-4" />
                 View Plans
-              </a>
+              </Link>
             </Button>
           </div>
         </CardContent>
