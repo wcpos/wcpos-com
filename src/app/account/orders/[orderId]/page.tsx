@@ -1,6 +1,7 @@
 import { Suspense } from 'react'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
+import Image from 'next/image'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -105,9 +106,11 @@ async function OrderDetailsContent({ orderId }: { orderId: string }) {
                 {order.items.map((item) => (
                   <div key={item.id} className="flex items-center space-x-4 py-4 border-b last:border-b-0">
                     {item.variant.product.thumbnail && (
-                      <img
+                      <Image
                         src={item.variant.product.thumbnail}
                         alt={item.title}
+                        width={64}
+                        height={64}
                         className="w-16 h-16 object-cover rounded-lg"
                       />
                     )}
@@ -289,7 +292,7 @@ async function OrderDetailsContent({ orderId }: { orderId: string }) {
   )
 }
 
-export default function OrderDetailsPage({ params }: OrderDetailsPageProps) {
+export default async function OrderDetailsPage({ params }: OrderDetailsPageProps) {
   return (
     <Suspense fallback={
       <div className="space-y-6">

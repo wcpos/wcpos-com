@@ -1,13 +1,11 @@
 import { useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { MapPin, Plus, Edit, Trash2 } from 'lucide-react'
-import { UnifiedCustomerService } from '@/services/customer/unified-customer-service'
-import type { MedusaAddress } from '@/services/medusa/medusa-client'
+import type { MedusaAddress } from '@/services/medusa/customer-service-v2'
 
 interface AddressManagementProps {
   userId: string

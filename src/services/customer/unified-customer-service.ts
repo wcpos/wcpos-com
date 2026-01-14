@@ -3,7 +3,7 @@ import 'server-only'
 import { eq } from 'drizzle-orm'
 import { db } from '../core/database/connection'
 import { users, type User, type NewUser } from '../core/database/schema'
-import { MedusaCustomerService, type MedusaCustomer } from '../medusa/customer-service'
+import { MedusaCustomerService, type MedusaCustomer } from '../medusa/customer-service-v2'
 import { SessionService } from '../core/auth/session-service'
 
 /**
@@ -50,7 +50,7 @@ export class UnifiedCustomerService {
         first_name: data.firstName,
         last_name: data.lastName,
         phone: data.phone,
-        password: data.password,
+        password: data.password || '',
       })
 
       if (!medusaResult.success) {
@@ -254,9 +254,8 @@ export class UnifiedCustomerService {
       }
 
       // Get MedusaJS customer data
-      const medusaCustomer = await MedusaCustomerService.getCustomer(
-        wcposUser.medusaCustomerId,
-        ['addresses', 'orders', 'orders.items']
+      const medusaCustomer = await MedusaCustomerService.getCustomerByEmail(
+        wcposUser.email
       )
 
       return {
@@ -297,14 +296,11 @@ export class UnifiedCustomerService {
       }
 
       // Update MedusaJS customer
-      const medusaResult = await MedusaCustomerService.updateCustomer(
-        wcposUser.medusaCustomerId,
-        {
-          first_name: data.firstName,
-          last_name: data.lastName,
-          phone: data.phone,
-        }
-      )
+      const medusaResult = await MedusaCustomerService.updateCustomer({
+        first_name: data.firstName,
+        last_name: data.lastName,
+        phone: data.phone,
+      })
 
       if (!medusaResult.success) {
         return { success: false, error: medusaResult.error }
@@ -348,11 +344,7 @@ export class UnifiedCustomerService {
         return []
       }
 
-      return await MedusaCustomerService.getCustomerOrders(
-        wcposUser.medusaCustomerId,
-        limit,
-        offset
-      )
+      return await MedusaCustomerService.getCustomerOrders(limit, offset)
     } catch (error) {
       console.error('[UnifiedCustomerService] Get orders error:', error)
       return []

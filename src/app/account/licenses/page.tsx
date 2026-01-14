@@ -34,7 +34,7 @@ async function LicensesContent() {
               <Key className="mx-auto h-12 w-12 text-gray-400 mb-4" />
               <h3 className="text-lg font-medium text-gray-900 mb-2">No Licenses Found</h3>
               <p className="text-gray-600 mb-4">
-                You don't have any WCPOS Pro licenses yet.
+                You don&apos;t have any WCPOS Pro licenses yet.
               </p>
               <Button asChild>
                 <Link href="/pro">Get WCPOS Pro</Link>
@@ -211,7 +211,7 @@ async function LicensesContent() {
             <div>
               <h4 className="font-medium text-gray-900 mb-2">Having Issues?</h4>
               <p className="text-sm text-gray-600 mb-3">
-                If you're having trouble with your license, our support team is here to help.
+                If you&apos;re having trouble with your license, our support team is here to help.
               </p>
               <Button variant="outline" size="sm" asChild>
                 <Link href="/support">

@@ -78,7 +78,7 @@ export async function GET(request: NextRequest) {
 
       if (emailResponse.ok) {
         const emails = await emailResponse.json()
-        const primaryEmail = emails.find((e: any) => e.primary && e.verified)
+        const primaryEmail = emails.find((e: { primary: boolean; verified: boolean; email: string }) => e.primary && e.verified)
         email = primaryEmail?.email || emails[0]?.email
       }
     }

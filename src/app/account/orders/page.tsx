@@ -1,6 +1,7 @@
 import { Suspense } from 'react'
 import Link from 'next/link'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import Image from 'next/image'
+import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -42,7 +43,7 @@ async function OrdersContent() {
               <ShoppingBag className="mx-auto h-12 w-12 text-gray-400 mb-4" />
               <h3 className="text-lg font-medium text-gray-900 mb-2">No Orders Found</h3>
               <p className="text-gray-600 mb-4">
-                You haven't placed any orders yet.
+                You haven&apos;t placed any orders yet.
               </p>
               <Button asChild>
                 <Link href="/pro">Browse Products</Link>
@@ -130,9 +131,11 @@ async function OrdersContent() {
                     <div key={item.id} className="flex items-center justify-between text-sm">
                       <div className="flex items-center space-x-3">
                         {item.variant.product.thumbnail && (
-                          <img
+                          <Image
                             src={item.variant.product.thumbnail}
                             alt={item.title}
+                            width={32}
+                            height={32}
                             className="w-8 h-8 object-cover rounded"
                           />
                         )}

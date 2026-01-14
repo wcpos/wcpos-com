@@ -1,4 +1,4 @@
-import { sdk } from '@medusajs/js-sdk'
+import sdk from '@medusajs/js-sdk'
 
 /**
  * MedusaJS Client Configuration
@@ -8,7 +8,7 @@ import { sdk } from '@medusajs/js-sdk'
  */
 
 // Initialize the MedusaJS SDK
-export const medusaClient = sdk({
+export const medusaClient = new sdk({
   baseUrl: process.env.MEDUSA_API_URL || 'https://store-api.wcpos.com',
   debug: process.env.NODE_ENV === 'development',
   auth: {

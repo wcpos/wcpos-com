@@ -27,7 +27,7 @@ export async function LicenseStatus({ userId }: LicenseStatusProps) {
             <Key className="mx-auto h-12 w-12 text-gray-400 mb-4" />
             <h3 className="text-lg font-medium text-gray-900 mb-2">No Licenses Found</h3>
             <p className="text-gray-600 mb-4">
-              You don't have any WCPOS Pro licenses yet.
+              You don&apos;t have any WCPOS Pro licenses yet.
             </p>
             <Button asChild>
               <Link href="/pro">Get WCPOS Pro</Link>
@@ -50,7 +50,7 @@ export async function LicenseStatus({ userId }: LicenseStatusProps) {
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        {licenses.map((license, index) => (
+        {licenses.map((license) => (
           <div key={license.id} className="border rounded-lg p-4 space-y-3">
             <div className="flex items-center justify-between">
               <div>

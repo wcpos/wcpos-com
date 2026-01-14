@@ -4,7 +4,6 @@ import {
   ShoppingBag, 
   Key, 
   User,
-  MapPin,
   Settings, 
   CreditCard,
   FileText 

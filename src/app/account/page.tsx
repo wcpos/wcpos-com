@@ -14,9 +14,6 @@ async function AccountContent() {
 
   // Use MedusaJS customer data if available, fallback to wcpos-com data
   const displayName = customer.medusaCustomer?.first_name || customer.firstName || customer.email
-  const fullName = customer.medusaCustomer 
-    ? `${customer.medusaCustomer.first_name || ''} ${customer.medusaCustomer.last_name || ''}`.trim()
-    : `${customer.firstName || ''} ${customer.lastName || ''}`.trim()
 
   return (
     <div className="space-y-6">
