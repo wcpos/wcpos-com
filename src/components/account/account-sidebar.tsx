@@ -3,6 +3,8 @@ import {
   Home, 
   ShoppingBag, 
   Key, 
+  User,
+  MapPin,
   Settings, 
   CreditCard,
   FileText 
@@ -11,6 +13,7 @@ import { cn } from '@/lib/utils'
 
 const navigation = [
   { name: 'Overview', href: '/account', icon: Home },
+  { name: 'Profile', href: '/account/profile', icon: User },
   { name: 'Orders', href: '/account/orders', icon: ShoppingBag },
   { name: 'Licenses', href: '/account/licenses', icon: Key },
   { name: 'Billing', href: '/account/billing', icon: CreditCard },
