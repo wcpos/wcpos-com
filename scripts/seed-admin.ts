@@ -11,23 +11,10 @@
  */
 
 import bcrypt from 'bcryptjs'
-import { drizzle } from 'drizzle-orm/postgres-js'
 import postgres from 'postgres'
 import { createId } from '@paralleldrive/cuid2'
 
-// Define the schema inline to avoid import issues
-const usersTable = {
-  id: 'id',
-  email: 'email',
-  password: 'password',
-  firstName: 'first_name',
-  lastName: 'last_name',
-  role: 'role',
-  status: 'status',
-  emailVerified: 'email_verified',
-  createdAt: 'created_at',
-  updatedAt: 'updated_at',
-}
+// Schema is handled directly in SQL queries below
 
 async function main() {
   const databaseUrl = process.env.DATABASE_URL || process.env.POSTGRES_URL
@@ -56,7 +43,7 @@ async function main() {
     ssl: 'require',
   })
 
-  const db = drizzle(client)
+  // Using direct SQL queries with postgres client
 
   try {
     // Check if user already exists

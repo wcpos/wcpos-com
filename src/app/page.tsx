@@ -18,6 +18,17 @@ export default function Home() {
               API Health Check
             </a>
           </p>
+          <div className="space-y-2 text-sm text-gray-500">
+            <p>Site under construction</p>
+            <p>
+              <a
+                href="/api/health"
+                className="text-blue-500 hover:underline"
+              >
+                API Health Check
+              </a>
+            </p>
+          </div>
         </div>
       </div>
       
