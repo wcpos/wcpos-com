@@ -1,14 +1,14 @@
 import { Suspense } from 'react'
 import { redirect } from 'next/navigation'
-import { AuthService } from '@/services/core/auth/auth-service'
+import { UnifiedCustomerService } from '@/services/customer/unified-customer-service'
 import { AccountHeader } from '@/components/account/account-header'
 import { AccountSidebar } from '@/components/account/account-sidebar'
 
 async function AuthenticatedLayout({ children }: { children: React.ReactNode }) {
-  // Check authentication - this will be dynamic
-  const user = await AuthService.getCurrentUser()
+  // Check authentication using unified customer service
+  const customer = await UnifiedCustomerService.getCurrentCustomer()
   
-  if (!user) {
+  if (!customer) {
     redirect('/login')
   }
 
@@ -16,7 +16,7 @@ async function AuthenticatedLayout({ children }: { children: React.ReactNode }) 
     <div className="min-h-screen bg-gray-50">
       {/* Header - can be static */}
       <Suspense fallback={<div className="h-16 bg-white border-b animate-pulse" />}>
-        <AccountHeader user={user} />
+        <AccountHeader user={customer} />
       </Suspense>
       
       <div className="flex">

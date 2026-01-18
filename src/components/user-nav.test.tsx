@@ -8,6 +8,7 @@ const mockUser: User = {
   id: 'test-user-id',
   email: 'john.doe@example.com',
   password: null,
+  medusaCustomerId: null,
   firstName: 'John',
   lastName: 'Doe',
   role: 'user',
