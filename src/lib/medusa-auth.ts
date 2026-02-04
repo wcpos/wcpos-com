@@ -377,6 +377,38 @@ export async function completeOAuthCallback(
   return data.token
 }
 
+/**
+ * Link an OAuth auth identity to an existing or new customer.
+ * The Medusa endpoint reads the email from the auth identity's
+ * provider metadata (not from the request body) for security.
+ * POST /store/auth/account-link
+ */
+export async function linkOrCreateCustomer(token: string): Promise<void> {
+  const response = await fetch(
+    `${env.MEDUSA_BACKEND_URL}/store/auth/account-link`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+        'x-publishable-api-key': env.MEDUSA_PUBLISHABLE_KEY || '',
+      },
+    }
+  )
+
+  if (!response.ok) {
+    const errorText = await response.text()
+    let message = 'Account linking failed'
+    try {
+      const parsed = JSON.parse(errorText)
+      message = parsed.message || message
+    } catch {
+      // use default message
+    }
+    throw new Error(message)
+  }
+}
+
 // ============================================================================
 // Token refresh
 // ============================================================================

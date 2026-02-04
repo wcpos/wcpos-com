@@ -35,6 +35,7 @@ import {
   getAuthToken,
   getCustomerOrders,
   decodeMedusaToken,
+  linkOrCreateCustomer,
 } from './medusa-auth'
 
 describe('medusa-auth', () => {
@@ -324,6 +325,40 @@ describe('medusa-auth', () => {
       const result = decodeMedusaToken(token)
 
       expect(result.user_metadata).toEqual({})
+    })
+  })
+
+  describe('linkOrCreateCustomer', () => {
+    it('calls the account-link endpoint with bearer token', async () => {
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ customer: { id: 'cust_123', email: 'test@example.com' } }),
+      })
+
+      await linkOrCreateCustomer('test-jwt-token')
+
+      expect(mockFetch).toHaveBeenCalledWith(
+        'https://test-store-api.wcpos.com/store/auth/account-link',
+        expect.objectContaining({
+          method: 'POST',
+          headers: expect.objectContaining({
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer test-jwt-token',
+            'x-publishable-api-key': 'pk_test_abc123',
+          }),
+        })
+      )
+    })
+
+    it('throws when the endpoint returns an error', async () => {
+      mockFetch.mockResolvedValueOnce({
+        ok: false,
+        text: async () => '{"message":"No email found in OAuth profile"}',
+      })
+
+      await expect(linkOrCreateCustomer('bad-token')).rejects.toThrow(
+        'No email found in OAuth profile'
+      )
     })
   })
 })
