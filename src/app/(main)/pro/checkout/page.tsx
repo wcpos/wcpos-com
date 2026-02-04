@@ -5,7 +5,7 @@ import { ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
 
 export const metadata = {
-  title: 'Checkout - WooCommerce POS Pro',
+  title: 'Checkout',
   description: 'Complete your purchase of WooCommerce POS Pro',
 }
 

@@ -3,7 +3,7 @@ import { getWcposProProducts } from '@/services/core/external/medusa-client'
 import { PricingCard } from '@/components/pro/pricing-card'
 
 export const metadata = {
-  title: 'WooCommerce POS Pro - Premium Features',
+  title: 'Pro - Premium Features',
   description:
     'Unlock the full potential of WooCommerce POS with Pro features including advanced reporting, multi-outlet support, and priority support.',
 }
