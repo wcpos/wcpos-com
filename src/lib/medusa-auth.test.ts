@@ -138,6 +138,7 @@ describe('medusa-auth', () => {
             'x-publishable-api-key': 'pk_test_abc123',
           }),
           body: JSON.stringify({
+            email: 'new@example.com',
             first_name: 'Jane',
             last_name: 'Doe',
           }),

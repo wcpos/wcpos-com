@@ -206,6 +206,7 @@ export async function register({
         'x-publishable-api-key': env.MEDUSA_PUBLISHABLE_KEY || '',
       },
       body: JSON.stringify({
+        email,
         ...(firstName && { first_name: firstName }),
         ...(lastName && { last_name: lastName }),
       }),
