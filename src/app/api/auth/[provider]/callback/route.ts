@@ -4,8 +4,8 @@ import {
   setAuthToken,
   refreshToken,
   decodeMedusaToken,
+  linkOrCreateCustomer,
 } from '@/lib/medusa-auth'
-import { env } from '@/utils/env'
 import { authLogger } from '@/lib/logger'
 
 const ALLOWED_PROVIDERS = ['google', 'github']
@@ -34,43 +34,12 @@ export async function GET(
     const payload = decodeMedusaToken(token)
 
     if (!payload.actor_id) {
-      // New user: create a customer record, then refresh the token
-      const { email, name, given_name, family_name } = payload.user_metadata
-
-      const customerResponse = await fetch(
-        `${env.MEDUSA_BACKEND_URL}/store/customers`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-            'x-publishable-api-key': env.MEDUSA_PUBLISHABLE_KEY || '',
-          },
-          body: JSON.stringify({
-            ...(email && { email }),
-            ...(given_name && { first_name: given_name }),
-            ...(family_name && { last_name: family_name }),
-            ...(!given_name && !family_name && name && { first_name: name }),
-          }),
-        }
-      )
-
-      if (!customerResponse.ok) {
-        const errorText = await customerResponse.text()
-        let message = 'Failed to create customer'
-        try {
-          const parsed = JSON.parse(errorText)
-          message = parsed.message || message
-        } catch {
-          // use default message
-        }
-        throw new Error(message)
-      }
-
+      // No customer linked yet — link to existing or create new
+      await linkOrCreateCustomer(token)
       const refreshedToken = await refreshToken(token)
       await setAuthToken(refreshedToken)
     } else {
-      // Existing user: just set the token
+      // Existing linked customer — just set the token
       await setAuthToken(token)
     }
 

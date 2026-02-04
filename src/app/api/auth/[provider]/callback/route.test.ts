@@ -24,6 +24,7 @@ const mockCompleteOAuthCallback = vi.fn()
 const mockSetAuthToken = vi.fn()
 const mockRefreshToken = vi.fn()
 const mockDecodeMedusaToken = vi.fn()
+const mockLinkOrCreateCustomer = vi.fn()
 
 vi.mock('@/lib/medusa-auth', () => ({
   completeOAuthCallback: (...args: unknown[]) =>
@@ -31,11 +32,9 @@ vi.mock('@/lib/medusa-auth', () => ({
   setAuthToken: (...args: unknown[]) => mockSetAuthToken(...args),
   refreshToken: (...args: unknown[]) => mockRefreshToken(...args),
   decodeMedusaToken: (...args: unknown[]) => mockDecodeMedusaToken(...args),
+  linkOrCreateCustomer: (...args: unknown[]) =>
+    mockLinkOrCreateCustomer(...args),
 }))
-
-// Mock fetch globally
-const mockFetch = vi.fn()
-global.fetch = mockFetch
 
 import { GET } from './route'
 
@@ -51,7 +50,7 @@ describe('OAuth callback route', () => {
     vi.clearAllMocks()
   })
 
-  it('passes email and name from user_metadata when creating a new customer (Google)', async () => {
+  it('links or creates customer for new OAuth user (Google)', async () => {
     const token = fakeJwt({
       actor_id: '',
       user_metadata: {
@@ -74,10 +73,7 @@ describe('OAuth callback route', () => {
         family_name: 'Smith',
       },
     })
-    mockFetch.mockResolvedValue({
-      ok: true,
-      json: async () => ({ customer: { id: 'cust_new' } }),
-    })
+    mockLinkOrCreateCustomer.mockResolvedValue(undefined)
     mockRefreshToken.mockResolvedValue(refreshedToken)
     mockSetAuthToken.mockResolvedValue(undefined)
 
@@ -89,18 +85,8 @@ describe('OAuth callback route', () => {
       params: Promise.resolve({ provider: 'google' }),
     })
 
-    // Should have called fetch to create customer with email + name
-    expect(mockFetch).toHaveBeenCalledWith(
-      'https://test-store-api.wcpos.com/store/customers',
-      expect.objectContaining({
-        method: 'POST',
-        body: JSON.stringify({
-          email: 'alice@gmail.com',
-          first_name: 'Alice',
-          last_name: 'Smith',
-        }),
-      })
-    )
+    // Should have called linkOrCreateCustomer with the token
+    expect(mockLinkOrCreateCustomer).toHaveBeenCalledWith(token)
 
     // Should refresh and set the token
     expect(mockRefreshToken).toHaveBeenCalledWith(token)
@@ -113,7 +99,7 @@ describe('OAuth callback route', () => {
     )
   })
 
-  it('passes email and name from user_metadata when creating a new customer (GitHub)', async () => {
+  it('links or creates customer for new OAuth user (GitHub)', async () => {
     const token = fakeJwt({
       actor_id: '',
       user_metadata: {
@@ -133,10 +119,7 @@ describe('OAuth callback route', () => {
         name: 'Bob Jones',
       },
     })
-    mockFetch.mockResolvedValue({
-      ok: true,
-      json: async () => ({ customer: { id: 'cust_bob' } }),
-    })
+    mockLinkOrCreateCustomer.mockResolvedValue(undefined)
     mockRefreshToken.mockResolvedValue('refreshed')
     mockSetAuthToken.mockResolvedValue(undefined)
 
@@ -148,17 +131,8 @@ describe('OAuth callback route', () => {
       params: Promise.resolve({ provider: 'github' }),
     })
 
-    // GitHub gives `name` but not given_name/family_name, so first_name = name
-    expect(mockFetch).toHaveBeenCalledWith(
-      'https://test-store-api.wcpos.com/store/customers',
-      expect.objectContaining({
-        method: 'POST',
-        body: JSON.stringify({
-          email: 'bob@github.com',
-          first_name: 'Bob Jones',
-        }),
-      })
-    )
+    // Should have called linkOrCreateCustomer with the token
+    expect(mockLinkOrCreateCustomer).toHaveBeenCalledWith(token)
 
     expect(response.status).toBe(307)
   })
@@ -187,8 +161,8 @@ describe('OAuth callback route', () => {
       params: Promise.resolve({ provider: 'google' }),
     })
 
-    // Should NOT create a customer or refresh the token
-    expect(mockFetch).not.toHaveBeenCalled()
+    // Should NOT link/create a customer or refresh the token
+    expect(mockLinkOrCreateCustomer).not.toHaveBeenCalled()
     expect(mockRefreshToken).not.toHaveBeenCalled()
 
     // Should set the original token
@@ -214,7 +188,7 @@ describe('OAuth callback route', () => {
     expect(body.error).toContain('facebook')
   })
 
-  it('redirects to /login with error when customer creation fails', async () => {
+  it('redirects to /login with error when account linking fails', async () => {
     const token = fakeJwt({
       actor_id: '',
       user_metadata: { email: 'fail@example.com' },
@@ -228,11 +202,9 @@ describe('OAuth callback route', () => {
       app_metadata: {},
       user_metadata: { email: 'fail@example.com' },
     })
-    mockFetch.mockResolvedValue({
-      ok: false,
-      status: 400,
-      text: async () => '{"message":"Email is required to create a customer"}',
-    })
+    mockLinkOrCreateCustomer.mockRejectedValue(
+      new Error('No email found in OAuth profile')
+    )
 
     const request = new NextRequest(
       'https://wcpos.com/api/auth/google/callback?code=abc&state=xyz'
