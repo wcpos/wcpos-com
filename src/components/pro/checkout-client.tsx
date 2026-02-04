@@ -48,12 +48,16 @@ const isStripeEnabled = Boolean(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
 const isPayPalEnabled = Boolean(process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID)
 const isBTCPayEnabled = Boolean(process.env.NEXT_PUBLIC_BTCPAY_ENABLED)
 
-export function CheckoutClient() {
+interface CheckoutClientProps {
+  customerEmail?: string
+}
+
+export function CheckoutClient({ customerEmail }: CheckoutClientProps) {
   const searchParams = useSearchParams()
   const variantId = searchParams.get('variant')
 
   const [cart, setCart] = useState<Cart | null>(null)
-  const [email, setEmail] = useState('')
+  const [email, setEmail] = useState(customerEmail || '')
   const [clientSecret, setClientSecret] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [isProcessing, setIsProcessing] = useState(false)
@@ -123,12 +127,23 @@ export function CheckoutClient() {
       if (paymentResult.clientSecret) {
         setClientSecret(paymentResult.clientSecret)
       }
+
+      // If customer is logged in, associate cart with their email
+      if (customerEmail && paymentResult.cart) {
+        fetch('/api/store/cart', {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ cartId: paymentResult.cart.id, email: customerEmail }),
+        }).catch(() => {
+          // Email association failed, but checkout can continue
+        })
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to initialize checkout')
     } finally {
       setIsLoading(false)
     }
-  }, [variantId])
+  }, [variantId, customerEmail])
 
   // Map frontend payment method names to Medusa provider IDs
   const getProviderId = (method: PaymentMethod): string => {
@@ -324,9 +339,13 @@ export function CheckoutClient() {
               onChange={(e) => setEmail(e.target.value)}
               onBlur={updateEmail}
               required
+              readOnly={Boolean(customerEmail)}
+              className={customerEmail ? 'bg-muted' : ''}
             />
             <p className="text-sm text-muted-foreground">
-              Your license key will be sent to this email
+              {customerEmail
+                ? 'Using your account email'
+                : 'Your license key will be sent to this email'}
             </p>
           </div>
 
