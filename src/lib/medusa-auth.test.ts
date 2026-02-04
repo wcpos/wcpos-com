@@ -34,6 +34,7 @@ import {
   getCustomer,
   getAuthToken,
   getCustomerOrders,
+  decodeMedusaToken,
 } from './medusa-auth'
 
 describe('medusa-auth', () => {
@@ -276,6 +277,52 @@ describe('medusa-auth', () => {
 
       expect(orders).toEqual([])
       expect(mockFetch).not.toHaveBeenCalled()
+    })
+  })
+
+  describe('decodeMedusaToken', () => {
+    it('decodes a standard JWT payload', () => {
+      const payload = {
+        actor_id: 'cust_123',
+        actor_type: 'customer',
+        auth_identity_id: 'authid_abc',
+        app_metadata: { customer_id: 'cust_123' },
+        user_metadata: { email: 'user@example.com', name: 'Jane Doe' },
+      }
+      const token = `header.${btoa(JSON.stringify(payload))}.signature`
+
+      const result = decodeMedusaToken(token)
+
+      expect(result.actor_id).toBe('cust_123')
+      expect(result.user_metadata.email).toBe('user@example.com')
+    })
+
+    it('handles URL-safe base64 encoding', () => {
+      const payload = {
+        actor_id: '',
+        actor_type: 'customer',
+        auth_identity_id: 'authid_xyz',
+        app_metadata: {},
+        user_metadata: { email: 'test+special@example.com' },
+      }
+      const base64 = btoa(JSON.stringify(payload))
+        .replace(/\+/g, '-')
+        .replace(/\//g, '_')
+        .replace(/=/g, '')
+      const token = `header.${base64}.signature`
+
+      const result = decodeMedusaToken(token)
+
+      expect(result.user_metadata.email).toBe('test+special@example.com')
+    })
+
+    it('returns empty user_metadata when field is missing', () => {
+      const payload = { actor_id: '', actor_type: 'customer', auth_identity_id: 'x', app_metadata: {} }
+      const token = `header.${btoa(JSON.stringify(payload))}.signature`
+
+      const result = decodeMedusaToken(token)
+
+      expect(result.user_metadata).toEqual({})
     })
   })
 })

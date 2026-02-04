@@ -45,6 +45,36 @@ export interface MedusaOrder {
 }
 
 // ============================================================================
+// JWT helpers
+// ============================================================================
+
+export interface MedusaTokenPayload {
+  actor_id: string
+  actor_type: string
+  auth_identity_id: string
+  app_metadata: Record<string, unknown>
+  user_metadata: Record<string, string>
+}
+
+/**
+ * Decode a Medusa JWT and return the payload.
+ * Handles URL-safe base64 encoding.
+ */
+export function decodeMedusaToken(token: string): MedusaTokenPayload {
+  const base64 = token.split('.')[1]
+    .replace(/-/g, '+')
+    .replace(/_/g, '/')
+  const payload = JSON.parse(atob(base64))
+  return {
+    actor_id: payload.actor_id ?? '',
+    actor_type: payload.actor_type ?? '',
+    auth_identity_id: payload.auth_identity_id ?? '',
+    app_metadata: payload.app_metadata ?? {},
+    user_metadata: payload.user_metadata ?? {},
+  }
+}
+
+// ============================================================================
 // Constants
 // ============================================================================
 
