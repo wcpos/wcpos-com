@@ -1,9 +1,10 @@
+import { Suspense } from 'react'
 import { getCustomer, getCustomerOrders } from '@/lib/medusa-auth'
 import Link from 'next/link'
 import { ShoppingBag, Key } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
-export default async function AccountPage() {
+async function AccountOverviewContent() {
   const [customer, orders] = await Promise.all([
     getCustomer(),
     getCustomerOrders(5),
@@ -15,7 +16,7 @@ export default async function AccountPage() {
   }, 0)
 
   return (
-    <div className="space-y-6">
+    <>
       <h1 className="text-2xl font-bold">
         Welcome{customer?.first_name ? `, ${customer.first_name}` : ''}
       </h1>
@@ -72,7 +73,7 @@ export default async function AccountPage() {
                       {new Intl.NumberFormat('en-US', {
                         style: 'currency',
                         currency: order.currency_code,
-                      }).format(order.total)}
+                      }).format(order.total / 100)}
                     </p>
                     <p className="text-sm text-muted-foreground capitalize">{order.status}</p>
                   </div>
@@ -82,6 +83,38 @@ export default async function AccountPage() {
           </CardContent>
         </Card>
       )}
+    </>
+  )
+}
+
+function AccountOverviewSkeleton() {
+  return (
+    <>
+      <div className="h-8 w-48 bg-muted rounded animate-pulse" />
+      <div className="grid gap-4 md:grid-cols-2">
+        <Card>
+          <CardContent className="py-6">
+            <div className="h-8 w-12 bg-muted rounded animate-pulse mb-2" />
+            <div className="h-4 w-24 bg-muted rounded animate-pulse" />
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="py-6">
+            <div className="h-8 w-12 bg-muted rounded animate-pulse mb-2" />
+            <div className="h-4 w-24 bg-muted rounded animate-pulse" />
+          </CardContent>
+        </Card>
+      </div>
+    </>
+  )
+}
+
+export default function AccountPage() {
+  return (
+    <div className="space-y-6">
+      <Suspense fallback={<AccountOverviewSkeleton />}>
+        <AccountOverviewContent />
+      </Suspense>
     </div>
   )
 }

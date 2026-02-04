@@ -144,6 +144,10 @@ async function getLicense(licenseId: string): Promise<LicenseDetail> {
     headers: authHeaders(),
   })
 
+  if (!res.ok) {
+    throw new Error(`Keygen getLicense failed (${res.status}): ${await res.text()}`)
+  }
+
   const json: { data: KeygenLicenseData } = await res.json()
   const mapped = mapLicenseData(json.data)
 
@@ -165,6 +169,10 @@ async function getLicenseMachines(
       headers: authHeaders(),
     }
   )
+
+  if (!res.ok) {
+    throw new Error(`Keygen getLicenseMachines failed (${res.status}): ${await res.text()}`)
+  }
 
   const json: { data: KeygenMachineData[] } = await res.json()
 

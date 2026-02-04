@@ -31,7 +31,10 @@ export async function GET(
     const token = await completeOAuthCallback(provider, callbackParams)
 
     // Decode the JWT payload to check for actor_id
-    const payload = JSON.parse(atob(token.split('.')[1]))
+    const base64Payload = token.split('.')[1]
+      .replace(/-/g, '+')
+      .replace(/_/g, '/')
+    const payload = JSON.parse(atob(base64Payload))
 
     if (!payload.actor_id) {
       // New user: create a customer record, then refresh the token

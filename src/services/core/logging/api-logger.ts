@@ -26,7 +26,12 @@ export interface LogContext {
  */
 export class ApiLogger {
   static async log(context: LogContext): Promise<void> {
-    console.log('[ApiLogger]', JSON.stringify(context))
+    const { licenseKey, ...rest } = context
+    const safeContext = {
+      ...rest,
+      ...(licenseKey ? { licenseKey: `${licenseKey.slice(0, 4)}...${licenseKey.slice(-4)}` } : {}),
+    }
+    console.log('[ApiLogger]', JSON.stringify(safeContext))
   }
 
   static async info(

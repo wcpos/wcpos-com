@@ -4,15 +4,35 @@ import { redirect } from 'next/navigation'
 import { AccountHeader } from '@/components/account/account-header'
 import { AccountSidebar } from '@/components/account/account-sidebar'
 
-async function AccountLayoutInner({ children }: { children: React.ReactNode }) {
+async function AccountHeaderWrapper() {
   const customer = await getCustomer()
   if (!customer) {
     redirect('/login')
   }
+  return <AccountHeader customer={customer} />
+}
 
+function AccountHeaderSkeleton() {
+  return (
+    <header className="bg-white border-b">
+      <div className="px-6 py-4 flex items-center justify-between">
+        <div className="flex items-center space-x-4">
+          <span className="text-xl font-bold text-gray-900">WCPOS</span>
+          <span className="text-gray-400">/</span>
+          <span className="text-gray-600">Account</span>
+        </div>
+        <div className="h-5 w-48 bg-gray-200 rounded animate-pulse" />
+      </div>
+    </header>
+  )
+}
+
+export default function AccountLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-background">
-      <AccountHeader customer={customer} />
+      <Suspense fallback={<AccountHeaderSkeleton />}>
+        <AccountHeaderWrapper />
+      </Suspense>
       <div className="flex">
         <aside className="w-64 border-r min-h-[calc(100vh-65px)]">
           <AccountSidebar />
@@ -22,13 +42,5 @@ async function AccountLayoutInner({ children }: { children: React.ReactNode }) {
         </main>
       </div>
     </div>
-  )
-}
-
-export default function AccountLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <Suspense>
-      <AccountLayoutInner>{children}</AccountLayoutInner>
-    </Suspense>
   )
 }

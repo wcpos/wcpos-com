@@ -1,14 +1,11 @@
+import { Suspense } from 'react'
 import { getCustomerOrders } from '@/lib/medusa-auth'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
-export default async function OrderDetailPage({
-  params,
-}: {
-  params: Promise<{ orderId: string }>
-}) {
+async function OrderDetailContent({ params }: { params: Promise<{ orderId: string }> }) {
   const { orderId } = await params
   const orders = await getCustomerOrders(50)
   const order = orders.find((o) => o.id === orderId)
@@ -20,15 +17,7 @@ export default async function OrderDetailPage({
   const licenses = order.metadata?.licenses as Array<{ license_id: string; license_key: string }> | undefined
 
   return (
-    <div className="space-y-6">
-      <Link
-        href="/account/orders"
-        className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground"
-      >
-        <ArrowLeft className="mr-2 h-4 w-4" />
-        Back to orders
-      </Link>
-
+    <>
       <h1 className="text-2xl font-bold">Order #{order.display_id}</h1>
 
       <div className="grid gap-4 md:grid-cols-2">
@@ -55,7 +44,7 @@ export default async function OrderDetailPage({
                 {new Intl.NumberFormat('en-US', {
                   style: 'currency',
                   currency: order.currency_code,
-                }).format(order.total)}
+                }).format(order.total / 100)}
               </span>
             </div>
           </CardContent>
@@ -77,7 +66,7 @@ export default async function OrderDetailPage({
                     {new Intl.NumberFormat('en-US', {
                       style: 'currency',
                       currency: order.currency_code,
-                    }).format(item.total)}
+                    }).format(item.total / 100)}
                   </p>
                 </div>
               ))}
@@ -108,6 +97,52 @@ export default async function OrderDetailPage({
           </CardContent>
         </Card>
       )}
+    </>
+  )
+}
+
+function OrderDetailSkeleton() {
+  return (
+    <>
+      <div className="h-8 w-40 bg-muted rounded animate-pulse" />
+      <div className="grid gap-4 md:grid-cols-2">
+        <Card>
+          <CardContent className="py-6 space-y-3">
+            {[1, 2, 3, 4].map((i) => (
+              <div key={i} className="h-5 bg-muted rounded animate-pulse" />
+            ))}
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="py-6 space-y-3">
+            {[1, 2].map((i) => (
+              <div key={i} className="h-5 bg-muted rounded animate-pulse" />
+            ))}
+          </CardContent>
+        </Card>
+      </div>
+    </>
+  )
+}
+
+export default function OrderDetailPage({
+  params,
+}: {
+  params: Promise<{ orderId: string }>
+}) {
+  return (
+    <div className="space-y-6">
+      <Link
+        href="/account/orders"
+        className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground"
+      >
+        <ArrowLeft className="mr-2 h-4 w-4" />
+        Back to orders
+      </Link>
+
+      <Suspense fallback={<OrderDetailSkeleton />}>
+        <OrderDetailContent params={params} />
+      </Suspense>
     </div>
   )
 }

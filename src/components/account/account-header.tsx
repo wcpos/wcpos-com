@@ -18,7 +18,7 @@ export function AccountHeader({ customer }: AccountHeaderProps) {
         </div>
         <div className="flex items-center space-x-4">
           <span className="text-sm text-gray-600">{customer.email}</span>
-          <form action="/api/auth/logout" method="GET">
+          <form action="/api/auth/logout" method="POST">
             <button type="submit" className="text-sm text-gray-500 hover:text-gray-900">
               Sign out
             </button>

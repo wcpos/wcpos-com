@@ -37,7 +37,7 @@ export async function DELETE(
   try {
     const { licenseId, machineId } = await params
 
-    const orders = await getCustomerOrders()
+    const orders = await getCustomerOrders(100)
 
     if (orders.length === 0) {
       return NextResponse.json(
@@ -51,6 +51,16 @@ export async function DELETE(
     if (!licenseIds.includes(licenseId)) {
       return NextResponse.json(
         { error: 'Forbidden' },
+        { status: 403 }
+      )
+    }
+
+    // Verify machine belongs to this license
+    const machines = await licenseClient.getLicenseMachines(licenseId)
+    const machineOwned = machines.some((m) => m.id === machineId)
+    if (!machineOwned) {
+      return NextResponse.json(
+        { error: 'Machine does not belong to this license' },
         { status: 403 }
       )
     }
