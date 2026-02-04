@@ -1,15 +1,8 @@
 import { NextResponse } from 'next/server'
-import { AuthService } from '@/services/core/auth/auth-service'
+import { logout } from '@/lib/medusa-auth'
 
-export async function POST() {
-  await AuthService.logout()
-
-  return NextResponse.redirect(new URL('/login', process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'))
+export async function POST(request: Request) {
+  await logout()
+  const url = new URL('/login', request.url)
+  return NextResponse.redirect(url, 303)
 }
-
-export async function GET() {
-  await AuthService.logout()
-
-  return NextResponse.redirect(new URL('/login', process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'))
-}
-

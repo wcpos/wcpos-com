@@ -1,76 +1,125 @@
 import { Suspense } from 'react'
-import { UnifiedCustomerService } from '@/services/customer/unified-customer-service'
-import { AccountOverview } from '@/components/account/account-overview'
-import { RecentOrders } from '@/components/account/recent-orders'
-import { LicenseStatus } from '@/components/account/license-status'
+import { getCustomer, getCustomerOrders } from '@/lib/medusa-auth'
+import { redirect } from 'next/navigation'
+import Link from 'next/link'
+import { ShoppingBag, Key } from 'lucide-react'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
-async function AccountContent() {
-  // Get unified customer data (wcpos-com + MedusaJS)
-  const customer = await UnifiedCustomerService.getCurrentCustomer()
-  
+async function AccountOverviewContent() {
+  const [customer, orders] = await Promise.all([
+    getCustomer(),
+    getCustomerOrders(5),
+  ])
+
   if (!customer) {
-    return null // Layout will handle redirect
+    redirect('/login')
   }
 
-  // Use MedusaJS customer data if available, fallback to wcpos-com data
-  const displayName = customer.medusaCustomer?.first_name || customer.firstName || customer.email
+  const licenseCount = orders.reduce((count, order) => {
+    const licenses = order.metadata?.licenses as Array<{ license_id: string }> | undefined
+    return count + (licenses?.length || 0)
+  }, 0)
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900">
-          Welcome back, {displayName}
-        </h1>
-        <p className="text-gray-600">
-          Manage your account, orders, and licenses
-        </p>
+    <>
+      <h1 className="text-2xl font-bold">
+        Welcome{customer?.first_name ? `, ${customer.first_name}` : ''}
+      </h1>
+
+      <div className="grid gap-4 md:grid-cols-2">
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Orders</CardTitle>
+            <ShoppingBag className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{orders.length}</div>
+            <Link href="/account/orders" className="text-sm text-muted-foreground hover:underline">
+              View all orders
+            </Link>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Licenses</CardTitle>
+            <Key className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{licenseCount}</div>
+            <Link href="/account/licenses" className="text-sm text-muted-foreground hover:underline">
+              Manage licenses
+            </Link>
+          </CardContent>
+        </Card>
       </div>
 
-      {/* Account Overview - can be partially static */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2">
-          <Suspense fallback={<div className="h-48 bg-white rounded-lg border animate-pulse" />}>
-            <AccountOverview user={customer} />
-          </Suspense>
-        </div>
-        
-        <div>
-          <Suspense fallback={<div className="h-48 bg-white rounded-lg border animate-pulse" />}>
-            <LicenseStatus userId={customer.id} />
-          </Suspense>
-        </div>
-      </div>
+      {orders.length > 0 && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg">Recent Orders</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              {orders.map((order) => (
+                <Link
+                  key={order.id}
+                  href={`/account/orders/${order.id}`}
+                  className="flex items-center justify-between p-3 rounded-lg border hover:bg-muted/50 transition-colors"
+                >
+                  <div>
+                    <p className="font-medium">Order #{order.display_id}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {new Date(order.created_at).toLocaleDateString()}
+                    </p>
+                  </div>
+                  <div className="text-right">
+                    <p className="font-medium">
+                      {new Intl.NumberFormat('en-US', {
+                        style: 'currency',
+                        currency: order.currency_code,
+                      }).format(order.total / 100)}
+                    </p>
+                    <p className="text-sm text-muted-foreground capitalize">{order.status}</p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+    </>
+  )
+}
 
-      {/* Recent Orders - dynamic content from MedusaJS */}
-      <div>
-        <Suspense fallback={<div className="h-64 bg-white rounded-lg border animate-pulse" />}>
-          <RecentOrders userId={customer.id} />
-        </Suspense>
+function AccountOverviewSkeleton() {
+  return (
+    <>
+      <div className="h-8 w-48 bg-muted rounded animate-pulse" />
+      <div className="grid gap-4 md:grid-cols-2">
+        <Card>
+          <CardContent className="py-6">
+            <div className="h-8 w-12 bg-muted rounded animate-pulse mb-2" />
+            <div className="h-4 w-24 bg-muted rounded animate-pulse" />
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="py-6">
+            <div className="h-8 w-12 bg-muted rounded animate-pulse mb-2" />
+            <div className="h-4 w-24 bg-muted rounded animate-pulse" />
+          </CardContent>
+        </Card>
       </div>
-    </div>
+    </>
   )
 }
 
 export default function AccountPage() {
   return (
-    <Suspense fallback={
-      <div className="space-y-6">
-        <div className="space-y-2">
-          <div className="h-8 bg-gray-200 rounded animate-pulse" />
-          <div className="h-4 bg-gray-200 rounded animate-pulse w-2/3" />
-        </div>
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2">
-            <div className="h-48 bg-white rounded-lg border animate-pulse" />
-          </div>
-          <div>
-            <div className="h-48 bg-white rounded-lg border animate-pulse" />
-          </div>
-        </div>
-        <div className="h-64 bg-white rounded-lg border animate-pulse" />
-      </div>
-    }>
-      <AccountContent />
-    </Suspense>
+    <div className="space-y-6">
+      <Suspense fallback={<AccountOverviewSkeleton />}>
+        <AccountOverviewContent />
+      </Suspense>
+    </div>
   )
 }

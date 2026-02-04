@@ -78,6 +78,7 @@ jobs:
         env:
           CI: true
           GITHUB_PAT: ${{ secrets.GH_PAT }}
+          MEDUSA_PUBLISHABLE_KEY: ${{ secrets.MEDUSA_PUBLISHABLE_KEY }}
 
       - name: Upload Playwright report
         uses: actions/upload-artifact@v4

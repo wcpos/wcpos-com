@@ -1,11 +1,17 @@
 import { Suspense } from 'react'
 import { CheckoutClient } from '@/components/pro/checkout-client'
+import { getCustomer } from '@/lib/medusa-auth'
 import { ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
 
 export const metadata = {
   title: 'Checkout - WooCommerce POS Pro',
   description: 'Complete your purchase of WooCommerce POS Pro',
+}
+
+async function CheckoutContent() {
+  const customer = await getCustomer()
+  return <CheckoutClient customerEmail={customer?.email} />
 }
 
 export default function CheckoutPage() {
@@ -29,7 +35,7 @@ export default function CheckoutPage() {
             </div>
           }
         >
-          <CheckoutClient />
+          <CheckoutContent />
         </Suspense>
       </div>
     </main>

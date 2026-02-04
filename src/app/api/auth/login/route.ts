@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { AuthService } from '@/services/core/auth/auth-service'
+import { NextResponse } from 'next/server'
+import { login, setAuthToken } from '@/lib/medusa-auth'
 
-export async function POST(request: NextRequest) {
+export async function POST(request: Request) {
   try {
     const { email, password } = await request.json()
 
@@ -12,25 +12,13 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const result = await AuthService.login(email, password)
+    const token = await login(email, password)
+    await setAuthToken(token)
 
-    if (!result.success) {
-      return NextResponse.json(
-        { error: result.error || 'Login failed' },
-        { status: 401 }
-      )
-    }
-
-    return NextResponse.json({
-      success: true,
-      role: result.user?.role,
-    })
+    return NextResponse.json({ success: true })
   } catch (error) {
-    console.error('[Auth] Login error:', error)
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    )
+    const message =
+      error instanceof Error ? error.message : 'Login failed'
+    return NextResponse.json({ error: message }, { status: 401 })
   }
 }
-

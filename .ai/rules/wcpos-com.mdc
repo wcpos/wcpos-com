@@ -20,14 +20,13 @@ See `wcpos-infra/ARCHITECTURE.md` for the full WCPOS ecosystem.
 
 - **Deployed to**: Vercel
 - **Domains**: `wcpos.com`, `beta.wcpos.com` (staging)
-- **Database**: Vercel Postgres (hosted) or local PostgreSQL for dev
-- **ORM**: Drizzle ORM
+- **Database**: None (removed -- auth moving to Medusa-native)
 
 ## Tech Stack
 
 - **Framework**: Next.js 16 (App Router, Turbopack)
 - **UI**: React 19, Tailwind CSS v4, Radix UI, shadcn/ui components
-- **Database**: Drizzle ORM + PostgreSQL
+- **Database**: None (removed -- auth moving to Medusa-native)
 - **Testing**: Vitest (unit), Playwright (e2e)
 - **Package Manager**: pnpm
 
@@ -212,15 +211,12 @@ pnpm dev         # Start dev server (Turbopack)
 pnpm build       # Production build (check PPR output)
 pnpm test:unit   # Run unit tests
 pnpm test:e2e    # Run Playwright tests
-pnpm db:studio   # Open Drizzle Studio
 ```
 
 ## Environment Variables
 
 Key environment variables (see Vercel dashboard):
-- `POSTGRES_URL` - Vercel Postgres connection string
 - `GITHUB_PAT` - GitHub Personal Access Token for releases API
-- `AUTH_SECRET` - JWT secret for admin authentication
 - `MEDUSA_BACKEND_URL` - Medusa Store API URL
 - `MEDUSA_PUBLISHABLE_KEY` - Medusa publishable API key
 - `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` - Stripe client key
@@ -244,8 +240,7 @@ src/
 │   ├── api/               # Public API exports
 │   └── core/              # Internal services
 │       ├── external/      # Third-party clients (GitHub, License, Medusa)
-│       ├── business/      # Business logic
-│       └── database/      # Drizzle connection & schema
+│       └── business/      # Business logic
 ├── types/                 # TypeScript types
 └── utils/                 # Utility functions
 ```

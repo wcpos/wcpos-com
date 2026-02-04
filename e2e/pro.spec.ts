@@ -1,15 +1,5 @@
 import { test, expect } from '@playwright/test'
 
-/**
- * Pro Page E2E Tests
- *
- * Note: Tests that require Medusa API (product display) are skipped in CI
- * unless MEDUSA_PUBLISHABLE_KEY is set in GitHub secrets.
- */
-
-// Check if we have the Medusa API key (for product-dependent tests)
-const hasMedusaKey = !!process.env.MEDUSA_PUBLISHABLE_KEY
-
 test.describe('Pro Page', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/pro')
@@ -34,10 +24,7 @@ test.describe('Pro Page', () => {
     ).toBeVisible()
   })
 
-  // Product-dependent tests - skip in CI without API key
   test.describe('Product Display', () => {
-    test.skip(!hasMedusaKey, 'Skipping: MEDUSA_PUBLISHABLE_KEY not set')
-
     test('displays product pricing cards', async ({ page }) => {
       const pricingCard = page.locator('[data-testid="pricing-card"]').first()
       await expect(pricingCard).toBeVisible({ timeout: 10000 })

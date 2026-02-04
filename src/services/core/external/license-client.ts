@@ -1,125 +1,334 @@
 import 'server-only'
 
-import type { LicenseStatusResponse } from '@/types/license'
+import { env } from '@/utils/env'
+import type {
+  LicenseStatusResponse,
+  LicenseDetail,
+  LicenseMachine,
+} from '@/types/license'
 
 /**
- * License Client
+ * License Client — Keygen CE API integration
  *
- * TODO: This is a placeholder implementation.
- * Will be replaced with integration to the new license server.
- *
- * Future implementation will:
- * - Connect to the license server API
- * - Validate license keys
- * - Track activations per instance
- * - Handle subscription status
+ * Handles license validation, machine activation/deactivation,
+ * and backward-compatible license status checks for the Pro plugin.
  */
 
+const BASE_URL = `https://${env.KEYGEN_HOST}`
+
+const JSON_API_HEADERS = {
+  'Content-Type': 'application/vnd.api+json',
+  Accept: 'application/vnd.api+json',
+}
+
+function authHeaders() {
+  return {
+    ...JSON_API_HEADERS,
+    Authorization: `Bearer ${env.KEYGEN_API_TOKEN}`,
+  }
+}
+
+// ---- JSON:API response shape helpers ----
+
+interface KeygenLicenseAttributes {
+  key: string
+  status: string
+  expiry: string | null
+  maxMachines: number
+  metadata: Record<string, unknown>
+  created: string
+}
+
+interface KeygenLicenseData {
+  id: string
+  attributes: KeygenLicenseAttributes
+  relationships: {
+    policy: { data: { id: string } }
+  }
+}
+
+interface KeygenMachineAttributes {
+  fingerprint: string
+  name: string | null
+  metadata: Record<string, unknown>
+  created: string
+}
+
+interface KeygenMachineData {
+  id: string
+  attributes: KeygenMachineAttributes
+}
+
+interface ValidateKeyResponse {
+  meta: { valid: boolean; detail: string; code: string }
+  data?: KeygenLicenseData
+}
+
+// ---- Mapping helpers ----
+
+function mapLicenseData(
+  data: KeygenLicenseData
+): Omit<LicenseDetail, 'machines'> {
+  return {
+    id: data.id,
+    key: data.attributes.key,
+    status: data.attributes.status,
+    expiry: data.attributes.expiry,
+    maxMachines: data.attributes.maxMachines,
+    metadata: data.attributes.metadata,
+    policyId: data.relationships.policy.data.id,
+    createdAt: data.attributes.created,
+  }
+}
+
+function mapMachineData(data: KeygenMachineData): LicenseMachine {
+  return {
+    id: data.id,
+    fingerprint: data.attributes.fingerprint,
+    name: data.attributes.name,
+    metadata: data.attributes.metadata,
+    createdAt: data.attributes.created,
+  }
+}
+
+// ---- Public API ----
+
 /**
- * Validate a license key and instance
+ * Validate a license key (no auth required).
  *
- * @param licenseKey - The license key to validate
- * @param instance - The unique instance identifier (site URL, device ID, etc.)
+ * POST /v1/licenses/actions/validate-key
  */
-export async function validateLicense(
+async function validateLicenseKey(key: string): Promise<{
+  valid: boolean
+  code: string
+  detail: string
+  license?: Omit<LicenseDetail, 'machines'>
+}> {
+  const res = await fetch(
+    `${BASE_URL}/v1/licenses/actions/validate-key`,
+    {
+      method: 'POST',
+      headers: JSON_API_HEADERS,
+      body: JSON.stringify({ meta: { key } }),
+    }
+  )
+
+  const json: ValidateKeyResponse = await res.json()
+
+  const result: {
+    valid: boolean
+    code: string
+    detail: string
+    license?: Omit<LicenseDetail, 'machines'>
+  } = {
+    valid: json.meta.valid,
+    code: json.meta.code,
+    detail: json.meta.detail,
+  }
+
+  if (json.data) {
+    result.license = mapLicenseData(json.data)
+  }
+
+  return result
+}
+
+/**
+ * Get a license by ID (requires auth).
+ *
+ * GET /v1/licenses/{id}
+ */
+async function getLicense(licenseId: string): Promise<LicenseDetail> {
+  const res = await fetch(`${BASE_URL}/v1/licenses/${licenseId}`, {
+    method: 'GET',
+    headers: authHeaders(),
+  })
+
+  if (!res.ok) {
+    throw new Error(`Keygen getLicense failed (${res.status}): ${await res.text()}`)
+  }
+
+  const json: { data: KeygenLicenseData } = await res.json()
+  const mapped = mapLicenseData(json.data)
+
+  return { ...mapped, machines: [] }
+}
+
+/**
+ * Get machines for a license (requires auth).
+ *
+ * GET /v1/licenses/{id}/machines
+ */
+async function getLicenseMachines(
+  licenseId: string
+): Promise<LicenseMachine[]> {
+  const res = await fetch(
+    `${BASE_URL}/v1/licenses/${licenseId}/machines`,
+    {
+      method: 'GET',
+      headers: authHeaders(),
+    }
+  )
+
+  if (!res.ok) {
+    throw new Error(`Keygen getLicenseMachines failed (${res.status}): ${await res.text()}`)
+  }
+
+  const json: { data: KeygenMachineData[] } = await res.json()
+
+  return json.data.map(mapMachineData)
+}
+
+/**
+ * Activate a machine for a license (requires auth).
+ *
+ * POST /v1/licenses/{id}/machines
+ */
+async function activateMachine(
+  licenseId: string,
+  fingerprint: string,
+  metadata: Record<string, unknown> = {}
+): Promise<{ id: string; fingerprint: string } | null> {
+  const name = (metadata.domain as string) ?? null
+
+  const res = await fetch(
+    `${BASE_URL}/v1/licenses/${licenseId}/machines`,
+    {
+      method: 'POST',
+      headers: authHeaders(),
+      body: JSON.stringify({
+        data: {
+          type: 'machines',
+          attributes: { fingerprint, name, metadata },
+        },
+      }),
+    }
+  )
+
+  if (!res.ok) {
+    console.error(`[LicenseClient] activateMachine failed (${res.status}): ${await res.text()}`)
+    return null
+  }
+
+  const json: { data: KeygenMachineData } = await res.json()
+
+  return { id: json.data.id, fingerprint: json.data.attributes.fingerprint }
+}
+
+/**
+ * Deactivate (delete) a machine (requires auth).
+ *
+ * DELETE /v1/machines/{id}
+ */
+async function deactivateMachine(machineId: string): Promise<boolean> {
+  const res = await fetch(`${BASE_URL}/v1/machines/${machineId}`, {
+    method: 'DELETE',
+    headers: authHeaders(),
+  })
+
+  return res.ok
+}
+
+/**
+ * Convenience: get a license with its machines populated.
+ */
+async function getLicenseWithMachines(
+  licenseId: string
+): Promise<LicenseDetail> {
+  const [license, machines] = await Promise.all([
+    getLicense(licenseId),
+    getLicenseMachines(licenseId),
+  ])
+
+  return { ...license, machines }
+}
+
+/**
+ * Backward-compatible wrapper used by existing Pro plugin API routes.
+ *
+ * Maps Keygen validate-key + machines data into the LicenseStatusResponse
+ * format that the rest of the codebase expects.
+ */
+async function validateLicense(
   licenseKey: string,
   instance: string
 ): Promise<LicenseStatusResponse> {
-  // TODO: Replace with actual license server call
-  console.log(`[LicenseClient] Validating license: ${licenseKey.substring(0, 8)}... for instance: ${instance}`)
+  const validation = await validateLicenseKey(licenseKey)
 
-  // Dummy implementation - always returns valid for testing
-  // In production, this will call the actual license server
-  if (!licenseKey || licenseKey.length < 8) {
-    return {
-      status: 400,
-      error: 'Invalid license key format',
-    }
-  }
-
-  // Simulate different license states based on key prefix (for testing)
-  if (licenseKey.startsWith('EXPIRED_')) {
-    return {
-      status: 200,
-      data: {
-        activated: false,
-        status: 'expired',
-        expiresAt: '2024-01-01T00:00:00Z',
-        productName: 'WooCommerce POS Pro',
-      },
-    }
-  }
-
-  if (licenseKey.startsWith('INVALID_')) {
+  if (validation.code === 'NOT_FOUND') {
     return {
       status: 404,
       error: 'License key not found',
-      message: 'The provided license key does not exist.',
+      message: validation.detail,
     }
   }
 
-  // Default: return active license
-  return {
-    status: 200,
-    data: {
-      activated: true,
-      status: 'active',
-      expiresAt: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString(),
-      activationsLimit: 5,
-      activationsCount: 1,
-      productName: 'WooCommerce POS Pro',
-      customerEmail: 'customer@example.com',
-    },
+  if (!validation.license) {
+    return {
+      status: 400,
+      error: 'Validation failed',
+      message: validation.detail,
+    }
   }
-}
 
-/**
- * Activate a license for an instance
- */
-export async function activateLicense(
-  licenseKey: string,
-  instance: string
-): Promise<LicenseStatusResponse> {
-  // TODO: Replace with actual license server call
-  console.log(`[LicenseClient] Activating license: ${licenseKey.substring(0, 8)}... for instance: ${instance}`)
+  const license = validation.license
 
-  // Dummy implementation
-  return {
-    status: 200,
-    data: {
-      activated: true,
+  // For valid licenses, fetch machines to get activation count
+  // and check if this instance is activated
+  let activationsCount = 0
+  let activated = false
+
+  if (validation.valid && license.id) {
+    try {
+      const machines = await getLicenseMachines(license.id)
+      activationsCount = machines.length
+      activated = machines.some((m) => m.fingerprint === instance)
+    } catch {
+      // If we can't fetch machines, still return what we have
+    }
+  }
+
+  const keygenStatus = license.status.toUpperCase()
+  const statusMap: Record<string, LicenseStatusResponse['data']> = {
+    ACTIVE: {
+      activated,
       status: 'active',
-      activationsLimit: 5,
-      activationsCount: 1,
+      expiresAt: license.expiry ?? undefined,
+      activationsLimit: license.maxMachines,
+      activationsCount,
       productName: 'WooCommerce POS Pro',
     },
-  }
-}
-
-/**
- * Deactivate a license for an instance
- */
-export async function deactivateLicense(
-  licenseKey: string,
-  instance: string
-): Promise<LicenseStatusResponse> {
-  // TODO: Replace with actual license server call
-  console.log(`[LicenseClient] Deactivating license: ${licenseKey.substring(0, 8)}... for instance: ${instance}`)
-
-  // Dummy implementation
-  return {
-    status: 200,
-    data: {
+    EXPIRED: {
+      activated: false,
+      status: 'expired',
+      expiresAt: license.expiry ?? undefined,
+      activationsLimit: license.maxMachines,
+      activationsCount,
+      productName: 'WooCommerce POS Pro',
+    },
+    SUSPENDED: {
       activated: false,
       status: 'inactive',
+      productName: 'WooCommerce POS Pro',
+    },
+  }
+
+  return {
+    status: 200,
+    data: statusMap[keygenStatus] ?? {
+      activated: false,
+      status: 'invalid',
       productName: 'WooCommerce POS Pro',
     },
   }
 }
 
 export const licenseClient = {
+  validateLicenseKey,
+  getLicense,
+  getLicenseMachines,
+  activateMachine,
+  deactivateMachine,
+  getLicenseWithMachines,
   validateLicense,
-  activateLicense,
-  deactivateLicense,
 }
-

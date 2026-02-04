@@ -43,6 +43,3 @@ export async function GET() {
     )
   }
 }
-
-// Enable ISR-style caching - revalidate every 5 minutes
-export const revalidate = 300

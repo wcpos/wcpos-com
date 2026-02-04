@@ -38,3 +38,27 @@ export interface ProUpdateResponse {
   error?: string
 }
 
+/**
+ * Keygen CE License Types
+ */
+
+export interface LicenseMachine {
+  id: string
+  fingerprint: string
+  name: string | null
+  metadata: Record<string, unknown>
+  createdAt: string
+}
+
+export interface LicenseDetail {
+  id: string
+  key: string
+  status: string
+  expiry: string | null
+  maxMachines: number
+  machines: LicenseMachine[]
+  metadata: Record<string, unknown>
+  policyId: string
+  createdAt: string
+}
+

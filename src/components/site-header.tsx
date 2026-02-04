@@ -1,7 +1,4 @@
-import { Suspense } from 'react'
 import Link from 'next/link'
-import { AuthService } from '@/services/core/auth/auth-service'
-import { UserNav } from '@/components/user-nav'
 import { Button } from '@/components/ui/button'
 
 export async function SiteHeader() {
@@ -28,35 +25,15 @@ export async function SiteHeader() {
           </nav>
         </div>
 
-        <div className="flex items-center space-x-4">
-          <Suspense fallback={
-            <Button variant="outline" size="sm" disabled>
-              Loading...
-            </Button>
-          }>
-            <AuthNav />
-          </Suspense>
+        <div className="flex items-center space-x-2">
+          <Button variant="ghost" size="sm" asChild>
+            <Link href="/login">Sign in</Link>
+          </Button>
+          <Button size="sm" asChild>
+            <Link href="/register">Get Started</Link>
+          </Button>
         </div>
       </div>
     </header>
-  )
-}
-
-async function AuthNav() {
-  const user = await AuthService.getCurrentUser()
-  
-  if (user) {
-    return <UserNav user={user} />
-  }
-
-  return (
-    <div className="flex items-center space-x-2">
-      <Button variant="ghost" size="sm" asChild>
-        <Link href="/login">Sign in</Link>
-      </Button>
-      <Button size="sm" asChild>
-        <Link href="/register">Get Started</Link>
-      </Button>
-    </div>
   )
 }

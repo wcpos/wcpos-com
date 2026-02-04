@@ -1,61 +1,46 @@
 import { Suspense } from 'react'
+import { getCustomer } from '@/lib/medusa-auth'
 import { redirect } from 'next/navigation'
-import { UnifiedCustomerService } from '@/services/customer/unified-customer-service'
 import { AccountHeader } from '@/components/account/account-header'
 import { AccountSidebar } from '@/components/account/account-sidebar'
 
-async function AuthenticatedLayout({ children }: { children: React.ReactNode }) {
-  // Check authentication using unified customer service
-  const customer = await UnifiedCustomerService.getCurrentCustomer()
-  
+async function AccountHeaderWrapper() {
+  const customer = await getCustomer()
   if (!customer) {
     redirect('/login')
   }
+  return <AccountHeader customer={customer} />
+}
 
+function AccountHeaderSkeleton() {
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header - can be static */}
-      <Suspense fallback={<div className="h-16 bg-white border-b animate-pulse" />}>
-        <AccountHeader user={customer} />
-      </Suspense>
-      
-      <div className="flex">
-        {/* Sidebar - can be static */}
-        <div className="w-64 bg-white border-r min-h-screen">
-          <AccountSidebar />
+    <header className="bg-white border-b">
+      <div className="px-6 py-4 flex items-center justify-between">
+        <div className="flex items-center space-x-4">
+          <span className="text-xl font-bold text-gray-900">WCPOS</span>
+          <span className="text-gray-400">/</span>
+          <span className="text-gray-600">Account</span>
         </div>
-        
-        {/* Main content - dynamic based on route */}
-        <main className="flex-1 p-6">
-          <Suspense fallback={
-            <div className="space-y-4">
-              <div className="h-8 bg-gray-200 rounded animate-pulse" />
-              <div className="h-32 bg-gray-200 rounded animate-pulse" />
-            </div>
-          }>
-            {children}
-          </Suspense>
-        </main>
+        <div className="h-5 w-48 bg-gray-200 rounded animate-pulse" />
       </div>
-    </div>
+    </header>
   )
 }
 
-export default function AccountLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function AccountLayout({ children }: { children: React.ReactNode }) {
   return (
-    <Suspense fallback={
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-2 text-gray-600">Loading...</p>
-        </div>
+    <div className="min-h-screen bg-background">
+      <Suspense fallback={<AccountHeaderSkeleton />}>
+        <AccountHeaderWrapper />
+      </Suspense>
+      <div className="flex">
+        <aside className="w-64 border-r min-h-[calc(100vh-65px)]">
+          <AccountSidebar />
+        </aside>
+        <main className="flex-1 p-6">
+          {children}
+        </main>
       </div>
-    }>
-      <AuthenticatedLayout>{children}</AuthenticatedLayout>
-    </Suspense>
+    </div>
   )
 }
