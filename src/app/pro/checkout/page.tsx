@@ -9,9 +9,12 @@ export const metadata = {
   description: 'Complete your purchase of WooCommerce POS Pro',
 }
 
-export default async function CheckoutPage() {
+async function CheckoutContent() {
   const customer = await getCustomer()
+  return <CheckoutClient customerEmail={customer?.email} />
+}
 
+export default function CheckoutPage() {
   return (
     <main className="min-h-screen bg-gradient-to-b from-background to-muted/20">
       <div className="container mx-auto px-4 py-8">
@@ -32,7 +35,7 @@ export default async function CheckoutPage() {
             </div>
           }
         >
-          <CheckoutClient customerEmail={customer?.email} />
+          <CheckoutContent />
         </Suspense>
       </div>
     </main>

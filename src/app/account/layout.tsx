@@ -1,9 +1,10 @@
+import { Suspense } from 'react'
 import { getCustomer } from '@/lib/medusa-auth'
 import { redirect } from 'next/navigation'
 import { AccountHeader } from '@/components/account/account-header'
 import { AccountSidebar } from '@/components/account/account-sidebar'
 
-export default async function AccountLayout({ children }: { children: React.ReactNode }) {
+async function AccountLayoutInner({ children }: { children: React.ReactNode }) {
   const customer = await getCustomer()
   if (!customer) {
     redirect('/login')
@@ -21,5 +22,13 @@ export default async function AccountLayout({ children }: { children: React.Reac
         </main>
       </div>
     </div>
+  )
+}
+
+export default function AccountLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <Suspense>
+      <AccountLayoutInner>{children}</AccountLayoutInner>
+    </Suspense>
   )
 }

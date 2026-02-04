@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { Suspense, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
@@ -16,6 +16,14 @@ import {
 } from '@/components/ui/card'
 
 export default function LoginPage() {
+  return (
+    <Suspense>
+      <LoginPageInner />
+    </Suspense>
+  )
+}
+
+function LoginPageInner() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const redirect = searchParams.get('redirect') || '/account'
@@ -110,6 +118,8 @@ export default function LoginPage() {
             </div>
           </div>
 
+          {/* These are API routes that redirect to OAuth providers, not Next.js pages */}
+          {/* eslint-disable @next/next/no-html-link-for-pages */}
           <div className="grid grid-cols-2 gap-3">
             <Button variant="outline" asChild>
               <a href="/api/auth/google">Google</a>
@@ -118,6 +128,7 @@ export default function LoginPage() {
               <a href="/api/auth/github">GitHub</a>
             </Button>
           </div>
+          {/* eslint-enable @next/next/no-html-link-for-pages */}
         </CardContent>
         <CardFooter className="justify-center">
           <p className="text-sm text-muted-foreground">
