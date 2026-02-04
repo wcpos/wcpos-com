@@ -27,10 +27,15 @@ function LoginPageInner() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const redirect = searchParams.get('redirect') || '/account'
+  const oauthError = searchParams.get('error')
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [error, setError] = useState('')
+  const [error, setError] = useState(() => {
+    if (!oauthError) return ''
+    if (oauthError === 'oauth_failed') return 'OAuth sign-in failed. Please try again or use email/password.'
+    return oauthError
+  })
   const [loading, setLoading] = useState(false)
 
   async function handleSubmit(e: React.FormEvent) {

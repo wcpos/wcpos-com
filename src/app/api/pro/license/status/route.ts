@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { proService } from '@/services/core/business/pro-service'
+import { licenseLogger } from '@/lib/logger'
 
 /**
  * License Status Check API
@@ -29,7 +30,7 @@ export async function GET(request: Request) {
 
     return NextResponse.json(result, { status: result.status })
   } catch (error) {
-    console.error('[ProAPI] License status check failed:', error)
+    licenseLogger.error`License status check failed: ${error}`
     return NextResponse.json(
       { status: 500, error: 'Internal server error' },
       { status: 500 }

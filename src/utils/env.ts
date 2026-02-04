@@ -25,6 +25,11 @@ const envSchema = z.object({
   KEYGEN_HOST: z.string().default('license.wcpos.com'),
   KEYGEN_API_TOKEN: z.string().optional(),
 
+  // Logging
+  LOKI_URL: z.string().url().optional(),
+  LOKI_API_KEY: z.string().optional(),
+  DISCORD_WEBHOOK_URL: z.string().url().optional(),
+
   // Node environment
   NODE_ENV: z
     .enum(['development', 'production', 'test'])

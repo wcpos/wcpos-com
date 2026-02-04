@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { addLineItem } from '@/services/core/external/medusa-client'
+import { storeLogger } from '@/lib/logger'
 
 /**
  * POST /api/store/cart/line-items - Add item to cart
@@ -37,7 +38,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ cart })
   } catch (error) {
-    console.error('[API] Error adding line item:', error)
+    storeLogger.error`Error adding line item: ${error}`
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

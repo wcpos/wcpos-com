@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { completeCart } from '@/services/core/external/medusa-client'
+import { storeLogger } from '@/lib/logger'
 
 /**
  * POST /api/store/cart/complete - Complete cart and create order
@@ -27,7 +28,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(result)
   } catch (error) {
-    console.error('[API] Error completing cart:', error)
+    storeLogger.error`Error completing cart: ${error}`
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

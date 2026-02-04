@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { getCustomerOrders } from '@/lib/medusa-auth'
 import { licenseClient } from '@/services/core/external/license-client'
+import { licenseLogger } from '@/lib/logger'
 import type { MedusaOrder } from '@/lib/medusa-auth'
 
 /**
@@ -48,10 +49,7 @@ export async function GET() {
         try {
           return await licenseClient.getLicenseWithMachines(id)
         } catch (error) {
-          console.error(
-            `[AccountLicenses] Failed to fetch license ${id}:`,
-            error
-          )
+          licenseLogger.error`Failed to fetch license ${id}: ${error}`
           return null
         }
       })
@@ -61,7 +59,7 @@ export async function GET() {
 
     return NextResponse.json({ licenses: validLicenses }, { status: 200 })
   } catch (error) {
-    console.error('[AccountLicenses] Failed to fetch licenses:', error)
+    licenseLogger.error`Failed to fetch licenses: ${error}`
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

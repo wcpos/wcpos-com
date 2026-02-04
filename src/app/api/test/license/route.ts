@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { licenseClient } from '@/services/core/external/license-client'
+import { licenseLogger } from '@/lib/logger'
 
 /**
  * License activation test harness
@@ -98,7 +99,7 @@ export async function POST(request: NextRequest) {
         )
     }
   } catch (error) {
-    console.error('[TestHarness] Error:', error)
+    licenseLogger.error`Test harness error: ${error}`
     return NextResponse.json(
       { error: error instanceof Error ? error.message : 'Internal error' },
       { status: 500 }

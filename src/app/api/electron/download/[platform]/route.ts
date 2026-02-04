@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { cacheLife } from 'next/cache'
 import { electronService } from '@/services/core/business/electron-service'
+import { apiLogger } from '@/lib/logger'
 
 /**
  * Electron Download Redirect API
@@ -47,7 +48,7 @@ export async function GET(request: Request, { params }: RouteParams) {
     // Redirect to GitHub download URL
     return NextResponse.redirect(result, 302)
   } catch (error) {
-    console.error('[ElectronAPI] Download redirect failed:', error)
+    apiLogger.error`Electron download redirect failed: ${error}`
     return NextResponse.json(
       { status: 500, error: 'Internal server error' },
       { status: 500 }

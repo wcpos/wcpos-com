@@ -2,6 +2,7 @@ import 'server-only'
 
 import { cookies } from 'next/headers'
 import { env } from '@/utils/env'
+import { authLogger } from '@/lib/logger'
 
 // ============================================================================
 // Types
@@ -236,7 +237,7 @@ export async function getCustomer(): Promise<MedusaCustomer | null> {
     const data = await response.json()
     return data.customer
   } catch (error) {
-    console.error('[MedusaAuth] Failed to get customer:', error)
+    authLogger.error`Failed to get customer: ${error}`
     return null
   }
 }
@@ -271,7 +272,7 @@ export async function getCustomerOrders(
     const data = await response.json()
     return data.orders ?? []
   } catch (error) {
-    console.error('[MedusaAuth] Failed to get orders:', error)
+    authLogger.error`Failed to get orders: ${error}`
     return []
   }
 }

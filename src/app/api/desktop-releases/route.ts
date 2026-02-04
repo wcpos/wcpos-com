@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { githubClient } from '@/services/core/external/github-client'
+import { apiLogger } from '@/lib/logger'
 
 const ELECTRON_REPO = 'electron'
 
@@ -36,7 +37,7 @@ export async function GET() {
     
     return NextResponse.json(response)
   } catch (error) {
-    console.error('[DesktopReleasesAPI] Failed to fetch release:', error)
+    apiLogger.error`Failed to fetch desktop release: ${error}`
     return NextResponse.json(
       { error: 'Failed to fetch release information' },
       { status: 500 }

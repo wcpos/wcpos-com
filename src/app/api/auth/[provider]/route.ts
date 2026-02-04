@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { initiateOAuth } from '@/lib/medusa-auth'
+import { authLogger } from '@/lib/logger'
 
 const ALLOWED_PROVIDERS = ['google', 'github']
 
@@ -23,7 +24,7 @@ export async function GET(
 
     return NextResponse.redirect(location)
   } catch (error) {
-    console.error('[OAuth] Failed to initiate OAuth:', error)
+    authLogger.error`Failed to initiate OAuth: ${error}`
     return NextResponse.redirect(
       new URL('/login?error=oauth_failed', request.url)
     )
