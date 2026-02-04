@@ -31,12 +31,7 @@ export function LoginForm() {
         throw new Error(data.error || 'Login failed')
       }
 
-      // Redirect based on role
-      if (data.role === 'admin') {
-        router.push('/admin')
-      } else {
-        router.push('/dashboard')
-      }
+      router.push('/dashboard')
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Login failed')
     } finally {

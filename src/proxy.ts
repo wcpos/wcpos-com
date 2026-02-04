@@ -7,7 +7,7 @@ import { SessionService } from '@/services/core/auth/session-service'
  *
  * Handles:
  * - Multiple domains pointing to the same Vercel deployment
- * - Route protection for admin and dashboard areas
+ * - Route protection for dashboard areas
  *
  * Domains:
  * - updates.wcpos.com: Only allows /api/* routes (public update API)
@@ -50,28 +50,6 @@ export async function proxy(request: NextRequest) {
     const redirectUrl = new URL(pathname, `https://${mainDomain}`)
     redirectUrl.search = request.nextUrl.search
     return NextResponse.redirect(redirectUrl, 301)
-  }
-
-  // Protect admin routes - require admin role
-  if (pathname.startsWith('/admin')) {
-    const session = await SessionService.validateSession(request)
-
-    if (!session) {
-      const loginUrl = new URL('/login', request.url)
-      loginUrl.searchParams.set('redirect', pathname)
-      return NextResponse.redirect(loginUrl)
-    }
-
-    if (session.role !== 'admin') {
-      // Non-admin users go to their dashboard
-      return NextResponse.redirect(new URL('/dashboard', request.url))
-    }
-
-    // Refresh session if needed
-    const refreshResponse = await SessionService.updateSessionMiddleware(request)
-    if (refreshResponse) {
-      return refreshResponse
-    }
   }
 
   // Protect dashboard routes - require any authenticated user
