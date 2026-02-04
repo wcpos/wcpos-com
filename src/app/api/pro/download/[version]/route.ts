@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { proService } from '@/services/core/business/pro-service'
-import { env } from '@/utils/env'
+import { getGitHubToken } from '@/services/core/external/github-auth'
 import { apiLogger } from '@/lib/logger'
 
 /**
@@ -44,12 +44,14 @@ export async function GET(request: Request, { params }: RouteParams) {
     }
 
     // Stream the file from GitHub
-    const githubResponse = await fetch(result, {
-      headers: {
-        Authorization: `token ${env.GITHUB_PAT}`,
-        Accept: 'application/octet-stream',
-      },
-    })
+    const token = await getGitHubToken()
+    const fetchHeaders: Record<string, string> = {
+      Accept: 'application/octet-stream',
+    }
+    if (token) {
+      fetchHeaders.Authorization = `token ${token}`
+    }
+    const githubResponse = await fetch(result, { headers: fetchHeaders })
 
     if (!githubResponse.ok) {
       return NextResponse.json(

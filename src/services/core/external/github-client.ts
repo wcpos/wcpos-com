@@ -1,7 +1,6 @@
 import 'server-only'
 
-import { Octokit } from '@octokit/rest'
-import { env } from '@/utils/env'
+import { getOctokit } from './github-auth'
 import { infraLogger } from '@/lib/logger'
 import type { GitHubRelease, GitHubReleaseInfo } from '@/types/github'
 
@@ -12,9 +11,7 @@ import type { GitHubRelease, GitHubReleaseInfo } from '@/types/github'
  * Protected by server-only to prevent client-side usage.
  */
 
-const octokit = new Octokit({
-  auth: env.GITHUB_PAT,
-})
+const octokit = getOctokit()
 
 const GITHUB_OWNER = 'wcpos'
 

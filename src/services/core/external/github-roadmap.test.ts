@@ -4,15 +4,14 @@ vi.mock('server-only', () => ({}))
 
 vi.mock('@/utils/env', () => ({
   env: {
-    GITHUB_PAT: 'ghp_test_token',
     GITHUB_PROJECT_NUMBER: 1,
   },
 }))
 
-// Mock the Octokit instance — vi.hoisted() ensures this runs before hoisted vi.mock()
+// Mock the shared Octokit factory
 const { mockGraphql } = vi.hoisted(() => ({ mockGraphql: vi.fn() }))
-vi.mock('@octokit/rest', () => ({
-  Octokit: vi.fn().mockImplementation(function () { return { graphql: mockGraphql } }),
+vi.mock('./github-auth', () => ({
+  getOctokit: vi.fn(() => ({ graphql: mockGraphql })),
 }))
 
 import { fetchRoadmapData, transformProjectItems } from './github-roadmap'

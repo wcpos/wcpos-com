@@ -1,11 +1,11 @@
 import 'server-only'
 
-import { Octokit } from '@octokit/rest'
+import { getOctokit } from './github-auth'
 import { env } from '@/utils/env'
 import { infraLogger } from '@/lib/logger'
 import type { RoadmapData, RoadmapItem, RoadmapMilestone, RoadmapStatus, RoadmapItemType } from '@/types/roadmap'
 
-const octokit = new Octokit({ auth: env.GITHUB_PAT })
+const octokit = getOctokit()
 
 const GITHUB_ORG = 'wcpos'
 const ALLOWED_REPOS = ['woocommerce-pos', 'woocommerce-pos-pro', 'monorepo', 'electron']

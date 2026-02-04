@@ -5,8 +5,10 @@ import { z } from 'zod'
  * Ensures required env vars are present at runtime
  */
 const envSchema = z.object({
-  // GitHub Personal Access Token (optional but recommended for higher rate limits)
-  GITHUB_PAT: z.string().optional(),
+  // GitHub App authentication
+  GITHUB_APP_ID: z.coerce.number().optional(),
+  GITHUB_PRIVATE_KEY: z.string().optional(),
+  GITHUB_INSTALLATION_ID: z.coerce.number().optional(),
 
   // GitHub Project (for roadmap page)
   GITHUB_PROJECT_NUMBER: z.coerce.number().optional(),
