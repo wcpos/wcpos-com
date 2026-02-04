@@ -5,7 +5,7 @@ test.describe('Authentication', () => {
     test('displays login form', async ({ page }) => {
       await page.goto('/login')
 
-      await expect(page.getByRole('heading', { name: 'Welcome back' })).toBeVisible()
+      await expect(page.getByRole('heading', { name: 'Sign in' })).toBeVisible()
       await expect(page.getByLabel('Email')).toBeVisible()
       await expect(page.getByLabel('Password')).toBeVisible()
       await expect(page.getByRole('button', { name: 'Sign in' })).toBeVisible()
@@ -33,9 +33,9 @@ test.describe('Authentication', () => {
     test('displays registration form', async ({ page }) => {
       await page.goto('/register')
 
-      await expect(page.getByRole('heading', { name: 'Create your account' })).toBeVisible()
-      await expect(page.getByLabel('First Name')).toBeVisible()
-      await expect(page.getByLabel('Last Name')).toBeVisible()
+      await expect(page.getByRole('heading', { name: 'Create an account' })).toBeVisible()
+      await expect(page.getByLabel('First name')).toBeVisible()
+      await expect(page.getByLabel('Last name')).toBeVisible()
       await expect(page.getByLabel('Email')).toBeVisible()
       await expect(page.getByLabel('Password')).toBeVisible()
       await expect(page.getByRole('button', { name: 'Create account' })).toBeVisible()
@@ -53,8 +53,8 @@ test.describe('Authentication', () => {
       await page.goto('/register')
 
       // Fill out the form
-      await page.getByLabel('First Name').fill('John')
-      await page.getByLabel('Last Name').fill('Doe')
+      await page.getByLabel('First name').fill('John')
+      await page.getByLabel('Last name').fill('Doe')
       await page.getByLabel('Email').fill('john.doe@example.com')
       await page.getByLabel('Password').fill('password123')
 
