@@ -127,10 +127,10 @@ function LoginPageInner() {
           {/* eslint-disable @next/next/no-html-link-for-pages */}
           <div className="grid grid-cols-2 gap-3">
             <Button variant="outline" asChild>
-              <a href="/api/auth/google">Google</a>
+              <a href="/api/auth/google" data-umami-event="click-oauth-google">Google</a>
             </Button>
             <Button variant="outline" asChild>
-              <a href="/api/auth/github">GitHub</a>
+              <a href="/api/auth/github" data-umami-event="click-oauth-github">GitHub</a>
             </Button>
           </div>
           {/* eslint-enable @next/next/no-html-link-for-pages */}
