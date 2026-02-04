@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
-import { SessionService } from '@/services/core/auth/session-service'
 
 /**
  * Proxy for hostname-based routing and authentication (Next.js 16+)
@@ -52,20 +51,16 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(redirectUrl, 301)
   }
 
-  // Protect dashboard routes - require any authenticated user
+  // Protect dashboard routes - require authenticated session cookie
   if (pathname.startsWith('/dashboard')) {
-    const session = await SessionService.validateSession(request)
+    // Instead of session validation, just check for cookie existence
+    // Real validation happens when Medusa rejects invalid tokens
+    const token = request.cookies.get('medusa-token')?.value
 
-    if (!session) {
+    if (!token) {
       const loginUrl = new URL('/login', request.url)
       loginUrl.searchParams.set('redirect', pathname)
       return NextResponse.redirect(loginUrl)
-    }
-
-    // Refresh session if needed
-    const refreshResponse = await SessionService.updateSessionMiddleware(request)
-    if (refreshResponse) {
-      return refreshResponse
     }
   }
 

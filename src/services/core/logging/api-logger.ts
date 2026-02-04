@@ -1,15 +1,11 @@
 import 'server-only'
 
-import { db, isDatabaseAvailable } from '../database/connection'
-import { apiLogs, type NewApiLog } from '../database/schema'
-import { hashString } from '@/lib/utils'
-
 export interface LogContext {
   endpoint: string
   method: string
   platform?: string
   appVersion?: string
-  licenseKey?: string // Will be hashed before storage
+  licenseKey?: string
   instance?: string
   statusCode?: number
   responseTime?: number
@@ -25,51 +21,14 @@ export interface LogContext {
 /**
  * API Logger for tracking all API requests
  *
- * Logs are stored in the database for analytics and debugging.
- * Sensitive data like license keys are hashed before storage.
+ * Database has been removed. Currently logs to console only.
+ * Will be rebuilt to use an external logging service.
  */
 export class ApiLogger {
-  /**
-   * Log an API request
-   */
   static async log(context: LogContext): Promise<void> {
-    if (!isDatabaseAvailable() || !db) {
-      // Fallback to console logging if database is not available
-      console.log('[ApiLogger]', JSON.stringify(context))
-      return
-    }
-
-    try {
-      const logEntry: NewApiLog = {
-        endpoint: context.endpoint,
-        method: context.method,
-        platform: context.platform || null,
-        appVersion: context.appVersion || null,
-        licenseKeyHash: context.licenseKey
-          ? await hashString(context.licenseKey)
-          : null,
-        instance: context.instance || null,
-        statusCode: context.statusCode || null,
-        responseTime: context.responseTime || null,
-        level: context.level || 'info',
-        errorMessage: context.errorMessage || null,
-        errorStack: context.errorStack || null,
-        ipAddress: context.ipAddress || null,
-        userAgent: context.userAgent || null,
-        country: context.country || null,
-        metadata: context.metadata ? JSON.stringify(context.metadata) : null,
-      }
-
-      await db.insert(apiLogs).values(logEntry)
-    } catch (error) {
-      // Don't throw - logging should never break the request
-      console.error('[ApiLogger] Failed to log:', error)
-    }
+    console.log('[ApiLogger]', JSON.stringify(context))
   }
 
-  /**
-   * Log an info event
-   */
   static async info(
     endpoint: string,
     method: string,
@@ -78,9 +37,6 @@ export class ApiLogger {
     await this.log({ endpoint, method, level: 'info', ...context })
   }
 
-  /**
-   * Log a warning event
-   */
   static async warn(
     endpoint: string,
     method: string,
@@ -89,9 +45,6 @@ export class ApiLogger {
     await this.log({ endpoint, method, level: 'warn', ...context })
   }
 
-  /**
-   * Log an error event
-   */
   static async error(
     endpoint: string,
     method: string,
@@ -111,9 +64,6 @@ export class ApiLogger {
     })
   }
 
-  /**
-   * Create a request logger that tracks timing
-   */
   static createRequestLogger(
     endpoint: string,
     method: string,
@@ -141,4 +91,3 @@ export class ApiLogger {
     }
   }
 }
-
