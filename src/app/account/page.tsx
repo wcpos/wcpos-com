@@ -1,5 +1,6 @@
 import { Suspense } from 'react'
 import { getCustomer, getCustomerOrders } from '@/lib/medusa-auth'
+import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { ShoppingBag, Key } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -9,6 +10,10 @@ async function AccountOverviewContent() {
     getCustomer(),
     getCustomerOrders(5),
   ])
+
+  if (!customer) {
+    redirect('/login')
+  }
 
   const licenseCount = orders.reduce((count, order) => {
     const licenses = order.metadata?.licenses as Array<{ license_id: string }> | undefined

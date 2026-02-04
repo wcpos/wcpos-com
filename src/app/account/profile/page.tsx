@@ -1,9 +1,14 @@
 import { Suspense } from 'react'
 import { getCustomer } from '@/lib/medusa-auth'
+import { redirect } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
 async function ProfileContent() {
   const customer = await getCustomer()
+
+  if (!customer) {
+    redirect('/login')
+  }
 
   return (
     <Card>
@@ -13,15 +18,15 @@ async function ProfileContent() {
       <CardContent className="space-y-3">
         <div className="flex justify-between">
           <span className="text-muted-foreground">Email</span>
-          <span>{customer?.email}</span>
+          <span>{customer.email}</span>
         </div>
-        {customer?.first_name && (
+        {customer.first_name && (
           <div className="flex justify-between">
             <span className="text-muted-foreground">First Name</span>
             <span>{customer.first_name}</span>
           </div>
         )}
-        {customer?.last_name && (
+        {customer.last_name && (
           <div className="flex justify-between">
             <span className="text-muted-foreground">Last Name</span>
             <span>{customer.last_name}</span>
@@ -29,7 +34,7 @@ async function ProfileContent() {
         )}
         <div className="flex justify-between">
           <span className="text-muted-foreground">Member Since</span>
-          <span>{new Date(customer?.created_at || '').toLocaleDateString()}</span>
+          <span>{new Date(customer.created_at).toLocaleDateString()}</span>
         </div>
       </CardContent>
     </Card>

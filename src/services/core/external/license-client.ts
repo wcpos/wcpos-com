@@ -206,6 +206,7 @@ async function activateMachine(
   )
 
   if (!res.ok) {
+    console.error(`[LicenseClient] activateMachine failed (${res.status}): ${await res.text()}`)
     return null
   }
 

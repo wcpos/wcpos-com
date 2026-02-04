@@ -34,6 +34,7 @@ export function LicensesClient() {
   const [deactivating, setDeactivating] = useState<string | null>(null)
 
   const fetchLicenses = async () => {
+    setError(null)
     try {
       const res = await fetch('/api/account/licenses')
       if (!res.ok) {
@@ -72,8 +73,8 @@ export function LicensesClient() {
   }
 
   const maskKey = (key: string) => {
-    if (key.length <= 8) return key
-    return key.slice(0, 4) + '-****-****-' + key.slice(-4)
+    if (key.length <= 4) return '****'
+    return '****-****-' + key.slice(-4)
   }
 
   const getStatusColor = (status: string) => {
