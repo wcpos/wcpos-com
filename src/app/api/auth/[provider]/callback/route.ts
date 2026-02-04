@@ -3,6 +3,7 @@ import {
   completeOAuthCallback,
   setAuthToken,
   refreshToken,
+  decodeMedusaToken,
 } from '@/lib/medusa-auth'
 import { env } from '@/utils/env'
 import { authLogger } from '@/lib/logger'
@@ -30,15 +31,12 @@ export async function GET(
     })
 
     const token = await completeOAuthCallback(provider, callbackParams)
-
-    // Decode the JWT payload to check for actor_id
-    const base64Payload = token.split('.')[1]
-      .replace(/-/g, '+')
-      .replace(/_/g, '/')
-    const payload = JSON.parse(atob(base64Payload))
+    const payload = decodeMedusaToken(token)
 
     if (!payload.actor_id) {
       // New user: create a customer record, then refresh the token
+      const { email, name, given_name, family_name } = payload.user_metadata
+
       const customerResponse = await fetch(
         `${env.MEDUSA_BACKEND_URL}/store/customers`,
         {
@@ -48,7 +46,12 @@ export async function GET(
             Authorization: `Bearer ${token}`,
             'x-publishable-api-key': env.MEDUSA_PUBLISHABLE_KEY || '',
           },
-          body: JSON.stringify({}),
+          body: JSON.stringify({
+            ...(email && { email }),
+            ...(given_name && { first_name: given_name }),
+            ...(family_name && { last_name: family_name }),
+            ...(!given_name && !family_name && name && { first_name: name }),
+          }),
         }
       )
 
