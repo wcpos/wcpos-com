@@ -317,20 +317,17 @@ export async function initiateOAuth(
 
 /**
  * Complete an OAuth callback.
- * POST /auth/customer/{provider}/callback with { code, state, ... }
- * Returns the JWT token.
+ * GET /auth/customer/{provider}/callback?code=...&state=...
+ * Params must be sent as URL query parameters because Medusa's
+ * auth providers only read `state` from req.query, not req.body.
  */
 export async function completeOAuthCallback(
   provider: string,
   params: Record<string, string>
 ): Promise<string> {
+  const queryString = new URLSearchParams(params).toString()
   const response = await fetch(
-    `${env.MEDUSA_BACKEND_URL}/auth/customer/${provider}/callback`,
-    {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(params),
-    }
+    `${env.MEDUSA_BACKEND_URL}/auth/customer/${provider}/callback?${queryString}`,
   )
 
   if (!response.ok) {
