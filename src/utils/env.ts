@@ -21,6 +21,10 @@ const envSchema = z.object({
   // BTCPayServer (enabled flag - actual server URL is handled by Medusa)
   NEXT_PUBLIC_BTCPAY_ENABLED: z.string().optional(),
 
+  // Keygen License Server
+  KEYGEN_HOST: z.string().default('license.wcpos.com'),
+  KEYGEN_API_TOKEN: z.string().optional(),
+
   // Node environment
   NODE_ENV: z
     .enum(['development', 'production', 'test'])
