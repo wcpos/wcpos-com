@@ -1,23 +1,12 @@
 import Link from 'next/link'
-import { 
-  Home, 
-  ShoppingBag, 
-  Key, 
-  User,
-  Settings, 
-  CreditCard,
-  FileText 
-} from 'lucide-react'
+import { Home, ShoppingBag, Key, User } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 const navigation = [
   { name: 'Overview', href: '/account', icon: Home },
-  { name: 'Profile', href: '/account/profile', icon: User },
   { name: 'Orders', href: '/account/orders', icon: ShoppingBag },
   { name: 'Licenses', href: '/account/licenses', icon: Key },
-  { name: 'Billing', href: '/account/billing', icon: CreditCard },
-  { name: 'Invoices', href: '/account/invoices', icon: FileText },
-  { name: 'Settings', href: '/account/settings', icon: Settings },
+  { name: 'Profile', href: '/account/profile', icon: User },
 ]
 
 export function AccountSidebar() {
@@ -26,10 +15,8 @@ export function AccountSidebar() {
       <div className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-4">
         Account
       </div>
-      
       {navigation.map((item) => {
         const Icon = item.icon
-        
         return (
           <Link
             key={item.name}
