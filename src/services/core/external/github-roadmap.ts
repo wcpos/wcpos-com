@@ -42,6 +42,7 @@ const PROJECT_ITEMS_QUERY = `
             content {
               __typename
               ... on Issue {
+                id
                 title
                 bodyText
                 state
@@ -109,7 +110,7 @@ export function transformProjectItems(data: any): RoadmapData {
       : bodyText
 
     const roadmapItem: RoadmapItem = {
-      id: content.number,
+      id: content.id,
       title: content.title,
       description,
       status: mappedStatus,
@@ -183,12 +184,27 @@ export async function fetchRoadmapData(): Promise<RoadmapData> {
   }
 
   try {
-    const data = await octokit.graphql(PROJECT_ITEMS_QUERY, {
-      org: GITHUB_ORG,
-      number: env.GITHUB_PROJECT_NUMBER,
-    })
+    let cursor: string | null = null
+    let hasNextPage = true
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let allNodes: any[] = []
 
-    return transformProjectItems(data)
+    while (hasNextPage) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const data: any = await octokit.graphql(PROJECT_ITEMS_QUERY, {
+        org: GITHUB_ORG,
+        number: env.GITHUB_PROJECT_NUMBER,
+        cursor,
+      })
+      const items = data?.organization?.projectV2?.items
+      allNodes = allNodes.concat(items?.nodes ?? [])
+      hasNextPage = Boolean(items?.pageInfo?.hasNextPage)
+      cursor = items?.pageInfo?.endCursor ?? null
+    }
+
+    return transformProjectItems({
+      organization: { projectV2: { items: { nodes: allNodes } } },
+    })
   } catch (error) {
     infraLogger.error`Failed to fetch roadmap data: ${error}`
     return empty

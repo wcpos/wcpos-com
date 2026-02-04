@@ -41,7 +41,12 @@ export async function getGitHubToken(): Promise<string | null> {
     return null
   }
 
-  const octokit = getOctokit()
-  const auth = await octokit.auth({ type: 'installation' }) as { token: string }
-  return auth.token
+  try {
+    const octokit = getOctokit()
+    const auth = await octokit.auth({ type: 'installation' }) as { token: string }
+    return auth.token
+  } catch (error) {
+    infraLogger.error`Failed to get GitHub installation token: ${error}`
+    return null
+  }
 }

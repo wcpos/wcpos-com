@@ -3,7 +3,7 @@ export type RoadmapStatus = 'planned' | 'in_progress' | 'done'
 export type RoadmapItemType = 'feature' | 'bug'
 
 export interface RoadmapItem {
-  id: number
+  id: string
   title: string
   description: string
   status: RoadmapStatus

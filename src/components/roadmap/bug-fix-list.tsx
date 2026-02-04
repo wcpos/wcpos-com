@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useId, useState } from 'react'
 import type { RoadmapItem } from '@/types/roadmap'
 import { Badge } from '@/components/ui/badge'
 
@@ -15,11 +15,15 @@ const statusConfig = {
 }
 
 export function BugFixList({ bugs }: BugFixListProps) {
+  const listId = useId()
   const [expanded, setExpanded] = useState(false)
 
   return (
     <div className="border rounded-lg">
       <button
+        type="button"
+        aria-expanded={expanded}
+        aria-controls={listId}
         onClick={() => setExpanded(!expanded)}
         className="w-full flex items-center justify-between px-4 py-3 text-sm text-muted-foreground hover:text-foreground transition-colors"
       >
@@ -28,7 +32,7 @@ export function BugFixList({ bugs }: BugFixListProps) {
       </button>
 
       {expanded && (
-        <ul className="border-t divide-y">
+        <ul id={listId} className="border-t divide-y">
           {bugs.map(bug => {
             const status = statusConfig[bug.status]
             return (

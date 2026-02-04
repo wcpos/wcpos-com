@@ -27,6 +27,7 @@ const mockProjectItems = {
             fieldValueByName: { name: 'In Progress' },
             content: {
               __typename: 'Issue',
+              id: 'I_kwDOA1',
               title: 'Add offline sync',
               bodyText: 'Implement offline data synchronization for the POS app so it works without internet.',
               state: 'OPEN',
@@ -46,6 +47,7 @@ const mockProjectItems = {
             fieldValueByName: { name: 'Up Next' },
             content: {
               __typename: 'Issue',
+              id: 'I_kwDOA2',
               title: 'Fix barcode scanner crash',
               bodyText: 'Scanner crashes when scanning certain QR codes with special characters.',
               state: 'OPEN',
@@ -65,6 +67,7 @@ const mockProjectItems = {
             fieldValueByName: { name: 'Done' },
             content: {
               __typename: 'Issue',
+              id: 'I_kwDOB1',
               title: 'Multi-currency support',
               bodyText: 'Allow switching between currencies at the register.',
               state: 'CLOSED',
@@ -84,6 +87,7 @@ const mockProjectItems = {
             fieldValueByName: { name: 'Done' },
             content: {
               __typename: 'Issue',
+              id: 'I_kwDOB2',
               title: 'Fix receipt printing alignment',
               bodyText: 'Receipt text was misaligned on certain thermal printers.',
               state: 'CLOSED',
@@ -104,6 +108,7 @@ const mockProjectItems = {
             fieldValueByName: { name: 'Up Next' },
             content: {
               __typename: 'Issue',
+              id: 'I_kwDOC1',
               title: 'Update Medusa plugins',
               bodyText: 'Upgrade to latest Medusa v2.',
               state: 'OPEN',
@@ -119,6 +124,7 @@ const mockProjectItems = {
             fieldValueByName: { name: 'Up Next' },
             content: {
               __typename: 'Issue',
+              id: 'I_kwDOA3',
               title: 'Update dependencies',
               bodyText: 'Bump all deps.',
               state: 'OPEN',
@@ -139,6 +145,7 @@ const mockProjectItems = {
             fieldValueByName: { name: 'Backlog' },
             content: {
               __typename: 'Issue',
+              id: 'I_kwDOA4',
               title: 'Voice commands',
               bodyText: 'Add voice command support.',
               state: 'OPEN',
@@ -154,6 +161,7 @@ const mockProjectItems = {
             fieldValueByName: { name: 'In Progress' },
             content: {
               __typename: 'Issue',
+              id: 'I_kwDOA5',
               title: 'Random fix',
               bodyText: 'Some quick fix.',
               state: 'OPEN',
@@ -281,6 +289,7 @@ describe('github-roadmap', () => {
                 fieldValueByName: { name: 'Up Next' },
                 content: {
                   __typename: 'Issue',
+                  id: 'I_kwDOD1',
                   title: 'Long description feature',
                   bodyText: 'A'.repeat(300),
                   state: 'OPEN',
@@ -329,6 +338,7 @@ describe('github-roadmap', () => {
                 fieldValueByName: { name: 'Done' },
                 content: {
                   __typename: 'Issue',
+                  id: `I_kwDOE${i}`,
                   title: `Feature for ${version}`,
                   bodyText: 'Done feature.',
                   state: 'CLOSED',
@@ -360,6 +370,41 @@ describe('github-roadmap', () => {
       expect(mockGraphql).toHaveBeenCalledTimes(1)
       expect(result.active).toHaveLength(1)
       expect(result.shipped).toHaveLength(1)
+    })
+
+    it('paginates through multiple pages', async () => {
+      const page1 = {
+        organization: {
+          projectV2: {
+            items: {
+              pageInfo: { hasNextPage: true, endCursor: 'cursor1' },
+              nodes: [mockProjectItems.organization.projectV2.items.nodes[0]],
+            },
+          },
+        },
+      }
+      const page2 = {
+        organization: {
+          projectV2: {
+            items: {
+              pageInfo: { hasNextPage: false, endCursor: null },
+              nodes: [mockProjectItems.organization.projectV2.items.nodes[1]],
+            },
+          },
+        },
+      }
+
+      mockGraphql.mockResolvedValueOnce(page1).mockResolvedValueOnce(page2)
+
+      const result = await fetchRoadmapData()
+
+      expect(mockGraphql).toHaveBeenCalledTimes(2)
+      expect(mockGraphql).toHaveBeenNthCalledWith(1, expect.any(String), expect.objectContaining({ cursor: null }))
+      expect(mockGraphql).toHaveBeenNthCalledWith(2, expect.any(String), expect.objectContaining({ cursor: 'cursor1' }))
+      // Both items are in v1.9.0 active milestone
+      expect(result.active).toHaveLength(1)
+      expect(result.active[0].features).toHaveLength(1)
+      expect(result.active[0].bugs).toHaveLength(1)
     })
 
     it('returns empty data on API error', async () => {

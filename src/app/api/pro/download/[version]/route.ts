@@ -49,7 +49,7 @@ export async function GET(request: Request, { params }: RouteParams) {
       Accept: 'application/octet-stream',
     }
     if (token) {
-      fetchHeaders.Authorization = `token ${token}`
+      fetchHeaders.Authorization = `Bearer ${token}`
     }
     const githubResponse = await fetch(result, { headers: fetchHeaders })
 
