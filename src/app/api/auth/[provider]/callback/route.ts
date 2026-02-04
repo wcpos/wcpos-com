@@ -72,9 +72,11 @@ export async function GET(
 
     return NextResponse.redirect(new URL('/account', request.url))
   } catch (error) {
-    console.error('[OAuth] Callback failed:', error)
-    return NextResponse.redirect(
-      new URL('/login?error=oauth_failed', request.url)
-    )
+    const message = error instanceof Error ? error.message : 'Unknown error'
+    console.error('[OAuth] Callback failed:', message)
+    const loginUrl = new URL('/login', request.url)
+    loginUrl.searchParams.set('error', 'oauth_failed')
+    loginUrl.searchParams.set('detail', message)
+    return NextResponse.redirect(loginUrl, 303)
   }
 }
