@@ -8,6 +8,19 @@ const envSchema = z.object({
   // GitHub Personal Access Token (optional but recommended for higher rate limits)
   GITHUB_PAT: z.string().optional(),
 
+  // Medusa Store API
+  MEDUSA_BACKEND_URL: z.string().default('https://store-api.wcpos.com'),
+  MEDUSA_PUBLISHABLE_KEY: z.string().optional(),
+
+  // Stripe (client-side publishable key)
+  NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: z.string().optional(),
+
+  // PayPal (client-side client ID)
+  NEXT_PUBLIC_PAYPAL_CLIENT_ID: z.string().optional(),
+
+  // BTCPayServer (enabled flag - actual server URL is handled by Medusa)
+  NEXT_PUBLIC_BTCPAY_ENABLED: z.string().optional(),
+
   // Node environment
   NODE_ENV: z
     .enum(['development', 'production', 'test'])

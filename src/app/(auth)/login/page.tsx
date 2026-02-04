@@ -3,8 +3,11 @@ import { redirect } from 'next/navigation'
 import { SessionService } from '@/services/core/auth/session-service'
 import { LoginForm } from './login-form'
 
-async function AuthCheck() {
-  // If already logged in, redirect to account
+/**
+ * Dynamic component that checks session and redirects if logged in
+ * Wrapped in Suspense at page level for PPR
+ */
+async function SessionCheck() {
   const session = await SessionService.getSession()
   if (session) {
     redirect('/account')
@@ -15,8 +18,9 @@ async function AuthCheck() {
 export default function LoginPage() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+      {/* Dynamic session check - streams after static shell */}
       <Suspense fallback={null}>
-        <AuthCheck />
+        <SessionCheck />
       </Suspense>
       
       <div className="w-full max-w-md space-y-8 rounded-2xl border border-slate-700 bg-slate-800/50 p-8 backdrop-blur-sm">

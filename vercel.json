@@ -6,7 +6,8 @@
   "devCommand": "pnpm dev",
   "git": {
     "deploymentEnabled": {
-      "main": false
+      "main": false,
+      "staging": false
     }
   }
 }
