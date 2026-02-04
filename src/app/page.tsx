@@ -1,4 +1,5 @@
 import { DesktopDownloads } from '@/components/desktop-downloads'
+import { PluginVersions } from '@/components/plugin-versions'
 
 export default function Home() {
   return (
@@ -32,7 +33,8 @@ export default function Home() {
         </div>
       </div>
       
-      <div className="w-full max-w-2xl">
+      <div className="w-full max-w-2xl space-y-8">
+        <PluginVersions />
         <DesktopDownloads />
       </div>
     </main>
