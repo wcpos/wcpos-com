@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { cacheLife } from 'next/cache'
 import { proService } from '@/services/core/business/pro-service'
+import { apiLogger } from '@/lib/logger'
 
 /**
  * Pro Plugin Update Check API
@@ -37,7 +38,7 @@ export async function GET(request: Request, { params }: RouteParams) {
 
     return NextResponse.json(result, { status: result.status })
   } catch (error) {
-    console.error('[ProAPI] Update check failed:', error)
+    apiLogger.error`Pro update check failed: ${error}`
     return NextResponse.json(
       { status: 500, error: 'Internal server error' },
       { status: 500 }

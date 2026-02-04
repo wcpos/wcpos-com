@@ -19,6 +19,7 @@
     "playwright:install": "playwright install --with-deps"
   },
   "dependencies": {
+    "@logtape/logtape": "^2.0.2",
     "@octokit/rest": "^22.0.1",
     "@paypal/react-paypal-js": "^8.9.2",
     "@radix-ui/react-avatar": "^1.1.11",

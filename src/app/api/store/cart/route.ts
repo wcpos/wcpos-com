@@ -4,6 +4,7 @@ import {
   getCart,
   updateCart,
 } from '@/services/core/external/medusa-client'
+import { storeLogger } from '@/lib/logger'
 
 /**
  * POST /api/store/cart - Create a new cart
@@ -22,7 +23,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ cart })
   } catch (error) {
-    console.error('[API] Error creating cart:', error)
+    storeLogger.error`Error creating cart: ${error}`
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -55,7 +56,7 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json({ cart })
   } catch (error) {
-    console.error('[API] Error getting cart:', error)
+    storeLogger.error`Error getting cart: ${error}`
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -89,7 +90,7 @@ export async function PATCH(request: NextRequest) {
 
     return NextResponse.json({ cart })
   } catch (error) {
-    console.error('[API] Error updating cart:', error)
+    storeLogger.error`Error updating cart: ${error}`
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

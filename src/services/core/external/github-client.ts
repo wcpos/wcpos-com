@@ -2,6 +2,7 @@ import 'server-only'
 
 import { Octokit } from '@octokit/rest'
 import { env } from '@/utils/env'
+import { infraLogger } from '@/lib/logger'
 import type { GitHubRelease, GitHubReleaseInfo } from '@/types/github'
 
 /**
@@ -53,7 +54,7 @@ export async function getLatestRelease(
 
     return transformRelease(response.data)
   } catch (error) {
-    console.error(`[GitHubClient] Failed to fetch latest release for ${repo}:`, error)
+    infraLogger.error`Failed to fetch latest release for ${repo}: ${error}`
     return null
   }
 }
@@ -77,7 +78,7 @@ export async function getReleaseByTag(
 
     return transformRelease(response.data)
   } catch (error) {
-    console.error(`[GitHubClient] Failed to fetch release ${tag} for ${repo}:`, error)
+    infraLogger.error`Failed to fetch release ${tag} for ${repo}: ${error}`
     return null
   }
 }

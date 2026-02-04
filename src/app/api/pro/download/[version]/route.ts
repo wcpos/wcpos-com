@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { proService } from '@/services/core/business/pro-service'
 import { env } from '@/utils/env'
+import { apiLogger } from '@/lib/logger'
 
 /**
  * Pro Plugin Download API
@@ -71,7 +72,7 @@ export async function GET(request: Request, { params }: RouteParams) {
       headers,
     })
   } catch (error) {
-    console.error('[ProAPI] Download failed:', error)
+    apiLogger.error`Pro download failed: ${error}`
     return NextResponse.json(
       { status: 500, error: 'Internal server error' },
       { status: 500 }

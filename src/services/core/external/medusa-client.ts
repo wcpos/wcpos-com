@@ -1,6 +1,7 @@
 import 'server-only'
 
 import { env } from '@/utils/env'
+import { storeLogger } from '@/lib/logger'
 import type {
   MedusaProduct,
   MedusaProductsResponse,
@@ -58,7 +59,7 @@ async function medusaFetch<T>(
 
   if (!response.ok) {
     const errorText = await response.text()
-    console.error(`[MedusaClient] API error: ${response.status} ${errorText}`)
+    storeLogger.error`API error: ${response.status} ${errorText}`
     throw new Error(`Medusa API error: ${response.status}`)
   }
 
@@ -90,7 +91,7 @@ export async function getProducts(): Promise<MedusaProduct[]> {
 
     return response.products
   } catch (error) {
-    console.error('[MedusaClient] Failed to fetch products:', error)
+    storeLogger.error`Failed to fetch products: ${error}`
     return []
   }
 }
@@ -125,7 +126,7 @@ export async function getWcposProProducts(): Promise<MedusaProduct[]> {
 
     return wcposProducts
   } catch (error) {
-    console.error('[MedusaClient] Failed to fetch WCPOS Pro products:', error)
+    storeLogger.error`Failed to fetch WCPOS Pro products: ${error}`
     return []
   }
 }
@@ -143,7 +144,7 @@ export async function getProductByHandle(
 
     return response.products[0] || null
   } catch (error) {
-    console.error(`[MedusaClient] Failed to fetch product ${handle}:`, error)
+    storeLogger.error`Failed to fetch product ${handle}: ${error}`
     return null
   }
 }
@@ -161,7 +162,7 @@ export async function getProductById(
 
     return response.product || null
   } catch (error) {
-    console.error(`[MedusaClient] Failed to fetch product ${id}:`, error)
+    storeLogger.error`Failed to fetch product ${id}: ${error}`
     return null
   }
 }
@@ -174,7 +175,7 @@ export async function getRegions(): Promise<MedusaRegionsResponse['regions']> {
     const response = await medusaFetch<MedusaRegionsResponse>('/store/regions')
     return response.regions
   } catch (error) {
-    console.error('[MedusaClient] Failed to fetch regions:', error)
+    storeLogger.error`Failed to fetch regions: ${error}`
     return []
   }
 }
@@ -224,7 +225,7 @@ export async function createCart(input: CreateCartInput = {}): Promise<MedusaCar
     })
     return response.cart
   } catch (error) {
-    console.error('[MedusaClient] Failed to create cart:', error)
+    storeLogger.error`Failed to create cart: ${error}`
     return null
   }
 }
@@ -237,7 +238,7 @@ export async function getCart(cartId: string): Promise<MedusaCart | null> {
     const response = await medusaFetch<MedusaCartResponse>(`/store/carts/${cartId}`)
     return response.cart
   } catch (error) {
-    console.error(`[MedusaClient] Failed to get cart ${cartId}:`, error)
+    storeLogger.error`Failed to get cart ${cartId}: ${error}`
     return null
   }
 }
@@ -259,7 +260,7 @@ export async function addLineItem(
     )
     return response.cart
   } catch (error) {
-    console.error('[MedusaClient] Failed to add line item:', error)
+    storeLogger.error`Failed to add line item: ${error}`
     return null
   }
 }
@@ -278,7 +279,7 @@ export async function updateCart(
     })
     return response.cart
   } catch (error) {
-    console.error('[MedusaClient] Failed to update cart:', error)
+    storeLogger.error`Failed to update cart: ${error}`
     return null
   }
 }
@@ -361,7 +362,7 @@ export async function initializePayment(
       paymentSessionId,
     }
   } catch (error) {
-    console.error('[MedusaClient] Failed to initialize payment:', error)
+    storeLogger.error`Failed to initialize payment: ${error}`
     return null
   }
 }
@@ -398,7 +399,7 @@ export async function completeCart(cartId: string): Promise<CompleteCartResponse
     )
     return response
   } catch (error) {
-    console.error('[MedusaClient] Failed to complete cart:', error)
+    storeLogger.error`Failed to complete cart: ${error}`
     return null
   }
 }

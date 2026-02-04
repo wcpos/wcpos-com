@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 import { getCustomerOrders } from '@/lib/medusa-auth'
 import { licenseClient } from '@/services/core/external/license-client'
+import { licenseLogger } from '@/lib/logger'
 import type { MedusaOrder } from '@/lib/medusa-auth'
 
 /**
@@ -79,7 +80,7 @@ export async function DELETE(
       { status: 200 }
     )
   } catch (error) {
-    console.error('[AccountLicenses] Failed to deactivate machine:', error)
+    licenseLogger.error`Failed to deactivate machine: ${error}`
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

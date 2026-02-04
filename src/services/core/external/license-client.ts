@@ -1,6 +1,7 @@
 import 'server-only'
 
 import { env } from '@/utils/env'
+import { licenseLogger } from '@/lib/logger'
 import type {
   LicenseStatusResponse,
   LicenseDetail,
@@ -206,7 +207,7 @@ async function activateMachine(
   )
 
   if (!res.ok) {
-    console.error(`[LicenseClient] activateMachine failed (${res.status}): ${await res.text()}`)
+    licenseLogger.error`activateMachine failed (${res.status}): ${await res.text()}`
     return null
   }
 

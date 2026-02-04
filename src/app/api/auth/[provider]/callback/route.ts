@@ -5,6 +5,7 @@ import {
   refreshToken,
 } from '@/lib/medusa-auth'
 import { env } from '@/utils/env'
+import { authLogger } from '@/lib/logger'
 
 const ALLOWED_PROVIDERS = ['google', 'github']
 
@@ -73,7 +74,7 @@ export async function GET(
     return NextResponse.redirect(new URL('/account', request.url))
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Unknown error'
-    console.error('[OAuth] Callback failed:', message)
+    authLogger.error`OAuth callback failed: ${message}`
     const loginUrl = new URL('/login', request.url)
     loginUrl.searchParams.set('error', 'oauth_failed')
     loginUrl.searchParams.set('detail', message)

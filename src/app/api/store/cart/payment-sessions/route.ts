@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import {
   initializePayment,
 } from '@/services/core/external/medusa-client'
+import { storeLogger } from '@/lib/logger'
 
 /**
  * POST /api/store/cart/payment-sessions - Initialize payment for a cart
@@ -36,7 +37,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(result)
   } catch (error) {
-    console.error('[API] Error with payment sessions:', error)
+    storeLogger.error`Error with payment sessions: ${error}`
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

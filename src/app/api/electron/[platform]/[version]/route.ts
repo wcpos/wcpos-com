@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { cacheLife } from 'next/cache'
 import { electronService } from '@/services/core/business/electron-service'
+import { apiLogger } from '@/lib/logger'
 
 /**
  * Electron Update Check API
@@ -52,7 +53,7 @@ export async function GET(request: Request, { params }: RouteParams) {
     // For modern responses (>= 1.4.0), return with status
     return NextResponse.json(result, { status: 200 })
   } catch (error) {
-    console.error('[ElectronAPI] Update check failed:', error)
+    apiLogger.error`Electron update check failed: ${error}`
     return NextResponse.json(
       { status: 500, error: 'Internal server error' },
       { status: 500 }
