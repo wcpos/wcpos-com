@@ -41,6 +41,19 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'Organization',
+              name: 'WCPOS',
+              url: 'https://wcpos.com',
+              logo: 'https://wcpos.com/icon.png',
+              sameAs: ['https://github.com/wcpos'],
+            }),
+          }}
+        />
         {children}
         {process.env.NEXT_PUBLIC_UMAMI_SCRIPT_URL &&
           process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID && (
