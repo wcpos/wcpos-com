@@ -14,6 +14,12 @@ const nextConfig: NextConfig = {
       revalidate: 60,  // Start revalidating after 1 min
       expire: 3600,    // Expire after 1 hour
     },
+    // 30 minute cache for roadmap data (revalidated on-demand via webhook)
+    'roadmap': {
+      stale: 1800,     // Serve stale for 30 min
+      revalidate: 300,  // Start revalidating after 5 min
+      expire: 7200,    // Expire after 2 hours
+    },
   },
 };
 
