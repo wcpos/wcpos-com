@@ -24,6 +24,7 @@
     "seed:admin": "npx tsx scripts/seed-admin.ts"
   },
   "dependencies": {
+    "@medusajs/js-sdk": "^2.12.5",
     "@octokit/rest": "^22.0.1",
     "@paralleldrive/cuid2": "^3.0.6",
     "@radix-ui/react-avatar": "^1.1.11",
