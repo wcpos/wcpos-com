@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { NextRequest } from 'next/server'
 
 // Mock server-only
@@ -33,20 +33,18 @@ function makeRequest(body: Record<string, unknown>): NextRequest {
 }
 
 describe('POST /api/test/license', () => {
-  const originalEnv = process.env.NODE_ENV
-
   beforeEach(() => {
     vi.clearAllMocks()
-    // Ensure we're in test mode (not production)
-    process.env.NODE_ENV = 'test'
+    vi.unstubAllEnvs()
+    vi.stubEnv('NODE_ENV', 'test')
   })
 
   afterEach(() => {
-    process.env.NODE_ENV = originalEnv
+    vi.unstubAllEnvs()
   })
 
   it('returns 403 in production', async () => {
-    process.env.NODE_ENV = 'production'
+    vi.stubEnv('NODE_ENV', 'production')
     const res = await POST(makeRequest({ action: 'validate', licenseKey: 'test' }))
     expect(res.status).toBe(403)
     const json = await res.json()
