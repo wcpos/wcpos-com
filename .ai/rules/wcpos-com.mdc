@@ -1,0 +1,257 @@
+---
+description: WCPOS Website & API context for AI agents
+globs:
+alwaysApply: true
+---
+
+# WCPOS Website (wcpos-com)
+
+## What This Is
+
+Next.js 16 application that serves as the main customer-facing website for WCPOS. Handles:
+- Marketing site at `wcpos.com`
+- Electron desktop app update distribution
+- Pro plugin update distribution & license validation
+- Admin dashboard for analytics and user management
+
+## System Context
+
+See `wcpos-infra/ARCHITECTURE.md` for the full WCPOS ecosystem.
+
+- **Deployed to**: Vercel
+- **Domains**: `wcpos.com`, `beta.wcpos.com` (staging)
+- **Database**: Vercel Postgres (hosted) or local PostgreSQL for dev
+- **ORM**: Drizzle ORM
+
+## Tech Stack
+
+- **Framework**: Next.js 16 (App Router, Turbopack)
+- **UI**: React 19, Tailwind CSS v4, Radix UI, shadcn/ui components
+- **Database**: Drizzle ORM + PostgreSQL
+- **Testing**: Vitest (unit), Playwright (e2e)
+- **Package Manager**: pnpm
+
+## ⚠️ AI Agent: Testing Requirements
+
+### MANDATORY: Test Before Every Commit
+
+**Before committing any changes, you MUST run:**
+
+```bash
+pnpm build      # Must pass - catches Next.js config issues
+pnpm lint       # Must pass - catches code quality issues
+pnpm test:unit  # Must pass - catches logic errors
+```
+
+If ANY test fails, fix the issues before committing. Do NOT push broken code.
+
+### MANDATORY: Write Tests for New Features
+
+**Every feature/change MUST have corresponding tests:**
+
+| Change Type | Required Tests |
+|-------------|----------------|
+| New API route | Unit tests for service logic + e2e test for endpoint |
+| New page | E2e test verifying content loads correctly |
+| New component | Unit test if complex logic, e2e test for user-facing |
+| External API integration | Unit tests with mocks, e2e smoke test |
+| Bug fix | Regression test that would catch the bug |
+
+### Test File Locations
+
+```
+src/
+├── services/
+│   └── core/external/
+│       ├── medusa-client.ts       # Service
+│       └── medusa-client.test.ts  # Unit tests (colocated)
+e2e/
+├── homepage.spec.ts               # Page tests
+├── pro.spec.ts                    # /pro page tests
+└── api/
+    └── electron.spec.ts           # API route tests
+```
+
+### Example: Testing External API Integrations
+
+When integrating with external APIs (Medusa, Keygen, GitHub):
+
+```typescript
+// Unit test with mocks - test error handling
+it('returns empty array when API rejects missing key', async () => {
+  mockFetch.mockResolvedValueOnce({
+    ok: false,
+    status: 401,
+    text: async () => '{"message":"Invalid API key"}',
+  })
+
+  const result = await getProducts()
+  expect(result).toEqual([])
+})
+
+// E2e test - verify page doesn't show error message
+test('does NOT show error message when products load', async ({ page }) => {
+  await page.goto('/pro')
+  await expect(page.getByText('unavailable')).not.toBeVisible()
+})
+```
+
+### When to Run Full Test Suite
+
+- `pnpm test:unit` - Run after every file change
+- `pnpm test:e2e` - Run before pushing (or in CI)
+- `pnpm build` - Run before every commit
+
+## Partial Pre-Rendering (PPR) with Cache Components
+
+We use Next.js 16's `cacheComponents` for Partial Pre-Rendering. This enables static shells with dynamic holes streamed at request time.
+
+### Configuration
+
+```typescript
+// next.config.ts
+const nextConfig = {
+  cacheComponents: true,
+  cacheLife: {
+    'api-short': { stale: 300, revalidate: 60, expire: 3600 },
+  },
+}
+```
+
+### Key Concepts
+
+1. **All pages are dynamic by default** - No `export const dynamic` needed
+2. **Use `'use cache'` + `cacheLife()`** - To cache API data fetching
+3. **Wrap dynamic content in `<Suspense>`** - Creates streaming boundaries
+4. **Use `connection()`** - Before `Date.now()` or other time-based operations
+
+### What Should Be Static vs Dynamic
+
+| Static (Page Shell) | Dynamic (Suspense Boundary) |
+|---------------------|-----------------------------|
+| Hero sections, headings | User-specific data (cart, session) |
+| Navigation, footer | Real-time API responses |
+| Static marketing content | Admin dashboard stats |
+| SEO metadata | Anything using Date.now() |
+
+### Pattern: Static Shell with Dynamic Holes
+
+```tsx
+import { Suspense } from 'react'
+import { connection } from 'next/server'
+
+// Dynamic component - uses Date.now() or fetches data
+async function DashboardStats() {
+  await connection() // Signal dynamic BEFORE Date.now()
+  const stats = await fetchStats()
+  return <StatsGrid stats={stats} />
+}
+
+// Static page shell with dynamic hole
+export default function DashboardPage() {
+  return (
+    <div>
+      {/* Static: Pre-rendered at build */}
+      <h1>Dashboard</h1>
+      
+      {/* Dynamic: Streamed at request time */}
+      <Suspense fallback={<StatsSkeleton />}>
+        <DashboardStats />
+      </Suspense>
+    </div>
+  )
+}
+```
+
+### Caching API Data
+
+```typescript
+import { cacheLife } from 'next/cache'
+
+async function getCachedData() {
+  'use cache'
+  cacheLife('api-short')  // Use profile from next.config.ts
+  return fetchFromExternalAPI()
+}
+```
+
+### Dynamic APIs (Must be in Suspense)
+
+- `cookies()` - Reading cookies
+- `headers()` - Reading request headers  
+- `searchParams` - URL search parameters
+- `connection()` - Signals dynamic rendering
+- `Date.now()` / `new Date()` - Must call `connection()` first
+
+## Key API Routes
+
+| Route | Purpose |
+|-------|---------|
+| `/api/electron/[platform]/[version]` | Desktop app update checks |
+| `/api/electron/download/[platform]` | Desktop app download redirects |
+| `/api/pro/update/[version]` | Pro plugin update checks |
+| `/api/pro/download/[version]` | Pro plugin download |
+| `/api/pro/license/*` | License validation (activate/deactivate/status) |
+| `/api/store/cart/*` | Medusa cart operations (proxy) |
+| `/api/health` | Health check endpoint |
+
+## External Integrations
+
+- **GitHub API**: Fetches releases for Electron app and Pro plugin (`@octokit/rest`)
+- **License Server**: Validates licenses via `license.wcpos.com` (Keygen API)
+- **Medusa API**: Commerce operations via `store-api.wcpos.com`
+- **Stripe**: Payment processing for Pro licenses
+- **PayPal**: Alternative payment method
+- **BTCPayServer**: Bitcoin payments
+
+## Development
+
+```bash
+pnpm install     # Install dependencies
+pnpm dev         # Start dev server (Turbopack)
+pnpm build       # Production build (check PPR output)
+pnpm test:unit   # Run unit tests
+pnpm test:e2e    # Run Playwright tests
+pnpm db:studio   # Open Drizzle Studio
+```
+
+## Environment Variables
+
+Key environment variables (see Vercel dashboard):
+- `POSTGRES_URL` - Vercel Postgres connection string
+- `GITHUB_PAT` - GitHub Personal Access Token for releases API
+- `AUTH_SECRET` - JWT secret for admin authentication
+- `MEDUSA_BACKEND_URL` - Medusa Store API URL
+- `MEDUSA_PUBLISHABLE_KEY` - Medusa publishable API key
+- `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` - Stripe client key
+- `NEXT_PUBLIC_PAYPAL_CLIENT_ID` - PayPal client ID
+- `NEXT_PUBLIC_BTCPAY_ENABLED` - Enable Bitcoin payments
+
+## Structure
+
+```
+src/
+├── app/                    # Next.js App Router pages
+│   ├── (auth)/            # Auth pages (login)
+│   ├── admin/             # Admin dashboard
+│   ├── pro/               # Pro purchase/checkout
+│   └── api/               # API routes
+├── components/            # React components
+│   ├── admin/             # Admin-specific components
+│   ├── pro/               # Pro page components
+│   └── ui/                # shadcn/ui components
+├── services/              # Server-side services
+│   ├── api/               # Public API exports
+│   └── core/              # Internal services
+│       ├── external/      # Third-party clients (GitHub, License, Medusa)
+│       ├── business/      # Business logic
+│       └── database/      # Drizzle connection & schema
+├── types/                 # TypeScript types
+└── utils/                 # Utility functions
+```
+
+## Related Projects
+
+- `wcpos-infra` - Backend infrastructure (Medusa, Keygen, etc.)
+- `monorepo-v2` - The Electron/mobile app that calls these APIs
+- `woocommerce-pos-pro` - The Pro plugin that calls these APIs
