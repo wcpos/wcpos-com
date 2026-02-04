@@ -207,7 +207,7 @@ async function activateMachine(
   )
 
   if (!res.ok) {
-    licenseLogger.error`activateMachine failed (${res.status}): ${await res.text()}`
+    licenseLogger.error`activateMachine failed (${res.status})`
     return null
   }
 

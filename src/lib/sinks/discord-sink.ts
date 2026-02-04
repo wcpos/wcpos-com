@@ -15,6 +15,14 @@ export function createDiscordSink(options: DiscordSinkOptions): Sink {
 
   const lastSent = new Map<string, number>()
 
+  const safeStringify = (value: unknown) => {
+    try {
+      return typeof value === 'string' ? value : JSON.stringify(value)
+    } catch {
+      return '[unserializable]'
+    }
+  }
+
   const colors: Record<string, number> = {
     error: 15158332, // red
     fatal: 10038562, // dark red
@@ -30,9 +38,7 @@ export function createDiscordSink(options: DiscordSinkOptions): Sink {
 
     lastSent.set(category, now)
 
-    const message = record.message
-      .map((part) => (typeof part === 'string' ? part : JSON.stringify(part)))
-      .join('')
+    const message = record.message.map(safeStringify).join('')
 
     const embed = {
       title: `${record.level.toUpperCase()}: ${category}`,
@@ -43,7 +49,7 @@ export function createDiscordSink(options: DiscordSinkOptions): Sink {
         .slice(0, 5)
         .map(([name, value]) => ({
           name,
-          value: String(value).slice(0, 1024),
+          value: safeStringify(value).slice(0, 1024),
           inline: true,
         })),
     }

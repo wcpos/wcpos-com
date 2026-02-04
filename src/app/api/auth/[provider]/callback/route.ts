@@ -77,7 +77,6 @@ export async function GET(
     authLogger.error`OAuth callback failed: ${message}`
     const loginUrl = new URL('/login', request.url)
     loginUrl.searchParams.set('error', 'oauth_failed')
-    loginUrl.searchParams.set('detail', message)
     return NextResponse.redirect(loginUrl, 303)
   }
 }

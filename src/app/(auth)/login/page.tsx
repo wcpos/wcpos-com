@@ -28,14 +28,12 @@ function LoginPageInner() {
   const searchParams = useSearchParams()
   const redirect = searchParams.get('redirect') || '/account'
   const oauthError = searchParams.get('error')
-  const oauthDetail = searchParams.get('detail')
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState(() => {
     if (!oauthError) return ''
-    const detail = oauthDetail ? ` (${oauthDetail})` : ''
-    if (oauthError === 'oauth_failed') return `OAuth sign-in failed${detail}. Please try again or use email/password.`
+    if (oauthError === 'oauth_failed') return 'OAuth sign-in failed. Please try again or use email/password.'
     return oauthError
   })
   const [loading, setLoading] = useState(false)

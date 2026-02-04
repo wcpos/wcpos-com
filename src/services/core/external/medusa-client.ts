@@ -58,8 +58,7 @@ async function medusaFetch<T>(
   })
 
   if (!response.ok) {
-    const errorText = await response.text()
-    storeLogger.error`API error: ${response.status} ${errorText}`
+    storeLogger.error`API error: ${response.status}`
     throw new Error(`Medusa API error: ${response.status}`)
   }
 
