@@ -20,6 +20,12 @@ const nextConfig: NextConfig = {
       revalidate: 300,  // Start revalidating after 5 min
       expire: 7200,    // Expire after 2 hours
     },
+    // 1 hour cache for Medusa product data (rarely changes)
+    'products': {
+      stale: 3600,      // Serve stale for 1 hour
+      revalidate: 900,  // Start revalidating after 15 min
+      expire: 86400,    // Expire after 24 hours
+    },
   },
 };
 
