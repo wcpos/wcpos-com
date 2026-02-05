@@ -5,6 +5,7 @@ import { NextIntlClientProvider } from 'next-intl'
 import { getMessages, setRequestLocale } from 'next-intl/server'
 import { ThemeProvider } from 'next-themes'
 import { locales } from '@/i18n/config'
+import { ClientLoggingInit } from '@/components/client-logging-init'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -66,6 +67,7 @@ export default async function LocaleLayout({
             }),
           }}
         />
+        <ClientLoggingInit />
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

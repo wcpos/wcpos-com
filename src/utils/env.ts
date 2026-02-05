@@ -36,6 +36,16 @@ const envSchema = z.object({
   LOKI_API_KEY: z.string().optional(),
   DISCORD_WEBHOOK_URL: z.string().url().optional(),
 
+  // Error tracking
+  SENTRY_DSN: z.string().url().optional(),
+  NEXT_PUBLIC_SENTRY_DSN: z.string().url().optional(),
+
+  // Transactional email
+  RESEND_API_KEY: z.string().optional(),
+
+  // Client-side logging configuration
+  NEXT_PUBLIC_LOG_LEVEL: z.enum(['debug', 'info', 'warning', 'error', 'fatal']).optional(),
+
   // Node environment
   NODE_ENV: z
     .enum(['development', 'production', 'test'])
