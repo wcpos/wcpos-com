@@ -29,12 +29,12 @@ function AccountHeaderSkeleton() {
 
 export default function AccountLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="flex min-h-screen flex-col bg-background">
       <Suspense fallback={<AccountHeaderSkeleton />}>
         <AccountHeaderWrapper />
       </Suspense>
-      <div className="flex">
-        <aside className="w-64 border-r min-h-[calc(100vh-65px)]">
+      <div className="flex flex-1">
+        <aside className="w-64 border-r">
           <AccountSidebar />
         </aside>
         <main className="flex-1 p-6">
