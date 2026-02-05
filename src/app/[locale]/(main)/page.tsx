@@ -19,6 +19,7 @@ export default async function Home({
         <div className="space-y-2 text-sm text-gray-500">
           <p>Site under construction</p>
           <p>
+{/* eslint-disable-next-line @next/next/no-html-link-for-pages -- API route, not a page */}
             <a
               href="/api/health"
               className="text-blue-500 hover:underline"
