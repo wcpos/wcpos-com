@@ -40,9 +40,6 @@ const envSchema = z.object({
   SENTRY_DSN: z.string().url().optional(),
   NEXT_PUBLIC_SENTRY_DSN: z.string().url().optional(),
 
-  // Transactional email
-  RESEND_API_KEY: z.string().optional(),
-
   // Client-side logging configuration
   NEXT_PUBLIC_LOG_LEVEL: z.enum(['debug', 'info', 'warning', 'error', 'fatal']).optional(),
 
