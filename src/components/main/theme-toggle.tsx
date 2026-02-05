@@ -19,6 +19,7 @@ export function ThemeToggle() {
       {options.map(({ value, icon: Icon, label }) => (
         <button
           key={value}
+          type="button"
           onClick={() => setTheme(value)}
           className={`rounded-sm p-1.5 transition-colors ${
             theme === value
@@ -27,6 +28,7 @@ export function ThemeToggle() {
           }`}
           title={label}
           aria-label={label}
+          aria-pressed={theme === value}
         >
           <Icon className="h-3.5 w-3.5" />
         </button>
