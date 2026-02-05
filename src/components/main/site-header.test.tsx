@@ -80,7 +80,7 @@ describe('SiteHeader', () => {
     expect(roadmapLink?.getAttribute('href')).toBe('/roadmap')
   })
 
-  it('links Support to external URL', async () => {
+  it('links Support to /support', async () => {
     mockGetAuthToken.mockResolvedValue(null)
     await act(async () => {
       render(<SiteHeader />)
@@ -88,9 +88,7 @@ describe('SiteHeader', () => {
 
     const supportLinks = screen.getAllByText('Support')
     const supportLink = supportLinks[0].closest('a')
-    expect(supportLink?.getAttribute('href')).toBe(
-      'https://docs.wcpos.com/support'
-    )
+    expect(supportLink?.getAttribute('href')).toBe('/support')
   })
 
   it('adds umami event attribute to Pro link', async () => {
