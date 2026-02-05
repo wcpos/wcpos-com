@@ -147,4 +147,14 @@ describe('SiteHeader', () => {
     const accountLink = accountLinks[0].closest('a')
     expect(accountLink?.getAttribute('href')).toBe('/account')
   })
+
+  it('falls back to Sign In when getAuthToken throws', async () => {
+    mockGetAuthToken.mockRejectedValue(new Error('cookie read failed'))
+    await act(async () => {
+      render(<SiteHeader />)
+    })
+
+    const signInLinks = screen.getAllByText('Sign In')
+    expect(signInLinks.length).toBeGreaterThan(0)
+  })
 })

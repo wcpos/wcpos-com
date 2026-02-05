@@ -55,6 +55,7 @@ export default function RootLayout({
           }}
         />
         {children}
+        {/* Umami analytics — cookieless, no personal data stored, GDPR-compliant by default */}
         {process.env.NEXT_PUBLIC_UMAMI_SCRIPT_URL &&
           process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID && (
             <Script

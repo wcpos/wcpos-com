@@ -18,7 +18,12 @@ const navLinks = [
 ]
 
 async function AuthButton() {
-  const token = await getAuthToken()
+  let token: string | null = null
+  try {
+    token = await getAuthToken()
+  } catch {
+    // Cookie read failed — fall through to Sign In
+  }
 
   if (token) {
     return (
