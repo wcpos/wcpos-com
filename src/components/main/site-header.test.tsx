@@ -6,9 +6,22 @@ vi.mock('@/lib/medusa-auth', () => ({
   getAuthToken: vi.fn(),
 }))
 
-// Mock next/link as a simple anchor
-vi.mock('next/link', () => ({
-  default: ({
+// Mock next-intl
+vi.mock('next-intl', () => ({
+  useTranslations: () => (key: string) => {
+    const translations: Record<string, string> = {
+      docs: 'Docs',
+      roadmap: 'Roadmap',
+      pro: 'Pro',
+      support: 'Support',
+    }
+    return translations[key] ?? key
+  },
+}))
+
+// Mock i18n navigation Link as a simple anchor
+vi.mock('@/i18n/navigation', () => ({
+  Link: ({
     children,
     href,
     ...props
