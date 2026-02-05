@@ -64,6 +64,7 @@ export function CheckoutClient({ customerEmail }: CheckoutClientProps) {
   const [error, setError] = useState<string | null>(null)
   const [orderComplete, setOrderComplete] = useState(false)
   const [orderId, setOrderId] = useState<string | null>(null)
+  const [paymentCollectionId, setPaymentCollectionId] = useState<string | null>(null)
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>(
     isStripeEnabled ? 'stripe' : 'paypal'
   )
@@ -122,7 +123,8 @@ export function CheckoutClient({ customerEmail }: CheckoutClientProps) {
 
       const paymentResult = await sessionsResponse.json()
       setCart(paymentResult.cart)
-      
+      setPaymentCollectionId(paymentResult.paymentCollectionId)
+
       // Set the client secret for Stripe
       if (paymentResult.clientSecret) {
         setClientSecret(paymentResult.clientSecret)
@@ -160,14 +162,13 @@ export function CheckoutClient({ customerEmail }: CheckoutClientProps) {
   }
 
   // Select payment provider when method changes
-  // Note: This creates a NEW payment collection/session each time
   const selectPaymentMethod = useCallback(
     async (method: PaymentMethod) => {
-      if (!cart) return
+      if (!cart || !paymentCollectionId) return
 
       setIsProcessing(true)
       setError(null)
-      setClientSecret(null) // Clear old secret
+      setClientSecret(null)
 
       try {
         const response = await fetch('/api/store/cart/payment-sessions', {
@@ -176,6 +177,7 @@ export function CheckoutClient({ customerEmail }: CheckoutClientProps) {
           body: JSON.stringify({
             cartId: cart.id,
             provider_id: getProviderId(method),
+            paymentCollectionId,
           }),
         })
 
@@ -186,7 +188,6 @@ export function CheckoutClient({ customerEmail }: CheckoutClientProps) {
         const paymentResult = await response.json()
         setCart(paymentResult.cart)
 
-        // For Stripe, set the client secret
         if (method === 'stripe' && paymentResult.clientSecret) {
           setClientSecret(paymentResult.clientSecret)
         }
@@ -196,7 +197,7 @@ export function CheckoutClient({ customerEmail }: CheckoutClientProps) {
         setIsProcessing(false)
       }
     },
-    [cart]
+    [cart, paymentCollectionId]
   )
 
   useEffect(() => {

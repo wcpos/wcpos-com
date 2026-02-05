@@ -23,12 +23,6 @@ import type {
  */
 
 /**
- * Cache for products to reduce API calls
- */
-const productCache = new Map<string, { data: MedusaProduct[]; timestamp: number }>()
-const CACHE_TTL_MS = 5 * 60 * 1000 // 5 minutes
-
-/**
  * Make a request to the Medusa Store API
  */
 async function medusaFetch<T>(
@@ -70,24 +64,9 @@ async function medusaFetch<T>(
  */
 export async function getProducts(): Promise<MedusaProduct[]> {
   try {
-    // Check cache first
-    const cached = productCache.get('all')
-    if (cached && Date.now() - cached.timestamp < CACHE_TTL_MS) {
-      return cached.data
-    }
-
-    // Note: Medusa v2 Store API only returns published products by default
-    // The 'status' filter is admin-only and invalid for store API
     const response = await medusaFetch<MedusaProductsResponse>(
       '/store/products?fields=*variants.prices'
     )
-
-    // Update cache
-    productCache.set('all', {
-      data: response.products,
-      timestamp: Date.now(),
-    })
-
     return response.products
   } catch (error) {
     storeLogger.error`Failed to fetch products: ${error}`
@@ -100,30 +79,12 @@ export async function getProducts(): Promise<MedusaProduct[]> {
  */
 export async function getWcposProProducts(): Promise<MedusaProduct[]> {
   try {
-    // Check cache first
-    const cached = productCache.get('wcpos-pro')
-    if (cached && Date.now() - cached.timestamp < CACHE_TTL_MS) {
-      return cached.data
-    }
-
-    // Note: Medusa v2 Store API only returns published products by default
-    // The 'status' filter is admin-only and invalid for store API
     const response = await medusaFetch<MedusaProductsResponse>(
       '/store/products?fields=*variants.prices'
     )
-
-    // Filter to only WCPOS Pro products
-    const wcposProducts = response.products.filter(
+    return response.products.filter(
       (p) => p.handle?.startsWith('wcpos-pro-')
     )
-
-    // Update cache
-    productCache.set('wcpos-pro', {
-      data: wcposProducts,
-      timestamp: Date.now(),
-    })
-
-    return wcposProducts
   } catch (error) {
     storeLogger.error`Failed to fetch WCPOS Pro products: ${error}`
     return []
@@ -200,13 +161,6 @@ export function getVariantPrice(
     (p) => p.currency_code.toLowerCase() === currencyCode.toLowerCase()
   )
   return price?.amount ?? null
-}
-
-/**
- * Clear the product cache (useful for testing or manual refresh)
- */
-export function clearProductCache(): void {
-  productCache.clear()
 }
 
 // ============================================================================
@@ -306,39 +260,45 @@ interface PaymentCollectionResponse {
 }
 
 /**
- * Payment initialization result
+ * Create a payment collection for a cart (Medusa v2)
+ * Called once during checkout initialization.
  */
-export interface PaymentInitResult {
-  cart: MedusaCart
-  paymentCollectionId: string
-  clientSecret: string | null
-  paymentSessionId: string | null
-}
-
-/**
- * Initialize payment for a cart (Medusa v2 flow)
- * 1. Creates a payment collection for the cart
- * 2. Initializes payment session with specified provider
- * 3. Returns cart + client_secret for Stripe.js
- */
-export async function initializePayment(
-  cartId: string,
-  providerId: string = 'pp_stripe_stripe'
-): Promise<PaymentInitResult | null> {
+export async function createPaymentCollection(
+  cartId: string
+): Promise<PaymentCollectionResponse['payment_collection'] | null> {
   try {
-    // Step 1: Create payment collection for the cart
-    const collectionResponse = await medusaFetch<PaymentCollectionResponse>(
+    const response = await medusaFetch<PaymentCollectionResponse>(
       '/store/payment-collections',
       {
         method: 'POST',
         body: JSON.stringify({ cart_id: cartId }),
       }
     )
+    return response.payment_collection
+  } catch (error) {
+    storeLogger.error`Failed to create payment collection: ${error}`
+    return null
+  }
+}
 
-    const paymentCollectionId = collectionResponse.payment_collection.id
+/**
+ * Payment session creation result
+ */
+export interface PaymentSessionResult {
+  clientSecret: string | null
+  paymentSessionId: string | null
+}
 
-    // Step 2: Initialize payment session with the provider
-    const sessionResponse = await medusaFetch<PaymentCollectionResponse>(
+/**
+ * Create a payment session within an existing collection (Medusa v2)
+ * Called on init and when switching payment provider.
+ */
+export async function createPaymentSession(
+  paymentCollectionId: string,
+  providerId: string
+): Promise<PaymentSessionResult | null> {
+  try {
+    const response = await medusaFetch<PaymentCollectionResponse>(
       `/store/payment-collections/${paymentCollectionId}/payment-sessions`,
       {
         method: 'POST',
@@ -346,43 +306,17 @@ export async function initializePayment(
       }
     )
 
-    // Extract client_secret from payment session data
-    const paymentSession = sessionResponse.payment_collection.payment_sessions?.[0]
-    const clientSecret = paymentSession?.data?.client_secret || null
-    const paymentSessionId = paymentSession?.id || null
-
-    // Step 3: Get the updated cart
-    const cartResponse = await medusaFetch<MedusaCartResponse>(`/store/carts/${cartId}`)
-
+    const paymentSession = response.payment_collection.payment_sessions?.find(
+      (s) => s.provider_id === providerId
+    )
     return {
-      cart: cartResponse.cart,
-      paymentCollectionId,
-      clientSecret,
-      paymentSessionId,
+      clientSecret: paymentSession?.data?.client_secret || null,
+      paymentSessionId: paymentSession?.id || null,
     }
   } catch (error) {
-    storeLogger.error`Failed to initialize payment: ${error}`
+    storeLogger.error`Failed to create payment session: ${error}`
     return null
   }
-}
-
-/**
- * @deprecated Use initializePayment instead - this is for backwards compatibility
- */
-export async function createPaymentSessions(cartId: string): Promise<MedusaCart | null> {
-  const result = await initializePayment(cartId)
-  return result?.cart || null
-}
-
-/**
- * @deprecated Use initializePayment instead - this is for backwards compatibility
- */
-export async function setPaymentSession(
-  cartId: string,
-  providerId: string
-): Promise<MedusaCart | null> {
-  const result = await initializePayment(cartId, providerId)
-  return result?.cart || null
 }
 
 /**
@@ -412,16 +346,13 @@ export const medusaClient = {
   getRegions,
   formatPrice,
   getVariantPrice,
-  clearProductCache,
   // Cart
   createCart,
   getCart,
   addLineItem,
   updateCart,
   // Payment (Medusa v2)
-  initializePayment,
+  createPaymentCollection,
+  createPaymentSession,
   completeCart,
-  // @deprecated
-  createPaymentSessions,
-  setPaymentSession,
 }
