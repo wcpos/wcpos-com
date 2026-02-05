@@ -47,12 +47,25 @@ export function CheckoutForm({
       })
 
       if (stripeError) {
+        console.error('[CHECKOUT] Stripe payment confirmation failed:', {
+          code: stripeError.code,
+          message: stripeError.message,
+          type: stripeError.type,
+          paymentIntent: stripeError.payment_intent,
+        })
         setError(stripeError.message || 'Payment failed')
         setIsLoading(false)
         return
       }
 
-      if (paymentIntent?.status === 'succeeded') {
+      // Handle both succeeded (auto-capture) and requires_capture (manual capture) statuses
+      if (paymentIntent?.status === 'succeeded' || paymentIntent?.status === 'requires_capture') {
+        console.log('[CHECKOUT] Payment authorized, completing cart:', {
+          paymentIntentId: paymentIntent.id,
+          status: paymentIntent.status,
+          cartId,
+        })
+
         // Complete the cart to create the order
         const completeResponse = await fetch('/api/store/cart/complete', {
           method: 'POST',
@@ -61,15 +74,28 @@ export function CheckoutForm({
         })
 
         if (!completeResponse.ok) {
+          const errorData = await completeResponse.json().catch(() => ({}))
+          console.error('[CHECKOUT] Cart completion failed:', {
+            status: completeResponse.status,
+            statusText: completeResponse.statusText,
+            error: errorData,
+          })
           throw new Error('Failed to complete order')
         }
 
         const result = await completeResponse.json()
+        console.log('[CHECKOUT] Order created successfully:', { orderId: result.order?.id })
         if (result.order?.id) {
           onSuccess(result.order.id)
         }
+      } else {
+        console.warn('[CHECKOUT] Unexpected payment intent status:', {
+          status: paymentIntent?.status,
+          paymentIntentId: paymentIntent?.id,
+        })
       }
     } catch (err) {
+      console.error('[CHECKOUT] Payment processing error:', err)
       setError(err instanceof Error ? err.message : 'An error occurred')
     } finally {
       setIsLoading(false)
