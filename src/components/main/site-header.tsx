@@ -14,7 +14,7 @@ const navLinks = [
   { label: 'Docs', href: 'https://docs.wcpos.com' },
   { label: 'Roadmap', href: '/roadmap' },
   { label: 'Pro', href: '/pro', umamiEvent: 'click-pro-cta' },
-  { label: 'Support', href: 'https://docs.wcpos.com/support' },
+  { label: 'Support', href: '/support' },
 ]
 
 async function AuthButton() {
