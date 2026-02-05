@@ -24,9 +24,9 @@ const mockPaymentResult = {
   paymentSessionId: 'payses_mock_123',
 }
 
-function setupCheckoutMocks(page: import('@playwright/test').Page) {
+async function setupCheckoutMocks(page: import('@playwright/test').Page) {
   // Mock cart creation
-  page.route('**/api/store/cart', async (route) => {
+  await page.route('**/api/store/cart', async (route) => {
     if (route.request().method() === 'POST') {
       await route.fulfill({
         status: 200,
@@ -45,7 +45,7 @@ function setupCheckoutMocks(page: import('@playwright/test').Page) {
   })
 
   // Mock add line item
-  page.route('**/api/store/cart/line-items', async (route) => {
+  await page.route('**/api/store/cart/line-items', async (route) => {
     await route.fulfill({
       status: 200,
       contentType: 'application/json',
@@ -54,7 +54,7 @@ function setupCheckoutMocks(page: import('@playwright/test').Page) {
   })
 
   // Mock payment sessions
-  page.route('**/api/store/cart/payment-sessions', async (route) => {
+  await page.route('**/api/store/cart/payment-sessions', async (route) => {
     await route.fulfill({
       status: 200,
       contentType: 'application/json',
@@ -77,23 +77,25 @@ test.describe('Checkout Flow', () => {
   })
 
   test('displays order summary with correct product', async ({ page }) => {
-    setupCheckoutMocks(page)
+    await setupCheckoutMocks(page)
     await page.goto('/pro/checkout?variant=variant_mock_123&product=wcpos-pro-yearly')
 
     await expect(page.getByText('Order Summary')).toBeVisible({ timeout: 10000 })
     await expect(page.getByText('WCPOS Pro Yearly')).toBeVisible()
-    await expect(page.getByText('$129.00')).toBeVisible()
+    await expect(page.getByText('$129.00').first()).toBeVisible()
   })
 
   test('displays email field', async ({ page }) => {
-    setupCheckoutMocks(page)
+    await setupCheckoutMocks(page)
     await page.goto('/pro/checkout?variant=variant_mock_123&product=wcpos-pro-yearly')
 
     await expect(page.getByLabel('Email address')).toBeVisible({ timeout: 10000 })
   })
 
   test('displays payment method tabs', async ({ page }) => {
-    setupCheckoutMocks(page)
+    test.skip(!process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY, 'Stripe not configured')
+
+    await setupCheckoutMocks(page)
     await page.goto('/pro/checkout?variant=variant_mock_123&product=wcpos-pro-yearly')
 
     // Wait for checkout to initialize
@@ -107,7 +109,7 @@ test.describe('Checkout Flow', () => {
     await page.goto('/pro/checkout')
 
     await expect(page.getByText('No product selected')).toBeVisible({ timeout: 10000 })
-    await expect(page.getByRole('link', { name: /Back to pricing/ })).toBeVisible()
+    await expect(page.getByRole('link', { name: /Back to pricing/ }).first()).toBeVisible()
   })
 
   test('back to pricing link works from checkout', async ({ page }) => {

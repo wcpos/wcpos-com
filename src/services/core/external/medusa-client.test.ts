@@ -416,6 +416,36 @@ describe('medusaClient', () => {
         expect(result?.paymentSessionId).toBe('payses_456')
       })
 
+      it('selects correct session by provider_id when multiple sessions exist', async () => {
+        mockFetch.mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({
+            payment_collection: {
+              id: 'pay_col_123',
+              payment_sessions: [
+                {
+                  id: 'payses_old',
+                  provider_id: 'pp_stripe_stripe',
+                  status: 'pending',
+                  data: { client_secret: 'pi_old_secret' },
+                },
+                {
+                  id: 'payses_new',
+                  provider_id: 'pp_paypal_paypal',
+                  status: 'pending',
+                  data: {},
+                },
+              ],
+            },
+          }),
+        })
+
+        const result = await createPaymentSession('pay_col_123', 'pp_paypal_paypal')
+
+        expect(result?.paymentSessionId).toBe('payses_new')
+        expect(result?.clientSecret).toBeNull()
+      })
+
       it('returns null on error', async () => {
         mockFetch.mockResolvedValueOnce({
           ok: false,

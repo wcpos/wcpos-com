@@ -306,7 +306,9 @@ export async function createPaymentSession(
       }
     )
 
-    const paymentSession = response.payment_collection.payment_sessions?.[0]
+    const paymentSession = response.payment_collection.payment_sessions?.find(
+      (s) => s.provider_id === providerId
+    )
     return {
       clientSecret: paymentSession?.data?.client_secret || null,
       paymentSessionId: paymentSession?.id || null,
