@@ -94,6 +94,7 @@ export function PricingCard({
         >
           <Link
             href={`/pro/checkout?variant=${variant?.id}&product=${product.handle}`}
+            data-umami-event="click-start-checkout"
           >
             Get Started
           </Link>

@@ -3,7 +3,7 @@ import { getWcposProProducts } from '@/services/core/external/medusa-client'
 import { PricingCard } from '@/components/pro/pricing-card'
 
 export const metadata = {
-  title: 'WooCommerce POS Pro - Premium Features',
+  title: 'Pro - Premium Features',
   description:
     'Unlock the full potential of WooCommerce POS with Pro features including advanced reporting, multi-outlet support, and priority support.',
 }
@@ -57,6 +57,38 @@ function PricingSkeleton() {
 export default function ProPage() {
   return (
     <main className="min-h-screen bg-gradient-to-b from-background to-muted/20">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'Product',
+            name: 'WooCommerce POS Pro',
+            description:
+              'Premium Point of Sale plugin for WooCommerce with advanced reporting, multi-outlet support, and priority support.',
+            brand: {
+              '@type': 'Organization',
+              name: 'WCPOS',
+            },
+            offers: [
+              {
+                '@type': 'Offer',
+                name: 'Yearly Subscription',
+                priceCurrency: 'USD',
+                price: '129',
+                availability: 'https://schema.org/InStock',
+              },
+              {
+                '@type': 'Offer',
+                name: 'Lifetime License',
+                priceCurrency: 'USD',
+                price: '249',
+                availability: 'https://schema.org/InStock',
+              },
+            ],
+          }),
+        }}
+      />
       {/* Hero Section */}
       <section className="container mx-auto px-4 py-16 text-center">
         <h1 className="text-4xl md:text-5xl font-bold mb-4">

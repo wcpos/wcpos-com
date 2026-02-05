@@ -24,6 +24,23 @@ export default function Home() {
       <div className="w-full max-w-2xl">
         <DesktopDownloads />
       </div>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'SoftwareApplication',
+            name: 'WooCommerce POS',
+            applicationCategory: 'BusinessApplication',
+            operatingSystem: 'Windows, macOS, Linux',
+            offers: {
+              '@type': 'Offer',
+              price: '0',
+              priceCurrency: 'USD',
+            },
+          }),
+        }}
+      />
     </main>
   )
 }
