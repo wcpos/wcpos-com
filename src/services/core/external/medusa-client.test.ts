@@ -24,8 +24,8 @@ import {
   getCart,
   addLineItem,
   updateCart,
-  createPaymentSessions,
-  setPaymentSession,
+  createPaymentCollection,
+  createPaymentSession,
   completeCart,
 } from './medusa-client'
 
@@ -321,9 +321,8 @@ describe('medusaClient', () => {
       })
     })
 
-    describe('createPaymentSessions (v2 flow)', () => {
-      it('creates payment collection and initializes session', async () => {
-        // Mock 1: Create payment collection
+    describe('createPaymentCollection', () => {
+      it('creates a payment collection for a cart', async () => {
         mockFetch.mockResolvedValueOnce({
           ok: true,
           json: async () => ({
@@ -334,45 +333,33 @@ describe('medusaClient', () => {
             },
           }),
         })
-        // Mock 2: Initialize payment session
+
+        const result = await createPaymentCollection('cart_123')
+
+        expect(result).not.toBeNull()
+        expect(result?.id).toBe('pay_col_123')
+        expect(mockFetch).toHaveBeenCalledWith(
+          'https://store-api.wcpos.com/store/payment-collections',
+          expect.objectContaining({
+            method: 'POST',
+            body: JSON.stringify({ cart_id: 'cart_123' }),
+          })
+        )
+      })
+
+      it('returns null on error', async () => {
         mockFetch.mockResolvedValueOnce({
-          ok: true,
-          json: async () => ({
-            payment_collection: {
-              id: 'pay_col_123',
-              payment_sessions: [
-                {
-                  id: 'payses_123',
-                  provider_id: 'pp_stripe_stripe',
-                  data: { client_secret: 'pi_secret_123' },
-                },
-              ],
-            },
-          }),
-        })
-        // Mock 3: Get updated cart
-        mockFetch.mockResolvedValueOnce({
-          ok: true,
-          json: async () => ({ cart: mockCart }),
+          ok: false,
+          status: 500,
         })
 
-        const cart = await createPaymentSessions('cart_123')
-
-        expect(cart).not.toBeNull()
-        expect(mockFetch).toHaveBeenCalledTimes(3)
+        const result = await createPaymentCollection('cart_123')
+        expect(result).toBeNull()
       })
     })
 
-    describe('setPaymentSession (v2 flow)', () => {
-      it('initializes payment with specified provider', async () => {
-        // Mock 1: Create payment collection
-        mockFetch.mockResolvedValueOnce({
-          ok: true,
-          json: async () => ({
-            payment_collection: { id: 'pay_col_123' },
-          }),
-        })
-        // Mock 2: Initialize session with provider
+    describe('createPaymentSession', () => {
+      it('creates a payment session within an existing collection', async () => {
         mockFetch.mockResolvedValueOnce({
           ok: true,
           json: async () => ({
@@ -382,21 +369,61 @@ describe('medusaClient', () => {
                 {
                   id: 'payses_123',
                   provider_id: 'pp_stripe_stripe',
+                  status: 'pending',
                   data: { client_secret: 'pi_secret_123' },
                 },
               ],
             },
           }),
         })
-        // Mock 3: Get cart
+
+        const result = await createPaymentSession('pay_col_123', 'pp_stripe_stripe')
+
+        expect(result).not.toBeNull()
+        expect(result?.clientSecret).toBe('pi_secret_123')
+        expect(result?.paymentSessionId).toBe('payses_123')
+        expect(mockFetch).toHaveBeenCalledWith(
+          'https://store-api.wcpos.com/store/payment-collections/pay_col_123/payment-sessions',
+          expect.objectContaining({
+            method: 'POST',
+            body: JSON.stringify({ provider_id: 'pp_stripe_stripe' }),
+          })
+        )
+      })
+
+      it('returns null client secret when provider does not return one', async () => {
         mockFetch.mockResolvedValueOnce({
           ok: true,
-          json: async () => ({ cart: mockCart }),
+          json: async () => ({
+            payment_collection: {
+              id: 'pay_col_123',
+              payment_sessions: [
+                {
+                  id: 'payses_456',
+                  provider_id: 'pp_paypal_paypal',
+                  status: 'pending',
+                  data: {},
+                },
+              ],
+            },
+          }),
         })
 
-        const cart = await setPaymentSession('cart_123', 'pp_stripe_stripe')
+        const result = await createPaymentSession('pay_col_123', 'pp_paypal_paypal')
 
-        expect(cart).not.toBeNull()
+        expect(result).not.toBeNull()
+        expect(result?.clientSecret).toBeNull()
+        expect(result?.paymentSessionId).toBe('payses_456')
+      })
+
+      it('returns null on error', async () => {
+        mockFetch.mockResolvedValueOnce({
+          ok: false,
+          status: 500,
+        })
+
+        const result = await createPaymentSession('pay_col_123', 'pp_stripe_stripe')
+        expect(result).toBeNull()
       })
     })
 
