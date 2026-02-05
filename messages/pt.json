@@ -1,0 +1,31 @@
+{
+  "common": {
+    "signIn": "Sign In",
+    "account": "Account",
+    "openMenu": "Open menu"
+  },
+  "header": {
+    "docs": "Docs",
+    "roadmap": "Roadmap",
+    "pro": "Pro",
+    "support": "Support"
+  },
+  "footer": {
+    "copyright": "© 2026 WCPOS",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "language": "Language",
+    "theme": "Theme",
+    "themeLight": "Light",
+    "themeDark": "Dark",
+    "themeSystem": "System"
+  },
+  "home": {
+    "title": "WooCommerce POS",
+    "subtitle": "A fast point of sale for WooCommerce"
+  },
+  "roadmap": {
+    "title": "Roadmap",
+    "subtitle": "What we're building for WooCommerce POS"
+  }
+}

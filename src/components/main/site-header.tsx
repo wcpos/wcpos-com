@@ -1,6 +1,7 @@
 import { Suspense } from 'react'
-import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 import { Menu } from 'lucide-react'
+import { Link } from '@/i18n/navigation'
 import { Button } from '@/components/ui/button'
 import {
   Sheet,
@@ -9,13 +10,6 @@ import {
   SheetTitle,
 } from '@/components/ui/sheet'
 import { getAuthToken } from '@/lib/medusa-auth'
-
-const navLinks = [
-  { label: 'Docs', href: 'https://docs.wcpos.com' },
-  { label: 'Roadmap', href: '/roadmap' },
-  { label: 'Pro', href: '/pro', umamiEvent: 'click-pro-cta' },
-  { label: 'Support', href: '/support' },
-]
 
 async function AuthButton() {
   let token: string | null = null
@@ -45,6 +39,15 @@ function AuthButtonFallback() {
 }
 
 export function SiteHeader() {
+  const t = useTranslations('header')
+
+  const navLinks = [
+    { label: t('roadmap'), href: '/roadmap' },
+    { label: t('pro'), href: '/pro', umamiEvent: 'click-pro-cta' },
+    { label: t('support'), href: '/support' },
+    { label: t('docs'), href: 'https://docs.wcpos.com', external: true },
+  ]
+
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center justify-between px-4 mx-auto">
@@ -54,16 +57,26 @@ export function SiteHeader() {
             WCPOS
           </Link>
           <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="text-muted-foreground hover:text-foreground transition-colors"
-                {...(link.umamiEvent && { 'data-umami-event': link.umamiEvent })}
-              >
-                {link.label}
-              </Link>
-            ))}
+            {navLinks.map((link) =>
+              link.external ? (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  className="text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  {link.label}
+                </a>
+              ) : (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="text-muted-foreground hover:text-foreground transition-colors"
+                  {...('umamiEvent' in link && link.umamiEvent && { 'data-umami-event': link.umamiEvent })}
+                >
+                  {link.label}
+                </Link>
+              )
+            )}
           </nav>
         </div>
 
@@ -85,16 +98,26 @@ export function SiteHeader() {
           <SheetContent side="right" className="w-72">
             <SheetTitle className="text-lg font-bold">WCPOS</SheetTitle>
             <nav className="flex flex-col gap-4 mt-6">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium"
-                  {...(link.umamiEvent && { 'data-umami-event': link.umamiEvent })}
-                >
-                  {link.label}
-                </Link>
-              ))}
+              {navLinks.map((link) =>
+                link.external ? (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium"
+                  >
+                    {link.label}
+                  </a>
+                ) : (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium"
+                    {...('umamiEvent' in link && link.umamiEvent && { 'data-umami-event': link.umamiEvent })}
+                  >
+                    {link.label}
+                  </Link>
+                )
+              )}
               <div className="border-t pt-4 mt-2">
                 <Suspense fallback={<AuthButtonFallback />}>
                   <AuthButton />

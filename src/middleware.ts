@@ -1,15 +1,21 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
+import createIntlMiddleware from 'next-intl/middleware'
+import { routing } from '@/i18n/routing'
 
 const COOKIE_NAME = 'medusa-token'
 
+const intlMiddleware = createIntlMiddleware(routing)
+
 /**
- * Middleware for route protection and hostname-based routing.
+ * Middleware for locale detection, route protection, and hostname-based routing.
  *
+ * - Locale detection: handled by next-intl (URL prefix > cookie > Accept-Language > fallback)
  * - /account/*: requires medusa-token cookie (redirects to /login if missing)
  * - /login, /register: redirects to /account if cookie exists
  * - updates.wcpos.com: restricts to /api/* routes only
- * - Everything else: passes through
+ * - /api/*: passes through without locale processing
+ * - Everything else: locale middleware runs
  *
  * The middleware does NOT validate the token. Invalid tokens are rejected
  * when Medusa returns 401 on actual API calls.
@@ -41,27 +47,37 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(redirectUrl, 301)
   }
 
+  // API routes don't need locale processing
+  if (pathname.startsWith('/api/')) {
+    return NextResponse.next()
+  }
+
+  // Strip locale prefix for auth checks (e.g., /fr/account -> /account)
+  const localePattern = routing.locales.join('|')
+  const localeRegex = new RegExp(`^/(${localePattern})(?=/|$)`)
+  const pathnameWithoutLocale = pathname.replace(localeRegex, '') || '/'
+
   // Protected routes: /account/* requires a medusa-token cookie
-  if (pathname.startsWith('/account')) {
+  if (pathnameWithoutLocale.startsWith('/account')) {
     const token = request.cookies.get(COOKIE_NAME)?.value
     if (!token) {
       const loginUrl = new URL('/login', request.url)
-      loginUrl.searchParams.set('redirect', pathname)
+      loginUrl.searchParams.set('redirect', pathnameWithoutLocale)
       return NextResponse.redirect(loginUrl)
     }
   }
 
   // Auth pages: redirect to /account if already logged in
-  if (pathname === '/login' || pathname === '/register') {
+  if (pathnameWithoutLocale === '/login' || pathnameWithoutLocale === '/register') {
     const token = request.cookies.get(COOKIE_NAME)?.value
     if (token) {
       return NextResponse.redirect(new URL('/account', request.url))
     }
   }
 
-  return NextResponse.next()
+  return intlMiddleware(request)
 }
 
 export const config = {
-  matcher: ['/((?!_next/static|_next/image|favicon.ico).*)'],
+  matcher: ['/((?!_next/static|_next/image|favicon.ico|icon.png|.*\\..*).*)'],
 }
