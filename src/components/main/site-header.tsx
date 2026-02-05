@@ -42,10 +42,10 @@ export function SiteHeader() {
   const t = useTranslations('header')
 
   const navLinks = [
-    { label: t('docs'), href: 'https://docs.wcpos.com', external: true },
     { label: t('roadmap'), href: '/roadmap' },
     { label: t('pro'), href: '/pro', umamiEvent: 'click-pro-cta' },
     { label: t('support'), href: '/support' },
+    { label: t('docs'), href: 'https://docs.wcpos.com', external: true },
   ]
 
   return (
