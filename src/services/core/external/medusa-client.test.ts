@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
+import { describe, it, expect, vi, beforeEach } from 'vitest'
 
 // Mock server-only (this module prevents client-side imports)
 vi.mock('server-only', () => ({}))
@@ -20,7 +20,6 @@ import {
   getRegions,
   formatPrice,
   getVariantPrice,
-  clearProductCache,
   createCart,
   getCart,
   addLineItem,
@@ -96,11 +95,6 @@ const mockCart = {
 describe('medusaClient', () => {
   beforeEach(() => {
     vi.clearAllMocks()
-    clearProductCache()
-  })
-
-  afterEach(() => {
-    clearProductCache()
   })
 
   describe('getProducts', () => {
@@ -155,17 +149,6 @@ describe('medusaClient', () => {
       expect(products).toEqual([])
     })
 
-    it('uses cache on subsequent calls', async () => {
-      mockFetch.mockResolvedValueOnce({
-        ok: true,
-        json: async () => ({ products: [mockProduct] }),
-      })
-
-      await getProducts()
-      await getProducts()
-
-      expect(mockFetch).toHaveBeenCalledTimes(1)
-    })
   })
 
   describe('getWcposProProducts', () => {

@@ -23,12 +23,6 @@ import type {
  */
 
 /**
- * Cache for products to reduce API calls
- */
-const productCache = new Map<string, { data: MedusaProduct[]; timestamp: number }>()
-const CACHE_TTL_MS = 5 * 60 * 1000 // 5 minutes
-
-/**
  * Make a request to the Medusa Store API
  */
 async function medusaFetch<T>(
@@ -70,24 +64,9 @@ async function medusaFetch<T>(
  */
 export async function getProducts(): Promise<MedusaProduct[]> {
   try {
-    // Check cache first
-    const cached = productCache.get('all')
-    if (cached && Date.now() - cached.timestamp < CACHE_TTL_MS) {
-      return cached.data
-    }
-
-    // Note: Medusa v2 Store API only returns published products by default
-    // The 'status' filter is admin-only and invalid for store API
     const response = await medusaFetch<MedusaProductsResponse>(
       '/store/products?fields=*variants.prices'
     )
-
-    // Update cache
-    productCache.set('all', {
-      data: response.products,
-      timestamp: Date.now(),
-    })
-
     return response.products
   } catch (error) {
     storeLogger.error`Failed to fetch products: ${error}`
@@ -100,30 +79,12 @@ export async function getProducts(): Promise<MedusaProduct[]> {
  */
 export async function getWcposProProducts(): Promise<MedusaProduct[]> {
   try {
-    // Check cache first
-    const cached = productCache.get('wcpos-pro')
-    if (cached && Date.now() - cached.timestamp < CACHE_TTL_MS) {
-      return cached.data
-    }
-
-    // Note: Medusa v2 Store API only returns published products by default
-    // The 'status' filter is admin-only and invalid for store API
     const response = await medusaFetch<MedusaProductsResponse>(
       '/store/products?fields=*variants.prices'
     )
-
-    // Filter to only WCPOS Pro products
-    const wcposProducts = response.products.filter(
+    return response.products.filter(
       (p) => p.handle?.startsWith('wcpos-pro-')
     )
-
-    // Update cache
-    productCache.set('wcpos-pro', {
-      data: wcposProducts,
-      timestamp: Date.now(),
-    })
-
-    return wcposProducts
   } catch (error) {
     storeLogger.error`Failed to fetch WCPOS Pro products: ${error}`
     return []
@@ -200,13 +161,6 @@ export function getVariantPrice(
     (p) => p.currency_code.toLowerCase() === currencyCode.toLowerCase()
   )
   return price?.amount ?? null
-}
-
-/**
- * Clear the product cache (useful for testing or manual refresh)
- */
-export function clearProductCache(): void {
-  productCache.clear()
 }
 
 // ============================================================================
@@ -412,7 +366,6 @@ export const medusaClient = {
   getRegions,
   formatPrice,
   getVariantPrice,
-  clearProductCache,
   // Cart
   createCart,
   getCart,

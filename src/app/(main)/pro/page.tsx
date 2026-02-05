@@ -1,4 +1,5 @@
 import { Suspense } from 'react'
+import { cacheLife, cacheTag } from 'next/cache'
 import { getWcposProProducts } from '@/services/core/external/medusa-client'
 import { PricingCard } from '@/components/pro/pricing-card'
 
@@ -12,6 +13,10 @@ export const metadata = {
  * Dynamic component that fetches products from Medusa
  */
 async function PricingSection() {
+  'use cache'
+  cacheLife('products')
+  cacheTag('products')
+
   const products = await getWcposProProducts()
 
   // Sort products: yearly first, then lifetime
