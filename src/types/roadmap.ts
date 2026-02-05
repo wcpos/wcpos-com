@@ -9,6 +9,7 @@ export interface RoadmapItem {
   status: RoadmapStatus
   type: RoadmapItemType
   url: string
+  subIssueProgress?: { total: number; completed: number }
 }
 
 export interface RoadmapMilestone {

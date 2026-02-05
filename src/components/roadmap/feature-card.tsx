@@ -30,6 +30,21 @@ export function FeatureCard({ item }: FeatureCardProps) {
               {item.description}
             </CardDescription>
           )}
+          {item.subIssueProgress && (
+            <div className="pt-2 space-y-1">
+              <div className="h-1 w-full rounded-full bg-muted overflow-hidden">
+                <div
+                  className="h-full rounded-full bg-primary transition-all"
+                  style={{
+                    width: `${Math.round((item.subIssueProgress.completed / item.subIssueProgress.total) * 100)}%`,
+                  }}
+                />
+              </div>
+              <p className="text-xs text-muted-foreground">
+                {item.subIssueProgress.completed}/{item.subIssueProgress.total} completed
+              </p>
+            </div>
+          )}
         </CardHeader>
       </Card>
     </a>

@@ -8,8 +8,8 @@ import type { RoadmapData, RoadmapItem, RoadmapMilestone, RoadmapStatus, Roadmap
 const octokit = getOctokit()
 
 const GITHUB_ORG = 'wcpos'
-const ALLOWED_REPOS = ['woocommerce-pos', 'woocommerce-pos-pro', 'monorepo', 'electron']
-const FEATURE_LABELS = ['enhancement', 'ui']
+const ALLOWED_REPOS = ['woocommerce-pos', 'woocommerce-pos-pro', 'monorepo', 'electron', 'roadmap']
+const FEATURE_LABELS = ['enhancement', 'ui', 'epic']
 const BUG_LABELS = ['bug']
 const PUBLIC_LABELS = [...FEATURE_LABELS, ...BUG_LABELS]
 
@@ -62,6 +62,13 @@ const PROJECT_ITEMS_QUERY = `
                 repository {
                   name
                 }
+                parent {
+                  id
+                }
+                subIssuesSummary {
+                  total
+                  completed
+                }
               }
             }
           }
@@ -93,6 +100,9 @@ export function transformProjectItems(data: any): RoadmapData {
     const repoName = content.repository?.name
     if (!repoName || !ALLOWED_REPOS.includes(repoName)) continue
 
+    // Skip sub-issues — the parent epic represents them
+    if (content.parent) continue
+
     const labels: string[] = (content.labels?.nodes ?? []).map((l: { name: string }) => l.name)
     const hasPublicLabel = labels.some(l => PUBLIC_LABELS.includes(l))
     if (!hasPublicLabel) continue
@@ -109,6 +119,11 @@ export function transformProjectItems(data: any): RoadmapData {
       ? bodyText.slice(0, DESCRIPTION_MAX_LENGTH) + '...'
       : bodyText
 
+    const summary = content.subIssuesSummary
+    const subIssueProgress = summary?.total > 0
+      ? { total: summary.total, completed: summary.completed }
+      : undefined
+
     const roadmapItem: RoadmapItem = {
       id: content.id,
       title: content.title,
@@ -116,6 +131,7 @@ export function transformProjectItems(data: any): RoadmapData {
       status: mappedStatus,
       type,
       url: content.url,
+      subIssueProgress,
     }
 
     const milestoneTitle = content.milestone.title
@@ -195,6 +211,7 @@ export async function fetchRoadmapData(): Promise<RoadmapData> {
         org: GITHUB_ORG,
         number: env.GITHUB_PROJECT_NUMBER,
         cursor,
+        headers: { 'GraphQL-Features': 'sub_issues' },
       })
       const items = data?.organization?.projectV2?.items
       allNodes = allNodes.concat(items?.nodes ?? [])

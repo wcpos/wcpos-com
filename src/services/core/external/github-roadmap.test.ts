@@ -41,6 +41,8 @@ const mockProjectItems = {
                 state: 'OPEN',
               },
               repository: { name: 'monorepo' },
+              parent: null,
+              subIssuesSummary: { total: 0, completed: 0 },
             },
           },
           {
@@ -61,6 +63,8 @@ const mockProjectItems = {
                 state: 'OPEN',
               },
               repository: { name: 'monorepo' },
+              parent: null,
+              subIssuesSummary: { total: 0, completed: 0 },
             },
           },
           {
@@ -81,6 +85,8 @@ const mockProjectItems = {
                 state: 'CLOSED',
               },
               repository: { name: 'woocommerce-pos' },
+              parent: null,
+              subIssuesSummary: { total: 0, completed: 0 },
             },
           },
           {
@@ -101,6 +107,54 @@ const mockProjectItems = {
                 state: 'CLOSED',
               },
               repository: { name: 'woocommerce-pos' },
+              parent: null,
+              subIssuesSummary: { total: 0, completed: 0 },
+            },
+          },
+          // Epic from roadmap repo — should appear as feature with subIssueProgress
+          {
+            fieldValueByName: { name: 'In Progress' },
+            content: {
+              __typename: 'Issue',
+              id: 'I_kwDOR1',
+              title: 'Prevent overselling at POS',
+              bodyText: 'Stock validation at both the app and server level.',
+              state: 'OPEN',
+              number: 1,
+              url: 'https://github.com/wcpos/roadmap/issues/1',
+              labels: { nodes: [{ name: 'epic' }, { name: 'enhancement' }] },
+              milestone: {
+                title: 'v1.9.0',
+                description: 'Offline support & sync improvements',
+                dueOn: '2026-04-01T00:00:00Z',
+                state: 'OPEN',
+              },
+              repository: { name: 'roadmap' },
+              parent: null,
+              subIssuesSummary: { total: 5, completed: 2 },
+            },
+          },
+          // Sub-issue of an epic — should be filtered out
+          {
+            fieldValueByName: { name: 'Up Next' },
+            content: {
+              __typename: 'Issue',
+              id: 'I_kwDOA6',
+              title: 'Server-side stock validation',
+              bodyText: 'Validate stock on order creation.',
+              state: 'OPEN',
+              number: 443,
+              url: 'https://github.com/wcpos/woocommerce-pos/issues/443',
+              labels: { nodes: [{ name: 'enhancement' }] },
+              milestone: {
+                title: 'v1.9.0',
+                description: 'Offline support & sync improvements',
+                dueOn: '2026-04-01T00:00:00Z',
+                state: 'OPEN',
+              },
+              repository: { name: 'woocommerce-pos' },
+              parent: { id: 'I_kwDOR1' },
+              subIssuesSummary: { total: 0, completed: 0 },
             },
           },
           // Item from wrong repo — should be filtered out
@@ -212,8 +266,10 @@ describe('github-roadmap', () => {
       const result = transformProjectItems(mockProjectItems)
 
       const active = result.active[0]
-      expect(active.features).toHaveLength(1)
+      // 2 features: standalone + epic (sub-issue filtered out)
+      expect(active.features).toHaveLength(2)
       expect(active.features[0].title).toBe('Add offline sync')
+      expect(active.features[1].title).toBe('Prevent overselling at POS')
       expect(active.bugs).toHaveLength(1)
       expect(active.bugs[0].title).toBe('Fix barcode scanner crash')
     })
@@ -221,8 +277,8 @@ describe('github-roadmap', () => {
     it('calculates progress correctly', () => {
       const result = transformProjectItems(mockProjectItems)
 
-      // v1.9.0: 0 done out of 2
-      expect(result.active[0].progress).toEqual({ total: 2, completed: 0 })
+      // v1.9.0: 0 done out of 3 (2 standalone + 1 epic, sub-issue filtered)
+      expect(result.active[0].progress).toEqual({ total: 3, completed: 0 })
 
       // v1.8.8: 2 done out of 2
       expect(result.shipped[0].progress).toEqual({ total: 2, completed: 2 })
@@ -277,6 +333,36 @@ describe('github-roadmap', () => {
       ]
 
       expect(allItems.find(i => i.title === 'Some draft idea')).toBeUndefined()
+    })
+
+    it('includes epics from the roadmap repo as features', () => {
+      const result = transformProjectItems(mockProjectItems)
+      const epic = result.active[0].features.find(f => f.title === 'Prevent overselling at POS')
+      expect(epic).toBeDefined()
+      expect(epic!.type).toBe('feature')
+    })
+
+    it('filters out sub-issues that have a parent', () => {
+      const result = transformProjectItems(mockProjectItems)
+      const allItems = [
+        ...result.active.flatMap(m => [...m.features, ...m.bugs]),
+        ...result.upcoming.flatMap(m => [...m.features, ...m.bugs]),
+        ...result.shipped.flatMap(m => [...m.features, ...m.bugs]),
+      ]
+
+      expect(allItems.find(i => i.title === 'Server-side stock validation')).toBeUndefined()
+    })
+
+    it('includes subIssueProgress for epics with sub-issues', () => {
+      const result = transformProjectItems(mockProjectItems)
+      const epic = result.active[0].features.find(f => f.title === 'Prevent overselling at POS')
+      expect(epic!.subIssueProgress).toEqual({ total: 5, completed: 2 })
+    })
+
+    it('does not include subIssueProgress for standalone issues', () => {
+      const result = transformProjectItems(mockProjectItems)
+      const standalone = result.active[0].features.find(f => f.title === 'Add offline sync')
+      expect(standalone!.subIssueProgress).toBeUndefined()
     })
 
     it('truncates descriptions to 150 characters', () => {
@@ -370,6 +456,21 @@ describe('github-roadmap', () => {
       expect(mockGraphql).toHaveBeenCalledTimes(1)
       expect(result.active).toHaveLength(1)
       expect(result.shipped).toHaveLength(1)
+    })
+
+    it('passes sub_issues feature header to GraphQL', async () => {
+      mockGraphql.mockResolvedValueOnce(mockProjectItems)
+
+      await fetchRoadmapData()
+
+      expect(mockGraphql).toHaveBeenCalledWith(
+        expect.any(String),
+        expect.objectContaining({
+          headers: expect.objectContaining({
+            'GraphQL-Features': 'sub_issues',
+          }),
+        }),
+      )
     })
 
     it('paginates through multiple pages', async () => {
