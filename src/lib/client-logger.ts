@@ -166,12 +166,15 @@ export async function initializeClientLogging() {
     // Setup global error handlers
     window.addEventListener('error', (event) => {
       const logger = getLogger(['wcpos', 'browser'])
-      logger.error`Uncaught error: ${event.error || event.message}`
+      logger.error('Uncaught error', { error: event.error || new Error(event.message) })
     })
 
     window.addEventListener('unhandledrejection', (event) => {
       const logger = getLogger(['wcpos', 'browser'])
-      logger.error`Unhandled promise rejection: ${event.reason}`
+      const error = event.reason instanceof Error
+        ? event.reason
+        : new Error(String(event.reason))
+      logger.error('Unhandled promise rejection', { error })
     })
   } catch (err) {
     configured = false

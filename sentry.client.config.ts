@@ -18,18 +18,11 @@ if (SENTRY_DSN) {
     // Capture unhandled promise rejections
     integrations: [
       Sentry.browserTracingIntegration(),
-      Sentry.replayIntegration({
-        // Capture 10% of sessions for replay in production
-        sessionSampleRate: process.env.NODE_ENV === 'production' ? 0.1 : 1.0,
-        // Capture 100% of sessions with errors for replay
-        errorSampleRate: 1.0,
-      }),
+      Sentry.replayIntegration(),
     ],
 
-    // This sets the sample rate to capture 10% of all sessions for performance monitoring
+    // Session replay sampling rates
     replaysSessionSampleRate: process.env.NODE_ENV === 'production' ? 0.1 : 1.0,
-
-    // This captures 100% of sessions with errors
     replaysOnErrorSampleRate: 1.0,
 
     // Filter out sensitive data

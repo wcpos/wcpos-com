@@ -19,6 +19,21 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    // Validate each log entry is a proper [timestamp, message] tuple
+    for (const entry of logs) {
+      if (
+        !Array.isArray(entry) ||
+        entry.length !== 2 ||
+        typeof entry[1] !== 'string' ||
+        isNaN(Number(entry[0]))
+      ) {
+        return NextResponse.json(
+          { error: 'Invalid log entry format' },
+          { status: 400 }
+        )
+      }
+    }
+
     // Forward to Loki if configured
     const lokiUrl = env.LOKI_URL
     if (!lokiUrl) {

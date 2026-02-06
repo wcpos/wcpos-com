@@ -22,12 +22,11 @@ if (SENTRY_DSN) {
     beforeSend(event) {
       // Remove sensitive environment variables
       if (event.contexts?.runtime?.env) {
-        const env = event.contexts.runtime.env
+        const env = event.contexts.runtime.env as Record<string, unknown>
         delete env.GITHUB_PRIVATE_KEY
         delete env.KEYGEN_API_TOKEN
         delete env.MEDUSA_PUBLISHABLE_KEY
         delete env.LOKI_API_KEY
-        delete env.RESEND_API_KEY
       }
       return event
     },
