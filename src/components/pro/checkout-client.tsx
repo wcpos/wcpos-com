@@ -43,6 +43,20 @@ interface Cart {
 
 type PaymentMethod = 'stripe' | 'paypal' | 'btcpay'
 
+// Map frontend payment method names to Medusa provider IDs
+function getProviderId(method: PaymentMethod): string {
+  switch (method) {
+    case 'stripe':
+      return 'pp_stripe_stripe'
+    case 'paypal':
+      return 'pp_paypal_paypal'
+    case 'btcpay':
+      return 'pp_btcpay_btcpay'
+    default:
+      return 'pp_stripe_stripe'
+  }
+}
+
 // Check which payment methods are configured
 const isStripeEnabled = Boolean(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
 const isPayPalEnabled = Boolean(process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID)
@@ -147,20 +161,6 @@ export function CheckoutClient({ customerEmail }: CheckoutClientProps) {
       setIsLoading(false)
     }
   }, [variantId, customerEmail])
-
-  // Map frontend payment method names to Medusa provider IDs
-  const getProviderId = (method: PaymentMethod): string => {
-    switch (method) {
-      case 'stripe':
-        return 'pp_stripe_stripe'
-      case 'paypal':
-        return 'pp_paypal_paypal'
-      case 'btcpay':
-        return 'pp_btcpay_btcpay'
-      default:
-        return 'pp_stripe_stripe'
-    }
-  }
 
   // Select payment provider when method changes
   const selectPaymentMethod = useCallback(
