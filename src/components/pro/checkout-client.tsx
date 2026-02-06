@@ -43,6 +43,20 @@ interface Cart {
 
 type PaymentMethod = 'stripe' | 'paypal' | 'btcpay'
 
+// Map frontend payment method names to Medusa provider IDs
+function getProviderId(method: PaymentMethod): string {
+  switch (method) {
+    case 'stripe':
+      return 'pp_stripe_stripe'
+    case 'paypal':
+      return 'pp_paypal_paypal'
+    case 'btcpay':
+      return 'pp_btcpay_btcpay'
+    default:
+      return 'pp_stripe_stripe'
+  }
+}
+
 // Check which payment methods are configured
 const isStripeEnabled = Boolean(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
 const isPayPalEnabled = Boolean(process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID)
@@ -141,25 +155,12 @@ export function CheckoutClient({ customerEmail }: CheckoutClientProps) {
         })
       }
     } catch (err) {
+      console.error('[CHECKOUT] Initialization failed:', err)
       setError(err instanceof Error ? err.message : 'Failed to initialize checkout')
     } finally {
       setIsLoading(false)
     }
   }, [variantId, customerEmail])
-
-  // Map frontend payment method names to Medusa provider IDs
-  const getProviderId = (method: PaymentMethod): string => {
-    switch (method) {
-      case 'stripe':
-        return 'pp_stripe_stripe'
-      case 'paypal':
-        return 'pp_paypal_paypal'
-      case 'btcpay':
-        return 'pp_btcpay_btcpay'
-      default:
-        return 'pp_stripe_stripe'
-    }
-  }
 
   // Select payment provider when method changes
   const selectPaymentMethod = useCallback(
@@ -171,6 +172,13 @@ export function CheckoutClient({ customerEmail }: CheckoutClientProps) {
       setClientSecret(null)
 
       try {
+        console.log('[CHECKOUT] Switching payment method:', {
+          from: paymentMethod,
+          to: method,
+          cartId: cart.id,
+          providerId: getProviderId(method),
+        })
+
         const response = await fetch('/api/store/cart/payment-sessions', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -182,6 +190,12 @@ export function CheckoutClient({ customerEmail }: CheckoutClientProps) {
         })
 
         if (!response.ok) {
+          const errorData = await response.json().catch(() => ({}))
+          console.error('[CHECKOUT] Payment method selection failed:', {
+            method,
+            status: response.status,
+            error: errorData,
+          })
           throw new Error(`Failed to select ${method} payment`)
         }
 
@@ -189,15 +203,17 @@ export function CheckoutClient({ customerEmail }: CheckoutClientProps) {
         setCart(paymentResult.cart)
 
         if (method === 'stripe' && paymentResult.clientSecret) {
+          console.log('[CHECKOUT] Stripe client secret received')
           setClientSecret(paymentResult.clientSecret)
         }
       } catch (err) {
+        console.error('[CHECKOUT] Payment method selection error:', err)
         setError(err instanceof Error ? err.message : 'Failed to select payment method')
       } finally {
         setIsProcessing(false)
       }
     },
-    [cart, paymentCollectionId]
+    [cart, paymentCollectionId, paymentMethod]
   )
 
   useEffect(() => {
