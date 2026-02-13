@@ -281,14 +281,19 @@ export function CheckoutClient({ customerEmail }: CheckoutClientProps) {
         <CheckCircle className="h-16 w-16 text-green-500 mb-4" />
         <h2 className="text-2xl font-bold mb-2">Thank you for your purchase!</h2>
         <p className="text-muted-foreground mb-4">
-          Your license key has been sent to your email.
+          Your license key and download link have been sent to your email.
         </p>
         {orderId && (
           <p className="text-sm text-muted-foreground mb-6">Order ID: {orderId}</p>
         )}
-        <Button asChild>
-          <Link href="/">Return to Home</Link>
-        </Button>
+        <div className="flex flex-col sm:flex-row gap-3">
+          <Button asChild>
+            <Link href="/account/licenses">Go to Licenses</Link>
+          </Button>
+          <Button asChild variant="outline">
+            <Link href="/">Return to Home</Link>
+          </Button>
+        </div>
       </div>
     )
   }

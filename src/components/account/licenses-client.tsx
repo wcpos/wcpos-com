@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Loader2, Key, Monitor, Trash2 } from 'lucide-react'
+import { Loader2, Key, Monitor, Trash2, Download } from 'lucide-react'
 
 interface Machine {
   id: string
@@ -134,17 +134,27 @@ export function LicensesClient() {
               </div>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="flex gap-6 text-sm">
-                {license.expiry && (
+              <div className="flex items-center justify-between">
+                <div className="flex gap-6 text-sm">
+                  {license.expiry && (
+                    <div>
+                      <span className="text-muted-foreground">Expires: </span>
+                      <span>{new Date(license.expiry).toLocaleDateString()}</span>
+                    </div>
+                  )}
                   <div>
-                    <span className="text-muted-foreground">Expires: </span>
-                    <span>{new Date(license.expiry).toLocaleDateString()}</span>
+                    <span className="text-muted-foreground">Activations: </span>
+                    <span>{license.machines.length} of {license.maxMachines}</span>
                   </div>
-                )}
-                <div>
-                  <span className="text-muted-foreground">Activations: </span>
-                  <span>{license.machines.length} of {license.maxMachines}</span>
                 </div>
+                {license.status.toLowerCase() === 'active' && (
+                  <Button asChild size="sm">
+                    <a href={`https://updates.wcpos.com/pro/download/latest?key=${encodeURIComponent(license.key)}`}>
+                      <Download className="mr-2 h-4 w-4" />
+                      Download
+                    </a>
+                  </Button>
+                )}
               </div>
 
               {license.machines.length > 0 && (
