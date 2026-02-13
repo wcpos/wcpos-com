@@ -10,7 +10,7 @@ test.describe('Checkout Integration @integration', {
     'Stripe test key not configured'
   )
 
-  test('completes full purchase with Stripe test card', async ({ page }) => {
+  test('completes full purchase with Stripe test card', async ({ page, request }) => {
     // Start from pro page
     await page.goto('/pro')
     await page.waitForLoadState('networkidle')
@@ -47,5 +47,39 @@ test.describe('Checkout Integration @integration', {
     // Wait for order confirmation
     await expect(page.getByText('Thank you for your purchase')).toBeVisible({ timeout: 60000 })
     await expect(page.getByText('Order ID:')).toBeVisible()
+
+    // Extract the order ID from the page
+    const orderIdText = await page.getByText('Order ID:').textContent()
+    const orderId = orderIdText?.replace('Order ID:', '').trim()
+    expect(orderId).toBeTruthy()
+
+    // ── Backend verification ────────────────────────────────
+    // Wait for async processing (license creation, fulfillment)
+    await page.waitForTimeout(10_000)
+
+    const medusaUrl = process.env.MEDUSA_BACKEND_URL || 'https://store-api-staging.wcpos.com'
+
+    // Verify order via admin API (requires MEDUSA_API_KEY env var)
+    const apiKey = process.env.MEDUSA_API_KEY
+    if (apiKey) {
+      const orderResponse = await request.get(
+        `${medusaUrl}/admin/orders/${orderId}?fields=*fulfillments,*payment_collections.payments,metadata`,
+        { headers: { Authorization: `Bearer ${apiKey}` } }
+      )
+
+      expect(orderResponse.ok()).toBeTruthy()
+      const { order } = await orderResponse.json()
+
+      // Verify payment was captured
+      expect(order.payment_status).toBe('captured')
+
+      // Verify order was fulfilled (digital auto-fulfillment)
+      expect(['fulfilled', 'delivered']).toContain(order.fulfillment_status)
+
+      // Verify license key was generated
+      expect(order.metadata?.licenses).toBeDefined()
+      expect(order.metadata.licenses.length).toBeGreaterThanOrEqual(1)
+      expect(order.metadata.licenses[0].license_key).toBeTruthy()
+    }
   })
 })
