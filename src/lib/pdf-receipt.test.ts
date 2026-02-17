@@ -71,4 +71,24 @@ describe('buildTaxReceiptPdf', () => {
       Uint8Array
     )
   })
+
+  it('does not throw when order data includes unexpected values', async () => {
+    const malformedOrder = {
+      ...baseOrder,
+      email: null as unknown as string,
+      currency_code: 'invalid',
+      items: [
+        {
+          ...baseOrder.items[0],
+          title: null as unknown as string,
+          unit_price: Number.NaN,
+          total: Number.NaN,
+        },
+      ],
+    }
+
+    await expect(buildTaxReceiptPdf(malformedOrder)).resolves.toBeInstanceOf(
+      Uint8Array
+    )
+  })
 })

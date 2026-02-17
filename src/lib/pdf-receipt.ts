@@ -13,8 +13,16 @@ export interface ReceiptAccountProfile {
   taxNumber?: string | null
 }
 
-function normalize(value: string | null | undefined): string {
-  return typeof value === 'string' ? value.trim() : ''
+function normalize(value: unknown): string {
+  if (typeof value === 'string') {
+    return value.trim()
+  }
+
+  if (typeof value === 'number' || typeof value === 'boolean') {
+    return String(value).trim()
+  }
+
+  return ''
 }
 
 function buildAddressLine(profile: ReceiptAccountProfile): string {
@@ -26,8 +34,8 @@ function buildAddressLine(profile: ReceiptAccountProfile): string {
 
 function drawLabelValueRow(params: {
   page: import('pdf-lib').PDFPage
-  label: string
-  value: string
+  label: unknown
+  value: unknown
   x: number
   y: number
   labelFont: import('pdf-lib').PDFFont
@@ -54,10 +62,13 @@ function drawLabelValueRow(params: {
   })
 }
 
-function sanitizeTextForFont(font: PDFFont, value: string): string {
+function sanitizeTextForFont(font: PDFFont, value: unknown): string {
+  const normalizedValue = normalize(value)
+  if (!normalizedValue) return ''
+
   let safeText = ''
 
-  for (const char of value.normalize('NFKD')) {
+  for (const char of normalizedValue.normalize('NFKD')) {
     try {
       font.encodeText(char)
       safeText += char
@@ -67,6 +78,34 @@ function sanitizeTextForFont(font: PDFFont, value: string): string {
   }
 
   return safeText.replace(/\?{2,}/g, '?')
+}
+
+function formatAmount(amount: unknown, currencyCode: unknown): string {
+  const numericAmount =
+    typeof amount === 'number'
+      ? amount
+      : typeof amount === 'string'
+        ? Number.parseFloat(amount)
+        : Number.NaN
+
+  if (!Number.isFinite(numericAmount)) {
+    return '--'
+  }
+
+  const normalizedCurrency = normalize(currencyCode).toUpperCase()
+
+  if (/^[A-Z]{3}$/.test(normalizedCurrency)) {
+    try {
+      return formatOrderAmount(numericAmount, normalizedCurrency)
+    } catch {
+      // fall back below
+    }
+  }
+
+  return new Intl.NumberFormat('en-US', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(numericAmount)
 }
 
 export async function buildTaxReceiptPdf(
@@ -126,7 +165,7 @@ export async function buildTaxReceiptPdf(
   drawLabelValueRow({
     page,
     label: 'Customer',
-    value: order.email,
+    value: normalize(order.email) || 'No email provided',
     x: margin,
     y: infoTopY - 16,
     labelFont: fontRegular,
@@ -208,7 +247,12 @@ export async function buildTaxReceiptPdf(
 
   let rowY = tableTopY - 18
   for (const item of order.items ?? []) {
-    page.drawText(sanitizeTextForFont(fontRegular, item.title), {
+    const itemTitle =
+      typeof item?.title === 'string' && item.title.trim()
+        ? item.title
+        : 'Untitled item'
+
+    page.drawText(sanitizeTextForFont(fontRegular, itemTitle), {
       x: margin + 8,
       y: rowY,
       font: fontRegular,
@@ -224,7 +268,7 @@ export async function buildTaxReceiptPdf(
     page.drawText(
       sanitizeTextForFont(
         fontRegular,
-        formatOrderAmount(item.unit_price, order.currency_code)
+        formatAmount(item.unit_price, order.currency_code)
       ),
       {
       x: unitX,
@@ -236,7 +280,7 @@ export async function buildTaxReceiptPdf(
     page.drawText(
       sanitizeTextForFont(
         fontRegular,
-        formatOrderAmount(item.total, order.currency_code)
+        formatAmount(item.total, order.currency_code)
       ),
       {
       x: totalX,
@@ -260,7 +304,7 @@ export async function buildTaxReceiptPdf(
   drawLabelValueRow({
     page,
     label: 'Subtotal',
-    value: formatOrderAmount(order.subtotal, order.currency_code),
+    value: formatAmount(order.subtotal, order.currency_code),
     x: width - margin - 180,
     y: rowY,
     labelFont: fontRegular,
@@ -270,7 +314,7 @@ export async function buildTaxReceiptPdf(
   drawLabelValueRow({
     page,
     label: 'Tax',
-    value: formatOrderAmount(order.tax_total, order.currency_code),
+    value: formatAmount(order.tax_total, order.currency_code),
     x: width - margin - 180,
     y: rowY,
     labelFont: fontRegular,
@@ -280,7 +324,7 @@ export async function buildTaxReceiptPdf(
   drawLabelValueRow({
     page,
     label: 'Total',
-    value: formatOrderAmount(order.total, order.currency_code),
+    value: formatAmount(order.total, order.currency_code),
     x: width - margin - 180,
     y: rowY,
     labelFont: fontBold,
