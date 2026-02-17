@@ -75,6 +75,20 @@ describe('DownloadsClient', () => {
     expect(screen.getByText('WCPOS Pro 1.9.10')).toBeInTheDocument()
   })
 
+  it('clamps to a valid page when release count shrinks', () => {
+    const { rerender } = render(
+      <DownloadsClient initialReleases={makeReleaseList(13)} />
+    )
+
+    fireEvent.click(screen.getByRole('button', { name: 'Next page' }))
+    expect(screen.getByText('WCPOS Pro 1.9.10')).toBeInTheDocument()
+
+    rerender(<DownloadsClient initialReleases={makeReleaseList(5)} />)
+
+    expect(screen.getByText('WCPOS Pro 1.9.0')).toBeInTheDocument()
+    expect(screen.queryByText('WCPOS Pro 1.9.10')).not.toBeInTheDocument()
+  })
+
   it('disables downloads for unavailable versions', () => {
     render(
       <DownloadsClient

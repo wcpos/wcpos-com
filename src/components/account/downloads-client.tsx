@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { ChevronLeft, ChevronRight, Download } from 'lucide-react'
 import { useLocale } from 'next-intl'
 import { Button } from '@/components/ui/button'
@@ -36,6 +36,10 @@ export function DownloadsClient({ initialReleases }: DownloadsClientProps) {
     (currentPage - 1) * RELEASES_PER_PAGE,
     currentPage * RELEASES_PER_PAGE
   )
+
+  useEffect(() => {
+    setCurrentPage((page) => Math.min(page, totalPages))
+  }, [totalPages])
 
   const startDownload = async (version: string) => {
     setDownloadingVersion(version)
