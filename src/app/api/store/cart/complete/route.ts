@@ -53,7 +53,7 @@ export async function POST(request: NextRequest) {
           })
         : 'control'
 
-      await trackServerEvent('checkout_completed', {
+      void trackServerEvent('checkout_completed', {
         experiment: typeof experiment === 'string' ? experiment : 'pro_checkout_v1',
         variant,
         distinct_id: distinctId ?? 'missing-distinct-id',
@@ -62,6 +62,8 @@ export async function POST(request: NextRequest) {
         cart_id: cartId,
         funnel_step: 'checkout_completed',
         page: '/pro/checkout',
+      }).catch((trackingError) => {
+        storeLogger.warn`Checkout conversion tracking failed: ${trackingError}`
       })
     } catch (trackingError) {
       storeLogger.warn`Checkout conversion tracking failed: ${trackingError}`

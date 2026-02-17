@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import type { ComponentProps } from 'react'
+import { forwardRef, type ComponentProps } from 'react'
 import { trackClientEvent } from '@/lib/analytics/client-events'
 
 type NextLinkProps = ComponentProps<typeof Link>
@@ -11,21 +11,22 @@ interface TrackedNextLinkProps extends NextLinkProps {
   eventProperties?: Record<string, unknown>
 }
 
-export function TrackedNextLink({
-  eventName,
-  eventProperties,
-  onClick,
-  ...linkProps
-}: TrackedNextLinkProps) {
-  return (
-    <Link
-      {...linkProps}
-      onClick={(event) => {
-        onClick?.(event)
-        if (!event.defaultPrevented) {
-          trackClientEvent(eventName, eventProperties)
-        }
-      }}
-    />
-  )
-}
+export const TrackedNextLink = forwardRef<HTMLAnchorElement, TrackedNextLinkProps>(
+  function TrackedNextLink(
+    { eventName, eventProperties, onClick, ...linkProps },
+    ref
+  ) {
+    return (
+      <Link
+        ref={ref}
+        {...linkProps}
+        onClick={(event) => {
+          onClick?.(event)
+          if (!event.defaultPrevented) {
+            trackClientEvent(eventName, eventProperties)
+          }
+        }}
+      />
+    )
+  }
+)

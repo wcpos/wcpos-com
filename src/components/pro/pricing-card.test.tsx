@@ -23,25 +23,23 @@ const mockProduct: MedusaProduct = {
   id: 'prod_123',
   title: 'WCPOS Pro Yearly',
   handle: 'wcpos-pro-yearly',
+  description: 'Yearly WCPOS Pro subscription',
+  status: 'published',
+  thumbnail: null,
+  images: [],
+  options: [],
   variants: [
     {
       id: 'variant_123',
       title: 'Default',
+      sku: null,
       prices: [{ currency_code: 'usd', amount: 129 }],
-      options: [],
-      product_id: 'prod_123',
-      created_at: '2026-01-01T00:00:00.000Z',
-      updated_at: '2026-01-01T00:00:00.000Z',
-      deleted_at: null,
-      metadata: null,
+      options: {},
+      manage_inventory: false,
     },
   ],
-  collection_id: null,
-  categories: [],
   created_at: '2026-01-01T00:00:00.000Z',
   updated_at: '2026-01-01T00:00:00.000Z',
-  deleted_at: null,
-  metadata: null,
 }
 
 describe('PricingCard', () => {

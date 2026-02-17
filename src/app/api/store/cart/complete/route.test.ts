@@ -117,4 +117,32 @@ describe('POST /api/store/cart/complete', () => {
     expect(response.status).toBe(200)
     expect(mockTrackServerEvent).toHaveBeenCalledTimes(1)
   })
+
+  it('does not block response when analytics tracking hangs', async () => {
+    mockGetCustomer.mockResolvedValueOnce({
+      id: 'cust_1',
+      email: 'customer@example.com',
+    })
+    mockCompleteCart.mockResolvedValueOnce({
+      order: { id: 'order_3' },
+    })
+    mockTrackServerEvent.mockReturnValueOnce(new Promise(() => {}))
+
+    const status = await Promise.race([
+      POST(
+        new NextRequest('http://localhost:3000/api/store/cart/complete', {
+          method: 'POST',
+          body: JSON.stringify({
+            cartId: 'cart_3',
+            experiment: 'pro_checkout_v1',
+          }),
+        })
+      ).then((response) => response.status),
+      new Promise<number>((resolve) => {
+        setTimeout(() => resolve(599), 75)
+      }),
+    ])
+
+    expect(status).toBe(200)
+  })
 })

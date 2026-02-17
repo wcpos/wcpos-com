@@ -1,6 +1,6 @@
 'use client'
 
-import type { ComponentProps } from 'react'
+import { forwardRef, type ComponentProps } from 'react'
 import { Link } from '@/i18n/navigation'
 import { trackClientEvent } from '@/lib/analytics/client-events'
 
@@ -11,21 +11,25 @@ interface TrackedLocaleLinkProps extends LocaleLinkProps {
   eventProperties?: Record<string, unknown>
 }
 
-export function TrackedLocaleLink({
-  eventName,
-  eventProperties,
-  onClick,
-  ...linkProps
-}: TrackedLocaleLinkProps) {
-  return (
-    <Link
-      {...linkProps}
-      onClick={(event) => {
-        onClick?.(event)
-        if (!event.defaultPrevented) {
-          trackClientEvent(eventName, eventProperties)
-        }
-      }}
-    />
-  )
-}
+export const TrackedLocaleLink = forwardRef<
+  HTMLAnchorElement,
+  TrackedLocaleLinkProps
+>(
+  function TrackedLocaleLink(
+    { eventName, eventProperties, onClick, ...linkProps },
+    ref
+  ) {
+    return (
+      <Link
+        ref={ref}
+        {...linkProps}
+        onClick={(event) => {
+          onClick?.(event)
+          if (!event.defaultPrevented) {
+            trackClientEvent(eventName, eventProperties)
+          }
+        }}
+      />
+    )
+  }
+)

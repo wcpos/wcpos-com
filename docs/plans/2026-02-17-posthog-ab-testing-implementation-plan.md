@@ -1,7 +1,5 @@
 # PostHog A/B Testing Cutover Implementation Plan
 
-> **For Claude:** REQUIRED: Use /execute-plan to implement this plan task-by-task.
-
 **Goal:** Replace Umami with self-hosted PostHog and launch server-assigned A/B testing for Pro checkout conversion on `/pro` and `/pro/checkout`.
 
 **Architecture:** Add a small analytics boundary (`track`, `getExperimentVariant`, identity helpers) so UI/server code stays vendor-neutral. Assign experiment variant server-side using a first-party distinct ID cookie and pass variant context through pricing and checkout flows. Fail open to control when analytics services are unavailable.

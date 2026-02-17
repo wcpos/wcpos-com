@@ -67,11 +67,11 @@ This service wraps PostHog SDK/API usage so app components call neutral function
 
 ### 2) Remove Umami Wiring
 - Remove Umami script/env logic from:  
-  `/Users/kilbot/Projects/wcpos-com/src/app/[locale]/layout.tsx`
+  `src/app/[locale]/layout.tsx`
 - Remove/replace `data-umami-event` usage in:
-  - `/Users/kilbot/Projects/wcpos-com/src/components/main/site-header.tsx`
-  - `/Users/kilbot/Projects/wcpos-com/src/components/pro/pricing-card.tsx`
-  - `/Users/kilbot/Projects/wcpos-com/src/app/[locale]/(auth)/login/page.tsx`
+  - `src/components/main/site-header.tsx`
+  - `src/components/pro/pricing-card.tsx`
+  - `src/app/[locale]/(auth)/login/page.tsx`
 - Update `.env.example` to PostHog-specific variables and remove Umami variables.
 
 ### 3) Server-Side Experiment Assignment
