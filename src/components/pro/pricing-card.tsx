@@ -12,11 +12,13 @@ import {
 import { Badge } from '@/components/ui/badge'
 import type { MedusaProduct } from '@/types/medusa'
 import { formatPrice, getVariantPrice } from '@/services/core/external/medusa-client'
+import type { ProCheckoutVariant } from '@/services/core/analytics/posthog-service'
 
 interface PricingCardProps {
   product: MedusaProduct
   featured?: boolean
   currencyCode?: string
+  experimentVariant?: ProCheckoutVariant
 }
 
 const FEATURES = {
@@ -41,11 +43,24 @@ export function PricingCard({
   product,
   featured = false,
   currencyCode = 'usd',
+  experimentVariant = 'control',
 }: PricingCardProps) {
   const variant = product.variants[0]
   const price = variant ? getVariantPrice(variant, currencyCode) : null
   const isLifetime = product.handle === 'wcpos-pro-lifetime'
   const features = isLifetime ? FEATURES.lifetime : FEATURES.yearly
+  const ctaLabel = experimentVariant === 'value_copy'
+    ? 'Get Instant Access'
+    : 'Get Started'
+
+  const checkoutSearchParams = new URLSearchParams()
+  if (variant?.id) {
+    checkoutSearchParams.set('variant', variant.id)
+  }
+  checkoutSearchParams.set('product', product.handle)
+  checkoutSearchParams.set('exp', 'pro_checkout_v1')
+  checkoutSearchParams.set('exp_variant', experimentVariant)
+  const checkoutHref = `/pro/checkout?${checkoutSearchParams.toString()}`
 
   return (
     <Card
@@ -93,10 +108,10 @@ export function PricingCard({
           variant={featured ? 'default' : 'outline'}
         >
           <Link
-            href={`/pro/checkout?variant=${variant?.id}&product=${product.handle}`}
+            href={checkoutHref}
             data-umami-event="click-start-checkout"
           >
-            Get Started
+            {ctaLabel}
           </Link>
         </Button>
       </CardFooter>

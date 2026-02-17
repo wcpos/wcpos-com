@@ -7,13 +7,6 @@ vi.hoisted(() => {
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = 'pk_test_123'
 })
 
-// Mock next/navigation
-vi.mock('next/navigation', () => ({
-  useSearchParams: () => ({
-    get: (key: string) => (key === 'variant' ? 'variant-123' : null),
-  }),
-}))
-
 // Mock next/link as a simple anchor
 vi.mock('next/link', () => ({
   default: ({
@@ -98,7 +91,13 @@ describe('CheckoutClient', () => {
 
   it('shows loading state initially', () => {
     mockFetch.mockReturnValue(new Promise(() => {}))
-    render(<CheckoutClient customerEmail="user@example.com" />)
+    render(
+      <CheckoutClient
+        customerEmail="user@example.com"
+        selectedVariantId="variant-prop-123"
+        experimentVariant="control"
+      />
+    )
     expect(screen.getByText('Preparing checkout...')).toBeInTheDocument()
     expect(document.querySelector('.animate-spin')).not.toBeInTheDocument()
   })
@@ -107,18 +106,43 @@ describe('CheckoutClient', () => {
     mockSuccessfulCheckoutInit()
     // Extra call for PATCH email association
     mockFetch.mockResolvedValueOnce({ ok: true, json: async () => ({}) })
-    render(<CheckoutClient customerEmail="user@example.com" />)
+    render(
+      <CheckoutClient
+        customerEmail="user@example.com"
+        selectedVariantId="variant-prop-123"
+        experimentVariant="control"
+      />
+    )
 
     await waitFor(() => {
       expect(screen.getByText('Order Summary')).toBeInTheDocument()
       expect(screen.getByText('WooCommerce POS Pro')).toBeInTheDocument()
       expect(screen.getByText('Total')).toBeInTheDocument()
     })
+
+    expect(mockFetch).toHaveBeenNthCalledWith(
+      2,
+      '/api/store/cart/line-items',
+      expect.objectContaining({
+        method: 'POST',
+        body: JSON.stringify({
+          cartId: 'cart-123',
+          variant_id: 'variant-prop-123',
+          quantity: 1,
+        }),
+      })
+    )
   })
 
   it('shows "Back to pricing" link when cart creation fails', async () => {
     mockFetch.mockResolvedValueOnce({ ok: false, status: 500 })
-    render(<CheckoutClient customerEmail="user@example.com" />)
+    render(
+      <CheckoutClient
+        customerEmail="user@example.com"
+        selectedVariantId="variant-prop-123"
+        experimentVariant="control"
+      />
+    )
 
     await waitFor(() => {
       const backLink = screen.getByRole('link', { name: /back to pricing/i })
@@ -129,7 +153,13 @@ describe('CheckoutClient', () => {
   it('shows success state with "Go to Licenses" link after payment', async () => {
     mockSuccessfulCheckoutInit()
     mockFetch.mockResolvedValueOnce({ ok: true, json: async () => ({}) })
-    render(<CheckoutClient customerEmail="user@example.com" />)
+    render(
+      <CheckoutClient
+        customerEmail="user@example.com"
+        selectedVariantId="variant-prop-123"
+        experimentVariant="control"
+      />
+    )
 
     await waitFor(() => {
       expect(screen.getByTestId('mock-pay-button')).toBeInTheDocument()
@@ -149,7 +179,13 @@ describe('CheckoutClient', () => {
   it('shows "Return to Home" link in success state', async () => {
     mockSuccessfulCheckoutInit()
     mockFetch.mockResolvedValueOnce({ ok: true, json: async () => ({}) })
-    render(<CheckoutClient customerEmail="user@example.com" />)
+    render(
+      <CheckoutClient
+        customerEmail="user@example.com"
+        selectedVariantId="variant-prop-123"
+        experimentVariant="control"
+      />
+    )
 
     await waitFor(() => {
       expect(screen.getByTestId('mock-pay-button')).toBeInTheDocument()
@@ -168,7 +204,13 @@ describe('CheckoutClient', () => {
     // Extra call for PATCH email association
     mockFetch.mockResolvedValueOnce({ ok: true, json: async () => ({}) })
 
-    render(<CheckoutClient customerEmail="user@example.com" />)
+    render(
+      <CheckoutClient
+        customerEmail="user@example.com"
+        selectedVariantId="variant-prop-123"
+        experimentVariant="control"
+      />
+    )
 
     await waitFor(() => {
       const emailInput = screen.getByLabelText('Email address') as HTMLInputElement
@@ -178,7 +220,7 @@ describe('CheckoutClient', () => {
   })
 
   it('shows sign-in message when customerEmail is missing', async () => {
-    render(<CheckoutClient />)
+    render(<CheckoutClient experimentVariant="control" />)
 
     await waitFor(() => {
       expect(

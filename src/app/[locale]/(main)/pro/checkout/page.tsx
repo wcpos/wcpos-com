@@ -1,10 +1,15 @@
 import { setRequestLocale } from 'next-intl/server'
 import { Suspense } from 'react'
+import { cookies } from 'next/headers'
 import { CheckoutClient } from '@/components/pro/checkout-client'
 import { getCustomer } from '@/lib/medusa-auth'
 import { ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
+import { resolveProCheckoutVariant } from '@/services/core/analytics/posthog-service'
+import { ANALYTICS_DISTINCT_ID_COOKIE } from '@/lib/analytics/distinct-id'
+import { getAnalyticsConfig } from '@/lib/analytics/config'
+import type { ProCheckoutVariant } from '@/services/core/analytics/posthog-service'
 
 export const metadata = {
   title: 'Checkout',
@@ -32,6 +37,18 @@ function buildCheckoutRedirectPath(
   return queryString ? `/pro/checkout?${queryString}` : '/pro/checkout'
 }
 
+function getSingleSearchParam(
+  searchParams: Record<string, string | string[] | undefined>,
+  key: string
+): string | undefined {
+  const value = searchParams[key]
+  if (Array.isArray(value)) {
+    return value[0]
+  }
+
+  return value
+}
+
 async function CheckoutContent({
   searchParamsPromise,
 }: {
@@ -43,7 +60,25 @@ async function CheckoutContent({
     const checkoutPath = buildCheckoutRedirectPath(searchParams)
     redirect(`/login?redirect=${encodeURIComponent(checkoutPath)}`)
   }
-  return <CheckoutClient customerEmail={customer?.email} />
+
+  const selectedVariantId = getSingleSearchParam(searchParams, 'variant')
+  const cookieStore = await cookies()
+  const distinctId = cookieStore.get(ANALYTICS_DISTINCT_ID_COOKIE)?.value
+  const analyticsConfig = getAnalyticsConfig(process.env)
+  const experimentVariant: ProCheckoutVariant = distinctId
+    ? await resolveProCheckoutVariant({
+        distinctId,
+        analyticsEnabled: analyticsConfig.enabled,
+      })
+    : 'control'
+
+  return (
+    <CheckoutClient
+      customerEmail={customer?.email}
+      selectedVariantId={selectedVariantId}
+      experimentVariant={experimentVariant}
+    />
+  )
 }
 
 export default async function CheckoutPage({
