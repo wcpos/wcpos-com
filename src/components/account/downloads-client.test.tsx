@@ -20,6 +20,15 @@ function makeRelease(overrides: Record<string, unknown> = {}) {
   }
 }
 
+function makeReleaseList(count: number) {
+  return Array.from({ length: count }, (_, index) =>
+    makeRelease({
+      version: `1.9.${index}`,
+      name: `WCPOS Pro 1.9.${index}`,
+    })
+  )
+}
+
 describe('DownloadsClient', () => {
   beforeEach(() => {
     vi.clearAllMocks()
@@ -36,6 +45,34 @@ describe('DownloadsClient', () => {
     render(<DownloadsClient initialReleases={[makeRelease()]} />)
     expect(screen.getByText('WCPOS Pro 1.9.0')).toBeInTheDocument()
     expect(screen.getByText('Bug fixes')).toBeInTheDocument()
+  })
+
+  it('renders markdown release notes with headings and lists', () => {
+    render(
+      <DownloadsClient
+        initialReleases={[
+          makeRelease({
+            releaseNotes: '# Highlights\n- Faster checkout\n- Better syncing',
+          }),
+        ]}
+      />
+    )
+
+    expect(
+      screen.getByRole('heading', { name: 'Highlights' })
+    ).toBeInTheDocument()
+    expect(screen.getByText('Faster checkout')).toBeInTheDocument()
+  })
+
+  it('paginates long release lists', () => {
+    render(<DownloadsClient initialReleases={makeReleaseList(13)} />)
+
+    expect(screen.getByText('WCPOS Pro 1.9.0')).toBeInTheDocument()
+    expect(screen.queryByText('WCPOS Pro 1.9.10')).not.toBeInTheDocument()
+
+    fireEvent.click(screen.getByRole('button', { name: 'Next page' }))
+
+    expect(screen.getByText('WCPOS Pro 1.9.10')).toBeInTheDocument()
   })
 
   it('disables downloads for unavailable versions', () => {
