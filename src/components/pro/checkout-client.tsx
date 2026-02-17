@@ -20,7 +20,7 @@ interface CartItem {
   title: string
   quantity: number
   unit_price: number
-  total: number
+  total?: number
 }
 
 interface PaymentSession {
@@ -28,7 +28,14 @@ interface PaymentSession {
   data: {
     client_secret?: string
     id?: string
+    checkoutLink?: string
+    [key: string]: unknown
   }
+}
+
+interface PaymentCollection {
+  id?: string
+  payment_sessions?: PaymentSession[]
 }
 
 interface Cart {
@@ -39,6 +46,7 @@ interface Cart {
   currency_code: string
   payment_session?: PaymentSession
   payment_sessions?: PaymentSession[]
+  payment_collection?: PaymentCollection
 }
 
 type PaymentMethod = 'stripe' | 'paypal' | 'btcpay'
@@ -66,6 +74,36 @@ interface CheckoutClientProps {
   customerEmail?: string
   selectedVariantId?: string
   experimentVariant: ProCheckoutVariant
+}
+
+function resolvePaymentSession(cart: Cart, providerId: string): PaymentSession | undefined {
+  const collectionSession = cart.payment_collection?.payment_sessions?.find(
+    (session) => session.provider_id === providerId
+  )
+  if (collectionSession) {
+    return collectionSession
+  }
+
+  if (cart.payment_sessions?.length) {
+    return cart.payment_sessions.find((session) => session.provider_id === providerId)
+  }
+
+  if (cart.payment_session?.provider_id === providerId) {
+    return cart.payment_session
+  }
+
+  return undefined
+}
+
+function resolveLineItemTotal(item: CartItem): number {
+  if (typeof item.total === 'number' && Number.isFinite(item.total)) {
+    return item.total
+  }
+
+  const unitPrice = Number.isFinite(item.unit_price) ? item.unit_price : 0
+  const quantity = Number.isFinite(item.quantity) ? item.quantity : 0
+
+  return unitPrice * quantity
 }
 
 export function CheckoutClient({
@@ -335,6 +373,16 @@ export function CheckoutClient({
       currency: cart.currency_code.toUpperCase(),
     }).format(amount)
 
+  const paypalSession = resolvePaymentSession(cart, getProviderId('paypal'))
+  const btcpaySession = resolvePaymentSession(cart, getProviderId('btcpay'))
+
+  const paypalOrderId =
+    typeof paypalSession?.data?.id === 'string' ? paypalSession.data.id : null
+  const btcpayCheckoutLink =
+    typeof btcpaySession?.data?.checkoutLink === 'string'
+      ? btcpaySession.data.checkoutLink
+      : null
+
   return (
     <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
       {/* Order Summary */}
@@ -349,7 +397,7 @@ export function CheckoutClient({
                 <p className="font-medium">{item.title}</p>
                 <p className="text-sm text-muted-foreground">Qty: {item.quantity}</p>
               </div>
-              <p className="font-medium">{formatCurrency(item.total)}</p>
+              <p className="font-medium">{formatCurrency(resolveLineItemTotal(item))}</p>
             </div>
           ))}
           <div className="border-t mt-4 pt-4 flex justify-between font-bold">
@@ -448,6 +496,7 @@ export function CheckoutClient({
                 <PayPalProvider>
                   <PayPalButton
                     cartId={cart.id}
+                    paypalOrderId={paypalOrderId}
                     onSuccess={handleSuccess}
                     onError={handleError}
                   />
@@ -463,7 +512,7 @@ export function CheckoutClient({
                   </p>
                   <BTCPayButton
                     cartId={cart.id}
-                    onSuccess={handleSuccess}
+                    checkoutLink={btcpayCheckoutLink}
                     onError={handleError}
                   />
                 </div>

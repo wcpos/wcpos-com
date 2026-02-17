@@ -4,12 +4,14 @@ import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js'
 
 interface PayPalButtonProps {
   cartId: string
+  paypalOrderId?: string | null
   onSuccess: (orderId: string) => void
   onError: (error: string) => void
 }
 
 export function PayPalButton({
   cartId,
+  paypalOrderId,
   onSuccess,
   onError,
 }: PayPalButtonProps) {
@@ -44,13 +46,17 @@ export function PayPalButton({
       }}
       createOrder={async () => {
         try {
+          if (paypalOrderId) {
+            return paypalOrderId
+          }
+
           // Set PayPal as the payment session
           const response = await fetch('/api/store/cart/payment-sessions', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               cartId,
-              provider_id: 'paypal',
+              provider_id: 'pp_paypal_paypal',
             }),
           })
 
@@ -60,13 +66,21 @@ export function PayPalButton({
 
           const { cart } = await response.json()
 
-          // The PayPal order ID should be in the payment session data
-          const paypalOrderId = cart?.payment_session?.data?.id
-          if (!paypalOrderId) {
+          const pendingPayPalSession = cart?.payment_collection?.payment_sessions?.find(
+            (session: {
+              provider_id?: string
+              data?: { id?: string }
+            }) => session.provider_id === 'pp_paypal_paypal'
+          )
+
+          const fallbackPayPalOrderId =
+            pendingPayPalSession?.data?.id || cart?.payment_session?.data?.id
+
+          if (!fallbackPayPalOrderId) {
             throw new Error('No PayPal order ID returned')
           }
 
-          return paypalOrderId
+          return fallbackPayPalOrderId
         } catch (err) {
           onError(err instanceof Error ? err.message : 'Failed to create PayPal order')
           throw err
