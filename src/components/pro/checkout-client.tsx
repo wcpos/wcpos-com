@@ -426,6 +426,8 @@ export function CheckoutClient({
                       cartId={cart.id}
                       amount={cart.total}
                       currency={cart.currency_code}
+                      experiment="pro_checkout_v1"
+                      experimentVariant={experimentVariant}
                       onSuccess={handleSuccess}
                     />
                   </StripeProvider>

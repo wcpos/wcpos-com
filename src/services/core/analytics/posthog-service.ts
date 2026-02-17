@@ -1,3 +1,6 @@
+import 'server-only'
+import { getAnalyticsConfig } from '@/lib/analytics/config'
+
 export type ProCheckoutVariant = 'control' | 'value_copy'
 
 type VariantEvaluationResult = string | boolean | null | undefined
@@ -49,4 +52,33 @@ export async function resolveProCheckoutVariant({
   } catch {
     return 'control'
   }
+}
+
+export async function trackServerEvent(
+  eventName: string,
+  properties: Record<string, unknown>
+): Promise<void> {
+  const analyticsConfig = getAnalyticsConfig(process.env)
+  const captureKey = analyticsConfig.serverKey ?? analyticsConfig.key
+
+  if (!analyticsConfig.enabled || !analyticsConfig.host || !captureKey) {
+    return
+  }
+
+  const distinctId = typeof properties.distinct_id === 'string'
+    ? properties.distinct_id
+    : 'wcpos-server-event'
+
+  await fetch(`${analyticsConfig.host}/capture/`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      api_key: captureKey,
+      event: eventName,
+      distinct_id: distinctId,
+      properties,
+    }),
+  })
 }
