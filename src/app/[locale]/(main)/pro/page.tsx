@@ -1,8 +1,13 @@
 import { setRequestLocale } from 'next-intl/server'
 import { Suspense } from 'react'
 import { cacheLife, cacheTag } from 'next/cache'
+import { cookies } from 'next/headers'
 import { getWcposProProducts } from '@/services/core/external/medusa-client'
 import { PricingCard } from '@/components/pro/pricing-card'
+import type { ProCheckoutVariant } from '@/services/core/analytics/posthog-service'
+import { resolveProCheckoutVariant } from '@/services/core/analytics/posthog-service'
+import { ANALYTICS_DISTINCT_ID_COOKIE } from '@/lib/analytics/distinct-id'
+import { getAnalyticsConfig } from '@/lib/analytics/config'
 
 export const metadata = {
   title: 'Pro - Premium Features',
@@ -13,7 +18,11 @@ export const metadata = {
 /**
  * Dynamic component that fetches products from Medusa
  */
-async function PricingSection() {
+async function PricingSection({
+  experimentVariant,
+}: {
+  experimentVariant: ProCheckoutVariant
+}) {
   'use cache'
   cacheLife('products')
   cacheTag('products')
@@ -45,6 +54,7 @@ async function PricingSection() {
           key={product.id}
           product={product}
           featured={product.handle === 'wcpos-pro-yearly'}
+          experimentVariant={experimentVariant}
         />
       ))}
     </div>
@@ -58,6 +68,20 @@ function PricingSkeleton() {
       <div className="h-96 animate-pulse rounded-lg bg-muted" />
     </div>
   )
+}
+
+async function PricingSectionWithExperiment() {
+  const cookieStore = await cookies()
+  const distinctId = cookieStore.get(ANALYTICS_DISTINCT_ID_COOKIE)?.value
+  const analyticsConfig = getAnalyticsConfig(process.env)
+  const experimentVariant = distinctId
+    ? await resolveProCheckoutVariant({
+        distinctId,
+        analyticsEnabled: analyticsConfig.enabled,
+      })
+    : 'control'
+
+  return <PricingSection experimentVariant={experimentVariant} />
 }
 
 export default async function ProPage({
@@ -116,7 +140,7 @@ export default async function ProPage({
       {/* Pricing Section - Dynamic */}
       <section className="container mx-auto px-4 pb-16">
         <Suspense fallback={<PricingSkeleton />}>
-          <PricingSection />
+          <PricingSectionWithExperiment />
         </Suspense>
       </section>
 

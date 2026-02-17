@@ -7,11 +7,14 @@ import {
   useElements,
 } from '@stripe/react-stripe-js'
 import { Button } from '@/components/ui/button'
+import type { ProCheckoutVariant } from '@/services/core/analytics/posthog-service'
 
 interface CheckoutFormProps {
   cartId: string
   amount: number
   currency: string
+  experiment: string
+  experimentVariant: ProCheckoutVariant
   onSuccess: (orderId: string) => void
 }
 
@@ -19,6 +22,8 @@ export function CheckoutForm({
   cartId,
   amount,
   currency,
+  experiment,
+  experimentVariant,
   onSuccess,
 }: CheckoutFormProps) {
   const stripe = useStripe()
@@ -70,7 +75,11 @@ export function CheckoutForm({
         const completeResponse = await fetch('/api/store/cart/complete', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ cartId }),
+          body: JSON.stringify({
+            cartId,
+            experiment,
+            experimentVariant,
+          }),
         })
 
         if (!completeResponse.ok) {

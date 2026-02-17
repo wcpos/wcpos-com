@@ -2,10 +2,29 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 import createIntlMiddleware from 'next-intl/middleware'
 import { routing } from '@/i18n/routing'
+import {
+  ANALYTICS_DISTINCT_ID_COOKIE,
+  getDistinctIdCookieOptions,
+  newDistinctId,
+} from '@/lib/analytics/distinct-id'
 
 const COOKIE_NAME = 'medusa-token'
 
 const intlMiddleware = createIntlMiddleware(routing)
+
+function withDistinctIdCookie(request: NextRequest, response: NextResponse) {
+  const existingDistinctId = request.cookies.get(ANALYTICS_DISTINCT_ID_COOKIE)?.value
+  if (existingDistinctId) {
+    return response
+  }
+
+  response.cookies.set(
+    ANALYTICS_DISTINCT_ID_COOKIE,
+    newDistinctId(),
+    getDistinctIdCookieOptions()
+  )
+  return response
+}
 
 /**
  * Middleware for locale detection, route protection, and hostname-based routing.
@@ -31,7 +50,7 @@ export function middleware(request: NextRequest) {
     }
 
     if (pathname === '/') {
-      return NextResponse.json(
+      const response = NextResponse.json(
         {
           service: 'wcpos-updates',
           status: 'healthy',
@@ -39,12 +58,13 @@ export function middleware(request: NextRequest) {
         },
         { status: 200 }
       )
+      return withDistinctIdCookie(request, response)
     }
 
     const mainDomain = hostname.replace('updates.', '')
     const redirectUrl = new URL(pathname, `https://${mainDomain}`)
     redirectUrl.search = request.nextUrl.search
-    return NextResponse.redirect(redirectUrl, 301)
+    return withDistinctIdCookie(request, NextResponse.redirect(redirectUrl, 301))
   }
 
   // API routes don't need locale processing
@@ -68,7 +88,7 @@ export function middleware(request: NextRequest) {
     if (!token) {
       const loginUrl = new URL('/login', request.url)
       loginUrl.searchParams.set('redirect', pathnameWithQuery)
-      return NextResponse.redirect(loginUrl)
+      return withDistinctIdCookie(request, NextResponse.redirect(loginUrl))
     }
   }
 
@@ -76,11 +96,14 @@ export function middleware(request: NextRequest) {
   if (pathnameWithoutLocale === '/login' || pathnameWithoutLocale === '/register') {
     const token = request.cookies.get(COOKIE_NAME)?.value
     if (token) {
-      return NextResponse.redirect(new URL('/account', request.url))
+      return withDistinctIdCookie(
+        request,
+        NextResponse.redirect(new URL('/account', request.url))
+      )
     }
   }
 
-  return intlMiddleware(request)
+  return withDistinctIdCookie(request, intlMiddleware(request))
 }
 
 export const config = {

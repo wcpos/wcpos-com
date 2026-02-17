@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useState, useCallback } from 'react'
-import { useSearchParams } from 'next/navigation'
 import { StripeProvider } from './stripe-provider'
 import { PayPalProvider } from './paypal-provider'
 import { CheckoutForm } from './checkout-form'
@@ -14,6 +13,7 @@ import { Label } from '@/components/ui/label'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { ArrowLeft, CheckCircle, CreditCard, Bitcoin } from 'lucide-react'
 import Link from 'next/link'
+import type { ProCheckoutVariant } from '@/services/core/analytics/posthog-service'
 
 interface CartItem {
   id: string
@@ -72,6 +72,8 @@ const isBTCPayEnabled = Boolean(process.env.NEXT_PUBLIC_BTCPAY_ENABLED)
 
 interface CheckoutClientProps {
   customerEmail?: string
+  selectedVariantId?: string
+  experimentVariant: ProCheckoutVariant
 }
 
 function resolvePaymentSession(cart: Cart, providerId: string): PaymentSession | undefined {
@@ -104,10 +106,11 @@ function resolveLineItemTotal(item: CartItem): number {
   return unitPrice * quantity
 }
 
-export function CheckoutClient({ customerEmail }: CheckoutClientProps) {
-  const searchParams = useSearchParams()
-  const variantId = searchParams.get('variant')
-
+export function CheckoutClient({
+  customerEmail,
+  selectedVariantId,
+  experimentVariant,
+}: CheckoutClientProps) {
   const [cart, setCart] = useState<Cart | null>(null)
   const [email, setEmail] = useState(customerEmail || '')
   const [clientSecret, setClientSecret] = useState<string | null>(null)
@@ -128,7 +131,7 @@ export function CheckoutClient({ customerEmail }: CheckoutClientProps) {
       return
     }
 
-    if (!variantId) {
+    if (!selectedVariantId) {
       setError('No product selected')
       setIsLoading(false)
       return
@@ -139,7 +142,12 @@ export function CheckoutClient({ customerEmail }: CheckoutClientProps) {
       const cartResponse = await fetch('/api/store/cart', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({}),
+        body: JSON.stringify({
+          metadata: {
+            experiment: 'pro_checkout_v1',
+            variant: experimentVariant,
+          },
+        }),
       })
 
       if (!cartResponse.ok) {
@@ -154,7 +162,7 @@ export function CheckoutClient({ customerEmail }: CheckoutClientProps) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           cartId: newCart.id,
-          variant_id: variantId,
+          variant_id: selectedVariantId,
           quantity: 1,
         }),
       })
@@ -201,7 +209,7 @@ export function CheckoutClient({ customerEmail }: CheckoutClientProps) {
     } finally {
       setIsLoading(false)
     }
-  }, [variantId, customerEmail])
+  }, [customerEmail, selectedVariantId, experimentVariant])
 
   // Select payment provider when method changes
   const selectPaymentMethod = useCallback(
@@ -466,6 +474,8 @@ export function CheckoutClient({ customerEmail }: CheckoutClientProps) {
                       cartId={cart.id}
                       amount={cart.total}
                       currency={cart.currency_code}
+                      experiment="pro_checkout_v1"
+                      experimentVariant={experimentVariant}
                       onSuccess={handleSuccess}
                     />
                   </StripeProvider>
