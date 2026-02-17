@@ -33,7 +33,7 @@ const mockProduct: MedusaProduct = {
       id: 'variant_123',
       title: 'Default',
       sku: null,
-      prices: [{ currency_code: 'usd', amount: 129 }],
+      prices: [{ id: 'price_123', currency_code: 'usd', amount: 129 }],
       options: {},
       manage_inventory: false,
     },
