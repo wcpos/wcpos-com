@@ -1,6 +1,8 @@
 import { setRequestLocale } from 'next-intl/server'
 import { Suspense } from 'react'
 import { getCustomer, getCustomerOrders } from '@/lib/medusa-auth'
+import { extractLicenseIdsFromOrders } from '@/lib/licenses'
+import { formatOrderAmount } from '@/lib/order-display'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { ShoppingBag, Key } from 'lucide-react'
@@ -16,10 +18,7 @@ async function AccountOverviewContent() {
     redirect('/login')
   }
 
-  const licenseCount = orders.reduce((count, order) => {
-    const licenses = order.metadata?.licenses as Array<{ license_id: string }> | undefined
-    return count + (licenses?.length || 0)
-  }, 0)
+  const licenseCount = extractLicenseIdsFromOrders(orders).length
 
   return (
     <>
@@ -76,10 +75,7 @@ async function AccountOverviewContent() {
                   </div>
                   <div className="text-right">
                     <p className="font-medium">
-                      {new Intl.NumberFormat('en-US', {
-                        style: 'currency',
-                        currency: order.currency_code,
-                      }).format(order.total / 100)}
+                      {formatOrderAmount(order.total, order.currency_code)}
                     </p>
                     <p className="text-sm text-muted-foreground capitalize">{order.status}</p>
                   </div>

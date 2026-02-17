@@ -1,6 +1,7 @@
 import { setRequestLocale } from 'next-intl/server'
 import { Suspense } from 'react'
 import { getCustomerOrders } from '@/lib/medusa-auth'
+import { formatOrderAmount } from '@/lib/order-display'
 import Link from 'next/link'
 import { Card, CardContent } from '@/components/ui/card'
 
@@ -39,10 +40,7 @@ async function OrdersContent() {
                 </div>
                 <div className="text-right">
                   <p className="font-medium">
-                    {new Intl.NumberFormat('en-US', {
-                      style: 'currency',
-                      currency: order.currency_code,
-                    }).format(order.total / 100)}
+                    {formatOrderAmount(order.total, order.currency_code)}
                   </p>
                   <p className="text-sm text-muted-foreground capitalize">{order.status}</p>
                 </div>

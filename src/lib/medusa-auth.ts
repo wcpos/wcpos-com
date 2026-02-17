@@ -20,6 +20,13 @@ export interface MedusaCustomer {
   metadata?: Record<string, unknown>
 }
 
+export interface UpdateCustomerInput {
+  email?: string
+  first_name?: string
+  last_name?: string
+  phone?: string
+}
+
 export interface MedusaOrderItem {
   id: string
   title: string
@@ -271,6 +278,46 @@ export async function getCustomer(): Promise<MedusaCustomer | null> {
     authLogger.error`Failed to get customer: ${error}`
     return null
   }
+}
+
+/**
+ * Update the current customer profile.
+ * POST /store/customers/me
+ * Returns null if unauthenticated.
+ */
+export async function updateCustomer(
+  input: UpdateCustomerInput
+): Promise<MedusaCustomer | null> {
+  const token = await getAuthToken()
+  if (!token) return null
+
+  const response = await fetch(
+    `${env.MEDUSA_BACKEND_URL}/store/customers/me`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+        'x-publishable-api-key': env.MEDUSA_PUBLISHABLE_KEY || '',
+      },
+      body: JSON.stringify(input),
+    }
+  )
+
+  if (!response.ok) {
+    const errorText = await response.text()
+    let message = 'Failed to update customer'
+    try {
+      const parsed = JSON.parse(errorText)
+      message = parsed.message || message
+    } catch {
+      // use default message
+    }
+    throw new Error(message)
+  }
+
+  const data = await response.json()
+  return data.customer
 }
 
 /**

@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 import { getCustomerOrders } from '@/lib/medusa-auth'
+import { extractLicenseIdsFromOrders } from '@/lib/licenses'
 import { licenseClient } from '@/services/core/external/license-client'
 import { licenseLogger } from '@/lib/logger'
-import type { MedusaOrder } from '@/lib/medusa-auth'
 
 /**
  * Machine Deactivation API
@@ -16,23 +16,8 @@ import type { MedusaOrder } from '@/lib/medusa-auth'
  * Ownership is verified by checking the licenseId exists in order metadata.
  */
 
-function extractLicenseIds(orders: MedusaOrder[]): string[] {
-  const ids: string[] = []
-  for (const order of orders) {
-    const licenses = order.metadata?.licenses as
-      | Array<{ license_id: string }>
-      | undefined
-    if (licenses) {
-      for (const lic of licenses) {
-        if (lic.license_id) ids.push(lic.license_id)
-      }
-    }
-  }
-  return ids
-}
-
 export async function DELETE(
-  request: NextRequest,
+  _request: NextRequest,
   { params }: { params: Promise<{ licenseId: string; machineId: string }> }
 ) {
   try {
@@ -47,7 +32,7 @@ export async function DELETE(
       )
     }
 
-    const licenseIds = extractLicenseIds(orders)
+    const licenseIds = extractLicenseIdsFromOrders(orders)
 
     if (!licenseIds.includes(licenseId)) {
       return NextResponse.json(

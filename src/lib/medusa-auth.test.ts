@@ -34,6 +34,7 @@ import {
   getCustomer,
   getAuthToken,
   getCustomerOrders,
+  updateCustomer,
   decodeMedusaToken,
   linkOrCreateCustomer,
 } from './medusa-auth'
@@ -278,6 +279,58 @@ describe('medusa-auth', () => {
       const orders = await getCustomerOrders()
 
       expect(orders).toEqual([])
+      expect(mockFetch).not.toHaveBeenCalled()
+    })
+  })
+
+  describe('updateCustomer', () => {
+    it('updates the current customer profile', async () => {
+      mockCookieStore.get.mockReturnValue({ value: 'valid_token' })
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          customer: {
+            id: 'cust_456',
+            email: 'user@example.com',
+            first_name: 'Updated',
+            last_name: 'Name',
+            phone: '+15551234567',
+            has_account: true,
+            created_at: '2024-01-01T00:00:00Z',
+            updated_at: '2024-02-01T00:00:00Z',
+          },
+        }),
+      })
+
+      const customer = await updateCustomer({
+        first_name: 'Updated',
+        last_name: 'Name',
+      })
+
+      expect(customer).toBeTruthy()
+      expect(customer?.first_name).toBe('Updated')
+      expect(mockFetch).toHaveBeenCalledWith(
+        'https://test-store-api.wcpos.com/store/customers/me',
+        expect.objectContaining({
+          method: 'POST',
+          headers: expect.objectContaining({
+            Authorization: 'Bearer valid_token',
+            'x-publishable-api-key': 'pk_test_abc123',
+          }),
+          body: JSON.stringify({
+            first_name: 'Updated',
+            last_name: 'Name',
+          }),
+        })
+      )
+    })
+
+    it('returns null when user is not authenticated', async () => {
+      mockCookieStore.get.mockReturnValue(undefined)
+
+      const customer = await updateCustomer({ first_name: 'Updated' })
+
+      expect(customer).toBeNull()
       expect(mockFetch).not.toHaveBeenCalled()
     })
   })
