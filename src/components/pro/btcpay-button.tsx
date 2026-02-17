@@ -7,7 +7,6 @@ import { Bitcoin } from 'lucide-react'
 interface BTCPayButtonProps {
   cartId: string
   checkoutLink?: string | null
-  onSuccess: (orderId: string) => void
   onError: (error: string) => void
 }
 

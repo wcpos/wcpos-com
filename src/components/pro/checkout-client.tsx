@@ -75,10 +75,11 @@ interface CheckoutClientProps {
 }
 
 function resolvePaymentSession(cart: Cart, providerId: string): PaymentSession | undefined {
-  if (cart.payment_collection?.payment_sessions?.length) {
-    return cart.payment_collection.payment_sessions.find(
-      (session) => session.provider_id === providerId
-    )
+  const collectionSession = cart.payment_collection?.payment_sessions?.find(
+    (session) => session.provider_id === providerId
+  )
+  if (collectionSession) {
+    return collectionSession
   }
 
   if (cart.payment_sessions?.length) {
@@ -502,7 +503,6 @@ export function CheckoutClient({ customerEmail }: CheckoutClientProps) {
                   <BTCPayButton
                     cartId={cart.id}
                     checkoutLink={btcpayCheckoutLink}
-                    onSuccess={handleSuccess}
                     onError={handleError}
                   />
                 </div>

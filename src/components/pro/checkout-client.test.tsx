@@ -86,6 +86,8 @@ function buildCheckoutCart({
   paymentSessions = [
     { provider_id: 'pp_stripe_stripe', data: { client_secret: 'pi_test_secret' } },
   ],
+  legacyPaymentSessions,
+  legacyPaymentSession,
 }: {
   title?: string
   unitPrice?: number
@@ -94,6 +96,8 @@ function buildCheckoutCart({
   quantity?: number
   cartTotal?: number
   paymentSessions?: Array<{ provider_id: string; data: Record<string, unknown> }>
+  legacyPaymentSessions?: Array<{ provider_id: string; data: Record<string, unknown> }>
+  legacyPaymentSession?: { provider_id: string; data: Record<string, unknown> }
 } = {}) {
   return {
     id: 'cart-123',
@@ -112,6 +116,8 @@ function buildCheckoutCart({
       id: 'pay-col-123',
       payment_sessions: paymentSessions,
     },
+    ...(legacyPaymentSessions ? { payment_sessions: legacyPaymentSessions } : {}),
+    ...(legacyPaymentSession ? { payment_session: legacyPaymentSession } : {}),
   }
 }
 
@@ -271,6 +277,30 @@ describe('CheckoutClient', () => {
       expect(renderPayPalButton).toHaveBeenCalledWith(
         expect.objectContaining({
           paypalOrderId: 'PAYPAL_ORDER_123',
+        })
+      )
+    })
+  })
+
+  it('falls back to legacy cart payment sessions when collection lacks paypal session', async () => {
+    mockSuccessfulCheckoutInit(
+      buildCheckoutCart({
+        paymentSessions: [
+          { provider_id: 'pp_stripe_stripe', data: { client_secret: 'pi_test_secret' } },
+        ],
+        legacyPaymentSessions: [
+          { provider_id: 'pp_paypal_paypal', data: { id: 'PAYPAL_ORDER_FALLBACK' } },
+        ],
+      })
+    )
+    mockFetch.mockResolvedValueOnce({ ok: true, json: async () => ({}) })
+
+    render(<CheckoutClient customerEmail="user@example.com" />)
+
+    await waitFor(() => {
+      expect(renderPayPalButton).toHaveBeenCalledWith(
+        expect.objectContaining({
+          paypalOrderId: 'PAYPAL_ORDER_FALLBACK',
         })
       )
     })
