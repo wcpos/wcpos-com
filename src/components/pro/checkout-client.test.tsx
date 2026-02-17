@@ -98,13 +98,15 @@ describe('CheckoutClient', () => {
 
   it('shows loading state initially', () => {
     mockFetch.mockReturnValue(new Promise(() => {}))
-    render(<CheckoutClient />)
+    render(<CheckoutClient customerEmail="user@example.com" />)
     expect(screen.getByText('Preparing checkout...')).toBeInTheDocument()
   })
 
   it('renders order summary after checkout initialization', async () => {
     mockSuccessfulCheckoutInit()
-    render(<CheckoutClient />)
+    // Extra call for PATCH email association
+    mockFetch.mockResolvedValueOnce({ ok: true, json: async () => ({}) })
+    render(<CheckoutClient customerEmail="user@example.com" />)
 
     await waitFor(() => {
       expect(screen.getByText('Order Summary')).toBeInTheDocument()
@@ -115,7 +117,7 @@ describe('CheckoutClient', () => {
 
   it('shows "Back to pricing" link when cart creation fails', async () => {
     mockFetch.mockResolvedValueOnce({ ok: false, status: 500 })
-    render(<CheckoutClient />)
+    render(<CheckoutClient customerEmail="user@example.com" />)
 
     await waitFor(() => {
       const backLink = screen.getByRole('link', { name: /back to pricing/i })
@@ -125,7 +127,8 @@ describe('CheckoutClient', () => {
 
   it('shows success state with "Go to Licenses" link after payment', async () => {
     mockSuccessfulCheckoutInit()
-    render(<CheckoutClient />)
+    mockFetch.mockResolvedValueOnce({ ok: true, json: async () => ({}) })
+    render(<CheckoutClient customerEmail="user@example.com" />)
 
     await waitFor(() => {
       expect(screen.getByTestId('mock-pay-button')).toBeInTheDocument()
@@ -144,7 +147,8 @@ describe('CheckoutClient', () => {
 
   it('shows "Return to Home" link in success state', async () => {
     mockSuccessfulCheckoutInit()
-    render(<CheckoutClient />)
+    mockFetch.mockResolvedValueOnce({ ok: true, json: async () => ({}) })
+    render(<CheckoutClient customerEmail="user@example.com" />)
 
     await waitFor(() => {
       expect(screen.getByTestId('mock-pay-button')).toBeInTheDocument()
@@ -160,7 +164,7 @@ describe('CheckoutClient', () => {
 
   it('pre-fills email when customerEmail is provided', async () => {
     mockSuccessfulCheckoutInit()
-    // Extra call for PATCH email association (fire-and-forget)
+    // Extra call for PATCH email association
     mockFetch.mockResolvedValueOnce({ ok: true, json: async () => ({}) })
 
     render(<CheckoutClient customerEmail="user@example.com" />)
@@ -169,6 +173,16 @@ describe('CheckoutClient', () => {
       const emailInput = screen.getByLabelText('Email address') as HTMLInputElement
       expect(emailInput.value).toBe('user@example.com')
       expect(emailInput).toHaveAttribute('readOnly')
+    })
+  })
+
+  it('shows sign-in message when customerEmail is missing', async () => {
+    render(<CheckoutClient />)
+
+    await waitFor(() => {
+      expect(
+        screen.getByText('Please sign in to continue checkout.')
+      ).toBeInTheDocument()
     })
   })
 })

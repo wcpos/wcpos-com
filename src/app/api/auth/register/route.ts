@@ -31,6 +31,12 @@ export async function POST(request: Request) {
       message.toLowerCase().includes('duplicate')
     const status = isDuplicate ? 409 : 400
 
-    return NextResponse.json({ error: message }, { status })
+    return NextResponse.json(
+      {
+        error: message,
+        ...(isDuplicate && { code: 'ACCOUNT_EXISTS' }),
+      },
+      { status }
+    )
   }
 }

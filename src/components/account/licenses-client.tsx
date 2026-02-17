@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Loader2, Key, Monitor, Trash2, Download } from 'lucide-react'
+import Link from 'next/link'
 
 interface Machine {
   id: string
@@ -149,10 +150,10 @@ export function LicensesClient() {
                 </div>
                 {license.status.toLowerCase() === 'active' && (
                   <Button asChild size="sm">
-                    <a href={`https://updates.wcpos.com/pro/download/latest?key=${encodeURIComponent(license.key)}`}>
+                    <Link href="/account/downloads">
                       <Download className="mr-2 h-4 w-4" />
-                      Download
-                    </a>
+                      Downloads
+                    </Link>
                   </Button>
                 )}
               </div>

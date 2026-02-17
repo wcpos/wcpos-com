@@ -24,6 +24,7 @@ async function ProfileContent() {
             first_name: customer.first_name,
             last_name: customer.last_name,
             phone: customer.phone,
+            metadata: customer.metadata,
           }}
         />
         <div className="flex justify-between border-t pt-3 text-sm">

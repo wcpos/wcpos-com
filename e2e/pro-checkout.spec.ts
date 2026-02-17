@@ -24,6 +24,37 @@ const mockPaymentResult = {
   paymentSessionId: 'payses_mock_123',
 }
 
+async function authenticateCheckout(page: import('@playwright/test').Page) {
+  const email = process.env.E2E_TEST_EMAIL
+  const password = process.env.E2E_TEST_PASSWORD
+  if (!email || !password) {
+    return false
+  }
+
+  const response = await page.request.post('/api/auth/login', {
+    data: { email, password },
+  })
+  if (!response.ok()) {
+    return false
+  }
+
+  const setCookieHeader = response.headers()['set-cookie']
+  const tokenMatch = setCookieHeader?.match(/medusa-token=([^;]+)/)
+  if (!tokenMatch?.[1]) {
+    return false
+  }
+
+  await page.context().addCookies([
+    {
+      name: 'medusa-token',
+      value: decodeURIComponent(tokenMatch[1]),
+      url: 'http://localhost:3000',
+    },
+  ])
+
+  return true
+}
+
 async function setupCheckoutMocks(page: import('@playwright/test').Page) {
   // Mock cart creation
   await page.route('**/api/store/cart', async (route) => {
@@ -64,7 +95,19 @@ async function setupCheckoutMocks(page: import('@playwright/test').Page) {
 }
 
 test.describe('Checkout Flow', () => {
+  test('redirects unauthenticated users to login', async ({ page }) => {
+    await page.goto('/pro/checkout?variant=variant_mock_123&product=wcpos-pro-yearly')
+
+    await expect(page).toHaveURL(
+      /\/login\?redirect=%2Fpro%2Fcheckout%3Fvariant%3Dvariant_mock_123%26product%3Dwcpos-pro-yearly/
+    )
+  })
+
   test('navigates from pro page to checkout', async ({ page }) => {
+    test.skip(
+      !(await authenticateCheckout(page)),
+      'E2E_TEST_EMAIL/E2E_TEST_PASSWORD are required for authenticated checkout tests'
+    )
     await page.goto('/pro')
     await page.waitForLoadState('networkidle')
 
@@ -77,6 +120,10 @@ test.describe('Checkout Flow', () => {
   })
 
   test('displays order summary with correct product', async ({ page }) => {
+    test.skip(
+      !(await authenticateCheckout(page)),
+      'E2E_TEST_EMAIL/E2E_TEST_PASSWORD are required for authenticated checkout tests'
+    )
     await setupCheckoutMocks(page)
     await page.goto('/pro/checkout?variant=variant_mock_123&product=wcpos-pro-yearly')
 
@@ -86,6 +133,10 @@ test.describe('Checkout Flow', () => {
   })
 
   test('displays email field', async ({ page }) => {
+    test.skip(
+      !(await authenticateCheckout(page)),
+      'E2E_TEST_EMAIL/E2E_TEST_PASSWORD are required for authenticated checkout tests'
+    )
     await setupCheckoutMocks(page)
     await page.goto('/pro/checkout?variant=variant_mock_123&product=wcpos-pro-yearly')
 
@@ -95,6 +146,10 @@ test.describe('Checkout Flow', () => {
   test('displays payment method tabs', async ({ page }) => {
     test.skip(!process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY, 'Stripe not configured')
 
+    test.skip(
+      !(await authenticateCheckout(page)),
+      'E2E_TEST_EMAIL/E2E_TEST_PASSWORD are required for authenticated checkout tests'
+    )
     await setupCheckoutMocks(page)
     await page.goto('/pro/checkout?variant=variant_mock_123&product=wcpos-pro-yearly')
 
@@ -106,6 +161,10 @@ test.describe('Checkout Flow', () => {
   })
 
   test('shows error when no variant is provided', async ({ page }) => {
+    test.skip(
+      !(await authenticateCheckout(page)),
+      'E2E_TEST_EMAIL/E2E_TEST_PASSWORD are required for authenticated checkout tests'
+    )
     await page.goto('/pro/checkout')
 
     await expect(page.getByText('No product selected')).toBeVisible({ timeout: 10000 })
@@ -113,6 +172,10 @@ test.describe('Checkout Flow', () => {
   })
 
   test('back to pricing link works from checkout', async ({ page }) => {
+    test.skip(
+      !(await authenticateCheckout(page)),
+      'E2E_TEST_EMAIL/E2E_TEST_PASSWORD are required for authenticated checkout tests'
+    )
     await page.goto('/pro/checkout')
 
     // The page-level back link (not the error state one)
@@ -124,6 +187,10 @@ test.describe('Checkout Flow', () => {
   })
 
   test('shows error state when cart creation fails', async ({ page }) => {
+    test.skip(
+      !(await authenticateCheckout(page)),
+      'E2E_TEST_EMAIL/E2E_TEST_PASSWORD are required for authenticated checkout tests'
+    )
     // Mock cart creation to fail
     await page.route('**/api/store/cart', async (route) => {
       if (route.request().method() === 'POST') {

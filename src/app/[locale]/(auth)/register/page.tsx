@@ -1,7 +1,7 @@
 'use client'
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { Suspense, useState } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -16,7 +16,17 @@ import {
 } from '@/components/ui/card'
 
 export default function RegisterPage() {
+  return (
+    <Suspense>
+      <RegisterPageInner />
+    </Suspense>
+  )
+}
+
+function RegisterPageInner() {
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const redirectTo = searchParams.get('redirect') || '/account'
 
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
@@ -40,11 +50,16 @@ export default function RegisterPage() {
       const data = await response.json()
 
       if (!response.ok) {
+        if (response.status === 409 && data.code === 'ACCOUNT_EXISTS') {
+          setError('An account with this email already exists. Please sign in.')
+          return
+        }
+
         setError(data.error || 'Registration failed')
         return
       }
 
-      router.push('/account')
+      router.push(redirectTo)
     } catch {
       setError('Something went wrong. Please try again.')
     } finally {
@@ -125,7 +140,10 @@ export default function RegisterPage() {
         <CardFooter className="justify-center">
           <p className="text-sm text-muted-foreground">
             Already have an account?{' '}
-            <Link href="/login" className="text-primary hover:underline">
+            <Link
+              href={`/login?redirect=${encodeURIComponent(redirectTo)}`}
+              className="text-primary hover:underline"
+            >
               Sign in
             </Link>
           </p>

@@ -15,6 +15,7 @@ export interface GitHubReleaseInfo {
   name: string
   body: string
   publishedAt: string
+  draft: boolean
+  prerelease: boolean
   assets: GitHubAsset[]
 }
-

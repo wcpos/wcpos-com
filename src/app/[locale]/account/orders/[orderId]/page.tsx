@@ -1,5 +1,6 @@
 import { Suspense } from 'react'
 import { getCustomerOrderById } from '@/lib/medusa-auth'
+import { extractLicenseReferencesFromOrders } from '@/lib/licenses'
 import { formatOrderAmount } from '@/lib/order-display'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
@@ -15,25 +16,10 @@ async function OrderDetailContent({ params }: { params: Promise<{ orderId: strin
     notFound()
   }
 
-  const rawLicenses = order.metadata?.licenses
-  const licenses = Array.isArray(rawLicenses)
-    ? (rawLicenses as Array<{
-        license_id?: string
-        licenseId?: string
-        id?: string
-        license_key?: string
-        licenseKey?: string
-        key?: string
-      }>)
-        .map((license) => ({
-          licenseId: license.license_id ?? license.licenseId ?? license.id,
-          licenseKey: license.license_key ?? license.licenseKey ?? license.key,
-        }))
-        .filter(
-          (license): license is { licenseId: string; licenseKey: string } =>
-            Boolean(license.licenseId && license.licenseKey)
-        )
-    : undefined
+  const licenses = extractLicenseReferencesFromOrders([order]).filter(
+    (license): license is { id: string; key: string } =>
+      Boolean(license.id && license.key)
+  )
 
   return (
     <>
@@ -103,8 +89,8 @@ async function OrderDetailContent({ params }: { params: Promise<{ orderId: strin
           <CardContent>
             <div className="space-y-2">
               {licenses.map((lic) => (
-                <div key={lic.licenseId} className="flex items-center justify-between p-3 bg-muted rounded-lg">
-                  <code className="text-sm font-mono">{lic.licenseKey}</code>
+                <div key={lic.id} className="flex items-center justify-between p-3 bg-muted rounded-lg">
+                  <code className="text-sm font-mono">{lic.key}</code>
                   <Link
                     href="/account/licenses"
                     className="text-sm text-primary hover:underline"

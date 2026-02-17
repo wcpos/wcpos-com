@@ -35,6 +35,8 @@ export const mockRelease: GitHubReleaseInfo = {
   name: 'v1.8.2',
   body: 'Release notes for version 1.8.2\n\n- Bug fixes\n- Performance improvements',
   publishedAt: '2026-01-05T18:40:35Z',
+  draft: false,
+  prerelease: false,
   assets: [
     createMockAsset(1, 'WooCommerce-POS-darwin-arm64-1.8.2.zip', 116087844, 'application/zip'),
     createMockAsset(2, 'WooCommerce-POS-darwin-x64-1.8.2.zip', 120000000, 'application/zip'),
@@ -45,4 +47,3 @@ export const mockRelease: GitHubReleaseInfo = {
     createMockAsset(7, 'WooCommerce-POS-arm64-1.8.2.dmg', 118000000),
   ],
 }
-

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { addLineItem } from '@/services/core/external/medusa-client'
+import { getCustomer } from '@/lib/medusa-auth'
 import { storeLogger } from '@/lib/logger'
 
 /**
@@ -7,6 +8,14 @@ import { storeLogger } from '@/lib/logger'
  */
 export async function POST(request: NextRequest) {
   try {
+    const customer = await getCustomer()
+    if (!customer) {
+      return NextResponse.json(
+        { error: 'Authentication required' },
+        { status: 401 }
+      )
+    }
+
     const body = await request.json()
     const { cartId, variant_id, quantity } = body
 

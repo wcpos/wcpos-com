@@ -85,4 +85,58 @@ describe('PATCH /api/account/profile', () => {
     expect(json.error).toBe('Email is required')
     expect(mockUpdateCustomer).not.toHaveBeenCalled()
   })
+
+  it('merges account profile metadata for avatar and tax details', async () => {
+    mockGetCustomer.mockResolvedValueOnce({
+      id: 'cust_1',
+      metadata: {
+        oauth_avatar_url: 'https://avatars.example.com/oauth.jpg',
+        marketing_opt_in: true,
+      },
+    })
+    mockUpdateCustomer.mockResolvedValueOnce({
+      id: 'cust_1',
+      email: 'updated@example.com',
+      metadata: {},
+    })
+
+    const response = await PATCH(
+      new NextRequest('http://localhost:3000/api/account/profile', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: 'updated@example.com',
+          accountProfile: {
+            avatarDataUrl: 'data:image/png;base64,AAAA',
+            countryCode: 'US',
+            addressLine1: '123 Main St',
+            city: 'Austin',
+            region: 'TX',
+            postalCode: '78701',
+            taxNumber: '12-3456789',
+          },
+        }),
+      })
+    )
+
+    expect(response.status).toBe(200)
+    expect(mockUpdateCustomer).toHaveBeenCalledWith(
+      expect.objectContaining({
+        email: 'updated@example.com',
+        metadata: {
+          oauth_avatar_url: 'https://avatars.example.com/oauth.jpg',
+          marketing_opt_in: true,
+          account_profile: {
+            avatarDataUrl: 'data:image/png;base64,AAAA',
+            countryCode: 'US',
+            addressLine1: '123 Main St',
+            city: 'Austin',
+            region: 'TX',
+            postalCode: '78701',
+            taxNumber: '12-3456789',
+          },
+        },
+      })
+    )
+  })
 })

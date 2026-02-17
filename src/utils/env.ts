@@ -30,6 +30,7 @@ const envSchema = z.object({
   // Keygen License Server
   KEYGEN_HOST: z.string().default('license.wcpos.com'),
   KEYGEN_API_TOKEN: z.string().optional(),
+  DOWNLOAD_TOKEN_SECRET: z.string().optional(),
 
   // Logging
   LOKI_URL: z.string().url().optional(),
@@ -61,4 +62,3 @@ function validateEnv() {
 }
 
 export const env = validateEnv()
-

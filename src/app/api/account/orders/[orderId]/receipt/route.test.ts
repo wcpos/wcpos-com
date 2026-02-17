@@ -1,10 +1,12 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 const mockGetCustomerOrderById = vi.fn()
+const mockGetCustomer = vi.fn()
 
 vi.mock('@/lib/medusa-auth', () => ({
   getCustomerOrderById: (...args: unknown[]) =>
     mockGetCustomerOrderById(...args),
+  getCustomer: (...args: unknown[]) => mockGetCustomer(...args),
 }))
 
 import { GET } from './route'
@@ -12,6 +14,10 @@ import { GET } from './route'
 describe('GET /api/account/orders/[orderId]/receipt', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+    mockGetCustomer.mockResolvedValue({
+      id: 'cust_1',
+      metadata: {},
+    })
   })
 
   it('returns a PDF receipt for an owned order', async () => {

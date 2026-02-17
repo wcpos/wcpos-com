@@ -1,18 +1,10 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-const mockGetAllCustomerOrders = vi.fn()
-const mockGetLicenseWithMachines = vi.fn()
+const mockGetResolvedCustomerLicenses = vi.fn()
 
-vi.mock('@/lib/medusa-auth', () => ({
-  getAllCustomerOrders: (...args: unknown[]) =>
-    mockGetAllCustomerOrders(...args),
-}))
-
-vi.mock('@/services/core/external/license-client', () => ({
-  licenseClient: {
-    getLicenseWithMachines: (...args: unknown[]) =>
-      mockGetLicenseWithMachines(...args),
-  },
+vi.mock('@/lib/customer-licenses', () => ({
+  getResolvedCustomerLicenses: (...args: unknown[]) =>
+    mockGetResolvedCustomerLicenses(...args),
 }))
 
 import { GET } from './route'
@@ -22,43 +14,39 @@ describe('GET /api/account/licenses', () => {
     vi.clearAllMocks()
   })
 
-  it('returns licenses extracted from camelCase metadata IDs', async () => {
-    mockGetAllCustomerOrders.mockResolvedValueOnce([
-      {
-        id: 'order_1',
-        status: 'completed',
-        display_id: 1,
-        email: 'user@example.com',
-        currency_code: 'usd',
-        total: 129,
-        subtotal: 129,
-        tax_total: 0,
-        created_at: '2025-01-01T00:00:00Z',
-        updated_at: '2025-01-01T00:00:00Z',
-        items: [],
-        metadata: {
-          licenses: [{ licenseId: 'lic_123' }],
-        },
-      },
-    ])
+  it('returns 401 when unauthenticated', async () => {
+    mockGetResolvedCustomerLicenses.mockResolvedValueOnce({
+      authenticated: false,
+      licenses: [],
+    })
 
-    mockGetLicenseWithMachines.mockResolvedValueOnce({
-      id: 'lic_123',
-      key: 'ABCD-1234',
-      status: 'active',
-      expiry: null,
-      maxMachines: 5,
-      machines: [],
-      metadata: {},
-      policyId: 'policy_1',
-      createdAt: '2025-01-01T00:00:00Z',
+    const response = await GET()
+    expect(response.status).toBe(401)
+  })
+
+  it('returns resolved customer licenses', async () => {
+    mockGetResolvedCustomerLicenses.mockResolvedValueOnce({
+      authenticated: true,
+      licenses: [
+        {
+          id: 'lic_123',
+          key: 'WCPOS-AAAA-1111',
+          status: 'active',
+          expiry: null,
+          maxMachines: 1,
+          machines: [],
+          metadata: {},
+          policyId: 'policy_1',
+          createdAt: '2026-01-01T00:00:00Z',
+        },
+      ],
     })
 
     const response = await GET()
     const json = await response.json()
 
     expect(response.status).toBe(200)
-    expect(mockGetLicenseWithMachines).toHaveBeenCalledWith('lic_123')
     expect(json.licenses).toHaveLength(1)
+    expect(json.licenses[0].key).toBe('WCPOS-AAAA-1111')
   })
 })
