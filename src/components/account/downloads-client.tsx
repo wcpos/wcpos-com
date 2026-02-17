@@ -1,7 +1,7 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import { Download, Loader2 } from 'lucide-react'
+import { useState } from 'react'
+import { Download } from 'lucide-react'
 import { useLocale } from 'next-intl'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -15,38 +15,17 @@ interface DownloadRelease {
   allowed: boolean
 }
 
-export function DownloadsClient() {
+interface DownloadsClientProps {
+  initialReleases: DownloadRelease[]
+}
+
+export function DownloadsClient({ initialReleases }: DownloadsClientProps) {
   const locale = useLocale()
-  const [releases, setReleases] = useState<DownloadRelease[]>([])
-  const [loading, setLoading] = useState(true)
+  const releases = initialReleases
   const [downloadingVersion, setDownloadingVersion] = useState<string | null>(
     null
   )
   const [error, setError] = useState<string | null>(null)
-
-  useEffect(() => {
-    const loadReleases = async () => {
-      setError(null)
-      try {
-        const response = await fetch('/api/account/downloads')
-        if (!response.ok) {
-          throw new Error('Failed to load plugin versions')
-        }
-        const data = await response.json()
-        setReleases(data.releases || [])
-      } catch (err) {
-        setError(
-          err instanceof Error
-            ? err.message
-            : 'Failed to load plugin versions'
-        )
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    loadReleases()
-  }, [])
 
   const startDownload = async (version: string) => {
     setDownloadingVersion(version)
@@ -60,11 +39,16 @@ export function DownloadsClient() {
       })
 
       if (!response.ok) {
-        throw new Error('Download is not available for this version')
+        const payload = await response.json().catch(() => ({}))
+        const message =
+          typeof payload.error === 'string'
+            ? payload.error
+            : 'Download is not available for this version'
+        throw new Error(message)
       }
 
       const data = await response.json()
-      window.location.href = data.downloadUrl
+      window.location.assign(data.downloadUrl)
     } catch (err) {
       setError(
         err instanceof Error ? err.message : 'Failed to start download'
@@ -72,14 +56,6 @@ export function DownloadsClient() {
     } finally {
       setDownloadingVersion(null)
     }
-  }
-
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center py-12">
-        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
-      </div>
-    )
   }
 
   return (
@@ -122,12 +98,10 @@ export function DownloadsClient() {
                     disabled={!release.allowed || downloadingVersion === release.version}
                     onClick={() => startDownload(release.version)}
                   >
-                    {downloadingVersion === release.version ? (
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    ) : (
-                      <Download className="mr-2 h-4 w-4" />
-                    )}
-                    Download
+                    <Download className="mr-2 h-4 w-4" />
+                    {downloadingVersion === release.version
+                      ? 'Preparing...'
+                      : 'Download'}
                   </Button>
                 </div>
               ))}

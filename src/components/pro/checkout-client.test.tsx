@@ -100,6 +100,7 @@ describe('CheckoutClient', () => {
     mockFetch.mockReturnValue(new Promise(() => {}))
     render(<CheckoutClient customerEmail="user@example.com" />)
     expect(screen.getByText('Preparing checkout...')).toBeInTheDocument()
+    expect(document.querySelector('.animate-spin')).not.toBeInTheDocument()
   })
 
   it('renders order summary after checkout initialization', async () => {

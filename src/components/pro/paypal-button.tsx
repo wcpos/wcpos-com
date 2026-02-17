@@ -1,20 +1,15 @@
 'use client'
 
 import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js'
-import { Loader2 } from 'lucide-react'
 
 interface PayPalButtonProps {
   cartId: string
-  amount: number
-  currency: string
   onSuccess: (orderId: string) => void
   onError: (error: string) => void
 }
 
 export function PayPalButton({
   cartId,
-  amount,
-  currency,
   onSuccess,
   onError,
 }: PayPalButtonProps) {
@@ -22,8 +17,11 @@ export function PayPalButton({
 
   if (isPending) {
     return (
-      <div className="flex justify-center py-4">
-        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+      <div className="space-y-2 rounded-md border border-dashed p-4">
+        <div className="h-10 animate-pulse rounded bg-muted" />
+        <p className="text-center text-sm text-muted-foreground">
+          Loading PayPal secure checkout...
+        </p>
       </div>
     )
   }
@@ -74,7 +72,7 @@ export function PayPalButton({
           throw err
         }
       }}
-      onApprove={async (data) => {
+      onApprove={async () => {
         try {
           // Complete the cart after PayPal approval
           const response = await fetch('/api/store/cart/complete', {
