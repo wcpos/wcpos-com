@@ -1,7 +1,19 @@
 # WCPOS PostHog A/B Testing Cutover Design
 **Date:** 2026-02-17  
-**Status:** Approved in brainstorm  
+**Status:** App implementation in progress (wcpos-com done; wcpos-infra pending)  
 **Primary Goal:** Improve Pro checkout conversion with server-side A/B testing on `/pro` and `/pro/checkout`.
+
+---
+
+## Implementation Status (2026-02-17)
+
+- [x] Replace Umami env/script path in `wcpos-com`
+- [x] Add first-party distinct ID cookie in middleware
+- [x] Add server-side variant resolution with timeout fallback
+- [x] Add server-assigned experiment context to `/pro` and `/pro/checkout`
+- [x] Replace Umami click attributes with tracker-based events
+- [x] Add resilient server-side conversion tracking on cart completion
+- [ ] Replace Umami service with self-hosted PostHog in `wcpos-infra`
 
 ---
 
