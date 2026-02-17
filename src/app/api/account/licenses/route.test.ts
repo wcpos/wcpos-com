@@ -1,10 +1,11 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-const mockGetCustomerOrders = vi.fn()
+const mockGetAllCustomerOrders = vi.fn()
 const mockGetLicenseWithMachines = vi.fn()
 
 vi.mock('@/lib/medusa-auth', () => ({
-  getCustomerOrders: (...args: unknown[]) => mockGetCustomerOrders(...args),
+  getAllCustomerOrders: (...args: unknown[]) =>
+    mockGetAllCustomerOrders(...args),
 }))
 
 vi.mock('@/services/core/external/license-client', () => ({
@@ -22,7 +23,7 @@ describe('GET /api/account/licenses', () => {
   })
 
   it('returns licenses extracted from camelCase metadata IDs', async () => {
-    mockGetCustomerOrders.mockResolvedValueOnce([
+    mockGetAllCustomerOrders.mockResolvedValueOnce([
       {
         id: 'order_1',
         status: 'completed',

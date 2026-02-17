@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
-import { getCustomerOrders } from '@/lib/medusa-auth'
+import { getAllCustomerOrders } from '@/lib/medusa-auth'
 import { extractLicenseIdsFromOrders } from '@/lib/licenses'
 import { licenseClient } from '@/services/core/external/license-client'
 import { licenseLogger } from '@/lib/logger'
@@ -23,7 +23,7 @@ export async function DELETE(
   try {
     const { licenseId, machineId } = await params
 
-    const orders = await getCustomerOrders(100)
+    const orders = await getAllCustomerOrders()
 
     if (orders.length === 0) {
       return NextResponse.json(

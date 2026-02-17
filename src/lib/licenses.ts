@@ -14,10 +14,10 @@ export function extractLicenseIdsFromOrders(orders: MedusaOrder[]): string[] {
   const ids = new Set<string>()
 
   for (const order of orders) {
-    const licenses = order.metadata?.licenses as RawLicenseEntry[] | undefined
-    if (!licenses) continue
+    const licenses = order.metadata?.licenses
+    if (!Array.isArray(licenses)) continue
 
-    for (const license of licenses) {
+    for (const license of licenses as RawLicenseEntry[]) {
       const licenseId = getLicenseId(license)
       if (licenseId) ids.add(licenseId)
     }

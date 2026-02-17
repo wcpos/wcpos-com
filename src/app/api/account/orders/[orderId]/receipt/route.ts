@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { getCustomerOrders } from '@/lib/medusa-auth'
+import { getCustomerOrderById } from '@/lib/medusa-auth'
 import { buildTaxReceiptPdf } from '@/lib/pdf-receipt'
 
 export async function GET(
@@ -7,8 +7,7 @@ export async function GET(
   { params }: { params: Promise<{ orderId: string }> }
 ) {
   const { orderId } = await params
-  const orders = await getCustomerOrders(100)
-  const order = orders.find((currentOrder) => currentOrder.id === orderId)
+  const order = await getCustomerOrderById(orderId)
 
   if (!order) {
     return NextResponse.json({ error: 'Order not found' }, { status: 404 })

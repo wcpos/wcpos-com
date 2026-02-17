@@ -34,6 +34,8 @@ import {
   getCustomer,
   getAuthToken,
   getCustomerOrders,
+  getAllCustomerOrders,
+  getCustomerOrderById,
   updateCustomer,
   decodeMedusaToken,
   linkOrCreateCustomer,
@@ -280,6 +282,84 @@ describe('medusa-auth', () => {
 
       expect(orders).toEqual([])
       expect(mockFetch).not.toHaveBeenCalled()
+    })
+
+    it('passes offset and limit to Medusa orders query', async () => {
+      mockCookieStore.get.mockReturnValue({ value: 'valid_token' })
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ orders: [] }),
+      })
+
+      await getCustomerOrders(25, 50)
+
+      expect(mockFetch).toHaveBeenCalledWith(
+        'https://test-store-api.wcpos.com/store/orders?limit=25&offset=50',
+        expect.anything()
+      )
+    })
+  })
+
+  describe('getAllCustomerOrders', () => {
+    it('fetches paginated orders until all are loaded', async () => {
+      mockCookieStore.get.mockReturnValue({ value: 'valid_token' })
+      mockFetch
+        .mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({ orders: [{ id: 'order_1' }] }),
+        })
+        .mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({ orders: [] }),
+        })
+
+      const orders = await getAllCustomerOrders(1, 5)
+
+      expect(orders).toEqual([{ id: 'order_1' }])
+      expect(mockFetch).toHaveBeenCalledTimes(2)
+      expect(mockFetch).toHaveBeenNthCalledWith(
+        1,
+        'https://test-store-api.wcpos.com/store/orders?limit=1&offset=0',
+        expect.anything()
+      )
+      expect(mockFetch).toHaveBeenNthCalledWith(
+        2,
+        'https://test-store-api.wcpos.com/store/orders?limit=1&offset=1',
+        expect.anything()
+      )
+    })
+  })
+
+  describe('getCustomerOrderById', () => {
+    it('finds an order in a later page', async () => {
+      mockCookieStore.get.mockReturnValue({ value: 'valid_token' })
+      mockFetch
+        .mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({ orders: [{ id: 'order_a' }] }),
+        })
+        .mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({ orders: [{ id: 'order_target' }] }),
+        })
+
+      const order = await getCustomerOrderById('order_target', 1, 5)
+
+      expect(order).toEqual({ id: 'order_target' })
+      expect(mockFetch).toHaveBeenCalledTimes(2)
+    })
+
+    it('returns null when order does not exist', async () => {
+      mockCookieStore.get.mockReturnValue({ value: 'valid_token' })
+      mockFetch
+        .mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({ orders: [] }),
+        })
+
+      const order = await getCustomerOrderById('missing-order', 10, 3)
+
+      expect(order).toBeNull()
     })
   })
 

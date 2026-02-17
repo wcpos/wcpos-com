@@ -1,6 +1,6 @@
 import { setRequestLocale } from 'next-intl/server'
 import { Suspense } from 'react'
-import { getCustomer, getCustomerOrders } from '@/lib/medusa-auth'
+import { getAllCustomerOrders, getCustomer, getCustomerOrders } from '@/lib/medusa-auth'
 import { extractLicenseIdsFromOrders } from '@/lib/licenses'
 import { formatOrderAmount } from '@/lib/order-display'
 import { redirect } from 'next/navigation'
@@ -9,16 +9,17 @@ import { ShoppingBag, Key } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
 async function AccountOverviewContent() {
-  const [customer, orders] = await Promise.all([
+  const [customer, orders, allOrders] = await Promise.all([
     getCustomer(),
     getCustomerOrders(5),
+    getAllCustomerOrders(),
   ])
 
   if (!customer) {
     redirect('/login')
   }
 
-  const licenseCount = extractLicenseIdsFromOrders(orders).length
+  const licenseCount = extractLicenseIdsFromOrders(allOrders).length
 
   return (
     <>

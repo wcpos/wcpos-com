@@ -1,12 +1,27 @@
 import type { MedusaOrder } from './medusa-auth'
 import { formatOrderAmount } from './order-display'
 
-function escapePdfText(value: string): string {
-  return value.replace(/\\/g, '\\\\').replace(/\(/g, '\\(').replace(/\)/g, '\\)')
+function sanitizePdfText(value: string): string {
+  return value.replace(/[\u0000-\u001f\u007f]/g, ' ')
+}
+
+export function encodePdfTextToHex(value: string): string {
+  const sanitized = sanitizePdfText(value)
+  const utf16le = Buffer.from(sanitized, 'utf16le')
+  const utf16be = Buffer.alloc(utf16le.length)
+
+  for (let i = 0; i < utf16le.length; i += 2) {
+    utf16be[i] = utf16le[i + 1] ?? 0
+    utf16be[i + 1] = utf16le[i] ?? 0
+  }
+
+  return Buffer.concat([Buffer.from([0xfe, 0xff]), utf16be])
+    .toString('hex')
+    .toUpperCase()
 }
 
 function buildPdfFromLines(lines: string[]): Uint8Array {
-  const textLines = lines.map((line) => `(${escapePdfText(line)}) Tj`)
+  const textLines = lines.map((line) => `<${encodePdfTextToHex(line)}> Tj`)
   const textContent = [
     'BT',
     '/F1 12 Tf',

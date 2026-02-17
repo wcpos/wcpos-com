@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { getCustomerOrders } from '@/lib/medusa-auth'
+import { getAllCustomerOrders } from '@/lib/medusa-auth'
 import { extractLicenseIdsFromOrders } from '@/lib/licenses'
 import { licenseClient } from '@/services/core/external/license-client'
 import { licenseLogger } from '@/lib/logger'
@@ -18,7 +18,7 @@ import { licenseLogger } from '@/lib/logger'
 
 export async function GET() {
   try {
-    const orders = await getCustomerOrders()
+    const orders = await getAllCustomerOrders()
 
     if (orders.length === 0) {
       return NextResponse.json(

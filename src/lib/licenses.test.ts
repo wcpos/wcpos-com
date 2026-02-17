@@ -51,4 +51,14 @@ describe('extractLicenseIdsFromOrders', () => {
 
     expect(extractLicenseIdsFromOrders(orders)).toEqual(['lic_dup'])
   })
+
+  it('skips non-array license metadata safely', () => {
+    const orders = [
+      makeOrder({
+        licenses: 'not-an-array',
+      }),
+    ]
+
+    expect(extractLicenseIdsFromOrders(orders)).toEqual([])
+  })
 })

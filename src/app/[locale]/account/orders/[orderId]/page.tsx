@@ -1,5 +1,5 @@
 import { Suspense } from 'react'
-import { getCustomerOrders } from '@/lib/medusa-auth'
+import { getCustomerOrderById } from '@/lib/medusa-auth'
 import { formatOrderAmount } from '@/lib/order-display'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
@@ -9,32 +9,31 @@ import { Button } from '@/components/ui/button'
 
 async function OrderDetailContent({ params }: { params: Promise<{ orderId: string }> }) {
   const { orderId } = await params
-  const orders = await getCustomerOrders(50)
-  const order = orders.find((o) => o.id === orderId)
+  const order = await getCustomerOrderById(orderId)
 
   if (!order) {
     notFound()
   }
 
-  const licenses = (
-    order.metadata?.licenses as
-      | Array<{
-          license_id?: string
-          licenseId?: string
-          id?: string
-          license_key?: string
-          licenseKey?: string
-          key?: string
-        }>
-      | undefined
-  )
-    ?.map((license) => ({
-      licenseId: license.license_id ?? license.licenseId ?? license.id,
-      licenseKey: license.license_key ?? license.licenseKey ?? license.key,
-    }))
-    .filter((license): license is { licenseId: string; licenseKey: string } =>
-      Boolean(license.licenseId && license.licenseKey)
-    )
+  const rawLicenses = order.metadata?.licenses
+  const licenses = Array.isArray(rawLicenses)
+    ? (rawLicenses as Array<{
+        license_id?: string
+        licenseId?: string
+        id?: string
+        license_key?: string
+        licenseKey?: string
+        key?: string
+      }>)
+        .map((license) => ({
+          licenseId: license.license_id ?? license.licenseId ?? license.id,
+          licenseKey: license.license_key ?? license.licenseKey ?? license.key,
+        }))
+        .filter(
+          (license): license is { licenseId: string; licenseKey: string } =>
+            Boolean(license.licenseId && license.licenseKey)
+        )
+    : undefined
 
   return (
     <>

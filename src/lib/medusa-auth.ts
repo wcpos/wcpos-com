@@ -325,15 +325,19 @@ export async function updateCustomer(
  * GET /store/orders
  * Returns an empty array if no token or on failure.
  */
-export async function getCustomerOrders(
-  limit: number = 10
+async function fetchCustomerOrdersPage(
+  token: string,
+  limit: number,
+  offset: number
 ): Promise<MedusaOrder[]> {
-  const token = await getAuthToken()
-  if (!token) return []
-
   try {
+    const query = new URLSearchParams({
+      limit: String(limit),
+      offset: String(offset),
+    })
+
     const response = await fetch(
-      `${env.MEDUSA_BACKEND_URL}/store/orders?limit=${limit}`,
+      `${env.MEDUSA_BACKEND_URL}/store/orders?${query.toString()}`,
       {
         headers: {
           'Content-Type': 'application/json',
@@ -353,6 +357,61 @@ export async function getCustomerOrders(
     authLogger.error`Failed to get orders: ${error}`
     return []
   }
+}
+
+export async function getCustomerOrders(
+  limit: number = 10,
+  offset: number = 0
+): Promise<MedusaOrder[]> {
+  const token = await getAuthToken()
+  if (!token) return []
+
+  return fetchCustomerOrdersPage(token, limit, offset)
+}
+
+export async function getAllCustomerOrders(
+  batchSize: number = 50,
+  maxBatches: number = 20
+): Promise<MedusaOrder[]> {
+  const token = await getAuthToken()
+  if (!token) return []
+
+  const orders: MedusaOrder[] = []
+
+  for (let batch = 0; batch < maxBatches; batch += 1) {
+    const offset = batch * batchSize
+    const page = await fetchCustomerOrdersPage(token, batchSize, offset)
+
+    if (page.length === 0) break
+    orders.push(...page)
+
+    if (page.length < batchSize) break
+  }
+
+  return orders
+}
+
+export async function getCustomerOrderById(
+  orderId: string,
+  batchSize: number = 50,
+  maxBatches: number = 20
+): Promise<MedusaOrder | null> {
+  const token = await getAuthToken()
+  if (!token) return null
+
+  for (let batch = 0; batch < maxBatches; batch += 1) {
+    const offset = batch * batchSize
+    const page = await fetchCustomerOrdersPage(token, batchSize, offset)
+
+    if (page.length === 0) break
+
+    const order = page.find((currentOrder) => currentOrder.id === orderId)
+    if (order) return order
+
+    if (page.length < batchSize) break
+  }
+
+  return null
 }
 
 // ============================================================================
