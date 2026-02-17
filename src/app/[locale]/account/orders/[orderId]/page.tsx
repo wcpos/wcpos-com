@@ -1,24 +1,52 @@
 import { Suspense } from 'react'
-import { getCustomerOrders } from '@/lib/medusa-auth'
+import { getCustomerOrderById } from '@/lib/medusa-auth'
+import { formatOrderAmount } from '@/lib/order-display'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeft, FileDown } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
 
 async function OrderDetailContent({ params }: { params: Promise<{ orderId: string }> }) {
   const { orderId } = await params
-  const orders = await getCustomerOrders(50)
-  const order = orders.find((o) => o.id === orderId)
+  const order = await getCustomerOrderById(orderId)
 
   if (!order) {
     notFound()
   }
 
-  const licenses = order.metadata?.licenses as Array<{ license_id: string; license_key: string }> | undefined
+  const rawLicenses = order.metadata?.licenses
+  const licenses = Array.isArray(rawLicenses)
+    ? (rawLicenses as Array<{
+        license_id?: string
+        licenseId?: string
+        id?: string
+        license_key?: string
+        licenseKey?: string
+        key?: string
+      }>)
+        .map((license) => ({
+          licenseId: license.license_id ?? license.licenseId ?? license.id,
+          licenseKey: license.license_key ?? license.licenseKey ?? license.key,
+        }))
+        .filter(
+          (license): license is { licenseId: string; licenseKey: string } =>
+            Boolean(license.licenseId && license.licenseKey)
+        )
+    : undefined
 
   return (
     <>
       <h1 className="text-2xl font-bold">Order #{order.display_id}</h1>
+
+      <div>
+        <Button asChild variant="outline" size="sm">
+          <a href={`/api/account/orders/${order.id}/receipt`} target="_blank" rel="noreferrer">
+            <FileDown className="mr-2 h-4 w-4" />
+            Download tax receipt (PDF)
+          </a>
+        </Button>
+      </div>
 
       <div className="grid gap-4 md:grid-cols-2">
         <Card>
@@ -40,12 +68,7 @@ async function OrderDetailContent({ params }: { params: Promise<{ orderId: strin
             </div>
             <div className="flex justify-between font-medium pt-2 border-t">
               <span>Total</span>
-              <span>
-                {new Intl.NumberFormat('en-US', {
-                  style: 'currency',
-                  currency: order.currency_code,
-                }).format(order.total / 100)}
-              </span>
+              <span>{formatOrderAmount(order.total, order.currency_code)}</span>
             </div>
           </CardContent>
         </Card>
@@ -63,10 +86,7 @@ async function OrderDetailContent({ params }: { params: Promise<{ orderId: strin
                     <p className="text-sm text-muted-foreground">Qty: {item.quantity}</p>
                   </div>
                   <p className="font-medium">
-                    {new Intl.NumberFormat('en-US', {
-                      style: 'currency',
-                      currency: order.currency_code,
-                    }).format(item.total / 100)}
+                    {formatOrderAmount(item.total, order.currency_code)}
                   </p>
                 </div>
               ))}
@@ -83,8 +103,8 @@ async function OrderDetailContent({ params }: { params: Promise<{ orderId: strin
           <CardContent>
             <div className="space-y-2">
               {licenses.map((lic) => (
-                <div key={lic.license_id} className="flex items-center justify-between p-3 bg-muted rounded-lg">
-                  <code className="text-sm font-mono">{lic.license_key}</code>
+                <div key={lic.licenseId} className="flex items-center justify-between p-3 bg-muted rounded-lg">
+                  <code className="text-sm font-mono">{lic.licenseKey}</code>
                   <Link
                     href="/account/licenses"
                     className="text-sm text-primary hover:underline"

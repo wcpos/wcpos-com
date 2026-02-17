@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server'
-import { getCustomerOrders } from '@/lib/medusa-auth'
+import { getAllCustomerOrders } from '@/lib/medusa-auth'
+import { extractLicenseIdsFromOrders } from '@/lib/licenses'
 import { licenseClient } from '@/services/core/external/license-client'
 import { licenseLogger } from '@/lib/logger'
-import type { MedusaOrder } from '@/lib/medusa-auth'
 
 /**
  * Customer Licenses API
@@ -16,24 +16,9 @@ import type { MedusaOrder } from '@/lib/medusa-auth'
  * Ownership is verified by extracting license IDs from order metadata.
  */
 
-function extractLicenseIds(orders: MedusaOrder[]): string[] {
-  const ids: string[] = []
-  for (const order of orders) {
-    const licenses = order.metadata?.licenses as
-      | Array<{ license_id: string }>
-      | undefined
-    if (licenses) {
-      for (const lic of licenses) {
-        if (lic.license_id) ids.push(lic.license_id)
-      }
-    }
-  }
-  return ids
-}
-
 export async function GET() {
   try {
-    const orders = await getCustomerOrders()
+    const orders = await getAllCustomerOrders()
 
     if (orders.length === 0) {
       return NextResponse.json(
@@ -42,7 +27,7 @@ export async function GET() {
       )
     }
 
-    const licenseIds = extractLicenseIds(orders)
+    const licenseIds = extractLicenseIdsFromOrders(orders)
 
     const licenses = await Promise.all(
       licenseIds.map(async (id) => {

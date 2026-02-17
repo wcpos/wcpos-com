@@ -34,6 +34,9 @@ import {
   getCustomer,
   getAuthToken,
   getCustomerOrders,
+  getAllCustomerOrders,
+  getCustomerOrderById,
+  updateCustomer,
   decodeMedusaToken,
   linkOrCreateCustomer,
 } from './medusa-auth'
@@ -278,6 +281,136 @@ describe('medusa-auth', () => {
       const orders = await getCustomerOrders()
 
       expect(orders).toEqual([])
+      expect(mockFetch).not.toHaveBeenCalled()
+    })
+
+    it('passes offset and limit to Medusa orders query', async () => {
+      mockCookieStore.get.mockReturnValue({ value: 'valid_token' })
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ orders: [] }),
+      })
+
+      await getCustomerOrders(25, 50)
+
+      expect(mockFetch).toHaveBeenCalledWith(
+        'https://test-store-api.wcpos.com/store/orders?limit=25&offset=50',
+        expect.anything()
+      )
+    })
+  })
+
+  describe('getAllCustomerOrders', () => {
+    it('fetches paginated orders until all are loaded', async () => {
+      mockCookieStore.get.mockReturnValue({ value: 'valid_token' })
+      mockFetch
+        .mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({ orders: [{ id: 'order_1' }] }),
+        })
+        .mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({ orders: [] }),
+        })
+
+      const orders = await getAllCustomerOrders(1, 5)
+
+      expect(orders).toEqual([{ id: 'order_1' }])
+      expect(mockFetch).toHaveBeenCalledTimes(2)
+      expect(mockFetch).toHaveBeenNthCalledWith(
+        1,
+        'https://test-store-api.wcpos.com/store/orders?limit=1&offset=0',
+        expect.anything()
+      )
+      expect(mockFetch).toHaveBeenNthCalledWith(
+        2,
+        'https://test-store-api.wcpos.com/store/orders?limit=1&offset=1',
+        expect.anything()
+      )
+    })
+  })
+
+  describe('getCustomerOrderById', () => {
+    it('finds an order in a later page', async () => {
+      mockCookieStore.get.mockReturnValue({ value: 'valid_token' })
+      mockFetch
+        .mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({ orders: [{ id: 'order_a' }] }),
+        })
+        .mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({ orders: [{ id: 'order_target' }] }),
+        })
+
+      const order = await getCustomerOrderById('order_target', 1, 5)
+
+      expect(order).toEqual({ id: 'order_target' })
+      expect(mockFetch).toHaveBeenCalledTimes(2)
+    })
+
+    it('returns null when order does not exist', async () => {
+      mockCookieStore.get.mockReturnValue({ value: 'valid_token' })
+      mockFetch
+        .mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({ orders: [] }),
+        })
+
+      const order = await getCustomerOrderById('missing-order', 10, 3)
+
+      expect(order).toBeNull()
+    })
+  })
+
+  describe('updateCustomer', () => {
+    it('updates the current customer profile', async () => {
+      mockCookieStore.get.mockReturnValue({ value: 'valid_token' })
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          customer: {
+            id: 'cust_456',
+            email: 'user@example.com',
+            first_name: 'Updated',
+            last_name: 'Name',
+            phone: '+15551234567',
+            has_account: true,
+            created_at: '2024-01-01T00:00:00Z',
+            updated_at: '2024-02-01T00:00:00Z',
+          },
+        }),
+      })
+
+      const customer = await updateCustomer({
+        first_name: 'Updated',
+        last_name: 'Name',
+      })
+
+      expect(customer).toBeTruthy()
+      expect(customer?.first_name).toBe('Updated')
+      expect(mockFetch).toHaveBeenCalledWith(
+        'https://test-store-api.wcpos.com/store/customers/me',
+        expect.objectContaining({
+          method: 'POST',
+          headers: expect.objectContaining({
+            Authorization: 'Bearer valid_token',
+            'x-publishable-api-key': 'pk_test_abc123',
+          }),
+          body: JSON.stringify({
+            first_name: 'Updated',
+            last_name: 'Name',
+          }),
+        })
+      )
+    })
+
+    it('returns null when user is not authenticated', async () => {
+      mockCookieStore.get.mockReturnValue(undefined)
+
+      const customer = await updateCustomer({ first_name: 'Updated' })
+
+      expect(customer).toBeNull()
       expect(mockFetch).not.toHaveBeenCalled()
     })
   })

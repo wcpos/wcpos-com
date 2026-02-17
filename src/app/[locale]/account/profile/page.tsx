@@ -3,6 +3,7 @@ import { Suspense } from 'react'
 import { getCustomer } from '@/lib/medusa-auth'
 import { redirect } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { ProfileEditForm } from '@/components/account/profile-edit-form'
 
 async function ProfileContent() {
   const customer = await getCustomer()
@@ -14,27 +15,19 @@ async function ProfileContent() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-lg">Account Information</CardTitle>
+        <CardTitle className="text-lg">Profile details</CardTitle>
       </CardHeader>
       <CardContent className="space-y-3">
-        <div className="flex justify-between">
-          <span className="text-muted-foreground">Email</span>
-          <span>{customer.email}</span>
-        </div>
-        {customer.first_name && (
-          <div className="flex justify-between">
-            <span className="text-muted-foreground">First Name</span>
-            <span>{customer.first_name}</span>
-          </div>
-        )}
-        {customer.last_name && (
-          <div className="flex justify-between">
-            <span className="text-muted-foreground">Last Name</span>
-            <span>{customer.last_name}</span>
-          </div>
-        )}
-        <div className="flex justify-between">
-          <span className="text-muted-foreground">Member Since</span>
+        <ProfileEditForm
+          customer={{
+            email: customer.email,
+            first_name: customer.first_name,
+            last_name: customer.last_name,
+            phone: customer.phone,
+          }}
+        />
+        <div className="flex justify-between border-t pt-3 text-sm">
+          <span className="text-muted-foreground">Member since</span>
           <span>{new Date(customer.created_at).toLocaleDateString()}</span>
         </div>
       </CardContent>
