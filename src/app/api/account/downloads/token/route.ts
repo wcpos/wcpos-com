@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { env } from '@/utils/env'
-import { getCustomer } from '@/lib/medusa-auth'
+import { getAuthToken, getCustomer } from '@/lib/medusa-auth'
 import { getResolvedCustomerLicenses } from '@/lib/customer-licenses'
 import { createDownloadToken } from '@/lib/download-token'
 import {
@@ -16,7 +16,8 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
-  const secret = env.DOWNLOAD_TOKEN_SECRET || env.KEYGEN_API_TOKEN
+  const authToken = await getAuthToken()
+  const secret = env.DOWNLOAD_TOKEN_SECRET || env.KEYGEN_API_TOKEN || authToken
   if (!secret) {
     return NextResponse.json(
       { error: 'Download token secret not configured' },

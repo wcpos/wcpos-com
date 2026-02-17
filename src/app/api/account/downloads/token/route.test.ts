@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { NextRequest } from 'next/server'
 
 const mockGetCustomer = vi.fn()
+const mockGetAuthToken = vi.fn()
 const mockGetResolvedCustomerLicenses = vi.fn()
 const mockFindReleaseByVersion = vi.fn()
 const mockIsReleaseAllowedForLicenses = vi.fn()
@@ -9,6 +10,7 @@ const mockCreateDownloadToken = vi.fn()
 
 vi.mock('@/lib/medusa-auth', () => ({
   getCustomer: (...args: unknown[]) => mockGetCustomer(...args),
+  getAuthToken: (...args: unknown[]) => mockGetAuthToken(...args),
 }))
 
 vi.mock('@/lib/customer-licenses', () => ({
@@ -29,7 +31,7 @@ vi.mock('@/lib/download-token', () => ({
 
 vi.mock('@/utils/env', () => ({
   env: {
-    DOWNLOAD_TOKEN_SECRET: 'test-secret',
+    DOWNLOAD_TOKEN_SECRET: undefined,
     KEYGEN_API_TOKEN: undefined,
   },
 }))
@@ -56,6 +58,7 @@ describe('POST /api/account/downloads/token', () => {
 
   it('returns a signed download URL for allowed versions', async () => {
     mockGetCustomer.mockResolvedValueOnce({ id: 'cust_1' })
+    mockGetAuthToken.mockResolvedValueOnce('auth-token-secret')
     mockFindReleaseByVersion.mockResolvedValueOnce({
       version: '1.9.0',
       assetName: 'woocommerce-pos-pro-1.9.0.zip',
@@ -77,5 +80,12 @@ describe('POST /api/account/downloads/token', () => {
 
     expect(response.status).toBe(200)
     expect(json.downloadUrl).toContain('/api/account/download?token=signed-token')
+    expect(mockCreateDownloadToken).toHaveBeenCalledWith(
+      expect.objectContaining({
+        customerId: 'cust_1',
+        version: '1.9.0',
+      }),
+      'auth-token-secret'
+    )
   })
 })

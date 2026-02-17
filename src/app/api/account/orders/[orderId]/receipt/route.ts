@@ -44,7 +44,7 @@ function toReceiptProfile(metadata: Record<string, unknown> | undefined) {
 }
 
 export async function GET(
-  _request: Request,
+  request: Request,
   { params }: { params: Promise<{ orderId: string }> }
 ) {
   const { orderId } = await params
@@ -58,13 +58,17 @@ export async function GET(
   }
 
   const profile = toReceiptProfile(customer?.metadata)
-  const pdf = await buildTaxReceiptPdf(order, profile)
-  const normalizedPdf = new Uint8Array(pdf.byteLength)
-  normalizedPdf.set(pdf)
-  const pdfBlob = new Blob([normalizedPdf], { type: 'application/pdf' })
+  const localeHeader = request.headers.get('accept-language') || ''
+  const locale =
+    localeHeader
+      .split(',')
+      .map((part) => part.split(';')[0]?.trim())
+      .find(Boolean) || 'en-US'
+  const pdf = await buildTaxReceiptPdf(order, profile, locale)
+  const pdfBuffer = Buffer.from(pdf)
   const filename = `receipt-${order.display_id}.pdf`
 
-  return new NextResponse(pdfBlob, {
+  return new NextResponse(pdfBuffer, {
     status: 200,
     headers: {
       'Content-Type': 'application/pdf',

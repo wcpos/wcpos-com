@@ -67,4 +67,39 @@ describe('GET /api/account/orders/[orderId]/receipt', () => {
 
     expect(response.status).toBe(404)
   })
+
+  it('accepts weighted Accept-Language headers', async () => {
+    mockGetCustomerOrderById.mockResolvedValueOnce({
+      id: 'order_1',
+      status: 'completed',
+      display_id: 1001,
+      email: 'user@example.com',
+      currency_code: 'usd',
+      total: 129,
+      subtotal: 120,
+      tax_total: 9,
+      created_at: '2026-02-01T00:00:00Z',
+      updated_at: '2026-02-01T00:00:00Z',
+      items: [
+        {
+          id: 'item_1',
+          title: 'WCPOS Pro Yearly',
+          quantity: 1,
+          unit_price: 129,
+          total: 129,
+        },
+      ],
+    })
+
+    const response = await GET(
+      new Request('http://localhost:3000/api/account/orders/order_1/receipt', {
+        headers: {
+          'accept-language': 'en-US;q=0.9,en;q=0.8',
+        },
+      }),
+      { params: Promise.resolve({ orderId: 'order_1' }) }
+    )
+
+    expect(response.status).toBe(200)
+  })
 })

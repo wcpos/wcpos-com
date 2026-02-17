@@ -55,6 +55,7 @@ describe('GET /api/account/downloads', () => {
         version: '1.9.0',
         tagName: 'v1.9.0',
         name: 'WCPOS Pro 1.9.0',
+        releaseNotes: 'Bug fixes',
         publishedAt: '2026-02-01T00:00:00Z',
         assetName: 'woocommerce-pos-pro-1.9.0.zip',
         assetUrl: 'https://example.com/file.zip',
@@ -68,5 +69,6 @@ describe('GET /api/account/downloads', () => {
     expect(response.status).toBe(200)
     expect(json.releases).toHaveLength(1)
     expect(json.releases[0].allowed).toBe(true)
+    expect(json.releases[0].releaseNotes).toBe('Bug fixes')
   })
 })

@@ -1,6 +1,7 @@
-import { PDFDocument, StandardFonts, rgb } from 'pdf-lib'
+import { PDFDocument, StandardFonts, rgb, type PDFFont } from 'pdf-lib'
 import type { MedusaOrder } from './medusa-auth'
 import { formatOrderAmount } from './order-display'
+import { formatDateForLocale } from './date-format'
 
 export interface ReceiptAccountProfile {
   countryCode?: string | null
@@ -34,14 +35,17 @@ function drawLabelValueRow(params: {
   size?: number
 }) {
   const { page, label, value, x, y, labelFont, valueFont, size = 10 } = params
-  page.drawText(label, {
+  const safeLabel = sanitizeTextForFont(labelFont, label)
+  const safeValue = sanitizeTextForFont(valueFont, value)
+
+  page.drawText(safeLabel, {
     x,
     y,
     font: labelFont,
     size,
     color: rgb(0.33, 0.33, 0.33),
   })
-  page.drawText(value, {
+  page.drawText(safeValue, {
     x: x + 90,
     y,
     font: valueFont,
@@ -50,9 +54,25 @@ function drawLabelValueRow(params: {
   })
 }
 
+function sanitizeTextForFont(font: PDFFont, value: string): string {
+  let safeText = ''
+
+  for (const char of value.normalize('NFKD')) {
+    try {
+      font.encodeText(char)
+      safeText += char
+    } catch {
+      safeText += '?'
+    }
+  }
+
+  return safeText.replace(/\?{2,}/g, '?')
+}
+
 export async function buildTaxReceiptPdf(
   order: MedusaOrder,
-  accountProfile: ReceiptAccountProfile = {}
+  accountProfile: ReceiptAccountProfile = {},
+  locale: string = 'en-US'
 ): Promise<Uint8Array> {
   const pdf = await PDFDocument.create()
   const page = pdf.addPage([595.28, 841.89]) // A4
@@ -97,7 +117,7 @@ export async function buildTaxReceiptPdf(
   drawLabelValueRow({
     page,
     label: 'Order date',
-    value: new Date(order.created_at).toLocaleDateString('en-US'),
+    value: formatDateForLocale(order.created_at, locale),
     x: margin,
     y: infoTopY,
     labelFont: fontRegular,
@@ -139,7 +159,7 @@ export async function buildTaxReceiptPdf(
   }
 
   billingLines.forEach((line, index) => {
-    page.drawText(line, {
+    page.drawText(sanitizeTextForFont(fontRegular, line), {
       x: margin,
       y: billingTopY - 18 - index * 14,
       font: fontRegular,
@@ -187,32 +207,44 @@ export async function buildTaxReceiptPdf(
   })
 
   let rowY = tableTopY - 18
-  for (const item of order.items) {
-    page.drawText(item.title, {
+  for (const item of order.items ?? []) {
+    page.drawText(sanitizeTextForFont(fontRegular, item.title), {
       x: margin + 8,
       y: rowY,
       font: fontRegular,
       size: 10,
       maxWidth: qtyX - margin - 16,
     })
-    page.drawText(String(item.quantity), {
+    page.drawText(sanitizeTextForFont(fontRegular, String(item.quantity)), {
       x: qtyX,
       y: rowY,
       font: fontRegular,
       size: 10,
     })
-    page.drawText(formatOrderAmount(item.unit_price, order.currency_code), {
+    page.drawText(
+      sanitizeTextForFont(
+        fontRegular,
+        formatOrderAmount(item.unit_price, order.currency_code)
+      ),
+      {
       x: unitX,
       y: rowY,
       font: fontRegular,
       size: 10,
-    })
-    page.drawText(formatOrderAmount(item.total, order.currency_code), {
+      }
+    )
+    page.drawText(
+      sanitizeTextForFont(
+        fontRegular,
+        formatOrderAmount(item.total, order.currency_code)
+      ),
+      {
       x: totalX,
       y: rowY,
       font: fontRegular,
       size: 10,
-    })
+      }
+    )
     rowY -= 16
   }
 

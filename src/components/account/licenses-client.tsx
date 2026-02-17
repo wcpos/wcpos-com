@@ -1,10 +1,12 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { useLocale } from 'next-intl'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Loader2, Key, Monitor, Trash2, Download } from 'lucide-react'
 import Link from 'next/link'
+import { formatDateForLocale } from '@/lib/date-format'
 
 interface Machine {
   id: string
@@ -29,6 +31,7 @@ interface License {
 const YEARLY_POLICY = '261cb7e2-6e80-476e-98bd-fe7f406f258d'
 
 export function LicensesClient() {
+  const locale = useLocale()
   const [licenses, setLicenses] = useState<License[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -112,7 +115,7 @@ export function LicensesClient() {
           <CardContent className="py-8 text-center text-muted-foreground">
             <Key className="h-8 w-8 mx-auto mb-2 opacity-50" />
             <p>No licenses found.</p>
-            <p className="text-sm mt-1">Purchase WooCommerce POS Pro to get a license.</p>
+            <p className="text-sm mt-1">Purchase WCPOS Pro to get a license.</p>
           </CardContent>
         </Card>
       ) : (
@@ -140,7 +143,7 @@ export function LicensesClient() {
                   {license.expiry && (
                     <div>
                       <span className="text-muted-foreground">Expires: </span>
-                      <span>{new Date(license.expiry).toLocaleDateString()}</span>
+                      <span>{formatDateForLocale(license.expiry, locale)}</span>
                     </div>
                   )}
                   <div>
@@ -176,7 +179,7 @@ export function LicensesClient() {
                             <p className="text-xs text-muted-foreground">{machine.fingerprint}</p>
                           )}
                           <p className="text-xs text-muted-foreground">
-                            Added {new Date(machine.createdAt).toLocaleDateString()}
+                            Added {formatDateForLocale(machine.createdAt, locale)}
                           </p>
                         </div>
                       </div>

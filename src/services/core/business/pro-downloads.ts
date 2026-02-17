@@ -9,6 +9,7 @@ export interface ProPluginRelease {
   version: string
   tagName: string
   name: string
+  releaseNotes: string
   publishedAt: string
   assetName: string
   assetUrl: string
@@ -39,6 +40,7 @@ export async function getProPluginReleases(): Promise<ProPluginRelease[]> {
         version: normalizeReleaseVersion(release.tagName),
         tagName: release.tagName,
         name: release.name,
+        releaseNotes: release.body || '',
         publishedAt: release.publishedAt,
         assetName: asset.name,
         assetUrl: asset.browser_download_url,

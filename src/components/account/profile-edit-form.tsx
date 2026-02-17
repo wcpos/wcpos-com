@@ -1,10 +1,12 @@
 'use client'
 
 import { useMemo, useState } from 'react'
+import { useLocale } from 'next-intl'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { getConnectedAvatarUrlFromMetadata } from '@/lib/avatar'
 
 interface ProfileEditFormProps {
   customer: {
@@ -36,18 +38,28 @@ const COUNTRY_PROFILES: Record<string, CountryProfile> = {
   JP: { regionLabel: 'Prefecture', postalLabel: 'Postal code', taxLabel: 'Tax registration number' },
 }
 
-const COUNTRY_OPTIONS = [
-  ['US', 'United States'],
-  ['CA', 'Canada'],
-  ['GB', 'United Kingdom'],
-  ['AU', 'Australia'],
-  ['NZ', 'New Zealand'],
-  ['DE', 'Germany'],
-  ['FR', 'France'],
-  ['ES', 'Spain'],
-  ['IT', 'Italy'],
-  ['NL', 'Netherlands'],
-  ['JP', 'Japan'],
+const FALLBACK_COUNTRY_CODES = [
+  'AD', 'AE', 'AF', 'AG', 'AI', 'AL', 'AM', 'AO', 'AQ', 'AR', 'AS', 'AT',
+  'AU', 'AW', 'AX', 'AZ', 'BA', 'BB', 'BD', 'BE', 'BF', 'BG', 'BH', 'BI',
+  'BJ', 'BL', 'BM', 'BN', 'BO', 'BQ', 'BR', 'BS', 'BT', 'BV', 'BW', 'BY',
+  'BZ', 'CA', 'CC', 'CD', 'CF', 'CG', 'CH', 'CI', 'CK', 'CL', 'CM', 'CN',
+  'CO', 'CQ', 'CR', 'CU', 'CV', 'CW', 'CX', 'CY', 'CZ', 'DE', 'DJ', 'DK',
+  'DM', 'DO', 'DZ', 'EC', 'EE', 'EG', 'EH', 'ER', 'ES', 'ET', 'FI', 'FJ',
+  'FK', 'FM', 'FO', 'FR', 'GA', 'GB', 'GD', 'GE', 'GF', 'GG', 'GH', 'GI',
+  'GL', 'GM', 'GN', 'GP', 'GQ', 'GR', 'GS', 'GT', 'GU', 'GW', 'GY', 'HK',
+  'HM', 'HN', 'HR', 'HT', 'HU', 'ID', 'IE', 'IL', 'IM', 'IN', 'IO', 'IQ',
+  'IR', 'IS', 'IT', 'JE', 'JM', 'JO', 'JP', 'KE', 'KG', 'KH', 'KI', 'KM',
+  'KN', 'KP', 'KR', 'KW', 'KY', 'KZ', 'LA', 'LB', 'LC', 'LI', 'LK', 'LR',
+  'LS', 'LT', 'LU', 'LV', 'LY', 'MA', 'MC', 'MD', 'ME', 'MF', 'MG', 'MH',
+  'MK', 'ML', 'MM', 'MN', 'MO', 'MP', 'MQ', 'MR', 'MS', 'MT', 'MU', 'MV',
+  'MW', 'MX', 'MY', 'MZ', 'NA', 'NC', 'NE', 'NF', 'NG', 'NI', 'NL', 'NO',
+  'NP', 'NR', 'NU', 'NZ', 'OM', 'PA', 'PE', 'PF', 'PG', 'PH', 'PK', 'PL',
+  'PM', 'PN', 'PR', 'PS', 'PT', 'PW', 'PY', 'QA', 'RE', 'RO', 'RS', 'RU',
+  'RW', 'SA', 'SB', 'SC', 'SD', 'SE', 'SG', 'SH', 'SI', 'SJ', 'SK', 'SL',
+  'SM', 'SN', 'SO', 'SR', 'SS', 'ST', 'SV', 'SX', 'SY', 'SZ', 'TC', 'TD',
+  'TF', 'TG', 'TH', 'TJ', 'TK', 'TL', 'TM', 'TN', 'TO', 'TR', 'TT', 'TV',
+  'TW', 'TZ', 'UA', 'UG', 'UM', 'US', 'UY', 'UZ', 'VA', 'VC', 'VE', 'VG',
+  'VI', 'VN', 'VU', 'WF', 'WS', 'XK', 'YE', 'YT', 'ZA', 'ZM', 'ZW',
 ]
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -56,6 +68,55 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 
 function asString(value: unknown): string {
   return typeof value === 'string' ? value : ''
+}
+
+function getCountryCodes(displayNames: Intl.DisplayNames | null): string[] {
+  if (typeof Intl.supportedValuesOf === 'function') {
+    try {
+      const getSupportedValues = Intl.supportedValuesOf as (
+        key: string
+      ) => string[]
+      return getSupportedValues('region').filter((code) =>
+        /^[A-Z]{2}$/.test(code)
+      )
+    } catch {
+      // fall through to generated list
+    }
+  }
+
+  if (!displayNames) {
+    return FALLBACK_COUNTRY_CODES
+  }
+
+  const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+  const codes: string[] = []
+
+  for (const first of alphabet) {
+    for (const second of alphabet) {
+      const code = `${first}${second}`
+      const label = displayNames.of(code)
+      if (label && label !== code) {
+        codes.push(code)
+      }
+    }
+  }
+
+  return codes
+}
+
+function buildCountryOptions(locale: string): Array<[string, string]> {
+  const displayNames =
+    typeof Intl.DisplayNames === 'function'
+      ? new Intl.DisplayNames([locale], { type: 'region' })
+      : null
+
+  const uniqueCodes = Array.from(new Set(getCountryCodes(displayNames)))
+  const options = uniqueCodes
+    .map((code) => [code, displayNames?.of(code) || code] as [string, string])
+    .filter(([, label]) => Boolean(label))
+
+  options.sort((a, b) => a[1].localeCompare(b[1], locale))
+  return options
 }
 
 function getInitials(firstName: string, lastName: string, email: string): string {
@@ -86,9 +147,7 @@ function getAvatarUrlFromMetadata(metadata: Record<string, unknown> | undefined)
     : undefined
 
   return {
-    oauthAvatarUrl:
-      asString(metadata?.oauth_avatar_url) ||
-      asString(metadata?.avatar_url),
+    oauthAvatarUrl: getConnectedAvatarUrlFromMetadata(metadata),
     customAvatarUrl: asString(accountProfile?.avatarUrl),
     customAvatarDataUrl: asString(accountProfile?.avatarDataUrl),
     countryCode: asString(accountProfile?.countryCode) || 'US',
@@ -102,7 +161,9 @@ function getAvatarUrlFromMetadata(metadata: Record<string, unknown> | undefined)
 }
 
 export function ProfileEditForm({ customer }: ProfileEditFormProps) {
+  const locale = useLocale()
   const metadataDefaults = getAvatarUrlFromMetadata(customer.metadata)
+  const countryOptions = useMemo(() => buildCountryOptions(locale), [locale])
 
   const [email, setEmail] = useState(customer.email ?? '')
   const [firstName, setFirstName] = useState(customer.first_name ?? '')
@@ -307,7 +368,7 @@ export function ProfileEditForm({ customer }: ProfileEditFormProps) {
             onChange={(event) => setCountryCode(event.target.value)}
             className="h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm"
           >
-            {COUNTRY_OPTIONS.map(([value, label]) => (
+            {countryOptions.map(([value, label]) => (
               <option key={value} value={value}>
                 {label}
               </option>

@@ -11,6 +11,7 @@ function makeRelease(version: string, publishedAt: string): ProPluginRelease {
     version,
     tagName: `v${version}`,
     name: `WCPOS Pro ${version}`,
+    releaseNotes: '',
     publishedAt,
     assetName: `woocommerce-pos-pro-${version}.zip`,
     assetUrl: `https://downloads.example.com/${version}.zip`,

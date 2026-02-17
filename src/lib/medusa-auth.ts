@@ -41,6 +41,8 @@ export interface MedusaOrderItem {
 export interface MedusaOrder {
   id: string
   status: string
+  payment_status?: string
+  fulfillment_status?: string
   display_id: number
   email: string
   currency_code: string

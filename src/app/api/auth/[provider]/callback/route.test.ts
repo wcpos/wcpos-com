@@ -25,6 +25,8 @@ const mockSetAuthToken = vi.fn()
 const mockRefreshToken = vi.fn()
 const mockDecodeMedusaToken = vi.fn()
 const mockLinkOrCreateCustomer = vi.fn()
+const mockGetCustomer = vi.fn()
+const mockUpdateCustomer = vi.fn()
 
 vi.mock('@/lib/medusa-auth', () => ({
   completeOAuthCallback: (...args: unknown[]) =>
@@ -34,6 +36,8 @@ vi.mock('@/lib/medusa-auth', () => ({
   decodeMedusaToken: (...args: unknown[]) => mockDecodeMedusaToken(...args),
   linkOrCreateCustomer: (...args: unknown[]) =>
     mockLinkOrCreateCustomer(...args),
+  getCustomer: (...args: unknown[]) => mockGetCustomer(...args),
+  updateCustomer: (...args: unknown[]) => mockUpdateCustomer(...args),
 }))
 
 import { GET } from './route'
@@ -48,6 +52,11 @@ function fakeJwt(payload: Record<string, unknown>): string {
 describe('OAuth callback route', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+    mockGetCustomer.mockResolvedValue({
+      id: 'cust_1',
+      metadata: {},
+    })
+    mockUpdateCustomer.mockResolvedValue(undefined)
   })
 
   it('links or creates customer for new OAuth user (Google)', async () => {
@@ -171,6 +180,46 @@ describe('OAuth callback route', () => {
     expect(response.status).toBe(307)
     expect(new URL(response.headers.get('location')!).pathname).toBe(
       '/account'
+    )
+  })
+
+  it('stores connected avatar in customer metadata when available', async () => {
+    const token = fakeJwt({
+      actor_id: 'cust_existing',
+      user_metadata: {
+        email: 'avatar@example.com',
+        avatar_url: 'https://avatars.example.com/user.png',
+      },
+    })
+
+    mockCompleteOAuthCallback.mockResolvedValue(token)
+    mockDecodeMedusaToken.mockReturnValue({
+      actor_id: 'cust_existing',
+      actor_type: 'customer',
+      auth_identity_id: 'auth_789',
+      app_metadata: {},
+      user_metadata: {
+        email: 'avatar@example.com',
+        avatar_url: 'https://avatars.example.com/user.png',
+      },
+    })
+    mockSetAuthToken.mockResolvedValue(undefined)
+
+    const request = new NextRequest(
+      'https://wcpos.com/api/auth/google/callback?code=ghi&state=rst'
+    )
+
+    const response = await GET(request, {
+      params: Promise.resolve({ provider: 'google' }),
+    })
+
+    expect(response.status).toBe(307)
+    expect(mockUpdateCustomer).toHaveBeenCalledWith(
+      expect.objectContaining({
+        metadata: expect.objectContaining({
+          oauth_avatar_url: 'https://avatars.example.com/user.png',
+        }),
+      })
     )
   })
 

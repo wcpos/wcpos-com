@@ -54,4 +54,21 @@ describe('buildTaxReceiptPdf', () => {
     expect(decodedStream).toContain('42696C6C696E672064657461696C73')
     expect(decodedStream).toContain('31322D33343536373839')
   })
+
+  it('does not throw when order content includes unicode characters', async () => {
+    const unicodeOrder = {
+      ...baseOrder,
+      email: 'unicode@example.com',
+      items: [
+        {
+          ...baseOrder.items[0],
+          title: 'WCPOS Pro – São Paulo 😄',
+        },
+      ],
+    }
+
+    await expect(buildTaxReceiptPdf(unicodeOrder)).resolves.toBeInstanceOf(
+      Uint8Array
+    )
+  })
 })

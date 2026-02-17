@@ -2,6 +2,7 @@ import { createHash } from 'crypto'
 import Link from 'next/link'
 import type { MedusaCustomer } from '@/lib/medusa-auth'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { getConnectedAvatarUrlFromMetadata } from '@/lib/avatar'
 
 interface AccountHeaderProps {
   customer: MedusaCustomer
@@ -27,7 +28,7 @@ function getAvatarUrl(customer: MedusaCustomer): string {
   const customUrl = asString(accountProfile.avatarUrl)
   if (customUrl) return customUrl
 
-  const oauthAvatarUrl = asString(metadata.oauth_avatar_url) || asString(metadata.avatar_url)
+  const oauthAvatarUrl = getConnectedAvatarUrlFromMetadata(metadata)
   if (oauthAvatarUrl) return oauthAvatarUrl
 
   const hash = createHash('md5')
