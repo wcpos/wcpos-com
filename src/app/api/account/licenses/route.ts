@@ -1,7 +1,5 @@
 import { NextResponse } from 'next/server'
-import { getAllCustomerOrders } from '@/lib/medusa-auth'
-import { extractLicenseIdsFromOrders } from '@/lib/licenses'
-import { licenseClient } from '@/services/core/external/license-client'
+import { getResolvedCustomerLicenses } from '@/lib/customer-licenses'
 import { licenseLogger } from '@/lib/logger'
 
 /**
@@ -18,31 +16,16 @@ import { licenseLogger } from '@/lib/logger'
 
 export async function GET() {
   try {
-    const orders = await getAllCustomerOrders()
+    const { authenticated, licenses } = await getResolvedCustomerLicenses()
 
-    if (orders.length === 0) {
+    if (!authenticated) {
       return NextResponse.json(
         { error: 'Unauthorized' },
         { status: 401 }
       )
     }
 
-    const licenseIds = extractLicenseIdsFromOrders(orders)
-
-    const licenses = await Promise.all(
-      licenseIds.map(async (id) => {
-        try {
-          return await licenseClient.getLicenseWithMachines(id)
-        } catch (error) {
-          licenseLogger.error`Failed to fetch license ${id}: ${error}`
-          return null
-        }
-      })
-    )
-
-    const validLicenses = licenses.filter(Boolean)
-
-    return NextResponse.json({ licenses: validLicenses }, { status: 200 })
+    return NextResponse.json({ licenses }, { status: 200 })
   } catch (error) {
     licenseLogger.error`Failed to fetch licenses: ${error}`
     return NextResponse.json(

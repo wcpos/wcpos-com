@@ -26,7 +26,7 @@ export default function LoginPage() {
 function LoginPageInner() {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const redirect = searchParams.get('redirect') || '/account'
+  const redirectTo = searchParams.get('redirect') || '/account'
   const oauthError = searchParams.get('error')
 
   const [email, setEmail] = useState('')
@@ -57,7 +57,7 @@ function LoginPageInner() {
         return
       }
 
-      router.push(redirect)
+      router.push(redirectTo)
     } catch {
       setError('Something went wrong. Please try again.')
     } finally {
@@ -138,7 +138,10 @@ function LoginPageInner() {
         <CardFooter className="justify-center">
           <p className="text-sm text-muted-foreground">
             Don&apos;t have an account?{' '}
-            <Link href="/register" className="text-primary hover:underline">
+            <Link
+              href={`/register?redirect=${encodeURIComponent(redirectTo)}`}
+              className="text-primary hover:underline"
+            >
               Sign up
             </Link>
           </p>

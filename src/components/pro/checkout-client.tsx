@@ -84,6 +84,12 @@ export function CheckoutClient({ customerEmail }: CheckoutClientProps) {
   )
 
   const initializeCheckout = useCallback(async () => {
+    if (!customerEmail) {
+      setError('Please sign in to continue checkout.')
+      setIsLoading(false)
+      return
+    }
+
     if (!variantId) {
       setError('No product selected')
       setIsLoading(false)
@@ -144,14 +150,11 @@ export function CheckoutClient({ customerEmail }: CheckoutClientProps) {
         setClientSecret(paymentResult.clientSecret)
       }
 
-      // If customer is logged in, associate cart with their email
-      if (customerEmail && paymentResult.cart) {
-        fetch('/api/store/cart', {
+      if (paymentResult.cart) {
+        await fetch('/api/store/cart', {
           method: 'PATCH',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ cartId: paymentResult.cart.id, email: customerEmail }),
-        }).catch(() => {
-          // Email association failed, but checkout can continue
         })
       }
     } catch (err) {
@@ -361,13 +364,11 @@ export function CheckoutClient({ customerEmail }: CheckoutClientProps) {
               onChange={(e) => setEmail(e.target.value)}
               onBlur={updateEmail}
               required
-              readOnly={Boolean(customerEmail)}
-              className={customerEmail ? 'bg-muted' : ''}
+              readOnly
+              className="bg-muted"
             />
             <p className="text-sm text-muted-foreground">
-              {customerEmail
-                ? 'Using your account email'
-                : 'Your license key will be sent to this email'}
+              Using your account email
             </p>
           </div>
 

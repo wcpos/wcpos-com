@@ -63,10 +63,7 @@ describe('LicensesClient', () => {
     await waitFor(() => {
       const downloadLink = screen.getByRole('link', { name: /download/i })
       expect(downloadLink).toBeInTheDocument()
-      expect(downloadLink).toHaveAttribute(
-        'href',
-        'https://updates.wcpos.com/pro/download/latest?key=ABCD-EFGH-IJKL-MNOP'
-      )
+      expect(downloadLink).toHaveAttribute('href', '/account/downloads')
     })
   })
 
@@ -102,24 +99,6 @@ describe('LicensesClient', () => {
     })
 
     expect(screen.queryByRole('link', { name: /download/i })).not.toBeInTheDocument()
-  })
-
-  it('encodes special characters in the license key URL', async () => {
-    mockFetch.mockResolvedValueOnce({
-      ok: true,
-      json: async () => ({
-        licenses: [makeLicense({ key: 'KEY+WITH SPACES&CHARS' })],
-      }),
-    })
-
-    render(<LicensesClient />)
-
-    await waitFor(() => {
-      const downloadLink = screen.getByRole('link', { name: /download/i })
-      expect(downloadLink.getAttribute('href')).toContain(
-        encodeURIComponent('KEY+WITH SPACES&CHARS')
-      )
-    })
   })
 
   it('shows activations count', async () => {

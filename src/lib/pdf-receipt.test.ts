@@ -1,45 +1,57 @@
 import { describe, expect, it } from 'vitest'
-import { buildTaxReceiptPdf, encodePdfTextToHex } from './pdf-receipt'
+import { inflateSync } from 'zlib'
+import { buildTaxReceiptPdf } from './pdf-receipt'
 
-describe('encodePdfTextToHex', () => {
-  it('encodes text as UTF-16BE with BOM', () => {
-    expect(encodePdfTextToHex('Café')).toBe('FEFF00430061006600E9')
-  })
-
-  it('sanitizes control characters', () => {
-    expect(encodePdfTextToHex('Line\nBreak')).toBe(
-      encodePdfTextToHex('Line Break')
-    )
-  })
-})
+const baseOrder = {
+  id: 'order_1',
+  status: 'completed',
+  display_id: 1001,
+  email: 'user@example.com',
+  currency_code: 'usd',
+  total: 129,
+  subtotal: 120,
+  tax_total: 9,
+  created_at: '2026-02-01T00:00:00Z',
+  updated_at: '2026-02-01T00:00:00Z',
+  items: [
+    {
+      id: 'item_1',
+      title: 'WCPOS Pro Yearly',
+      quantity: 1,
+      unit_price: 129,
+      total: 129,
+    },
+  ],
+}
 
 describe('buildTaxReceiptPdf', () => {
-  it('uses hex text operators in the content stream', () => {
-    const pdf = buildTaxReceiptPdf({
-      id: 'order_1',
-      status: 'completed',
-      display_id: 1001,
-      email: 'user@example.com',
-      currency_code: 'usd',
-      total: 129,
-      subtotal: 120,
-      tax_total: 9,
-      created_at: '2026-02-01T00:00:00Z',
-      updated_at: '2026-02-01T00:00:00Z',
-      items: [
-        {
-          id: 'item_1',
-          title: 'WCPOS Pro Café\nYearly',
-          quantity: 1,
-          unit_price: 129,
-          total: 129,
-        },
-      ],
+  it('builds a PDF document', async () => {
+    const pdf = await buildTaxReceiptPdf(baseOrder)
+    const bytes = Buffer.from(pdf)
+
+    expect(bytes.subarray(0, 4).toString('utf8')).toBe('%PDF')
+    expect(bytes.byteLength).toBeGreaterThan(1000)
+  })
+
+  it('renders billing details and tax number when provided', async () => {
+    const pdf = await buildTaxReceiptPdf(baseOrder, {
+      countryCode: 'US',
+      addressLine1: '123 Main St',
+      city: 'Austin',
+      region: 'TX',
+      postalCode: '78701',
+      taxNumber: '12-3456789',
     })
 
-    const content = Buffer.from(pdf).toString('utf8')
+    const bytes = Buffer.from(pdf)
+    const raw = bytes.toString('latin1')
+    const streamMatch = raw.match(/stream\r?\n([\s\S]*?)\r?\nendstream/)
+    const streamContent = streamMatch?.[1]
+    expect(streamContent).toBeTruthy()
 
-    expect(content).toContain('<FEFF')
-    expect(content).not.toContain('(WCPOS - Tax Receipt)')
+    const decodedStream = inflateSync(Buffer.from(streamContent!, 'latin1')).toString('latin1')
+
+    expect(decodedStream).toContain('42696C6C696E672064657461696C73')
+    expect(decodedStream).toContain('31322D33343536373839')
   })
 })

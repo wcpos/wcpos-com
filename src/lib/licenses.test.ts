@@ -1,6 +1,9 @@
 import { describe, expect, it } from 'vitest'
 import type { MedusaOrder } from './medusa-auth'
-import { extractLicenseIdsFromOrders } from './licenses'
+import {
+  extractLicenseIdsFromOrders,
+  extractLicenseReferencesFromOrders,
+} from './licenses'
 
 function makeOrder(metadata: Record<string, unknown>): MedusaOrder {
   return {
@@ -60,5 +63,59 @@ describe('extractLicenseIdsFromOrders', () => {
     ]
 
     expect(extractLicenseIdsFromOrders(orders)).toEqual([])
+  })
+})
+
+describe('extractLicenseReferencesFromOrders', () => {
+  it('extracts references when metadata only includes license keys', () => {
+    const orders = [
+      makeOrder({
+        licenses: [
+          { license_key: 'WCPOS-AAAA-1111' },
+          { licenseKey: 'WCPOS-BBBB-2222' },
+          { key: 'WCPOS-CCCC-3333' },
+        ],
+      }),
+    ]
+
+    expect(extractLicenseReferencesFromOrders(orders)).toEqual([
+      { key: 'WCPOS-AAAA-1111' },
+      { key: 'WCPOS-BBBB-2222' },
+      { key: 'WCPOS-CCCC-3333' },
+    ])
+  })
+
+  it('extracts references from line item metadata and deduplicates by key', () => {
+    const orders: MedusaOrder[] = [
+      {
+        ...makeOrder({}),
+        items: [
+          {
+            id: 'item_1',
+            title: 'WCPOS Pro',
+            quantity: 1,
+            unit_price: 129,
+            total: 129,
+            metadata: {
+              license_key: 'WCPOS-AAAA-1111',
+            },
+          },
+          {
+            id: 'item_2',
+            title: 'WCPOS Pro',
+            quantity: 1,
+            unit_price: 129,
+            total: 129,
+            metadata: {
+              key: 'WCPOS-AAAA-1111',
+            },
+          },
+        ],
+      },
+    ]
+
+    expect(extractLicenseReferencesFromOrders(orders)).toEqual([
+      { key: 'WCPOS-AAAA-1111' },
+    ])
   })
 })

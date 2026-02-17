@@ -1,7 +1,7 @@
 import { setRequestLocale } from 'next-intl/server'
 import { Suspense } from 'react'
 import { getAllCustomerOrders, getCustomer, getCustomerOrders } from '@/lib/medusa-auth'
-import { extractLicenseIdsFromOrders } from '@/lib/licenses'
+import { extractLicenseReferencesFromOrders } from '@/lib/licenses'
 import { formatOrderAmount } from '@/lib/order-display'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
@@ -19,7 +19,7 @@ async function AccountOverviewContent() {
     redirect('/login')
   }
 
-  const licenseCount = extractLicenseIdsFromOrders(allOrders).length
+  const licenseCount = extractLicenseReferencesFromOrders(allOrders).length
 
   return (
     <>

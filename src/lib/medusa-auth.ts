@@ -25,6 +25,7 @@ export interface UpdateCustomerInput {
   first_name?: string
   last_name?: string
   phone?: string
+  metadata?: Record<string, unknown>
 }
 
 export interface MedusaOrderItem {
@@ -33,6 +34,7 @@ export interface MedusaOrderItem {
   quantity: number
   unit_price: number
   total: number
+  metadata?: Record<string, unknown>
   variant?: Record<string, unknown>
 }
 

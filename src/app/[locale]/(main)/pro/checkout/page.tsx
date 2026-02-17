@@ -4,21 +4,54 @@ import { CheckoutClient } from '@/components/pro/checkout-client'
 import { getCustomer } from '@/lib/medusa-auth'
 import { ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
+import { redirect } from 'next/navigation'
 
 export const metadata = {
   title: 'Checkout',
   description: 'Complete your purchase of WooCommerce POS Pro',
 }
 
-async function CheckoutContent() {
+function buildCheckoutRedirectPath(
+  searchParams: Record<string, string | string[] | undefined>
+): string {
+  const query = new URLSearchParams()
+  for (const [key, value] of Object.entries(searchParams)) {
+    if (Array.isArray(value)) {
+      for (const item of value) {
+        query.append(key, item)
+      }
+      continue
+    }
+
+    if (typeof value === 'string') {
+      query.set(key, value)
+    }
+  }
+
+  const queryString = query.toString()
+  return queryString ? `/pro/checkout?${queryString}` : '/pro/checkout'
+}
+
+async function CheckoutContent({
+  searchParamsPromise,
+}: {
+  searchParamsPromise: Promise<Record<string, string | string[] | undefined>>
+}) {
+  const searchParams = await searchParamsPromise
   const customer = await getCustomer()
+  if (!customer) {
+    const checkoutPath = buildCheckoutRedirectPath(searchParams)
+    redirect(`/login?redirect=${encodeURIComponent(checkoutPath)}`)
+  }
   return <CheckoutClient customerEmail={customer?.email} />
 }
 
 export default async function CheckoutPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ locale: string }>
+  searchParams: Promise<Record<string, string | string[] | undefined>>
 }) {
   const { locale } = await params
   setRequestLocale(locale)
@@ -43,7 +76,7 @@ export default async function CheckoutPage({
             </div>
           }
         >
-          <CheckoutContent />
+          <CheckoutContent searchParamsPromise={searchParams} />
         </Suspense>
       </div>
     </main>

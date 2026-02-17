@@ -23,6 +23,10 @@ const releaseCache = new Map<
   string,
   { data: GitHubRelease; timestamp: number }
 >()
+const releasesListCache = new Map<
+  string,
+  { data: GitHubRelease[]; timestamp: number }
+>()
 const CACHE_TTL_MS = 5 * 60 * 1000 // 5 minutes
 
 /**
@@ -81,6 +85,36 @@ export async function getReleaseByTag(
 }
 
 /**
+ * Get all releases for a repository.
+ */
+export async function getReleases(
+  repo: string
+): Promise<GitHubReleaseInfo[]> {
+  try {
+    const cached = releasesListCache.get(repo)
+    if (cached && Date.now() - cached.timestamp < CACHE_TTL_MS) {
+      return cached.data.map(transformRelease)
+    }
+
+    const response = await octokit.paginate(octokit.repos.listReleases, {
+      owner: GITHUB_OWNER,
+      repo,
+      per_page: 100,
+    })
+
+    releasesListCache.set(repo, {
+      data: response,
+      timestamp: Date.now(),
+    })
+
+    return response.map(transformRelease)
+  } catch (error) {
+    infraLogger.error`Failed to fetch releases for ${repo}: ${error}`
+    return []
+  }
+}
+
+/**
  * Transform GitHub API response to our internal type
  */
 function transformRelease(release: GitHubRelease): GitHubReleaseInfo {
@@ -89,6 +123,8 @@ function transformRelease(release: GitHubRelease): GitHubReleaseInfo {
     name: release.name || release.tag_name,
     body: release.body || '',
     publishedAt: release.published_at || new Date().toISOString(),
+    draft: release.draft,
+    prerelease: release.prerelease,
     assets: release.assets,
   }
 }
@@ -98,11 +134,12 @@ function transformRelease(release: GitHubRelease): GitHubReleaseInfo {
  */
 export function clearReleaseCache(): void {
   releaseCache.clear()
+  releasesListCache.clear()
 }
 
 export const githubClient = {
   getLatestRelease,
   getReleaseByTag,
+  getReleases,
   clearReleaseCache,
 }
-

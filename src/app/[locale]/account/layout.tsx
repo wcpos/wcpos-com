@@ -4,6 +4,7 @@ import { getCustomer } from '@/lib/medusa-auth'
 import { redirect } from 'next/navigation'
 import { AccountHeader } from '@/components/account/account-header'
 import { AccountSidebar } from '@/components/account/account-sidebar'
+import { SiteFooter } from '@/components/main/site-footer'
 
 async function AccountHeaderWrapper() {
   const customer = await getCustomer()
@@ -25,6 +26,16 @@ function AccountHeaderSkeleton() {
         <div className="h-5 w-48 bg-gray-200 rounded animate-pulse" />
       </div>
     </header>
+  )
+}
+
+function AccountFooterSkeleton() {
+  return (
+    <footer className="border-t py-8">
+      <div className="container mx-auto px-4">
+        <div className="h-5 w-48 animate-pulse rounded bg-muted" />
+      </div>
+    </footer>
   )
 }
 
@@ -51,6 +62,9 @@ export default async function AccountLayout({
           {children}
         </main>
       </div>
+      <Suspense fallback={<AccountFooterSkeleton />}>
+        <SiteFooter />
+      </Suspense>
     </div>
   )
 }

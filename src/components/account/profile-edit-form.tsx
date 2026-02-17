@@ -1,6 +1,7 @@
 'use client'
 
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -11,17 +12,151 @@ interface ProfileEditFormProps {
     first_name?: string
     last_name?: string
     phone?: string
+    metadata?: Record<string, unknown>
+  }
+}
+
+type CountryProfile = {
+  regionLabel: string
+  postalLabel: string
+  taxLabel: string
+}
+
+const COUNTRY_PROFILES: Record<string, CountryProfile> = {
+  US: { regionLabel: 'State', postalLabel: 'ZIP code', taxLabel: 'EIN / Tax ID' },
+  CA: { regionLabel: 'Province', postalLabel: 'Postal code', taxLabel: 'GST/HST number' },
+  GB: { regionLabel: 'County', postalLabel: 'Postcode', taxLabel: 'VAT number' },
+  AU: { regionLabel: 'State/Territory', postalLabel: 'Postcode', taxLabel: 'ABN' },
+  DE: { regionLabel: 'State', postalLabel: 'Postal code', taxLabel: 'VAT number' },
+  FR: { regionLabel: 'Region', postalLabel: 'Postal code', taxLabel: 'VAT number' },
+  ES: { regionLabel: 'Province', postalLabel: 'Postal code', taxLabel: 'NIF / VAT number' },
+  IT: { regionLabel: 'Province', postalLabel: 'Postal code', taxLabel: 'Partita IVA' },
+  NL: { regionLabel: 'Province', postalLabel: 'Postal code', taxLabel: 'VAT number' },
+  NZ: { regionLabel: 'Region', postalLabel: 'Postcode', taxLabel: 'GST number' },
+  JP: { regionLabel: 'Prefecture', postalLabel: 'Postal code', taxLabel: 'Tax registration number' },
+}
+
+const COUNTRY_OPTIONS = [
+  ['US', 'United States'],
+  ['CA', 'Canada'],
+  ['GB', 'United Kingdom'],
+  ['AU', 'Australia'],
+  ['NZ', 'New Zealand'],
+  ['DE', 'Germany'],
+  ['FR', 'France'],
+  ['ES', 'Spain'],
+  ['IT', 'Italy'],
+  ['NL', 'Netherlands'],
+  ['JP', 'Japan'],
+]
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return Boolean(value) && typeof value === 'object' && !Array.isArray(value)
+}
+
+function asString(value: unknown): string {
+  return typeof value === 'string' ? value : ''
+}
+
+function getInitials(firstName: string, lastName: string, email: string): string {
+  const first = firstName.trim().charAt(0)
+  const last = lastName.trim().charAt(0)
+
+  if (first || last) {
+    return `${first}${last}`.toUpperCase()
+  }
+
+  return email.trim().charAt(0).toUpperCase() || 'U'
+}
+
+function getAvatarUrlFromMetadata(metadata: Record<string, unknown> | undefined): {
+  oauthAvatarUrl: string
+  customAvatarUrl: string
+  customAvatarDataUrl: string
+  countryCode: string
+  addressLine1: string
+  addressLine2: string
+  city: string
+  region: string
+  postalCode: string
+  taxNumber: string
+} {
+  const accountProfile = isRecord(metadata?.account_profile)
+    ? metadata.account_profile
+    : undefined
+
+  return {
+    oauthAvatarUrl:
+      asString(metadata?.oauth_avatar_url) ||
+      asString(metadata?.avatar_url),
+    customAvatarUrl: asString(accountProfile?.avatarUrl),
+    customAvatarDataUrl: asString(accountProfile?.avatarDataUrl),
+    countryCode: asString(accountProfile?.countryCode) || 'US',
+    addressLine1: asString(accountProfile?.addressLine1),
+    addressLine2: asString(accountProfile?.addressLine2),
+    city: asString(accountProfile?.city),
+    region: asString(accountProfile?.region),
+    postalCode: asString(accountProfile?.postalCode),
+    taxNumber: asString(accountProfile?.taxNumber),
   }
 }
 
 export function ProfileEditForm({ customer }: ProfileEditFormProps) {
+  const metadataDefaults = getAvatarUrlFromMetadata(customer.metadata)
+
   const [email, setEmail] = useState(customer.email ?? '')
   const [firstName, setFirstName] = useState(customer.first_name ?? '')
   const [lastName, setLastName] = useState(customer.last_name ?? '')
   const [phone, setPhone] = useState(customer.phone ?? '')
+  const [countryCode, setCountryCode] = useState(metadataDefaults.countryCode)
+  const [addressLine1, setAddressLine1] = useState(metadataDefaults.addressLine1)
+  const [addressLine2, setAddressLine2] = useState(metadataDefaults.addressLine2)
+  const [city, setCity] = useState(metadataDefaults.city)
+  const [region, setRegion] = useState(metadataDefaults.region)
+  const [postalCode, setPostalCode] = useState(metadataDefaults.postalCode)
+  const [taxNumber, setTaxNumber] = useState(metadataDefaults.taxNumber)
+  const [customAvatarDataUrl, setCustomAvatarDataUrl] = useState(
+    metadataDefaults.customAvatarDataUrl
+  )
+  const [customAvatarUrl, setCustomAvatarUrl] = useState(
+    metadataDefaults.customAvatarUrl
+  )
   const [saving, setSaving] = useState(false)
   const [success, setSuccess] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
+
+  const countryProfile =
+    COUNTRY_PROFILES[countryCode] ?? COUNTRY_PROFILES.US
+
+  const avatarUrl = useMemo(() => {
+    return customAvatarDataUrl || customAvatarUrl || metadataDefaults.oauthAvatarUrl
+  }, [customAvatarDataUrl, customAvatarUrl, metadataDefaults.oauthAvatarUrl])
+
+  const initials = getInitials(firstName, lastName, email)
+
+  const handleAvatarFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    if (!file) return
+
+    if (file.size > 1024 * 1024) {
+      setError('Avatar image must be 1MB or smaller.')
+      return
+    }
+
+    const reader = new FileReader()
+    reader.onload = () => {
+      const result = typeof reader.result === 'string' ? reader.result : ''
+      if (!result.startsWith('data:image/')) {
+        setError('Please upload a valid image file.')
+        return
+      }
+
+      setError(null)
+      setCustomAvatarDataUrl(result)
+      setCustomAvatarUrl('')
+    }
+    reader.readAsDataURL(file)
+  }
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -38,6 +173,17 @@ export function ProfileEditForm({ customer }: ProfileEditFormProps) {
           first_name: firstName,
           last_name: lastName,
           phone,
+          accountProfile: {
+            avatarDataUrl: customAvatarDataUrl || null,
+            avatarUrl: customAvatarUrl || null,
+            countryCode,
+            addressLine1,
+            addressLine2: addressLine2 || null,
+            city,
+            region,
+            postalCode,
+            taxNumber: taxNumber || null,
+          },
         }),
       })
 
@@ -47,10 +193,23 @@ export function ProfileEditForm({ customer }: ProfileEditFormProps) {
         throw new Error(data.error || 'Failed to update profile')
       }
 
+      const updated = getAvatarUrlFromMetadata(
+        isRecord(data.customer?.metadata) ? data.customer.metadata : {}
+      )
+
       setEmail(data.customer.email ?? '')
       setFirstName(data.customer.first_name ?? '')
       setLastName(data.customer.last_name ?? '')
       setPhone(data.customer.phone ?? '')
+      setCountryCode(updated.countryCode || 'US')
+      setAddressLine1(updated.addressLine1)
+      setAddressLine2(updated.addressLine2)
+      setCity(updated.city)
+      setRegion(updated.region)
+      setPostalCode(updated.postalCode)
+      setTaxNumber(updated.taxNumber)
+      setCustomAvatarDataUrl(updated.customAvatarDataUrl)
+      setCustomAvatarUrl(updated.customAvatarUrl)
       setSuccess('Profile updated successfully.')
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to update profile')
@@ -60,7 +219,37 @@ export function ProfileEditForm({ customer }: ProfileEditFormProps) {
   }
 
   return (
-    <form className="space-y-4" onSubmit={handleSubmit}>
+    <form className="space-y-6" onSubmit={handleSubmit}>
+      <div className="space-y-3 rounded-lg border p-4">
+        <div className="flex items-center gap-4">
+          <Avatar className="h-16 w-16">
+            {avatarUrl ? <AvatarImage src={avatarUrl} alt="Avatar" /> : null}
+            <AvatarFallback>{initials}</AvatarFallback>
+          </Avatar>
+          <div className="space-y-2">
+            <Label htmlFor="profile-avatar-upload">Profile avatar</Label>
+            <Input
+              id="profile-avatar-upload"
+              type="file"
+              accept="image/*"
+              onChange={handleAvatarFileChange}
+            />
+            <p className="text-xs text-muted-foreground">
+              If your connected account has an avatar, it is used by default.
+            </p>
+          </div>
+        </div>
+        {customAvatarDataUrl && (
+          <Button
+            type="button"
+            variant="ghost"
+            onClick={() => setCustomAvatarDataUrl('')}
+          >
+            Remove uploaded avatar
+          </Button>
+        )}
+      </div>
+
       <div className="grid gap-4 md:grid-cols-2">
         <div className="space-y-2">
           <Label htmlFor="profile-first-name">First name</Label>
@@ -103,6 +292,87 @@ export function ProfileEditForm({ customer }: ProfileEditFormProps) {
           onChange={(event) => setPhone(event.target.value)}
           autoComplete="tel"
         />
+      </div>
+
+      <div className="space-y-4 rounded-lg border p-4">
+        <h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+          Billing details for receipts
+        </h3>
+
+        <div className="space-y-2">
+          <Label htmlFor="profile-country">Country</Label>
+          <select
+            id="profile-country"
+            value={countryCode}
+            onChange={(event) => setCountryCode(event.target.value)}
+            className="h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm"
+          >
+            {COUNTRY_OPTIONS.map(([value, label]) => (
+              <option key={value} value={value}>
+                {label}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="profile-address-line-1">Address line 1</Label>
+          <Input
+            id="profile-address-line-1"
+            value={addressLine1}
+            onChange={(event) => setAddressLine1(event.target.value)}
+            autoComplete="address-line1"
+          />
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="profile-address-line-2">Address line 2</Label>
+          <Input
+            id="profile-address-line-2"
+            value={addressLine2}
+            onChange={(event) => setAddressLine2(event.target.value)}
+            autoComplete="address-line2"
+          />
+        </div>
+
+        <div className="grid gap-4 md:grid-cols-3">
+          <div className="space-y-2">
+            <Label htmlFor="profile-city">City</Label>
+            <Input
+              id="profile-city"
+              value={city}
+              onChange={(event) => setCity(event.target.value)}
+              autoComplete="address-level2"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="profile-region">{countryProfile.regionLabel}</Label>
+            <Input
+              id="profile-region"
+              value={region}
+              onChange={(event) => setRegion(event.target.value)}
+              autoComplete="address-level1"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="profile-postal-code">{countryProfile.postalLabel}</Label>
+            <Input
+              id="profile-postal-code"
+              value={postalCode}
+              onChange={(event) => setPostalCode(event.target.value)}
+              autoComplete="postal-code"
+            />
+          </div>
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="profile-tax-number">{countryProfile.taxLabel}</Label>
+          <Input
+            id="profile-tax-number"
+            value={taxNumber}
+            onChange={(event) => setTaxNumber(event.target.value)}
+          />
+        </div>
       </div>
 
       {error && (

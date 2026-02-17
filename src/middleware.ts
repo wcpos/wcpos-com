@@ -56,13 +56,18 @@ export function middleware(request: NextRequest) {
   const localePattern = routing.locales.join('|')
   const localeRegex = new RegExp(`^/(${localePattern})(?=/|$)`)
   const pathnameWithoutLocale = pathname.replace(localeRegex, '') || '/'
+  const pathnameWithQuery = `${pathnameWithoutLocale}${request.nextUrl.search}`
 
   // Protected routes: /account/* requires a medusa-token cookie
-  if (pathnameWithoutLocale.startsWith('/account')) {
+  const requiresAuth =
+    pathnameWithoutLocale.startsWith('/account') ||
+    pathnameWithoutLocale.startsWith('/pro/checkout')
+
+  if (requiresAuth) {
     const token = request.cookies.get(COOKIE_NAME)?.value
     if (!token) {
       const loginUrl = new URL('/login', request.url)
-      loginUrl.searchParams.set('redirect', pathnameWithoutLocale)
+      loginUrl.searchParams.set('redirect', pathnameWithQuery)
       return NextResponse.redirect(loginUrl)
     }
   }

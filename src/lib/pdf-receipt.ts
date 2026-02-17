@@ -1,91 +1,270 @@
+import { PDFDocument, StandardFonts, rgb } from 'pdf-lib'
 import type { MedusaOrder } from './medusa-auth'
 import { formatOrderAmount } from './order-display'
 
-function sanitizePdfText(value: string): string {
-  return value.replace(/[\u0000-\u001f\u007f]/g, ' ')
+export interface ReceiptAccountProfile {
+  countryCode?: string | null
+  addressLine1?: string | null
+  addressLine2?: string | null
+  city?: string | null
+  region?: string | null
+  postalCode?: string | null
+  taxNumber?: string | null
 }
 
-export function encodePdfTextToHex(value: string): string {
-  const sanitized = sanitizePdfText(value)
-  const utf16le = Buffer.from(sanitized, 'utf16le')
-  const utf16be = Buffer.alloc(utf16le.length)
-
-  for (let i = 0; i < utf16le.length; i += 2) {
-    utf16be[i] = utf16le[i + 1] ?? 0
-    utf16be[i + 1] = utf16le[i] ?? 0
-  }
-
-  return Buffer.concat([Buffer.from([0xfe, 0xff]), utf16be])
-    .toString('hex')
-    .toUpperCase()
+function normalize(value: string | null | undefined): string {
+  return typeof value === 'string' ? value.trim() : ''
 }
 
-function buildPdfFromLines(lines: string[]): Uint8Array {
-  const textLines = lines.map((line) => `<${encodePdfTextToHex(line)}> Tj`)
-  const textContent = [
-    'BT',
-    '/F1 12 Tf',
-    '50 760 Td',
-    ...textLines.flatMap((line, index) =>
-      index === 0 ? [line] : ['0 -18 Td', line]
-    ),
-    'ET',
-  ].join('\n')
-
-  const objects = [
-    '1 0 obj << /Type /Catalog /Pages 2 0 R >> endobj',
-    '2 0 obj << /Type /Pages /Kids [3 0 R] /Count 1 >> endobj',
-    '3 0 obj << /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 5 0 R >> >> /Contents 4 0 R >> endobj',
-    `4 0 obj << /Length ${Buffer.byteLength(textContent, 'utf8')} >> stream\n${textContent}\nendstream endobj`,
-    '5 0 obj << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> endobj',
-  ]
-
-  let pdf = '%PDF-1.4\n'
-  const offsets: number[] = [0]
-
-  for (const object of objects) {
-    offsets.push(Buffer.byteLength(pdf, 'utf8'))
-    pdf += `${object}\n`
-  }
-
-  const xrefStart = Buffer.byteLength(pdf, 'utf8')
-  pdf += `xref\n0 ${objects.length + 1}\n`
-  pdf += '0000000000 65535 f \n'
-
-  for (let i = 1; i < offsets.length; i += 1) {
-    pdf += `${offsets[i].toString().padStart(10, '0')} 00000 n \n`
-  }
-
-  pdf += `trailer << /Size ${objects.length + 1} /Root 1 0 R >>\n`
-  pdf += `startxref\n${xrefStart}\n%%EOF`
-
-  return Buffer.from(pdf, 'utf8')
+function buildAddressLine(profile: ReceiptAccountProfile): string {
+  const city = normalize(profile.city)
+  const region = normalize(profile.region)
+  const postalCode = normalize(profile.postalCode)
+  return [city, region, postalCode].filter(Boolean).join(', ')
 }
 
-export function buildTaxReceiptPdf(order: MedusaOrder): Uint8Array {
-  const lines: string[] = [
-    'WCPOS - Tax Receipt',
-    `Order #: ${order.display_id}`,
-    `Order ID: ${order.id}`,
-    `Date: ${new Date(order.created_at).toLocaleDateString('en-US')}`,
-    `Customer: ${order.email}`,
-    '',
-    'Items:',
-  ]
+function drawLabelValueRow(params: {
+  page: import('pdf-lib').PDFPage
+  label: string
+  value: string
+  x: number
+  y: number
+  labelFont: import('pdf-lib').PDFFont
+  valueFont: import('pdf-lib').PDFFont
+  size?: number
+}) {
+  const { page, label, value, x, y, labelFont, valueFont, size = 10 } = params
+  page.drawText(label, {
+    x,
+    y,
+    font: labelFont,
+    size,
+    color: rgb(0.33, 0.33, 0.33),
+  })
+  page.drawText(value, {
+    x: x + 90,
+    y,
+    font: valueFont,
+    size,
+    color: rgb(0.1, 0.1, 0.1),
+  })
+}
 
+export async function buildTaxReceiptPdf(
+  order: MedusaOrder,
+  accountProfile: ReceiptAccountProfile = {}
+): Promise<Uint8Array> {
+  const pdf = await PDFDocument.create()
+  const page = pdf.addPage([595.28, 841.89]) // A4
+  const fontRegular = await pdf.embedFont(StandardFonts.Helvetica)
+  const fontBold = await pdf.embedFont(StandardFonts.HelveticaBold)
+
+  const margin = 48
+  const width = page.getWidth()
+
+  page.drawRectangle({
+    x: 0,
+    y: page.getHeight() - 110,
+    width,
+    height: 110,
+    color: rgb(0.1, 0.2, 0.5),
+  })
+
+  page.drawText('WCPOS', {
+    x: margin,
+    y: page.getHeight() - 56,
+    font: fontBold,
+    size: 22,
+    color: rgb(1, 1, 1),
+  })
+  page.drawText('Tax Receipt', {
+    x: margin,
+    y: page.getHeight() - 82,
+    font: fontRegular,
+    size: 13,
+    color: rgb(0.9, 0.94, 1),
+  })
+
+  page.drawText(`Order #${order.display_id}`, {
+    x: width - 200,
+    y: page.getHeight() - 60,
+    font: fontBold,
+    size: 13,
+    color: rgb(1, 1, 1),
+  })
+
+  const infoTopY = page.getHeight() - 145
+  drawLabelValueRow({
+    page,
+    label: 'Order date',
+    value: new Date(order.created_at).toLocaleDateString('en-US'),
+    x: margin,
+    y: infoTopY,
+    labelFont: fontRegular,
+    valueFont: fontBold,
+  })
+  drawLabelValueRow({
+    page,
+    label: 'Customer',
+    value: order.email,
+    x: margin,
+    y: infoTopY - 16,
+    labelFont: fontRegular,
+    valueFont: fontRegular,
+  })
+
+  const billingTopY = infoTopY - 56
+  page.drawText('Billing details', {
+    x: margin,
+    y: billingTopY,
+    font: fontBold,
+    size: 12,
+    color: rgb(0.1, 0.1, 0.1),
+  })
+
+  const billingLines: string[] = []
+  const addressLine1 = normalize(accountProfile.addressLine1)
+  const addressLine2 = normalize(accountProfile.addressLine2)
+  const locationLine = buildAddressLine(accountProfile)
+  const countryCode = normalize(accountProfile.countryCode)
+  const taxNumber = normalize(accountProfile.taxNumber)
+
+  if (addressLine1) billingLines.push(addressLine1)
+  if (addressLine2) billingLines.push(addressLine2)
+  if (locationLine) billingLines.push(locationLine)
+  if (countryCode) billingLines.push(countryCode)
+  if (taxNumber) billingLines.push(`Tax number: ${taxNumber}`)
+  if (billingLines.length === 0) {
+    billingLines.push('No billing details on file')
+  }
+
+  billingLines.forEach((line, index) => {
+    page.drawText(line, {
+      x: margin,
+      y: billingTopY - 18 - index * 14,
+      font: fontRegular,
+      size: 10,
+      color: rgb(0.18, 0.18, 0.18),
+    })
+  })
+
+  const tableTopY = billingTopY - 120
+  page.drawRectangle({
+    x: margin,
+    y: tableTopY,
+    width: width - margin * 2,
+    height: 24,
+    color: rgb(0.94, 0.95, 0.97),
+  })
+
+  const qtyX = width - margin - 200
+  const unitX = width - margin - 140
+  const totalX = width - margin - 70
+
+  page.drawText('Item', {
+    x: margin + 8,
+    y: tableTopY + 8,
+    font: fontBold,
+    size: 10,
+  })
+  page.drawText('Qty', {
+    x: qtyX,
+    y: tableTopY + 8,
+    font: fontBold,
+    size: 10,
+  })
+  page.drawText('Unit', {
+    x: unitX,
+    y: tableTopY + 8,
+    font: fontBold,
+    size: 10,
+  })
+  page.drawText('Total', {
+    x: totalX,
+    y: tableTopY + 8,
+    font: fontBold,
+    size: 10,
+  })
+
+  let rowY = tableTopY - 18
   for (const item of order.items) {
-    lines.push(
-      `${item.title} x${item.quantity} - ${formatOrderAmount(
-        item.total,
-        order.currency_code
-      )}`
-    )
+    page.drawText(item.title, {
+      x: margin + 8,
+      y: rowY,
+      font: fontRegular,
+      size: 10,
+      maxWidth: qtyX - margin - 16,
+    })
+    page.drawText(String(item.quantity), {
+      x: qtyX,
+      y: rowY,
+      font: fontRegular,
+      size: 10,
+    })
+    page.drawText(formatOrderAmount(item.unit_price, order.currency_code), {
+      x: unitX,
+      y: rowY,
+      font: fontRegular,
+      size: 10,
+    })
+    page.drawText(formatOrderAmount(item.total, order.currency_code), {
+      x: totalX,
+      y: rowY,
+      font: fontRegular,
+      size: 10,
+    })
+    rowY -= 16
   }
 
-  lines.push('')
-  lines.push(`Subtotal: ${formatOrderAmount(order.subtotal, order.currency_code)}`)
-  lines.push(`Tax: ${formatOrderAmount(order.tax_total, order.currency_code)}`)
-  lines.push(`Total: ${formatOrderAmount(order.total, order.currency_code)}`)
+  rowY -= 8
+  page.drawLine({
+    start: { x: width - margin - 180, y: rowY },
+    end: { x: width - margin, y: rowY },
+    thickness: 1,
+    color: rgb(0.82, 0.82, 0.84),
+  })
+  rowY -= 16
 
-  return buildPdfFromLines(lines)
+  drawLabelValueRow({
+    page,
+    label: 'Subtotal',
+    value: formatOrderAmount(order.subtotal, order.currency_code),
+    x: width - margin - 180,
+    y: rowY,
+    labelFont: fontRegular,
+    valueFont: fontRegular,
+  })
+  rowY -= 14
+  drawLabelValueRow({
+    page,
+    label: 'Tax',
+    value: formatOrderAmount(order.tax_total, order.currency_code),
+    x: width - margin - 180,
+    y: rowY,
+    labelFont: fontRegular,
+    valueFont: fontRegular,
+  })
+  rowY -= 16
+  drawLabelValueRow({
+    page,
+    label: 'Total',
+    value: formatOrderAmount(order.total, order.currency_code),
+    x: width - margin - 180,
+    y: rowY,
+    labelFont: fontBold,
+    valueFont: fontBold,
+    size: 11,
+  })
+
+  page.drawText('Thank you for your WCPOS Pro purchase.', {
+    x: margin,
+    y: 72,
+    font: fontRegular,
+    size: 10,
+    color: rgb(0.35, 0.35, 0.35),
+  })
+
+  return pdf.save({
+    useObjectStreams: false,
+  })
 }

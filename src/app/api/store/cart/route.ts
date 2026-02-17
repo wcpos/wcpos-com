@@ -4,6 +4,7 @@ import {
   getCart,
   updateCart,
 } from '@/services/core/external/medusa-client'
+import { getCustomer } from '@/lib/medusa-auth'
 import { storeLogger } from '@/lib/logger'
 
 /**
@@ -11,8 +12,19 @@ import { storeLogger } from '@/lib/logger'
  */
 export async function POST(request: NextRequest) {
   try {
+    const customer = await getCustomer()
+    if (!customer) {
+      return NextResponse.json(
+        { error: 'Authentication required' },
+        { status: 401 }
+      )
+    }
+
     const body = await request.json().catch(() => ({}))
-    const cart = await createCart(body)
+    const cart = await createCart({
+      ...body,
+      email: customer.email,
+    })
 
     if (!cart) {
       return NextResponse.json(
@@ -69,6 +81,14 @@ export async function GET(request: NextRequest) {
  */
 export async function PATCH(request: NextRequest) {
   try {
+    const customer = await getCustomer()
+    if (!customer) {
+      return NextResponse.json(
+        { error: 'Authentication required' },
+        { status: 401 }
+      )
+    }
+
     const body = await request.json()
     const { cartId, ...updateData } = body
 
@@ -79,7 +99,10 @@ export async function PATCH(request: NextRequest) {
       )
     }
 
-    const cart = await updateCart(cartId, updateData)
+    const cart = await updateCart(cartId, {
+      ...updateData,
+      email: customer.email,
+    })
 
     if (!cart) {
       return NextResponse.json(

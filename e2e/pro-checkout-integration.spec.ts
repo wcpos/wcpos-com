@@ -4,13 +4,40 @@ test.describe('Checkout Integration @integration', {
   tag: '@integration',
 }, () => {
   test.setTimeout(120_000)
+  const e2eEmail = process.env.E2E_TEST_EMAIL
+  const e2ePassword = process.env.E2E_TEST_PASSWORD
 
   test.skip(
     !process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
     'Stripe test key not configured'
   )
 
+  test.skip(
+    !e2eEmail || !e2ePassword,
+    'E2E_TEST_EMAIL and E2E_TEST_PASSWORD are required for authenticated checkout'
+  )
+
   test('completes full purchase with Stripe test card', async ({ page, request }) => {
+    const loginResponse = await request.post('/api/auth/login', {
+      data: {
+        email: e2eEmail,
+        password: e2ePassword,
+      },
+    })
+    expect(loginResponse.ok()).toBeTruthy()
+
+    const setCookieHeader = loginResponse.headers()['set-cookie']
+    const tokenMatch = setCookieHeader?.match(/medusa-token=([^;]+)/)
+    expect(tokenMatch?.[1]).toBeTruthy()
+
+    await page.context().addCookies([
+      {
+        name: 'medusa-token',
+        value: decodeURIComponent(tokenMatch![1]),
+        url: process.env.BASE_URL || 'http://localhost:3000',
+      },
+    ])
+
     // Start from pro page
     await page.goto('/pro')
     await page.waitForLoadState('networkidle')

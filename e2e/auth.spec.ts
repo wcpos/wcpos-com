@@ -16,7 +16,10 @@ test.describe('Authentication', () => {
 
       const registerLink = page.getByRole('link', { name: /sign up/i })
       await expect(registerLink).toBeVisible()
-      await expect(registerLink).toHaveAttribute('href', '/register')
+      await expect(registerLink).toHaveAttribute(
+        'href',
+        /\/register\?redirect=/
+      )
     })
 
     test('shows validation errors for empty form', async ({ page }) => {
@@ -46,7 +49,7 @@ test.describe('Authentication', () => {
 
       const loginLink = page.getByRole('link', { name: /sign in/i })
       await expect(loginLink).toBeVisible()
-      await expect(loginLink).toHaveAttribute('href', '/login')
+      await expect(loginLink).toHaveAttribute('href', /\/login\?redirect=/)
     })
 
     test('shows loading state during form submission', async ({ page }) => {
@@ -82,6 +85,14 @@ test.describe('Authentication', () => {
 
       // Should redirect to login page
       await expect(page).toHaveURL(/\/login/)
+    })
+
+    test('redirects checkout to login when not authenticated', async ({ page }) => {
+      await page.goto('/pro/checkout?variant=variant_123')
+
+      await expect(page).toHaveURL(
+        /\/login\?redirect=%2Fpro%2Fcheckout%3Fvariant%3Dvariant_123/
+      )
     })
   })
 })
