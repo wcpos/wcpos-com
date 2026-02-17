@@ -7,6 +7,7 @@ const mockGetResolvedCustomerLicenses = vi.fn()
 const mockFindReleaseByVersion = vi.fn()
 const mockIsReleaseAllowedForLicenses = vi.fn()
 const mockCreateDownloadToken = vi.fn()
+const mockLicenseLoggerWarn = vi.fn()
 
 vi.mock('@/lib/medusa-auth', () => ({
   getCustomer: (...args: unknown[]) => mockGetCustomer(...args),
@@ -27,6 +28,13 @@ vi.mock('@/services/core/business/pro-downloads', () => ({
 
 vi.mock('@/lib/download-token', () => ({
   createDownloadToken: (...args: unknown[]) => mockCreateDownloadToken(...args),
+}))
+
+vi.mock('@/lib/logger', () => ({
+  licenseLogger: {
+    warn: (...args: unknown[]) => mockLicenseLoggerWarn(...args),
+    error: vi.fn(),
+  },
 }))
 
 vi.mock('@/utils/env', () => ({
@@ -87,5 +95,46 @@ describe('POST /api/account/downloads/token', () => {
       }),
       'auth-token-secret'
     )
+  })
+
+  it('returns 404 and logs warning when release is missing', async () => {
+    mockGetCustomer.mockResolvedValueOnce({ id: 'cust_1' })
+    mockGetAuthToken.mockResolvedValueOnce('auth-token-secret')
+    mockFindReleaseByVersion.mockResolvedValueOnce(null)
+
+    const response = await POST(
+      new NextRequest('http://localhost/api/account/downloads/token', {
+        method: 'POST',
+        body: JSON.stringify({ version: '99.9.9' }),
+      })
+    )
+
+    expect(response.status).toBe(404)
+    expect(mockLicenseLoggerWarn).toHaveBeenCalled()
+  })
+
+  it('returns 403 when release is not allowed by license', async () => {
+    mockGetCustomer.mockResolvedValueOnce({ id: 'cust_1' })
+    mockGetAuthToken.mockResolvedValueOnce('auth-token-secret')
+    mockFindReleaseByVersion.mockResolvedValueOnce({
+      version: '1.9.0',
+      assetName: 'woocommerce-pos-pro-1.9.0.zip',
+      assetApiUrl: 'https://api.github.com/assets/123',
+      assetUrl: 'https://github.com/download.zip',
+    })
+    mockGetResolvedCustomerLicenses.mockResolvedValueOnce({
+      authenticated: true,
+      licenses: [],
+    })
+    mockIsReleaseAllowedForLicenses.mockReturnValueOnce(false)
+
+    const response = await POST(
+      new NextRequest('http://localhost/api/account/downloads/token', {
+        method: 'POST',
+        body: JSON.stringify({ version: '1.9.0' }),
+      })
+    )
+
+    expect(response.status).toBe(403)
   })
 })

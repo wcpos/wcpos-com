@@ -1,10 +1,11 @@
 'use client'
 
-import { useState } from 'react'
-import { Download } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { ChevronLeft, ChevronRight, Download } from 'lucide-react'
 import { useLocale } from 'next-intl'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Markdown } from '@/components/ui/markdown'
 import { formatDateForLocale } from '@/lib/date-format'
 
 interface DownloadRelease {
@@ -19,13 +20,26 @@ interface DownloadsClientProps {
   initialReleases: DownloadRelease[]
 }
 
+const RELEASES_PER_PAGE = 10
+
 export function DownloadsClient({ initialReleases }: DownloadsClientProps) {
   const locale = useLocale()
   const releases = initialReleases
+  const [currentPage, setCurrentPage] = useState(1)
   const [downloadingVersion, setDownloadingVersion] = useState<string | null>(
     null
   )
   const [error, setError] = useState<string | null>(null)
+
+  const totalPages = Math.max(1, Math.ceil(releases.length / RELEASES_PER_PAGE))
+  const visibleReleases = releases.slice(
+    (currentPage - 1) * RELEASES_PER_PAGE,
+    currentPage * RELEASES_PER_PAGE
+  )
+
+  useEffect(() => {
+    setCurrentPage((page) => Math.min(page, totalPages))
+  }, [totalPages])
 
   const startDownload = async (version: string) => {
     setDownloadingVersion(version)
@@ -76,21 +90,28 @@ export function DownloadsClient({ initialReleases }: DownloadsClientProps) {
               No downloadable versions were found.
             </p>
           ) : (
-            <div className="space-y-3">
-              {releases.map((release) => (
+            <div className="space-y-4">
+              {visibleReleases.map((release) => (
                 <div
                   key={release.version}
-                  className="flex items-center justify-between rounded-lg border p-3"
+                  className="flex items-start justify-between gap-4 rounded-lg border p-3"
                 >
-                  <div>
+                  <div className="min-w-0">
                     <p className="font-medium">{release.name}</p>
                     <p className="text-sm text-muted-foreground">
                       v{release.version} •{' '}
                       {formatDateForLocale(release.publishedAt, locale)}
                     </p>
-                    <p className="mt-1 whitespace-pre-wrap text-xs text-muted-foreground">
-                      {release.releaseNotes?.trim() || 'No release notes yet.'}
-                    </p>
+                    {release.releaseNotes?.trim() ? (
+                      <Markdown
+                        className="mt-2 space-y-1"
+                        content={release.releaseNotes}
+                      />
+                    ) : (
+                      <p className="mt-1 text-xs text-muted-foreground">
+                        No release notes yet.
+                      </p>
+                    )}
                   </div>
                   <Button
                     size="sm"
@@ -105,6 +126,40 @@ export function DownloadsClient({ initialReleases }: DownloadsClientProps) {
                   </Button>
                 </div>
               ))}
+
+              {totalPages > 1 && (
+                <div className="flex items-center justify-between border-t pt-3">
+                  <p className="text-xs text-muted-foreground">
+                    Page {currentPage} of {totalPages}
+                  </p>
+                  <div className="flex items-center gap-2">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setCurrentPage((page) => Math.max(1, page - 1))}
+                      disabled={currentPage === 1}
+                      aria-label="Previous page"
+                    >
+                      <ChevronLeft className="h-4 w-4" />
+                      Previous
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() =>
+                        setCurrentPage((page) => Math.min(totalPages, page + 1))
+                      }
+                      disabled={currentPage === totalPages}
+                      aria-label="Next page"
+                    >
+                      Next
+                      <ChevronRight className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </div>
+              )}
             </div>
           )}
         </CardContent>

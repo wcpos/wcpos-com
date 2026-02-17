@@ -14,6 +14,7 @@ function makeRelease(version: string, publishedAt: string): ProPluginRelease {
     releaseNotes: '',
     publishedAt,
     assetName: `woocommerce-pos-pro-${version}.zip`,
+    assetApiUrl: `https://api.github.com/repos/wcpos/woocommerce-pos-pro/releases/assets/${version}`,
     assetUrl: `https://downloads.example.com/${version}.zip`,
   }
 }

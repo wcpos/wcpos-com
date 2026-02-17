@@ -7,48 +7,60 @@ import {
   findReleaseByVersion,
   isReleaseAllowedForLicenses,
 } from '@/services/core/business/pro-downloads'
+import { licenseLogger } from '@/lib/logger'
 
 const TOKEN_TTL_MS = 60_000
 
 export async function POST(request: NextRequest) {
-  const customer = await getCustomer()
-  if (!customer) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-  }
+  try {
+    const customer = await getCustomer()
+    if (!customer) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
 
-  const authToken = await getAuthToken()
-  const secret = env.DOWNLOAD_TOKEN_SECRET || env.KEYGEN_API_TOKEN || authToken
-  if (!secret) {
+    const authToken = await getAuthToken()
+    const secret = env.DOWNLOAD_TOKEN_SECRET || env.KEYGEN_API_TOKEN || authToken
+    if (!secret) {
+      licenseLogger.error`Download token secret not configured for customer ${customer.id}`
+      return NextResponse.json(
+        { error: 'Download token secret not configured' },
+        { status: 500 }
+      )
+    }
+
+    const body = await request.json().catch(() => ({}))
+    const version = typeof body.version === 'string' ? body.version : 'latest'
+
+    const release = await findReleaseByVersion(version)
+    if (!release) {
+      licenseLogger.warn`Download token requested for missing release version=${version} customer=${customer.id}`
+      return NextResponse.json({ error: 'Release not found' }, { status: 404 })
+    }
+
+    const { licenses } = await getResolvedCustomerLicenses()
+    if (!isReleaseAllowedForLicenses(release, licenses)) {
+      licenseLogger.warn`Download token forbidden. version=${release.version} customer=${customer.id}`
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+    }
+
+    const token = createDownloadToken(
+      {
+        customerId: customer.id,
+        version: release.version,
+        expiresAt: Date.now() + TOKEN_TTL_MS,
+      },
+      secret
+    )
+
+    return NextResponse.json({
+      downloadUrl: `/api/account/download?token=${encodeURIComponent(token)}`,
+      version: release.version,
+    })
+  } catch (error) {
+    licenseLogger.error`Download token endpoint failed: ${error}`
     return NextResponse.json(
-      { error: 'Download token secret not configured' },
+      { error: 'Internal server error' },
       { status: 500 }
     )
   }
-
-  const body = await request.json().catch(() => ({}))
-  const version = typeof body.version === 'string' ? body.version : 'latest'
-
-  const release = await findReleaseByVersion(version)
-  if (!release) {
-    return NextResponse.json({ error: 'Release not found' }, { status: 404 })
-  }
-
-  const { licenses } = await getResolvedCustomerLicenses()
-  if (!isReleaseAllowedForLicenses(release, licenses)) {
-    return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
-  }
-
-  const token = createDownloadToken(
-    {
-      customerId: customer.id,
-      version: release.version,
-      expiresAt: Date.now() + TOKEN_TTL_MS,
-    },
-    secret
-  )
-
-  return NextResponse.json({
-    downloadUrl: `/api/account/download?token=${encodeURIComponent(token)}`,
-    version: release.version,
-  })
 }

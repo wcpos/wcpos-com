@@ -12,6 +12,7 @@ export interface ProPluginRelease {
   releaseNotes: string
   publishedAt: string
   assetName: string
+  assetApiUrl: string
   assetUrl: string
 }
 
@@ -19,7 +20,9 @@ export function normalizeReleaseVersion(version: string): string {
   return version.replace(/^v/i, '')
 }
 
-function getPrimaryZipAsset(assets: Array<{ name: string; browser_download_url: string }>) {
+function getPrimaryZipAsset(
+  assets: Array<{ name: string; browser_download_url: string; url: string }>
+) {
   return assets.find(
     (asset) =>
       asset.name.toLowerCase().includes('woocommerce-pos-pro') &&
@@ -43,6 +46,7 @@ export async function getProPluginReleases(): Promise<ProPluginRelease[]> {
         releaseNotes: release.body || '',
         publishedAt: release.publishedAt,
         assetName: asset.name,
+        assetApiUrl: asset.url,
         assetUrl: asset.browser_download_url,
       } satisfies ProPluginRelease
     })
