@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { getCustomer, getCustomerOrderById } from '@/lib/medusa-auth'
 import { buildTaxReceiptPdf } from '@/lib/pdf-receipt'
+import { apiLogger } from '@/lib/logger'
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return Boolean(value) && typeof value === 'object' && !Array.isArray(value)
@@ -43,37 +44,60 @@ function toReceiptProfile(metadata: Record<string, unknown> | undefined) {
   }
 }
 
+function resolveLocale(request: Request): string {
+  const header = request.headers.get('accept-language') || ''
+  const candidates = header
+    .split(',')
+    .map((part) => part.split(';')[0]?.trim())
+    .filter((value): value is string => Boolean(value) && value !== '*')
+
+  for (const candidate of candidates) {
+    try {
+      const [canonical] = Intl.getCanonicalLocales(candidate)
+      if (canonical) return canonical
+    } catch {
+      // try next locale candidate
+    }
+  }
+
+  return 'en-US'
+}
+
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ orderId: string }> }
 ) {
   const { orderId } = await params
-  const [order, customer] = await Promise.all([
-    getCustomerOrderById(orderId),
-    getCustomer(),
-  ])
 
-  if (!order) {
-    return NextResponse.json({ error: 'Order not found' }, { status: 404 })
+  try {
+    const [order, customer] = await Promise.all([
+      getCustomerOrderById(orderId),
+      getCustomer(),
+    ])
+
+    if (!order) {
+      return NextResponse.json({ error: 'Order not found' }, { status: 404 })
+    }
+
+    const profile = toReceiptProfile(customer?.metadata)
+    const locale = resolveLocale(request)
+    const pdf = await buildTaxReceiptPdf(order, profile, locale)
+    const pdfBuffer = Buffer.from(pdf)
+    const filename = `receipt-${order.display_id}.pdf`
+
+    return new NextResponse(pdfBuffer, {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/pdf',
+        'Content-Disposition': `attachment; filename="${filename}"`,
+        'Cache-Control': 'private, no-store',
+      },
+    })
+  } catch (error) {
+    apiLogger.error`Receipt generation failed. orderId=${orderId} error=${error}`
+    return NextResponse.json(
+      { error: 'Failed to generate receipt' },
+      { status: 500 }
+    )
   }
-
-  const profile = toReceiptProfile(customer?.metadata)
-  const localeHeader = request.headers.get('accept-language') || ''
-  const locale =
-    localeHeader
-      .split(',')
-      .map((part) => part.split(';')[0]?.trim())
-      .find(Boolean) || 'en-US'
-  const pdf = await buildTaxReceiptPdf(order, profile, locale)
-  const pdfBuffer = Buffer.from(pdf)
-  const filename = `receipt-${order.display_id}.pdf`
-
-  return new NextResponse(pdfBuffer, {
-    status: 200,
-    headers: {
-      'Content-Type': 'application/pdf',
-      'Content-Disposition': `attachment; filename="${filename}"`,
-      'Cache-Control': 'private, no-store',
-    },
-  })
 }
