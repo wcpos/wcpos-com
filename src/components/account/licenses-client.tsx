@@ -1,10 +1,10 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useLocale } from 'next-intl'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Loader2, Key, Monitor, Trash2, Download } from 'lucide-react'
+import { Key, Monitor, Trash2, Download } from 'lucide-react'
 import Link from 'next/link'
 import { formatDateForLocale } from '@/lib/date-format'
 
@@ -30,10 +30,13 @@ interface License {
 
 const YEARLY_POLICY = '261cb7e2-6e80-476e-98bd-fe7f406f258d'
 
-export function LicensesClient() {
+interface LicensesClientProps {
+  initialLicenses: License[]
+}
+
+export function LicensesClient({ initialLicenses }: LicensesClientProps) {
   const locale = useLocale()
-  const [licenses, setLicenses] = useState<License[]>([])
-  const [loading, setLoading] = useState(true)
+  const [licenses, setLicenses] = useState<License[]>(initialLicenses)
   const [error, setError] = useState<string | null>(null)
   const [deactivating, setDeactivating] = useState<string | null>(null)
 
@@ -52,14 +55,8 @@ export function LicensesClient() {
       setLicenses(data.licenses || [])
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to load licenses')
-    } finally {
-      setLoading(false)
     }
   }
-
-  useEffect(() => {
-    fetchLicenses()
-  }, [])
 
   const handleDeactivate = async (licenseId: string, machineId: string) => {
     setDeactivating(machineId)
@@ -92,14 +89,6 @@ export function LicensesClient() {
 
   const getPlanName = (policyId: string) => {
     return policyId === YEARLY_POLICY ? 'Yearly' : 'Lifetime'
-  }
-
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center py-12">
-        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
-      </div>
-    )
   }
 
   return (
@@ -190,11 +179,13 @@ export function LicensesClient() {
                         disabled={deactivating === machine.id}
                         aria-label={`Deactivate ${machine.name || 'machine'}`}
                       >
-                        {deactivating === machine.id ? (
-                          <Loader2 className="h-4 w-4 animate-spin" />
-                        ) : (
-                          <Trash2 className="h-4 w-4 text-destructive" />
-                        )}
+                        <Trash2
+                          className={`h-4 w-4 ${
+                            deactivating === machine.id
+                              ? 'text-muted-foreground'
+                              : 'text-destructive'
+                          }`}
+                        />
                       </Button>
                     </div>
                   ))}

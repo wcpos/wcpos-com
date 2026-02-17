@@ -71,8 +71,17 @@ export default async function CheckoutPage({
 
         <Suspense
           fallback={
-            <div className="flex justify-center py-12">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-foreground" />
+            <div className="mx-auto grid max-w-4xl gap-8 md:grid-cols-2">
+              {[1, 2].map((panel) => (
+                <div
+                  key={panel}
+                  className="space-y-3 rounded-xl border bg-card p-6"
+                >
+                  <div className="h-6 w-40 animate-pulse rounded bg-muted" />
+                  <div className="h-20 animate-pulse rounded bg-muted" />
+                  <div className="h-20 animate-pulse rounded bg-muted" />
+                </div>
+              ))}
             </div>
           }
         >

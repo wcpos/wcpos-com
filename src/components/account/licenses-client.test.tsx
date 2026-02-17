@@ -1,12 +1,11 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { LicensesClient } from './licenses-client'
 
 vi.mock('next-intl', () => ({
   useLocale: () => 'en-US',
 }))
 
-// Mock global fetch
 const mockFetch = vi.fn()
 vi.stubGlobal('fetch', mockFetch)
 
@@ -30,86 +29,45 @@ describe('LicensesClient', () => {
     vi.clearAllMocks()
   })
 
-  it('shows empty state when no licenses exist', async () => {
-    mockFetch.mockResolvedValueOnce({
-      ok: true,
-      json: async () => ({ licenses: [] }),
-    })
-
-    render(<LicensesClient />)
-
-    await waitFor(() => {
-      expect(screen.getByText('No licenses found.')).toBeInTheDocument()
-    })
+  it('shows empty state when no licenses exist', () => {
+    render(<LicensesClient initialLicenses={[]} />)
+    expect(screen.getByText('No licenses found.')).toBeInTheDocument()
   })
 
-  it('renders license key masked', async () => {
-    mockFetch.mockResolvedValueOnce({
-      ok: true,
-      json: async () => ({ licenses: [makeLicense()] }),
-    })
-
-    render(<LicensesClient />)
-
-    await waitFor(() => {
-      expect(screen.getByText('****-****-MNOP')).toBeInTheDocument()
-    })
+  it('renders license key masked', () => {
+    render(<LicensesClient initialLicenses={[makeLicense()]} />)
+    expect(screen.getByText('****-****-MNOP')).toBeInTheDocument()
   })
 
-  it('shows download button for active licenses', async () => {
-    mockFetch.mockResolvedValueOnce({
-      ok: true,
-      json: async () => ({ licenses: [makeLicense({ status: 'active' })] }),
-    })
-
-    render(<LicensesClient />)
-
-    await waitFor(() => {
-      const downloadLink = screen.getByRole('link', { name: /download/i })
-      expect(downloadLink).toBeInTheDocument()
-      expect(downloadLink).toHaveAttribute('href', '/account/downloads')
-    })
+  it('shows download button for active licenses', () => {
+    render(
+      <LicensesClient initialLicenses={[makeLicense({ status: 'active' })]} />
+    )
+    const downloadLink = screen.getByRole('link', { name: /downloads/i })
+    expect(downloadLink).toBeInTheDocument()
+    expect(downloadLink).toHaveAttribute('href', '/account/downloads')
   })
 
-  it('does not show download button for expired licenses', async () => {
-    mockFetch.mockResolvedValueOnce({
-      ok: true,
-      json: async () => ({
-        licenses: [makeLicense({ status: 'expired' })],
-      }),
-    })
-
-    render(<LicensesClient />)
-
-    await waitFor(() => {
-      expect(screen.getByText('****-****-MNOP')).toBeInTheDocument()
-    })
-
+  it('does not show download button for expired licenses', () => {
+    render(
+      <LicensesClient initialLicenses={[makeLicense({ status: 'expired' })]} />
+    )
+    expect(screen.getByText('****-****-MNOP')).toBeInTheDocument()
     expect(screen.queryByRole('link', { name: /download/i })).not.toBeInTheDocument()
   })
 
-  it('does not show download button for suspended licenses', async () => {
-    mockFetch.mockResolvedValueOnce({
-      ok: true,
-      json: async () => ({
-        licenses: [makeLicense({ status: 'suspended' })],
-      }),
-    })
-
-    render(<LicensesClient />)
-
-    await waitFor(() => {
-      expect(screen.getByText('****-****-MNOP')).toBeInTheDocument()
-    })
-
+  it('does not show download button for suspended licenses', () => {
+    render(
+      <LicensesClient initialLicenses={[makeLicense({ status: 'suspended' })]} />
+    )
+    expect(screen.getByText('****-****-MNOP')).toBeInTheDocument()
     expect(screen.queryByRole('link', { name: /download/i })).not.toBeInTheDocument()
   })
 
-  it('shows activations count', async () => {
-    mockFetch.mockResolvedValueOnce({
-      ok: true,
-      json: async () => ({
-        licenses: [
+  it('shows activations count', () => {
+    render(
+      <LicensesClient
+        initialLicenses={[
           makeLicense({
             maxMachines: 5,
             machines: [
@@ -122,27 +80,14 @@ describe('LicensesClient', () => {
               },
             ],
           }),
-        ],
-      }),
-    })
-
-    render(<LicensesClient />)
-
-    await waitFor(() => {
-      expect(screen.getByText('1 of 5')).toBeInTheDocument()
-    })
+        ]}
+      />
+    )
+    expect(screen.getByText('1 of 5')).toBeInTheDocument()
   })
 
-  it('shows error message when fetch fails', async () => {
-    mockFetch.mockResolvedValueOnce({
-      ok: false,
-      status: 500,
-    })
-
-    render(<LicensesClient />)
-
-    await waitFor(() => {
-      expect(screen.getByText('Failed to fetch licenses')).toBeInTheDocument()
-    })
+  it('does not fetch licenses on initial render', () => {
+    render(<LicensesClient initialLicenses={[makeLicense()]} />)
+    expect(mockFetch).not.toHaveBeenCalled()
   })
 })

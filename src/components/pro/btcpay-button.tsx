@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
-import { Loader2, Bitcoin } from 'lucide-react'
+import { Bitcoin } from 'lucide-react'
 
 interface BTCPayButtonProps {
   cartId: string
@@ -56,7 +56,7 @@ export function BTCPayButton({ cartId, onError }: BTCPayButtonProps) {
     >
       {isLoading ? (
         <>
-          <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+          <Bitcoin className="h-4 w-4 mr-2 opacity-80" />
           Preparing Bitcoin payment...
         </>
       ) : (

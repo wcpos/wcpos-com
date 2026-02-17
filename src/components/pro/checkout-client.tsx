@@ -12,7 +12,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { ArrowLeft, Loader2, CheckCircle, CreditCard, Bitcoin } from 'lucide-react'
+import { ArrowLeft, CheckCircle, CreditCard, Bitcoin } from 'lucide-react'
 import Link from 'next/link'
 
 interface CartItem {
@@ -258,7 +258,11 @@ export function CheckoutClient({ customerEmail }: CheckoutClientProps) {
   if (isLoading) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[400px]">
-        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+        <div className="w-full max-w-xl space-y-3">
+          <div className="h-6 w-40 animate-pulse rounded bg-muted" />
+          <div className="h-28 w-full animate-pulse rounded bg-muted" />
+          <div className="h-28 w-full animate-pulse rounded bg-muted" />
+        </div>
         <p className="mt-4 text-muted-foreground">Preparing checkout...</p>
       </div>
     )
@@ -418,8 +422,12 @@ export function CheckoutClient({ customerEmail }: CheckoutClientProps) {
                     />
                   </StripeProvider>
                 ) : (
-                  <div className="flex justify-center py-8">
-                    <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+                  <div className="space-y-3 rounded-md border border-dashed p-4">
+                    <div className="h-5 w-44 animate-pulse rounded bg-muted" />
+                    <div className="h-10 w-full animate-pulse rounded bg-muted" />
+                    <p className="text-sm text-muted-foreground">
+                      Preparing secure card form...
+                    </p>
                   </div>
                 )}
               </TabsContent>
@@ -430,8 +438,6 @@ export function CheckoutClient({ customerEmail }: CheckoutClientProps) {
                 <PayPalProvider>
                   <PayPalButton
                     cartId={cart.id}
-                    amount={cart.total}
-                    currency={cart.currency_code}
                     onSuccess={handleSuccess}
                     onError={handleError}
                   />
