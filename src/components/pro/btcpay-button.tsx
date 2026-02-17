@@ -6,24 +6,29 @@ import { Bitcoin } from 'lucide-react'
 
 interface BTCPayButtonProps {
   cartId: string
-  onSuccess: (orderId: string) => void
+  checkoutLink?: string | null
   onError: (error: string) => void
 }
 
-export function BTCPayButton({ cartId, onError }: BTCPayButtonProps) {
+export function BTCPayButton({ cartId, checkoutLink, onError }: BTCPayButtonProps) {
   const [isLoading, setIsLoading] = useState(false)
 
   const handleClick = async () => {
     setIsLoading(true)
 
     try {
+      if (checkoutLink) {
+        window.location.href = checkoutLink
+        return
+      }
+
       // Select BTCPay as payment provider
       const response = await fetch('/api/store/cart/payment-sessions', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           cartId,
-          provider_id: 'btcpay',
+          provider_id: 'pp_btcpay_btcpay',
         }),
       })
 
@@ -33,14 +38,22 @@ export function BTCPayButton({ cartId, onError }: BTCPayButtonProps) {
 
       const { cart } = await response.json()
 
-      // Get the BTCPay checkout link
-      const checkoutLink = cart?.payment_session?.data?.checkoutLink
-      if (!checkoutLink) {
+      const pendingBTCPaySession = cart?.payment_collection?.payment_sessions?.find(
+        (session: {
+          provider_id?: string
+          data?: { checkoutLink?: string }
+        }) => session.provider_id === 'pp_btcpay_btcpay'
+      )
+
+      const nextCheckoutLink =
+        pendingBTCPaySession?.data?.checkoutLink || cart?.payment_session?.data?.checkoutLink
+
+      if (!nextCheckoutLink) {
         throw new Error('No checkout link returned')
       }
 
       // Redirect to BTCPayServer checkout
-      window.location.href = checkoutLink
+      window.location.href = nextCheckoutLink
     } catch (err) {
       onError(err instanceof Error ? err.message : 'Failed to initialize Bitcoin payment')
       setIsLoading(false)

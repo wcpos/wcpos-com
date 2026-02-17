@@ -5,6 +5,8 @@ import { render, screen, waitFor, fireEvent } from '@testing-library/react'
 // vi.hoisted runs before hoisted vi.mock calls
 vi.hoisted(() => {
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = 'pk_test_123'
+  process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID = 'paypal_test_client'
+  process.env.NEXT_PUBLIC_BTCPAY_ENABLED = 'true'
 })
 
 // Mock next/navigation
@@ -12,6 +14,13 @@ vi.mock('next/navigation', () => ({
   useSearchParams: () => ({
     get: (key: string) => (key === 'variant' ? 'variant-123' : null),
   }),
+}))
+
+vi.mock('@/components/ui/tabs', () => ({
+  Tabs: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
+  TabsList: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
+  TabsTrigger: ({ children }: { children: React.ReactNode }) => <button type="button">{children}</button>,
+  TabsContent: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
 }))
 
 // Mock next/link as a simple anchor
@@ -45,11 +54,21 @@ vi.mock('./checkout-form', () => ({
     </button>
   ),
 }))
+
+const renderPayPalButton = vi.fn()
+const renderBTCPayButton = vi.fn()
+
 vi.mock('./paypal-button', () => ({
-  PayPalButton: () => <div data-testid="paypal-button">PayPal</div>,
+  PayPalButton: (props: Record<string, unknown>) => {
+    renderPayPalButton(props)
+    return <div data-testid="paypal-button">PayPal</div>
+  },
 }))
 vi.mock('./btcpay-button', () => ({
-  BTCPayButton: () => <div data-testid="btcpay-button">BTCPay</div>,
+  BTCPayButton: (props: Record<string, unknown>) => {
+    renderBTCPayButton(props)
+    return <div data-testid="btcpay-button">BTCPay</div>
+  },
 }))
 
 import { CheckoutClient } from './checkout-client'
@@ -57,7 +76,54 @@ import { CheckoutClient } from './checkout-client'
 const mockFetch = vi.fn()
 vi.stubGlobal('fetch', mockFetch)
 
-function mockSuccessfulCheckoutInit() {
+function buildCheckoutCart({
+  title = 'WCPOS Pro Lifetime',
+  unitPrice = 129,
+  itemTotal = 129,
+  omitItemTotal = false,
+  quantity = 1,
+  cartTotal = 129,
+  paymentSessions = [
+    { provider_id: 'pp_stripe_stripe', data: { client_secret: 'pi_test_secret' } },
+  ],
+  legacyPaymentSessions,
+  legacyPaymentSession,
+}: {
+  title?: string
+  unitPrice?: number
+  itemTotal?: number
+  omitItemTotal?: boolean
+  quantity?: number
+  cartTotal?: number
+  paymentSessions?: Array<{ provider_id: string; data: Record<string, unknown> }>
+  legacyPaymentSessions?: Array<{ provider_id: string; data: Record<string, unknown> }>
+  legacyPaymentSession?: { provider_id: string; data: Record<string, unknown> }
+} = {}) {
+  return {
+    id: 'cart-123',
+    items: [
+      {
+        id: 'item-1',
+        title,
+        quantity,
+        unit_price: unitPrice,
+        ...(omitItemTotal ? {} : { total: itemTotal }),
+      },
+    ],
+    total: cartTotal,
+    currency_code: 'usd',
+    payment_collection: {
+      id: 'pay-col-123',
+      payment_sessions: paymentSessions,
+    },
+    ...(legacyPaymentSessions ? { payment_sessions: legacyPaymentSessions } : {}),
+    ...(legacyPaymentSession ? { payment_session: legacyPaymentSession } : {}),
+  }
+}
+
+function mockSuccessfulCheckoutInit(
+  cart = buildCheckoutCart()
+) {
   // 1. POST /api/store/cart
   mockFetch.mockResolvedValueOnce({
     ok: true,
@@ -66,25 +132,13 @@ function mockSuccessfulCheckoutInit() {
   // 2. POST /api/store/cart/line-items
   mockFetch.mockResolvedValueOnce({
     ok: true,
-    json: async () => ({
-      cart: {
-        id: 'cart-123',
-        items: [{ id: 'item-1', title: 'WooCommerce POS Pro', quantity: 1, unit_price: 129, total: 129 }],
-        total: 129,
-        currency_code: 'usd',
-      },
-    }),
+    json: async () => ({ cart }),
   })
   // 3. POST /api/store/cart/payment-sessions
   mockFetch.mockResolvedValueOnce({
     ok: true,
     json: async () => ({
-      cart: {
-        id: 'cart-123',
-        items: [{ id: 'item-1', title: 'WooCommerce POS Pro', quantity: 1, unit_price: 129, total: 129 }],
-        total: 129,
-        currency_code: 'usd',
-      },
+      cart,
       paymentCollectionId: 'pay-col-123',
       clientSecret: 'pi_test_secret',
     }),
@@ -111,7 +165,7 @@ describe('CheckoutClient', () => {
 
     await waitFor(() => {
       expect(screen.getByText('Order Summary')).toBeInTheDocument()
-      expect(screen.getByText('WooCommerce POS Pro')).toBeInTheDocument()
+      expect(screen.getByText('WCPOS Pro Lifetime')).toBeInTheDocument()
       expect(screen.getByText('Total')).toBeInTheDocument()
     })
   })
@@ -184,6 +238,96 @@ describe('CheckoutClient', () => {
       expect(
         screen.getByText('Please sign in to continue checkout.')
       ).toBeInTheDocument()
+    })
+  })
+
+  it('falls back to unit price when Medusa omits line item total', async () => {
+    mockSuccessfulCheckoutInit(
+      buildCheckoutCart({
+        title: 'WCPOS Pro Lifetime',
+        unitPrice: 399,
+        omitItemTotal: true,
+        cartTotal: 399,
+      })
+    )
+    mockFetch.mockResolvedValueOnce({ ok: true, json: async () => ({}) })
+
+    render(<CheckoutClient customerEmail="user@example.com" />)
+
+    await waitFor(() => {
+      expect(screen.getByText('WCPOS Pro Lifetime')).toBeInTheDocument()
+      expect(screen.queryByText('$NaN')).not.toBeInTheDocument()
+    })
+  })
+
+  it('passes paypal session order id to PayPalButton when present in cart sessions', async () => {
+    mockSuccessfulCheckoutInit(
+      buildCheckoutCart({
+        paymentSessions: [
+          { provider_id: 'pp_stripe_stripe', data: { client_secret: 'pi_test_secret' } },
+          { provider_id: 'pp_paypal_paypal', data: { id: 'PAYPAL_ORDER_123' } },
+        ],
+      })
+    )
+    mockFetch.mockResolvedValueOnce({ ok: true, json: async () => ({}) })
+
+    render(<CheckoutClient customerEmail="user@example.com" />)
+
+    await waitFor(() => {
+      expect(renderPayPalButton).toHaveBeenCalledWith(
+        expect.objectContaining({
+          paypalOrderId: 'PAYPAL_ORDER_123',
+        })
+      )
+    })
+  })
+
+  it('falls back to legacy cart payment sessions when collection lacks paypal session', async () => {
+    mockSuccessfulCheckoutInit(
+      buildCheckoutCart({
+        paymentSessions: [
+          { provider_id: 'pp_stripe_stripe', data: { client_secret: 'pi_test_secret' } },
+        ],
+        legacyPaymentSessions: [
+          { provider_id: 'pp_paypal_paypal', data: { id: 'PAYPAL_ORDER_FALLBACK' } },
+        ],
+      })
+    )
+    mockFetch.mockResolvedValueOnce({ ok: true, json: async () => ({}) })
+
+    render(<CheckoutClient customerEmail="user@example.com" />)
+
+    await waitFor(() => {
+      expect(renderPayPalButton).toHaveBeenCalledWith(
+        expect.objectContaining({
+          paypalOrderId: 'PAYPAL_ORDER_FALLBACK',
+        })
+      )
+    })
+  })
+
+  it('passes BTCPay checkout link to BTCPayButton when present in cart sessions', async () => {
+    mockSuccessfulCheckoutInit(
+      buildCheckoutCart({
+        paymentSessions: [
+          { provider_id: 'pp_stripe_stripe', data: { client_secret: 'pi_test_secret' } },
+          {
+            provider_id: 'pp_btcpay_btcpay',
+            data: { checkoutLink: 'https://btcpay.wcpos.com/i/invoice_123' },
+          },
+        ],
+      })
+    )
+    mockFetch.mockResolvedValueOnce({ ok: true, json: async () => ({}) })
+
+    render(<CheckoutClient customerEmail="user@example.com" />)
+
+    await waitFor(() => {
+      expect(renderBTCPayButton).toHaveBeenCalledWith(
+        expect.objectContaining({
+          checkoutLink: 'https://btcpay.wcpos.com/i/invoice_123',
+        })
+      )
     })
   })
 })

@@ -13,7 +13,7 @@ describe('BTCPayButton', () => {
   it('shows non-spinner loading state while preparing checkout', () => {
     mockFetch.mockReturnValue(new Promise(() => {}))
 
-    render(<BTCPayButton cartId="cart_1" onSuccess={() => {}} onError={() => {}} />)
+    render(<BTCPayButton cartId="cart_1" onError={() => {}} />)
 
     fireEvent.click(screen.getByRole('button', { name: 'Pay with Bitcoin' }))
 
