@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
 import { NextRequest, NextResponse } from 'next/server'
+import { ANALYTICS_DISTINCT_ID_COOKIE } from '@/lib/analytics/distinct-id'
 
 vi.mock('next-intl/middleware', () => ({
   default: () => () => NextResponse.next(),
@@ -19,6 +20,7 @@ describe('middleware', () => {
     expect(response?.headers.get('location')).toBe(
       'https://wcpos.com/login?redirect=%2Fpro%2Fcheckout%3Fvariant%3Dvariant_123'
     )
+    expect(response?.cookies.get(ANALYTICS_DISTINCT_ID_COOKIE)?.value).toBeTruthy()
   })
 
   it('allows checkout requests when the auth cookie is present', () => {
@@ -34,5 +36,6 @@ describe('middleware', () => {
     const response = middleware(request)
 
     expect(response?.status).toBe(200)
+    expect(response?.cookies.get(ANALYTICS_DISTINCT_ID_COOKIE)?.value).toBeTruthy()
   })
 })
