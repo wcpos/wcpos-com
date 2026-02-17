@@ -58,8 +58,12 @@ export async function GET(
   }
 
   const profile = toReceiptProfile(customer?.metadata)
+  const localeHeader = request.headers.get('accept-language') || ''
   const locale =
-    request.headers.get('accept-language')?.split(',')[0]?.trim() || 'en-US'
+    localeHeader
+      .split(',')
+      .map((part) => part.split(';')[0]?.trim())
+      .find(Boolean) || 'en-US'
   const pdf = await buildTaxReceiptPdf(order, profile, locale)
   const pdfBuffer = Buffer.from(pdf)
   const filename = `receipt-${order.display_id}.pdf`

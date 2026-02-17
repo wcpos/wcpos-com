@@ -117,10 +117,7 @@ export async function buildTaxReceiptPdf(
   drawLabelValueRow({
     page,
     label: 'Order date',
-    value: sanitizeTextForFont(
-      fontBold,
-      formatDateForLocale(order.created_at, locale)
-    ),
+    value: formatDateForLocale(order.created_at, locale),
     x: margin,
     y: infoTopY,
     labelFont: fontRegular,
@@ -129,7 +126,7 @@ export async function buildTaxReceiptPdf(
   drawLabelValueRow({
     page,
     label: 'Customer',
-    value: sanitizeTextForFont(fontRegular, order.email),
+    value: order.email,
     x: margin,
     y: infoTopY - 16,
     labelFont: fontRegular,

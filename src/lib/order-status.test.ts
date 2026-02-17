@@ -18,4 +18,17 @@ describe('getOrderDisplayStatus', () => {
       })
     ).toBe('Completed')
   })
+
+  it('returns Unknown for empty values', () => {
+    expect(getOrderDisplayStatus({})).toBe('Unknown')
+    expect(getOrderDisplayStatus({ status: '   ' })).toBe('Unknown')
+  })
+
+  it('humanizes unknown status values', () => {
+    expect(
+      getOrderDisplayStatus({
+        status: 'awaiting_fulfillment',
+      })
+    ).toBe('Awaiting Fulfillment')
+  })
 })

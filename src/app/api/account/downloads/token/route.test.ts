@@ -80,6 +80,12 @@ describe('POST /api/account/downloads/token', () => {
 
     expect(response.status).toBe(200)
     expect(json.downloadUrl).toContain('/api/account/download?token=signed-token')
-    expect(mockCreateDownloadToken).toHaveBeenCalled()
+    expect(mockCreateDownloadToken).toHaveBeenCalledWith(
+      expect.objectContaining({
+        customerId: 'cust_1',
+        version: '1.9.0',
+      }),
+      'auth-token-secret'
+    )
   })
 })
