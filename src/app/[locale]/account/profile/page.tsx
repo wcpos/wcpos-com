@@ -1,11 +1,12 @@
 import { setRequestLocale } from 'next-intl/server'
 import { Suspense } from 'react'
 import { getCustomer } from '@/lib/medusa-auth'
+import { formatDateForLocale } from '@/lib/date-format'
 import { redirect } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { ProfileEditForm } from '@/components/account/profile-edit-form'
 
-async function ProfileContent() {
+async function ProfileContent({ locale }: { locale: string }) {
   const customer = await getCustomer()
 
   if (!customer) {
@@ -29,7 +30,7 @@ async function ProfileContent() {
         />
         <div className="flex justify-between border-t pt-3 text-sm">
           <span className="text-muted-foreground">Member since</span>
-          <span>{new Date(customer.created_at).toLocaleDateString()}</span>
+          <span>{formatDateForLocale(customer.created_at, locale)}</span>
         </div>
       </CardContent>
     </Card>
@@ -63,7 +64,7 @@ export default async function ProfilePage({
     <div className="space-y-6">
       <h1 className="text-2xl font-bold">Profile</h1>
       <Suspense fallback={<ProfileSkeleton />}>
-        <ProfileContent />
+        <ProfileContent locale={locale} />
       </Suspense>
     </div>
   )

@@ -2,10 +2,12 @@ import { setRequestLocale } from 'next-intl/server'
 import { Suspense } from 'react'
 import { getCustomerOrders } from '@/lib/medusa-auth'
 import { formatOrderAmount } from '@/lib/order-display'
+import { formatDateForLocale } from '@/lib/date-format'
+import { getOrderDisplayStatus } from '@/lib/order-status'
 import Link from 'next/link'
 import { Card, CardContent } from '@/components/ui/card'
 
-async function OrdersContent() {
+async function OrdersContent({ locale }: { locale: string }) {
   const orders = await getCustomerOrders(50)
 
   if (orders.length === 0) {
@@ -14,7 +16,7 @@ async function OrdersContent() {
         <CardContent className="py-8 text-center text-muted-foreground">
           <p>No orders yet.</p>
           <Link href="/pro" className="text-primary hover:underline mt-2 inline-block">
-            Browse WooCommerce POS Pro
+            Browse WCPOS Pro
           </Link>
         </CardContent>
       </Card>
@@ -35,14 +37,16 @@ async function OrdersContent() {
                 <div>
                   <p className="font-medium">Order #{order.display_id}</p>
                   <p className="text-sm text-muted-foreground">
-                    {new Date(order.created_at).toLocaleDateString()} — {order.items.length} item{order.items.length !== 1 ? 's' : ''}
+                    {formatDateForLocale(order.created_at, locale)} — {order.items.length} item{order.items.length !== 1 ? 's' : ''}
                   </p>
                 </div>
                 <div className="text-right">
                   <p className="font-medium">
                     {formatOrderAmount(order.total, order.currency_code)}
                   </p>
-                  <p className="text-sm text-muted-foreground capitalize">{order.status}</p>
+                  <p className="text-sm text-muted-foreground">
+                    {getOrderDisplayStatus(order)}
+                  </p>
                 </div>
               </div>
             </CardContent>
@@ -88,7 +92,7 @@ export default async function OrdersPage({
     <div className="space-y-6">
       <h1 className="text-2xl font-bold">Order History</h1>
       <Suspense fallback={<OrdersSkeleton />}>
-        <OrdersContent />
+        <OrdersContent locale={locale} />
       </Suspense>
     </div>
   )

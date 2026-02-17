@@ -2,14 +2,20 @@ import { Suspense } from 'react'
 import { getCustomerOrderById } from '@/lib/medusa-auth'
 import { extractLicenseReferencesFromOrders } from '@/lib/licenses'
 import { formatOrderAmount } from '@/lib/order-display'
+import { formatDateForLocale } from '@/lib/date-format'
+import { getOrderDisplayStatus } from '@/lib/order-status'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { ArrowLeft, FileDown } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 
-async function OrderDetailContent({ params }: { params: Promise<{ orderId: string }> }) {
-  const { orderId } = await params
+async function OrderDetailContent({
+  params,
+}: {
+  params: Promise<{ locale: string; orderId: string }>
+}) {
+  const { orderId, locale } = await params
   const order = await getCustomerOrderById(orderId)
 
   if (!order) {
@@ -42,11 +48,11 @@ async function OrderDetailContent({ params }: { params: Promise<{ orderId: strin
           <CardContent className="space-y-2">
             <div className="flex justify-between">
               <span className="text-muted-foreground">Date</span>
-              <span>{new Date(order.created_at).toLocaleDateString()}</span>
+              <span>{formatDateForLocale(order.created_at, locale)}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-muted-foreground">Status</span>
-              <span className="capitalize">{order.status}</span>
+              <span>{getOrderDisplayStatus(order)}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-muted-foreground">Email</span>

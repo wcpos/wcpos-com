@@ -1,10 +1,12 @@
 'use client'
 
 import { useMemo, useState } from 'react'
+import { useLocale } from 'next-intl'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { getConnectedAvatarUrlFromMetadata } from '@/lib/avatar'
 
 interface ProfileEditFormProps {
   customer: {
@@ -36,26 +38,61 @@ const COUNTRY_PROFILES: Record<string, CountryProfile> = {
   JP: { regionLabel: 'Prefecture', postalLabel: 'Postal code', taxLabel: 'Tax registration number' },
 }
 
-const COUNTRY_OPTIONS = [
-  ['US', 'United States'],
-  ['CA', 'Canada'],
-  ['GB', 'United Kingdom'],
-  ['AU', 'Australia'],
-  ['NZ', 'New Zealand'],
-  ['DE', 'Germany'],
-  ['FR', 'France'],
-  ['ES', 'Spain'],
-  ['IT', 'Italy'],
-  ['NL', 'Netherlands'],
-  ['JP', 'Japan'],
-]
-
 function isRecord(value: unknown): value is Record<string, unknown> {
   return Boolean(value) && typeof value === 'object' && !Array.isArray(value)
 }
 
 function asString(value: unknown): string {
   return typeof value === 'string' ? value : ''
+}
+
+function getCountryCodes(displayNames: Intl.DisplayNames | null): string[] {
+  if (typeof Intl.supportedValuesOf === 'function') {
+    try {
+      const getSupportedValues = Intl.supportedValuesOf as (
+        key: string
+      ) => string[]
+      return getSupportedValues('region').filter((code) =>
+        /^[A-Z]{2}$/.test(code)
+      )
+    } catch {
+      // fall through to generated list
+    }
+  }
+
+  if (!displayNames) {
+    return ['US']
+  }
+
+  const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+  const codes: string[] = []
+
+  for (const first of alphabet) {
+    for (const second of alphabet) {
+      const code = `${first}${second}`
+      const label = displayNames.of(code)
+      if (label && label !== code) {
+        codes.push(code)
+      }
+    }
+  }
+
+  return codes
+}
+
+function buildCountryOptions(locale: string): Array<[string, string]> {
+  const displayNames =
+    typeof Intl.DisplayNames === 'function'
+      ? new Intl.DisplayNames([locale], { type: 'region' })
+      : null
+
+  const uniqueCodes = Array.from(new Set(getCountryCodes(displayNames)))
+  const options = uniqueCodes
+    .map((code) => [code, displayNames?.of(code) || code] as [string, string])
+    .filter(([, label]) => Boolean(label))
+
+  options.sort((a, b) => a[1].localeCompare(b[1], locale))
+  return options
 }
 
 function getInitials(firstName: string, lastName: string, email: string): string {
@@ -86,9 +123,7 @@ function getAvatarUrlFromMetadata(metadata: Record<string, unknown> | undefined)
     : undefined
 
   return {
-    oauthAvatarUrl:
-      asString(metadata?.oauth_avatar_url) ||
-      asString(metadata?.avatar_url),
+    oauthAvatarUrl: getConnectedAvatarUrlFromMetadata(metadata),
     customAvatarUrl: asString(accountProfile?.avatarUrl),
     customAvatarDataUrl: asString(accountProfile?.avatarDataUrl),
     countryCode: asString(accountProfile?.countryCode) || 'US',
@@ -102,7 +137,9 @@ function getAvatarUrlFromMetadata(metadata: Record<string, unknown> | undefined)
 }
 
 export function ProfileEditForm({ customer }: ProfileEditFormProps) {
+  const locale = useLocale()
   const metadataDefaults = getAvatarUrlFromMetadata(customer.metadata)
+  const countryOptions = useMemo(() => buildCountryOptions(locale), [locale])
 
   const [email, setEmail] = useState(customer.email ?? '')
   const [firstName, setFirstName] = useState(customer.first_name ?? '')
@@ -307,7 +344,7 @@ export function ProfileEditForm({ customer }: ProfileEditFormProps) {
             onChange={(event) => setCountryCode(event.target.value)}
             className="h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm"
           >
-            {COUNTRY_OPTIONS.map(([value, label]) => (
+            {countryOptions.map(([value, label]) => (
               <option key={value} value={value}>
                 {label}
               </option>

@@ -3,12 +3,14 @@ import { Suspense } from 'react'
 import { getAllCustomerOrders, getCustomer, getCustomerOrders } from '@/lib/medusa-auth'
 import { extractLicenseReferencesFromOrders } from '@/lib/licenses'
 import { formatOrderAmount } from '@/lib/order-display'
+import { getOrderDisplayStatus } from '@/lib/order-status'
+import { formatDateForLocale } from '@/lib/date-format'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { ShoppingBag, Key } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
-async function AccountOverviewContent() {
+async function AccountOverviewContent({ locale }: { locale: string }) {
   const [customer, orders, allOrders] = await Promise.all([
     getCustomer(),
     getCustomerOrders(5),
@@ -71,14 +73,16 @@ async function AccountOverviewContent() {
                   <div>
                     <p className="font-medium">Order #{order.display_id}</p>
                     <p className="text-sm text-muted-foreground">
-                      {new Date(order.created_at).toLocaleDateString()}
+                      {formatDateForLocale(order.created_at, locale)}
                     </p>
                   </div>
                   <div className="text-right">
                     <p className="font-medium">
                       {formatOrderAmount(order.total, order.currency_code)}
                     </p>
-                    <p className="text-sm text-muted-foreground capitalize">{order.status}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {getOrderDisplayStatus(order)}
+                    </p>
                   </div>
                 </Link>
               ))}
@@ -123,7 +127,7 @@ export default async function AccountPage({
   return (
     <div className="space-y-6">
       <Suspense fallback={<AccountOverviewSkeleton />}>
-        <AccountOverviewContent />
+        <AccountOverviewContent locale={locale} />
       </Suspense>
     </div>
   )

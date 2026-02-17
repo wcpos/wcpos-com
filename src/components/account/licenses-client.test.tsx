@@ -2,6 +2,10 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen, waitFor } from '@testing-library/react'
 import { LicensesClient } from './licenses-client'
 
+vi.mock('next-intl', () => ({
+  useLocale: () => 'en-US',
+}))
+
 // Mock global fetch
 const mockFetch = vi.fn()
 vi.stubGlobal('fetch', mockFetch)

@@ -2,6 +2,10 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { ProfileEditForm } from './profile-edit-form'
 
+vi.mock('next-intl', () => ({
+  useLocale: () => 'en-US',
+}))
+
 const mockFetch = vi.fn()
 vi.stubGlobal('fetch', mockFetch)
 
@@ -70,5 +74,25 @@ describe('ProfileEditForm', () => {
     expect(
       await screen.findByText('Profile updated successfully.')
     ).toBeInTheDocument()
+  })
+
+  it('lists worldwide country options', () => {
+    render(
+      <ProfileEditForm
+        customer={{
+          email: 'world@example.com',
+          metadata: {},
+        }}
+      />
+    )
+
+    const countrySelect = screen.getByLabelText('Country')
+    const options = Array.from(countrySelect.querySelectorAll('option')).map(
+      (option) => option.textContent
+    )
+
+    expect(options.length).toBeGreaterThan(200)
+    expect(options.some((label) => label?.includes('Afghanistan'))).toBe(true)
+    expect(options.some((label) => label?.includes('Zimbabwe'))).toBe(true)
   })
 })

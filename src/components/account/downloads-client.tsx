@@ -2,17 +2,21 @@
 
 import { useEffect, useState } from 'react'
 import { Download, Loader2 } from 'lucide-react'
+import { useLocale } from 'next-intl'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { formatDateForLocale } from '@/lib/date-format'
 
 interface DownloadRelease {
   version: string
   name: string
+  releaseNotes: string
   publishedAt: string
   allowed: boolean
 }
 
 export function DownloadsClient() {
+  const locale = useLocale()
   const [releases, setReleases] = useState<DownloadRelease[]>([])
   const [loading, setLoading] = useState(true)
   const [downloadingVersion, setDownloadingVersion] = useState<string | null>(
@@ -106,7 +110,10 @@ export function DownloadsClient() {
                     <p className="font-medium">{release.name}</p>
                     <p className="text-sm text-muted-foreground">
                       v{release.version} •{' '}
-                      {new Date(release.publishedAt).toLocaleDateString()}
+                      {formatDateForLocale(release.publishedAt, locale)}
+                    </p>
+                    <p className="mt-1 whitespace-pre-wrap text-xs text-muted-foreground">
+                      {release.releaseNotes?.trim() || 'No release notes yet.'}
                     </p>
                   </div>
                   <Button
