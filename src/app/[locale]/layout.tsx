@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import Script from 'next/script'
 import { Geist, Geist_Mono } from 'next/font/google'
 import { NextIntlClientProvider } from 'next-intl'
 import { getMessages, setRequestLocale } from 'next-intl/server'
@@ -78,14 +77,6 @@ export default async function LocaleLayout({
             {children}
           </NextIntlClientProvider>
         </ThemeProvider>
-        {process.env.NEXT_PUBLIC_UMAMI_SCRIPT_URL &&
-          process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID && (
-            <Script
-              src={process.env.NEXT_PUBLIC_UMAMI_SCRIPT_URL}
-              data-website-id={process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID}
-              strategy="afterInteractive"
-            />
-          )}
       </body>
     </html>
   )
