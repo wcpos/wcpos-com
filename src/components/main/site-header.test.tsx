@@ -1,9 +1,13 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { render, screen, act } from '@testing-library/react'
+import { fireEvent, render, screen, act } from '@testing-library/react'
 
 // Mock medusa-auth before importing the component
 vi.mock('@/lib/medusa-auth', () => ({
   getAuthToken: vi.fn(),
+}))
+
+vi.mock('@/lib/analytics/client-events', () => ({
+  trackClientEvent: vi.fn(),
 }))
 
 // Mock next-intl
@@ -37,9 +41,11 @@ vi.mock('@/i18n/navigation', () => ({
 }))
 
 import { getAuthToken } from '@/lib/medusa-auth'
+import { trackClientEvent } from '@/lib/analytics/client-events'
 import { SiteHeader } from './site-header'
 
 const mockGetAuthToken = vi.mocked(getAuthToken)
+const mockTrackClientEvent = vi.mocked(trackClientEvent)
 
 describe('SiteHeader', () => {
   beforeEach(() => {
@@ -104,7 +110,7 @@ describe('SiteHeader', () => {
     expect(supportLink?.getAttribute('href')).toBe('/support')
   })
 
-  it('adds umami event attribute to Pro link', async () => {
+  it('tracks Pro link clicks', async () => {
     mockGetAuthToken.mockResolvedValue(null)
     await act(async () => {
       render(<SiteHeader />)
@@ -112,7 +118,11 @@ describe('SiteHeader', () => {
 
     const proLinks = screen.getAllByText('Pro')
     const proLink = proLinks[0].closest('a')
-    expect(proLink?.getAttribute('data-umami-event')).toBe('click-pro-cta')
+    expect(proLink).toBeTruthy()
+
+    fireEvent.click(proLink!)
+
+    expect(mockTrackClientEvent).toHaveBeenCalledWith('click_pro_cta', undefined)
   })
 
   it('shows Sign In when not authenticated', async () => {
@@ -135,17 +145,19 @@ describe('SiteHeader', () => {
     expect(accountLinks.length).toBeGreaterThan(0)
   })
 
-  it('adds umami event attribute to Sign In button', async () => {
+  it('tracks Sign In button clicks', async () => {
     mockGetAuthToken.mockResolvedValue(null)
     await act(async () => {
       render(<SiteHeader />)
     })
 
     const signInLinks = screen.getAllByText('Sign In')
-    // The Button component uses asChild with Slot, so data-umami-event
-    // gets forwarded to the rendered anchor element
-    const signInEl = signInLinks[0].closest('[data-umami-event]')
-    expect(signInEl?.getAttribute('data-umami-event')).toBe('click-sign-in')
+    const signInLink = signInLinks[0].closest('a')
+    expect(signInLink).toBeTruthy()
+
+    fireEvent.click(signInLink!)
+
+    expect(mockTrackClientEvent).toHaveBeenCalledWith('click_sign_in', undefined)
   })
 
   it('links Account to /account', async () => {

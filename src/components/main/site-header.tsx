@@ -3,6 +3,7 @@ import { useTranslations } from 'next-intl'
 import { Menu } from 'lucide-react'
 import { Link } from '@/i18n/navigation'
 import { Button } from '@/components/ui/button'
+import { TrackedLocaleLink } from '@/components/analytics/tracked-locale-link'
 import {
   Sheet,
   SheetContent,
@@ -28,8 +29,10 @@ async function AuthButton() {
   }
 
   return (
-    <Button size="sm" asChild data-umami-event="click-sign-in">
-      <Link href="/login">Sign In</Link>
+    <Button size="sm" asChild>
+      <TrackedLocaleLink href="/login" eventName="click_sign_in">
+        Sign In
+      </TrackedLocaleLink>
     </Button>
   )
 }
@@ -43,7 +46,7 @@ export function SiteHeader() {
 
   const navLinks = [
     { label: t('roadmap'), href: '/roadmap' },
-    { label: t('pro'), href: '/pro', umamiEvent: 'click-pro-cta' },
+    { label: t('pro'), href: '/pro', eventName: 'click_pro_cta' },
     { label: t('support'), href: '/support' },
     { label: t('docs'), href: 'https://docs.wcpos.com', external: true },
   ]
@@ -67,14 +70,24 @@ export function SiteHeader() {
                   {link.label}
                 </a>
               ) : (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="text-muted-foreground hover:text-foreground transition-colors"
-                  {...('umamiEvent' in link && link.umamiEvent && { 'data-umami-event': link.umamiEvent })}
-                >
-                  {link.label}
-                </Link>
+                link.eventName ? (
+                  <TrackedLocaleLink
+                    key={link.href}
+                    href={link.href}
+                    eventName={link.eventName}
+                    className="text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    {link.label}
+                  </TrackedLocaleLink>
+                ) : (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className="text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    {link.label}
+                  </Link>
+                )
               )
             )}
           </nav>
@@ -108,14 +121,24 @@ export function SiteHeader() {
                     {link.label}
                   </a>
                 ) : (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium"
-                    {...('umamiEvent' in link && link.umamiEvent && { 'data-umami-event': link.umamiEvent })}
-                  >
-                    {link.label}
-                  </Link>
+                  link.eventName ? (
+                    <TrackedLocaleLink
+                      key={link.href}
+                      href={link.href}
+                      eventName={link.eventName}
+                      className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium"
+                    >
+                      {link.label}
+                    </TrackedLocaleLink>
+                  ) : (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium"
+                    >
+                      {link.label}
+                    </Link>
+                  )
                 )
               )}
               <div className="border-t pt-4 mt-2">

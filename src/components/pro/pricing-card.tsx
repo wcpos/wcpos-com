@@ -1,4 +1,3 @@
-import Link from 'next/link'
 import { Check } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
@@ -13,6 +12,7 @@ import { Badge } from '@/components/ui/badge'
 import type { MedusaProduct } from '@/types/medusa'
 import { formatPrice, getVariantPrice } from '@/services/core/external/medusa-client'
 import type { ProCheckoutVariant } from '@/services/core/analytics/posthog-service'
+import { TrackedNextLink } from '@/components/analytics/tracked-next-link'
 
 interface PricingCardProps {
   product: MedusaProduct
@@ -107,12 +107,17 @@ export function PricingCard({
           size="lg"
           variant={featured ? 'default' : 'outline'}
         >
-          <Link
+          <TrackedNextLink
             href={checkoutHref}
-            data-umami-event="click-start-checkout"
+            eventName="click_start_checkout"
+            eventProperties={{
+              experiment: 'pro_checkout_v1',
+              variant: experimentVariant,
+              product: product.handle,
+            }}
           >
             {ctaLabel}
-          </Link>
+          </TrackedNextLink>
         </Button>
       </CardFooter>
     </Card>
