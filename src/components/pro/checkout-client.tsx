@@ -50,6 +50,7 @@ interface Cart {
 }
 
 type PaymentMethod = 'stripe' | 'paypal' | 'btcpay'
+const PRO_CHECKOUT_EXPERIMENT = 'pro_checkout_v1'
 
 // Map frontend payment method names to Medusa provider IDs
 function getProviderId(method: PaymentMethod): string {
@@ -144,7 +145,7 @@ export function CheckoutClient({
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           metadata: {
-            experiment: 'pro_checkout_v1',
+            experiment: PRO_CHECKOUT_EXPERIMENT,
             variant: experimentVariant,
           },
         }),
@@ -474,7 +475,7 @@ export function CheckoutClient({
                       cartId={cart.id}
                       amount={cart.total}
                       currency={cart.currency_code}
-                      experiment="pro_checkout_v1"
+                      experiment={PRO_CHECKOUT_EXPERIMENT}
                       experimentVariant={experimentVariant}
                       onSuccess={handleSuccess}
                     />
