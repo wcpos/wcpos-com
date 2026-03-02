@@ -1,4 +1,3 @@
-import Link from 'next/link'
 import { Check } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
@@ -12,11 +11,14 @@ import {
 import { Badge } from '@/components/ui/badge'
 import type { MedusaProduct } from '@/types/medusa'
 import { formatPrice, getVariantPrice } from '@/services/core/external/medusa-client'
+import type { ProCheckoutVariant } from '@/services/core/analytics/posthog-service'
+import { TrackedNextLink } from '@/components/analytics/tracked-next-link'
 
 interface PricingCardProps {
   product: MedusaProduct
   featured?: boolean
   currencyCode?: string
+  experimentVariant?: ProCheckoutVariant
 }
 
 const FEATURES = {
@@ -41,11 +43,24 @@ export function PricingCard({
   product,
   featured = false,
   currencyCode = 'usd',
+  experimentVariant = 'control',
 }: PricingCardProps) {
   const variant = product.variants[0]
   const price = variant ? getVariantPrice(variant, currencyCode) : null
   const isLifetime = product.handle === 'wcpos-pro-lifetime'
   const features = isLifetime ? FEATURES.lifetime : FEATURES.yearly
+  const ctaLabel = experimentVariant === 'value_copy'
+    ? 'Get Instant Access'
+    : 'Get Started'
+
+  const checkoutSearchParams = new URLSearchParams()
+  if (variant?.id) {
+    checkoutSearchParams.set('variant', variant.id)
+  }
+  checkoutSearchParams.set('product', product.handle)
+  checkoutSearchParams.set('exp', 'pro_checkout_v1')
+  checkoutSearchParams.set('exp_variant', experimentVariant)
+  const checkoutHref = `/pro/checkout?${checkoutSearchParams.toString()}`
 
   return (
     <Card
@@ -92,12 +107,17 @@ export function PricingCard({
           size="lg"
           variant={featured ? 'default' : 'outline'}
         >
-          <Link
-            href={`/pro/checkout?variant=${variant?.id}&product=${product.handle}`}
-            data-umami-event="click-start-checkout"
+          <TrackedNextLink
+            href={checkoutHref}
+            eventName="click_start_checkout"
+            eventProperties={{
+              experiment: 'pro_checkout_v1',
+              variant: experimentVariant,
+              product: product.handle,
+            }}
           >
-            Get Started
-          </Link>
+            {ctaLabel}
+          </TrackedNextLink>
         </Button>
       </CardFooter>
     </Card>

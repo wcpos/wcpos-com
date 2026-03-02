@@ -111,12 +111,14 @@ test.describe('Checkout Flow', () => {
     await page.goto('/pro')
     await page.waitForLoadState('networkidle')
 
-    const getStartedLink = page.getByRole('link', { name: 'Get Started' }).first()
+    const getStartedLink = page.getByRole('link', { name: /Get (Started|Instant Access)/ }).first()
     await expect(getStartedLink).toBeVisible({ timeout: 10000 })
 
     const href = await getStartedLink.getAttribute('href')
     expect(href).toContain('/pro/checkout')
     expect(href).toContain('variant=')
+    expect(href).toContain('exp=pro_checkout_v1')
+    expect(href).toContain('exp_variant=')
   })
 
   test('displays order summary with correct product', async ({ page }) => {

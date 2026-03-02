@@ -27,6 +27,11 @@ const envSchema = z.object({
   // BTCPayServer (enabled flag - actual server URL is handled by Medusa)
   NEXT_PUBLIC_BTCPAY_ENABLED: z.string().optional(),
 
+  // PostHog analytics / experiments
+  NEXT_PUBLIC_POSTHOG_HOST: z.string().url().optional(),
+  NEXT_PUBLIC_POSTHOG_KEY: z.string().optional(),
+  POSTHOG_API_KEY: z.string().optional(),
+
   // Keygen License Server
   KEYGEN_HOST: z.string().default('license.wcpos.com'),
   KEYGEN_API_TOKEN: z.string().optional(),
