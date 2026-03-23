@@ -1,4 +1,4 @@
-# SEO Optimization for Ecommerce Storefronts
+# SEO for Ecommerce Storefronts
 
 ## Contents
 
@@ -84,7 +84,7 @@ Add on homepage only: Organization name, URL, logo, contact information. Helps e
 - Flat (`/categories/laptops`) for simpler management
 - Don't mix both approaches
 
-**Pagination URLs**: Use query parameters (`/products?page=2`). Implement `rel="prev"` and `rel="next"` tags. Each page is canonical to itself (NOT to page 1) so all pages can be indexed.
+**Pagination URLs**: Use query parameters (`/products?page=2`). Each paginated page should be self-canonical (NOT canonical to page 1). Ensure each page is discoverable via crawlable links. Note: Google no longer uses `rel="prev"`/`rel="next"` as an indexing signal, though other search engines may still honor them.
 
 **Filter URLs**: Use query parameters (`/products?color=blue&size=large`).
 

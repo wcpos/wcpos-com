@@ -107,7 +107,7 @@ Electronics (header)
 **REQUIRED positioning pattern:**
 
 **Visual structure:**
-```
+```text
 ┌─────────────────────────────────────────────────┐
 │ NAVBAR (position: relative)                     │
 │  [Logo]  [Shop ▼]  [Men]  [Women]  [Cart]      │

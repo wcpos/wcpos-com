@@ -55,7 +55,7 @@ export function Breadcrumb() {
 </Suspense>
 ```
 
-If you use `generateStaticParams`, Suspense is optional.
+If you use `generateStaticParams` (with the experimental `cacheComponents` feature enabled), Suspense is optional for `usePathname()`.
 
 ## Quick Reference
 

@@ -111,7 +111,7 @@ export const config = {
 
 ### Next.js 16+: `proxy.ts`
 
-Renamed for clarity - same capabilities, different names:
+Renamed for clarity - same capabilities, different names. Note: `proxy()` runs on the Node.js runtime (not Edge), so edge-only APIs are not available. Teams requiring Edge runtime should continue using `middleware()` in `middleware.ts`.
 
 ```ts
 // proxy.ts (root of project)
@@ -123,7 +123,7 @@ export function proxy(request: NextRequest) {
   return NextResponse.next();
 }
 
-export const proxyConfig = {
+export const config = {
   matcher: ['/dashboard/:path*', '/api/:path*'],
 };
 ```
@@ -131,7 +131,7 @@ export const proxyConfig = {
 | Version | File | Export | Config |
 |---------|------|--------|--------|
 | v14-15 | `middleware.ts` | `middleware()` | `config` |
-| v16+ | `proxy.ts` | `proxy()` | `proxyConfig` |
+| v16+ | `proxy.ts` | `proxy()` | `config` |
 
 **Migration**: Run `npx @next/codemod@latest upgrade` to auto-rename.
 

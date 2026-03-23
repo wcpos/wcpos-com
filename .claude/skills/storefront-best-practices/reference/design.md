@@ -57,19 +57,28 @@ Tailwind v3 and v4 have different syntax, and mixing them causes errors.
 **Key differences:**
 
 **Tailwind v3:**
+```css
+/* v3: @tailwind directives + tailwind.config.js */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+```
 ```tsx
-// v3 syntax
-<div className="bg-primary text-white">Content</div>
+// v3: !important modifier prefix, arbitrary values with brackets
+<div className="!flex bg-[#1da1f2] text-white">Content</div>
 ```
 
 **Tailwind v4:**
+```css
+/* v4: single CSS import, CSS-first config (no tailwind.config.js needed) */
+@import "tailwindcss";
+```
 ```tsx
-// v4 may use CSS variables differently
-// Check the project's existing patterns
-<div className="bg-primary text-white">Content</div>
+// v4: !important modifier suffix, CSS variables with parentheses
+<div className="flex! bg-(--brand-color) text-white">Content</div>
 ```
 
-**Common mistake:** Using v3 syntax in v4 projects or vice versa. Always verify the version first.
+**Common mistake:** Using v3 syntax in v4 projects or vice versa. Most breaking changes are in configuration/imports and modifier syntax. Always verify the version first.
 
 ### Document Discovery
 

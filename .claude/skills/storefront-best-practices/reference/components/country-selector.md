@@ -107,7 +107,7 @@ Sticky banner at top: "Shipping to United States? Change" with link to selector.
 - Helpful for large lists (100+ countries)
 
 **Format:**
-```
+```text
 🇺🇸 United States (USD)
 🇬🇧 United Kingdom (GBP)
 🇨🇦 Canada (CAD)

@@ -179,7 +179,8 @@ For non-Medusa backends (custom APIs, third-party platforms):
 - Call backend login endpoint, check auth state, logout methods
 
 **Token-based (JWT, OAuth):**
-- Store token in localStorage or secure cookie after login
+- Prefer HttpOnly, Secure, SameSite cookies for token/session storage
+- Avoid `localStorage` for tokens (XSS risk); use only as a constrained fallback with short-lived tokens and CSP mitigations
 - Include token in Authorization header for all authenticated requests
 - Common in headless/API-first backends
 - Format: `Authorization: Bearer {token}`
@@ -333,7 +334,7 @@ Use framework-specific auth patterns for redirects.
 ### Caching Strategy
 
 **Client-side caching:**
-- TanStack Query handles automatically with `staleTime` and `cacheTime`
+- TanStack Query handles automatically with `staleTime` and `gcTime`
 - Configure globally or per-query
 - Product data: 5-10 min stale time
 - Cart data: Fresh on every fetch

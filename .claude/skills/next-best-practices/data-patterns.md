@@ -4,7 +4,7 @@ Choose the right data fetching pattern for each use case.
 
 ## Decision Tree
 
-```
+```text
 Need to fetch data?
 ├── From a Server Component?
 │   └── Use: Fetch directly (no API needed)
@@ -107,7 +107,7 @@ Use Route Handlers when you need a REST API.
 // app/api/posts/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 
-// GET is cacheable
+// GET is uncached by default in Next.js 15+; opt in via route config or fetch cache options
 export async function GET(request: NextRequest) {
   const posts = await db.post.findMany();
   return NextResponse.json(posts);

@@ -2,7 +2,7 @@
 name: next-upgrade
 user-invocable: true
 description: "Upgrade Next.js to the latest version following official migration guides and codemods"
-allowed-tools: [Bash,Read,Write,Edit,Glob,Grep]
+allowed-tools: [Bash,Read,Write,Edit,Glob,Grep,WebFetch]
 ---
 
 # Upgrade Next.js
@@ -20,7 +20,7 @@ Upgrade the current project to the latest Next.js version following official mig
      - https://nextjs.org/docs/app/guides/upgrading/version-15
      - https://nextjs.org/docs/app/guides/upgrading/version-14
 
-3. **Determine upgrade path**: Based on current version, identify which migration steps apply. For major version jumps, upgrade incrementally (e.g., 13 → 14 → 15).
+3. **Determine upgrade path**: Based on current version, identify which migration steps apply. For major version jumps, upgrade incrementally (e.g., 13 → 14 → 15 → 16).
 
 4. **Run codemods first**: Next.js provides codemods to automate breaking changes:
    ```bash
@@ -31,9 +31,9 @@ Upgrade the current project to the latest Next.js version following official mig
    - `next-request-geo-ip` - Migrates geo/ip properties (v15)
    - `next-dynamic-access-named-export` - Transforms dynamic imports (v15)
 
-5. **Update dependencies**: Upgrade Next.js and peer dependencies together:
+5. **Update dependencies**: Upgrade Next.js and peer dependencies using the repo's package manager (detect via lockfile: `pnpm-lock.yaml` → pnpm, `yarn.lock` → yarn, `package-lock.json` → npm):
    ```bash
-   npm install next@latest react@latest react-dom@latest
+   pnpm add next@latest react@latest react-dom@latest
    ```
 
 6. **Review breaking changes**: Check the upgrade guide for manual changes needed:
@@ -43,9 +43,9 @@ Upgrade the current project to the latest Next.js version following official mig
 
 7. **Update TypeScript types** (if applicable):
    ```bash
-   npm install @types/react@latest @types/react-dom@latest
+   pnpm add -D @types/react@latest @types/react-dom@latest
    ```
 
 8. **Test the upgrade**:
-   - Run `npm run build` to check for build errors
-   - Run `npm run dev` and test key functionality
+   - Run `pnpm build` to check for build errors
+   - Run `pnpm dev` and test key functionality

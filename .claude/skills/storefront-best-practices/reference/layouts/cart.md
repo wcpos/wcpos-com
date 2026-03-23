@@ -93,7 +93,7 @@ Total for item (price × quantity), bold or larger font, update dynamically when
 ### Quantity Selector
 
 Standard +/- buttons with number display:
-```
+```text
 [-]  [2]  [+]
 ```
 
@@ -121,7 +121,7 @@ Position: Right column on desktop (sticky), below cart items on mobile, fixed wi
 ### Price Breakdown
 
 **Line items:**
-```
+```text
 Subtotal (3 items):     $149.97
 Shipping:               $9.99
 Tax:                    $12.00
@@ -240,7 +240,7 @@ Send cart ID with every cart API request, create new cart if ID doesn't exist, c
 Built-in caching with automatic revalidation, optimistic updates support, automatic refetching on focus/reconnect, loading and error states handled, query invalidation for cart updates.
 
 **Configuration:**
-Use `useQuery` for fetching cart data, set `staleTime` to 30-60 seconds, use `queryClient.invalidateQueries(['cart'])` after updates.
+Use `useQuery` for fetching cart data, set `staleTime` to 30-60 seconds, use `queryClient.invalidateQueries({ queryKey: ['cart'] })` after updates.
 
 **See also:** [connecting-to-backend.md](../connecting-to-backend.md) for detailed backend integration patterns.
 
@@ -275,7 +275,7 @@ Smaller product images (60-80px), truncated product titles (1-2 lines), essentia
 Fixed at bottom of screen, total amount visible, "Checkout" button (full-width), appears after scrolling (optional), always accessible.
 
 **Design:**
-```
+```text
 [Total: $171.96]  [Checkout]
 ```
 

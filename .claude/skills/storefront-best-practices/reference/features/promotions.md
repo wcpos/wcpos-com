@@ -18,7 +18,7 @@ Promotions are temporary price reductions, discounts, or special offers designed
 
 **Backend Integration (CRITICAL):**
 
-All promotion logic and data must come from the ecommerce backend. Do this based on backend integrated. Fetch active promotions, discount codes, and price rules from backend API. Never hardcode promotion logic in frontend.
+All promotion logic and data must come from the ecommerce backend: fetch active promotions, discount codes, and price rules from the backend API and never hardcode promotion logic in the frontend.
 
 ### Key Ecommerce Requirements
 
