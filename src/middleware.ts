@@ -9,6 +9,8 @@ import {
 } from '@/lib/analytics/distinct-id'
 
 const COOKIE_NAME = 'medusa-token'
+const UPDATES_HOSTNAME = 'updates.wcpos.com'
+const MAIN_SITE_ORIGIN = 'https://wcpos.com'
 
 const intlMiddleware = createIntlMiddleware(routing)
 
@@ -41,10 +43,10 @@ function withDistinctIdCookie(request: NextRequest, response: NextResponse) {
  */
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
-  const hostname = request.headers.get('host') || ''
+  const hostname = request.nextUrl.hostname.toLowerCase()
 
   // Handle updates.wcpos.com — restrict to API routes only
-  if (hostname.includes('updates.wcpos.com') || hostname.includes('updates.')) {
+  if (hostname === UPDATES_HOSTNAME) {
     if (pathname.startsWith('/api/')) {
       return NextResponse.next()
     }
@@ -61,8 +63,7 @@ export function middleware(request: NextRequest) {
       return withDistinctIdCookie(request, response)
     }
 
-    const mainDomain = hostname.replace('updates.', '')
-    const redirectUrl = new URL(pathname, `https://${mainDomain}`)
+    const redirectUrl = new URL(pathname, MAIN_SITE_ORIGIN)
     redirectUrl.search = request.nextUrl.search
     return withDistinctIdCookie(request, NextResponse.redirect(redirectUrl, 301))
   }
