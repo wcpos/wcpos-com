@@ -30,6 +30,10 @@ function authHeaders() {
   }
 }
 
+function encodeKeygenPathSegment(value: string): string {
+  return encodeURIComponent(value)
+}
+
 // ---- JSON:API response shape helpers ----
 
 interface KeygenLicenseAttributes {
@@ -141,7 +145,8 @@ async function validateLicenseKey(key: string): Promise<{
  * GET /v1/licenses/{id}
  */
 async function getLicense(licenseId: string): Promise<LicenseDetail> {
-  const res = await fetch(`${BASE_URL}/v1/licenses/${licenseId}`, {
+  const encodedLicenseId = encodeKeygenPathSegment(licenseId)
+  const res = await fetch(`${BASE_URL}/v1/licenses/${encodedLicenseId}`, {
     method: 'GET',
     headers: authHeaders(),
   })
@@ -164,8 +169,9 @@ async function getLicense(licenseId: string): Promise<LicenseDetail> {
 async function getLicenseMachines(
   licenseId: string
 ): Promise<LicenseMachine[]> {
+  const encodedLicenseId = encodeKeygenPathSegment(licenseId)
   const res = await fetch(
-    `${BASE_URL}/v1/licenses/${licenseId}/machines`,
+    `${BASE_URL}/v1/licenses/${encodedLicenseId}/machines`,
     {
       method: 'GET',
       headers: authHeaders(),
@@ -192,9 +198,10 @@ async function activateMachine(
   metadata: Record<string, unknown> = {}
 ): Promise<{ id: string; fingerprint: string } | null> {
   const name = (metadata.domain as string) ?? null
+  const encodedLicenseId = encodeKeygenPathSegment(licenseId)
 
   const res = await fetch(
-    `${BASE_URL}/v1/licenses/${licenseId}/machines`,
+    `${BASE_URL}/v1/licenses/${encodedLicenseId}/machines`,
     {
       method: 'POST',
       headers: authHeaders(),
@@ -223,7 +230,8 @@ async function activateMachine(
  * DELETE /v1/machines/{id}
  */
 async function deactivateMachine(machineId: string): Promise<boolean> {
-  const res = await fetch(`${BASE_URL}/v1/machines/${machineId}`, {
+  const encodedMachineId = encodeKeygenPathSegment(machineId)
+  const res = await fetch(`${BASE_URL}/v1/machines/${encodedMachineId}`, {
     method: 'DELETE',
     headers: authHeaders(),
   })
