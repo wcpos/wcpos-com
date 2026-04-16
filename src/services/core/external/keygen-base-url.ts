@@ -29,6 +29,10 @@ export function getKeygenBaseUrl(
   const isAllowedLocalHost =
     nodeEnv !== 'production' && ALLOWED_LOCAL_HOSTS.has(parsedUrl.hostname)
 
+  if (nodeEnv === 'production' && parsedUrl.port) {
+    throw new Error('KEYGEN_HOST must not include a port in production')
+  }
+
   if (!isAllowedProductionHost && !isAllowedLocalHost) {
     throw new Error('KEYGEN_HOST must be a trusted Keygen host')
   }
