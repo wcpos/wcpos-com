@@ -9,6 +9,32 @@ vi.mock('next-intl/middleware', () => ({
 import { middleware } from './middleware'
 
 describe('middleware', () => {
+  it('redirects updates.wcpos.com page requests to the main domain', () => {
+    const request = new NextRequest('https://updates.wcpos.com/download', {
+      headers: {
+        host: 'updates.wcpos.com',
+      },
+    })
+
+    const response = middleware(request)
+
+    expect(response?.status).toBe(301)
+    expect(response?.headers.get('location')).toBe('https://wcpos.com/download')
+  })
+
+  it('does not trust arbitrary hosts that merely contain updates.wcpos.com', () => {
+    const request = new NextRequest('https://updates.wcpos.com.evil.test/download', {
+      headers: {
+        host: 'updates.wcpos.com.evil.test',
+      },
+    })
+
+    const response = middleware(request)
+
+    expect(response?.status).toBe(200)
+    expect(response?.headers.get('location')).toBeNull()
+  })
+
   it('redirects unauthenticated checkout requests to login with redirect param', () => {
     const request = new NextRequest(
       'https://wcpos.com/pro/checkout?variant=variant_123'
