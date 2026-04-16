@@ -178,6 +178,35 @@ describe('licenseClient', () => {
         })
       )
     })
+
+    it('URL-encodes license ids before fetching', async () => {
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          data: {
+            id: 'license/123',
+            attributes: {
+              key: 'XXXX-XXXX',
+              status: 'ACTIVE',
+              expiry: '2027-01-01T00:00:00Z',
+              maxMachines: 2,
+              metadata: {},
+              created: '2026-01-01T00:00:00Z',
+            },
+            relationships: {
+              policy: { data: { id: 'policy-yearly' } },
+            },
+          },
+        }),
+      })
+
+      await licenseClient.getLicense('license/123')
+
+      expect(mockFetch).toHaveBeenCalledWith(
+        'https://license.wcpos.com/v1/licenses/license%2F123',
+        expect.anything()
+      )
+    })
   })
 
   describe('getLicenseMachines', () => {
@@ -237,6 +266,20 @@ describe('licenseClient', () => {
         })
       )
     })
+
+    it('URL-encodes license ids when fetching machines', async () => {
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ data: [] }),
+      })
+
+      await licenseClient.getLicenseMachines('license/123')
+
+      expect(mockFetch).toHaveBeenCalledWith(
+        'https://license.wcpos.com/v1/licenses/license%2F123/machines',
+        expect.anything()
+      )
+    })
   })
 
   describe('activateMachine', () => {
@@ -289,6 +332,31 @@ describe('licenseClient', () => {
         })
       )
     })
+
+    it('URL-encodes license ids when activating a machine', async () => {
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        status: 201,
+        json: async () => ({
+          data: {
+            id: 'machine-789',
+            attributes: {
+              fingerprint: 'wp-instance-new',
+              name: 'newstore.com',
+              metadata: { domain: 'newstore.com' },
+              created: '2026-02-04T00:00:00Z',
+            },
+          },
+        }),
+      })
+
+      await licenseClient.activateMachine('license/123', 'wp-instance-new')
+
+      expect(mockFetch).toHaveBeenCalledWith(
+        'https://license.wcpos.com/v1/licenses/license%2F123/machines',
+        expect.anything()
+      )
+    })
   })
 
   describe('deactivateMachine', () => {
@@ -310,6 +378,20 @@ describe('licenseClient', () => {
             Authorization: 'Bearer test-token',
           }),
         })
+      )
+    })
+
+    it('URL-encodes machine ids when deactivating', async () => {
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        status: 204,
+      })
+
+      await licenseClient.deactivateMachine('machine/789')
+
+      expect(mockFetch).toHaveBeenCalledWith(
+        'https://license.wcpos.com/v1/machines/machine%2F789',
+        expect.anything()
       )
     })
 
