@@ -7,6 +7,7 @@ import type {
   LicenseDetail,
   LicenseMachine,
 } from '@/types/license'
+import { getKeygenBaseUrl } from './keygen-base-url'
 
 /**
  * License Client — Keygen CE API integration
@@ -15,7 +16,7 @@ import type {
  * and backward-compatible license status checks for the Pro plugin.
  */
 
-const BASE_URL = `https://${env.KEYGEN_HOST}`
+const BASE_URL = getKeygenBaseUrl(env.KEYGEN_HOST, env.NODE_ENV)
 
 const JSON_API_HEADERS = {
   'Content-Type': 'application/vnd.api+json',
