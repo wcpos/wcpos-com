@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { ChevronLeft, ChevronRight, Download } from 'lucide-react'
 import { useLocale } from 'next-intl'
 import { Button } from '@/components/ui/button'
@@ -32,14 +32,11 @@ export function DownloadsClient({ initialReleases }: DownloadsClientProps) {
   const [error, setError] = useState<string | null>(null)
 
   const totalPages = Math.max(1, Math.ceil(releases.length / RELEASES_PER_PAGE))
+  const visiblePage = Math.min(currentPage, totalPages)
   const visibleReleases = releases.slice(
-    (currentPage - 1) * RELEASES_PER_PAGE,
-    currentPage * RELEASES_PER_PAGE
+    (visiblePage - 1) * RELEASES_PER_PAGE,
+    visiblePage * RELEASES_PER_PAGE
   )
-
-  useEffect(() => {
-    setCurrentPage((page) => Math.min(page, totalPages))
-  }, [totalPages])
 
   const startDownload = async (version: string) => {
     setDownloadingVersion(version)
@@ -130,15 +127,15 @@ export function DownloadsClient({ initialReleases }: DownloadsClientProps) {
               {totalPages > 1 && (
                 <div className="flex items-center justify-between border-t pt-3">
                   <p className="text-xs text-muted-foreground">
-                    Page {currentPage} of {totalPages}
+                    Page {visiblePage} of {totalPages}
                   </p>
                   <div className="flex items-center gap-2">
                     <Button
                       type="button"
                       variant="outline"
                       size="sm"
-                      onClick={() => setCurrentPage((page) => Math.max(1, page - 1))}
-                      disabled={currentPage === 1}
+                      onClick={() => setCurrentPage(Math.max(1, visiblePage - 1))}
+                      disabled={visiblePage === 1}
                       aria-label="Previous page"
                     >
                       <ChevronLeft className="h-4 w-4" />
@@ -149,9 +146,9 @@ export function DownloadsClient({ initialReleases }: DownloadsClientProps) {
                       variant="outline"
                       size="sm"
                       onClick={() =>
-                        setCurrentPage((page) => Math.min(totalPages, page + 1))
+                        setCurrentPage(Math.min(totalPages, visiblePage + 1))
                       }
-                      disabled={currentPage === totalPages}
+                      disabled={visiblePage === totalPages}
                       aria-label="Next page"
                     >
                       Next

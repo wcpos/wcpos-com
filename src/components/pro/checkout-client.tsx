@@ -112,10 +112,15 @@ export function CheckoutClient({
   selectedVariantId,
   experimentVariant,
 }: CheckoutClientProps) {
+  const validationError = !customerEmail
+    ? 'Please sign in to continue checkout.'
+    : !selectedVariantId
+      ? 'No product selected'
+      : null
   const [cart, setCart] = useState<Cart | null>(null)
   const [email, setEmail] = useState(customerEmail || '')
   const [clientSecret, setClientSecret] = useState<string | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(validationError === null)
   const [isProcessing, setIsProcessing] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [orderComplete, setOrderComplete] = useState(false)
@@ -126,15 +131,7 @@ export function CheckoutClient({
   )
 
   const initializeCheckout = useCallback(async () => {
-    if (!customerEmail) {
-      setError('Please sign in to continue checkout.')
-      setIsLoading(false)
-      return
-    }
-
-    if (!selectedVariantId) {
-      setError('No product selected')
-      setIsLoading(false)
+    if (!customerEmail || !selectedVariantId) {
       return
     }
 
@@ -178,7 +175,7 @@ export function CheckoutClient({
       const sessionsResponse = await fetch('/api/store/cart/payment-sessions', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
+        body: JSON.stringify({
           cartId: cartWithItem.id,
           provider_id: 'pp_stripe_stripe',
         }),
@@ -267,8 +264,14 @@ export function CheckoutClient({
   )
 
   useEffect(() => {
-    initializeCheckout()
-  }, [initializeCheckout])
+    if (validationError) {
+      return
+    }
+
+    queueMicrotask(() => {
+      void initializeCheckout()
+    })
+  }, [initializeCheckout, validationError])
 
   // Note: We initialize payment during cart creation, so no need to auto-select here
   // The clientSecret is already set from initializeCheckout
@@ -315,10 +318,12 @@ export function CheckoutClient({
     )
   }
 
-  if (error && !cart) {
+  const checkoutError = validationError || error
+
+  if (checkoutError && !cart) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[400px]">
-        <p className="text-destructive mb-4">{error}</p>
+        <p className="text-destructive mb-4">{checkoutError}</p>
         <Button asChild variant="outline">
           <Link href="/pro">
             <ArrowLeft className="mr-2 h-4 w-4" />
