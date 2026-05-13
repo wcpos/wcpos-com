@@ -41,8 +41,6 @@ jobs:
 
       - name: Setup pnpm
         uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v4
-        with:
-          version: 10
 
       - name: Setup Node.js
         uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
@@ -78,8 +76,6 @@ jobs:
 
       - name: Setup pnpm
         uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v4
-        with:
-          version: 10
 
       - name: Setup Node.js
         uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
@@ -128,8 +124,6 @@ jobs:
 
       - name: Setup pnpm
         uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v4
-        with:
-          version: 10
 
       - name: Setup Node.js
         uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
@@ -137,21 +131,18 @@ jobs:
           node-version: '22'
           cache: 'pnpm'
 
-      - name: Install Vercel CLI
-        run: pnpm add -g vercel
-
       - name: Pull Vercel Environment
-        run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+        run: pnpm dlx vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: Build Project
-        run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
+        run: pnpm dlx vercel build --token=${{ secrets.VERCEL_TOKEN }}
         env:
           GITHUB_PAT: ${{ secrets.GH_PAT }}
 
       - name: Deploy Preview
         id: deploy
         run: |
-          url=$(vercel deploy --prebuilt --archive=tgz --token=${{ secrets.VERCEL_TOKEN }})
+          url=$(pnpm dlx vercel deploy --prebuilt --archive=tgz --token=${{ secrets.VERCEL_TOKEN }})
           echo "url=$url" >> $GITHUB_OUTPUT
 
       - name: Comment PR
@@ -186,8 +177,6 @@ jobs:
 
       - name: Setup pnpm
         uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v4
-        with:
-          version: 10
 
       - name: Setup Node.js
         uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
@@ -195,25 +184,22 @@ jobs:
           node-version: '22'
           cache: 'pnpm'
 
-      - name: Install Vercel CLI
-        run: pnpm add -g vercel
-
       - name: Pull Vercel Environment
-        run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+        run: pnpm dlx vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: Build Project
-        run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
+        run: pnpm dlx vercel build --token=${{ secrets.VERCEL_TOKEN }}
         env:
           GITHUB_PAT: ${{ secrets.GH_PAT }}
 
       - name: Deploy Staging
         id: deploy
         run: |
-          url=$(vercel deploy --prebuilt --archive=tgz --token=${{ secrets.VERCEL_TOKEN }})
+          url=$(pnpm dlx vercel deploy --prebuilt --archive=tgz --token=${{ secrets.VERCEL_TOKEN }})
           echo "url=$url" >> $GITHUB_OUTPUT
 
       - name: Alias to beta.wcpos.com
-        run: vercel alias set ${{ steps.deploy.outputs.url }} beta.wcpos.com --scope=${{ secrets.VERCEL_ORG_ID }} --token=${{ secrets.VERCEL_TOKEN }}
+        run: pnpm dlx vercel alias set ${{ steps.deploy.outputs.url }} beta.wcpos.com --scope=${{ secrets.VERCEL_ORG_ID }} --token=${{ secrets.VERCEL_TOKEN }}
 
   # ============================================
   # Stage 4: Deploy Production (main branch only)
@@ -234,8 +220,6 @@ jobs:
 
       - name: Setup pnpm
         uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v4
-        with:
-          version: 10
 
       - name: Setup Node.js
         uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
@@ -243,16 +227,13 @@ jobs:
           node-version: '22'
           cache: 'pnpm'
 
-      - name: Install Vercel CLI
-        run: pnpm add -g vercel
-
       - name: Pull Vercel Environment
-        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+        run: pnpm dlx vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: Build Project
-        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+        run: pnpm dlx vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
         env:
           GITHUB_PAT: ${{ secrets.GH_PAT }}
 
       - name: Deploy Production
-        run: vercel deploy --prebuilt --prod --archive=tgz --token=${{ secrets.VERCEL_TOKEN }}
+        run: pnpm dlx vercel deploy --prebuilt --prod --archive=tgz --token=${{ secrets.VERCEL_TOKEN }}
