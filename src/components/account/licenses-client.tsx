@@ -46,7 +46,7 @@ export function LicensesClient({ initialLicenses }: LicensesClientProps) {
       const res = await fetch('/api/account/licenses')
       if (!res.ok) {
         if (res.status === 401) {
-          window.location.href = '/login'
+          window.location.assign('/login')
           return
         }
         throw new Error('Failed to fetch licenses')
