@@ -115,9 +115,19 @@ export function CheckoutClient({
   const [cart, setCart] = useState<Cart | null>(null)
   const [email, setEmail] = useState(customerEmail || '')
   const [clientSecret, setClientSecret] = useState<string | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(Boolean(customerEmail && selectedVariantId))
   const [isProcessing, setIsProcessing] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const [error, setError] = useState<string | null>(() => {
+    if (!customerEmail) {
+      return 'Please sign in to continue checkout.'
+    }
+
+    if (!selectedVariantId) {
+      return 'No product selected'
+    }
+
+    return null
+  })
   const [orderComplete, setOrderComplete] = useState(false)
   const [orderId, setOrderId] = useState<string | null>(null)
   const [paymentCollectionId, setPaymentCollectionId] = useState<string | null>(null)
@@ -126,18 +136,6 @@ export function CheckoutClient({
   )
 
   const initializeCheckout = useCallback(async () => {
-    if (!customerEmail) {
-      setError('Please sign in to continue checkout.')
-      setIsLoading(false)
-      return
-    }
-
-    if (!selectedVariantId) {
-      setError('No product selected')
-      setIsLoading(false)
-      return
-    }
-
     try {
       // Create cart
       const cartResponse = await fetch('/api/store/cart', {
@@ -267,8 +265,16 @@ export function CheckoutClient({
   )
 
   useEffect(() => {
-    initializeCheckout()
-  }, [initializeCheckout])
+    if (!customerEmail || !selectedVariantId) {
+      return
+    }
+
+    const timeoutId = window.setTimeout(() => {
+      initializeCheckout()
+    }, 0)
+
+    return () => window.clearTimeout(timeoutId)
+  }, [customerEmail, selectedVariantId, initializeCheckout])
 
   // Note: We initialize payment during cart creation, so no need to auto-select here
   // The clientSecret is already set from initializeCheckout
