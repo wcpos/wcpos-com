@@ -6,6 +6,11 @@ const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
   {
+    settings: {
+      react: {
+        version: "19.2.6",
+      },
+    },
     rules: {
       "@typescript-eslint/no-unused-expressions": ["error", { allowTaggedTemplates: true }],
     },

@@ -267,7 +267,9 @@ export function CheckoutClient({
   )
 
   useEffect(() => {
-    initializeCheckout()
+    queueMicrotask(() => {
+      void initializeCheckout()
+    })
   }, [initializeCheckout])
 
   // Note: We initialize payment during cart creation, so no need to auto-select here
