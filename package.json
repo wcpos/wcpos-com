@@ -19,7 +19,7 @@
     "playwright:install": "playwright install --with-deps"
   },
   "dependencies": {
-    "@logtape/logtape": "^2.0.7",
+    "@logtape/logtape": "^2.1.1",
     "@octokit/auth-app": "8.2.0",
     "@octokit/rest": "^22.0.1",
     "@paypal/react-paypal-js": "^9.2.0",
@@ -34,10 +34,10 @@
     "@stripe/react-stripe-js": "^5.6.1",
     "@stripe/stripe-js": "^8.11.0",
     "@tanstack/react-table": "^8.21.3",
-    "@widgetbot/react-embed": "^1.10.0",
+    "@widgetbot/react-embed": "^1.10.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "date-fns": "^4.1.0",
+    "date-fns": "^4.2.1",
     "i18next": "25.8.20",
     "lucide-react": "^0.577.0",
     "next": "16.2.6",
@@ -50,7 +50,7 @@
     "react-markdown": "10.1.0",
     "recharts": "^3.8.1",
     "remark-gfm": "4.0.1",
-    "semver": "^7.8.0",
+    "semver": "^7.8.1",
     "server-only": "^0.0.1",
     "tailwind-merge": "^3.6.0",
     "zod": "^4.4.3"
@@ -70,9 +70,9 @@
     "eslint-config-next": "16.2.6",
     "jsdom": "^29.1.1",
     "tailwindcss": "^4",
-    "tsx": "^4.22.0",
+    "tsx": "^4.22.3",
     "typescript": "^5",
-    "vitest": "^4.1.6"
+    "vitest": "^4.1.7"
   },
   "packageManager": "pnpm@11.1.1"
 }
