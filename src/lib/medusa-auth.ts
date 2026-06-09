@@ -86,6 +86,29 @@ export function decodeMedusaToken(token: string): MedusaTokenPayload {
 }
 
 // ============================================================================
+// Error helpers
+// ============================================================================
+
+/**
+ * Extract a user-facing error message from a failed Medusa response.
+ * Uses the JSON `message` field when present, otherwise the default.
+ */
+export async function parseMedusaError(
+  response: Response,
+  defaultMessage: string
+): Promise<string> {
+  const errorText = await response.text()
+  let message = defaultMessage
+  try {
+    const parsed = JSON.parse(errorText)
+    message = parsed.message || message
+  } catch {
+    // use default message
+  }
+  return message
+}
+
+// ============================================================================
 // Constants
 // ============================================================================
 
@@ -151,15 +174,7 @@ export async function login(
   )
 
   if (!response.ok) {
-    const errorText = await response.text()
-    let message = 'Login failed'
-    try {
-      const parsed = JSON.parse(errorText)
-      message = parsed.message || message
-    } catch {
-      // use default message
-    }
-    throw new Error(message)
+    throw new Error(await parseMedusaError(response, 'Login failed'))
   }
 
   const data = await response.json()
@@ -193,15 +208,7 @@ export async function register({
   )
 
   if (!authResponse.ok) {
-    const errorText = await authResponse.text()
-    let message = 'Registration failed'
-    try {
-      const parsed = JSON.parse(errorText)
-      message = parsed.message || message
-    } catch {
-      // use default message
-    }
-    throw new Error(message)
+    throw new Error(await parseMedusaError(authResponse, 'Registration failed'))
   }
 
   const { token } = await authResponse.json()
@@ -225,15 +232,9 @@ export async function register({
   )
 
   if (!customerResponse.ok) {
-    const errorText = await customerResponse.text()
-    let message = 'Failed to create customer'
-    try {
-      const parsed = JSON.parse(errorText)
-      message = parsed.message || message
-    } catch {
-      // use default message
-    }
-    throw new Error(message)
+    throw new Error(
+      await parseMedusaError(customerResponse, 'Failed to create customer')
+    )
   }
 
   const { customer } = await customerResponse.json()
@@ -309,15 +310,7 @@ export async function updateCustomer(
   )
 
   if (!response.ok) {
-    const errorText = await response.text()
-    let message = 'Failed to update customer'
-    try {
-      const parsed = JSON.parse(errorText)
-      message = parsed.message || message
-    } catch {
-      // use default message
-    }
-    throw new Error(message)
+    throw new Error(await parseMedusaError(response, 'Failed to update customer'))
   }
 
   const data = await response.json()
@@ -441,15 +434,7 @@ export async function initiateOAuth(
   )
 
   if (!response.ok) {
-    const errorText = await response.text()
-    let message = 'Failed to initiate OAuth'
-    try {
-      const parsed = JSON.parse(errorText)
-      message = parsed.message || message
-    } catch {
-      // use default message
-    }
-    throw new Error(message)
+    throw new Error(await parseMedusaError(response, 'Failed to initiate OAuth'))
   }
 
   const data = await response.json()
@@ -472,15 +457,7 @@ export async function completeOAuthCallback(
   )
 
   if (!response.ok) {
-    const errorText = await response.text()
-    let message = 'OAuth callback failed'
-    try {
-      const parsed = JSON.parse(errorText)
-      message = parsed.message || message
-    } catch {
-      // use default message
-    }
-    throw new Error(message)
+    throw new Error(await parseMedusaError(response, 'OAuth callback failed'))
   }
 
   const data = await response.json()
@@ -507,15 +484,7 @@ export async function linkOrCreateCustomer(token: string): Promise<void> {
   )
 
   if (!response.ok) {
-    const errorText = await response.text()
-    let message = 'Account linking failed'
-    try {
-      const parsed = JSON.parse(errorText)
-      message = parsed.message || message
-    } catch {
-      // use default message
-    }
-    throw new Error(message)
+    throw new Error(await parseMedusaError(response, 'Account linking failed'))
   }
 }
 
@@ -541,15 +510,7 @@ export async function refreshToken(token: string): Promise<string> {
   )
 
   if (!response.ok) {
-    const errorText = await response.text()
-    let message = 'Token refresh failed'
-    try {
-      const parsed = JSON.parse(errorText)
-      message = parsed.message || message
-    } catch {
-      // use default message
-    }
-    throw new Error(message)
+    throw new Error(await parseMedusaError(response, 'Token refresh failed'))
   }
 
   const data = await response.json()
