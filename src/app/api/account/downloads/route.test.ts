@@ -3,6 +3,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 const mockGetResolvedCustomerLicenses = vi.fn()
 const mockGetProPluginReleases = vi.fn()
 const mockIsReleaseAllowedForLicenses = vi.fn()
+const mockHasActiveLicense = vi.fn()
 
 vi.mock('@/lib/customer-licenses', () => ({
   getResolvedCustomerLicenses: (...args: unknown[]) =>
@@ -14,6 +15,7 @@ vi.mock('@/services/core/business/pro-downloads', () => ({
     mockGetProPluginReleases(...args),
   isReleaseAllowedForLicenses: (...args: unknown[]) =>
     mockIsReleaseAllowedForLicenses(...args),
+  hasActiveLicense: (...args: unknown[]) => mockHasActiveLicense(...args),
 }))
 
 import { GET } from './route'
@@ -62,6 +64,7 @@ describe('GET /api/account/downloads', () => {
       },
     ])
     mockIsReleaseAllowedForLicenses.mockReturnValueOnce(true)
+    mockHasActiveLicense.mockReturnValueOnce(true)
 
     const response = await GET()
     const json = await response.json()
@@ -70,5 +73,6 @@ describe('GET /api/account/downloads', () => {
     expect(json.releases).toHaveLength(1)
     expect(json.releases[0].allowed).toBe(true)
     expect(json.releases[0].releaseNotes).toBe('Bug fixes')
+    expect(json.hasActiveLicense).toBe(true)
   })
 })
