@@ -2,17 +2,9 @@ import { NextResponse } from 'next/server'
 import { getResolvedCustomerLicenses } from '@/lib/customer-licenses'
 import {
   getProPluginReleases,
+  hasActiveLicense,
   isReleaseAllowedForLicenses,
 } from '@/services/core/business/pro-downloads'
-
-function hasActiveLicense(licenses: Array<{ status: string; expiry: string | null }>): boolean {
-  const now = Date.now()
-  return licenses.some((license) => {
-    if (license.status.toLowerCase() !== 'active') return false
-    if (!license.expiry) return true
-    return new Date(license.expiry).getTime() >= now
-  })
-}
 
 export async function GET() {
   const { authenticated, licenses } = await getResolvedCustomerLicenses()
