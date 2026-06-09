@@ -84,6 +84,7 @@ describe('GET /api/account/download', () => {
     expect(response.status).toBe(500)
     expect(json.error).toBe('Download token secret not configured')
     expect(mockVerifyDownloadToken).not.toHaveBeenCalled()
+    expect(mockLicenseLoggerError).toHaveBeenCalled()
   })
 
   it('streams the release asset for a valid signed token', async () => {

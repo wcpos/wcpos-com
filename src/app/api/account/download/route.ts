@@ -26,6 +26,7 @@ export async function GET(request: NextRequest) {
   // bearer token must never be used as an HMAC signing secret.
   const secret = env.DOWNLOAD_TOKEN_SECRET || env.KEYGEN_API_TOKEN
   if (!secret) {
+    licenseLogger.error`Download token secret not configured for customer ${customer.id}`
     return NextResponse.json(
       { error: 'Download token secret not configured' },
       { status: 500 }
