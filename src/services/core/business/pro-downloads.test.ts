@@ -49,6 +49,20 @@ describe('isReleaseAllowedForLicenses', () => {
     expect(isReleaseAllowedForLicenses(beforeExpiry, licenses)).toBe(true)
     expect(isReleaseAllowedForLicenses(afterExpiry, licenses)).toBe(false)
   })
+
+  it('grants nothing to suspended licenses, even with a future expiry', () => {
+    const release = makeRelease('1.9.0', '2026-02-01T00:00:00Z')
+    const licenses = [makeLicense('suspended', '2099-10-01T00:00:00Z')]
+
+    expect(isReleaseAllowedForLicenses(release, licenses)).toBe(false)
+  })
+
+  it('grants nothing to revoked licenses', () => {
+    const release = makeRelease('1.9.0', '2026-02-01T00:00:00Z')
+    const licenses = [makeLicense('revoked', '2099-10-01T00:00:00Z')]
+
+    expect(isReleaseAllowedForLicenses(release, licenses)).toBe(false)
+  })
 })
 
 describe('hasActiveLicense', () => {
