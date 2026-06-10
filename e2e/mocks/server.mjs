@@ -319,6 +319,5 @@ const server = createServer(async (req, res) => {
 })
 
 server.listen(PORT, '127.0.0.1', () => {
-  // eslint-disable-next-line no-console
   console.log(`[e2e-mock] listening on http://127.0.0.1:${PORT}`)
 })

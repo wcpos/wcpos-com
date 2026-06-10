@@ -67,17 +67,22 @@ export default defineConfig({
       url: 'http://localhost:3000',
       reuseExistingServer: !process.env.CI,
       timeout: 240000,
-      env: {
-        // Preload the fetch interceptor into the Next.js server process so
-        // server-side calls to Medusa/Keygen/GitHub hit the mock backend.
-        NODE_OPTIONS: `--require ${FETCH_INTERCEPT_PATH}`,
-        E2E_MOCK_PORT: String(MOCK_PORT),
-        // Pin backend hosts to the origins the interceptor rewrites, in case
-        // a local .env.local points elsewhere.
-        MEDUSA_BACKEND_URL: 'https://store-api.wcpos.com',
-        KEYGEN_HOST: 'license.wcpos.com',
-        DOWNLOAD_TOKEN_SECRET: 'e2e-download-token-secret',
-      },
+      // Integration runs (INCLUDE_INTEGRATION=1 --grep @integration) must hit
+      // the real backends from ambient env, so the interceptor and host pins
+      // apply only to the default mocked suite.
+      env: process.env.INCLUDE_INTEGRATION
+        ? {}
+        : {
+            // Preload the fetch interceptor into the Next.js server process so
+            // server-side calls to Medusa/Keygen/GitHub hit the mock backend.
+            NODE_OPTIONS: `--require ${FETCH_INTERCEPT_PATH}`,
+            E2E_MOCK_PORT: String(MOCK_PORT),
+            // Pin backend hosts to the origins the interceptor rewrites, in
+            // case a local .env.local points elsewhere.
+            MEDUSA_BACKEND_URL: 'https://store-api.wcpos.com',
+            KEYGEN_HOST: 'license.wcpos.com',
+            DOWNLOAD_TOKEN_SECRET: 'e2e-download-token-secret',
+          },
     },
   ],
 })
