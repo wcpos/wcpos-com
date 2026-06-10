@@ -5,7 +5,8 @@ import { extractLicenseReferencesFromOrders } from '@/lib/licenses'
 import { formatOrderAmount } from '@/lib/order-display'
 import { getOrderDisplayStatus } from '@/lib/order-status'
 import { formatDateForLocale } from '@/lib/date-format'
-import { Link, redirect } from '@/i18n/navigation'
+import { Link } from '@/i18n/navigation'
+import { redirectToLoginClearingSession } from '@/lib/login-redirect'
 import { ShoppingBag, Key } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import type { Metadata } from 'next'
@@ -23,7 +24,7 @@ async function AccountOverviewContent({ locale }: { locale: string }) {
   ])
 
   if (!customer) {
-    redirect({ href: '/login', locale })
+    redirectToLoginClearingSession(locale)
   }
 
   const licenseCount = extractLicenseReferencesFromOrders(allOrders).length

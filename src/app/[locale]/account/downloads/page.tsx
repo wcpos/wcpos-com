@@ -1,6 +1,6 @@
 import { setRequestLocale } from 'next-intl/server'
 import { Suspense } from 'react'
-import { redirect } from '@/i18n/navigation'
+import { redirectToLoginClearingSession } from '@/lib/login-redirect'
 import { DownloadsClient } from '@/components/account/downloads-client'
 import { getResolvedCustomerLicenses } from '@/lib/customer-licenses'
 import {
@@ -36,7 +36,7 @@ function DownloadsSkeleton() {
 async function DownloadsContent({ locale }: { locale: string }) {
   const { authenticated, licenses } = await getResolvedCustomerLicenses()
   if (!authenticated) {
-    redirect({ href: '/login', locale })
+    redirectToLoginClearingSession(locale)
   }
 
   const now = new Date()

@@ -1,7 +1,7 @@
 import { setRequestLocale } from 'next-intl/server'
 import { Suspense } from 'react'
 import { getCustomer } from '@/lib/medusa-auth'
-import { redirect } from '@/i18n/navigation'
+import { redirectToLoginClearingSession } from '@/lib/login-redirect'
 import { AccountHeader } from '@/components/account/account-header'
 import { AccountSidebar } from '@/components/account/account-sidebar'
 import { SiteFooter } from '@/components/main/site-footer'
@@ -15,10 +15,7 @@ export const metadata: Metadata = {
 async function AccountHeaderWrapper({ locale }: { locale: string }) {
   const customer = await getCustomer()
   if (!customer) {
-    // `return` is needed for TypeScript narrowing: next-intl's redirect is
-    // typed via an inferred destructured export, so its `never` return type
-    // does not narrow `customer` the way next/navigation's redirect does.
-    return redirect({ href: '/login', locale })
+    return redirectToLoginClearingSession(locale)
   }
   return <AccountHeader customer={customer} />
 }

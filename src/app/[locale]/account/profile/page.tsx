@@ -2,7 +2,7 @@ import { setRequestLocale } from 'next-intl/server'
 import { Suspense } from 'react'
 import { getCustomer } from '@/lib/medusa-auth'
 import { formatDateForLocale } from '@/lib/date-format'
-import { redirect } from '@/i18n/navigation'
+import { redirectToLoginClearingSession } from '@/lib/login-redirect'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { ProfileEditForm } from '@/components/account/profile-edit-form'
 import type { Metadata } from 'next'
@@ -19,7 +19,7 @@ async function ProfileContent({ locale }: { locale: string }) {
     // `return` is needed for TypeScript narrowing: next-intl's redirect is
     // typed via an inferred destructured export, so its `never` return type
     // does not narrow `customer` the way next/navigation's redirect does.
-    return redirect({ href: '/login', locale })
+    return redirectToLoginClearingSession(locale)
   }
 
   return (
