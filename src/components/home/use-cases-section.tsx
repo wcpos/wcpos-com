@@ -6,20 +6,20 @@ interface UseCase {
   icon: LucideIcon
   iconClasses: string
   bandClasses: string
-  quote: string
-  attribution: string
+  description: string
   useCase: string
 }
 
+// Scenario descriptions, not quoted testimonials — quotes need verifiable
+// provenance before they can be presented as customer statements.
 const useCases: UseCase[] = [
   {
     type: 'Retail Store',
     icon: Store,
     iconClasses: 'text-wcpos-red',
     bandClasses: 'bg-rose-50 dark:bg-rose-950/30',
-    quote:
-      "We had 400 products already in WooCommerce. WCPOS meant we didn't have to enter them again. It just worked.",
-    attribution: 'Hat shop owner, Spain',
+    description:
+      'Shops with hundreds of products already in WooCommerce start selling in-store on day one — nothing to re-enter, nothing to import.',
     useCase: 'Daily in-store sales with iPad and Stripe Terminal',
   },
   {
@@ -27,9 +27,8 @@ const useCases: UseCase[] = [
     icon: Tent,
     iconClasses: 'text-amber-600 dark:text-amber-400',
     bandClasses: 'bg-amber-50 dark:bg-amber-950/30',
-    quote:
-      "Internet at markets is terrible. WCPOS works offline and syncs when I'm home. Perfect for weekend events.",
-    attribution: 'Cat toy vendor, UK',
+    description:
+      "Markets and pop-ups rarely have reliable internet. Sales keep ringing up offline and sync automatically once you're back online.",
     useCase: 'Weekend markets and events, offline mode essential',
   },
   {
@@ -37,9 +36,8 @@ const useCases: UseCase[] = [
     icon: Code2,
     iconClasses: 'text-sky-600 dark:text-sky-400',
     bandClasses: 'bg-sky-50 dark:bg-sky-950/30',
-    quote:
-      'I set up WCPOS for three clients. Native WooCommerce integration means it just works with their existing plugins. No maintenance headaches.',
-    attribution: 'WordPress developer, Australia',
+    description:
+      'Agencies roll WCPOS out across client stores — native WooCommerce integration works with the plugins each site already runs.',
     useCase: 'Multi-client deployments with custom extensions',
   },
 ]
@@ -71,14 +69,9 @@ export function UseCasesSection() {
                     {uc.type}
                   </span>
                 </h3>
-                <figure>
-                  <blockquote className="mb-3 italic leading-relaxed text-slate-800 dark:text-slate-200">
-                    &ldquo;{uc.quote}&rdquo;
-                  </blockquote>
-                  <figcaption className="mb-3 text-sm text-slate-500 dark:text-slate-400">
-                    — {uc.attribution}
-                  </figcaption>
-                </figure>
+                <p className="mb-3 leading-relaxed text-slate-800 dark:text-slate-200">
+                  {uc.description}
+                </p>
                 <p className="text-xs text-slate-500 dark:text-slate-400">
                   {uc.useCase}
                 </p>

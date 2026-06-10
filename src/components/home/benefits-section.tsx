@@ -250,7 +250,7 @@ export function BenefitsSection() {
                   <p className="mb-4 leading-relaxed text-slate-600 dark:text-slate-400">
                     {benefit.description}
                   </p>
-                  <p className="text-sm italic text-slate-500">
+                  <p className="text-sm italic text-slate-500 dark:text-slate-400">
                     {benefit.supporting}
                   </p>
                 </div>

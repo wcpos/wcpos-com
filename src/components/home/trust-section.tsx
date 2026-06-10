@@ -46,17 +46,12 @@ export function TrustSection() {
           </div>
         </div>
 
-        {/* Testimonial */}
-        <figure className="mx-auto max-w-2xl text-center">
-          <blockquote className="mb-4 text-lg italic leading-relaxed text-slate-700 dark:text-slate-300">
-            &ldquo;WCPOS solved a problem we thought had no good solution. The
-            sync actually works, it&apos;s affordable, and we own our
-            setup.&rdquo;
-          </blockquote>
-          <figcaption className="text-sm text-slate-500 dark:text-slate-400">
-            — Wine retailer, France
-          </figcaption>
-        </figure>
+        {/* Closing statement (not a quoted testimonial — quotes need
+            verifiable provenance before being attributed to customers) */}
+        <p className="mx-auto max-w-2xl text-center text-lg leading-relaxed text-slate-700 dark:text-slate-300">
+          Built for stores that thought there was no good answer: sync that
+          actually works, pricing that&apos;s fair, and a setup you own.
+        </p>
       </div>
     </section>
   )
