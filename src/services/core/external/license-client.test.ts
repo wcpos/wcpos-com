@@ -520,4 +520,161 @@ describe('licenseClient', () => {
       })
     })
   })
+  describe('listLicenses', () => {
+    const licenseData = (id: string) => ({
+      id,
+      attributes: {
+        key: `KEY-${id}`,
+        status: 'ACTIVE',
+        expiry: '2027-01-01T00:00:00Z',
+        maxMachines: 2,
+        metadata: {},
+        created: '2026-01-01T00:00:00Z',
+      },
+      relationships: {
+        policy: { data: { id: 'policy-yearly' } },
+      },
+    })
+
+    it('requests the right page and maps items', async () => {
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          data: [licenseData('lic-1'), licenseData('lic-2')],
+          links: { next: null },
+        }),
+      })
+
+      const result = await licenseClient.listLicenses(2, 20)
+
+      expect(mockFetch).toHaveBeenCalledWith(
+        'https://license.wcpos.com/v1/licenses?page%5Bnumber%5D=2&page%5Bsize%5D=20',
+        expect.objectContaining({
+          method: 'GET',
+          headers: expect.objectContaining({
+            Authorization: 'Bearer test-token',
+            Accept: 'application/vnd.api+json',
+          }),
+        })
+      )
+
+      expect(result.page).toBe(2)
+      expect(result.pageSize).toBe(20)
+      expect(result.hasNextPage).toBe(false)
+      expect(result.items).toEqual([
+        {
+          id: 'lic-1',
+          key: 'KEY-lic-1',
+          status: 'ACTIVE',
+          expiry: '2027-01-01T00:00:00Z',
+          maxMachines: 2,
+          metadata: {},
+          policyId: 'policy-yearly',
+          createdAt: '2026-01-01T00:00:00Z',
+        },
+        {
+          id: 'lic-2',
+          key: 'KEY-lic-2',
+          status: 'ACTIVE',
+          expiry: '2027-01-01T00:00:00Z',
+          maxMachines: 2,
+          metadata: {},
+          policyId: 'policy-yearly',
+          createdAt: '2026-01-01T00:00:00Z',
+        },
+      ])
+    })
+
+    it('reports hasNextPage when links.next is present', async () => {
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          data: [licenseData('lic-1')],
+          links: { next: '/v1/licenses?page[number]=2&page[size]=1' },
+        }),
+      })
+
+      const result = await licenseClient.listLicenses(1, 1)
+      expect(result.hasNextPage).toBe(true)
+    })
+
+    it('falls back to full-page heuristic when links are missing', async () => {
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ data: [licenseData('lic-1'), licenseData('lic-2')] }),
+      })
+
+      const result = await licenseClient.listLicenses(1, 2)
+      expect(result.hasNextPage).toBe(true)
+    })
+
+    it('throws on non-200 responses', async () => {
+      mockFetch.mockResolvedValueOnce({
+        ok: false,
+        status: 403,
+        text: async () => 'forbidden',
+      })
+
+      await expect(licenseClient.listLicenses(1, 20)).rejects.toThrow(
+        'Keygen listLicenses failed (403)'
+      )
+    })
+  })
+
+  describe('listMachines', () => {
+    it('requests machines and maps items', async () => {
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          data: [
+            {
+              id: 'machine-1',
+              attributes: {
+                fingerprint: 'fp-1',
+                name: 'shop.example.com',
+                metadata: {},
+                created: '2026-02-01T00:00:00Z',
+              },
+            },
+          ],
+          links: { next: null },
+        }),
+      })
+
+      const result = await licenseClient.listMachines(1, 100)
+
+      expect(mockFetch).toHaveBeenCalledWith(
+        'https://license.wcpos.com/v1/machines?page%5Bnumber%5D=1&page%5Bsize%5D=100',
+        expect.objectContaining({
+          method: 'GET',
+          headers: expect.objectContaining({
+            Authorization: 'Bearer test-token',
+          }),
+        })
+      )
+
+      expect(result.hasNextPage).toBe(false)
+      expect(result.items).toEqual([
+        {
+          id: 'machine-1',
+          fingerprint: 'fp-1',
+          name: 'shop.example.com',
+          metadata: {},
+          createdAt: '2026-02-01T00:00:00Z',
+        },
+      ])
+    })
+
+    it('throws on non-200 responses', async () => {
+      mockFetch.mockResolvedValueOnce({
+        ok: false,
+        status: 500,
+        text: async () => 'boom',
+      })
+
+      await expect(licenseClient.listMachines(1, 100)).rejects.toThrow(
+        'Keygen listMachines failed (500)'
+      )
+    })
+  })
 })
