@@ -90,6 +90,180 @@
       "licenses": "Licenses",
       "downloads": "Downloads",
       "profile": "Profile"
+    },
+    "meta": {
+      "overview": {
+        "title": "Account",
+        "description": "Overview of your WCPOS account, recent orders, and licenses."
+      },
+      "orders": {
+        "title": "Order History",
+        "description": "View your WCPOS order history and receipts."
+      },
+      "orderDetail": {
+        "title": "Order Details",
+        "description": "View the details of your WCPOS order."
+      },
+      "licenses": {
+        "title": "Licenses",
+        "description": "Manage your WCPOS Pro license keys and activations."
+      },
+      "downloads": {
+        "title": "Downloads",
+        "description": "Download WCPOS Pro plugin releases for your licenses."
+      },
+      "profile": {
+        "title": "Profile",
+        "description": "Manage your WCPOS account profile details."
+      }
+    },
+    "header": {
+      "breadcrumb": "Account",
+      "signOut": "Sign out"
+    },
+    "error": {
+      "heading": "Something went wrong loading this page.",
+      "description": "The error has been reported. You can try again, or come back later.",
+      "retry": "Try again"
+    },
+    "overview": {
+      "welcome": "Welcome, {name}",
+      "welcomeNoName": "Welcome",
+      "expiresSoonRenew": "Your license expires on {date} — renew to keep receiving updates.",
+      "renewLicense": "Renew license",
+      "ordersCardTitle": "Orders",
+      "licensesCardTitle": "Licenses",
+      "viewAllOrders": "View all orders",
+      "manageLicenses": "Manage licenses",
+      "recentOrders": "Recent Orders",
+      "orderNumber": "Order #{id}"
+    },
+    "orders": {
+      "heading": "Order History",
+      "intro": "Invoices & receipts — every order includes a downloadable PDF tax receipt. Receipts use the billing address saved in your <profileLink>profile</profileLink>.",
+      "emptyTitle": "No orders yet.",
+      "emptyDescription": "Invoices and receipts will appear here after your first purchase.",
+      "browsePro": "Browse WCPOS Pro",
+      "orderNumber": "Order #{id}",
+      "dateAndItems": "{date} — {count, plural, =1 {# item} other {# items}}",
+      "receiptPdf": "Receipt (PDF)",
+      "downloadReceiptAria": "Download receipt for order #{id}"
+    },
+    "orderDetail": {
+      "backToOrders": "Back to orders",
+      "orderNumber": "Order #{id}",
+      "downloadReceipt": "Download tax receipt (PDF)",
+      "detailsTitle": "Order Details",
+      "dateLabel": "Date",
+      "statusLabel": "Status",
+      "emailLabel": "Email",
+      "totalLabel": "Total",
+      "itemsTitle": "Items",
+      "quantity": "Qty: {count}",
+      "licenseKeysTitle": "License Keys",
+      "manage": "Manage"
+    },
+    "licenseStatus": {
+      "active": "active",
+      "expired": "expired",
+      "suspended": "suspended",
+      "unknown": "unknown"
+    },
+    "licenses": {
+      "heading": "Licenses",
+      "loadError": "Failed to load licenses",
+      "deactivateError": "Failed to deactivate machine. Please try again.",
+      "emptyTitle": "No licenses found.",
+      "emptyDescription": "Purchase WCPOS Pro to get a license.",
+      "planYearly": "Yearly",
+      "planLifetime": "Lifetime",
+      "unknownStatusTooltip": "We couldn't verify this license right now",
+      "unverifiable": "We couldn't verify this license right now. Try again shortly or <supportLink>contact support</supportLink>.",
+      "expiresSoonRenew": "Your license expires on {date} — renew to keep receiving updates.",
+      "expiresSoon": "Your license expires on {date}.",
+      "renew": "Renew",
+      "expiresLabel": "Expires:",
+      "activationsLabel": "Activations:",
+      "activationsCount": "{count} of {max}",
+      "downloads": "Downloads",
+      "activatedMachines": "Activated Machines",
+      "machineAdded": "Added {date}",
+      "deactivateMachineAria": "Deactivate {name}",
+      "genericMachineName": "machine"
+    },
+    "downloads": {
+      "heading": "Downloads",
+      "expiredBanner": "Your license expired on {date}. You can still download versions released before then.",
+      "suspendedBanner": "Your license is suspended — contact support.",
+      "unknownBanner": "We couldn't verify your license — downloads may be temporarily limited. Try again shortly or contact support.",
+      "inactiveBanner": "You have no active license. Only versions released during your license term are available.",
+      "noLicenseBanner": "A WCPOS Pro license is required to download the plugin.",
+      "renewLicense": "Renew license",
+      "contactSupport": "Contact support",
+      "getPro": "Get WCPOS Pro",
+      "listTitle": "WCPOS Pro Downloads",
+      "emptyList": "No downloadable versions were found.",
+      "reasonExpired": "Released after your license expired.",
+      "reasonUnknown": "We couldn't verify your license.",
+      "reasonInactive": "Requires an active license.",
+      "noReleaseNotes": "No release notes yet.",
+      "unavailable": "Unavailable",
+      "preparing": "Preparing...",
+      "download": "Download",
+      "pageOf": "Page {page} of {total}",
+      "previous": "Previous",
+      "previousPageAria": "Previous page",
+      "next": "Next",
+      "nextPageAria": "Next page",
+      "tokenErrorFallback": "Download is not available for this version",
+      "startErrorFallback": "Failed to start download"
+    },
+    "profile": {
+      "heading": "Profile",
+      "cardTitle": "Profile details",
+      "memberSince": "Member since",
+      "avatarAlt": "Avatar",
+      "avatarLabel": "Profile avatar",
+      "avatarHint": "If your connected account has an avatar, it is used by default.",
+      "avatarTooLarge": "Avatar image must be 1MB or smaller.",
+      "avatarInvalid": "Please upload a valid image file.",
+      "removeAvatar": "Remove uploaded avatar",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "email": "Email",
+      "phone": "Phone",
+      "billingDetails": "Billing details for receipts",
+      "country": "Country",
+      "addressLine1": "Address line 1",
+      "addressLine2": "Address line 2",
+      "city": "City",
+      "regionLabels": {
+        "state": "State",
+        "province": "Province",
+        "county": "County",
+        "stateTerritory": "State/Territory",
+        "region": "Region",
+        "prefecture": "Prefecture"
+      },
+      "postalLabels": {
+        "zip": "ZIP code",
+        "postalCode": "Postal code",
+        "postcode": "Postcode"
+      },
+      "taxLabels": {
+        "einTaxId": "EIN / Tax ID",
+        "gstHst": "GST/HST number",
+        "vat": "VAT number",
+        "abn": "ABN",
+        "nifVat": "NIF / VAT number",
+        "partitaIva": "Partita IVA",
+        "gst": "GST number",
+        "taxRegistration": "Tax registration number"
+      },
+      "updateError": "Failed to update profile",
+      "updateSuccess": "Profile updated successfully.",
+      "saving": "Saving...",
+      "save": "Save changes"
     }
   }
 }

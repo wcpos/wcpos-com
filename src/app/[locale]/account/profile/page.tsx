@@ -1,4 +1,4 @@
-import { setRequestLocale } from 'next-intl/server'
+import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { Suspense } from 'react'
 import { getCustomer } from '@/lib/medusa-auth'
 import { formatDateForLocale } from '@/lib/date-format'
@@ -7,13 +7,24 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { ProfileEditForm } from '@/components/account/profile-edit-form'
 import type { Metadata } from 'next'
 
-export const metadata: Metadata = {
-  title: 'Profile',
-  description: 'Manage your WCPOS account profile details.',
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}): Promise<Metadata> {
+  const { locale } = await params
+  const t = await getTranslations({ locale, namespace: 'account.meta' })
+  return {
+    title: t('profile.title'),
+    description: t('profile.description'),
+  }
 }
 
 async function ProfileContent({ locale }: { locale: string }) {
-  const customer = await getCustomer()
+  const [t, customer] = await Promise.all([
+    getTranslations({ locale, namespace: 'account.profile' }),
+    getCustomer(),
+  ])
 
   if (!customer) {
     // `return` is needed for TypeScript narrowing: next-intl's redirect is
@@ -25,7 +36,7 @@ async function ProfileContent({ locale }: { locale: string }) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-lg">Profile details</CardTitle>
+        <CardTitle className="text-lg">{t('cardTitle')}</CardTitle>
       </CardHeader>
       <CardContent className="space-y-3">
         <ProfileEditForm
@@ -38,7 +49,7 @@ async function ProfileContent({ locale }: { locale: string }) {
           }}
         />
         <div className="flex justify-between border-t pt-3 text-sm">
-          <span className="text-muted-foreground">Member since</span>
+          <span className="text-muted-foreground">{t('memberSince')}</span>
           <span>{formatDateForLocale(customer.created_at, locale)}</span>
         </div>
       </CardContent>
@@ -68,10 +79,11 @@ export default async function ProfilePage({
 }) {
   const { locale } = await params
   setRequestLocale(locale)
+  const t = await getTranslations({ locale, namespace: 'account.profile' })
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold">Profile</h1>
+      <h1 className="text-2xl font-bold">{t('heading')}</h1>
       <Suspense fallback={<ProfileSkeleton />}>
         <ProfileContent locale={locale} />
       </Suspense>

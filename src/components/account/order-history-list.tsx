@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/navigation'
 import { FileDown, ShoppingBag } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -23,20 +24,20 @@ interface OrderHistoryListProps {
 }
 
 export function OrderHistoryList({ orders, locale }: OrderHistoryListProps) {
+  const t = useTranslations('account.orders')
+
   if (orders.length === 0) {
     return (
       <Card>
         <CardContent className="py-8 text-center text-muted-foreground">
           <ShoppingBag className="h-8 w-8 mx-auto mb-2 opacity-50" />
-          <p>No orders yet.</p>
-          <p className="text-sm mt-1">
-            Invoices and receipts will appear here after your first purchase.
-          </p>
+          <p>{t('emptyTitle')}</p>
+          <p className="text-sm mt-1">{t('emptyDescription')}</p>
           <Link
             href="/pro"
             className="text-primary hover:underline mt-2 inline-block"
           >
-            Browse WCPOS Pro
+            {t('browsePro')}
           </Link>
         </CardContent>
       </Card>
@@ -54,11 +55,13 @@ export function OrderHistoryList({ orders, locale }: OrderHistoryListProps) {
                   href={`/account/orders/${order.id}`}
                   className="font-medium hover:underline"
                 >
-                  Order #{order.display_id}
+                  {t('orderNumber', { id: order.display_id })}
                 </Link>
                 <p className="text-sm text-muted-foreground">
-                  {formatDateForLocale(order.created_at, locale)} —{' '}
-                  {order.items.length} item{order.items.length !== 1 ? 's' : ''}
+                  {t('dateAndItems', {
+                    date: formatDateForLocale(order.created_at, locale),
+                    count: order.items.length,
+                  })}
                 </p>
               </div>
               <div className="flex flex-wrap items-center gap-4">
@@ -75,10 +78,12 @@ export function OrderHistoryList({ orders, locale }: OrderHistoryListProps) {
                     href={`/api/account/orders/${order.id}/receipt`}
                     target="_blank"
                     rel="noreferrer"
-                    aria-label={`Download receipt for order #${order.display_id}`}
+                    aria-label={t('downloadReceiptAria', {
+                      id: order.display_id,
+                    })}
                   >
                     <FileDown className="mr-2 h-4 w-4" />
-                    Receipt (PDF)
+                    {t('receiptPdf')}
                   </a>
                 </Button>
               </div>

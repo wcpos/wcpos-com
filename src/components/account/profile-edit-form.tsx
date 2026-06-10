@@ -1,7 +1,7 @@
 'use client'
 
 import { useMemo, useState } from 'react'
-import { useLocale } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -18,24 +18,44 @@ interface ProfileEditFormProps {
   }
 }
 
+// Message keys under account.profile.{regionLabels,postalLabels,taxLabels};
+// the labels themselves live in messages/*.json so they can be translated.
+type RegionLabelKey =
+  | 'state'
+  | 'province'
+  | 'county'
+  | 'stateTerritory'
+  | 'region'
+  | 'prefecture'
+type PostalLabelKey = 'zip' | 'postalCode' | 'postcode'
+type TaxLabelKey =
+  | 'einTaxId'
+  | 'gstHst'
+  | 'vat'
+  | 'abn'
+  | 'nifVat'
+  | 'partitaIva'
+  | 'gst'
+  | 'taxRegistration'
+
 type CountryProfile = {
-  regionLabel: string
-  postalLabel: string
-  taxLabel: string
+  regionLabel: RegionLabelKey
+  postalLabel: PostalLabelKey
+  taxLabel: TaxLabelKey
 }
 
 const COUNTRY_PROFILES: Record<string, CountryProfile> = {
-  US: { regionLabel: 'State', postalLabel: 'ZIP code', taxLabel: 'EIN / Tax ID' },
-  CA: { regionLabel: 'Province', postalLabel: 'Postal code', taxLabel: 'GST/HST number' },
-  GB: { regionLabel: 'County', postalLabel: 'Postcode', taxLabel: 'VAT number' },
-  AU: { regionLabel: 'State/Territory', postalLabel: 'Postcode', taxLabel: 'ABN' },
-  DE: { regionLabel: 'State', postalLabel: 'Postal code', taxLabel: 'VAT number' },
-  FR: { regionLabel: 'Region', postalLabel: 'Postal code', taxLabel: 'VAT number' },
-  ES: { regionLabel: 'Province', postalLabel: 'Postal code', taxLabel: 'NIF / VAT number' },
-  IT: { regionLabel: 'Province', postalLabel: 'Postal code', taxLabel: 'Partita IVA' },
-  NL: { regionLabel: 'Province', postalLabel: 'Postal code', taxLabel: 'VAT number' },
-  NZ: { regionLabel: 'Region', postalLabel: 'Postcode', taxLabel: 'GST number' },
-  JP: { regionLabel: 'Prefecture', postalLabel: 'Postal code', taxLabel: 'Tax registration number' },
+  US: { regionLabel: 'state', postalLabel: 'zip', taxLabel: 'einTaxId' },
+  CA: { regionLabel: 'province', postalLabel: 'postalCode', taxLabel: 'gstHst' },
+  GB: { regionLabel: 'county', postalLabel: 'postcode', taxLabel: 'vat' },
+  AU: { regionLabel: 'stateTerritory', postalLabel: 'postcode', taxLabel: 'abn' },
+  DE: { regionLabel: 'state', postalLabel: 'postalCode', taxLabel: 'vat' },
+  FR: { regionLabel: 'region', postalLabel: 'postalCode', taxLabel: 'vat' },
+  ES: { regionLabel: 'province', postalLabel: 'postalCode', taxLabel: 'nifVat' },
+  IT: { regionLabel: 'province', postalLabel: 'postalCode', taxLabel: 'partitaIva' },
+  NL: { regionLabel: 'province', postalLabel: 'postalCode', taxLabel: 'vat' },
+  NZ: { regionLabel: 'region', postalLabel: 'postcode', taxLabel: 'gst' },
+  JP: { regionLabel: 'prefecture', postalLabel: 'postalCode', taxLabel: 'taxRegistration' },
 }
 
 const FALLBACK_COUNTRY_CODES = [
@@ -162,6 +182,7 @@ function getAvatarUrlFromMetadata(metadata: Record<string, unknown> | undefined)
 
 export function ProfileEditForm({ customer }: ProfileEditFormProps) {
   const locale = useLocale()
+  const t = useTranslations('account.profile')
   const metadataDefaults = getAvatarUrlFromMetadata(customer.metadata)
   const countryOptions = useMemo(() => buildCountryOptions(locale), [locale])
 
@@ -200,7 +221,7 @@ export function ProfileEditForm({ customer }: ProfileEditFormProps) {
     if (!file) return
 
     if (file.size > 1024 * 1024) {
-      setError('Avatar image must be 1MB or smaller.')
+      setError(t('avatarTooLarge'))
       return
     }
 
@@ -208,7 +229,7 @@ export function ProfileEditForm({ customer }: ProfileEditFormProps) {
     reader.onload = () => {
       const result = typeof reader.result === 'string' ? reader.result : ''
       if (!result.startsWith('data:image/')) {
-        setError('Please upload a valid image file.')
+        setError(t('avatarInvalid'))
         return
       }
 
@@ -251,7 +272,7 @@ export function ProfileEditForm({ customer }: ProfileEditFormProps) {
       const data = await response.json()
 
       if (!response.ok) {
-        throw new Error(data.error || 'Failed to update profile')
+        throw new Error(data.error || t('updateError'))
       }
 
       const updated = getAvatarUrlFromMetadata(
@@ -271,9 +292,9 @@ export function ProfileEditForm({ customer }: ProfileEditFormProps) {
       setTaxNumber(updated.taxNumber)
       setCustomAvatarDataUrl(updated.customAvatarDataUrl)
       setCustomAvatarUrl(updated.customAvatarUrl)
-      setSuccess('Profile updated successfully.')
+      setSuccess(t('updateSuccess'))
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to update profile')
+      setError(err instanceof Error ? err.message : t('updateError'))
     } finally {
       setSaving(false)
     }
@@ -284,20 +305,20 @@ export function ProfileEditForm({ customer }: ProfileEditFormProps) {
       <div className="space-y-3 rounded-lg border p-4">
         <div className="flex items-center gap-4">
           <Avatar className="h-16 w-16">
-            {avatarUrl ? <AvatarImage src={avatarUrl} alt="Avatar" /> : null}
+            {avatarUrl ? (
+              <AvatarImage src={avatarUrl} alt={t('avatarAlt')} />
+            ) : null}
             <AvatarFallback>{initials}</AvatarFallback>
           </Avatar>
           <div className="space-y-2">
-            <Label htmlFor="profile-avatar-upload">Profile avatar</Label>
+            <Label htmlFor="profile-avatar-upload">{t('avatarLabel')}</Label>
             <Input
               id="profile-avatar-upload"
               type="file"
               accept="image/*"
               onChange={handleAvatarFileChange}
             />
-            <p className="text-xs text-muted-foreground">
-              If your connected account has an avatar, it is used by default.
-            </p>
+            <p className="text-xs text-muted-foreground">{t('avatarHint')}</p>
           </div>
         </div>
         {customAvatarDataUrl && (
@@ -306,14 +327,14 @@ export function ProfileEditForm({ customer }: ProfileEditFormProps) {
             variant="ghost"
             onClick={() => setCustomAvatarDataUrl('')}
           >
-            Remove uploaded avatar
+            {t('removeAvatar')}
           </Button>
         )}
       </div>
 
       <div className="grid gap-4 md:grid-cols-2">
         <div className="space-y-2">
-          <Label htmlFor="profile-first-name">First name</Label>
+          <Label htmlFor="profile-first-name">{t('firstName')}</Label>
           <Input
             id="profile-first-name"
             value={firstName}
@@ -322,7 +343,7 @@ export function ProfileEditForm({ customer }: ProfileEditFormProps) {
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="profile-last-name">Last name</Label>
+          <Label htmlFor="profile-last-name">{t('lastName')}</Label>
           <Input
             id="profile-last-name"
             value={lastName}
@@ -333,7 +354,7 @@ export function ProfileEditForm({ customer }: ProfileEditFormProps) {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="profile-email">Email</Label>
+        <Label htmlFor="profile-email">{t('email')}</Label>
         <Input
           id="profile-email"
           type="email"
@@ -345,7 +366,7 @@ export function ProfileEditForm({ customer }: ProfileEditFormProps) {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="profile-phone">Phone</Label>
+        <Label htmlFor="profile-phone">{t('phone')}</Label>
         <Input
           id="profile-phone"
           type="tel"
@@ -361,11 +382,11 @@ export function ProfileEditForm({ customer }: ProfileEditFormProps) {
         className="scroll-mt-24 space-y-4 rounded-lg border p-4"
       >
         <h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-          Billing details for receipts
+          {t('billingDetails')}
         </h3>
 
         <div className="space-y-2">
-          <Label htmlFor="profile-country">Country</Label>
+          <Label htmlFor="profile-country">{t('country')}</Label>
           <select
             id="profile-country"
             value={countryCode}
@@ -381,7 +402,7 @@ export function ProfileEditForm({ customer }: ProfileEditFormProps) {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="profile-address-line-1">Address line 1</Label>
+          <Label htmlFor="profile-address-line-1">{t('addressLine1')}</Label>
           <Input
             id="profile-address-line-1"
             value={addressLine1}
@@ -391,7 +412,7 @@ export function ProfileEditForm({ customer }: ProfileEditFormProps) {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="profile-address-line-2">Address line 2</Label>
+          <Label htmlFor="profile-address-line-2">{t('addressLine2')}</Label>
           <Input
             id="profile-address-line-2"
             value={addressLine2}
@@ -402,7 +423,7 @@ export function ProfileEditForm({ customer }: ProfileEditFormProps) {
 
         <div className="grid gap-4 md:grid-cols-3">
           <div className="space-y-2">
-            <Label htmlFor="profile-city">City</Label>
+            <Label htmlFor="profile-city">{t('city')}</Label>
             <Input
               id="profile-city"
               value={city}
@@ -411,7 +432,9 @@ export function ProfileEditForm({ customer }: ProfileEditFormProps) {
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="profile-region">{countryProfile.regionLabel}</Label>
+            <Label htmlFor="profile-region">
+              {t(`regionLabels.${countryProfile.regionLabel}`)}
+            </Label>
             <Input
               id="profile-region"
               value={region}
@@ -420,7 +443,9 @@ export function ProfileEditForm({ customer }: ProfileEditFormProps) {
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="profile-postal-code">{countryProfile.postalLabel}</Label>
+            <Label htmlFor="profile-postal-code">
+              {t(`postalLabels.${countryProfile.postalLabel}`)}
+            </Label>
             <Input
               id="profile-postal-code"
               value={postalCode}
@@ -431,7 +456,9 @@ export function ProfileEditForm({ customer }: ProfileEditFormProps) {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="profile-tax-number">{countryProfile.taxLabel}</Label>
+          <Label htmlFor="profile-tax-number">
+            {t(`taxLabels.${countryProfile.taxLabel}`)}
+          </Label>
           <Input
             id="profile-tax-number"
             value={taxNumber}
@@ -453,7 +480,7 @@ export function ProfileEditForm({ customer }: ProfileEditFormProps) {
       )}
 
       <Button type="submit" disabled={saving}>
-        {saving ? 'Saving...' : 'Save changes'}
+        {saving ? t('saving') : t('save')}
       </Button>
     </form>
   )

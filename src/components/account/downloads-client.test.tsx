@@ -1,10 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
+import { renderWithIntl as render } from '@/test/intl'
 import { DownloadsClient, type DownloadAccess } from './downloads-client'
-
-vi.mock('next-intl', () => ({
-  useLocale: () => 'en-US',
-}))
 
 // Mock the locale-aware Link as a simple anchor
 vi.mock('@/i18n/navigation', () => ({

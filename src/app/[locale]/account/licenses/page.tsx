@@ -1,4 +1,4 @@
-import { setRequestLocale } from 'next-intl/server'
+import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { Suspense } from 'react'
 import { redirectToLoginClearingSession } from '@/lib/login-redirect'
 import { LicensesClient } from '@/components/account/licenses-client'
@@ -6,9 +6,17 @@ import { getResolvedCustomerLicenses } from '@/lib/customer-licenses'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import type { Metadata } from 'next'
 
-export const metadata: Metadata = {
-  title: 'Licenses',
-  description: 'Manage your WCPOS Pro license keys and activations.',
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}): Promise<Metadata> {
+  const { locale } = await params
+  const t = await getTranslations({ locale, namespace: 'account.meta' })
+  return {
+    title: t('licenses.title'),
+    description: t('licenses.description'),
+  }
 }
 
 function LicensesSkeleton() {
@@ -46,10 +54,11 @@ export default async function LicensesPage({
 }) {
   const { locale } = await params
   setRequestLocale(locale)
+  const t = await getTranslations({ locale, namespace: 'account.licenses' })
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold">Licenses</h1>
+      <h1 className="text-2xl font-bold">{t('heading')}</h1>
       <Suspense fallback={<LicensesSkeleton />}>
         <LicensesContent locale={locale} />
       </Suspense>

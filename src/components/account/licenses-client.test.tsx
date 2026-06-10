@@ -1,10 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { render, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
+import { renderWithIntl as render } from '@/test/intl'
 import { LicensesClient } from './licenses-client'
-
-vi.mock('next-intl', () => ({
-  useLocale: () => 'en-US',
-}))
 
 // Mock the locale-aware Link as a simple anchor
 vi.mock('@/i18n/navigation', () => ({
@@ -150,6 +147,81 @@ describe('LicensesClient', () => {
     expect(
       screen.queryByText(/renew to keep receiving updates/)
     ).not.toBeInTheDocument()
+  })
+
+  it('softens the per-card notice when a lifetime license keeps update access open', () => {
+    const expiry = new Date(Date.now() + 10 * 24 * 60 * 60 * 1000).toISOString()
+    render(
+      <LicensesClient
+        initialLicenses={[
+          makeLicense({ id: 'lic-yearly', status: 'active', expiry }),
+          makeLicense({
+            id: 'lic-lifetime',
+            key: 'WXYZ-WXYZ-WXYZ-LIFE',
+            status: 'active',
+            expiry: null,
+          }),
+        ]}
+      />
+    )
+
+    // The expiring card still mentions its expiry date...
+    expect(screen.getByText(/Your license expires on/)).toBeInTheDocument()
+    // ...but drops the urgency clause: updates stay available via the
+    // lifetime license, mirroring the overview's account-level suppression.
+    expect(
+      screen.queryByText(/renew to keep receiving updates/)
+    ).not.toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Renew' })).toHaveAttribute(
+      'href',
+      '/pro'
+    )
+  })
+
+  it('softens the per-card notice when a later active license extends access beyond the window', () => {
+    const soon = new Date(Date.now() + 10 * 24 * 60 * 60 * 1000).toISOString()
+    const later = new Date(
+      Date.now() + 200 * 24 * 60 * 60 * 1000
+    ).toISOString()
+    render(
+      <LicensesClient
+        initialLicenses={[
+          makeLicense({ id: 'lic-soon', status: 'active', expiry: soon }),
+          makeLicense({
+            id: 'lic-later',
+            key: 'WXYZ-WXYZ-WXYZ-LATE',
+            status: 'active',
+            expiry: later,
+          }),
+        ]}
+      />
+    )
+
+    expect(screen.getByText(/Your license expires on/)).toBeInTheDocument()
+    expect(
+      screen.queryByText(/renew to keep receiving updates/)
+    ).not.toBeInTheDocument()
+  })
+
+  it('keeps the full renewal warning when every active license lapses inside the window', () => {
+    const expiry = new Date(Date.now() + 10 * 24 * 60 * 60 * 1000).toISOString()
+    render(
+      <LicensesClient
+        initialLicenses={[
+          makeLicense({ id: 'lic-only', status: 'active', expiry }),
+          makeLicense({
+            id: 'lic-expired',
+            key: 'WXYZ-WXYZ-WXYZ-DEAD',
+            status: 'expired',
+            expiry: '2020-01-01T00:00:00Z',
+          }),
+        ]}
+      />
+    )
+
+    expect(
+      screen.getByText(/renew to keep receiving updates/)
+    ).toBeInTheDocument()
   })
 
   it('explains unverifiable licenses instead of implying they lapsed', () => {

@@ -1,4 +1,5 @@
 import { createHash } from 'crypto'
+import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/navigation'
 import type { MedusaCustomer } from '@/lib/medusa-auth'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
@@ -47,6 +48,7 @@ function getInitials(customer: MedusaCustomer): string {
 }
 
 export function AccountHeader({ customer }: AccountHeaderProps) {
+  const t = useTranslations('account.header')
   const avatarUrl = getAvatarUrl(customer)
   const initials = getInitials(customer)
 
@@ -58,7 +60,7 @@ export function AccountHeader({ customer }: AccountHeaderProps) {
             WCPOS
           </Link>
           <span className="text-gray-400">/</span>
-          <span className="text-gray-600">Account</span>
+          <span className="text-gray-600">{t('breadcrumb')}</span>
         </div>
         <div className="flex min-w-0 items-center space-x-3 sm:space-x-4">
           <div className="flex min-w-0 items-center gap-2">
@@ -77,7 +79,7 @@ export function AccountHeader({ customer }: AccountHeaderProps) {
               type="submit"
               className="py-2 text-sm text-gray-500 hover:text-gray-900"
             >
-              Sign out
+              {t('signOut')}
             </button>
           </form>
         </div>

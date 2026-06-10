@@ -1,4 +1,4 @@
-import { setRequestLocale } from 'next-intl/server'
+import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { Suspense } from 'react'
 import { getCustomerOrders } from '@/lib/medusa-auth'
 import { Link } from '@/i18n/navigation'
@@ -6,9 +6,17 @@ import { Card, CardContent } from '@/components/ui/card'
 import { OrderHistoryList } from '@/components/account/order-history-list'
 import type { Metadata } from 'next'
 
-export const metadata: Metadata = {
-  title: 'Order History',
-  description: 'View your WCPOS order history and receipts.',
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}): Promise<Metadata> {
+  const { locale } = await params
+  const t = await getTranslations({ locale, namespace: 'account.meta' })
+  return {
+    title: t('orders.title'),
+    description: t('orders.description'),
+  }
 }
 
 async function OrdersContent({ locale }: { locale: string }) {
@@ -47,21 +55,23 @@ export default async function OrdersPage({
 }) {
   const { locale } = await params
   setRequestLocale(locale)
+  const t = await getTranslations({ locale, namespace: 'account.orders' })
 
   return (
     <div className="space-y-6">
       <div className="space-y-1">
-        <h1 className="text-2xl font-bold">Order History</h1>
+        <h1 className="text-2xl font-bold">{t('heading')}</h1>
         <p className="text-sm text-muted-foreground">
-          Invoices &amp; receipts — every order includes a downloadable PDF tax
-          receipt. Receipts use the billing address saved in your{' '}
-          <Link
-            href="/account/profile#billing-address"
-            className="text-primary hover:underline"
-          >
-            profile
-          </Link>
-          .
+          {t.rich('intro', {
+            profileLink: (chunks) => (
+              <Link
+                href="/account/profile#billing-address"
+                className="text-primary hover:underline"
+              >
+                {chunks}
+              </Link>
+            ),
+          })}
         </p>
       </div>
       <Suspense fallback={<OrdersSkeleton />}>
