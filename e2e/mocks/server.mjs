@@ -107,6 +107,34 @@ function personaForRequest(req) {
   return { persona, suffix }
 }
 
+// ---------------------------------------------------------------------------
+// Carts & payment collections (Medusa v2 checkout)
+// ---------------------------------------------------------------------------
+//
+// The app's cart calls (src/services/core/external/medusa-client.ts) carry no
+// Authorization header — auth is enforced by the Next API routes via
+// GET /store/customers/me — so cart state is keyed by a generated cart id
+// rather than by persona. Every POST /store/carts mints a fresh id, so
+// parallel workers/projects/retries never share mutable cart state (the same
+// isolation property the persona `__<suffix>` convention provides above).
+
+const carts = new Map()
+const paymentCollections = new Map()
+let cartSequence = 0
+
+function findVariant(variantId) {
+  for (const product of fixtures.products) {
+    const variant = product.variants.find((entry) => entry.id === variantId)
+    if (variant) return { product, variant }
+  }
+  return null
+}
+
+function recalculateCart(cart) {
+  cart.subtotal = cart.items.reduce((sum, item) => sum + item.total, 0)
+  cart.total = cart.subtotal + cart.tax_total
+}
+
 function ordersForPersona(persona, suffix) {
   return persona.orders.map((order) => {
     const clone = JSON.parse(JSON.stringify(order))
@@ -200,6 +228,127 @@ const server = createServer(async (req, res) => {
       limit: products.length,
       offset: 0,
     })
+  }
+
+  // ----- Medusa carts & payment collections (checkout) -----
+
+  if (pathname === '/store/carts' && method === 'POST') {
+    const body = await readJson(req)
+    cartSequence += 1
+    const id = `cart_e2e_${cartSequence}_${Math.random().toString(36).slice(2, 8)}`
+    const cart = {
+      id,
+      email: typeof body.email === 'string' ? body.email : null,
+      region_id: 'reg_e2e',
+      currency_code: 'usd',
+      items: [],
+      subtotal: 0,
+      tax_total: 0,
+      total: 0,
+      metadata: body.metadata ?? {},
+    }
+    carts.set(id, cart)
+    return sendJson(res, 200, { cart })
+  }
+
+  const cartLineItemsMatch = pathname.match(/^\/store\/carts\/([^/]+)\/line-items$/)
+  if (cartLineItemsMatch && method === 'POST') {
+    const cart = carts.get(decodeURIComponent(cartLineItemsMatch[1]))
+    if (!cart) return sendJson(res, 404, { message: 'Cart not found' })
+
+    const body = await readJson(req)
+    const match = body.variant_id ? findVariant(body.variant_id) : null
+    if (!match) {
+      return sendJson(res, 400, {
+        message: `Variant not found: ${body.variant_id}`,
+      })
+    }
+
+    const quantity = Number(body.quantity ?? 1)
+    const unitPrice =
+      match.variant.prices.find((price) => price.currency_code === 'usd')
+        ?.amount ?? 0
+    cart.items.push({
+      id: `item_${cart.id}_${cart.items.length + 1}`,
+      title: match.product.title,
+      description: match.variant.title,
+      quantity,
+      unit_price: unitPrice,
+      subtotal: unitPrice * quantity,
+      total: unitPrice * quantity,
+      variant_id: match.variant.id,
+    })
+    recalculateCart(cart)
+    return sendJson(res, 200, { cart })
+  }
+
+  const cartMatch = pathname.match(/^\/store\/carts\/([^/]+)$/)
+  if (cartMatch && (method === 'GET' || method === 'POST')) {
+    const cart = carts.get(decodeURIComponent(cartMatch[1]))
+    if (!cart) return sendJson(res, 404, { message: 'Cart not found' })
+
+    if (method === 'POST') {
+      // Medusa v2 updates carts via POST /store/carts/{id} (email, metadata).
+      const body = await readJson(req)
+      if (typeof body.email === 'string') cart.email = body.email
+      if (body.metadata && typeof body.metadata === 'object') {
+        cart.metadata = { ...cart.metadata, ...body.metadata }
+      }
+    }
+    return sendJson(res, 200, { cart })
+  }
+
+  if (pathname === '/store/payment-collections' && method === 'POST') {
+    const body = await readJson(req)
+    const cart = carts.get(typeof body.cart_id === 'string' ? body.cart_id : '')
+    if (!cart) return sendJson(res, 404, { message: 'Cart not found' })
+
+    const collection = {
+      id: `paycol_${cart.id}`,
+      currency_code: cart.currency_code,
+      amount: cart.total,
+      status: 'not_paid',
+      payment_sessions: [],
+    }
+    paymentCollections.set(collection.id, collection)
+    // Stored by reference so GET /store/carts/{id} reflects later sessions.
+    cart.payment_collection = collection
+    return sendJson(res, 200, { payment_collection: collection })
+  }
+
+  const paymentSessionsMatch = pathname.match(
+    /^\/store\/payment-collections\/([^/]+)\/payment-sessions$/
+  )
+  if (paymentSessionsMatch && method === 'POST') {
+    const collection = paymentCollections.get(
+      decodeURIComponent(paymentSessionsMatch[1])
+    )
+    if (!collection) {
+      return sendJson(res, 404, { message: 'Payment collection not found' })
+    }
+
+    const body = await readJson(req)
+    const providerId =
+      typeof body.provider_id === 'string' ? body.provider_id : 'pp_stripe_stripe'
+    let session = collection.payment_sessions.find(
+      (entry) => entry.provider_id === providerId
+    )
+    if (!session) {
+      session = {
+        id: `payses_${collection.id}_${providerId}`,
+        provider_id: providerId,
+        status: 'pending',
+        // Shaped like a Stripe PaymentIntent client secret; the mocked suite
+        // never mounts Stripe Elements (no NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+        // at build time), so this is only ever read, not used.
+        data:
+          providerId === 'pp_stripe_stripe'
+            ? { client_secret: `pi_e2e_${collection.id}_secret_e2e` }
+            : {},
+      }
+      collection.payment_sessions.push(session)
+    }
+    return sendJson(res, 200, { payment_collection: collection })
   }
 
   // ----- Keygen license API (JSON:API) -----
