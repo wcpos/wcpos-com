@@ -2,16 +2,19 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { NextRequest } from 'next/server'
 
 const mockGetCustomer = vi.fn()
-const mockGetAuthToken = vi.fn()
 const mockGetResolvedCustomerLicenses = vi.fn()
 const mockFindReleaseByVersion = vi.fn()
 const mockIsReleaseAllowedForLicenses = vi.fn()
 const mockCreateDownloadToken = vi.fn()
 const mockLicenseLoggerWarn = vi.fn()
 
+const mockEnv = vi.hoisted(() => ({
+  DOWNLOAD_TOKEN_SECRET: undefined as string | undefined,
+  KEYGEN_API_TOKEN: 'keygen-token-secret' as string | undefined,
+}))
+
 vi.mock('@/lib/medusa-auth', () => ({
   getCustomer: (...args: unknown[]) => mockGetCustomer(...args),
-  getAuthToken: (...args: unknown[]) => mockGetAuthToken(...args),
 }))
 
 vi.mock('@/lib/customer-licenses', () => ({
@@ -38,10 +41,7 @@ vi.mock('@/lib/logger', () => ({
 }))
 
 vi.mock('@/utils/env', () => ({
-  env: {
-    DOWNLOAD_TOKEN_SECRET: undefined,
-    KEYGEN_API_TOKEN: undefined,
-  },
+  env: mockEnv,
 }))
 
 import { POST } from './route'
@@ -49,6 +49,8 @@ import { POST } from './route'
 describe('POST /api/account/downloads/token', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+    mockEnv.DOWNLOAD_TOKEN_SECRET = undefined
+    mockEnv.KEYGEN_API_TOKEN = 'keygen-token-secret'
   })
 
   it('returns 401 when unauthenticated', async () => {
@@ -64,9 +66,25 @@ describe('POST /api/account/downloads/token', () => {
     expect(response.status).toBe(401)
   })
 
+  it('returns 500 when no signing secret is configured', async () => {
+    mockEnv.KEYGEN_API_TOKEN = undefined
+    mockGetCustomer.mockResolvedValueOnce({ id: 'cust_1' })
+
+    const response = await POST(
+      new NextRequest('http://localhost/api/account/downloads/token', {
+        method: 'POST',
+        body: JSON.stringify({ version: '1.9.0' }),
+      })
+    )
+    const json = await response.json()
+
+    expect(response.status).toBe(500)
+    expect(json.error).toBe('Download token secret not configured')
+    expect(mockCreateDownloadToken).not.toHaveBeenCalled()
+  })
+
   it('returns a signed download URL for allowed versions', async () => {
     mockGetCustomer.mockResolvedValueOnce({ id: 'cust_1' })
-    mockGetAuthToken.mockResolvedValueOnce('auth-token-secret')
     mockFindReleaseByVersion.mockResolvedValueOnce({
       version: '1.9.0',
       assetName: 'woocommerce-pos-pro-1.9.0.zip',
@@ -93,13 +111,40 @@ describe('POST /api/account/downloads/token', () => {
         customerId: 'cust_1',
         version: '1.9.0',
       }),
-      'auth-token-secret'
+      'keygen-token-secret'
+    )
+  })
+
+  it('prefers DOWNLOAD_TOKEN_SECRET over KEYGEN_API_TOKEN', async () => {
+    mockEnv.DOWNLOAD_TOKEN_SECRET = 'download-token-secret'
+    mockGetCustomer.mockResolvedValueOnce({ id: 'cust_1' })
+    mockFindReleaseByVersion.mockResolvedValueOnce({
+      version: '1.9.0',
+      assetName: 'woocommerce-pos-pro-1.9.0.zip',
+    })
+    mockGetResolvedCustomerLicenses.mockResolvedValueOnce({
+      authenticated: true,
+      licenses: [],
+    })
+    mockIsReleaseAllowedForLicenses.mockReturnValueOnce(true)
+    mockCreateDownloadToken.mockReturnValueOnce('signed-token')
+
+    const response = await POST(
+      new NextRequest('http://localhost/api/account/downloads/token', {
+        method: 'POST',
+        body: JSON.stringify({ version: '1.9.0' }),
+      })
+    )
+
+    expect(response.status).toBe(200)
+    expect(mockCreateDownloadToken).toHaveBeenCalledWith(
+      expect.anything(),
+      'download-token-secret'
     )
   })
 
   it('returns 404 and logs warning when release is missing', async () => {
     mockGetCustomer.mockResolvedValueOnce({ id: 'cust_1' })
-    mockGetAuthToken.mockResolvedValueOnce('auth-token-secret')
     mockFindReleaseByVersion.mockResolvedValueOnce(null)
 
     const response = await POST(
@@ -115,7 +160,6 @@ describe('POST /api/account/downloads/token', () => {
 
   it('returns 403 when release is not allowed by license', async () => {
     mockGetCustomer.mockResolvedValueOnce({ id: 'cust_1' })
-    mockGetAuthToken.mockResolvedValueOnce('auth-token-secret')
     mockFindReleaseByVersion.mockResolvedValueOnce({
       version: '1.9.0',
       assetName: 'woocommerce-pos-pro-1.9.0.zip',
