@@ -1,5 +1,5 @@
 import { setRequestLocale } from 'next-intl/server'
-import Link from 'next/link'
+import { Link } from '@/i18n/navigation'
 import { CheckCircle, Download } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
@@ -47,9 +47,10 @@ export default async function CheckoutSuccessPage({
             </Link>
           </Button>
           <Button asChild variant="outline">
-            <Link href="https://docs.wcpos.com/getting-started/installation">
+            {/* External docs site — plain anchor, not locale-aware navigation */}
+            <a href="https://docs.wcpos.com/getting-started/installation">
               Installation Guide
-            </Link>
+            </a>
           </Button>
         </div>
       </div>

@@ -1,6 +1,23 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import { OrderHistoryList, type OrderHistoryOrder } from './order-history-list'
+
+// Mock the locale-aware Link as a simple anchor
+vi.mock('@/i18n/navigation', () => ({
+  Link: ({
+    children,
+    href,
+    ...props
+  }: {
+    children: React.ReactNode
+    href: string
+    [key: string]: unknown
+  }) => (
+    <a href={href} {...props}>
+      {children}
+    </a>
+  ),
+}))
 
 function makeOrder(overrides: Partial<OrderHistoryOrder> = {}): OrderHistoryOrder {
   return {

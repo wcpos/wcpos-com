@@ -4,8 +4,7 @@ import { cookies } from 'next/headers'
 import { CheckoutClient } from '@/components/pro/checkout-client'
 import { getCustomer } from '@/lib/medusa-auth'
 import { ArrowLeft } from 'lucide-react'
-import Link from 'next/link'
-import { redirect } from 'next/navigation'
+import { Link, redirect } from '@/i18n/navigation'
 import { resolveProCheckoutVariant } from '@/services/core/analytics/posthog-service'
 import { ANALYTICS_DISTINCT_ID_COOKIE } from '@/lib/analytics/distinct-id'
 import { getAnalyticsConfig } from '@/lib/analytics/config'
@@ -52,15 +51,20 @@ function getSingleSearchParam(
 }
 
 async function CheckoutContent({
+  locale,
   searchParamsPromise,
 }: {
+  locale: string
   searchParamsPromise: Promise<Record<string, string | string[] | undefined>>
 }) {
   const searchParams = await searchParamsPromise
   const customer = await getCustomer()
   if (!customer) {
     const checkoutPath = buildCheckoutRedirectPath(searchParams)
-    redirect(`/login?redirect=${encodeURIComponent(checkoutPath)}`)
+    redirect({
+      href: { pathname: '/login', query: { redirect: checkoutPath } },
+      locale,
+    })
   }
 
   const selectedVariantId = getSingleSearchParam(searchParams, 'variant')
@@ -122,7 +126,7 @@ export default async function CheckoutPage({
             </div>
           }
         >
-          <CheckoutContent searchParamsPromise={searchParams} />
+          <CheckoutContent locale={locale} searchParamsPromise={searchParams} />
         </Suspense>
       </div>
     </main>

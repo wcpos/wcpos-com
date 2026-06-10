@@ -1,6 +1,6 @@
 'use client'
 
-import Link from 'next/link'
+import { Link } from '@/i18n/navigation'
 import { AlertTriangle, LifeBuoy } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import type { CheckoutFailure } from './checkout-errors'

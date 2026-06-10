@@ -1,3 +1,4 @@
+import { setRequestLocale } from 'next-intl/server'
 import { Suspense } from 'react'
 import { getCustomerOrderById } from '@/lib/medusa-auth'
 import { extractLicenseReferencesFromOrders } from '@/lib/licenses'
@@ -5,7 +6,7 @@ import { formatOrderAmount } from '@/lib/order-display'
 import { formatDateForLocale } from '@/lib/date-format'
 import { getOrderDisplayStatus } from '@/lib/order-status'
 import { notFound } from 'next/navigation'
-import Link from 'next/link'
+import { Link } from '@/i18n/navigation'
 import { ArrowLeft, FileDown } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -143,20 +144,30 @@ function OrderDetailSkeleton() {
   )
 }
 
-export default function OrderDetailPage({
+export default async function OrderDetailPage({
   params,
 }: {
   params: Promise<{ locale: string; orderId: string }>
 }) {
+  const { locale } = await params
+  setRequestLocale(locale)
+
   return (
     <div className="space-y-6">
-      <Link
-        href="/account/orders"
-        className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground"
+      {/* Suspense is required: the locale-aware Link reads the pathname,
+          which is dynamic on this route's fallback shell ([orderId] is not
+          known at build time under cacheComponents/PPR). */}
+      <Suspense
+        fallback={<div className="h-5 w-32 animate-pulse rounded bg-muted" />}
       >
-        <ArrowLeft className="mr-2 h-4 w-4" />
-        Back to orders
-      </Link>
+        <Link
+          href="/account/orders"
+          className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground"
+        >
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          Back to orders
+        </Link>
+      </Suspense>
 
       <Suspense fallback={<OrderDetailSkeleton />}>
         <OrderDetailContent params={params} />

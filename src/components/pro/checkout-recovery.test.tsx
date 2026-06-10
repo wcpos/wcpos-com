@@ -1,9 +1,9 @@
 import { describe, it, expect, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
 
-// Mock next/link as a simple anchor
-vi.mock('next/link', () => ({
-  default: ({
+// Mock the locale-aware Link as a simple anchor
+vi.mock('@/i18n/navigation', () => ({
+  Link: ({
     children,
     href,
     ...props

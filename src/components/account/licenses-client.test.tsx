@@ -6,6 +6,23 @@ vi.mock('next-intl', () => ({
   useLocale: () => 'en-US',
 }))
 
+// Mock the locale-aware Link as a simple anchor
+vi.mock('@/i18n/navigation', () => ({
+  Link: ({
+    children,
+    href,
+    ...props
+  }: {
+    children: React.ReactNode
+    href: string
+    [key: string]: unknown
+  }) => (
+    <a href={href} {...props}>
+      {children}
+    </a>
+  ),
+}))
+
 const mockFetch = vi.fn()
 vi.stubGlobal('fetch', mockFetch)
 

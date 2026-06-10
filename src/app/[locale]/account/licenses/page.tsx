@@ -1,6 +1,6 @@
 import { setRequestLocale } from 'next-intl/server'
 import { Suspense } from 'react'
-import { redirect } from 'next/navigation'
+import { redirect } from '@/i18n/navigation'
 import { LicensesClient } from '@/components/account/licenses-client'
 import { getResolvedCustomerLicenses } from '@/lib/customer-licenses'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
@@ -29,11 +29,11 @@ function LicensesSkeleton() {
   )
 }
 
-async function LicensesContent() {
+async function LicensesContent({ locale }: { locale: string }) {
   const { authenticated, licenses } = await getResolvedCustomerLicenses()
 
   if (!authenticated) {
-    redirect('/login')
+    redirect({ href: '/login', locale })
   }
 
   return <LicensesClient initialLicenses={licenses} />
@@ -51,7 +51,7 @@ export default async function LicensesPage({
     <div className="space-y-6">
       <h1 className="text-2xl font-bold">Licenses</h1>
       <Suspense fallback={<LicensesSkeleton />}>
-        <LicensesContent />
+        <LicensesContent locale={locale} />
       </Suspense>
     </div>
   )
