@@ -5,6 +5,7 @@ import { StripeProvider } from './stripe-provider'
 import { PayPalProvider } from './paypal-provider'
 import { CheckoutForm } from './checkout-form'
 import { PayPalButton } from './paypal-button'
+import { createPaymentSession } from './complete-cart'
 import { BTCPayButton } from './btcpay-button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -47,6 +48,12 @@ interface Cart {
   payment_session?: PaymentSession
   payment_sessions?: PaymentSession[]
   payment_collection?: PaymentCollection
+}
+
+interface PaymentSessionResult {
+  cart: Cart
+  paymentCollectionId: string | null
+  clientSecret?: string | null
 }
 
 type PaymentMethod = 'stripe' | 'paypal' | 'btcpay'
@@ -125,92 +132,86 @@ export function CheckoutClient({
     isStripeEnabled ? 'stripe' : 'paypal'
   )
 
-  const initializeCheckout = useCallback(async () => {
-    if (!customerEmail) {
-      setError('Please sign in to continue checkout.')
-      setIsLoading(false)
-      return
-    }
+  // Derived from props during render (instead of setState in an effect) so the
+  // initialization effect never calls setState synchronously.
+  const prerequisiteError = !customerEmail
+    ? 'Please sign in to continue checkout.'
+    : !selectedVariantId
+      ? 'No product selected'
+      : null
 
-    if (!selectedVariantId) {
-      setError('No product selected')
-      setIsLoading(false)
-      return
-    }
+  useEffect(() => {
+    if (prerequisiteError) return
 
-    try {
-      // Create cart
-      const cartResponse = await fetch('/api/store/cart', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          metadata: {
-            experiment: PRO_CHECKOUT_EXPERIMENT,
-            variant: experimentVariant,
-          },
-        }),
-      })
-
-      if (!cartResponse.ok) {
-        throw new Error('Failed to create cart')
-      }
-
-      const { cart: newCart } = await cartResponse.json()
-
-      // Add item to cart
-      const itemResponse = await fetch('/api/store/cart/line-items', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          cartId: newCart.id,
-          variant_id: selectedVariantId,
-          quantity: 1,
-        }),
-      })
-
-      if (!itemResponse.ok) {
-        throw new Error('Failed to add item to cart')
-      }
-
-      const { cart: cartWithItem } = await itemResponse.json()
-
-      // Initialize payment with Stripe (Medusa v2 flow)
-      const sessionsResponse = await fetch('/api/store/cart/payment-sessions', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          cartId: cartWithItem.id,
-          provider_id: 'pp_stripe_stripe',
-        }),
-      })
-
-      if (!sessionsResponse.ok) {
-        throw new Error('Failed to initialize payment')
-      }
-
-      const paymentResult = await sessionsResponse.json()
-      setCart(paymentResult.cart)
-      setPaymentCollectionId(paymentResult.paymentCollectionId)
-
-      // Set the client secret for Stripe
-      if (paymentResult.clientSecret) {
-        setClientSecret(paymentResult.clientSecret)
-      }
-
-      if (paymentResult.cart) {
-        await fetch('/api/store/cart', {
-          method: 'PATCH',
+    async function initializeCheckout() {
+      try {
+        // Create cart
+        const cartResponse = await fetch('/api/store/cart', {
+          method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ cartId: paymentResult.cart.id, email: customerEmail }),
+          body: JSON.stringify({
+            metadata: {
+              experiment: PRO_CHECKOUT_EXPERIMENT,
+              variant: experimentVariant,
+            },
+          }),
         })
+
+        if (!cartResponse.ok) {
+          throw new Error('Failed to create cart')
+        }
+
+        const { cart: newCart } = await cartResponse.json()
+
+        // Add item to cart
+        const itemResponse = await fetch('/api/store/cart/line-items', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            cartId: newCart.id,
+            variant_id: selectedVariantId,
+            quantity: 1,
+          }),
+        })
+
+        if (!itemResponse.ok) {
+          throw new Error('Failed to add item to cart')
+        }
+
+        const { cart: cartWithItem } = await itemResponse.json()
+
+        // Initialize payment with Stripe (Medusa v2 flow)
+        const paymentResult = await createPaymentSession<PaymentSessionResult>({
+          cartId: cartWithItem.id,
+          providerId: 'pp_stripe_stripe',
+          errorMessage: 'Failed to initialize payment',
+        })
+
+        setCart(paymentResult.cart)
+        setPaymentCollectionId(paymentResult.paymentCollectionId)
+
+        // Set the client secret for Stripe
+        if (paymentResult.clientSecret) {
+          setClientSecret(paymentResult.clientSecret)
+        }
+
+        if (paymentResult.cart) {
+          await fetch('/api/store/cart', {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ cartId: paymentResult.cart.id, email: customerEmail }),
+          })
+        }
+      } catch (err) {
+        console.error('[CHECKOUT] Initialization failed:', err)
+        setError(err instanceof Error ? err.message : 'Failed to initialize checkout')
+      } finally {
+        setIsLoading(false)
       }
-    } catch (err) {
-      console.error('[CHECKOUT] Initialization failed:', err)
-      setError(err instanceof Error ? err.message : 'Failed to initialize checkout')
-    } finally {
-      setIsLoading(false)
     }
-  }, [customerEmail, selectedVariantId, experimentVariant])
+
+    initializeCheckout()
+  }, [customerEmail, selectedVariantId, experimentVariant, prerequisiteError])
 
   // Select payment provider when method changes
   const selectPaymentMethod = useCallback(
@@ -229,27 +230,13 @@ export function CheckoutClient({
           providerId: getProviderId(method),
         })
 
-        const response = await fetch('/api/store/cart/payment-sessions', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            cartId: cart.id,
-            provider_id: getProviderId(method),
-            paymentCollectionId,
-          }),
+        const paymentResult = await createPaymentSession<PaymentSessionResult>({
+          cartId: cart.id,
+          providerId: getProviderId(method),
+          paymentCollectionId,
+          errorMessage: `Failed to select ${method} payment`,
         })
 
-        if (!response.ok) {
-          const errorData = await response.json().catch(() => ({}))
-          console.error('[CHECKOUT] Payment method selection failed:', {
-            method,
-            status: response.status,
-            error: errorData,
-          })
-          throw new Error(`Failed to select ${method} payment`)
-        }
-
-        const paymentResult = await response.json()
         setCart(paymentResult.cart)
 
         if (method === 'stripe' && paymentResult.clientSecret) {
@@ -265,10 +252,6 @@ export function CheckoutClient({
     },
     [cart, paymentCollectionId, paymentMethod]
   )
-
-  useEffect(() => {
-    initializeCheckout()
-  }, [initializeCheckout])
 
   // Note: We initialize payment during cart creation, so no need to auto-select here
   // The clientSecret is already set from initializeCheckout
@@ -302,6 +285,22 @@ export function CheckoutClient({
     }
   }
 
+  const blockingError = prerequisiteError ?? (!cart ? error : null)
+
+  if (blockingError) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[400px]">
+        <p className="text-destructive mb-4">{blockingError}</p>
+        <Button asChild variant="outline">
+          <Link href="/pro">
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Back to pricing
+          </Link>
+        </Button>
+      </div>
+    )
+  }
+
   if (isLoading) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[400px]">
@@ -311,20 +310,6 @@ export function CheckoutClient({
           <div className="h-28 w-full animate-pulse rounded bg-muted" />
         </div>
         <p className="mt-4 text-muted-foreground">Preparing checkout...</p>
-      </div>
-    )
-  }
-
-  if (error && !cart) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-[400px]">
-        <p className="text-destructive mb-4">{error}</p>
-        <Button asChild variant="outline">
-          <Link href="/pro">
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to pricing
-          </Link>
-        </Button>
       </div>
     )
   }
@@ -497,6 +482,8 @@ export function CheckoutClient({
                 <PayPalProvider>
                   <PayPalButton
                     cartId={cart.id}
+                    experiment={PRO_CHECKOUT_EXPERIMENT}
+                    experimentVariant={experimentVariant}
                     paypalOrderId={paypalOrderId}
                     onSuccess={handleSuccess}
                     onError={handleError}
