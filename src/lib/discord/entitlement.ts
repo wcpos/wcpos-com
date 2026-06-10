@@ -24,7 +24,17 @@ export function evaluateDiscordProEntitlement(
 
     if (status !== 'active') continue
 
-    if (!license.expiry || new Date(license.expiry).getTime() > now.getTime()) {
+    if (!license.expiry) {
+      return { state: 'entitled' }
+    }
+
+    const expiryTime = new Date(license.expiry).getTime()
+    if (Number.isNaN(expiryTime)) {
+      sawUnknown = true
+      continue
+    }
+
+    if (expiryTime > now.getTime()) {
       return { state: 'entitled' }
     }
   }

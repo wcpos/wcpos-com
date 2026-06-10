@@ -44,12 +44,15 @@ export async function GET(request: NextRequest) {
       }),
     })
 
-    if (updatedCustomer) {
-      try {
-        await syncCurrentCustomerDiscordRole(updatedCustomer)
-      } catch (syncError) {
-        infraLogger.warn`Discord role sync after link failed: ${syncError}`
-      }
+    if (!updatedCustomer) {
+      infraLogger.error`Discord link callback failed: customer metadata update returned empty result`
+      return callbackRedirect(request, storedState.returnTo, 'error')
+    }
+
+    try {
+      await syncCurrentCustomerDiscordRole(updatedCustomer)
+    } catch (syncError) {
+      infraLogger.warn`Discord role sync after link failed: ${syncError}`
     }
 
     return callbackRedirect(request, storedState.returnTo, 'linked')

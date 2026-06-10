@@ -1,11 +1,18 @@
 import type { LicenseDetail } from '@/types/license'
-import { getAllCustomerOrders, getCustomer, type MedusaOrder } from '@/lib/medusa-auth'
+import {
+  getAllCustomerOrders,
+  getCustomer,
+  type MedusaCustomer,
+  type MedusaOrder,
+} from '@/lib/medusa-auth'
 import {
   extractLicenseReferencesFromOrders,
   type LicenseReference,
 } from '@/lib/licenses'
 import { licenseClient } from '@/services/core/external/license-client'
 import { licenseLogger } from '@/lib/logger'
+
+const LICENSE_LOOKUP_BATCH_SIZE = 10
 
 function buildLicensePlaceholder(reference: LicenseReference): LicenseDetail | null {
   if (!reference.key) return null
@@ -56,20 +63,30 @@ export async function getResolvedLicensesFromOrders(
   orders: MedusaOrder[]
 ): Promise<LicenseDetail[]> {
   const references = extractLicenseReferencesFromOrders(orders)
-
-  const licenses = await Promise.all(
-    references.map((reference) => resolveLicenseReference(reference))
+  const uniqueReferences = Array.from(
+    new Map(
+      references.map((reference) => [
+        reference.id ? `id:${reference.id}` : `key:${reference.key}`,
+        reference,
+      ])
+    ).values()
   )
+
+  const licenses: Array<LicenseDetail | null> = []
+  for (let index = 0; index < uniqueReferences.length; index += LICENSE_LOOKUP_BATCH_SIZE) {
+    const batch = uniqueReferences.slice(index, index + LICENSE_LOOKUP_BATCH_SIZE)
+    licenses.push(...(await Promise.all(batch.map(resolveLicenseReference))))
+  }
 
   return licenses.filter((license): license is LicenseDetail => Boolean(license))
 }
 
-export async function getResolvedCustomerLicenses(): Promise<{
+export async function getResolvedCustomerLicenses(customer?: MedusaCustomer): Promise<{
   authenticated: boolean
   licenses: LicenseDetail[]
 }> {
-  const customer = await getCustomer()
-  if (!customer) {
+  const resolvedCustomer = customer ?? await getCustomer()
+  if (!resolvedCustomer) {
     return { authenticated: false, licenses: [] }
   }
 

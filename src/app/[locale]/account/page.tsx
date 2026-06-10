@@ -165,7 +165,7 @@ async function AccountOverviewContent({
                 </p>
                 {discordConfigured && (
                   <form action="/api/discord/link" method="get">
-                    <input type="hidden" name="return_to" value="/account" />
+                    <input type="hidden" name="return_to" value={`/${locale}/account`} />
                     <Button type="submit" size="sm">
                       {t('discordConnect')}
                     </Button>

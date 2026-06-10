@@ -112,6 +112,7 @@ export class DiscordApiClient {
       { method: 'PUT' }
     )
 
+    if (response.status === 404) return
     if (!response.ok) {
       throw new Error(`Discord role add failed: ${await parseDiscordError(response)}`)
     }
@@ -123,6 +124,7 @@ export class DiscordApiClient {
       { method: 'DELETE' }
     )
 
+    if (response.status === 404) return
     if (!response.ok) {
       throw new Error(`Discord role removal failed: ${await parseDiscordError(response)}`)
     }

@@ -6,6 +6,7 @@ export interface DiscordConfig {
   botToken: string
   guildId: string
   proRoleId: string
+  adminApiToken: string
   publicKey?: string
 }
 
@@ -16,6 +17,7 @@ export function getDiscordConfig(): DiscordConfig {
     ['DISCORD_BOT_TOKEN', env.DISCORD_BOT_TOKEN],
     ['DISCORD_GUILD_ID', env.DISCORD_GUILD_ID],
     ['DISCORD_PRO_ROLE_ID', env.DISCORD_PRO_ROLE_ID],
+    ['MEDUSA_ADMIN_API_TOKEN', env.MEDUSA_ADMIN_API_TOKEN],
   ]
     .filter(([, value]) => !value)
     .map(([name]) => name)
@@ -30,6 +32,7 @@ export function getDiscordConfig(): DiscordConfig {
     botToken: env.DISCORD_BOT_TOKEN!,
     guildId: env.DISCORD_GUILD_ID!,
     proRoleId: env.DISCORD_PRO_ROLE_ID!,
+    adminApiToken: env.MEDUSA_ADMIN_API_TOKEN!,
     publicKey: env.DISCORD_PUBLIC_KEY,
   }
 }

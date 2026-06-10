@@ -72,6 +72,7 @@ describe('syncDiscordProRole', () => {
       discordUserId: 'discord_1',
     })
     expect(d.removeRole).not.toHaveBeenCalled()
+    expect(d.getMemberRoleState).not.toHaveBeenCalled()
   })
 
   it('skips role changes when the linked Discord user is not in the guild', async () => {

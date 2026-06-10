@@ -8,11 +8,14 @@ import type { DiscordRoleSyncDependencies, DiscordRoleSyncResult } from './sync'
 import { syncDiscordProRole } from './sync'
 import { getDiscordLink } from './metadata'
 
-function createCurrentCustomerDependencies(): DiscordRoleSyncDependencies {
+function createCurrentCustomerDependencies(customer: MedusaCustomer): DiscordRoleSyncDependencies {
   const client = new DiscordApiClient(getDiscordConfig())
 
   return {
-    getLicensesForCustomer: async () => (await getResolvedCustomerLicenses()).licenses,
+    getLicensesForCustomer: async (customerId) =>
+      customerId === customer.id
+        ? (await getResolvedCustomerLicenses(customer)).licenses
+        : [],
     getMemberRoleState: (discordUserId) => client.getMemberRoleState(discordUserId),
     addRole: (discordUserId) => client.addRole(discordUserId),
     removeRole: (discordUserId) => client.removeRole(discordUserId),
@@ -27,7 +30,7 @@ export async function syncCurrentCustomerDiscordRole(
   customer: MedusaCustomer
 ): Promise<DiscordRoleSyncResult | null> {
   if (!isDiscordConfigured()) return null
-  return syncDiscordProRole(customer, createCurrentCustomerDependencies())
+  return syncDiscordProRole(customer, createCurrentCustomerDependencies(customer))
 }
 
 export async function removeCurrentCustomerDiscordRole(

@@ -30,7 +30,8 @@ async function medusaAdminFetch<T>(path: string, init: RequestInit = {}): Promis
   })
 
   if (!response.ok) {
-    throw new Error(`Medusa Admin API error ${response.status}`)
+    const text = await response.text()
+    throw new Error(`Medusa Admin API error ${response.status}: ${text}`)
   }
 
   return response.json() as Promise<T>

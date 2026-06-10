@@ -59,4 +59,12 @@ describe('evaluateDiscordProEntitlement', () => {
       ], now)
     ).toEqual({ state: 'entitled' })
   })
+
+  it('treats malformed active expiry as unknown', () => {
+    expect(
+      evaluateDiscordProEntitlement([
+        license({ status: 'ACTIVE', expiry: 'not-a-date' }),
+      ], now)
+    ).toEqual({ state: 'unknown' })
+  })
 })

@@ -16,7 +16,15 @@ export async function POST(request: NextRequest) {
     infraLogger.warn`Discord role removal during unlink failed: ${error}`
   }
 
-  await updateCustomer({ metadata: clearDiscordLinkMetadata(customer.metadata) })
+  const updatedCustomer = await updateCustomer({
+    metadata: clearDiscordLinkMetadata(customer.metadata),
+  })
+  if (!updatedCustomer) {
+    infraLogger.error`Discord unlink failed: customer metadata update returned empty result`
+    const errorUrl = new URL('/account', request.url)
+    errorUrl.searchParams.set('discord', 'error')
+    return NextResponse.redirect(errorUrl, { status: 303 })
+  }
 
   const url = new URL('/account', request.url)
   url.searchParams.set('discord', 'unlinked')
