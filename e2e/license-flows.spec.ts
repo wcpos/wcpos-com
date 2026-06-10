@@ -89,7 +89,8 @@ test.describe('Purchase to account handoff', () => {
 
     const card = licenseCard(page, '****-****-7777')
     await expect(card).toBeVisible()
-    await expect(card.getByText('ACTIVE', { exact: true })).toBeVisible()
+    // Status badge renders the lowercased display status (raw Keygen casing is normalized).
+    await expect(card.getByText('active', { exact: true })).toBeVisible()
     await expect(card.getByText('Yearly', { exact: true })).toBeVisible()
     await expect(card.getByText('0 of 4')).toBeVisible()
     await expect(card.getByRole('link', { name: /Downloads/ })).toBeVisible()
@@ -142,7 +143,7 @@ test.describe('Existing license holder data accuracy', () => {
     await expect(unknownCard.getByRole('link', { name: /Downloads/ })).toHaveCount(0)
   })
 
-  test('expired holder sees expired status, expiry date, and no downloads CTA', async ({
+  test('expired holder sees expired status, expiry date, renew CTA, and downloads link', async ({
     page,
     context,
     baseURL,
@@ -152,11 +153,16 @@ test.describe('Existing license holder data accuracy', () => {
 
     const card = licenseCard(page, '****-****-5678')
     await expect(card).toBeVisible()
-    await expect(card.getByText('EXPIRED', { exact: true })).toBeVisible()
+    await expect(card.getByText('expired', { exact: true })).toBeVisible()
     await expect(card.getByText('Expires:')).toBeVisible()
     await expect(card.getByText(/2025/)).toBeVisible()
     await expect(card.getByText('0 of 1')).toBeVisible()
-    await expect(card.getByRole('link', { name: /Downloads/ })).toHaveCount(0)
+    // Expired holders can still download pre-expiry versions, so the
+    // downloads link stays, alongside a renew CTA.
+    const renewLink = card.getByRole('link', { name: 'Renew' })
+    await expect(renewLink).toBeVisible()
+    await expect(renewLink).toHaveAttribute('href', '/pro')
+    await expect(card.getByRole('link', { name: /Downloads/ })).toBeVisible()
   })
 
   test('suspended holder sees suspended status and no downloads CTA', async ({
@@ -169,7 +175,7 @@ test.describe('Existing license holder data accuracy', () => {
 
     const card = licenseCard(page, '****-****-9012')
     await expect(card).toBeVisible()
-    await expect(card.getByText('SUSPENDED', { exact: true })).toBeVisible()
+    await expect(card.getByText('suspended', { exact: true })).toBeVisible()
     await expect(card.getByRole('link', { name: /Downloads/ })).toHaveCount(0)
   })
 
@@ -283,11 +289,18 @@ test.describe('Expired license version gating in downloads', () => {
     await signInAs(context, baseURL, 'e2e-expired')
     await page.goto('/account/downloads')
 
+    // Post-expiry releases are greyed out with an explicit reason and an
+    // "Unavailable" button; the page banner offers a renew CTA.
+    const blockedRow = releaseRow(page, 'WCPOS Pro 3.2.0')
     await expect(
-      releaseRow(page, 'WCPOS Pro 3.2.0').getByRole('button', {
-        name: 'Download',
-      })
+      blockedRow.getByRole('button', { name: 'Unavailable' })
     ).toBeDisabled()
+    await expect(
+      blockedRow.getByText('Released after your license expired.')
+    ).toBeVisible()
+    await expect(
+      page.getByRole('link', { name: 'Renew license' })
+    ).toHaveAttribute('href', '/pro')
     await expect(
       releaseRow(page, 'WCPOS Pro 2.5.0').getByRole('button', {
         name: 'Download',
@@ -358,11 +371,16 @@ test.describe('Expired license version gating in downloads', () => {
     await signInAs(context, baseURL, 'e2e-none')
     await page.goto('/account/downloads')
 
-    const buttons = page.getByRole('button', { name: 'Download' })
+    // With no license at all, every release is "Unavailable" and the page
+    // offers a purchase CTA instead of a renew banner.
+    const buttons = page.getByRole('button', { name: 'Unavailable' })
     await expect(buttons).toHaveCount(3)
     for (const button of await buttons.all()) {
       await expect(button).toBeDisabled()
     }
+    await expect(
+      page.getByRole('link', { name: 'Get WCPOS Pro' })
+    ).toHaveAttribute('href', '/pro')
 
     const response = await page.request.post('/api/account/downloads/token', {
       data: { version: '1.9.0' },
