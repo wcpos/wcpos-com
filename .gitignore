@@ -49,3 +49,8 @@ docs/
 # playwright artifacts
 /playwright-report/
 /test-results/
+
+# ADRs are durable decisions, not working docs
+!docs/
+docs/*
+!docs/adr/

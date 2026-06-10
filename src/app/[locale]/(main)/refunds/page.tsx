@@ -102,7 +102,7 @@ export default async function RefundsPage({
             </a>{' '}
             from the email address you used for the purchase within 14 days. We
             will refund the full amount to your original payment method and
-            deactivate the license key.
+            revoke the license key.
           </p>
           <p className="leading-7 text-muted-foreground">
             Under those laws, the withdrawal right for digital content can end
@@ -134,7 +134,7 @@ export default async function RefundsPage({
             When a refund is given, it goes back to the original payment method
             via Stripe or PayPal and typically appears on your statement within
             5–10 business days, depending on your bank or card issuer. Refunded
-            license keys are deactivated.
+            license keys are revoked and stop working immediately.
           </p>
         </section>
 

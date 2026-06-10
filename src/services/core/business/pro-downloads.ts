@@ -82,6 +82,11 @@ function getLatestExpiry(licenses: LicenseEntitlementInput[]): Date | null {
   let latest: Date | null = null
 
   for (const license of licenses) {
+    // Only natural lifecycle states grant expiry-based access: suspended and
+    // revoked licenses are administrative holds/terminations (refunds,
+    // chargebacks) and grant nothing. See docs/adr/0001.
+    const status = license.status.toLowerCase()
+    if (status !== 'active' && status !== 'expired') continue
     if (!license.expiry) continue
     const expiry = new Date(license.expiry)
     if (Number.isNaN(expiry.getTime())) continue

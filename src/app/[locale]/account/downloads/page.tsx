@@ -56,15 +56,18 @@ async function DownloadsContent({ locale }: { locale: string }) {
 
   // Mirrors the entitlement rules in isReleaseAllowedForLicenses so the UI
   // can explain WHY a release is unavailable (expired vs. suspended vs.
-  // unverifiable vs. no license). Note: a suspended license's expiry still
-  // counts toward pre-expiry access (getLatestExpiry ignores status), and
-  // unknown licenses grant nothing; the extra fields below are messaging-only.
+  // unverifiable vs. no license). Only active/expired licenses contribute
+  // expiry-based access — suspended/revoked grant nothing (docs/adr/0001) —
+  // so expiry messaging derives from the same subset.
   const hasActiveLicense = licenses.some((license) => {
     if (license.status.toLowerCase() !== 'active') return false
     if (!license.expiry) return true
     return new Date(license.expiry).getTime() >= now.getTime()
   })
   const expiryTimes = licenses
+    .filter((license) =>
+      ['active', 'expired'].includes(license.status.toLowerCase())
+    )
     .map((license) =>
       license.expiry ? new Date(license.expiry).getTime() : Number.NaN
     )
