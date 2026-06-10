@@ -355,7 +355,11 @@ export function ProfileEditForm({ customer }: ProfileEditFormProps) {
         />
       </div>
 
-      <div className="space-y-4 rounded-lg border p-4">
+      {/* id targeted by the "billing address" link on the orders page */}
+      <div
+        id="billing-address"
+        className="scroll-mt-24 space-y-4 rounded-lg border p-4"
+      >
         <h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
           Billing details for receipts
         </h3>
