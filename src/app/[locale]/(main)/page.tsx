@@ -1,4 +1,5 @@
 import { setRequestLocale } from 'next-intl/server'
+import type { Metadata } from 'next'
 import { HeroSection } from '@/components/home/hero-section'
 import { ProblemSection } from '@/components/home/problem-section'
 import { EcosystemSection } from '@/components/home/ecosystem-section'
@@ -8,6 +9,11 @@ import { FeaturesSection } from '@/components/home/features-section'
 import { PricingTeaserSection } from '@/components/home/pricing-teaser-section'
 import { TrustSection } from '@/components/home/trust-section'
 import { CtaSection } from '@/components/home/cta-section'
+
+export const metadata: Metadata = {
+  description:
+    'Point of Sale for WooCommerce. Sync your products, sell offline, and connect real hardware with native apps for iOS, Android, and desktop.',
+}
 
 export default async function Home({
   params,
@@ -38,6 +44,7 @@ export default async function Home({
             name: 'WooCommerce POS',
             applicationCategory: 'BusinessApplication',
             operatingSystem: 'Windows, macOS, Linux, iOS, Android',
+            url: 'https://wcpos.com',
             offers: {
               '@type': 'Offer',
               price: '0',

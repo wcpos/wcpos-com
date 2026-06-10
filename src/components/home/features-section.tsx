@@ -1,35 +1,58 @@
-const features = [
+import {
+  BarChart3,
+  PencilLine,
+  Receipt,
+  Search,
+  ShoppingCart,
+  Users,
+} from 'lucide-react'
+import type { LucideIcon } from 'lucide-react'
+
+interface Feature {
+  icon: LucideIcon
+  title: string
+  description: string
+  pro: boolean
+}
+
+const features: Feature[] = [
   {
+    icon: Search,
     title: 'Fast product search',
     description:
       'Find products instantly with search, filters, and category browsing. Barcode scanner support.',
     pro: false,
   },
   {
+    icon: ShoppingCart,
     title: 'Smooth checkout flow',
     description:
       'Add items, apply discounts, choose payment method. Supports Stripe Terminal, SumUp, cash, and custom gateways.',
     pro: true,
   },
   {
+    icon: Users,
     title: 'Customer profiles',
     description:
       'Add and edit customer info directly in the POS. Track regulars, offer better service.',
     pro: true,
   },
   {
+    icon: Receipt,
     title: 'Order history & management',
     description:
       'View past orders, process returns, check order status without switching to WP Admin.',
     pro: true,
   },
   {
+    icon: PencilLine,
     title: 'Edit stock & prices on the fly',
     description:
       'Fix a wrong price while serving a customer. Adjust stock without leaving the POS.',
     pro: true,
   },
   {
+    icon: BarChart3,
     title: 'End-of-day reports',
     description:
       'Generate sales reports for each shift or day. Cash up quickly, track performance.',
@@ -41,39 +64,36 @@ export function FeaturesSection() {
   return (
     <section className="bg-white dark:bg-slate-950">
       <div className="container mx-auto px-4 py-16 md:py-24">
-        <h2 className="text-2xl md:text-3xl font-semibold text-center text-slate-800 dark:text-slate-100 mb-12">
+        <h2 className="mb-12 text-center text-2xl font-semibold text-slate-800 dark:text-slate-100 md:text-3xl">
           Built for the demands of physical retail
         </h2>
 
-        <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+        <ul className="mx-auto grid max-w-5xl gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {features.map((feature) => (
-            <div
+            <li
               key={feature.title}
-              className="relative bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden"
+              className="rounded-lg border border-slate-200 bg-white p-6 dark:border-slate-700 dark:bg-slate-800"
             >
-              {/* Screenshot placeholder */}
-              <div className="w-full aspect-[16/10] bg-slate-100 dark:bg-slate-700 flex items-center justify-center relative">
-                <span className="text-xs text-slate-400 dark:text-slate-500">
-                  Screenshot
-                </span>
+              <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-rose-50 dark:bg-rose-950/30">
+                <feature.icon
+                  aria-hidden="true"
+                  className="h-5 w-5 text-wcpos-red"
+                />
+              </div>
+              <h3 className="mb-1.5 flex items-center gap-2 text-base font-semibold text-slate-800 dark:text-slate-100">
+                {feature.title}
                 {feature.pro && (
-                  <span className="absolute top-3 right-3 text-[10px] font-semibold bg-amber-100 text-amber-800 dark:bg-amber-900/50 dark:text-amber-300 px-2 py-0.5 rounded-full">
+                  <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-semibold text-amber-800 dark:bg-amber-900/50 dark:text-amber-300">
                     Pro
                   </span>
                 )}
-              </div>
-
-              <div className="p-5">
-                <h3 className="text-base font-semibold text-slate-800 dark:text-slate-100 mb-1.5">
-                  {feature.title}
-                </h3>
-                <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
-                  {feature.description}
-                </p>
-              </div>
-            </div>
+              </h3>
+              <p className="text-sm leading-relaxed text-slate-600 dark:text-slate-400">
+                {feature.description}
+              </p>
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
     </section>
   )

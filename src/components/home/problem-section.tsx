@@ -36,7 +36,10 @@ export function ProblemSection() {
               key={problem.label}
               className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-6"
             >
-              <problem.icon className="w-10 h-10 text-slate-500 dark:text-slate-400 mb-4" />
+              <problem.icon
+                aria-hidden="true"
+                className="w-10 h-10 text-slate-500 dark:text-slate-400 mb-4"
+              />
               <h3 className="text-base font-semibold text-slate-800 dark:text-slate-100 mb-2">
                 {problem.label}
               </h3>
