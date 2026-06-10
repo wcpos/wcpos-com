@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
-import { DownloadsClient } from './downloads-client'
+import { DownloadsClient, type DownloadAccess } from './downloads-client'
 
 vi.mock('next-intl', () => ({
   useLocale: () => 'en-US',
@@ -29,20 +29,31 @@ function makeReleaseList(count: number) {
   )
 }
 
+function makeAccess(overrides: Partial<DownloadAccess> = {}): DownloadAccess {
+  return {
+    hasActiveLicense: true,
+    latestExpiry: null,
+    licenseCount: 1,
+    ...overrides,
+  }
+}
+
 describe('DownloadsClient', () => {
   beforeEach(() => {
     vi.clearAllMocks()
   })
 
   it('shows empty state when no releases are available', () => {
-    render(<DownloadsClient initialReleases={[]} />)
+    render(<DownloadsClient initialReleases={[]} access={makeAccess()} />)
     expect(
       screen.getByText('No downloadable versions were found.')
     ).toBeInTheDocument()
   })
 
   it('renders release notes for each version', () => {
-    render(<DownloadsClient initialReleases={[makeRelease()]} />)
+    render(
+      <DownloadsClient initialReleases={[makeRelease()]} access={makeAccess()} />
+    )
     expect(screen.getByText('WCPOS Pro 1.9.0')).toBeInTheDocument()
     expect(screen.getByText('Bug fixes')).toBeInTheDocument()
   })
@@ -55,6 +66,7 @@ describe('DownloadsClient', () => {
             releaseNotes: '# Highlights\n- Faster checkout\n- Better syncing',
           }),
         ]}
+        access={makeAccess()}
       />
     )
 
@@ -65,7 +77,12 @@ describe('DownloadsClient', () => {
   })
 
   it('paginates long release lists', () => {
-    render(<DownloadsClient initialReleases={makeReleaseList(13)} />)
+    render(
+      <DownloadsClient
+        initialReleases={makeReleaseList(13)}
+        access={makeAccess()}
+      />
+    )
 
     expect(screen.getByText('WCPOS Pro 1.9.0')).toBeInTheDocument()
     expect(screen.queryByText('WCPOS Pro 1.9.10')).not.toBeInTheDocument()
@@ -77,30 +94,94 @@ describe('DownloadsClient', () => {
 
   it('clamps to a valid page when release count shrinks', () => {
     const { rerender } = render(
-      <DownloadsClient initialReleases={makeReleaseList(13)} />
+      <DownloadsClient
+        initialReleases={makeReleaseList(13)}
+        access={makeAccess()}
+      />
     )
 
     fireEvent.click(screen.getByRole('button', { name: 'Next page' }))
     expect(screen.getByText('WCPOS Pro 1.9.10')).toBeInTheDocument()
 
-    rerender(<DownloadsClient initialReleases={makeReleaseList(5)} />)
+    rerender(
+      <DownloadsClient
+        initialReleases={makeReleaseList(5)}
+        access={makeAccess()}
+      />
+    )
 
     expect(screen.getByText('WCPOS Pro 1.9.0')).toBeInTheDocument()
     expect(screen.queryByText('WCPOS Pro 1.9.10')).not.toBeInTheDocument()
   })
 
-  it('disables downloads for unavailable versions', () => {
+  it('greys out unavailable versions with a reason and disabled button', () => {
     render(
       <DownloadsClient
         initialReleases={[makeRelease({ version: '1.8.0', allowed: false })]}
+        access={makeAccess({
+          hasActiveLicense: false,
+          latestExpiry: '2026-01-01T00:00:00Z',
+        })}
       />
     )
 
-    expect(screen.getByRole('button', { name: 'Download' })).toBeDisabled()
+    expect(screen.getByRole('button', { name: 'Unavailable' })).toBeDisabled()
+    expect(
+      screen.getByText('Released after your license expired.')
+    ).toBeInTheDocument()
+  })
+
+  it('shows a renew banner when all licenses are expired', () => {
+    render(
+      <DownloadsClient
+        initialReleases={[makeRelease()]}
+        access={makeAccess({
+          hasActiveLicense: false,
+          latestExpiry: '2026-01-01T00:00:00Z',
+        })}
+      />
+    )
+
+    expect(
+      screen.getByText(/Your license expired on .*2026/)
+    ).toBeInTheDocument()
+    const renewLink = screen.getByRole('link', { name: 'Renew license' })
+    expect(renewLink).toHaveAttribute('href', '/pro')
+  })
+
+  it('shows a purchase banner when the customer has no licenses', () => {
+    render(
+      <DownloadsClient
+        initialReleases={[makeRelease({ allowed: false })]}
+        access={makeAccess({ hasActiveLicense: false, licenseCount: 0 })}
+      />
+    )
+
+    expect(
+      screen.getByText('A WCPOS Pro license is required to download the plugin.')
+    ).toBeInTheDocument()
+    const buyLink = screen.getByRole('link', { name: 'Get WCPOS Pro' })
+    expect(buyLink).toHaveAttribute('href', '/pro')
+    expect(
+      screen.getByText('Requires an active license.')
+    ).toBeInTheDocument()
+  })
+
+  it('shows no banner for customers with an active license', () => {
+    render(
+      <DownloadsClient initialReleases={[makeRelease()]} access={makeAccess()} />
+    )
+
+    expect(screen.queryByRole('link', { name: /renew/i })).not.toBeInTheDocument()
+    expect(
+      screen.queryByRole('link', { name: 'Get WCPOS Pro' })
+    ).not.toBeInTheDocument()
   })
 
   it('does not fetch releases on initial render', () => {
-    render(<DownloadsClient initialReleases={[makeRelease()]} />)
+    render(
+      <DownloadsClient initialReleases={[makeRelease()]} access={makeAccess()} />
+    )
     expect(mockFetch).not.toHaveBeenCalled()
   })
 
@@ -112,7 +193,9 @@ describe('DownloadsClient', () => {
       }),
     })
 
-    render(<DownloadsClient initialReleases={[makeRelease()]} />)
+    render(
+      <DownloadsClient initialReleases={[makeRelease()]} access={makeAccess()} />
+    )
 
     fireEvent.click(screen.getByRole('button', { name: 'Download' }))
 
