@@ -76,6 +76,18 @@ export function DownloadsClient({
   const inactiveFallback =
     inactiveAccess && !expiredAccess && !suspendedAccess && !unknownAccess
 
+  const getUnavailableReason = () => {
+    if (expiredAccess) {
+      return t('reasonExpired')
+    }
+
+    if (unknownAccess) {
+      return t('reasonUnknown')
+    }
+
+    return t('reasonInactive')
+  }
+
   const startDownload = async (version: string) => {
     setDownloadingVersion(version)
     setError(null)
@@ -186,11 +198,7 @@ export function DownloadsClient({
                     </p>
                     {!release.allowed && (
                       <p className="mt-1 text-xs text-amber-700">
-                        {expiredAccess
-                          ? t('reasonExpired')
-                          : unknownAccess
-                            ? t('reasonUnknown')
-                            : t('reasonInactive')}
+                        {getUnavailableReason()}
                       </p>
                     )}
                     {release.releaseNotes?.trim() ? (
