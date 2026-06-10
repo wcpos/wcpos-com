@@ -11,6 +11,9 @@ const marketingRoutes = [
   { path: '/pro', changeFrequency: 'weekly', priority: 0.8 },
   { path: '/roadmap', changeFrequency: 'monthly', priority: 0.5 },
   { path: '/support', changeFrequency: 'monthly', priority: 0.5 },
+  { path: '/privacy', changeFrequency: 'yearly', priority: 0.3 },
+  { path: '/terms', changeFrequency: 'yearly', priority: 0.3 },
+  { path: '/refunds', changeFrequency: 'yearly', priority: 0.3 },
 ] as const
 
 export default function sitemap(): MetadataRoute.Sitemap {
