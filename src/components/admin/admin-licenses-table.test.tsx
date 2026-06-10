@@ -1,18 +1,17 @@
 import { describe, it, expect } from 'vitest'
 import { render, screen, fireEvent } from '@testing-library/react'
-import {
-  AdminLicensesTable,
-  type AdminLicenseRow,
-} from './admin-licenses-table'
+import { AdminLicensesTable } from './admin-licenses-table'
+import type { AdminLicenseRow } from '@/types/license'
 
+// Rows arrive pre-masked from the server (toAdminLicenseRow); the raw key
+// is never part of the client row shape.
 function makeRow(overrides: Partial<AdminLicenseRow> = {}): AdminLicenseRow {
   return {
     id: 'lic-1',
-    key: 'ABCD-EFGH-IJKL-MNOP',
+    maskedKey: '****-****-MNOP',
     status: 'ACTIVE',
     expiry: '2099-01-01T00:00:00Z',
     maxMachines: 2,
-    metadata: {},
     policyId: '261cb7e2-6e80-476e-98bd-fe7f406f258d',
     createdAt: '2026-01-01T00:00:00Z',
     machines: [
@@ -20,7 +19,6 @@ function makeRow(overrides: Partial<AdminLicenseRow> = {}): AdminLicenseRow {
         id: 'machine-1',
         fingerprint: 'fp-abc123',
         name: 'shop.example.com',
-        metadata: {},
         createdAt: '2026-02-01T00:00:00Z',
       },
     ],
@@ -41,8 +39,6 @@ describe('AdminLicensesTable', () => {
     expect(screen.getByText('active')).toBeInTheDocument()
     expect(screen.getByText('1 of 2')).toBeInTheDocument()
     expect(screen.getByText('Yearly')).toBeInTheDocument()
-    // Full key never appears in the DOM
-    expect(screen.queryByText('ABCD-EFGH-IJKL-MNOP')).not.toBeInTheDocument()
   })
 
   it('displays active-past-expiry licenses as expired', () => {

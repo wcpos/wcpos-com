@@ -2,10 +2,9 @@ import { setRequestLocale } from 'next-intl/server'
 import Link from 'next/link'
 import { requireAdmin } from '@/lib/admin-auth'
 import { licenseClient } from '@/services/core/external/license-client'
-import {
-  AdminLicensesTable,
-  type AdminLicenseRow,
-} from '@/components/admin/admin-licenses-table'
+import { toAdminLicenseRow } from '@/lib/license-display'
+import { AdminLicensesTable } from '@/components/admin/admin-licenses-table'
+import type { AdminLicenseRow } from '@/types/license'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 
@@ -32,10 +31,12 @@ async function fetchLicensesPage(page: number): Promise<
       )
     )
 
-    const rows: AdminLicenseRow[] = result.items.map((license, index) => ({
-      ...license,
-      machines: machines[index],
-    }))
+    // Project onto the client-safe row shape BEFORE crossing the client
+    // component boundary: masks the license key and drops metadata so raw
+    // activation credentials are never serialized into the RSC payload.
+    const rows: AdminLicenseRow[] = result.items.map((license, index) =>
+      toAdminLicenseRow(license, machines[index])
+    )
 
     return { ok: true, rows, hasNextPage: result.hasNextPage }
   } catch {

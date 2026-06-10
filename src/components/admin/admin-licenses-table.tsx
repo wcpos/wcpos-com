@@ -14,18 +14,14 @@ import {
   getLicenseDisplayStatus,
   getPolicyPlanName,
   getStatusColorClasses,
-  maskLicenseKey,
 } from '@/lib/license-display'
 import { formatDateForLocale } from '@/lib/date-format'
-import type { LicenseDetail, LicenseMachine } from '@/types/license'
+import type {
+  AdminLicenseMachineRow,
+  AdminLicenseRow,
+} from '@/types/license'
 
-/**
- * License row for the admin browser. Machines are pre-fetched server-side;
- * null means the machines lookup failed for that license.
- */
-export type AdminLicenseRow = Omit<LicenseDetail, 'machines'> & {
-  machines: LicenseMachine[] | null
-}
+export type { AdminLicenseRow }
 
 interface AdminLicensesTableProps {
   licenses: AdminLicenseRow[]
@@ -109,9 +105,7 @@ function LicenseRows({
           )}
         </TableCell>
         <TableCell>
-          <code className="font-mono text-xs">
-            {maskLicenseKey(license.key)}
-          </code>
+          <code className="font-mono text-xs">{license.maskedKey}</code>
         </TableCell>
         <TableCell>
           <span
@@ -144,7 +138,11 @@ function LicenseRows({
   )
 }
 
-function MachinesDetail({ machines }: { machines: LicenseMachine[] | null }) {
+function MachinesDetail({
+  machines,
+}: {
+  machines: AdminLicenseMachineRow[] | null
+}) {
   if (machines === null) {
     return (
       <p className="text-sm text-destructive">
