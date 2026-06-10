@@ -1,13 +1,15 @@
 import { setRequestLocale } from 'next-intl/server'
 import { Suspense } from 'react'
-import { getAllCustomerOrders, getCustomer, getCustomerOrders } from '@/lib/medusa-auth'
-import { extractLicenseReferencesFromOrders } from '@/lib/licenses'
+import { getCustomer, getCustomerOrders } from '@/lib/medusa-auth'
+import { getResolvedCustomerLicenses } from '@/lib/customer-licenses'
+import { getExpiringSoonExpiry } from '@/lib/license-display'
 import { formatOrderAmount } from '@/lib/order-display'
 import { getOrderDisplayStatus } from '@/lib/order-status'
 import { formatDateForLocale } from '@/lib/date-format'
 import { Link } from '@/i18n/navigation'
 import { redirectToLoginClearingSession } from '@/lib/login-redirect'
 import { ShoppingBag, Key } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import type { Metadata } from 'next'
 
@@ -17,23 +19,45 @@ export const metadata: Metadata = {
 }
 
 async function AccountOverviewContent({ locale }: { locale: string }) {
-  const [customer, orders, allOrders] = await Promise.all([
+  // Resolving licenses (one Keygen resolution pass, shared with the licenses
+  // page) lets the overview warn about imminent expiry, and keeps the license
+  // count consistent with what /account/licenses actually lists.
+  const [customer, orders, { licenses }] = await Promise.all([
     getCustomer(),
     getCustomerOrders(5),
-    getAllCustomerOrders(),
+    getResolvedCustomerLicenses(),
   ])
 
   if (!customer) {
     redirectToLoginClearingSession(locale)
   }
 
-  const licenseCount = extractLicenseReferencesFromOrders(allOrders).length
+  const licenseCount = licenses.length
+  // Yearly licenses renew by manual re-purchase (no auto-billing), so warn
+  // before update access lapses.
+  const expiringSoonExpiry = getExpiringSoonExpiry(
+    licenses,
+    new Date().getTime()
+  )
 
   return (
     <>
       <h1 className="text-2xl font-bold">
         Welcome{customer?.first_name ? `, ${customer.first_name}` : ''}
       </h1>
+
+      {expiringSoonExpiry && (
+        <div className="flex flex-wrap items-center justify-between gap-3 rounded-md border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900">
+          <p>
+            Your license expires on{' '}
+            {formatDateForLocale(expiringSoonExpiry, locale)} &mdash; renew to
+            keep receiving updates.
+          </p>
+          <Button asChild size="sm">
+            <Link href="/pro">Renew license</Link>
+          </Button>
+        </div>
+      )}
 
       <div className="grid gap-4 md:grid-cols-2">
         <Card>

@@ -47,7 +47,9 @@ async function DownloadsContent({ locale }: { locale: string }) {
   }))
 
   // Mirrors the entitlement rules in isReleaseAllowedForLicenses so the UI
-  // can explain WHY a release is unavailable (expired vs. no license).
+  // can explain WHY a release is unavailable (expired vs. suspended vs.
+  // unverifiable vs. no license). Unknown/suspended licenses never grant
+  // access; the extra fields below are messaging-only.
   const hasActiveLicense = licenses.some((license) => {
     if (license.status.toLowerCase() !== 'active') return false
     if (!license.expiry) return true
@@ -62,11 +64,30 @@ async function DownloadsContent({ locale }: { locale: string }) {
     expiryTimes.length > 0
       ? new Date(Math.max(...expiryTimes)).toISOString()
       : null
+  // The banner may only claim "expired" once an expiry has actually passed;
+  // e.g. a suspended license can carry a future expiry.
+  const expiryHasPassed =
+    expiryTimes.length > 0 && Math.max(...expiryTimes) < now.getTime()
+  const statuses = licenses.map((license) => license.status.toLowerCase())
+  const suspendedCount = statuses.filter(
+    (status) => status === 'suspended'
+  ).length
+  // 'unknown' = placeholder from buildLicensePlaceholder (Keygen unreachable
+  // or an unresolvable legacy key); the license may be fine, we just can't
+  // verify it right now.
+  const unknownCount = statuses.filter((status) => status === 'unknown').length
 
   return (
     <DownloadsClient
       initialReleases={mappedReleases}
-      access={{ hasActiveLicense, latestExpiry, licenseCount: licenses.length }}
+      access={{
+        hasActiveLicense,
+        latestExpiry,
+        expiryHasPassed,
+        licenseCount: licenses.length,
+        suspendedCount,
+        unknownCount,
+      }}
     />
   )
 }

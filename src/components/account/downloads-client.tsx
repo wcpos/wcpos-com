@@ -20,7 +20,16 @@ interface DownloadRelease {
 export interface DownloadAccess {
   hasActiveLicense: boolean
   latestExpiry: string | null
+  /**
+   * True only when latestExpiry is in the past. The UI may only claim a
+   * license "expired" when this is set — a suspended license can carry a
+   * future expiry.
+   */
+  expiryHasPassed: boolean
   licenseCount: number
+  suspendedCount: number
+  /** Licenses we could not verify (Keygen unreachable or legacy key). */
+  unknownCount: number
 }
 
 interface DownloadsClientProps {
@@ -50,8 +59,21 @@ export function DownloadsClient({
     safePage * RELEASES_PER_PAGE
   )
 
-  const expiredAccess = !access.hasActiveLicense && access.licenseCount > 0
   const noLicense = access.licenseCount === 0
+  const inactiveAccess = !access.hasActiveLicense && access.licenseCount > 0
+  // One banner per state, in order of how definitive the diagnosis is:
+  // a passed expiry is a fact; suspension and unverifiability are status-based.
+  const expiredAccess =
+    inactiveAccess && access.expiryHasPassed && access.latestExpiry !== null
+  const suspendedAccess =
+    inactiveAccess && !expiredAccess && access.suspendedCount > 0
+  const unknownAccess =
+    inactiveAccess &&
+    !expiredAccess &&
+    !suspendedAccess &&
+    access.unknownCount > 0
+  const inactiveFallback =
+    inactiveAccess && !expiredAccess && !suspendedAccess && !unknownAccess
 
   const startDownload = async (version: string) => {
     setDownloadingVersion(version)
@@ -92,15 +114,46 @@ export function DownloadsClient({
         </div>
       )}
 
-      {expiredAccess && (
+      {expiredAccess && access.latestExpiry && (
         <div className="flex flex-wrap items-center justify-between gap-3 rounded-md border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900">
           <p>
-            {access.latestExpiry
-              ? `Your license expired on ${formatDateForLocale(
-                  access.latestExpiry,
-                  locale
-                )}. You can still download versions released before then.`
-              : 'You have no active license. Only versions released during your license term are available.'}
+            {`Your license expired on ${formatDateForLocale(
+              access.latestExpiry,
+              locale
+            )}. You can still download versions released before then.`}
+          </p>
+          <Button asChild size="sm">
+            <Link href="/pro">Renew license</Link>
+          </Button>
+        </div>
+      )}
+
+      {suspendedAccess && (
+        <div className="flex flex-wrap items-center justify-between gap-3 rounded-md border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900">
+          <p>Your license is suspended &mdash; contact support.</p>
+          <Button asChild size="sm" variant="outline">
+            <Link href="/support">Contact support</Link>
+          </Button>
+        </div>
+      )}
+
+      {unknownAccess && (
+        <div className="flex flex-wrap items-center justify-between gap-3 rounded-md border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900">
+          <p>
+            We couldn&apos;t verify your license &mdash; downloads may be
+            temporarily limited. Try again shortly or contact support.
+          </p>
+          <Button asChild size="sm" variant="outline">
+            <Link href="/support">Contact support</Link>
+          </Button>
+        </div>
+      )}
+
+      {inactiveFallback && (
+        <div className="flex flex-wrap items-center justify-between gap-3 rounded-md border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900">
+          <p>
+            You have no active license. Only versions released during your
+            license term are available.
           </p>
           <Button asChild size="sm">
             <Link href="/pro">Renew license</Link>
@@ -143,9 +196,11 @@ export function DownloadsClient({
                     </p>
                     {!release.allowed && (
                       <p className="mt-1 text-xs text-amber-700">
-                        {expiredAccess && access.latestExpiry
+                        {expiredAccess
                           ? 'Released after your license expired.'
-                          : 'Requires an active license.'}
+                          : unknownAccess
+                            ? "We couldn't verify your license."
+                            : 'Requires an active license.'}
                       </p>
                     )}
                     {release.releaseNotes?.trim() ? (
