@@ -366,6 +366,40 @@
       ]
     }
   ],
+  "electronLatestRelease": {
+    "tag_name": "v1.8.2",
+    "name": "WCPOS Desktop 1.8.2",
+    "body": "Latest desktop release.",
+    "published_at": "2026-01-05T18:40:35.000Z",
+    "draft": false,
+    "prerelease": false,
+    "assets": [
+      {
+        "name": "WooCommerce-POS-arm64-1.8.2.dmg",
+        "size": 118000000,
+        "url": "https://api.github.com/repos/wcpos/electron/releases/assets/1821",
+        "browser_download_url": "https://api.github.com/e2e-assets/WooCommerce-POS-arm64-1.8.2.dmg"
+      },
+      {
+        "name": "WooCommerce-POS-x64-1.8.2.dmg",
+        "size": 120000000,
+        "url": "https://api.github.com/repos/wcpos/electron/releases/assets/1822",
+        "browser_download_url": "https://api.github.com/e2e-assets/WooCommerce-POS-x64-1.8.2.dmg"
+      },
+      {
+        "name": "WooCommerce-POS-Setup-1.8.2.exe",
+        "size": 130000000,
+        "url": "https://api.github.com/repos/wcpos/electron/releases/assets/1823",
+        "browser_download_url": "https://api.github.com/e2e-assets/WooCommerce-POS-Setup-1.8.2.exe"
+      },
+      {
+        "name": "WooCommerce-POS-1.8.2.AppImage",
+        "size": 140000000,
+        "url": "https://api.github.com/repos/wcpos/electron/releases/assets/1824",
+        "browser_download_url": "https://api.github.com/e2e-assets/WooCommerce-POS-1.8.2.AppImage"
+      }
+    ]
+  },
   "products": [
     {
       "id": "prod_e2e_yearly",

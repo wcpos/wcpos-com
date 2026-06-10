@@ -303,9 +303,16 @@ const server = createServer(async (req, res) => {
     return sendJson(res, 200, fixtures.releases)
   }
 
+  // Fetched by /api/desktop-releases (prerendered at build time), so this is
+  // hit during `pnpm build` and on cache revalidation, not just by specs.
+  if (pathname === '/repos/wcpos/electron/releases/latest' && method === 'GET') {
+    return sendJson(res, 200, fixtures.electronLatestRelease)
+  }
+
   if (
     method === 'GET' &&
     (pathname.startsWith('/repos/wcpos/woocommerce-pos-pro/releases/assets/') ||
+      pathname.startsWith('/repos/wcpos/electron/releases/assets/') ||
       pathname.startsWith('/e2e-assets/'))
   ) {
     res.writeHead(200, {
