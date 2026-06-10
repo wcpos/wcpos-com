@@ -50,6 +50,11 @@ _Avoid_: seat, device slot
 
 ### Commerce
 
+**Money-back guarantee**:
+A 14-day, any-reason refund window on every purchase, worldwide. A
+granted refund revokes the license.
+_Avoid_: trial, return window
+
 **Customer**:
 The person who buys and holds licenses, authenticated via the Medusa
 session. There are no separate "users" or roles on this site.
