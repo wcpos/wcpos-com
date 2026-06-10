@@ -5,6 +5,7 @@ import { getMessages, setRequestLocale } from 'next-intl/server'
 import { ThemeProvider } from 'next-themes'
 import { locales } from '@/i18n/config'
 import { ClientLoggingInit } from '@/components/client-logging-init'
+import { ConsentBanner } from '@/components/consent/consent-banner'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -87,6 +88,7 @@ export default async function LocaleLayout({
         >
           <NextIntlClientProvider messages={messages}>
             {children}
+            <ConsentBanner />
           </NextIntlClientProvider>
         </ThemeProvider>
       </body>

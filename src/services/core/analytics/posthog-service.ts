@@ -1,5 +1,10 @@
 import 'server-only'
+import { cookies } from 'next/headers'
 import { getAnalyticsConfig } from '@/lib/analytics/config'
+import {
+  ANALYTICS_CONSENT_COOKIE,
+  hasAnalyticsConsent,
+} from '@/lib/analytics/consent'
 
 export type ProCheckoutVariant = 'control' | 'value_copy'
 
@@ -15,6 +20,20 @@ type ResolveProCheckoutVariantOptions = {
 const DEFAULT_TIMEOUT_MS = 150
 const TRACK_TIMEOUT_MS = 1500
 const PRO_CHECKOUT_EXPERIMENT = 'pro_checkout_v1'
+
+/**
+ * GDPR gate for server-side analytics. Reads the consent cookie from the
+ * current request scope; fails closed (no consent) when called outside a
+ * request or when the visitor has not explicitly granted consent.
+ */
+async function hasRequestAnalyticsConsent(): Promise<boolean> {
+  try {
+    const cookieStore = await cookies()
+    return hasAnalyticsConsent(cookieStore.get(ANALYTICS_CONSENT_COOKIE)?.value)
+  } catch {
+    return false
+  }
+}
 
 function normalizeVariant(value: VariantEvaluationResult): ProCheckoutVariant {
   if (value === 'value_copy') {
@@ -78,6 +97,12 @@ export async function resolveProCheckoutVariant({
     return 'control'
   }
 
+  // GDPR: without explicit consent visitors are not bucketed into
+  // experiments — they always get the default (control) variant.
+  if (!(await hasRequestAnalyticsConsent())) {
+    return 'control'
+  }
+
   if (!evaluate) {
     return normalizeVariant(
       await evaluateProCheckoutVariantFromPostHog(distinctId, timeoutMs)
@@ -113,6 +138,11 @@ export async function trackServerEvent(
   eventName: string,
   properties: Record<string, unknown>
 ): Promise<void> {
+  // GDPR: no server-side capture without explicit analytics consent.
+  if (!(await hasRequestAnalyticsConsent())) {
+    return
+  }
+
   const analyticsConfig = getAnalyticsConfig(process.env)
   const captureKey = analyticsConfig.serverKey ?? analyticsConfig.key
 

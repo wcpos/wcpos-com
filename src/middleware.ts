@@ -7,6 +7,10 @@ import {
   getDistinctIdCookieOptions,
   newDistinctId,
 } from '@/lib/analytics/distinct-id'
+import {
+  ANALYTICS_CONSENT_COOKIE,
+  parseAnalyticsConsent,
+} from '@/lib/analytics/consent'
 
 const COOKIE_NAME = 'medusa-token'
 const UPDATES_HOSTNAME = 'updates.wcpos.com'
@@ -14,8 +18,31 @@ const MAIN_SITE_ORIGIN = 'https://wcpos.com'
 
 const intlMiddleware = createIntlMiddleware(routing)
 
+/**
+ * Sets the analytics distinct-id cookie only when the visitor has granted
+ * analytics consent (GDPR):
+ *
+ * - consent granted -> set a distinct-id cookie if one is missing
+ * - consent denied  -> remove any existing distinct-id cookie
+ * - no decision yet -> do nothing (existing cookies are not refreshed)
+ */
 function withDistinctIdCookie(request: NextRequest, response: NextResponse) {
+  const consent = parseAnalyticsConsent(
+    request.cookies.get(ANALYTICS_CONSENT_COOKIE)?.value
+  )
   const existingDistinctId = request.cookies.get(ANALYTICS_DISTINCT_ID_COOKIE)?.value
+
+  if (consent === 'denied') {
+    if (existingDistinctId) {
+      response.cookies.delete(ANALYTICS_DISTINCT_ID_COOKIE)
+    }
+    return response
+  }
+
+  if (consent !== 'granted') {
+    return response
+  }
+
   if (existingDistinctId) {
     return response
   }
