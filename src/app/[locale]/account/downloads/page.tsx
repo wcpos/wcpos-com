@@ -48,8 +48,9 @@ async function DownloadsContent({ locale }: { locale: string }) {
 
   // Mirrors the entitlement rules in isReleaseAllowedForLicenses so the UI
   // can explain WHY a release is unavailable (expired vs. suspended vs.
-  // unverifiable vs. no license). Unknown/suspended licenses never grant
-  // access; the extra fields below are messaging-only.
+  // unverifiable vs. no license). Note: a suspended license's expiry still
+  // counts toward pre-expiry access (getLatestExpiry ignores status), and
+  // unknown licenses grant nothing; the extra fields below are messaging-only.
   const hasActiveLicense = licenses.some((license) => {
     if (license.status.toLowerCase() !== 'active') return false
     if (!license.expiry) return true
