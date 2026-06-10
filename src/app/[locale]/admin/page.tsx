@@ -1,3 +1,4 @@
+import { Suspense } from 'react'
 import { setRequestLocale } from 'next-intl/server'
 import { requireAdmin } from '@/lib/admin-auth'
 import { getLicenseStats } from '@/services/core/business/admin-stats'
@@ -138,6 +139,17 @@ async function LatestReleaseSection() {
   )
 }
 
+async function AdminDashboardContent() {
+  await requireAdmin()
+
+  return (
+    <>
+      <LicenseStatsSection />
+      <LatestReleaseSection />
+    </>
+  )
+}
+
 export default async function AdminDashboardPage({
   params,
 }: {
@@ -145,13 +157,13 @@ export default async function AdminDashboardPage({
 }) {
   const { locale } = await params
   setRequestLocale(locale)
-  await requireAdmin()
 
   return (
     <div className="space-y-6">
       <h1 className="text-2xl font-bold">Dashboard</h1>
-      <LicenseStatsSection />
-      <LatestReleaseSection />
+      <Suspense fallback={null}>
+        <AdminDashboardContent />
+      </Suspense>
     </div>
   )
 }

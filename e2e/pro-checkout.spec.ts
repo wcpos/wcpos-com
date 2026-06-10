@@ -1,199 +1,250 @@
 import { test, expect } from '@playwright/test'
+import type { BrowserContext, Page } from '@playwright/test'
 
-// Mock data matching what the API routes return
-const mockCart = {
-  id: 'cart_mock_123',
-  email: null,
-  items: [
-    {
-      id: 'item_1',
-      title: 'WCPOS Pro Yearly',
-      quantity: 1,
-      unit_price: 129,
-      total: 129,
-    },
-  ],
-  total: 129,
-  currency_code: 'usd',
-}
+/**
+ * Checkout flow e2e specs (fully mocked — no external services, no real
+ * credentials).
+ *
+ * The Next.js server runs with e2e/mocks/fetch-intercept.cjs preloaded, so
+ * server-side calls to Medusa (customers, products, carts, payment
+ * collections) are served by e2e/mocks/server.mjs. Specs authenticate by
+ * setting the `medusa-token` cookie to a persona key (see e2e/mocks/
+ * fixtures.json); the app forwards the cookie value verbatim as a Bearer
+ * token. Carts are minted per POST with unique ids by the mock, so parallel
+ * workers/projects/retries never share cart state.
+ *
+ * Scope: everything up to and including the checkout page rendering with an
+ * order summary and the payment area, plus navigation paths. Stripe Elements
+ * cannot run against a mock backend (and NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+ * is not set for the mocked build, so no provider tab renders here). Card
+ * entry and payment confirmation are covered by
+ * e2e/pro-checkout-integration.spec.ts (@integration — real backends and
+ * real Stripe test keys).
+ */
 
-const mockPaymentResult = {
-  cart: mockCart,
-  paymentCollectionId: 'pay_col_mock_123',
-  clientSecret: 'pi_mock_secret_123_secret_mock',
-  paymentSessionId: 'payses_mock_123',
-}
+// Persona without licenses — semantically, a customer about to buy.
+const CHECKOUT_PERSONA = 'e2e-none'
+const CHECKOUT_PERSONA_EMAIL = 'nolicense@example.com'
 
-async function authenticateCheckout(page: import('@playwright/test').Page) {
-  const email = process.env.E2E_TEST_EMAIL
-  const password = process.env.E2E_TEST_PASSWORD
-  if (!email || !password) {
-    return false
-  }
+// variant_e2e_yearly is WCPOS Pro Yearly ($129.00) in e2e/mocks/fixtures.json.
+const YEARLY_CHECKOUT_PATH =
+  '/pro/checkout?variant=variant_e2e_yearly&product=wcpos-pro-yearly'
+const MOCK_BACKEND_URL = `http://127.0.0.1:${Number(
+  process.env.E2E_MOCK_PORT || 4873
+)}`
 
-  const response = await page.request.post('/api/auth/login', {
-    data: { email, password },
-  })
-  if (!response.ok()) {
-    return false
-  }
-
-  const setCookieHeader = response.headers()['set-cookie']
-  const tokenMatch = setCookieHeader?.match(/medusa-token=([^;]+)/)
-  if (!tokenMatch?.[1]) {
-    return false
-  }
-
-  await page.context().addCookies([
+async function signInAs(
+  context: BrowserContext,
+  baseURL: string | undefined,
+  token: string
+) {
+  await context.addCookies([
     {
       name: 'medusa-token',
-      value: decodeURIComponent(tokenMatch[1]),
-      url: 'http://localhost:3000',
+      value: token,
+      url: baseURL ?? 'http://localhost:3000',
     },
   ])
-
-  return true
 }
 
-async function setupCheckoutMocks(page: import('@playwright/test').Page) {
-  // Mock cart creation
-  await page.route('**/api/store/cart', async (route) => {
-    if (route.request().method() === 'POST') {
-      await route.fulfill({
-        status: 200,
-        contentType: 'application/json',
-        body: JSON.stringify({ cart: mockCart }),
-      })
-    } else if (route.request().method() === 'PATCH') {
-      await route.fulfill({
-        status: 200,
-        contentType: 'application/json',
-        body: JSON.stringify({ cart: { ...mockCart, email: 'test@example.com' } }),
-      })
-    } else {
-      await route.continue()
+async function openYearlyCheckout(page: Page) {
+  await page.goto(YEARLY_CHECKOUT_PATH)
+  await expect(page.getByText('Order Summary')).toBeVisible({ timeout: 15000 })
+}
+
+test.describe('Checkout auth gating', () => {
+  test('redirects unauthenticated users to login with redirect param', async ({
+    page,
+  }) => {
+    await page.goto(YEARLY_CHECKOUT_PATH)
+
+    const encoded = encodeURIComponent(YEARLY_CHECKOUT_PATH).replace(
+      /[.*+?^${}()|[\]\\]/g,
+      '\\$&'
+    )
+    await expect(page).toHaveURL(new RegExp(`/login\\?redirect=${encoded}`))
+  })
+
+  test('cart APIs reject unauthenticated requests', async ({ request }) => {
+    const cart = await request.post('/api/store/cart', { data: {} })
+    expect(cart.status()).toBe(401)
+
+    const lineItems = await request.post('/api/store/cart/line-items', {
+      data: { cartId: 'cart_x', variant_id: 'variant_e2e_yearly' },
+    })
+    expect(lineItems.status()).toBe(401)
+
+    const paymentSessions = await request.post(
+      '/api/store/cart/payment-sessions',
+      { data: { cartId: 'cart_x' } }
+    )
+    expect(paymentSessions.status()).toBe(401)
+  })
+})
+
+test.describe('Mock checkout backend', () => {
+  test('rejects invalid line-item quantities without mutating the cart', async ({
+    request,
+  }) => {
+    const cartResponse = await request.post(`${MOCK_BACKEND_URL}/store/carts`, {
+      data: {},
+    })
+    expect(cartResponse.status()).toBe(200)
+    const { cart } = await cartResponse.json()
+
+    for (const quantity of ['not-a-number', 0, -1, 1.5]) {
+      const lineItemResponse = await request.post(
+        `${MOCK_BACKEND_URL}/store/carts/${cart.id}/line-items`,
+        {
+          data: { variant_id: 'variant_e2e_yearly', quantity },
+        }
+      )
+      expect(lineItemResponse.status()).toBe(400)
     }
-  })
 
-  // Mock add line item
-  await page.route('**/api/store/cart/line-items', async (route) => {
-    await route.fulfill({
-      status: 200,
-      contentType: 'application/json',
-      body: JSON.stringify({ cart: mockCart }),
-    })
-  })
-
-  // Mock payment sessions
-  await page.route('**/api/store/cart/payment-sessions', async (route) => {
-    await route.fulfill({
-      status: 200,
-      contentType: 'application/json',
-      body: JSON.stringify(mockPaymentResult),
-    })
-  })
-}
-
-test.describe('Checkout Flow', () => {
-  test('redirects unauthenticated users to login', async ({ page }) => {
-    await page.goto('/pro/checkout?variant=variant_mock_123&product=wcpos-pro-yearly')
-
-    await expect(page).toHaveURL(
-      /\/login\?redirect=%2Fpro%2Fcheckout%3Fvariant%3Dvariant_mock_123%26product%3Dwcpos-pro-yearly/
+    const updatedCartResponse = await request.get(
+      `${MOCK_BACKEND_URL}/store/carts/${cart.id}`
     )
+    expect(updatedCartResponse.status()).toBe(200)
+    const { cart: updatedCart } = await updatedCartResponse.json()
+    expect(updatedCart.items).toHaveLength(0)
+    expect(updatedCart.total).toBe(0)
   })
 
-  test('navigates from pro page to checkout', async ({ page }) => {
-    test.skip(
-      !(await authenticateCheckout(page)),
-      'E2E_TEST_EMAIL/E2E_TEST_PASSWORD are required for authenticated checkout tests'
+  test('reuses payment collections per cart without dropping sessions', async ({
+    request,
+  }) => {
+    const cartResponse = await request.post(`${MOCK_BACKEND_URL}/store/carts`, {
+      data: {},
+    })
+    expect(cartResponse.status()).toBe(200)
+    const { cart } = await cartResponse.json()
+
+    const lineItemResponse = await request.post(
+      `${MOCK_BACKEND_URL}/store/carts/${cart.id}/line-items`,
+      {
+        data: { variant_id: 'variant_e2e_yearly', quantity: 1 },
+      }
     )
+    expect(lineItemResponse.status()).toBe(200)
+
+    const paymentCollectionResponse = await request.post(
+      `${MOCK_BACKEND_URL}/store/payment-collections`,
+      { data: { cart_id: cart.id } }
+    )
+    expect(paymentCollectionResponse.status()).toBe(200)
+    const { payment_collection: paymentCollection } =
+      await paymentCollectionResponse.json()
+
+    const sessionResponse = await request.post(
+      `${MOCK_BACKEND_URL}/store/payment-collections/${paymentCollection.id}/payment-sessions`,
+      { data: { provider_id: 'pp_stripe_stripe' } }
+    )
+    expect(sessionResponse.status()).toBe(200)
+    const { payment_collection: collectionWithSession } =
+      await sessionResponse.json()
+    expect(collectionWithSession.payment_sessions).toHaveLength(1)
+
+    const retriedCollectionResponse = await request.post(
+      `${MOCK_BACKEND_URL}/store/payment-collections`,
+      { data: { cart_id: cart.id } }
+    )
+    expect(retriedCollectionResponse.status()).toBe(200)
+    const { payment_collection: retriedCollection } =
+      await retriedCollectionResponse.json()
+    expect(retriedCollection.id).toBe(paymentCollection.id)
+    expect(retriedCollection.payment_sessions).toHaveLength(1)
+  })
+})
+
+test.describe('Checkout flow', () => {
+  test.beforeEach(async ({ context, baseURL }) => {
+    await signInAs(context, baseURL, CHECKOUT_PERSONA)
+  })
+
+  test('navigates from pro page to a rendered checkout', async ({ page }) => {
     await page.goto('/pro')
-    await page.waitForLoadState('networkidle')
 
-    const getStartedLink = page.getByRole('link', { name: /Get (Started|Instant Access)/ }).first()
+    // Yearly is sorted first and featured, so the first CTA is the yearly one.
+    const getStartedLink = page
+      .getByRole('link', { name: /Get (Started|Instant Access)/ })
+      .first()
     await expect(getStartedLink).toBeVisible({ timeout: 10000 })
 
     const href = await getStartedLink.getAttribute('href')
     expect(href).toContain('/pro/checkout')
-    expect(href).toContain('variant=')
+    expect(href).toContain('variant=variant_e2e_yearly')
     expect(href).toContain('exp=pro_checkout_v1')
     expect(href).toContain('exp_variant=')
+
+    await getStartedLink.click()
+    await expect(page).toHaveURL(/\/pro\/checkout\?/)
+    await expect(page.getByText('Order Summary')).toBeVisible({
+      timeout: 15000,
+    })
   })
 
-  test('displays order summary with correct product', async ({ page }) => {
-    test.skip(
-      !(await authenticateCheckout(page)),
-      'E2E_TEST_EMAIL/E2E_TEST_PASSWORD are required for authenticated checkout tests'
-    )
-    await setupCheckoutMocks(page)
-    await page.goto('/pro/checkout?variant=variant_mock_123&product=wcpos-pro-yearly')
+  test('displays order summary with the selected product', async ({ page }) => {
+    await openYearlyCheckout(page)
 
-    await expect(page.getByText('Order Summary')).toBeVisible({ timeout: 10000 })
     await expect(page.getByText('WCPOS Pro Yearly')).toBeVisible()
-    await expect(page.getByText('$129.00').first()).toBeVisible()
+    await expect(page.getByText('Qty: 1')).toBeVisible()
+    // Line item total and the cart total both render $129.00.
+    await expect(page.getByText('$129.00')).toHaveCount(2)
+    await expect(page.getByText('Total', { exact: true })).toBeVisible()
   })
 
-  test('displays email field', async ({ page }) => {
-    test.skip(
-      !(await authenticateCheckout(page)),
-      'E2E_TEST_EMAIL/E2E_TEST_PASSWORD are required for authenticated checkout tests'
-    )
-    await setupCheckoutMocks(page)
-    await page.goto('/pro/checkout?variant=variant_mock_123&product=wcpos-pro-yearly')
+  test('displays the account email read-only', async ({ page }) => {
+    await openYearlyCheckout(page)
 
-    await expect(page.getByLabel('Email address')).toBeVisible({ timeout: 10000 })
+    const emailInput = page.getByLabel('Email address')
+    await expect(emailInput).toBeVisible()
+    await expect(emailInput).toHaveValue(CHECKOUT_PERSONA_EMAIL)
+    // The account email is locked in (readOnly input).
+    await expect(emailInput).not.toBeEditable()
+    await expect(page.getByText('Using your account email')).toBeVisible()
   })
 
-  test('displays payment method tabs', async ({ page }) => {
-    test.skip(!process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY, 'Stripe not configured')
+  test('displays the payment method area', async ({ page }) => {
+    await openYearlyCheckout(page)
 
-    test.skip(
-      !(await authenticateCheckout(page)),
-      'E2E_TEST_EMAIL/E2E_TEST_PASSWORD are required for authenticated checkout tests'
-    )
-    await setupCheckoutMocks(page)
-    await page.goto('/pro/checkout?variant=variant_mock_123&product=wcpos-pro-yearly')
-
-    // Wait for checkout to initialize
-    await expect(page.getByText('Order Summary')).toBeVisible({ timeout: 10000 })
-
-    // At least the Card tab should appear (Stripe)
-    await expect(page.getByRole('tab', { name: /Card/ })).toBeVisible()
+    await expect(page.getByText('Payment', { exact: true })).toBeVisible()
+    // The payment-method tablist renders; individual provider tabs (Card /
+    // PayPal / Bitcoin) require build-time NEXT_PUBLIC_* payment keys, which
+    // the mocked suite intentionally omits — provider UIs are exercised by
+    // the @integration suite against real backends.
+    await expect(page.getByRole('tablist')).toBeVisible()
+    await expect(page.getByText('Secure payment processing')).toBeVisible()
   })
 
   test('shows error when no variant is provided', async ({ page }) => {
-    test.skip(
-      !(await authenticateCheckout(page)),
-      'E2E_TEST_EMAIL/E2E_TEST_PASSWORD are required for authenticated checkout tests'
-    )
     await page.goto('/pro/checkout')
 
-    await expect(page.getByText('No product selected')).toBeVisible({ timeout: 10000 })
-    await expect(page.getByRole('link', { name: /Back to pricing/ }).first()).toBeVisible()
+    await expect(page.getByText('No product selected')).toBeVisible({
+      timeout: 15000,
+    })
+    await expect(
+      page.getByRole('link', { name: /Back to pricing/ }).first()
+    ).toBeVisible()
   })
 
-  test('back to pricing link works from checkout', async ({ page }) => {
-    test.skip(
-      !(await authenticateCheckout(page)),
-      'E2E_TEST_EMAIL/E2E_TEST_PASSWORD are required for authenticated checkout tests'
-    )
-    await page.goto('/pro/checkout')
+  test('back to pricing link returns to the pro page', async ({ page }) => {
+    await openYearlyCheckout(page)
 
-    // The page-level back link (not the error state one)
+    // The page-level back link (the error state renders its own).
     const backLink = page.getByRole('link', { name: /Back to pricing/ }).first()
     await expect(backLink).toBeVisible()
 
     await backLink.click()
     await expect(page).toHaveURL(/\/pro$/)
+    await expect(
+      page.getByRole('heading', { name: 'WooCommerce POS Pro' })
+    ).toBeVisible()
   })
 
   test('shows error state when cart creation fails', async ({ page }) => {
-    test.skip(
-      !(await authenticateCheckout(page)),
-      'E2E_TEST_EMAIL/E2E_TEST_PASSWORD are required for authenticated checkout tests'
-    )
-    // Mock cart creation to fail
+    // Failure injection happens at the browser -> Next API boundary; the mock
+    // backend stays healthy so only this test sees the failure.
     await page.route('**/api/store/cart', async (route) => {
       if (route.request().method() === 'POST') {
         await route.fulfill({
@@ -206,8 +257,13 @@ test.describe('Checkout Flow', () => {
       }
     })
 
-    await page.goto('/pro/checkout?variant=variant_mock_123&product=wcpos-pro-yearly')
+    await page.goto(YEARLY_CHECKOUT_PATH)
 
-    await expect(page.getByText('Failed to create cart')).toBeVisible({ timeout: 10000 })
+    await expect(page.getByText('Failed to create cart')).toBeVisible({
+      timeout: 15000,
+    })
+    await expect(
+      page.getByRole('link', { name: /Back to pricing/ }).first()
+    ).toBeVisible()
   })
 })

@@ -1,3 +1,4 @@
+import { Suspense } from 'react'
 import { setRequestLocale } from 'next-intl/server'
 import Link from 'next/link'
 import { requireAdmin } from '@/lib/admin-auth'
@@ -44,15 +45,11 @@ async function fetchLicensesPage(page: number): Promise<
   }
 }
 
-export default async function AdminLicensesPage({
-  params,
+async function AdminLicensesContent({
   searchParams,
 }: {
-  params: Promise<{ locale: string }>
   searchParams: Promise<{ page?: string }>
 }) {
-  const { locale } = await params
-  setRequestLocale(locale)
   await requireAdmin()
 
   const { page: pageParam } = await searchParams
@@ -61,9 +58,7 @@ export default async function AdminLicensesPage({
   const result = await fetchLicensesPage(page)
 
   return (
-    <div className="space-y-6">
-      <h1 className="text-2xl font-bold">Licenses</h1>
-
+    <>
       {!result.ok ? (
         <Card>
           <CardContent className="py-8 text-center text-sm">
@@ -104,6 +99,26 @@ export default async function AdminLicensesPage({
           </div>
         </>
       )}
+    </>
+  )
+}
+
+export default async function AdminLicensesPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ locale: string }>
+  searchParams: Promise<{ page?: string }>
+}) {
+  const { locale } = await params
+  setRequestLocale(locale)
+
+  return (
+    <div className="space-y-6">
+      <h1 className="text-2xl font-bold">Licenses</h1>
+      <Suspense fallback={null}>
+        <AdminLicensesContent searchParams={searchParams} />
+      </Suspense>
     </div>
   )
 }

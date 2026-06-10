@@ -1,3 +1,4 @@
+import { Suspense } from 'react'
 import { setRequestLocale } from 'next-intl/server'
 import Link from 'next/link'
 import { requireAdmin } from '@/lib/admin-auth'
@@ -9,19 +10,7 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 }
 
-export default async function AdminLayout({
-  children,
-  params,
-}: {
-  children: React.ReactNode
-  params: Promise<{ locale: string }>
-}) {
-  const { locale } = await params
-  setRequestLocale(locale)
-
-  // Server-side allowlist guard. Non-admins (or anyone when ADMIN_EMAILS is
-  // unset) get a 404 — the admin area never reveals it exists.
-  // Each admin page also calls requireAdmin() itself; never trust the client.
+async function AdminShell({ children }: { children: React.ReactNode }) {
   await requireAdmin()
 
   return (
@@ -48,5 +37,22 @@ export default async function AdminLayout({
         <main className="flex-1 p-6">{children}</main>
       </div>
     </div>
+  )
+}
+
+export default async function AdminLayout({
+  children,
+  params,
+}: {
+  children: React.ReactNode
+  params: Promise<{ locale: string }>
+}) {
+  const { locale } = await params
+  setRequestLocale(locale)
+
+  return (
+    <Suspense fallback={null}>
+      <AdminShell>{children}</AdminShell>
+    </Suspense>
   )
 }
