@@ -27,21 +27,12 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     siteName: 'WCPOS',
-    // The file-convention opengraph-image at the app root is not inherited
-    // into the [locale] tree, so reference the generated image explicitly.
-    // Resolved against metadataBase: https://wcpos.com/opengraph-image
-    images: [
-      {
-        url: '/opengraph-image',
-        width: 1200,
-        height: 630,
-        alt: 'WCPOS - WooCommerce Point of Sale',
-      },
-    ],
+    // og:image and twitter:image come from the opengraph-image.tsx file
+    // convention in this segment — explicit URLs here would point at the
+    // un-prefixed /opengraph-image path, which no route serves.
   },
   twitter: {
     card: 'summary_large_image',
-    images: ['/opengraph-image'],
   },
 }
 
