@@ -60,10 +60,13 @@ export default async function TermsPage({
               happens under your account.
             </li>
             <li>
-              Tell us promptly via the{' '}
-              <Link href="/support" className="underline underline-offset-4 hover:text-foreground">
-                support page
-              </Link>{' '}
+              Tell us promptly at{' '}
+              <a
+                href="mailto:support@wcpos.com"
+                className="underline underline-offset-4 hover:text-foreground"
+              >
+                support@wcpos.com
+              </a>{' '}
               if you suspect unauthorized access to your account.
             </li>
           </ul>
@@ -73,10 +76,11 @@ export default async function TermsPage({
           <h2 className="text-2xl font-semibold mb-4">Purchases and licenses</h2>
           <ul className="list-disc pl-6 space-y-3 leading-7 text-muted-foreground">
             <li>
-              <span className="font-medium text-foreground">Yearly license.</span> An
-              annual subscription that includes Pro features, automatic updates, and
-              priority support for one year. It renews annually unless you cancel; you
-              can cancel anytime to stop future renewals.
+              <span className="font-medium text-foreground">Yearly license.</span> A
+              one-time payment that includes Pro features, automatic updates, and
+              priority support for one year. It does not renew automatically and we
+              never charge you again without a new purchase. When it expires, you can
+              choose to renew it from your account for another year.
             </li>
             <li>
               <span className="font-medium text-foreground">Lifetime license.</span> A
@@ -169,7 +173,14 @@ export default async function TermsPage({
         <section>
           <h2 className="text-2xl font-semibold mb-4">Contact</h2>
           <p className="leading-7 text-muted-foreground">
-            Questions about these terms? Reach us via the{' '}
+            Questions about these terms? Email us at{' '}
+            <a
+              href="mailto:support@wcpos.com"
+              className="underline underline-offset-4 hover:text-foreground"
+            >
+              support@wcpos.com
+            </a>{' '}
+            or ask in the community chat on the{' '}
             <Link href="/support" className="underline underline-offset-4 hover:text-foreground">
               support page
             </Link>

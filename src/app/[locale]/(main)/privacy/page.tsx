@@ -175,12 +175,15 @@ export default async function PrivacyPage({
             users regardless of location.
           </p>
           <p className="leading-7 text-muted-foreground">
-            To exercise any of these rights, contact us via the{' '}
-            <Link href="/support" className="underline underline-offset-4 hover:text-foreground">
-              support page
-            </Link>
-            . EU/EEA residents also have the right to lodge a complaint with their
-            local data protection authority.
+            To exercise any of these rights, email us at{' '}
+            <a
+              href="mailto:support@wcpos.com"
+              className="underline underline-offset-4 hover:text-foreground"
+            >
+              support@wcpos.com
+            </a>{' '}
+            so we can verify your identity privately. EU/EEA residents also have the
+            right to lodge a complaint with their local data protection authority.
           </p>
         </section>
 
@@ -196,7 +199,14 @@ export default async function PrivacyPage({
         <section>
           <h2 className="text-2xl font-semibold mb-4">Contact</h2>
           <p className="leading-7 text-muted-foreground">
-            Questions about this policy or your data? Reach us via the{' '}
+            Questions about this policy or your data? Email us at{' '}
+            <a
+              href="mailto:support@wcpos.com"
+              className="underline underline-offset-4 hover:text-foreground"
+            >
+              support@wcpos.com
+            </a>{' '}
+            or ask general questions in the community chat on the{' '}
             <Link href="/support" className="underline underline-offset-4 hover:text-foreground">
               support page
             </Link>

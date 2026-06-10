@@ -1,10 +1,9 @@
 import { setRequestLocale } from 'next-intl/server'
-import { Link } from '@/i18n/navigation'
 
 export const metadata = {
   title: 'Refund Policy',
   description:
-    'The WCPOS Pro money-back guarantee: how refunds work, how to request one, and how subscription renewals are handled.',
+    'The WCPOS Pro money-back guarantee: how refunds work, how to request one, and how license renewals are handled.',
 }
 
 /*
@@ -53,11 +52,14 @@ export default async function RefundsPage({
           <h2 className="text-2xl font-semibold mb-4">How to request a refund</h2>
           <ul className="list-disc pl-6 space-y-3 leading-7 text-muted-foreground">
             <li>
-              Contact us via the{' '}
-              <Link href="/support" className="underline underline-offset-4 hover:text-foreground">
-                support page
-              </Link>{' '}
-              with the email address you used for the purchase.
+              Email us at{' '}
+              <a
+                href="mailto:support@wcpos.com"
+                className="underline underline-offset-4 hover:text-foreground"
+              >
+                support@wcpos.com
+              </a>{' '}
+              from the email address you used for the purchase.
             </li>
             <li>
               Telling us why you&apos;re asking helps us improve, but it is not
@@ -77,14 +79,18 @@ export default async function RefundsPage({
         </section>
 
         <section>
-          <h2 className="text-2xl font-semibold mb-4">Subscription renewals</h2>
+          <h2 className="text-2xl font-semibold mb-4">License renewals</h2>
           <p className="leading-7 text-muted-foreground">
-            Yearly licenses renew automatically. You can cancel anytime before the
-            renewal date to stop future charges. If you are charged for a renewal you
-            did not want, contact us promptly via the{' '}
-            <Link href="/support" className="underline underline-offset-4 hover:text-foreground">
-              support page
-            </Link>{' '}
+            Yearly licenses do not renew automatically, and we never charge you again
+            without a new purchase. When your license expires, you can choose to renew
+            it from your account. If anything about a renewal purchase is not right,
+            email us at{' '}
+            <a
+              href="mailto:support@wcpos.com"
+              className="underline underline-offset-4 hover:text-foreground"
+            >
+              support@wcpos.com
+            </a>{' '}
             and we will work it out with you.
           </p>
         </section>
