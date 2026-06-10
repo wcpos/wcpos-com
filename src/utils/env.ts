@@ -34,7 +34,6 @@ const envSchema = z.object({
 
   // Admin area allowlist (comma-separated emails, case-insensitive).
   // Unset or empty means nobody is admin (fail closed).
-  ADMIN_EMAILS: z.string().optional(),
 
   // Keygen License Server
   KEYGEN_HOST: z.string().default('license.wcpos.com'),

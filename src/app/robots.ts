@@ -8,13 +8,11 @@ export default function robots(): MetadataRoute.Robots {
       disallow: [
         '/account',
         '/api/',
-        '/admin',
         '/login',
         '/register',
         '/pro/checkout',
         // Locale-prefixed variants (e.g. /fr/login)
         '/*/account',
-        '/*/admin',
         '/*/login',
         '/*/register',
         '/*/pro/checkout',
