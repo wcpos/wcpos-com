@@ -70,6 +70,29 @@ interface ValidateKeyResponse {
   data?: KeygenLicenseData
 }
 
+interface KeygenListLinks {
+  self?: string
+  prev?: string | null
+  next?: string | null
+  first?: string
+  last?: string
+}
+
+export interface LicenseListPage {
+  items: Array<Omit<LicenseDetail, 'machines'>>
+  page: number
+  pageSize: number
+  /** Derived from JSON:API links.next (fallback: full page). */
+  hasNextPage: boolean
+}
+
+export interface MachineListPage {
+  items: LicenseMachine[]
+  page: number
+  pageSize: number
+  hasNextPage: boolean
+}
+
 // ---- Mapping helpers ----
 
 function mapLicenseData(
@@ -159,6 +182,90 @@ async function getLicense(licenseId: string): Promise<LicenseDetail> {
   const mapped = mapLicenseData(json.data)
 
   return { ...mapped, machines: [] }
+}
+
+/**
+ * List licenses (requires auth). Admin use only.
+ *
+ * GET /v1/licenses?page[number]=N&page[size]=M
+ *
+ * Keygen returns newest-first by default. Pagination state comes from the
+ * JSON:API `links.next` field; when absent we fall back to assuming a full
+ * page may have more results.
+ */
+async function listLicenses(
+  page: number = 1,
+  pageSize: number = 20
+): Promise<LicenseListPage> {
+  const query = new URLSearchParams({
+    'page[number]': String(page),
+    'page[size]': String(pageSize),
+  })
+
+  const res = await fetch(`${BASE_URL}/v1/licenses?${query.toString()}`, {
+    method: 'GET',
+    headers: authHeaders(),
+  })
+
+  if (!res.ok) {
+    throw new Error(
+      `Keygen listLicenses failed (${res.status}): ${await res.text()}`
+    )
+  }
+
+  const json: { data: KeygenLicenseData[]; links?: KeygenListLinks } =
+    await res.json()
+
+  const items = json.data.map(mapLicenseData)
+
+  return {
+    items,
+    page,
+    pageSize,
+    hasNextPage: json.links
+      ? Boolean(json.links.next)
+      : items.length === pageSize,
+  }
+}
+
+/**
+ * List all machines across licenses (requires auth). Admin use only.
+ *
+ * GET /v1/machines?page[number]=N&page[size]=M
+ */
+async function listMachines(
+  page: number = 1,
+  pageSize: number = 100
+): Promise<MachineListPage> {
+  const query = new URLSearchParams({
+    'page[number]': String(page),
+    'page[size]': String(pageSize),
+  })
+
+  const res = await fetch(`${BASE_URL}/v1/machines?${query.toString()}`, {
+    method: 'GET',
+    headers: authHeaders(),
+  })
+
+  if (!res.ok) {
+    throw new Error(
+      `Keygen listMachines failed (${res.status}): ${await res.text()}`
+    )
+  }
+
+  const json: { data: KeygenMachineData[]; links?: KeygenListLinks } =
+    await res.json()
+
+  const items = json.data.map(mapMachineData)
+
+  return {
+    items,
+    page,
+    pageSize,
+    hasNextPage: json.links
+      ? Boolean(json.links.next)
+      : items.length === pageSize,
+  }
 }
 
 /**
@@ -335,6 +442,8 @@ async function validateLicense(
 
 export const licenseClient = {
   validateLicenseKey,
+  listLicenses,
+  listMachines,
   getLicense,
   getLicenseMachines,
   activateMachine,

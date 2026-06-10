@@ -32,6 +32,10 @@ const envSchema = z.object({
   NEXT_PUBLIC_POSTHOG_KEY: z.string().optional(),
   POSTHOG_API_KEY: z.string().optional(),
 
+  // Admin area allowlist (comma-separated emails, case-insensitive).
+  // Unset or empty means nobody is admin (fail closed).
+  ADMIN_EMAILS: z.string().optional(),
+
   // Keygen License Server
   KEYGEN_HOST: z.string().default('license.wcpos.com'),
   KEYGEN_API_TOKEN: z.string().optional(),

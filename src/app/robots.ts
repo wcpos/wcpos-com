@@ -14,6 +14,7 @@ export default function robots(): MetadataRoute.Robots {
         '/pro/checkout',
         // Locale-prefixed variants (e.g. /fr/login)
         '/*/account',
+        '/*/admin',
         '/*/login',
         '/*/register',
         '/*/pro/checkout',
