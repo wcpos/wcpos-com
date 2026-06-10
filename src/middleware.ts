@@ -135,10 +135,10 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  // opengraph-image (and its twitter-image alias) are extension-less metadata
-  // routes served from the app root — exclude them so the locale middleware
-  // doesn't rewrite them into /[locale]/... 404s.
-  matcher: [
-    '/((?!_next/static|_next/image|favicon.ico|icon.png|opengraph-image|twitter-image|.*\\..*).*)',
-  ],
+  // The unanchored `.*\..*` alternative excludes every path containing a dot:
+  // all static files (favicon.ico, images, opengraph-image.png/twitter-image.png)
+  // follow the same root 404 rule as not-found.tsx. Only extension-less _next/*
+  // internals need explicit entries, and no code or routes reference
+  // extension-less metadata paths like /opengraph-image or /twitter-image.
+  matcher: ['/((?!_next/static|_next/image|.*\\..*).*)'],
 }

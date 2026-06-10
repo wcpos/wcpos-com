@@ -7,13 +7,19 @@ const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 // anything. Origins cover Stripe, PayPal, PostHog, Sentry, and the WidgetBot
 // Discord embed. Promote to an enforcing Content-Security-Policy header once
 // it has been verified clean against real checkout/analytics traffic.
+//
+// PostHog is self-hosted at analytics.wcpos.com (NEXT_PUBLIC_POSTHOG_HOST;
+// see docs/plans/2026-02-17-posthog-ab-testing-design.md) — the browser never
+// talks to PostHog Cloud (*.posthog.com), so that origin is not listed. The
+// snippet (script) and capture/flags calls (connect) both target the
+// self-hosted origin directly; there is no /ingest first-party proxy.
 const cspReportOnly = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://js.stripe.com https://www.paypal.com https://www.sandbox.paypal.com https://www.paypalobjects.com https://*.posthog.com",
+  "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://js.stripe.com https://www.paypal.com https://www.sandbox.paypal.com https://www.paypalobjects.com https://analytics.wcpos.com",
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' blob: data: https:",
   "font-src 'self' data:",
-  "connect-src 'self' https://api.stripe.com https://m.stripe.com https://m.stripe.network https://www.paypal.com https://www.sandbox.paypal.com https://*.posthog.com https://*.sentry.io https://*.ingest.sentry.io https://*.ingest.us.sentry.io",
+  "connect-src 'self' https://api.stripe.com https://m.stripe.com https://m.stripe.network https://www.paypal.com https://www.sandbox.paypal.com https://analytics.wcpos.com https://*.sentry.io https://*.ingest.sentry.io https://*.ingest.us.sentry.io",
   "frame-src https://js.stripe.com https://hooks.stripe.com https://m.stripe.network https://www.paypal.com https://www.sandbox.paypal.com https://*.widgetbot.io https://discord.com",
   "object-src 'none'",
   "base-uri 'self'",
