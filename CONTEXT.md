@@ -66,3 +66,29 @@ A license reference whose current state cannot be confirmed right now
 Presented honestly as unverified; grants nothing while unverified, but is
 never treated as revoked.
 _Avoid_: unknown, broken, invalid
+
+### Discord community
+
+**Discord link**:
+A verified association between one Medusa customer and one Discord user ID,
+created by Discord OAuth using the `identify` scope. Stored on customer
+metadata until scale requires a dedicated Medusa table.
+_Avoid_: Discord login, Discord auth provider
+
+**Discord Pro role**:
+A bot-managed community role in the WCPOS Discord server. Granted only while
+the linked customer has an active license. Expired licenses can retain
+pre-expiry downloads, but they do not keep this current-community perk.
+_Avoid_: membership, subscription role
+
+**Role sync**:
+The idempotent operation that compares a linked customer's active-license
+state with their Discord role state, then adds or removes the Discord Pro role
+when needed.
+_Avoid_: manual role management
+
+**Reconciliation**:
+The scheduled two-way sweep that syncs all linked customers and removes
+orphaned/manual Discord Pro role grants from current role holders. Inline syncs
+are best-effort; reconciliation is the correctness guarantee.
+_Avoid_: one-way cleanup, cron-only expiry check

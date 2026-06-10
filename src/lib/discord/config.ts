@@ -1,0 +1,46 @@
+import { env } from '@/utils/env'
+
+export interface DiscordConfig {
+  clientId: string
+  clientSecret: string
+  botToken: string
+  guildId: string
+  proRoleId: string
+  publicKey?: string
+}
+
+export function getDiscordConfig(): DiscordConfig {
+  const missing = [
+    ['DISCORD_CLIENT_ID', env.DISCORD_CLIENT_ID],
+    ['DISCORD_CLIENT_SECRET', env.DISCORD_CLIENT_SECRET],
+    ['DISCORD_BOT_TOKEN', env.DISCORD_BOT_TOKEN],
+    ['DISCORD_GUILD_ID', env.DISCORD_GUILD_ID],
+    ['DISCORD_PRO_ROLE_ID', env.DISCORD_PRO_ROLE_ID],
+  ]
+    .filter(([, value]) => !value)
+    .map(([name]) => name)
+
+  if (missing.length > 0) {
+    throw new Error(`Discord role sync is not configured: ${missing.join(', ')}`)
+  }
+
+  return {
+    clientId: env.DISCORD_CLIENT_ID!,
+    clientSecret: env.DISCORD_CLIENT_SECRET!,
+    botToken: env.DISCORD_BOT_TOKEN!,
+    guildId: env.DISCORD_GUILD_ID!,
+    proRoleId: env.DISCORD_PRO_ROLE_ID!,
+    publicKey: env.DISCORD_PUBLIC_KEY,
+  }
+}
+
+export function isDiscordConfigured(): boolean {
+  return Boolean(
+    env.DISCORD_CLIENT_ID &&
+      env.DISCORD_CLIENT_SECRET &&
+      env.DISCORD_BOT_TOKEN &&
+      env.DISCORD_GUILD_ID &&
+      env.DISCORD_PRO_ROLE_ID &&
+      env.MEDUSA_ADMIN_API_TOKEN
+  )
+}

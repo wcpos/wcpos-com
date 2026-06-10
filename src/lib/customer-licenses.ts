@@ -1,5 +1,5 @@
 import type { LicenseDetail } from '@/types/license'
-import { getAllCustomerOrders, getCustomer } from '@/lib/medusa-auth'
+import { getAllCustomerOrders, getCustomer, type MedusaOrder } from '@/lib/medusa-auth'
 import {
   extractLicenseReferencesFromOrders,
   type LicenseReference,
@@ -23,7 +23,7 @@ function buildLicensePlaceholder(reference: LicenseReference): LicenseDetail | n
   }
 }
 
-async function resolveLicenseReference(
+export async function resolveLicenseReference(
   reference: LicenseReference
 ): Promise<LicenseDetail | null> {
   if (reference.id) {
@@ -52,6 +52,18 @@ async function resolveLicenseReference(
   return buildLicensePlaceholder(reference)
 }
 
+export async function getResolvedLicensesFromOrders(
+  orders: MedusaOrder[]
+): Promise<LicenseDetail[]> {
+  const references = extractLicenseReferencesFromOrders(orders)
+
+  const licenses = await Promise.all(
+    references.map((reference) => resolveLicenseReference(reference))
+  )
+
+  return licenses.filter((license): license is LicenseDetail => Boolean(license))
+}
+
 export async function getResolvedCustomerLicenses(): Promise<{
   authenticated: boolean
   licenses: LicenseDetail[]
@@ -62,14 +74,9 @@ export async function getResolvedCustomerLicenses(): Promise<{
   }
 
   const orders = await getAllCustomerOrders()
-  const references = extractLicenseReferencesFromOrders(orders)
-
-  const licenses = await Promise.all(
-    references.map((reference) => resolveLicenseReference(reference))
-  )
 
   return {
     authenticated: true,
-    licenses: licenses.filter((license): license is LicenseDetail => Boolean(license)),
+    licenses: await getResolvedLicensesFromOrders(orders),
   }
 }
