@@ -1,7 +1,7 @@
 # Blanket 14-day money-back guarantee instead of EU withdrawal-waiver mechanics
 
 The business is Australian-registered but relocating to the EU (planned
-2026), where consumers hold a statutory 14-day withdrawal right for
+for the coming months, as of June 2026), where consumers hold a statutory 14-day withdrawal right for
 digital content unless checkout collects an express waiver. Rather than
 keep the historical no-refund policy and add a consent checkbox to
 checkout (conversion friction, geo-targeting complexity, stored-consent
