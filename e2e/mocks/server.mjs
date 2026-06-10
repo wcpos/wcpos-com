@@ -254,8 +254,15 @@ const server = createServer(async (req, res) => {
         })
       }
 
+      // Namespace new machine ids with the instance suffix so identical
+      // fingerprints activated by parallel workers/projects never collide
+      // (DELETE /v1/machines/{id} scans every instance, so ids must be
+      // globally unique just like the cloned fixture machines above).
+      const { suffix } = splitSuffix(instance.id)
       const machine = {
-        id: `mach-${attributes.fingerprint}`,
+        id: suffix
+          ? `mach-${attributes.fingerprint}__${suffix}`
+          : `mach-${attributes.fingerprint}`,
         fingerprint: attributes.fingerprint,
         name: attributes.name ?? null,
         metadata: attributes.metadata ?? {},
