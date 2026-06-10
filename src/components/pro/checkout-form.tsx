@@ -11,9 +11,9 @@ import { completeCart } from './complete-cart'
 import {
   createOrderPendingFailure,
   createPaymentFailure,
+  createUncertainPaymentFailure,
   mapStripeErrorMessage,
   GENERIC_PAYMENT_FAILED_MESSAGE,
-  UNEXPECTED_PAYMENT_STATUS_MESSAGE,
   type CheckoutFailure,
 } from './checkout-errors'
 import type { ProCheckoutVariant } from '@/services/core/analytics/posthog-service'
@@ -118,9 +118,11 @@ export function CheckoutForm({
       }
 
       // Unknown intent status (e.g. 'processing'): the charge state is
-      // ambiguous, so tell the customer to check with support before retrying.
+      // ambiguous — the intent may still succeed later. Surface the distinct
+      // uncertain state so the UI never suggests retrying or switching
+      // payment method, which could double-charge the customer.
       onFailure(
-        createPaymentFailure(UNEXPECTED_PAYMENT_STATUS_MESSAGE, {
+        createUncertainPaymentFailure({
           source: 'stripe_unexpected_status',
           details: {
             cartId,

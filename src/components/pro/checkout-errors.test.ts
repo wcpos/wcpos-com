@@ -4,11 +4,13 @@ import {
   createCancelledFailure,
   createOrderPendingFailure,
   createPaymentFailure,
+  createUncertainPaymentFailure,
   generateErrorReference,
   mapStripeErrorMessage,
   GENERIC_CARD_FAILED_MESSAGE,
   GENERIC_PAYMENT_FAILED_MESSAGE,
   ORDER_PENDING_MESSAGE,
+  UNEXPECTED_PAYMENT_STATUS_MESSAGE,
   OrderPendingError,
 } from './checkout-errors'
 
@@ -116,6 +118,35 @@ describe('createPaymentFailure', () => {
         reference: failure.reference,
         source: 'test_source',
         details: { raw: 'provider junk' },
+      })
+    )
+  })
+})
+
+describe('createUncertainPaymentFailure', () => {
+  it('always uses the contact-support-before-retrying copy', () => {
+    const failure = createUncertainPaymentFailure({
+      source: 'stripe_unexpected_status',
+    })
+
+    expect(failure.kind).toBe('payment_uncertain')
+    expect(failure.message).toBe(UNEXPECTED_PAYMENT_STATUS_MESSAGE)
+    expect(failure.message).toContain('contact support before trying again')
+    expect(failure.reference).toMatch(/^WCPOS-/)
+  })
+
+  it('logs the failure as an error for support correlation', () => {
+    const failure = createUncertainPaymentFailure({
+      source: 'stripe_unexpected_status',
+      details: { paymentIntentId: 'pi_1', status: 'processing' },
+    })
+
+    expect(console.error).toHaveBeenCalledWith(
+      '[CHECKOUT] Payment failure:',
+      expect.objectContaining({
+        reference: failure.reference,
+        kind: 'payment_uncertain',
+        details: { paymentIntentId: 'pi_1', status: 'processing' },
       })
     )
   })

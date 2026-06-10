@@ -20,6 +20,9 @@ interface CheckoutErrorNoticeProps {
  *
  * Rendered above the payment method tabs so the cart, email and payment form
  * all stay mounted — the customer can retry without starting over.
+ * The `payment_uncertain` kind deliberately shows NO retry or switch-method
+ * guidance: the charge may still complete (e.g. a Stripe intent in
+ * 'processing'), so paying again via another method could double-charge.
  * The `order_pending` kind is intentionally NOT handled here; that state
  * replaces the whole checkout via OrderPendingNotice.
  */
@@ -37,6 +40,29 @@ export function CheckoutErrorNotice({
             You can also choose a different payment method below.
           </p>
         )}
+      </div>
+    )
+  }
+
+  if (failure.kind === 'payment_uncertain') {
+    return (
+      <div
+        role="alert"
+        className="rounded-md border border-amber-500/40 bg-amber-500/10 p-4 text-sm space-y-2"
+      >
+        <p className="font-medium">Payment status unknown</p>
+        <p>{failure.message}</p>
+        <p className="text-muted-foreground">
+          Please{' '}
+          <Link
+            href={supportHref(failure.reference)}
+            className="font-medium underline underline-offset-2"
+          >
+            contact support
+          </Link>{' '}
+          and quote reference <span className="font-mono">{failure.reference}</span> —
+          we will confirm whether your payment went through before you pay again.
+        </p>
       </div>
     )
   }

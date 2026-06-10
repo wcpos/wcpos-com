@@ -39,6 +39,13 @@ const orderPending: CheckoutFailure = {
   reference: 'WCPOS-TEST-REF3',
 }
 
+const uncertain: CheckoutFailure = {
+  kind: 'payment_uncertain',
+  message:
+    "We couldn't confirm the status of your payment. If you think you may have been charged, please contact support before trying again.",
+  reference: 'WCPOS-TEST-REF4',
+}
+
 describe('CheckoutErrorNotice', () => {
   it('shows the failure message as an alert', () => {
     render(<CheckoutErrorNotice failure={paymentFailed} />)
@@ -79,6 +86,36 @@ describe('CheckoutErrorNotice', () => {
     const supportLink = screen.getByRole('link', { name: /contact support/i })
     expect(supportLink).toHaveAttribute('href', '/support?ref=WCPOS-TEST-REF1')
     expect(screen.getByText('WCPOS-TEST-REF1')).toBeInTheDocument()
+  })
+
+  it('renders uncertain payments as an alert without retry guidance', () => {
+    render(<CheckoutErrorNotice failure={uncertain} canSwitchMethod />)
+
+    expect(screen.getByRole('alert')).toBeInTheDocument()
+    expect(screen.getByText('Payment status unknown')).toBeInTheDocument()
+    expect(screen.getByText(uncertain.message)).toBeInTheDocument()
+    // Never invite a retry or a method switch — the charge may still complete
+    // and paying again via another method would double-charge the customer.
+    expect(
+      screen.queryByText(/your order details have been saved/i)
+    ).not.toBeInTheDocument()
+    expect(
+      screen.queryByText(/try again without starting over/i)
+    ).not.toBeInTheDocument()
+    expect(
+      screen.queryByText(/choose a different payment method/i)
+    ).not.toBeInTheDocument()
+  })
+
+  it('points uncertain payments at support with the error reference', () => {
+    render(<CheckoutErrorNotice failure={uncertain} canSwitchMethod />)
+
+    const supportLink = screen.getByRole('link', { name: /contact support/i })
+    expect(supportLink).toHaveAttribute('href', '/support?ref=WCPOS-TEST-REF4')
+    expect(screen.getByText('WCPOS-TEST-REF4')).toBeInTheDocument()
+    expect(
+      screen.getByText(/before you pay again/i)
+    ).toBeInTheDocument()
   })
 
   it('renders cancellations as a calm status without a support link', () => {

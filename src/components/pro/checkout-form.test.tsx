@@ -146,7 +146,7 @@ describe('CheckoutForm', () => {
     expect(lastFailure().kind).toBe('order_pending')
   })
 
-  it('reports a cautious failure for unexpected intent statuses', async () => {
+  it('reports the distinct uncertain state for ambiguous intent statuses', async () => {
     mockConfirmPayment.mockResolvedValue({
       paymentIntent: { id: 'pi_1', status: 'processing' },
     })
@@ -157,7 +157,7 @@ describe('CheckoutForm', () => {
     await waitFor(() => expect(onFailure).toHaveBeenCalledTimes(2))
 
     const failure = lastFailure()
-    expect(failure.kind).toBe('payment_failed')
+    expect(failure.kind).toBe('payment_uncertain')
     expect(failure.message).toContain('contact support before trying again')
     expect(mockCompleteCart).not.toHaveBeenCalled()
   })

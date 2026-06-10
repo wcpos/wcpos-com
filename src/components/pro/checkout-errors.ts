@@ -12,6 +12,13 @@ export type CheckoutFailureKind =
   /** Customer cancelled the payment themselves — informational, retry is fine. */
   | 'payment_cancelled'
   /**
+   * The charge state is ambiguous (e.g. a Stripe intent stuck in
+   * 'processing'): money may still be taken later. The customer must check
+   * with support before retrying — never show retry/switch-method guidance,
+   * or they could be double-charged via a second payment session.
+   */
+  | 'payment_uncertain'
+  /**
    * Payment was authorized/captured but the order could not be created.
    * The customer must NOT pay again — support has to finish or refund it.
    */
@@ -171,6 +178,16 @@ export function createPaymentFailure(
   context: FailureLogContext
 ): CheckoutFailure {
   return buildFailure('payment_failed', message, context)
+}
+
+/**
+ * The charge state could not be confirmed (e.g. Stripe 'processing') — the
+ * payment may still complete later. Always uses the fixed "contact support
+ * before trying again" copy so the UI never invites a retry or a method
+ * switch that could double-charge the customer.
+ */
+export function createUncertainPaymentFailure(context: FailureLogContext): CheckoutFailure {
+  return buildFailure('payment_uncertain', UNEXPECTED_PAYMENT_STATUS_MESSAGE, context)
 }
 
 /** The customer cancelled the payment themselves. */
