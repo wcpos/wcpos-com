@@ -98,6 +98,11 @@ jobs:
           CI: true
           GITHUB_PAT: ${{ secrets.GH_PAT }}
           MEDUSA_PUBLISHABLE_KEY: ${{ secrets.MEDUSA_PUBLISHABLE_KEY }}
+          # Set so the e2e build exercises the admin pages' dynamic (cookie)
+          # code path — with it unset, requireAdmin() short-circuits to
+          # notFound() before touching cookies, and PPR prerender failures
+          # on /admin/* only surface in Vercel builds (where it IS set).
+          ADMIN_EMAILS: ci-smoke@example.com
 
       - name: Upload Playwright report
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
