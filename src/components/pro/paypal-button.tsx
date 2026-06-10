@@ -2,6 +2,15 @@
 
 import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js'
 import { completeCart, createPaymentSession } from './complete-cart'
+import {
+  createCancelledFailure,
+  createOrderPendingFailure,
+  createPaymentFailure,
+  PAYPAL_CANCELLED_MESSAGE,
+  PAYPAL_FAILED_MESSAGE,
+  PAYPAL_INIT_FAILED_MESSAGE,
+  type CheckoutFailure,
+} from './checkout-errors'
 import type { ProCheckoutVariant } from '@/services/core/analytics/posthog-service'
 
 interface PayPalSessionCart {
@@ -20,7 +29,11 @@ interface PayPalButtonProps {
   experimentVariant: ProCheckoutVariant
   paypalOrderId?: string | null
   onSuccess: (orderId: string) => void
-  onError: (error: string) => void
+  /**
+   * Reports payment failures to the parent (null clears a previous failure
+   * when the customer retries). Failure messages are already customer-safe.
+   */
+  onFailure: (failure: CheckoutFailure | null) => void
 }
 
 export function PayPalButton({
@@ -29,7 +42,7 @@ export function PayPalButton({
   experimentVariant,
   paypalOrderId,
   onSuccess,
-  onError,
+  onFailure,
 }: PayPalButtonProps) {
   const [{ isPending, isRejected }] = usePayPalScriptReducer()
 
@@ -62,6 +75,8 @@ export function PayPalButton({
       }}
       createOrder={async () => {
         try {
+          onFailure(null)
+
           if (paypalOrderId) {
             return paypalOrderId
           }
@@ -86,7 +101,13 @@ export function PayPalButton({
 
           return fallbackPayPalOrderId
         } catch (err) {
-          onError(err instanceof Error ? err.message : 'Failed to create PayPal order')
+          // No payment has happened yet — safe to retry.
+          onFailure(
+            createPaymentFailure(PAYPAL_INIT_FAILED_MESSAGE, {
+              source: 'paypal_create_order',
+              details: { cartId, error: err instanceof Error ? err.message : err },
+            })
+          )
           throw err
         }
       }}
@@ -94,19 +115,34 @@ export function PayPalButton({
         try {
           // Complete the cart after PayPal approval
           const orderId = await completeCart({ cartId, experiment, experimentVariant })
-          if (orderId) {
-            onSuccess(orderId)
-          }
+          onSuccess(orderId)
         } catch (err) {
-          onError(err instanceof Error ? err.message : 'Failed to complete order')
+          // The customer already approved the payment in PayPal. Any
+          // completion failure means money may have been taken without an
+          // order — surface the distinct "do not pay again" state.
+          onFailure(
+            createOrderPendingFailure({
+              source: 'paypal_complete_cart',
+              details: { cartId, error: err instanceof Error ? err.message : err },
+            })
+          )
         }
       }}
       onError={(err) => {
-        console.error('PayPal error:', err)
-        onError('PayPal payment failed. Please try again.')
+        onFailure(
+          createPaymentFailure(PAYPAL_FAILED_MESSAGE, {
+            source: 'paypal_sdk',
+            details: { cartId, error: err instanceof Error ? err.message : String(err) },
+          })
+        )
       }}
       onCancel={() => {
-        // User cancelled - no action needed
+        onFailure(
+          createCancelledFailure(PAYPAL_CANCELLED_MESSAGE, {
+            source: 'paypal_cancel',
+            details: { cartId },
+          })
+        )
       }}
     />
   )

@@ -1,4 +1,5 @@
 import type { ProCheckoutVariant } from '@/services/core/analytics/posthog-service'
+import { OrderPendingError } from './checkout-errors'
 
 export interface CompleteCartParams {
   cartId: string
@@ -12,14 +13,19 @@ export interface CompleteCartParams {
  * Shared by all client payment flows (Stripe, PayPal) so completion
  * behaviour — including experiment attribution fields — stays consistent.
  *
- * @returns the created order id, or null if the response had no order id
- * @throws if the completion request fails
+ * Only called AFTER the payment has been confirmed/approved by the provider,
+ * so every failure here means money may have been taken without an order.
+ * Callers must surface OrderPendingError as the distinct "payment received,
+ * order pending — do not pay again" state, never as a retryable error.
+ *
+ * @returns the created order id
+ * @throws OrderPendingError if the request fails or returns no order id
  */
 export async function completeCart({
   cartId,
   experiment,
   experimentVariant,
-}: CompleteCartParams): Promise<string | null> {
+}: CompleteCartParams): Promise<string> {
   const response = await fetch('/api/store/cart/complete', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -33,15 +39,28 @@ export async function completeCart({
   if (!response.ok) {
     const errorData = await response.json().catch(() => ({}))
     console.error('[CHECKOUT] Cart completion failed:', {
+      cartId,
       status: response.status,
       statusText: response.statusText,
       error: errorData,
     })
-    throw new Error('Failed to complete order')
+    throw new OrderPendingError('Failed to complete order')
   }
 
   const result = await response.json()
-  const orderId: string | null = result.order?.id ?? null
+  const orderId: string | undefined = result.order?.id
+
+  if (!orderId) {
+    // The completion call "succeeded" but produced no order — previously this
+    // was logged as success and silently ignored, leaving the customer stuck
+    // after their payment was captured.
+    console.error('[CHECKOUT] Cart completion returned no order id:', {
+      cartId,
+      result,
+    })
+    throw new OrderPendingError('Cart completion returned no order id')
+  }
+
   console.log('[CHECKOUT] Order created successfully:', { orderId })
   return orderId
 }

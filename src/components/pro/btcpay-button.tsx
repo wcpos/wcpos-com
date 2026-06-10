@@ -3,18 +3,28 @@
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Bitcoin } from 'lucide-react'
+import {
+  createPaymentFailure,
+  BTCPAY_INIT_FAILED_MESSAGE,
+  type CheckoutFailure,
+} from './checkout-errors'
 
 interface BTCPayButtonProps {
   cartId: string
   checkoutLink?: string | null
-  onError: (error: string) => void
+  /**
+   * Reports payment failures to the parent (null clears a previous failure
+   * when the customer retries). Failure messages are already customer-safe.
+   */
+  onFailure: (failure: CheckoutFailure | null) => void
 }
 
-export function BTCPayButton({ cartId, checkoutLink, onError }: BTCPayButtonProps) {
+export function BTCPayButton({ cartId, checkoutLink, onFailure }: BTCPayButtonProps) {
   const [isLoading, setIsLoading] = useState(false)
 
   const handleClick = async () => {
     setIsLoading(true)
+    onFailure(null)
 
     try {
       if (checkoutLink) {
@@ -55,7 +65,13 @@ export function BTCPayButton({ cartId, checkoutLink, onError }: BTCPayButtonProp
       // Redirect to BTCPayServer checkout
       window.location.href = nextCheckoutLink
     } catch (err) {
-      onError(err instanceof Error ? err.message : 'Failed to initialize Bitcoin payment')
+      // No payment has happened yet — safe to retry.
+      onFailure(
+        createPaymentFailure(BTCPAY_INIT_FAILED_MESSAGE, {
+          source: 'btcpay_init',
+          details: { cartId, error: err instanceof Error ? err.message : err },
+        })
+      )
       setIsLoading(false)
     }
   }

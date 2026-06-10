@@ -40,10 +40,44 @@ vi.mock('./paypal-provider', () => ({
   PayPalProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 }))
 vi.mock('./checkout-form', () => ({
-  CheckoutForm: ({ onSuccess }: { onSuccess: (id: string) => void }) => (
-    <button data-testid="mock-pay-button" onClick={() => onSuccess('order-abc-123')}>
-      Pay
-    </button>
+  CheckoutForm: ({
+    onSuccess,
+    onFailure,
+  }: {
+    onSuccess: (id: string) => void
+    onFailure: (failure: unknown) => void
+  }) => (
+    <div>
+      <button data-testid="mock-pay-button" onClick={() => onSuccess('order-abc-123')}>
+        Pay
+      </button>
+      <button
+        data-testid="mock-fail-button"
+        onClick={() =>
+          onFailure({
+            kind: 'payment_failed',
+            message:
+              'Your card was declined. Please try a different card or payment method.',
+            reference: 'WCPOS-TEST-FAIL',
+          })
+        }
+      >
+        Fail
+      </button>
+      <button
+        data-testid="mock-pending-button"
+        onClick={() =>
+          onFailure({
+            kind: 'order_pending',
+            message:
+              'Your payment was received, but we could not finish creating your order.',
+            reference: 'WCPOS-TEST-PENDING',
+          })
+        }
+      >
+        Pending
+      </button>
+    </div>
   ),
 }))
 
@@ -363,6 +397,83 @@ describe('CheckoutClient', () => {
         })
       )
     })
+  })
+
+  it('shows the recovery notice and preserves the cart when payment fails', async () => {
+    mockSuccessfulCheckoutInit()
+    mockFetch.mockResolvedValueOnce({ ok: true, json: async () => ({}) })
+    render(
+      <CheckoutClient
+        customerEmail="user@example.com"
+        selectedVariantId="variant-prop-123"
+        experimentVariant="control"
+      />
+    )
+
+    await waitFor(() => {
+      expect(screen.getByTestId('mock-fail-button')).toBeInTheDocument()
+    })
+
+    fireEvent.click(screen.getByTestId('mock-fail-button'))
+
+    await waitFor(() => {
+      expect(screen.getByText('Payment unsuccessful')).toBeInTheDocument()
+    })
+
+    // Mapped, customer-safe message with a support reference
+    expect(
+      screen.getByText(
+        'Your card was declined. Please try a different card or payment method.'
+      )
+    ).toBeInTheDocument()
+    const supportLink = screen.getByRole('link', { name: /contact support/i })
+    expect(supportLink).toHaveAttribute('href', '/support?ref=WCPOS-TEST-FAIL')
+
+    // Multiple methods are enabled, so the switch-method hint shows
+    expect(
+      screen.getByText(/choose a different payment method/i)
+    ).toBeInTheDocument()
+
+    // The cart, email and payment form all stay mounted for retry
+    expect(screen.getByText('Order Summary')).toBeInTheDocument()
+    const emailInput = screen.getByLabelText('Email address') as HTMLInputElement
+    expect(emailInput.value).toBe('user@example.com')
+    expect(screen.getByTestId('mock-pay-button')).toBeInTheDocument()
+  })
+
+  it('shows the distinct order-pending state when completion fails after payment', async () => {
+    mockSuccessfulCheckoutInit()
+    mockFetch.mockResolvedValueOnce({ ok: true, json: async () => ({}) })
+    render(
+      <CheckoutClient
+        customerEmail="user@example.com"
+        selectedVariantId="variant-prop-123"
+        experimentVariant="control"
+      />
+    )
+
+    await waitFor(() => {
+      expect(screen.getByTestId('mock-pending-button')).toBeInTheDocument()
+    })
+
+    fireEvent.click(screen.getByTestId('mock-pending-button'))
+
+    await waitFor(() => {
+      expect(
+        screen.getByText('Payment received — order pending')
+      ).toBeInTheDocument()
+    })
+
+    // The customer is told not to pay again, with a support reference
+    expect(screen.getByText(/do not pay again/i)).toBeInTheDocument()
+    const supportLink = screen.getByRole('link', { name: /contact support/i })
+    expect(supportLink).toHaveAttribute('href', '/support?ref=WCPOS-TEST-PENDING')
+    expect(screen.getByText('WCPOS-TEST-PENDING')).toBeInTheDocument()
+
+    // The payment form is gone — no way to pay a second time
+    expect(screen.queryByText('Order Summary')).not.toBeInTheDocument()
+    expect(screen.queryByTestId('mock-pay-button')).not.toBeInTheDocument()
+    expect(screen.queryByText('Payment unsuccessful')).not.toBeInTheDocument()
   })
 
   it('passes BTCPay checkout link to BTCPayButton when present in cart sessions', async () => {

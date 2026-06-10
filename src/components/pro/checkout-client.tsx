@@ -7,6 +7,12 @@ import { CheckoutForm } from './checkout-form'
 import { PayPalButton } from './paypal-button'
 import { createPaymentSession } from './complete-cart'
 import { BTCPayButton } from './btcpay-button'
+import { CheckoutErrorNotice, OrderPendingNotice } from './checkout-recovery'
+import {
+  createPaymentFailure,
+  METHOD_SWITCH_FAILED_MESSAGE,
+  type CheckoutFailure,
+} from './checkout-errors'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -124,7 +130,10 @@ export function CheckoutClient({
   const [clientSecret, setClientSecret] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [isProcessing, setIsProcessing] = useState(false)
+  // Blocking initialization errors (cart could not be created at all).
   const [error, setError] = useState<string | null>(null)
+  // Payment-stage failures — recoverable, rendered without unmounting the cart.
+  const [failure, setFailure] = useState<CheckoutFailure | null>(null)
   const [orderComplete, setOrderComplete] = useState(false)
   const [orderId, setOrderId] = useState<string | null>(null)
   const [paymentCollectionId, setPaymentCollectionId] = useState<string | null>(null)
@@ -219,7 +228,7 @@ export function CheckoutClient({
       if (!cart || !paymentCollectionId) return
 
       setIsProcessing(true)
-      setError(null)
+      setFailure(null)
       setClientSecret(null)
 
       try {
@@ -244,8 +253,16 @@ export function CheckoutClient({
           setClientSecret(paymentResult.clientSecret)
         }
       } catch (err) {
-        console.error('[CHECKOUT] Payment method selection error:', err)
-        setError(err instanceof Error ? err.message : 'Failed to select payment method')
+        setFailure(
+          createPaymentFailure(METHOD_SWITCH_FAILED_MESSAGE, {
+            source: 'payment_method_switch',
+            details: {
+              cartId: cart.id,
+              method,
+              error: err instanceof Error ? err.message : err,
+            },
+          })
+        )
       } finally {
         setIsProcessing(false)
       }
@@ -263,13 +280,16 @@ export function CheckoutClient({
   }
 
   const handleSuccess = (newOrderId: string) => {
+    setFailure(null)
     setOrderId(newOrderId)
     setOrderComplete(true)
   }
 
-  const handleError = (errorMessage: string) => {
-    setError(errorMessage)
-  }
+  // Children report payment failures here (null clears a previous failure on
+  // retry). Messages are already customer-safe; raw details are in the logs.
+  const handleFailure = useCallback((nextFailure: CheckoutFailure | null) => {
+    setFailure(nextFailure)
+  }, [])
 
   const updateEmail = async () => {
     if (!cart || !email) return
@@ -337,6 +357,12 @@ export function CheckoutClient({
     )
   }
 
+  // Payment captured but order creation failed — the worst customer state.
+  // Replaces the whole checkout so the customer cannot pay a second time.
+  if (failure?.kind === 'order_pending') {
+    return <OrderPendingNotice failure={failure} />
+  }
+
   if (!cart) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[400px]">
@@ -361,6 +387,10 @@ export function CheckoutClient({
 
   const paypalSession = resolvePaymentSession(cart, getProviderId('paypal'))
   const btcpaySession = resolvePaymentSession(cart, getProviderId('btcpay'))
+
+  const enabledMethodCount = [isStripeEnabled, isPayPalEnabled, isBTCPayEnabled].filter(
+    Boolean
+  ).length
 
   const paypalOrderId =
     typeof paypalSession?.data?.id === 'string' ? paypalSession.data.id : null
@@ -418,18 +448,19 @@ export function CheckoutClient({
             </p>
           </div>
 
-          {error && (
-            <div className="bg-destructive/10 text-destructive p-3 rounded-md text-sm">
-              {error}
-            </div>
+          {failure && (
+            <CheckoutErrorNotice
+              failure={failure}
+              canSwitchMethod={enabledMethodCount > 1}
+            />
           )}
 
           {/* Payment method tabs */}
           <Tabs value={paymentMethod} onValueChange={handlePaymentMethodChange}>
             <TabsList className={`grid w-full ${
-              [isStripeEnabled, isPayPalEnabled, isBTCPayEnabled].filter(Boolean).length === 3
+              enabledMethodCount === 3
                 ? 'grid-cols-3'
-                : [isStripeEnabled, isPayPalEnabled, isBTCPayEnabled].filter(Boolean).length === 2
+                : enabledMethodCount === 2
                   ? 'grid-cols-2'
                   : 'grid-cols-1'
             }`}>
@@ -463,6 +494,7 @@ export function CheckoutClient({
                       experiment={PRO_CHECKOUT_EXPERIMENT}
                       experimentVariant={experimentVariant}
                       onSuccess={handleSuccess}
+                      onFailure={handleFailure}
                     />
                   </StripeProvider>
                 ) : (
@@ -486,7 +518,7 @@ export function CheckoutClient({
                     experimentVariant={experimentVariant}
                     paypalOrderId={paypalOrderId}
                     onSuccess={handleSuccess}
-                    onError={handleError}
+                    onFailure={handleFailure}
                   />
                 </PayPalProvider>
               </TabsContent>
@@ -501,7 +533,7 @@ export function CheckoutClient({
                   <BTCPayButton
                     cartId={cart.id}
                     checkoutLink={btcpayCheckoutLink}
-                    onError={handleError}
+                    onFailure={handleFailure}
                   />
                 </div>
               </TabsContent>
