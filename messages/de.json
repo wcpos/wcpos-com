@@ -29,14 +29,67 @@
     "title": "Roadmap",
     "subtitle": "What we're building for WooCommerce POS"
   },
-  "acct": {
+  "pro": {
+    "features": {
+      "title": "What's included in Pro?",
+      "subtitle": "Everything in Free, plus the tools to run your whole store from the register — and priority support when you need a hand.",
+      "terminal": {
+        "title": "Payment Terminal Integration",
+        "description": "Connect card readers and payment terminals for fast, accurate in-person payments."
+      },
+      "stockPrice": {
+        "title": "Stock & Price Editing",
+        "description": "Update stock levels, prices, and product details right from the POS — no trip to the WordPress admin."
+      },
+      "orders": {
+        "title": "Order Management",
+        "description": "Browse order history, open past orders, and manage them without leaving the register."
+      },
+      "customers": {
+        "title": "Customer Management",
+        "description": "Add and edit customer details at the point of sale, kept in sync with WooCommerce."
+      },
+      "reports": {
+        "title": "End-of-Day Reports",
+        "description": "Close the register with end-of-day summaries of sales, payments, and takings."
+      },
+      "gateways": {
+        "title": "Custom Payment Gateways",
+        "description": "Take payments with any WooCommerce-compatible gateway, not just the built-in options."
+      }
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "freePlugin": {
+        "question": "Is the free plugin limited?",
+        "answer": "No. The free WooCommerce POS plugin is GPL software with full point of sale features — unlimited products, orders, and customers, and no transaction fees. Pro adds the advanced tools listed above."
+      },
+      "yearlyVsLifetime": {
+        "question": "What's the difference between Yearly and Lifetime?",
+        "answer": "The Yearly subscription renews annually and includes all updates during your subscription period. The Lifetime license is a one-time payment that includes updates forever."
+      },
+      "upgrade": {
+        "question": "Can I upgrade from Yearly to Lifetime?",
+        "answer": "Yes! Contact our support team and we'll credit your remaining subscription towards a Lifetime license."
+      },
+      "siteLimits": {
+        "question": "How many sites can I use my license on?",
+        "answer": "Each license can be activated on multiple sites. Check your account dashboard for activation limits."
+      },
+      "paymentMethods": {
+        "question": "What payment methods do you accept?",
+        "answer": "We accept credit cards (Visa, Mastercard, Amex), PayPal, and Bitcoin."
+      }
+    }
+  },
+  "account": {
     "nav": {
-      "ttl": "Account",
-      "ovw": "Overview",
-      "ord": "Orders",
-      "lic": "Licenses",
-      "dls": "Downloads",
-      "prf": "Profile"
+      "title": "Account",
+      "overview": "Overview",
+      "orders": "Orders",
+      "licenses": "Licenses",
+      "downloads": "Downloads",
+      "profile": "Profile"
     }
   }
 }

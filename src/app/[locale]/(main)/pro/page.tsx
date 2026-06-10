@@ -1,4 +1,4 @@
-import { setRequestLocale } from 'next-intl/server'
+import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { Suspense } from 'react'
 import { cacheLife, cacheTag } from 'next/cache'
 import { cookies } from 'next/headers'
@@ -102,6 +102,7 @@ export default async function ProPage({
 }) {
   const { locale } = await params
   setRequestLocale(locale)
+  const t = await getTranslations({ locale, namespace: 'pro' })
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-background to-muted/20">
@@ -159,36 +160,35 @@ export default async function ProPage({
       {/* Features Section */}
       <section className="container mx-auto px-4 py-16 border-t">
         <h2 className="text-3xl font-bold text-center mb-4">
-          What&apos;s included in Pro?
+          {t('features.title')}
         </h2>
         <p className="text-center text-muted-foreground max-w-2xl mx-auto mb-12">
-          Everything in Free, plus the tools to run your whole store from the
-          register — and priority support when you need a hand.
+          {t('features.subtitle')}
         </p>
         <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
           <FeatureBlock
-            title="Payment Terminal Integration"
-            description="Connect card readers and payment terminals for fast, accurate in-person payments."
+            title={t('features.terminal.title')}
+            description={t('features.terminal.description')}
           />
           <FeatureBlock
-            title="Stock & Price Editing"
-            description="Update stock levels, prices, and product details right from the POS — no trip to the WordPress admin."
+            title={t('features.stockPrice.title')}
+            description={t('features.stockPrice.description')}
           />
           <FeatureBlock
-            title="Order Management"
-            description="Browse order history, open past orders, and manage them without leaving the register."
+            title={t('features.orders.title')}
+            description={t('features.orders.description')}
           />
           <FeatureBlock
-            title="Customer Management"
-            description="Add and edit customer details at the point of sale, kept in sync with WooCommerce."
+            title={t('features.customers.title')}
+            description={t('features.customers.description')}
           />
           <FeatureBlock
-            title="End-of-Day Reports"
-            description="Close the register with end-of-day summaries of sales, payments, and takings."
+            title={t('features.reports.title')}
+            description={t('features.reports.description')}
           />
           <FeatureBlock
-            title="Custom Payment Gateways"
-            description="Take payments with any WooCommerce-compatible gateway, not just the built-in options."
+            title={t('features.gateways.title')}
+            description={t('features.gateways.description')}
           />
         </div>
       </section>
@@ -196,28 +196,28 @@ export default async function ProPage({
       {/* FAQ Section */}
       <section className="container mx-auto px-4 py-16 border-t">
         <h2 className="text-3xl font-bold text-center mb-12">
-          Frequently Asked Questions
+          {t('faq.title')}
         </h2>
         <div className="max-w-3xl mx-auto space-y-6">
           <FaqItem
-            question="Is the free plugin limited?"
-            answer="No. The free WooCommerce POS plugin is GPL software with full point of sale features — unlimited products, orders, and customers, and no transaction fees. Pro adds the advanced tools listed above."
+            question={t('faq.freePlugin.question')}
+            answer={t('faq.freePlugin.answer')}
           />
           <FaqItem
-            question="What's the difference between Yearly and Lifetime?"
-            answer="The Yearly subscription renews annually and includes all updates during your subscription period. The Lifetime license is a one-time payment that includes updates forever."
+            question={t('faq.yearlyVsLifetime.question')}
+            answer={t('faq.yearlyVsLifetime.answer')}
           />
           <FaqItem
-            question="Can I upgrade from Yearly to Lifetime?"
-            answer="Yes! Contact our support team and we'll credit your remaining subscription towards a Lifetime license."
+            question={t('faq.upgrade.question')}
+            answer={t('faq.upgrade.answer')}
           />
           <FaqItem
-            question="How many sites can I use my license on?"
-            answer="Each license can be activated on multiple sites. Check your account dashboard for activation limits."
+            question={t('faq.siteLimits.question')}
+            answer={t('faq.siteLimits.answer')}
           />
           <FaqItem
-            question="What payment methods do you accept?"
-            answer="We accept credit cards (Visa, Mastercard, Amex), PayPal, and Bitcoin."
+            question={t('faq.paymentMethods.question')}
+            answer={t('faq.paymentMethods.answer')}
           />
         </div>
       </section>

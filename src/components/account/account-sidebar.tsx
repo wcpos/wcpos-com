@@ -8,11 +8,11 @@ import { cn } from '@/lib/utils'
 import { setReactI18nextLanguage } from '@/i18n/react-i18next-client'
 
 const navigation = [
-  { key: 'ovw', href: '/account', icon: Home },
-  { key: 'ord', href: '/account/orders', icon: ShoppingBag },
-  { key: 'lic', href: '/account/licenses', icon: Key },
-  { key: 'dls', href: '/account/downloads', icon: Download },
-  { key: 'prf', href: '/account/profile', icon: User },
+  { key: 'overview', href: '/account', icon: Home },
+  { key: 'orders', href: '/account/orders', icon: ShoppingBag },
+  { key: 'licenses', href: '/account/licenses', icon: Key },
+  { key: 'downloads', href: '/account/downloads', icon: Download },
+  { key: 'profile', href: '/account/profile', icon: User },
 ]
 
 export function AccountSidebar() {
@@ -25,7 +25,7 @@ export function AccountSidebar() {
   return (
     <nav className="space-y-2 p-4">
       <div className="mb-4 text-xs font-semibold uppercase tracking-wide text-gray-500">
-        {t('acct.nav.ttl')}
+        {t('account.nav.title')}
       </div>
       {navigation.map((item) => {
         const Icon = item.icon
@@ -39,7 +39,7 @@ export function AccountSidebar() {
             )}
           >
             <Icon className="mr-3 h-4 w-4" />
-            {t(`acct.nav.${item.key}`)}
+            {t(`account.nav.${item.key}`)}
           </Link>
         )
       })}
