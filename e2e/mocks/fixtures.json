@@ -1,0 +1,421 @@
+{
+  "comment": "Shared fixtures for the e2e mock backend (Medusa + Keygen + GitHub). Personas are keyed by the fake medusa-token cookie value set by specs. Dates for the expired persona are fixed relative to the release publish dates so the gating boundary stays stable.",
+  "downloadTokenSecret": "e2e-download-token-secret",
+  "policies": {
+    "yearly": "261cb7e2-6e80-476e-98bd-fe7f406f258d",
+    "lifetime": "e2e-lifetime-policy-0000"
+  },
+  "personas": {
+    "e2e-active": {
+      "customer": {
+        "id": "cust_e2e_active",
+        "email": "active@example.com",
+        "first_name": "Ada",
+        "last_name": "Active",
+        "has_account": true,
+        "created_at": "2026-01-10T09:00:00.000Z",
+        "updated_at": "2026-01-10T09:00:00.000Z"
+      },
+      "orders": [
+        {
+          "id": "order_e2e_active_1",
+          "status": "completed",
+          "payment_status": "captured",
+          "display_id": 1001,
+          "email": "active@example.com",
+          "currency_code": "usd",
+          "total": 129,
+          "subtotal": 129,
+          "tax_total": 0,
+          "created_at": "2026-01-10T09:05:00.000Z",
+          "updated_at": "2026-01-10T09:05:00.000Z",
+          "items": [
+            {
+              "id": "item_e2e_active_1",
+              "title": "WCPOS Pro Yearly",
+              "quantity": 1,
+              "unit_price": 129,
+              "total": 129
+            }
+          ],
+          "metadata": {
+            "licenses": [
+              {
+                "license_id": "lic-e2e-active",
+                "license_key": "E2EA-CTIV-EKEY-1234"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "e2e-expired": {
+      "customer": {
+        "id": "cust_e2e_expired",
+        "email": "expired@example.com",
+        "first_name": "Eve",
+        "last_name": "Expired",
+        "has_account": true,
+        "created_at": "2024-06-01T09:00:00.000Z",
+        "updated_at": "2024-06-01T09:00:00.000Z"
+      },
+      "orders": [
+        {
+          "id": "order_e2e_expired_1",
+          "status": "completed",
+          "payment_status": "captured",
+          "display_id": 1002,
+          "email": "expired@example.com",
+          "currency_code": "usd",
+          "total": 129,
+          "subtotal": 129,
+          "tax_total": 0,
+          "created_at": "2024-06-15T12:00:00.000Z",
+          "updated_at": "2024-06-15T12:00:00.000Z",
+          "items": [
+            {
+              "id": "item_e2e_expired_1",
+              "title": "WCPOS Pro Yearly",
+              "quantity": 1,
+              "unit_price": 129,
+              "total": 129
+            }
+          ],
+          "metadata": {
+            "licenses": [
+              {
+                "license_id": "lic-e2e-expired",
+                "license_key": "E2EX-PIRE-DKEY-5678"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "e2e-suspended": {
+      "customer": {
+        "id": "cust_e2e_suspended",
+        "email": "suspended@example.com",
+        "first_name": "Sam",
+        "last_name": "Suspended",
+        "has_account": true,
+        "created_at": "2025-09-01T09:00:00.000Z",
+        "updated_at": "2025-09-01T09:00:00.000Z"
+      },
+      "orders": [
+        {
+          "id": "order_e2e_suspended_1",
+          "status": "completed",
+          "payment_status": "captured",
+          "display_id": 1003,
+          "email": "suspended@example.com",
+          "currency_code": "usd",
+          "total": 129,
+          "subtotal": 129,
+          "tax_total": 0,
+          "created_at": "2025-09-01T12:00:00.000Z",
+          "updated_at": "2025-09-01T12:00:00.000Z",
+          "items": [
+            {
+              "id": "item_e2e_suspended_1",
+              "title": "WCPOS Pro Yearly",
+              "quantity": 1,
+              "unit_price": 129,
+              "total": 129
+            }
+          ],
+          "metadata": {
+            "licenses": [
+              {
+                "license_id": "lic-e2e-suspended",
+                "license_key": "E2ES-USPE-NDED-9012"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "e2e-legacy": {
+      "customer": {
+        "id": "cust_e2e_legacy",
+        "email": "legacy@example.com",
+        "first_name": "Lena",
+        "last_name": "Legacy",
+        "has_account": true,
+        "created_at": "2019-03-04T09:00:00.000Z",
+        "updated_at": "2019-03-04T09:00:00.000Z"
+      },
+      "orders": [
+        {
+          "id": "order_e2e_legacy_1",
+          "status": "completed",
+          "payment_status": "captured",
+          "display_id": 87,
+          "email": "legacy@example.com",
+          "currency_code": "usd",
+          "total": 99,
+          "subtotal": 99,
+          "tax_total": 0,
+          "created_at": "2019-03-04T10:00:00.000Z",
+          "updated_at": "2019-03-04T10:00:00.000Z",
+          "items": [
+            {
+              "id": "item_e2e_legacy_1",
+              "title": "WooCommerce POS Pro (legacy)",
+              "quantity": 1,
+              "unit_price": 99,
+              "total": 99
+            }
+          ],
+          "metadata": {
+            "license_key": "WP19-LEGA-CYKE-Y007"
+          }
+        },
+        {
+          "id": "order_e2e_legacy_2",
+          "status": "completed",
+          "payment_status": "captured",
+          "display_id": 92,
+          "email": "legacy@example.com",
+          "currency_code": "usd",
+          "total": 99,
+          "subtotal": 99,
+          "tax_total": 0,
+          "created_at": "2020-07-21T10:00:00.000Z",
+          "updated_at": "2020-07-21T10:00:00.000Z",
+          "items": [
+            {
+              "id": "item_e2e_legacy_2",
+              "title": "WooCommerce POS Pro (legacy)",
+              "quantity": 1,
+              "unit_price": 99,
+              "total": 99
+            }
+          ],
+          "metadata": {
+            "license_key": "WP20-LOST-KEYX-0000"
+          }
+        }
+      ]
+    },
+    "e2e-none": {
+      "customer": {
+        "id": "cust_e2e_none",
+        "email": "nolicense@example.com",
+        "first_name": "Nina",
+        "last_name": "NoLicense",
+        "has_account": true,
+        "created_at": "2026-05-01T09:00:00.000Z",
+        "updated_at": "2026-05-01T09:00:00.000Z"
+      },
+      "orders": []
+    },
+    "e2e-purchase": {
+      "customer": {
+        "id": "cust_e2e_purchase",
+        "email": "purchase@example.com",
+        "first_name": "Pat",
+        "last_name": "Purchaser",
+        "has_account": true,
+        "created_at": "2026-06-09T09:00:00.000Z",
+        "updated_at": "2026-06-09T09:00:00.000Z"
+      },
+      "orders": [
+        {
+          "id": "order_e2e_purchase_1",
+          "status": "completed",
+          "payment_status": "captured",
+          "display_id": 2001,
+          "email": "purchase@example.com",
+          "currency_code": "usd",
+          "total": 129,
+          "subtotal": 129,
+          "tax_total": 0,
+          "created_at": "2026-06-09T09:10:00.000Z",
+          "updated_at": "2026-06-09T09:10:00.000Z",
+          "items": [
+            {
+              "id": "item_e2e_purchase_1",
+              "title": "WCPOS Pro Yearly",
+              "quantity": 1,
+              "unit_price": 129,
+              "total": 129
+            }
+          ],
+          "metadata": {
+            "licenses": [
+              {
+                "license_id": "lic-e2e-purchase",
+                "license_key": "PURC-HASE-FLOW-7777"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "licenses": {
+    "lic-e2e-active": {
+      "key": "E2EA-CTIV-EKEY-1234",
+      "status": "ACTIVE",
+      "expiry": "2099-12-31T23:59:59.000Z",
+      "maxMachines": 4,
+      "policy": "yearly",
+      "created": "2026-01-10T09:05:00.000Z",
+      "machines": [
+        {
+          "id": "mach-e2e-front-counter",
+          "fingerprint": "fp-front-counter-001",
+          "name": "Front Counter POS",
+          "metadata": { "domain": "shop.example.com" },
+          "created": "2026-02-01T08:00:00.000Z"
+        },
+        {
+          "id": "mach-e2e-back-office",
+          "fingerprint": "fp-back-office-002",
+          "name": "Back Office Mac",
+          "metadata": { "domain": "office.example.com" },
+          "created": "2026-03-15T08:00:00.000Z"
+        }
+      ]
+    },
+    "lic-e2e-expired": {
+      "key": "E2EX-PIRE-DKEY-5678",
+      "status": "EXPIRED",
+      "expiry": "2025-06-15T00:00:00.000Z",
+      "maxMachines": 1,
+      "policy": "yearly",
+      "created": "2024-06-15T12:00:00.000Z",
+      "machines": []
+    },
+    "lic-e2e-suspended": {
+      "key": "E2ES-USPE-NDED-9012",
+      "status": "SUSPENDED",
+      "expiry": "2026-10-01T00:00:00.000Z",
+      "maxMachines": 1,
+      "policy": "yearly",
+      "created": "2025-09-01T12:00:00.000Z",
+      "machines": []
+    },
+    "lic-e2e-legacy": {
+      "key": "WP19-LEGA-CYKE-Y007",
+      "status": "ACTIVE",
+      "expiry": null,
+      "maxMachines": 1,
+      "policy": "lifetime",
+      "created": "2019-03-04T10:00:00.000Z",
+      "machines": []
+    },
+    "lic-e2e-purchase": {
+      "key": "PURC-HASE-FLOW-7777",
+      "status": "ACTIVE",
+      "expiry": "2099-06-09T00:00:00.000Z",
+      "maxMachines": 4,
+      "policy": "yearly",
+      "created": "2026-06-09T09:10:00.000Z",
+      "machines": []
+    }
+  },
+  "resolvableLicenseKeys": {
+    "WP19-LEGA-CYKE-Y007": "lic-e2e-legacy"
+  },
+  "releases": [
+    {
+      "tag_name": "v3.2.0",
+      "name": "WCPOS Pro 3.2.0",
+      "body": "Latest release with new features.",
+      "published_at": "2026-01-15T00:00:00.000Z",
+      "draft": false,
+      "prerelease": false,
+      "assets": [
+        {
+          "name": "woocommerce-pos-pro-3.2.0.zip",
+          "url": "https://api.github.com/repos/wcpos/woocommerce-pos-pro/releases/assets/3201",
+          "browser_download_url": "https://api.github.com/e2e-assets/woocommerce-pos-pro-3.2.0.zip"
+        }
+      ]
+    },
+    {
+      "tag_name": "v2.5.0",
+      "name": "WCPOS Pro 2.5.0",
+      "body": "Stability fixes.",
+      "published_at": "2025-05-01T00:00:00.000Z",
+      "draft": false,
+      "prerelease": false,
+      "assets": [
+        {
+          "name": "woocommerce-pos-pro-2.5.0.zip",
+          "url": "https://api.github.com/repos/wcpos/woocommerce-pos-pro/releases/assets/2501",
+          "browser_download_url": "https://api.github.com/e2e-assets/woocommerce-pos-pro-2.5.0.zip"
+        }
+      ]
+    },
+    {
+      "tag_name": "v1.9.0",
+      "name": "WCPOS Pro 1.9.0",
+      "body": "Older release.",
+      "published_at": "2024-11-01T00:00:00.000Z",
+      "draft": false,
+      "prerelease": false,
+      "assets": [
+        {
+          "name": "woocommerce-pos-pro-1.9.0.zip",
+          "url": "https://api.github.com/repos/wcpos/woocommerce-pos-pro/releases/assets/1901",
+          "browser_download_url": "https://api.github.com/e2e-assets/woocommerce-pos-pro-1.9.0.zip"
+        }
+      ]
+    }
+  ],
+  "products": [
+    {
+      "id": "prod_e2e_yearly",
+      "title": "WCPOS Pro Yearly",
+      "handle": "wcpos-pro-yearly",
+      "description": "Yearly license for WCPOS Pro.",
+      "status": "published",
+      "thumbnail": null,
+      "images": [],
+      "variants": [
+        {
+          "id": "variant_e2e_yearly",
+          "title": "Yearly",
+          "sku": "wcpos-pro-yearly",
+          "prices": [
+            { "id": "price_e2e_yearly", "currency_code": "usd", "amount": 129 }
+          ],
+          "options": {},
+          "manage_inventory": false
+        }
+      ],
+      "options": [],
+      "metadata": {},
+      "created_at": "2026-01-01T00:00:00.000Z",
+      "updated_at": "2026-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "prod_e2e_lifetime",
+      "title": "WCPOS Pro Lifetime",
+      "handle": "wcpos-pro-lifetime",
+      "description": "Lifetime license for WCPOS Pro.",
+      "status": "published",
+      "thumbnail": null,
+      "images": [],
+      "variants": [
+        {
+          "id": "variant_e2e_lifetime",
+          "title": "Lifetime",
+          "sku": "wcpos-pro-lifetime",
+          "prices": [
+            { "id": "price_e2e_lifetime", "currency_code": "usd", "amount": 399 }
+          ],
+          "options": {},
+          "manage_inventory": false
+        }
+      ],
+      "options": [],
+      "metadata": {},
+      "created_at": "2026-01-01T00:00:00.000Z",
+      "updated_at": "2026-01-01T00:00:00.000Z"
+    }
+  ]
+}
