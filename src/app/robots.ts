@@ -5,7 +5,19 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: '*',
       allow: '/',
-      disallow: ['/account/', '/api/', '/admin/'],
+      disallow: [
+        '/account',
+        '/api/',
+        '/admin',
+        '/login',
+        '/register',
+        '/pro/checkout',
+        // Locale-prefixed variants (e.g. /fr/login)
+        '/*/account',
+        '/*/login',
+        '/*/register',
+        '/*/pro/checkout',
+      ],
     },
     sitemap: 'https://wcpos.com/sitemap.xml',
   }

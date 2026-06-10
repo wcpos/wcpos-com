@@ -4,6 +4,23 @@ import { cacheLife, cacheTag } from 'next/cache'
 import { fetchRoadmapData } from '@/services/core/external/github-roadmap'
 import { MilestoneList } from '@/components/roadmap/milestone-list'
 import type { RoadmapData } from '@/types/roadmap'
+import type { Metadata } from 'next'
+import { marketingMetadata } from '@/lib/seo'
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}): Promise<Metadata> {
+  const { locale } = await params
+  return marketingMetadata({
+    locale,
+    path: '/roadmap',
+    title: 'Roadmap',
+    description:
+      'See what we are building next for WooCommerce POS — upcoming features, milestones, and release progress.',
+  })
+}
 
 async function getCachedRoadmapData(): Promise<RoadmapData> {
   'use cache'

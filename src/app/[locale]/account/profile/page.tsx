@@ -5,6 +5,12 @@ import { formatDateForLocale } from '@/lib/date-format'
 import { redirect } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { ProfileEditForm } from '@/components/account/profile-edit-form'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Profile',
+  description: 'Manage your WCPOS account profile details.',
+}
 
 async function ProfileContent({ locale }: { locale: string }) {
   const customer = await getCustomer()

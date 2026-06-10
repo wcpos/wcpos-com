@@ -8,6 +8,12 @@ import {
   isReleaseAllowedForLicenses,
 } from '@/services/core/business/pro-downloads'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Downloads',
+  description: 'Download WCPOS Pro plugin releases for your licenses.',
+}
 
 function DownloadsSkeleton() {
   return (
