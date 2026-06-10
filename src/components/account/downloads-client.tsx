@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { ChevronLeft, ChevronRight, Download } from 'lucide-react'
-import { useLocale } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 import { Link } from '@/i18n/navigation'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -44,6 +44,7 @@ export function DownloadsClient({
   access,
 }: DownloadsClientProps) {
   const locale = useLocale()
+  const t = useTranslations('account.downloads')
   const releases = initialReleases
   const [currentPage, setCurrentPage] = useState(1)
   const [downloadingVersion, setDownloadingVersion] = useState<string | null>(
@@ -91,16 +92,14 @@ export function DownloadsClient({
         const message =
           typeof payload.error === 'string'
             ? payload.error
-            : 'Download is not available for this version'
+            : t('tokenErrorFallback')
         throw new Error(message)
       }
 
       const data = await response.json()
       window.location.assign(data.downloadUrl)
     } catch (err) {
-      setError(
-        err instanceof Error ? err.message : 'Failed to start download'
-      )
+      setError(err instanceof Error ? err.message : t('startErrorFallback'))
     } finally {
       setDownloadingVersion(null)
     }
@@ -117,68 +116,59 @@ export function DownloadsClient({
       {expiredAccess && access.latestExpiry && (
         <div className="flex flex-wrap items-center justify-between gap-3 rounded-md border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900">
           <p>
-            {`Your license expired on ${formatDateForLocale(
-              access.latestExpiry,
-              locale
-            )}. You can still download versions released before then.`}
+            {t('expiredBanner', {
+              date: formatDateForLocale(access.latestExpiry, locale),
+            })}
           </p>
           <Button asChild size="sm">
-            <Link href="/pro">Renew license</Link>
+            <Link href="/pro">{t('renewLicense')}</Link>
           </Button>
         </div>
       )}
 
       {suspendedAccess && (
         <div className="flex flex-wrap items-center justify-between gap-3 rounded-md border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900">
-          <p>Your license is suspended &mdash; contact support.</p>
+          <p>{t('suspendedBanner')}</p>
           <Button asChild size="sm" variant="outline">
-            <Link href="/support">Contact support</Link>
+            <Link href="/support">{t('contactSupport')}</Link>
           </Button>
         </div>
       )}
 
       {unknownAccess && (
         <div className="flex flex-wrap items-center justify-between gap-3 rounded-md border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900">
-          <p>
-            We couldn&apos;t verify your license &mdash; downloads may be
-            temporarily limited. Try again shortly or contact support.
-          </p>
+          <p>{t('unknownBanner')}</p>
           <Button asChild size="sm" variant="outline">
-            <Link href="/support">Contact support</Link>
+            <Link href="/support">{t('contactSupport')}</Link>
           </Button>
         </div>
       )}
 
       {inactiveFallback && (
         <div className="flex flex-wrap items-center justify-between gap-3 rounded-md border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900">
-          <p>
-            You have no active license. Only versions released during your
-            license term are available.
-          </p>
+          <p>{t('inactiveBanner')}</p>
           <Button asChild size="sm">
-            <Link href="/pro">Renew license</Link>
+            <Link href="/pro">{t('renewLicense')}</Link>
           </Button>
         </div>
       )}
 
       {noLicense && (
         <div className="flex flex-wrap items-center justify-between gap-3 rounded-md border bg-muted p-3 text-sm">
-          <p>A WCPOS Pro license is required to download the plugin.</p>
+          <p>{t('noLicenseBanner')}</p>
           <Button asChild size="sm">
-            <Link href="/pro">Get WCPOS Pro</Link>
+            <Link href="/pro">{t('getPro')}</Link>
           </Button>
         </div>
       )}
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-lg">WCPOS Pro Downloads</CardTitle>
+          <CardTitle className="text-lg">{t('listTitle')}</CardTitle>
         </CardHeader>
         <CardContent>
           {releases.length === 0 ? (
-            <p className="text-sm text-muted-foreground">
-              No downloadable versions were found.
-            </p>
+            <p className="text-sm text-muted-foreground">{t('emptyList')}</p>
           ) : (
             <div className="space-y-4">
               {visibleReleases.map((release) => (
@@ -197,10 +187,10 @@ export function DownloadsClient({
                     {!release.allowed && (
                       <p className="mt-1 text-xs text-amber-700">
                         {expiredAccess
-                          ? 'Released after your license expired.'
+                          ? t('reasonExpired')
                           : unknownAccess
-                            ? "We couldn't verify your license."
-                            : 'Requires an active license.'}
+                            ? t('reasonUnknown')
+                            : t('reasonInactive')}
                       </p>
                     )}
                     {release.releaseNotes?.trim() ? (
@@ -210,7 +200,7 @@ export function DownloadsClient({
                       />
                     ) : (
                       <p className="mt-1 text-xs text-muted-foreground">
-                        No release notes yet.
+                        {t('noReleaseNotes')}
                       </p>
                     )}
                   </div>
@@ -222,10 +212,10 @@ export function DownloadsClient({
                   >
                     <Download className="mr-2 h-4 w-4" />
                     {!release.allowed
-                      ? 'Unavailable'
+                      ? t('unavailable')
                       : downloadingVersion === release.version
-                        ? 'Preparing...'
-                        : 'Download'}
+                        ? t('preparing')
+                        : t('download')}
                   </Button>
                 </div>
               ))}
@@ -233,7 +223,7 @@ export function DownloadsClient({
               {totalPages > 1 && (
                 <div className="flex items-center justify-between border-t pt-3">
                   <p className="text-xs text-muted-foreground">
-                    Page {safePage} of {totalPages}
+                    {t('pageOf', { page: safePage, total: totalPages })}
                   </p>
                   <div className="flex items-center gap-2">
                     <Button
@@ -242,10 +232,10 @@ export function DownloadsClient({
                       size="sm"
                       onClick={() => setCurrentPage(Math.max(1, safePage - 1))}
                       disabled={safePage === 1}
-                      aria-label="Previous page"
+                      aria-label={t('previousPageAria')}
                     >
                       <ChevronLeft className="h-4 w-4" />
-                      Previous
+                      {t('previous')}
                     </Button>
                     <Button
                       type="button"
@@ -255,9 +245,9 @@ export function DownloadsClient({
                         setCurrentPage(Math.min(totalPages, safePage + 1))
                       }
                       disabled={safePage === totalPages}
-                      aria-label="Next page"
+                      aria-label={t('nextPageAria')}
                     >
-                      Next
+                      {t('next')}
                       <ChevronRight className="h-4 w-4" />
                     </Button>
                   </div>

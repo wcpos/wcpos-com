@@ -1,10 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
+import { renderWithIntl as render } from '@/test/intl'
 import { ProfileEditForm } from './profile-edit-form'
-
-vi.mock('next-intl', () => ({
-  useLocale: () => 'en-US',
-}))
 
 const mockFetch = vi.fn()
 vi.stubGlobal('fetch', mockFetch)

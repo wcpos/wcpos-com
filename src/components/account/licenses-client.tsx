@@ -1,13 +1,14 @@
 'use client'
 
 import { useState } from 'react'
-import { useLocale } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Key, Monitor, Trash2, Download } from 'lucide-react'
 import { Link } from '@/i18n/navigation'
 import { formatDateForLocale } from '@/lib/date-format'
 import {
+  getExpiringSoonExpiry,
   getLicenseDisplayStatus,
   isLicenseExpiringSoon,
 } from '@/lib/license-display'
@@ -34,12 +35,30 @@ interface License {
 
 const YEARLY_POLICY = '261cb7e2-6e80-476e-98bd-fe7f406f258d'
 
+// Display statuses with a dedicated translation. The underlying status
+// values stay untouched (they drive entitlement logic and e2e selectors);
+// only the badge label is translated, and unexpected statuses fall back to
+// the raw value.
+const TRANSLATED_STATUSES = [
+  'active',
+  'expired',
+  'suspended',
+  'unknown',
+] as const
+type TranslatedStatus = (typeof TRANSLATED_STATUSES)[number]
+
+function isTranslatedStatus(status: string): status is TranslatedStatus {
+  return (TRANSLATED_STATUSES as readonly string[]).includes(status)
+}
+
 interface LicensesClientProps {
   initialLicenses: License[]
 }
 
 export function LicensesClient({ initialLicenses }: LicensesClientProps) {
   const locale = useLocale()
+  const t = useTranslations('account.licenses')
+  const tStatus = useTranslations('account.licenseStatus')
   const [licenses, setLicenses] = useState<License[]>(initialLicenses)
   const [error, setError] = useState<string | null>(null)
   const [deactivating, setDeactivating] = useState<string | null>(null)
@@ -55,12 +74,12 @@ export function LicensesClient({ initialLicenses }: LicensesClientProps) {
           window.location.assign('/login')
           return
         }
-        throw new Error('Failed to fetch licenses')
+        throw new Error(t('loadError'))
       }
       const data = await res.json()
       setLicenses(data.licenses || [])
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load licenses')
+      setError(err instanceof Error ? err.message : t('loadError'))
     }
   }
 
@@ -73,7 +92,7 @@ export function LicensesClient({ initialLicenses }: LicensesClientProps) {
       if (!res.ok) throw new Error('Failed to deactivate')
       await fetchLicenses()
     } catch {
-      setError('Failed to deactivate machine. Please try again.')
+      setError(t('deactivateError'))
     } finally {
       setDeactivating(null)
     }
@@ -100,8 +119,14 @@ export function LicensesClient({ initialLicenses }: LicensesClientProps) {
     getLicenseDisplayStatus(license.status, license.expiry, now)
 
   const getPlanName = (policyId: string) => {
-    return policyId === YEARLY_POLICY ? 'Yearly' : 'Lifetime'
+    return policyId === YEARLY_POLICY ? t('planYearly') : t('planLifetime')
   }
+
+  // When another active license (e.g. a lifetime one) keeps update access
+  // open beyond the warning window, the per-card notice drops the "renew to
+  // keep receiving updates" urgency — updates are not actually at risk.
+  // Mirrors the account-level suppression on the overview page.
+  const updateAccessLapsingSoon = getExpiringSoonExpiry(licenses, now) !== null
 
   return (
     <>
@@ -115,8 +140,8 @@ export function LicensesClient({ initialLicenses }: LicensesClientProps) {
         <Card>
           <CardContent className="py-8 text-center text-muted-foreground">
             <Key className="h-8 w-8 mx-auto mb-2 opacity-50" />
-            <p>No licenses found.</p>
-            <p className="text-sm mt-1">Purchase WCPOS Pro to get a license.</p>
+            <p>{t('emptyTitle')}</p>
+            <p className="text-sm mt-1">{t('emptyDescription')}</p>
           </CardContent>
         </Card>
       ) : (
@@ -136,11 +161,13 @@ export function LicensesClient({ initialLicenses }: LicensesClientProps) {
                     className={`text-xs font-medium px-2 py-1 rounded capitalize ${getStatusColor(displayStatus)}`}
                     title={
                       displayStatus === 'unknown'
-                        ? "We couldn't verify this license right now"
+                        ? t('unknownStatusTooltip')
                         : undefined
                     }
                   >
-                    {displayStatus}
+                    {isTranslatedStatus(displayStatus)
+                      ? tStatus(displayStatus)
+                      : displayStatus}
                   </span>
                   <span className="text-xs text-muted-foreground">
                     {getPlanName(license.policyId)}
@@ -152,24 +179,31 @@ export function LicensesClient({ initialLicenses }: LicensesClientProps) {
               {expiringSoon && license.expiry && (
                 <div className="flex flex-wrap items-center justify-between gap-3 rounded-md border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900">
                   <p>
-                    Your license expires on{' '}
-                    {formatDateForLocale(license.expiry, locale)} &mdash; renew
-                    to keep receiving updates.
+                    {t(
+                      updateAccessLapsingSoon
+                        ? 'expiresSoonRenew'
+                        : 'expiresSoon',
+                      { date: formatDateForLocale(license.expiry, locale) }
+                    )}
                   </p>
                   <Button asChild size="sm">
-                    <Link href="/pro">Renew</Link>
+                    <Link href="/pro">{t('renew')}</Link>
                   </Button>
                 </div>
               )}
 
               {displayStatus === 'unknown' && (
                 <p className="text-sm text-muted-foreground">
-                  We couldn&apos;t verify this license right now. Try again
-                  shortly or{' '}
-                  <Link href="/support" className="underline underline-offset-4">
-                    contact support
-                  </Link>
-                  .
+                  {t.rich('unverifiable', {
+                    supportLink: (chunks) => (
+                      <Link
+                        href="/support"
+                        className="underline underline-offset-4"
+                      >
+                        {chunks}
+                      </Link>
+                    ),
+                  })}
                 </p>
               )}
 
@@ -177,34 +211,43 @@ export function LicensesClient({ initialLicenses }: LicensesClientProps) {
                 <div className="flex gap-6 text-sm">
                   {license.expiry && (
                     <div>
-                      <span className="text-muted-foreground">Expires: </span>
+                      <span className="text-muted-foreground">
+                        {t('expiresLabel')}{' '}
+                      </span>
                       <span>{formatDateForLocale(license.expiry, locale)}</span>
                     </div>
                   )}
                   <div>
-                    <span className="text-muted-foreground">Activations: </span>
-                    <span>{license.machines.length} of {license.maxMachines}</span>
+                    <span className="text-muted-foreground">
+                      {t('activationsLabel')}{' '}
+                    </span>
+                    <span>
+                      {t('activationsCount', {
+                        count: license.machines.length,
+                        max: license.maxMachines,
+                      })}
+                    </span>
                   </div>
                 </div>
                 {displayStatus === 'active' && (
                   <Button asChild size="sm">
                     <Link href="/account/downloads">
                       <Download className="mr-2 h-4 w-4" />
-                      Downloads
+                      {t('downloads')}
                     </Link>
                   </Button>
                 )}
                 {displayStatus === 'expired' && (
                   <div className="flex items-center gap-2">
                     <Button asChild size="sm">
-                      <Link href="/pro">Renew</Link>
+                      <Link href="/pro">{t('renew')}</Link>
                     </Button>
                     {/* Expired licenses can still download versions released
                         before their expiry, so keep downloads reachable. */}
                     <Button asChild size="sm" variant="outline">
                       <Link href="/account/downloads">
                         <Download className="mr-2 h-4 w-4" />
-                        Downloads
+                        {t('downloads')}
                       </Link>
                     </Button>
                   </div>
@@ -213,7 +256,7 @@ export function LicensesClient({ initialLicenses }: LicensesClientProps) {
 
               {license.machines.length > 0 && (
                 <div className="space-y-2">
-                  <p className="text-sm font-medium">Activated Machines</p>
+                  <p className="text-sm font-medium">{t('activatedMachines')}</p>
                   {license.machines.map((machine) => (
                     <div
                       key={machine.id}
@@ -229,7 +272,12 @@ export function LicensesClient({ initialLicenses }: LicensesClientProps) {
                             <p className="text-xs text-muted-foreground">{machine.fingerprint}</p>
                           )}
                           <p className="text-xs text-muted-foreground">
-                            Added {formatDateForLocale(machine.createdAt, locale)}
+                            {t('machineAdded', {
+                              date: formatDateForLocale(
+                                machine.createdAt,
+                                locale
+                              ),
+                            })}
                           </p>
                         </div>
                       </div>
@@ -238,7 +286,9 @@ export function LicensesClient({ initialLicenses }: LicensesClientProps) {
                         size="sm"
                         onClick={() => handleDeactivate(license.id, machine.id)}
                         disabled={deactivating === machine.id}
-                        aria-label={`Deactivate ${machine.name || 'machine'}`}
+                        aria-label={t('deactivateMachineAria', {
+                          name: machine.name || t('genericMachineName'),
+                        })}
                       >
                         <Trash2
                           className={`h-4 w-4 ${

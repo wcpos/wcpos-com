@@ -1,4 +1,4 @@
-import { setRequestLocale } from 'next-intl/server'
+import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { Suspense } from 'react'
 import { redirectToLoginClearingSession } from '@/lib/login-redirect'
 import { DownloadsClient } from '@/components/account/downloads-client'
@@ -10,9 +10,17 @@ import {
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import type { Metadata } from 'next'
 
-export const metadata: Metadata = {
-  title: 'Downloads',
-  description: 'Download WCPOS Pro plugin releases for your licenses.',
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}): Promise<Metadata> {
+  const { locale } = await params
+  const t = await getTranslations({ locale, namespace: 'account.meta' })
+  return {
+    title: t('downloads.title'),
+    description: t('downloads.description'),
+  }
 }
 
 function DownloadsSkeleton() {
@@ -100,10 +108,11 @@ export default async function DownloadsPage({
 }) {
   const { locale } = await params
   setRequestLocale(locale)
+  const t = await getTranslations({ locale, namespace: 'account.downloads' })
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold">Downloads</h1>
+      <h1 className="text-2xl font-bold">{t('heading')}</h1>
       <Suspense fallback={<DownloadsSkeleton />}>
         <DownloadsContent locale={locale} />
       </Suspense>

@@ -1,4 +1,4 @@
-import { setRequestLocale } from 'next-intl/server'
+import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { Suspense } from 'react'
 import { getCustomer, getCustomerOrders } from '@/lib/medusa-auth'
 import { getResolvedCustomerLicenses } from '@/lib/customer-licenses'
@@ -13,16 +13,25 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import type { Metadata } from 'next'
 
-export const metadata: Metadata = {
-  title: 'Account',
-  description: 'Overview of your WCPOS account, recent orders, and licenses.',
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}): Promise<Metadata> {
+  const { locale } = await params
+  const t = await getTranslations({ locale, namespace: 'account.meta' })
+  return {
+    title: t('overview.title'),
+    description: t('overview.description'),
+  }
 }
 
 async function AccountOverviewContent({ locale }: { locale: string }) {
   // Resolving licenses (one Keygen resolution pass, shared with the licenses
   // page) lets the overview warn about imminent expiry, and keeps the license
   // count consistent with what /account/licenses actually lists.
-  const [customer, orders, { licenses }] = await Promise.all([
+  const [t, customer, orders, { licenses }] = await Promise.all([
+    getTranslations({ locale, namespace: 'account.overview' }),
     getCustomer(),
     getCustomerOrders(5),
     getResolvedCustomerLicenses(),
@@ -43,18 +52,20 @@ async function AccountOverviewContent({ locale }: { locale: string }) {
   return (
     <>
       <h1 className="text-2xl font-bold">
-        Welcome{customer?.first_name ? `, ${customer.first_name}` : ''}
+        {customer?.first_name
+          ? t('welcome', { name: customer.first_name })
+          : t('welcomeNoName')}
       </h1>
 
       {expiringSoonExpiry && (
         <div className="flex flex-wrap items-center justify-between gap-3 rounded-md border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900">
           <p>
-            Your license expires on{' '}
-            {formatDateForLocale(expiringSoonExpiry, locale)} &mdash; renew to
-            keep receiving updates.
+            {t('expiresSoonRenew', {
+              date: formatDateForLocale(expiringSoonExpiry, locale),
+            })}
           </p>
           <Button asChild size="sm">
-            <Link href="/pro">Renew license</Link>
+            <Link href="/pro">{t('renewLicense')}</Link>
           </Button>
         </div>
       )}
@@ -62,26 +73,30 @@ async function AccountOverviewContent({ locale }: { locale: string }) {
       <div className="grid gap-4 md:grid-cols-2">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Orders</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              {t('ordersCardTitle')}
+            </CardTitle>
             <ShoppingBag className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{orders.length}</div>
             <Link href="/account/orders" className="text-sm text-muted-foreground hover:underline">
-              View all orders
+              {t('viewAllOrders')}
             </Link>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Licenses</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              {t('licensesCardTitle')}
+            </CardTitle>
             <Key className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{licenseCount}</div>
             <Link href="/account/licenses" className="text-sm text-muted-foreground hover:underline">
-              Manage licenses
+              {t('manageLicenses')}
             </Link>
           </CardContent>
         </Card>
@@ -90,7 +105,7 @@ async function AccountOverviewContent({ locale }: { locale: string }) {
       {orders.length > 0 && (
         <Card>
           <CardHeader>
-            <CardTitle className="text-lg">Recent Orders</CardTitle>
+            <CardTitle className="text-lg">{t('recentOrders')}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
@@ -101,7 +116,9 @@ async function AccountOverviewContent({ locale }: { locale: string }) {
                   className="flex items-center justify-between p-3 rounded-lg border hover:bg-muted/50 transition-colors"
                 >
                   <div>
-                    <p className="font-medium">Order #{order.display_id}</p>
+                    <p className="font-medium">
+                      {t('orderNumber', { id: order.display_id })}
+                    </p>
                     <p className="text-sm text-muted-foreground">
                       {formatDateForLocale(order.created_at, locale)}
                     </p>
