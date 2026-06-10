@@ -23,13 +23,13 @@ async function AccountHeaderWrapper({ locale }: { locale: string }) {
 function AccountHeaderSkeleton() {
   return (
     <header className="bg-white border-b">
-      <div className="px-6 py-4 flex items-center justify-between">
-        <div className="flex items-center space-x-4">
+      <div className="flex items-center justify-between gap-4 px-4 py-4 sm:px-6">
+        <div className="flex shrink-0 items-center space-x-2 sm:space-x-4">
           <span className="text-xl font-bold text-gray-900">WCPOS</span>
           <span className="text-gray-400">/</span>
           <span className="text-gray-600">Account</span>
         </div>
-        <div className="h-5 w-48 bg-gray-200 rounded animate-pulse" />
+        <div className="h-5 w-24 animate-pulse rounded bg-gray-200 sm:w-48" />
       </div>
     </header>
   )
@@ -37,11 +37,16 @@ function AccountHeaderSkeleton() {
 
 function AccountSidebarSkeleton() {
   return (
-    <nav className="space-y-2 p-4">
-      <div className="mb-4 h-4 w-24 animate-pulse rounded bg-muted" />
-      {[1, 2, 3, 4, 5].map((row) => (
-        <div key={row} className="h-9 animate-pulse rounded-md bg-muted/60" />
-      ))}
+    <nav className="overflow-x-auto p-2 md:overflow-x-visible md:p-4">
+      <div className="mb-4 hidden h-4 w-24 animate-pulse rounded bg-muted md:block" />
+      <div className="flex w-max items-center gap-1 md:w-auto md:flex-col md:items-stretch md:gap-2">
+        {[1, 2, 3, 4, 5].map((row) => (
+          <div
+            key={row}
+            className="h-11 w-28 animate-pulse rounded-md bg-muted/60 md:h-9 md:w-auto"
+          />
+        ))}
+      </div>
     </nav>
   )
 }
@@ -71,17 +76,18 @@ export default async function AccountLayout({
       <Suspense fallback={<AccountHeaderSkeleton />}>
         <AccountHeaderWrapper locale={locale} />
       </Suspense>
-      <div className="flex flex-1">
-        <aside className="w-64 border-r">
-          {/* Suspense is required: the locale-aware Link reads the pathname,
-              which is dynamic on fallback shells of dynamic routes such as
-              /account/orders/[orderId] (cacheComponents/PPR). On static
-              account routes the sidebar still prerenders into the shell. */}
+      <div className="flex flex-1 flex-col md:flex-row">
+        <aside className="border-b md:w-64 md:border-b-0 md:border-r">
+          {/* Suspense is required: the locale-aware Link and usePathname read
+              the pathname, which is dynamic on fallback shells of dynamic
+              routes such as /account/orders/[orderId] (cacheComponents/PPR).
+              On static account routes the sidebar still prerenders into the
+              shell. */}
           <Suspense fallback={<AccountSidebarSkeleton />}>
             <AccountSidebar />
           </Suspense>
         </aside>
-        <main className="flex-1 p-6">
+        <main className="min-w-0 flex-1 p-4 sm:p-6">
           {children}
         </main>
       </div>
