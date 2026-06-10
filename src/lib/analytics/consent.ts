@@ -54,7 +54,13 @@ function readDocumentCookie(name: string): string | null {
     return null
   }
 
-  return decodeURIComponent(match.slice(prefix.length))
+  try {
+    return decodeURIComponent(match.slice(prefix.length))
+  } catch {
+    // Malformed % sequences in user-controlled cookies must fail closed,
+    // not crash consent reads.
+    return null
+  }
 }
 
 /** Client-side read of the consent decision. Returns null when undecided. */

@@ -61,6 +61,11 @@ describe('readAnalyticsConsent / writeAnalyticsConsent', () => {
     expect(readAnalyticsConsent()).toBeNull()
   })
 
+  it('fails closed on malformed percent sequences in the cookie', () => {
+    document.cookie = `${ANALYTICS_CONSENT_COOKIE}=%E0%`
+    expect(readAnalyticsConsent()).toBeNull()
+  })
+
   it('round-trips a granted decision', () => {
     writeAnalyticsConsent('granted')
 

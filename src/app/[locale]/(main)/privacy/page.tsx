@@ -91,8 +91,15 @@ export default async function PrivacyPage({
               you signed in to your account. Expires after 1 day.
             </li>
             <li>
+              <span className="font-medium text-foreground">wcpos-analytics-consent</span> —
+              remembers your analytics consent choice (accepted or declined).
+              Expires after 182 days.
+            </li>
+            <li>
               <span className="font-medium text-foreground">wcpos-distinct-id</span> — a
-              random identifier used for analytics. Expires after 1 year.
+              random identifier used for analytics. Only set after you accept
+              analytics on the consent banner; removed if you decline. Expires
+              after 1 year.
             </li>
             <li>
               <span className="font-medium text-foreground">NEXT_LOCALE</span> —
