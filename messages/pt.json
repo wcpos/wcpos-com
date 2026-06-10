@@ -145,7 +145,7 @@
       "emptyDescription": "Invoices and receipts will appear here after your first purchase.",
       "browsePro": "Browse WCPOS Pro",
       "orderNumber": "Order #{id}",
-      "dateAndItems": "{date} — {count, plural, one {# item} other {# items}}",
+      "dateAndItems": "{date} — {count, plural, =1 {# item} other {# items}}",
       "receiptPdf": "Receipt (PDF)",
       "downloadReceiptAria": "Download receipt for order #{id}"
     },
