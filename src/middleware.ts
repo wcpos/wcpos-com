@@ -135,9 +135,10 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  // The unanchored `.*\..*` alternative excludes every dotted path, which
-  // covers all static metadata files (favicon.ico, icon.png, and the static
-  // opengraph-image.png/twitter-image.png convention). Only the extension-less
-  // _next/* internals need explicit entries.
+  // The unanchored `.*\..*` alternative excludes every path containing a dot:
+  // all static files (favicon.ico, images, opengraph-image.png/twitter-image.png)
+  // follow the same root 404 rule as not-found.tsx. Only extension-less _next/*
+  // internals need explicit entries, and no code or routes reference
+  // extension-less metadata paths like /opengraph-image or /twitter-image.
   matcher: ['/((?!_next/static|_next/image|.*\\..*).*)'],
 }

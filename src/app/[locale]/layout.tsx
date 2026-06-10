@@ -29,8 +29,9 @@ export const metadata: Metadata = {
     type: 'website',
     siteName: 'WCPOS',
     // og:image and twitter:image come from the static opengraph-image.png
-    // file convention in this segment — explicit URLs here would point at
-    // the un-prefixed /opengraph-image path, which no route serves.
+    // file convention in this segment. No code or routes reference extension-less
+    // metadata paths like /opengraph-image or /twitter-image; explicit URLs here
+    // would point at the un-prefixed /opengraph-image path.
   },
   twitter: {
     card: 'summary_large_image',
