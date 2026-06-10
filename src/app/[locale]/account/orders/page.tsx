@@ -1,60 +1,14 @@
 import { setRequestLocale } from 'next-intl/server'
 import { Suspense } from 'react'
 import { getCustomerOrders } from '@/lib/medusa-auth'
-import { formatOrderAmount } from '@/lib/order-display'
-import { formatDateForLocale } from '@/lib/date-format'
-import { getOrderDisplayStatus } from '@/lib/order-status'
 import Link from 'next/link'
 import { Card, CardContent } from '@/components/ui/card'
+import { OrderHistoryList } from '@/components/account/order-history-list'
 
 async function OrdersContent({ locale }: { locale: string }) {
   const orders = await getCustomerOrders(50)
 
-  if (orders.length === 0) {
-    return (
-      <Card>
-        <CardContent className="py-8 text-center text-muted-foreground">
-          <p>No orders yet.</p>
-          <Link href="/pro" className="text-primary hover:underline mt-2 inline-block">
-            Browse WCPOS Pro
-          </Link>
-        </CardContent>
-      </Card>
-    )
-  }
-
-  return (
-    <div className="space-y-3">
-      {orders.map((order) => (
-        <Link
-          key={order.id}
-          href={`/account/orders/${order.id}`}
-          className="block"
-        >
-          <Card className="hover:bg-muted/50 transition-colors">
-            <CardContent className="py-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="font-medium">Order #{order.display_id}</p>
-                  <p className="text-sm text-muted-foreground">
-                    {formatDateForLocale(order.created_at, locale)} — {order.items.length} item{order.items.length !== 1 ? 's' : ''}
-                  </p>
-                </div>
-                <div className="text-right">
-                  <p className="font-medium">
-                    {formatOrderAmount(order.total, order.currency_code)}
-                  </p>
-                  <p className="text-sm text-muted-foreground">
-                    {getOrderDisplayStatus(order)}
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </Link>
-      ))}
-    </div>
-  )
+  return <OrderHistoryList orders={orders} locale={locale} />
 }
 
 function OrdersSkeleton() {
@@ -90,7 +44,20 @@ export default async function OrdersPage({
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold">Order History</h1>
+      <div className="space-y-1">
+        <h1 className="text-2xl font-bold">Order History</h1>
+        <p className="text-sm text-muted-foreground">
+          Invoices &amp; receipts — every order includes a downloadable PDF tax
+          receipt. Receipts use the billing address saved in your{' '}
+          <Link
+            href="/account/profile#billing-address"
+            className="text-primary hover:underline"
+          >
+            profile
+          </Link>
+          .
+        </p>
+      </div>
       <Suspense fallback={<OrdersSkeleton />}>
         <OrdersContent locale={locale} />
       </Suspense>
