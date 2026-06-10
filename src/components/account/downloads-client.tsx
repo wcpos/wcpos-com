@@ -143,7 +143,7 @@ export function DownloadsClient({
                     </p>
                     {!release.allowed && (
                       <p className="mt-1 text-xs text-amber-700">
-                        {expiredAccess
+                        {expiredAccess && access.latestExpiry
                           ? 'Released after your license expired.'
                           : 'Requires an active license.'}
                       </p>

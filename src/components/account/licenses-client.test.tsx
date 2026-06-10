@@ -60,6 +60,17 @@ describe('LicensesClient', () => {
     expect(downloadLink).toHaveAttribute('href', '/account/downloads')
   })
 
+  it('presents an active license with unparseable expiry as expired', () => {
+    render(
+      <LicensesClient
+        initialLicenses={[
+          makeLicense({ status: 'active', expiry: 'not-a-date' }),
+        ]}
+      />
+    )
+    expect(screen.getByText('expired')).toBeInTheDocument()
+  })
+
   it('presents an active license past its expiry date as expired', () => {
     render(
       <LicensesClient

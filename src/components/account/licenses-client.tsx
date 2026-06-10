@@ -93,12 +93,12 @@ export function LicensesClient({ initialLicenses }: LicensesClientProps) {
   // present those licenses as expired so the UI matches download entitlement.
   const getDisplayStatus = (license: License) => {
     const status = license.status.toLowerCase()
-    if (
-      status === 'active' &&
-      license.expiry &&
-      new Date(license.expiry).getTime() < now
-    ) {
-      return 'expired'
+    if (status === 'active' && license.expiry) {
+      const expiryTime = new Date(license.expiry).getTime()
+      // Unparseable expiry fails closed, matching server-side entitlement.
+      if (Number.isNaN(expiryTime) || expiryTime < now) {
+        return 'expired'
+      }
     }
     return status
   }
