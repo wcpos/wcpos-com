@@ -1,5 +1,13 @@
 import { setRequestLocale } from 'next-intl/server'
-import { DesktopDownloads } from '@/components/desktop-downloads'
+import { HeroSection } from '@/components/home/hero-section'
+import { ProblemSection } from '@/components/home/problem-section'
+import { EcosystemSection } from '@/components/home/ecosystem-section'
+import { BenefitsSection } from '@/components/home/benefits-section'
+import { UseCasesSection } from '@/components/home/use-cases-section'
+import { FeaturesSection } from '@/components/home/features-section'
+import { PricingTeaserSection } from '@/components/home/pricing-teaser-section'
+import { TrustSection } from '@/components/home/trust-section'
+import { CtaSection } from '@/components/home/cta-section'
 
 export default async function Home({
   params,
@@ -10,29 +18,17 @@ export default async function Home({
   setRequestLocale(locale)
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-8">
-      <div className="text-center mb-12">
-        <h1 className="text-4xl font-bold mb-4">WooCommerce POS</h1>
-        <p className="text-lg text-gray-600 mb-8">
-          Point of Sale for WooCommerce
-        </p>
-        <div className="space-y-2 text-sm text-gray-500">
-          <p>Site under construction</p>
-          <p>
-{/* eslint-disable-next-line @next/next/no-html-link-for-pages -- API route, not a page */}
-            <a
-              href="/api/health"
-              className="text-blue-500 hover:underline"
-            >
-              API Health Check
-            </a>
-          </p>
-        </div>
-      </div>
-      
-      <div className="w-full max-w-2xl">
-        <DesktopDownloads />
-      </div>
+    <main>
+      <HeroSection />
+      <ProblemSection />
+      <EcosystemSection />
+      <BenefitsSection />
+      <UseCasesSection />
+      <FeaturesSection />
+      <PricingTeaserSection />
+      <TrustSection />
+      <CtaSection />
+
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -41,7 +37,7 @@ export default async function Home({
             '@type': 'SoftwareApplication',
             name: 'WooCommerce POS',
             applicationCategory: 'BusinessApplication',
-            operatingSystem: 'Windows, macOS, Linux',
+            operatingSystem: 'Windows, macOS, Linux, iOS, Android',
             offers: {
               '@type': 'Offer',
               price: '0',
