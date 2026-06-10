@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 
 import { completeCart, createPaymentSession } from './complete-cart'
+import { OrderPendingError } from './checkout-errors'
 
 const mockFetch = vi.fn()
 vi.stubGlobal('fetch', mockFetch)
@@ -16,6 +17,8 @@ function jsonResponse(body: unknown, ok = true, status = 200) {
 
 beforeEach(() => {
   mockFetch.mockReset()
+  // Restore first so each test gets a fresh spy with zeroed call counts.
+  vi.restoreAllMocks()
   vi.spyOn(console, 'error').mockImplementation(() => {})
   vi.spyOn(console, 'log').mockImplementation(() => {})
 })
@@ -53,20 +56,10 @@ describe('completeCart', () => {
     expect(orderId).toBe('order_42')
   })
 
-  it('returns null when the response has no order id', async () => {
+  it('throws OrderPendingError when the response has no order id', async () => {
+    // Regression: this used to log "Order created successfully" and return
+    // null, which callers silently ignored after the payment was captured.
     mockFetch.mockResolvedValue(jsonResponse({}))
-
-    const orderId = await completeCart({
-      cartId: 'cart_1',
-      experiment: 'pro_checkout_v1',
-      experimentVariant: 'control',
-    })
-
-    expect(orderId).toBeNull()
-  })
-
-  it('throws when the request fails', async () => {
-    mockFetch.mockResolvedValue(jsonResponse({ error: 'boom' }, false, 500))
 
     await expect(
       completeCart({
@@ -74,7 +67,29 @@ describe('completeCart', () => {
         experiment: 'pro_checkout_v1',
         experimentVariant: 'control',
       })
-    ).rejects.toThrow('Failed to complete order')
+    ).rejects.toThrow(OrderPendingError)
+
+    expect(console.error).toHaveBeenCalledWith(
+      '[CHECKOUT] Cart completion returned no order id:',
+      expect.objectContaining({ cartId: 'cart_1' })
+    )
+    expect(console.log).not.toHaveBeenCalledWith(
+      '[CHECKOUT] Order created successfully:',
+      expect.anything()
+    )
+  })
+
+  it('throws OrderPendingError when the request fails', async () => {
+    mockFetch.mockResolvedValue(jsonResponse({ error: 'boom' }, false, 500))
+
+    const promise = completeCart({
+      cartId: 'cart_1',
+      experiment: 'pro_checkout_v1',
+      experimentVariant: 'control',
+    })
+
+    await expect(promise).rejects.toThrow('Failed to complete order')
+    await expect(promise).rejects.toBeInstanceOf(OrderPendingError)
   })
 })
 

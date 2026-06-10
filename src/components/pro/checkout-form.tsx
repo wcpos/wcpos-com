@@ -8,6 +8,14 @@ import {
 } from '@stripe/react-stripe-js'
 import { Button } from '@/components/ui/button'
 import { completeCart } from './complete-cart'
+import {
+  createOrderPendingFailure,
+  createPaymentFailure,
+  createUncertainPaymentFailure,
+  mapStripeErrorMessage,
+  GENERIC_PAYMENT_FAILED_MESSAGE,
+  type CheckoutFailure,
+} from './checkout-errors'
 import type { ProCheckoutVariant } from '@/services/core/analytics/posthog-service'
 
 interface CheckoutFormProps {
@@ -17,6 +25,11 @@ interface CheckoutFormProps {
   experiment: string
   experimentVariant: ProCheckoutVariant
   onSuccess: (orderId: string) => void
+  /**
+   * Reports payment failures to the parent (null clears a previous failure
+   * when the customer retries). Failure messages are already customer-safe.
+   */
+  onFailure: (failure: CheckoutFailure | null) => void
 }
 
 export function CheckoutForm({
@@ -26,11 +39,11 @@ export function CheckoutForm({
   experiment,
   experimentVariant,
   onSuccess,
+  onFailure,
 }: CheckoutFormProps) {
   const stripe = useStripe()
   const elements = useElements()
   const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -40,7 +53,7 @@ export function CheckoutForm({
     }
 
     setIsLoading(true)
-    setError(null)
+    onFailure(null)
 
     try {
       // Confirm payment with Stripe
@@ -53,39 +66,79 @@ export function CheckoutForm({
       })
 
       if (stripeError) {
-        console.error('[CHECKOUT] Stripe payment confirmation failed:', {
-          code: stripeError.code,
-          message: stripeError.message,
-          type: stripeError.type,
-          paymentIntent: stripeError.payment_intent,
-        })
-        setError(stripeError.message || 'Payment failed')
-        setIsLoading(false)
+        // Payment failed before any charge succeeded — safe to retry.
+        // Raw Stripe details stay in the logs; the customer sees mapped copy.
+        onFailure(
+          createPaymentFailure(mapStripeErrorMessage(stripeError), {
+            source: 'stripe_confirm_payment',
+            details: {
+              cartId,
+              code: stripeError.code,
+              declineCode: stripeError.decline_code,
+              type: stripeError.type,
+              message: stripeError.message,
+              paymentIntentId: stripeError.payment_intent?.id,
+            },
+          })
+        )
         return
       }
 
       // Handle both succeeded (auto-capture) and requires_capture (manual capture) statuses
-      if (paymentIntent?.status === 'succeeded' || paymentIntent?.status === 'requires_capture') {
+      if (
+        paymentIntent?.status === 'succeeded' ||
+        paymentIntent?.status === 'requires_capture'
+      ) {
         console.log('[CHECKOUT] Payment authorized, completing cart:', {
           paymentIntentId: paymentIntent.id,
           status: paymentIntent.status,
           cartId,
         })
 
-        // Complete the cart to create the order
-        const orderId = await completeCart({ cartId, experiment, experimentVariant })
-        if (orderId) {
+        try {
+          // Complete the cart to create the order
+          const orderId = await completeCart({ cartId, experiment, experimentVariant })
           onSuccess(orderId)
+        } catch (err) {
+          // Payment is already authorized/captured at this point. Any
+          // completion failure means money was taken without an order —
+          // surface the distinct "do not pay again" state, never a retry.
+          onFailure(
+            createOrderPendingFailure({
+              source: 'stripe_complete_cart',
+              details: {
+                cartId,
+                paymentIntentId: paymentIntent.id,
+                error: err instanceof Error ? err.message : err,
+              },
+            })
+          )
         }
-      } else {
-        console.warn('[CHECKOUT] Unexpected payment intent status:', {
-          status: paymentIntent?.status,
-          paymentIntentId: paymentIntent?.id,
-        })
+        return
       }
+
+      // Unknown intent status (e.g. 'processing'): the charge state is
+      // ambiguous — the intent may still succeed later. Surface the distinct
+      // uncertain state so the UI never suggests retrying or switching
+      // payment method, which could double-charge the customer.
+      onFailure(
+        createUncertainPaymentFailure({
+          source: 'stripe_unexpected_status',
+          details: {
+            cartId,
+            status: paymentIntent?.status,
+            paymentIntentId: paymentIntent?.id,
+          },
+        })
+      )
     } catch (err) {
-      console.error('[CHECKOUT] Payment processing error:', err)
-      setError(err instanceof Error ? err.message : 'An error occurred')
+      // confirmPayment itself threw — no charge was made.
+      onFailure(
+        createPaymentFailure(GENERIC_PAYMENT_FAILED_MESSAGE, {
+          source: 'stripe_checkout_unexpected',
+          details: { cartId, error: err instanceof Error ? err.message : err },
+        })
+      )
     } finally {
       setIsLoading(false)
     }
@@ -103,12 +156,6 @@ export function CheckoutForm({
       <div className="border rounded-md p-4">
         <PaymentElement />
       </div>
-
-      {error && (
-        <div className="bg-destructive/10 text-destructive p-3 rounded-md text-sm">
-          {error}
-        </div>
-      )}
 
       <Button
         type="submit"
