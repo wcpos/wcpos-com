@@ -1,4 +1,4 @@
-import { Github } from 'lucide-react'
+import { GithubIcon } from '@/components/icons/github'
 
 const stats = [
   { value: '5,000+', label: 'Active Installations' },
@@ -26,7 +26,7 @@ export function TrustSection() {
               href="https://github.com/wcpos"
               className="group rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-wcpos-red focus-visible:ring-offset-2"
             >
-              <Github
+              <GithubIcon
                 aria-hidden="true"
                 className="mx-auto mb-1 h-9 w-9 text-wcpos-red"
               />

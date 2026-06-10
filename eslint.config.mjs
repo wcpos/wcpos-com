@@ -6,6 +6,13 @@ const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
   {
+    settings: {
+      react: {
+        // eslint-plugin-react's runtime "detect" relies on context.getFilename(),
+        // which was removed in ESLint 10. Pin explicitly until the plugin supports it.
+        version: "19.2.6",
+      },
+    },
     rules: {
       "@typescript-eslint/no-unused-expressions": ["error", { allowTaggedTemplates: true }],
     },

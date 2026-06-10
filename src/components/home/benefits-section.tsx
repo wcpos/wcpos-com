@@ -1,7 +1,6 @@
 import {
   ArrowLeftRight,
   CreditCard,
-  Github,
   Printer,
   RefreshCw,
   ScanBarcode,
@@ -14,6 +13,7 @@ import {
   Check,
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
+import { GithubIcon } from '@/components/icons/github'
 
 type VisualKey = 'sync' | 'offline' | 'hardware' | 'ownership'
 
@@ -195,7 +195,7 @@ function OwnershipVisual() {
             </span>
           ))}
           <span className="flex items-center gap-1 rounded-full bg-white px-2.5 py-1 text-[9px] font-medium text-slate-600 dark:bg-slate-900 dark:text-slate-300">
-            <Github className="h-2.5 w-2.5" /> Open source
+            <GithubIcon className="h-2.5 w-2.5" /> Open source
           </span>
         </div>
       </div>
