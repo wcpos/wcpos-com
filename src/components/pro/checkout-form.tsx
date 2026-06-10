@@ -7,6 +7,7 @@ import {
   useElements,
 } from '@stripe/react-stripe-js'
 import { Button } from '@/components/ui/button'
+import { completeCart } from './complete-cart'
 import type { ProCheckoutVariant } from '@/services/core/analytics/posthog-service'
 
 interface CheckoutFormProps {
@@ -72,30 +73,9 @@ export function CheckoutForm({
         })
 
         // Complete the cart to create the order
-        const completeResponse = await fetch('/api/store/cart/complete', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            cartId,
-            experiment,
-            experimentVariant,
-          }),
-        })
-
-        if (!completeResponse.ok) {
-          const errorData = await completeResponse.json().catch(() => ({}))
-          console.error('[CHECKOUT] Cart completion failed:', {
-            status: completeResponse.status,
-            statusText: completeResponse.statusText,
-            error: errorData,
-          })
-          throw new Error('Failed to complete order')
-        }
-
-        const result = await completeResponse.json()
-        console.log('[CHECKOUT] Order created successfully:', { orderId: result.order?.id })
-        if (result.order?.id) {
-          onSuccess(result.order.id)
+        const orderId = await completeCart({ cartId, experiment, experimentVariant })
+        if (orderId) {
+          onSuccess(orderId)
         }
       } else {
         console.warn('[CHECKOUT] Unexpected payment intent status:', {
