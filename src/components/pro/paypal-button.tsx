@@ -1,9 +1,23 @@
 'use client'
 
 import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js'
+import { completeCart, createPaymentSession } from './complete-cart'
+import type { ProCheckoutVariant } from '@/services/core/analytics/posthog-service'
+
+interface PayPalSessionCart {
+  payment_collection?: {
+    payment_sessions?: Array<{
+      provider_id?: string
+      data?: { id?: string }
+    }>
+  }
+  payment_session?: { data?: { id?: string } }
+}
 
 interface PayPalButtonProps {
   cartId: string
+  experiment: string
+  experimentVariant: ProCheckoutVariant
   paypalOrderId?: string | null
   onSuccess: (orderId: string) => void
   onError: (error: string) => void
@@ -11,6 +25,8 @@ interface PayPalButtonProps {
 
 export function PayPalButton({
   cartId,
+  experiment,
+  experimentVariant,
   paypalOrderId,
   onSuccess,
   onError,
@@ -51,26 +67,14 @@ export function PayPalButton({
           }
 
           // Set PayPal as the payment session
-          const response = await fetch('/api/store/cart/payment-sessions', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              cartId,
-              provider_id: 'pp_paypal_paypal',
-            }),
+          const { cart } = await createPaymentSession<{ cart?: PayPalSessionCart }>({
+            cartId,
+            providerId: 'pp_paypal_paypal',
+            errorMessage: 'Failed to initialize PayPal payment',
           })
 
-          if (!response.ok) {
-            throw new Error('Failed to initialize PayPal payment')
-          }
-
-          const { cart } = await response.json()
-
           const pendingPayPalSession = cart?.payment_collection?.payment_sessions?.find(
-            (session: {
-              provider_id?: string
-              data?: { id?: string }
-            }) => session.provider_id === 'pp_paypal_paypal'
+            (session) => session.provider_id === 'pp_paypal_paypal'
           )
 
           const fallbackPayPalOrderId =
@@ -89,19 +93,9 @@ export function PayPalButton({
       onApprove={async () => {
         try {
           // Complete the cart after PayPal approval
-          const response = await fetch('/api/store/cart/complete', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ cartId }),
-          })
-
-          if (!response.ok) {
-            throw new Error('Failed to complete order')
-          }
-
-          const result = await response.json()
-          if (result.order?.id) {
-            onSuccess(result.order.id)
+          const orderId = await completeCart({ cartId, experiment, experimentVariant })
+          if (orderId) {
+            onSuccess(orderId)
           }
         } catch (err) {
           onError(err instanceof Error ? err.message : 'Failed to complete order')

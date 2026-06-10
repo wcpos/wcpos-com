@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { env } from '@/utils/env'
+import { buildLokiPayload, lokiPushEndpoint } from '@/lib/sinks/loki-format'
 
 /**
  * POST /api/logs
@@ -41,22 +42,18 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: true })
     }
 
-    const endpoint = lokiUrl.replace(/\/$/, '') + '/loki/api/v1/push'
+    const endpoint = lokiPushEndpoint(lokiUrl)
 
     // Prepare Loki payload
-    const payload = {
-      streams: [
-        {
-          stream: {
-            job: 'wcpos-com',
-            service: 'wcpos-com',
-            environment: process.env.NODE_ENV ?? 'production',
-            source: 'browser',
-          },
-          values: logs,
-        },
-      ],
-    }
+    const payload = buildLokiPayload(
+      {
+        job: 'wcpos-com',
+        service: 'wcpos-com',
+        environment: process.env.NODE_ENV ?? 'production',
+        source: 'browser',
+      },
+      logs
+    )
 
     const headers: Record<string, string> = {
       'Content-Type': 'application/json',
