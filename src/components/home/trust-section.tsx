@@ -46,12 +46,22 @@ export function TrustSection() {
           </div>
         </div>
 
-        {/* Closing statement (not a quoted testimonial — quotes need
-            verifiable provenance before being attributed to customers) */}
-        <p className="mx-auto max-w-2xl text-center text-lg leading-relaxed text-slate-700 dark:text-slate-300">
-          Built for stores that thought there was no good answer: sync that
-          actually works, pricing that&apos;s fair, and a setup you own.
-        </p>
+        {/* Real customer quote — public wordpress.org review, linked below. */}
+        <figure className="mx-auto max-w-2xl text-center">
+          <blockquote className="mb-4 text-lg italic leading-relaxed text-slate-700 dark:text-slate-300">
+            &ldquo;Straightforward, functional and simple to use. 10/10.&rdquo;
+          </blockquote>
+          <figcaption className="text-sm text-slate-500 dark:text-slate-400">
+            —{' '}
+            <a
+              href="https://wordpress.org/support/topic/does-what-it-says-836/"
+              className="underline underline-offset-4 hover:text-slate-700 dark:hover:text-slate-300"
+              rel="noopener"
+            >
+              Ward, wordpress.org review
+            </a>
+          </figcaption>
+        </figure>
       </div>
     </section>
   )
