@@ -33,13 +33,36 @@ async function DownloadsContent() {
     redirect('/login')
   }
 
+  const now = new Date()
   const releases = await getProPluginReleases()
   const mappedReleases = releases.map((release) => ({
     ...release,
-    allowed: isReleaseAllowedForLicenses(release, licenses),
+    allowed: isReleaseAllowedForLicenses(release, licenses, now),
   }))
 
-  return <DownloadsClient initialReleases={mappedReleases} />
+  // Mirrors the entitlement rules in isReleaseAllowedForLicenses so the UI
+  // can explain WHY a release is unavailable (expired vs. no license).
+  const hasActiveLicense = licenses.some((license) => {
+    if (license.status.toLowerCase() !== 'active') return false
+    if (!license.expiry) return true
+    return new Date(license.expiry).getTime() >= now.getTime()
+  })
+  const expiryTimes = licenses
+    .map((license) =>
+      license.expiry ? new Date(license.expiry).getTime() : Number.NaN
+    )
+    .filter((time) => !Number.isNaN(time))
+  const latestExpiry =
+    expiryTimes.length > 0
+      ? new Date(Math.max(...expiryTimes)).toISOString()
+      : null
+
+  return (
+    <DownloadsClient
+      initialReleases={mappedReleases}
+      access={{ hasActiveLicense, latestExpiry, licenseCount: licenses.length }}
+    />
+  )
 }
 
 export default async function DownloadsPage({

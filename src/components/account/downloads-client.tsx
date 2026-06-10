@@ -1,8 +1,9 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { ChevronLeft, ChevronRight, Download } from 'lucide-react'
 import { useLocale } from 'next-intl'
+import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Markdown } from '@/components/ui/markdown'
@@ -16,13 +17,23 @@ interface DownloadRelease {
   allowed: boolean
 }
 
+export interface DownloadAccess {
+  hasActiveLicense: boolean
+  latestExpiry: string | null
+  licenseCount: number
+}
+
 interface DownloadsClientProps {
   initialReleases: DownloadRelease[]
+  access: DownloadAccess
 }
 
 const RELEASES_PER_PAGE = 10
 
-export function DownloadsClient({ initialReleases }: DownloadsClientProps) {
+export function DownloadsClient({
+  initialReleases,
+  access,
+}: DownloadsClientProps) {
   const locale = useLocale()
   const releases = initialReleases
   const [currentPage, setCurrentPage] = useState(1)
@@ -32,14 +43,15 @@ export function DownloadsClient({ initialReleases }: DownloadsClientProps) {
   const [error, setError] = useState<string | null>(null)
 
   const totalPages = Math.max(1, Math.ceil(releases.length / RELEASES_PER_PAGE))
+  // Derive the clamped page instead of syncing state in an effect.
+  const safePage = Math.min(currentPage, totalPages)
   const visibleReleases = releases.slice(
-    (currentPage - 1) * RELEASES_PER_PAGE,
-    currentPage * RELEASES_PER_PAGE
+    (safePage - 1) * RELEASES_PER_PAGE,
+    safePage * RELEASES_PER_PAGE
   )
 
-  useEffect(() => {
-    setCurrentPage((page) => Math.min(page, totalPages))
-  }, [totalPages])
+  const expiredAccess = !access.hasActiveLicense && access.licenseCount > 0
+  const noLicense = access.licenseCount === 0
 
   const startDownload = async (version: string) => {
     setDownloadingVersion(version)
@@ -80,6 +92,31 @@ export function DownloadsClient({ initialReleases }: DownloadsClientProps) {
         </div>
       )}
 
+      {expiredAccess && (
+        <div className="flex flex-wrap items-center justify-between gap-3 rounded-md border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900">
+          <p>
+            {access.latestExpiry
+              ? `Your license expired on ${formatDateForLocale(
+                  access.latestExpiry,
+                  locale
+                )}. You can still download versions released before then.`
+              : 'You have no active license. Only versions released during your license term are available.'}
+          </p>
+          <Button asChild size="sm">
+            <Link href="/pro">Renew license</Link>
+          </Button>
+        </div>
+      )}
+
+      {noLicense && (
+        <div className="flex flex-wrap items-center justify-between gap-3 rounded-md border bg-muted p-3 text-sm">
+          <p>A WCPOS Pro license is required to download the plugin.</p>
+          <Button asChild size="sm">
+            <Link href="/pro">Get WCPOS Pro</Link>
+          </Button>
+        </div>
+      )}
+
       <Card>
         <CardHeader>
           <CardTitle className="text-lg">WCPOS Pro Downloads</CardTitle>
@@ -94,7 +131,9 @@ export function DownloadsClient({ initialReleases }: DownloadsClientProps) {
               {visibleReleases.map((release) => (
                 <div
                   key={release.version}
-                  className="flex items-start justify-between gap-4 rounded-lg border p-3"
+                  className={`flex items-start justify-between gap-4 rounded-lg border p-3 ${
+                    release.allowed ? '' : 'opacity-60'
+                  }`}
                 >
                   <div className="min-w-0">
                     <p className="font-medium">{release.name}</p>
@@ -102,6 +141,13 @@ export function DownloadsClient({ initialReleases }: DownloadsClientProps) {
                       v{release.version} •{' '}
                       {formatDateForLocale(release.publishedAt, locale)}
                     </p>
+                    {!release.allowed && (
+                      <p className="mt-1 text-xs text-amber-700">
+                        {expiredAccess
+                          ? 'Released after your license expired.'
+                          : 'Requires an active license.'}
+                      </p>
+                    )}
                     {release.releaseNotes?.trim() ? (
                       <Markdown
                         className="mt-2 space-y-1"
@@ -120,9 +166,11 @@ export function DownloadsClient({ initialReleases }: DownloadsClientProps) {
                     onClick={() => startDownload(release.version)}
                   >
                     <Download className="mr-2 h-4 w-4" />
-                    {downloadingVersion === release.version
-                      ? 'Preparing...'
-                      : 'Download'}
+                    {!release.allowed
+                      ? 'Unavailable'
+                      : downloadingVersion === release.version
+                        ? 'Preparing...'
+                        : 'Download'}
                   </Button>
                 </div>
               ))}
@@ -130,15 +178,15 @@ export function DownloadsClient({ initialReleases }: DownloadsClientProps) {
               {totalPages > 1 && (
                 <div className="flex items-center justify-between border-t pt-3">
                   <p className="text-xs text-muted-foreground">
-                    Page {currentPage} of {totalPages}
+                    Page {safePage} of {totalPages}
                   </p>
                   <div className="flex items-center gap-2">
                     <Button
                       type="button"
                       variant="outline"
                       size="sm"
-                      onClick={() => setCurrentPage((page) => Math.max(1, page - 1))}
-                      disabled={currentPage === 1}
+                      onClick={() => setCurrentPage(Math.max(1, safePage - 1))}
+                      disabled={safePage === 1}
                       aria-label="Previous page"
                     >
                       <ChevronLeft className="h-4 w-4" />
@@ -149,9 +197,9 @@ export function DownloadsClient({ initialReleases }: DownloadsClientProps) {
                       variant="outline"
                       size="sm"
                       onClick={() =>
-                        setCurrentPage((page) => Math.min(totalPages, page + 1))
+                        setCurrentPage(Math.min(totalPages, safePage + 1))
                       }
-                      disabled={currentPage === totalPages}
+                      disabled={safePage === totalPages}
                       aria-label="Next page"
                     >
                       Next
