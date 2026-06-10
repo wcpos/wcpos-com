@@ -265,7 +265,17 @@ const server = createServer(async (req, res) => {
       })
     }
 
-    const quantity = Number(body.quantity ?? 1)
+    const quantityCandidate = Number(body.quantity ?? 1)
+    if (
+      Number.isNaN(quantityCandidate) ||
+      !Number.isInteger(quantityCandidate) ||
+      quantityCandidate <= 0
+    ) {
+      return sendJson(res, 400, {
+        message: 'Quantity must be a positive integer',
+      })
+    }
+    const quantity = quantityCandidate
     const unitPrice =
       match.variant.prices.find((price) => price.currency_code === 'usd')
         ?.amount ?? 0
@@ -304,8 +314,17 @@ const server = createServer(async (req, res) => {
     const cart = carts.get(typeof body.cart_id === 'string' ? body.cart_id : '')
     if (!cart) return sendJson(res, 404, { message: 'Cart not found' })
 
+    const collectionId = `paycol_${cart.id}`
+    const existing = paymentCollections.get(collectionId)
+    if (existing) {
+      existing.amount = cart.total
+      existing.currency_code = cart.currency_code
+      cart.payment_collection = existing
+      return sendJson(res, 200, { payment_collection: existing })
+    }
+
     const collection = {
-      id: `paycol_${cart.id}`,
+      id: collectionId,
       currency_code: cart.currency_code,
       amount: cart.total,
       status: 'not_paid',

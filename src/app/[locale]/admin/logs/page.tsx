@@ -1,3 +1,4 @@
+import { Suspense } from 'react'
 import { setRequestLocale } from 'next-intl/server'
 import Link from 'next/link'
 import { requireAdmin } from '@/lib/admin-auth'
@@ -125,15 +126,11 @@ function LogsTable({ logs }: { logs: ApiLog[] }) {
   )
 }
 
-export default async function AdminLogsPage({
-  params,
+async function AdminLogsContent({
   searchParams,
 }: {
-  params: Promise<{ locale: string }>
   searchParams: Promise<{ level?: string }>
 }) {
-  const { locale } = await params
-  setRequestLocale(locale)
   await requireAdmin()
 
   const { level: levelParam } = await searchParams
@@ -142,12 +139,7 @@ export default async function AdminLogsPage({
   const result = await queryLogs({ level })
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">Logs</h1>
-        <span className="text-sm text-muted-foreground">Last hour</span>
-      </div>
-
+    <>
       <LevelFilter active={level} />
 
       {result.status === 'unconfigured' && (
@@ -173,6 +165,30 @@ export default async function AdminLogsPage({
         ) : (
           <LogsTable logs={result.logs} />
         ))}
+    </>
+  )
+}
+
+export default async function AdminLogsPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ locale: string }>
+  searchParams: Promise<{ level?: string }>
+}) {
+  const { locale } = await params
+  setRequestLocale(locale)
+
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold">Logs</h1>
+        <span className="text-sm text-muted-foreground">Last hour</span>
+      </div>
+
+      <Suspense fallback={null}>
+        <AdminLogsContent searchParams={searchParams} />
+      </Suspense>
     </div>
   )
 }

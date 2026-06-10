@@ -29,6 +29,9 @@ const CHECKOUT_PERSONA_EMAIL = 'nolicense@example.com'
 // variant_e2e_yearly is WCPOS Pro Yearly ($129.00) in e2e/mocks/fixtures.json.
 const YEARLY_CHECKOUT_PATH =
   '/pro/checkout?variant=variant_e2e_yearly&product=wcpos-pro-yearly'
+const MOCK_BACKEND_URL = `http://127.0.0.1:${Number(
+  process.env.E2E_MOCK_PORT || 4873
+)}`
 
 async function signInAs(
   context: BrowserContext,
@@ -76,6 +79,81 @@ test.describe('Checkout auth gating', () => {
       { data: { cartId: 'cart_x' } }
     )
     expect(paymentSessions.status()).toBe(401)
+  })
+})
+
+test.describe('Mock checkout backend', () => {
+  test('rejects invalid line-item quantities without mutating the cart', async ({
+    request,
+  }) => {
+    const cartResponse = await request.post(`${MOCK_BACKEND_URL}/store/carts`, {
+      data: {},
+    })
+    expect(cartResponse.status()).toBe(200)
+    const { cart } = await cartResponse.json()
+
+    for (const quantity of ['not-a-number', 0, -1, 1.5]) {
+      const lineItemResponse = await request.post(
+        `${MOCK_BACKEND_URL}/store/carts/${cart.id}/line-items`,
+        {
+          data: { variant_id: 'variant_e2e_yearly', quantity },
+        }
+      )
+      expect(lineItemResponse.status()).toBe(400)
+    }
+
+    const updatedCartResponse = await request.get(
+      `${MOCK_BACKEND_URL}/store/carts/${cart.id}`
+    )
+    expect(updatedCartResponse.status()).toBe(200)
+    const { cart: updatedCart } = await updatedCartResponse.json()
+    expect(updatedCart.items).toHaveLength(0)
+    expect(updatedCart.total).toBe(0)
+  })
+
+  test('reuses payment collections per cart without dropping sessions', async ({
+    request,
+  }) => {
+    const cartResponse = await request.post(`${MOCK_BACKEND_URL}/store/carts`, {
+      data: {},
+    })
+    expect(cartResponse.status()).toBe(200)
+    const { cart } = await cartResponse.json()
+
+    const lineItemResponse = await request.post(
+      `${MOCK_BACKEND_URL}/store/carts/${cart.id}/line-items`,
+      {
+        data: { variant_id: 'variant_e2e_yearly', quantity: 1 },
+      }
+    )
+    expect(lineItemResponse.status()).toBe(200)
+
+    const paymentCollectionResponse = await request.post(
+      `${MOCK_BACKEND_URL}/store/payment-collections`,
+      { data: { cart_id: cart.id } }
+    )
+    expect(paymentCollectionResponse.status()).toBe(200)
+    const { payment_collection: paymentCollection } =
+      await paymentCollectionResponse.json()
+
+    const sessionResponse = await request.post(
+      `${MOCK_BACKEND_URL}/store/payment-collections/${paymentCollection.id}/payment-sessions`,
+      { data: { provider_id: 'pp_stripe_stripe' } }
+    )
+    expect(sessionResponse.status()).toBe(200)
+    const { payment_collection: collectionWithSession } =
+      await sessionResponse.json()
+    expect(collectionWithSession.payment_sessions).toHaveLength(1)
+
+    const retriedCollectionResponse = await request.post(
+      `${MOCK_BACKEND_URL}/store/payment-collections`,
+      { data: { cart_id: cart.id } }
+    )
+    expect(retriedCollectionResponse.status()).toBe(200)
+    const { payment_collection: retriedCollection } =
+      await retriedCollectionResponse.json()
+    expect(retriedCollection.id).toBe(paymentCollection.id)
+    expect(retriedCollection.payment_sessions).toHaveLength(1)
   })
 })
 
