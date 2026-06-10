@@ -10,8 +10,7 @@ import {
 } from '@/lib/medusa-auth'
 import { authLogger } from '@/lib/logger'
 import { getConnectedAvatarUrlFromUserMetadata } from '@/lib/avatar'
-
-const ALLOWED_PROVIDERS = ['google', 'github']
+import { ALLOWED_PROVIDERS } from '@/lib/oauth-providers'
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return Boolean(value) && typeof value === 'object' && !Array.isArray(value)

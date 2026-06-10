@@ -57,7 +57,13 @@ export async function getProPluginReleases(): Promise<ProPluginRelease[]> {
     )
 }
 
-function isLicenseActive(license: LicenseDetail, now: Date): boolean {
+/**
+ * Minimal license shape needed to decide download/update entitlement.
+ * Structural typing lets full LicenseDetail objects be passed as-is.
+ */
+export type LicenseEntitlementInput = Pick<LicenseDetail, 'status' | 'expiry'>
+
+function isLicenseActive(license: LicenseEntitlementInput, now: Date): boolean {
   const status = license.status.toLowerCase()
   if (status !== 'active') return false
 
@@ -65,7 +71,14 @@ function isLicenseActive(license: LicenseDetail, now: Date): boolean {
   return new Date(license.expiry).getTime() >= now.getTime()
 }
 
-function getLatestExpiry(licenses: LicenseDetail[]): Date | null {
+export function hasActiveLicense(
+  licenses: LicenseEntitlementInput[],
+  now: Date = new Date()
+): boolean {
+  return licenses.some((license) => isLicenseActive(license, now))
+}
+
+function getLatestExpiry(licenses: LicenseEntitlementInput[]): Date | null {
   let latest: Date | null = null
 
   for (const license of licenses) {
@@ -83,10 +96,10 @@ function getLatestExpiry(licenses: LicenseDetail[]): Date | null {
 
 export function isReleaseAllowedForLicenses(
   release: ProPluginRelease,
-  licenses: LicenseDetail[],
+  licenses: LicenseEntitlementInput[],
   now: Date = new Date()
 ): boolean {
-  if (licenses.some((license) => isLicenseActive(license, now))) {
+  if (hasActiveLicense(licenses, now)) {
     return true
   }
 
