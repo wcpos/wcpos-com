@@ -6,6 +6,7 @@ import { Link, useRouter } from '@/i18n/navigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { sanitizeRedirectPath } from '@/lib/safe-redirect'
 import {
   Card,
   CardContent,
@@ -26,7 +27,7 @@ export function RegisterPageClient() {
 function RegisterPageInner() {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const redirectTo = searchParams.get('redirect') || '/account'
+  const redirectTo = sanitizeRedirectPath(searchParams.get('redirect'))
 
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')

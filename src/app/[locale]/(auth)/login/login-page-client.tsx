@@ -15,6 +15,7 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { trackClientEvent } from '@/lib/analytics/client-events'
+import { sanitizeRedirectPath } from '@/lib/safe-redirect'
 
 export function LoginPageClient() {
   return (
@@ -27,7 +28,7 @@ export function LoginPageClient() {
 function LoginPageInner() {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const redirectTo = searchParams.get('redirect') || '/account'
+  const redirectTo = sanitizeRedirectPath(searchParams.get('redirect'))
   const oauthError = searchParams.get('error')
 
   const [email, setEmail] = useState('')
