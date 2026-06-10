@@ -28,7 +28,7 @@ const useCases: UseCase[] = [
     iconClasses: 'text-amber-600 dark:text-amber-400',
     bandClasses: 'bg-amber-50 dark:bg-amber-950/30',
     description:
-      "Markets and pop-ups rarely have reliable internet. Sales keep ringing up offline and sync automatically once you're back online.",
+      "Markets and pop-ups rarely have reliable internet. Keep serving customers offline — orders are preserved and complete automatically once you reconnect.",
     useCase: 'Weekend markets and events, offline mode essential',
   },
   {

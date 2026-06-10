@@ -38,8 +38,8 @@ const benefits: Benefit[] = [
     icon: WifiOff,
     headline: 'Works offline',
     description:
-      'Local-first architecture means the POS keeps running when your connection drops. Products are stored locally. Sales complete normally. Everything syncs automatically when the internet returns.',
-    supporting: 'Never lose a sale because of internet issues.',
+      'Local-first architecture means the POS keeps running when your connection drops. Products are stored locally and open orders are preserved — they complete and sync as soon as the internet returns.',
+    supporting: 'Never lose an order to internet issues.',
     visual: 'offline',
   },
   {
