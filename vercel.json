@@ -9,6 +9,11 @@
       "main": false,
       "staging": false
     }
-  }
+  },
+  "crons": [
+    {
+      "path": "/api/discord/reconcile",
+      "schedule": "0 3 * * *"
+    }
+  ]
 }
-
