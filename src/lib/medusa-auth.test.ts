@@ -33,6 +33,8 @@ import {
   register,
   getCustomer,
   getAuthToken,
+  setAuthToken,
+  clearAuthToken,
   getCustomerOrders,
   getAllCustomerOrders,
   getCustomerOrderById,
@@ -526,5 +528,55 @@ describe('medusa-auth', () => {
 
       expect(message).toBe('Token refresh failed')
     })
+  })
+})
+
+// Session cookie flags: every API route test mocks this module, so without
+// these assertions a regression dropping httpOnly/secure from the session
+// cookie would pass the whole suite (found in adversarial review of #115).
+describe('session cookie options', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+  })
+
+  it('setAuthToken sets the medusa-token cookie with the exact hardening flags', async () => {
+    await setAuthToken('jwt-value')
+
+    expect(mockCookieStore.set).toHaveBeenCalledTimes(1)
+    expect(mockCookieStore.set).toHaveBeenCalledWith('medusa-token', 'jwt-value', {
+      httpOnly: true,
+      // NODE_ENV is "test" here; the production posture is asserted below.
+      secure: false,
+      sameSite: 'lax',
+      path: '/',
+      maxAge: 60 * 60 * 24,
+    })
+  })
+
+  it('marks the cookie Secure in production builds', async () => {
+    vi.resetModules()
+    vi.stubEnv('NODE_ENV', 'production')
+    try {
+      // COOKIE_OPTIONS is computed at module load, so re-import with the
+      // production NODE_ENV to capture the deployed flag values.
+      const prodModule = await import('./medusa-auth')
+      await prodModule.setAuthToken('jwt-value')
+
+      expect(mockCookieStore.set).toHaveBeenCalledWith(
+        'medusa-token',
+        'jwt-value',
+        expect.objectContaining({ httpOnly: true, secure: true, sameSite: 'lax' })
+      )
+    } finally {
+      vi.unstubAllEnvs()
+      vi.resetModules()
+    }
+  })
+
+  it('clearAuthToken deletes the medusa-token cookie', async () => {
+    await clearAuthToken()
+
+    expect(mockCookieStore.delete).toHaveBeenCalledTimes(1)
+    expect(mockCookieStore.delete).toHaveBeenCalledWith('medusa-token')
   })
 })
