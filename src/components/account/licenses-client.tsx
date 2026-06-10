@@ -7,6 +7,10 @@ import { Button } from '@/components/ui/button'
 import { Key, Monitor, Trash2, Download } from 'lucide-react'
 import { Link } from '@/i18n/navigation'
 import { formatDateForLocale } from '@/lib/date-format'
+import {
+  getLicenseDisplayStatus,
+  isLicenseExpiringSoon,
+} from '@/lib/license-display'
 
 interface Machine {
   id: string
@@ -91,17 +95,9 @@ export function LicensesClient({ initialLicenses }: LicensesClientProps) {
 
   // Keygen can report status "active" after the expiry date has passed;
   // present those licenses as expired so the UI matches download entitlement.
-  const getDisplayStatus = (license: License) => {
-    const status = license.status.toLowerCase()
-    if (status === 'active' && license.expiry) {
-      const expiryTime = new Date(license.expiry).getTime()
-      // Unparseable expiry fails closed, matching server-side entitlement.
-      if (Number.isNaN(expiryTime) || expiryTime < now) {
-        return 'expired'
-      }
-    }
-    return status
-  }
+  // (Shared rule: unparseable expiry fails closed, matching the server.)
+  const getDisplayStatus = (license: License) =>
+    getLicenseDisplayStatus(license.status, license.expiry, now)
 
   const getPlanName = (policyId: string) => {
     return policyId === YEARLY_POLICY ? 'Yearly' : 'Lifetime'
@@ -126,6 +122,7 @@ export function LicensesClient({ initialLicenses }: LicensesClientProps) {
       ) : (
         licenses.map((license) => {
           const displayStatus = getDisplayStatus(license)
+          const expiringSoon = isLicenseExpiringSoon(license, now)
           return (
           <Card key={license.id}>
             <CardHeader>
@@ -135,7 +132,14 @@ export function LicensesClient({ initialLicenses }: LicensesClientProps) {
                   <code className="text-sm font-mono">{maskKey(license.key)}</code>
                 </CardTitle>
                 <div className="flex items-center gap-2">
-                  <span className={`text-xs font-medium px-2 py-1 rounded capitalize ${getStatusColor(displayStatus)}`}>
+                  <span
+                    className={`text-xs font-medium px-2 py-1 rounded capitalize ${getStatusColor(displayStatus)}`}
+                    title={
+                      displayStatus === 'unknown'
+                        ? "We couldn't verify this license right now"
+                        : undefined
+                    }
+                  >
                     {displayStatus}
                   </span>
                   <span className="text-xs text-muted-foreground">
@@ -145,6 +149,30 @@ export function LicensesClient({ initialLicenses }: LicensesClientProps) {
               </div>
             </CardHeader>
             <CardContent className="space-y-4">
+              {expiringSoon && license.expiry && (
+                <div className="flex flex-wrap items-center justify-between gap-3 rounded-md border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900">
+                  <p>
+                    Your license expires on{' '}
+                    {formatDateForLocale(license.expiry, locale)} &mdash; renew
+                    to keep receiving updates.
+                  </p>
+                  <Button asChild size="sm">
+                    <Link href="/pro">Renew</Link>
+                  </Button>
+                </div>
+              )}
+
+              {displayStatus === 'unknown' && (
+                <p className="text-sm text-muted-foreground">
+                  We couldn&apos;t verify this license right now. Try again
+                  shortly or{' '}
+                  <Link href="/support" className="underline underline-offset-4">
+                    contact support
+                  </Link>
+                  .
+                </p>
+              )}
+
               <div className="flex items-center justify-between">
                 <div className="flex gap-6 text-sm">
                   {license.expiry && (

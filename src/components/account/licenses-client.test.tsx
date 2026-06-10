@@ -103,6 +103,77 @@ describe('LicensesClient', () => {
     )
   })
 
+  it('warns when an active license expires within 30 days', () => {
+    const expiry = new Date(Date.now() + 10 * 24 * 60 * 60 * 1000).toISOString()
+    render(
+      <LicensesClient
+        initialLicenses={[makeLicense({ status: 'active', expiry })]}
+      />
+    )
+
+    expect(
+      screen.getByText(/Your license expires on .* renew to keep receiving updates/)
+    ).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Renew' })).toHaveAttribute(
+      'href',
+      '/pro'
+    )
+    // Still displays as active with downloads reachable.
+    expect(screen.getByText('active')).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: /downloads/i })).toHaveAttribute(
+      'href',
+      '/account/downloads'
+    )
+  })
+
+  it('does not warn when the expiry is beyond the 30-day window', () => {
+    const expiry = new Date(Date.now() + 90 * 24 * 60 * 60 * 1000).toISOString()
+    render(
+      <LicensesClient
+        initialLicenses={[makeLicense({ status: 'active', expiry })]}
+      />
+    )
+
+    expect(
+      screen.queryByText(/renew to keep receiving updates/)
+    ).not.toBeInTheDocument()
+    expect(screen.queryByRole('link', { name: 'Renew' })).not.toBeInTheDocument()
+  })
+
+  it('does not warn for lifetime licenses', () => {
+    render(
+      <LicensesClient
+        initialLicenses={[makeLicense({ status: 'active', expiry: null })]}
+      />
+    )
+
+    expect(
+      screen.queryByText(/renew to keep receiving updates/)
+    ).not.toBeInTheDocument()
+  })
+
+  it('explains unverifiable licenses instead of implying they lapsed', () => {
+    render(
+      <LicensesClient
+        initialLicenses={[
+          makeLicense({ status: 'unknown', expiry: null, policyId: 'unknown' }),
+        ]}
+      />
+    )
+
+    expect(screen.getByText('unknown')).toBeInTheDocument()
+    expect(screen.getByTitle("We couldn't verify this license right now")).toBeInTheDocument()
+    expect(
+      screen.getByText(/We couldn't verify this license right now/)
+    ).toBeInTheDocument()
+    expect(
+      screen.getByRole('link', { name: 'contact support' })
+    ).toHaveAttribute('href', '/support')
+    // Unknown is not expired: no renew CTA, no expiry warning.
+    expect(screen.queryByRole('link', { name: 'Renew' })).not.toBeInTheDocument()
+    expect(screen.queryByText('expired')).not.toBeInTheDocument()
+  })
+
   it('does not show download button for suspended licenses', () => {
     render(
       <LicensesClient initialLicenses={[makeLicense({ status: 'suspended' })]} />
