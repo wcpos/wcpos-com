@@ -6,6 +6,8 @@
  * plus the reference they can quote to support.
  */
 
+import { clientLogger } from '@/lib/client-logger'
+
 export type CheckoutFailureKind =
   /** Payment was declined or never made — safe for the customer to retry. */
   | 'payment_failed'
@@ -167,6 +169,21 @@ function buildFailure(
       source: context.source,
       details: context.details,
     })
+
+    // Ship the failure server-side (Loki via clientLogger) so support can look
+    // up the WCPOS-… reference a customer quotes. The console.error above is
+    // only visible in the customer's own devtools.
+    try {
+      clientLogger.error('Checkout payment failure {reference}', {
+        reference: failure.reference,
+        kind,
+        source: context.source,
+        details: context.details,
+      })
+    } catch {
+      // Logging must never break failure reporting — console output above is
+      // the fallback.
+    }
   }
 
   return failure

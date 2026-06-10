@@ -1,4 +1,9 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { clientLogger } from '@/lib/client-logger'
+
+vi.mock('@/lib/client-logger', () => ({
+  clientLogger: { error: vi.fn() },
+}))
 
 import {
   createCancelledFailure,
@@ -17,6 +22,7 @@ import {
 beforeEach(() => {
   // Restore first so each test gets a fresh spy with zeroed call counts.
   vi.restoreAllMocks()
+  vi.mocked(clientLogger.error).mockClear()
   vi.spyOn(console, 'error').mockImplementation(() => {})
   vi.spyOn(console, 'log').mockImplementation(() => {})
 })
@@ -187,6 +193,76 @@ describe('createCancelledFailure', () => {
     expect(failure.kind).toBe('payment_cancelled')
     expect(failure.message).toBe('Cancelled copy')
     expect(console.error).not.toHaveBeenCalled()
+  })
+})
+
+describe('server-side failure shipping (clientLogger)', () => {
+  it('ships payment_failed failures with their reference at error level', () => {
+    const failure = createPaymentFailure('Friendly message', {
+      source: 'stripe_confirm_payment',
+      details: { raw: 'provider junk' },
+    })
+
+    expect(clientLogger.error).toHaveBeenCalledWith(
+      expect.stringContaining('Checkout payment failure'),
+      expect.objectContaining({
+        reference: failure.reference,
+        kind: 'payment_failed',
+        source: 'stripe_confirm_payment',
+        details: { raw: 'provider junk' },
+      })
+    )
+  })
+
+  it('ships order_pending failures so support can correlate the reference', () => {
+    const failure = createOrderPendingFailure({
+      source: 'paypal_complete_cart',
+      details: { cartId: 'cart_1' },
+    })
+
+    expect(clientLogger.error).toHaveBeenCalledWith(
+      expect.any(String),
+      expect.objectContaining({
+        reference: failure.reference,
+        kind: 'order_pending',
+        source: 'paypal_complete_cart',
+      })
+    )
+  })
+
+  it('ships payment_uncertain failures', () => {
+    const failure = createUncertainPaymentFailure({
+      source: 'stripe_unexpected_status',
+    })
+
+    expect(clientLogger.error).toHaveBeenCalledWith(
+      expect.any(String),
+      expect.objectContaining({
+        reference: failure.reference,
+        kind: 'payment_uncertain',
+      })
+    )
+  })
+
+  it('does not ship customer cancellations', () => {
+    createCancelledFailure('Cancelled copy', { source: 'paypal_cancel' })
+
+    expect(clientLogger.error).not.toHaveBeenCalled()
+  })
+
+  it('still returns the failure when shipping throws', () => {
+    vi.mocked(clientLogger.error).mockImplementationOnce(() => {
+      throw new Error('logger not configured')
+    })
+
+    const failure = createPaymentFailure('Friendly message', {
+      source: 'stripe_confirm_payment',
+    })
+
+    expect(failure.kind).toBe('payment_failed')
+    expect(failure.reference).toMatch(/^WCPOS-/)
+    // The devtools fallback still fired.
+    expect(console.error).toHaveBeenCalled()
   })
 })
 

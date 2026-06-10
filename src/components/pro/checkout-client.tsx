@@ -13,6 +13,12 @@ import {
   METHOD_SWITCH_FAILED_MESSAGE,
   type CheckoutFailure,
 } from './checkout-errors'
+import {
+  clearPendingFailures,
+  isPersistedPendingKind,
+  persistPendingFailure,
+  readPendingFailure,
+} from './checkout-pending-storage'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -154,6 +160,22 @@ export function CheckoutClient({
 
     async function initializeCheckout() {
       try {
+        // A protective failure (payment may have been taken without an order)
+        // survives reloads via sessionStorage. Restore it before initializing
+        // so a refresh cannot silently hand the customer a fresh, payable
+        // checkout.
+        const restored = await Promise.resolve(readPendingFailure())
+        if (restored) {
+          setFailure(restored.failure)
+          if (restored.failure.kind === 'order_pending') {
+            // Money moved but no order exists — do not create a new cart or
+            // payment session at all; render only the do-not-pay-again notice.
+            return
+          }
+          // payment_uncertain: keep the warning visible but let the checkout
+          // mount — the inline notice already withholds retry/switch guidance.
+        }
+
         // Create cart
         const cartResponse = await fetch('/api/store/cart', {
           method: 'POST',
@@ -279,7 +301,11 @@ export function CheckoutClient({
     selectPaymentMethod(method)
   }
 
+  const activeCartId = cart?.id ?? null
+
   const handleSuccess = (newOrderId: string) => {
+    // An order definitively exists — the do-not-pay-again guard can go.
+    clearPendingFailures()
     setFailure(null)
     setOrderId(newOrderId)
     setOrderComplete(true)
@@ -287,9 +313,18 @@ export function CheckoutClient({
 
   // Children report payment failures here (null clears a previous failure on
   // retry). Messages are already customer-safe; raw details are in the logs.
-  const handleFailure = useCallback((nextFailure: CheckoutFailure | null) => {
-    setFailure(nextFailure)
-  }, [])
+  // Protective kinds (order_pending / payment_uncertain) are also persisted so
+  // a page reload cannot restore a payable checkout while a charge may have
+  // succeeded; only a successful order clears them.
+  const handleFailure = useCallback(
+    (nextFailure: CheckoutFailure | null) => {
+      setFailure(nextFailure)
+      if (nextFailure && activeCartId && isPersistedPendingKind(nextFailure.kind)) {
+        persistPendingFailure(activeCartId, nextFailure)
+      }
+    },
+    [activeCartId]
+  )
 
   const updateEmail = async () => {
     if (!cart || !email) return

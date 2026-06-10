@@ -1,5 +1,6 @@
 'use client'
 
+import { useRef } from 'react'
 import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js'
 import { completeCart, createPaymentSession } from './complete-cart'
 import {
@@ -46,6 +47,12 @@ export function PayPalButton({
 }: PayPalButtonProps) {
   const [{ isPending, isRejected }] = usePayPalScriptReducer()
 
+  // When createOrder rejects, the PayPal SDK re-reports the same failure via
+  // onError. The createOrder catch already reported it (with its own support
+  // reference), so onError must skip that echo — otherwise the customer sees
+  // a second message under a different reference for one failure.
+  const createOrderFailureReported = useRef(false)
+
   if (isPending) {
     return (
       <div className="space-y-2 rounded-md border border-dashed p-4">
@@ -74,6 +81,7 @@ export function PayPalButton({
         label: 'paypal',
       }}
       createOrder={async () => {
+        createOrderFailureReported.current = false
         try {
           onFailure(null)
 
@@ -102,6 +110,7 @@ export function PayPalButton({
           return fallbackPayPalOrderId
         } catch (err) {
           // No payment has happened yet — safe to retry.
+          createOrderFailureReported.current = true
           onFailure(
             createPaymentFailure(PAYPAL_INIT_FAILED_MESSAGE, {
               source: 'paypal_create_order',
@@ -129,6 +138,14 @@ export function PayPalButton({
         }
       }}
       onError={(err) => {
+        // Skip the SDK's echo of a createOrder failure that was already
+        // reported (single failure, single reference). The flag is consumed
+        // here and also reset at the start of every createOrder attempt, so
+        // genuinely new SDK errors are never swallowed.
+        if (createOrderFailureReported.current) {
+          createOrderFailureReported.current = false
+          return
+        }
         onFailure(
           createPaymentFailure(PAYPAL_FAILED_MESSAGE, {
             source: 'paypal_sdk',
