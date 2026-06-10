@@ -106,12 +106,20 @@ jobs:
 
   # ============================================
   # Stage 3: Deploy Preview (PRs only)
+  #
+  # Vercel git deployments are disabled in vercel.json, so these CLI jobs
+  # are the ONLY deploy path for this repo. They are gated on the
+  # VERCEL_DEPLOYS repository variable so an expired VERCEL_TOKEN skips
+  # them instead of failing every run. To enable: rotate the token
+  # (Vercel dashboard -> Account Settings -> Tokens), then
+  #   gh secret set VERCEL_TOKEN --repo wcpos/wcpos-com
+  #   gh variable set VERCEL_DEPLOYS --repo wcpos/wcpos-com --body enabled
   # ============================================
   deploy-preview:
     name: Deploy Preview
     runs-on: ubuntu-latest
     needs: [test, e2e]
-    if: github.event_name == 'pull_request'
+    if: github.event_name == 'pull_request' && vars.VERCEL_DEPLOYS == 'enabled'
     permissions:
       contents: read
       pull-requests: write
@@ -159,56 +167,21 @@ jobs:
             })
 
   # ============================================
-  # Stage 3: Deploy Staging (staging branch only)
-  # ============================================
-  deploy-staging:
-    name: Deploy Staging
-    runs-on: ubuntu-latest
-    needs: [test, e2e]
-    if: github.event_name == 'push' && github.ref == 'refs/heads/staging'
-    permissions:
-      contents: read
-    environment:
-      name: staging
-      url: https://beta.wcpos.com
-    steps:
-      - name: Checkout
-        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@0e279bb959325dab635dd2c09392533439d90093 # v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
-        with:
-          node-version: '22'
-          cache: 'pnpm'
-
-      - name: Pull Vercel Environment
-        run: pnpm dlx vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
-
-      - name: Build Project
-        run: pnpm dlx vercel build --token=${{ secrets.VERCEL_TOKEN }}
-        env:
-          GITHUB_PAT: ${{ secrets.GH_PAT }}
-
-      - name: Deploy Staging
-        id: deploy
-        run: |
-          url=$(pnpm dlx vercel deploy --prebuilt --archive=tgz --token=${{ secrets.VERCEL_TOKEN }})
-          echo "url=$url" >> $GITHUB_OUTPUT
-
-      - name: Alias to beta.wcpos.com
-        run: pnpm dlx vercel alias set ${{ steps.deploy.outputs.url }} beta.wcpos.com --scope=${{ secrets.VERCEL_ORG_ID }} --token=${{ secrets.VERCEL_TOKEN }}
+  # NOTE: the former Deploy Staging job (staging branch -> beta.wcpos.com
+  # alias) was removed: the staging branch no longer exists, and pinning
+  # beta.wcpos.com via a one-off CLI alias left it serving a stale
+  # deployment. Re-point beta in the Vercel dashboard instead.
 
   # ============================================
   # Stage 4: Deploy Production (main branch only)
+  # Same VERCEL_DEPLOYS gate as preview — vercel.json disables git
+  # deployments, so this job is the only production deploy path.
   # ============================================
   deploy-production:
     name: Deploy Production
     runs-on: ubuntu-latest
     needs: [test, e2e]
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && vars.VERCEL_DEPLOYS == 'enabled'
     permissions:
       contents: read
     environment:
