@@ -1,8 +1,9 @@
 'use client'
 
 import { configure, getConsoleSink, getLogger } from '@logtape/logtape'
-import * as Sentry from '@sentry/nextjs'
 import type { LogLevel, LogRecord, Sink } from '@logtape/logtape'
+import { createSentrySink } from './sinks/sentry-sink'
+import { formatLokiEntry, type LokiLogEntry } from './sinks/loki-format'
 
 let configured = false
 
@@ -11,7 +12,7 @@ let configured = false
  * Sends logs to Loki via our API route (no CORS needed)
  */
 function createClientLokiSink(): Sink {
-  let batch: Array<[string, string]> = []
+  let batch: LokiLogEntry[] = []
   let flushTimer: ReturnType<typeof setTimeout> | null = null
 
   function flush() {
@@ -41,81 +42,12 @@ function createClientLokiSink(): Sink {
   }
 
   return (record: LogRecord) => {
-    const timestampNs = (record.timestamp * 1_000_000).toString()
-
-    const line = JSON.stringify({
-      level: record.level,
-      category: record.category.join('.'),
-      message: record.message
-        .map((part) => (typeof part === 'string' ? part : JSON.stringify(part)))
-        .join(''),
-      ...(Object.keys(record.properties).length > 0
-        ? { properties: record.properties }
-        : {}),
-    })
-
-    batch.push([timestampNs, line])
+    batch.push(formatLokiEntry(record))
 
     if (batch.length >= 50) {
       flush()
     } else {
       scheduleFlush()
-    }
-  }
-}
-
-/**
- * Client-side Sentry sink
- * Sends errors to Sentry from the browser
- */
-function createClientSentrySink(): Sink {
-  return (record: LogRecord) => {
-    // Only send errors and fatal logs to Sentry
-    if (record.level !== 'error' && record.level !== 'fatal') {
-      return
-    }
-
-    // Extract error object if present in properties
-    const error = record.properties.error instanceof Error
-      ? record.properties.error
-      : undefined
-
-    // Build message from log parts
-    const message = record.message
-      .map((part) => (typeof part === 'string' ? part : JSON.stringify(part)))
-      .join('')
-
-    // Prepare extra context
-    const extra: Record<string, unknown> = {
-      category: record.category.join('.'),
-      level: record.level,
-      timestamp: new Date(record.timestamp).toISOString(),
-    }
-
-    // Add all properties except error (we handle that separately)
-    for (const [key, value] of Object.entries(record.properties)) {
-      if (key !== 'error') {
-        extra[key] = value
-      }
-    }
-
-    // Send to Sentry
-    if (error) {
-      Sentry.captureException(error, {
-        level: record.level === 'fatal' ? 'fatal' : 'error',
-        extra,
-        tags: {
-          category: record.category.join('.'),
-        },
-      })
-    } else {
-      Sentry.captureMessage(message, {
-        level: record.level === 'fatal' ? 'fatal' : 'error',
-        extra,
-        tags: {
-          category: record.category.join('.'),
-        },
-      })
     }
   }
 }
@@ -139,7 +71,7 @@ export async function initializeClientLogging() {
     // Add Sentry sink if DSN is configured
     const sentryDsn = process.env.NEXT_PUBLIC_SENTRY_DSN
     if (sentryDsn) {
-      sinks.sentry = createClientSentrySink()
+      sinks.sentry = createSentrySink()
     }
 
     // Determine log level (default to 'error' in production, 'debug' in development)

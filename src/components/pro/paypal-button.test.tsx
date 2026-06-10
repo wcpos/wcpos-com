@@ -17,6 +17,8 @@ describe('PayPalButton', () => {
     render(
       <PayPalButton
         cartId="cart_1"
+        experiment="pro_checkout_v1"
+        experimentVariant="control"
         onSuccess={() => {}}
         onError={() => {}}
       />
