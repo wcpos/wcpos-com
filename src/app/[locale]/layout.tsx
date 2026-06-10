@@ -27,9 +27,9 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     siteName: 'WCPOS',
-    // og:image and twitter:image come from the opengraph-image.tsx file
-    // convention in this segment — explicit URLs here would point at the
-    // un-prefixed /opengraph-image path, which no route serves.
+    // og:image and twitter:image come from the static opengraph-image.png
+    // file convention in this segment — explicit URLs here would point at
+    // the un-prefixed /opengraph-image path, which no route serves.
   },
   twitter: {
     card: 'summary_large_image',
@@ -64,7 +64,7 @@ export default async function LocaleLayout({
               '@type': 'Organization',
               name: 'WCPOS',
               url: 'https://wcpos.com',
-              logo: 'https://wcpos.com/opengraph-image',
+              logo: 'https://wcpos.com/icon.png',
               sameAs: ['https://github.com/wcpos'],
             }),
           }}
