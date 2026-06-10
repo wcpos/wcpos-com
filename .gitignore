@@ -46,3 +46,6 @@ next-env.d.ts
 
 # working docs (plans, designs)
 docs/
+# playwright artifacts
+/playwright-report/
+/test-results/
