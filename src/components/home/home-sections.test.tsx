@@ -40,12 +40,24 @@ describe('BenefitsSection', () => {
 })
 
 describe('UseCasesSection', () => {
-  it('renders the three use case cards', () => {
+  it('renders the three testimonial cards with sourced attributions', () => {
     render(<UseCasesSection />)
 
     expect(screen.getByText('Retail Store')).toBeInTheDocument()
     expect(screen.getByText('Market Vendor')).toBeInTheDocument()
-    expect(screen.getByText('Agency Setup')).toBeInTheDocument()
+    expect(screen.getByText('Desktop & Offline')).toBeInTheDocument()
+
+    // Every quote must link to its wordpress.org source review.
+    const sources = screen.getAllByRole('link', {
+      name: /wordpress\.org review/,
+    })
+    expect(sources).toHaveLength(3)
+    for (const link of sources) {
+      expect(link).toHaveAttribute(
+        'href',
+        expect.stringContaining('https://wordpress.org/support/topic/')
+      )
+    }
   })
 })
 

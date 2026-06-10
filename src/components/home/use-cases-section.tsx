@@ -1,4 +1,4 @@
-import { Store, Tent, Code2 } from 'lucide-react'
+import { Store, Tent, Laptop } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 
 interface UseCase {
@@ -6,39 +6,48 @@ interface UseCase {
   icon: LucideIcon
   iconClasses: string
   bandClasses: string
-  description: string
-  useCase: string
+  quote: string
+  attribution: string
+  sourceUrl: string
+  note?: string
 }
 
-// Scenario descriptions, not quoted testimonials — quotes need verifiable
-// provenance before they can be presented as customer statements.
+// Real customer quotes from public wordpress.org reviews of the
+// woocommerce-pos plugin — each attribution links to its source review.
 const useCases: UseCase[] = [
   {
     type: 'Retail Store',
     icon: Store,
     iconClasses: 'text-wcpos-red',
     bandClasses: 'bg-rose-50 dark:bg-rose-950/30',
-    description:
-      'Shops with hundreds of products already in WooCommerce start selling in-store on day one — nothing to re-enter, nothing to import.',
-    useCase: 'Daily in-store sales with iPad and Stripe Terminal',
+    quote:
+      'I did a lot of research when looking for a POS for my existing WC site, and nearly overlooked this one because it was free. But I’m glad I tried it. It does everything you want without asking for subscriptions or a percentage of your sales.',
+    attribution: 'nckllnpssy',
+    sourceUrl:
+      'https://wordpress.org/support/topic/the-best-woo-pos-plugin-available-and-its-free/',
   },
   {
     type: 'Market Vendor',
     icon: Tent,
     iconClasses: 'text-amber-600 dark:text-amber-400',
     bandClasses: 'bg-amber-50 dark:bg-amber-950/30',
-    description:
-      "Markets and pop-ups rarely have reliable internet. Keep serving customers offline — orders are preserved and complete automatically once you reconnect.",
-    useCase: 'Weekend markets and events, offline mode essential',
+    quote:
+      'I’m a ceramicist in Annecy and I sell through my WooCommerce shop and at markets. I’ve been using WCPOS for over a year and bought the lifetime Pro license a few months ago — worth it, I think. Paul is responsive on Discord, even on weekends.',
+    attribution: 'adeline',
+    sourceUrl:
+      'https://wordpress.org/support/topic/plus-dun-an-dutilisation-je-recommande/',
+    note: 'translated from French',
   },
   {
-    type: 'Agency Setup',
-    icon: Code2,
+    type: 'Desktop & Offline',
+    icon: Laptop,
     iconClasses: 'text-sky-600 dark:text-sky-400',
     bandClasses: 'bg-sky-50 dark:bg-sky-950/30',
-    description:
-      'Agencies roll WCPOS out across client stores — native WooCommerce integration works with the plugins each site already runs.',
-    useCase: 'Multi-client deployments with custom extensions',
+    quote:
+      'Great POS for your WooCommerce store, it has the desktop version which makes it better for places with weak internet connectivity. I believe there are more great features coming up.',
+    attribution: 'rodriguekgl',
+    sourceUrl:
+      'https://wordpress.org/support/topic/great-pos-for-your-woocommerce-store/',
   },
 ]
 
@@ -69,12 +78,22 @@ export function UseCasesSection() {
                     {uc.type}
                   </span>
                 </h3>
-                <p className="mb-3 leading-relaxed text-slate-800 dark:text-slate-200">
-                  {uc.description}
-                </p>
-                <p className="text-xs text-slate-500 dark:text-slate-400">
-                  {uc.useCase}
-                </p>
+                <figure>
+                  <blockquote className="mb-3 leading-relaxed text-slate-800 dark:text-slate-200">
+                    &ldquo;{uc.quote}&rdquo;
+                  </blockquote>
+                  <figcaption className="text-xs text-slate-500 dark:text-slate-400">
+                    —{' '}
+                    <a
+                      href={uc.sourceUrl}
+                      className="underline underline-offset-4 hover:text-slate-700 dark:hover:text-slate-300"
+                      rel="noopener"
+                    >
+                      {uc.attribution}, wordpress.org review
+                    </a>
+                    {uc.note ? ` (${uc.note})` : null}
+                  </figcaption>
+                </figure>
               </div>
             </li>
           ))}
