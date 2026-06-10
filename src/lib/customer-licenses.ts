@@ -9,6 +9,7 @@ import {
   extractLicenseReferencesFromOrders,
   type LicenseReference,
 } from '@/lib/licenses'
+import { listAdminCustomerOrders } from '@/lib/discord/medusa-admin'
 import { licenseClient } from '@/services/core/external/license-client'
 import { licenseLogger } from '@/lib/logger'
 
@@ -85,12 +86,14 @@ export async function getResolvedCustomerLicenses(customer?: MedusaCustomer): Pr
   authenticated: boolean
   licenses: LicenseDetail[]
 }> {
-  const resolvedCustomer = customer ?? await getCustomer()
+  const resolvedCustomer = customer ?? (await getCustomer())
   if (!resolvedCustomer) {
     return { authenticated: false, licenses: [] }
   }
 
-  const orders = await getAllCustomerOrders()
+  const orders = customer
+    ? await listAdminCustomerOrders(resolvedCustomer.id)
+    : await getAllCustomerOrders()
 
   return {
     authenticated: true,
