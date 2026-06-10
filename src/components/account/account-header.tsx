@@ -52,24 +52,31 @@ export function AccountHeader({ customer }: AccountHeaderProps) {
 
   return (
     <header className="border-b bg-white">
-      <div className="flex items-center justify-between px-6 py-4">
-        <div className="flex items-center space-x-4">
+      <div className="flex items-center justify-between gap-4 px-4 py-4 sm:px-6">
+        <div className="flex shrink-0 items-center space-x-2 sm:space-x-4">
           <Link href="/" className="text-xl font-bold text-gray-900">
             WCPOS
           </Link>
           <span className="text-gray-400">/</span>
           <span className="text-gray-600">Account</span>
         </div>
-        <div className="flex items-center space-x-4">
-          <div className="flex items-center gap-2">
-            <Avatar className="h-8 w-8">
+        <div className="flex min-w-0 items-center space-x-3 sm:space-x-4">
+          <div className="flex min-w-0 items-center gap-2">
+            <Avatar className="h-8 w-8 shrink-0">
               <AvatarImage src={avatarUrl} alt={customer.email} />
               <AvatarFallback>{initials}</AvatarFallback>
             </Avatar>
-            <span className="text-sm text-gray-600">{customer.email}</span>
+            {/* The email can be arbitrarily long — hide it on phones and
+                truncate it on wider screens so the header never overflows. */}
+            <span className="hidden min-w-0 max-w-[14rem] truncate text-sm text-gray-600 sm:block">
+              {customer.email}
+            </span>
           </div>
-          <form action="/api/auth/logout" method="POST">
-            <button type="submit" className="text-sm text-gray-500 hover:text-gray-900">
+          <form action="/api/auth/logout" method="POST" className="shrink-0">
+            <button
+              type="submit"
+              className="py-2 text-sm text-gray-500 hover:text-gray-900"
+            >
               Sign out
             </button>
           </form>
