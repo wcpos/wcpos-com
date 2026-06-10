@@ -15,6 +15,7 @@
  * retries never share mutable machine state.
  */
 import { createServer } from 'node:http'
+import { randomUUID } from 'node:crypto'
 import { readFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -235,7 +236,7 @@ const server = createServer(async (req, res) => {
   if (pathname === '/store/carts' && method === 'POST') {
     const body = await readJson(req)
     cartSequence += 1
-    const id = `cart_e2e_${cartSequence}_${Math.random().toString(36).slice(2, 8)}`
+    const id = `cart_e2e_${cartSequence}_${randomUUID().slice(0, 8)}`
     const cart = {
       id,
       email: typeof body.email === 'string' ? body.email : null,
