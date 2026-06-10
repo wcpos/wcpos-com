@@ -151,7 +151,7 @@ export function HeroSection() {
 
             {/* Trust Badges */}
             <div className="flex flex-wrap gap-x-6 gap-y-2 text-xs font-medium text-slate-400">
-              <span>6,000+ Active Stores</span>
+              <span>5,000+ Active Stores</span>
               <span aria-hidden="true" className="hidden sm:inline">
                 •
               </span>
@@ -159,7 +159,7 @@ export function HeroSection() {
               <span aria-hidden="true" className="hidden sm:inline">
                 •
               </span>
-              <span>13 Years Active</span>
+              <span>Since 2014</span>
             </div>
           </div>
 

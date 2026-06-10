@@ -1,8 +1,8 @@
 import { Github } from 'lucide-react'
 
 const stats = [
-  { value: '6,000+', label: 'Active Installations' },
-  { value: '13', label: 'Years in Development' },
+  { value: '5,000+', label: 'Active Installations' },
+  { value: '2014', label: 'In Development Since' },
 ]
 
 export function TrustSection() {

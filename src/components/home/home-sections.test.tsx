@@ -76,7 +76,7 @@ describe('TrustSection', () => {
   it('renders the stats', () => {
     render(<TrustSection />)
 
-    expect(screen.getByText('6,000+')).toBeInTheDocument()
+    expect(screen.getByText('5,000+')).toBeInTheDocument()
     expect(screen.getByText('Active Installations')).toBeInTheDocument()
     expect(screen.getByText('Languages Supported')).toBeInTheDocument()
   })

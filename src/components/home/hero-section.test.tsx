@@ -34,8 +34,8 @@ describe('HeroSection', () => {
   it('shows the trust badges', () => {
     render(<HeroSection />)
 
-    expect(screen.getByText('6,000+ Active Stores')).toBeInTheDocument()
+    expect(screen.getByText('5,000+ Active Stores')).toBeInTheDocument()
     expect(screen.getByText('Free & Open Source')).toBeInTheDocument()
-    expect(screen.getByText('13 Years Active')).toBeInTheDocument()
+    expect(screen.getByText('Since 2014')).toBeInTheDocument()
   })
 })
