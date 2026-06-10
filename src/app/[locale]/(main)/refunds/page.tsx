@@ -3,7 +3,7 @@ import { setRequestLocale } from 'next-intl/server'
 export const metadata = {
   title: 'Refund Policy',
   description:
-    'WCPOS Pro is a digital product delivered immediately after purchase. Refunds are generally not given — try the free plugin, demo, and docs first. EU/UK consumer rights are honoured.',
+    'Every WCPOS Pro purchase comes with a 14-day money-back guarantee: ask within 14 days and we refund you in full, no reason required.',
 }
 
 export default async function RefundsPage({
@@ -24,28 +24,28 @@ export default async function RefundsPage({
       <div className="space-y-10">
         <section>
           <p className="leading-7 text-muted-foreground">
-            WCPOS Pro is a digital product: your license key and downloads are
-            available immediately after purchase, and once delivered they cannot
-            be returned. Because of this,{' '}
+            Every WCPOS Pro purchase — first purchase or renewal, yearly or
+            lifetime — comes with a{' '}
             <strong className="text-foreground">
-              we generally do not give refunds after purchase
+              14-day money-back guarantee
             </strong>
-            . Please make sure the plugin is right for your store before you buy
-            — we make that easy, and we answer pre-sale questions openly and
-            honestly.
+            . If it&apos;s not right for your store, ask within 14 days of
+            purchase and we refund you in full. No reason required, no hoops.
           </p>
         </section>
 
         <section>
-          <h2 className="text-2xl font-semibold mb-4">Try before you buy</h2>
+          <h2 className="text-2xl font-semibold mb-4">
+            The best refund is the one you never need
+          </h2>
           <ul className="list-disc pl-6 space-y-3 leading-7 text-muted-foreground">
             <li>
               <span className="font-medium text-foreground">
                 Install the free plugin.
               </span>{' '}
-              Run the free version of WooCommerce POS on your store for at least
-              a couple of days before upgrading to Pro — that proves the plugin
-              works on your site.
+              Run the free version of WooCommerce POS on your store for a
+              couple of days before upgrading — that proves the plugin works on
+              your site.
             </li>
             <li>
               <span className="font-medium text-foreground">Try the demo.</span>{' '}
@@ -56,85 +56,55 @@ export default async function RefundsPage({
               >
                 online demo
               </a>{' '}
-              runs the current version with Pro activated, so you can confirm it
-              fulfils your store&apos;s requirements.
+              runs the current version with Pro activated, so you can confirm
+              it fulfils your store&apos;s requirements.
             </li>
             <li>
               <span className="font-medium text-foreground">
                 Read the documentation.
               </span>{' '}
-              Don&apos;t assume Pro has a feature you need — check the{' '}
+              Check the{' '}
               <a
                 href="https://docs.wcpos.com"
                 className="underline underline-offset-4 hover:text-foreground"
               >
                 docs
               </a>{' '}
-              and the demo to make sure it is right for you.
-            </li>
-            <li>
-              Still unsure? Email{' '}
+              for the features you need, and email{' '}
               <a
                 href="mailto:support@wcpos.com"
                 className="underline underline-offset-4 hover:text-foreground"
               >
                 support@wcpos.com
               </a>{' '}
-              with pre-sale questions.
+              with pre-sale questions — we answer openly and honestly.
             </li>
           </ul>
         </section>
 
         <section>
-          <h2 className="text-2xl font-semibold mb-4">
-            Consumers in the EU, EEA and UK
-          </h2>
-          <p className="leading-7 text-muted-foreground mb-4">
-            If you purchase as a consumer in the European Union, the European
-            Economic Area or the United Kingdom, you have a statutory right to
-            withdraw from the purchase within 14 days without giving a reason.
-            To exercise it, email{' '}
+          <h2 className="text-2xl font-semibold mb-4">How to request a refund</h2>
+          <p className="leading-7 text-muted-foreground">
+            Email{' '}
             <a
               href="mailto:support@wcpos.com"
               className="underline underline-offset-4 hover:text-foreground"
             >
               support@wcpos.com
             </a>{' '}
-            from the email address you used for the purchase within 14 days. We
-            will refund the full amount to your original payment method and
-            revoke the license key.
-          </p>
-          <p className="leading-7 text-muted-foreground">
-            Under those laws, the withdrawal right for digital content can end
-            early once delivery begins with your express consent and
-            acknowledgment. Where our checkout has not asked for that consent,
-            we honour the full 14-day right.
-          </p>
-        </section>
-
-        <section>
-          <h2 className="text-2xl font-semibold mb-4">Faulty products</h2>
-          <p className="leading-7 text-muted-foreground">
-            If WCPOS Pro is defective or does not work as described, contact{' '}
-            <a
-              href="mailto:support@wcpos.com"
-              className="underline underline-offset-4 hover:text-foreground"
-            >
-              support@wcpos.com
-            </a>{' '}
-            and we will make it right — by fixing the problem or, where required
-            by law, refunding you. Statutory remedies for faulty digital content
-            apply regardless of the general no-refund policy above.
+            from the email address you used for the purchase, within 14 days of
+            buying. Telling us why helps us improve, but it is not required to
+            get the refund.
           </p>
         </section>
 
         <section>
           <h2 className="text-2xl font-semibold mb-4">How refunds are paid</h2>
           <p className="leading-7 text-muted-foreground">
-            When a refund is given, it goes back to the original payment method
-            via Stripe or PayPal and typically appears on your statement within
-            5–10 business days, depending on your bank or card issuer. Refunded
-            license keys are revoked and stop working immediately.
+            Refunds go back to the original payment method via Stripe or PayPal
+            and typically appear on your statement within 5–10 business days,
+            depending on your bank or card issuer. Refunded license keys are
+            revoked and stop working immediately.
           </p>
         </section>
 
@@ -142,25 +112,24 @@ export default async function RefundsPage({
           <h2 className="text-2xl font-semibold mb-4">License renewals</h2>
           <p className="leading-7 text-muted-foreground">
             Yearly licenses do not renew automatically — we never charge you
-            again without a new purchase from you. When your license expires,
-            you can choose to renew it from your account. If anything about a
-            renewal purchase is not right, email{' '}
-            <a
-              href="mailto:support@wcpos.com"
-              className="underline underline-offset-4 hover:text-foreground"
-            >
-              support@wcpos.com
-            </a>{' '}
-            and we will work it out with you.
+            again without a new purchase from you. Renewal purchases carry the
+            same 14-day guarantee.
           </p>
         </section>
 
         <section>
           <h2 className="text-2xl font-semibold mb-4">Your statutory rights</h2>
+          <p className="leading-7 text-muted-foreground mb-4">
+            For consumers in the EU, EEA and UK: our 14-day guarantee matches
+            your statutory right of withdrawal for this kind of purchase, and
+            exercising either works the same way — email us within 14 days.
+          </p>
           <p className="leading-7 text-muted-foreground">
-            Nothing in this policy limits any rights you have under the consumer
-            protection laws of your country. Where local law gives you stronger
-            rights, those rights apply.
+            If WCPOS Pro is defective or does not work as described, statutory
+            remedies for faulty digital content apply at any time, independent
+            of the 14-day window. And nothing in this policy limits any rights
+            you have under the consumer protection laws of your country —
+            where local law gives you stronger rights, those rights apply.
           </p>
         </section>
       </div>
