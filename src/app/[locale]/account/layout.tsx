@@ -5,6 +5,12 @@ import { redirect } from 'next/navigation'
 import { AccountHeader } from '@/components/account/account-header'
 import { AccountSidebar } from '@/components/account/account-sidebar'
 import { SiteFooter } from '@/components/main/site-footer'
+import type { Metadata } from 'next'
+
+// Account pages are private — keep them out of search engines.
+export const metadata: Metadata = {
+  robots: { index: false, follow: false },
+}
 
 async function AccountHeaderWrapper() {
   const customer = await getCustomer()

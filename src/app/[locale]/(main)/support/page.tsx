@@ -1,10 +1,21 @@
 import { setRequestLocale } from 'next-intl/server'
 import { Suspense } from 'react'
 import { DiscordWidget } from '@/components/support/discord-widget'
+import type { Metadata } from 'next'
+import { marketingMetadata } from '@/lib/seo'
 
-export const metadata = {
-  title: 'Support',
-  description: 'Get support for WooCommerce POS through our Discord community.',
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}): Promise<Metadata> {
+  const { locale } = await params
+  return marketingMetadata({
+    locale,
+    path: '/support',
+    title: 'Support',
+    description: 'Get support for WooCommerce POS through our Discord community.',
+  })
 }
 
 function DiscordSkeleton() {

@@ -4,6 +4,12 @@ import { redirect } from 'next/navigation'
 import { LicensesClient } from '@/components/account/licenses-client'
 import { getResolvedCustomerLicenses } from '@/lib/customer-licenses'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Licenses',
+  description: 'Manage your WCPOS Pro license keys and activations.',
+}
 
 function LicensesSkeleton() {
   return (

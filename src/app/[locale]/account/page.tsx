@@ -9,6 +9,12 @@ import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { ShoppingBag, Key } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Account',
+  description: 'Overview of your WCPOS account, recent orders, and licenses.',
+}
 
 async function AccountOverviewContent({ locale }: { locale: string }) {
   const [customer, orders, allOrders] = await Promise.all([

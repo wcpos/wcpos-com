@@ -14,6 +14,8 @@ import type { ProCheckoutVariant } from '@/services/core/analytics/posthog-servi
 export const metadata = {
   title: 'Checkout',
   description: 'Complete your purchase of WooCommerce POS Pro',
+  // Auth-gated transactional page — keep out of search engines.
+  robots: { index: false, follow: false },
 }
 
 function buildCheckoutRedirectPath(

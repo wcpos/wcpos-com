@@ -4,6 +4,12 @@ import { getCustomerOrders } from '@/lib/medusa-auth'
 import Link from 'next/link'
 import { Card, CardContent } from '@/components/ui/card'
 import { OrderHistoryList } from '@/components/account/order-history-list'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Order History',
+  description: 'View your WCPOS order history and receipts.',
+}
 
 async function OrdersContent({ locale }: { locale: string }) {
   const orders = await getCustomerOrders(50)

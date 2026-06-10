@@ -8,11 +8,22 @@ import type { ProCheckoutVariant } from '@/services/core/analytics/posthog-servi
 import { resolveProCheckoutVariant } from '@/services/core/analytics/posthog-service'
 import { ANALYTICS_DISTINCT_ID_COOKIE } from '@/lib/analytics/distinct-id'
 import { getAnalyticsConfig } from '@/lib/analytics/config'
+import type { Metadata } from 'next'
+import { marketingMetadata } from '@/lib/seo'
 
-export const metadata = {
-  title: 'Pro - Premium Features',
-  description:
-    'Upgrade WooCommerce POS with Pro: payment terminal integration, stock and price editing at the register, order and customer management, end-of-day reports, custom payment gateways, and priority support.',
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}): Promise<Metadata> {
+  const { locale } = await params
+  return marketingMetadata({
+    locale,
+    path: '/pro',
+    title: 'Pro - Premium Features',
+    description:
+      'Upgrade WooCommerce POS with Pro: terminal payments, stock and price editing, order and customer management, end-of-day reports, and priority support.',
+  })
 }
 
 /**

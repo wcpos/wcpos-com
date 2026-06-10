@@ -9,6 +9,12 @@ import Link from 'next/link'
 import { ArrowLeft, FileDown } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Order Details',
+  description: 'View the details of your WCPOS order.',
+}
 
 async function OrderDetailContent({
   params,

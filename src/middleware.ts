@@ -108,5 +108,10 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!_next/static|_next/image|favicon.ico|icon.png|.*\\..*).*)'],
+  // opengraph-image (and its twitter-image alias) are extension-less metadata
+  // routes served from the app root — exclude them so the locale middleware
+  // doesn't rewrite them into /[locale]/... 404s.
+  matcher: [
+    '/((?!_next/static|_next/image|favicon.ico|icon.png|opengraph-image|twitter-image|.*\\..*).*)',
+  ],
 }

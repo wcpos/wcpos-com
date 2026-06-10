@@ -6,6 +6,8 @@ import { Button } from '@/components/ui/button'
 export const metadata = {
   title: 'Order Complete - WooCommerce POS Pro',
   description: 'Thank you for your purchase of WooCommerce POS Pro',
+  // Post-purchase page — keep out of search engines.
+  robots: { index: false, follow: false },
 }
 
 export default async function CheckoutSuccessPage({

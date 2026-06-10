@@ -27,9 +27,21 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     siteName: 'WCPOS',
+    // The file-convention opengraph-image at the app root is not inherited
+    // into the [locale] tree, so reference the generated image explicitly.
+    // Resolved against metadataBase: https://wcpos.com/opengraph-image
+    images: [
+      {
+        url: '/opengraph-image',
+        width: 1200,
+        height: 630,
+        alt: 'WCPOS - WooCommerce Point of Sale',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
+    images: ['/opengraph-image'],
   },
 }
 
@@ -61,7 +73,7 @@ export default async function LocaleLayout({
               '@type': 'Organization',
               name: 'WCPOS',
               url: 'https://wcpos.com',
-              logo: 'https://wcpos.com/icon.png',
+              logo: 'https://wcpos.com/opengraph-image',
               sameAs: ['https://github.com/wcpos'],
             }),
           }}
