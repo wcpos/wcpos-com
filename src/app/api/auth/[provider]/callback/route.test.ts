@@ -237,6 +237,61 @@ describe('OAuth callback route', () => {
     expect(body.error).toContain('facebook')
   })
 
+  it('forwards all OAuth query params (code, state, ...) to the token exchange', async () => {
+    const token = fakeJwt({
+      actor_id: 'cust_existing',
+      user_metadata: { email: 'existing@example.com' },
+    })
+
+    mockCompleteOAuthCallback.mockResolvedValue(token)
+    mockDecodeMedusaToken.mockReturnValue({
+      actor_id: 'cust_existing',
+      actor_type: 'customer',
+      auth_identity_id: 'auth_789',
+      app_metadata: {},
+      user_metadata: { email: 'existing@example.com' },
+    })
+    mockSetAuthToken.mockResolvedValue(undefined)
+
+    const request = new NextRequest(
+      'https://wcpos.com/api/auth/google/callback?code=abc&state=csrf_state_123&scope=email'
+    )
+
+    await GET(request, {
+      params: Promise.resolve({ provider: 'google' }),
+    })
+
+    // Medusa validates the CSRF state server-side, so the route must
+    // forward every provider query param verbatim.
+    expect(mockCompleteOAuthCallback).toHaveBeenCalledWith('google', {
+      code: 'abc',
+      state: 'csrf_state_123',
+      scope: 'email',
+    })
+  })
+
+  it('redirects to /login with error when the token exchange fails', async () => {
+    mockCompleteOAuthCallback.mockRejectedValue(
+      new Error('Invalid state parameter')
+    )
+
+    const request = new NextRequest(
+      'https://wcpos.com/api/auth/google/callback?code=abc&state=tampered'
+    )
+
+    const response = await GET(request, {
+      params: Promise.resolve({ provider: 'google' }),
+    })
+
+    expect(response.status).toBe(303)
+    const location = new URL(response.headers.get('location')!)
+    expect(location.pathname).toBe('/login')
+    expect(location.searchParams.get('error')).toBe('oauth_failed')
+
+    // No session should be established on failure
+    expect(mockSetAuthToken).not.toHaveBeenCalled()
+  })
+
   it('redirects to /login with error when account linking fails', async () => {
     const token = fakeJwt({
       actor_id: '',
