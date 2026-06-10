@@ -1,10 +1,18 @@
 import Link from 'next/link'
-import { LayoutDashboard, Key, ScrollText } from 'lucide-react'
+import {
+  LayoutDashboard,
+  Key,
+  ScrollText,
+  Users,
+  ShoppingCart,
+} from 'lucide-react'
 
 // Admin UI is intentionally hardcoded English (internal tooling).
 const navigation = [
   { label: 'Dashboard', href: '/admin', icon: LayoutDashboard },
   { label: 'Licenses', href: '/admin/licenses', icon: Key },
+  { label: 'Customers', href: '/admin/customers', icon: Users },
+  { label: 'Orders', href: '/admin/orders', icon: ShoppingCart },
   { label: 'Logs', href: '/admin/logs', icon: ScrollText },
 ]
 

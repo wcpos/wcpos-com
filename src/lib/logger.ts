@@ -9,6 +9,7 @@ export const apiLogger = getLogger(['wcpos', 'api'])
 export const storeLogger = getLogger(['wcpos', 'store'])
 export const licenseLogger = getLogger(['wcpos', 'license'])
 export const infraLogger = getLogger(['wcpos', 'infra'])
+export const adminLogger = getLogger(['wcpos', 'admin'])
 
 // Re-export for custom categories
 export { getLogger }

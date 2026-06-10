@@ -8,6 +8,7 @@ import {
   type LogLevel,
 } from '@/services/core/logs/logs-service'
 import { Card, CardContent } from '@/components/ui/card'
+import { StateCard } from '@/components/admin/state-card'
 import {
   Table,
   TableBody,
@@ -67,17 +68,6 @@ function LevelFilter({ active }: { active: LogLevel | undefined }) {
         </Link>
       ))}
     </div>
-  )
-}
-
-function StateCard({ title, detail }: { title: string; detail: string }) {
-  return (
-    <Card>
-      <CardContent className="py-8 text-center text-sm">
-        <p className="font-medium text-foreground">{title}</p>
-        <p className="mt-1 text-muted-foreground">{detail}</p>
-      </CardContent>
-    </Card>
   )
 }
 

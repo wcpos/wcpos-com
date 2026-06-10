@@ -7,6 +7,16 @@ export interface LicenseReference {
   key?: string
 }
 
+/**
+ * Structural input for license extraction: anything with order-level and
+ * (optionally) item-level metadata. Satisfied by the store MedusaOrder shape
+ * and by the admin client's mapped order shapes.
+ */
+export interface OrderWithLicenseMetadata {
+  metadata?: Record<string, unknown> | null
+  items?: Array<{ metadata?: Record<string, unknown> | null }> | null
+}
+
 function normalizeString(value: unknown): string | undefined {
   if (typeof value !== 'string') return undefined
   const normalized = value.trim()
@@ -92,7 +102,7 @@ function collectReferencesFromValue(
 }
 
 function collectReferencesFromMetadata(
-  metadata: Record<string, unknown> | undefined,
+  metadata: Record<string, unknown> | null | undefined,
   references: LicenseReference[]
 ) {
   if (!metadata) return
@@ -109,14 +119,14 @@ function collectReferencesFromMetadata(
 }
 
 export function extractLicenseReferencesFromOrders(
-  orders: MedusaOrder[]
+  orders: OrderWithLicenseMetadata[]
 ): LicenseReference[] {
   const references: LicenseReference[] = []
 
   for (const order of orders) {
     collectReferencesFromMetadata(order.metadata, references)
 
-    for (const item of order.items) {
+    for (const item of order.items ?? []) {
       collectReferencesFromMetadata(item.metadata, references)
     }
   }

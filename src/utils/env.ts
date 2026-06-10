@@ -18,6 +18,11 @@ const envSchema = z.object({
   MEDUSA_BACKEND_URL: z.string().default('https://store-api.wcpos.com'),
   MEDUSA_PUBLISHABLE_KEY: z.string().optional(),
 
+  // Medusa Admin API (secret API key, sk_...). Authenticates admin routes
+  // via HTTP Basic with the key as the username. Unset means the admin
+  // customers/orders pages render a "not configured" state (fail closed).
+  MEDUSA_ADMIN_API_KEY: z.string().optional(),
+
   // Stripe (client-side publishable key)
   NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: z.string().optional(),
 

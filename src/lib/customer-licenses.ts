@@ -52,6 +52,22 @@ async function resolveLicenseReference(
   return buildLicensePlaceholder(reference)
 }
 
+/**
+ * Resolve license references (from order metadata) against Keygen.
+ * Shared by the account licenses page and the admin customer page —
+ * references that cannot be resolved fall back to a placeholder (when a
+ * key is present) or are dropped.
+ */
+export async function resolveLicenseReferences(
+  references: LicenseReference[]
+): Promise<LicenseDetail[]> {
+  const licenses = await Promise.all(
+    references.map((reference) => resolveLicenseReference(reference))
+  )
+
+  return licenses.filter((license): license is LicenseDetail => Boolean(license))
+}
+
 export async function getResolvedCustomerLicenses(): Promise<{
   authenticated: boolean
   licenses: LicenseDetail[]
@@ -64,12 +80,8 @@ export async function getResolvedCustomerLicenses(): Promise<{
   const orders = await getAllCustomerOrders()
   const references = extractLicenseReferencesFromOrders(orders)
 
-  const licenses = await Promise.all(
-    references.map((reference) => resolveLicenseReference(reference))
-  )
-
   return {
     authenticated: true,
-    licenses: licenses.filter((license): license is LicenseDetail => Boolean(license)),
+    licenses: await resolveLicenseReferences(references),
   }
 }

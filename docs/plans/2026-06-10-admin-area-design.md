@@ -1,7 +1,7 @@
-# Admin Area — Phase 1 Design
+# Admin Area — Phase 1 & 2 Design
 
 Date: 2026-06-10
-Status: Implemented (phase 1)
+Status: Implemented (phase 1: licenses/logs; phase 2: customers/orders, read-only)
 
 ## Context
 
@@ -98,27 +98,83 @@ which is how Loki's `query_range` works. The service returns a
 discriminated union (`unconfigured` / `error` / `ok`) so pages can render
 resilient inline states instead of crashing.
 
-## Phase 2 backlog (requires owner sign-off)
+## Phase 2 (implemented): customers & orders browsers
 
-- **Customers & orders browser** — requires `MEDUSA_ADMIN_API_KEY` (Medusa
-  admin API credentials) since the store API only exposes the logged-in
-  customer's own data. Provisioning the key on the Medusa backend and
-  adding it to the env schema is a prerequisite.
+Still strictly READ-ONLY — no mutations of any kind.
+
+### Data source & auth
+
+`MEDUSA_ADMIN_API_KEY` (optional, zod env schema) holds a **Medusa v2
+secret API key** (`sk_...`). The deployed backend is `@medusajs/medusa`
+2.13.1; its authenticate middleware accepts secret keys on admin routes via
+**HTTP Basic with the key as the username and an empty password**
+(`Authorization: Basic base64("sk_...:")` — see `getApiKeyInfo` in
+`@medusajs/framework`'s authenticate middleware). Provision one in the
+Medusa admin (Settings → API Key Management → Secret Keys) and set it in
+Vercel.
+
+When the key is unset, the customers and orders pages render a
+"Medusa admin access not configured" card (same fail-closed pattern as the
+Loki logs viewer). Nothing else breaks.
+
+### Client
+
+`src/services/core/external/medusa-admin-client.ts` — server-only,
+read-only: `listCustomers` (offset pagination + `q` search),
+`getCustomerById`, `listOrders` (offset pagination, optional
+`customer_id` filter), `getOrderById`. All functions return discriminated
+unions (`unconfigured` / `error` / `not_found` / `ok`) and never throw.
+Raw Medusa payloads are mapped onto minimal typed shapes before reaching
+pages; upstream error bodies are never surfaced (HTTP status only).
+Order list/detail requests use `fields=+email,+currency_code,+customer_id`
+because Medusa's default admin order fields omit those; `payment_status`
+is aggregated by Medusa's order workflows on every response.
+
+### Pages
+
+- `customers/page.tsx` — GET-form search (`?q=`), paginated table (email,
+  name, registered/guest, created). Orders count per customer was skipped:
+  it would cost one `/admin/orders` request per row.
+- `customers/[customerId]/page.tsx` — profile fields, billing metadata
+  summary, the customer's orders, and their licenses: references extracted
+  via `extractLicenseReferencesFromOrders` (order metadata, where the
+  backend's order-completed subscriber writes `metadata.licenses`) and
+  resolved through the shared `resolveLicenseReferences` in
+  `src/lib/customer-licenses.ts` (reused, not duplicated). Keys masked.
+- `orders/page.tsx` — paginated table (display id, email, status via
+  `getOrderDisplayStatus`, total via `formatOrderAmount`, date).
+- `orders/[orderId]/page.tsx` — items, totals, link to the customer,
+  license keys **masked** (`maskLicenseKey`; full keys never rendered).
+
+Both sections are in the admin sidebar. Every page calls `requireAdmin()`;
+upstream 404s render `notFound()` (the admin-area convention). No new API
+routes — server components call the client directly, as in phase 1.
+
+### users-service.ts removal
+
+The dead `src/services/core/users/users-service.ts` stub (a relic of the
+deleted Postgres database) was **deleted**, not rebuilt. Its `User` shape
+(role/status columns) described the old DB table; the admin area's actual
+need — browsing Medusa customers — is served by `medusa-admin-client.ts`.
+Nothing imported the stub. Role management, if it ever lands, belongs to
+the write-actions phase below.
+
+## Phase 3 backlog (requires owner sign-off)
+
 - **Write actions** (all gated behind explicit confirmation UI):
   - License revoke / suspend / reinstate (Keygen).
   - Machine deactivation on behalf of customers.
-  - User-role writes / customer management (also requires
-    `MEDUSA_ADMIN_API_KEY`).
-- **Users page** — rebuild `users-service.ts` against the Medusa admin API
-  (blocked on `MEDUSA_ADMIN_API_KEY` as above; the stub remains untouched in
-  phase 1).
+  - Customer management writes via the Medusa admin API.
 - Logs: configurable time range, free-text search (LogQL line filter),
   category filter, pagination via Loki `start`/`end` cursors.
 - Licenses: search by key/email, filter by status/policy, link a license to
   its Medusa customer/order.
+- Orders: free-text search (`q`), status filter.
 - Stronger admin auth (Medusa admin users) if/when more admins are added.
 
 ## Activation
 
 Set `ADMIN_EMAILS` in Vercel (e.g. `paul@kilbot.com.au`) — without it,
 every admin route 404s for everyone, including preview deploys.
+Set `MEDUSA_ADMIN_API_KEY` (Medusa secret API key) to enable the customers
+and orders browsers; they render a "not configured" card without it.
