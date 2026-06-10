@@ -67,6 +67,11 @@ export function readAnalyticsConsent(): AnalyticsConsentStatus | null {
  *
  * Denying consent also removes the analytics distinct-id cookie immediately
  * (the middleware does the same on subsequent requests).
+ *
+ * The Secure attribute follows the actual page protocol rather than
+ * NODE_ENV: WebKit rejects Secure cookies set over plain http (no localhost
+ * exemption, unlike Chromium/Firefox), and e2e runs serve a production
+ * build over http://localhost.
  */
 export function writeAnalyticsConsent(status: AnalyticsConsentStatus): void {
   if (typeof document === 'undefined') {
@@ -74,7 +79,7 @@ export function writeAnalyticsConsent(status: AnalyticsConsentStatus): void {
   }
 
   const options = getConsentCookieOptions()
-  const secure = options.secure ? '; Secure' : ''
+  const secure = window.location.protocol === 'https:' ? '; Secure' : ''
 
   document.cookie = `${ANALYTICS_CONSENT_COOKIE}=${status}; Path=${options.path}; Max-Age=${options.maxAge}; SameSite=Lax${secure}`
 

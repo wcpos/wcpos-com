@@ -34,6 +34,26 @@ export default defineConfig({
     baseURL: process.env.BASE_URL || 'http://localhost:3000',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
+    // Pre-seed an analytics consent decision (cookie name must match
+    // ANALYTICS_CONSENT_COOKIE in src/lib/analytics/consent.ts) so the GDPR
+    // banner does not overlay every page in unrelated specs. The banner has
+    // dedicated coverage in e2e/consent-banner.spec.ts, which opts out via
+    // test.use({ storageState: { cookies: [], origins: [] } }).
+    storageState: {
+      cookies: [
+        {
+          name: 'wcpos-analytics-consent',
+          value: 'denied',
+          domain: 'localhost',
+          path: '/',
+          expires: -1,
+          httpOnly: false,
+          secure: false,
+          sameSite: 'Lax' as const,
+        },
+      ],
+      origins: [],
+    },
   },
 
   projects: [

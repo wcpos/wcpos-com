@@ -73,9 +73,14 @@ test.describe('Authentication', () => {
 
       await page.getByRole('button', { name: 'Create account' }).click()
 
-      // Should show loading state
-      await expect(page.getByRole('button', { name: 'Creating account...' })).toBeVisible()
-      await expect(page.getByRole('button')).toBeDisabled()
+      // Should show loading state. Scope to the submit button: other buttons
+      // (e.g. the consent banner's Accept/Decline) may be on the page, and an
+      // unscoped getByRole('button') trips Playwright's strict mode.
+      const submitButton = page.getByRole('button', {
+        name: 'Creating account...',
+      })
+      await expect(submitButton).toBeVisible()
+      await expect(submitButton).toBeDisabled()
     })
   })
 
