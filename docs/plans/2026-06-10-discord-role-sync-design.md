@@ -163,7 +163,7 @@ Store on the Medusa customer: `metadata.discord_user_id`, `metadata.discord_user
 
 ### Reconciliation job (the backbone)
 
-- **What:** list all customers with `metadata.discord_user_id` → resolve entitlement per customer (same chain as `getResolvedCustomerLicenses`) → compare with current guild role membership (`GET /guilds/{g}/members/{uid}` or the role's member list) → add/remove role where they differ. Idempotent; safe to run at any frequency.
+- **What:** a two-direction sweep, so the role converges from both sides. **(a) Linked customers:** list all customers with `metadata.discord_user_id` → resolve entitlement per customer (same chain as `getResolvedCustomerLicenses`) → compare with current guild role membership → add/remove role where they differ. **(b) Current role holders:** enumerate guild members who currently hold the Pro role (`GET /guilds/{g}/members` filtered by role, paginated) → any holder with no linked customer, or whose linked customer is not entitled, gets the role removed. Sweep (b) is what catches unlinked-but-still-holding members (failed unlink role-removal, manual role grants, links deleted out-of-band) — sweep (a) alone can never see them. Both directions are idempotent; safe to run at any frequency.
 - **Where:** **Vercel cron → protected wcpos-com route** (`/api/discord/reconcile`, guarded by `CRON_SECRET`). Rationale: all the resolution code (`licenseClient`, order extraction) already lives in wcpos-com; putting the job in wcpos-medusa would duplicate it. Vercel function time limits are fine at this scale; if runtime ever becomes an issue, move the job to a wcpos-medusa scheduled job and expose the resolution via an internal endpoint.
 - **Cadence:** daily (e.g. 03:00 UTC). Expiry precision of "within a day" matches the perk's stakes. Tighten to 6-hourly later if desired.
 
@@ -179,8 +179,10 @@ The design **reuses** the existing resolution and adds no second definition:
 
 ```
 hasActiveProEntitlement(licenses) :=
-  licenses.some(l => l.status === 'active' && (l.expiry === null || l.expiry > now))
+  licenses.some(l => normalizeStatus(l.status) === 'active' && (l.expiry === null || l.expiry > now))
 ```
+
+**Status must be normalized (lowercased) before the check.** The two Keygen resolution paths disagree today: `validateLicenseKey` lowercases `status` before returning, but the by-ID path (`licenseClient.getLicenseWithMachines` → `mapLicenseData`) preserves Keygen's raw casing. Without normalization, an active license resolved by ID would be denied the role. Normalize once, inside the entitlement helper — do not rely on callers.
 
 where `licenses` come from the exact pipeline in `src/lib/customer-licenses.ts` (Medusa orders → `extractLicenseReferencesFromOrders` → Keygen resolution). Required refactor (not redefinition): extract a parameterized `getResolvedLicensesForCustomer(customerId)` from `getResolvedCustomerLicenses()` so the reconciliation job and webhook handler can resolve entitlements for customers other than the cookie-authenticated one. The cookie-based function becomes a thin wrapper. `status: 'unknown'` placeholders (Keygen unreachable) count as **not entitled for adding** but **never trigger removal** — see failure handling.
 
