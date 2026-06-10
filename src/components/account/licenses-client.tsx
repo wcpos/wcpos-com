@@ -39,6 +39,8 @@ export function LicensesClient({ initialLicenses }: LicensesClientProps) {
   const [licenses, setLicenses] = useState<License[]>(initialLicenses)
   const [error, setError] = useState<string | null>(null)
   const [deactivating, setDeactivating] = useState<string | null>(null)
+  // Captured once per mount so render stays pure for the React compiler.
+  const [now] = useState(() => Date.now())
 
   const fetchLicenses = async () => {
     setError(null)
@@ -46,7 +48,7 @@ export function LicensesClient({ initialLicenses }: LicensesClientProps) {
       const res = await fetch('/api/account/licenses')
       if (!res.ok) {
         if (res.status === 401) {
-          window.location.href = '/login'
+          window.location.assign('/login')
           return
         }
         throw new Error('Failed to fetch licenses')
@@ -87,6 +89,20 @@ export function LicensesClient({ initialLicenses }: LicensesClientProps) {
     }
   }
 
+  // Keygen can report status "active" after the expiry date has passed;
+  // present those licenses as expired so the UI matches download entitlement.
+  const getDisplayStatus = (license: License) => {
+    const status = license.status.toLowerCase()
+    if (status === 'active' && license.expiry) {
+      const expiryTime = new Date(license.expiry).getTime()
+      // Unparseable expiry fails closed, matching server-side entitlement.
+      if (Number.isNaN(expiryTime) || expiryTime < now) {
+        return 'expired'
+      }
+    }
+    return status
+  }
+
   const getPlanName = (policyId: string) => {
     return policyId === YEARLY_POLICY ? 'Yearly' : 'Lifetime'
   }
@@ -108,7 +124,9 @@ export function LicensesClient({ initialLicenses }: LicensesClientProps) {
           </CardContent>
         </Card>
       ) : (
-        licenses.map((license) => (
+        licenses.map((license) => {
+          const displayStatus = getDisplayStatus(license)
+          return (
           <Card key={license.id}>
             <CardHeader>
               <div className="flex items-center justify-between">
@@ -117,8 +135,8 @@ export function LicensesClient({ initialLicenses }: LicensesClientProps) {
                   <code className="text-sm font-mono">{maskKey(license.key)}</code>
                 </CardTitle>
                 <div className="flex items-center gap-2">
-                  <span className={`text-xs font-medium px-2 py-1 rounded ${getStatusColor(license.status)}`}>
-                    {license.status}
+                  <span className={`text-xs font-medium px-2 py-1 rounded capitalize ${getStatusColor(displayStatus)}`}>
+                    {displayStatus}
                   </span>
                   <span className="text-xs text-muted-foreground">
                     {getPlanName(license.policyId)}
@@ -140,13 +158,28 @@ export function LicensesClient({ initialLicenses }: LicensesClientProps) {
                     <span>{license.machines.length} of {license.maxMachines}</span>
                   </div>
                 </div>
-                {license.status.toLowerCase() === 'active' && (
+                {displayStatus === 'active' && (
                   <Button asChild size="sm">
                     <Link href="/account/downloads">
                       <Download className="mr-2 h-4 w-4" />
                       Downloads
                     </Link>
                   </Button>
+                )}
+                {displayStatus === 'expired' && (
+                  <div className="flex items-center gap-2">
+                    <Button asChild size="sm">
+                      <Link href="/pro">Renew</Link>
+                    </Button>
+                    {/* Expired licenses can still download versions released
+                        before their expiry, so keep downloads reachable. */}
+                    <Button asChild size="sm" variant="outline">
+                      <Link href="/account/downloads">
+                        <Download className="mr-2 h-4 w-4" />
+                        Downloads
+                      </Link>
+                    </Button>
+                  </div>
                 )}
               </div>
 
@@ -193,7 +226,8 @@ export function LicensesClient({ initialLicenses }: LicensesClientProps) {
               )}
             </CardContent>
           </Card>
-        ))
+          )
+        })
       )}
     </>
   )

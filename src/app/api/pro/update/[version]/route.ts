@@ -5,28 +5,6 @@ import {
   getProPluginReleases,
   isReleaseAllowedForLicenses,
 } from '@/services/core/business/pro-downloads'
-import type { LicenseDetail } from '@/types/license'
-
-function mapLicenseStatusToDetail(
-  key: string,
-  status: {
-    status: 'active' | 'expired' | 'inactive' | 'invalid'
-    expiresAt?: string
-    activationsLimit?: number
-  }
-): LicenseDetail {
-  return {
-    id: 'validated',
-    key,
-    status: status.status,
-    expiry: status.expiresAt ?? null,
-    maxMachines: status.activationsLimit ?? 0,
-    machines: [],
-    metadata: {},
-    policyId: 'validated',
-    createdAt: new Date().toISOString(),
-  }
-}
 
 function normalizeSemver(version: string): string {
   const normalized = semver.valid(version) ?? semver.valid(semver.coerce(version))
@@ -59,7 +37,10 @@ export async function GET(
   }
 
   const releases = await getProPluginReleases()
-  const license = mapLicenseStatusToDetail(key, licenseStatus.data)
+  const license = {
+    status: licenseStatus.data.status,
+    expiry: licenseStatus.data.expiresAt ?? null,
+  }
   const latestAllowedRelease = releases.find((release) =>
     isReleaseAllowedForLicenses(release, [license])
   )

@@ -27,5 +27,15 @@
   "roadmap": {
     "title": "Roadmap",
     "subtitle": "What we're building for WooCommerce POS"
+  },
+  "acct": {
+    "nav": {
+      "ttl": "Account",
+      "ovw": "Overview",
+      "ord": "Orders",
+      "lic": "Licenses",
+      "dls": "Downloads",
+      "prf": "Profile"
+    }
   }
 }
