@@ -12,7 +12,7 @@ import { getAnalyticsConfig } from '@/lib/analytics/config'
 export const metadata = {
   title: 'Pro - Premium Features',
   description:
-    'Unlock the full potential of WooCommerce POS with Pro features including advanced reporting, multi-outlet support, and priority support.',
+    'Upgrade WooCommerce POS with Pro: payment terminal integration, stock and price editing at the register, order and customer management, end-of-day reports, custom payment gateways, and priority support.',
 }
 
 /**
@@ -102,7 +102,7 @@ export default async function ProPage({
             '@type': 'Product',
             name: 'WooCommerce POS Pro',
             description:
-              'Premium Point of Sale plugin for WooCommerce with advanced reporting, multi-outlet support, and priority support.',
+              'Premium Point of Sale plugin for WooCommerce. Adds payment terminal integration, stock and price editing, order and customer management, end-of-day reports, custom payment gateways, and priority support.',
             brand: {
               '@type': 'Organization',
               name: 'WCPOS',
@@ -132,8 +132,9 @@ export default async function ProPage({
           WooCommerce POS Pro
         </h1>
         <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
-          Take your point of sale to the next level with advanced features,
-          priority support, and unlimited capabilities.
+          Everything in the free POS, plus payment terminals, store
+          management at the register, end-of-day reports, and priority
+          support.
         </p>
       </section>
 
@@ -146,33 +147,37 @@ export default async function ProPage({
 
       {/* Features Section */}
       <section className="container mx-auto px-4 py-16 border-t">
-        <h2 className="text-3xl font-bold text-center mb-12">
+        <h2 className="text-3xl font-bold text-center mb-4">
           What&apos;s included in Pro?
         </h2>
+        <p className="text-center text-muted-foreground max-w-2xl mx-auto mb-12">
+          Everything in Free, plus the tools to run your whole store from the
+          register — and priority support when you need a hand.
+        </p>
         <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
           <FeatureBlock
-            title="Unlimited Everything"
-            description="No limits on orders, products, or customers. Scale your business without restrictions."
+            title="Payment Terminal Integration"
+            description="Connect card readers and payment terminals for fast, accurate in-person payments."
           />
           <FeatureBlock
-            title="Priority Support"
-            description="Get faster responses and dedicated assistance from our support team."
+            title="Stock & Price Editing"
+            description="Update stock levels, prices, and product details right from the POS — no trip to the WordPress admin."
           />
           <FeatureBlock
-            title="Advanced Features"
-            description="Access pro-only features including advanced reporting and customization options."
+            title="Order Management"
+            description="Browse order history, open past orders, and manage them without leaving the register."
           />
           <FeatureBlock
-            title="Multi-outlet Support"
-            description="Manage multiple store locations from a single dashboard."
+            title="Customer Management"
+            description="Add and edit customer details at the point of sale, kept in sync with WooCommerce."
           />
           <FeatureBlock
-            title="Automatic Updates"
-            description="Always stay up to date with the latest features and security patches."
+            title="End-of-Day Reports"
+            description="Close the register with end-of-day summaries of sales, payments, and takings."
           />
           <FeatureBlock
-            title="Custom Receipts"
-            description="Fully customizable receipt templates with your branding."
+            title="Custom Payment Gateways"
+            description="Take payments with any WooCommerce-compatible gateway, not just the built-in options."
           />
         </div>
       </section>
@@ -183,6 +188,10 @@ export default async function ProPage({
           Frequently Asked Questions
         </h2>
         <div className="max-w-3xl mx-auto space-y-6">
+          <FaqItem
+            question="Is the free plugin limited?"
+            answer="No. The free WooCommerce POS plugin is GPL software with full point of sale features — unlimited products, orders, and customers, and no transaction fees. Pro adds the advanced tools listed above."
+          />
           <FaqItem
             question="What's the difference between Yearly and Lifetime?"
             answer="The Yearly subscription renews annually and includes all updates during your subscription period. The Lifetime license is a one-time payment that includes updates forever."
