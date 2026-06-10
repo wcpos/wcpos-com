@@ -1,4 +1,10 @@
 import type { LogRecord, Sink } from '@logtape/logtape'
+import {
+  buildLokiPayload,
+  formatLokiEntry,
+  lokiPushEndpoint,
+  type LokiLogEntry,
+} from './loki-format'
 
 interface LokiSinkOptions {
   url: string
@@ -17,8 +23,8 @@ export function createLokiSink(options: LokiSinkOptions): Sink {
     flushIntervalMs = 5000,
   } = options
 
-  const endpoint = url.replace(/\/$/, '') + '/loki/api/v1/push'
-  let batch: Array<[string, string]> = []
+  const endpoint = lokiPushEndpoint(url)
+  let batch: LokiLogEntry[] = []
   let flushTimer: ReturnType<typeof setTimeout> | null = null
 
   function flush() {
@@ -27,14 +33,7 @@ export function createLokiSink(options: LokiSinkOptions): Sink {
     const entries = [...batch]
     batch = []
 
-    const payload = {
-      streams: [
-        {
-          stream: { job: 'wcpos', ...labels },
-          values: entries,
-        },
-      ],
-    }
+    const payload = buildLokiPayload({ job: 'wcpos', ...labels }, entries)
 
     const headers: Record<string, string> = {
       'Content-Type': 'application/json',
@@ -61,20 +60,7 @@ export function createLokiSink(options: LokiSinkOptions): Sink {
   }
 
   return (record: LogRecord) => {
-    const timestampNs = (record.timestamp * 1_000_000).toString()
-
-    const line = JSON.stringify({
-      level: record.level,
-      category: record.category.join('.'),
-      message: record.message
-        .map((part) => (typeof part === 'string' ? part : JSON.stringify(part)))
-        .join(''),
-      ...(Object.keys(record.properties).length > 0
-        ? { properties: record.properties }
-        : {}),
-    })
-
-    batch.push([timestampNs, line])
+    batch.push(formatLokiEntry(record))
 
     if (batch.length >= batchSize) {
       flush()
