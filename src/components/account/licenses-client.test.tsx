@@ -48,12 +48,31 @@ describe('LicensesClient', () => {
     expect(downloadLink).toHaveAttribute('href', '/account/downloads')
   })
 
-  it('does not show download button for expired licenses', () => {
+  it('shows renew CTA and keeps downloads reachable for expired licenses', () => {
     render(
       <LicensesClient initialLicenses={[makeLicense({ status: 'expired' })]} />
     )
     expect(screen.getByText('****-****-MNOP')).toBeInTheDocument()
-    expect(screen.queryByRole('link', { name: /download/i })).not.toBeInTheDocument()
+    const renewLink = screen.getByRole('link', { name: 'Renew' })
+    expect(renewLink).toHaveAttribute('href', '/pro')
+    // Pre-expiry versions stay downloadable, so the downloads page stays linked
+    const downloadLink = screen.getByRole('link', { name: /downloads/i })
+    expect(downloadLink).toHaveAttribute('href', '/account/downloads')
+  })
+
+  it('presents an active license past its expiry date as expired', () => {
+    render(
+      <LicensesClient
+        initialLicenses={[
+          makeLicense({ status: 'active', expiry: '2020-01-01T00:00:00Z' }),
+        ]}
+      />
+    )
+    expect(screen.getByText('expired')).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Renew' })).toHaveAttribute(
+      'href',
+      '/pro'
+    )
   })
 
   it('does not show download button for suspended licenses', () => {
