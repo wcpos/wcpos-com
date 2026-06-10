@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { env } from '@/utils/env'
-import { getAuthToken, getCustomer } from '@/lib/medusa-auth'
+import { getCustomer } from '@/lib/medusa-auth'
 import { getResolvedCustomerLicenses } from '@/lib/customer-licenses'
 import { verifyDownloadToken } from '@/lib/download-token'
 import {
@@ -22,9 +22,11 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
-  const authToken = await getAuthToken()
-  const secret = env.DOWNLOAD_TOKEN_SECRET || env.KEYGEN_API_TOKEN || authToken
+  // Deliberately no fallback to the customer JWT: a request-scoped
+  // bearer token must never be used as an HMAC signing secret.
+  const secret = env.DOWNLOAD_TOKEN_SECRET || env.KEYGEN_API_TOKEN
   if (!secret) {
+    licenseLogger.error`Download token secret not configured for customer ${customer.id}`
     return NextResponse.json(
       { error: 'Download token secret not configured' },
       { status: 500 }

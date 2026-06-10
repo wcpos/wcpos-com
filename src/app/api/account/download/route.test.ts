@@ -2,7 +2,6 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { NextRequest } from 'next/server'
 
 const mockGetCustomer = vi.fn()
-const mockGetAuthToken = vi.fn()
 const mockGetResolvedCustomerLicenses = vi.fn()
 const mockVerifyDownloadToken = vi.fn()
 const mockFindReleaseByVersion = vi.fn()
@@ -16,7 +15,6 @@ vi.stubGlobal('fetch', mockFetch)
 
 vi.mock('@/lib/medusa-auth', () => ({
   getCustomer: (...args: unknown[]) => mockGetCustomer(...args),
-  getAuthToken: (...args: unknown[]) => mockGetAuthToken(...args),
 }))
 
 vi.mock('@/lib/customer-licenses', () => ({
@@ -45,11 +43,13 @@ vi.mock('@/lib/logger', () => ({
   },
 }))
 
+const mockEnv = vi.hoisted(() => ({
+  DOWNLOAD_TOKEN_SECRET: undefined as string | undefined,
+  KEYGEN_API_TOKEN: 'keygen-token-secret' as string | undefined,
+}))
+
 vi.mock('@/utils/env', () => ({
-  env: {
-    DOWNLOAD_TOKEN_SECRET: undefined,
-    KEYGEN_API_TOKEN: undefined,
-  },
+  env: mockEnv,
 }))
 
 import { GET } from './route'
@@ -57,6 +57,8 @@ import { GET } from './route'
 describe('GET /api/account/download', () => {
   beforeEach(() => {
     vi.resetAllMocks()
+    mockEnv.DOWNLOAD_TOKEN_SECRET = undefined
+    mockEnv.KEYGEN_API_TOKEN = 'keygen-token-secret'
     mockGetGitHubToken.mockResolvedValue(null)
   })
 
@@ -70,9 +72,23 @@ describe('GET /api/account/download', () => {
     expect(response.status).toBe(401)
   })
 
-  it('allows downloads with auth-token fallback secret', async () => {
+  it('returns 500 when no signing secret is configured', async () => {
+    mockEnv.KEYGEN_API_TOKEN = undefined
     mockGetCustomer.mockResolvedValueOnce({ id: 'cust_1' })
-    mockGetAuthToken.mockResolvedValueOnce('auth-token-secret')
+
+    const response = await GET(
+      new NextRequest('http://localhost/api/account/download?token=test')
+    )
+    const json = await response.json()
+
+    expect(response.status).toBe(500)
+    expect(json.error).toBe('Download token secret not configured')
+    expect(mockVerifyDownloadToken).not.toHaveBeenCalled()
+    expect(mockLicenseLoggerError).toHaveBeenCalled()
+  })
+
+  it('streams the release asset for a valid signed token', async () => {
+    mockGetCustomer.mockResolvedValueOnce({ id: 'cust_1' })
     mockVerifyDownloadToken.mockReturnValueOnce({
       customerId: 'cust_1',
       version: '1.9.0',
@@ -101,6 +117,10 @@ describe('GET /api/account/download', () => {
 
     expect(response.status).toBe(200)
     expect(response.headers.get('content-type')).toContain('application/zip')
+    expect(mockVerifyDownloadToken).toHaveBeenCalledWith(
+      'test',
+      'keygen-token-secret'
+    )
     expect(mockFetch).toHaveBeenCalledTimes(1)
     expect(mockFetch).toHaveBeenCalledWith('https://api.github.com/assets/123', {
       headers: {
@@ -111,7 +131,6 @@ describe('GET /api/account/download', () => {
 
   it('falls back to browser asset URL when API asset URL fails', async () => {
     mockGetCustomer.mockResolvedValueOnce({ id: 'cust_1' })
-    mockGetAuthToken.mockResolvedValueOnce('auth-token-secret')
     mockGetGitHubToken.mockResolvedValueOnce('github-token')
     mockVerifyDownloadToken.mockReturnValueOnce({
       customerId: 'cust_1',
@@ -145,7 +164,6 @@ describe('GET /api/account/download', () => {
 
   it('logs and returns 502 when all asset download attempts fail', async () => {
     mockGetCustomer.mockResolvedValueOnce({ id: 'cust_1' })
-    mockGetAuthToken.mockResolvedValueOnce('auth-token-secret')
     mockGetGitHubToken.mockResolvedValueOnce('github-token')
     mockVerifyDownloadToken.mockReturnValueOnce({
       customerId: 'cust_1',

@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 import { getAllCustomerOrders, getCustomer } from '@/lib/medusa-auth'
-import { extractLicenseReferencesFromOrders } from '@/lib/licenses'
+import { extractLicenseIdsFromOrders } from '@/lib/licenses'
 import { licenseClient } from '@/services/core/external/license-client'
 import { licenseLogger } from '@/lib/logger'
 
@@ -32,8 +32,7 @@ export async function DELETE(
     }
 
     const orders = await getAllCustomerOrders()
-    const licenseIds = extractLicenseReferencesFromOrders(orders)
-      .flatMap((reference) => (reference.id ? [reference.id] : []))
+    const licenseIds = extractLicenseIdsFromOrders(orders)
 
     if (!licenseIds.includes(licenseId)) {
       return NextResponse.json(

@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { initiateOAuth } from '@/lib/medusa-auth'
 import { authLogger } from '@/lib/logger'
-
-const ALLOWED_PROVIDERS = ['google', 'github']
+import { ALLOWED_PROVIDERS } from '@/lib/oauth-providers'
 
 export async function GET(
   request: NextRequest,

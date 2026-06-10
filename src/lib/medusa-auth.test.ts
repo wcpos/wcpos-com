@@ -39,6 +39,7 @@ import {
   updateCustomer,
   decodeMedusaToken,
   linkOrCreateCustomer,
+  parseMedusaError,
 } from './medusa-auth'
 
 describe('medusa-auth', () => {
@@ -492,6 +493,38 @@ describe('medusa-auth', () => {
       await expect(linkOrCreateCustomer('bad-token')).rejects.toThrow(
         'No email found in OAuth profile'
       )
+    })
+  })
+
+  describe('parseMedusaError', () => {
+    const makeResponse = (body: string) =>
+      ({ text: async () => body }) as unknown as Response
+
+    it('returns the message from a JSON body', async () => {
+      const message = await parseMedusaError(
+        makeResponse('{"message":"Invalid credentials"}'),
+        'Login failed'
+      )
+
+      expect(message).toBe('Invalid credentials')
+    })
+
+    it('falls back to the default when JSON has no message', async () => {
+      const message = await parseMedusaError(
+        makeResponse('{"code":"unauthorized"}'),
+        'Login failed'
+      )
+
+      expect(message).toBe('Login failed')
+    })
+
+    it('falls back to the default for a non-JSON body', async () => {
+      const message = await parseMedusaError(
+        makeResponse('<html>Bad Gateway</html>'),
+        'Token refresh failed'
+      )
+
+      expect(message).toBe('Token refresh failed')
     })
   })
 })

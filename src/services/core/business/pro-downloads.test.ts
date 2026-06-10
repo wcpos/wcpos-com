@@ -1,8 +1,9 @@
 import { describe, expect, it } from 'vitest'
-import type { LicenseDetail } from '@/types/license'
 import {
+  hasActiveLicense,
   isReleaseAllowedForLicenses,
   normalizeReleaseVersion,
+  type LicenseEntitlementInput,
   type ProPluginRelease,
 } from './pro-downloads'
 
@@ -19,18 +20,11 @@ function makeRelease(version: string, publishedAt: string): ProPluginRelease {
   }
 }
 
-function makeLicense(status: string, expiry: string | null): LicenseDetail {
-  return {
-    id: 'lic_1',
-    key: 'WCPOS-AAAA-1111',
-    status,
-    expiry,
-    maxMachines: 1,
-    machines: [],
-    metadata: {},
-    policyId: 'policy_1',
-    createdAt: '2026-01-01T00:00:00Z',
-  }
+function makeLicense(
+  status: string,
+  expiry: string | null
+): LicenseEntitlementInput {
+  return { status, expiry }
 }
 
 describe('normalizeReleaseVersion', () => {
@@ -54,5 +48,30 @@ describe('isReleaseAllowedForLicenses', () => {
 
     expect(isReleaseAllowedForLicenses(beforeExpiry, licenses)).toBe(true)
     expect(isReleaseAllowedForLicenses(afterExpiry, licenses)).toBe(false)
+  })
+})
+
+describe('hasActiveLicense', () => {
+  const now = new Date('2026-06-01T00:00:00Z')
+
+  it('returns true for an active license without expiry', () => {
+    expect(hasActiveLicense([makeLicense('active', null)], now)).toBe(true)
+  })
+
+  it('returns true for an active license expiring in the future', () => {
+    expect(
+      hasActiveLicense([makeLicense('active', '2026-07-01T00:00:00Z')], now)
+    ).toBe(true)
+  })
+
+  it('returns false for an active license that has expired', () => {
+    expect(
+      hasActiveLicense([makeLicense('active', '2026-05-01T00:00:00Z')], now)
+    ).toBe(false)
+  })
+
+  it('returns false for non-active statuses and empty lists', () => {
+    expect(hasActiveLicense([makeLicense('expired', null)], now)).toBe(false)
+    expect(hasActiveLicense([], now)).toBe(false)
   })
 })
