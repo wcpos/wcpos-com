@@ -12,7 +12,7 @@ import { Badge } from '@/components/ui/badge'
 import type { MedusaProduct } from '@/types/medusa'
 import { formatPrice, getVariantPrice } from '@/services/core/external/medusa-client'
 import type { ProCheckoutVariant } from '@/services/core/analytics/posthog-service'
-import { TrackedNextLink } from '@/components/analytics/tracked-next-link'
+import { TrackedLocaleLink } from '@/components/analytics/tracked-locale-link'
 
 interface PricingCardProps {
   product: MedusaProduct
@@ -107,7 +107,7 @@ export function PricingCard({
           size="lg"
           variant={featured ? 'default' : 'outline'}
         >
-          <TrackedNextLink
+          <TrackedLocaleLink
             href={checkoutHref}
             eventName="click_start_checkout"
             eventProperties={{
@@ -117,7 +117,7 @@ export function PricingCard({
             }}
           >
             {ctaLabel}
-          </TrackedNextLink>
+          </TrackedLocaleLink>
         </Button>
       </CardFooter>
     </Card>

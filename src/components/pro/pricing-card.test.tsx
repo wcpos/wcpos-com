@@ -3,8 +3,8 @@ import { render, screen } from '@testing-library/react'
 import { PricingCard } from './pricing-card'
 import type { MedusaProduct } from '@/types/medusa'
 
-vi.mock('next/link', () => ({
-  default: ({
+vi.mock('@/i18n/navigation', () => ({
+  Link: ({
     children,
     href,
     ...props

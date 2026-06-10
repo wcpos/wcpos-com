@@ -1,6 +1,6 @@
 import { setRequestLocale } from 'next-intl/server'
 import { Suspense } from 'react'
-import { redirect } from 'next/navigation'
+import { redirect } from '@/i18n/navigation'
 import { DownloadsClient } from '@/components/account/downloads-client'
 import { getResolvedCustomerLicenses } from '@/lib/customer-licenses'
 import {
@@ -33,10 +33,10 @@ function DownloadsSkeleton() {
   )
 }
 
-async function DownloadsContent() {
+async function DownloadsContent({ locale }: { locale: string }) {
   const { authenticated, licenses } = await getResolvedCustomerLicenses()
   if (!authenticated) {
-    redirect('/login')
+    redirect({ href: '/login', locale })
   }
 
   const now = new Date()
@@ -83,7 +83,7 @@ export default async function DownloadsPage({
     <div className="space-y-6">
       <h1 className="text-2xl font-bold">Downloads</h1>
       <Suspense fallback={<DownloadsSkeleton />}>
-        <DownloadsContent />
+        <DownloadsContent locale={locale} />
       </Suspense>
     </div>
   )

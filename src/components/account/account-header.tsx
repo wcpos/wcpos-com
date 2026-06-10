@@ -1,5 +1,5 @@
 import { createHash } from 'crypto'
-import Link from 'next/link'
+import { Link } from '@/i18n/navigation'
 import type { MedusaCustomer } from '@/lib/medusa-auth'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { getConnectedAvatarUrlFromMetadata } from '@/lib/avatar'

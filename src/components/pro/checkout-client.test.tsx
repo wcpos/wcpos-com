@@ -15,9 +15,9 @@ vi.mock('@/components/ui/tabs', () => ({
   TabsTrigger: ({ children }: { children: React.ReactNode }) => <button type="button">{children}</button>,
   TabsContent: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
 }))
-// Mock next/link as a simple anchor
-vi.mock('next/link', () => ({
-  default: ({
+// Mock the locale-aware Link as a simple anchor
+vi.mock('@/i18n/navigation', () => ({
+  Link: ({
     children,
     href,
     ...props

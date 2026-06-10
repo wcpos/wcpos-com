@@ -1,7 +1,7 @@
 import { setRequestLocale } from 'next-intl/server'
 import { Suspense } from 'react'
 import { getCustomer } from '@/lib/medusa-auth'
-import { redirect } from 'next/navigation'
+import { redirect } from '@/i18n/navigation'
 import { AccountHeader } from '@/components/account/account-header'
 import { AccountSidebar } from '@/components/account/account-sidebar'
 import { SiteFooter } from '@/components/main/site-footer'
@@ -12,10 +12,13 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 }
 
-async function AccountHeaderWrapper() {
+async function AccountHeaderWrapper({ locale }: { locale: string }) {
   const customer = await getCustomer()
   if (!customer) {
-    redirect('/login')
+    // `return` is needed for TypeScript narrowing: next-intl's redirect is
+    // typed via an inferred destructured export, so its `never` return type
+    // does not narrow `customer` the way next/navigation's redirect does.
+    return redirect({ href: '/login', locale })
   }
   return <AccountHeader customer={customer} />
 }
@@ -32,6 +35,17 @@ function AccountHeaderSkeleton() {
         <div className="h-5 w-48 bg-gray-200 rounded animate-pulse" />
       </div>
     </header>
+  )
+}
+
+function AccountSidebarSkeleton() {
+  return (
+    <nav className="space-y-2 p-4">
+      <div className="mb-4 h-4 w-24 animate-pulse rounded bg-muted" />
+      {[1, 2, 3, 4, 5].map((row) => (
+        <div key={row} className="h-9 animate-pulse rounded-md bg-muted/60" />
+      ))}
+    </nav>
   )
 }
 
@@ -58,11 +72,17 @@ export default async function AccountLayout({
   return (
     <div className="flex min-h-screen flex-col bg-background">
       <Suspense fallback={<AccountHeaderSkeleton />}>
-        <AccountHeaderWrapper />
+        <AccountHeaderWrapper locale={locale} />
       </Suspense>
       <div className="flex flex-1">
         <aside className="w-64 border-r">
-          <AccountSidebar />
+          {/* Suspense is required: the locale-aware Link reads the pathname,
+              which is dynamic on fallback shells of dynamic routes such as
+              /account/orders/[orderId] (cacheComponents/PPR). On static
+              account routes the sidebar still prerenders into the shell. */}
+          <Suspense fallback={<AccountSidebarSkeleton />}>
+            <AccountSidebar />
+          </Suspense>
         </aside>
         <main className="flex-1 p-6">
           {children}

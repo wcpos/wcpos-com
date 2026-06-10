@@ -1,7 +1,7 @@
 import { setRequestLocale } from 'next-intl/server'
 import { Suspense } from 'react'
 import { getCustomerOrders } from '@/lib/medusa-auth'
-import Link from 'next/link'
+import { Link } from '@/i18n/navigation'
 import { Card, CardContent } from '@/components/ui/card'
 import { OrderHistoryList } from '@/components/account/order-history-list'
 import type { Metadata } from 'next'
