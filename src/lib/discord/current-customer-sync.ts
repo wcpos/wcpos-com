@@ -13,7 +13,7 @@ function createCurrentCustomerDependencies(): DiscordRoleSyncDependencies {
 
   return {
     getLicensesForCustomer: async () => (await getResolvedCustomerLicenses()).licenses,
-    memberHasRole: (discordUserId) => client.memberHasRole(discordUserId),
+    getMemberRoleState: (discordUserId) => client.getMemberRoleState(discordUserId),
     addRole: (discordUserId) => client.addRole(discordUserId),
     removeRole: (discordUserId) => client.removeRole(discordUserId),
     listLinkedCustomers: async () => [],

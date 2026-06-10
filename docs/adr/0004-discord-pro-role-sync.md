@@ -42,7 +42,8 @@ Required production secrets are `DISCORD_CLIENT_ID`, `DISCORD_CLIENT_SECRET`,
 `DISCORD_BOT_TOKEN`, `DISCORD_GUILD_ID`, `DISCORD_PRO_ROLE_ID`, `CRON_SECRET`,
 and `MEDUSA_ADMIN_API_TOKEN` for reconciliation. `DISCORD_PUBLIC_KEY` is reserved
 for a future Discord Interactions endpoint. The bot should have only Manage Roles
-permission and its highest role should sit immediately above the Pro role in the
+permission, with the Server Members privileged intent enabled for reconciliation
+sweeps, and its highest role should sit immediately above the Pro role in the
 server hierarchy.
 
 Deferred work: a Discord `/link` command can deep-link users back to the account

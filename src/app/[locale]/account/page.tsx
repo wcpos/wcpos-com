@@ -62,6 +62,7 @@ async function AccountOverviewContent({
     discordStatus === 'linked' ||
     discordStatus === 'unlinked' ||
     discordStatus === 'synced' ||
+    discordStatus === 'join_server' ||
     discordStatus === 'already_linked' ||
     discordStatus === 'error'
       ? discordStatus

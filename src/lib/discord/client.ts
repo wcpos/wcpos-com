@@ -1,6 +1,7 @@
 import 'server-only'
 
 import type { DiscordConfig } from './config'
+import type { DiscordMemberRoleState } from './sync'
 
 const DISCORD_API_BASE = 'https://discord.com/api/v10'
 
@@ -91,18 +92,18 @@ export class DiscordApiClient {
     })
   }
 
-  async memberHasRole(discordUserId: string): Promise<boolean> {
+  async getMemberRoleState(discordUserId: string): Promise<DiscordMemberRoleState> {
     const response = await this.botFetch(
       `/guilds/${this.config.guildId}/members/${discordUserId}`
     )
 
-    if (response.status === 404) return false
+    if (response.status === 404) return 'not_in_guild'
     if (!response.ok) {
       throw new Error(`Discord member lookup failed: ${await parseDiscordError(response)}`)
     }
 
     const member = (await response.json()) as DiscordGuildMember
-    return member.roles?.includes(this.config.proRoleId) ?? false
+    return member.roles?.includes(this.config.proRoleId) ? 'has_role' : 'missing_role'
   }
 
   async addRole(discordUserId: string): Promise<void> {

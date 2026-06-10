@@ -10,7 +10,7 @@ export interface DiscordRoleSyncCustomer {
 
 export interface DiscordRoleSyncDependencies {
   getLicensesForCustomer(customerId: string): Promise<Array<Pick<LicenseDetail, 'status'> & { expiry?: string | null }>>
-  memberHasRole(discordUserId: string): Promise<boolean>
+  getMemberRoleState(discordUserId: string): Promise<DiscordMemberRoleState>
   addRole(discordUserId: string): Promise<void>
   removeRole(discordUserId: string): Promise<void>
   listLinkedCustomers(): Promise<DiscordRoleSyncCustomer[]>
@@ -24,7 +24,10 @@ export type DiscordRoleSyncAction =
   | 'removed'
   | 'unchanged'
   | 'skipped_no_link'
+  | 'skipped_not_in_guild'
   | 'skipped_unknown_entitlement'
+
+export type DiscordMemberRoleState = 'has_role' | 'missing_role' | 'not_in_guild'
 
 export interface DiscordRoleSyncResult {
   action: DiscordRoleSyncAction
@@ -64,7 +67,6 @@ export async function syncDiscordProRole(
 
   const licenses = await dependencies.getLicensesForCustomer(customer.id)
   const entitlement = evaluateDiscordProEntitlement(licenses, dependencies.now())
-  const hasRole = await dependencies.memberHasRole(link.userId)
 
   if (entitlement.state === 'unknown') {
     return {
@@ -74,6 +76,16 @@ export async function syncDiscordProRole(
     }
   }
 
+  const memberRoleState = await dependencies.getMemberRoleState(link.userId)
+  if (memberRoleState === 'not_in_guild') {
+    return {
+      action: 'skipped_not_in_guild',
+      customerId: customer.id,
+      discordUserId: link.userId,
+    }
+  }
+
+  const hasRole = memberRoleState === 'has_role'
   if (entitlement.state === 'entitled' && !hasRole) {
     await dependencies.addRole(link.userId)
     return { action: 'added', customerId: customer.id, discordUserId: link.userId }
@@ -115,7 +127,14 @@ export async function reconcileDiscordProRoles(
     }
   }
 
-  const roleHolderIds = await dependencies.listRoleHolderIds()
+  let roleHolderIds: string[]
+  try {
+    roleHolderIds = await dependencies.listRoleHolderIds()
+  } catch {
+    summary.errors += 1
+    return summary
+  }
+
   for (const discordUserId of roleHolderIds) {
     summary.roleHoldersChecked += 1
     if (seenDiscordIds.has(discordUserId)) continue
