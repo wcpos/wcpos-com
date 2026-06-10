@@ -98,6 +98,10 @@ vi.mock('./btcpay-button', () => ({
 }))
 
 import { CheckoutClient } from './checkout-client'
+import {
+  persistPendingFailure,
+  readPendingFailure,
+} from './checkout-pending-storage'
 
 const mockFetch = vi.fn()
 vi.stubGlobal('fetch', mockFetch)
@@ -174,6 +178,7 @@ function mockSuccessfulCheckoutInit(
 describe('CheckoutClient', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+    sessionStorage.clear()
   })
 
   it('shows loading state initially', () => {
@@ -474,6 +479,158 @@ describe('CheckoutClient', () => {
     expect(screen.queryByText('Order Summary')).not.toBeInTheDocument()
     expect(screen.queryByTestId('mock-pay-button')).not.toBeInTheDocument()
     expect(screen.queryByText('Payment unsuccessful')).not.toBeInTheDocument()
+  })
+
+  it('persists the order-pending failure so a reload cannot re-enable payment', async () => {
+    mockSuccessfulCheckoutInit()
+    mockFetch.mockResolvedValueOnce({ ok: true, json: async () => ({}) })
+    render(
+      <CheckoutClient
+        customerEmail="user@example.com"
+        selectedVariantId="variant-prop-123"
+        experimentVariant="control"
+      />
+    )
+
+    await waitFor(() => {
+      expect(screen.getByTestId('mock-pending-button')).toBeInTheDocument()
+    })
+
+    fireEvent.click(screen.getByTestId('mock-pending-button'))
+
+    await waitFor(() => {
+      expect(
+        screen.getByText('Payment received — order pending')
+      ).toBeInTheDocument()
+    })
+
+    const persisted = readPendingFailure()
+    expect(persisted).toEqual({
+      cartId: 'cart-123',
+      failure: expect.objectContaining({
+        kind: 'order_pending',
+        reference: 'WCPOS-TEST-PENDING',
+      }),
+    })
+  })
+
+  it('does not persist plain payment failures', async () => {
+    mockSuccessfulCheckoutInit()
+    mockFetch.mockResolvedValueOnce({ ok: true, json: async () => ({}) })
+    render(
+      <CheckoutClient
+        customerEmail="user@example.com"
+        selectedVariantId="variant-prop-123"
+        experimentVariant="control"
+      />
+    )
+
+    await waitFor(() => {
+      expect(screen.getByTestId('mock-fail-button')).toBeInTheDocument()
+    })
+
+    fireEvent.click(screen.getByTestId('mock-fail-button'))
+
+    await waitFor(() => {
+      expect(screen.getByText('Payment unsuccessful')).toBeInTheDocument()
+    })
+
+    expect(readPendingFailure()).toBeNull()
+  })
+
+  it('restores the order-pending state on reload without creating a new cart', async () => {
+    persistPendingFailure('cart-old', {
+      kind: 'order_pending',
+      message:
+        'Your payment was received, but we could not finish creating your order.',
+      reference: 'WCPOS-RESTORED-PENDING',
+    })
+
+    render(
+      <CheckoutClient
+        customerEmail="user@example.com"
+        selectedVariantId="variant-prop-123"
+        experimentVariant="control"
+      />
+    )
+
+    await waitFor(() => {
+      expect(
+        screen.getByText('Payment received — order pending')
+      ).toBeInTheDocument()
+    })
+
+    // The protective copy and the persisted reference both survive the reload
+    expect(screen.getByText(/do not pay again/i)).toBeInTheDocument()
+    expect(screen.getByText('WCPOS-RESTORED-PENDING')).toBeInTheDocument()
+
+    // No new cart or payment session is created — the customer cannot pay again
+    expect(mockFetch).not.toHaveBeenCalled()
+    expect(screen.queryByText('Order Summary')).not.toBeInTheDocument()
+    expect(screen.queryByTestId('mock-pay-button')).not.toBeInTheDocument()
+  })
+
+  it('restores the uncertain-payment warning on reload while keeping checkout mounted', async () => {
+    persistPendingFailure('cart-old', {
+      kind: 'payment_uncertain',
+      message:
+        "We couldn't confirm the status of your payment. If you think you may have been charged, please contact support before trying again.",
+      reference: 'WCPOS-RESTORED-UNCERTAIN',
+    })
+
+    mockSuccessfulCheckoutInit()
+    mockFetch.mockResolvedValueOnce({ ok: true, json: async () => ({}) })
+
+    render(
+      <CheckoutClient
+        customerEmail="user@example.com"
+        selectedVariantId="variant-prop-123"
+        experimentVariant="control"
+      />
+    )
+
+    await waitFor(() => {
+      expect(screen.getByText('Payment status unknown')).toBeInTheDocument()
+    })
+
+    expect(screen.getByText('WCPOS-RESTORED-UNCERTAIN')).toBeInTheDocument()
+
+    // The checkout itself still mounts (the warning withholds retry guidance,
+    // but support may confirm the charge failed, so the form stays usable)
+    await waitFor(() => {
+      expect(screen.getByText('Order Summary')).toBeInTheDocument()
+    })
+  })
+
+  it('clears the persisted protective state after a successful order', async () => {
+    persistPendingFailure('cart-old', {
+      kind: 'payment_uncertain',
+      message: "We couldn't confirm the status of your payment.",
+      reference: 'WCPOS-RESTORED-UNCERTAIN',
+    })
+
+    mockSuccessfulCheckoutInit()
+    mockFetch.mockResolvedValueOnce({ ok: true, json: async () => ({}) })
+
+    render(
+      <CheckoutClient
+        customerEmail="user@example.com"
+        selectedVariantId="variant-prop-123"
+        experimentVariant="control"
+      />
+    )
+
+    await waitFor(() => {
+      expect(screen.getByTestId('mock-pay-button')).toBeInTheDocument()
+    })
+
+    fireEvent.click(screen.getByTestId('mock-pay-button'))
+
+    await waitFor(() => {
+      expect(screen.getByText('Thank you for your purchase!')).toBeInTheDocument()
+    })
+
+    expect(readPendingFailure()).toBeNull()
   })
 
   it('passes BTCPay checkout link to BTCPayButton when present in cart sessions', async () => {

@@ -138,6 +138,58 @@ describe('PayPalButton', () => {
     expect(failure.message).not.toContain('paypal internal js error')
   })
 
+  it('reports a createOrder failure once when the SDK echoes it through onError', async () => {
+    const initError = new Error('Medusa 500 stack trace')
+    mockCreatePaymentSession.mockRejectedValue(initError)
+
+    const props = renderButton(null)
+    await expect(props.createOrder()).rejects.toThrow()
+
+    // One clear (null) + one failure report from the createOrder catch
+    expect(onFailure).toHaveBeenCalledTimes(2)
+    const reported = lastFailure()
+    expect(reported.message).toContain("couldn't start the PayPal checkout")
+
+    // The SDK re-reports the same rejection via onError — must be a no-op
+    props.onError(initError)
+
+    expect(onFailure).toHaveBeenCalledTimes(2)
+    expect(lastFailure().reference).toBe(reported.reference)
+    expect(lastFailure().message).toBe(reported.message)
+  })
+
+  it('still reports a later, unrelated SDK error after a deduped echo', async () => {
+    mockCreatePaymentSession.mockRejectedValue(new Error('init failed'))
+
+    const props = renderButton(null)
+    await expect(props.createOrder()).rejects.toThrow()
+    props.onError(new Error('echoed init failure')) // deduped echo
+
+    const callsAfterEcho = onFailure.mock.calls.length
+    props.onError(new Error('genuinely new sdk error'))
+
+    expect(onFailure.mock.calls.length).toBe(callsAfterEcho + 1)
+    const failure = lastFailure()
+    expect(failure.kind).toBe('payment_failed')
+    expect(failure.message).toContain("PayPal couldn't complete your payment")
+  })
+
+  it('reports each createOrder attempt separately with its own reference', async () => {
+    mockCreatePaymentSession.mockRejectedValue(new Error('init failed'))
+
+    const props = renderButton(null)
+    await expect(props.createOrder()).rejects.toThrow()
+    const firstReference = lastFailure().reference
+
+    // Customer retries; the new attempt reports its own failure even though
+    // the previous flag was never consumed by an onError echo
+    await expect(props.createOrder()).rejects.toThrow()
+    const secondReference = lastFailure().reference
+
+    expect(secondReference).toMatch(/^WCPOS-/)
+    expect(secondReference).not.toBe(firstReference)
+  })
+
   it('reports a calm cancelled state when the customer backs out', () => {
     const props = renderButton()
     props.onCancel()
