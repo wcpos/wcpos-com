@@ -2,6 +2,8 @@
  * License API Types
  */
 
+import type { CanonicalLicenseStatus } from '@/lib/license-status'
+
 export interface LicenseStatus {
   activated: boolean
   status: 'active' | 'expired' | 'inactive' | 'invalid'
@@ -14,7 +16,14 @@ export interface LicenseStatus {
 
 export interface LicenseStatusResponse {
   status: number
+  /** Plugin-facing display shape. Its `status` vocabulary is what the WP
+      plugin understands and MUST NOT drive entitlement: 'inactive' here
+      means suspended, while the canonical vocabulary maps 'inactive' to a
+      different (in-term, active) Keygen state. */
   data?: LicenseStatus
+  /** Canonical-vocabulary input for entitlement decisions
+      (isReleaseAllowedForLicenses). Present whenever `data` is. */
+  entitlement?: { status: CanonicalLicenseStatus; expiry: string | null }
   error?: string
   message?: string
 }

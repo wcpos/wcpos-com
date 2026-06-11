@@ -33,9 +33,12 @@ export async function GET(
   }
 
   const releases = await getProPluginReleases()
-  const license = {
-    status: licenseStatus.data.status,
-    expiry: licenseStatus.data.expiresAt ?? null,
+  // Entitlement uses the canonical status, NOT data.status: the plugin
+  // display vocabulary reuses 'inactive' for suspended licenses, which the
+  // canonical normalizer would misread as an in-term Keygen status.
+  const license = licenseStatus.entitlement ?? {
+    status: 'unknown',
+    expiry: null,
   }
   const allowedReleases = releases.filter((release) =>
     isReleaseAllowedForLicenses(release, [license])
