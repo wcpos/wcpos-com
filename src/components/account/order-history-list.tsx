@@ -29,13 +29,17 @@ export function OrderHistoryList({ orders, locale }: OrderHistoryListProps) {
   if (orders.length === 0) {
     return (
       <Card>
-        <CardContent className="py-8 text-center text-muted-foreground">
-          <ShoppingBag className="h-8 w-8 mx-auto mb-2 opacity-50" />
-          <p>{t('emptyTitle')}</p>
-          <p className="text-sm mt-1">{t('emptyDescription')}</p>
+        <CardContent className="flex flex-col items-center py-12 text-center">
+          <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-muted">
+            <ShoppingBag className="h-5 w-5 text-muted-foreground" />
+          </div>
+          <p className="font-medium">{t('emptyTitle')}</p>
+          <p className="mt-1 max-w-sm text-sm text-muted-foreground">
+            {t('emptyDescription')}
+          </p>
           <Link
             href="/pro"
-            className="text-primary hover:underline mt-2 inline-block"
+            className="mt-3 inline-block text-sm font-medium text-wcpos-red-accent hover:underline"
           >
             {t('browsePro')}
           </Link>
@@ -47,13 +51,16 @@ export function OrderHistoryList({ orders, locale }: OrderHistoryListProps) {
   return (
     <div className="space-y-3">
       {orders.map((order) => (
-        <Card key={order.id}>
+        <Card
+          key={order.id}
+          className="transition-colors hover:border-foreground/20"
+        >
           <CardContent className="py-4">
             <div className="flex flex-wrap items-center justify-between gap-4">
-              <div>
+              <div className="min-w-0">
                 <Link
                   href={`/account/orders/${order.id}`}
-                  className="font-medium hover:underline"
+                  className="font-medium underline-offset-4 hover:underline"
                 >
                   {t('orderNumber', { id: order.display_id })}
                 </Link>
@@ -66,7 +73,7 @@ export function OrderHistoryList({ orders, locale }: OrderHistoryListProps) {
               </div>
               <div className="flex flex-wrap items-center gap-4">
                 <div className="text-right">
-                  <p className="font-medium">
+                  <p className="font-medium tabular-nums">
                     {formatOrderAmount(order.total, order.currency_code)}
                   </p>
                   <p className="text-sm text-muted-foreground">

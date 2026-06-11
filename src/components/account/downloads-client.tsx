@@ -5,6 +5,7 @@ import { ChevronLeft, ChevronRight, Download } from 'lucide-react'
 import { useLocale, useTranslations } from 'next-intl'
 import { Link } from '@/i18n/navigation'
 import { Button } from '@/components/ui/button'
+import { AccountNotice } from '@/components/account/account-notice'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Markdown } from '@/components/ui/markdown'
 import { formatDateForLocale } from '@/lib/date-format'
@@ -54,6 +55,8 @@ export function DownloadsClient({
   )
   const [error, setError] = useState<string | null>(null)
 
+  // Releases arrive sorted newest-first; the first one gets a "Latest" chip.
+  const latestVersion = releases[0]?.version
   const totalPages = Math.max(1, Math.ceil(releases.length / RELEASES_PER_PAGE))
   // Derive the clamped page instead of syncing state in an effect.
   const safePage = Math.min(currentPage, totalPages)
@@ -126,61 +129,78 @@ export function DownloadsClient({
       )}
 
       {expiredAccess && access.latestExpiry && (
-        <div className="flex flex-wrap items-center justify-between gap-3 rounded-md border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900">
-          <p>
-            {t('expiredBanner', {
-              date: formatDateForLocale(access.latestExpiry, locale),
-            })}
-          </p>
-          <Button asChild size="sm">
-            <Link href="/pro">{t('renewLicense')}</Link>
-          </Button>
-        </div>
+        <AccountNotice
+          action={
+            <Button asChild size="sm">
+              <Link href="/pro">{t('renewLicense')}</Link>
+            </Button>
+          }
+        >
+          {t('expiredBanner', {
+            date: formatDateForLocale(access.latestExpiry, locale),
+          })}
+        </AccountNotice>
       )}
 
       {suspendedAccess && (
-        <div className="flex flex-wrap items-center justify-between gap-3 rounded-md border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900">
-          <p>{t('suspendedBanner')}</p>
-          <Button asChild size="sm" variant="outline">
-            <Link href="/support">{t('contactSupport')}</Link>
-          </Button>
-        </div>
+        <AccountNotice
+          action={
+            <Button asChild size="sm" variant="outline">
+              <Link href="/support">{t('contactSupport')}</Link>
+            </Button>
+          }
+        >
+          {t('suspendedBanner')}
+        </AccountNotice>
       )}
 
       {revokedAccess && (
-        <div className="flex flex-wrap items-center justify-between gap-3 rounded-md border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900">
-          <p>{t('revokedBanner')}</p>
-          <Button asChild size="sm" variant="outline">
-            <Link href="/support">{t('contactSupport')}</Link>
-          </Button>
-        </div>
+        <AccountNotice
+          action={
+            <Button asChild size="sm" variant="outline">
+              <Link href="/support">{t('contactSupport')}</Link>
+            </Button>
+          }
+        >
+          {t('revokedBanner')}
+        </AccountNotice>
       )}
 
       {unknownAccess && (
-        <div className="flex flex-wrap items-center justify-between gap-3 rounded-md border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900">
-          <p>{t('unknownBanner')}</p>
-          <Button asChild size="sm" variant="outline">
-            <Link href="/support">{t('contactSupport')}</Link>
-          </Button>
-        </div>
+        <AccountNotice
+          action={
+            <Button asChild size="sm" variant="outline">
+              <Link href="/support">{t('contactSupport')}</Link>
+            </Button>
+          }
+        >
+          {t('unknownBanner')}
+        </AccountNotice>
       )}
 
       {inactiveFallback && (
-        <div className="flex flex-wrap items-center justify-between gap-3 rounded-md border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900">
-          <p>{t('inactiveBanner')}</p>
-          <Button asChild size="sm">
-            <Link href="/pro">{t('renewLicense')}</Link>
-          </Button>
-        </div>
+        <AccountNotice
+          action={
+            <Button asChild size="sm">
+              <Link href="/pro">{t('renewLicense')}</Link>
+            </Button>
+          }
+        >
+          {t('inactiveBanner')}
+        </AccountNotice>
       )}
 
       {noLicense && (
-        <div className="flex flex-wrap items-center justify-between gap-3 rounded-md border bg-muted p-3 text-sm">
-          <p>{t('noLicenseBanner')}</p>
-          <Button asChild size="sm">
-            <Link href="/pro">{t('getPro')}</Link>
-          </Button>
-        </div>
+        <AccountNotice
+          variant="neutral"
+          action={
+            <Button asChild size="sm">
+              <Link href="/pro">{t('getPro')}</Link>
+            </Button>
+          }
+        >
+          {t('noLicenseBanner')}
+        </AccountNotice>
       )}
 
       <Card>
@@ -191,22 +211,31 @@ export function DownloadsClient({
           {releases.length === 0 ? (
             <p className="text-sm text-muted-foreground">{t('emptyList')}</p>
           ) : (
-            <div className="space-y-4">
+            <div className="space-y-3">
               {visibleReleases.map((release) => (
                 <div
                   key={release.version}
-                  className={`flex items-start justify-between gap-4 rounded-lg border p-3 ${
-                    release.allowed ? '' : 'opacity-60'
+                  className={`flex flex-wrap items-start justify-between gap-3 rounded-lg border p-3 transition-colors sm:p-4 ${
+                    release.allowed
+                      ? 'hover:border-foreground/20'
+                      : 'opacity-60'
                   }`}
                 >
-                  <div className="min-w-0">
-                    <p className="font-medium">{release.name}</p>
+                  <div className="min-w-0 flex-1 basis-60">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <p className="font-medium">{release.name}</p>
+                      {release.version === latestVersion && (
+                        <span className="rounded-full bg-wcpos-red/10 px-2 py-0.5 text-[11px] font-semibold text-wcpos-red-accent">
+                          {t('latestBadge')}
+                        </span>
+                      )}
+                    </div>
                     <p className="text-sm text-muted-foreground">
                       v{release.version} •{' '}
                       {formatDateForLocale(release.publishedAt, locale)}
                     </p>
                     {!release.allowed && (
-                      <p className="mt-1 text-xs text-amber-700">
+                      <p className="mt-1 text-xs text-amber-700 dark:text-amber-400">
                         {expiredAccess
                           ? t('reasonExpired')
                           : unknownAccess
@@ -216,7 +245,7 @@ export function DownloadsClient({
                     )}
                     {release.releaseNotes?.trim() ? (
                       <Markdown
-                        className="mt-2 space-y-1"
+                        className="mt-2 max-w-prose space-y-1 break-words"
                         content={release.releaseNotes}
                       />
                     ) : (
@@ -227,6 +256,7 @@ export function DownloadsClient({
                   </div>
                   <Button
                     size="sm"
+                    className="shrink-0"
                     variant={release.allowed ? 'default' : 'outline'}
                     disabled={!release.allowed || downloadingVersion === release.version}
                     onClick={() => startDownload(release.version)}
@@ -242,7 +272,7 @@ export function DownloadsClient({
               ))}
 
               {totalPages > 1 && (
-                <div className="flex items-center justify-between border-t pt-3">
+                <div className="flex flex-wrap items-center justify-between gap-3 border-t pt-4">
                   <p className="text-xs text-muted-foreground">
                     {t('pageOf', { page: safePage, total: totalPages })}
                   </p>
