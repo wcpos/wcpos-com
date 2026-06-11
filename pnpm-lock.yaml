@@ -22,8 +22,8 @@ importers:
         specifier: ^22.0.1
         version: 22.0.1
       '@paypal/react-paypal-js':
-        specifier: ^9.2.0
-        version: 9.2.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+        specifier: ^10.0.0
+        version: 10.0.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@radix-ui/react-avatar':
         specifier: ^1.1.12
         version: 1.1.12(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
@@ -1255,17 +1255,17 @@ packages:
     resolution: {integrity: sha512-tmmZ3lQxAe/k/+rNnXQRawJ4NjxO2hqiOLTHvWchtGZULp4RyFeh6aU4XdOYBFe2KE1oShQTv4AblOs2iOrNnQ==}
     engines: {node: '>= 10.0.0'}
 
-  '@paypal/paypal-js@9.7.0':
-    resolution: {integrity: sha512-eUQVZWTEhXhaPsYDmfUaOeV5zfeLUn7kCE7/BXm6uAtMhUoK0S7uPtUzosqfH1vZgjfUSyTzghDJtYxXyRRZig==}
+  '@paypal/paypal-js@10.0.0':
+    resolution: {integrity: sha512-IOAA8Ls7A5WXH8vV8Lbh+QTyVsQWbmqzCMvNFmGO/56D+7i5OMXhjzG2Qhz0WHSiVe+IutqJMWPX2dHJXA7Kgw==}
 
-  '@paypal/react-paypal-js@9.2.0':
-    resolution: {integrity: sha512-wckuxilT+fYYwg0TYbEbxkclYeJnhIlThpNtV9RLXQA6uBbt5xPIzGv9wt2ykQTLiNIqhXhw1Hlz5yxUeCteKQ==}
+  '@paypal/react-paypal-js@10.0.0':
+    resolution: {integrity: sha512-65ry+7rJE2sjwPGrW2pSPM8ye2pYxIFO/DpAd0QfkJ56FHc281paAHc5OTg/cZf88UUXkn7hltLDZ60CRfjIrQ==}
     peerDependencies:
       react: ^16.8.0 || ^17 || ^18 || ^19
       react-dom: ^16.8.0 || ^17 || ^18 || ^19
 
-  '@paypal/sdk-constants@1.0.157':
-    resolution: {integrity: sha512-BjxWT9rK6dM1AOffSpvHYY47/8BY775jgEYYiwH6eL4YaqU5Epcw7zOtwQ8L4UaEn4FCAjZ2EWxaS83dCN7SpA==}
+  '@paypal/sdk-constants@1.0.158':
+    resolution: {integrity: sha512-OrX2kN4gsBl6fG1GS1ewsNk7TTqYmdtUMVaJ+wAzPhsv9M7dfni95WuJdt4pMALOo5ioZeJ05a16BUSca5IC+Q==}
 
   '@pdf-lib/standard-fonts@1.0.0':
     resolution: {integrity: sha512-hU30BK9IUN/su0Mn9VdlVKsWBS6GyhVfqjwl1FjZN4TxP6cCw0jP2w7V3Hf5uX7M0AZJ16vey9yE0ny7Sa59ZA==}
@@ -5778,19 +5778,19 @@ snapshots:
       '@parcel/watcher-win32-ia32': 2.5.6
       '@parcel/watcher-win32-x64': 2.5.6
 
-  '@paypal/paypal-js@9.7.0':
+  '@paypal/paypal-js@10.0.0':
     dependencies:
       promise-polyfill: 8.3.0
 
-  '@paypal/react-paypal-js@9.2.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7)':
+  '@paypal/react-paypal-js@10.0.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7)':
     dependencies:
-      '@paypal/paypal-js': 9.7.0
-      '@paypal/sdk-constants': 1.0.157
+      '@paypal/paypal-js': 10.0.0
+      '@paypal/sdk-constants': 1.0.158
       react: 19.2.7
       react-dom: 19.2.7(react@19.2.7)
       server-only: 0.0.1
 
-  '@paypal/sdk-constants@1.0.157':
+  '@paypal/sdk-constants@1.0.158':
     dependencies:
       hi-base32: 0.5.1
 
