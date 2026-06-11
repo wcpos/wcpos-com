@@ -1,6 +1,7 @@
 import 'server-only'
 
 import { env } from '@/utils/env'
+import { normalizeLicenseStatus } from '@/lib/license-status'
 import { licenseLogger } from '@/lib/logger'
 import type {
   LicenseStatusResponse,
@@ -343,6 +344,13 @@ async function validateLicense(
       activated: false,
       status: 'invalid',
       productName: 'WooCommerce POS Pro',
+    },
+    // Entitlement must come from the RAW Keygen status run through the
+    // canonical normalizer — never from data.status above, whose plugin
+    // vocabulary collides with it ('inactive' there means suspended).
+    entitlement: {
+      status: normalizeLicenseStatus(license.status),
+      expiry: license.expiry,
     },
   }
 }

@@ -462,6 +462,10 @@ describe('licenseClient', () => {
           activationsCount: 1,
           productName: 'WooCommerce POS Pro',
         },
+        entitlement: {
+          status: 'active',
+          expiry: '2027-01-01T00:00:00Z',
+        },
       })
     })
 
@@ -498,6 +502,10 @@ describe('licenseClient', () => {
           activationsLimit: 2,
           activationsCount: 0,
           productName: 'WooCommerce POS Pro',
+        },
+        entitlement: {
+          status: 'expired',
+          expiry: '2024-01-01T00:00:00Z',
         },
       })
     })
@@ -545,6 +553,10 @@ describe('licenseClient', () => {
           activationsCount: 0,
           productName: 'WooCommerce POS Pro',
         },
+        entitlement: {
+          status: 'active',
+          expiry: '2026-06-14T00:00:00Z',
+        },
       })
     })
 
@@ -556,32 +568,42 @@ describe('licenseClient', () => {
 
       expect(result.data?.status).toBe('active')
       expect(result.data?.expiresAt).toBe('2026-12-01T00:00:00Z')
+      expect(result.entitlement?.status).toBe('active')
     })
 
-    it('maps SUSPENDED to inactive', async () => {
+    it('maps SUSPENDED to plugin-display inactive but canonical suspended entitlement', async () => {
       mockValidation('SUSPENDED', false, '2099-01-01T00:00:00Z')
 
       const result = await licenseClient.validateLicense('KEYX-KEYX', 'instance-abc')
 
       expect(result.data?.status).toBe('inactive')
       expect(result.data?.activated).toBe(false)
+      // The display value 'inactive' collides with the canonical vocabulary
+      // (where 'inactive' is an in-term Keygen status) — entitlement must
+      // carry the canonical 'suspended', which grants nothing (ADR-0001).
+      expect(result.entitlement).toEqual({
+        status: 'suspended',
+        expiry: '2099-01-01T00:00:00Z',
+      })
     })
 
-    it('maps BANNED (Keygen terminal status) to invalid', async () => {
+    it('maps BANNED (Keygen terminal status) to invalid / revoked entitlement', async () => {
       mockValidation('BANNED', false, null)
 
       const result = await licenseClient.validateLicense('KEYX-KEYX', 'instance-abc')
 
       expect(result.data?.status).toBe('invalid')
       expect(result.data?.activated).toBe(false)
+      expect(result.entitlement?.status).toBe('revoked')
     })
 
-    it('fails closed to invalid for unrecognized statuses', async () => {
+    it('fails closed to invalid/unknown for unrecognized statuses', async () => {
       mockValidation('SOMETHING_NEW', false, null)
 
       const result = await licenseClient.validateLicense('KEYX-KEYX', 'instance-abc')
 
       expect(result.data?.status).toBe('invalid')
+      expect(result.entitlement?.status).toBe('unknown')
     })
 
     it('maps NOT_FOUND to 404 error response', async () => {
