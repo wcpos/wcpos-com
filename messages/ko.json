@@ -167,6 +167,7 @@
       "active": "active",
       "expired": "expired",
       "suspended": "suspended",
+      "revoked": "revoked",
       "unknown": "unknown"
     },
     "licenses": {
@@ -195,6 +196,7 @@
       "heading": "Downloads",
       "expiredBanner": "Your license expired on {date}. You can still download versions released before then.",
       "suspendedBanner": "Your license is suspended — contact support.",
+      "revokedBanner": "Your license has been revoked and no longer includes downloads. Contact support if you believe this is an error.",
       "unknownBanner": "We couldn't verify your license — downloads may be temporarily limited. Try again shortly or contact support.",
       "inactiveBanner": "You have no active license. Only versions released during your license term are available.",
       "noLicenseBanner": "A WCPOS Pro license is required to download the plugin.",

@@ -43,6 +43,7 @@ const TRANSLATED_STATUSES = [
   'active',
   'expired',
   'suspended',
+  'revoked',
   'unknown',
 ] as const
 type TranslatedStatus = (typeof TRANSLATED_STATUSES)[number]
@@ -108,6 +109,7 @@ export function LicensesClient({ initialLicenses }: LicensesClientProps) {
       case 'active': return 'text-green-600 bg-green-50'
       case 'expired': return 'text-red-600 bg-red-50'
       case 'suspended': return 'text-yellow-600 bg-yellow-50'
+      case 'revoked': return 'text-red-600 bg-red-50'
       default: return 'text-gray-600 bg-gray-50'
     }
   }

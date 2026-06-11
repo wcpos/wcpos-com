@@ -63,6 +63,35 @@ describe('isReleaseAllowedForLicenses', () => {
 
     expect(isReleaseAllowedForLicenses(release, licenses)).toBe(false)
   })
+
+  describe('raw Keygen statuses', () => {
+    const now = new Date('2026-06-01T00:00:00Z')
+    const release = makeRelease('1.9.0', '2026-02-01T00:00:00Z')
+
+    it('treats EXPIRING as active — paid, in-term, days from expiry', () => {
+      const licenses = [makeLicense('EXPIRING', '2026-06-03T00:00:00Z')]
+      expect(hasActiveLicense(licenses, now)).toBe(true)
+      expect(isReleaseAllowedForLicenses(release, licenses, now)).toBe(true)
+    })
+
+    it('treats INACTIVE as active — paid, in-term, just idle', () => {
+      const licenses = [makeLicense('INACTIVE', '2026-12-01T00:00:00Z')]
+      expect(hasActiveLicense(licenses, now)).toBe(true)
+      expect(isReleaseAllowedForLicenses(release, licenses, now)).toBe(true)
+    })
+
+    it('treats BANNED as revoked — grants nothing', () => {
+      const licenses = [makeLicense('BANNED', '2099-10-01T00:00:00Z')]
+      expect(hasActiveLicense(licenses, now)).toBe(false)
+      expect(isReleaseAllowedForLicenses(release, licenses, now)).toBe(false)
+    })
+
+    it('fails closed for unrecognized statuses', () => {
+      const licenses = [makeLicense('invalid', '2099-10-01T00:00:00Z')]
+      expect(hasActiveLicense(licenses, now)).toBe(false)
+      expect(isReleaseAllowedForLicenses(release, licenses, now)).toBe(false)
+    })
+  })
 })
 
 describe('hasActiveLicense', () => {

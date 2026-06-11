@@ -1,6 +1,7 @@
 import 'server-only'
 
 import { githubClient } from '@/services/core/external/github-client'
+import { normalizeLicenseStatus } from '@/lib/license-status'
 import type { LicenseDetail } from '@/types/license'
 
 const PRO_PLUGIN_REPO = 'woocommerce-pos-pro'
@@ -64,7 +65,10 @@ export async function getProPluginReleases(): Promise<ProPluginRelease[]> {
 export type LicenseEntitlementInput = Pick<LicenseDetail, 'status' | 'expiry'>
 
 function isLicenseActive(license: LicenseEntitlementInput, now: Date): boolean {
-  const status = license.status.toLowerCase()
+  // Normalizing here (not just at the account boundary) keeps entitlement
+  // correct for every caller: raw Keygen statuses like EXPIRING/INACTIVE are
+  // in-term paid licenses and must count as active.
+  const status = normalizeLicenseStatus(license.status)
   if (status !== 'active') return false
 
   if (!license.expiry) return true
@@ -85,7 +89,7 @@ function getLatestExpiry(licenses: LicenseEntitlementInput[]): Date | null {
     // Only natural lifecycle states grant expiry-based access: suspended and
     // revoked licenses are administrative holds/terminations (refunds,
     // chargebacks) and grant nothing. See docs/adr/0001.
-    const status = license.status.toLowerCase()
+    const status = normalizeLicenseStatus(license.status)
     if (status !== 'active' && status !== 'expired') continue
     if (!license.expiry) continue
     const expiry = new Date(license.expiry)

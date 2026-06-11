@@ -4,6 +4,7 @@ import {
   extractLicenseReferencesFromOrders,
   type LicenseReference,
 } from '@/lib/licenses'
+import { normalizeLicenseStatus } from '@/lib/license-status'
 import { licenseClient } from '@/services/core/external/license-client'
 import { licenseLogger } from '@/lib/logger'
 
@@ -26,9 +27,13 @@ function buildLicensePlaceholder(reference: LicenseReference): LicenseDetail | n
 async function resolveLicenseReference(
   reference: LicenseReference
 ): Promise<LicenseDetail | null> {
+  // Keygen statuses are normalized to the canonical vocabulary here, at the
+  // account boundary, so everything downstream (entitlement, badges, banners)
+  // only ever sees active/expired/suspended/revoked/unknown.
   if (reference.id) {
     try {
-      return await licenseClient.getLicenseWithMachines(reference.id)
+      const license = await licenseClient.getLicenseWithMachines(reference.id)
+      return { ...license, status: normalizeLicenseStatus(license.status) }
     } catch (error) {
       licenseLogger.error`Failed to fetch license ${reference.id}: ${error}`
     }
@@ -40,7 +45,7 @@ async function resolveLicenseReference(
       if (validation.license) {
         return {
           ...validation.license,
-          status: validation.license.status.toLowerCase(),
+          status: normalizeLicenseStatus(validation.license.status),
           machines: [],
         }
       }
