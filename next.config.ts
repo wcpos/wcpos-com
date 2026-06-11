@@ -47,6 +47,49 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  // Legacy WordPress URLs (pre-cutover site). SEO via 301s; no content
+  // migration — see the cutover decision in the launch ledger.
+  async redirects() {
+    return [
+      // High-value pages
+      { source: '/shop', destination: '/pro', permanent: true },
+      { source: '/cart', destination: '/pro', permanent: true },
+      { source: '/checkout', destination: '/pro', permanent: true },
+      { source: '/product/:slug*', destination: '/pro', permanent: true },
+      { source: '/pro/changelog', destination: '/pro', permanent: true },
+      { source: '/my-account/orders', destination: '/account/orders', permanent: true },
+      { source: '/my-account/downloads', destination: '/account/downloads', permanent: true },
+      { source: '/my-account/:path*', destination: '/account', permanent: true },
+      { source: '/privacy-policy', destination: '/privacy', permanent: true },
+      { source: '/terms-of-service', destination: '/terms', permanent: true },
+      { source: '/refund-policy', destination: '/refunds', permanent: true },
+      { source: '/contact', destination: '/support', permanent: true },
+      { source: '/about', destination: '/', permanent: true },
+      // Old docs pages that exist at the same path on docs.wcpos.com
+      { source: '/docs/cart', destination: 'https://docs.wcpos.com/cart', permanent: true },
+      { source: '/docs/coupons', destination: 'https://docs.wcpos.com/coupons', permanent: true },
+      { source: '/docs/customers', destination: 'https://docs.wcpos.com/customers', permanent: true },
+      { source: '/docs/orders', destination: 'https://docs.wcpos.com/orders', permanent: true },
+      { source: '/docs/products', destination: 'https://docs.wcpos.com/products', permanent: true },
+      { source: '/docs/products/barcode-scanning', destination: 'https://docs.wcpos.com/products/barcode-scanning', permanent: true },
+      { source: '/docs/products/pos-only-products', destination: 'https://docs.wcpos.com/products/pos-only-products', permanent: true },
+      { source: '/docs/receipts', destination: 'https://docs.wcpos.com/receipts', permanent: true },
+      { source: '/docs/reports', destination: 'https://docs.wcpos.com/reports', permanent: true },
+      { source: '/docs/stores', destination: 'https://docs.wcpos.com/stores', permanent: true },
+      { source: '/docs/support', destination: 'https://docs.wcpos.com/support', permanent: true },
+      { source: '/docs/support/performance', destination: 'https://docs.wcpos.com/support/performance', permanent: true },
+      // Remaining docs/FAQ content was reorganized — send to the docs root
+      { source: '/docs/:path*', destination: 'https://docs.wcpos.com', permanent: true },
+      { source: '/faq/:path*', destination: 'https://docs.wcpos.com', permanent: true },
+      { source: '/faq', destination: 'https://docs.wcpos.com', permanent: true },
+      // 2014-2017 blog archive and taxonomy pages — consolidate to home
+      { source: '/blog', destination: '/', permanent: true },
+      { source: '/:year(\\d{4})/:month(\\d{2})/:slug*', destination: '/', permanent: true },
+      { source: '/category/:slug*', destination: '/', permanent: true },
+      { source: '/tag/:slug*', destination: '/', permanent: true },
+      { source: '/author/:slug*', destination: '/', permanent: true },
+    ]
+  },
   async headers() {
     return [
       {
