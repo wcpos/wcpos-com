@@ -84,6 +84,7 @@ async function DownloadsContent({ locale }: { locale: string }) {
   const suspendedCount = statuses.filter(
     (status) => status === 'suspended'
   ).length
+  const revokedCount = statuses.filter((status) => status === 'revoked').length
   // 'unknown' = placeholder from buildLicensePlaceholder (Keygen unreachable
   // or an unresolvable legacy key); the license may be fine, we just can't
   // verify it right now.
@@ -98,6 +99,7 @@ async function DownloadsContent({ locale }: { locale: string }) {
         expiryHasPassed,
         licenseCount: licenses.length,
         suspendedCount,
+        revokedCount,
         unknownCount,
       }}
     />

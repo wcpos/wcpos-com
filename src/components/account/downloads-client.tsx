@@ -28,6 +28,8 @@ export interface DownloadAccess {
   expiryHasPassed: boolean
   licenseCount: number
   suspendedCount: number
+  /** Permanently terminated licenses (refund granted, fraud). */
+  revokedCount: number
   /** Licenses we could not verify (Keygen unreachable or legacy key). */
   unknownCount: number
 }
@@ -68,13 +70,23 @@ export function DownloadsClient({
     inactiveAccess && access.expiryHasPassed && access.latestExpiry !== null
   const suspendedAccess =
     inactiveAccess && !expiredAccess && access.suspendedCount > 0
+  const revokedAccess =
+    inactiveAccess &&
+    !expiredAccess &&
+    !suspendedAccess &&
+    access.revokedCount > 0
   const unknownAccess =
     inactiveAccess &&
     !expiredAccess &&
     !suspendedAccess &&
+    !revokedAccess &&
     access.unknownCount > 0
   const inactiveFallback =
-    inactiveAccess && !expiredAccess && !suspendedAccess && !unknownAccess
+    inactiveAccess &&
+    !expiredAccess &&
+    !suspendedAccess &&
+    !revokedAccess &&
+    !unknownAccess
 
   const startDownload = async (version: string) => {
     setDownloadingVersion(version)
@@ -129,6 +141,15 @@ export function DownloadsClient({
       {suspendedAccess && (
         <div className="flex flex-wrap items-center justify-between gap-3 rounded-md border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900">
           <p>{t('suspendedBanner')}</p>
+          <Button asChild size="sm" variant="outline">
+            <Link href="/support">{t('contactSupport')}</Link>
+          </Button>
+        </div>
+      )}
+
+      {revokedAccess && (
+        <div className="flex flex-wrap items-center justify-between gap-3 rounded-md border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900">
+          <p>{t('revokedBanner')}</p>
           <Button asChild size="sm" variant="outline">
             <Link href="/support">{t('contactSupport')}</Link>
           </Button>
