@@ -53,31 +53,40 @@ export function AccountHeader({ customer }: AccountHeaderProps) {
   const initials = getInitials(customer)
 
   return (
-    <header className="border-b bg-white">
-      <div className="flex items-center justify-between gap-4 px-4 py-4 sm:px-6">
-        <div className="flex shrink-0 items-center space-x-2 sm:space-x-4">
-          <Link href="/" className="text-xl font-bold text-gray-900">
+    <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="flex h-16 items-center justify-between gap-4 px-4 sm:px-6">
+        <div className="flex shrink-0 items-baseline gap-2 sm:gap-3">
+          <Link
+            href="/"
+            className="text-xl font-bold tracking-tight transition-opacity hover:opacity-80"
+          >
             WCPOS
           </Link>
-          <span className="text-gray-400">/</span>
-          <span className="text-gray-600">{t('breadcrumb')}</span>
+          <span aria-hidden="true" className="select-none text-border">
+            /
+          </span>
+          <span className="text-sm font-medium text-muted-foreground">
+            {t('breadcrumb')}
+          </span>
         </div>
-        <div className="flex min-w-0 items-center space-x-3 sm:space-x-4">
-          <div className="flex min-w-0 items-center gap-2">
-            <Avatar className="h-8 w-8 shrink-0">
+        <div className="flex min-w-0 items-center gap-3 sm:gap-4">
+          <div className="flex min-w-0 items-center gap-2.5">
+            <Avatar className="h-8 w-8 shrink-0 ring-2 ring-border">
               <AvatarImage src={avatarUrl} alt={customer.email} />
-              <AvatarFallback>{initials}</AvatarFallback>
+              <AvatarFallback className="text-xs font-semibold">
+                {initials}
+              </AvatarFallback>
             </Avatar>
             {/* The email can be arbitrarily long — hide it on phones and
                 truncate it on wider screens so the header never overflows. */}
-            <span className="hidden min-w-0 max-w-[14rem] truncate text-sm text-gray-600 sm:block">
+            <span className="hidden min-w-0 max-w-[14rem] truncate text-sm text-muted-foreground sm:block">
               {customer.email}
             </span>
           </div>
           <form action="/api/auth/logout" method="POST" className="shrink-0">
             <button
               type="submit"
-              className="py-2 text-sm text-gray-500 hover:text-gray-900"
+              className="rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             >
               {t('signOut')}
             </button>

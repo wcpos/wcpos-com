@@ -69,10 +69,13 @@ function RegisterPageInner() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center px-4">
-      <Card className="w-full max-w-md">
+    // Centering and page chrome live in the (auth) layout.
+    <div className="w-full max-w-md">
+      <Card className="shadow-lg shadow-black/5 dark:shadow-black/20">
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl">Create an account</CardTitle>
+          <CardTitle className="text-2xl tracking-tight">
+            Create an account
+          </CardTitle>
           <CardDescription>
             Sign up for a WCPOS account
           </CardDescription>

@@ -95,6 +95,10 @@
   --sidebar-border: 217.2 32.6% 17.5%;
   --sidebar-accent: 217.2 32.6% 17.5%;
   --sidebar-accent-foreground: 210 40% 98%;
+
+  /* Brand red lifts in dark mode for contrast on dark surfaces,
+     same treatment as --primary above. */
+  --wcpos-red: 4 78% 56%;
 }
 
 @theme inline {

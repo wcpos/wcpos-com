@@ -83,7 +83,7 @@ export default async function ProfilePage({
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold">{t('heading')}</h1>
+      <h1 className="text-2xl font-bold tracking-tight">{t('heading')}</h1>
       <Suspense fallback={<ProfileSkeleton />}>
         <ProfileContent locale={locale} />
       </Suspense>

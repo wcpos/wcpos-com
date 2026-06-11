@@ -204,6 +204,7 @@
       "contactSupport": "Contact support",
       "getPro": "Get WCPOS Pro",
       "listTitle": "WCPOS Pro Downloads",
+      "latestBadge": "Latest",
       "emptyList": "No downloadable versions were found.",
       "reasonExpired": "Released after your license expired.",
       "reasonUnknown": "We couldn't verify your license.",

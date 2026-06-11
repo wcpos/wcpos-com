@@ -16,6 +16,7 @@ import {
 } from '@/components/ui/card'
 import { trackClientEvent } from '@/lib/analytics/client-events'
 import { sanitizeRedirectPath } from '@/lib/safe-redirect'
+import { GitHubMark, GoogleMark } from '@/components/auth/provider-marks'
 
 export function LoginPageClient() {
   return (
@@ -68,10 +69,11 @@ function LoginPageInner() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center px-4">
-      <Card className="w-full max-w-md">
+    // Centering and page chrome live in the (auth) layout.
+    <div className="w-full max-w-md">
+      <Card className="shadow-lg shadow-black/5 dark:shadow-black/20">
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl">Sign in</CardTitle>
+          <CardTitle className="text-2xl tracking-tight">Sign in</CardTitle>
           <CardDescription>
             Sign in to your WCPOS account
           </CardDescription>
@@ -133,6 +135,7 @@ function LoginPageInner() {
                 href="/api/auth/google"
                 onClick={() => trackClientEvent('click_oauth_google')}
               >
+                <GoogleMark className="mr-2 h-4 w-4" />
                 Google
               </a>
             </Button>
@@ -141,6 +144,7 @@ function LoginPageInner() {
                 href="/api/auth/github"
                 onClick={() => trackClientEvent('click_oauth_github')}
               >
+                <GitHubMark className="mr-2 h-4 w-4" />
                 GitHub
               </a>
             </Button>

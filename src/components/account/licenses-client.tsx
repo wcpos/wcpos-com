@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useLocale, useTranslations } from 'next-intl'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
+import { AccountNotice } from '@/components/account/account-notice'
 import { Key, Monitor, Trash2, Download } from 'lucide-react'
 import { Link } from '@/i18n/navigation'
 import { formatDateForLocale } from '@/lib/date-format'
@@ -104,13 +105,34 @@ export function LicensesClient({ initialLicenses }: LicensesClientProps) {
     return '****-****-' + key.slice(-4)
   }
 
+  // Semantic, dark-mode-safe status palette: emerald = entitled, amber =
+  // natural lifecycle end (still keeps pre-expiry access), red = withdrawn
+  // by us (suspended/revoked), muted = unverifiable.
   const getStatusColor = (status: string) => {
     switch (status.toLowerCase()) {
-      case 'active': return 'text-green-600 bg-green-50'
-      case 'expired': return 'text-red-600 bg-red-50'
-      case 'suspended': return 'text-yellow-600 bg-yellow-50'
-      case 'revoked': return 'text-red-600 bg-red-50'
-      default: return 'text-gray-600 bg-gray-50'
+      case 'active':
+        return 'bg-emerald-50 text-emerald-700 ring-emerald-600/20 dark:bg-emerald-500/10 dark:text-emerald-400 dark:ring-emerald-400/20'
+      case 'expired':
+        return 'bg-amber-50 text-amber-700 ring-amber-600/20 dark:bg-amber-400/10 dark:text-amber-300 dark:ring-amber-400/20'
+      case 'suspended':
+      case 'revoked':
+        return 'bg-red-50 text-red-700 ring-red-600/20 dark:bg-red-500/10 dark:text-red-400 dark:ring-red-400/20'
+      default:
+        return 'bg-muted text-muted-foreground ring-border'
+    }
+  }
+
+  const getStatusDot = (status: string) => {
+    switch (status.toLowerCase()) {
+      case 'active':
+        return 'bg-emerald-500'
+      case 'expired':
+        return 'bg-amber-500'
+      case 'suspended':
+      case 'revoked':
+        return 'bg-red-500'
+      default:
+        return 'bg-muted-foreground/50'
     }
   }
 
@@ -140,10 +162,14 @@ export function LicensesClient({ initialLicenses }: LicensesClientProps) {
 
       {licenses.length === 0 ? (
         <Card>
-          <CardContent className="py-8 text-center text-muted-foreground">
-            <Key className="h-8 w-8 mx-auto mb-2 opacity-50" />
-            <p>{t('emptyTitle')}</p>
-            <p className="text-sm mt-1">{t('emptyDescription')}</p>
+          <CardContent className="flex flex-col items-center py-12 text-center">
+            <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-muted">
+              <Key className="h-5 w-5 text-muted-foreground" />
+            </div>
+            <p className="font-medium">{t('emptyTitle')}</p>
+            <p className="mt-1 max-w-sm text-sm text-muted-foreground">
+              {t('emptyDescription')}
+            </p>
           </CardContent>
         </Card>
       ) : (
@@ -153,25 +179,38 @@ export function LicensesClient({ initialLicenses }: LicensesClientProps) {
           return (
           <Card key={license.id}>
             <CardHeader>
-              <div className="flex items-center justify-between">
-                <CardTitle className="text-lg flex items-center gap-2">
-                  <Key className="h-5 w-5" />
-                  <code className="text-sm font-mono">{maskKey(license.key)}</code>
+              {/* flex-wrap so the badge/plan cluster drops below the key on
+                  narrow phones instead of squeezing it. */}
+              <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
+                <CardTitle className="flex items-center gap-2.5 text-lg">
+                  <span
+                    aria-hidden="true"
+                    className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-wcpos-red/10 text-wcpos-red"
+                  >
+                    <Key className="h-4 w-4" />
+                  </span>
+                  <code className="font-mono text-sm tracking-wider">
+                    {maskKey(license.key)}
+                  </code>
                 </CardTitle>
                 <div className="flex items-center gap-2">
                   <span
-                    className={`text-xs font-medium px-2 py-1 rounded capitalize ${getStatusColor(displayStatus)}`}
+                    className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium capitalize ring-1 ring-inset ${getStatusColor(displayStatus)}`}
                     title={
                       displayStatus === 'unknown'
                         ? t('unknownStatusTooltip')
                         : undefined
                     }
                   >
+                    <span
+                      aria-hidden="true"
+                      className={`h-1.5 w-1.5 rounded-full ${getStatusDot(displayStatus)}`}
+                    />
                     {isTranslatedStatus(displayStatus)
                       ? tStatus(displayStatus)
                       : displayStatus}
                   </span>
-                  <span className="text-xs text-muted-foreground">
+                  <span className="rounded-full border px-2.5 py-1 text-xs font-medium text-muted-foreground">
                     {getPlanName(license.policyId)}
                   </span>
                 </div>
@@ -179,19 +218,18 @@ export function LicensesClient({ initialLicenses }: LicensesClientProps) {
             </CardHeader>
             <CardContent className="space-y-4">
               {expiringSoon && license.expiry && (
-                <div className="flex flex-wrap items-center justify-between gap-3 rounded-md border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900">
-                  <p>
-                    {t(
-                      updateAccessLapsingSoon
-                        ? 'expiresSoonRenew'
-                        : 'expiresSoon',
-                      { date: formatDateForLocale(license.expiry, locale) }
-                    )}
-                  </p>
-                  <Button asChild size="sm">
-                    <Link href="/pro">{t('renew')}</Link>
-                  </Button>
-                </div>
+                <AccountNotice
+                  action={
+                    <Button asChild size="sm">
+                      <Link href="/pro">{t('renew')}</Link>
+                    </Button>
+                  }
+                >
+                  {t(
+                    updateAccessLapsingSoon ? 'expiresSoonRenew' : 'expiresSoon',
+                    { date: formatDateForLocale(license.expiry, locale) }
+                  )}
+                </AccountNotice>
               )}
 
               {displayStatus === 'unknown' && (
@@ -209,21 +247,23 @@ export function LicensesClient({ initialLicenses }: LicensesClientProps) {
                 </p>
               )}
 
-              <div className="flex items-center justify-between">
-                <div className="flex gap-6 text-sm">
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <div className="flex flex-wrap gap-x-6 gap-y-1 text-sm">
                   {license.expiry && (
                     <div>
                       <span className="text-muted-foreground">
                         {t('expiresLabel')}{' '}
                       </span>
-                      <span>{formatDateForLocale(license.expiry, locale)}</span>
+                      <span className="font-medium">
+                        {formatDateForLocale(license.expiry, locale)}
+                      </span>
                     </div>
                   )}
                   <div>
                     <span className="text-muted-foreground">
                       {t('activationsLabel')}{' '}
                     </span>
-                    <span>
+                    <span className="font-medium">
                       {t('activationsCount', {
                         count: license.machines.length,
                         max: license.maxMachines,
@@ -258,22 +298,29 @@ export function LicensesClient({ initialLicenses }: LicensesClientProps) {
 
               {license.machines.length > 0 && (
                 <div className="space-y-2">
-                  <p className="text-sm font-medium">{t('activatedMachines')}</p>
+                  <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+                    {t('activatedMachines')}
+                  </p>
                   {license.machines.map((machine) => (
                     <div
                       key={machine.id}
-                      className="flex items-center justify-between p-3 bg-muted rounded-lg"
+                      className="flex items-center justify-between gap-2 rounded-lg border bg-muted/40 p-3"
                     >
-                      <div className="flex items-center gap-2">
-                        <Monitor className="h-4 w-4 text-muted-foreground" />
-                        <div>
-                          <p className="text-sm font-medium">
+                      <div className="flex min-w-0 items-start gap-2.5">
+                        <Monitor className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground" />
+                        <div className="min-w-0">
+                          {/* Fingerprints are unbroken machine hashes — they
+                              must be allowed to break anywhere or they blow
+                              out the card on phones. */}
+                          <p className="break-all text-sm font-medium">
                             {machine.name || machine.fingerprint}
                           </p>
                           {machine.name && (
-                            <p className="text-xs text-muted-foreground">{machine.fingerprint}</p>
+                            <p className="break-all font-mono text-xs text-muted-foreground">
+                              {machine.fingerprint}
+                            </p>
                           )}
-                          <p className="text-xs text-muted-foreground">
+                          <p className="mt-0.5 text-xs text-muted-foreground">
                             {t('machineAdded', {
                               date: formatDateForLocale(
                                 machine.createdAt,
