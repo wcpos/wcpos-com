@@ -502,6 +502,88 @@ describe('licenseClient', () => {
       })
     })
 
+    // Keygen statuses beyond the basic three. EXPIRING and INACTIVE are
+    // paid, in-term licenses and must report as 'active' to the plugin —
+    // same policy as normalizeLicenseStatus (src/lib/license-status.ts).
+    function mockValidation(status: string, valid: boolean, expiry: string | null) {
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          meta: { valid, detail: 'detail', code: valid ? 'VALID' : 'OTHER' },
+          data: {
+            id: 'license-789',
+            attributes: {
+              key: 'KEYX-KEYX',
+              status,
+              expiry,
+              maxMachines: 3,
+              metadata: {},
+              created: '2026-01-01T00:00:00Z',
+            },
+            relationships: {
+              policy: { data: { id: 'policy-yearly' } },
+            },
+          },
+        }),
+      })
+    }
+
+    it('treats EXPIRING as active — paid, in-term, days from expiry', async () => {
+      mockValidation('EXPIRING', true, '2026-06-14T00:00:00Z')
+      // getLicenseMachines call (validation.valid gates the fetch)
+      mockFetch.mockResolvedValueOnce({ ok: true, json: async () => ({ data: [] }) })
+
+      const result = await licenseClient.validateLicense('KEYX-KEYX', 'instance-abc')
+
+      expect(result).toEqual({
+        status: 200,
+        data: {
+          activated: false,
+          status: 'active',
+          expiresAt: '2026-06-14T00:00:00Z',
+          activationsLimit: 3,
+          activationsCount: 0,
+          productName: 'WooCommerce POS Pro',
+        },
+      })
+    })
+
+    it('treats INACTIVE as active — paid, in-term, just idle', async () => {
+      mockValidation('INACTIVE', true, '2026-12-01T00:00:00Z')
+      mockFetch.mockResolvedValueOnce({ ok: true, json: async () => ({ data: [] }) })
+
+      const result = await licenseClient.validateLicense('KEYX-KEYX', 'instance-abc')
+
+      expect(result.data?.status).toBe('active')
+      expect(result.data?.expiresAt).toBe('2026-12-01T00:00:00Z')
+    })
+
+    it('maps SUSPENDED to inactive', async () => {
+      mockValidation('SUSPENDED', false, '2099-01-01T00:00:00Z')
+
+      const result = await licenseClient.validateLicense('KEYX-KEYX', 'instance-abc')
+
+      expect(result.data?.status).toBe('inactive')
+      expect(result.data?.activated).toBe(false)
+    })
+
+    it('maps BANNED (Keygen terminal status) to invalid', async () => {
+      mockValidation('BANNED', false, null)
+
+      const result = await licenseClient.validateLicense('KEYX-KEYX', 'instance-abc')
+
+      expect(result.data?.status).toBe('invalid')
+      expect(result.data?.activated).toBe(false)
+    })
+
+    it('fails closed to invalid for unrecognized statuses', async () => {
+      mockValidation('SOMETHING_NEW', false, null)
+
+      const result = await licenseClient.validateLicense('KEYX-KEYX', 'instance-abc')
+
+      expect(result.data?.status).toBe('invalid')
+    })
+
     it('maps NOT_FOUND to 404 error response', async () => {
       mockFetch.mockResolvedValueOnce({
         ok: false,

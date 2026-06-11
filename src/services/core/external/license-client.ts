@@ -299,15 +299,23 @@ async function validateLicense(
   }
 
   const keygenStatus = license.status.toUpperCase()
+  // The plugin understands four statuses: active/expired/inactive/invalid
+  // (LicenseStatus in src/types/license.ts). Keygen's raw space is wider:
+  // EXPIRING (within days of expiry) and INACTIVE (no validation in ~90
+  // days) are paid, in-term licenses and must report as active — same
+  // policy as normalizeLicenseStatus (src/lib/license-status.ts, ADR-0001).
+  const activeData: LicenseStatusResponse['data'] = {
+    activated,
+    status: 'active',
+    expiresAt: license.expiry ?? undefined,
+    activationsLimit: license.maxMachines,
+    activationsCount,
+    productName: 'WooCommerce POS Pro',
+  }
   const statusMap: Record<string, LicenseStatusResponse['data']> = {
-    ACTIVE: {
-      activated,
-      status: 'active',
-      expiresAt: license.expiry ?? undefined,
-      activationsLimit: license.maxMachines,
-      activationsCount,
-      productName: 'WooCommerce POS Pro',
-    },
+    ACTIVE: activeData,
+    EXPIRING: activeData,
+    INACTIVE: activeData,
     EXPIRED: {
       activated: false,
       status: 'expired',
@@ -319,6 +327,12 @@ async function validateLicense(
     SUSPENDED: {
       activated: false,
       status: 'inactive',
+      productName: 'WooCommerce POS Pro',
+    },
+    // Keygen's terminal status (fraud, refund) — permanently invalid.
+    BANNED: {
+      activated: false,
+      status: 'invalid',
       productName: 'WooCommerce POS Pro',
     },
   }
