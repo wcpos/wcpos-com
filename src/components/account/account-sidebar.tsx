@@ -30,18 +30,27 @@ function isActiveRoute(pathname: string, href: string): boolean {
 export function AccountSidebar() {
   const t = useTranslations('account.nav')
   const pathname = usePathname()
+  const navRef = useRef<HTMLElement>(null)
   const activeRef = useRef<HTMLAnchorElement>(null)
 
   // On phones the nav scrolls horizontally and the active tab (e.g.
-  // Downloads, last in the row) can sit off-screen on load — bring it into
-  // view. Vertical 'nearest' keeps the page itself from jumping; on md+ the
-  // nav isn't scrollable, so this is a no-op.
+  // Downloads, last in the row) can sit off-screen on load — center it.
+  // Scroll ONLY the nav container: scrollIntoView would also walk scrollable
+  // ancestors (the document) and fight back/forward scroll restoration.
   useEffect(() => {
-    activeRef.current?.scrollIntoView({ block: 'nearest', inline: 'center' })
+    const nav = navRef.current
+    const link = activeRef.current
+    if (!nav || !link) return
+    if (nav.scrollWidth <= nav.clientWidth) return
+    const navRect = nav.getBoundingClientRect()
+    const linkRect = link.getBoundingClientRect()
+    nav.scrollLeft +=
+      linkRect.left - navRect.left - (navRect.width - linkRect.width) / 2
   }, [pathname])
 
   return (
     <nav
+      ref={navRef}
       aria-label={t('title')}
       className="overflow-x-auto p-2 md:overflow-x-visible md:p-4"
     >
@@ -61,7 +70,7 @@ export function AccountSidebar() {
                 className={cn(
                   'flex items-center whitespace-nowrap rounded-md px-3 py-3 text-sm font-medium transition-colors md:py-2',
                   isActive
-                    ? 'bg-wcpos-red/10 text-wcpos-red dark:bg-wcpos-red/15'
+                    ? 'bg-wcpos-red/10 text-wcpos-red-accent dark:bg-wcpos-red/15'
                     : 'text-muted-foreground hover:bg-accent hover:text-foreground'
                 )}
               >

@@ -39,7 +39,7 @@ export function OrderHistoryList({ orders, locale }: OrderHistoryListProps) {
           </p>
           <Link
             href="/pro"
-            className="mt-3 inline-block text-sm font-medium text-wcpos-red hover:underline"
+            className="mt-3 inline-block text-sm font-medium text-wcpos-red-accent hover:underline"
           >
             {t('browsePro')}
           </Link>

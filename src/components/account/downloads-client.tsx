@@ -225,7 +225,7 @@ export function DownloadsClient({
                     <div className="flex flex-wrap items-center gap-2">
                       <p className="font-medium">{release.name}</p>
                       {release.version === latestVersion && (
-                        <span className="rounded-full bg-wcpos-red/10 px-2 py-0.5 text-[11px] font-semibold text-wcpos-red">
+                        <span className="rounded-full bg-wcpos-red/10 px-2 py-0.5 text-[11px] font-semibold text-wcpos-red-accent">
                           {t('latestBadge')}
                         </span>
                       )}

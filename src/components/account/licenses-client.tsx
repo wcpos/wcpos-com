@@ -185,7 +185,7 @@ export function LicensesClient({ initialLicenses }: LicensesClientProps) {
                 <CardTitle className="flex items-center gap-2.5 text-lg">
                   <span
                     aria-hidden="true"
-                    className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-wcpos-red/10 text-wcpos-red"
+                    className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-wcpos-red/10 text-wcpos-red-accent"
                   >
                     <Key className="h-4 w-4" />
                   </span>
