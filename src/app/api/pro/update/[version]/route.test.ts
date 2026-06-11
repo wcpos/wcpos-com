@@ -83,17 +83,19 @@ describe('GET /api/pro/update/[version]', () => {
   })
 
   it('serves the update for an EXPIRING license (canonical active)', async () => {
+    // The route compares against the real clock, so the fixture expiry must
+    // stay far in the future or this test ages into a false 403.
     mockValidateLicense.mockResolvedValueOnce({
       status: 200,
       data: {
         activated: true,
         status: 'active',
-        expiresAt: '2026-06-14T00:00:00Z',
+        expiresAt: '2099-06-14T00:00:00Z',
         activationsLimit: 3,
         activationsCount: 1,
         productName: 'WooCommerce POS Pro',
       },
-      entitlement: { status: 'active', expiry: '2026-06-14T00:00:00Z' },
+      entitlement: { status: 'active', expiry: '2099-06-14T00:00:00Z' },
     })
     mockGetProPluginReleases.mockResolvedValueOnce([
       makeRelease('3.2.0', '2026-01-15T00:00:00Z'),
