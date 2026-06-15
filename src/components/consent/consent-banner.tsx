@@ -8,6 +8,7 @@ import {
   writeAnalyticsConsent,
   type AnalyticsConsentStatus,
 } from '@/lib/analytics/consent'
+import { initPostHogBrowser } from '@/lib/analytics/posthog-browser'
 
 const emptySubscribe = () => () => {}
 
@@ -39,6 +40,14 @@ export function ConsentBanner() {
 
   const decide = (status: AnalyticsConsentStatus) => {
     writeAnalyticsConsent(status)
+    if (status === 'granted') {
+      // Start capture in the same session consent is granted; the consent
+      // cookie was just written, so initPostHogBrowser's gate now passes.
+      initPostHogBrowser({
+        key: process.env.NEXT_PUBLIC_POSTHOG_KEY,
+        host: process.env.NEXT_PUBLIC_POSTHOG_HOST,
+      })
+    }
     setDismissed(true)
   }
 

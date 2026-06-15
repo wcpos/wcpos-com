@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react'
 import { initializeClientLogging } from '@/lib/client-logger'
+import { initPostHogBrowser } from '@/lib/analytics/posthog-browser'
 
 /**
  * Initialize client-side logging
@@ -10,6 +11,10 @@ import { initializeClientLogging } from '@/lib/client-logger'
 export function ClientLoggingInit() {
   useEffect(() => {
     initializeClientLogging()
+    initPostHogBrowser({
+      key: process.env.NEXT_PUBLIC_POSTHOG_KEY,
+      host: process.env.NEXT_PUBLIC_POSTHOG_HOST,
+    })
   }, [])
 
   return null
