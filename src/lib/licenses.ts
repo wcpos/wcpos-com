@@ -1,4 +1,4 @@
-import type { MedusaOrder } from './medusa-auth'
+import type { MedusaOrder } from './customer-orders'
 
 type RawLicenseEntry = Record<string, unknown>
 

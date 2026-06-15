@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
-import { getCustomer, getCustomerOrderById } from '@/lib/medusa-auth'
+import { getOrderById } from '@/lib/customer-orders'
+import { getCustomer } from '@/lib/medusa-auth'
 import { buildTaxReceiptPdf } from '@/lib/pdf-receipt'
 import { apiLogger } from '@/lib/logger'
 
@@ -71,7 +72,7 @@ export async function GET(
 
   try {
     const [order, customer] = await Promise.all([
-      getCustomerOrderById(orderId),
+      getOrderById(orderId),
       getCustomer(),
     ])
 

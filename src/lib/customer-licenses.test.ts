@@ -1,14 +1,17 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 const mockGetCustomer = vi.fn()
-const mockGetAllCustomerOrders = vi.fn()
+const mockGetAllOrders = vi.fn()
 const mockListAdminCustomerOrders = vi.fn()
 const mockGetLicenseWithMachines = vi.fn()
 const mockValidateLicenseKey = vi.fn()
 
 vi.mock('@/lib/medusa-auth', () => ({
   getCustomer: (...args: unknown[]) => mockGetCustomer(...args),
-  getAllCustomerOrders: (...args: unknown[]) => mockGetAllCustomerOrders(...args),
+}))
+
+vi.mock('@/lib/customer-orders', () => ({
+  getAllOrders: (...args: unknown[]) => mockGetAllOrders(...args),
 }))
 
 vi.mock('@/services/core/external/license-client', () => ({
@@ -42,7 +45,7 @@ describe('getResolvedCustomerLicenses', () => {
 
   it('resolves licenses from key-only metadata', async () => {
     mockGetCustomer.mockResolvedValueOnce({ id: 'cust_1' })
-    mockGetAllCustomerOrders.mockResolvedValueOnce([
+    mockGetAllOrders.mockResolvedValueOnce([
       {
         id: 'order_1',
         status: 'completed',
@@ -87,7 +90,7 @@ describe('getResolvedCustomerLicenses', () => {
 
   it('normalizes raw Keygen statuses on the id-resolution path', async () => {
     mockGetCustomer.mockResolvedValueOnce({ id: 'cust_1' })
-    mockGetAllCustomerOrders.mockResolvedValueOnce([
+    mockGetAllOrders.mockResolvedValueOnce([
       {
         id: 'order_1',
         status: 'completed',
@@ -167,7 +170,7 @@ describe('getResolvedCustomerLicenses', () => {
     })
 
     expect(mockGetCustomer).not.toHaveBeenCalled()
-    expect(mockGetAllCustomerOrders).not.toHaveBeenCalled()
+    expect(mockGetAllOrders).not.toHaveBeenCalled()
     expect(mockListAdminCustomerOrders).toHaveBeenCalledWith('cust_2')
     expect(result.authenticated).toBe(true)
     expect(result.licenses).toHaveLength(1)

@@ -1,13 +1,15 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import * as pdfReceipt from '@/lib/pdf-receipt'
 
-const mockGetCustomerOrderById = vi.fn()
+const mockGetOrderById = vi.fn()
 const mockGetCustomer = vi.fn()
 
 vi.mock('@/lib/medusa-auth', () => ({
-  getCustomerOrderById: (...args: unknown[]) =>
-    mockGetCustomerOrderById(...args),
   getCustomer: (...args: unknown[]) => mockGetCustomer(...args),
+}))
+
+vi.mock('@/lib/customer-orders', () => ({
+  getOrderById: (...args: unknown[]) => mockGetOrderById(...args),
 }))
 
 import { GET } from './route'
@@ -22,7 +24,7 @@ describe('GET /api/account/orders/[orderId]/receipt', () => {
   })
 
   it('returns a PDF receipt for an owned order', async () => {
-    mockGetCustomerOrderById.mockResolvedValueOnce({
+    mockGetOrderById.mockResolvedValueOnce({
       id: 'order_1',
       status: 'completed',
       display_id: 1001,
@@ -57,7 +59,7 @@ describe('GET /api/account/orders/[orderId]/receipt', () => {
   })
 
   it('returns 404 when the order is not owned by the customer', async () => {
-    mockGetCustomerOrderById.mockResolvedValueOnce(null)
+    mockGetOrderById.mockResolvedValueOnce(null)
 
     const response = await GET(
       new Request(
@@ -70,7 +72,7 @@ describe('GET /api/account/orders/[orderId]/receipt', () => {
   })
 
   it('accepts weighted Accept-Language headers', async () => {
-    mockGetCustomerOrderById.mockResolvedValueOnce({
+    mockGetOrderById.mockResolvedValueOnce({
       id: 'order_1',
       status: 'completed',
       display_id: 1001,
@@ -105,7 +107,7 @@ describe('GET /api/account/orders/[orderId]/receipt', () => {
   })
 
   it('falls back when Accept-Language is invalid', async () => {
-    mockGetCustomerOrderById.mockResolvedValueOnce({
+    mockGetOrderById.mockResolvedValueOnce({
       id: 'order_1',
       status: 'completed',
       display_id: 1001,
@@ -140,7 +142,7 @@ describe('GET /api/account/orders/[orderId]/receipt', () => {
   })
 
   it('returns 500 when receipt generation fails', async () => {
-    mockGetCustomerOrderById.mockResolvedValueOnce({
+    mockGetOrderById.mockResolvedValueOnce({
       id: 'order_1',
       status: 'completed',
       display_id: 1001,

@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
-import { getAllCustomerOrders, getCustomer } from '@/lib/medusa-auth'
+import { getAllOrders } from '@/lib/customer-orders'
+import { getCustomer } from '@/lib/medusa-auth'
 import { extractLicenseIdsFromOrders } from '@/lib/licenses'
 import { licenseClient } from '@/services/core/external/license-client'
 import { licenseLogger } from '@/lib/logger'
@@ -31,7 +32,7 @@ export async function DELETE(
       )
     }
 
-    const orders = await getAllCustomerOrders()
+    const orders = await getAllOrders()
     const licenseIds = extractLicenseIdsFromOrders(orders)
 
     if (!licenseIds.includes(licenseId)) {
