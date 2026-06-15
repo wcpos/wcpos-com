@@ -43,6 +43,31 @@ const mockProduct: MedusaProduct = {
 }
 
 describe('PricingCard', () => {
+  it('renders lifetime copy for the lifetime product handle', () => {
+    const lifetimeProduct: MedusaProduct = {
+      ...mockProduct,
+      id: 'prod_lifetime',
+      title: 'WCPOS Pro Lifetime',
+      handle: 'wcpos-pro-lifetime',
+      description: 'Lifetime WCPOS Pro license',
+    }
+
+    render(<PricingCard product={lifetimeProduct} />)
+
+    expect(screen.getByText('One-time purchase')).toBeInTheDocument()
+    expect(screen.getByText('Lifetime updates forever')).toBeInTheDocument()
+    expect(screen.queryByText('/year')).not.toBeInTheDocument()
+    expect(screen.queryByText('Annual subscription')).not.toBeInTheDocument()
+  })
+
+  it('renders yearly copy for the yearly product handle', () => {
+    render(<PricingCard product={mockProduct} />)
+
+    expect(screen.getByText('Annual subscription')).toBeInTheDocument()
+    expect(screen.getByText('/year')).toBeInTheDocument()
+    expect(screen.queryByText('One-time purchase')).not.toBeInTheDocument()
+  })
+
   it('includes experiment metadata in checkout link', () => {
     render(
       <PricingCard

@@ -10,6 +10,7 @@ import { ANALYTICS_DISTINCT_ID_COOKIE } from '@/lib/analytics/distinct-id'
 import { getAnalyticsConfig } from '@/lib/analytics/config'
 import type { Metadata } from 'next'
 import { marketingMetadata } from '@/lib/seo'
+import { getPlanByHandle } from '@/lib/plans'
 
 export async function generateMetadata({
   params,
@@ -42,9 +43,9 @@ async function PricingSection({
 
   // Sort products: yearly first, then lifetime
   const sortedProducts = [...products].sort((a, b) => {
-    if (a.handle === 'wcpos-pro-yearly') return -1
-    if (b.handle === 'wcpos-pro-yearly') return 1
-    return 0
+    const rankA = getPlanByHandle(a.handle)?.id === 'yearly' ? 0 : 1
+    const rankB = getPlanByHandle(b.handle)?.id === 'yearly' ? 0 : 1
+    return rankA - rankB
   })
 
   if (products.length === 0) {
@@ -64,7 +65,7 @@ async function PricingSection({
         <PricingCard
           key={product.id}
           product={product}
-          featured={product.handle === 'wcpos-pro-yearly'}
+          featured={getPlanByHandle(product.handle)?.id === 'yearly'}
           experimentVariant={experimentVariant}
         />
       ))}
