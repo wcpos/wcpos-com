@@ -9,6 +9,15 @@ vi.mock('next/headers', () => ({
   })),
 }))
 
+const captureMock = vi.fn()
+const shutdownMock = vi.fn()
+
+vi.mock('posthog-node', () => ({
+  PostHog: vi.fn(function () {
+    return { capture: captureMock, shutdown: shutdownMock }
+  }),
+}))
+
 import {
   resolveProCheckoutVariant,
   trackServerEvent,
@@ -117,6 +126,10 @@ describe('resolveProCheckoutVariant consent gating', () => {
 })
 
 describe('trackServerEvent', () => {
+  beforeEach(() => {
+    captureMock.mockClear()
+  })
+
   afterEach(() => {
     vi.unstubAllEnvs()
     vi.unstubAllGlobals()
@@ -127,49 +140,35 @@ describe('trackServerEvent', () => {
     stubConsent(undefined)
     vi.stubEnv('NEXT_PUBLIC_POSTHOG_HOST', 'https://analytics.example.com')
     vi.stubEnv('NEXT_PUBLIC_POSTHOG_KEY', 'phc_test')
-    const fetchMock = vi.fn()
-    vi.stubGlobal('fetch', fetchMock)
 
     await trackServerEvent('checkout_completed', { distinct_id: 'anon_1' })
 
-    expect(fetchMock).not.toHaveBeenCalled()
+    expect(captureMock).not.toHaveBeenCalled()
   })
 
   it('does not capture when consent is denied', async () => {
     stubConsent('denied')
     vi.stubEnv('NEXT_PUBLIC_POSTHOG_HOST', 'https://analytics.example.com')
     vi.stubEnv('NEXT_PUBLIC_POSTHOG_KEY', 'phc_test')
-    const fetchMock = vi.fn()
-    vi.stubGlobal('fetch', fetchMock)
 
     await trackServerEvent('checkout_completed', { distinct_id: 'anon_1' })
 
-    expect(fetchMock).not.toHaveBeenCalled()
+    expect(captureMock).not.toHaveBeenCalled()
   })
 
   it('captures when consent is granted', async () => {
     vi.stubEnv('NEXT_PUBLIC_POSTHOG_HOST', 'https://analytics.example.com')
     vi.stubEnv('NEXT_PUBLIC_POSTHOG_KEY', 'phc_test')
-    const fetchMock = vi.fn().mockResolvedValue(new Response('{}', { status: 200 }))
-    vi.stubGlobal('fetch', fetchMock)
 
     await trackServerEvent('checkout_completed', { distinct_id: 'anon_1' })
 
-    expect(fetchMock).toHaveBeenCalledWith(
-      'https://analytics.example.com/capture/',
-      expect.objectContaining({ method: 'POST' })
-    )
-  })
-
-  it('swallows fetch failures', async () => {
-    vi.stubEnv('NEXT_PUBLIC_POSTHOG_HOST', 'https://analytics.example.com')
-    vi.stubEnv('NEXT_PUBLIC_POSTHOG_KEY', 'phc_test')
-    vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new Error('network down')))
-
-    await expect(
-      trackServerEvent('checkout_completed', {
-        distinct_id: 'anon_1',
+    expect(captureMock).toHaveBeenCalledTimes(1)
+    expect(captureMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        event: 'checkout_completed',
+        distinctId: 'anon_1',
+        properties: expect.objectContaining({ distinct_id: 'anon_1' }),
       })
-    ).resolves.toBeUndefined()
+    )
   })
 })

@@ -5,6 +5,7 @@ import {
   ANALYTICS_CONSENT_COOKIE,
   hasAnalyticsConsent,
 } from '@/lib/analytics/consent'
+import { getPostHogServerClient } from '@/services/core/external/posthog-node-client'
 
 export type ProCheckoutVariant = 'control' | 'value_copy'
 
@@ -18,7 +19,6 @@ type ResolveProCheckoutVariantOptions = {
 }
 
 const DEFAULT_TIMEOUT_MS = 150
-const TRACK_TIMEOUT_MS = 1500
 const PRO_CHECKOUT_EXPERIMENT = 'pro_checkout_v1'
 
 /**
@@ -143,35 +143,12 @@ export async function trackServerEvent(
     return
   }
 
-  const analyticsConfig = getAnalyticsConfig(process.env)
-  const captureKey = analyticsConfig.serverKey ?? analyticsConfig.key
-
-  if (!analyticsConfig.enabled || !analyticsConfig.host || !captureKey) {
-    return
-  }
+  const ph = getPostHogServerClient(process.env)
+  if (!ph) return
 
   const distinctId = typeof properties.distinct_id === 'string'
     ? properties.distinct_id
     : 'wcpos-server-event'
 
-  const controller = new AbortController()
-  const timeoutId = setTimeout(() => controller.abort(), TRACK_TIMEOUT_MS)
-
-  void fetch(`${analyticsConfig.host}/capture/`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      api_key: captureKey,
-      event: eventName,
-      distinct_id: distinctId,
-      properties,
-    }),
-    signal: controller.signal,
-  })
-    .catch(() => undefined)
-    .finally(() => {
-      clearTimeout(timeoutId)
-    })
+  ph.capture({ distinctId, event: eventName, properties })
 }
