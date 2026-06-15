@@ -1,5 +1,23 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
+
+// Mock i18n navigation Link as a simple anchor (TrustSection links to /about-us)
+vi.mock('@/i18n/navigation', () => ({
+  Link: ({
+    children,
+    href,
+    ...props
+  }: {
+    children: React.ReactNode
+    href: string
+    [key: string]: unknown
+  }) => (
+    <a href={href} {...props}>
+      {children}
+    </a>
+  ),
+}))
+
 import { ProblemSection } from './problem-section'
 import { BenefitsSection } from './benefits-section'
 import { UseCasesSection } from './use-cases-section'
