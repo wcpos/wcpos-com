@@ -28,4 +28,15 @@ describe('createDiscordSink rate limiting', () => {
     sink(record(['wcpos', 'store', 'sale']))
     expect((fetch as ReturnType<typeof vi.fn>)).toHaveBeenCalledTimes(2)
   })
+
+  it('still rate-limits a category that merely shares the prefix string', () => {
+    const sink = createDiscordSink({
+      webhookUrl: 'https://x', rateLimitMs: 30_000,
+      alwaysSendPrefixes: ['wcpos.store.sale'],
+    })
+    // 'salefoo' is not 'sale' nor a dot-descendant of it — must NOT bypass.
+    sink(record(['wcpos', 'store', 'salefoo']))
+    sink(record(['wcpos', 'store', 'salefoo']))
+    expect((fetch as ReturnType<typeof vi.fn>)).toHaveBeenCalledTimes(1)
+  })
 })

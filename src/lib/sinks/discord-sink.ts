@@ -35,7 +35,11 @@ export function createDiscordSink(options: DiscordSinkOptions): Sink {
     if (record.level !== 'error' && record.level !== 'fatal') return
 
     const category = record.category.join('.')
-    const bypass = alwaysSendPrefixes.some((p) => category.startsWith(p))
+    // Match on category boundaries: exact, or a dot-delimited descendant.
+    // Avoids `wcpos.store.sale` accidentally bypassing for `wcpos.store.salefoo`.
+    const bypass = alwaysSendPrefixes.some(
+      (p) => category === p || category.startsWith(`${p}.`)
+    )
     if (!bypass) {
       const now = Date.now()
       const last = lastSent.get(category) ?? 0
