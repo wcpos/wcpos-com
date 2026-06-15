@@ -3,6 +3,7 @@ import 'server-only'
 import { cookies } from 'next/headers'
 import { env } from '@/utils/env'
 import { authLogger } from '@/lib/logger'
+import { MEDUSA_TOKEN_COOKIE } from '@/lib/medusa-cookie'
 
 // ============================================================================
 // Types
@@ -112,7 +113,7 @@ export async function parseMedusaError(
 // Constants
 // ============================================================================
 
-const COOKIE_NAME = 'medusa-token'
+const COOKIE_NAME = MEDUSA_TOKEN_COOKIE
 
 const COOKIE_OPTIONS = {
   httpOnly: true,
