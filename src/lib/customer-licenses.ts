@@ -1,5 +1,6 @@
 import type { LicenseDetail } from '@/types/license'
-import { getAllCustomerOrders, getCustomer } from '@/lib/medusa-auth'
+import { getAllOrders } from '@/lib/customer-orders'
+import { getCustomer } from '@/lib/medusa-auth'
 import {
   extractLicenseReferencesFromOrders,
   type LicenseReference,
@@ -66,7 +67,7 @@ export async function getResolvedCustomerLicenses(): Promise<{
     return { authenticated: false, licenses: [] }
   }
 
-  const orders = await getAllCustomerOrders()
+  const orders = await getAllOrders()
   const references = extractLicenseReferencesFromOrders(orders)
 
   const licenses = await Promise.all(

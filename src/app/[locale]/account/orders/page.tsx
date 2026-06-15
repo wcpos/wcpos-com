@@ -1,6 +1,6 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { Suspense } from 'react'
-import { getCustomerOrders } from '@/lib/medusa-auth'
+import { getOrdersPage } from '@/lib/customer-orders'
 import { Link } from '@/i18n/navigation'
 import { Card, CardContent } from '@/components/ui/card'
 import { OrderHistoryList } from '@/components/account/order-history-list'
@@ -20,7 +20,7 @@ export async function generateMetadata({
 }
 
 async function OrdersContent({ locale }: { locale: string }) {
-  const orders = await getCustomerOrders(50)
+  const orders = await getOrdersPage(50)
 
   return <OrderHistoryList orders={orders} locale={locale} />
 }

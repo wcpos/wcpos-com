@@ -1,5 +1,5 @@
 import { PDFDocument, StandardFonts, rgb, type PDFFont } from 'pdf-lib'
-import type { MedusaOrder } from './medusa-auth'
+import type { MedusaOrder } from './customer-orders'
 import { formatOrderAmount } from './order-display'
 import { formatDateForLocale } from './date-format'
 
