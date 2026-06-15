@@ -17,7 +17,10 @@ _Avoid_: subscription, membership
 A license inside its term, or a Lifetime license. Grants downloads,
 updates, and machine activations. Keygen's raw EXPIRING and INACTIVE
 statuses are in-term paid licenses and normalize to active
-(`normalizeLicenseStatus`, src/lib/license-status.ts).
+(`normalizeLicenseStatus`, src/lib/license-status.ts). Normalization
+happens once, at the Keygen adapter seam (license-client `mapLicenseData`);
+every `LicenseDetail.status` and the deep License module
+(`src/lib/license.ts`) work in the canonical vocabulary.
 
 **Expired (license)**:
 A license that reached the natural end of its term. Keeps access to
