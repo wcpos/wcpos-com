@@ -32,6 +32,29 @@ describe('POST /api/checkout/report-failure', () => {
     expect(fatalMock).toHaveBeenCalledTimes(1)
   })
 
+  it('logs payment_uncertain at fatal and returns 204', async () => {
+    const res = await POST(req({
+      kind: 'payment_uncertain', reference: 'WCPOS-CCC-DDDD',
+      source: 'stripe_unexpected_status', cartId: 'cart_2',
+    }))
+    expect(res.status).toBe(204)
+    expect(fatalMock).toHaveBeenCalledTimes(1)
+  })
+
+  it('sanitizes the attacker-controlled reference before logging', async () => {
+    const res = await POST(req({
+      kind: 'order_pending',
+      reference: 'WCPOS-AAA\n@everyone **pwn**',
+    }))
+    expect(res.status).toBe(204)
+    expect(fatalMock).toHaveBeenCalledTimes(1)
+    // Tagged-template call: fatal(strings, ...values). The reference value must
+    // be stripped of newlines/markdown — only [A-Za-z0-9-] survive.
+    const values = fatalMock.mock.calls[0].slice(1)
+    expect(values.join('|')).not.toMatch(/[\n*@]/)
+    expect(values.join('|')).toContain('WCPOS-AAA')
+  })
+
   it('ignores unknown kinds without logging fatal (still 204, never errors the client)', async () => {
     const res = await POST(req({ kind: 'banana', reference: 'x' }))
     expect(res.status).toBe(204)
