@@ -184,6 +184,27 @@ function buildFailure(
       // Logging must never break failure reporting — console output above is
       // the fallback.
     }
+
+    // Money-at-risk failures (charged but no order, or ambiguous charge) must
+    // reach the SERVER logger so Discord/Sentry alert — clientLogger only goes
+    // to Loki. sendBeacon survives the customer navigating away.
+    if (kind === 'order_pending' || kind === 'payment_uncertain') {
+      try {
+        if (typeof navigator !== 'undefined') {
+          navigator.sendBeacon?.(
+            '/api/checkout/report-failure',
+            JSON.stringify({
+              kind,
+              reference: failure.reference,
+              source: context.source,
+              details: context.details,
+            })
+          )
+        }
+      } catch {
+        // Beacon unavailable — clientLogger.error above is the fallback.
+      }
+    }
   }
 
   return failure
