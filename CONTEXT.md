@@ -13,6 +13,14 @@ A customer's right to use WCPOS Pro, created by a purchase and identified
 by a license key. Yearly (expires) or Lifetime (no expiry).
 _Avoid_: subscription, membership
 
+**Plan**:
+The product tier a License grants — Yearly (a year of updates, then
+expires) or Lifetime (no expiry). Identified internally by a PlanId,
+mapped to one Keygen policy and one Medusa product handle, with the
+display label, in the single registry `src/lib/plans.ts`. An unrecognized
+policy resolves to no plan (never guessed).
+_Avoid_: tier, SKU, subscription level
+
 **Active (license)**:
 A license inside its term, or a Lifetime license. Grants downloads,
 updates, and machine activations. Keygen's raw EXPIRING and INACTIVE
