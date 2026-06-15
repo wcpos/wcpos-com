@@ -289,6 +289,24 @@ describe('buildFailure → server beacon', () => {
     createPaymentFailure('declined', { source: 'stripe_confirm_payment' })
     expect(beacon).not.toHaveBeenCalled()
   })
+
+  it('falls back to a keepalive fetch when sendBeacon returns false', () => {
+    beacon.mockReturnValue(false)
+    const fetchMock = vi.fn(
+      (_url: string, _init?: RequestInit) => Promise.resolve({ ok: true } as Response)
+    )
+    vi.stubGlobal('fetch', fetchMock)
+
+    createOrderPendingFailure({ source: 'stripe_complete_cart', details: { cartId: 'c1' } })
+
+    expect(fetchMock).toHaveBeenCalledTimes(1)
+    expect(fetchMock.mock.calls[0][0]).toBe('/api/checkout/report-failure')
+    const init = fetchMock.mock.calls[0][1] as RequestInit
+    expect(init.keepalive).toBe(true)
+    const payload = JSON.parse(init.body as string)
+    expect(payload.kind).toBe('order_pending')
+    expect(payload.reference).toMatch(/^WCPOS-/)
+  })
 })
 
 describe('OrderPendingError', () => {
