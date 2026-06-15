@@ -222,6 +222,25 @@ describe('customer-orders', () => {
       expect(mockFetch).toHaveBeenCalledTimes(1)
     })
 
+    it('returns null when the list endpoint returns a different order id', async () => {
+      // Defense in depth: local/e2e mocks or future upstream regressions may
+      // ignore the id filter. Never treat the first returned order as a match
+      // unless Medusa echoes the requested id.
+      mockGetAuthToken.mockResolvedValue('valid_token')
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          orders: [{ id: 'order_not_requested', display_id: 8 }],
+          count: 1,
+        }),
+      })
+
+      const order = await getOrderById('order_target')
+
+      expect(order).toBeNull()
+      expect(mockFetch).toHaveBeenCalledTimes(1)
+    })
+
     it('returns null when no token', async () => {
       mockGetAuthToken.mockResolvedValue(null)
 

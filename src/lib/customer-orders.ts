@@ -172,5 +172,6 @@ export async function getOrderById(
     token,
     new URLSearchParams({ id: orderId, limit: '1' })
   )
-  return orders[0] ?? null
+  const [order] = orders
+  return order?.id === orderId ? order : null
 }
