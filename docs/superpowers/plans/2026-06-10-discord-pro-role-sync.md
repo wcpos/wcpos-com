@@ -75,8 +75,8 @@
 
 - Use a git worktree for implementation.
 - Do not match by email.
-- Do not persist Discord OAuth access or refresh tokens.
-- Do not block checkout on Discord failures.
+- Never persist Discord OAuth access or refresh tokens.
+- Avoid blocking checkout on Discord failures.
 - Never remove roles during a customer-specific unverifiable/Keygen-outage result.
 - Treat `Pro User` as bot-owned; reconciliation removes manual grants that are not backed by active entitlement.
 - Run tests after each task and commit each coherent task.
@@ -480,8 +480,9 @@ export async function getCustomerOrdersByCustomerId({
   )
 
   if (!response.ok) {
-    authLogger.error`Failed to get admin orders for customer ${customerId}: ${response.status}`
-    return []
+    const message = `Failed to get admin orders for customer ${customerId}: ${response.status}`
+    authLogger.error`${message}`
+    throw new Error(message)
   }
 
   const data = await response.json()
@@ -512,7 +513,7 @@ export async function getAllCustomerOrdersByCustomerId(
 }
 ```
 
-If Medusa Admin API uses a different filter shape in the deployed backend, adjust only this helper and keep the rest of the sync code unchanged.
+If Medusa Admin API uses a different filter shape in the deployed backend, adjust only this helper and keep the rest of the sync code unchanged. Admin order-read failures must throw; they must never be converted to an empty order list because an empty list means “confirmed no licenses” and can demote a Discord role.
 
 - [ ] **Step 5: Refactor license resolution**
 
@@ -1159,6 +1160,24 @@ describe('syncDiscordRoleForCustomer', () => {
     expect(result.action).toBe('skipped_unverifiable')
     expect(mockRemoveRole).not.toHaveBeenCalled()
   })
+
+
+  it('does not remove when customer license resolution fails', async () => {
+    mockGetResolvedLicensesForCustomerId.mockRejectedValueOnce(new Error('Medusa unavailable'))
+    mockGetMember.mockResolvedValueOnce({ userId: 'discord_1', roles: ['role_1'] })
+
+    const result = await syncDiscordRoleForCustomer({
+      customerId: 'cust_1',
+      metadata: { discord_user_id: 'discord_1' },
+      guildId: 'guild_1',
+      roleId: 'role_1',
+      enabled: true,
+      botToken: 'bot_token',
+    })
+
+    expect(result.action).toBe('skipped_unverifiable')
+    expect(mockRemoveRole).not.toHaveBeenCalled()
+  })
 })
 ```
 
@@ -1217,8 +1236,14 @@ export async function syncDiscordRoleForCustomer(
     return { customerId: input.customerId, discordUserId: link.userId, action: 'missing_member' }
   }
 
-  const licenses = await getResolvedLicensesForCustomerId(input.customerId)
-  const entitlement = getDiscordEntitlementState(licenses)
+  let entitlement: ReturnType<typeof getDiscordEntitlementState>
+  try {
+    const licenses = await getResolvedLicensesForCustomerId(input.customerId)
+    entitlement = getDiscordEntitlementState(licenses)
+  } catch {
+    return { customerId: input.customerId, discordUserId: link.userId, action: 'skipped_unverifiable' }
+  }
+
   const hasRole = member.roles.includes(input.roleId)
 
   if (entitlement.entitled && !hasRole) {
@@ -1348,11 +1373,16 @@ import { GET } from './route'
 describe('GET /api/discord/link', () => {
   beforeEach(() => vi.clearAllMocks())
 
-  it('requires an authenticated customer', async () => {
+  it('requires an authenticated customer and preserves Discord-first link params through login', async () => {
     mockGetCustomer.mockResolvedValueOnce(null)
-    const response = await GET(new NextRequest('https://wcpos.com/api/discord/link'))
+    const response = await GET(
+      new NextRequest('https://wcpos.com/api/discord/link?expected_discord_user_id=discord_1')
+    )
+    const location = response.headers.get('location') ?? ''
+
     expect(response.status).toBe(302)
-    expect(response.headers.get('location')).toContain('/login')
+    expect(location).toContain('/login')
+    expect(location).toContain('redirect=%2Fapi%2Fdiscord%2Flink%3Fexpected_discord_user_id%3Ddiscord_1')
   })
 
   it('redirects to Discord without using customer email', async () => {
@@ -1380,7 +1410,10 @@ import { env } from '@/utils/env'
 export async function GET(request: NextRequest) {
   const customer = await getCustomer()
   if (!customer) {
-    return NextResponse.redirect(new URL('/login?next=/account/profile', request.url))
+    const redirect = `${request.nextUrl.pathname}${request.nextUrl.search}`
+    const loginUrl = new URL('/login', request.url)
+    loginUrl.searchParams.set('redirect', redirect)
+    return NextResponse.redirect(loginUrl)
   }
 
   if (!env.DISCORD_CLIENT_ID || !env.DISCORD_LINK_STATE_SECRET) {
@@ -1438,7 +1471,10 @@ import { env } from '@/utils/env'
 export async function GET(request: NextRequest) {
   const customer = await getCustomer()
   if (!customer) {
-    return NextResponse.redirect(new URL('/login?next=/account/profile', request.url))
+    const redirect = `${request.nextUrl.pathname}${request.nextUrl.search}`
+    const loginUrl = new URL('/login', request.url)
+    loginUrl.searchParams.set('redirect', redirect)
+    return NextResponse.redirect(loginUrl)
   }
 
   const code = request.nextUrl.searchParams.get('code')
@@ -1929,7 +1965,9 @@ export async function listCustomersForDiscordReconciliation({
   limit?: number
   offset?: number
 }): Promise<MedusaCustomer[]> {
-  if (!env.MEDUSA_ADMIN_API_TOKEN) return []
+  if (!env.MEDUSA_ADMIN_API_TOKEN) {
+    throw new Error('MEDUSA_ADMIN_API_TOKEN is required for Discord reconciliation')
+  }
 
   const query = new URLSearchParams({ limit: String(limit), offset: String(offset) })
   const response = await fetch(`${env.MEDUSA_BACKEND_URL}/admin/customers?${query.toString()}`, {
@@ -1937,8 +1975,9 @@ export async function listCustomersForDiscordReconciliation({
   })
 
   if (!response.ok) {
-    authLogger.error`Failed to list customers for Discord reconciliation: ${response.status}`
-    return []
+    const message = `Failed to list customers for Discord reconciliation: ${response.status}`
+    authLogger.error`${message}`
+    throw new Error(message)
   }
 
   const data = await response.json()
@@ -1979,34 +2018,39 @@ export async function reconcileDiscordProRole(input: {
 
   const linkedByDiscordId = new Map<string, { customerId: string; metadata: Record<string, unknown> | undefined }>()
 
-  for (let offset = 0; ; offset += 100) {
-    const customers = await listCustomersForDiscordReconciliation({ limit: 100, offset })
-    if (customers.length === 0) break
+  try {
+    for (let offset = 0; ; offset += 100) {
+      const customers = await listCustomersForDiscordReconciliation({ limit: 100, offset })
+      if (customers.length === 0) break
 
-    for (const customer of customers) {
-      const link = getDiscordLinkFromMetadata(customer.metadata)
-      if (!link) continue
-      linkedByDiscordId.set(link.userId, { customerId: customer.id, metadata: customer.metadata })
-      summary.linkedChecked += 1
+      for (const customer of customers) {
+        const link = getDiscordLinkFromMetadata(customer.metadata)
+        if (!link) continue
+        linkedByDiscordId.set(link.userId, { customerId: customer.id, metadata: customer.metadata })
+        summary.linkedChecked += 1
 
-      try {
-        const result = await syncDiscordRoleForCustomer({
-          customerId: customer.id,
-          metadata: customer.metadata,
-          guildId: input.guildId,
-          roleId: input.roleId,
-          botToken: input.botToken,
-          enabled: input.enabled,
-        })
-        if (result.action === 'added') summary.added += 1
-        else if (result.action === 'removed') summary.removed += 1
-        else if (result.action !== 'already_correct') summary.skipped += 1
-      } catch {
-        summary.errors += 1
+        try {
+          const result = await syncDiscordRoleForCustomer({
+            customerId: customer.id,
+            metadata: customer.metadata,
+            guildId: input.guildId,
+            roleId: input.roleId,
+            botToken: input.botToken,
+            enabled: input.enabled,
+          })
+          if (result.action === 'added') summary.added += 1
+          else if (result.action === 'removed') summary.removed += 1
+          else if (result.action !== 'already_correct') summary.skipped += 1
+        } catch {
+          summary.errors += 1
+        }
       }
-    }
 
-    if (customers.length < 100) break
+      if (customers.length < 100) break
+    }
+  } catch {
+    summary.errors += 1
+    return summary
   }
 
   if (!input.enabled || !input.guildId || !input.roleId || !input.botToken) return summary
@@ -2039,6 +2083,25 @@ export async function reconcileDiscordProRole(input: {
 }
 ```
 
+Add a reconciliation service test that proves customer-list failures abort before the role-holder removal sweep:
+
+```ts
+it('aborts reconciliation before removing role holders when customer listing fails', async () => {
+  mockListCustomersForDiscordReconciliation.mockRejectedValueOnce(new Error('Medusa unavailable'))
+
+  const summary = await reconcileDiscordProRole({
+    guildId: 'guild_1',
+    roleId: 'role_1',
+    botToken: 'bot_token',
+    enabled: true,
+  })
+
+  expect(summary.errors).toBe(1)
+  expect(mockListMembers).not.toHaveBeenCalled()
+  expect(mockRemoveRole).not.toHaveBeenCalled()
+})
+```
+
 - [ ] **Step 3: Add reconcile route**
 
 Create `src/app/api/discord/reconcile/route.ts`:
@@ -2048,7 +2111,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { reconcileDiscordProRole } from '@/services/core/business/discord-role-sync'
 import { env } from '@/utils/env'
 
-export async function POST(request: NextRequest) {
+async function handleReconcile(request: NextRequest) {
   const auth = request.headers.get('authorization')
   if (!env.CRON_SECRET || auth !== `Bearer ${env.CRON_SECRET}`) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
@@ -2062,6 +2125,14 @@ export async function POST(request: NextRequest) {
   })
 
   return NextResponse.json({ summary }, { status: summary.errors > 0 ? 207 : 200 })
+}
+
+export async function GET(request: NextRequest) {
+  return handleReconcile(request)
+}
+
+export async function POST(request: NextRequest) {
+  return handleReconcile(request)
 }
 ```
 
@@ -2089,9 +2160,9 @@ vi.mock('@/utils/env', () => ({
   },
 }))
 
-import { POST } from './route'
+import { GET, POST } from './route'
 
-describe('POST /api/discord/reconcile', () => {
+describe('/api/discord/reconcile', () => {
   beforeEach(() => vi.clearAllMocks())
 
   it('rejects missing cron secret', async () => {
@@ -2099,7 +2170,17 @@ describe('POST /api/discord/reconcile', () => {
     expect(response.status).toBe(401)
   })
 
-  it('runs reconciliation with configured guild and role', async () => {
+  it('runs reconciliation via GET with configured guild and role for Vercel Cron', async () => {
+    mockReconcile.mockResolvedValueOnce({ linkedChecked: 1, roleHoldersChecked: 1, added: 0, removed: 0, skipped: 0, errors: 0 })
+    const response = await GET(new NextRequest('https://wcpos.com/api/discord/reconcile', {
+      method: 'GET',
+      headers: { authorization: 'Bearer secret' },
+    }))
+    expect(response.status).toBe(200)
+    expect(mockReconcile).toHaveBeenCalledWith(expect.objectContaining({ guildId: 'guild_1', roleId: 'role_1' }))
+  })
+
+  it('also allows POST for manual operational runs', async () => {
     mockReconcile.mockResolvedValueOnce({ linkedChecked: 1, roleHoldersChecked: 1, added: 0, removed: 0, skipped: 0, errors: 0 })
     const response = await POST(new NextRequest('https://wcpos.com/api/discord/reconcile', {
       method: 'POST',
