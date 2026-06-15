@@ -71,6 +71,15 @@ a provider (Stripe or PayPal), the Customer pays, then complete the cart.
 Completion runs **only after the provider has confirmed payment**.
 _Avoid_: purchase flow, buy
 
+**Order**:
+A completed purchase in Medusa: line items, totals, and the metadata
+that carries the license keys it issued. The source of a customer's
+license references (`extractLicenseReferencesFromOrders`). Fetched via
+the deep `customer-orders` module (`src/lib/customer-orders.ts`);
+identified by Medusa `id` and a human-facing `display_id`.
+_Avoid_: invoice, transaction, receipt (the receipt is the rendered PDF
+of an order, not the order itself).
+
 **Order pending**:
 The state where payment was captured but the order could not be created.
 The Customer must **not** pay again; support finishes or refunds it.
