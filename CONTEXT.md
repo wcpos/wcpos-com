@@ -62,6 +62,15 @@ The person who buys and holds licenses, authenticated via the Medusa
 session. There are no separate "users" or roles on this site.
 _Avoid_: user, account, client
 
+**Order**:
+A completed purchase in Medusa: line items, totals, and the metadata
+that carries the license keys it issued. The source of a customer's
+license references (`extractLicenseReferencesFromOrders`). Fetched via
+the deep `customer-orders` module (`src/lib/customer-orders.ts`);
+identified by Medusa `id` and a human-facing `display_id`.
+_Avoid_: invoice, transaction, receipt (the receipt is the rendered PDF
+of an order, not the order itself).
+
 **Unverifiable (license)**:
 A license reference whose current state cannot be confirmed right now
 (license server unreachable, or a legacy key that no longer resolves).
