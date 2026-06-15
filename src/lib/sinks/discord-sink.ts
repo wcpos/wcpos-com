@@ -4,6 +4,8 @@ interface DiscordSinkOptions {
   webhookUrl: string
   username?: string
   rateLimitMs?: number
+  /** Category prefixes (dot-joined) that bypass the rate limit entirely. */
+  alwaysSendPrefixes?: string[]
 }
 
 export function createDiscordSink(options: DiscordSinkOptions): Sink {
@@ -11,6 +13,7 @@ export function createDiscordSink(options: DiscordSinkOptions): Sink {
     webhookUrl,
     username = 'WCPOS Logger',
     rateLimitMs = 30_000,
+    alwaysSendPrefixes = [],
   } = options
 
   const lastSent = new Map<string, number>()
@@ -32,11 +35,13 @@ export function createDiscordSink(options: DiscordSinkOptions): Sink {
     if (record.level !== 'error' && record.level !== 'fatal') return
 
     const category = record.category.join('.')
-    const now = Date.now()
-    const last = lastSent.get(category) ?? 0
-    if (now - last < rateLimitMs) return
-
-    lastSent.set(category, now)
+    const bypass = alwaysSendPrefixes.some((p) => category.startsWith(p))
+    if (!bypass) {
+      const now = Date.now()
+      const last = lastSent.get(category) ?? 0
+      if (now - last < rateLimitMs) return
+      lastSent.set(category, now)
+    }
 
     const message = record.message.map(safeStringify).join('')
 
