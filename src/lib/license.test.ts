@@ -171,6 +171,22 @@ describe('summarizeDownloadAccess', () => {
       unknownCount: 0,
     })
   })
+  it('treats an active lifetime license as non-expiring access', () => {
+    expect(
+      summarizeDownloadAccess(
+        [lic('active', null), lic('expired', daysFromNow(-2))],
+        NOW
+      )
+    ).toEqual({
+      hasActiveLicense: true,
+      latestExpiry: null,
+      expiryHasPassed: false,
+      suspendedCount: 0,
+      revokedCount: 0,
+      unknownCount: 0,
+    })
+  })
+
   it('flags a passed expiry and counts withdrawn/unverifiable licenses', () => {
     const summary = summarizeDownloadAccess(
       [

@@ -156,10 +156,14 @@ export function summarizeDownloadAccess(
   licenses: LicenseLifecycle[],
   nowMs: number
 ): DownloadAccessSummary {
-  const latestExpiry = getLatestEntitledExpiry(licenses)
+  const hasActive = hasActiveLicense(licenses, nowMs)
+  const hasActiveLifetime = licenses.some(
+    (license) => license.status === 'active' && license.expiry === null
+  )
+  const latestExpiry = hasActiveLifetime ? null : getLatestEntitledExpiry(licenses)
   const latestExpiryMs = latestExpiry ? new Date(latestExpiry).getTime() : null
   return {
-    hasActiveLicense: hasActiveLicense(licenses, nowMs),
+    hasActiveLicense: hasActive,
     latestExpiry,
     expiryHasPassed: latestExpiryMs !== null && latestExpiryMs < nowMs,
     suspendedCount: licenses.filter((l) => l.status === 'suspended').length,
