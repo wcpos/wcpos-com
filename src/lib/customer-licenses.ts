@@ -1,3 +1,4 @@
+import 'server-only'
 import type { LicenseDetail } from '@/types/license'
 import { getAllCustomerOrders, getCustomer } from '@/lib/medusa-auth'
 import {
