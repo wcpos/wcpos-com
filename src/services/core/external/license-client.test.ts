@@ -33,7 +33,7 @@ describe('licenseClient', () => {
             id: 'license-123',
             attributes: {
               key: 'XXXX-XXXX',
-              status: 'ACTIVE',
+              status: 'active',
               expiry: '2027-01-01T00:00:00Z',
               maxMachines: 2,
               metadata: {},
@@ -55,7 +55,7 @@ describe('licenseClient', () => {
         license: {
           id: 'license-123',
           key: 'XXXX-XXXX',
-          status: 'ACTIVE',
+          status: 'active',
           expiry: '2027-01-01T00:00:00Z',
           maxMachines: 2,
           metadata: {},
@@ -86,7 +86,7 @@ describe('licenseClient', () => {
             id: 'license-456',
             attributes: {
               key: 'YYYY-YYYY',
-              status: 'EXPIRED',
+              status: 'expired',
               expiry: '2024-01-01T00:00:00Z',
               maxMachines: 2,
               metadata: {},
@@ -107,7 +107,7 @@ describe('licenseClient', () => {
         detail: 'is expired',
         license: expect.objectContaining({
           id: 'license-456',
-          status: 'EXPIRED',
+          status: 'expired',
         }),
       })
     })
@@ -158,7 +158,7 @@ describe('licenseClient', () => {
       expect(result).toEqual({
         id: 'license-123',
         key: 'XXXX-XXXX',
-        status: 'ACTIVE',
+        status: 'active',
         expiry: '2027-01-01T00:00:00Z',
         maxMachines: 2,
         machines: [],
@@ -406,6 +406,165 @@ describe('licenseClient', () => {
 
       expect(result).toBe(false)
     })
+  })
+
+
+  describe('Keygen adapter normalizes raw status at the seam', () => {
+    const mockValidateKey = ({
+      status,
+      expiry,
+      valid = true,
+    }: {
+      status: string
+      expiry: string | null
+      valid?: boolean
+    }) => {
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          meta: { valid, detail: 'detail', code: valid ? 'VALID' : 'OTHER' },
+          data: {
+            id: 'license-123',
+            attributes: {
+              key: 'KEY',
+              status,
+              expiry,
+              maxMachines: 2,
+              metadata: {},
+              created: '2026-01-01T00:00:00Z',
+            },
+            relationships: {
+              policy: { data: { id: 'policy-yearly' } },
+            },
+          },
+        }),
+      })
+    }
+
+    const mockGetLicense = ({
+      id = 'lic_1',
+      status,
+      expiry,
+    }: {
+      id?: string
+      status: string
+      expiry: string | null
+    }) => {
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          data: {
+            id,
+            attributes: {
+              key: 'KEY',
+              status,
+              expiry,
+              maxMachines: 2,
+              metadata: {},
+              created: '2026-01-01T00:00:00Z',
+            },
+            relationships: {
+              policy: { data: { id: 'policy-yearly' } },
+            },
+          },
+        }),
+      })
+    }
+
+    const mockMachines = (machines: unknown[]) => {
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ data: machines }),
+      })
+    }
+
+    it('validateLicenseKey returns canonical status (EXPIRING -> active)', async () => {
+      mockValidateKey({ valid: true, status: 'EXPIRING', expiry: null })
+
+      const result = await licenseClient.validateLicenseKey('KEY')
+
+      expect(result.license?.status).toBe('active')
+    })
+
+    it('getLicenseWithMachines returns canonical status (BANNED -> revoked)', async () => {
+      mockGetLicense({ status: 'BANNED', expiry: null })
+      mockMachines([])
+
+      const license = await licenseClient.getLicenseWithMachines('lic_1')
+
+      expect(license.status).toBe('revoked')
+    })
+
+    it('getLicenseWithMachines normalizes INACTIVE -> active', async () => {
+      mockGetLicense({ id: 'lic_2', status: 'INACTIVE', expiry: null })
+      mockMachines([])
+
+      const license = await licenseClient.getLicenseWithMachines('lic_2')
+
+      expect(license.status).toBe('active')
+    })
+  })
+
+  describe('validateLicense — plugin data derives from canonical status', () => {
+    const mockValidateKey = ({
+      status,
+      expiry,
+      valid = true,
+    }: {
+      status: string
+      expiry: string | null
+      valid?: boolean
+    }) => {
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          meta: { valid, detail: 'detail', code: valid ? 'VALID' : 'OTHER' },
+          data: {
+            id: 'license-123',
+            attributes: {
+              key: 'KEY',
+              status,
+              expiry,
+              maxMachines: 2,
+              metadata: {},
+              created: '2026-01-01T00:00:00Z',
+            },
+            relationships: {
+              policy: { data: { id: 'policy-yearly' } },
+            },
+          },
+        }),
+      })
+    }
+
+    const mockMachines = (machines: unknown[]) => {
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ data: machines }),
+      })
+    }
+
+    const cases: Array<[string, string, string, boolean]> = [
+      ['ACTIVE', 'active', 'active', true],
+      ['EXPIRING', 'active', 'active', true],
+      ['INACTIVE', 'active', 'active', true],
+      ['EXPIRED', 'expired', 'expired', false],
+      ['SUSPENDED', 'inactive', 'suspended', false],
+      ['BANNED', 'invalid', 'revoked', false],
+    ]
+
+    it.each(cases)(
+      'raw %s -> plugin %s / entitlement %s',
+      async (rawStatus, pluginStatus, entitlementStatus, valid) => {
+        mockValidateKey({ valid, status: rawStatus, expiry: null })
+        if (valid) mockMachines([])
+
+        const res = await licenseClient.validateLicense('KEY', 'instance')
+
+        expect(res.data?.status).toBe(pluginStatus)
+        expect(res.entitlement?.status).toBe(entitlementStatus)
+      }
+    )
   })
 
   describe('validateLicense', () => {

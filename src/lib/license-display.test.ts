@@ -9,7 +9,7 @@ function makeLicense(overrides: Partial<LicenseDetail> = {}): LicenseDetail {
   return {
     id: 'lic-1',
     key: 'ABCD-EFGH-IJKL-MNOP',
-    status: 'ACTIVE',
+    status: 'active',
     expiry: '2099-01-01T00:00:00Z',
     maxMachines: 2,
     machines: [],
@@ -37,7 +37,7 @@ describe('isLicenseExpiringSoon', () => {
 
   it('flags an active license expiring today', () => {
     expect(
-      isLicenseExpiringSoon({ status: 'ACTIVE', expiry: daysFromNow(0.5) }, NOW)
+      isLicenseExpiringSoon({ status: 'active', expiry: daysFromNow(0.5) }, NOW)
     ).toBe(true)
   })
 
