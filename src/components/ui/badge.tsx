@@ -18,16 +18,20 @@ const badgeVariants = cva(
           'border-transparent bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100',
         warning:
           'border-transparent bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-100',
+        // Amber pill used for "Pro" / "Beta" markers on the marketing pages.
+        pro: 'border-0 rounded-full px-2 text-[10px] bg-amber-100 text-amber-800 dark:bg-amber-900/50 dark:text-amber-300',
+        beta: 'border-0 rounded-full px-2 text-[10px] bg-amber-100 text-amber-800 dark:bg-amber-900/50 dark:text-amber-300',
       },
     },
     defaultVariants: {
       variant: 'default',
     },
-  }
+  },
 )
 
 export interface BadgeProps
-  extends React.HTMLAttributes<HTMLDivElement>,
+  extends
+    React.HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof badgeVariants> {}
 
 function Badge({ className, variant, ...props }: BadgeProps) {
@@ -37,4 +41,3 @@ function Badge({ className, variant, ...props }: BadgeProps) {
 }
 
 export { Badge, badgeVariants }
-

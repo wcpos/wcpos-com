@@ -15,8 +15,9 @@
   --popover: 0 0% 100%;
   --popover-foreground: 222.2 84% 4.9%;
   
-  /* Primary colors - deep teal */
-  --primary: 173 58% 39%;
+  /* Primary colors - WCPOS brand red (see --wcpos-red rationale below).
+     Held at 47% lightness so white-text-on-primary CTAs clear WCAG AA. */
+  --primary: 4 73% 47%;
   --primary-foreground: 0 0% 100%;
   
   /* Secondary colors */
@@ -38,7 +39,7 @@
   /* Border colors */
   --border: 214.3 31.8% 91.4%;
   --input: 214.3 31.8% 91.4%;
-  --ring: 173 58% 39%;
+  --ring: 4 73% 47%;
   
   /* Chart colors */
   --chart-1: 173 58% 39%;
@@ -74,7 +75,8 @@
   --popover: 222.2 84% 4.9%;
   --popover-foreground: 210 40% 98%;
 
-  --primary: 173 58% 50%;
+  /* Kept at 47% (not lifted) so white text on a primary CTA stays WCAG AA. */
+  --primary: 4 73% 47%;
   --primary-foreground: 0 0% 100%;
 
   --secondary: 217.2 32.6% 17.5%;
@@ -91,7 +93,7 @@
 
   --border: 217.2 32.6% 17.5%;
   --input: 217.2 32.6% 17.5%;
-  --ring: 173 58% 50%;
+  --ring: 4 73% 47%;
 
   --sidebar: 222.2 47% 8%;
   --sidebar-foreground: 210 40% 98%;
