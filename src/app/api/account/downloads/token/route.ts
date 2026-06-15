@@ -3,10 +3,8 @@ import { env } from '@/utils/env'
 import { getCustomer } from '@/lib/medusa-auth'
 import { getResolvedCustomerLicenses } from '@/lib/customer-licenses'
 import { createDownloadToken } from '@/lib/download-token'
-import {
-  findReleaseByVersion,
-  isReleaseAllowedForLicenses,
-} from '@/services/core/business/pro-downloads'
+import { isReleaseAllowedForLicenses } from '@/lib/license'
+import { findReleaseByVersion } from '@/services/core/business/pro-downloads'
 import { licenseLogger } from '@/lib/logger'
 
 const TOKEN_TTL_MS = 60_000
