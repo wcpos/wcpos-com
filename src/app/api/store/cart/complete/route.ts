@@ -53,16 +53,20 @@ export async function POST(request: NextRequest) {
           })
         : 'control'
 
-      void trackServerEvent('checkout_completed', {
-        experiment: typeof experiment === 'string' ? experiment : 'pro_checkout_v1',
-        variant,
-        distinct_id: distinctId ?? 'missing-distinct-id',
-        customer_id: customer.id,
-        order_id: result.order?.id ?? null,
-        cart_id: cartId,
-        funnel_step: 'checkout_completed',
-        page: '/pro/checkout',
-      }).catch((trackingError) => {
+      const orderId = result.order?.id ?? null
+      void trackServerEvent(
+        orderId ? 'checkout_completed' : 'checkout_completed_no_order',
+        {
+          experiment: typeof experiment === 'string' ? experiment : 'pro_checkout_v1',
+          variant,
+          distinct_id: distinctId ?? 'missing-distinct-id',
+          customer_id: customer.id,
+          order_id: orderId,
+          cart_id: cartId,
+          funnel_step: orderId ? 'checkout_completed' : 'checkout_completed_no_order',
+          page: '/pro/checkout',
+        }
+      ).catch((trackingError) => {
         storeLogger.warn`Checkout conversion tracking failed: ${trackingError}`
       })
     } catch (trackingError) {

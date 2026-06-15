@@ -93,6 +93,39 @@ describe('POST /api/store/cart/complete', () => {
     })
   })
 
+  it('tracks checkout_completed_no_order when no order is created', async () => {
+    mockGetCustomer.mockResolvedValueOnce({
+      id: 'cust_1',
+      email: 'customer@example.com',
+    })
+    mockCompleteCart.mockResolvedValueOnce({
+      // result is truthy but carries no order (e.g. cart returned instead)
+      type: 'cart',
+    })
+
+    const response = await POST(
+      new NextRequest('http://localhost:3000/api/store/cart/complete', {
+        method: 'POST',
+        body: JSON.stringify({
+          cartId: 'cart_1',
+          experiment: 'pro_checkout_v1',
+        }),
+      })
+    )
+
+    expect(response.status).toBe(200)
+    expect(mockTrackServerEvent).toHaveBeenCalledWith('checkout_completed_no_order', {
+      experiment: 'pro_checkout_v1',
+      variant: 'control',
+      distinct_id: 'anon_123',
+      customer_id: 'cust_1',
+      order_id: null,
+      cart_id: 'cart_1',
+      funnel_step: 'checkout_completed_no_order',
+      page: '/pro/checkout',
+    })
+  })
+
   it('returns success even when analytics tracking throws', async () => {
     mockGetCustomer.mockResolvedValueOnce({
       id: 'cust_1',
