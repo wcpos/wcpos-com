@@ -10,5 +10,9 @@ export const storeLogger = getLogger(['wcpos', 'store'])
 export const licenseLogger = getLogger(['wcpos', 'license'])
 export const infraLogger = getLogger(['wcpos', 'infra'])
 
+// Sale-critical events (charged-but-no-order). Its own category so it can be
+// alerted/filtered distinctly from ordinary store errors.
+export const saleLogger = getLogger(['wcpos', 'store', 'sale'])
+
 // Re-export for custom categories
 export { getLogger }
