@@ -47,7 +47,7 @@ Two officially supported approaches:
 
 **1. Linked Roles (role connections).** The app registers up to **5 metadata fields** (boolean / integer / ISO8601 date, e.g. `license_active`, `license_expiry`). The user authorizes the app with `identify` + `role_connections.write`. The app then pushes metadata for that user via `PUT /users/@me/applications/{app_id}/role-connection` — **using the user's OAuth access token**, not a bot token. Guild admins configure a role requirement ("license_active = true") in server settings; Discord grants/removes the role based on the latest pushed metadata. Important correction to the common mental model: **Discord does not pull from the app.** The app must push on every change, which means storing and refreshing every user's OAuth token (access tokens expire in ~7 days; refresh tokens last until revoked).
 
-**2. Bot-managed roles.** A bot in the guild with `Manage Roles` permission adds/removes the role directly: `PUT/DELETE /guilds/{guild_id}/members/{user_id}/roles/{role_id}`, authenticated with the **bot token**. No per-user tokens. No gateway connection required — plain REST calls work, and slash commands can be served over the Interactions HTTP endpoint (signed webhooks) rather than a persistent websocket.
+**2. Bot-managed roles.** A bot in the guild with `Manage Roles` permission adds/removes the role directly: `PUT/DELETE /guilds/{guild_id}/members/{user_id}/roles/{role_id}`, authenticated with the **bot token**. The daily role-holder sweep also requires enabling the bot's Server Members privileged intent so Discord permits `GET /guilds/{guild_id}/members`. No per-user tokens. No gateway connection required — plain REST calls work, and slash commands can be served over the Interactions HTTP endpoint (signed webhooks) rather than a persistent websocket.
 
 ---
 
@@ -193,7 +193,7 @@ where `licenses` come from the exact pipeline in `src/lib/customer-licenses.ts` 
 - **OAuth state/CSRF:** random `state` in an httpOnly, `SameSite=Lax`, short-TTL cookie; verified on callback; flow bound to the authenticated Medusa session (linking is rejected if the session user changed mid-flow).
 - **Token storage:** with Option B, user OAuth tokens are held in memory for the duration of the callback only and never persisted. Persistent secrets are limited to: `DISCORD_BOT_TOKEN`, `DISCORD_CLIENT_SECRET`, `DISCORD_PUBLIC_KEY` (interactions signature check), `CRON_SECRET` — all server-side env vars (Vercel encrypted env), never exposed to the client.
 - **Unlink flow:** "Disconnect" on the account card → confirm → best-effort role removal → delete the `discord_*` metadata keys → audit log entry. Unlink succeeds even if the Discord role-removal call fails (reconciliation note: an orphaned role with no link is removed per the role-ownership policy below).
-- **Compromised bot token blast radius:** the bot can act with whatever guild permissions it has. Mitigation = least privilege: grant **only `Manage Roles`**, no admin/kick/ban/message permissions; place the bot's highest role immediately above the Pro role in the hierarchy (it can then only manage Pro and below); single guild install; rotate the token from the Developer Portal if leaked. Worst case with this setup: an attacker grants/removes Pro role and roles below it — annoying, not destructive.
+- **Compromised bot token blast radius:** the bot can act with whatever guild permissions it has. Mitigation = least privilege: grant **only `Manage Roles`**, no admin/kick/ban/message permissions; enable only the Server Members privileged intent needed for sweeps; place the bot's highest role immediately above the Pro role in the hierarchy (it can then only manage Pro and below); single guild install; rotate the token from the Developer Portal if leaked. Worst case with this setup: an attacker grants/removes Pro role and roles below it — annoying, not destructive.
 - **Interactions endpoint:** verify Discord's ed25519 signature on every request (required by Discord; also prevents spoofed `/link` calls).
 - **Webhook endpoint (if Phase 2):** verify Keygen webhook signatures; treat payloads as untrusted hints and re-resolve entitlement from Keygen before acting.
 
@@ -220,7 +220,7 @@ where `licenses` come from the exact pipeline in `src/lib/customer-licenses.ts` 
 
 ### Phase 1 — MVP (est. 3–5 dev days)
 
-1. Discord application + bot setup, guild role + permission hierarchy (0.5 d).
+1. Discord application + bot setup, Server Members privileged intent, guild role + permission hierarchy (0.5 d).
 2. Link/unlink OAuth flow + account card UI (`/api/discord/link`, callback, profile card) (1–1.5 d).
 3. `getResolvedLicensesForCustomer` refactor + `hasActiveProEntitlement` helper + Role Sync service (Discord REST client with backoff) (1 d).
 4. Purchase hook in cart-complete + manual Resync endpoint/button (0.5 d).

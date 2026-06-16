@@ -136,7 +136,23 @@
       "viewAllOrders": "View all orders",
       "manageLicenses": "Manage licenses",
       "recentOrders": "Recent Orders",
-      "orderNumber": "Order #{id}"
+      "orderNumber": "Order #{id}",
+      "discordCardTitle": "Discord Pro-rol",
+      "discordConnectedFallback": "Discord verbonden",
+      "discordConnectedDescription": "Je Discord-account is gekoppeld. Actieve Pro-licenties krijgen automatisch de Pro-rol.",
+      "discordDisconnectedDescription": "Koppel Discord om de community Pro-rol te ontvangen zolang je een actieve WCPOS Pro-licentie hebt.",
+      "discordConnect": "Discord koppelen",
+      "discordResync": "Rol opnieuw synchroniseren",
+      "discordDisconnect": "Loskoppelen",
+      "discordNotConfigured": "Discord-koppeling is nog niet geconfigureerd.",
+      "discordStatus": {
+        "linked": "Discord verbonden. Je Pro-rol wordt automatisch gesynchroniseerd.",
+        "unlinked": "Discord losgekoppeld. De Pro-rol is verwijderd als Discord dit toestond.",
+        "synced": "Discord-rol opnieuw gesynchroniseerd.",
+        "join_server": "Word lid van de Discord-server en synchroniseer daarna je rol opnieuw.",
+        "error": "Discord-synchronisatie is mislukt. Probeer het opnieuw of neem contact op met support.",
+        "already_linked": "Dat Discord-account is al gekoppeld aan een andere WCPOS-klant."
+      }
     },
     "orders": {
       "heading": "Order History",

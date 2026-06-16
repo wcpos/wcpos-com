@@ -136,7 +136,23 @@
       "viewAllOrders": "View all orders",
       "manageLicenses": "Manage licenses",
       "recentOrders": "Recent Orders",
-      "orderNumber": "Order #{id}"
+      "orderNumber": "Order #{id}",
+      "discordCardTitle": "Discord Pro role",
+      "discordConnectedFallback": "Discord connected",
+      "discordConnectedDescription": "Your Discord account is linked. Active Pro licenses receive the Pro role automatically.",
+      "discordDisconnectedDescription": "Link Discord to receive the community Pro role while you have an active WCPOS Pro license.",
+      "discordConnect": "Connect Discord",
+      "discordResync": "Resync role",
+      "discordDisconnect": "Disconnect",
+      "discordNotConfigured": "Discord linking is not configured yet.",
+      "discordStatus": {
+        "linked": "Discord connected. Your Pro role will sync automatically.",
+        "unlinked": "Discord disconnected. The Pro role was removed if Discord allowed it.",
+        "synced": "Discord role resynced.",
+        "join_server": "Join the Discord server, then resync your role.",
+        "error": "Discord sync failed. Please try again or contact support.",
+        "already_linked": "That Discord account is already linked to another WCPOS customer."
+      }
     },
     "orders": {
       "heading": "Order History",

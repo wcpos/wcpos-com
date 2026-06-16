@@ -40,6 +40,16 @@ const envSchema = z.object({
   KEYGEN_API_TOKEN: z.string().optional(),
   DOWNLOAD_TOKEN_SECRET: z.string().optional(),
 
+  // Discord Pro role sync
+  DISCORD_CLIENT_ID: z.string().optional(),
+  DISCORD_CLIENT_SECRET: z.string().optional(),
+  DISCORD_BOT_TOKEN: z.string().optional(),
+  DISCORD_GUILD_ID: z.string().optional(),
+  DISCORD_PRO_ROLE_ID: z.string().optional(),
+  DISCORD_PUBLIC_KEY: z.string().optional(),
+  CRON_SECRET: z.string().optional(),
+  MEDUSA_ADMIN_API_TOKEN: z.string().optional(),
+
   // Logging
   LOKI_URL: z.string().url().optional(),
   LOKI_API_KEY: z.string().optional(),

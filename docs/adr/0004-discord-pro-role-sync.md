@@ -80,7 +80,9 @@ Discord/API failures that heal on the next run.
 
 The Discord bot needs only the permissions required to manage the target role.
 It must not be granted administrator permissions. Its highest role must sit above
-`Pro User` and below staff/admin roles in Discord's role hierarchy.
+`Pro User` and below staff/admin roles in Discord's role hierarchy. The bot must
+also have the Server Members privileged intent enabled for reconciliation sweeps
+that list current guild members.
 
 Required secrets live only in server-side deployment environment variables:
 
@@ -91,6 +93,8 @@ Required secrets live only in server-side deployment environment variables:
 - `DISCORD_CLIENT_SECRET`
 - `DISCORD_PUBLIC_KEY` for slash-command interaction signature verification
 - `CRON_SECRET`
+- `MEDUSA_ADMIN_API_TOKEN` for customer-wide duplicate-link checks and
+  reconciliation
 - `DISCORD_SYNC_ENABLED` kill switch
 
 ## Deferred decisions
