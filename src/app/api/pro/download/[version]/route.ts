@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { licenseClient } from '@/services/core/external/license-client'
-import { isReleaseAllowedForLicenses } from '@/lib/license'
+import { getProPluginReleases } from '@/services/core/business/pro-downloads'
 import {
-  getProPluginReleases,
-  normalizeReleaseVersion,
-} from '@/services/core/business/pro-downloads'
+  licenceScopeFromValidation,
+  selectEntitledRelease,
+} from '@/services/core/business/release-delivery'
 import { fetchReleaseAsset } from '@/services/core/external/github-asset'
 import { apiLogger } from '@/lib/logger'
 
@@ -34,35 +34,20 @@ export async function GET(
   }
 
   const releases = await getProPluginReleases()
-  // Entitlement uses the canonical status, NOT data.status: the plugin
-  // display vocabulary reuses 'inactive' for suspended licenses, which the
-  // canonical normalizer would misread as an in-term Keygen status.
-  const license = licenseStatus.entitlement ?? {
-    status: 'unknown',
-    expiry: null,
-  }
-  const allowedReleases = releases.filter((release) =>
-    isReleaseAllowedForLicenses(release, [license])
-  )
-
-  const normalizedVersion = normalizeReleaseVersion(version)
-  const selectedRelease =
-    normalizedVersion === 'latest'
-      ? allowedReleases[0]
-      : allowedReleases.find(
-          (release) => release.version === normalizedVersion
-        )
-
-  if (!selectedRelease) {
+  const scope = licenceScopeFromValidation(licenseStatus)
+  const selection = selectEntitledRelease(releases, version, scope)
+  // The plugin contract returns 403 for any version this key cannot select —
+  // both "unknown version" and "not entitled" collapse to one refusal.
+  if (!selection.ok) {
     return NextResponse.json(
       { error: 'Requested version is not available for this license' },
       { status: 403 }
     )
   }
 
-  const served = await fetchReleaseAsset(selectedRelease)
+  const served = await fetchReleaseAsset(selection.release)
   if (!served) {
-    apiLogger.error`Failed to fetch pro release asset. version=${selectedRelease.version}`
+    apiLogger.error`Failed to fetch pro release asset. version=${selection.release.version}`
     return NextResponse.json(
       { error: 'Failed to fetch release asset' },
       { status: 502 }
