@@ -11,7 +11,7 @@ import type { AnalyticsRecorder } from './types'
  * The predicate is synchronous: this decorator is for runtimes where consent
  * is a cheap synchronous read (the browser cookie). The server reads consent
  * asynchronously from request-scoped cookies() and gates at its own seam
- * instead; see docs/adr/0010.
+ * instead; see docs/adr/0011.
  */
 export function withConsent(
   inner: AnalyticsRecorder,

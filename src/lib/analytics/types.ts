@@ -13,7 +13,7 @@
  *
  * Two runtimes, one shape: there is a browser adapter and a server adapter,
  * each gated by consent once at its own seam (the runtimes read consent
- * differently — see docs/adr/0010). Feature-flag/experiment resolution is a
+ * differently — see docs/adr/0011). Feature-flag/experiment resolution is a
  * latency-bound *read* and deliberately NOT part of this write interface.
  */
 export interface AnalyticsEvent {

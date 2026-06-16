@@ -88,5 +88,7 @@ caller wanting both calls both (see `app/api/store/cart/complete/route.ts`):
 - Public signatures are unchanged: `trackClientEvent`, `trackServerEvent`, and
   `resolveProCheckoutVariant` keep their shapes, so call sites and the
   cart-complete route are untouched.
-- Numbering note: ADR 0006 has a pre-existing collision (two files); this ADR
-  takes the next free number (0010) and does not reconcile that.
+- Numbering note: 0006 has a pre-existing two-file collision, and 0010 is
+  already earmarked by the in-flight API error-response-seam PR. This ADR
+  therefore takes 0011 to avoid a second collision; it does not reconcile the
+  0006 one.

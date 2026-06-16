@@ -74,7 +74,7 @@ export function readAnalyticsConsent(): AnalyticsConsentStatus | null {
  * The single source for the "may we capture in the browser?" decision — both
  * posthog init and event capture call this, so the GDPR rule for the browser
  * runtime lives in exactly one place. (The server has its own async,
- * request-scoped gate in posthog-service; see docs/adr/0010.)
+ * request-scoped gate in posthog-service; see docs/adr/0011.)
  */
 export function isAnalyticsGranted(): boolean {
   return readAnalyticsConsent() === 'granted'

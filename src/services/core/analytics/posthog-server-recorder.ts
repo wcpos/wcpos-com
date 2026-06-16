@@ -11,7 +11,7 @@ import { getPostHogServerClient } from '@/services/core/external/posthog-node-cl
  *
  * Consent is NOT checked here: server consent is an async, request-scoped read
  * (cookies()), so the gate lives in trackServerEvent, the single server seam.
- * See docs/adr/0010.
+ * See docs/adr/0011.
  */
 export function createPostHogServerRecorder(
   env: NodeJS.ProcessEnv
