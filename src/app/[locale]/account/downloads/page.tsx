@@ -86,12 +86,25 @@ function resolveEntitlingPlanLabel(
   return plan ? planLabel(plan.labelKey) : null
 }
 
-async function DownloadsContent({ locale }: { locale: string }) {
+async function DownloadsContent({
+  locale,
+  scopedLicenseId,
+}: {
+  locale: string
+  scopedLicenseId?: string
+}) {
   const { authenticated, licenses } = await getResolvedCustomerLicenses()
   if (!authenticated) {
     redirectToLoginClearingSession(locale)
   }
 
+  const scopedLicenses = scopedLicenseId
+    ? licenses.filter((license) => license.id === scopedLicenseId)
+    : []
+  // When a licence is explicitly scoped via ?license=, honour that scope even
+  // when it matches nothing — a foreign/stale id must grant no access, not fall
+  // back to pooling every licence (ADR-0006). Only an absent scope sees all.
+  const downloadLicenses = scopedLicenseId ? scopedLicenses : licenses
   const nowMs = new Date().getTime()
   const releases = await getProPluginReleases()
   const mappedReleases = releases.map((release) => ({
@@ -99,7 +112,7 @@ async function DownloadsContent({ locale }: { locale: string }) {
     name: release.name,
     releaseNotes: release.releaseNotes,
     publishedAt: release.publishedAt,
-    allowed: isReleaseAllowedForLicenses(release, licenses, nowMs),
+    allowed: isReleaseAllowedForLicenses(release, downloadLicenses, nowMs),
   }))
 
   // One-pass access diagnosis so the UI can explain WHY a release is
@@ -111,7 +124,7 @@ async function DownloadsContent({ locale }: { locale: string }) {
     suspendedCount,
     revokedCount,
     unknownCount,
-  } = summarizeDownloadAccess(licenses, nowMs)
+  } = summarizeDownloadAccess(downloadLicenses, nowMs)
 
   // Plan label of the licence backing the latest build, resolved here (the page
   // owns plan lookup; the client never sees policy ids). Translation is done
@@ -121,7 +134,7 @@ async function DownloadsContent({ locale }: { locale: string }) {
     namespace: 'account.licenses',
   })
   const entitlingPlanLabel = resolveEntitlingPlanLabel(
-    licenses,
+    downloadLicenses,
     nowMs,
     (key) => planLabels(key)
   )
@@ -134,7 +147,7 @@ async function DownloadsContent({ locale }: { locale: string }) {
         hasActiveLicense,
         latestExpiry,
         expiryHasPassed,
-        licenseCount: licenses.length,
+        licenseCount: downloadLicenses.length,
         suspendedCount,
         revokedCount,
         unknownCount,
@@ -145,10 +158,13 @@ async function DownloadsContent({ locale }: { locale: string }) {
 
 export default async function DownloadsPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ locale: string }>
+  searchParams?: Promise<{ license?: string }>
 }) {
   const { locale } = await params
+  const resolvedSearchParams = searchParams ? await searchParams : {}
   setRequestLocale(locale)
   const t = await getTranslations({ locale, namespace: 'account.downloads' })
 
@@ -159,7 +175,10 @@ export default async function DownloadsPage({
         <p className="text-sm text-muted-foreground">{t('subheading')}</p>
       </div>
       <Suspense fallback={<DownloadsSkeleton />}>
-        <DownloadsContent locale={locale} />
+        <DownloadsContent
+          locale={locale}
+          scopedLicenseId={resolvedSearchParams.license}
+        />
       </Suspense>
     </div>
   )

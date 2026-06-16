@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useLocale, useTranslations } from 'next-intl'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
 import { AccountNotice } from '@/components/account/account-notice'
 import { Key, Monitor, Trash2, Download } from 'lucide-react'
 import { Link } from '@/i18n/navigation'
@@ -53,11 +54,74 @@ function isTranslatedStatus(status: string): status is TranslatedStatus {
   return (TRANSLATED_STATUSES as readonly string[]).includes(status)
 }
 
-interface LicensesClientProps {
-  initialLicenses: License[]
+// Map each display status to a shared Badge variant. Semantics mirror the
+// account download palette: success = entitled now, warning = natural
+// lifecycle end (still keeps pre-expiry access), destructive = withdrawn by us
+// (suspended/revoked), secondary = unverifiable.
+type BadgeVariant = 'success' | 'warning' | 'destructive' | 'secondary'
+
+function statusBadgeVariant(status: string): BadgeVariant {
+  switch (status.toLowerCase()) {
+    case 'active':
+      return 'success'
+    case 'expired':
+      return 'warning'
+    case 'suspended':
+    case 'revoked':
+      return 'destructive'
+    default:
+      return 'secondary'
+  }
 }
 
-export function LicensesClient({ initialLicenses }: LicensesClientProps) {
+// Frontend stub for ADR-0007 (per-licence Discord access). The backend that
+// resolves connected members is OUT OF SCOPE for this work package, so the
+// section renders sample data with a default seat cap. Wiring this to real
+// membership data is tracked separately.
+interface DiscordMember {
+  id: string
+  handle: string
+  avatarInitials: string
+  connectedAt: string
+}
+
+const DISCORD_DEFAULT_CAP = 5
+
+const SAMPLE_DISCORD_MEMBERS: DiscordMember[] = [
+  {
+    id: 'discord-sample-ada',
+    handle: '@ada',
+    avatarInitials: 'AL',
+    connectedAt: '2026-03-14T00:00:00Z',
+  },
+  {
+    id: 'discord-sample-devon',
+    handle: '@devon',
+    avatarInitials: 'DV',
+    connectedAt: '2026-04-02T00:00:00Z',
+  },
+  {
+    id: 'discord-sample-sam',
+    handle: '@sam',
+    avatarInitials: 'SM',
+    connectedAt: '2026-05-18T00:00:00Z',
+  },
+]
+
+interface LicensesClientProps {
+  initialLicenses: License[]
+  /**
+   * Per-licence covered version (ADR-0006). Keyed by license id: the newest
+   * release that licence is entitled to on its own, or null when none. Computed
+   * server-side in the page so release dates never re-ship to the client.
+   */
+  entitledVersions?: Record<string, string | null>
+}
+
+export function LicensesClient({
+  initialLicenses,
+  entitledVersions = {},
+}: LicensesClientProps) {
   const locale = useLocale()
   const t = useTranslations('account.licenses')
   const tStatus = useTranslations('account.licenseStatus')
@@ -66,6 +130,16 @@ export function LicensesClient({ initialLicenses }: LicensesClientProps) {
   const [deactivating, setDeactivating] = useState<string | null>(null)
   // Captured once per mount so render stays pure for the React compiler.
   const [now] = useState(() => Date.now())
+
+  // Discord membership is a frontend stub (ADR-0007); the Remove control only
+  // prunes local sample state so the interaction is demonstrable.
+  const [discordMembersByLicense, setDiscordMembersByLicense] = useState<
+    Record<string, DiscordMember[]>
+  >(() =>
+    Object.fromEntries(
+      initialLicenses.map((license) => [license.id, SAMPLE_DISCORD_MEMBERS])
+    )
+  )
 
   const fetchLicenses = async () => {
     setError(null)
@@ -103,37 +177,6 @@ export function LicensesClient({ initialLicenses }: LicensesClientProps) {
   const maskKey = (key: string) => {
     if (key.length <= 4) return '****'
     return '****-****-' + key.slice(-4)
-  }
-
-  // Semantic, dark-mode-safe status palette: emerald = entitled, amber =
-  // natural lifecycle end (still keeps pre-expiry access), red = withdrawn
-  // by us (suspended/revoked), muted = unverifiable.
-  const getStatusColor = (status: string) => {
-    switch (status.toLowerCase()) {
-      case 'active':
-        return 'bg-emerald-50 text-emerald-700 ring-emerald-600/20 dark:bg-emerald-500/10 dark:text-emerald-400 dark:ring-emerald-400/20'
-      case 'expired':
-        return 'bg-amber-50 text-amber-700 ring-amber-600/20 dark:bg-amber-400/10 dark:text-amber-300 dark:ring-amber-400/20'
-      case 'suspended':
-      case 'revoked':
-        return 'bg-red-50 text-red-700 ring-red-600/20 dark:bg-red-500/10 dark:text-red-400 dark:ring-red-400/20'
-      default:
-        return 'bg-muted text-muted-foreground ring-border'
-    }
-  }
-
-  const getStatusDot = (status: string) => {
-    switch (status.toLowerCase()) {
-      case 'active':
-        return 'bg-emerald-500'
-      case 'expired':
-        return 'bg-amber-500'
-      case 'suspended':
-      case 'revoked':
-        return 'bg-red-500'
-      default:
-        return 'bg-muted-foreground/50'
-    }
   }
 
   // Keygen can report status "active" after the expiry date has passed;
@@ -178,6 +221,14 @@ export function LicensesClient({ initialLicenses }: LicensesClientProps) {
           const displayStatus = getDisplayStatus(license)
           const expiringSoon = isLicenseExpiringSoon(license, now)
           const planLabel = getPlanLabel(license.policyId)
+          // Per-licence attributed version (ADR-0006): null when this licence
+          // alone covers nothing.
+          const coveredVersion = entitledVersions[license.id] ?? null
+          const scopedDownloadsHref = `/account/downloads?license=${encodeURIComponent(
+            license.id
+          )}`
+          const discordMembers =
+            discordMembersByLicense[license.id] ?? SAMPLE_DISCORD_MEMBERS
           return (
           <Card key={license.id}>
             <CardHeader>
@@ -196,26 +247,22 @@ export function LicensesClient({ initialLicenses }: LicensesClientProps) {
                   </code>
                 </CardTitle>
                 <div className="flex items-center gap-2">
-                  <span
-                    className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium capitalize ring-1 ring-inset ${getStatusColor(displayStatus)}`}
+                  <Badge
+                    variant={statusBadgeVariant(displayStatus)}
                     title={
                       displayStatus === 'unknown'
                         ? t('unknownStatusTooltip')
                         : undefined
                     }
                   >
-                    <span
-                      aria-hidden="true"
-                      className={`h-1.5 w-1.5 rounded-full ${getStatusDot(displayStatus)}`}
-                    />
                     {isTranslatedStatus(displayStatus)
                       ? tStatus(displayStatus)
                       : displayStatus}
-                  </span>
+                  </Badge>
                   {planLabel && (
-                    <span className="rounded-full border px-2.5 py-1 text-xs font-medium text-muted-foreground">
+                    <Badge variant="outline" className="text-muted-foreground">
                       {planLabel}
-                    </span>
+                    </Badge>
                   )}
                 </div>
               </div>
@@ -248,6 +295,21 @@ export function LicensesClient({ initialLicenses }: LicensesClientProps) {
                       </Link>
                     ),
                   })}
+                </p>
+              )}
+
+              {/* Per-licence covered version (ADR-0006): an active licence shows
+                  the latest version it grants; an expired one shows the last
+                  version released during its term. Update access is attributed
+                  to THIS licence, never pooled across licences. */}
+              {coveredVersion && displayStatus === 'active' && (
+                <p className="text-sm text-muted-foreground">
+                  {t('coversLatestVersion', { version: coveredVersion })}
+                </p>
+              )}
+              {coveredVersion && displayStatus === 'expired' && (
+                <p className="text-sm text-muted-foreground">
+                  {t('coversUpToVersion', { version: coveredVersion })}
                 </p>
               )}
 
@@ -289,9 +351,10 @@ export function LicensesClient({ initialLicenses }: LicensesClientProps) {
                       <Link href="/pro">{t('renew')}</Link>
                     </Button>
                     {/* Expired licenses can still download versions released
-                        before their expiry, so keep downloads reachable. */}
+                        before their expiry; scope the downloads page to this
+                        licence so another active licence does not pool access. */}
                     <Button asChild size="sm" variant="outline">
-                      <Link href="/account/downloads">
+                      <Link href={scopedDownloadsHref}>
                         <Download className="mr-2 h-4 w-4" />
                         {t('downloads')}
                       </Link>
@@ -322,6 +385,16 @@ export function LicensesClient({ initialLicenses }: LicensesClientProps) {
                           {machine.name && (
                             <p className="break-all font-mono text-xs text-muted-foreground">
                               {machine.fingerprint}
+                            </p>
+                          )}
+                          {/* Expired licences still cover pre-expiry versions:
+                              tell each activated site which version it can
+                              still update through (ADR-0006, per licence). */}
+                          {displayStatus === 'expired' && coveredVersion && (
+                            <p className="mt-0.5 text-xs text-muted-foreground">
+                              {t('siteUpdatesThrough', {
+                                version: coveredVersion,
+                              })}
                             </p>
                           )}
                           <p className="mt-0.5 text-xs text-muted-foreground">
@@ -355,6 +428,78 @@ export function LicensesClient({ initialLicenses }: LicensesClientProps) {
                   ))}
                 </div>
               )}
+
+              {/* Discord access — frontend stub per ADR-0007. Membership data
+                  is sample-only; the resolving backend is out of scope for this
+                  work package. */}
+              <div className="space-y-2 rounded-lg border bg-muted/40 p-3">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+                    {t('discordHeading')}
+                  </p>
+                  <span className="text-xs font-medium text-muted-foreground">
+                    {t('discordMembers', {
+                      count: discordMembers.length,
+                      cap: DISCORD_DEFAULT_CAP,
+                    })}
+                  </span>
+                </div>
+                {discordMembers.map((member) => (
+                  <div
+                    key={member.id}
+                    className="flex items-center justify-between gap-2"
+                  >
+                    <div className="flex min-w-0 items-center gap-2.5">
+                      <span
+                        aria-hidden="true"
+                        className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-wcpos-red/10 text-xs font-medium text-wcpos-red-accent"
+                      >
+                        {member.avatarInitials}
+                      </span>
+                      <div className="min-w-0">
+                        <p className="truncate text-sm font-medium">
+                          {member.handle}
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          {t('discordConnected', {
+                            date: formatDateForLocale(
+                              member.connectedAt,
+                              locale
+                            ),
+                          })}
+                        </p>
+                      </div>
+                    </div>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() =>
+                        setDiscordMembersByLicense((membersByLicense) => {
+                          const currentMembers =
+                            membersByLicense[license.id] ??
+                            SAMPLE_DISCORD_MEMBERS
+                          return {
+                            ...membersByLicense,
+                            [license.id]: currentMembers.filter(
+                              (m) => m.id !== member.id
+                            ),
+                          }
+                        })
+                      }
+                      aria-label={t('discordRemoveAria', {
+                        handle: member.handle,
+                      })}
+                    >
+                      {t('discordRemove')}
+                    </Button>
+                  </div>
+                ))}
+                {displayStatus === 'active' && (
+                  <p className="text-xs text-muted-foreground">
+                    {t('discordConnectHint')}
+                  </p>
+                )}
+              </div>
             </CardContent>
           </Card>
           )
