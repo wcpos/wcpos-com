@@ -171,6 +171,29 @@ describe('medusa-auth', () => {
       // It must not proceed to the create-customer step.
       expect(mockFetch).toHaveBeenCalledTimes(1)
     })
+
+    it('throws AccountExistsError when customer creation finds an existing email', async () => {
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ token: 'new_user_token' }),
+      })
+      mockFetch.mockResolvedValueOnce({
+        ok: false,
+        status: 400,
+        text: async () => '{"message":"Customer with email already exists"}',
+      })
+
+      const error = await register({
+        email: 'existing@example.com',
+        password: 'securepass',
+      }).catch((e) => e)
+
+      expect(error).toBeInstanceOf(AccountExistsError)
+      expect(error.code).toBe('ACCOUNT_EXISTS')
+      expect(error.status).toBe(409)
+      expect(error.message).toBe('Customer with email already exists')
+      expect(mockFetch).toHaveBeenCalledTimes(2)
+    })
   })
 
   describe('getCustomer', () => {

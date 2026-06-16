@@ -217,9 +217,14 @@ export async function register({
   )
 
   if (!customerResponse.ok) {
-    throw new Error(
-      await parseMedusaError(customerResponse, 'Failed to create customer')
+    const message = await parseMedusaError(
+      customerResponse,
+      'Failed to create customer'
     )
+    if (/already exists|duplicate/i.test(message)) {
+      throw new AccountExistsError(message)
+    }
+    throw new Error(message)
   }
 
   const { customer } = await customerResponse.json()
