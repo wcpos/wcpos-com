@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server'
 import { getResolvedCustomerLicenses } from '@/lib/customer-licenses'
-import { hasActiveLicense, isReleaseAllowedForLicenses } from '@/lib/license'
+import { hasActiveLicense } from '@/lib/license'
 import { getProPluginReleases } from '@/services/core/business/pro-downloads'
+import { resolveEntitledReleases } from '@/services/core/business/release-delivery'
 
 export async function GET() {
   const { authenticated, licenses } = await getResolvedCustomerLicenses()
@@ -10,10 +11,10 @@ export async function GET() {
   }
 
   const releases = await getProPluginReleases()
-  const data = releases.map((release) => ({
-    ...release,
-    allowed: isReleaseAllowedForLicenses(release, licenses),
-  }))
+  const data = resolveEntitledReleases(releases, {
+    kind: 'account',
+    licences: licenses,
+  })
 
   return NextResponse.json(
     {

@@ -2,8 +2,6 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 const mockGetResolvedCustomerLicenses = vi.fn()
 const mockGetProPluginReleases = vi.fn()
-const mockIsReleaseAllowedForLicenses = vi.fn()
-const mockHasActiveLicense = vi.fn()
 
 vi.mock('@/lib/customer-licenses', () => ({
   getResolvedCustomerLicenses: (...args: unknown[]) =>
@@ -13,12 +11,6 @@ vi.mock('@/lib/customer-licenses', () => ({
 vi.mock('@/services/core/business/pro-downloads', () => ({
   getProPluginReleases: (...args: unknown[]) =>
     mockGetProPluginReleases(...args),
-}))
-
-vi.mock('@/lib/license', () => ({
-  isReleaseAllowedForLicenses: (...args: unknown[]) =>
-    mockIsReleaseAllowedForLicenses(...args),
-  hasActiveLicense: (...args: unknown[]) => mockHasActiveLicense(...args),
 }))
 
 import { GET } from './route'
@@ -38,7 +30,7 @@ describe('GET /api/account/downloads', () => {
     expect(response.status).toBe(401)
   })
 
-  it('returns releases with allowed flags', async () => {
+  it('returns releases with allowed flags from real entitlement policy', async () => {
     mockGetResolvedCustomerLicenses.mockResolvedValueOnce({
       authenticated: true,
       licenses: [
@@ -66,8 +58,6 @@ describe('GET /api/account/downloads', () => {
         assetUrl: 'https://example.com/file.zip',
       },
     ])
-    mockIsReleaseAllowedForLicenses.mockReturnValueOnce(true)
-    mockHasActiveLicense.mockReturnValueOnce(true)
 
     const response = await GET()
     const json = await response.json()
