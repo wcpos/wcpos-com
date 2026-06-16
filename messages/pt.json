@@ -293,7 +293,11 @@
         "error": "A sincronização do Discord falhou. Tente novamente ou entre em contato com o suporte.",
         "already_linked": "Essa conta do Discord já está vinculada a outro cliente WCPOS."
       },
-      "discordNotConfigured": "A vinculação do Discord ainda não está configurada."
+      "discordNotConfigured": "A vinculação do Discord ainda não está configurada.",
+      "githubProvider": "GitHub",
+      "githubDescription": "Usado para iniciar sessão com um clique.",
+      "emailProvider": "Email & password",
+      "emailDescription": "You sign in with your email address."
     }
   }
 }

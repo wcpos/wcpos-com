@@ -293,7 +293,11 @@
         "error": "Discord-synchronisatie is mislukt. Probeer het opnieuw of neem contact op met support.",
         "already_linked": "Dat Discord-account is al gekoppeld aan een andere WCPOS-klant."
       },
-      "discordNotConfigured": "Discord-koppeling is nog niet geconfigureerd."
+      "discordNotConfigured": "Discord-koppeling is nog niet geconfigureerd.",
+      "githubProvider": "GitHub",
+      "githubDescription": "Gebruikt voor aanmelden met één klik.",
+      "emailProvider": "Email & password",
+      "emailDescription": "You sign in with your email address."
     }
   }
 }

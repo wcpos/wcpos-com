@@ -123,7 +123,7 @@ describe('ProfileEditForm', () => {
       <ProfileEditForm
         customer={{ email: 'ada@gmail.com', metadata: {} }}
         connections={{
-          google: { email: 'ada@gmail.com' },
+          signIn: { provider: 'google', email: 'ada@gmail.com' },
           discord: { connected: false, configured: true },
           discordReturnTo: '/en/account/profile',
         }}
@@ -144,12 +144,47 @@ describe('ProfileEditForm', () => {
     )
   })
 
+  it('labels the sign-in row by the actual provider (GitHub)', () => {
+    render(
+      <ProfileEditForm
+        customer={{ email: 'ada@github.com', metadata: {} }}
+        connections={{
+          signIn: { provider: 'github', email: 'ada@github.com' },
+          discord: { connected: false, configured: false },
+          discordReturnTo: '/en/account/profile',
+        }}
+      />
+    )
+
+    expect(screen.getByText('GitHub')).toBeInTheDocument()
+    expect(screen.getByText('Connected as ada@github.com')).toBeInTheDocument()
+    // No false Google claim for a GitHub user.
+    expect(screen.queryByText('Google')).not.toBeInTheDocument()
+  })
+
+  it('shows an email/password sign-in row when no OAuth provider is known', () => {
+    render(
+      <ProfileEditForm
+        customer={{ email: 'ada@example.com', metadata: {} }}
+        connections={{
+          signIn: { provider: 'email', email: 'ada@example.com' },
+          discord: { connected: false, configured: false },
+          discordReturnTo: '/en/account/profile',
+        }}
+      />
+    )
+
+    expect(screen.getByText('Email & password')).toBeInTheDocument()
+    expect(screen.queryByText('Google')).not.toBeInTheDocument()
+    expect(screen.queryByText('GitHub')).not.toBeInTheDocument()
+  })
+
   it('hides the Connect Discord action when Discord is not configured', () => {
     render(
       <ProfileEditForm
         customer={{ email: 'ada@gmail.com', metadata: {} }}
         connections={{
-          google: { email: 'ada@gmail.com' },
+          signIn: { provider: 'google', email: 'ada@gmail.com' },
           discord: { connected: false, configured: false },
           discordReturnTo: '/en/account/profile',
         }}
@@ -182,7 +217,7 @@ describe('ProfileEditForm', () => {
       <ProfileEditForm
         customer={{ email: 'ada@gmail.com', metadata: {} }}
         connections={{
-          google: { email: 'ada@gmail.com' },
+          signIn: { provider: 'google', email: 'ada@gmail.com' },
           discord: { connected: true, username: 'ada' },
           discordReturnTo: '/en/account/profile',
         }}
@@ -224,7 +259,7 @@ describe('ProfileEditForm', () => {
       <ProfileEditForm
         customer={{ email: 'ada@gmail.com', metadata: {} }}
         connections={{
-          google: { email: 'ada@gmail.com' },
+          signIn: { provider: 'google', email: 'ada@gmail.com' },
           discord: { connected: true, username: 'ada' },
           discordReturnTo: '/en/account/profile',
         }}
