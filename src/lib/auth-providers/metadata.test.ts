@@ -2,6 +2,8 @@ import { describe, it, expect } from 'vitest'
 import {
   getLinkedAuthProviders,
   addAuthProviderToMetadata,
+  recordSignInProvider,
+  getPrimarySignInProvider,
 } from './metadata'
 
 describe('getLinkedAuthProviders', () => {
@@ -75,5 +77,73 @@ describe('addAuthProviderToMetadata', () => {
     const input = { auth_providers: ['google'] }
     addAuthProviderToMetadata(input, 'github')
     expect(input.auth_providers).toEqual(['google'])
+  })
+
+  it('ignores an unknown provider', () => {
+    expect(addAuthProviderToMetadata({}, 'twitter')).toEqual({})
+  })
+
+  it('drops unknown entries already present in the list', () => {
+    expect(
+      addAuthProviderToMetadata(
+        { auth_providers: ['google', 'bogus'] },
+        'github'
+      )
+    ).toEqual({ auth_providers: ['google', 'github'] })
+  })
+})
+
+describe('recordSignInProvider', () => {
+  it('adds the provider and marks it as the most recent', () => {
+    expect(recordSignInProvider({}, 'github')).toEqual({
+      auth_providers: ['github'],
+      last_sign_in_provider: 'github',
+    })
+  })
+
+  it('updates last_sign_in_provider each sign-in while keeping the set', () => {
+    const first = recordSignInProvider({}, 'google')
+    const second = recordSignInProvider(first, 'github')
+    expect(second).toEqual({
+      auth_providers: ['google', 'github'],
+      last_sign_in_provider: 'github',
+    })
+  })
+
+  it('ignores an unknown provider', () => {
+    expect(recordSignInProvider({}, 'twitter')).toEqual({})
+  })
+})
+
+describe('getPrimarySignInProvider', () => {
+  it('prefers the most recent Google/GitHub sign-in', () => {
+    expect(
+      getPrimarySignInProvider({
+        auth_providers: ['google', 'github'],
+        last_sign_in_provider: 'github',
+      })
+    ).toBe('github')
+  })
+
+  it('falls back to the first linked Google/GitHub without a recency marker', () => {
+    expect(
+      getPrimarySignInProvider({ auth_providers: ['github', 'google'] })
+    ).toBe('google')
+  })
+
+  it('ignores a non-display recent provider (discord) and uses the linked set', () => {
+    expect(
+      getPrimarySignInProvider({
+        auth_providers: ['google', 'discord'],
+        last_sign_in_provider: 'discord',
+      })
+    ).toBe('google')
+  })
+
+  it('returns null for email/password or discord-only (no display provider)', () => {
+    expect(getPrimarySignInProvider({})).toBeNull()
+    expect(
+      getPrimarySignInProvider({ last_sign_in_provider: 'discord' })
+    ).toBeNull()
   })
 })

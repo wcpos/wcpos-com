@@ -10,7 +10,7 @@ import {
 } from '@/lib/medusa-auth'
 import { authLogger } from '@/lib/logger'
 import { getConnectedAvatarUrlFromUserMetadata } from '@/lib/avatar'
-import { addAuthProviderToMetadata } from '@/lib/auth-providers/metadata'
+import { recordSignInProvider } from '@/lib/auth-providers/metadata'
 import { isAllowedOAuthProvider } from '@/lib/oauth-providers'
 import { sanitizeRedirectPath } from '@/lib/safe-redirect'
 import { env } from '@/utils/env'
@@ -32,17 +32,20 @@ async function syncOauthProfile(
 
     // Record which provider this sign-in used — Medusa never exposes the
     // provider-specific AuthIdentity to the storefront, so the profile reads
-    // `auth_providers` to show truthful per-provider connection state.
+    // `auth_providers` / `last_sign_in_provider` to show truthful per-provider
+    // connection state.
     const providerAlreadyKnown =
       Array.isArray(metadata.auth_providers) &&
       metadata.auth_providers.includes(provider)
+    const alreadyLatest = metadata.last_sign_in_provider === provider
     const avatarUnchanged =
       !avatarUrl || avatarUrl === metadata.oauth_avatar_url
 
-    // Nothing to persist: provider already recorded and avatar unchanged.
-    if (providerAlreadyKnown && avatarUnchanged) return
+    // Nothing to persist: provider already recorded as the latest and avatar
+    // unchanged.
+    if (providerAlreadyKnown && alreadyLatest && avatarUnchanged) return
 
-    let nextMetadata = addAuthProviderToMetadata(metadata, provider)
+    let nextMetadata = recordSignInProvider(metadata, provider)
     if (avatarUrl && avatarUrl !== metadata.oauth_avatar_url) {
       nextMetadata = { ...nextMetadata, oauth_avatar_url: avatarUrl }
     }

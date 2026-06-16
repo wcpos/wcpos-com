@@ -2,7 +2,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { Suspense } from 'react'
 import { getCustomer } from '@/lib/medusa-auth'
 import { getDiscordLink } from '@/lib/discord/metadata'
-import { getLinkedAuthProviders } from '@/lib/auth-providers/metadata'
+import { getPrimarySignInProvider } from '@/lib/auth-providers/metadata'
 import { isDiscordConfigured } from '@/lib/discord/config'
 import { formatDateForLocale } from '@/lib/date-format'
 import { redirectToLoginClearingSession } from '@/lib/login-redirect'
@@ -72,14 +72,12 @@ async function ProfileContent({ locale }: { locale: string }) {
 
   const discordLink = getDiscordLink(customer.metadata)
   const discordConfigured = isDiscordConfigured()
-  // Show the real sign-in provider rather than assuming Google for everyone.
-  // Discord has its own role-sync row below, so the sign-in row is Google or
-  // GitHub; absent a known OAuth provider it falls back to email/password.
-  const linkedProviders = getLinkedAuthProviders(customer.metadata)
+  // Show the real sign-in provider rather than assuming Google for everyone —
+  // the most recently used Google/GitHub sign-in (so multi-linked accounts
+  // attribute correctly), falling back to email/password. Discord has its own
+  // role-sync row below.
   const signInProvider =
-    linkedProviders.find(
-      (provider) => provider === 'google' || provider === 'github'
-    ) ?? 'email'
+    getPrimarySignInProvider(customer.metadata) ?? 'email'
 
   return (
     <ProfileEditForm

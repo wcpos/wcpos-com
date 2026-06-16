@@ -224,6 +224,7 @@ describe('OAuth callback route', () => {
           // The provider is recorded so the profile can show truthful
           // per-provider connection state.
           auth_providers: ['google'],
+          last_sign_in_provider: 'google',
         }),
       })
     )
@@ -255,14 +256,14 @@ describe('OAuth callback route', () => {
 
     expect(response.status).toBe(307)
     expect(mockUpdateCustomer).toHaveBeenCalledWith({
-      metadata: { auth_providers: ['github'] },
+      metadata: { auth_providers: ['github'], last_sign_in_provider: 'github' },
     })
   })
 
-  it('does not re-write metadata when the provider is already recorded and the avatar is unchanged', async () => {
+  it('does not re-write metadata when the provider is already the latest and the avatar is unchanged', async () => {
     mockGetCustomer.mockResolvedValueOnce({
       id: 'cust_1',
-      metadata: { auth_providers: ['google'] },
+      metadata: { auth_providers: ['google'], last_sign_in_provider: 'google' },
     })
     const token = fakeJwt({
       actor_id: 'cust_existing',
