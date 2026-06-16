@@ -7,15 +7,29 @@ export interface DiscordRoleSyncCustomer {
   metadata?: Record<string, unknown> | null
 }
 
+/**
+ * What the per-Discord-user role sync needs: resolve a subject's licenses,
+ * read/grant/remove the role, and a clock. This is exactly the surface
+ * syncDiscordProRole touches — no enumeration — so an inline caller cannot be
+ * forced to stub methods it never calls.
+ */
 export interface DiscordRoleSyncDependencies {
   getLicensesForCustomer(customerId: string): Promise<LicenseLifecycle[]>
   getMemberRoleState(discordUserId: string): Promise<DiscordMemberRoleState>
   addRole(discordUserId: string): Promise<void>
   removeRole(discordUserId: string): Promise<void>
+  now(): Date
+}
+
+/**
+ * What the reconciliation sweep additionally needs: enumerate the population to
+ * walk — linked customers, current role holders, and the reverse lookup. Only
+ * the scheduled sweep depends on this wider surface.
+ */
+export interface DiscordReconcileDependencies extends DiscordRoleSyncDependencies {
   listLinkedCustomers(): Promise<DiscordRoleSyncCustomer[]>
   listRoleHolderIds(): Promise<string[]>
   findCustomerByDiscordUserId(discordUserId: string): Promise<DiscordRoleSyncCustomer | null>
-  now(): Date
 }
 
 export type DiscordRoleSyncAction =
@@ -99,7 +113,7 @@ export async function syncDiscordProRole(
 }
 
 export async function reconcileDiscordProRoles(
-  dependencies: DiscordRoleSyncDependencies
+  dependencies: DiscordReconcileDependencies
 ): Promise<DiscordReconcileSummary> {
   const summary: DiscordReconcileSummary = {
     linkedChecked: 0,
