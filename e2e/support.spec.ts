@@ -15,7 +15,7 @@ test('support page answers a question and shows Discord', async ({ page }) => {
   await page.goto('/en/support')
   await expect(page.getByRole('heading', { name: /how can we help/i })).toBeVisible()
 
-  await page.getByRole('textbox').fill('How do I print receipts?')
+  await page.getByRole('textbox').pressSequentially('How do I print receipts?')
   await page.getByRole('button', { name: /^ask$/i }).click()
 
   await expect(page.getByText('How do I print receipts?')).toBeVisible()
