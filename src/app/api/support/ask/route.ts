@@ -5,8 +5,9 @@ import { askAide, OpenclawError } from '@/lib/openclaw/client'
 import { verifyTurnstile } from '@/lib/support/turnstile'
 import { consumeRateLimit, consumeDailyBudget } from '@/lib/support/rate-limit'
 
-// agent_session executions are slow — give the gateway room, but bound it.
-export const runtime = 'nodejs'
+// agent_session executions are slow — extend the function budget. Node is the
+// default runtime; an explicit `export const runtime` is incompatible with the
+// app's cacheComponents config, so it is intentionally omitted.
 export const maxDuration = 60
 
 const GATEWAY_TIMEOUT_MS = 45_000

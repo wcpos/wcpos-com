@@ -1,7 +1,7 @@
 import { setRequestLocale } from 'next-intl/server'
-import { Suspense } from 'react'
-import { DiscordWidget } from '@/components/support/discord-widget'
 import type { Metadata } from 'next'
+import { SupportChat } from '@/components/support/support-chat'
+import { DiscordSection } from '@/components/support/discord-section'
 import { marketingMetadata } from '@/lib/seo'
 
 export async function generateMetadata({
@@ -14,12 +14,9 @@ export async function generateMetadata({
     locale,
     path: '/support',
     title: 'Support',
-    description: 'Get support for WooCommerce POS through our Discord community.',
+    description:
+      'Ask anything about WooCommerce POS and get an instant answer from our docs, or chat with the community on Discord.',
   })
-}
-
-function DiscordSkeleton() {
-  return <div className="flex-1 animate-pulse bg-muted" />
 }
 
 export default async function SupportPage({
@@ -31,10 +28,11 @@ export default async function SupportPage({
   setRequestLocale(locale)
 
   return (
-    <main className="flex flex-col" style={{ height: 'calc(100vh - 65px)' }}>
-      <Suspense fallback={<DiscordSkeleton />}>
-        <DiscordWidget />
-      </Suspense>
+    <main>
+      <section className="container mx-auto px-4 py-20 md:py-28">
+        <SupportChat />
+      </section>
+      <DiscordSection />
     </main>
   )
 }

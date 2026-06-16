@@ -15,12 +15,12 @@ const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 // self-hosted origin directly; there is no /ingest first-party proxy.
 const cspReportOnly = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://js.stripe.com https://www.paypal.com https://www.sandbox.paypal.com https://www.paypalobjects.com https://analytics.wcpos.com",
+  "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://js.stripe.com https://www.paypal.com https://www.sandbox.paypal.com https://www.paypalobjects.com https://analytics.wcpos.com https://challenges.cloudflare.com",
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' blob: data: https:",
   "font-src 'self' data:",
-  "connect-src 'self' https://api.stripe.com https://m.stripe.com https://m.stripe.network https://www.paypal.com https://www.sandbox.paypal.com https://analytics.wcpos.com https://*.sentry.io https://*.ingest.sentry.io https://*.ingest.us.sentry.io",
-  "frame-src https://js.stripe.com https://hooks.stripe.com https://m.stripe.network https://www.paypal.com https://www.sandbox.paypal.com https://*.widgetbot.io https://discord.com",
+  "connect-src 'self' https://api.stripe.com https://m.stripe.com https://m.stripe.network https://www.paypal.com https://www.sandbox.paypal.com https://analytics.wcpos.com https://*.sentry.io https://*.ingest.sentry.io https://*.ingest.us.sentry.io https://challenges.cloudflare.com",
+  "frame-src https://js.stripe.com https://hooks.stripe.com https://m.stripe.network https://www.paypal.com https://www.sandbox.paypal.com https://*.widgetbot.io https://discord.com https://challenges.cloudflare.com",
   "object-src 'none'",
   "base-uri 'self'",
   "form-action 'self' https://www.paypal.com https://www.sandbox.paypal.com",
