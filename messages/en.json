@@ -207,7 +207,16 @@
       "activatedMachines": "Activated Machines",
       "machineAdded": "Added {date}",
       "deactivateMachineAria": "Deactivate {name}",
-      "genericMachineName": "machine"
+      "genericMachineName": "machine",
+      "coversLatestVersion": "Latest version {version} · via this licence",
+      "coversUpToVersion": "Covers updates up to {version}",
+      "siteUpdatesThrough": "Updates through {version}",
+      "discordHeading": "Discord access",
+      "discordMembers": "{count} of {cap} members",
+      "discordConnected": "Connected {date}",
+      "discordRemove": "Remove",
+      "discordRemoveAria": "Remove {handle}",
+      "discordConnectHint": "Connect with your license key to get the Pro role in our community Discord."
     },
     "downloads": {
       "heading": "Downloads",

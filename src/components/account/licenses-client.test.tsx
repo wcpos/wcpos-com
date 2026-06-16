@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { screen } from '@testing-library/react'
+import { fireEvent, screen } from '@testing-library/react'
 import { renderWithIntl as render } from '@/test/intl'
 import { LicensesClient } from './licenses-client'
 import type { CanonicalLicenseStatus } from '@/lib/license-status'
@@ -323,5 +323,84 @@ describe('LicensesClient', () => {
   it('does not fetch licenses on initial render', () => {
     render(<LicensesClient initialLicenses={[makeLicense()]} />)
     expect(mockFetch).not.toHaveBeenCalled()
+  })
+
+  it('attributes the latest covered version to an active licence', () => {
+    render(
+      <LicensesClient
+        initialLicenses={[makeLicense({ id: 'lic-1', status: 'active' })]}
+        entitledVersions={{ 'lic-1': '3.2.0' }}
+      />
+    )
+    expect(
+      screen.getByText(/Latest version 3\.2\.0 · via this licence/)
+    ).toBeInTheDocument()
+  })
+
+  it('shows the last covered version for an expired licence', () => {
+    render(
+      <LicensesClient
+        initialLicenses={[
+          makeLicense({ id: 'lic-1', status: 'expired', maxMachines: 1, machines: [] }),
+        ]}
+        entitledVersions={{ 'lic-1': '2.8.0' }}
+      />
+    )
+    expect(
+      screen.getByText(/Covers updates up to 2\.8\.0/)
+    ).toBeInTheDocument()
+  })
+
+  it('annotates each activated site of an expired licence with its update ceiling', () => {
+    render(
+      <LicensesClient
+        initialLicenses={[
+          makeLicense({
+            id: 'lic-1',
+            status: 'expired',
+            maxMachines: 4,
+            machines: [
+              {
+                id: 'm-1',
+                fingerprint: 'fp-1',
+                name: 'Till One',
+                metadata: {},
+                createdAt: '2025-01-01T00:00:00Z',
+              },
+            ],
+          }),
+        ]}
+        entitledVersions={{ 'lic-1': '2.8.0' }}
+      />
+    )
+    expect(screen.getByText('Updates through 2.8.0')).toBeInTheDocument()
+  })
+
+  it('omits the version attribution when the licence covers nothing on its own', () => {
+    render(
+      <LicensesClient
+        initialLicenses={[makeLicense({ id: 'lic-1', status: 'active' })]}
+        entitledVersions={{ 'lic-1': null }}
+      />
+    )
+    expect(screen.queryByText(/via this licence/)).not.toBeInTheDocument()
+  })
+
+  it('renders the Discord access stub with sample members and a seat cap', () => {
+    render(<LicensesClient initialLicenses={[makeLicense()]} />)
+    expect(screen.getByText('Discord access')).toBeInTheDocument()
+    // Default cap is 5; three sample members ship by default.
+    expect(screen.getByText('3 of 5 members')).toBeInTheDocument()
+    expect(screen.getByText('@ada')).toBeInTheDocument()
+  })
+
+  it('removes a Discord member from the local stub on Remove', () => {
+    render(<LicensesClient initialLicenses={[makeLicense()]} />)
+
+    expect(screen.getByText('3 of 5 members')).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: 'Remove @ada' }))
+
+    expect(screen.getByText('2 of 5 members')).toBeInTheDocument()
+    expect(screen.queryByText('@ada')).not.toBeInTheDocument()
   })
 })
