@@ -39,8 +39,10 @@ export default async function PrivacyPage({
             <li>
               <span className="font-medium text-foreground">Account information.</span>{' '}
               Your email address and name when you create an account, either directly
-              or by signing in with Google or GitHub. When you use a sign-in provider,
-              we receive only your basic profile (email and name) from that provider.
+              or by signing in with Google, GitHub, or Discord. When you use a sign-in
+              provider, we receive only your basic profile (email, name or username,
+              and avatar or picture URL) from that provider, and may store the avatar
+              or picture URL on your account as <code>oauth_avatar_url</code>.
             </li>
             <li>
               <span className="font-medium text-foreground">Billing details.</span>{' '}

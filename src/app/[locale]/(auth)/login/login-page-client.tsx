@@ -151,7 +151,7 @@ function LoginPageInner({ discordEnabled }: { discordEnabled: boolean }) {
             {discordEnabled && (
               <Button variant="outline" asChild>
                 <a
-                  href="/api/auth/discord"
+                  href={`/api/auth/discord?redirect=${encodeURIComponent(redirectTo)}`}
                   onClick={() => trackClientEvent('click_oauth_discord')}
                 >
                   <DiscordMark className="mr-2 h-4 w-4" />
