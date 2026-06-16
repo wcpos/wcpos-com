@@ -1,7 +1,8 @@
 import 'server-only'
 
 import { env } from '@/utils/env'
-import type { MedusaCustomer, MedusaOrder } from '@/lib/medusa-auth'
+import type { MedusaOrder } from '@/lib/customer-orders'
+import type { MedusaCustomer } from '@/lib/medusa-auth'
 import { authLogger } from '@/lib/logger'
 
 interface AdminCustomersResponse {
