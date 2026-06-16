@@ -15,7 +15,7 @@ const GATEWAY_TIMEOUT_MS = 45_000
 const bodySchema = z.object({
   question: z.string().trim().min(1).max(1000),
   sessionId: z.string().min(1).optional(),
-  turnstileToken: z.string().min(1),
+  turnstileToken: z.string().optional().default(''),
 })
 
 function clientIp(request: Request): string {

@@ -1,8 +1,13 @@
-import { describe, it, expect, vi, afterEach } from 'vitest'
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 
 vi.mock('@/utils/env', () => ({ env: { TURNSTILE_SECRET_KEY: 'secret', NODE_ENV: 'production' } }))
 import { verifyTurnstile } from './turnstile'
+import { env } from '@/utils/env'
 
+beforeEach(() => {
+  env.TURNSTILE_SECRET_KEY = 'secret'
+  env.NODE_ENV = 'production'
+})
 afterEach(() => vi.unstubAllGlobals())
 
 describe('verifyTurnstile', () => {
@@ -16,5 +21,15 @@ describe('verifyTurnstile', () => {
   })
   it('returns false for an empty token', async () => {
     expect(await verifyTurnstile('')).toBe(false)
+  })
+  it('fails closed in production when the secret key is absent', async () => {
+    env.TURNSTILE_SECRET_KEY = undefined
+    env.NODE_ENV = 'production'
+    expect(await verifyTurnstile('token')).toBe(false)
+  })
+  it('allows local development when the secret key is absent', async () => {
+    env.TURNSTILE_SECRET_KEY = undefined
+    env.NODE_ENV = 'development'
+    expect(await verifyTurnstile('token')).toBe(true)
   })
 })

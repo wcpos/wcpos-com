@@ -1,9 +1,27 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
+import { useEffect, useImperativeHandle } from 'react'
+import type { Ref } from 'react'
+
+const { resetTurnstile } = vi.hoisted(() => ({ resetTurnstile: vi.fn() }))
 
 vi.mock('@marsidev/react-turnstile', () => ({
-  Turnstile: ({ onSuccess }: { onSuccess: (t: string) => void }) => {
-    onSuccess('test-token')
+  Turnstile: ({
+    onSuccess,
+    ref,
+  }: {
+    onSuccess: (t: string) => void
+    ref?: Ref<{ reset: () => void }>
+  }) => {
+    useEffect(() => {
+      onSuccess('test-token-1')
+    }, [onSuccess])
+    useImperativeHandle(ref, () => ({
+      reset: () => {
+        resetTurnstile()
+        onSuccess('test-token-2')
+      },
+    }))
     return <div data-testid="turnstile" />
   },
 }))
@@ -11,16 +29,28 @@ vi.mock('@marsidev/react-turnstile', () => ({
 import { SupportChat } from './support-chat'
 
 beforeEach(() => {
+  resetTurnstile.mockClear()
+  process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY = 'site-key'
   vi.stubGlobal(
     'fetch',
-    vi.fn().mockResolvedValue(
-      new Response(JSON.stringify({ answer: 'Open Settings → Printing.', sessionId: 's1' }), {
-        status: 200,
-      })
-    )
+    vi
+      .fn()
+      .mockResolvedValueOnce(
+        new Response(JSON.stringify({ answer: 'Open Settings → Printing.', sessionId: 's1' }), {
+          status: 200,
+        })
+      )
+      .mockResolvedValueOnce(
+        new Response(JSON.stringify({ answer: 'Check Hardware → Printers.', sessionId: 's1' }), {
+          status: 200,
+        })
+      )
   )
 })
-afterEach(() => vi.unstubAllGlobals())
+afterEach(() => {
+  delete process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY
+  vi.unstubAllGlobals()
+})
 
 describe('SupportChat', () => {
   it('submits a question and renders the answer', async () => {
@@ -29,5 +59,11 @@ describe('SupportChat', () => {
     fireEvent.submit(screen.getByRole('textbox').closest('form')!)
     await waitFor(() => expect(screen.getByText(/Open Settings/)).toBeInTheDocument())
     expect(screen.getByText('How do I print?')).toBeInTheDocument()
+
+    fireEvent.change(screen.getByRole('textbox'), { target: { value: 'How do I add another?' } })
+    fireEvent.submit(screen.getByRole('textbox').closest('form')!)
+    await waitFor(() => expect(screen.getByText(/Check Hardware/)).toBeInTheDocument())
+    expect(screen.getByText('How do I add another?')).toBeInTheDocument()
+    expect(resetTurnstile).toHaveBeenCalled()
   })
 })

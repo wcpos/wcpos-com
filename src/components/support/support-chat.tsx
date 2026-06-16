@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useRef, useEffect, type FormEvent } from 'react'
-import { Turnstile } from '@marsidev/react-turnstile'
+import { Turnstile, type TurnstileInstance } from '@marsidev/react-turnstile'
 import posthog from 'posthog-js'
 import { Markdown } from '@/components/ui/markdown'
 
@@ -38,6 +38,7 @@ export function SupportChat() {
   const [error, setError] = useState<string | null>(null)
   const [token, setToken] = useState<string | null>(null)
   const sessionIdRef = useSessionId()
+  const turnstileRef = useRef<TurnstileInstance | null>(null)
 
   async function ask(question: string) {
     if (!question.trim() || status === 'asking') return
@@ -65,6 +66,8 @@ export function SupportChat() {
         sessionStorage.setItem('wcpos-support-session', data.sessionId)
       }
       setMessages((m) => [...m, { role: 'assistant', content: data.answer }])
+      setToken(null)
+      turnstileRef.current?.reset()
     } catch {
       setError('The assistant is unavailable right now. Please ask in Discord.')
     } finally {
@@ -152,6 +155,7 @@ export function SupportChat() {
         className="flex items-center gap-2 rounded-xl border-2 border-wcpos-red/40 bg-card p-1.5 pl-4 focus-within:border-wcpos-red"
       >
         <input
+          aria-label="Ask a support question"
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder={started ? 'Ask a follow-up…' : 'e.g. How do I connect a receipt printer?'}
@@ -196,7 +200,12 @@ export function SupportChat() {
       </p>
 
       {siteKey && (
-        <Turnstile siteKey={siteKey} onSuccess={setToken} options={{ size: 'invisible' }} />
+        <Turnstile
+          ref={turnstileRef}
+          siteKey={siteKey}
+          onSuccess={setToken}
+          options={{ size: 'invisible' }}
+        />
       )}
     </div>
   )
