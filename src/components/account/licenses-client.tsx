@@ -133,8 +133,12 @@ export function LicensesClient({
 
   // Discord membership is a frontend stub (ADR-0007); the Remove control only
   // prunes local sample state so the interaction is demonstrable.
-  const [discordMembers, setDiscordMembers] = useState<DiscordMember[]>(
-    SAMPLE_DISCORD_MEMBERS
+  const [discordMembersByLicense, setDiscordMembersByLicense] = useState<
+    Record<string, DiscordMember[]>
+  >(() =>
+    Object.fromEntries(
+      initialLicenses.map((license) => [license.id, SAMPLE_DISCORD_MEMBERS])
+    )
   )
 
   const fetchLicenses = async () => {
@@ -220,6 +224,11 @@ export function LicensesClient({
           // Per-licence attributed version (ADR-0006): null when this licence
           // alone covers nothing.
           const coveredVersion = entitledVersions[license.id] ?? null
+          const scopedDownloadsHref = `/account/downloads?license=${encodeURIComponent(
+            license.id
+          )}`
+          const discordMembers =
+            discordMembersByLicense[license.id] ?? SAMPLE_DISCORD_MEMBERS
           return (
           <Card key={license.id}>
             <CardHeader>
@@ -342,9 +351,10 @@ export function LicensesClient({
                       <Link href="/pro">{t('renew')}</Link>
                     </Button>
                     {/* Expired licenses can still download versions released
-                        before their expiry, so keep downloads reachable. */}
+                        before their expiry; scope the downloads page to this
+                        licence so another active licence does not pool access. */}
                     <Button asChild size="sm" variant="outline">
-                      <Link href="/account/downloads">
+                      <Link href={scopedDownloadsHref}>
                         <Download className="mr-2 h-4 w-4" />
                         {t('downloads')}
                       </Link>
@@ -464,9 +474,17 @@ export function LicensesClient({
                       variant="ghost"
                       size="sm"
                       onClick={() =>
-                        setDiscordMembers((members) =>
-                          members.filter((m) => m.id !== member.id)
-                        )
+                        setDiscordMembersByLicense((membersByLicense) => {
+                          const currentMembers =
+                            membersByLicense[license.id] ??
+                            SAMPLE_DISCORD_MEMBERS
+                          return {
+                            ...membersByLicense,
+                            [license.id]: currentMembers.filter(
+                              (m) => m.id !== member.id
+                            ),
+                          }
+                        })
                       }
                       aria-label={t('discordRemoveAria', {
                         handle: member.handle,
@@ -476,9 +494,11 @@ export function LicensesClient({
                     </Button>
                   </div>
                 ))}
-                <p className="text-xs text-muted-foreground">
-                  {t('discordConnectHint')}
-                </p>
+                {displayStatus === 'active' && (
+                  <p className="text-xs text-muted-foreground">
+                    {t('discordConnectHint')}
+                  </p>
+                )}
               </div>
             </CardContent>
           </Card>

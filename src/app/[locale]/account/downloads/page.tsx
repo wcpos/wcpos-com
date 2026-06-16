@@ -42,17 +42,27 @@ function DownloadsSkeleton() {
   )
 }
 
-async function DownloadsContent({ locale }: { locale: string }) {
+async function DownloadsContent({
+  locale,
+  scopedLicenseId,
+}: {
+  locale: string
+  scopedLicenseId?: string
+}) {
   const { authenticated, licenses } = await getResolvedCustomerLicenses()
   if (!authenticated) {
     redirectToLoginClearingSession(locale)
   }
 
+  const scopedLicenses = scopedLicenseId
+    ? licenses.filter((license) => license.id === scopedLicenseId)
+    : []
+  const downloadLicenses = scopedLicenses.length > 0 ? scopedLicenses : licenses
   const nowMs = new Date().getTime()
   const releases = await getProPluginReleases()
   const mappedReleases = releases.map((release) => ({
     ...release,
-    allowed: isReleaseAllowedForLicenses(release, licenses, nowMs),
+    allowed: isReleaseAllowedForLicenses(release, downloadLicenses, nowMs),
   }))
 
   // One-pass access diagnosis so the UI can explain WHY a release is
@@ -64,7 +74,7 @@ async function DownloadsContent({ locale }: { locale: string }) {
     suspendedCount,
     revokedCount,
     unknownCount,
-  } = summarizeDownloadAccess(licenses, nowMs)
+  } = summarizeDownloadAccess(downloadLicenses, nowMs)
 
   return (
     <DownloadsClient
@@ -73,7 +83,7 @@ async function DownloadsContent({ locale }: { locale: string }) {
         hasActiveLicense,
         latestExpiry,
         expiryHasPassed,
-        licenseCount: licenses.length,
+        licenseCount: downloadLicenses.length,
         suspendedCount,
         revokedCount,
         unknownCount,
@@ -84,10 +94,13 @@ async function DownloadsContent({ locale }: { locale: string }) {
 
 export default async function DownloadsPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ locale: string }>
+  searchParams?: Promise<{ license?: string }>
 }) {
   const { locale } = await params
+  const resolvedSearchParams = searchParams ? await searchParams : {}
   setRequestLocale(locale)
   const t = await getTranslations({ locale, namespace: 'account.downloads' })
 
@@ -95,7 +108,10 @@ export default async function DownloadsPage({
     <div className="space-y-6">
       <h1 className="text-2xl font-bold tracking-tight">{t('heading')}</h1>
       <Suspense fallback={<DownloadsSkeleton />}>
-        <DownloadsContent locale={locale} />
+        <DownloadsContent
+          locale={locale}
+          scopedLicenseId={resolvedSearchParams.license}
+        />
       </Suspense>
     </div>
   )

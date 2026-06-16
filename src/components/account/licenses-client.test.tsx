@@ -83,14 +83,16 @@ describe('LicensesClient', () => {
 
   it('shows renew CTA and keeps downloads reachable for expired licenses', () => {
     render(
-      <LicensesClient initialLicenses={[makeLicense({ status: 'expired' })]} />
+      <LicensesClient
+        initialLicenses={[makeLicense({ id: 'lic-1', status: 'expired' })]}
+      />
     )
     expect(screen.getByText('****-****-MNOP')).toBeInTheDocument()
     const renewLink = screen.getByRole('link', { name: 'Renew' })
     expect(renewLink).toHaveAttribute('href', '/pro')
-    // Pre-expiry versions stay downloadable, so the downloads page stays linked
+    // Pre-expiry versions stay downloadable, scoped to this licence.
     const downloadLink = screen.getByRole('link', { name: /downloads/i })
-    expect(downloadLink).toHaveAttribute('href', '/account/downloads')
+    expect(downloadLink).toHaveAttribute('href', '/account/downloads?license=lic-1')
   })
 
   it('presents an active license with unparseable expiry as expired', () => {
@@ -296,6 +298,9 @@ describe('LicensesClient', () => {
     )
     expect(screen.getByText('****-****-MNOP')).toBeInTheDocument()
     expect(screen.queryByRole('link', { name: /download/i })).not.toBeInTheDocument()
+    expect(
+      screen.queryByText(/Connect with your license key/)
+    ).not.toBeInTheDocument()
   })
 
   it('shows activations count', () => {
@@ -392,6 +397,7 @@ describe('LicensesClient', () => {
     // Default cap is 5; three sample members ship by default.
     expect(screen.getByText('3 of 5 members')).toBeInTheDocument()
     expect(screen.getByText('@ada')).toBeInTheDocument()
+    expect(screen.getByText(/Connect with your license key/)).toBeInTheDocument()
   })
 
   it('removes a Discord member from the local stub on Remove', () => {
@@ -402,5 +408,22 @@ describe('LicensesClient', () => {
 
     expect(screen.getByText('2 of 5 members')).toBeInTheDocument()
     expect(screen.queryByText('@ada')).not.toBeInTheDocument()
+  })
+
+  it('keeps Discord member removals scoped to one license card', () => {
+    render(
+      <LicensesClient
+        initialLicenses={[
+          makeLicense({ id: 'lic-1' }),
+          makeLicense({ id: 'lic-2', key: 'WXYZ-WXYZ-WXYZ-PAIR' }),
+        ]}
+      />
+    )
+
+    fireEvent.click(screen.getAllByRole('button', { name: 'Remove @ada' })[0])
+
+    expect(screen.getByText('2 of 5 members')).toBeInTheDocument()
+    expect(screen.getByText('3 of 5 members')).toBeInTheDocument()
+    expect(screen.getAllByText('@ada')).toHaveLength(1)
   })
 })

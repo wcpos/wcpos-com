@@ -73,7 +73,12 @@ async function LicensesContent({ locale }: { locale: string }) {
   }
 
   const nowMs = new Date().getTime()
-  const releases = await getProPluginReleases()
+  let releases: { version: string; publishedAt: string }[] = []
+  try {
+    releases = await getProPluginReleases()
+  } catch {
+    releases = []
+  }
   const entitledVersions = buildEntitledVersions(licenses, releases, nowMs)
 
   return (
