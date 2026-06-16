@@ -31,6 +31,9 @@ class ElectronService {
     _platform: string,
     _version: string
   ): Promise<UpdateResult> {
+    void _platform
+    void _version
+
     return { status: 404, error: 'Electron service not yet implemented' }
   }
 
@@ -38,6 +41,9 @@ class ElectronService {
     _platform: string,
     _version: string
   ): Promise<string | ErrorResponse> {
+    void _platform
+    void _version
+
     return { status: 404, error: 'Electron service not yet implemented' }
   }
 }
