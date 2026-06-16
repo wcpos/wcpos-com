@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { getConnectedAvatarUrlFromMetadata } from '@/lib/avatar'
+import { getDiscordLink } from '@/lib/discord/metadata'
 
 interface ProfileEditFormProps {
   customer: {
@@ -178,6 +179,104 @@ function getAvatarUrlFromMetadata(metadata: Record<string, unknown> | undefined)
     postalCode: asString(accountProfile?.postalCode),
     taxNumber: asString(accountProfile?.taxNumber),
   }
+}
+
+type DiscordStatusKey =
+  | 'linked'
+  | 'unlinked'
+  | 'synced'
+  | 'join_server'
+  | 'already_linked'
+  | 'error'
+
+const DISCORD_STATUS_KEYS = new Set<string>([
+  'linked',
+  'unlinked',
+  'synced',
+  'join_server',
+  'already_linked',
+  'error',
+])
+
+function getDiscordStatusKey(status?: string): DiscordStatusKey | null {
+  return status && DISCORD_STATUS_KEYS.has(status)
+    ? (status as DiscordStatusKey)
+    : null
+}
+
+export function ProfileDiscordControls({
+  configured,
+  customerMetadata,
+  discordStatus,
+  returnTo,
+}: {
+  configured: boolean
+  customerMetadata?: Record<string, unknown>
+  discordStatus?: string
+  returnTo: string
+}) {
+  const t = useTranslations('account.profile')
+  const discordLink = getDiscordLink(customerMetadata)
+  const statusKey = getDiscordStatusKey(discordStatus)
+
+  return (
+    <div className="space-y-3 rounded-lg border p-4">
+      {statusKey && (
+        <div className="rounded-md border border-blue-200 bg-blue-50 p-3 text-sm text-blue-900">
+          {t(`discordStatus.${statusKey}`)}
+        </div>
+      )}
+
+      <div>
+        <h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+          {t('discordCardTitle')}
+        </h3>
+      </div>
+
+      {discordLink ? (
+        <>
+          <div>
+            <div className="text-lg font-semibold">
+              {discordLink.username ?? t('discordConnectedFallback')}
+            </div>
+            <p className="text-sm text-muted-foreground">
+              {t('discordConnectedDescription')}
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <form action="/api/discord/resync" method="post">
+              <Button type="submit" size="sm" variant="outline">
+                {t('discordResync')}
+              </Button>
+            </form>
+            <form action="/api/discord/unlink" method="post">
+              <Button type="submit" size="sm" variant="ghost">
+                {t('discordDisconnect')}
+              </Button>
+            </form>
+          </div>
+        </>
+      ) : (
+        <>
+          <p className="text-sm text-muted-foreground">
+            {t('discordDisconnectedDescription')}
+          </p>
+          {configured ? (
+            <form action="/api/discord/link" method="get">
+              <input type="hidden" name="return_to" value={returnTo} />
+              <Button type="submit" size="sm">
+                {t('discordConnect')}
+              </Button>
+            </form>
+          ) : (
+            <p className="text-xs text-muted-foreground">
+              {t('discordNotConfigured')}
+            </p>
+          )}
+        </>
+      )}
+    </div>
+  )
 }
 
 export function ProfileEditForm({ customer }: ProfileEditFormProps) {

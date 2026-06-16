@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { renderWithIntl as render } from '@/test/intl'
-import { ProfileEditForm } from './profile-edit-form'
+import { ProfileDiscordControls, ProfileEditForm } from './profile-edit-form'
 
 const mockFetch = vi.fn()
 vi.stubGlobal('fetch', mockFetch)
@@ -91,5 +91,51 @@ describe('ProfileEditForm', () => {
     expect(options.length).toBeGreaterThan(200)
     expect(options.some((label) => label?.includes('Afghanistan'))).toBe(true)
     expect(options.some((label) => label?.includes('Zimbabwe'))).toBe(true)
+  })
+
+  it('offers Discord linking from the profile page', () => {
+    render(
+      <ProfileDiscordControls
+        configured
+        customerMetadata={{}}
+        returnTo="/en/account/profile"
+      />
+    )
+
+    const connectButton = screen.getByRole('button', {
+      name: 'Connect Discord',
+    })
+    const form = connectButton.closest('form')
+
+    expect(screen.getByText('Discord')).toBeInTheDocument()
+    expect(form).toHaveAttribute('action', '/api/discord/link')
+    expect(form).toHaveAttribute('method', 'get')
+    expect(form?.querySelector('input[name="return_to"]')).toHaveValue(
+      '/en/account/profile'
+    )
+  })
+
+  it('shows Discord status and linked account actions', () => {
+    render(
+      <ProfileDiscordControls
+        configured
+        customerMetadata={{
+          discord_user_id: 'discord_123',
+          discord_username: 'pat',
+          discord_linked_at: '2026-06-16T00:00:00.000Z',
+        }}
+        discordStatus="synced"
+        returnTo="/en/account/profile"
+      />
+    )
+
+    expect(screen.getByText('Discord roles synced.')).toBeInTheDocument()
+    expect(screen.getByText('pat')).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: 'Resync roles' }).closest('form')
+    ).toHaveAttribute('action', '/api/discord/resync')
+    expect(
+      screen.getByRole('button', { name: 'Disconnect' }).closest('form')
+    ).toHaveAttribute('action', '/api/discord/unlink')
   })
 })

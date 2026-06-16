@@ -2,9 +2,13 @@ import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { Suspense } from 'react'
 import { getCustomer } from '@/lib/medusa-auth'
 import { formatDateForLocale } from '@/lib/date-format'
+import { isDiscordConfigured } from '@/lib/discord/config'
 import { redirectToLoginClearingSession } from '@/lib/login-redirect'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { ProfileEditForm } from '@/components/account/profile-edit-form'
+import {
+  ProfileDiscordControls,
+  ProfileEditForm,
+} from '@/components/account/profile-edit-form'
 import type { Metadata } from 'next'
 
 export async function generateMetadata({
@@ -20,7 +24,13 @@ export async function generateMetadata({
   }
 }
 
-async function ProfileContent({ locale }: { locale: string }) {
+async function ProfileContent({
+  discordStatus,
+  locale,
+}: {
+  discordStatus?: string
+  locale: string
+}) {
   const [t, customer] = await Promise.all([
     getTranslations({ locale, namespace: 'account.profile' }),
     getCustomer(),
@@ -52,6 +62,12 @@ async function ProfileContent({ locale }: { locale: string }) {
           <span className="text-muted-foreground">{t('memberSince')}</span>
           <span>{formatDateForLocale(customer.created_at, locale)}</span>
         </div>
+        <ProfileDiscordControls
+          configured={isDiscordConfigured()}
+          customerMetadata={customer.metadata}
+          discordStatus={discordStatus}
+          returnTo={`/${locale}/account/profile`}
+        />
       </CardContent>
     </Card>
   )
@@ -74,10 +90,13 @@ function ProfileSkeleton() {
 
 export default async function ProfilePage({
   params,
+  searchParams,
 }: {
   params: Promise<{ locale: string }>
+  searchParams?: Promise<{ discord?: string }>
 }) {
   const { locale } = await params
+  const resolvedSearchParams = searchParams ? await searchParams : {}
   setRequestLocale(locale)
   const t = await getTranslations({ locale, namespace: 'account.profile' })
 
@@ -85,7 +104,10 @@ export default async function ProfilePage({
     <div className="space-y-6">
       <h1 className="text-2xl font-bold tracking-tight">{t('heading')}</h1>
       <Suspense fallback={<ProfileSkeleton />}>
-        <ProfileContent locale={locale} />
+        <ProfileContent
+          discordStatus={resolvedSearchParams.discord}
+          locale={locale}
+        />
       </Suspense>
     </div>
   )

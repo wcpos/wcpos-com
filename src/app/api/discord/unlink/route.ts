@@ -21,12 +21,12 @@ export async function POST(request: NextRequest) {
   })
   if (!updatedCustomer) {
     infraLogger.error`Discord unlink failed: customer metadata update returned empty result`
-    const errorUrl = new URL('/account', request.url)
+    const errorUrl = new URL('/account/profile', request.url)
     errorUrl.searchParams.set('discord', 'error')
     return NextResponse.redirect(errorUrl, { status: 303 })
   }
 
-  const url = new URL('/account', request.url)
+  const url = new URL('/account/profile', request.url)
   url.searchParams.set('discord', 'unlinked')
   return NextResponse.redirect(url, { status: 303 })
 }

@@ -11,7 +11,7 @@ export async function POST(request: NextRequest) {
 
   try {
     const result = await syncCurrentCustomerDiscordRole(customer)
-    const url = new URL('/account', request.url)
+    const url = new URL('/account/profile', request.url)
     url.searchParams.set(
       'discord',
       result?.action === 'skipped_not_in_guild' ? 'join_server' : 'synced'
@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.redirect(url, { status: 303 })
   } catch (error) {
     infraLogger.error`Discord role resync failed: ${error}`
-    const url = new URL('/account', request.url)
+    const url = new URL('/account/profile', request.url)
     url.searchParams.set('discord', 'error')
     return NextResponse.redirect(url, { status: 303 })
   }
