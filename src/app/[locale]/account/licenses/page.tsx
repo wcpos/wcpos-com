@@ -3,7 +3,11 @@ import { Suspense } from 'react'
 import { redirectToLoginClearingSession } from '@/lib/login-redirect'
 import { LicensesClient } from '@/components/account/licenses-client'
 import { getResolvedCustomerLicenses } from '@/lib/customer-licenses'
+import { getProPluginReleases } from '@/services/core/business/pro-downloads'
+import { isReleaseAllowedForLicenses } from '@/lib/license'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { Skeleton } from '@/components/ui/skeleton'
+import type { LicenseDetail } from '@/types/license'
 import type { Metadata } from 'next'
 
 export async function generateMetadata({
@@ -25,11 +29,11 @@ function LicensesSkeleton() {
       {[1, 2].map((card) => (
         <Card key={card}>
           <CardHeader>
-            <div className="h-5 w-48 animate-pulse rounded bg-muted" />
+            <Skeleton className="h-5 w-48" />
           </CardHeader>
           <CardContent className="space-y-3">
-            <div className="h-4 w-64 animate-pulse rounded bg-muted" />
-            <div className="h-4 w-32 animate-pulse rounded bg-muted" />
+            <Skeleton className="h-4 w-64" />
+            <Skeleton className="h-4 w-32" />
           </CardContent>
         </Card>
       ))}
@@ -37,14 +41,52 @@ function LicensesSkeleton() {
   )
 }
 
-async function LicensesContent({ locale }: { locale: string }) {
-  const { authenticated, licenses } = await getResolvedCustomerLicenses()
+/**
+ * Entitlement is decided PER LICENCE, not pooled (ADR-0006). The map attributes
+ * a single covered version to each licence: the newest release that licence —
+ * on its own — is entitled to download. Computed server-side so we never ship
+ * release dates/entitlement logic into the client more than once.
+ */
+function buildEntitledVersions(
+  licenses: LicenseDetail[],
+  releases: { version: string; publishedAt: string }[],
+  nowMs: number
+): Record<string, string | null> {
+  const map: Record<string, string | null> = {}
+  for (const license of licenses) {
+    const covered = releases.find((release) =>
+      isReleaseAllowedForLicenses(release, [license], nowMs)
+    )
+    map[license.id] = covered?.version ?? null
+  }
+  return map
+}
 
+async function LicensesContent({ locale }: { locale: string }) {
+  // Read request data (cookies, via the customer lookup) before touching the
+  // current time: under Cache Components a Server Component may only read the
+  // clock once an uncached/request data source has been accessed. Mirrors the
+  // ordering on the downloads page.
+  const { authenticated, licenses } = await getResolvedCustomerLicenses()
   if (!authenticated) {
     redirectToLoginClearingSession(locale)
   }
 
-  return <LicensesClient initialLicenses={licenses} />
+  const nowMs = new Date().getTime()
+  let releases: { version: string; publishedAt: string }[] = []
+  try {
+    releases = await getProPluginReleases()
+  } catch {
+    releases = []
+  }
+  const entitledVersions = buildEntitledVersions(licenses, releases, nowMs)
+
+  return (
+    <LicensesClient
+      initialLicenses={licenses}
+      entitledVersions={entitledVersions}
+    />
+  )
 }
 
 export default async function LicensesPage({

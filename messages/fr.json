@@ -86,17 +86,12 @@
   "account": {
     "nav": {
       "title": "Account",
-      "overview": "Overview",
       "orders": "Orders",
       "licenses": "Licenses",
       "downloads": "Downloads",
       "profile": "Profile"
     },
     "meta": {
-      "overview": {
-        "title": "Account",
-        "description": "Overview of your WCPOS account, recent orders, and licenses."
-      },
       "orders": {
         "title": "Order History",
         "description": "View your WCPOS order history and receipts."
@@ -127,34 +122,6 @@
       "description": "The error has been reported. You can try again, or come back later.",
       "retry": "Try again"
     },
-    "overview": {
-      "welcome": "Welcome, {name}",
-      "welcomeNoName": "Welcome",
-      "expiresSoonRenew": "Your license expires on {date} — renew to keep receiving updates.",
-      "renewLicense": "Renew license",
-      "ordersCardTitle": "Orders",
-      "licensesCardTitle": "Licenses",
-      "viewAllOrders": "View all orders",
-      "manageLicenses": "Manage licenses",
-      "recentOrders": "Recent Orders",
-      "orderNumber": "Order #{id}",
-      "discordCardTitle": "Discord Pro role",
-      "discordConnectedFallback": "Discord connected",
-      "discordConnectedDescription": "Your Discord account is linked. Active Pro licenses receive the Pro role automatically.",
-      "discordDisconnectedDescription": "Link Discord to receive the community Pro role while you have an active WCPOS Pro license.",
-      "discordConnect": "Connect Discord",
-      "discordResync": "Resync role",
-      "discordDisconnect": "Disconnect",
-      "discordNotConfigured": "Discord linking is not configured yet.",
-      "discordStatus": {
-        "linked": "Discord connected. Your Pro role will sync automatically.",
-        "unlinked": "Discord disconnected. The Pro role was removed if Discord allowed it.",
-        "synced": "Discord role resynced.",
-        "join_server": "Rejoignez le serveur Discord, puis resynchronisez votre rôle.",
-        "error": "Discord sync failed. Please try again or contact support.",
-        "already_linked": "That Discord account is already linked to another WCPOS customer."
-      }
-    },
     "orders": {
       "heading": "Order History",
       "intro": "Invoices & receipts — every order includes a downloadable PDF tax receipt. Receipts use the billing address saved in your <profileLink>profile</profileLink>.",
@@ -164,7 +131,9 @@
       "orderNumber": "Order #{id}",
       "dateAndItems": "{date} — {count, plural, =1 {# item} other {# items}}",
       "receiptPdf": "Receipt (PDF)",
-      "downloadReceiptAria": "Download receipt for order #{id}"
+      "downloadReceiptAria": "Download receipt for order #{id}",
+      "viewOrder": "Voir",
+      "viewOrderAria": "Voir la commande n° {id}"
     },
     "orderDetail": {
       "backToOrders": "Back to orders",
@@ -178,7 +147,9 @@
       "itemsTitle": "Items",
       "quantity": "Qty: {count}",
       "licenseKeysTitle": "License Keys",
-      "manage": "Manage"
+      "manage": "Manage",
+      "licenseFromOrderTitle": "Licence issue de cette commande",
+      "manageLicence": "Gérer la licence →"
     },
     "licenseStatus": {
       "active": "active",
@@ -207,10 +178,20 @@
       "activatedMachines": "Activated Machines",
       "machineAdded": "Added {date}",
       "deactivateMachineAria": "Deactivate {name}",
-      "genericMachineName": "machine"
+      "genericMachineName": "machine",
+      "coversLatestVersion": "Latest version {version} · via this licence",
+      "coversUpToVersion": "Covers updates up to {version}",
+      "siteUpdatesThrough": "Updates through {version}",
+      "discordHeading": "Discord access",
+      "discordMembers": "{count} of {cap} members",
+      "discordConnected": "Connected {date}",
+      "discordRemove": "Remove",
+      "discordRemoveAria": "Remove {handle}",
+      "discordConnectHint": "Connect with your license key to get the Pro role in our community Discord."
     },
     "downloads": {
       "heading": "Downloads",
+      "subheading": "Toutes les versions. Ce que vous pouvez installer dépend de votre licence.",
       "expiredBanner": "Your license expired on {date}. You can still download versions released before then.",
       "suspendedBanner": "Your license is suspended — contact support.",
       "revokedBanner": "Your license has been revoked and no longer includes downloads. Contact support if you believe this is an error.",
@@ -220,8 +201,14 @@
       "renewLicense": "Renew license",
       "contactSupport": "Contact support",
       "getPro": "Get WCPOS Pro",
-      "listTitle": "WCPOS Pro Downloads",
+      "listTitle": "Historique des versions",
+      "latestVersionLabel": "Dernière version",
       "latestBadge": "Latest",
+      "majorBadge": "Majeure",
+      "releaseNotes": "Notes de version",
+      "releaseCount": "{count, plural, one {# version} other {# versions}}",
+      "availableOnPlan": "Disponible avec votre licence {plan} active",
+      "availableOnActive": "Disponible avec votre licence active",
       "emptyList": "No downloadable versions were found.",
       "reasonExpired": "Released after your license expired.",
       "reasonUnknown": "We couldn't verify your license.",
@@ -283,7 +270,30 @@
       "updateError": "Failed to update profile",
       "updateSuccess": "Profile updated successfully.",
       "saving": "Saving...",
-      "save": "Save changes"
+      "save": "Save changes",
+      "lede": "Vos coordonnées, informations de facturation et services connectés.",
+      "billingDetailsHint": "Utilisé sur vos reçus.",
+      "connectionsTitle": "Connexions",
+      "connectionsHint": "Fournisseurs de connexion et accès à la communauté liés à votre compte.",
+      "googleProvider": "Google",
+      "googleDescription": "Utilisé pour la connexion en un clic.",
+      "discordProvider": "Discord",
+      "discordDescription": "Connectez-vous pour obtenir le rôle Pro sur notre Discord communautaire.",
+      "connected": "Connecté",
+      "connectedAs": "Connecté en tant que {account}",
+      "connectDiscord": "Connecter Discord",
+      "disconnect": "Déconnecter",
+      "disconnecting": "Déconnexion...",
+      "disconnectError": "Impossible de déconnecter. Veuillez réessayer.",
+      "discordStatus": {
+        "linked": "Discord connected. Your Pro role will sync automatically.",
+        "unlinked": "Discord disconnected. The Pro role was removed if Discord allowed it.",
+        "synced": "Discord role resynced.",
+        "join_server": "Rejoignez le serveur Discord, puis resynchronisez votre rôle.",
+        "error": "Discord sync failed. Please try again or contact support.",
+        "already_linked": "That Discord account is already linked to another WCPOS customer."
+      },
+      "discordNotConfigured": "Discord linking is not configured yet."
     }
   }
 }

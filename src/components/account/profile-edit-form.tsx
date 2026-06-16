@@ -3,9 +3,19 @@
 import { useMemo, useState } from 'react'
 import { useLocale, useTranslations } from 'next-intl'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { Separator } from '@/components/ui/separator'
+import { DiscordMark, GoogleMark } from '@/components/auth/provider-marks'
 import { getConnectedAvatarUrlFromMetadata } from '@/lib/avatar'
 
 interface ProfileEditFormProps {
@@ -15,6 +25,14 @@ interface ProfileEditFormProps {
     last_name?: string
     phone?: string
     metadata?: Record<string, unknown>
+  }
+  memberSince?: string
+  connections?: {
+    google: { email: string }
+    discord:
+      | { connected: true; username: string | null }
+      | { connected: false; configured: boolean }
+    discordReturnTo: string
   }
 }
 
@@ -180,7 +198,11 @@ function getAvatarUrlFromMetadata(metadata: Record<string, unknown> | undefined)
   }
 }
 
-export function ProfileEditForm({ customer }: ProfileEditFormProps) {
+export function ProfileEditForm({
+  customer,
+  memberSince,
+  connections,
+}: ProfileEditFormProps) {
   const locale = useLocale()
   const t = useTranslations('account.profile')
   const metadataDefaults = getAvatarUrlFromMetadata(customer.metadata)
@@ -206,9 +228,46 @@ export function ProfileEditForm({ customer }: ProfileEditFormProps) {
   const [saving, setSaving] = useState(false)
   const [success, setSuccess] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const [disconnecting, setDisconnecting] = useState(false)
 
   const countryProfile =
     COUNTRY_PROFILES[countryCode] ?? COUNTRY_PROFILES.US
+
+  // Connect starts a full-page OAuth redirect; the link route returns the
+  // user to this profile path once Discord authorizes. No backend endpoint is invented
+  // here — these are the existing /api/discord/{link,unlink} routes.
+  const handleConnectDiscord = () => {
+    const params = new URLSearchParams({
+      return_to: connections?.discordReturnTo ?? `/${locale}/account/profile`,
+    })
+    window.location.href = `/api/discord/link?${params.toString()}`
+  }
+
+  const handleDisconnectDiscord = async () => {
+    setDisconnecting(true)
+    setError(null)
+    try {
+      const response = await fetch('/api/discord/unlink', { method: 'POST' })
+      const responseUrl = response.url
+        ? new URL(response.url, window.location.origin)
+        : null
+      if (
+        !response.ok ||
+        responseUrl?.searchParams.get('discord') === 'error'
+      ) {
+        throw new Error(t('disconnectError'))
+      }
+      // The unlink route 303-redirects to /account/profile?discord=unlinked.
+      // Navigate to that URL (not a bare reload) so the server re-reads the
+      // connection state AND the `unlinked` status banner is shown.
+      window.location.href = responseUrl
+        ? responseUrl.toString()
+        : window.location.href
+    } catch (err) {
+      setError(err instanceof Error ? err.message : t('disconnectError'))
+      setDisconnecting(false)
+    }
+  }
 
   const avatarUrl = useMemo(() => {
     return customAvatarDataUrl || customAvatarUrl || metadataDefaults.oauthAvatarUrl
@@ -302,90 +361,99 @@ export function ProfileEditForm({ customer }: ProfileEditFormProps) {
 
   return (
     <form className="space-y-6" onSubmit={handleSubmit}>
-      <div className="space-y-3 rounded-lg border p-4">
-        <div className="flex items-center gap-4">
-          <Avatar className="h-16 w-16">
-            {avatarUrl ? (
-              <AvatarImage src={avatarUrl} alt={t('avatarAlt')} />
-            ) : null}
-            <AvatarFallback>{initials}</AvatarFallback>
-          </Avatar>
-          <div className="space-y-2">
-            <Label htmlFor="profile-avatar-upload">{t('avatarLabel')}</Label>
-            <Input
-              id="profile-avatar-upload"
-              type="file"
-              accept="image/*"
-              onChange={handleAvatarFileChange}
-            />
-            <p className="text-xs text-muted-foreground">{t('avatarHint')}</p>
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-lg">{t('cardTitle')}</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="space-y-3 rounded-lg border p-4">
+            <div className="flex items-center gap-4">
+              <Avatar className="h-16 w-16">
+                {avatarUrl ? (
+                  <AvatarImage src={avatarUrl} alt={t('avatarAlt')} />
+                ) : null}
+                <AvatarFallback>{initials}</AvatarFallback>
+              </Avatar>
+              <div className="space-y-2">
+                <Label htmlFor="profile-avatar-upload">
+                  {t('avatarLabel')}
+                </Label>
+                <Input
+                  id="profile-avatar-upload"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleAvatarFileChange}
+                />
+                <p className="text-xs text-muted-foreground">
+                  {t('avatarHint')}
+                </p>
+              </div>
+            </div>
+            {customAvatarDataUrl && (
+              <Button
+                type="button"
+                variant="ghost"
+                onClick={() => setCustomAvatarDataUrl('')}
+              >
+                {t('removeAvatar')}
+              </Button>
+            )}
           </div>
-        </div>
-        {customAvatarDataUrl && (
-          <Button
-            type="button"
-            variant="ghost"
-            onClick={() => setCustomAvatarDataUrl('')}
-          >
-            {t('removeAvatar')}
-          </Button>
-        )}
-      </div>
 
-      <div className="grid gap-4 md:grid-cols-2">
-        <div className="space-y-2">
-          <Label htmlFor="profile-first-name">{t('firstName')}</Label>
-          <Input
-            id="profile-first-name"
-            value={firstName}
-            onChange={(event) => setFirstName(event.target.value)}
-            autoComplete="given-name"
-          />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="profile-last-name">{t('lastName')}</Label>
-          <Input
-            id="profile-last-name"
-            value={lastName}
-            onChange={(event) => setLastName(event.target.value)}
-            autoComplete="family-name"
-          />
-        </div>
-      </div>
+          <div className="grid gap-4 md:grid-cols-2">
+            <div className="space-y-2">
+              <Label htmlFor="profile-first-name">{t('firstName')}</Label>
+              <Input
+                id="profile-first-name"
+                value={firstName}
+                onChange={(event) => setFirstName(event.target.value)}
+                autoComplete="given-name"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="profile-last-name">{t('lastName')}</Label>
+              <Input
+                id="profile-last-name"
+                value={lastName}
+                onChange={(event) => setLastName(event.target.value)}
+                autoComplete="family-name"
+              />
+            </div>
+          </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="profile-email">{t('email')}</Label>
-        <Input
-          id="profile-email"
-          type="email"
-          value={email}
-          onChange={(event) => setEmail(event.target.value)}
-          autoComplete="email"
-          required
-        />
-      </div>
+          <div className="space-y-2">
+            <Label htmlFor="profile-email">{t('email')}</Label>
+            <Input
+              id="profile-email"
+              type="email"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+              autoComplete="email"
+              required
+            />
+          </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="profile-phone">{t('phone')}</Label>
-        <Input
-          id="profile-phone"
-          type="tel"
-          value={phone}
-          onChange={(event) => setPhone(event.target.value)}
-          autoComplete="tel"
-        />
-      </div>
+          <div className="space-y-2">
+            <Label htmlFor="profile-phone">{t('phone')}</Label>
+            <Input
+              id="profile-phone"
+              type="tel"
+              value={phone}
+              onChange={(event) => setPhone(event.target.value)}
+              autoComplete="tel"
+            />
+          </div>
+        </CardContent>
+      </Card>
 
       {/* id targeted by the "billing address" link on the orders page */}
-      <div
-        id="billing-address"
-        className="scroll-mt-24 space-y-4 rounded-lg border p-4"
-      >
-        <h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-          {t('billingDetails')}
-        </h3>
-
-        <div className="space-y-2">
+      <Card id="billing-address" className="scroll-mt-24">
+        <CardHeader>
+          <CardTitle className="text-lg">{t('billingDetails')}</CardTitle>
+          <CardDescription>{t('billingDetailsHint')}</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="space-y-2">
           <Label htmlFor="profile-country">{t('country')}</Label>
           <select
             id="profile-country"
@@ -455,17 +523,92 @@ export function ProfileEditForm({ customer }: ProfileEditFormProps) {
           </div>
         </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="profile-tax-number">
-            {t(`taxLabels.${countryProfile.taxLabel}`)}
-          </Label>
-          <Input
-            id="profile-tax-number"
-            value={taxNumber}
-            onChange={(event) => setTaxNumber(event.target.value)}
-          />
-        </div>
-      </div>
+          <div className="space-y-2">
+            <Label htmlFor="profile-tax-number">
+              {t(`taxLabels.${countryProfile.taxLabel}`)}
+            </Label>
+            <Input
+              id="profile-tax-number"
+              value={taxNumber}
+              onChange={(event) => setTaxNumber(event.target.value)}
+            />
+          </div>
+        </CardContent>
+      </Card>
+
+      {connections && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg">{t('connectionsTitle')}</CardTitle>
+            <CardDescription>{t('connectionsHint')}</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-1">
+            <div className="flex items-center gap-4 py-3">
+              <span className="flex h-10 w-10 flex-none items-center justify-center rounded-md border">
+                <GoogleMark className="h-5 w-5" />
+              </span>
+              <div className="min-w-0 flex-1">
+                <p className="font-medium leading-none">
+                  {t('googleProvider')}
+                </p>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  {t('googleDescription')}
+                </p>
+              </div>
+              <div className="flex flex-none items-center gap-2">
+                <Badge variant="success">
+                  {t('connectedAs', { account: connections.google.email })}
+                </Badge>
+              </div>
+            </div>
+
+            <Separator />
+
+            <div className="flex items-center gap-4 py-3">
+              <span className="flex h-10 w-10 flex-none items-center justify-center rounded-md border">
+                <DiscordMark className="h-5 w-5" />
+              </span>
+              <div className="min-w-0 flex-1">
+                <p className="font-medium leading-none">
+                  {t('discordProvider')}
+                </p>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  {t('discordDescription')}
+                </p>
+              </div>
+              <div className="flex flex-none items-center gap-2">
+                {connections.discord.connected ? (
+                  <>
+                    {connections.discord.username && (
+                      <span className="hidden text-sm font-medium sm:inline">
+                        @{connections.discord.username}
+                      </span>
+                    )}
+                    <Badge variant="success">{t('connected')}</Badge>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      disabled={disconnecting}
+                      onClick={handleDisconnectDiscord}
+                    >
+                      {disconnecting ? t('disconnecting') : t('disconnect')}
+                    </Button>
+                  </>
+                ) : connections.discord.configured ? (
+                  <Button type="button" size="sm" onClick={handleConnectDiscord}>
+                    {t('connectDiscord')}
+                  </Button>
+                ) : (
+                  <span className="text-xs text-muted-foreground">
+                    {t('discordNotConfigured')}
+                  </span>
+                )}
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {error && (
         <div className="rounded-md bg-destructive/10 p-3 text-sm text-destructive">
@@ -479,9 +622,16 @@ export function ProfileEditForm({ customer }: ProfileEditFormProps) {
         </div>
       )}
 
-      <Button type="submit" disabled={saving}>
-        {saving ? t('saving') : t('save')}
-      </Button>
+      <div className="flex items-center justify-between gap-4">
+        <Button type="submit" disabled={saving}>
+          {saving ? t('saving') : t('save')}
+        </Button>
+        {memberSince && (
+          <span className="text-sm text-muted-foreground">
+            {t('memberSince')} {memberSince}
+          </span>
+        )}
+      </div>
     </form>
   )
 }

@@ -127,8 +127,12 @@ function LoginPageInner({ discordEnabled }: { discordEnabled: boolean }) {
             </div>
           </div>
 
-          {/* These are API routes that redirect to OAuth providers, not Next.js pages */}
-          {/* eslint-disable @next/next/no-html-link-for-pages */}
+          {/*
+            Raw <a> (not next/link): these are /api/auth/* route handlers that
+            server-redirect to external OAuth providers, not Next.js pages, so
+            no-html-link-for-pages does not apply and no eslint-disable is needed
+            (an unused directive gets stripped by `eslint --fix`, leaving `{}`).
+          */}
           <div className="grid gap-2.5">
             <Button variant="outline" asChild>
               <a
@@ -160,7 +164,6 @@ function LoginPageInner({ discordEnabled }: { discordEnabled: boolean }) {
               </Button>
             )}
           </div>
-          {/* eslint-enable @next/next/no-html-link-for-pages */}
         </CardContent>
         <CardFooter className="justify-center">
           <p className="text-sm text-muted-foreground">

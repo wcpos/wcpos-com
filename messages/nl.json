@@ -86,17 +86,12 @@
   "account": {
     "nav": {
       "title": "Account",
-      "overview": "Overview",
       "orders": "Orders",
       "licenses": "Licenses",
       "downloads": "Downloads",
       "profile": "Profile"
     },
     "meta": {
-      "overview": {
-        "title": "Account",
-        "description": "Overview of your WCPOS account, recent orders, and licenses."
-      },
       "orders": {
         "title": "Order History",
         "description": "View your WCPOS order history and receipts."
@@ -127,34 +122,6 @@
       "description": "The error has been reported. You can try again, or come back later.",
       "retry": "Try again"
     },
-    "overview": {
-      "welcome": "Welcome, {name}",
-      "welcomeNoName": "Welcome",
-      "expiresSoonRenew": "Your license expires on {date} — renew to keep receiving updates.",
-      "renewLicense": "Renew license",
-      "ordersCardTitle": "Orders",
-      "licensesCardTitle": "Licenses",
-      "viewAllOrders": "View all orders",
-      "manageLicenses": "Manage licenses",
-      "recentOrders": "Recent Orders",
-      "orderNumber": "Order #{id}",
-      "discordCardTitle": "Discord Pro-rol",
-      "discordConnectedFallback": "Discord verbonden",
-      "discordConnectedDescription": "Je Discord-account is gekoppeld. Actieve Pro-licenties krijgen automatisch de Pro-rol.",
-      "discordDisconnectedDescription": "Koppel Discord om de community Pro-rol te ontvangen zolang je een actieve WCPOS Pro-licentie hebt.",
-      "discordConnect": "Discord koppelen",
-      "discordResync": "Rol opnieuw synchroniseren",
-      "discordDisconnect": "Loskoppelen",
-      "discordNotConfigured": "Discord-koppeling is nog niet geconfigureerd.",
-      "discordStatus": {
-        "linked": "Discord verbonden. Je Pro-rol wordt automatisch gesynchroniseerd.",
-        "unlinked": "Discord losgekoppeld. De Pro-rol is verwijderd als Discord dit toestond.",
-        "synced": "Discord-rol opnieuw gesynchroniseerd.",
-        "join_server": "Word lid van de Discord-server en synchroniseer daarna je rol opnieuw.",
-        "error": "Discord-synchronisatie is mislukt. Probeer het opnieuw of neem contact op met support.",
-        "already_linked": "Dat Discord-account is al gekoppeld aan een andere WCPOS-klant."
-      }
-    },
     "orders": {
       "heading": "Order History",
       "intro": "Invoices & receipts — every order includes a downloadable PDF tax receipt. Receipts use the billing address saved in your <profileLink>profile</profileLink>.",
@@ -164,7 +131,9 @@
       "orderNumber": "Order #{id}",
       "dateAndItems": "{date} — {count, plural, =1 {# item} other {# items}}",
       "receiptPdf": "Receipt (PDF)",
-      "downloadReceiptAria": "Download receipt for order #{id}"
+      "downloadReceiptAria": "Download receipt for order #{id}",
+      "viewOrder": "Bekijken",
+      "viewOrderAria": "Bestelling #{id} bekijken"
     },
     "orderDetail": {
       "backToOrders": "Back to orders",
@@ -178,7 +147,9 @@
       "itemsTitle": "Items",
       "quantity": "Qty: {count}",
       "licenseKeysTitle": "License Keys",
-      "manage": "Manage"
+      "manage": "Manage",
+      "licenseFromOrderTitle": "Licentie van deze bestelling",
+      "manageLicence": "Licentie beheren →"
     },
     "licenseStatus": {
       "active": "active",
@@ -207,10 +178,20 @@
       "activatedMachines": "Activated Machines",
       "machineAdded": "Added {date}",
       "deactivateMachineAria": "Deactivate {name}",
-      "genericMachineName": "machine"
+      "genericMachineName": "machine",
+      "coversLatestVersion": "Latest version {version} · via this licence",
+      "coversUpToVersion": "Covers updates up to {version}",
+      "siteUpdatesThrough": "Updates through {version}",
+      "discordHeading": "Discord access",
+      "discordMembers": "{count} of {cap} members",
+      "discordConnected": "Connected {date}",
+      "discordRemove": "Remove",
+      "discordRemoveAria": "Remove {handle}",
+      "discordConnectHint": "Connect with your license key to get the Pro role in our community Discord."
     },
     "downloads": {
       "heading": "Downloads",
+      "subheading": "Elke release. Wat u kunt installeren, hangt af van uw licentie.",
       "expiredBanner": "Your license expired on {date}. You can still download versions released before then.",
       "suspendedBanner": "Your license is suspended — contact support.",
       "revokedBanner": "Your license has been revoked and no longer includes downloads. Contact support if you believe this is an error.",
@@ -220,8 +201,14 @@
       "renewLicense": "Renew license",
       "contactSupport": "Contact support",
       "getPro": "Get WCPOS Pro",
-      "listTitle": "WCPOS Pro Downloads",
+      "listTitle": "Versiegeschiedenis",
+      "latestVersionLabel": "Nieuwste versie",
       "latestBadge": "Latest",
+      "majorBadge": "Hoofdversie",
+      "releaseNotes": "Release-opmerkingen",
+      "releaseCount": "{count, plural, one {# release} other {# releases}}",
+      "availableOnPlan": "Beschikbaar met uw actieve {plan}-licentie",
+      "availableOnActive": "Beschikbaar met uw actieve licentie",
       "emptyList": "No downloadable versions were found.",
       "reasonExpired": "Released after your license expired.",
       "reasonUnknown": "We couldn't verify your license.",
@@ -283,7 +270,30 @@
       "updateError": "Failed to update profile",
       "updateSuccess": "Profile updated successfully.",
       "saving": "Saving...",
-      "save": "Save changes"
+      "save": "Save changes",
+      "lede": "Je gegevens, factuurgegevens en verbonden diensten.",
+      "billingDetailsHint": "Gebruikt op je bonnen.",
+      "connectionsTitle": "Verbindingen",
+      "connectionsHint": "Aanmeldproviders en community-toegang gekoppeld aan je account.",
+      "googleProvider": "Google",
+      "googleDescription": "Gebruikt voor aanmelden met één klik.",
+      "discordProvider": "Discord",
+      "discordDescription": "Verbind om de Pro-rol in onze community-Discord te krijgen.",
+      "connected": "Verbonden",
+      "connectedAs": "Verbonden als {account}",
+      "connectDiscord": "Discord verbinden",
+      "disconnect": "Verbinding verbreken",
+      "disconnecting": "Verbinding verbreken...",
+      "disconnectError": "Kan de verbinding niet verbreken. Probeer het opnieuw.",
+      "discordStatus": {
+        "linked": "Discord verbonden. Je Pro-rol wordt automatisch gesynchroniseerd.",
+        "unlinked": "Discord losgekoppeld. De Pro-rol is verwijderd als Discord dit toestond.",
+        "synced": "Discord-rol opnieuw gesynchroniseerd.",
+        "join_server": "Word lid van de Discord-server en synchroniseer daarna je rol opnieuw.",
+        "error": "Discord-synchronisatie is mislukt. Probeer het opnieuw of neem contact op met support.",
+        "already_linked": "Dat Discord-account is al gekoppeld aan een andere WCPOS-klant."
+      },
+      "discordNotConfigured": "Discord-koppeling is nog niet geconfigureerd."
     }
   }
 }

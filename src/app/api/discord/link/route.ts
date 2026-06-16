@@ -10,12 +10,14 @@ function redirectUri(request: NextRequest): string {
 }
 
 function safeReturnTo(value: string | null): string {
-  if (!value || !value.startsWith('/') || value.startsWith('//')) return '/account'
+  if (!value || !value.startsWith('/') || value.startsWith('//')) {
+    return '/account/profile'
+  }
   try {
     const parsed = new URL(value, 'https://wcpos.local')
     return `${parsed.pathname}${parsed.search}${parsed.hash}`
   } catch {
-    return '/account'
+    return '/account/profile'
   }
 }
 

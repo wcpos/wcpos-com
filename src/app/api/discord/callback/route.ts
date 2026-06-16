@@ -21,7 +21,11 @@ export async function GET(request: NextRequest) {
   const customer = await getCustomer()
 
   if (!code || !state || !storedState || storedState.state !== state || !customer || storedState.customerId !== customer.id) {
-    return callbackRedirect(request, storedState?.returnTo ?? '/account', 'error')
+    return callbackRedirect(
+      request,
+      storedState?.returnTo ?? '/account/profile',
+      'error'
+    )
   }
 
   try {

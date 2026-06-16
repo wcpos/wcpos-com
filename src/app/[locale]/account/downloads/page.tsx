@@ -4,11 +4,15 @@ import { redirectToLoginClearingSession } from '@/lib/login-redirect'
 import { DownloadsClient } from '@/components/account/downloads-client'
 import { getResolvedCustomerLicenses } from '@/lib/customer-licenses'
 import {
+  isLicenseActive,
   isReleaseAllowedForLicenses,
   summarizeDownloadAccess,
 } from '@/lib/license'
+import { getPlanByPolicyId } from '@/lib/plans'
 import { getProPluginReleases } from '@/services/core/business/pro-downloads'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { Skeleton } from '@/components/ui/skeleton'
+import type { LicenseDetail } from '@/types/license'
 import type { Metadata } from 'next'
 
 export async function generateMetadata({
@@ -26,33 +30,89 @@ export async function generateMetadata({
 
 function DownloadsSkeleton() {
   return (
-    <div className="space-y-3">
-      {[1, 2, 3].map((row) => (
-        <Card key={row}>
-          <CardHeader>
-            <div className="h-5 w-52 animate-pulse rounded bg-muted" />
-          </CardHeader>
-          <CardContent className="space-y-2">
-            <div className="h-4 w-40 animate-pulse rounded bg-muted" />
-            <div className="h-4 w-full animate-pulse rounded bg-muted" />
-          </CardContent>
-        </Card>
-      ))}
+    <div className="space-y-6">
+      <Card>
+        <CardHeader className="gap-3">
+          <Skeleton className="h-5 w-40" />
+          <Skeleton className="h-7 w-56" />
+        </CardHeader>
+        <CardContent className="space-y-3">
+          <Skeleton className="h-4 w-72" />
+          <Skeleton className="h-9 w-36" />
+        </CardContent>
+      </Card>
+      <Card>
+        <CardHeader>
+          <Skeleton className="h-5 w-44" />
+        </CardHeader>
+        <CardContent className="space-y-3">
+          {[1, 2, 3].map((row) => (
+            <div key={row} className="space-y-2 rounded-lg border p-4">
+              <Skeleton className="h-4 w-32" />
+              <Skeleton className="h-4 w-full" />
+            </div>
+          ))}
+        </CardContent>
+      </Card>
     </div>
   )
 }
 
-async function DownloadsContent({ locale }: { locale: string }) {
+/**
+ * Plan label of the licence that entitles the latest build. Any active licence
+ * grants every release (see isReleaseAllowedForLicenses), so we attribute to an
+ * active licence — preferring a lifetime one, then the one expiring latest, so
+ * the copy ("Available on your active Yearly licence") names a durable grant.
+ * Returns null when no active licence entitles it or the policy is unrecognized.
+ */
+function resolveEntitlingPlanLabel(
+  licenses: LicenseDetail[],
+  nowMs: number,
+  planLabel: (key: 'planYearly' | 'planLifetime') => string
+): string | null {
+  const active = licenses.filter((license) => isLicenseActive(license, nowMs))
+  if (active.length === 0) return null
+
+  const entitling = [...active].sort((a, b) => {
+    // Lifetime (null expiry) is the most durable grant — sort it first.
+    if (a.expiry === null && b.expiry !== null) return -1
+    if (b.expiry === null && a.expiry !== null) return 1
+    const aTime = a.expiry ? new Date(a.expiry).getTime() : 0
+    const bTime = b.expiry ? new Date(b.expiry).getTime() : 0
+    return bTime - aTime
+  })[0]
+
+  const plan = getPlanByPolicyId(entitling.policyId)
+  return plan ? planLabel(plan.labelKey) : null
+}
+
+async function DownloadsContent({
+  locale,
+  scopedLicenseId,
+}: {
+  locale: string
+  scopedLicenseId?: string
+}) {
   const { authenticated, licenses } = await getResolvedCustomerLicenses()
   if (!authenticated) {
     redirectToLoginClearingSession(locale)
   }
 
+  const scopedLicenses = scopedLicenseId
+    ? licenses.filter((license) => license.id === scopedLicenseId)
+    : []
+  // When a licence is explicitly scoped via ?license=, honour that scope even
+  // when it matches nothing — a foreign/stale id must grant no access, not fall
+  // back to pooling every licence (ADR-0006). Only an absent scope sees all.
+  const downloadLicenses = scopedLicenseId ? scopedLicenses : licenses
   const nowMs = new Date().getTime()
   const releases = await getProPluginReleases()
   const mappedReleases = releases.map((release) => ({
-    ...release,
-    allowed: isReleaseAllowedForLicenses(release, licenses, nowMs),
+    version: release.version,
+    name: release.name,
+    releaseNotes: release.releaseNotes,
+    publishedAt: release.publishedAt,
+    allowed: isReleaseAllowedForLicenses(release, downloadLicenses, nowMs),
   }))
 
   // One-pass access diagnosis so the UI can explain WHY a release is
@@ -64,16 +124,30 @@ async function DownloadsContent({ locale }: { locale: string }) {
     suspendedCount,
     revokedCount,
     unknownCount,
-  } = summarizeDownloadAccess(licenses, nowMs)
+  } = summarizeDownloadAccess(downloadLicenses, nowMs)
+
+  // Plan label of the licence backing the latest build, resolved here (the page
+  // owns plan lookup; the client never sees policy ids). Translation is done
+  // server-side so the client receives a ready-to-render string.
+  const planLabels = await getTranslations({
+    locale,
+    namespace: 'account.licenses',
+  })
+  const entitlingPlanLabel = resolveEntitlingPlanLabel(
+    downloadLicenses,
+    nowMs,
+    (key) => planLabels(key)
+  )
 
   return (
     <DownloadsClient
       initialReleases={mappedReleases}
+      entitlingPlanLabel={entitlingPlanLabel}
       access={{
         hasActiveLicense,
         latestExpiry,
         expiryHasPassed,
-        licenseCount: licenses.length,
+        licenseCount: downloadLicenses.length,
         suspendedCount,
         revokedCount,
         unknownCount,
@@ -84,18 +158,27 @@ async function DownloadsContent({ locale }: { locale: string }) {
 
 export default async function DownloadsPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ locale: string }>
+  searchParams?: Promise<{ license?: string }>
 }) {
   const { locale } = await params
+  const resolvedSearchParams = searchParams ? await searchParams : {}
   setRequestLocale(locale)
   const t = await getTranslations({ locale, namespace: 'account.downloads' })
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold tracking-tight">{t('heading')}</h1>
+      <div className="space-y-1">
+        <h1 className="text-2xl font-bold tracking-tight">{t('heading')}</h1>
+        <p className="text-sm text-muted-foreground">{t('subheading')}</p>
+      </div>
       <Suspense fallback={<DownloadsSkeleton />}>
-        <DownloadsContent locale={locale} />
+        <DownloadsContent
+          locale={locale}
+          scopedLicenseId={resolvedSearchParams.license}
+        />
       </Suspense>
     </div>
   )

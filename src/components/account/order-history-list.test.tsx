@@ -49,13 +49,64 @@ describe('OrderHistoryList', () => {
     ).toHaveAttribute('href', '/pro')
   })
 
-  it('links each order to its detail page', () => {
+  it('shows the order number and a View link to the detail page', () => {
     render(<OrderHistoryList orders={[makeOrder()]} locale="en-US" />)
 
-    expect(screen.getByRole('link', { name: 'Order #1042' })).toHaveAttribute(
-      'href',
-      '/account/orders/order_123'
+    // The order number is plain text, not a nested anchor; navigation is the
+    // dedicated View link, kept a sibling of the Receipt button.
+    expect(screen.getByText('Order #1042')).toBeInTheDocument()
+    expect(
+      screen.getByRole('link', { name: 'View order #1042' })
+    ).toHaveAttribute('href', '/account/orders/order_123')
+  })
+
+  it('renders a masked licence chip with product when the order produced one', () => {
+    render(
+      <OrderHistoryList
+        orders={[
+          makeOrder({
+            licenses: [{ maskedKey: '****-****-1234', product: 'WCPOS Pro Yearly' }],
+          }),
+        ]}
+        locale="en-US"
+      />
     )
+
+    expect(screen.getByText('****-****-1234')).toBeInTheDocument()
+    expect(screen.getByText('WCPOS Pro Yearly')).toBeInTheDocument()
+  })
+
+  it('does not reuse React keys for licences with the same masked key', () => {
+    const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {})
+
+    render(
+      <OrderHistoryList
+        orders={[
+          makeOrder({
+            licenses: [
+              { maskedKey: '****-****-1234', product: 'WCPOS Pro Yearly' },
+              { maskedKey: '****-****-1234', product: 'WCPOS Pro Monthly' },
+            ],
+          }),
+        ]}
+        locale="en-US"
+      />
+    )
+
+    const duplicateKeyMessages = consoleError.mock.calls
+      .map(([message]) => String(message))
+      .filter((message) =>
+        message.includes('Encountered two children with the same key')
+      )
+    consoleError.mockRestore()
+
+    expect(duplicateKeyMessages).toEqual([])
+  })
+
+  it('omits the licence chip when no licence metadata is present', () => {
+    render(<OrderHistoryList orders={[makeOrder()]} locale="en-US" />)
+
+    expect(screen.queryByText(/\*\*\*\*-\*\*\*\*-/)).not.toBeInTheDocument()
   })
 
   it('renders a PDF receipt download link for each order', () => {
