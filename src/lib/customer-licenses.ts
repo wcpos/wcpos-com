@@ -1,13 +1,20 @@
 import 'server-only'
 import type { LicenseDetail } from '@/types/license'
-import { getAllCustomerOrders, getCustomer } from '@/lib/medusa-auth'
+import {
+  getAllOrders,
+  type MedusaOrder,
+} from '@/lib/customer-orders'
+import { getCustomer, type MedusaCustomer } from '@/lib/medusa-auth'
 import {
   extractLicenseReferencesFromOrders,
   type LicenseReference,
 } from '@/lib/licenses'
+import { listAdminCustomerOrders } from '@/lib/discord/medusa-admin'
 import { normalizeLicenseStatus } from '@/lib/license-status'
 import { licenseClient } from '@/services/core/external/license-client'
 import { licenseLogger } from '@/lib/logger'
+
+const LICENSE_LOOKUP_BATCH_SIZE = 10
 
 function buildLicensePlaceholder(reference: LicenseReference): LicenseDetail | null {
   if (!reference.key) return null
@@ -25,12 +32,9 @@ function buildLicensePlaceholder(reference: LicenseReference): LicenseDetail | n
   }
 }
 
-async function resolveLicenseReference(
+export async function resolveLicenseReference(
   reference: LicenseReference
 ): Promise<LicenseDetail | null> {
-  // Keygen statuses are normalized to the canonical vocabulary here, at the
-  // account boundary, so everything downstream (entitlement, badges, banners)
-  // only ever sees active/expired/suspended/revoked/unknown.
   if (reference.id) {
     try {
       const license = await licenseClient.getLicenseWithMachines(reference.id)
@@ -58,24 +62,43 @@ async function resolveLicenseReference(
   return buildLicensePlaceholder(reference)
 }
 
-export async function getResolvedCustomerLicenses(): Promise<{
+export async function getResolvedLicensesFromOrders(
+  orders: MedusaOrder[]
+): Promise<LicenseDetail[]> {
+  const references = extractLicenseReferencesFromOrders(orders)
+  const uniqueReferences = Array.from(
+    new Map(
+      references.map((reference) => [
+        reference.id ? `id:${reference.id}` : `key:${reference.key}`,
+        reference,
+      ])
+    ).values()
+  )
+
+  const licenses: Array<LicenseDetail | null> = []
+  for (let index = 0; index < uniqueReferences.length; index += LICENSE_LOOKUP_BATCH_SIZE) {
+    const batch = uniqueReferences.slice(index, index + LICENSE_LOOKUP_BATCH_SIZE)
+    licenses.push(...(await Promise.all(batch.map(resolveLicenseReference))))
+  }
+
+  return licenses.filter((license): license is LicenseDetail => Boolean(license))
+}
+
+export async function getResolvedCustomerLicenses(customer?: MedusaCustomer): Promise<{
   authenticated: boolean
   licenses: LicenseDetail[]
 }> {
-  const customer = await getCustomer()
-  if (!customer) {
+  const resolvedCustomer = customer ?? (await getCustomer())
+  if (!resolvedCustomer) {
     return { authenticated: false, licenses: [] }
   }
 
-  const orders = await getAllCustomerOrders()
-  const references = extractLicenseReferencesFromOrders(orders)
-
-  const licenses = await Promise.all(
-    references.map((reference) => resolveLicenseReference(reference))
-  )
+  const orders = customer
+    ? await listAdminCustomerOrders(resolvedCustomer.id)
+    : await getAllOrders()
 
   return {
     authenticated: true,
-    licenses: licenses.filter((license): license is LicenseDetail => Boolean(license)),
+    licenses: await getResolvedLicensesFromOrders(orders),
   }
 }

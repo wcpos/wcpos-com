@@ -13,11 +13,22 @@ A customer's right to use WCPOS Pro, created by a purchase and identified
 by a license key. Yearly (expires) or Lifetime (no expiry).
 _Avoid_: subscription, membership
 
+**Plan**:
+The product tier a License grants — Yearly (a year of updates, then
+expires) or Lifetime (no expiry). Identified internally by a PlanId,
+mapped to one Keygen policy and one Medusa product handle, with the
+display label, in the single registry `src/lib/plans.ts`. An unrecognized
+policy resolves to no plan (never guessed).
+_Avoid_: tier, SKU, subscription level
+
 **Active (license)**:
 A license inside its term, or a Lifetime license. Grants downloads,
 updates, and machine activations. Keygen's raw EXPIRING and INACTIVE
 statuses are in-term paid licenses and normalize to active
-(`normalizeLicenseStatus`, src/lib/license-status.ts).
+(`normalizeLicenseStatus`, src/lib/license-status.ts). Normalization
+happens once, at the Keygen adapter seam (license-client `mapLicenseData`);
+every `LicenseDetail.status` and the deep License module
+(`src/lib/license.ts`) work in the canonical vocabulary.
 
 **Expired (license)**:
 A license that reached the natural end of its term. Keeps access to
@@ -62,9 +73,57 @@ The person who buys and holds licenses, authenticated via the Medusa
 session. There are no separate "users" or roles on this site.
 _Avoid_: user, account, client
 
+**Checkout**:
+The flow that turns a cart into a paid order: open a payment session with
+a provider (Stripe or PayPal), the Customer pays, then complete the cart.
+Completion runs **only after the provider has confirmed payment**.
+_Avoid_: purchase flow, buy
+
+**Order**:
+A completed purchase in Medusa: line items, totals, and the metadata
+that carries the license keys it issued. The source of a customer's
+license references (`extractLicenseReferencesFromOrders`). Fetched via
+the deep `customer-orders` module (`src/lib/customer-orders.ts`);
+identified by Medusa `id` and a human-facing `display_id`.
+_Avoid_: invoice, transaction, receipt (the receipt is the rendered PDF
+of an order, not the order itself).
+
+**Order pending**:
+The state where payment was captured but the order could not be created.
+The Customer must **not** pay again; support finishes or refunds it.
+Surfaced as `OrderPendingError` client-side and a `409 order_pending`
+response from the completion route.
+_Avoid_: failed payment, retryable error
+
 **Unverifiable (license)**:
 A license reference whose current state cannot be confirmed right now
 (license server unreachable, or a legacy key that no longer resolves).
 Presented honestly as unverified; grants nothing while unverified, but is
 never treated as revoked.
 _Avoid_: unknown, broken, invalid
+
+### Discord community
+
+**Discord link**:
+A verified association between one Medusa customer and one Discord user ID,
+created by Discord OAuth using the `identify` scope. Stored on customer
+metadata until scale requires a dedicated Medusa table.
+_Avoid_: Discord login, Discord auth provider
+
+**Discord Pro role**:
+A bot-managed community role in the WCPOS Discord server. Granted only while
+the linked customer has an active license. Expired licenses can retain
+pre-expiry downloads, but they do not keep this current-community perk.
+_Avoid_: membership, subscription role
+
+**Role sync**:
+The idempotent operation that compares a linked customer's active-license
+state with their Discord role state, then adds or removes the Discord Pro role
+when needed.
+_Avoid_: manual role management
+
+**Reconciliation**:
+The scheduled two-way sweep that syncs all linked customers and removes
+orphaned/manual Discord Pro role grants from current role holders. Inline syncs
+are best-effort; reconciliation is the correctness guarantee.
+_Avoid_: one-way cleanup, cron-only expiry check

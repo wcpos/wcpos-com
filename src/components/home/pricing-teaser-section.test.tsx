@@ -43,7 +43,7 @@ describe('PricingTeaserSection', () => {
     render(<PricingTeaserSection />)
 
     expect(
-      screen.getByText('$129/year or $249 lifetime. No per-register fees.')
+      screen.getByText('$129/year or $399 lifetime. No per-register fees.')
     ).toBeInTheDocument()
   })
 

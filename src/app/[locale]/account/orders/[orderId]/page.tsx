@@ -1,6 +1,6 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { Suspense } from 'react'
-import { getCustomerOrderById } from '@/lib/medusa-auth'
+import { getOrderById } from '@/lib/customer-orders'
 import { extractLicenseReferencesFromOrders } from '@/lib/licenses'
 import { formatOrderAmount } from '@/lib/order-display'
 import { formatDateForLocale } from '@/lib/date-format'
@@ -33,7 +33,7 @@ async function OrderDetailContent({
   const { orderId, locale } = await params
   const [t, order] = await Promise.all([
     getTranslations({ locale, namespace: 'account.orderDetail' }),
-    getCustomerOrderById(orderId),
+    getOrderById(orderId),
   ])
 
   if (!order) {

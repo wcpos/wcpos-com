@@ -1,7 +1,10 @@
 import 'server-only'
 
 import { env } from '@/utils/env'
-import { normalizeLicenseStatus } from '@/lib/license-status'
+import {
+  normalizeLicenseStatus,
+  type CanonicalLicenseStatus,
+} from '@/lib/license-status'
 import { licenseLogger } from '@/lib/logger'
 import type {
   LicenseStatusResponse,
@@ -79,7 +82,9 @@ function mapLicenseData(
   return {
     id: data.id,
     key: data.attributes.key,
-    status: data.attributes.status,
+    // Canonical by construction: raw Keygen status is normalized here, at the
+    // adapter seam, so every LicenseDetail downstream carries canonical status.
+    status: normalizeLicenseStatus(data.attributes.status),
     expiry: data.attributes.expiry,
     maxMachines: data.attributes.maxMachines,
     metadata: data.attributes.metadata,
@@ -299,12 +304,6 @@ async function validateLicense(
     }
   }
 
-  const keygenStatus = license.status.toUpperCase()
-  // The plugin understands four statuses: active/expired/inactive/invalid
-  // (LicenseStatus in src/types/license.ts). Keygen's raw space is wider:
-  // EXPIRING (within days of expiry) and INACTIVE (no validation in ~90
-  // days) are paid, in-term licenses and must report as active — same
-  // policy as normalizeLicenseStatus (src/lib/license-status.ts, ADR-0001).
   const activeData: LicenseStatusResponse['data'] = {
     activated,
     status: 'active',
@@ -313,11 +312,16 @@ async function validateLicense(
     activationsCount,
     productName: 'WooCommerce POS Pro',
   }
-  const statusMap: Record<string, LicenseStatusResponse['data']> = {
-    ACTIVE: activeData,
-    EXPIRING: activeData,
-    INACTIVE: activeData,
-    EXPIRED: {
+
+  // Plugin display vocabulary (active/expired/inactive/invalid) derived from
+  // the CANONICAL status. 'suspended' -> plugin 'inactive'; 'revoked'/'unknown'
+  // -> plugin 'invalid'. Output is identical to the previous raw-keyed map.
+  const pluginDataByCanonical: Record<
+    CanonicalLicenseStatus,
+    LicenseStatusResponse['data']
+  > = {
+    active: activeData,
+    expired: {
       activated: false,
       status: 'expired',
       expiresAt: license.expiry ?? undefined,
@@ -325,13 +329,17 @@ async function validateLicense(
       activationsCount,
       productName: 'WooCommerce POS Pro',
     },
-    SUSPENDED: {
+    suspended: {
       activated: false,
       status: 'inactive',
       productName: 'WooCommerce POS Pro',
     },
-    // Keygen's terminal status (fraud, refund) — permanently invalid.
-    BANNED: {
+    revoked: {
+      activated: false,
+      status: 'invalid',
+      productName: 'WooCommerce POS Pro',
+    },
+    unknown: {
       activated: false,
       status: 'invalid',
       productName: 'WooCommerce POS Pro',
@@ -340,16 +348,11 @@ async function validateLicense(
 
   return {
     status: 200,
-    data: statusMap[keygenStatus] ?? {
-      activated: false,
-      status: 'invalid',
-      productName: 'WooCommerce POS Pro',
-    },
-    // Entitlement must come from the RAW Keygen status run through the
-    // canonical normalizer — never from data.status above, whose plugin
-    // vocabulary collides with it ('inactive' there means suspended).
+    data: pluginDataByCanonical[license.status],
+    // Entitlement carries the canonical status straight through — it is already
+    // normalized at the adapter seam.
     entitlement: {
-      status: normalizeLicenseStatus(license.status),
+      status: license.status,
       expiry: license.expiry,
     },
   }

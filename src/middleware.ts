@@ -11,8 +11,9 @@ import {
   ANALYTICS_CONSENT_COOKIE,
   parseAnalyticsConsent,
 } from '@/lib/analytics/consent'
+import { MEDUSA_TOKEN_COOKIE } from '@/lib/medusa-cookie'
 
-const COOKIE_NAME = 'medusa-token'
+const COOKIE_NAME = MEDUSA_TOKEN_COOKIE
 const UPDATES_HOSTNAME = 'updates.wcpos.com'
 const MAIN_SITE_ORIGIN = 'https://wcpos.com'
 

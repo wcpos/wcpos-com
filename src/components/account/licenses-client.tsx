@@ -8,11 +8,13 @@ import { AccountNotice } from '@/components/account/account-notice'
 import { Key, Monitor, Trash2, Download } from 'lucide-react'
 import { Link } from '@/i18n/navigation'
 import { formatDateForLocale } from '@/lib/date-format'
+import type { CanonicalLicenseStatus } from '@/lib/license-status'
 import {
   getExpiringSoonExpiry,
   getLicenseDisplayStatus,
   isLicenseExpiringSoon,
-} from '@/lib/license-display'
+} from '@/lib/license'
+import { getPlanByPolicyId } from '@/lib/plans'
 
 interface Machine {
   id: string
@@ -25,7 +27,7 @@ interface Machine {
 interface License {
   id: string
   key: string
-  status: string
+  status: CanonicalLicenseStatus
   expiry: string | null
   maxMachines: number
   machines: Machine[]
@@ -33,8 +35,6 @@ interface License {
   policyId: string
   createdAt: string
 }
-
-const YEARLY_POLICY = '261cb7e2-6e80-476e-98bd-fe7f406f258d'
 
 // Display statuses with a dedicated translation. The underlying status
 // values stay untouched (they drive entitlement logic and e2e selectors);
@@ -140,10 +140,11 @@ export function LicensesClient({ initialLicenses }: LicensesClientProps) {
   // present those licenses as expired so the UI matches download entitlement.
   // (Shared rule: unparseable expiry fails closed, matching the server.)
   const getDisplayStatus = (license: License) =>
-    getLicenseDisplayStatus(license.status, license.expiry, now)
+    getLicenseDisplayStatus(license, now)
 
-  const getPlanName = (policyId: string) => {
-    return policyId === YEARLY_POLICY ? t('planYearly') : t('planLifetime')
+  const getPlanLabel = (policyId: string) => {
+    const plan = getPlanByPolicyId(policyId)
+    return plan ? t(plan.labelKey) : null
   }
 
   // When another active license (e.g. a lifetime one) keeps update access
@@ -176,6 +177,7 @@ export function LicensesClient({ initialLicenses }: LicensesClientProps) {
         licenses.map((license) => {
           const displayStatus = getDisplayStatus(license)
           const expiringSoon = isLicenseExpiringSoon(license, now)
+          const planLabel = getPlanLabel(license.policyId)
           return (
           <Card key={license.id}>
             <CardHeader>
@@ -210,9 +212,11 @@ export function LicensesClient({ initialLicenses }: LicensesClientProps) {
                       ? tStatus(displayStatus)
                       : displayStatus}
                   </span>
-                  <span className="rounded-full border px-2.5 py-1 text-xs font-medium text-muted-foreground">
-                    {getPlanName(license.policyId)}
-                  </span>
+                  {planLabel && (
+                    <span className="rounded-full border px-2.5 py-1 text-xs font-medium text-muted-foreground">
+                      {planLabel}
+                    </span>
+                  )}
                 </div>
               </div>
             </CardHeader>

@@ -2,15 +2,17 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { NextRequest } from 'next/server'
 
 const mockGetCustomer = vi.fn()
-const mockGetAllCustomerOrders = vi.fn()
+const mockGetAllOrders = vi.fn()
 const mockExtractLicenseIdsFromOrders = vi.fn()
 const mockGetLicenseMachines = vi.fn()
 const mockDeactivateMachine = vi.fn()
 
 vi.mock('@/lib/medusa-auth', () => ({
   getCustomer: (...args: unknown[]) => mockGetCustomer(...args),
-  getAllCustomerOrders: (...args: unknown[]) =>
-    mockGetAllCustomerOrders(...args),
+}))
+
+vi.mock('@/lib/customer-orders', () => ({
+  getAllOrders: (...args: unknown[]) => mockGetAllOrders(...args),
 }))
 
 vi.mock('@/lib/licenses', () => ({
@@ -65,7 +67,7 @@ describe('DELETE /api/account/licenses/[licenseId]/machines/[machineId]', () => 
 
   it('returns 403 when the license does not belong to the customer (ownership check)', async () => {
     mockGetCustomer.mockResolvedValueOnce({ id: 'cust_1' })
-    mockGetAllCustomerOrders.mockResolvedValueOnce([{ id: 'order_1' }])
+    mockGetAllOrders.mockResolvedValueOnce([{ id: 'order_1' }])
     // Customer owns lic_mine, attempts to deactivate a machine on lic_other
     mockExtractLicenseIdsFromOrders.mockReturnValueOnce(['lic_mine'])
 
@@ -80,7 +82,7 @@ describe('DELETE /api/account/licenses/[licenseId]/machines/[machineId]', () => 
 
   it('returns 403 when the machine does not belong to the license', async () => {
     mockGetCustomer.mockResolvedValueOnce({ id: 'cust_1' })
-    mockGetAllCustomerOrders.mockResolvedValueOnce([{ id: 'order_1' }])
+    mockGetAllOrders.mockResolvedValueOnce([{ id: 'order_1' }])
     mockExtractLicenseIdsFromOrders.mockReturnValueOnce(['lic_mine'])
     mockGetLicenseMachines.mockResolvedValueOnce([
       { id: 'machine_a' },
@@ -97,7 +99,7 @@ describe('DELETE /api/account/licenses/[licenseId]/machines/[machineId]', () => 
 
   it('deactivates an owned machine and returns success', async () => {
     mockGetCustomer.mockResolvedValueOnce({ id: 'cust_1' })
-    mockGetAllCustomerOrders.mockResolvedValueOnce([{ id: 'order_1' }])
+    mockGetAllOrders.mockResolvedValueOnce([{ id: 'order_1' }])
     mockExtractLicenseIdsFromOrders.mockReturnValueOnce(['lic_mine'])
     mockGetLicenseMachines.mockResolvedValueOnce([{ id: 'machine_a' }])
     mockDeactivateMachine.mockResolvedValueOnce(true)
@@ -113,7 +115,7 @@ describe('DELETE /api/account/licenses/[licenseId]/machines/[machineId]', () => 
 
   it('returns 500 when the license service fails to deactivate', async () => {
     mockGetCustomer.mockResolvedValueOnce({ id: 'cust_1' })
-    mockGetAllCustomerOrders.mockResolvedValueOnce([{ id: 'order_1' }])
+    mockGetAllOrders.mockResolvedValueOnce([{ id: 'order_1' }])
     mockExtractLicenseIdsFromOrders.mockReturnValueOnce(['lic_mine'])
     mockGetLicenseMachines.mockResolvedValueOnce([{ id: 'machine_a' }])
     mockDeactivateMachine.mockResolvedValueOnce(false)
@@ -127,7 +129,7 @@ describe('DELETE /api/account/licenses/[licenseId]/machines/[machineId]', () => 
 
   it('returns 500 when an unexpected error is thrown', async () => {
     mockGetCustomer.mockResolvedValueOnce({ id: 'cust_1' })
-    mockGetAllCustomerOrders.mockRejectedValueOnce(
+    mockGetAllOrders.mockRejectedValueOnce(
       new Error('Medusa unreachable')
     )
 

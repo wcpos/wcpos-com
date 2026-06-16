@@ -3,10 +3,8 @@ import { env } from '@/utils/env'
 import { getCustomer } from '@/lib/medusa-auth'
 import { getResolvedCustomerLicenses } from '@/lib/customer-licenses'
 import { verifyDownloadToken } from '@/lib/download-token'
-import {
-  findReleaseByVersion,
-  isReleaseAllowedForLicenses,
-} from '@/services/core/business/pro-downloads'
+import { isReleaseAllowedForLicenses } from '@/lib/license'
+import { findReleaseByVersion } from '@/services/core/business/pro-downloads'
 import { getGitHubToken } from '@/services/core/external/github-auth'
 import { licenseLogger } from '@/lib/logger'
 

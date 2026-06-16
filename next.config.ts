@@ -64,7 +64,7 @@ const nextConfig: NextConfig = {
       { source: '/terms-of-service', destination: '/terms', statusCode: 301 },
       { source: '/refund-policy', destination: '/refunds', statusCode: 301 },
       { source: '/contact', destination: '/support', statusCode: 301 },
-      { source: '/about', destination: '/', statusCode: 301 },
+      { source: '/about', destination: 'https://wcpos.com/', statusCode: 301 },
       // Old docs pages that exist at the same path on docs.wcpos.com
       { source: '/docs/cart', destination: 'https://docs.wcpos.com/cart', statusCode: 301 },
       { source: '/docs/coupons', destination: 'https://docs.wcpos.com/coupons', statusCode: 301 },
@@ -83,11 +83,11 @@ const nextConfig: NextConfig = {
       { source: '/faq/:path*', destination: 'https://docs.wcpos.com', statusCode: 301 },
       { source: '/faq', destination: 'https://docs.wcpos.com', statusCode: 301 },
       // 2014-2017 blog archive and taxonomy pages — consolidate to home
-      { source: '/blog', destination: '/', statusCode: 301 },
-      { source: '/:year(201[4-7])/:month(\\d{2})/:slug*', destination: '/', statusCode: 301 },
-      { source: '/category/:slug*', destination: '/', statusCode: 301 },
-      { source: '/tag/:slug*', destination: '/', statusCode: 301 },
-      { source: '/author/:slug*', destination: '/', statusCode: 301 },
+      { source: '/blog', destination: 'https://wcpos.com/', statusCode: 301 },
+      { source: '/:year(201[4-7])/:month(\\d{2})/:slug*', destination: 'https://wcpos.com/', statusCode: 301 },
+      { source: '/category/:slug*', destination: 'https://wcpos.com/', statusCode: 301 },
+      { source: '/tag/:slug*', destination: 'https://wcpos.com/', statusCode: 301 },
+      { source: '/author/:slug*', destination: 'https://wcpos.com/', statusCode: 301 },
     ]
   },
   async headers() {

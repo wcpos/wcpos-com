@@ -15,6 +15,7 @@
     "privacy": "Privacy",
     "terms": "Terms",
     "refunds": "Refunds",
+    "about": "About",
     "language": "Language",
     "theme": "Theme",
     "themeLight": "Light",
@@ -136,7 +137,23 @@
       "viewAllOrders": "View all orders",
       "manageLicenses": "Manage licenses",
       "recentOrders": "Recent Orders",
-      "orderNumber": "Order #{id}"
+      "orderNumber": "Order #{id}",
+      "discordCardTitle": "Discord Pro 身份组",
+      "discordConnectedFallback": "Discord 已连接",
+      "discordConnectedDescription": "你的 Discord 账号已关联。有效的 Pro 许可证会自动获得 Pro 身份组。",
+      "discordDisconnectedDescription": "关联 Discord，在拥有有效 WCPOS Pro 许可证期间获取社区 Pro 身份组。",
+      "discordConnect": "连接 Discord",
+      "discordResync": "重新同步身份组",
+      "discordDisconnect": "断开连接",
+      "discordNotConfigured": "尚未配置 Discord 关联。",
+      "discordStatus": {
+        "linked": "Discord 已连接。你的 Pro 身份组将自动同步。",
+        "unlinked": "Discord 已断开。如果 Discord 允许，Pro 身份组已移除。",
+        "synced": "Discord 身份组已重新同步。",
+        "join_server": "加入 Discord 服务器，然后重新同步你的身份组。",
+        "error": "Discord 同步失败。请重试或联系支持。",
+        "already_linked": "该 Discord 账号已关联到另一个 WCPOS 客户。"
+      }
     },
     "orders": {
       "heading": "Order History",

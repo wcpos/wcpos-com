@@ -7,6 +7,7 @@ export function SiteFooter() {
   const t = useTranslations('footer')
 
   const legalLinks = [
+    { label: t('about'), href: '/about-us' },
     { label: t('privacy'), href: '/privacy' },
     { label: t('terms'), href: '/terms' },
     { label: t('refunds'), href: '/refunds' },
