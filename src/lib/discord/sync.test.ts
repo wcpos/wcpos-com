@@ -62,12 +62,12 @@ describe('syncDiscordProRole', () => {
 
   it('skips removal when entitlement cannot be verified', async () => {
     const d = deps({
-      getLicensesForCustomer: vi.fn(async () => [{ status: 'unknown' }]),
+      getLicensesForCustomer: vi.fn(async () => [{ status: 'unknown', expiry: null }]),
       getMemberRoleState: memberRoleState('has_role'),
     } as Partial<DiscordRoleSyncDependencies>)
 
     await expect(syncDiscordProRole(customer(), d)).resolves.toEqual({
-      action: 'skipped_unknown_entitlement',
+      action: 'skipped_unverifiable_entitlement',
       customerId: 'cust_1',
       discordUserId: 'discord_1',
     })
