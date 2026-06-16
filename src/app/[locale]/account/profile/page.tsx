@@ -2,6 +2,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { Suspense } from 'react'
 import { getCustomer } from '@/lib/medusa-auth'
 import { getDiscordLink } from '@/lib/discord/metadata'
+import { isDiscordConfigured } from '@/lib/discord/config'
 import { formatDateForLocale } from '@/lib/date-format'
 import { redirectToLoginClearingSession } from '@/lib/login-redirect'
 import { Card, CardContent } from '@/components/ui/card'
@@ -32,6 +33,7 @@ async function ProfileContent({ locale }: { locale: string }) {
   }
 
   const discordLink = getDiscordLink(customer.metadata)
+  const discordConfigured = isDiscordConfigured()
 
   return (
     <ProfileEditForm
@@ -47,7 +49,8 @@ async function ProfileContent({ locale }: { locale: string }) {
         google: { email: customer.email },
         discord: discordLink
           ? { connected: true, username: discordLink.username }
-          : { connected: false },
+          : { connected: false, configured: discordConfigured },
+        discordReturnTo: `/${locale}/account/profile`,
       }}
     />
   )
@@ -72,12 +75,29 @@ function ProfileSkeleton() {
 
 export default async function ProfilePage({
   params,
+  searchParams,
 }: {
   params: Promise<{ locale: string }>
+  searchParams?: Promise<{ discord?: string }>
 }) {
   const { locale } = await params
+  const resolvedSearchParams = searchParams ? await searchParams : {}
   setRequestLocale(locale)
   const t = await getTranslations({ locale, namespace: 'account.profile' })
+  const overviewT = await getTranslations({
+    locale,
+    namespace: 'account.overview',
+  })
+  const discordStatus = resolvedSearchParams.discord
+  const discordStatusKey =
+    discordStatus === 'linked' ||
+    discordStatus === 'unlinked' ||
+    discordStatus === 'synced' ||
+    discordStatus === 'join_server' ||
+    discordStatus === 'already_linked' ||
+    discordStatus === 'error'
+      ? discordStatus
+      : null
 
   return (
     <div className="space-y-6">
@@ -85,6 +105,11 @@ export default async function ProfilePage({
         <h1 className="text-2xl font-bold tracking-tight">{t('heading')}</h1>
         <p className="text-sm text-muted-foreground">{t('lede')}</p>
       </div>
+      {discordStatusKey && (
+        <div className="rounded-md border border-blue-200 bg-blue-50 p-3 text-sm text-blue-900">
+          {overviewT(`discordStatus.${discordStatusKey}`)}
+        </div>
+      )}
       <Suspense fallback={<ProfileSkeleton />}>
         <ProfileContent locale={locale} />
       </Suspense>
