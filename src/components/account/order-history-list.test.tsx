@@ -76,6 +76,33 @@ describe('OrderHistoryList', () => {
     expect(screen.getByText('WCPOS Pro Yearly')).toBeInTheDocument()
   })
 
+  it('does not reuse React keys for licences with the same masked key', () => {
+    const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {})
+
+    render(
+      <OrderHistoryList
+        orders={[
+          makeOrder({
+            licenses: [
+              { maskedKey: '****-****-1234', product: 'WCPOS Pro Yearly' },
+              { maskedKey: '****-****-1234', product: 'WCPOS Pro Monthly' },
+            ],
+          }),
+        ]}
+        locale="en-US"
+      />
+    )
+
+    const duplicateKeyMessages = consoleError.mock.calls
+      .map(([message]) => String(message))
+      .filter((message) =>
+        message.includes('Encountered two children with the same key')
+      )
+    consoleError.mockRestore()
+
+    expect(duplicateKeyMessages).toEqual([])
+  })
+
   it('omits the licence chip when no licence metadata is present', () => {
     render(<OrderHistoryList orders={[makeOrder()]} locale="en-US" />)
 

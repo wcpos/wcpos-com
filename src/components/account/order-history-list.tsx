@@ -88,9 +88,9 @@ export function OrderHistoryList({ orders, locale }: OrderHistoryListProps) {
                     count: order.items.length,
                   })}
                 </p>
-                {order.licenses?.map((license) => (
+                {order.licenses?.map((license, index) => (
                   <p
-                    key={license.maskedKey}
+                    key={`${license.maskedKey}-${license.product ?? 'license'}-${index}`}
                     className="flex flex-wrap items-center gap-x-1.5 gap-y-0.5 text-sm text-muted-foreground"
                   >
                     <Key
