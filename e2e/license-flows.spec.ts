@@ -39,7 +39,7 @@ function licenseCard(page: Page, maskedKey: string) {
 /** A release row on /account/downloads, identified by its release name. */
 function releaseRow(page: Page, releaseName: string) {
   return page
-    .locator('div.rounded-lg.border')
+    .locator('[data-testid="release-row"]')
     .filter({ has: page.getByText(releaseName, { exact: true }) })
 }
 

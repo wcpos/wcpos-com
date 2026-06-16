@@ -3,6 +3,7 @@ import { Link } from '@/i18n/navigation'
 import { FileDown, Key, ShoppingBag } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
+import { DividedList, Row } from '@/components/ui/row'
 import { formatOrderAmount } from '@/lib/order-display'
 import { formatDateForLocale } from '@/lib/date-format'
 import { getOrderDisplayStatus } from '@/lib/order-status'
@@ -67,15 +68,11 @@ export function OrderHistoryList({ orders, locale }: OrderHistoryListProps) {
   }
 
   return (
-    <div className="space-y-3">
-      {orders.map((order) => (
-        <Card
-          key={order.id}
-          className="transition-colors hover:border-foreground/20"
-        >
-          <CardContent className="py-4">
-            <div className="flex flex-wrap items-center justify-between gap-4">
-              <div className="min-w-0 space-y-1">
+    <Card>
+      <DividedList>
+        {orders.map((order) => (
+          <Row key={order.id} className="gap-4 px-6">
+            <div className="min-w-0 space-y-1">
                 {/* Plain text, not a link: the row's "View" action below is
                     the single anchor to the detail page, so no nested
                     anchors and the Receipt button stays a sibling. */}
@@ -141,10 +138,9 @@ export function OrderHistoryList({ orders, locale }: OrderHistoryListProps) {
                   </Button>
                 </div>
               </div>
-            </div>
-          </CardContent>
-        </Card>
-      ))}
-    </div>
+          </Row>
+        ))}
+      </DividedList>
+    </Card>
   )
 }

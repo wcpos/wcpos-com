@@ -13,6 +13,7 @@ import { ArrowLeft, FileDown, Key } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
+import { DividedList, Row } from '@/components/ui/row'
 import type { CanonicalLicenseStatus } from '@/lib/license-status'
 import type { Metadata } from 'next'
 
@@ -156,12 +157,9 @@ async function OrderDetailContent({
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="space-y-2">
+            <DividedList>
               {licenseEntitlements.map((license) => (
-                <div
-                  key={license.id}
-                  className="flex flex-wrap items-center justify-between gap-3 rounded-lg border bg-muted/40 p-3"
-                >
+                <Row key={license.id} className="gap-3">
                   <div className="flex min-w-0 items-center gap-2.5">
                     <span
                       aria-hidden="true"
@@ -193,9 +191,9 @@ async function OrderDetailContent({
                       {t('manageLicence')}
                     </Link>
                   </div>
-                </div>
+                </Row>
               ))}
-            </div>
+            </DividedList>
           </CardContent>
         </Card>
       )}
@@ -206,12 +204,9 @@ async function OrderDetailContent({
             <CardTitle className="text-lg">{t('licenseKeysTitle')}</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="space-y-2">
+            <DividedList>
               {licenses.map((lic) => (
-                <div
-                  key={lic.id}
-                  className="flex flex-wrap items-center justify-between gap-2 rounded-lg border bg-muted/40 p-3"
-                >
+                <Row key={lic.id} className="gap-2">
                   {/* The full key is intentionally shown here: the order page
                       is where customers retrieve it for plugin activation. */}
                   <code className="break-all font-mono text-sm tracking-wide">
@@ -223,9 +218,9 @@ async function OrderDetailContent({
                   >
                     {t('manage')}
                   </Link>
-                </div>
+                </Row>
               ))}
-            </div>
+            </DividedList>
           </CardContent>
         </Card>
       )}

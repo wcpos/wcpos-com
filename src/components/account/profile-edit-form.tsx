@@ -371,7 +371,7 @@ export function ProfileEditForm({
           <CardTitle className="text-lg">{t('cardTitle')}</CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
-          <div className="space-y-3 rounded-lg border p-4">
+          <div className="space-y-3 border-b pb-6">
             <div className="flex items-center gap-4">
               <Avatar className="h-16 w-16">
                 {avatarUrl ? (
