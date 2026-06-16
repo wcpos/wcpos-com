@@ -13,6 +13,7 @@ import type { MedusaProduct } from '@/types/medusa'
 import { formatPrice, getVariantPrice } from '@/services/core/external/medusa-client'
 import type { ProCheckoutVariant } from '@/services/core/analytics/posthog-service'
 import { TrackedLocaleLink } from '@/components/analytics/tracked-locale-link'
+import { getPlanByHandle } from '@/lib/plans'
 
 interface PricingCardProps {
   product: MedusaProduct
@@ -47,7 +48,7 @@ export function PricingCard({
 }: PricingCardProps) {
   const variant = product.variants[0]
   const price = variant ? getVariantPrice(variant, currencyCode) : null
-  const isLifetime = product.handle === 'wcpos-pro-lifetime'
+  const isLifetime = getPlanByHandle(product.handle)?.id === 'lifetime'
   const features = isLifetime ? FEATURES.lifetime : FEATURES.yearly
   const ctaLabel = experimentVariant === 'value_copy'
     ? 'Get Instant Access'

@@ -168,6 +168,31 @@ describe('LicensesClient', () => {
     ).not.toBeInTheDocument()
   })
 
+  it('labels a yearly-policy license "Yearly"', () => {
+    render(
+      <LicensesClient
+        initialLicenses={[
+          makeLicense({ policyId: '261cb7e2-6e80-476e-98bd-fe7f406f258d' }),
+        ]}
+      />
+    )
+
+    expect(screen.getByText('Yearly')).toBeInTheDocument()
+  })
+
+  it('does NOT label an unregistered/unknown policy as "Lifetime"', () => {
+    render(
+      <LicensesClient
+        initialLicenses={[
+          makeLicense({ status: 'unknown', expiry: null, policyId: 'unknown' }),
+        ]}
+      />
+    )
+
+    expect(screen.queryByText('Lifetime')).not.toBeInTheDocument()
+    expect(screen.queryByText('Yearly')).not.toBeInTheDocument()
+  })
+
   it('softens the per-card notice when a lifetime license keeps update access open', () => {
     const expiry = new Date(Date.now() + 10 * 24 * 60 * 60 * 1000).toISOString()
     render(

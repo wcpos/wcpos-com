@@ -39,6 +39,12 @@ const envSchema = z.object({
   KEYGEN_HOST: z.string().default('license.wcpos.com'),
   KEYGEN_API_TOKEN: z.string().optional(),
   DOWNLOAD_TOKEN_SECRET: z.string().optional(),
+  // Keygen policy ids per plan (NEXT_PUBLIC_ so the account badge — a client
+  // component — can map a license's policyId to its plan). Yearly defaults to
+  // the known UUID in src/lib/plans.ts; Lifetime MUST be set per environment
+  // (its UUID is not hardcoded). Not secrets.
+  NEXT_PUBLIC_KEYGEN_YEARLY_POLICY_ID: z.string().optional(),
+  NEXT_PUBLIC_KEYGEN_LIFETIME_POLICY_ID: z.string().optional(),
 
   // Discord Pro role sync
   DISCORD_CLIENT_ID: z.string().optional(),
