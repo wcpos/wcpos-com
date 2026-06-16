@@ -303,7 +303,30 @@
       "updateError": "Failed to update profile",
       "updateSuccess": "Profile updated successfully.",
       "saving": "Saving...",
-      "save": "Save changes"
+      "save": "Save changes",
+      "lede": "Deine Daten, Rechnungsinformationen und verbundenen Dienste.",
+      "billingDetailsHint": "Wird auf deinen Belegen verwendet.",
+      "connectionsTitle": "Verbindungen",
+      "connectionsHint": "Mit deinem Konto verknüpfte Anmeldedienste und Community-Zugang.",
+      "googleProvider": "Google",
+      "googleDescription": "Wird für die Ein-Klick-Anmeldung verwendet.",
+      "discordProvider": "Discord",
+      "discordDescription": "Verbinden, um die Pro-Rolle in unserem Community-Discord zu erhalten.",
+      "connected": "Verbunden",
+      "connectedAs": "Verbunden als {account}",
+      "connectDiscord": "Discord verbinden",
+      "disconnect": "Trennen",
+      "disconnecting": "Wird getrennt...",
+      "disconnectError": "Trennen nicht möglich. Bitte versuche es erneut.",
+      "discordStatus": {
+        "linked": "Discord connected. Your Pro role will sync automatically.",
+        "unlinked": "Discord disconnected. The Pro role was removed if Discord allowed it.",
+        "synced": "Discord role resynced.",
+        "join_server": "Tritt dem Discord-Server bei und synchronisiere dann deine Rolle erneut.",
+        "error": "Discord sync failed. Please try again or contact support.",
+        "already_linked": "That Discord account is already linked to another WCPOS customer."
+      },
+      "discordNotConfigured": "Discord linking is not configured yet."
     }
   }
 }

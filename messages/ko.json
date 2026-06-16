@@ -303,7 +303,30 @@
       "updateError": "Failed to update profile",
       "updateSuccess": "Profile updated successfully.",
       "saving": "Saving...",
-      "save": "Save changes"
+      "save": "Save changes",
+      "lede": "회원님의 정보, 청구 정보 및 연결된 서비스입니다.",
+      "billingDetailsHint": "영수증에 사용됩니다.",
+      "connectionsTitle": "연결",
+      "connectionsHint": "계정에 연결된 로그인 공급자 및 커뮤니티 액세스입니다.",
+      "googleProvider": "Google",
+      "googleDescription": "원클릭 로그인에 사용됩니다.",
+      "discordProvider": "Discord",
+      "discordDescription": "연결하면 커뮤니티 Discord에서 Pro 역할을 받을 수 있습니다.",
+      "connected": "연결됨",
+      "connectedAs": "{account}(으)로 연결됨",
+      "connectDiscord": "Discord 연결",
+      "disconnect": "연결 해제",
+      "disconnecting": "연결 해제 중...",
+      "disconnectError": "연결을 해제할 수 없습니다. 다시 시도해 주세요.",
+      "discordStatus": {
+        "linked": "Discord connected. Your Pro role will sync automatically.",
+        "unlinked": "Discord disconnected. The Pro role was removed if Discord allowed it.",
+        "synced": "Discord role resynced.",
+        "join_server": "Discord 서버에 참여한 다음 역할을 다시 동기화하세요.",
+        "error": "Discord sync failed. Please try again or contact support.",
+        "already_linked": "That Discord account is already linked to another WCPOS customer."
+      },
+      "discordNotConfigured": "Discord linking is not configured yet."
     }
   }
 }
