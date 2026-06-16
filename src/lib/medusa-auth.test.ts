@@ -40,6 +40,7 @@ import {
   linkOrCreateCustomer,
   parseMedusaError,
 } from './medusa-auth'
+import { AccountExistsError } from '@/lib/api/errors'
 
 describe('medusa-auth', () => {
   beforeEach(() => {
@@ -148,6 +149,27 @@ describe('medusa-auth', () => {
           }),
         })
       )
+    })
+
+    it('throws AccountExistsError when the email is already registered', async () => {
+      // Medusa rejects the auth-identity register step for an existing email.
+      mockFetch.mockResolvedValueOnce({
+        ok: false,
+        status: 401,
+        text: async () => '{"message":"Identity with email already exists"}',
+      })
+
+      const error = await register({
+        email: 'existing@example.com',
+        password: 'securepass',
+      }).catch((e) => e)
+
+      expect(error).toBeInstanceOf(AccountExistsError)
+      expect(error.code).toBe('ACCOUNT_EXISTS')
+      expect(error.status).toBe(409)
+      expect(error.message).toBe('Identity with email already exists')
+      // It must not proceed to the create-customer step.
+      expect(mockFetch).toHaveBeenCalledTimes(1)
     })
   })
 

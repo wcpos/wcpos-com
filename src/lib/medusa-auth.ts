@@ -5,6 +5,7 @@ import { cookies } from 'next/headers'
 import { env } from '@/utils/env'
 import { authLogger } from '@/lib/logger'
 import { MEDUSA_TOKEN_COOKIE } from '@/lib/medusa-cookie'
+import { AccountExistsError } from '@/lib/api/errors'
 
 // ============================================================================
 // Types
@@ -183,7 +184,16 @@ export async function register({
   )
 
   if (!authResponse.ok) {
-    throw new Error(await parseMedusaError(authResponse, 'Registration failed'))
+    const message = await parseMedusaError(authResponse, 'Registration failed')
+    // Classify the duplicate-account case here, at the Medusa adapter seam —
+    // the same place license statuses are normalized once (CONTEXT.md). Medusa
+    // returns "Identity with email already exists" / a duplicate message; a
+    // typed AccountExistsError lets the route map it to 409 ACCOUNT_EXISTS
+    // without re-sniffing provider strings.
+    if (/already exists|duplicate/i.test(message)) {
+      throw new AccountExistsError(message)
+    }
+    throw new Error(message)
   }
 
   const { token } = await authResponse.json()
