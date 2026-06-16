@@ -28,13 +28,18 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     siteName: 'WCPOS',
-    // og:image and twitter:image come from the static opengraph-image.png
-    // file convention in this segment. No code or routes reference extension-less
-    // metadata paths like /opengraph-image or /twitter-image; explicit URLs here
-    // would point at the un-prefixed /opengraph-image path.
+    images: ['/opengraph-image.png'],
+    // og:image and twitter:image come from the static src/app/opengraph-image.png
+    // file convention. It lives at the APP ROOT, not under [locale]: a static
+    // metadata image inside a dynamic segment trips a Next.js cacheComponents
+    // prerender bug (vercel/next.js#88043 — generateStaticParams is ignored for
+    // opengraph-image), which fails the production build. The image is identical
+    // across locales, so one root image is both correct and bug-free. Do not
+    // move it back under [locale].
   },
   twitter: {
     card: 'summary_large_image',
+    images: ['/opengraph-image.png'],
   },
 }
 

@@ -18,6 +18,11 @@ vi.mock('@/i18n/navigation', () => ({
   ),
 }))
 
+vi.mock('next/font/google', () => ({
+  Geist: () => ({ variable: '--font-geist-sans' }),
+  Geist_Mono: () => ({ variable: '--font-geist-mono' }),
+}))
+
 describe('NotFoundPage (localized)', () => {
   it('renders the 404 message', () => {
     render(<NotFoundPage />)
@@ -46,5 +51,14 @@ describe('NotFoundPage (localized)', () => {
       'href',
       '/support'
     )
+  })
+})
+
+describe('LocaleLayout metadata', () => {
+  it('preserves the root social image for localized pages', async () => {
+    const { metadata } = await import('./layout')
+
+    expect(metadata.openGraph?.images).toEqual(['/opengraph-image.png'])
+    expect(metadata.twitter?.images).toEqual(['/opengraph-image.png'])
   })
 })
