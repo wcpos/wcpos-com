@@ -86,17 +86,12 @@
   "account": {
     "nav": {
       "title": "Account",
-      "overview": "Overview",
       "orders": "Orders",
       "licenses": "Licenses",
       "downloads": "Downloads",
       "profile": "Profile"
     },
     "meta": {
-      "overview": {
-        "title": "Account",
-        "description": "Overview of your WCPOS account, recent orders, and licenses."
-      },
       "orders": {
         "title": "Order History",
         "description": "View your WCPOS order history and receipts."
@@ -126,34 +121,6 @@
       "heading": "Something went wrong loading this page.",
       "description": "The error has been reported. You can try again, or come back later.",
       "retry": "Try again"
-    },
-    "overview": {
-      "welcome": "Welcome, {name}",
-      "welcomeNoName": "Welcome",
-      "expiresSoonRenew": "Your license expires on {date} — renew to keep receiving updates.",
-      "renewLicense": "Renew license",
-      "ordersCardTitle": "Orders",
-      "licensesCardTitle": "Licenses",
-      "viewAllOrders": "View all orders",
-      "manageLicenses": "Manage licenses",
-      "recentOrders": "Recent Orders",
-      "orderNumber": "Order #{id}",
-      "discordCardTitle": "Discord Pro role",
-      "discordConnectedFallback": "Discord connected",
-      "discordConnectedDescription": "Your Discord account is linked. Active Pro licenses receive the Pro role automatically.",
-      "discordDisconnectedDescription": "Link Discord to receive the community Pro role while you have an active WCPOS Pro license.",
-      "discordConnect": "Connect Discord",
-      "discordResync": "Resync role",
-      "discordDisconnect": "Disconnect",
-      "discordNotConfigured": "Discord linking is not configured yet.",
-      "discordStatus": {
-        "linked": "Discord connected. Your Pro role will sync automatically.",
-        "unlinked": "Discord disconnected. The Pro role was removed if Discord allowed it.",
-        "synced": "Discord role resynced.",
-        "join_server": "Rejoignez le serveur Discord, puis resynchronisez votre rôle.",
-        "error": "Discord sync failed. Please try again or contact support.",
-        "already_linked": "That Discord account is already linked to another WCPOS customer."
-      }
     },
     "orders": {
       "heading": "Order History",

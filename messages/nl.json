@@ -86,17 +86,12 @@
   "account": {
     "nav": {
       "title": "Account",
-      "overview": "Overview",
       "orders": "Orders",
       "licenses": "Licenses",
       "downloads": "Downloads",
       "profile": "Profile"
     },
     "meta": {
-      "overview": {
-        "title": "Account",
-        "description": "Overview of your WCPOS account, recent orders, and licenses."
-      },
       "orders": {
         "title": "Order History",
         "description": "View your WCPOS order history and receipts."
@@ -126,34 +121,6 @@
       "heading": "Something went wrong loading this page.",
       "description": "The error has been reported. You can try again, or come back later.",
       "retry": "Try again"
-    },
-    "overview": {
-      "welcome": "Welcome, {name}",
-      "welcomeNoName": "Welcome",
-      "expiresSoonRenew": "Your license expires on {date} — renew to keep receiving updates.",
-      "renewLicense": "Renew license",
-      "ordersCardTitle": "Orders",
-      "licensesCardTitle": "Licenses",
-      "viewAllOrders": "View all orders",
-      "manageLicenses": "Manage licenses",
-      "recentOrders": "Recent Orders",
-      "orderNumber": "Order #{id}",
-      "discordCardTitle": "Discord Pro-rol",
-      "discordConnectedFallback": "Discord verbonden",
-      "discordConnectedDescription": "Je Discord-account is gekoppeld. Actieve Pro-licenties krijgen automatisch de Pro-rol.",
-      "discordDisconnectedDescription": "Koppel Discord om de community Pro-rol te ontvangen zolang je een actieve WCPOS Pro-licentie hebt.",
-      "discordConnect": "Discord koppelen",
-      "discordResync": "Rol opnieuw synchroniseren",
-      "discordDisconnect": "Loskoppelen",
-      "discordNotConfigured": "Discord-koppeling is nog niet geconfigureerd.",
-      "discordStatus": {
-        "linked": "Discord verbonden. Je Pro-rol wordt automatisch gesynchroniseerd.",
-        "unlinked": "Discord losgekoppeld. De Pro-rol is verwijderd als Discord dit toestond.",
-        "synced": "Discord-rol opnieuw gesynchroniseerd.",
-        "join_server": "Word lid van de Discord-server en synchroniseer daarna je rol opnieuw.",
-        "error": "Discord-synchronisatie is mislukt. Probeer het opnieuw of neem contact op met support.",
-        "already_linked": "Dat Discord-account is al gekoppeld aan een andere WCPOS-klant."
-      }
     },
     "orders": {
       "heading": "Order History",
