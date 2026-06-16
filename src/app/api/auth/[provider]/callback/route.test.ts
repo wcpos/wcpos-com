@@ -221,9 +221,73 @@ describe('OAuth callback route', () => {
       expect.objectContaining({
         metadata: expect.objectContaining({
           oauth_avatar_url: 'https://avatars.example.com/user.png',
+          // The provider is recorded so the profile can show truthful
+          // per-provider connection state.
+          auth_providers: ['google'],
         }),
       })
     )
+  })
+
+  it('persists the sign-in provider even when no avatar is present', async () => {
+    const token = fakeJwt({
+      actor_id: 'cust_existing',
+      user_metadata: { email: 'noavatar@example.com' },
+    })
+
+    mockCompleteOAuthCallback.mockResolvedValue(token)
+    mockDecodeMedusaToken.mockReturnValue({
+      actor_id: 'cust_existing',
+      actor_type: 'customer',
+      auth_identity_id: 'auth_321',
+      app_metadata: {},
+      user_metadata: { email: 'noavatar@example.com' },
+    })
+    mockSetAuthToken.mockResolvedValue(undefined)
+
+    const request = new NextRequest(
+      'https://wcpos.com/api/auth/github/callback?code=xyz&state=uvw'
+    )
+
+    const response = await GET(request, {
+      params: Promise.resolve({ provider: 'github' }),
+    })
+
+    expect(response.status).toBe(307)
+    expect(mockUpdateCustomer).toHaveBeenCalledWith({
+      metadata: { auth_providers: ['github'] },
+    })
+  })
+
+  it('does not re-write metadata when the provider is already recorded and the avatar is unchanged', async () => {
+    mockGetCustomer.mockResolvedValueOnce({
+      id: 'cust_1',
+      metadata: { auth_providers: ['google'] },
+    })
+    const token = fakeJwt({
+      actor_id: 'cust_existing',
+      user_metadata: { email: 'repeat@example.com' },
+    })
+    mockCompleteOAuthCallback.mockResolvedValue(token)
+    mockDecodeMedusaToken.mockReturnValue({
+      actor_id: 'cust_existing',
+      actor_type: 'customer',
+      auth_identity_id: 'auth_repeat',
+      app_metadata: {},
+      user_metadata: { email: 'repeat@example.com' },
+    })
+    mockSetAuthToken.mockResolvedValue(undefined)
+
+    const request = new NextRequest(
+      'https://wcpos.com/api/auth/google/callback?code=abc&state=def'
+    )
+
+    const response = await GET(request, {
+      params: Promise.resolve({ provider: 'google' }),
+    })
+
+    expect(response.status).toBe(307)
+    expect(mockUpdateCustomer).not.toHaveBeenCalled()
   })
 
   it('rejects unsupported providers', async () => {

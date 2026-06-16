@@ -293,7 +293,11 @@
         "error": "Discord sync failed. Please try again or contact support.",
         "already_linked": "That Discord account is already linked to another WCPOS customer."
       },
-      "discordNotConfigured": "Discord linking is not configured yet."
+      "discordNotConfigured": "Discord linking is not configured yet.",
+      "githubProvider": "GitHub",
+      "githubDescription": "Utilisé pour la connexion en un clic.",
+      "emailProvider": "Email & password",
+      "emailDescription": "You sign in with your email address."
     }
   }
 }

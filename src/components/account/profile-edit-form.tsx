@@ -15,7 +15,12 @@ import {
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
-import { DiscordMark, GoogleMark } from '@/components/auth/provider-marks'
+import { Mail } from 'lucide-react'
+import {
+  DiscordMark,
+  GitHubMark,
+  GoogleMark,
+} from '@/components/auth/provider-marks'
 import { getConnectedAvatarUrlFromMetadata } from '@/lib/avatar'
 
 interface ProfileEditFormProps {
@@ -28,7 +33,7 @@ interface ProfileEditFormProps {
   }
   memberSince?: string
   connections?: {
-    google: { email: string }
+    signIn: { provider: 'google' | 'github' | 'email'; email: string }
     discord:
       | { connected: true; username: string | null }
       | { connected: false; configured: boolean }
@@ -545,19 +550,33 @@ export function ProfileEditForm({
           <CardContent className="space-y-1">
             <div className="flex items-center gap-4 py-3">
               <span className="flex h-10 w-10 flex-none items-center justify-center rounded-md border">
-                <GoogleMark className="h-5 w-5" />
+                {connections.signIn.provider === 'google' ? (
+                  <GoogleMark className="h-5 w-5" />
+                ) : connections.signIn.provider === 'github' ? (
+                  <GitHubMark className="h-5 w-5" />
+                ) : (
+                  <Mail className="h-5 w-5 text-muted-foreground" />
+                )}
               </span>
               <div className="min-w-0 flex-1">
                 <p className="font-medium leading-none">
-                  {t('googleProvider')}
+                  {connections.signIn.provider === 'google'
+                    ? t('googleProvider')
+                    : connections.signIn.provider === 'github'
+                      ? t('githubProvider')
+                      : t('emailProvider')}
                 </p>
                 <p className="mt-1 text-sm text-muted-foreground">
-                  {t('googleDescription')}
+                  {connections.signIn.provider === 'google'
+                    ? t('googleDescription')
+                    : connections.signIn.provider === 'github'
+                      ? t('githubDescription')
+                      : t('emailDescription')}
                 </p>
               </div>
               <div className="flex flex-none items-center gap-2">
                 <Badge variant="success">
-                  {t('connectedAs', { account: connections.google.email })}
+                  {t('connectedAs', { account: connections.signIn.email })}
                 </Badge>
               </div>
             </div>

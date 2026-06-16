@@ -10,6 +10,7 @@ import {
 } from '@/lib/medusa-auth'
 import { authLogger } from '@/lib/logger'
 import { getConnectedAvatarUrlFromUserMetadata } from '@/lib/avatar'
+import { addAuthProviderToMetadata } from '@/lib/auth-providers/metadata'
 import { isAllowedOAuthProvider } from '@/lib/oauth-providers'
 import { sanitizeRedirectPath } from '@/lib/safe-redirect'
 import { env } from '@/utils/env'
@@ -18,27 +19,37 @@ function isRecord(value: unknown): value is Record<string, unknown> {
   return Boolean(value) && typeof value === 'object' && !Array.isArray(value)
 }
 
-async function syncOauthAvatar(userMetadata: Record<string, string>) {
-  const avatarUrl = getConnectedAvatarUrlFromUserMetadata(userMetadata)
-  if (!avatarUrl) return
-
+async function syncOauthProfile(
+  provider: string,
+  userMetadata: Record<string, string>
+) {
   try {
     const customer = await getCustomer()
     if (!customer) return
 
     const metadata = isRecord(customer.metadata) ? customer.metadata : {}
-    if (metadata.oauth_avatar_url === avatarUrl) {
-      return
+    const avatarUrl = getConnectedAvatarUrlFromUserMetadata(userMetadata)
+
+    // Record which provider this sign-in used — Medusa never exposes the
+    // provider-specific AuthIdentity to the storefront, so the profile reads
+    // `auth_providers` to show truthful per-provider connection state.
+    const providerAlreadyKnown =
+      Array.isArray(metadata.auth_providers) &&
+      metadata.auth_providers.includes(provider)
+    const avatarUnchanged =
+      !avatarUrl || avatarUrl === metadata.oauth_avatar_url
+
+    // Nothing to persist: provider already recorded and avatar unchanged.
+    if (providerAlreadyKnown && avatarUnchanged) return
+
+    let nextMetadata = addAuthProviderToMetadata(metadata, provider)
+    if (avatarUrl && avatarUrl !== metadata.oauth_avatar_url) {
+      nextMetadata = { ...nextMetadata, oauth_avatar_url: avatarUrl }
     }
 
-    await updateCustomer({
-      metadata: {
-        ...metadata,
-        oauth_avatar_url: avatarUrl,
-      },
-    })
+    await updateCustomer({ metadata: nextMetadata })
   } catch (error) {
-    authLogger.error`Failed to sync OAuth avatar: ${error}`
+    authLogger.error`Failed to sync OAuth profile: ${error}`
   }
 }
 
@@ -82,7 +93,7 @@ export async function GET(
     }
 
     const sessionPayload = decodeMedusaToken(sessionToken)
-    await syncOauthAvatar(sessionPayload.user_metadata)
+    await syncOauthProfile(provider, sessionPayload.user_metadata)
 
     return NextResponse.redirect(new URL(redirectTo, request.url))
   } catch (error) {

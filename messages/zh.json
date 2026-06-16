@@ -293,7 +293,11 @@
         "error": "Discord 同步失败。请重试或联系支持。",
         "already_linked": "该 Discord 账号已关联到另一个 WCPOS 客户。"
       },
-      "discordNotConfigured": "尚未配置 Discord 关联。"
+      "discordNotConfigured": "尚未配置 Discord 关联。",
+      "githubProvider": "GitHub",
+      "githubDescription": "用于一键登录。",
+      "emailProvider": "Email & password",
+      "emailDescription": "You sign in with your email address."
     }
   }
 }
