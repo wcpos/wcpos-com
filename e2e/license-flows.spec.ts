@@ -96,19 +96,18 @@ test.describe('Purchase to account handoff', () => {
     await expect(card.getByRole('link', { name: /Downloads/ })).toBeVisible()
   })
 
-  test('account overview reflects the new purchase', async ({
+  test('/account redirects to licenses and reflects the new purchase', async ({
     page,
     context,
     baseURL,
   }) => {
     await signInAs(context, baseURL, 'e2e-purchase')
+    // The Overview page was removed; /account now redirects to the licenses
+    // tab, which is the account landing page.
     await page.goto('/account')
 
-    await expect(page.getByText('Welcome, Pat')).toBeVisible()
-    await expect(page.getByText('Order #2001')).toBeVisible()
-    await expect(
-      page.getByRole('link', { name: 'Manage licenses' })
-    ).toBeVisible()
+    await expect(page).toHaveURL(/\/account\/licenses/)
+    await expect(licenseCard(page, '****-****-7777')).toBeVisible()
   })
 })
 

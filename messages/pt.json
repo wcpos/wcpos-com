@@ -86,17 +86,12 @@
   "account": {
     "nav": {
       "title": "Account",
-      "overview": "Overview",
       "orders": "Orders",
       "licenses": "Licenses",
       "downloads": "Downloads",
       "profile": "Profile"
     },
     "meta": {
-      "overview": {
-        "title": "Account",
-        "description": "Overview of your WCPOS account, recent orders, and licenses."
-      },
       "orders": {
         "title": "Order History",
         "description": "View your WCPOS order history and receipts."
@@ -126,34 +121,6 @@
       "heading": "Something went wrong loading this page.",
       "description": "The error has been reported. You can try again, or come back later.",
       "retry": "Try again"
-    },
-    "overview": {
-      "welcome": "Welcome, {name}",
-      "welcomeNoName": "Welcome",
-      "expiresSoonRenew": "Your license expires on {date} — renew to keep receiving updates.",
-      "renewLicense": "Renew license",
-      "ordersCardTitle": "Orders",
-      "licensesCardTitle": "Licenses",
-      "viewAllOrders": "View all orders",
-      "manageLicenses": "Manage licenses",
-      "recentOrders": "Recent Orders",
-      "orderNumber": "Order #{id}",
-      "discordCardTitle": "Função Pro do Discord",
-      "discordConnectedFallback": "Discord conectado",
-      "discordConnectedDescription": "Sua conta do Discord está vinculada. Licenças Pro ativas recebem a função Pro automaticamente.",
-      "discordDisconnectedDescription": "Vincule o Discord para receber a função Pro da comunidade enquanto tiver uma licença WCPOS Pro ativa.",
-      "discordConnect": "Conectar Discord",
-      "discordResync": "Sincronizar função",
-      "discordDisconnect": "Desconectar",
-      "discordNotConfigured": "A vinculação do Discord ainda não está configurada.",
-      "discordStatus": {
-        "linked": "Discord conectado. Sua função Pro será sincronizada automaticamente.",
-        "unlinked": "Discord desconectado. A função Pro foi removida se o Discord permitiu.",
-        "synced": "Função do Discord sincronizada novamente.",
-        "join_server": "Entre no servidor do Discord e sincronize sua função novamente.",
-        "error": "A sincronização do Discord falhou. Tente novamente ou entre em contato com o suporte.",
-        "already_linked": "Essa conta do Discord já está vinculada a outro cliente WCPOS."
-      }
     },
     "orders": {
       "heading": "Order History",

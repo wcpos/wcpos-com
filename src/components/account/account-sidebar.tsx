@@ -2,23 +2,21 @@
 
 import { useEffect, useRef } from 'react'
 import { Link, usePathname } from '@/i18n/navigation'
-import { Home, ShoppingBag, Key, User, Download } from 'lucide-react'
+import { ShoppingBag, Key, User, Download } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { cn } from '@/lib/utils'
 
 const navigation = [
-  { key: 'overview', href: '/account', icon: Home },
-  { key: 'orders', href: '/account/orders', icon: ShoppingBag },
   { key: 'licenses', href: '/account/licenses', icon: Key },
   { key: 'downloads', href: '/account/downloads', icon: Download },
+  { key: 'orders', href: '/account/orders', icon: ShoppingBag },
   { key: 'profile', href: '/account/profile', icon: User },
 ] as const
 
 function isActiveRoute(pathname: string, href: string): boolean {
-  // Overview is the parent of every account route, so it only highlights on
-  // an exact match; other items also match their nested routes (e.g.
-  // /account/orders/123 keeps Orders highlighted).
-  if (href === '/account') return pathname === href
+  // An item also matches its nested routes (e.g. /account/orders/123 keeps
+  // Orders highlighted). /account itself redirects to /account/licenses, so
+  // it never needs to highlight as a standalone tab.
   return pathname === href || pathname.startsWith(`${href}/`)
 }
 

@@ -34,7 +34,7 @@ function AccountSidebarSkeleton() {
     <nav className="overflow-x-auto md:overflow-x-visible">
       <div className="mb-4 hidden h-4 w-24 animate-pulse rounded bg-muted md:block" />
       <div className="flex w-max items-center gap-1 md:w-auto md:flex-col md:items-stretch md:gap-2">
-        {[1, 2, 3, 4, 5].map((row) => (
+        {[1, 2, 3, 4].map((row) => (
           <div
             key={row}
             className="h-11 w-28 animate-pulse rounded-md bg-muted/60 md:h-9 md:w-auto"
