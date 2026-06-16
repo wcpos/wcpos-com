@@ -553,10 +553,9 @@ export function ProfileEditForm({
                 </p>
               </div>
               <div className="flex flex-none items-center gap-2">
-                <span className="hidden text-sm text-muted-foreground sm:inline">
+                <Badge variant="success">
                   {t('connectedAs', { account: connections.google.email })}
-                </span>
-                <Badge variant="success">{t('connected')}</Badge>
+                </Badge>
               </div>
             </div>
 
