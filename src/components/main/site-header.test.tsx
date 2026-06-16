@@ -3,7 +3,13 @@ import { fireEvent, render, screen, act } from '@testing-library/react'
 
 // Mock medusa-auth before importing the component
 vi.mock('@/lib/medusa-auth', () => ({
-  getAuthToken: vi.fn(),
+  getCustomer: vi.fn(),
+}))
+
+// customer-avatar is server-only (crypto/gravatar) — stub it for the menu.
+vi.mock('@/lib/customer-avatar', () => ({
+  getCustomerAvatarUrl: () => 'https://avatar.test/a.png',
+  getCustomerInitials: () => 'AB',
 }))
 
 vi.mock('@/lib/analytics/client-events', () => ({
@@ -40,11 +46,11 @@ vi.mock('@/i18n/navigation', () => ({
   ),
 }))
 
-import { getAuthToken } from '@/lib/medusa-auth'
+import { getCustomer } from '@/lib/medusa-auth'
 import { trackClientEvent } from '@/lib/analytics/client-events'
 import { SiteHeader } from './site-header'
 
-const mockGetAuthToken = vi.mocked(getAuthToken)
+const mockGetCustomer = vi.mocked(getCustomer)
 const mockTrackClientEvent = vi.mocked(trackClientEvent)
 
 describe('SiteHeader', () => {
@@ -53,7 +59,7 @@ describe('SiteHeader', () => {
   })
 
   it('renders the WCPOS logo link', async () => {
-    mockGetAuthToken.mockResolvedValue(null)
+    mockGetCustomer.mockResolvedValue(null)
     await act(async () => {
       render(<SiteHeader />)
     })
@@ -66,7 +72,7 @@ describe('SiteHeader', () => {
   })
 
   it('renders desktop nav links', async () => {
-    mockGetAuthToken.mockResolvedValue(null)
+    mockGetCustomer.mockResolvedValue(null)
     await act(async () => {
       render(<SiteHeader />)
     })
@@ -78,7 +84,7 @@ describe('SiteHeader', () => {
   })
 
   it('links Docs to external URL', async () => {
-    mockGetAuthToken.mockResolvedValue(null)
+    mockGetCustomer.mockResolvedValue(null)
     await act(async () => {
       render(<SiteHeader />)
     })
@@ -89,7 +95,7 @@ describe('SiteHeader', () => {
   })
 
   it('links Roadmap to /roadmap', async () => {
-    mockGetAuthToken.mockResolvedValue(null)
+    mockGetCustomer.mockResolvedValue(null)
     await act(async () => {
       render(<SiteHeader />)
     })
@@ -100,7 +106,7 @@ describe('SiteHeader', () => {
   })
 
   it('links Support to /support', async () => {
-    mockGetAuthToken.mockResolvedValue(null)
+    mockGetCustomer.mockResolvedValue(null)
     await act(async () => {
       render(<SiteHeader />)
     })
@@ -111,7 +117,7 @@ describe('SiteHeader', () => {
   })
 
   it('tracks Pro link clicks', async () => {
-    mockGetAuthToken.mockResolvedValue(null)
+    mockGetCustomer.mockResolvedValue(null)
     await act(async () => {
       render(<SiteHeader />)
     })
@@ -126,7 +132,7 @@ describe('SiteHeader', () => {
   })
 
   it('shows Sign In when not authenticated', async () => {
-    mockGetAuthToken.mockResolvedValue(null)
+    mockGetCustomer.mockResolvedValue(null)
     await act(async () => {
       render(<SiteHeader />)
     })
@@ -135,18 +141,26 @@ describe('SiteHeader', () => {
     expect(signInLinks.length).toBeGreaterThan(0)
   })
 
-  it('shows Account link when authenticated', async () => {
-    mockGetAuthToken.mockResolvedValue('fake-token')
+  it('shows the account menu when authenticated', async () => {
+    mockGetCustomer.mockResolvedValue({
+      id: 'cust_1',
+      email: 'user@example.com',
+      has_account: true,
+      created_at: '2026-01-01T00:00:00Z',
+      updated_at: '2026-01-01T00:00:00Z',
+    })
     await act(async () => {
       render(<SiteHeader />)
     })
 
-    const accountLinks = screen.getAllByText('Account')
-    expect(accountLinks.length).toBeGreaterThan(0)
+    // Authenticated state renders an avatar menu trigger, not a plain link.
+    expect(
+      screen.getAllByRole('button', { name: /account menu/i }).length
+    ).toBeGreaterThan(0)
   })
 
   it('tracks Sign In button clicks', async () => {
-    mockGetAuthToken.mockResolvedValue(null)
+    mockGetCustomer.mockResolvedValue(null)
     await act(async () => {
       render(<SiteHeader />)
     })
@@ -160,19 +174,8 @@ describe('SiteHeader', () => {
     expect(mockTrackClientEvent).toHaveBeenCalledWith('click_sign_in', undefined)
   })
 
-  it('links Account to /account', async () => {
-    mockGetAuthToken.mockResolvedValue('fake-token')
-    await act(async () => {
-      render(<SiteHeader />)
-    })
-
-    const accountLinks = screen.getAllByText('Account')
-    const accountLink = accountLinks[0].closest('a')
-    expect(accountLink?.getAttribute('href')).toBe('/account')
-  })
-
-  it('falls back to Sign In when getAuthToken throws', async () => {
-    mockGetAuthToken.mockRejectedValue(new Error('cookie read failed'))
+  it('falls back to Sign In when getCustomer throws', async () => {
+    mockGetCustomer.mockRejectedValue(new Error('cookie read failed'))
     await act(async () => {
       render(<SiteHeader />)
     })

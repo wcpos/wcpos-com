@@ -52,7 +52,7 @@ export function AccountSidebar() {
     <nav
       ref={navRef}
       aria-label={t('title')}
-      className="overflow-x-auto p-2 md:overflow-x-visible md:p-4"
+      className="-mx-4 overflow-x-auto border-b px-4 pb-2 md:sticky md:top-20 md:mx-0 md:overflow-x-visible md:border-b-0 md:px-0 md:pb-0"
     >
       <div className="mb-4 hidden text-xs font-semibold uppercase tracking-widest text-muted-foreground md:block">
         {t('title')}
