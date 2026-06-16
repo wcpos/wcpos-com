@@ -75,8 +75,11 @@
   --popover: 222.2 84% 4.9%;
   --popover-foreground: 210 40% 98%;
 
-  /* Kept at 47% (not lifted) so white text on a primary CTA stays WCAG AA. */
-  --primary: 4 73% 47%;
+  /* Lifted to 60% in dark so red `text-primary` (links, the Button `link`
+     variant) clears WCAG AA against the dark background. White-text CTA fills
+     do NOT use --primary in dark — Button/Badge `default` point at --wcpos-red
+     (47%), which keeps their white-on-red contrast. */
+  --primary: 4 73% 60%;
   --primary-foreground: 0 0% 100%;
 
   --secondary: 217.2 32.6% 17.5%;
@@ -93,7 +96,7 @@
 
   --border: 217.2 32.6% 17.5%;
   --input: 217.2 32.6% 17.5%;
-  --ring: 4 73% 47%;
+  --ring: 4 73% 60%;
 
   --sidebar: 222.2 47% 8%;
   --sidebar-foreground: 210 40% 98%;
