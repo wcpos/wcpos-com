@@ -1,6 +1,7 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { Suspense } from 'react'
-import { getCustomer, getCustomerOrders } from '@/lib/medusa-auth'
+import { getOrdersPage } from '@/lib/customer-orders'
+import { getCustomer } from '@/lib/medusa-auth'
 import { getResolvedCustomerLicenses } from '@/lib/customer-licenses'
 import { getExpiringSoonExpiry } from '@/lib/license'
 import { formatOrderAmount } from '@/lib/order-display'
@@ -42,7 +43,7 @@ async function AccountOverviewContent({
   const [t, customer, orders, { licenses }] = await Promise.all([
     getTranslations({ locale, namespace: 'account.overview' }),
     getCustomer(),
-    getCustomerOrders(5),
+    getOrdersPage(5),
     getResolvedCustomerLicenses(),
   ])
 

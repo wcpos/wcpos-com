@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import type { MedusaOrder } from './medusa-auth'
+import type { MedusaOrder } from './customer-orders'
 import {
   extractLicenseIdsFromOrders,
   extractLicenseReferencesFromOrders,

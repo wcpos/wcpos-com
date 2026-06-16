@@ -3,6 +3,7 @@ import 'server-only'
 import { cookies } from 'next/headers'
 import { env } from '@/utils/env'
 import { authLogger } from '@/lib/logger'
+import { MEDUSA_TOKEN_COOKIE } from '@/lib/medusa-cookie'
 
 // ============================================================================
 // Types
@@ -25,33 +26,6 @@ export interface UpdateCustomerInput {
   first_name?: string
   last_name?: string
   phone?: string
-  metadata?: Record<string, unknown>
-}
-
-export interface MedusaOrderItem {
-  id: string
-  title: string
-  quantity: number
-  unit_price: number
-  total: number
-  metadata?: Record<string, unknown>
-  variant?: Record<string, unknown>
-}
-
-export interface MedusaOrder {
-  id: string
-  status: string
-  payment_status?: string
-  fulfillment_status?: string
-  display_id: number
-  email: string
-  currency_code: string
-  total: number
-  subtotal: number
-  tax_total: number
-  created_at: string
-  updated_at: string
-  items: MedusaOrderItem[]
   metadata?: Record<string, unknown>
 }
 
@@ -112,7 +86,7 @@ export async function parseMedusaError(
 // Constants
 // ============================================================================
 
-const COOKIE_NAME = 'medusa-token'
+const COOKIE_NAME = MEDUSA_TOKEN_COOKIE
 
 const COOKIE_OPTIONS = {
   httpOnly: true,
@@ -315,100 +289,6 @@ export async function updateCustomer(
 
   const data = await response.json()
   return data.customer
-}
-
-/**
- * Get the current customer's orders.
- * GET /store/orders
- * Returns an empty array if no token or on failure.
- */
-async function fetchCustomerOrdersPage(
-  token: string,
-  limit: number,
-  offset: number
-): Promise<MedusaOrder[]> {
-  try {
-    const query = new URLSearchParams({
-      limit: String(limit),
-      offset: String(offset),
-    })
-
-    const response = await fetch(
-      `${env.MEDUSA_BACKEND_URL}/store/orders?${query.toString()}`,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-          'x-publishable-api-key': env.MEDUSA_PUBLISHABLE_KEY || '',
-        },
-      }
-    )
-
-    if (!response.ok) {
-      return []
-    }
-
-    const data = await response.json()
-    return data.orders ?? []
-  } catch (error) {
-    authLogger.error`Failed to get orders: ${error}`
-    return []
-  }
-}
-
-export async function getCustomerOrders(
-  limit: number = 10,
-  offset: number = 0
-): Promise<MedusaOrder[]> {
-  const token = await getAuthToken()
-  if (!token) return []
-
-  return fetchCustomerOrdersPage(token, limit, offset)
-}
-
-export async function getAllCustomerOrders(
-  batchSize: number = 50,
-  maxBatches: number = 20
-): Promise<MedusaOrder[]> {
-  const token = await getAuthToken()
-  if (!token) return []
-
-  const orders: MedusaOrder[] = []
-
-  for (let batch = 0; batch < maxBatches; batch += 1) {
-    const offset = batch * batchSize
-    const page = await fetchCustomerOrdersPage(token, batchSize, offset)
-
-    if (page.length === 0) break
-    orders.push(...page)
-
-    if (page.length < batchSize) break
-  }
-
-  return orders
-}
-
-export async function getCustomerOrderById(
-  orderId: string,
-  batchSize: number = 50,
-  maxBatches: number = 20
-): Promise<MedusaOrder | null> {
-  const token = await getAuthToken()
-  if (!token) return null
-
-  for (let batch = 0; batch < maxBatches; batch += 1) {
-    const offset = batch * batchSize
-    const page = await fetchCustomerOrdersPage(token, batchSize, offset)
-
-    if (page.length === 0) break
-
-    const order = page.find((currentOrder) => currentOrder.id === orderId)
-    if (order) return order
-
-    if (page.length < batchSize) break
-  }
-
-  return null
 }
 
 // ============================================================================

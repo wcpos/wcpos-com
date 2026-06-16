@@ -1,10 +1,9 @@
 import type { LicenseDetail } from '@/types/license'
 import {
-  getAllCustomerOrders,
-  getCustomer,
-  type MedusaCustomer,
+  getAllOrders,
   type MedusaOrder,
-} from '@/lib/medusa-auth'
+} from '@/lib/customer-orders'
+import { getCustomer, type MedusaCustomer } from '@/lib/medusa-auth'
 import {
   extractLicenseReferencesFromOrders,
   type LicenseReference,
@@ -95,7 +94,7 @@ export async function getResolvedCustomerLicenses(customer?: MedusaCustomer): Pr
 
   const orders = customer
     ? await listAdminCustomerOrders(resolvedCustomer.id)
-    : await getAllCustomerOrders()
+    : await getAllOrders()
 
   return {
     authenticated: true,
