@@ -132,7 +132,7 @@ function LoginPageInner({ discordEnabled }: { discordEnabled: boolean }) {
           <div className="grid gap-2.5">
             <Button variant="outline" asChild>
               <a
-                href="/api/auth/google"
+                href={`/api/auth/google?redirect=${encodeURIComponent(redirectTo)}`}
                 onClick={() => trackClientEvent('click_oauth_google')}
               >
                 <GoogleMark className="mr-2 h-4 w-4" />
@@ -141,7 +141,7 @@ function LoginPageInner({ discordEnabled }: { discordEnabled: boolean }) {
             </Button>
             <Button variant="outline" asChild>
               <a
-                href="/api/auth/github"
+                href={`/api/auth/github?redirect=${encodeURIComponent(redirectTo)}`}
                 onClick={() => trackClientEvent('click_oauth_github')}
               >
                 <GitHubMark className="mr-2 h-4 w-4" />
