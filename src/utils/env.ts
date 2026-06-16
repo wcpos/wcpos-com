@@ -77,6 +77,20 @@ const envSchema = z.object({
   // Client-side logging configuration
   NEXT_PUBLIC_LOG_LEVEL: z.enum(['debug', 'info', 'warning', 'error', 'fatal']).optional(),
 
+  // openclaw model-gateway (server-side support assistant)
+  OPENCLAW_GATEWAY_URL: z.string().url().default('https://openclaw.wcpos.com'),
+  OPENCLAW_TOKEN: z.string().optional(),
+  OPENCLAW_SUPPORT_INTENT: z.string().default('aide.web.support_question'),
+
+  // Cloudflare Turnstile (bot protection for the public support box)
+  NEXT_PUBLIC_TURNSTILE_SITE_KEY: z.string().optional(),
+  TURNSTILE_SECRET_KEY: z.string().optional(),
+
+  // Upstash Redis (per-IP rate limit + daily budget ceiling for the support box)
+  UPSTASH_REDIS_REST_URL: z.string().url().optional(),
+  UPSTASH_REDIS_REST_TOKEN: z.string().optional(),
+  SUPPORT_DAILY_QUESTION_BUDGET: z.coerce.number().int().positive().default(500),
+
   // Node environment
   NODE_ENV: z
     .enum(['development', 'production', 'test'])
