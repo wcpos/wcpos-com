@@ -28,6 +28,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     siteName: 'WCPOS',
+    images: ['/opengraph-image.png'],
     // og:image and twitter:image come from the static src/app/opengraph-image.png
     // file convention. It lives at the APP ROOT, not under [locale]: a static
     // metadata image inside a dynamic segment trips a Next.js cacheComponents
@@ -38,6 +39,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
+    images: ['/opengraph-image.png'],
   },
 }
 
