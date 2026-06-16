@@ -1,9 +1,11 @@
 'use client'
 
 import { useState, useRef, useEffect, type FormEvent } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { Turnstile, type TurnstileInstance } from '@marsidev/react-turnstile'
 import posthog from 'posthog-js'
 import { Markdown } from '@/components/ui/markdown'
+import { DiscordSection } from '@/components/support/discord-section'
 
 interface Message {
   role: 'user' | 'assistant'
@@ -208,5 +210,45 @@ export function SupportChat() {
         />
       )}
     </div>
+  )
+}
+
+export function SupportDefaultContent() {
+  return (
+    <>
+      <section className="container mx-auto px-4 py-20 md:py-28">
+        <SupportChat />
+      </section>
+      <DiscordSection />
+    </>
+  )
+}
+
+export function SupportPageContent() {
+  const searchParams = useSearchParams()
+  const supportRef = searchParams.get('ref')?.trim()
+
+  if (!supportRef) {
+    return <SupportDefaultContent />
+  }
+
+  return (
+    <>
+      <section className="container mx-auto px-4 py-12 md:py-16">
+        <div className="mx-auto max-w-2xl text-center">
+          <h1 className="mb-3 text-3xl font-bold text-foreground md:text-4xl">
+            Contact support about your order
+          </h1>
+          <p className="text-base text-muted-foreground">
+            Quote reference <span className="font-mono font-medium">{supportRef}</span> so we can
+            confirm the payment or finish the order before you pay again.
+          </p>
+        </div>
+      </section>
+      <section className="container mx-auto px-4 py-16">
+        <SupportChat />
+      </section>
+      <DiscordSection />
+    </>
   )
 }
