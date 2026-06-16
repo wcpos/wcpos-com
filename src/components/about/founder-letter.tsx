@@ -2,7 +2,7 @@ export function FounderLetter() {
   return (
     <section className="bg-slate-50 dark:bg-slate-900">
       <div className="container mx-auto px-4 py-16 md:py-24">
-        <article className="mx-auto max-w-2xl rounded-sm bg-[#fffefb] p-8 shadow-xl md:p-12 dark:bg-slate-800">
+        <article className="mx-auto max-w-2xl rounded-sm bg-[#fffefb] p-8 shadow-lg md:p-12 dark:bg-slate-800">
           <div
             aria-hidden="true"
             className="-mx-8 mb-8 h-[5px] md:-mx-12"

@@ -19,7 +19,7 @@ export function BugFixList({ bugs }: BugFixListProps) {
   const [expanded, setExpanded] = useState(false)
 
   return (
-    <div className="border rounded-lg">
+    <div className="border rounded-md">
       <button
         type="button"
         aria-expanded={expanded}

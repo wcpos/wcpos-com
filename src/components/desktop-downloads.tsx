@@ -55,13 +55,13 @@ export function DesktopDownloads() {
 
   if (loading) {
     return (
-      <div className="bg-white rounded-lg shadow-md p-6">
+      <div className="rounded-md border bg-card p-6">
         <h2 className="text-2xl font-bold mb-4">Desktop Applications</h2>
         <div className="animate-pulse">
-          <div className="h-4 bg-gray-200 rounded w-1/4 mb-4"></div>
+          <div className="h-4 bg-muted rounded w-1/4 mb-4"></div>
           <div className="space-y-3">
             {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="h-12 bg-gray-200 rounded"></div>
+              <div key={i} className="h-12 bg-muted rounded"></div>
             ))}
           </div>
         </div>
@@ -71,9 +71,9 @@ export function DesktopDownloads() {
 
   if (error) {
     return (
-      <div className="bg-white rounded-lg shadow-md p-6">
+      <div className="rounded-md border bg-card p-6">
         <h2 className="text-2xl font-bold mb-4">Desktop Applications</h2>
-        <p className="text-red-600">Error: {error}</p>
+        <p className="text-destructive">Error: {error}</p>
       </div>
     )
   }
@@ -120,9 +120,9 @@ export function DesktopDownloads() {
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6">
+    <div className="rounded-md border bg-card p-6">
       <h2 className="text-2xl font-bold mb-4">Desktop Applications</h2>
-      <p className="text-gray-600 mb-6">
+      <p className="text-muted-foreground mb-6">
         Version {releaseInfo.version} • Released{' '}
         {new Date(releaseInfo.releaseDate).toLocaleDateString()}
       </p>
@@ -138,7 +138,7 @@ export function DesktopDownloads() {
             <a
               key={platform.platform}
               href={downloadUrl}
-              className="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+              className="flex items-center justify-between p-4 border rounded-md hover:bg-muted transition-colors"
               download
             >
               <div className="flex items-center space-x-3">
@@ -146,11 +146,11 @@ export function DesktopDownloads() {
                 <div>
                   <p className="font-medium">{platform.name}</p>
                   {fileSize && (
-                    <p className="text-sm text-gray-500">{fileSize}</p>
+                    <p className="text-sm text-muted-foreground">{fileSize}</p>
                   )}
                 </div>
               </div>
-              <Download className="w-5 h-5 text-gray-400" />
+              <Download className="w-5 h-5 text-muted-foreground" />
             </a>
           )
         })}
@@ -158,10 +158,10 @@ export function DesktopDownloads() {
       
       {releaseInfo.notes && (
         <details className="mt-6">
-          <summary className="cursor-pointer text-sm text-gray-600 hover:text-gray-800">
+          <summary className="cursor-pointer text-sm text-muted-foreground hover:text-foreground">
             Release Notes
           </summary>
-          <div className="mt-2 text-sm text-gray-600 whitespace-pre-wrap">
+          <div className="mt-2 text-sm text-muted-foreground whitespace-pre-wrap">
             {releaseInfo.notes}
           </div>
         </details>

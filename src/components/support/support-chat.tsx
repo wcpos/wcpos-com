@@ -114,7 +114,7 @@ export function SupportChat() {
           {messages.map((m, i) =>
             m.role === 'user' ? (
               <div key={i} className="flex justify-end">
-                <div className="max-w-[80%] rounded-lg bg-wcpos-red px-3.5 py-2 text-sm text-white">
+                <div className="max-w-[80%] rounded-md bg-wcpos-red px-3.5 py-2 text-sm text-white">
                   {m.content}
                 </div>
               </div>
@@ -154,7 +154,7 @@ export function SupportChat() {
 
       <form
         onSubmit={onSubmit}
-        className="flex items-center gap-2 rounded-xl border-2 border-wcpos-red/40 bg-card p-1.5 pl-4 focus-within:border-wcpos-red"
+        className="flex items-center gap-2 rounded-md border-2 border-wcpos-red/40 bg-card p-1.5 pl-4 focus-within:border-wcpos-red"
       >
         <input
           aria-label="Ask a support question"
@@ -167,7 +167,7 @@ export function SupportChat() {
         <button
           type="submit"
           disabled={status === 'asking' || !input.trim() || verifying}
-          className="rounded-lg bg-wcpos-red px-4 py-2 text-sm font-semibold text-white transition hover:brightness-110 disabled:opacity-50"
+          className="rounded-md bg-wcpos-red px-4 py-2 text-sm font-semibold text-white transition hover:brightness-110 disabled:opacity-50"
         >
           {status === 'asking' ? '…' : 'Ask'}
         </button>

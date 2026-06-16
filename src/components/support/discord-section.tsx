@@ -6,7 +6,7 @@ const DiscordWidget = dynamic(
   () => import('@/components/support/discord-widget').then((m) => m.DiscordWidget),
   {
     ssr: false,
-    loading: () => <div className="h-[600px] w-full animate-pulse rounded-xl bg-muted" />,
+    loading: () => <div className="h-[600px] w-full animate-pulse rounded-md bg-muted" />,
   }
 )
 
@@ -19,7 +19,7 @@ export function DiscordSection() {
           Join store owners and the team in our live Discord community.
         </p>
       </div>
-      <div className="mx-auto h-[600px] max-w-3xl overflow-hidden rounded-xl border">
+      <div className="mx-auto h-[600px] max-w-3xl overflow-hidden rounded-md border">
         <DiscordWidget />
       </div>
     </section>

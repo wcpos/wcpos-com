@@ -41,7 +41,7 @@ function MilestoneListSkeleton() {
           <Skeleton className="h-2 w-full" />
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
             {[1, 2, 3].map((j) => (
-              <Skeleton key={j} className="h-32 rounded-xl" />
+              <Skeleton key={j} className="h-32 rounded-md" />
             ))}
           </div>
         </div>

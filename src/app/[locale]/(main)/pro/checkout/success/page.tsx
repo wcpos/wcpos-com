@@ -29,7 +29,7 @@ export default async function CheckoutSuccessPage({
           Your purchase of WooCommerce POS Pro is complete.
         </p>
 
-        <div className="bg-muted/50 rounded-lg p-6 mb-8">
+        <div className="bg-muted/50 rounded-md p-6 mb-8">
           <h2 className="font-semibold mb-2">What happens next?</h2>
           <ul className="text-sm text-muted-foreground space-y-2 text-left">
             <li>✓ Your license key and download link have been sent to your email</li>
