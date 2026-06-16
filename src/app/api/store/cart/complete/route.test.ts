@@ -93,6 +93,33 @@ describe('POST /api/store/cart/complete', () => {
     })
   })
 
+  it('returns 409 order_pending and skips analytics when no order is created', async () => {
+    mockGetCustomer.mockResolvedValueOnce({
+      id: 'cust_1',
+      email: 'customer@example.com',
+    })
+    // Medusa returns HTTP 200 with a cart (not an order) when completion fails;
+    // completeCart passes that through as a non-null result with no order.
+    mockCompleteCart.mockResolvedValueOnce({
+      type: 'cart',
+      cart: { id: 'cart_1' },
+    })
+
+    const response = await POST(
+      new NextRequest('http://localhost:3000/api/store/cart/complete', {
+        method: 'POST',
+        body: JSON.stringify({ cartId: 'cart_1' }),
+      })
+    )
+
+    expect(response.status).toBe(409)
+    expect(await response.json()).toEqual({
+      error: 'Payment received, order pending',
+      code: 'order_pending',
+    })
+    expect(mockTrackServerEvent).not.toHaveBeenCalled()
+  })
+
   it('returns success even when analytics tracking throws', async () => {
     mockGetCustomer.mockResolvedValueOnce({
       id: 'cust_1',

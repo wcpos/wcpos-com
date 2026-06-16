@@ -44,6 +44,21 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    // Medusa returns HTTP 200 with `type: 'cart'` (not an order) when the cart
+    // could not be completed — so a non-null result is NOT proof an order
+    // exists. Because completion only runs after the provider captured payment,
+    // a missing order id means money may have been taken without an order. Treat
+    // it as the distinct "order pending" state here rather than trusting the
+    // browser to catch it, and do not fire the checkout_completed event for a
+    // non-order. See the "Order pending" term in CONTEXT.md.
+    if (!result.order?.id) {
+      storeLogger.error`Cart completion produced no order: cartId=${cartId} type=${result.type}`
+      return NextResponse.json(
+        { error: 'Payment received, order pending', code: 'order_pending' },
+        { status: 409 }
+      )
+    }
+
     if (getDiscordLink(customer.metadata)) {
       void syncCurrentCustomerDiscordRole(customer).catch((syncError) => {
         storeLogger.warn`Discord role sync after checkout failed: ${syncError}`
@@ -66,7 +81,7 @@ export async function POST(request: NextRequest) {
         variant,
         distinct_id: distinctId ?? 'missing-distinct-id',
         customer_id: customer.id,
-        order_id: result.order?.id ?? null,
+        order_id: result.order.id,
         cart_id: cartId,
         funnel_step: 'checkout_completed',
         page: '/pro/checkout',

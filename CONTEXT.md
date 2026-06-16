@@ -65,6 +65,19 @@ The person who buys and holds licenses, authenticated via the Medusa
 session. There are no separate "users" or roles on this site.
 _Avoid_: user, account, client
 
+**Checkout**:
+The flow that turns a cart into a paid order: open a payment session with
+a provider (Stripe or PayPal), the Customer pays, then complete the cart.
+Completion runs **only after the provider has confirmed payment**.
+_Avoid_: purchase flow, buy
+
+**Order pending**:
+The state where payment was captured but the order could not be created.
+The Customer must **not** pay again; support finishes or refunds it.
+Surfaced as `OrderPendingError` client-side and a `409 order_pending`
+response from the completion route.
+_Avoid_: failed payment, retryable error
+
 **Unverifiable (license)**:
 A license reference whose current state cannot be confirmed right now
 (license server unreachable, or a legacy key that no longer resolves).
