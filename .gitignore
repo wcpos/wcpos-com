@@ -50,7 +50,8 @@ docs/
 /playwright-report/
 /test-results/
 
-# ADRs are durable decisions, not working docs
+# ADRs and runbooks are durable docs, not working scratch
 !docs/
 docs/*
 !docs/adr/
+!docs/runbooks/

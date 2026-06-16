@@ -108,5 +108,21 @@ test.describe('Checkout Integration @integration', {
       expect(order.metadata.licenses.length).toBeGreaterThanOrEqual(1)
       expect(order.metadata.licenses[0].license_key).toBeTruthy()
     }
+
+    // ── Download verification ───────────────────────────────
+    // The buyer can immediately download the Pro plugin they just paid for.
+    // page.request shares the authenticated medusa-token cookie set above.
+    const tokenResponse = await page.request.post('/api/account/downloads/token', {
+      data: { version: 'latest' },
+    })
+    expect(tokenResponse.ok()).toBeTruthy()
+    const { downloadUrl } = await tokenResponse.json()
+    expect(downloadUrl).toContain('/api/account/download?token=')
+
+    // Follow the signed URL and confirm the actual asset streams back.
+    const fileResponse = await page.request.get(downloadUrl)
+    expect(fileResponse.ok()).toBeTruthy()
+    expect(fileResponse.headers()['content-type']).toContain('application/zip')
+    expect(fileResponse.headers()['content-disposition']).toContain('attachment')
   })
 })
