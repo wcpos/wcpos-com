@@ -1,13 +1,32 @@
 'use client'
 
 import { useState } from 'react'
-import { ChevronLeft, ChevronRight, Download } from 'lucide-react'
+import {
+  ChevronLeft,
+  ChevronRight,
+  Download,
+  FileText,
+} from 'lucide-react'
 import { useLocale, useTranslations } from 'next-intl'
 import { Link } from '@/i18n/navigation'
 import { Button } from '@/components/ui/button'
 import { AccountNotice } from '@/components/account/account-notice'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
 import { Markdown } from '@/components/ui/markdown'
+import { Separator } from '@/components/ui/separator'
 import { formatDateForLocale } from '@/lib/date-format'
 
 interface DownloadRelease {
@@ -38,13 +57,26 @@ export interface DownloadAccess {
 interface DownloadsClientProps {
   initialReleases: DownloadRelease[]
   access: DownloadAccess
+  /**
+   * Already-translated plan label ("Yearly"/"Lifetime") of the licence backing
+   * the latest build, or null when no active licence entitles it or the plan is
+   * unrecognized. The page resolves this server-side; the client never sees
+   * policy ids.
+   */
+  entitlingPlanLabel?: string | null
 }
 
 const RELEASES_PER_PAGE = 10
 
+/** Major releases (x.0.0) get a marker in the archive, matching the mockup. */
+function isMajorRelease(version: string): boolean {
+  return /^\d+\.0\.0$/.test(version.replace(/^v/i, ''))
+}
+
 export function DownloadsClient({
   initialReleases,
   access,
+  entitlingPlanLabel = null,
 }: DownloadsClientProps) {
   const locale = useLocale()
   const t = useTranslations('account.downloads')
@@ -54,9 +86,12 @@ export function DownloadsClient({
     null
   )
   const [error, setError] = useState<string | null>(null)
+  // The release whose notes are open in the modal, or null when closed.
+  const [notesRelease, setNotesRelease] = useState<DownloadRelease | null>(null)
 
-  // Releases arrive sorted newest-first; the first one gets a "Latest" chip.
-  const latestVersion = releases[0]?.version
+  // Releases arrive sorted newest-first; the first one is the "Latest" build.
+  const latestRelease = releases[0]
+  const latestVersion = latestRelease?.version
   const totalPages = Math.max(1, Math.ceil(releases.length / RELEASES_PER_PAGE))
   // Derive the clamped page instead of syncing state in an effect.
   const safePage = Math.min(currentPage, totalPages)
@@ -91,6 +126,14 @@ export function DownloadsClient({
     !revokedAccess &&
     !unknownAccess
 
+  // Per-release reason a build is unavailable. Mirrors the active banner so the
+  // copy never misattributes the cause (e.g. claims "expired" for unverifiable).
+  const blockedReason = expiredAccess
+    ? t('reasonExpired')
+    : unknownAccess
+      ? t('reasonUnknown')
+      : t('reasonInactive')
+
   const startDownload = async (version: string) => {
     setDownloadingVersion(version)
     setError(null)
@@ -120,8 +163,18 @@ export function DownloadsClient({
     }
   }
 
+  const downloadLabel = (release: DownloadRelease) =>
+    !release.allowed
+      ? t('unavailable')
+      : downloadingVersion === release.version
+        ? t('preparing')
+        : t('download')
+
+  const hasNotes = (release: DownloadRelease) =>
+    Boolean(release.releaseNotes?.trim())
+
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       {error && (
         <div className="rounded-md bg-destructive/10 p-3 text-sm text-destructive">
           {error}
@@ -203,9 +256,78 @@ export function DownloadsClient({
         </AccountNotice>
       )}
 
+      {/* Latest version hero — the build most customers want, surfaced first.
+          Only shown when the latest build is actually installable: a blocked
+          latest release would duplicate the archive's "Unavailable" row (and
+          the page banner already explains the lapse). */}
+      {latestRelease && latestRelease.allowed && (
+        <Card>
+          <CardHeader className="gap-3">
+            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+              {t('latestVersionLabel')}
+            </p>
+            <div className="flex flex-wrap items-center gap-2">
+              <CardTitle className="text-xl">{latestRelease.name}</CardTitle>
+              <Badge variant="default">{t('latestBadge')}</Badge>
+            </div>
+            <p className="text-sm text-muted-foreground">
+              v{latestRelease.version} •{' '}
+              {formatDateForLocale(latestRelease.publishedAt, locale)}
+            </p>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {hasNotes(latestRelease) ? (
+              <Markdown
+                className="line-clamp-3 max-w-prose text-sm text-muted-foreground"
+                content={latestRelease.releaseNotes}
+              />
+            ) : (
+              <p className="text-sm text-muted-foreground">
+                {t('noReleaseNotes')}
+              </p>
+            )}
+
+            <p className="text-sm font-medium text-foreground">
+              {entitlingPlanLabel
+                ? t('availableOnPlan', { plan: entitlingPlanLabel })
+                : t('availableOnActive')}
+            </p>
+
+            <div className="flex flex-wrap items-center gap-2">
+              <Button
+                size="sm"
+                disabled={downloadingVersion === latestRelease.version}
+                onClick={() => startDownload(latestRelease.version)}
+              >
+                <Download className="mr-2 h-4 w-4" />
+                {downloadLabel(latestRelease)}
+              </Button>
+              {hasNotes(latestRelease) && (
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => setNotesRelease(latestRelease)}
+                >
+                  <FileText className="mr-2 h-4 w-4" />
+                  {t('releaseNotes')}
+                </Button>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Version history — the full changelog archive. */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-lg">{t('listTitle')}</CardTitle>
+          <div className="flex flex-wrap items-baseline justify-between gap-2">
+            <CardTitle className="text-lg">{t('listTitle')}</CardTitle>
+            {releases.length > 0 && (
+              <span className="text-sm text-muted-foreground">
+                {t('releaseCount', { count: releases.length })}
+              </span>
+            )}
+          </div>
         </CardHeader>
         <CardContent>
           {releases.length === 0 ? (
@@ -225,9 +347,10 @@ export function DownloadsClient({
                     <div className="flex flex-wrap items-center gap-2">
                       <p className="font-medium">{release.name}</p>
                       {release.version === latestVersion && (
-                        <span className="rounded-full bg-wcpos-red/10 px-2 py-0.5 text-[11px] font-semibold text-wcpos-red-accent">
-                          {t('latestBadge')}
-                        </span>
+                        <Badge variant="default">{t('latestBadge')}</Badge>
+                      )}
+                      {isMajorRelease(release.version) && (
+                        <Badge variant="secondary">{t('majorBadge')}</Badge>
                       )}
                     </div>
                     <p className="text-sm text-muted-foreground">
@@ -236,38 +359,34 @@ export function DownloadsClient({
                     </p>
                     {!release.allowed && (
                       <p className="mt-1 text-xs text-amber-700 dark:text-amber-400">
-                        {expiredAccess
-                          ? t('reasonExpired')
-                          : unknownAccess
-                            ? t('reasonUnknown')
-                            : t('reasonInactive')}
-                      </p>
-                    )}
-                    {release.releaseNotes?.trim() ? (
-                      <Markdown
-                        className="mt-2 max-w-prose space-y-1 break-words"
-                        content={release.releaseNotes}
-                      />
-                    ) : (
-                      <p className="mt-1 text-xs text-muted-foreground">
-                        {t('noReleaseNotes')}
+                        {blockedReason}
                       </p>
                     )}
                   </div>
-                  <Button
-                    size="sm"
-                    className="shrink-0"
-                    variant={release.allowed ? 'default' : 'outline'}
-                    disabled={!release.allowed || downloadingVersion === release.version}
-                    onClick={() => startDownload(release.version)}
-                  >
-                    <Download className="mr-2 h-4 w-4" />
-                    {!release.allowed
-                      ? t('unavailable')
-                      : downloadingVersion === release.version
-                        ? t('preparing')
-                        : t('download')}
-                  </Button>
+                  <div className="flex shrink-0 flex-wrap items-center gap-2">
+                    {hasNotes(release) && (
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        onClick={() => setNotesRelease(release)}
+                      >
+                        <FileText className="mr-2 h-4 w-4" />
+                        {t('releaseNotes')}
+                      </Button>
+                    )}
+                    <Button
+                      size="sm"
+                      variant={release.allowed ? 'default' : 'outline'}
+                      disabled={
+                        !release.allowed ||
+                        downloadingVersion === release.version
+                      }
+                      onClick={() => startDownload(release.version)}
+                    >
+                      <Download className="mr-2 h-4 w-4" />
+                      {downloadLabel(release)}
+                    </Button>
+                  </div>
                 </div>
               ))}
 
@@ -308,6 +427,40 @@ export function DownloadsClient({
           )}
         </CardContent>
       </Card>
+
+      {/* Release-notes modal. Long changelogs scroll inside a bounded region
+          so the dialog itself never exceeds the viewport. */}
+      <Dialog
+        open={notesRelease !== null}
+        onOpenChange={(open) => {
+          if (!open) setNotesRelease(null)
+        }}
+      >
+        <DialogContent className="max-h-[85vh] sm:max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>{notesRelease?.name}</DialogTitle>
+            {notesRelease && (
+              <DialogDescription>
+                v{notesRelease.version} •{' '}
+                {formatDateForLocale(notesRelease.publishedAt, locale)}
+              </DialogDescription>
+            )}
+          </DialogHeader>
+          <Separator />
+          <div className="max-h-[60vh] overflow-y-auto pr-1">
+            {notesRelease && hasNotes(notesRelease) ? (
+              <Markdown
+                className="max-w-none space-y-2 break-words text-sm"
+                content={notesRelease.releaseNotes}
+              />
+            ) : (
+              <p className="text-sm text-muted-foreground">
+                {t('noReleaseNotes')}
+              </p>
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }
