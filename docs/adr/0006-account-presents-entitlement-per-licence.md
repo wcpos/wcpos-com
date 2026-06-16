@@ -59,3 +59,7 @@ per-licence and union are identical anyway).
 - The entitlement primitive (`isReleaseAllowedForLicenses`) is unchanged —
   only what we pass it (one licence, not the pooled array) and how we label
   the result. The per-key plugin path was already correct.
+- This supersedes ADR-0001 only for the customer account Downloads UI. The
+  pooled helper can still answer account-wide questions when a caller
+  explicitly wants a union, but customer-facing downloads must present the
+  per-licence result described here.

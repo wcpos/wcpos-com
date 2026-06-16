@@ -45,14 +45,18 @@ concept and a way for members to join.
 4. **Holder visibility and removal.** The licence holder (the logged-in
    customer who owns the licence) sees the connected members on the licence
    page — count, handle/avatar, joined date — and can **remove** a member,
-   freeing a seat and dropping that member's role on the next
-   reconciliation. Removal is the holder's control, since joining is
-   key-based rather than invite-approved.
+   freeing a seat. Removal records the Discord user ID as blocked for that
+   licence, so the same person cannot immediately reclaim the seat with the
+   same shared key; restoring that person requires explicit holder action
+   (or a future key-rotation flow). Removal is the holder's control, since
+   joining is key-based rather than invite-approved.
 
 5. **Entitlement-driven, as before.** Role grants follow licence status:
-   licence lapses → every connected member loses the role on reconciliation
-   (unchanged principle from ADR-0004, now evaluated per licence rather than
-   per customer).
+   a connected member keeps the role while they have at least one active
+   connected licence. Reconciliation removes the role from a Discord user
+   only after checking all licence-member links for that Discord user and
+   finding no active licence left (unchanged principle from ADR-0004, now
+   evaluated across licence-member links rather than one customer link).
 
 Rejected alternatives: single-person link (ADR-0004 as-is — doesn't deliver
 the team perk); uncapped membership (one key could grant Pro Discord to an
@@ -67,9 +71,13 @@ owner chose lower-friction key self-claim with the cap as the safeguard).
 - **The licence key now doubles as a Discord-access credential**, not only a
   plugin-activation credential. The seat cap bounds the blast radius of a
   leaked key for Discord; site activation remains separately capped.
-- Reconciliation walks licence → connected members (grant/remove by the
-  licence's current status and the cap), in addition to ADR-0004's sweep of
-  current role-holders.
+- Reconciliation walks licence → connected members to grant roles, then
+  groups by Discord user before removing roles so another active connected
+  licence can preserve access.
+- The current-role-holder sweep checks both backing models before treating a
+  role as orphaned: the legacy customer link from ADR-0004 and the new
+  licence→members relation. A key-claimed member with no wcpos.com account is
+  valid when backed by an active connected licence.
 - The licence page gains a "Discord access" section (members of N, list,
   remove). The plugin/site model is untouched — Discord seats and site
   activations are independent caps on the same licence.

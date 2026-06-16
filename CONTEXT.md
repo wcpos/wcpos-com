@@ -124,25 +124,33 @@ _Avoid_: unknown, broken, invalid
 ### Discord community
 
 **Discord link**:
-A verified association between one Medusa customer and one Discord user ID,
-created by Discord OAuth using the `identify` scope. Stored on customer
-metadata until scale requires a dedicated Medusa table.
+A verified association between Discord identity and WCPOS Pro entitlement.
+The current account design uses a licence→connected-members relation: a
+Discord user self-links with a licence key plus OAuth `identify`, without
+needing their own wcpos.com account. The older one-Medusa-customer-to-one-
+Discord-user metadata link is the legacy v1 model from docs/adr/0004 and is
+superseded for the per-licence account redesign by docs/adr/0007.
 _Avoid_: Discord login, Discord auth provider
 
 **Discord Pro role**:
 A bot-managed community role in the WCPOS Discord server. Granted only while
-the linked customer has an active license. Expired licenses can retain
-pre-expiry downloads, but they do not keep this current-community perk.
+the Discord user is backed by at least one active connected licence (or, for
+legacy links, a linked customer with active Pro entitlement). Expired licences
+can retain pre-expiry downloads, but they do not keep this current-community
+perk.
 _Avoid_: membership, subscription role
 
 **Role sync**:
-The idempotent operation that compares a linked customer's active-license
-state with their Discord role state, then adds or removes the Discord Pro role
-when needed.
+The idempotent operation that compares Discord role state with all backing
+entitlement links for that Discord user. It grants the Discord Pro role when
+any connected licence is active, and removes it only after no active
+licence-member link or legacy active customer link remains.
 _Avoid_: manual role management
 
 **Reconciliation**:
-The scheduled two-way sweep that syncs all linked customers and removes
-orphaned/manual Discord Pro role grants from current role holders. Inline syncs
-are best-effort; reconciliation is the correctness guarantee.
+The scheduled two-way sweep that syncs licence-member links, legacy linked
+customers, and current Discord Pro role holders. It removes orphaned/manual
+role grants only after confirming the holder has no active licence-member
+link and no legacy active customer link. Inline syncs are best-effort;
+reconciliation is the correctness guarantee.
 _Avoid_: one-way cleanup, cron-only expiry check
