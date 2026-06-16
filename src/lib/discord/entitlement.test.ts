@@ -20,10 +20,10 @@ function license(overrides: Partial<LicenseDetail>): LicenseDetail {
 describe('evaluateDiscordProEntitlement', () => {
   const now = new Date('2026-06-11T00:00:00Z')
 
-  it('grants the Discord Pro role for active licenses regardless of Keygen casing', () => {
+  it('grants the Discord Pro role for active canonical licenses', () => {
     expect(
       evaluateDiscordProEntitlement([
-        license({ status: 'ACTIVE', expiry: '2026-12-01T00:00:00Z' }),
+        license({ status: 'active', expiry: '2026-12-01T00:00:00Z' }),
       ], now)
     ).toEqual({ state: 'entitled' })
   })
@@ -63,7 +63,7 @@ describe('evaluateDiscordProEntitlement', () => {
   it('treats malformed active expiry as unknown', () => {
     expect(
       evaluateDiscordProEntitlement([
-        license({ status: 'ACTIVE', expiry: 'not-a-date' }),
+        license({ status: 'active', expiry: 'not-a-date' }),
       ], now)
     ).toEqual({ state: 'unknown' })
   })
