@@ -3,8 +3,8 @@ import { env } from '@/utils/env'
 import { getCustomer } from '@/lib/medusa-auth'
 import { getResolvedCustomerLicenses } from '@/lib/customer-licenses'
 import { verifyDownloadToken } from '@/lib/download-token'
-import { isReleaseAllowedForLicenses } from '@/lib/license'
-import { findReleaseByVersion } from '@/services/core/business/pro-downloads'
+import { getProPluginReleases } from '@/services/core/business/pro-downloads'
+import { selectEntitledRelease } from '@/services/core/business/release-delivery'
 import { fetchReleaseAsset } from '@/services/core/external/github-asset'
 import { licenseLogger } from '@/lib/logger'
 
@@ -35,19 +35,25 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: 'Invalid token' }, { status: 403 })
   }
 
-  const release = await findReleaseByVersion(payload.version)
-  if (!release) {
-    return NextResponse.json({ error: 'Release not found' }, { status: 404 })
-  }
-
+  const releases = await getProPluginReleases()
   const { licenses } = await getResolvedCustomerLicenses()
-  if (!isReleaseAllowedForLicenses(release, licenses)) {
+  // Account-wide authorization is a deliberate union (ADR-0006): the token
+  // proves the customer asked for this version; the union decides whether any
+  // licence they hold entitles it.
+  const selection = selectEntitledRelease(releases, payload.version, {
+    kind: 'account',
+    licences: licenses,
+  })
+  if (!selection.ok) {
+    if (selection.reason === 'not_found') {
+      return NextResponse.json({ error: 'Release not found' }, { status: 404 })
+    }
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
   }
 
-  const served = await fetchReleaseAsset(release)
+  const served = await fetchReleaseAsset(selection.release)
   if (!served) {
-    licenseLogger.error`Failed to fetch release asset after retries. version=${release.version} customer=${customer.id}`
+    licenseLogger.error`Failed to fetch release asset after retries. version=${selection.release.version} customer=${customer.id}`
     return NextResponse.json(
       { error: 'Failed to fetch release asset' },
       { status: 502 }

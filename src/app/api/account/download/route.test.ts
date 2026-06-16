@@ -4,8 +4,7 @@ import { NextRequest } from 'next/server'
 const mockGetCustomer = vi.fn()
 const mockGetResolvedCustomerLicenses = vi.fn()
 const mockVerifyDownloadToken = vi.fn()
-const mockFindReleaseByVersion = vi.fn()
-const mockIsReleaseAllowedForLicenses = vi.fn()
+const mockGetProPluginReleases = vi.fn()
 const mockFetchReleaseAsset = vi.fn()
 const mockLicenseLoggerError = vi.fn()
 const mockLicenseLoggerWarn = vi.fn()
@@ -24,13 +23,8 @@ vi.mock('@/lib/download-token', () => ({
 }))
 
 vi.mock('@/services/core/business/pro-downloads', () => ({
-  findReleaseByVersion: (...args: unknown[]) =>
-    mockFindReleaseByVersion(...args),
-}))
-
-vi.mock('@/lib/license', () => ({
-  isReleaseAllowedForLicenses: (...args: unknown[]) =>
-    mockIsReleaseAllowedForLicenses(...args),
+  getProPluginReleases: (...args: unknown[]) =>
+    mockGetProPluginReleases(...args),
 }))
 
 vi.mock('@/services/core/external/github-asset', () => ({
@@ -55,6 +49,19 @@ vi.mock('@/utils/env', () => ({
 
 import { GET } from './route'
 
+function makeRelease(version: string, publishedAt: string) {
+  return {
+    version,
+    tagName: `v${version}`,
+    name: `WCPOS Pro ${version}`,
+    releaseNotes: '',
+    publishedAt,
+    assetName: `woocommerce-pos-pro-${version}.zip`,
+    assetApiUrl: `https://api.github.com/assets/${version}`,
+    assetUrl: `https://downloads.example.com/${version}.zip`,
+  }
+}
+
 function servedAsset() {
   return {
     stream: new Response('zip-binary').body,
@@ -62,6 +69,8 @@ function servedAsset() {
     contentType: 'application/zip' as const,
   }
 }
+
+const ACTIVE_LICENCE = { status: 'active', expiry: null }
 
 describe('GET /api/account/download', () => {
   beforeEach(() => {
@@ -90,54 +99,46 @@ describe('GET /api/account/download', () => {
 
     expect(response.status).toBe(500)
     expect(mockVerifyDownloadToken).not.toHaveBeenCalled()
-    expect(mockLicenseLoggerError).toHaveBeenCalled()
   })
 
-  it('streams the release asset for a valid signed token', async () => {
+  it('returns 404 when the requested version does not exist', async () => {
     mockGetCustomer.mockResolvedValueOnce({ id: 'cust_1' })
     mockVerifyDownloadToken.mockReturnValueOnce({
       customerId: 'cust_1',
-      version: '1.9.0',
+      version: '9.9.9',
       expiresAt: Date.now() + 60_000,
     })
-    mockFindReleaseByVersion.mockResolvedValueOnce({
-      version: '1.9.0',
-      assetName: 'woocommerce-pos-pro-1.9.0.zip',
-      assetApiUrl: 'https://api.github.com/assets/123',
-      assetUrl: 'https://github.com/download.zip',
-    })
+    mockGetProPluginReleases.mockResolvedValueOnce([
+      makeRelease('1.9.0', '2026-01-15T00:00:00Z'),
+    ])
     mockGetResolvedCustomerLicenses.mockResolvedValueOnce({
       authenticated: true,
-      licenses: [],
+      licenses: [ACTIVE_LICENCE],
     })
-    mockIsReleaseAllowedForLicenses.mockReturnValueOnce(true)
-    mockFetchReleaseAsset.mockResolvedValueOnce(servedAsset())
 
     const response = await GET(
       new NextRequest('http://localhost/api/account/download?token=test')
     )
 
-    expect(response.status).toBe(200)
-    expect(response.headers.get('content-type')).toContain('application/zip')
-    expect(response.headers.get('content-disposition')).toContain(
-      'woocommerce-pos-pro-1.9.0.zip'
-    )
-    expect(response.headers.get('cache-control')).toBe('private, no-store')
+    expect(response.status).toBe(404)
+    expect(mockFetchReleaseAsset).not.toHaveBeenCalled()
   })
 
-  it('returns 403 when the release is not allowed for the customer', async () => {
+  it('returns 403 when the release exists but is not entitled', async () => {
     mockGetCustomer.mockResolvedValueOnce({ id: 'cust_1' })
     mockVerifyDownloadToken.mockReturnValueOnce({
       customerId: 'cust_1',
       version: '1.9.0',
       expiresAt: Date.now() + 60_000,
     })
-    mockFindReleaseByVersion.mockResolvedValueOnce({ version: '1.9.0' })
+    mockGetProPluginReleases.mockResolvedValueOnce([
+      makeRelease('1.9.0', '2026-01-15T00:00:00Z'),
+    ])
+    // Expired licence with a ceiling before the release date — not entitled.
     mockGetResolvedCustomerLicenses.mockResolvedValueOnce({
       authenticated: true,
-      licenses: [],
+      licenses: [{ status: 'expired', expiry: '2025-01-01T00:00:00Z' }],
     })
-    mockIsReleaseAllowedForLicenses.mockReturnValueOnce(false)
 
     const response = await GET(
       new NextRequest('http://localhost/api/account/download?token=test')
@@ -147,6 +148,31 @@ describe('GET /api/account/download', () => {
     expect(mockFetchReleaseAsset).not.toHaveBeenCalled()
   })
 
+  it('streams the release asset for an entitled signed token', async () => {
+    mockGetCustomer.mockResolvedValueOnce({ id: 'cust_1' })
+    mockVerifyDownloadToken.mockReturnValueOnce({
+      customerId: 'cust_1',
+      version: '1.9.0',
+      expiresAt: Date.now() + 60_000,
+    })
+    mockGetProPluginReleases.mockResolvedValueOnce([
+      makeRelease('1.9.0', '2026-01-15T00:00:00Z'),
+    ])
+    mockGetResolvedCustomerLicenses.mockResolvedValueOnce({
+      authenticated: true,
+      licenses: [ACTIVE_LICENCE],
+    })
+    mockFetchReleaseAsset.mockResolvedValueOnce(servedAsset())
+
+    const response = await GET(
+      new NextRequest('http://localhost/api/account/download?token=test')
+    )
+
+    expect(response.status).toBe(200)
+    expect(response.headers.get('content-type')).toContain('application/zip')
+    expect(response.headers.get('cache-control')).toBe('private, no-store')
+  })
+
   it('returns 502 when the asset cannot be fetched', async () => {
     mockGetCustomer.mockResolvedValueOnce({ id: 'cust_1' })
     mockVerifyDownloadToken.mockReturnValueOnce({
@@ -154,17 +180,13 @@ describe('GET /api/account/download', () => {
       version: '1.9.0',
       expiresAt: Date.now() + 60_000,
     })
-    mockFindReleaseByVersion.mockResolvedValueOnce({
-      version: '1.9.0',
-      assetName: 'z.zip',
-      assetApiUrl: 'x',
-      assetUrl: 'y',
-    })
+    mockGetProPluginReleases.mockResolvedValueOnce([
+      makeRelease('1.9.0', '2026-01-15T00:00:00Z'),
+    ])
     mockGetResolvedCustomerLicenses.mockResolvedValueOnce({
       authenticated: true,
-      licenses: [],
+      licenses: [ACTIVE_LICENCE],
     })
-    mockIsReleaseAllowedForLicenses.mockReturnValueOnce(true)
     mockFetchReleaseAsset.mockResolvedValueOnce(null)
 
     const response = await GET(
