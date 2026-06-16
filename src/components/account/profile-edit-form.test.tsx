@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { renderWithIntl as render } from '@/test/intl'
 import { ProfileEditForm } from './profile-edit-form'
@@ -7,8 +7,17 @@ const mockFetch = vi.fn()
 vi.stubGlobal('fetch', mockFetch)
 
 describe('ProfileEditForm', () => {
+  const originalLocation = window.location
+
   beforeEach(() => {
     vi.clearAllMocks()
+  })
+
+  afterEach(() => {
+    Object.defineProperty(window, 'location', {
+      configurable: true,
+      value: originalLocation,
+    })
   })
 
   it('allows customers to update profile details', async () => {
@@ -115,7 +124,8 @@ describe('ProfileEditForm', () => {
         customer={{ email: 'ada@gmail.com', metadata: {} }}
         connections={{
           google: { email: 'ada@gmail.com' },
-          discord: { connected: false },
+          discord: { connected: false, configured: true },
+          discordReturnTo: '/en/account/profile',
         }}
       />
     )
@@ -130,8 +140,28 @@ describe('ProfileEditForm', () => {
     })
     fireEvent.click(connectButton)
     expect(window.location.href).toBe(
-      '/api/discord/link?return_to=/account/profile'
+      '/api/discord/link?return_to=%2Fen%2Faccount%2Fprofile'
     )
+  })
+
+  it('hides the Connect Discord action when Discord is not configured', () => {
+    render(
+      <ProfileEditForm
+        customer={{ email: 'ada@gmail.com', metadata: {} }}
+        connections={{
+          google: { email: 'ada@gmail.com' },
+          discord: { connected: false, configured: false },
+          discordReturnTo: '/en/account/profile',
+        }}
+      />
+    )
+
+    expect(
+      screen.queryByRole('button', { name: 'Connect Discord' })
+    ).not.toBeInTheDocument()
+    expect(
+      screen.getByText('Discord linking is not configured yet.')
+    ).toBeInTheDocument()
   })
 
   it('shows the linked Discord handle and disconnect action', async () => {
@@ -148,6 +178,7 @@ describe('ProfileEditForm', () => {
         connections={{
           google: { email: 'ada@gmail.com' },
           discord: { connected: true, username: 'ada' },
+          discordReturnTo: '/en/account/profile',
         }}
       />
     )
@@ -157,13 +188,45 @@ describe('ProfileEditForm', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Disconnect' }))
 
     await waitFor(() => {
-      expect(mockFetch).toHaveBeenCalledWith('/api/discord/unlink', {
-        method: 'POST',
-      })
+      expect(mockFetch).toHaveBeenCalledWith(
+        '/api/discord/unlink',
+        expect.objectContaining({ method: 'POST' })
+      )
     })
     await waitFor(() => {
       expect(reload).toHaveBeenCalled()
     })
+  })
+
+  it('shows an error when Discord unlink redirects to an error status', async () => {
+    const reload = vi.fn()
+    Object.defineProperty(window, 'location', {
+      configurable: true,
+      value: { href: '', origin: 'http://localhost:3000', reload },
+    })
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      redirected: true,
+      url: 'http://localhost:3000/account?discord=error',
+    })
+
+    render(
+      <ProfileEditForm
+        customer={{ email: 'ada@gmail.com', metadata: {} }}
+        connections={{
+          google: { email: 'ada@gmail.com' },
+          discord: { connected: true, username: 'ada' },
+          discordReturnTo: '/en/account/profile',
+        }}
+      />
+    )
+
+    fireEvent.click(screen.getByRole('button', { name: 'Disconnect' }))
+
+    expect(
+      await screen.findByText('Could not disconnect. Please try again.')
+    ).toBeInTheDocument()
+    expect(reload).not.toHaveBeenCalled()
   })
 
   it('renders the member-since footer when provided', () => {
