@@ -10,21 +10,28 @@ import {
   SheetTrigger,
   SheetTitle,
 } from '@/components/ui/sheet'
-import { getAuthToken } from '@/lib/medusa-auth'
+import { getCustomer } from '@/lib/medusa-auth'
+import {
+  getCustomerAvatarUrl,
+  getCustomerInitials,
+} from '@/lib/customer-avatar'
+import { UserMenu } from '@/components/main/user-menu'
 
 async function AuthButton() {
-  let token: string | null = null
+  let customer = null
   try {
-    token = await getAuthToken()
+    customer = await getCustomer()
   } catch {
-    // Cookie read failed — fall through to Sign In
+    // Cookie/customer read failed — fall through to Sign In
   }
 
-  if (token) {
+  if (customer) {
     return (
-      <Button variant="ghost" size="sm" asChild>
-        <Link href="/account">Account</Link>
-      </Button>
+      <UserMenu
+        email={customer.email}
+        avatarUrl={getCustomerAvatarUrl(customer)}
+        initials={getCustomerInitials(customer)}
+      />
     )
   }
 
@@ -38,7 +45,7 @@ async function AuthButton() {
 }
 
 function AuthButtonFallback() {
-  return <div className="h-9 w-20" />
+  return <div className="h-9 w-9" />
 }
 
 export function SiteHeader() {
