@@ -57,7 +57,10 @@ async function DownloadsContent({
   const scopedLicenses = scopedLicenseId
     ? licenses.filter((license) => license.id === scopedLicenseId)
     : []
-  const downloadLicenses = scopedLicenses.length > 0 ? scopedLicenses : licenses
+  // When a licence is explicitly scoped via ?license=, honour that scope even
+  // when it matches nothing — a foreign/stale id must grant no access, not fall
+  // back to pooling every licence (ADR-0006). Only an absent scope sees all.
+  const downloadLicenses = scopedLicenseId ? scopedLicenses : licenses
   const nowMs = new Date().getTime()
   const releases = await getProPluginReleases()
   const mappedReleases = releases.map((release) => ({
