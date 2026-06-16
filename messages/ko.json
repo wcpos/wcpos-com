@@ -164,7 +164,9 @@
       "orderNumber": "Order #{id}",
       "dateAndItems": "{date} — {count, plural, =1 {# item} other {# items}}",
       "receiptPdf": "Receipt (PDF)",
-      "downloadReceiptAria": "Download receipt for order #{id}"
+      "downloadReceiptAria": "Download receipt for order #{id}",
+      "viewOrder": "보기",
+      "viewOrderAria": "주문 #{id} 보기"
     },
     "orderDetail": {
       "backToOrders": "Back to orders",
@@ -178,7 +180,9 @@
       "itemsTitle": "Items",
       "quantity": "Qty: {count}",
       "licenseKeysTitle": "License Keys",
-      "manage": "Manage"
+      "manage": "Manage",
+      "licenseFromOrderTitle": "이 주문의 라이선스",
+      "manageLicence": "라이선스 관리 →"
     },
     "licenseStatus": {
       "active": "active",

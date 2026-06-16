@@ -164,7 +164,9 @@
       "orderNumber": "Order #{id}",
       "dateAndItems": "{date} — {count, plural, =1 {# item} other {# items}}",
       "receiptPdf": "Receipt (PDF)",
-      "downloadReceiptAria": "Download receipt for order #{id}"
+      "downloadReceiptAria": "Download receipt for order #{id}",
+      "viewOrder": "查看",
+      "viewOrderAria": "查看订单 #{id}"
     },
     "orderDetail": {
       "backToOrders": "Back to orders",
@@ -178,7 +180,9 @@
       "itemsTitle": "Items",
       "quantity": "Qty: {count}",
       "licenseKeysTitle": "License Keys",
-      "manage": "Manage"
+      "manage": "Manage",
+      "licenseFromOrderTitle": "此订单的许可证",
+      "manageLicence": "管理许可证 →"
     },
     "licenseStatus": {
       "active": "active",
