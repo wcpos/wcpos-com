@@ -24,10 +24,14 @@ export default function AccountError({
 
   return (
     <Card>
-      <CardContent className="py-8 text-center text-muted-foreground">
-        <AlertTriangle className="h-8 w-8 mx-auto mb-2 opacity-50" />
-        <p className="font-medium text-foreground">{t('heading')}</p>
-        <p className="text-sm mt-1">{t('description')}</p>
+      <CardContent className="flex flex-col items-center py-12 text-center">
+        <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-amber-50 dark:bg-amber-400/10">
+          <AlertTriangle className="h-5 w-5 text-amber-600 dark:text-amber-400" />
+        </div>
+        <p className="font-medium">{t('heading')}</p>
+        <p className="mt-1 max-w-sm text-sm text-muted-foreground">
+          {t('description')}
+        </p>
         <Button className="mt-4" onClick={reset}>
           {t('retry')}
         </Button>

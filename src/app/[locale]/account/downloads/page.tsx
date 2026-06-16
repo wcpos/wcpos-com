@@ -4,9 +4,10 @@ import { redirectToLoginClearingSession } from '@/lib/login-redirect'
 import { DownloadsClient } from '@/components/account/downloads-client'
 import { getResolvedCustomerLicenses } from '@/lib/customer-licenses'
 import {
-  getProPluginReleases,
   isReleaseAllowedForLicenses,
-} from '@/services/core/business/pro-downloads'
+  summarizeDownloadAccess,
+} from '@/lib/license'
+import { getProPluginReleases } from '@/services/core/business/pro-downloads'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import type { Metadata } from 'next'
 
@@ -47,47 +48,23 @@ async function DownloadsContent({ locale }: { locale: string }) {
     redirectToLoginClearingSession(locale)
   }
 
-  const now = new Date()
+  const nowMs = new Date().getTime()
   const releases = await getProPluginReleases()
   const mappedReleases = releases.map((release) => ({
     ...release,
-    allowed: isReleaseAllowedForLicenses(release, licenses, now),
+    allowed: isReleaseAllowedForLicenses(release, licenses, nowMs),
   }))
 
-  // Mirrors the entitlement rules in isReleaseAllowedForLicenses so the UI
-  // can explain WHY a release is unavailable (expired vs. suspended vs.
-  // unverifiable vs. no license). Only active/expired licenses contribute
-  // expiry-based access — suspended/revoked grant nothing (docs/adr/0001) —
-  // so expiry messaging derives from the same subset.
-  const hasActiveLicense = licenses.some((license) => {
-    if (license.status.toLowerCase() !== 'active') return false
-    if (!license.expiry) return true
-    return new Date(license.expiry).getTime() >= now.getTime()
-  })
-  const expiryTimes = licenses
-    .filter((license) =>
-      ['active', 'expired'].includes(license.status.toLowerCase())
-    )
-    .map((license) =>
-      license.expiry ? new Date(license.expiry).getTime() : Number.NaN
-    )
-    .filter((time) => !Number.isNaN(time))
-  const latestExpiry =
-    expiryTimes.length > 0
-      ? new Date(Math.max(...expiryTimes)).toISOString()
-      : null
-  // The banner may only claim "expired" once an expiry has actually passed;
-  // e.g. a suspended license can carry a future expiry.
-  const expiryHasPassed =
-    expiryTimes.length > 0 && Math.max(...expiryTimes) < now.getTime()
-  const statuses = licenses.map((license) => license.status.toLowerCase())
-  const suspendedCount = statuses.filter(
-    (status) => status === 'suspended'
-  ).length
-  // 'unknown' = placeholder from buildLicensePlaceholder (Keygen unreachable
-  // or an unresolvable legacy key); the license may be fine, we just can't
-  // verify it right now.
-  const unknownCount = statuses.filter((status) => status === 'unknown').length
+  // One-pass access diagnosis so the UI can explain WHY a release is
+  // unavailable (expired vs. suspended vs. unverifiable vs. no license).
+  const {
+    hasActiveLicense,
+    latestExpiry,
+    expiryHasPassed,
+    suspendedCount,
+    revokedCount,
+    unknownCount,
+  } = summarizeDownloadAccess(licenses, nowMs)
 
   return (
     <DownloadsClient
@@ -98,6 +75,7 @@ async function DownloadsContent({ locale }: { locale: string }) {
         expiryHasPassed,
         licenseCount: licenses.length,
         suspendedCount,
+        revokedCount,
         unknownCount,
       }}
     />
@@ -115,7 +93,7 @@ export default async function DownloadsPage({
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold">{t('heading')}</h1>
+      <h1 className="text-2xl font-bold tracking-tight">{t('heading')}</h1>
       <Suspense fallback={<DownloadsSkeleton />}>
         <DownloadsContent locale={locale} />
       </Suspense>

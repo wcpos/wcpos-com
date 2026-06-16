@@ -47,7 +47,7 @@ async function OrderDetailContent({
 
   return (
     <>
-      <h1 className="text-2xl font-bold">
+      <h1 className="text-2xl font-bold tracking-tight">
         {t('orderNumber', { id: order.display_id })}
       </h1>
 
@@ -117,11 +117,18 @@ async function OrderDetailContent({
           <CardContent>
             <div className="space-y-2">
               {licenses.map((lic) => (
-                <div key={lic.id} className="flex items-center justify-between p-3 bg-muted rounded-lg">
-                  <code className="text-sm font-mono">{lic.key}</code>
+                <div
+                  key={lic.id}
+                  className="flex flex-wrap items-center justify-between gap-2 rounded-lg border bg-muted/40 p-3"
+                >
+                  {/* The full key is intentionally shown here: the order page
+                      is where customers retrieve it for plugin activation. */}
+                  <code className="break-all font-mono text-sm tracking-wide">
+                    {lic.key}
+                  </code>
                   <Link
                     href="/account/licenses"
-                    className="text-sm text-primary hover:underline"
+                    className="shrink-0 text-sm text-primary underline-offset-4 hover:underline"
                   >
                     {t('manage')}
                   </Link>

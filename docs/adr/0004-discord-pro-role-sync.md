@@ -1,52 +1,113 @@
----
-status: accepted
----
+# Discord Pro role is synced from active Medusa/Keygen entitlement
 
-# Discord Pro role is bot-managed from active license entitlement
+The WCPOS Discord `Pro User` role is an automated, bot-owned role derived
+from the customer's current WCPOS Pro entitlement. Medusa/Keygen remains the
+source of truth; Discord is only the projection of that state.
 
-WCPOS Pro customers can link a Discord account from the wcpos.com account area.
-The site grants the Discord Pro role while the customer has at least one active
-license, and removes it when no active license remains. This community role is a
-perk of current Pro status, not a download entitlement: expired licenses keep the
-pre-expiry downloads described in ADR-0001, but expired/suspended/revoked
-licenses do not grant the Discord role.
+## Decision
 
-The implementation uses a bot-managed role instead of Discord Linked Roles. The
-customer authorizes Discord OAuth with `identify` only; wcpos.com stores the
-Discord user ID and display metadata on the Medusa customer metadata, discards
-the user OAuth token, and uses a server-side bot token to add/remove the guild
-role. This avoids storing permanent per-user Discord refresh tokens and keeps the
-role fully derivable from WCPOS license data.
+Use a Discord bot to manage the normal Discord `Pro User` role in guild
+`711884517081612298`. Do not use Discord Linked Roles for v1.
 
-Durable link state lives on the customer record as `discord_user_id`,
-`discord_username`, `discord_avatar`, and `discord_linked_at`. This is enough at
-current community scale and keeps the first implementation inside wcpos-com. If
-linked users grow into the thousands, or if hard database uniqueness becomes
-necessary, promote this metadata to a dedicated Medusa module/table and migrate
-these keys.
+A customer receives the role only while they have at least one active WCPOS Pro
+license:
 
-Reconciliation is the correctness mechanism. Vercel cron calls
-`/api/discord/reconcile`, guarded by `CRON_SECRET`, and the route sweeps both
-sides: linked customers are synced to their current entitlement, and current
-Discord Pro-role holders with no entitled linked customer are demoted. Inline
-syncs after link, unlink, resync, and checkout are best-effort conveniences; a
-missed inline sync is repaired by reconciliation.
+- Lifetime active licenses grant the role.
+- Yearly active licenses grant the role until expiry.
+- Expired licenses do not grant the role.
+- Suspended and revoked licenses do not grant the role.
+- Unverifiable licenses do not grant the role, but a temporary verification
+  outage must not by itself remove an already-held role during reconciliation.
 
-License status is normalized before role checks. `active` grants the role when
-expiry is absent or in the future. `expired`, `suspended`, and `revoked` do not.
-Unverifiable licenses (`unknown`) do not grant new roles, but also do not trigger
-demotion; missing Keygen data must not remove a community role until the current
-license state can be confirmed.
+This intentionally differs from download entitlement: expired licenses can keep
+access to releases published during their term, but the Discord community perk
+requires current active Pro status.
 
-Required production secrets are `DISCORD_CLIENT_ID`, `DISCORD_CLIENT_SECRET`,
-`DISCORD_BOT_TOKEN`, `DISCORD_GUILD_ID`, `DISCORD_PRO_ROLE_ID`, `CRON_SECRET`,
-and `MEDUSA_ADMIN_API_TOKEN` for reconciliation. `DISCORD_PUBLIC_KEY` is reserved
-for a future Discord Interactions endpoint. The bot should have only Manage Roles
-permission, with the Server Members privileged intent enabled for reconciliation
-sweeps, and its highest role should sit immediately above the Pro role in the
-server hierarchy.
+## Account linking
 
-Deferred work: a Discord `/link` command can deep-link users back to the account
-page, and Keygen webhooks can accelerate expiry demotion once the license-to-
-customer lookup is made explicit. Those paths improve latency and UX; they are
-not the source of truth.
+Store the Discord link on the Medusa customer metadata for v1:
+
+- `discord_user_id`
+- `discord_username`
+- `discord_avatar`
+- `discord_linked_at`
+- `discord_last_synced_at`
+
+Do not infer identity from email address. A customer's WCPOS email and Discord
+email may differ. The link is created only from both of these proofs:
+
+1. an authenticated Medusa customer session on wcpos.com, and
+2. a verified Discord OAuth `identify` result for the Discord account.
+
+Both linking entry points are supported:
+
+- Website-first: the logged-in customer clicks **Connect Discord** in the
+  account area.
+- Discord-first: the customer runs `/link` in Discord and receives an ephemeral
+  wcpos.com linking URL.
+
+The Discord-first URL should carry a short-lived signed state binding it to the
+Discord user who invoked `/link`; the OAuth callback must reject the link if the
+OAuth Discord user differs from that expected user. This prevents forwarded link
+URLs from linking the wrong Discord identity.
+
+## Role ownership
+
+`Pro User` is bot-owned. Reconciliation removes manual grants that are not backed
+by a linked Medusa customer with active Pro entitlement.
+
+If a manual exception is needed, create a separate admin-managed role such as
+`Honorary Pro` with equivalent channel permissions. Do not use the synced
+`Pro User` role as an allowlist.
+
+## Reconciliation
+
+A scheduled reconciliation job is the correctness mechanism. Event-driven syncs
+are convenience accelerators only.
+
+Run a protected wcpos.com route from Vercel Cron, guarded by `CRON_SECRET`. The
+job must sweep both directions:
+
+1. Linked customers: resolve each customer's licenses from Medusa orders and
+   Keygen, then add or remove the Discord role to match active entitlement.
+2. Current Discord `Pro User` holders: remove the role from anyone who has no
+   linked customer or whose linked customer lacks active entitlement.
+
+This catches expiry, unlink drift, manual role grants, missed checkout hooks, and
+Discord/API failures that heal on the next run.
+
+## Discord operations
+
+The Discord bot needs only the permissions required to manage the target role.
+It must not be granted administrator permissions. Its highest role must sit above
+`Pro User` and below staff/admin roles in Discord's role hierarchy. The bot must
+also have the Server Members privileged intent enabled for reconciliation sweeps
+that list current guild members.
+
+Required secrets live only in server-side deployment environment variables:
+
+- `DISCORD_GUILD_ID`
+- `DISCORD_PRO_ROLE_ID`
+- `DISCORD_BOT_TOKEN`
+- `DISCORD_CLIENT_ID`
+- `DISCORD_CLIENT_SECRET`
+- `DISCORD_PUBLIC_KEY` for slash-command interaction signature verification
+- `CRON_SECRET`
+- `MEDUSA_ADMIN_API_TOKEN` for customer-wide duplicate-link checks and
+  reconciliation
+- `DISCORD_SYNC_ENABLED` kill switch
+
+## Deferred decisions
+
+A dedicated Medusa `customer_discord_link` table is deferred. Promote from
+customer metadata only if linked-user count grows into the thousands, reverse
+lookup becomes hot, hard database uniqueness is needed, or audit/history becomes
+important.
+
+Keygen webhooks are also deferred. They can later accelerate targeted sync on
+license expiry, renewal, suspension, or revocation, but reconciliation remains
+the source of correctness.
+
+Discord Linked Roles are deferred. They may provide richer Discord-native
+connection metadata, but they require persistent per-user Discord OAuth tokens
+and refresh/revocation handling. That cost is not justified for v1 role sync.

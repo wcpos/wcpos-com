@@ -33,7 +33,7 @@ describe('licenseClient', () => {
             id: 'license-123',
             attributes: {
               key: 'XXXX-XXXX',
-              status: 'ACTIVE',
+              status: 'active',
               expiry: '2027-01-01T00:00:00Z',
               maxMachines: 2,
               metadata: {},
@@ -55,7 +55,7 @@ describe('licenseClient', () => {
         license: {
           id: 'license-123',
           key: 'XXXX-XXXX',
-          status: 'ACTIVE',
+          status: 'active',
           expiry: '2027-01-01T00:00:00Z',
           maxMachines: 2,
           metadata: {},
@@ -86,7 +86,7 @@ describe('licenseClient', () => {
             id: 'license-456',
             attributes: {
               key: 'YYYY-YYYY',
-              status: 'EXPIRED',
+              status: 'expired',
               expiry: '2024-01-01T00:00:00Z',
               maxMachines: 2,
               metadata: {},
@@ -107,7 +107,7 @@ describe('licenseClient', () => {
         detail: 'is expired',
         license: expect.objectContaining({
           id: 'license-456',
-          status: 'EXPIRED',
+          status: 'expired',
         }),
       })
     })
@@ -158,7 +158,7 @@ describe('licenseClient', () => {
       expect(result).toEqual({
         id: 'license-123',
         key: 'XXXX-XXXX',
-        status: 'ACTIVE',
+        status: 'active',
         expiry: '2027-01-01T00:00:00Z',
         maxMachines: 2,
         machines: [],
@@ -408,6 +408,165 @@ describe('licenseClient', () => {
     })
   })
 
+
+  describe('Keygen adapter normalizes raw status at the seam', () => {
+    const mockValidateKey = ({
+      status,
+      expiry,
+      valid = true,
+    }: {
+      status: string
+      expiry: string | null
+      valid?: boolean
+    }) => {
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          meta: { valid, detail: 'detail', code: valid ? 'VALID' : 'OTHER' },
+          data: {
+            id: 'license-123',
+            attributes: {
+              key: 'KEY',
+              status,
+              expiry,
+              maxMachines: 2,
+              metadata: {},
+              created: '2026-01-01T00:00:00Z',
+            },
+            relationships: {
+              policy: { data: { id: 'policy-yearly' } },
+            },
+          },
+        }),
+      })
+    }
+
+    const mockGetLicense = ({
+      id = 'lic_1',
+      status,
+      expiry,
+    }: {
+      id?: string
+      status: string
+      expiry: string | null
+    }) => {
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          data: {
+            id,
+            attributes: {
+              key: 'KEY',
+              status,
+              expiry,
+              maxMachines: 2,
+              metadata: {},
+              created: '2026-01-01T00:00:00Z',
+            },
+            relationships: {
+              policy: { data: { id: 'policy-yearly' } },
+            },
+          },
+        }),
+      })
+    }
+
+    const mockMachines = (machines: unknown[]) => {
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ data: machines }),
+      })
+    }
+
+    it('validateLicenseKey returns canonical status (EXPIRING -> active)', async () => {
+      mockValidateKey({ valid: true, status: 'EXPIRING', expiry: null })
+
+      const result = await licenseClient.validateLicenseKey('KEY')
+
+      expect(result.license?.status).toBe('active')
+    })
+
+    it('getLicenseWithMachines returns canonical status (BANNED -> revoked)', async () => {
+      mockGetLicense({ status: 'BANNED', expiry: null })
+      mockMachines([])
+
+      const license = await licenseClient.getLicenseWithMachines('lic_1')
+
+      expect(license.status).toBe('revoked')
+    })
+
+    it('getLicenseWithMachines normalizes INACTIVE -> active', async () => {
+      mockGetLicense({ id: 'lic_2', status: 'INACTIVE', expiry: null })
+      mockMachines([])
+
+      const license = await licenseClient.getLicenseWithMachines('lic_2')
+
+      expect(license.status).toBe('active')
+    })
+  })
+
+  describe('validateLicense — plugin data derives from canonical status', () => {
+    const mockValidateKey = ({
+      status,
+      expiry,
+      valid = true,
+    }: {
+      status: string
+      expiry: string | null
+      valid?: boolean
+    }) => {
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          meta: { valid, detail: 'detail', code: valid ? 'VALID' : 'OTHER' },
+          data: {
+            id: 'license-123',
+            attributes: {
+              key: 'KEY',
+              status,
+              expiry,
+              maxMachines: 2,
+              metadata: {},
+              created: '2026-01-01T00:00:00Z',
+            },
+            relationships: {
+              policy: { data: { id: 'policy-yearly' } },
+            },
+          },
+        }),
+      })
+    }
+
+    const mockMachines = (machines: unknown[]) => {
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ data: machines }),
+      })
+    }
+
+    const cases: Array<[string, string, string, boolean]> = [
+      ['ACTIVE', 'active', 'active', true],
+      ['EXPIRING', 'active', 'active', true],
+      ['INACTIVE', 'active', 'active', true],
+      ['EXPIRED', 'expired', 'expired', false],
+      ['SUSPENDED', 'inactive', 'suspended', false],
+      ['BANNED', 'invalid', 'revoked', false],
+    ]
+
+    it.each(cases)(
+      'raw %s -> plugin %s / entitlement %s',
+      async (rawStatus, pluginStatus, entitlementStatus, valid) => {
+        mockValidateKey({ valid, status: rawStatus, expiry: null })
+        if (valid) mockMachines([])
+
+        const res = await licenseClient.validateLicense('KEY', 'instance')
+
+        expect(res.data?.status).toBe(pluginStatus)
+        expect(res.entitlement?.status).toBe(entitlementStatus)
+      }
+    )
+  })
+
   describe('validateLicense', () => {
     it('maps Keygen data to LicenseStatusResponse format for an active license', async () => {
       // Mock validateLicenseKey call
@@ -462,6 +621,10 @@ describe('licenseClient', () => {
           activationsCount: 1,
           productName: 'WooCommerce POS Pro',
         },
+        entitlement: {
+          status: 'active',
+          expiry: '2027-01-01T00:00:00Z',
+        },
       })
     })
 
@@ -499,7 +662,107 @@ describe('licenseClient', () => {
           activationsCount: 0,
           productName: 'WooCommerce POS Pro',
         },
+        entitlement: {
+          status: 'expired',
+          expiry: '2024-01-01T00:00:00Z',
+        },
       })
+    })
+
+    // Keygen statuses beyond the basic three. EXPIRING and INACTIVE are
+    // paid, in-term licenses and must report as 'active' to the plugin —
+    // same policy as normalizeLicenseStatus (src/lib/license-status.ts).
+    function mockValidation(status: string, valid: boolean, expiry: string | null) {
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          meta: { valid, detail: 'detail', code: valid ? 'VALID' : 'OTHER' },
+          data: {
+            id: 'license-789',
+            attributes: {
+              key: 'KEYX-KEYX',
+              status,
+              expiry,
+              maxMachines: 3,
+              metadata: {},
+              created: '2026-01-01T00:00:00Z',
+            },
+            relationships: {
+              policy: { data: { id: 'policy-yearly' } },
+            },
+          },
+        }),
+      })
+    }
+
+    it('treats EXPIRING as active — paid, in-term, days from expiry', async () => {
+      mockValidation('EXPIRING', true, '2026-06-14T00:00:00Z')
+      // getLicenseMachines call (validation.valid gates the fetch)
+      mockFetch.mockResolvedValueOnce({ ok: true, json: async () => ({ data: [] }) })
+
+      const result = await licenseClient.validateLicense('KEYX-KEYX', 'instance-abc')
+
+      expect(result).toEqual({
+        status: 200,
+        data: {
+          activated: false,
+          status: 'active',
+          expiresAt: '2026-06-14T00:00:00Z',
+          activationsLimit: 3,
+          activationsCount: 0,
+          productName: 'WooCommerce POS Pro',
+        },
+        entitlement: {
+          status: 'active',
+          expiry: '2026-06-14T00:00:00Z',
+        },
+      })
+    })
+
+    it('treats INACTIVE as active — paid, in-term, just idle', async () => {
+      mockValidation('INACTIVE', true, '2026-12-01T00:00:00Z')
+      mockFetch.mockResolvedValueOnce({ ok: true, json: async () => ({ data: [] }) })
+
+      const result = await licenseClient.validateLicense('KEYX-KEYX', 'instance-abc')
+
+      expect(result.data?.status).toBe('active')
+      expect(result.data?.expiresAt).toBe('2026-12-01T00:00:00Z')
+      expect(result.entitlement?.status).toBe('active')
+    })
+
+    it('maps SUSPENDED to plugin-display inactive but canonical suspended entitlement', async () => {
+      mockValidation('SUSPENDED', false, '2099-01-01T00:00:00Z')
+
+      const result = await licenseClient.validateLicense('KEYX-KEYX', 'instance-abc')
+
+      expect(result.data?.status).toBe('inactive')
+      expect(result.data?.activated).toBe(false)
+      // The display value 'inactive' collides with the canonical vocabulary
+      // (where 'inactive' is an in-term Keygen status) — entitlement must
+      // carry the canonical 'suspended', which grants nothing (ADR-0001).
+      expect(result.entitlement).toEqual({
+        status: 'suspended',
+        expiry: '2099-01-01T00:00:00Z',
+      })
+    })
+
+    it('maps BANNED (Keygen terminal status) to invalid / revoked entitlement', async () => {
+      mockValidation('BANNED', false, null)
+
+      const result = await licenseClient.validateLicense('KEYX-KEYX', 'instance-abc')
+
+      expect(result.data?.status).toBe('invalid')
+      expect(result.data?.activated).toBe(false)
+      expect(result.entitlement?.status).toBe('revoked')
+    })
+
+    it('fails closed to invalid/unknown for unrecognized statuses', async () => {
+      mockValidation('SOMETHING_NEW', false, null)
+
+      const result = await licenseClient.validateLicense('KEYX-KEYX', 'instance-abc')
+
+      expect(result.data?.status).toBe('invalid')
+      expect(result.entitlement?.status).toBe('unknown')
     })
 
     it('maps NOT_FOUND to 404 error response', async () => {

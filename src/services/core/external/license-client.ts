@@ -1,6 +1,10 @@
 import 'server-only'
 
 import { env } from '@/utils/env'
+import {
+  normalizeLicenseStatus,
+  type CanonicalLicenseStatus,
+} from '@/lib/license-status'
 import { licenseLogger } from '@/lib/logger'
 import type {
   LicenseStatusResponse,
@@ -78,7 +82,9 @@ function mapLicenseData(
   return {
     id: data.id,
     key: data.attributes.key,
-    status: data.attributes.status,
+    // Canonical by construction: raw Keygen status is normalized here, at the
+    // adapter seam, so every LicenseDetail downstream carries canonical status.
+    status: normalizeLicenseStatus(data.attributes.status),
     expiry: data.attributes.expiry,
     maxMachines: data.attributes.maxMachines,
     metadata: data.attributes.metadata,
@@ -298,17 +304,24 @@ async function validateLicense(
     }
   }
 
-  const keygenStatus = license.status.toUpperCase()
-  const statusMap: Record<string, LicenseStatusResponse['data']> = {
-    ACTIVE: {
-      activated,
-      status: 'active',
-      expiresAt: license.expiry ?? undefined,
-      activationsLimit: license.maxMachines,
-      activationsCount,
-      productName: 'WooCommerce POS Pro',
-    },
-    EXPIRED: {
+  const activeData: LicenseStatusResponse['data'] = {
+    activated,
+    status: 'active',
+    expiresAt: license.expiry ?? undefined,
+    activationsLimit: license.maxMachines,
+    activationsCount,
+    productName: 'WooCommerce POS Pro',
+  }
+
+  // Plugin display vocabulary (active/expired/inactive/invalid) derived from
+  // the CANONICAL status. 'suspended' -> plugin 'inactive'; 'revoked'/'unknown'
+  // -> plugin 'invalid'. Output is identical to the previous raw-keyed map.
+  const pluginDataByCanonical: Record<
+    CanonicalLicenseStatus,
+    LicenseStatusResponse['data']
+  > = {
+    active: activeData,
+    expired: {
       activated: false,
       status: 'expired',
       expiresAt: license.expiry ?? undefined,
@@ -316,19 +329,31 @@ async function validateLicense(
       activationsCount,
       productName: 'WooCommerce POS Pro',
     },
-    SUSPENDED: {
+    suspended: {
       activated: false,
       status: 'inactive',
+      productName: 'WooCommerce POS Pro',
+    },
+    revoked: {
+      activated: false,
+      status: 'invalid',
+      productName: 'WooCommerce POS Pro',
+    },
+    unknown: {
+      activated: false,
+      status: 'invalid',
       productName: 'WooCommerce POS Pro',
     },
   }
 
   return {
     status: 200,
-    data: statusMap[keygenStatus] ?? {
-      activated: false,
-      status: 'invalid',
-      productName: 'WooCommerce POS Pro',
+    data: pluginDataByCanonical[license.status],
+    // Entitlement carries the canonical status straight through — it is already
+    // normalized at the adapter seam.
+    entitlement: {
+      status: license.status,
+      expiry: license.expiry,
     },
   }
 }

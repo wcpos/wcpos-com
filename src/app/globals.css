@@ -47,8 +47,11 @@
   --chart-4: 280 65% 60%;
   --chart-5: 340 75% 55%;
   
-  /* WCPOS brand red */
+  /* WCPOS brand red. The base token is a BACKGROUND color (white-text CTAs);
+     the accent variant is for small text/icons on white or red-tinted
+     surfaces, darkened so those pairings clear WCAG AA 4.5:1. */
   --wcpos-red: 4 73% 47%;
+  --wcpos-red-accent: 4 73% 42%;
 
   /* Radius */
   --radius: 0.5rem;
@@ -95,6 +98,11 @@
   --sidebar-border: 217.2 32.6% 17.5%;
   --sidebar-accent: 217.2 32.6% 17.5%;
   --sidebar-accent-foreground: 210 40% 98%;
+
+  /* Lifted in dark mode for small text/icons on dark and tinted surfaces.
+     --wcpos-red itself must stay untouched here: it is the background of the
+     white-text homepage CTAs, which pass WCAG AA only at 47% lightness. */
+  --wcpos-red-accent: 4 78% 62%;
 }
 
 @theme inline {
@@ -128,6 +136,7 @@
   --color-chart-4: hsl(var(--chart-4));
   --color-chart-5: hsl(var(--chart-5));
   --color-wcpos-red: hsl(var(--wcpos-red));
+  --color-wcpos-red-accent: hsl(var(--wcpos-red-accent));
   --font-sans: var(--font-geist-sans), system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
   --radius-sm: calc(var(--radius) - 4px);

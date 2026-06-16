@@ -47,7 +47,12 @@ test.describe('Authentication', () => {
     test('has link to login page', async ({ page }) => {
       await page.goto('/register')
 
-      const loginLink = page.getByRole('link', { name: /sign in/i })
+      // Auth pages now render inside the site chrome, whose header has its
+      // own "Sign In" button — scope to the form region (<main>) so we
+      // assert on the card's cross-link that carries the redirect param.
+      const loginLink = page
+        .getByRole('main')
+        .getByRole('link', { name: /sign in/i })
       await expect(loginLink).toBeVisible()
       await expect(loginLink).toHaveAttribute('href', /\/login\?redirect=/)
     })

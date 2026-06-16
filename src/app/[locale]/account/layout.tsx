@@ -22,14 +22,18 @@ async function AccountHeaderWrapper({ locale }: { locale: string }) {
 
 function AccountHeaderSkeleton() {
   return (
-    <header className="bg-white border-b">
-      <div className="flex items-center justify-between gap-4 px-4 py-4 sm:px-6">
-        <div className="flex shrink-0 items-center space-x-2 sm:space-x-4">
-          <span className="text-xl font-bold text-gray-900">WCPOS</span>
-          <span className="text-gray-400">/</span>
-          <span className="text-gray-600">Account</span>
+    <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="flex h-16 items-center justify-between gap-4 px-4 sm:px-6">
+        <div className="flex shrink-0 items-baseline gap-2 sm:gap-3">
+          <span className="text-xl font-bold tracking-tight">WCPOS</span>
+          <span aria-hidden="true" className="select-none text-border">
+            /
+          </span>
+          <span className="text-sm font-medium text-muted-foreground">
+            Account
+          </span>
         </div>
-        <div className="h-5 w-24 animate-pulse rounded bg-gray-200 sm:w-48" />
+        <div className="h-5 w-24 animate-pulse rounded bg-muted sm:w-48" />
       </div>
     </header>
   )
@@ -77,7 +81,7 @@ export default async function AccountLayout({
         <AccountHeaderWrapper locale={locale} />
       </Suspense>
       <div className="flex flex-1 flex-col md:flex-row">
-        <aside className="border-b md:w-64 md:border-b-0 md:border-r">
+        <aside className="border-b bg-muted/30 md:w-64 md:border-b-0 md:border-r">
           {/* Suspense is required: the locale-aware Link and usePathname read
               the pathname, which is dynamic on fallback shells of dynamic
               routes such as /account/orders/[orderId] (cacheComponents/PPR).
@@ -87,8 +91,8 @@ export default async function AccountLayout({
             <AccountSidebar />
           </Suspense>
         </aside>
-        <main className="min-w-0 flex-1 p-4 sm:p-6">
-          {children}
+        <main className="min-w-0 flex-1 p-4 sm:p-6 lg:p-8">
+          <div className="mx-auto w-full max-w-4xl">{children}</div>
         </main>
       </div>
       <Suspense fallback={<AccountFooterSkeleton />}>

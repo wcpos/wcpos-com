@@ -10,6 +10,7 @@ import {
   type LicenseReference,
 } from '@/lib/licenses'
 import { listAdminCustomerOrders } from '@/lib/discord/medusa-admin'
+import { normalizeLicenseStatus } from '@/lib/license-status'
 import { licenseClient } from '@/services/core/external/license-client'
 import { licenseLogger } from '@/lib/logger'
 
@@ -36,7 +37,8 @@ export async function resolveLicenseReference(
 ): Promise<LicenseDetail | null> {
   if (reference.id) {
     try {
-      return await licenseClient.getLicenseWithMachines(reference.id)
+      const license = await licenseClient.getLicenseWithMachines(reference.id)
+      return { ...license, status: normalizeLicenseStatus(license.status) }
     } catch (error) {
       licenseLogger.error`Failed to fetch license ${reference.id}: ${error}`
     }
@@ -48,7 +50,7 @@ export async function resolveLicenseReference(
       if (validation.license) {
         return {
           ...validation.license,
-          status: validation.license.status.toLowerCase(),
+          status: normalizeLicenseStatus(validation.license.status),
           machines: [],
         }
       }

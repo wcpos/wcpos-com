@@ -50,6 +50,7 @@ function makeAccess(overrides: Partial<DownloadAccess> = {}): DownloadAccess {
     expiryHasPassed: false,
     licenseCount: 1,
     suspendedCount: 0,
+    revokedCount: 0,
     unknownCount: 0,
     ...overrides,
   }
@@ -214,6 +215,59 @@ describe('DownloadsClient', () => {
     ).toBeInTheDocument()
     expect(
       screen.queryByText(/Your license is suspended/)
+    ).not.toBeInTheDocument()
+  })
+
+  it('shows a revoked banner instead of promising in-term access', () => {
+    // A sole revoked license must not see the generic fallback, whose copy
+    // ("Only versions released during your license term are available")
+    // contradicts ADR-0001: revoked grants nothing.
+    render(
+      <DownloadsClient
+        initialReleases={[makeRelease({ allowed: false })]}
+        access={makeAccess({
+          hasActiveLicense: false,
+          latestExpiry: null,
+          revokedCount: 1,
+        })}
+      />
+    )
+
+    expect(
+      screen.getByText(
+        'Your license has been revoked and no longer includes downloads. Contact support if you believe this is an error.'
+      )
+    ).toBeInTheDocument()
+    expect(
+      screen.getByRole('link', { name: 'Contact support' })
+    ).toHaveAttribute('href', '/support')
+    expect(
+      screen.queryByText(/You have no active license/)
+    ).not.toBeInTheDocument()
+    expect(
+      screen.queryByRole('link', { name: 'Renew license' })
+    ).not.toBeInTheDocument()
+  })
+
+  it('prefers the suspended banner when suspended and revoked licenses coexist', () => {
+    // Suspension is reversible and therefore the more actionable message.
+    render(
+      <DownloadsClient
+        initialReleases={[makeRelease({ allowed: false })]}
+        access={makeAccess({
+          hasActiveLicense: false,
+          latestExpiry: null,
+          suspendedCount: 1,
+          revokedCount: 1,
+        })}
+      />
+    )
+
+    expect(
+      screen.getByText('Your license is suspended — contact support.')
+    ).toBeInTheDocument()
+    expect(
+      screen.queryByText(/Your license has been revoked/)
     ).not.toBeInTheDocument()
   })
 

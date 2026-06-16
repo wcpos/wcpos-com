@@ -67,7 +67,7 @@ describe('getResolvedCustomerLicenses', () => {
       license: {
         id: 'lic_1',
         key: 'WCPOS-AAAA-1111',
-        status: 'ACTIVE',
+        status: 'active',
         expiry: null,
         maxMachines: 1,
         metadata: {},
@@ -81,6 +81,45 @@ describe('getResolvedCustomerLicenses', () => {
     expect(result.authenticated).toBe(true)
     expect(result.licenses).toHaveLength(1)
     expect(result.licenses[0].key).toBe('WCPOS-AAAA-1111')
+    expect(result.licenses[0].status).toBe('active')
+  })
+
+  it('returns already-canonical statuses from the id-resolution path', async () => {
+    mockGetCustomer.mockResolvedValueOnce({ id: 'cust_1' })
+    mockGetAllCustomerOrders.mockResolvedValueOnce([
+      {
+        id: 'order_1',
+        status: 'completed',
+        display_id: 1,
+        email: 'user@example.com',
+        currency_code: 'usd',
+        total: 129,
+        subtotal: 129,
+        tax_total: 0,
+        created_at: '2026-01-01T00:00:00Z',
+        updated_at: '2026-01-01T00:00:00Z',
+        items: [],
+        metadata: {
+          licenses: [{ license_id: 'lic_2', license_key: 'WCPOS-BBBB-2222' }],
+        },
+      },
+    ])
+    mockGetLicenseWithMachines.mockResolvedValueOnce({
+      id: 'lic_2',
+      key: 'WCPOS-BBBB-2222',
+      status: 'active',
+      expiry: '2026-06-03T00:00:00Z',
+      maxMachines: 1,
+      machines: [],
+      metadata: {},
+      policyId: 'policy_1',
+      createdAt: '2026-01-01T00:00:00Z',
+    })
+
+    const result = await getResolvedCustomerLicenses()
+
+    expect(result.licenses).toHaveLength(1)
+    expect(result.licenses[0].status).toBe('active')
   })
 
   it('resolves licenses from the supplied customer orders', async () => {
