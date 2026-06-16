@@ -3,6 +3,9 @@ import { Suspense } from 'react'
 import { cacheLife, cacheTag } from 'next/cache'
 import { fetchRoadmapData } from '@/services/core/external/github-roadmap'
 import { MilestoneList } from '@/components/roadmap/milestone-list'
+import { Section, Container } from '@/components/ui/section'
+import { SectionHeading } from '@/components/ui/section-heading'
+import { Skeleton } from '@/components/ui/skeleton'
 import type { RoadmapData } from '@/types/roadmap'
 import type { Metadata } from 'next'
 import { marketingMetadata } from '@/lib/seo'
@@ -32,13 +35,13 @@ async function getCachedRoadmapData(): Promise<RoadmapData> {
 function MilestoneListSkeleton() {
   return (
     <div className="space-y-12">
-      {[1, 2].map(i => (
+      {[1, 2].map((i) => (
         <div key={i} className="space-y-4">
-          <div className="h-8 w-48 rounded bg-muted animate-pulse" />
-          <div className="h-2 w-full rounded bg-muted animate-pulse" />
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {[1, 2, 3].map(j => (
-              <div key={j} className="h-32 rounded-xl bg-muted animate-pulse" />
+          <Skeleton className="h-8 w-48" />
+          <Skeleton className="h-2 w-full" />
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {[1, 2, 3].map((j) => (
+              <Skeleton key={j} className="h-32 rounded-xl" />
             ))}
           </div>
         </div>
@@ -56,17 +59,29 @@ export default async function RoadmapPage({
   setRequestLocale(locale)
 
   return (
-    <main className="max-w-5xl mx-auto px-4 py-16">
-      <div className="mb-12">
-        <h1 className="text-4xl font-bold mb-3">Roadmap</h1>
-        <p className="text-lg text-muted-foreground">
-          What we&apos;re building for WooCommerce POS
-        </p>
-      </div>
+    <main>
+      <Section
+        tone="none"
+        spacing="hero"
+        className="bg-gradient-to-b from-muted/40 to-background"
+        containerClassName="text-center"
+      >
+        <SectionHeading
+          as="h1"
+          size="hero"
+          eyebrow="Roadmap"
+          title="What we're building for WooCommerce POS"
+          subtitle="Upcoming features, milestones, and release progress — pulled straight from our GitHub."
+        />
+      </Section>
 
-      <Suspense fallback={<MilestoneListSkeleton />}>
-        <MilestoneListLoader />
-      </Suspense>
+      <Section spacing="default" bare>
+        <Container width="content">
+          <Suspense fallback={<MilestoneListSkeleton />}>
+            <MilestoneListLoader />
+          </Suspense>
+        </Container>
+      </Section>
     </main>
   )
 }

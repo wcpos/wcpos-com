@@ -1,5 +1,8 @@
 import { Apple, Smartphone, Monitor, Globe } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
+import { Badge } from '@/components/ui/badge'
+import { Section } from '@/components/ui/section'
+import { SectionHeading } from '@/components/ui/section-heading'
 
 interface Device {
   icon: LucideIcon
@@ -47,78 +50,73 @@ const devices: Device[] = [
 
 export function EcosystemSection() {
   return (
-    <section className="bg-white dark:bg-slate-950">
-      <div className="container mx-auto px-4 py-16 md:py-24">
-        <div className="mb-12 text-center">
-          <h2 className="mb-3 text-2xl font-semibold text-slate-800 dark:text-slate-100 md:text-3xl">
-            One ecosystem. Multiple ways to sell.
-          </h2>
-          <p className="mx-auto max-w-xl text-slate-600 dark:text-slate-400">
-            Install the WordPress plugin, then choose your device.
+    <Section tone="default" spacing="default">
+      <SectionHeading
+        className="mb-12"
+        title="One ecosystem. Multiple ways to sell."
+        subtitle="Install the WordPress plugin, then choose your device."
+      />
+
+      {/* Flow Diagram */}
+      <div className="mb-12 flex flex-col items-center" aria-hidden="true">
+        <div className="mb-4 rounded-xl border border-purple-200 bg-purple-50 px-8 py-4 text-center dark:border-purple-800 dark:bg-purple-900/20">
+          <p className="text-sm font-semibold text-purple-800 dark:text-purple-300">
+            Your WooCommerce Store
+          </p>
+          <p className="text-xs text-purple-600 dark:text-purple-400">
+            WordPress Plugin Installed
           </p>
         </div>
 
-        {/* Flow Diagram */}
-        <div className="mb-12 flex flex-col items-center" aria-hidden="true">
-          <div className="mb-4 rounded-xl border border-purple-200 bg-purple-50 px-8 py-4 text-center dark:border-purple-800 dark:bg-purple-900/20">
-            <p className="text-sm font-semibold text-purple-800 dark:text-purple-300">
-              Your WooCommerce Store
-            </p>
-            <p className="text-xs text-purple-600 dark:text-purple-400">
-              WordPress Plugin Installed
-            </p>
-          </div>
-
-          <div className="mb-4 flex flex-col items-center gap-1">
-            <div className="h-6 w-px bg-slate-300 dark:bg-slate-600" />
-            <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-500 dark:bg-slate-800 dark:text-slate-400">
-              REST API Sync
-            </span>
-            <div className="h-6 w-px bg-slate-300 dark:bg-slate-600" />
-          </div>
-
-          <div className="hidden h-px w-3/4 max-w-2xl bg-slate-300 dark:bg-slate-600 md:block" />
+        <div className="mb-4 flex flex-col items-center gap-1">
+          <div className="h-6 w-px bg-slate-300 dark:bg-slate-600" />
+          <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-500 dark:bg-slate-800 dark:text-slate-400">
+            REST API Sync
+          </span>
+          <div className="h-6 w-px bg-slate-300 dark:bg-slate-600" />
         </div>
 
-        {/* Device Cards */}
-        <ul className="mx-auto grid max-w-4xl gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {devices.map((device) => (
-            <li
-              key={device.label}
-              className="relative rounded-lg border border-slate-200 bg-white p-5 text-center transition-all hover:-translate-y-1 hover:shadow-md dark:border-slate-700 dark:bg-slate-800"
-            >
-              {device.badge && (
-                <span className="absolute right-3 top-3 rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-semibold text-amber-800 dark:bg-amber-900/50 dark:text-amber-300">
-                  {device.badge}
-                </span>
-              )}
-              <device.icon
-                aria-hidden="true"
-                className="mx-auto mb-3 h-8 w-8 text-slate-600 dark:text-slate-300"
-              />
-              <h3 className="mb-1 text-sm font-semibold text-slate-800 dark:text-slate-100">
-                {device.label}
-              </h3>
-              <p className="mb-4 text-xs leading-relaxed text-slate-500 dark:text-slate-400">
-                {device.description}
-              </p>
-              <a
-                href={device.href}
-                className="rounded text-xs font-medium text-wcpos-red hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-wcpos-red focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-800"
-              >
-                {device.cta} <span aria-hidden="true">→</span>
-              </a>
-            </li>
-          ))}
-        </ul>
-
-        {/* Explanatory text */}
-        <p className="mx-auto mt-10 max-w-2xl text-center text-sm leading-relaxed text-slate-500 dark:text-slate-400">
-          All apps sync with your WooCommerce store via the REST API. Install
-          the free WordPress plugin, then choose your device. Products, stock,
-          and orders stay in sync automatically.
-        </p>
+        <div className="hidden h-px w-3/4 max-w-2xl bg-slate-300 dark:bg-slate-600 md:block" />
       </div>
-    </section>
+
+      {/* Device Cards */}
+      <ul className="mx-auto grid max-w-4xl gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {devices.map((device) => (
+          <li
+            key={device.label}
+            className="relative rounded-lg border border-slate-200 bg-white p-5 text-center transition-all hover:-translate-y-1 hover:shadow-md dark:border-slate-700 dark:bg-slate-800"
+          >
+            {device.badge && (
+              <Badge variant="beta" className="absolute right-3 top-3">
+                {device.badge}
+              </Badge>
+            )}
+            <device.icon
+              aria-hidden="true"
+              className="mx-auto mb-3 h-8 w-8 text-slate-600 dark:text-slate-300"
+            />
+            <h3 className="mb-1 text-sm font-semibold text-slate-800 dark:text-slate-100">
+              {device.label}
+            </h3>
+            <p className="mb-4 text-xs leading-relaxed text-slate-500 dark:text-slate-400">
+              {device.description}
+            </p>
+            <a
+              href={device.href}
+              className="rounded text-xs font-medium text-wcpos-red hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-wcpos-red focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-800"
+            >
+              {device.cta} <span aria-hidden="true">→</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+
+      {/* Explanatory text */}
+      <p className="mx-auto mt-10 max-w-2xl text-center text-sm leading-relaxed text-slate-500 dark:text-slate-400">
+        All apps sync with your WooCommerce store via the REST API. Install the
+        free WordPress plugin, then choose your device. Products, stock, and
+        orders stay in sync automatically.
+      </p>
+    </Section>
   )
 }

@@ -1,10 +1,10 @@
 import { Monitor, Smartphone, Tablet, Wifi } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Section, Container } from '@/components/ui/section'
 
-const primaryCta =
-  'inline-flex items-center justify-center rounded-lg bg-wcpos-red px-8 py-3.5 text-base font-semibold text-white transition-all hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900'
-
-const secondaryCta =
-  'inline-flex items-center justify-center rounded-lg border-2 border-white/30 px-8 py-3.5 text-base font-semibold text-white transition-all hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900'
+/** White focus ring for brand buttons sitting on the dark hero band. */
+const onDarkFocus =
+  'focus-visible:ring-white focus-visible:ring-offset-transparent'
 
 const demoProducts = [
   { name: 'Tote Bag', price: '$29' },
@@ -116,12 +116,17 @@ function PosMockup() {
 
 export function HeroSection() {
   return (
-    <section className="relative overflow-hidden bg-slate-900">
+    <Section
+      tone="dark"
+      spacing="hero"
+      bare
+      className="relative overflow-hidden"
+    >
       <div
         aria-hidden="true"
         className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,rgba(148,163,184,0.18),transparent)]"
       />
-      <div className="container relative mx-auto px-4 py-20 md:py-24 lg:py-28">
+      <Container className="relative">
         <div className="grid items-center gap-12 lg:grid-cols-[1fr_0.9fr] lg:gap-16">
           {/* Left - Content */}
           <div className="max-w-xl">
@@ -138,15 +143,14 @@ export function HeroSection() {
 
             {/* CTA Buttons */}
             <div className="mb-8 flex flex-col gap-4 sm:flex-row">
-              <a href="https://demo.wcpos.com/pos" className={primaryCta}>
-                Try Live Demo
-              </a>
-              <a
-                href="https://wordpress.org/plugins/woocommerce-pos/"
-                className={secondaryCta}
-              >
-                Download Free
-              </a>
+              <Button asChild variant="brand" size="xl" className={onDarkFocus}>
+                <a href="https://demo.wcpos.com/pos">Try Live Demo</a>
+              </Button>
+              <Button asChild variant="brand-outline" size="xl">
+                <a href="https://wordpress.org/plugins/woocommerce-pos/">
+                  Download Free
+                </a>
+              </Button>
             </div>
 
             {/* Trust Badges */}
@@ -168,7 +172,7 @@ export function HeroSection() {
             <PosMockup />
           </div>
         </div>
-      </div>
-    </section>
+      </Container>
+    </Section>
   )
 }

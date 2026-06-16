@@ -1,16 +1,29 @@
-import type { RoadmapData } from '@/types/roadmap'
+import type { RoadmapData, RoadmapMilestone } from '@/types/roadmap'
 import { MilestoneSection } from './milestone-section'
 
 interface MilestoneListProps {
   data: RoadmapData
 }
 
+interface MilestoneGroup {
+  label: string
+  milestones: RoadmapMilestone[]
+  /** Shipped work is de-emphasised. */
+  dim?: boolean
+}
+
 export function MilestoneList({ data }: MilestoneListProps) {
-  const hasContent = data.active.length > 0 || data.upcoming.length > 0 || data.shipped.length > 0
+  const groups: MilestoneGroup[] = [
+    { label: 'In Progress', milestones: data.active },
+    { label: 'Up Next', milestones: data.upcoming },
+    { label: 'Recently Shipped', milestones: data.shipped, dim: true },
+  ]
+
+  const hasContent = groups.some((group) => group.milestones.length > 0)
 
   if (!hasContent) {
     return (
-      <p className="text-muted-foreground text-center py-12">
+      <p className="py-12 text-center text-muted-foreground">
         No roadmap items to display yet.
       </p>
     )
@@ -18,43 +31,19 @@ export function MilestoneList({ data }: MilestoneListProps) {
 
   return (
     <div className="space-y-16">
-      {data.active.length > 0 && (
-        <section>
-          <h2 className="text-sm font-medium uppercase tracking-wider text-muted-foreground mb-6">
-            In Progress
-          </h2>
-          <div className="space-y-12">
-            {data.active.map(milestone => (
-              <MilestoneSection key={milestone.title} milestone={milestone} />
-            ))}
-          </div>
-        </section>
-      )}
-
-      {data.upcoming.length > 0 && (
-        <section>
-          <h2 className="text-sm font-medium uppercase tracking-wider text-muted-foreground mb-6">
-            Up Next
-          </h2>
-          <div className="space-y-12">
-            {data.upcoming.map(milestone => (
-              <MilestoneSection key={milestone.title} milestone={milestone} />
-            ))}
-          </div>
-        </section>
-      )}
-
-      {data.shipped.length > 0 && (
-        <section>
-          <h2 className="text-sm font-medium uppercase tracking-wider text-muted-foreground mb-6">
-            Recently Shipped
-          </h2>
-          <div className="space-y-12 opacity-75">
-            {data.shipped.map(milestone => (
-              <MilestoneSection key={milestone.title} milestone={milestone} />
-            ))}
-          </div>
-        </section>
+      {groups.map((group) =>
+        group.milestones.length > 0 ? (
+          <section key={group.label}>
+            <h2 className="mb-6 text-sm font-semibold uppercase tracking-wider text-wcpos-red dark:text-wcpos-red-accent">
+              {group.label}
+            </h2>
+            <div className={group.dim ? 'space-y-12 opacity-75' : 'space-y-12'}>
+              {group.milestones.map((milestone) => (
+                <MilestoneSection key={milestone.title} milestone={milestone} />
+              ))}
+            </div>
+          </section>
+        ) : null,
       )}
     </div>
   )

@@ -14,6 +14,7 @@ import {
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import { GithubIcon } from '@/components/icons/github'
+import { SectionHeading } from '@/components/ui/section-heading'
 
 type VisualKey = 'sync' | 'offline' | 'hardware' | 'ownership'
 
@@ -214,13 +215,11 @@ export function BenefitsSection() {
   return (
     <section aria-labelledby="benefits-heading">
       <div className="bg-slate-50 dark:bg-slate-900/50">
-        <div className="container mx-auto px-4 pt-16 text-center md:pt-20">
-          <h2
+        <div className="container mx-auto px-4 pt-16 md:pt-20">
+          <SectionHeading
             id="benefits-heading"
-            className="text-2xl font-semibold text-slate-800 dark:text-slate-100 md:text-3xl"
-          >
-            Why stores choose WCPOS
-          </h2>
+            title="Why stores choose WCPOS"
+          />
         </div>
       </div>
 
