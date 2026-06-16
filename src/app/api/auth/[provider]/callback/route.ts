@@ -11,9 +11,8 @@ import {
 import { authLogger } from '@/lib/logger'
 import { getConnectedAvatarUrlFromUserMetadata } from '@/lib/avatar'
 import { recordSignInProvider } from '@/lib/auth-providers/metadata'
-import { isAllowedOAuthProvider } from '@/lib/oauth-providers'
+import { ALLOWED_PROVIDERS } from '@/lib/oauth-providers'
 import { sanitizeRedirectPath } from '@/lib/safe-redirect'
-import { env } from '@/utils/env'
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return Boolean(value) && typeof value === 'object' && !Array.isArray(value)
@@ -63,7 +62,7 @@ export async function GET(
   try {
     const { provider } = await params
 
-    if (!isAllowedOAuthProvider(provider, env.DISCORD_LOGIN_ENABLED === 'true')) {
+    if (!ALLOWED_PROVIDERS.includes(provider)) {
       return NextResponse.json(
         { error: `Unsupported provider: ${provider}` },
         { status: 400 }

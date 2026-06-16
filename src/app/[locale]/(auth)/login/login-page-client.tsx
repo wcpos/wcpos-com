@@ -18,15 +18,15 @@ import { trackClientEvent } from '@/lib/analytics/client-events'
 import { sanitizeRedirectPath } from '@/lib/safe-redirect'
 import { DiscordMark, GitHubMark, GoogleMark } from '@/components/auth/provider-marks'
 
-export function LoginPageClient({ discordEnabled }: { discordEnabled: boolean }) {
+export function LoginPageClient() {
   return (
     <Suspense>
-      <LoginPageInner discordEnabled={discordEnabled} />
+      <LoginPageInner />
     </Suspense>
   )
 }
 
-function LoginPageInner({ discordEnabled }: { discordEnabled: boolean }) {
+function LoginPageInner() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const redirectTo = sanitizeRedirectPath(searchParams.get('redirect'))
@@ -152,17 +152,15 @@ function LoginPageInner({ discordEnabled }: { discordEnabled: boolean }) {
                 GitHub
               </a>
             </Button>
-            {discordEnabled && (
-              <Button variant="outline" asChild>
-                <a
-                  href={`/api/auth/discord?redirect=${encodeURIComponent(redirectTo)}`}
-                  onClick={() => trackClientEvent('click_oauth_discord')}
-                >
-                  <DiscordMark className="mr-2 h-4 w-4" />
-                  Discord
-                </a>
-              </Button>
-            )}
+            <Button variant="outline" asChild>
+              <a
+                href={`/api/auth/discord?redirect=${encodeURIComponent(redirectTo)}`}
+                onClick={() => trackClientEvent('click_oauth_discord')}
+              >
+                <DiscordMark className="mr-2 h-4 w-4" />
+                Discord
+              </a>
+            </Button>
           </div>
         </CardContent>
         <CardFooter className="justify-center">

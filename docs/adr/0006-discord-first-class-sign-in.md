@@ -19,9 +19,14 @@ set, the same conditional pattern as Google and GitHub.
 
 The frontend reuses the existing generic OAuth plumbing (`/api/auth/[provider]`
 and its callback). The only additions are `'discord'` in the allow-list, a
-Discord brand mark, and a login button. The button is gated behind
-`DISCORD_LOGIN_ENABLED` so it can ship before the Medusa provider is deployed
-without exposing a broken control.
+Discord brand mark, and a login button shown unconditionally alongside Google
+and GitHub.
+
+During initial rollout the button was gated behind a `DISCORD_LOGIN_ENABLED`
+env flag so it could merge before the Medusa provider was deployed. Once the
+provider went live the flag was removed: a transitional gate that, left in
+place, only risks the button silently disappearing if the var is unset. Discord
+is now a first-class provider with no special storefront configuration.
 
 ## Relationship to ADR 0004
 

@@ -1,12 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { NextRequest } from 'next/server'
 
-vi.mock('@/utils/env', () => ({
-  env: {
-    DISCORD_LOGIN_ENABLED: undefined as string | undefined,
-  },
-}))
-
 const mockInitiateOAuth = vi.fn()
 
 vi.mock('@/lib/medusa-auth', () => ({
@@ -20,12 +14,10 @@ vi.mock('@/lib/logger', () => ({
 }))
 
 import { GET } from './route'
-import { env } from '@/utils/env'
 
 describe('GET /api/auth/[provider] (OAuth initiate)', () => {
   beforeEach(() => {
     vi.clearAllMocks()
-    env.DISCORD_LOGIN_ENABLED = undefined
   })
 
   it('redirects to the provider authorization URL returned by Medusa', async () => {
@@ -70,18 +62,22 @@ describe('GET /api/auth/[provider] (OAuth initiate)', () => {
     expect(mockInitiateOAuth).not.toHaveBeenCalled()
   })
 
-  it('rejects Discord when the login flag is disabled', async () => {
+  it('initiates Discord OAuth like any other allowed provider', async () => {
+    mockInitiateOAuth.mockResolvedValueOnce('https://discord.com/oauth2/authorize')
+
     const request = new NextRequest('https://wcpos.com/api/auth/discord')
     const response = await GET(request, {
       params: Promise.resolve({ provider: 'discord' }),
     })
 
-    expect(response.status).toBe(400)
-    expect(mockInitiateOAuth).not.toHaveBeenCalled()
+    expect(response.status).toBe(307)
+    expect(mockInitiateOAuth).toHaveBeenCalledWith(
+      'discord',
+      'https://wcpos.com/api/auth/discord/callback'
+    )
   })
 
   it('preserves a sanitized redirect target for Discord OAuth', async () => {
-    env.DISCORD_LOGIN_ENABLED = 'true'
     mockInitiateOAuth.mockResolvedValueOnce('https://discord.com/oauth2/authorize')
 
     const request = new NextRequest(

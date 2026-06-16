@@ -1,9 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { initiateOAuth } from '@/lib/medusa-auth'
 import { authLogger } from '@/lib/logger'
-import { isAllowedOAuthProvider } from '@/lib/oauth-providers'
+import { ALLOWED_PROVIDERS } from '@/lib/oauth-providers'
 import { sanitizeRedirectPath } from '@/lib/safe-redirect'
-import { env } from '@/utils/env'
 
 export async function GET(
   request: NextRequest,
@@ -12,7 +11,7 @@ export async function GET(
   try {
     const { provider } = await params
 
-    if (!isAllowedOAuthProvider(provider, env.DISCORD_LOGIN_ENABLED === 'true')) {
+    if (!ALLOWED_PROVIDERS.includes(provider)) {
       return NextResponse.json(
         { error: `Unsupported provider: ${provider}` },
         { status: 400 }
