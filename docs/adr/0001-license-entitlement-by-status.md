@@ -9,8 +9,11 @@ The asymmetry is intentional. Any currently active license — including
 Lifetime, which has no expiry — grants every release outright; only when
 no license is active is entitlement decided per release, by comparing
 publish date to the latest expiry across the customer's active/expired
-licenses (`isReleaseAllowedForLicenses`). The same rule serves the account
-downloads page and the WordPress-plugin-facing `/api/pro` endpoints.
+licenses (`isReleaseAllowedForLicenses`). That pooled helper remains
+available for callers that explicitly need an account-wide union. ADR-0006
+supersedes this for the customer account Downloads UI, which must present
+entitlement per licence; the WordPress-plugin-facing `/api/pro` endpoints
+already evaluate the single licence key supplied by the activated site.
 
 Statuses are compared in the canonical vocabulary (CONTEXT.md), not
 Keygen's raw status space, which is wider: EXPIRING (within days of

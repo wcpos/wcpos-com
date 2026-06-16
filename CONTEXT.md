@@ -48,18 +48,37 @@ _Avoid_: deactivated, deleted, cancelled
 
 **Renewal**:
 A new manual purchase that extends a license. There is no automatic
-billing; nothing renews without the customer buying again.
+billing; nothing renews without the customer buying again. A renewal
+extends the SAME license (same key); it does not create a second one.
 _Avoid_: auto-renew, recurring payment
 
 **Entitlement**:
-Whether a specific release is downloadable for a customer's set of
-licenses. Decided by license status and release publish date.
-_Avoid_: access rights, permissions
+Whether a specific release is downloadable, decided PER LICENCE by that
+licence's status and the release's publish date — not pooled across a
+customer's licences. A site is bound to one licence and its updates follow
+that licence's entitlement; the account presents downloads per-licence to
+match what the plugin enforces per key. An expired licence's ceiling is the
+newest release published before its expiry. (The shared entitlement
+functions in `src/lib/license.ts` already accept a licences array, so
+per-licence is calling them with a single-element array.) See
+docs/adr/0006.
+_Avoid_: access rights, permissions, pooled/union entitlement
 
-**Machine (activation)**:
-A till/store device registered against a license, counted toward the
-license's activation limit. Deactivating frees the slot.
-_Avoid_: seat, device slot
+**Activation (site)**:
+The registration of one WCPOS Pro install — a single WordPress site / one
+WooCommerce database instance — against a license, counted toward the
+license's activation limit. Shown to the customer by its site URL.
+Deactivating frees the slot. (Keygen's API calls these "machines"; that is
+an implementation noun, not customer language.)
+_Avoid_: machine, device, till, seat
+
+**Connected member (Discord)**:
+A Discord user linked to a licence by presenting its key, granted the Pro
+community role while the licence is active, counted against the licence's
+Discord seat cap. The licence holder sees and can remove connected members.
+The licence key is therefore also a Discord-access credential. See
+docs/adr/0007.
+_Avoid_: subscriber, follower, guest
 
 ### Commerce
 
@@ -105,25 +124,33 @@ _Avoid_: unknown, broken, invalid
 ### Discord community
 
 **Discord link**:
-A verified association between one Medusa customer and one Discord user ID,
-created by Discord OAuth using the `identify` scope. Stored on customer
-metadata until scale requires a dedicated Medusa table.
+A verified association between Discord identity and WCPOS Pro entitlement.
+The current account design uses a licence→connected-members relation: a
+Discord user self-links with a licence key plus OAuth `identify`, without
+needing their own wcpos.com account. The older one-Medusa-customer-to-one-
+Discord-user metadata link is the legacy v1 model from docs/adr/0004 and is
+superseded for the per-licence account redesign by docs/adr/0007.
 _Avoid_: Discord login, Discord auth provider
 
 **Discord Pro role**:
 A bot-managed community role in the WCPOS Discord server. Granted only while
-the linked customer has an active license. Expired licenses can retain
-pre-expiry downloads, but they do not keep this current-community perk.
+the Discord user is backed by at least one active connected licence (or, for
+legacy links, a linked customer with active Pro entitlement). Expired licences
+can retain pre-expiry downloads, but they do not keep this current-community
+perk.
 _Avoid_: membership, subscription role
 
 **Role sync**:
-The idempotent operation that compares a linked customer's active-license
-state with their Discord role state, then adds or removes the Discord Pro role
-when needed.
+The idempotent operation that compares Discord role state with all backing
+entitlement links for that Discord user. It grants the Discord Pro role when
+any connected licence is active, and removes it only after no active
+licence-member link or legacy active customer link remains.
 _Avoid_: manual role management
 
 **Reconciliation**:
-The scheduled two-way sweep that syncs all linked customers and removes
-orphaned/manual Discord Pro role grants from current role holders. Inline syncs
-are best-effort; reconciliation is the correctness guarantee.
+The scheduled two-way sweep that syncs licence-member links, legacy linked
+customers, and current Discord Pro role holders. It removes orphaned/manual
+role grants only after confirming the holder has no active licence-member
+link and no legacy active customer link. Inline syncs are best-effort;
+reconciliation is the correctness guarantee.
 _Avoid_: one-way cleanup, cron-only expiry check
