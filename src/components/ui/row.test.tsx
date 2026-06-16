@@ -40,4 +40,16 @@ describe('FieldRow', () => {
     render(<FieldRow label="Plan" value={<span>Pro</span>} />)
     expect(screen.getByText('Pro')).toBeInTheDocument()
   })
+
+  it('wraps node content in block-safe elements', () => {
+    render(
+      <FieldRow
+        label={<div>Plan</div>}
+        value={<div>Pro</div>}
+      />,
+    )
+
+    expect(screen.getByText('Plan').parentElement?.tagName).toBe('DIV')
+    expect(screen.getByText('Pro').parentElement?.tagName).toBe('DIV')
+  })
 })

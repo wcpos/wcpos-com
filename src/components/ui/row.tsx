@@ -55,8 +55,8 @@ const FieldRow = React.forwardRef<HTMLDivElement, FieldRowProps>(
       )}
       {...props}
     >
-      <span className="text-muted-foreground">{label}</span>
-      <span className="text-right font-medium text-foreground">{value}</span>
+      <div className="text-muted-foreground">{label}</div>
+      <div className="text-right font-medium text-foreground">{value}</div>
     </div>
   ),
 )
