@@ -31,7 +31,8 @@ interface ProfileEditFormProps {
     google: { email: string }
     discord:
       | { connected: true; username: string | null }
-      | { connected: false }
+      | { connected: false; configured: boolean }
+    discordReturnTo: string
   }
 }
 
@@ -204,6 +205,7 @@ export function ProfileEditForm({
 }: ProfileEditFormProps) {
   const locale = useLocale()
   const t = useTranslations('account.profile')
+  const overviewT = useTranslations('account.overview')
   const metadataDefaults = getAvatarUrlFromMetadata(customer.metadata)
   const countryOptions = useMemo(() => buildCountryOptions(locale), [locale])
 
@@ -233,10 +235,13 @@ export function ProfileEditForm({
     COUNTRY_PROFILES[countryCode] ?? COUNTRY_PROFILES.US
 
   // Connect starts a full-page OAuth redirect; the link route returns the
-  // user to /account once Discord authorizes. No backend endpoint is invented
+  // user to this profile path once Discord authorizes. No backend endpoint is invented
   // here — these are the existing /api/discord/{link,unlink} routes.
   const handleConnectDiscord = () => {
-    window.location.href = '/api/discord/link?return_to=/account/profile'
+    const params = new URLSearchParams({
+      return_to: connections?.discordReturnTo ?? `/${locale}/account/profile`,
+    })
+    window.location.href = `/api/discord/link?${params.toString()}`
   }
 
   const handleDisconnectDiscord = async () => {
@@ -244,7 +249,13 @@ export function ProfileEditForm({
     setError(null)
     try {
       const response = await fetch('/api/discord/unlink', { method: 'POST' })
-      if (!response.ok && !response.redirected) {
+      const responseUrl = response.url
+        ? new URL(response.url, window.location.origin)
+        : null
+      if (
+        !response.ok ||
+        responseUrl?.searchParams.get('discord') === 'error'
+      ) {
         throw new Error(t('disconnectError'))
       }
       // The unlink route mutates server-side customer metadata; reload so the
@@ -583,10 +594,14 @@ export function ProfileEditForm({
                       {disconnecting ? t('disconnecting') : t('disconnect')}
                     </Button>
                   </>
-                ) : (
+                ) : connections.discord.configured ? (
                   <Button type="button" size="sm" onClick={handleConnectDiscord}>
                     {t('connectDiscord')}
                   </Button>
+                ) : (
+                  <span className="text-xs text-muted-foreground">
+                    {overviewT('discordNotConfigured')}
+                  </span>
                 )}
               </div>
             </div>
