@@ -131,7 +131,7 @@ export default async function ProPage({
                 '@type': 'Offer',
                 name: 'Lifetime License',
                 priceCurrency: 'USD',
-                price: '249',
+                price: '399',
                 availability: 'https://schema.org/InStock',
               },
             ],

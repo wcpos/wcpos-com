@@ -1,0 +1,42 @@
+import { setRequestLocale } from 'next-intl/server'
+import type { Metadata } from 'next'
+import { marketingMetadata } from '@/lib/seo'
+import { AboutHero } from '@/components/about/about-hero'
+import { FounderLetter } from '@/components/about/founder-letter'
+import { StoryTimeline } from '@/components/about/story-timeline'
+import { ValuesSection } from '@/components/about/values-section'
+import { AboutCta } from '@/components/about/about-cta'
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}): Promise<Metadata> {
+  const { locale } = await params
+  return marketingMetadata({
+    locale,
+    path: '/about-us',
+    title: 'About',
+    description:
+      'The story behind WooCommerce POS — an independent point of sale built by a former shopkeeper and funded by shopkeepers, not investors.',
+  })
+}
+
+export default async function AboutPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}) {
+  const { locale } = await params
+  setRequestLocale(locale)
+
+  return (
+    <main>
+      <AboutHero />
+      <FounderLetter />
+      <StoryTimeline />
+      <ValuesSection />
+      <AboutCta />
+    </main>
+  )
+}

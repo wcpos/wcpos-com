@@ -61,7 +61,7 @@ export function PricingTeaserSection() {
               Pro
             </h3>
             <p className="mb-4 text-sm text-slate-500 dark:text-slate-400">
-              $129/year or $249 lifetime. No per-register fees.
+              $129/year or $399 lifetime. No per-register fees.
             </p>
             <p className="mb-3 text-sm font-medium text-slate-700 dark:text-slate-300">
               Everything in Free, plus:

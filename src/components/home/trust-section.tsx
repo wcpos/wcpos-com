@@ -1,4 +1,5 @@
 import { GithubIcon } from '@/components/icons/github'
+import { Link } from '@/i18n/navigation'
 
 const stats = [
   { value: '5,000+', label: 'Active Installations' },
@@ -62,6 +63,15 @@ export function TrustSection() {
             </a>
           </figcaption>
         </figure>
+
+        <p className="mt-8 text-center text-sm">
+          <Link
+            href="/about-us"
+            className="font-medium text-wcpos-red underline-offset-4 hover:underline"
+          >
+            Read our story →
+          </Link>
+        </p>
       </div>
     </section>
   )
