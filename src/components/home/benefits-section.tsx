@@ -62,13 +62,13 @@ const benefits: Benefit[] = [
 ]
 
 const visualFrame =
-  'flex w-full aspect-video items-center justify-center rounded-xl border border-slate-200 bg-white p-6 dark:border-slate-700 dark:bg-slate-900'
+  'flex w-full aspect-video items-center justify-center rounded-md border border-slate-200 bg-white p-6 dark:border-slate-700 dark:bg-slate-900'
 
 function SyncVisual() {
   return (
     <div aria-hidden="true" className={`${visualFrame} select-none gap-4`}>
       {/* WooCommerce admin list */}
-      <div className="w-2/5 rounded-lg border border-slate-200 bg-slate-50 p-3 dark:border-slate-700 dark:bg-slate-800">
+      <div className="w-2/5 rounded-md border border-slate-200 bg-slate-50 p-3 dark:border-slate-700 dark:bg-slate-800">
         <p className="mb-2 text-[10px] font-semibold text-slate-500 dark:text-slate-400">
           WooCommerce
         </p>
@@ -90,7 +90,7 @@ function SyncVisual() {
       <ArrowLeftRight className="h-6 w-6 shrink-0 text-wcpos-red" />
 
       {/* POS grid */}
-      <div className="w-2/5 rounded-lg border border-slate-200 bg-slate-50 p-3 dark:border-slate-700 dark:bg-slate-800">
+      <div className="w-2/5 rounded-md border border-slate-200 bg-slate-50 p-3 dark:border-slate-700 dark:bg-slate-800">
         <p className="mb-2 text-[10px] font-semibold text-slate-500 dark:text-slate-400">
           POS
         </p>
@@ -119,7 +119,7 @@ function SyncVisual() {
 function OfflineVisual() {
   return (
     <div aria-hidden="true" className={visualFrame}>
-      <div className="w-full max-w-xs select-none rounded-lg border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-800">
+      <div className="w-full max-w-xs select-none rounded-md border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-800">
         <div className="mb-3 flex items-center justify-between">
           <p className="text-[10px] font-semibold text-slate-500 dark:text-slate-400">
             Today&apos;s Sales
@@ -162,7 +162,7 @@ function HardwareVisual() {
         {items.map((item) => (
           <div
             key={item.label}
-            className="flex flex-col items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-4 dark:border-slate-700 dark:bg-slate-800"
+            className="flex flex-col items-center gap-2 rounded-md border border-slate-200 bg-slate-50 px-3 py-4 dark:border-slate-700 dark:bg-slate-800"
           >
             <item.icon className="h-7 w-7 text-slate-600 dark:text-slate-300" />
             <span className="text-center text-[9px] font-medium text-slate-500 dark:text-slate-400">
@@ -178,7 +178,7 @@ function HardwareVisual() {
 function OwnershipVisual() {
   return (
     <div aria-hidden="true" className={visualFrame}>
-      <div className="w-full max-w-xs select-none rounded-lg border border-slate-200 bg-slate-50 p-4 text-center dark:border-slate-700 dark:bg-slate-800">
+      <div className="w-full max-w-xs select-none rounded-md border border-slate-200 bg-slate-50 p-4 text-center dark:border-slate-700 dark:bg-slate-800">
         <div className="mb-3 flex items-center justify-center gap-2">
           <Server className="h-5 w-5 text-slate-500 dark:text-slate-400" />
           <span className="font-mono text-xs text-slate-700 dark:text-slate-200">

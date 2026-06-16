@@ -75,9 +75,9 @@ export function FeaturesSection() {
         {features.map((feature) => (
           <li
             key={feature.title}
-            className="rounded-lg border border-slate-200 bg-white p-6 dark:border-slate-700 dark:bg-slate-800"
+            className="rounded-md border border-slate-200 bg-white p-6 transition-colors hover:border-foreground/20 dark:border-slate-700 dark:bg-slate-800"
           >
-            <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-rose-50 dark:bg-rose-950/30">
+            <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-md bg-rose-50 dark:bg-rose-950/30">
               <feature.icon
                 aria-hidden="true"
                 className="h-5 w-5 text-wcpos-red"

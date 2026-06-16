@@ -59,7 +59,7 @@ export function EcosystemSection() {
 
       {/* Flow Diagram */}
       <div className="mb-12 flex flex-col items-center" aria-hidden="true">
-        <div className="mb-4 rounded-xl border border-purple-200 bg-purple-50 px-8 py-4 text-center dark:border-purple-800 dark:bg-purple-900/20">
+        <div className="mb-4 rounded-md border border-purple-200 bg-purple-50 px-8 py-4 text-center dark:border-purple-800 dark:bg-purple-900/20">
           <p className="text-sm font-semibold text-purple-800 dark:text-purple-300">
             Your WooCommerce Store
           </p>
@@ -84,7 +84,7 @@ export function EcosystemSection() {
         {devices.map((device) => (
           <li
             key={device.label}
-            className="relative rounded-lg border border-slate-200 bg-white p-5 text-center transition-all hover:-translate-y-1 hover:shadow-md dark:border-slate-700 dark:bg-slate-800"
+            className="relative rounded-md border border-slate-200 bg-white p-5 text-center transition-colors hover:border-foreground/20 dark:border-slate-700 dark:bg-slate-800"
           >
             {device.badge && (
               <Badge variant="beta" className="absolute right-3 top-3">

@@ -35,7 +35,7 @@ export function ProblemSection() {
         {problems.map((problem) => (
           <div
             key={problem.label}
-            className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-6"
+            className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-md p-6"
           >
             <problem.icon
               aria-hidden="true"
