@@ -1,9 +1,14 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { Suspense } from 'react'
-import { getOrdersPage } from '@/lib/customer-orders'
+import { getOrdersPage, type MedusaOrder } from '@/lib/customer-orders'
+import { extractLicenseReferencesFromOrders } from '@/lib/licenses'
+import { maskLicenseKey } from '@/lib/order-display'
 import { Link } from '@/i18n/navigation'
 import { Card, CardContent } from '@/components/ui/card'
-import { OrderHistoryList } from '@/components/account/order-history-list'
+import {
+  OrderHistoryList,
+  type OrderHistoryOrder,
+} from '@/components/account/order-history-list'
 import type { Metadata } from 'next'
 
 export async function generateMetadata({
@@ -19,10 +24,44 @@ export async function generateMetadata({
   }
 }
 
+/**
+ * Maps a Medusa order to the client-safe row shape. License keys are masked
+ * HERE, server-side, so the raw key is never serialized to the client. The
+ * product label is the order's first line-item title (the licence is issued
+ * for the purchased plan). When the orders list endpoint does not project
+ * `metadata.licenses`, `extractLicenseReferencesFromOrders` returns nothing
+ * and the row degrades gracefully to no licence chip.
+ */
+function toOrderHistoryOrder(order: MedusaOrder): OrderHistoryOrder {
+  const product = order.items[0]?.title?.trim() || undefined
+  const licenses = extractLicenseReferencesFromOrders([order])
+    .filter((reference): reference is { id?: string; key: string } =>
+      Boolean(reference.key)
+    )
+    .map((reference) => ({
+      maskedKey: maskLicenseKey(reference.key),
+      product,
+    }))
+
+  return {
+    id: order.id,
+    display_id: order.display_id,
+    status: order.status,
+    payment_status: order.payment_status,
+    currency_code: order.currency_code,
+    total: order.total,
+    created_at: order.created_at,
+    items: order.items.map((item) => ({ id: item.id })),
+    ...(licenses.length > 0 ? { licenses } : {}),
+  }
+}
+
 async function OrdersContent({ locale }: { locale: string }) {
   const orders = await getOrdersPage(50)
 
-  return <OrderHistoryList orders={orders} locale={locale} />
+  return (
+    <OrderHistoryList orders={orders.map(toOrderHistoryOrder)} locale={locale} />
+  )
 }
 
 function OrdersSkeleton() {

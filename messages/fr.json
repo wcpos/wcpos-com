@@ -164,7 +164,9 @@
       "orderNumber": "Order #{id}",
       "dateAndItems": "{date} — {count, plural, =1 {# item} other {# items}}",
       "receiptPdf": "Receipt (PDF)",
-      "downloadReceiptAria": "Download receipt for order #{id}"
+      "downloadReceiptAria": "Download receipt for order #{id}",
+      "viewOrder": "Voir",
+      "viewOrderAria": "Voir la commande n° {id}"
     },
     "orderDetail": {
       "backToOrders": "Back to orders",
@@ -178,7 +180,9 @@
       "itemsTitle": "Items",
       "quantity": "Qty: {count}",
       "licenseKeysTitle": "License Keys",
-      "manage": "Manage"
+      "manage": "Manage",
+      "licenseFromOrderTitle": "Licence issue de cette commande",
+      "manageLicence": "Gérer la licence →"
     },
     "licenseStatus": {
       "active": "active",

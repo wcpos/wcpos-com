@@ -2,15 +2,33 @@ import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { Suspense } from 'react'
 import { getOrderById } from '@/lib/customer-orders'
 import { extractLicenseReferencesFromOrders } from '@/lib/licenses'
-import { formatOrderAmount } from '@/lib/order-display'
+import { getResolvedLicensesFromOrders } from '@/lib/customer-licenses'
+import { getLicenseDisplayStatus } from '@/lib/license'
+import { formatOrderAmount, maskLicenseKey } from '@/lib/order-display'
 import { formatDateForLocale } from '@/lib/date-format'
 import { getOrderDisplayStatus } from '@/lib/order-status'
 import { notFound } from 'next/navigation'
 import { Link } from '@/i18n/navigation'
-import { ArrowLeft, FileDown } from 'lucide-react'
+import { ArrowLeft, FileDown, Key } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
+import type { CanonicalLicenseStatus } from '@/lib/license-status'
 import type { Metadata } from 'next'
+
+// Maps a canonical licence status to a shared Badge variant: green = entitled,
+// amber/warning = natural lapse (still entitled to pre-expiry releases), red =
+// withdrawn by us, secondary = unverifiable.
+const LICENSE_BADGE_VARIANT: Record<
+  CanonicalLicenseStatus,
+  'success' | 'warning' | 'destructive' | 'secondary'
+> = {
+  active: 'success',
+  expired: 'warning',
+  suspended: 'destructive',
+  revoked: 'destructive',
+  unknown: 'secondary',
+}
 
 export async function generateMetadata({
   params,
@@ -31,8 +49,9 @@ async function OrderDetailContent({
   params: Promise<{ locale: string; orderId: string }>
 }) {
   const { orderId, locale } = await params
-  const [t, order] = await Promise.all([
+  const [t, tStatus, order] = await Promise.all([
     getTranslations({ locale, namespace: 'account.orderDetail' }),
+    getTranslations({ locale, namespace: 'account.licenseStatus' }),
     getOrderById(orderId),
   ])
 
@@ -44,6 +63,21 @@ async function OrderDetailContent({
     (license): license is { id: string; key: string } =>
       Boolean(license.id && license.key)
   )
+
+  // Resolve the order's licences against Keygen for the status badge. The
+  // product label is the purchased line item. `now` is captured once so the
+  // expiry-aware display status is stable across this render. (`new Date()`
+  // mirrors the downloads page and sidesteps the react-hooks purity lint that
+  // flags `Date.now` directly in render.)
+  const now = new Date().getTime()
+  const product = order.items[0]?.title?.trim() || undefined
+  const resolvedLicenses = await getResolvedLicensesFromOrders([order])
+  const licenseEntitlements = resolvedLicenses.map((license) => ({
+    id: license.id,
+    maskedKey: maskLicenseKey(license.key),
+    status: getLicenseDisplayStatus(license, now),
+    product,
+  }))
 
   return (
     <>
@@ -108,6 +142,58 @@ async function OrderDetailContent({
           </CardContent>
         </Card>
       </div>
+
+      {licenseEntitlements.length > 0 && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg">
+              {t('licenseFromOrderTitle')}
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-2">
+              {licenseEntitlements.map((license) => (
+                <div
+                  key={license.id}
+                  className="flex flex-wrap items-center justify-between gap-3 rounded-lg border bg-muted/40 p-3"
+                >
+                  <div className="flex min-w-0 items-center gap-2.5">
+                    <span
+                      aria-hidden="true"
+                      className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-wcpos-red/10 text-wcpos-red-accent"
+                    >
+                      <Key className="h-4 w-4" />
+                    </span>
+                    <div className="min-w-0">
+                      {license.product && (
+                        <p className="truncate font-medium">
+                          {license.product}
+                        </p>
+                      )}
+                      <code className="font-mono text-sm tracking-wider text-muted-foreground">
+                        {license.maskedKey}
+                      </code>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    {/* Status text stays lowercase to honour the e2e badge
+                        contract; the colour carries the emphasis. */}
+                    <Badge variant={LICENSE_BADGE_VARIANT[license.status]}>
+                      {tStatus(license.status)}
+                    </Badge>
+                    <Link
+                      href="/account/licenses"
+                      className="shrink-0 text-sm text-primary underline-offset-4 hover:underline"
+                    >
+                      {t('manageLicence')}
+                    </Link>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {licenses && licenses.length > 0 && (
         <Card>
