@@ -65,12 +65,17 @@ async function OrderDetailContent({
   )
 
   // Resolve the order's licences against Keygen for the status badge. The
-  // product label is the purchased line item. `now` is captured once so the
+  // product label is the purchased line item, attributed only for single-item
+  // orders — a multi-item order could attach a licence to any item, so
+  // first-item attribution would mislabel. `now` is captured once so the
   // expiry-aware display status is stable across this render. (`new Date()`
   // mirrors the downloads page and sidesteps the react-hooks purity lint that
   // flags `Date.now` directly in render.)
   const now = new Date().getTime()
-  const product = order.items[0]?.title?.trim() || undefined
+  const product =
+    order.items.length === 1
+      ? order.items[0]?.title?.trim() || undefined
+      : undefined
   const resolvedLicenses = await getResolvedLicensesFromOrders([order])
   const licenseEntitlements = resolvedLicenses.map((license) => ({
     id: license.id,

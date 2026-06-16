@@ -165,12 +165,18 @@ describe('ProfileEditForm', () => {
   })
 
   it('shows the linked Discord handle and disconnect action', async () => {
-    const reload = vi.fn()
     Object.defineProperty(window, 'location', {
       configurable: true,
-      value: { href: '', reload },
+      value: {
+        href: 'http://localhost/en/account/profile',
+        origin: 'http://localhost',
+      },
     })
-    mockFetch.mockResolvedValueOnce({ ok: true, redirected: false })
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      redirected: true,
+      url: 'http://localhost/en/account/profile?discord=unlinked',
+    })
 
     render(
       <ProfileEditForm
@@ -193,8 +199,12 @@ describe('ProfileEditForm', () => {
         expect.objectContaining({ method: 'POST' })
       )
     })
+    // The unlink route 303-redirects to ?discord=unlinked; the form navigates
+    // there so the server re-reads state and the unlinked banner is shown.
     await waitFor(() => {
-      expect(reload).toHaveBeenCalled()
+      expect(window.location.href).toBe(
+        'http://localhost/en/account/profile?discord=unlinked'
+      )
     })
   })
 

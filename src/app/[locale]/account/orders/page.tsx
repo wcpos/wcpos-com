@@ -33,7 +33,13 @@ export async function generateMetadata({
  * and the row degrades gracefully to no licence chip.
  */
 function toOrderHistoryOrder(order: MedusaOrder): OrderHistoryOrder {
-  const product = order.items[0]?.title?.trim() || undefined
+  // Attribute the product only when the order has a single line item — the
+  // licence metadata carries no product name, and a multi-item order could
+  // attach a licence to any item, so first-item attribution would mislabel.
+  const product =
+    order.items.length === 1
+      ? order.items[0]?.title?.trim() || undefined
+      : undefined
   const references = extractLicenseReferencesFromOrders([order]).filter(
     (reference): reference is { id?: string; key: string } =>
       Boolean(reference.key)

@@ -257,9 +257,12 @@ export function ProfileEditForm({
       ) {
         throw new Error(t('disconnectError'))
       }
-      // The unlink route mutates server-side customer metadata; reload so the
-      // server component re-reads the connection state.
-      window.location.reload()
+      // The unlink route 303-redirects to /account/profile?discord=unlinked.
+      // Navigate to that URL (not a bare reload) so the server re-reads the
+      // connection state AND the `unlinked` status banner is shown.
+      window.location.href = responseUrl
+        ? responseUrl.toString()
+        : window.location.href
     } catch (err) {
       setError(err instanceof Error ? err.message : t('disconnectError'))
       setDisconnecting(false)
