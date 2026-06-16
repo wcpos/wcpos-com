@@ -10,7 +10,9 @@ import {
 } from '@/lib/medusa-auth'
 import { authLogger } from '@/lib/logger'
 import { getConnectedAvatarUrlFromUserMetadata } from '@/lib/avatar'
-import { ALLOWED_PROVIDERS } from '@/lib/oauth-providers'
+import { isAllowedOAuthProvider } from '@/lib/oauth-providers'
+import { sanitizeRedirectPath } from '@/lib/safe-redirect'
+import { env } from '@/utils/env'
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return Boolean(value) && typeof value === 'object' && !Array.isArray(value)
@@ -47,16 +49,19 @@ export async function GET(
   try {
     const { provider } = await params
 
-    if (!ALLOWED_PROVIDERS.includes(provider)) {
+    if (!isAllowedOAuthProvider(provider, env.DISCORD_LOGIN_ENABLED === 'true')) {
       return NextResponse.json(
         { error: `Unsupported provider: ${provider}` },
         { status: 400 }
       )
     }
 
+    const redirectTo = sanitizeRedirectPath(request.nextUrl.searchParams.get('redirect'))
+
     // Collect all query params from the OAuth provider (code, state, etc.)
     const callbackParams: Record<string, string> = {}
     request.nextUrl.searchParams.forEach((value, key) => {
+      if (key === 'redirect') return
       callbackParams[key] = value
     })
 
@@ -79,7 +84,7 @@ export async function GET(
     const sessionPayload = decodeMedusaToken(sessionToken)
     await syncOauthAvatar(sessionPayload.user_metadata)
 
-    return NextResponse.redirect(new URL('/account', request.url))
+    return NextResponse.redirect(new URL(redirectTo, request.url))
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Unknown error'
     authLogger.error`OAuth callback failed: ${message}`

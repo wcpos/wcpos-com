@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { initiateOAuth } from '@/lib/medusa-auth'
 import { authLogger } from '@/lib/logger'
-import { ALLOWED_PROVIDERS } from '@/lib/oauth-providers'
+import { isAllowedOAuthProvider } from '@/lib/oauth-providers'
+import { sanitizeRedirectPath } from '@/lib/safe-redirect'
+import { env } from '@/utils/env'
 
 export async function GET(
   request: NextRequest,
@@ -10,7 +12,7 @@ export async function GET(
   try {
     const { provider } = await params
 
-    if (!ALLOWED_PROVIDERS.includes(provider)) {
+    if (!isAllowedOAuthProvider(provider, env.DISCORD_LOGIN_ENABLED === 'true')) {
       return NextResponse.json(
         { error: `Unsupported provider: ${provider}` },
         { status: 400 }
@@ -18,8 +20,13 @@ export async function GET(
     }
 
     const origin = request.nextUrl.origin
-    const callbackUrl = `${origin}/api/auth/${provider}/callback`
-    const location = await initiateOAuth(provider, callbackUrl)
+    const callbackUrl = new URL(`/api/auth/${provider}/callback`, origin)
+    const redirectTo = sanitizeRedirectPath(request.nextUrl.searchParams.get('redirect'))
+    if (redirectTo !== '/account') {
+      callbackUrl.searchParams.set('redirect', redirectTo)
+    }
+
+    const location = await initiateOAuth(provider, callbackUrl.toString())
 
     return NextResponse.redirect(location)
   } catch (error) {

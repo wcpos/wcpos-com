@@ -16,17 +16,17 @@ import {
 } from '@/components/ui/card'
 import { trackClientEvent } from '@/lib/analytics/client-events'
 import { sanitizeRedirectPath } from '@/lib/safe-redirect'
-import { GitHubMark, GoogleMark } from '@/components/auth/provider-marks'
+import { DiscordMark, GitHubMark, GoogleMark } from '@/components/auth/provider-marks'
 
-export function LoginPageClient() {
+export function LoginPageClient({ discordEnabled }: { discordEnabled: boolean }) {
   return (
     <Suspense>
-      <LoginPageInner />
+      <LoginPageInner discordEnabled={discordEnabled} />
     </Suspense>
   )
 }
 
-function LoginPageInner() {
+function LoginPageInner({ discordEnabled }: { discordEnabled: boolean }) {
   const router = useRouter()
   const searchParams = useSearchParams()
   const redirectTo = sanitizeRedirectPath(searchParams.get('redirect'))
@@ -129,10 +129,10 @@ function LoginPageInner() {
 
           {/* These are API routes that redirect to OAuth providers, not Next.js pages */}
           {/* eslint-disable @next/next/no-html-link-for-pages */}
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid gap-2.5">
             <Button variant="outline" asChild>
               <a
-                href="/api/auth/google"
+                href={`/api/auth/google?redirect=${encodeURIComponent(redirectTo)}`}
                 onClick={() => trackClientEvent('click_oauth_google')}
               >
                 <GoogleMark className="mr-2 h-4 w-4" />
@@ -141,13 +141,24 @@ function LoginPageInner() {
             </Button>
             <Button variant="outline" asChild>
               <a
-                href="/api/auth/github"
+                href={`/api/auth/github?redirect=${encodeURIComponent(redirectTo)}`}
                 onClick={() => trackClientEvent('click_oauth_github')}
               >
                 <GitHubMark className="mr-2 h-4 w-4" />
                 GitHub
               </a>
             </Button>
+            {discordEnabled && (
+              <Button variant="outline" asChild>
+                <a
+                  href={`/api/auth/discord?redirect=${encodeURIComponent(redirectTo)}`}
+                  onClick={() => trackClientEvent('click_oauth_discord')}
+                >
+                  <DiscordMark className="mr-2 h-4 w-4" />
+                  Discord
+                </a>
+              </Button>
+            )}
           </div>
           {/* eslint-enable @next/next/no-html-link-for-pages */}
         </CardContent>
