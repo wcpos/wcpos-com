@@ -9,7 +9,6 @@ vi.mock('@/utils/env', () => ({
   env: {
     MEDUSA_BACKEND_URL: 'https://test-store-api.wcpos.com',
     MEDUSA_PUBLISHABLE_KEY: 'pk_test_abc123',
-    DISCORD_LOGIN_ENABLED: undefined as string | undefined,
   },
 }))
 
@@ -42,7 +41,6 @@ vi.mock('@/lib/medusa-auth', () => ({
 }))
 
 import { GET } from './route'
-import { env } from '@/utils/env'
 
 /**
  * Build a fake JWT token whose payload section base64-encodes the given object.
@@ -54,7 +52,6 @@ function fakeJwt(payload: Record<string, unknown>): string {
 describe('OAuth callback route', () => {
   beforeEach(() => {
     vi.clearAllMocks()
-    env.DISCORD_LOGIN_ENABLED = undefined
     mockGetCustomer.mockResolvedValue({
       id: 'cust_1',
       metadata: {},
@@ -305,19 +302,6 @@ describe('OAuth callback route', () => {
     expect(body.error).toContain('facebook')
   })
 
-  it('rejects Discord when the login flag is disabled', async () => {
-    const request = new NextRequest(
-      'https://wcpos.com/api/auth/discord/callback?code=abc'
-    )
-
-    const response = await GET(request, {
-      params: Promise.resolve({ provider: 'discord' }),
-    })
-
-    expect(response.status).toBe(400)
-    expect(mockCompleteOAuthCallback).not.toHaveBeenCalled()
-  })
-
   it('forwards all OAuth query params (code, state, ...) to the token exchange', async () => {
     const token = fakeJwt({
       actor_id: 'cust_existing',
@@ -352,7 +336,6 @@ describe('OAuth callback route', () => {
   })
 
   it('redirects to the sanitized redirect target after OAuth sign-in', async () => {
-    env.DISCORD_LOGIN_ENABLED = 'true'
     const token = fakeJwt({
       actor_id: 'cust_existing',
       user_metadata: { email: 'discord@example.com' },

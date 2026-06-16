@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
 import { setRequestLocale } from 'next-intl/server'
-import { env } from '@/utils/env'
 import { LoginPageClient } from './login-page-client'
 
 export const metadata: Metadata = {
@@ -16,5 +15,5 @@ export default async function LoginPage({
 }) {
   const { locale } = await params
   setRequestLocale(locale)
-  return <LoginPageClient discordEnabled={env.DISCORD_LOGIN_ENABLED === 'true'} />
+  return <LoginPageClient />
 }

@@ -56,12 +56,6 @@ const envSchema = z.object({
   CRON_SECRET: z.string().optional(),
   MEDUSA_ADMIN_API_TOKEN: z.string().optional(),
 
-  // "Sign in with Discord" button on the login page. Off by default; set to
-  // 'true' only once the Medusa `discord` auth provider is deployed, otherwise
-  // the button would fail against the backend. Separate concern from the
-  // Discord Pro role-sync config above (that links an already-signed-in user).
-  DISCORD_LOGIN_ENABLED: z.string().optional(),
-
   // Logging
   LOKI_URL: z.string().url().optional(),
   LOKI_API_KEY: z.string().optional(),
