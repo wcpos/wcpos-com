@@ -30,6 +30,12 @@ section below.
   `403 task_intent_denied`.
 - Streaming responses, server-side conversation history, and structured source citations are
   deferred. Answers render whatever Markdown Aide returns (the gateway exposes no `sources`).
+- The rate limiter and daily budget fail **open** when Upstash is unconfigured or errors — a
+  deliberate availability-over-strictness choice so a Redis blip never takes the support box
+  down. During an Upstash outage, Turnstile + the per-request timeout are the only remaining
+  cost controls; a flapping gateway can also exhaust the day's counter with failed attempts.
+  Revisit (e.g. fail the global budget closed, add an alert on the fail-open branch) if cost
+  exposure becomes a concern.
 - New runtime config required (server unless noted): `OPENCLAW_TOKEN`, `OPENCLAW_GATEWAY_URL`,
   `OPENCLAW_SUPPORT_INTENT`, `TURNSTILE_SECRET_KEY`, `NEXT_PUBLIC_TURNSTILE_SITE_KEY` (client),
   `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN`, `SUPPORT_DAILY_QUESTION_BUDGET`.

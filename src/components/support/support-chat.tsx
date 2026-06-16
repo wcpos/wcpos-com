@@ -86,6 +86,10 @@ export function SupportChat() {
   }
 
   const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY
+  // When a Turnstile site key is configured, hold submissions until the invisible
+  // widget has issued a token — otherwise the first eager click posts an empty
+  // token and gets a confusing 403 from the bot check.
+  const verifying = Boolean(siteKey) && !token
   const started = messages.length > 0
 
   return (
@@ -156,7 +160,7 @@ export function SupportChat() {
         />
         <button
           type="submit"
-          disabled={status === 'asking' || !input.trim()}
+          disabled={status === 'asking' || !input.trim() || verifying}
           className="rounded-lg bg-wcpos-red px-4 py-2 text-sm font-semibold text-white transition hover:brightness-110 disabled:opacity-50"
         >
           {status === 'asking' ? '…' : 'Ask'}
@@ -178,7 +182,8 @@ export function SupportChat() {
             <button
               key={q}
               onClick={() => void ask(q)}
-              className="rounded-full border bg-card px-3 py-1.5 text-sm text-muted-foreground hover:bg-muted"
+              disabled={verifying}
+              className="rounded-full border bg-card px-3 py-1.5 text-sm text-muted-foreground hover:bg-muted disabled:opacity-50"
             >
               {q}
             </button>

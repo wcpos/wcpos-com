@@ -50,8 +50,9 @@ export async function askAide({
       cache: 'no-store',
     })
   } catch (err) {
-    const aborted =
-      err instanceof Error && (err.name === 'AbortError' || err.message === 'fetch failed')
+    // Only a real abort (our timeout controller) is a "timeout"; every other
+    // failure (DNS, connection refused, generic 'fetch failed') is unreachable.
+    const aborted = err instanceof Error && err.name === 'AbortError'
     throw new OpenclawError(
       'support assistant unreachable',
       503,
