@@ -283,7 +283,21 @@
       "updateError": "Failed to update profile",
       "updateSuccess": "Profile updated successfully.",
       "saving": "Saving...",
-      "save": "Save changes"
+      "save": "Save changes",
+      "lede": "あなたの情報、請求情報、連携サービス。",
+      "billingDetailsHint": "領収書に使用されます。",
+      "connectionsTitle": "連携",
+      "connectionsHint": "アカウントに連携されたサインインプロバイダーとコミュニティアクセス。",
+      "googleProvider": "Google",
+      "googleDescription": "ワンクリックサインインに使用されます。",
+      "discordProvider": "Discord",
+      "discordDescription": "連携すると、コミュニティDiscordでProロールを取得できます。",
+      "connected": "連携済み",
+      "connectedAs": "{account} として連携",
+      "connectDiscord": "Discordを連携",
+      "disconnect": "連携解除",
+      "disconnecting": "連携を解除しています...",
+      "disconnectError": "連携を解除できませんでした。もう一度お試しください。"
     }
   }
 }

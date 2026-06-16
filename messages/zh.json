@@ -283,7 +283,21 @@
       "updateError": "Failed to update profile",
       "updateSuccess": "Profile updated successfully.",
       "saving": "Saving...",
-      "save": "Save changes"
+      "save": "Save changes",
+      "lede": "您的详细信息、账单信息和已连接的服务。",
+      "billingDetailsHint": "用于您的收据。",
+      "connectionsTitle": "连接",
+      "connectionsHint": "与您账户关联的登录提供商和社区访问权限。",
+      "googleProvider": "Google",
+      "googleDescription": "用于一键登录。",
+      "discordProvider": "Discord",
+      "discordDescription": "连接后即可在我们的社区 Discord 中获得 Pro 身份组。",
+      "connected": "已连接",
+      "connectedAs": "已连接为 {account}",
+      "connectDiscord": "连接 Discord",
+      "disconnect": "断开连接",
+      "disconnecting": "正在断开连接...",
+      "disconnectError": "无法断开连接，请重试。"
     }
   }
 }

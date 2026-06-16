@@ -92,4 +92,88 @@ describe('ProfileEditForm', () => {
     expect(options.some((label) => label?.includes('Afghanistan'))).toBe(true)
     expect(options.some((label) => label?.includes('Zimbabwe'))).toBe(true)
   })
+
+  it('omits the Connections section when no connections are provided', () => {
+    render(
+      <ProfileEditForm
+        customer={{ email: 'noconn@example.com', metadata: {} }}
+      />
+    )
+
+    expect(screen.queryByText('Connections')).not.toBeInTheDocument()
+  })
+
+  it('shows a Connect Discord action when Discord is not linked', () => {
+    const assign = vi.fn()
+    Object.defineProperty(window, 'location', {
+      configurable: true,
+      value: { href: '', assign, reload: vi.fn() },
+    })
+
+    render(
+      <ProfileEditForm
+        customer={{ email: 'ada@gmail.com', metadata: {} }}
+        connections={{
+          google: { email: 'ada@gmail.com' },
+          discord: { connected: false },
+        }}
+      />
+    )
+
+    // Google shows a connected state with the account email.
+    expect(
+      screen.getByText('Connected as ada@gmail.com')
+    ).toBeInTheDocument()
+
+    const connectButton = screen.getByRole('button', {
+      name: 'Connect Discord',
+    })
+    fireEvent.click(connectButton)
+    expect(window.location.href).toBe(
+      '/api/discord/link?return_to=/account/profile'
+    )
+  })
+
+  it('shows the linked Discord handle and disconnect action', async () => {
+    const reload = vi.fn()
+    Object.defineProperty(window, 'location', {
+      configurable: true,
+      value: { href: '', reload },
+    })
+    mockFetch.mockResolvedValueOnce({ ok: true, redirected: false })
+
+    render(
+      <ProfileEditForm
+        customer={{ email: 'ada@gmail.com', metadata: {} }}
+        connections={{
+          google: { email: 'ada@gmail.com' },
+          discord: { connected: true, username: 'ada' },
+        }}
+      />
+    )
+
+    expect(screen.getByText('@ada')).toBeInTheDocument()
+
+    fireEvent.click(screen.getByRole('button', { name: 'Disconnect' }))
+
+    await waitFor(() => {
+      expect(mockFetch).toHaveBeenCalledWith('/api/discord/unlink', {
+        method: 'POST',
+      })
+    })
+    await waitFor(() => {
+      expect(reload).toHaveBeenCalled()
+    })
+  })
+
+  it('renders the member-since footer when provided', () => {
+    render(
+      <ProfileEditForm
+        customer={{ email: 'ada@gmail.com', metadata: {} }}
+        memberSince="January 2024"
+      />
+    )
+
+    expect(screen.getByText(/January 2024/)).toBeInTheDocument()
+  })
 })

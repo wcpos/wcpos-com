@@ -283,7 +283,21 @@
       "updateError": "Failed to update profile",
       "updateSuccess": "Profile updated successfully.",
       "saving": "Saving...",
-      "save": "Save changes"
+      "save": "Save changes",
+      "lede": "Je gegevens, factuurgegevens en verbonden diensten.",
+      "billingDetailsHint": "Gebruikt op je bonnen.",
+      "connectionsTitle": "Verbindingen",
+      "connectionsHint": "Aanmeldproviders en community-toegang gekoppeld aan je account.",
+      "googleProvider": "Google",
+      "googleDescription": "Gebruikt voor aanmelden met één klik.",
+      "discordProvider": "Discord",
+      "discordDescription": "Verbind om de Pro-rol in onze community-Discord te krijgen.",
+      "connected": "Verbonden",
+      "connectedAs": "Verbonden als {account}",
+      "connectDiscord": "Discord verbinden",
+      "disconnect": "Verbinding verbreken",
+      "disconnecting": "Verbinding verbreken...",
+      "disconnectError": "Kan de verbinding niet verbreken. Probeer het opnieuw."
     }
   }
 }

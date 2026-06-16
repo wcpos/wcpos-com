@@ -283,7 +283,21 @@
       "updateError": "Failed to update profile",
       "updateSuccess": "Profile updated successfully.",
       "saving": "Saving...",
-      "save": "Save changes"
+      "save": "Save changes",
+      "lede": "Vos coordonnées, informations de facturation et services connectés.",
+      "billingDetailsHint": "Utilisé sur vos reçus.",
+      "connectionsTitle": "Connexions",
+      "connectionsHint": "Fournisseurs de connexion et accès à la communauté liés à votre compte.",
+      "googleProvider": "Google",
+      "googleDescription": "Utilisé pour la connexion en un clic.",
+      "discordProvider": "Discord",
+      "discordDescription": "Connectez-vous pour obtenir le rôle Pro sur notre Discord communautaire.",
+      "connected": "Connecté",
+      "connectedAs": "Connecté en tant que {account}",
+      "connectDiscord": "Connecter Discord",
+      "disconnect": "Déconnecter",
+      "disconnecting": "Déconnexion...",
+      "disconnectError": "Impossible de déconnecter. Veuillez réessayer."
     }
   }
 }

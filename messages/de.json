@@ -283,7 +283,21 @@
       "updateError": "Failed to update profile",
       "updateSuccess": "Profile updated successfully.",
       "saving": "Saving...",
-      "save": "Save changes"
+      "save": "Save changes",
+      "lede": "Deine Daten, Rechnungsinformationen und verbundenen Dienste.",
+      "billingDetailsHint": "Wird auf deinen Belegen verwendet.",
+      "connectionsTitle": "Verbindungen",
+      "connectionsHint": "Mit deinem Konto verknüpfte Anmeldedienste und Community-Zugang.",
+      "googleProvider": "Google",
+      "googleDescription": "Wird für die Ein-Klick-Anmeldung verwendet.",
+      "discordProvider": "Discord",
+      "discordDescription": "Verbinden, um die Pro-Rolle in unserem Community-Discord zu erhalten.",
+      "connected": "Verbunden",
+      "connectedAs": "Verbunden als {account}",
+      "connectDiscord": "Discord verbinden",
+      "disconnect": "Trennen",
+      "disconnecting": "Wird getrennt...",
+      "disconnectError": "Trennen nicht möglich. Bitte versuche es erneut."
     }
   }
 }

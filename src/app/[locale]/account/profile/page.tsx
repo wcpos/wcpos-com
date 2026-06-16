@@ -1,9 +1,10 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { Suspense } from 'react'
 import { getCustomer } from '@/lib/medusa-auth'
+import { getDiscordLink } from '@/lib/discord/metadata'
 import { formatDateForLocale } from '@/lib/date-format'
 import { redirectToLoginClearingSession } from '@/lib/login-redirect'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent } from '@/components/ui/card'
 import { ProfileEditForm } from '@/components/account/profile-edit-form'
 import type { Metadata } from 'next'
 
@@ -21,10 +22,7 @@ export async function generateMetadata({
 }
 
 async function ProfileContent({ locale }: { locale: string }) {
-  const [t, customer] = await Promise.all([
-    getTranslations({ locale, namespace: 'account.profile' }),
-    getCustomer(),
-  ])
+  const customer = await getCustomer()
 
   if (!customer) {
     // `return` is needed for TypeScript narrowing: next-intl's redirect is
@@ -33,42 +31,42 @@ async function ProfileContent({ locale }: { locale: string }) {
     return redirectToLoginClearingSession(locale)
   }
 
+  const discordLink = getDiscordLink(customer.metadata)
+
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="text-lg">{t('cardTitle')}</CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-3">
-        <ProfileEditForm
-          customer={{
-            email: customer.email,
-            first_name: customer.first_name,
-            last_name: customer.last_name,
-            phone: customer.phone,
-            metadata: customer.metadata,
-          }}
-        />
-        <div className="flex justify-between border-t pt-3 text-sm">
-          <span className="text-muted-foreground">{t('memberSince')}</span>
-          <span>{formatDateForLocale(customer.created_at, locale)}</span>
-        </div>
-      </CardContent>
-    </Card>
+    <ProfileEditForm
+      customer={{
+        email: customer.email,
+        first_name: customer.first_name,
+        last_name: customer.last_name,
+        phone: customer.phone,
+        metadata: customer.metadata,
+      }}
+      memberSince={formatDateForLocale(customer.created_at, locale)}
+      connections={{
+        google: { email: customer.email },
+        discord: discordLink
+          ? { connected: true, username: discordLink.username }
+          : { connected: false },
+      }}
+    />
   )
 }
 
 function ProfileSkeleton() {
   return (
-    <Card>
-      <CardContent className="py-6 space-y-3">
-        {[1, 2, 3, 4].map((i) => (
-          <div key={i} className="flex justify-between">
-            <div className="h-5 w-24 bg-muted rounded animate-pulse" />
-            <div className="h-5 w-32 bg-muted rounded animate-pulse" />
-          </div>
-        ))}
-      </CardContent>
-    </Card>
+    <div className="space-y-6">
+      <Card>
+        <CardContent className="space-y-4 py-6">
+          {[1, 2, 3, 4].map((i) => (
+            <div key={i} className="space-y-2">
+              <div className="h-4 w-24 animate-pulse rounded bg-muted" />
+              <div className="h-10 w-full animate-pulse rounded bg-muted" />
+            </div>
+          ))}
+        </CardContent>
+      </Card>
+    </div>
   )
 }
 
@@ -83,7 +81,10 @@ export default async function ProfilePage({
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold tracking-tight">{t('heading')}</h1>
+      <div className="space-y-1">
+        <h1 className="text-2xl font-bold tracking-tight">{t('heading')}</h1>
+        <p className="text-sm text-muted-foreground">{t('lede')}</p>
+      </div>
       <Suspense fallback={<ProfileSkeleton />}>
         <ProfileContent locale={locale} />
       </Suspense>

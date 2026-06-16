@@ -283,7 +283,21 @@
       "updateError": "Failed to update profile",
       "updateSuccess": "Profile updated successfully.",
       "saving": "Saving...",
-      "save": "Save changes"
+      "save": "Save changes",
+      "lede": "Os teus dados, informações de faturação e serviços ligados.",
+      "billingDetailsHint": "Usado nos teus recibos.",
+      "connectionsTitle": "Ligações",
+      "connectionsHint": "Fornecedores de início de sessão e acesso à comunidade ligados à tua conta.",
+      "googleProvider": "Google",
+      "googleDescription": "Usado para iniciar sessão com um clique.",
+      "discordProvider": "Discord",
+      "discordDescription": "Liga para obteres o papel Pro no nosso Discord da comunidade.",
+      "connected": "Ligado",
+      "connectedAs": "Ligado como {account}",
+      "connectDiscord": "Ligar o Discord",
+      "disconnect": "Desligar",
+      "disconnecting": "A desligar...",
+      "disconnectError": "Não foi possível desligar. Tenta novamente."
     }
   }
 }
