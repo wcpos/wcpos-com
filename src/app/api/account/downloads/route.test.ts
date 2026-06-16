@@ -13,6 +13,9 @@ vi.mock('@/lib/customer-licenses', () => ({
 vi.mock('@/services/core/business/pro-downloads', () => ({
   getProPluginReleases: (...args: unknown[]) =>
     mockGetProPluginReleases(...args),
+}))
+
+vi.mock('@/lib/license', () => ({
   isReleaseAllowedForLicenses: (...args: unknown[]) =>
     mockIsReleaseAllowedForLicenses(...args),
   hasActiveLicense: (...args: unknown[]) => mockHasActiveLicense(...args),

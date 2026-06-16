@@ -1,10 +1,7 @@
 import { NextResponse } from 'next/server'
 import { getResolvedCustomerLicenses } from '@/lib/customer-licenses'
-import {
-  getProPluginReleases,
-  hasActiveLicense,
-  isReleaseAllowedForLicenses,
-} from '@/services/core/business/pro-downloads'
+import { hasActiveLicense, isReleaseAllowedForLicenses } from '@/lib/license'
+import { getProPluginReleases } from '@/services/core/business/pro-downloads'
 
 export async function GET() {
   const { authenticated, licenses } = await getResolvedCustomerLicenses()

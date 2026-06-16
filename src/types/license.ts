@@ -62,7 +62,7 @@ export interface LicenseMachine {
 export interface LicenseDetail {
   id: string
   key: string
-  status: string
+  status: CanonicalLicenseStatus
   expiry: string | null
   maxMachines: number
   machines: LicenseMachine[]

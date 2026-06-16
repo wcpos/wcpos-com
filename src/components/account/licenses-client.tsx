@@ -8,11 +8,12 @@ import { AccountNotice } from '@/components/account/account-notice'
 import { Key, Monitor, Trash2, Download } from 'lucide-react'
 import { Link } from '@/i18n/navigation'
 import { formatDateForLocale } from '@/lib/date-format'
+import type { CanonicalLicenseStatus } from '@/lib/license-status'
 import {
   getExpiringSoonExpiry,
   getLicenseDisplayStatus,
   isLicenseExpiringSoon,
-} from '@/lib/license-display'
+} from '@/lib/license'
 
 interface Machine {
   id: string
@@ -25,7 +26,7 @@ interface Machine {
 interface License {
   id: string
   key: string
-  status: string
+  status: CanonicalLicenseStatus
   expiry: string | null
   maxMachines: number
   machines: Machine[]
@@ -140,7 +141,7 @@ export function LicensesClient({ initialLicenses }: LicensesClientProps) {
   // present those licenses as expired so the UI matches download entitlement.
   // (Shared rule: unparseable expiry fails closed, matching the server.)
   const getDisplayStatus = (license: License) =>
-    getLicenseDisplayStatus(license.status, license.expiry, now)
+    getLicenseDisplayStatus(license, now)
 
   const getPlanName = (policyId: string) => {
     return policyId === YEARLY_POLICY ? t('planYearly') : t('planLifetime')

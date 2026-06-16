@@ -28,6 +28,9 @@ vi.mock('@/lib/download-token', () => ({
 
 vi.mock('@/services/core/business/pro-downloads', () => ({
   findReleaseByVersion: (...args: unknown[]) => mockFindReleaseByVersion(...args),
+}))
+
+vi.mock('@/lib/license', () => ({
   isReleaseAllowedForLicenses: (...args: unknown[]) =>
     mockIsReleaseAllowedForLicenses(...args),
 }))
