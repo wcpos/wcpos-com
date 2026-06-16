@@ -48,18 +48,37 @@ _Avoid_: deactivated, deleted, cancelled
 
 **Renewal**:
 A new manual purchase that extends a license. There is no automatic
-billing; nothing renews without the customer buying again.
+billing; nothing renews without the customer buying again. A renewal
+extends the SAME license (same key); it does not create a second one.
 _Avoid_: auto-renew, recurring payment
 
 **Entitlement**:
-Whether a specific release is downloadable for a customer's set of
-licenses. Decided by license status and release publish date.
-_Avoid_: access rights, permissions
+Whether a specific release is downloadable, decided PER LICENCE by that
+licence's status and the release's publish date — not pooled across a
+customer's licences. A site is bound to one licence and its updates follow
+that licence's entitlement; the account presents downloads per-licence to
+match what the plugin enforces per key. An expired licence's ceiling is the
+newest release published before its expiry. (The shared entitlement
+functions in `src/lib/license.ts` already accept a licences array, so
+per-licence is calling them with a single-element array.) See
+docs/adr/0006.
+_Avoid_: access rights, permissions, pooled/union entitlement
 
-**Machine (activation)**:
-A till/store device registered against a license, counted toward the
-license's activation limit. Deactivating frees the slot.
-_Avoid_: seat, device slot
+**Activation (site)**:
+The registration of one WCPOS Pro install — a single WordPress site / one
+WooCommerce database instance — against a license, counted toward the
+license's activation limit. Shown to the customer by its site URL.
+Deactivating frees the slot. (Keygen's API calls these "machines"; that is
+an implementation noun, not customer language.)
+_Avoid_: machine, device, till, seat
+
+**Connected member (Discord)**:
+A Discord user linked to a licence by presenting its key, granted the Pro
+community role while the licence is active, counted against the licence's
+Discord seat cap. The licence holder sees and can remove connected members.
+The licence key is therefore also a Discord-access credential. See
+docs/adr/0007.
+_Avoid_: subscriber, follower, guest
 
 ### Commerce
 
