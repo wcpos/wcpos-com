@@ -1,5 +1,6 @@
 import 'server-only'
 
+import { cache } from 'react'
 import { cookies } from 'next/headers'
 import { env } from '@/utils/env'
 import { authLogger } from '@/lib/logger'
@@ -231,33 +232,41 @@ export async function logout(): Promise<void> {
  * GET /store/customers/me
  * Returns null if no token or if the token is invalid.
  */
-export async function getCustomer(): Promise<MedusaCustomer | null> {
-  const token = await getAuthToken()
-  if (!token) return null
+// Memoized per request with React `cache()`: the shared header, the account
+// layout gate, and each account page all call getCustomer in one render, so
+// without this they each issue an identical /store/customers/me fetch. cache()
+// dedupes them to a single request. It stays dynamic (reads cookies via
+// getAuthToken) — callers keep it inside Suspense, so PPR is unaffected; the
+// null-on-failure result is safe to memoize within a request.
+export const getCustomer = cache(
+  async (): Promise<MedusaCustomer | null> => {
+    const token = await getAuthToken()
+    if (!token) return null
 
-  try {
-    const response = await fetch(
-      `${env.MEDUSA_BACKEND_URL}/store/customers/me`,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-          'x-publishable-api-key': env.MEDUSA_PUBLISHABLE_KEY || '',
-        },
+    try {
+      const response = await fetch(
+        `${env.MEDUSA_BACKEND_URL}/store/customers/me`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+            'x-publishable-api-key': env.MEDUSA_PUBLISHABLE_KEY || '',
+          },
+        }
+      )
+
+      if (!response.ok) {
+        return null
       }
-    )
 
-    if (!response.ok) {
+      const data = await response.json()
+      return data.customer
+    } catch (error) {
+      authLogger.error`Failed to get customer: ${error}`
       return null
     }
-
-    const data = await response.json()
-    return data.customer
-  } catch (error) {
-    authLogger.error`Failed to get customer: ${error}`
-    return null
   }
-}
+)
 
 /**
  * Update the current customer profile.
