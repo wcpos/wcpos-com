@@ -64,6 +64,14 @@ const envSchema = z.object({
   // /api/debug/alert-test production guard (token !== '' would otherwise pass).
   ALERT_TEST_TOKEN: z.string().min(1).optional(),
 
+  // Owner alert email (Resend REST). Fatal-tier logs are also emailed so a
+  // missed Discord ping can't hide a paid-but-no-license / broken-checkout
+  // incident. ALERT_EMAIL_TO may be a comma-separated list. All optional — the
+  // email sink is simply not registered when the key/recipient are unset.
+  RESEND_API_KEY: z.string().optional(),
+  ALERT_EMAIL_TO: z.string().optional(),
+  ALERT_EMAIL_FROM: z.string().default('WCPOS Alerts <noreply@wcpos.com>'),
+
   // Error tracking
   SENTRY_DSN: z.string().url().optional(),
   NEXT_PUBLIC_SENTRY_DSN: z.string().url().optional(),

@@ -9,6 +9,10 @@ const mockIsReleaseAllowedForLicenses = vi.fn()
 const mockGetGitHubToken = vi.fn()
 const mockLicenseLoggerError = vi.fn()
 const mockLicenseLoggerWarn = vi.fn()
+const mockDownloadInfo = vi.fn()
+const mockDownloadWarn = vi.fn()
+const mockDownloadError = vi.fn()
+const mockDownloadFatal = vi.fn()
 
 const mockFetch = vi.fn()
 vi.stubGlobal('fetch', mockFetch)
@@ -43,6 +47,12 @@ vi.mock('@/lib/logger', () => ({
   licenseLogger: {
     error: (...args: unknown[]) => mockLicenseLoggerError(...args),
     warn: (...args: unknown[]) => mockLicenseLoggerWarn(...args),
+  },
+  downloadLogger: {
+    info: (...args: unknown[]) => mockDownloadInfo(...args),
+    warn: (...args: unknown[]) => mockDownloadWarn(...args),
+    error: (...args: unknown[]) => mockDownloadError(...args),
+    fatal: (...args: unknown[]) => mockDownloadFatal(...args),
   },
 }))
 
@@ -87,7 +97,8 @@ describe('GET /api/account/download', () => {
     expect(response.status).toBe(500)
     expect(json.error).toBe('Download token secret not configured')
     expect(mockVerifyDownloadToken).not.toHaveBeenCalled()
-    expect(mockLicenseLoggerError).toHaveBeenCalled()
+    // Infra broken — fatal so Discord + email page on it.
+    expect(mockDownloadFatal).toHaveBeenCalled()
   })
 
   it('streams the release asset for a valid signed token', async () => {
@@ -120,6 +131,8 @@ describe('GET /api/account/download', () => {
 
     expect(response.status).toBe(200)
     expect(response.headers.get('content-type')).toContain('application/zip')
+    // Successful download is audited (who/what/when).
+    expect(mockDownloadInfo).toHaveBeenCalled()
     expect(mockVerifyDownloadToken).toHaveBeenCalledWith(
       'test',
       'keygen-token-secret'
@@ -195,6 +208,53 @@ describe('GET /api/account/download', () => {
 
     expect(response.status).toBe(502)
     expect(json.error).toBe('Failed to fetch release asset')
-    expect(mockLicenseLoggerError).toHaveBeenCalled()
+    // Delivery broken for an entitled customer — error so Discord pages (the
+    // download category bypasses the rate limit).
+    expect(mockDownloadError).toHaveBeenCalled()
+  })
+
+  it('denies and audits a token whose customerId does not match', async () => {
+    mockGetCustomer.mockResolvedValueOnce({ id: 'cust_1' })
+    mockVerifyDownloadToken.mockReturnValueOnce({
+      customerId: 'someone_else',
+      version: '1.9.0',
+      expiresAt: Date.now() + 60_000,
+    })
+
+    const response = await GET(
+      new NextRequest('http://localhost/api/account/download?token=test')
+    )
+
+    expect(response.status).toBe(403)
+    expect(mockDownloadWarn).toHaveBeenCalled()
+    expect(mockFindReleaseByVersion).not.toHaveBeenCalled()
+  })
+
+  it('denies and audits a download the license does not entitle', async () => {
+    mockGetCustomer.mockResolvedValueOnce({ id: 'cust_1' })
+    mockVerifyDownloadToken.mockReturnValueOnce({
+      customerId: 'cust_1',
+      version: '1.9.0',
+      expiresAt: Date.now() + 60_000,
+    })
+    mockFindReleaseByVersion.mockResolvedValueOnce({
+      version: '1.9.0',
+      assetName: 'woocommerce-pos-pro-1.9.0.zip',
+      assetApiUrl: 'https://api.github.com/assets/123',
+      assetUrl: 'https://github.com/download.zip',
+    })
+    mockGetResolvedCustomerLicenses.mockResolvedValueOnce({
+      authenticated: true,
+      licenses: [],
+    })
+    mockIsReleaseAllowedForLicenses.mockReturnValueOnce(false)
+
+    const response = await GET(
+      new NextRequest('http://localhost/api/account/download?token=test')
+    )
+
+    expect(response.status).toBe(403)
+    expect(mockDownloadWarn).toHaveBeenCalled()
+    expect(mockFetch).not.toHaveBeenCalled()
   })
 })

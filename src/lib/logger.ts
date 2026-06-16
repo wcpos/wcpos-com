@@ -14,5 +14,10 @@ export const infraLogger = getLogger(['wcpos', 'infra'])
 // alerted/filtered distinctly from ordinary store errors.
 export const saleLogger = getLogger(['wcpos', 'store', 'sale'])
 
+// Pro download delivery: audit trail (info) + delivery failures. Its own
+// category so it can bypass the Discord rate limit — a paying customer unable
+// to download is an alert that must never be throttled away.
+export const downloadLogger = getLogger(['wcpos', 'license', 'download'])
+
 // Re-export for custom categories
 export { getLogger }

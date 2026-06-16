@@ -2,12 +2,17 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 
 // vi.mock is hoisted above module-scope consts, so the mock fns must be
 // created inside vi.hoisted() to be available when the factory runs.
-const { fatalMock, errorMock } = vi.hoisted(() => ({
+const { fatalMock, errorMock, consumeMock } = vi.hoisted(() => ({
   fatalMock: vi.fn(),
   errorMock: vi.fn(),
+  consumeMock: vi.fn(),
 }))
 vi.mock('@/lib/logger', () => ({
   saleLogger: { fatal: fatalMock, error: errorMock },
+}))
+vi.mock('@/lib/rate-limit', () => ({
+  createRateLimiter: () => ({ consume: (...args: unknown[]) => consumeMock(...args) }),
+  clientIp: () => '1.2.3.4',
 }))
 
 import { POST } from './route'
@@ -21,7 +26,12 @@ function req(body: unknown) {
 }
 
 describe('POST /api/checkout/report-failure', () => {
-  beforeEach(() => { fatalMock.mockReset() })
+  beforeEach(() => {
+    fatalMock.mockReset()
+    errorMock.mockReset()
+    consumeMock.mockReset()
+    consumeMock.mockResolvedValue({ success: true, remaining: 29 })
+  })
 
   it('logs money-at-risk kinds at fatal and returns 204', async () => {
     const res = await POST(req({
@@ -55,10 +65,31 @@ describe('POST /api/checkout/report-failure', () => {
     expect(values.join('|')).toContain('WCPOS-AAA')
   })
 
-  it('ignores unknown kinds without logging fatal (still 204, never errors the client)', async () => {
+  it('logs routine payment_failed at error (not fatal) and returns 204', async () => {
+    const res = await POST(req({
+      kind: 'payment_failed', reference: 'WCPOS-EEE-FFFF',
+      source: 'stripe_confirm_payment',
+    }))
+    expect(res.status).toBe(204)
+    expect(errorMock).toHaveBeenCalledTimes(1)
+    expect(fatalMock).not.toHaveBeenCalled()
+  })
+
+  it('drops over-limit callers silently (204, no log)', async () => {
+    consumeMock.mockResolvedValueOnce({ success: false, remaining: 0 })
+    const res = await POST(req({
+      kind: 'order_pending', reference: 'WCPOS-GGG-HHHH',
+    }))
+    expect(res.status).toBe(204)
+    expect(fatalMock).not.toHaveBeenCalled()
+    expect(errorMock).not.toHaveBeenCalled()
+  })
+
+  it('ignores unknown kinds without logging (still 204, never errors the client)', async () => {
     const res = await POST(req({ kind: 'banana', reference: 'x' }))
     expect(res.status).toBe(204)
     expect(fatalMock).not.toHaveBeenCalled()
+    expect(errorMock).not.toHaveBeenCalled()
   })
 
   it('tolerates malformed JSON', async () => {
