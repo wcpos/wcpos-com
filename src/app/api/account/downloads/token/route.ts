@@ -3,8 +3,8 @@ import { env } from '@/utils/env'
 import { getCustomer } from '@/lib/medusa-auth'
 import { getResolvedCustomerLicenses } from '@/lib/customer-licenses'
 import { createDownloadToken } from '@/lib/download-token'
-import { isReleaseAllowedForLicenses } from '@/lib/license'
-import { findReleaseByVersion } from '@/services/core/business/pro-downloads'
+import { getProPluginReleases } from '@/services/core/business/pro-downloads'
+import { selectEntitledRelease } from '@/services/core/business/release-delivery'
 import { licenseLogger } from '@/lib/logger'
 
 const TOKEN_TTL_MS = 60_000
@@ -30,18 +30,23 @@ export async function POST(request: NextRequest) {
     const body = await request.json().catch(() => ({}))
     const version = typeof body.version === 'string' ? body.version : 'latest'
 
-    const release = await findReleaseByVersion(version)
-    if (!release) {
-      licenseLogger.warn`Download token requested for missing release version=${version} customer=${customer.id}`
-      return NextResponse.json({ error: 'Release not found' }, { status: 404 })
-    }
-
+    const releases = await getProPluginReleases()
     const { licenses } = await getResolvedCustomerLicenses()
-    if (!isReleaseAllowedForLicenses(release, licenses)) {
-      licenseLogger.warn`Download token forbidden. version=${release.version} customer=${customer.id}`
+    const selection = selectEntitledRelease(releases, version, {
+      kind: 'account',
+      licences: licenses,
+    })
+
+    if (!selection.ok) {
+      if (selection.reason === 'not_found') {
+        licenseLogger.warn`Download token requested for missing release version=${version} customer=${customer.id}`
+        return NextResponse.json({ error: 'Release not found' }, { status: 404 })
+      }
+      licenseLogger.warn`Download token forbidden. version=${version} customer=${customer.id}`
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
     }
 
+    const release = selection.release
     const token = createDownloadToken(
       {
         customerId: customer.id,
