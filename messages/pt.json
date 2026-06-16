@@ -297,7 +297,16 @@
       "connectDiscord": "Ligar o Discord",
       "disconnect": "Desligar",
       "disconnecting": "A desligar...",
-      "disconnectError": "Não foi possível desligar. Tenta novamente."
+      "disconnectError": "Não foi possível desligar. Tenta novamente.",
+      "discordStatus": {
+        "linked": "Discord conectado. Sua função Pro será sincronizada automaticamente.",
+        "unlinked": "Discord desconectado. A função Pro foi removida se o Discord permitiu.",
+        "synced": "Função do Discord sincronizada novamente.",
+        "join_server": "Entre no servidor do Discord e sincronize sua função novamente.",
+        "error": "A sincronização do Discord falhou. Tente novamente ou entre em contato com o suporte.",
+        "already_linked": "Essa conta do Discord já está vinculada a outro cliente WCPOS."
+      },
+      "discordNotConfigured": "A vinculação do Discord ainda não está configurada."
     }
   }
 }

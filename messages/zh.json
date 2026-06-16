@@ -297,7 +297,16 @@
       "connectDiscord": "连接 Discord",
       "disconnect": "断开连接",
       "disconnecting": "正在断开连接...",
-      "disconnectError": "无法断开连接，请重试。"
+      "disconnectError": "无法断开连接，请重试。",
+      "discordStatus": {
+        "linked": "Discord 已连接。你的 Pro 身份组将自动同步。",
+        "unlinked": "Discord 已断开。如果 Discord 允许，Pro 身份组已移除。",
+        "synced": "Discord 身份组已重新同步。",
+        "join_server": "加入 Discord 服务器，然后重新同步你的身份组。",
+        "error": "Discord 同步失败。请重试或联系支持。",
+        "already_linked": "该 Discord 账号已关联到另一个 WCPOS 客户。"
+      },
+      "discordNotConfigured": "尚未配置 Discord 关联。"
     }
   }
 }

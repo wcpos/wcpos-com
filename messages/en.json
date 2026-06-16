@@ -297,7 +297,16 @@
       "connectDiscord": "Connect Discord",
       "disconnect": "Disconnect",
       "disconnecting": "Disconnecting...",
-      "disconnectError": "Could not disconnect. Please try again."
+      "disconnectError": "Could not disconnect. Please try again.",
+      "discordStatus": {
+        "linked": "Discord connected. Your Pro role will sync automatically.",
+        "unlinked": "Discord disconnected. The Pro role was removed if Discord allowed it.",
+        "synced": "Discord role resynced.",
+        "join_server": "Join the Discord server, then resync your role.",
+        "error": "Discord sync failed. Please try again or contact support.",
+        "already_linked": "That Discord account is already linked to another WCPOS customer."
+      },
+      "discordNotConfigured": "Discord linking is not configured yet."
     }
   }
 }

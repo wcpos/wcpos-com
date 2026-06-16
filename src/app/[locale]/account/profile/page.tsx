@@ -84,10 +84,6 @@ export default async function ProfilePage({
   const resolvedSearchParams = searchParams ? await searchParams : {}
   setRequestLocale(locale)
   const t = await getTranslations({ locale, namespace: 'account.profile' })
-  const overviewT = await getTranslations({
-    locale,
-    namespace: 'account.overview',
-  })
   const discordStatus = resolvedSearchParams.discord
   const discordStatusKey =
     discordStatus === 'linked' ||
@@ -107,7 +103,7 @@ export default async function ProfilePage({
       </div>
       {discordStatusKey && (
         <div className="rounded-md border border-blue-200 bg-blue-50 p-3 text-sm text-blue-900">
-          {overviewT(`discordStatus.${discordStatusKey}`)}
+          {t(`discordStatus.${discordStatusKey}`)}
         </div>
       )}
       <Suspense fallback={<ProfileSkeleton />}>

@@ -297,7 +297,16 @@
       "connectDiscord": "Discordを連携",
       "disconnect": "連携解除",
       "disconnecting": "連携を解除しています...",
-      "disconnectError": "連携を解除できませんでした。もう一度お試しください。"
+      "disconnectError": "連携を解除できませんでした。もう一度お試しください。",
+      "discordStatus": {
+        "linked": "Discord connected. Your Pro role will sync automatically.",
+        "unlinked": "Discord disconnected. The Pro role was removed if Discord allowed it.",
+        "synced": "Discord role resynced.",
+        "join_server": "Discord サーバーに参加してから、ロールを再同期してください。",
+        "error": "Discord sync failed. Please try again or contact support.",
+        "already_linked": "That Discord account is already linked to another WCPOS customer."
+      },
+      "discordNotConfigured": "Discord linking is not configured yet."
     }
   }
 }

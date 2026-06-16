@@ -297,7 +297,16 @@
       "connectDiscord": "Discord verbinden",
       "disconnect": "Verbinding verbreken",
       "disconnecting": "Verbinding verbreken...",
-      "disconnectError": "Kan de verbinding niet verbreken. Probeer het opnieuw."
+      "disconnectError": "Kan de verbinding niet verbreken. Probeer het opnieuw.",
+      "discordStatus": {
+        "linked": "Discord verbonden. Je Pro-rol wordt automatisch gesynchroniseerd.",
+        "unlinked": "Discord losgekoppeld. De Pro-rol is verwijderd als Discord dit toestond.",
+        "synced": "Discord-rol opnieuw gesynchroniseerd.",
+        "join_server": "Word lid van de Discord-server en synchroniseer daarna je rol opnieuw.",
+        "error": "Discord-synchronisatie is mislukt. Probeer het opnieuw of neem contact op met support.",
+        "already_linked": "Dat Discord-account is al gekoppeld aan een andere WCPOS-klant."
+      },
+      "discordNotConfigured": "Discord-koppeling is nog niet geconfigureerd."
     }
   }
 }

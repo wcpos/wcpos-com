@@ -205,7 +205,6 @@ export function ProfileEditForm({
 }: ProfileEditFormProps) {
   const locale = useLocale()
   const t = useTranslations('account.profile')
-  const overviewT = useTranslations('account.overview')
   const metadataDefaults = getAvatarUrlFromMetadata(customer.metadata)
   const countryOptions = useMemo(() => buildCountryOptions(locale), [locale])
 
@@ -600,7 +599,7 @@ export function ProfileEditForm({
                   </Button>
                 ) : (
                   <span className="text-xs text-muted-foreground">
-                    {overviewT('discordNotConfigured')}
+                    {t('discordNotConfigured')}
                   </span>
                 )}
               </div>
