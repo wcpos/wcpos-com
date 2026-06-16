@@ -3,17 +3,18 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-  /* Background colors */
+  /* Background colors. Foreground softened from near-black (slate-950) to a
+     deep slate-ink for a cleaner, classier read (design sweep 2026-06-16). */
   --background: 0 0% 100%;
-  --foreground: 222.2 84% 4.9%;
-  
+  --foreground: 222 47% 11%;
+
   /* Card colors */
   --card: 0 0% 100%;
-  --card-foreground: 222.2 84% 4.9%;
-  
+  --card-foreground: 222 47% 11%;
+
   /* Popover colors */
   --popover: 0 0% 100%;
-  --popover-foreground: 222.2 84% 4.9%;
+  --popover-foreground: 222 47% 11%;
   
   /* Primary colors - WCPOS brand red (see --wcpos-red rationale below).
      Held at 47% lightness so white-text-on-primary CTAs clear WCAG AA. */
@@ -36,9 +37,9 @@
   --destructive: 0 84.2% 60.2%;
   --destructive-foreground: 0 0% 100%;
   
-  /* Border colors */
-  --border: 214.3 31.8% 91.4%;
-  --input: 214.3 31.8% 91.4%;
+  /* Border colors. Cooler, lighter hairline (design sweep 2026-06-16). */
+  --border: 214 25% 91%;
+  --input: 214 25% 91%;
   --ring: 4 73% 47%;
   
   /* Chart colors */
@@ -54,13 +55,13 @@
   --wcpos-red: 4 73% 47%;
   --wcpos-red-accent: 4 73% 42%;
 
-  /* Radius */
-  --radius: 0.5rem;
-  
+  /* Radius — tightened to 6px for a subtle, "cut" feel (design sweep 2026-06-16). */
+  --radius: 0.375rem;
+
   /* Sidebar specific */
   --sidebar: 0 0% 98%;
-  --sidebar-foreground: 222.2 84% 4.9%;
-  --sidebar-border: 214.3 31.8% 91.4%;
+  --sidebar-foreground: 222 47% 11%;
+  --sidebar-border: 214 25% 91%;
   --sidebar-accent: 210 40% 96.1%;
   --sidebar-accent-foreground: 222.2 47.4% 11.2%;
 }
@@ -144,10 +145,21 @@
   --color-wcpos-red-accent: hsl(var(--wcpos-red-accent));
   --font-sans: var(--font-geist-sans), system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
-  --radius-sm: calc(var(--radius) - 4px);
+  /* One tight radius scale derived from --radius (6px). `lg` is for genuinely
+     raised cards only; `xl` is deprecated (kept small so any stray use is mild). */
+  --radius-sm: calc(var(--radius) - 2px);
   --radius-md: var(--radius);
-  --radius-lg: calc(var(--radius) + 4px);
-  --radius-xl: calc(var(--radius) + 8px);
+  --radius-lg: calc(var(--radius) + 2px);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  /* Designed elevation scale — soft, ink-tinted, low-opacity, layered.
+     Default surfaces are FLAT; these appear only on genuinely raised UI
+     (raised cards, dialogs/popovers, the hero mockup). Overrides Tailwind's
+     default shadow-* utilities so the whole site softens at once. */
+  --shadow-xs: 0 1px 2px 0 hsl(222 47% 11% / 0.05);
+  --shadow-sm: 0 1px 2px 0 hsl(222 47% 11% / 0.05), 0 1px 3px 0 hsl(222 47% 11% / 0.07);
+  --shadow-md: 0 2px 6px -2px hsl(222 47% 11% / 0.06), 0 6px 16px -4px hsl(222 47% 11% / 0.10);
+  --shadow-lg: 0 6px 12px -6px hsl(222 47% 11% / 0.08), 0 16px 32px -8px hsl(222 47% 11% / 0.14);
 }
 
 * {

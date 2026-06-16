@@ -34,7 +34,7 @@ export function ValuesSection() {
           {values.map((value) => (
             <div
               key={value.title}
-              className="rounded-xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-950"
+              className="rounded-md border border-slate-200 bg-white p-6 dark:border-slate-700 dark:bg-slate-900"
             >
               <value.icon
                 aria-hidden="true"

@@ -62,7 +62,7 @@ export function UseCasesSection() {
         {useCases.map((uc) => (
           <li
             key={uc.type}
-            className="overflow-hidden rounded-lg border border-slate-200 bg-white transition-all hover:-translate-y-1 hover:shadow-md dark:border-slate-700 dark:bg-slate-800"
+            className="overflow-hidden rounded-md border border-slate-200 bg-white transition-colors hover:border-foreground/20 dark:border-slate-700 dark:bg-slate-800"
           >
             <div
               aria-hidden="true"

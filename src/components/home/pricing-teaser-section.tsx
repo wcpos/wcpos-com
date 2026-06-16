@@ -33,7 +33,7 @@ export function PricingTeaserSection() {
       />
 
       {/* Comparison */}
-      <div className="mx-auto mb-8 grid max-w-3xl overflow-hidden rounded-xl border border-slate-200 dark:border-slate-700 md:grid-cols-2">
+      <div className="mx-auto mb-8 grid max-w-3xl overflow-hidden rounded-md border border-slate-200 dark:border-slate-700 md:grid-cols-2">
         {/* Free Column */}
         <div className="bg-slate-50 p-6 dark:bg-slate-800/50">
           <h3 className="mb-1 text-lg font-semibold text-slate-800 dark:text-slate-100">

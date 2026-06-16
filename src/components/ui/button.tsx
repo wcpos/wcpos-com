@@ -9,23 +9,23 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          'bg-wcpos-red text-primary-foreground shadow hover:bg-wcpos-red/90',
+          'bg-wcpos-red text-primary-foreground shadow-xs hover:bg-wcpos-red/90',
         destructive:
-          'bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90',
+          'bg-destructive text-destructive-foreground shadow-xs hover:bg-destructive/90',
         outline:
-          'border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground',
+          'border border-input bg-background shadow-xs hover:bg-accent hover:text-accent-foreground',
         secondary:
-          'bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80',
+          'bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80',
         ghost: 'hover:bg-accent hover:text-accent-foreground',
         link: 'text-primary underline-offset-4 hover:underline',
         // Marketing CTAs. `brand` is the solid red call-to-action; the
         // `brand-outline` and `inverse` variants pair with it on dark bands.
         brand:
-          'bg-wcpos-red text-white shadow transition-all hover:brightness-110 focus-visible:ring-2 focus-visible:ring-wcpos-red/70 focus-visible:ring-offset-2',
+          'bg-wcpos-red text-white shadow-xs transition-all hover:brightness-110 focus-visible:ring-2 focus-visible:ring-wcpos-red/70 focus-visible:ring-offset-2',
         'brand-outline':
           'border-2 border-white/30 text-white transition-colors hover:bg-white/10 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-transparent',
         inverse:
-          'bg-white text-slate-900 shadow transition-colors hover:bg-slate-100 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-transparent',
+          'bg-white text-slate-900 shadow-xs transition-colors hover:bg-slate-100 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-transparent',
       },
       size: {
         default: 'h-9 px-4 py-2',

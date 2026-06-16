@@ -76,8 +76,8 @@ async function PricingSection({
 function PricingSkeleton() {
   return (
     <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto items-start">
-      <div className="h-96 animate-pulse rounded-lg bg-muted" />
-      <div className="h-96 animate-pulse rounded-lg bg-muted" />
+      <div className="h-96 animate-pulse rounded-md bg-muted" />
+      <div className="h-96 animate-pulse rounded-md bg-muted" />
     </div>
   )
 }

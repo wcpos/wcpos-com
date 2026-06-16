@@ -26,9 +26,9 @@ function PosMockup() {
   return (
     <div
       aria-hidden="true"
-      className="relative w-full max-w-lg select-none rounded-2xl border border-slate-600/50 bg-slate-700/50 p-3 shadow-2xl"
+      className="relative w-full max-w-lg select-none rounded-md border border-slate-600/50 bg-slate-700/50 p-3 shadow-lg"
     >
-      <div className="overflow-hidden rounded-xl bg-slate-900">
+      <div className="overflow-hidden rounded-md bg-slate-900">
         {/* Top bar */}
         <div className="flex items-center justify-between border-b border-slate-800 px-4 py-2.5">
           <span className="text-xs font-bold tracking-wide text-white">
@@ -48,7 +48,7 @@ function PosMockup() {
             {demoProducts.map((product, i) => (
               <div
                 key={product.name}
-                className="overflow-hidden rounded-lg bg-slate-800"
+                className="overflow-hidden rounded-md bg-slate-800"
               >
                 <div
                   className={`h-10 w-full ${
@@ -104,7 +104,7 @@ function PosMockup() {
         {[Smartphone, Tablet, Monitor].map((Icon, i) => (
           <div
             key={i}
-            className="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-700 shadow-lg"
+            className="flex h-10 w-10 items-center justify-center rounded-md bg-slate-700 shadow-lg"
           >
             <Icon className="h-5 w-5 text-slate-300" />
           </div>

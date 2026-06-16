@@ -47,7 +47,10 @@ function DownloadsSkeleton() {
         </CardHeader>
         <CardContent className="space-y-3">
           {[1, 2, 3].map((row) => (
-            <div key={row} className="space-y-2 rounded-lg border p-4">
+            <div
+              key={row}
+              className="space-y-2 border-t py-4 first:border-t-0 first:pt-0"
+            >
               <Skeleton className="h-4 w-32" />
               <Skeleton className="h-4 w-full" />
             </div>

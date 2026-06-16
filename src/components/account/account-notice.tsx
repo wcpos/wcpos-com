@@ -39,7 +39,7 @@ export function AccountNotice({
   return (
     <div
       className={cn(
-        'flex flex-wrap items-center justify-between gap-3 rounded-lg border p-3 text-sm sm:p-4',
+        'flex flex-wrap items-center justify-between gap-3 rounded-md border p-3 text-sm sm:p-4',
         VARIANT_CLASSES[variant],
         className
       )}

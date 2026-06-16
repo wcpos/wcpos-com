@@ -5,6 +5,7 @@ import { useLocale, useTranslations } from 'next-intl'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
+import { DividedList, Row } from '@/components/ui/row'
 import { AccountNotice } from '@/components/account/account-notice'
 import { Key, Monitor, Trash2, Download } from 'lucide-react'
 import { Link } from '@/i18n/navigation'
@@ -364,75 +365,76 @@ export function LicensesClient({
               </div>
 
               {license.machines.length > 0 && (
-                <div className="space-y-2">
+                <div className="border-t pt-4">
                   <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
                     {t('activatedMachines')}
                   </p>
-                  {license.machines.map((machine) => (
-                    <div
-                      key={machine.id}
-                      className="flex items-center justify-between gap-2 rounded-lg border bg-muted/40 p-3"
-                    >
-                      <div className="flex min-w-0 items-start gap-2.5">
-                        <Monitor className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground" />
-                        <div className="min-w-0">
-                          {/* Fingerprints are unbroken machine hashes — they
-                              must be allowed to break anywhere or they blow
-                              out the card on phones. */}
-                          <p className="break-all text-sm font-medium">
-                            {machine.name || machine.fingerprint}
-                          </p>
-                          {machine.name && (
-                            <p className="break-all font-mono text-xs text-muted-foreground">
-                              {machine.fingerprint}
+                  <DividedList className="mt-1">
+                    {license.machines.map((machine) => (
+                      <Row key={machine.id} className="items-start gap-2">
+                        <div className="flex min-w-0 items-start gap-2.5">
+                          <Monitor className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground" />
+                          <div className="min-w-0">
+                            {/* Fingerprints are unbroken machine hashes — they
+                                must be allowed to break anywhere or they blow
+                                out the card on phones. */}
+                            <p className="break-all text-sm font-medium">
+                              {machine.name || machine.fingerprint}
                             </p>
-                          )}
-                          {/* Expired licences still cover pre-expiry versions:
-                              tell each activated site which version it can
-                              still update through (ADR-0006, per licence). */}
-                          {displayStatus === 'expired' && coveredVersion && (
+                            {machine.name && (
+                              <p className="break-all font-mono text-xs text-muted-foreground">
+                                {machine.fingerprint}
+                              </p>
+                            )}
+                            {/* Expired licences still cover pre-expiry versions:
+                                tell each activated site which version it can
+                                still update through (ADR-0006, per licence). */}
+                            {displayStatus === 'expired' && coveredVersion && (
+                              <p className="mt-0.5 text-xs text-muted-foreground">
+                                {t('siteUpdatesThrough', {
+                                  version: coveredVersion,
+                                })}
+                              </p>
+                            )}
                             <p className="mt-0.5 text-xs text-muted-foreground">
-                              {t('siteUpdatesThrough', {
-                                version: coveredVersion,
+                              {t('machineAdded', {
+                                date: formatDateForLocale(
+                                  machine.createdAt,
+                                  locale
+                                ),
                               })}
                             </p>
-                          )}
-                          <p className="mt-0.5 text-xs text-muted-foreground">
-                            {t('machineAdded', {
-                              date: formatDateForLocale(
-                                machine.createdAt,
-                                locale
-                              ),
-                            })}
-                          </p>
+                          </div>
                         </div>
-                      </div>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleDeactivate(license.id, machine.id)}
-                        disabled={deactivating === machine.id}
-                        aria-label={t('deactivateMachineAria', {
-                          name: machine.name || t('genericMachineName'),
-                        })}
-                      >
-                        <Trash2
-                          className={`h-4 w-4 ${
-                            deactivating === machine.id
-                              ? 'text-muted-foreground'
-                              : 'text-destructive'
-                          }`}
-                        />
-                      </Button>
-                    </div>
-                  ))}
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() =>
+                            handleDeactivate(license.id, machine.id)
+                          }
+                          disabled={deactivating === machine.id}
+                          aria-label={t('deactivateMachineAria', {
+                            name: machine.name || t('genericMachineName'),
+                          })}
+                        >
+                          <Trash2
+                            className={`h-4 w-4 ${
+                              deactivating === machine.id
+                                ? 'text-muted-foreground'
+                                : 'text-destructive'
+                            }`}
+                          />
+                        </Button>
+                      </Row>
+                    ))}
+                  </DividedList>
                 </div>
               )}
 
               {/* Discord access — frontend stub per ADR-0007. Membership data
                   is sample-only; the resolving backend is out of scope for this
                   work package. */}
-              <div className="space-y-2 rounded-lg border bg-muted/40 p-3">
+              <div className="border-t pt-4">
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
                     {t('discordHeading')}
@@ -444,58 +446,57 @@ export function LicensesClient({
                     })}
                   </span>
                 </div>
-                {discordMembers.map((member) => (
-                  <div
-                    key={member.id}
-                    className="flex items-center justify-between gap-2"
-                  >
-                    <div className="flex min-w-0 items-center gap-2.5">
-                      <span
-                        aria-hidden="true"
-                        className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-wcpos-red/10 text-xs font-medium text-wcpos-red-accent"
-                      >
-                        {member.avatarInitials}
-                      </span>
-                      <div className="min-w-0">
-                        <p className="truncate text-sm font-medium">
-                          {member.handle}
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          {t('discordConnected', {
-                            date: formatDateForLocale(
-                              member.connectedAt,
-                              locale
-                            ),
-                          })}
-                        </p>
+                <DividedList className="mt-1">
+                  {discordMembers.map((member) => (
+                    <Row key={member.id} className="gap-2">
+                      <div className="flex min-w-0 items-center gap-2.5">
+                        <span
+                          aria-hidden="true"
+                          className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-wcpos-red/10 text-xs font-medium text-wcpos-red-accent"
+                        >
+                          {member.avatarInitials}
+                        </span>
+                        <div className="min-w-0">
+                          <p className="truncate text-sm font-medium">
+                            {member.handle}
+                          </p>
+                          <p className="text-xs text-muted-foreground">
+                            {t('discordConnected', {
+                              date: formatDateForLocale(
+                                member.connectedAt,
+                                locale
+                              ),
+                            })}
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() =>
-                        setDiscordMembersByLicense((membersByLicense) => {
-                          const currentMembers =
-                            membersByLicense[license.id] ??
-                            SAMPLE_DISCORD_MEMBERS
-                          return {
-                            ...membersByLicense,
-                            [license.id]: currentMembers.filter(
-                              (m) => m.id !== member.id
-                            ),
-                          }
-                        })
-                      }
-                      aria-label={t('discordRemoveAria', {
-                        handle: member.handle,
-                      })}
-                    >
-                      {t('discordRemove')}
-                    </Button>
-                  </div>
-                ))}
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() =>
+                          setDiscordMembersByLicense((membersByLicense) => {
+                            const currentMembers =
+                              membersByLicense[license.id] ??
+                              SAMPLE_DISCORD_MEMBERS
+                            return {
+                              ...membersByLicense,
+                              [license.id]: currentMembers.filter(
+                                (m) => m.id !== member.id
+                              ),
+                            }
+                          })
+                        }
+                        aria-label={t('discordRemoveAria', {
+                          handle: member.handle,
+                        })}
+                      >
+                        {t('discordRemove')}
+                      </Button>
+                    </Row>
+                  ))}
+                </DividedList>
                 {displayStatus === 'active' && (
-                  <p className="text-xs text-muted-foreground">
+                  <p className="mt-3 text-xs text-muted-foreground">
                     {t('discordConnectHint')}
                   </p>
                 )}

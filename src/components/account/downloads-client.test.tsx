@@ -58,12 +58,12 @@ function makeAccess(overrides: Partial<DownloadAccess> = {}): DownloadAccess {
 
 /**
  * The version-history archive row for a release name. Mirrors the e2e
- * `releaseRow` selector (`div.rounded-lg.border` filtered by name) so unit
+ * `releaseRow` selector (`[data-testid="release-row"]` filtered by name) so unit
  * coverage stays aligned with the e2e contract.
  */
 function archiveRow(name: string): HTMLElement {
   const rows = Array.from(
-    document.querySelectorAll<HTMLElement>('div.rounded-lg.border')
+    document.querySelectorAll<HTMLElement>('[data-testid="release-row"]')
   )
   const match = rows.find((row) =>
     within(row)

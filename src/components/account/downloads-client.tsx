@@ -12,6 +12,7 @@ import { Link } from '@/i18n/navigation'
 import { Button } from '@/components/ui/button'
 import { AccountNotice } from '@/components/account/account-notice'
 import { Badge } from '@/components/ui/badge'
+import { DividedList, Row } from '@/components/ui/row'
 import {
   Card,
   CardContent,
@@ -339,16 +340,16 @@ export function DownloadsClient({
           {releases.length === 0 ? (
             <p className="text-sm text-muted-foreground">{t('emptyList')}</p>
           ) : (
-            <div className="space-y-3">
-              {visibleReleases.map((release) => (
-                <div
-                  key={release.version}
-                  className={`flex flex-wrap items-start justify-between gap-3 rounded-lg border p-3 transition-colors sm:p-4 ${
-                    release.allowed
-                      ? 'hover:border-foreground/20'
-                      : 'opacity-60'
-                  }`}
-                >
+            <>
+              <DividedList>
+                {visibleReleases.map((release) => (
+                  <Row
+                    key={release.version}
+                    data-testid="release-row"
+                    className={`items-start gap-3 ${
+                      release.allowed ? '' : 'opacity-60'
+                    }`}
+                  >
                   <div className="min-w-0 flex-1 basis-60">
                     <div className="flex flex-wrap items-center gap-2">
                       <p className="font-medium">{release.name}</p>
@@ -393,8 +394,9 @@ export function DownloadsClient({
                       {downloadLabel(release)}
                     </Button>
                   </div>
-                </div>
-              ))}
+                </Row>
+                ))}
+              </DividedList>
 
               {totalPages > 1 && (
                 <div className="flex flex-wrap items-center justify-between gap-3 border-t pt-4">
@@ -429,7 +431,7 @@ export function DownloadsClient({
                   </div>
                 </div>
               )}
-            </div>
+            </>
           )}
         </CardContent>
       </Card>
