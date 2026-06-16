@@ -1,10 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import semver from 'semver'
 import { licenseClient } from '@/services/core/external/license-client'
-import {
-  getProPluginReleases,
-  isReleaseAllowedForLicenses,
-} from '@/services/core/business/pro-downloads'
+import { isReleaseAllowedForLicenses } from '@/lib/license'
+import { getProPluginReleases } from '@/services/core/business/pro-downloads'
 
 function normalizeSemver(version: string): string {
   const normalized = semver.valid(version) ?? semver.valid(semver.coerce(version))

@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { licenseClient } from '@/services/core/external/license-client'
 import { getGitHubToken } from '@/services/core/external/github-auth'
+import { isReleaseAllowedForLicenses } from '@/lib/license'
 import {
   getProPluginReleases,
-  isReleaseAllowedForLicenses,
   normalizeReleaseVersion,
 } from '@/services/core/business/pro-downloads'
 

@@ -61,7 +61,7 @@ describe('getResolvedCustomerLicenses', () => {
       license: {
         id: 'lic_1',
         key: 'WCPOS-AAAA-1111',
-        status: 'ACTIVE',
+        status: 'active',
         expiry: null,
         maxMachines: 1,
         metadata: {},
@@ -75,11 +75,10 @@ describe('getResolvedCustomerLicenses', () => {
     expect(result.authenticated).toBe(true)
     expect(result.licenses).toHaveLength(1)
     expect(result.licenses[0].key).toBe('WCPOS-AAAA-1111')
-    // Raw Keygen 'ACTIVE' normalizes to the canonical vocabulary.
     expect(result.licenses[0].status).toBe('active')
   })
 
-  it('normalizes raw Keygen statuses on the id-resolution path', async () => {
+  it('returns already-canonical statuses from the id-resolution path', async () => {
     mockGetCustomer.mockResolvedValueOnce({ id: 'cust_1' })
     mockGetAllCustomerOrders.mockResolvedValueOnce([
       {
@@ -99,12 +98,10 @@ describe('getResolvedCustomerLicenses', () => {
         },
       },
     ])
-    // EXPIRING is a paid, in-term Keygen status and must surface as active —
-    // entitlement and badges would otherwise wrongly lock the customer out.
     mockGetLicenseWithMachines.mockResolvedValueOnce({
       id: 'lic_2',
       key: 'WCPOS-BBBB-2222',
-      status: 'EXPIRING',
+      status: 'active',
       expiry: '2026-06-03T00:00:00Z',
       maxMachines: 1,
       machines: [],

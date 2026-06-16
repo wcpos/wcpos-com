@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { screen } from '@testing-library/react'
 import { renderWithIntl as render } from '@/test/intl'
 import { LicensesClient } from './licenses-client'
+import type { CanonicalLicenseStatus } from '@/lib/license-status'
 
 // Mock the locale-aware Link as a simple anchor
 vi.mock('@/i18n/navigation', () => ({
@@ -23,11 +24,29 @@ vi.mock('@/i18n/navigation', () => ({
 const mockFetch = vi.fn()
 vi.stubGlobal('fetch', mockFetch)
 
-function makeLicense(overrides: Record<string, unknown> = {}) {
+function makeLicense(
+  overrides: Partial<{
+    id: string
+    key: string
+    status: CanonicalLicenseStatus
+    expiry: string | null
+    maxMachines: number
+    machines: Array<{
+      id: string
+      fingerprint: string
+      name: string | null
+      metadata: Record<string, unknown>
+      createdAt: string
+    }>
+    metadata: Record<string, unknown>
+    policyId: string
+    createdAt: string
+  }> = {}
+) {
   return {
     id: 'lic-1',
     key: 'ABCD-EFGH-IJKL-MNOP',
-    status: 'active',
+    status: 'active' as CanonicalLicenseStatus,
     expiry: '2027-01-01T00:00:00Z',
     maxMachines: 5,
     machines: [],
