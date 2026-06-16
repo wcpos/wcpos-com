@@ -34,14 +34,24 @@ export async function generateMetadata({
  */
 function toOrderHistoryOrder(order: MedusaOrder): OrderHistoryOrder {
   const product = order.items[0]?.title?.trim() || undefined
-  const licenses = extractLicenseReferencesFromOrders([order])
-    .filter((reference): reference is { id?: string; key: string } =>
+  const references = extractLicenseReferencesFromOrders([order]).filter(
+    (reference): reference is { id?: string; key: string } =>
       Boolean(reference.key)
-    )
-    .map((reference) => ({
-      maskedKey: maskLicenseKey(reference.key),
-      product,
-    }))
+  )
+  // A licence reference can surface from both order.metadata and item.metadata;
+  // dedupe by id (else key) so one entitlement renders a single chip.
+  const uniqueReferences = Array.from(
+    new Map(
+      references.map((reference) => [
+        reference.id ? `id:${reference.id}` : `key:${reference.key}`,
+        reference,
+      ])
+    ).values()
+  )
+  const licenses = uniqueReferences.map((reference) => ({
+    maskedKey: maskLicenseKey(reference.key),
+    product,
+  }))
 
   return {
     id: order.id,
