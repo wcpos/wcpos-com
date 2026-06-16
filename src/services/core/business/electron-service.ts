@@ -1,3 +1,4 @@
+import 'server-only'
 /**
  * Electron Desktop App Service (stub)
  *

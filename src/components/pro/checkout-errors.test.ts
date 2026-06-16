@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { clientLogger } from '@/lib/client-logger'
 
 vi.mock('@/lib/client-logger', () => ({
@@ -263,6 +263,47 @@ describe('server-side failure shipping (clientLogger)', () => {
     expect(failure.reference).toMatch(/^WCPOS-/)
     // The devtools fallback still fired.
     expect(console.error).toHaveBeenCalled()
+  })
+})
+
+describe('buildFailure → server beacon', () => {
+  let beacon: ReturnType<typeof vi.fn>
+  beforeEach(() => {
+    beacon = vi.fn(() => true)
+    vi.stubGlobal('navigator', { sendBeacon: beacon })
+  })
+  afterEach(() => {
+    vi.unstubAllGlobals()
+  })
+
+  it('beacons report-failure for money-at-risk kinds', () => {
+    createOrderPendingFailure({ source: 'stripe_complete_cart', details: { cartId: 'c1' } })
+    expect(beacon).toHaveBeenCalledTimes(1)
+    expect(beacon.mock.calls[0][0]).toBe('/api/checkout/report-failure')
+    const payload = JSON.parse(beacon.mock.calls[0][1] as string)
+    expect(payload.kind).toBe('order_pending')
+    expect(payload.reference).toMatch(/^WCPOS-/)
+  })
+
+  it('does NOT beacon ordinary retryable payment failures', () => {
+    createPaymentFailure('declined', { source: 'stripe_confirm_payment' })
+    expect(beacon).not.toHaveBeenCalled()
+  })
+
+  it('falls back to a keepalive fetch when sendBeacon returns false', () => {
+    beacon.mockReturnValue(false)
+    const fetchMock = vi.fn(() => Promise.resolve({ ok: true } as Response))
+    vi.stubGlobal('fetch', fetchMock)
+
+    createOrderPendingFailure({ source: 'stripe_complete_cart', details: { cartId: 'c1' } })
+
+    expect(fetchMock).toHaveBeenCalledTimes(1)
+    const [url, init] = fetchMock.mock.calls[0] as unknown as [string, RequestInit]
+    expect(url).toBe('/api/checkout/report-failure')
+    expect(init.keepalive).toBe(true)
+    const payload = JSON.parse(init.body as string)
+    expect(payload.kind).toBe('order_pending')
+    expect(payload.reference).toMatch(/^WCPOS-/)
   })
 })
 

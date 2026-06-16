@@ -60,6 +60,9 @@ const envSchema = z.object({
   LOKI_URL: z.string().url().optional(),
   LOKI_API_KEY: z.string().optional(),
   DISCORD_WEBHOOK_URL: z.string().url().optional(),
+  // .min(1): reject an empty string so an empty value can never satisfy the
+  // /api/debug/alert-test production guard (token !== '' would otherwise pass).
+  ALERT_TEST_TOKEN: z.string().min(1).optional(),
 
   // Error tracking
   SENTRY_DSN: z.string().url().optional(),

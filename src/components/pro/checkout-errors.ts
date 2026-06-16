@@ -184,6 +184,43 @@ function buildFailure(
       // Logging must never break failure reporting — console output above is
       // the fallback.
     }
+
+    // Money-at-risk failures (charged but no order, or ambiguous charge) must
+    // reach the SERVER logger so Discord/Sentry alert — clientLogger only goes
+    // to Loki. sendBeacon survives the customer navigating away.
+    if (kind === 'order_pending' || kind === 'payment_uncertain') {
+      const endpoint = '/api/checkout/report-failure'
+      let queued = false
+      try {
+        if (typeof navigator !== 'undefined' && typeof navigator.sendBeacon === 'function') {
+          queued = navigator.sendBeacon(
+            endpoint,
+            JSON.stringify({
+              kind,
+              reference: failure.reference,
+              source: context.source,
+              details: context.details,
+            })
+          )
+        }
+      } catch {
+        queued = false
+      }
+
+      // sendBeacon returns false when its queue is full (or it's unavailable).
+      // For a money-at-risk alert we must not drop it silently — fall back to a
+      // keepalive fetch with the minimal payload the server actually logs.
+      if (!queued && typeof fetch !== 'undefined') {
+        void fetch(endpoint, {
+          method: 'POST',
+          keepalive: true,
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ kind, reference: failure.reference }),
+        }).catch(() => {
+          // Both transports failed — clientLogger.error above is the fallback.
+        })
+      }
+    }
   }
 
   return failure

@@ -30,6 +30,7 @@ export async function register() {
     if (discordUrl) {
       sinks.discord = createDiscordSink({
         webhookUrl: discordUrl,
+        alwaysSendPrefixes: ['wcpos.store.sale'],
       })
     }
 
