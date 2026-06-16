@@ -91,7 +91,7 @@ describe('DownloadsClient', () => {
       <DownloadsClient initialReleases={[makeRelease()]} access={makeAccess()} />
     )
     // Name appears in both the latest-version hero and the archive row.
-    expect(screen.getAllByText('WCPOS Pro 1.9.0').length).toBeGreaterThan(0)
+    expect(screen.getAllByText('WCPOS Pro 1.9.0')).toHaveLength(2)
     expect(screen.getByText('Bug fixes')).toBeInTheDocument()
   })
 
@@ -140,6 +140,24 @@ describe('DownloadsClient', () => {
     expect(
       screen.getByText('Available on your active Yearly licence')
     ).toBeInTheDocument()
+  })
+
+  it('does not claim active-licence availability for expired term entitlements', () => {
+    render(
+      <DownloadsClient
+        initialReleases={[makeRelease()]}
+        access={makeAccess({
+          hasActiveLicense: false,
+          latestExpiry: '2026-03-01T00:00:00Z',
+          expiryHasPassed: true,
+        })}
+      />
+    )
+
+    expect(screen.getByText('Latest version')).toBeInTheDocument()
+    expect(
+      screen.queryByText(/Available on your active/)
+    ).not.toBeInTheDocument()
   })
 
   it('hides the latest-version hero when the latest build is blocked', () => {

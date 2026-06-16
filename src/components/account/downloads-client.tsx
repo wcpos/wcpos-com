@@ -173,6 +173,12 @@ export function DownloadsClient({
   const hasNotes = (release: DownloadRelease) =>
     Boolean(release.releaseNotes?.trim())
 
+  const latestAvailabilityLabel = access.hasActiveLicense
+    ? entitlingPlanLabel
+      ? t('availableOnPlan', { plan: entitlingPlanLabel })
+      : t('availableOnActive')
+    : null
+
   return (
     <div className="space-y-6">
       {error && (
@@ -287,11 +293,11 @@ export function DownloadsClient({
               </p>
             )}
 
-            <p className="text-sm font-medium text-foreground">
-              {entitlingPlanLabel
-                ? t('availableOnPlan', { plan: entitlingPlanLabel })
-                : t('availableOnActive')}
-            </p>
+            {latestAvailabilityLabel && (
+              <p className="text-sm font-medium text-foreground">
+                {latestAvailabilityLabel}
+              </p>
+            )}
 
             <div className="flex flex-wrap items-center gap-2">
               <Button
