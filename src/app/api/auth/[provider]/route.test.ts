@@ -3,7 +3,7 @@ import { NextRequest } from 'next/server'
 
 const mockInitiateOAuth = vi.fn()
 
-vi.mock('@/lib/medusa-auth', () => ({
+vi.mock('@/lib/oauth', () => ({
   initiateOAuth: (...args: unknown[]) => mockInitiateOAuth(...args),
 }))
 

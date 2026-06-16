@@ -1,13 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
-import {
-  completeOAuthCallback,
-  setAuthToken,
-  refreshToken,
-  decodeMedusaToken,
-  linkOrCreateCustomer,
-  getCustomer,
-  updateCustomer,
-} from '@/lib/medusa-auth'
+import { getCustomer, updateCustomer } from '@/lib/medusa-auth'
+import { establishOAuthSession } from '@/lib/oauth'
 import { authLogger } from '@/lib/logger'
 import { getConnectedAvatarUrlFromUserMetadata } from '@/lib/avatar'
 import { recordSignInProvider } from '@/lib/auth-providers/metadata'
@@ -78,24 +71,12 @@ export async function GET(
       callbackParams[key] = value
     })
 
-    const token = await completeOAuthCallback(provider, callbackParams)
-    const payload = decodeMedusaToken(token)
-
-    let sessionToken = token
-
-    if (!payload.actor_id) {
-      // No customer linked yet — link to existing or create new
-      await linkOrCreateCustomer(token)
-      const refreshedToken = await refreshToken(token)
-      sessionToken = refreshedToken
-      await setAuthToken(refreshedToken)
-    } else {
-      // Existing linked customer — just set the token
-      await setAuthToken(token)
-    }
-
-    const sessionPayload = decodeMedusaToken(sessionToken)
-    await syncOauthProfile(provider, sessionPayload.user_metadata)
+    // establishOAuthSession owns the link-then-refresh-then-persist ordering
+    // and writes the session cookie; the route only drives profile sync and
+    // the redirect. Profile sync runs after the session exists (it reads the
+    // cookie via getCustomer) and is best-effort — it must not block sign-in.
+    const { payload } = await establishOAuthSession(provider, callbackParams)
+    await syncOauthProfile(provider, payload.user_metadata)
 
     return NextResponse.redirect(new URL(redirectTo, request.url))
   } catch (error) {
