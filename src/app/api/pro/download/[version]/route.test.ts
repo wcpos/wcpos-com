@@ -23,6 +23,11 @@ vi.mock('@/services/core/business/pro-downloads', async (importOriginal) => {
   }
 })
 
+const mockFetchReleaseAsset = vi.fn()
+vi.mock('@/services/core/external/github-asset', () => ({
+  fetchReleaseAsset: (...args: unknown[]) => mockFetchReleaseAsset(...args),
+}))
+
 import { GET } from './route'
 
 function makeRelease(version: string, publishedAt: string) {
@@ -74,5 +79,60 @@ describe('GET /api/pro/download/[version]', () => {
     )
 
     expect(response.status).toBe(403)
+  })
+
+  it('streams the asset for an entitled version', async () => {
+    mockValidateLicense.mockResolvedValueOnce({
+      status: 200,
+      data: {
+        activated: true,
+        status: 'active',
+        productName: 'WooCommerce POS Pro',
+      },
+      entitlement: { status: 'active', expiry: null },
+    })
+    mockGetProPluginReleases.mockResolvedValueOnce([
+      makeRelease('3.2.0', '2026-01-15T00:00:00Z'),
+    ])
+    mockFetchReleaseAsset.mockResolvedValueOnce({
+      stream: new Response('zip').body,
+      filename: 'woocommerce-pos-pro-3.2.0.zip',
+      contentType: 'application/zip',
+    })
+
+    const response = await GET(
+      new NextRequest(
+        'http://localhost/api/pro/download/latest?key=KEY&instance=INST'
+      ),
+      { params: Promise.resolve({ version: 'latest' }) }
+    )
+
+    expect(response.status).toBe(200)
+    expect(response.headers.get('cache-control')).toBe('private, no-store')
+  })
+
+  it('returns 502 when the asset cannot be fetched', async () => {
+    mockValidateLicense.mockResolvedValueOnce({
+      status: 200,
+      data: {
+        activated: true,
+        status: 'active',
+        productName: 'WooCommerce POS Pro',
+      },
+      entitlement: { status: 'active', expiry: null },
+    })
+    mockGetProPluginReleases.mockResolvedValueOnce([
+      makeRelease('3.2.0', '2026-01-15T00:00:00Z'),
+    ])
+    mockFetchReleaseAsset.mockResolvedValueOnce(null)
+
+    const response = await GET(
+      new NextRequest(
+        'http://localhost/api/pro/download/latest?key=KEY&instance=INST'
+      ),
+      { params: Promise.resolve({ version: 'latest' }) }
+    )
+
+    expect(response.status).toBe(502)
   })
 })

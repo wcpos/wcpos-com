@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { licenseClient } from '@/services/core/external/license-client'
-import { getGitHubToken } from '@/services/core/external/github-auth'
 import { isReleaseAllowedForLicenses } from '@/lib/license'
 import {
   getProPluginReleases,
   normalizeReleaseVersion,
 } from '@/services/core/business/pro-downloads'
+import { fetchReleaseAsset } from '@/services/core/external/github-asset'
+import { apiLogger } from '@/lib/logger'
 
 export async function GET(
   request: NextRequest,
@@ -59,27 +60,20 @@ export async function GET(
     )
   }
 
-  const githubToken = await getGitHubToken()
-  const headers: Record<string, string> = {
-    Accept: 'application/octet-stream',
-  }
-  if (githubToken) {
-    headers.Authorization = `Bearer ${githubToken}`
-  }
-
-  const assetResponse = await fetch(selectedRelease.assetUrl, { headers })
-  if (!assetResponse.ok || !assetResponse.body) {
+  const served = await fetchReleaseAsset(selectedRelease)
+  if (!served) {
+    apiLogger.error`Failed to fetch pro release asset. version=${selectedRelease.version}`
     return NextResponse.json(
       { error: 'Failed to fetch release asset' },
       { status: 502 }
     )
   }
 
-  return new NextResponse(assetResponse.body, {
+  return new NextResponse(served.stream, {
     status: 200,
     headers: {
-      'Content-Type': 'application/zip',
-      'Content-Disposition': `attachment; filename="${selectedRelease.assetName}"`,
+      'Content-Type': served.contentType,
+      'Content-Disposition': `attachment; filename="${served.filename}"`,
       'Cache-Control': 'private, no-store',
     },
   })
