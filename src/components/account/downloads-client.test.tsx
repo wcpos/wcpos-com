@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { fireEvent, screen, waitFor } from '@testing-library/react'
+import { fireEvent, screen, waitFor, within } from '@testing-library/react'
 import { renderWithIntl as render } from '@/test/intl'
 import { DownloadsClient, type DownloadAccess } from './downloads-client'
 
@@ -56,6 +56,24 @@ function makeAccess(overrides: Partial<DownloadAccess> = {}): DownloadAccess {
   }
 }
 
+/**
+ * The version-history archive row for a release name. Mirrors the e2e
+ * `releaseRow` selector (`div.rounded-lg.border` filtered by name) so unit
+ * coverage stays aligned with the e2e contract.
+ */
+function archiveRow(name: string): HTMLElement {
+  const rows = Array.from(
+    document.querySelectorAll<HTMLElement>('div.rounded-lg.border')
+  )
+  const match = rows.find((row) =>
+    within(row)
+      .queryAllByText(name, { exact: true })
+      .some((el) => el.textContent === name)
+  )
+  if (!match) throw new Error(`No archive row found for "${name}"`)
+  return match
+}
+
 describe('DownloadsClient', () => {
   beforeEach(() => {
     vi.clearAllMocks()
@@ -72,7 +90,8 @@ describe('DownloadsClient', () => {
     render(
       <DownloadsClient initialReleases={[makeRelease()]} access={makeAccess()} />
     )
-    expect(screen.getByText('WCPOS Pro 1.9.0')).toBeInTheDocument()
+    // Name appears in both the latest-version hero and the archive row.
+    expect(screen.getAllByText('WCPOS Pro 1.9.0')).toHaveLength(2)
     expect(screen.getByText('Bug fixes')).toBeInTheDocument()
   })
 
@@ -94,6 +113,105 @@ describe('DownloadsClient', () => {
     expect(screen.getByText('Faster checkout')).toBeInTheDocument()
   })
 
+  it('surfaces the latest build in a hero with a Latest badge', () => {
+    render(
+      <DownloadsClient
+        initialReleases={makeReleaseList(3)}
+        access={makeAccess()}
+      />
+    )
+
+    expect(screen.getByText('Latest version')).toBeInTheDocument()
+    // The hero attributes the build to the active licence.
+    expect(
+      screen.getByText('Available on your active licence')
+    ).toBeInTheDocument()
+  })
+
+  it('attributes the latest build to the entitling plan when known', () => {
+    render(
+      <DownloadsClient
+        initialReleases={[makeRelease()]}
+        access={makeAccess()}
+        entitlingPlanLabel="Yearly"
+      />
+    )
+
+    expect(
+      screen.getByText('Available on your active Yearly licence')
+    ).toBeInTheDocument()
+  })
+
+  it('does not claim active-licence availability for expired term entitlements', () => {
+    render(
+      <DownloadsClient
+        initialReleases={[makeRelease()]}
+        access={makeAccess({
+          hasActiveLicense: false,
+          latestExpiry: '2026-03-01T00:00:00Z',
+          expiryHasPassed: true,
+        })}
+      />
+    )
+
+    expect(screen.getByText('Latest version')).toBeInTheDocument()
+    expect(
+      screen.queryByText(/Available on your active/)
+    ).not.toBeInTheDocument()
+  })
+
+  it('hides the latest-version hero when the latest build is blocked', () => {
+    render(
+      <DownloadsClient
+        initialReleases={[makeRelease({ allowed: false })]}
+        access={makeAccess({
+          hasActiveLicense: false,
+          latestExpiry: '2026-01-01T00:00:00Z',
+          expiryHasPassed: true,
+        })}
+      />
+    )
+
+    expect(screen.queryByText('Latest version')).not.toBeInTheDocument()
+    expect(
+      screen.queryByText(/Available on your active/)
+    ).not.toBeInTheDocument()
+  })
+
+  it('opens a scrollable release-notes modal from the archive row', async () => {
+    render(
+      <DownloadsClient
+        initialReleases={[
+          makeRelease({
+            version: '1.8.0',
+            name: 'WCPOS Pro 1.8.0',
+            releaseNotes: '# Changes\n- Long note line',
+            allowed: false,
+          }),
+        ]}
+        access={makeAccess({
+          hasActiveLicense: false,
+          latestExpiry: '2026-01-01T00:00:00Z',
+          expiryHasPassed: true,
+        })}
+      />
+    )
+
+    // No dialog before interacting.
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+
+    const row = archiveRow('WCPOS Pro 1.8.0')
+    fireEvent.click(within(row).getByRole('button', { name: 'Release notes' }))
+
+    const dialog = await screen.findByRole('dialog')
+    expect(within(dialog).getByText('WCPOS Pro 1.8.0')).toBeInTheDocument()
+    expect(
+      within(dialog).getByRole('heading', { name: 'Changes' })
+    ).toBeInTheDocument()
+    // The notes live in a bounded, scrollable region.
+    expect(dialog.querySelector('.overflow-y-auto')).not.toBeNull()
+  })
+
   it('paginates long release lists', () => {
     render(
       <DownloadsClient
@@ -102,12 +220,13 @@ describe('DownloadsClient', () => {
       />
     )
 
-    expect(screen.getByText('WCPOS Pro 1.9.0')).toBeInTheDocument()
-    expect(screen.queryByText('WCPOS Pro 1.9.10')).not.toBeInTheDocument()
+    // The archive shows the first page; 1.9.10 is on page 2.
+    expect(() => archiveRow('WCPOS Pro 1.9.0')).not.toThrow()
+    expect(() => archiveRow('WCPOS Pro 1.9.10')).toThrow()
 
     fireEvent.click(screen.getByRole('button', { name: 'Next page' }))
 
-    expect(screen.getByText('WCPOS Pro 1.9.10')).toBeInTheDocument()
+    expect(() => archiveRow('WCPOS Pro 1.9.10')).not.toThrow()
   })
 
   it('clamps to a valid page when release count shrinks', () => {
@@ -119,7 +238,7 @@ describe('DownloadsClient', () => {
     )
 
     fireEvent.click(screen.getByRole('button', { name: 'Next page' }))
-    expect(screen.getByText('WCPOS Pro 1.9.10')).toBeInTheDocument()
+    expect(() => archiveRow('WCPOS Pro 1.9.10')).not.toThrow()
 
     rerender(
       <DownloadsClient
@@ -128,8 +247,8 @@ describe('DownloadsClient', () => {
       />
     )
 
-    expect(screen.getByText('WCPOS Pro 1.9.0')).toBeInTheDocument()
-    expect(screen.queryByText('WCPOS Pro 1.9.10')).not.toBeInTheDocument()
+    expect(() => archiveRow('WCPOS Pro 1.9.0')).not.toThrow()
+    expect(() => archiveRow('WCPOS Pro 1.9.10')).toThrow()
   })
 
   it('greys out unavailable versions with a reason and disabled button', () => {
@@ -153,7 +272,7 @@ describe('DownloadsClient', () => {
   it('shows a renew banner when all licenses are expired', () => {
     render(
       <DownloadsClient
-        initialReleases={[makeRelease()]}
+        initialReleases={[makeRelease({ allowed: false })]}
         access={makeAccess({
           hasActiveLicense: false,
           latestExpiry: '2026-01-01T00:00:00Z',
@@ -174,7 +293,7 @@ describe('DownloadsClient', () => {
     // "Your license expired on [future date]".
     render(
       <DownloadsClient
-        initialReleases={[makeRelease()]}
+        initialReleases={[makeRelease({ allowed: false })]}
         access={makeAccess({
           hasActiveLicense: false,
           latestExpiry: '2099-10-01T00:00:00Z',
@@ -200,7 +319,7 @@ describe('DownloadsClient', () => {
   it('shows the expired banner for a suspended license whose expiry has actually passed', () => {
     render(
       <DownloadsClient
-        initialReleases={[makeRelease()]}
+        initialReleases={[makeRelease({ allowed: false })]}
         access={makeAccess({
           hasActiveLicense: false,
           latestExpiry: '2025-06-15T00:00:00Z',
@@ -373,7 +492,9 @@ describe('DownloadsClient', () => {
       <DownloadsClient initialReleases={[makeRelease()]} access={makeAccess()} />
     )
 
-    fireEvent.click(screen.getByRole('button', { name: 'Download' }))
+    // Click the archive row's Download button (the hero shows the same build).
+    const row = archiveRow('WCPOS Pro 1.9.0')
+    fireEvent.click(within(row).getByRole('button', { name: 'Download' }))
 
     await waitFor(() => {
       expect(mockFetch).toHaveBeenCalledTimes(1)
