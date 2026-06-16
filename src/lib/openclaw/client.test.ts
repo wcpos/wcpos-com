@@ -8,7 +8,7 @@ vi.mock('@/utils/env', () => ({
   },
 }))
 
-import { askAide, OpenclawError } from './client'
+import { askAide } from './client'
 
 describe('askAide', () => {
   beforeEach(() => vi.restoreAllMocks())
