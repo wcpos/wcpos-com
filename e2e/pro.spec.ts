@@ -56,8 +56,8 @@ test.describe('Pro Page', () => {
       await skipIfPricingUnavailable(page)
       await page.waitForLoadState('networkidle')
       await page.waitForTimeout(2000)
-      await expect(page.getByText('WCPOS Pro Yearly')).toBeVisible()
-      await expect(page.getByText('WCPOS Pro Lifetime')).toBeVisible()
+      await expect(page.getByText('Pro Yearly')).toBeVisible()
+      await expect(page.getByText('Pro Lifetime')).toBeVisible()
     })
 
     test('pricing cards have checkout CTAs with experiment query params', async ({ page }) => {
