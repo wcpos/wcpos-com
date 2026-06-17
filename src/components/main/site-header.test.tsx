@@ -20,7 +20,8 @@ vi.mock('@/lib/analytics/client-events', () => ({
 vi.mock('next-intl', () => ({
   useTranslations: () => (key: string) => {
     const translations: Record<string, string> = {
-      docs: 'Docs',
+      downloads: 'Downloads',
+      documentation: 'Documentation',
       roadmap: 'Roadmap',
       pro: 'Pro',
       support: 'Support',
@@ -77,21 +78,32 @@ describe('SiteHeader', () => {
       render(<SiteHeader />)
     })
 
-    expect(screen.getAllByText('Docs').length).toBeGreaterThan(0)
+    expect(screen.getAllByText('Downloads').length).toBeGreaterThan(0)
+    expect(screen.getAllByText('Documentation').length).toBeGreaterThan(0)
     expect(screen.getAllByText('Roadmap').length).toBeGreaterThan(0)
     expect(screen.getAllByText('Pro').length).toBeGreaterThan(0)
     expect(screen.getAllByText('Support').length).toBeGreaterThan(0)
   })
 
-  it('links Docs to external URL', async () => {
+  it('links Documentation to external URL', async () => {
     mockGetCustomer.mockResolvedValue(null)
     await act(async () => {
       render(<SiteHeader />)
     })
 
-    const docsLinks = screen.getAllByText('Docs')
+    const docsLinks = screen.getAllByText('Documentation')
     const docsLink = docsLinks[0].closest('a')
     expect(docsLink?.getAttribute('href')).toBe('https://docs.wcpos.com')
+  })
+
+  it('links Downloads to /downloads', async () => {
+    mockGetCustomer.mockResolvedValue(null)
+    await act(async () => {
+      render(<SiteHeader />)
+    })
+
+    const downloadsLink = screen.getAllByText('Downloads')[0].closest('a')
+    expect(downloadsLink?.getAttribute('href')).toBe('/downloads')
   })
 
   it('links Roadmap to /roadmap', async () => {

@@ -6,7 +6,8 @@ import { LanguageSelector } from './language-selector'
 export function SiteFooter() {
   const t = useTranslations('footer')
 
-  const legalLinks = [
+  const footerLinks = [
+    { label: t('downloads'), href: '/downloads' },
     { label: t('about'), href: '/about-us' },
     { label: t('privacy'), href: '/privacy' },
     { label: t('terms'), href: '/terms' },
@@ -22,7 +23,7 @@ export function SiteFooter() {
               {t('copyright')}
             </p>
             <nav className="flex items-center gap-4">
-              {legalLinks.map((link) => (
+              {footerLinks.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
