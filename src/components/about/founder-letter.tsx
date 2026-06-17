@@ -1,4 +1,29 @@
-export function FounderLetter() {
+import { cacheLife, cacheTag } from 'next/cache'
+import {
+  formatFounderProPriceSummary,
+  getProOfferCatalog,
+} from '@/lib/pro-offer-catalog'
+
+export function FounderLetterFallback() {
+  return <FounderLetterContent priceSummary={null} />
+}
+
+export async function FounderLetter() {
+  'use cache'
+  cacheLife('products')
+  cacheTag('products')
+
+  const { offers } = await getProOfferCatalog()
+  const priceSummary = formatFounderProPriceSummary(offers)
+
+  return <FounderLetterContent priceSummary={priceSummary} />
+}
+
+function FounderLetterContent({
+  priceSummary,
+}: {
+  priceSummary: string | null
+}) {
   return (
     <section className="bg-slate-50 dark:bg-slate-900">
       <div className="container mx-auto px-4 py-16 md:py-24">
@@ -90,10 +115,17 @@ export function FounderLetter() {
               P.S.
             </strong>{' '}
             — Pro is{' '}
-            <strong className="font-semibold text-slate-900 dark:text-slate-100">
-              $129/yr or $399 once
-            </strong>
-            . If a licence lapses, Pro keeps working; you just stop getting
+            {priceSummary ? (
+              <>
+                <strong className="font-semibold text-slate-900 dark:text-slate-100">
+                  {priceSummary}
+                </strong>
+                .{' '}
+              </>
+            ) : (
+              'available from the Pro page. '
+            )}
+            If a licence lapses, Pro keeps working; you just stop getting
             updates.
           </p>
         </article>

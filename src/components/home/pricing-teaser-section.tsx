@@ -3,6 +3,12 @@ import { TrackedLocaleLink } from '@/components/analytics/tracked-locale-link'
 import { Button } from '@/components/ui/button'
 import { Section } from '@/components/ui/section'
 import { SectionHeading } from '@/components/ui/section-heading'
+import { cacheLife, cacheTag } from 'next/cache'
+import {
+  formatHomeProPriceSummary,
+  getProOfferCatalog,
+  PRO_TEASER_FEATURES,
+} from '@/lib/pro-offer-catalog'
 
 const freeFeatures = [
   'WooCommerce sync',
@@ -14,17 +20,29 @@ const freeFeatures = [
   'Unlimited products',
 ]
 
-const proFeatures = [
-  'Payment terminal integration',
-  'Stock & price editing in POS',
-  'Order history & management',
-  'Customer management',
-  'End-of-day reports',
-  'Custom payment gateways',
-  'Priority support',
-]
+const PRO_PRICE_FALLBACK =
+  'See full pricing for current Pro options. No per-register fees.'
 
-export function PricingTeaserSection() {
+export function PricingTeaserSectionFallback() {
+  return <PricingTeaserSectionContent priceSummary={PRO_PRICE_FALLBACK} />
+}
+
+export async function PricingTeaserSection() {
+  'use cache'
+  cacheLife('products')
+  cacheTag('products')
+
+  const { offers } = await getProOfferCatalog()
+  const priceSummary = formatHomeProPriceSummary(offers) ?? PRO_PRICE_FALLBACK
+
+  return <PricingTeaserSectionContent priceSummary={priceSummary} />
+}
+
+function PricingTeaserSectionContent({
+  priceSummary,
+}: {
+  priceSummary: string
+}) {
   return (
     <Section tone="muted" spacing="default">
       <SectionHeading
@@ -64,13 +82,13 @@ export function PricingTeaserSection() {
             Pro
           </h3>
           <p className="mb-4 text-sm text-slate-500 dark:text-slate-400">
-            $129/year or $399 lifetime. No per-register fees.
+            {priceSummary}
           </p>
           <p className="mb-3 text-sm font-medium text-slate-700 dark:text-slate-300">
             Everything in Free, plus:
           </p>
           <ul className="space-y-3">
-            {proFeatures.map((feature) => (
+            {PRO_TEASER_FEATURES.map((feature) => (
               <li
                 key={feature}
                 className="flex items-start gap-2 text-sm text-slate-700 dark:text-slate-300"

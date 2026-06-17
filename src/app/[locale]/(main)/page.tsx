@@ -1,12 +1,16 @@
 import { setRequestLocale } from 'next-intl/server'
 import type { Metadata } from 'next'
+import { Suspense } from 'react'
 import { HeroSection } from '@/components/home/hero-section'
 import { ProblemSection } from '@/components/home/problem-section'
 import { EcosystemSection } from '@/components/home/ecosystem-section'
 import { BenefitsSection } from '@/components/home/benefits-section'
 import { UseCasesSection } from '@/components/home/use-cases-section'
 import { FeaturesSection } from '@/components/home/features-section'
-import { PricingTeaserSection } from '@/components/home/pricing-teaser-section'
+import {
+  PricingTeaserSection,
+  PricingTeaserSectionFallback,
+} from '@/components/home/pricing-teaser-section'
 import { TrustSection } from '@/components/home/trust-section'
 import { CtaSection } from '@/components/home/cta-section'
 
@@ -31,7 +35,9 @@ export default async function Home({
       <BenefitsSection />
       <UseCasesSection />
       <FeaturesSection />
-      <PricingTeaserSection />
+      <Suspense fallback={<PricingTeaserSectionFallback />}>
+        <PricingTeaserSection />
+      </Suspense>
       <TrustSection />
       <CtaSection />
 
