@@ -38,10 +38,10 @@ caller wanting both calls both (see `app/api/store/cart/complete/route.ts`):
 ## Decision
 
 1. **Analytics copies the sink *shape*.** One interface
-   `AnalyticsRecorder { capture(event: AnalyticsEvent): void }` (`lib/analytics/types.ts`),
+   `AnalyticsRecorder { capture(event: AnalyticsEvent): void }` (`src/lib/analytics/types.ts`),
    synchronous and fire-and-forget like a `Sink`. PostHog is the single adapter
-   per runtime: `createPostHogBrowserRecorder` (`lib/analytics/posthog-browser-recorder.ts`)
-   and `createPostHogServerRecorder` (`services/core/analytics/posthog-server-recorder.ts`).
+   per runtime: `createPostHogBrowserRecorder` (`src/lib/analytics/posthog-browser-recorder.ts`)
+   and `createPostHogServerRecorder` (`src/services/core/analytics/posthog-server-recorder.ts`).
 
 2. **Consent is gated once per runtime, at the seam.** The browser composes
    `withConsent(recorder, isAnalyticsGranted)` once in `client-events.ts`; the

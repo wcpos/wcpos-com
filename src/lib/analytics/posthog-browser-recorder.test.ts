@@ -40,4 +40,16 @@ describe('createPostHogBrowserRecorder', () => {
       createPostHogBrowserRecorder().capture({ name: 'cta_clicked' })
     ).not.toThrow()
   })
+
+  it('does not throw when posthog capture throws', () => {
+    ;(window as WindowWithPostHog).posthog = {
+      capture: vi.fn(() => {
+        throw new Error('posthog unavailable')
+      }),
+    }
+
+    expect(() =>
+      createPostHogBrowserRecorder().capture({ name: 'cta_clicked' })
+    ).not.toThrow()
+  })
 })

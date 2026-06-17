@@ -31,14 +31,12 @@ describe('createPostHogServerRecorder', () => {
     })
   })
 
-  it('falls back to a server distinct id when none is given', () => {
+  it('drops events without a distinct id', () => {
     getClientMock.mockReturnValue({ capture: captureMock })
 
     createPostHogServerRecorder(process.env).capture({ name: 'server_event' })
 
-    expect(captureMock).toHaveBeenCalledWith(
-      expect.objectContaining({ distinctId: 'wcpos-server-event' })
-    )
+    expect(captureMock).not.toHaveBeenCalled()
   })
 
   it('no-ops without throwing when no client is configured', () => {
@@ -48,5 +46,19 @@ describe('createPostHogServerRecorder', () => {
       createPostHogServerRecorder(process.env).capture({ name: 'x' })
     ).not.toThrow()
     expect(captureMock).not.toHaveBeenCalled()
+  })
+
+  it('does not throw when posthog capture throws', () => {
+    captureMock.mockImplementation(() => {
+      throw new Error('posthog unavailable')
+    })
+    getClientMock.mockReturnValue({ capture: captureMock })
+
+    expect(() =>
+      createPostHogServerRecorder(process.env).capture({
+        name: 'checkout_completed',
+        distinctId: 'anon_1',
+      })
+    ).not.toThrow()
   })
 })

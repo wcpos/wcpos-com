@@ -20,12 +20,17 @@ export function createPostHogServerRecorder(
     capture(event) {
       const ph = getPostHogServerClient(env)
       if (!ph) return
+      if (!event.distinctId) return
 
-      ph.capture({
-        distinctId: event.distinctId ?? 'wcpos-server-event',
-        event: event.name,
-        properties: event.properties,
-      })
+      try {
+        ph.capture({
+          distinctId: event.distinctId,
+          event: event.name,
+          properties: event.properties,
+        })
+      } catch {
+        // AnalyticsRecorder is fire-and-forget: never throw to callers.
+      }
     },
   }
 }

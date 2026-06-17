@@ -40,4 +40,24 @@ describe('withConsent', () => {
     expect(capture).toHaveBeenCalledTimes(1)
     expect(capture).toHaveBeenCalledWith({ name: 'second' })
   })
+
+  it('does not throw when the consent predicate throws', () => {
+    const inner: AnalyticsRecorder = { capture: vi.fn() }
+    const gated = withConsent(inner, () => {
+      throw new Error('cookie read failed')
+    })
+
+    expect(() => gated.capture({ name: 'cta_clicked' })).not.toThrow()
+  })
+
+  it('does not throw when the inner recorder throws', () => {
+    const inner: AnalyticsRecorder = {
+      capture: vi.fn(() => {
+        throw new Error('recorder failed')
+      }),
+    }
+    const gated = withConsent(inner, () => true)
+
+    expect(() => gated.capture({ name: 'cta_clicked' })).not.toThrow()
+  })
 })

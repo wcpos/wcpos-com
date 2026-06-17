@@ -19,8 +19,12 @@ export function withConsent(
 ): AnalyticsRecorder {
   return {
     capture(event) {
-      if (!isGranted()) return
-      inner.capture(event)
+      try {
+        if (!isGranted()) return
+        inner.capture(event)
+      } catch {
+        // AnalyticsRecorder is fire-and-forget: never throw to callers.
+      }
     },
   }
 }

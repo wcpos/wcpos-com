@@ -21,7 +21,11 @@ export function createPostHogBrowserRecorder(): AnalyticsRecorder {
     capture(event) {
       if (typeof window === 'undefined') return
       const posthog = (window as WindowWithPostHog).posthog
-      posthog?.capture?.(event.name, event.properties)
+      try {
+        posthog?.capture?.(event.name, event.properties)
+      } catch {
+        // AnalyticsRecorder is fire-and-forget: never throw to callers.
+      }
     },
   }
 }
