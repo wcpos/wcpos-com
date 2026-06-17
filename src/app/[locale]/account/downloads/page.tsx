@@ -3,13 +3,10 @@ import { Suspense } from 'react'
 import { redirectToLoginClearingSession } from '@/lib/login-redirect'
 import { DownloadsClient } from '@/components/account/downloads-client'
 import { getResolvedCustomerLicenses } from '@/lib/customer-licenses'
-import {
-  isLicenseActive,
-  isReleaseAllowedForLicenses,
-  summarizeDownloadAccess,
-} from '@/lib/license'
+import { isLicenseActive, summarizeDownloadAccess } from '@/lib/license'
 import { getPlanByPolicyId } from '@/lib/plans'
 import { getProPluginReleases } from '@/services/core/business/pro-downloads'
+import { resolveEntitledReleases } from '@/services/core/business/release-delivery'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import type { LicenseDetail } from '@/types/license'
@@ -110,12 +107,16 @@ async function DownloadsContent({
   const downloadLicenses = scopedLicenseId ? scopedLicenses : licenses
   const nowMs = new Date().getTime()
   const releases = await getProPluginReleases()
-  const mappedReleases = releases.map((release) => ({
+  const mappedReleases = resolveEntitledReleases(
+    releases,
+    { kind: 'account', licences: downloadLicenses },
+    nowMs
+  ).map((release) => ({
     version: release.version,
     name: release.name,
     releaseNotes: release.releaseNotes,
     publishedAt: release.publishedAt,
-    allowed: isReleaseAllowedForLicenses(release, downloadLicenses, nowMs),
+    allowed: release.allowed,
   }))
 
   // One-pass access diagnosis so the UI can explain WHY a release is
