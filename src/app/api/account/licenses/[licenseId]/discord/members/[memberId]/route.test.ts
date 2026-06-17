@@ -13,6 +13,7 @@ vi.mock('@/lib/customer-licenses', () => ({
 }))
 
 vi.mock('@/lib/discord/connected-member-service', () => ({
+  getLicensesForDiscordUser: vi.fn(),
   removeConnectedDiscordMemberForHolder: (...args: unknown[]) =>
     mockRemoveConnectedDiscordMemberForHolder(...args),
 }))

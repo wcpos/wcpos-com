@@ -65,7 +65,10 @@ export async function GET(request: NextRequest) {
       try {
         await syncDiscordProRoleForMember(
           discordUser.id,
-          createDiscordRoleSyncDependencies()
+          createDiscordRoleSyncDependencies(async () => {
+            const license = await licenseClient.getLicense(result.licenseId)
+            return [{ status: license.status, expiry: license.expiry }]
+          })
         )
       } catch (syncError) {
         infraLogger.warn`Discord role sync after member claim failed: ${syncError}`

@@ -1,11 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getResolvedCustomerLicenses } from '@/lib/customer-licenses'
-import { removeConnectedDiscordMemberForHolder } from '@/lib/discord/connected-member-service'
+import {
+  getLicensesForDiscordUser,
+  removeConnectedDiscordMemberForHolder,
+} from '@/lib/discord/connected-member-service'
 import { createDiscordRoleSyncDependencies } from '@/lib/discord/default-sync'
 import { isDiscordConfigured } from '@/lib/discord/config'
 import { syncDiscordProRoleForMember } from '@/lib/discord/sync'
+import type { LicenseLifecycle } from '@/lib/license'
 import { licenseClient } from '@/services/core/external/license-client'
 import { infraLogger } from '@/lib/logger'
+
+const UNVERIFIABLE_DISCORD_ENTITLEMENT: LicenseLifecycle[] = [
+  { status: 'unknown', expiry: null },
+]
 
 export async function DELETE(
   _request: NextRequest,
@@ -40,7 +48,16 @@ export async function DELETE(
     try {
       await syncDiscordProRoleForMember(
         result.discordUserId,
-        createDiscordRoleSyncDependencies()
+        createDiscordRoleSyncDependencies(async (discordUserId) => {
+          const latestLicense = await licenseClient.getLicense(licenseId)
+          const holderLicenses = licenses.map((license) =>
+            license.id === latestLicense.id ? latestLicense : license
+          )
+          const memberLicenses = getLicensesForDiscordUser(discordUserId, holderLicenses)
+          return memberLicenses.length > 0
+            ? memberLicenses
+            : UNVERIFIABLE_DISCORD_ENTITLEMENT
+        })
       )
     } catch (error) {
       infraLogger.warn`Discord role sync after member removal failed: ${error}`

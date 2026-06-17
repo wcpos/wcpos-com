@@ -7,8 +7,9 @@ import { getResolvedLicensesFromOrders } from '@/lib/customer-licenses'
 import { extractLicenseReferencesFromOrders } from '@/lib/licenses'
 import {
   getConnectedDiscordUserIds,
-  getLicensesForDiscordUser,
+  getLicensesForDiscordUser as getLicenseLifecyclesForDiscordUser,
 } from './connected-member-service'
+import type { LicenseLifecycle } from '@/lib/license'
 import type {
   DiscordReconcileDependencies,
   DiscordRoleSyncDependencies,
@@ -66,22 +67,19 @@ function getLicensesForDiscordUserFromSnapshot(
   discordUserId: string,
   snapshot: DiscordLicenseSnapshot
 ) {
-  const licenses = getLicensesForDiscordUser(discordUserId, snapshot.licenses)
+  const licenses = getLicenseLifecyclesForDiscordUser(discordUserId, snapshot.licenses)
   return snapshot.complete
     ? licenses
     : [...licenses, { status: 'unknown' as const, expiry: null }]
 }
 
-export function createDiscordRoleSyncDependencies(): DiscordRoleSyncDependencies {
+export function createDiscordRoleSyncDependencies(
+  getLicensesForDiscordUser: (discordUserId: string) => Promise<LicenseLifecycle[]>
+): DiscordRoleSyncDependencies {
   const client = new DiscordApiClient(getDiscordConfig())
-  const getResolvedLicenses = createResolvedLicenseSnapshot()
 
   return {
-    getLicensesForDiscordUser: async (discordUserId) =>
-      getLicensesForDiscordUserFromSnapshot(
-        discordUserId,
-        await getResolvedLicenses()
-      ),
+    getLicensesForDiscordUser,
     getMemberRoleState: (discordUserId) => client.getMemberRoleState(discordUserId),
     addRole: (discordUserId) => client.addRole(discordUserId),
     removeRole: (discordUserId) => client.removeRole(discordUserId),
