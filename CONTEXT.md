@@ -92,6 +92,14 @@ The person who buys and holds licenses, authenticated via the Medusa
 session. There are no separate "users" or roles on this site.
 _Avoid_: user, account, client
 
+**Pro offer**:
+The sellable presentation of a Plan for marketing and Checkout: the Plan,
+current Medusa variant, current price, checkout path, feature bullets, and
+CTA copy resolved by the deep Pro offer catalog (`src/lib/pro-offer-catalog.ts`).
+Rendering surfaces consume Pro offers instead of raw Medusa product/variant
+shape or copied price strings.
+_Avoid_: pricing card product, SKU, subscription
+
 **Checkout**:
 The flow that turns a cart into a paid order: open a payment session with
 a provider (Stripe or PayPal), the Customer pays, then complete the cart.

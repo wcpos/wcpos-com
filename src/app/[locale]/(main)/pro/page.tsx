@@ -2,7 +2,6 @@ import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { Suspense } from 'react'
 import { cacheLife, cacheTag } from 'next/cache'
 import { cookies } from 'next/headers'
-import { getWcposProProducts } from '@/services/core/external/medusa-client'
 import { PricingCard } from '@/components/pro/pricing-card'
 import type { ProCheckoutVariant } from '@/services/core/analytics/posthog-service'
 import { resolveProCheckoutVariant } from '@/services/core/analytics/posthog-service'
@@ -10,7 +9,10 @@ import { ANALYTICS_DISTINCT_ID_COOKIE } from '@/lib/analytics/distinct-id'
 import { getAnalyticsConfig } from '@/lib/analytics/config'
 import type { Metadata } from 'next'
 import { marketingMetadata } from '@/lib/seo'
-import { getPlanByHandle } from '@/lib/plans'
+import {
+  buildProOfferSchemaOffers,
+  getProOfferCatalog,
+} from '@/lib/pro-offer-catalog'
 
 export async function generateMetadata({
   params,
@@ -39,16 +41,9 @@ async function PricingSection({
   cacheLife('products')
   cacheTag('products')
 
-  const products = await getWcposProProducts()
+  const { offers } = await getProOfferCatalog()
 
-  // Sort products: yearly first, then lifetime
-  const sortedProducts = [...products].sort((a, b) => {
-    const rankA = getPlanByHandle(a.handle)?.id === 'yearly' ? 0 : 1
-    const rankB = getPlanByHandle(b.handle)?.id === 'yearly' ? 0 : 1
-    return rankA - rankB
-  })
-
-  if (products.length === 0) {
+  if (offers.length === 0) {
     return (
       <div className="text-center py-12">
         <p className="text-muted-foreground">
@@ -61,11 +56,10 @@ async function PricingSection({
 
   return (
     <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto items-start">
-      {sortedProducts.map((product) => (
+      {offers.map((offer) => (
         <PricingCard
-          key={product.id}
-          product={product}
-          featured={getPlanByHandle(product.handle)?.id === 'yearly'}
+          key={offer.planId}
+          offer={offer}
           experimentVariant={experimentVariant}
         />
       ))}
@@ -96,6 +90,35 @@ async function PricingSectionWithExperiment() {
   return <PricingSection experimentVariant={experimentVariant} />
 }
 
+
+async function ProProductJsonLd() {
+  'use cache'
+  cacheLife('products')
+  cacheTag('products')
+
+  const { offers } = await getProOfferCatalog()
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{
+        __html: JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'Product',
+          name: 'WooCommerce POS Pro',
+          description:
+            'Premium Point of Sale plugin for WooCommerce. Adds payment terminal integration, stock and price editing, order and customer management, end-of-day reports, custom payment gateways, and priority support.',
+          brand: {
+            '@type': 'Organization',
+            name: 'WCPOS',
+          },
+          offers: buildProOfferSchemaOffers(offers),
+        }),
+      }}
+    />
+  )
+}
+
 export default async function ProPage({
   params,
 }: {
@@ -107,38 +130,7 @@ export default async function ProPage({
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-background to-muted/20">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            '@context': 'https://schema.org',
-            '@type': 'Product',
-            name: 'WooCommerce POS Pro',
-            description:
-              'Premium Point of Sale plugin for WooCommerce. Adds payment terminal integration, stock and price editing, order and customer management, end-of-day reports, custom payment gateways, and priority support.',
-            brand: {
-              '@type': 'Organization',
-              name: 'WCPOS',
-            },
-            offers: [
-              {
-                '@type': 'Offer',
-                name: 'Yearly Subscription',
-                priceCurrency: 'USD',
-                price: '129',
-                availability: 'https://schema.org/InStock',
-              },
-              {
-                '@type': 'Offer',
-                name: 'Lifetime License',
-                priceCurrency: 'USD',
-                price: '399',
-                availability: 'https://schema.org/InStock',
-              },
-            ],
-          }),
-        }}
-      />
+      <ProProductJsonLd />
       {/* Hero Section */}
       <section className="container mx-auto px-4 py-16 text-center">
         <h1 className="text-4xl md:text-5xl font-bold mb-4">
