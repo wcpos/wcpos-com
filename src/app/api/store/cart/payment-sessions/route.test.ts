@@ -5,6 +5,7 @@ const mockGetCustomer = vi.fn()
 const mockCreatePaymentCollection = vi.fn()
 const mockCreatePaymentSession = vi.fn()
 const mockGetCart = vi.fn()
+const mockGetProOfferCatalog = vi.fn()
 
 vi.mock('@/lib/medusa-auth', () => ({
   getCustomer: (...args: unknown[]) => mockGetCustomer(...args),
@@ -18,6 +19,14 @@ vi.mock('@/services/core/external/medusa-client', () => ({
   getCart: (...args: unknown[]) => mockGetCart(...args),
 }))
 
+vi.mock('@/lib/pro-offer-catalog', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@/lib/pro-offer-catalog')>()
+  return {
+    ...actual,
+    getProOfferCatalog: (...args: unknown[]) => mockGetProOfferCatalog(...args),
+  }
+})
+
 vi.mock('@/lib/logger', () => ({
   storeLogger: {
     error: vi.fn(),
@@ -25,6 +34,11 @@ vi.mock('@/lib/logger', () => ({
 }))
 
 import { POST } from './route'
+
+const validCart = {
+  id: 'cart_1',
+  items: [{ variant_id: 'variant_yearly_current', quantity: 1 }],
+}
 
 function makeRequest(body: unknown) {
   return new NextRequest(
@@ -41,6 +55,13 @@ describe('POST /api/store/cart/payment-sessions', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     mockGetCustomer.mockResolvedValue({ id: 'cust_1' })
+    mockGetCart.mockResolvedValue(validCart)
+    mockGetProOfferCatalog.mockResolvedValue({
+      offers: [
+        { planId: 'yearly', handle: 'wcpos-pro-yearly', variantId: 'variant_yearly_current' },
+        { planId: 'lifetime', handle: 'wcpos-pro-lifetime', variantId: 'variant_lifetime_current' },
+      ],
+    })
   })
 
   it('returns 401 when the customer is not authenticated', async () => {
@@ -69,7 +90,6 @@ describe('POST /api/store/cart/payment-sessions', () => {
       clientSecret: 'pi_secret',
       paymentSessionId: 'payses_1',
     })
-    mockGetCart.mockResolvedValueOnce({ id: 'cart_1' })
 
     const response = await POST(makeRequest({ cartId: 'cart_1' }))
     const json = await response.json()
@@ -82,7 +102,7 @@ describe('POST /api/store/cart/payment-sessions', () => {
     )
     expect(mockGetCart).toHaveBeenCalledWith('cart_1')
     expect(json).toEqual({
-      cart: { id: 'cart_1' },
+      cart: validCart,
       paymentCollectionId: 'paycol_1',
       clientSecret: 'pi_secret',
       paymentSessionId: 'payses_1',
@@ -94,7 +114,6 @@ describe('POST /api/store/cart/payment-sessions', () => {
       clientSecret: 'pi_secret',
       paymentSessionId: 'payses_1',
     })
-    mockGetCart.mockResolvedValueOnce({ id: 'cart_1' })
 
     const response = await POST(
       makeRequest({
@@ -112,6 +131,21 @@ describe('POST /api/store/cart/payment-sessions', () => {
       'pp_custom'
     )
     expect(json.paymentCollectionId).toBe('paycol_existing')
+  })
+
+  it('rejects carts that do not contain exactly one current Pro offer', async () => {
+    mockGetCart.mockResolvedValueOnce({
+      id: 'cart_1',
+      items: [{ variant_id: 'variant_old_or_other', quantity: 1 }],
+    })
+
+    const response = await POST(makeRequest({ cartId: 'cart_1' }))
+    const json = await response.json()
+
+    expect(response.status).toBe(400)
+    expect(json.error).toBe('Current Pro offer cart is required')
+    expect(mockCreatePaymentCollection).not.toHaveBeenCalled()
+    expect(mockCreatePaymentSession).not.toHaveBeenCalled()
   })
 
   it('returns 500 when the payment collection cannot be created', async () => {
@@ -134,7 +168,6 @@ describe('POST /api/store/cart/payment-sessions', () => {
 
     expect(response.status).toBe(500)
     expect(json.error).toBe('Failed to create payment session')
-    expect(mockGetCart).not.toHaveBeenCalled()
   })
 
   it('returns 500 when the updated cart cannot be fetched', async () => {
@@ -143,7 +176,7 @@ describe('POST /api/store/cart/payment-sessions', () => {
       clientSecret: 'pi_secret',
       paymentSessionId: 'payses_1',
     })
-    mockGetCart.mockResolvedValueOnce(null)
+    mockGetCart.mockResolvedValueOnce(validCart).mockResolvedValueOnce(null)
 
     const response = await POST(makeRequest({ cartId: 'cart_1' }))
     const json = await response.json()

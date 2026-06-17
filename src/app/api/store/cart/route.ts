@@ -6,6 +6,11 @@ import {
 } from '@/services/core/external/medusa-client'
 import { getCustomer } from '@/lib/medusa-auth'
 import { storeLogger } from '@/lib/logger'
+import type { CreateCartInput } from '@/types/medusa'
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null && !Array.isArray(value)
+}
 
 /**
  * POST /api/store/cart - Create a new cart
@@ -21,10 +26,19 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json().catch(() => ({}))
-    const cart = await createCart({
-      ...body,
+    const createCartInput: CreateCartInput = {
       email: customer.email,
-    })
+    }
+    if (isRecord(body)) {
+      if (typeof body.region_id === 'string') {
+        createCartInput.region_id = body.region_id
+      }
+      if (isRecord(body.metadata)) {
+        createCartInput.metadata = body.metadata
+      }
+    }
+
+    const cart = await createCart(createCartInput)
 
     if (!cart) {
       return NextResponse.json(

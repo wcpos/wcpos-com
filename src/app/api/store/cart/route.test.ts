@@ -45,7 +45,10 @@ describe('POST /api/store/cart', () => {
     const response = await POST(
       new NextRequest('http://localhost:3000/api/store/cart', {
         method: 'POST',
-        body: JSON.stringify({ region_id: 'reg_1' }),
+        body: JSON.stringify({
+          region_id: 'reg_1',
+          metadata: { experiment: 'pro_checkout_v1' },
+        }),
       })
     )
     const json = await response.json()
@@ -53,8 +56,31 @@ describe('POST /api/store/cart', () => {
     expect(response.status).toBe(200)
     expect(mockCreateCart).toHaveBeenCalledWith({
       region_id: 'reg_1',
+      metadata: { experiment: 'pro_checkout_v1' },
       email: 'customer@example.com',
     })
     expect(json.cart.id).toBe('cart_1')
+  })
+
+  it('does not forward client-supplied line items when creating a cart', async () => {
+    mockGetCustomer.mockResolvedValueOnce({
+      id: 'cust_1',
+      email: 'customer@example.com',
+    })
+    mockCreateCart.mockResolvedValueOnce({ id: 'cart_1' })
+
+    const response = await POST(
+      new NextRequest('http://localhost:3000/api/store/cart', {
+        method: 'POST',
+        body: JSON.stringify({
+          items: [{ variant_id: 'variant_old_or_other', quantity: 99 }],
+        }),
+      })
+    )
+
+    expect(response.status).toBe(200)
+    expect(mockCreateCart).toHaveBeenCalledWith({
+      email: 'customer@example.com',
+    })
   })
 })

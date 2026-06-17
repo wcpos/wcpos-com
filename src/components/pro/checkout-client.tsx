@@ -91,7 +91,7 @@ const isBTCPayEnabled = Boolean(process.env.NEXT_PUBLIC_BTCPAY_ENABLED)
 
 interface CheckoutClientProps {
   customerEmail?: string
-  selectedVariantId?: string
+  selectedOfferHandle?: string
   experimentVariant: ProCheckoutVariant
 }
 
@@ -127,7 +127,7 @@ function resolveLineItemTotal(item: CartItem): number {
 
 export function CheckoutClient({
   customerEmail,
-  selectedVariantId,
+  selectedOfferHandle,
   experimentVariant,
 }: CheckoutClientProps) {
   const [cart, setCart] = useState<Cart | null>(null)
@@ -150,7 +150,7 @@ export function CheckoutClient({
   // initialization effect never calls setState synchronously.
   const prerequisiteError = !customerEmail
     ? 'Please sign in to continue checkout.'
-    : !selectedVariantId
+    : !selectedOfferHandle
       ? 'No product selected'
       : null
 
@@ -199,7 +199,7 @@ export function CheckoutClient({
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             cartId: newCart.id,
-            variant_id: selectedVariantId,
+            product: selectedOfferHandle,
             quantity: 1,
           }),
         })
@@ -241,7 +241,7 @@ export function CheckoutClient({
     }
 
     initializeCheckout()
-  }, [customerEmail, selectedVariantId, experimentVariant, prerequisiteError])
+  }, [customerEmail, selectedOfferHandle, experimentVariant, prerequisiteError])
 
   // Select payment provider when method changes
   const selectPaymentMethod = useCallback(

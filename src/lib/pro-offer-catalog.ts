@@ -6,7 +6,7 @@ import {
 } from '@/services/core/external/medusa-client'
 import type { PlanId } from '@/lib/plans'
 import { getPlanByHandle } from '@/lib/plans'
-import type { MedusaProduct } from '@/types/medusa'
+import type { MedusaProduct, MedusaProductVariant } from '@/types/medusa'
 
 const PRO_CHECKOUT_EXPERIMENT = 'pro_checkout_v1'
 const DEFAULT_CURRENCY_CODE = 'usd'
@@ -76,6 +76,8 @@ export interface ProOfferPrice {
 export interface ProOffer {
   planId: PlanId
   handle: string
+  /** Current Medusa variant selected by the Pro offer catalog. */
+  variantId: string
   title: string
   description: string
   featured: boolean
@@ -83,12 +85,32 @@ export interface ProOffer {
   price: ProOfferPrice
   priceSuffix: string | null
   features: string[]
-  /** Checkout path containing the Medusa variant choice. Callers append metadata through buildProCheckoutHref. */
+  /** Checkout path containing the stable Pro offer choice. Callers append metadata through buildProCheckoutHref. */
   checkoutPath: string
 }
 
 export interface ProOfferCatalog {
   offers: ProOffer[]
+}
+
+export interface ProOfferCheckoutSelection {
+  planId: PlanId
+  handle: string
+  variantId: string
+}
+
+export interface ProOfferCheckoutInput {
+  /** Stable Pro offer handle, for example wcpos-pro-yearly. */
+  product?: string
+  /** Legacy Medusa variant id accepted only when it matches the current offer. */
+  variant?: string
+}
+
+export interface ProOfferCartInput {
+  items?: Array<{
+    variant_id?: string
+    quantity?: number
+  }>
 }
 
 function compactPrice(amount: number, currencyCode: string): string {
@@ -104,6 +126,12 @@ function sortByPlanOrder(a: ProOffer, b: ProOffer): number {
   return order[a.planId] - order[b.planId]
 }
 
+function resolveCurrentProVariant(
+  product: MedusaProduct
+): MedusaProductVariant | null {
+  return product.variants.length === 1 ? product.variants[0] : null
+}
+
 export function buildProOfferCatalog(
   products: MedusaProduct[],
   currencyCode: string = DEFAULT_CURRENCY_CODE
@@ -113,7 +141,7 @@ export function buildProOfferCatalog(
       const plan = getPlanByHandle(product.handle)
       if (!plan) return null
 
-      const variant = product.variants[0]
+      const variant = resolveCurrentProVariant(product)
       if (!variant) return null
 
       const amount = getVariantPrice(variant, currencyCode)
@@ -121,13 +149,16 @@ export function buildProOfferCatalog(
 
       const copy = OFFER_COPY[plan.id]
       const checkoutParams = new URLSearchParams({
-        variant: variant.id,
         product: plan.handle,
+        // Compatibility hint only: checkout validates product+variant against
+        // the current catalog before it lets this reach Medusa.
+        variant: variant.id,
       })
 
       return {
         planId: plan.id,
         handle: plan.handle,
+        variantId: variant.id,
         title: copy.title,
         description: copy.description,
         featured: copy.featured,
@@ -153,6 +184,49 @@ export async function getProOfferCatalog(
 ): Promise<ProOfferCatalog> {
   const products = await getProducts()
   return { offers: buildProOfferCatalog(products, currencyCode) }
+}
+
+function toCheckoutSelection(offer: ProOffer): ProOfferCheckoutSelection {
+  return {
+    planId: offer.planId,
+    handle: offer.handle,
+    variantId: offer.variantId,
+  }
+}
+
+export function resolveProOfferCheckoutSelection(
+  offers: ProOffer[],
+  input: ProOfferCheckoutInput
+): ProOfferCheckoutSelection | null {
+  const product = input.product?.trim()
+  const variant = input.variant?.trim()
+
+  if (product) {
+    const offer = offers.find((candidate) => candidate.handle === product)
+    if (!offer) return null
+    if (variant && offer.variantId !== variant) return null
+    return toCheckoutSelection(offer)
+  }
+
+  if (variant) {
+    const offer = offers.find((candidate) => candidate.variantId === variant)
+    return offer ? toCheckoutSelection(offer) : null
+  }
+
+  return null
+}
+
+export function resolveProOfferCartSelection(
+  offers: ProOffer[],
+  cart: ProOfferCartInput
+): ProOfferCheckoutSelection | null {
+  const items = cart.items ?? []
+  if (items.length !== 1) return null
+
+  const [item] = items
+  if (item.quantity !== 1 || typeof item.variant_id !== 'string') return null
+
+  return resolveProOfferCheckoutSelection(offers, { variant: item.variant_id })
 }
 
 export function buildProCheckoutHref(

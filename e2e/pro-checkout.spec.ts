@@ -26,9 +26,10 @@ import type { BrowserContext, Page } from '@playwright/test'
 const CHECKOUT_PERSONA = 'e2e-none'
 const CHECKOUT_PERSONA_EMAIL = 'nolicense@example.com'
 
-// variant_e2e_yearly is WCPOS Pro Yearly ($129.00) in e2e/mocks/fixtures.json.
+// wcpos-pro-yearly + variant_e2e_yearly resolve to the current WCPOS Pro
+// Yearly offer ($129.00) in e2e/mocks/fixtures.json.
 const YEARLY_CHECKOUT_PATH =
-  '/pro/checkout?variant=variant_e2e_yearly&product=wcpos-pro-yearly'
+  '/pro/checkout?product=wcpos-pro-yearly&variant=variant_e2e_yearly'
 const MOCK_BACKEND_URL = `http://127.0.0.1:${Number(
   process.env.E2E_MOCK_PORT || 4873
 )}`
@@ -70,7 +71,7 @@ test.describe('Checkout auth gating', () => {
     expect(cart.status()).toBe(401)
 
     const lineItems = await request.post('/api/store/cart/line-items', {
-      data: { cartId: 'cart_x', variant_id: 'variant_e2e_yearly' },
+      data: { cartId: 'cart_x', product: 'wcpos-pro-yearly' },
     })
     expect(lineItems.status()).toBe(401)
 
@@ -173,6 +174,7 @@ test.describe('Checkout flow', () => {
 
     const href = await getStartedLink.getAttribute('href')
     expect(href).toContain('/pro/checkout')
+    expect(href).toContain('product=wcpos-pro-yearly')
     expect(href).toContain('variant=variant_e2e_yearly')
     expect(href).toContain('exp=pro_checkout_v1')
     expect(href).toContain('exp_variant=')
@@ -217,7 +219,7 @@ test.describe('Checkout flow', () => {
     await expect(page.getByText('Secure payment processing')).toBeVisible()
   })
 
-  test('shows error when no variant is provided', async ({ page }) => {
+  test('shows error when no current Pro offer is provided', async ({ page }) => {
     await page.goto('/pro/checkout')
 
     await expect(page.getByText('No product selected')).toBeVisible({

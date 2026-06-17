@@ -186,7 +186,7 @@ describe('CheckoutClient', () => {
     render(
       <CheckoutClient
         customerEmail="user@example.com"
-        selectedVariantId="variant-prop-123"
+        selectedOfferHandle="wcpos-pro-yearly"
         experimentVariant="control"
       />
     )
@@ -201,7 +201,7 @@ describe('CheckoutClient', () => {
     render(
       <CheckoutClient
         customerEmail="user@example.com"
-        selectedVariantId="variant-prop-123"
+        selectedOfferHandle="wcpos-pro-yearly"
         experimentVariant="control"
       />
     )
@@ -219,7 +219,7 @@ describe('CheckoutClient', () => {
         method: 'POST',
         body: JSON.stringify({
           cartId: 'cart-123',
-          variant_id: 'variant-prop-123',
+          product: 'wcpos-pro-yearly',
           quantity: 1,
         }),
       })
@@ -231,7 +231,7 @@ describe('CheckoutClient', () => {
     render(
       <CheckoutClient
         customerEmail="user@example.com"
-        selectedVariantId="variant-prop-123"
+        selectedOfferHandle="wcpos-pro-yearly"
         experimentVariant="control"
       />
     )
@@ -248,7 +248,7 @@ describe('CheckoutClient', () => {
     render(
       <CheckoutClient
         customerEmail="user@example.com"
-        selectedVariantId="variant-prop-123"
+        selectedOfferHandle="wcpos-pro-yearly"
         experimentVariant="control"
       />
     )
@@ -274,7 +274,7 @@ describe('CheckoutClient', () => {
     render(
       <CheckoutClient
         customerEmail="user@example.com"
-        selectedVariantId="variant-prop-123"
+        selectedOfferHandle="wcpos-pro-yearly"
         experimentVariant="control"
       />
     )
@@ -299,7 +299,7 @@ describe('CheckoutClient', () => {
     render(
       <CheckoutClient
         customerEmail="user@example.com"
-        selectedVariantId="variant-prop-123"
+        selectedOfferHandle="wcpos-pro-yearly"
         experimentVariant="control"
       />
     )
@@ -335,7 +335,7 @@ describe('CheckoutClient', () => {
     render(
       <CheckoutClient
         customerEmail="user@example.com"
-        selectedVariantId="variant-prop-123"
+        selectedOfferHandle="wcpos-pro-yearly"
         experimentVariant="control"
       />
     )
@@ -360,7 +360,7 @@ describe('CheckoutClient', () => {
     render(
       <CheckoutClient
         customerEmail="user@example.com"
-        selectedVariantId="variant-prop-123"
+        selectedOfferHandle="wcpos-pro-yearly"
         experimentVariant="control"
       />
     )
@@ -390,7 +390,7 @@ describe('CheckoutClient', () => {
     render(
       <CheckoutClient
         customerEmail="user@example.com"
-        selectedVariantId="variant-prop-123"
+        selectedOfferHandle="wcpos-pro-yearly"
         experimentVariant="control"
       />
     )
@@ -410,7 +410,7 @@ describe('CheckoutClient', () => {
     render(
       <CheckoutClient
         customerEmail="user@example.com"
-        selectedVariantId="variant-prop-123"
+        selectedOfferHandle="wcpos-pro-yearly"
         experimentVariant="control"
       />
     )
@@ -452,7 +452,7 @@ describe('CheckoutClient', () => {
     render(
       <CheckoutClient
         customerEmail="user@example.com"
-        selectedVariantId="variant-prop-123"
+        selectedOfferHandle="wcpos-pro-yearly"
         experimentVariant="control"
       />
     )
@@ -487,7 +487,7 @@ describe('CheckoutClient', () => {
     render(
       <CheckoutClient
         customerEmail="user@example.com"
-        selectedVariantId="variant-prop-123"
+        selectedOfferHandle="wcpos-pro-yearly"
         experimentVariant="control"
       />
     )
@@ -520,7 +520,7 @@ describe('CheckoutClient', () => {
     render(
       <CheckoutClient
         customerEmail="user@example.com"
-        selectedVariantId="variant-prop-123"
+        selectedOfferHandle="wcpos-pro-yearly"
         experimentVariant="control"
       />
     )
@@ -549,7 +549,7 @@ describe('CheckoutClient', () => {
     render(
       <CheckoutClient
         customerEmail="user@example.com"
-        selectedVariantId="variant-prop-123"
+        selectedOfferHandle="wcpos-pro-yearly"
         experimentVariant="control"
       />
     )
@@ -584,7 +584,7 @@ describe('CheckoutClient', () => {
     render(
       <CheckoutClient
         customerEmail="user@example.com"
-        selectedVariantId="variant-prop-123"
+        selectedOfferHandle="wcpos-pro-yearly"
         experimentVariant="control"
       />
     )
@@ -615,7 +615,7 @@ describe('CheckoutClient', () => {
     render(
       <CheckoutClient
         customerEmail="user@example.com"
-        selectedVariantId="variant-prop-123"
+        selectedOfferHandle="wcpos-pro-yearly"
         experimentVariant="control"
       />
     )
@@ -650,7 +650,7 @@ describe('CheckoutClient', () => {
     render(
       <CheckoutClient
         customerEmail="user@example.com"
-        selectedVariantId="variant-prop-123"
+        selectedOfferHandle="wcpos-pro-yearly"
         experimentVariant="control"
       />
     )
