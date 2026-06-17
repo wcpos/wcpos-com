@@ -1,5 +1,4 @@
-import type { LicenseDetail } from '@/types/license'
-import { evaluateDiscordProEntitlement } from './entitlement'
+import { evaluateLicenseEntitlement, type LicenseLifecycle } from '@/lib/license'
 import { getDiscordLink } from './metadata'
 
 export interface DiscordRoleSyncCustomer {
@@ -8,15 +7,29 @@ export interface DiscordRoleSyncCustomer {
   metadata?: Record<string, unknown> | null
 }
 
+/**
+ * What the per-Discord-user role sync needs: resolve a subject's licenses,
+ * read/grant/remove the role, and a clock. This is exactly the surface
+ * syncDiscordProRole touches — no enumeration — so an inline caller cannot be
+ * forced to stub methods it never calls.
+ */
 export interface DiscordRoleSyncDependencies {
-  getLicensesForCustomer(customerId: string): Promise<Array<Pick<LicenseDetail, 'status'> & { expiry?: string | null }>>
+  getLicensesForCustomer(customerId: string): Promise<LicenseLifecycle[]>
   getMemberRoleState(discordUserId: string): Promise<DiscordMemberRoleState>
   addRole(discordUserId: string): Promise<void>
   removeRole(discordUserId: string): Promise<void>
+  now(): Date
+}
+
+/**
+ * What the reconciliation sweep additionally needs: enumerate the population to
+ * walk — linked customers, current role holders, and the reverse lookup. Only
+ * the scheduled sweep depends on this wider surface.
+ */
+export interface DiscordReconcileDependencies extends DiscordRoleSyncDependencies {
   listLinkedCustomers(): Promise<DiscordRoleSyncCustomer[]>
   listRoleHolderIds(): Promise<string[]>
   findCustomerByDiscordUserId(discordUserId: string): Promise<DiscordRoleSyncCustomer | null>
-  now(): Date
 }
 
 export type DiscordRoleSyncAction =
@@ -25,7 +38,7 @@ export type DiscordRoleSyncAction =
   | 'unchanged'
   | 'skipped_no_link'
   | 'skipped_not_in_guild'
-  | 'skipped_unknown_entitlement'
+  | 'skipped_unverifiable_entitlement'
 
 export type DiscordMemberRoleState = 'has_role' | 'missing_role' | 'not_in_guild'
 
@@ -66,11 +79,11 @@ export async function syncDiscordProRole(
   }
 
   const licenses = await dependencies.getLicensesForCustomer(customer.id)
-  const entitlement = evaluateDiscordProEntitlement(licenses, dependencies.now())
+  const entitlement = evaluateLicenseEntitlement(licenses, dependencies.now().getTime())
 
-  if (entitlement.state === 'unknown') {
+  if (entitlement === 'unverifiable') {
     return {
-      action: 'skipped_unknown_entitlement',
+      action: 'skipped_unverifiable_entitlement',
       customerId: customer.id,
       discordUserId: link.userId,
     }
@@ -86,12 +99,12 @@ export async function syncDiscordProRole(
   }
 
   const hasRole = memberRoleState === 'has_role'
-  if (entitlement.state === 'entitled' && !hasRole) {
+  if (entitlement === 'entitled' && !hasRole) {
     await dependencies.addRole(link.userId)
     return { action: 'added', customerId: customer.id, discordUserId: link.userId }
   }
 
-  if (entitlement.state === 'not_entitled' && hasRole) {
+  if (entitlement === 'not_entitled' && hasRole) {
     await dependencies.removeRole(link.userId)
     return { action: 'removed', customerId: customer.id, discordUserId: link.userId }
   }
@@ -100,7 +113,7 @@ export async function syncDiscordProRole(
 }
 
 export async function reconcileDiscordProRoles(
-  dependencies: DiscordRoleSyncDependencies
+  dependencies: DiscordReconcileDependencies
 ): Promise<DiscordReconcileSummary> {
   const summary: DiscordReconcileSummary = {
     linkedChecked: 0,

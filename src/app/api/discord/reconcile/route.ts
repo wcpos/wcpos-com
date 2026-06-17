@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { env } from '@/utils/env'
-import { createDiscordRoleSyncDependencies } from '@/lib/discord/default-sync'
+import { createDiscordReconcileDependencies } from '@/lib/discord/default-sync'
 import { reconcileDiscordProRoles } from '@/lib/discord/sync'
 import { infraLogger } from '@/lib/logger'
 
@@ -17,7 +17,7 @@ async function handle(request: NextRequest) {
   }
 
   try {
-    const summary = await reconcileDiscordProRoles(createDiscordRoleSyncDependencies())
+    const summary = await reconcileDiscordProRoles(createDiscordReconcileDependencies())
     infraLogger.info`Discord role reconciliation complete: ${JSON.stringify(summary)}`
     return NextResponse.json({ ok: true, summary })
   } catch (error) {

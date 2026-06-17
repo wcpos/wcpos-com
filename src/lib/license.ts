@@ -57,6 +57,48 @@ export function hasActiveLicense(
 }
 
 /**
+ * The three-way verdict over a set of licenses, for any feature that must tell
+ * "no active license" apart from "can't confirm right now". Downloads fail
+ * closed and only care whether the result is `entitled`; the Discord Pro role
+ * uses all three states — an `unverifiable` outage must NOT by itself strip an
+ * already-held role (CONTEXT.md "Unverifiable (license)", docs/adr/0004). This
+ * is the single home for that decision: `entitled` agrees exactly with
+ * `hasActiveLicense`, and the unverifiable split is the only addition.
+ */
+export type LicenseEntitlement = 'entitled' | 'not_entitled' | 'unverifiable'
+
+/**
+ * A license whose current state can't be confirmed: an explicitly unverifiable
+ * (`unknown`) license, or an active one whose expiry won't parse — we can prove
+ * neither that it is in-term nor that it has lapsed.
+ */
+function isLicenseUnverifiable(license: LicenseLifecycle): boolean {
+  if (license.status === 'unknown') return true
+  if (license.status === 'active' && license.expiry) {
+    return Number.isNaN(new Date(license.expiry).getTime())
+  }
+  return false
+}
+
+/**
+ * Resolve a set of licenses to a single entitlement verdict. Any active license
+ * wins (`entitled`); otherwise the result is `unverifiable` when any license
+ * could not be confirmed, else `not_entitled`. Pass a single-element array for
+ * the per-licence question (CONTEXT.md "Entitlement").
+ */
+export function evaluateLicenseEntitlement(
+  licenses: LicenseLifecycle[],
+  nowMs: number = Date.now()
+): LicenseEntitlement {
+  let sawUnverifiable = false
+  for (const license of licenses) {
+    if (isLicenseActive(license, nowMs)) return 'entitled'
+    if (isLicenseUnverifiable(license)) sawUnverifiable = true
+  }
+  return sawUnverifiable ? 'unverifiable' : 'not_entitled'
+}
+
+/**
  * Latest expiry (ISO string) across active/expired licenses — the only states
  * that grant expiry-based access. Suspended and revoked grant nothing because
  * those states only occur deliberately (refund, chargeback); see docs/adr/0001.
