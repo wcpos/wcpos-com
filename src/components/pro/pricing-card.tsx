@@ -9,91 +9,57 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import type { MedusaProduct } from '@/types/medusa'
-import { formatPrice, getVariantPrice } from '@/services/core/external/medusa-client'
 import type { ProCheckoutVariant } from '@/services/core/analytics/posthog-service'
 import { TrackedLocaleLink } from '@/components/analytics/tracked-locale-link'
-import { getPlanByHandle } from '@/lib/plans'
+import {
+  buildProCheckoutHref,
+  getProCheckoutCtaLabel,
+  type ProOffer,
+} from '@/lib/pro-offer-catalog'
 
 interface PricingCardProps {
-  product: MedusaProduct
-  featured?: boolean
-  currencyCode?: string
+  offer: ProOffer
   experimentVariant?: ProCheckoutVariant
 }
 
-const FEATURES = {
-  yearly: [
-    'All Pro features included',
-    'Unlimited orders & products',
-    'Priority email support',
-    'Automatic updates for 1 year',
-    'Cancel anytime',
-  ],
-  lifetime: [
-    'All Pro features included',
-    'Unlimited orders & products',
-    'Priority email support',
-    'Lifetime updates forever',
-    'One-time payment',
-    'Best value for long-term use',
-  ],
-}
-
 export function PricingCard({
-  product,
-  featured = false,
-  currencyCode = 'usd',
+  offer,
   experimentVariant = 'control',
 }: PricingCardProps) {
-  const variant = product.variants[0]
-  const price = variant ? getVariantPrice(variant, currencyCode) : null
-  const isLifetime = getPlanByHandle(product.handle)?.id === 'lifetime'
-  const features = isLifetime ? FEATURES.lifetime : FEATURES.yearly
-  const ctaLabel = experimentVariant === 'value_copy'
-    ? 'Get Instant Access'
-    : 'Get Started'
-
-  const checkoutSearchParams = new URLSearchParams()
-  if (variant?.id) {
-    checkoutSearchParams.set('variant', variant.id)
-  }
-  checkoutSearchParams.set('product', product.handle)
-  checkoutSearchParams.set('exp', 'pro_checkout_v1')
-  checkoutSearchParams.set('exp_variant', experimentVariant)
-  const checkoutHref = `/pro/checkout?${checkoutSearchParams.toString()}`
+  const checkoutHref = buildProCheckoutHref(offer, experimentVariant)
+  const ctaLabel = getProCheckoutCtaLabel(experimentVariant)
 
   return (
     <Card
       data-testid="pricing-card"
       className={`relative flex flex-col ${
-        featured
+        offer.featured
           ? 'border-primary shadow-lg scale-105'
           : 'border-border'
       }`}
     >
-      {featured && (
+      {offer.badgeLabel && (
         <Badge className="absolute -top-3 left-1/2 -translate-x-1/2">
-          Most Popular
+          {offer.badgeLabel}
         </Badge>
       )}
       <CardHeader className="text-center pb-2">
-        <CardTitle className="text-2xl">{product.title}</CardTitle>
+        <CardTitle className="text-2xl">{offer.title}</CardTitle>
         <CardDescription className="text-sm">
-          {isLifetime ? 'One-time purchase' : 'Annual subscription'}
+          {offer.description}
         </CardDescription>
       </CardHeader>
       <CardContent className="flex-1">
         <div className="text-center mb-6">
           <span className="text-4xl font-bold">
-            {price !== null ? formatPrice(price, currencyCode) : 'N/A'}
+            {offer.price.formatted}
           </span>
-          {!isLifetime && (
-            <span className="text-muted-foreground">/year</span>
+          {offer.priceSuffix && (
+            <span className="text-muted-foreground">{offer.priceSuffix}</span>
           )}
         </div>
         <ul className="space-y-3">
-          {features.map((feature) => (
+          {offer.features.map((feature) => (
             <li key={feature} className="flex items-start gap-2">
               <Check className="h-5 w-5 text-green-500 shrink-0 mt-0.5" />
               <span className="text-sm">{feature}</span>
@@ -106,7 +72,7 @@ export function PricingCard({
           asChild
           className="w-full"
           size="lg"
-          variant={featured ? 'default' : 'outline'}
+          variant={offer.featured ? 'default' : 'outline'}
         >
           <TrackedLocaleLink
             href={checkoutHref}
@@ -114,7 +80,8 @@ export function PricingCard({
             eventProperties={{
               experiment: 'pro_checkout_v1',
               variant: experimentVariant,
-              product: product.handle,
+              product: offer.handle,
+              plan: offer.planId,
             }}
           >
             {ctaLabel}

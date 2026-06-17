@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import { PricingCard } from './pricing-card'
-import type { MedusaProduct } from '@/types/medusa'
+import type { ProOffer } from '@/lib/pro-offer-catalog'
 
 vi.mock('@/i18n/navigation', () => ({
   Link: ({
@@ -19,62 +19,80 @@ vi.mock('@/i18n/navigation', () => ({
   ),
 }))
 
-const mockProduct: MedusaProduct = {
-  id: 'prod_123',
-  title: 'WCPOS Pro Yearly',
+const yearlyOffer: ProOffer = {
+  planId: 'yearly',
   handle: 'wcpos-pro-yearly',
-  description: 'Yearly WCPOS Pro subscription',
-  status: 'published',
-  thumbnail: null,
-  images: [],
-  options: [],
-  variants: [
-    {
-      id: 'variant_123',
-      title: 'Default',
-      sku: null,
-      prices: [{ id: 'price_123', currency_code: 'usd', amount: 129 }],
-      options: {},
-      manage_inventory: false,
-    },
+  title: 'WCPOS Pro Yearly',
+  description: 'One-year license',
+  featured: true,
+  badgeLabel: 'Most Popular',
+  price: {
+    amount: 129,
+    currencyCode: 'usd',
+    formatted: '$129.00',
+    compact: '$129',
+    schemaPrice: '129',
+  },
+  priceSuffix: '/year',
+  features: [
+    'All Pro features included',
+    'Unlimited orders & products',
+    'Priority email support',
+    'Automatic updates for 1 year',
+    'Manual renewal — no automatic billing',
   ],
-  created_at: '2026-01-01T00:00:00.000Z',
-  updated_at: '2026-01-01T00:00:00.000Z',
+  checkoutPath: '/pro/checkout?variant=variant_123&product=wcpos-pro-yearly',
+}
+
+const lifetimeOffer: ProOffer = {
+  ...yearlyOffer,
+  planId: 'lifetime',
+  handle: 'wcpos-pro-lifetime',
+  title: 'WCPOS Pro Lifetime',
+  description: 'One-time purchase',
+  featured: false,
+  badgeLabel: null,
+  price: {
+    amount: 399,
+    currencyCode: 'usd',
+    formatted: '$399.00',
+    compact: '$399',
+    schemaPrice: '399',
+  },
+  priceSuffix: null,
+  features: [
+    'All Pro features included',
+    'Unlimited orders & products',
+    'Priority email support',
+    'Lifetime updates forever',
+    'One-time payment',
+    'Best value for long-term use',
+  ],
+  checkoutPath: '/pro/checkout?variant=variant_456&product=wcpos-pro-lifetime',
 }
 
 describe('PricingCard', () => {
-  it('renders lifetime copy for the lifetime product handle', () => {
-    const lifetimeProduct: MedusaProduct = {
-      ...mockProduct,
-      id: 'prod_lifetime',
-      title: 'WCPOS Pro Lifetime',
-      handle: 'wcpos-pro-lifetime',
-      description: 'Lifetime WCPOS Pro license',
-    }
-
-    render(<PricingCard product={lifetimeProduct} />)
+  it('renders lifetime offer copy from the offer catalog', () => {
+    render(<PricingCard offer={lifetimeOffer} />)
 
     expect(screen.getByText('One-time purchase')).toBeInTheDocument()
     expect(screen.getByText('Lifetime updates forever')).toBeInTheDocument()
     expect(screen.queryByText('/year')).not.toBeInTheDocument()
+    expect(screen.queryByText('One-year license')).not.toBeInTheDocument()
+  })
+
+  it('renders yearly offer copy from the offer catalog', () => {
+    render(<PricingCard offer={yearlyOffer} />)
+
+    expect(screen.getByText('One-year license')).toBeInTheDocument()
+    expect(screen.getByText('/year')).toBeInTheDocument()
+    expect(screen.getByText('Manual renewal — no automatic billing')).toBeInTheDocument()
+    expect(screen.queryByText('Cancel anytime')).not.toBeInTheDocument()
     expect(screen.queryByText('Annual subscription')).not.toBeInTheDocument()
   })
 
-  it('renders yearly copy for the yearly product handle', () => {
-    render(<PricingCard product={mockProduct} />)
-
-    expect(screen.getByText('Annual subscription')).toBeInTheDocument()
-    expect(screen.getByText('/year')).toBeInTheDocument()
-    expect(screen.queryByText('One-time purchase')).not.toBeInTheDocument()
-  })
-
   it('includes experiment metadata in checkout link', () => {
-    render(
-      <PricingCard
-        product={mockProduct}
-        experimentVariant="value_copy"
-      />
-    )
+    render(<PricingCard offer={yearlyOffer} experimentVariant="value_copy" />)
 
     const cta = screen.getByRole('link', { name: 'Get Instant Access' })
     const href = cta.getAttribute('href')

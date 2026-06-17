@@ -1,11 +1,9 @@
 import { NextResponse } from 'next/server'
 import { getOrderById } from '@/lib/customer-orders'
 import { getCustomer } from '@/lib/medusa-auth'
-import {
-  projectAccountOrderReceipt,
-  projectReceiptProfile,
-} from '@/lib/account-order-projection'
+import { projectAccountOrderReceipt } from '@/lib/account-order-projection'
 import { buildTaxReceiptPdf } from '@/lib/pdf-receipt'
+import { projectAccountProfileForReceipt } from '@/lib/customer-profile-metadata'
 import { apiLogger } from '@/lib/logger'
 
 function resolveLocale(request: Request): string {
@@ -43,7 +41,7 @@ export async function GET(
       return NextResponse.json({ error: 'Order not found' }, { status: 404 })
     }
 
-    const profile = projectReceiptProfile(customer?.metadata)
+    const profile = projectAccountProfileForReceipt(customer?.metadata)
     const receipt = projectAccountOrderReceipt(order, profile)
     const locale = resolveLocale(request)
     const pdf = await buildTaxReceiptPdf(receipt, locale)

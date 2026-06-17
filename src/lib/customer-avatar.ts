@@ -2,6 +2,7 @@ import 'server-only'
 
 import { createHash } from 'crypto'
 import { getConnectedAvatarUrlFromMetadata } from '@/lib/avatar'
+import { getCustomProfileAvatar } from '@/lib/customer-profile-metadata'
 
 /**
  * Server-only avatar/initials derivation for a customer. Kept out of
@@ -15,24 +16,14 @@ interface AvatarCustomer {
   metadata?: Record<string, unknown>
 }
 
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return Boolean(value) && typeof value === 'object' && !Array.isArray(value)
-}
-
-function asString(value: unknown): string {
-  return typeof value === 'string' ? value : ''
-}
-
 export function getCustomerAvatarUrl(customer: AvatarCustomer): string {
-  const metadata = isRecord(customer.metadata) ? customer.metadata : {}
-  const accountProfile = isRecord(metadata.account_profile)
-    ? metadata.account_profile
-    : {}
+  const metadata = customer.metadata
+  const customAvatar = getCustomProfileAvatar(metadata)
 
-  const customDataUrl = asString(accountProfile.avatarDataUrl)
+  const customDataUrl = customAvatar.avatarDataUrl
   if (customDataUrl) return customDataUrl
 
-  const customUrl = asString(accountProfile.avatarUrl)
+  const customUrl = customAvatar.avatarUrl
   if (customUrl) return customUrl
 
   const oauthAvatarUrl = getConnectedAvatarUrlFromMetadata(metadata)
