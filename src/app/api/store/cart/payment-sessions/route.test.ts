@@ -175,6 +175,30 @@ describe('POST /api/store/cart/payment-sessions', () => {
     expect(json.paymentCollectionId).toBe('paycol_existing')
   })
 
+  it('treats a blank payment collection id as missing', async () => {
+    mockCreatePaymentCollection.mockResolvedValueOnce({ id: 'paycol_1' })
+    mockCreatePaymentSession.mockResolvedValueOnce({
+      clientSecret: 'pi_secret',
+      paymentSessionId: 'payses_1',
+    })
+
+    const response = await POST(
+      makeRequest({
+        cartId: 'cart_1',
+        paymentCollectionId: '   ',
+      })
+    )
+    const json = await response.json()
+
+    expect(response.status).toBe(200)
+    expect(mockCreatePaymentCollection).toHaveBeenCalledWith('cart_1')
+    expect(mockCreatePaymentSession).toHaveBeenCalledWith(
+      'paycol_1',
+      'pp_stripe_stripe'
+    )
+    expect(json.paymentCollectionId).toBe('paycol_1')
+  })
+
   it('rejects carts that do not contain exactly one current Pro offer', async () => {
     mockGetCart.mockResolvedValueOnce({
       id: 'cart_1',

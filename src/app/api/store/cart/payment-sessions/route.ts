@@ -43,8 +43,9 @@ export async function POST(request: NextRequest) {
         ? payload.provider_id.trim()
         : 'pp_stripe_stripe'
     const existingCollectionId =
-      typeof payload.paymentCollectionId === 'string'
-        ? payload.paymentCollectionId
+      typeof payload.paymentCollectionId === 'string' &&
+      payload.paymentCollectionId.trim()
+        ? payload.paymentCollectionId.trim()
         : undefined
 
     if (!cartId) {
