@@ -152,19 +152,27 @@ describe('medusaClient', () => {
   })
 
   describe('getWcposProProducts', () => {
-    it('filters products to only wcpos-pro handles', async () => {
+    it('filters products to only registered Pro plan handles', async () => {
       const otherProduct = { ...mockProduct, id: 'prod_other', handle: 'other-product' }
+      const unregisteredProProduct = {
+        ...mockProduct,
+        id: 'prod_monthly',
+        handle: 'wcpos-pro-monthly',
+      }
       mockFetch.mockResolvedValueOnce({
         ok: true,
         json: async () => ({
-          products: [mockProduct, mockLifetimeProduct, otherProduct],
+          products: [mockProduct, mockLifetimeProduct, unregisteredProProduct, otherProduct],
         }),
       })
 
       const products = await getWcposProProducts()
 
       expect(products).toHaveLength(2)
-      expect(products.every((p) => p.handle?.startsWith('wcpos-pro-'))).toBe(true)
+      expect(products.map((p) => p.handle)).toEqual([
+        'wcpos-pro-yearly',
+        'wcpos-pro-lifetime',
+      ])
     })
   })
 

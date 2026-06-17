@@ -67,11 +67,11 @@
       },
       "yearlyVsLifetime": {
         "question": "What's the difference between Yearly and Lifetime?",
-        "answer": "The Yearly subscription renews annually and includes all updates during your subscription period. The Lifetime license is a one-time payment that includes updates forever."
+        "answer": "The Yearly license is a one-time payment that includes updates and priority support for one year. It does not renew automatically. The Lifetime license is a one-time payment that includes updates forever."
       },
       "upgrade": {
         "question": "Can I upgrade from Yearly to Lifetime?",
-        "answer": "Yes! Contact our support team and we'll credit your remaining subscription towards a Lifetime license."
+        "answer": "Yes! Contact our support team and we'll credit the remaining time on your Yearly license towards a Lifetime license."
       },
       "siteLimits": {
         "question": "How many sites can I use my license on?",

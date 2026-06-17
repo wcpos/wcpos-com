@@ -2,6 +2,7 @@ import 'server-only'
 
 import { env } from '@/utils/env'
 import { storeLogger } from '@/lib/logger'
+import { getPlanByHandle } from '@/lib/plans'
 import type {
   MedusaProduct,
   MedusaProductsResponse,
@@ -82,9 +83,7 @@ export async function getWcposProProducts(): Promise<MedusaProduct[]> {
     const response = await medusaFetch<MedusaProductsResponse>(
       '/store/products?fields=*variants.prices'
     )
-    return response.products.filter(
-      (p) => p.handle?.startsWith('wcpos-pro-')
-    )
+    return response.products.filter((p) => getPlanByHandle(p.handle) !== null)
   } catch (error) {
     storeLogger.error`Failed to fetch WCPOS Pro products: ${error}`
     return []

@@ -1,4 +1,9 @@
 import { describe, expect, it, vi } from 'vitest'
+vi.mock('next/cache', () => ({
+  cacheLife: vi.fn(),
+  cacheTag: vi.fn(),
+}))
+
 import { render, screen } from '@testing-library/react'
 
 // Mock i18n navigation Link as a simple anchor (the about CTA only uses it for
@@ -20,7 +25,17 @@ vi.mock('@/i18n/navigation', () => ({
 }))
 
 import { AboutHero } from './about-hero'
-import { FounderLetter } from './founder-letter'
+import { FounderLetter, FounderLetterFallback } from './founder-letter'
+
+vi.mock('@/lib/pro-offer-catalog', () => ({
+  getProOfferCatalog: vi.fn(async () => ({
+    offers: [
+      { planId: 'yearly', price: { compact: '$129' } },
+      { planId: 'lifetime', price: { compact: '$399' } },
+    ],
+  })),
+  formatFounderProPriceSummary: vi.fn(() => '$129/yr or $399 once'),
+}))
 import { StoryTimeline } from './story-timeline'
 import { ValuesSection } from './values-section'
 import { AboutCta } from './about-cta'
@@ -38,8 +53,8 @@ describe('AboutHero', () => {
 })
 
 describe('FounderLetter', () => {
-  it('introduces Paul and shows the shop photo', () => {
-    render(<FounderLetter />)
+  it('introduces Paul and shows the shop photo', async () => {
+    render(await FounderLetter())
     expect(
       screen.getByText(/Hi — I'm Paul\. I built WooCommerce POS\./)
     ).toBeInTheDocument()
@@ -49,9 +64,14 @@ describe('FounderLetter', () => {
     )
   })
 
-  it('states the Pro pricing', () => {
-    render(<FounderLetter />)
+  it('states the Pro pricing', async () => {
+    render(await FounderLetter())
     expect(screen.getByText(/\$129\/yr or \$399 once/)).toBeInTheDocument()
+  })
+
+  it('renders a non-price fallback while pricing loads', () => {
+    render(<FounderLetterFallback />)
+    expect(screen.getByText(/available from the Pro page/)).toBeInTheDocument()
   })
 })
 

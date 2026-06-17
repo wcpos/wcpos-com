@@ -17,6 +17,7 @@ import { Label } from '@/components/ui/label'
 import { Mail } from 'lucide-react'
 import { GitHubMark, GoogleMark } from '@/components/auth/provider-marks'
 import { getConnectedAvatarUrlFromMetadata } from '@/lib/avatar'
+import { readAccountProfileMetadata } from '@/lib/customer-profile-metadata'
 
 interface ProfileEditFormProps {
   customer: {
@@ -96,14 +97,6 @@ const FALLBACK_COUNTRY_CODES = [
   'VI', 'VN', 'VU', 'WF', 'WS', 'XK', 'YE', 'YT', 'ZA', 'ZM', 'ZW',
 ]
 
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return Boolean(value) && typeof value === 'object' && !Array.isArray(value)
-}
-
-function asString(value: unknown): string {
-  return typeof value === 'string' ? value : ''
-}
-
 function getCountryCodes(displayNames: Intl.DisplayNames | null): string[] {
   if (typeof Intl.supportedValuesOf === 'function') {
     try {
@@ -164,7 +157,7 @@ function getInitials(firstName: string, lastName: string, email: string): string
   return email.trim().charAt(0).toUpperCase() || 'U'
 }
 
-function getAvatarUrlFromMetadata(metadata: Record<string, unknown> | undefined): {
+function getProfileDefaults(metadata: Record<string, unknown> | undefined): {
   oauthAvatarUrl: string
   customAvatarUrl: string
   customAvatarDataUrl: string
@@ -176,21 +169,19 @@ function getAvatarUrlFromMetadata(metadata: Record<string, unknown> | undefined)
   postalCode: string
   taxNumber: string
 } {
-  const accountProfile = isRecord(metadata?.account_profile)
-    ? metadata.account_profile
-    : undefined
+  const accountProfile = readAccountProfileMetadata(metadata)
 
   return {
     oauthAvatarUrl: getConnectedAvatarUrlFromMetadata(metadata),
-    customAvatarUrl: asString(accountProfile?.avatarUrl),
-    customAvatarDataUrl: asString(accountProfile?.avatarDataUrl),
-    countryCode: asString(accountProfile?.countryCode) || 'US',
-    addressLine1: asString(accountProfile?.addressLine1),
-    addressLine2: asString(accountProfile?.addressLine2),
-    city: asString(accountProfile?.city),
-    region: asString(accountProfile?.region),
-    postalCode: asString(accountProfile?.postalCode),
-    taxNumber: asString(accountProfile?.taxNumber),
+    customAvatarUrl: accountProfile.avatarUrl,
+    customAvatarDataUrl: accountProfile.avatarDataUrl,
+    countryCode: accountProfile.countryCode,
+    addressLine1: accountProfile.addressLine1,
+    addressLine2: accountProfile.addressLine2,
+    city: accountProfile.city,
+    region: accountProfile.region,
+    postalCode: accountProfile.postalCode,
+    taxNumber: accountProfile.taxNumber,
   }
 }
 
@@ -201,7 +192,7 @@ export function ProfileEditForm({
 }: ProfileEditFormProps) {
   const locale = useLocale()
   const t = useTranslations('account.profile')
-  const metadataDefaults = getAvatarUrlFromMetadata(customer.metadata)
+  const metadataDefaults = getProfileDefaults(customer.metadata)
   const countryOptions = useMemo(() => buildCountryOptions(locale), [locale])
 
   const [email, setEmail] = useState(customer.email ?? '')
@@ -294,9 +285,7 @@ export function ProfileEditForm({
         throw new Error(data.error || t('updateError'))
       }
 
-      const updated = getAvatarUrlFromMetadata(
-        isRecord(data.customer?.metadata) ? data.customer.metadata : {}
-      )
+      const updated = getProfileDefaults(data.customer?.metadata)
 
       setEmail(data.customer.email ?? '')
       setFirstName(data.customer.first_name ?? '')
