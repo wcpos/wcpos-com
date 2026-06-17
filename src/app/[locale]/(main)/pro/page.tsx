@@ -13,6 +13,8 @@ import {
   buildProOfferSchemaOffers,
   getProOfferCatalog,
 } from '@/lib/pro-offer-catalog'
+import { Section } from '@/components/ui/section'
+import { SectionHeading } from '@/components/ui/section-heading'
 
 export async function generateMetadata({
   params,
@@ -129,37 +131,34 @@ export default async function ProPage({
   const t = await getTranslations({ locale, namespace: 'pro' })
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-background to-muted/20">
+    <main>
       <Suspense fallback={null}>
         <ProProductJsonLd />
       </Suspense>
-      {/* Hero Section */}
-      <section className="container mx-auto px-4 py-16 text-center">
-        <h1 className="text-4xl md:text-5xl font-bold mb-4">
-          WooCommerce POS Pro
-        </h1>
-        <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
-          Everything in the free POS, plus payment terminals, store
-          management at the register, end-of-day reports, and priority
-          support.
-        </p>
-      </section>
+
+      <Section tone="default" spacing="hero">
+        <SectionHeading
+          as="h1"
+          size="hero"
+          title="WooCommerce POS Pro"
+          subtitle="Everything in the free POS, plus payment terminals, store management at the register, end-of-day reports, and priority support."
+        />
+      </Section>
 
       {/* Pricing Section - Dynamic */}
-      <section className="container mx-auto px-4 pb-16">
+      <Section tone="default" spacing="compact">
         <Suspense fallback={<PricingSkeleton />}>
           <PricingSectionWithExperiment />
         </Suspense>
-      </section>
+      </Section>
 
       {/* Features Section */}
-      <section className="container mx-auto px-4 py-16 border-t">
-        <h2 className="text-3xl font-bold text-center mb-4">
-          {t('features.title')}
-        </h2>
-        <p className="text-center text-muted-foreground max-w-2xl mx-auto mb-12">
-          {t('features.subtitle')}
-        </p>
+      <Section tone="muted" spacing="default">
+        <SectionHeading
+          className="mb-12"
+          title={t('features.title')}
+          subtitle={t('features.subtitle')}
+        />
         <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
           <FeatureBlock
             title={t('features.terminal.title')}
@@ -186,13 +185,11 @@ export default async function ProPage({
             description={t('features.gateways.description')}
           />
         </div>
-      </section>
+      </Section>
 
       {/* FAQ Section */}
-      <section className="container mx-auto px-4 py-16 border-t">
-        <h2 className="text-3xl font-bold text-center mb-12">
-          {t('faq.title')}
-        </h2>
+      <Section tone="default" spacing="default">
+        <SectionHeading className="mb-12" title={t('faq.title')} />
         <div className="max-w-3xl mx-auto space-y-6">
           <FaqItem
             question={t('faq.freePlugin.question')}
@@ -215,7 +212,7 @@ export default async function ProPage({
             answer={t('faq.paymentMethods.answer')}
           />
         </div>
-      </section>
+      </Section>
     </main>
   )
 }

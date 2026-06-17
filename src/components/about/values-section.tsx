@@ -1,4 +1,6 @@
 import { Compass, HeartHandshake, Code2, ShieldCheck } from 'lucide-react'
+import { Section } from '@/components/ui/section'
+import { SectionHeading } from '@/components/ui/section-heading'
 
 const values = [
   {
@@ -25,31 +27,27 @@ const values = [
 
 export function ValuesSection() {
   return (
-    <section className="bg-slate-50 dark:bg-slate-900">
-      <div className="container mx-auto px-4 py-16 md:py-24">
-        <h2 className="mb-12 text-center text-2xl font-semibold text-slate-900 md:text-3xl dark:text-slate-100">
-          What it stands for
-        </h2>
-        <div className="mx-auto grid max-w-4xl gap-6 sm:grid-cols-2">
-          {values.map((value) => (
-            <div
-              key={value.title}
-              className="rounded-md border border-slate-200 bg-white p-6 dark:border-slate-700 dark:bg-slate-900"
-            >
-              <value.icon
-                aria-hidden="true"
-                className="mb-4 h-8 w-8 text-wcpos-red"
-              />
-              <h3 className="mb-2 text-lg font-semibold text-slate-900 dark:text-slate-100">
-                {value.title}
-              </h3>
-              <p className="leading-relaxed text-slate-600 dark:text-slate-400">
-                {value.body}
-              </p>
-            </div>
-          ))}
-        </div>
+    <Section tone="muted" spacing="default">
+      <SectionHeading className="mb-12" title="What it stands for" />
+      <div className="mx-auto grid max-w-4xl gap-6 sm:grid-cols-2">
+        {values.map((value) => (
+          <div
+            key={value.title}
+            className="rounded-md border border-slate-200 bg-white p-6 dark:border-slate-700 dark:bg-slate-900"
+          >
+            <value.icon
+              aria-hidden="true"
+              className="mb-4 h-8 w-8 text-wcpos-red"
+            />
+            <h3 className="mb-2 text-lg font-semibold text-slate-900 dark:text-slate-100">
+              {value.title}
+            </h3>
+            <p className="leading-relaxed text-slate-600 dark:text-slate-400">
+              {value.body}
+            </p>
+          </div>
+        ))}
       </div>
-    </section>
+    </Section>
   )
 }

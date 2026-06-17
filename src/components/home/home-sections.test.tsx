@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { render, screen } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 
 // Mock i18n navigation Link as a simple anchor (TrustSection links to /about-us)
 vi.mock('@/i18n/navigation', () => ({
@@ -16,6 +16,37 @@ vi.mock('@/i18n/navigation', () => ({
       {children}
     </a>
   ),
+}))
+
+vi.mock('@/components/ui/section', () => ({
+  Section: ({
+    children,
+    tone = 'default',
+    spacing = 'default',
+    bare = false,
+    ...props
+  }: {
+    children: React.ReactNode
+    tone?: string
+    spacing?: string
+    bare?: boolean
+  } & React.HTMLAttributes<HTMLElement>) => (
+    <section
+      {...props}
+      data-section-tone={tone}
+      data-section-spacing={spacing}
+      data-section-bare={String(bare)}
+    >
+      {bare ? children : <div data-container-width="default">{children}</div>}
+    </section>
+  ),
+  Container: ({
+    children,
+    width = 'default',
+  }: {
+    children: React.ReactNode
+    width?: string
+  }) => <div data-container-width={width}>{children}</div>,
 }))
 
 import { ProblemSection } from './problem-section'
@@ -53,6 +84,55 @@ describe('BenefitsSection', () => {
     ).toBeInTheDocument()
     expect(
       screen.getByRole('heading', { name: 'You own everything' })
+    ).toBeInTheDocument()
+  })
+
+  it('uses the canonical section seam for its heading and alternating bands', () => {
+    render(<BenefitsSection />)
+
+    const heading = screen.getByRole('heading', {
+      name: 'Why stores choose WCPOS',
+    })
+    expect(heading.closest('[data-section-tone]')).toHaveAttribute(
+      'data-section-tone',
+      'muted'
+    )
+
+    const sections = document.querySelectorAll('[data-section-tone]')
+    expect(
+      [...sections].map((section) =>
+        section.getAttribute('data-section-tone')
+      )
+    ).toEqual(['muted', 'muted', 'default', 'muted', 'default'])
+  })
+
+  it('keeps all benefits inside the labelled benefits region', () => {
+    render(<BenefitsSection />)
+
+    const region = screen.getByRole('region', {
+      name: 'Why stores choose WCPOS',
+    })
+
+    expect(
+      within(region).getByRole('heading', {
+        name: 'Why stores choose WCPOS',
+      })
+    ).toBeInTheDocument()
+    expect(
+      within(region).getByRole('heading', {
+        name: 'One catalog, two channels',
+      })
+    ).toBeInTheDocument()
+    expect(
+      within(region).getByRole('heading', { name: 'Works offline' })
+    ).toBeInTheDocument()
+    expect(
+      within(region).getByRole('heading', {
+        name: 'Native apps, real hardware',
+      })
+    ).toBeInTheDocument()
+    expect(
+      within(region).getByRole('heading', { name: 'You own everything' })
     ).toBeInTheDocument()
   })
 })
