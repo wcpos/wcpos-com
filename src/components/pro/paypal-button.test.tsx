@@ -21,7 +21,7 @@ vi.mock('./complete-cart', () => ({
 }))
 
 import { PayPalButton } from './paypal-button'
-import { OrderPendingError } from './checkout-errors'
+import { OrderPendingError } from './checkout-safety'
 
 const onSuccess = vi.fn()
 const onFailure = vi.fn()

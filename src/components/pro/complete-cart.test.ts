@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 
 import { completeCart, createPaymentSession } from './complete-cart'
-import { OrderPendingError } from './checkout-errors'
+import { OrderPendingError } from './checkout-safety'
 
 const mockFetch = vi.fn()
 vi.stubGlobal('fetch', mockFetch)

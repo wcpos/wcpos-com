@@ -19,7 +19,7 @@ vi.mock('@/i18n/navigation', () => ({
 }))
 
 import { CheckoutErrorNotice, OrderPendingNotice } from './checkout-recovery'
-import type { CheckoutFailure } from './checkout-errors'
+import type { CheckoutFailure } from './checkout-safety'
 
 const paymentFailed: CheckoutFailure = {
   kind: 'payment_failed',

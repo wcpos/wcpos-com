@@ -1,5 +1,5 @@
 import type { ProCheckoutVariant } from '@/services/core/analytics/posthog-service'
-import { OrderPendingError } from './checkout-errors'
+import { OrderPendingError } from './checkout-safety'
 
 export interface CompleteCartParams {
   cartId: string

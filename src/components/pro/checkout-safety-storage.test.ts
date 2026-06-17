@@ -1,12 +1,12 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 
 import {
-  clearPendingFailures,
-  isPersistedPendingKind,
-  persistPendingFailure,
-  readPendingFailure,
-} from './checkout-pending-storage'
-import type { CheckoutFailure } from './checkout-errors'
+  clearCheckoutSafetyState,
+  isProtectiveCheckoutFailureKind,
+  recordCheckoutFailure,
+  restoreCheckoutSafetyState,
+} from './checkout-safety'
+import type { CheckoutFailure } from './checkout-safety'
 
 const ORDER_PENDING_FAILURE: CheckoutFailure = {
   kind: 'order_pending',
@@ -29,20 +29,20 @@ afterEach(() => {
   sessionStorage.clear()
 })
 
-describe('isPersistedPendingKind', () => {
+describe('isProtectiveCheckoutFailureKind', () => {
   it('persists only the protective kinds', () => {
-    expect(isPersistedPendingKind('order_pending')).toBe(true)
-    expect(isPersistedPendingKind('payment_uncertain')).toBe(true)
-    expect(isPersistedPendingKind('payment_failed')).toBe(false)
-    expect(isPersistedPendingKind('payment_cancelled')).toBe(false)
+    expect(isProtectiveCheckoutFailureKind('order_pending')).toBe(true)
+    expect(isProtectiveCheckoutFailureKind('payment_uncertain')).toBe(true)
+    expect(isProtectiveCheckoutFailureKind('payment_failed')).toBe(false)
+    expect(isProtectiveCheckoutFailureKind('payment_cancelled')).toBe(false)
   })
 })
 
-describe('persistPendingFailure / readPendingFailure', () => {
+describe('recordCheckoutFailure / restoreCheckoutSafetyState', () => {
   it('round-trips an order_pending failure keyed by cart id', () => {
-    persistPendingFailure('cart_1', ORDER_PENDING_FAILURE)
+    recordCheckoutFailure('cart_1', ORDER_PENDING_FAILURE)
 
-    const restored = readPendingFailure()
+    const restored = restoreCheckoutSafetyState()
     expect(restored).toEqual({
       cartId: 'cart_1',
       failure: ORDER_PENDING_FAILURE,
@@ -50,74 +50,74 @@ describe('persistPendingFailure / readPendingFailure', () => {
   })
 
   it('round-trips a payment_uncertain failure', () => {
-    persistPendingFailure('cart_1', UNCERTAIN_FAILURE)
+    recordCheckoutFailure('cart_1', UNCERTAIN_FAILURE)
 
-    expect(readPendingFailure()?.failure).toEqual(UNCERTAIN_FAILURE)
+    expect(restoreCheckoutSafetyState()?.failure).toEqual(UNCERTAIN_FAILURE)
   })
 
   it('ignores non-protective failure kinds', () => {
-    persistPendingFailure('cart_1', {
+    recordCheckoutFailure('cart_1', {
       kind: 'payment_failed',
       message: 'Declined',
       reference: 'WCPOS-FAIL-0001',
     })
-    persistPendingFailure('cart_1', {
+    recordCheckoutFailure('cart_1', {
       kind: 'payment_cancelled',
       message: 'Cancelled',
       reference: 'WCPOS-CANC-0001',
     })
 
-    expect(readPendingFailure()).toBeNull()
+    expect(restoreCheckoutSafetyState()).toBeNull()
     expect(sessionStorage.length).toBe(0)
   })
 
   it('ignores entries without a cart id', () => {
-    persistPendingFailure('', ORDER_PENDING_FAILURE)
+    recordCheckoutFailure('', ORDER_PENDING_FAILURE)
 
-    expect(readPendingFailure()).toBeNull()
+    expect(restoreCheckoutSafetyState()).toBeNull()
   })
 
   it('returns null when nothing is stored', () => {
-    expect(readPendingFailure()).toBeNull()
+    expect(restoreCheckoutSafetyState()).toBeNull()
   })
 
   it('prefers order_pending over a newer payment_uncertain entry', () => {
     vi.spyOn(Date, 'now').mockReturnValue(1_000)
-    persistPendingFailure('cart_pending', ORDER_PENDING_FAILURE)
+    recordCheckoutFailure('cart_pending', ORDER_PENDING_FAILURE)
     vi.spyOn(Date, 'now').mockReturnValue(2_000)
-    persistPendingFailure('cart_uncertain', UNCERTAIN_FAILURE)
+    recordCheckoutFailure('cart_uncertain', UNCERTAIN_FAILURE)
 
-    const restored = readPendingFailure()
+    const restored = restoreCheckoutSafetyState()
     expect(restored?.cartId).toBe('cart_pending')
     expect(restored?.failure.kind).toBe('order_pending')
   })
 
   it('prefers the most recent entry within the same kind', () => {
     vi.spyOn(Date, 'now').mockReturnValue(1_000)
-    persistPendingFailure('cart_old', UNCERTAIN_FAILURE)
+    recordCheckoutFailure('cart_old', UNCERTAIN_FAILURE)
     vi.spyOn(Date, 'now').mockReturnValue(2_000)
-    persistPendingFailure('cart_new', {
+    recordCheckoutFailure('cart_new', {
       ...UNCERTAIN_FAILURE,
       reference: 'WCPOS-UNC-0002',
     })
 
-    const restored = readPendingFailure()
+    const restored = restoreCheckoutSafetyState()
     expect(restored?.cartId).toBe('cart_new')
     expect(restored?.failure.reference).toBe('WCPOS-UNC-0002')
   })
 
   it('overwrites an earlier entry for the same cart', () => {
-    persistPendingFailure('cart_1', UNCERTAIN_FAILURE)
-    persistPendingFailure('cart_1', ORDER_PENDING_FAILURE)
+    recordCheckoutFailure('cart_1', UNCERTAIN_FAILURE)
+    recordCheckoutFailure('cart_1', ORDER_PENDING_FAILURE)
 
     expect(sessionStorage.length).toBe(1)
-    expect(readPendingFailure()?.failure.kind).toBe('order_pending')
+    expect(restoreCheckoutSafetyState()?.failure.kind).toBe('order_pending')
   })
 
   it('ignores malformed JSON entries', () => {
     sessionStorage.setItem('wcpos:checkout-pending:cart_bad', 'not json {')
 
-    expect(readPendingFailure()).toBeNull()
+    expect(restoreCheckoutSafetyState()).toBeNull()
   })
 
   it('ignores entries with a non-protective kind injected directly', () => {
@@ -132,7 +132,7 @@ describe('persistPendingFailure / readPendingFailure', () => {
       })
     )
 
-    expect(readPendingFailure()).toBeNull()
+    expect(restoreCheckoutSafetyState()).toBeNull()
   })
 
   it('ignores entries missing required fields', () => {
@@ -141,13 +141,13 @@ describe('persistPendingFailure / readPendingFailure', () => {
       JSON.stringify({ kind: 'order_pending', cartId: 'cart_bad' })
     )
 
-    expect(readPendingFailure()).toBeNull()
+    expect(restoreCheckoutSafetyState()).toBeNull()
   })
 
   it('ignores unrelated sessionStorage keys', () => {
     sessionStorage.setItem('some-other-key', 'value')
 
-    expect(readPendingFailure()).toBeNull()
+    expect(restoreCheckoutSafetyState()).toBeNull()
   })
 
   it('swallows storage write failures (private mode / quota)', () => {
@@ -155,7 +155,7 @@ describe('persistPendingFailure / readPendingFailure', () => {
       throw new DOMException('QuotaExceededError')
     })
 
-    expect(() => persistPendingFailure('cart_1', ORDER_PENDING_FAILURE)).not.toThrow()
+    expect(() => recordCheckoutFailure('cart_1', ORDER_PENDING_FAILURE)).not.toThrow()
   })
 
   it('swallows storage read failures', () => {
@@ -167,36 +167,36 @@ describe('persistPendingFailure / readPendingFailure', () => {
       throw new DOMException('SecurityError')
     })
 
-    expect(readPendingFailure()).toBeNull()
+    expect(restoreCheckoutSafetyState()).toBeNull()
   })
 })
 
-describe('clearPendingFailures', () => {
+describe('clearCheckoutSafetyState', () => {
   it('removes every persisted protective failure', () => {
-    persistPendingFailure('cart_1', ORDER_PENDING_FAILURE)
-    persistPendingFailure('cart_2', UNCERTAIN_FAILURE)
+    recordCheckoutFailure('cart_1', ORDER_PENDING_FAILURE)
+    recordCheckoutFailure('cart_2', UNCERTAIN_FAILURE)
 
-    clearPendingFailures()
+    clearCheckoutSafetyState()
 
-    expect(readPendingFailure()).toBeNull()
+    expect(restoreCheckoutSafetyState()).toBeNull()
     expect(sessionStorage.length).toBe(0)
   })
 
   it('leaves unrelated keys untouched', () => {
     sessionStorage.setItem('unrelated', 'keep me')
-    persistPendingFailure('cart_1', ORDER_PENDING_FAILURE)
+    recordCheckoutFailure('cart_1', ORDER_PENDING_FAILURE)
 
-    clearPendingFailures()
+    clearCheckoutSafetyState()
 
     expect(sessionStorage.getItem('unrelated')).toBe('keep me')
   })
 
   it('swallows storage failures', () => {
-    persistPendingFailure('cart_1', ORDER_PENDING_FAILURE)
+    recordCheckoutFailure('cart_1', ORDER_PENDING_FAILURE)
     vi.spyOn(Storage.prototype, 'removeItem').mockImplementation(() => {
       throw new DOMException('SecurityError')
     })
 
-    expect(() => clearPendingFailures()).not.toThrow()
+    expect(() => clearCheckoutSafetyState()).not.toThrow()
   })
 })

@@ -9,16 +9,15 @@ import { createPaymentSession } from './complete-cart'
 import { BTCPayButton } from './btcpay-button'
 import { CheckoutErrorNotice, OrderPendingNotice } from './checkout-recovery'
 import {
+  clearCheckoutSafetyState,
   createPaymentFailure,
+  isProtectiveCheckoutFailureKind,
   METHOD_SWITCH_FAILED_MESSAGE,
+  recordCheckoutFailure,
+  restoreCheckoutSafetyState,
+  shouldBlockCheckout,
   type CheckoutFailure,
-} from './checkout-errors'
-import {
-  clearPendingFailures,
-  isPersistedPendingKind,
-  persistPendingFailure,
-  readPendingFailure,
-} from './checkout-pending-storage'
+} from './checkout-safety'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -164,10 +163,10 @@ export function CheckoutClient({
         // survives reloads via sessionStorage. Restore it before initializing
         // so a refresh cannot silently hand the customer a fresh, payable
         // checkout.
-        const restored = await Promise.resolve(readPendingFailure())
+        const restored = await Promise.resolve(restoreCheckoutSafetyState())
         if (restored) {
           setFailure(restored.failure)
-          if (restored.failure.kind === 'order_pending') {
+          if (shouldBlockCheckout(restored.failure)) {
             // Money moved but no order exists — do not create a new cart or
             // payment session at all; render only the do-not-pay-again notice.
             return
@@ -305,7 +304,7 @@ export function CheckoutClient({
 
   const handleSuccess = (newOrderId: string) => {
     // An order definitively exists — the do-not-pay-again guard can go.
-    clearPendingFailures()
+    clearCheckoutSafetyState()
     setFailure(null)
     setOrderId(newOrderId)
     setOrderComplete(true)
@@ -319,8 +318,8 @@ export function CheckoutClient({
   const handleFailure = useCallback(
     (nextFailure: CheckoutFailure | null) => {
       setFailure(nextFailure)
-      if (nextFailure && activeCartId && isPersistedPendingKind(nextFailure.kind)) {
-        persistPendingFailure(activeCartId, nextFailure)
+      if (nextFailure && activeCartId && isProtectiveCheckoutFailureKind(nextFailure.kind)) {
+        recordCheckoutFailure(activeCartId, nextFailure)
       }
     },
     [activeCartId]
