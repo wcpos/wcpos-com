@@ -38,6 +38,7 @@ import {
   updateCustomer,
   parseMedusaError,
 } from './medusa-auth'
+import { AccountExistsError } from '@/lib/api/errors'
 
 // decodeMedusaToken, linkOrCreateCustomer, completeOAuthCallback, refreshToken
 // and initiateOAuth moved to `@/lib/oauth`; their tests live in oauth.test.ts.
@@ -149,6 +150,50 @@ describe('medusa-auth', () => {
           }),
         })
       )
+    })
+
+    it('throws AccountExistsError when the email is already registered', async () => {
+      // Medusa rejects the auth-identity register step for an existing email.
+      mockFetch.mockResolvedValueOnce({
+        ok: false,
+        status: 401,
+        text: async () => '{"message":"Identity with email already exists"}',
+      })
+
+      const error = await register({
+        email: 'existing@example.com',
+        password: 'securepass',
+      }).catch((e) => e)
+
+      expect(error).toBeInstanceOf(AccountExistsError)
+      expect(error.code).toBe('ACCOUNT_EXISTS')
+      expect(error.status).toBe(409)
+      expect(error.message).toBe('Identity with email already exists')
+      // It must not proceed to the create-customer step.
+      expect(mockFetch).toHaveBeenCalledTimes(1)
+    })
+
+    it('throws AccountExistsError when customer creation finds an existing email', async () => {
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ token: 'new_user_token' }),
+      })
+      mockFetch.mockResolvedValueOnce({
+        ok: false,
+        status: 400,
+        text: async () => '{"message":"Customer with email already exists"}',
+      })
+
+      const error = await register({
+        email: 'existing@example.com',
+        password: 'securepass',
+      }).catch((e) => e)
+
+      expect(error).toBeInstanceOf(AccountExistsError)
+      expect(error.code).toBe('ACCOUNT_EXISTS')
+      expect(error.status).toBe(409)
+      expect(error.message).toBe('Customer with email already exists')
+      expect(mockFetch).toHaveBeenCalledTimes(2)
     })
   })
 

@@ -11,6 +11,8 @@ import {
 } from '@/services/core/analytics/posthog-service'
 import { ANALYTICS_DISTINCT_ID_COOKIE } from '@/lib/analytics/distinct-id'
 import { getAnalyticsConfig } from '@/lib/analytics/config'
+import { ApiError } from '@/lib/api/errors'
+import { toErrorResponse } from '@/lib/api/to-error-response'
 
 /**
  * POST /api/store/cart/complete - Complete cart and create order
@@ -53,9 +55,11 @@ export async function POST(request: NextRequest) {
     // non-order. See the "Order pending" term in CONTEXT.md.
     if (!result.order?.id) {
       storeLogger.error`Cart completion produced no order: cartId=${cartId} type=${result.type}`
-      return NextResponse.json(
-        { error: 'Payment received, order pending', code: 'order_pending' },
-        { status: 409 }
+      // The one wire shape the checkout client and CONTEXT.md pin as the
+      // distinct "Order pending" state. Routed through the shared adapter so the
+      // { error, code } contract has a single, tested home.
+      return toErrorResponse(
+        new ApiError(409, 'Payment received, order pending', 'order_pending')
       )
     }
 
