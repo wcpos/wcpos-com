@@ -99,9 +99,9 @@ vi.mock('./btcpay-button', () => ({
 
 import { CheckoutClient } from './checkout-client'
 import {
-  persistPendingFailure,
-  readPendingFailure,
-} from './checkout-pending-storage'
+  recordCheckoutFailure,
+  restoreCheckoutSafetyState,
+} from './checkout-safety'
 
 const mockFetch = vi.fn()
 vi.stubGlobal('fetch', mockFetch)
@@ -504,7 +504,7 @@ describe('CheckoutClient', () => {
       ).toBeInTheDocument()
     })
 
-    const persisted = readPendingFailure()
+    const persisted = restoreCheckoutSafetyState()
     expect(persisted).toEqual({
       cartId: 'cart-123',
       failure: expect.objectContaining({
@@ -535,11 +535,11 @@ describe('CheckoutClient', () => {
       expect(screen.getByText('Payment unsuccessful')).toBeInTheDocument()
     })
 
-    expect(readPendingFailure()).toBeNull()
+    expect(restoreCheckoutSafetyState()).toBeNull()
   })
 
   it('restores the order-pending state on reload without creating a new cart', async () => {
-    persistPendingFailure('cart-old', {
+    recordCheckoutFailure('cart-old', {
       kind: 'order_pending',
       message:
         'Your payment was received, but we could not finish creating your order.',
@@ -571,7 +571,7 @@ describe('CheckoutClient', () => {
   })
 
   it('restores the uncertain-payment warning on reload while keeping checkout mounted', async () => {
-    persistPendingFailure('cart-old', {
+    recordCheckoutFailure('cart-old', {
       kind: 'payment_uncertain',
       message:
         "We couldn't confirm the status of your payment. If you think you may have been charged, please contact support before trying again.",
@@ -603,7 +603,7 @@ describe('CheckoutClient', () => {
   })
 
   it('clears the persisted protective state after a successful order', async () => {
-    persistPendingFailure('cart-old', {
+    recordCheckoutFailure('cart-old', {
       kind: 'payment_uncertain',
       message: "We couldn't confirm the status of your payment.",
       reference: 'WCPOS-RESTORED-UNCERTAIN',
@@ -630,7 +630,7 @@ describe('CheckoutClient', () => {
       expect(screen.getByText('Thank you for your purchase!')).toBeInTheDocument()
     })
 
-    expect(readPendingFailure()).toBeNull()
+    expect(restoreCheckoutSafetyState()).toBeNull()
   })
 
   it('passes BTCPay checkout link to BTCPayButton when present in cart sessions', async () => {

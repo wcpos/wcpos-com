@@ -17,7 +17,7 @@ import {
   ORDER_PENDING_MESSAGE,
   UNEXPECTED_PAYMENT_STATUS_MESSAGE,
   OrderPendingError,
-} from './checkout-errors'
+} from './checkout-safety'
 
 beforeEach(() => {
   // Restore first so each test gets a fresh spy with zeroed call counts.

@@ -16,7 +16,7 @@ vi.mock('./complete-cart', () => ({
 }))
 
 import { CheckoutForm } from './checkout-form'
-import { OrderPendingError } from './checkout-errors'
+import { OrderPendingError } from './checkout-safety'
 
 const onSuccess = vi.fn()
 const onFailure = vi.fn()

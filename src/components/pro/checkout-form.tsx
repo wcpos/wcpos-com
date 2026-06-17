@@ -9,13 +9,13 @@ import {
 import { Button } from '@/components/ui/button'
 import { completeCart } from './complete-cart'
 import {
-  createOrderPendingFailure,
+  completeProviderConfirmedCheckout,
   createPaymentFailure,
   createUncertainPaymentFailure,
   mapStripeErrorMessage,
   GENERIC_PAYMENT_FAILED_MESSAGE,
   type CheckoutFailure,
-} from './checkout-errors'
+} from './checkout-safety'
 import type { ProCheckoutVariant } from '@/services/core/analytics/posthog-service'
 
 interface CheckoutFormProps {
@@ -95,24 +95,21 @@ export function CheckoutForm({
           cartId,
         })
 
-        try {
-          // Complete the cart to create the order
-          const orderId = await completeCart({ cartId, experiment, experimentVariant })
-          onSuccess(orderId)
-        } catch (err) {
-          // Payment is already authorized/captured at this point. Any
-          // completion failure means money was taken without an order —
-          // surface the distinct "do not pay again" state, never a retry.
-          onFailure(
-            createOrderPendingFailure({
-              source: 'stripe_complete_cart',
-              details: {
-                cartId,
-                paymentIntentId: paymentIntent.id,
-                error: err instanceof Error ? err.message : err,
-              },
-            })
-          )
+        const completion = await completeProviderConfirmedCheckout({
+          complete: () => completeCart({ cartId, experiment, experimentVariant }),
+          failureContext: {
+            source: 'stripe_complete_cart',
+            details: {
+              cartId,
+              paymentIntentId: paymentIntent.id,
+            },
+          },
+        })
+
+        if (completion.ok) {
+          onSuccess(completion.orderId)
+        } else {
+          onFailure(completion.failure)
         }
         return
       }

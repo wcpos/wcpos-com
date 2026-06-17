@@ -7,7 +7,7 @@ import {
   createPaymentFailure,
   BTCPAY_INIT_FAILED_MESSAGE,
   type CheckoutFailure,
-} from './checkout-errors'
+} from './checkout-safety'
 
 interface BTCPayButtonProps {
   cartId: string
