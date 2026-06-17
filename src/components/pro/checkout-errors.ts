@@ -35,6 +35,18 @@ export interface CheckoutFailure {
 }
 
 /**
+ * Failure kinds forwarded to the server alerting path (/api/checkout/report-failure).
+ * The server routes money-at-risk kinds to fatal (Discord + email) and routine
+ * declines to error (Discord only). `payment_cancelled` is the customer's own
+ * choice and is intentionally absent.
+ */
+const OWNER_REPORTED_KINDS = new Set<CheckoutFailureKind>([
+  'payment_failed',
+  'payment_uncertain',
+  'order_pending',
+])
+
+/**
  * Thrown by completeCart when the order could not be created after the
  * payment step. Callers must treat this as "money may have been taken,
  * no order exists" and never present it as a retryable payment error.
@@ -185,10 +197,12 @@ function buildFailure(
       // the fallback.
     }
 
-    // Money-at-risk failures (charged but no order, or ambiguous charge) must
-    // reach the SERVER logger so Discord/Sentry alert — clientLogger only goes
-    // to Loki. sendBeacon survives the customer navigating away.
-    if (kind === 'order_pending' || kind === 'payment_uncertain') {
+    // Forward failures to the SERVER logger so Discord/email alert — clientLogger
+    // only reaches Loki. Money-at-risk kinds page hardest; routine declines are
+    // reported too (owner wants every failed attempt at launch). Cancellations
+    // are the customer's own choice and are deliberately NOT reported.
+    // sendBeacon survives the customer navigating away.
+    if (OWNER_REPORTED_KINDS.has(kind)) {
       const endpoint = '/api/checkout/report-failure'
       let queued = false
       try {
@@ -198,8 +212,6 @@ function buildFailure(
             JSON.stringify({
               kind,
               reference: failure.reference,
-              source: context.source,
-              details: context.details,
             })
           )
         }

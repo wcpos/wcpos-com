@@ -1,14 +1,25 @@
 import type { LogRecord, Sink } from '@logtape/logtape'
 import * as Sentry from '@sentry/nextjs'
 
+interface SentrySinkOptions {
+  ignoredCategoryPrefixes?: string[]
+}
+
 /**
  * Sentry sink for LogTape
  * Sends error and fatal level logs to Sentry with full context
  */
-export function createSentrySink(): Sink {
+export function createSentrySink(options: SentrySinkOptions = {}): Sink {
+  const { ignoredCategoryPrefixes = [] } = options
+
   return (record: LogRecord) => {
     // Only send errors and fatal logs to Sentry
     if (record.level !== 'error' && record.level !== 'fatal') {
+      return
+    }
+
+    const category = record.category.join('.')
+    if (ignoredCategoryPrefixes.some((p) => category === p || category.startsWith(`${p}.`))) {
       return
     }
 
@@ -24,7 +35,7 @@ export function createSentrySink(): Sink {
 
     // Prepare extra context
     const extra: Record<string, unknown> = {
-      category: record.category.join('.'),
+      category,
       level: record.level,
       timestamp: new Date(record.timestamp).toISOString(),
     }
@@ -42,7 +53,7 @@ export function createSentrySink(): Sink {
         level: record.level === 'fatal' ? 'fatal' : 'error',
         extra,
         tags: {
-          category: record.category.join('.'),
+          category,
         },
       })
     } else {
@@ -50,7 +61,7 @@ export function createSentrySink(): Sink {
         level: record.level === 'fatal' ? 'fatal' : 'error',
         extra,
         tags: {
-          category: record.category.join('.'),
+          category,
         },
       })
     }
