@@ -29,17 +29,16 @@ test.describe('Homepage', () => {
     }
   })
 
-  test('links the download CTA to the WordPress.org plugin', async ({
+  test('links the download CTAs to their intended targets', async ({
     page,
   }) => {
     const downloadLinks = page.getByRole('link', { name: 'Download Free' })
-    await expect(downloadLinks.first()).toBeVisible()
-    for (const link of await downloadLinks.all()) {
-      await expect(link).toHaveAttribute(
-        'href',
-        'https://wordpress.org/plugins/woocommerce-pos/'
-      )
-    }
+    await expect(downloadLinks).toHaveCount(2)
+    await expect(downloadLinks.first()).toHaveAttribute(
+      'href',
+      'https://wordpress.org/plugins/woocommerce-pos/'
+    )
+    await expect(downloadLinks.nth(1)).toHaveAttribute('href', '/downloads')
   })
 
   test('renders the marketing sections', async ({ page }) => {
