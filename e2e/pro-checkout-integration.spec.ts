@@ -6,6 +6,7 @@ test.describe('Checkout Integration @integration', {
   test.setTimeout(120_000)
   const e2eEmail = process.env.E2E_TEST_EMAIL
   const e2ePassword = process.env.E2E_TEST_PASSWORD
+  const medusaApiKey = process.env.MEDUSA_API_KEY
 
   test.skip(
     !process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
@@ -15,6 +16,11 @@ test.describe('Checkout Integration @integration', {
   test.skip(
     !e2eEmail || !e2ePassword,
     'E2E_TEST_EMAIL and E2E_TEST_PASSWORD are required for authenticated checkout'
+  )
+
+  test.skip(
+    !medusaApiKey,
+    'MEDUSA_API_KEY is required to verify the purchase creates a license before download'
   )
 
   test('completes full purchase with Stripe test card', async ({ page, request }) => {
@@ -86,27 +92,41 @@ test.describe('Checkout Integration @integration', {
 
     const medusaUrl = process.env.MEDUSA_BACKEND_URL || 'https://store-api-staging.wcpos.com'
 
-    // Verify order via admin API (requires MEDUSA_API_KEY env var)
-    const apiKey = process.env.MEDUSA_API_KEY
-    if (apiKey) {
-      const orderResponse = await request.get(
-        `${medusaUrl}/admin/orders/${orderId}?fields=*fulfillments,*payment_collections.payments,metadata`,
-        { headers: { Authorization: `Bearer ${apiKey}` } }
-      )
+    const orderResponse = await request.get(
+      `${medusaUrl}/admin/orders/${orderId}?fields=*fulfillments,*payment_collections.payments,metadata`,
+      { headers: { Authorization: `Bearer ${medusaApiKey}` } }
+    )
 
-      expect(orderResponse.ok()).toBeTruthy()
-      const { order } = await orderResponse.json()
+    expect(orderResponse.ok()).toBeTruthy()
+    const { order } = await orderResponse.json()
 
-      // Verify payment was captured
-      expect(order.payment_status).toBe('captured')
+    // Verify payment was captured
+    expect(order.payment_status).toBe('captured')
 
-      // Verify order was fulfilled (digital auto-fulfillment)
-      expect(['fulfilled', 'delivered']).toContain(order.fulfillment_status)
+    // Verify order was fulfilled (digital auto-fulfillment)
+    expect(['fulfilled', 'delivered']).toContain(order.fulfillment_status)
 
-      // Verify license key was generated
-      expect(order.metadata?.licenses).toBeDefined()
-      expect(order.metadata.licenses.length).toBeGreaterThanOrEqual(1)
-      expect(order.metadata.licenses[0].license_key).toBeTruthy()
-    }
+    // Verify license key was generated for the order created by this test.
+    const licenses = order.metadata?.licenses
+    expect(Array.isArray(licenses)).toBe(true)
+    if (!Array.isArray(licenses)) return
+    expect(licenses.length).toBeGreaterThanOrEqual(1)
+    expect(licenses[0].license_key).toBeTruthy()
+
+    // ── Download verification ───────────────────────────────
+    // The buyer can immediately download the Pro plugin they just paid for.
+    // page.request shares the authenticated medusa-token cookie set above.
+    const tokenResponse = await page.request.post('/api/account/downloads/token', {
+      data: { version: 'latest' },
+    })
+    expect(tokenResponse.ok()).toBeTruthy()
+    const { downloadUrl } = await tokenResponse.json()
+    expect(downloadUrl).toContain('/api/account/download?token=')
+
+    // Follow the signed URL and confirm the actual asset streams back.
+    const fileResponse = await page.request.get(downloadUrl)
+    expect(fileResponse.ok()).toBeTruthy()
+    expect(fileResponse.headers()['content-type']).toContain('application/zip')
+    expect(fileResponse.headers()['content-disposition']).toContain('attachment')
   })
 })

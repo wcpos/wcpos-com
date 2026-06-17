@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { initiateOAuth } from '@/lib/medusa-auth'
+import { initiateOAuth } from '@/lib/oauth'
 import { authLogger } from '@/lib/logger'
 import { ALLOWED_PROVIDERS } from '@/lib/oauth-providers'
 import { sanitizeRedirectPath } from '@/lib/safe-redirect'

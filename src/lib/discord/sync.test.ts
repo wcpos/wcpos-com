@@ -1,6 +1,11 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { syncDiscordProRole, reconcileDiscordProRoles } from './sync'
-import type { DiscordMemberRoleState, DiscordRoleSyncCustomer, DiscordRoleSyncDependencies } from './sync'
+import type {
+  DiscordMemberRoleState,
+  DiscordReconcileDependencies,
+  DiscordRoleSyncCustomer,
+  DiscordRoleSyncDependencies,
+} from './sync'
 
 function customer(overrides: Partial<DiscordRoleSyncCustomer> = {}): DiscordRoleSyncCustomer {
   return {
@@ -17,10 +22,19 @@ function deps(overrides: Partial<DiscordRoleSyncDependencies> = {}): DiscordRole
     getMemberRoleState: memberRoleState('missing_role'),
     addRole: vi.fn(async () => undefined),
     removeRole: vi.fn(async () => undefined),
+    now: () => new Date('2026-06-11T00:00:00Z'),
+    ...overrides,
+  }
+}
+
+function reconcileDeps(
+  overrides: Partial<DiscordReconcileDependencies> = {}
+): DiscordReconcileDependencies {
+  return {
+    ...deps(),
     listLinkedCustomers: vi.fn(async () => []),
     listRoleHolderIds: vi.fn(async () => []),
     findCustomerByDiscordUserId: vi.fn(async () => null),
-    now: () => new Date('2026-06-11T00:00:00Z'),
     ...overrides,
   }
 }
@@ -62,12 +76,12 @@ describe('syncDiscordProRole', () => {
 
   it('skips removal when entitlement cannot be verified', async () => {
     const d = deps({
-      getLicensesForCustomer: vi.fn(async () => [{ status: 'unknown' }]),
+      getLicensesForCustomer: vi.fn(async () => [{ status: 'unknown', expiry: null }]),
       getMemberRoleState: memberRoleState('has_role'),
     } as Partial<DiscordRoleSyncDependencies>)
 
     await expect(syncDiscordProRole(customer(), d)).resolves.toEqual({
-      action: 'skipped_unknown_entitlement',
+      action: 'skipped_unverifiable_entitlement',
       customerId: 'cust_1',
       discordUserId: 'discord_1',
     })
@@ -93,7 +107,7 @@ describe('syncDiscordProRole', () => {
 
 describe('reconcileDiscordProRoles', () => {
   it('sweeps linked customers and orphan current role holders', async () => {
-    const d = deps({
+    const d = reconcileDeps({
       listLinkedCustomers: vi.fn(async () => [customer()]),
       getLicensesForCustomer: vi.fn(async () => [{ status: 'active', expiry: null }]),
       getMemberRoleState: memberRoleState('has_role'),
@@ -101,7 +115,7 @@ describe('reconcileDiscordProRoles', () => {
       findCustomerByDiscordUserId: vi.fn(async (discordUserId: string) =>
         discordUserId === 'discord_1' ? customer() : null
       ),
-    } as Partial<DiscordRoleSyncDependencies>)
+    } as Partial<DiscordReconcileDependencies>)
 
     await expect(reconcileDiscordProRoles(d)).resolves.toEqual({
       linkedChecked: 1,
@@ -116,14 +130,14 @@ describe('reconcileDiscordProRoles', () => {
   })
 
   it('counts a role-holder sweep failure without rejecting the reconciliation run', async () => {
-    const d = deps({
+    const d = reconcileDeps({
       listLinkedCustomers: vi.fn(async () => [customer()]),
       getLicensesForCustomer: vi.fn(async () => [{ status: 'active', expiry: null }]),
       getMemberRoleState: memberRoleState('has_role'),
       listRoleHolderIds: vi.fn(async () => {
         throw new Error('Discord member list failed: Missing Access')
       }),
-    } as Partial<DiscordRoleSyncDependencies>)
+    } as Partial<DiscordReconcileDependencies>)
 
     await expect(reconcileDiscordProRoles(d)).resolves.toEqual({
       linkedChecked: 1,

@@ -5,25 +5,46 @@ import { getResolvedCustomerLicenses } from '@/lib/customer-licenses'
 import { createDownloadToken } from '@/lib/download-token'
 import { getProPluginReleases } from '@/services/core/business/pro-downloads'
 import { selectEntitledRelease } from '@/services/core/business/release-delivery'
-import { licenseLogger } from '@/lib/logger'
+import { downloadLogger } from '@/lib/logger'
+import { createRateLimiter, clientIp } from '@/lib/rate-limit'
 
 const TOKEN_TTL_MS = 60_000
 
+// Per-customer gate. Generous (a real customer clicks download a handful of
+// times) but stops a compromised session from minting tokens in a tight loop.
+// Fail-open — a Redis hiccup must never block a paying customer's download.
+const limiter = createRateLimiter({
+  prefix: 'download:token:customer',
+  limit: 30,
+  window: '10 m',
+})
+
 export async function POST(request: NextRequest) {
   try {
+    const ip = clientIp(request)
     const customer = await getCustomer()
     if (!customer) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    // Deliberately no fallback to the customer JWT: a request-scoped
-    // bearer token must never be used as an HMAC signing secret.
-    const secret = env.DOWNLOAD_TOKEN_SECRET || env.KEYGEN_API_TOKEN
+    // Deliberately no fallback: broader API/customer tokens must never be used
+    // as an HMAC signing secret.
+    const secret = env.DOWNLOAD_TOKEN_SECRET
     if (!secret) {
-      licenseLogger.error`Download token secret not configured for customer ${customer.id}`
+      // Infra broken — every paying customer is blocked. fatal → Discord + email.
+      downloadLogger.fatal`Download token secret not configured (customer ${customer.id})`
       return NextResponse.json(
         { error: 'Download token secret not configured' },
         { status: 500 }
+      )
+    }
+
+    const { success } = await limiter.consume(customer.id)
+    if (!success) {
+      downloadLogger.warn`Download token rate limited. customer=${customer.id} ip=${ip}`
+      return NextResponse.json(
+        { error: 'Too many download requests. Please wait a moment and try again.' },
+        { status: 429 }
       )
     }
 
@@ -39,10 +60,10 @@ export async function POST(request: NextRequest) {
 
     if (!selection.ok) {
       if (selection.reason === 'not_found') {
-        licenseLogger.warn`Download token requested for missing release version=${version} customer=${customer.id}`
+        downloadLogger.warn`Download token requested for missing release version=${version} customer=${customer.id} ip=${ip}`
         return NextResponse.json({ error: 'Release not found' }, { status: 404 })
       }
-      licenseLogger.warn`Download token forbidden. version=${version} customer=${customer.id}`
+      downloadLogger.warn`Download token forbidden. version=${version} customer=${customer.id} ip=${ip}`
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
     }
 
@@ -56,12 +77,14 @@ export async function POST(request: NextRequest) {
       secret
     )
 
+    downloadLogger.info`Download token issued. customer=${customer.id} version=${release.version} ip=${ip}`
+
     return NextResponse.json({
       downloadUrl: `/api/account/download?token=${encodeURIComponent(token)}`,
       version: release.version,
     })
   } catch (error) {
-    licenseLogger.error`Download token endpoint failed: ${error}`
+    downloadLogger.error`Download token endpoint failed: ${error}`
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

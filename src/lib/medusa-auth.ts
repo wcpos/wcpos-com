@@ -5,6 +5,7 @@ import { cookies } from 'next/headers'
 import { env } from '@/utils/env'
 import { authLogger } from '@/lib/logger'
 import { MEDUSA_TOKEN_COOKIE } from '@/lib/medusa-cookie'
+import { AccountExistsError } from '@/lib/api/errors'
 
 // ============================================================================
 // Types
@@ -28,36 +29,6 @@ export interface UpdateCustomerInput {
   last_name?: string
   phone?: string
   metadata?: Record<string, unknown>
-}
-
-// ============================================================================
-// JWT helpers
-// ============================================================================
-
-export interface MedusaTokenPayload {
-  actor_id: string
-  actor_type: string
-  auth_identity_id: string
-  app_metadata: Record<string, unknown>
-  user_metadata: Record<string, string>
-}
-
-/**
- * Decode a Medusa JWT and return the payload.
- * Handles URL-safe base64 encoding.
- */
-export function decodeMedusaToken(token: string): MedusaTokenPayload {
-  const base64 = token.split('.')[1]
-    .replace(/-/g, '+')
-    .replace(/_/g, '/')
-  const payload = JSON.parse(atob(base64))
-  return {
-    actor_id: payload.actor_id ?? '',
-    actor_type: payload.actor_type ?? '',
-    auth_identity_id: payload.auth_identity_id ?? '',
-    app_metadata: payload.app_metadata ?? {},
-    user_metadata: payload.user_metadata ?? {},
-  }
 }
 
 // ============================================================================
@@ -183,7 +154,16 @@ export async function register({
   )
 
   if (!authResponse.ok) {
-    throw new Error(await parseMedusaError(authResponse, 'Registration failed'))
+    const message = await parseMedusaError(authResponse, 'Registration failed')
+    // Classify the duplicate-account case here, at the Medusa adapter seam —
+    // the same place license statuses are normalized once (CONTEXT.md). Medusa
+    // returns "Identity with email already exists" / a duplicate message; a
+    // typed AccountExistsError lets the route map it to 409 ACCOUNT_EXISTS
+    // without re-sniffing provider strings.
+    if (/already exists|duplicate/i.test(message)) {
+      throw new AccountExistsError(message)
+    }
+    throw new Error(message)
   }
 
   const { token } = await authResponse.json()
@@ -207,9 +187,14 @@ export async function register({
   )
 
   if (!customerResponse.ok) {
-    throw new Error(
-      await parseMedusaError(customerResponse, 'Failed to create customer')
+    const message = await parseMedusaError(
+      customerResponse,
+      'Failed to create customer'
     )
+    if (/already exists|duplicate/i.test(message)) {
+      throw new AccountExistsError(message)
+    }
+    throw new Error(message)
   }
 
   const { customer } = await customerResponse.json()
@@ -300,108 +285,7 @@ export async function updateCustomer(
   return data.customer
 }
 
-// ============================================================================
-// OAuth
-// ============================================================================
-
-/**
- * Initiate an OAuth login flow.
- * POST /auth/customer/{provider} with { callback_url }
- * Returns the redirect URL from the provider.
- */
-export async function initiateOAuth(
-  provider: string,
-  callbackUrl: string
-): Promise<string> {
-  const response = await fetch(
-    `${env.MEDUSA_BACKEND_URL}/auth/customer/${provider}`,
-    {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ callback_url: callbackUrl }),
-    }
-  )
-
-  if (!response.ok) {
-    throw new Error(await parseMedusaError(response, 'Failed to initiate OAuth'))
-  }
-
-  const data = await response.json()
-  return data.location
-}
-
-/**
- * Complete an OAuth callback.
- * GET /auth/customer/{provider}/callback?code=...&state=...
- * Params must be sent as URL query parameters because Medusa's
- * auth providers only read `state` from req.query, not req.body.
- */
-export async function completeOAuthCallback(
-  provider: string,
-  params: Record<string, string>
-): Promise<string> {
-  const queryString = new URLSearchParams(params).toString()
-  const response = await fetch(
-    `${env.MEDUSA_BACKEND_URL}/auth/customer/${provider}/callback?${queryString}`,
-  )
-
-  if (!response.ok) {
-    throw new Error(await parseMedusaError(response, 'OAuth callback failed'))
-  }
-
-  const data = await response.json()
-  return data.token
-}
-
-/**
- * Link an OAuth auth identity to an existing or new customer.
- * The Medusa endpoint reads the email from the auth identity's
- * provider metadata (not from the request body) for security.
- * POST /store/auth/account-link
- */
-export async function linkOrCreateCustomer(token: string): Promise<void> {
-  const response = await fetch(
-    `${env.MEDUSA_BACKEND_URL}/store/auth/account-link`,
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-        'x-publishable-api-key': env.MEDUSA_PUBLISHABLE_KEY || '',
-      },
-    }
-  )
-
-  if (!response.ok) {
-    throw new Error(await parseMedusaError(response, 'Account linking failed'))
-  }
-}
-
-// ============================================================================
-// Token refresh
-// ============================================================================
-
-/**
- * Refresh an auth token.
- * POST /auth/token/refresh with Bearer token
- * Returns the new token.
- */
-export async function refreshToken(token: string): Promise<string> {
-  const response = await fetch(
-    `${env.MEDUSA_BACKEND_URL}/auth/token/refresh`,
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  )
-
-  if (!response.ok) {
-    throw new Error(await parseMedusaError(response, 'Token refresh failed'))
-  }
-
-  const data = await response.json()
-  return data.token
-}
+// OAuth sign-in (initiateOAuth / establishOAuthSession) lives in
+// `@/lib/oauth`, which imports the shared `setAuthToken` and `parseMedusaError`
+// from here. The link-then-refresh-then-persist ordering is owned by that
+// module's `establishOAuthSession` rather than spread across a route handler.

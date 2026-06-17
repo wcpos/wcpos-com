@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import {
+  evaluateLicenseEntitlement,
   getExpiringSoonExpiry,
   getLatestEntitledExpiry,
   getLicenseDisplayStatus,
@@ -67,6 +68,50 @@ describe('hasActiveLicense', () => {
   })
   it('false for an empty set', () => {
     expect(hasActiveLicense([], NOW)).toBe(false)
+  })
+})
+
+describe('evaluateLicenseEntitlement', () => {
+  it('entitled for an active in-term license', () => {
+    expect(evaluateLicenseEntitlement([lic('active', daysFromNow(10))], NOW)).toBe(
+      'entitled'
+    )
+  })
+  it('entitled for an active lifetime (null expiry) license', () => {
+    expect(evaluateLicenseEntitlement([lic('active', null)], NOW)).toBe('entitled')
+  })
+  it('entitled when any license is active even if another is unverifiable', () => {
+    expect(
+      evaluateLicenseEntitlement([lic('unknown', null), lic('active', null)], NOW)
+    ).toBe('entitled')
+  })
+  it('not_entitled for an expired license', () => {
+    expect(
+      evaluateLicenseEntitlement([lic('expired', daysFromNow(-1))], NOW)
+    ).toBe('not_entitled')
+  })
+  it('not_entitled for suspended and revoked licenses', () => {
+    expect(
+      evaluateLicenseEntitlement([lic('suspended', null), lic('revoked', null)], NOW)
+    ).toBe('not_entitled')
+  })
+  it('not_entitled for an empty set', () => {
+    expect(evaluateLicenseEntitlement([], NOW)).toBe('not_entitled')
+  })
+  it('unverifiable for an unknown license, so callers never demote on missing data', () => {
+    expect(evaluateLicenseEntitlement([lic('unknown', null)], NOW)).toBe(
+      'unverifiable'
+    )
+  })
+  it('unverifiable for an active license whose expiry will not parse', () => {
+    expect(evaluateLicenseEntitlement([lic('active', 'not-a-date')], NOW)).toBe(
+      'unverifiable'
+    )
+  })
+  it('agrees with hasActiveLicense at the exact expiry instant (>= boundary)', () => {
+    const atBoundary = [lic('active', new Date(NOW).toISOString())]
+    expect(evaluateLicenseEntitlement(atBoundary, NOW)).toBe('entitled')
+    expect(hasActiveLicense(atBoundary, NOW)).toBe(true)
   })
 })
 

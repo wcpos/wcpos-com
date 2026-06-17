@@ -6,8 +6,10 @@ const mockGetResolvedCustomerLicenses = vi.fn()
 const mockVerifyDownloadToken = vi.fn()
 const mockGetProPluginReleases = vi.fn()
 const mockFetchReleaseAsset = vi.fn()
-const mockLicenseLoggerError = vi.fn()
-const mockLicenseLoggerWarn = vi.fn()
+const mockDownloadInfo = vi.fn()
+const mockDownloadWarn = vi.fn()
+const mockDownloadError = vi.fn()
+const mockDownloadFatal = vi.fn()
 
 vi.mock('@/lib/medusa-auth', () => ({
   getCustomer: (...args: unknown[]) => mockGetCustomer(...args),
@@ -32,9 +34,11 @@ vi.mock('@/services/core/external/github-asset', () => ({
 }))
 
 vi.mock('@/lib/logger', () => ({
-  licenseLogger: {
-    error: (...args: unknown[]) => mockLicenseLoggerError(...args),
-    warn: (...args: unknown[]) => mockLicenseLoggerWarn(...args),
+  downloadLogger: {
+    info: (...args: unknown[]) => mockDownloadInfo(...args),
+    warn: (...args: unknown[]) => mockDownloadWarn(...args),
+    error: (...args: unknown[]) => mockDownloadError(...args),
+    fatal: (...args: unknown[]) => mockDownloadFatal(...args),
   },
 }))
 
@@ -72,33 +76,64 @@ function servedAsset() {
 
 const ACTIVE_LICENCE = { status: 'active', expiry: null }
 
+function downloadRequest() {
+  return new NextRequest('http://localhost/api/account/download?token=test')
+}
+
 describe('GET /api/account/download', () => {
   beforeEach(() => {
     vi.resetAllMocks()
-    mockEnv.DOWNLOAD_TOKEN_SECRET = undefined
+    mockEnv.DOWNLOAD_TOKEN_SECRET = 'download-token-secret'
     mockEnv.KEYGEN_API_TOKEN = 'keygen-token-secret'
   })
 
   it('returns 401 when unauthenticated', async () => {
     mockGetCustomer.mockResolvedValueOnce(null)
 
-    const response = await GET(
-      new NextRequest('http://localhost/api/account/download?token=test')
-    )
+    const response = await GET(downloadRequest())
 
     expect(response.status).toBe(401)
   })
 
-  it('returns 500 when no signing secret is configured', async () => {
+  it('returns 500 and pages (fatal) when no signing secret is configured', async () => {
+    mockEnv.DOWNLOAD_TOKEN_SECRET = undefined
     mockEnv.KEYGEN_API_TOKEN = undefined
     mockGetCustomer.mockResolvedValueOnce({ id: 'cust_1' })
 
-    const response = await GET(
-      new NextRequest('http://localhost/api/account/download?token=test')
-    )
+    const response = await GET(downloadRequest())
 
     expect(response.status).toBe(500)
     expect(mockVerifyDownloadToken).not.toHaveBeenCalled()
+    // Infra broken — fatal so Discord + email page on it.
+    expect(mockDownloadFatal).toHaveBeenCalled()
+  })
+
+  it('returns 500 when DOWNLOAD_TOKEN_SECRET is missing even if KEYGEN_API_TOKEN is configured', async () => {
+    mockEnv.DOWNLOAD_TOKEN_SECRET = undefined
+    mockGetCustomer.mockResolvedValueOnce({ id: 'cust_1' })
+
+    const response = await GET(downloadRequest())
+    const json = await response.json()
+
+    expect(response.status).toBe(500)
+    expect(json.error).toBe('Download token secret not configured')
+    expect(mockVerifyDownloadToken).not.toHaveBeenCalled()
+    expect(mockDownloadFatal).toHaveBeenCalled()
+  })
+
+  it('returns 403 and audits a token whose customerId does not match', async () => {
+    mockGetCustomer.mockResolvedValueOnce({ id: 'cust_1' })
+    mockVerifyDownloadToken.mockReturnValueOnce({
+      customerId: 'someone_else',
+      version: '1.9.0',
+      expiresAt: Date.now() + 60_000,
+    })
+
+    const response = await GET(downloadRequest())
+
+    expect(response.status).toBe(403)
+    expect(mockDownloadWarn).toHaveBeenCalled()
+    expect(mockGetProPluginReleases).not.toHaveBeenCalled()
   })
 
   it('returns 404 when the requested version does not exist', async () => {
@@ -116,15 +151,14 @@ describe('GET /api/account/download', () => {
       licenses: [ACTIVE_LICENCE],
     })
 
-    const response = await GET(
-      new NextRequest('http://localhost/api/account/download?token=test')
-    )
+    const response = await GET(downloadRequest())
 
     expect(response.status).toBe(404)
+    expect(mockDownloadWarn).toHaveBeenCalled()
     expect(mockFetchReleaseAsset).not.toHaveBeenCalled()
   })
 
-  it('returns 403 when the release exists but is not entitled', async () => {
+  it('returns 403 and audits when the release exists but is not entitled', async () => {
     mockGetCustomer.mockResolvedValueOnce({ id: 'cust_1' })
     mockVerifyDownloadToken.mockReturnValueOnce({
       customerId: 'cust_1',
@@ -140,15 +174,14 @@ describe('GET /api/account/download', () => {
       licenses: [{ status: 'expired', expiry: '2025-01-01T00:00:00Z' }],
     })
 
-    const response = await GET(
-      new NextRequest('http://localhost/api/account/download?token=test')
-    )
+    const response = await GET(downloadRequest())
 
     expect(response.status).toBe(403)
+    expect(mockDownloadWarn).toHaveBeenCalled()
     expect(mockFetchReleaseAsset).not.toHaveBeenCalled()
   })
 
-  it('streams the release asset for an entitled signed token', async () => {
+  it('streams and audits the release asset for an entitled signed token', async () => {
     mockGetCustomer.mockResolvedValueOnce({ id: 'cust_1' })
     mockVerifyDownloadToken.mockReturnValueOnce({
       customerId: 'cust_1',
@@ -164,16 +197,20 @@ describe('GET /api/account/download', () => {
     })
     mockFetchReleaseAsset.mockResolvedValueOnce(servedAsset())
 
-    const response = await GET(
-      new NextRequest('http://localhost/api/account/download?token=test')
-    )
+    const response = await GET(downloadRequest())
 
     expect(response.status).toBe(200)
     expect(response.headers.get('content-type')).toContain('application/zip')
     expect(response.headers.get('cache-control')).toBe('private, no-store')
+    // Successful download is audited (who/what/when).
+    expect(mockDownloadInfo).toHaveBeenCalled()
+    expect(mockVerifyDownloadToken).toHaveBeenCalledWith(
+      'test',
+      'download-token-secret'
+    )
   })
 
-  it('returns 502 when the asset cannot be fetched', async () => {
+  it('returns 502 and pages (error) when the asset cannot be fetched', async () => {
     mockGetCustomer.mockResolvedValueOnce({ id: 'cust_1' })
     mockVerifyDownloadToken.mockReturnValueOnce({
       customerId: 'cust_1',
@@ -189,11 +226,9 @@ describe('GET /api/account/download', () => {
     })
     mockFetchReleaseAsset.mockResolvedValueOnce(null)
 
-    const response = await GET(
-      new NextRequest('http://localhost/api/account/download?token=test')
-    )
+    const response = await GET(downloadRequest())
 
     expect(response.status).toBe(502)
-    expect(mockLicenseLoggerError).toHaveBeenCalled()
+    expect(mockDownloadError).toHaveBeenCalled()
   })
 })

@@ -2,6 +2,7 @@ import { configure, getConsoleSink } from '@logtape/logtape'
 import { createLokiSink } from '@/lib/sinks/loki-sink'
 import { createDiscordSink } from '@/lib/sinks/discord-sink'
 import { createSentrySink } from '@/lib/sinks/sentry-sink'
+import { createEmailSink } from '@/lib/sinks/email-sink'
 
 let configured = false
 
@@ -30,22 +31,41 @@ export async function register() {
     if (discordUrl) {
       sinks.discord = createDiscordSink({
         webhookUrl: discordUrl,
-        alwaysSendPrefixes: ['wcpos.store.sale'],
+        // Categories that bypass the 30s rate limit entirely: money-at-risk
+        // sale events, and download-delivery failures (a paying customer who
+        // can't download must always page, never be throttled away).
+        alwaysSendPrefixes: ['wcpos.store.sale', 'wcpos.license.download'],
       })
     }
 
     // Add Sentry sink if DSN is configured
     const sentryDsn = process.env.SENTRY_DSN || process.env.NEXT_PUBLIC_SENTRY_DSN
     if (sentryDsn) {
-      sinks.sentry = createSentrySink()
+      sinks.sentry = createSentrySink({
+        ignoredCategoryPrefixes: ['wcpos.store.sale.routine'],
+      })
     }
 
-    // Single logger entry for all sinks — Discord and Sentry sinks filter for error/fatal internally
+    // Email sink for the immediate-attention tier (fatal only). A missed Discord
+    // ping can't then hide a paid-but-no-license / broken-checkout incident.
+    const alertEmailKey = process.env.RESEND_API_KEY
+    const alertEmailTo = process.env.ALERT_EMAIL_TO
+    const emailConfigured = Boolean(alertEmailKey && alertEmailTo)
+    if (emailConfigured) {
+      sinks.email = createEmailSink({
+        apiKey: alertEmailKey!,
+        to: alertEmailTo!,
+        from: process.env.ALERT_EMAIL_FROM || 'WCPOS Alerts <noreply@wcpos.com>',
+      })
+    }
+
+    // Single logger entry for all sinks — Discord, Sentry and email sinks filter by level internally
     const sinkNames = [
       'console',
       ...(lokiUrl ? ['loki'] : []),
       ...(discordUrl ? ['discord'] : []),
       ...(sentryDsn ? ['sentry'] : []),
+      ...(emailConfigured ? ['email'] : []),
     ]
 
     await configure({
