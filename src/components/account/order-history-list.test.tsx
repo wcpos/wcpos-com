@@ -23,13 +23,15 @@ vi.mock('@/i18n/navigation', () => ({
 function makeOrder(overrides: Partial<OrderHistoryOrder> = {}): OrderHistoryOrder {
   return {
     id: 'order_123',
-    display_id: 1042,
-    status: 'completed',
-    payment_status: 'captured',
-    currency_code: 'usd',
-    total: 129,
-    created_at: '2026-01-15T00:00:00Z',
-    items: [{ id: 'item_1' }],
+    displayId: 1042,
+    createdAt: '2026-01-15T00:00:00Z',
+    itemCount: 1,
+    displayStatus: 'Paid',
+    total: {
+      amount: 129,
+      currencyCode: 'usd',
+    },
+    licenses: [],
     ...overrides,
   }
 }
@@ -114,7 +116,7 @@ describe('OrderHistoryList', () => {
       <OrderHistoryList
         orders={[
           makeOrder(),
-          makeOrder({ id: 'order_456', display_id: 1043 }),
+          makeOrder({ id: 'order_456', displayId: 1043 }),
         ]}
         locale="en-US"
       />

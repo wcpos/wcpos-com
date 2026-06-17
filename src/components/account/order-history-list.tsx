@@ -6,7 +6,6 @@ import { Card, CardContent } from '@/components/ui/card'
 import { DividedList, Row } from '@/components/ui/row'
 import { formatOrderAmount } from '@/lib/order-display'
 import { formatDateForLocale } from '@/lib/date-format'
-import { getOrderDisplayStatus } from '@/lib/order-status'
 
 /**
  * A licence an order produced, ready for display. The key is ALREADY masked
@@ -22,13 +21,14 @@ export interface OrderHistoryLicense {
 
 export interface OrderHistoryOrder {
   id: string
-  display_id: number
-  status: string
-  payment_status?: string
-  currency_code: string
-  total: number
-  created_at: string
-  items: Array<{ id: string }>
+  displayId: number
+  createdAt: string
+  itemCount: number
+  displayStatus: string
+  total: {
+    amount: number
+    currencyCode: string
+  }
   /**
    * Licences produced by this order, masked server-side. Optional and
    * degrades gracefully: when the orders list endpoint does not project
@@ -77,12 +77,12 @@ export function OrderHistoryList({ orders, locale }: OrderHistoryListProps) {
                     the single anchor to the detail page, so no nested
                     anchors and the Receipt button stays a sibling. */}
                 <p className="font-medium">
-                  {t('orderNumber', { id: order.display_id })}
+                  {t('orderNumber', { id: order.displayId })}
                 </p>
                 <p className="text-sm text-muted-foreground">
                   {t('dateAndItems', {
-                    date: formatDateForLocale(order.created_at, locale),
-                    count: order.items.length,
+                    date: formatDateForLocale(order.createdAt, locale),
+                    count: order.itemCount,
                   })}
                 </p>
                 {order.licenses?.map((license, index) => (
@@ -108,10 +108,13 @@ export function OrderHistoryList({ orders, locale }: OrderHistoryListProps) {
               <div className="flex flex-wrap items-center gap-4">
                 <div className="text-right">
                   <p className="font-medium tabular-nums">
-                    {formatOrderAmount(order.total, order.currency_code)}
+                    {formatOrderAmount(
+                      order.total.amount,
+                      order.total.currencyCode
+                    )}
                   </p>
                   <p className="text-sm text-muted-foreground">
-                    {getOrderDisplayStatus(order)}
+                    {order.displayStatus}
                   </p>
                 </div>
                 <div className="flex items-center gap-2">
@@ -121,7 +124,7 @@ export function OrderHistoryList({ orders, locale }: OrderHistoryListProps) {
                       target="_blank"
                       rel="noreferrer"
                       aria-label={t('downloadReceiptAria', {
-                        id: order.display_id,
+                        id: order.displayId,
                       })}
                     >
                       <FileDown className="mr-2 h-4 w-4" />
@@ -131,7 +134,7 @@ export function OrderHistoryList({ orders, locale }: OrderHistoryListProps) {
                   <Button asChild variant="ghost" size="sm">
                     <Link
                       href={`/account/orders/${order.id}`}
-                      aria-label={t('viewOrderAria', { id: order.display_id })}
+                      aria-label={t('viewOrderAria', { id: order.displayId })}
                     >
                       {t('viewOrder')}
                     </Link>

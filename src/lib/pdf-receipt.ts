@@ -1,17 +1,10 @@
 import { PDFDocument, StandardFonts, rgb, type PDFFont } from 'pdf-lib'
-import type { MedusaOrder } from './customer-orders'
+import type {
+  AccountOrderReceiptFact,
+  AccountOrderReceiptProfileFact,
+} from './account-order-projection'
 import { formatOrderAmount } from './order-display'
 import { formatDateForLocale } from './date-format'
-
-export interface ReceiptAccountProfile {
-  countryCode?: string | null
-  addressLine1?: string | null
-  addressLine2?: string | null
-  city?: string | null
-  region?: string | null
-  postalCode?: string | null
-  taxNumber?: string | null
-}
 
 function normalize(value: unknown): string {
   if (typeof value === 'string') {
@@ -25,7 +18,7 @@ function normalize(value: unknown): string {
   return ''
 }
 
-function buildAddressLine(profile: ReceiptAccountProfile): string {
+function buildAddressLine(profile: AccountOrderReceiptProfileFact): string {
   const city = normalize(profile.city)
   const region = normalize(profile.region)
   const postalCode = normalize(profile.postalCode)
@@ -109,8 +102,7 @@ function formatAmount(amount: unknown, currencyCode: unknown): string {
 }
 
 export async function buildTaxReceiptPdf(
-  order: MedusaOrder,
-  accountProfile: ReceiptAccountProfile = {},
+  receipt: AccountOrderReceiptFact,
   locale: string = 'en-US'
 ): Promise<Uint8Array> {
   const pdf = await PDFDocument.create()
@@ -144,7 +136,7 @@ export async function buildTaxReceiptPdf(
     color: rgb(0.9, 0.94, 1),
   })
 
-  page.drawText(`Order #${order.display_id}`, {
+  page.drawText(`Order #${receipt.displayId}`, {
     x: width - 200,
     y: page.getHeight() - 60,
     font: fontBold,
@@ -156,7 +148,7 @@ export async function buildTaxReceiptPdf(
   drawLabelValueRow({
     page,
     label: 'Order date',
-    value: formatDateForLocale(order.created_at, locale),
+    value: formatDateForLocale(receipt.createdAt, locale),
     x: margin,
     y: infoTopY,
     labelFont: fontRegular,
@@ -165,7 +157,7 @@ export async function buildTaxReceiptPdf(
   drawLabelValueRow({
     page,
     label: 'Customer',
-    value: normalize(order.email) || 'No email provided',
+    value: normalize(receipt.customerEmail) || 'No email provided',
     x: margin,
     y: infoTopY - 16,
     labelFont: fontRegular,
@@ -182,11 +174,11 @@ export async function buildTaxReceiptPdf(
   })
 
   const billingLines: string[] = []
-  const addressLine1 = normalize(accountProfile.addressLine1)
-  const addressLine2 = normalize(accountProfile.addressLine2)
-  const locationLine = buildAddressLine(accountProfile)
-  const countryCode = normalize(accountProfile.countryCode)
-  const taxNumber = normalize(accountProfile.taxNumber)
+  const addressLine1 = normalize(receipt.billingProfile.addressLine1)
+  const addressLine2 = normalize(receipt.billingProfile.addressLine2)
+  const locationLine = buildAddressLine(receipt.billingProfile)
+  const countryCode = normalize(receipt.billingProfile.countryCode)
+  const taxNumber = normalize(receipt.billingProfile.taxNumber)
 
   if (addressLine1) billingLines.push(addressLine1)
   if (addressLine2) billingLines.push(addressLine2)
@@ -246,7 +238,7 @@ export async function buildTaxReceiptPdf(
   })
 
   let rowY = tableTopY - 18
-  for (const item of order.items ?? []) {
+  for (const item of receipt.items ?? []) {
     const itemTitle =
       typeof item?.title === 'string' && item.title.trim()
         ? item.title
@@ -268,7 +260,7 @@ export async function buildTaxReceiptPdf(
     page.drawText(
       sanitizeTextForFont(
         fontRegular,
-        formatAmount(item.unit_price, order.currency_code)
+        formatAmount(item.unitPrice, receipt.currencyCode)
       ),
       {
       x: unitX,
@@ -280,7 +272,7 @@ export async function buildTaxReceiptPdf(
     page.drawText(
       sanitizeTextForFont(
         fontRegular,
-        formatAmount(item.total, order.currency_code)
+        formatAmount(item.total, receipt.currencyCode)
       ),
       {
       x: totalX,
@@ -304,7 +296,7 @@ export async function buildTaxReceiptPdf(
   drawLabelValueRow({
     page,
     label: 'Subtotal',
-    value: formatAmount(order.subtotal, order.currency_code),
+    value: formatAmount(receipt.totals.subtotal, receipt.currencyCode),
     x: width - margin - 180,
     y: rowY,
     labelFont: fontRegular,
@@ -314,7 +306,7 @@ export async function buildTaxReceiptPdf(
   drawLabelValueRow({
     page,
     label: 'Tax',
-    value: formatAmount(order.tax_total, order.currency_code),
+    value: formatAmount(receipt.totals.tax, receipt.currencyCode),
     x: width - margin - 180,
     y: rowY,
     labelFont: fontRegular,
@@ -324,7 +316,7 @@ export async function buildTaxReceiptPdf(
   drawLabelValueRow({
     page,
     label: 'Total',
-    value: formatAmount(order.total, order.currency_code),
+    value: formatAmount(receipt.totals.total, receipt.currencyCode),
     x: width - margin - 180,
     y: rowY,
     labelFont: fontBold,

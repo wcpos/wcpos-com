@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { getOrderById } from '@/lib/customer-orders'
 import { getCustomer } from '@/lib/medusa-auth'
+import { projectAccountOrderReceipt } from '@/lib/account-order-projection'
 import { buildTaxReceiptPdf } from '@/lib/pdf-receipt'
 import { projectAccountProfileForReceipt } from '@/lib/customer-profile-metadata'
 import { apiLogger } from '@/lib/logger'
@@ -41,8 +42,9 @@ export async function GET(
     }
 
     const profile = projectAccountProfileForReceipt(customer?.metadata)
+    const receipt = projectAccountOrderReceipt(order, profile)
     const locale = resolveLocale(request)
-    const pdf = await buildTaxReceiptPdf(order, profile, locale)
+    const pdf = await buildTaxReceiptPdf(receipt, locale)
     const pdfBuffer = Buffer.from(pdf)
     const filename = `receipt-${order.display_id}.pdf`
 
