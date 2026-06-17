@@ -11,6 +11,7 @@ import { ANALYTICS_DISTINCT_ID_COOKIE } from '@/lib/analytics/distinct-id'
 import { getAnalyticsConfig } from '@/lib/analytics/config'
 import { ApiError } from '@/lib/api/errors'
 import { toErrorResponse } from '@/lib/api/to-error-response'
+import { ORDER_PENDING_CODE } from '@/lib/checkout-failure-taxonomy'
 
 /**
  * POST /api/store/cart/complete - Complete cart and create order
@@ -57,7 +58,7 @@ export async function POST(request: NextRequest) {
       // distinct "Order pending" state. Routed through the shared adapter so the
       // { error, code } contract has a single, tested home.
       return toErrorResponse(
-        new ApiError(409, 'Payment received, order pending', 'order_pending')
+        new ApiError(409, 'Payment received, order pending', ORDER_PENDING_CODE)
       )
     }
 

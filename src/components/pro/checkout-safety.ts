@@ -9,22 +9,17 @@
  */
 
 import { clientLogger } from '@/lib/client-logger'
+import {
+  compareCheckoutFailureKindSafety,
+  isOwnerReportedCheckoutFailureKind,
+  isProtectiveCheckoutFailureKind as isProtectiveKind,
+  shouldBlockCheckoutForFailureKind,
+  type CheckoutFailureKind,
+  type ProtectiveCheckoutFailureKind,
+} from '@/lib/checkout-failure-taxonomy'
 
-export type CheckoutFailureKind =
-  /** Payment was declined or never made — safe for the Customer to retry. */
-  | 'payment_failed'
-  /** Customer cancelled the payment themselves — informational, retry is fine. */
-  | 'payment_cancelled'
-  /**
-   * The charge state is ambiguous: money may still be taken later. The Customer
-   * must check with support before retrying, or they could be double-charged.
-   */
-  | 'payment_uncertain'
-  /**
-   * Payment was authorized/captured but the Order could not be created. The
-   * Customer must not pay again — support has to finish or refund it.
-   */
-  | 'order_pending'
+export type { CheckoutFailureKind } from '@/lib/checkout-failure-taxonomy'
+export { isProtectiveCheckoutFailureKind } from '@/lib/checkout-failure-taxonomy'
 
 export interface CheckoutFailure {
   kind: CheckoutFailureKind
@@ -140,17 +135,11 @@ export function mapStripeErrorMessage(error: StripeErrorLike): string {
 // ---------------------------------------------------------------------------
 
 /**
- * Failure kinds forwarded to the server alerting path (/api/checkout/report-failure).
- * The server routes money-at-risk kinds to fatal (Discord + email) and routine
+ * Owner reporting is classified by the pure Checkout failure taxonomy. The
+ * server routes money-at-risk kinds to fatal (Discord + email) and routine
  * declines to error (Discord only). `payment_cancelled` is the Customer's own
  * choice and is intentionally absent.
  */
-const OWNER_REPORTED_KINDS = new Set<CheckoutFailureKind>([
-  'payment_failed',
-  'payment_uncertain',
-  'order_pending',
-])
-
 export function generateErrorReference(): string {
   const time = Date.now().toString(36).toUpperCase()
   const random = Math.random().toString(36).slice(2, 6).toUpperCase().padEnd(4, '0')
@@ -158,7 +147,7 @@ export function generateErrorReference(): string {
 }
 
 function reportFailureToOwner(failure: CheckoutFailure): void {
-  if (!OWNER_REPORTED_KINDS.has(failure.kind)) return
+  if (!isOwnerReportedCheckoutFailureKind(failure.kind)) return
 
   const endpoint = '/api/checkout/report-failure'
   let queued = false
@@ -304,12 +293,9 @@ export async function completeProviderConfirmedCheckout({
 // ---------------------------------------------------------------------------
 
 const STORAGE_KEY_PREFIX = 'wcpos:checkout-pending:'
-const PROTECTIVE_KINDS = ['order_pending', 'payment_uncertain'] as const
-
-type ProtectiveKind = (typeof PROTECTIVE_KINDS)[number]
 
 interface PersistedCheckoutSafetyState {
-  kind: ProtectiveKind
+  kind: ProtectiveCheckoutFailureKind
   message: string
   reference: string
   cartId: string
@@ -321,14 +307,8 @@ export interface RestoredCheckoutSafetyState {
   failure: CheckoutFailure
 }
 
-export function isProtectiveCheckoutFailureKind(
-  kind: CheckoutFailureKind
-): kind is ProtectiveKind {
-  return (PROTECTIVE_KINDS as readonly string[]).includes(kind)
-}
-
 export function shouldBlockCheckout(failure: CheckoutFailure): boolean {
-  return failure.kind === 'order_pending'
+  return shouldBlockCheckoutForFailureKind(failure.kind)
 }
 
 function getSessionStorage(): Storage | null {
@@ -348,8 +328,7 @@ function parsePersistedEntry(raw: string | null): PersistedCheckoutSafetyState |
     if (typeof parsed !== 'object' || parsed === null) return null
     const entry = parsed as Record<string, unknown>
     if (
-      typeof entry.kind === 'string' &&
-      (PROTECTIVE_KINDS as readonly string[]).includes(entry.kind) &&
+      isProtectiveKind(entry.kind) &&
       typeof entry.message === 'string' &&
       entry.message.length > 0 &&
       typeof entry.reference === 'string' &&
@@ -358,7 +337,7 @@ function parsePersistedEntry(raw: string | null): PersistedCheckoutSafetyState |
       entry.cartId.length > 0
     ) {
       return {
-        kind: entry.kind as ProtectiveKind,
+        kind: entry.kind,
         message: entry.message,
         reference: entry.reference,
         cartId: entry.cartId,
@@ -376,7 +355,7 @@ function parsePersistedEntry(raw: string | null): PersistedCheckoutSafetyState |
  * payment. Non-protective failures are ignored.
  */
 export function recordCheckoutFailure(cartId: string, failure: CheckoutFailure): void {
-  if (!cartId || !isProtectiveCheckoutFailureKind(failure.kind)) return
+  if (!cartId || !isProtectiveKind(failure.kind)) return
   const storage = getSessionStorage()
   if (!storage) return
 
@@ -419,7 +398,7 @@ export function restoreCheckoutSafetyState(): RestoredCheckoutSafetyState | null
 
   entries.sort((a, b) => {
     if (a.kind !== b.kind) {
-      return a.kind === 'order_pending' ? -1 : 1
+      return compareCheckoutFailureKindSafety(a.kind, b.kind)
     }
     return b.storedAt - a.storedAt
   })
