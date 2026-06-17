@@ -3,6 +3,7 @@ import { Suspense } from 'react'
 import { getCustomer } from '@/lib/medusa-auth'
 import { getDiscordLink } from '@/lib/discord/metadata'
 import { getPrimarySignInProvider } from '@/lib/auth-providers/metadata'
+import { projectProfileMetadataForClient } from '@/lib/customer-profile-metadata'
 import { isDiscordConfigured } from '@/lib/discord/config'
 import { formatDateForLocale } from '@/lib/date-format'
 import { redirectToLoginClearingSession } from '@/lib/login-redirect'
@@ -20,43 +21,6 @@ export async function generateMetadata({
   return {
     title: t('profile.title'),
     description: t('profile.description'),
-  }
-}
-
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return Boolean(value) && typeof value === 'object' && !Array.isArray(value)
-}
-
-function getClientProfileMetadata(
-  metadata: Record<string, unknown> | undefined
-): Record<string, unknown> | undefined {
-  if (!isRecord(metadata)) return undefined
-  const accountProfile = isRecord(metadata.account_profile)
-    ? metadata.account_profile
-    : undefined
-
-  return {
-    oauth_avatar_url: metadata.oauth_avatar_url,
-    avatar_url: metadata.avatar_url,
-    avatarUrl: metadata.avatarUrl,
-    picture: metadata.picture,
-    image: metadata.image,
-    image_url: metadata.image_url,
-    photo_url: metadata.photo_url,
-    profile_image_url: metadata.profile_image_url,
-    account_profile: accountProfile
-      ? {
-          avatarDataUrl: accountProfile.avatarDataUrl,
-          avatarUrl: accountProfile.avatarUrl,
-          countryCode: accountProfile.countryCode,
-          addressLine1: accountProfile.addressLine1,
-          addressLine2: accountProfile.addressLine2,
-          city: accountProfile.city,
-          region: accountProfile.region,
-          postalCode: accountProfile.postalCode,
-          taxNumber: accountProfile.taxNumber,
-        }
-      : undefined,
   }
 }
 
@@ -86,7 +50,7 @@ async function ProfileContent({ locale }: { locale: string }) {
         first_name: customer.first_name,
         last_name: customer.last_name,
         phone: customer.phone,
-        metadata: getClientProfileMetadata(customer.metadata),
+        metadata: projectProfileMetadataForClient(customer.metadata),
       }}
       memberSince={formatDateForLocale(customer.created_at, locale)}
       connections={{

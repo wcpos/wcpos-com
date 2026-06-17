@@ -139,4 +139,58 @@ describe('PATCH /api/account/profile', () => {
       })
     )
   })
+  it('returns only client-safe profile metadata after update', async () => {
+    mockGetCustomer.mockResolvedValueOnce({
+      id: 'cust_1',
+      metadata: {
+        oauth_avatar_url: 'https://avatars.example.com/oauth.jpg',
+        discord_user_id: 'secret-discord-id',
+      },
+    })
+    mockUpdateCustomer.mockResolvedValueOnce({
+      id: 'cust_1',
+      email: 'updated@example.com',
+      metadata: {
+        oauth_avatar_url: 'https://avatars.example.com/oauth.jpg',
+        discord_user_id: 'secret-discord-id',
+        marketing_opt_in: true,
+        account_profile: {
+          countryCode: 'US',
+          secretField: 'do not leak',
+        },
+      },
+    })
+
+    const response = await PATCH(
+      new NextRequest('http://localhost:3000/api/account/profile', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: 'updated@example.com',
+          accountProfile: {
+            countryCode: 'US',
+          },
+        }),
+      })
+    )
+
+    const json = await response.json()
+
+    expect(response.status).toBe(200)
+    expect(json.customer.metadata).toEqual({
+      oauth_avatar_url: 'https://avatars.example.com/oauth.jpg',
+      account_profile: {
+        avatarDataUrl: '',
+        avatarUrl: '',
+        countryCode: 'US',
+        addressLine1: '',
+        addressLine2: '',
+        city: '',
+        region: '',
+        postalCode: '',
+        taxNumber: '',
+      },
+    })
+  })
+
 })
