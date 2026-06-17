@@ -157,11 +157,7 @@ describe('getResolvedCustomerLicenses', () => {
       },
     })
 
-    const result = await (getResolvedCustomerLicenses as (
-      ignoredCustomer?: unknown
-    ) => ReturnType<typeof getResolvedCustomerLicenses>)({
-      id: 'cust_other',
-    })
+    const result = await getResolvedCustomerLicenses()
 
     expect(mockGetCustomer).toHaveBeenCalledTimes(1)
     expect(mockGetAllOrders).toHaveBeenCalledTimes(1)
