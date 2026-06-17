@@ -5,6 +5,7 @@ import { useLocale, useTranslations } from 'next-intl'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
+import { StatusBadge } from '@/components/ui/status-badge'
 import { DividedList, Row } from '@/components/ui/row'
 import { AccountNotice } from '@/components/account/account-notice'
 import { Key, Monitor, Trash2, Download } from 'lucide-react'
@@ -17,6 +18,7 @@ import {
   isLicenseExpiringSoon,
 } from '@/lib/license'
 import { getPlanByPolicyId } from '@/lib/plans'
+import { presentLicenseStatus } from '@/lib/license-status-presentation'
 
 interface Machine {
   id: string
@@ -36,43 +38,6 @@ interface License {
   metadata: Record<string, unknown>
   policyId: string
   createdAt: string
-}
-
-// Display statuses with a dedicated translation. The underlying status
-// values stay untouched (they drive entitlement logic and e2e selectors);
-// only the badge label is translated, and unexpected statuses fall back to
-// the raw value.
-const TRANSLATED_STATUSES = [
-  'active',
-  'expired',
-  'suspended',
-  'revoked',
-  'unknown',
-] as const
-type TranslatedStatus = (typeof TRANSLATED_STATUSES)[number]
-
-function isTranslatedStatus(status: string): status is TranslatedStatus {
-  return (TRANSLATED_STATUSES as readonly string[]).includes(status)
-}
-
-// Map each display status to a shared Badge variant. Semantics mirror the
-// account download palette: success = entitled now, warning = natural
-// lifecycle end (still keeps pre-expiry access), destructive = withdrawn by us
-// (suspended/revoked), secondary = unverifiable.
-type BadgeVariant = 'success' | 'warning' | 'destructive' | 'secondary'
-
-function statusBadgeVariant(status: string): BadgeVariant {
-  switch (status.toLowerCase()) {
-    case 'active':
-      return 'success'
-    case 'expired':
-      return 'warning'
-    case 'suspended':
-    case 'revoked':
-      return 'destructive'
-    default:
-      return 'secondary'
-  }
 }
 
 interface DiscordMember {
@@ -258,6 +223,7 @@ export function LicensesClient({
       ) : (
         licenses.map((license) => {
           const displayStatus = getDisplayStatus(license)
+          const statusPresentation = presentLicenseStatus(displayStatus)
           const expiringSoon = isLicenseExpiringSoon(license, now)
           const planLabel = getPlanLabel(license.policyId)
           // Per-licence attributed version (ADR-0006): null when this licence
@@ -287,18 +253,16 @@ export function LicensesClient({
                   </code>
                 </CardTitle>
                 <div className="flex items-center gap-2">
-                  <Badge
-                    variant={statusBadgeVariant(displayStatus)}
+                  <StatusBadge
+                    tone={statusPresentation.tone}
                     title={
-                      displayStatus === 'unknown'
-                        ? t('unknownStatusTooltip')
+                      statusPresentation.titleKey
+                        ? t(statusPresentation.titleKey)
                         : undefined
                     }
                   >
-                    {isTranslatedStatus(displayStatus)
-                      ? tStatus(displayStatus)
-                      : displayStatus}
-                  </Badge>
+                    {tStatus(statusPresentation.labelKey)}
+                  </StatusBadge>
                   {planLabel && (
                     <Badge variant="outline" className="text-muted-foreground">
                       {planLabel}

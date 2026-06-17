@@ -8,20 +8,19 @@ import { cn } from '@/lib/utils'
  * calmer and more legible (design sweep 2026-06-16).
  *
  * This is PURELY presentational. `tone` is a visual register, not a license
- * status: callers map their domain status (which lives in the keygen status
- * vocabularies — see memory keygen-status-space) onto one of these tones. Do
- * not treat the tone names as canonical statuses.
+ * status: callers map their domain status onto one of these tones. Do not
+ * treat the tone names as canonical statuses.
  */
 const statusBadgeVariants = cva(
   'inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-medium',
   {
     variants: {
       tone: {
-        active:
+        positive:
           'bg-green-50 text-green-700 dark:bg-green-500/10 dark:text-green-400',
-        pending:
+        caution:
           'bg-amber-50 text-amber-700 dark:bg-amber-500/10 dark:text-amber-400',
-        danger: 'bg-red-50 text-red-700 dark:bg-red-500/10 dark:text-red-400',
+        critical: 'bg-red-50 text-red-700 dark:bg-red-500/10 dark:text-red-400',
         neutral: 'bg-muted text-muted-foreground',
       },
     },
@@ -30,9 +29,9 @@ const statusBadgeVariants = cva(
 )
 
 const dotColor: Record<NonNullable<StatusBadgeProps['tone']>, string> = {
-  active: 'bg-green-500',
-  pending: 'bg-amber-500',
-  danger: 'bg-red-500',
+  positive: 'bg-green-500',
+  caution: 'bg-amber-500',
+  critical: 'bg-red-500',
   neutral: 'bg-muted-foreground',
 }
 

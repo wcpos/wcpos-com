@@ -10,24 +10,10 @@ import { Link } from '@/i18n/navigation'
 import { ArrowLeft, FileDown, Key } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
+import { StatusBadge } from '@/components/ui/status-badge'
 import { DividedList, Row } from '@/components/ui/row'
-import type { CanonicalLicenseStatus } from '@/lib/license-status'
+import { presentLicenseStatus } from '@/lib/license-status-presentation'
 import type { Metadata } from 'next'
-
-// Maps a canonical licence status to a shared Badge variant: green = entitled,
-// amber/warning = natural lapse (still entitled to pre-expiry releases), red =
-// withdrawn by us, secondary = unverifiable.
-const LICENSE_BADGE_VARIANT: Record<
-  CanonicalLicenseStatus,
-  'success' | 'warning' | 'destructive' | 'secondary'
-> = {
-  active: 'success',
-  expired: 'warning',
-  suspended: 'destructive',
-  revoked: 'destructive',
-  unknown: 'secondary',
-}
 
 export async function generateMetadata({
   params,
@@ -153,41 +139,44 @@ async function OrderDetailContent({
           </CardHeader>
           <CardContent>
             <DividedList>
-              {orderDetail.licenseEntitlements.map((license) => (
-                <Row key={license.id} className="gap-3">
-                  <div className="flex min-w-0 items-center gap-2.5">
-                    <span
-                      aria-hidden="true"
-                      className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-wcpos-red/10 text-wcpos-red-accent"
-                    >
-                      <Key className="h-4 w-4" />
-                    </span>
-                    <div className="min-w-0">
-                      {license.product && (
-                        <p className="truncate font-medium">
-                          {license.product}
-                        </p>
-                      )}
-                      <code className="font-mono text-sm tracking-wider text-muted-foreground">
-                        {license.maskedKey}
-                      </code>
+              {orderDetail.licenseEntitlements.map((license) => {
+                const statusPresentation = presentLicenseStatus(license.status)
+                return (
+                  <Row key={license.id} className="gap-3">
+                    <div className="flex min-w-0 items-center gap-2.5">
+                      <span
+                        aria-hidden="true"
+                        className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-wcpos-red/10 text-wcpos-red-accent"
+                      >
+                        <Key className="h-4 w-4" />
+                      </span>
+                      <div className="min-w-0">
+                        {license.product && (
+                          <p className="truncate font-medium">
+                            {license.product}
+                          </p>
+                        )}
+                        <code className="font-mono text-sm tracking-wider text-muted-foreground">
+                          {license.maskedKey}
+                        </code>
+                      </div>
                     </div>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    {/* Status text stays lowercase to honour the e2e badge
-                        contract; the colour carries the emphasis. */}
-                    <Badge variant={LICENSE_BADGE_VARIANT[license.status]}>
-                      {tStatus(license.status)}
-                    </Badge>
-                    <Link
-                      href="/account/licenses"
-                      className="shrink-0 text-sm text-primary underline-offset-4 hover:underline"
-                    >
-                      {t('manageLicence')}
-                    </Link>
-                  </div>
-                </Row>
-              ))}
+                    <div className="flex items-center gap-3">
+                      {/* Status text stays lowercase to honour the e2e contract;
+                          the marker carries the visual emphasis. */}
+                      <StatusBadge tone={statusPresentation.tone}>
+                        {tStatus(statusPresentation.labelKey)}
+                      </StatusBadge>
+                      <Link
+                        href="/account/licenses"
+                        className="shrink-0 text-sm text-primary underline-offset-4 hover:underline"
+                      >
+                        {t('manageLicence')}
+                      </Link>
+                    </div>
+                  </Row>
+                )
+              })}
             </DividedList>
           </CardContent>
         </Card>
