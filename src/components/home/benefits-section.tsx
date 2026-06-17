@@ -14,6 +14,7 @@ import {
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import { GithubIcon } from '@/components/icons/github'
+import { Section } from '@/components/ui/section'
 import { SectionHeading } from '@/components/ui/section-heading'
 
 type VisualKey = 'sync' | 'offline' | 'hardware' | 'ownership'
@@ -213,51 +214,53 @@ const visuals: Record<VisualKey, () => React.JSX.Element> = {
 
 export function BenefitsSection() {
   return (
-    <section aria-labelledby="benefits-heading">
-      <div className="bg-slate-50 dark:bg-slate-900/50">
-        <div className="container mx-auto px-4 pt-16 md:pt-20">
-          <SectionHeading
-            id="benefits-heading"
-            title="Why stores choose WCPOS"
-          />
-        </div>
-      </div>
+    <>
+      <Section
+        aria-labelledby="benefits-heading"
+        tone="muted"
+        spacing="none"
+        className="pt-16 md:pt-20"
+      >
+        <SectionHeading
+          id="benefits-heading"
+          title="Why stores choose WCPOS"
+        />
+      </Section>
 
       {benefits.map((benefit, index) => {
         const isEven = index % 2 === 0
-        const bgClass = isEven
-          ? 'bg-slate-50 dark:bg-slate-900/50'
-          : 'bg-white dark:bg-slate-950'
         const Visual = visuals[benefit.visual]
 
         return (
-          <div key={benefit.headline} className={bgClass}>
-            <div className="container mx-auto px-4 py-16 md:py-20">
-              <div className="mx-auto grid max-w-5xl items-center gap-12 md:grid-cols-2">
-                <div className={isEven ? '' : 'md:order-last'}>
-                  <Visual />
-                </div>
+          <Section
+            key={benefit.headline}
+            tone={isEven ? 'muted' : 'default'}
+            spacing="compact"
+          >
+            <div className="mx-auto grid max-w-5xl items-center gap-12 md:grid-cols-2">
+              <div className={isEven ? '' : 'md:order-last'}>
+                <Visual />
+              </div>
 
-                <div>
-                  <benefit.icon
-                    aria-hidden="true"
-                    className="mb-4 h-8 w-8 text-wcpos-red"
-                  />
-                  <h3 className="mb-3 text-xl font-semibold text-slate-800 dark:text-slate-100 md:text-2xl">
-                    {benefit.headline}
-                  </h3>
-                  <p className="mb-4 leading-relaxed text-slate-600 dark:text-slate-400">
-                    {benefit.description}
-                  </p>
-                  <p className="text-sm italic text-slate-500 dark:text-slate-400">
-                    {benefit.supporting}
-                  </p>
-                </div>
+              <div>
+                <benefit.icon
+                  aria-hidden="true"
+                  className="mb-4 h-8 w-8 text-wcpos-red"
+                />
+                <h3 className="mb-3 text-xl font-semibold text-slate-800 dark:text-slate-100 md:text-2xl">
+                  {benefit.headline}
+                </h3>
+                <p className="mb-4 leading-relaxed text-slate-600 dark:text-slate-400">
+                  {benefit.description}
+                </p>
+                <p className="text-sm italic text-slate-500 dark:text-slate-400">
+                  {benefit.supporting}
+                </p>
               </div>
             </div>
-          </div>
+          </Section>
         )
       })}
-    </section>
+    </>
   )
 }

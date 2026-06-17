@@ -18,6 +18,35 @@ vi.mock('@/i18n/navigation', () => ({
   ),
 }))
 
+vi.mock('@/components/ui/section', () => ({
+  Section: ({
+    children,
+    tone = 'default',
+    spacing = 'default',
+    bare = false,
+  }: {
+    children: React.ReactNode
+    tone?: string
+    spacing?: string
+    bare?: boolean
+  }) => (
+    <section
+      data-section-tone={tone}
+      data-section-spacing={spacing}
+      data-section-bare={String(bare)}
+    >
+      {bare ? children : <div data-container-width="default">{children}</div>}
+    </section>
+  ),
+  Container: ({
+    children,
+    width = 'default',
+  }: {
+    children: React.ReactNode
+    width?: string
+  }) => <div data-container-width={width}>{children}</div>,
+}))
+
 import { ProblemSection } from './problem-section'
 import { BenefitsSection } from './benefits-section'
 import { UseCasesSection } from './use-cases-section'
@@ -54,6 +83,25 @@ describe('BenefitsSection', () => {
     expect(
       screen.getByRole('heading', { name: 'You own everything' })
     ).toBeInTheDocument()
+  })
+
+  it('uses the canonical section seam for its heading and alternating bands', () => {
+    render(<BenefitsSection />)
+
+    const heading = screen.getByRole('heading', {
+      name: 'Why stores choose WCPOS',
+    })
+    expect(heading.closest('[data-section-tone]')).toHaveAttribute(
+      'data-section-tone',
+      'muted'
+    )
+
+    const sections = document.querySelectorAll('[data-section-tone]')
+    expect(
+      [...sections].map((section) =>
+        section.getAttribute('data-section-tone')
+      )
+    ).toEqual(['muted', 'muted', 'default', 'muted', 'default'])
   })
 })
 

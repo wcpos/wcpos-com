@@ -24,6 +24,76 @@ vi.mock('@/i18n/navigation', () => ({
   ),
 }))
 
+vi.mock('@/components/ui/section', () => ({
+  Section: ({
+    children,
+    tone = 'default',
+    spacing = 'default',
+    bare = false,
+  }: {
+    children: React.ReactNode
+    tone?: string
+    spacing?: string
+    bare?: boolean
+  }) => (
+    <section
+      data-section-tone={tone}
+      data-section-spacing={spacing}
+      data-section-bare={String(bare)}
+    >
+      {bare ? children : <div data-container-width="default">{children}</div>}
+    </section>
+  ),
+  Container: ({
+    children,
+    width = 'default',
+  }: {
+    children: React.ReactNode
+    width?: string
+  }) => <div data-container-width={width}>{children}</div>,
+}))
+
+vi.mock('@/components/ui/section-heading', () => ({
+  SectionHeading: ({
+    eyebrow,
+    title,
+    subtitle,
+    as: TitleTag = 'h2',
+    tone = 'default',
+    size = 'default',
+  }: {
+    eyebrow?: React.ReactNode
+    title: React.ReactNode
+    subtitle?: React.ReactNode
+    as?: 'h1' | 'h2' | 'h3'
+    tone?: string
+    size?: string
+  }) => (
+    <div data-section-heading-tone={tone} data-section-heading-size={size}>
+      {eyebrow && <p>{eyebrow}</p>}
+      <TitleTag>{title}</TitleTag>
+      {subtitle && <p>{subtitle}</p>}
+    </div>
+  ),
+}))
+
+vi.mock('@/components/ui/button', () => ({
+  Button: ({
+    children,
+    variant = 'default',
+    size = 'default',
+  }: {
+    children: React.ReactNode
+    variant?: string
+    size?: string
+    asChild?: boolean
+  }) => (
+    <span data-button-variant={variant} data-button-size={size}>
+      {children}
+    </span>
+  ),
+}))
+
 import { AboutHero } from './about-hero'
 import { FounderLetter, FounderLetterFallback } from './founder-letter'
 
@@ -50,6 +120,24 @@ describe('AboutHero', () => {
       })
     ).toBeInTheDocument()
   })
+
+  it('uses the canonical dark hero section seam', () => {
+    render(<AboutHero />)
+
+    const heading = screen.getByRole('heading', {
+      level: 1,
+      name: 'An independent point of sale for WooCommerce',
+    })
+    const section = heading.closest('[data-section-tone]')
+
+    expect(section).toHaveAttribute('data-section-tone', 'dark')
+    expect(section).toHaveAttribute('data-section-spacing', 'hero')
+    expect(section).toHaveAttribute('data-section-bare', 'true')
+    expect(heading.closest('[data-section-heading-tone]')).toHaveAttribute(
+      'data-section-heading-tone',
+      'inverse'
+    )
+  })
 })
 
 describe('FounderLetter', () => {
@@ -73,6 +161,17 @@ describe('FounderLetter', () => {
     render(<FounderLetterFallback />)
     expect(screen.getByText(/available from the Pro page/)).toBeInTheDocument()
   })
+
+  it('uses the canonical muted section seam around the editorial letter', () => {
+    render(<FounderLetterFallback />)
+
+    const section = screen
+      .getByText(/Hi — I'm Paul\. I built WooCommerce POS\./)
+      .closest('[data-section-tone]')
+
+    expect(section).toHaveAttribute('data-section-tone', 'muted')
+    expect(section).toHaveAttribute('data-section-spacing', 'default')
+  })
 })
 
 describe('StoryTimeline', () => {
@@ -82,6 +181,17 @@ describe('StoryTimeline', () => {
     expect(
       screen.getByRole('heading', { name: 'Released on WordPress.org' })
     ).toBeInTheDocument()
+  })
+
+  it('uses the canonical default section seam for the story band', () => {
+    render(<StoryTimeline />)
+
+    const section = screen
+      .getByRole('heading', { name: "How it started, and why it's still here" })
+      .closest('[data-section-tone]')
+
+    expect(section).toHaveAttribute('data-section-tone', 'default')
+    expect(section).toHaveAttribute('data-section-spacing', 'default')
   })
 })
 
@@ -99,6 +209,17 @@ describe('ValuesSection', () => {
       ).toBeInTheDocument()
     }
   })
+
+  it('uses the canonical muted section seam for the values band', () => {
+    render(<ValuesSection />)
+
+    const section = screen
+      .getByRole('heading', { name: 'What it stands for' })
+      .closest('[data-section-tone]')
+
+    expect(section).toHaveAttribute('data-section-tone', 'muted')
+    expect(section).toHaveAttribute('data-section-spacing', 'default')
+  })
 })
 
 describe('AboutCta', () => {
@@ -114,5 +235,29 @@ describe('AboutCta', () => {
       'href',
       '/pro'
     )
+  })
+
+  it('uses the canonical dark section and shared button seam', () => {
+    render(<AboutCta />)
+
+    const heading = screen.getByRole('heading', {
+      name: 'Built by a shopkeeper. Funded by shopkeepers.',
+    })
+    const section = heading.closest('[data-section-tone]')
+
+    expect(section).toHaveAttribute('data-section-tone', 'dark')
+    expect(section).toHaveAttribute('data-section-spacing', 'default')
+    expect(heading.closest('[data-section-heading-tone]')).toHaveAttribute(
+      'data-section-heading-tone',
+      'inverse'
+    )
+    expect(
+      screen.getByRole('link', { name: 'Try Live Demo' }).parentElement
+    ).toHaveAttribute('data-button-variant', 'brand')
+    expect(
+      screen.getByRole('link', { name: 'Download Free' }).parentElement
+    ).toHaveAttribute('data-button-variant', 'inverse')
+    expect(screen.getByRole('link', { name: 'See Pro' }).parentElement)
+      .toHaveAttribute('data-button-variant', 'brand-outline')
   })
 })
