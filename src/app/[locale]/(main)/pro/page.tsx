@@ -130,7 +130,9 @@ export default async function ProPage({
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-background to-muted/20">
-      <ProProductJsonLd />
+      <Suspense fallback={null}>
+        <ProProductJsonLd />
+      </Suspense>
       {/* Hero Section */}
       <section className="container mx-auto px-4 py-16 text-center">
         <h1 className="text-4xl md:text-5xl font-bold mb-4">
