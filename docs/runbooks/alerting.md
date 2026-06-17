@@ -35,7 +35,7 @@ Run **after** the PRs are merged and deployed and the env below is set.
 **1. Prove the alert chain (no purchase needed).** Hit the test endpoint in
 production with the configured token — expect a Discord message **and** an email:
 
-```
+```bash
 curl -s -o /dev/null -w '%{http_code}\n' \
   -H "x-alert-test-token: $ALERT_TEST_TOKEN" \
   https://wcpos.com/api/debug/alert-test
