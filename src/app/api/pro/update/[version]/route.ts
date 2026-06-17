@@ -1,8 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
 import semver from 'semver'
 import { licenseClient } from '@/services/core/external/license-client'
-import { isReleaseAllowedForLicenses } from '@/lib/license'
 import { getProPluginReleases } from '@/services/core/business/pro-downloads'
+import {
+  licenceScopeFromValidation,
+  selectEntitledRelease,
+} from '@/services/core/business/release-delivery'
 
 function normalizeSemver(version: string): string {
   const normalized = semver.valid(version) ?? semver.valid(semver.coerce(version))
@@ -35,24 +38,17 @@ export async function GET(
   }
 
   const releases = await getProPluginReleases()
-  // Entitlement uses the canonical status, NOT data.status: the plugin
-  // display vocabulary reuses 'inactive' for suspended licenses, which the
-  // canonical normalizer would misread as an in-term Keygen status.
-  const license = licenseStatus.entitlement ?? {
-    status: 'unknown',
-    expiry: null,
-  }
-  const latestAllowedRelease = releases.find((release) =>
-    isReleaseAllowedForLicenses(release, [license])
-  )
+  const scope = licenceScopeFromValidation(licenseStatus)
+  const selection = selectEntitledRelease(releases, 'latest', scope)
 
-  if (!latestAllowedRelease) {
+  if (!selection.ok) {
     return NextResponse.json(
       { error: 'No update is available for this license' },
       { status: 403 }
     )
   }
 
+  const latestAllowedRelease = selection.release
   const hasUpdate = semver.gt(
     normalizeSemver(latestAllowedRelease.version),
     normalizeSemver(currentVersion)

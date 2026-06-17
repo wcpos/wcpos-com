@@ -3,17 +3,11 @@ import { env } from '@/utils/env'
 import { getCustomer } from '@/lib/medusa-auth'
 import { getResolvedCustomerLicenses } from '@/lib/customer-licenses'
 import { verifyDownloadToken } from '@/lib/download-token'
-import { isReleaseAllowedForLicenses } from '@/lib/license'
-import { findReleaseByVersion } from '@/services/core/business/pro-downloads'
-import { getGitHubToken } from '@/services/core/external/github-auth'
+import { getProPluginReleases } from '@/services/core/business/pro-downloads'
+import { selectEntitledRelease } from '@/services/core/business/release-delivery'
+import { fetchReleaseAsset } from '@/services/core/external/github-asset'
 import { downloadLogger } from '@/lib/logger'
 import { clientIp } from '@/lib/rate-limit'
-
-interface DownloadAttempt {
-  name: 'asset-api' | 'asset-browser'
-  url: string
-  headers: Record<string, string>
-}
 
 export async function GET(request: NextRequest) {
   const ip = clientIp(request)
@@ -47,71 +41,45 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: 'Invalid token' }, { status: 403 })
   }
 
-  const release = await findReleaseByVersion(payload.version)
-  if (!release) {
-    downloadLogger.warn`Download denied: release not found. version=${payload.version} customer=${customer.id} ip=${ip}`
-    return NextResponse.json({ error: 'Release not found' }, { status: 404 })
-  }
-
+  const releases = await getProPluginReleases()
   const { licenses } = await getResolvedCustomerLicenses()
-  if (!isReleaseAllowedForLicenses(release, licenses)) {
-    downloadLogger.warn`Download denied: not entitled. version=${release.version} customer=${customer.id} ip=${ip}`
+  // Account-wide authorization is a deliberate union (ADR-0006): the token
+  // proves the customer asked for this version; the union decides whether any
+  // licence they hold entitles it.
+  const selection = selectEntitledRelease(releases, payload.version, {
+    kind: 'account',
+    licences: licenses,
+  })
+  if (!selection.ok) {
+    if (selection.reason === 'not_found') {
+      downloadLogger.warn`Download denied: release not found. version=${payload.version} customer=${customer.id} ip=${ip}`
+      return NextResponse.json({ error: 'Release not found' }, { status: 404 })
+    }
+    downloadLogger.warn`Download denied: not entitled. version=${payload.version} customer=${customer.id} ip=${ip}`
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
   }
 
-  const githubToken = await getGitHubToken()
-  if (!githubToken) {
-    downloadLogger.warn`GitHub token unavailable for account download. version=${release.version}`
+  const release = selection.release
+  const served = await fetchReleaseAsset(release)
+  if (!served) {
+    // All sources failed for an entitled customer — delivery is broken. error →
+    // Discord (download category bypasses the rate limit, never throttled).
+    downloadLogger.error`Failed to fetch release asset after retries. version=${release.version} customer=${customer.id} ip=${ip}`
+    return NextResponse.json(
+      { error: 'Failed to fetch release asset' },
+      { status: 502 }
+    )
   }
 
-  const downloadAttempts: DownloadAttempt[] = [
-    {
-      name: 'asset-api',
-      url: release.assetApiUrl,
-      headers: {
-        ...(githubToken ? { Authorization: `Bearer ${githubToken}` } : {}),
-        Accept: 'application/octet-stream',
-      },
+  // Audit trail: who downloaded what, when, from where. info → Loki only.
+  downloadLogger.info`Download served. customer=${customer.id} version=${release.version} asset=${served.filename} ip=${ip} ua=${userAgent}`
+
+  return new NextResponse(served.stream, {
+    status: 200,
+    headers: {
+      'Content-Type': served.contentType,
+      'Content-Disposition': `attachment; filename="${served.filename}"`,
+      'Cache-Control': 'private, no-store',
     },
-    {
-      name: 'asset-browser',
-      url: release.assetUrl,
-      headers: {
-        ...(githubToken ? { Authorization: `Bearer ${githubToken}` } : {}),
-        Accept: '*/*',
-      },
-    },
-  ]
-
-  for (const attempt of downloadAttempts) {
-    try {
-      const response = await fetch(attempt.url, { headers: attempt.headers })
-      if (!response.ok || !response.body) {
-        downloadLogger.warn`Account download attempt failed (${attempt.name}). status=${response.status} version=${release.version}`
-        continue
-      }
-
-      // Audit trail: who downloaded what, when, from where. info → Loki only.
-      downloadLogger.info`Download served. customer=${customer.id} version=${release.version} asset=${release.assetName} ip=${ip} ua=${userAgent}`
-
-      return new NextResponse(response.body, {
-        status: 200,
-        headers: {
-          'Content-Type': 'application/zip',
-          'Content-Disposition': `attachment; filename="${release.assetName}"`,
-          'Cache-Control': 'private, no-store',
-        },
-      })
-    } catch (error) {
-      downloadLogger.warn`Account download attempt error (${attempt.name}). version=${release.version} error=${error}`
-    }
-  }
-
-  // All sources failed for an entitled customer — delivery is broken. error →
-  // Discord (download category bypasses the rate limit, never throttled).
-  downloadLogger.error`Failed to fetch release asset after retries. version=${release.version} customer=${customer.id} ip=${ip}`
-  return NextResponse.json(
-    { error: 'Failed to fetch release asset' },
-    { status: 502 }
-  )
+  })
 }

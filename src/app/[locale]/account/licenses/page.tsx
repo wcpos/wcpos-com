@@ -4,7 +4,7 @@ import { redirectToLoginClearingSession } from '@/lib/login-redirect'
 import { LicensesClient } from '@/components/account/licenses-client'
 import { getResolvedCustomerLicenses } from '@/lib/customer-licenses'
 import { getProPluginReleases } from '@/services/core/business/pro-downloads'
-import { isReleaseAllowedForLicenses } from '@/lib/license'
+import { selectEntitledRelease } from '@/services/core/business/release-delivery'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import type { LicenseDetail } from '@/types/license'
@@ -54,10 +54,13 @@ function buildEntitledVersions(
 ): Record<string, string | null> {
   const map: Record<string, string | null> = {}
   for (const license of licenses) {
-    const covered = releases.find((release) =>
-      isReleaseAllowedForLicenses(release, [license], nowMs)
+    const selection = selectEntitledRelease(
+      releases,
+      'latest',
+      { kind: 'licence', licence: license },
+      nowMs
     )
-    map[license.id] = covered?.version ?? null
+    map[license.id] = selection.ok ? selection.release.version : null
   }
   return map
 }

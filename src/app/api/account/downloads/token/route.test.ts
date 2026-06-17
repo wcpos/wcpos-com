@@ -3,8 +3,7 @@ import { NextRequest } from 'next/server'
 
 const mockGetCustomer = vi.fn()
 const mockGetResolvedCustomerLicenses = vi.fn()
-const mockFindReleaseByVersion = vi.fn()
-const mockIsReleaseAllowedForLicenses = vi.fn()
+const mockGetProPluginReleases = vi.fn()
 const mockCreateDownloadToken = vi.fn()
 const mockDownloadInfo = vi.fn()
 const mockDownloadWarn = vi.fn()
@@ -27,13 +26,8 @@ vi.mock('@/lib/customer-licenses', () => ({
 }))
 
 vi.mock('@/services/core/business/pro-downloads', () => ({
-  findReleaseByVersion: (...args: unknown[]) =>
-    mockFindReleaseByVersion(...args),
-}))
-
-vi.mock('@/lib/license', () => ({
-  isReleaseAllowedForLicenses: (...args: unknown[]) =>
-    mockIsReleaseAllowedForLicenses(...args),
+  getProPluginReleases: (...args: unknown[]) =>
+    mockGetProPluginReleases(...args),
 }))
 
 vi.mock('@/lib/download-token', () => ({
@@ -51,7 +45,9 @@ vi.mock('@/lib/logger', () => ({
 }))
 
 vi.mock('@/lib/rate-limit', () => ({
-  createRateLimiter: () => ({ consume: (...args: unknown[]) => mockConsume(...args) }),
+  createRateLimiter: () => ({
+    consume: (...args: unknown[]) => mockConsume(...args),
+  }),
   clientIp: () => '1.2.3.4',
 }))
 
@@ -60,6 +56,29 @@ vi.mock('@/utils/env', () => ({
 }))
 
 import { POST } from './route'
+
+function makeRelease(version: string, publishedAt: string) {
+  return {
+    version,
+    tagName: `v${version}`,
+    name: `WCPOS Pro ${version}`,
+    releaseNotes: '',
+    publishedAt,
+    assetName: `woocommerce-pos-pro-${version}.zip`,
+    assetApiUrl: `https://api.github.com/assets/${version}`,
+    assetUrl: `https://downloads.example.com/${version}.zip`,
+  }
+}
+
+const ACTIVE_LICENCE = { status: 'active', expiry: null }
+const EXPIRED_LICENCE = { status: 'expired', expiry: '2025-01-01T00:00:00Z' }
+
+function tokenRequest(version: string) {
+  return new NextRequest('http://localhost/api/account/downloads/token', {
+    method: 'POST',
+    body: JSON.stringify({ version }),
+  })
+}
 
 describe('POST /api/account/downloads/token', () => {
   beforeEach(() => {
@@ -72,44 +91,17 @@ describe('POST /api/account/downloads/token', () => {
   it('returns 401 when unauthenticated', async () => {
     mockGetCustomer.mockResolvedValueOnce(null)
 
-    const response = await POST(
-      new NextRequest('http://localhost/api/account/downloads/token', {
-        method: 'POST',
-        body: JSON.stringify({ version: '1.9.0' }),
-      })
-    )
+    const response = await POST(tokenRequest('1.9.0'))
 
     expect(response.status).toBe(401)
   })
 
-  it('returns 500 when no signing secret is configured', async () => {
+  it('returns 500 and pages (fatal) when DOWNLOAD_TOKEN_SECRET is missing', async () => {
     mockEnv.DOWNLOAD_TOKEN_SECRET = undefined
     mockEnv.KEYGEN_API_TOKEN = undefined
     mockGetCustomer.mockResolvedValueOnce({ id: 'cust_1' })
 
-    const response = await POST(
-      new NextRequest('http://localhost/api/account/downloads/token', {
-        method: 'POST',
-        body: JSON.stringify({ version: '1.9.0' }),
-      })
-    )
-    const json = await response.json()
-
-    expect(response.status).toBe(500)
-    expect(json.error).toBe('Download token secret not configured')
-    expect(mockCreateDownloadToken).not.toHaveBeenCalled()
-  })
-
-  it('returns 500 when DOWNLOAD_TOKEN_SECRET is missing even if KEYGEN_API_TOKEN is configured', async () => {
-    mockEnv.DOWNLOAD_TOKEN_SECRET = undefined
-    mockGetCustomer.mockResolvedValueOnce({ id: 'cust_1' })
-
-    const response = await POST(
-      new NextRequest('http://localhost/api/account/downloads/token', {
-        method: 'POST',
-        body: JSON.stringify({ version: '1.9.0' }),
-      })
-    )
+    const response = await POST(tokenRequest('1.9.0'))
     const json = await response.json()
 
     expect(response.status).toBe(500)
@@ -119,144 +111,102 @@ describe('POST /api/account/downloads/token', () => {
     expect(mockCreateDownloadToken).not.toHaveBeenCalled()
   })
 
-  it('returns a signed download URL for allowed versions', async () => {
+  it('returns 500 when DOWNLOAD_TOKEN_SECRET is missing even if KEYGEN_API_TOKEN is configured', async () => {
+    mockEnv.DOWNLOAD_TOKEN_SECRET = undefined
     mockGetCustomer.mockResolvedValueOnce({ id: 'cust_1' })
-    mockFindReleaseByVersion.mockResolvedValueOnce({
-      version: '1.9.0',
-      assetName: 'woocommerce-pos-pro-1.9.0.zip',
-    })
-    mockGetResolvedCustomerLicenses.mockResolvedValueOnce({
-      authenticated: true,
-      licenses: [],
-    })
-    mockIsReleaseAllowedForLicenses.mockReturnValueOnce(true)
-    mockCreateDownloadToken.mockReturnValueOnce('signed-token')
 
-    const response = await POST(
-      new NextRequest('http://localhost/api/account/downloads/token', {
-        method: 'POST',
-        body: JSON.stringify({ version: '1.9.0' }),
-      })
-    )
+    const response = await POST(tokenRequest('1.9.0'))
     const json = await response.json()
 
-    expect(response.status).toBe(200)
-    expect(json.downloadUrl).toContain('/api/account/download?token=signed-token')
-    // Token issuance is audited.
-    expect(mockDownloadInfo).toHaveBeenCalled()
-    expect(mockCreateDownloadToken).toHaveBeenCalledWith(
-      expect.objectContaining({
-        customerId: 'cust_1',
-        version: '1.9.0',
-      }),
-      'download-token-secret'
-    )
-  })
-
-  it('prefers DOWNLOAD_TOKEN_SECRET over KEYGEN_API_TOKEN', async () => {
-    mockEnv.DOWNLOAD_TOKEN_SECRET = 'download-token-secret'
-    mockGetCustomer.mockResolvedValueOnce({ id: 'cust_1' })
-    mockFindReleaseByVersion.mockResolvedValueOnce({
-      version: '1.9.0',
-      assetName: 'woocommerce-pos-pro-1.9.0.zip',
-    })
-    mockGetResolvedCustomerLicenses.mockResolvedValueOnce({
-      authenticated: true,
-      licenses: [],
-    })
-    mockIsReleaseAllowedForLicenses.mockReturnValueOnce(true)
-    mockCreateDownloadToken.mockReturnValueOnce('signed-token')
-
-    const response = await POST(
-      new NextRequest('http://localhost/api/account/downloads/token', {
-        method: 'POST',
-        body: JSON.stringify({ version: '1.9.0' }),
-      })
-    )
-
-    expect(response.status).toBe(200)
-    expect(mockCreateDownloadToken).toHaveBeenCalledWith(
-      expect.anything(),
-      'download-token-secret'
-    )
-  })
-
-  it('returns 404 and logs warning when release is missing', async () => {
-    mockGetCustomer.mockResolvedValueOnce({ id: 'cust_1' })
-    mockFindReleaseByVersion.mockResolvedValueOnce(null)
-
-    const response = await POST(
-      new NextRequest('http://localhost/api/account/downloads/token', {
-        method: 'POST',
-        body: JSON.stringify({ version: '99.9.9' }),
-      })
-    )
-
-    expect(response.status).toBe(404)
-    expect(mockDownloadWarn).toHaveBeenCalled()
-  })
-
-  it('returns 403 when release is not allowed by license', async () => {
-    mockGetCustomer.mockResolvedValueOnce({ id: 'cust_1' })
-    mockFindReleaseByVersion.mockResolvedValueOnce({
-      version: '1.9.0',
-      assetName: 'woocommerce-pos-pro-1.9.0.zip',
-      assetApiUrl: 'https://api.github.com/assets/123',
-      assetUrl: 'https://github.com/download.zip',
-    })
-    mockGetResolvedCustomerLicenses.mockResolvedValueOnce({
-      authenticated: true,
-      licenses: [],
-    })
-    mockIsReleaseAllowedForLicenses.mockReturnValueOnce(false)
-
-    const response = await POST(
-      new NextRequest('http://localhost/api/account/downloads/token', {
-        method: 'POST',
-        body: JSON.stringify({ version: '1.9.0' }),
-      })
-    )
-
-    expect(response.status).toBe(403)
-    expect(mockDownloadWarn).toHaveBeenCalled()
+    expect(response.status).toBe(500)
+    expect(json.error).toBe('Download token secret not configured')
+    expect(mockCreateDownloadToken).not.toHaveBeenCalled()
   })
 
   it('returns 429 and does not mint a token when rate limited', async () => {
     mockGetCustomer.mockResolvedValueOnce({ id: 'cust_1' })
     mockConsume.mockResolvedValueOnce({ success: false, remaining: 0 })
 
-    const response = await POST(
-      new NextRequest('http://localhost/api/account/downloads/token', {
-        method: 'POST',
-        body: JSON.stringify({ version: '1.9.0' }),
-      })
-    )
+    const response = await POST(tokenRequest('1.9.0'))
 
     expect(response.status).toBe(429)
     expect(mockCreateDownloadToken).not.toHaveBeenCalled()
-    expect(mockFindReleaseByVersion).not.toHaveBeenCalled()
+    expect(mockGetProPluginReleases).not.toHaveBeenCalled()
     expect(mockDownloadWarn).toHaveBeenCalled()
+  })
+
+  it('returns a signed download URL for an entitled version and audits it', async () => {
+    mockGetCustomer.mockResolvedValueOnce({ id: 'cust_1' })
+    mockGetProPluginReleases.mockResolvedValueOnce([
+      makeRelease('1.9.0', '2026-02-01T00:00:00Z'),
+    ])
+    mockGetResolvedCustomerLicenses.mockResolvedValueOnce({
+      authenticated: true,
+      licenses: [ACTIVE_LICENCE],
+    })
+    mockCreateDownloadToken.mockReturnValueOnce('signed-token')
+
+    const response = await POST(tokenRequest('1.9.0'))
+    const json = await response.json()
+
+    expect(response.status).toBe(200)
+    expect(json.downloadUrl).toContain(
+      '/api/account/download?token=signed-token'
+    )
+    // Token issuance is audited.
+    expect(mockDownloadInfo).toHaveBeenCalled()
+    expect(mockCreateDownloadToken).toHaveBeenCalledWith(
+      expect.objectContaining({ customerId: 'cust_1', version: '1.9.0' }),
+      'download-token-secret'
+    )
+  })
+
+  it('returns 404 and logs a warning when the release is missing', async () => {
+    mockGetCustomer.mockResolvedValueOnce({ id: 'cust_1' })
+    mockGetProPluginReleases.mockResolvedValueOnce([
+      makeRelease('1.9.0', '2026-02-01T00:00:00Z'),
+    ])
+    mockGetResolvedCustomerLicenses.mockResolvedValueOnce({
+      authenticated: true,
+      licenses: [ACTIVE_LICENCE],
+    })
+
+    const response = await POST(tokenRequest('99.9.9'))
+
+    expect(response.status).toBe(404)
+    expect(mockDownloadWarn).toHaveBeenCalled()
+    expect(mockCreateDownloadToken).not.toHaveBeenCalled()
+  })
+
+  it('returns 403 when the release is not entitled by any licence', async () => {
+    mockGetCustomer.mockResolvedValueOnce({ id: 'cust_1' })
+    mockGetProPluginReleases.mockResolvedValueOnce([
+      makeRelease('1.9.0', '2026-02-01T00:00:00Z'),
+    ])
+    mockGetResolvedCustomerLicenses.mockResolvedValueOnce({
+      authenticated: true,
+      licenses: [EXPIRED_LICENCE],
+    })
+
+    const response = await POST(tokenRequest('1.9.0'))
+
+    expect(response.status).toBe(403)
+    expect(mockDownloadWarn).toHaveBeenCalled()
+    expect(mockCreateDownloadToken).not.toHaveBeenCalled()
   })
 
   it('rate limits per customer id (not IP)', async () => {
     mockGetCustomer.mockResolvedValueOnce({ id: 'cust_42' })
-    mockFindReleaseByVersion.mockResolvedValueOnce({
-      version: '1.9.0',
-      assetName: 'woocommerce-pos-pro-1.9.0.zip',
-    })
+    mockGetProPluginReleases.mockResolvedValueOnce([
+      makeRelease('1.9.0', '2026-02-01T00:00:00Z'),
+    ])
     mockGetResolvedCustomerLicenses.mockResolvedValueOnce({
       authenticated: true,
-      licenses: [],
+      licenses: [ACTIVE_LICENCE],
     })
-    mockIsReleaseAllowedForLicenses.mockReturnValueOnce(true)
     mockCreateDownloadToken.mockReturnValueOnce('signed-token')
 
-    await POST(
-      new NextRequest('http://localhost/api/account/downloads/token', {
-        method: 'POST',
-        body: JSON.stringify({ version: '1.9.0' }),
-      })
-    )
+    await POST(tokenRequest('1.9.0'))
 
     expect(mockConsume).toHaveBeenCalledWith('cust_42')
   })
