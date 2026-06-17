@@ -109,6 +109,10 @@ describe('GET /api/pro/download/[version]', () => {
 
     expect(response.status).toBe(200)
     expect(response.headers.get('cache-control')).toBe('private, no-store')
+    expect(response.headers.get('content-type')).toBe('application/zip')
+    expect(response.headers.get('content-disposition')).toBe(
+      'attachment; filename="woocommerce-pos-pro-3.2.0.zip"'
+    )
   })
 
   it('returns 502 when the asset cannot be fetched', async () => {

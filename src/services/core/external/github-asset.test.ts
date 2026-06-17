@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 const mockGetGitHubToken = vi.fn()
 const mockInfraWarn = vi.fn()
@@ -27,6 +27,10 @@ describe('fetchReleaseAsset', () => {
     mockGetGitHubToken.mockResolvedValue('github-token')
   })
 
+  afterEach(() => {
+    vi.useRealTimers()
+  })
+
   it('returns the asset stream from the API url on first success', async () => {
     mockFetch.mockResolvedValueOnce(new Response('zip-binary', { status: 200 }))
 
@@ -40,7 +44,31 @@ describe('fetchReleaseAsset', () => {
         Authorization: 'Bearer github-token',
         Accept: 'application/octet-stream',
       },
+      signal: expect.any(AbortSignal),
     })
+  })
+
+  it('aborts a stalled attempt and retries the browser url', async () => {
+    vi.useFakeTimers()
+    mockFetch
+      .mockImplementationOnce((_url: string, init?: RequestInit) => {
+        return new Promise((_resolve, reject) => {
+          init?.signal?.addEventListener('abort', () => {
+            reject(new DOMException('Aborted', 'AbortError'))
+          })
+        })
+      })
+      .mockResolvedValueOnce(new Response('zip-binary', { status: 200 }))
+
+    const servedPromise = fetchReleaseAsset(release)
+
+    await vi.advanceTimersByTimeAsync(10_000)
+    const served = await servedPromise
+
+    expect(served).not.toBeNull()
+    expect(mockFetch).toHaveBeenCalledTimes(2)
+    expect(mockFetch.mock.calls[0][0]).toBe('https://api.github.com/assets/123')
+    expect(mockFetch.mock.calls[1][0]).toBe('https://github.com/download.zip')
   })
 
   it('falls back to the browser url when the API url fails', async () => {
@@ -75,6 +103,7 @@ describe('fetchReleaseAsset', () => {
 
     expect(mockFetch).toHaveBeenCalledWith('https://api.github.com/assets/123', {
       headers: { Accept: 'application/octet-stream' },
+      signal: expect.any(AbortSignal),
     })
   })
 })

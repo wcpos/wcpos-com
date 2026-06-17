@@ -101,8 +101,10 @@ describe('GET /api/account/download', () => {
     mockGetCustomer.mockResolvedValueOnce({ id: 'cust_1' })
 
     const response = await GET(downloadRequest())
+    const json = await response.json()
 
     expect(response.status).toBe(500)
+    expect(json.error).toBe('Download token secret not configured')
     expect(mockVerifyDownloadToken).not.toHaveBeenCalled()
     // Infra broken — fatal so Discord + email page on it.
     expect(mockDownloadFatal).toHaveBeenCalled()
@@ -132,7 +134,15 @@ describe('GET /api/account/download', () => {
     const response = await GET(downloadRequest())
 
     expect(response.status).toBe(403)
-    expect(mockDownloadWarn).toHaveBeenCalled()
+    expect(mockDownloadWarn.mock.calls[0][0]).toEqual([
+      'Download denied: invalid/mismatched token. customer=',
+      ' ip=',
+      '',
+    ])
+    expect(mockDownloadWarn.mock.calls[0].slice(1)).toEqual([
+      'cust_1',
+      'unknown',
+    ])
     expect(mockGetProPluginReleases).not.toHaveBeenCalled()
   })
 
@@ -154,7 +164,17 @@ describe('GET /api/account/download', () => {
     const response = await GET(downloadRequest())
 
     expect(response.status).toBe(404)
-    expect(mockDownloadWarn).toHaveBeenCalled()
+    expect(mockDownloadWarn.mock.calls[0][0]).toEqual([
+      'Download denied: release not found. version=',
+      ' customer=',
+      ' ip=',
+      '',
+    ])
+    expect(mockDownloadWarn.mock.calls[0].slice(1)).toEqual([
+      '9.9.9',
+      'cust_1',
+      'unknown',
+    ])
     expect(mockFetchReleaseAsset).not.toHaveBeenCalled()
   })
 
@@ -177,7 +197,17 @@ describe('GET /api/account/download', () => {
     const response = await GET(downloadRequest())
 
     expect(response.status).toBe(403)
-    expect(mockDownloadWarn).toHaveBeenCalled()
+    expect(mockDownloadWarn.mock.calls[0][0]).toEqual([
+      'Download denied: not entitled. version=',
+      ' customer=',
+      ' ip=',
+      '',
+    ])
+    expect(mockDownloadWarn.mock.calls[0].slice(1)).toEqual([
+      '1.9.0',
+      'cust_1',
+      'unknown',
+    ])
     expect(mockFetchReleaseAsset).not.toHaveBeenCalled()
   })
 

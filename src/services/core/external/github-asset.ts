@@ -3,6 +3,8 @@ import 'server-only'
 import { getGitHubToken } from './github-auth'
 import { infraLogger } from '@/lib/logger'
 
+const FETCH_TIMEOUT_MS = 10_000
+
 /** The minimal release fields needed to fetch the binary from GitHub. */
 export interface ReleaseAssetRef {
   assetApiUrl: string
@@ -56,8 +58,14 @@ export async function fetchReleaseAsset(
   ]
 
   for (const attempt of attempts) {
+    const controller = new AbortController()
+    const timeout = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS)
+
     try {
-      const response = await fetch(attempt.url, { headers: attempt.headers })
+      const response = await fetch(attempt.url, {
+        headers: attempt.headers,
+        signal: controller.signal,
+      })
       if (!response.ok || !response.body) {
         infraLogger.warn`Release asset attempt failed (${attempt.name}). status=${response.status} asset=${release.assetName}`
         continue
@@ -70,6 +78,8 @@ export async function fetchReleaseAsset(
       }
     } catch (error) {
       infraLogger.warn`Release asset attempt error (${attempt.name}). asset=${release.assetName} error=${error}`
+    } finally {
+      clearTimeout(timeout)
     }
   }
 
