@@ -12,6 +12,7 @@ const PRO_CHECKOUT_EXPERIMENT = 'pro_checkout_v1'
 const DEFAULT_CURRENCY_CODE = 'usd'
 
 interface ProOfferCopy {
+  title: string
   description: string
   priceSuffix: string | null
   schemaName: string
@@ -22,6 +23,7 @@ interface ProOfferCopy {
 
 const OFFER_COPY: Record<PlanId, ProOfferCopy> = {
   yearly: {
+    title: 'Pro Yearly',
     description: 'One-year license',
     priceSuffix: '/year',
     schemaName: 'Yearly License',
@@ -36,6 +38,7 @@ const OFFER_COPY: Record<PlanId, ProOfferCopy> = {
     ],
   },
   lifetime: {
+    title: 'Pro Lifetime',
     description: 'One-time purchase',
     priceSuffix: null,
     schemaName: 'Lifetime License',
@@ -125,7 +128,7 @@ export function buildProOfferCatalog(
       return {
         planId: plan.id,
         handle: plan.handle,
-        title: product.title,
+        title: copy.title,
         description: copy.description,
         featured: copy.featured,
         badgeLabel: copy.badgeLabel,

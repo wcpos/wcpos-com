@@ -45,7 +45,7 @@ describe('buildProOfferCatalog', () => {
     expect(offers.map((offer) => offer.planId)).toEqual(['yearly', 'lifetime'])
     expect(offers[0]).toMatchObject({
       planId: 'yearly',
-      title: 'WCPOS Pro Yearly',
+      title: 'Pro Yearly',
       featured: true,
       badgeLabel: 'Most Popular',
       description: 'One-year license',
@@ -63,6 +63,7 @@ describe('buildProOfferCatalog', () => {
     expect(offers[0].features).not.toContain('Cancel anytime')
     expect(offers[1]).toMatchObject({
       planId: 'lifetime',
+      title: 'Pro Lifetime',
       featured: false,
       description: 'One-time purchase',
       priceSuffix: null,
