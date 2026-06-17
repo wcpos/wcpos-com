@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { render, screen } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 
 // Mock i18n navigation Link as a simple anchor (TrustSection links to /about-us)
 vi.mock('@/i18n/navigation', () => ({
@@ -24,13 +24,15 @@ vi.mock('@/components/ui/section', () => ({
     tone = 'default',
     spacing = 'default',
     bare = false,
+    ...props
   }: {
     children: React.ReactNode
     tone?: string
     spacing?: string
     bare?: boolean
-  }) => (
+  } & React.HTMLAttributes<HTMLElement>) => (
     <section
+      {...props}
       data-section-tone={tone}
       data-section-spacing={spacing}
       data-section-bare={String(bare)}
@@ -102,6 +104,36 @@ describe('BenefitsSection', () => {
         section.getAttribute('data-section-tone')
       )
     ).toEqual(['muted', 'muted', 'default', 'muted', 'default'])
+  })
+
+  it('keeps all benefits inside the labelled benefits region', () => {
+    render(<BenefitsSection />)
+
+    const region = screen.getByRole('region', {
+      name: 'Why stores choose WCPOS',
+    })
+
+    expect(
+      within(region).getByRole('heading', {
+        name: 'Why stores choose WCPOS',
+      })
+    ).toBeInTheDocument()
+    expect(
+      within(region).getByRole('heading', {
+        name: 'One catalog, two channels',
+      })
+    ).toBeInTheDocument()
+    expect(
+      within(region).getByRole('heading', { name: 'Works offline' })
+    ).toBeInTheDocument()
+    expect(
+      within(region).getByRole('heading', {
+        name: 'Native apps, real hardware',
+      })
+    ).toBeInTheDocument()
+    expect(
+      within(region).getByRole('heading', { name: 'You own everything' })
+    ).toBeInTheDocument()
   })
 })
 

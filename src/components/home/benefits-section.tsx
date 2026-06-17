@@ -214,9 +214,8 @@ const visuals: Record<VisualKey, () => React.JSX.Element> = {
 
 export function BenefitsSection() {
   return (
-    <>
+    <section aria-labelledby="benefits-heading">
       <Section
-        aria-labelledby="benefits-heading"
         tone="muted"
         spacing="none"
         className="pt-16 md:pt-20"
@@ -261,6 +260,6 @@ export function BenefitsSection() {
           </Section>
         )
       })}
-    </>
+    </section>
   )
 }
