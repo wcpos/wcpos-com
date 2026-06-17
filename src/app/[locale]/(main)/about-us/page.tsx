@@ -1,8 +1,12 @@
 import { setRequestLocale } from 'next-intl/server'
 import type { Metadata } from 'next'
+import { Suspense } from 'react'
 import { marketingMetadata } from '@/lib/seo'
 import { AboutHero } from '@/components/about/about-hero'
-import { FounderLetter } from '@/components/about/founder-letter'
+import {
+  FounderLetter,
+  FounderLetterFallback,
+} from '@/components/about/founder-letter'
 import { StoryTimeline } from '@/components/about/story-timeline'
 import { ValuesSection } from '@/components/about/values-section'
 import { AboutCta } from '@/components/about/about-cta'
@@ -33,7 +37,9 @@ export default async function AboutPage({
   return (
     <main>
       <AboutHero />
-      <FounderLetter />
+      <Suspense fallback={<FounderLetterFallback />}>
+        <FounderLetter />
+      </Suspense>
       <StoryTimeline />
       <ValuesSection />
       <AboutCta />

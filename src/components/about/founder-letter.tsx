@@ -4,6 +4,10 @@ import {
   getProOfferCatalog,
 } from '@/lib/pro-offer-catalog'
 
+export function FounderLetterFallback() {
+  return <FounderLetterContent priceSummary={null} />
+}
+
 export async function FounderLetter() {
   'use cache'
   cacheLife('products')
@@ -12,6 +16,14 @@ export async function FounderLetter() {
   const { offers } = await getProOfferCatalog()
   const priceSummary = formatFounderProPriceSummary(offers)
 
+  return <FounderLetterContent priceSummary={priceSummary} />
+}
+
+function FounderLetterContent({
+  priceSummary,
+}: {
+  priceSummary: string | null
+}) {
   return (
     <section className="bg-slate-50 dark:bg-slate-900">
       <div className="container mx-auto px-4 py-16 md:py-24">

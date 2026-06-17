@@ -25,7 +25,7 @@ vi.mock('@/i18n/navigation', () => ({
 }))
 
 import { AboutHero } from './about-hero'
-import { FounderLetter } from './founder-letter'
+import { FounderLetter, FounderLetterFallback } from './founder-letter'
 
 vi.mock('@/lib/pro-offer-catalog', () => ({
   getProOfferCatalog: vi.fn(async () => ({
@@ -67,6 +67,11 @@ describe('FounderLetter', () => {
   it('states the Pro pricing', async () => {
     render(await FounderLetter())
     expect(screen.getByText(/\$129\/yr or \$399 once/)).toBeInTheDocument()
+  })
+
+  it('renders a non-price fallback while pricing loads', () => {
+    render(<FounderLetterFallback />)
+    expect(screen.getByText(/available from the Pro page/)).toBeInTheDocument()
   })
 })
 
