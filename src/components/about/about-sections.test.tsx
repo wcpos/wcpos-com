@@ -192,6 +192,7 @@ describe('StoryTimeline', () => {
 
     expect(section).toHaveAttribute('data-section-tone', 'default')
     expect(section).toHaveAttribute('data-section-spacing', 'default')
+    expect(section).toHaveAttribute('data-section-bare', 'true')
   })
 })
 

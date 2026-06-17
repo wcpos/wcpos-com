@@ -5,7 +5,12 @@ vi.mock('react', async (importActual) => {
   const actual = await importActual<typeof import('react')>()
   return {
     ...actual,
-    Suspense: ({ fallback }: { fallback: React.ReactNode }) => <>{fallback}</>,
+    Suspense: ({
+      fallback,
+    }: {
+      children?: React.ReactNode
+      fallback?: React.ReactNode
+    }) => <>{fallback}</>,
   }
 })
 
@@ -75,13 +80,15 @@ vi.mock('@/components/ui/section', () => ({
     children,
     tone = 'default',
     spacing = 'default',
+    bare = false,
   }: {
     children: React.ReactNode
     tone?: string
     spacing?: string
+    bare?: boolean
   }) => (
     <section data-section-tone={tone} data-section-spacing={spacing}>
-      <div data-container-width="default">{children}</div>
+      {bare ? children : <div data-container-width="default">{children}</div>}
     </section>
   ),
 }))
@@ -125,5 +132,12 @@ describe('ProPage', () => {
     expect(
       sections.map((section) => section.getAttribute('data-section-spacing'))
     ).toEqual(['hero', 'compact', 'default', 'default'])
+
+    expect(screen.getByText('Pro features')).toBeInTheDocument()
+    expect(screen.getByText('Payment terminals')).toBeInTheDocument()
+    expect(screen.getByText('Stock and price edits')).toBeInTheDocument()
+    expect(screen.getByText('Questions')).toBeInTheDocument()
+    expect(screen.getByText('Do I need the free plugin?')).toBeInTheDocument()
+    expect(screen.getAllByText('Yes.')).toHaveLength(2)
   })
 })
