@@ -107,9 +107,11 @@ test.describe('Checkout Integration @integration', {
     expect(['fulfilled', 'delivered']).toContain(order.fulfillment_status)
 
     // Verify license key was generated for the order created by this test.
-    expect(order.metadata?.licenses).toBeDefined()
-    expect(order.metadata.licenses.length).toBeGreaterThanOrEqual(1)
-    expect(order.metadata.licenses[0].license_key).toBeTruthy()
+    const licenses = order.metadata?.licenses
+    expect(Array.isArray(licenses)).toBe(true)
+    if (!Array.isArray(licenses)) return
+    expect(licenses.length).toBeGreaterThanOrEqual(1)
+    expect(licenses[0].license_key).toBeTruthy()
 
     // ── Download verification ───────────────────────────────
     // The buyer can immediately download the Pro plugin they just paid for.
