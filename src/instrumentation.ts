@@ -41,7 +41,9 @@ export async function register() {
     // Add Sentry sink if DSN is configured
     const sentryDsn = process.env.SENTRY_DSN || process.env.NEXT_PUBLIC_SENTRY_DSN
     if (sentryDsn) {
-      sinks.sentry = createSentrySink()
+      sinks.sentry = createSentrySink({
+        ignoredCategoryPrefixes: ['wcpos.store.sale.routine'],
+      })
     }
 
     // Email sink for the immediate-attention tier (fatal only). A missed Discord

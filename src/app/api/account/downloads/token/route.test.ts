@@ -64,7 +64,7 @@ import { POST } from './route'
 describe('POST /api/account/downloads/token', () => {
   beforeEach(() => {
     vi.clearAllMocks()
-    mockEnv.DOWNLOAD_TOKEN_SECRET = undefined
+    mockEnv.DOWNLOAD_TOKEN_SECRET = 'download-token-secret'
     mockEnv.KEYGEN_API_TOKEN = 'keygen-token-secret'
     mockConsume.mockResolvedValue({ success: true, remaining: 29 })
   })
@@ -83,6 +83,7 @@ describe('POST /api/account/downloads/token', () => {
   })
 
   it('returns 500 when no signing secret is configured', async () => {
+    mockEnv.DOWNLOAD_TOKEN_SECRET = undefined
     mockEnv.KEYGEN_API_TOKEN = undefined
     mockGetCustomer.mockResolvedValueOnce({ id: 'cust_1' })
 
@@ -96,6 +97,25 @@ describe('POST /api/account/downloads/token', () => {
 
     expect(response.status).toBe(500)
     expect(json.error).toBe('Download token secret not configured')
+    expect(mockCreateDownloadToken).not.toHaveBeenCalled()
+  })
+
+  it('returns 500 when DOWNLOAD_TOKEN_SECRET is missing even if KEYGEN_API_TOKEN is configured', async () => {
+    mockEnv.DOWNLOAD_TOKEN_SECRET = undefined
+    mockGetCustomer.mockResolvedValueOnce({ id: 'cust_1' })
+
+    const response = await POST(
+      new NextRequest('http://localhost/api/account/downloads/token', {
+        method: 'POST',
+        body: JSON.stringify({ version: '1.9.0' }),
+      })
+    )
+    const json = await response.json()
+
+    expect(response.status).toBe(500)
+    expect(json.error).toBe('Download token secret not configured')
+    expect(mockDownloadFatal).toHaveBeenCalled()
+    expect(mockConsume).not.toHaveBeenCalled()
     expect(mockCreateDownloadToken).not.toHaveBeenCalled()
   })
 
@@ -129,7 +149,7 @@ describe('POST /api/account/downloads/token', () => {
         customerId: 'cust_1',
         version: '1.9.0',
       }),
-      'keygen-token-secret'
+      'download-token-secret'
     )
   })
 

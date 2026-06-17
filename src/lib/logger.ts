@@ -13,6 +13,7 @@ export const infraLogger = getLogger(['wcpos', 'infra'])
 // Sale-critical events (charged-but-no-order). Its own category so it can be
 // alerted/filtered distinctly from ordinary store errors.
 export const saleLogger = getLogger(['wcpos', 'store', 'sale'])
+export const routineSaleLogger = getLogger(['wcpos', 'store', 'sale', 'routine'])
 
 // Pro download delivery: audit trail (info) + delivery failures. Its own
 // category so it can bypass the Discord rate limit — a paying customer unable

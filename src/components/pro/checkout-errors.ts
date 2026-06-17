@@ -212,8 +212,6 @@ function buildFailure(
             JSON.stringify({
               kind,
               reference: failure.reference,
-              source: context.source,
-              details: context.details,
             })
           )
         }

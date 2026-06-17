@@ -27,9 +27,9 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    // Deliberately no fallback to the customer JWT: a request-scoped
-    // bearer token must never be used as an HMAC signing secret.
-    const secret = env.DOWNLOAD_TOKEN_SECRET || env.KEYGEN_API_TOKEN
+    // Deliberately no fallback: broader API/customer tokens must never be used
+    // as an HMAC signing secret.
+    const secret = env.DOWNLOAD_TOKEN_SECRET
     if (!secret) {
       // Infra broken — every paying customer is blocked. fatal → Discord + email.
       downloadLogger.fatal`Download token secret not configured (customer ${customer.id})`

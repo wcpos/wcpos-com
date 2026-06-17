@@ -2,13 +2,15 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 
 // vi.mock is hoisted above module-scope consts, so the mock fns must be
 // created inside vi.hoisted() to be available when the factory runs.
-const { fatalMock, errorMock, consumeMock } = vi.hoisted(() => ({
+const { fatalMock, errorMock, routineErrorMock, consumeMock } = vi.hoisted(() => ({
   fatalMock: vi.fn(),
   errorMock: vi.fn(),
+  routineErrorMock: vi.fn(),
   consumeMock: vi.fn(),
 }))
 vi.mock('@/lib/logger', () => ({
   saleLogger: { fatal: fatalMock, error: errorMock },
+  routineSaleLogger: { error: routineErrorMock },
 }))
 vi.mock('@/lib/rate-limit', () => ({
   createRateLimiter: () => ({ consume: (...args: unknown[]) => consumeMock(...args) }),
@@ -29,6 +31,7 @@ describe('POST /api/checkout/report-failure', () => {
   beforeEach(() => {
     fatalMock.mockReset()
     errorMock.mockReset()
+    routineErrorMock.mockReset()
     consumeMock.mockReset()
     consumeMock.mockResolvedValue({ success: true, remaining: 29 })
   })
@@ -71,7 +74,8 @@ describe('POST /api/checkout/report-failure', () => {
       source: 'stripe_confirm_payment',
     }))
     expect(res.status).toBe(204)
-    expect(errorMock).toHaveBeenCalledTimes(1)
+    expect(routineErrorMock).toHaveBeenCalledTimes(1)
+    expect(errorMock).not.toHaveBeenCalled()
     expect(fatalMock).not.toHaveBeenCalled()
   })
 
@@ -83,6 +87,7 @@ describe('POST /api/checkout/report-failure', () => {
     expect(res.status).toBe(204)
     expect(fatalMock).not.toHaveBeenCalled()
     expect(errorMock).not.toHaveBeenCalled()
+    expect(routineErrorMock).not.toHaveBeenCalled()
   })
 
   it('ignores unknown kinds without logging (still 204, never errors the client)', async () => {
@@ -90,11 +95,31 @@ describe('POST /api/checkout/report-failure', () => {
     expect(res.status).toBe(204)
     expect(fatalMock).not.toHaveBeenCalled()
     expect(errorMock).not.toHaveBeenCalled()
+    expect(routineErrorMock).not.toHaveBeenCalled()
   })
 
   it('tolerates malformed JSON', async () => {
     const bad = new Request('http://localhost/api/checkout/report-failure', { method: 'POST', body: '{' })
     const res = await POST(bad)
     expect(res.status).toBe(204)
+  })
+
+  it('drops oversized payloads without a valid content-length header', async () => {
+    const oversized = new Request('http://localhost/api/checkout/report-failure', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        kind: 'payment_failed',
+        reference: 'WCPOS-III-JJJJ',
+        details: 'x'.repeat(3_000),
+      }),
+    })
+
+    const res = await POST(oversized)
+
+    expect(res.status).toBe(204)
+    expect(fatalMock).not.toHaveBeenCalled()
+    expect(errorMock).not.toHaveBeenCalled()
+    expect(routineErrorMock).not.toHaveBeenCalled()
   })
 })

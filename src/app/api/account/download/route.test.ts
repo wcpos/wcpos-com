@@ -70,7 +70,7 @@ import { GET } from './route'
 describe('GET /api/account/download', () => {
   beforeEach(() => {
     vi.resetAllMocks()
-    mockEnv.DOWNLOAD_TOKEN_SECRET = undefined
+    mockEnv.DOWNLOAD_TOKEN_SECRET = 'download-token-secret'
     mockEnv.KEYGEN_API_TOKEN = 'keygen-token-secret'
     mockGetGitHubToken.mockResolvedValue(null)
   })
@@ -86,6 +86,7 @@ describe('GET /api/account/download', () => {
   })
 
   it('returns 500 when no signing secret is configured', async () => {
+    mockEnv.DOWNLOAD_TOKEN_SECRET = undefined
     mockEnv.KEYGEN_API_TOKEN = undefined
     mockGetCustomer.mockResolvedValueOnce({ id: 'cust_1' })
 
@@ -98,6 +99,21 @@ describe('GET /api/account/download', () => {
     expect(json.error).toBe('Download token secret not configured')
     expect(mockVerifyDownloadToken).not.toHaveBeenCalled()
     // Infra broken — fatal so Discord + email page on it.
+    expect(mockDownloadFatal).toHaveBeenCalled()
+  })
+
+  it('returns 500 when DOWNLOAD_TOKEN_SECRET is missing even if KEYGEN_API_TOKEN is configured', async () => {
+    mockEnv.DOWNLOAD_TOKEN_SECRET = undefined
+    mockGetCustomer.mockResolvedValueOnce({ id: 'cust_1' })
+
+    const response = await GET(
+      new NextRequest('http://localhost/api/account/download?token=test')
+    )
+    const json = await response.json()
+
+    expect(response.status).toBe(500)
+    expect(json.error).toBe('Download token secret not configured')
+    expect(mockVerifyDownloadToken).not.toHaveBeenCalled()
     expect(mockDownloadFatal).toHaveBeenCalled()
   })
 
@@ -135,7 +151,7 @@ describe('GET /api/account/download', () => {
     expect(mockDownloadInfo).toHaveBeenCalled()
     expect(mockVerifyDownloadToken).toHaveBeenCalledWith(
       'test',
-      'keygen-token-secret'
+      'download-token-secret'
     )
     expect(mockFetch).toHaveBeenCalledTimes(1)
     expect(mockFetch).toHaveBeenCalledWith('https://api.github.com/assets/123', {

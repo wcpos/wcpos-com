@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { saleLogger } from '@/lib/logger'
+import { routineSaleLogger, saleLogger } from '@/lib/logger'
 import { createRateLimiter, clientIp } from '@/lib/rate-limit'
 
 /**
@@ -20,7 +20,7 @@ const MONEY_AT_RISK = new Set(['order_pending', 'payment_uncertain'])
 // owner sees every failed purchase attempt; they go to Discord only, not email.
 const ROUTINE_FAILURE = new Set(['payment_failed'])
 
-// Beacon payloads are tiny ({kind, reference, source, details}). Reject anything
+// Beacon payloads are tiny ({kind, reference}). Reject anything
 // larger so a single caller can't push large bodies through the alert path.
 const MAX_BODY_BYTES = 2_048
 
@@ -47,7 +47,8 @@ function sanitizeReference(value: unknown): string {
 export async function POST(request: Request): Promise<NextResponse> {
   const noContent = new NextResponse(null, { status: 204 })
   try {
-    if (Number(request.headers.get('content-length') ?? 0) > MAX_BODY_BYTES) {
+    const declaredLength = Number(request.headers.get('content-length'))
+    if (Number.isFinite(declaredLength) && declaredLength > MAX_BODY_BYTES) {
       return noContent
     }
 
@@ -55,7 +56,9 @@ export async function POST(request: Request): Promise<NextResponse> {
     const { success } = await limiter.consume(clientIp(request))
     if (!success) return noContent
 
-    const body = (await request.json()) as Record<string, unknown>
+    const raw = await request.text()
+    if (new TextEncoder().encode(raw).byteLength > MAX_BODY_BYTES) return noContent
+    const body = JSON.parse(raw) as Record<string, unknown>
     const kind = typeof body.kind === 'string' ? body.kind : 'unknown'
     const reference = sanitizeReference(body.reference)
 
@@ -63,8 +66,8 @@ export async function POST(request: Request): Promise<NextResponse> {
       // fatal → Discord (rate-limit-bypassed for wcpos.store.sale) + email.
       saleLogger.fatal`Checkout failure (money at risk): ${kind} ref=${reference}`
     } else if (ROUTINE_FAILURE.has(kind)) {
-      // error → Discord only (sale category bypasses the rate limit, no email).
-      saleLogger.error`Checkout payment failure: ${kind} ref=${reference}`
+      // error → Discord only (Sentry filters the routine sale subcategory).
+      routineSaleLogger.error`Checkout payment failure: ${kind} ref=${reference}`
     }
   } catch {
     // Malformed body — swallow. Alerting must never 500 the browser.

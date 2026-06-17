@@ -285,12 +285,17 @@ describe('buildFailure → server beacon', () => {
     expect(payload.reference).toMatch(/^WCPOS-/)
   })
 
-  it('beacons routine payment failures too (owner wants every failed attempt)', () => {
-    createPaymentFailure('declined', { source: 'stripe_confirm_payment' })
+  it('beacons routine payment failures with the minimal server payload', () => {
+    createPaymentFailure('declined', {
+      source: 'stripe_confirm_payment',
+      details: { raw: 'x'.repeat(3_000) },
+    })
     expect(beacon).toHaveBeenCalledTimes(1)
     const payload = JSON.parse(beacon.mock.calls[0][1] as string)
-    expect(payload.kind).toBe('payment_failed')
-    expect(payload.reference).toMatch(/^WCPOS-/)
+    expect(payload).toEqual({
+      kind: 'payment_failed',
+      reference: expect.stringMatching(/^WCPOS-/),
+    })
   })
 
   it('does NOT beacon customer cancellations', () => {
