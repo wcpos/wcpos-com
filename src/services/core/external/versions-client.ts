@@ -16,6 +16,7 @@ import { infraLogger } from '@/lib/logger'
  */
 
 const VERSIONS_URL = 'https://updates.wcpos.com/api/versions'
+const FEED_TIMEOUT_MS = 5000
 
 /** Labels the updates feed uses, in feed order. */
 export const PRODUCT_LABELS = {
@@ -41,12 +42,19 @@ async function fetchProductVersions(): Promise<ProductVersion[]> {
   'use cache'
   cacheLife('api-short')
 
-  const res = await fetch(VERSIONS_URL)
-  if (!res.ok) {
-    throw new Error(`Versions feed responded ${res.status}`)
+  const controller = new AbortController()
+  const timeoutId = setTimeout(() => controller.abort(), FEED_TIMEOUT_MS)
+
+  try {
+    const res = await fetch(VERSIONS_URL, { signal: controller.signal })
+    if (!res.ok) {
+      throw new Error(`Versions feed responded ${res.status}`)
+    }
+    const json = (await res.json()) as { data?: ProductVersion[] }
+    return Array.isArray(json.data) ? json.data : []
+  } finally {
+    clearTimeout(timeoutId)
   }
-  const json = (await res.json()) as { data?: ProductVersion[] }
-  return Array.isArray(json.data) ? json.data : []
 }
 
 /**
@@ -54,6 +62,9 @@ async function fetchProductVersions(): Promise<ProductVersion[]> {
  * feed is unreachable so callers can fall back to static copy.
  */
 export async function getProductVersions(): Promise<ProductVersion[]> {
+  'use cache'
+  cacheLife('api-short')
+
   try {
     return await fetchProductVersions()
   } catch (error) {

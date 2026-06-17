@@ -53,13 +53,6 @@ export function ReleaseHistory({ releases }: { releases: ReleaseEntry[] }) {
         </a>{' '}
         ·{' '}
         <a
-          href="https://github.com/wcpos/woocommerce-pos-pro/releases"
-          className="font-medium text-wcpos-red-accent hover:underline"
-        >
-          Pro
-        </a>{' '}
-        ·{' '}
-        <a
           href="https://github.com/wcpos/electron/releases"
           className="font-medium text-wcpos-red-accent hover:underline"
         >

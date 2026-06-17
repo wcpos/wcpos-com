@@ -472,6 +472,11 @@ const server = createServer(async (req, res) => {
     return sendJson(res, 200, fixtures.releases)
   }
 
+  if (pathname === '/repos/wcpos/woocommerce-pos/releases' && method === 'GET') {
+    // No Link header -> octokit.paginate stops after one page.
+    return sendJson(res, 200, fixtures.freeReleases)
+  }
+
   // Fetched by /api/desktop-releases (prerendered at build time), so this is
   // hit during `pnpm build` and on cache revalidation, not just by specs.
   if (pathname === '/repos/wcpos/electron/releases/latest' && method === 'GET') {

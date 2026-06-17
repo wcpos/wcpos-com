@@ -47,6 +47,7 @@ beforeEach(() => {
 })
 
 afterEach(() => {
+  vi.useRealTimers()
   vi.unstubAllGlobals()
 })
 
@@ -97,6 +98,27 @@ describe('getProductVersions', () => {
     vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new Error('network')))
 
     expect(await getProductVersions()).toEqual([])
+    expect(mockLoggerError).toHaveBeenCalled()
+  })
+
+  it('aborts the feed request after the timeout', async () => {
+    vi.useFakeTimers()
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(
+        (_url: string, init?: RequestInit) =>
+          new Promise<Response>((_resolve, reject) => {
+            init?.signal?.addEventListener('abort', () => {
+              reject(Object.assign(new Error('aborted'), { name: 'AbortError' }))
+            })
+          }),
+      ),
+    )
+
+    const resultPromise = getProductVersions()
+    await vi.advanceTimersByTimeAsync(5000)
+
+    await expect(resultPromise).resolves.toEqual([])
     expect(mockLoggerError).toHaveBeenCalled()
   })
 

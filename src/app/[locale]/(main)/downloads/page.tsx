@@ -59,33 +59,35 @@ const DESKTOP_LINKS = [
  * Shown only if the GitHub releases feed is unavailable at build/render time,
  * so the changelog is never empty. Mirrors the latest readme.txt highlights.
  */
-const FALLBACK_RELEASES: ReleaseEntry[] = [
+type FallbackRelease = Omit<ReleaseEntry, 'date'> & { publishedAt: string }
+
+const FALLBACK_RELEASES: FallbackRelease[] = [
   {
     version: '1.9.6',
-    date: 'Jun 17, 2026',
+    publishedAt: '2026-06-17T00:00:00.000Z',
     latest: true,
     body: '- Cash drawer support — auto-open after payment or via a new Open Drawer button, with per-printer connectors (ESC-POS, Epson, PrintNode, cloud)\n- Fixed analytics events firing too often\n- Updated translations',
   },
   {
     version: '1.9.5',
-    date: 'Jun 15, 2026',
+    publishedAt: '2026-06-15T00:00:00.000Z',
     body: '- Fixed a payment-gateways API crash (HTTP 500 with some third-party gateways, e.g. ToyyibPay)',
   },
   {
     version: '1.9.4',
-    date: 'Jun 13, 2026',
+    publishedAt: '2026-06-13T00:00:00.000Z',
     body: '- Redesigned Bluetooth printer setup; serial printing for OS-paired Bluetooth Classic printers\n- Improved Windows raw printing; smoother USB flow',
   },
   {
     version: '1.9.0',
-    date: 'May 15, 2026',
+    publishedAt: '2026-05-15T00:00:00.000Z',
     body: '- New receipt template gallery; thermal printing (58/80mm)\n- Customer Tax IDs; Pro coupons & refunds at the POS',
   },
 ]
 
-function formatReleaseDate(iso: string): string {
+function formatReleaseDate(iso: string, locale: string): string {
   try {
-    return new Intl.DateTimeFormat('en-US', {
+    return new Intl.DateTimeFormat(locale, {
       month: 'short',
       day: 'numeric',
       year: 'numeric',
@@ -95,7 +97,14 @@ function formatReleaseDate(iso: string): string {
   }
 }
 
-async function getRecentReleases(): Promise<ReleaseEntry[]> {
+function getFallbackReleases(locale: string): ReleaseEntry[] {
+  return FALLBACK_RELEASES.map(({ publishedAt, ...release }) => ({
+    ...release,
+    date: formatReleaseDate(publishedAt, locale),
+  }))
+}
+
+async function getRecentReleases(locale: string): Promise<ReleaseEntry[]> {
   const releases = await getReleases('woocommerce-pos')
   const published = releases
     .filter((release) => !release.draft && !release.prerelease)
@@ -103,12 +112,12 @@ async function getRecentReleases(): Promise<ReleaseEntry[]> {
     .slice(0, 6)
 
   if (published.length === 0) {
-    return FALLBACK_RELEASES
+    return getFallbackReleases(locale)
   }
 
   return published.map((release, index) => ({
     version: release.tagName.replace(/^v/, ''),
-    date: formatReleaseDate(release.publishedAt),
+    date: formatReleaseDate(release.publishedAt, locale),
     body: release.body.trim() || '_No release notes for this version._',
     latest: index === 0,
   }))
@@ -161,10 +170,12 @@ export default async function DownloadsPage({
   const { locale } = await params
   setRequestLocale(locale)
 
-  const versions = await getProductVersions()
+  const [versions, releases] = await Promise.all([
+    getProductVersions(),
+    getRecentReleases(locale),
+  ])
   const desktopVersion = versionFor(versions, PRODUCT_LABELS.desktop)
   const freeVersion = versionFor(versions, PRODUCT_LABELS.free)
-  const releases = await getRecentReleases()
 
   return (
     <main>
