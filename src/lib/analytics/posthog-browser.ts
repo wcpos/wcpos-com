@@ -1,7 +1,7 @@
 'use client'
 
 import posthog from 'posthog-js'
-import { readAnalyticsConsent } from './consent'
+import { isAnalyticsGranted } from './consent'
 
 let started = false
 
@@ -13,7 +13,7 @@ let started = false
 export function initPostHogBrowser(config: { key?: string; host?: string }) {
   if (started || typeof window === 'undefined') return
   if (!config.key || !config.host) return
-  if (readAnalyticsConsent() !== 'granted') return
+  if (!isAnalyticsGranted()) return
 
   started = true
   posthog.init(config.key, {

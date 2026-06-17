@@ -5,7 +5,7 @@ import {
   ANALYTICS_CONSENT_COOKIE,
   hasAnalyticsConsent,
 } from '@/lib/analytics/consent'
-import { getPostHogServerClient } from '@/services/core/external/posthog-node-client'
+import { createPostHogServerRecorder } from './posthog-server-recorder'
 
 export type ProCheckoutVariant = 'control' | 'value_copy'
 
@@ -134,6 +134,11 @@ export async function resolveProCheckoutVariant({
   }
 }
 
+// The server analytics recorder: the PostHog server adapter. Consent is gated
+// below (not in the recorder) because the server reads it asynchronously from
+// request-scoped cookies; this function is the single server consent seam.
+const serverRecorder = createPostHogServerRecorder(process.env)
+
 export async function trackServerEvent(
   eventName: string,
   properties: Record<string, unknown>
@@ -143,12 +148,9 @@ export async function trackServerEvent(
     return
   }
 
-  const ph = getPostHogServerClient(process.env)
-  if (!ph) return
-
   const distinctId = typeof properties.distinct_id === 'string'
     ? properties.distinct_id
-    : 'wcpos-server-event'
+    : undefined
 
-  ph.capture({ distinctId, event: eventName, properties })
+  serverRecorder.capture({ name: eventName, properties, distinctId })
 }

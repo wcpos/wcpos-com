@@ -69,6 +69,18 @@ export function readAnalyticsConsent(): AnalyticsConsentStatus | null {
 }
 
 /**
+ * Client-side gate for browser analytics: true only on an explicit grant.
+ *
+ * The single source for the "may we capture in the browser?" decision — both
+ * posthog init and event capture call this, so the GDPR rule for the browser
+ * runtime lives in exactly one place. (The server has its own async,
+ * request-scoped gate in posthog-service; see docs/adr/0011.)
+ */
+export function isAnalyticsGranted(): boolean {
+  return readAnalyticsConsent() === 'granted'
+}
+
+/**
  * Client-side write of the consent decision.
  *
  * Denying consent also removes the analytics distinct-id cookie immediately
