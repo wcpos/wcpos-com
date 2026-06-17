@@ -56,6 +56,7 @@ export async function GET(request: NextRequest) {
       dependencies: {
         now: () => new Date(),
         validateLicenseKey: licenseClient.validateLicenseKey,
+        getLicense: licenseClient.getLicense,
         updateLicenseMetadata: licenseClient.updateLicenseMetadata,
       },
     })

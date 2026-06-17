@@ -47,12 +47,39 @@ interface ClaimDependencies {
     detail: string
     license?: Omit<LicenseDetail, 'machines'>
   }>
+  getLicense(licenseId: string): Promise<Omit<LicenseDetail, 'machines'>>
   updateLicenseMetadata(licenseId: string, metadata: Record<string, unknown>): Promise<LicenseDetail>
 }
 
 interface RemoveDependencies {
   now(): Date
+  getLicense(licenseId: string): Promise<Omit<LicenseDetail, 'machines'>>
   updateLicenseMetadata(licenseId: string, metadata: Record<string, unknown>): Promise<LicenseDetail>
+}
+
+const licenseMetadataLocks = new Map<string, Promise<void>>()
+
+async function withLicenseMetadataLock<T>(
+  licenseId: string,
+  operation: () => Promise<T>
+): Promise<T> {
+  const previous = licenseMetadataLocks.get(licenseId) ?? Promise.resolve()
+  let release!: () => void
+  const next = new Promise<void>((resolve) => {
+    release = resolve
+  })
+  const tail = previous.catch(() => undefined).then(() => next)
+  licenseMetadataLocks.set(licenseId, tail)
+
+  await previous.catch(() => undefined)
+  try {
+    return await operation()
+  } finally {
+    release()
+    if (licenseMetadataLocks.get(licenseId) === tail) {
+      licenseMetadataLocks.delete(licenseId)
+    }
+  }
 }
 
 export function getDiscordAccessByLicense(
@@ -92,38 +119,41 @@ export async function claimConnectedDiscordMember({
   if (!validation.license) return { status: 'invalid_license' }
 
   const license = validation.license
-  const now = dependencies.now()
-  if (!isLicenseActive(license, now.getTime())) {
-    return { status: 'license_not_active', licenseId: license.id }
-  }
+  return withLicenseMetadataLock(license.id, async () => {
+    const latestLicense = await dependencies.getLicense(license.id)
+    const now = dependencies.now()
+    if (!isLicenseActive(latestLicense, now.getTime())) {
+      return { status: 'license_not_active', licenseId: latestLicense.id }
+    }
 
-  if (isDiscordUserBlockedForLicence(license.metadata, identity.id)) {
-    return { status: 'blocked', licenseId: license.id }
-  }
+    if (isDiscordUserBlockedForLicence(latestLicense.metadata, identity.id)) {
+      return { status: 'blocked', licenseId: latestLicense.id }
+    }
 
-  const access = getConnectedDiscordAccess(license.metadata)
-  const existing = access.members.find((member) => member.discordUserId === identity.id)
-  if (existing) {
-    return { status: 'already_connected', licenseId: license.id, memberId: existing.id }
-  }
+    const access = getConnectedDiscordAccess(latestLicense.metadata)
+    const existing = access.members.find((member) => member.discordUserId === identity.id)
+    if (existing) {
+      return { status: 'already_connected', licenseId: latestLicense.id, memberId: existing.id }
+    }
 
-  if (access.members.length >= access.seatCap) {
-    return { status: 'seat_cap_reached', licenseId: license.id }
-  }
+    if (access.members.length >= access.seatCap) {
+      return { status: 'seat_cap_reached', licenseId: latestLicense.id }
+    }
 
-  const metadata = addConnectedDiscordMember(license.metadata, {
-    ...identity,
-    connectedAt: now,
+    const metadata = addConnectedDiscordMember(latestLicense.metadata, {
+      ...identity,
+      connectedAt: now,
+    })
+    const updated = await dependencies.updateLicenseMetadata(latestLicense.id, metadata)
+    const member = getConnectedDiscordAccess(updated.metadata).members.find(
+      (candidate) => candidate.discordUserId === identity.id
+    )
+    return {
+      status: 'claimed',
+      licenseId: latestLicense.id,
+      memberId: member?.id ?? `discord-member-${identity.id}`,
+    }
   })
-  const updated = await dependencies.updateLicenseMetadata(license.id, metadata)
-  const member = getConnectedDiscordAccess(updated.metadata).members.find(
-    (candidate) => candidate.discordUserId === identity.id
-  )
-  return {
-    status: 'claimed',
-    licenseId: license.id,
-    memberId: member?.id ?? `discord-member-${identity.id}`,
-  }
 }
 
 export async function removeConnectedDiscordMemberForHolder({
@@ -140,18 +170,21 @@ export async function removeConnectedDiscordMemberForHolder({
   const license = holderLicenses.find((candidate) => candidate.id === licenseId)
   if (!license) return { status: 'license_not_found' }
 
-  const member = getConnectedDiscordAccess(license.metadata).members.find(
-    (candidate) => candidate.id === memberId
-  )
-  if (!member) return { status: 'member_not_found' }
+  return withLicenseMetadataLock(license.id, async () => {
+    const latestLicense = await dependencies.getLicense(license.id)
+    const member = getConnectedDiscordAccess(latestLicense.metadata).members.find(
+      (candidate) => candidate.id === memberId
+    )
+    if (!member) return { status: 'member_not_found' }
 
-  const metadata = removeConnectedDiscordMember(
-    license.metadata,
-    memberId,
-    dependencies.now()
-  )
-  await dependencies.updateLicenseMetadata(license.id, metadata)
-  return { status: 'removed', discordUserId: member.discordUserId }
+    const metadata = removeConnectedDiscordMember(
+      latestLicense.metadata,
+      memberId,
+      dependencies.now()
+    )
+    await dependencies.updateLicenseMetadata(latestLicense.id, metadata)
+    return { status: 'removed', discordUserId: member.discordUserId }
+  })
 }
 
 export function getLicensesForDiscordUser(

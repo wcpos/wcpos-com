@@ -453,4 +453,33 @@ describe('LicensesClient', () => {
     expect(await screen.findByText('0 of 5 members')).toBeInTheDocument()
     expect(screen.queryByText('@ada')).not.toBeInTheDocument()
   })
+
+  it('redirects to login when Discord member removal returns 401', async () => {
+    const assign = vi.fn()
+    Object.defineProperty(window, 'location', {
+      configurable: true,
+      value: { ...window.location, assign },
+    })
+    mockFetch.mockResolvedValueOnce({ ok: false, status: 401 })
+    render(
+      <LicensesClient
+        initialLicenses={[makeLicense({ id: 'lic-1' })]}
+        discordAccessByLicense={{
+          'lic-1': {
+            licenseId: 'lic-1',
+            seatCap: 5,
+            usedSeats: 1,
+            members: [
+              { id: 'member-ada', handle: '@ada', avatarUrl: null, connectedAt: '2026-06-01T00:00:00.000Z' },
+            ],
+          },
+        }}
+      />
+    )
+
+    fireEvent.click(screen.getByRole('button', { name: 'Remove @ada' }))
+
+    expect(await screen.findByText('@ada')).toBeInTheDocument()
+    expect(assign).toHaveBeenCalledWith('/login')
+  })
 })

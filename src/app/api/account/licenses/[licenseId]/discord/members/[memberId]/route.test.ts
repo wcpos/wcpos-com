@@ -3,6 +3,7 @@ import { NextRequest } from 'next/server'
 
 const mockGetResolvedCustomerLicenses = vi.fn()
 const mockRemoveConnectedDiscordMemberForHolder = vi.fn()
+const mockGetLicense = vi.fn()
 const mockUpdateLicenseMetadata = vi.fn()
 const mockSyncDiscordProRoleForMember = vi.fn()
 const mockCreateDiscordRoleSyncDependencies = vi.fn()
@@ -18,6 +19,7 @@ vi.mock('@/lib/discord/connected-member-service', () => ({
 
 vi.mock('@/services/core/external/license-client', () => ({
   licenseClient: {
+    getLicense: (...args: unknown[]) => mockGetLicense(...args),
     updateLicenseMetadata: (...args: unknown[]) => mockUpdateLicenseMetadata(...args),
   },
 }))
@@ -86,7 +88,10 @@ describe('DELETE /api/account/licenses/[licenseId]/discord/members/[memberId]', 
       licenseId: 'lic_1',
       memberId: 'member_1',
       holderLicenses: licenses,
-      dependencies: expect.objectContaining({ updateLicenseMetadata: expect.any(Function) }),
+      dependencies: expect.objectContaining({
+        getLicense: expect.any(Function),
+        updateLicenseMetadata: expect.any(Function),
+      }),
     })
     expect(mockSyncDiscordProRoleForMember).toHaveBeenCalledWith('discord_1', deps)
   })

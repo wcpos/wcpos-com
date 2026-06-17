@@ -24,6 +24,7 @@ export async function DELETE(
     holderLicenses: licenses,
     dependencies: {
       now: () => new Date(),
+      getLicense: licenseClient.getLicense,
       updateLicenseMetadata: licenseClient.updateLicenseMetadata,
     },
   })

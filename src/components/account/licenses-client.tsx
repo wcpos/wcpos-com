@@ -152,12 +152,12 @@ export function LicensesClient({
       const data = await res.json()
       const nextLicenses = data.licenses || []
       setLicenses(nextLicenses)
-      setDiscordAccessByLicenseState(
+      setDiscordAccessByLicenseState((prev) =>
         Object.fromEntries(
           nextLicenses.map((license: License) => [
             license.id,
             data.discordAccessByLicense?.[license.id] ??
-              discordAccessByLicenseState[license.id] ??
+              prev[license.id] ??
               emptyDiscordAccess(license.id),
           ])
         )
@@ -191,7 +191,13 @@ export function LicensesClient({
         `/api/account/licenses/${licenseId}/discord/members/${memberId}`,
         { method: 'DELETE' }
       )
-      if (!res.ok) throw new Error('Failed to remove Discord member')
+      if (!res.ok) {
+        if (res.status === 401) {
+          window.location.assign('/login')
+          return
+        }
+        throw new Error('Failed to remove Discord member')
+      }
       setDiscordAccessByLicenseState((accessByLicense) => {
         const current = accessByLicense[licenseId] ?? emptyDiscordAccess(licenseId)
         const members = current.members.filter((member) => member.id !== memberId)

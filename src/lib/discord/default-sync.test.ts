@@ -35,7 +35,10 @@ vi.mock('@/lib/customer-licenses', () => ({
   getResolvedLicensesFromOrders: mocks.getResolvedLicensesFromOrders,
 }))
 
-import { createDiscordReconcileDependencies } from './default-sync'
+import {
+  createDiscordReconcileDependencies,
+  createDiscordRoleSyncDependencies,
+} from './default-sync'
 
 function license(metadata: Record<string, unknown>): LicenseDetail {
   return {
@@ -140,4 +143,20 @@ describe('createDiscordReconcileDependencies', () => {
     expect(maxInFlight).toBeLessThanOrEqual(5)
   })
 
+})
+
+describe('createDiscordRoleSyncDependencies', () => {
+  beforeEach(() => vi.clearAllMocks())
+
+  it('surfaces incomplete admin snapshots as unverifiable for per-member sync', async () => {
+    mocks.listAdminCustomers.mockResolvedValue([{ id: 'cust_1' }])
+    mocks.listAdminCustomerOrders.mockResolvedValue([order({ licenses: [{ license_id: 'lic_missing' }] })])
+    mocks.getResolvedLicensesFromOrders.mockResolvedValue([])
+
+    const dependencies = createDiscordRoleSyncDependencies()
+
+    await expect(dependencies.getLicensesForDiscordUser('discord_1')).resolves.toEqual([
+      { status: 'unknown', expiry: null },
+    ])
+  })
 })

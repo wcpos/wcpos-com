@@ -49,4 +49,42 @@ describe('GET /api/account/licenses', () => {
     expect(json.licenses).toHaveLength(1)
     expect(json.licenses[0].key).toBe('WCPOS-AAAA-1111')
   })
+
+  it('strips raw Discord access metadata from the browser response', async () => {
+    mockGetResolvedCustomerLicenses.mockResolvedValueOnce({
+      authenticated: true,
+      licenses: [
+        {
+          id: 'lic_123',
+          key: 'WCPOS-AAAA-1111',
+          status: 'active',
+          expiry: null,
+          maxMachines: 1,
+          machines: [],
+          metadata: {
+            public_note: 'keep',
+            discord_access: {
+              seatCap: 5,
+              blockedDiscordUserIds: ['discord_blocked'],
+              removedMembers: [{ discordUserId: 'discord_removed' }],
+              members: [],
+            },
+          },
+          policyId: 'policy_1',
+          createdAt: '2026-01-01T00:00:00Z',
+        },
+      ],
+    })
+
+    const response = await GET()
+    const json = await response.json()
+
+    expect(json.licenses[0].metadata).toEqual({ public_note: 'keep' })
+    expect(json.discordAccessByLicense.lic_123).toEqual({
+      licenseId: 'lic_123',
+      seatCap: 5,
+      usedSeats: 0,
+      members: [],
+    })
+  })
 })

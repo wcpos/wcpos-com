@@ -62,15 +62,25 @@ function createResolvedLicenseSnapshot(): () => Promise<DiscordLicenseSnapshot> 
   }
 }
 
+function getLicensesForDiscordUserFromSnapshot(
+  discordUserId: string,
+  snapshot: DiscordLicenseSnapshot
+) {
+  const licenses = getLicensesForDiscordUser(discordUserId, snapshot.licenses)
+  return snapshot.complete
+    ? licenses
+    : [...licenses, { status: 'unknown' as const, expiry: null }]
+}
+
 export function createDiscordRoleSyncDependencies(): DiscordRoleSyncDependencies {
   const client = new DiscordApiClient(getDiscordConfig())
   const getResolvedLicenses = createResolvedLicenseSnapshot()
 
   return {
     getLicensesForDiscordUser: async (discordUserId) =>
-      getLicensesForDiscordUser(
+      getLicensesForDiscordUserFromSnapshot(
         discordUserId,
-        (await getResolvedLicenses()).licenses
+        await getResolvedLicenses()
       ),
     getMemberRoleState: (discordUserId) => client.getMemberRoleState(discordUserId),
     addRole: (discordUserId) => client.addRole(discordUserId),
@@ -85,9 +95,9 @@ export function createDiscordReconcileDependencies(): DiscordReconcileDependenci
 
   return {
     getLicensesForDiscordUser: async (discordUserId) =>
-      getLicensesForDiscordUser(
+      getLicensesForDiscordUserFromSnapshot(
         discordUserId,
-        (await getResolvedLicenses()).licenses
+        await getResolvedLicenses()
       ),
     getMemberRoleState: (discordUserId) => client.getMemberRoleState(discordUserId),
     addRole: (discordUserId) => client.addRole(discordUserId),
