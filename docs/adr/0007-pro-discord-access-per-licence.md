@@ -70,7 +70,9 @@ owner chose lower-friction key self-claim with the cap as the safeguard).
   superseded by a licence→members relation.
 - **The licence key now doubles as a Discord-access credential**, not only a
   plugin-activation credential. The seat cap bounds the blast radius of a
-  leaked key for Discord; site activation remains separately capped.
+  leaked key for Discord; site activation remains separately capped. The
+  greenfield wcpos.com slice stores this connected-member collection on the
+  licence metadata under `discord_access`.
 - Reconciliation walks licence → connected members to grant roles, then
   groups by Discord user before removing roles so another active connected
   licence can preserve access.
@@ -84,7 +86,6 @@ owner chose lower-friction key self-claim with the cap as the safeguard).
 
 ## Open
 
-- **Cap basis and number** — a per-plan figure (e.g. Yearly vs Lifetime) or
-  the site-activation limit. Team size and site count are different things,
-  so a dedicated per-plan cap is the likely answer; the number is a product
-  decision.
+- **Cap basis and number** — implemented initially as a dedicated Discord seat
+  cap of 5 per licence, separate from site activations. This can move to a
+  per-plan registry field when product wants different caps by plan.

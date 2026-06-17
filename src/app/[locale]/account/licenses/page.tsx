@@ -3,6 +3,7 @@ import { Suspense } from 'react'
 import { redirectToLoginClearingSession } from '@/lib/login-redirect'
 import { LicensesClient } from '@/components/account/licenses-client'
 import { getResolvedCustomerLicenses } from '@/lib/customer-licenses'
+import { getDiscordAccessByLicense } from '@/lib/discord/connected-member-service'
 import { getProPluginReleases } from '@/services/core/business/pro-downloads'
 import { selectEntitledRelease } from '@/services/core/business/release-delivery'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
@@ -83,11 +84,13 @@ async function LicensesContent({ locale }: { locale: string }) {
     releases = []
   }
   const entitledVersions = buildEntitledVersions(licenses, releases, nowMs)
+  const discordAccessByLicense = getDiscordAccessByLicense(licenses)
 
   return (
     <LicensesClient
       initialLicenses={licenses}
       entitledVersions={entitledVersions}
+      discordAccessByLicense={discordAccessByLicense}
     />
   )
 }

@@ -567,6 +567,55 @@ describe('licenseClient', () => {
     )
   })
 
+
+  describe('updateLicenseMetadata', () => {
+    it('PATCHes only license metadata and returns the mapped license', async () => {
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          data: {
+            id: 'license-123',
+            attributes: {
+              key: 'XXXX-XXXX',
+              status: 'ACTIVE',
+              expiry: null,
+              maxMachines: 5,
+              metadata: { discord_access: { seatCap: 5 } },
+              created: '2026-01-01T00:00:00Z',
+            },
+            relationships: {
+              policy: { data: { id: 'policy-yearly' } },
+            },
+          },
+        }),
+      })
+
+      const result = await licenseClient.updateLicenseMetadata('license-123', {
+        discord_access: { seatCap: 5 },
+      })
+
+      expect(result.metadata).toEqual({ discord_access: { seatCap: 5 } })
+      expect(result.machines).toEqual([])
+      expect(mockFetch).toHaveBeenCalledWith(
+        'https://license.wcpos.com/v1/licenses/license-123',
+        expect.objectContaining({
+          method: 'PATCH',
+          headers: expect.objectContaining({
+            Authorization: 'Bearer test-token',
+            'Content-Type': 'application/vnd.api+json',
+          }),
+          body: JSON.stringify({
+            data: {
+              type: 'licenses',
+              id: 'license-123',
+              attributes: { metadata: { discord_access: { seatCap: 5 } } },
+            },
+          }),
+        })
+      )
+    })
+  })
+
   describe('validateLicense', () => {
     it('maps Keygen data to LicenseStatusResponse format for an active license', async () => {
       // Mock validateLicenseKey call

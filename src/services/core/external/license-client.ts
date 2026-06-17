@@ -259,6 +259,37 @@ async function getLicenseWithMachines(
   return { ...license, machines }
 }
 
+
+/**
+ * Update license metadata (requires auth).
+ *
+ * PATCH /v1/licenses/{id}
+ */
+async function updateLicenseMetadata(
+  licenseId: string,
+  metadata: Record<string, unknown>
+): Promise<LicenseDetail> {
+  const encodedLicenseId = encodeKeygenPathSegment(licenseId)
+  const res = await fetch(`${BASE_URL}/v1/licenses/${encodedLicenseId}`, {
+    method: 'PATCH',
+    headers: authHeaders(),
+    body: JSON.stringify({
+      data: {
+        type: 'licenses',
+        id: licenseId,
+        attributes: { metadata },
+      },
+    }),
+  })
+
+  if (!res.ok) {
+    throw new Error(`Keygen updateLicenseMetadata failed (${res.status}): ${await res.text()}`)
+  }
+
+  const json: { data: KeygenLicenseData } = await res.json()
+  return { ...mapLicenseData(json.data), machines: [] }
+}
+
 /**
  * Backward-compatible wrapper used by existing Pro plugin API routes.
  *
@@ -365,5 +396,6 @@ export const licenseClient = {
   activateMachine,
   deactivateMachine,
   getLicenseWithMachines,
+  updateLicenseMetadata,
   validateLicense,
 }

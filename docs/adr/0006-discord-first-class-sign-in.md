@@ -42,10 +42,10 @@ decision recorded here. The consequences:
 
 - A user whose Discord email differs from their WCPOS email will, on sign-in,
   match or create the account belonging to the **Discord** email.
-- The sign-in `discord` auth identity and the role-sync `discord_user_id`
-  customer metadata are **two independent links**. The same person could sign in
-  with one Discord account and connect a different one for the Pro role.
-  Unifying the two is a possible future enhancement, not a requirement here.
+- The sign-in `discord` auth identity and the Pro-role connected-member link
+  are **two independent links**. The same person could sign in with one Discord
+  account and claim a licence for another Discord identity. Unifying the two is
+  not a requirement here.
 
 ## Guards
 

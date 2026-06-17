@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { getResolvedCustomerLicenses } from '@/lib/customer-licenses'
+import { getDiscordAccessByLicense } from '@/lib/discord/connected-member-service'
 import { licenseLogger } from '@/lib/logger'
 
 /**
@@ -25,7 +26,10 @@ export async function GET() {
       )
     }
 
-    return NextResponse.json({ licenses }, { status: 200 })
+    return NextResponse.json(
+      { licenses, discordAccessByLicense: getDiscordAccessByLicense(licenses) },
+      { status: 200 }
+    )
   } catch (error) {
     licenseLogger.error`Failed to fetch licenses: ${error}`
     return NextResponse.json(

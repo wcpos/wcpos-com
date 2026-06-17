@@ -187,7 +187,9 @@
       "discordConnected": "Connected {date}",
       "discordRemove": "Remove",
       "discordRemoveAria": "Remove {handle}",
-      "discordConnectHint": "Connect with your license key to get the Pro role in our community Discord."
+      "discordConnectHint": "Connect with your license key to get the Pro role in our community Discord.",
+      "discordNoMembers": "No connected members yet.",
+      "discordRemoveError": "Failed to remove Discord member. Please try again."
     },
     "downloads": {
       "heading": "Downloads",
