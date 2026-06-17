@@ -36,10 +36,11 @@ import {
   setAuthToken,
   clearAuthToken,
   updateCustomer,
-  decodeMedusaToken,
-  linkOrCreateCustomer,
   parseMedusaError,
 } from './medusa-auth'
+
+// decodeMedusaToken, linkOrCreateCustomer, completeOAuthCallback, refreshToken
+// and initiateOAuth moved to `@/lib/oauth`; their tests live in oauth.test.ts.
 
 describe('medusa-auth', () => {
   beforeEach(() => {
@@ -276,86 +277,6 @@ describe('medusa-auth', () => {
 
       expect(customer).toBeNull()
       expect(mockFetch).not.toHaveBeenCalled()
-    })
-  })
-
-  describe('decodeMedusaToken', () => {
-    it('decodes a standard JWT payload', () => {
-      const payload = {
-        actor_id: 'cust_123',
-        actor_type: 'customer',
-        auth_identity_id: 'authid_abc',
-        app_metadata: { customer_id: 'cust_123' },
-        user_metadata: { email: 'user@example.com', name: 'Jane Doe' },
-      }
-      const token = `header.${btoa(JSON.stringify(payload))}.signature`
-
-      const result = decodeMedusaToken(token)
-
-      expect(result.actor_id).toBe('cust_123')
-      expect(result.user_metadata.email).toBe('user@example.com')
-    })
-
-    it('handles URL-safe base64 encoding', () => {
-      const payload = {
-        actor_id: '',
-        actor_type: 'customer',
-        auth_identity_id: 'authid_xyz',
-        app_metadata: {},
-        user_metadata: { email: 'test+special@example.com' },
-      }
-      const base64 = btoa(JSON.stringify(payload))
-        .replace(/\+/g, '-')
-        .replace(/\//g, '_')
-        .replace(/=/g, '')
-      const token = `header.${base64}.signature`
-
-      const result = decodeMedusaToken(token)
-
-      expect(result.user_metadata.email).toBe('test+special@example.com')
-    })
-
-    it('returns empty user_metadata when field is missing', () => {
-      const payload = { actor_id: '', actor_type: 'customer', auth_identity_id: 'x', app_metadata: {} }
-      const token = `header.${btoa(JSON.stringify(payload))}.signature`
-
-      const result = decodeMedusaToken(token)
-
-      expect(result.user_metadata).toEqual({})
-    })
-  })
-
-  describe('linkOrCreateCustomer', () => {
-    it('calls the account-link endpoint with bearer token', async () => {
-      mockFetch.mockResolvedValueOnce({
-        ok: true,
-        json: async () => ({ customer: { id: 'cust_123', email: 'test@example.com' } }),
-      })
-
-      await linkOrCreateCustomer('test-jwt-token')
-
-      expect(mockFetch).toHaveBeenCalledWith(
-        'https://test-store-api.wcpos.com/store/auth/account-link',
-        expect.objectContaining({
-          method: 'POST',
-          headers: expect.objectContaining({
-            'Content-Type': 'application/json',
-            Authorization: 'Bearer test-jwt-token',
-            'x-publishable-api-key': 'pk_test_abc123',
-          }),
-        })
-      )
-    })
-
-    it('throws when the endpoint returns an error', async () => {
-      mockFetch.mockResolvedValueOnce({
-        ok: false,
-        text: async () => '{"message":"No email found in OAuth profile"}',
-      })
-
-      await expect(linkOrCreateCustomer('bad-token')).rejects.toThrow(
-        'No email found in OAuth profile'
-      )
     })
   })
 

@@ -19,72 +19,56 @@ vi.mock('@/lib/logger', () => ({
   },
 }))
 
-// Mock medusa-auth functions
-const mockCompleteOAuthCallback = vi.fn()
-const mockSetAuthToken = vi.fn()
-const mockRefreshToken = vi.fn()
-const mockDecodeMedusaToken = vi.fn()
-const mockLinkOrCreateCustomer = vi.fn()
+// The route now delegates the whole session-establishment dance (link → refresh
+// → persist) to establishOAuthSession. This test owns only the route's own
+// responsibilities: provider validation, param forwarding, profile sync, and
+// the redirect. The ordering invariant is pinned in oauth.test.ts.
+const mockEstablishOAuthSession = vi.fn()
 const mockGetCustomer = vi.fn()
 const mockUpdateCustomer = vi.fn()
 
+vi.mock('@/lib/oauth', () => ({
+  establishOAuthSession: (...args: unknown[]) => mockEstablishOAuthSession(...args),
+}))
+
 vi.mock('@/lib/medusa-auth', () => ({
-  completeOAuthCallback: (...args: unknown[]) =>
-    mockCompleteOAuthCallback(...args),
-  setAuthToken: (...args: unknown[]) => mockSetAuthToken(...args),
-  refreshToken: (...args: unknown[]) => mockRefreshToken(...args),
-  decodeMedusaToken: (...args: unknown[]) => mockDecodeMedusaToken(...args),
-  linkOrCreateCustomer: (...args: unknown[]) =>
-    mockLinkOrCreateCustomer(...args),
   getCustomer: (...args: unknown[]) => mockGetCustomer(...args),
   updateCustomer: (...args: unknown[]) => mockUpdateCustomer(...args),
 }))
 
 import { GET } from './route'
 
-/**
- * Build a fake JWT token whose payload section base64-encodes the given object.
- */
-function fakeJwt(payload: Record<string, unknown>): string {
-  return `header.${btoa(JSON.stringify(payload))}.signature`
+/** Build the value establishOAuthSession resolves to. */
+function session(
+  userMetadata: Record<string, string>,
+  { linked = false }: { linked?: boolean } = {}
+) {
+  return {
+    payload: {
+      actor_id: linked ? '' : 'cust_existing',
+      actor_type: 'customer',
+      auth_identity_id: 'auth_1',
+      app_metadata: {},
+      user_metadata: userMetadata,
+    },
+    linked,
+  }
 }
 
 describe('OAuth callback route', () => {
   beforeEach(() => {
     vi.clearAllMocks()
-    mockGetCustomer.mockResolvedValue({
-      id: 'cust_1',
-      metadata: {},
-    })
+    mockGetCustomer.mockResolvedValue({ id: 'cust_1', metadata: {} })
     mockUpdateCustomer.mockResolvedValue(undefined)
   })
 
-  it('links or creates customer for new OAuth user (Google)', async () => {
-    const token = fakeJwt({
-      actor_id: '',
-      user_metadata: {
-        email: 'alice@gmail.com',
-        given_name: 'Alice',
-        family_name: 'Smith',
-      },
-    })
-    const refreshedToken = 'refreshed_token'
-
-    mockCompleteOAuthCallback.mockResolvedValue(token)
-    mockDecodeMedusaToken.mockReturnValue({
-      actor_id: '',
-      actor_type: 'customer',
-      auth_identity_id: 'auth_123',
-      app_metadata: {},
-      user_metadata: {
-        email: 'alice@gmail.com',
-        given_name: 'Alice',
-        family_name: 'Smith',
-      },
-    })
-    mockLinkOrCreateCustomer.mockResolvedValue(undefined)
-    mockRefreshToken.mockResolvedValue(refreshedToken)
-    mockSetAuthToken.mockResolvedValue(undefined)
+  it('establishes a session and redirects to /account for a new OAuth user (Google)', async () => {
+    mockEstablishOAuthSession.mockResolvedValue(
+      session(
+        { email: 'alice@gmail.com', given_name: 'Alice', family_name: 'Smith' },
+        { linked: true }
+      )
+    )
 
     const request = new NextRequest(
       'https://wcpos.com/api/auth/google/callback?code=abc&state=xyz'
@@ -94,43 +78,18 @@ describe('OAuth callback route', () => {
       params: Promise.resolve({ provider: 'google' }),
     })
 
-    // Should have called linkOrCreateCustomer with the token
-    expect(mockLinkOrCreateCustomer).toHaveBeenCalledWith(token)
-
-    // Should refresh and set the token
-    expect(mockRefreshToken).toHaveBeenCalledWith(token)
-    expect(mockSetAuthToken).toHaveBeenCalledWith(refreshedToken)
-
-    // Should redirect to /account
+    expect(mockEstablishOAuthSession).toHaveBeenCalledWith('google', {
+      code: 'abc',
+      state: 'xyz',
+    })
     expect(response.status).toBe(307)
-    expect(new URL(response.headers.get('location')!).pathname).toBe(
-      '/account'
-    )
+    expect(new URL(response.headers.get('location')!).pathname).toBe('/account')
   })
 
-  it('links or creates customer for new OAuth user (GitHub)', async () => {
-    const token = fakeJwt({
-      actor_id: '',
-      user_metadata: {
-        email: 'bob@github.com',
-        name: 'Bob Jones',
-      },
-    })
-
-    mockCompleteOAuthCallback.mockResolvedValue(token)
-    mockDecodeMedusaToken.mockReturnValue({
-      actor_id: '',
-      actor_type: 'customer',
-      auth_identity_id: 'auth_456',
-      app_metadata: {},
-      user_metadata: {
-        email: 'bob@github.com',
-        name: 'Bob Jones',
-      },
-    })
-    mockLinkOrCreateCustomer.mockResolvedValue(undefined)
-    mockRefreshToken.mockResolvedValue('refreshed')
-    mockSetAuthToken.mockResolvedValue(undefined)
+  it('establishes a session and redirects for an existing user (GitHub)', async () => {
+    mockEstablishOAuthSession.mockResolvedValue(
+      session({ email: 'bob@github.com', name: 'Bob Jones' })
+    )
 
     const request = new NextRequest(
       'https://wcpos.com/api/auth/github/callback?code=def&state=uvw'
@@ -140,70 +99,20 @@ describe('OAuth callback route', () => {
       params: Promise.resolve({ provider: 'github' }),
     })
 
-    // Should have called linkOrCreateCustomer with the token
-    expect(mockLinkOrCreateCustomer).toHaveBeenCalledWith(token)
-
+    expect(mockEstablishOAuthSession).toHaveBeenCalledWith('github', {
+      code: 'def',
+      state: 'uvw',
+    })
     expect(response.status).toBe(307)
-  })
-
-  it('sets token directly for existing users (actor_id present)', async () => {
-    const token = fakeJwt({
-      actor_id: 'cust_existing',
-      user_metadata: { email: 'existing@example.com' },
-    })
-
-    mockCompleteOAuthCallback.mockResolvedValue(token)
-    mockDecodeMedusaToken.mockReturnValue({
-      actor_id: 'cust_existing',
-      actor_type: 'customer',
-      auth_identity_id: 'auth_789',
-      app_metadata: {},
-      user_metadata: { email: 'existing@example.com' },
-    })
-    mockSetAuthToken.mockResolvedValue(undefined)
-
-    const request = new NextRequest(
-      'https://wcpos.com/api/auth/google/callback?code=ghi&state=rst'
-    )
-
-    const response = await GET(request, {
-      params: Promise.resolve({ provider: 'google' }),
-    })
-
-    // Should NOT link/create a customer or refresh the token
-    expect(mockLinkOrCreateCustomer).not.toHaveBeenCalled()
-    expect(mockRefreshToken).not.toHaveBeenCalled()
-
-    // Should set the original token
-    expect(mockSetAuthToken).toHaveBeenCalledWith(token)
-
-    expect(response.status).toBe(307)
-    expect(new URL(response.headers.get('location')!).pathname).toBe(
-      '/account'
-    )
   })
 
   it('stores connected avatar in customer metadata when available', async () => {
-    const token = fakeJwt({
-      actor_id: 'cust_existing',
-      user_metadata: {
+    mockEstablishOAuthSession.mockResolvedValue(
+      session({
         email: 'avatar@example.com',
         avatar_url: 'https://avatars.example.com/user.png',
-      },
-    })
-
-    mockCompleteOAuthCallback.mockResolvedValue(token)
-    mockDecodeMedusaToken.mockReturnValue({
-      actor_id: 'cust_existing',
-      actor_type: 'customer',
-      auth_identity_id: 'auth_789',
-      app_metadata: {},
-      user_metadata: {
-        email: 'avatar@example.com',
-        avatar_url: 'https://avatars.example.com/user.png',
-      },
-    })
-    mockSetAuthToken.mockResolvedValue(undefined)
+      })
+    )
 
     const request = new NextRequest(
       'https://wcpos.com/api/auth/google/callback?code=ghi&state=rst'
@@ -228,20 +137,9 @@ describe('OAuth callback route', () => {
   })
 
   it('persists the sign-in provider even when no avatar is present', async () => {
-    const token = fakeJwt({
-      actor_id: 'cust_existing',
-      user_metadata: { email: 'noavatar@example.com' },
-    })
-
-    mockCompleteOAuthCallback.mockResolvedValue(token)
-    mockDecodeMedusaToken.mockReturnValue({
-      actor_id: 'cust_existing',
-      actor_type: 'customer',
-      auth_identity_id: 'auth_321',
-      app_metadata: {},
-      user_metadata: { email: 'noavatar@example.com' },
-    })
-    mockSetAuthToken.mockResolvedValue(undefined)
+    mockEstablishOAuthSession.mockResolvedValue(
+      session({ email: 'noavatar@example.com' })
+    )
 
     const request = new NextRequest(
       'https://wcpos.com/api/auth/github/callback?code=xyz&state=uvw'
@@ -262,19 +160,9 @@ describe('OAuth callback route', () => {
       id: 'cust_1',
       metadata: { auth_providers: ['google'], last_sign_in_provider: 'google' },
     })
-    const token = fakeJwt({
-      actor_id: 'cust_existing',
-      user_metadata: { email: 'repeat@example.com' },
-    })
-    mockCompleteOAuthCallback.mockResolvedValue(token)
-    mockDecodeMedusaToken.mockReturnValue({
-      actor_id: 'cust_existing',
-      actor_type: 'customer',
-      auth_identity_id: 'auth_repeat',
-      app_metadata: {},
-      user_metadata: { email: 'repeat@example.com' },
-    })
-    mockSetAuthToken.mockResolvedValue(undefined)
+    mockEstablishOAuthSession.mockResolvedValue(
+      session({ email: 'repeat@example.com' })
+    )
 
     const request = new NextRequest(
       'https://wcpos.com/api/auth/google/callback?code=abc&state=def'
@@ -300,23 +188,13 @@ describe('OAuth callback route', () => {
     expect(response.status).toBe(400)
     const body = await response.json()
     expect(body.error).toContain('facebook')
+    expect(mockEstablishOAuthSession).not.toHaveBeenCalled()
   })
 
-  it('forwards all OAuth query params (code, state, ...) to the token exchange', async () => {
-    const token = fakeJwt({
-      actor_id: 'cust_existing',
-      user_metadata: { email: 'existing@example.com' },
-    })
-
-    mockCompleteOAuthCallback.mockResolvedValue(token)
-    mockDecodeMedusaToken.mockReturnValue({
-      actor_id: 'cust_existing',
-      actor_type: 'customer',
-      auth_identity_id: 'auth_789',
-      app_metadata: {},
-      user_metadata: { email: 'existing@example.com' },
-    })
-    mockSetAuthToken.mockResolvedValue(undefined)
+  it('forwards all OAuth query params (code, state, ...) to establishOAuthSession', async () => {
+    mockEstablishOAuthSession.mockResolvedValue(
+      session({ email: 'existing@example.com' })
+    )
 
     const request = new NextRequest(
       'https://wcpos.com/api/auth/google/callback?code=abc&state=csrf_state_123&scope=email'
@@ -326,30 +204,19 @@ describe('OAuth callback route', () => {
       params: Promise.resolve({ provider: 'google' }),
     })
 
-    // Medusa validates the CSRF state server-side, so the route must
-    // forward every provider query param verbatim.
-    expect(mockCompleteOAuthCallback).toHaveBeenCalledWith('google', {
+    // Medusa validates the CSRF state server-side, so the route must forward
+    // every provider query param verbatim (minus the storefront `redirect`).
+    expect(mockEstablishOAuthSession).toHaveBeenCalledWith('google', {
       code: 'abc',
       state: 'csrf_state_123',
       scope: 'email',
     })
   })
 
-  it('redirects to the sanitized redirect target after OAuth sign-in', async () => {
-    const token = fakeJwt({
-      actor_id: 'cust_existing',
-      user_metadata: { email: 'discord@example.com' },
-    })
-
-    mockCompleteOAuthCallback.mockResolvedValue(token)
-    mockDecodeMedusaToken.mockReturnValue({
-      actor_id: 'cust_existing',
-      actor_type: 'customer',
-      auth_identity_id: 'auth_789',
-      app_metadata: {},
-      user_metadata: { email: 'discord@example.com' },
-    })
-    mockSetAuthToken.mockResolvedValue(undefined)
+  it('redirects to the sanitized redirect target after OAuth sign-in (Discord)', async () => {
+    mockEstablishOAuthSession.mockResolvedValue(
+      session({ email: 'discord@example.com' })
+    )
 
     const request = new NextRequest(
       'https://wcpos.com/api/auth/discord/callback?code=abc&state=xyz&redirect=%2Fpro%2Fcheckout%3Fvariant%3Dvariant_123'
@@ -359,7 +226,8 @@ describe('OAuth callback route', () => {
       params: Promise.resolve({ provider: 'discord' }),
     })
 
-    expect(mockCompleteOAuthCallback).toHaveBeenCalledWith('discord', {
+    // The storefront `redirect` param is stripped before forwarding to Medusa.
+    expect(mockEstablishOAuthSession).toHaveBeenCalledWith('discord', {
       code: 'abc',
       state: 'xyz',
     })
@@ -369,8 +237,8 @@ describe('OAuth callback route', () => {
     )
   })
 
-  it('redirects to /login with error when the token exchange fails', async () => {
-    mockCompleteOAuthCallback.mockRejectedValue(
+  it('redirects to /login with error when establishing the session fails', async () => {
+    mockEstablishOAuthSession.mockRejectedValue(
       new Error('Invalid state parameter')
     )
 
@@ -387,40 +255,7 @@ describe('OAuth callback route', () => {
     expect(location.pathname).toBe('/login')
     expect(location.searchParams.get('error')).toBe('oauth_failed')
 
-    // No session should be established on failure
-    expect(mockSetAuthToken).not.toHaveBeenCalled()
-  })
-
-  it('redirects to /login with error when account linking fails', async () => {
-    const token = fakeJwt({
-      actor_id: '',
-      user_metadata: { email: 'fail@example.com' },
-    })
-
-    mockCompleteOAuthCallback.mockResolvedValue(token)
-    mockDecodeMedusaToken.mockReturnValue({
-      actor_id: '',
-      actor_type: 'customer',
-      auth_identity_id: 'auth_fail',
-      app_metadata: {},
-      user_metadata: { email: 'fail@example.com' },
-    })
-    mockLinkOrCreateCustomer.mockRejectedValue(
-      new Error('No email found in OAuth profile')
-    )
-
-    const request = new NextRequest(
-      'https://wcpos.com/api/auth/google/callback?code=abc&state=xyz'
-    )
-
-    const response = await GET(request, {
-      params: Promise.resolve({ provider: 'google' }),
-    })
-
-    // Should redirect to /login with error
-    expect(response.status).toBe(303)
-    const location = new URL(response.headers.get('location')!)
-    expect(location.pathname).toBe('/login')
-    expect(location.searchParams.get('error')).toBe('oauth_failed')
+    // A failed sign-in must not run profile sync.
+    expect(mockUpdateCustomer).not.toHaveBeenCalled()
   })
 })
