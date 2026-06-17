@@ -7,8 +7,8 @@ const MAX_AGE_SECONDS = 10 * 60
 
 export interface DiscordOAuthStatePayload {
   state: string
-  customerId: string
   returnTo: string
+  licenseKey?: string
 }
 
 function encode(payload: DiscordOAuthStatePayload): string {
@@ -18,7 +18,7 @@ function encode(payload: DiscordOAuthStatePayload): string {
 function decode(value: string): DiscordOAuthStatePayload | null {
   try {
     const payload = JSON.parse(Buffer.from(value, 'base64url').toString('utf8')) as DiscordOAuthStatePayload
-    if (!payload.state || !payload.customerId || !payload.returnTo) return null
+    if (!payload.state || !payload.returnTo) return null
     return payload
   } catch {
     return null

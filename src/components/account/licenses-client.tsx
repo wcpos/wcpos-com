@@ -75,39 +75,31 @@ function statusBadgeVariant(status: string): BadgeVariant {
   }
 }
 
-// Frontend stub for ADR-0007 (per-licence Discord access). The backend that
-// resolves connected members is OUT OF SCOPE for this work package, so the
-// section renders sample data with a default seat cap. Wiring this to real
-// membership data is tracked separately.
 interface DiscordMember {
   id: string
   handle: string
-  avatarInitials: string
+  avatarUrl: string | null
   connectedAt: string
+}
+
+interface DiscordAccess {
+  licenseId: string
+  seatCap: number
+  usedSeats: number
+  members: DiscordMember[]
 }
 
 const DISCORD_DEFAULT_CAP = 5
 
-const SAMPLE_DISCORD_MEMBERS: DiscordMember[] = [
-  {
-    id: 'discord-sample-ada',
-    handle: '@ada',
-    avatarInitials: 'AL',
-    connectedAt: '2026-03-14T00:00:00Z',
-  },
-  {
-    id: 'discord-sample-devon',
-    handle: '@devon',
-    avatarInitials: 'DV',
-    connectedAt: '2026-04-02T00:00:00Z',
-  },
-  {
-    id: 'discord-sample-sam',
-    handle: '@sam',
-    avatarInitials: 'SM',
-    connectedAt: '2026-05-18T00:00:00Z',
-  },
-]
+function emptyDiscordAccess(licenseId: string): DiscordAccess {
+  return { licenseId, seatCap: DISCORD_DEFAULT_CAP, usedSeats: 0, members: [] }
+}
+
+function memberInitials(handle: string): string {
+  const cleaned = handle.replace(/^@/, '').trim()
+  if (!cleaned) return 'DC'
+  return cleaned.slice(0, 2).toUpperCase()
+}
 
 interface LicensesClientProps {
   initialLicenses: License[]
@@ -117,11 +109,13 @@ interface LicensesClientProps {
    * server-side in the page so release dates never re-ship to the client.
    */
   entitledVersions?: Record<string, string | null>
+  discordAccessByLicense?: Record<string, DiscordAccess>
 }
 
 export function LicensesClient({
   initialLicenses,
   entitledVersions = {},
+  discordAccessByLicense = {},
 }: LicensesClientProps) {
   const locale = useLocale()
   const t = useTranslations('account.licenses')
@@ -129,16 +123,18 @@ export function LicensesClient({
   const [licenses, setLicenses] = useState<License[]>(initialLicenses)
   const [error, setError] = useState<string | null>(null)
   const [deactivating, setDeactivating] = useState<string | null>(null)
+  const [removingDiscordMember, setRemovingDiscordMember] = useState<string | null>(null)
   // Captured once per mount so render stays pure for the React compiler.
   const [now] = useState(() => Date.now())
 
-  // Discord membership is a frontend stub (ADR-0007); the Remove control only
-  // prunes local sample state so the interaction is demonstrable.
-  const [discordMembersByLicense, setDiscordMembersByLicense] = useState<
-    Record<string, DiscordMember[]>
+  const [discordAccessByLicenseState, setDiscordAccessByLicenseState] = useState<
+    Record<string, DiscordAccess>
   >(() =>
     Object.fromEntries(
-      initialLicenses.map((license) => [license.id, SAMPLE_DISCORD_MEMBERS])
+      initialLicenses.map((license) => [
+        license.id,
+        discordAccessByLicense[license.id] ?? emptyDiscordAccess(license.id),
+      ])
     )
   )
 
@@ -154,7 +150,18 @@ export function LicensesClient({
         throw new Error(t('loadError'))
       }
       const data = await res.json()
-      setLicenses(data.licenses || [])
+      const nextLicenses = data.licenses || []
+      setLicenses(nextLicenses)
+      setDiscordAccessByLicenseState((prev) =>
+        Object.fromEntries(
+          nextLicenses.map((license: License) => [
+            license.id,
+            data.discordAccessByLicense?.[license.id] ??
+              prev[license.id] ??
+              emptyDiscordAccess(license.id),
+          ])
+        )
+      )
     } catch (err) {
       setError(err instanceof Error ? err.message : t('loadError'))
     }
@@ -172,6 +179,37 @@ export function LicensesClient({
       setError(t('deactivateError'))
     } finally {
       setDeactivating(null)
+    }
+  }
+
+
+  const handleRemoveDiscordMember = async (licenseId: string, memberId: string) => {
+    setRemovingDiscordMember(memberId)
+    setError(null)
+    try {
+      const res = await fetch(
+        `/api/account/licenses/${licenseId}/discord/members/${memberId}`,
+        { method: 'DELETE' }
+      )
+      if (!res.ok) {
+        if (res.status === 401) {
+          window.location.assign('/login')
+          return
+        }
+        throw new Error('Failed to remove Discord member')
+      }
+      setDiscordAccessByLicenseState((accessByLicense) => {
+        const current = accessByLicense[licenseId] ?? emptyDiscordAccess(licenseId)
+        const members = current.members.filter((member) => member.id !== memberId)
+        return {
+          ...accessByLicense,
+          [licenseId]: { ...current, members, usedSeats: members.length },
+        }
+      })
+    } catch {
+      setError(t('discordRemoveError'))
+    } finally {
+      setRemovingDiscordMember(null)
     }
   }
 
@@ -228,8 +266,9 @@ export function LicensesClient({
           const scopedDownloadsHref = `/account/downloads?license=${encodeURIComponent(
             license.id
           )}`
-          const discordMembers =
-            discordMembersByLicense[license.id] ?? SAMPLE_DISCORD_MEMBERS
+          const discordAccess =
+            discordAccessByLicenseState[license.id] ?? emptyDiscordAccess(license.id)
+          const discordMembers = discordAccess.members
           return (
           <Card key={license.id}>
             <CardHeader>
@@ -431,9 +470,9 @@ export function LicensesClient({
                 </div>
               )}
 
-              {/* Discord access — frontend stub per ADR-0007. Membership data
-                  is sample-only; the resolving backend is out of scope for this
-                  work package. */}
+              {/* Discord access is scoped to this licence. Connected members
+                  come from the server-side licence metadata projection; removal
+                  updates the same licence-scoped module. */}
               <div className="border-t pt-4">
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
@@ -441,20 +480,25 @@ export function LicensesClient({
                   </p>
                   <span className="text-xs font-medium text-muted-foreground">
                     {t('discordMembers', {
-                      count: discordMembers.length,
-                      cap: DISCORD_DEFAULT_CAP,
+                      count: discordAccess.usedSeats,
+                      cap: discordAccess.seatCap,
                     })}
                   </span>
                 </div>
-                <DividedList className="mt-1">
-                  {discordMembers.map((member) => (
+                {discordMembers.length === 0 ? (
+                  <p className="mt-2 text-sm text-muted-foreground">
+                    {t('discordNoMembers')}
+                  </p>
+                ) : (
+                  <DividedList className="mt-1">
+                    {discordMembers.map((member) => (
                     <Row key={member.id} className="gap-2">
                       <div className="flex min-w-0 items-center gap-2.5">
                         <span
                           aria-hidden="true"
                           className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-wcpos-red/10 text-xs font-medium text-wcpos-red-accent"
                         >
-                          {member.avatarInitials}
+                          {memberInitials(member.handle)}
                         </span>
                         <div className="min-w-0">
                           <p className="truncate text-sm font-medium">
@@ -474,18 +518,9 @@ export function LicensesClient({
                         variant="ghost"
                         size="sm"
                         onClick={() =>
-                          setDiscordMembersByLicense((membersByLicense) => {
-                            const currentMembers =
-                              membersByLicense[license.id] ??
-                              SAMPLE_DISCORD_MEMBERS
-                            return {
-                              ...membersByLicense,
-                              [license.id]: currentMembers.filter(
-                                (m) => m.id !== member.id
-                              ),
-                            }
-                          })
+                          handleRemoveDiscordMember(license.id, member.id)
                         }
+                        disabled={removingDiscordMember === member.id}
                         aria-label={t('discordRemoveAria', {
                           handle: member.handle,
                         })}
@@ -493,8 +528,9 @@ export function LicensesClient({
                         {t('discordRemove')}
                       </Button>
                     </Row>
-                  ))}
-                </DividedList>
+                    ))}
+                  </DividedList>
+                )}
                 {displayStatus === 'active' && (
                   <p className="mt-3 text-xs text-muted-foreground">
                     {t('discordConnectHint')}

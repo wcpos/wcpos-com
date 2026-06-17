@@ -112,7 +112,7 @@ describe('ProfileEditForm', () => {
     expect(screen.queryByText('Connections')).not.toBeInTheDocument()
   })
 
-  it('shows a Connect Discord action when Discord is not linked', () => {
+  it('does not expose account-level Discord linking from the profile', () => {
     const assign = vi.fn()
     Object.defineProperty(window, 'location', {
       configurable: true,
@@ -124,8 +124,6 @@ describe('ProfileEditForm', () => {
         customer={{ email: 'ada@gmail.com', metadata: {} }}
         connections={{
           signIn: { provider: 'google', email: 'ada@gmail.com' },
-          discord: { connected: false, configured: true },
-          discordReturnTo: '/en/account/profile',
         }}
       />
     )
@@ -135,13 +133,8 @@ describe('ProfileEditForm', () => {
       screen.getByText('Connected as ada@gmail.com')
     ).toBeInTheDocument()
 
-    const connectButton = screen.getByRole('button', {
-      name: 'Connect Discord',
-    })
-    fireEvent.click(connectButton)
-    expect(window.location.href).toBe(
-      '/api/discord/link?return_to=%2Fen%2Faccount%2Fprofile'
-    )
+    expect(screen.queryByText('Discord')).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Connect Discord' })).not.toBeInTheDocument()
   })
 
   it('labels the sign-in row by the actual provider (GitHub)', () => {
@@ -150,8 +143,6 @@ describe('ProfileEditForm', () => {
         customer={{ email: 'ada@github.com', metadata: {} }}
         connections={{
           signIn: { provider: 'github', email: 'ada@github.com' },
-          discord: { connected: false, configured: false },
-          discordReturnTo: '/en/account/profile',
         }}
       />
     )
@@ -168,8 +159,6 @@ describe('ProfileEditForm', () => {
         customer={{ email: 'ada@example.com', metadata: {} }}
         connections={{
           signIn: { provider: 'email', email: 'ada@example.com' },
-          discord: { connected: false, configured: false },
-          discordReturnTo: '/en/account/profile',
         }}
       />
     )
@@ -177,101 +166,6 @@ describe('ProfileEditForm', () => {
     expect(screen.getByText('Email & password')).toBeInTheDocument()
     expect(screen.queryByText('Google')).not.toBeInTheDocument()
     expect(screen.queryByText('GitHub')).not.toBeInTheDocument()
-  })
-
-  it('hides the Connect Discord action when Discord is not configured', () => {
-    render(
-      <ProfileEditForm
-        customer={{ email: 'ada@gmail.com', metadata: {} }}
-        connections={{
-          signIn: { provider: 'google', email: 'ada@gmail.com' },
-          discord: { connected: false, configured: false },
-          discordReturnTo: '/en/account/profile',
-        }}
-      />
-    )
-
-    expect(
-      screen.queryByRole('button', { name: 'Connect Discord' })
-    ).not.toBeInTheDocument()
-    expect(
-      screen.getByText('Discord linking is not configured yet.')
-    ).toBeInTheDocument()
-  })
-
-  it('shows the linked Discord handle and disconnect action', async () => {
-    Object.defineProperty(window, 'location', {
-      configurable: true,
-      value: {
-        href: 'http://localhost/en/account/profile',
-        origin: 'http://localhost',
-      },
-    })
-    mockFetch.mockResolvedValueOnce({
-      ok: true,
-      redirected: true,
-      url: 'http://localhost/en/account/profile?discord=unlinked',
-    })
-
-    render(
-      <ProfileEditForm
-        customer={{ email: 'ada@gmail.com', metadata: {} }}
-        connections={{
-          signIn: { provider: 'google', email: 'ada@gmail.com' },
-          discord: { connected: true, username: 'ada' },
-          discordReturnTo: '/en/account/profile',
-        }}
-      />
-    )
-
-    expect(screen.getByText('@ada')).toBeInTheDocument()
-
-    fireEvent.click(screen.getByRole('button', { name: 'Disconnect' }))
-
-    await waitFor(() => {
-      expect(mockFetch).toHaveBeenCalledWith(
-        '/api/discord/unlink',
-        expect.objectContaining({ method: 'POST' })
-      )
-    })
-    // The unlink route 303-redirects to ?discord=unlinked; the form navigates
-    // there so the server re-reads state and the unlinked banner is shown.
-    await waitFor(() => {
-      expect(window.location.href).toBe(
-        'http://localhost/en/account/profile?discord=unlinked'
-      )
-    })
-  })
-
-  it('shows an error when Discord unlink redirects to an error status', async () => {
-    const reload = vi.fn()
-    Object.defineProperty(window, 'location', {
-      configurable: true,
-      value: { href: '', origin: 'http://localhost:3000', reload },
-    })
-    mockFetch.mockResolvedValueOnce({
-      ok: true,
-      redirected: true,
-      url: 'http://localhost:3000/account?discord=error',
-    })
-
-    render(
-      <ProfileEditForm
-        customer={{ email: 'ada@gmail.com', metadata: {} }}
-        connections={{
-          signIn: { provider: 'google', email: 'ada@gmail.com' },
-          discord: { connected: true, username: 'ada' },
-          discordReturnTo: '/en/account/profile',
-        }}
-      />
-    )
-
-    fireEvent.click(screen.getByRole('button', { name: 'Disconnect' }))
-
-    expect(
-      await screen.findByText('Could not disconnect. Please try again.')
-    ).toBeInTheDocument()
-    expect(reload).not.toHaveBeenCalled()
   })
 
   it('renders the member-since footer when provided', () => {

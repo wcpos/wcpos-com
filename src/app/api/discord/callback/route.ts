@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getCustomer, updateCustomer } from '@/lib/medusa-auth'
 import { DiscordApiClient } from '@/lib/discord/client'
-import { getDiscordConfig } from '@/lib/discord/config'
+import { getDiscordConfig, isDiscordConfigured } from '@/lib/discord/config'
 import { consumeDiscordOAuthState } from '@/lib/discord/oauth-state'
-import { buildDiscordLinkMetadata } from '@/lib/discord/metadata'
-import { syncCurrentCustomerDiscordRole } from '@/lib/discord/current-customer-sync'
-import { findCustomerByDiscordUserId } from '@/lib/discord/medusa-admin'
+import { claimConnectedDiscordMember } from '@/lib/discord/connected-member-service'
+import { createDiscordRoleSyncDependencies } from '@/lib/discord/default-sync'
+import { syncDiscordProRoleForMember } from '@/lib/discord/sync'
+import { licenseClient } from '@/services/core/external/license-client'
 import { infraLogger } from '@/lib/logger'
 
 function callbackRedirect(request: NextRequest, path: string, status: string): NextResponse {
@@ -14,18 +14,30 @@ function callbackRedirect(request: NextRequest, path: string, status: string): N
   return NextResponse.redirect(url)
 }
 
+function statusToQuery(status: Awaited<ReturnType<typeof claimConnectedDiscordMember>>['status']): string {
+  switch (status) {
+    case 'claimed':
+    case 'already_connected':
+      return 'claimed'
+    case 'seat_cap_reached':
+      return 'seat_cap_reached'
+    case 'blocked':
+      return 'blocked'
+    case 'license_not_active':
+      return 'license_not_active'
+    default:
+      return 'error'
+  }
+}
+
 export async function GET(request: NextRequest) {
   const code = request.nextUrl.searchParams.get('code')
   const state = request.nextUrl.searchParams.get('state')
   const storedState = await consumeDiscordOAuthState()
-  const customer = await getCustomer()
+  const returnTo = storedState?.returnTo ?? '/account/licenses'
 
-  if (!code || !state || !storedState || storedState.state !== state || !customer || storedState.customerId !== customer.id) {
-    return callbackRedirect(
-      request,
-      storedState?.returnTo ?? '/account/profile',
-      'error'
-    )
+  if (!code || !state || !storedState || storedState.state !== state || !storedState.licenseKey) {
+    return callbackRedirect(request, returnTo, 'error')
   }
 
   try {
@@ -33,35 +45,39 @@ export async function GET(request: NextRequest) {
     const redirectUri = new URL('/api/discord/callback', request.url).toString()
     const accessToken = await client.exchangeCode({ code, redirectUri })
     const discordUser = await client.getCurrentUser(accessToken)
-    const existingLink = await findCustomerByDiscordUserId(discordUser.id)
 
-    if (existingLink && existingLink.id !== customer.id) {
-      return callbackRedirect(request, storedState.returnTo, 'already_linked')
-    }
-
-    const updatedCustomer = await updateCustomer({
-      metadata: buildDiscordLinkMetadata(customer.metadata, {
+    const result = await claimConnectedDiscordMember({
+      licenseKey: storedState.licenseKey,
+      identity: {
         id: discordUser.id,
         username: discordUser.username,
         avatar: discordUser.avatar,
-        linkedAt: new Date(),
-      }),
+      },
+      dependencies: {
+        now: () => new Date(),
+        validateLicenseKey: licenseClient.validateLicenseKey,
+        getLicense: licenseClient.getLicense,
+        updateLicenseMetadata: licenseClient.updateLicenseMetadata,
+      },
     })
 
-    if (!updatedCustomer) {
-      infraLogger.error`Discord link callback failed: customer metadata update returned empty result`
-      return callbackRedirect(request, storedState.returnTo, 'error')
+    if (isDiscordConfigured() && (result.status === 'claimed' || result.status === 'already_connected')) {
+      try {
+        await syncDiscordProRoleForMember(
+          discordUser.id,
+          createDiscordRoleSyncDependencies(async () => {
+            const license = await licenseClient.getLicense(result.licenseId)
+            return [{ status: license.status, expiry: license.expiry }]
+          })
+        )
+      } catch (syncError) {
+        infraLogger.warn`Discord role sync after member claim failed: ${syncError}`
+      }
     }
 
-    try {
-      await syncCurrentCustomerDiscordRole(updatedCustomer)
-    } catch (syncError) {
-      infraLogger.warn`Discord role sync after link failed: ${syncError}`
-    }
-
-    return callbackRedirect(request, storedState.returnTo, 'linked')
+    return callbackRedirect(request, returnTo, statusToQuery(result.status))
   } catch (error) {
-    infraLogger.error`Discord link callback failed: ${error}`
-    return callbackRedirect(request, storedState.returnTo, 'error')
+    infraLogger.error`Discord member claim callback failed: ${error}`
+    return callbackRedirect(request, returnTo, 'error')
   }
 }

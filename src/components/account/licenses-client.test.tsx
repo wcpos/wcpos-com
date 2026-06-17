@@ -391,39 +391,95 @@ describe('LicensesClient', () => {
     expect(screen.queryByText(/via this licence/)).not.toBeInTheDocument()
   })
 
-  it('renders the Discord access stub with sample members and a seat cap', () => {
-    render(<LicensesClient initialLicenses={[makeLicense()]} />)
+  it('renders real Discord connected members with a seat cap', () => {
+    render(
+      <LicensesClient
+        initialLicenses={[makeLicense({ id: 'lic-1' })]}
+        discordAccessByLicense={{
+          'lic-1': {
+            licenseId: 'lic-1',
+            seatCap: 5,
+            usedSeats: 1,
+            members: [
+              {
+                id: 'member-ada',
+                handle: '@ada',
+                avatarUrl: null,
+                connectedAt: '2026-06-01T00:00:00.000Z',
+              },
+            ],
+          },
+        }}
+      />
+    )
     expect(screen.getByText('Discord access')).toBeInTheDocument()
-    // Default cap is 5; three sample members ship by default.
-    expect(screen.getByText('3 of 5 members')).toBeInTheDocument()
+    expect(screen.getByText('1 of 5 members')).toBeInTheDocument()
     expect(screen.getByText('@ada')).toBeInTheDocument()
-    expect(screen.getByText(/Connect with your license key/)).toBeInTheDocument()
+    expect(screen.queryByText('@devon')).not.toBeInTheDocument()
   })
 
-  it('removes a Discord member from the local stub on Remove', () => {
-    render(<LicensesClient initialLicenses={[makeLicense()]} />)
+  it('renders empty Discord access when no members are connected', () => {
+    render(<LicensesClient initialLicenses={[makeLicense({ id: 'lic-1' })]} />)
 
-    expect(screen.getByText('3 of 5 members')).toBeInTheDocument()
-    fireEvent.click(screen.getByRole('button', { name: 'Remove @ada' }))
-
-    expect(screen.getByText('2 of 5 members')).toBeInTheDocument()
+    expect(screen.getByText('0 of 5 members')).toBeInTheDocument()
+    expect(screen.getByText('No connected members yet.')).toBeInTheDocument()
     expect(screen.queryByText('@ada')).not.toBeInTheDocument()
   })
 
-  it('keeps Discord member removals scoped to one license card', () => {
+  it('removes a Discord member through the holder endpoint', async () => {
+    mockFetch.mockResolvedValueOnce({ ok: true, json: async () => ({ ok: true }) })
     render(
       <LicensesClient
-        initialLicenses={[
-          makeLicense({ id: 'lic-1' }),
-          makeLicense({ id: 'lic-2', key: 'WXYZ-WXYZ-WXYZ-PAIR' }),
-        ]}
+        initialLicenses={[makeLicense({ id: 'lic-1' })]}
+        discordAccessByLicense={{
+          'lic-1': {
+            licenseId: 'lic-1',
+            seatCap: 5,
+            usedSeats: 1,
+            members: [
+              { id: 'member-ada', handle: '@ada', avatarUrl: null, connectedAt: '2026-06-01T00:00:00.000Z' },
+            ],
+          },
+        }}
       />
     )
 
-    fireEvent.click(screen.getAllByRole('button', { name: 'Remove @ada' })[0])
+    fireEvent.click(screen.getByRole('button', { name: 'Remove @ada' }))
 
-    expect(screen.getByText('2 of 5 members')).toBeInTheDocument()
-    expect(screen.getByText('3 of 5 members')).toBeInTheDocument()
-    expect(screen.getAllByText('@ada')).toHaveLength(1)
+    expect(mockFetch).toHaveBeenCalledWith(
+      '/api/account/licenses/lic-1/discord/members/member-ada',
+      { method: 'DELETE' }
+    )
+    expect(await screen.findByText('0 of 5 members')).toBeInTheDocument()
+    expect(screen.queryByText('@ada')).not.toBeInTheDocument()
+  })
+
+  it('redirects to login when Discord member removal returns 401', async () => {
+    const assign = vi.fn()
+    Object.defineProperty(window, 'location', {
+      configurable: true,
+      value: { ...window.location, assign },
+    })
+    mockFetch.mockResolvedValueOnce({ ok: false, status: 401 })
+    render(
+      <LicensesClient
+        initialLicenses={[makeLicense({ id: 'lic-1' })]}
+        discordAccessByLicense={{
+          'lic-1': {
+            licenseId: 'lic-1',
+            seatCap: 5,
+            usedSeats: 1,
+            members: [
+              { id: 'member-ada', handle: '@ada', avatarUrl: null, connectedAt: '2026-06-01T00:00:00.000Z' },
+            ],
+          },
+        }}
+      />
+    )
+
+    fireEvent.click(screen.getByRole('button', { name: 'Remove @ada' }))
+
+    expect(await screen.findByText('@ada')).toBeInTheDocument()
+    expect(assign).toHaveBeenCalledWith('/login')
   })
 })

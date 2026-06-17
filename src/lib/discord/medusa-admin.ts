@@ -3,7 +3,6 @@ import 'server-only'
 import { env } from '@/utils/env'
 import type { MedusaOrder } from '@/lib/customer-orders'
 import type { MedusaCustomer } from '@/lib/medusa-auth'
-import { authLogger } from '@/lib/logger'
 
 interface AdminCustomersResponse {
   customers?: MedusaCustomer[]
@@ -63,22 +62,6 @@ export async function listAdminCustomers(
   return customers
 }
 
-export async function listCustomersWithDiscordLinks(): Promise<MedusaCustomer[]> {
-  const customers = await listAdminCustomers()
-  return customers.filter((customer) =>
-    Boolean(customer.metadata?.discord_user_id)
-  )
-}
-
-export async function findCustomerByDiscordUserId(
-  discordUserId: string
-): Promise<MedusaCustomer | null> {
-  const customers = await listAdminCustomers()
-  return customers.find(
-    (customer) => customer.metadata?.discord_user_id === discordUserId
-  ) ?? null
-}
-
 export async function listAdminCustomerOrders(
   customerId: string,
   batchSize: number = 100,
@@ -103,13 +86,4 @@ export async function listAdminCustomerOrders(
   }
 
   return orders
-}
-
-export async function safeListCustomersWithDiscordLinks(): Promise<MedusaCustomer[]> {
-  try {
-    return await listCustomersWithDiscordLinks()
-  } catch (error) {
-    authLogger.error`Failed to list Discord-linked customers: ${error}`
-    throw error
-  }
 }

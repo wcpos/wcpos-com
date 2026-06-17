@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server'
 import { getResolvedCustomerLicenses } from '@/lib/customer-licenses'
+import { getDiscordAccessByLicense } from '@/lib/discord/connected-member-service'
 import { licenseLogger } from '@/lib/logger'
+import type { LicenseDetail } from '@/types/license'
 
 /**
  * Customer Licenses API
@@ -14,6 +16,14 @@ import { licenseLogger } from '@/lib/logger'
  * Ownership is verified by extracting license IDs from order metadata.
  */
 
+function stripDiscordAccessMetadata(licenses: LicenseDetail[]): LicenseDetail[] {
+  return licenses.map((license) => {
+    const metadata = { ...license.metadata }
+    delete metadata.discord_access
+    return { ...license, metadata }
+  })
+}
+
 export async function GET() {
   try {
     const { authenticated, licenses } = await getResolvedCustomerLicenses()
@@ -25,7 +35,10 @@ export async function GET() {
       )
     }
 
-    return NextResponse.json({ licenses }, { status: 200 })
+    return NextResponse.json({
+      licenses: stripDiscordAccessMetadata(licenses),
+      discordAccessByLicense: getDiscordAccessByLicense(licenses),
+    }, { status: 200 })
   } catch (error) {
     licenseLogger.error`Failed to fetch licenses: ${error}`
     return NextResponse.json(

@@ -23,33 +23,14 @@ This intentionally differs from download entitlement: expired licenses can keep
 access to releases published during their term, but the Discord community perk
 requires current active Pro status.
 
-## Account linking
+## Superseded account linking model
 
-Store the Discord link on the Medusa customer metadata for v1:
-
-- `discord_user_id`
-- `discord_username`
-- `discord_avatar`
-- `discord_linked_at`
-- `discord_last_synced_at`
-
-Do not infer identity from email address. A customer's WCPOS email and Discord
-email may differ. The link is created only from both of these proofs:
-
-1. an authenticated Medusa customer session on wcpos.com, and
-2. a verified Discord OAuth `identify` result for the Discord account.
-
-Both linking entry points are supported:
-
-- Website-first: the logged-in customer clicks **Connect Discord** in the
-  account area.
-- Discord-first: the customer runs `/link` in Discord and receives an ephemeral
-  wcpos.com linking URL.
-
-The Discord-first URL should carry a short-lived signed state binding it to the
-Discord user who invoked `/link`; the OAuth callback must reject the link if the
-OAuth Discord user differs from that expected user. This prevents forwarded link
-URLs from linking the wrong Discord identity.
+The original v1 account-linking design stored one Discord identity on Medusa
+customer metadata. That model is superseded for the account redesign by
+[ADR-0007](0007-pro-discord-access-per-licence.md). Greenfield
+implementations must not add customer-level `discord_*` metadata links; Discord
+access is now stored as licence connected-member metadata and managed from the
+licence page.
 
 ## Role ownership
 
@@ -93,16 +74,15 @@ Required secrets live only in server-side deployment environment variables:
 - `DISCORD_CLIENT_SECRET`
 - `DISCORD_PUBLIC_KEY` for slash-command interaction signature verification
 - `CRON_SECRET`
-- `MEDUSA_ADMIN_API_TOKEN` for customer-wide duplicate-link checks and
-  reconciliation
-- `DISCORD_SYNC_ENABLED` kill switch
+- `MEDUSA_ADMIN_API_TOKEN` for reconciliation over licence-owning customer orders
 
 ## Deferred decisions
 
-A dedicated Medusa `customer_discord_link` table is deferred. Promote from
-customer metadata only if linked-user count grows into the thousands, reverse
-lookup becomes hot, hard database uniqueness is needed, or audit/history becomes
-important.
+A dedicated external connected-member table is deferred for this greenfield
+slice. The current implementation stores the licence-member collection on
+Keygen licence metadata (`discord_access`) so access follows the licence record
+without customer-level link state. Promote to a dedicated store only if metadata
+contention, audit/history, or indexed reverse lookup becomes important.
 
 Keygen webhooks are also deferred. They can later accelerate targeted sync on
 license expiry, renewal, suspension, or revocation, but reconciliation remains

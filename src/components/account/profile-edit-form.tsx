@@ -14,13 +14,8 @@ import {
 } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Separator } from '@/components/ui/separator'
 import { Mail } from 'lucide-react'
-import {
-  DiscordMark,
-  GitHubMark,
-  GoogleMark,
-} from '@/components/auth/provider-marks'
+import { GitHubMark, GoogleMark } from '@/components/auth/provider-marks'
 import { getConnectedAvatarUrlFromMetadata } from '@/lib/avatar'
 import { readAccountProfileMetadata } from '@/lib/customer-profile-metadata'
 
@@ -35,10 +30,6 @@ interface ProfileEditFormProps {
   memberSince?: string
   connections?: {
     signIn: { provider: 'google' | 'github' | 'email'; email: string }
-    discord:
-      | { connected: true; username: string | null }
-      | { connected: false; configured: boolean }
-    discordReturnTo: string
   }
 }
 
@@ -224,46 +215,10 @@ export function ProfileEditForm({
   const [saving, setSaving] = useState(false)
   const [success, setSuccess] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
-  const [disconnecting, setDisconnecting] = useState(false)
 
   const countryProfile =
     COUNTRY_PROFILES[countryCode] ?? COUNTRY_PROFILES.US
 
-  // Connect starts a full-page OAuth redirect; the link route returns the
-  // user to this profile path once Discord authorizes. No backend endpoint is invented
-  // here — these are the existing /api/discord/{link,unlink} routes.
-  const handleConnectDiscord = () => {
-    const params = new URLSearchParams({
-      return_to: connections?.discordReturnTo ?? `/${locale}/account/profile`,
-    })
-    window.location.href = `/api/discord/link?${params.toString()}`
-  }
-
-  const handleDisconnectDiscord = async () => {
-    setDisconnecting(true)
-    setError(null)
-    try {
-      const response = await fetch('/api/discord/unlink', { method: 'POST' })
-      const responseUrl = response.url
-        ? new URL(response.url, window.location.origin)
-        : null
-      if (
-        !response.ok ||
-        responseUrl?.searchParams.get('discord') === 'error'
-      ) {
-        throw new Error(t('disconnectError'))
-      }
-      // The unlink route 303-redirects to /account/profile?discord=unlinked.
-      // Navigate to that URL (not a bare reload) so the server re-reads the
-      // connection state AND the `unlinked` status banner is shown.
-      window.location.href = responseUrl
-        ? responseUrl.toString()
-        : window.location.href
-    } catch (err) {
-      setError(err instanceof Error ? err.message : t('disconnectError'))
-      setDisconnecting(false)
-    }
-  }
 
   const avatarUrl = useMemo(() => {
     return customAvatarDataUrl || customAvatarUrl || metadataDefaults.oauthAvatarUrl
@@ -567,51 +522,6 @@ export function ProfileEditForm({
                 <Badge variant="success">
                   {t('connectedAs', { account: connections.signIn.email })}
                 </Badge>
-              </div>
-            </div>
-
-            <Separator />
-
-            <div className="flex items-center gap-4 py-3">
-              <span className="flex h-10 w-10 flex-none items-center justify-center rounded-md border">
-                <DiscordMark className="h-5 w-5" />
-              </span>
-              <div className="min-w-0 flex-1">
-                <p className="font-medium leading-none">
-                  {t('discordProvider')}
-                </p>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  {t('discordDescription')}
-                </p>
-              </div>
-              <div className="flex flex-none items-center gap-2">
-                {connections.discord.connected ? (
-                  <>
-                    {connections.discord.username && (
-                      <span className="hidden text-sm font-medium sm:inline">
-                        @{connections.discord.username}
-                      </span>
-                    )}
-                    <Badge variant="success">{t('connected')}</Badge>
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="sm"
-                      disabled={disconnecting}
-                      onClick={handleDisconnectDiscord}
-                    >
-                      {disconnecting ? t('disconnecting') : t('disconnect')}
-                    </Button>
-                  </>
-                ) : connections.discord.configured ? (
-                  <Button type="button" size="sm" onClick={handleConnectDiscord}>
-                    {t('connectDiscord')}
-                  </Button>
-                ) : (
-                  <span className="text-xs text-muted-foreground">
-                    {t('discordNotConfigured')}
-                  </span>
-                )}
               </div>
             </div>
           </CardContent>

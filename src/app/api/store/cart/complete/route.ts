@@ -3,8 +3,6 @@ import { cookies } from 'next/headers'
 import { completeCart } from '@/services/core/external/medusa-client'
 import { getCustomer } from '@/lib/medusa-auth'
 import { storeLogger } from '@/lib/logger'
-import { getDiscordLink } from '@/lib/discord/metadata'
-import { syncCurrentCustomerDiscordRole } from '@/lib/discord/current-customer-sync'
 import {
   resolveProCheckoutVariant,
   trackServerEvent,
@@ -61,12 +59,6 @@ export async function POST(request: NextRequest) {
       return toErrorResponse(
         new ApiError(409, 'Payment received, order pending', 'order_pending')
       )
-    }
-
-    if (getDiscordLink(customer.metadata)) {
-      void syncCurrentCustomerDiscordRole(customer).catch((syncError) => {
-        storeLogger.warn`Discord role sync after checkout failed: ${syncError}`
-      })
     }
 
     try {
