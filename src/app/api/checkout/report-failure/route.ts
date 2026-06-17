@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { routineSaleLogger, saleLogger } from '@/lib/logger'
 import { createRateLimiter, clientIp } from '@/lib/rate-limit'
+import { ownerSeverityForCheckoutFailure } from '@/lib/checkout-failure-taxonomy'
 
 /**
  * Browser-reported checkout failure bridge.
@@ -13,12 +14,6 @@ import { createRateLimiter, clientIp } from '@/lib/rate-limit'
  *
  * Always returns 204 — never let alerting break the customer's flow.
  */
-
-// Charged-but-no-order / ambiguous-charge: page hardest (fatal → Discord + email).
-const MONEY_AT_RISK = new Set(['order_pending', 'payment_uncertain'])
-// Routine failures (declines/errors). At launch we alert on all of these so the
-// owner sees every failed purchase attempt; they go to Discord only, not email.
-const ROUTINE_FAILURE = new Set(['payment_failed'])
 
 // Beacon payloads are tiny ({kind, reference}). Reject anything
 // larger so a single caller can't push large bodies through the alert path.
@@ -62,10 +57,12 @@ export async function POST(request: Request): Promise<NextResponse> {
     const kind = typeof body.kind === 'string' ? body.kind : 'unknown'
     const reference = sanitizeReference(body.reference)
 
-    if (MONEY_AT_RISK.has(kind)) {
+    const ownerSeverity = ownerSeverityForCheckoutFailure(kind)
+
+    if (ownerSeverity === 'fatal') {
       // fatal → Discord (rate-limit-bypassed for wcpos.store.sale) + email.
       saleLogger.fatal`Checkout failure (money at risk): ${kind} ref=${reference}`
-    } else if (ROUTINE_FAILURE.has(kind)) {
+    } else if (ownerSeverity === 'error') {
       // error → Discord only (Sentry filters the routine sale subcategory).
       routineSaleLogger.error`Checkout payment failure: ${kind} ref=${reference}`
     }

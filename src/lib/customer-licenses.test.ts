@@ -2,7 +2,6 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 const mockGetCustomer = vi.fn()
 const mockGetAllOrders = vi.fn()
-const mockListAdminCustomerOrders = vi.fn()
 const mockGetLicenseWithMachines = vi.fn()
 const mockValidateLicenseKey = vi.fn()
 
@@ -23,10 +22,6 @@ vi.mock('@/services/core/external/license-client', () => ({
   },
 }))
 
-vi.mock('@/lib/discord/medusa-admin', () => ({
-  listAdminCustomerOrders: (...args: unknown[]) =>
-    mockListAdminCustomerOrders(...args),
-}))
 
 import { getResolvedCustomerLicenses } from './customer-licenses'
 
@@ -126,13 +121,14 @@ describe('getResolvedCustomerLicenses', () => {
     expect(result.licenses[0].status).toBe('active')
   })
 
-  it('resolves licenses from the supplied customer orders', async () => {
-    mockListAdminCustomerOrders.mockResolvedValueOnce([
+  it('always resolves licenses for the current session customer', async () => {
+    mockGetCustomer.mockResolvedValueOnce({ id: 'cust_session' })
+    mockGetAllOrders.mockResolvedValueOnce([
       {
-        id: 'order_2',
+        id: 'order_session',
         status: 'completed',
-        display_id: 2,
-        email: 'other@example.com',
+        display_id: 3,
+        email: 'session@example.com',
         currency_code: 'usd',
         total: 129,
         subtotal: 129,
@@ -141,7 +137,7 @@ describe('getResolvedCustomerLicenses', () => {
         updated_at: '2026-01-01T00:00:00Z',
         items: [],
         metadata: {
-          licenses: [{ license_key: 'WCPOS-BBBB-2222' }],
+          licenses: [{ license_key: 'WCPOS-SESSION-3333' }],
         },
       },
     ])
@@ -150,8 +146,8 @@ describe('getResolvedCustomerLicenses', () => {
       code: 'VALID',
       detail: 'ok',
       license: {
-        id: 'lic_2',
-        key: 'WCPOS-BBBB-2222',
+        id: 'lic_session',
+        key: 'WCPOS-SESSION-3333',
         status: 'ACTIVE',
         expiry: null,
         maxMachines: 1,
@@ -161,19 +157,12 @@ describe('getResolvedCustomerLicenses', () => {
       },
     })
 
-    const result = await getResolvedCustomerLicenses({
-      id: 'cust_2',
-      email: 'other@example.com',
-      has_account: true,
-      created_at: '2026-01-01T00:00:00Z',
-      updated_at: '2026-01-01T00:00:00Z',
-    })
+    const result = await getResolvedCustomerLicenses()
 
-    expect(mockGetCustomer).not.toHaveBeenCalled()
-    expect(mockGetAllOrders).not.toHaveBeenCalled()
-    expect(mockListAdminCustomerOrders).toHaveBeenCalledWith('cust_2')
+    expect(mockGetCustomer).toHaveBeenCalledTimes(1)
+    expect(mockGetAllOrders).toHaveBeenCalledTimes(1)
     expect(result.authenticated).toBe(true)
     expect(result.licenses).toHaveLength(1)
-    expect(result.licenses[0].key).toBe('WCPOS-BBBB-2222')
+    expect(result.licenses[0].key).toBe('WCPOS-SESSION-3333')
   })
 })

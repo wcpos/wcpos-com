@@ -4,12 +4,11 @@ import {
   getAllOrders,
   type MedusaOrder,
 } from '@/lib/customer-orders'
-import { getCustomer, type MedusaCustomer } from '@/lib/medusa-auth'
+import { getCustomer } from '@/lib/medusa-auth'
 import {
   extractLicenseReferencesFromOrders,
   type LicenseReference,
 } from '@/lib/licenses'
-import { listAdminCustomerOrders } from '@/lib/discord/medusa-admin'
 import { normalizeLicenseStatus } from '@/lib/license-status'
 import { licenseClient } from '@/services/core/external/license-client'
 import { licenseLogger } from '@/lib/logger'
@@ -84,18 +83,16 @@ export async function getResolvedLicensesFromOrders(
   return licenses.filter((license): license is LicenseDetail => Boolean(license))
 }
 
-export async function getResolvedCustomerLicenses(customer?: MedusaCustomer): Promise<{
+export async function getResolvedCustomerLicenses(): Promise<{
   authenticated: boolean
   licenses: LicenseDetail[]
 }> {
-  const resolvedCustomer = customer ?? (await getCustomer())
-  if (!resolvedCustomer) {
+  const customer = await getCustomer()
+  if (!customer) {
     return { authenticated: false, licenses: [] }
   }
 
-  const orders = customer
-    ? await listAdminCustomerOrders(resolvedCustomer.id)
-    : await getAllOrders()
+  const orders = await getAllOrders()
 
   return {
     authenticated: true,
