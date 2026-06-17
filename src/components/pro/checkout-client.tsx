@@ -163,7 +163,7 @@ export function CheckoutClient({
         // survives reloads via sessionStorage. Restore it before initializing
         // so a refresh cannot silently hand the customer a fresh, payable
         // checkout.
-        const restored = await Promise.resolve(restoreCheckoutSafetyState())
+        const restored = restoreCheckoutSafetyState()
         if (restored) {
           setFailure(restored.failure)
           if (shouldBlockCheckout(restored.failure)) {
