@@ -1,12 +1,10 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { Suspense } from 'react'
 import { getOrderById } from '@/lib/customer-orders'
-import { extractLicenseReferencesFromOrders } from '@/lib/licenses'
 import { getResolvedLicensesFromOrders } from '@/lib/customer-licenses'
-import { getLicenseDisplayStatus } from '@/lib/license'
-import { formatOrderAmount, maskLicenseKey } from '@/lib/order-display'
+import { projectAccountOrderDetail } from '@/lib/account-order-projection'
+import { formatOrderAmount } from '@/lib/order-display'
 import { formatDateForLocale } from '@/lib/date-format'
-import { getOrderDisplayStatus } from '@/lib/order-status'
 import { notFound } from 'next/navigation'
 import { Link } from '@/i18n/navigation'
 import { ArrowLeft, FileDown, Key } from 'lucide-react'
@@ -60,40 +58,29 @@ async function OrderDetailContent({
     notFound()
   }
 
-  const licenses = extractLicenseReferencesFromOrders([order]).filter(
-    (license): license is { id: string; key: string } =>
-      Boolean(license.id && license.key)
-  )
-
   // Resolve the order's licences against Keygen for the status badge. The
-  // product label is the purchased line item, attributed only for single-item
-  // orders — a multi-item order could attach a licence to any item, so
-  // first-item attribution would mislabel. `now` is captured once so the
-  // expiry-aware display status is stable across this render. (`new Date()`
-  // mirrors the downloads page and sidesteps the react-hooks purity lint that
-  // flags `Date.now` directly in render.)
+  // Account Order projection attributes product labels only for single-item
+  // orders and keeps activation-key exposure detail-only. `now` is captured
+  // once so the expiry-aware display status is stable across this render.
+  // (`new Date()` mirrors the downloads page and sidesteps the react-hooks
+  // purity lint that flags `Date.now` directly in render.)
   const now = new Date().getTime()
-  const product =
-    order.items.length === 1
-      ? order.items[0]?.title?.trim() || undefined
-      : undefined
   const resolvedLicenses = await getResolvedLicensesFromOrders([order])
-  const licenseEntitlements = resolvedLicenses.map((license) => ({
-    id: license.id,
-    maskedKey: maskLicenseKey(license.key),
-    status: getLicenseDisplayStatus(license, now),
-    product,
-  }))
+  const orderDetail = projectAccountOrderDetail(order, resolvedLicenses, now)
 
   return (
     <>
       <h1 className="text-2xl font-bold tracking-tight">
-        {t('orderNumber', { id: order.display_id })}
+        {t('orderNumber', { id: orderDetail.displayId })}
       </h1>
 
       <div>
         <Button asChild variant="outline" size="sm">
-          <a href={`/api/account/orders/${order.id}/receipt`} target="_blank" rel="noreferrer">
+          <a
+            href={`/api/account/orders/${orderDetail.id}/receipt`}
+            target="_blank"
+            rel="noreferrer"
+          >
             <FileDown className="mr-2 h-4 w-4" />
             {t('downloadReceipt')}
           </a>
@@ -108,19 +95,24 @@ async function OrderDetailContent({
           <CardContent className="space-y-2">
             <div className="flex justify-between">
               <span className="text-muted-foreground">{t('dateLabel')}</span>
-              <span>{formatDateForLocale(order.created_at, locale)}</span>
+              <span>{formatDateForLocale(orderDetail.createdAt, locale)}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-muted-foreground">{t('statusLabel')}</span>
-              <span>{getOrderDisplayStatus(order)}</span>
+              <span>{orderDetail.displayStatus}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-muted-foreground">{t('emailLabel')}</span>
-              <span>{order.email}</span>
+              <span>{orderDetail.email}</span>
             </div>
             <div className="flex justify-between font-medium pt-2 border-t">
               <span>{t('totalLabel')}</span>
-              <span>{formatOrderAmount(order.total, order.currency_code)}</span>
+              <span>
+                {formatOrderAmount(
+                  orderDetail.total.amount,
+                  orderDetail.total.currencyCode
+                )}
+              </span>
             </div>
           </CardContent>
         </Card>
@@ -131,7 +123,7 @@ async function OrderDetailContent({
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
-              {order.items.map((item) => (
+              {orderDetail.items.map((item) => (
                 <div key={item.id} className="flex justify-between">
                   <div>
                     <p className="font-medium">{item.title}</p>
@@ -140,7 +132,10 @@ async function OrderDetailContent({
                     </p>
                   </div>
                   <p className="font-medium">
-                    {formatOrderAmount(item.total, order.currency_code)}
+                    {formatOrderAmount(
+                      item.total.amount,
+                      item.total.currencyCode
+                    )}
                   </p>
                 </div>
               ))}
@@ -149,7 +144,7 @@ async function OrderDetailContent({
         </Card>
       </div>
 
-      {licenseEntitlements.length > 0 && (
+      {orderDetail.licenseEntitlements.length > 0 && (
         <Card>
           <CardHeader>
             <CardTitle className="text-lg">
@@ -158,7 +153,7 @@ async function OrderDetailContent({
           </CardHeader>
           <CardContent>
             <DividedList>
-              {licenseEntitlements.map((license) => (
+              {orderDetail.licenseEntitlements.map((license) => (
                 <Row key={license.id} className="gap-3">
                   <div className="flex min-w-0 items-center gap-2.5">
                     <span
@@ -198,15 +193,15 @@ async function OrderDetailContent({
         </Card>
       )}
 
-      {licenses && licenses.length > 0 && (
+      {orderDetail.activationKeys.length > 0 && (
         <Card>
           <CardHeader>
             <CardTitle className="text-lg">{t('licenseKeysTitle')}</CardTitle>
           </CardHeader>
           <CardContent>
             <DividedList>
-              {licenses.map((lic) => (
-                <Row key={lic.id} className="gap-2">
+              {orderDetail.activationKeys.map((lic) => (
+                <Row key={lic.id ?? lic.key} className="gap-2">
                   {/* The full key is intentionally shown here: the order page
                       is where customers retrieve it for plugin activation. */}
                   <code className="break-all font-mono text-sm tracking-wide">
