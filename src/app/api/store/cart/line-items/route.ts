@@ -21,8 +21,14 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const body = await request.json()
-    const { cartId, product, variant_id, quantity } = body
+    const body = await request.json().catch(() => null)
+    if (!body || typeof body !== 'object' || Array.isArray(body)) {
+      return NextResponse.json({ error: 'Invalid request body' }, { status: 400 })
+    }
+
+    const payload = body as Record<string, unknown>
+    const cartId = typeof payload.cartId === 'string' ? payload.cartId.trim() : ''
+    const { product, variant_id, quantity } = payload
 
     if (!cartId) {
       return NextResponse.json(

@@ -31,8 +31,21 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const body = await request.json()
-    const { cartId, provider_id, paymentCollectionId: existingCollectionId } = body
+    const body = await request.json().catch(() => null)
+    if (!body || typeof body !== 'object' || Array.isArray(body)) {
+      return NextResponse.json({ error: 'Invalid request body' }, { status: 400 })
+    }
+
+    const payload = body as Record<string, unknown>
+    const cartId = typeof payload.cartId === 'string' ? payload.cartId.trim() : ''
+    const providerId =
+      typeof payload.provider_id === 'string' && payload.provider_id.trim()
+        ? payload.provider_id.trim()
+        : 'pp_stripe_stripe'
+    const existingCollectionId =
+      typeof payload.paymentCollectionId === 'string'
+        ? payload.paymentCollectionId
+        : undefined
 
     if (!cartId) {
       return NextResponse.json(
@@ -40,8 +53,6 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       )
     }
-
-    const providerId = provider_id || 'pp_stripe_stripe'
 
     const currentCart = await getCart(cartId)
     if (!currentCart) {

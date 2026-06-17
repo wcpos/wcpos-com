@@ -84,6 +84,25 @@ describe('POST /api/store/cart/payment-sessions', () => {
     expect(mockCreatePaymentCollection).not.toHaveBeenCalled()
   })
 
+  it('returns 400 when the request body is not an object', async () => {
+    const response = await POST(makeRequest(null))
+    const json = await response.json()
+
+    expect(response.status).toBe(400)
+    expect(json.error).toBe('Invalid request body')
+    expect(mockCreatePaymentCollection).not.toHaveBeenCalled()
+  })
+
+  it('returns 400 when cartId is not a string', async () => {
+    const response = await POST(makeRequest({ cartId: 123 }))
+    const json = await response.json()
+
+    expect(response.status).toBe(400)
+    expect(json.error).toBe('Cart ID is required')
+    expect(mockGetCart).not.toHaveBeenCalled()
+    expect(mockCreatePaymentCollection).not.toHaveBeenCalled()
+  })
+
   it('creates a collection and session with the default stripe provider', async () => {
     mockCreatePaymentCollection.mockResolvedValueOnce({ id: 'paycol_1' })
     mockCreatePaymentSession.mockResolvedValueOnce({
@@ -107,6 +126,29 @@ describe('POST /api/store/cart/payment-sessions', () => {
       clientSecret: 'pi_secret',
       paymentSessionId: 'payses_1',
     })
+  })
+
+  it('defaults non-string payment fields before Medusa calls', async () => {
+    mockCreatePaymentCollection.mockResolvedValueOnce({ id: 'paycol_1' })
+    mockCreatePaymentSession.mockResolvedValueOnce({
+      clientSecret: 'pi_secret',
+      paymentSessionId: 'payses_1',
+    })
+
+    const response = await POST(
+      makeRequest({
+        cartId: 'cart_1',
+        provider_id: { bad: true },
+        paymentCollectionId: { bad: true },
+      })
+    )
+
+    expect(response.status).toBe(200)
+    expect(mockCreatePaymentCollection).toHaveBeenCalledWith('cart_1')
+    expect(mockCreatePaymentSession).toHaveBeenCalledWith(
+      'paycol_1',
+      'pp_stripe_stripe'
+    )
   })
 
   it('reuses an existing payment collection when provided', async () => {

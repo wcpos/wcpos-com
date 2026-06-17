@@ -71,6 +71,26 @@ describe('POST /api/store/cart/line-items', () => {
     expect(mockAddLineItem).not.toHaveBeenCalled()
   })
 
+  it('returns 400 when the request body is not an object', async () => {
+    const response = await POST(makeRequest(null))
+    const json = await response.json()
+
+    expect(response.status).toBe(400)
+    expect(json.error).toBe('Invalid request body')
+    expect(mockAddLineItem).not.toHaveBeenCalled()
+  })
+
+  it('returns 400 when cartId is not a string', async () => {
+    const response = await POST(
+      makeRequest({ cartId: 123, product: 'wcpos-pro-yearly' })
+    )
+    const json = await response.json()
+
+    expect(response.status).toBe(400)
+    expect(json.error).toBe('Cart ID is required')
+    expect(mockAddLineItem).not.toHaveBeenCalled()
+  })
+
   it('returns 400 when no current Pro offer can be resolved', async () => {
     const response = await POST(makeRequest({ cartId: 'cart_1' }))
     const json = await response.json()
