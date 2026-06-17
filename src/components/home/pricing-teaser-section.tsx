@@ -20,6 +20,12 @@ const freeFeatures = [
   'Unlimited products',
 ]
 
+const PRO_PRICE_FALLBACK =
+  'See full pricing for current Pro options. No per-register fees.'
+
+export function PricingTeaserSectionFallback() {
+  return <PricingTeaserSectionContent priceSummary={PRO_PRICE_FALLBACK} />
+}
 
 export async function PricingTeaserSection() {
   'use cache'
@@ -27,10 +33,16 @@ export async function PricingTeaserSection() {
   cacheTag('products')
 
   const { offers } = await getProOfferCatalog()
-  const priceSummary =
-    formatHomeProPriceSummary(offers) ??
-    'See full pricing for current Pro options. No per-register fees.'
+  const priceSummary = formatHomeProPriceSummary(offers) ?? PRO_PRICE_FALLBACK
 
+  return <PricingTeaserSectionContent priceSummary={priceSummary} />
+}
+
+function PricingTeaserSectionContent({
+  priceSummary,
+}: {
+  priceSummary: string
+}) {
   return (
     <Section tone="muted" spacing="default">
       <SectionHeading

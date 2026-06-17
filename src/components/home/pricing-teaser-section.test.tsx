@@ -28,7 +28,10 @@ vi.mock('@/i18n/navigation', () => ({
 }))
 
 import { trackClientEvent } from '@/lib/analytics/client-events'
-import { PricingTeaserSection } from './pricing-teaser-section'
+import {
+  PricingTeaserSection,
+  PricingTeaserSectionFallback,
+} from './pricing-teaser-section'
 
 vi.mock('@/lib/pro-offer-catalog', () => ({
   getProOfferCatalog: vi.fn(async () => ({
@@ -68,6 +71,16 @@ describe('PricingTeaserSection', () => {
 
     expect(
       screen.getByText('$129/year or $399 lifetime. No per-register fees.')
+    ).toBeInTheDocument()
+  })
+
+  it('renders a non-price fallback while pricing loads', () => {
+    render(<PricingTeaserSectionFallback />)
+
+    expect(
+      screen.getByText(
+        'See full pricing for current Pro options. No per-register fees.'
+      )
     ).toBeInTheDocument()
   })
 
