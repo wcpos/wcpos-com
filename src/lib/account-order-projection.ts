@@ -102,14 +102,22 @@ function referenceIdentity(reference: LicenseReference): string {
 }
 
 function uniqueLicenseReferences(order: MedusaOrder): LicenseReference[] {
-  return Array.from(
-    new Map(
-      extractLicenseReferencesFromOrders([order]).map((reference) => [
-        referenceIdentity(reference),
-        reference,
-      ])
-    ).values()
-  )
+  const unique = new Map<string, LicenseReference>()
+  for (const reference of extractLicenseReferencesFromOrders([order])) {
+    const identity = referenceIdentity(reference)
+    const existing = unique.get(identity)
+    if (!existing) {
+      unique.set(identity, reference)
+      continue
+    }
+
+    unique.set(identity, {
+      ...reference,
+      id: reference.id ?? existing.id,
+      key: reference.key ?? existing.key,
+    })
+  }
+  return Array.from(unique.values())
 }
 
 function projectItemTotal(

@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import type { MedusaOrder } from './customer-orders'
 import type { LicenseDetail } from '@/types/license'
 import {
@@ -55,6 +55,32 @@ function makeLicense(overrides: Partial<LicenseDetail> = {}): LicenseDetail {
 }
 
 describe('projectAccountOrderListRow', () => {
+  it('retains key data when duplicate references share an id', async () => {
+    vi.resetModules()
+    vi.doMock('./licenses', async (importOriginal) => {
+      const actual = await importOriginal<typeof import('./licenses')>()
+      return {
+        ...actual,
+        extractLicenseReferencesFromOrders: () => [
+          { id: 'lic_1', key: 'WCPOS-YEAR-LIC1-1234' },
+          { id: 'lic_1' },
+        ],
+      }
+    })
+    const { projectAccountOrderListRow } = await import(
+      './account-order-projection'
+    )
+
+    const row = projectAccountOrderListRow(makeOrder())
+
+    expect(row.licenses).toEqual([
+      { maskedKey: '****-****-1234', product: 'WCPOS Pro Yearly' },
+    ])
+
+    vi.doUnmock('./licenses')
+    vi.resetModules()
+  })
+
   it('masks and deduplicates license references before returning a client-safe row', () => {
     const order = makeOrder({
       metadata: {
