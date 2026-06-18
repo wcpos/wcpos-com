@@ -5,6 +5,7 @@ import { redirectToLoginClearingSession } from '@/lib/login-redirect'
 import { AccountSidebar } from '@/components/account/account-sidebar'
 import { SiteHeader } from '@/components/main/site-header'
 import { SiteFooter } from '@/components/main/site-footer'
+import { Skeleton } from '@/components/ui/skeleton'
 import type { Metadata } from 'next'
 
 // Account pages are private — keep them out of search engines.
@@ -32,12 +33,12 @@ function HeaderSkeleton() {
 function AccountSidebarSkeleton() {
   return (
     <nav className="overflow-x-auto md:overflow-x-visible">
-      <div className="mb-4 hidden h-4 w-24 animate-pulse rounded bg-muted md:block" />
+      <Skeleton className="mb-4 hidden h-4 w-24 md:block" />
       <div className="flex w-max items-center gap-1 md:w-auto md:flex-col md:items-stretch md:gap-2">
         {[1, 2, 3, 4].map((row) => (
-          <div
+          <Skeleton
             key={row}
-            className="h-11 w-28 animate-pulse rounded-md bg-muted/60 md:h-9 md:w-auto"
+            className="h-11 w-28 bg-muted/60 md:h-9 md:w-auto"
           />
         ))}
       </div>
@@ -49,7 +50,7 @@ function AccountFooterSkeleton() {
   return (
     <footer className="border-t py-8">
       <div className="container mx-auto px-4">
-        <div className="h-5 w-48 animate-pulse rounded bg-muted" />
+        <Skeleton className="h-5 w-48" />
       </div>
     </footer>
   )

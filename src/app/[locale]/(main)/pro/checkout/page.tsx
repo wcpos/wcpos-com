@@ -2,6 +2,7 @@ import { setRequestLocale } from 'next-intl/server'
 import { Suspense } from 'react'
 import { cookies } from 'next/headers'
 import { CheckoutClient } from '@/components/pro/checkout-client'
+import { Skeleton } from '@/components/ui/skeleton'
 import { getCustomer } from '@/lib/medusa-auth'
 import { ArrowLeft } from 'lucide-react'
 import { Link, redirect } from '@/i18n/navigation'
@@ -130,9 +131,9 @@ export default async function CheckoutPage({
                   key={panel}
                   className="space-y-3 rounded-md border bg-card p-6"
                 >
-                  <div className="h-6 w-40 animate-pulse rounded bg-muted" />
-                  <div className="h-20 animate-pulse rounded bg-muted" />
-                  <div className="h-20 animate-pulse rounded bg-muted" />
+                  <Skeleton className="h-6 w-40" />
+                  <Skeleton className="h-20" />
+                  <Skeleton className="h-20" />
                 </div>
               ))}
             </div>

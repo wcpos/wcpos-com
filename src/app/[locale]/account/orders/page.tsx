@@ -5,6 +5,7 @@ import { projectAccountOrderListRow } from '@/lib/account-order-projection'
 import { Link } from '@/i18n/navigation'
 import { Card, CardContent } from '@/components/ui/card'
 import { PageHeader } from '@/components/ui/page-header'
+import { Skeleton } from '@/components/ui/skeleton'
 import { OrderHistoryList } from '@/components/account/order-history-list'
 import type { Metadata } from 'next'
 
@@ -40,12 +41,12 @@ function OrdersSkeleton() {
           <CardContent className="py-4">
             <div className="flex items-center justify-between">
               <div className="space-y-2">
-                <div className="h-5 w-32 bg-muted rounded animate-pulse" />
-                <div className="h-4 w-48 bg-muted rounded animate-pulse" />
+                <Skeleton className="h-5 w-32" />
+                <Skeleton className="h-4 w-48" />
               </div>
               <div className="space-y-2 text-right">
-                <div className="h-5 w-20 bg-muted rounded animate-pulse ml-auto" />
-                <div className="h-4 w-16 bg-muted rounded animate-pulse ml-auto" />
+                <Skeleton className="ml-auto h-5 w-20" />
+                <Skeleton className="ml-auto h-4 w-16" />
               </div>
             </div>
           </CardContent>

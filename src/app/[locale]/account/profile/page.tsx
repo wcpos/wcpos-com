@@ -7,6 +7,7 @@ import { formatDateForLocale } from '@/lib/date-format'
 import { redirectToLoginClearingSession } from '@/lib/login-redirect'
 import { Card, CardContent } from '@/components/ui/card'
 import { PageHeader } from '@/components/ui/page-header'
+import { Skeleton } from '@/components/ui/skeleton'
 import { ProfileEditForm } from '@/components/account/profile-edit-form'
 import type { Metadata } from 'next'
 
@@ -64,8 +65,8 @@ function ProfileSkeleton() {
         <CardContent className="space-y-4 py-6">
           {[1, 2, 3, 4].map((i) => (
             <div key={i} className="space-y-2">
-              <div className="h-4 w-24 animate-pulse rounded bg-muted" />
-              <div className="h-10 w-full animate-pulse rounded bg-muted" />
+              <Skeleton className="h-4 w-24" />
+              <Skeleton className="h-10 w-full" />
             </div>
           ))}
         </CardContent>

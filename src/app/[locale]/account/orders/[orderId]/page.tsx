@@ -13,6 +13,7 @@ import { Button } from '@/components/ui/button'
 import { StatusBadge } from '@/components/ui/status-badge'
 import { DividedList, Row } from '@/components/ui/row'
 import { PageHeader } from '@/components/ui/page-header'
+import { Skeleton } from '@/components/ui/skeleton'
 import { presentLicenseStatus } from '@/lib/license-status-presentation'
 import type { Metadata } from 'next'
 
@@ -214,19 +215,19 @@ async function OrderDetailContent({
 function OrderDetailSkeleton() {
   return (
     <>
-      <div className="h-8 w-40 bg-muted rounded animate-pulse" />
+      <Skeleton className="h-8 w-40" />
       <div className="grid gap-4 md:grid-cols-2">
         <Card>
           <CardContent className="py-6 space-y-3">
             {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="h-5 bg-muted rounded animate-pulse" />
+              <Skeleton key={i} className="h-5" />
             ))}
           </CardContent>
         </Card>
         <Card>
           <CardContent className="py-6 space-y-3">
             {[1, 2].map((i) => (
-              <div key={i} className="h-5 bg-muted rounded animate-pulse" />
+              <Skeleton key={i} className="h-5" />
             ))}
           </CardContent>
         </Card>
@@ -249,9 +250,7 @@ export default async function OrderDetailPage({
       {/* Suspense is required: the locale-aware Link reads the pathname,
           which is dynamic on this route's fallback shell ([orderId] is not
           known at build time under cacheComponents/PPR). */}
-      <Suspense
-        fallback={<div className="h-5 w-32 animate-pulse rounded bg-muted" />}
-      >
+      <Suspense fallback={<Skeleton className="h-5 w-32" />}>
         <Link
           href="/account/orders"
           className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground"
