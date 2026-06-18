@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { render, screen } from '@testing-library/react'
-import { DividedList, Row, FieldRow } from './row'
+import { DividedList, Row, FieldRow, MediaRow } from './row'
 
 describe('DividedList', () => {
   it('renders children and draws dividers between them', () => {
@@ -51,5 +51,36 @@ describe('FieldRow', () => {
 
     expect(screen.getByText('Plan').parentElement?.tagName).toBe('DIV')
     expect(screen.getByText('Pro').parentElement?.tagName).toBe('DIV')
+  })
+
+  it('draws a top hairline for an emphasis/total row', () => {
+    const { container } = render(
+      <FieldRow label="Total" value="$99" emphasis />,
+    )
+    expect((container.firstChild as HTMLElement).className).toContain(
+      'border-t',
+    )
+  })
+})
+
+describe('MediaRow', () => {
+  it('renders media, title, subtitle and action slots', () => {
+    render(
+      <MediaRow
+        media={<svg data-testid="media" />}
+        title="example.com"
+        subtitle="Activated"
+        action={<button>Remove</button>}
+      />,
+    )
+    expect(screen.getByTestId('media')).toBeInTheDocument()
+    expect(screen.getByText('example.com')).toBeInTheDocument()
+    expect(screen.getByText('Activated')).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Remove' })).toBeInTheDocument()
+  })
+
+  it('renders without optional slots', () => {
+    render(<MediaRow title="bare" />)
+    expect(screen.getByText('bare')).toBeInTheDocument()
   })
 })

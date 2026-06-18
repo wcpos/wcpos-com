@@ -18,10 +18,19 @@ const buttonVariants = cva(
           'bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80',
         ghost: 'hover:bg-accent hover:text-accent-foreground',
         link: 'text-primary underline-offset-4 hover:underline',
+        // Inline brand link in button clothing — the Button-side complement to
+        // the TextLink atom, on the accessible accent red.
+        'brand-link':
+          'text-wcpos-red-accent underline-offset-4 hover:underline',
         // Marketing CTAs. `brand` is the solid red call-to-action; the
         // `brand-outline` and `inverse` variants pair with it on dark bands.
         brand:
           'bg-wcpos-red text-white shadow-xs transition-all hover:brightness-110 focus-visible:ring-2 focus-visible:ring-wcpos-red/70 focus-visible:ring-offset-2',
+        // `brand` on a dark band: the focus ring goes white so it reads against
+        // the dark surface (bakes in the `onDarkFocus` patch the marketing CTAs
+        // were each hand-applying).
+        'brand-on-dark':
+          'bg-wcpos-red text-white shadow-xs transition-all hover:brightness-110 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-transparent',
         'brand-outline':
           'border-2 border-white/30 text-white transition-colors hover:bg-white/10 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-transparent',
         inverse:

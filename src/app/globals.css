@@ -64,6 +64,11 @@
   --sidebar-border: 214 25% 91%;
   --sidebar-accent: 210 40% 96.1%;
   --sidebar-accent-foreground: 222.2 47.4% 11.2%;
+
+  /* Modal scrim. One ink-tinted dimming value shared by Dialog and Sheet
+     (both previously hard-coded `bg-black/80`). Apply at 80% opacity via
+     `bg-overlay/80`. Intentionally identical in light and dark. */
+  --overlay: 222 47% 11%;
 }
 
 .dark {
@@ -143,8 +148,18 @@
   --color-chart-5: hsl(var(--chart-5));
   --color-wcpos-red: hsl(var(--wcpos-red));
   --color-wcpos-red-accent: hsl(var(--wcpos-red-accent));
+  --color-overlay: hsl(var(--overlay));
   --font-sans: var(--font-geist-sans), system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+
+  /* Sub-xs type steps. Tailwind ships text-xs (12px) and up; the marketing
+     mockup chrome and micro-pills (Badge pro/beta, Latest/Beta/Free·GPL)
+     invented ad-hoc text-[9px]/[10px]/[0.65rem] literals per call site. These
+     two named steps give that register one home: `text-2xs` and `text-3xs`. */
+  --text-2xs: 0.625rem;
+  --text-2xs--line-height: 0.875rem;
+  --text-3xs: 0.5625rem;
+  --text-3xs--line-height: 0.75rem;
   /* One tight radius scale derived from --radius (6px). `lg` is for genuinely
      raised cards only; `xl` is deprecated (kept small so any stray use is mild). */
   --radius-sm: calc(var(--radius) - 2px);

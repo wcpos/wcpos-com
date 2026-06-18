@@ -1,18 +1,21 @@
 import * as React from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '@/lib/utils'
+import { Eyebrow } from './eyebrow'
 
 /**
  * SectionHeading — the eyebrow / title / subtitle block that home sections
  * previously copy-pasted with divergent weights, sizes and colours.
  *
  * `tone="inverse"` is for dark bands (Section tone="dark"); `align` controls
- * text alignment and auto-centres the subtitle when centred.
+ * text alignment and auto-centres the subtitle when centred. Title/subtitle use
+ * the semantic `foreground` / `muted-foreground` tokens (one source of truth),
+ * not baked-in slate; the eyebrow renders through the shared Eyebrow atom.
  */
 const titleVariants = cva('font-semibold tracking-tight', {
   variants: {
     tone: {
-      default: 'text-slate-800 dark:text-slate-100',
+      default: 'text-foreground',
       inverse: 'text-white',
     },
     size: {
@@ -59,25 +62,16 @@ function SectionHeading({
       {...props}
     >
       {eyebrow && (
-        <p
-          className={cn(
-            'text-sm font-semibold uppercase tracking-wider',
-            tone === 'inverse'
-              ? 'text-wcpos-red-accent'
-              : 'text-wcpos-red dark:text-wcpos-red-accent',
-          )}
-        >
+        <Eyebrow tone={tone === 'inverse' ? 'inverse' : 'brand'}>
           {eyebrow}
-        </p>
+        </Eyebrow>
       )}
       <TitleTag className={titleVariants({ tone, size })}>{title}</TitleTag>
       {subtitle && (
         <p
           className={cn(
             'text-lg',
-            tone === 'inverse'
-              ? 'text-slate-300'
-              : 'text-slate-600 dark:text-slate-400',
+            tone === 'inverse' ? 'text-slate-300' : 'text-muted-foreground',
             centered && 'mx-auto max-w-2xl',
           )}
         >
