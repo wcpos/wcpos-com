@@ -3,6 +3,7 @@ import { NextRequest } from 'next/server'
 
 const mockGetCustomer = vi.fn()
 const mockAddLineItem = vi.fn()
+const mockGetProOfferCatalog = vi.fn()
 
 vi.mock('@/lib/medusa-auth', () => ({
   getCustomer: (...args: unknown[]) => mockGetCustomer(...args),
@@ -11,6 +12,14 @@ vi.mock('@/lib/medusa-auth', () => ({
 vi.mock('@/services/core/external/medusa-client', () => ({
   addLineItem: (...args: unknown[]) => mockAddLineItem(...args),
 }))
+
+vi.mock('@/lib/pro-offer-catalog', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@/lib/pro-offer-catalog')>()
+  return {
+    ...actual,
+    getProOfferCatalog: (...args: unknown[]) => mockGetProOfferCatalog(...args),
+  }
+})
 
 vi.mock('@/lib/logger', () => ({
   storeLogger: {
@@ -32,13 +41,19 @@ describe('POST /api/store/cart/line-items', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     mockGetCustomer.mockResolvedValue({ id: 'cust_1' })
+    mockGetProOfferCatalog.mockResolvedValue({
+      offers: [
+        { planId: 'yearly', handle: 'wcpos-pro-yearly', variantId: 'variant_yearly_current' },
+        { planId: 'lifetime', handle: 'wcpos-pro-lifetime', variantId: 'variant_lifetime_current' },
+      ],
+    })
   })
 
   it('returns 401 when the customer is not authenticated', async () => {
     mockGetCustomer.mockResolvedValueOnce(null)
 
     const response = await POST(
-      makeRequest({ cartId: 'cart_1', variant_id: 'variant_1' })
+      makeRequest({ cartId: 'cart_1', product: 'wcpos-pro-yearly' })
     )
     const json = await response.json()
 
@@ -48,7 +63,7 @@ describe('POST /api/store/cart/line-items', () => {
   })
 
   it('returns 400 when cartId is missing', async () => {
-    const response = await POST(makeRequest({ variant_id: 'variant_1' }))
+    const response = await POST(makeRequest({ product: 'wcpos-pro-yearly' }))
     const json = await response.json()
 
     expect(response.status).toBe(400)
@@ -56,12 +71,32 @@ describe('POST /api/store/cart/line-items', () => {
     expect(mockAddLineItem).not.toHaveBeenCalled()
   })
 
-  it('returns 400 when variant_id is missing', async () => {
+  it('returns 400 when the request body is not an object', async () => {
+    const response = await POST(makeRequest(null))
+    const json = await response.json()
+
+    expect(response.status).toBe(400)
+    expect(json.error).toBe('Invalid request body')
+    expect(mockAddLineItem).not.toHaveBeenCalled()
+  })
+
+  it('returns 400 when cartId is not a string', async () => {
+    const response = await POST(
+      makeRequest({ cartId: 123, product: 'wcpos-pro-yearly' })
+    )
+    const json = await response.json()
+
+    expect(response.status).toBe(400)
+    expect(json.error).toBe('Cart ID is required')
+    expect(mockAddLineItem).not.toHaveBeenCalled()
+  })
+
+  it('returns 400 when no current Pro offer can be resolved', async () => {
     const response = await POST(makeRequest({ cartId: 'cart_1' }))
     const json = await response.json()
 
     expect(response.status).toBe(400)
-    expect(json.error).toBe('Variant ID is required')
+    expect(json.error).toBe('Current Pro offer is required')
     expect(mockAddLineItem).not.toHaveBeenCalled()
   })
 
@@ -69,37 +104,59 @@ describe('POST /api/store/cart/line-items', () => {
     mockAddLineItem.mockResolvedValueOnce({ id: 'cart_1', items: [] })
 
     const response = await POST(
-      makeRequest({ cartId: 'cart_1', variant_id: 'variant_1' })
+      makeRequest({ cartId: 'cart_1', product: 'wcpos-pro-yearly' })
     )
     const json = await response.json()
 
     expect(response.status).toBe(200)
     expect(mockAddLineItem).toHaveBeenCalledWith('cart_1', {
-      variant_id: 'variant_1',
+      variant_id: 'variant_yearly_current',
       quantity: 1,
     })
     expect(json.cart.id).toBe('cart_1')
   })
 
-  it('adds the line item with the requested quantity', async () => {
+  it('rejects Pro checkout quantities other than 1', async () => {
+    const response = await POST(
+      makeRequest({ cartId: 'cart_1', product: 'wcpos-pro-yearly', quantity: 3 })
+    )
+    const json = await response.json()
+
+    expect(response.status).toBe(400)
+    expect(json.error).toBe('Quantity must be 1 for Pro checkout')
+    expect(mockAddLineItem).not.toHaveBeenCalled()
+  })
+
+  it('accepts a legacy variant id only when it is the current Pro offer variant', async () => {
     mockAddLineItem.mockResolvedValueOnce({ id: 'cart_1', items: [] })
 
     const response = await POST(
-      makeRequest({ cartId: 'cart_1', variant_id: 'variant_1', quantity: 3 })
+      makeRequest({ cartId: 'cart_1', variant_id: 'variant_lifetime_current' })
     )
 
     expect(response.status).toBe(200)
     expect(mockAddLineItem).toHaveBeenCalledWith('cart_1', {
-      variant_id: 'variant_1',
-      quantity: 3,
+      variant_id: 'variant_lifetime_current',
+      quantity: 1,
     })
+  })
+
+  it('rejects non-current or non-Pro variant ids', async () => {
+    const response = await POST(
+      makeRequest({ cartId: 'cart_1', variant_id: 'variant_old_or_other' })
+    )
+    const json = await response.json()
+
+    expect(response.status).toBe(400)
+    expect(json.error).toBe('Current Pro offer is required')
+    expect(mockAddLineItem).not.toHaveBeenCalled()
   })
 
   it('returns 500 when the medusa client returns no cart', async () => {
     mockAddLineItem.mockResolvedValueOnce(null)
 
     const response = await POST(
-      makeRequest({ cartId: 'cart_1', variant_id: 'variant_1' })
+      makeRequest({ cartId: 'cart_1', product: 'wcpos-pro-yearly' })
     )
     const json = await response.json()
 
@@ -111,7 +168,7 @@ describe('POST /api/store/cart/line-items', () => {
     mockAddLineItem.mockRejectedValueOnce(new Error('network error'))
 
     const response = await POST(
-      makeRequest({ cartId: 'cart_1', variant_id: 'variant_1' })
+      makeRequest({ cartId: 'cart_1', product: 'wcpos-pro-yearly' })
     )
     const json = await response.json()
 

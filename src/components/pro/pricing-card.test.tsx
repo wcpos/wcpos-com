@@ -22,6 +22,7 @@ vi.mock('@/i18n/navigation', () => ({
 const yearlyOffer: ProOffer = {
   planId: 'yearly',
   handle: 'wcpos-pro-yearly',
+  variantId: 'variant_123',
   title: 'WCPOS Pro Yearly',
   description: 'One-year license',
   featured: true,
@@ -41,7 +42,7 @@ const yearlyOffer: ProOffer = {
     'Automatic updates for 1 year',
     'Manual renewal — no automatic billing',
   ],
-  checkoutPath: '/pro/checkout?variant=variant_123&product=wcpos-pro-yearly',
+  checkoutPath: '/pro/checkout?product=wcpos-pro-yearly&variant=variant_123',
 }
 
 const lifetimeOffer: ProOffer = {
@@ -68,7 +69,8 @@ const lifetimeOffer: ProOffer = {
     'One-time payment',
     'Best value for long-term use',
   ],
-  checkoutPath: '/pro/checkout?variant=variant_456&product=wcpos-pro-lifetime',
+  variantId: 'variant_456',
+  checkoutPath: '/pro/checkout?product=wcpos-pro-lifetime&variant=variant_456',
 }
 
 describe('PricingCard', () => {
@@ -98,8 +100,8 @@ describe('PricingCard', () => {
     const href = cta.getAttribute('href')
 
     expect(href).toContain('/pro/checkout?')
-    expect(href).toContain('variant=variant_123')
     expect(href).toContain('product=wcpos-pro-yearly')
+    expect(href).toContain('variant=variant_123')
     expect(href).toContain('exp=pro_checkout_v1')
     expect(href).toContain('exp_variant=value_copy')
   })

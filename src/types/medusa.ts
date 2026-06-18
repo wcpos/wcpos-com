@@ -111,6 +111,7 @@ export interface MedusaRegionsResponse {
 export interface CreateCartInput {
   region_id?: string
   email?: string
+  metadata?: Record<string, unknown>
   items?: Array<{
     variant_id: string
     quantity: number

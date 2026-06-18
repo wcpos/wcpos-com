@@ -9,6 +9,11 @@ import { resolveProCheckoutVariant } from '@/services/core/analytics/posthog-ser
 import { ANALYTICS_DISTINCT_ID_COOKIE } from '@/lib/analytics/distinct-id'
 import { getAnalyticsConfig } from '@/lib/analytics/config'
 import type { ProCheckoutVariant } from '@/services/core/analytics/posthog-service'
+import {
+  getProOfferCatalog,
+  resolveProOfferCheckoutSelection,
+  type ProOfferCheckoutInput,
+} from '@/lib/pro-offer-catalog'
 
 export const metadata = {
   title: 'Checkout',
@@ -68,6 +73,13 @@ async function CheckoutContent({
   }
 
   const selectedVariantId = getSingleSearchParam(searchParams, 'variant')
+  const selectedProduct = getSingleSearchParam(searchParams, 'product')
+  const { offers } = await getProOfferCatalog()
+  const checkoutInput: ProOfferCheckoutInput = {
+    product: selectedProduct,
+    variant: selectedVariantId,
+  }
+  const selectedOffer = resolveProOfferCheckoutSelection(offers, checkoutInput)
   const cookieStore = await cookies()
   const distinctId = cookieStore.get(ANALYTICS_DISTINCT_ID_COOKIE)?.value
   const analyticsConfig = getAnalyticsConfig(process.env)
@@ -81,7 +93,7 @@ async function CheckoutContent({
   return (
     <CheckoutClient
       customerEmail={customer?.email}
-      selectedVariantId={selectedVariantId}
+      selectedOfferHandle={selectedOffer?.handle}
       experimentVariant={experimentVariant}
     />
   )

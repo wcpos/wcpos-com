@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
-import { completeCart } from '@/services/core/external/medusa-client'
+import { completeCart, getCart } from '@/services/core/external/medusa-client'
 import { getCustomer } from '@/lib/medusa-auth'
 import { storeLogger } from '@/lib/logger'
 import {
@@ -11,6 +11,10 @@ import { ANALYTICS_DISTINCT_ID_COOKIE } from '@/lib/analytics/distinct-id'
 import { getAnalyticsConfig } from '@/lib/analytics/config'
 import { ApiError } from '@/lib/api/errors'
 import { toErrorResponse } from '@/lib/api/to-error-response'
+import {
+  getProOfferCatalog,
+  resolveProOfferCartSelection,
+} from '@/lib/pro-offer-catalog'
 import { ORDER_PENDING_CODE } from '@/lib/checkout-failure-taxonomy'
 
 /**
@@ -32,6 +36,23 @@ export async function POST(request: NextRequest) {
     if (!cartId) {
       return NextResponse.json(
         { error: 'Cart ID is required' },
+        { status: 400 }
+      )
+    }
+
+    const cart = await getCart(cartId)
+    if (!cart) {
+      return NextResponse.json(
+        { error: 'Failed to fetch cart' },
+        { status: 500 }
+      )
+    }
+
+    const { offers } = await getProOfferCatalog()
+    const selection = resolveProOfferCartSelection(offers, cart)
+    if (!selection) {
+      return NextResponse.json(
+        { error: 'Current Pro offer cart is required' },
         { status: 400 }
       )
     }

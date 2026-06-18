@@ -3,10 +3,12 @@ import { NextRequest } from 'next/server'
 
 const mockGetCustomer = vi.fn()
 const mockCompleteCart = vi.fn()
+const mockGetCart = vi.fn()
 const mockResolveProCheckoutVariant = vi.fn()
 const mockTrackServerEvent = vi.fn()
 const mockGetAnalyticsConfig = vi.fn()
 const mockCookieGet = vi.fn()
+const mockGetProOfferCatalog = vi.fn()
 
 vi.mock('@/lib/medusa-auth', () => ({
   getCustomer: (...args: unknown[]) => mockGetCustomer(...args),
@@ -14,12 +16,22 @@ vi.mock('@/lib/medusa-auth', () => ({
 
 vi.mock('@/services/core/external/medusa-client', () => ({
   completeCart: (...args: unknown[]) => mockCompleteCart(...args),
+  getCart: (...args: unknown[]) => mockGetCart(...args),
 }))
 
 vi.mock('@/services/core/analytics/posthog-service', () => ({
-  resolveProCheckoutVariant: (...args: unknown[]) => mockResolveProCheckoutVariant(...args),
+  resolveProCheckoutVariant: (...args: unknown[]) =>
+    mockResolveProCheckoutVariant(...args),
   trackServerEvent: (...args: unknown[]) => mockTrackServerEvent(...args),
 }))
+
+vi.mock('@/lib/pro-offer-catalog', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@/lib/pro-offer-catalog')>()
+  return {
+    ...actual,
+    getProOfferCatalog: (...args: unknown[]) => mockGetProOfferCatalog(...args),
+  }
+})
 
 vi.mock('@/lib/analytics/config', () => ({
   getAnalyticsConfig: (...args: unknown[]) => mockGetAnalyticsConfig(...args),
@@ -33,9 +45,25 @@ vi.mock('next/headers', () => ({
 
 import { POST } from './route'
 
+const validCart = {
+  id: 'cart_1',
+  items: [{ variant_id: 'variant_yearly_current', quantity: 1 }],
+}
+
 describe('POST /api/store/cart/complete', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+    mockGetCustomer.mockResolvedValue({
+      id: 'cust_1',
+      email: 'customer@example.com',
+    })
+    mockGetCart.mockResolvedValue(validCart)
+    mockGetProOfferCatalog.mockResolvedValue({
+      offers: [
+        { planId: 'yearly', handle: 'wcpos-pro-yearly', variantId: 'variant_yearly_current' },
+        { planId: 'lifetime', handle: 'wcpos-pro-lifetime', variantId: 'variant_lifetime_current' },
+      ],
+    })
     mockGetAnalyticsConfig.mockReturnValue({ enabled: true })
     mockResolveProCheckoutVariant.mockResolvedValue('control')
     mockCookieGet.mockReturnValue({ value: 'anon_123' })
@@ -57,10 +85,6 @@ describe('POST /api/store/cart/complete', () => {
   })
 
   it('tracks checkout completion with server-validated variant', async () => {
-    mockGetCustomer.mockResolvedValueOnce({
-      id: 'cust_1',
-      email: 'customer@example.com',
-    })
     mockCompleteCart.mockResolvedValueOnce({
       order: { id: 'order_1' },
     })
@@ -93,11 +117,27 @@ describe('POST /api/store/cart/complete', () => {
     })
   })
 
-  it('returns 409 order_pending and skips analytics when no order is created', async () => {
-    mockGetCustomer.mockResolvedValueOnce({
-      id: 'cust_1',
-      email: 'customer@example.com',
+  it('returns 400 and does not complete dirty carts', async () => {
+    mockGetCart.mockResolvedValueOnce({
+      id: 'cart_1',
+      items: [{ variant_id: 'variant_old_or_other', quantity: 1 }],
     })
+
+    const response = await POST(
+      new NextRequest('http://localhost:3000/api/store/cart/complete', {
+        method: 'POST',
+        body: JSON.stringify({ cartId: 'cart_1' }),
+      })
+    )
+    const json = await response.json()
+
+    expect(response.status).toBe(400)
+    expect(json.error).toBe('Current Pro offer cart is required')
+    expect(mockCompleteCart).not.toHaveBeenCalled()
+    expect(mockTrackServerEvent).not.toHaveBeenCalled()
+  })
+
+  it('returns 409 order_pending and skips analytics when no order is created', async () => {
     // Medusa returns HTTP 200 with a cart (not an order) when completion fails;
     // completeCart passes that through as a non-null result with no order.
     mockCompleteCart.mockResolvedValueOnce({
@@ -121,10 +161,6 @@ describe('POST /api/store/cart/complete', () => {
   })
 
   it('returns success even when analytics tracking throws', async () => {
-    mockGetCustomer.mockResolvedValueOnce({
-      id: 'cust_1',
-      email: 'customer@example.com',
-    })
     mockCompleteCart.mockResolvedValueOnce({
       order: { id: 'order_2' },
     })
@@ -146,10 +182,6 @@ describe('POST /api/store/cart/complete', () => {
   })
 
   it('does not block response when analytics tracking hangs', async () => {
-    mockGetCustomer.mockResolvedValueOnce({
-      id: 'cust_1',
-      email: 'customer@example.com',
-    })
     mockCompleteCart.mockResolvedValueOnce({
       order: { id: 'order_3' },
     })

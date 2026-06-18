@@ -7,6 +7,8 @@ import {
   formatFounderProPriceSummary,
   formatHomeProPriceSummary,
   getProCheckoutCtaLabel,
+  resolveProOfferCartSelection,
+  resolveProOfferCheckoutSelection,
 } from './pro-offer-catalog'
 
 function product(handle: string, amount: number, variantId: string): MedusaProduct {
@@ -56,7 +58,8 @@ describe('buildProOfferCatalog', () => {
         schemaPrice: '129',
       },
       priceSuffix: '/year',
-      checkoutPath: '/pro/checkout?variant=variant_yearly&product=wcpos-pro-yearly',
+      checkoutPath:
+        '/pro/checkout?product=wcpos-pro-yearly&variant=variant_yearly',
     })
     expect(offers[0].features).toContain('Automatic updates for 1 year')
     expect(offers[0].features).toContain('Manual renewal — no automatic billing')
@@ -68,7 +71,7 @@ describe('buildProOfferCatalog', () => {
       description: 'One-time purchase',
       priceSuffix: null,
       checkoutPath:
-        '/pro/checkout?variant=variant_lifetime&product=wcpos-pro-lifetime',
+        '/pro/checkout?product=wcpos-pro-lifetime&variant=variant_lifetime',
     })
   })
 
@@ -77,6 +80,108 @@ describe('buildProOfferCatalog', () => {
     yearly.variants[0].prices = [{ id: 'price_eur', currency_code: 'eur', amount: 119 }]
 
     expect(buildProOfferCatalog([yearly])).toEqual([])
+  })
+
+  it('omits offers when the current Pro variant is ambiguous', () => {
+    const yearly = product('wcpos-pro-yearly', 129, 'variant_yearly')
+    yearly.variants.push({
+      ...yearly.variants[0],
+      id: 'variant_yearly_second',
+    })
+
+    expect(buildProOfferCatalog([yearly])).toEqual([])
+  })
+})
+
+describe('resolveProOfferCheckoutSelection', () => {
+  const offers = buildProOfferCatalog([
+    product('wcpos-pro-yearly', 129, 'variant_yearly_current'),
+    product('wcpos-pro-lifetime', 399, 'variant_lifetime_current'),
+  ])
+
+  it('resolves a current Pro offer from the stable product handle', () => {
+    expect(
+      resolveProOfferCheckoutSelection(offers, {
+        product: 'wcpos-pro-yearly',
+      })
+    ).toEqual({
+      planId: 'yearly',
+      handle: 'wcpos-pro-yearly',
+      variantId: 'variant_yearly_current',
+    })
+  })
+
+  it('accepts a legacy variant param only when it matches the current Pro offer', () => {
+    expect(
+      resolveProOfferCheckoutSelection(offers, {
+        variant: 'variant_lifetime_current',
+      })
+    ).toEqual({
+      planId: 'lifetime',
+      handle: 'wcpos-pro-lifetime',
+      variantId: 'variant_lifetime_current',
+    })
+
+    expect(
+      resolveProOfferCheckoutSelection(offers, {
+        product: 'wcpos-pro-yearly',
+        variant: 'variant_lifetime_current',
+      })
+    ).toBeNull()
+  })
+
+  it('rejects unknown products and non-current variant ids', () => {
+    expect(
+      resolveProOfferCheckoutSelection(offers, {
+        product: 'wcpos-pro-monthly',
+      })
+    ).toBeNull()
+    expect(
+      resolveProOfferCheckoutSelection(offers, {
+        variant: 'variant_old_yearly',
+      })
+    ).toBeNull()
+  })
+})
+
+describe('resolveProOfferCartSelection', () => {
+  const offers = buildProOfferCatalog([
+    product('wcpos-pro-yearly', 129, 'variant_yearly_current'),
+    product('wcpos-pro-lifetime', 399, 'variant_lifetime_current'),
+  ])
+
+  it('resolves a cart with exactly one current Pro offer line item', () => {
+    expect(
+      resolveProOfferCartSelection(offers, {
+        items: [{ variant_id: 'variant_yearly_current', quantity: 1 }],
+      })
+    ).toEqual({
+      planId: 'yearly',
+      handle: 'wcpos-pro-yearly',
+      variantId: 'variant_yearly_current',
+    })
+  })
+
+  it('rejects empty, multi-item, multi-quantity, and non-current carts', () => {
+    expect(resolveProOfferCartSelection(offers, { items: [] })).toBeNull()
+    expect(
+      resolveProOfferCartSelection(offers, {
+        items: [
+          { variant_id: 'variant_yearly_current', quantity: 1 },
+          { variant_id: 'variant_lifetime_current', quantity: 1 },
+        ],
+      })
+    ).toBeNull()
+    expect(
+      resolveProOfferCartSelection(offers, {
+        items: [{ variant_id: 'variant_yearly_current', quantity: 2 }],
+      })
+    ).toBeNull()
+    expect(
+      resolveProOfferCartSelection(offers, {
+        items: [{ variant_id: 'variant_old_yearly', quantity: 1 }],
+      })
+    ).toBeNull()
   })
 })
 
@@ -88,7 +193,8 @@ describe('offer presentation helpers', () => {
 
   it('builds checkout hrefs with experiment metadata without exposing query details to cards', () => {
     expect(buildProCheckoutHref(offers[0], 'value_copy')).toBe(
-      '/pro/checkout?variant=variant_yearly&product=wcpos-pro-yearly&exp=pro_checkout_v1&exp_variant=value_copy'
+      '/pro/checkout?product=wcpos-pro-yearly&variant=variant_yearly' +
+        '&exp=pro_checkout_v1&exp_variant=value_copy'
     )
   })
 
