@@ -6,6 +6,7 @@ import { Link, useRouter } from '@/i18n/navigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { Alert } from '@/components/ui/alert'
 import {
   Card,
   CardContent,
@@ -81,9 +82,9 @@ function LoginPageInner() {
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             {error && (
-              <div className="rounded-md bg-destructive/10 p-3 text-sm text-destructive">
+              <Alert tone="critical" role="alert">
                 {error}
-              </div>
+              </Alert>
             )}
 
             <div className="space-y-2">

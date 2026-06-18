@@ -5,6 +5,7 @@ import { useLocale, useTranslations } from 'next-intl'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import { Alert } from '@/components/ui/alert'
 import {
   Card,
   CardContent,
@@ -529,15 +530,15 @@ export function ProfileEditForm({
       )}
 
       {error && (
-        <div className="rounded-md bg-destructive/10 p-3 text-sm text-destructive">
+        <Alert tone="critical" role="alert">
           {error}
-        </div>
+        </Alert>
       )}
 
       {success && (
-        <div className="rounded-md bg-green-50 p-3 text-sm text-green-700">
+        <Alert tone="positive" role="status">
           {success}
-        </div>
+        </Alert>
       )}
 
       <div className="flex items-center justify-between gap-4">

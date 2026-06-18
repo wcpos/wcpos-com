@@ -12,6 +12,7 @@ import { Link } from '@/i18n/navigation'
 import { Button } from '@/components/ui/button'
 import { AccountNotice } from '@/components/account/account-notice'
 import { Badge } from '@/components/ui/badge'
+import { Alert } from '@/components/ui/alert'
 import { DividedList, Row } from '@/components/ui/row'
 import {
   Card,
@@ -183,9 +184,9 @@ export function DownloadsClient({
   return (
     <div className="space-y-6">
       {error && (
-        <div className="rounded-md bg-destructive/10 p-3 text-sm text-destructive">
+        <Alert tone="critical" role="alert">
           {error}
-        </div>
+        </Alert>
       )}
 
       {expiredAccess && access.latestExpiry && (

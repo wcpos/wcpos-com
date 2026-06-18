@@ -12,6 +12,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { StatusBadge } from '@/components/ui/status-badge'
 import { DividedList, Row } from '@/components/ui/row'
+import { PageHeader } from '@/components/ui/page-header'
 import { presentLicenseStatus } from '@/lib/license-status-presentation'
 import type { Metadata } from 'next'
 
@@ -56,9 +57,7 @@ async function OrderDetailContent({
 
   return (
     <>
-      <h1 className="text-2xl font-bold tracking-tight">
-        {t('orderNumber', { id: orderDetail.displayId })}
-      </h1>
+      <PageHeader title={t('orderNumber', { id: orderDetail.displayId })} />
 
       <div>
         <Button asChild variant="outline" size="sm">

@@ -4,6 +4,7 @@ import { getOrdersPage } from '@/lib/customer-orders'
 import { projectAccountOrderListRow } from '@/lib/account-order-projection'
 import { Link } from '@/i18n/navigation'
 import { Card, CardContent } from '@/components/ui/card'
+import { PageHeader } from '@/components/ui/page-header'
 import { OrderHistoryList } from '@/components/account/order-history-list'
 import type { Metadata } from 'next'
 
@@ -65,21 +66,19 @@ export default async function OrdersPage({
 
   return (
     <div className="space-y-6">
-      <div className="space-y-1">
-        <h1 className="text-2xl font-bold tracking-tight">{t('heading')}</h1>
-        <p className="text-sm text-muted-foreground">
-          {t.rich('intro', {
-            profileLink: (chunks) => (
-              <Link
-                href="/account/profile#billing-address"
-                className="text-primary hover:underline"
-              >
-                {chunks}
-              </Link>
-            ),
-          })}
-        </p>
-      </div>
+      <PageHeader
+        title={t('heading')}
+        lede={t.rich('intro', {
+          profileLink: (chunks) => (
+            <Link
+              href="/account/profile#billing-address"
+              className="text-primary hover:underline"
+            >
+              {chunks}
+            </Link>
+          ),
+        })}
+      />
       <Suspense fallback={<OrdersSkeleton />}>
         <OrdersContent locale={locale} />
       </Suspense>

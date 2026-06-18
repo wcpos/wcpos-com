@@ -8,6 +8,7 @@ import { getProPluginReleases } from '@/services/core/business/pro-downloads'
 import { selectEntitledRelease } from '@/services/core/business/release-delivery'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
+import { PageHeader } from '@/components/ui/page-header'
 import type { LicenseDetail } from '@/types/license'
 import type { Metadata } from 'next'
 
@@ -106,7 +107,7 @@ export default async function LicensesPage({
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold tracking-tight">{t('heading')}</h1>
+      <PageHeader title={t('heading')} />
       <Suspense fallback={<LicensesSkeleton />}>
         <LicensesContent locale={locale} />
       </Suspense>

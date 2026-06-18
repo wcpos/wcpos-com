@@ -6,6 +6,7 @@ import { projectProfileMetadataForClient } from '@/lib/customer-profile-metadata
 import { formatDateForLocale } from '@/lib/date-format'
 import { redirectToLoginClearingSession } from '@/lib/login-redirect'
 import { Card, CardContent } from '@/components/ui/card'
+import { PageHeader } from '@/components/ui/page-header'
 import { ProfileEditForm } from '@/components/account/profile-edit-form'
 import type { Metadata } from 'next'
 
@@ -84,10 +85,7 @@ export default async function ProfilePage({
 
   return (
     <div className="space-y-6">
-      <div className="space-y-1">
-        <h1 className="text-2xl font-bold tracking-tight">{t('heading')}</h1>
-        <p className="text-sm text-muted-foreground">{t('lede')}</p>
-      </div>
+      <PageHeader title={t('heading')} lede={t('lede')} />
       <Suspense fallback={<ProfileSkeleton />}>
         <ProfileContent locale={locale} />
       </Suspense>
