@@ -72,7 +72,7 @@ function LoginPageInner() {
   return (
     // Centering and page chrome live in the (auth) layout.
     <div className="w-full max-w-md">
-      <Card className="shadow-lg shadow-black/5 dark:shadow-black/20">
+      <Card elevated>
         <CardHeader className="text-center">
           <CardTitle className="text-2xl tracking-tight">Sign in</CardTitle>
           <CardDescription>

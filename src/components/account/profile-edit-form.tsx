@@ -15,6 +15,7 @@ import {
 } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { Select } from '@/components/ui/select'
 import { Mail } from 'lucide-react'
 import { GitHubMark, GoogleMark } from '@/components/auth/provider-marks'
 import { getConnectedAvatarUrlFromMetadata } from '@/lib/avatar'
@@ -405,18 +406,17 @@ export function ProfileEditForm({
         <CardContent className="space-y-4">
           <div className="space-y-2">
           <Label htmlFor="profile-country">{t('country')}</Label>
-          <select
+          <Select
             id="profile-country"
             value={countryCode}
             onChange={(event) => setCountryCode(event.target.value)}
-            className="h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm"
           >
             {countryOptions.map(([value, label]) => (
               <option key={value} value={value}>
                 {label}
               </option>
             ))}
-          </select>
+          </Select>
         </div>
 
         <div className="space-y-2">

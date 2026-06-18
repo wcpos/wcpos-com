@@ -5,6 +5,8 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { DividedList, Row } from '@/components/ui/row'
 import { EmptyState } from '@/components/ui/empty-state'
+import { CodeRef } from '@/components/ui/code-ref'
+import { TextLink } from '@/components/ui/text-link'
 import { formatOrderAmount } from '@/lib/order-display'
 import { formatDateForLocale } from '@/lib/date-format'
 
@@ -54,12 +56,9 @@ export function OrderHistoryList({ orders, locale }: OrderHistoryListProps) {
           title={t('emptyTitle')}
           description={t('emptyDescription')}
           action={
-            <Link
-              href="/pro"
-              className="text-sm font-medium text-wcpos-red-accent hover:underline"
-            >
-              {t('browsePro')}
-            </Link>
+            <TextLink asChild className="text-sm">
+              <Link href="/pro">{t('browsePro')}</Link>
+            </TextLink>
           }
         />
       </Card>
@@ -98,9 +97,9 @@ export function OrderHistoryList({ orders, locale }: OrderHistoryListProps) {
                         {license.product}
                       </span>
                     )}
-                    <code className="font-mono tracking-wider">
+                    <CodeRef className="tracking-wider">
                       {license.maskedKey}
-                    </code>
+                    </CodeRef>
                   </p>
                 ))}
               </div>
