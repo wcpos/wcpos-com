@@ -4,6 +4,8 @@ import { getOrdersPage } from '@/lib/customer-orders'
 import { projectAccountOrderListRow } from '@/lib/account-order-projection'
 import { Link } from '@/i18n/navigation'
 import { Card, CardContent } from '@/components/ui/card'
+import { PageHeader } from '@/components/ui/page-header'
+import { Skeleton } from '@/components/ui/skeleton'
 import { OrderHistoryList } from '@/components/account/order-history-list'
 import type { Metadata } from 'next'
 
@@ -39,12 +41,12 @@ function OrdersSkeleton() {
           <CardContent className="py-4">
             <div className="flex items-center justify-between">
               <div className="space-y-2">
-                <div className="h-5 w-32 bg-muted rounded animate-pulse" />
-                <div className="h-4 w-48 bg-muted rounded animate-pulse" />
+                <Skeleton className="h-5 w-32" />
+                <Skeleton className="h-4 w-48" />
               </div>
               <div className="space-y-2 text-right">
-                <div className="h-5 w-20 bg-muted rounded animate-pulse ml-auto" />
-                <div className="h-4 w-16 bg-muted rounded animate-pulse ml-auto" />
+                <Skeleton className="ml-auto h-5 w-20" />
+                <Skeleton className="ml-auto h-4 w-16" />
               </div>
             </div>
           </CardContent>
@@ -65,21 +67,19 @@ export default async function OrdersPage({
 
   return (
     <div className="space-y-6">
-      <div className="space-y-1">
-        <h1 className="text-2xl font-bold tracking-tight">{t('heading')}</h1>
-        <p className="text-sm text-muted-foreground">
-          {t.rich('intro', {
-            profileLink: (chunks) => (
-              <Link
-                href="/account/profile#billing-address"
-                className="text-primary hover:underline"
-              >
-                {chunks}
-              </Link>
-            ),
-          })}
-        </p>
-      </div>
+      <PageHeader
+        title={t('heading')}
+        lede={t.rich('intro', {
+          profileLink: (chunks) => (
+            <Link
+              href="/account/profile#billing-address"
+              className="text-primary hover:underline"
+            >
+              {chunks}
+            </Link>
+          ),
+        })}
+      />
       <Suspense fallback={<OrdersSkeleton />}>
         <OrdersContent locale={locale} />
       </Suspense>

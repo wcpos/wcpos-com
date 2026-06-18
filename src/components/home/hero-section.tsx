@@ -2,10 +2,6 @@ import { Monitor, Smartphone, Tablet, Wifi } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Section, Container } from '@/components/ui/section'
 
-/** White focus ring for brand buttons sitting on the dark hero band. */
-const onDarkFocus =
-  'focus-visible:ring-white focus-visible:ring-offset-transparent'
-
 const demoProducts = [
   { name: 'Tote Bag', price: '$29' },
   { name: 'Candle', price: '$24' },
@@ -143,7 +139,7 @@ export function HeroSection() {
 
             {/* CTA Buttons */}
             <div className="mb-8 flex flex-col gap-4 sm:flex-row">
-              <Button asChild variant="brand" size="xl" className={onDarkFocus}>
+              <Button asChild variant="brand-on-dark" size="xl">
                 <a href="https://demo.wcpos.com/pos">Try Live Demo</a>
               </Button>
               <Button asChild variant="brand-outline" size="xl">

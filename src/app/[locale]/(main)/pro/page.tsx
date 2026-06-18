@@ -3,6 +3,7 @@ import { Suspense } from 'react'
 import { cacheLife, cacheTag } from 'next/cache'
 import { cookies } from 'next/headers'
 import { PricingCard } from '@/components/pro/pricing-card'
+import { Skeleton } from '@/components/ui/skeleton'
 import type { ProCheckoutVariant } from '@/services/core/analytics/posthog-service'
 import { resolveProCheckoutVariant } from '@/services/core/analytics/posthog-service'
 import { ANALYTICS_DISTINCT_ID_COOKIE } from '@/lib/analytics/distinct-id'
@@ -72,8 +73,8 @@ async function PricingSection({
 function PricingSkeleton() {
   return (
     <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto items-start">
-      <div className="h-96 animate-pulse rounded-md bg-muted" />
-      <div className="h-96 animate-pulse rounded-md bg-muted" />
+      <Skeleton className="h-96" />
+      <Skeleton className="h-96" />
     </div>
   )
 }

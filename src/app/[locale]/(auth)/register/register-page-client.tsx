@@ -6,6 +6,7 @@ import { Link, useRouter } from '@/i18n/navigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { Alert } from '@/components/ui/alert'
 import { sanitizeRedirectPath } from '@/lib/safe-redirect'
 import {
   Card,
@@ -71,7 +72,7 @@ function RegisterPageInner() {
   return (
     // Centering and page chrome live in the (auth) layout.
     <div className="w-full max-w-md">
-      <Card className="shadow-lg shadow-black/5 dark:shadow-black/20">
+      <Card elevated>
         <CardHeader className="text-center">
           <CardTitle className="text-2xl tracking-tight">
             Create an account
@@ -83,9 +84,9 @@ function RegisterPageInner() {
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             {error && (
-              <div className="rounded-md bg-destructive/10 p-3 text-sm text-destructive">
+              <Alert tone="critical" role="alert">
                 {error}
-              </div>
+              </Alert>
             )}
 
             <div className="grid grid-cols-2 gap-3">

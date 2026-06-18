@@ -1,6 +1,7 @@
 import type { RoadmapItem } from '@/types/roadmap'
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { Progress } from '@/components/ui/progress'
 
 interface FeatureCardProps {
   item: RoadmapItem
@@ -32,14 +33,11 @@ export function FeatureCard({ item }: FeatureCardProps) {
           )}
           {item.subIssueProgress && (
             <div className="pt-2 space-y-1">
-              <div className="h-1 w-full rounded-full bg-muted overflow-hidden">
-                <div
-                  className="h-full rounded-full bg-primary transition-all"
-                  style={{
-                    width: `${Math.round((item.subIssueProgress.completed / item.subIssueProgress.total) * 100)}%`,
-                  }}
-                />
-              </div>
+              <Progress
+                value={item.subIssueProgress.completed}
+                max={item.subIssueProgress.total}
+                size="sm"
+              />
               <p className="text-xs text-muted-foreground">
                 {item.subIssueProgress.completed}/{item.subIssueProgress.total} completed
               </p>

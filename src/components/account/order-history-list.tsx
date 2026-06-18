@@ -2,8 +2,11 @@ import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/navigation'
 import { FileDown, Key, ShoppingBag } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
+import { Card } from '@/components/ui/card'
 import { DividedList, Row } from '@/components/ui/row'
+import { EmptyState } from '@/components/ui/empty-state'
+import { CodeRef } from '@/components/ui/code-ref'
+import { TextLink } from '@/components/ui/text-link'
 import { formatOrderAmount } from '@/lib/order-display'
 import { formatDateForLocale } from '@/lib/date-format'
 
@@ -48,21 +51,16 @@ export function OrderHistoryList({ orders, locale }: OrderHistoryListProps) {
   if (orders.length === 0) {
     return (
       <Card>
-        <CardContent className="flex flex-col items-center py-12 text-center">
-          <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-muted">
-            <ShoppingBag className="h-5 w-5 text-muted-foreground" />
-          </div>
-          <p className="font-medium">{t('emptyTitle')}</p>
-          <p className="mt-1 max-w-sm text-sm text-muted-foreground">
-            {t('emptyDescription')}
-          </p>
-          <Link
-            href="/pro"
-            className="mt-3 inline-block text-sm font-medium text-wcpos-red-accent hover:underline"
-          >
-            {t('browsePro')}
-          </Link>
-        </CardContent>
+        <EmptyState
+          icon={<ShoppingBag />}
+          title={t('emptyTitle')}
+          description={t('emptyDescription')}
+          action={
+            <TextLink asChild className="text-sm">
+              <Link href="/pro">{t('browsePro')}</Link>
+            </TextLink>
+          }
+        />
       </Card>
     )
   }
@@ -99,9 +97,9 @@ export function OrderHistoryList({ orders, locale }: OrderHistoryListProps) {
                         {license.product}
                       </span>
                     )}
-                    <code className="font-mono tracking-wider">
+                    <CodeRef className="tracking-wider">
                       {license.maskedKey}
-                    </code>
+                    </CodeRef>
                   </p>
                 ))}
               </div>

@@ -22,7 +22,7 @@ export function LanguageSelector() {
         value={locale}
         onChange={onChange}
         aria-label={t('language')}
-        className="bg-transparent text-sm cursor-pointer hover:text-foreground transition-colors focus:outline-none"
+        className="cursor-pointer rounded-sm bg-transparent text-sm transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
       >
         {locales.map((loc) => (
           <option key={loc} value={loc}>

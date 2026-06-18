@@ -7,6 +7,8 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { StatusBadge } from '@/components/ui/status-badge'
 import { DividedList, Row } from '@/components/ui/row'
+import { Alert } from '@/components/ui/alert'
+import { EmptyState } from '@/components/ui/empty-state'
 import { AccountNotice } from '@/components/account/account-notice'
 import { Key, Monitor, Trash2, Download } from 'lucide-react'
 import { Link } from '@/i18n/navigation'
@@ -203,22 +205,18 @@ export function LicensesClient({
   return (
     <>
       {error && (
-        <div className="bg-destructive/10 text-destructive p-3 rounded-md text-sm">
+        <Alert tone="critical" role="alert">
           {error}
-        </div>
+        </Alert>
       )}
 
       {licenses.length === 0 ? (
         <Card>
-          <CardContent className="flex flex-col items-center py-12 text-center">
-            <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-muted">
-              <Key className="h-5 w-5 text-muted-foreground" />
-            </div>
-            <p className="font-medium">{t('emptyTitle')}</p>
-            <p className="mt-1 max-w-sm text-sm text-muted-foreground">
-              {t('emptyDescription')}
-            </p>
-          </CardContent>
+          <EmptyState
+            icon={<Key />}
+            title={t('emptyTitle')}
+            description={t('emptyDescription')}
+          />
         </Card>
       ) : (
         licenses.map((license) => {

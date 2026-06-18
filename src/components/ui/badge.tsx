@@ -2,6 +2,11 @@ import * as React from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '@/lib/utils'
 
+// Amber micro-pill shared by the "Pro" / "Beta" markers. Defined once so the
+// two markers can never drift apart again (they were byte-identical).
+const amberPill =
+  'border-0 rounded-full px-2 text-2xs bg-amber-100 text-amber-800 dark:bg-amber-900/50 dark:text-amber-300'
+
 const badgeVariants = cva(
   'inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
   {
@@ -19,8 +24,14 @@ const badgeVariants = cva(
         warning:
           'border-transparent bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-100',
         // Amber pill used for "Pro" / "Beta" markers on the marketing pages.
-        pro: 'border-0 rounded-full px-2 text-[10px] bg-amber-100 text-amber-800 dark:bg-amber-900/50 dark:text-amber-300',
-        beta: 'border-0 rounded-full px-2 text-[10px] bg-amber-100 text-amber-800 dark:bg-amber-900/50 dark:text-amber-300',
+        pro: amberPill,
+        beta: amberPill,
+        // Tinted micro-pills for inline tags (Latest / Free·GPL etc.) — the
+        // brand and muted registers, on the sub-xs type token.
+        'brand-tint':
+          'border-0 rounded-full px-2 text-2xs bg-wcpos-red/10 text-wcpos-red-accent',
+        'muted-tint':
+          'border-0 rounded-full px-2 text-2xs bg-muted text-muted-foreground',
       },
     },
     defaultVariants: {

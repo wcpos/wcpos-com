@@ -71,6 +71,11 @@ const containerVariants = cva('mx-auto px-4', {
       prose: 'w-full max-w-3xl',
       content: 'w-full max-w-5xl',
       wide: 'w-full max-w-7xl',
+      // Narrower reading/form columns the callers previously reached for as raw
+      // `max-w-*` (11× max-w-2xl, 6× max-w-md, 5× max-w-sm).
+      narrow: 'w-full max-w-2xl',
+      form: 'w-full max-w-md',
+      sm: 'w-full max-w-sm',
     },
   },
   defaultVariants: {

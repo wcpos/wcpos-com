@@ -33,12 +33,18 @@ AvatarImage.displayName = AvatarPrimitive.Image.displayName
 
 const AvatarFallback = React.forwardRef<
   React.ComponentRef<typeof AvatarPrimitive.Fallback>,
-  React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Fallback>
->(({ className, ...props }, ref) => (
+  React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Fallback> & {
+    /** `brand` tints the disc with the shared brand tint for initials chips. */
+    tone?: 'muted' | 'brand'
+  }
+>(({ className, tone = 'muted', ...props }, ref) => (
   <AvatarPrimitive.Fallback
     ref={ref}
     className={cn(
-      'flex h-full w-full items-center justify-center rounded-full bg-muted',
+      'flex h-full w-full items-center justify-center rounded-full',
+      tone === 'brand'
+        ? 'bg-wcpos-red/10 font-medium text-wcpos-red-accent'
+        : 'bg-muted',
       className
     )}
     {...props}

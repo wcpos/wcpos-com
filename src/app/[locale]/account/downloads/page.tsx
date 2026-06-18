@@ -9,6 +9,7 @@ import { getProPluginReleases } from '@/services/core/business/pro-downloads'
 import { resolveEntitledReleases } from '@/services/core/business/release-delivery'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
+import { PageHeader } from '@/components/ui/page-header'
 import type { LicenseDetail } from '@/types/license'
 import type { Metadata } from 'next'
 
@@ -174,10 +175,7 @@ export default async function DownloadsPage({
 
   return (
     <div className="space-y-6">
-      <div className="space-y-1">
-        <h1 className="text-2xl font-bold tracking-tight">{t('heading')}</h1>
-        <p className="text-sm text-muted-foreground">{t('subheading')}</p>
-      </div>
+      <PageHeader title={t('heading')} lede={t('subheading')} />
       <Suspense fallback={<DownloadsSkeleton />}>
         <DownloadsContent
           locale={locale}

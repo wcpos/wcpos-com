@@ -1,12 +1,13 @@
 'use client'
 
 import dynamic from 'next/dynamic'
+import { Skeleton } from '@/components/ui/skeleton'
 
 const DiscordWidget = dynamic(
   () => import('@/components/support/discord-widget').then((m) => m.DiscordWidget),
   {
     ssr: false,
-    loading: () => <div className="h-[600px] w-full animate-pulse rounded-md bg-muted" />,
+    loading: () => <Skeleton className="h-[600px] w-full" />,
   }
 )
 
