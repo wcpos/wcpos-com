@@ -211,6 +211,6 @@ describe('CtaSection', () => {
     )
     expect(
       screen.getByRole('link', { name: 'Download Free' })
-    ).toHaveAttribute('href', 'https://wordpress.org/plugins/woocommerce-pos/')
+    ).toHaveAttribute('href', '/downloads')
   })
 })

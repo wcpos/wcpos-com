@@ -5,12 +5,14 @@
     "openMenu": "Open menu"
   },
   "header": {
-    "docs": "Docs",
+    "documentation": "Documentation",
     "roadmap": "Roadmap",
     "pro": "Pro",
-    "support": "Support"
+    "support": "Support",
+    "downloads": "Downloads"
   },
   "footer": {
+    "downloads": "Downloads",
     "copyright": "© 2026 WCPOS",
     "privacy": "Privacy",
     "terms": "Terms",

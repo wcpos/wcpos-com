@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button'
 import { Section } from '@/components/ui/section'
 import { SectionHeading } from '@/components/ui/section-heading'
+import { Link } from '@/i18n/navigation'
 
 export function CtaSection() {
   return (
@@ -20,9 +21,7 @@ export function CtaSection() {
           <a href="https://demo.wcpos.com/pos">Try Live Demo</a>
         </Button>
         <Button asChild variant="inverse" size="xl">
-          <a href="https://wordpress.org/plugins/woocommerce-pos/">
-            Download Free
-          </a>
+          <Link href="/downloads">Download Free</Link>
         </Button>
       </div>
     </Section>

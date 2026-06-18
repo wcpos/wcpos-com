@@ -8,6 +8,7 @@ import { languageAlternates, localeUrl } from '@/lib/seo'
  */
 const marketingRoutes = [
   { path: '/', changeFrequency: 'weekly', priority: 1 },
+  { path: '/downloads', changeFrequency: 'weekly', priority: 0.9 },
   { path: '/pro', changeFrequency: 'weekly', priority: 0.8 },
   { path: '/about-us', changeFrequency: 'monthly', priority: 0.5 },
   { path: '/roadmap', changeFrequency: 'monthly', priority: 0.5 },
