@@ -1,5 +1,6 @@
 import type { RoadmapMilestone } from '@/types/roadmap'
 import { Badge } from '@/components/ui/badge'
+import { Progress } from '@/components/ui/progress'
 import { FeatureCard } from './feature-card'
 import { BugFixList } from './bug-fix-list'
 
@@ -28,12 +29,11 @@ export function MilestoneSection({ milestone }: MilestoneSectionProps) {
       )}
 
       {/* Progress bar */}
-      <div className="h-1.5 w-full rounded-full bg-muted overflow-hidden">
-        <div
-          className="h-full rounded-full bg-primary transition-all duration-500"
-          style={{ width: `${progressPercent}%` }}
-        />
-      </div>
+      <Progress
+        value={milestone.progress.completed}
+        max={milestone.progress.total}
+        size="md"
+      />
 
       {/* Feature cards */}
       {milestone.features.length > 0 && (

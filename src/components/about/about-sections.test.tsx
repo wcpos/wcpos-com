@@ -254,7 +254,7 @@ describe('AboutCta', () => {
     )
     expect(
       screen.getByRole('link', { name: 'Try Live Demo' }).parentElement
-    ).toHaveAttribute('data-button-variant', 'brand')
+    ).toHaveAttribute('data-button-variant', 'brand-on-dark')
     expect(
       screen.getByRole('link', { name: 'Download Free' }).parentElement
     ).toHaveAttribute('data-button-variant', 'inverse')

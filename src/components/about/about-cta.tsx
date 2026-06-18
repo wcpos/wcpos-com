@@ -12,12 +12,7 @@ export function AboutCta() {
         subtitle="Try the live demo, download the free plugin, or see what Pro adds — and what keeps it all going."
       />
       <div className="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
-        <Button
-          asChild
-          variant="brand"
-          size="xl"
-          className="focus-visible:ring-white focus-visible:ring-offset-transparent"
-        >
+        <Button asChild variant="brand-on-dark" size="xl">
           <a href="https://demo.wcpos.com/pos">
             Try Live Demo
           </a>

@@ -12,12 +12,7 @@ export function CtaSection() {
         subtitle="Try the live demo or download the free plugin to get started."
       />
       <div className="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
-        <Button
-          asChild
-          variant="brand"
-          size="xl"
-          className="focus-visible:ring-white focus-visible:ring-offset-transparent"
-        >
+        <Button asChild variant="brand-on-dark" size="xl">
           <a href="https://demo.wcpos.com/pos">Try Live Demo</a>
         </Button>
         <Button asChild variant="inverse" size="xl">
