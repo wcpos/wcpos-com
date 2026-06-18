@@ -30,7 +30,9 @@ describe('EmptyState', () => {
     const { container } = render(
       <EmptyState icon={<svg />} title="Error" tone="caution" />,
     )
-    // The IconTile disc carries the caution amber tint.
-    expect(container.innerHTML).toContain('amber')
+    // The IconTile disc is the first element (the round chip) and carries the
+    // caution amber tint.
+    const disc = container.querySelector('span')
+    expect(disc?.className).toContain('bg-amber-50')
   })
 })

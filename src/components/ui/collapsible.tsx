@@ -11,6 +11,14 @@ import { cn } from '@/lib/utils'
 export interface CollapsibleProps
   extends React.HTMLAttributes<HTMLDetailsElement> {
   summary: React.ReactNode
+  /**
+   * Initial open state, rendered as the native `open` attribute so the
+   * disclosure is correct on first paint with no JS. This is uncontrolled:
+   * pass a render-stable value (React only reconciles `open` when the prop
+   * value changes, so the user's native toggle is preserved across re-renders).
+   * A `useRef`/`useEffect` approach is avoided on purpose — it would force this
+   * into a client component and lose the no-JS SSR guarantee.
+   */
   defaultOpen?: boolean
   /** Class applied to the <summary> trigger row. */
   summaryClassName?: string

@@ -21,6 +21,15 @@ describe('IconTile', () => {
     expect(container.firstChild).toHaveAttribute('aria-hidden', 'true')
   })
 
+  it('lets a caller override aria-hidden when the tile must be announced', () => {
+    const { container } = render(
+      <IconTile aria-hidden={false}>
+        <svg />
+      </IconTile>,
+    )
+    expect(container.firstChild).toHaveAttribute('aria-hidden', 'false')
+  })
+
   it('applies size + shape + tone classes', () => {
     const { container } = render(
       <IconTile size="lg" shape="round" tone="brand">

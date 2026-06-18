@@ -17,6 +17,10 @@ const statusBadgeVariants = cva(
   'inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-medium',
   {
     variants: {
+      // `info` (present in the shared status-tone module for Alert) is
+      // intentionally omitted here: a StatusBadge marks a real status, and
+      // "info" is a notice register, not a status. Add it only if a genuine
+      // informational *status* appears.
       tone: {
         positive: toneSurface.positive,
         caution: toneSurface.caution,

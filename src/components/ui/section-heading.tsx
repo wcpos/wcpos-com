@@ -8,9 +8,11 @@ import { Eyebrow } from './eyebrow'
  * previously copy-pasted with divergent weights, sizes and colours.
  *
  * `tone="inverse"` is for dark bands (Section tone="dark"); `align` controls
- * text alignment and auto-centres the subtitle when centred. Title/subtitle use
- * the semantic `foreground` / `muted-foreground` tokens (one source of truth),
- * not baked-in slate; the eyebrow renders through the shared Eyebrow atom.
+ * text alignment and auto-centres the subtitle when centred. In the default
+ * tone, title/subtitle use the semantic `foreground` / `muted-foreground`
+ * tokens (one source of truth) rather than baked-in slate; the inverse tone
+ * keeps explicit on-dark colours (see the subtitle note). The eyebrow renders
+ * through the shared Eyebrow atom.
  */
 const titleVariants = cva('font-semibold tracking-tight', {
   variants: {
@@ -71,6 +73,9 @@ function SectionHeading({
         <p
           className={cn(
             'text-lg',
+            // Default uses the semantic muted token. The inverse (dark-band)
+            // subtitle keeps an explicit slate-300: there is no on-dark muted
+            // token, and muted-foreground is tuned for light surfaces.
             tone === 'inverse' ? 'text-slate-300' : 'text-muted-foreground',
             centered && 'mx-auto max-w-2xl',
           )}

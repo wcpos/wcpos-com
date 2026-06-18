@@ -10,8 +10,9 @@ export interface ReleaseEntry {
 }
 
 /**
- * Collapsible changelog. Uses native <details> so it works without client
- * JavaScript; the first (latest) entry is open by default.
+ * Changelog built on the shared <Collapsible> primitive (which wraps a native
+ * <details>/<summary>), so it works without client JavaScript; the first
+ * (latest) entry is open by default.
  */
 export function ReleaseHistory({ releases }: { releases: ReleaseEntry[] }) {
   return (
