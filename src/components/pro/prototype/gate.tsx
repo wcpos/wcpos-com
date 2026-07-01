@@ -12,15 +12,20 @@ import type { ReactNode } from 'react'
 import { VariantA } from './variant-a'
 import { VariantB } from './variant-b'
 import { VariantC } from './variant-c'
+import { VariantD } from './variant-d'
+import { VariantE } from './variant-e'
+import { VariantF } from './variant-f'
 import { PrototypeSwitcher } from './switcher'
 
 const DEFAULT_DELAY_MS = 1500
 
+// Round 1 (a/b/c) was rejected as lacklustre — still reachable by URL, but
+// the switcher cycles the research-driven round 2 (d/e/f) plus the baseline.
 const PRICING_VARIANTS = [
   { key: 'current', label: 'Current production design' },
-  { key: 'a', label: 'Static-first cards' },
-  { key: 'b', label: 'Comparison panel' },
-  { key: 'c', label: 'One product, pick a term' },
+  { key: 'd', label: 'Free anchors Pro' },
+  { key: 'e', label: 'The zero column' },
+  { key: 'f', label: 'The receipt' },
 ] as const
 
 export async function PricingPrototypeGate({
@@ -51,6 +56,12 @@ export async function PricingPrototypeGate({
         <VariantB delayMs={delayMs} />
       ) : variant === 'c' ? (
         <VariantC delayMs={delayMs} />
+      ) : variant === 'd' ? (
+        <VariantD delayMs={delayMs} />
+      ) : variant === 'e' ? (
+        <VariantE delayMs={delayMs} />
+      ) : variant === 'f' ? (
+        <VariantF delayMs={delayMs} />
       ) : (
         production
       )}
