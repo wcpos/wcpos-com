@@ -61,6 +61,21 @@
         "description": "Take payments with any WooCommerce-compatible gateway, not just the built-in options."
       }
     },
+    "buyBox": {
+      "yearly": {
+        "title": "年間",
+        "subtitle": "1年間のアップデートとサポート",
+        "badgeLabel": "最も人気",
+        "priceSuffix": "/年",
+        "ctaNote": "一回払い — 自動更新はありません。"
+      },
+      "lifetime": {
+        "title": "買い切り",
+        "subtitle": "アップデートは永久",
+        "priceSuffix": " 一回払い",
+        "ctaNote": "年間約3年分 — その後は永久に$0。"
+      }
+    },
     "faq": {
       "title": "Frequently Asked Questions",
       "freePlugin": {

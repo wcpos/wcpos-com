@@ -61,6 +61,21 @@
         "description": "Take payments with any WooCommerce-compatible gateway, not just the built-in options."
       }
     },
+    "buyBox": {
+      "yearly": {
+        "title": "Yearly",
+        "subtitle": "Updates & support for 1 year",
+        "badgeLabel": "Most Popular",
+        "priceSuffix": "/yr",
+        "ctaNote": "One-time payment — never auto-renews."
+      },
+      "lifetime": {
+        "title": "Lifetime",
+        "subtitle": "Updates forever",
+        "priceSuffix": " once",
+        "ctaNote": "About 3 years of Yearly — then $0 forever."
+      }
+    },
     "faq": {
       "title": "Frequently Asked Questions",
       "freePlugin": {

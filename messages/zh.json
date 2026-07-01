@@ -61,6 +61,21 @@
         "description": "Take payments with any WooCommerce-compatible gateway, not just the built-in options."
       }
     },
+    "buyBox": {
+      "yearly": {
+        "title": "年付",
+        "subtitle": "1年更新和支持",
+        "badgeLabel": "最受欢迎",
+        "priceSuffix": "/年",
+        "ctaNote": "一次性付款 — 永不自动续订。"
+      },
+      "lifetime": {
+        "title": "终身",
+        "subtitle": "永久更新",
+        "priceSuffix": " 一次性",
+        "ctaNote": "约等于3年年付 — 之后永久$0。"
+      }
+    },
     "faq": {
       "title": "Frequently Asked Questions",
       "freePlugin": {

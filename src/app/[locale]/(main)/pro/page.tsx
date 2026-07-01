@@ -40,48 +40,62 @@ export async function generateMetadata({
 }
 
 /**
- * Buy-box copy: one product, two terms. Price + term facts only — the
- * feature list renders once, outside the box.
+ * Buy-box copy: one product, two terms. Price + term facts only; the
+ * values are resolved through the locale messages in BuyBoxSection.
  */
-const BUY_BOX_COPY: Record<
-  PlanId,
-  {
-    title: string
-    subtitle: string
-    badgeLabel: string | null
-    priceSuffix: string
-    ctaNote: string
-  }
-> = {
+type BuyBoxMessageKey =
+  | 'buyBox.yearly.title'
+  | 'buyBox.yearly.subtitle'
+  | 'buyBox.yearly.badgeLabel'
+  | 'buyBox.yearly.priceSuffix'
+  | 'buyBox.yearly.ctaNote'
+  | 'buyBox.lifetime.title'
+  | 'buyBox.lifetime.subtitle'
+  | 'buyBox.lifetime.priceSuffix'
+  | 'buyBox.lifetime.ctaNote'
+
+const BUY_BOX_COPY_KEYS = {
   yearly: {
-    title: 'Yearly',
-    subtitle: 'Updates & support for 1 year',
-    badgeLabel: 'Most Popular',
-    priceSuffix: '/yr',
-    ctaNote: 'One-time payment — never auto-renews.',
+    title: 'buyBox.yearly.title',
+    subtitle: 'buyBox.yearly.subtitle',
+    badgeLabel: 'buyBox.yearly.badgeLabel',
+    priceSuffix: 'buyBox.yearly.priceSuffix',
+    ctaNote: 'buyBox.yearly.ctaNote',
   },
   lifetime: {
-    title: 'Lifetime',
-    subtitle: 'Updates forever',
+    title: 'buyBox.lifetime.title',
+    subtitle: 'buyBox.lifetime.subtitle',
     badgeLabel: null,
-    priceSuffix: ' once',
-    ctaNote: 'About 3 years of Yearly — then $0 forever.',
+    priceSuffix: 'buyBox.lifetime.priceSuffix',
+    ctaNote: 'buyBox.lifetime.ctaNote',
   },
-}
+} as const satisfies Record<
+  PlanId,
+  {
+    title: BuyBoxMessageKey
+    subtitle: BuyBoxMessageKey
+    badgeLabel: BuyBoxMessageKey | null
+    priceSuffix: BuyBoxMessageKey
+    ctaNote: BuyBoxMessageKey
+  }
+>
 
 /**
  * Dynamic component that fetches offers from Medusa. Only this box
  * suspends; the rest of the page renders statically.
  */
-async function BuyBoxSection({
+export async function BuyBoxSection({
   experimentVariant,
+  locale,
 }: {
   experimentVariant: ProCheckoutVariant
+  locale: string
 }) {
   'use cache'
   cacheLife('products')
   cacheTag('products')
 
+  const t = await getTranslations({ locale, namespace: 'pro' })
   const { offers } = await getProOfferCatalog()
 
   if (offers.length === 0) {
@@ -96,16 +110,16 @@ async function BuyBoxSection({
   }
 
   const options: ProBuyBoxOption[] = offers.map((offer) => {
-    const copy = BUY_BOX_COPY[offer.planId]
+    const copy = BUY_BOX_COPY_KEYS[offer.planId]
     return {
       planId: offer.planId,
       handle: offer.handle,
-      title: copy.title,
-      subtitle: copy.subtitle,
-      badgeLabel: copy.badgeLabel,
+      title: t(copy.title),
+      subtitle: t(copy.subtitle),
+      badgeLabel: copy.badgeLabel ? t(copy.badgeLabel) : null,
       priceText: offer.price.compact,
-      priceSuffix: copy.priceSuffix,
-      ctaNote: copy.ctaNote,
+      priceSuffix: t(copy.priceSuffix),
+      ctaNote: t(copy.ctaNote),
       checkoutHref: buildProCheckoutHref(offer, experimentVariant),
     }
   })
@@ -134,7 +148,7 @@ function BuyBoxSkeleton() {
   )
 }
 
-async function BuyBoxWithExperiment() {
+async function BuyBoxWithExperiment({ locale }: { locale: string }) {
   const cookieStore = await cookies()
   const distinctId = cookieStore.get(ANALYTICS_DISTINCT_ID_COOKIE)?.value
   const analyticsConfig = getAnalyticsConfig(process.env)
@@ -145,7 +159,9 @@ async function BuyBoxWithExperiment() {
       })
     : 'control'
 
-  return <BuyBoxSection experimentVariant={experimentVariant} />
+  return (
+    <BuyBoxSection experimentVariant={experimentVariant} locale={locale} />
+  )
 }
 
 async function ProProductJsonLd() {
@@ -216,7 +232,7 @@ export default async function ProPage({
           />
           <div className="lg:sticky lg:top-24">
             <Suspense fallback={<BuyBoxSkeleton />}>
-              <BuyBoxWithExperiment />
+              <BuyBoxWithExperiment locale={locale} />
             </Suspense>
           </div>
         </div>

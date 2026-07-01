@@ -61,6 +61,21 @@
         "description": "Take payments with any WooCommerce-compatible gateway, not just the built-in options."
       }
     },
+    "buyBox": {
+      "yearly": {
+        "title": "연간",
+        "subtitle": "1년간 업데이트 및 지원",
+        "badgeLabel": "가장 인기",
+        "priceSuffix": "/년",
+        "ctaNote": "일회성 결제 — 자동 갱신되지 않습니다."
+      },
+      "lifetime": {
+        "title": "평생",
+        "subtitle": "영구 업데이트",
+        "priceSuffix": " 1회",
+        "ctaNote": "연간 약 3년치 — 이후 영구적으로 $0."
+      }
+    },
     "faq": {
       "title": "Frequently Asked Questions",
       "freePlugin": {
