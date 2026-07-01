@@ -15,14 +15,18 @@ import { Button } from '@/components/ui/button'
 import { Link } from '@/i18n/navigation'
 import {
   AccountBlock,
-  AltPaymentLinks,
   CompactAddressFields,
-  FakeCardFields,
+  ExpressPayRow,
   PayButton,
   STUB_SIGNED_IN_EMAIL,
   SuccessScreen,
   useFakePay,
 } from './stubs'
+import {
+  PaymentMethodSelector,
+  payButtonLabel,
+  type StubPaymentMethod,
+} from './payment-method-selector'
 
 type StepId = 1 | 2 | 3
 
@@ -83,6 +87,7 @@ function StepShell({
 
 export function CheckoutVariantB({ signedIn }: { signedIn: boolean }) {
   const [step, setStep] = useState<StepId>(signedIn ? 2 : 1)
+  const [method, setMethod] = useState<StubPaymentMethod>('card')
   const { state, pay } = useFakePay()
 
   if (state === 'done') return <SuccessScreen />
@@ -134,9 +139,13 @@ export function CheckoutVariantB({ signedIn }: { signedIn: boolean }) {
             onEdit={() => setStep(3)}
           >
             <div className="space-y-4">
-              <FakeCardFields />
-              <PayButton label="Pay $129 now" state={state} onClick={pay} />
-              <AltPaymentLinks />
+              <ExpressPayRow onPay={pay} dividerLabel="or choose how to pay" />
+              <PaymentMethodSelector method={method} onChange={setMethod} />
+              <PayButton
+                label={payButtonLabel(method)}
+                state={state}
+                onClick={pay}
+              />
             </div>
           </StepShell>
         </div>

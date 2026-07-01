@@ -68,6 +68,14 @@ processing state then show a success screen.
 
 ## Verdict
 
-_TBD — owner to flip through and pick winners (or combinations) for both the
-pricing section and the checkout, then fold them into the real components and
-delete this directory (including the middleware bypass)._
+- **Checkout: Variant B wins** (owner, 2026-07-01) — three collapsing steps
+  with sticky summary. Payment step reworked to the owner's spec: wallet
+  buttons (Apple/Google Pay) on top, then a radio-accordion where **Card is
+  the default and expanded** and **PayPal and Bitcoin are equally visible
+  rows** (not a buried text link); the pay button label follows the selection
+  ("Pay $129 now" / "Continue to PayPal" / "Continue to Bitcoin payment").
+  See `checkout/payment-method-selector.tsx`.
+- **Pricing section: TBD** — owner still to pick between A / B / C.
+
+When both are decided: fold the winners into the real components and delete
+this directory (including the middleware bypass)._

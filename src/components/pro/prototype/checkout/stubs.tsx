@@ -30,7 +30,13 @@ export function useFakePay() {
 }
 
 /** Apple Pay / Google Pay express row — the genuinely fastest path. */
-export function ExpressPayRow({ onPay }: { onPay: () => void }) {
+export function ExpressPayRow({
+  onPay,
+  dividerLabel = 'or pay with card',
+}: {
+  onPay: () => void
+  dividerLabel?: string
+}) {
   return (
     <div>
       <div className="grid grid-cols-2 gap-3">
@@ -51,7 +57,7 @@ export function ExpressPayRow({ onPay }: { onPay: () => void }) {
       </div>
       <div className="my-4 flex items-center gap-3 text-xs text-muted-foreground">
         <div className="h-px flex-1 bg-border" />
-        or pay with card
+        {dividerLabel}
         <div className="h-px flex-1 bg-border" />
       </div>
     </div>
