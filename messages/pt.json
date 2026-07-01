@@ -61,6 +61,33 @@
         "description": "Take payments with any WooCommerce-compatible gateway, not just the built-in options."
       }
     },
+    "buyBox": {
+      "heading": "Adquira o Pro",
+      "subheading": "Uma licença, todos os recursos. Escolha apenas por quanto tempo quer atualizações.",
+      "termAriaLabel": "Duração da licença",
+      "cta": "Começar",
+      "ctaValueCopy": "Obtenha acesso imediato",
+      "yearly": {
+        "title": "Anual",
+        "subtitle": "Atualizações e suporte por 1 ano",
+        "badgeLabel": "Mais popular",
+        "priceSuffix": "/ano",
+        "ctaNote": "Pagamento único — nunca renova automaticamente."
+      },
+      "lifetime": {
+        "title": "Vitalício",
+        "subtitle": "Atualizações para sempre",
+        "priceSuffix": "uma vez",
+        "ctaNote": "Cerca de {years} anos do Anual — depois $0 para sempre.",
+        "ctaNoteSimple": "Pague uma vez — atualizações para sempre."
+      },
+      "guaranteeLink": "Garantia de reembolso de 14 dias",
+      "guaranteeSuffix": ", sem precisar justificar",
+      "payments": "Cartão, PayPal ou Bitcoin",
+      "proof": "Mais de 5.000 lojas ativas · O Anual é creditado no Vitalício",
+      "unavailableTitle": "Preços temporariamente indisponíveis",
+      "unavailableDescription": "As informações de preços estão indisponíveis no momento. Tente novamente mais tarde."
+    },
     "faq": {
       "title": "Frequently Asked Questions",
       "freePlugin": {
