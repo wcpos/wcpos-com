@@ -36,10 +36,10 @@ test.describe('Pro Page', () => {
   })
 
   test.describe('Product Display', () => {
-    test('displays product pricing cards', async ({ page }) => {
+    test('displays the buy box', async ({ page }) => {
       await skipIfPricingUnavailable(page)
-      const pricingCard = page.locator('[data-testid="pricing-card"]').first()
-      await expect(pricingCard).toBeVisible({ timeout: 10000 })
+      const buyBox = page.locator('[data-testid="pro-buy-box"]')
+      await expect(buyBox).toBeVisible({ timeout: 10000 })
     })
 
     test('does NOT show "pricing unavailable" message when products are available', async ({ page }) => {
@@ -52,15 +52,15 @@ test.describe('Pro Page', () => {
       await expect(errorMessage).not.toBeVisible()
     })
 
-    test('displays yearly and lifetime products', async ({ page }) => {
+    test('displays yearly and lifetime term options', async ({ page }) => {
       await skipIfPricingUnavailable(page)
       await page.waitForLoadState('networkidle')
       await page.waitForTimeout(2000)
-      await expect(page.getByText('Pro Yearly')).toBeVisible()
-      await expect(page.getByText('Pro Lifetime')).toBeVisible()
+      await expect(page.getByRole('radio', { name: /Yearly/ })).toBeVisible()
+      await expect(page.getByRole('radio', { name: /Lifetime/ })).toBeVisible()
     })
 
-    test('pricing cards have checkout CTAs with experiment query params', async ({ page }) => {
+    test('buy box CTA carries experiment query params', async ({ page }) => {
       await skipIfPricingUnavailable(page)
       await page.waitForLoadState('networkidle')
       await page.waitForTimeout(2000)

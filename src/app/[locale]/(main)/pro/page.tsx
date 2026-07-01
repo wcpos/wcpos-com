@@ -2,7 +2,11 @@ import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { Suspense } from 'react'
 import { cacheLife, cacheTag } from 'next/cache'
 import { cookies } from 'next/headers'
-import { PricingCard } from '@/components/pro/pricing-card'
+import { ProBuyBox, type ProBuyBoxOption } from '@/components/pro/pro-buy-box'
+import {
+  PRO_FEATURE_KEYS,
+  ProFeatureList,
+} from '@/components/pro/pro-features'
 import { Skeleton } from '@/components/ui/skeleton'
 import type { ProCheckoutVariant } from '@/services/core/analytics/posthog-service'
 import { resolveProCheckoutVariant } from '@/services/core/analytics/posthog-service'
@@ -11,9 +15,12 @@ import { getAnalyticsConfig } from '@/lib/analytics/config'
 import type { Metadata } from 'next'
 import { marketingMetadata } from '@/lib/seo'
 import {
+  buildProCheckoutHref,
   buildProOfferSchemaOffers,
+  getProCheckoutCtaLabel,
   getProOfferCatalog,
 } from '@/lib/pro-offer-catalog'
+import type { PlanId } from '@/lib/plans'
 import { Section } from '@/components/ui/section'
 import { SectionHeading } from '@/components/ui/section-heading'
 
@@ -33,9 +40,40 @@ export async function generateMetadata({
 }
 
 /**
- * Dynamic component that fetches products from Medusa
+ * Buy-box copy: one product, two terms. Price + term facts only — the
+ * feature list renders once, outside the box.
  */
-async function PricingSection({
+const BUY_BOX_COPY: Record<
+  PlanId,
+  {
+    title: string
+    subtitle: string
+    badgeLabel: string | null
+    priceSuffix: string
+    ctaNote: string
+  }
+> = {
+  yearly: {
+    title: 'Yearly',
+    subtitle: 'Updates & support for 1 year',
+    badgeLabel: 'Most Popular',
+    priceSuffix: '/yr',
+    ctaNote: 'One-time payment — never auto-renews.',
+  },
+  lifetime: {
+    title: 'Lifetime',
+    subtitle: 'Updates forever',
+    badgeLabel: null,
+    priceSuffix: ' once',
+    ctaNote: 'About 3 years of Yearly — then $0 forever.',
+  },
+}
+
+/**
+ * Dynamic component that fetches offers from Medusa. Only this box
+ * suspends; the rest of the page renders statically.
+ */
+async function BuyBoxSection({
   experimentVariant,
 }: {
   experimentVariant: ProCheckoutVariant
@@ -48,7 +86,7 @@ async function PricingSection({
 
   if (offers.length === 0) {
     return (
-      <div className="text-center py-12">
+      <div className="rounded-2xl border bg-card p-6 text-center">
         <p className="text-muted-foreground">
           Pricing information is currently unavailable. Please try again
           later.
@@ -57,29 +95,46 @@ async function PricingSection({
     )
   }
 
+  const options: ProBuyBoxOption[] = offers.map((offer) => {
+    const copy = BUY_BOX_COPY[offer.planId]
+    return {
+      planId: offer.planId,
+      handle: offer.handle,
+      title: copy.title,
+      subtitle: copy.subtitle,
+      badgeLabel: copy.badgeLabel,
+      priceText: offer.price.compact,
+      priceSuffix: copy.priceSuffix,
+      ctaNote: copy.ctaNote,
+      checkoutHref: buildProCheckoutHref(offer, experimentVariant),
+    }
+  })
+
   return (
-    <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto items-start">
-      {offers.map((offer) => (
-        <PricingCard
-          key={offer.planId}
-          offer={offer}
-          experimentVariant={experimentVariant}
-        />
-      ))}
+    <ProBuyBox
+      options={options}
+      ctaLabel={getProCheckoutCtaLabel(experimentVariant)}
+      experimentVariant={experimentVariant}
+    />
+  )
+}
+
+function BuyBoxSkeleton() {
+  return (
+    <div
+      data-testid="pro-buy-box-skeleton"
+      className="space-y-4 rounded-2xl border bg-card p-6"
+    >
+      <Skeleton className="h-6 w-24" />
+      <Skeleton className="h-4 w-56" />
+      <Skeleton className="h-20" />
+      <Skeleton className="h-20" />
+      <Skeleton className="h-11" />
     </div>
   )
 }
 
-function PricingSkeleton() {
-  return (
-    <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto items-start">
-      <Skeleton className="h-96" />
-      <Skeleton className="h-96" />
-    </div>
-  )
-}
-
-async function PricingSectionWithExperiment() {
+async function BuyBoxWithExperiment() {
   const cookieStore = await cookies()
   const distinctId = cookieStore.get(ANALYTICS_DISTINCT_ID_COOKIE)?.value
   const analyticsConfig = getAnalyticsConfig(process.env)
@@ -90,9 +145,8 @@ async function PricingSectionWithExperiment() {
       })
     : 'control'
 
-  return <PricingSection experimentVariant={experimentVariant} />
+  return <BuyBoxSection experimentVariant={experimentVariant} />
 }
-
 
 async function ProProductJsonLd() {
   'use cache'
@@ -131,6 +185,12 @@ export default async function ProPage({
   setRequestLocale(locale)
   const t = await getTranslations({ locale, namespace: 'pro' })
 
+  const features = PRO_FEATURE_KEYS.map(({ key, Icon }) => ({
+    Icon,
+    title: t(`features.${key}.title`),
+    description: t(`features.${key}.description`),
+  }))
+
   return (
     <main>
       <Suspense fallback={null}>
@@ -146,50 +206,24 @@ export default async function ProPage({
         />
       </Section>
 
-      {/* Pricing Section - Dynamic */}
+      {/* Features render statically; only the buy box waits on Medusa */}
       <Section tone="default" spacing="compact">
-        <Suspense fallback={<PricingSkeleton />}>
-          <PricingSectionWithExperiment />
-        </Suspense>
-      </Section>
-
-      {/* Features Section */}
-      <Section tone="muted" spacing="default">
-        <SectionHeading
-          className="mb-12"
-          title={t('features.title')}
-          subtitle={t('features.subtitle')}
-        />
-        <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-          <FeatureBlock
-            title={t('features.terminal.title')}
-            description={t('features.terminal.description')}
+        <div className="mx-auto grid max-w-5xl items-start gap-10 lg:grid-cols-[1.5fr_1fr]">
+          <ProFeatureList
+            heading={t('features.title')}
+            subtitle={t('features.subtitle')}
+            features={features}
           />
-          <FeatureBlock
-            title={t('features.stockPrice.title')}
-            description={t('features.stockPrice.description')}
-          />
-          <FeatureBlock
-            title={t('features.orders.title')}
-            description={t('features.orders.description')}
-          />
-          <FeatureBlock
-            title={t('features.customers.title')}
-            description={t('features.customers.description')}
-          />
-          <FeatureBlock
-            title={t('features.reports.title')}
-            description={t('features.reports.description')}
-          />
-          <FeatureBlock
-            title={t('features.gateways.title')}
-            description={t('features.gateways.description')}
-          />
+          <div className="lg:sticky lg:top-24">
+            <Suspense fallback={<BuyBoxSkeleton />}>
+              <BuyBoxWithExperiment />
+            </Suspense>
+          </div>
         </div>
       </Section>
 
       {/* FAQ Section */}
-      <Section tone="default" spacing="default">
+      <Section tone="muted" spacing="default">
         <SectionHeading className="mb-12" title={t('faq.title')} />
         <div className="max-w-3xl mx-auto space-y-6">
           <FaqItem
@@ -215,21 +249,6 @@ export default async function ProPage({
         </div>
       </Section>
     </main>
-  )
-}
-
-function FeatureBlock({
-  title,
-  description,
-}: {
-  title: string
-  description: string
-}) {
-  return (
-    <div className="text-center">
-      <h3 className="text-xl font-semibold mb-2">{title}</h3>
-      <p className="text-muted-foreground">{description}</p>
-    </div>
   )
 }
 
