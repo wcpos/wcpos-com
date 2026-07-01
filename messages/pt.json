@@ -62,6 +62,9 @@
       }
     },
     "buyBox": {
+      "heading": "Adquira o Pro",
+      "subheading": "Uma licença, todos os recursos. Escolha apenas por quanto tempo quer atualizações.",
+      "termAriaLabel": "Duração da licença",
       "yearly": {
         "title": "Anual",
         "subtitle": "Atualizações e suporte por 1 ano",
@@ -73,8 +76,15 @@
         "title": "Vitalício",
         "subtitle": "Atualizações para sempre",
         "priceSuffix": " uma vez",
-        "ctaNote": "Cerca de 3 anos do Anual — depois $0 para sempre."
-      }
+        "ctaNote": "Cerca de {years} anos do Anual — depois $0 para sempre.",
+        "ctaNoteSimple": "Pague uma vez — atualizações para sempre."
+      },
+      "guaranteeLink": "Garantia de reembolso de 14 dias",
+      "guaranteeSuffix": ", sem precisar justificar",
+      "payments": "Cartão, PayPal ou Bitcoin",
+      "proof": "Mais de 5.000 lojas ativas · O Anual é creditado no Vitalício",
+      "unavailableTitle": "Preços temporariamente indisponíveis",
+      "unavailableDescription": "As informações de preços estão indisponíveis no momento. Tente novamente mais tarde."
     },
     "faq": {
       "title": "Frequently Asked Questions",

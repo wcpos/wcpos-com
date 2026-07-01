@@ -2,25 +2,28 @@ import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { Suspense } from 'react'
 import { cacheLife, cacheTag } from 'next/cache'
 import { cookies } from 'next/headers'
-import { ProBuyBox, type ProBuyBoxOption } from '@/components/pro/pro-buy-box'
+import { AlertCircle, Bitcoin, CreditCard, Shield } from 'lucide-react'
+import { Link } from '@/i18n/navigation'
+import { ProBuyBox } from '@/components/pro/pro-buy-box'
+import { buildProBuyBoxOptions } from '@/components/pro/pro-buy-box-options'
 import {
   PRO_FEATURE_KEYS,
   ProFeatureList,
 } from '@/components/pro/pro-features'
+import { Card } from '@/components/ui/card'
+import { EmptyState } from '@/components/ui/empty-state'
 import { Skeleton } from '@/components/ui/skeleton'
-import type { ProCheckoutVariant } from '@/services/core/analytics/posthog-service'
+import { TextLink } from '@/components/ui/text-link'
 import { resolveProCheckoutVariant } from '@/services/core/analytics/posthog-service'
 import { ANALYTICS_DISTINCT_ID_COOKIE } from '@/lib/analytics/distinct-id'
 import { getAnalyticsConfig } from '@/lib/analytics/config'
 import type { Metadata } from 'next'
 import { marketingMetadata } from '@/lib/seo'
 import {
-  buildProCheckoutHref,
   buildProOfferSchemaOffers,
   getProCheckoutCtaLabel,
   getProOfferCatalog,
 } from '@/lib/pro-offer-catalog'
-import type { PlanId } from '@/lib/plans'
 import { Section } from '@/components/ui/section'
 import { SectionHeading } from '@/components/ui/section-heading'
 
@@ -40,114 +43,37 @@ export async function generateMetadata({
 }
 
 /**
- * Buy-box copy: one product, two terms. Price + term facts only; the
- * values are resolved through the locale messages in BuyBoxSection.
+ * One cached catalog fetch shared by the buy box and the JSON-LD block —
+ * the cache key is the catalog itself, not the experiment variant or
+ * locale, which are pure string work applied outside the boundary.
  */
-type BuyBoxMessageKey =
-  | 'buyBox.yearly.title'
-  | 'buyBox.yearly.subtitle'
-  | 'buyBox.yearly.badgeLabel'
-  | 'buyBox.yearly.priceSuffix'
-  | 'buyBox.yearly.ctaNote'
-  | 'buyBox.lifetime.title'
-  | 'buyBox.lifetime.subtitle'
-  | 'buyBox.lifetime.priceSuffix'
-  | 'buyBox.lifetime.ctaNote'
-
-const BUY_BOX_COPY_KEYS = {
-  yearly: {
-    title: 'buyBox.yearly.title',
-    subtitle: 'buyBox.yearly.subtitle',
-    badgeLabel: 'buyBox.yearly.badgeLabel',
-    priceSuffix: 'buyBox.yearly.priceSuffix',
-    ctaNote: 'buyBox.yearly.ctaNote',
-  },
-  lifetime: {
-    title: 'buyBox.lifetime.title',
-    subtitle: 'buyBox.lifetime.subtitle',
-    badgeLabel: null,
-    priceSuffix: 'buyBox.lifetime.priceSuffix',
-    ctaNote: 'buyBox.lifetime.ctaNote',
-  },
-} as const satisfies Record<
-  PlanId,
-  {
-    title: BuyBoxMessageKey
-    subtitle: BuyBoxMessageKey
-    badgeLabel: BuyBoxMessageKey | null
-    priceSuffix: BuyBoxMessageKey
-    ctaNote: BuyBoxMessageKey
-  }
->
-
-/**
- * Dynamic component that fetches offers from Medusa. Only this box
- * suspends; the rest of the page renders statically.
- */
-export async function BuyBoxSection({
-  experimentVariant,
-  locale,
-}: {
-  experimentVariant: ProCheckoutVariant
-  locale: string
-}) {
+async function getCachedProOfferCatalog() {
   'use cache'
   cacheLife('products')
   cacheTag('products')
-
-  const t = await getTranslations({ locale, namespace: 'pro' })
-  const { offers } = await getProOfferCatalog()
-
-  if (offers.length === 0) {
-    return (
-      <div className="rounded-2xl border bg-card p-6 text-center">
-        <p className="text-muted-foreground">
-          Pricing information is currently unavailable. Please try again
-          later.
-        </p>
-      </div>
-    )
-  }
-
-  const options: ProBuyBoxOption[] = offers.map((offer) => {
-    const copy = BUY_BOX_COPY_KEYS[offer.planId]
-    return {
-      planId: offer.planId,
-      handle: offer.handle,
-      title: t(copy.title),
-      subtitle: t(copy.subtitle),
-      badgeLabel: copy.badgeLabel ? t(copy.badgeLabel) : null,
-      priceText: offer.price.compact,
-      priceSuffix: t(copy.priceSuffix),
-      ctaNote: t(copy.ctaNote),
-      checkoutHref: buildProCheckoutHref(offer, experimentVariant),
-    }
-  })
-
-  return (
-    <ProBuyBox
-      options={options}
-      ctaLabel={getProCheckoutCtaLabel(experimentVariant)}
-      experimentVariant={experimentVariant}
-    />
-  )
+  return getProOfferCatalog()
 }
 
 function BuyBoxSkeleton() {
   return (
-    <div
+    <Card
+      elevated
       data-testid="pro-buy-box-skeleton"
-      className="space-y-4 rounded-2xl border bg-card p-6"
+      className="space-y-4 p-6"
     >
       <Skeleton className="h-6 w-24" />
       <Skeleton className="h-4 w-56" />
       <Skeleton className="h-20" />
       <Skeleton className="h-20" />
       <Skeleton className="h-11" />
-    </div>
+    </Card>
   )
 }
 
+/**
+ * The only dynamic region of the page: Medusa prices + the checkout
+ * experiment from cookies. Everything else renders statically around it.
+ */
 async function BuyBoxWithExperiment({ locale }: { locale: string }) {
   const cookieStore = await cookies()
   const distinctId = cookieStore.get(ANALYTICS_DISTINCT_ID_COOKIE)?.value
@@ -159,17 +85,66 @@ async function BuyBoxWithExperiment({ locale }: { locale: string }) {
       })
     : 'control'
 
+  const [t, { offers }] = await Promise.all([
+    getTranslations({ locale, namespace: 'pro' }),
+    getCachedProOfferCatalog(),
+  ])
+  // next-intl's Translator is key-typed; the options builder takes a plain
+  // string-keyed translate function.
+  const translate = (key: string, values?: Record<string, string | number>) =>
+    t(key as Parameters<typeof t>[0], values)
+
+  if (offers.length === 0) {
+    return (
+      <Card elevated className="p-6">
+        <EmptyState
+          tone="caution"
+          icon={<AlertCircle />}
+          title={t('buyBox.unavailableTitle')}
+          description={t('buyBox.unavailableDescription')}
+        />
+      </Card>
+    )
+  }
+
   return (
-    <BuyBoxSection experimentVariant={experimentVariant} locale={locale} />
+    <ProBuyBox
+      options={buildProBuyBoxOptions(offers, experimentVariant, translate)}
+      ctaLabel={getProCheckoutCtaLabel(experimentVariant)}
+      heading={t('buyBox.heading')}
+      subheading={t('buyBox.subheading')}
+      termAriaLabel={t('buyBox.termAriaLabel')}
+      footer={
+        <>
+          <div className="mt-5 space-y-2 border-t pt-4 text-sm text-muted-foreground">
+            <p className="flex items-center gap-2">
+              <Shield className="h-4 w-4 shrink-0" aria-hidden />
+              <span>
+                <TextLink asChild>
+                  <Link href="/refunds">{t('buyBox.guaranteeLink')}</Link>
+                </TextLink>
+                {t('buyBox.guaranteeSuffix')}
+              </span>
+            </p>
+            <p className="flex items-center gap-2">
+              <CreditCard className="h-4 w-4 shrink-0" aria-hidden />
+              <span className="flex items-center gap-1">
+                {t('buyBox.payments')}
+                <Bitcoin className="h-4 w-4" aria-hidden />
+              </span>
+            </p>
+          </div>
+          <p className="mt-4 text-center text-xs text-muted-foreground">
+            {t('buyBox.proof')}
+          </p>
+        </>
+      }
+    />
   )
 }
 
 async function ProProductJsonLd() {
-  'use cache'
-  cacheLife('products')
-  cacheTag('products')
-
-  const { offers } = await getProOfferCatalog()
+  const { offers } = await getCachedProOfferCatalog()
 
   return (
     <script

@@ -8,6 +8,7 @@ import {
   type LucideIcon,
 } from 'lucide-react'
 import { IconTile } from '@/components/ui/icon-tile'
+import { SectionHeading } from '@/components/ui/section-heading'
 
 /**
  * The Pro feature list — appears exactly once on /pro, beside the buy box.
@@ -41,8 +42,7 @@ export function ProFeatureList({
 }) {
   return (
     <div>
-      <h2 className="text-2xl font-bold">{heading}</h2>
-      <p className="mt-2 text-muted-foreground">{subtitle}</p>
+      <SectionHeading align="left" title={heading} subtitle={subtitle} />
       <div className="mt-10 space-y-7">
         {features.map(({ Icon, title, description }) => (
           <div key={title} className="flex gap-4">

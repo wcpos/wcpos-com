@@ -1,25 +1,16 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
-import type { ProBuyBoxOption } from '@/components/pro/pro-buy-box'
-import type { ProOffer } from '@/lib/pro-offer-catalog'
-
-const mocks = vi.hoisted(() => ({
-  suspense: { renderChildren: false },
-  getProOfferCatalog: vi.fn(async () => ({ offers: [] as ProOffer[] })),
-  buildProCheckoutHref: vi.fn(() => '/pro/checkout?product=test'),
-}))
 
 vi.mock('react', async (importActual) => {
   const actual = await importActual<typeof import('react')>()
   return {
     ...actual,
     Suspense: ({
-      children,
       fallback,
     }: {
       children?: React.ReactNode
       fallback?: React.ReactNode
-    }) => <>{mocks.suspense.renderChildren ? children : fallback}</>,
+    }) => <>{fallback}</>,
   }
 })
 
@@ -40,15 +31,6 @@ vi.mock('next-intl/server', () => ({
       'features.reports.description': 'Run reports.',
       'features.gateways.title': 'Gateways',
       'features.gateways.description': 'Use custom gateways.',
-      'buyBox.yearly.title': 'Translated Yearly',
-      'buyBox.yearly.subtitle': 'Translated yearly support',
-      'buyBox.yearly.badgeLabel': 'Translated Popular',
-      'buyBox.yearly.priceSuffix': '/translated-year',
-      'buyBox.yearly.ctaNote': 'Translated yearly note.',
-      'buyBox.lifetime.title': 'Translated Lifetime',
-      'buyBox.lifetime.subtitle': 'Translated lifetime updates',
-      'buyBox.lifetime.priceSuffix': ' translated-once',
-      'buyBox.lifetime.ctaNote': 'Translated lifetime note.',
       'faq.title': 'Questions',
       'faq.freePlugin.question': 'Do I need the free plugin?',
       'faq.freePlugin.answer': 'Yes.',
@@ -105,33 +87,10 @@ vi.mock('@/lib/analytics/client-events', () => ({
 }))
 
 vi.mock('@/lib/pro-offer-catalog', () => ({
-  getProOfferCatalog: mocks.getProOfferCatalog,
+  getProOfferCatalog: vi.fn(async () => ({ offers: [] })),
   buildProOfferSchemaOffers: vi.fn(() => []),
-  buildProCheckoutHref: mocks.buildProCheckoutHref,
+  buildProCheckoutHref: vi.fn(() => '/pro/checkout?product=test'),
   getProCheckoutCtaLabel: vi.fn(() => 'Get Started'),
-}))
-
-vi.mock('@/components/pro/pro-buy-box', () => ({
-  ProBuyBox: ({
-    options,
-    ctaLabel,
-  }: {
-    options: ProBuyBoxOption[]
-    ctaLabel: string
-  }) => (
-    <div data-testid="pro-buy-box">
-      <span>{ctaLabel}</span>
-      {options.map((option) => (
-        <div key={option.planId}>
-          <span>{option.title}</span>
-          <span>{option.subtitle}</span>
-          {option.badgeLabel && <span>{option.badgeLabel}</span>}
-          <span>{option.priceSuffix}</span>
-          <span>{option.ctaNote}</span>
-        </div>
-      ))}
-    </div>
-  ),
 }))
 
 vi.mock('@/components/ui/section', () => ({
@@ -171,15 +130,9 @@ vi.mock('@/components/ui/section-heading', () => ({
   ),
 }))
 
-import ProPage, { BuyBoxSection } from './page'
+import ProPage from './page'
 
 describe('ProPage', () => {
-  beforeEach(() => {
-    mocks.suspense.renderChildren = false
-    mocks.getProOfferCatalog.mockResolvedValue({ offers: [] })
-    mocks.buildProCheckoutHref.mockReturnValue('/pro/checkout?product=test')
-  })
-
   it('renders hero and features statically with only the buy box suspending', async () => {
     render(await ProPage({ params: Promise.resolve({ locale: 'en' }) }))
 
@@ -210,69 +163,5 @@ describe('ProPage', () => {
     expect(screen.getByText('Questions')).toBeInTheDocument()
     expect(screen.getByText('Do I need the free plugin?')).toBeInTheDocument()
     expect(screen.getAllByText('Yes.')).toHaveLength(2)
-  })
-
-  it('passes translated buy-box option copy to the buy box', async () => {
-    mocks.getProOfferCatalog.mockResolvedValue({
-      offers: [
-        {
-          planId: 'yearly',
-          handle: 'wcpos-pro-yearly',
-          variantId: 'variant_yearly',
-          title: 'Pro Yearly',
-          description: 'One-year license',
-          featured: true,
-          badgeLabel: 'Most Popular',
-          price: {
-            amount: 129,
-            currencyCode: 'usd',
-            formatted: '$129.00',
-            compact: '$129',
-            schemaPrice: '129',
-          },
-          priceSuffix: '/year',
-          features: [],
-          checkoutPath: '/pro/checkout?product=wcpos-pro-yearly',
-        },
-        {
-          planId: 'lifetime',
-          handle: 'wcpos-pro-lifetime',
-          variantId: 'variant_lifetime',
-          title: 'Pro Lifetime',
-          description: 'Lifetime license',
-          featured: false,
-          badgeLabel: null,
-          price: {
-            amount: 399,
-            currencyCode: 'usd',
-            formatted: '$399.00',
-            compact: '$399',
-            schemaPrice: '399',
-          },
-          priceSuffix: null,
-          features: [],
-          checkoutPath: '/pro/checkout?product=wcpos-pro-lifetime',
-        },
-      ],
-    })
-
-    render(
-      await BuyBoxSection({
-        experimentVariant: 'control',
-        locale: 'en',
-      })
-    )
-
-    expect(await screen.findByText('Translated Yearly')).toBeInTheDocument()
-    expect(screen.getByText('Translated yearly support')).toBeInTheDocument()
-    expect(screen.getByText('Translated Popular')).toBeInTheDocument()
-    expect(screen.getByText('/translated-year')).toBeInTheDocument()
-    expect(screen.getByText('Translated yearly note.')).toBeInTheDocument()
-    expect(screen.getByText('Translated Lifetime')).toBeInTheDocument()
-    expect(screen.getByText('Translated lifetime updates')).toBeInTheDocument()
-    expect(
-      screen.getByText((_, element) => element?.textContent === ' translated-once')
-    ).toBeInTheDocument()
-    expect(screen.getByText('Translated lifetime note.')).toBeInTheDocument()
   })
 })

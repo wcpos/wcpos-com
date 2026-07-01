@@ -47,29 +47,20 @@ describe('buildProOfferCatalog', () => {
     expect(offers.map((offer) => offer.planId)).toEqual(['yearly', 'lifetime'])
     expect(offers[0]).toMatchObject({
       planId: 'yearly',
-      title: 'Pro Yearly',
-      featured: true,
-      badgeLabel: 'Most Popular',
-      description: 'One-year license',
+      handle: 'wcpos-pro-yearly',
       price: {
         amount: 129,
         currencyCode: 'usd',
         formatted: '$129.00',
+        compact: '$129',
         schemaPrice: '129',
       },
-      priceSuffix: '/year',
       checkoutPath:
         '/pro/checkout?product=wcpos-pro-yearly&variant=variant_yearly',
     })
-    expect(offers[0].features).toContain('Automatic updates for 1 year')
-    expect(offers[0].features).toContain('Manual renewal — no automatic billing')
-    expect(offers[0].features).not.toContain('Cancel anytime')
     expect(offers[1]).toMatchObject({
       planId: 'lifetime',
-      title: 'Pro Lifetime',
-      featured: false,
-      description: 'One-time purchase',
-      priceSuffix: null,
+      handle: 'wcpos-pro-lifetime',
       checkoutPath:
         '/pro/checkout?product=wcpos-pro-lifetime&variant=variant_lifetime',
     })

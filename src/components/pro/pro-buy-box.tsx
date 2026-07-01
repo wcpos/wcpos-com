@@ -1,93 +1,89 @@
 'use client'
 
-import { useRef, useState } from 'react'
-import { Bitcoin, CreditCard, Shield } from 'lucide-react'
+import { useRef, useState, type ReactNode } from 'react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Link } from '@/i18n/navigation'
+import { Card } from '@/components/ui/card'
 import { TrackedLocaleLink } from '@/components/analytics/tracked-locale-link'
-import type { ProCheckoutVariant } from '@/services/core/analytics/posthog-service'
 import type { PlanId } from '@/lib/plans'
+import type { ProBuyBoxOption } from './pro-buy-box-options'
 
 /**
  * ProBuyBox — the purchase decision on /pro, product-page style.
  *
  * The feature list lives outside this box and appears exactly once; the
  * yearly/lifetime choice is deliberately reduced to price + term facts
- * (see docs/adr — pricing must never repeat the feature checklist per
- * plan). Selection is client state; prices arrive resolved as strings so
- * the box streams in as one unit behind Suspense.
+ * (pricing must never repeat the feature checklist per plan). Selection is
+ * client state; copy and analytics payloads arrive resolved from the
+ * server, and the static footer is server-rendered via the `footer` slot
+ * so only the term choice hydrates.
  */
-export interface ProBuyBoxOption {
-  planId: PlanId
-  handle: string
-  title: string
-  subtitle: string
-  badgeLabel: string | null
-  priceText: string
-  priceSuffix: string
-  ctaNote: string
-  checkoutHref: string
-}
-
 interface ProBuyBoxProps {
   options: ProBuyBoxOption[]
   ctaLabel: string
-  experimentVariant: ProCheckoutVariant
+  heading: string
+  subheading: string
+  termAriaLabel: string
+  /** Server-rendered static content (guarantee, payment methods, proof). */
+  footer?: ReactNode
 }
 
 export function ProBuyBox({
   options,
   ctaLabel,
-  experimentVariant,
+  heading,
+  subheading,
+  termAriaLabel,
+  footer,
 }: ProBuyBoxProps) {
   const [selected, setSelected] = useState<PlanId>(options[0].planId)
-  const optionRefs = useRef<Array<HTMLButtonElement | null>>([])
-  const current = options.find((option) => option.planId === selected)!
+  const radioRefs = useRef<Array<HTMLButtonElement | null>>([])
+  // Fall back to the first option if a revalidated payload dropped the
+  // selected plan — client state can outlive the server-provided options.
+  const current =
+    options.find((option) => option.planId === selected) ?? options[0]
+
+  function onRadioKeyDown(event: React.KeyboardEvent) {
+    const direction =
+      event.key === 'ArrowDown' || event.key === 'ArrowRight'
+        ? 1
+        : event.key === 'ArrowUp' || event.key === 'ArrowLeft'
+          ? -1
+          : 0
+    if (direction === 0) return
+    event.preventDefault()
+    const index = options.findIndex(
+      (option) => option.planId === current.planId
+    )
+    const next = (index + direction + options.length) % options.length
+    setSelected(options[next].planId)
+    radioRefs.current[next]?.focus()
+  }
 
   return (
-    <div
-      data-testid="pro-buy-box"
-      className="rounded-2xl border bg-card p-6 shadow-sm"
-    >
-      <p className="text-lg font-semibold mb-1">Get Pro</p>
-      <p className="text-sm text-muted-foreground mb-5">
-        One license, all features. Just pick how long you want updates.
-      </p>
+    <Card elevated data-testid="pro-buy-box" className="p-6">
+      <p className="text-lg font-semibold mb-1">{heading}</p>
+      <p className="text-sm text-muted-foreground mb-5">{subheading}</p>
 
-      <div className="space-y-3" role="radiogroup" aria-label="License term">
+      <div
+        className="space-y-3"
+        role="radiogroup"
+        aria-label={termAriaLabel}
+        onKeyDown={onRadioKeyDown}
+      >
         {options.map((option, index) => {
-          const isSelected = option.planId === selected
-          const moveSelection = (direction: 1 | -1) => {
-            const nextIndex =
-              (index + direction + options.length) % options.length
-            const nextOption = options[nextIndex]
-            setSelected(nextOption.planId)
-            optionRefs.current[nextIndex]?.focus()
-          }
-
+          const isSelected = option.planId === current.planId
           return (
             <button
               key={option.planId}
               ref={(element) => {
-                optionRefs.current[index] = element
+                radioRefs.current[index] = element
               }}
               type="button"
               role="radio"
               aria-checked={isSelected}
               tabIndex={isSelected ? 0 : -1}
               onClick={() => setSelected(option.planId)}
-              onKeyDown={(event) => {
-                if (event.key === 'ArrowDown') {
-                  event.preventDefault()
-                  moveSelection(1)
-                }
-
-                if (event.key === 'ArrowUp') {
-                  event.preventDefault()
-                  moveSelection(-1)
-                }
-              }}
               className={`w-full flex items-center gap-3 rounded-lg border p-4 text-left transition-colors ${
                 isSelected
                   ? 'border-primary ring-1 ring-primary bg-primary/5'
@@ -126,12 +122,7 @@ export function ProBuyBox({
         <TrackedLocaleLink
           href={current.checkoutHref}
           eventName="click_start_checkout"
-          eventProperties={{
-            experiment: 'pro_checkout_v1',
-            variant: experimentVariant,
-            product: current.handle,
-            plan: current.planId,
-          }}
+          eventProperties={current.eventProperties}
         >
           {ctaLabel}
         </TrackedLocaleLink>
@@ -140,28 +131,7 @@ export function ProBuyBox({
         {current.ctaNote}
       </p>
 
-      <div className="mt-5 space-y-2 border-t pt-4 text-sm text-muted-foreground">
-        <p className="flex items-center gap-2">
-          <Shield className="h-4 w-4 shrink-0" aria-hidden />
-          <span>
-            <Link href="/refunds" className="underline underline-offset-4">
-              14-day money-back guarantee
-            </Link>
-            , no reason required
-          </span>
-        </p>
-        <p className="flex items-center gap-2">
-          <CreditCard className="h-4 w-4 shrink-0" aria-hidden />
-          <span className="flex items-center gap-1">
-            Card, PayPal or <Bitcoin className="h-4 w-4" aria-hidden />
-            Bitcoin
-          </span>
-        </p>
-      </div>
-
-      <p className="mt-4 text-center text-xs text-muted-foreground">
-        5,000+ active stores · Yearly credits toward Lifetime
-      </p>
-    </div>
+      {footer}
+    </Card>
   )
 }

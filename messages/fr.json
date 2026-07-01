@@ -62,6 +62,9 @@
       }
     },
     "buyBox": {
+      "heading": "Passez à Pro",
+      "subheading": "Une licence, toutes les fonctionnalités. Choisissez simplement la durée des mises à jour.",
+      "termAriaLabel": "Durée de la licence",
       "yearly": {
         "title": "Annuel",
         "subtitle": "Mises à jour et support pendant 1 an",
@@ -73,8 +76,15 @@
         "title": "À vie",
         "subtitle": "Mises à jour pour toujours",
         "priceSuffix": " une fois",
-        "ctaNote": "Environ 3 ans d'Annuel — puis $0 pour toujours."
-      }
+        "ctaNote": "Environ {years} ans d'Annuel — puis $0 pour toujours.",
+        "ctaNoteSimple": "Payez une fois — mises à jour pour toujours."
+      },
+      "guaranteeLink": "Garantie satisfait ou remboursé de 14 jours",
+      "guaranteeSuffix": ", sans justification",
+      "payments": "Carte, PayPal ou Bitcoin",
+      "proof": "Plus de 5 000 boutiques actives · L'Annuel est crédité vers l'À vie",
+      "unavailableTitle": "Tarifs temporairement indisponibles",
+      "unavailableDescription": "Les informations tarifaires sont actuellement indisponibles. Veuillez réessayer plus tard."
     },
     "faq": {
       "title": "Frequently Asked Questions",
