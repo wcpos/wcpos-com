@@ -83,7 +83,10 @@ export function ProBuyBox({
               role="radio"
               aria-checked={isSelected}
               tabIndex={isSelected ? 0 : -1}
-              onClick={() => setSelected(option.planId)}
+              onClick={() => {
+                setSelected(option.planId)
+                radioRefs.current[index]?.focus()
+              }}
               className={`w-full flex items-center gap-3 rounded-lg border p-4 text-left transition-colors ${
                 isSelected
                   ? 'border-primary ring-1 ring-primary bg-primary/5'

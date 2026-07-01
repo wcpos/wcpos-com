@@ -97,11 +97,11 @@ describe('ProBuyBox', () => {
   it('switches CTA href and note when the other term is selected', () => {
     renderBuyBox()
 
-    fireEvent.click(screen.getByRole('radio', { name: /Lifetime/ }))
+    const lifetime = screen.getByRole('radio', { name: /Lifetime/ })
+    fireEvent.click(lifetime)
 
-    expect(
-      screen.getByRole('radio', { name: /Lifetime/ })
-    ).toHaveAttribute('aria-checked', 'true')
+    expect(lifetime).toHaveAttribute('aria-checked', 'true')
+    expect(lifetime).toHaveFocus()
     const cta = screen.getByRole('link', { name: 'Get Started' })
     expect(cta.getAttribute('href')).toContain('product=wcpos-pro-lifetime')
     expect(
