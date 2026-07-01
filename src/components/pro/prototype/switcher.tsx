@@ -6,37 +6,41 @@
  */
 'use client'
 
-import { useCallback, useEffect } from 'react'
+import { useCallback, useEffect, type ReactNode } from 'react'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 
-export const PROTOTYPE_VARIANTS = [
-  { key: 'current', label: 'Current production design' },
-  { key: 'a', label: 'Static-first cards' },
-  { key: 'b', label: 'Comparison panel' },
-  { key: 'c', label: 'One product, pick a term' },
-] as const
+export interface PrototypeVariantOption {
+  key: string
+  label: string
+}
 
-export function PrototypeSwitcher({ current }: { current: string }) {
+export function PrototypeSwitcher({
+  variants,
+  current,
+  children,
+}: {
+  variants: readonly PrototypeVariantOption[]
+  current: string
+  children?: ReactNode
+}) {
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
 
   const index = Math.max(
     0,
-    PROTOTYPE_VARIANTS.findIndex((variant) => variant.key === current)
+    variants.findIndex((variant) => variant.key === current)
   )
 
   const go = useCallback(
     (step: number) => {
       const next =
-        PROTOTYPE_VARIANTS[
-          (index + step + PROTOTYPE_VARIANTS.length) % PROTOTYPE_VARIANTS.length
-        ]
+        variants[(index + step + variants.length) % variants.length]
       const params = new URLSearchParams(searchParams.toString())
       params.set('variant', next.key)
       router.replace(`${pathname}?${params.toString()}`, { scroll: false })
     },
-    [index, pathname, router, searchParams]
+    [index, pathname, router, searchParams, variants]
   )
 
   useEffect(() => {
@@ -57,7 +61,7 @@ export function PrototypeSwitcher({ current }: { current: string }) {
     return () => window.removeEventListener('keydown', onKeyDown)
   }, [go])
 
-  const label = PROTOTYPE_VARIANTS[index]
+  const label = variants[index]
 
   return (
     <div className="fixed bottom-4 left-1/2 z-50 -translate-x-1/2 flex items-center gap-3 rounded-full bg-zinc-900 px-4 py-2 text-sm text-white shadow-xl">
@@ -80,6 +84,7 @@ export function PrototypeSwitcher({ current }: { current: string }) {
       >
         →
       </button>
+      {children}
     </div>
   )
 }

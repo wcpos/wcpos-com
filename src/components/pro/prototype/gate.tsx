@@ -16,6 +16,13 @@ import { PrototypeSwitcher } from './switcher'
 
 const DEFAULT_DELAY_MS = 1500
 
+const PRICING_VARIANTS = [
+  { key: 'current', label: 'Current production design' },
+  { key: 'a', label: 'Static-first cards' },
+  { key: 'b', label: 'Comparison panel' },
+  { key: 'c', label: 'One product, pick a term' },
+] as const
+
 export async function PricingPrototypeGate({
   searchParams,
   production,
@@ -47,7 +54,7 @@ export async function PricingPrototypeGate({
       ) : (
         production
       )}
-      <PrototypeSwitcher current={variant} />
+      <PrototypeSwitcher variants={PRICING_VARIANTS} current={variant} />
     </>
   )
 }
