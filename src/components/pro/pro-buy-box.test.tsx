@@ -96,6 +96,35 @@ describe('ProBuyBox', () => {
     ).not.toBeInTheDocument()
   })
 
+  it('moves selection with arrow keys and keeps only the selected row tabbable', () => {
+    render(
+      <ProBuyBox
+        options={options}
+        ctaLabel="Get Started"
+        experimentVariant="control"
+      />
+    )
+
+    const yearly = screen.getByRole('radio', { name: /Yearly/ })
+    const lifetime = screen.getByRole('radio', { name: /Lifetime/ })
+
+    expect(yearly).toHaveAttribute('tabIndex', '0')
+    expect(lifetime).toHaveAttribute('tabIndex', '-1')
+
+    yearly.focus()
+    fireEvent.keyDown(yearly, { key: 'ArrowDown' })
+
+    expect(lifetime).toHaveAttribute('aria-checked', 'true')
+    expect(yearly).toHaveAttribute('tabIndex', '-1')
+    expect(lifetime).toHaveAttribute('tabIndex', '0')
+    expect(lifetime).toHaveFocus()
+
+    fireEvent.keyDown(lifetime, { key: 'ArrowUp' })
+
+    expect(yearly).toHaveAttribute('aria-checked', 'true')
+    expect(yearly).toHaveFocus()
+  })
+
   it('tracks the checkout click with the selected plan', () => {
     render(
       <ProBuyBox

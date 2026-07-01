@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { Bitcoin, CreditCard, Shield } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -42,6 +42,7 @@ export function ProBuyBox({
   experimentVariant,
 }: ProBuyBoxProps) {
   const [selected, setSelected] = useState<PlanId>(options[0].planId)
+  const optionRefs = useRef<Array<HTMLButtonElement | null>>([])
   const current = options.find((option) => option.planId === selected)!
 
   return (
@@ -55,15 +56,38 @@ export function ProBuyBox({
       </p>
 
       <div className="space-y-3" role="radiogroup" aria-label="License term">
-        {options.map((option) => {
+        {options.map((option, index) => {
           const isSelected = option.planId === selected
+          const moveSelection = (direction: 1 | -1) => {
+            const nextIndex =
+              (index + direction + options.length) % options.length
+            const nextOption = options[nextIndex]
+            setSelected(nextOption.planId)
+            optionRefs.current[nextIndex]?.focus()
+          }
+
           return (
             <button
               key={option.planId}
+              ref={(element) => {
+                optionRefs.current[index] = element
+              }}
               type="button"
               role="radio"
               aria-checked={isSelected}
+              tabIndex={isSelected ? 0 : -1}
               onClick={() => setSelected(option.planId)}
+              onKeyDown={(event) => {
+                if (event.key === 'ArrowDown') {
+                  event.preventDefault()
+                  moveSelection(1)
+                }
+
+                if (event.key === 'ArrowUp') {
+                  event.preventDefault()
+                  moveSelection(-1)
+                }
+              }}
               className={`w-full flex items-center gap-3 rounded-lg border p-4 text-left transition-colors ${
                 isSelected
                   ? 'border-primary ring-1 ring-primary bg-primary/5'
