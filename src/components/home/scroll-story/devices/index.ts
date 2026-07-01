@@ -1,0 +1,7 @@
+export { PosScreen } from './pos-screen'
+export { DeviceTablet } from './tablet'
+export { DevicePhone } from './phone'
+export { DeviceLaptop } from './laptop'
+export { DeviceTerminal } from './terminal'
+export { DevicePrinter } from './printer'
+export { DeviceScanner } from './scanner'
