@@ -9,12 +9,6 @@ vi.hoisted(() => {
   process.env.NEXT_PUBLIC_BTCPAY_ENABLED = 'true'
 })
 
-vi.mock('@/components/ui/tabs', () => ({
-  Tabs: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
-  TabsList: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
-  TabsTrigger: ({ children }: { children: React.ReactNode }) => <button type="button">{children}</button>,
-  TabsContent: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
-}))
 // Mock the locale-aware Link as a simple anchor
 vi.mock('@/i18n/navigation', () => ({
   Link: ({
@@ -23,10 +17,10 @@ vi.mock('@/i18n/navigation', () => ({
     ...props
   }: {
     children: React.ReactNode
-    href: string
+    href: string | { pathname: string }
     [key: string]: unknown
   }) => (
-    <a href={href} {...props}>
+    <a href={typeof href === 'string' ? href : href.pathname} {...props}>
       {children}
     </a>
   ),
@@ -34,10 +28,18 @@ vi.mock('@/i18n/navigation', () => ({
 
 // Mock payment providers to avoid loading Stripe/PayPal SDKs
 vi.mock('./stripe-provider', () => ({
-  StripeProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+  StripeProvider: ({ children }: { children: React.ReactNode }) => (
+    <>{children}</>
+  ),
 }))
 vi.mock('./paypal-provider', () => ({
-  PayPalProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+  PayPalProvider: ({ children }: { children: React.ReactNode }) => (
+    <>{children}</>
+  ),
+}))
+// Wallets talk to the Stripe SDK directly — inert in unit tests.
+vi.mock('./checkout/express-checkout', () => ({
+  ExpressCheckoutRow: () => null,
 }))
 vi.mock('./checkout-form', () => ({
   CheckoutForm: ({
@@ -48,7 +50,10 @@ vi.mock('./checkout-form', () => ({
     onFailure: (failure: unknown) => void
   }) => (
     <div>
-      <button data-testid="mock-pay-button" onClick={() => onSuccess('order-abc-123')}>
+      <button
+        data-testid="mock-pay-button"
+        onClick={() => onSuccess('order-abc-123')}
+      >
         Pay
       </button>
       <button
@@ -114,7 +119,10 @@ function buildCheckoutCart({
   quantity = 1,
   cartTotal = 129,
   paymentSessions = [
-    { provider_id: 'pp_stripe_stripe', data: { client_secret: 'pi_test_secret' } },
+    {
+      provider_id: 'pp_stripe_stripe',
+      data: { client_secret: 'pi_test_secret' },
+    },
   ],
   legacyPaymentSessions,
   legacyPaymentSession,
@@ -125,8 +133,14 @@ function buildCheckoutCart({
   omitItemTotal?: boolean
   quantity?: number
   cartTotal?: number
-  paymentSessions?: Array<{ provider_id: string; data: Record<string, unknown> }>
-  legacyPaymentSessions?: Array<{ provider_id: string; data: Record<string, unknown> }>
+  paymentSessions?: Array<{
+    provider_id: string
+    data: Record<string, unknown>
+  }>
+  legacyPaymentSessions?: Array<{
+    provider_id: string
+    data: Record<string, unknown>
+  }>
   legacyPaymentSession?: { provider_id: string; data: Record<string, unknown> }
 } = {}) {
   return {
@@ -146,14 +160,14 @@ function buildCheckoutCart({
       id: 'pay-col-123',
       payment_sessions: paymentSessions,
     },
-    ...(legacyPaymentSessions ? { payment_sessions: legacyPaymentSessions } : {}),
+    ...(legacyPaymentSessions
+      ? { payment_sessions: legacyPaymentSessions }
+      : {}),
     ...(legacyPaymentSession ? { payment_session: legacyPaymentSession } : {}),
   }
 }
 
-function mockSuccessfulCheckoutInit(
-  cart = buildCheckoutCart()
-) {
+function mockSuccessfulCheckoutInit(cart = buildCheckoutCart()) {
   // 1. POST /api/store/cart
   mockFetch.mockResolvedValueOnce({
     ok: true,
@@ -175,43 +189,82 @@ function mockSuccessfulCheckoutInit(
   })
 }
 
+function renderSignedIn(props: Record<string, unknown> = {}) {
+  return render(
+    <CheckoutClient
+      customerEmail="user@example.com"
+      selectedOfferHandle="wcpos-pro-yearly"
+      checkoutPath="/pro/checkout?product=wcpos-pro-yearly"
+      experimentVariant="control"
+      {...props}
+    />
+  )
+}
+
+/**
+ * Fills the billing step and continues to payment. Queues the billing
+ * PATCH response itself (the 4th fetch after the 3 init calls).
+ */
+async function completeBillingStep() {
+  await waitFor(() => {
+    expect(screen.getByTestId('billing-step-form')).toBeInTheDocument()
+  })
+
+  fireEvent.change(screen.getByLabelText('First name'), {
+    target: { value: 'Ada' },
+  })
+  fireEvent.change(screen.getByLabelText('Last name'), {
+    target: { value: 'Lovelace' },
+  })
+  fireEvent.change(screen.getByLabelText('Address'), {
+    target: { value: '42 Wallaby Way' },
+  })
+  fireEvent.change(screen.getByLabelText('City'), {
+    target: { value: 'Sydney' },
+  })
+  fireEvent.change(screen.getByLabelText('Postal code'), {
+    target: { value: '2000' },
+  })
+
+  mockFetch.mockResolvedValueOnce({ ok: true, json: async () => ({}) })
+  fireEvent.click(screen.getByRole('button', { name: /continue to payment/i }))
+
+  await waitFor(() => {
+    expect(screen.getByTestId('checkout-step-3')).toHaveAttribute(
+      'data-step-state',
+      'active'
+    )
+  })
+}
+
 describe('CheckoutClient', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     sessionStorage.clear()
   })
 
-  it('shows loading state initially', () => {
-    mockFetch.mockReturnValue(new Promise(() => {}))
-    render(
-      <CheckoutClient
-        customerEmail="user@example.com"
-        selectedOfferHandle="wcpos-pro-yearly"
-        experimentVariant="control"
-      />
-    )
-    expect(screen.getByText('Preparing checkout...')).toBeInTheDocument()
-    expect(document.querySelector('.animate-spin')).not.toBeInTheDocument()
-  })
-
-  it('renders order summary after checkout initialization', async () => {
+  it('starts at the billing step for signed-in customers with the account collapsed', async () => {
     mockSuccessfulCheckoutInit()
-    // Extra call for PATCH email association
-    mockFetch.mockResolvedValueOnce({ ok: true, json: async () => ({}) })
-    render(
-      <CheckoutClient
-        customerEmail="user@example.com"
-        selectedOfferHandle="wcpos-pro-yearly"
-        experimentVariant="control"
-      />
+    renderSignedIn()
+
+    expect(screen.getByTestId('checkout-step-1')).toHaveAttribute(
+      'data-step-state',
+      'done'
     )
+    expect(screen.getByText('user@example.com')).toBeInTheDocument()
+    expect(screen.getByTestId('checkout-step-2')).toHaveAttribute(
+      'data-step-state',
+      'active'
+    )
+    expect(screen.getByTestId('billing-step-form')).toBeInTheDocument()
 
+    // Cart initializes in the background while billing is on screen.
     await waitFor(() => {
-      expect(screen.getByText('Order Summary')).toBeInTheDocument()
-      expect(screen.getByText('WCPOS Pro Lifetime')).toBeInTheDocument()
-      expect(screen.getByText('Total')).toBeInTheDocument()
+      expect(mockFetch).toHaveBeenCalledWith(
+        '/api/store/cart',
+        expect.objectContaining({ method: 'POST' })
+      )
     })
-
     expect(mockFetch).toHaveBeenNthCalledWith(
       2,
       '/api/store/cart/line-items',
@@ -226,15 +279,190 @@ describe('CheckoutClient', () => {
     )
   })
 
-  it('shows "Back to pricing" link when cart creation fails', async () => {
-    mockFetch.mockResolvedValueOnce({ ok: false, status: 500 })
+  it('starts at the account step when signed out and creates the account inline', async () => {
     render(
       <CheckoutClient
-        customerEmail="user@example.com"
         selectedOfferHandle="wcpos-pro-yearly"
+        checkoutPath="/pro/checkout?product=wcpos-pro-yearly"
         experimentVariant="control"
       />
     )
+
+    expect(screen.getByTestId('checkout-step-1')).toHaveAttribute(
+      'data-step-state',
+      'active'
+    )
+    expect(screen.getByTestId('account-step-form')).toBeInTheDocument()
+    // No cart is created before we know who is buying.
+    expect(mockFetch).not.toHaveBeenCalled()
+
+    fireEvent.change(screen.getByLabelText('Email'), {
+      target: { value: 'new@example.com' },
+    })
+    fireEvent.change(screen.getByLabelText('Password'), {
+      target: { value: 'hunter2hunter2' },
+    })
+
+    // 1. register succeeds; then background cart init fires (3 calls).
+    mockFetch.mockResolvedValueOnce({ ok: true, json: async () => ({}) })
+    mockSuccessfulCheckoutInit()
+    fireEvent.click(
+      screen.getByRole('button', { name: /create account & continue/i })
+    )
+
+    await waitFor(() => {
+      expect(screen.getByTestId('checkout-step-2')).toHaveAttribute(
+        'data-step-state',
+        'active'
+      )
+    })
+    expect(screen.getByText('new@example.com')).toBeInTheDocument()
+    expect(mockFetch).toHaveBeenNthCalledWith(
+      1,
+      '/api/auth/register',
+      expect.objectContaining({ method: 'POST' })
+    )
+    await waitFor(() => {
+      expect(mockFetch).toHaveBeenCalledWith(
+        '/api/store/cart',
+        expect.objectContaining({ method: 'POST' })
+      )
+    })
+  })
+
+  it('flips to sign-in mode when the account already exists', async () => {
+    render(
+      <CheckoutClient
+        selectedOfferHandle="wcpos-pro-yearly"
+        checkoutPath="/pro/checkout?product=wcpos-pro-yearly"
+        experimentVariant="control"
+      />
+    )
+
+    fireEvent.change(screen.getByLabelText('Email'), {
+      target: { value: 'existing@example.com' },
+    })
+    fireEvent.change(screen.getByLabelText('Password'), {
+      target: { value: 'wrong-guess-1' },
+    })
+
+    // register -> 409 ACCOUNT_EXISTS
+    mockFetch.mockResolvedValueOnce({
+      ok: false,
+      status: 409,
+      json: async () => ({ error: 'Account exists', code: 'ACCOUNT_EXISTS' }),
+    })
+    fireEvent.click(
+      screen.getByRole('button', { name: /create account & continue/i })
+    )
+
+    await waitFor(() => {
+      expect(screen.getByTestId('account-exists-notice')).toBeInTheDocument()
+    })
+
+    // sign-in succeeds; background cart init follows
+    mockFetch.mockResolvedValueOnce({ ok: true, json: async () => ({}) })
+    mockSuccessfulCheckoutInit()
+    fireEvent.click(
+      screen.getByRole('button', { name: /sign in & continue/i })
+    )
+
+    await waitFor(() => {
+      expect(screen.getByTestId('checkout-step-2')).toHaveAttribute(
+        'data-step-state',
+        'active'
+      )
+    })
+    expect(mockFetch).toHaveBeenNthCalledWith(
+      2,
+      '/api/auth/login',
+      expect.objectContaining({ method: 'POST' })
+    )
+  })
+
+  it('persists the billing address to the cart and collapses the step', async () => {
+    mockSuccessfulCheckoutInit()
+    renderSignedIn()
+
+    await completeBillingStep()
+
+    // The 4th call is the billing PATCH.
+    expect(mockFetch).toHaveBeenNthCalledWith(
+      4,
+      '/api/store/cart',
+      expect.objectContaining({
+        method: 'PATCH',
+        body: JSON.stringify({
+          cartId: 'cart-123',
+          billing_address: {
+            first_name: 'Ada',
+            last_name: 'Lovelace',
+            address_1: '42 Wallaby Way',
+            city: 'Sydney',
+            postal_code: '2000',
+            country_code: 'us',
+          },
+        }),
+      })
+    )
+
+    // Collapsed summary line with Edit
+    expect(screen.getByTestId('checkout-step-2')).toHaveAttribute(
+      'data-step-state',
+      'done'
+    )
+    expect(screen.getByText('42 Wallaby Way, Sydney 2000, US')).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Edit' })).toBeInTheDocument()
+  })
+
+  it('renders the payment method rows with card selected by default', async () => {
+    mockSuccessfulCheckoutInit()
+    renderSignedIn()
+    await completeBillingStep()
+
+    expect(screen.getByTestId('payment-method-stripe')).toHaveAttribute(
+      'aria-checked',
+      'true'
+    )
+    expect(screen.getByTestId('payment-method-paypal')).toHaveAttribute(
+      'aria-checked',
+      'false'
+    )
+    expect(screen.getByTestId('payment-method-btcpay')).toHaveAttribute(
+      'aria-checked',
+      'false'
+    )
+    expect(screen.getByTestId('mock-pay-button')).toBeInTheDocument()
+  })
+
+  it('renders the order summary from the cart', async () => {
+    mockSuccessfulCheckoutInit()
+    renderSignedIn()
+
+    await waitFor(() => {
+      expect(screen.getByText('WCPOS Pro Lifetime')).toBeInTheDocument()
+      expect(screen.getByText('Total')).toBeInTheDocument()
+    })
+  })
+
+  it('shows the static offer summary before the cart exists', () => {
+    mockFetch.mockReturnValue(new Promise(() => {}))
+    renderSignedIn({
+      offerSummary: {
+        title: 'WooCommerce POS Pro — Yearly',
+        priceFormatted: '$129.00',
+      },
+    })
+
+    expect(
+      screen.getByText('WooCommerce POS Pro — Yearly')
+    ).toBeInTheDocument()
+    expect(screen.getByText('$129.00')).toBeInTheDocument()
+  })
+
+  it('surfaces a cart-init failure with a back-to-pricing link', async () => {
+    mockFetch.mockResolvedValueOnce({ ok: false, status: 500 })
+    renderSignedIn()
 
     await waitFor(() => {
       const backLink = screen.getByRole('link', { name: /back to pricing/i })
@@ -244,80 +472,34 @@ describe('CheckoutClient', () => {
 
   it('shows success state with "Go to Licenses" link after payment', async () => {
     mockSuccessfulCheckoutInit()
-    mockFetch.mockResolvedValueOnce({ ok: true, json: async () => ({}) })
-    render(
-      <CheckoutClient
-        customerEmail="user@example.com"
-        selectedOfferHandle="wcpos-pro-yearly"
-        experimentVariant="control"
-      />
-    )
-
-    await waitFor(() => {
-      expect(screen.getByTestId('mock-pay-button')).toBeInTheDocument()
-    })
+    renderSignedIn()
+    await completeBillingStep()
 
     fireEvent.click(screen.getByTestId('mock-pay-button'))
 
     await waitFor(() => {
-      expect(screen.getByText('Thank you for your purchase!')).toBeInTheDocument()
+      expect(
+        screen.getByText('Thank you for your purchase!')
+      ).toBeInTheDocument()
       expect(screen.getByText('Order ID: order-abc-123')).toBeInTheDocument()
     })
 
     const licensesLink = screen.getByRole('link', { name: /go to licenses/i })
     expect(licensesLink).toHaveAttribute('href', '/account/licenses')
+    const homeLink = screen.getByRole('link', { name: /return to home/i })
+    expect(homeLink).toHaveAttribute('href', '/')
   })
 
-  it('shows "Return to Home" link in success state', async () => {
-    mockSuccessfulCheckoutInit()
-    mockFetch.mockResolvedValueOnce({ ok: true, json: async () => ({}) })
+  it('shows the no-product error when no offer is selected', async () => {
     render(
       <CheckoutClient
-        customerEmail="user@example.com"
-        selectedOfferHandle="wcpos-pro-yearly"
+        checkoutPath="/pro/checkout"
         experimentVariant="control"
       />
     )
 
     await waitFor(() => {
-      expect(screen.getByTestId('mock-pay-button')).toBeInTheDocument()
-    })
-
-    fireEvent.click(screen.getByTestId('mock-pay-button'))
-
-    await waitFor(() => {
-      const homeLink = screen.getByRole('link', { name: /return to home/i })
-      expect(homeLink).toHaveAttribute('href', '/')
-    })
-  })
-
-  it('pre-fills email when customerEmail is provided', async () => {
-    mockSuccessfulCheckoutInit()
-    // Extra call for PATCH email association
-    mockFetch.mockResolvedValueOnce({ ok: true, json: async () => ({}) })
-
-    render(
-      <CheckoutClient
-        customerEmail="user@example.com"
-        selectedOfferHandle="wcpos-pro-yearly"
-        experimentVariant="control"
-      />
-    )
-
-    await waitFor(() => {
-      const emailInput = screen.getByLabelText('Email address') as HTMLInputElement
-      expect(emailInput.value).toBe('user@example.com')
-      expect(emailInput).toHaveAttribute('readOnly')
-    })
-  })
-
-  it('shows sign-in message when customerEmail is missing', async () => {
-    render(<CheckoutClient experimentVariant="control" />)
-
-    await waitFor(() => {
-      expect(
-        screen.getByText('Please sign in to continue checkout.')
-      ).toBeInTheDocument()
+      expect(screen.getByText('No product selected')).toBeInTheDocument()
     })
   })
 
@@ -330,15 +512,7 @@ describe('CheckoutClient', () => {
         cartTotal: 399,
       })
     )
-    mockFetch.mockResolvedValueOnce({ ok: true, json: async () => ({}) })
-
-    render(
-      <CheckoutClient
-        customerEmail="user@example.com"
-        selectedOfferHandle="wcpos-pro-yearly"
-        experimentVariant="control"
-      />
-    )
+    renderSignedIn()
 
     await waitFor(() => {
       expect(screen.getByText('WCPOS Pro Lifetime')).toBeInTheDocument()
@@ -346,24 +520,29 @@ describe('CheckoutClient', () => {
     })
   })
 
-  it('passes paypal session order id to PayPalButton when present in cart sessions', async () => {
-    mockSuccessfulCheckoutInit(
-      buildCheckoutCart({
-        paymentSessions: [
-          { provider_id: 'pp_stripe_stripe', data: { client_secret: 'pi_test_secret' } },
-          { provider_id: 'pp_paypal_paypal', data: { id: 'PAYPAL_ORDER_123' } },
-        ],
-      })
-    )
-    mockFetch.mockResolvedValueOnce({ ok: true, json: async () => ({}) })
+  it('passes the paypal session order id to PayPalButton when selected', async () => {
+    const cartWithPaypal = buildCheckoutCart({
+      paymentSessions: [
+        {
+          provider_id: 'pp_stripe_stripe',
+          data: { client_secret: 'pi_test_secret' },
+        },
+        { provider_id: 'pp_paypal_paypal', data: { id: 'PAYPAL_ORDER_123' } },
+      ],
+    })
+    mockSuccessfulCheckoutInit(cartWithPaypal)
+    renderSignedIn()
+    await completeBillingStep()
 
-    render(
-      <CheckoutClient
-        customerEmail="user@example.com"
-        selectedOfferHandle="wcpos-pro-yearly"
-        experimentVariant="control"
-      />
-    )
+    // Selecting PayPal re-creates the session; queue the switch response.
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        cart: cartWithPaypal,
+        paymentCollectionId: 'pay-col-123',
+      }),
+    })
+    fireEvent.click(screen.getByTestId('payment-method-paypal'))
 
     await waitFor(() => {
       expect(renderPayPalButton).toHaveBeenCalledWith(
@@ -375,25 +554,32 @@ describe('CheckoutClient', () => {
   })
 
   it('falls back to legacy cart payment sessions when collection lacks paypal session', async () => {
-    mockSuccessfulCheckoutInit(
-      buildCheckoutCart({
-        paymentSessions: [
-          { provider_id: 'pp_stripe_stripe', data: { client_secret: 'pi_test_secret' } },
-        ],
-        legacyPaymentSessions: [
-          { provider_id: 'pp_paypal_paypal', data: { id: 'PAYPAL_ORDER_FALLBACK' } },
-        ],
-      })
-    )
-    mockFetch.mockResolvedValueOnce({ ok: true, json: async () => ({}) })
+    const legacyCart = buildCheckoutCart({
+      paymentSessions: [
+        {
+          provider_id: 'pp_stripe_stripe',
+          data: { client_secret: 'pi_test_secret' },
+        },
+      ],
+      legacyPaymentSessions: [
+        {
+          provider_id: 'pp_paypal_paypal',
+          data: { id: 'PAYPAL_ORDER_FALLBACK' },
+        },
+      ],
+    })
+    mockSuccessfulCheckoutInit(legacyCart)
+    renderSignedIn()
+    await completeBillingStep()
 
-    render(
-      <CheckoutClient
-        customerEmail="user@example.com"
-        selectedOfferHandle="wcpos-pro-yearly"
-        experimentVariant="control"
-      />
-    )
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        cart: legacyCart,
+        paymentCollectionId: 'pay-col-123',
+      }),
+    })
+    fireEvent.click(screen.getByTestId('payment-method-paypal'))
 
     await waitFor(() => {
       expect(renderPayPalButton).toHaveBeenCalledWith(
@@ -404,20 +590,61 @@ describe('CheckoutClient', () => {
     })
   })
 
-  it('shows the recovery notice and preserves the cart when payment fails', async () => {
-    mockSuccessfulCheckoutInit()
-    mockFetch.mockResolvedValueOnce({ ok: true, json: async () => ({}) })
-    render(
-      <CheckoutClient
-        customerEmail="user@example.com"
-        selectedOfferHandle="wcpos-pro-yearly"
-        experimentVariant="control"
-      />
-    )
+  it('passes the BTCPay checkout link to BTCPayButton when selected', async () => {
+    const cartWithBtcpay = buildCheckoutCart({
+      paymentSessions: [
+        {
+          provider_id: 'pp_stripe_stripe',
+          data: { client_secret: 'pi_test_secret' },
+        },
+        {
+          provider_id: 'pp_btcpay_btcpay',
+          data: { checkoutLink: 'https://btcpay.wcpos.com/i/invoice_123' },
+        },
+      ],
+    })
+    mockSuccessfulCheckoutInit(cartWithBtcpay)
+    renderSignedIn()
+    await completeBillingStep()
+
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        cart: cartWithBtcpay,
+        paymentCollectionId: 'pay-col-123',
+      }),
+    })
+    fireEvent.click(screen.getByTestId('payment-method-btcpay'))
 
     await waitFor(() => {
-      expect(screen.getByTestId('mock-fail-button')).toBeInTheDocument()
+      expect(renderBTCPayButton).toHaveBeenCalledWith(
+        expect.objectContaining({
+          checkoutLink: 'https://btcpay.wcpos.com/i/invoice_123',
+        })
+      )
     })
+  })
+
+  it('shows the method-switch failure notice when re-selecting a provider fails', async () => {
+    mockSuccessfulCheckoutInit()
+    renderSignedIn()
+    await completeBillingStep()
+
+    mockFetch.mockResolvedValueOnce({ ok: false, status: 500 })
+    fireEvent.click(screen.getByTestId('payment-method-paypal'))
+
+    await waitFor(() => {
+      expect(screen.getByText('Payment unsuccessful')).toBeInTheDocument()
+    })
+    expect(
+      screen.getByText(/couldn't prepare that payment method/i)
+    ).toBeInTheDocument()
+  })
+
+  it('shows the recovery notice and preserves the cart when payment fails', async () => {
+    mockSuccessfulCheckoutInit()
+    renderSignedIn()
+    await completeBillingStep()
 
     fireEvent.click(screen.getByTestId('mock-fail-button'))
 
@@ -439,27 +666,15 @@ describe('CheckoutClient', () => {
       screen.getByText(/choose a different payment method/i)
     ).toBeInTheDocument()
 
-    // The cart, email and payment form all stay mounted for retry
-    expect(screen.getByText('Order Summary')).toBeInTheDocument()
-    const emailInput = screen.getByLabelText('Email address') as HTMLInputElement
-    expect(emailInput.value).toBe('user@example.com')
+    // The cart summary and payment form stay mounted for retry
+    expect(screen.getByTestId('checkout-order-summary')).toBeInTheDocument()
     expect(screen.getByTestId('mock-pay-button')).toBeInTheDocument()
   })
 
   it('shows the distinct order-pending state when completion fails after payment', async () => {
     mockSuccessfulCheckoutInit()
-    mockFetch.mockResolvedValueOnce({ ok: true, json: async () => ({}) })
-    render(
-      <CheckoutClient
-        customerEmail="user@example.com"
-        selectedOfferHandle="wcpos-pro-yearly"
-        experimentVariant="control"
-      />
-    )
-
-    await waitFor(() => {
-      expect(screen.getByTestId('mock-pending-button')).toBeInTheDocument()
-    })
+    renderSignedIn()
+    await completeBillingStep()
 
     fireEvent.click(screen.getByTestId('mock-pending-button'))
 
@@ -472,29 +687,24 @@ describe('CheckoutClient', () => {
     // The customer is told not to pay again, with a support reference
     expect(screen.getByText(/do not pay again/i)).toBeInTheDocument()
     const supportLink = screen.getByRole('link', { name: /contact support/i })
-    expect(supportLink).toHaveAttribute('href', '/support?ref=WCPOS-TEST-PENDING')
+    expect(supportLink).toHaveAttribute(
+      'href',
+      '/support?ref=WCPOS-TEST-PENDING'
+    )
     expect(screen.getByText('WCPOS-TEST-PENDING')).toBeInTheDocument()
 
     // The payment form is gone — no way to pay a second time
-    expect(screen.queryByText('Order Summary')).not.toBeInTheDocument()
+    expect(
+      screen.queryByTestId('checkout-order-summary')
+    ).not.toBeInTheDocument()
     expect(screen.queryByTestId('mock-pay-button')).not.toBeInTheDocument()
     expect(screen.queryByText('Payment unsuccessful')).not.toBeInTheDocument()
   })
 
   it('persists the order-pending failure so a reload cannot re-enable payment', async () => {
     mockSuccessfulCheckoutInit()
-    mockFetch.mockResolvedValueOnce({ ok: true, json: async () => ({}) })
-    render(
-      <CheckoutClient
-        customerEmail="user@example.com"
-        selectedOfferHandle="wcpos-pro-yearly"
-        experimentVariant="control"
-      />
-    )
-
-    await waitFor(() => {
-      expect(screen.getByTestId('mock-pending-button')).toBeInTheDocument()
-    })
+    renderSignedIn()
+    await completeBillingStep()
 
     fireEvent.click(screen.getByTestId('mock-pending-button'))
 
@@ -516,18 +726,8 @@ describe('CheckoutClient', () => {
 
   it('does not persist plain payment failures', async () => {
     mockSuccessfulCheckoutInit()
-    mockFetch.mockResolvedValueOnce({ ok: true, json: async () => ({}) })
-    render(
-      <CheckoutClient
-        customerEmail="user@example.com"
-        selectedOfferHandle="wcpos-pro-yearly"
-        experimentVariant="control"
-      />
-    )
-
-    await waitFor(() => {
-      expect(screen.getByTestId('mock-fail-button')).toBeInTheDocument()
-    })
+    renderSignedIn()
+    await completeBillingStep()
 
     fireEvent.click(screen.getByTestId('mock-fail-button'))
 
@@ -546,13 +746,7 @@ describe('CheckoutClient', () => {
       reference: 'WCPOS-RESTORED-PENDING',
     })
 
-    render(
-      <CheckoutClient
-        customerEmail="user@example.com"
-        selectedOfferHandle="wcpos-pro-yearly"
-        experimentVariant="control"
-      />
-    )
+    renderSignedIn()
 
     await waitFor(() => {
       expect(
@@ -566,7 +760,9 @@ describe('CheckoutClient', () => {
 
     // No new cart or payment session is created — the customer cannot pay again
     expect(mockFetch).not.toHaveBeenCalled()
-    expect(screen.queryByText('Order Summary')).not.toBeInTheDocument()
+    expect(
+      screen.queryByTestId('checkout-order-summary')
+    ).not.toBeInTheDocument()
     expect(screen.queryByTestId('mock-pay-button')).not.toBeInTheDocument()
   })
 
@@ -579,15 +775,8 @@ describe('CheckoutClient', () => {
     })
 
     mockSuccessfulCheckoutInit()
-    mockFetch.mockResolvedValueOnce({ ok: true, json: async () => ({}) })
-
-    render(
-      <CheckoutClient
-        customerEmail="user@example.com"
-        selectedOfferHandle="wcpos-pro-yearly"
-        experimentVariant="control"
-      />
-    )
+    renderSignedIn()
+    await completeBillingStep()
 
     await waitFor(() => {
       expect(screen.getByText('Payment status unknown')).toBeInTheDocument()
@@ -597,9 +786,8 @@ describe('CheckoutClient', () => {
 
     // The checkout itself still mounts (the warning withholds retry guidance,
     // but support may confirm the charge failed, so the form stays usable)
-    await waitFor(() => {
-      expect(screen.getByText('Order Summary')).toBeInTheDocument()
-    })
+    expect(screen.getByTestId('checkout-order-summary')).toBeInTheDocument()
+    expect(screen.getByTestId('mock-pay-button')).toBeInTheDocument()
   })
 
   it('clears the persisted protective state after a successful order', async () => {
@@ -610,57 +798,17 @@ describe('CheckoutClient', () => {
     })
 
     mockSuccessfulCheckoutInit()
-    mockFetch.mockResolvedValueOnce({ ok: true, json: async () => ({}) })
-
-    render(
-      <CheckoutClient
-        customerEmail="user@example.com"
-        selectedOfferHandle="wcpos-pro-yearly"
-        experimentVariant="control"
-      />
-    )
-
-    await waitFor(() => {
-      expect(screen.getByTestId('mock-pay-button')).toBeInTheDocument()
-    })
+    renderSignedIn()
+    await completeBillingStep()
 
     fireEvent.click(screen.getByTestId('mock-pay-button'))
 
     await waitFor(() => {
-      expect(screen.getByText('Thank you for your purchase!')).toBeInTheDocument()
+      expect(
+        screen.getByText('Thank you for your purchase!')
+      ).toBeInTheDocument()
     })
 
     expect(restoreCheckoutSafetyState()).toBeNull()
-  })
-
-  it('passes BTCPay checkout link to BTCPayButton when present in cart sessions', async () => {
-    mockSuccessfulCheckoutInit(
-      buildCheckoutCart({
-        paymentSessions: [
-          { provider_id: 'pp_stripe_stripe', data: { client_secret: 'pi_test_secret' } },
-          {
-            provider_id: 'pp_btcpay_btcpay',
-            data: { checkoutLink: 'https://btcpay.wcpos.com/i/invoice_123' },
-          },
-        ],
-      })
-    )
-    mockFetch.mockResolvedValueOnce({ ok: true, json: async () => ({}) })
-
-    render(
-      <CheckoutClient
-        customerEmail="user@example.com"
-        selectedOfferHandle="wcpos-pro-yearly"
-        experimentVariant="control"
-      />
-    )
-
-    await waitFor(() => {
-      expect(renderBTCPayButton).toHaveBeenCalledWith(
-        expect.objectContaining({
-          checkoutLink: 'https://btcpay.wcpos.com/i/invoice_123',
-        })
-      )
-    })
   })
 })
