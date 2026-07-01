@@ -56,6 +56,21 @@ http://localhost:3000/pro?variant=f   # F — The receipt (till-receipt pricing,
 
 All still render static-first with only the price suspending (PriceSlot).
 
+## Part 1c — pricing round 3 ("features once")
+
+Round 2 (d/e/f) also rejected. Owner's articulated rule: **don't reproduce the
+same checklist for yearly and lifetime** — the feature list appears once; the
+yearly/lifetime choice is price + term facts only.
+
+```
+http://localhost:3000/pro?variant=g   # G — One panel, two prices (feature grid once → two compact price tiles)
+http://localhost:3000/pro?variant=h   # H — The buy box (product-page pattern: features left, sticky radio buy box right)
+```
+
+Both use the real feature descriptions from messages/en.json (not bare
+checkmarks), IconTile brand tiles, and keep the round-2 trust elements
+(guarantee at CTA, proof strip, dollar-framed lifetime math, never-auto-renews).
+
 ## Part 2 — checkout flow
 
 **Question:** What does a modern, minimal checkout look like given the two hard
