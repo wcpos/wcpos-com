@@ -65,6 +65,8 @@
       "heading": "Hol dir Pro",
       "subheading": "Eine Lizenz, alle Funktionen. Wähle nur, wie lange du Updates möchtest.",
       "termAriaLabel": "Lizenzlaufzeit",
+      "cta": "Loslegen",
+      "ctaValueCopy": "Sofortzugang erhalten",
       "yearly": {
         "title": "Jährlich",
         "subtitle": "Updates & Support für 1 Jahr",
@@ -75,7 +77,7 @@
       "lifetime": {
         "title": "Lebenslang",
         "subtitle": "Updates für immer",
-        "priceSuffix": " einmalig",
+        "priceSuffix": "einmalig",
         "ctaNote": "Etwa {years} Jahre Jährlich — danach für immer $0.",
         "ctaNoteSimple": "Einmal zahlen — Updates für immer."
       },

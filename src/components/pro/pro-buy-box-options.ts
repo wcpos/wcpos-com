@@ -20,7 +20,14 @@ export interface ProBuyBoxOption {
   priceSuffix: string
   ctaNote: string
   checkoutHref: string
-  eventProperties: Record<string, unknown>
+  eventProperties: ProBuyBoxEventProperties
+}
+
+export type ProBuyBoxEventProperties = {
+  experiment: 'pro_checkout_v1'
+  variant: ProCheckoutVariant
+  product: string
+  plan: PlanId
 }
 
 type TranslateFn = (
@@ -36,7 +43,7 @@ function lifetimeCtaNote(
   const lifetime = offers.find((offer) => offer.planId === 'lifetime')
   const years =
     yearly && lifetime && yearly.price.amount > 0
-      ? Math.round(lifetime.price.amount / yearly.price.amount)
+      ? Math.floor(lifetime.price.amount / yearly.price.amount)
       : null
 
   return years !== null && years >= 2

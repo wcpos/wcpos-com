@@ -65,6 +65,8 @@
       "heading": "Pro 구매",
       "subheading": "하나의 라이선스, 모든 기능. 업데이트 기간만 선택하세요.",
       "termAriaLabel": "라이선스 기간",
+      "cta": "시작하기",
+      "ctaValueCopy": "즉시 이용하기",
       "yearly": {
         "title": "연간",
         "subtitle": "1년간 업데이트 및 지원",
@@ -75,7 +77,7 @@
       "lifetime": {
         "title": "평생",
         "subtitle": "영구 업데이트",
-        "priceSuffix": " 1회",
+        "priceSuffix": "1회",
         "ctaNote": "연간 약 {years}년치 — 이후 영구적으로 $0.",
         "ctaNoteSimple": "한 번만 결제 — 업데이트는 영구적."
       },

@@ -65,6 +65,8 @@
       "heading": "Proを購入",
       "subheading": "1つのライセンスで全機能。アップデート期間を選ぶだけ。",
       "termAriaLabel": "ライセンス期間",
+      "cta": "始める",
+      "ctaValueCopy": "すぐにアクセス",
       "yearly": {
         "title": "年間",
         "subtitle": "1年間のアップデートとサポート",
@@ -75,7 +77,7 @@
       "lifetime": {
         "title": "買い切り",
         "subtitle": "アップデートは永久",
-        "priceSuffix": " 一回払い",
+        "priceSuffix": "一回払い",
         "ctaNote": "年間約{years}年分 — その後は永久に$0。",
         "ctaNoteSimple": "一度の支払いで、アップデートは永久。"
       },

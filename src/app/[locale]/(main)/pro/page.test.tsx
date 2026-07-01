@@ -31,6 +31,8 @@ vi.mock('next-intl/server', () => ({
       'features.reports.description': 'Run reports.',
       'features.gateways.title': 'Gateways',
       'features.gateways.description': 'Use custom gateways.',
+      'buyBox.cta': 'Get Started',
+      'buyBox.ctaValueCopy': 'Get Instant Access',
       'faq.title': 'Questions',
       'faq.freePlugin.question': 'Do I need the free plugin?',
       'faq.freePlugin.answer': 'Yes.',
@@ -90,7 +92,7 @@ vi.mock('@/lib/pro-offer-catalog', () => ({
   getProOfferCatalog: vi.fn(async () => ({ offers: [] })),
   buildProOfferSchemaOffers: vi.fn(() => []),
   buildProCheckoutHref: vi.fn(() => '/pro/checkout?product=test'),
-  getProCheckoutCtaLabel: vi.fn(() => 'Get Started'),
+  getProCheckoutCtaLabel: vi.fn((_variant, t) => t('buyBox.cta')),
 }))
 
 vi.mock('@/components/ui/section', () => ({

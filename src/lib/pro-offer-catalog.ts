@@ -197,10 +197,17 @@ export function buildProCheckoutHref(
   return `${pathname}?${checkoutParams.toString()}`
 }
 
+type ProCheckoutCtaTranslateFn = (
+  key: 'buyBox.cta' | 'buyBox.ctaValueCopy'
+) => string
+
 export function getProCheckoutCtaLabel(
-  experimentVariant: ProCheckoutVariant
+  experimentVariant: ProCheckoutVariant,
+  t: ProCheckoutCtaTranslateFn
 ): string {
-  return experimentVariant === 'value_copy' ? 'Get Instant Access' : 'Get Started'
+  return t(
+    experimentVariant === 'value_copy' ? 'buyBox.ctaValueCopy' : 'buyBox.cta'
+  )
 }
 
 function getOffer(offers: ProOffer[], planId: PlanId): ProOffer | null {

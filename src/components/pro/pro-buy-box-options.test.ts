@@ -74,6 +74,14 @@ describe('buildProBuyBoxOptions', () => {
     expect(buildProBuyBoxOptions(closerOffers, 'control', t)[1].ctaNote).toBe(
       'buyBox.lifetime.ctaNote|{"years":2}'
     )
+
+    const fractionalOffers = buildProOfferCatalog([
+      product('wcpos-pro-yearly', 250, 'variant_yearly'),
+      product('wcpos-pro-lifetime', 399, 'variant_lifetime'),
+    ])
+    expect(
+      buildProBuyBoxOptions(fractionalOffers, 'control', t)[1].ctaNote
+    ).toBe('buyBox.lifetime.ctaNoteSimple')
   })
 
   it('falls back to the simple lifetime note when the ratio is not a selling point', () => {

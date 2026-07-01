@@ -65,6 +65,8 @@
       "heading": "Consigue Pro",
       "subheading": "Una licencia, todas las funciones. Solo elige cuánto tiempo quieres actualizaciones.",
       "termAriaLabel": "Duración de la licencia",
+      "cta": "Empezar",
+      "ctaValueCopy": "Obtén acceso instantáneo",
       "yearly": {
         "title": "Anual",
         "subtitle": "Actualizaciones y soporte durante 1 año",
@@ -75,7 +77,7 @@
       "lifetime": {
         "title": "De por vida",
         "subtitle": "Actualizaciones para siempre",
-        "priceSuffix": " una vez",
+        "priceSuffix": "una vez",
         "ctaNote": "Aproximadamente {years} años de Anual — después $0 para siempre.",
         "ctaNoteSimple": "Paga una vez — actualizaciones para siempre."
       },

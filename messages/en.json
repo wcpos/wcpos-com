@@ -65,6 +65,8 @@
       "heading": "Get Pro",
       "subheading": "One license, all features. Just pick how long you want updates.",
       "termAriaLabel": "License term",
+      "cta": "Get Started",
+      "ctaValueCopy": "Get Instant Access",
       "yearly": {
         "title": "Yearly",
         "subtitle": "Updates & support for 1 year",
@@ -75,7 +77,7 @@
       "lifetime": {
         "title": "Lifetime",
         "subtitle": "Updates forever",
-        "priceSuffix": " once",
+        "priceSuffix": "once",
         "ctaNote": "About {years} years of Yearly — then $0 forever.",
         "ctaNoteSimple": "Pay once — updates forever."
       },

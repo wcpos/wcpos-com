@@ -36,12 +36,16 @@ export function ProBuyBox({
   termAriaLabel,
   footer,
 }: ProBuyBoxProps) {
-  const [selected, setSelected] = useState<PlanId>(options[0].planId)
+  const [selected, setSelected] = useState<PlanId>(
+    options[0]?.planId ?? 'yearly'
+  )
   const radioRefs = useRef<Array<HTMLButtonElement | null>>([])
   // Fall back to the first option if a revalidated payload dropped the
   // selected plan — client state can outlive the server-provided options.
   const current =
     options.find((option) => option.planId === selected) ?? options[0]
+
+  if (!current) return null
 
   function onRadioKeyDown(event: React.KeyboardEvent) {
     const direction =
@@ -112,7 +116,7 @@ export function ProBuyBox({
               </span>
               <span className="text-right shrink-0">
                 <span className="text-xl font-bold">{option.priceText}</span>
-                <span className="text-sm text-muted-foreground">
+                <span className="ml-1 text-sm text-muted-foreground">
                   {option.priceSuffix}
                 </span>
               </span>

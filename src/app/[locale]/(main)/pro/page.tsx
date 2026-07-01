@@ -110,7 +110,7 @@ async function BuyBoxWithExperiment({ locale }: { locale: string }) {
   return (
     <ProBuyBox
       options={buildProBuyBoxOptions(offers, experimentVariant, translate)}
-      ctaLabel={getProCheckoutCtaLabel(experimentVariant)}
+      ctaLabel={getProCheckoutCtaLabel(experimentVariant, translate)}
       heading={t('buyBox.heading')}
       subheading={t('buyBox.subheading')}
       termAriaLabel={t('buyBox.termAriaLabel')}

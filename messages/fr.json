@@ -65,6 +65,8 @@
       "heading": "Passez à Pro",
       "subheading": "Une licence, toutes les fonctionnalités. Choisissez simplement la durée des mises à jour.",
       "termAriaLabel": "Durée de la licence",
+      "cta": "Commencer",
+      "ctaValueCopy": "Accédez immédiatement",
       "yearly": {
         "title": "Annuel",
         "subtitle": "Mises à jour et support pendant 1 an",
@@ -75,7 +77,7 @@
       "lifetime": {
         "title": "À vie",
         "subtitle": "Mises à jour pour toujours",
-        "priceSuffix": " une fois",
+        "priceSuffix": "une fois",
         "ctaNote": "Environ {years} ans d'Annuel — puis $0 pour toujours.",
         "ctaNoteSimple": "Payez une fois — mises à jour pour toujours."
       },

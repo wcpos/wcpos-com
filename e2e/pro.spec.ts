@@ -48,14 +48,12 @@ test.describe('Pro Page', () => {
       const errorMessage = page.getByText(
         'Pricing information is currently unavailable'
       )
-      await page.waitForTimeout(2000)
       await expect(errorMessage).not.toBeVisible()
     })
 
     test('displays yearly and lifetime term options', async ({ page }) => {
       await skipIfPricingUnavailable(page)
       await page.waitForLoadState('networkidle')
-      await page.waitForTimeout(2000)
       await expect(page.getByRole('radio', { name: /Yearly/ })).toBeVisible()
       await expect(page.getByRole('radio', { name: /Lifetime/ })).toBeVisible()
     })
@@ -63,8 +61,9 @@ test.describe('Pro Page', () => {
     test('buy box CTA carries experiment query params', async ({ page }) => {
       await skipIfPricingUnavailable(page)
       await page.waitForLoadState('networkidle')
-      await page.waitForTimeout(2000)
-      const checkoutButtons = page.getByRole('link', { name: /Get (Started|Instant Access)/ })
+      const checkoutButtons = page.getByRole('link', {
+        name: /Get (Started|Instant Access)/,
+      })
       await expect(checkoutButtons.first()).toBeVisible()
 
       const href = await checkoutButtons.first().getAttribute('href')

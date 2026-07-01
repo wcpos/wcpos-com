@@ -49,7 +49,7 @@ const options: ProBuyBoxOption[] = [
     subtitle: 'Updates forever',
     badgeLabel: null,
     priceText: '$399',
-    priceSuffix: ' once',
+    priceSuffix: 'once',
     ctaNote: 'About 3 years of Yearly — then $0 forever.',
     checkoutHref:
       '/pro/checkout?product=wcpos-pro-lifetime&variant=variant_456&exp=pro_checkout_v1&exp_variant=control',
@@ -153,6 +153,11 @@ describe('ProBuyBox', () => {
     expect(
       screen.getByRole('radio', { name: /Yearly/ })
     ).toHaveAttribute('aria-checked', 'true')
+  })
+
+  it('renders nothing for an empty options list', () => {
+    const { container } = renderBuyBox({ options: [] })
+    expect(container).toBeEmptyDOMElement()
   })
 
   it('tracks the checkout click with the selected plan payload', () => {

@@ -215,8 +215,12 @@ describe('offer presentation helpers', () => {
     ])
   })
 
-  it('centralizes checkout CTA copy', () => {
-    expect(getProCheckoutCtaLabel('control')).toBe('Get Started')
-    expect(getProCheckoutCtaLabel('value_copy')).toBe('Get Instant Access')
+  it('centralizes checkout CTA translation keys', () => {
+    const t = (key: 'buyBox.cta' | 'buyBox.ctaValueCopy') => key
+
+    expect(getProCheckoutCtaLabel('control', t)).toBe('buyBox.cta')
+    expect(getProCheckoutCtaLabel('value_copy', t)).toBe(
+      'buyBox.ctaValueCopy'
+    )
   })
 })
