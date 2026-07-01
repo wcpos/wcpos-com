@@ -116,7 +116,11 @@ processing state then show a success screen.
   rows** (not a buried text link); the pay button label follows the selection
   ("Pay $129 now" / "Continue to PayPal" / "Continue to Bitcoin payment").
   See `checkout/payment-method-selector.tsx`.
-- **Pricing section: TBD** — owner still to pick between A / B / C.
+- **Pricing section: Variant H wins** (owner, 2026-07-02) — "the buy box":
+  feature list once (icons + real descriptions) with a sticky radio term
+  selector; feature checklist never repeats per plan. Owner caveat: page still
+  "not very strong visually" — a visual-polish pass is deferred, the structure
+  is approved. Rounds 1 (a/b/c) and 2 (d/e/f) rejected.
 
 When both are decided: fold the winners into the real components and delete
 this directory (including the middleware bypass)._
