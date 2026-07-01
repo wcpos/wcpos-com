@@ -16,6 +16,7 @@ import {
 } from '@/lib/pro-offer-catalog'
 import { Section } from '@/components/ui/section'
 import { SectionHeading } from '@/components/ui/section-heading'
+import { PricingPrototypeGate } from '@/components/pro/prototype/gate'
 
 export async function generateMetadata({
   params,
@@ -124,8 +125,10 @@ async function ProProductJsonLd() {
 
 export default async function ProPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ locale: string }>
+  searchParams?: Promise<Record<string, string | string[] | undefined>>
 }) {
   const { locale } = await params
   setRequestLocale(locale)
@@ -147,9 +150,13 @@ export default async function ProPage({
       </Section>
 
       {/* Pricing Section - Dynamic */}
+      {/* PROTOTYPE: dev-only ?variant= switcher; renders the real section in production */}
       <Section tone="default" spacing="compact">
         <Suspense fallback={<PricingSkeleton />}>
-          <PricingSectionWithExperiment />
+          <PricingPrototypeGate
+            searchParams={searchParams ?? Promise.resolve({})}
+            production={<PricingSectionWithExperiment />}
+          />
         </Suspense>
       </Section>
 
