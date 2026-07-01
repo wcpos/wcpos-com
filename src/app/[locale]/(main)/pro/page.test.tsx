@@ -75,6 +75,12 @@ vi.mock('@/components/pro/pricing-card', () => ({
   PricingCard: () => <div data-testid="pricing-card" />,
 }))
 
+// PROTOTYPE: pass-through so tests exercise the real pricing section
+vi.mock('@/components/pro/prototype/gate', () => ({
+  PricingPrototypeGate: ({ production }: { production: React.ReactNode }) =>
+    production,
+}))
+
 vi.mock('@/components/ui/section', () => ({
   Section: ({
     children,

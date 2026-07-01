@@ -15,6 +15,7 @@ import {
   resolveProOfferCheckoutSelection,
   type ProOfferCheckoutInput,
 } from '@/lib/pro-offer-catalog'
+import { CheckoutPrototypeGate } from '@/components/pro/prototype/checkout/gate'
 
 export const metadata = {
   title: 'Checkout',
@@ -110,38 +111,48 @@ export default async function CheckoutPage({
   const { locale } = await params
   setRequestLocale(locale)
 
+  const production = (
+    <div className="container mx-auto px-4 py-8">
+      <Link
+        href="/pro"
+        className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground mb-8"
+      >
+        <ArrowLeft className="mr-2 h-4 w-4" />
+        Back to pricing
+      </Link>
+
+      <h1 className="text-3xl font-bold mb-8 text-center">Checkout</h1>
+
+      <Suspense
+        fallback={
+          <div className="mx-auto grid max-w-4xl gap-8 md:grid-cols-2">
+            {[1, 2].map((panel) => (
+              <div
+                key={panel}
+                className="space-y-3 rounded-md border bg-card p-6"
+              >
+                <Skeleton className="h-6 w-40" />
+                <Skeleton className="h-20" />
+                <Skeleton className="h-20" />
+              </div>
+            ))}
+          </div>
+        }
+      >
+        <CheckoutContent locale={locale} searchParamsPromise={searchParams} />
+      </Suspense>
+    </div>
+  )
+
   return (
     <main className="min-h-screen bg-gradient-to-b from-background to-muted/20">
-      <div className="container mx-auto px-4 py-8">
-        <Link
-          href="/pro"
-          className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground mb-8"
-        >
-          <ArrowLeft className="mr-2 h-4 w-4" />
-          Back to pricing
-        </Link>
-
-        <h1 className="text-3xl font-bold mb-8 text-center">Checkout</h1>
-
-        <Suspense
-          fallback={
-            <div className="mx-auto grid max-w-4xl gap-8 md:grid-cols-2">
-              {[1, 2].map((panel) => (
-                <div
-                  key={panel}
-                  className="space-y-3 rounded-md border bg-card p-6"
-                >
-                  <Skeleton className="h-6 w-40" />
-                  <Skeleton className="h-20" />
-                  <Skeleton className="h-20" />
-                </div>
-              ))}
-            </div>
-          }
-        >
-          <CheckoutContent locale={locale} searchParamsPromise={searchParams} />
-        </Suspense>
-      </div>
+      {/* PROTOTYPE: dev-only ?variant= switcher; renders the real checkout in production */}
+      <Suspense fallback={null}>
+        <CheckoutPrototypeGate
+          searchParams={searchParams}
+          production={production}
+        />
+      </Suspense>
     </main>
   )
 }

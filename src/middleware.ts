@@ -112,7 +112,13 @@ export function middleware(request: NextRequest) {
     pathnameWithoutLocale.startsWith('/account') ||
     pathnameWithoutLocale.startsWith('/pro/checkout')
 
-  if (requiresAuth) {
+  // PROTOTYPE: dev-only checkout mockups (?variant=a|b|c) render without auth
+  const isCheckoutPrototype =
+    process.env.NODE_ENV !== 'production' &&
+    pathnameWithoutLocale.startsWith('/pro/checkout') &&
+    ['a', 'b', 'c'].includes(request.nextUrl.searchParams.get('variant') ?? '')
+
+  if (requiresAuth && !isCheckoutPrototype) {
     const token = request.cookies.get(COOKIE_NAME)?.value
     if (!token) {
       const loginUrl = new URL('/login', request.url)
