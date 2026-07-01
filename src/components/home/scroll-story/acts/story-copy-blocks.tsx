@@ -24,7 +24,7 @@ export function CopyAct1({ headingLevel = 1 }: { headingLevel?: 1 | 2 }) {
   return (
     <>
       <Kicker>{storyCopy.act1.kicker}</Kicker>
-      <Heading className="mb-4 text-4xl font-bold leading-[1.05] tracking-tight text-white md:text-5xl lg:text-6xl">
+      <Heading className="mb-4 text-4xl font-bold leading-[1.05] tracking-tight text-white md:text-5xl">
         {storyCopy.act1.heading}
       </Heading>
       <p className="mx-auto mb-7 max-w-xl text-base text-slate-300 md:text-lg">

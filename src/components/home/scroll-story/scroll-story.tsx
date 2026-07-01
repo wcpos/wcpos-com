@@ -195,14 +195,8 @@ function PinnedStoryScroller() {
           </motion.div>
         </div>
 
-        {/* act 2: phone + laptop */}
+        {/* act 2: laptop behind the tablet, phone in front (device cluster) */}
         <div className="absolute left-1/2 top-1/2 z-[9]">
-          <motion.div
-            className="-ml-16 -mt-[129px]"
-            style={{ opacity: phoneOpacity, x: phoneX, y: '2vh' }}
-          >
-            <DevicePhone />
-          </motion.div>
           <motion.div
             className="-ml-[210px] -mt-[132px]"
             style={{ opacity: laptopOpacity, x: laptopX, y: '4vh' }}
@@ -210,15 +204,25 @@ function PinnedStoryScroller() {
             <DeviceLaptop />
           </motion.div>
         </div>
+        <div className="absolute left-1/2 top-1/2 z-[11]">
+          <motion.div
+            className="-ml-16 -mt-[129px]"
+            style={{ opacity: phoneOpacity, x: phoneX, y: '6vh' }}
+          >
+            <DevicePhone />
+          </motion.div>
+        </div>
 
-        {/* act 3: hardware ring */}
-        <div className="absolute left-1/2 top-1/2 z-[9]">
+        {/* act 3: terminal fronts the tablet (payment moment); printer + scanner behind */}
+        <div className="absolute left-1/2 top-1/2 z-[11]">
           <motion.div
             className="-ml-[75px] -mt-28"
-            style={{ opacity: terminalOpacity, x: terminalX, y: '-4vh' }}
+            style={{ opacity: terminalOpacity, x: terminalX, y: '2vh' }}
           >
             <DeviceTerminal />
           </motion.div>
+        </div>
+        <div className="absolute left-1/2 top-1/2 z-[9]">
           <motion.div
             className="-ml-[105px] -mt-[74px]"
             style={{ opacity: printerOpacity, x: printerX, y: printerY }}
@@ -251,19 +255,19 @@ function PinnedStoryScroller() {
           <CopyAct1 />
         </motion.div>
         <motion.div
-          className="pointer-events-none absolute left-[7%] top-1/2 z-20 max-w-md -translate-y-1/2"
+          className="pointer-events-none absolute left-[6%] top-1/2 z-20 max-w-sm -translate-y-1/2"
           style={{ opacity: copy2Opacity }}
         >
           <CopyAct2 />
         </motion.div>
         <motion.div
-          className="pointer-events-none absolute left-[7%] top-1/2 z-20 max-w-md -translate-y-1/2"
+          className="pointer-events-none absolute left-[6%] top-1/2 z-20 max-w-sm -translate-y-1/2"
           style={{ opacity: copy3Opacity }}
         >
           <CopyAct3 />
         </motion.div>
         <motion.div
-          className="pointer-events-none absolute left-[7%] top-1/2 z-20 max-w-md -translate-y-1/2"
+          className="pointer-events-none absolute left-[6%] top-1/2 z-20 max-w-sm -translate-y-1/2"
           style={{ opacity: copy4Opacity }}
         >
           <CopyAct4 />

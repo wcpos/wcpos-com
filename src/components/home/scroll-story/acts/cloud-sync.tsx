@@ -41,22 +41,22 @@ export function CloudSync({ className }: { className?: string }) {
       </div>
 
       <svg
-        className="absolute left-1/2 top-[108px] h-[150px] w-[300px] -translate-x-1/2 overflow-visible"
-        viewBox="0 0 300 150"
+        className="absolute left-1/2 top-[108px] h-[190px] w-[300px] -translate-x-1/2 overflow-visible"
+        viewBox="0 0 300 190"
         fill="none"
       >
         <path
           className={cn('stroke-slate-500', styles.dashFlow)}
           strokeWidth="2"
           strokeDasharray="6 8"
-          d="M 40 10 C 10 60, 30 120, 90 145"
+          d="M 40 10 C 5 70, 25 150, 90 185"
         />
         <path
           className={cn('stroke-emerald-600', styles.dashFlow)}
           style={{ animationDirection: 'reverse' }}
           strokeWidth="2"
           strokeDasharray="6 8"
-          d="M 260 10 C 290 60, 270 120, 210 145"
+          d="M 260 10 C 295 70, 275 150, 210 185"
         />
       </svg>
 
