@@ -1,6 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { NextRequest } from 'next/server'
-import { stubVercelRequestContext } from '@/test/vercel-request-context'
 
 const mockGetCustomer = vi.fn()
 const mockCompleteCart = vi.fn()
@@ -184,65 +183,6 @@ describe('POST /api/store/cart/complete', () => {
 
     expect(response.status).toBe(200)
     expect(mockTrackServerEvent).toHaveBeenCalledTimes(1)
-  })
-
-  it('registers the tracking promise with Vercel waitUntil so the freeze after the response cannot drop it', async () => {
-    const ctx = stubVercelRequestContext()
-    try {
-      mockCompleteCart.mockResolvedValueOnce({
-        order: { id: 'order_4' },
-      })
-      let resolveTracking!: () => void
-      mockTrackServerEvent.mockReturnValueOnce(
-        new Promise<void>((resolve) => {
-          resolveTracking = resolve
-        })
-      )
-
-      const response = await POST(
-        new NextRequest('http://localhost:3000/api/store/cart/complete', {
-          method: 'POST',
-          body: JSON.stringify({
-            cartId: 'cart_4',
-            experiment: 'pro_checkout_v1',
-          }),
-        })
-      )
-
-      expect(response.status).toBe(200)
-      expect(ctx.waitUntil).toHaveBeenCalledTimes(1)
-
-      // The registered promise settles once tracking does — and stays
-      // settled (not rejected) even though failures are logged, so waitUntil
-      // never surfaces an unhandled rejection.
-      resolveTracking()
-      await expect(ctx.waitUntil.mock.calls[0][0]).resolves.toBeUndefined()
-    } finally {
-      ctx.restore()
-    }
-  })
-
-  it('registers a settling promise with waitUntil even when tracking rejects', async () => {
-    const ctx = stubVercelRequestContext()
-    try {
-      mockCompleteCart.mockResolvedValueOnce({
-        order: { id: 'order_5' },
-      })
-      mockTrackServerEvent.mockRejectedValueOnce(new Error('analytics down'))
-
-      const response = await POST(
-        new NextRequest('http://localhost:3000/api/store/cart/complete', {
-          method: 'POST',
-          body: JSON.stringify({ cartId: 'cart_5' }),
-        })
-      )
-
-      expect(response.status).toBe(200)
-      expect(ctx.waitUntil).toHaveBeenCalledTimes(1)
-      await expect(ctx.waitUntil.mock.calls[0][0]).resolves.toBeUndefined()
-    } finally {
-      ctx.restore()
-    }
   })
 
   it('does not block response when analytics tracking hangs', async () => {

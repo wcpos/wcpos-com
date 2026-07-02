@@ -16,7 +16,6 @@ import {
   resolveProOfferCartSelection,
 } from '@/lib/pro-offer-catalog'
 import { ORDER_PENDING_CODE } from '@/lib/checkout-failure-taxonomy'
-import { deliver } from '@/lib/sinks/deliver'
 
 /**
  * POST /api/store/cart/complete - Complete cart and create order
@@ -101,23 +100,21 @@ export async function POST(request: NextRequest) {
           })
         : 'control'
 
-      // Registered with the request's waitUntil (deliver): a floating `void`
-      // promise is dropped when Vercel freezes the function after the
-      // response, silently under-counting conversions.
-      deliver(
-        trackServerEvent('checkout_completed', {
-          experiment: typeof experiment === 'string' ? experiment : 'pro_checkout_v1',
-          variant,
-          distinct_id: distinctId ?? 'missing-distinct-id',
-          customer_id: customer.id,
-          order_id: result.order.id,
-          cart_id: cartId,
-          funnel_step: 'checkout_completed',
-          page: '/pro/checkout',
-        }).catch((trackingError) => {
-          storeLogger.warn`Checkout conversion tracking failed: ${trackingError}`
-        })
-      )
+      // Fire-and-forget is safe here: trackServerEvent registers its own
+      // delivery with the request's waitUntil, so the Vercel freeze after
+      // the response cannot drop the conversion event.
+      void trackServerEvent('checkout_completed', {
+        experiment: typeof experiment === 'string' ? experiment : 'pro_checkout_v1',
+        variant,
+        distinct_id: distinctId ?? 'missing-distinct-id',
+        customer_id: customer.id,
+        order_id: result.order.id,
+        cart_id: cartId,
+        funnel_step: 'checkout_completed',
+        page: '/pro/checkout',
+      }).catch((trackingError) => {
+        storeLogger.warn`Checkout conversion tracking failed: ${trackingError}`
+      })
     } catch (trackingError) {
       storeLogger.warn`Checkout conversion tracking failed: ${trackingError}`
     }

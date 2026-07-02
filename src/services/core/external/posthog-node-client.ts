@@ -39,9 +39,15 @@ export function getPostHogServerClient(env: PostHogServerEnv): PostHog | null {
       // time, before the freeze.
       waitUntil: deliver,
       // waitUntil extends the *billed* function lifetime, so cap how long a
-      // wedged PostHog can hold it open: one 3s attempt + one 3s retry.
+      // wedged PostHog can hold it open: two 3s attempts 250ms apart (~6.25s
+      // worst case; the SDK defaults are 4 attempts × 10s with 3s idle sleeps
+      // between — nearly a minute).
       requestTimeout: 3000,
       fetchRetryCount: 1,
+      fetchRetryDelay: 250,
+      // With flushAt: 1 every capture flushes immediately, so the SDK's 50ms
+      // waitUntil debounce window only adds keep-alive time — collapse it.
+      waitUntilDebounceMs: 0,
     })
   }
   return client
