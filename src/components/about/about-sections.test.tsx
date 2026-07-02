@@ -185,6 +185,25 @@ describe('StoryTimeline', () => {
     ).toBeInTheDocument()
   })
 
+  it('lists the rewrite and mobile milestones with their verified dates', () => {
+    render(<StoryTimeline />)
+    // v1.0.0 shipped 2023-05-03 UTC — 4 May 2023 in Perth (github.com/wcpos/woocommerce-pos 1.0.0)
+    expect(screen.getByText('4 May 2023')).toBeInTheDocument()
+    expect(
+      screen.getByRole('heading', { name: 'Rewritten in React Native' })
+    ).toBeInTheDocument()
+    // iOS TestFlight + Android Play beta shipped with v1.8.0 on 2025-12-18
+    expect(screen.getByText('December 2025')).toBeInTheDocument()
+    expect(
+      screen.getByRole('heading', { name: 'Native mobile apps' })
+    ).toBeInTheDocument()
+  })
+
+  it('mentions the original Backbone.js and IndexedDB stack', () => {
+    render(<StoryTimeline />)
+    expect(screen.getByText(/Backbone\.js and an in-browser IndexedDB/)).toBeInTheDocument()
+  })
+
   it('uses the canonical default section seam for the story band', () => {
     render(<StoryTimeline />)
 
