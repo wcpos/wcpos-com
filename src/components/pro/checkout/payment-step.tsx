@@ -88,6 +88,9 @@ interface PaymentStepProps {
    */
   lockMethods?: boolean
   enabled: { stripe: boolean; paypal: boolean; btcpay: boolean }
+  /** Host-resolved public identifiers for the provider SDKs. */
+  stripePublishableKey: string | null
+  paypalClientId: string | null
   experiment: string
   experimentVariant: ProCheckoutVariant
   amount: number
@@ -120,6 +123,8 @@ export function PaymentStep({
   isProcessing,
   lockMethods = false,
   enabled,
+  stripePublishableKey,
+  paypalClientId,
   experiment,
   experimentVariant,
   amount,
@@ -186,7 +191,7 @@ export function PaymentStep({
           {isProcessing ? (
             <PreparingMethod />
           ) : (
-            <PayPalProvider>
+            <PayPalProvider clientId={paypalClientId}>
               <PayPalButton
                 cartId={cartId}
                 experiment={experiment}
@@ -233,7 +238,10 @@ export function PaymentStep({
   // Wallets + card share one Stripe Elements instance (same client secret).
   if (enabled.stripe && clientSecret) {
     return (
-      <StripeProvider clientSecret={clientSecret}>
+      <StripeProvider
+        clientSecret={clientSecret}
+        publishableKey={stripePublishableKey}
+      >
         <ExpressCheckoutRow
           cartId={cartId}
           experiment={experiment}

@@ -2,7 +2,10 @@ import 'server-only'
 
 import { getAuthToken } from '@/lib/medusa-auth'
 import { storeLogger } from '@/lib/logger'
-import { env } from '@/utils/env'
+import {
+  getMedusaBackendUrl,
+  getMedusaPublishableKey,
+} from '@/lib/store-environment'
 
 // ============================================================================
 // Types — the order shape this module owns
@@ -44,11 +47,11 @@ const DEFAULT_BATCH_SIZE = 50
 const DEFAULT_MAX_BATCHES = 20
 
 /** Authenticated store headers (Bearer token + publishable key). */
-function storeHeaders(token: string): HeadersInit {
+async function storeHeaders(token: string): Promise<HeadersInit> {
   return {
     'Content-Type': 'application/json',
     Authorization: `Bearer ${token}`,
-    'x-publishable-api-key': env.MEDUSA_PUBLISHABLE_KEY || '',
+    'x-publishable-api-key': await getMedusaPublishableKey(),
   }
 }
 
@@ -71,8 +74,8 @@ async function fetchOrders(
 ): Promise<OrdersListResult> {
   try {
     const response = await fetch(
-      `${env.MEDUSA_BACKEND_URL}/store/orders?${query.toString()}`,
-      { headers: storeHeaders(token) }
+      `${await getMedusaBackendUrl()}/store/orders?${query.toString()}`,
+      { headers: await storeHeaders(token) }
     )
 
     if (!response.ok) {

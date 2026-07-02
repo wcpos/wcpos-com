@@ -5,12 +5,15 @@ import type { ReactNode } from 'react'
 
 interface PayPalProviderProps {
   children: ReactNode
+  /**
+   * Host-resolved public client id (live on wcpos.com, sandbox on beta —
+   * see store-environment.ts). Null renders children without the provider.
+   */
+  clientId: string | null
 }
 
-const PAYPAL_CLIENT_ID = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID
-
-export function PayPalProvider({ children }: PayPalProviderProps) {
-  if (!PAYPAL_CLIENT_ID) {
+export function PayPalProvider({ children, clientId }: PayPalProviderProps) {
+  if (!clientId) {
     // PayPal not configured - render children without provider
     return <>{children}</>
   }
@@ -18,7 +21,7 @@ export function PayPalProvider({ children }: PayPalProviderProps) {
   return (
     <PayPalScriptProvider
       options={{
-        clientId: PAYPAL_CLIENT_ID,
+        clientId,
         currency: 'USD',
         intent: 'capture',
       }}
@@ -26,8 +29,4 @@ export function PayPalProvider({ children }: PayPalProviderProps) {
       {children}
     </PayPalScriptProvider>
   )
-}
-
-export function isPayPalConfigured(): boolean {
-  return Boolean(PAYPAL_CLIENT_ID)
 }

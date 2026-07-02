@@ -2,7 +2,10 @@ import 'server-only'
 
 import { cache } from 'react'
 import { cookies } from 'next/headers'
-import { env } from '@/utils/env'
+import {
+  getMedusaBackendUrl,
+  getMedusaPublishableKey,
+} from '@/lib/store-environment'
 import { authLogger } from '@/lib/logger'
 import { MEDUSA_TOKEN_COOKIE } from '@/lib/medusa-cookie'
 import { AccountExistsError } from '@/lib/api/errors'
@@ -111,7 +114,7 @@ export async function login(
   password: string
 ): Promise<string> {
   const response = await fetch(
-    `${env.MEDUSA_BACKEND_URL}/auth/customer/emailpass`,
+    `${await getMedusaBackendUrl()}/auth/customer/emailpass`,
     {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -154,7 +157,7 @@ export async function register({
 }): Promise<{ token: string; customer: MedusaCustomer }> {
   // Step 1: Register auth identity
   const authResponse = await fetch(
-    `${env.MEDUSA_BACKEND_URL}/auth/customer/emailpass/register`,
+    `${await getMedusaBackendUrl()}/auth/customer/emailpass/register`,
     {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -179,13 +182,13 @@ export async function register({
 
   // Step 2: Create customer record with the token
   const customerResponse = await fetch(
-    `${env.MEDUSA_BACKEND_URL}/store/customers`,
+    `${await getMedusaBackendUrl()}/store/customers`,
     {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
-        'x-publishable-api-key': env.MEDUSA_PUBLISHABLE_KEY || '',
+        'x-publishable-api-key': await getMedusaPublishableKey(),
       },
       body: JSON.stringify({
         email,
@@ -253,12 +256,12 @@ export const getCustomer = cache(
 
     try {
       const response = await fetch(
-        `${env.MEDUSA_BACKEND_URL}/store/customers/me`,
+        `${await getMedusaBackendUrl()}/store/customers/me`,
         {
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
-            'x-publishable-api-key': env.MEDUSA_PUBLISHABLE_KEY || '',
+            'x-publishable-api-key': await getMedusaPublishableKey(),
           },
         }
       )
@@ -288,13 +291,13 @@ export async function updateCustomer(
   if (!token) return null
 
   const response = await fetch(
-    `${env.MEDUSA_BACKEND_URL}/store/customers/me`,
+    `${await getMedusaBackendUrl()}/store/customers/me`,
     {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
-        'x-publishable-api-key': env.MEDUSA_PUBLISHABLE_KEY || '',
+        'x-publishable-api-key': await getMedusaPublishableKey(),
       },
       body: JSON.stringify(input),
     }

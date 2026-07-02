@@ -12,6 +12,30 @@ vi.mock('@/utils/env', () => ({
   },
 }))
 
+// Mock the host-keyed store environment (replaces the old env-var mock):
+// unit tests always see the pinned test backend.
+vi.mock('@/lib/store-environment', () => {
+  const environment = {
+    name: 'test',
+    medusaBackendUrl: 'https://test-store-api.wcpos.com',
+    medusaPublishableKey: 'pk_test_abc123',
+    payments: {
+      stripePublishableKey: null,
+      paypalClientId: null,
+      btcpayEnabled: true,
+    },
+  }
+  return {
+    getRequestStoreEnvironment: vi.fn(async () => environment),
+    getLiveStoreEnvironment: vi.fn(() => environment),
+    getStoreEnvironmentByName: vi.fn(() => environment),
+    getMedusaBackendUrl: vi.fn(async () => environment.medusaBackendUrl),
+    getMedusaPublishableKey: vi.fn(
+      async () => environment.medusaPublishableKey
+    ),
+  }
+})
+
 // Mock next/headers cookies — establishOAuthSession persists the session via
 // the real setAuthToken, which writes to the cookie store.
 const mockCookieStore = {

@@ -1,13 +1,13 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen, waitFor, fireEvent } from '@testing-library/react'
 
-// Set env vars BEFORE module import (isStripeEnabled is evaluated at module load)
-// vi.hoisted runs before hoisted vi.mock calls
-vi.hoisted(() => {
-  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = 'pk_test_123'
-  process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID = 'paypal_test_client'
-  process.env.NEXT_PUBLIC_BTCPAY_ENABLED = 'true'
-})
+// Payment identifiers are host-resolved server-side and passed as a prop
+// (see store-environment.ts); tests exercise the all-providers setup.
+const ALL_PAYMENTS = {
+  stripePublishableKey: 'pk_test_123',
+  paypalClientId: 'paypal_test_client',
+  btcpayEnabled: true,
+}
 
 // Mock the locale-aware Link as a simple anchor
 vi.mock('@/i18n/navigation', () => ({
@@ -196,6 +196,7 @@ function renderSignedIn(props: Record<string, unknown> = {}) {
       selectedOfferHandle="wcpos-pro-yearly"
       checkoutPath="/pro/checkout?product=wcpos-pro-yearly"
       experimentVariant="control"
+      payments={ALL_PAYMENTS}
       {...props}
     />
   )
@@ -297,6 +298,7 @@ describe('CheckoutClient', () => {
         selectedOfferHandle="wcpos-pro-yearly"
         checkoutPath="/pro/checkout?product=wcpos-pro-yearly"
         experimentVariant="control"
+        payments={ALL_PAYMENTS}
       />
     )
 
@@ -348,6 +350,7 @@ describe('CheckoutClient', () => {
         selectedOfferHandle="wcpos-pro-yearly"
         checkoutPath="/pro/checkout?product=wcpos-pro-yearly"
         experimentVariant="control"
+        payments={ALL_PAYMENTS}
       />
     )
 
@@ -585,6 +588,7 @@ describe('CheckoutClient', () => {
       <CheckoutClient
         checkoutPath="/pro/checkout"
         experimentVariant="control"
+        payments={ALL_PAYMENTS}
       />
     )
 

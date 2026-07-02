@@ -9,6 +9,7 @@ import { Link } from '@/i18n/navigation'
 import { resolveProCheckoutVariant } from '@/services/core/analytics/posthog-service'
 import { ANALYTICS_DISTINCT_ID_COOKIE } from '@/lib/analytics/distinct-id'
 import { getAnalyticsConfig } from '@/lib/analytics/config'
+import { getRequestStoreEnvironment } from '@/lib/store-environment'
 import type { ProCheckoutVariant } from '@/services/core/analytics/posthog-service'
 import {
   getProOfferCatalog,
@@ -71,9 +72,13 @@ async function CheckoutContent({
   // account inline. The cart APIs still require auth server-side.
   const customer = await getCustomer()
 
+  // Host-keyed: wcpos.com takes live money, beta.wcpos.com uses the staging
+  // backend with test-mode payment providers.
+  const storeEnv = await getRequestStoreEnvironment()
+
   const selectedVariantId = getSingleSearchParam(searchParams, 'variant')
   const selectedProduct = getSingleSearchParam(searchParams, 'product')
-  const { offers } = await getProOfferCatalog()
+  const { offers } = await getProOfferCatalog(undefined, storeEnv)
   const checkoutInput: ProOfferCheckoutInput = {
     product: selectedProduct,
     variant: selectedVariantId,
@@ -108,6 +113,7 @@ async function CheckoutContent({
       }
       checkoutPath={buildCheckoutRedirectPath(searchParams)}
       experimentVariant={experimentVariant}
+      payments={storeEnv.payments}
     />
   )
 }

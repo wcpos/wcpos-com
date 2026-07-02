@@ -1,6 +1,9 @@
 import 'server-only'
 
-import { env } from '@/utils/env'
+import {
+  getMedusaBackendUrl,
+  getMedusaPublishableKey,
+} from '@/lib/store-environment'
 import { parseMedusaError, setAuthToken } from '@/lib/medusa-auth'
 
 // ============================================================================
@@ -66,7 +69,7 @@ async function completeOAuthCallback(
 ): Promise<string> {
   const queryString = new URLSearchParams(params).toString()
   const response = await fetch(
-    `${env.MEDUSA_BACKEND_URL}/auth/customer/${provider}/callback?${queryString}`,
+    `${await getMedusaBackendUrl()}/auth/customer/${provider}/callback?${queryString}`,
   )
 
   if (!response.ok) {
@@ -85,13 +88,13 @@ async function completeOAuthCallback(
  */
 async function linkOrCreateCustomer(token: string): Promise<void> {
   const response = await fetch(
-    `${env.MEDUSA_BACKEND_URL}/store/auth/account-link`,
+    `${await getMedusaBackendUrl()}/store/auth/account-link`,
     {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
-        'x-publishable-api-key': env.MEDUSA_PUBLISHABLE_KEY || '',
+        'x-publishable-api-key': await getMedusaPublishableKey(),
       },
     }
   )
@@ -108,7 +111,7 @@ async function linkOrCreateCustomer(token: string): Promise<void> {
  */
 async function refreshToken(token: string): Promise<string> {
   const response = await fetch(
-    `${env.MEDUSA_BACKEND_URL}/auth/token/refresh`,
+    `${await getMedusaBackendUrl()}/auth/token/refresh`,
     {
       method: 'POST',
       headers: {
@@ -140,7 +143,7 @@ export async function initiateOAuth(
   callbackUrl: string
 ): Promise<string> {
   const response = await fetch(
-    `${env.MEDUSA_BACKEND_URL}/auth/customer/${provider}`,
+    `${await getMedusaBackendUrl()}/auth/customer/${provider}`,
     {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
