@@ -6,6 +6,9 @@ import type { SVGProps } from 'react'
  * Colours are hardcoded brand values (not currentColor) so the mark keeps
  * its identity in both themes. Defaults to aria-hidden because it always
  * sits next to a visible "WCPOS" wordmark; spread props to override.
+ *
+ * The same path data lives in src/app/icon.svg (the Next.js favicon file
+ * convention needs a real file on disk) — keep the two in sync.
  */
 export function WcposLogo(props: SVGProps<SVGSVGElement>) {
   return (
