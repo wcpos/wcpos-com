@@ -1,9 +1,11 @@
+import { cacheLife, cacheTag } from 'next/cache'
 import type { ProCheckoutVariant } from '@/services/core/analytics/posthog-service'
 import {
   formatPrice,
   getProducts,
   getVariantPrice,
 } from '@/services/core/external/medusa-client'
+import { storeLogger } from '@/lib/logger'
 import type { PlanId } from '@/lib/plans'
 import { getPlanByHandle } from '@/lib/plans'
 import type { StoreEnvironment } from '@/lib/store-environment'
@@ -25,6 +27,63 @@ const OFFER_COPY: Record<PlanId, ProOfferCopy> = {
   yearly: { schemaName: 'Yearly License' },
   lifetime: { schemaName: 'Lifetime License' },
 }
+
+function fallbackProduct(
+  handle: string,
+  title: string,
+  variantId: string,
+  prices: Record<string, number>
+): MedusaProduct {
+  return {
+    id: `fallback_${handle}`,
+    title,
+    handle,
+    description: null,
+    status: 'published',
+    thumbnail: null,
+    images: [],
+    options: [],
+    variants: [
+      {
+        id: variantId,
+        title: 'Default',
+        sku: null,
+        prices: Object.entries(prices).map(([currency_code, amount]) => ({
+          id: `fallback_price_${handle}_${currency_code}`,
+          currency_code,
+          amount,
+        })),
+        options: {},
+        manage_inventory: false,
+      },
+    ],
+    created_at: '2026-07-02T00:00:00.000Z',
+    updated_at: '2026-07-02T00:00:00.000Z',
+  }
+}
+
+/**
+ * Committed offer facts served when Medusa cannot — the purchase funnel must
+ * never render empty because the store backend is unreachable (config in
+ * code; a price change in Medusa must be mirrored here). Snapshot of the
+ * live catalog as of 2026-07-02, including the live variant ids so checkout
+ * links built from a fallback catalog validate against the real catalog once
+ * the backend answers again.
+ */
+const FALLBACK_PRO_PRODUCTS: MedusaProduct[] = [
+  fallbackProduct(
+    'wcpos-pro-yearly',
+    'WCPOS Pro Yearly',
+    'variant_01KEMXD1D4HTKKP730PF2DP2W8',
+    { usd: 129, eur: 119, gbp: 99, aud: 199 }
+  ),
+  fallbackProduct(
+    'wcpos-pro-lifetime',
+    'WCPOS Pro Lifetime',
+    'variant_01KEMXD1D426KGZXJQXE7BA16M',
+    { usd: 399, eur: 369, gbp: 319, aud: 599 }
+  ),
+]
 
 export const PRO_TEASER_FEATURES = [
   'Payment terminal integration',
@@ -54,8 +113,16 @@ export interface ProOffer {
   checkoutPath: string
 }
 
+export type ProOfferCatalogSource = 'medusa' | 'fallback'
+
 export interface ProOfferCatalog {
   offers: ProOffer[]
+  /**
+   * 'fallback' when any offer came from the committed price table instead of
+   * Medusa — callers may cache such catalogs on a shorter profile so real
+   * prices return quickly after the backend recovers.
+   */
+  source: ProOfferCatalogSource
 }
 
 export interface ProOfferCheckoutSelection {
@@ -147,7 +214,38 @@ export async function getProOfferCatalog(
   storeEnv?: StoreEnvironment
 ): Promise<ProOfferCatalog> {
   const products = await getProducts(storeEnv)
-  return { offers: buildProOfferCatalog(products, currencyCode) }
+  const offers = buildProOfferCatalog(products, currencyCode)
+
+  const missing = buildProOfferCatalog(
+    FALLBACK_PRO_PRODUCTS,
+    currencyCode
+  ).filter(
+    (fallback) => !offers.some((offer) => offer.planId === fallback.planId)
+  )
+  if (missing.length === 0) return { offers, source: 'medusa' }
+
+  storeLogger.error`Pro offer catalog missing plans from Medusa, serving committed fallback prices: ${missing
+    .map((offer) => offer.planId)
+    .join(', ')}`
+  return {
+    offers: [...offers, ...missing].sort(sortByPlanOrder),
+    source: 'fallback',
+  }
+}
+
+/**
+ * The one cache policy for 'use cache' scopes that fetch the offer catalog:
+ * the shared products profile/tag, tightened to api-short when the catalog
+ * carries fallback prices (the shortest cacheLife call wins) so real prices
+ * return quickly after the backend recovers. Must run inside the caller's
+ * 'use cache' scope — cacheLife/cacheTag attach to that scope's cache entry.
+ */
+export function applyProOfferCatalogCachePolicy(
+  catalog: ProOfferCatalog
+): void {
+  cacheLife('products')
+  cacheTag('products')
+  if (catalog.source === 'fallback') cacheLife('api-short')
 }
 
 function toCheckoutSelection(offer: ProOffer): ProOfferCheckoutSelection {

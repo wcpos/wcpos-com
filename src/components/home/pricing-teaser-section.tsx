@@ -3,8 +3,8 @@ import { TrackedLocaleLink } from '@/components/analytics/tracked-locale-link'
 import { Button } from '@/components/ui/button'
 import { Section } from '@/components/ui/section'
 import { SectionHeading } from '@/components/ui/section-heading'
-import { cacheLife, cacheTag } from 'next/cache'
 import {
+  applyProOfferCatalogCachePolicy,
   formatHomeProPriceSummary,
   getProOfferCatalog,
   PRO_TEASER_FEATURES,
@@ -30,15 +30,12 @@ export function PricingTeaserSectionFallback() {
 
 export async function PricingTeaserSection() {
   'use cache'
-  cacheLife('products')
-  cacheTag('products')
 
   // Prerendered into the shared static homepage shell — always live prices.
-  const { offers } = await getProOfferCatalog(
-    undefined,
-    getLiveStoreEnvironment()
-  )
-  const priceSummary = formatHomeProPriceSummary(offers) ?? PRO_PRICE_FALLBACK
+  const catalog = await getProOfferCatalog(undefined, getLiveStoreEnvironment())
+  applyProOfferCatalogCachePolicy(catalog)
+  const priceSummary =
+    formatHomeProPriceSummary(catalog.offers) ?? PRO_PRICE_FALLBACK
 
   return <PricingTeaserSectionContent priceSummary={priceSummary} />
 }

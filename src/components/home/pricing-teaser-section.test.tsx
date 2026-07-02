@@ -39,7 +39,9 @@ vi.mock('@/lib/pro-offer-catalog', () => ({
       { planId: 'yearly', price: { compact: '$129' } },
       { planId: 'lifetime', price: { compact: '$399' } },
     ],
+    source: 'medusa',
   })),
+  applyProOfferCatalogCachePolicy: vi.fn(),
   formatHomeProPriceSummary: vi.fn(() => '$129/year or $399 lifetime. No per-register fees.'),
   PRO_TEASER_FEATURES: [
     'Payment terminal integration',

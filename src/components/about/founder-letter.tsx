@@ -1,5 +1,5 @@
-import { cacheLife, cacheTag } from 'next/cache'
 import {
+  applyProOfferCatalogCachePolicy,
   formatFounderProPriceSummary,
   getProOfferCatalog,
 } from '@/lib/pro-offer-catalog'
@@ -12,15 +12,11 @@ export function FounderLetterFallback() {
 
 export async function FounderLetter() {
   'use cache'
-  cacheLife('products')
-  cacheTag('products')
 
   // Prerendered into the shared static shell — always live prices.
-  const { offers } = await getProOfferCatalog(
-    undefined,
-    getLiveStoreEnvironment()
-  )
-  const priceSummary = formatFounderProPriceSummary(offers)
+  const catalog = await getProOfferCatalog(undefined, getLiveStoreEnvironment())
+  applyProOfferCatalogCachePolicy(catalog)
+  const priceSummary = formatFounderProPriceSummary(catalog.offers)
 
   return <FounderLetterContent priceSummary={priceSummary} />
 }
