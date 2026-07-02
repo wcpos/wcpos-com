@@ -64,7 +64,12 @@ async function medusaFetch<T>(
   })
 
   if (!response.ok) {
-    storeLogger.error`API error: ${response.status}`
+    // Carry enough context to diagnose from the alert alone: the bare
+    // "API error: 400" embed proved undebuggable (2026-07-02), and the
+    // caller's contextful follow-up log gets eaten by the Discord sink's
+    // per-category rate limit.
+    const body = await response.text().catch(() => '')
+    storeLogger.error`Medusa API error ${response.status} on ${options.method ?? 'GET'} ${endpoint} [${environment.name}]: ${body.slice(0, 300)}`
     throw new Error(`Medusa API error: ${response.status}`)
   }
 
