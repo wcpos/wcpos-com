@@ -58,6 +58,16 @@ const milestones = [
 const LINE_STOPS = ['#cf2c20', '#5b8def', '#8b5cf6']
 const colorAlongLine = transform([0, 0.5, 1], LINE_STOPS)
 
+/**
+ * Motion mixes colours in squared-RGB space while CSS gradients interpolate
+ * raw sRGB, so a plain 3-stop gradient would drift from the JS-derived tip
+ * and marker colours between stops. Sampling colorAlongLine densely keeps
+ * the CSS line on motion's curve.
+ */
+const LINE_GRADIENT = `linear-gradient(to bottom, ${[0, 0.125, 0.25, 0.375, 0.5, 0.625, 0.75, 0.875, 1]
+  .map((t) => `${colorAlongLine(t)} ${t * 100}%`)
+  .join(', ')})`
+
 function usePrefersReducedMotion() {
   return React.useSyncExternalStore(
     (onChange) => {
@@ -175,13 +185,20 @@ export function StoryTimeline() {
 
   const measure = React.useCallback(() => {
     const list = listRef.current
-    if (!list) return
-    const listRect = list.getBoundingClientRect()
-    if (listRect.height === 0) return
+    if (!list || list.offsetHeight === 0) return
     const next = markerRefs.current.slice(0, milestones.length).map((el) => {
       if (!el) return 1
-      const r = el.getBoundingClientRect()
-      return (r.top + r.height / 2 - listRect.top) / listRect.height
+      // Walk offsetTop up to the list instead of using bounding rects:
+      // offset coordinates ignore transforms, so the entrance translateY on
+      // motion.li (still applied when this runs on mount) can't bias the
+      // thresholds and make every marker ignite late.
+      let top = el.offsetTop + el.offsetHeight / 2
+      let parent = el.offsetParent as HTMLElement | null
+      while (parent && parent !== list) {
+        top += parent.offsetTop
+        parent = parent.offsetParent as HTMLElement | null
+      }
+      return top / list.offsetHeight
     })
     setThresholds((prev) =>
       prev && prev.length === next.length && prev.every((t, i) => t === next[i])
@@ -236,7 +253,7 @@ export function StoryTimeline() {
                 className="absolute bottom-1 left-0 top-1 w-0.5 origin-top rounded"
                 style={{
                   scaleY: scrollYProgress,
-                  backgroundImage: `linear-gradient(to bottom, ${LINE_STOPS.join(', ')})`,
+                  backgroundImage: LINE_GRADIENT,
                 }}
               />
               <motion.span
