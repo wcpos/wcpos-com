@@ -9,6 +9,13 @@ import { Skeleton } from '@/components/ui/skeleton'
 import type { RoadmapData } from '@/types/roadmap'
 import type { Metadata } from 'next'
 import { marketingMetadata } from '@/lib/seo'
+// PROTOTYPE — roadmap presentation variants, switchable via ?variant=.
+// See src/components/roadmap/prototype/NOTES.md. Delete when a variant wins.
+import { VariantGate } from '@/components/roadmap/prototype/switcher'
+import { VariantTimeline } from '@/components/roadmap/prototype/variant-timeline'
+import { VariantBoard } from '@/components/roadmap/prototype/variant-board'
+import { VariantFocus } from '@/components/roadmap/prototype/variant-focus'
+import { MOCK_ROADMAP_DATA } from '@/components/roadmap/prototype/mock-data'
 
 export async function generateMetadata({
   params,
@@ -50,16 +57,10 @@ function MilestoneListSkeleton() {
   )
 }
 
-export default async function RoadmapPage({
-  params,
-}: {
-  params: Promise<{ locale: string }>
-}) {
-  const { locale } = await params
-  setRequestLocale(locale)
-
+/** The pre-prototype page body, kept as the baseline variant. */
+function CurrentVariant({ data }: { data: RoadmapData }) {
   return (
-    <main>
+    <>
       <Section
         tone="none"
         spacing="hero"
@@ -77,16 +78,59 @@ export default async function RoadmapPage({
 
       <Section spacing="default" bare>
         <Container width="content">
-          <Suspense fallback={<MilestoneListSkeleton />}>
-            <MilestoneListLoader />
-          </Suspense>
+          <MilestoneList data={data} />
         </Container>
       </Section>
+    </>
+  )
+}
+
+export default async function RoadmapPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}) {
+  const { locale } = await params
+  setRequestLocale(locale)
+
+  return (
+    <main>
+      <Suspense
+        fallback={
+          <Section spacing="default" bare>
+            <Container width="content">
+              <MilestoneListSkeleton />
+            </Container>
+          </Section>
+        }
+      >
+        <RoadmapVariantsLoader />
+      </Suspense>
     </main>
   )
 }
 
-async function MilestoneListLoader() {
-  const data = await getCachedRoadmapData()
-  return <MilestoneList data={data} />
+async function RoadmapVariantsLoader() {
+  let data = await getCachedRoadmapData()
+
+  // PROTOTYPE — no GitHub credentials in local dev returns empty data; fall
+  // back to a realistic mock so the variants can be judged with real density.
+  const isEmpty =
+    data.active.length === 0 &&
+    data.upcoming.length === 0 &&
+    data.shipped.length === 0
+  if (isEmpty && process.env.NODE_ENV !== 'production') {
+    data = MOCK_ROADMAP_DATA
+  }
+
+  return (
+    <VariantGate
+      variants={[
+        { key: 'current', name: 'Current design', node: <CurrentVariant data={data} /> },
+        { key: 'timeline', name: 'Release train', node: <VariantTimeline data={data} /> },
+        { key: 'board', name: 'Status board', node: <VariantBoard data={data} /> },
+        { key: 'focus', name: 'Mission control', node: <VariantFocus data={data} /> },
+      ]}
+    />
+  )
 }
