@@ -2,9 +2,18 @@ import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { Suspense } from 'react'
 import { cacheLife, cacheTag } from 'next/cache'
 import { cookies } from 'next/headers'
-import { PricingCard } from '@/components/pro/pricing-card'
+import { AlertCircle, Bitcoin, CreditCard, Shield } from 'lucide-react'
+import { Link } from '@/i18n/navigation'
+import { ProBuyBox } from '@/components/pro/pro-buy-box'
+import { buildProBuyBoxOptions } from '@/components/pro/pro-buy-box-options'
+import {
+  PRO_FEATURE_KEYS,
+  ProFeatureList,
+} from '@/components/pro/pro-features'
+import { Card } from '@/components/ui/card'
+import { EmptyState } from '@/components/ui/empty-state'
 import { Skeleton } from '@/components/ui/skeleton'
-import type { ProCheckoutVariant } from '@/services/core/analytics/posthog-service'
+import { TextLink } from '@/components/ui/text-link'
 import { resolveProCheckoutVariant } from '@/services/core/analytics/posthog-service'
 import { ANALYTICS_DISTINCT_ID_COOKIE } from '@/lib/analytics/distinct-id'
 import { getAnalyticsConfig } from '@/lib/analytics/config'
@@ -12,6 +21,7 @@ import type { Metadata } from 'next'
 import { marketingMetadata } from '@/lib/seo'
 import {
   buildProOfferSchemaOffers,
+  getProCheckoutCtaLabel,
   getProOfferCatalog,
 } from '@/lib/pro-offer-catalog'
 import { Section } from '@/components/ui/section'
@@ -33,53 +43,38 @@ export async function generateMetadata({
 }
 
 /**
- * Dynamic component that fetches products from Medusa
+ * One cached catalog fetch shared by the buy box and the JSON-LD block —
+ * the cache key is the catalog itself, not the experiment variant or
+ * locale, which are pure string work applied outside the boundary.
  */
-async function PricingSection({
-  experimentVariant,
-}: {
-  experimentVariant: ProCheckoutVariant
-}) {
+async function getCachedProOfferCatalog() {
   'use cache'
   cacheLife('products')
   cacheTag('products')
+  return getProOfferCatalog()
+}
 
-  const { offers } = await getProOfferCatalog()
-
-  if (offers.length === 0) {
-    return (
-      <div className="text-center py-12">
-        <p className="text-muted-foreground">
-          Pricing information is currently unavailable. Please try again
-          later.
-        </p>
-      </div>
-    )
-  }
-
+function BuyBoxSkeleton() {
   return (
-    <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto items-start">
-      {offers.map((offer) => (
-        <PricingCard
-          key={offer.planId}
-          offer={offer}
-          experimentVariant={experimentVariant}
-        />
-      ))}
-    </div>
+    <Card
+      elevated
+      data-testid="pro-buy-box-skeleton"
+      className="space-y-4 p-6"
+    >
+      <Skeleton className="h-6 w-24" />
+      <Skeleton className="h-4 w-56" />
+      <Skeleton className="h-20" />
+      <Skeleton className="h-20" />
+      <Skeleton className="h-11" />
+    </Card>
   )
 }
 
-function PricingSkeleton() {
-  return (
-    <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto items-start">
-      <Skeleton className="h-96" />
-      <Skeleton className="h-96" />
-    </div>
-  )
-}
-
-async function PricingSectionWithExperiment() {
+/**
+ * The only dynamic region of the page: Medusa prices + the checkout
+ * experiment from cookies. Everything else renders statically around it.
+ */
+async function BuyBoxWithExperiment({ locale }: { locale: string }) {
   const cookieStore = await cookies()
   const distinctId = cookieStore.get(ANALYTICS_DISTINCT_ID_COOKIE)?.value
   const analyticsConfig = getAnalyticsConfig(process.env)
@@ -90,16 +85,66 @@ async function PricingSectionWithExperiment() {
       })
     : 'control'
 
-  return <PricingSection experimentVariant={experimentVariant} />
+  const [t, { offers }] = await Promise.all([
+    getTranslations({ locale, namespace: 'pro' }),
+    getCachedProOfferCatalog(),
+  ])
+  // next-intl's Translator is key-typed; the options builder takes a plain
+  // string-keyed translate function.
+  const translate = (key: string, values?: Record<string, string | number>) =>
+    t(key as Parameters<typeof t>[0], values)
+
+  if (offers.length === 0) {
+    return (
+      <Card elevated className="p-6">
+        <EmptyState
+          tone="caution"
+          icon={<AlertCircle />}
+          title={t('buyBox.unavailableTitle')}
+          description={t('buyBox.unavailableDescription')}
+        />
+      </Card>
+    )
+  }
+
+  return (
+    <ProBuyBox
+      options={buildProBuyBoxOptions(offers, experimentVariant, translate)}
+      ctaLabel={getProCheckoutCtaLabel(experimentVariant, translate)}
+      heading={t('buyBox.heading')}
+      subheading={t('buyBox.subheading')}
+      termAriaLabel={t('buyBox.termAriaLabel')}
+      footer={
+        <>
+          <div className="mt-5 space-y-2 border-t pt-4 text-sm text-muted-foreground">
+            <p className="flex items-center gap-2">
+              <Shield className="h-4 w-4 shrink-0" aria-hidden />
+              <span>
+                <TextLink asChild>
+                  <Link href="/refunds">{t('buyBox.guaranteeLink')}</Link>
+                </TextLink>
+                {t('buyBox.guaranteeSuffix')}
+              </span>
+            </p>
+            <p className="flex items-center gap-2">
+              <CreditCard className="h-4 w-4 shrink-0" aria-hidden />
+              <span className="flex items-center gap-1">
+                {t('buyBox.payments')}
+                <Bitcoin className="h-4 w-4" aria-hidden />
+              </span>
+            </p>
+          </div>
+          <p className="mt-4 text-center text-xs text-muted-foreground">
+            {t('buyBox.proof')}
+          </p>
+        </>
+      }
+    />
+  )
 }
 
-
 async function ProProductJsonLd() {
-  'use cache'
-  cacheLife('products')
-  cacheTag('products')
-
-  const { offers } = await getProOfferCatalog()
+  const { offers } = await getCachedProOfferCatalog()
 
   return (
     <script
@@ -131,6 +176,12 @@ export default async function ProPage({
   setRequestLocale(locale)
   const t = await getTranslations({ locale, namespace: 'pro' })
 
+  const features = PRO_FEATURE_KEYS.map(({ key, Icon }) => ({
+    Icon,
+    title: t(`features.${key}.title`),
+    description: t(`features.${key}.description`),
+  }))
+
   return (
     <main>
       <Suspense fallback={null}>
@@ -146,50 +197,24 @@ export default async function ProPage({
         />
       </Section>
 
-      {/* Pricing Section - Dynamic */}
+      {/* Features render statically; only the buy box waits on Medusa */}
       <Section tone="default" spacing="compact">
-        <Suspense fallback={<PricingSkeleton />}>
-          <PricingSectionWithExperiment />
-        </Suspense>
-      </Section>
-
-      {/* Features Section */}
-      <Section tone="muted" spacing="default">
-        <SectionHeading
-          className="mb-12"
-          title={t('features.title')}
-          subtitle={t('features.subtitle')}
-        />
-        <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-          <FeatureBlock
-            title={t('features.terminal.title')}
-            description={t('features.terminal.description')}
+        <div className="mx-auto grid max-w-5xl items-start gap-10 lg:grid-cols-[1.5fr_1fr]">
+          <ProFeatureList
+            heading={t('features.title')}
+            subtitle={t('features.subtitle')}
+            features={features}
           />
-          <FeatureBlock
-            title={t('features.stockPrice.title')}
-            description={t('features.stockPrice.description')}
-          />
-          <FeatureBlock
-            title={t('features.orders.title')}
-            description={t('features.orders.description')}
-          />
-          <FeatureBlock
-            title={t('features.customers.title')}
-            description={t('features.customers.description')}
-          />
-          <FeatureBlock
-            title={t('features.reports.title')}
-            description={t('features.reports.description')}
-          />
-          <FeatureBlock
-            title={t('features.gateways.title')}
-            description={t('features.gateways.description')}
-          />
+          <div className="lg:sticky lg:top-24">
+            <Suspense fallback={<BuyBoxSkeleton />}>
+              <BuyBoxWithExperiment locale={locale} />
+            </Suspense>
+          </div>
         </div>
       </Section>
 
       {/* FAQ Section */}
-      <Section tone="default" spacing="default">
+      <Section tone="muted" spacing="default">
         <SectionHeading className="mb-12" title={t('faq.title')} />
         <div className="max-w-3xl mx-auto space-y-6">
           <FaqItem
@@ -215,21 +240,6 @@ export default async function ProPage({
         </div>
       </Section>
     </main>
-  )
-}
-
-function FeatureBlock({
-  title,
-  description,
-}: {
-  title: string
-  description: string
-}) {
-  return (
-    <div className="text-center">
-      <h3 className="text-xl font-semibold mb-2">{title}</h3>
-      <p className="text-muted-foreground">{description}</p>
-    </div>
   )
 }
 

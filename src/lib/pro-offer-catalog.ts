@@ -11,48 +11,18 @@ import type { MedusaProduct, MedusaProductVariant } from '@/types/medusa'
 const PRO_CHECKOUT_EXPERIMENT = 'pro_checkout_v1'
 const DEFAULT_CURRENCY_CODE = 'usd'
 
+/**
+ * Schema.org copy only. Customer-facing plan copy lives in the `pro.buyBox`
+ * message namespace (10 locales) — the catalog carries domain data (prices,
+ * handles, checkout paths), not display prose.
+ */
 interface ProOfferCopy {
-  title: string
-  description: string
-  priceSuffix: string | null
   schemaName: string
-  features: string[]
-  featured: boolean
-  badgeLabel: string | null
 }
 
 const OFFER_COPY: Record<PlanId, ProOfferCopy> = {
-  yearly: {
-    title: 'Pro Yearly',
-    description: 'One-year license',
-    priceSuffix: '/year',
-    schemaName: 'Yearly License',
-    featured: true,
-    badgeLabel: 'Most Popular',
-    features: [
-      'All Pro features included',
-      'Unlimited orders & products',
-      'Priority email support',
-      'Automatic updates for 1 year',
-      'Manual renewal — no automatic billing',
-    ],
-  },
-  lifetime: {
-    title: 'Pro Lifetime',
-    description: 'One-time purchase',
-    priceSuffix: null,
-    schemaName: 'Lifetime License',
-    featured: false,
-    badgeLabel: null,
-    features: [
-      'All Pro features included',
-      'Unlimited orders & products',
-      'Priority email support',
-      'Lifetime updates forever',
-      'One-time payment',
-      'Best value for long-term use',
-    ],
-  },
+  yearly: { schemaName: 'Yearly License' },
+  lifetime: { schemaName: 'Lifetime License' },
 }
 
 export const PRO_TEASER_FEATURES = [
@@ -78,13 +48,7 @@ export interface ProOffer {
   handle: string
   /** Current Medusa variant selected by the Pro offer catalog. */
   variantId: string
-  title: string
-  description: string
-  featured: boolean
-  badgeLabel: string | null
   price: ProOfferPrice
-  priceSuffix: string | null
-  features: string[]
   /** Checkout path containing the stable Pro offer choice. Callers append metadata through buildProCheckoutHref. */
   checkoutPath: string
 }
@@ -147,7 +111,6 @@ export function buildProOfferCatalog(
       const amount = getVariantPrice(variant, currencyCode)
       if (amount === null) return null
 
-      const copy = OFFER_COPY[plan.id]
       const checkoutParams = new URLSearchParams({
         product: plan.handle,
         // Compatibility hint only: checkout validates product+variant against
@@ -159,10 +122,6 @@ export function buildProOfferCatalog(
         planId: plan.id,
         handle: plan.handle,
         variantId: variant.id,
-        title: copy.title,
-        description: copy.description,
-        featured: copy.featured,
-        badgeLabel: copy.badgeLabel,
         price: {
           amount,
           currencyCode,
@@ -170,8 +129,6 @@ export function buildProOfferCatalog(
           compact: compactPrice(amount, currencyCode),
           schemaPrice: schemaPrice(amount),
         },
-        priceSuffix: copy.priceSuffix,
-        features: [...copy.features],
         checkoutPath: `/pro/checkout?${checkoutParams.toString()}`,
       }
     })
@@ -240,10 +197,17 @@ export function buildProCheckoutHref(
   return `${pathname}?${checkoutParams.toString()}`
 }
 
+type ProCheckoutCtaTranslateFn = (
+  key: 'buyBox.cta' | 'buyBox.ctaValueCopy'
+) => string
+
 export function getProCheckoutCtaLabel(
-  experimentVariant: ProCheckoutVariant
+  experimentVariant: ProCheckoutVariant,
+  t: ProCheckoutCtaTranslateFn
 ): string {
-  return experimentVariant === 'value_copy' ? 'Get Instant Access' : 'Get Started'
+  return t(
+    experimentVariant === 'value_copy' ? 'buyBox.ctaValueCopy' : 'buyBox.cta'
+  )
 }
 
 function getOffer(offers: ProOffer[], planId: PlanId): ProOffer | null {

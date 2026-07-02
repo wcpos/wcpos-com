@@ -61,6 +61,33 @@
         "description": "Take payments with any WooCommerce-compatible gateway, not just the built-in options."
       }
     },
+    "buyBox": {
+      "heading": "购买 Pro",
+      "subheading": "一个许可证，全部功能。只需选择更新时长。",
+      "termAriaLabel": "许可证期限",
+      "cta": "开始使用",
+      "ctaValueCopy": "立即获取访问权限",
+      "yearly": {
+        "title": "年付",
+        "subtitle": "1年更新和支持",
+        "badgeLabel": "最受欢迎",
+        "priceSuffix": "/年",
+        "ctaNote": "一次性付款 — 永不自动续订。"
+      },
+      "lifetime": {
+        "title": "终身",
+        "subtitle": "永久更新",
+        "priceSuffix": "一次性",
+        "ctaNote": "约等于{years}年年付 — 之后永久$0。",
+        "ctaNoteSimple": "一次付款 — 永久更新。"
+      },
+      "guaranteeLink": "14 天退款保证",
+      "guaranteeSuffix": "，无需说明理由",
+      "payments": "银行卡、PayPal 或 Bitcoin",
+      "proof": "5,000+ 活跃商店 · 年付费用可抵扣终身版",
+      "unavailableTitle": "价格信息暂时不可用",
+      "unavailableDescription": "价格信息当前不可用。请稍后再试。"
+    },
     "faq": {
       "title": "Frequently Asked Questions",
       "freePlugin": {

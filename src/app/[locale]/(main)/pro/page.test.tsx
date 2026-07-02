@@ -31,6 +31,8 @@ vi.mock('next-intl/server', () => ({
       'features.reports.description': 'Run reports.',
       'features.gateways.title': 'Gateways',
       'features.gateways.description': 'Use custom gateways.',
+      'buyBox.cta': 'Get Started',
+      'buyBox.ctaValueCopy': 'Get Instant Access',
       'faq.title': 'Questions',
       'faq.freePlugin.question': 'Do I need the free plugin?',
       'faq.freePlugin.answer': 'Yes.',
@@ -66,13 +68,31 @@ vi.mock('@/services/core/analytics/posthog-service', () => ({
   resolveProCheckoutVariant: vi.fn(async () => 'control'),
 }))
 
+vi.mock('@/i18n/navigation', () => ({
+  Link: ({
+    children,
+    href,
+    ...props
+  }: {
+    children: React.ReactNode
+    href: string
+    [key: string]: unknown
+  }) => (
+    <a href={href} {...props}>
+      {children}
+    </a>
+  ),
+}))
+
+vi.mock('@/lib/analytics/client-events', () => ({
+  trackClientEvent: vi.fn(),
+}))
+
 vi.mock('@/lib/pro-offer-catalog', () => ({
   getProOfferCatalog: vi.fn(async () => ({ offers: [] })),
   buildProOfferSchemaOffers: vi.fn(() => []),
-}))
-
-vi.mock('@/components/pro/pricing-card', () => ({
-  PricingCard: () => <div data-testid="pricing-card" />,
+  buildProCheckoutHref: vi.fn(() => '/pro/checkout?product=test'),
+  getProCheckoutCtaLabel: vi.fn((_variant, t) => t('buyBox.cta')),
 }))
 
 vi.mock('@/components/ui/section', () => ({
@@ -115,7 +135,7 @@ vi.mock('@/components/ui/section-heading', () => ({
 import ProPage from './page'
 
 describe('ProPage', () => {
-  it('uses the canonical page-section seam for hero, pricing, features, and FAQ', async () => {
+  it('renders hero and features statically with only the buy box suspending', async () => {
     render(await ProPage({ params: Promise.resolve({ locale: 'en' }) }))
 
     const heroHeading = screen.getByRole('heading', {
@@ -128,14 +148,20 @@ describe('ProPage', () => {
     const sections = [...document.querySelectorAll('[data-section-tone]')]
     expect(
       sections.map((section) => section.getAttribute('data-section-tone'))
-    ).toEqual(['default', 'default', 'muted', 'default'])
+    ).toEqual(['default', 'default', 'muted'])
     expect(
       sections.map((section) => section.getAttribute('data-section-spacing'))
-    ).toEqual(['hero', 'compact', 'default', 'default'])
+    ).toEqual(['hero', 'compact', 'default'])
 
+    // Feature list renders statically (exactly once, next to the buy box).
     expect(screen.getByText('Pro features')).toBeInTheDocument()
     expect(screen.getByText('Payment terminals')).toBeInTheDocument()
     expect(screen.getByText('Stock and price edits')).toBeInTheDocument()
+
+    // The buy box is the only suspended region (Suspense is mocked to
+    // render its fallback), so the skeleton stands in for it here.
+    expect(screen.getByTestId('pro-buy-box-skeleton')).toBeInTheDocument()
+
     expect(screen.getByText('Questions')).toBeInTheDocument()
     expect(screen.getByText('Do I need the free plugin?')).toBeInTheDocument()
     expect(screen.getAllByText('Yes.')).toHaveLength(2)

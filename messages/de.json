@@ -61,6 +61,33 @@
         "description": "Take payments with any WooCommerce-compatible gateway, not just the built-in options."
       }
     },
+    "buyBox": {
+      "heading": "Hol dir Pro",
+      "subheading": "Eine Lizenz, alle Funktionen. Wähle nur, wie lange du Updates möchtest.",
+      "termAriaLabel": "Lizenzlaufzeit",
+      "cta": "Loslegen",
+      "ctaValueCopy": "Sofortzugang erhalten",
+      "yearly": {
+        "title": "Jährlich",
+        "subtitle": "Updates & Support für 1 Jahr",
+        "badgeLabel": "Am beliebtesten",
+        "priceSuffix": "/Jahr",
+        "ctaNote": "Einmalige Zahlung — keine automatische Verlängerung."
+      },
+      "lifetime": {
+        "title": "Lebenslang",
+        "subtitle": "Updates für immer",
+        "priceSuffix": "einmalig",
+        "ctaNote": "Etwa {years} Jahre Jährlich — danach für immer $0.",
+        "ctaNoteSimple": "Einmal zahlen — Updates für immer."
+      },
+      "guaranteeLink": "14 Tage Geld-zurück-Garantie",
+      "guaranteeSuffix": ", ohne Angabe von Gründen",
+      "payments": "Karte, PayPal oder Bitcoin",
+      "proof": "5.000+ aktive Shops · Jährlich wird auf Lebenslang angerechnet",
+      "unavailableTitle": "Preise vorübergehend nicht verfügbar",
+      "unavailableDescription": "Die Preisinformationen sind derzeit nicht verfügbar. Bitte versuche es später erneut."
+    },
     "faq": {
       "title": "Frequently Asked Questions",
       "freePlugin": {

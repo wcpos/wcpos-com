@@ -61,6 +61,33 @@
         "description": "Take payments with any WooCommerce-compatible gateway, not just the built-in options."
       }
     },
+    "buyBox": {
+      "heading": "Consigue Pro",
+      "subheading": "Una licencia, todas las funciones. Solo elige cuánto tiempo quieres actualizaciones.",
+      "termAriaLabel": "Duración de la licencia",
+      "cta": "Empezar",
+      "ctaValueCopy": "Obtén acceso instantáneo",
+      "yearly": {
+        "title": "Anual",
+        "subtitle": "Actualizaciones y soporte durante 1 año",
+        "badgeLabel": "Más popular",
+        "priceSuffix": "/año",
+        "ctaNote": "Pago único — nunca se renueva automáticamente."
+      },
+      "lifetime": {
+        "title": "De por vida",
+        "subtitle": "Actualizaciones para siempre",
+        "priceSuffix": "una vez",
+        "ctaNote": "Aproximadamente {years} años de Anual — después $0 para siempre.",
+        "ctaNoteSimple": "Paga una vez — actualizaciones para siempre."
+      },
+      "guaranteeLink": "Garantía de devolución de 14 días",
+      "guaranteeSuffix": ", sin dar explicaciones",
+      "payments": "Tarjeta, PayPal o Bitcoin",
+      "proof": "Más de 5.000 tiendas activas · El plan Anual se descuenta del De por vida",
+      "unavailableTitle": "Precios temporalmente no disponibles",
+      "unavailableDescription": "La información de precios no está disponible en este momento. Inténtalo de nuevo más tarde."
+    },
     "faq": {
       "title": "Frequently Asked Questions",
       "freePlugin": {
