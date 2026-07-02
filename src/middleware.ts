@@ -107,10 +107,11 @@ export function middleware(request: NextRequest) {
   const pathnameWithoutLocale = pathname.replace(localeRegex, '') || '/'
   const pathnameWithQuery = `${pathnameWithoutLocale}${request.nextUrl.search}`
 
-  // Protected routes: /account/* requires a medusa-token cookie
-  const requiresAuth =
-    pathnameWithoutLocale.startsWith('/account') ||
-    pathnameWithoutLocale.startsWith('/pro/checkout')
+  // Protected routes: /account/* requires a medusa-token cookie.
+  // /pro/checkout is deliberately NOT gated: signed-out buyers create their
+  // account inline in the checkout's first step (the cart APIs it calls
+  // still enforce auth server-side).
+  const requiresAuth = pathnameWithoutLocale.startsWith('/account')
 
   if (requiresAuth) {
     const token = request.cookies.get(COOKIE_NAME)?.value

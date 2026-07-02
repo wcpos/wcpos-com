@@ -36,19 +36,30 @@ describe('middleware', () => {
     expect(response?.headers.get('location')).toBeNull()
   })
 
-  it('redirects unauthenticated checkout requests to login with redirect param', () => {
+  it('lets unauthenticated visitors reach checkout (account is created inline)', () => {
     const request = new NextRequest(
       'https://wcpos.com/pro/checkout?variant=variant_123'
     )
 
     const response = middleware(request)
 
-    expect(response?.status).toBe(307)
-    expect(response?.headers.get('location')).toBe(
-      'https://wcpos.com/login?redirect=%2Fpro%2Fcheckout%3Fvariant%3Dvariant_123'
-    )
+    // No login redirect: the checkout's first step handles account
+    // creation/sign-in; the cart APIs still enforce auth server-side.
+    expect(response?.status).toBe(200)
+    expect(response?.headers.get('location')).toBeNull()
     // No consent decision -> no analytics cookie
     expect(response?.cookies.get(ANALYTICS_DISTINCT_ID_COOKIE)).toBeUndefined()
+  })
+
+  it('still redirects unauthenticated account requests to login', () => {
+    const request = new NextRequest('https://wcpos.com/account/licenses')
+
+    const response = middleware(request)
+
+    expect(response?.status).toBe(307)
+    expect(response?.headers.get('location')).toBe(
+      'https://wcpos.com/login?redirect=%2Faccount%2Flicenses'
+    )
   })
 
   it('allows checkout requests when the auth cookie is present', () => {

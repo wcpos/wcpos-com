@@ -1,5 +1,11 @@
 import { test, expect } from '@playwright/test'
-import type { BrowserContext, Page } from '@playwright/test'
+import {
+  MOCK_BACKEND_URL,
+  YEARLY_CHECKOUT_PATH,
+  completeBillingStep,
+  openYearlyCheckout,
+  signInAs,
+} from './helpers/checkout'
 
 /**
  * Checkout flow e2e specs (fully mocked — no external services, no real
@@ -13,11 +19,11 @@ import type { BrowserContext, Page } from '@playwright/test'
  * token. Carts are minted per POST with unique ids by the mock, so parallel
  * workers/projects/retries never share cart state.
  *
- * Scope: everything up to and including the checkout page rendering with an
- * order summary and the payment area, plus navigation paths. Stripe Elements
- * cannot run against a mock backend (and NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
- * is not set for the mocked build, so no provider tab renders here). Card
- * entry and payment confirmation are covered by
+ * Scope: the three-step checkout (account / billing / payment) up to the
+ * payment method selector. Bitcoin (BTCPay) is enabled in the mocked build
+ * (plain redirect — no client SDK) and exercised end-to-end in
+ * e2e/pro-checkout-journeys.spec.ts. Stripe Elements / PayPal SDK cannot run
+ * against a mock backend; card entry and payment confirmation are covered by
  * e2e/pro-checkout-integration.spec.ts (@integration — real backends and
  * real Stripe test keys).
  */
@@ -26,44 +32,21 @@ import type { BrowserContext, Page } from '@playwright/test'
 const CHECKOUT_PERSONA = 'e2e-none'
 const CHECKOUT_PERSONA_EMAIL = 'nolicense@example.com'
 
-// wcpos-pro-yearly + variant_e2e_yearly resolve to the current WCPOS Pro
-// Yearly offer ($129.00) in e2e/mocks/fixtures.json.
-const YEARLY_CHECKOUT_PATH =
-  '/pro/checkout?product=wcpos-pro-yearly&variant=variant_e2e_yearly'
-const MOCK_BACKEND_URL = `http://127.0.0.1:${Number(
-  process.env.E2E_MOCK_PORT || 4873
-)}`
-
-async function signInAs(
-  context: BrowserContext,
-  baseURL: string | undefined,
-  token: string
-) {
-  await context.addCookies([
-    {
-      name: 'medusa-token',
-      value: token,
-      url: baseURL ?? 'http://localhost:3000',
-    },
-  ])
-}
-
-async function openYearlyCheckout(page: Page) {
-  await page.goto(YEARLY_CHECKOUT_PATH)
-  await expect(page.getByText('Order Summary')).toBeVisible({ timeout: 15000 })
-}
-
 test.describe('Checkout auth gating', () => {
-  test('redirects unauthenticated users to login with redirect param', async ({
+  test('shows the inline account step instead of redirecting to login', async ({
     page,
   }) => {
     await page.goto(YEARLY_CHECKOUT_PATH)
 
-    const encoded = encodeURIComponent(YEARLY_CHECKOUT_PATH).replace(
-      /[.*+?^${}()|[\]\\]/g,
-      '\\$&'
+    // No login bounce — the first step creates the account inline.
+    await expect(page).toHaveURL(/\/pro\/checkout\?/)
+    await expect(page.getByTestId('account-step-form')).toBeVisible({
+      timeout: 15000,
+    })
+    await expect(page.getByTestId('checkout-step-1')).toHaveAttribute(
+      'data-step-state',
+      'active'
     )
-    await expect(page).toHaveURL(new RegExp(`/login\\?redirect=${encoded}`))
   })
 
   test('cart APIs reject unauthenticated requests', async ({ request }) => {
@@ -156,6 +139,89 @@ test.describe('Mock checkout backend', () => {
     expect(retriedCollection.id).toBe(paymentCollection.id)
     expect(retriedCollection.payment_sessions).toHaveLength(1)
   })
+
+  test('returns the same order when cart completion is retried', async ({
+    request,
+  }) => {
+    const cartResponse = await request.post(`${MOCK_BACKEND_URL}/store/carts`, {
+      data: {},
+    })
+    expect(cartResponse.status()).toBe(200)
+    const { cart } = await cartResponse.json()
+    const email = `retry-completion+${cart.id}@example.com`
+
+    const registerResponse = await request.post(
+      `${MOCK_BACKEND_URL}/auth/customer/emailpass/register`,
+      { data: { email, password: 'e2e-password' } }
+    )
+    expect(registerResponse.status()).toBe(200)
+    const { token } = await registerResponse.json()
+
+    const emailResponse = await request.post(
+      `${MOCK_BACKEND_URL}/store/carts/${cart.id}`,
+      { data: { email } }
+    )
+    expect(emailResponse.status()).toBe(200)
+
+    const lineItemResponse = await request.post(
+      `${MOCK_BACKEND_URL}/store/carts/${cart.id}/line-items`,
+      {
+        data: { variant_id: 'variant_e2e_yearly', quantity: 1 },
+      }
+    )
+    expect(lineItemResponse.status()).toBe(200)
+
+    const paymentCollectionResponse = await request.post(
+      `${MOCK_BACKEND_URL}/store/payment-collections`,
+      { data: { cart_id: cart.id } }
+    )
+    expect(paymentCollectionResponse.status()).toBe(200)
+    const { payment_collection: paymentCollection } =
+      await paymentCollectionResponse.json()
+
+    const sessionResponse = await request.post(
+      `${MOCK_BACKEND_URL}/store/payment-collections/${paymentCollection.id}/payment-sessions`,
+      { data: { provider_id: 'pp_btcpay_btcpay' } }
+    )
+    expect(sessionResponse.status()).toBe(200)
+
+    const firstComplete = await request.post(
+      `${MOCK_BACKEND_URL}/store/carts/${cart.id}/complete`
+    )
+    expect(firstComplete.status()).toBe(200)
+    const { order: firstOrder } = await firstComplete.json()
+
+    const firstOrdersResponse = await request.get(
+      `${MOCK_BACKEND_URL}/store/orders`,
+      { headers: { Authorization: `Bearer ${token}` } }
+    )
+    expect(firstOrdersResponse.status()).toBe(200)
+    const { count: firstOrderCount, orders: firstOrders } =
+      await firstOrdersResponse.json()
+    expect(firstOrderCount).toBe(1)
+    expect(firstOrders).toHaveLength(1)
+    expect(firstOrders[0].id).toBe(firstOrder.id)
+
+    const retriedComplete = await request.post(
+      `${MOCK_BACKEND_URL}/store/carts/${cart.id}/complete`
+    )
+    expect(retriedComplete.status()).toBe(200)
+    const { order: retriedOrder } = await retriedComplete.json()
+
+    expect(retriedOrder.id).toBe(firstOrder.id)
+    expect(retriedOrder.display_id).toBe(firstOrder.display_id)
+
+    const retriedOrdersResponse = await request.get(
+      `${MOCK_BACKEND_URL}/store/orders`,
+      { headers: { Authorization: `Bearer ${token}` } }
+    )
+    expect(retriedOrdersResponse.status()).toBe(200)
+    const { count: retriedOrderCount, orders: retriedOrders } =
+      await retriedOrdersResponse.json()
+    expect(retriedOrderCount).toBe(firstOrderCount)
+    expect(retriedOrders).toHaveLength(1)
+    expect(retriedOrders[0].id).toBe(firstOrder.id)
+  })
 })
 
 test.describe('Checkout flow', () => {
@@ -181,45 +247,77 @@ test.describe('Checkout flow', () => {
 
     await getStartedLink.click()
     await expect(page).toHaveURL(/\/pro\/checkout\?/)
-    await expect(page.getByText('Order Summary')).toBeVisible({
+    await expect(page.getByTestId('checkout-steps')).toBeVisible({
       timeout: 15000,
     })
   })
 
-  test('displays order summary with the selected product', async ({ page }) => {
+  test('collapses the account step to the signed-in email', async ({
+    page,
+  }) => {
     await openYearlyCheckout(page)
 
-    await expect(page.getByText('WCPOS Pro Yearly')).toBeVisible()
-    await expect(page.getByText('Qty: 1')).toBeVisible()
+    await expect(page.getByTestId('checkout-step-1')).toHaveAttribute(
+      'data-step-state',
+      'done'
+    )
+    await expect(page.getByText(CHECKOUT_PERSONA_EMAIL)).toBeVisible()
+    await expect(page.getByTestId('checkout-step-2')).toHaveAttribute(
+      'data-step-state',
+      'active'
+    )
+  })
+
+  test('displays order summary with the selected product', async ({
+    page,
+  }) => {
+    await openYearlyCheckout(page)
+
+    const summary = page.getByTestId('checkout-order-summary')
+    await expect(summary.getByText('WCPOS Pro Yearly')).toBeVisible({
+      timeout: 15000,
+    })
+    await expect(summary.getByText('Qty: 1')).toBeVisible()
     // Line item total and the cart total both render $129.00.
-    await expect(page.getByText('$129.00')).toHaveCount(2)
-    await expect(page.getByText('Total', { exact: true })).toBeVisible()
+    await expect(summary.getByText('$129.00')).toHaveCount(2)
+    await expect(summary.getByText('Total', { exact: true })).toBeVisible()
   })
 
-  test('displays the account email read-only', async ({ page }) => {
+  test('persists the billing address and reaches the payment step', async ({
+    page,
+  }) => {
     await openYearlyCheckout(page)
+    await completeBillingStep(page)
 
-    const emailInput = page.getByLabel('Email address')
-    await expect(emailInput).toBeVisible()
-    await expect(emailInput).toHaveValue(CHECKOUT_PERSONA_EMAIL)
-    // The account email is locked in (readOnly input).
-    await expect(emailInput).not.toBeEditable()
-    await expect(page.getByText('Using your account email')).toBeVisible()
+    // Collapsed billing summary
+    await expect(page.getByTestId('checkout-step-2')).toHaveAttribute(
+      'data-step-state',
+      'done'
+    )
+    await expect(
+      page.getByText('42 Wallaby Way, Sydney 2000, AU')
+    ).toBeVisible()
+
+    // The mocked build enables only BTCPay (no Stripe/PayPal keys), so the
+    // payment selector shows exactly the Bitcoin row.
+    await expect(page.getByTestId('payment-method-btcpay')).toBeVisible()
+    await expect(page.getByTestId('payment-method-stripe')).toHaveCount(0)
+    await expect(page.getByTestId('payment-method-paypal')).toHaveCount(0)
   })
 
-  test('displays the payment method area', async ({ page }) => {
+  test('billing step can be reopened with Edit', async ({ page }) => {
     await openYearlyCheckout(page)
+    await completeBillingStep(page)
 
-    await expect(page.getByText('Payment', { exact: true })).toBeVisible()
-    // The payment-method tablist renders; individual provider tabs (Card /
-    // PayPal / Bitcoin) require build-time NEXT_PUBLIC_* payment keys, which
-    // the mocked suite intentionally omits — provider UIs are exercised by
-    // the @integration suite against real backends.
-    await expect(page.getByRole('tablist')).toBeVisible()
-    await expect(page.getByText('Secure payment processing')).toBeVisible()
+    await page.getByRole('button', { name: 'Edit' }).click()
+    await expect(page.getByTestId('billing-step-form')).toBeVisible()
+    // Previously entered values survive the reopen.
+    await expect(page.getByLabel('Address')).toHaveValue('42 Wallaby Way')
   })
 
-  test('shows error when no current Pro offer is provided', async ({ page }) => {
+  test('shows error when no current Pro offer is provided', async ({
+    page,
+  }) => {
     await page.goto('/pro/checkout')
 
     await expect(page.getByText('No product selected')).toBeVisible({
@@ -261,9 +359,9 @@ test.describe('Checkout flow', () => {
 
     await page.goto(YEARLY_CHECKOUT_PATH)
 
-    await expect(page.getByText('Failed to create cart')).toBeVisible({
-      timeout: 15000,
-    })
+    await expect(
+      page.getByText('Unable to initialize checkout. Please try again.')
+    ).toBeVisible({ timeout: 15000 })
     await expect(
       page.getByRole('link', { name: /Back to pricing/ }).first()
     ).toBeVisible()

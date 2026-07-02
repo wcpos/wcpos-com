@@ -108,6 +108,10 @@ export default defineConfig({
             NEXT_PUBLIC_KEYGEN_YEARLY_POLICY_ID:
               '261cb7e2-6e80-476e-98bd-fe7f406f258d',
             NEXT_PUBLIC_KEYGEN_LIFETIME_POLICY_ID: 'e2e-lifetime-policy-0000',
+            // BTCPay is a plain redirect (no client SDK), so the mocked suite
+            // can exercise one payment method truly end-to-end: enable it.
+            // The mock backend serves the invoice page and settles the order.
+            NEXT_PUBLIC_BTCPAY_ENABLED: '1',
           },
     },
   ],
