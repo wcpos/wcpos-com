@@ -1,3 +1,4 @@
+import { cacheLife, cacheTag } from 'next/cache'
 import type { ProCheckoutVariant } from '@/services/core/analytics/posthog-service'
 import {
   formatPrice,
@@ -230,6 +231,21 @@ export async function getProOfferCatalog(
     offers: [...offers, ...missing].sort(sortByPlanOrder),
     source: 'fallback',
   }
+}
+
+/**
+ * The one cache policy for 'use cache' scopes that fetch the offer catalog:
+ * the shared products profile/tag, tightened to api-short when the catalog
+ * carries fallback prices (the shortest cacheLife call wins) so real prices
+ * return quickly after the backend recovers. Must run inside the caller's
+ * 'use cache' scope — cacheLife/cacheTag attach to that scope's cache entry.
+ */
+export function applyProOfferCatalogCachePolicy(
+  catalog: ProOfferCatalog
+): void {
+  cacheLife('products')
+  cacheTag('products')
+  if (catalog.source === 'fallback') cacheLife('api-short')
 }
 
 function toCheckoutSelection(offer: ProOffer): ProOfferCheckoutSelection {

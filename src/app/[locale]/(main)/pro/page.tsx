@@ -1,6 +1,5 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { Suspense } from 'react'
-import { cacheLife, cacheTag } from 'next/cache'
 import { cookies } from 'next/headers'
 import { AlertCircle, Bitcoin, CreditCard, Download } from 'lucide-react'
 import { Link } from '@/i18n/navigation'
@@ -25,6 +24,7 @@ import {
 import type { Metadata } from 'next'
 import { marketingMetadata } from '@/lib/seo'
 import {
+  applyProOfferCatalogCachePolicy,
   buildProOfferSchemaOffers,
   getProCheckoutCtaLabel,
   getProOfferCatalog,
@@ -55,15 +55,11 @@ export async function generateMetadata({
  */
 async function getCachedProOfferCatalog(envName: StoreEnvironmentName) {
   'use cache'
-  cacheLife('products')
-  cacheTag('products')
   const catalog = await getProOfferCatalog(
     undefined,
     getStoreEnvironmentByName(envName)
   )
-  // Fallback prices retry the backend on the short profile (shortest
-  // cacheLife call wins) instead of pinning for the full products lifetime.
-  if (catalog.source === 'fallback') cacheLife('api-short')
+  applyProOfferCatalogCachePolicy(catalog)
   return catalog
 }
 
@@ -108,6 +104,10 @@ async function BuyBoxWithExperiment({ locale }: { locale: string }) {
   const translate = (key: string, values?: Record<string, string | number>) =>
     t(key as Parameters<typeof t>[0], values)
 
+  // Near-unreachable since the catalog fills missing plans from committed
+  // fallback prices — kept as the last line of defense (non-USD catalogs,
+  // or the fallback table itself being removed) so the page degrades to a
+  // message instead of a crash.
   if (offers.length === 0) {
     return (
       <Card elevated className="p-6">

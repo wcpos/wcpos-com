@@ -103,7 +103,9 @@ vi.mock('@/lib/pro-offer-catalog', () => ({
       { planId: 'yearly', price: { compact: '$129' } },
       { planId: 'lifetime', price: { compact: '$399' } },
     ],
+    source: 'medusa',
   })),
+  applyProOfferCatalogCachePolicy: vi.fn(),
   formatFounderProPriceSummary: vi.fn(() => '$129/yr or $399 once'),
 }))
 import { StoryTimeline } from './story-timeline'

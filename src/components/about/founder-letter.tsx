@@ -1,5 +1,5 @@
-import { cacheLife, cacheTag } from 'next/cache'
 import {
+  applyProOfferCatalogCachePolicy,
   formatFounderProPriceSummary,
   getProOfferCatalog,
 } from '@/lib/pro-offer-catalog'
@@ -12,18 +12,11 @@ export function FounderLetterFallback() {
 
 export async function FounderLetter() {
   'use cache'
-  cacheLife('products')
-  cacheTag('products')
 
   // Prerendered into the shared static shell — always live prices.
-  const { offers, source } = await getProOfferCatalog(
-    undefined,
-    getLiveStoreEnvironment()
-  )
-  // Fallback prices retry the backend on the short profile (shortest
-  // cacheLife call wins) instead of pinning for the full products lifetime.
-  if (source === 'fallback') cacheLife('api-short')
-  const priceSummary = formatFounderProPriceSummary(offers)
+  const catalog = await getProOfferCatalog(undefined, getLiveStoreEnvironment())
+  applyProOfferCatalogCachePolicy(catalog)
+  const priceSummary = formatFounderProPriceSummary(catalog.offers)
 
   return <FounderLetterContent priceSummary={priceSummary} />
 }
