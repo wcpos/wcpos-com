@@ -160,11 +160,14 @@ export default async function DownloadsPage({
   searchParams?: Promise<Record<string, string | string[] | undefined>>
 }) {
   const { locale } = await params
-  const resolvedSearchParams = searchParams ? await searchParams : {}
-  const variantParam = resolvedSearchParams.variant
-  const variant = Array.isArray(variantParam) ? variantParam[0] : variantParam
-  const showPrototypeHero =
-    process.env.NODE_ENV !== 'production' && variant === 'hero'
+  let showPrototypeHero = false
+
+  if (process.env.NODE_ENV !== 'production') {
+    const resolvedSearchParams = searchParams ? await searchParams : {}
+    const variantParam = resolvedSearchParams.variant
+    const variant = Array.isArray(variantParam) ? variantParam[0] : variantParam
+    showPrototypeHero = variant === 'hero'
+  }
 
   setRequestLocale(locale)
 
