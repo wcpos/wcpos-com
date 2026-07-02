@@ -10,7 +10,13 @@ import { saleLogger } from '@/lib/logger'
  */
 export async function GET(request: Request): Promise<NextResponse> {
   const token = request.headers.get('x-alert-test-token')
-  if (process.env.NODE_ENV === 'production' && token !== process.env.ALERT_TEST_TOKEN) {
+  // Fail closed: an unset or EMPTY ALERT_TEST_TOKEN must never match — an
+  // empty request header would equal an empty env var and fire the fatal.
+  const expected = process.env.ALERT_TEST_TOKEN
+  if (
+    process.env.NODE_ENV === 'production' &&
+    (!expected || token !== expected)
+  ) {
     return new NextResponse(null, { status: 404 })
   }
   saleLogger.fatal`SYNTHETIC alert-chain test ${new Date().toISOString()}`

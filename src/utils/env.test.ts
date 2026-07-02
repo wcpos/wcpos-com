@@ -43,4 +43,15 @@ describe('env validation with empty-string platform variables', () => {
       'Invalid environment variables',
     )
   })
+
+  it('keeps a blank NODE_ENV strict instead of defaulting to development', async () => {
+    // Security-sensitive code fail-opens on NODE_ENV !== 'production'; a
+    // blank platform value must fail the build, not become 'development'.
+    vi.stubEnv('NODE_ENV', '')
+    vi.resetModules()
+
+    await expect(import('./env')).rejects.toThrow(
+      'Invalid environment variables',
+    )
+  })
 })

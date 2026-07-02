@@ -106,12 +106,20 @@ const envSchema = z.object({
  * dies. Took production deploys down on 2026-07-02 when placeholder alerting
  * vars (LOKI_URL, DISCORD_WEBHOOK_URL, …) were saved empty. Genuinely
  * malformed non-empty values still fail loudly.
+ *
+ * NODE_ENV is exempt: a blank NODE_ENV must fail the enum rather than fall
+ * back to the 'development' default — security-sensitive code fail-opens on
+ * `env.NODE_ENV !== 'production'` (e.g. the Turnstile guard).
  */
+const KEEP_EMPTY = new Set(['NODE_ENV'])
+
 export function definedEnvEntries(
   source: Record<string, string | undefined>,
 ): Record<string, string | undefined> {
   return Object.fromEntries(
-    Object.entries(source).filter(([, value]) => value !== ''),
+    Object.entries(source).filter(
+      ([key, value]) => value !== '' || KEEP_EMPTY.has(key),
+    ),
   )
 }
 
