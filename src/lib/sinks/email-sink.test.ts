@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import type { LogRecord } from '@logtape/logtape'
 import { createEmailSink } from './email-sink'
+import { stubVercelRequestContext } from '@/test/vercel-request-context'
 
 function record(overrides: Partial<LogRecord> = {}): LogRecord {
   return {
@@ -79,17 +80,13 @@ describe('createEmailSink', () => {
   })
 
   it('registers the send with the Vercel request context so serverless does not drop it', () => {
-    const REQUEST_CONTEXT = Symbol.for('@vercel/request-context')
-    const waitUntil = vi.fn()
-    ;(globalThis as { [REQUEST_CONTEXT]?: unknown })[REQUEST_CONTEXT] = {
-      get: () => ({ waitUntil }),
-    }
+    const ctx = stubVercelRequestContext()
     try {
       const sink = createEmailSink({ apiKey: 'k', to: 'o@e.com', from: 'a@b.com' })
       sink(record())
-      expect(waitUntil).toHaveBeenCalledTimes(1)
+      expect(ctx.waitUntil).toHaveBeenCalledTimes(1)
     } finally {
-      delete (globalThis as { [REQUEST_CONTEXT]?: unknown })[REQUEST_CONTEXT]
+      ctx.restore()
     }
   })
 })

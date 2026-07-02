@@ -83,6 +83,8 @@ export function createEmailSink(options: EmailSinkOptions): Sink {
           Authorization: `Bearer ${apiKey}`,
         },
         body: JSON.stringify({ from, to, subject, html }),
+        // Bound the waitUntil-extended function lifetime if Resend hangs.
+        signal: AbortSignal.timeout(3000),
       }).catch(() => {
         // Resend unavailable — silently drop. Discord is the redundant channel.
       })

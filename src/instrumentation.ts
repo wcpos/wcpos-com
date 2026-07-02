@@ -22,11 +22,11 @@ export async function register() {
         apiKey: process.env.LOKI_API_KEY,
         labels: {
           service: 'wcpos-com',
-          environment: process.env.NODE_ENV ?? 'development',
+          // NODE_ENV is 'production' on Vercel previews too — VERCEL_ENV is
+          // the value that distinguishes production/preview/development.
+          environment:
+            process.env.VERCEL_ENV ?? process.env.NODE_ENV ?? 'development',
         },
-        // Serverless functions freeze after responding — batching would drop
-        // every entry that hasn't hit the 5s timer. Push per-record on Vercel.
-        immediate: Boolean(process.env.VERCEL),
       })
     }
 

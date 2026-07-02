@@ -69,6 +69,8 @@ export function createDiscordSink(options: DiscordSinkOptions): Sink {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, embeds: [embed] }),
+        // Bound the waitUntil-extended function lifetime if Discord hangs.
+        signal: AbortSignal.timeout(3000),
       }).catch(() => {
         // Discord unavailable — silently drop
       })
