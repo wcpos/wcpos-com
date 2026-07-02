@@ -10,7 +10,6 @@ import {
 } from 'motion/react'
 import { cn } from '@/lib/utils'
 import { useActGravity } from './act-gravity'
-import { CounterProps } from './acts/counter-props'
 import { CloudSync } from './acts/cloud-sync'
 import { CyclingDevice } from './acts/cycling-device'
 import { DotOrbit } from './acts/dot-orbit'
@@ -54,11 +53,13 @@ const COPY_1_HIDDEN_PROGRESS = K.copy1Opacity[0][2]
  * not, so the pinned rotateX is a constant.
  */
 const COUNTER_PHOTO = {
-  width: 1408,
+  width: 1376,
   height: 768,
-  // width is the trapezoid's mid-line (top edge 323, bottom 287) — with
-  // per-element perspective the projected mid-line width is exact.
-  tablet: { cx: 567, cy: 536, width: 305, height: 170 },
+  // width is the tablet body trapezoid's mid-line (top edge wider than
+  // bottom) — with per-element perspective the projected mid-line width is
+  // exact. Coordinates are in the source image's pixel space; the shipped
+  // asset only needs the same aspect ratio.
+  tablet: { cx: 559, cy: 536, width: 297, height: 165 },
 } as const
 
 /** DeviceTablet's unscaled CSS box (see devices/tablet.tsx). */
@@ -119,7 +120,17 @@ function useStageSize(ref: React.RefObject<HTMLDivElement | null>) {
  * all x/y values resolved to px against the measured stage (single unit —
  * mixing the pin's px with the flight path's vw/vh caused drift).
  */
-function pinnedTabletTracks(size: StageSize | null) {
+type TabletTracks = {
+  rotateX: Track
+  rotateZ: Track
+  scale: Track
+  x: Track
+  y: Track
+  /** true once x/y values are px resolved against the measured stage */
+  px: boolean
+}
+
+function pinnedTabletTracks(size: StageSize | null): TabletTracks {
   if (!size) {
     return {
       rotateX: K.tabletRotateX,
@@ -228,14 +239,10 @@ function PinnedStoryScroller() {
   const bgWarmScale = useTrack(progress, K.bgWarmScale)
   const bgSlateOpacity = useTrack(progress, K.bgSlateOpacity)
 
-  // counter props
-  const propsOpacity = useTrack(progress, K.propsOpacity)
-  const propsY = useTrack(progress, K.propsY, 'vh')
-  const propsScale = useTrack(progress, K.propsScale)
-
   // tablet — counter-hold stops come from the measured photo pin
   const stageRef = React.useRef<HTMLDivElement>(null)
   const stageSize = useStageSize(stageRef)
+  const tabletOpacity = useTrack(progress, K.tabletOpacity)
   const tabletTracks = React.useMemo(
     () => pinnedTabletTracks(stageSize),
     [stageSize]
@@ -343,14 +350,6 @@ function PinnedStoryScroller() {
           <div className={cn('absolute inset-0', styles.ribbonMask)} />
         </motion.div>
 
-        {/* act 1 counter dressing */}
-        <motion.div
-          className="absolute inset-0"
-          style={{ opacity: propsOpacity, y: propsY, scale: propsScale }}
-        >
-          <CounterProps className="hidden" />
-        </motion.div>
-
         {/* the tablet — one element across all four acts. Translate lives on
             the outer wrapper and rotate/scale/perspective on the inner one:
             translating inside a perspective() transform projects the plane
@@ -361,7 +360,7 @@ function PinnedStoryScroller() {
         <div className="absolute left-1/2 top-1/2 z-10">
           <motion.div
             className="-ml-[230px] -mt-[159px]"
-            style={{ x: tabletX, y: tabletY }}
+            style={{ opacity: tabletOpacity, x: tabletX, y: tabletY }}
           >
             <motion.div
               className="[transform-style:preserve-3d]"
