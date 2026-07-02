@@ -23,7 +23,7 @@ export const ACT_HOLDS = [0.4, 0.64, 0.95] as const
 export const CATCH_RADIUS = 0.05
 
 /** Dead zone so a settle that lands on the plateau doesn't re-trigger. */
-const DEAD_ZONE = 0.004
+export const DEAD_ZONE = 0.004
 
 export function nearestHold(progress: number): number | null {
   let best: number | null = null
