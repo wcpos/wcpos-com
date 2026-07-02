@@ -50,19 +50,21 @@ function stubMatchMedia({ reducedMotion }: { reducedMotion: boolean }) {
 }
 
 describe('PosScreen', () => {
-  it('shows the product grid and cart on tablet screens', () => {
+  it('shows the product grid and cart panel on tablet screens', () => {
     render(<PosScreen variant="tablet" />)
 
     expect(screen.getByText('Tote Bag')).toBeInTheDocument()
-    expect(screen.getByText('Cart')).toBeInTheDocument()
+    expect(screen.getByText('Customer:')).toBeInTheDocument()
     expect(screen.getByText('Charge $69')).toBeInTheDocument()
   })
 
-  it('shows a simplified list on phone screens', () => {
+  it('shows the mobile layout with bottom nav on phone screens', () => {
     render(<PosScreen variant="phone" />)
 
     expect(screen.getByText('Tote Bag')).toBeInTheDocument()
-    expect(screen.queryByText('Cart')).not.toBeInTheDocument()
+    expect(screen.getByText('Products')).toBeInTheDocument()
+    expect(screen.getByText('Cart')).toBeInTheDocument()
+    expect(screen.queryByText('Customer:')).not.toBeInTheDocument()
   })
 })
 
