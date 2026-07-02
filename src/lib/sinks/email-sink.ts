@@ -1,5 +1,6 @@
 import type { LogRecord, Sink } from '@logtape/logtape'
 import { deliver } from './deliver'
+import { stringifyLogPart } from './stringify-log-part'
 
 /**
  * Email sink for the immediate-attention tier. Fires on `fatal` ONLY (the
@@ -37,14 +38,6 @@ export function createEmailSink(options: EmailSinkOptions): Sink {
 
   const lastSent = new Map<string, number>()
 
-  const safeStringify = (value: unknown) => {
-    try {
-      return typeof value === 'string' ? value : JSON.stringify(value)
-    } catch {
-      return '[unserializable]'
-    }
-  }
-
   return (record: LogRecord) => {
     if (record.level !== 'fatal') return
     if (to.length === 0) return
@@ -57,10 +50,10 @@ export function createEmailSink(options: EmailSinkOptions): Sink {
     if (now - last < rateLimitMs) return
     lastSent.set(category, now)
 
-    const message = record.message.map(safeStringify).join('')
+    const message = record.message.map(stringifyLogPart).join('')
     const fieldLines = Object.entries(record.properties)
       .slice(0, 10)
-      .map(([name, value]) => `${name}: ${safeStringify(value).slice(0, 500)}`)
+      .map(([name, value]) => `${name}: ${stringifyLogPart(value).slice(0, 500)}`)
       .join('\n')
 
     const subject = `[FATAL] wcpos-com: ${category}`.slice(0, 200)

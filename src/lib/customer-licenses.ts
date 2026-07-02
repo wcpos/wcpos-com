@@ -10,7 +10,10 @@ import {
   type LicenseReference,
 } from '@/lib/licenses'
 import { normalizeLicenseStatus } from '@/lib/license-status'
-import { licenseClient } from '@/services/core/external/license-client'
+import {
+  licenseClient,
+  KeygenRequestError,
+} from '@/services/core/external/license-client'
 import { licenseLogger } from '@/lib/logger'
 
 const LICENSE_LOOKUP_BATCH_SIZE = 10
@@ -39,6 +42,13 @@ export async function resolveLicenseReference(
       const license = await licenseClient.getLicenseWithMachines(reference.id)
       return { ...license, status: normalizeLicenseStatus(license.status) }
     } catch (error) {
+      if (error instanceof KeygenRequestError && error.status === 404) {
+        // The reference points at a license Keygen never had (legacy
+        // migrated orders) — that's data, not an incident. Don't render a
+        // bogus "unknown" row for it either.
+        licenseLogger.warn`License ${reference.id} not found in Keygen; skipping`
+        return null
+      }
       licenseLogger.error`Failed to fetch license ${reference.id}: ${error}`
     }
   }

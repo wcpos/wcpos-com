@@ -41,6 +41,20 @@ describe('createDiscordSink rate limiting', () => {
     expect((fetch as ReturnType<typeof vi.fn>)).toHaveBeenCalledTimes(1)
   })
 
+  it('renders interpolated Error objects with their message, not {}', () => {
+    const sink = createDiscordSink({ webhookUrl: 'https://x' })
+    sink({
+      category: ['wcpos', 'auth'], level: 'error',
+      message: ['Failed to initiate OAuth: ', new Error('Medusa returned 500')],
+      properties: {}, timestamp: 0, rawMessage: 'Failed to initiate OAuth: {}',
+    } as unknown as LogRecord)
+    const body = JSON.parse(
+      (fetch as ReturnType<typeof vi.fn>).mock.calls[0][1].body as string
+    )
+    expect(body.embeds[0].description).toContain('Medusa returned 500')
+    expect(body.embeds[0].description).not.toContain('{}')
+  })
+
   it('registers the webhook POST with the Vercel request context so serverless does not drop it', () => {
     const ctx = stubVercelRequestContext()
     try {

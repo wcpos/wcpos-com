@@ -22,6 +22,21 @@ import { getKeygenBaseUrl } from './keygen-base-url'
 
 const BASE_URL = getKeygenBaseUrl(env.KEYGEN_HOST, env.NODE_ENV)
 
+/**
+ * A non-2xx Keygen response. Carries the HTTP status so callers can tell
+ * "this license does not exist" (404 — data, e.g. legacy migrated references
+ * that never made it into Keygen) apart from "Keygen is unhappy" (incident).
+ */
+export class KeygenRequestError extends Error {
+  constructor(
+    message: string,
+    readonly status: number
+  ) {
+    super(message)
+    this.name = 'KeygenRequestError'
+  }
+}
+
 const JSON_API_HEADERS = {
   'Content-Type': 'application/vnd.api+json',
   Accept: 'application/vnd.api+json',
@@ -158,7 +173,10 @@ async function getLicense(licenseId: string): Promise<LicenseDetail> {
   })
 
   if (!res.ok) {
-    throw new Error(`Keygen getLicense failed (${res.status}): ${await res.text()}`)
+    throw new KeygenRequestError(
+      `Keygen getLicense failed (${res.status}): ${await res.text()}`,
+      res.status
+    )
   }
 
   const json: { data: KeygenLicenseData } = await res.json()
@@ -185,7 +203,10 @@ async function getLicenseMachines(
   )
 
   if (!res.ok) {
-    throw new Error(`Keygen getLicenseMachines failed (${res.status}): ${await res.text()}`)
+    throw new KeygenRequestError(
+      `Keygen getLicenseMachines failed (${res.status}): ${await res.text()}`,
+      res.status
+    )
   }
 
   const json: { data: KeygenMachineData[] } = await res.json()

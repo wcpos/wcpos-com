@@ -1,5 +1,7 @@
 import type { LogRecord } from '@logtape/logtape'
 
+import { stringifyLogPart } from './stringify-log-part'
+
 /**
  * Pure helpers for building Loki push API payloads.
  *
@@ -24,9 +26,7 @@ export function formatLokiEntry(record: LogRecord): LokiLogEntry {
   const line = JSON.stringify({
     level: record.level,
     category: record.category.join('.'),
-    message: record.message
-      .map((part) => (typeof part === 'string' ? part : JSON.stringify(part)))
-      .join(''),
+    message: record.message.map(stringifyLogPart).join(''),
     ...(Object.keys(record.properties).length > 0
       ? { properties: record.properties }
       : {}),

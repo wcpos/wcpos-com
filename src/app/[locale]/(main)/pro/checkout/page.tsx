@@ -10,6 +10,10 @@ import { resolveProCheckoutVariant } from '@/services/core/analytics/posthog-ser
 import { ANALYTICS_DISTINCT_ID_COOKIE } from '@/lib/analytics/distinct-id'
 import { getAnalyticsConfig } from '@/lib/analytics/config'
 import { getRequestStoreEnvironment } from '@/lib/store-environment'
+import { filterPaymentsByBackendProviders } from '@/lib/checkout-payments'
+import { getEnabledPaymentProviderIds } from '@/services/core/external/medusa-client'
+import { readAccountProfileMetadata } from '@/lib/customer-profile-metadata'
+import type { BillingAddress } from '@/components/pro/checkout/billing-step'
 import type { ProCheckoutVariant } from '@/services/core/analytics/posthog-service'
 import {
   getProOfferCatalog,
@@ -78,7 +82,12 @@ async function CheckoutContent({
 
   const selectedVariantId = getSingleSearchParam(searchParams, 'variant')
   const selectedProduct = getSingleSearchParam(searchParams, 'product')
-  const { offers } = await getProOfferCatalog(undefined, storeEnv)
+  // Only offer payment methods the backend actually registers — config and
+  // backend drift independently (see checkout-payments.ts).
+  const [{ offers }, enabledProviderIds] = await Promise.all([
+    getProOfferCatalog(undefined, storeEnv),
+    getEnabledPaymentProviderIds(storeEnv),
+  ])
   const checkoutInput: ProOfferCheckoutInput = {
     product: selectedProduct,
     variant: selectedVariantId,
@@ -87,6 +96,26 @@ async function CheckoutContent({
   const selectedFullOffer = selectedOffer
     ? offers.find((offer) => offer.handle === selectedOffer.handle)
     : null
+  // Prefill billing from the saved profile (same source receipts read).
+  // Only when something is actually saved — an all-empty prefill would just
+  // override the form's own defaults with blanks.
+  let initialBillingAddress: BillingAddress | null = null
+  let initialTaxNumber: string | undefined
+  if (customer) {
+    const profile = readAccountProfileMetadata(customer.metadata)
+    if (profile.addressLine1 || profile.city || profile.postalCode) {
+      initialBillingAddress = {
+        first_name: customer.first_name ?? '',
+        last_name: customer.last_name ?? '',
+        address_1: profile.addressLine1,
+        city: profile.city,
+        postal_code: profile.postalCode,
+        country_code: profile.countryCode.toLowerCase(),
+      }
+    }
+    initialTaxNumber = profile.taxNumber || undefined
+  }
+
   const cookieStore = await cookies()
   const distinctId = cookieStore.get(ANALYTICS_DISTINCT_ID_COOKIE)?.value
   const analyticsConfig = getAnalyticsConfig(process.env)
@@ -100,6 +129,8 @@ async function CheckoutContent({
   return (
     <CheckoutClient
       customerEmail={customer?.email}
+      initialBillingAddress={initialBillingAddress}
+      initialTaxNumber={initialTaxNumber}
       selectedOfferHandle={selectedOffer?.handle}
       offerSummary={
         selectedFullOffer
@@ -113,7 +144,10 @@ async function CheckoutContent({
       }
       checkoutPath={buildCheckoutRedirectPath(searchParams)}
       experimentVariant={experimentVariant}
-      payments={storeEnv.payments}
+      payments={filterPaymentsByBackendProviders(
+        storeEnv.payments,
+        enabledProviderIds
+      )}
     />
   )
 }

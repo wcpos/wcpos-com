@@ -160,6 +160,40 @@ export async function getRegions(): Promise<MedusaRegionsResponse['regions']> {
 }
 
 /**
+ * Payment provider ids registered and enabled on the backend's regions.
+ *
+ * Returns null when the backend cannot be asked (down, or a mock without the
+ * endpoint) so callers can fail open instead of hiding every payment method
+ * on a transient error.
+ */
+export async function getEnabledPaymentProviderIds(
+  storeEnv?: StoreEnvironment
+): Promise<string[] | null> {
+  interface RegionWithProviders {
+    payment_providers?: Array<{ id: string; is_enabled?: boolean }>
+  }
+  try {
+    const response = await medusaFetch<{ regions: RegionWithProviders[] }>(
+      '/store/regions?fields=id,name,*payment_providers',
+      {},
+      storeEnv
+    )
+    const ids = new Set<string>()
+    for (const region of response.regions ?? []) {
+      for (const provider of region.payment_providers ?? []) {
+        if (provider.is_enabled !== false) {
+          ids.add(provider.id)
+        }
+      }
+    }
+    return [...ids]
+  } catch (error) {
+    storeLogger.error`Failed to fetch region payment providers: ${error}`
+    return null
+  }
+}
+
+/**
  * Format price for display
  */
 export function formatPrice(amount: number, currencyCode: string): string {

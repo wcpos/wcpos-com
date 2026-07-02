@@ -13,14 +13,28 @@ vi.mock('@/lib/customer-orders', () => ({
   getAllOrders: (...args: unknown[]) => mockGetAllOrders(...args),
 }))
 
-vi.mock('@/services/core/external/license-client', () => ({
-  licenseClient: {
-    getLicenseWithMachines: (...args: unknown[]) =>
-      mockGetLicenseWithMachines(...args),
-    validateLicenseKey: (...args: unknown[]) =>
-      mockValidateLicenseKey(...args),
-  },
-}))
+vi.mock('@/services/core/external/license-client', () => {
+  class KeygenRequestError extends Error {
+    constructor(
+      message: string,
+      readonly status: number
+    ) {
+      super(message)
+      this.name = 'KeygenRequestError'
+    }
+  }
+  return {
+    KeygenRequestError,
+    licenseClient: {
+      getLicenseWithMachines: (...args: unknown[]) =>
+        mockGetLicenseWithMachines(...args),
+      validateLicenseKey: (...args: unknown[]) =>
+        mockValidateLicenseKey(...args),
+    },
+  }
+})
+
+import { KeygenRequestError } from '@/services/core/external/license-client'
 
 
 import { getResolvedCustomerLicenses } from './customer-licenses'
@@ -164,5 +178,104 @@ describe('getResolvedCustomerLicenses', () => {
     expect(result.authenticated).toBe(true)
     expect(result.licenses).toHaveLength(1)
     expect(result.licenses[0].key).toBe('WCPOS-SESSION-3333')
+  })
+  it('skips references whose license does not exist in Keygen (404) without a placeholder row', async () => {
+    mockGetCustomer.mockResolvedValueOnce({ id: 'cust_1' })
+    mockGetAllOrders.mockResolvedValueOnce([
+      {
+        id: 'order_legacy',
+        status: 'completed',
+        display_id: 9,
+        email: 'user@example.com',
+        currency_code: 'usd',
+        total: 129,
+        subtotal: 129,
+        tax_total: 0,
+        created_at: '2021-04-03T00:00:00Z',
+        updated_at: '2021-04-03T00:00:00Z',
+        items: [],
+        metadata: {
+          legacy: true,
+          licenses: [
+            { license_id: 'lic_missing', license_key: 'WCPOS-GONE-0000' },
+          ],
+        },
+      },
+    ])
+    mockGetLicenseWithMachines.mockRejectedValueOnce(
+      new KeygenRequestError('Keygen getLicense failed (404): not found', 404)
+    )
+
+    const result = await getResolvedCustomerLicenses()
+
+    expect(result.licenses).toEqual([])
+    // 404 is terminal: no fallback key validation, no 'unknown' placeholder.
+    expect(mockValidateLicenseKey).not.toHaveBeenCalled()
+  })
+
+  it('still falls back to key validation and placeholder on non-404 Keygen errors', async () => {
+    mockGetCustomer.mockResolvedValueOnce({ id: 'cust_1' })
+    mockGetAllOrders.mockResolvedValueOnce([
+      {
+        id: 'order_outage',
+        status: 'completed',
+        display_id: 10,
+        email: 'user@example.com',
+        currency_code: 'usd',
+        total: 129,
+        subtotal: 129,
+        tax_total: 0,
+        created_at: '2026-01-01T00:00:00Z',
+        updated_at: '2026-01-01T00:00:00Z',
+        items: [],
+        metadata: {
+          licenses: [
+            { license_id: 'lic_outage', license_key: 'WCPOS-DOWN-0001' },
+          ],
+        },
+      },
+    ])
+    mockGetLicenseWithMachines.mockRejectedValueOnce(
+      new KeygenRequestError('Keygen getLicense failed (503): boom', 503)
+    )
+    mockValidateLicenseKey.mockRejectedValueOnce(new Error('still down'))
+
+    const result = await getResolvedCustomerLicenses()
+
+    // Transient outage: the key is still shown as an 'unknown' placeholder.
+    expect(result.licenses).toHaveLength(1)
+    expect(result.licenses[0].key).toBe('WCPOS-DOWN-0001')
+    expect(result.licenses[0].status).toBe('unknown')
+  })
+
+  it('ignores license references on canceled orders', async () => {
+    mockGetCustomer.mockResolvedValueOnce({ id: 'cust_1' })
+    mockGetAllOrders.mockResolvedValueOnce([
+      {
+        id: 'order_cancelled',
+        status: 'canceled',
+        display_id: 11,
+        email: 'user@example.com',
+        currency_code: 'usd',
+        total: 129,
+        subtotal: 129,
+        tax_total: 0,
+        created_at: '2021-04-03T00:00:00Z',
+        updated_at: '2021-04-03T00:00:00Z',
+        items: [],
+        metadata: {
+          legacy: true,
+          wc_order_status: 'wc-cancelled',
+          licenses: [
+            { license_id: 'lic_cancelled', license_key: 'WCPOS-CANC-0002' },
+          ],
+        },
+      },
+    ])
+
+    const result = await getResolvedCustomerLicenses()
+
+    expect(result.licenses).toEqual([])
+    expect(mockGetLicenseWithMachines).not.toHaveBeenCalled()
   })
 })

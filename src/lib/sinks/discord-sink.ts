@@ -1,5 +1,6 @@
 import type { LogRecord, Sink } from '@logtape/logtape'
 import { deliver } from './deliver'
+import { stringifyLogPart } from './stringify-log-part'
 
 interface DiscordSinkOptions {
   webhookUrl: string
@@ -18,14 +19,6 @@ export function createDiscordSink(options: DiscordSinkOptions): Sink {
   } = options
 
   const lastSent = new Map<string, number>()
-
-  const safeStringify = (value: unknown) => {
-    try {
-      return typeof value === 'string' ? value : JSON.stringify(value)
-    } catch {
-      return '[unserializable]'
-    }
-  }
 
   const colors: Record<string, number> = {
     error: 15158332, // red
@@ -48,7 +41,7 @@ export function createDiscordSink(options: DiscordSinkOptions): Sink {
       lastSent.set(category, now)
     }
 
-    const message = record.message.map(safeStringify).join('')
+    const message = record.message.map(stringifyLogPart).join('')
 
     const embed = {
       title: `${record.level.toUpperCase()}: ${category}`,
@@ -59,7 +52,7 @@ export function createDiscordSink(options: DiscordSinkOptions): Sink {
         .slice(0, 5)
         .map(([name, value]) => ({
           name,
-          value: safeStringify(value).slice(0, 1024),
+          value: stringifyLogPart(value).slice(0, 1024),
           inline: true,
         })),
     }

@@ -23,6 +23,29 @@ export function billingAddressSummary(address: BillingAddress): string {
   return `${address.address_1}, ${address.city} ${address.postal_code.toUpperCase()}, ${address.country_code.toUpperCase()}`
 }
 
+/**
+ * What the optional tax-registration field is called locally. Mirrors the
+ * profile form's per-country vocabulary (profile-edit-form.tsx) — the value
+ * itself is stored as one field either way.
+ */
+const TAX_ID_LABELS: Record<string, string> = {
+  au: 'ABN',
+  ca: 'GST/HST number',
+  de: 'VAT number',
+  es: 'NIF / VAT number',
+  fr: 'VAT number',
+  gb: 'VAT number',
+  it: 'Partita IVA',
+  jp: 'Tax registration number',
+  nl: 'VAT number',
+  nz: 'GST number',
+  us: 'EIN / Tax ID',
+}
+
+export function taxIdLabel(countryCode: string): string {
+  return TAX_ID_LABELS[countryCode.toLowerCase()] ?? 'Tax ID / VAT number'
+}
+
 const COUNTRIES: Array<{ code: string; label: string }> = [
   { code: 'au', label: 'Australia' },
   { code: 'at', label: 'Austria' },
@@ -53,11 +76,20 @@ const COUNTRIES: Array<{ code: string; label: string }> = [
 
 interface BillingStepProps {
   initialAddress?: BillingAddress | null
+  /** Prefill for the optional tax field (customer profile's taxNumber). */
+  initialTaxNumber?: string
   /** Resolves when the address is persisted; rejections keep the step open. */
-  onSubmit: (address: BillingAddress) => Promise<void>
+  onSubmit: (
+    address: BillingAddress,
+    extras: { taxNumber: string }
+  ) => Promise<void>
 }
 
-export function BillingStep({ initialAddress, onSubmit }: BillingStepProps) {
+export function BillingStep({
+  initialAddress,
+  initialTaxNumber,
+  onSubmit,
+}: BillingStepProps) {
   const [firstName, setFirstName] = useState(initialAddress?.first_name ?? '')
   const [lastName, setLastName] = useState(initialAddress?.last_name ?? '')
   const [address1, setAddress1] = useState(initialAddress?.address_1 ?? '')
@@ -68,6 +100,7 @@ export function BillingStep({ initialAddress, onSubmit }: BillingStepProps) {
   const [countryCode, setCountryCode] = useState(
     initialAddress?.country_code ?? 'us'
   )
+  const [taxNumber, setTaxNumber] = useState(initialTaxNumber ?? '')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -77,14 +110,17 @@ export function BillingStep({ initialAddress, onSubmit }: BillingStepProps) {
     setIsSubmitting(true)
     setError(null)
     try {
-      await onSubmit({
-        first_name: firstName.trim(),
-        last_name: lastName.trim(),
-        address_1: address1.trim(),
-        city: city.trim(),
-        postal_code: postalCode.trim(),
-        country_code: countryCode,
-      })
+      await onSubmit(
+        {
+          first_name: firstName.trim(),
+          last_name: lastName.trim(),
+          address_1: address1.trim(),
+          city: city.trim(),
+          postal_code: postalCode.trim(),
+          country_code: countryCode,
+        },
+        { taxNumber: taxNumber.trim() }
+      )
     } catch (error) {
       const paymentRefreshError =
         error instanceof Error && error.name === 'PaymentRefreshError'
@@ -174,6 +210,18 @@ export function BillingStep({ initialAddress, onSubmit }: BillingStepProps) {
             </option>
           ))}
         </select>
+      </div>
+
+      <div className="space-y-1.5">
+        <Label htmlFor="billing-tax-number">
+          {taxIdLabel(countryCode)}{' '}
+          <span className="text-muted-foreground font-normal">(optional)</span>
+        </Label>
+        <Input
+          id="billing-tax-number"
+          value={taxNumber}
+          onChange={(event) => setTaxNumber(event.target.value)}
+        />
       </div>
 
       {error && (

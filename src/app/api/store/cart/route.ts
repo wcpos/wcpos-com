@@ -4,12 +4,49 @@ import {
   getCart,
   updateCart,
 } from '@/services/core/external/medusa-client'
-import { getCustomer } from '@/lib/medusa-auth'
+import {
+  getCustomer,
+  updateCustomer,
+  type MedusaCustomer,
+} from '@/lib/medusa-auth'
 import { storeLogger } from '@/lib/logger'
+import { mergeAccountProfileMetadataPatch } from '@/lib/customer-profile-metadata'
 import type { CreateCartInput } from '@/types/medusa'
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value)
+}
+
+function asTrimmedString(value: unknown): string {
+  return typeof value === 'string' ? value.trim() : ''
+}
+
+/**
+ * Mirror confirmed billing details into the customer profile
+ * (metadata.account_profile) — receipts read the profile, and the next
+ * checkout prefills from it. Best-effort: profile sync must never fail the
+ * purchase, so errors are logged and swallowed.
+ */
+async function syncBillingToProfile(
+  customer: MedusaCustomer,
+  billingAddress: Record<string, unknown>,
+  taxNumber: string
+): Promise<void> {
+  const countryCode = asTrimmedString(billingAddress.country_code)
+  const metadata = mergeAccountProfileMetadataPatch(customer.metadata, {
+    countryCode: countryCode ? countryCode.toUpperCase() : undefined,
+    addressLine1: asTrimmedString(billingAddress.address_1) || undefined,
+    city: asTrimmedString(billingAddress.city) || undefined,
+    postalCode: asTrimmedString(billingAddress.postal_code) || undefined,
+    taxNumber: taxNumber || undefined,
+  })
+  if (!metadata) return
+
+  try {
+    await updateCustomer({ metadata })
+  } catch (error) {
+    storeLogger.error`Failed to sync billing address to customer profile: ${error}`
+  }
 }
 
 /**
@@ -142,6 +179,16 @@ export async function PATCH(request: NextRequest) {
     if (isRecord(body.billing_address)) {
       updateData.billing_address = body.billing_address
     }
+    // The one metadata key the browser may set: the billing step's optional
+    // tax registration (ABN/VAT/EIN). Medusa merges metadata keys, so this
+    // cannot clobber the server-owned experiment attribution.
+    const taxNumber =
+      isRecord(body.metadata) && typeof body.metadata.taxNumber === 'string'
+        ? body.metadata.taxNumber.trim().slice(0, 64)
+        : ''
+    if (taxNumber) {
+      updateData.metadata = { taxNumber }
+    }
 
     const cart = await updateCart(cartId, {
       ...updateData,
@@ -153,6 +200,10 @@ export async function PATCH(request: NextRequest) {
         { error: 'Failed to update cart' },
         { status: 500 }
       )
+    }
+
+    if (isRecord(body.billing_address)) {
+      await syncBillingToProfile(customer, body.billing_address, taxNumber)
     }
 
     return NextResponse.json({ cart })
