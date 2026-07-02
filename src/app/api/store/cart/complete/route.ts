@@ -100,6 +100,9 @@ export async function POST(request: NextRequest) {
           })
         : 'control'
 
+      // Fire-and-forget is safe here: trackServerEvent registers its own
+      // delivery with the request's waitUntil, so the Vercel freeze after
+      // the response cannot drop the conversion event.
       void trackServerEvent('checkout_completed', {
         experiment: typeof experiment === 'string' ? experiment : 'pro_checkout_v1',
         variant,

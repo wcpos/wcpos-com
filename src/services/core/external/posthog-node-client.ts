@@ -1,5 +1,6 @@
 import 'server-only'
 import { PostHog } from 'posthog-node'
+import { deliver } from '@/lib/sinks/deliver'
 
 let client: PostHog | null = null
 
@@ -27,7 +28,27 @@ export function getPostHogServerClient(env: PostHogServerEnv): PostHog | null {
   const host = env.NEXT_PUBLIC_POSTHOG_HOST
   if (!key || !host) return null
   if (!client) {
-    client = new PostHog(key, { host, flushAt: 1, flushInterval: 0 })
+    client = new PostHog(key, {
+      host,
+      flushAt: 1,
+      flushInterval: 0,
+      // On Vercel the runtime freezes the moment the response returns, so the
+      // capture POST the SDK fires internally is dropped mid-flight — the same
+      // bug the log sinks had. The SDK registers its flush promise with the
+      // request's waitUntil (looked up per-request by deliver) at enqueue
+      // time, before the freeze.
+      waitUntil: deliver,
+      // waitUntil extends the *billed* function lifetime, so cap how long a
+      // wedged PostHog can hold it open: two 3s attempts 250ms apart (~6.25s
+      // worst case; the SDK defaults are 4 attempts × 10s with 3s idle sleeps
+      // between — nearly a minute).
+      requestTimeout: 3000,
+      fetchRetryCount: 1,
+      fetchRetryDelay: 250,
+      // With flushAt: 1 every capture flushes immediately, so the SDK's 50ms
+      // waitUntil debounce window only adds keep-alive time — collapse it.
+      waitUntilDebounceMs: 0,
+    })
   }
   return client
 }

@@ -1,5 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { ANALYTICS_CONSENT_COOKIE } from '@/lib/analytics/consent'
+import { stubVercelRequestContext } from '@/test/vercel-request-context'
 
 const mockCookieGet = vi.fn()
 
@@ -170,5 +171,28 @@ describe('trackServerEvent', () => {
         properties: expect.objectContaining({ distinct_id: 'anon_1' }),
       })
     )
+  })
+
+  it('registers its own delivery with the request waitUntil so fire-and-forget callers survive the post-response freeze', async () => {
+    const ctx = stubVercelRequestContext()
+    try {
+      vi.stubEnv('NEXT_PUBLIC_POSTHOG_HOST', 'https://analytics.example.com')
+      vi.stubEnv('NEXT_PUBLIC_POSTHOG_KEY', 'phc_test')
+
+      const tracked = trackServerEvent('checkout_completed', {
+        distinct_id: 'anon_1',
+      })
+
+      // The registration must happen synchronously, before the first await:
+      // once the response returns, the request context is gone and it is too
+      // late to register anything.
+      expect(ctx.waitUntil).toHaveBeenCalledTimes(1)
+
+      await tracked
+      await expect(ctx.waitUntil.mock.calls[0][0]).resolves.toBeUndefined()
+      expect(captureMock).toHaveBeenCalledTimes(1)
+    } finally {
+      ctx.restore()
+    }
   })
 })

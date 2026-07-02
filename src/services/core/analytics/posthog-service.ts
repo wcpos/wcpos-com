@@ -6,6 +6,7 @@ import {
   hasAnalyticsConsent,
 } from '@/lib/analytics/consent'
 import { createPostHogServerRecorder } from './posthog-server-recorder'
+import { deliver } from '@/lib/sinks/deliver'
 
 export type ProCheckoutVariant = 'control' | 'value_copy'
 
@@ -139,7 +140,7 @@ export async function resolveProCheckoutVariant({
 // request-scoped cookies; this function is the single server consent seam.
 const serverRecorder = createPostHogServerRecorder(process.env)
 
-export async function trackServerEvent(
+async function captureServerEvent(
   eventName: string,
   properties: Record<string, unknown>
 ): Promise<void> {
@@ -153,4 +154,19 @@ export async function trackServerEvent(
     : undefined
 
   serverRecorder.capture({ name: eventName, properties, distinctId })
+}
+
+export function trackServerEvent(
+  eventName: string,
+  properties: Record<string, unknown>
+): Promise<void> {
+  const tracked = captureServerEvent(eventName, properties)
+  // Registered with the request's waitUntil here, synchronously, so callers
+  // can stay fire-and-forget: on Vercel a floating promise is dropped when
+  // the function freezes after the response, and the consent read above is
+  // async. This covers the span up to enqueue; the SDK covers its own
+  // capture POST (see posthog-node-client). The registered copy swallows
+  // rejections; callers still see them on the returned promise.
+  deliver(tracked.catch(() => {}))
+  return tracked
 }
