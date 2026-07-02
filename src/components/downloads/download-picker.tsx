@@ -1,121 +1,15 @@
 'use client'
 
 import { useSyncExternalStore } from 'react'
-import {
-  Laptop,
-  Smartphone,
-  Globe,
-  Download,
-  ChevronDown,
-  ArrowRight,
-  type LucideIcon,
-} from 'lucide-react'
+import { Download, ChevronDown, ArrowRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import {
+  PLATFORMS,
+  resolvePlatform,
+  type PlatformKey,
+} from '@/components/downloads/platforms'
 import { cn } from '@/lib/utils'
 
-export type PlatformKey =
-  | 'mac-arm'
-  | 'mac-intel'
-  | 'win'
-  | 'linux'
-  | 'ios'
-  | 'android'
-  | 'web'
-
-type Kind = 'desktop' | 'mobile' | 'web'
-
-interface Platform {
-  kind: Kind
-  icon: LucideIcon
-  name: string
-  /** Word used in "Recommended for your …". */
-  deviceWord: string
-  /** Short descriptor shown after the version, e.g. "Apple Silicon · .dmg". */
-  short: string
-  href: string
-  /** Primary button label. */
-  action: string
-  /** Label for the row in the "other platforms" list. */
-  rowAction: string
-}
-
-const ELECTRON = (slug: string) =>
-  `https://updates.wcpos.com/v1/electron/download/${slug}`
-
-const PLATFORMS: Record<PlatformKey, Platform> = {
-  'mac-arm': {
-    kind: 'desktop',
-    icon: Laptop,
-    name: 'macOS',
-    deviceWord: 'Mac',
-    short: 'Apple Silicon · .dmg',
-    href: ELECTRON('darwin-arm64'),
-    action: 'Download for macOS',
-    rowAction: 'Download',
-  },
-  'mac-intel': {
-    kind: 'desktop',
-    icon: Laptop,
-    name: 'macOS (Intel)',
-    deviceWord: 'Mac',
-    short: 'Intel · .dmg',
-    href: ELECTRON('darwin-x64'),
-    action: 'Download for macOS',
-    rowAction: 'Download',
-  },
-  win: {
-    kind: 'desktop',
-    icon: Laptop,
-    name: 'Windows',
-    deviceWord: 'Windows PC',
-    short: 'Windows 10/11 · .exe',
-    href: ELECTRON('win32-x64'),
-    action: 'Download for Windows',
-    rowAction: 'Download',
-  },
-  linux: {
-    kind: 'desktop',
-    icon: Laptop,
-    name: 'Linux',
-    deviceWord: 'Linux machine',
-    short: '.AppImage',
-    href: ELECTRON('linux-x64'),
-    action: 'Download for Linux',
-    rowAction: 'Download',
-  },
-  ios: {
-    kind: 'mobile',
-    icon: Smartphone,
-    name: 'iOS & iPad',
-    deviceWord: 'iPhone or iPad',
-    short: 'Public TestFlight beta',
-    href: 'https://testflight.apple.com/join/JGBdVRrW',
-    action: 'Join the iOS beta',
-    rowAction: 'Join beta',
-  },
-  android: {
-    kind: 'mobile',
-    icon: Smartphone,
-    name: 'Android',
-    deviceWord: 'Android device',
-    short: 'Google Play testing beta',
-    href: 'https://play.google.com/apps/testing/com.wcpos.main',
-    action: 'Join the Android beta',
-    rowAction: 'Join beta',
-  },
-  web: {
-    kind: 'web',
-    icon: Globe,
-    name: 'Web',
-    deviceWord: 'browser',
-    short: 'No install needed',
-    href: 'https://demo.wcpos.com/pos',
-    action: 'Open the web demo',
-    rowAction: 'Open',
-  },
-}
-
-/** Order the "other platforms" list is rendered in. */
 const ORDER: PlatformKey[] = [
   'mac-arm',
   'mac-intel',
@@ -126,32 +20,33 @@ const ORDER: PlatformKey[] = [
   'web',
 ]
 
-/**
- * Map a browser environment to the best-fit platform. Pure so it can be
- * unit-tested without a DOM.
- */
-export function resolvePlatform(
-  userAgent: string,
-  platform: string,
-  maxTouchPoints: number,
-): PlatformKey {
-  const ua = userAgent || ''
-  const p = platform || ''
-  // iPadOS 13+ reports as "MacIntel" with touch points — treat as iOS.
-  if (/iPhone|iPod/i.test(ua) || /iPad/i.test(ua) || (/Mac/i.test(p) && maxTouchPoints > 1)) {
-    return 'ios'
-  }
-  if (/Android/i.test(ua)) return 'android'
-  if (/Win/i.test(p) || /Windows/i.test(ua)) return 'win'
-  if (/Linux/i.test(p) && !/Android/i.test(ua)) return 'linux'
-  if (/Mac/i.test(p)) return 'mac-arm'
-  return 'mac-arm'
+const DEVICE_WORDS: Record<PlatformKey, string> = {
+  'mac-arm': 'Mac',
+  'mac-intel': 'Mac',
+  win: 'Windows PC',
+  linux: 'Linux machine',
+  ios: 'iPhone or iPad',
+  android: 'Android device',
+  web: 'browser',
+}
+
+const ROW_ACTIONS: Record<PlatformKey, string> = {
+  'mac-arm': 'Download',
+  'mac-intel': 'Download',
+  win: 'Download',
+  linux: 'Download',
+  ios: 'Join beta',
+  android: 'Join beta',
+  web: 'Open',
 }
 
 /** Platform never changes within a session, so the store never emits. */
 const subscribePlatform = () => () => {}
 
-function metaLine(p: Platform, version: string | null): string {
+function metaLine(
+  p: (typeof PLATFORMS)[PlatformKey],
+  version: string | null,
+): string {
   if (p.kind === 'desktop') {
     return version
       ? `Desktop app · version ${version} · ${p.short}`
@@ -186,7 +81,7 @@ export function DownloadPicker({
   return (
     <div className="rounded-2xl border bg-card p-6 shadow-sm sm:p-7">
       <p className="mb-5 text-sm text-muted-foreground">
-        Recommended for your {info.deviceWord}
+        Recommended for your {DEVICE_WORDS[current]}
       </p>
 
       <div className="mb-5 flex items-center gap-4">
@@ -242,7 +137,9 @@ export function DownloadPicker({
                 </span>
                 <span className="min-w-0">
                   <span className="font-medium">{other.name}</span>{' '}
-                  <span className="text-xs text-muted-foreground">{other.short}</span>
+                  <span className="text-xs text-muted-foreground">
+                    {other.short}
+                  </span>
                 </span>
                 <a
                   href={other.href}
@@ -250,7 +147,7 @@ export function DownloadPicker({
                     'ml-auto inline-flex items-center gap-1 font-medium text-wcpos-red-accent hover:underline',
                   )}
                 >
-                  {other.rowAction}
+                  {ROW_ACTIONS[key]}
                   <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
                 </a>
               </li>

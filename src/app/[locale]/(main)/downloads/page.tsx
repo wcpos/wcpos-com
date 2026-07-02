@@ -8,7 +8,9 @@ import { Card } from '@/components/ui/card'
 import { Link } from '@/i18n/navigation'
 import { TrackedLocaleLink } from '@/components/analytics/tracked-locale-link'
 import { marketingMetadata } from '@/lib/seo'
+import { DownloadsHero } from '@/components/downloads/download-hero'
 import { DownloadPicker } from '@/components/downloads/download-picker'
+import { PLATFORMS } from '@/components/downloads/platforms'
 import { HowItFits } from '@/components/downloads/how-it-fits'
 import {
   ReleaseHistory,
@@ -37,22 +39,10 @@ export async function generateMetadata({
 }
 
 const DESKTOP_LINKS = [
-  {
-    label: 'macOS (Apple Silicon)',
-    href: 'https://updates.wcpos.com/v1/electron/download/darwin-arm64',
-  },
-  {
-    label: 'macOS (Intel)',
-    href: 'https://updates.wcpos.com/v1/electron/download/darwin-x64',
-  },
-  {
-    label: 'Windows',
-    href: 'https://updates.wcpos.com/v1/electron/download/win32-x64',
-  },
-  {
-    label: 'Linux',
-    href: 'https://updates.wcpos.com/v1/electron/download/linux-x64',
-  },
+  { label: 'macOS (Apple Silicon)', href: PLATFORMS['mac-arm'].href },
+  { label: 'macOS (Intel)', href: PLATFORMS['mac-intel'].href },
+  { label: 'Windows', href: PLATFORMS.win.href },
+  { label: 'Linux', href: PLATFORMS.linux.href },
 ]
 
 /**
@@ -164,10 +154,21 @@ function DeviceCard({
 
 export default async function DownloadsPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ locale: string }>
+  searchParams?: Promise<Record<string, string | string[] | undefined>>
 }) {
   const { locale } = await params
+  let showPrototypeHero = false
+
+  if (process.env.NODE_ENV !== 'production') {
+    const resolvedSearchParams = searchParams ? await searchParams : {}
+    const variantParam = resolvedSearchParams.variant
+    const variant = Array.isArray(variantParam) ? variantParam[0] : variantParam
+    showPrototypeHero = variant === 'hero'
+  }
+
   setRequestLocale(locale)
 
   const [versions, releases] = await Promise.all([
@@ -180,37 +181,41 @@ export default async function DownloadsPage({
   return (
     <main>
       {/* HERO */}
-      <Section
-        tone="none"
-        spacing="hero"
-        className="border-b bg-gradient-to-b from-muted/40 to-background"
-      >
-        <div className="grid items-center gap-10 lg:grid-cols-2">
-          <div>
-            <p className="text-sm font-semibold uppercase tracking-wider text-wcpos-red dark:text-wcpos-red-accent">
-              Downloads
-            </p>
-            <h1 className="mt-4 text-4xl font-bold leading-tight tracking-tight md:text-5xl">
-              Take orders on any device.
-            </h1>
-            <p className="mt-5 max-w-md text-lg text-muted-foreground">
-              WCPOS is the fast point of sale for WooCommerce — free,
-              offline-first, and in sync across desktop, tablet and phone.
-            </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Button asChild variant="brand" size="xl">
-                <a href="https://wordpress.org/plugins/woocommerce-pos/">
-                  Install the free plugin
-                </a>
-              </Button>
-              <Button asChild variant="outline" size="xl">
-                <a href="https://demo.wcpos.com/pos">Try the live demo</a>
-              </Button>
+      {showPrototypeHero ? (
+        <DownloadsHero desktopVersion={desktopVersion} />
+      ) : (
+        <Section
+          tone="none"
+          spacing="hero"
+          className="border-b bg-gradient-to-b from-muted/40 to-background"
+        >
+          <div className="grid items-center gap-10 lg:grid-cols-2">
+            <div>
+              <p className="text-sm font-semibold uppercase tracking-wider text-wcpos-red dark:text-wcpos-red-accent">
+                Downloads
+              </p>
+              <h1 className="mt-4 text-4xl font-bold leading-tight tracking-tight md:text-5xl">
+                Take orders on any device.
+              </h1>
+              <p className="mt-5 max-w-md text-lg text-muted-foreground">
+                WCPOS is the fast point of sale for WooCommerce — free,
+                offline-first, and in sync across desktop, tablet and phone.
+              </p>
+              <div className="mt-8 flex flex-wrap gap-3">
+                <Button asChild variant="brand" size="xl">
+                  <a href="https://wordpress.org/plugins/woocommerce-pos/">
+                    Install the free plugin
+                  </a>
+                </Button>
+                <Button asChild variant="outline" size="xl">
+                  <a href="https://demo.wcpos.com/pos">Try the live demo</a>
+                </Button>
+              </div>
             </div>
+            <DownloadPicker desktopVersion={desktopVersion} />
           </div>
-          <DownloadPicker desktopVersion={desktopVersion} />
-        </div>
-      </Section>
+        </Section>
+      )}
 
       {/* HOW IT FITS TOGETHER */}
       <HowItFits />
@@ -290,7 +295,7 @@ export default async function DownloadsPage({
                 </DeviceCard>
                 <DeviceCard icon={Smartphone} title="iOS & iPad" beta>
                   <a
-                    href="https://testflight.apple.com/join/JGBdVRrW"
+                    href={PLATFORMS.ios.href}
                     className="font-medium text-wcpos-red-accent hover:underline"
                   >
                     Join the TestFlight beta
@@ -298,7 +303,7 @@ export default async function DownloadsPage({
                 </DeviceCard>
                 <DeviceCard icon={Smartphone} title="Android" beta>
                   <a
-                    href="https://play.google.com/apps/testing/com.wcpos.main"
+                    href={PLATFORMS.android.href}
                     className="font-medium text-wcpos-red-accent hover:underline"
                   >
                     Join on Google Play
@@ -306,7 +311,7 @@ export default async function DownloadsPage({
                 </DeviceCard>
                 <DeviceCard icon={Globe} title="Web">
                   <a
-                    href="https://demo.wcpos.com/pos"
+                    href={PLATFORMS.web.href}
                     className="font-medium text-wcpos-red-accent hover:underline"
                   >
                     Open the live demo
