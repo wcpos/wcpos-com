@@ -11,6 +11,8 @@ import {
 import { cn } from '@/lib/utils'
 import { CounterProps } from './acts/counter-props'
 import { CloudSync } from './acts/cloud-sync'
+import { CyclingDevice } from './acts/cycling-device'
+import { DotOrbit } from './acts/dot-orbit'
 import {
   CopyAct1,
   CopyAct2,
@@ -87,6 +89,7 @@ function PinnedStory() {
 }
 
 function PinnedStoryScroller() {
+  const tone = 'onLight' as const
   const scrollerRef = React.useRef<HTMLDivElement>(null)
   const { scrollYProgress: progress } = useScroll({
     target: scrollerRef,
@@ -108,9 +111,6 @@ function PinnedStoryScroller() {
   const bgWarmOpacity = useTrack(progress, K.bgWarmOpacity)
   const bgWarmScale = useTrack(progress, K.bgWarmScale)
   const bgSlateOpacity = useTrack(progress, K.bgSlateOpacity)
-  const pattern2Opacity = useTrack(progress, K.pattern2Opacity)
-  const pattern3Opacity = useTrack(progress, K.pattern3Opacity)
-  const pattern4Opacity = useTrack(progress, K.pattern4Opacity)
 
   // counter props
   const propsOpacity = useTrack(progress, K.propsOpacity)
@@ -159,40 +159,40 @@ function PinnedStoryScroller() {
 
   return (
     <div ref={scrollerRef} className="relative h-[560vh]" data-testid="story-scroller">
-      <div className="sticky top-0 h-screen overflow-hidden bg-slate-950">
+      <div className="sticky top-0 h-screen overflow-hidden bg-slate-50">
         {/* backgrounds: warm counter → slate studio */}
         <motion.div
           aria-hidden="true"
-          className={cn('absolute inset-0', styles.woodCounter)}
+          className={cn('absolute inset-0', styles.woodCounterLight)}
           style={{ opacity: bgWarmOpacity, scale: bgWarmScale }}
         >
-          <div className={cn('absolute -inset-[30%]', styles.lightPool)} />
-          <div className={cn('absolute inset-0', styles.woodVignette)} />
+          <div
+            className={cn('absolute -inset-[30%]', styles.lightPoolBright)}
+          />
         </motion.div>
         <motion.div
           aria-hidden="true"
-          className={cn('absolute inset-0 overflow-hidden', styles.slateStudio)}
+          className={cn(
+            'absolute inset-0 overflow-hidden',
+            styles.lightStudio
+          )}
           style={{ opacity: bgSlateOpacity }}
         >
-          {/* one ambient pattern per act, crossfaded with scroll progress:
-              drifting screen-grid (act 2), drifting barcode (act 3),
-              two-speed rising data particles (act 4) */}
-          <motion.div
-            className={cn('absolute -inset-40', styles.gridDrift)}
-            style={{ opacity: pattern2Opacity }}
-          />
-          <motion.div
-            className={cn('absolute -inset-40', styles.barcodePattern)}
-            style={{ opacity: pattern3Opacity }}
-          />
-          <motion.div
-            className={cn('absolute -inset-40', styles.particlesA)}
-            style={{ opacity: pattern4Opacity }}
-          />
-          <motion.div
-            className={cn('absolute -inset-40', styles.particlesB)}
-            style={{ opacity: pattern4Opacity }}
-          />
+          {/* the one continuous background: a slow-breathing brand gradient
+              that ties acts 2-4 together (per-act patterns removed — the
+              acts now illustrate their point with foreground animation) */}
+          <div
+            className={cn(
+              'absolute -inset-x-[10%] -inset-y-[20%]',
+              styles.ribbonWrap
+            )}
+          >
+            <div className={cn('absolute left-[8%] top-[-18%] h-[70%] w-[55%] rounded-full', styles.ribbonBlob1)} />
+            <div className={cn('absolute right-[-6%] top-[6%] h-[75%] w-[60%] rounded-full', styles.ribbonBlob2)} />
+            <div className={cn('absolute bottom-[-22%] left-[34%] h-[60%] w-[46%] rounded-full', styles.ribbonBlob3)} />
+            <div className={cn('absolute bottom-[-8%] left-[-8%] h-[52%] w-[38%] rounded-full', styles.ribbonBlob4)} />
+          </div>
+          <div className={cn('absolute inset-0', styles.ribbonMask)} />
         </motion.div>
 
         {/* act 1 counter dressing */}
@@ -243,7 +243,11 @@ function PinnedStoryScroller() {
             className="-ml-[75px] -mt-28"
             style={{ opacity: terminalOpacity, x: terminalX, y: '2vh' }}
           >
-            <DeviceTerminal />
+            <CyclingDevice active={act === 2} offsetMs={0}>
+              <DeviceTerminal />
+              <DeviceTerminal skin="light" />
+              <DeviceScanner />
+            </CyclingDevice>
           </motion.div>
         </div>
         <div className="absolute left-1/2 top-1/2 z-[9]">
@@ -251,23 +255,31 @@ function PinnedStoryScroller() {
             className="-ml-[105px] -mt-[74px]"
             style={{ opacity: printerOpacity, x: printerX, y: printerY }}
           >
-            <DevicePrinter />
+            <CyclingDevice active={act === 2} offsetMs={1200}>
+              <DevicePrinter />
+              <DevicePrinter skin="dark" />
+            </CyclingDevice>
           </motion.div>
           <motion.div
             className="-ml-[60px] -mt-[95px]"
             style={{ opacity: scannerOpacity, x: scannerX, y: scannerY }}
           >
-            <DeviceScanner />
+            <CyclingDevice active={act === 2} offsetMs={2300}>
+              <DeviceScanner />
+              <DeviceTerminal skin="light" className="scale-90" />
+              <DevicePrinter className="scale-90" />
+            </CyclingDevice>
           </motion.div>
         </div>
 
         {/* act 4: cloud sync */}
         <div className="absolute left-1/2 top-1/2 z-[8]">
           <motion.div
-            className="-ml-[280px] -mt-[290px]"
+            className="relative -ml-[280px] -mt-[290px]"
             style={{ opacity: cloudOpacity, x: '10vw', y: cloudY }}
           >
-            <CloudSync />
+            <DotOrbit className="absolute left-1/2 top-[190px] -translate-x-1/2 -translate-y-1/2" />
+            <CloudSync light />
           </motion.div>
         </div>
 
@@ -275,36 +287,39 @@ function PinnedStoryScroller() {
         <motion.div
           {...copy1InteractionProps}
           className={cn(
-            'absolute left-1/2 top-[10%] z-20 w-full max-w-2xl -translate-x-1/2 text-center [filter:drop-shadow(0_1px_3px_rgba(20,8,0,0.5))]',
+            'absolute left-1/2 top-[10%] z-20 w-full max-w-2xl -translate-x-1/2 text-center',
             !copy1Interactive && 'pointer-events-none'
           )}
           style={{ opacity: copy1Opacity }}
         >
-          <CopyAct1 />
+          <CopyAct1 tone={tone} />
         </motion.div>
         <motion.div
           className="pointer-events-none absolute left-[6%] top-1/2 z-20 max-w-sm -translate-y-1/2"
           style={{ opacity: copy2Opacity }}
         >
-          <CopyAct2 />
+          <CopyAct2 tone={tone} />
         </motion.div>
         <motion.div
           className="pointer-events-none absolute left-[6%] top-1/2 z-20 max-w-sm -translate-y-1/2"
           style={{ opacity: copy3Opacity }}
         >
-          <CopyAct3 />
+          <CopyAct3 tone={tone} />
         </motion.div>
         <motion.div
           className="pointer-events-none absolute left-[6%] top-1/2 z-20 max-w-sm -translate-y-1/2"
           style={{ opacity: copy4Opacity }}
         >
-          <CopyAct4 />
+          <CopyAct4 tone={tone} />
         </motion.div>
 
         {/* scroll hint */}
         <motion.div
           aria-hidden="true"
-          className="absolute bottom-6 left-1/2 z-20 -translate-x-1/2 rounded-full bg-slate-950/60 px-4 py-1.5 text-[11px] uppercase tracking-[0.14em] text-slate-400"
+          className={cn(
+            'absolute bottom-6 left-1/2 z-20 -translate-x-1/2 rounded-full px-4 py-1.5 text-[11px] uppercase tracking-[0.14em]',
+            'bg-white/70 text-slate-500'
+          )}
           style={{ opacity: hintOpacity }}
         >
           Scroll ↓
@@ -320,7 +335,9 @@ function PinnedStoryScroller() {
               key={i}
               className={cn(
                 'h-2 w-2 rounded-full transition-all duration-300',
-                i === act ? 'scale-125 bg-wcpos-red' : 'bg-slate-600'
+                i === act
+                  ? 'scale-125 bg-wcpos-red'
+                  : 'bg-slate-300'
               )}
             />
           ))}

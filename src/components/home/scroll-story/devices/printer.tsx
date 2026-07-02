@@ -2,13 +2,19 @@ import { cn } from '@/lib/utils'
 import styles from '../story.module.css'
 
 /** Thermal receipt printer, front view, printing on loop. */
-export function DevicePrinter({ className }: { className?: string }) {
+export function DevicePrinter({
+  className,
+  skin = 'light',
+}: {
+  className?: string
+  skin?: 'light' | 'dark'
+}) {
   return (
     <div
       aria-hidden="true"
       className={cn(
         'relative h-[148px] w-[210px] rounded-[18px]',
-        styles.printerBody,
+        skin === 'dark' ? styles.printerBodyDark : styles.printerBody,
         className
       )}
     >

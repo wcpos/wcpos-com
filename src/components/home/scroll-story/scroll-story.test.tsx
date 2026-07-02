@@ -194,6 +194,15 @@ describe('ScrollStory', () => {
     }
   })
 
+  it('mounts the act-4 dot orbit', () => {
+    stubMatchMedia({ reducedMotion: false })
+    render(<ScrollStory />)
+
+    expect(
+      within(screen.getByTestId('story-scroller')).getByTestId('dot-orbit')
+    ).toBeInTheDocument()
+  })
+
   it('removes the Act 1 CTAs from interaction after Act 1 fades out', () => {
     stubMatchMedia({ reducedMotion: false })
     render(<ScrollStory />)

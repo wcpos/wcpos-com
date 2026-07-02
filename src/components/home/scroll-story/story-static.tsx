@@ -48,21 +48,21 @@ function StageStrip({
 export function StoryStatic() {
   return (
     <div data-testid="story-static">
-      <Section tone="dark" spacing="hero" className="overflow-hidden bg-slate-950">
+      <Section tone="none" spacing="hero" className={cn('overflow-hidden', styles.woodCounterLight)}>
         <div className="mx-auto max-w-2xl text-center">
           {/* h1 here too: on mobile and reduced-motion renders this variant is
               the only visible one, and a page without a visible h1 loses its
               primary landmark (the pinned copy is display:none there) */}
-          <CopyAct1 headingLevel={1} />
+          <CopyAct1 headingLevel={1} tone="onLight" />
         </div>
         <StageStrip className="h-[240px] sm:h-[300px]">
           <DeviceTablet />
         </StageStrip>
       </Section>
 
-      <Section tone="dark" spacing="default" className="overflow-hidden">
+      <Section tone="none" spacing="default" className={cn('overflow-hidden', styles.lightStudio)}>
         <div className="mx-auto max-w-2xl text-center">
-          <CopyAct2 />
+          <CopyAct2 tone="onLight" />
         </div>
         <StageStrip className="h-[220px] sm:h-[280px]">
           <DevicePhone />
@@ -72,12 +72,12 @@ export function StoryStatic() {
       </Section>
 
       <Section
-        tone="dark"
+        tone="none"
         spacing="default"
-        className={cn('overflow-hidden', styles.slateStudio)}
+        className={cn('overflow-hidden', styles.lightStudio)}
       >
         <div className="mx-auto max-w-2xl text-center">
-          <CopyAct3 />
+          <CopyAct3 tone="onLight" />
         </div>
         <StageStrip className="h-[220px] sm:h-[260px]">
           <DevicePrinter />
@@ -87,15 +87,15 @@ export function StoryStatic() {
       </Section>
 
       <Section
-        tone="dark"
+        tone="none"
         spacing="default"
-        className={cn('overflow-hidden', styles.slateStudio)}
+        className={cn('overflow-hidden', styles.lightStudio)}
       >
         <div className="mx-auto max-w-2xl text-center">
-          <CopyAct4 />
+          <CopyAct4 tone="onLight" />
         </div>
         <StageStrip className="h-[260px] sm:h-[320px]">
-          <CloudSync />
+          <CloudSync light />
         </StageStrip>
       </Section>
     </div>

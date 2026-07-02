@@ -219,6 +219,10 @@
   .barcodePattern,
   .particlesA,
   .particlesB,
+  .ribbonBlob1,
+  .ribbonBlob2,
+  .ribbonBlob3,
+  .ribbonBlob4,
   .lightPool {
     animation: none;
   }
@@ -288,6 +292,20 @@
   background: linear-gradient(135deg, #164e63, #0e7490);
 }
 
+.terminalBodyLight {
+  background: linear-gradient(180deg, #ffffff, #dde4ec);
+  box-shadow:
+    0 30px 50px -24px rgb(15 23 42 / 0.35),
+    inset 0 1px 1px rgb(255 255 255 / 0.9);
+}
+
+.printerBodyDark {
+  background: linear-gradient(180deg, #3a4656, #1f2937);
+  box-shadow:
+    0 30px 50px -24px rgb(15 23 42 / 0.5),
+    inset 0 1px 1px rgb(255 255 255 / 0.18);
+}
+
 .printerBody {
   background: linear-gradient(180deg, #e8edf3, #9aa8ba);
   box-shadow:
@@ -325,4 +343,126 @@
 .wooBadge {
   background: #7f54b3;
   box-shadow: 0 0 30px rgb(127 84 179 / 0.5);
+}
+
+/* ---------- bright variants (?variant=light|ribbon prototype) ---------- */
+
+.woodCounterLight {
+  background:
+    url('/images/story/counter-wood-light.svg') center / cover,
+    repeating-linear-gradient(
+      88deg,
+      #e2c69a 0 90px,
+      #d4b487 90px 94px,
+      #dcbf92 94px 180px
+    );
+}
+
+.lightPoolBright {
+  background: radial-gradient(
+    ellipse at 32% 22%,
+    rgb(255 246 214 / 0.55),
+    transparent 55%
+  );
+  animation: story-sway 10s ease-in-out infinite alternate;
+}
+
+.lightStudio {
+  background: radial-gradient(ellipse at 50% 20%, #ffffff, #eef2f7 75%);
+}
+
+.gridDriftLight {
+  background-image:
+    linear-gradient(rgb(43 108 176 / 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(43 108 176 / 0.1) 1px, transparent 1px);
+  background-size: 48px 48px;
+  animation: story-grid-drift 9s linear infinite;
+}
+
+.barcodePatternLight {
+  background-image: repeating-linear-gradient(
+    90deg,
+    rgb(205 32 31 / 0.07) 0 2px,
+    transparent 2px 10px,
+    rgb(100 116 139 / 0.08) 10px 13px,
+    transparent 13px 32px,
+    rgb(100 116 139 / 0.1) 32px 33px,
+    transparent 33px 64px
+  );
+  animation: story-barcode-drift 14s linear infinite;
+}
+
+.particlesALight {
+  background-image: radial-gradient(
+    rgb(100 116 139 / 0.28) 1.2px,
+    transparent 1.4px
+  );
+  background-size: 60px 120px;
+  animation: story-particles-rise 16s linear infinite;
+}
+
+.particlesBLight {
+  background-image: radial-gradient(
+    rgb(16 185 129 / 0.24) 1.6px,
+    transparent 1.9px
+  );
+  background-size: 90px 120px;
+  background-position: 30px 40px;
+  animation: story-particles-rise 26s linear infinite;
+}
+
+/* Stripe-style mesh ribbon, CSS approximation for the prototype. Production
+   note (ADR-bound): swap for a ~10kb WebGL mesh (minigl-style) with this as
+   the static fallback; blobs animate transform-only under a parent blur. */
+@keyframes story-blob-a {
+  to {
+    transform: translate(9%, 14%) scale(1.12);
+  }
+}
+
+@keyframes story-blob-b {
+  to {
+    transform: translate(-10%, -8%) scale(1.08) rotate(8deg);
+  }
+}
+
+@keyframes story-blob-c {
+  to {
+    transform: translate(6%, -12%) scale(1.15);
+  }
+}
+
+.ribbonWrap {
+  filter: blur(52px) saturate(1.15);
+  opacity: 0.75;
+}
+
+.ribbonBlob1 {
+  background: radial-gradient(circle, #ff9a5c, transparent 65%);
+  animation: story-blob-a 11s ease-in-out infinite alternate;
+}
+
+.ribbonBlob2 {
+  background: radial-gradient(circle, #f14f6d, transparent 65%);
+  animation: story-blob-b 13s ease-in-out infinite alternate;
+}
+
+.ribbonBlob3 {
+  background: radial-gradient(circle, #8b5cf6, transparent 65%);
+  animation: story-blob-c 17s ease-in-out infinite alternate;
+}
+
+.ribbonBlob4 {
+  background: radial-gradient(circle, #ffd08a, transparent 65%);
+  animation: story-blob-b 15s ease-in-out infinite alternate-reverse;
+}
+
+.ribbonMask {
+  background: linear-gradient(
+    105deg,
+    rgb(253 252 251 / 1) 26%,
+    rgb(253 252 251 / 0) 44%,
+    rgb(253 252 251 / 0) 74%,
+    rgb(253 252 251 / 0.9) 90%
+  );
 }
