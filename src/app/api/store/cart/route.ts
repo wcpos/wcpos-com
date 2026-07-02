@@ -58,10 +58,18 @@ export async function POST(request: NextRequest) {
 }
 
 /**
- * GET /api/store/cart?id=xxx - Get a cart by ID
+ * GET /api/store/cart?id=xxx - Get a cart by ID (caller's carts only)
  */
 export async function GET(request: NextRequest) {
   try {
+    const customer = await getCustomer()
+    if (!customer) {
+      return NextResponse.json(
+        { error: 'Authentication required' },
+        { status: 401 }
+      )
+    }
+
     const cartId = request.nextUrl.searchParams.get('id')
 
     if (!cartId) {
@@ -73,7 +81,7 @@ export async function GET(request: NextRequest) {
 
     const cart = await getCart(cartId)
 
-    if (!cart) {
+    if (!cart || cart.email !== customer.email) {
       return NextResponse.json(
         { error: 'Cart not found' },
         { status: 404 }
@@ -92,6 +100,10 @@ export async function GET(request: NextRequest) {
 
 /**
  * PATCH /api/store/cart - Update a cart
+ *
+ * Whitelisted fields only: the checkout owns metadata/experiment
+ * attribution and region server-side, so the browser may set nothing but
+ * the billing address (email is always forced to the session customer).
  */
 export async function PATCH(request: NextRequest) {
   try {
@@ -103,14 +115,32 @@ export async function PATCH(request: NextRequest) {
       )
     }
 
-    const body = await request.json()
-    const { cartId, ...updateData } = body
+    const body = await request.json().catch(() => null)
+    if (!isRecord(body)) {
+      return NextResponse.json(
+        { error: 'Invalid request body' },
+        { status: 400 }
+      )
+    }
 
+    const cartId = typeof body.cartId === 'string' ? body.cartId.trim() : ''
     if (!cartId) {
       return NextResponse.json(
         { error: 'Cart ID is required' },
         { status: 400 }
       )
+    }
+
+    // Bind the cart to the caller: carts are created with the session
+    // customer's email, so a mismatch means someone else's cart id.
+    const existingCart = await getCart(cartId)
+    if (!existingCart || existingCart.email !== customer.email) {
+      return NextResponse.json({ error: 'Cart not found' }, { status: 404 })
+    }
+
+    const updateData: Record<string, unknown> = {}
+    if (isRecord(body.billing_address)) {
+      updateData.billing_address = body.billing_address
     }
 
     const cart = await updateCart(cartId, {

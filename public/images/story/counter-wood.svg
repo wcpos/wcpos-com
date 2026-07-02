@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1200" viewBox="0 0 1600 1200" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="base" x1="0" y1="0" x2="0.15" y2="1">
+      <stop offset="0" stop-color="#8a6544"/>
+      <stop offset="0.5" stop-color="#7a5738"/>
+      <stop offset="1" stop-color="#69482c"/>
+    </linearGradient>
+    <!-- long vertical streaks: fine wood grain -->
+    <filter id="grain" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.11 0.0032" numOctaves="4" seed="11" result="noise"/>
+      <feComponentTransfer in="noise" result="contrast">
+        <feFuncA type="gamma" amplitude="1" exponent="2.2" offset="0"/>
+      </feComponentTransfer>
+      <feColorMatrix in="contrast" type="matrix"
+        values="0 0 0 0 0.24
+                0 0 0 0 0.14
+                0 0 0 0 0.06
+                0.9 0 0 0 0"/>
+    </filter>
+    <!-- broad tonal patches: aged timber variation -->
+    <filter id="patches" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.012 0.004" numOctaves="2" seed="4" result="noise"/>
+      <feColorMatrix in="noise" type="matrix"
+        values="0 0 0 0 1
+                0 0 0 0 0.85
+                0 0 0 0 0.6
+                0.35 0 0 0 0"/>
+    </filter>
+    <!-- plank separations with bevel: dark gap + light catch-edge -->
+    <pattern id="planks" width="200" height="1200" patternUnits="userSpaceOnUse">
+      <rect width="200" height="1200" fill="none"/>
+      <rect x="195" width="3" height="1200" fill="#4a2f1a" opacity="0.55"/>
+      <rect x="198" width="2" height="1200" fill="#a97e52" opacity="0.5"/>
+    </pattern>
+    <radialGradient id="vignette" cx="0.5" cy="0.42" r="0.75">
+      <stop offset="0.55" stop-color="#1a0d04" stop-opacity="0"/>
+      <stop offset="1" stop-color="#1a0d04" stop-opacity="0.5"/>
+    </radialGradient>
+    <radialGradient id="keylight" cx="0.3" cy="0.18" r="0.7">
+      <stop offset="0" stop-color="#ffdda0" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#ffdda0" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1600" height="1200" fill="url(#base)"/>
+  <rect width="1600" height="1200" filter="url(#patches)" opacity="0.5" style="mix-blend-mode:overlay"/>
+  <rect width="1600" height="1200" filter="url(#grain)" opacity="0.55" style="mix-blend-mode:multiply"/>
+  <rect width="1600" height="1200" fill="url(#planks)"/>
+  <rect width="1600" height="1200" fill="url(#keylight)"/>
+  <rect width="1600" height="1200" fill="url(#vignette)"/>
+</svg>

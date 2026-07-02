@@ -61,6 +61,33 @@
         "description": "Take payments with any WooCommerce-compatible gateway, not just the built-in options."
       }
     },
+    "buyBox": {
+      "heading": "Get Pro",
+      "subheading": "One license, all features. Just pick how long you want updates.",
+      "termAriaLabel": "License term",
+      "cta": "Get Started",
+      "ctaValueCopy": "Get Instant Access",
+      "yearly": {
+        "title": "Yearly",
+        "subtitle": "Updates & support for 1 year",
+        "badgeLabel": "Most Popular",
+        "priceSuffix": "/yr",
+        "ctaNote": "One-time payment — never auto-renews."
+      },
+      "lifetime": {
+        "title": "Lifetime",
+        "subtitle": "Updates forever",
+        "priceSuffix": "once",
+        "ctaNote": "About {years} years of Yearly — then $0 forever.",
+        "ctaNoteSimple": "Pay once — updates forever."
+      },
+      "guaranteeLink": "14-day money-back guarantee",
+      "guaranteeSuffix": ", no reason required",
+      "payments": "Card, PayPal or Bitcoin",
+      "proof": "5,000+ active stores · Yearly credits toward Lifetime",
+      "unavailableTitle": "Pricing temporarily unavailable",
+      "unavailableDescription": "Pricing information is currently unavailable. Please try again later."
+    },
     "faq": {
       "title": "Frequently Asked Questions",
       "freePlugin": {

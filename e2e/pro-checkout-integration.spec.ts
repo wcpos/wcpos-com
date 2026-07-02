@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test'
+import { completeBillingStep } from './helpers/checkout'
 
 test.describe('Checkout Integration @integration', {
   tag: '@integration',
@@ -49,19 +50,27 @@ test.describe('Checkout Integration @integration', {
     await page.waitForLoadState('networkidle')
 
     // Click first "Get Started" button
-    const getStartedLink = page.getByRole('link', { name: 'Get Started' }).first()
+    const getStartedLink = page
+      .getByRole('link', { name: /Get (Started|Instant Access)/ })
+      .first()
     await expect(getStartedLink).toBeVisible({ timeout: 15000 })
     await getStartedLink.click()
 
-    // Wait for checkout to load
-    await expect(page.getByText('Order Summary')).toBeVisible({ timeout: 30000 })
+    // Wait for the stepper checkout to load — account is collapsed for the
+    // signed-in test user, billing is active.
+    await expect(page.getByTestId('checkout-steps')).toBeVisible({
+      timeout: 30000,
+    })
 
-    // Fill email
-    const emailInput = page.getByLabel('Email address')
-    if (await emailInput.isEditable()) {
-      await emailInput.fill('test-e2e@wcpos.com')
-      await emailInput.blur()
-    }
+    // Billing address step (shared helper — same fields as the mocked suite)
+    await completeBillingStep(page)
+
+    // Payment step: Card is the default selected method.
+    await expect(page.getByTestId('payment-method-stripe')).toHaveAttribute(
+      'aria-checked',
+      'true',
+      { timeout: 15000 }
+    )
 
     // Wait for Stripe Elements to load
     const stripeFrame = page.frameLocator('iframe[name*="__privateStripeFrame"]').first()
@@ -72,8 +81,8 @@ test.describe('Checkout Integration @integration', {
     await stripeFrame.locator('[name="expiry"]').fill('12/30')
     await stripeFrame.locator('[name="cvc"]').fill('123')
 
-    // Submit payment
-    const payButton = page.getByRole('button', { name: /Pay/i })
+    // Submit payment (the card form's "Pay $X" button, not "Pay with Bitcoin")
+    const payButton = page.getByRole('button', { name: /^Pay \$/ })
     await expect(payButton).toBeEnabled()
     await payButton.click()
 

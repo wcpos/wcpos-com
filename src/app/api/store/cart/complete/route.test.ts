@@ -47,6 +47,9 @@ import { POST } from './route'
 
 const validCart = {
   id: 'cart_1',
+  // Ownership binding: the route only completes carts carrying the session
+  // customer's email.
+  email: 'customer@example.com',
   items: [{ variant_id: 'variant_yearly_current', quantity: 1 }],
 }
 
@@ -120,6 +123,7 @@ describe('POST /api/store/cart/complete', () => {
   it('returns 400 and does not complete dirty carts', async () => {
     mockGetCart.mockResolvedValueOnce({
       id: 'cart_1',
+      email: 'customer@example.com',
       items: [{ variant_id: 'variant_old_or_other', quantity: 1 }],
     })
 

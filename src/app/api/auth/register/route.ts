@@ -2,9 +2,14 @@ import { NextResponse } from 'next/server'
 import { register, setAuthToken } from '@/lib/medusa-auth'
 import { ApiError } from '@/lib/api/errors'
 import { toErrorResponse } from '@/lib/api/to-error-response'
+import { isSameOriginRequest } from '@/lib/api/same-origin'
 
 export async function POST(request: Request) {
   try {
+    if (!isSameOriginRequest(request)) {
+      return NextResponse.json({ error: 'Invalid origin' }, { status: 403 })
+    }
+
     const { email, password, firstName, lastName } = await request.json()
 
     if (!email || !password) {

@@ -6,10 +6,34 @@ vi.mock('server-only', () => ({}))
 // Mock environment variables
 vi.mock('@/utils/env', () => ({
   env: {
-    MEDUSA_BACKEND_URL: 'https://store-api.wcpos.com',
+    MEDUSA_BACKEND_URL: 'https://test-store-api.wcpos.com',
     MEDUSA_PUBLISHABLE_KEY: 'pk_test_123',
   },
 }))
+
+// Mock the host-keyed store environment (replaces the old env-var mock):
+// unit tests always see the pinned test backend.
+vi.mock('@/lib/store-environment', () => {
+  const environment = {
+    name: 'test',
+    medusaBackendUrl: 'https://test-store-api.wcpos.com',
+    medusaPublishableKey: 'pk_test_abc123',
+    payments: {
+      stripePublishableKey: null,
+      paypalClientId: null,
+      btcpayEnabled: true,
+    },
+  }
+  return {
+    getRequestStoreEnvironment: vi.fn(async () => environment),
+    getLiveStoreEnvironment: vi.fn(() => environment),
+    getStoreEnvironmentByName: vi.fn(() => environment),
+    getMedusaBackendUrl: vi.fn(async () => environment.medusaBackendUrl),
+    getMedusaPublishableKey: vi.fn(
+      async () => environment.medusaPublishableKey
+    ),
+  }
+})
 
 // Import after mocks are set up
 import {
@@ -114,11 +138,11 @@ describe('medusaClient', () => {
       expect(products).toHaveLength(2)
       expect(products[0].title).toBe('WCPOS Pro Yearly')
       expect(mockFetch).toHaveBeenCalledWith(
-        'https://store-api.wcpos.com/store/products?fields=*variants.prices',
+        'https://test-store-api.wcpos.com/store/products?fields=*variants.prices',
         expect.objectContaining({
           headers: expect.objectContaining({
             'Content-Type': 'application/json',
-            'x-publishable-api-key': 'pk_test_123',
+            'x-publishable-api-key': 'pk_test_abc123',
           }),
         })
       )
@@ -274,7 +298,7 @@ describe('medusaClient', () => {
         expect(cart).not.toBeNull()
         expect(cart?.id).toBe('cart_123')
         expect(mockFetch).toHaveBeenCalledWith(
-          'https://store-api.wcpos.com/store/carts',
+          'https://test-store-api.wcpos.com/store/carts',
           expect.objectContaining({
             method: 'POST',
           })
@@ -347,7 +371,7 @@ describe('medusaClient', () => {
         expect(result).not.toBeNull()
         expect(result?.id).toBe('pay_col_123')
         expect(mockFetch).toHaveBeenCalledWith(
-          'https://store-api.wcpos.com/store/payment-collections',
+          'https://test-store-api.wcpos.com/store/payment-collections',
           expect.objectContaining({
             method: 'POST',
             body: JSON.stringify({ cart_id: 'cart_123' }),
@@ -391,7 +415,7 @@ describe('medusaClient', () => {
         expect(result?.clientSecret).toBe('pi_secret_123')
         expect(result?.paymentSessionId).toBe('payses_123')
         expect(mockFetch).toHaveBeenCalledWith(
-          'https://store-api.wcpos.com/store/payment-collections/pay_col_123/payment-sessions',
+          'https://test-store-api.wcpos.com/store/payment-collections/pay_col_123/payment-sessions',
           expect.objectContaining({
             method: 'POST',
             body: JSON.stringify({ provider_id: 'pp_stripe_stripe' }),

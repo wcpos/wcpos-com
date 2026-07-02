@@ -2,7 +2,10 @@ import 'server-only'
 
 import { cache } from 'react'
 import { cookies } from 'next/headers'
-import { env } from '@/utils/env'
+import {
+  getMedusaBackendUrl,
+  getMedusaPublishableKey,
+} from '@/lib/store-environment'
 import { authLogger } from '@/lib/logger'
 import { MEDUSA_TOKEN_COOKIE } from '@/lib/medusa-cookie'
 import { AccountExistsError } from '@/lib/api/errors'
@@ -111,7 +114,7 @@ export async function login(
   password: string
 ): Promise<string> {
   const response = await fetch(
-    `${env.MEDUSA_BACKEND_URL}/auth/customer/emailpass`,
+    `${await getMedusaBackendUrl()}/auth/customer/emailpass`,
     {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -128,9 +131,18 @@ export async function login(
 }
 
 /**
- * Register a new customer (two-step process).
+ * Register a new customer (three-step process).
  * 1. POST /auth/customer/emailpass/register -> { token }
  * 2. POST /store/customers with Bearer token -> { customer }
+ * 3. POST /auth/customer/emailpass (login) -> fresh token
+ *
+ * Step 3 matters: the registration token was issued BEFORE the customer
+ * existed, so its JWT has an empty actor_id and fails
+ * `/store/customers/me` — the same refresh-after-linking invariant the
+ * OAuth flow enforces (see establishOAuthSession). Persisting the step-1
+ * token leaves the new customer with a dead session; checkout's inline
+ * registration creates the cart immediately afterwards, so this must be
+ * an actor token.
  */
 export async function register({
   email,
@@ -145,7 +157,7 @@ export async function register({
 }): Promise<{ token: string; customer: MedusaCustomer }> {
   // Step 1: Register auth identity
   const authResponse = await fetch(
-    `${env.MEDUSA_BACKEND_URL}/auth/customer/emailpass/register`,
+    `${await getMedusaBackendUrl()}/auth/customer/emailpass/register`,
     {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -170,13 +182,13 @@ export async function register({
 
   // Step 2: Create customer record with the token
   const customerResponse = await fetch(
-    `${env.MEDUSA_BACKEND_URL}/store/customers`,
+    `${await getMedusaBackendUrl()}/store/customers`,
     {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
-        'x-publishable-api-key': env.MEDUSA_PUBLISHABLE_KEY || '',
+        'x-publishable-api-key': await getMedusaPublishableKey(),
       },
       body: JSON.stringify({
         email,
@@ -198,7 +210,21 @@ export async function register({
   }
 
   const { customer } = await customerResponse.json()
-  return { token, customer }
+
+  // Step 3: exchange the registration token for an actor token. Without
+  // this, /store/customers/me (and therefore every cart API) rejects the
+  // brand-new session.
+  try {
+    const sessionToken = await login(email, password)
+    return { token: sessionToken, customer }
+  } catch {
+    // The account exists at this point (steps 1–2 succeeded) — a transient
+    // failure here must not read as "registration failed", or the customer
+    // will retry registration and hit ACCOUNT_EXISTS confused.
+    throw new Error(
+      'Your account was created, but signing you in failed. Please sign in to continue.'
+    )
+  }
 }
 
 /**
@@ -230,12 +256,12 @@ export const getCustomer = cache(
 
     try {
       const response = await fetch(
-        `${env.MEDUSA_BACKEND_URL}/store/customers/me`,
+        `${await getMedusaBackendUrl()}/store/customers/me`,
         {
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
-            'x-publishable-api-key': env.MEDUSA_PUBLISHABLE_KEY || '',
+            'x-publishable-api-key': await getMedusaPublishableKey(),
           },
         }
       )
@@ -265,13 +291,13 @@ export async function updateCustomer(
   if (!token) return null
 
   const response = await fetch(
-    `${env.MEDUSA_BACKEND_URL}/store/customers/me`,
+    `${await getMedusaBackendUrl()}/store/customers/me`,
     {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
-        'x-publishable-api-key': env.MEDUSA_PUBLISHABLE_KEY || '',
+        'x-publishable-api-key': await getMedusaPublishableKey(),
       },
       body: JSON.stringify(input),
     }

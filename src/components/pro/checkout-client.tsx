@@ -1,12 +1,7 @@
 'use client'
 
-import { useEffect, useState, useCallback } from 'react'
-import { StripeProvider } from './stripe-provider'
-import { PayPalProvider } from './paypal-provider'
-import { CheckoutForm } from './checkout-form'
-import { PayPalButton } from './paypal-button'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { createPaymentSession } from './complete-cart'
-import { BTCPayButton } from './btcpay-button'
 import { CheckoutErrorNotice, OrderPendingNotice } from './checkout-recovery'
 import {
   clearCheckoutSafetyState,
@@ -18,12 +13,16 @@ import {
   shouldBlockCheckout,
   type CheckoutFailure,
 } from './checkout-safety'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { AccountStep } from './checkout/account-step'
+import {
+  BillingStep,
+  billingAddressSummary,
+  type BillingAddress,
+} from './checkout/billing-step'
+import { PaymentStep, type PaymentMethod } from './checkout/payment-step'
+import { StepShell } from './checkout/step-shell'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { ArrowLeft, CheckCircle, CreditCard, Bitcoin } from 'lucide-react'
+import { ArrowLeft, Check, CheckCircle } from 'lucide-react'
 import { Link } from '@/i18n/navigation'
 import type { ProCheckoutVariant } from '@/services/core/analytics/posthog-service'
 
@@ -67,7 +66,6 @@ interface PaymentSessionResult {
   clientSecret?: string | null
 }
 
-type PaymentMethod = 'stripe' | 'paypal' | 'btcpay'
 const PRO_CHECKOUT_EXPERIMENT = 'pro_checkout_v1'
 
 // Map frontend payment method names to Medusa provider IDs
@@ -84,18 +82,50 @@ function getProviderId(method: PaymentMethod): string {
   }
 }
 
-// Check which payment methods are configured
-const isStripeEnabled = Boolean(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
-const isPayPalEnabled = Boolean(process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID)
-const isBTCPayEnabled = Boolean(process.env.NEXT_PUBLIC_BTCPAY_ENABLED)
-
-interface CheckoutClientProps {
-  customerEmail?: string
-  selectedOfferHandle?: string
-  experimentVariant: ProCheckoutVariant
+/**
+ * Which payment methods this checkout offers — resolved server-side from the
+ * request host (wcpos.com => live keys, beta => test keys, localhost => dev;
+ * see store-environment.ts) and passed in as a prop. All values are public
+ * identifiers.
+ */
+export interface CheckoutPaymentConfig {
+  stripePublishableKey: string | null
+  paypalClientId: string | null
+  btcpayEnabled: boolean
 }
 
-function resolvePaymentSession(cart: Cart, providerId: string): PaymentSession | undefined {
+function derivePaymentSetup(payments: CheckoutPaymentConfig) {
+  const stripeEnabled = Boolean(payments.stripePublishableKey)
+  const paypalEnabled = Boolean(payments.paypalClientId)
+  const btcpayEnabled = payments.btcpayEnabled
+  const anyEnabled = stripeEnabled || paypalEnabled || btcpayEnabled
+  const defaultMethod: PaymentMethod = stripeEnabled
+    ? 'stripe'
+    : paypalEnabled
+      ? 'paypal'
+      : 'btcpay'
+  return { stripeEnabled, paypalEnabled, btcpayEnabled, anyEnabled, defaultMethod }
+}
+
+type StepId = 'account' | 'billing' | 'payment'
+
+interface CheckoutClientProps {
+  /** Absent when the visitor is not signed in — the account step handles it. */
+  customerEmail?: string
+  selectedOfferHandle?: string
+  /** Static summary shown before the cart exists. */
+  offerSummary?: { title: string; priceFormatted: string }
+  /** Current checkout path (with query) for OAuth redirect-back. */
+  checkoutPath: string
+  experimentVariant: ProCheckoutVariant
+  /** Host-resolved public payment identifiers (see store-environment.ts). */
+  payments: CheckoutPaymentConfig
+}
+
+function resolvePaymentSession(
+  cart: Cart,
+  providerId: string
+): PaymentSession | undefined {
   const collectionSession = cart.payment_collection?.payment_sessions?.find(
     (session) => session.provider_id === providerId
   )
@@ -104,7 +134,12 @@ function resolvePaymentSession(cart: Cart, providerId: string): PaymentSession |
   }
 
   if (cart.payment_sessions?.length) {
-    return cart.payment_sessions.find((session) => session.provider_id === providerId)
+    const legacySession = cart.payment_sessions.find(
+      (session) => session.provider_id === providerId
+    )
+    if (legacySession) {
+      return legacySession
+    }
   }
 
   if (cart.payment_session?.provider_id === providerId) {
@@ -128,53 +163,111 @@ function resolveLineItemTotal(item: CartItem): number {
 export function CheckoutClient({
   customerEmail,
   selectedOfferHandle,
+  offerSummary,
+  checkoutPath,
   experimentVariant,
+  payments,
 }: CheckoutClientProps) {
+  const {
+    stripeEnabled: isStripeEnabled,
+    paypalEnabled: isPayPalEnabled,
+    btcpayEnabled: isBTCPayEnabled,
+    anyEnabled: anyPaymentMethodEnabled,
+    defaultMethod: defaultPaymentMethod,
+  } = derivePaymentSetup(payments)
+  const [email, setEmail] = useState<string | null>(customerEmail ?? null)
+  const [step, setStep] = useState<StepId>(
+    customerEmail ? 'billing' : 'account'
+  )
+  const [billingAddress, setBillingAddress] = useState<BillingAddress | null>(
+    null
+  )
   const [cart, setCart] = useState<Cart | null>(null)
-  const [email, setEmail] = useState(customerEmail || '')
   const [clientSecret, setClientSecret] = useState<string | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
   const [isProcessing, setIsProcessing] = useState(false)
+  // True while a provider confirmation may be charging the customer —
+  // billing Edit and method switching are locked for its duration.
+  const [isConfirmingPayment, setIsConfirmingPayment] = useState(false)
   // Blocking initialization errors (cart could not be created at all).
   const [error, setError] = useState<string | null>(null)
   // Payment-stage failures — recoverable, rendered without unmounting the cart.
   const [failure, setFailure] = useState<CheckoutFailure | null>(null)
   const [orderComplete, setOrderComplete] = useState(false)
   const [orderId, setOrderId] = useState<string | null>(null)
-  const [paymentCollectionId, setPaymentCollectionId] = useState<string | null>(null)
+  const [paymentCollectionId, setPaymentCollectionId] = useState<
+    string | null
+  >(null)
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>(
-    isStripeEnabled ? 'stripe' : 'paypal'
+    defaultPaymentMethod
   )
 
-  // Derived from props during render (instead of setState in an effect) so the
-  // initialization effect never calls setState synchronously.
-  const prerequisiteError = !customerEmail
-    ? 'Please sign in to continue checkout.'
-    : !selectedOfferHandle
-      ? 'No product selected'
-      : null
+  // Billing can finish before the background cart init does — the submit
+  // handler awaits this instead of racing state. It resolves with the FULL
+  // init result (cart + payment collection id), because React state set by
+  // the init effect may not have rendered into this closure yet; relying on
+  // state alone once minted a second payment collection for the same cart.
+  interface CheckoutInitResult {
+    cart: Cart
+    paymentCollectionId: string | null
+  }
+  const cartReadyRef = useRef<{
+    promise: Promise<CheckoutInitResult>
+    resolve: (result: CheckoutInitResult) => void
+    reject: (error: unknown) => void
+  } | null>(null)
+  if (cartReadyRef.current === null) {
+    let resolve!: (result: CheckoutInitResult) => void
+    let reject!: (error: unknown) => void
+    const promise = new Promise<CheckoutInitResult>((res, rej) => {
+      resolve = res
+      reject = rej
+    })
+    // Swallow "nobody awaited yet" rejections; billing submit attaches later.
+    promise.catch(() => {})
+    cartReadyRef.current = { promise, resolve, reject }
+  }
 
+  const initStartedRef = useRef(false)
+
+  const prerequisiteError = !selectedOfferHandle ? 'No product selected' : null
+
+  // A protective failure (payment may have been taken without an order)
+  // survives reloads via sessionStorage. Restore it before initializing so
+  // a refresh cannot silently hand the customer a fresh, payable checkout.
+  const [safetyRestored, setSafetyRestored] = useState(false)
   useEffect(() => {
-    if (prerequisiteError) return
+    let cancelled = false
+    // Deferred a microtask so the effect never sets state synchronously
+    // (react-hooks/set-state-in-effect); sessionStorage is browser-only.
+    Promise.resolve().then(() => {
+      if (cancelled) return
+      const restored = restoreCheckoutSafetyState()
+      if (restored) {
+        setFailure(restored.failure)
+      }
+      setSafetyRestored(true)
+    })
+    return () => {
+      cancelled = true
+    }
+  }, [])
+
+  const blockedByProtectiveFailure = failure
+    ? shouldBlockCheckout(failure)
+    : false
+
+  // Cart initialization: starts as soon as we know who is buying (page load
+  // for signed-in customers; after the account step otherwise). The customer
+  // keeps filling in billing while this runs in the background.
+  useEffect(() => {
+    if (!safetyRestored) return
+    if (prerequisiteError || blockedByProtectiveFailure) return
+    if (!email) return
+    if (initStartedRef.current) return
+    initStartedRef.current = true
 
     async function initializeCheckout() {
       try {
-        // A protective failure (payment may have been taken without an order)
-        // survives reloads via sessionStorage. Restore it before initializing
-        // so a refresh cannot silently hand the customer a fresh, payable
-        // checkout.
-        const restored = restoreCheckoutSafetyState()
-        if (restored) {
-          setFailure(restored.failure)
-          if (shouldBlockCheckout(restored.failure)) {
-            // Money moved but no order exists — do not create a new cart or
-            // payment session at all; render only the do-not-pay-again notice.
-            return
-          }
-          // payment_uncertain: keep the warning visible but let the checkout
-          // mount — the inline notice already withholds retry/switch guidance.
-        }
-
         // Create cart
         const cartResponse = await fetch('/api/store/cart', {
           method: 'POST',
@@ -210,56 +303,67 @@ export function CheckoutClient({
 
         const { cart: cartWithItem } = await itemResponse.json()
 
-        // Initialize payment with Stripe (Medusa v2 flow)
+        // No provider configured: keep the cart usable and let PaymentStep
+        // surface its explicit "no payment methods" state instead of failing
+        // init with a misleading payment error.
+        if (!anyPaymentMethodEnabled) {
+          setCart(cartWithItem)
+          cartReadyRef.current?.resolve({
+            cart: cartWithItem,
+            paymentCollectionId: null,
+          })
+          return
+        }
+
+        // Initialize payment (Medusa v2 flow) with the default provider.
         const paymentResult = await createPaymentSession<PaymentSessionResult>({
           cartId: cartWithItem.id,
-          providerId: 'pp_stripe_stripe',
+          providerId: getProviderId(defaultPaymentMethod),
           errorMessage: 'Failed to initialize payment',
         })
 
         setCart(paymentResult.cart)
         setPaymentCollectionId(paymentResult.paymentCollectionId)
 
-        // Set the client secret for Stripe
         if (paymentResult.clientSecret) {
           setClientSecret(paymentResult.clientSecret)
         }
 
-        if (paymentResult.cart) {
-          await fetch('/api/store/cart', {
-            method: 'PATCH',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ cartId: paymentResult.cart.id, email: customerEmail }),
-          })
-        }
+        cartReadyRef.current?.resolve({
+          cart: paymentResult.cart,
+          paymentCollectionId: paymentResult.paymentCollectionId,
+        })
       } catch (err) {
         console.error('[CHECKOUT] Initialization failed:', err)
-        setError(err instanceof Error ? err.message : 'Failed to initialize checkout')
-      } finally {
-        setIsLoading(false)
+        setError(
+          err instanceof Error ? err.message : 'Failed to initialize checkout'
+        )
+        cartReadyRef.current?.reject(err)
       }
     }
 
     initializeCheckout()
-  }, [customerEmail, selectedOfferHandle, experimentVariant, prerequisiteError])
+  }, [
+    safetyRestored,
+    prerequisiteError,
+    blockedByProtectiveFailure,
+    email,
+    selectedOfferHandle,
+    experimentVariant,
+  ])
 
   // Select payment provider when method changes
   const selectPaymentMethod = useCallback(
     async (method: PaymentMethod) => {
       if (!cart || !paymentCollectionId) return
+      // One session mutation at a time (see handleBillingSubmit).
+      if (isProcessing) return
 
       setIsProcessing(true)
       setFailure(null)
       setClientSecret(null)
 
       try {
-        console.log('[CHECKOUT] Switching payment method:', {
-          from: paymentMethod,
-          to: method,
-          cartId: cart.id,
-          providerId: getProviderId(method),
-        })
-
         const paymentResult = await createPaymentSession<PaymentSessionResult>({
           cartId: cart.id,
           providerId: getProviderId(method),
@@ -270,7 +374,6 @@ export function CheckoutClient({
         setCart(paymentResult.cart)
 
         if (method === 'stripe' && paymentResult.clientSecret) {
-          console.log('[CHECKOUT] Stripe client secret received')
           setClientSecret(paymentResult.clientSecret)
         }
       } catch (err) {
@@ -288,14 +391,11 @@ export function CheckoutClient({
         setIsProcessing(false)
       }
     },
-    [cart, paymentCollectionId, paymentMethod]
+    [cart, paymentCollectionId, isProcessing]
   )
 
-  // Note: We initialize payment during cart creation, so no need to auto-select here
-  // The clientSecret is already set from initializeCheckout
-
-  const handlePaymentMethodChange = (value: string) => {
-    const method = value as PaymentMethod
+  const handlePaymentMethodChange = (method: PaymentMethod) => {
+    if (method === paymentMethod) return
     setPaymentMethod(method)
     selectPaymentMethod(method)
   }
@@ -318,33 +418,102 @@ export function CheckoutClient({
   const handleFailure = useCallback(
     (nextFailure: CheckoutFailure | null) => {
       setFailure(nextFailure)
-      if (nextFailure && activeCartId && isProtectiveCheckoutFailureKind(nextFailure.kind)) {
+      if (
+        nextFailure &&
+        activeCartId &&
+        isProtectiveCheckoutFailureKind(nextFailure.kind)
+      ) {
         recordCheckoutFailure(activeCartId, nextFailure)
       }
     },
     [activeCartId]
   )
 
-  const updateEmail = async () => {
-    if (!cart || !email) return
+  async function handleBillingSubmit(address: BillingAddress) {
+    // Serialize against method switches and other refreshes — two session
+    // mutations racing can leave the mounted Stripe element and the Medusa
+    // collection pointing at different intents.
+    if (isProcessing) {
+      throw new Error('Checkout is busy. Please try again.')
+    }
 
+    // Always await the init result: the ref carries the collection id even
+    // when React state hasn't rendered into this closure yet (fast typers
+    // beat the background init). Relying on state alone once minted a second
+    // payment collection for the same cart.
+    const init = cart
+      ? { cart, paymentCollectionId }
+      : await cartReadyRef.current!.promise
+
+    setIsProcessing(true)
     try {
-      await fetch('/api/store/cart', {
+      const response = await fetch('/api/store/cart', {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ cartId: cart.id, email }),
+        body: JSON.stringify({
+          cartId: init.cart.id,
+          billing_address: address,
+        }),
       })
-    } catch {
-      // Email update failed, but we can continue
+      if (!response.ok) {
+        throw new Error('Failed to save billing address')
+      }
+      const { cart: updatedCart } = (await response.json()) as { cart?: Cart }
+      const cartAfterBilling = updatedCart ?? init.cart
+
+      // No provider configured — nothing to refresh; PaymentStep shows its
+      // explicit no-methods state.
+      if (!anyPaymentMethodEnabled) {
+        setCart(cartAfterBilling)
+        setBillingAddress(address)
+        setStep('payment')
+        return
+      }
+
+      let paymentResult: PaymentSessionResult
+      try {
+        paymentResult = await createPaymentSession<PaymentSessionResult>({
+          cartId: cartAfterBilling.id,
+          providerId: getProviderId(paymentMethod),
+          paymentCollectionId:
+            paymentCollectionId ??
+            init.paymentCollectionId ??
+            cartAfterBilling.payment_collection?.id ??
+            null,
+          errorMessage: 'Failed to refresh payment',
+        })
+      } catch {
+        throw Object.assign(
+          new Error(
+            "Billing address was saved, but we couldn't prepare payment. Please try again."
+          ),
+          { name: 'PaymentRefreshError' }
+        )
+      }
+
+      setCart(paymentResult.cart)
+      setPaymentCollectionId(paymentResult.paymentCollectionId)
+      setClientSecret(
+        paymentMethod === 'stripe' && paymentResult.clientSecret
+          ? paymentResult.clientSecret
+          : null
+      )
+      setBillingAddress(address)
+      setStep('payment')
+    } finally {
+      setIsProcessing(false)
     }
   }
 
-  const blockingError = prerequisiteError ?? (!cart ? error : null)
+  const handleAuthenticated = (authedEmail: string) => {
+    setEmail(authedEmail)
+    setStep('billing')
+  }
 
-  if (blockingError) {
+  if (prerequisiteError) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[400px]">
-        <p className="text-destructive mb-4">{blockingError}</p>
+      <div className="flex min-h-[400px] flex-col items-center justify-center">
+        <p className="mb-4 text-destructive">{prerequisiteError}</p>
         <Button asChild variant="outline">
           <Link href="/pro">
             <ArrowLeft className="mr-2 h-4 w-4" />
@@ -355,31 +524,22 @@ export function CheckoutClient({
     )
   }
 
-  if (isLoading) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-[400px]">
-        <div className="w-full max-w-xl space-y-3">
-          <div className="h-6 w-40 animate-pulse rounded bg-muted" />
-          <div className="h-28 w-full animate-pulse rounded bg-muted" />
-          <div className="h-28 w-full animate-pulse rounded bg-muted" />
-        </div>
-        <p className="mt-4 text-muted-foreground">Preparing checkout...</p>
-      </div>
-    )
-  }
-
   if (orderComplete) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[400px] text-center">
-        <CheckCircle className="h-16 w-16 text-green-500 mb-4" />
-        <h2 className="text-2xl font-bold mb-2">Thank you for your purchase!</h2>
-        <p className="text-muted-foreground mb-4">
+      <div className="flex min-h-[400px] flex-col items-center justify-center text-center">
+        <CheckCircle className="mb-4 h-16 w-16 text-green-500" />
+        <h2 className="mb-2 text-2xl font-bold">
+          Thank you for your purchase!
+        </h2>
+        <p className="mb-4 text-muted-foreground">
           Your license key and download link have been sent to your email.
         </p>
         {orderId && (
-          <p className="text-sm text-muted-foreground mb-6">Order ID: {orderId}</p>
+          <p className="mb-6 text-sm text-muted-foreground">
+            Order ID: {orderId}
+          </p>
         )}
-        <div className="flex flex-col sm:flex-row gap-3">
+        <div className="flex flex-col gap-3 sm:flex-row">
           <Button asChild>
             <Link href="/account/licenses">Go to Licenses</Link>
           </Button>
@@ -397,34 +557,24 @@ export function CheckoutClient({
     return <OrderPendingNotice failure={failure} />
   }
 
-  if (!cart) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-[400px]">
-        <p className="text-muted-foreground mb-4">
-          Unable to initialize checkout. Please try again.
-        </p>
-        <Button asChild variant="outline">
-          <Link href="/pro">
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to pricing
-          </Link>
-        </Button>
-      </div>
-    )
-  }
-
   const formatCurrency = (amount: number) =>
     new Intl.NumberFormat('en-US', {
       style: 'currency',
-      currency: cart.currency_code.toUpperCase(),
+      currency: (cart?.currency_code ?? 'usd').toUpperCase(),
     }).format(amount)
 
-  const paypalSession = resolvePaymentSession(cart, getProviderId('paypal'))
-  const btcpaySession = resolvePaymentSession(cart, getProviderId('btcpay'))
+  const paypalSession = cart
+    ? resolvePaymentSession(cart, getProviderId('paypal'))
+    : undefined
+  const btcpaySession = cart
+    ? resolvePaymentSession(cart, getProviderId('btcpay'))
+    : undefined
 
-  const enabledMethodCount = [isStripeEnabled, isPayPalEnabled, isBTCPayEnabled].filter(
-    Boolean
-  ).length
+  const enabledMethodCount = [
+    isStripeEnabled,
+    isPayPalEnabled,
+    isBTCPayEnabled,
+  ].filter(Boolean).length
 
   const paypalOrderId =
     typeof paypalSession?.data?.id === 'string' ? paypalSession.data.id : null
@@ -433,152 +583,184 @@ export function CheckoutClient({
       ? btcpaySession.data.checkoutLink
       : null
 
+  const stepIndex: Record<StepId, number> = {
+    account: 1,
+    billing: 2,
+    payment: 3,
+  }
+  const stepState = (target: StepId): 'done' | 'active' | 'todo' => {
+    if (step === target) return 'active'
+    return stepIndex[target] < stepIndex[step] ? 'done' : 'todo'
+  }
+
+  const initErrorNotice = (
+    <div className="space-y-4">
+      <p className="text-sm text-destructive">
+        Unable to initialize checkout. Please try again.
+      </p>
+      <Button asChild variant="outline">
+        <Link href="/pro">
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          Back to pricing
+        </Link>
+      </Button>
+    </div>
+  )
+
   return (
-    <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-      {/* Order Summary */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Order Summary</CardTitle>
-        </CardHeader>
-        <CardContent>
-          {cart.items.map((item) => (
-            <div key={item.id} className="flex justify-between py-2">
-              <div>
-                <p className="font-medium">{item.title}</p>
-                <p className="text-sm text-muted-foreground">Qty: {item.quantity}</p>
-              </div>
-              <p className="font-medium">{formatCurrency(resolveLineItemTotal(item))}</p>
-            </div>
-          ))}
-          <div className="border-t mt-4 pt-4 flex justify-between font-bold">
-            <span>Total</span>
-            <span>{formatCurrency(cart.total)}</span>
-          </div>
-        </CardContent>
-      </Card>
+    <div className="mx-auto grid max-w-4xl items-start gap-8 md:grid-cols-[1.6fr_1fr]">
+      {/* Steps */}
+      <div className="space-y-3" data-testid="checkout-steps">
+        {/* Above the steps, not inside step 3: a restored protective warning
+            (e.g. payment_uncertain from a previous session) must be visible
+            from the first render, not only once the customer reaches payment. */}
+        {failure && (
+          <CheckoutErrorNotice
+            failure={failure}
+            canSwitchMethod={enabledMethodCount > 1}
+          />
+        )}
+        <StepShell
+          index={1}
+          title="Account"
+          summary={email ?? undefined}
+          state={stepState('account')}
+          editLabel="Edit"
+        >
+          <AccountStep
+            checkoutPath={checkoutPath}
+            onAuthenticated={handleAuthenticated}
+          />
+        </StepShell>
 
-      {/* Payment */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Payment</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          {/* Email input */}
-          <div className="space-y-2">
-            <Label htmlFor="email">Email address</Label>
-            <Input
-              id="email"
-              type="email"
-              placeholder="you@example.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              onBlur={updateEmail}
-              required
-              readOnly
-              className="bg-muted"
-            />
-            <p className="text-sm text-muted-foreground">
-              Using your account email
-            </p>
-          </div>
-
-          {failure && (
-            <CheckoutErrorNotice
-              failure={failure}
-              canSwitchMethod={enabledMethodCount > 1}
+        <StepShell
+          index={2}
+          title="Billing address"
+          summary={
+            billingAddress ? billingAddressSummary(billingAddress) : undefined
+          }
+          state={stepState('billing')}
+          onEdit={
+            // No billing edits while a session mutation or a provider
+            // confirmation is in flight — resubmitting billing re-creates
+            // the payment session mid-charge.
+            isProcessing || isConfirmingPayment
+              ? undefined
+              : () => setStep('billing')
+          }
+          editLabel="Edit"
+        >
+          {error ? (
+            initErrorNotice
+          ) : (
+            <BillingStep
+              initialAddress={billingAddress}
+              onSubmit={handleBillingSubmit}
             />
           )}
+        </StepShell>
 
-          {/* Payment method tabs */}
-          <Tabs value={paymentMethod} onValueChange={handlePaymentMethodChange}>
-            <TabsList className={`grid w-full ${
-              enabledMethodCount === 3
-                ? 'grid-cols-3'
-                : enabledMethodCount === 2
-                  ? 'grid-cols-2'
-                  : 'grid-cols-1'
-            }`}>
-              {isStripeEnabled && (
-                <TabsTrigger value="stripe" disabled={isProcessing}>
-                  <CreditCard className="h-4 w-4 mr-2" />
-                  Card
-                </TabsTrigger>
-              )}
-              {isPayPalEnabled && (
-                <TabsTrigger value="paypal" disabled={isProcessing}>
-                  PayPal
-                </TabsTrigger>
-              )}
-              {isBTCPayEnabled && (
-                <TabsTrigger value="btcpay" disabled={isProcessing}>
-                  <Bitcoin className="h-4 w-4 mr-2" />
-                  Bitcoin
-                </TabsTrigger>
-              )}
-            </TabsList>
-
-            {isStripeEnabled && (
-              <TabsContent value="stripe" className="mt-4">
-                {clientSecret ? (
-                  <StripeProvider clientSecret={clientSecret}>
-                    <CheckoutForm
-                      cartId={cart.id}
-                      amount={cart.total}
-                      currency={cart.currency_code}
-                      experiment={PRO_CHECKOUT_EXPERIMENT}
-                      experimentVariant={experimentVariant}
-                      onSuccess={handleSuccess}
-                      onFailure={handleFailure}
-                    />
-                  </StripeProvider>
-                ) : (
-                  <div className="space-y-3 rounded-md border border-dashed p-4">
-                    <div className="h-5 w-44 animate-pulse rounded bg-muted" />
-                    <div className="h-10 w-full animate-pulse rounded bg-muted" />
-                    <p className="text-sm text-muted-foreground">
-                      Preparing secure card form...
-                    </p>
-                  </div>
-                )}
-              </TabsContent>
+        <StepShell
+          index={3}
+          title="Payment"
+          state={stepState('payment')}
+          editLabel="Edit"
+        >
+          <div className="space-y-4">
+            {cart ? (
+              <PaymentStep
+                cartId={cart.id}
+                clientSecret={clientSecret}
+                paypalOrderId={paypalOrderId}
+                btcpayCheckoutLink={btcpayCheckoutLink}
+                method={paymentMethod}
+                onMethodChange={handlePaymentMethodChange}
+                isProcessing={isProcessing}
+                lockMethods={isConfirmingPayment}
+                onProcessingChange={setIsConfirmingPayment}
+                enabled={{
+                  stripe: isStripeEnabled,
+                  paypal: isPayPalEnabled,
+                  btcpay: isBTCPayEnabled,
+                }}
+                stripePublishableKey={payments.stripePublishableKey}
+                paypalClientId={payments.paypalClientId}
+                experiment={PRO_CHECKOUT_EXPERIMENT}
+                experimentVariant={experimentVariant}
+                amount={cart.total}
+                currency={cart.currency_code}
+                onSuccess={handleSuccess}
+                onFailure={handleFailure}
+              />
+            ) : error ? (
+              initErrorNotice
+            ) : (
+              <div className="space-y-3">
+                <div className="h-6 w-40 animate-pulse rounded bg-muted" />
+                <div className="h-24 w-full animate-pulse rounded bg-muted" />
+                <p className="text-sm text-muted-foreground">
+                  Preparing checkout...
+                </p>
+              </div>
             )}
+          </div>
+        </StepShell>
+      </div>
 
-            {isPayPalEnabled && (
-              <TabsContent value="paypal" className="mt-4">
-                <PayPalProvider>
-                  <PayPalButton
-                    cartId={cart.id}
-                    experiment={PRO_CHECKOUT_EXPERIMENT}
-                    experimentVariant={experimentVariant}
-                    paypalOrderId={paypalOrderId}
-                    onSuccess={handleSuccess}
-                    onFailure={handleFailure}
-                  />
-                </PayPalProvider>
-              </TabsContent>
-            )}
-
-            {isBTCPayEnabled && (
-              <TabsContent value="btcpay" className="mt-4">
-                <div className="space-y-4">
-                  <p className="text-sm text-muted-foreground text-center">
-                    Pay with Bitcoin, Lightning Network, or other cryptocurrencies
+      {/* Sticky order summary */}
+      <div
+        className="rounded-xl border bg-card p-5 md:sticky md:top-24"
+        data-testid="checkout-order-summary"
+      >
+        {cart && cart.items.length > 0 ? (
+          <>
+            {cart.items.map((item) => (
+              <div key={item.id} className="flex justify-between py-1">
+                <div>
+                  <p className="font-medium">{item.title}</p>
+                  <p className="text-sm text-muted-foreground">
+                    Qty: {item.quantity}
                   </p>
-                  <BTCPayButton
-                    cartId={cart.id}
-                    checkoutLink={btcpayCheckoutLink}
-                    onFailure={handleFailure}
-                  />
                 </div>
-              </TabsContent>
-            )}
-          </Tabs>
-
-          <p className="text-xs text-center text-muted-foreground">
+                <p className="font-medium">
+                  {formatCurrency(resolveLineItemTotal(item))}
+                </p>
+              </div>
+            ))}
+            <div className="mt-3 flex justify-between border-t pt-3 font-bold">
+              <span>Total</span>
+              <span>{formatCurrency(cart.total)}</span>
+            </div>
+          </>
+        ) : offerSummary ? (
+          <>
+            <p className="font-medium">{offerSummary.title}</p>
+            <div className="mt-3 flex justify-between border-t pt-3 font-bold">
+              <span>Total</span>
+              <span>{offerSummary.priceFormatted}</span>
+            </div>
+          </>
+        ) : (
+          <div className="space-y-2">
+            <div className="h-5 w-40 animate-pulse rounded bg-muted" />
+            <div className="h-5 w-24 animate-pulse rounded bg-muted" />
+          </div>
+        )}
+        <ul className="mt-4 space-y-1.5 text-sm text-muted-foreground">
+          <li className="flex gap-2">
+            <Check className="mt-0.5 h-4 w-4 shrink-0 text-green-500" />
+            Instant license delivery
+          </li>
+          <li className="flex gap-2">
+            <Check className="mt-0.5 h-4 w-4 shrink-0 text-green-500" />
+            14-day money-back guarantee
+          </li>
+          <li className="flex gap-2">
+            <Check className="mt-0.5 h-4 w-4 shrink-0 text-green-500" />
             Secure payment processing
-          </p>
-        </CardContent>
-      </Card>
+          </li>
+        </ul>
+      </div>
     </div>
   )
 }

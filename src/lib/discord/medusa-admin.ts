@@ -1,6 +1,7 @@
 import 'server-only'
 
 import { env } from '@/utils/env'
+import { getLiveStoreEnvironment } from '@/lib/store-environment'
 import type { MedusaOrder } from '@/lib/customer-orders'
 import type { MedusaCustomer } from '@/lib/medusa-auth'
 
@@ -20,7 +21,10 @@ function requireAdminToken(): string {
 }
 
 async function medusaAdminFetch<T>(path: string, init: RequestInit = {}): Promise<T> {
-  const response = await fetch(`${env.MEDUSA_BACKEND_URL}${path}`, {
+  // Discord role-sync reconciles LIVE business data — it runs from webhooks
+  // and cron with no meaningful request host, so it is pinned to live rather
+  // than host-resolved.
+  const response = await fetch(`${getLiveStoreEnvironment().medusaBackendUrl}${path}`, {
     ...init,
     headers: {
       'Content-Type': 'application/json',

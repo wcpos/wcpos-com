@@ -61,6 +61,33 @@
         "description": "Take payments with any WooCommerce-compatible gateway, not just the built-in options."
       }
     },
+    "buyBox": {
+      "heading": "Koop Pro",
+      "subheading": "Eén licentie, alle functies. Kies alleen hoe lang je updates wilt.",
+      "termAriaLabel": "Licentieduur",
+      "cta": "Aan de slag",
+      "ctaValueCopy": "Krijg direct toegang",
+      "yearly": {
+        "title": "Jaarlijks",
+        "subtitle": "Updates en support voor 1 jaar",
+        "badgeLabel": "Meest populair",
+        "priceSuffix": "/jaar",
+        "ctaNote": "Eenmalige betaling — wordt nooit automatisch verlengd."
+      },
+      "lifetime": {
+        "title": "Levenslang",
+        "subtitle": "Altijd updates",
+        "priceSuffix": "eenmalig",
+        "ctaNote": "Ongeveer {years} jaar Jaarlijks — daarna voor altijd $0.",
+        "ctaNoteSimple": "Eén keer betalen — voor altijd updates."
+      },
+      "guaranteeLink": "14 dagen geld-terug-garantie",
+      "guaranteeSuffix": ", zonder opgaaf van redenen",
+      "payments": "Kaart, PayPal of Bitcoin",
+      "proof": "5.000+ actieve winkels · Jaarlijks wordt verrekend met Levenslang",
+      "unavailableTitle": "Prijzen tijdelijk niet beschikbaar",
+      "unavailableDescription": "Prijsinformatie is momenteel niet beschikbaar. Probeer het later opnieuw."
+    },
     "faq": {
       "title": "Frequently Asked Questions",
       "freePlugin": {

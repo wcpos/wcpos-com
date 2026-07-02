@@ -97,12 +97,16 @@ test.describe('Authentication', () => {
       await expect(page).toHaveURL(/\/login/)
     })
 
-    test('redirects checkout to login when not authenticated', async ({ page }) => {
-      await page.goto('/pro/checkout?variant=variant_123')
+    test('checkout stays reachable when not authenticated (inline account step)', async ({
+      page,
+    }) => {
+      await page.goto('/pro/checkout?product=wcpos-pro-yearly')
 
-      await expect(page).toHaveURL(
-        /\/login\?redirect=%2Fpro%2Fcheckout%3Fvariant%3Dvariant_123/
-      )
+      // No login bounce — checkout's first step creates the account inline.
+      await expect(page).toHaveURL(/\/pro\/checkout\?product=wcpos-pro-yearly/)
+      await expect(page.getByTestId('account-step-form')).toBeVisible({
+        timeout: 15000,
+      })
     })
   })
 })

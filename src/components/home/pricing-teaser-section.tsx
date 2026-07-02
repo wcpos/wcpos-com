@@ -9,6 +9,7 @@ import {
   getProOfferCatalog,
   PRO_TEASER_FEATURES,
 } from '@/lib/pro-offer-catalog'
+import { getLiveStoreEnvironment } from '@/lib/store-environment'
 
 const freeFeatures = [
   'WooCommerce sync',
@@ -32,7 +33,11 @@ export async function PricingTeaserSection() {
   cacheLife('products')
   cacheTag('products')
 
-  const { offers } = await getProOfferCatalog()
+  // Prerendered into the shared static homepage shell — always live prices.
+  const { offers } = await getProOfferCatalog(
+    undefined,
+    getLiveStoreEnvironment()
+  )
   const priceSummary = formatHomeProPriceSummary(offers) ?? PRO_PRICE_FALLBACK
 
   return <PricingTeaserSectionContent priceSummary={priceSummary} />

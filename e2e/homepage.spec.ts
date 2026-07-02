@@ -9,14 +9,16 @@ test.describe('Homepage', () => {
     await expect(
       page.getByRole('heading', {
         level: 1,
-        name: 'Your WooCommerce products, ready to sell in-store',
+        name: 'Your counter. Your customers. Your WooCommerce.',
       })
     ).toBeVisible()
   })
 
   test('displays the tagline', async ({ page }) => {
     await expect(
-      page.getByText('Point of Sale for WooCommerce')
+      page
+        .getByTestId('story-scroller')
+        .getByText('Point of Sale for WooCommerce')
     ).toBeVisible()
   })
 
@@ -43,7 +45,17 @@ test.describe('Homepage', () => {
 
   test('renders the marketing sections', async ({ page }) => {
     await expect(
-      page.getByRole('heading', { name: 'Why stores choose WCPOS' })
+      page.getByRole('heading', { name: 'Works for stores of all kinds' })
+    ).toBeVisible()
+    await expect(
+      page.getByRole('heading', {
+        name: 'Built for the demands of physical retail',
+      })
+    ).toBeVisible()
+    await expect(
+      page.getByRole('heading', {
+        name: 'Start free. Upgrade when you need more.',
+      })
     ).toBeVisible()
     await expect(
       page.getByRole('heading', {

@@ -177,12 +177,17 @@
   --shadow-lg: 0 6px 12px -6px hsl(222 47% 11% / 0.08), 0 16px 32px -8px hsl(222 47% 11% / 0.14);
 }
 
-* {
-  border-color: hsl(var(--border));
-}
+/* Base resets live in @layer base so Tailwind utilities (layered above base)
+   can override them. Unlayered, these rules beat EVERY utility in the cascade —
+   which silently disabled all border-<color>/divide-<color> classes site-wide. */
+@layer base {
+  * {
+    border-color: hsl(var(--border));
+  }
 
-body {
-  background-color: hsl(var(--background));
-  color: hsl(var(--foreground));
-  font-family: var(--font-sans);
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    font-family: var(--font-sans);
+  }
 }

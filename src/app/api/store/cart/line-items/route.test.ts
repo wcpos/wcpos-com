@@ -3,6 +3,7 @@ import { NextRequest } from 'next/server'
 
 const mockGetCustomer = vi.fn()
 const mockAddLineItem = vi.fn()
+const mockGetCart = vi.fn()
 const mockGetProOfferCatalog = vi.fn()
 
 vi.mock('@/lib/medusa-auth', () => ({
@@ -11,6 +12,7 @@ vi.mock('@/lib/medusa-auth', () => ({
 
 vi.mock('@/services/core/external/medusa-client', () => ({
   addLineItem: (...args: unknown[]) => mockAddLineItem(...args),
+  getCart: (...args: unknown[]) => mockGetCart(...args),
 }))
 
 vi.mock('@/lib/pro-offer-catalog', async (importOriginal) => {
@@ -40,7 +42,17 @@ function makeRequest(body: unknown) {
 describe('POST /api/store/cart/line-items', () => {
   beforeEach(() => {
     vi.clearAllMocks()
-    mockGetCustomer.mockResolvedValue({ id: 'cust_1' })
+    mockGetCustomer.mockResolvedValue({
+      id: 'cust_1',
+      email: 'customer@example.com',
+    })
+    // Ownership binding: the route only mutates carts carrying the session
+    // customer's email.
+    mockGetCart.mockResolvedValue({
+      id: 'cart_1',
+      email: 'customer@example.com',
+      items: [],
+    })
     mockGetProOfferCatalog.mockResolvedValue({
       offers: [
         { planId: 'yearly', handle: 'wcpos-pro-yearly', variantId: 'variant_yearly_current' },

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { addLineItem } from '@/services/core/external/medusa-client'
+import { addLineItem, getCart } from '@/services/core/external/medusa-client'
 import { getCustomer } from '@/lib/medusa-auth'
 import { storeLogger } from '@/lib/logger'
 import {
@@ -56,6 +56,12 @@ export async function POST(request: NextRequest) {
         { error: 'Current Pro offer is required' },
         { status: 400 }
       )
+    }
+
+    // Bind the cart to the caller (carts carry the session customer's email).
+    const existingCart = await getCart(cartId)
+    if (!existingCart || existingCart.email !== customer.email) {
+      return NextResponse.json({ error: 'Cart not found' }, { status: 404 })
     }
 
     const cart = await addLineItem(cartId, {
