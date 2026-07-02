@@ -66,32 +66,41 @@ void main() {
   vec2 p = uv * vec2(u_res.x / u_res.y, 1.0) * 1.6;
   float t = u_t * 0.05;
 
-  // warm updraft: the domain warp rises rather than scrolling sideways
+  // rising domain warp (steam nod), but rendered as energy, not cloud
   vec2 q = vec2(fbm(p + vec2(0.0, t)), fbm(p + vec2(5.2, t * 0.8)));
   float f = fbm(p + 2.2 * q + vec2(t * 0.6, -t));
 
-  vec3 col = mix(u_c0, u_c1, smoothstep(0.25, 0.55, f));
-  col = mix(col, u_c2, smoothstep(0.5, 0.8, q.x));
-  col = mix(col, u_c3, smoothstep(0.6, 0.95, q.y) * 0.8);
+  vec3 col = mix(u_c0, u_c1, smoothstep(0.2, 0.6, f));
+  col = mix(col, u_c2, smoothstep(0.32, 0.68, q.x) * 0.85);
+  col = mix(col, u_c3, smoothstep(0.42, 0.78, q.y) * 0.6);
+
+  // digital structure 1: terraced contour lines through the field (holo/topo)
+  float steps = 16.0;
+  float cell = fract(f * steps);
+  float contour = 1.0 - smoothstep(0.0, 0.10, min(cell, 1.0 - cell));
+  col = mix(col, col * 0.9 + vec3(0.06), contour * 0.35);
+
+  // digital structure 2: a bright filament riding the field's midline
+  float filament = 1.0 - smoothstep(0.0, 0.045, abs(f - 0.52));
+  col += filament * 0.18 * mix(u_c2, vec3(1.0), 0.4);
 
   // our diagonal: bottom-left to upper-right, easing to cool white outside
   float d = uv.x + (1.0 - uv.y) * 0.9;
   float band = smoothstep(0.1, 0.65, d - 0.35) * (1.0 - smoothstep(0.9, 1.35, d));
-  vec3 base = vec3(0.984, 0.988, 0.996);
-  col = mix(base, col, band * 0.85);
+  vec3 base = vec3(0.985, 0.99, 0.998);
+  col = mix(base, col, band * 0.92);
 
   gl_FragColor = vec4(col, 1.0);
 }
 `
 
-// calm professional blues (owner call: warm reds were unsettling as a
-// backdrop; brand red stays confined to small accents like CTAs). The mid
-// tones anchor to the POS app's own UI blue; the purple is a whisper of Woo.
+// bright but calm: blue-led with pink and yellow splashes (owner: no warm
+// red/orange washes, blues fine, brighter like the original CSS pass).
 const DEFAULT_COLORS: [string, string, string, string] = [
-  '#a7cdf2',
-  '#6aa5dd',
-  '#2b6cb0',
-  '#8b7cf6',
+  '#8ad2ff',
+  '#5b8def',
+  '#ff9ec8',
+  '#ffd76a',
 ]
 
 function hexToVec3(hex: string): [number, number, number] {
@@ -104,9 +113,9 @@ function hexToVec3(hex: string): [number, number, number] {
 }
 
 const FALLBACK_BG =
-  'radial-gradient(ellipse 60% 70% at 72% 22%, #6aa5dd55, transparent 70%),' +
-  'radial-gradient(ellipse 55% 65% at 88% 60%, #a7cdf24d, transparent 70%),' +
-  'radial-gradient(ellipse 50% 60% at 55% 95%, #8b7cf640, transparent 70%),' +
+  'radial-gradient(ellipse 60% 70% at 72% 22%, #5b8def55, transparent 70%),' +
+  'radial-gradient(ellipse 55% 65% at 88% 60%, #ff9ec84d, transparent 70%),' +
+  'radial-gradient(ellipse 50% 60% at 55% 95%, #ffd76a40, transparent 70%),' +
   '#fbfcfe'
 
 export function AmbientGradient({
