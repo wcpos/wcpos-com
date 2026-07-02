@@ -69,24 +69,22 @@ function usePrefersReducedMotion() {
  * in the DOM, switched by CSS, so SSR needs no viewport knowledge.
  */
 export function ScrollStory() {
+  const reducedMotion = usePrefersReducedMotion()
+
   return (
     <>
       <div className="hidden md:block">
-        <PinnedStory />
+        {reducedMotion ? (
+          <StoryStatic animateDevices={false} />
+        ) : (
+          <PinnedStoryScroller />
+        )}
       </div>
       <div className="md:hidden">
-        <StoryStatic />
+        <StoryStatic animateDevices={!reducedMotion} />
       </div>
     </>
   )
-}
-
-function PinnedStory() {
-  const reducedMotion = usePrefersReducedMotion()
-  if (reducedMotion) {
-    return <StoryStatic />
-  }
-  return <PinnedStoryScroller />
 }
 
 function PinnedStoryScroller() {

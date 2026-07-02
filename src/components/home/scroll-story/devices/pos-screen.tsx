@@ -45,10 +45,12 @@ function LandscapePos({
   w,
   h,
   register,
+  animateCharge,
 }: {
   w: number
   h: number
   register: string
+  animateCharge: boolean
 }) {
   const rail = 24
   const bar = 20
@@ -233,12 +235,14 @@ function LandscapePos({
       <rect x={cartX + 8} y={h - 25} width={cartW - 16} height={16} rx={4} fill={ink.red}>
         {/* same store, same data: every device's Charge button breathes on
             the same clock (document timeline), a quiet sync cue */}
-        <animate
-          attributeName="opacity"
-          values="1;0.72;1"
-          dur="2.4s"
-          repeatCount="indefinite"
-        />
+        {animateCharge ? (
+          <animate
+            attributeName="opacity"
+            values="1;0.72;1"
+            dur="2.4s"
+            repeatCount="indefinite"
+          />
+        ) : null}
       </rect>
       <text
         x={cartX + cartW / 2}
@@ -254,7 +258,7 @@ function LandscapePos({
   )
 }
 
-function PhonePos() {
+function PhonePos({ animateCharge }: { animateCharge: boolean }) {
   const w = 112
   const h = 242
   const cols = 2
@@ -322,12 +326,14 @@ function PhonePos() {
 
       {/* charge bar + bottom nav */}
       <rect x={6} y={h - navH - 20} width={w - 12} height={15} rx={4} fill={ink.red}>
-        <animate
-          attributeName="opacity"
-          values="1;0.72;1"
-          dur="2.4s"
-          repeatCount="indefinite"
-        />
+        {animateCharge ? (
+          <animate
+            attributeName="opacity"
+            values="1;0.72;1"
+            dur="2.4s"
+            repeatCount="indefinite"
+          />
+        ) : null}
       </rect>
       <text x={w / 2} y={h - navH - 9.5} textAnchor="middle" fontSize="6.5" fontWeight="700" fill="#fff">
         Charge $69
@@ -354,10 +360,12 @@ export function PosScreen({
   variant = 'tablet',
   register = 'Register 1',
   className,
+  animateCharge = true,
 }: {
   variant?: 'tablet' | 'laptop' | 'phone'
   register?: string
   className?: string
+  animateCharge?: boolean
 }) {
   return (
     <div
@@ -368,12 +376,13 @@ export function PosScreen({
       )}
     >
       {variant === 'phone' ? (
-        <PhonePos />
+        <PhonePos animateCharge={animateCharge} />
       ) : (
         <LandscapePos
           w={variant === 'tablet' ? 436 : 400}
           h={variant === 'tablet' ? 294 : 236}
           register={register}
+          animateCharge={animateCharge}
         />
       )}
     </div>

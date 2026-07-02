@@ -205,12 +205,6 @@ export function AmbientGradient({
     const reducedMotion = window.matchMedia(
       '(prefers-reduced-motion: reduce)'
     ).matches
-    if (reducedMotion) {
-      drawFrame()
-      resizeObserver.disconnect()
-      return
-    }
-
     let frame = 0
     let running = false
     const tick = () => {
@@ -228,20 +222,34 @@ export function AmbientGradient({
       cancelAnimationFrame(frame)
     }
 
-    const io = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting && !document.hidden) start()
-      else stop()
-    })
-    io.observe(canvas)
-    const onVisibility = () => (document.hidden ? stop() : start())
-    document.addEventListener('visibilitychange', onVisibility)
-
     const onContextLost = (event: Event) => {
       event.preventDefault()
       stop()
       setFallback(true)
     }
     canvas.addEventListener('webglcontextlost', onContextLost)
+
+    if (reducedMotion) {
+      drawFrame()
+      resizeObserver.disconnect()
+      return () => {
+        canvas.removeEventListener('webglcontextlost', onContextLost)
+      }
+    }
+
+    let isIntersecting = false
+    const updateRunning = () => {
+      if (isIntersecting && !document.hidden) start()
+      else stop()
+    }
+
+    const io = new IntersectionObserver(([entry]) => {
+      isIntersecting = Boolean(entry?.isIntersecting)
+      updateRunning()
+    })
+    io.observe(canvas)
+    const onVisibility = updateRunning
+    document.addEventListener('visibilitychange', onVisibility)
 
     return () => {
       stop()
@@ -256,7 +264,7 @@ export function AmbientGradient({
     return (
       <div
         aria-hidden="true"
-        className={cn('pointer-events-none', className)}
+        className={cn('pointer-events-none h-full w-full', className)}
         style={{ background: FALLBACK_BG }}
         data-testid="ambient-gradient-fallback"
       />

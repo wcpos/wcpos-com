@@ -7,7 +7,13 @@ import styles from '../story.module.css'
  * shot through to the cloud act. The bezel is a CSS stand-in for the future
  * hyper-real render; the screen is always the live DOM PosScreen.
  */
-export function DeviceTablet({ className }: { className?: string }) {
+export function DeviceTablet({
+  className,
+  animateCharge = true,
+}: {
+  className?: string
+  animateCharge?: boolean
+}) {
   return (
     <div
       aria-hidden="true"
@@ -17,7 +23,7 @@ export function DeviceTablet({ className }: { className?: string }) {
         className
       )}
     >
-      <PosScreen variant="tablet" />
+      <PosScreen variant="tablet" animateCharge={animateCharge} />
     </div>
   )
 }
