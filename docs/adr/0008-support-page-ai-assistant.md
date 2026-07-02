@@ -1,6 +1,6 @@
 # 0008 — Support page is an AI assistant (Aide) with Discord fallback
 
-Status: Accepted (2026-06-16)
+Status: Accepted (2026-06-16) — Amended (2026-07-03), see below
 
 ## Context
 
@@ -42,3 +42,25 @@ section below.
 
 See `docs/superpowers/specs/2026-06-16-support-page-ai-assistant-design.md` and
 `docs/superpowers/plans/2026-06-16-support-page-ai-assistant.md`.
+
+## Amendment (2026-07-03) — repoint to `POST /support/answer`
+
+openclaw replaced the agent-session path with a dedicated grounded answerer
+(openclaw #1315, publicly routed in #1316). The proxy now speaks that contract
+instead of `/execute`:
+
+- Request: `POST {OPENCLAW_GATEWAY_URL}/support/answer` with
+  `{ question, session_id, channel: 'web' }`. `OPENCLAW_SUPPORT_INTENT` is
+  gone — the answerer pins models and config in code.
+- Response is structured: `{ answered, answer, sources, confidence, model }`.
+  An escalation is an HTTP 200 with `answered: false` whose `answer` is the
+  Discord hand-off message; the route forwards `answered` and `sources` to the
+  client. The gateway cites sources now, superseding the "no `sources`" note
+  above.
+- The gateway enforces its own caps (12/session/hour, 120 global/hour, plus a
+  Traefik 20 req/min/IP edge limit); its 429s pass through with their message
+  rather than surfacing as a 503 outage.
+- The answerer is a single-shot completion: `session_id` is a rate-limit key,
+  not conversation memory. The chat UI implies multi-turn context that the
+  backend does not have — follow-up questions must stand alone. Revisit if
+  escalation styling or real multi-turn lands.

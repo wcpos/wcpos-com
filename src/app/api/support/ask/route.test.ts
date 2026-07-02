@@ -1,9 +1,9 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 
-const { errorMock } = vi.hoisted(() => ({ errorMock: vi.fn() }))
+const { errorMock, warnMock } = vi.hoisted(() => ({ errorMock: vi.fn(), warnMock: vi.fn() }))
 
 vi.mock('@/lib/logger', () => ({
-  apiLogger: { error: errorMock },
+  apiLogger: { error: errorMock, warn: warnMock },
 }))
 vi.mock('@/lib/support/turnstile', () => ({ verifyTurnstile: vi.fn() }))
 vi.mock('@/lib/support/rate-limit', () => ({
@@ -72,23 +72,34 @@ describe('POST /api/support/ask', () => {
     vi.mocked(askAide).mockResolvedValue({ answer: 'Do X.', model: 'sonnet', answered: true, sources: [] })
     const res = await POST(req({ question: 'How?', turnstileToken: 't', sessionId: 's1' }))
     expect(res.status).toBe(200)
-    expect(await res.json()).toMatchObject({ answer: 'Do X.', sessionId: 's1' })
+    expect(await res.json()).toMatchObject({
+      answer: 'Do X.',
+      sessionId: 's1',
+      answered: true,
+      sources: [],
+    })
   })
 
-  it('502 when Aide returns an empty answer', async () => {
+  it('502 and an error log when the gateway sends an empty answer', async () => {
     vi.mocked(verifyTurnstile).mockResolvedValue(true)
     vi.mocked(askAide).mockResolvedValue({ answer: '', model: 'sonnet', answered: false, sources: [] })
     const res = await POST(req({ question: 'How?', turnstileToken: 't' }))
     expect(res.status).toBe(502)
     expect(await res.json()).toHaveProperty('error')
+    expect(errorMock).toHaveBeenCalledTimes(1)
   })
 
-  it('passes a gateway 429 through as a rate-limit message, not an outage', async () => {
+  it('passes a gateway 429 through with its message, logged at warn not error', async () => {
     vi.mocked(verifyTurnstile).mockResolvedValue(true)
-    vi.mocked(askAide).mockRejectedValue(new OpenclawError('rate limited', 429, 'rate_limited'))
+    vi.mocked(askAide).mockRejectedValue(
+      new OpenclawError('The assistant is busy right now — please try again later.', 429, 'rate_limited')
+    )
     const res = await POST(req({ question: 'How?', turnstileToken: 't' }))
     expect(res.status).toBe(429)
-    expect(await res.json()).toHaveProperty('error')
+    expect(await res.json()).toEqual({
+      error: 'The assistant is busy right now — please try again later.',
+    })
+    expect(warnMock).toHaveBeenCalledTimes(1)
     expect(errorMock).not.toHaveBeenCalled()
   })
 
