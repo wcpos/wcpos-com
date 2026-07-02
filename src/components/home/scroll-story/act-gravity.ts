@@ -54,6 +54,8 @@ export function useActGravity(
     let debounce: ReturnType<typeof setTimeout> | undefined
 
     const cancel = () => {
+      clearTimeout(debounce)
+      debounce = undefined
       animation?.stop()
       animation = null
       settling = false
