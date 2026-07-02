@@ -2,7 +2,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { Suspense } from 'react'
 import { cacheLife, cacheTag } from 'next/cache'
 import { cookies } from 'next/headers'
-import { AlertCircle, Bitcoin, CreditCard, Shield } from 'lucide-react'
+import { AlertCircle, Bitcoin, CreditCard, Download } from 'lucide-react'
 import { Link } from '@/i18n/navigation'
 import { ProBuyBox } from '@/components/pro/pro-buy-box'
 import { buildProBuyBoxOptions } from '@/components/pro/pro-buy-box-options'
@@ -43,7 +43,7 @@ export async function generateMetadata({
     path: '/pro',
     title: 'Pro - Premium Features',
     description:
-      'Upgrade WooCommerce POS with Pro: terminal payments, stock and price editing, order and customer management, end-of-day reports, and priority support.',
+      'Upgrade WCPOS with Pro: terminal payments, stock and price editing, order and customer management, end-of-day reports, and priority support.',
   })
 }
 
@@ -125,12 +125,12 @@ async function BuyBoxWithExperiment({ locale }: { locale: string }) {
         <>
           <div className="mt-5 space-y-2 border-t pt-4 text-sm text-muted-foreground">
             <p className="flex items-center gap-2">
-              <Shield className="h-4 w-4 shrink-0" aria-hidden />
+              <Download className="h-4 w-4 shrink-0" aria-hidden />
               <span>
                 <TextLink asChild>
-                  <Link href="/refunds">{t('buyBox.guaranteeLink')}</Link>
+                  <Link href="/downloads">{t('buyBox.tryFreeLink')}</Link>
                 </TextLink>
-                {t('buyBox.guaranteeSuffix')}
+                {t('buyBox.tryFreeSuffix')}
               </span>
             </p>
             <p className="flex items-center gap-2">
@@ -161,7 +161,7 @@ async function ProProductJsonLd() {
         __html: JSON.stringify({
           '@context': 'https://schema.org',
           '@type': 'Product',
-          name: 'WooCommerce POS Pro',
+          name: 'WCPOS Pro',
           description:
             'Premium Point of Sale plugin for WooCommerce. Adds payment terminal integration, stock and price editing, order and customer management, end-of-day reports, custom payment gateways, and priority support.',
           brand: {
@@ -200,7 +200,7 @@ export default async function ProPage({
         <SectionHeading
           as="h1"
           size="hero"
-          title="WooCommerce POS Pro"
+          title="WCPOS Pro"
           subtitle="Everything in the free POS, plus payment terminals, store management at the register, end-of-day reports, and priority support."
         />
       </Section>

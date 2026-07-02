@@ -322,7 +322,7 @@
   "freeReleases": [
     {
       "tag_name": "v1.9.6",
-      "name": "WooCommerce POS 1.9.6",
+      "name": "WCPOS 1.9.6",
       "body": "Cash drawer support, analytics fixes, and translation updates.",
       "published_at": "2026-06-17T00:00:00.000Z",
       "draft": false,
@@ -331,7 +331,7 @@
     },
     {
       "tag_name": "v1.9.5",
-      "name": "WooCommerce POS 1.9.5",
+      "name": "WCPOS 1.9.5",
       "body": "Fixed a payment-gateways API crash.",
       "published_at": "2026-06-15T00:00:00.000Z",
       "draft": false,

@@ -41,7 +41,7 @@ export default async function Home({
           __html: JSON.stringify({
             '@context': 'https://schema.org',
             '@type': 'SoftwareApplication',
-            name: 'WooCommerce POS',
+            name: 'WCPOS',
             applicationCategory: 'BusinessApplication',
             operatingSystem: 'Windows, macOS, Linux, iOS, Android',
             url: 'https://wcpos.com',

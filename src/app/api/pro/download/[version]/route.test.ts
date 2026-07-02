@@ -63,7 +63,7 @@ describe('GET /api/pro/download/[version]', () => {
       data: {
         activated: false,
         status: 'inactive',
-        productName: 'WooCommerce POS Pro',
+        productName: 'WCPOS Pro',
       },
       entitlement: { status: 'suspended', expiry: '2099-01-01T00:00:00Z' },
     })
@@ -87,7 +87,7 @@ describe('GET /api/pro/download/[version]', () => {
       data: {
         activated: true,
         status: 'active',
-        productName: 'WooCommerce POS Pro',
+        productName: 'WCPOS Pro',
       },
       entitlement: { status: 'active', expiry: null },
     })
@@ -121,7 +121,7 @@ describe('GET /api/pro/download/[version]', () => {
       data: {
         activated: true,
         status: 'active',
-        productName: 'WooCommerce POS Pro',
+        productName: 'WCPOS Pro',
       },
       entitlement: { status: 'active', expiry: null },
     })

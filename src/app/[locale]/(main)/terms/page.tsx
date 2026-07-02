@@ -36,14 +36,14 @@ export default async function TermsPage({
           <p className="leading-7 text-muted-foreground">
             WCPOS provides the wcpos.com website, user accounts, and paid WCPOS Pro
             licenses that unlock premium features, updates, and priority support for
-            the WooCommerce POS plugin.
+            the WCPOS plugin.
           </p>
         </section>
 
         <section>
           <h2 className="text-2xl font-semibold mb-4">The free plugin and the GPL</h2>
           <p className="leading-7 text-muted-foreground">
-            The free WooCommerce POS plugin is open-source software released under the
+            The free WCPOS plugin is open-source software released under the
             GNU General Public License (GPL). Nothing in these terms limits the rights
             the GPL grants you over that code. A Pro license is separate: it covers
             access to Pro features, license keys, automatic updates, and priority

@@ -25,12 +25,12 @@
     "themeSystem": "System"
   },
   "home": {
-    "title": "WooCommerce POS",
+    "title": "WCPOS",
     "subtitle": "A fast point of sale for WooCommerce"
   },
   "roadmap": {
     "title": "Roadmap",
-    "subtitle": "What we're building for WooCommerce POS"
+    "subtitle": "What we're building for WCPOS"
   },
   "pro": {
     "features": {
@@ -81,8 +81,8 @@
         "ctaNote": "Etwa {years} Jahre Jährlich — danach für immer $0.",
         "ctaNoteSimple": "Einmal zahlen — Updates für immer."
       },
-      "guaranteeLink": "14 Tage Geld-zurück-Garantie",
-      "guaranteeSuffix": ", ohne Angabe von Gründen",
+      "tryFreeLink": "Testen Sie zuerst die kostenlose Version",
+      "tryFreeSuffix": " — upgraden Sie erst, wenn sie sich bewährt hat",
       "payments": "Karte, PayPal oder Bitcoin",
       "proof": "5.000+ aktive Shops · Jährlich wird auf Lebenslang angerechnet",
       "unavailableTitle": "Preise vorübergehend nicht verfügbar",
@@ -92,7 +92,7 @@
       "title": "Frequently Asked Questions",
       "freePlugin": {
         "question": "Is the free plugin limited?",
-        "answer": "No. The free WooCommerce POS plugin is GPL software with full point of sale features — unlimited products, orders, and customers, and no transaction fees. Pro adds the advanced tools listed above."
+        "answer": "No. The free WCPOS plugin is GPL software with full point of sale features — unlimited products, orders, and customers, and no transaction fees. Pro adds the advanced tools listed above."
       },
       "yearlyVsLifetime": {
         "question": "What's the difference between Yearly and Lifetime?",

@@ -140,7 +140,7 @@ describe('ProPage', () => {
 
     const heroHeading = screen.getByRole('heading', {
       level: 1,
-      name: 'WooCommerce POS Pro',
+      name: 'WCPOS Pro',
     })
     expect(heroHeading.closest('[data-section-heading-size]'))
       .toHaveAttribute('data-section-heading-size', 'hero')

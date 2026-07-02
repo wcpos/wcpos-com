@@ -24,7 +24,7 @@ const milestones = [
   {
     date: '11 May 2014',
     title: 'Released on WordPress.org',
-    body: 'WooCommerce POS goes public, free for anyone who needs it. The free version does the actual job: sell, print, stay in sync.',
+    body: 'WCPOS goes public, free for anyone who needs it. The free version does the actual job: sell, print, stay in sync.',
   },
   {
     date: 'Today',

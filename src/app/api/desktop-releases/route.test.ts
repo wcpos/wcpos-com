@@ -35,7 +35,7 @@ describe('GET /api/desktop-releases', () => {
   it('returns the latest release with mapped assets', async () => {
     mockGetLatestRelease.mockResolvedValueOnce({
       tagName: 'v1.5.0',
-      name: 'WooCommerce POS 1.5.0',
+      name: 'WCPOS 1.5.0',
       assets: [
         {
           name: 'wcpos-1.5.0-arm64.dmg',
@@ -54,7 +54,7 @@ describe('GET /api/desktop-releases', () => {
     expect(response.status).toBe(200)
     expect(json).toEqual({
       version: '1.5.0',
-      name: 'WooCommerce POS 1.5.0',
+      name: 'WCPOS 1.5.0',
       assets: [
         {
           name: 'wcpos-1.5.0-arm64.dmg',

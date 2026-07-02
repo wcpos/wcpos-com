@@ -19,7 +19,7 @@ import {
 
 export const metadata = {
   title: 'Checkout',
-  description: 'Complete your purchase of WooCommerce POS Pro',
+  description: 'Complete your purchase of WCPOS Pro',
   // Auth-gated transactional page — keep out of search engines.
   robots: { index: false, follow: false },
 }
@@ -58,8 +58,8 @@ function getSingleSearchParam(
 }
 
 const OFFER_SUMMARY_TITLES: Record<string, string> = {
-  yearly: 'WooCommerce POS Pro — Yearly',
-  lifetime: 'WooCommerce POS Pro — Lifetime',
+  yearly: 'WCPOS Pro — Yearly',
+  lifetime: 'WCPOS Pro — Lifetime',
 }
 
 async function CheckoutContent({
@@ -106,7 +106,7 @@ async function CheckoutContent({
           ? {
               title:
                 OFFER_SUMMARY_TITLES[selectedFullOffer.planId] ??
-                'WooCommerce POS Pro',
+                'WCPOS Pro',
               priceFormatted: selectedFullOffer.price.formatted,
             }
           : undefined

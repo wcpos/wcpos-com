@@ -347,7 +347,7 @@ test.describe('Checkout flow', () => {
     await backLink.click()
     await expect(page).toHaveURL(/\/pro$/)
     await expect(
-      page.getByRole('heading', { name: 'WooCommerce POS Pro' })
+      page.getByRole('heading', { name: 'WCPOS Pro' })
     ).toBeVisible()
   })
 

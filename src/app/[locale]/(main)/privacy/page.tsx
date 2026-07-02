@@ -26,7 +26,7 @@ export default async function PrivacyPage({
         <section>
           <p className="leading-7 text-muted-foreground">
             WCPOS (&quot;we&quot;, &quot;us&quot;) operates wcpos.com, the website for the
-            WooCommerce POS plugin and WCPOS Pro. This policy explains what personal
+            WCPOS plugin and WCPOS Pro. This policy explains what personal
             data we collect when you use the site, why we collect it, who processes it
             on our behalf, and what rights you have over it. We aim to collect as
             little as we need to run the service.

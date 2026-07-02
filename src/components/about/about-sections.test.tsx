@@ -144,7 +144,7 @@ describe('FounderLetter', () => {
   it('introduces Paul and shows the shop photo', async () => {
     render(await FounderLetter())
     expect(
-      screen.getByText(/Hi — I'm Paul\. I built WooCommerce POS\./)
+      screen.getByText(/Hi — I'm Paul\. I built WCPOS\./)
     ).toBeInTheDocument()
     expect(screen.getByRole('img')).toHaveAttribute(
       'src',
@@ -166,7 +166,7 @@ describe('FounderLetter', () => {
     render(<FounderLetterFallback />)
 
     const section = screen
-      .getByText(/Hi — I'm Paul\. I built WooCommerce POS\./)
+      .getByText(/Hi — I'm Paul\. I built WCPOS\./)
       .closest('[data-section-tone]')
 
     expect(section).toHaveAttribute('data-section-tone', 'muted')

@@ -69,7 +69,7 @@ function LandscapePos({
       viewBox={`0 0 ${w} ${h}`}
       className="h-full w-full"
       role="img"
-      aria-label="WooCommerce POS app"
+      aria-label="WCPOS app"
     >
       {/* content background */}
       <rect width={w} height={h} rx={6} fill={ink.bg} />
@@ -260,7 +260,7 @@ function PhonePos() {
       viewBox={`0 0 ${w} ${h}`}
       className="h-full w-full"
       role="img"
-      aria-label="WooCommerce POS app, phone"
+      aria-label="WCPOS app, phone"
     >
       <rect width={w} height={h} rx={10} fill={ink.bg} />
 

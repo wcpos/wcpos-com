@@ -69,7 +69,7 @@ describe('GET /api/pro/update/[version]', () => {
       data: {
         activated: false,
         status: 'inactive',
-        productName: 'WooCommerce POS Pro',
+        productName: 'WCPOS Pro',
       },
       entitlement: { status: 'suspended', expiry: '2099-01-01T00:00:00Z' },
     })
@@ -93,7 +93,7 @@ describe('GET /api/pro/update/[version]', () => {
         expiresAt: '2099-06-14T00:00:00Z',
         activationsLimit: 3,
         activationsCount: 1,
-        productName: 'WooCommerce POS Pro',
+        productName: 'WCPOS Pro',
       },
       entitlement: { status: 'active', expiry: '2099-06-14T00:00:00Z' },
     })
@@ -115,7 +115,7 @@ describe('GET /api/pro/update/[version]', () => {
       data: {
         activated: false,
         status: 'active',
-        productName: 'WooCommerce POS Pro',
+        productName: 'WCPOS Pro',
       },
       // no entitlement field
     })

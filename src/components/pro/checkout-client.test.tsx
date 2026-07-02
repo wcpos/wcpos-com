@@ -542,13 +542,13 @@ describe('CheckoutClient', () => {
     mockFetch.mockReturnValue(new Promise(() => {}))
     renderSignedIn({
       offerSummary: {
-        title: 'WooCommerce POS Pro — Yearly',
+        title: 'WCPOS Pro — Yearly',
         priceFormatted: '$129.00',
       },
     })
 
     expect(
-      screen.getByText('WooCommerce POS Pro — Yearly')
+      screen.getByText('WCPOS Pro — Yearly')
     ).toBeInTheDocument()
     expect(screen.getByText('$129.00')).toBeInTheDocument()
   })

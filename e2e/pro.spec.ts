@@ -17,9 +17,9 @@ test.describe('Pro Page', () => {
   })
 
   // Static content tests - always run
-  test('displays WooCommerce POS Pro heading', async ({ page }) => {
+  test('displays WCPOS Pro heading', async ({ page }) => {
     await expect(
-      page.getByRole('heading', { name: 'WooCommerce POS Pro' })
+      page.getByRole('heading', { name: 'WCPOS Pro' })
     ).toBeVisible()
   })
 

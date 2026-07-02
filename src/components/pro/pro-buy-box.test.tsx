@@ -70,7 +70,7 @@ function renderBuyBox(overrides: Partial<Parameters<typeof ProBuyBox>[0]> = {}) 
       heading="Get Pro"
       subheading="One license, all features."
       termAriaLabel="License term"
-      footer={<p>14-day money-back guarantee</p>}
+      footer={<p>Try the free version first</p>}
       {...overrides}
     />
   )
@@ -90,7 +90,7 @@ describe('ProBuyBox', () => {
       screen.getByText('One-time payment — never auto-renews.')
     ).toBeInTheDocument()
     expect(
-      screen.getByText('14-day money-back guarantee')
+      screen.getByText('Try the free version first')
     ).toBeInTheDocument()
   })
 

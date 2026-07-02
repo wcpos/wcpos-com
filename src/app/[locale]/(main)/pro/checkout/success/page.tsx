@@ -4,8 +4,8 @@ import { CheckCircle, Download } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
 export const metadata = {
-  title: 'Order Complete - WooCommerce POS Pro',
-  description: 'Thank you for your purchase of WooCommerce POS Pro',
+  title: 'Order Complete - WCPOS Pro',
+  description: 'Thank you for your purchase of WCPOS Pro',
   // Post-purchase page — keep out of search engines.
   robots: { index: false, follow: false },
 }
@@ -26,7 +26,7 @@ export default async function CheckoutSuccessPage({
         <h1 className="text-3xl font-bold mb-4">Thank You!</h1>
 
         <p className="text-lg text-muted-foreground mb-6">
-          Your purchase of WooCommerce POS Pro is complete.
+          Your purchase of WCPOS Pro is complete.
         </p>
 
         <div className="bg-muted/50 rounded-md p-6 mb-8">

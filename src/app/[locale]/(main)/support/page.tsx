@@ -15,7 +15,7 @@ export async function generateMetadata({
     path: '/support',
     title: 'Support',
     description:
-      'Ask anything about WooCommerce POS and get an instant answer from our docs, or chat with the community on Discord.',
+      'Ask anything about WCPOS and get an instant answer from our docs, or chat with the community on Discord.',
   })
 }
 
