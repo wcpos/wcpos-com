@@ -127,6 +127,7 @@ export function AmbientGradient({
 }) {
   const canvasRef = React.useRef<HTMLCanvasElement>(null)
   const [fallback, setFallback] = React.useState(false)
+  const colorsKey = colors.join('|')
 
   React.useEffect(() => {
     const canvas = canvasRef.current
@@ -188,6 +189,16 @@ export function AmbientGradient({
     })
     void uniforms
 
+    const started = performance.now()
+    function drawFrame() {
+      if (!gl) return
+      gl.uniform1f(uTime, (performance.now() - started) / 1000)
+      gl.drawArrays(gl.TRIANGLES, 0, 3)
+    }
+
+    const reducedMotion = window.matchMedia(
+      '(prefers-reduced-motion: reduce)'
+    ).matches
     const dpr = Math.min(window.devicePixelRatio || 1, 1.5)
     function resize() {
       if (!canvas || !gl) return
@@ -199,21 +210,12 @@ export function AmbientGradient({
         gl.viewport(0, 0, width, height)
       }
       gl.uniform2f(uRes, canvas.width, canvas.height)
+      if (reducedMotion) drawFrame()
     }
     resize()
     const resizeObserver = new ResizeObserver(resize)
     resizeObserver.observe(canvas)
 
-    const started = performance.now()
-    function drawFrame() {
-      if (!gl) return
-      gl.uniform1f(uTime, (performance.now() - started) / 1000)
-      gl.drawArrays(gl.TRIANGLES, 0, 3)
-    }
-
-    const reducedMotion = window.matchMedia(
-      '(prefers-reduced-motion: reduce)'
-    ).matches
     let frame = 0
     let running = false
     const tick = () => {
@@ -239,9 +241,8 @@ export function AmbientGradient({
     canvas.addEventListener('webglcontextlost', onContextLost)
 
     if (reducedMotion) {
-      drawFrame()
-      resizeObserver.disconnect()
       return () => {
+        resizeObserver.disconnect()
         canvas.removeEventListener('webglcontextlost', onContextLost)
       }
     }
@@ -267,7 +268,8 @@ export function AmbientGradient({
       document.removeEventListener('visibilitychange', onVisibility)
       canvas.removeEventListener('webglcontextlost', onContextLost)
     }
-  }, [colors])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [colorsKey])
 
   if (fallback) {
     return (

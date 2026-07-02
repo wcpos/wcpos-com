@@ -27,7 +27,7 @@ sections together, and — borrowing Stripe's philosophy, not their pixels —
    decorate it (hardware carousel = "anything works"; arc pulses = sync;
    synchronized Charge buttons = "same store, same data").
 
-**The ambient gradient** (`src/components/ui/ambient-gradient.tsx`) is an
+**The ambient gradient** (`src/components/motion/ambient-gradient.tsx`) is an
 original ~180-line WebGL fragment shader: domain-warped value noise through
 the backdrop palette (blue-led with pink/yellow splashes — bright but calm; warm red/orange washes ruled out, brand red lives only in small accents) with a digital character: terraced contour lines and a bright filament through the noise field, not soft cloud inside a
 bottom-left→top-right diagonal band that fades to warm white where copy
