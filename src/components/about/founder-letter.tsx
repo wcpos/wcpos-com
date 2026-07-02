@@ -16,10 +16,13 @@ export async function FounderLetter() {
   cacheTag('products')
 
   // Prerendered into the shared static shell — always live prices.
-  const { offers } = await getProOfferCatalog(
+  const { offers, source } = await getProOfferCatalog(
     undefined,
     getLiveStoreEnvironment()
   )
+  // Fallback prices retry the backend on the short profile (shortest
+  // cacheLife call wins) instead of pinning for the full products lifetime.
+  if (source === 'fallback') cacheLife('api-short')
   const priceSummary = formatFounderProPriceSummary(offers)
 
   return <FounderLetterContent priceSummary={priceSummary} />

@@ -57,7 +57,14 @@ async function getCachedProOfferCatalog(envName: StoreEnvironmentName) {
   'use cache'
   cacheLife('products')
   cacheTag('products')
-  return getProOfferCatalog(undefined, getStoreEnvironmentByName(envName))
+  const catalog = await getProOfferCatalog(
+    undefined,
+    getStoreEnvironmentByName(envName)
+  )
+  // Fallback prices retry the backend on the short profile (shortest
+  // cacheLife call wins) instead of pinning for the full products lifetime.
+  if (catalog.source === 'fallback') cacheLife('api-short')
+  return catalog
 }
 
 function BuyBoxSkeleton() {

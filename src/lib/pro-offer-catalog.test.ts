@@ -1,5 +1,6 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import type { MedusaProduct } from '@/types/medusa'
+import { getProducts } from '@/services/core/external/medusa-client'
 import {
   buildProCheckoutHref,
   buildProOfferCatalog,
@@ -7,9 +8,18 @@ import {
   formatFounderProPriceSummary,
   formatHomeProPriceSummary,
   getProCheckoutCtaLabel,
+  getProOfferCatalog,
   resolveProOfferCartSelection,
   resolveProOfferCheckoutSelection,
 } from './pro-offer-catalog'
+
+vi.mock('@/services/core/external/medusa-client', async (importOriginal) => {
+  const actual =
+    await importOriginal<
+      typeof import('@/services/core/external/medusa-client')
+    >()
+  return { ...actual, getProducts: vi.fn() }
+})
 
 function product(handle: string, amount: number, variantId: string): MedusaProduct {
   return {
@@ -81,6 +91,66 @@ describe('buildProOfferCatalog', () => {
     })
 
     expect(buildProOfferCatalog([yearly])).toEqual([])
+  })
+})
+
+describe('getProOfferCatalog', () => {
+  it('serves the committed fallback catalog when Medusa returns no products', async () => {
+    vi.mocked(getProducts).mockResolvedValueOnce([])
+
+    const catalog = await getProOfferCatalog()
+
+    expect(catalog.source).toBe('fallback')
+    expect(
+      catalog.offers.map((offer) => [offer.planId, offer.price.compact])
+    ).toEqual([
+      ['yearly', '$129'],
+      ['lifetime', '$399'],
+    ])
+    // Fallback offers keep the stable-handle checkout contract intact.
+    expect(catalog.offers[0].checkoutPath).toContain(
+      'product=wcpos-pro-yearly'
+    )
+  })
+
+  it('fills only the missing plan when Medusa returns a partial catalog', async () => {
+    vi.mocked(getProducts).mockResolvedValueOnce([
+      product('wcpos-pro-yearly', 149, 'variant_yearly_live'),
+    ])
+
+    const catalog = await getProOfferCatalog()
+
+    expect(catalog.source).toBe('fallback')
+    expect(
+      catalog.offers.map((offer) => [offer.planId, offer.price.amount])
+    ).toEqual([
+      ['yearly', 149],
+      ['lifetime', 399],
+    ])
+    // The plan Medusa did resolve keeps its live variant, not the fallback's.
+    expect(catalog.offers[0].variantId).toBe('variant_yearly_live')
+  })
+
+  it('reports a pure Medusa catalog when both plans resolve', async () => {
+    vi.mocked(getProducts).mockResolvedValueOnce([
+      product('wcpos-pro-yearly', 129, 'variant_yearly'),
+      product('wcpos-pro-lifetime', 399, 'variant_lifetime'),
+    ])
+
+    const catalog = await getProOfferCatalog()
+
+    expect(catalog.source).toBe('medusa')
+    expect(catalog.offers).toHaveLength(2)
+  })
+
+  it('serves fallback prices in the other committed currencies', async () => {
+    vi.mocked(getProducts).mockResolvedValueOnce([])
+
+    const catalog = await getProOfferCatalog('eur')
+
+    expect(catalog.offers.map((offer) => offer.price.amount)).toEqual([
+      119, 369,
+    ])
   })
 })
 

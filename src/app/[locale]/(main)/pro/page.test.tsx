@@ -89,7 +89,7 @@ vi.mock('@/lib/analytics/client-events', () => ({
 }))
 
 vi.mock('@/lib/pro-offer-catalog', () => ({
-  getProOfferCatalog: vi.fn(async () => ({ offers: [] })),
+  getProOfferCatalog: vi.fn(async () => ({ offers: [], source: 'fallback' })),
   buildProOfferSchemaOffers: vi.fn(() => []),
   buildProCheckoutHref: vi.fn(() => '/pro/checkout?product=test'),
   getProCheckoutCtaLabel: vi.fn((_variant, t) => t('buyBox.cta')),
