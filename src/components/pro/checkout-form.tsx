@@ -30,6 +30,12 @@ interface CheckoutFormProps {
    * when the customer retries). Failure messages are already customer-safe.
    */
   onFailure: (failure: CheckoutFailure | null) => void
+  /**
+   * Mirrors the confirm-in-flight state to the parent so it can lock the
+   * rest of the checkout (billing Edit, method switching) while a charge
+   * may be happening.
+   */
+  onProcessingChange?: (processing: boolean) => void
 }
 
 export function CheckoutForm({
@@ -40,6 +46,7 @@ export function CheckoutForm({
   experimentVariant,
   onSuccess,
   onFailure,
+  onProcessingChange,
 }: CheckoutFormProps) {
   const stripe = useStripe()
   const elements = useElements()
@@ -53,6 +60,7 @@ export function CheckoutForm({
     }
 
     setIsLoading(true)
+    onProcessingChange?.(true)
     onFailure(null)
 
     try {
@@ -138,6 +146,7 @@ export function CheckoutForm({
       )
     } finally {
       setIsLoading(false)
+      onProcessingChange?.(false)
     }
   }
 

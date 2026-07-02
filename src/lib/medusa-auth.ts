@@ -128,9 +128,18 @@ export async function login(
 }
 
 /**
- * Register a new customer (two-step process).
+ * Register a new customer (three-step process).
  * 1. POST /auth/customer/emailpass/register -> { token }
  * 2. POST /store/customers with Bearer token -> { customer }
+ * 3. POST /auth/customer/emailpass (login) -> fresh token
+ *
+ * Step 3 matters: the registration token was issued BEFORE the customer
+ * existed, so its JWT has an empty actor_id and fails
+ * `/store/customers/me` — the same refresh-after-linking invariant the
+ * OAuth flow enforces (see establishOAuthSession). Persisting the step-1
+ * token leaves the new customer with a dead session; checkout's inline
+ * registration creates the cart immediately afterwards, so this must be
+ * an actor token.
  */
 export async function register({
   email,
@@ -198,7 +207,13 @@ export async function register({
   }
 
   const { customer } = await customerResponse.json()
-  return { token, customer }
+
+  // Step 3: exchange the registration token for an actor token. Without
+  // this, /store/customers/me (and therefore every cart API) rejects the
+  // brand-new session.
+  const sessionToken = await login(email, password)
+
+  return { token: sessionToken, customer }
 }
 
 /**

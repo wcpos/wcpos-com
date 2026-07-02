@@ -32,6 +32,8 @@ interface ExpressCheckoutRowProps {
   experimentVariant: ProCheckoutVariant
   onSuccess: (orderId: string) => void
   onFailure: (failure: CheckoutFailure | null) => void
+  /** Mirrors confirm-in-flight to the parent (locks billing Edit etc.). */
+  onProcessingChange?: (processing: boolean) => void
 }
 
 export function ExpressCheckoutRow({
@@ -40,6 +42,7 @@ export function ExpressCheckoutRow({
   experimentVariant,
   onSuccess,
   onFailure,
+  onProcessingChange,
 }: ExpressCheckoutRowProps) {
   const stripe = useStripe()
   const elements = useElements()
@@ -52,6 +55,7 @@ export function ExpressCheckoutRow({
     // confirmation while one is in flight could double-charge.
     if (isConfirming) return
     setIsConfirming(true)
+    onProcessingChange?.(true)
     onFailure(null)
 
     try {
@@ -120,6 +124,7 @@ export function ExpressCheckoutRow({
       )
     } finally {
       setIsConfirming(false)
+      onProcessingChange?.(false)
     }
   }
 

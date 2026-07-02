@@ -82,6 +82,11 @@ interface PaymentStepProps {
   method: PaymentMethod
   onMethodChange: (method: PaymentMethod) => void
   isProcessing: boolean
+  /**
+   * True while a provider confirmation may be charging the customer —
+   * locks method switching WITHOUT unmounting the confirming form.
+   */
+  lockMethods?: boolean
   enabled: { stripe: boolean; paypal: boolean; btcpay: boolean }
   experiment: string
   experimentVariant: ProCheckoutVariant
@@ -89,6 +94,20 @@ interface PaymentStepProps {
   currency: string
   onSuccess: (orderId: string) => void
   onFailure: (failure: CheckoutFailure | null) => void
+  /** Bubbles provider confirm-in-flight up (locks billing Edit etc.). */
+  onProcessingChange?: (processing: boolean) => void
+}
+
+/** Placeholder shown while a session mutation is in flight — the previous
+ * session's pay buttons/links must not be clickable against stale data. */
+function PreparingMethod() {
+  return (
+    <div className="space-y-3 rounded-md border border-dashed p-4">
+      <div className="h-5 w-44 animate-pulse rounded bg-muted" />
+      <div className="h-10 w-full animate-pulse rounded bg-muted" />
+      <p className="text-sm text-muted-foreground">Preparing payment...</p>
+    </div>
+  )
 }
 
 export function PaymentStep({
@@ -99,6 +118,7 @@ export function PaymentStep({
   method,
   onMethodChange,
   isProcessing,
+  lockMethods = false,
   enabled,
   experiment,
   experimentVariant,
@@ -106,6 +126,7 @@ export function PaymentStep({
   currency,
   onSuccess,
   onFailure,
+  onProcessingChange,
 }: PaymentStepProps) {
   const enabledCount = [enabled.stripe, enabled.paypal, enabled.btcpay].filter(
     Boolean
@@ -124,14 +145,16 @@ export function PaymentStep({
       {enabled.stripe && (
         <MethodRow
           selected={method === 'stripe'}
-          disabled={isProcessing}
+          disabled={isProcessing || lockMethods}
           onSelect={() => onMethodChange('stripe')}
           icon={<CreditCard className="h-4 w-4" aria-hidden />}
           title="Card"
           hint="Visa · Mastercard · Amex"
           testId="payment-method-stripe"
         >
-          {clientSecret ? (
+          {isProcessing || !clientSecret ? (
+            <PreparingMethod />
+          ) : (
             <CheckoutForm
               cartId={cartId}
               amount={amount}
@@ -140,15 +163,8 @@ export function PaymentStep({
               experimentVariant={experimentVariant}
               onSuccess={onSuccess}
               onFailure={onFailure}
+              onProcessingChange={onProcessingChange}
             />
-          ) : (
-            <div className="space-y-3 rounded-md border border-dashed p-4">
-              <div className="h-5 w-44 animate-pulse rounded bg-muted" />
-              <div className="h-10 w-full animate-pulse rounded bg-muted" />
-              <p className="text-sm text-muted-foreground">
-                Preparing secure card form...
-              </p>
-            </div>
           )}
         </MethodRow>
       )}
@@ -156,7 +172,7 @@ export function PaymentStep({
       {enabled.paypal && (
         <MethodRow
           selected={method === 'paypal'}
-          disabled={isProcessing}
+          disabled={isProcessing || lockMethods}
           onSelect={() => onMethodChange('paypal')}
           icon={
             <span className="font-bold italic text-[#1a3d8f] dark:text-[#7ba3f0]">
@@ -167,40 +183,48 @@ export function PaymentStep({
           hint="Pay with your PayPal balance or linked card"
           testId="payment-method-paypal"
         >
-          <PayPalProvider>
-            <PayPalButton
-              cartId={cartId}
-              experiment={experiment}
-              experimentVariant={experimentVariant}
-              paypalOrderId={paypalOrderId}
-              onSuccess={onSuccess}
-              onFailure={onFailure}
-            />
-          </PayPalProvider>
+          {isProcessing ? (
+            <PreparingMethod />
+          ) : (
+            <PayPalProvider>
+              <PayPalButton
+                cartId={cartId}
+                experiment={experiment}
+                experimentVariant={experimentVariant}
+                paypalOrderId={paypalOrderId}
+                onSuccess={onSuccess}
+                onFailure={onFailure}
+              />
+            </PayPalProvider>
+          )}
         </MethodRow>
       )}
 
       {enabled.btcpay && (
         <MethodRow
           selected={method === 'btcpay'}
-          disabled={isProcessing}
+          disabled={isProcessing || lockMethods}
           onSelect={() => onMethodChange('btcpay')}
           icon={<Bitcoin className="h-4 w-4 text-amber-500" aria-hidden />}
           title="Bitcoin"
           hint="On-chain or Lightning"
           testId="payment-method-btcpay"
         >
-          <div className="space-y-3">
-            <p className="text-sm text-muted-foreground">
-              A BTCPay invoice opens with a QR code — pay on-chain or over
-              Lightning, then you&apos;ll be returned here.
-            </p>
-            <BTCPayButton
-              cartId={cartId}
-              checkoutLink={btcpayCheckoutLink}
-              onFailure={onFailure}
-            />
-          </div>
+          {isProcessing ? (
+            <PreparingMethod />
+          ) : (
+            <div className="space-y-3">
+              <p className="text-sm text-muted-foreground">
+                A BTCPay invoice opens with a QR code — pay on-chain or over
+                Lightning, then you&apos;ll be returned here.
+              </p>
+              <BTCPayButton
+                cartId={cartId}
+                checkoutLink={btcpayCheckoutLink}
+                onFailure={onFailure}
+              />
+            </div>
+          )}
         </MethodRow>
       )}
     </div>
@@ -216,6 +240,7 @@ export function PaymentStep({
           experimentVariant={experimentVariant}
           onSuccess={onSuccess}
           onFailure={onFailure}
+          onProcessingChange={onProcessingChange}
         />
         {selector}
       </StripeProvider>

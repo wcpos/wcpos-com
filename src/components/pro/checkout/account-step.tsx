@@ -58,6 +58,16 @@ export function AccountStep({ checkoutPath, onAuthenticated }: AccountStepProps)
       }
 
       const body = await response.json().catch(() => ({}))
+      if (mode === 'signin' && response.status === 401) {
+        // The account exists but this password doesn't work — which is also
+        // exactly what an OAuth-only account (Google/GitHub/Discord, no
+        // password) looks like. Point at both exits, not just "check your
+        // password", or OAuth customers dead-end here.
+        setError(
+          'That password didn’t work. If you signed up with Google, GitHub or Discord, use the sign-in link below instead — or reset your password from the sign-in page.'
+        )
+        return
+      }
       setError(
         typeof body.error === 'string'
           ? body.error

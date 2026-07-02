@@ -161,6 +161,9 @@ export function CheckoutClient({
   const [cart, setCart] = useState<Cart | null>(null)
   const [clientSecret, setClientSecret] = useState<string | null>(null)
   const [isProcessing, setIsProcessing] = useState(false)
+  // True while a provider confirmation may be charging the customer —
+  // billing Edit and method switching are locked for its duration.
+  const [isConfirmingPayment, setIsConfirmingPayment] = useState(false)
   // Blocking initialization errors (cart could not be created at all).
   const [error, setError] = useState<string | null>(null)
   // Payment-stage failures — recoverable, rendered without unmounting the cart.
@@ -175,16 +178,23 @@ export function CheckoutClient({
   )
 
   // Billing can finish before the background cart init does — the submit
-  // handler awaits this instead of racing state.
+  // handler awaits this instead of racing state. It resolves with the FULL
+  // init result (cart + payment collection id), because React state set by
+  // the init effect may not have rendered into this closure yet; relying on
+  // state alone once minted a second payment collection for the same cart.
+  interface CheckoutInitResult {
+    cart: Cart
+    paymentCollectionId: string | null
+  }
   const cartReadyRef = useRef<{
-    promise: Promise<Cart>
-    resolve: (cart: Cart) => void
+    promise: Promise<CheckoutInitResult>
+    resolve: (result: CheckoutInitResult) => void
     reject: (error: unknown) => void
   } | null>(null)
   if (cartReadyRef.current === null) {
-    let resolve!: (cart: Cart) => void
+    let resolve!: (result: CheckoutInitResult) => void
     let reject!: (error: unknown) => void
-    const promise = new Promise<Cart>((res, rej) => {
+    const promise = new Promise<CheckoutInitResult>((res, rej) => {
       resolve = res
       reject = rej
     })
@@ -283,7 +293,10 @@ export function CheckoutClient({
           setClientSecret(paymentResult.clientSecret)
         }
 
-        cartReadyRef.current?.resolve(paymentResult.cart)
+        cartReadyRef.current?.resolve({
+          cart: paymentResult.cart,
+          paymentCollectionId: paymentResult.paymentCollectionId,
+        })
       } catch (err) {
         console.error('[CHECKOUT] Initialization failed:', err)
         setError(
@@ -307,6 +320,8 @@ export function CheckoutClient({
   const selectPaymentMethod = useCallback(
     async (method: PaymentMethod) => {
       if (!cart || !paymentCollectionId) return
+      // One session mutation at a time (see handleBillingSubmit).
+      if (isProcessing) return
 
       setIsProcessing(true)
       setFailure(null)
@@ -340,7 +355,7 @@ export function CheckoutClient({
         setIsProcessing(false)
       }
     },
-    [cart, paymentCollectionId]
+    [cart, paymentCollectionId, isProcessing]
   )
 
   const handlePaymentMethodChange = (method: PaymentMethod) => {
@@ -379,53 +394,70 @@ export function CheckoutClient({
   )
 
   async function handleBillingSubmit(address: BillingAddress) {
-    // The cart is usually ready by the time billing is filled in; if not,
-    // wait for the background init instead of racing it.
-    const readyCart = cart ?? (await cartReadyRef.current!.promise)
-
-    const response = await fetch('/api/store/cart', {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        cartId: readyCart.id,
-        billing_address: address,
-      }),
-    })
-    if (!response.ok) {
-      throw new Error('Failed to save billing address')
+    // Serialize against method switches and other refreshes — two session
+    // mutations racing can leave the mounted Stripe element and the Medusa
+    // collection pointing at different intents.
+    if (isProcessing) {
+      throw new Error('Checkout is busy. Please try again.')
     }
-    const { cart: updatedCart } = (await response.json()) as { cart?: Cart }
-    const cartAfterBilling = updatedCart ?? readyCart
 
-    let paymentResult: PaymentSessionResult
+    // Always await the init result: the ref carries the collection id even
+    // when React state hasn't rendered into this closure yet (fast typers
+    // beat the background init). Relying on state alone once minted a second
+    // payment collection for the same cart.
+    const init = cart
+      ? { cart, paymentCollectionId }
+      : await cartReadyRef.current!.promise
+
+    setIsProcessing(true)
     try {
-      paymentResult = await createPaymentSession<PaymentSessionResult>({
-        cartId: cartAfterBilling.id,
-        providerId: getProviderId(paymentMethod),
-        paymentCollectionId:
-          paymentCollectionId ??
-          cartAfterBilling.payment_collection?.id ??
-          null,
-        errorMessage: 'Failed to refresh payment',
+      const response = await fetch('/api/store/cart', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          cartId: init.cart.id,
+          billing_address: address,
+        }),
       })
-    } catch {
-      throw Object.assign(
-        new Error(
-          "Billing address was saved, but we couldn't prepare payment. Please try again."
-        ),
-        { name: 'PaymentRefreshError' }
-      )
-    }
+      if (!response.ok) {
+        throw new Error('Failed to save billing address')
+      }
+      const { cart: updatedCart } = (await response.json()) as { cart?: Cart }
+      const cartAfterBilling = updatedCart ?? init.cart
 
-    setCart(paymentResult.cart)
-    setPaymentCollectionId(paymentResult.paymentCollectionId)
-    setClientSecret(
-      paymentMethod === 'stripe' && paymentResult.clientSecret
-        ? paymentResult.clientSecret
-        : null
-    )
-    setBillingAddress(address)
-    setStep('payment')
+      let paymentResult: PaymentSessionResult
+      try {
+        paymentResult = await createPaymentSession<PaymentSessionResult>({
+          cartId: cartAfterBilling.id,
+          providerId: getProviderId(paymentMethod),
+          paymentCollectionId:
+            paymentCollectionId ??
+            init.paymentCollectionId ??
+            cartAfterBilling.payment_collection?.id ??
+            null,
+          errorMessage: 'Failed to refresh payment',
+        })
+      } catch {
+        throw Object.assign(
+          new Error(
+            "Billing address was saved, but we couldn't prepare payment. Please try again."
+          ),
+          { name: 'PaymentRefreshError' }
+        )
+      }
+
+      setCart(paymentResult.cart)
+      setPaymentCollectionId(paymentResult.paymentCollectionId)
+      setClientSecret(
+        paymentMethod === 'stripe' && paymentResult.clientSecret
+          ? paymentResult.clientSecret
+          : null
+      )
+      setBillingAddress(address)
+      setStep('payment')
+    } finally {
+      setIsProcessing(false)
+    }
   }
 
   const handleAuthenticated = (authedEmail: string) => {
@@ -563,7 +595,14 @@ export function CheckoutClient({
             billingAddress ? billingAddressSummary(billingAddress) : undefined
           }
           state={stepState('billing')}
-          onEdit={() => setStep('billing')}
+          onEdit={
+            // No billing edits while a session mutation or a provider
+            // confirmation is in flight — resubmitting billing re-creates
+            // the payment session mid-charge.
+            isProcessing || isConfirmingPayment
+              ? undefined
+              : () => setStep('billing')
+          }
           editLabel="Edit"
         >
           {error ? (
@@ -592,6 +631,8 @@ export function CheckoutClient({
                 method={paymentMethod}
                 onMethodChange={handlePaymentMethodChange}
                 isProcessing={isProcessing}
+                lockMethods={isConfirmingPayment}
+                onProcessingChange={setIsConfirmingPayment}
                 enabled={{
                   stripe: isStripeEnabled,
                   paypal: isPayPalEnabled,

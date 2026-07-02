@@ -155,7 +155,15 @@ test.describe('Mock checkout backend', () => {
       { data: { email, password: 'e2e-password' } }
     )
     expect(registerResponse.status()).toBe(200)
-    const { token } = await registerResponse.json()
+
+    // Registration tokens are not sessions (empty actor_id in real Medusa)
+    // — exchange for a session token the way the app's register() does.
+    const loginResponse = await request.post(
+      `${MOCK_BACKEND_URL}/auth/customer/emailpass`,
+      { data: { email, password: 'e2e-password' } }
+    )
+    expect(loginResponse.status()).toBe(200)
+    const { token } = await loginResponse.json()
 
     const emailResponse = await request.post(
       `${MOCK_BACKEND_URL}/store/carts/${cart.id}`,

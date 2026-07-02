@@ -48,6 +48,12 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    // Bind the cart to the caller: only the customer a cart was created for
+    // may complete it (carts always carry the session customer's email).
+    if (cart.email !== customer.email) {
+      return NextResponse.json({ error: 'Cart not found' }, { status: 404 })
+    }
+
     const { offers } = await getProOfferCatalog()
     const selection = resolveProOfferCartSelection(offers, cart)
     if (!selection) {

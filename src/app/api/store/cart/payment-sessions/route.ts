@@ -63,6 +63,11 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    // Bind the cart to the caller (carts carry the session customer's email).
+    if (currentCart.email !== customer.email) {
+      return NextResponse.json({ error: 'Cart not found' }, { status: 404 })
+    }
+
     const { offers } = await getProOfferCatalog()
     const selection = resolveProOfferCartSelection(offers, currentCart)
     if (!selection) {

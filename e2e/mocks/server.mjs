@@ -101,8 +101,14 @@ function machineToJsonApi(machine) {
 // registration). Keyed by the minted token; carts/orders attach by email.
 // ---------------------------------------------------------------------------
 
-const dynamicPersonas = new Map() // token -> { customer, orders, licenses }
-const registeredCredentials = new Map() // email -> { token, password }
+// Two token kinds mirror real Medusa emailpass semantics: the REGISTRATION
+// token (issued before the customer exists, empty actor_id) may only create
+// the customer; every persona read (/store/customers/me etc.) requires a
+// SESSION token from a subsequent login. This is exactly the trap the app's
+// register() must handle — a mock that accepted registration tokens as
+// sessions let a real-world dead-session bug pass CI green.
+const dynamicTokens = new Map() // token -> { persona, kind: 'registration' | 'session' }
+const registeredCredentials = new Map() // email -> { password, persona }
 let registrationSequence = 0
 
 const FIXTURE_PASSWORD = 'e2e-password'
@@ -115,17 +121,24 @@ function fixtureTokenForEmail(email) {
 }
 
 function dynamicPersonaForEmail(email) {
-  const registered = registeredCredentials.get(email)
-  return registered ? dynamicPersonas.get(registered.token) ?? null : null
+  return registeredCredentials.get(email)?.persona ?? null
+}
+
+function bearerToken(req) {
+  const auth = req.headers.authorization || ''
+  return auth.startsWith('Bearer ') ? auth.slice('Bearer '.length) : ''
 }
 
 function personaForRequest(req) {
-  const auth = req.headers.authorization || ''
-  const token = auth.startsWith('Bearer ') ? auth.slice('Bearer '.length) : ''
+  const token = bearerToken(req)
   if (!token) return null
 
-  const dynamic = dynamicPersonas.get(token)
-  if (dynamic) return { persona: dynamic, suffix: null }
+  const dynamic = dynamicTokens.get(token)
+  if (dynamic) {
+    // Registration tokens are NOT sessions (empty actor_id in real Medusa).
+    if (dynamic.kind !== 'session') return null
+    return { persona: dynamic.persona, suffix: null }
+  }
 
   const { base, suffix } = splitSuffix(token)
   const persona = fixtures.personas[base]
@@ -292,12 +305,9 @@ const server = createServer(async (req, res) => {
     }
     registrationSequence += 1
     const token = `e2e-reg-${registrationSequence}-${randomUUID().slice(0, 8)}`
-    registeredCredentials.set(email, { token, password })
-    dynamicPersonas.set(token, {
-      customer: null,
-      orders: [],
-      licenses: {},
-    })
+    const persona = { customer: null, orders: [], licenses: {} }
+    registeredCredentials.set(email, { password, persona })
+    dynamicTokens.set(token, { persona, kind: 'registration' })
     return sendJson(res, 200, { token })
   }
 
@@ -308,7 +318,12 @@ const server = createServer(async (req, res) => {
 
     const registered = registeredCredentials.get(email)
     if (registered && registered.password === password) {
-      return sendJson(res, 200, { token: registered.token })
+      const sessionToken = `e2e-sess-${randomUUID().slice(0, 12)}`
+      dynamicTokens.set(sessionToken, {
+        persona: registered.persona,
+        kind: 'session',
+      })
+      return sendJson(res, 200, { token: sessionToken })
     }
     const fixtureToken = fixtureTokenForEmail(email)
     if (fixtureToken && password === FIXTURE_PASSWORD) {
@@ -318,24 +333,26 @@ const server = createServer(async (req, res) => {
   }
 
   if (pathname === '/store/customers' && method === 'POST') {
-    const auth = personaForRequest(req)
-    if (!auth) return sendJson(res, 401, { message: 'Unauthorized' })
+    // Customer creation is the ONE call a registration token may make
+    // (real Medusa: authenticate(..., { allowUnregistered: true })).
+    const entry = dynamicTokens.get(bearerToken(req))
+    if (!entry) return sendJson(res, 401, { message: 'Unauthorized' })
     const body = await readJson(req)
     const email = typeof body.email === 'string' ? body.email.trim() : ''
     if (!email) return sendJson(res, 400, { message: 'Email is required' })
-    if (auth.persona.customer) {
+    if (entry.persona.customer) {
       return sendJson(res, 400, {
         message: 'Customer already exists for this identity',
       })
     }
-    auth.persona.customer = {
+    entry.persona.customer = {
       id: `cus_e2e_${randomUUID().slice(0, 8)}`,
       email,
       first_name: body.first_name ?? null,
       last_name: body.last_name ?? null,
       created_at: new Date().toISOString(),
     }
-    return sendJson(res, 200, { customer: auth.persona.customer })
+    return sendJson(res, 200, { customer: entry.persona.customer })
   }
 
   // ----- Medusa store API -----
