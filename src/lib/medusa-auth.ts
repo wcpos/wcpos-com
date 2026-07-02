@@ -211,9 +211,17 @@ export async function register({
   // Step 3: exchange the registration token for an actor token. Without
   // this, /store/customers/me (and therefore every cart API) rejects the
   // brand-new session.
-  const sessionToken = await login(email, password)
-
-  return { token: sessionToken, customer }
+  try {
+    const sessionToken = await login(email, password)
+    return { token: sessionToken, customer }
+  } catch {
+    // The account exists at this point (steps 1–2 succeeded) — a transient
+    // failure here must not read as "registration failed", or the customer
+    // will retry registration and hit ACCOUNT_EXISTS confused.
+    throw new Error(
+      'Your account was created, but signing you in failed. Please sign in to continue.'
+    )
+  }
 }
 
 /**
