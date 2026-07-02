@@ -45,6 +45,120 @@ const REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)'
 const COPY_1_HIDDEN_PROGRESS = K.copy1Opacity[0][2]
 
 /**
+ * The Act-1 counter photograph and where its tablet's body sits inside it
+ * (image-pixel coords, measured off the render). While the story holds on
+ * the counter the DOM tablet pins onto this quad so the live PosScreen
+ * reads as the photographed tablet's display; the existing swing-up path
+ * (0.13→0.30) then lifts it out of the photo. Position/scale depend on the
+ * viewport (the photo renders with object-cover); the foreshortening does
+ * not, so the pinned rotateX is a constant.
+ */
+const COUNTER_PHOTO = {
+  width: 1408,
+  height: 768,
+  // width is the trapezoid's mid-line (top edge 323, bottom 287) — with
+  // per-element perspective the projected mid-line width is exact.
+  tablet: { cx: 567, cy: 536, width: 305, height: 170 },
+} as const
+
+/** DeviceTablet's unscaled CSS box (see devices/tablet.tsx). */
+const TABLET_BODY = { width: 460, height: 318 } as const
+
+/** acos of the photo tablet's foreshortening ratio; negative = top edge toward camera. */
+const PIN_ROTATE_X = -(
+  (Math.acos(
+    (COUNTER_PHOTO.tablet.height * TABLET_BODY.width) /
+      (COUNTER_PHOTO.tablet.width * TABLET_BODY.height)
+  ) *
+    180) /
+  Math.PI
+)
+
+type StageSize = { width: number; height: number }
+type TabletPin = { x: number; y: number; scale: number }
+
+/** Where the photo tablet's center lands inside the object-cover'd stage, px. */
+function computeTabletPin(stage: StageSize): TabletPin {
+  const s = Math.max(
+    stage.width / COUNTER_PHOTO.width,
+    stage.height / COUNTER_PHOTO.height
+  )
+  const cx =
+    (stage.width - COUNTER_PHOTO.width * s) / 2 + COUNTER_PHOTO.tablet.cx * s
+  const cy =
+    (stage.height - COUNTER_PHOTO.height * s) / 2 + COUNTER_PHOTO.tablet.cy * s
+  return {
+    x: cx - stage.width / 2, // px from stage center
+    y: cy - stage.height / 2, // px from stage center
+    scale: (COUNTER_PHOTO.tablet.width * s) / TABLET_BODY.width,
+  }
+}
+
+/**
+ * Rendered size of the sticky stage, via ResizeObserver. window.inner* is
+ * unreliable here (emulated viewports report stale/zero sizes at mount);
+ * observing the element that actually hosts the photo cannot drift.
+ */
+function useStageSize(ref: React.RefObject<HTMLDivElement | null>) {
+  const [size, setSize] = React.useState<StageSize | null>(null)
+  React.useEffect(() => {
+    const el = ref.current
+    if (!el || typeof ResizeObserver === 'undefined') return
+    const ro = new ResizeObserver(([entry]) => {
+      const { width, height } = entry.contentRect
+      if (width > 0 && height > 0) setSize({ width, height })
+    })
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [ref])
+  return size
+}
+
+/**
+ * K.tablet* with the counter-hold stops replaced by the measured pin, and
+ * all x/y values resolved to px against the measured stage (single unit —
+ * mixing the pin's px with the flight path's vw/vh caused drift).
+ */
+function pinnedTabletTracks(size: StageSize | null) {
+  if (!size) {
+    return {
+      rotateX: K.tabletRotateX,
+      rotateZ: K.tabletRotateZ,
+      scale: K.tabletScale,
+      x: K.tabletX,
+      y: K.tabletY,
+      px: false,
+    }
+  }
+  const pin = computeTabletPin(size)
+  const vw = (v: number) => (v / 100) * size.width
+  const vh = (v: number) => (v / 100) * size.height
+  return {
+    rotateX: [
+      [0, 0.13, 0.3, 1],
+      [PIN_ROTATE_X, PIN_ROTATE_X, 0, 0],
+    ],
+    rotateZ: [
+      [0, 0.3, 1],
+      [0, 0, 0],
+    ],
+    scale: [
+      [0, 0.13, 0.3, 0.42, 0.55, 0.68, 0.82, 1],
+      [pin.scale, pin.scale, 1.08, 1.08, 0.94, 0.94, 0.78, 0.78],
+    ],
+    x: [
+      [0, 0.16, 0.32, 0.44, 0.56, 0.7, 0.84, 1],
+      [pin.x, pin.x, vw(12), vw(12), vw(9), vw(9), vw(10), vw(10)],
+    ],
+    y: [
+      [0, 0.13, 0.3, 0.68, 0.84, 1],
+      [pin.y, pin.y, 0, 0, vh(16), vh(16)],
+    ],
+    px: true,
+  }
+}
+
+/**
  * Local media-query hook (instead of motion's useReducedMotion, which caches
  * the query result in module state). Server snapshot is `false` so SSR emits
  * the pinned markup; reduced-motion users swap to the static variant on
@@ -119,12 +233,26 @@ function PinnedStoryScroller() {
   const propsY = useTrack(progress, K.propsY, 'vh')
   const propsScale = useTrack(progress, K.propsScale)
 
-  // tablet
-  const tabletRotateX = useTrack(progress, K.tabletRotateX)
-  const tabletRotateZ = useTrack(progress, K.tabletRotateZ)
-  const tabletScale = useTrack(progress, K.tabletScale)
-  const tabletX = useTrack(progress, K.tabletX, 'vw')
-  const tabletY = useTrack(progress, K.tabletY, 'vh')
+  // tablet — counter-hold stops come from the measured photo pin
+  const stageRef = React.useRef<HTMLDivElement>(null)
+  const stageSize = useStageSize(stageRef)
+  const tabletTracks = React.useMemo(
+    () => pinnedTabletTracks(stageSize),
+    [stageSize]
+  )
+  const tabletRotateX = useTrack(progress, tabletTracks.rotateX)
+  const tabletRotateZ = useTrack(progress, tabletTracks.rotateZ)
+  const tabletScale = useTrack(progress, tabletTracks.scale)
+  const tabletX = useTrack(
+    progress,
+    tabletTracks.x,
+    tabletTracks.px ? undefined : 'vw'
+  )
+  const tabletY = useTrack(
+    progress,
+    tabletTracks.y,
+    tabletTracks.px ? undefined : 'vh'
+  )
 
   // act 2 companions
   const phoneOpacity = useTrack(progress, K.phoneOpacity)
@@ -161,7 +289,10 @@ function PinnedStoryScroller() {
 
   return (
     <div ref={scrollerRef} className="relative h-[560vh]" data-testid="story-scroller">
-      <div className="sticky top-0 h-screen overflow-hidden bg-slate-50">
+      <div
+        ref={stageRef}
+        className="sticky top-0 h-screen overflow-hidden bg-slate-50"
+      >
         {/* backgrounds: warm counter → slate studio */}
         <motion.div
           aria-hidden="true"
@@ -213,19 +344,29 @@ function PinnedStoryScroller() {
           <CounterProps className="hidden" />
         </motion.div>
 
-        {/* the tablet — one element across all four acts */}
-        <div className="absolute left-1/2 top-1/2 z-10 [perspective:1200px]">
+        {/* the tablet — one element across all four acts. Translate lives on
+            the outer wrapper and rotate/scale/perspective on the inner one:
+            translating inside a perspective() transform projects the plane
+            off-axis, which would skew the photo pin. Split this way the
+            projection stays centered on the tablet, so the pin's
+            position/mid-width math is exact. Perspective 1600 matches the
+            photo tablet's near/far edge ratio. */}
+        <div className="absolute left-1/2 top-1/2 z-10">
           <motion.div
-            className="-ml-[230px] -mt-[159px] [transform-style:preserve-3d]"
-            style={{
-              x: tabletX,
-              y: tabletY,
-              rotateX: tabletRotateX,
-              rotateZ: tabletRotateZ,
-              scale: tabletScale,
-            }}
+            className="-ml-[230px] -mt-[159px]"
+            style={{ x: tabletX, y: tabletY }}
           >
-            <DeviceTablet />
+            <motion.div
+              className="[transform-style:preserve-3d]"
+              style={{
+                rotateX: tabletRotateX,
+                rotateZ: tabletRotateZ,
+                scale: tabletScale,
+                transformPerspective: 1600,
+              }}
+            >
+              <DeviceTablet />
+            </motion.div>
           </motion.div>
         </div>
 
