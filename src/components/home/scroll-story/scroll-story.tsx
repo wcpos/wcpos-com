@@ -41,6 +41,7 @@ function useTrack(
 }
 
 const REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)'
+const DESKTOP_QUERY = '(min-width: 768px)'
 const COPY_1_HIDDEN_PROGRESS = K.copy1Opacity[0][2]
 
 /**
@@ -187,20 +188,34 @@ function usePrefersReducedMotion() {
   )
 }
 
+function useDesktopViewport() {
+  return React.useSyncExternalStore(
+    (onChange) => {
+      const mql = window.matchMedia(DESKTOP_QUERY)
+      mql.addEventListener('change', onChange)
+      return () => mql.removeEventListener('change', onChange)
+    },
+    () => window.matchMedia(DESKTOP_QUERY).matches,
+    () => false
+  )
+}
+
 /**
  * The four-act pinned scroll story. Desktop (md+) gets the scrubbed
  * choreography; small viewports and prefers-reduced-motion get the static
- * stacked variant with identical copy (see StoryStatic). Both variants are
- * in the DOM, switched by CSS, so SSR needs no viewport knowledge.
+ * stacked variant with identical copy (see StoryStatic). SSR emits the static
+ * story; the pinned branch mounts only after a desktop viewport match.
  */
 export function ScrollStory() {
+  const isDesktop = useDesktopViewport()
+
   return (
     <>
       <div className="hidden md:block">
-        <PinnedStory />
+        {isDesktop && <PinnedStory />}
       </div>
       <div className="md:hidden">
-        <StoryStatic />
+        {!isDesktop && <StoryStatic />}
       </div>
     </>
   )

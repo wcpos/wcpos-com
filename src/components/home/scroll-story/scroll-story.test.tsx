@@ -37,11 +37,17 @@ afterEach(() => {
   motionMock.progressHandlers.length = 0
 })
 
-function stubMatchMedia({ reducedMotion }: { reducedMotion: boolean }) {
+function stubMatchMedia(options: {
+  reducedMotion: boolean
+  desktop?: boolean
+}) {
+  const { reducedMotion, desktop = true } = options
   vi.stubGlobal(
     'matchMedia',
     vi.fn((query: string) => ({
-      matches: query.includes('prefers-reduced-motion') ? reducedMotion : false,
+      matches: query.includes('prefers-reduced-motion')
+        ? reducedMotion
+        : desktop && query.includes('min-width: 768px'),
       media: query,
       onchange: null,
       addListener: vi.fn(),
@@ -147,8 +153,7 @@ describe('ScrollStory', () => {
     for (const act of [storyCopy.act2, storyCopy.act3, storyCopy.act4]) {
       expect(within(scroller).getByText(act.heading)).toBeInTheDocument()
     }
-    // static variant also present (CSS-switched for small viewports)
-    expect(screen.getByTestId('story-static')).toBeInTheDocument()
+    expect(screen.queryByTestId('story-static')).not.toBeInTheDocument()
   })
 
   it('drops the pinned scroller under prefers-reduced-motion', () => {
@@ -156,8 +161,17 @@ describe('ScrollStory', () => {
     render(<ScrollStory />)
 
     expect(screen.queryByTestId('story-scroller')).not.toBeInTheDocument()
-    // both the md+ slot and the mobile slot fall back to the static story
-    expect(screen.getAllByTestId('story-static')).toHaveLength(2)
+    expect(screen.getAllByTestId('story-static')).toHaveLength(1)
+  })
+
+  it('does not render the desktop photo branch on mobile viewports', () => {
+    stubMatchMedia({ reducedMotion: false, desktop: false })
+    const { container } = render(<ScrollStory />)
+
+    expect(screen.queryByTestId('story-scroller')).not.toBeInTheDocument()
+    expect(screen.getByTestId('story-static')).toBeInTheDocument()
+    expect(container.innerHTML).not.toContain('/images/story/counter-photo.avif')
+    expect(container.innerHTML).not.toContain('/images/story/counter-photo.webp')
   })
 
   it('disables every scroll-story animation under prefers-reduced-motion', () => {
