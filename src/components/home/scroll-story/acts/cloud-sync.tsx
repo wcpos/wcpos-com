@@ -5,7 +5,19 @@ import styles from '../story.module.css'
  * Act 4's sync tableau: Woo cloud with bidirectional dashed arcs and floating
  * status chips, positioned above the (shrunken) tablet by the choreography.
  */
-export function CloudSync({ className }: { className?: string }) {
+export function CloudSync({
+  className,
+  light = false,
+}: {
+  className?: string
+  light?: boolean
+}) {
+  const puffClass = light
+    ? 'border border-slate-300 bg-white shadow-sm'
+    : styles.cloudPuff
+  const chipClass = light
+    ? 'border-slate-300 bg-white/90 text-slate-600'
+    : 'border-slate-600 bg-slate-800/90 text-slate-300'
   return (
     <div
       aria-hidden="true"
@@ -15,19 +27,19 @@ export function CloudSync({ className }: { className?: string }) {
         <i
           className={cn(
             'absolute bottom-0 left-0 h-[74px] w-[110px] rounded-full',
-            styles.cloudPuff
+            puffClass
           )}
         />
         <i
           className={cn(
             'absolute left-[52px] top-0 h-[100px] w-[130px] rounded-full',
-            styles.cloudPuff
+            puffClass
           )}
         />
         <i
           className={cn(
             'absolute bottom-0 right-0 h-[66px] w-[120px] rounded-full',
-            styles.cloudPuff
+            puffClass
           )}
         />
         <span
@@ -58,11 +70,37 @@ export function CloudSync({ className }: { className?: string }) {
           strokeDasharray="6 8"
           d="M 260 10 C 295 70, 275 150, 210 185"
         />
+        {/* payment pulses riding the sync lines (Stripe-globe style):
+            products flow down to the register, orders flow up to Woo */}
+        {[0, 1].map((i) => (
+          <circle key={`down-${i}`} r="3.2" className="fill-slate-400">
+            <animateMotion
+              dur="3.2s"
+              begin={`${i * 1.6}s`}
+              repeatCount="indefinite"
+              path="M 40 10 C 5 70, 25 150, 90 185"
+            />
+          </circle>
+        ))}
+        {[0, 1].map((i) => (
+          <circle key={`up-${i}`} r="3.2" className="fill-emerald-500">
+            <animateMotion
+              dur="2.6s"
+              begin={`${i * 1.3}s`}
+              repeatCount="indefinite"
+              keyPoints="1;0"
+              keyTimes="0;1"
+              calcMode="linear"
+              path="M 260 10 C 295 70, 275 150, 210 185"
+            />
+          </circle>
+        ))}
       </svg>
 
       <span
         className={cn(
-          'absolute -left-14 top-[60px] whitespace-nowrap rounded-lg border border-slate-600 bg-slate-800/90 px-3 py-1.5 font-mono text-[11px] text-slate-300',
+          'absolute -left-14 top-[60px] whitespace-nowrap rounded-lg border px-3 py-1.5 font-mono text-[11px]',
+          chipClass,
           styles.floaty
         )}
       >
@@ -70,7 +108,8 @@ export function CloudSync({ className }: { className?: string }) {
       </span>
       <span
         className={cn(
-          'absolute -right-16 top-[46px] whitespace-nowrap rounded-lg border border-slate-600 bg-slate-800/90 px-3 py-1.5 font-mono text-[11px] text-slate-300',
+          'absolute -right-16 top-[46px] whitespace-nowrap rounded-lg border px-3 py-1.5 font-mono text-[11px]',
+          chipClass,
           styles.floaty
         )}
         style={{ animationDelay: '1.2s' }}
@@ -79,7 +118,8 @@ export function CloudSync({ className }: { className?: string }) {
       </span>
       <span
         className={cn(
-          'absolute -right-10 top-[150px] whitespace-nowrap rounded-lg border border-slate-600 bg-slate-800/90 px-3 py-1.5 font-mono text-[11px] text-slate-300',
+          'absolute -right-10 top-[150px] whitespace-nowrap rounded-lg border px-3 py-1.5 font-mono text-[11px]',
+          chipClass,
           styles.floaty
         )}
         style={{ animationDelay: '0.6s' }}

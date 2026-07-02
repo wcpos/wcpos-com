@@ -11,6 +11,7 @@ import {
 import { cn } from '@/lib/utils'
 import { CounterProps } from './acts/counter-props'
 import { CloudSync } from './acts/cloud-sync'
+import { DotOrbit } from './acts/dot-orbit'
 import {
   CopyAct1,
   CopyAct2,
@@ -37,6 +38,8 @@ function useTrack(
   const value = useTransform(progress, [...track[0]], [...track[1]])
   return useTransform(value, (v) => (unit ? `${v}${unit}` : v))
 }
+
+export type StoryVariant = 'dark' | 'light' | 'ribbon'
 
 const REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)'
 const COPY_1_HIDDEN_PROGRESS = K.copy1Opacity[0][2]
@@ -65,11 +68,15 @@ function usePrefersReducedMotion() {
  * stacked variant with identical copy (see StoryStatic). Both variants are
  * in the DOM, switched by CSS, so SSR needs no viewport knowledge.
  */
-export function ScrollStory() {
+export function ScrollStory({
+  variant = 'dark',
+}: {
+  variant?: StoryVariant
+}) {
   return (
     <>
       <div className="hidden md:block">
-        <PinnedStory />
+        <PinnedStory variant={variant} />
       </div>
       <div className="md:hidden">
         <StoryStatic />
@@ -78,15 +85,17 @@ export function ScrollStory() {
   )
 }
 
-function PinnedStory() {
+function PinnedStory({ variant }: { variant: StoryVariant }) {
   const reducedMotion = usePrefersReducedMotion()
   if (reducedMotion) {
     return <StoryStatic />
   }
-  return <PinnedStoryScroller />
+  return <PinnedStoryScroller variant={variant} />
 }
 
-function PinnedStoryScroller() {
+function PinnedStoryScroller({ variant }: { variant: StoryVariant }) {
+  const light = variant !== 'dark'
+  const tone = light ? ('onLight' as const) : ('onDark' as const)
   const scrollerRef = React.useRef<HTMLDivElement>(null)
   const { scrollYProgress: progress } = useScroll({
     target: scrollerRef,
@@ -159,38 +168,72 @@ function PinnedStoryScroller() {
 
   return (
     <div ref={scrollerRef} className="relative h-[560vh]" data-testid="story-scroller">
-      <div className="sticky top-0 h-screen overflow-hidden bg-slate-950">
+      <div
+        className={cn(
+          'sticky top-0 h-screen overflow-hidden',
+          light ? 'bg-slate-50' : 'bg-slate-950'
+        )}
+      >
         {/* backgrounds: warm counter → slate studio */}
         <motion.div
           aria-hidden="true"
-          className={cn('absolute inset-0', styles.woodCounter)}
+          className={cn(
+            'absolute inset-0',
+            light ? styles.woodCounterLight : styles.woodCounter
+          )}
           style={{ opacity: bgWarmOpacity, scale: bgWarmScale }}
         >
-          <div className={cn('absolute -inset-[30%]', styles.lightPool)} />
-          <div className={cn('absolute inset-0', styles.woodVignette)} />
+          <div
+            className={cn(
+              'absolute -inset-[30%]',
+              light ? styles.lightPoolBright : styles.lightPool
+            )}
+          />
+          {!light && (
+            <div className={cn('absolute inset-0', styles.woodVignette)} />
+          )}
         </motion.div>
         <motion.div
           aria-hidden="true"
-          className={cn('absolute inset-0 overflow-hidden', styles.slateStudio)}
+          className={cn(
+            'absolute inset-0 overflow-hidden',
+            light ? styles.lightStudio : styles.slateStudio
+          )}
           style={{ opacity: bgSlateOpacity }}
         >
+          {variant === 'ribbon' && (
+            <>
+              <div
+                className={cn(
+                  'absolute -inset-x-[10%] -inset-y-[20%]',
+                  styles.ribbonWrap
+                )}
+              >
+                <div className={cn('absolute left-[8%] top-[-18%] h-[70%] w-[55%] rounded-full', styles.ribbonBlob1)} />
+                <div className={cn('absolute right-[-6%] top-[6%] h-[75%] w-[60%] rounded-full', styles.ribbonBlob2)} />
+                <div className={cn('absolute bottom-[-22%] left-[34%] h-[60%] w-[46%] rounded-full', styles.ribbonBlob3)} />
+                <div className={cn('absolute bottom-[-8%] left-[-8%] h-[52%] w-[38%] rounded-full', styles.ribbonBlob4)} />
+              </div>
+              <div className={cn('absolute inset-0', styles.ribbonMask)} />
+            </>
+          )}
           {/* one ambient pattern per act, crossfaded with scroll progress:
               drifting screen-grid (act 2), drifting barcode (act 3),
               two-speed rising data particles (act 4) */}
           <motion.div
-            className={cn('absolute -inset-40', styles.gridDrift)}
+            className={cn('absolute -inset-40', light ? styles.gridDriftLight : styles.gridDrift)}
             style={{ opacity: pattern2Opacity }}
           />
           <motion.div
-            className={cn('absolute -inset-40', styles.barcodePattern)}
+            className={cn('absolute -inset-40', light ? styles.barcodePatternLight : styles.barcodePattern)}
             style={{ opacity: pattern3Opacity }}
           />
           <motion.div
-            className={cn('absolute -inset-40', styles.particlesA)}
+            className={cn('absolute -inset-40', light ? styles.particlesALight : styles.particlesA)}
             style={{ opacity: pattern4Opacity }}
           />
           <motion.div
-            className={cn('absolute -inset-40', styles.particlesB)}
+            className={cn('absolute -inset-40', light ? styles.particlesBLight : styles.particlesB)}
             style={{ opacity: pattern4Opacity }}
           />
         </motion.div>
@@ -264,10 +307,11 @@ function PinnedStoryScroller() {
         {/* act 4: cloud sync */}
         <div className="absolute left-1/2 top-1/2 z-[8]">
           <motion.div
-            className="-ml-[280px] -mt-[290px]"
+            className="relative -ml-[280px] -mt-[290px]"
             style={{ opacity: cloudOpacity, x: '10vw', y: cloudY }}
           >
-            <CloudSync />
+            <DotOrbit className="absolute left-1/2 top-[190px] -translate-x-1/2 -translate-y-1/2" />
+            <CloudSync light={light} />
           </motion.div>
         </div>
 
@@ -275,36 +319,42 @@ function PinnedStoryScroller() {
         <motion.div
           {...copy1InteractionProps}
           className={cn(
-            'absolute left-1/2 top-[10%] z-20 w-full max-w-2xl -translate-x-1/2 text-center [filter:drop-shadow(0_1px_3px_rgba(20,8,0,0.5))]',
+            'absolute left-1/2 top-[10%] z-20 w-full max-w-2xl -translate-x-1/2 text-center',
+            !light && '[filter:drop-shadow(0_1px_3px_rgba(20,8,0,0.5))]',
             !copy1Interactive && 'pointer-events-none'
           )}
           style={{ opacity: copy1Opacity }}
         >
-          <CopyAct1 />
+          <CopyAct1 tone={tone} />
         </motion.div>
         <motion.div
           className="pointer-events-none absolute left-[6%] top-1/2 z-20 max-w-sm -translate-y-1/2"
           style={{ opacity: copy2Opacity }}
         >
-          <CopyAct2 />
+          <CopyAct2 tone={tone} />
         </motion.div>
         <motion.div
           className="pointer-events-none absolute left-[6%] top-1/2 z-20 max-w-sm -translate-y-1/2"
           style={{ opacity: copy3Opacity }}
         >
-          <CopyAct3 />
+          <CopyAct3 tone={tone} />
         </motion.div>
         <motion.div
           className="pointer-events-none absolute left-[6%] top-1/2 z-20 max-w-sm -translate-y-1/2"
           style={{ opacity: copy4Opacity }}
         >
-          <CopyAct4 />
+          <CopyAct4 tone={tone} />
         </motion.div>
 
         {/* scroll hint */}
         <motion.div
           aria-hidden="true"
-          className="absolute bottom-6 left-1/2 z-20 -translate-x-1/2 rounded-full bg-slate-950/60 px-4 py-1.5 text-[11px] uppercase tracking-[0.14em] text-slate-400"
+          className={cn(
+            'absolute bottom-6 left-1/2 z-20 -translate-x-1/2 rounded-full px-4 py-1.5 text-[11px] uppercase tracking-[0.14em]',
+            light
+              ? 'bg-white/70 text-slate-500'
+              : 'bg-slate-950/60 text-slate-400'
+          )}
           style={{ opacity: hintOpacity }}
         >
           Scroll ↓
@@ -320,7 +370,11 @@ function PinnedStoryScroller() {
               key={i}
               className={cn(
                 'h-2 w-2 rounded-full transition-all duration-300',
-                i === act ? 'scale-125 bg-wcpos-red' : 'bg-slate-600'
+                i === act
+                  ? 'scale-125 bg-wcpos-red'
+                  : light
+                    ? 'bg-slate-300'
+                    : 'bg-slate-600'
               )}
             />
           ))}
