@@ -20,23 +20,9 @@ const ORDER: PlatformKey[] = [
   'web',
 ]
 
-const DEVICE_WORDS: Record<PlatformKey, string> = {
-  'mac-arm': 'Mac',
-  'mac-intel': 'Mac',
-  win: 'Windows PC',
-  linux: 'Linux machine',
-  ios: 'iPhone or iPad',
-  android: 'Android device',
-  web: 'browser',
-}
-
-const ROW_ACTIONS: Record<PlatformKey, string> = {
-  'mac-arm': 'Download',
-  'mac-intel': 'Download',
-  win: 'Download',
-  linux: 'Download',
-  ios: 'Join beta',
-  android: 'Join beta',
+const ROW_ACTIONS: Record<(typeof PLATFORMS)[PlatformKey]['kind'], string> = {
+  desktop: 'Download',
+  mobile: 'Join beta',
   web: 'Open',
 }
 
@@ -81,7 +67,7 @@ export function DownloadPicker({
   return (
     <div className="rounded-2xl border bg-card p-6 shadow-sm sm:p-7">
       <p className="mb-5 text-sm text-muted-foreground">
-        Recommended for your {DEVICE_WORDS[current]}
+        Recommended for your {info.deviceWord}
       </p>
 
       <div className="mb-5 flex items-center gap-4">
@@ -147,7 +133,7 @@ export function DownloadPicker({
                     'ml-auto inline-flex items-center gap-1 font-medium text-wcpos-red-accent hover:underline',
                   )}
                 >
-                  {ROW_ACTIONS[key]}
+                  {ROW_ACTIONS[other.kind]}
                   <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
                 </a>
               </li>
