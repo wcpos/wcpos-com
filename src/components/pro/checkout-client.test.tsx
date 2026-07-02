@@ -905,13 +905,18 @@ describe('CheckoutClient', () => {
 
     mockSuccessfulCheckoutInit()
     renderSignedIn()
-    await completeBillingStep()
 
+    // The warning is visible IMMEDIATELY — before the customer reaches the
+    // payment step — so nobody fills in billing unaware a charge may exist.
     await waitFor(() => {
       expect(screen.getByText('Payment status unknown')).toBeInTheDocument()
     })
-
     expect(screen.getByText('WCPOS-RESTORED-UNCERTAIN')).toBeInTheDocument()
+
+    await completeBillingStep()
+
+    // Still visible on the payment step.
+    expect(screen.getByText('Payment status unknown')).toBeInTheDocument()
 
     // The checkout itself still mounts (the warning withholds retry guidance,
     // but support may confirm the charge failed, so the form stays usable)

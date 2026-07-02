@@ -44,9 +44,14 @@ export function ExpressCheckoutRow({
   const stripe = useStripe()
   const elements = useElements()
   const [hasWallets, setHasWallets] = useState(false)
+  const [isConfirming, setIsConfirming] = useState(false)
 
   async function handleConfirm() {
     if (!stripe || !elements) return
+    // Same double-submit guard the card form has — a second wallet
+    // confirmation while one is in flight could double-charge.
+    if (isConfirming) return
+    setIsConfirming(true)
     onFailure(null)
 
     try {
@@ -113,6 +118,8 @@ export function ExpressCheckoutRow({
           },
         })
       )
+    } finally {
+      setIsConfirming(false)
     }
   }
 

@@ -534,6 +534,15 @@ export function CheckoutClient({
     <div className="mx-auto grid max-w-4xl items-start gap-8 md:grid-cols-[1.6fr_1fr]">
       {/* Steps */}
       <div className="space-y-3" data-testid="checkout-steps">
+        {/* Above the steps, not inside step 3: a restored protective warning
+            (e.g. payment_uncertain from a previous session) must be visible
+            from the first render, not only once the customer reaches payment. */}
+        {failure && (
+          <CheckoutErrorNotice
+            failure={failure}
+            canSwitchMethod={enabledMethodCount > 1}
+          />
+        )}
         <StepShell
           index={1}
           title="Account"
@@ -574,12 +583,6 @@ export function CheckoutClient({
           editLabel="Edit"
         >
           <div className="space-y-4">
-            {failure && (
-              <CheckoutErrorNotice
-                failure={failure}
-                canSwitchMethod={enabledMethodCount > 1}
-              />
-            )}
             {cart ? (
               <PaymentStep
                 cartId={cart.id}
