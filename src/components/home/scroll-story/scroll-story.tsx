@@ -3,7 +3,6 @@
 import * as React from 'react'
 import {
   motion,
-  useMotionTemplate,
   useMotionValueEvent,
   useScroll,
   useTransform,
@@ -30,8 +29,13 @@ import { K, ACT_BOUNDS, type Track } from './keyframes'
 import { StoryStatic } from './story-static'
 import styles from './story.module.css'
 
-function useTrack(progress: MotionValue<number>, track: Track) {
-  return useTransform(progress, [...track[0]], [...track[1]])
+function useTrack(
+  progress: MotionValue<number>,
+  track: Track,
+  unit?: 'vw' | 'vh'
+): MotionValue<number | string> {
+  const value = useTransform(progress, [...track[0]], [...track[1]])
+  return useTransform(value, (v) => (unit ? `${v}${unit}` : v))
 }
 
 const REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)'
@@ -101,46 +105,35 @@ function PinnedStoryScroller() {
 
   // counter props
   const propsOpacity = useTrack(progress, K.propsOpacity)
-  const propsYRaw = useTrack(progress, K.propsY)
-  const propsY = useMotionTemplate`${propsYRaw}vh`
+  const propsY = useTrack(progress, K.propsY, 'vh')
   const propsScale = useTrack(progress, K.propsScale)
 
   // tablet
   const tabletRotateX = useTrack(progress, K.tabletRotateX)
   const tabletRotateZ = useTrack(progress, K.tabletRotateZ)
   const tabletScale = useTrack(progress, K.tabletScale)
-  const tabletXRaw = useTrack(progress, K.tabletX)
-  const tabletYRaw = useTrack(progress, K.tabletY)
-  const tabletX = useMotionTemplate`${tabletXRaw}vw`
-  const tabletY = useMotionTemplate`${tabletYRaw}vh`
+  const tabletX = useTrack(progress, K.tabletX, 'vw')
+  const tabletY = useTrack(progress, K.tabletY, 'vh')
 
   // act 2 companions
   const phoneOpacity = useTrack(progress, K.phoneOpacity)
-  const phoneXRaw = useTrack(progress, K.phoneX)
-  const phoneX = useMotionTemplate`${phoneXRaw}vw`
+  const phoneX = useTrack(progress, K.phoneX, 'vw')
   const laptopOpacity = useTrack(progress, K.laptopOpacity)
-  const laptopXRaw = useTrack(progress, K.laptopX)
-  const laptopX = useMotionTemplate`${laptopXRaw}vw`
+  const laptopX = useTrack(progress, K.laptopX, 'vw')
 
   // act 3 hardware
   const terminalOpacity = useTrack(progress, K.terminalOpacity)
-  const terminalXRaw = useTrack(progress, K.terminalX)
-  const terminalX = useMotionTemplate`${terminalXRaw}vw`
+  const terminalX = useTrack(progress, K.terminalX, 'vw')
   const printerOpacity = useTrack(progress, K.printerOpacity)
-  const printerXRaw = useTrack(progress, K.printerX)
-  const printerX = useMotionTemplate`${printerXRaw}vw`
-  const printerYRaw = useTrack(progress, K.printerY)
-  const printerY = useMotionTemplate`${printerYRaw}vh`
+  const printerX = useTrack(progress, K.printerX, 'vw')
+  const printerY = useTrack(progress, K.printerY, 'vh')
   const scannerOpacity = useTrack(progress, K.scannerOpacity)
-  const scannerXRaw = useTrack(progress, K.scannerX)
-  const scannerX = useMotionTemplate`${scannerXRaw}vw`
-  const scannerYRaw = useTrack(progress, K.scannerY)
-  const scannerY = useMotionTemplate`${scannerYRaw}vh`
+  const scannerX = useTrack(progress, K.scannerX, 'vw')
+  const scannerY = useTrack(progress, K.scannerY, 'vh')
 
   // act 4 cloud
   const cloudOpacity = useTrack(progress, K.cloudOpacity)
-  const cloudYRaw = useTrack(progress, K.cloudY)
-  const cloudY = useMotionTemplate`${cloudYRaw}vh`
+  const cloudY = useTrack(progress, K.cloudY, 'vh')
 
   // copy + hint
   const copy1Opacity = useTrack(progress, K.copy1Opacity)
@@ -276,7 +269,7 @@ function PinnedStoryScroller() {
         {/* scroll hint */}
         <motion.div
           aria-hidden="true"
-          className="absolute bottom-6 left-1/2 z-20 -translate-x-1/2 rounded-full bg-slate-950/60 px-4 py-1.5 text-[11px] uppercase tracking-[0.14em] text-slate-400 backdrop-blur"
+          className="absolute bottom-6 left-1/2 z-20 -translate-x-1/2 rounded-full bg-slate-950/60 px-4 py-1.5 text-[11px] uppercase tracking-[0.14em] text-slate-400"
           style={{ opacity: hintOpacity }}
         >
           Scroll ↓

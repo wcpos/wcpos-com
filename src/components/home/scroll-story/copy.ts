@@ -17,6 +17,7 @@ export const storyCopy = {
       href: 'https://wordpress.org/plugins/woocommerce-pos/',
     },
     scrollHint: 'Scroll',
+    trustBadges: ['5,000+ Active Stores', 'Free & Open Source', 'Since 2014'],
   },
   act2: {
     kicker: 'Every screen you own',

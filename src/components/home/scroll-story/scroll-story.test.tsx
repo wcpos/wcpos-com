@@ -80,13 +80,21 @@ describe('StoryStatic', () => {
     ).toHaveAttribute('href', storyCopy.act1.downloadCta.href)
   })
 
-  it('uses an h2 for act 1 so the pinned variant keeps the only h1', () => {
+  it('keeps a page h1 on static-only renders (mobile, reduced motion)', () => {
     render(<StoryStatic />)
 
     const heading = screen.getByRole('heading', {
       name: storyCopy.act1.heading,
     })
-    expect(heading.tagName).toBe('H2')
+    expect(heading.tagName).toBe('H1')
+  })
+
+  it('shows the trust badges', () => {
+    render(<StoryStatic />)
+
+    for (const badge of storyCopy.act1.trustBadges) {
+      expect(screen.getByText(badge)).toBeInTheDocument()
+    }
   })
 })
 

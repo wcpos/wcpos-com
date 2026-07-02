@@ -50,8 +50,10 @@ export function StoryStatic() {
     <div data-testid="story-static">
       <Section tone="dark" spacing="hero" className="overflow-hidden bg-slate-950">
         <div className="mx-auto max-w-2xl text-center">
-          {/* pinned variant owns the page h1; this h2 avoids duplicate h1s */}
-          <CopyAct1 headingLevel={2} />
+          {/* h1 here too: on mobile and reduced-motion renders this variant is
+              the only visible one, and a page without a visible h1 loses its
+              primary landmark (the pinned copy is display:none there) */}
+          <CopyAct1 headingLevel={1} />
         </div>
         <StageStrip className="h-[240px] sm:h-[300px]">
           <DeviceTablet />
