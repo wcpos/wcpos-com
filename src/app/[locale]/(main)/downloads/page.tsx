@@ -10,7 +10,8 @@ import { TrackedLocaleLink } from '@/components/analytics/tracked-locale-link'
 import { marketingMetadata } from '@/lib/seo'
 import { DownloadsHero } from '@/components/downloads/download-hero'
 import { PLATFORMS } from '@/components/downloads/platforms'
-import { HowItFits } from '@/components/downloads/how-it-fits'
+// PROTOTYPE — motion lab swap, do not merge
+import { HowItFitsLab } from '@/components/downloads/how-it-fits-lab'
 import {
   ReleaseHistory,
   type ReleaseEntry,
@@ -172,7 +173,7 @@ export default async function DownloadsPage({
       <DownloadsHero desktopVersion={desktopVersion} />
 
       {/* HOW IT FITS TOGETHER */}
-      <HowItFits />
+      <HowItFitsLab />
 
       {/* GET STARTED */}
       <Section tone="default" spacing="default" bare>
