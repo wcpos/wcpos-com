@@ -46,7 +46,14 @@ export const K = {
     [1, 1, 1.12, 1.12],
   ],
 
-  // the tablet: top-down → face-on → hold → step back for the cloud
+  // the tablet: top-down → face-on → hold → step back for the cloud.
+  // Invisible during the counter hold — the photographed tablet (with the
+  // POS UI baked into its screen) plays the part at rest; the live DOM
+  // tablet fades in as it starts lifting out of the photo.
+  tabletOpacity: [
+    [0, 0.13, 0.17, 1],
+    [0, 0, 1, 1],
+  ],
   tabletRotateX: [
     [0, 0.13, 0.3, 1],
     [58, 58, 0, 0],

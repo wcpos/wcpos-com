@@ -205,6 +205,96 @@
   animation: story-sway 10s ease-in-out infinite alternate;
 }
 
+/* Act-1 counter photo: customers approaching the counter. Each shadow is a
+   tall, heavily blurred silhouette that enters from beyond the top edge
+   (where a customer would stand), leans in over the counter, lingers, and
+   withdraws. Cast down-right to match the upper-left window light. */
+@keyframes story-counter-visitor-a {
+  0% {
+    transform: translate3d(0, -14%, 0) scale(0.92);
+    opacity: 0;
+  }
+  18% {
+    transform: translate3d(0, -8%, 0) scale(0.92);
+    opacity: 0;
+  }
+  34% {
+    transform: translate3d(5%, 8%, 0) scale(1);
+    opacity: 0.85;
+  }
+  58% {
+    transform: translate3d(7%, 5%, 0) scale(1.02);
+    opacity: 0.7;
+  }
+  82% {
+    transform: translate3d(11%, -8%, 0) scale(0.94);
+    opacity: 0;
+  }
+  100% {
+    transform: translate3d(11%, -14%, 0) scale(0.94);
+    opacity: 0;
+  }
+}
+@keyframes story-counter-visitor-b {
+  0% {
+    transform: translate3d(0, -15%, 0) scale(0.9);
+    opacity: 0;
+  }
+  20% {
+    transform: translate3d(0, -9%, 0) scale(0.9);
+    opacity: 0;
+  }
+  40% {
+    transform: translate3d(-6%, 6%, 0) scale(1.04);
+    opacity: 0.7;
+  }
+  62% {
+    transform: translate3d(-8%, 8%, 0) scale(1);
+    opacity: 0.55;
+  }
+  84% {
+    transform: translate3d(-12%, -9%, 0) scale(0.92);
+    opacity: 0;
+  }
+  100% {
+    transform: translate3d(-12%, -15%, 0) scale(0.92);
+    opacity: 0;
+  }
+}
+.counterShadow1,
+.counterShadow2 {
+  position: absolute;
+  border-radius: 50%;
+  mix-blend-mode: multiply;
+  filter: blur(42px);
+  will-change: transform, opacity;
+}
+.counterShadow1 {
+  top: 8%;
+  left: 10%;
+  width: 26%;
+  height: 84%;
+  background: radial-gradient(
+    ellipse 50% 50% at 50% 42%,
+    rgb(38 29 18 / 0.38),
+    transparent 70%
+  );
+  animation: story-counter-visitor-a 17s ease-in-out infinite;
+}
+.counterShadow2 {
+  top: 9%;
+  right: 18%;
+  width: 22%;
+  height: 82%;
+  background: radial-gradient(
+    ellipse 50% 50% at 50% 40%,
+    rgb(38 29 18 / 0.32),
+    transparent 72%
+  );
+  animation: story-counter-visitor-b 23s ease-in-out infinite;
+  animation-delay: -11s;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .steam,
   .ledBlink,
@@ -223,7 +313,9 @@
   .ribbonBlob2,
   .ribbonBlob3,
   .ribbonBlob4,
-  .lightPool {
+  .lightPool,
+  .counterShadow1,
+  .counterShadow2 {
     animation: none;
   }
 }
