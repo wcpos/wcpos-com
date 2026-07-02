@@ -9,7 +9,6 @@ import { Link } from '@/i18n/navigation'
 import { TrackedLocaleLink } from '@/components/analytics/tracked-locale-link'
 import { marketingMetadata } from '@/lib/seo'
 import { DownloadsHero } from '@/components/downloads/download-hero'
-import { DownloadPicker } from '@/components/downloads/download-picker'
 import { PLATFORMS } from '@/components/downloads/platforms'
 import { HowItFits } from '@/components/downloads/how-it-fits'
 import {
@@ -154,21 +153,10 @@ function DeviceCard({
 
 export default async function DownloadsPage({
   params,
-  searchParams,
 }: {
   params: Promise<{ locale: string }>
-  searchParams?: Promise<Record<string, string | string[] | undefined>>
 }) {
   const { locale } = await params
-  let showPrototypeHero = false
-
-  if (process.env.NODE_ENV !== 'production') {
-    const resolvedSearchParams = searchParams ? await searchParams : {}
-    const variantParam = resolvedSearchParams.variant
-    const variant = Array.isArray(variantParam) ? variantParam[0] : variantParam
-    showPrototypeHero = variant === 'hero'
-  }
-
   setRequestLocale(locale)
 
   const [versions, releases] = await Promise.all([
@@ -181,41 +169,7 @@ export default async function DownloadsPage({
   return (
     <main>
       {/* HERO */}
-      {showPrototypeHero ? (
-        <DownloadsHero desktopVersion={desktopVersion} />
-      ) : (
-        <Section
-          tone="none"
-          spacing="hero"
-          className="border-b bg-gradient-to-b from-muted/40 to-background"
-        >
-          <div className="grid items-center gap-10 lg:grid-cols-2">
-            <div>
-              <p className="text-sm font-semibold uppercase tracking-wider text-wcpos-red dark:text-wcpos-red-accent">
-                Downloads
-              </p>
-              <h1 className="mt-4 text-4xl font-bold leading-tight tracking-tight md:text-5xl">
-                Take orders on any device.
-              </h1>
-              <p className="mt-5 max-w-md text-lg text-muted-foreground">
-                WCPOS is the fast point of sale for WooCommerce — free,
-                offline-first, and in sync across desktop, tablet and phone.
-              </p>
-              <div className="mt-8 flex flex-wrap gap-3">
-                <Button asChild variant="brand" size="xl">
-                  <a href="https://wordpress.org/plugins/woocommerce-pos/">
-                    Install the free plugin
-                  </a>
-                </Button>
-                <Button asChild variant="outline" size="xl">
-                  <a href="https://demo.wcpos.com/pos">Try the live demo</a>
-                </Button>
-              </div>
-            </div>
-            <DownloadPicker desktopVersion={desktopVersion} />
-          </div>
-        </Section>
-      )}
+      <DownloadsHero desktopVersion={desktopVersion} />
 
       {/* HOW IT FITS TOGETHER */}
       <HowItFits />
