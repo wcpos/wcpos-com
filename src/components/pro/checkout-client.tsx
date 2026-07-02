@@ -87,6 +87,9 @@ const isStripeEnabled = Boolean(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
 const isPayPalEnabled = Boolean(process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID)
 const isBTCPayEnabled = Boolean(process.env.NEXT_PUBLIC_BTCPAY_ENABLED)
 
+const ANY_PAYMENT_METHOD_ENABLED =
+  isStripeEnabled || isPayPalEnabled || isBTCPayEnabled
+
 const DEFAULT_PAYMENT_METHOD: PaymentMethod = isStripeEnabled
   ? 'stripe'
   : isPayPalEnabled
@@ -279,6 +282,18 @@ export function CheckoutClient({
 
         const { cart: cartWithItem } = await itemResponse.json()
 
+        // No provider configured: keep the cart usable and let PaymentStep
+        // surface its explicit "no payment methods" state instead of failing
+        // init with a misleading payment error.
+        if (!ANY_PAYMENT_METHOD_ENABLED) {
+          setCart(cartWithItem)
+          cartReadyRef.current?.resolve({
+            cart: cartWithItem,
+            paymentCollectionId: null,
+          })
+          return
+        }
+
         // Initialize payment (Medusa v2 flow) with the default provider.
         const paymentResult = await createPaymentSession<PaymentSessionResult>({
           cartId: cartWithItem.id,
@@ -424,6 +439,15 @@ export function CheckoutClient({
       }
       const { cart: updatedCart } = (await response.json()) as { cart?: Cart }
       const cartAfterBilling = updatedCart ?? init.cart
+
+      // No provider configured — nothing to refresh; PaymentStep shows its
+      // explicit no-methods state.
+      if (!ANY_PAYMENT_METHOD_ENABLED) {
+        setCart(cartAfterBilling)
+        setBillingAddress(address)
+        setStep('payment')
+        return
+      }
 
       let paymentResult: PaymentSessionResult
       try {
