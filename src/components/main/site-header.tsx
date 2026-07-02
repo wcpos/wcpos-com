@@ -16,6 +16,7 @@ import {
   getCustomerInitials,
 } from '@/lib/customer-avatar'
 import { UserMenu } from '@/components/main/user-menu'
+import { WcposLogo } from '@/components/icons/wcpos-logo'
 
 async function AuthButton() {
   let customer = null
@@ -48,15 +49,23 @@ function AuthButtonFallback() {
   return <div className="h-9 w-9" />
 }
 
+// The highlighted link (Pro) carries the brand red; everything else stays muted.
+function navLinkClass(highlight?: boolean) {
+  return highlight
+    ? 'text-primary transition-colors hover:text-primary/80'
+    : 'text-muted-foreground transition-colors hover:text-foreground'
+}
+
 export function SiteHeader() {
   const t = useTranslations('header')
 
+  // Journey order: try → upgrade → learn → get help → what's coming.
   const navLinks = [
     { label: t('downloads'), href: '/downloads' },
-    { label: t('roadmap'), href: '/roadmap' },
-    { label: t('pro'), href: '/pro', eventName: 'click_pro_cta' },
-    { label: t('support'), href: '/support' },
+    { label: t('pro'), href: '/pro', eventName: 'click_pro_cta', highlight: true },
     { label: t('documentation'), href: 'https://docs.wcpos.com', external: true },
+    { label: t('support'), href: '/support' },
+    { label: t('roadmap'), href: '/roadmap' },
   ]
 
   return (
@@ -64,7 +73,8 @@ export function SiteHeader() {
       <div className="container flex h-16 items-center justify-between px-4 mx-auto">
         {/* Logo + Desktop Nav */}
         <div className="flex items-center gap-6">
-          <Link href="/" className="text-xl font-bold">
+          <Link href="/" className="flex items-center gap-2 text-xl font-bold">
+            <WcposLogo className="h-7 w-7" />
             WCPOS
           </Link>
           <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
@@ -73,7 +83,7 @@ export function SiteHeader() {
                 <a
                   key={link.href}
                   href={link.href}
-                  className="text-muted-foreground hover:text-foreground transition-colors"
+                  className={navLinkClass(link.highlight)}
                 >
                   {link.label}
                 </a>
@@ -83,7 +93,7 @@ export function SiteHeader() {
                     key={link.href}
                     href={link.href}
                     eventName={link.eventName}
-                    className="text-muted-foreground hover:text-foreground transition-colors"
+                    className={navLinkClass(link.highlight)}
                   >
                     {link.label}
                   </TrackedLocaleLink>
@@ -91,7 +101,7 @@ export function SiteHeader() {
                   <Link
                     key={link.href}
                     href={link.href}
-                    className="text-muted-foreground hover:text-foreground transition-colors"
+                    className={navLinkClass(link.highlight)}
                   >
                     {link.label}
                   </Link>
@@ -117,14 +127,17 @@ export function SiteHeader() {
             </Button>
           </SheetTrigger>
           <SheetContent side="right" className="w-72">
-            <SheetTitle className="text-lg font-bold">WCPOS</SheetTitle>
+            <SheetTitle className="flex items-center gap-2 text-lg font-bold">
+              <WcposLogo className="h-6 w-6" />
+              WCPOS
+            </SheetTitle>
             <nav className="flex flex-col gap-4 mt-6">
               {navLinks.map((link) =>
                 link.external ? (
                   <a
                     key={link.href}
                     href={link.href}
-                    className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium"
+                    className={`${navLinkClass(link.highlight)} text-sm font-medium`}
                   >
                     {link.label}
                   </a>
@@ -134,7 +147,7 @@ export function SiteHeader() {
                       key={link.href}
                       href={link.href}
                       eventName={link.eventName}
-                      className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium"
+                      className={`${navLinkClass(link.highlight)} text-sm font-medium`}
                     >
                       {link.label}
                     </TrackedLocaleLink>
@@ -142,7 +155,7 @@ export function SiteHeader() {
                     <Link
                       key={link.href}
                       href={link.href}
-                      className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium"
+                      className={`${navLinkClass(link.highlight)} text-sm font-medium`}
                     >
                       {link.label}
                     </Link>
