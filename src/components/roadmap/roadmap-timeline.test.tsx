@@ -46,6 +46,14 @@ describe('RoadmapTimeline', () => {
     expect(screen.getAllByText('Compliance / Fiscalization')).toHaveLength(1)
   })
 
+  it('formats midnight-UTC due dates in UTC (no previous-month drift)', () => {
+    // v1.10.0 in the fixture is due 2026-09-01T00:00:00Z; in a negative-offset
+    // timezone a local-time format would render "Aug 2026".
+    render(<RoadmapTimeline data={ROADMAP_DEV_FIXTURE} />)
+    expect(screen.getByText(/due Sep 2026/)).toBeInTheDocument()
+    expect(screen.queryByText(/Aug 2026/)).not.toBeInTheDocument()
+  })
+
   it('renders an empty state when there is no roadmap data', () => {
     render(<RoadmapTimeline data={EMPTY} />)
     expect(

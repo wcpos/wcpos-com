@@ -16,9 +16,12 @@ type Tone = 'now' | 'next' | 'shipped'
 
 function fmtDue(dueOn: string | null): string | null {
   if (!dueOn) return null
+  // GitHub due dates are midnight-UTC timestamps; format in UTC so a
+  // negative-offset server timezone can't shift them to the previous month.
   return new Date(dueOn).toLocaleDateString('en', {
     month: 'short',
     year: 'numeric',
+    timeZone: 'UTC',
   })
 }
 
@@ -79,8 +82,8 @@ function FeatureRow({ item }: { item: RoadmapItem }) {
         className="group flex items-start gap-3 py-2"
       >
         <StatusGlyph status={item.status} />
-        <span className="flex-1">
-          <span className="font-medium group-hover:text-wcpos-red dark:group-hover:text-wcpos-red-accent">
+        <span className="min-w-0 flex-1">
+          <span className="break-words font-medium group-hover:text-wcpos-red dark:group-hover:text-wcpos-red-accent">
             {item.title}
           </span>
           {item.description && (
@@ -137,7 +140,7 @@ function TimelineMilestone({
       )}
 
       <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-        <h3 className="text-2xl font-semibold tracking-tight sm:text-3xl">
+        <h3 className="break-words text-2xl font-semibold tracking-tight sm:text-3xl">
           {milestone.title}
         </h3>
         <span className="font-mono text-xs uppercase tracking-wider text-muted-foreground">
