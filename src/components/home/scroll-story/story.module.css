@@ -292,6 +292,20 @@
   background: linear-gradient(135deg, #164e63, #0e7490);
 }
 
+.terminalBodyLight {
+  background: linear-gradient(180deg, #ffffff, #dde4ec);
+  box-shadow:
+    0 30px 50px -24px rgb(15 23 42 / 0.35),
+    inset 0 1px 1px rgb(255 255 255 / 0.9);
+}
+
+.printerBodyDark {
+  background: linear-gradient(180deg, #3a4656, #1f2937);
+  box-shadow:
+    0 30px 50px -24px rgb(15 23 42 / 0.5),
+    inset 0 1px 1px rgb(255 255 255 / 0.18);
+}
+
 .printerBody {
   background: linear-gradient(180deg, #e8edf3, #9aa8ba);
   box-shadow:

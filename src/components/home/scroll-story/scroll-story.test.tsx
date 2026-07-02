@@ -194,17 +194,13 @@ describe('ScrollStory', () => {
     }
   })
 
-  it('renders the bright variants without losing act copy', () => {
+  it('mounts the act-4 dot orbit', () => {
     stubMatchMedia({ reducedMotion: false })
-    for (const variant of ['light', 'ribbon'] as const) {
-      const { unmount } = render(<ScrollStory variant={variant} />)
-      const scroller = screen.getByTestId('story-scroller')
-      expect(
-        within(scroller).getByText(storyCopy.act2.heading)
-      ).toBeInTheDocument()
-      expect(within(scroller).getByTestId('dot-orbit')).toBeInTheDocument()
-      unmount()
-    }
+    render(<ScrollStory />)
+
+    expect(
+      within(screen.getByTestId('story-scroller')).getByTestId('dot-orbit')
+    ).toBeInTheDocument()
   })
 
   it('removes the Act 1 CTAs from interaction after Act 1 fades out', () => {

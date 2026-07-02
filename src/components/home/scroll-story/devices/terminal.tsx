@@ -2,13 +2,21 @@ import { cn } from '@/lib/utils'
 import styles from '../story.module.css'
 
 /** Card payment terminal, front view, mid tap-to-pay. */
-export function DeviceTerminal({ className }: { className?: string }) {
+export function DeviceTerminal({
+  className,
+  skin = 'dark',
+}: {
+  className?: string
+  skin?: 'dark' | 'light'
+}) {
   return (
     <div
       aria-hidden="true"
       className={cn(
-        'relative h-[224px] w-[150px] rounded-[20px] border-[6px] border-slate-800',
-        styles.terminalBody,
+        'relative h-[224px] w-[150px] rounded-[20px] border-[6px]',
+        skin === 'light'
+          ? cn('border-slate-200', styles.terminalBodyLight)
+          : cn('border-slate-800', styles.terminalBody),
         className
       )}
     >
@@ -42,7 +50,11 @@ export function DeviceTerminal({ className }: { className?: string }) {
             key={i}
             className={cn(
               'rounded',
-              i === 8 ? 'bg-emerald-600' : 'bg-slate-700'
+              i === 8
+                ? 'bg-emerald-600'
+                : skin === 'light'
+                  ? 'bg-slate-300'
+                  : 'bg-slate-700'
             )}
           />
         ))}

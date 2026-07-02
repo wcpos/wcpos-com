@@ -18,25 +18,15 @@ export const metadata: Metadata = {
 
 export default async function Home({
   params,
-  searchParams,
 }: {
   params: Promise<{ locale: string }>
-  searchParams: Promise<{ variant?: string }>
 }) {
   const { locale } = await params
   setRequestLocale(locale)
 
-  // Prototype-only switch for evaluating bright directions on beta:
-  // ?variant=light | ?variant=ribbon. Remove once a direction is chosen.
-  const { variant: variantParam } = await searchParams
-  const variant =
-    variantParam === 'light' || variantParam === 'ribbon'
-      ? variantParam
-      : 'dark'
-
   return (
     <main>
-      <ScrollStory variant={variant} />
+      <ScrollStory />
       <UseCasesSection />
       <FeaturesSection />
       <Suspense fallback={<PricingTeaserSectionFallback />}>
