@@ -82,19 +82,30 @@ function getProviderId(method: PaymentMethod): string {
   }
 }
 
-// Check which payment methods are configured
-const isStripeEnabled = Boolean(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
-const isPayPalEnabled = Boolean(process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID)
-const isBTCPayEnabled = Boolean(process.env.NEXT_PUBLIC_BTCPAY_ENABLED)
+/**
+ * Which payment methods this checkout offers — resolved server-side from the
+ * request host (wcpos.com => live keys, beta => test keys, localhost => dev;
+ * see store-environment.ts) and passed in as a prop. All values are public
+ * identifiers.
+ */
+export interface CheckoutPaymentConfig {
+  stripePublishableKey: string | null
+  paypalClientId: string | null
+  btcpayEnabled: boolean
+}
 
-const ANY_PAYMENT_METHOD_ENABLED =
-  isStripeEnabled || isPayPalEnabled || isBTCPayEnabled
-
-const DEFAULT_PAYMENT_METHOD: PaymentMethod = isStripeEnabled
-  ? 'stripe'
-  : isPayPalEnabled
-    ? 'paypal'
-    : 'btcpay'
+function derivePaymentSetup(payments: CheckoutPaymentConfig) {
+  const stripeEnabled = Boolean(payments.stripePublishableKey)
+  const paypalEnabled = Boolean(payments.paypalClientId)
+  const btcpayEnabled = payments.btcpayEnabled
+  const anyEnabled = stripeEnabled || paypalEnabled || btcpayEnabled
+  const defaultMethod: PaymentMethod = stripeEnabled
+    ? 'stripe'
+    : paypalEnabled
+      ? 'paypal'
+      : 'btcpay'
+  return { stripeEnabled, paypalEnabled, btcpayEnabled, anyEnabled, defaultMethod }
+}
 
 type StepId = 'account' | 'billing' | 'payment'
 
@@ -107,6 +118,8 @@ interface CheckoutClientProps {
   /** Current checkout path (with query) for OAuth redirect-back. */
   checkoutPath: string
   experimentVariant: ProCheckoutVariant
+  /** Host-resolved public payment identifiers (see store-environment.ts). */
+  payments: CheckoutPaymentConfig
 }
 
 function resolvePaymentSession(
@@ -153,7 +166,15 @@ export function CheckoutClient({
   offerSummary,
   checkoutPath,
   experimentVariant,
+  payments,
 }: CheckoutClientProps) {
+  const {
+    stripeEnabled: isStripeEnabled,
+    paypalEnabled: isPayPalEnabled,
+    btcpayEnabled: isBTCPayEnabled,
+    anyEnabled: anyPaymentMethodEnabled,
+    defaultMethod: defaultPaymentMethod,
+  } = derivePaymentSetup(payments)
   const [email, setEmail] = useState<string | null>(customerEmail ?? null)
   const [step, setStep] = useState<StepId>(
     customerEmail ? 'billing' : 'account'
@@ -177,7 +198,7 @@ export function CheckoutClient({
     string | null
   >(null)
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>(
-    DEFAULT_PAYMENT_METHOD
+    defaultPaymentMethod
   )
 
   // Billing can finish before the background cart init does — the submit
@@ -285,7 +306,7 @@ export function CheckoutClient({
         // No provider configured: keep the cart usable and let PaymentStep
         // surface its explicit "no payment methods" state instead of failing
         // init with a misleading payment error.
-        if (!ANY_PAYMENT_METHOD_ENABLED) {
+        if (!anyPaymentMethodEnabled) {
           setCart(cartWithItem)
           cartReadyRef.current?.resolve({
             cart: cartWithItem,
@@ -297,7 +318,7 @@ export function CheckoutClient({
         // Initialize payment (Medusa v2 flow) with the default provider.
         const paymentResult = await createPaymentSession<PaymentSessionResult>({
           cartId: cartWithItem.id,
-          providerId: getProviderId(DEFAULT_PAYMENT_METHOD),
+          providerId: getProviderId(defaultPaymentMethod),
           errorMessage: 'Failed to initialize payment',
         })
 
@@ -442,7 +463,7 @@ export function CheckoutClient({
 
       // No provider configured — nothing to refresh; PaymentStep shows its
       // explicit no-methods state.
-      if (!ANY_PAYMENT_METHOD_ENABLED) {
+      if (!anyPaymentMethodEnabled) {
         setCart(cartAfterBilling)
         setBillingAddress(address)
         setStep('payment')
@@ -662,6 +683,8 @@ export function CheckoutClient({
                   paypal: isPayPalEnabled,
                   btcpay: isBTCPayEnabled,
                 }}
+                stripePublishableKey={payments.stripePublishableKey}
+                paypalClientId={payments.paypalClientId}
                 experiment={PRO_CHECKOUT_EXPERIMENT}
                 experimentVariant={experimentVariant}
                 amount={cart.total}

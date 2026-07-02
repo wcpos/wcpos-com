@@ -6,6 +6,7 @@ import {
 } from '@/services/core/external/medusa-client'
 import type { PlanId } from '@/lib/plans'
 import { getPlanByHandle } from '@/lib/plans'
+import type { StoreEnvironment } from '@/lib/store-environment'
 import type { MedusaProduct, MedusaProductVariant } from '@/types/medusa'
 
 const PRO_CHECKOUT_EXPERIMENT = 'pro_checkout_v1'
@@ -137,9 +138,15 @@ export function buildProOfferCatalog(
 }
 
 export async function getProOfferCatalog(
-  currencyCode: string = DEFAULT_CURRENCY_CODE
+  currencyCode: string = DEFAULT_CURRENCY_CODE,
+  /**
+   * Required inside 'use cache' scopes (where the request host is
+   * unavailable); request-scoped callers omit it and the backend resolves
+   * from the request host.
+   */
+  storeEnv?: StoreEnvironment
 ): Promise<ProOfferCatalog> {
-  const products = await getProducts()
+  const products = await getProducts(storeEnv)
   return { offers: buildProOfferCatalog(products, currencyCode) }
 }
 

@@ -3,6 +3,7 @@ import {
   formatFounderProPriceSummary,
   getProOfferCatalog,
 } from '@/lib/pro-offer-catalog'
+import { getLiveStoreEnvironment } from '@/lib/store-environment'
 import { Section } from '@/components/ui/section'
 
 export function FounderLetterFallback() {
@@ -14,7 +15,11 @@ export async function FounderLetter() {
   cacheLife('products')
   cacheTag('products')
 
-  const { offers } = await getProOfferCatalog()
+  // Prerendered into the shared static shell — always live prices.
+  const { offers } = await getProOfferCatalog(
+    undefined,
+    getLiveStoreEnvironment()
+  )
   const priceSummary = formatFounderProPriceSummary(offers)
 
   return <FounderLetterContent priceSummary={priceSummary} />

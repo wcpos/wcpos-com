@@ -1,6 +1,9 @@
 import 'server-only'
 
-import { env } from '@/utils/env'
+import {
+  getRequestStoreEnvironment,
+  type StoreEnvironment,
+} from '@/lib/store-environment'
 import { storeLogger } from '@/lib/logger'
 import { getPlanByHandle } from '@/lib/plans'
 import type {
@@ -24,13 +27,21 @@ import type {
  */
 
 /**
- * Make a request to the Medusa Store API
+ * Make a request to the Medusa Store API.
+ *
+ * The backend is host-keyed (wcpos.com → live, beta → staging, localhost →
+ * dev; see store-environment.ts). Request-scoped callers omit `storeEnv` and
+ * it resolves from the request host; 'use cache' callers MUST pass it in
+ * (headers() is unavailable inside the cache scope, and the environment must
+ * be part of the cache key so beta prices never leak into wcpos.com).
  */
 async function medusaFetch<T>(
   endpoint: string,
-  options: RequestInit = {}
+  options: RequestInit = {},
+  storeEnv?: StoreEnvironment
 ): Promise<T> {
-  const url = `${env.MEDUSA_BACKEND_URL}${endpoint}`
+  const environment = storeEnv ?? (await getRequestStoreEnvironment())
+  const url = `${environment.medusaBackendUrl}${endpoint}`
 
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
@@ -43,8 +54,8 @@ async function medusaFetch<T>(
   }
 
   // Add publishable API key if available
-  if (env.MEDUSA_PUBLISHABLE_KEY) {
-    headers['x-publishable-api-key'] = env.MEDUSA_PUBLISHABLE_KEY
+  if (environment.medusaPublishableKey) {
+    headers['x-publishable-api-key'] = environment.medusaPublishableKey
   }
 
   const response = await fetch(url, {
@@ -63,10 +74,14 @@ async function medusaFetch<T>(
 /**
  * Get all published products
  */
-export async function getProducts(): Promise<MedusaProduct[]> {
+export async function getProducts(
+  storeEnv?: StoreEnvironment
+): Promise<MedusaProduct[]> {
   try {
     const response = await medusaFetch<MedusaProductsResponse>(
-      '/store/products?fields=*variants.prices'
+      '/store/products?fields=*variants.prices',
+      {},
+      storeEnv
     )
     return response.products
   } catch (error) {
