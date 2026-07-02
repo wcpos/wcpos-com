@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { resolvePlatform } from './download-picker'
+import { resolvePlatform } from './platforms'
 
 describe('resolvePlatform', () => {
   it('detects Windows from the platform string', () => {

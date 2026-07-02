@@ -1,20 +1,21 @@
-// PROTOTYPE — throwaway. Variant B: platform selector tiles + detail panel.
-// A row of six selectable tiles (detected one pre-selected); picking a tile
-// swaps the download panel beneath. One download action visible at a time.
 'use client'
 
-import { useState } from 'react'
+import { useState, useSyncExternalStore } from 'react'
 import { Download, ArrowRight } from 'lucide-react'
 import { Section } from '@/components/ui/section'
 import { Button } from '@/components/ui/button'
 import {
   PLATFORMS,
+  resolvePlatform,
   type PlatformKey,
-} from '@/components/downloads/download-picker'
-import { useDetectedPlatform } from './use-detected-platform'
+} from '@/components/downloads/platforms'
 import { cn } from '@/lib/utils'
 
-/** Tiles collapse the two mac builds into one; Intel is offered in the panel. */
+/**
+ * Tiles collapse the two mac builds into one; browsers can't reliably tell
+ * Apple Silicon from Intel, so the Intel build is a secondary link in the
+ * panel instead.
+ */
 const TILES: { key: PlatformKey; label: string }[] = [
   { key: 'mac-arm', label: 'macOS' },
   { key: 'win', label: 'Windows' },
@@ -24,12 +25,28 @@ const TILES: { key: PlatformKey; label: string }[] = [
   { key: 'web', label: 'Web' },
 ]
 
-export function HeroVariantB({
-  desktopVersion,
+/** Platform never changes within a session, so the store never emits. */
+const subscribePlatform = () => () => {}
+
+export function DownloadsHero({
+  desktopVersion = null,
 }: {
-  desktopVersion: string | null
+  desktopVersion?: string | null
 }) {
-  const detected = useDetectedPlatform()
+  // Server renders a desktop default; the client reads the real platform.
+  // useSyncExternalStore keeps SSR and hydration consistent without a
+  // setState-in-effect (the store is read-only and never emits).
+  const detected = useSyncExternalStore<PlatformKey>(
+    subscribePlatform,
+    () =>
+      resolvePlatform(
+        navigator.userAgent,
+        navigator.platform,
+        navigator.maxTouchPoints ?? 0,
+      ),
+    () => 'mac-arm',
+  )
+
   // Until the visitor picks a tile, the selection follows the detected
   // platform (derived, so SSR and hydration stay consistent).
   const [picked, setPicked] = useState<PlatformKey | null>(null)
@@ -58,7 +75,7 @@ export function HeroVariantB({
         </h1>
 
         <div
-          role="tablist"
+          role="group"
           aria-label="Choose your platform"
           className="mt-10 flex flex-wrap justify-center gap-2"
         >
@@ -68,8 +85,8 @@ export function HeroVariantB({
             return (
               <button
                 key={key}
-                role="tab"
-                aria-selected={active}
+                type="button"
+                aria-pressed={active}
                 onClick={() => setPicked(key)}
                 className={cn(
                   'flex w-24 flex-col items-center gap-2 rounded-xl border py-4 text-sm font-medium transition-colors',

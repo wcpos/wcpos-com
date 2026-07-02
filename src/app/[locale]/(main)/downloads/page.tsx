@@ -8,11 +8,7 @@ import { Card } from '@/components/ui/card'
 import { Link } from '@/i18n/navigation'
 import { TrackedLocaleLink } from '@/components/analytics/tracked-locale-link'
 import { marketingMetadata } from '@/lib/seo'
-import { DownloadPicker } from '@/components/downloads/download-picker'
-import {
-  DownloadsHeroPrototype,
-  resolveHeroVariant,
-} from '@/components/downloads/hero-prototype'
+import { DownloadsHero } from '@/components/downloads/download-hero'
 import { HowItFits } from '@/components/downloads/how-it-fits'
 import {
   ReleaseHistory,
@@ -168,15 +164,11 @@ function DeviceCard({
 
 export default async function DownloadsPage({
   params,
-  searchParams,
 }: {
   params: Promise<{ locale: string }>
-  // PROTOTYPE — searchParams only exists for the hero variant switcher.
-  searchParams: Promise<{ variant?: string }>
 }) {
   const { locale } = await params
   setRequestLocale(locale)
-  const heroVariant = resolveHeroVariant((await searchParams).variant)
 
   const [versions, releases] = await Promise.all([
     getProductVersions(),
@@ -187,45 +179,8 @@ export default async function DownloadsPage({
 
   return (
     <main>
-      {/* HERO — original, kept as the `original` prototype variant */}
-      {heroVariant === 'original' && (
-        <Section
-          tone="none"
-          spacing="hero"
-          className="border-b bg-gradient-to-b from-muted/40 to-background"
-        >
-          <div className="grid items-center gap-10 lg:grid-cols-2">
-            <div>
-              <p className="text-sm font-semibold uppercase tracking-wider text-wcpos-red dark:text-wcpos-red-accent">
-                Downloads
-              </p>
-              <h1 className="mt-4 text-4xl font-bold leading-tight tracking-tight md:text-5xl">
-                Take orders on any device.
-              </h1>
-              <p className="mt-5 max-w-md text-lg text-muted-foreground">
-                WCPOS is the fast point of sale for WooCommerce — free,
-                offline-first, and in sync across desktop, tablet and phone.
-              </p>
-              <div className="mt-8 flex flex-wrap gap-3">
-                <Button asChild variant="brand" size="xl">
-                  <a href="https://wordpress.org/plugins/woocommerce-pos/">
-                    Install the free plugin
-                  </a>
-                </Button>
-                <Button asChild variant="outline" size="xl">
-                  <a href="https://demo.wcpos.com/pos">Try the live demo</a>
-                </Button>
-              </div>
-            </div>
-            <DownloadPicker desktopVersion={desktopVersion} />
-          </div>
-        </Section>
-      )}
-      <DownloadsHeroPrototype
-        variant={heroVariant}
-        desktopVersion={desktopVersion}
-        freeVersion={freeVersion}
-      />
+      {/* HERO */}
+      <DownloadsHero desktopVersion={desktopVersion} />
 
       {/* HOW IT FITS TOGETHER */}
       <HowItFits />
