@@ -175,8 +175,10 @@
 /* ---------- surfaces & materials (premium-render grade) ---------- */
 
 .woodCounter {
+  /* SVG timber texture (fractal-noise grain + plank bevels + baked key
+     light/vignette); gradient stack is the pre-paint fallback */
   background:
-    radial-gradient(ellipse at 50% 0%, rgb(255 235 200 / 0.14), transparent 55%),
+    url('/images/story/counter-wood.svg') center / cover,
     repeating-linear-gradient(
       88deg,
       #7c5a3a 0 90px,

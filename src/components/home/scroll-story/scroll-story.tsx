@@ -242,7 +242,7 @@ function PinnedStoryScroller() {
 
         {/* copy overlays */}
         <motion.div
-          className="absolute left-1/2 top-[10%] z-20 w-full max-w-2xl -translate-x-1/2 text-center"
+          className="absolute left-1/2 top-[10%] z-20 w-full max-w-2xl -translate-x-1/2 text-center [filter:drop-shadow(0_1px_3px_rgba(20,8,0,0.5))]"
           style={{ opacity: copy1Opacity }}
         >
           <CopyAct1 />
