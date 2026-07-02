@@ -49,15 +49,23 @@ function AuthButtonFallback() {
   return <div className="h-9 w-9" />
 }
 
+// The highlighted link (Pro) carries the brand red; everything else stays muted.
+function navLinkClass(highlight?: boolean) {
+  return highlight
+    ? 'text-primary transition-colors hover:text-primary/80'
+    : 'text-muted-foreground transition-colors hover:text-foreground'
+}
+
 export function SiteHeader() {
   const t = useTranslations('header')
 
+  // Journey order: try → upgrade → learn → get help → what's coming.
   const navLinks = [
     { label: t('downloads'), href: '/downloads' },
-    { label: t('roadmap'), href: '/roadmap' },
-    { label: t('pro'), href: '/pro', eventName: 'click_pro_cta' },
-    { label: t('support'), href: '/support' },
+    { label: t('pro'), href: '/pro', eventName: 'click_pro_cta', highlight: true },
     { label: t('documentation'), href: 'https://docs.wcpos.com', external: true },
+    { label: t('support'), href: '/support' },
+    { label: t('roadmap'), href: '/roadmap' },
   ]
 
   return (
@@ -75,7 +83,7 @@ export function SiteHeader() {
                 <a
                   key={link.href}
                   href={link.href}
-                  className="text-muted-foreground hover:text-foreground transition-colors"
+                  className={navLinkClass(link.highlight)}
                 >
                   {link.label}
                 </a>
@@ -85,7 +93,7 @@ export function SiteHeader() {
                     key={link.href}
                     href={link.href}
                     eventName={link.eventName}
-                    className="text-muted-foreground hover:text-foreground transition-colors"
+                    className={navLinkClass(link.highlight)}
                   >
                     {link.label}
                   </TrackedLocaleLink>
@@ -93,7 +101,7 @@ export function SiteHeader() {
                   <Link
                     key={link.href}
                     href={link.href}
-                    className="text-muted-foreground hover:text-foreground transition-colors"
+                    className={navLinkClass(link.highlight)}
                   >
                     {link.label}
                   </Link>
@@ -129,7 +137,7 @@ export function SiteHeader() {
                   <a
                     key={link.href}
                     href={link.href}
-                    className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium"
+                    className={`${navLinkClass(link.highlight)} text-sm font-medium`}
                   >
                     {link.label}
                   </a>
@@ -139,7 +147,7 @@ export function SiteHeader() {
                       key={link.href}
                       href={link.href}
                       eventName={link.eventName}
-                      className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium"
+                      className={`${navLinkClass(link.highlight)} text-sm font-medium`}
                     >
                       {link.label}
                     </TrackedLocaleLink>
@@ -147,7 +155,7 @@ export function SiteHeader() {
                     <Link
                       key={link.href}
                       href={link.href}
-                      className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium"
+                      className={`${navLinkClass(link.highlight)} text-sm font-medium`}
                     >
                       {link.label}
                     </Link>
