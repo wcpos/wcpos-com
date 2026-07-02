@@ -4,25 +4,29 @@ import { useState, useSyncExternalStore } from 'react'
 import { Download, ArrowRight } from 'lucide-react'
 import { Section } from '@/components/ui/section'
 import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
+import { Eyebrow } from '@/components/ui/eyebrow'
+import { TextLink } from '@/components/ui/text-link'
 import {
   PLATFORMS,
+  tileFor,
   resolvePlatform,
   type PlatformKey,
 } from '@/components/downloads/platforms'
 import { cn } from '@/lib/utils'
 
 /**
- * Tiles collapse the two mac builds into one; browsers can't reliably tell
- * Apple Silicon from Intel, so the Intel build is a secondary link in the
- * panel instead.
+ * One tile per device family — the two mac builds share the macOS tile
+ * (browsers can't reliably tell Apple Silicon from Intel, so the Intel build
+ * is a secondary link in the panel; `tileFor` owns that collapse).
  */
-const TILES: { key: PlatformKey; label: string }[] = [
-  { key: 'mac-arm', label: 'macOS' },
-  { key: 'win', label: 'Windows' },
-  { key: 'linux', label: 'Linux' },
-  { key: 'ios', label: 'iOS & iPad' },
-  { key: 'android', label: 'Android' },
-  { key: 'web', label: 'Web' },
+const TILES: PlatformKey[] = [
+  'mac-arm',
+  'win',
+  'linux',
+  'ios',
+  'android',
+  'web',
 ]
 
 /** Platform never changes within a session, so the store never emits. */
@@ -50,7 +54,8 @@ export function DownloadsHero({
   // Until the visitor picks a tile, the selection follows the detected
   // platform (derived, so SSR and hydration stay consistent).
   const [picked, setPicked] = useState<PlatformKey | null>(null)
-  const selected = picked ?? (detected === 'mac-intel' ? 'mac-arm' : detected)
+  const selected = picked ?? tileFor(detected)
+  const isDetected = selected === tileFor(detected)
 
   const info = PLATFORMS[selected]
   const Icon = info.icon
@@ -67,9 +72,7 @@ export function DownloadsHero({
       className="border-b bg-gradient-to-b from-muted/40 to-background"
     >
       <div className="mx-auto max-w-3xl text-center">
-        <p className="text-sm font-semibold uppercase tracking-wider text-wcpos-red dark:text-wcpos-red-accent">
-          Downloads
-        </p>
+        <Eyebrow>Downloads</Eyebrow>
         <h1 className="mt-4 text-4xl font-bold leading-tight tracking-tight md:text-5xl">
           One till, every device.
         </h1>
@@ -79,7 +82,7 @@ export function DownloadsHero({
           aria-label="Choose your platform"
           className="mt-10 flex flex-wrap justify-center gap-2"
         >
-          {TILES.map(({ key, label }) => {
+          {TILES.map((key) => {
             const TileIcon = PLATFORMS[key].icon
             const active = key === selected
             return (
@@ -89,25 +92,30 @@ export function DownloadsHero({
                 aria-pressed={active}
                 onClick={() => setPicked(key)}
                 className={cn(
-                  'flex w-24 flex-col items-center gap-2 rounded-xl border py-4 text-sm font-medium transition-colors',
+                  'flex w-24 flex-col items-center gap-2 rounded-lg border py-4 text-sm font-medium transition-colors',
                   active
                     ? 'border-wcpos-red bg-wcpos-red/5 text-foreground ring-1 ring-wcpos-red'
                     : 'bg-card text-muted-foreground hover:bg-accent hover:text-foreground',
                 )}
               >
                 <TileIcon className="h-6 w-6" aria-hidden="true" />
-                {label}
+                {PLATFORMS[key].name}
               </button>
             )
           })}
         </div>
 
-        <div className="mx-auto mt-6 max-w-xl rounded-2xl border bg-card p-8 shadow-sm">
-          <div className="flex items-center justify-center gap-3">
+        <Card aria-live="polite" className="mx-auto mt-6 max-w-xl p-8">
+          <div className="flex flex-wrap items-center justify-center gap-3">
             <Icon className="h-6 w-6 text-muted-foreground" aria-hidden="true" />
             <span className="text-lg font-semibold tracking-tight">
               {info.name}
             </span>
+            {isDetected && (
+              <span className="rounded bg-wcpos-red/10 px-1.5 py-0.5 text-[0.65rem] font-semibold uppercase tracking-wide text-wcpos-red-accent">
+                Detected
+              </span>
+            )}
           </div>
           <p className="mt-1 text-sm text-muted-foreground">{meta}</p>
           <Button asChild variant="brand" size="xl" className="mt-6 w-full">
@@ -119,24 +127,35 @@ export function DownloadsHero({
           {selected === 'mac-arm' && (
             <p className="mt-3 text-xs text-muted-foreground">
               On an Intel Mac?{' '}
-              <a
-                href={PLATFORMS['mac-intel'].href}
-                className="font-medium text-wcpos-red-accent hover:underline"
-              >
+              <TextLink href={PLATFORMS['mac-intel'].href}>
                 Get the Intel build
-              </a>
+              </TextLink>
             </p>
           )}
-        </div>
+        </Card>
+
+        {/* The tiles need JS; without it, list every build so no platform is
+            unreachable from the hero. */}
+        <noscript>
+          <ul className="mx-auto mt-6 max-w-xl space-y-2 text-left text-sm">
+            {(Object.keys(PLATFORMS) as PlatformKey[]).map((key) => (
+              <li key={key}>
+                <TextLink href={PLATFORMS[key].href}>
+                  {PLATFORMS[key].name}
+                </TextLink>{' '}
+                <span className="text-muted-foreground">
+                  {PLATFORMS[key].short}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </noscript>
 
         <p className="mt-6 text-sm text-muted-foreground">
           Every app connects to the{' '}
-          <a
-            href="https://wordpress.org/plugins/woocommerce-pos/"
-            className="font-medium text-wcpos-red-accent hover:underline"
-          >
+          <TextLink href="https://wordpress.org/plugins/woocommerce-pos/">
             free WordPress plugin
-          </a>{' '}
+          </TextLink>{' '}
           — install it first.
         </p>
       </div>

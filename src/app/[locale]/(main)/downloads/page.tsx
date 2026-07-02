@@ -9,6 +9,7 @@ import { Link } from '@/i18n/navigation'
 import { TrackedLocaleLink } from '@/components/analytics/tracked-locale-link'
 import { marketingMetadata } from '@/lib/seo'
 import { DownloadsHero } from '@/components/downloads/download-hero'
+import { PLATFORMS } from '@/components/downloads/platforms'
 import { HowItFits } from '@/components/downloads/how-it-fits'
 import {
   ReleaseHistory,
@@ -37,22 +38,10 @@ export async function generateMetadata({
 }
 
 const DESKTOP_LINKS = [
-  {
-    label: 'macOS (Apple Silicon)',
-    href: 'https://updates.wcpos.com/v1/electron/download/darwin-arm64',
-  },
-  {
-    label: 'macOS (Intel)',
-    href: 'https://updates.wcpos.com/v1/electron/download/darwin-x64',
-  },
-  {
-    label: 'Windows',
-    href: 'https://updates.wcpos.com/v1/electron/download/win32-x64',
-  },
-  {
-    label: 'Linux',
-    href: 'https://updates.wcpos.com/v1/electron/download/linux-x64',
-  },
+  { label: 'macOS (Apple Silicon)', href: PLATFORMS['mac-arm'].href },
+  { label: 'macOS (Intel)', href: PLATFORMS['mac-intel'].href },
+  { label: 'Windows', href: PLATFORMS.win.href },
+  { label: 'Linux', href: PLATFORMS.linux.href },
 ]
 
 /**
@@ -260,7 +249,7 @@ export default async function DownloadsPage({
                 </DeviceCard>
                 <DeviceCard icon={Smartphone} title="iOS & iPad" beta>
                   <a
-                    href="https://testflight.apple.com/join/JGBdVRrW"
+                    href={PLATFORMS.ios.href}
                     className="font-medium text-wcpos-red-accent hover:underline"
                   >
                     Join the TestFlight beta
@@ -268,7 +257,7 @@ export default async function DownloadsPage({
                 </DeviceCard>
                 <DeviceCard icon={Smartphone} title="Android" beta>
                   <a
-                    href="https://play.google.com/apps/testing/com.wcpos.main"
+                    href={PLATFORMS.android.href}
                     className="font-medium text-wcpos-red-accent hover:underline"
                   >
                     Join on Google Play
@@ -276,7 +265,7 @@ export default async function DownloadsPage({
                 </DeviceCard>
                 <DeviceCard icon={Globe} title="Web">
                   <a
-                    href="https://demo.wcpos.com/pos"
+                    href={PLATFORMS.web.href}
                     className="font-medium text-wcpos-red-accent hover:underline"
                   >
                     Open the live demo

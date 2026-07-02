@@ -14,9 +14,9 @@ export type PlatformKey =
   | 'android'
   | 'web'
 
-export type Kind = 'desktop' | 'mobile' | 'web'
+type Kind = 'desktop' | 'mobile' | 'web'
 
-export interface Platform {
+interface Platform {
   kind: Kind
   icon: LucideIcon
   name: string
@@ -25,8 +25,6 @@ export interface Platform {
   href: string
   /** Primary button label. */
   action: string
-  /** Label for a compact row/list action. */
-  rowAction: string
 }
 
 const ELECTRON = (slug: string) =>
@@ -39,75 +37,58 @@ export const PLATFORMS: Record<PlatformKey, Platform> = {
     name: 'macOS',
     short: 'Apple Silicon · .dmg',
     href: ELECTRON('darwin-arm64'),
-    action: 'Download for macOS',
-    rowAction: 'Download',
-  },
+    action: 'Download for macOS',  },
   'mac-intel': {
     kind: 'desktop',
     icon: Laptop,
     name: 'macOS (Intel)',
     short: 'Intel · .dmg',
     href: ELECTRON('darwin-x64'),
-    action: 'Download for macOS',
-    rowAction: 'Download',
-  },
+    action: 'Download for macOS',  },
   win: {
     kind: 'desktop',
     icon: Laptop,
     name: 'Windows',
     short: 'Windows 10/11 · .exe',
     href: ELECTRON('win32-x64'),
-    action: 'Download for Windows',
-    rowAction: 'Download',
-  },
+    action: 'Download for Windows',  },
   linux: {
     kind: 'desktop',
     icon: Laptop,
     name: 'Linux',
     short: '.AppImage',
     href: ELECTRON('linux-x64'),
-    action: 'Download for Linux',
-    rowAction: 'Download',
-  },
+    action: 'Download for Linux',  },
   ios: {
     kind: 'mobile',
     icon: Smartphone,
     name: 'iOS & iPad',
     short: 'Public TestFlight beta',
     href: 'https://testflight.apple.com/join/JGBdVRrW',
-    action: 'Join the iOS beta',
-    rowAction: 'Join beta',
-  },
+    action: 'Join the iOS beta',  },
   android: {
     kind: 'mobile',
     icon: Smartphone,
     name: 'Android',
     short: 'Google Play testing beta',
     href: 'https://play.google.com/apps/testing/com.wcpos.main',
-    action: 'Join the Android beta',
-    rowAction: 'Join beta',
-  },
+    action: 'Join the Android beta',  },
   web: {
     kind: 'web',
     icon: Globe,
     name: 'Web',
     short: 'No install needed',
     href: 'https://demo.wcpos.com/pos',
-    action: 'Open the web demo',
-    rowAction: 'Open',
-  },
+    action: 'Open the web demo',  },
 }
 
-/** Order platforms are listed in wherever all of them are shown. */
-export const ORDER: PlatformKey[] = [
-  'mac-arm',
-  'mac-intel',
-  'win',
-  'linux',
-  'ios',
-  'android',
-  'web',
-]
+/**
+ * The tile a detected platform maps to — the two mac builds share one macOS
+ * tile because browsers can't reliably tell Apple Silicon from Intel.
+ */
+export function tileFor(key: PlatformKey): PlatformKey {
+  return key === 'mac-intel' ? 'mac-arm' : key
+}
 
 /**
  * Map a browser environment to the best-fit platform. Pure so it can be
