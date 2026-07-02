@@ -10,7 +10,7 @@ import * as React from 'react'
  * (static ring is drawn once instead).
  */
 
-const DOTS = 130
+const DOTS = 170
 const SIZE = 520
 const RING_RADIUS = 190
 const ATTRACT_RADIUS = 130

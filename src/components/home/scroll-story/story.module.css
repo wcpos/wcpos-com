@@ -219,10 +219,6 @@
   .barcodePattern,
   .particlesA,
   .particlesB,
-  .ribbonBlob1,
-  .ribbonBlob2,
-  .ribbonBlob3,
-  .ribbonBlob4,
   .lightPool {
     animation: none;
   }
@@ -411,58 +407,3 @@
   animation: story-particles-rise 26s linear infinite;
 }
 
-/* Stripe-style mesh ribbon, CSS approximation for the prototype. Production
-   note (ADR-bound): swap for a ~10kb WebGL mesh (minigl-style) with this as
-   the static fallback; blobs animate transform-only under a parent blur. */
-@keyframes story-blob-a {
-  to {
-    transform: translate(9%, 14%) scale(1.12);
-  }
-}
-
-@keyframes story-blob-b {
-  to {
-    transform: translate(-10%, -8%) scale(1.08) rotate(8deg);
-  }
-}
-
-@keyframes story-blob-c {
-  to {
-    transform: translate(6%, -12%) scale(1.15);
-  }
-}
-
-.ribbonWrap {
-  filter: blur(52px) saturate(1.15);
-  opacity: 0.75;
-}
-
-.ribbonBlob1 {
-  background: radial-gradient(circle, #ff9a5c, transparent 65%);
-  animation: story-blob-a 11s ease-in-out infinite alternate;
-}
-
-.ribbonBlob2 {
-  background: radial-gradient(circle, #f14f6d, transparent 65%);
-  animation: story-blob-b 13s ease-in-out infinite alternate;
-}
-
-.ribbonBlob3 {
-  background: radial-gradient(circle, #8b5cf6, transparent 65%);
-  animation: story-blob-c 17s ease-in-out infinite alternate;
-}
-
-.ribbonBlob4 {
-  background: radial-gradient(circle, #ffd08a, transparent 65%);
-  animation: story-blob-b 15s ease-in-out infinite alternate-reverse;
-}
-
-.ribbonMask {
-  background: linear-gradient(
-    105deg,
-    rgb(253 252 251 / 1) 26%,
-    rgb(253 252 251 / 0) 44%,
-    rgb(253 252 251 / 0) 74%,
-    rgb(253 252 251 / 0.9) 90%
-  );
-}

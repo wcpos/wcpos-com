@@ -9,6 +9,7 @@ import {
   type MotionValue,
 } from 'motion/react'
 import { cn } from '@/lib/utils'
+import { AmbientGradient } from '@/components/ui/ambient-gradient'
 import { CounterProps } from './acts/counter-props'
 import { CloudSync } from './acts/cloud-sync'
 import { CyclingDevice } from './acts/cycling-device'
@@ -178,21 +179,10 @@ function PinnedStoryScroller() {
           )}
           style={{ opacity: bgSlateOpacity }}
         >
-          {/* the one continuous background: a slow-breathing brand gradient
-              that ties acts 2-4 together (per-act patterns removed — the
-              acts now illustrate their point with foreground animation) */}
-          <div
-            className={cn(
-              'absolute -inset-x-[10%] -inset-y-[20%]',
-              styles.ribbonWrap
-            )}
-          >
-            <div className={cn('absolute left-[8%] top-[-18%] h-[70%] w-[55%] rounded-full', styles.ribbonBlob1)} />
-            <div className={cn('absolute right-[-6%] top-[6%] h-[75%] w-[60%] rounded-full', styles.ribbonBlob2)} />
-            <div className={cn('absolute bottom-[-22%] left-[34%] h-[60%] w-[46%] rounded-full', styles.ribbonBlob3)} />
-            <div className={cn('absolute bottom-[-8%] left-[-8%] h-[52%] w-[38%] rounded-full', styles.ribbonBlob4)} />
-          </div>
-          <div className={cn('absolute inset-0', styles.ribbonMask)} />
+          {/* the one continuous background tying acts 2-4 together: our own
+              shader gradient (Stripe-inspired in spirit, original in code —
+              see ui/ambient-gradient.tsx and ADR 0013) */}
+          <AmbientGradient className="absolute inset-0" />
         </motion.div>
 
         {/* act 1 counter dressing */}
