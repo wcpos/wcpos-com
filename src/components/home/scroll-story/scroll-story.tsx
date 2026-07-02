@@ -168,9 +168,17 @@ function PinnedStoryScroller() {
           className={cn('absolute inset-0', styles.woodCounterLight)}
           style={{ opacity: bgWarmOpacity, scale: bgWarmScale }}
         >
-          <div
-            className={cn('absolute -inset-[30%]', styles.lightPoolBright)}
-          />
+          <picture>
+            <source
+              srcSet="/images/story/counter-photo.avif"
+              type="image/avif"
+            />
+            <img
+              src="/images/story/counter-photo.webp"
+              alt=""
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+          </picture>
         </motion.div>
         <motion.div
           aria-hidden="true"
@@ -202,7 +210,7 @@ function PinnedStoryScroller() {
           className="absolute inset-0"
           style={{ opacity: propsOpacity, y: propsY, scale: propsScale }}
         >
-          <CounterProps />
+          <CounterProps className="hidden" />
         </motion.div>
 
         {/* the tablet — one element across all four acts */}
