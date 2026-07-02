@@ -5,67 +5,65 @@ import {
   lokiPushEndpoint,
   type LokiLogEntry,
 } from './loki-format'
+import { deliver } from './deliver'
 
 interface LokiSinkOptions {
   url: string
   apiKey?: string
   labels?: Record<string, string>
-  batchSize?: number
-  flushIntervalMs?: number
+  /** Abort a push that hasn't settled after this long. Default 3s. */
+  timeoutMs?: number
 }
 
 export function createLokiSink(options: LokiSinkOptions): Sink {
-  const {
-    url,
-    apiKey,
-    labels = {},
-    batchSize = 100,
-    flushIntervalMs = 5000,
-  } = options
+  const { url, apiKey, labels = {}, timeoutMs = 3000 } = options
 
   const endpoint = lokiPushEndpoint(url)
-  let batch: LokiLogEntry[] = []
-  let flushTimer: ReturnType<typeof setTimeout> | null = null
-
-  function flush() {
-    if (batch.length === 0) return
-
-    const entries = [...batch]
-    batch = []
-
-    const payload = buildLokiPayload({ job: 'wcpos', ...labels }, entries)
-
-    const headers: Record<string, string> = {
-      'Content-Type': 'application/json',
-    }
-    if (apiKey) {
-      headers['X-API-Key'] = apiKey
-    }
-
-    fetch(endpoint, {
-      method: 'POST',
-      headers,
-      body: JSON.stringify(payload),
-    }).catch(() => {
-      // Loki unavailable — silently drop. Logs still go to console sink.
-    })
+  const streamLabels = { job: 'wcpos', ...labels }
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json',
+  }
+  if (apiKey) {
+    headers['X-API-Key'] = apiKey
   }
 
-  function scheduleFlush() {
-    if (flushTimer) return
-    flushTimer = setTimeout(() => {
-      flushTimer = null
-      flush()
-    }, flushIntervalMs)
+  let pending: LokiLogEntry[] = []
+
+  function flush(): Promise<void> {
+    const entries = pending
+    pending = []
+    if (entries.length === 0) return Promise.resolve()
+
+    return fetch(endpoint, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify(buildLokiPayload(streamLabels, entries)),
+      // Without a deadline, waitUntil would keep the (billed) function alive
+      // for as long as a wedged Loki holds the connection open.
+      signal: AbortSignal.timeout(timeoutMs),
+    }).then(
+      () => undefined,
+      () => {
+        // Loki unavailable — silently drop. Logs still go to console sink.
+      }
+    )
   }
 
   return (record: LogRecord) => {
-    batch.push(formatLokiEntry(record))
+    pending.push(formatLokiEntry(record))
+    if (pending.length > 1) return // a flush is already scheduled for this tick
 
-    if (batch.length >= batchSize) {
-      flush()
-    } else {
-      scheduleFlush()
-    }
+    // Coalesce every record logged in the same tick into one push. The
+    // delivery promise is registered synchronously — while the Vercel request
+    // context (if any) is still current — so the function stays alive until
+    // the flush settles instead of freezing with the POST in flight. A
+    // timer-based batch can't do this: serverless freezes before it fires.
+    deliver(
+      new Promise<void>((resolve) => {
+        queueMicrotask(() => {
+          void flush().then(resolve)
+        })
+      })
+    )
   }
 }

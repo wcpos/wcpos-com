@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { createDiscordSink } from './discord-sink'
+import { stubVercelRequestContext } from '@/test/vercel-request-context'
 import type { LogRecord } from '@logtape/logtape'
 
 function record(category: string[]): LogRecord {
@@ -38,5 +39,16 @@ describe('createDiscordSink rate limiting', () => {
     sink(record(['wcpos', 'store', 'salefoo']))
     sink(record(['wcpos', 'store', 'salefoo']))
     expect((fetch as ReturnType<typeof vi.fn>)).toHaveBeenCalledTimes(1)
+  })
+
+  it('registers the webhook POST with the Vercel request context so serverless does not drop it', () => {
+    const ctx = stubVercelRequestContext()
+    try {
+      const sink = createDiscordSink({ webhookUrl: 'https://x' })
+      sink(record(['wcpos', 'store']))
+      expect(ctx.waitUntil).toHaveBeenCalledTimes(1)
+    } finally {
+      ctx.restore()
+    }
   })
 })
