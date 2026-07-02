@@ -83,6 +83,15 @@ describe('POST /api/support/ask', () => {
     expect(await res.json()).toHaveProperty('error')
   })
 
+  it('passes a gateway 429 through as a rate-limit message, not an outage', async () => {
+    vi.mocked(verifyTurnstile).mockResolvedValue(true)
+    vi.mocked(askAide).mockRejectedValue(new OpenclawError('rate limited', 429, 'rate_limited'))
+    const res = await POST(req({ question: 'How?', turnstileToken: 't' }))
+    expect(res.status).toBe(429)
+    expect(await res.json()).toHaveProperty('error')
+    expect(errorMock).not.toHaveBeenCalled()
+  })
+
   it('maps an OpenclawError to a friendly 503 and logs at error', async () => {
     vi.mocked(verifyTurnstile).mockResolvedValue(true)
     vi.mocked(askAide).mockRejectedValue(new OpenclawError('boom', 502, 'runtime_error'))

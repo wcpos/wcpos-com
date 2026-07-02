@@ -79,6 +79,14 @@ export async function POST(request: Request): Promise<NextResponse> {
     return NextResponse.json({ answer, model, sessionId: resolvedSessionId }, { status: 200 })
   } catch (err) {
     const code = err instanceof OpenclawError ? err.code : 'unknown'
+    // The gateway runs its own session/global caps — pass its 429 through
+    // instead of masking it as an outage.
+    if (err instanceof OpenclawError && err.status === 429) {
+      return NextResponse.json(
+        { error: "You're asking a lot of questions — please wait a few minutes, or hop into Discord." },
+        { status: 429 }
+      )
+    }
     const message =
       code === 'timeout'
         ? 'That took too long. Please try again, or ask in Discord.'
