@@ -115,9 +115,15 @@ export async function PATCH(request: NextRequest) {
       )
     }
 
-    const body = await request.json()
-    const { cartId } = body
+    const body = await request.json().catch(() => null)
+    if (!isRecord(body)) {
+      return NextResponse.json(
+        { error: 'Invalid request body' },
+        { status: 400 }
+      )
+    }
 
+    const cartId = typeof body.cartId === 'string' ? body.cartId.trim() : ''
     if (!cartId) {
       return NextResponse.json(
         { error: 'Cart ID is required' },
