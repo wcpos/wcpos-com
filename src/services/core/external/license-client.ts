@@ -341,7 +341,7 @@ async function validateLicense(
     expiresAt: license.expiry ?? undefined,
     activationsLimit: license.maxMachines,
     activationsCount,
-    productName: 'WooCommerce POS Pro',
+    productName: 'WCPOS Pro',
   }
 
   // Plugin display vocabulary (active/expired/inactive/invalid) derived from
@@ -358,22 +358,22 @@ async function validateLicense(
       expiresAt: license.expiry ?? undefined,
       activationsLimit: license.maxMachines,
       activationsCount,
-      productName: 'WooCommerce POS Pro',
+      productName: 'WCPOS Pro',
     },
     suspended: {
       activated: false,
       status: 'inactive',
-      productName: 'WooCommerce POS Pro',
+      productName: 'WCPOS Pro',
     },
     revoked: {
       activated: false,
       status: 'invalid',
-      productName: 'WooCommerce POS Pro',
+      productName: 'WCPOS Pro',
     },
     unknown: {
       activated: false,
       status: 'invalid',
-      productName: 'WooCommerce POS Pro',
+      productName: 'WCPOS Pro',
     },
   }
 

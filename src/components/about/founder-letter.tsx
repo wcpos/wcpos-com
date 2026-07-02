@@ -61,7 +61,7 @@ function FounderLetterContent({
           A note from the developer
         </p>
         <p className="mb-4 text-xl font-semibold text-slate-900 dark:text-slate-100">
-          Hi — I&apos;m Paul. I built WooCommerce POS.
+          Hi — I&apos;m Paul. I built WCPOS.
         </p>
 
         <p className="mb-4 leading-relaxed text-slate-700 dark:text-slate-300">

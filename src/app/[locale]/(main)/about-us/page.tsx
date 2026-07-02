@@ -22,7 +22,7 @@ export async function generateMetadata({
     path: '/about-us',
     title: 'About',
     description:
-      'The story behind WooCommerce POS — an independent point of sale built by a former shopkeeper and funded by shopkeepers, not investors.',
+      'The story behind WCPOS — an independent point of sale built by a former shopkeeper and funded by shopkeepers, not investors.',
   })
 }
 

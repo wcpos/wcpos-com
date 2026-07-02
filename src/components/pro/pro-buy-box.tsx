@@ -24,7 +24,7 @@ interface ProBuyBoxProps {
   heading: string
   subheading: string
   termAriaLabel: string
-  /** Server-rendered static content (guarantee, payment methods, proof). */
+  /** Server-rendered static content (try-free note, payment methods, proof). */
   footer?: ReactNode
 }
 

@@ -3,7 +3,7 @@ import { setRequestLocale } from 'next-intl/server'
 export const metadata = {
   title: 'Refund Policy',
   description:
-    'Every WCPOS Pro purchase comes with a 14-day money-back guarantee: ask within 14 days and we refund you in full, no reason required.',
+    'The WCPOS Pro refund policy: how to request a refund within 14 days of purchase, and how refunds are paid.',
 }
 
 export default async function RefundsPage({
@@ -24,13 +24,10 @@ export default async function RefundsPage({
       <div className="space-y-10">
         <section>
           <p className="leading-7 text-muted-foreground">
-            Every WCPOS Pro purchase — first purchase or renewal, yearly or
-            lifetime — comes with a{' '}
-            <strong className="text-foreground">
-              14-day money-back guarantee
-            </strong>
-            . If it&apos;s not right for your store, ask within 14 days of
-            purchase and we refund you in full. No reason required, no hoops.
+            WCPOS Pro purchases — first purchase or renewal, yearly or
+            lifetime — can be refunded within 14 days of purchase. Email us
+            within that window and we refund you in full. You do not need to
+            give a reason.
           </p>
         </section>
 
@@ -43,7 +40,7 @@ export default async function RefundsPage({
               <span className="font-medium text-foreground">
                 Install the free plugin.
               </span>{' '}
-              Run the free version of WooCommerce POS on your store for a
+              Run the free version of WCPOS on your store for a
               couple of days before upgrading — that proves the plugin works on
               your site.
             </li>
@@ -112,17 +109,18 @@ export default async function RefundsPage({
           <h2 className="text-2xl font-semibold mb-4">License renewals</h2>
           <p className="leading-7 text-muted-foreground">
             Yearly licenses do not renew automatically — we never charge you
-            again without a new purchase from you. Renewal purchases carry the
-            same 14-day guarantee.
+            again without a new purchase from you. The same 14-day refund
+            window applies to renewal purchases.
           </p>
         </section>
 
         <section>
           <h2 className="text-2xl font-semibold mb-4">Your statutory rights</h2>
           <p className="leading-7 text-muted-foreground mb-4">
-            For consumers in the EU, EEA and UK: our 14-day guarantee matches
-            your statutory right of withdrawal for this kind of purchase, and
-            exercising either works the same way — email us within 14 days.
+            For consumers in the EU, EEA and UK: our 14-day refund window
+            matches your statutory right of withdrawal for this kind of
+            purchase, and exercising either works the same way — email us
+            within 14 days.
           </p>
           <p className="leading-7 text-muted-foreground">
             If WCPOS Pro is defective or does not work as described, statutory

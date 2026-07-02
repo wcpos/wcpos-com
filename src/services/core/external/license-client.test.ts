@@ -668,7 +668,7 @@ describe('licenseClient', () => {
           expiresAt: '2027-01-01T00:00:00Z',
           activationsLimit: 5,
           activationsCount: 1,
-          productName: 'WooCommerce POS Pro',
+          productName: 'WCPOS Pro',
         },
         entitlement: {
           status: 'active',
@@ -709,7 +709,7 @@ describe('licenseClient', () => {
           expiresAt: '2024-01-01T00:00:00Z',
           activationsLimit: 2,
           activationsCount: 0,
-          productName: 'WooCommerce POS Pro',
+          productName: 'WCPOS Pro',
         },
         entitlement: {
           status: 'expired',
@@ -759,7 +759,7 @@ describe('licenseClient', () => {
           expiresAt: '2026-06-14T00:00:00Z',
           activationsLimit: 3,
           activationsCount: 0,
-          productName: 'WooCommerce POS Pro',
+          productName: 'WCPOS Pro',
         },
         entitlement: {
           status: 'active',

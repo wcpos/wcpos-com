@@ -34,7 +34,7 @@ export async function generateMetadata({
     path: '/downloads',
     title: 'Downloads',
     description:
-      'Download WooCommerce POS — the free plugin plus the desktop, iOS, Android and web apps. See the latest version and recent release notes.',
+      'Download WCPOS — the free plugin plus the desktop, iOS, Android and web apps. See the latest version and recent release notes.',
   })
 }
 
@@ -241,7 +241,7 @@ export default async function DownloadsPage({
               <Card className="mt-4 flex flex-wrap items-center justify-between gap-4 p-5">
                 <div>
                   <p className="font-medium">
-                    WooCommerce POS
+                    WCPOS
                     <span className="ml-2 rounded bg-wcpos-red/10 px-1.5 py-0.5 text-[0.65rem] font-semibold uppercase tracking-wide text-wcpos-red-accent">
                       Free · GPL
                     </span>

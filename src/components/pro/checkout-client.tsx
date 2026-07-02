@@ -753,7 +753,7 @@ export function CheckoutClient({
           </li>
           <li className="flex gap-2">
             <Check className="mt-0.5 h-4 w-4 shrink-0 text-green-500" />
-            14-day money-back guarantee
+            One-time payment — never auto-renews
           </li>
           <li className="flex gap-2">
             <Check className="mt-0.5 h-4 w-4 shrink-0 text-green-500" />

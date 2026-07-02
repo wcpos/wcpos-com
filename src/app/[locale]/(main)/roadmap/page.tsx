@@ -23,7 +23,7 @@ export async function generateMetadata({
     path: '/roadmap',
     title: 'Roadmap',
     description:
-      'See what we are building next for WooCommerce POS — upcoming features, milestones, and release progress.',
+      'See what we are building next for WCPOS — upcoming features, milestones, and release progress.',
   })
 }
 
@@ -71,7 +71,7 @@ export default async function RoadmapPage({
             The release train
           </h1>
           <p className="mt-4 max-w-xl text-lg text-muted-foreground">
-            Every stop on the way to a faster, offline-proof WooCommerce POS —
+            Every stop on the way to a faster, offline-proof WCPOS —
             pulled straight from our GitHub, newest work first.
           </p>
           <BoardLinkChip />
