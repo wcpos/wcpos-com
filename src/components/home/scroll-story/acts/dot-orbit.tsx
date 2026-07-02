@@ -10,7 +10,7 @@ import * as React from 'react'
  * (static ring is drawn once instead).
  */
 
-const DOTS = 130
+const DOTS = 170
 const SIZE = 520
 const RING_RADIUS = 190
 const ATTRACT_RADIUS = 130
@@ -46,7 +46,7 @@ function makeDots(): Dot[] {
 
 const COLORS: Record<Dot['hue'], string> = {
   slate: 'rgba(100, 116, 139, 0.55)',
-  red: 'rgba(205, 32, 31, 0.5)',
+  red: 'rgba(43, 108, 176, 0.55)',
   purple: 'rgba(127, 84, 179, 0.55)',
 }
 

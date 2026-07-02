@@ -2,7 +2,13 @@ import { cn } from '@/lib/utils'
 import { PosScreen } from './pos-screen'
 import styles from '../story.module.css'
 
-export function DevicePhone({ className }: { className?: string }) {
+export function DevicePhone({
+  className,
+  animateCharge = true,
+}: {
+  className?: string
+  animateCharge?: boolean
+}) {
   return (
     <div
       aria-hidden="true"
@@ -12,7 +18,7 @@ export function DevicePhone({ className }: { className?: string }) {
         className
       )}
     >
-      <PosScreen variant="phone" />
+      <PosScreen variant="phone" animateCharge={animateCharge} />
     </div>
   )
 }

@@ -45,7 +45,11 @@ function StageStrip({
   )
 }
 
-export function StoryStatic() {
+export function StoryStatic({
+  animateDevices = true,
+}: {
+  animateDevices?: boolean
+}) {
   return (
     <div data-testid="story-static">
       <Section tone="none" spacing="hero" className={cn('overflow-hidden', styles.woodCounterLight)}>
@@ -56,7 +60,7 @@ export function StoryStatic() {
           <CopyAct1 headingLevel={1} tone="onLight" />
         </div>
         <StageStrip className="h-[240px] sm:h-[300px]">
-          <DeviceTablet />
+          <DeviceTablet animateCharge={animateDevices} />
         </StageStrip>
       </Section>
 
@@ -65,9 +69,12 @@ export function StoryStatic() {
           <CopyAct2 tone="onLight" />
         </div>
         <StageStrip className="h-[220px] sm:h-[280px]">
-          <DevicePhone />
-          <DeviceTablet className="h-[240px] w-[348px]" />
-          <DeviceLaptop className="w-[340px]" />
+          <DevicePhone animateCharge={animateDevices} />
+          <DeviceTablet
+            className="h-[240px] w-[348px]"
+            animateCharge={animateDevices}
+          />
+          <DeviceLaptop className="w-[340px]" animateCharge={animateDevices} />
         </StageStrip>
       </Section>
 

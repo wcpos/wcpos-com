@@ -30,11 +30,13 @@ vi.mock('motion/react', async () => {
 
 afterEach(() => {
   cleanup()
+  vi.restoreAllMocks()
   vi.unstubAllGlobals()
   motionMock.progressHandlers.length = 0
 })
 
 function stubMatchMedia({ reducedMotion }: { reducedMotion: boolean }) {
+  vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockReturnValue(null)
   vi.stubGlobal(
     'matchMedia',
     vi.fn((query: string) => ({
@@ -149,6 +151,13 @@ describe('ScrollStory', () => {
     expect(screen.queryByTestId('story-scroller')).not.toBeInTheDocument()
     // both the md+ slot and the mobile slot fall back to the static story
     expect(screen.getAllByTestId('story-static')).toHaveLength(2)
+  })
+
+  it('omits Charge pulse animations under prefers-reduced-motion', () => {
+    stubMatchMedia({ reducedMotion: true })
+    render(<ScrollStory />)
+
+    expect(document.querySelector('animate')).not.toBeInTheDocument()
   })
 
   it('disables every scroll-story animation under prefers-reduced-motion', () => {
