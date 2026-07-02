@@ -148,6 +148,20 @@ test.describe('Mock checkout backend', () => {
     })
     expect(cartResponse.status()).toBe(200)
     const { cart } = await cartResponse.json()
+    const email = `retry-completion+${cart.id}@example.com`
+
+    const registerResponse = await request.post(
+      `${MOCK_BACKEND_URL}/auth/customer/emailpass/register`,
+      { data: { email, password: 'e2e-password' } }
+    )
+    expect(registerResponse.status()).toBe(200)
+    const { token } = await registerResponse.json()
+
+    const emailResponse = await request.post(
+      `${MOCK_BACKEND_URL}/store/carts/${cart.id}`,
+      { data: { email } }
+    )
+    expect(emailResponse.status()).toBe(200)
 
     const lineItemResponse = await request.post(
       `${MOCK_BACKEND_URL}/store/carts/${cart.id}/line-items`,
@@ -177,6 +191,17 @@ test.describe('Mock checkout backend', () => {
     expect(firstComplete.status()).toBe(200)
     const { order: firstOrder } = await firstComplete.json()
 
+    const firstOrdersResponse = await request.get(
+      `${MOCK_BACKEND_URL}/store/orders`,
+      { headers: { Authorization: `Bearer ${token}` } }
+    )
+    expect(firstOrdersResponse.status()).toBe(200)
+    const { count: firstOrderCount, orders: firstOrders } =
+      await firstOrdersResponse.json()
+    expect(firstOrderCount).toBe(1)
+    expect(firstOrders).toHaveLength(1)
+    expect(firstOrders[0].id).toBe(firstOrder.id)
+
     const retriedComplete = await request.post(
       `${MOCK_BACKEND_URL}/store/carts/${cart.id}/complete`
     )
@@ -185,6 +210,17 @@ test.describe('Mock checkout backend', () => {
 
     expect(retriedOrder.id).toBe(firstOrder.id)
     expect(retriedOrder.display_id).toBe(firstOrder.display_id)
+
+    const retriedOrdersResponse = await request.get(
+      `${MOCK_BACKEND_URL}/store/orders`,
+      { headers: { Authorization: `Bearer ${token}` } }
+    )
+    expect(retriedOrdersResponse.status()).toBe(200)
+    const { count: retriedOrderCount, orders: retriedOrders } =
+      await retriedOrdersResponse.json()
+    expect(retriedOrderCount).toBe(firstOrderCount)
+    expect(retriedOrders).toHaveLength(1)
+    expect(retriedOrders[0].id).toBe(firstOrder.id)
   })
 })
 
