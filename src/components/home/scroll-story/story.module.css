@@ -92,12 +92,24 @@
   }
 }
 
-@keyframes story-bob {
-  from {
-    transform: translateY(-4px);
-  }
+/* act-pattern loops: transform-only on oversized layers (compositor-only,
+   no per-frame paint) — each period matches the pattern tile so the loop is
+   seamless */
+@keyframes story-grid-drift {
   to {
-    transform: translateY(4px);
+    transform: translate(-48px, -48px);
+  }
+}
+
+@keyframes story-barcode-drift {
+  to {
+    transform: translateX(-64px);
+  }
+}
+
+@keyframes story-particles-rise {
+  to {
+    transform: translateY(-120px);
   }
 }
 
@@ -144,8 +156,44 @@
   animation: story-dash 1.4s linear infinite;
 }
 
-.bob {
-  animation: story-bob 7s ease-in-out infinite alternate;
+.gridDrift {
+  background-image:
+    linear-gradient(rgb(148 163 184 / 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(148 163 184 / 0.07) 1px, transparent 1px);
+  background-size: 48px 48px;
+  animation: story-grid-drift 9s linear infinite;
+}
+
+.barcodePattern {
+  background-image: repeating-linear-gradient(
+    90deg,
+    rgb(148 163 184 / 0.055) 0 2px,
+    transparent 2px 10px,
+    rgb(148 163 184 / 0.035) 10px 13px,
+    transparent 13px 32px,
+    rgb(148 163 184 / 0.05) 32px 33px,
+    transparent 33px 64px
+  );
+  animation: story-barcode-drift 14s linear infinite;
+}
+
+.particlesA {
+  background-image: radial-gradient(
+    rgb(148 163 184 / 0.16) 1.2px,
+    transparent 1.4px
+  );
+  background-size: 60px 120px;
+  animation: story-particles-rise 16s linear infinite;
+}
+
+.particlesB {
+  background-image: radial-gradient(
+    rgb(52 211 153 / 0.13) 1.6px,
+    transparent 1.9px
+  );
+  background-size: 90px 120px;
+  background-position: 30px 40px;
+  animation: story-particles-rise 26s linear infinite;
 }
 
 .lightPool {
@@ -167,6 +215,10 @@
   .floaty,
   .dashFlow,
   .bob,
+  .gridDrift,
+  .barcodePattern,
+  .particlesA,
+  .particlesB,
   .lightPool {
     animation: none;
   }
@@ -197,13 +249,6 @@
 
 .slateStudio {
   background: radial-gradient(ellipse at 50% 20%, #1e293b, #0f172a 75%);
-}
-
-.gridlines {
-  background-image:
-    linear-gradient(rgb(148 163 184 / 0.06) 1px, transparent 1px),
-    linear-gradient(90deg, rgb(148 163 184 / 0.06) 1px, transparent 1px);
-  background-size: 48px 48px;
 }
 
 .tabletBezel {

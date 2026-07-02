@@ -108,6 +108,9 @@ function PinnedStoryScroller() {
   const bgWarmOpacity = useTrack(progress, K.bgWarmOpacity)
   const bgWarmScale = useTrack(progress, K.bgWarmScale)
   const bgSlateOpacity = useTrack(progress, K.bgSlateOpacity)
+  const pattern2Opacity = useTrack(progress, K.pattern2Opacity)
+  const pattern3Opacity = useTrack(progress, K.pattern3Opacity)
+  const pattern4Opacity = useTrack(progress, K.pattern4Opacity)
 
   // counter props
   const propsOpacity = useTrack(progress, K.propsOpacity)
@@ -168,10 +171,28 @@ function PinnedStoryScroller() {
         </motion.div>
         <motion.div
           aria-hidden="true"
-          className={cn('absolute inset-0', styles.slateStudio)}
+          className={cn('absolute inset-0 overflow-hidden', styles.slateStudio)}
           style={{ opacity: bgSlateOpacity }}
         >
-          <div className={cn('absolute inset-0', styles.gridlines)} />
+          {/* one ambient pattern per act, crossfaded with scroll progress:
+              drifting screen-grid (act 2), drifting barcode (act 3),
+              two-speed rising data particles (act 4) */}
+          <motion.div
+            className={cn('absolute -inset-40', styles.gridDrift)}
+            style={{ opacity: pattern2Opacity }}
+          />
+          <motion.div
+            className={cn('absolute -inset-40', styles.barcodePattern)}
+            style={{ opacity: pattern3Opacity }}
+          />
+          <motion.div
+            className={cn('absolute -inset-40', styles.particlesA)}
+            style={{ opacity: pattern4Opacity }}
+          />
+          <motion.div
+            className={cn('absolute -inset-40', styles.particlesB)}
+            style={{ opacity: pattern4Opacity }}
+          />
         </motion.div>
 
         {/* act 1 counter dressing */}
@@ -194,9 +215,7 @@ function PinnedStoryScroller() {
               scale: tabletScale,
             }}
           >
-            <div className={styles.bob}>
-              <DeviceTablet />
-            </div>
+            <DeviceTablet />
           </motion.div>
         </div>
 
