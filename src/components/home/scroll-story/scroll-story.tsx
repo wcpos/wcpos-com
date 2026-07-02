@@ -149,10 +149,10 @@ function PinnedStoryScroller() {
   const hintOpacity = useTrack(progress, K.hintOpacity)
   const copy1InteractionProps = copy1Interactive
     ? {}
-    : ({
+    : {
         'aria-hidden': true,
-        inert: '',
-      } as React.HTMLAttributes<HTMLDivElement> & { inert: '' })
+        inert: true,
+      }
 
   return (
     <div ref={scrollerRef} className="relative h-[560vh]" data-testid="story-scroller">

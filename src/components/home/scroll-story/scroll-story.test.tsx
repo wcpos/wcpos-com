@@ -1,14 +1,36 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { cleanup, render, screen, within } from '@testing-library/react'
+import { act, cleanup, render, screen, within } from '@testing-library/react'
 import { PosScreen } from './devices/pos-screen'
 import { DeviceTerminal } from './devices/terminal'
 import { StoryStatic } from './story-static'
 import { ScrollStory } from './scroll-story'
 import { storyCopy } from './copy'
 
+type ProgressHandler = (value: number) => void
+const motionMock = vi.hoisted(() => ({
+  progressHandlers: [] as ProgressHandler[],
+}))
+
+vi.mock('motion/react', async () => {
+  const React = await import('react')
+  return {
+    motion: {
+      div: ({ children, ...props }: React.HTMLAttributes<HTMLElement>) =>
+        React.createElement('div', props, children),
+    },
+    useMotionValueEvent: (_value: unknown, eventName: string, handler: ProgressHandler) => {
+      if (eventName === 'change') motionMock.progressHandlers.push(handler)
+    },
+    useScroll: () => ({ scrollYProgress: 0 }),
+    useTransform: (_value: unknown, input: unknown, output?: readonly unknown[]) =>
+      output?.[0] ?? (typeof input === 'function' ? input(0) : 0),
+  }
+})
+
 afterEach(() => {
   cleanup()
   vi.unstubAllGlobals()
+  motionMock.progressHandlers.length = 0
 })
 
 function stubMatchMedia({ reducedMotion }: { reducedMotion: boolean }) {
@@ -124,5 +146,24 @@ describe('ScrollStory', () => {
     expect(screen.queryByTestId('story-scroller')).not.toBeInTheDocument()
     // both the md+ slot and the mobile slot fall back to the static story
     expect(screen.getAllByTestId('story-static')).toHaveLength(2)
+  })
+
+  it('removes the Act 1 CTAs from interaction after Act 1 fades out', () => {
+    stubMatchMedia({ reducedMotion: false })
+    render(<ScrollStory />)
+
+    const act1Overlay = within(screen.getByTestId('story-scroller')).getByRole(
+      'heading',
+      { level: 1, name: storyCopy.act1.heading }
+    ).parentElement
+
+    expect(act1Overlay).not.toHaveAttribute('inert')
+
+    act(() => {
+      for (const handler of motionMock.progressHandlers) handler(0.21)
+    })
+
+    expect(act1Overlay).toHaveAttribute('inert')
+    expect(act1Overlay).toHaveClass('pointer-events-none')
   })
 })
