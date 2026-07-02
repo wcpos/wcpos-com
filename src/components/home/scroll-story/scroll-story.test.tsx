@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { act, cleanup, render, screen, within } from '@testing-library/react'
 import { PosScreen } from './devices/pos-screen'
@@ -148,6 +149,49 @@ describe('ScrollStory', () => {
     expect(screen.queryByTestId('story-scroller')).not.toBeInTheDocument()
     // both the md+ slot and the mobile slot fall back to the static story
     expect(screen.getAllByTestId('story-static')).toHaveLength(2)
+  })
+
+  it('disables every scroll-story animation under prefers-reduced-motion', () => {
+    const style = document.createElement('style')
+    style.textContent = readFileSync(
+      'src/components/home/scroll-story/story.module.css',
+      'utf8'
+    )
+    document.head.append(style)
+
+    const sheet = document.styleSheets.item(document.styleSheets.length - 1)
+    if (!sheet) throw new Error('scroll story stylesheet was not loaded')
+
+    const reducedMotionRule = Array.from(sheet.cssRules).find(
+      (rule): rule is CSSMediaRule =>
+        rule instanceof CSSMediaRule &&
+        rule.conditionText.includes('prefers-reduced-motion')
+    )
+
+    if (!reducedMotionRule) {
+      throw new Error('reduced-motion media rule was not found')
+    }
+
+    const reducedMotionStyles = Array.from(reducedMotionRule.cssRules).filter(
+      (rule): rule is CSSStyleRule => rule instanceof CSSStyleRule
+    )
+    const selectors = reducedMotionStyles
+      .map((rule) => rule.selectorText)
+      .join(',')
+
+    for (const rule of reducedMotionStyles) {
+      expect(rule.style.animation).toBe('none')
+    }
+
+    for (const selector of [
+      '.gridDrift',
+      '.barcodePattern',
+      '.particlesA',
+      '.particlesB',
+      '.lightPool',
+    ]) {
+      expect(selectors).toContain(selector)
+    }
   })
 
   it('removes the Act 1 CTAs from interaction after Act 1 fades out', () => {
