@@ -52,8 +52,9 @@ const STORE_ENVIRONMENTS: Record<StoreEnvironmentName, StoreEnvironment> = {
   test: {
     name: 'test',
     medusaBackendUrl: 'https://store-api-staging.wcpos.com',
+    // Staging Medusa "Default Publishable API Key" (apk_01KHAY67JDMAE75CVE6AK7WKG6).
     medusaPublishableKey:
-      process.env.MEDUSA_STAGING_PUBLISHABLE_KEY ?? null,
+      'pk_399c0c1ca328579dc9055be3c3c29c640953d1b585c76803164aeea4029025e9',
     payments: {
       stripePublishableKey:
         process.env.NEXT_PUBLIC_STRIPE_TEST_PUBLISHABLE_KEY ?? null,
