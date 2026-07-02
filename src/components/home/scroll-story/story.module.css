@@ -211,7 +211,11 @@
    withdraws. Cast down-right to match the upper-left window light. */
 @keyframes story-counter-visitor-a {
   0% {
-    transform: translate3d(0, -34%, 0) scale(0.92);
+    transform: translate3d(0, -14%, 0) scale(0.92);
+    opacity: 0;
+  }
+  18% {
+    transform: translate3d(0, -8%, 0) scale(0.92);
     opacity: 0;
   }
   34% {
@@ -222,14 +226,22 @@
     transform: translate3d(7%, 5%, 0) scale(1.02);
     opacity: 0.7;
   }
+  82% {
+    transform: translate3d(11%, -8%, 0) scale(0.94);
+    opacity: 0;
+  }
   100% {
-    transform: translate3d(11%, -36%, 0) scale(0.94);
+    transform: translate3d(11%, -14%, 0) scale(0.94);
     opacity: 0;
   }
 }
 @keyframes story-counter-visitor-b {
   0% {
-    transform: translate3d(0, -38%, 0) scale(0.9);
+    transform: translate3d(0, -15%, 0) scale(0.9);
+    opacity: 0;
+  }
+  20% {
+    transform: translate3d(0, -9%, 0) scale(0.9);
     opacity: 0;
   }
   40% {
@@ -240,8 +252,12 @@
     transform: translate3d(-8%, 8%, 0) scale(1);
     opacity: 0.55;
   }
+  84% {
+    transform: translate3d(-12%, -9%, 0) scale(0.92);
+    opacity: 0;
+  }
   100% {
-    transform: translate3d(-12%, -40%, 0) scale(0.92);
+    transform: translate3d(-12%, -15%, 0) scale(0.92);
     opacity: 0;
   }
 }
@@ -254,10 +270,10 @@
   will-change: transform, opacity;
 }
 .counterShadow1 {
-  top: -42%;
+  top: 8%;
   left: 10%;
   width: 26%;
-  height: 92%;
+  height: 84%;
   background: radial-gradient(
     ellipse 50% 50% at 50% 42%,
     rgb(38 29 18 / 0.38),
@@ -266,10 +282,10 @@
   animation: story-counter-visitor-a 17s ease-in-out infinite;
 }
 .counterShadow2 {
-  top: -46%;
+  top: 9%;
   right: 18%;
   width: 22%;
-  height: 86%;
+  height: 82%;
   background: radial-gradient(
     ellipse 50% 50% at 50% 40%,
     rgb(38 29 18 / 0.32),
