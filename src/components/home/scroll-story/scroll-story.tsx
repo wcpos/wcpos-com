@@ -310,6 +310,13 @@ function PinnedStoryScroller() {
               className="absolute inset-0 h-full w-full object-cover"
             />
           </picture>
+          {/* passers-by: soft shadows drifting over the counter */}
+          <div aria-hidden="true" className="absolute inset-0 overflow-hidden">
+            <span className={styles.counterShadow1} />
+            <span className={styles.counterShadow2} />
+          </div>
+          {/* readability scrim under the act-1 copy */}
+          <div className="absolute inset-x-0 top-0 h-[52%] bg-gradient-to-b from-white/60 via-white/25 to-transparent" />
         </motion.div>
         <motion.div
           aria-hidden="true"
