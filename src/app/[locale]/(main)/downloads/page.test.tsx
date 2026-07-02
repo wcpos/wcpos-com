@@ -69,6 +69,25 @@ describe('DownloadsPage', () => {
       screen.getByRole('heading', { level: 1, name: 'One till, every device.' }),
     ).toBeInTheDocument()
   })
+
+  it('renders the static how-it-fits section by default', async () => {
+    const { default: DownloadsPage } = await import(
+      '@/app/[locale]/(main)/downloads/page'
+    )
+
+    render(await DownloadsPage({ params: Promise.resolve({ locale: 'en' }) }))
+
+    expect(
+      screen.getByRole('heading', {
+        level: 2,
+        name: 'One store at the centre. Every till in sync.',
+      }),
+    ).toBeInTheDocument()
+    expect(
+      screen.queryByText('Mix — drift + shaded spheres'),
+    ).not.toBeInTheDocument()
+    expect(screen.queryByText('Original — static')).not.toBeInTheDocument()
+  })
 })
 
 describe('HowItFitsLab', () => {
@@ -97,5 +116,19 @@ describe('HowItFitsLab', () => {
     fireEvent.keyDown(window, { key: 'ArrowRight' })
 
     expect(window.location.search).toBe('?variant=float')
+  })
+
+  it('renders the static fallback when reduced motion is requested', async () => {
+    window.history.replaceState(null, '', '/downloads?variant=orbit')
+    const motionReact = await import('motion/react')
+    vi.mocked(motionReact.useReducedMotion).mockReturnValue(true)
+    const { HowItFitsLab } = await import(
+      '@/components/downloads/how-it-fits-lab'
+    )
+
+    const { container } = render(<HowItFitsLab />)
+
+    expect(container.querySelector('.wcpos-flow-line')).toBeInTheDocument()
+    expect(container.querySelector('.hif-lab-flow')).not.toBeInTheDocument()
   })
 })

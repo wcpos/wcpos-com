@@ -272,7 +272,7 @@ function VariantOrbit() {
   const rotateY = useSpring(0, { stiffness: 120, damping: 18 })
 
   useAnimationFrame((t, dt) => {
-    const target = pointer.current ? 0.18 : 1
+    const target = hoveredRef.current !== null ? 0.18 : 1
     speed.current += (target - speed.current) * Math.min(1, dt * 0.004)
     baseAngle.current += dt * 0.000115 * speed.current * 360 * 0.05
 
@@ -524,7 +524,7 @@ function VariantFling() {
 
   useAnimationFrame(() => {
     const rect = container.current?.getBoundingClientRect()
-    const scale = rect ? rect.width / 440 : 1
+    const scale = rect && rect.width > 0 ? rect.width / 440 : 1
     apply(
       NODES.map((n, i) => {
         const home = homeOf(n)
@@ -960,10 +960,12 @@ function LabInner() {
   const key =
     override ??
     (mounted
-      ? (new URLSearchParams(window.location.search).get('variant') ?? 'mix-shaded')
+      ? (new URLSearchParams(window.location.search).get('variant') ?? 'original')
       : null)
 
   const variant = VARIANTS.find((v) => v.key === key) ?? VARIANTS[0]
+
+  if (process.env.NODE_ENV === 'production') return <HowItFits />
 
   if (key === null) return <HowItFits />
 
