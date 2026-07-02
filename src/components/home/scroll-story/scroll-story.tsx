@@ -39,6 +39,7 @@ function useTrack(
 }
 
 const REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)'
+const COPY_1_HIDDEN_PROGRESS = K.copy1Opacity[0][2]
 
 /**
  * Local media-query hook (instead of motion's useReducedMotion, which caches
@@ -93,9 +94,14 @@ function PinnedStoryScroller() {
   })
 
   const [act, setAct] = React.useState(0)
+  const [copy1Interactive, setCopy1Interactive] = React.useState(true)
   useMotionValueEvent(progress, 'change', (p) => {
     const next = ACT_BOUNDS.filter((bound) => p >= bound).length
     setAct((current) => (current === next ? current : next))
+    const nextCopy1Interactive = p < COPY_1_HIDDEN_PROGRESS
+    setCopy1Interactive((current) =>
+      current === nextCopy1Interactive ? current : nextCopy1Interactive
+    )
   })
 
   // backgrounds
@@ -141,6 +147,12 @@ function PinnedStoryScroller() {
   const copy3Opacity = useTrack(progress, K.copy3Opacity)
   const copy4Opacity = useTrack(progress, K.copy4Opacity)
   const hintOpacity = useTrack(progress, K.hintOpacity)
+  const copy1InteractionProps = copy1Interactive
+    ? {}
+    : ({
+        'aria-hidden': true,
+        inert: '',
+      } as React.HTMLAttributes<HTMLDivElement> & { inert: '' })
 
   return (
     <div ref={scrollerRef} className="relative h-[560vh]" data-testid="story-scroller">
@@ -242,7 +254,11 @@ function PinnedStoryScroller() {
 
         {/* copy overlays */}
         <motion.div
-          className="absolute left-1/2 top-[10%] z-20 w-full max-w-2xl -translate-x-1/2 text-center [filter:drop-shadow(0_1px_3px_rgba(20,8,0,0.5))]"
+          {...copy1InteractionProps}
+          className={cn(
+            'absolute left-1/2 top-[10%] z-20 w-full max-w-2xl -translate-x-1/2 text-center [filter:drop-shadow(0_1px_3px_rgba(20,8,0,0.5))]',
+            !copy1Interactive && 'pointer-events-none'
+          )}
           style={{ opacity: copy1Opacity }}
         >
           <CopyAct1 />
