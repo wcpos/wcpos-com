@@ -16,6 +16,7 @@ import {
   getCustomerInitials,
 } from '@/lib/customer-avatar'
 import { UserMenu } from '@/components/main/user-menu'
+import { WcposLogo } from '@/components/icons/wcpos-logo'
 
 async function AuthButton() {
   let customer = null
@@ -64,7 +65,8 @@ export function SiteHeader() {
       <div className="container flex h-16 items-center justify-between px-4 mx-auto">
         {/* Logo + Desktop Nav */}
         <div className="flex items-center gap-6">
-          <Link href="/" className="text-xl font-bold">
+          <Link href="/" className="flex items-center gap-2 text-xl font-bold">
+            <WcposLogo className="h-7 w-7" />
             WCPOS
           </Link>
           <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
@@ -117,7 +119,10 @@ export function SiteHeader() {
             </Button>
           </SheetTrigger>
           <SheetContent side="right" className="w-72">
-            <SheetTitle className="text-lg font-bold">WCPOS</SheetTitle>
+            <SheetTitle className="flex items-center gap-2 text-lg font-bold">
+              <WcposLogo className="h-6 w-6" />
+              WCPOS
+            </SheetTitle>
             <nav className="flex flex-col gap-4 mt-6">
               {navLinks.map((link) =>
                 link.external ? (

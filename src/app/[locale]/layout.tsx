@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://wcpos.com'),
   title: {
     template: '%s | WCPOS',
-    default: 'WCPOS - WooCommerce Point of Sale',
+    default: 'WCPOS - Point of Sale for WooCommerce',
   },
   description:
     'Point of Sale for WooCommerce. Fast, reliable POS system for your WooCommerce store.',
