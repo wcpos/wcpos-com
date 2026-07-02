@@ -22,9 +22,9 @@ export type PlatformKey =
   | 'android'
   | 'web'
 
-type Kind = 'desktop' | 'mobile' | 'web'
+export type Kind = 'desktop' | 'mobile' | 'web'
 
-interface Platform {
+export interface Platform {
   kind: Kind
   icon: LucideIcon
   name: string
@@ -42,7 +42,7 @@ interface Platform {
 const ELECTRON = (slug: string) =>
   `https://updates.wcpos.com/v1/electron/download/${slug}`
 
-const PLATFORMS: Record<PlatformKey, Platform> = {
+export const PLATFORMS: Record<PlatformKey, Platform> = {
   'mac-arm': {
     kind: 'desktop',
     icon: Laptop,
@@ -116,7 +116,7 @@ const PLATFORMS: Record<PlatformKey, Platform> = {
 }
 
 /** Order the "other platforms" list is rendered in. */
-const ORDER: PlatformKey[] = [
+export const ORDER: PlatformKey[] = [
   'mac-arm',
   'mac-intel',
   'win',
