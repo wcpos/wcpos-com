@@ -20,6 +20,8 @@ interface Platform {
   kind: Kind
   icon: LucideIcon
   name: string
+  /** Short device label used in recommendation copy. */
+  deviceWord: string
   /** Short descriptor shown after the version, e.g. "Apple Silicon · .dmg". */
   short: string
   href: string
@@ -35,51 +37,65 @@ export const PLATFORMS: Record<PlatformKey, Platform> = {
     kind: 'desktop',
     icon: Laptop,
     name: 'macOS',
+    deviceWord: 'Mac',
     short: 'Apple Silicon · .dmg',
     href: ELECTRON('darwin-arm64'),
-    action: 'Download for macOS',  },
+    action: 'Download for macOS',
+  },
   'mac-intel': {
     kind: 'desktop',
     icon: Laptop,
     name: 'macOS (Intel)',
+    deviceWord: 'Mac',
     short: 'Intel · .dmg',
     href: ELECTRON('darwin-x64'),
-    action: 'Download for macOS',  },
+    action: 'Download for macOS',
+  },
   win: {
     kind: 'desktop',
     icon: Laptop,
     name: 'Windows',
+    deviceWord: 'Windows PC',
     short: 'Windows 10/11 · .exe',
     href: ELECTRON('win32-x64'),
-    action: 'Download for Windows',  },
+    action: 'Download for Windows',
+  },
   linux: {
     kind: 'desktop',
     icon: Laptop,
     name: 'Linux',
+    deviceWord: 'Linux machine',
     short: '.AppImage',
     href: ELECTRON('linux-x64'),
-    action: 'Download for Linux',  },
+    action: 'Download for Linux',
+  },
   ios: {
     kind: 'mobile',
     icon: Smartphone,
     name: 'iOS & iPad',
+    deviceWord: 'iPhone or iPad',
     short: 'Public TestFlight beta',
     href: 'https://testflight.apple.com/join/JGBdVRrW',
-    action: 'Join the iOS beta',  },
+    action: 'Join the iOS beta',
+  },
   android: {
     kind: 'mobile',
     icon: Smartphone,
     name: 'Android',
+    deviceWord: 'Android device',
     short: 'Google Play testing beta',
     href: 'https://play.google.com/apps/testing/com.wcpos.main',
-    action: 'Join the Android beta',  },
+    action: 'Join the Android beta',
+  },
   web: {
     kind: 'web',
     icon: Globe,
     name: 'Web',
+    deviceWord: 'browser',
     short: 'No install needed',
     href: 'https://demo.wcpos.com/pos',
-    action: 'Open the web demo',  },
+    action: 'Open the web demo',
+  },
 }
 
 /**
