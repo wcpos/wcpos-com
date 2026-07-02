@@ -1,5 +1,6 @@
 /**
- * Serverless-safe delivery for fire-and-forget sink requests.
+ * Serverless-safe delivery for fire-and-forget requests (log sinks, server
+ * analytics).
  *
  * On Vercel the function runtime is frozen the moment the response returns —
  * a floating `fetch` promise never completes, so alerts and logs are silently
