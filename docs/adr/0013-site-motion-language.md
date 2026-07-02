@@ -29,7 +29,7 @@ sections together, and — borrowing Stripe's philosophy, not their pixels —
 
 **The ambient gradient** (`src/components/ui/ambient-gradient.tsx`) is an
 original ~180-line WebGL fragment shader: domain-warped value noise through
-the brand palette (amber → coral → wcpos-red → Woo purple) inside a
+the backdrop palette (calm blues anchored to the POS UI blue, with a whisper of Woo purple; owner ruled the warm reds unsettling as a wash — brand red lives only in small accents) inside a
 bottom-left→top-right diagonal band that fades to warm white where copy
 sits, with slow upward drift (echoing the homepage's coffee steam). It is
 deliberately *not* Stripe's minigl or any recreation of it — inspired-by,

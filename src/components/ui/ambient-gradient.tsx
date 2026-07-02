@@ -74,22 +74,24 @@ void main() {
   col = mix(col, u_c2, smoothstep(0.5, 0.8, q.x));
   col = mix(col, u_c3, smoothstep(0.6, 0.95, q.y) * 0.8);
 
-  // our diagonal: bottom-left to upper-right, easing to warm white outside
+  // our diagonal: bottom-left to upper-right, easing to cool white outside
   float d = uv.x + (1.0 - uv.y) * 0.9;
   float band = smoothstep(0.1, 0.65, d - 0.35) * (1.0 - smoothstep(0.9, 1.35, d));
-  vec3 base = vec3(0.992, 0.988, 0.984);
+  vec3 base = vec3(0.984, 0.988, 0.996);
   col = mix(base, col, band * 0.85);
 
   gl_FragColor = vec4(col, 1.0);
 }
 `
 
-// brand palette: amber → coral → wcpos red → woo purple
+// calm professional blues (owner call: warm reds were unsettling as a
+// backdrop; brand red stays confined to small accents like CTAs). The mid
+// tones anchor to the POS app's own UI blue; the purple is a whisper of Woo.
 const DEFAULT_COLORS: [string, string, string, string] = [
-  '#ff9a5c',
-  '#f14f6d',
-  '#cd201f',
-  '#8b5cf6',
+  '#a7cdf2',
+  '#6aa5dd',
+  '#2b6cb0',
+  '#8b7cf6',
 ]
 
 function hexToVec3(hex: string): [number, number, number] {
@@ -102,10 +104,10 @@ function hexToVec3(hex: string): [number, number, number] {
 }
 
 const FALLBACK_BG =
-  'radial-gradient(ellipse 60% 70% at 72% 22%, #f14f6d55, transparent 70%),' +
-  'radial-gradient(ellipse 55% 65% at 88% 60%, #ff9a5c4d, transparent 70%),' +
-  'radial-gradient(ellipse 50% 60% at 55% 95%, #8b5cf640, transparent 70%),' +
-  '#fdfcfb'
+  'radial-gradient(ellipse 60% 70% at 72% 22%, #6aa5dd55, transparent 70%),' +
+  'radial-gradient(ellipse 55% 65% at 88% 60%, #a7cdf24d, transparent 70%),' +
+  'radial-gradient(ellipse 50% 60% at 55% 95%, #8b7cf640, transparent 70%),' +
+  '#fbfcfe'
 
 export function AmbientGradient({
   className,
