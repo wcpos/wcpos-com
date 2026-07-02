@@ -206,6 +206,7 @@ function completeCartIntoOrder(cart) {
   }
   cart.completed_at = order.created_at
   cart.order_id = order.id
+  cart.order = order
 
   const persona = cart.email ? dynamicPersonaForEmail(cart.email) : null
   if (persona) {
@@ -561,6 +562,21 @@ const server = createServer(async (req, res) => {
     }
     if (cart.items.length === 0) {
       return sendJson(res, 400, { message: 'Cart is empty' })
+    }
+
+    if (cart.order_id) {
+      const existingOrder =
+        cart.order ??
+        dynamicPersonaForEmail(email)?.orders.find(
+          (order) => order.id === cart.order_id
+        )
+      if (existingOrder) {
+        return sendJson(res, 200, { type: 'order', order: existingOrder })
+      }
+      return sendJson(res, 409, {
+        message: 'Cart is already completed',
+        order_id: cart.order_id,
+      })
     }
 
     const order = completeCartIntoOrder(cart)

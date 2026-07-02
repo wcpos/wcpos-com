@@ -85,8 +85,15 @@ export function BillingStep({ initialAddress, onSubmit }: BillingStepProps) {
         postal_code: postalCode.trim(),
         country_code: countryCode,
       })
-    } catch {
-      setError('Could not save your billing address. Please try again.')
+    } catch (error) {
+      const paymentRefreshError =
+        error instanceof Error && error.name === 'PaymentRefreshError'
+          ? error.message
+          : null
+      setError(
+        paymentRefreshError ??
+          'Could not save your billing address. Please try again.'
+      )
     } finally {
       setIsSubmitting(false)
     }

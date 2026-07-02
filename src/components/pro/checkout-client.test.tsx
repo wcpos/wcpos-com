@@ -457,6 +457,52 @@ describe('CheckoutClient', () => {
     expect(screen.getByText('$149.00')).toBeInTheDocument()
   })
 
+  it('reports payment refresh failures separately from billing save failures', async () => {
+    mockSuccessfulCheckoutInit()
+    renderSignedIn()
+
+    await waitFor(() => {
+      expect(screen.getByTestId('billing-step-form')).toBeInTheDocument()
+    })
+
+    fireEvent.change(screen.getByLabelText('First name'), {
+      target: { value: 'Ada' },
+    })
+    fireEvent.change(screen.getByLabelText('Last name'), {
+      target: { value: 'Lovelace' },
+    })
+    fireEvent.change(screen.getByLabelText('Address'), {
+      target: { value: '42 Wallaby Way' },
+    })
+    fireEvent.change(screen.getByLabelText('City'), {
+      target: { value: 'Sydney' },
+    })
+    fireEvent.change(screen.getByLabelText('Postal code'), {
+      target: { value: '2000' },
+    })
+
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ cart: buildCheckoutCart() }),
+    })
+    mockFetch.mockResolvedValueOnce({
+      ok: false,
+      json: async () => ({ message: 'payment refresh failed' }),
+    })
+
+    fireEvent.click(screen.getByRole('button', { name: /continue to payment/i }))
+
+    expect(
+      await screen.findByText(
+        "Billing address was saved, but we couldn't prepare payment. Please try again."
+      )
+    ).toBeInTheDocument()
+    expect(screen.getByTestId('checkout-step-2')).toHaveAttribute(
+      'data-step-state',
+      'active'
+    )
+  })
+
   it('renders the payment method rows with card selected by default', async () => {
     mockSuccessfulCheckoutInit()
     renderSignedIn()
@@ -627,6 +673,47 @@ describe('CheckoutClient', () => {
       expect(renderPayPalButton).toHaveBeenCalledWith(
         expect.objectContaining({
           paypalOrderId: 'PAYPAL_ORDER_FALLBACK',
+        })
+      )
+    })
+  })
+
+  it('falls back to singular legacy payment session when session arrays do not match', async () => {
+    const legacyCart = buildCheckoutCart({
+      paymentSessions: [
+        {
+          provider_id: 'pp_stripe_stripe',
+          data: { client_secret: 'pi_test_secret' },
+        },
+      ],
+      legacyPaymentSessions: [
+        {
+          provider_id: 'pp_stripe_stripe',
+          data: { client_secret: 'pi_legacy_secret' },
+        },
+      ],
+      legacyPaymentSession: {
+        provider_id: 'pp_paypal_paypal',
+        data: { id: 'PAYPAL_ORDER_SINGULAR' },
+      },
+    })
+    mockSuccessfulCheckoutInit(legacyCart)
+    renderSignedIn()
+    await completeBillingStep()
+
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        cart: legacyCart,
+        paymentCollectionId: 'pay-col-123',
+      }),
+    })
+    fireEvent.click(screen.getByTestId('payment-method-paypal'))
+
+    await waitFor(() => {
+      expect(renderPayPalButton).toHaveBeenCalledWith(
+        expect.objectContaining({
+          paypalOrderId: 'PAYPAL_ORDER_SINGULAR',
         })
       )
     })

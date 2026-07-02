@@ -139,6 +139,53 @@ test.describe('Mock checkout backend', () => {
     expect(retriedCollection.id).toBe(paymentCollection.id)
     expect(retriedCollection.payment_sessions).toHaveLength(1)
   })
+
+  test('returns the same order when cart completion is retried', async ({
+    request,
+  }) => {
+    const cartResponse = await request.post(`${MOCK_BACKEND_URL}/store/carts`, {
+      data: {},
+    })
+    expect(cartResponse.status()).toBe(200)
+    const { cart } = await cartResponse.json()
+
+    const lineItemResponse = await request.post(
+      `${MOCK_BACKEND_URL}/store/carts/${cart.id}/line-items`,
+      {
+        data: { variant_id: 'variant_e2e_yearly', quantity: 1 },
+      }
+    )
+    expect(lineItemResponse.status()).toBe(200)
+
+    const paymentCollectionResponse = await request.post(
+      `${MOCK_BACKEND_URL}/store/payment-collections`,
+      { data: { cart_id: cart.id } }
+    )
+    expect(paymentCollectionResponse.status()).toBe(200)
+    const { payment_collection: paymentCollection } =
+      await paymentCollectionResponse.json()
+
+    const sessionResponse = await request.post(
+      `${MOCK_BACKEND_URL}/store/payment-collections/${paymentCollection.id}/payment-sessions`,
+      { data: { provider_id: 'pp_btcpay_btcpay' } }
+    )
+    expect(sessionResponse.status()).toBe(200)
+
+    const firstComplete = await request.post(
+      `${MOCK_BACKEND_URL}/store/carts/${cart.id}/complete`
+    )
+    expect(firstComplete.status()).toBe(200)
+    const { order: firstOrder } = await firstComplete.json()
+
+    const retriedComplete = await request.post(
+      `${MOCK_BACKEND_URL}/store/carts/${cart.id}/complete`
+    )
+    expect(retriedComplete.status()).toBe(200)
+    const { order: retriedOrder } = await retriedComplete.json()
+
+    expect(retriedOrder.id).toBe(firstOrder.id)
+    expect(retriedOrder.display_id).toBe(firstOrder.display_id)
+  })
 })
 
 test.describe('Checkout flow', () => {

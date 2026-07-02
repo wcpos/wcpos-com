@@ -118,9 +118,12 @@ function resolvePaymentSession(
   }
 
   if (cart.payment_sessions?.length) {
-    return cart.payment_sessions.find(
+    const legacySession = cart.payment_sessions.find(
       (session) => session.provider_id === providerId
     )
+    if (legacySession) {
+      return legacySession
+    }
   }
 
   if (cart.payment_session?.provider_id === providerId) {
@@ -394,13 +397,25 @@ export function CheckoutClient({
     const { cart: updatedCart } = (await response.json()) as { cart?: Cart }
     const cartAfterBilling = updatedCart ?? readyCart
 
-    const paymentResult = await createPaymentSession<PaymentSessionResult>({
-      cartId: cartAfterBilling.id,
-      providerId: getProviderId(paymentMethod),
-      paymentCollectionId:
-        paymentCollectionId ?? cartAfterBilling.payment_collection?.id ?? null,
-      errorMessage: 'Failed to refresh payment',
-    })
+    let paymentResult: PaymentSessionResult
+    try {
+      paymentResult = await createPaymentSession<PaymentSessionResult>({
+        cartId: cartAfterBilling.id,
+        providerId: getProviderId(paymentMethod),
+        paymentCollectionId:
+          paymentCollectionId ??
+          cartAfterBilling.payment_collection?.id ??
+          null,
+        errorMessage: 'Failed to refresh payment',
+      })
+    } catch {
+      throw Object.assign(
+        new Error(
+          "Billing address was saved, but we couldn't prepare payment. Please try again."
+        ),
+        { name: 'PaymentRefreshError' }
+      )
+    }
 
     setCart(paymentResult.cart)
     setPaymentCollectionId(paymentResult.paymentCollectionId)
