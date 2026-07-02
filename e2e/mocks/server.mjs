@@ -15,6 +15,14 @@
  * retries never share mutable machine state.
  */
 import { createServer } from 'node:http'
+import {
+  FAIL_COMPLETE_EMAIL_PREFIX,
+  FAIL_SESSION_EMAIL_PREFIX,
+  FIXTURE_PASSWORD,
+  ORDER_PENDING_EMAIL_PREFIX,
+  PURCHASE_LICENSE_ID,
+  PURCHASE_LICENSE_KEY,
+} from './constants.mjs'
 import { randomUUID } from 'node:crypto'
 import { readFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
@@ -111,8 +119,6 @@ const dynamicTokens = new Map() // token -> { persona, kind: 'registration' | 's
 const registeredCredentials = new Map() // email -> { password, persona }
 let registrationSequence = 0
 
-const FIXTURE_PASSWORD = 'e2e-password'
-
 function fixtureTokenForEmail(email) {
   for (const [token, persona] of Object.entries(fixtures.personas)) {
     if (persona.customer?.email === email) return token
@@ -204,8 +210,8 @@ function completeCartIntoOrder(cart) {
     metadata: {
       licenses: [
         {
-          license_id: 'lic-e2e-purchase',
-          license_key: 'PURC-HASE-FLOW-7777',
+          license_id: PURCHASE_LICENSE_ID,
+          license_key: PURCHASE_LICENSE_KEY,
         },
       ],
     },
@@ -481,7 +487,7 @@ const server = createServer(async (req, res) => {
 
     // Failure injection: carts whose email starts with `fail-session+` cannot
     // initialize payment (exercises the payment-init error path).
-    if ((cart.email ?? '').startsWith('fail-session+')) {
+    if ((cart.email ?? '').startsWith(FAIL_SESSION_EMAIL_PREFIX)) {
       return sendJson(res, 500, { message: 'Payment provider unavailable' })
     }
 
@@ -565,10 +571,10 @@ const server = createServer(async (req, res) => {
     //   fail-complete+…   -> hard 500 (payment NOT taken; retryable failure)
     //   order-pending+…   -> 200 without an order (payment taken, order stuck
     //                        — the state the checkout-safety machinery guards)
-    if (email.startsWith('fail-complete+')) {
+    if (email.startsWith(FAIL_COMPLETE_EMAIL_PREFIX)) {
       return sendJson(res, 500, { message: 'Cart completion failed' })
     }
-    if (email.startsWith('order-pending+')) {
+    if (email.startsWith(ORDER_PENDING_EMAIL_PREFIX)) {
       return sendJson(res, 200, { type: 'cart', cart })
     }
 

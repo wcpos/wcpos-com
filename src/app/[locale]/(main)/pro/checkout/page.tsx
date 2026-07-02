@@ -137,17 +137,20 @@ export default async function CheckoutPage({
 
         <Suspense
           fallback={
-            <div className="mx-auto grid max-w-4xl gap-8 md:grid-cols-2">
-              {[1, 2].map((panel) => (
-                <div
-                  key={panel}
-                  className="space-y-3 rounded-md border bg-card p-6"
-                >
-                  <Skeleton className="h-6 w-40" />
-                  <Skeleton className="h-20" />
-                  <Skeleton className="h-20" />
-                </div>
-              ))}
+            // Mirrors the loaded layout: three step rows + sticky summary.
+            <div className="mx-auto grid max-w-4xl items-start gap-8 md:grid-cols-[1.6fr_1fr]">
+              <div className="space-y-3">
+                {[1, 2, 3].map((step) => (
+                  <div key={step} className="rounded-xl border bg-card p-5">
+                    <Skeleton className="h-6 w-40" />
+                  </div>
+                ))}
+              </div>
+              <div className="space-y-3 rounded-xl border bg-card p-5">
+                <Skeleton className="h-5 w-40" />
+                <Skeleton className="h-5 w-24" />
+                <Skeleton className="h-20" />
+              </div>
             </div>
           }
         >

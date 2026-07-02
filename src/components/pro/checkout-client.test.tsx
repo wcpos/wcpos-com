@@ -424,7 +424,9 @@ describe('CheckoutClient', () => {
       'done'
     )
     expect(screen.getByText('42 Wallaby Way, Sydney 2000, US')).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'Edit' })).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: 'Edit Billing address' })
+    ).toBeInTheDocument()
   })
 
   it('refreshes the cart and payment session after billing changes totals', async () => {

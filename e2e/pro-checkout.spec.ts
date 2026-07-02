@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test'
+import { FIXTURE_PASSWORD } from './mocks/constants.mjs'
 import {
   MOCK_BACKEND_URL,
   YEARLY_CHECKOUT_PATH,
@@ -152,7 +153,7 @@ test.describe('Mock checkout backend', () => {
 
     const registerResponse = await request.post(
       `${MOCK_BACKEND_URL}/auth/customer/emailpass/register`,
-      { data: { email, password: 'e2e-password' } }
+      { data: { email, password: FIXTURE_PASSWORD } }
     )
     expect(registerResponse.status()).toBe(200)
 
@@ -160,7 +161,7 @@ test.describe('Mock checkout backend', () => {
     // — exchange for a session token the way the app's register() does.
     const loginResponse = await request.post(
       `${MOCK_BACKEND_URL}/auth/customer/emailpass`,
-      { data: { email, password: 'e2e-password' } }
+      { data: { email, password: FIXTURE_PASSWORD } }
     )
     expect(loginResponse.status()).toBe(200)
     const { token } = await loginResponse.json()
@@ -317,7 +318,7 @@ test.describe('Checkout flow', () => {
     await openYearlyCheckout(page)
     await completeBillingStep(page)
 
-    await page.getByRole('button', { name: 'Edit' }).click()
+    await page.getByRole('button', { name: 'Edit Billing address' }).click()
     await expect(page.getByTestId('billing-step-form')).toBeVisible()
     // Previously entered values survive the reopen.
     await expect(page.getByLabel('Address')).toHaveValue('42 Wallaby Way')

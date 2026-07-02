@@ -64,6 +64,9 @@ export function StepShell({
           <button
             type="button"
             onClick={onEdit}
+            // Multiple steps render an "Edit" control — disambiguate for
+            // screen readers navigating by button.
+            aria-label={`${editLabel} ${title}`}
             className="text-sm text-muted-foreground underline underline-offset-4"
           >
             {editLabel}

@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test'
+import { completeBillingStep } from './helpers/checkout'
 
 test.describe('Checkout Integration @integration', {
   tag: '@integration',
@@ -61,17 +62,8 @@ test.describe('Checkout Integration @integration', {
       timeout: 30000,
     })
 
-    // Billing address step
-    await expect(page.getByTestId('billing-step-form')).toBeVisible({
-      timeout: 15000,
-    })
-    await page.getByLabel('First name').fill('E2E')
-    await page.getByLabel('Last name').fill('Tester')
-    await page.getByLabel('Address').fill('1 Integration Way')
-    await page.getByLabel('City').fill('Sydney')
-    await page.getByLabel('Postal code').fill('2000')
-    await page.getByLabel('Country').selectOption('au')
-    await page.getByRole('button', { name: /continue to payment/i }).click()
+    // Billing address step (shared helper — same fields as the mocked suite)
+    await completeBillingStep(page)
 
     // Payment step: Card is the default selected method.
     await expect(page.getByTestId('payment-method-stripe')).toHaveAttribute(

@@ -2,6 +2,13 @@ import { test, expect } from '@playwright/test'
 import type { APIRequestContext } from '@playwright/test'
 import { randomUUID } from 'node:crypto'
 import {
+  FAIL_COMPLETE_EMAIL_PREFIX,
+  FAIL_SESSION_EMAIL_PREFIX,
+  ORDER_PENDING_EMAIL_PREFIX,
+  PURCHASE_LICENSE_ID,
+  PURCHASE_LICENSE_KEY,
+} from './mocks/constants.mjs'
+import {
   YEARLY_CHECKOUT_PATH,
   completeAccountStep,
   completeBillingStep,
@@ -132,9 +139,10 @@ test.describe('Journey: new customer buys with Bitcoin', () => {
     const email = uniqueEmail('returning')
 
     // Seed the account (as if created on an earlier visit).
-    await page.request.post('/api/auth/register', {
+    const seedResponse = await page.request.post('/api/auth/register', {
       data: { email, password: PASSWORD },
     })
+    expect(seedResponse.status()).toBe(200)
     await page.context().clearCookies()
 
     await page.goto(YEARLY_CHECKOUT_PATH)
@@ -163,9 +171,10 @@ test.describe('Journey: new customer buys with Bitcoin', () => {
     page,
   }) => {
     const email = uniqueEmail('wrongpass')
-    await page.request.post('/api/auth/register', {
+    const seedResponse = await page.request.post('/api/auth/register', {
       data: { email, password: PASSWORD },
     })
+    expect(seedResponse.status()).toBe(200)
     await page.context().clearCookies()
 
     await page.goto(YEARLY_CHECKOUT_PATH)
@@ -250,7 +259,7 @@ test.describe('Checkout safety net', () => {
   }) => {
     // The fail-session+ email prefix makes the mock reject payment-collection
     // creation — the init path's payment step should fail loudly.
-    const email = `fail-session+${randomUUID().slice(0, 8)}@example.com`
+    const email = `${FAIL_SESSION_EMAIL_PREFIX}${randomUUID().slice(0, 8)}@example.com`
     await page.goto(YEARLY_CHECKOUT_PATH)
     await completeAccountStep(page, email, PASSWORD)
 
@@ -298,7 +307,7 @@ test.describe('API-level provider matrix', () => {
       const { order } = await complete.json()
       expect(order.id).toBeTruthy()
       expect(order.metadata.licenses[0].license_key).toBe(
-        'PURC-HASE-FLOW-7777'
+        PURCHASE_LICENSE_KEY
       )
     })
   }
@@ -308,7 +317,7 @@ test.describe('API-level provider matrix', () => {
   }) => {
     // The order-pending+ email prefix makes the mock return HTTP 200 with no
     // order — the paid-but-stuck state the client treats as money-at-risk.
-    await registerViaApi(request, `order-pending+${randomUUID().slice(0, 8)}@example.com`)
+    await registerViaApi(request, `${ORDER_PENDING_EMAIL_PREFIX}${randomUUID().slice(0, 8)}@example.com`)
 
     const { complete } = await apiCheckout(request)
 
@@ -320,7 +329,7 @@ test.describe('API-level provider matrix', () => {
   test('completion failure (5xx from Medusa) also maps to the protective contract', async ({
     request,
   }) => {
-    await registerViaApi(request, `fail-complete+${randomUUID().slice(0, 8)}@example.com`)
+    await registerViaApi(request, `${FAIL_COMPLETE_EMAIL_PREFIX}${randomUUID().slice(0, 8)}@example.com`)
 
     const { complete } = await apiCheckout(request)
 
@@ -345,7 +354,7 @@ test.describe('API-level provider matrix', () => {
     const licenses = await request.get('/api/account/licenses')
     expect(licenses.status()).toBe(200)
     const body = await licenses.json()
-    expect(JSON.stringify(body)).toContain('lic-e2e-purchase')
+    expect(JSON.stringify(body)).toContain(PURCHASE_LICENSE_ID)
   })
 
   test('completed fixture-account checkouts do not mutate shared fixture orders', async ({
@@ -365,6 +374,6 @@ test.describe('API-level provider matrix', () => {
     const licenses = await request.get('/api/account/licenses')
     expect(licenses.status()).toBe(200)
     const body = await licenses.json()
-    expect(JSON.stringify(body)).not.toContain('lic-e2e-purchase')
+    expect(JSON.stringify(body)).not.toContain(PURCHASE_LICENSE_ID)
   })
 })
