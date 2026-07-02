@@ -24,7 +24,9 @@ import {
 import {
   motion,
   useAnimationFrame,
+  useMotionValue,
   useReducedMotion,
+  useSpring,
 } from 'motion/react'
 import { Section, Container } from '@/components/ui/section'
 import { HowItFits } from '@/components/downloads/how-it-fits'
@@ -248,6 +250,92 @@ function useLogicalPointer(container: React.RefObject<HTMLDivElement | null>) {
 }
 
 /* ------------------------------------------------------------------ */
+/* Variant A — orbit: satellites circle the hub, 3D tilt follows the   */
+/* cursor, hovering slows the orbit and lights that device's line      */
+/* ------------------------------------------------------------------ */
+
+function VariantOrbit() {
+  const container = useRef<HTMLDivElement>(null)
+  const { pointer, onPointerMove, onPointerLeave } = useLogicalPointer(container)
+  const { wrappers, baseLines, flowLines, apply } = useDiagramRefs()
+  const [hovered, setHovered] = useState<number | null>(null)
+  const hoveredRef = useRef<number | null>(null)
+  const setHover = (i: number | null) => {
+    hoveredRef.current = i
+    setHovered(i)
+  }
+
+  const baseAngle = useRef(0)
+  const speed = useRef(1)
+
+  const rotateX = useSpring(0, { stiffness: 120, damping: 18 })
+  const rotateY = useSpring(0, { stiffness: 120, damping: 18 })
+
+  useAnimationFrame((t, dt) => {
+    const target = pointer.current ? 0.18 : 1
+    speed.current += (target - speed.current) * Math.min(1, dt * 0.004)
+    baseAngle.current += dt * 0.000115 * speed.current * 360 * 0.05
+
+    if (pointer.current) {
+      rotateY.set(((pointer.current.x - C) / C) * 7)
+      rotateX.set((-(pointer.current.y - C) / C) * 7)
+    } else {
+      rotateX.set(0)
+      rotateY.set(0)
+    }
+
+    apply(
+      NODES.map((n, i) => {
+        const rad = ((n.angle + baseAngle.current) * Math.PI) / 180
+        const r = ORBIT_R + 7 * Math.sin(t / 900 + i * 1.7)
+        return { x: C + r * Math.cos(rad), y: C + r * Math.sin(rad) }
+      }),
+      hoveredRef.current,
+    )
+  })
+
+  return (
+    <motion.div
+      style={{ rotateX, rotateY, transformPerspective: 900 }}
+      className="w-full max-w-[440px]"
+    >
+      <div
+        ref={container}
+        role="img"
+        aria-label={DIAGRAM_LABEL}
+        className="relative aspect-square w-full"
+        onPointerMove={onPointerMove}
+        onPointerLeave={onPointerLeave}
+      >
+        <DiagramLines baseLines={baseLines} flowLines={flowLines} />
+        {NODES.map((n, i) => {
+          const h = homeOf(n)
+          return (
+            <div
+              key={n.key}
+              ref={(el) => {
+                wrappers.current[i] = el
+              }}
+              className="absolute"
+              style={{ left: pct(h.x), top: pct(h.y) }}
+              onPointerEnter={() => setHover(i)}
+              onPointerLeave={() => setHover(null)}
+            >
+              <BallContent
+                node={n}
+                hovered={hovered === i}
+                className="-translate-x-1/2 -translate-y-1/2"
+              />
+            </div>
+          )
+        })}
+        <Hub />
+      </div>
+    </motion.div>
+  )
+}
+
+/* ------------------------------------------------------------------ */
 /* Variant B — float: balls drift at home and are magnetically pulled  */
 /* toward the cursor; hovering a ball fires sync packets to the hub    */
 /* ------------------------------------------------------------------ */
@@ -363,6 +451,121 @@ function VariantFloat() {
           <HubBody />
         </motion.div>
       </Hub>
+    </div>
+  )
+}
+
+/* ------------------------------------------------------------------ */
+/* Variant C — fling: grab a ball and let go — it springs back on an   */
+/* elastic connector; everything bobs gently at rest                   */
+/* ------------------------------------------------------------------ */
+
+function FlingBall({
+  node,
+  index,
+  registerWrapper,
+  onOffset,
+  onDragState,
+}: {
+  node: NodeSpec
+  index: number
+  registerWrapper: (i: number, el: HTMLDivElement | null) => void
+  onOffset: (i: number, x: number, y: number) => void
+  onDragState: (i: number, dragging: boolean) => void
+}) {
+  const x = useMotionValue(0)
+  const y = useMotionValue(0)
+  const [dragging, setDragging] = useState(false)
+  const home = homeOf(node)
+
+  useAnimationFrame(() => {
+    onOffset(index, x.get(), y.get())
+  })
+
+  return (
+    <div
+      ref={(el) => registerWrapper(index, el)}
+      className="absolute"
+      style={{ left: pct(home.x), top: pct(home.y) }}
+    >
+      <motion.div
+        drag
+        dragConstraints={{ top: 0, right: 0, bottom: 0, left: 0 }}
+        dragElastic={0.45}
+        dragTransition={{ bounceStiffness: 250, bounceDamping: 11 }}
+        whileDrag={{ scale: 1.12 }}
+        style={{ x, y, touchAction: 'none' }}
+        className={dragging ? 'cursor-grabbing' : 'cursor-grab'}
+        onDragStart={() => {
+          setDragging(true)
+          onDragState(index, true)
+        }}
+        onDragEnd={() => {
+          setDragging(false)
+          onDragState(index, false)
+        }}
+      >
+        <div
+          className="hif-bob -translate-x-1/2 -translate-y-1/2"
+          style={{ animationDelay: `${index * 0.6}s` }}
+        >
+          <BallContent node={node} hovered={dragging} className="relative" />
+        </div>
+      </motion.div>
+    </div>
+  )
+}
+
+function VariantFling() {
+  const container = useRef<HTMLDivElement>(null)
+  const { wrappers, baseLines, flowLines, apply } = useDiagramRefs()
+  const offsets = useRef(NODES.map(() => ({ x: 0, y: 0 })))
+  const draggingRef = useRef<number | null>(null)
+
+  useAnimationFrame(() => {
+    const rect = container.current?.getBoundingClientRect()
+    const scale = rect ? rect.width / 440 : 1
+    apply(
+      NODES.map((n, i) => {
+        const home = homeOf(n)
+        return {
+          x: home.x + offsets.current[i].x / scale,
+          y: home.y + offsets.current[i].y / scale,
+        }
+      }),
+      draggingRef.current,
+    )
+  })
+
+  return (
+    <div
+      ref={container}
+      role="img"
+      aria-label={DIAGRAM_LABEL}
+      className="relative aspect-square w-full max-w-[440px]"
+    >
+      <style>{`
+        @keyframes hif-bob { 0%,100% { transform: translate(-50%,-50%) translateY(-3px); } 50% { transform: translate(-50%,-50%) translateY(3px); } }
+        .hif-bob { animation: hif-bob 3.4s ease-in-out infinite; }
+      `}</style>
+      <DiagramLines baseLines={baseLines} flowLines={flowLines} />
+      {NODES.map((n, i) => (
+        <FlingBall
+          key={n.key}
+          node={n}
+          index={i}
+          registerWrapper={(idx, el) => {
+            wrappers.current[idx] = el
+          }}
+          onOffset={(idx, ox, oy) => {
+            offsets.current[idx] = { x: ox, y: oy }
+          }}
+          onDragState={(idx, dragging) => {
+            draggingRef.current = dragging ? idx : null
+          }}
+        />
+      ))}
+      <Hub />
     </div>
   )
 }
@@ -623,10 +826,12 @@ const MixInk = () => <MixDiagram Ball={InkBall} />
 /* ------------------------------------------------------------------ */
 
 const VARIANTS = [
+  { key: 'orbit', name: 'Orbit — satellites circle, 3D tilt', el: VariantOrbit },
   { key: 'mix-shaded', name: 'Mix — drift + shaded spheres', el: MixShaded },
   { key: 'mix-glass', name: 'Mix — drift + glass spheres', el: MixGlass },
   { key: 'mix-ink', name: 'Mix — drift + ink spheres', el: MixInk },
   { key: 'float', name: 'Float — previous round', el: VariantFloat },
+  { key: 'fling', name: 'Fling — grab, throw, spring back', el: VariantFling },
   { key: 'original', name: 'Original — static', el: null },
 ] as const
 
@@ -698,6 +903,8 @@ function Switcher({
   }
 
   useEffect(() => {
+    if (process.env.NODE_ENV === 'production') return
+
     const onKey = (e: KeyboardEvent) => {
       const t = e.target as HTMLElement
       if (

@@ -1,5 +1,5 @@
-import { describe, expect, it, vi } from 'vitest'
-import { render, screen } from '@testing-library/react'
+import { afterEach, describe, expect, it, vi } from 'vitest'
+import { fireEvent, cleanup, render, screen } from '@testing-library/react'
 
 vi.mock('next-intl/server', () => ({
   setRequestLocale: vi.fn(),
@@ -35,6 +35,28 @@ vi.mock('@/services/core/external/versions-client', () => ({
   versionFor: vi.fn(() => '1.2.3'),
 }))
 
+vi.mock('motion/react', async () => {
+  const React = await import('react')
+
+  return {
+    motion: {
+      div: ({ children, ...props }: React.HTMLAttributes<HTMLElement>) =>
+        React.createElement('div', props, children),
+    },
+    useAnimationFrame: vi.fn(),
+    useMotionValue: vi.fn(() => ({ get: () => 0 })),
+    useReducedMotion: vi.fn(() => false),
+    useSpring: vi.fn(() => ({ set: vi.fn() })),
+  }
+})
+
+afterEach(() => {
+  cleanup()
+  window.history.replaceState(null, '', '/downloads')
+  vi.unstubAllEnvs()
+  vi.resetModules()
+})
+
 describe('DownloadsPage', () => {
   it('renders the tile-selector hero on the default page', async () => {
     const { default: DownloadsPage } = await import(
@@ -46,5 +68,34 @@ describe('DownloadsPage', () => {
     expect(
       screen.getByRole('heading', { level: 1, name: 'One till, every device.' }),
     ).toBeInTheDocument()
+  })
+})
+
+describe('HowItFitsLab', () => {
+  it.each([
+    ['orbit', 'Orbit — satellites circle, 3D tilt'],
+    ['fling', 'Fling — grab, throw, spring back'],
+  ])('renders the advertised %s variant', async (variant, label) => {
+    window.history.replaceState(null, '', `/downloads?variant=${variant}`)
+    const { HowItFitsLab } = await import(
+      '@/components/downloads/how-it-fits-lab'
+    )
+
+    render(<HowItFitsLab />)
+
+    expect(screen.getByText(label)).toBeInTheDocument()
+  })
+
+  it('does not install the hidden switcher key handler in production', async () => {
+    vi.stubEnv('NODE_ENV', 'production')
+    window.history.replaceState(null, '', '/downloads?variant=float')
+    const { HowItFitsLab } = await import(
+      '@/components/downloads/how-it-fits-lab'
+    )
+
+    render(<HowItFitsLab />)
+    fireEvent.keyDown(window, { key: 'ArrowRight' })
+
+    expect(window.location.search).toBe('?variant=float')
   })
 })
