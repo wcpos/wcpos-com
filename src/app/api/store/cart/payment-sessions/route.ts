@@ -63,6 +63,11 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    // Bind the cart to the caller (carts carry the session customer's email).
+    if (currentCart.email !== customer.email) {
+      return NextResponse.json({ error: 'Cart not found' }, { status: 404 })
+    }
+
     const { offers } = await getProOfferCatalog()
     const selection = resolveProOfferCartSelection(offers, currentCart)
     if (!selection) {
@@ -72,8 +77,24 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Create collection if not provided
-    let collectionId = existingCollectionId
+    // The cart is the source of truth for its payment collection: a
+    // caller-supplied id that doesn't match the cart's own collection (stale
+    // tab, replaced session, or a different cart's id) must not attach
+    // sessions to the wrong collection.
+    const cartCollectionId = currentCart.payment_collection?.id
+    if (
+      existingCollectionId &&
+      cartCollectionId &&
+      existingCollectionId !== cartCollectionId
+    ) {
+      return NextResponse.json(
+        { error: 'Payment collection does not belong to this cart' },
+        { status: 400 }
+      )
+    }
+
+    // Prefer the cart's own collection; create one only when none exists.
+    let collectionId = cartCollectionId ?? existingCollectionId
     if (!collectionId) {
       const collection = await createPaymentCollection(cartId)
       if (!collection) {

@@ -87,7 +87,7 @@ describe('medusa-auth', () => {
   })
 
   describe('register', () => {
-    it('calls register endpoint then create customer endpoint', async () => {
+    it('registers, creates the customer, then exchanges for a session token', async () => {
       // Mock 1: Register auth identity
       mockFetch.mockResolvedValueOnce({
         ok: true,
@@ -108,6 +108,12 @@ describe('medusa-auth', () => {
           },
         }),
       })
+      // Mock 3: Login — the registration token has an empty actor_id, so
+      // register() must exchange it for a real session token.
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ token: 'session_token' }),
+      })
 
       const result = await register({
         email: 'new@example.com',
@@ -116,9 +122,23 @@ describe('medusa-auth', () => {
         lastName: 'Doe',
       })
 
-      expect(result.token).toBe('new_user_token')
+      // The SESSION token is returned, never the registration token.
+      expect(result.token).toBe('session_token')
       expect(result.customer.email).toBe('new@example.com')
-      expect(mockFetch).toHaveBeenCalledTimes(2)
+      expect(mockFetch).toHaveBeenCalledTimes(3)
+
+      // Third call: login exchange for an actor token
+      expect(mockFetch).toHaveBeenNthCalledWith(
+        3,
+        'https://test-store-api.wcpos.com/auth/customer/emailpass',
+        expect.objectContaining({
+          method: 'POST',
+          body: JSON.stringify({
+            email: 'new@example.com',
+            password: 'securepass',
+          }),
+        })
+      )
 
       // First call: register auth identity
       expect(mockFetch).toHaveBeenNthCalledWith(

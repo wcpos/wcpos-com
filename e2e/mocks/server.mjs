@@ -15,6 +15,14 @@
  * retries never share mutable machine state.
  */
 import { createServer } from 'node:http'
+import {
+  FAIL_COMPLETE_EMAIL_PREFIX,
+  FAIL_SESSION_EMAIL_PREFIX,
+  FIXTURE_PASSWORD,
+  ORDER_PENDING_EMAIL_PREFIX,
+  PURCHASE_LICENSE_ID,
+  PURCHASE_LICENSE_KEY,
+} from './constants.mjs'
 import { randomUUID } from 'node:crypto'
 import { readFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
@@ -96,10 +104,47 @@ function machineToJsonApi(machine) {
 // Personas (Medusa)
 // ---------------------------------------------------------------------------
 
-function personaForRequest(req) {
+// ---------------------------------------------------------------------------
+// Dynamic personas — accounts created DURING a test run (inline checkout
+// registration). Keyed by the minted token; carts/orders attach by email.
+// ---------------------------------------------------------------------------
+
+// Two token kinds mirror real Medusa emailpass semantics: the REGISTRATION
+// token (issued before the customer exists, empty actor_id) may only create
+// the customer; every persona read (/store/customers/me etc.) requires a
+// SESSION token from a subsequent login. This is exactly the trap the app's
+// register() must handle — a mock that accepted registration tokens as
+// sessions let a real-world dead-session bug pass CI green.
+const dynamicTokens = new Map() // token -> { persona, kind: 'registration' | 'session' }
+const registeredCredentials = new Map() // email -> { password, persona }
+let registrationSequence = 0
+
+function fixtureTokenForEmail(email) {
+  for (const [token, persona] of Object.entries(fixtures.personas)) {
+    if (persona.customer?.email === email) return token
+  }
+  return null
+}
+
+function dynamicPersonaForEmail(email) {
+  return registeredCredentials.get(email)?.persona ?? null
+}
+
+function bearerToken(req) {
   const auth = req.headers.authorization || ''
-  const token = auth.startsWith('Bearer ') ? auth.slice('Bearer '.length) : ''
+  return auth.startsWith('Bearer ') ? auth.slice('Bearer '.length) : ''
+}
+
+function personaForRequest(req) {
+  const token = bearerToken(req)
   if (!token) return null
+
+  const dynamic = dynamicTokens.get(token)
+  if (dynamic) {
+    // Registration tokens are NOT sessions (empty actor_id in real Medusa).
+    if (dynamic.kind !== 'session') return null
+    return { persona: dynamic.persona, suffix: null }
+  }
 
   const { base, suffix } = splitSuffix(token)
   const persona = fixtures.personas[base]
@@ -134,6 +179,60 @@ function findVariant(variantId) {
 function recalculateCart(cart) {
   cart.subtotal = cart.items.reduce((sum, item) => sum + item.total, 0)
   cart.total = cart.subtotal + cart.tax_total
+}
+
+let orderSequence = 0
+
+/**
+ * Turn a cart into an order the way the real backend does at completion:
+ * mint the order, mark the collection paid, stamp license metadata (the
+ * Medusa→Keygen webhook's job in production, reusing the resolvable
+ * `lic-e2e-purchase` fixture so /account/licenses can hydrate it), and
+ * attach the order to the purchasing persona by cart email so account
+ * pages show the purchase.
+ */
+function completeCartIntoOrder(cart) {
+  orderSequence += 1
+  const order = {
+    id: `order_e2e_new_${orderSequence}_${randomUUID().slice(0, 8)}`,
+    display_id: 90000 + orderSequence,
+    status: 'completed',
+    email: cart.email,
+    currency_code: cart.currency_code,
+    created_at: new Date().toISOString(),
+    items: cart.items.map((item) => ({ ...item })),
+    subtotal: cart.subtotal,
+    tax_total: cart.tax_total,
+    total: cart.total,
+    ...(cart.billing_address
+      ? { billing_address: { ...cart.billing_address } }
+      : {}),
+    metadata: {
+      licenses: [
+        {
+          license_id: PURCHASE_LICENSE_ID,
+          license_key: PURCHASE_LICENSE_KEY,
+        },
+      ],
+    },
+  }
+
+  if (cart.payment_collection) {
+    cart.payment_collection.status = 'authorized'
+    for (const session of cart.payment_collection.payment_sessions) {
+      session.status = 'authorized'
+    }
+  }
+  cart.completed_at = order.created_at
+  cart.order_id = order.id
+  cart.order = order
+
+  const persona = cart.email ? dynamicPersonaForEmail(cart.email) : null
+  if (persona) {
+    persona.orders.unshift(order)
+  }
+
+  return order
 }
 
 function ordersForPersona(persona, suffix) {
@@ -192,6 +291,74 @@ const server = createServer(async (req, res) => {
 
   if (pathname === '/health') {
     return sendJson(res, 200, { status: 'ok' })
+  }
+
+  // ----- Medusa auth API (emailpass register / login) -----
+
+  if (pathname === '/auth/customer/emailpass/register' && method === 'POST') {
+    const body = await readJson(req)
+    const email = typeof body.email === 'string' ? body.email.trim() : ''
+    const password = typeof body.password === 'string' ? body.password : ''
+    if (!email || !password) {
+      return sendJson(res, 400, { message: 'Email and password are required' })
+    }
+    if (registeredCredentials.has(email) || fixtureTokenForEmail(email)) {
+      // Matches Medusa's duplicate-identity message shape, which the app's
+      // adapter classifies into AccountExistsError (409 ACCOUNT_EXISTS).
+      return sendJson(res, 401, {
+        message: 'Identity with email already exists',
+      })
+    }
+    registrationSequence += 1
+    const token = `e2e-reg-${registrationSequence}-${randomUUID().slice(0, 8)}`
+    const persona = { customer: null, orders: [], licenses: {} }
+    registeredCredentials.set(email, { password, persona })
+    dynamicTokens.set(token, { persona, kind: 'registration' })
+    return sendJson(res, 200, { token })
+  }
+
+  if (pathname === '/auth/customer/emailpass' && method === 'POST') {
+    const body = await readJson(req)
+    const email = typeof body.email === 'string' ? body.email.trim() : ''
+    const password = typeof body.password === 'string' ? body.password : ''
+
+    const registered = registeredCredentials.get(email)
+    if (registered && registered.password === password) {
+      const sessionToken = `e2e-sess-${randomUUID().slice(0, 12)}`
+      dynamicTokens.set(sessionToken, {
+        persona: registered.persona,
+        kind: 'session',
+      })
+      return sendJson(res, 200, { token: sessionToken })
+    }
+    const fixtureToken = fixtureTokenForEmail(email)
+    if (fixtureToken && password === FIXTURE_PASSWORD) {
+      return sendJson(res, 200, { token: fixtureToken })
+    }
+    return sendJson(res, 401, { message: 'Invalid email or password' })
+  }
+
+  if (pathname === '/store/customers' && method === 'POST') {
+    // Customer creation is the ONE call a registration token may make
+    // (real Medusa: authenticate(..., { allowUnregistered: true })).
+    const entry = dynamicTokens.get(bearerToken(req))
+    if (!entry) return sendJson(res, 401, { message: 'Unauthorized' })
+    const body = await readJson(req)
+    const email = typeof body.email === 'string' ? body.email.trim() : ''
+    if (!email) return sendJson(res, 400, { message: 'Email is required' })
+    if (entry.persona.customer) {
+      return sendJson(res, 400, {
+        message: 'Customer already exists for this identity',
+      })
+    }
+    entry.persona.customer = {
+      id: `cus_e2e_${randomUUID().slice(0, 8)}`,
+      email,
+      first_name: body.first_name ?? null,
+      last_name: body.last_name ?? null,
+      created_at: new Date().toISOString(),
+    }
+    return sendJson(res, 200, { customer: entry.persona.customer })
   }
 
   // ----- Medusa store API -----
@@ -299,11 +466,15 @@ const server = createServer(async (req, res) => {
     if (!cart) return sendJson(res, 404, { message: 'Cart not found' })
 
     if (method === 'POST') {
-      // Medusa v2 updates carts via POST /store/carts/{id} (email, metadata).
+      // Medusa v2 updates carts via POST /store/carts/{id}
+      // (email, metadata, billing_address).
       const body = await readJson(req)
       if (typeof body.email === 'string') cart.email = body.email
       if (body.metadata && typeof body.metadata === 'object') {
         cart.metadata = { ...cart.metadata, ...body.metadata }
+      }
+      if (body.billing_address && typeof body.billing_address === 'object') {
+        cart.billing_address = { ...body.billing_address }
       }
     }
     return sendJson(res, 200, { cart })
@@ -313,6 +484,12 @@ const server = createServer(async (req, res) => {
     const body = await readJson(req)
     const cart = carts.get(typeof body.cart_id === 'string' ? body.cart_id : '')
     if (!cart) return sendJson(res, 404, { message: 'Cart not found' })
+
+    // Failure injection: carts whose email starts with `fail-session+` cannot
+    // initialize payment (exercises the payment-init error path).
+    if ((cart.email ?? '').startsWith(FAIL_SESSION_EMAIL_PREFIX)) {
+      return sendJson(res, 500, { message: 'Payment provider unavailable' })
+    }
 
     const collectionId = `paycol_${cart.id}`
     const existing = paymentCollections.get(collectionId)
@@ -364,11 +541,105 @@ const server = createServer(async (req, res) => {
         data:
           providerId === 'pp_stripe_stripe'
             ? { client_secret: `pi_e2e_${collection.id}_secret_e2e` }
-            : {},
+            : providerId === 'pp_btcpay_btcpay'
+              ? {
+                  // Points at this mock's own BTCPay simulator so the mocked
+                  // suite can exercise the full redirect → pay → return loop.
+                  checkoutLink: `http://127.0.0.1:${PORT}/btcpay/checkout/${collection.id}`,
+                }
+              : providerId === 'pp_paypal_paypal'
+                ? { id: `paypal_order_${collection.id}` }
+                : {},
       }
       collection.payment_sessions.push(session)
     }
     return sendJson(res, 200, { payment_collection: collection })
+  }
+
+  // ----- Medusa cart completion (order + license issuance) -----
+
+  const cartCompleteMatch = pathname.match(
+    /^\/store\/carts\/([^/]+)\/complete$/
+  )
+  if (cartCompleteMatch && method === 'POST') {
+    const cart = carts.get(decodeURIComponent(cartCompleteMatch[1]))
+    if (!cart) return sendJson(res, 404, { message: 'Cart not found' })
+
+    const email = cart.email ?? ''
+
+    // Failure injections keyed by the cart email local-part prefix:
+    //   fail-complete+…   -> hard 500 (payment NOT taken; retryable failure)
+    //   order-pending+…   -> 200 without an order (payment taken, order stuck
+    //                        — the state the checkout-safety machinery guards)
+    if (email.startsWith(FAIL_COMPLETE_EMAIL_PREFIX)) {
+      return sendJson(res, 500, { message: 'Cart completion failed' })
+    }
+    if (email.startsWith(ORDER_PENDING_EMAIL_PREFIX)) {
+      return sendJson(res, 200, { type: 'cart', cart })
+    }
+
+    if (!cart.payment_collection?.payment_sessions?.length) {
+      return sendJson(res, 400, {
+        message: 'Cart has no payment session',
+      })
+    }
+    if (cart.items.length === 0) {
+      return sendJson(res, 400, { message: 'Cart is empty' })
+    }
+
+    if (cart.order_id) {
+      const existingOrder =
+        cart.order ??
+        dynamicPersonaForEmail(email)?.orders.find(
+          (order) => order.id === cart.order_id
+        )
+      if (existingOrder) {
+        return sendJson(res, 200, { type: 'order', order: existingOrder })
+      }
+      return sendJson(res, 409, {
+        message: 'Cart is already completed',
+        order_id: cart.order_id,
+      })
+    }
+
+    const order = completeCartIntoOrder(cart)
+    return sendJson(res, 200, { type: 'order', order })
+  }
+
+  // ----- BTCPay simulator (checkout link target for pp_btcpay_btcpay) -----
+
+  const btcpayCheckoutMatch = pathname.match(/^\/btcpay\/checkout\/([^/]+)$/)
+  if (btcpayCheckoutMatch && method === 'GET') {
+    const collectionId = decodeURIComponent(btcpayCheckoutMatch[1])
+    const html = `<!doctype html><html><body>
+      <h1>BTCPay Invoice (e2e simulator)</h1>
+      <p data-testid="btcpay-invoice">Invoice for ${collectionId}</p>
+      <a data-testid="btcpay-pay" href="/btcpay/pay/${encodeURIComponent(collectionId)}">Simulate payment</a>
+    </body></html>`
+    res.writeHead(200, { 'Content-Type': 'text/html' })
+    return res.end(html)
+  }
+
+  const btcpayPayMatch = pathname.match(/^\/btcpay\/pay\/([^/]+)$/)
+  if (btcpayPayMatch && method === 'GET') {
+    const collectionId = decodeURIComponent(btcpayPayMatch[1])
+    // Collection ids embed the cart id: paycol_<cartId>.
+    const cartId = collectionId.replace(/^paycol_/, '')
+    const cart = carts.get(cartId)
+    if (!cart) {
+      res.writeHead(404, { 'Content-Type': 'text/plain' })
+      return res.end('Unknown invoice')
+    }
+    // "Webhook" side effect: settle the invoice and complete the order the
+    // way the production Medusa BTCPay plugin does, then send the customer
+    // back to the store's success page.
+    if (!cart.order_id) {
+      completeCartIntoOrder(cart)
+    }
+    res.writeHead(302, {
+      Location: 'http://localhost:3000/pro/checkout/success',
+    })
+    return res.end()
   }
 
   // ----- Keygen license API (JSON:API) -----

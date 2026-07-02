@@ -5,7 +5,7 @@ import { CheckoutClient } from '@/components/pro/checkout-client'
 import { Skeleton } from '@/components/ui/skeleton'
 import { getCustomer } from '@/lib/medusa-auth'
 import { ArrowLeft } from 'lucide-react'
-import { Link, redirect } from '@/i18n/navigation'
+import { Link } from '@/i18n/navigation'
 import { resolveProCheckoutVariant } from '@/services/core/analytics/posthog-service'
 import { ANALYTICS_DISTINCT_ID_COOKIE } from '@/lib/analytics/distinct-id'
 import { getAnalyticsConfig } from '@/lib/analytics/config'
@@ -56,22 +56,20 @@ function getSingleSearchParam(
   return value
 }
 
+const OFFER_SUMMARY_TITLES: Record<string, string> = {
+  yearly: 'WooCommerce POS Pro — Yearly',
+  lifetime: 'WooCommerce POS Pro — Lifetime',
+}
+
 async function CheckoutContent({
-  locale,
   searchParamsPromise,
 }: {
-  locale: string
   searchParamsPromise: Promise<Record<string, string | string[] | undefined>>
 }) {
   const searchParams = await searchParamsPromise
+  // Signed-out visitors are welcome: the checkout's first step creates the
+  // account inline. The cart APIs still require auth server-side.
   const customer = await getCustomer()
-  if (!customer) {
-    const checkoutPath = buildCheckoutRedirectPath(searchParams)
-    redirect({
-      href: { pathname: '/login', query: { redirect: checkoutPath } },
-      locale,
-    })
-  }
 
   const selectedVariantId = getSingleSearchParam(searchParams, 'variant')
   const selectedProduct = getSingleSearchParam(searchParams, 'product')
@@ -81,6 +79,9 @@ async function CheckoutContent({
     variant: selectedVariantId,
   }
   const selectedOffer = resolveProOfferCheckoutSelection(offers, checkoutInput)
+  const selectedFullOffer = selectedOffer
+    ? offers.find((offer) => offer.handle === selectedOffer.handle)
+    : null
   const cookieStore = await cookies()
   const distinctId = cookieStore.get(ANALYTICS_DISTINCT_ID_COOKIE)?.value
   const analyticsConfig = getAnalyticsConfig(process.env)
@@ -95,6 +96,17 @@ async function CheckoutContent({
     <CheckoutClient
       customerEmail={customer?.email}
       selectedOfferHandle={selectedOffer?.handle}
+      offerSummary={
+        selectedFullOffer
+          ? {
+              title:
+                OFFER_SUMMARY_TITLES[selectedFullOffer.planId] ??
+                'WooCommerce POS Pro',
+              priceFormatted: selectedFullOffer.price.formatted,
+            }
+          : undefined
+      }
+      checkoutPath={buildCheckoutRedirectPath(searchParams)}
       experimentVariant={experimentVariant}
     />
   )
@@ -125,21 +137,24 @@ export default async function CheckoutPage({
 
         <Suspense
           fallback={
-            <div className="mx-auto grid max-w-4xl gap-8 md:grid-cols-2">
-              {[1, 2].map((panel) => (
-                <div
-                  key={panel}
-                  className="space-y-3 rounded-md border bg-card p-6"
-                >
-                  <Skeleton className="h-6 w-40" />
-                  <Skeleton className="h-20" />
-                  <Skeleton className="h-20" />
-                </div>
-              ))}
+            // Mirrors the loaded layout: three step rows + sticky summary.
+            <div className="mx-auto grid max-w-4xl items-start gap-8 md:grid-cols-[1.6fr_1fr]">
+              <div className="space-y-3">
+                {[1, 2, 3].map((step) => (
+                  <div key={step} className="rounded-xl border bg-card p-5">
+                    <Skeleton className="h-6 w-40" />
+                  </div>
+                ))}
+              </div>
+              <div className="space-y-3 rounded-xl border bg-card p-5">
+                <Skeleton className="h-5 w-40" />
+                <Skeleton className="h-5 w-24" />
+                <Skeleton className="h-20" />
+              </div>
             </div>
           }
         >
-          <CheckoutContent locale={locale} searchParamsPromise={searchParams} />
+          <CheckoutContent searchParamsPromise={searchParams} />
         </Suspense>
       </div>
     </main>

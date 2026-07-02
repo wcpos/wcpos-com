@@ -36,7 +36,10 @@ export function StripeProvider({ children, clientSecret }: StripeProviderProps) 
     : undefined
 
   return (
-    <Elements stripe={stripePromise} options={options}>
+    // Keyed by client secret: Elements ignores clientSecret changes after
+    // mount, so a refreshed payment session (e.g. after a billing edit)
+    // must remount rather than leave the form confirming a stale intent.
+    <Elements key={clientSecret} stripe={stripePromise} options={options}>
       {children}
     </Elements>
   )
