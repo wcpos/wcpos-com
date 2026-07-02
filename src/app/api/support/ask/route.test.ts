@@ -46,7 +46,7 @@ describe('POST /api/support/ask', () => {
 
   it('lets verifyTurnstile decide when the token is empty', async () => {
     vi.mocked(verifyTurnstile).mockResolvedValue(true)
-    vi.mocked(askAide).mockResolvedValue({ answer: 'Do X.', model: 'claude' })
+    vi.mocked(askAide).mockResolvedValue({ answer: 'Do X.', model: 'sonnet', answered: true, sources: [] })
     const res = await POST(req({ question: 'How?', turnstileToken: '' }))
     expect(res.status).toBe(200)
     expect(verifyTurnstile).toHaveBeenCalledWith('', 'unknown')
@@ -69,7 +69,7 @@ describe('POST /api/support/ask', () => {
 
   it('200 with the answer on success', async () => {
     vi.mocked(verifyTurnstile).mockResolvedValue(true)
-    vi.mocked(askAide).mockResolvedValue({ answer: 'Do X.', model: 'claude' })
+    vi.mocked(askAide).mockResolvedValue({ answer: 'Do X.', model: 'sonnet', answered: true, sources: [] })
     const res = await POST(req({ question: 'How?', turnstileToken: 't', sessionId: 's1' }))
     expect(res.status).toBe(200)
     expect(await res.json()).toMatchObject({ answer: 'Do X.', sessionId: 's1' })
@@ -77,7 +77,7 @@ describe('POST /api/support/ask', () => {
 
   it('502 when Aide returns an empty answer', async () => {
     vi.mocked(verifyTurnstile).mockResolvedValue(true)
-    vi.mocked(askAide).mockResolvedValue({ answer: '', model: 'claude' })
+    vi.mocked(askAide).mockResolvedValue({ answer: '', model: 'sonnet', answered: false, sources: [] })
     const res = await POST(req({ question: 'How?', turnstileToken: 't' }))
     expect(res.status).toBe(502)
     expect(await res.json()).toHaveProperty('error')

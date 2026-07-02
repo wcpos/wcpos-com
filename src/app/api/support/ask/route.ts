@@ -6,7 +6,7 @@ import { askAide, OpenclawError } from '@/lib/openclaw/client'
 import { verifyTurnstile } from '@/lib/support/turnstile'
 import { consumeRateLimit, consumeDailyBudget } from '@/lib/support/rate-limit'
 
-// agent_session executions are slow — extend the function budget. Node is the
+// Grounded answers can take ~20s — extend the function budget. Node is the
 // default runtime; an explicit `export const runtime` is incompatible with the
 // app's cacheComponents config, so it is intentionally omitted.
 export const maxDuration = 60
