@@ -1,11 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { cleanup, render, screen, waitFor } from '@testing-library/react'
-import {
-  AmbientGradient,
-  DotOrbit,
-  Reveal,
-  SpikeBurst,
-} from '@/components/motion'
+import { AmbientGradient, DotOrbit, Reveal } from '@/components/motion'
 
 const motionMock = vi.hoisted(() => ({ reducedMotion: false }))
 
@@ -73,11 +68,10 @@ afterEach(() => {
 })
 
 describe('motion kit index', () => {
-  it('exports the four primitives', () => {
+  it('exports the three primitives', () => {
     expect(AmbientGradient).toBeTypeOf('function')
     expect(DotOrbit).toBeTypeOf('function')
     expect(Reveal).toBeTypeOf('function')
-    expect(SpikeBurst).toBeTypeOf('function')
   })
 })
 
@@ -144,19 +138,5 @@ describe('AmbientGradient', () => {
     await waitFor(() =>
       expect(screen.queryByTestId('ambient-gradient')).not.toBeInTheDocument()
     )
-  })
-})
-
-describe('SpikeBurst', () => {
-  it('renders an observed wrapper and defers the 3D scene until near the viewport', () => {
-    const { observe } = stubObservers()
-    render(<SpikeBurst className="h-40 w-40" />)
-
-    const wrapper = screen.getByTestId('spike-burst')
-    expect(wrapper).toHaveAttribute('aria-hidden', 'true')
-    expect(wrapper).toHaveClass('h-40')
-    // IO gate registered; no canvas mounted while the observer stays silent
-    expect(observe).toHaveBeenCalledWith(wrapper)
-    expect(wrapper.querySelector('canvas')).toBeNull()
   })
 })

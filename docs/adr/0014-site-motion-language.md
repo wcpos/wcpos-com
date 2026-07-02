@@ -1,4 +1,4 @@
-# 0013 — Site motion language and the ambient gradient
+# 0014 — Site motion language and the ambient gradient
 
 Date: 2026-07-02
 Status: accepted
@@ -47,11 +47,16 @@ follow-up to this ADR.
   foreground act animations (rule 5).
 - A `Reveal` scroll-into-view primitive (IntersectionObserver + <500ms
   transform/opacity) is the next building block for non-homepage pages.
-- **Interactive kit direction:** the site standardises on two libraries and
-  pushes them hard — `motion` (scroll, springs, gestures, SVG pathLength)
-  and `three` + `@react-three/fiber` (lazy-loaded, component-scale 3D
-  centerpieces such as a pointer-reactive spike burst). Custom canvas/WebGL
-  (DotOrbit, AmbientGradient) stays for cases smaller than a three scene.
-  Kit lives in `src/components/motion/`; every piece is IO/visibility gated
+- **Interactive kit direction:** the site standardises on `motion` (scroll,
+  springs, gestures, SVG pathLength) plus the custom canvas/WebGL
+  primitives (DotOrbit, AmbientGradient) for the signature surfaces. A
+  `three` + `@react-three/fiber` 3D centerpiece (pointer-reactive spike
+  burst) was prototyped and **rejected** (owner, 2026-07-02): visually
+  strong, but not worth carrying a 3D library for a site with no other 3D
+  need. Do not reintroduce a 3D dependency for decorative motion. Kit
+  lives in `src/components/motion/`; every piece is IO/visibility gated
   and reduced-motion aware. First deployments: downloads "how it fits
-  together" hub pulses, about-us timeline draw-on-scroll.
+  together" hub pulses, about-us timeline draw-on-scroll. The owner's
+  preferred DotOrbit accent variant: dense blue-led
+  (`dots={190} ringRadius={120} size={340}` with the blue/pink/yellow
+  palette from the kit evaluation).

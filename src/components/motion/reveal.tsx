@@ -4,7 +4,7 @@ import * as React from 'react'
 import { motion, useReducedMotion } from 'motion/react'
 
 /**
- * Reveal — the kit's scroll-into-view primitive (ADR 0013).
+ * Reveal — the kit's scroll-into-view primitive (ADR 0014).
  *
  * Fades + lifts children as they enter the viewport: transform/opacity only,
  * under 500ms, once by default. Under prefers-reduced-motion it renders a
