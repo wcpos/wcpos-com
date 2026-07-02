@@ -3,6 +3,11 @@ import { NextRequest } from 'next/server'
 
 const mockSetDiscordOAuthState = vi.fn()
 const mockBuildAuthorizeUrl = vi.fn(() => 'https://discord.com/oauth2/authorize?state=abc')
+const { infoMock } = vi.hoisted(() => ({ infoMock: vi.fn() }))
+
+vi.mock('@/lib/logger', () => ({
+  apiLogger: { info: infoMock },
+}))
 
 vi.mock('@/lib/discord/oauth-state', () => ({
   setDiscordOAuthState: (...args: unknown[]) => mockSetDiscordOAuthState(...args),
@@ -46,5 +51,19 @@ describe('POST /api/discord/claim', () => {
 
     expect(response.status).toBe(400)
     expect(await response.json()).toEqual({ error: 'license_key_required' })
+  })
+
+  it('logs a malformed JSON body at info and rejects with 400', async () => {
+    const response = await POST(new NextRequest('https://wcpos.com/api/discord/claim', {
+      method: 'POST',
+      body: 'not-json',
+      headers: { 'content-type': 'application/json' },
+    }))
+
+    expect(response.status).toBe(400)
+    expect(await response.json()).toEqual({ error: 'license_key_required' })
+    // The parse failure is no longer swallowed silently, but it is
+    // client-caused so it stays at info (error level fans out to alerts).
+    expect(infoMock).toHaveBeenCalledTimes(1)
   })
 })

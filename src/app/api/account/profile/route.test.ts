@@ -3,10 +3,16 @@ import { NextRequest } from 'next/server'
 
 const mockGetCustomer = vi.fn()
 const mockUpdateCustomer = vi.fn()
+const { errorMock } = vi.hoisted(() => ({
+  errorMock: vi.fn(),
+}))
 
 vi.mock('@/lib/medusa-auth', () => ({
   getCustomer: (...args: unknown[]) => mockGetCustomer(...args),
   updateCustomer: (...args: unknown[]) => mockUpdateCustomer(...args),
+}))
+vi.mock('@/lib/logger', () => ({
+  apiLogger: { error: errorMock },
 }))
 
 import { PATCH } from './route'
@@ -34,7 +40,7 @@ describe('PATCH /api/account/profile', () => {
     mockGetCustomer.mockResolvedValueOnce({ id: 'cust_1' })
     mockUpdateCustomer.mockResolvedValueOnce({
       id: 'cust_1',
-      email: 'updated@example.com',
+      email: 'user@example.com',
       first_name: 'Updated',
       last_name: 'Name',
       phone: '+15551234567',
@@ -45,7 +51,6 @@ describe('PATCH /api/account/profile', () => {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          email: 'updated@example.com',
           first_name: 'Updated',
           last_name: 'Name',
           phone: '+15551234567',
@@ -57,33 +62,58 @@ describe('PATCH /api/account/profile', () => {
 
     expect(response.status).toBe(200)
     expect(mockUpdateCustomer).toHaveBeenCalledWith({
-      email: 'updated@example.com',
       first_name: 'Updated',
       last_name: 'Name',
       phone: '+15551234567',
     })
-    expect(json.customer.email).toBe('updated@example.com')
+    expect(json.customer.email).toBe('user@example.com')
   })
 
-  it('returns 400 when email is empty', async () => {
+  it('never forwards email to Medusa, even when the client sends it', async () => {
+    // Regression: Medusa's store update-customer schema rejects unknown
+    // fields, so a forwarded `email` failed EVERY profile save with
+    // 400 "Unrecognized fields: 'email'".
     mockGetCustomer.mockResolvedValueOnce({ id: 'cust_1' })
+    mockUpdateCustomer.mockResolvedValueOnce({
+      id: 'cust_1',
+      email: 'user@example.com',
+      first_name: 'Updated',
+    })
 
     const response = await PATCH(
       new NextRequest('http://localhost:3000/api/account/profile', {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          email: '   ',
+          email: 'changed@example.com',
           first_name: 'Updated',
         }),
       })
     )
 
+    expect(response.status).toBe(200)
+    expect(mockUpdateCustomer).toHaveBeenCalledTimes(1)
+    expect(mockUpdateCustomer.mock.calls[0][0]).not.toHaveProperty('email')
+  })
+
+  it('logs at error and returns 400 when the update fails', async () => {
+    mockGetCustomer.mockResolvedValueOnce({ id: 'cust_1' })
+    mockUpdateCustomer.mockRejectedValueOnce(
+      new Error('Failed to update customer')
+    )
+
+    const response = await PATCH(
+      new NextRequest('http://localhost:3000/api/account/profile', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ first_name: 'Updated' }),
+      })
+    )
     const json = await response.json()
 
     expect(response.status).toBe(400)
-    expect(json.error).toBe('Email is required')
-    expect(mockUpdateCustomer).not.toHaveBeenCalled()
+    expect(json.error).toBe('Failed to update customer')
+    expect(errorMock).toHaveBeenCalledTimes(1)
   })
 
   it('merges account profile metadata for avatar and tax details', async () => {
@@ -96,7 +126,7 @@ describe('PATCH /api/account/profile', () => {
     })
     mockUpdateCustomer.mockResolvedValueOnce({
       id: 'cust_1',
-      email: 'updated@example.com',
+      email: 'user@example.com',
       metadata: {},
     })
 
@@ -105,7 +135,6 @@ describe('PATCH /api/account/profile', () => {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          email: 'updated@example.com',
           accountProfile: {
             avatarDataUrl: 'data:image/png;base64,AAAA',
             countryCode: 'US',
@@ -122,7 +151,6 @@ describe('PATCH /api/account/profile', () => {
     expect(response.status).toBe(200)
     expect(mockUpdateCustomer).toHaveBeenCalledWith(
       expect.objectContaining({
-        email: 'updated@example.com',
         metadata: {
           oauth_avatar_url: 'https://avatars.example.com/oauth.jpg',
           marketing_opt_in: true,
@@ -149,7 +177,7 @@ describe('PATCH /api/account/profile', () => {
     })
     mockUpdateCustomer.mockResolvedValueOnce({
       id: 'cust_1',
-      email: 'updated@example.com',
+      email: 'user@example.com',
       metadata: {
         oauth_avatar_url: 'https://avatars.example.com/oauth.jpg',
         discord_user_id: 'secret-discord-id',
@@ -166,7 +194,6 @@ describe('PATCH /api/account/profile', () => {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          email: 'updated@example.com',
           accountProfile: {
             countryCode: 'US',
           },

@@ -50,9 +50,6 @@ describe('ProfileEditForm', () => {
       />
     )
 
-    fireEvent.change(screen.getByLabelText('Email'), {
-      target: { value: 'updated@example.com' },
-    })
     fireEvent.change(screen.getByLabelText('First name'), {
       target: { value: 'Updated' },
     })
@@ -68,7 +65,6 @@ describe('ProfileEditForm', () => {
     const [, requestInit] = mockFetch.mock.calls[0]
     const parsedBody = JSON.parse((requestInit as RequestInit).body as string)
     expect(parsedBody).toMatchObject({
-      email: 'updated@example.com',
       first_name: 'Updated',
       last_name: 'Name',
       phone: '+15551234567',
@@ -76,10 +72,25 @@ describe('ProfileEditForm', () => {
         countryCode: 'US',
       },
     })
+    // Email is not editable — sending it made Medusa reject EVERY profile
+    // save with 400 "Unrecognized fields: 'email'".
+    expect(parsedBody).not.toHaveProperty('email')
 
     expect(
       await screen.findByText('Profile updated successfully.')
     ).toBeInTheDocument()
+  })
+
+  it('renders the email field read-only', () => {
+    render(
+      <ProfileEditForm
+        customer={{ email: 'fixed@example.com', metadata: {} }}
+      />
+    )
+
+    const emailInput = screen.getByLabelText('Email') as HTMLInputElement
+    expect(emailInput.value).toBe('fixed@example.com')
+    expect(emailInput).toHaveAttribute('readonly')
   })
 
   it('lists worldwide country options', () => {

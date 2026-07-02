@@ -48,3 +48,18 @@ export class AccountExistsError extends ApiError {
     this.name = 'AccountExistsError'
   }
 }
+
+/**
+ * Email/password sign-in was rejected by Medusa (HTTP 401).
+ *
+ * Classified at the Medusa adapter seam in `login()` so the login route can
+ * tell a routine wrong-password rejection (logged at info) apart from an
+ * unexpected failure (logged at error, which fans out to alerts) without
+ * re-sniffing provider strings.
+ */
+export class InvalidCredentialsError extends ApiError {
+  constructor(message = 'Invalid email or password') {
+    super(401, message)
+    this.name = 'InvalidCredentialsError'
+  }
+}

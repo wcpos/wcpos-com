@@ -1,17 +1,23 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getCustomer, updateCustomer } from '@/lib/medusa-auth'
+import {
+  getCustomer,
+  updateCustomer,
+  type UpdateCustomerInput,
+} from '@/lib/medusa-auth'
+import { apiLogger } from '@/lib/logger'
 import {
   mergeAccountProfileMetadataPatch,
   projectProfileMetadataForClient,
   type AccountProfilePatchInput,
 } from '@/lib/customer-profile-metadata'
 
+// `email` is intentionally not read from the body: it is not editable on this
+// endpoint, and Medusa's store update-customer schema rejects unknown fields
+// (forwarding it 400s with "Unrecognized fields: 'email'").
 interface ProfilePayload {
-  email?: string
   first_name?: string
   last_name?: string
   phone?: string
-  metadata?: Record<string, unknown>
   accountProfile?: AccountProfilePatchInput
 }
 
@@ -28,17 +34,8 @@ export async function PATCH(request: NextRequest) {
 
   try {
     const body = (await request.json()) as ProfilePayload
-    const email = normalizeField(body.email)
 
-    if (!email) {
-      return NextResponse.json(
-        { error: 'Email is required' },
-        { status: 400 }
-      )
-    }
-
-    const payload: ProfilePayload = {
-      email,
+    const payload: UpdateCustomerInput = {
       first_name: normalizeField(body.first_name),
       last_name: normalizeField(body.last_name),
       phone: normalizeField(body.phone),
@@ -65,6 +62,8 @@ export async function PATCH(request: NextRequest) {
       },
     }, { status: 200 })
   } catch (error) {
+    apiLogger.error`Profile update failed (PATCH /api/account/profile): ${error}`
+
     const message =
       error instanceof Error ? error.message : 'Failed to update profile'
 

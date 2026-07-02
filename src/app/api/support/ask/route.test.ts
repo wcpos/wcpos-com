@@ -1,5 +1,10 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 
+const { errorMock } = vi.hoisted(() => ({ errorMock: vi.fn() }))
+
+vi.mock('@/lib/logger', () => ({
+  apiLogger: { error: errorMock },
+}))
 vi.mock('@/lib/support/turnstile', () => ({ verifyTurnstile: vi.fn() }))
 vi.mock('@/lib/support/rate-limit', () => ({
   consumeRateLimit: vi.fn().mockResolvedValue({ success: true, remaining: 7 }),
@@ -78,11 +83,14 @@ describe('POST /api/support/ask', () => {
     expect(await res.json()).toHaveProperty('error')
   })
 
-  it('maps an OpenclawError to a friendly 503', async () => {
+  it('maps an OpenclawError to a friendly 503 and logs at error', async () => {
     vi.mocked(verifyTurnstile).mockResolvedValue(true)
     vi.mocked(askAide).mockRejectedValue(new OpenclawError('boom', 502, 'runtime_error'))
     const res = await POST(req({ question: 'How?', turnstileToken: 't' }))
     expect(res.status).toBe(503)
     expect(await res.json()).toHaveProperty('error')
+    // Gateway failures go through the logging seam (not console.error) so
+    // they reach Loki/Discord like every other route failure.
+    expect(errorMock).toHaveBeenCalledTimes(1)
   })
 })

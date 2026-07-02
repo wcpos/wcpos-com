@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { env } from '@/utils/env'
+import { infraLogger } from '@/lib/logger'
 import { buildLokiPayload, lokiPushEndpoint } from '@/lib/sinks/loki-format'
 
 /**
@@ -7,11 +8,17 @@ import { buildLokiPayload, lokiPushEndpoint } from '@/lib/sinks/loki-format'
  *
  * Accepts logs from the browser and forwards them to Loki
  * This avoids exposing Loki directly to the internet
+ *
+ * Failures here are logged ONCE per request via the server-side logger sinks
+ * (never per forwarded entry, and never back through this route), so a Loki
+ * outage cannot create a log feedback loop.
  */
 export async function POST(request: NextRequest) {
-  try {
-    const logs = await request.json()
+  // Malformed JSON is client-caused: treat it like the other validation
+  // failures below (400, no error-level log) rather than an infra error.
+  const logs = await request.json().catch(() => null)
 
+  try {
     // Validate log structure
     if (!Array.isArray(logs) || logs.length === 0) {
       return NextResponse.json(
@@ -71,12 +78,12 @@ export async function POST(request: NextRequest) {
     })
 
     if (!response.ok) {
-      console.error('Failed to forward logs to Loki:', response.status)
+      infraLogger.error`Failed to forward browser logs to Loki: status=${response.status}`
     }
 
     return NextResponse.json({ success: true })
   } catch (error) {
-    console.error('Error in logs API:', error)
+    infraLogger.error`Browser log forwarding failed: ${error}`
     // Return success anyway to avoid breaking the client
     return NextResponse.json({ success: true })
   }

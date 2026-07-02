@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
 import { randomUUID } from 'crypto'
+import { apiLogger } from '@/lib/logger'
 import { askAide, OpenclawError } from '@/lib/openclaw/client'
 import { verifyTurnstile } from '@/lib/support/turnstile'
 import { consumeRateLimit, consumeDailyBudget } from '@/lib/support/rate-limit'
@@ -82,7 +83,7 @@ export async function POST(request: Request): Promise<NextResponse> {
       code === 'timeout'
         ? 'That took too long. Please try again, or ask in Discord.'
         : 'The assistant is temporarily unavailable. Please try Discord while we get it back.'
-    console.error('support/ask failed', { code, ip })
+    apiLogger.error`Support ask failed. code=${code} ip=${ip} error=${err}`
     return NextResponse.json({ error: message }, { status: 503 })
   } finally {
     clearTimeout(timer)
