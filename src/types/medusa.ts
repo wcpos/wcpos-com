@@ -68,6 +68,11 @@ export interface MedusaCart {
   tax_total: number
   total: number
   payment_sessions?: MedusaPaymentSession[]
+  /** Medusa v2: the cart's payment container (one per cart). */
+  payment_collection?: {
+    id: string
+    payment_sessions?: MedusaPaymentSession[]
+  }
 }
 
 export interface MedusaCartItem {

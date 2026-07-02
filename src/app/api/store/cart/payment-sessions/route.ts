@@ -77,8 +77,24 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Create collection if not provided
-    let collectionId = existingCollectionId
+    // The cart is the source of truth for its payment collection: a
+    // caller-supplied id that doesn't match the cart's own collection (stale
+    // tab, replaced session, or a different cart's id) must not attach
+    // sessions to the wrong collection.
+    const cartCollectionId = currentCart.payment_collection?.id
+    if (
+      existingCollectionId &&
+      cartCollectionId &&
+      existingCollectionId !== cartCollectionId
+    ) {
+      return NextResponse.json(
+        { error: 'Payment collection does not belong to this cart' },
+        { status: 400 }
+      )
+    }
+
+    // Prefer the cart's own collection; create one only when none exists.
+    let collectionId = cartCollectionId ?? existingCollectionId
     if (!collectionId) {
       const collection = await createPaymentCollection(cartId)
       if (!collection) {
