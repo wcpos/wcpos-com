@@ -1,4 +1,5 @@
 import type { LogRecord, Sink } from '@logtape/logtape'
+import { deliver } from './deliver'
 
 /**
  * Email sink for the immediate-attention tier. Fires on `fatal` ONLY (the
@@ -74,15 +75,17 @@ export function createEmailSink(options: EmailSinkOptions): Sink {
         <p style="color: #9ca3af; font-size: 12px;">${new Date(record.timestamp).toISOString()} · wcpos-com</p>
       </div>`
 
-    fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({ from, to, subject, html }),
-    }).catch(() => {
-      // Resend unavailable — silently drop. Discord is the redundant channel.
-    })
+    deliver(
+      fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${apiKey}`,
+        },
+        body: JSON.stringify({ from, to, subject, html }),
+      }).catch(() => {
+        // Resend unavailable — silently drop. Discord is the redundant channel.
+      })
+    )
   }
 }

@@ -39,4 +39,19 @@ describe('createDiscordSink rate limiting', () => {
     sink(record(['wcpos', 'store', 'salefoo']))
     expect((fetch as ReturnType<typeof vi.fn>)).toHaveBeenCalledTimes(1)
   })
+
+  it('registers the webhook POST with the Vercel request context so serverless does not drop it', () => {
+    const REQUEST_CONTEXT = Symbol.for('@vercel/request-context')
+    const waitUntil = vi.fn()
+    ;(globalThis as { [REQUEST_CONTEXT]?: unknown })[REQUEST_CONTEXT] = {
+      get: () => ({ waitUntil }),
+    }
+    try {
+      const sink = createDiscordSink({ webhookUrl: 'https://x' })
+      sink(record(['wcpos', 'store']))
+      expect(waitUntil).toHaveBeenCalledTimes(1)
+    } finally {
+      delete (globalThis as { [REQUEST_CONTEXT]?: unknown })[REQUEST_CONTEXT]
+    }
+  })
 })

@@ -77,4 +77,19 @@ describe('createEmailSink', () => {
     sink(record())
     expect(fetchMock).not.toHaveBeenCalled()
   })
+
+  it('registers the send with the Vercel request context so serverless does not drop it', () => {
+    const REQUEST_CONTEXT = Symbol.for('@vercel/request-context')
+    const waitUntil = vi.fn()
+    ;(globalThis as { [REQUEST_CONTEXT]?: unknown })[REQUEST_CONTEXT] = {
+      get: () => ({ waitUntil }),
+    }
+    try {
+      const sink = createEmailSink({ apiKey: 'k', to: 'o@e.com', from: 'a@b.com' })
+      sink(record())
+      expect(waitUntil).toHaveBeenCalledTimes(1)
+    } finally {
+      delete (globalThis as { [REQUEST_CONTEXT]?: unknown })[REQUEST_CONTEXT]
+    }
+  })
 })

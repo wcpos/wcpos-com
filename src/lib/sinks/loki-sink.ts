@@ -5,6 +5,7 @@ import {
   lokiPushEndpoint,
   type LokiLogEntry,
 } from './loki-format'
+import { deliver } from './deliver'
 
 interface LokiSinkOptions {
   url: string
@@ -12,6 +13,12 @@ interface LokiSinkOptions {
   labels?: Record<string, string>
   batchSize?: number
   flushIntervalMs?: number
+  /**
+   * Push every record immediately instead of batching. Required on serverless
+   * runtimes (Vercel): the function freezes after the response is sent, so a
+   * timer-based flush never fires and batched entries are dropped.
+   */
+  immediate?: boolean
 }
 
 export function createLokiSink(options: LokiSinkOptions): Sink {
@@ -21,6 +28,7 @@ export function createLokiSink(options: LokiSinkOptions): Sink {
     labels = {},
     batchSize = 100,
     flushIntervalMs = 5000,
+    immediate = false,
   } = options
 
   const endpoint = lokiPushEndpoint(url)
@@ -42,13 +50,15 @@ export function createLokiSink(options: LokiSinkOptions): Sink {
       headers['X-API-Key'] = apiKey
     }
 
-    fetch(endpoint, {
-      method: 'POST',
-      headers,
-      body: JSON.stringify(payload),
-    }).catch(() => {
-      // Loki unavailable — silently drop. Logs still go to console sink.
-    })
+    deliver(
+      fetch(endpoint, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify(payload),
+      }).catch(() => {
+        // Loki unavailable — silently drop. Logs still go to console sink.
+      })
+    )
   }
 
   function scheduleFlush() {
@@ -62,7 +72,7 @@ export function createLokiSink(options: LokiSinkOptions): Sink {
   return (record: LogRecord) => {
     batch.push(formatLokiEntry(record))
 
-    if (batch.length >= batchSize) {
+    if (immediate || batch.length >= batchSize) {
       flush()
     } else {
       scheduleFlush()

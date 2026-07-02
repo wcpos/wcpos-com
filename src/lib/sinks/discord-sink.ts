@@ -1,4 +1,5 @@
 import type { LogRecord, Sink } from '@logtape/logtape'
+import { deliver } from './deliver'
 
 interface DiscordSinkOptions {
   webhookUrl: string
@@ -63,12 +64,14 @@ export function createDiscordSink(options: DiscordSinkOptions): Sink {
         })),
     }
 
-    fetch(webhookUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, embeds: [embed] }),
-    }).catch(() => {
-      // Discord unavailable — silently drop
-    })
+    deliver(
+      fetch(webhookUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, embeds: [embed] }),
+      }).catch(() => {
+        // Discord unavailable — silently drop
+      })
+    )
   }
 }

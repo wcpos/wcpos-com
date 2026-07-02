@@ -24,6 +24,9 @@ export async function register() {
           service: 'wcpos-com',
           environment: process.env.NODE_ENV ?? 'development',
         },
+        // Serverless functions freeze after responding — batching would drop
+        // every entry that hasn't hit the 5s timer. Push per-record on Vercel.
+        immediate: Boolean(process.env.VERCEL),
       })
     }
 
