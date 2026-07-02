@@ -391,7 +391,24 @@ export function CheckoutClient({
     if (!response.ok) {
       throw new Error('Failed to save billing address')
     }
+    const { cart: updatedCart } = (await response.json()) as { cart?: Cart }
+    const cartAfterBilling = updatedCart ?? readyCart
 
+    const paymentResult = await createPaymentSession<PaymentSessionResult>({
+      cartId: cartAfterBilling.id,
+      providerId: getProviderId(paymentMethod),
+      paymentCollectionId:
+        paymentCollectionId ?? cartAfterBilling.payment_collection?.id ?? null,
+      errorMessage: 'Failed to refresh payment',
+    })
+
+    setCart(paymentResult.cart)
+    setPaymentCollectionId(paymentResult.paymentCollectionId)
+    setClientSecret(
+      paymentMethod === 'stripe' && paymentResult.clientSecret
+        ? paymentResult.clientSecret
+        : null
+    )
     setBillingAddress(address)
     setStep('payment')
   }

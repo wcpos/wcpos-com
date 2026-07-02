@@ -203,9 +203,10 @@ function renderSignedIn(props: Record<string, unknown> = {}) {
 
 /**
  * Fills the billing step and continues to payment. Queues the billing
- * PATCH response itself (the 4th fetch after the 3 init calls).
+ * PATCH response and refreshed payment session (the 4th and 5th fetches
+ * after the 3 init calls).
  */
-async function completeBillingStep() {
+async function completeBillingStep(cartAfterBilling = buildCheckoutCart()) {
   await waitFor(() => {
     expect(screen.getByTestId('billing-step-form')).toBeInTheDocument()
   })
@@ -226,7 +227,18 @@ async function completeBillingStep() {
     target: { value: '2000' },
   })
 
-  mockFetch.mockResolvedValueOnce({ ok: true, json: async () => ({}) })
+  mockFetch.mockResolvedValueOnce({
+    ok: true,
+    json: async () => ({ cart: cartAfterBilling }),
+  })
+  mockFetch.mockResolvedValueOnce({
+    ok: true,
+    json: async () => ({
+      cart: cartAfterBilling,
+      paymentCollectionId: 'pay-col-123',
+      clientSecret: 'pi_test_secret',
+    }),
+  })
   fireEvent.click(screen.getByRole('button', { name: /continue to payment/i }))
 
   await waitFor(() => {
@@ -413,6 +425,36 @@ describe('CheckoutClient', () => {
     )
     expect(screen.getByText('42 Wallaby Way, Sydney 2000, US')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Edit' })).toBeInTheDocument()
+  })
+
+  it('refreshes the cart and payment session after billing changes totals', async () => {
+    mockSuccessfulCheckoutInit()
+    renderSignedIn()
+
+    await waitFor(() => {
+      expect(screen.getAllByText('$129.00')).toHaveLength(2)
+    })
+
+    const recalculatedCart = buildCheckoutCart({
+      cartTotal: 149,
+      itemTotal: 129,
+    })
+
+    await completeBillingStep(recalculatedCart)
+
+    expect(mockFetch).toHaveBeenNthCalledWith(
+      5,
+      '/api/store/cart/payment-sessions',
+      expect.objectContaining({
+        method: 'POST',
+        body: JSON.stringify({
+          cartId: 'cart-123',
+          provider_id: 'pp_stripe_stripe',
+          paymentCollectionId: 'pay-col-123',
+        }),
+      })
+    )
+    expect(screen.getByText('$149.00')).toBeInTheDocument()
   })
 
   it('renders the payment method rows with card selected by default', async () => {

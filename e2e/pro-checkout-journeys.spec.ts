@@ -347,4 +347,24 @@ test.describe('API-level provider matrix', () => {
     const body = await licenses.json()
     expect(JSON.stringify(body)).toContain('lic-e2e-purchase')
   })
+
+  test('completed fixture-account checkouts do not mutate shared fixture orders', async ({
+    request,
+  }) => {
+    const login = await request.post('/api/auth/login', {
+      data: {
+        email: 'nolicense@example.com',
+        password: 'e2e-password',
+      },
+    })
+    expect(login.status()).toBe(200)
+
+    const { complete } = await apiCheckout(request)
+    expect(complete.status()).toBe(200)
+
+    const licenses = await request.get('/api/account/licenses')
+    expect(licenses.status()).toBe(200)
+    const body = await licenses.json()
+    expect(JSON.stringify(body)).not.toContain('lic-e2e-purchase')
+  })
 })

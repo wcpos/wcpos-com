@@ -114,11 +114,9 @@ function fixtureTokenForEmail(email) {
   return null
 }
 
-function personaForEmail(email) {
+function dynamicPersonaForEmail(email) {
   const registered = registeredCredentials.get(email)
-  if (registered) return dynamicPersonas.get(registered.token) ?? null
-  const fixtureToken = fixtureTokenForEmail(email)
-  return fixtureToken ? fixtures.personas[fixtureToken] : null
+  return registered ? dynamicPersonas.get(registered.token) ?? null : null
 }
 
 function personaForRequest(req) {
@@ -209,7 +207,7 @@ function completeCartIntoOrder(cart) {
   cart.completed_at = order.created_at
   cart.order_id = order.id
 
-  const persona = cart.email ? personaForEmail(cart.email) : null
+  const persona = cart.email ? dynamicPersonaForEmail(cart.email) : null
   if (persona) {
     persona.orders.unshift(order)
   }
