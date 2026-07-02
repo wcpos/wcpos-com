@@ -1,0 +1,283 @@
+/*
+ * Painterly layer for the scroll story: keyframes and gradient treatments
+ * that would be unreadable as Tailwind arbitrary values. Structural layout
+ * stays in Tailwind classes inside the components.
+ */
+
+/* ---------- ambient loops ---------- */
+
+@keyframes story-steam {
+  0% {
+    transform: translateY(10px) scaleY(0.4);
+    opacity: 0;
+  }
+  40% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(-34px) scaleY(1.1);
+    opacity: 0;
+  }
+}
+
+@keyframes story-blink {
+  0%,
+  86% {
+    opacity: 0.25;
+    box-shadow: none;
+  }
+  90%,
+  100% {
+    opacity: 1;
+    box-shadow: 0 0 12px 3px rgb(205 32 31 / 0.7);
+  }
+}
+
+@keyframes story-printing {
+  0%,
+  22% {
+    transform: scaleY(0.28);
+  }
+  60%,
+  100% {
+    transform: scaleY(1);
+  }
+}
+
+@keyframes story-wave {
+  0% {
+    transform: scale(0.3);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(1.4);
+    opacity: 0;
+  }
+}
+
+@keyframes story-term-glow {
+  0%,
+  100% {
+    filter: brightness(1);
+  }
+  50% {
+    filter: brightness(1.4);
+  }
+}
+
+@keyframes story-beam {
+  0%,
+  100% {
+    opacity: 0.15;
+    transform: scaleX(0.5);
+  }
+  50% {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
+
+@keyframes story-floaty {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-9px);
+  }
+}
+
+@keyframes story-dash {
+  to {
+    stroke-dashoffset: -14;
+  }
+}
+
+@keyframes story-bob {
+  from {
+    transform: translateY(-4px);
+  }
+  to {
+    transform: translateY(4px);
+  }
+}
+
+@keyframes story-sway {
+  from {
+    transform: translateX(-24px);
+  }
+  to {
+    transform: translateX(24px);
+  }
+}
+
+.steam {
+  animation: story-steam 3.8s ease-in-out infinite;
+}
+
+.ledBlink {
+  animation: story-blink 2.6s infinite;
+}
+
+.paperPrint {
+  transform-origin: bottom;
+  animation: story-printing 7s ease-in-out infinite;
+}
+
+.wave {
+  animation: story-wave 2s infinite;
+}
+
+.termGlow {
+  animation: story-term-glow 5s ease-in-out infinite;
+}
+
+.beamPulse {
+  transform-origin: center;
+  animation: story-beam 2.2s ease-in-out infinite;
+}
+
+.floaty {
+  animation: story-floaty 5s ease-in-out infinite alternate;
+}
+
+.dashFlow {
+  animation: story-dash 1.4s linear infinite;
+}
+
+.bob {
+  animation: story-bob 7s ease-in-out infinite alternate;
+}
+
+.lightPool {
+  background: radial-gradient(
+    ellipse at 32% 22%,
+    rgb(255 220 160 / 0.32),
+    transparent 55%
+  );
+  animation: story-sway 10s ease-in-out infinite alternate;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .steam,
+  .ledBlink,
+  .paperPrint,
+  .wave,
+  .termGlow,
+  .beamPulse,
+  .floaty,
+  .dashFlow,
+  .bob,
+  .lightPool {
+    animation: none;
+  }
+}
+
+/* ---------- surfaces & materials (premium-render grade) ---------- */
+
+.woodCounter {
+  /* SVG timber texture (fractal-noise grain + plank bevels + baked key
+     light/vignette); gradient stack is the pre-paint fallback */
+  background:
+    url('/images/story/counter-wood.svg') center / cover,
+    repeating-linear-gradient(
+      88deg,
+      #7c5a3a 0 90px,
+      #6f4f33 90px 94px,
+      #76553a 94px 180px
+    );
+}
+
+.woodVignette {
+  background: radial-gradient(
+    ellipse at 50% 45%,
+    transparent 55%,
+    rgb(30 15 5 / 0.5)
+  );
+}
+
+.slateStudio {
+  background: radial-gradient(ellipse at 50% 20%, #1e293b, #0f172a 75%);
+}
+
+.gridlines {
+  background-image:
+    linear-gradient(rgb(148 163 184 / 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(148 163 184 / 0.06) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+.tabletBezel {
+  background: linear-gradient(180deg, #4a5568, #2d3748 60%, #1f2733);
+  box-shadow:
+    0 40px 70px -30px rgb(0 0 0 / 0.75),
+    0 4px 10px rgb(0 0 0 / 0.3),
+    inset 0 1px 1px rgb(255 255 255 / 0.35);
+}
+
+.phoneBezel {
+  background: linear-gradient(180deg, #4a5568, #262f3d);
+  box-shadow:
+    0 30px 50px -24px rgb(0 0 0 / 0.7),
+    inset 0 1px 1px rgb(255 255 255 / 0.3);
+}
+
+.laptopLid {
+  background: linear-gradient(180deg, #4a5568, #2b3442);
+  box-shadow:
+    0 34px 60px -28px rgb(0 0 0 / 0.7),
+    inset 0 1px 1px rgb(255 255 255 / 0.3);
+}
+
+.laptopBase {
+  background: linear-gradient(180deg, #64748b, #334155);
+}
+
+.terminalBody {
+  background: linear-gradient(180deg, #131b28, #0b111c);
+  box-shadow:
+    0 30px 50px -24px rgb(0 0 0 / 0.7),
+    inset 0 1px 1px rgb(255 255 255 / 0.14);
+}
+
+.terminalScreen {
+  background: linear-gradient(135deg, #164e63, #0e7490);
+}
+
+.printerBody {
+  background: linear-gradient(180deg, #e8edf3, #9aa8ba);
+  box-shadow:
+    0 30px 50px -24px rgb(0 0 0 / 0.7),
+    inset 0 1px 1px rgb(255 255 255 / 0.65);
+}
+
+.receipt {
+  box-shadow: 0 -2px 10px rgb(0 0 0 / 0.15);
+}
+
+.contactShadow {
+  background: radial-gradient(ellipse, rgb(10 5 0 / 0.5), transparent 70%);
+  filter: blur(6px);
+}
+
+.cup {
+  background: radial-gradient(
+    circle at 44% 40%,
+    #4a2c17 0 40%,
+    #f4ead8 41% 60%,
+    #e0cdae 61%
+  );
+  box-shadow:
+    0 22px 26px -14px rgb(20 8 0 / 0.6),
+    0 2px 4px rgb(20 8 0 / 0.35),
+    inset 0 -2px 4px rgb(255 255 255 / 0.5);
+}
+
+.cloudPuff {
+  background: #1e293b;
+  border: 1px solid #475569;
+}
+
+.wooBadge {
+  background: #7f54b3;
+  box-shadow: 0 0 30px rgb(127 84 179 / 0.5);
+}
