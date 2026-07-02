@@ -10,6 +10,7 @@ import { storyCopy } from './copy'
 type ProgressHandler = (value: number) => void
 const motionMock = vi.hoisted(() => ({
   progressHandlers: [] as ProgressHandler[],
+  animate: vi.fn(() => ({ stop: vi.fn() })),
 }))
 
 vi.mock('motion/react', async () => {
@@ -19,6 +20,7 @@ vi.mock('motion/react', async () => {
       div: ({ children, ...props }: React.HTMLAttributes<HTMLElement>) =>
         React.createElement('div', props, children),
     },
+    animate: motionMock.animate,
     useMotionValueEvent: (_value: unknown, eventName: string, handler: ProgressHandler) => {
       if (eventName === 'change') motionMock.progressHandlers.push(handler)
     },
@@ -31,6 +33,7 @@ vi.mock('motion/react', async () => {
 afterEach(() => {
   cleanup()
   vi.unstubAllGlobals()
+  motionMock.animate.mockClear()
   motionMock.progressHandlers.length = 0
 })
 
@@ -124,6 +127,12 @@ describe('StoryStatic', () => {
 })
 
 describe('ScrollStory', () => {
+  it('keeps the motion test mock compatible with act gravity', async () => {
+    const motionReact = await import('motion/react')
+
+    expect(motionReact.animate).toEqual(expect.any(Function))
+  })
+
   it('renders the pinned choreography with all act copy in the DOM', () => {
     stubMatchMedia({ reducedMotion: false })
     render(<ScrollStory />)

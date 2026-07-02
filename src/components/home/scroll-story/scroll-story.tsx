@@ -9,6 +9,7 @@ import {
   type MotionValue,
 } from 'motion/react'
 import { cn } from '@/lib/utils'
+import { useActGravity } from './act-gravity'
 import { CounterProps } from './acts/counter-props'
 import { CloudSync } from './acts/cloud-sync'
 import { CyclingDevice } from './acts/cycling-device'
@@ -95,6 +96,7 @@ function PinnedStoryScroller() {
     target: scrollerRef,
     offset: ['start start', 'end end'],
   })
+  useActGravity(scrollerRef, progress)
 
   const [act, setAct] = React.useState(0)
   const [copy1Interactive, setCopy1Interactive] = React.useState(true)
