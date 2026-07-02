@@ -11,7 +11,7 @@ import type { Metadata } from 'next'
 import { marketingMetadata } from '@/lib/seo'
 // PROTOTYPE — roadmap presentation variants, switchable via ?variant=.
 // See src/components/roadmap/prototype/NOTES.md. Delete when a variant wins.
-import { VariantGate } from '@/components/roadmap/prototype/switcher'
+import { PrototypeSwitcher } from '@/components/roadmap/prototype/switcher'
 import { VariantTimeline } from '@/components/roadmap/prototype/variant-timeline'
 import { VariantBoard } from '@/components/roadmap/prototype/variant-board'
 import { VariantFocus } from '@/components/roadmap/prototype/variant-focus'
@@ -85,10 +85,19 @@ function CurrentVariant({ data }: { data: RoadmapData }) {
   )
 }
 
+const VARIANTS = [
+  { key: 'current', name: 'Current design' },
+  { key: 'timeline', name: 'Release train' },
+  { key: 'board', name: 'Status board' },
+  { key: 'focus', name: 'Mission control' },
+]
+
 export default async function RoadmapPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ locale: string }>
+  searchParams: Promise<{ variant?: string }>
 }) {
   const { locale } = await params
   setRequestLocale(locale)
@@ -104,14 +113,22 @@ export default async function RoadmapPage({
           </Section>
         }
       >
-        <RoadmapVariantsLoader />
+        <RoadmapVariantsLoader searchParams={searchParams} />
       </Suspense>
     </main>
   )
 }
 
-async function RoadmapVariantsLoader() {
-  let data = await getCachedRoadmapData()
+async function RoadmapVariantsLoader({
+  searchParams,
+}: {
+  searchParams: Promise<{ variant?: string }>
+}) {
+  const [{ variant }, fetched] = await Promise.all([
+    searchParams,
+    getCachedRoadmapData(),
+  ])
+  let data = fetched
 
   // PROTOTYPE — no GitHub credentials in local dev returns empty data; fall
   // back to a realistic mock so the variants can be judged with real density.
@@ -123,14 +140,17 @@ async function RoadmapVariantsLoader() {
     data = MOCK_ROADMAP_DATA
   }
 
+  const key = VARIANTS.some((v) => v.key === variant) ? variant : 'current'
+
   return (
-    <VariantGate
-      variants={[
-        { key: 'current', name: 'Current design', node: <CurrentVariant data={data} /> },
-        { key: 'timeline', name: 'Release train', node: <VariantTimeline data={data} /> },
-        { key: 'board', name: 'Status board', node: <VariantBoard data={data} /> },
-        { key: 'focus', name: 'Mission control', node: <VariantFocus data={data} /> },
-      ]}
-    />
+    <>
+      {key === 'current' && <CurrentVariant data={data} />}
+      {key === 'timeline' && <VariantTimeline data={data} />}
+      {key === 'board' && <VariantBoard data={data} />}
+      {key === 'focus' && <VariantFocus data={data} />}
+      {process.env.NODE_ENV !== 'production' && (
+        <PrototypeSwitcher variants={VARIANTS} current={key ?? 'current'} />
+      )}
+    </>
   )
 }

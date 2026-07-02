@@ -77,21 +77,31 @@ export const MOCK_ROADMAP_DATA: RoadmapData = {
   ],
   upcoming: [
     {
-      title: 'v1.9.x',
-      description: 'Stabilization patches for the 1.9 line (rolling patch lane).',
-      dueOn: null,
+      title: 'v1.11.0',
+      description:
+        'Checkout & payments: split payments, checkout conditions. Monthly dot-release cadence.',
+      dueOn: '2026-07-31T00:00:00Z',
       state: 'open',
-      progress: { total: 2, completed: 2 },
+      progress: { total: 2, completed: 0 },
       features: [
         {
-          id: 'f5',
-          title:
-            'Add server-side thermal engine renderer (gate server preview for thermal templates)',
+          id: 'f10',
+          title: 'Split payment support',
           description:
-            'PR #596 introduces thermal engine templates in the gallery. However, the server-side receipt rendering path (includes/Templates/Receipt.php) cannot render them yet.',
-          status: 'done',
+            'Accept more than one payment method on a single order — cash plus card, gift card plus cash — with sub-order handling on the WooCommerce side.',
+          status: 'planned',
           type: 'feature',
-          url: 'https://github.com/wcpos/woocommerce-pos/issues/7',
+          url: 'https://github.com/wcpos/roadmap/issues/3',
+          subIssueProgress: { total: 2, completed: 0 },
+        },
+        {
+          id: 'f11',
+          title: 'Checkout conditions system',
+          description:
+            'Configurable rules that must be satisfied before checkout completes — required customer, minimum totals, custom prompts.',
+          status: 'planned',
+          type: 'feature',
+          url: 'https://github.com/wcpos/monorepo/issues/43',
         },
       ],
       bugs: [],
@@ -120,6 +130,26 @@ export const MOCK_ROADMAP_DATA: RoadmapData = {
   ],
   shipped: [
     {
+      title: 'v1.9.x',
+      description: 'Stabilization patches for the 1.9 line (rolling patch lane).',
+      dueOn: null,
+      state: 'closed',
+      progress: { total: 1, completed: 1 },
+      features: [
+        {
+          id: 'f5',
+          title:
+            'Add server-side thermal engine renderer (gate server preview for thermal templates)',
+          description:
+            'PR #596 introduces thermal engine templates in the gallery. However, the server-side receipt rendering path (includes/Templates/Receipt.php) cannot render them yet.',
+          status: 'done',
+          type: 'feature',
+          url: 'https://github.com/wcpos/woocommerce-pos/issues/7',
+        },
+      ],
+      bugs: [],
+    },
+    {
       title: '2026.4',
       description: null,
       dueOn: '2026-04-30T00:00:00Z',
@@ -146,34 +176,6 @@ export const MOCK_ROADMAP_DATA: RoadmapData = {
           url: 'https://github.com/wcpos/woocommerce-pos-pro/issues/10',
         },
       ],
-    },
-    {
-      title: '2026.3',
-      description: 'Tax & receipts polish.',
-      dueOn: '2026-03-31T00:00:00Z',
-      state: 'closed',
-      progress: { total: 2, completed: 2 },
-      features: [
-        {
-          id: 'f8',
-          title: 'Receipt template gallery',
-          description:
-            'A gallery of ready-made receipt templates (standard, thermal 58mm/80mm) selectable from POS settings.',
-          status: 'done',
-          type: 'feature',
-          url: 'https://github.com/wcpos/woocommerce-pos/issues/11',
-        },
-        {
-          id: 'f9',
-          title: 'Per-register tax rate overrides',
-          description:
-            'Allow each register to pin a tax location, so pop-up locations charge the right rate.',
-          status: 'done',
-          type: 'feature',
-          url: 'https://github.com/wcpos/woocommerce-pos/issues/12',
-        },
-      ],
-      bugs: [],
     },
   ],
 }

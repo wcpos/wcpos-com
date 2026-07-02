@@ -1,4 +1,7 @@
 import type { RoadmapData, RoadmapItem, RoadmapMilestone } from '@/types/roadmap'
+import { TimelineBugs } from './timeline-bugs'
+
+const PROJECT_BOARD_URL = 'https://github.com/orgs/wcpos/projects/4'
 
 /**
  * PROTOTYPE variant "timeline" — the release train.
@@ -102,7 +105,6 @@ function TimelineMilestone({
       ? Math.round((milestone.progress.completed / milestone.progress.total) * 100)
       : 0
   const due = fmtDue(milestone.dueOn)
-  const doneBugs = milestone.bugs.length
 
   return (
     <div className={tone === 'shipped' ? 'relative pb-14 opacity-60' : 'relative pb-14'}>
@@ -172,11 +174,7 @@ function TimelineMilestone({
         </ul>
       )}
 
-      {doneBugs > 0 && (
-        <p className="mt-2 font-mono text-xs text-muted-foreground">
-          + {doneBugs} bug fix{doneBugs !== 1 ? 'es' : ''}{' '}&amp; improvements
-        </p>
-      )}
+      <TimelineBugs bugs={milestone.bugs} />
     </div>
   )
 }
@@ -245,13 +243,19 @@ export function VariantTimeline({ data }: { data: RoadmapData }) {
           Every stop on the way to a faster, offline-proof WooCommerce POS — pulled
           straight from our GitHub, newest work first.
         </p>
-        <p className="mt-4 inline-flex items-center gap-2 rounded-full border px-3 py-1 font-mono text-xs text-muted-foreground">
+        <a
+          href={PROJECT_BOARD_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-4 inline-flex items-center gap-2 rounded-full border px-3 py-1 font-mono text-xs text-muted-foreground transition-colors hover:border-foreground/30 hover:text-foreground"
+        >
           <span className="relative flex size-2">
             <span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-400 opacity-60" />
             <span className="relative inline-flex size-2 rounded-full bg-emerald-500" />
           </span>
-          live from github.com/wcpos
-        </p>
+          live from the WCPOS project board
+          <span aria-hidden>&#8599;</span>
+        </a>
       </header>
 
       <div className="space-y-4">
