@@ -41,7 +41,6 @@ function useTrack(
 }
 
 const REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)'
-const DESKTOP_QUERY = '(min-width: 768px)'
 const COPY_1_HIDDEN_PROGRESS = K.copy1Opacity[0][2]
 
 /**
@@ -188,34 +187,24 @@ function usePrefersReducedMotion() {
   )
 }
 
-function useDesktopViewport() {
-  return React.useSyncExternalStore(
-    (onChange) => {
-      const mql = window.matchMedia(DESKTOP_QUERY)
-      mql.addEventListener('change', onChange)
-      return () => mql.removeEventListener('change', onChange)
-    },
-    () => window.matchMedia(DESKTOP_QUERY).matches,
-    () => false
-  )
-}
-
 /**
  * The four-act pinned scroll story. Desktop (md+) gets the scrubbed
  * choreography; small viewports and prefers-reduced-motion get the static
- * stacked variant with identical copy (see StoryStatic). SSR emits the static
- * story; the pinned branch mounts only after a desktop viewport match.
+ * stacked variant with identical copy (see StoryStatic). Both variants are
+ * in the DOM, switched by CSS, so SSR needs no viewport knowledge and the
+ * desktop hero paints before hydration. Image downloads are gated at the
+ * markup level instead: the pinned picture's desktop sources carry a
+ * min-width media query and its mobile fallback src is the static card's
+ * url, so each viewport fetches exactly one counter asset.
  */
 export function ScrollStory() {
-  const isDesktop = useDesktopViewport()
-
   return (
     <>
       <div className="hidden md:block">
-        {isDesktop && <PinnedStory />}
+        <PinnedStory />
       </div>
       <div className="md:hidden">
-        {!isDesktop && <StoryStatic />}
+        <StoryStatic />
       </div>
     </>
   )
@@ -348,8 +337,9 @@ function PinnedStoryScroller() {
           <div className="absolute inset-x-0 top-0 h-[40%] bg-gradient-to-b from-white/30 via-white/10 to-transparent" />
           {/* customers: tall soft silhouettes approach the counter from
               beyond the top edge, linger, and withdraw (cast over the scrim
-              so they stay present in the brightened band) */}
-          <div aria-hidden="true" className="absolute inset-0 overflow-hidden">
+              so they stay present in the brightened band; the sticky stage's
+              own overflow-hidden clips their offscreen starting position) */}
+          <div aria-hidden="true" className="absolute inset-0">
             <span className={styles.counterShadow1} />
             <span className={styles.counterShadow2} />
           </div>

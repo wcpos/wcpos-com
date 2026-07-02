@@ -56,15 +56,12 @@ export function StoryStatic() {
           <CopyAct1 headingLevel={1} tone="onLight" />
         </div>
         {/* the counter photo, cropped to the hardware cluster. lazy so the
-            desktop render of this hidden variant never downloads it (the
-            pinned variant's mobile fallback src is the same file, so on
-            mobile this comes straight from cache) */}
+            desktop render of this hidden variant never downloads it. webp
+            only, deliberately: the pinned variant's mobile fallback src is
+            the SAME url, so on mobile this is one shared download — an avif
+            source here would fork the formats and double-fetch the card */}
         <div className="mx-auto mt-10 max-w-2xl">
           <picture>
-            <source
-              srcSet="/images/story/counter-photo-card.avif"
-              type="image/avif"
-            />
             <img
               src="/images/story/counter-photo-card.webp"
               alt="A shop counter with a tablet running the WCPOS register, a receipt printer, a card terminal and a barcode scanner"

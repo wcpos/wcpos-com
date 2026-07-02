@@ -211,7 +211,7 @@
    withdraws. Cast down-right to match the upper-left window light. */
 @keyframes story-counter-visitor-a {
   0% {
-    transform: translate3d(0, -108%, 0) scale(0.92);
+    transform: translate3d(0, -34%, 0) scale(0.92);
     opacity: 0;
   }
   34% {
@@ -223,13 +223,13 @@
     opacity: 0.7;
   }
   100% {
-    transform: translate3d(11%, -112%, 0) scale(0.94);
+    transform: translate3d(11%, -36%, 0) scale(0.94);
     opacity: 0;
   }
 }
 @keyframes story-counter-visitor-b {
   0% {
-    transform: translate3d(0, -110%, 0) scale(0.9);
+    transform: translate3d(0, -38%, 0) scale(0.9);
     opacity: 0;
   }
   40% {
@@ -241,7 +241,7 @@
     opacity: 0.55;
   }
   100% {
-    transform: translate3d(-12%, -114%, 0) scale(0.92);
+    transform: translate3d(-12%, -40%, 0) scale(0.92);
     opacity: 0;
   }
 }
@@ -254,7 +254,7 @@
   will-change: transform, opacity;
 }
 .counterShadow1 {
-  top: 0;
+  top: -42%;
   left: 10%;
   width: 26%;
   height: 92%;
@@ -266,7 +266,7 @@
   animation: story-counter-visitor-a 17s ease-in-out infinite;
 }
 .counterShadow2 {
-  top: 2%;
+  top: -46%;
   right: 18%;
   width: 22%;
   height: 86%;
