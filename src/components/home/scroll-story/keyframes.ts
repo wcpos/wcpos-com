@@ -32,6 +32,20 @@ export const K = {
     [0, 0, 1, 1],
   ],
 
+  // per-act ambient background patterns on the slate stage
+  pattern2Opacity: [
+    [0, 0.16, 0.3, 0.44, 0.52, 1],
+    [0, 0, 1, 1, 0, 0],
+  ],
+  pattern3Opacity: [
+    [0, 0.46, 0.56, 0.7, 0.78, 1],
+    [0, 0, 1, 1, 0, 0],
+  ],
+  pattern4Opacity: [
+    [0, 0.78, 0.9, 1],
+    [0, 0, 1, 1],
+  ],
+
   // act 1 counter props slide off as the "camera" tilts up
   propsOpacity: [
     [0, 0.13, 0.26, 1],
