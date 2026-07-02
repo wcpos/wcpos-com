@@ -1,3 +1,7 @@
+'use client'
+
+import * as React from 'react'
+import { motion, useScroll, useTransform } from 'motion/react'
 import { Section, Container } from '@/components/ui/section'
 import { SectionHeading } from '@/components/ui/section-heading'
 
@@ -29,7 +33,78 @@ const milestones = [
   },
 ]
 
+function usePrefersReducedMotion() {
+  return React.useSyncExternalStore(
+    (onChange) => {
+      if (typeof window.matchMedia !== 'function') return () => {}
+      const mql = window.matchMedia('(prefers-reduced-motion: reduce)')
+      mql.addEventListener('change', onChange)
+      return () => mql.removeEventListener('change', onChange)
+    },
+    () =>
+      typeof window.matchMedia === 'function' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+    () => false
+  )
+}
+
+function Milestone({
+  date,
+  title,
+  body,
+  animate,
+}: (typeof milestones)[number] & { animate: boolean }) {
+  const content = (
+    <>
+      <motion.span
+        aria-hidden="true"
+        className="absolute -left-[31px] mt-1.5 h-3 w-3 rounded-full bg-wcpos-red"
+        initial={animate ? { scale: 0.4, opacity: 0.4 } : false}
+        whileInView={animate ? { scale: 1, opacity: 1 } : undefined}
+        viewport={{ once: true, margin: '-20% 0px -20% 0px' }}
+        transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+      />
+      <p className="text-sm font-medium text-wcpos-red">{date}</p>
+      <h3 className="mt-1 text-lg font-semibold text-slate-900 dark:text-slate-100">
+        {title}
+      </h3>
+      <p className="mt-1 leading-relaxed text-slate-600 dark:text-slate-400">
+        {body}
+      </p>
+    </>
+  )
+
+  if (!animate) {
+    return <li className="relative mb-10 ml-6 last:mb-0">{content}</li>
+  }
+  return (
+    <motion.li
+      className="relative mb-10 ml-6 last:mb-0"
+      initial={{ opacity: 0, y: 18 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-12% 0px -12% 0px' }}
+      transition={{ duration: 0.45, ease: 'easeOut' }}
+    >
+      {content}
+    </motion.li>
+  )
+}
+
+/**
+ * The company timeline, drawn by scroll (ADR 0013: movement that means
+ * progress). A gradient fill grows down the line track as the reader moves
+ * through the story, a glowing tip rides its end, and each milestone lifts
+ * in as the line reaches it. Reduced motion renders the static timeline.
+ */
 export function StoryTimeline() {
+  const listRef = React.useRef<HTMLOListElement>(null)
+  const reducedMotion = usePrefersReducedMotion()
+  const { scrollYProgress } = useScroll({
+    target: listRef,
+    offset: ['start 0.78', 'end 0.6'],
+  })
+  const tipTop = useTransform(scrollYProgress, (v) => `${v * 100}%`)
+
   return (
     <Section tone="default" spacing="default" bare>
       <Container width="prose">
@@ -38,21 +113,28 @@ export function StoryTimeline() {
           title="How it started, and why it's still here"
         />
 
-        <ol className="relative border-l-2 border-slate-200 dark:border-slate-800">
-          {milestones.map((m) => (
-            <li key={m.date} className="mb-10 ml-6 last:mb-0">
-              <span
+        <ol ref={listRef} className="relative">
+          {/* line track + scroll-drawn fill + traveling tip */}
+          <span
+            aria-hidden="true"
+            className="absolute bottom-1 left-0 top-1 w-0.5 rounded bg-slate-200 dark:bg-slate-800"
+          />
+          {!reducedMotion && (
+            <>
+              <motion.span
                 aria-hidden="true"
-                className="absolute -left-[7px] mt-1.5 h-3 w-3 rounded-full bg-wcpos-red"
+                className="absolute bottom-1 left-0 top-1 w-0.5 origin-top rounded bg-gradient-to-b from-wcpos-red via-[#5b8def] to-[#8b5cf6]"
+                style={{ scaleY: scrollYProgress }}
               />
-              <p className="text-sm font-medium text-wcpos-red">{m.date}</p>
-              <h3 className="mt-1 text-lg font-semibold text-slate-900 dark:text-slate-100">
-                {m.title}
-              </h3>
-              <p className="mt-1 leading-relaxed text-slate-600 dark:text-slate-400">
-                {m.body}
-              </p>
-            </li>
+              <motion.span
+                aria-hidden="true"
+                className="absolute -left-[3px] h-2 w-2 rounded-full bg-[#5b8def] shadow-[0_0_10px_2px_rgba(91,141,239,0.55)]"
+                style={{ top: tipTop }}
+              />
+            </>
+          )}
+          {milestones.map((m) => (
+            <Milestone key={m.date} {...m} animate={!reducedMotion} />
           ))}
         </ol>
       </Container>
