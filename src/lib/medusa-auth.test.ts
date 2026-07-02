@@ -62,7 +62,7 @@ import {
   updateCustomer,
   parseMedusaError,
 } from './medusa-auth'
-import { AccountExistsError } from '@/lib/api/errors'
+import { AccountExistsError, InvalidCredentialsError } from '@/lib/api/errors'
 
 // decodeMedusaToken, linkOrCreateCustomer, completeOAuthCallback, refreshToken
 // and initiateOAuth moved to `@/lib/oauth`; their tests live in oauth.test.ts.
@@ -97,16 +97,35 @@ describe('medusa-auth', () => {
       )
     })
 
-    it('throws on invalid credentials', async () => {
+    it('throws a typed InvalidCredentialsError on a 401', async () => {
       mockFetch.mockResolvedValueOnce({
         ok: false,
         status: 401,
         text: async () => '{"message":"Invalid credentials"}',
       })
 
-      await expect(login('user@example.com', 'wrong')).rejects.toThrow(
-        'Invalid credentials'
+      const error = await login('user@example.com', 'wrong').catch((e) => e)
+
+      // Classified at the adapter seam so the login route can log routine
+      // wrong-password rejections at info instead of alerting.
+      expect(error).toBeInstanceOf(InvalidCredentialsError)
+      expect(error.message).toBe('Invalid credentials')
+    })
+
+    it('throws a plain Error on unexpected non-401 failures', async () => {
+      mockFetch.mockResolvedValueOnce({
+        ok: false,
+        status: 500,
+        text: async () => '{"message":"Internal server error"}',
+      })
+
+      const error = await login('user@example.com', 'password123').catch(
+        (e) => e
       )
+
+      expect(error).toBeInstanceOf(Error)
+      expect(error).not.toBeInstanceOf(InvalidCredentialsError)
+      expect(error.message).toBe('Internal server error')
     })
   })
 

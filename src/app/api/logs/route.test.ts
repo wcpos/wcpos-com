@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { NextRequest } from 'next/server'
 
 const mockFetch = vi.fn()
@@ -8,9 +8,13 @@ const mockEnv = vi.hoisted(() => ({
   LOKI_URL: undefined as string | undefined,
   LOKI_API_KEY: undefined as string | undefined,
 }))
+const { errorMock } = vi.hoisted(() => ({ errorMock: vi.fn() }))
 
 vi.mock('@/utils/env', () => ({
   env: mockEnv,
+}))
+vi.mock('@/lib/logger', () => ({
+  infraLogger: { error: errorMock },
 }))
 
 // Uses the real @/lib/sinks/loki-format helpers (pure functions).
@@ -30,17 +34,10 @@ const validEntry: [string, string] = [
 ]
 
 describe('POST /api/logs', () => {
-  let consoleErrorSpy: ReturnType<typeof vi.spyOn>
-
   beforeEach(() => {
     vi.clearAllMocks()
     mockEnv.LOKI_URL = undefined
     mockEnv.LOKI_API_KEY = undefined
-    consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
-  })
-
-  afterEach(() => {
-    consoleErrorSpy.mockRestore()
   })
 
   it('rejects a non-array body with 400', async () => {
@@ -117,7 +114,7 @@ describe('POST /api/logs', () => {
     expect(init.headers['X-API-Key']).toBe('secret-key')
   })
 
-  it('still returns success when Loki responds with an error', async () => {
+  it('still returns success when Loki responds with an error, logging it once', async () => {
     mockEnv.LOKI_URL = 'https://loki.example.com'
     mockFetch.mockResolvedValueOnce({ ok: false, status: 502 })
 
@@ -126,18 +123,33 @@ describe('POST /api/logs', () => {
     expect(response.status).toBe(200)
     const body = await response.json()
     expect(body).toEqual({ success: true })
-    expect(consoleErrorSpy).toHaveBeenCalledWith(
-      'Failed to forward logs to Loki:',
-      502
-    )
+    // One error-level record per failed request (via the server sinks, never
+    // back through this route) — never one per forwarded entry.
+    expect(errorMock).toHaveBeenCalledTimes(1)
   })
 
-  it('returns success for malformed JSON to avoid breaking the client', async () => {
-    const response = await POST(makeRequest('{not json'))
+  it('still returns success when the Loki push throws, logging it once', async () => {
+    mockEnv.LOKI_URL = 'https://loki.example.com'
+    mockFetch.mockRejectedValueOnce(new Error('network down'))
+
+    const response = await POST(makeRequest([validEntry]))
 
     expect(response.status).toBe(200)
     const body = await response.json()
     expect(body).toEqual({ success: true })
+    expect(errorMock).toHaveBeenCalledTimes(1)
+  })
+
+  it('rejects malformed JSON with 400 without logging an error', async () => {
+    // Client-caused garbage is validated like any other bad payload; the
+    // fire-and-forget browser sender ignores the status, and it must not
+    // page via error level.
+    const response = await POST(makeRequest('{not json'))
+
+    expect(response.status).toBe(400)
+    const body = await response.json()
+    expect(body.error).toBe('Invalid log format')
     expect(mockFetch).not.toHaveBeenCalled()
+    expect(errorMock).not.toHaveBeenCalled()
   })
 })

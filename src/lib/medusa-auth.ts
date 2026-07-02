@@ -8,7 +8,7 @@ import {
 } from '@/lib/store-environment'
 import { authLogger } from '@/lib/logger'
 import { MEDUSA_TOKEN_COOKIE } from '@/lib/medusa-cookie'
-import { AccountExistsError } from '@/lib/api/errors'
+import { AccountExistsError, InvalidCredentialsError } from '@/lib/api/errors'
 
 // ============================================================================
 // Types
@@ -26,8 +26,11 @@ export interface MedusaCustomer {
   metadata?: Record<string, unknown>
 }
 
+// NOTE: `email` is deliberately absent — Medusa's store update-customer schema
+// (POST /store/customers/me) rejects unknown fields, and email is not
+// updatable there. Forwarding it fails every update with
+// 400 "Unrecognized fields: 'email'".
 export interface UpdateCustomerInput {
-  email?: string
   first_name?: string
   last_name?: string
   phone?: string
@@ -123,7 +126,14 @@ export async function login(
   )
 
   if (!response.ok) {
-    throw new Error(await parseMedusaError(response, 'Login failed'))
+    const message = await parseMedusaError(response, 'Login failed')
+    // Classify the routine wrong-credentials case at the adapter seam (same
+    // pattern as AccountExistsError in register()) so callers can log it at
+    // info instead of paging on every mistyped password.
+    if (response.status === 401) {
+      throw new InvalidCredentialsError(message)
+    }
+    throw new Error(message)
   }
 
   const data = await response.json()

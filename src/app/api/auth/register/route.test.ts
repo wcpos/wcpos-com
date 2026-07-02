@@ -4,10 +4,17 @@ import { AccountExistsError } from '@/lib/api/errors'
 
 const mockRegister = vi.fn()
 const mockSetAuthToken = vi.fn()
+const { infoMock, errorMock } = vi.hoisted(() => ({
+  infoMock: vi.fn(),
+  errorMock: vi.fn(),
+}))
 
 vi.mock('@/lib/medusa-auth', () => ({
   register: (...args: unknown[]) => mockRegister(...args),
   setAuthToken: (...args: unknown[]) => mockSetAuthToken(...args),
+}))
+vi.mock('@/lib/logger', () => ({
+  authLogger: { info: infoMock, error: errorMock },
 }))
 
 function postRegister(body: Record<string, unknown>) {
@@ -43,9 +50,13 @@ describe('POST /api/auth/register', () => {
       error: 'Identity with email already exists',
       code: 'ACCOUNT_EXISTS',
     })
+    // Duplicate accounts are routine user behaviour — info, never error
+    // (error level fans out to Discord alerts).
+    expect(infoMock).toHaveBeenCalledTimes(1)
+    expect(errorMock).not.toHaveBeenCalled()
   })
 
-  it('surfaces other registration failures as a 400 with the message', async () => {
+  it('surfaces other registration failures as a 400 with the message and logs at error', async () => {
     mockRegister.mockRejectedValueOnce(new Error('Password is too weak'))
 
     const response = await postRegister({
@@ -56,6 +67,8 @@ describe('POST /api/auth/register', () => {
 
     expect(response.status).toBe(400)
     expect(json).toEqual({ error: 'Password is too weak' })
+    expect(errorMock).toHaveBeenCalledTimes(1)
+    expect(infoMock).not.toHaveBeenCalled()
   })
 
   it('rejects a request missing email or password with a 400', async () => {
@@ -65,5 +78,21 @@ describe('POST /api/auth/register', () => {
     expect(response.status).toBe(400)
     expect(json).toEqual({ error: 'Email and password are required' })
     expect(mockRegister).not.toHaveBeenCalled()
+  })
+
+  it('treats a malformed JSON body as a missing-fields 400, not a failure', async () => {
+    const response = await POST(
+      new Request('http://localhost:3000/api/auth/register', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: 'not-json',
+      })
+    )
+    const json = await response.json()
+
+    expect(response.status).toBe(400)
+    expect(json).toEqual({ error: 'Email and password are required' })
+    expect(mockRegister).not.toHaveBeenCalled()
+    expect(errorMock).not.toHaveBeenCalled()
   })
 })

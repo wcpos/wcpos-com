@@ -197,7 +197,9 @@ export function ProfileEditForm({
   const metadataDefaults = getProfileDefaults(customer.metadata)
   const countryOptions = useMemo(() => buildCountryOptions(locale), [locale])
 
-  const [email, setEmail] = useState(customer.email ?? '')
+  // Email is not editable: the profile API deliberately never forwards it to
+  // Medusa (the store update-customer endpoint rejects unknown fields).
+  const email = customer.email ?? ''
   const [firstName, setFirstName] = useState(customer.first_name ?? '')
   const [lastName, setLastName] = useState(customer.last_name ?? '')
   const [phone, setPhone] = useState(customer.phone ?? '')
@@ -263,7 +265,6 @@ export function ProfileEditForm({
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          email,
           first_name: firstName,
           last_name: lastName,
           phone,
@@ -289,7 +290,6 @@ export function ProfileEditForm({
 
       const updated = getProfileDefaults(data.customer?.metadata)
 
-      setEmail(data.customer.email ?? '')
       setFirstName(data.customer.first_name ?? '')
       setLastName(data.customer.last_name ?? '')
       setPhone(data.customer.phone ?? '')
@@ -378,9 +378,9 @@ export function ProfileEditForm({
               id="profile-email"
               type="email"
               value={email}
-              onChange={(event) => setEmail(event.target.value)}
+              readOnly
+              aria-readonly="true"
               autoComplete="email"
-              required
             />
           </div>
 
