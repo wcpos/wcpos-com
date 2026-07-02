@@ -2,9 +2,11 @@ import { setRequestLocale } from 'next-intl/server'
 import { Suspense } from 'react'
 import { cacheLife, cacheTag } from 'next/cache'
 import { fetchRoadmapData } from '@/services/core/external/github-roadmap'
-import { MilestoneList } from '@/components/roadmap/milestone-list'
-import { Section, Container } from '@/components/ui/section'
-import { SectionHeading } from '@/components/ui/section-heading'
+import {
+  RoadmapTimeline,
+  BoardLinkChip,
+} from '@/components/roadmap/roadmap-timeline'
+import { ROADMAP_DEV_FIXTURE } from '@/components/roadmap/dev-fixture'
 import { Skeleton } from '@/components/ui/skeleton'
 import type { RoadmapData } from '@/types/roadmap'
 import type { Metadata } from 'next'
@@ -32,18 +34,18 @@ async function getCachedRoadmapData(): Promise<RoadmapData> {
   return fetchRoadmapData()
 }
 
-function MilestoneListSkeleton() {
+function TimelineSkeleton() {
   return (
-    <div className="space-y-12">
+    <div className="space-y-10 border-l-2 pl-8 sm:pl-10">
       {[1, 2].map((i) => (
         <div key={i} className="space-y-4">
-          <Skeleton className="h-8 w-48" />
-          <Skeleton className="h-2 w-full" />
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {[1, 2, 3].map((j) => (
-              <Skeleton key={j} className="h-32 rounded-md" />
-            ))}
-          </div>
+          <Skeleton className="h-6 w-20 rounded-full" />
+          <Skeleton className="h-9 w-40" />
+          <Skeleton className="h-1 w-full max-w-xs" />
+          <Skeleton className="h-5 w-full max-w-xl" />
+          {[1, 2, 3].map((j) => (
+            <Skeleton key={j} className="h-14 w-full" />
+          ))}
         </div>
       ))}
     </div>
@@ -60,33 +62,46 @@ export default async function RoadmapPage({
 
   return (
     <main>
-      <Section
-        tone="none"
-        spacing="hero"
-        className="bg-gradient-to-b from-muted/40 to-background"
-        containerClassName="text-center"
-      >
-        <SectionHeading
-          as="h1"
-          size="hero"
-          eyebrow="Roadmap"
-          title="What we're building for WooCommerce POS"
-          subtitle="Upcoming features, milestones, and release progress — pulled straight from our GitHub."
-        />
-      </Section>
+      <div className="mx-auto w-full max-w-3xl px-4 py-16 sm:py-24">
+        <header className="mb-14">
+          <p className="font-mono text-xs font-semibold uppercase tracking-[0.25em] text-wcpos-red dark:text-wcpos-red-accent">
+            Roadmap
+          </p>
+          <h1 className="mt-3 text-4xl font-bold tracking-tight sm:text-5xl">
+            The release train
+          </h1>
+          <p className="mt-4 max-w-xl text-lg text-muted-foreground">
+            Every stop on the way to a faster, offline-proof WooCommerce POS —
+            pulled straight from our GitHub, newest work first.
+          </p>
+          <BoardLinkChip />
+        </header>
 
-      <Section spacing="default" bare>
-        <Container width="content">
-          <Suspense fallback={<MilestoneListSkeleton />}>
-            <MilestoneListLoader />
-          </Suspense>
-        </Container>
-      </Section>
+        <Suspense fallback={<TimelineSkeleton />}>
+          <RoadmapTimelineLoader />
+        </Suspense>
+      </div>
     </main>
   )
 }
 
-async function MilestoneListLoader() {
-  const data = await getCachedRoadmapData()
-  return <MilestoneList data={data} />
+async function RoadmapTimelineLoader() {
+  let data = await getCachedRoadmapData()
+
+  // Local dev has no GitHub App credentials, so the fetch returns empty;
+  // substitute a realistic fixture. Production always renders live data.
+  // The substitution is logged so an empty board can't silently masquerade
+  // as populated during local QA.
+  const isEmpty =
+    data.active.length === 0 &&
+    data.upcoming.length === 0 &&
+    data.shipped.length === 0
+  if (isEmpty && process.env.NODE_ENV !== 'production') {
+    console.warn(
+      '[roadmap] GitHub returned no roadmap data — rendering ROADMAP_DEV_FIXTURE (dev only)',
+    )
+    data = ROADMAP_DEV_FIXTURE
+  }
+
+  return <RoadmapTimeline data={data} />
 }
