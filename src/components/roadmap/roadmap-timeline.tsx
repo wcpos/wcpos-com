@@ -1,16 +1,18 @@
 import type { RoadmapData, RoadmapItem, RoadmapMilestone } from '@/types/roadmap'
-import { TimelineBugs } from './timeline-bugs'
+import { BugFixList } from './bug-fix-list'
+import styles from './timeline.module.css'
+
+/**
+ * RoadmapTimeline — the "release train": one continuous vertical spine where
+ * time is the hierarchy. The active release sits on a pulsing red node,
+ * upcoming work rides a dashed rail below it, shipped releases fade out at
+ * the bottom. Milestones and items come straight from the GitHub project
+ * board (see services/core/external/github-roadmap.ts for the bucketing).
+ */
 
 const PROJECT_BOARD_URL = 'https://github.com/orgs/wcpos/projects/4'
 
-/**
- * PROTOTYPE variant "timeline" — the release train.
- *
- * One continuous vertical spine; time is the hierarchy. Future work rides a
- * dashed rail up top, the active release sits on a pulsing red node, shipped
- * releases fade out below. Ghost version numerals, status glyphs instead of
- * badges, editorial single column. Delete with the prototype.
- */
+type Tone = 'now' | 'next' | 'shipped'
 
 function fmtDue(dueOn: string | null): string | null {
   if (!dueOn) return null
@@ -37,7 +39,11 @@ function StatusGlyph({ status }: { status: RoadmapItem['status'] }) {
   }
   if (status === 'in_progress') {
     return (
-      <svg viewBox="0 0 16 16" className="mt-1 size-4 shrink-0" aria-label="In progress">
+      <svg
+        viewBox="0 0 16 16"
+        className="mt-1 size-4 shrink-0"
+        aria-label="In progress"
+      >
         <circle
           cx="8"
           cy="8"
@@ -93,12 +99,18 @@ function FeatureRow({ item }: { item: RoadmapItem }) {
   )
 }
 
+const NODE_TONE: Record<Tone, string> = {
+  now: `border-wcpos-red bg-wcpos-red ${styles.pulse}`,
+  next: 'border-slate-400 bg-background dark:border-slate-500',
+  shipped: 'border-emerald-500 bg-emerald-500',
+}
+
 function TimelineMilestone({
   milestone,
   tone,
 }: {
   milestone: RoadmapMilestone
-  tone: 'now' | 'next' | 'shipped'
+  tone: Tone
 }) {
   const pct =
     milestone.progress.total > 0
@@ -108,29 +120,13 @@ function TimelineMilestone({
 
   return (
     <div className={tone === 'shipped' ? 'relative pb-14 opacity-60' : 'relative pb-14'}>
-      {/* Node on the rail. Border colors are inline — an unlayered
-          `* { border-color }` reset in globals.css overrides the utilities. */}
+      {/* Node on the rail */}
       <span
-        className={
-          'absolute -left-[38px] top-2 size-4 rounded-full border-2 sm:-left-[46px] ' +
-          (tone === 'now'
-            ? 'bg-wcpos-red rp-pulse'
-            : tone === 'next'
-              ? 'bg-background'
-              : 'bg-emerald-500')
-        }
-        style={{
-          borderColor:
-            tone === 'now'
-              ? 'hsl(var(--wcpos-red))'
-              : tone === 'next'
-                ? '#94a3b8'
-                : '#10b981',
-        }}
+        className={`absolute -left-[38px] top-2 size-4 rounded-full border-2 sm:-left-[46px] ${NODE_TONE[tone]}`}
         aria-hidden
       />
 
-      {/* Ghost version numeral — only for short version-style titles */}
+      {/* Ghost numeral behind the heading — version-style titles only */}
       {milestone.title.length <= 8 && (
         <div
           aria-hidden
@@ -148,8 +144,7 @@ function TimelineMilestone({
           {tone === 'shipped'
             ? 'shipped'
             : `${milestone.progress.completed} of ${milestone.progress.total} done`}
-          {due && tone !== 'shipped' ? ` · due ${due}` : ''}
-          {due && tone === 'shipped' ? ` · ${due}` : ''}
+          {due ? (tone === 'shipped' ? ` · ${due}` : ` · due ${due}`) : ''}
         </span>
       </div>
 
@@ -174,9 +169,21 @@ function TimelineMilestone({
         </ul>
       )}
 
-      <TimelineBugs bugs={milestone.bugs} />
+      <BugFixList bugs={milestone.bugs} />
     </div>
   )
+}
+
+const RAIL_TONE: Record<Tone, string> = {
+  now: 'border-wcpos-red/70',
+  next: 'border-dashed border-slate-300 dark:border-slate-700',
+  shipped: 'border-slate-200 dark:border-slate-800',
+}
+
+const LABEL_TONE: Record<Tone, string> = {
+  now: 'bg-wcpos-red text-white',
+  next: 'border border-slate-300 text-muted-foreground dark:border-slate-600',
+  shipped: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400',
 }
 
 function RailGroup({
@@ -186,35 +193,20 @@ function RailGroup({
 }: {
   label: string
   milestones: RoadmapMilestone[]
-  tone: 'now' | 'next' | 'shipped'
+  tone: Tone
 }) {
   if (milestones.length === 0) return null
   return (
-    <section
-      className={
-        'relative border-l-2 pl-8 sm:pl-10 ' + (tone === 'next' ? 'border-dashed' : '')
-      }
-      style={{
-        borderLeftColor:
-          tone === 'now' ? 'hsl(var(--wcpos-red) / 0.7)' : 'hsl(var(--border))',
-      }}
-    >
+    <section className={`relative border-l-2 pl-8 sm:pl-10 ${RAIL_TONE[tone]}`}>
       <div className="pb-8">
         <span
-          className={
-            'inline-block rounded-full px-3 py-1 font-mono text-[11px] font-semibold uppercase tracking-[0.2em] ' +
-            (tone === 'now'
-              ? 'bg-wcpos-red text-white'
-              : tone === 'next'
-                ? 'border border-slate-300 text-muted-foreground dark:border-slate-600'
-                : 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400')
-          }
+          className={`inline-block rounded-full px-3 py-1 font-mono text-[11px] font-semibold uppercase tracking-[0.2em] ${LABEL_TONE[tone]}`}
         >
           {label}
         </span>
       </div>
       {milestones.map((m, i) => (
-        <div key={m.title} className="rp-rise" style={{ animationDelay: `${i * 90}ms` }}>
+        <div key={m.title} className={styles.rise} style={{ animationDelay: `${i * 90}ms` }}>
           <TimelineMilestone milestone={m} tone={tone} />
         </div>
       ))}
@@ -222,47 +214,41 @@ function RailGroup({
   )
 }
 
-export function VariantTimeline({ data }: { data: RoadmapData }) {
+export function BoardLinkChip() {
   return (
-    <div className="mx-auto w-full max-w-3xl px-4 py-16 sm:py-24">
-      <style>{`
-        @keyframes rp-rise-kf { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
-        .rp-rise { animation: rp-rise-kf 0.5s ease-out both; }
-        @keyframes rp-pulse-kf { 0%, 100% { box-shadow: 0 0 0 0 hsl(var(--wcpos-red) / 0.45); } 50% { box-shadow: 0 0 0 8px hsl(var(--wcpos-red) / 0); } }
-        .rp-pulse { animation: rp-pulse-kf 2s ease-out infinite; }
-      `}</style>
+    <a
+      href={PROJECT_BOARD_URL}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="mt-4 inline-flex items-center gap-2 rounded-full border px-3 py-1 font-mono text-xs text-muted-foreground transition-colors hover:border-foreground/30 hover:text-foreground"
+    >
+      <span className="relative flex size-2">
+        <span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-400 opacity-60 motion-reduce:animate-none" />
+        <span className="relative inline-flex size-2 rounded-full bg-emerald-500" />
+      </span>
+      live from the WCPOS project board
+      <span aria-hidden>&#8599;</span>
+    </a>
+  )
+}
 
-      <header className="mb-14">
-        <p className="font-mono text-xs font-semibold uppercase tracking-[0.25em] text-wcpos-red dark:text-wcpos-red-accent">
-          Roadmap
-        </p>
-        <h1 className="mt-3 text-4xl font-bold tracking-tight sm:text-5xl">
-          The release train
-        </h1>
-        <p className="mt-4 max-w-xl text-lg text-muted-foreground">
-          Every stop on the way to a faster, offline-proof WooCommerce POS — pulled
-          straight from our GitHub, newest work first.
-        </p>
-        <a
-          href={PROJECT_BOARD_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="mt-4 inline-flex items-center gap-2 rounded-full border px-3 py-1 font-mono text-xs text-muted-foreground transition-colors hover:border-foreground/30 hover:text-foreground"
-        >
-          <span className="relative flex size-2">
-            <span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-400 opacity-60" />
-            <span className="relative inline-flex size-2 rounded-full bg-emerald-500" />
-          </span>
-          live from the WCPOS project board
-          <span aria-hidden>&#8599;</span>
-        </a>
-      </header>
+export function RoadmapTimeline({ data }: { data: RoadmapData }) {
+  const hasContent =
+    data.active.length > 0 || data.upcoming.length > 0 || data.shipped.length > 0
 
-      <div className="space-y-4">
-        <RailGroup label="Now" milestones={data.active} tone="now" />
-        <RailGroup label="Next" milestones={data.upcoming} tone="next" />
-        <RailGroup label="Shipped" milestones={data.shipped} tone="shipped" />
-      </div>
+  if (!hasContent) {
+    return (
+      <p className="py-12 text-center text-muted-foreground">
+        No roadmap items to display yet.
+      </p>
+    )
+  }
+
+  return (
+    <div className="space-y-4">
+      <RailGroup label="Now" milestones={data.active} tone="now" />
+      <RailGroup label="Next" milestones={data.upcoming} tone="next" />
+      <RailGroup label="Shipped" milestones={data.shipped} tone="shipped" />
     </div>
   )
 }

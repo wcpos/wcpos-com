@@ -1,11 +1,12 @@
 import type { RoadmapData } from '@/types/roadmap'
 
 /**
- * PROTOTYPE — realistic mock roadmap data, mirroring the live content of
- * beta.wcpos.com/roadmap (2026-07). Used as a dev-only fallback when GitHub
- * credentials are not configured locally. Delete with the prototype.
+ * Dev-only roadmap fixture, mirroring the live GitHub project board content
+ * (2026-07). Substituted when the roadmap fetch returns empty in non-prod —
+ * local dev has no GitHub App credentials, and an empty page makes layout
+ * work on /roadmap impossible. Never used in production.
  */
-export const MOCK_ROADMAP_DATA: RoadmapData = {
+export const ROADMAP_DEV_FIXTURE: RoadmapData = {
   active: [
     {
       title: 'v1.10.0',

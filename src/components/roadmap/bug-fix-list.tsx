@@ -1,58 +1,54 @@
-'use client'
-
-import { useId, useState } from 'react'
 import type { RoadmapItem } from '@/types/roadmap'
-import { Badge } from '@/components/ui/badge'
+import { Collapsible } from '@/components/ui/collapsible'
 
-interface BugFixListProps {
-  bugs: RoadmapItem[]
+const STATUS_WORD: Record<RoadmapItem['status'], string> = {
+  done: 'fixed',
+  in_progress: 'in progress',
+  planned: 'planned',
 }
 
-const statusConfig = {
-  planned: { label: 'Planned', variant: 'secondary' as const },
-  in_progress: { label: 'In Progress', variant: 'default' as const },
-  done: { label: 'Done', variant: 'success' as const },
+const STATUS_DOT: Record<RoadmapItem['status'], string> = {
+  done: 'bg-emerald-500',
+  in_progress: 'bg-wcpos-red',
+  planned: 'bg-slate-300 dark:bg-slate-600',
 }
 
-export function BugFixList({ bugs }: BugFixListProps) {
-  const listId = useId()
-  const [expanded, setExpanded] = useState(false)
+/**
+ * BugFixList — a milestone's bug fixes behind a quiet inline disclosure.
+ * Native <details> via the Collapsible primitive, so it works without JS.
+ */
+export function BugFixList({ bugs }: { bugs: RoadmapItem[] }) {
+  if (bugs.length === 0) return null
 
   return (
-    <div className="border rounded-md">
-      <button
-        type="button"
-        aria-expanded={expanded}
-        aria-controls={listId}
-        onClick={() => setExpanded(!expanded)}
-        className="w-full flex items-center justify-between px-4 py-3 text-sm text-muted-foreground hover:text-foreground transition-colors"
-      >
-        <span>{bugs.length} bug fix{bugs.length !== 1 ? 'es' : ''} &amp; improvements</span>
-        <span className="text-xs">{expanded ? '\u25B2' : '\u25BC'}</span>
-      </button>
-
-      {expanded && (
-        <ul id={listId} className="border-t divide-y">
-          {bugs.map(bug => {
-            const status = statusConfig[bug.status]
-            return (
-              <li key={bug.id}>
-                <a
-                  href={bug.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-between px-4 py-2 text-sm hover:bg-muted/50 transition-colors"
-                >
-                  <span>{bug.title}</span>
-                  <Badge variant={status.variant} className="text-xs">
-                    {status.label}
-                  </Badge>
-                </a>
-              </li>
-            )
-          })}
-        </ul>
-      )}
-    </div>
+    <Collapsible
+      className="mt-2"
+      summaryClassName="w-fit font-mono text-xs text-muted-foreground transition-colors hover:text-foreground"
+      summary={`+ ${bugs.length} bug ${bugs.length === 1 ? 'fix' : 'fixes'} & improvements`}
+    >
+      <ul className="mt-2 space-y-1.5 pl-4">
+        {bugs.map((bug) => (
+          <li key={bug.id}>
+            <a
+              href={bug.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex items-baseline gap-2 text-sm text-muted-foreground"
+            >
+              <span
+                className={`size-1.5 shrink-0 self-center rounded-full ${STATUS_DOT[bug.status]}`}
+                aria-hidden
+              />
+              <span className="group-hover:text-foreground group-hover:underline">
+                {bug.title}
+              </span>
+              <span className="font-mono text-[11px]">
+                {STATUS_WORD[bug.status]}
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </Collapsible>
   )
 }
