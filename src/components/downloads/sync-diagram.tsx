@@ -60,6 +60,7 @@ function DeviceSphere({
   return (
     <div className="-translate-x-1/2 -translate-y-1/2">
       <div
+        data-testid={`device-sphere-${node.key}`}
         className={`flex items-center justify-center rounded-full shadow-lg transition-all duration-200 ${
           hovered
             ? 'scale-110 bg-wcpos-red text-white'
@@ -288,9 +289,13 @@ export function SyncDiagram() {
               wrappers.current[i] = el
             }}
             className="absolute"
+            data-testid={`device-wrapper-${node.key}`}
             style={{ left: pct(home.x), top: pct(home.y) }}
+            tabIndex={reduced ? undefined : 0}
             onPointerEnter={reduced ? undefined : () => setHover(i)}
             onPointerLeave={reduced ? undefined : () => setHover(null)}
+            onFocus={reduced ? undefined : () => setHover(i)}
+            onBlur={reduced ? undefined : () => setHover(null)}
           >
             <DeviceSphere node={node} hovered={hovered === i} />
           </div>

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import { HowItFits } from './how-it-fits'
 
 describe('HowItFits', () => {
@@ -24,5 +24,22 @@ describe('HowItFits', () => {
       }),
     ).toBeInTheDocument()
     expect(screen.getByText('One plugin is the only setup')).toBeInTheDocument()
+  })
+
+  it('highlights device spheres when keyboard focus reaches them', () => {
+    render(<HowItFits />)
+
+    const desktopWrapper = screen.getByTestId('device-wrapper-desktop')
+    const desktopSphere = screen.getByTestId('device-sphere-desktop')
+
+    expect(desktopWrapper).toHaveAttribute('tabindex', '0')
+
+    fireEvent.focus(desktopWrapper)
+
+    expect(desktopSphere).toHaveClass('bg-wcpos-red')
+
+    fireEvent.blur(desktopWrapper)
+
+    expect(desktopSphere).not.toHaveClass('bg-wcpos-red')
   })
 })
