@@ -24,8 +24,6 @@ import {
 import {
   motion,
   useAnimationFrame,
-  useMotionValue,
-  useSpring,
   useReducedMotion,
 } from 'motion/react'
 import { Section, Container } from '@/components/ui/section'
@@ -40,13 +38,19 @@ const ORBIT_R = 138
 const DIAGRAM_LABEL =
   'A WooCommerce store with the WCPOS plugin sits at the centre, connected over a REST API to the desktop, iOS, Android and web apps, which all stay in sync.'
 
-type NodeSpec = { key: string; label: string; icon: LucideIcon; angle: number }
+type NodeSpec = {
+  key: string
+  label: string
+  icon: LucideIcon
+  angle: number
+  size: number
+}
 
 const NODES: NodeSpec[] = [
-  { key: 'desktop', label: 'Desktop', icon: Laptop, angle: -90 },
-  { key: 'ios', label: 'iOS & iPad', icon: Smartphone, angle: 0 },
-  { key: 'android', label: 'Android', icon: Smartphone, angle: 90 },
-  { key: 'web', label: 'Web', icon: Globe, angle: 180 },
+  { key: 'desktop', label: 'Desktop', icon: Laptop, angle: -90, size: 66 },
+  { key: 'ios', label: 'iOS & iPad', icon: Smartphone, angle: 0, size: 58 },
+  { key: 'android', label: 'Android', icon: Smartphone, angle: 90, size: 58 },
+  { key: 'web', label: 'Web', icon: Globe, angle: 180, size: 62 },
 ]
 
 function homeOf(node: NodeSpec) {
@@ -244,92 +248,6 @@ function useLogicalPointer(container: React.RefObject<HTMLDivElement | null>) {
 }
 
 /* ------------------------------------------------------------------ */
-/* Variant A — orbit: satellites circle the hub, 3D tilt follows the   */
-/* cursor, hovering slows the orbit and lights that device's line      */
-/* ------------------------------------------------------------------ */
-
-function VariantOrbit() {
-  const container = useRef<HTMLDivElement>(null)
-  const { pointer, onPointerMove, onPointerLeave } = useLogicalPointer(container)
-  const { wrappers, baseLines, flowLines, apply } = useDiagramRefs()
-  const [hovered, setHovered] = useState<number | null>(null)
-  const hoveredRef = useRef<number | null>(null)
-  const setHover = (i: number | null) => {
-    hoveredRef.current = i
-    setHovered(i)
-  }
-
-  const baseAngle = useRef(0)
-  const speed = useRef(1)
-
-  const rotateX = useSpring(0, { stiffness: 120, damping: 18 })
-  const rotateY = useSpring(0, { stiffness: 120, damping: 18 })
-
-  useAnimationFrame((t, dt) => {
-    const target = pointer.current ? 0.18 : 1
-    speed.current += (target - speed.current) * Math.min(1, dt * 0.004)
-    baseAngle.current += dt * 0.000115 * speed.current * 360 * 0.05
-
-    if (pointer.current) {
-      rotateY.set(((pointer.current.x - C) / C) * 7)
-      rotateX.set((-(pointer.current.y - C) / C) * 7)
-    } else {
-      rotateX.set(0)
-      rotateY.set(0)
-    }
-
-    apply(
-      NODES.map((n, i) => {
-        const rad = ((n.angle + baseAngle.current) * Math.PI) / 180
-        const r = ORBIT_R + 7 * Math.sin(t / 900 + i * 1.7)
-        return { x: C + r * Math.cos(rad), y: C + r * Math.sin(rad) }
-      }),
-      hoveredRef.current,
-    )
-  })
-
-  return (
-    <motion.div
-      style={{ rotateX, rotateY, transformPerspective: 900 }}
-      className="w-full max-w-[440px]"
-    >
-      <div
-        ref={container}
-        role="img"
-        aria-label={DIAGRAM_LABEL}
-        className="relative aspect-square w-full"
-        onPointerMove={onPointerMove}
-        onPointerLeave={onPointerLeave}
-      >
-        <DiagramLines baseLines={baseLines} flowLines={flowLines} />
-        {NODES.map((n, i) => {
-          const h = homeOf(n)
-          return (
-            <div
-              key={n.key}
-              ref={(el) => {
-                wrappers.current[i] = el
-              }}
-              className="absolute"
-              style={{ left: pct(h.x), top: pct(h.y) }}
-              onPointerEnter={() => setHover(i)}
-              onPointerLeave={() => setHover(null)}
-            >
-              <BallContent
-                node={n}
-                hovered={hovered === i}
-                className="-translate-x-1/2 -translate-y-1/2"
-              />
-            </div>
-          )
-        })}
-        <Hub />
-      </div>
-    </motion.div>
-  )
-}
-
-/* ------------------------------------------------------------------ */
 /* Variant B — float: balls drift at home and are magnetically pulled  */
 /* toward the cursor; hovering a ball fires sync packets to the hub    */
 /* ------------------------------------------------------------------ */
@@ -450,85 +368,199 @@ function VariantFloat() {
 }
 
 /* ------------------------------------------------------------------ */
-/* Variant C — fling: grab a ball and let go — it springs back on an   */
-/* elastic connector; everything bobs gently at rest                   */
+/* Mix — float physics + slow orbital drift, three sphere treatments   */
 /* ------------------------------------------------------------------ */
 
-function FlingBall({
-  node,
-  index,
-  registerWrapper,
-  onOffset,
-  onDragState,
-}: {
-  node: NodeSpec
-  index: number
-  registerWrapper: (i: number, el: HTMLDivElement | null) => void
-  onOffset: (i: number, x: number, y: number) => void
-  onDragState: (i: number, dragging: boolean) => void
-}) {
-  const x = useMotionValue(0)
-  const y = useMotionValue(0)
-  const [dragging, setDragging] = useState(false)
-  const home = homeOf(node)
+const DRIFT_DEG_PER_MS = 0.0022 // ~2.2 deg/s — one lap in ~2.7 min
 
-  useAnimationFrame(() => {
-    onOffset(index, x.get(), y.get())
-  })
+type BallSkinProps = { node: NodeSpec; hovered: boolean; className?: string }
+type BallSkin = (props: BallSkinProps) => React.ReactNode
 
+function BallLabel({ label }: { label: string }) {
   return (
-    <div
-      ref={(el) => registerWrapper(index, el)}
-      className="absolute"
-      style={{ left: pct(home.x), top: pct(home.y) }}
-    >
-      <motion.div
-        drag
-        dragConstraints={{ top: 0, right: 0, bottom: 0, left: 0 }}
-        dragElastic={0.45}
-        dragTransition={{ bounceStiffness: 250, bounceDamping: 11 }}
-        whileDrag={{ scale: 1.12 }}
-        style={{ x, y, touchAction: 'none' }}
-        className={dragging ? 'cursor-grabbing' : 'cursor-grab'}
-        onDragStart={() => {
-          setDragging(true)
-          onDragState(index, true)
-        }}
-        onDragEnd={() => {
-          setDragging(false)
-          onDragState(index, false)
+    <span className="absolute left-1/2 top-full mt-1.5 -translate-x-1/2 whitespace-nowrap text-[11px] font-medium text-muted-foreground">
+      {label}
+    </span>
+  )
+}
+
+/** Soft 3D-shaded sphere sitting above the canvas. */
+function ShadedBall({ node, hovered, className }: BallSkinProps) {
+  const Icon = node.icon
+  return (
+    <div className={className}>
+      <div
+        className={`flex items-center justify-center rounded-full bg-card transition-all duration-200 ${
+          hovered
+            ? 'scale-110 text-wcpos-red dark:text-wcpos-red-accent'
+            : 'text-slate-500 dark:text-slate-300'
+        }`}
+        style={{
+          width: node.size,
+          height: node.size,
+          backgroundImage:
+            'radial-gradient(circle at 30% 26%, rgba(255,255,255,0.6), rgba(255,255,255,0) 55%), radial-gradient(circle at 72% 82%, rgba(15,23,42,0.16), rgba(15,23,42,0) 60%)',
+          boxShadow: hovered
+            ? '0 16px 26px -12px rgba(15,23,42,0.45), 0 0 0 2px rgba(199,57,44,0.4)'
+            : '0 12px 22px -12px rgba(15,23,42,0.35)',
         }}
       >
-        <div
-          className="hif-bob -translate-x-1/2 -translate-y-1/2"
-          style={{ animationDelay: `${index * 0.6}s` }}
-        >
-          <BallContent node={node} hovered={dragging} className="relative" />
-        </div>
-      </motion.div>
+        <Icon
+          size={Math.round(node.size * 0.36)}
+          strokeWidth={1.6}
+          aria-hidden="true"
+        />
+      </div>
+      <BallLabel label={node.label} />
     </div>
   )
 }
 
-function VariantFling() {
-  const container = useRef<HTMLDivElement>(null)
-  const { wrappers, baseLines, flowLines, apply } = useDiagramRefs()
-  const offsets = useRef(NODES.map(() => ({ x: 0, y: 0 })))
-  const draggingRef = useRef<number | null>(null)
+/** Frosted-glass sphere floating over a calm blue halo. */
+function GlassBall({ node, hovered, className }: BallSkinProps) {
+  const Icon = node.icon
+  return (
+    <div className={className}>
+      <span
+        aria-hidden="true"
+        className="absolute rounded-full blur-xl transition-opacity duration-300"
+        style={{
+          inset: -14,
+          background:
+            'radial-gradient(circle, rgba(120,165,215,0.5), rgba(120,165,215,0) 70%)',
+          opacity: hovered ? 1 : 0.55,
+        }}
+      />
+      <div
+        className={`relative flex items-center justify-center rounded-full border backdrop-blur-md transition-all duration-200 ${
+          hovered
+            ? 'scale-110 border-wcpos-red/50 text-wcpos-red dark:text-wcpos-red-accent'
+            : 'border-white/70 text-slate-600 dark:border-white/25 dark:text-slate-200'
+        }`}
+        style={{
+          width: node.size,
+          height: node.size,
+          background:
+            'linear-gradient(145deg, rgba(255,255,255,0.6), rgba(255,255,255,0.15))',
+          boxShadow:
+            'inset 0 1px 1px rgba(255,255,255,0.9), 0 10px 24px -14px rgba(30,58,95,0.5)',
+        }}
+      >
+        <Icon
+          size={Math.round(node.size * 0.36)}
+          strokeWidth={1.6}
+          aria-hidden="true"
+        />
+      </div>
+      <BallLabel label={node.label} />
+    </div>
+  )
+}
 
-  useAnimationFrame(() => {
-    const rect = container.current?.getBoundingClientRect()
-    const scale = rect ? rect.width / 440 : 1
-    apply(
-      NODES.map((n, i) => {
-        const home = homeOf(n)
-        return {
-          x: home.x + offsets.current[i].x / scale,
-          y: home.y + offsets.current[i].y / scale,
-        }
-      }),
-      draggingRef.current,
-    )
+/** Solid ink sphere that flips to brand red on hover. */
+function InkBall({ node, hovered, className }: BallSkinProps) {
+  const Icon = node.icon
+  return (
+    <div className={className}>
+      <div
+        className={`flex items-center justify-center rounded-full shadow-lg transition-all duration-200 ${
+          hovered
+            ? 'scale-110 bg-wcpos-red text-white'
+            : 'bg-slate-800 text-slate-100 dark:bg-slate-100 dark:text-slate-800'
+        }`}
+        style={{ width: node.size, height: node.size }}
+      >
+        <Icon
+          size={Math.round(node.size * 0.36)}
+          strokeWidth={1.6}
+          aria-hidden="true"
+        />
+      </div>
+      <BallLabel label={node.label} />
+    </div>
+  )
+}
+
+/** Hub with the same shading treatment so it reads as one family. */
+function ShadedHubBody() {
+  return (
+    <div
+      className="flex h-[112px] w-[112px] flex-col items-center justify-center rounded-full bg-wcpos-red text-center"
+      style={{
+        backgroundImage:
+          'radial-gradient(circle at 32% 26%, rgba(255,255,255,0.3), rgba(255,255,255,0) 48%), radial-gradient(circle at 70% 82%, rgba(0,0,0,0.2), rgba(0,0,0,0) 58%)',
+        boxShadow: '0 20px 36px -16px rgba(160,40,30,0.55)',
+      }}
+    >
+      <span className="text-[13px] font-semibold text-white">Your store</span>
+      <span className="text-[10.5px] text-white/90">WooCommerce</span>
+      <span className="text-[9px] text-white/70">+ WCPOS plugin</span>
+    </div>
+  )
+}
+
+function MixDiagram({ Ball }: { Ball: BallSkin }) {
+  const container = useRef<HTMLDivElement>(null)
+  const { pointer, onPointerMove, onPointerLeave } = useLogicalPointer(container)
+  const { wrappers, baseLines, flowLines, apply } = useDiagramRefs()
+  const [hovered, setHovered] = useState<number | null>(null)
+  const hoveredRef = useRef<number | null>(null)
+  const setHover = (i: number | null) => {
+    hoveredRef.current = i
+    setHovered(i)
+  }
+
+  const offsets = useRef(NODES.map(() => ({ x: 0, y: 0 })))
+  const packetOut = useRef<HTMLDivElement>(null)
+  const packetBack = useRef<HTMLDivElement>(null)
+
+  useAnimationFrame((t, dt) => {
+    const driftAngle = t * DRIFT_DEG_PER_MS
+    const pts = NODES.map((n, i) => {
+      const rad = ((n.angle + driftAngle) * Math.PI) / 180
+      const home = { x: C + ORBIT_R * Math.cos(rad), y: C + ORBIT_R * Math.sin(rad) }
+      const drift = {
+        x: 9 * Math.sin(t * 0.0006 + i * 2.1),
+        y: 7 * Math.cos(t * 0.0007 + i * 1.3),
+      }
+
+      let target = { x: 0, y: 0 }
+      const p = pointer.current
+      if (p) {
+        const dx = p.x - home.x
+        const dy = p.y - home.y
+        const dist = Math.max(24, Math.hypot(dx, dy))
+        const pull = 34 * Math.exp(-dist / 170)
+        target = { x: (dx / dist) * pull * 3.2, y: (dy / dist) * pull * 3.2 }
+      }
+      const o = offsets.current[i]
+      const k = Math.min(1, dt * 0.006)
+      o.x += (target.x - o.x) * k
+      o.y += (target.y - o.y) * k
+
+      return { x: home.x + drift.x + o.x, y: home.y + drift.y + o.y }
+    })
+    apply(pts, hoveredRef.current)
+
+    const hi = hoveredRef.current
+    for (const [ref, phase] of [
+      [packetOut, 0],
+      [packetBack, 0.5],
+    ] as const) {
+      const el = ref.current
+      if (!el) continue
+      if (hi === null) {
+        el.style.opacity = '0'
+        continue
+      }
+      const ball = pts[hi]
+      const tt = ((t / 1100 + phase) % 1 + 1) % 1
+      const from = phase === 0 ? { x: C, y: C } : ball
+      const to = phase === 0 ? ball : { x: C, y: C }
+      el.style.opacity = '1'
+      el.style.left = pct(from.x + (to.x - from.x) * tt)
+      el.style.top = pct(from.y + (to.y - from.y) * tt)
+    }
   })
 
   return (
@@ -537,41 +569,64 @@ function VariantFling() {
       role="img"
       aria-label={DIAGRAM_LABEL}
       className="relative aspect-square w-full max-w-[440px]"
+      onPointerMove={onPointerMove}
+      onPointerLeave={onPointerLeave}
     >
-      <style>{`
-        @keyframes hif-bob { 0%,100% { transform: translate(-50%,-50%) translateY(-3px); } 50% { transform: translate(-50%,-50%) translateY(3px); } }
-        .hif-bob { animation: hif-bob 3.4s ease-in-out infinite; }
-      `}</style>
       <DiagramLines baseLines={baseLines} flowLines={flowLines} />
-      {NODES.map((n, i) => (
-        <FlingBall
-          key={n.key}
-          node={n}
-          index={i}
-          registerWrapper={(idx, el) => {
-            wrappers.current[idx] = el
-          }}
-          onOffset={(idx, ox, oy) => {
-            offsets.current[idx] = { x: ox, y: oy }
-          }}
-          onDragState={(idx, dragging) => {
-            draggingRef.current = dragging ? idx : null
-          }}
-        />
-      ))}
-      <Hub />
+      <div
+        ref={packetOut}
+        className="absolute h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-wcpos-red opacity-0 shadow-[0_0_6px_rgba(220,60,50,0.7)]"
+      />
+      <div
+        ref={packetBack}
+        className="absolute h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-wcpos-red opacity-0 shadow-[0_0_6px_rgba(220,60,50,0.7)]"
+      />
+      {NODES.map((n, i) => {
+        const h = homeOf(n)
+        return (
+          <div
+            key={n.key}
+            ref={(el) => {
+              wrappers.current[i] = el
+            }}
+            className="absolute"
+            style={{ left: pct(h.x), top: pct(h.y) }}
+            onPointerEnter={() => setHover(i)}
+            onPointerLeave={() => setHover(null)}
+          >
+            <Ball
+              node={n}
+              hovered={hovered === i}
+              className="-translate-x-1/2 -translate-y-1/2"
+            />
+          </div>
+        )
+      })}
+      <Hub>
+        <motion.div
+          animate={{ scale: [1, 1.045, 1] }}
+          transition={{ duration: 3.2, repeat: Infinity, ease: 'easeInOut' }}
+        >
+          <ShadedHubBody />
+        </motion.div>
+      </Hub>
     </div>
   )
 }
+
+const MixShaded = () => <MixDiagram Ball={ShadedBall} />
+const MixGlass = () => <MixDiagram Ball={GlassBall} />
+const MixInk = () => <MixDiagram Ball={InkBall} />
 
 /* ------------------------------------------------------------------ */
 /* Section shell + switcher                                            */
 /* ------------------------------------------------------------------ */
 
 const VARIANTS = [
-  { key: 'orbit', name: 'Orbit — satellites circle, 3D tilt', el: VariantOrbit },
-  { key: 'float', name: 'Float — magnetic pull, sync packets', el: VariantFloat },
-  { key: 'fling', name: 'Fling — grab, throw, spring back', el: VariantFling },
+  { key: 'mix-shaded', name: 'Mix — drift + shaded spheres', el: MixShaded },
+  { key: 'mix-glass', name: 'Mix — drift + glass spheres', el: MixGlass },
+  { key: 'mix-ink', name: 'Mix — drift + ink spheres', el: MixInk },
+  { key: 'float', name: 'Float — previous round', el: VariantFloat },
   { key: 'original', name: 'Original — static', el: null },
 ] as const
 
@@ -698,7 +753,7 @@ function LabInner() {
   const key =
     override ??
     (mounted
-      ? (new URLSearchParams(window.location.search).get('variant') ?? 'orbit')
+      ? (new URLSearchParams(window.location.search).get('variant') ?? 'mix-shaded')
       : null)
 
   const variant = VARIANTS.find((v) => v.key === key) ?? VARIANTS[0]
