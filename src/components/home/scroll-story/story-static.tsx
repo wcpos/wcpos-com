@@ -55,9 +55,26 @@ export function StoryStatic() {
               primary landmark (the pinned copy is display:none there) */}
           <CopyAct1 headingLevel={1} tone="onLight" />
         </div>
-        <StageStrip className="h-[240px] sm:h-[300px]">
-          <DeviceTablet />
-        </StageStrip>
+        {/* the counter photo, cropped to the hardware cluster. lazy so the
+            desktop render of this hidden variant never downloads it (the
+            pinned variant's mobile fallback src is the same file, so on
+            mobile this comes straight from cache) */}
+        <div className="mx-auto mt-10 max-w-2xl">
+          <picture>
+            <source
+              srcSet="/images/story/counter-photo-card.avif"
+              type="image/avif"
+            />
+            <img
+              src="/images/story/counter-photo-card.webp"
+              alt="A shop counter with a tablet running the WCPOS register, a receipt printer, a card terminal and a barcode scanner"
+              width={1280}
+              height={722}
+              loading="lazy"
+              className="w-full rounded-2xl shadow-[0_24px_48px_-24px_rgba(30,20,10,0.5)]"
+            />
+          </picture>
+        </div>
       </Section>
 
       <Section tone="none" spacing="default" className={cn('overflow-hidden', styles.lightStudio)}>

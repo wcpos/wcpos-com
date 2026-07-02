@@ -9,7 +9,7 @@ import {
   type MotionValue,
 } from 'motion/react'
 import { cn } from '@/lib/utils'
-import { useActGravity } from './act-gravity'
+import { ACT_HOLDS, useActGravity } from './act-gravity'
 import { CloudSync } from './acts/cloud-sync'
 import { CyclingDevice } from './acts/cycling-device'
 import { DotOrbit } from './acts/dot-orbit'
@@ -306,25 +306,38 @@ function PinnedStoryScroller() {
           className={cn('absolute inset-0', styles.woodCounterLight)}
           style={{ opacity: bgWarmOpacity, scale: bgWarmScale }}
         >
+          {/* media-split sources: mobile (where this pinned variant is
+              display:none) falls through to the small card file, which the
+              static variant reuses from cache — desktop never downloads the
+              card, mobile never downloads the 2K master */}
           <picture>
             <source
+              media="(min-width: 768px)"
               srcSet="/images/story/counter-photo.avif"
               type="image/avif"
             />
+            <source
+              media="(min-width: 768px)"
+              srcSet="/images/story/counter-photo.webp"
+              type="image/webp"
+            />
             <img
-              src="/images/story/counter-photo.webp"
+              src="/images/story/counter-photo-card.webp"
               alt=""
               fetchPriority="high"
               className="absolute inset-0 h-full w-full object-cover"
             />
           </picture>
-          {/* passers-by: soft shadows drifting over the counter */}
+          {/* readability scrim under the act-1 copy — kept faint; the
+              visitor shadows carry the depth */}
+          <div className="absolute inset-x-0 top-0 h-[40%] bg-gradient-to-b from-white/30 via-white/10 to-transparent" />
+          {/* customers: tall soft silhouettes approach the counter from
+              beyond the top edge, linger, and withdraw (cast over the scrim
+              so they stay present in the brightened band) */}
           <div aria-hidden="true" className="absolute inset-0 overflow-hidden">
             <span className={styles.counterShadow1} />
             <span className={styles.counterShadow2} />
           </div>
-          {/* readability scrim under the act-1 copy */}
-          <div className="absolute inset-x-0 top-0 h-[52%] bg-gradient-to-b from-white/60 via-white/25 to-transparent" />
         </motion.div>
         <motion.div
           aria-hidden="true"
@@ -483,21 +496,35 @@ function PinnedStoryScroller() {
           Scroll ↓
         </motion.div>
 
-        {/* act progress dots */}
-        <div
-          aria-hidden="true"
-          className="absolute right-6 top-1/2 z-20 flex -translate-y-1/2 flex-col gap-2.5"
-        >
+        {/* act progress dots — click to jump to an act (targets are the
+            act-gravity settle anchors, so the settle assist stays quiet) */}
+        <div className="absolute right-6 top-1/2 z-20 flex -translate-y-1/2 flex-col gap-1">
           {[0, 1, 2, 3].map((i) => (
-            <span
+            <button
               key={i}
-              className={cn(
-                'h-2 w-2 rounded-full transition-all duration-300',
-                i === act
-                  ? 'scale-125 bg-wcpos-red'
-                  : 'bg-slate-300'
-              )}
-            />
+              type="button"
+              aria-label={`Go to act ${i + 1} of 4`}
+              aria-current={i === act ? 'step' : undefined}
+              onClick={() => {
+                const scroller = scrollerRef.current
+                if (!scroller) return
+                const p = i === 0 ? 0 : ACT_HOLDS[i - 1]
+                const top =
+                  scroller.getBoundingClientRect().top + window.scrollY
+                window.scrollTo({
+                  top: top + (scroller.offsetHeight - window.innerHeight) * p,
+                  behavior: 'smooth',
+                })
+              }}
+              className="group flex h-5 w-5 items-center justify-center"
+            >
+              <span
+                className={cn(
+                  'h-2 w-2 rounded-full transition-all duration-300 group-hover:scale-125',
+                  i === act ? 'scale-125 bg-wcpos-red' : 'bg-slate-300'
+                )}
+              />
+            </button>
           ))}
         </div>
       </div>

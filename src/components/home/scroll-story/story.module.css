@@ -205,27 +205,44 @@
   animation: story-sway 10s ease-in-out infinite alternate;
 }
 
-/* Act-1 counter photo: soft shadows drifting across the wood, as if
-   customers pass the window light. Deliberately huge, blurred and slow —
-   they should register as ambience, never as shapes. */
-@keyframes story-counter-shadow-a {
-  from {
-    transform: translate3d(-16%, -3%, 0) scale(1);
-    opacity: 0.9;
+/* Act-1 counter photo: customers approaching the counter. Each shadow is a
+   tall, heavily blurred silhouette that enters from beyond the top edge
+   (where a customer would stand), leans in over the counter, lingers, and
+   withdraws. Cast down-right to match the upper-left window light. */
+@keyframes story-counter-visitor-a {
+  0% {
+    transform: translate3d(0, -34%, 0) scale(0.92);
+    opacity: 0;
   }
-  to {
-    transform: translate3d(56%, 6%, 0) scale(1.2);
-    opacity: 0.15;
+  34% {
+    transform: translate3d(5%, 8%, 0) scale(1);
+    opacity: 0.85;
+  }
+  58% {
+    transform: translate3d(7%, 5%, 0) scale(1.02);
+    opacity: 0.7;
+  }
+  100% {
+    transform: translate3d(11%, -36%, 0) scale(0.94);
+    opacity: 0;
   }
 }
-@keyframes story-counter-shadow-b {
-  from {
-    transform: translate3d(34%, 5%, 0) scale(1.12);
-    opacity: 0.12;
+@keyframes story-counter-visitor-b {
+  0% {
+    transform: translate3d(0, -38%, 0) scale(0.9);
+    opacity: 0;
   }
-  to {
-    transform: translate3d(-42%, -4%, 0) scale(0.92);
-    opacity: 0.85;
+  40% {
+    transform: translate3d(-6%, 6%, 0) scale(1.04);
+    opacity: 0.7;
+  }
+  62% {
+    transform: translate3d(-8%, 8%, 0) scale(1);
+    opacity: 0.55;
+  }
+  100% {
+    transform: translate3d(-12%, -40%, 0) scale(0.92);
+    opacity: 0;
   }
 }
 .counterShadow1,
@@ -233,33 +250,33 @@
   position: absolute;
   border-radius: 50%;
   mix-blend-mode: multiply;
-  filter: blur(40px);
+  filter: blur(42px);
   will-change: transform, opacity;
 }
 .counterShadow1 {
-  top: -12%;
-  left: -8%;
-  width: 58%;
-  height: 88%;
+  top: -42%;
+  left: 10%;
+  width: 26%;
+  height: 92%;
   background: radial-gradient(
-    closest-side,
+    ellipse 50% 50% at 50% 42%,
+    rgb(38 29 18 / 0.38),
+    transparent 70%
+  );
+  animation: story-counter-visitor-a 17s ease-in-out infinite;
+}
+.counterShadow2 {
+  top: -46%;
+  right: 18%;
+  width: 22%;
+  height: 86%;
+  background: radial-gradient(
+    ellipse 50% 50% at 50% 40%,
     rgb(38 29 18 / 0.32),
     transparent 72%
   );
-  animation: story-counter-shadow-a 21s ease-in-out infinite alternate;
-}
-.counterShadow2 {
-  top: 14%;
-  right: -14%;
-  width: 48%;
-  height: 80%;
-  background: radial-gradient(
-    closest-side,
-    rgb(38 29 18 / 0.26),
-    transparent 74%
-  );
-  animation: story-counter-shadow-b 29s ease-in-out infinite alternate;
-  animation-delay: -9s;
+  animation: story-counter-visitor-b 23s ease-in-out infinite;
+  animation-delay: -11s;
 }
 
 @media (prefers-reduced-motion: reduce) {
