@@ -314,6 +314,7 @@ function PinnedStoryScroller() {
             <img
               src="/images/story/counter-photo.webp"
               alt=""
+              fetchPriority="high"
               className="absolute inset-0 h-full w-full object-cover"
             />
           </picture>
