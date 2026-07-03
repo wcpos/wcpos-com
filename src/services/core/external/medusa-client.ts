@@ -160,6 +160,71 @@ export async function getRegions(): Promise<MedusaRegionsResponse['regions']> {
 }
 
 /**
+ * Payment provider ids registered and enabled on the backend's default region.
+ *
+ * Returns null when the backend cannot be asked (down, or a mock without the
+ * endpoint) so callers can fail open instead of hiding every payment method
+ * on a transient error.
+ */
+export async function getEnabledPaymentProviderIds(
+  storeEnv?: StoreEnvironment
+): Promise<string[] | null> {
+  interface RegionWithProviders {
+    id: string
+    payment_providers?: Array<{ id: string; is_enabled?: boolean }>
+  }
+  interface StoreResponse {
+    store?: { default_region_id?: string | null }
+  }
+
+  try {
+    const response = await medusaFetch<{ regions: RegionWithProviders[] }>(
+      '/store/regions?fields=id,name,*payment_providers',
+      {},
+      storeEnv
+    )
+    const regions = response.regions ?? []
+    let cartRegion: RegionWithProviders | undefined = regions[0]
+    if (regions.length > 1) {
+      const store = await medusaFetch<StoreResponse>('/store/store', {}, storeEnv)
+      const defaultRegionId = store.store?.default_region_id
+      cartRegion = regions.find((region) => region.id === defaultRegionId)
+      if (!cartRegion) {
+        storeLogger.warn`Default Medusa region ${defaultRegionId ?? 'unknown'} was not present in /store/regions; skipping method filtering`
+        return null
+      }
+    }
+    const hasAnyProviderEvidence = regions.some(
+      (region) => (region.payment_providers?.length ?? 0) > 0
+    )
+    const ids = new Set<string>()
+    let sawProvider = false
+
+    for (const provider of cartRegion?.payment_providers ?? []) {
+      sawProvider = true
+      if (provider.is_enabled !== false) {
+        ids.add(provider.id)
+      }
+    }
+
+    if (!sawProvider && !hasAnyProviderEvidence) {
+      // No positive evidence: a backend that ignores the *payment_providers
+      // expansion (version/config drift) is indistinguishable from one with
+      // zero providers. Filtering on [] would hide every payment method on a
+      // 200 response — the outage class this function exists to prevent —
+      // so fail open and let session creation surface any real problem.
+      storeLogger.warn`No enabled payment providers reported by /store/regions; skipping method filtering`
+      return null
+    }
+
+    return [...ids]
+  } catch (error) {
+    storeLogger.error`Failed to fetch region payment providers: ${error}`
+    return null
+  }
+}
+
+/**
  * Format price for display
  */
 export function formatPrice(amount: number, currencyCode: string): string {

@@ -114,6 +114,11 @@ export function extractLicenseReferencesFromOrders(
   const references: LicenseReference[] = []
 
   for (const order of orders) {
+    // A canceled order grants nothing — legacy WooCommerce migration mapped
+    // failed/cancelled/refunded orders here, and their metadata still carries
+    // license references that were never (or no longer) valid.
+    if (order.status === 'canceled') continue
+
     collectReferencesFromMetadata(order.metadata, references)
 
     for (const item of order.items) {

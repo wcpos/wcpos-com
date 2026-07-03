@@ -43,6 +43,11 @@ export interface AccountProfileMetadata {
   taxNumber: string
 }
 
+export interface AccountProfileMetadataRead {
+  profile: AccountProfileMetadata
+  hasCountryCode: boolean
+}
+
 export type AccountProfilePatchInput = Record<string, unknown> | null | undefined
 
 export type ReceiptAccountProfileMetadata = Record<
@@ -84,19 +89,28 @@ function rawAccountProfile(
 export function readAccountProfileMetadata(
   metadata: Record<string, unknown> | null | undefined
 ): AccountProfileMetadata {
+  return readAccountProfileMetadataWithPresence(metadata).profile
+}
+
+export function readAccountProfileMetadataWithPresence(
+  metadata: Record<string, unknown> | null | undefined
+): AccountProfileMetadataRead {
   const accountProfile = rawAccountProfile(metadata)
   const countryCode = asString(accountProfile.countryCode)
 
   return {
-    avatarDataUrl: asString(accountProfile.avatarDataUrl),
-    avatarUrl: asString(accountProfile.avatarUrl),
-    countryCode: countryCode || 'US',
-    addressLine1: asString(accountProfile.addressLine1),
-    addressLine2: asString(accountProfile.addressLine2),
-    city: asString(accountProfile.city),
-    region: asString(accountProfile.region),
-    postalCode: asString(accountProfile.postalCode),
-    taxNumber: asString(accountProfile.taxNumber),
+    profile: {
+      avatarDataUrl: asString(accountProfile.avatarDataUrl),
+      avatarUrl: asString(accountProfile.avatarUrl),
+      countryCode: countryCode || 'US',
+      addressLine1: asString(accountProfile.addressLine1),
+      addressLine2: asString(accountProfile.addressLine2),
+      city: asString(accountProfile.city),
+      region: asString(accountProfile.region),
+      postalCode: asString(accountProfile.postalCode),
+      taxNumber: asString(accountProfile.taxNumber),
+    },
+    hasCountryCode: Boolean(countryCode),
   }
 }
 

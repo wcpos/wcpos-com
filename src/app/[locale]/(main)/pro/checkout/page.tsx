@@ -10,6 +10,9 @@ import { resolveProCheckoutVariant } from '@/services/core/analytics/posthog-ser
 import { ANALYTICS_DISTINCT_ID_COOKIE } from '@/lib/analytics/distinct-id'
 import { getAnalyticsConfig } from '@/lib/analytics/config'
 import { getRequestStoreEnvironment } from '@/lib/store-environment'
+import { filterPaymentsByBackendProviders } from '@/lib/checkout-payments'
+import { getEnabledPaymentProviderIds } from '@/services/core/external/medusa-client'
+import { billingPrefillFromCustomer } from '@/lib/billing-profile'
 import type { ProCheckoutVariant } from '@/services/core/analytics/posthog-service'
 import {
   getProOfferCatalog,
@@ -70,15 +73,31 @@ async function CheckoutContent({
   const searchParams = await searchParamsPromise
   // Signed-out visitors are welcome: the checkout's first step creates the
   // account inline. The cart APIs still require auth server-side.
-  const customer = await getCustomer()
-
   // Host-keyed: wcpos.com takes live money, beta.wcpos.com uses the staging
   // backend with test-mode payment providers.
-  const storeEnv = await getRequestStoreEnvironment()
+  const [customer, storeEnv, cookieStore] = await Promise.all([
+    getCustomer(),
+    getRequestStoreEnvironment(),
+    cookies(),
+  ])
 
   const selectedVariantId = getSingleSearchParam(searchParams, 'variant')
   const selectedProduct = getSingleSearchParam(searchParams, 'product')
-  const { offers } = await getProOfferCatalog(undefined, storeEnv)
+  const distinctId = cookieStore.get(ANALYTICS_DISTINCT_ID_COOKIE)?.value
+  const analyticsConfig = getAnalyticsConfig(process.env)
+  // Only offer payment methods the backend actually registers — config and
+  // backend drift independently (see checkout-payments.ts).
+  const [{ offers }, enabledProviderIds, experimentVariant] =
+    await Promise.all([
+      getProOfferCatalog(undefined, storeEnv),
+      getEnabledPaymentProviderIds(storeEnv),
+      distinctId
+        ? resolveProCheckoutVariant({
+            distinctId,
+            analyticsEnabled: analyticsConfig.enabled,
+          })
+        : Promise.resolve<ProCheckoutVariant>('control'),
+    ])
   const checkoutInput: ProOfferCheckoutInput = {
     product: selectedProduct,
     variant: selectedVariantId,
@@ -87,19 +106,16 @@ async function CheckoutContent({
   const selectedFullOffer = selectedOffer
     ? offers.find((offer) => offer.handle === selectedOffer.handle)
     : null
-  const cookieStore = await cookies()
-  const distinctId = cookieStore.get(ANALYTICS_DISTINCT_ID_COOKIE)?.value
-  const analyticsConfig = getAnalyticsConfig(process.env)
-  const experimentVariant: ProCheckoutVariant = distinctId
-    ? await resolveProCheckoutVariant({
-        distinctId,
-        analyticsEnabled: analyticsConfig.enabled,
-      })
-    : 'control'
+  // Prefill billing from the saved profile (same source receipts read).
+  const prefill = customer
+    ? billingPrefillFromCustomer(customer)
+    : { address: null, taxNumber: undefined }
 
   return (
     <CheckoutClient
       customerEmail={customer?.email}
+      initialBillingAddress={prefill.address}
+      initialTaxNumber={prefill.taxNumber}
       selectedOfferHandle={selectedOffer?.handle}
       offerSummary={
         selectedFullOffer
@@ -113,7 +129,10 @@ async function CheckoutContent({
       }
       checkoutPath={buildCheckoutRedirectPath(searchParams)}
       experimentVariant={experimentVariant}
-      payments={storeEnv.payments}
+      payments={filterPaymentsByBackendProviders(
+        storeEnv.payments,
+        enabledProviderIds
+      )}
     />
   )
 }

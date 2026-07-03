@@ -20,6 +20,7 @@ import {
   type BillingAddress,
 } from './checkout/billing-step'
 import { PaymentStep, type PaymentMethod } from './checkout/payment-step'
+import { PAYMENT_METHOD_PROVIDER_IDS } from '@/lib/checkout-payments'
 import { StepShell } from './checkout/step-shell'
 import { Button } from '@/components/ui/button'
 import { toneText } from '@/components/ui/status-tone'
@@ -69,18 +70,11 @@ interface PaymentSessionResult {
 
 const PRO_CHECKOUT_EXPERIMENT = 'pro_checkout_v1'
 
-// Map frontend payment method names to Medusa provider IDs
+// Map frontend payment method names to Medusa provider IDs. The Record is
+// total over PaymentMethod, so adding a method without a provider id is a
+// compile error — no runtime fallback.
 function getProviderId(method: PaymentMethod): string {
-  switch (method) {
-    case 'stripe':
-      return 'pp_stripe_stripe'
-    case 'paypal':
-      return 'pp_paypal_paypal'
-    case 'btcpay':
-      return 'pp_btcpay_btcpay'
-    default:
-      return 'pp_stripe_stripe'
-  }
+  return PAYMENT_METHOD_PROVIDER_IDS[method]
 }
 
 /**
@@ -113,6 +107,14 @@ type StepId = 'account' | 'billing' | 'payment'
 interface CheckoutClientProps {
   /** Absent when the visitor is not signed in — the account step handles it. */
   customerEmail?: string
+  /**
+   * Saved profile address (customer.metadata.account_profile) to prefill the
+   * billing form with. Prefill only — billingAddress state stays "what was
+   * submitted", so the step summary never shows an unsaved address.
+   */
+  initialBillingAddress?: BillingAddress | null
+  /** Saved profile tax registration (ABN/VAT/EIN…) to prefill. */
+  initialTaxNumber?: string
   selectedOfferHandle?: string
   /** Static summary shown before the cart exists. */
   offerSummary?: { title: string; priceFormatted: string }
@@ -163,6 +165,8 @@ function resolveLineItemTotal(item: CartItem): number {
 
 export function CheckoutClient({
   customerEmail,
+  initialBillingAddress,
+  initialTaxNumber,
   selectedOfferHandle,
   offerSummary,
   checkoutPath,
@@ -183,6 +187,10 @@ export function CheckoutClient({
   const [billingAddress, setBillingAddress] = useState<BillingAddress | null>(
     null
   )
+  // Submitted tax number — StepShell unmounts BillingStep between visits, so
+  // Edit must re-seed the field with what was last saved, not the page-load
+  // profile prefill. null = never submitted.
+  const [taxNumber, setTaxNumber] = useState<string | null>(null)
   const [cart, setCart] = useState<Cart | null>(null)
   const [clientSecret, setClientSecret] = useState<string | null>(null)
   const [isProcessing, setIsProcessing] = useState(false)
@@ -430,7 +438,10 @@ export function CheckoutClient({
     [activeCartId]
   )
 
-  async function handleBillingSubmit(address: BillingAddress) {
+  async function handleBillingSubmit(
+    address: BillingAddress,
+    extras: { taxNumber: string }
+  ) {
     // Serialize against method switches and other refreshes — two session
     // mutations racing can leave the mounted Stripe element and the Medusa
     // collection pointing at different intents.
@@ -454,6 +465,10 @@ export function CheckoutClient({
         body: JSON.stringify({
           cartId: init.cart.id,
           billing_address: address,
+          // Not a Medusa address field — travels as cart metadata so it
+          // lands on the order record. Always sent (even empty) so clearing
+          // a previously entered number actually removes it.
+          metadata: { taxNumber: extras.taxNumber },
         }),
       })
       if (!response.ok) {
@@ -467,6 +482,7 @@ export function CheckoutClient({
       if (!anyPaymentMethodEnabled) {
         setCart(cartAfterBilling)
         setBillingAddress(address)
+        setTaxNumber(extras.taxNumber)
         setStep('payment')
         return
       }
@@ -500,6 +516,7 @@ export function CheckoutClient({
           : null
       )
       setBillingAddress(address)
+      setTaxNumber(extras.taxNumber)
       setStep('payment')
     } finally {
       setIsProcessing(false)
@@ -655,7 +672,8 @@ export function CheckoutClient({
             initErrorNotice
           ) : (
             <BillingStep
-              initialAddress={billingAddress}
+              initialAddress={billingAddress ?? initialBillingAddress ?? null}
+              initialTaxNumber={taxNumber ?? initialTaxNumber}
               onSubmit={handleBillingSubmit}
             />
           )}

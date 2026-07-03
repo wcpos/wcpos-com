@@ -67,6 +67,18 @@ describe('extractLicenseIdsFromOrders', () => {
 })
 
 describe('extractLicenseReferencesFromOrders', () => {
+  it('skips references on canceled orders (legacy failed/cancelled/refunded)', () => {
+    const canceled = {
+      ...makeOrder({
+        licenses: [{ license_id: 'lic_1', license_key: 'WCPOS-AAAA-1111' }],
+      }),
+      status: 'canceled',
+    }
+
+    expect(extractLicenseReferencesFromOrders([canceled])).toEqual([])
+  })
+
+
   it('extracts references when metadata only includes license keys', () => {
     const orders = [
       makeOrder({

@@ -10,7 +10,10 @@ import {
   type LicenseReference,
 } from '@/lib/licenses'
 import { normalizeLicenseStatus } from '@/lib/license-status'
-import { licenseClient } from '@/services/core/external/license-client'
+import {
+  licenseClient,
+  KeygenRequestError,
+} from '@/services/core/external/license-client'
 import { licenseLogger } from '@/lib/logger'
 
 const LICENSE_LOOKUP_BATCH_SIZE = 10
@@ -34,14 +37,27 @@ function buildLicensePlaceholder(reference: LicenseReference): LicenseDetail | n
 export async function resolveLicenseReference(
   reference: LicenseReference
 ): Promise<LicenseDetail | null> {
+  // A 404 on the stored id means Keygen never had it (legacy migrated
+  // orders, or an id superseded by re-issue) — data, not an incident. The
+  // key fallback below still runs (a stale id can accompany a live key),
+  // but a definitively-missing id must not produce an "unknown" placeholder.
+  let idNotFound = false
+
   if (reference.id) {
     try {
       const license = await licenseClient.getLicenseWithMachines(reference.id)
       return { ...license, status: normalizeLicenseStatus(license.status) }
     } catch (error) {
-      licenseLogger.error`Failed to fetch license ${reference.id}: ${error}`
+      if (error instanceof KeygenRequestError && error.status === 404) {
+        idNotFound = true
+        licenseLogger.warn`License ${reference.id} not found in Keygen; trying key fallback`
+      } else {
+        licenseLogger.error`Failed to fetch license ${reference.id}: ${error}`
+      }
     }
   }
+
+  let keyLookupMissing = false
 
   if (reference.key) {
     try {
@@ -53,12 +69,15 @@ export async function resolveLicenseReference(
           machines: [],
         }
       }
+      keyLookupMissing = true
     } catch (error) {
       licenseLogger.error`Failed to validate license key: ${error}`
     }
   }
 
-  return buildLicensePlaceholder(reference)
+  return idNotFound && (!reference.key || keyLookupMissing)
+    ? null
+    : buildLicensePlaceholder(reference)
 }
 
 export async function getResolvedLicensesFromOrders(

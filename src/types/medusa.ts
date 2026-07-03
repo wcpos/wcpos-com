@@ -132,6 +132,8 @@ export interface UpdateCartInput {
   email?: string
   billing_address?: MedusaAddress
   shipping_address?: MedusaAddress
+  /** Merged into existing cart metadata by Medusa (never replaces it). */
+  metadata?: Record<string, unknown>
 }
 
 export interface MedusaAddress {

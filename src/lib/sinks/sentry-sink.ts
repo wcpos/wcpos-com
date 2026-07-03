@@ -1,6 +1,8 @@
 import type { LogRecord, Sink } from '@logtape/logtape'
 import * as Sentry from '@sentry/nextjs'
 
+import { stringifyLogPart } from './stringify-log-part'
+
 interface SentrySinkOptions {
   ignoredCategoryPrefixes?: string[]
 }
@@ -23,15 +25,15 @@ export function createSentrySink(options: SentrySinkOptions = {}): Sink {
       return
     }
 
-    // Extract error object if present in properties
-    const error = record.properties.error instanceof Error
-      ? record.properties.error
-      : undefined
+    // Extract error object if present in properties or interpolated into the
+    // message template (logger.error`...: ${error}` puts it in message parts).
+    const error =
+      record.properties.error instanceof Error
+        ? record.properties.error
+        : record.message.find((part): part is Error => part instanceof Error)
 
     // Build message from log parts
-    const message = record.message
-      .map((part) => (typeof part === 'string' ? part : JSON.stringify(part)))
-      .join('')
+    const message = record.message.map(stringifyLogPart).join('')
 
     // Prepare extra context
     const extra: Record<string, unknown> = {
@@ -51,7 +53,7 @@ export function createSentrySink(options: SentrySinkOptions = {}): Sink {
     if (error) {
       Sentry.captureException(error, {
         level: record.level === 'fatal' ? 'fatal' : 'error',
-        extra,
+        extra: { ...extra, message },
         tags: {
           category,
         },
