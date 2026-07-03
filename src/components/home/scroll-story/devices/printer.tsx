@@ -1,47 +1,43 @@
 import { cn } from '@/lib/utils'
-import styles from '../story.module.css'
+import { HardwareImage } from './hardware-image'
 
-/** Thermal receipt printer, front view, printing on loop. */
+/**
+ * Thermal receipt printers, photoreal renders (see
+ * docs/runbooks/scroll-story-asset-generation.md, Act 3 prompt pack).
+ * Three recognizable form factors, logo-free by design:
+ *   1 light-gray cube, receipt curling out the front
+ *   2 black tower, receipt from the top hatch
+ *   3 minimalist white cube, front exit slit
+ * Receipts and status LEDs are baked into the renders.
+ */
+const BOX = { width: 210, height: 148 } as const
+
+const MODELS: Record<1 | 2 | 3, { name: string; width: number; height: number }> = {
+  1: { name: 'printer-1', width: 800, height: 681 },
+  2: { name: 'printer-2', width: 763, height: 800 },
+  3: { name: 'printer-3', width: 800, height: 676 },
+}
+
 export function DevicePrinter({
   className,
-  skin = 'light',
+  model = 1,
 }: {
   className?: string
-  skin?: 'light' | 'dark'
+  model?: 1 | 2 | 3
 }) {
+  const spec = MODELS[model]
   return (
     <div
       aria-hidden="true"
-      className={cn(
-        'relative h-[148px] w-[210px] rounded-[18px]',
-        skin === 'dark' ? styles.printerBodyDark : styles.printerBody,
-        className
-      )}
+      className={cn('flex items-end justify-center', className)}
+      style={{ width: BOX.width, height: BOX.height }}
     >
-      <div
-        className={cn(
-          'absolute inset-x-[52px] bottom-[calc(100%-16px)] h-[92px] overflow-hidden rounded-t bg-slate-50',
-          styles.receipt,
-          styles.paperPrint
-        )}
-      >
-        {[0, 1, 2, 3, 4].map((i) => (
-          <span
-            key={i}
-            className={cn(
-              'mx-2.5 mt-2 block h-[3px] rounded-sm bg-slate-300',
-              i === 4 && 'w-2/5'
-            )}
-          />
-        ))}
-      </div>
-      <div className="absolute inset-x-6 top-4 h-2 rounded bg-slate-600" />
-      <div className="absolute bottom-4 left-6 h-2.5 w-8 rounded-md bg-slate-600" />
-      <span
-        className={cn(
-          'absolute bottom-4 right-6 h-2 w-2 rounded-full bg-emerald-500',
-          styles.ledBlink
-        )}
+      <HardwareImage
+        name={spec.name}
+        width={spec.width}
+        height={spec.height}
+        boxWidth={BOX.width}
+        boxHeight={BOX.height}
       />
     </div>
   )

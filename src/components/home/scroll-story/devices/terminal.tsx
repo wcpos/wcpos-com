@@ -1,64 +1,84 @@
 import { cn } from '@/lib/utils'
-import styles from '../story.module.css'
+import { HardwareImage, type ScreenRect } from './hardware-image'
 
-/** Card payment terminal, front view, mid tap-to-pay. */
+/**
+ * Card payment terminals, photoreal renders (see
+ * docs/runbooks/scroll-story-asset-generation.md, Act 3 prompt pack).
+ * Three recognizable form factors, logo-free by design:
+ *   1 classic countertop terminal (keypad + small screen)
+ *   2 slim white smart terminal (full portrait touchscreen)
+ *   3 square contactless reader on its dock (no screen)
+ * Models with a screen get the live tap-to-pay overlay; rects are measured
+ * in source-image px off the renders.
+ */
+const BOX = { width: 150, height: 224 } as const
+
+const MODELS: Record<
+  1 | 2 | 3,
+  {
+    name: string
+    width: number
+    height: number
+    screen?: ScreenRect
+    screenSize?: 'sm' | 'lg'
+  }
+> = {
+  1: {
+    name: 'terminal-1',
+    width: 567,
+    height: 800,
+    screen: { left: 78, top: 165, width: 265, height: 148 },
+    screenSize: 'sm',
+  },
+  2: {
+    name: 'terminal-2',
+    width: 493,
+    height: 800,
+    screen: { left: 43, top: 93, width: 299, height: 665 },
+    screenSize: 'lg',
+  },
+  3: { name: 'terminal-3', width: 800, height: 629 },
+}
+
 export function DeviceTerminal({
   className,
-  skin = 'dark',
+  model = 1,
 }: {
   className?: string
-  skin?: 'dark' | 'light'
+  model?: 1 | 2 | 3
 }) {
+  const spec = MODELS[model]
   return (
     <div
       aria-hidden="true"
-      className={cn(
-        'relative h-[224px] w-[150px] rounded-[20px] border-[6px]',
-        skin === 'light'
-          ? cn('border-slate-200', styles.terminalBodyLight)
-          : cn('border-slate-800', styles.terminalBody),
-        className
-      )}
+      className={cn('flex items-end justify-center', className)}
+      style={{ width: BOX.width, height: BOX.height }}
     >
-      <div
-        className={cn(
-          'absolute inset-x-3.5 top-3.5 flex h-[74px] flex-col items-center justify-center gap-1 rounded-lg',
-          styles.terminalScreen,
-          styles.termGlow
-        )}
+      <HardwareImage
+        name={spec.name}
+        width={spec.width}
+        height={spec.height}
+        boxWidth={BOX.width}
+        boxHeight={BOX.height}
+        screen={spec.screen}
       >
-        <span className="text-base font-bold text-white">$69.00</span>
-        <span className="text-[8px] uppercase tracking-widest text-cyan-200">
+        <span
+          className={cn(
+            'font-bold text-white',
+            spec.screenSize === 'lg' ? 'text-2xl' : 'text-[13px] leading-tight'
+          )}
+        >
+          $69.00
+        </span>
+        <span
+          className={cn(
+            'uppercase tracking-widest text-cyan-200',
+            spec.screenSize === 'lg' ? 'mt-1 text-[10px]' : 'text-[6px]'
+          )}
+        >
           Tap to pay
         </span>
-      </div>
-      <div className="absolute right-3 top-3 h-4 w-4">
-        {[0, 1, 2].map((i) => (
-          <span
-            key={i}
-            className={cn(
-              'absolute inset-0 rounded-full border-2 border-cyan-200 opacity-0',
-              styles.wave
-            )}
-            style={{ animationDelay: `${i * 0.5}s` }}
-          />
-        ))}
-      </div>
-      <div className="absolute inset-x-3.5 bottom-3.5 top-[104px] grid grid-cols-3 gap-1.5">
-        {Array.from({ length: 9 }, (_, i) => (
-          <span
-            key={i}
-            className={cn(
-              'rounded',
-              i === 8
-                ? 'bg-emerald-600'
-                : skin === 'light'
-                  ? 'bg-slate-300'
-                  : 'bg-slate-700'
-            )}
-          />
-        ))}
-      </div>
+      </HardwareImage>
     </div>
   )
 }

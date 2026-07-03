@@ -93,38 +93,41 @@ export const K = {
     [60, 60, 30, 30, 60, 60],
   ], // vw
 
-  // act 3: terminal / printer / scanner ring the tablet
+  // act 3: terminal / printer / scanner ring the tablet (center ~9vw at the
+  // hold): scanner at ~10 o'clock tucked behind the top-left corner, terminal
+  // at 3 fronting the right edge, printer at ~7 under the left half — each
+  // enters from its own side (right / below / above) and leaves the same way
   terminalOpacity: [
     [0, 0.46, 0.54, 0.7, 0.78, 1],
     [0, 0, 1, 1, 0, 0],
   ],
   terminalX: [
     [0, 0.46, 0.58, 0.7, 0.8, 1],
-    [60, 60, 22, 22, 60, 60],
+    [60, 60, 24, 24, 60, 60],
   ], // vw
   printerOpacity: [
     [0, 0.46, 0.54, 0.7, 0.78, 1],
     [0, 0, 1, 1, 0, 0],
   ],
   printerX: [
-    [0, 0.46, 0.58, 0.7, 0.8, 1],
-    [45, 45, 17, 17, 45, 45],
+    [0, 1],
+    [1, 1],
   ], // vw
   printerY: [
-    [0, 0.46, 0.58, 1],
-    [40, 40, 29, 29],
+    [0, 0.46, 0.58, 0.7, 0.8, 1],
+    [45, 45, 28, 28, 45, 45],
   ], // vh
   scannerOpacity: [
     [0, 0.48, 0.56, 0.7, 0.78, 1],
     [0, 0, 1, 1, 0, 0],
   ],
   scannerX: [
-    [0, 0.48, 0.6, 0.7, 0.8, 1],
-    [40, 40, 33, 33, 40, 40],
+    [0, 1],
+    [-6, -6],
   ], // vw
   scannerY: [
-    [0, 0.48, 0.6, 1],
-    [-50, -50, -18, -18],
+    [0, 0.48, 0.6, 0.7, 0.8, 1],
+    [-50, -50, -26, -26, -50, -50],
   ], // vh
 
   // act 4: the Woo cloud rises above the tablet
