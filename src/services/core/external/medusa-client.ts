@@ -159,22 +159,25 @@ export async function getRegions(): Promise<MedusaRegionsResponse['regions']> {
   }
 }
 
+interface CartPaymentProviderContext {
+  cartRegionId: string | null
+  providerIds: string[] | null
+}
+
 /**
- * Payment provider ids registered and enabled on the backend's default region.
+ * Payment provider ids registered and enabled on the region checkout will use
+ * for new carts.
  *
- * Returns null when the backend cannot be asked (down, or a mock without the
- * endpoint) so callers can fail open instead of hiding every payment method
- * on a transient error.
+ * Returns null provider ids when the backend cannot be asked (down, or a mock
+ * without the endpoint) so callers can fail open instead of hiding every
+ * payment method on a transient error.
  */
-export async function getEnabledPaymentProviderIds(
+export async function getCartPaymentProviderContext(
   storeEnv?: StoreEnvironment
-): Promise<string[] | null> {
+): Promise<CartPaymentProviderContext> {
   interface RegionWithProviders {
     id: string
     payment_providers?: Array<{ id: string; is_enabled?: boolean }>
-  }
-  interface StoreResponse {
-    store?: { default_region_id?: string | null }
   }
 
   try {
@@ -184,16 +187,10 @@ export async function getEnabledPaymentProviderIds(
       storeEnv
     )
     const regions = response.regions ?? []
-    let cartRegion: RegionWithProviders | undefined = regions[0]
-    if (regions.length > 1) {
-      const store = await medusaFetch<StoreResponse>('/store/store', {}, storeEnv)
-      const defaultRegionId = store.store?.default_region_id
-      cartRegion = regions.find((region) => region.id === defaultRegionId)
-      if (!cartRegion) {
-        storeLogger.warn`Default Medusa region ${defaultRegionId ?? 'unknown'} was not present in /store/regions; skipping method filtering`
-        return null
-      }
-    }
+    // Checkout passes this region_id when creating the cart, so provider
+    // filtering and the cart's region stay coupled even if Medusa's implicit
+    // default region differs from /store/regions order.
+    const cartRegion: RegionWithProviders | undefined = regions[0]
     const hasAnyProviderEvidence = regions.some(
       (region) => (region.payment_providers?.length ?? 0) > 0
     )
@@ -214,14 +211,21 @@ export async function getEnabledPaymentProviderIds(
       // 200 response — the outage class this function exists to prevent —
       // so fail open and let session creation surface any real problem.
       storeLogger.warn`No enabled payment providers reported by /store/regions; skipping method filtering`
-      return null
+      return { cartRegionId: null, providerIds: null }
     }
 
-    return [...ids]
+    return { cartRegionId: cartRegion?.id ?? null, providerIds: [...ids] }
   } catch (error) {
     storeLogger.error`Failed to fetch region payment providers: ${error}`
-    return null
+    return { cartRegionId: null, providerIds: null }
   }
+}
+
+export async function getEnabledPaymentProviderIds(
+  storeEnv?: StoreEnvironment
+): Promise<string[] | null> {
+  const { providerIds } = await getCartPaymentProviderContext(storeEnv)
+  return providerIds
 }
 
 /**
