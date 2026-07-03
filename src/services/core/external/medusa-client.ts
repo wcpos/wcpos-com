@@ -160,7 +160,7 @@ export async function getRegions(): Promise<MedusaRegionsResponse['regions']> {
 }
 
 /**
- * Payment provider ids registered and enabled on the backend's regions.
+ * Payment provider ids registered and enabled on the backend's default region.
  *
  * Returns null when the backend cannot be asked (down, or a mock without the
  * endpoint) so callers can fail open instead of hiding every payment method
@@ -178,15 +178,22 @@ export async function getEnabledPaymentProviderIds(
       {},
       storeEnv
     )
+    const regions = response.regions ?? []
+    const cartRegion = regions[0]
+    const hasAnyProviderEvidence = regions.some(
+      (region) => (region.payment_providers?.length ?? 0) > 0
+    )
     const ids = new Set<string>()
-    for (const region of response.regions ?? []) {
-      for (const provider of region.payment_providers ?? []) {
-        if (provider.is_enabled !== false) {
-          ids.add(provider.id)
-        }
+    let sawProvider = false
+
+    for (const provider of cartRegion?.payment_providers ?? []) {
+      sawProvider = true
+      if (provider.is_enabled !== false) {
+        ids.add(provider.id)
       }
     }
-    if (ids.size === 0) {
+
+    if (!sawProvider && !hasAnyProviderEvidence) {
       // No positive evidence: a backend that ignores the *payment_providers
       // expansion (version/config drift) is indistinguishable from one with
       // zero providers. Filtering on [] would hide every payment method on a
@@ -195,6 +202,7 @@ export async function getEnabledPaymentProviderIds(
       storeLogger.warn`No enabled payment providers reported by /store/regions; skipping method filtering`
       return null
     }
+
     return [...ids]
   } catch (error) {
     storeLogger.error`Failed to fetch region payment providers: ${error}`
