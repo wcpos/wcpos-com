@@ -34,7 +34,10 @@ export function CloudSync({
     >
       <div className="absolute left-1/2 top-1.5 h-[110px] w-[240px] -translate-x-1/2">
         <svg
-          className="absolute inset-0 overflow-visible"
+          className={cn(
+            'absolute inset-0 overflow-visible',
+            light && 'drop-shadow-[0_12px_20px_rgba(51,65,85,0.14)]'
+          )}
           viewBox="0 0 240 110"
           width="240"
           height="110"
@@ -51,46 +54,111 @@ export function CloudSync({
                   y2="1"
                 >
                   <stop offset="0" stopColor="#ffffff" />
-                  <stop offset="0.55" stopColor="#f3f7fb" />
-                  <stop offset="1" stopColor="#d5e0ec" />
+                  <stop offset="0.6" stopColor="#f4f8fc" />
+                  <stop offset="1" stopColor="#d3dfec" />
                 </linearGradient>
+                {/* fluffy cumulus: fractal noise roughens the vector edge
+                    into billows, diffuse lighting on the blurred alpha gives
+                    cauliflower volume; the component transfer lifts the
+                    shadow floor so the cloud stays white (research notes in
+                    PR #237) */}
                 <filter
-                  id={`${svgId}-soft`}
-                  x="-50%"
-                  y="-50%"
-                  width="200%"
+                  id={`${svgId}-fluff`}
+                  x="-25%"
+                  y="-45%"
+                  width="150%"
                   height="200%"
+                  colorInterpolationFilters="sRGB"
                 >
-                  <feGaussianBlur stdDeviation="5" />
+                  <feTurbulence
+                    type="fractalNoise"
+                    baseFrequency="0.02 0.028"
+                    numOctaves="4"
+                    seed="8"
+                    result="noise"
+                  />
+                  <feDisplacementMap
+                    in="SourceGraphic"
+                    in2="noise"
+                    scale="18"
+                    result="cloud"
+                  />
+                  <feGaussianBlur in="cloud" stdDeviation="6" result="soft" />
+                  <feDiffuseLighting
+                    in="soft"
+                    surfaceScale="7"
+                    diffuseConstant="1.15"
+                    lightingColor="#ffffff"
+                    result="lit"
+                  >
+                    <feDistantLight azimuth="225" elevation="52" />
+                  </feDiffuseLighting>
+                  <feComponentTransfer in="lit" result="litLift">
+                    <feFuncR type="linear" slope="0.35" intercept="0.65" />
+                    <feFuncG type="linear" slope="0.35" intercept="0.65" />
+                    <feFuncB type="linear" slope="0.35" intercept="0.65" />
+                  </feComponentTransfer>
+                  <feComposite
+                    in="litLift"
+                    in2="cloud"
+                    operator="in"
+                    result="litClip"
+                  />
+                  <feBlend
+                    in="cloud"
+                    in2="litClip"
+                    mode="multiply"
+                    result="shaded"
+                  />
+                  <feComposite
+                    in="shaded"
+                    in2="cloud"
+                    operator="arithmetic"
+                    k1="0"
+                    k2="0.85"
+                    k3="0.15"
+                    k4="0"
+                    result="mix"
+                  />
+                  <feGaussianBlur in="mix" stdDeviation="0.5" />
+                </filter>
+                {/* wispy aura behind the body */}
+                <filter
+                  id={`${svgId}-halo`}
+                  x="-30%"
+                  y="-50%"
+                  width="160%"
+                  height="210%"
+                  colorInterpolationFilters="sRGB"
+                >
+                  <feTurbulence
+                    type="fractalNoise"
+                    baseFrequency="0.03 0.04"
+                    numOctaves="3"
+                    seed="3"
+                    result="noise"
+                  />
+                  <feDisplacementMap
+                    in="SourceGraphic"
+                    in2="noise"
+                    scale="26"
+                  />
+                  <feGaussianBlur stdDeviation="6" />
                 </filter>
               </defs>
               <path
-                className={cn(
-                  styles.cloudMorph,
-                  'drop-shadow-[0_10px_18px_rgba(51,65,85,0.16)]'
-                )}
-                fill={`url(#${svgId}-body)`}
+                className={styles.cloudMorph}
+                fill="#ffffff"
+                opacity="0.55"
+                filter={`url(#${svgId}-halo)`}
                 d={CLOUD_REST}
               />
-              <g filter={`url(#${svgId}-soft)`} opacity="0.85">
-                <ellipse cx="82" cy="34" rx="26" ry="12" fill="#fff" />
-                <ellipse
-                  cx="138"
-                  cy="40"
-                  rx="18"
-                  ry="8"
-                  fill="#fff"
-                  opacity="0.8"
-                />
-                <ellipse
-                  cx="40"
-                  cy="66"
-                  rx="10"
-                  ry="5"
-                  fill="#fff"
-                  opacity="0.7"
-                />
-              </g>
+              <path
+                className={styles.cloudMorph}
+                fill={`url(#${svgId}-body)`}
+                filter={`url(#${svgId}-fluff)`}
+                d={CLOUD_REST}
+              />
             </>
           ) : (
             <path
@@ -102,11 +170,17 @@ export function CloudSync({
         </svg>
         <span
           className={cn(
-            'absolute left-1/2 top-1/2 z-[2] flex h-[62px] w-[62px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full text-lg font-extrabold text-white',
+            'absolute left-1/2 top-1/2 z-[2] flex h-[62px] w-[62px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full',
             styles.wooBadge
           )}
         >
-          Woo
+          {/* official Woo wordmark (simple-icons "Woo") */}
+          <svg viewBox="0 0 24 24" width="42" height="42" aria-hidden="true">
+            <path
+              fill="#ffffff"
+              d="M10.118 8.895c-.562 0-.928.183-1.255.797l-1.49 2.811v-2.496c0-.745-.353-1.111-1.007-1.111s-.928.222-1.255.85l-1.412 2.757v-2.47c0-.797-.327-1.137-1.124-1.137H.954C.34 8.895 0 9.183 0 9.706s.327.837.928.837h.667v3.15c0 .889.601 1.412 1.464 1.412s1.255-.34 1.686-1.137l.941-1.765v1.49c0 .876.575 1.412 1.451 1.412s1.203-.301 1.699-1.137l2.17-3.66c.471-.798.144-1.413-.901-1.413zm4.078 0c-1.778 0-3.124 1.321-3.124 3.112s1.359 3.098 3.124 3.098 3.111-1.32 3.124-3.098c0-1.791-1.359-3.112-3.124-3.112m0 4.301c-.667 0-1.124-.497-1.124-1.19s.458-1.203 1.124-1.203 1.124.51 1.124 1.203-.444 1.19-1.124 1.19m6.68-4.301c-1.765 0-3.124 1.32-3.124 3.111s1.359 3.098 3.124 3.098S24 13.784 24 12.006s-1.359-3.111-3.124-3.111m0 4.301c-.68 0-1.111-.497-1.111-1.19s.444-1.203 1.111-1.203S22 11.313 22 12.006s-.444 1.19-1.124 1.19"
+            />
+          </svg>
         </span>
       </div>
 

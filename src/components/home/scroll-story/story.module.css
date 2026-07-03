@@ -486,8 +486,9 @@
 }
 
 .wooBadge {
-  background: #7f54b3;
-  box-shadow: 0 0 30px rgb(127 84 179 / 0.5);
+  /* current Woo brand purple (post-2024 rebrand) */
+  background: #873eff;
+  box-shadow: 0 0 30px rgb(135 62 255 / 0.5);
 }
 
 /* ---------- bright variants (?variant=light|ribbon prototype) ---------- */
