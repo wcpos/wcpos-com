@@ -29,7 +29,7 @@ const toneStyles = {
 // Act-1 letterpress: a single crisp 1px light shadow, angled down-right, so
 // the dark text reads as pressed into the counter. One hard-edged layer —
 // blur radii read as glow on the grain and are deliberately absent.
-const letterpress = '[text-shadow:1px_1px_0_rgba(255,252,245,0.75)]'
+const letterpress = '[text-shadow:1px_1px_0_rgba(255,252,245,0.45)]'
 
 function Kicker({
   children,
