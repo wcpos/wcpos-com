@@ -340,6 +340,8 @@ function PinnedStoryScroller() {
             <span className={styles.counterLife2} />
             <span className={styles.counterLife3} />
           </div>
+          {/* static wash under the copy zone — see .copyWash for rationale */}
+          <div aria-hidden="true" className={styles.copyWash} />
         </motion.div>
         <motion.div
           aria-hidden="true"
