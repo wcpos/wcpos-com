@@ -9,6 +9,7 @@ import {
   useTransform,
 } from 'motion/react'
 import { Section, Container } from '@/components/ui/section'
+import { usePrefersReducedMotion } from '@/lib/use-prefers-reduced-motion'
 import { SectionHeading } from '@/components/ui/section-heading'
 
 const milestones = [
@@ -67,21 +68,6 @@ const colorAlongLine = transform([0, 0.5, 1], LINE_STOPS)
 const LINE_GRADIENT = `linear-gradient(to bottom, ${[0, 0.125, 0.25, 0.375, 0.5, 0.625, 0.75, 0.875, 1]
   .map((t) => `${colorAlongLine(t)} ${t * 100}%`)
   .join(', ')})`
-
-function usePrefersReducedMotion() {
-  return React.useSyncExternalStore(
-    (onChange) => {
-      if (typeof window.matchMedia !== 'function') return () => {}
-      const mql = window.matchMedia('(prefers-reduced-motion: reduce)')
-      mql.addEventListener('change', onChange)
-      return () => mql.removeEventListener('change', onChange)
-    },
-    () =>
-      typeof window.matchMedia === 'function' &&
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches,
-    () => false
-  )
-}
 
 function Milestone({
   date,
