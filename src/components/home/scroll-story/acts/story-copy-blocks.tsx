@@ -28,13 +28,10 @@ const toneStyles = {
  * variants can never drift.
  */
 
-// Act 1 sits on the counter photo: dark warm text over wood grain. A cream
-// halo (not a dark drop shadow — the text is darker than its ground) lifts
-// the copy off the grain; the small sizes get a denser halo than the h1.
-const glowHeading =
-  '[text-shadow:0_1px_2px_rgba(255,250,242,0.95),0_0_14px_rgba(255,248,235,0.9),0_0_32px_rgba(255,248,235,0.75)]'
-const glowSmall =
-  '[text-shadow:0_0_1px_rgba(255,251,244,1),0_1px_6px_rgba(255,251,244,0.95),0_0_14px_rgba(255,251,244,0.9),0_0_28px_rgba(255,251,244,0.75)]'
+// Act 1 sits on the counter photo: dark warm text over wood grain. The small
+// sizes get a hairline cream edge (single tight shadow, no glow) plus a
+// deeper brown than the h1, which carries contrast through weight alone.
+const edgeSmall = '[text-shadow:0_1px_2px_rgba(255,251,244,0.55)]'
 
 function Kicker({
   children,
@@ -72,13 +69,13 @@ export function CopyAct1({
   const t = toneStyles[tone]
   return (
     <>
-      <Kicker tone={tone} className={tone === 'onLight' ? glowSmall : undefined}>
+      <Kicker tone={tone} className={tone === 'onLight' ? edgeSmall : undefined}>
         {storyCopy.act1.kicker}
       </Kicker>
       <Heading
         className={cn(
           'mb-4 text-4xl font-bold leading-[1.05] tracking-tight md:text-5xl',
-          tone === 'onLight' ? cn('text-[#3b2a17]', glowHeading) : t.heading
+          tone === 'onLight' ? 'text-[#3b2a17]' : t.heading
         )}
       >
         {storyCopy.act1.heading}
@@ -86,7 +83,7 @@ export function CopyAct1({
       <p
         className={cn(
           'mx-auto mb-7 max-w-xl text-base md:text-lg',
-          tone === 'onLight' ? cn('text-[#5d4730]', glowSmall) : t.body
+          tone === 'onLight' ? cn('text-[#4a3823]', edgeSmall) : t.body
         )}
       >
         {storyCopy.act1.body}
@@ -109,7 +106,7 @@ export function CopyAct1({
       <div
         className={cn(
           'mt-6 flex flex-wrap items-center justify-center gap-x-5 gap-y-1 text-xs font-medium',
-          tone === 'onLight' ? cn('text-[#5d4730]', glowSmall) : t.badges
+          tone === 'onLight' ? cn('text-[#4a3823]', edgeSmall) : t.badges
         )}
       >
         {storyCopy.act1.trustBadges.map((badge) => (
