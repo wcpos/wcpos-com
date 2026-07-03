@@ -159,26 +159,22 @@ export async function getRegions(): Promise<MedusaRegionsResponse['regions']> {
   }
 }
 
+interface CartPaymentProviderContext {
+  cartRegionId: string | null
+  providerIds: string[] | null
+}
+
 /**
- * Payment provider ids enabled on EVERY region of the backend.
+ * Payment provider ids registered and enabled on the region checkout will use
+ * for new carts.
  *
- * Checkout creates its cart without a region_id, and Medusa then assigns the
- * store's default region (store.default_region_id in findOneOrAnyRegionStep)
- * — which the store API does not expose. (/store/store does not exist;
- * querying it made this function throw and fail open on every multi-region
- * backend — the 2026-07-03 beta BTCPay 500.) Rather than guess which region
- * the cart will land in, offer only the providers enabled on all of them:
- * any region Medusa picks can serve those. The boot sync (wcpos-medusa) sets
- * every region to the same provider set, so the intersection normally IS the
- * cart region's set; it only narrows while regions have drifted apart.
- *
- * Returns null when the backend cannot be asked (down, or a mock without the
- * endpoint) so callers can fail open instead of hiding every payment method
- * on a transient error.
+ * Returns null provider ids when the backend cannot be asked (down, or a mock
+ * without the endpoint) so callers can fail open instead of hiding every
+ * payment method on a transient error.
  */
-export async function getEnabledPaymentProviderIds(
+export async function getCartPaymentProviderContext(
   storeEnv?: StoreEnvironment
-): Promise<string[] | null> {
+): Promise<CartPaymentProviderContext> {
   interface RegionWithProviders {
     id: string
     payment_providers?: Array<{ id: string; is_enabled?: boolean }>
@@ -191,38 +187,45 @@ export async function getEnabledPaymentProviderIds(
       storeEnv
     )
     const regions = response.regions ?? []
+    // Checkout passes this region_id when creating the cart, so provider
+    // filtering and the cart's region stay coupled even if Medusa's implicit
+    // default region differs from /store/regions order.
+    const cartRegion: RegionWithProviders | undefined = regions[0]
+    const hasAnyProviderEvidence = regions.some(
+      (region) => (region.payment_providers?.length ?? 0) > 0
+    )
+    const ids = new Set<string>()
+    let sawProvider = false
 
-    if (!regions.some((region) => (region.payment_providers?.length ?? 0) > 0)) {
+    for (const provider of cartRegion?.payment_providers ?? []) {
+      sawProvider = true
+      if (provider.is_enabled !== false) {
+        ids.add(provider.id)
+      }
+    }
+
+    if (!sawProvider && !hasAnyProviderEvidence) {
       // No positive evidence: a backend that ignores the *payment_providers
       // expansion (version/config drift) is indistinguishable from one with
       // zero providers. Filtering on [] would hide every payment method on a
       // 200 response — the outage class this function exists to prevent —
       // so fail open and let session creation surface any real problem.
       storeLogger.warn`No enabled payment providers reported by /store/regions; skipping method filtering`
-      return null
+      return { cartRegionId: null, providerIds: null }
     }
 
-    // The evidence guard above guarantees at least one region, so the
-    // initializer-less reduce cannot throw.
-    const intersection = regions
-      .map(
-        (region) =>
-          new Set(
-            (region.payment_providers ?? [])
-              .filter((provider) => provider.is_enabled !== false)
-              .map((provider) => provider.id)
-          )
-      )
-      .reduce(
-        (shared, enabled) =>
-          new Set([...shared].filter((id) => enabled.has(id)))
-      )
-
-    return [...intersection]
+    return { cartRegionId: cartRegion?.id ?? null, providerIds: [...ids] }
   } catch (error) {
     storeLogger.error`Failed to fetch region payment providers: ${error}`
-    return null
+    return { cartRegionId: null, providerIds: null }
   }
+}
+
+export async function getEnabledPaymentProviderIds(
+  storeEnv?: StoreEnvironment
+): Promise<string[] | null> {
+  const { providerIds } = await getCartPaymentProviderContext(storeEnv)
+  return providerIds
 }
 
 /**
