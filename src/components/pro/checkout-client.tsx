@@ -116,6 +116,7 @@ interface CheckoutClientProps {
   /** Saved profile tax registration (ABN/VAT/EIN…) to prefill. */
   initialTaxNumber?: string
   selectedOfferHandle?: string
+  cartRegionId?: string
   /** Static summary shown before the cart exists. */
   offerSummary?: { title: string; priceFormatted: string }
   /** Current checkout path (with query) for OAuth redirect-back. */
@@ -168,6 +169,7 @@ export function CheckoutClient({
   initialBillingAddress,
   initialTaxNumber,
   selectedOfferHandle,
+  cartRegionId,
   offerSummary,
   checkoutPath,
   experimentVariant,
@@ -282,6 +284,7 @@ export function CheckoutClient({
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
+            region_id: cartRegionId,
             metadata: {
               experiment: PRO_CHECKOUT_EXPERIMENT,
               variant: experimentVariant,
@@ -358,6 +361,7 @@ export function CheckoutClient({
     blockedByProtectiveFailure,
     email,
     selectedOfferHandle,
+    cartRegionId,
     experimentVariant,
   ])
 

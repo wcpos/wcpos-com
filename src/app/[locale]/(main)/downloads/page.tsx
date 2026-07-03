@@ -14,6 +14,10 @@ import { DownloadsHero } from '@/components/downloads/download-hero'
 import { PLATFORMS } from '@/components/downloads/platforms'
 import { HowItFits } from '@/components/downloads/how-it-fits'
 import {
+  GetStartedSteps,
+  GetStartedStep,
+} from '@/components/downloads/get-started-steps'
+import {
   ReleaseHistory,
   type ReleaseEntry,
 } from '@/components/downloads/release-history'
@@ -114,14 +118,6 @@ async function getRecentReleases(locale: string): Promise<ReleaseEntry[]> {
   }))
 }
 
-function StepNumber({ children }: { children: React.ReactNode }) {
-  return (
-    <span className="absolute -left-12 top-0 flex h-8 w-8 items-center justify-center rounded-full border-[1.5px] border-wcpos-red bg-background text-sm font-semibold text-wcpos-red-accent">
-      {children}
-    </span>
-  )
-}
-
 function DeviceCard({
   icon: Icon,
   title,
@@ -184,9 +180,8 @@ export default async function DownloadsPage({
             title="Three steps to your first sale"
             subtitle="It takes about two minutes, start to finish."
           />
-          <ol className="relative mx-auto mt-12 max-w-2xl space-y-10 pl-12 before:absolute before:bottom-12 before:left-[15px] before:top-2 before:w-px before:bg-border">
-            <li className="relative">
-              <StepNumber>1</StepNumber>
+          <GetStartedSteps>
+            <GetStartedStep step={1}>
               <h3 className="text-xl font-semibold tracking-tight">
                 Install the free plugin
               </h3>
@@ -220,10 +215,9 @@ export default async function DownloadsPage({
                   </Button>
                 </div>
               </Card>
-            </li>
+            </GetStartedStep>
 
-            <li className="relative">
-              <StepNumber>2</StepNumber>
+            <GetStartedStep step={2}>
               <h3 className="text-xl font-semibold tracking-tight">
                 Pick your device
               </h3>
@@ -260,10 +254,9 @@ export default async function DownloadsPage({
                   </TextLink>
                 </DeviceCard>
               </div>
-            </li>
+            </GetStartedStep>
 
-            <li className="relative">
-              <StepNumber>3</StepNumber>
+            <GetStartedStep step={3}>
               <h3 className="text-xl font-semibold tracking-tight">
                 Want more? Go Pro
               </h3>
@@ -291,8 +284,8 @@ export default async function DownloadsPage({
                   </Button>
                 </div>
               </Card>
-            </li>
-          </ol>
+            </GetStartedStep>
+          </GetStartedSteps>
         </Container>
       </Section>
 

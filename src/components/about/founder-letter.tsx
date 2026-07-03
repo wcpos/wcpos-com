@@ -31,7 +31,7 @@ function FounderLetterContent({
       <article className="mx-auto max-w-2xl rounded-sm bg-[#fffefb] p-8 shadow-lg md:p-12 dark:bg-slate-800">
         <div
           aria-hidden="true"
-          className="-mx-8 mb-8 h-[5px] md:-mx-12"
+          className="-mx-8 -mt-8 mb-8 h-[5px] rounded-t-sm md:-mx-12 md:-mt-12"
           style={{
             background:
               'repeating-linear-gradient(90deg,#CD2C24 0 22px,#F5E5C0 22px 44px)',

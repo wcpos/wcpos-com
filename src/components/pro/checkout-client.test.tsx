@@ -292,6 +292,32 @@ describe('CheckoutClient', () => {
     )
   })
 
+  it('creates the cart in the provider-filter region when supplied', async () => {
+    mockSuccessfulCheckoutInit()
+    renderSignedIn({ cartRegionId: 'reg_eu' })
+
+    await waitFor(() => {
+      expect(mockFetch).toHaveBeenCalledWith(
+        '/api/store/cart',
+        expect.objectContaining({ method: 'POST' })
+      )
+    })
+    expect(mockFetch).toHaveBeenNthCalledWith(
+      1,
+      '/api/store/cart',
+      expect.objectContaining({
+        method: 'POST',
+        body: JSON.stringify({
+          region_id: 'reg_eu',
+          metadata: {
+            experiment: 'pro_checkout_v1',
+            variant: 'control',
+          },
+        }),
+      })
+    )
+  })
+
   it('starts at the account step when signed out and creates the account inline', async () => {
     render(
       <CheckoutClient

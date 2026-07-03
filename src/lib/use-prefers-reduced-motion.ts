@@ -1,35 +1,26 @@
 'use client'
 
-import { useSyncExternalStore } from 'react'
-
-const REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)'
-
-function subscribe(onChange: () => void) {
-  if (typeof window.matchMedia !== 'function') return () => {}
-  const mql = window.matchMedia(REDUCED_MOTION_QUERY)
-  mql.addEventListener('change', onChange)
-  return () => mql.removeEventListener('change', onChange)
-}
-
-function getSnapshot() {
-  return (
-    typeof window.matchMedia === 'function' &&
-    window.matchMedia(REDUCED_MOTION_QUERY).matches
-  )
-}
-
-function getServerSnapshot() {
-  return false
-}
+import * as React from 'react'
 
 /**
- * SSR-safe prefers-reduced-motion hook. Motion's useReducedMotion caches the
- * media query in module state and reports the real value during the hydration
- * render, so any markup derived from it (tabIndex, variants) mismatches the
- * server HTML for reduced-motion users. The server snapshot here is `false`:
- * SSR and the hydration render both emit the motion-enabled markup, and
- * reduced-motion users swap to the static variant immediately after hydration.
+ * Media-query subscription for `prefers-reduced-motion: reduce` — local
+ * instead of motion's useReducedMotion, which caches the query result in
+ * module state. The server snapshot is `false` so SSR emits the animated
+ * markup and reduced-motion users swap to their static variant on hydration.
+ * The matchMedia guard keeps non-browser DOM environments (jsdom) on the
+ * animated path instead of crashing.
  */
-export function usePrefersReducedMotion(): boolean {
-  return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)
+export function usePrefersReducedMotion() {
+  return React.useSyncExternalStore(
+    (onChange) => {
+      if (typeof window.matchMedia !== 'function') return () => {}
+      const mql = window.matchMedia('(prefers-reduced-motion: reduce)')
+      mql.addEventListener('change', onChange)
+      return () => mql.removeEventListener('change', onChange)
+    },
+    () =>
+      typeof window.matchMedia === 'function' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+    () => false
+  )
 }

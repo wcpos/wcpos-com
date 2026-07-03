@@ -9,8 +9,8 @@
 export const storyCopy = {
   act1: {
     kicker: 'Point of Sale for WooCommerce',
-    heading: 'Your counter. Your customers. Your WooCommerce.',
-    body: 'WCPOS turns the store you already run into the register you always wanted.',
+    heading: 'Your WooCommerce store, at the counter.',
+    body: 'WCPOS turns the tablet into your register — same catalog, same stock, same prices, even offline.',
     demoCta: { label: 'Try Live Demo', href: 'https://demo.wcpos.com/pos' },
     downloadCta: {
       label: 'Download Free',

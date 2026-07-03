@@ -11,7 +11,7 @@ import { ANALYTICS_DISTINCT_ID_COOKIE } from '@/lib/analytics/distinct-id'
 import { getAnalyticsConfig } from '@/lib/analytics/config'
 import { getRequestStoreEnvironment } from '@/lib/store-environment'
 import { filterPaymentsByBackendProviders } from '@/lib/checkout-payments'
-import { getEnabledPaymentProviderIds } from '@/services/core/external/medusa-client'
+import { getCartPaymentProviderContext } from '@/services/core/external/medusa-client'
 import { billingPrefillFromCustomer } from '@/lib/billing-profile'
 import type { ProCheckoutVariant } from '@/services/core/analytics/posthog-service'
 import {
@@ -87,10 +87,10 @@ async function CheckoutContent({
   const analyticsConfig = getAnalyticsConfig(process.env)
   // Only offer payment methods the backend actually registers — config and
   // backend drift independently (see checkout-payments.ts).
-  const [{ offers }, enabledProviderIds, experimentVariant] =
+  const [{ offers }, paymentProviderContext, experimentVariant] =
     await Promise.all([
       getProOfferCatalog(undefined, storeEnv),
-      getEnabledPaymentProviderIds(storeEnv),
+      getCartPaymentProviderContext(storeEnv),
       distinctId
         ? resolveProCheckoutVariant({
             distinctId,
@@ -129,9 +129,10 @@ async function CheckoutContent({
       }
       checkoutPath={buildCheckoutRedirectPath(searchParams)}
       experimentVariant={experimentVariant}
+      cartRegionId={paymentProviderContext.cartRegionId ?? undefined}
       payments={filterPaymentsByBackendProviders(
         storeEnv.payments,
-        enabledProviderIds
+        paymentProviderContext.providerIds
       )}
     />
   )
