@@ -1,5 +1,7 @@
 import { Markdown } from '@/components/ui/markdown'
+import { Badge } from '@/components/ui/badge'
 import { Collapsible } from '@/components/ui/collapsible'
+import { TextLink } from '@/components/ui/text-link'
 
 export interface ReleaseEntry {
   version: string
@@ -28,11 +30,7 @@ export function ReleaseHistory({ releases }: { releases: ReleaseEntry[] }) {
               <span className="font-mono text-base font-medium">
                 {release.version}
               </span>
-              {release.latest && (
-                <span className="rounded-md bg-wcpos-red/10 px-2 py-0.5 text-xs font-semibold uppercase tracking-wide text-wcpos-red-accent">
-                  Latest
-                </span>
-              )}
+              {release.latest && <Badge variant="brand-tint">Latest</Badge>}
               <span className="text-sm text-muted-foreground">
                 {release.date}
               </span>
@@ -47,19 +45,13 @@ export function ReleaseHistory({ releases }: { releases: ReleaseEntry[] }) {
 
       <p className="mt-8 text-center text-sm text-muted-foreground">
         Full history on GitHub —{' '}
-        <a
-          href="https://github.com/wcpos/woocommerce-pos/releases"
-          className="font-medium text-wcpos-red-accent hover:underline"
-        >
+        <TextLink href="https://github.com/wcpos/woocommerce-pos/releases">
           Free
-        </a>{' '}
+        </TextLink>{' '}
         ·{' '}
-        <a
-          href="https://github.com/wcpos/electron/releases"
-          className="font-medium text-wcpos-red-accent hover:underline"
-        >
+        <TextLink href="https://github.com/wcpos/electron/releases">
           Desktop
-        </a>
+        </TextLink>
       </p>
     </div>
   )

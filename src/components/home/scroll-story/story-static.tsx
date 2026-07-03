@@ -68,7 +68,7 @@ export function StoryStatic() {
               width={1280}
               height={722}
               loading="lazy"
-              className="w-full rounded-2xl shadow-[0_24px_48px_-24px_rgba(30,20,10,0.5)]"
+              className="w-full rounded-lg shadow-[0_24px_48px_-24px_rgba(30,20,10,0.5)]"
             />
           </picture>
         </div>
