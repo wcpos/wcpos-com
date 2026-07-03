@@ -9,6 +9,13 @@ describe('TextLink', () => {
     expect(link).toHaveAttribute('href', '/downloads')
   })
 
+  it('opens external links safely in a new tab', () => {
+    render(<TextLink href="https://example.com/download">Download</TextLink>)
+    const link = screen.getByRole('link', { name: 'Download' })
+    expect(link).toHaveAttribute('target', '_blank')
+    expect(link).toHaveAttribute('rel', 'noopener noreferrer')
+  })
+
   it('renders a trailing arrow when arrow is set', () => {
     const { container } = render(
       <TextLink href="#" arrow>

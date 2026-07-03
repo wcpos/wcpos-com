@@ -40,7 +40,7 @@ function MethodRow({
 }) {
   return (
     <div
-      className={`rounded-lg border transition-colors ${
+      className={`rounded-md border transition-colors ${
         selected ? 'border-primary ring-1 ring-primary' : 'border-border'
       }`}
     >

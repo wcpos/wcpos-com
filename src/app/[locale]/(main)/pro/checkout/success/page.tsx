@@ -2,6 +2,7 @@ import { setRequestLocale } from 'next-intl/server'
 import { Link } from '@/i18n/navigation'
 import { CheckCircle, Download } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { toneText } from '@/components/ui/status-tone'
 
 export const metadata = {
   title: 'Order Complete - WCPOS Pro',
@@ -21,7 +22,7 @@ export default async function CheckoutSuccessPage({
   return (
     <main className="min-h-screen bg-gradient-to-b from-background to-muted/20 flex items-center justify-center">
       <div className="container mx-auto px-4 py-16 text-center max-w-lg">
-        <CheckCircle className="h-20 w-20 text-green-500 mx-auto mb-6" />
+        <CheckCircle className={`h-20 w-20 mx-auto mb-6 ${toneText.positive}`} />
 
         <h1 className="text-3xl font-bold mb-4">Thank You!</h1>
 

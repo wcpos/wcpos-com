@@ -59,11 +59,21 @@ describe('SupportChat', () => {
     fireEvent.submit(screen.getByRole('textbox').closest('form')!)
     await waitFor(() => expect(screen.getByText(/Open Settings/)).toBeInTheDocument())
     expect(screen.getByText('How do I print?')).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Yes' }).className).toContain(
+      'inline-flex',
+    )
 
     fireEvent.change(screen.getByRole('textbox'), { target: { value: 'How do I add another?' } })
     fireEvent.submit(screen.getByRole('textbox').closest('form')!)
     await waitFor(() => expect(screen.getByText(/Check Hardware/)).toBeInTheDocument())
     expect(screen.getByText('How do I add another?')).toBeInTheDocument()
     expect(resetTurnstile).toHaveBeenCalled()
+  })
+
+  it('renders example questions with the shared button styling', () => {
+    render(<SupportChat />)
+    expect(
+      screen.getByRole('button', { name: 'Why is my licence inactive?' }).className,
+    ).toContain('inline-flex')
   })
 })

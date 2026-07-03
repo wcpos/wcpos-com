@@ -1,4 +1,5 @@
 import { Compass, HeartHandshake, Code2, ShieldCheck } from 'lucide-react'
+import { FeatureCard } from '@/components/ui/feature-card'
 import { Section } from '@/components/ui/section'
 import { SectionHeading } from '@/components/ui/section-heading'
 
@@ -31,21 +32,14 @@ export function ValuesSection() {
       <SectionHeading className="mb-12" title="What it stands for" />
       <div className="mx-auto grid max-w-4xl gap-6 sm:grid-cols-2">
         {values.map((value) => (
-          <div
+          <FeatureCard
             key={value.title}
-            className="rounded-md border border-slate-200 bg-white p-6 dark:border-slate-700 dark:bg-slate-900"
+            icon={value.icon}
+            iconStyle="plain"
+            title={value.title}
           >
-            <value.icon
-              aria-hidden="true"
-              className="mb-4 h-8 w-8 text-wcpos-red"
-            />
-            <h3 className="mb-2 text-lg font-semibold text-slate-900 dark:text-slate-100">
-              {value.title}
-            </h3>
-            <p className="leading-relaxed text-slate-600 dark:text-slate-400">
-              {value.body}
-            </p>
-          </div>
+            {value.body}
+          </FeatureCard>
         ))}
       </div>
     </Section>

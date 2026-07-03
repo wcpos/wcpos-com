@@ -4,7 +4,9 @@ import { useState, useRef, useEffect, type FormEvent } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { Turnstile, type TurnstileInstance } from '@marsidev/react-turnstile'
 import posthog from 'posthog-js'
+import { Button } from '@/components/ui/button'
 import { Markdown } from '@/components/ui/markdown'
+import { Section } from '@/components/ui/section'
 import { DiscordSection } from '@/components/support/discord-section'
 
 interface Message {
@@ -127,20 +129,26 @@ export function SupportChat() {
                   <Markdown content={m.content} className="text-sm text-foreground" />
                   <div className="mt-2 flex items-center gap-2 text-muted-foreground">
                     <span className="text-xs">Was this helpful?</span>
-                    <button
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
                       aria-label="Yes"
                       onClick={() => feedback(true, i)}
-                      className="rounded border px-2 py-1 text-xs hover:bg-muted"
+                      className="h-auto px-2 py-1 text-xs hover:bg-muted"
                     >
                       👍
-                    </button>
-                    <button
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
                       aria-label="No"
                       onClick={() => feedback(false, i)}
-                      className="rounded border px-2 py-1 text-xs hover:bg-muted"
+                      className="h-auto px-2 py-1 text-xs hover:bg-muted"
                     >
                       👎
-                    </button>
+                    </Button>
                   </div>
                 </div>
               </div>
@@ -164,13 +172,12 @@ export function SupportChat() {
           maxLength={1000}
           className="flex-1 bg-transparent text-base outline-none placeholder:text-muted-foreground"
         />
-        <button
+        <Button
           type="submit"
           disabled={status === 'asking' || !input.trim() || verifying}
-          className="rounded-md bg-wcpos-red px-4 py-2 text-sm font-semibold text-white transition hover:brightness-110 disabled:opacity-50"
         >
           {status === 'asking' ? '…' : 'Ask'}
-        </button>
+        </Button>
       </form>
 
       {error && (
@@ -185,14 +192,17 @@ export function SupportChat() {
       {!started && (
         <div className="mt-4 flex flex-wrap justify-center gap-2">
           {EXAMPLES.map((q) => (
-            <button
+            <Button
               key={q}
+              type="button"
+              variant="outline"
+              size="sm"
               onClick={() => void ask(q)}
               disabled={verifying}
-              className="rounded-full border bg-card px-3 py-1.5 text-sm text-muted-foreground hover:bg-muted disabled:opacity-50"
+              className="h-auto rounded-full bg-card px-3 py-1.5 text-sm text-muted-foreground hover:bg-muted"
             >
               {q}
-            </button>
+            </Button>
           ))}
         </div>
       )}
@@ -216,9 +226,9 @@ export function SupportChat() {
 export function SupportDefaultContent() {
   return (
     <>
-      <section className="container mx-auto px-4 py-20 md:py-28">
+      <Section spacing="hero">
         <SupportChat />
-      </section>
+      </Section>
       <DiscordSection />
     </>
   )
@@ -234,7 +244,7 @@ export function SupportPageContent() {
 
   return (
     <>
-      <section className="container mx-auto px-4 py-12 md:py-16">
+      <Section spacing="compact">
         <div className="mx-auto max-w-2xl text-center">
           <h1 className="mb-3 text-3xl font-bold text-foreground md:text-4xl">
             Contact support about your order
@@ -244,10 +254,10 @@ export function SupportPageContent() {
             confirm the payment or finish the order before you pay again.
           </p>
         </div>
-      </section>
-      <section className="container mx-auto px-4 py-16">
+      </Section>
+      <Section spacing="default" className="pt-0">
         <SupportChat />
-      </section>
+      </Section>
       <DiscordSection />
     </>
   )

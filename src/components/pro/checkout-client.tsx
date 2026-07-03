@@ -22,6 +22,7 @@ import {
 import { PaymentStep, type PaymentMethod } from './checkout/payment-step'
 import { StepShell } from './checkout/step-shell'
 import { Button } from '@/components/ui/button'
+import { toneText } from '@/components/ui/status-tone'
 import { ArrowLeft, Check, CheckCircle } from 'lucide-react'
 import { Link } from '@/i18n/navigation'
 import type { ProCheckoutVariant } from '@/services/core/analytics/posthog-service'
@@ -527,7 +528,7 @@ export function CheckoutClient({
   if (orderComplete) {
     return (
       <div className="flex min-h-[400px] flex-col items-center justify-center text-center">
-        <CheckCircle className="mb-4 h-16 w-16 text-green-500" />
+        <CheckCircle className={`mb-4 h-16 w-16 ${toneText.positive}`} />
         <h2 className="mb-2 text-2xl font-bold">
           Thank you for your purchase!
         </h2>
@@ -709,7 +710,7 @@ export function CheckoutClient({
 
       {/* Sticky order summary */}
       <div
-        className="rounded-xl border bg-card p-5 md:sticky md:top-24"
+        className="rounded-md border bg-card p-5 md:sticky md:top-24"
         data-testid="checkout-order-summary"
       >
         {cart && cart.items.length > 0 ? (
@@ -748,15 +749,15 @@ export function CheckoutClient({
         )}
         <ul className="mt-4 space-y-1.5 text-sm text-muted-foreground">
           <li className="flex gap-2">
-            <Check className="mt-0.5 h-4 w-4 shrink-0 text-green-500" />
+            <Check className={`mt-0.5 h-4 w-4 shrink-0 ${toneText.positive}`} />
             Instant license delivery
           </li>
           <li className="flex gap-2">
-            <Check className="mt-0.5 h-4 w-4 shrink-0 text-green-500" />
+            <Check className={`mt-0.5 h-4 w-4 shrink-0 ${toneText.positive}`} />
             One-time payment — never auto-renews
           </li>
           <li className="flex gap-2">
-            <Check className="mt-0.5 h-4 w-4 shrink-0 text-green-500" />
+            <Check className={`mt-0.5 h-4 w-4 shrink-0 ${toneText.positive}`} />
             Secure payment processing
           </li>
         </ul>

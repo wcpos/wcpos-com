@@ -2,7 +2,9 @@
 
 import { Link } from '@/i18n/navigation'
 import { AlertTriangle, LifeBuoy } from 'lucide-react'
+import { Alert } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
+import { toneText } from '@/components/ui/status-tone'
 import type { CheckoutFailure } from './checkout-safety'
 
 function supportHref(reference: string): string {
@@ -32,27 +34,20 @@ export function CheckoutErrorNotice({
 }: CheckoutErrorNoticeProps) {
   if (failure.kind === 'payment_cancelled') {
     return (
-      <div role="status" className="rounded-md border bg-muted/50 p-4 text-sm space-y-1">
-        <p className="font-medium">Payment cancelled</p>
-        <p className="text-muted-foreground">{failure.message}</p>
+      <Alert role="status" tone="neutral" title="Payment cancelled">
+        <p>{failure.message}</p>
         {canSwitchMethod && (
-          <p className="text-muted-foreground">
-            You can also choose a different payment method below.
-          </p>
+          <p>You can also choose a different payment method below.</p>
         )}
-      </div>
+      </Alert>
     )
   }
 
   if (failure.kind === 'payment_uncertain') {
     return (
-      <div
-        role="alert"
-        className="rounded-md border border-amber-500/40 bg-amber-500/10 p-4 text-sm space-y-2"
-      >
-        <p className="font-medium">Payment status unknown</p>
+      <Alert role="alert" tone="caution" title="Payment status unknown">
         <p>{failure.message}</p>
-        <p className="text-muted-foreground">
+        <p>
           Please{' '}
           <Link
             href={supportHref(failure.reference)}
@@ -63,22 +58,18 @@ export function CheckoutErrorNotice({
           and quote reference <span className="font-mono">{failure.reference}</span> —
           we will confirm whether your payment went through before you pay again.
         </p>
-      </div>
+      </Alert>
     )
   }
 
   return (
-    <div
-      role="alert"
-      className="rounded-md border border-destructive/30 bg-destructive/10 p-4 text-sm space-y-2"
-    >
-      <p className="font-medium text-destructive">Payment unsuccessful</p>
-      <p className="text-destructive">{failure.message}</p>
-      <p className="text-muted-foreground">
+    <Alert role="alert" tone="critical" title="Payment unsuccessful">
+      <p>{failure.message}</p>
+      <p>
         Your order details have been saved, so you can try again without starting over.
         {canSwitchMethod && ' You can also choose a different payment method below.'}
       </p>
-      <p className="text-muted-foreground">
+      <p>
         Still stuck?{' '}
         <Link
           href={supportHref(failure.reference)}
@@ -88,7 +79,7 @@ export function CheckoutErrorNotice({
         </Link>{' '}
         and quote reference <span className="font-mono">{failure.reference}</span>.
       </p>
-    </div>
+    </Alert>
   )
 }
 
@@ -107,7 +98,7 @@ export function OrderPendingNotice({ failure }: OrderPendingNoticeProps) {
       role="alert"
       className="flex flex-col items-center justify-center min-h-[400px] text-center max-w-xl mx-auto"
     >
-      <AlertTriangle className="h-16 w-16 text-amber-500 mb-4" />
+      <AlertTriangle className={`h-16 w-16 mb-4 ${toneText.caution}`} />
       <h2 className="text-2xl font-bold mb-2">Payment received — order pending</h2>
       <p className="text-muted-foreground mb-2">
         Your payment went through, but we hit a problem while creating your order.
