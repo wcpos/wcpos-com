@@ -67,6 +67,17 @@ For shot 1 swap the view for "directly overhead top-down view of a warm oak
 coffee-shop counter" and add the prop list. Generate 4–8 candidates, pick in
 the browser, iterate.
 
+## Act 4: Woo sync cloud — DECIDED, no artwork needed (2026-07-03)
+
+Explored Nano Banana renders of a porcelain cloud, then chose code instead:
+the cloud in `acts/cloud-sync.tsx` is a single SVG silhouette that gently
+morphs between four keyshapes via a CSS `d: path()` animation
+(`cloudMorph` in `story.module.css`). Keyshapes are generated from three
+overlapping circle lobes sampled at fixed point counts (identical path
+structure is required for interpolation) — regenerate all four together if
+the geometry ever changes. Do not add an Act 4 image asset; the badge,
+chips, and sync arcs stay live DOM.
+
 ## Integration map
 
 - Files land in `public/images/story/` as AVIF + WebP (use `sharp` or
