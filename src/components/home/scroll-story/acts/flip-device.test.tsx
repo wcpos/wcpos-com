@@ -76,10 +76,14 @@ describe('FlipDevice', () => {
     expect(visible('model-c')).toBe(false)
   })
 
-  it('card-flips to the next model on the cycle timer', () => {
+  it('card-flips to the next model after a full beat', () => {
     renderSlot()
 
-    act(() => vi.advanceTimersByTime(0)) // offset timer → flip starts
+    // the first model holds one interval before its first flip
+    act(() => vi.advanceTimersByTime(2900))
+    expect(visible('model-a')).toBe(true)
+
+    act(() => vi.advanceTimersByTime(100)) // offset + interval → flip starts
     completeFlip()
 
     expect(visible('model-a')).toBe(false)
@@ -90,7 +94,7 @@ describe('FlipDevice', () => {
     const { container } = renderSlot()
     const card = container.querySelector('[data-flip-phase]')!
 
-    act(() => vi.advanceTimersByTime(0))
+    act(() => vi.advanceTimersByTime(3000))
     expect(card.getAttribute('data-flip-phase')).toBe('out')
     expect(visible('model-a')).toBe(true)
 
@@ -103,7 +107,7 @@ describe('FlipDevice', () => {
   it('wraps around to the first model', () => {
     renderSlot()
 
-    act(() => vi.advanceTimersByTime(0))
+    act(() => vi.advanceTimersByTime(3000))
     completeFlip()
     act(() => vi.advanceTimersByTime(3000 - 700))
     completeFlip()
@@ -135,7 +139,7 @@ describe('FlipDevice', () => {
     const hidden = vi.spyOn(document, 'hidden', 'get').mockReturnValue(true)
     renderSlot()
 
-    act(() => vi.advanceTimersByTime(0))
+    act(() => vi.advanceTimersByTime(3000))
     completeFlip()
 
     expect(visible('model-a')).toBe(true)
@@ -145,7 +149,8 @@ describe('FlipDevice', () => {
   it('honours the slot stagger offset', () => {
     renderSlot({ offsetMs: 1200 })
 
-    act(() => vi.advanceTimersByTime(1100))
+    // first flip lands at offset + one full interval
+    act(() => vi.advanceTimersByTime(4100))
     expect(visible('model-a')).toBe(true)
 
     act(() => vi.advanceTimersByTime(100))

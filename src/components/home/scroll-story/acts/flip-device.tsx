@@ -47,11 +47,14 @@ export function FlipDevice({
       setPhase((current) => (current === 'rest' ? 'out' : current))
     }
 
+    // the first model holds a full beat before its first flip — flipping the
+    // moment the act activates would snatch away the model the viewer just
+    // scrolled to
     let interval: ReturnType<typeof setInterval> | undefined
     const timeout = setTimeout(() => {
       flip()
       interval = setInterval(flip, intervalMs)
-    }, offsetMs)
+    }, offsetMs + intervalMs)
 
     return () => {
       clearTimeout(timeout)
