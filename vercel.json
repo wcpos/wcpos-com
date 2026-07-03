@@ -14,6 +14,10 @@
     {
       "path": "/api/discord/reconcile",
       "schedule": "0 3 * * *"
+    },
+    {
+      "path": "/api/health/oauth",
+      "schedule": "0 * * * *"
     }
   ]
 }
