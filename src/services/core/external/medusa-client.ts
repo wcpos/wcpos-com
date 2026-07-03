@@ -160,8 +160,17 @@ export async function getRegions(): Promise<MedusaRegionsResponse['regions']> {
 }
 
 /**
- * Payment provider ids registered and enabled on the region a new cart will
- * land in.
+ * Payment provider ids enabled on EVERY region of the backend.
+ *
+ * Checkout creates its cart without a region_id, and Medusa then assigns the
+ * store's default region (store.default_region_id in findOneOrAnyRegionStep)
+ * — which the store API does not expose. (/store/store does not exist;
+ * querying it made this function throw and fail open on every multi-region
+ * backend — the 2026-07-03 beta BTCPay 500.) Rather than guess which region
+ * the cart will land in, offer only the providers enabled on all of them:
+ * any region Medusa picks can serve those. The boot sync (wcpos-medusa) sets
+ * every region to the same provider set, so the intersection normally IS the
+ * cart region's set; it only narrows while regions have drifted apart.
  *
  * Returns null when the backend cannot be asked (down, or a mock without the
  * endpoint) so callers can fail open instead of hiding every payment method
@@ -182,28 +191,8 @@ export async function getEnabledPaymentProviderIds(
       storeEnv
     )
     const regions = response.regions ?? []
-    // Checkout creates its cart without a region_id, and Medusa's
-    // createCartWorkflow then defaults to the first region it lists — so the
-    // first region here is the one the cart will get. There is no store-API
-    // endpoint exposing a "default region": asking /store/store for one (it
-    // does not exist, 404) made this function fail open on every
-    // multi-region backend, which re-opened the BTCPay outage on beta
-    // (2026-07-03).
-    const cartRegion: RegionWithProviders | undefined = regions[0]
-    const hasAnyProviderEvidence = regions.some(
-      (region) => (region.payment_providers?.length ?? 0) > 0
-    )
-    const ids = new Set<string>()
-    let sawProvider = false
 
-    for (const provider of cartRegion?.payment_providers ?? []) {
-      sawProvider = true
-      if (provider.is_enabled !== false) {
-        ids.add(provider.id)
-      }
-    }
-
-    if (!sawProvider && !hasAnyProviderEvidence) {
+    if (!regions.some((region) => (region.payment_providers?.length ?? 0) > 0)) {
       // No positive evidence: a backend that ignores the *payment_providers
       // expansion (version/config drift) is indistinguishable from one with
       // zero providers. Filtering on [] would hide every payment method on a
@@ -213,7 +202,19 @@ export async function getEnabledPaymentProviderIds(
       return null
     }
 
-    return [...ids]
+    let ids: Set<string> | null = null
+    for (const region of regions) {
+      const enabled = new Set(
+        (region.payment_providers ?? [])
+          .filter((provider) => provider.is_enabled !== false)
+          .map((provider) => provider.id)
+      )
+      ids = ids === null
+        ? enabled
+        : new Set([...ids].filter((id) => enabled.has(id)))
+    }
+
+    return [...(ids ?? [])]
   } catch (error) {
     storeLogger.error`Failed to fetch region payment providers: ${error}`
     return null

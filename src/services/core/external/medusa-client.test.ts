@@ -259,10 +259,12 @@ describe('medusaClient', () => {
   })
 
   describe('getEnabledPaymentProviderIds', () => {
-    it('uses the first region (the cart-creation default) instead of unioning every region', async () => {
-      // Single request: the old multi-region branch asked /store/store for a
-      // default region — an endpoint that does not exist (404) — so the
-      // filter failed open on every real multi-region backend.
+    it('offers only providers enabled on every region, in a single request', async () => {
+      // The cart's region (store.default_region_id) is not exposed by the
+      // store API — the old branch asked /store/store for it, an endpoint
+      // that does not exist (404), so the filter failed open on every real
+      // multi-region backend. The intersection is safe whichever region the
+      // cart lands in.
       mockFetch.mockResolvedValueOnce({
         ok: true,
         json: async () => ({
@@ -280,6 +282,7 @@ describe('medusaClient', () => {
               name: 'US',
               payment_providers: [
                 { id: 'pp_btcpay_btcpay', is_enabled: true },
+                { id: 'pp_stripe_stripe', is_enabled: true },
               ],
             },
           ],
@@ -288,7 +291,6 @@ describe('medusaClient', () => {
 
       await expect(getEnabledPaymentProviderIds()).resolves.toEqual([
         'pp_stripe_stripe',
-        'pp_paypal_paypal',
       ])
       expect(mockFetch).toHaveBeenCalledTimes(1)
     })
@@ -329,7 +331,7 @@ describe('medusaClient', () => {
       await expect(getEnabledPaymentProviderIds()).resolves.toBeNull()
     })
 
-    it('filters everything when the cart region has no providers but another region does', async () => {
+    it('filters everything when one region has no providers but another does', async () => {
       mockFetch.mockResolvedValueOnce({
         ok: true,
         json: async () => ({
