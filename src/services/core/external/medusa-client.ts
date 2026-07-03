@@ -202,19 +202,23 @@ export async function getEnabledPaymentProviderIds(
       return null
     }
 
-    let ids: Set<string> | null = null
-    for (const region of regions) {
-      const enabled = new Set(
-        (region.payment_providers ?? [])
-          .filter((provider) => provider.is_enabled !== false)
-          .map((provider) => provider.id)
+    // The evidence guard above guarantees at least one region, so the
+    // initializer-less reduce cannot throw.
+    const intersection = regions
+      .map(
+        (region) =>
+          new Set(
+            (region.payment_providers ?? [])
+              .filter((provider) => provider.is_enabled !== false)
+              .map((provider) => provider.id)
+          )
       )
-      ids = ids === null
-        ? enabled
-        : new Set([...ids].filter((id) => enabled.has(id)))
-    }
+      .reduce(
+        (shared, enabled) =>
+          new Set([...shared].filter((id) => enabled.has(id)))
+      )
 
-    return [...(ids ?? [])]
+    return [...intersection]
   } catch (error) {
     storeLogger.error`Failed to fetch region payment providers: ${error}`
     return null
