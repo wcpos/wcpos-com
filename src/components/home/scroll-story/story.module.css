@@ -205,53 +205,51 @@
   animation: story-sway 10s ease-in-out infinite alternate;
 }
 
-/* Act-1 counter photo: life at the top edge of the frame. A top-down camera
-   doesn't see the people beyond the counter — it sees the light along the
-   counter's far edge shift as bodies block and unblock the window. So: a
-   shallow band under the header where wide, soft patches of shade and warm
-   light drift sideways at different speeds (same family as the acts-2-4
-   ribbon gradients), masked to fade out well before the headline.
+/* Act-1 counter photo: clouds at the top of the frame. A really thin band
+   under the header where soft masses of white, table-warm yellow and faint
+   grey drift slowly past each other — dreamy, floaty, the same family as
+   the acts-2-4 ribbon gradients. No static scrim above the photo; this
+   layer IS the light at the counter's far edge.
 
-   INTENT: deliberately faint per-pixel — the goal is that the top of the
-   photo never quite holds still, not that a shape is ever seen. Owner
-   rejected discrete silhouettes as "weird circles"; do not reintroduce
-   traveling shapes. Tune strength via the gradient alphas only. */
-@keyframes story-counter-life-a {
+   INTENT: light tones only (owner rejected dark shadows and any discrete
+   traveling shape). Keep it faint and slow; tune via the gradient alphas
+   and the cycle durations only. */
+@keyframes story-counter-cloud-a {
   from {
-    transform: translateX(-7%);
+    transform: translate3d(-6%, -3%, 0) scale(1);
+    opacity: 0.6;
+  }
+  to {
+    transform: translate3d(8%, 3%, 0) scale(1.08);
+    opacity: 1;
+  }
+}
+@keyframes story-counter-cloud-b {
+  from {
+    transform: translate3d(7%, 2%, 0) scale(1.06);
+    opacity: 1;
+  }
+  to {
+    transform: translate3d(-8%, -3%, 0) scale(0.96);
     opacity: 0.55;
   }
-  to {
-    transform: translateX(10%);
-    opacity: 1;
-  }
 }
-@keyframes story-counter-life-b {
+@keyframes story-counter-cloud-c {
   from {
-    transform: translateX(8%);
-    opacity: 1;
-  }
-  to {
-    transform: translateX(-9%);
+    transform: translate3d(-4%, 2%, 0) scale(0.98);
     opacity: 0.5;
   }
-}
-@keyframes story-counter-life-c {
-  from {
-    transform: translateX(-5%);
-    opacity: 0.45;
-  }
   to {
-    transform: translateX(6%);
+    transform: translate3d(5%, -2%, 0) scale(1.06);
     opacity: 0.9;
   }
 }
 .counterLife {
   position: absolute;
   inset: 0 0 auto 0;
-  height: 22%;
+  height: 20%;
   overflow: hidden;
-  mask-image: linear-gradient(to bottom, #000 0%, #000 18%, transparent 42%);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 30%, transparent 100%);
 }
 .counterLife1,
 .counterLife2,
@@ -260,45 +258,48 @@
   top: -70%;
   height: 220%;
   border-radius: 50%;
-  filter: blur(26px);
+  filter: blur(30px);
   will-change: transform, opacity;
 }
 .counterLife1 {
-  left: -12%;
-  width: 64%;
+  /* white cloud */
+  left: -14%;
+  width: 62%;
   background: radial-gradient(
     ellipse 50% 50% at 50% 50%,
-    rgb(45 33 20 / 0.3) 0%,
-    rgb(45 33 20 / 0.22) 50%,
+    rgb(255 255 255 / 0.55) 0%,
+    rgb(255 255 255 / 0.4) 50%,
     transparent 78%
   );
-  mix-blend-mode: multiply;
-  animation: story-counter-life-a 13s ease-in-out infinite alternate;
+  mix-blend-mode: screen;
+  animation: story-counter-cloud-a 27s ease-in-out infinite alternate;
 }
 .counterLife2 {
-  left: 30%;
-  width: 56%;
+  /* table-warm yellow */
+  left: 28%;
+  width: 58%;
   background: radial-gradient(
     ellipse 50% 50% at 50% 50%,
-    rgb(255 226 180 / 0.5) 0%,
-    rgb(255 226 180 / 0.35) 50%,
+    rgb(255 224 160 / 0.5) 0%,
+    rgb(255 224 160 / 0.35) 50%,
+    transparent 78%
+  );
+  mix-blend-mode: screen;
+  animation: story-counter-cloud-b 35s ease-in-out infinite alternate;
+}
+.counterLife3 {
+  /* a little grey, so the light doesn't read flat */
+  right: -12%;
+  width: 46%;
+  background: radial-gradient(
+    ellipse 50% 50% at 50% 50%,
+    rgb(148 145 140 / 0.32) 0%,
+    rgb(148 145 140 / 0.22) 50%,
     transparent 78%
   );
   mix-blend-mode: soft-light;
-  animation: story-counter-life-b 19s ease-in-out infinite alternate;
-}
-.counterLife3 {
-  right: -14%;
-  width: 48%;
-  background: radial-gradient(
-    ellipse 50% 50% at 50% 50%,
-    rgb(45 33 20 / 0.26) 0%,
-    rgb(45 33 20 / 0.18) 50%,
-    transparent 78%
-  );
-  mix-blend-mode: multiply;
-  animation: story-counter-life-c 21s ease-in-out infinite alternate;
-  animation-delay: -8s;
+  animation: story-counter-cloud-c 43s ease-in-out infinite alternate;
+  animation-delay: -14s;
 }
 
 @media (prefers-reduced-motion: reduce) {
