@@ -251,7 +251,7 @@
   inset: 0 0 auto 0;
   height: 22%;
   overflow: hidden;
-  mask-image: linear-gradient(to bottom, #000 0%, #000 30%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 18%, transparent 42%);
 }
 .counterLife1,
 .counterLife2,
