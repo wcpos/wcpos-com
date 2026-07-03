@@ -69,8 +69,12 @@ GitHub/Discord console drift can only be caught by an authenticated login test.
 
 ## Automated monitoring
 
-`GET /api/health/oauth` (cron-guarded, `CRON_SECRET`) runs **hourly** via
-Vercel cron. It starts from apex `https://wcpos.com`, follows any same-site
+`GET /api/health/oauth` runs **hourly** via Vercel cron. **Zero-config**: no
+env var — Vercel cron invocations are recognized by their `vercel-cron/`
+user-agent, and manual runs use the committed key in
+[route.ts](../../src/app/api/health/oauth/route.ts) (`CRON_KEY`). Both are
+spoofable by design; the route is read-only against public URLs and its
+alerts are sink-throttled, so the guard only exists to shoo casual scanners. It starts from apex `https://wcpos.com`, follows any same-site
 redirect (apex ⇄ www) to the actual serving host, verifies each provider is
 handed a correct authorize URL whose `redirect_uri` exactly matches
 `{serving origin}/api/auth/{provider}/callback`, and for Google also fetches
@@ -87,23 +91,20 @@ Vercel's egress IPs and the Google leg of the check is blind — verify sign-in
 manually. The JSON response includes `servingOrigin` per provider, so it also
 shows which host is currently canonical in Vercel.
 
-**Deploy acceptance (run once after the cron first ships, or when `CRON_SECRET`
-changes):** the guard fails closed, so a missing/empty `CRON_SECRET` means the
-cron 401s forever with zero signal (see incident #207 for the empty-string env
-failure mode). Also confirm the Vercel plan allows hourly crons (Hobby caps
-crons at once per day — this is the project's first sub-daily schedule).
-Run the manual curl below against the **deployed** endpoint and expect JSON
-(not 401); check `results` — this also proves Google tolerates probe traffic
-from Vercel's egress IPs (datacenter reputation differs from a residential
-curl).
+**Deploy acceptance (run once after the cron first ships):** confirm the
+Vercel plan allows hourly crons (Hobby caps crons at once per day — this is
+the project's first sub-daily schedule), then run the manual curl below
+against the **deployed** endpoint and check `results` — this also proves
+Google tolerates probe traffic from Vercel's egress IPs (datacenter
+reputation differs from a residential curl).
 
-Manual run:
+Manual run (key is the committed `CRON_KEY` in route.ts, no env needed):
 
 ```bash
-curl -s -H "Authorization: Bearer $CRON_SECRET" \
+curl -s -H 'Authorization: Bearer wcpos-oauth-health-v4qx8r2n' \
   'https://wcpos.com/api/health/oauth' | jq
 # staging/beta drill:
-curl -s -H "Authorization: Bearer $CRON_SECRET" \
+curl -s -H 'Authorization: Bearer wcpos-oauth-health-v4qx8r2n' \
   'https://wcpos.com/api/health/oauth?base=https://beta.wcpos.com' | jq
 ```
 
