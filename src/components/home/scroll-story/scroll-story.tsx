@@ -342,6 +342,7 @@ function PinnedStoryScroller() {
           <div aria-hidden="true" className="absolute inset-0">
             <span className={styles.counterShadow1} />
             <span className={styles.counterShadow2} />
+            <span className={styles.counterPasserby} />
           </div>
         </motion.div>
         <motion.div
