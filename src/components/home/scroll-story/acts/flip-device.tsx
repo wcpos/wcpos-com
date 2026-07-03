@@ -21,7 +21,7 @@ type Phase = 'rest' | 'out' | 'snap' | 'in'
 
 export function FlipDevice({
   children,
-  intervalMs = 3400,
+  intervalMs = 2800,
   offsetMs = 0,
   active = true,
   className,
