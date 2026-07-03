@@ -134,8 +134,9 @@ export async function GET(request: NextRequest) {
  * PATCH /api/store/cart - Update a cart
  *
  * Whitelisted fields only: the checkout owns metadata/experiment
- * attribution and region server-side, so the browser may set nothing but
- * the billing address (email is always forced to the session customer).
+ * attribution and region server-side, so the browser may set only the
+ * billing address plus metadata.taxNumber (email is always forced to the
+ * session customer).
  */
 export async function PATCH(request: NextRequest) {
   try {

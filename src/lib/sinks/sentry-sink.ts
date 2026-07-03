@@ -53,7 +53,7 @@ export function createSentrySink(options: SentrySinkOptions = {}): Sink {
     if (error) {
       Sentry.captureException(error, {
         level: record.level === 'fatal' ? 'fatal' : 'error',
-        extra,
+        extra: { ...extra, message },
         tags: {
           category,
         },

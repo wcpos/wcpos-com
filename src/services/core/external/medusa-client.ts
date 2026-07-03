@@ -170,8 +170,13 @@ export async function getEnabledPaymentProviderIds(
   storeEnv?: StoreEnvironment
 ): Promise<string[] | null> {
   interface RegionWithProviders {
+    id: string
     payment_providers?: Array<{ id: string; is_enabled?: boolean }>
   }
+  interface StoreResponse {
+    store?: { default_region_id?: string | null }
+  }
+
   try {
     const response = await medusaFetch<{ regions: RegionWithProviders[] }>(
       '/store/regions?fields=id,name,*payment_providers',
@@ -179,7 +184,16 @@ export async function getEnabledPaymentProviderIds(
       storeEnv
     )
     const regions = response.regions ?? []
-    const cartRegion = regions[0]
+    let cartRegion: RegionWithProviders | undefined = regions[0]
+    if (regions.length > 1) {
+      const store = await medusaFetch<StoreResponse>('/store/store', {}, storeEnv)
+      const defaultRegionId = store.store?.default_region_id
+      cartRegion = regions.find((region) => region.id === defaultRegionId)
+      if (!cartRegion) {
+        storeLogger.warn`Default Medusa region ${defaultRegionId ?? 'unknown'} was not present in /store/regions; skipping method filtering`
+        return null
+      }
+    }
     const hasAnyProviderEvidence = regions.some(
       (region) => (region.payment_providers?.length ?? 0) > 0
     )

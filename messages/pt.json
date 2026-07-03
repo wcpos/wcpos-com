@@ -296,7 +296,8 @@
         "nifVat": "NIF / VAT number",
         "partitaIva": "Partita IVA",
         "gst": "GST number",
-        "taxRegistration": "Tax registration number"
+        "taxRegistration": "Tax registration number",
+        "genericTaxId": "Tax ID / VAT number"
       },
       "updateError": "Failed to update profile",
       "updateSuccess": "Profile updated successfully.",

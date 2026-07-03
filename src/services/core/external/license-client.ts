@@ -272,10 +272,8 @@ async function deactivateMachine(machineId: string): Promise<boolean> {
 async function getLicenseWithMachines(
   licenseId: string
 ): Promise<LicenseDetail> {
-  const [license, machines] = await Promise.all([
-    getLicense(licenseId),
-    getLicenseMachines(licenseId),
-  ])
+  const license = await getLicense(licenseId)
+  const machines = await getLicenseMachines(licenseId)
 
   return { ...license, machines }
 }

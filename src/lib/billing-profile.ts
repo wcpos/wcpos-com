@@ -1,4 +1,4 @@
-import { readAccountProfileMetadata } from './customer-profile-metadata'
+import { readAccountProfileMetadataWithPresence } from './customer-profile-metadata'
 import { isBillingCountry } from './billing-countries'
 import type { BillingAddress } from '@/components/pro/checkout/billing-step'
 
@@ -23,21 +23,14 @@ interface PrefillCustomer {
 export function billingPrefillFromCustomer(
   customer: PrefillCustomer
 ): BillingPrefill {
-  const profile = readAccountProfileMetadata(customer.metadata)
+  const { profile, hasCountryCode } =
+    readAccountProfileMetadataWithPresence(customer.metadata)
 
   // The reader defaults countryCode to 'US'; only a country the customer
   // actually saved — and one the checkout's country list offers — may be
   // asserted into the form. Anything else keeps the form's own default.
-  const accountProfile = customer.metadata?.account_profile
-  const rawCountry =
-    accountProfile &&
-    typeof accountProfile === 'object' &&
-    !Array.isArray(accountProfile) &&
-    typeof (accountProfile as Record<string, unknown>).countryCode === 'string'
-      ? ((accountProfile as Record<string, unknown>).countryCode as string)
-      : ''
-  const countryCode = isBillingCountry(rawCountry)
-    ? rawCountry.toLowerCase()
+  const countryCode = hasCountryCode && isBillingCountry(profile.countryCode)
+    ? profile.countryCode.toLowerCase()
     : 'us'
 
   // An all-empty prefill would just override the form's defaults with blanks.

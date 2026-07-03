@@ -58,7 +58,7 @@ type CountryProfile = {
 }
 
 function taxLabelFor(countryCode: string): TaxLabelKey {
-  return COUNTRY_TAX_LABEL_KEYS[countryCode.toLowerCase()] ?? 'einTaxId'
+  return COUNTRY_TAX_LABEL_KEYS[countryCode.toLowerCase()] ?? 'genericTaxId'
 }
 
 const COUNTRY_PROFILES: Record<string, CountryProfile> = {

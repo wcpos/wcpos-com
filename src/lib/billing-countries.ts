@@ -17,6 +17,7 @@ export type TaxLabelKey =
   | 'partitaIva'
   | 'gst'
   | 'taxRegistration'
+  | 'genericTaxId'
 
 /** ISO code (lowercase) → tax-label message key, for countries with a specific name. */
 export const COUNTRY_TAX_LABEL_KEYS: Record<string, TaxLabelKey> = {
@@ -42,11 +43,12 @@ export const TAX_LABELS_EN: Record<TaxLabelKey, string> = {
   partitaIva: 'Partita IVA',
   taxRegistration: 'Tax registration number',
   vat: 'VAT number',
+  genericTaxId: 'Tax ID / VAT number',
 }
 
 export function taxIdLabel(countryCode: string): string {
   const key = COUNTRY_TAX_LABEL_KEYS[countryCode.toLowerCase()]
-  return key ? TAX_LABELS_EN[key] : 'Tax ID / VAT number'
+  return TAX_LABELS_EN[key ?? 'genericTaxId']
 }
 
 /** The countries the checkout billing form offers. */

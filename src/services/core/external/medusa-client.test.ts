@@ -265,12 +265,39 @@ describe('medusaClient', () => {
         json: async () => ({
           regions: [
             {
+              id: 'reg_eu',
+              name: 'EU',
+              payment_providers: [
+                { id: 'pp_paypal_paypal', is_enabled: true },
+              ],
+            },
+            {
               id: 'reg_us',
               name: 'US',
               payment_providers: [
                 { id: 'pp_stripe_stripe', is_enabled: true },
               ],
             },
+          ],
+        }),
+      })
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          store: { default_region_id: 'reg_us' },
+        }),
+      })
+
+      await expect(getEnabledPaymentProviderIds()).resolves.toEqual([
+        'pp_stripe_stripe',
+      ])
+    })
+
+    it('fails open when the default region is absent from the regions response', async () => {
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          regions: [
             {
               id: 'reg_eu',
               name: 'EU',
@@ -278,13 +305,24 @@ describe('medusaClient', () => {
                 { id: 'pp_paypal_paypal', is_enabled: true },
               ],
             },
+            {
+              id: 'reg_us',
+              name: 'US',
+              payment_providers: [
+                { id: 'pp_stripe_stripe', is_enabled: true },
+              ],
+            },
           ],
         }),
       })
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          store: { default_region_id: 'reg_missing' },
+        }),
+      })
 
-      await expect(getEnabledPaymentProviderIds()).resolves.toEqual([
-        'pp_stripe_stripe',
-      ])
+      await expect(getEnabledPaymentProviderIds()).resolves.toBeNull()
     })
   })
 

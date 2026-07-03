@@ -303,6 +303,40 @@ describe('getResolvedCustomerLicenses', () => {
     expect(result.licenses[0].status).toBe('unknown')
   })
 
+  it('keeps the placeholder when key validation throws after an id 404', async () => {
+    mockGetCustomer.mockResolvedValueOnce({ id: 'cust_1' })
+    mockGetAllOrders.mockResolvedValueOnce([
+      {
+        id: 'order_validation_outage',
+        status: 'completed',
+        display_id: 13,
+        email: 'user@example.com',
+        currency_code: 'usd',
+        total: 129,
+        subtotal: 129,
+        tax_total: 0,
+        created_at: '2026-01-01T00:00:00Z',
+        updated_at: '2026-01-01T00:00:00Z',
+        items: [],
+        metadata: {
+          licenses: [
+            { license_id: 'lic_stale', license_key: 'WCPOS-DOWN-4040' },
+          ],
+        },
+      },
+    ])
+    mockGetLicenseWithMachines.mockRejectedValueOnce(
+      new KeygenRequestError('Keygen getLicense failed (404): not found', 404)
+    )
+    mockValidateLicenseKey.mockRejectedValueOnce(new Error('Keygen timeout'))
+
+    const result = await getResolvedCustomerLicenses()
+
+    expect(result.licenses).toHaveLength(1)
+    expect(result.licenses[0].key).toBe('WCPOS-DOWN-4040')
+    expect(result.licenses[0].status).toBe('unknown')
+  })
+
   it('ignores license references on canceled orders', async () => {
     mockGetCustomer.mockResolvedValueOnce({ id: 'cust_1' })
     mockGetAllOrders.mockResolvedValueOnce([

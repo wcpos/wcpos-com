@@ -57,6 +57,8 @@ export async function resolveLicenseReference(
     }
   }
 
+  let keyLookupMissing = false
+
   if (reference.key) {
     try {
       const validation = await licenseClient.validateLicenseKey(reference.key)
@@ -67,12 +69,15 @@ export async function resolveLicenseReference(
           machines: [],
         }
       }
+      keyLookupMissing = true
     } catch (error) {
       licenseLogger.error`Failed to validate license key: ${error}`
     }
   }
 
-  return idNotFound ? null : buildLicensePlaceholder(reference)
+  return idNotFound && (!reference.key || keyLookupMissing)
+    ? null
+    : buildLicensePlaceholder(reference)
 }
 
 export async function getResolvedLicensesFromOrders(
