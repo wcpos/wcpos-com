@@ -33,6 +33,13 @@ export interface StoreEnvironment {
   }
 }
 
+function stripePublishableKey(value: string | undefined): string | null {
+  const candidate = value?.trim()
+  if (!candidate) return null
+
+  return candidate.startsWith('pk_') ? candidate : null
+}
+
 // TODO(launch): replace the env-var fallbacks below with the literal
 // publishable keys/client ids once pasted from the Stripe/PayPal/Medusa
 // dashboards. The fallbacks only exist so current env-var-based deploys keep
@@ -43,8 +50,9 @@ const STORE_ENVIRONMENTS: Record<StoreEnvironmentName, StoreEnvironment> = {
     medusaBackendUrl: 'https://store-api.wcpos.com',
     medusaPublishableKey: process.env.MEDUSA_PUBLISHABLE_KEY ?? null,
     payments: {
-      stripePublishableKey:
-        process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY ?? null,
+      stripePublishableKey: stripePublishableKey(
+        process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+      ),
       paypalClientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID ?? null,
       btcpayEnabled: Boolean(process.env.NEXT_PUBLIC_BTCPAY_ENABLED),
     },
@@ -56,8 +64,9 @@ const STORE_ENVIRONMENTS: Record<StoreEnvironmentName, StoreEnvironment> = {
     medusaPublishableKey:
       'pk_399c0c1ca328579dc9055be3c3c29c640953d1b585c76803164aeea4029025e9',
     payments: {
-      stripePublishableKey:
-        process.env.NEXT_PUBLIC_STRIPE_TEST_PUBLISHABLE_KEY ?? null,
+      stripePublishableKey: stripePublishableKey(
+        process.env.NEXT_PUBLIC_STRIPE_TEST_PUBLISHABLE_KEY
+      ),
       paypalClientId:
         process.env.NEXT_PUBLIC_PAYPAL_SANDBOX_CLIENT_ID ?? null,
       btcpayEnabled: true,
@@ -72,8 +81,9 @@ const STORE_ENVIRONMENTS: Record<StoreEnvironmentName, StoreEnvironment> = {
       process.env.MEDUSA_BACKEND_URL ?? 'https://store-api-staging.wcpos.com',
     medusaPublishableKey: process.env.MEDUSA_PUBLISHABLE_KEY ?? null,
     payments: {
-      stripePublishableKey:
-        process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY ?? null,
+      stripePublishableKey: stripePublishableKey(
+        process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+      ),
       paypalClientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID ?? null,
       // BTCPay is a plain redirect (no client SDK), so the mocked suite can
       // exercise a full payment method end-to-end.
