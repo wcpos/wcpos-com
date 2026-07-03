@@ -55,6 +55,8 @@ global.fetch = mockFetch
 import {
   login,
   register,
+  requestPasswordReset,
+  resetPassword,
   getCustomer,
   getAuthToken,
   setAuthToken,
@@ -62,7 +64,11 @@ import {
   updateCustomer,
   parseMedusaError,
 } from './medusa-auth'
-import { AccountExistsError, InvalidCredentialsError } from '@/lib/api/errors'
+import {
+  AccountExistsError,
+  InvalidCredentialsError,
+  InvalidResetTokenError,
+} from '@/lib/api/errors'
 
 // decodeMedusaToken, linkOrCreateCustomer, completeOAuthCallback, refreshToken
 // and initiateOAuth moved to `@/lib/oauth`; their tests live in oauth.test.ts.
@@ -125,6 +131,100 @@ describe('medusa-auth', () => {
 
       expect(error).toBeInstanceOf(Error)
       expect(error).not.toBeInstanceOf(InvalidCredentialsError)
+      expect(error.message).toBe('Internal server error')
+    })
+  })
+
+  describe('requestPasswordReset', () => {
+    it('posts the email as identifier to the reset-password endpoint', async () => {
+      mockFetch.mockResolvedValueOnce({ ok: true })
+
+      await requestPasswordReset('user@example.com')
+
+      expect(mockFetch).toHaveBeenCalledWith(
+        'https://test-store-api.wcpos.com/auth/customer/emailpass/reset-password',
+        expect.objectContaining({
+          method: 'POST',
+          headers: expect.objectContaining({
+            'Content-Type': 'application/json',
+          }),
+          body: JSON.stringify({ identifier: 'user@example.com' }),
+        })
+      )
+    })
+
+    it('throws with the Medusa message on failure', async () => {
+      mockFetch.mockResolvedValueOnce({
+        ok: false,
+        status: 500,
+        text: async () => '{"message":"Internal server error"}',
+      })
+
+      await expect(requestPasswordReset('user@example.com')).rejects.toThrow(
+        'Internal server error'
+      )
+    })
+  })
+
+  describe('resetPassword', () => {
+    it('posts the new password with the reset token as Bearer auth', async () => {
+      mockFetch.mockResolvedValueOnce({ ok: true })
+
+      await resetPassword({
+        email: 'user@example.com',
+        token: 'reset-jwt',
+        password: 'new-secret',
+      })
+
+      expect(mockFetch).toHaveBeenCalledWith(
+        'https://test-store-api.wcpos.com/auth/customer/emailpass/update',
+        expect.objectContaining({
+          method: 'POST',
+          headers: expect.objectContaining({
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer reset-jwt',
+          }),
+          body: JSON.stringify({
+            email: 'user@example.com',
+            password: 'new-secret',
+          }),
+        })
+      )
+    })
+
+    it('throws a typed InvalidResetTokenError on a 401', async () => {
+      mockFetch.mockResolvedValueOnce({
+        ok: false,
+        status: 401,
+        text: async () => '{"message":"Invalid token"}',
+      })
+
+      const error = await resetPassword({
+        email: 'user@example.com',
+        token: 'expired-jwt',
+        password: 'new-secret',
+      }).catch((e) => e)
+
+      // Classified at the adapter seam so the route can log routine
+      // expired-link rejections at info instead of alerting.
+      expect(error).toBeInstanceOf(InvalidResetTokenError)
+    })
+
+    it('throws a plain Error on unexpected non-401 failures', async () => {
+      mockFetch.mockResolvedValueOnce({
+        ok: false,
+        status: 500,
+        text: async () => '{"message":"Internal server error"}',
+      })
+
+      const error = await resetPassword({
+        email: 'user@example.com',
+        token: 'reset-jwt',
+        password: 'new-secret',
+      }).catch((e) => e)
+
+      expect(error).toBeInstanceOf(Error)
+      expect(error).not.toBeInstanceOf(InvalidResetTokenError)
       expect(error.message).toBe('Internal server error')
     })
   })

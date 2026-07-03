@@ -63,3 +63,20 @@ export class InvalidCredentialsError extends ApiError {
     this.name = 'InvalidCredentialsError'
   }
 }
+
+/**
+ * A password-reset token was rejected by Medusa (HTTP 401) — expired, already
+ * used, or tampered with.
+ *
+ * Classified at the Medusa adapter seam in `resetPassword()` for the same
+ * reason as InvalidCredentialsError: an expired link is routine user behaviour
+ * (logged at info), not an alert-worthy failure. Display-only, no code.
+ */
+export class InvalidResetTokenError extends ApiError {
+  constructor(
+    message = 'This password reset link is invalid or has expired. Please request a new one.'
+  ) {
+    super(401, message)
+    this.name = 'InvalidResetTokenError'
+  }
+}
