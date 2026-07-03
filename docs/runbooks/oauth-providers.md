@@ -42,9 +42,7 @@ The URI pattern is `https://{host}/api/auth/{provider}/callback`.
 direction is Vercel's primary-domain setting (Vercel → project → Settings →
 Domains), not anything in this repo. To make apex canonical: register the apex
 URIs in all three consoles first (table above), then set `wcpos.com` as the
-primary domain with `www.wcpos.com` redirecting to it. The health check
-follows the redirect either way and validates whichever host actually serves
-the route.
+primary domain with `www.wcpos.com` redirecting to it.
 
 ## Where to register (one console per provider)
 
@@ -64,52 +62,15 @@ Google changes can take a few minutes to propagate after saving.
 | GitHub | Normal login page first; error only **after** the user authenticates | No |
 | Discord | Normal login page first; error only **after** the user authenticates | No |
 
-This asymmetry matters: Google failures are caught automatically (below);
-GitHub/Discord console drift can only be caught by an authenticated login test.
+This asymmetry matters: a Google mismatch can be spot-checked with curl
+(below); GitHub/Discord console drift can only be caught by an authenticated
+login test.
 
-## Automated monitoring
+## Spot checks (no login needed)
 
-`GET /api/health/oauth` runs **hourly** via Vercel cron. **Zero-config**: no
-env var — Vercel cron invocations are recognized by their `vercel-cron/`
-user-agent, and manual runs use the committed key in
-[route.ts](../../src/app/api/health/oauth/route.ts) (`CRON_KEY`). Both are
-spoofable by design; the route is read-only against public URLs and its
-alerts are sink-throttled, so the guard only exists to shoo casual scanners. It starts from apex `https://wcpos.com`, follows any same-site
-redirect (apex ⇄ www) to the actual serving host, verifies each provider is
-handed a correct authorize URL whose `redirect_uri` exactly matches
-`{serving origin}/api/auth/{provider}/callback`, and for Google also fetches
-the authorize page and fails on the `redirect_uri_mismatch` error code.
-Confirmed breakage fires **one aggregated authLogger.fatal → Discord + email**
-(see [alerting](./alerting.md)) listing every broken provider, every hourly
-run until fixed. Transient blips are absorbed: probe fetches time out at 10s,
-and the initiate step retries once after 5s (a routine Medusa redeploy won't
-page). A Google error page *without* the mismatch code (rate limiting / bot
-defense against datacenter IPs) is reported as **`inconclusive`** — logged at
-error level, no fatal, `HTTP 200` with `"inconclusive": true`. Occasional
-inconclusive runs are noise; *every* run inconclusive means Google is blocking
-Vercel's egress IPs and the Google leg of the check is blind — verify sign-in
-manually. The JSON response includes `servingOrigin` per provider, so it also
-shows which host is currently canonical in Vercel.
-
-**Deploy acceptance (run once after the cron first ships):** confirm the
-Vercel plan allows hourly crons (Hobby caps crons at once per day — this is
-the project's first sub-daily schedule), then run the manual curl below
-against the **deployed** endpoint and check `results` — this also proves
-Google tolerates probe traffic from Vercel's egress IPs (datacenter
-reputation differs from a residential curl).
-
-Manual run (key is the committed `CRON_KEY` in route.ts, no env needed):
-
-```bash
-curl -s -H 'Authorization: Bearer wcpos-oauth-health-v4qx8r2n' \
-  'https://wcpos.com/api/health/oauth' | jq
-# staging/beta drill:
-curl -s -H 'Authorization: Bearer wcpos-oauth-health-v4qx8r2n' \
-  'https://wcpos.com/api/health/oauth?base=https://beta.wcpos.com' | jq
-```
-
-Quick unauthenticated spot-check of what production actually sends
-(`-L` follows the apex→www hop while it exists):
+What each provider is being handed (`-L` follows the apex→www hop while it
+exists) — the `redirect_uri` in the last location must be the **bare**
+callback for the serving host:
 
 ```bash
 for p in google github discord; do
@@ -117,9 +78,17 @@ for p in google github discord; do
 done
 ```
 
+Google only — fetch the authorize page and look for the mismatch error
+(GitHub/Discord don't reveal it pre-login):
+
+```bash
+url=$(curl -sIL 'https://wcpos.com/api/auth/google' | grep -i '^location' | tail -1 | cut -d' ' -f2)
+curl -sL "$url" | grep -c redirect_uri_mismatch   # 0 = registered, >0 = broken
+```
+
 ## Full verification (after any console or hostname change)
 
-1. `curl` the health endpoint above — all three `"status": "ok"`.
+1. Run the spot checks above — correct `redirect_uri`, Google grep returns 0.
 2. Log in with **each** provider in a real browser on the production host
    (this is the only way to verify GitHub/Discord console registration).
 3. Confirm you land on `/account` signed in.
