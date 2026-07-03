@@ -332,17 +332,15 @@ function PinnedStoryScroller() {
               className="absolute inset-0 h-full w-full object-cover"
             />
           </picture>
-          {/* readability scrim under the act-1 copy — kept faint; the
-              visitor shadows carry the depth */}
+          {/* readability scrim under the act-1 copy */}
           <div className="absolute inset-x-0 top-0 h-[40%] bg-gradient-to-b from-white/30 via-white/10 to-transparent" />
-          {/* customers: tall soft silhouettes approach the counter from
-              beyond the top edge, linger, and withdraw (cast over the scrim
-              so they stay present in the brightened band; the sticky stage's
-              own overflow-hidden clips their offscreen starting position) */}
-          <div aria-hidden="true" className="absolute inset-0">
-            <span className={styles.counterShadow1} />
-            <span className={styles.counterShadow2} />
-            <span className={styles.counterPasserby} />
+          {/* life at the top edge: soft patches of shade and warm light
+              drift through a shallow masked band under the header — the
+              light shifting as customers move beyond the counter */}
+          <div aria-hidden="true" className={styles.counterLife}>
+            <span className={styles.counterLife1} />
+            <span className={styles.counterLife2} />
+            <span className={styles.counterLife3} />
           </div>
         </motion.div>
         <motion.div
