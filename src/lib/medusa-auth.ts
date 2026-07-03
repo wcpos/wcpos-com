@@ -8,7 +8,11 @@ import {
 } from '@/lib/store-environment'
 import { authLogger } from '@/lib/logger'
 import { MEDUSA_TOKEN_COOKIE } from '@/lib/medusa-cookie'
-import { AccountExistsError, InvalidCredentialsError } from '@/lib/api/errors'
+import {
+  AccountExistsError,
+  InvalidCredentialsError,
+  InvalidResetTokenError,
+} from '@/lib/api/errors'
 
 // ============================================================================
 // Types
@@ -138,6 +142,70 @@ export async function login(
 
   const data = await response.json()
   return data.token
+}
+
+/**
+ * Request a password-reset email.
+ * POST /auth/customer/emailpass/reset-password
+ *
+ * Medusa responds 201 whether or not the email has an account (no user
+ * enumeration) and emits `auth.password_reset`; the backend's password-reset
+ * subscriber turns that into the email linking to
+ * `/reset-password?token=...&email=...` on this site.
+ */
+export async function requestPasswordReset(email: string): Promise<void> {
+  const response = await fetch(
+    `${await getMedusaBackendUrl()}/auth/customer/emailpass/reset-password`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ identifier: email }),
+    }
+  )
+
+  if (!response.ok) {
+    throw new Error(
+      await parseMedusaError(response, 'Failed to request password reset')
+    )
+  }
+}
+
+/**
+ * Set a new password using the token from the reset email.
+ * POST /auth/customer/emailpass/update with the reset token as Bearer auth.
+ *
+ * Medusa rejects an expired/used/tampered token with 401, classified here as
+ * InvalidResetTokenError (routine, logged at info by the route) — the same
+ * adapter-seam pattern as InvalidCredentialsError in login().
+ */
+export async function resetPassword({
+  email,
+  token,
+  password,
+}: {
+  email: string
+  token: string
+  password: string
+}): Promise<void> {
+  const response = await fetch(
+    `${await getMedusaBackendUrl()}/auth/customer/emailpass/update`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ email, password }),
+    }
+  )
+
+  if (!response.ok) {
+    const message = await parseMedusaError(response, 'Failed to reset password')
+    if (response.status === 401) {
+      throw new InvalidResetTokenError()
+    }
+    throw new Error(message)
+  }
 }
 
 /**
