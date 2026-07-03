@@ -57,106 +57,67 @@ export function CloudSync({
                   <stop offset="0.6" stopColor="#f4f8fc" />
                   <stop offset="1" stopColor="#d3dfec" />
                 </linearGradient>
-                {/* fluffy cumulus: fractal noise roughens the vector edge
-                    into billows, diffuse lighting on the blurred alpha gives
-                    cauliflower volume; the component transfer lifts the
-                    shadow floor so the cloud stays white (research notes in
-                    PR #237) */}
+                {/* squishy pillow shading: NO edge displacement — diffuse
+                    lighting on the smooth blurred alpha plumps each lobe,
+                    the component transfer lifts the shadow floor so the
+                    cloud stays white, and a whisper of final blur keeps the
+                    edge comfy (bench notes in PR #237) */}
                 <filter
-                  id={`${svgId}-fluff`}
-                  x="-25%"
-                  y="-45%"
-                  width="150%"
-                  height="200%"
+                  id={`${svgId}-pillow`}
+                  x="-20%"
+                  y="-35%"
+                  width="140%"
+                  height="180%"
                   colorInterpolationFilters="sRGB"
                 >
-                  <feTurbulence
-                    type="fractalNoise"
-                    baseFrequency="0.02 0.028"
-                    numOctaves="4"
-                    seed="8"
-                    result="noise"
-                  />
-                  <feDisplacementMap
+                  <feGaussianBlur
                     in="SourceGraphic"
-                    in2="noise"
-                    scale="18"
-                    result="cloud"
+                    stdDeviation="9"
+                    result="soft"
                   />
-                  <feGaussianBlur in="cloud" stdDeviation="6" result="soft" />
                   <feDiffuseLighting
                     in="soft"
-                    surfaceScale="7"
-                    diffuseConstant="1.15"
+                    surfaceScale="12"
+                    diffuseConstant="1.25"
                     lightingColor="#ffffff"
                     result="lit"
                   >
-                    <feDistantLight azimuth="225" elevation="52" />
+                    <feDistantLight azimuth="225" elevation="55" />
                   </feDiffuseLighting>
                   <feComponentTransfer in="lit" result="litLift">
-                    <feFuncR type="linear" slope="0.35" intercept="0.65" />
-                    <feFuncG type="linear" slope="0.35" intercept="0.65" />
-                    <feFuncB type="linear" slope="0.35" intercept="0.65" />
+                    <feFuncR type="linear" slope="0.28" intercept="0.72" />
+                    <feFuncG type="linear" slope="0.28" intercept="0.72" />
+                    <feFuncB type="linear" slope="0.28" intercept="0.72" />
                   </feComponentTransfer>
                   <feComposite
                     in="litLift"
-                    in2="cloud"
+                    in2="SourceGraphic"
                     operator="in"
                     result="litClip"
                   />
                   <feBlend
-                    in="cloud"
+                    in="SourceGraphic"
                     in2="litClip"
                     mode="multiply"
                     result="shaded"
                   />
                   <feComposite
                     in="shaded"
-                    in2="cloud"
+                    in2="SourceGraphic"
                     operator="arithmetic"
                     k1="0"
-                    k2="0.85"
-                    k3="0.15"
+                    k2="0.92"
+                    k3="0.08"
                     k4="0"
                     result="mix"
                   />
-                  <feGaussianBlur in="mix" stdDeviation="0.5" />
-                </filter>
-                {/* wispy aura behind the body */}
-                <filter
-                  id={`${svgId}-halo`}
-                  x="-30%"
-                  y="-50%"
-                  width="160%"
-                  height="210%"
-                  colorInterpolationFilters="sRGB"
-                >
-                  <feTurbulence
-                    type="fractalNoise"
-                    baseFrequency="0.03 0.04"
-                    numOctaves="3"
-                    seed="3"
-                    result="noise"
-                  />
-                  <feDisplacementMap
-                    in="SourceGraphic"
-                    in2="noise"
-                    scale="26"
-                  />
-                  <feGaussianBlur stdDeviation="6" />
+                  <feGaussianBlur in="mix" stdDeviation="0.7" />
                 </filter>
               </defs>
               <path
                 className={styles.cloudMorph}
-                fill="#ffffff"
-                opacity="0.55"
-                filter={`url(#${svgId}-halo)`}
-                d={CLOUD_REST}
-              />
-              <path
-                className={styles.cloudMorph}
                 fill={`url(#${svgId}-body)`}
-                filter={`url(#${svgId}-fluff)`}
+                filter={`url(#${svgId}-pillow)`}
                 d={CLOUD_REST}
               />
             </>
