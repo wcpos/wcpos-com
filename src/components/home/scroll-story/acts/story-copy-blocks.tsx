@@ -28,12 +28,19 @@ const toneStyles = {
  * variants can never drift.
  */
 
+// Act 1 sits on the counter photo: dark warm text over wood grain. The small
+// sizes get a hairline cream edge (single tight shadow, no glow) plus a
+// deeper brown than the h1, which carries contrast through weight alone.
+const edgeSmall = '[text-shadow:0_1px_2px_rgba(255,251,244,0.55)]'
+
 function Kicker({
   children,
   tone = 'onDark',
+  className,
 }: {
   children: React.ReactNode
   tone?: CopyTone
+  className?: string
 }) {
   // fixed red-400: the stage is always dark, but --wcpos-red-accent only
   // lightens under .dark — in light mode it would sit at 42% lightness on
@@ -42,7 +49,8 @@ function Kicker({
     <p
       className={cn(
         'mb-3 text-xs font-bold uppercase tracking-[0.18em]',
-        tone === 'onLight' ? 'text-wcpos-red' : 'text-red-400'
+        tone === 'onLight' ? 'text-wcpos-red' : 'text-red-400',
+        className
       )}
     >
       {children}
@@ -61,7 +69,9 @@ export function CopyAct1({
   const t = toneStyles[tone]
   return (
     <>
-      <Kicker tone={tone}>{storyCopy.act1.kicker}</Kicker>
+      <Kicker tone={tone} className={tone === 'onLight' ? edgeSmall : undefined}>
+        {storyCopy.act1.kicker}
+      </Kicker>
       <Heading
         className={cn(
           'mb-4 text-4xl font-bold leading-[1.05] tracking-tight md:text-5xl',
@@ -73,7 +83,7 @@ export function CopyAct1({
       <p
         className={cn(
           'mx-auto mb-7 max-w-xl text-base md:text-lg',
-          tone === 'onLight' ? 'text-[#6b543a]' : t.body
+          tone === 'onLight' ? cn('text-[#4a3823]', edgeSmall) : t.body
         )}
       >
         {storyCopy.act1.body}
@@ -96,7 +106,7 @@ export function CopyAct1({
       <div
         className={cn(
           'mt-6 flex flex-wrap items-center justify-center gap-x-5 gap-y-1 text-xs font-medium',
-          tone === 'onLight' ? 'text-[#6b543a]' : t.badges
+          tone === 'onLight' ? cn('text-[#4a3823]', edgeSmall) : t.badges
         )}
       >
         {storyCopy.act1.trustBadges.map((badge) => (
