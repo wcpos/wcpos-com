@@ -78,3 +78,50 @@ the browser, iterate.
 - Video (phase 3): `<video muted autoPlay playsInline loop poster={still}>`
   behind a corner-pinned (`matrix3d`) `PosScreen` aligned to the artwork
   tablet; crossfade to the DOM tablet as Act 2 begins.
+
+## Act 3 hardware prompt pack (executed 2026-07-03)
+
+The nine Act 3 renders shipped from these prompts (Nano Banana / Gemini).
+Brand rule: **iconic form factors, no logos** — recognition comes from
+silhouette, never from marks. One scene-bible amendment since the sections
+above were written: acts 2–4 now sit on the *light* studio background, so
+devices are generated over plain light gray (not slate) and cut out.
+
+Shared prompt tail for every device:
+
+> …, high-end 3D product render, photorealistic materials, straight-on
+> front view, orthographic, device centered filling about 80% of the frame,
+> soft studio key light from the upper left, crisp soft contact shadow
+> directly below, plain light gray background, completely blank housing
+> with no logos, no brand names, no legible text, square format, 4k detail.
+
+Per-device subjects (file = `public/images/story/hardware/<name>`):
+
+| File | Subject |
+|------|---------|
+| terminal-1 | classic countertop card payment terminal, dark charcoal plastic body, raised numeric keypad with softly rounded keys, small rectangular display completely black and switched off, contactless tap-to-pay zone above the display, card insert slot along the bottom edge |
+| terminal-2 | modern smart payment terminal, slim white body, large portrait touchscreen completely black and switched off, thin bezels, narrow integrated receipt slot along the top edge, one subtle side button |
+| terminal-3 | small square contactless card reader resting on its low matching charging dock, matte white body with softly rounded corners, embossed contactless wave symbol on the top face, thin card-swipe groove along one edge, no screen |
+| printer-1 | compact thermal receipt printer, matte light-gray cube body with rounded corners, crisp white paper receipt emerging from the front slot and curling gently forward, faint generic gray print lines with no readable words, small round feed button, tiny power LED |
+| printer-2 | vertical black thermal receipt printer, matte black housing, glossy top paper hatch with a white receipt emerging upward, faint generic gray print lines with no readable words, one large oval feed button on the front face, small green status LED |
+| printer-3 | minimalist modern white cube receipt printer, clean matte white surfaces, softly rounded edges, front paper exit slit with the leading edge of a white receipt just visible, subtle blue power LED |
+| scanner-1 | handheld barcode scanner gun, black rubberized ergonomic body, dark red scan window at the head, standing upright in its weighted hands-free desk stand with a curved neck |
+| scanner-2 | omnidirectional presentation barcode scanner, dark gray dome-shaped head angled slightly upward, glossy dark scan window, sitting on a weighted round base |
+| scanner-3 | modern compact 2D barcode scanner, white body with light gray trim, rounded head with a dark scan window, standing upright in a minimal matching white cradle |
+
+Session tips that mattered:
+
+- **Reference-image consistency:** after the first approved render, attach
+  it and add "match the lighting direction, shadow softness and background
+  of the reference image" — beats regenerating outliers blind.
+- If a logo or fake brand text sneaks in, re-roll with "completely blank
+  plastic, absolutely no printed markings anywhere on the device".
+- Cutout pipeline (no installs needed): Apple Vision subject mask via a
+  small `swiftc` CLI + sharp compositing that re-extracts the baked contact
+  shadow from the gray backdrop (luminance, feathered band around the
+  subject's base, largest-mask-component filter for Gemini's floating
+  sparkle props). Tools archived in `~/Documents/hardware/tools/` on the
+  owner's machine.
+- Screen overlays: terminal display rects are measured off the renders in
+  source-image px and live in `devices/terminal.tsx` — remeasure if a
+  terminal render is regenerated.

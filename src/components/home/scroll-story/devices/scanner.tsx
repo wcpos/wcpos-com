@@ -1,22 +1,43 @@
 import { cn } from '@/lib/utils'
-import styles from '../story.module.css'
+import { HardwareImage } from './hardware-image'
 
-/** Upright barcode scanner with a pulsing read beam. */
-export function DeviceScanner({ className }: { className?: string }) {
+/**
+ * Barcode scanners, photoreal renders (see
+ * docs/runbooks/scroll-story-asset-generation.md, Act 3 prompt pack).
+ * Three recognizable form factors, logo-free by design:
+ *   1 black gun scanner upright in its weighted stand
+ *   2 omnidirectional dome scanner on a round base
+ *   3 white 2D scanner in a matching cradle
+ */
+const BOX = { width: 120, height: 190 } as const
+
+const MODELS: Record<1 | 2 | 3, { name: string; width: number; height: number }> = {
+  1: { name: 'scanner-1', width: 530, height: 800 },
+  2: { name: 'scanner-2', width: 690, height: 800 },
+  3: { name: 'scanner-3', width: 492, height: 800 },
+}
+
+export function DeviceScanner({
+  className,
+  model = 1,
+}: {
+  className?: string
+  model?: 1 | 2 | 3
+}) {
+  const spec = MODELS[model]
   return (
     <div
       aria-hidden="true"
-      className={cn('relative h-[190px] w-[120px]', className)}
+      className={cn('flex items-end justify-center', className)}
+      style={{ width: BOX.width, height: BOX.height }}
     >
-      <div className="absolute left-3.5 top-0 h-[74px] w-[92px] rounded-t-[18px] rounded-b-[24px] bg-slate-700 shadow-[0_24px_40px_-20px_rgba(0,0,0,0.7),inset_0_1px_1px_rgba(255,255,255,0.2)]" />
-      <div
-        className={cn(
-          'absolute left-[30px] top-[76px] h-[3px] w-[60px] bg-wcpos-red blur-[1px]',
-          styles.beamPulse
-        )}
+      <HardwareImage
+        name={spec.name}
+        width={spec.width}
+        height={spec.height}
+        boxWidth={BOX.width}
+        boxHeight={BOX.height}
       />
-      <div className="absolute left-[52px] top-20 h-[74px] w-4 bg-slate-600" />
-      <div className="absolute bottom-0 left-[22px] h-[18px] w-[76px] rounded-[50%] bg-slate-700" />
     </div>
   )
 }

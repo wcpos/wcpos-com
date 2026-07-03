@@ -79,6 +79,15 @@ describe('DeviceTerminal', () => {
     expect(screen.getByText('$69.00')).toBeInTheDocument()
     expect(screen.getByText('Tap to pay')).toBeInTheDocument()
   })
+
+  it('keeps the tap-to-pay overlay off screenless models', () => {
+    const { container } = render(<DeviceTerminal model={3} />)
+
+    expect(screen.queryByText('$69.00')).not.toBeInTheDocument()
+    expect(container.querySelector('img')?.getAttribute('src')).toBe(
+      '/images/story/hardware/terminal-3.webp'
+    )
+  })
 })
 
 describe('StoryStatic', () => {
@@ -228,6 +237,31 @@ describe('ScrollStory', () => {
       '.lightPool',
     ]) {
       expect(selectors).toContain(selector)
+    }
+  })
+
+  it('cycles each act-3 slot within a single hardware category', () => {
+    // "any terminal, any printer, any scanner" only reads if a slot never
+    // flips to a different device category
+    stubMatchMedia({ reducedMotion: false })
+    render(<ScrollStory />)
+
+    const scroller = screen.getByTestId('story-scroller')
+    for (const category of ['terminal', 'printer', 'scanner']) {
+      const slot = Array.from(
+        scroller.querySelectorAll('[data-flip-phase]')
+      ).find((card) =>
+        card.querySelector(`img[src*="/hardware/${category}-"]`)
+      )
+      expect(slot).toBeDefined()
+      const models = Array.from(slot!.querySelectorAll('img')).map((img) =>
+        img.getAttribute('src')
+      )
+      expect(models).toEqual([
+        `/images/story/hardware/${category}-1.webp`,
+        `/images/story/hardware/${category}-2.webp`,
+        `/images/story/hardware/${category}-3.webp`,
+      ])
     }
   })
 

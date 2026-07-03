@@ -11,8 +11,8 @@ import {
 import { cn } from '@/lib/utils'
 import { ACT_HOLDS, useActGravity } from './act-gravity'
 import { CloudSync } from './acts/cloud-sync'
-import { CyclingDevice } from './acts/cycling-device'
 import { DotOrbit } from './acts/dot-orbit'
+import { FlipDevice } from './acts/flip-device'
 import {
   CopyAct1,
   CopyAct2,
@@ -410,17 +410,19 @@ function PinnedStoryScroller() {
           </motion.div>
         </div>
 
-        {/* act 3: terminal fronts the tablet (payment moment); printer + scanner behind */}
+        {/* act 3: terminal fronts the tablet (payment moment); printer + scanner
+            behind. Each slot card-flips through its own category only — that's
+            the "any terminal, any printer, any scanner" message */}
         <div className="absolute left-1/2 top-1/2 z-[11]">
           <motion.div
             className="-ml-[75px] -mt-28"
             style={{ opacity: terminalOpacity, x: terminalX, y: '2vh' }}
           >
-            <CyclingDevice active={act === 2} offsetMs={0}>
-              <DeviceTerminal />
-              <DeviceTerminal skin="light" />
-              <DeviceScanner />
-            </CyclingDevice>
+            <FlipDevice active={act === 2} offsetMs={0}>
+              <DeviceTerminal model={1} />
+              <DeviceTerminal model={2} />
+              <DeviceTerminal model={3} />
+            </FlipDevice>
           </motion.div>
         </div>
         <div className="absolute left-1/2 top-1/2 z-[9]">
@@ -428,20 +430,21 @@ function PinnedStoryScroller() {
             className="-ml-[105px] -mt-[74px]"
             style={{ opacity: printerOpacity, x: printerX, y: printerY }}
           >
-            <CyclingDevice active={act === 2} offsetMs={1200}>
-              <DevicePrinter />
-              <DevicePrinter skin="dark" />
-            </CyclingDevice>
+            <FlipDevice active={act === 2} offsetMs={1200}>
+              <DevicePrinter model={1} />
+              <DevicePrinter model={2} />
+              <DevicePrinter model={3} />
+            </FlipDevice>
           </motion.div>
           <motion.div
             className="-ml-[60px] -mt-[95px]"
             style={{ opacity: scannerOpacity, x: scannerX, y: scannerY }}
           >
-            <CyclingDevice active={act === 2} offsetMs={2300}>
-              <DeviceScanner />
-              <DeviceTerminal skin="light" className="scale-90" />
-              <DevicePrinter className="scale-90" />
-            </CyclingDevice>
+            <FlipDevice active={act === 2} offsetMs={2300}>
+              <DeviceScanner model={1} />
+              <DeviceScanner model={2} />
+              <DeviceScanner model={3} />
+            </FlipDevice>
           </motion.div>
         </div>
 
