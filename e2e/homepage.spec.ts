@@ -9,7 +9,7 @@ test.describe('Homepage', () => {
     await expect(
       page.getByRole('heading', {
         level: 1,
-        name: 'Your counter. Your customers. Your WooCommerce.',
+        name: 'Your WooCommerce store, at the counter.',
       })
     ).toBeVisible()
   })
