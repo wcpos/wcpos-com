@@ -371,6 +371,11 @@
   .counterPasserby {
     animation: none;
   }
+
+  .counterPasserby {
+    animation: none;
+    opacity: 0;
+  }
 }
 
 /* ---------- surfaces & materials (premium-render grade) ---------- */
