@@ -64,6 +64,23 @@ describe('GetStartedSteps', () => {
     }
   })
 
+  it('omits the scroll-drawn fill and tip with reduced motion', () => {
+    stubReducedMotion(true)
+    const { container } = renderSteps()
+    const track = container.querySelector('ol > span[aria-hidden="true"]')
+    expect(track).not.toBeNull()
+    // Static grey track only — no fill, no traveling tip.
+    expect(track!.querySelectorAll('span')).toHaveLength(1)
+  })
+
+  it('hides the decorative line from assistive tech', () => {
+    stubReducedMotion(false)
+    const { container } = renderSteps()
+    expect(
+      container.querySelector('ol > span[aria-hidden="true"]')
+    ).not.toBeNull()
+  })
+
   it('throws when a step is used outside the list', () => {
     // Silence React's error boundary logging for the expected throw.
     const spy = vi.spyOn(console, 'error').mockImplementation(() => {})

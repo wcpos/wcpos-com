@@ -3,9 +3,10 @@
 import * as React from 'react'
 import { motion, useMotionValueEvent, useScroll, useTransform } from 'motion/react'
 import { cn } from '@/lib/utils'
+import { usePrefersReducedMotion } from '@/lib/use-prefers-reduced-motion'
 
 /**
- * The "Get started" step list, drawn by scroll (ADR 0013: movement that means
+ * The "Get started" step list, drawn by scroll (movement that means
  * progress) — the downloads-page sibling of the about-page StoryTimeline. A
  * brand-red fill grows down the line track as the reader moves through the
  * steps and a glowing tip rides its end; each numbered circle starts muted and
@@ -19,25 +20,10 @@ import { cn } from '@/lib/utils'
 
 const StepsContext = React.createContext<{
   animate: boolean
-  /** Whether the scroll-drawn line has reached this step's circle. */
+  /** How many circles the scroll-drawn line has passed. */
   reached: number
   register: (index: number, el: HTMLSpanElement | null) => void
 } | null>(null)
-
-function usePrefersReducedMotion() {
-  return React.useSyncExternalStore(
-    (onChange) => {
-      if (typeof window.matchMedia !== 'function') return () => {}
-      const mql = window.matchMedia('(prefers-reduced-motion: reduce)')
-      mql.addEventListener('change', onChange)
-      return () => mql.removeEventListener('change', onChange)
-    },
-    () =>
-      typeof window.matchMedia === 'function' &&
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches,
-    () => false
-  )
-}
 
 export function GetStartedSteps({ children }: { children: React.ReactNode }) {
   const listRef = React.useRef<HTMLOListElement>(null)
@@ -72,7 +58,10 @@ export function GetStartedSteps({ children }: { children: React.ReactNode }) {
         top += parent.offsetTop
         parent = parent.offsetParent as HTMLElement | null
       }
-      return (top - track.offsetTop) / track.offsetHeight
+      // Clamp below 1 so a circle sitting at (or past) the track end can
+      // still ignite — otherwise a copy edit that shrinks the last step's
+      // body would silently leave its circle unlit forever.
+      return Math.min((top - track.offsetTop) / track.offsetHeight, 0.98)
     })
     setThresholds((prev) =>
       prev && prev.length === next.length && prev.every((t, i) => t === next[i])
@@ -178,6 +167,9 @@ export function GetStartedStep({
           animate && 'transition-colors duration-300'
         )}
         initial={false}
+        // Deliberate: on a mid-page landing the post-mount seed lights every
+        // already-passed circle with one shared pulse — same flourish as the
+        // about timeline's spring pop-in.
         animate={{ scale: active && animate ? [1, 1.15, 1] : 1 }}
         transition={{ duration: 0.35, ease: 'easeOut' }}
       >
