@@ -127,13 +127,16 @@ async function checkProvider(
       }
     }
     // Google renders this error pre-login when the redirect_uri is not
-    // registered on the OAuth client — verified live 2026-07-03.
-    if (body.includes('redirect_uri_mismatch') || body.includes('invalid_request')) {
+    // registered on the OAuth client — verified live 2026-07-03. Match only
+    // the exact signature (plus a 4xx/5xx status): a healthy login page's JS
+    // could plausibly contain generic strings like "invalid_request", and a
+    // false positive here pages the owner hourly.
+    if (body.includes('redirect_uri_mismatch') || authorizePage.status >= 400) {
       return {
         provider,
         status: 'provider_rejected',
         redirectUri: sentRedirectUri,
-        detail: `Google rejected redirect_uri "${sentRedirectUri}" (redirect_uri_mismatch) — add it to the OAuth client in Google Cloud Console (see docs/runbooks/oauth-providers.md)`,
+        detail: `Google rejected the authorize request (status ${authorizePage.status}${body.includes('redirect_uri_mismatch') ? ', redirect_uri_mismatch' : ''}) for redirect_uri "${sentRedirectUri}" — check the OAuth client in Google Cloud Console (see docs/runbooks/oauth-providers.md)`,
         registrationVerified: true,
       }
     }
