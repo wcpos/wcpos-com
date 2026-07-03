@@ -186,6 +186,15 @@ export async function getEnabledPaymentProviderIds(
         }
       }
     }
+    if (ids.size === 0) {
+      // No positive evidence: a backend that ignores the *payment_providers
+      // expansion (version/config drift) is indistinguishable from one with
+      // zero providers. Filtering on [] would hide every payment method on a
+      // 200 response — the outage class this function exists to prevent —
+      // so fail open and let session creation surface any real problem.
+      storeLogger.warn`No enabled payment providers reported by /store/regions; skipping method filtering`
+      return null
+    }
     return [...ids]
   } catch (error) {
     storeLogger.error`Failed to fetch region payment providers: ${error}`

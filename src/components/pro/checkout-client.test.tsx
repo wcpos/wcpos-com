@@ -417,6 +417,8 @@ describe('CheckoutClient', () => {
             postal_code: '2000',
             country_code: 'us',
           },
+          // Always sent — an empty value clears a previously saved number.
+          metadata: { taxNumber: '' },
         }),
       })
     )

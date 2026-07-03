@@ -205,12 +205,67 @@ describe('getResolvedCustomerLicenses', () => {
     mockGetLicenseWithMachines.mockRejectedValueOnce(
       new KeygenRequestError('Keygen getLicense failed (404): not found', 404)
     )
+    mockValidateLicenseKey.mockResolvedValueOnce({
+      valid: false,
+      code: 'NOT_FOUND',
+      detail: 'does not exist',
+      license: null,
+    })
 
     const result = await getResolvedCustomerLicenses()
 
+    // Key fallback ran and also came up empty: no 'unknown' placeholder row.
+    expect(mockValidateLicenseKey).toHaveBeenCalledWith('WCPOS-GONE-0000')
     expect(result.licenses).toEqual([])
-    // 404 is terminal: no fallback key validation, no 'unknown' placeholder.
-    expect(mockValidateLicenseKey).not.toHaveBeenCalled()
+  })
+
+  it('rescues a stale id via the key fallback when the key is still live in Keygen', async () => {
+    mockGetCustomer.mockResolvedValueOnce({ id: 'cust_1' })
+    mockGetAllOrders.mockResolvedValueOnce([
+      {
+        id: 'order_stale_id',
+        status: 'completed',
+        display_id: 12,
+        email: 'user@example.com',
+        currency_code: 'usd',
+        total: 129,
+        subtotal: 129,
+        tax_total: 0,
+        created_at: '2021-04-03T00:00:00Z',
+        updated_at: '2021-04-03T00:00:00Z',
+        items: [],
+        metadata: {
+          legacy: true,
+          licenses: [
+            { license_id: 'lic_stale', license_key: 'WCPOS-LIVE-0003' },
+          ],
+        },
+      },
+    ])
+    mockGetLicenseWithMachines.mockRejectedValueOnce(
+      new KeygenRequestError('Keygen getLicense failed (404): not found', 404)
+    )
+    mockValidateLicenseKey.mockResolvedValueOnce({
+      valid: true,
+      code: 'VALID',
+      detail: 'ok',
+      license: {
+        id: 'lic_reissued',
+        key: 'WCPOS-LIVE-0003',
+        status: 'active',
+        expiry: null,
+        maxMachines: 1,
+        metadata: {},
+        policyId: 'policy_1',
+        createdAt: '2026-01-01T00:00:00Z',
+      },
+    })
+
+    const result = await getResolvedCustomerLicenses()
+
+    expect(result.licenses).toHaveLength(1)
+    expect(result.licenses[0].id).toBe('lic_reissued')
+    expect(result.licenses[0].status).toBe('active')
   })
 
   it('still falls back to key validation and placeholder on non-404 Keygen errors', async () => {

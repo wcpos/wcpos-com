@@ -37,19 +37,23 @@ function buildLicensePlaceholder(reference: LicenseReference): LicenseDetail | n
 export async function resolveLicenseReference(
   reference: LicenseReference
 ): Promise<LicenseDetail | null> {
+  // A 404 on the stored id means Keygen never had it (legacy migrated
+  // orders, or an id superseded by re-issue) — data, not an incident. The
+  // key fallback below still runs (a stale id can accompany a live key),
+  // but a definitively-missing id must not produce an "unknown" placeholder.
+  let idNotFound = false
+
   if (reference.id) {
     try {
       const license = await licenseClient.getLicenseWithMachines(reference.id)
       return { ...license, status: normalizeLicenseStatus(license.status) }
     } catch (error) {
       if (error instanceof KeygenRequestError && error.status === 404) {
-        // The reference points at a license Keygen never had (legacy
-        // migrated orders) — that's data, not an incident. Don't render a
-        // bogus "unknown" row for it either.
-        licenseLogger.warn`License ${reference.id} not found in Keygen; skipping`
-        return null
+        idNotFound = true
+        licenseLogger.warn`License ${reference.id} not found in Keygen; trying key fallback`
+      } else {
+        licenseLogger.error`Failed to fetch license ${reference.id}: ${error}`
       }
-      licenseLogger.error`Failed to fetch license ${reference.id}: ${error}`
     }
   }
 
@@ -68,7 +72,7 @@ export async function resolveLicenseReference(
     }
   }
 
-  return buildLicensePlaceholder(reference)
+  return idNotFound ? null : buildLicensePlaceholder(reference)
 }
 
 export async function getResolvedLicensesFromOrders(

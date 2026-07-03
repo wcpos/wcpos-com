@@ -141,13 +141,52 @@ describe('PATCH /api/store/cart', () => {
       patchRequest({
         cartId: 'cart_1',
         billing_address: billingAddress,
-        metadata: { experiment: 'evil-overwrite', taxNumber: '' },
+        metadata: { experiment: 'evil-overwrite', taxNumber: 'abn-1' },
       })
     )
 
     expect(mockUpdateCart).toHaveBeenCalledWith('cart_1', {
       billing_address: billingAddress,
+      metadata: { taxNumber: 'abn-1' },
       email: customer.email,
+    })
+  })
+
+  it('clears the cart tax number when the field is submitted empty', async () => {
+    await PATCH(
+      patchRequest({
+        cartId: 'cart_1',
+        billing_address: billingAddress,
+        metadata: { taxNumber: '' },
+      })
+    )
+
+    // null deletes the key on Medusa's metadata merge.
+    expect(mockUpdateCart).toHaveBeenCalledWith('cart_1', {
+      billing_address: billingAddress,
+      metadata: { taxNumber: null },
+      email: customer.email,
+    })
+  })
+
+  it('clears the profile tax number when the field is submitted empty', async () => {
+    mockGetCustomer.mockResolvedValue({
+      ...customer,
+      metadata: { account_profile: { taxNumber: 'stale-abn' } },
+    })
+
+    await PATCH(
+      patchRequest({
+        cartId: 'cart_1',
+        billing_address: billingAddress,
+        metadata: { taxNumber: '' },
+      })
+    )
+
+    expect(mockUpdateCustomer).toHaveBeenCalledWith({
+      metadata: {
+        account_profile: expect.objectContaining({ taxNumber: null }),
+      },
     })
   })
 

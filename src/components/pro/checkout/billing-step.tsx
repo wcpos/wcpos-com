@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { BILLING_COUNTRIES, taxIdLabel } from '@/lib/billing-countries'
 
 /**
  * Billing address step — the minimum honest address block. The parent owns
@@ -23,56 +24,7 @@ export function billingAddressSummary(address: BillingAddress): string {
   return `${address.address_1}, ${address.city} ${address.postal_code.toUpperCase()}, ${address.country_code.toUpperCase()}`
 }
 
-/**
- * What the optional tax-registration field is called locally. Mirrors the
- * profile form's per-country vocabulary (profile-edit-form.tsx) — the value
- * itself is stored as one field either way.
- */
-const TAX_ID_LABELS: Record<string, string> = {
-  au: 'ABN',
-  ca: 'GST/HST number',
-  de: 'VAT number',
-  es: 'NIF / VAT number',
-  fr: 'VAT number',
-  gb: 'VAT number',
-  it: 'Partita IVA',
-  jp: 'Tax registration number',
-  nl: 'VAT number',
-  nz: 'GST number',
-  us: 'EIN / Tax ID',
-}
-
-export function taxIdLabel(countryCode: string): string {
-  return TAX_ID_LABELS[countryCode.toLowerCase()] ?? 'Tax ID / VAT number'
-}
-
-const COUNTRIES: Array<{ code: string; label: string }> = [
-  { code: 'au', label: 'Australia' },
-  { code: 'at', label: 'Austria' },
-  { code: 'be', label: 'Belgium' },
-  { code: 'br', label: 'Brazil' },
-  { code: 'ca', label: 'Canada' },
-  { code: 'dk', label: 'Denmark' },
-  { code: 'fi', label: 'Finland' },
-  { code: 'fr', label: 'France' },
-  { code: 'de', label: 'Germany' },
-  { code: 'ie', label: 'Ireland' },
-  { code: 'it', label: 'Italy' },
-  { code: 'jp', label: 'Japan' },
-  { code: 'kr', label: 'South Korea' },
-  { code: 'mx', label: 'Mexico' },
-  { code: 'nl', label: 'Netherlands' },
-  { code: 'nz', label: 'New Zealand' },
-  { code: 'no', label: 'Norway' },
-  { code: 'pt', label: 'Portugal' },
-  { code: 'sg', label: 'Singapore' },
-  { code: 'za', label: 'South Africa' },
-  { code: 'es', label: 'Spain' },
-  { code: 'se', label: 'Sweden' },
-  { code: 'ch', label: 'Switzerland' },
-  { code: 'gb', label: 'United Kingdom' },
-  { code: 'us', label: 'United States' },
-]
+export { taxIdLabel } from '@/lib/billing-countries'
 
 interface BillingStepProps {
   initialAddress?: BillingAddress | null
@@ -204,7 +156,7 @@ export function BillingStep({
           onChange={(event) => setCountryCode(event.target.value)}
           className="border-input h-9 w-full rounded-md border bg-transparent px-3 text-sm shadow-xs"
         >
-          {COUNTRIES.map((country) => (
+          {BILLING_COUNTRIES.map((country) => (
             <option key={country.code} value={country.code}>
               {country.label}
             </option>

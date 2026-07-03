@@ -20,6 +20,10 @@ import { Mail } from 'lucide-react'
 import { GitHubMark, GoogleMark } from '@/components/auth/provider-marks'
 import { getConnectedAvatarUrlFromMetadata } from '@/lib/avatar'
 import { readAccountProfileMetadata } from '@/lib/customer-profile-metadata'
+import {
+  COUNTRY_TAX_LABEL_KEYS,
+  type TaxLabelKey,
+} from '@/lib/billing-countries'
 
 interface ProfileEditFormProps {
   customer: {
@@ -45,34 +49,30 @@ type RegionLabelKey =
   | 'region'
   | 'prefecture'
 type PostalLabelKey = 'zip' | 'postalCode' | 'postcode'
-type TaxLabelKey =
-  | 'einTaxId'
-  | 'gstHst'
-  | 'vat'
-  | 'abn'
-  | 'nifVat'
-  | 'partitaIva'
-  | 'gst'
-  | 'taxRegistration'
 
 type CountryProfile = {
   regionLabel: RegionLabelKey
   postalLabel: PostalLabelKey
+  /** From the shared checkout/profile vocabulary (billing-countries.ts). */
   taxLabel: TaxLabelKey
 }
 
+function taxLabelFor(countryCode: string): TaxLabelKey {
+  return COUNTRY_TAX_LABEL_KEYS[countryCode.toLowerCase()] ?? 'einTaxId'
+}
+
 const COUNTRY_PROFILES: Record<string, CountryProfile> = {
-  US: { regionLabel: 'state', postalLabel: 'zip', taxLabel: 'einTaxId' },
-  CA: { regionLabel: 'province', postalLabel: 'postalCode', taxLabel: 'gstHst' },
-  GB: { regionLabel: 'county', postalLabel: 'postcode', taxLabel: 'vat' },
-  AU: { regionLabel: 'stateTerritory', postalLabel: 'postcode', taxLabel: 'abn' },
-  DE: { regionLabel: 'state', postalLabel: 'postalCode', taxLabel: 'vat' },
-  FR: { regionLabel: 'region', postalLabel: 'postalCode', taxLabel: 'vat' },
-  ES: { regionLabel: 'province', postalLabel: 'postalCode', taxLabel: 'nifVat' },
-  IT: { regionLabel: 'province', postalLabel: 'postalCode', taxLabel: 'partitaIva' },
-  NL: { regionLabel: 'province', postalLabel: 'postalCode', taxLabel: 'vat' },
-  NZ: { regionLabel: 'region', postalLabel: 'postcode', taxLabel: 'gst' },
-  JP: { regionLabel: 'prefecture', postalLabel: 'postalCode', taxLabel: 'taxRegistration' },
+  US: { regionLabel: 'state', postalLabel: 'zip', taxLabel: taxLabelFor('US') },
+  CA: { regionLabel: 'province', postalLabel: 'postalCode', taxLabel: taxLabelFor('CA') },
+  GB: { regionLabel: 'county', postalLabel: 'postcode', taxLabel: taxLabelFor('GB') },
+  AU: { regionLabel: 'stateTerritory', postalLabel: 'postcode', taxLabel: taxLabelFor('AU') },
+  DE: { regionLabel: 'state', postalLabel: 'postalCode', taxLabel: taxLabelFor('DE') },
+  FR: { regionLabel: 'region', postalLabel: 'postalCode', taxLabel: taxLabelFor('FR') },
+  ES: { regionLabel: 'province', postalLabel: 'postalCode', taxLabel: taxLabelFor('ES') },
+  IT: { regionLabel: 'province', postalLabel: 'postalCode', taxLabel: taxLabelFor('IT') },
+  NL: { regionLabel: 'province', postalLabel: 'postalCode', taxLabel: taxLabelFor('NL') },
+  NZ: { regionLabel: 'region', postalLabel: 'postcode', taxLabel: taxLabelFor('NZ') },
+  JP: { regionLabel: 'prefecture', postalLabel: 'postalCode', taxLabel: taxLabelFor('JP') },
 }
 
 const FALLBACK_COUNTRY_CODES = [

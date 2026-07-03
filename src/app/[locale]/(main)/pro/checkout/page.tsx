@@ -12,8 +12,7 @@ import { getAnalyticsConfig } from '@/lib/analytics/config'
 import { getRequestStoreEnvironment } from '@/lib/store-environment'
 import { filterPaymentsByBackendProviders } from '@/lib/checkout-payments'
 import { getEnabledPaymentProviderIds } from '@/services/core/external/medusa-client'
-import { readAccountProfileMetadata } from '@/lib/customer-profile-metadata'
-import type { BillingAddress } from '@/components/pro/checkout/billing-step'
+import { billingPrefillFromCustomer } from '@/lib/billing-profile'
 import type { ProCheckoutVariant } from '@/services/core/analytics/posthog-service'
 import {
   getProOfferCatalog,
@@ -74,20 +73,31 @@ async function CheckoutContent({
   const searchParams = await searchParamsPromise
   // Signed-out visitors are welcome: the checkout's first step creates the
   // account inline. The cart APIs still require auth server-side.
-  const customer = await getCustomer()
-
   // Host-keyed: wcpos.com takes live money, beta.wcpos.com uses the staging
   // backend with test-mode payment providers.
-  const storeEnv = await getRequestStoreEnvironment()
+  const [customer, storeEnv, cookieStore] = await Promise.all([
+    getCustomer(),
+    getRequestStoreEnvironment(),
+    cookies(),
+  ])
 
   const selectedVariantId = getSingleSearchParam(searchParams, 'variant')
   const selectedProduct = getSingleSearchParam(searchParams, 'product')
+  const distinctId = cookieStore.get(ANALYTICS_DISTINCT_ID_COOKIE)?.value
+  const analyticsConfig = getAnalyticsConfig(process.env)
   // Only offer payment methods the backend actually registers — config and
   // backend drift independently (see checkout-payments.ts).
-  const [{ offers }, enabledProviderIds] = await Promise.all([
-    getProOfferCatalog(undefined, storeEnv),
-    getEnabledPaymentProviderIds(storeEnv),
-  ])
+  const [{ offers }, enabledProviderIds, experimentVariant] =
+    await Promise.all([
+      getProOfferCatalog(undefined, storeEnv),
+      getEnabledPaymentProviderIds(storeEnv),
+      distinctId
+        ? resolveProCheckoutVariant({
+            distinctId,
+            analyticsEnabled: analyticsConfig.enabled,
+          })
+        : Promise.resolve<ProCheckoutVariant>('control'),
+    ])
   const checkoutInput: ProOfferCheckoutInput = {
     product: selectedProduct,
     variant: selectedVariantId,
@@ -97,40 +107,15 @@ async function CheckoutContent({
     ? offers.find((offer) => offer.handle === selectedOffer.handle)
     : null
   // Prefill billing from the saved profile (same source receipts read).
-  // Only when something is actually saved — an all-empty prefill would just
-  // override the form's own defaults with blanks.
-  let initialBillingAddress: BillingAddress | null = null
-  let initialTaxNumber: string | undefined
-  if (customer) {
-    const profile = readAccountProfileMetadata(customer.metadata)
-    if (profile.addressLine1 || profile.city || profile.postalCode) {
-      initialBillingAddress = {
-        first_name: customer.first_name ?? '',
-        last_name: customer.last_name ?? '',
-        address_1: profile.addressLine1,
-        city: profile.city,
-        postal_code: profile.postalCode,
-        country_code: profile.countryCode.toLowerCase(),
-      }
-    }
-    initialTaxNumber = profile.taxNumber || undefined
-  }
-
-  const cookieStore = await cookies()
-  const distinctId = cookieStore.get(ANALYTICS_DISTINCT_ID_COOKIE)?.value
-  const analyticsConfig = getAnalyticsConfig(process.env)
-  const experimentVariant: ProCheckoutVariant = distinctId
-    ? await resolveProCheckoutVariant({
-        distinctId,
-        analyticsEnabled: analyticsConfig.enabled,
-      })
-    : 'control'
+  const prefill = customer
+    ? billingPrefillFromCustomer(customer)
+    : { address: null, taxNumber: undefined }
 
   return (
     <CheckoutClient
       customerEmail={customer?.email}
-      initialBillingAddress={initialBillingAddress}
-      initialTaxNumber={initialTaxNumber}
+      initialBillingAddress={prefill.address}
+      initialTaxNumber={prefill.taxNumber}
       selectedOfferHandle={selectedOffer?.handle}
       offerSummary={
         selectedFullOffer

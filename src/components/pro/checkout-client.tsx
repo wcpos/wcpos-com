@@ -69,11 +69,11 @@ interface PaymentSessionResult {
 
 const PRO_CHECKOUT_EXPERIMENT = 'pro_checkout_v1'
 
-// Map frontend payment method names to Medusa provider IDs
+// Map frontend payment method names to Medusa provider IDs. The Record is
+// total over PaymentMethod, so adding a method without a provider id is a
+// compile error — no runtime fallback.
 function getProviderId(method: PaymentMethod): string {
-  return (
-    PAYMENT_METHOD_PROVIDER_IDS[method] ?? PAYMENT_METHOD_PROVIDER_IDS.stripe
-  )
+  return PAYMENT_METHOD_PROVIDER_IDS[method]
 }
 
 /**
@@ -186,6 +186,10 @@ export function CheckoutClient({
   const [billingAddress, setBillingAddress] = useState<BillingAddress | null>(
     null
   )
+  // Submitted tax number — StepShell unmounts BillingStep between visits, so
+  // Edit must re-seed the field with what was last saved, not the page-load
+  // profile prefill. null = never submitted.
+  const [taxNumber, setTaxNumber] = useState<string | null>(null)
   const [cart, setCart] = useState<Cart | null>(null)
   const [clientSecret, setClientSecret] = useState<string | null>(null)
   const [isProcessing, setIsProcessing] = useState(false)
@@ -435,7 +439,7 @@ export function CheckoutClient({
 
   async function handleBillingSubmit(
     address: BillingAddress,
-    extras: { taxNumber: string } = { taxNumber: '' }
+    extras: { taxNumber: string }
   ) {
     // Serialize against method switches and other refreshes — two session
     // mutations racing can leave the mounted Stripe element and the Medusa
@@ -454,7 +458,6 @@ export function CheckoutClient({
 
     setIsProcessing(true)
     try {
-      const taxNumber = extras.taxNumber.trim()
       const response = await fetch('/api/store/cart', {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
@@ -462,8 +465,9 @@ export function CheckoutClient({
           cartId: init.cart.id,
           billing_address: address,
           // Not a Medusa address field — travels as cart metadata so it
-          // lands on the order record.
-          ...(taxNumber ? { metadata: { taxNumber } } : {}),
+          // lands on the order record. Always sent (even empty) so clearing
+          // a previously entered number actually removes it.
+          metadata: { taxNumber: extras.taxNumber },
         }),
       })
       if (!response.ok) {
@@ -477,6 +481,7 @@ export function CheckoutClient({
       if (!anyPaymentMethodEnabled) {
         setCart(cartAfterBilling)
         setBillingAddress(address)
+        setTaxNumber(extras.taxNumber)
         setStep('payment')
         return
       }
@@ -510,6 +515,7 @@ export function CheckoutClient({
           : null
       )
       setBillingAddress(address)
+      setTaxNumber(extras.taxNumber)
       setStep('payment')
     } finally {
       setIsProcessing(false)
@@ -666,7 +672,7 @@ export function CheckoutClient({
           ) : (
             <BillingStep
               initialAddress={billingAddress ?? initialBillingAddress ?? null}
-              initialTaxNumber={initialTaxNumber}
+              initialTaxNumber={taxNumber ?? initialTaxNumber}
               onSubmit={handleBillingSubmit}
             />
           )}
