@@ -65,11 +65,28 @@ Vercel cron. It starts from apex `https://wcpos.com`, follows any same-site
 redirect (apex ⇄ www) to the actual serving host, verifies each provider is
 handed a correct authorize URL whose `redirect_uri` exactly matches
 `{serving origin}/api/auth/{provider}/callback`, and for Google also fetches
-the authorize page and fails on `redirect_uri_mismatch`. Any failure fires
-**authLogger.fatal → Discord + email** (see [alerting](./alerting.md)), once
-per provider per hourly run, until fixed. The JSON response includes
-`servingOrigin` per provider, so it also shows which host is currently
-canonical in Vercel.
+the authorize page and fails on the `redirect_uri_mismatch` error code.
+Confirmed breakage fires **one aggregated authLogger.fatal → Discord + email**
+(see [alerting](./alerting.md)) listing every broken provider, every hourly
+run until fixed. Transient blips are absorbed: probe fetches time out at 10s,
+and the initiate step retries once after 5s (a routine Medusa redeploy won't
+page). A Google error page *without* the mismatch code (rate limiting / bot
+defense against datacenter IPs) is reported as **`inconclusive`** — logged at
+error level, no fatal, `HTTP 200` with `"inconclusive": true`. Occasional
+inconclusive runs are noise; *every* run inconclusive means Google is blocking
+Vercel's egress IPs and the Google leg of the check is blind — verify sign-in
+manually. The JSON response includes `servingOrigin` per provider, so it also
+shows which host is currently canonical in Vercel.
+
+**Deploy acceptance (run once after the cron first ships, or when `CRON_SECRET`
+changes):** the guard fails closed, so a missing/empty `CRON_SECRET` means the
+cron 401s forever with zero signal (see incident #207 for the empty-string env
+failure mode). Also confirm the Vercel plan allows hourly crons (Hobby caps
+crons at once per day — this is the project's first sub-daily schedule).
+Run the manual curl below against the **deployed** endpoint and expect JSON
+(not 401); check `results` — this also proves Google tolerates probe traffic
+from Vercel's egress IPs (datacenter reputation differs from a residential
+curl).
 
 Manual run:
 

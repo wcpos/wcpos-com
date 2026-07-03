@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { env } from '@/utils/env'
-import { checkOAuthProviders } from '@/lib/oauth-health'
+import { checkOAuthProviders, HARD_FAILURE_STATUSES } from '@/lib/oauth-health'
 import { authLogger } from '@/lib/logger'
 
 /**
@@ -12,6 +12,11 @@ import { authLogger } from '@/lib/logger'
  * production callback URL is missing from a provider console after a domain
  * change. Runbook: docs/runbooks/oauth-providers.md
  */
+
+// Probe fetches abort at 10s each, but give the whole run (parallel
+// providers, one retry after a 5s delay) room to finish and report instead
+// of dying in a silent platform timeout.
+export const maxDuration = 60
 
 function isAuthorized(request: NextRequest): boolean {
   if (!env.CRON_SECRET) return false
@@ -56,17 +61,33 @@ async function handle(request: NextRequest) {
   }
   const report = await checkOAuthProviders(baseUrl)
 
-  for (const result of report.results) {
-    if (result.status === 'ok') continue
-    authLogger.fatal`OAuth sign-in broken (${result.provider}): ${result.detail}`
-  }
+  const broken = report.results.filter((r) => HARD_FAILURE_STATUSES.includes(r.status))
+  const inconclusive = report.results.filter((r) => r.status === 'inconclusive')
 
-  if (report.healthy) {
+  // One aggregated fatal: the Discord/email sinks throttle per category, so
+  // per-provider fatals fired in the same run would be dropped after the
+  // first. Fatal is reserved for confirmed breakage; inconclusive (Google
+  // rate limiting / bot defense) logs at error so it is visible without
+  // paging hourly.
+  if (broken.length > 0) {
+    const summary = broken.map((r) => `${r.provider}: ${r.detail}`).join(' | ')
+    authLogger.fatal`OAuth sign-in broken (${broken.map((r) => r.provider).join(', ')}) — ${summary}`
+  }
+  if (inconclusive.length > 0) {
+    const summary = inconclusive.map((r) => `${r.provider}: ${r.detail}`).join(' | ')
+    authLogger.error`OAuth health check inconclusive — ${summary}`
+  }
+  if (report.healthy && !report.inconclusive) {
     authLogger.info`OAuth provider health check passed for ${baseUrl}`
   }
 
   return NextResponse.json(
-    { ok: report.healthy, baseUrl, results: report.results },
+    {
+      ok: report.healthy,
+      inconclusive: report.inconclusive,
+      baseUrl,
+      results: report.results,
+    },
     { status: report.healthy ? 200 : 500 }
   )
 }
