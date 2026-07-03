@@ -9,6 +9,7 @@ import {
   type MotionValue,
 } from 'motion/react'
 import { cn } from '@/lib/utils'
+import { usePrefersReducedMotion } from '@/lib/use-prefers-reduced-motion'
 import { ACT_HOLDS, useActGravity } from './act-gravity'
 import { CloudSync } from './acts/cloud-sync'
 import { CyclingDevice } from './acts/cycling-device'
@@ -40,7 +41,6 @@ function useTrack(
   return useTransform(value, (v) => (unit ? `${v}${unit}` : v))
 }
 
-const REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)'
 const COPY_1_HIDDEN_PROGRESS = K.copy1Opacity[0][2]
 
 /**
@@ -167,24 +167,6 @@ function pinnedTabletTracks(size: StageSize | null): TabletTracks {
     ],
     px: true,
   }
-}
-
-/**
- * Local media-query hook (instead of motion's useReducedMotion, which caches
- * the query result in module state). Server snapshot is `false` so SSR emits
- * the pinned markup; reduced-motion users swap to the static variant on
- * hydration.
- */
-function usePrefersReducedMotion() {
-  return React.useSyncExternalStore(
-    (onChange) => {
-      const mql = window.matchMedia(REDUCED_MOTION_QUERY)
-      mql.addEventListener('change', onChange)
-      return () => mql.removeEventListener('change', onChange)
-    },
-    () => window.matchMedia(REDUCED_MOTION_QUERY).matches,
-    () => false
-  )
 }
 
 /**

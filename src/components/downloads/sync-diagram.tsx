@@ -2,7 +2,8 @@
 
 import { useRef, useState } from 'react'
 import { Laptop, Smartphone, Globe, type LucideIcon } from 'lucide-react'
-import { motion, useAnimationFrame, useReducedMotion } from 'motion/react'
+import { motion, useAnimationFrame } from 'motion/react'
+import { usePrefersReducedMotion } from '@/lib/use-prefers-reduced-motion'
 
 /**
  * The "how it fits together" diagram: the store hub with the four device
@@ -111,7 +112,7 @@ function StoreHub({ animate }: { animate: boolean }) {
 }
 
 export function SyncDiagram() {
-  const reduced = useReducedMotion()
+  const reduced = usePrefersReducedMotion()
   const container = useRef<HTMLDivElement>(null)
   const wrappers = useRef<(HTMLDivElement | null)[]>([])
   const baseLines = useRef<(SVGLineElement | null)[]>([])
