@@ -24,11 +24,24 @@ function FormField({
   children,
   ...props
 }: FormFieldProps) {
+  const hintId = hint ? `${htmlFor}-hint` : undefined
+  const control = hintId && React.isValidElement<React.AriaAttributes>(children)
+    ? React.cloneElement(children, {
+        'aria-describedby': [children.props['aria-describedby'], hintId]
+          .filter(Boolean)
+          .join(' '),
+      })
+    : children
+
   return (
     <div className={cn('space-y-2', className)} {...props}>
       <Label htmlFor={htmlFor}>{label}</Label>
-      {children}
-      {hint && <p className="text-xs text-muted-foreground">{hint}</p>}
+      {control}
+      {hint && (
+        <p id={hintId} className="text-xs text-muted-foreground">
+          {hint}
+        </p>
+      )}
     </div>
   )
 }

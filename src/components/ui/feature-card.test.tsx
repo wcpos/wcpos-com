@@ -41,6 +41,15 @@ describe('FeatureCard', () => {
     expect(screen.getByRole('listitem')).toBeInTheDocument()
   })
 
+  it('wraps the icon in an IconTile by default', () => {
+    const { container } = render(
+      <FeatureCard icon={Search} title="Tiled">
+        Body.
+      </FeatureCard>,
+    )
+    expect(container.querySelector('span svg')).not.toBeNull()
+  })
+
   it('draws the icon bare when iconStyle is plain', () => {
     const { container } = render(
       <FeatureCard icon={Search} iconStyle="plain" title="Plain">

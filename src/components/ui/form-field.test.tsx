@@ -23,6 +23,18 @@ describe('FormField', () => {
     expect(hint.className).toContain('text-muted-foreground')
   })
 
+  it('associates hint text with the control', () => {
+    render(
+      <FormField label="Avatar" htmlFor="avatar" hint="PNG or JPG, up to 2MB">
+        <Input id="avatar" />
+      </FormField>,
+    )
+    const input = screen.getByLabelText('Avatar')
+    const hint = screen.getByText('PNG or JPG, up to 2MB')
+    expect(hint).toHaveAttribute('id', 'avatar-hint')
+    expect(input).toHaveAttribute('aria-describedby', 'avatar-hint')
+  })
+
   it('renders no hint element by default', () => {
     const { container } = render(
       <FormField label="City" htmlFor="city">

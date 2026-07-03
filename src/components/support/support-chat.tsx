@@ -129,20 +129,26 @@ export function SupportChat() {
                   <Markdown content={m.content} className="text-sm text-foreground" />
                   <div className="mt-2 flex items-center gap-2 text-muted-foreground">
                     <span className="text-xs">Was this helpful?</span>
-                    <button
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
                       aria-label="Yes"
                       onClick={() => feedback(true, i)}
-                      className="rounded border px-2 py-1 text-xs hover:bg-muted"
+                      className="h-auto px-2 py-1 text-xs hover:bg-muted"
                     >
                       👍
-                    </button>
-                    <button
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
                       aria-label="No"
                       onClick={() => feedback(false, i)}
-                      className="rounded border px-2 py-1 text-xs hover:bg-muted"
+                      className="h-auto px-2 py-1 text-xs hover:bg-muted"
                     >
                       👎
-                    </button>
+                    </Button>
                   </div>
                 </div>
               </div>
@@ -186,14 +192,17 @@ export function SupportChat() {
       {!started && (
         <div className="mt-4 flex flex-wrap justify-center gap-2">
           {EXAMPLES.map((q) => (
-            <button
+            <Button
               key={q}
+              type="button"
+              variant="outline"
+              size="sm"
               onClick={() => void ask(q)}
               disabled={verifying}
-              className="rounded-full border bg-card px-3 py-1.5 text-sm text-muted-foreground hover:bg-muted disabled:opacity-50"
+              className="h-auto rounded-full bg-card px-3 py-1.5 text-sm text-muted-foreground hover:bg-muted"
             >
               {q}
-            </button>
+            </Button>
           ))}
         </div>
       )}
