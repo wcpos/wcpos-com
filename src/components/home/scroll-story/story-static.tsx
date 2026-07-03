@@ -108,8 +108,14 @@ export function StoryStatic() {
         <div className="mx-auto max-w-2xl text-center">
           <CopyAct4 tone="onLight" />
         </div>
-        <StageStrip className="h-[260px] sm:h-[320px]">
-          <CloudSync light />
+        {/* the sync arcs point at the register — without the tablet the
+            cloud syncs with nothing (the pinned variant keeps its persistent
+            tablet on stage here; this variant has to bring its own) */}
+        <StageStrip className="h-[300px] sm:h-[400px]">
+          <div className="flex flex-col items-center">
+            <CloudSync light />
+            <DeviceTablet className="-mt-9 h-[210px] w-[304px]" />
+          </div>
         </StageStrip>
       </Section>
     </div>
