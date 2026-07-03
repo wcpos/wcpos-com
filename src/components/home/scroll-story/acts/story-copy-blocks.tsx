@@ -26,12 +26,19 @@ const toneStyles = {
  * variants can never drift.
  */
 
+// Act-1 letterpress: a single crisp 1px light shadow, angled down-right, so
+// the dark text reads as pressed into the counter. One hard-edged layer —
+// blur radii read as glow on the grain and are deliberately absent.
+const letterpress = '[text-shadow:1px_1px_0_rgba(255,252,245,0.75)]'
+
 function Kicker({
   children,
   tone = 'onDark',
+  className,
 }: {
   children: React.ReactNode
   tone?: CopyTone
+  className?: string
 }) {
   // fixed red-400: the stage is always dark, but --wcpos-red-accent only
   // lightens under .dark — in light mode it would sit at 42% lightness on
@@ -40,7 +47,8 @@ function Kicker({
     <p
       className={cn(
         'mb-3 text-xs font-bold uppercase tracking-[0.18em]',
-        tone === 'onLight' ? 'text-wcpos-red' : 'text-red-400'
+        tone === 'onLight' ? 'text-wcpos-red' : 'text-red-400',
+        className
       )}
     >
       {children}
@@ -59,21 +67,26 @@ export function CopyAct1({
   const t = toneStyles[tone]
   return (
     <>
-      <Kicker tone={tone}>{storyCopy.act1.kicker}</Kicker>
+      <Kicker tone={tone} className={tone === 'onLight' ? letterpress : undefined}>
+        {storyCopy.act1.kicker}
+      </Kicker>
       <Heading
         className={cn(
           'mb-4 text-4xl font-bold leading-[1.05] tracking-tight md:text-5xl',
-          tone === 'onLight' ? 'text-[#3b2a17]' : t.heading
+          tone === 'onLight' ? cn('text-[#3b2a17]', letterpress) : t.heading
         )}
       >
         {storyCopy.act1.heading}
       </Heading>
       {/* small sizes on the photo go near-black and up a weight: contrast
-          from ink and the static copyWash behind, never from text effects */}
+          comes from ink and the static copyWash behind; the letterpress edge
+          separates the glyphs from the grain */}
       <p
         className={cn(
           'mx-auto mb-7 max-w-xl text-base md:text-lg',
-          tone === 'onLight' ? 'font-medium text-[#2a1e10]' : toneStyles.onDark.body
+          tone === 'onLight'
+            ? cn('font-medium text-[#2a1e10]', letterpress)
+            : toneStyles.onDark.body
         )}
       >
         {storyCopy.act1.body}
@@ -96,7 +109,9 @@ export function CopyAct1({
       <div
         className={cn(
           'mt-6 flex flex-wrap items-center justify-center gap-x-5 gap-y-1 text-xs font-medium',
-          tone === 'onLight' ? 'font-semibold text-[#2a1e10]' : toneStyles.onDark.badges
+          tone === 'onLight'
+            ? cn('font-semibold text-[#2a1e10]', letterpress)
+            : toneStyles.onDark.badges
         )}
       >
         {storyCopy.act1.trustBadges.map((badge) => (
