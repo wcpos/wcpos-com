@@ -245,6 +245,21 @@
     opacity: 0.45;
   }
 }
+/* static legibility wash under the act-1 copy zone: the breathing light band
+   above only reaches the top ~20% of the stage, so the subhead and badges sit
+   on raw grain at the band's dim phase. This layer bounds the worst case —
+   it never animates, and its radius fades out before the tablet cluster. */
+.copyWash {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    85% 60% at 50% 18%,
+    rgba(255, 250, 240, 0.5) 0%,
+    rgba(255, 250, 240, 0.28) 45%,
+    rgba(255, 250, 240, 0) 72%
+  );
+}
 .counterLife {
   position: absolute;
   inset: 0 0 auto 0;
