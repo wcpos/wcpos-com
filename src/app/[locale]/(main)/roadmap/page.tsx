@@ -7,6 +7,7 @@ import {
   BoardLinkChip,
 } from '@/components/roadmap/roadmap-timeline'
 import { ROADMAP_DEV_FIXTURE } from '@/components/roadmap/dev-fixture'
+import { Eyebrow } from '@/components/ui/eyebrow'
 import { Skeleton } from '@/components/ui/skeleton'
 import type { RoadmapData } from '@/types/roadmap'
 import type { Metadata } from 'next'
@@ -64,9 +65,9 @@ export default async function RoadmapPage({
     <main>
       <div className="mx-auto w-full max-w-3xl px-4 py-16 sm:py-24">
         <header className="mb-14">
-          <p className="font-mono text-xs font-semibold uppercase tracking-[0.25em] text-wcpos-red dark:text-wcpos-red-accent">
+          <Eyebrow size="sm" className="font-mono tracking-[0.25em]">
             Roadmap
-          </p>
+          </Eyebrow>
           <h1 className="mt-3 text-4xl font-bold tracking-tight sm:text-5xl">
             The release train
           </h1>

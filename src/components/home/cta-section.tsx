@@ -1,24 +1,14 @@
-import { Button } from '@/components/ui/button'
-import { Section } from '@/components/ui/section'
-import { SectionHeading } from '@/components/ui/section-heading'
-import { Link } from '@/i18n/navigation'
+import { CtaBand } from '@/components/main/cta-band'
 
 export function CtaSection() {
   return (
-    <Section tone="dark" spacing="default" containerClassName="text-center">
-      <SectionHeading
-        tone="inverse"
-        title="Ready to sell in-store with WooCommerce?"
-        subtitle="Try the live demo or download the free plugin to get started."
-      />
-      <div className="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
-        <Button asChild variant="brand-on-dark" size="xl">
-          <a href="https://demo.wcpos.com/pos">Try Live Demo</a>
-        </Button>
-        <Button asChild variant="inverse" size="xl">
-          <Link href="/downloads">Download Free</Link>
-        </Button>
-      </div>
-    </Section>
+    <CtaBand
+      title="Ready to sell in-store with WooCommerce?"
+      subtitle="Try the live demo or download the free plugin to get started."
+      actions={[
+        { label: 'Try Live Demo', href: 'https://demo.wcpos.com/pos' },
+        { label: 'Download Free', href: '/downloads', variant: 'inverse' },
+      ]}
+    />
   )
 }

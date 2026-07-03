@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://wcpos.com'),
   title: {
     template: '%s | WCPOS',
-    default: 'WCPOS - WooCommerce Point of Sale',
+    default: 'WCPOS - Point of Sale for WooCommerce',
   },
   description:
     'Point of Sale for WooCommerce. Fast, reliable POS system for your WooCommerce store.',
@@ -35,7 +35,8 @@ export const metadata: Metadata = {
     // prerender bug (vercel/next.js#88043 — generateStaticParams is ignored for
     // opengraph-image), which fails the production build. The image is identical
     // across locales, so one root image is both correct and bug-free. Do not
-    // move it back under [locale].
+    // move it back under [locale]. Regenerate it from scripts/og-image/
+    // (see the README there) when branding or the tagline changes.
   },
   twitter: {
     card: 'summary_large_image',

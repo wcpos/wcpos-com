@@ -3,6 +3,7 @@
 import { useState, useSyncExternalStore } from 'react'
 import { Download, ArrowRight } from 'lucide-react'
 import { Section } from '@/components/ui/section'
+import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Eyebrow } from '@/components/ui/eyebrow'
@@ -111,11 +112,7 @@ export function DownloadsHero({
             <span className="text-lg font-semibold tracking-tight">
               {info.name}
             </span>
-            {isDetected && (
-              <span className="rounded bg-wcpos-red/10 px-1.5 py-0.5 text-[0.65rem] font-semibold uppercase tracking-wide text-wcpos-red-accent">
-                Detected
-              </span>
-            )}
+            {isDetected && <Badge variant="brand-tint">Detected</Badge>}
           </div>
           <p className="mt-1 text-sm text-muted-foreground">{meta}</p>
           <Button asChild variant="brand" size="xl" className="mt-6 w-full">

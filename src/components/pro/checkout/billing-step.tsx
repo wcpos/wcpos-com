@@ -2,8 +2,9 @@
 
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
+import { FormField } from '@/components/ui/form-field'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
+import { Select } from '@/components/ui/select'
 import { BILLING_COUNTRIES, taxIdLabel } from '@/lib/billing-countries'
 
 /**
@@ -90,8 +91,7 @@ export function BillingStep({
   return (
     <form onSubmit={submit} className="space-y-4" data-testid="billing-step-form">
       <div className="grid grid-cols-2 gap-3">
-        <div className="space-y-1.5">
-          <Label htmlFor="billing-first-name">First name</Label>
+        <FormField label="First name" htmlFor="billing-first-name">
           <Input
             id="billing-first-name"
             autoComplete="given-name"
@@ -99,9 +99,8 @@ export function BillingStep({
             value={firstName}
             onChange={(event) => setFirstName(event.target.value)}
           />
-        </div>
-        <div className="space-y-1.5">
-          <Label htmlFor="billing-last-name">Last name</Label>
+        </FormField>
+        <FormField label="Last name" htmlFor="billing-last-name">
           <Input
             id="billing-last-name"
             autoComplete="family-name"
@@ -109,11 +108,10 @@ export function BillingStep({
             value={lastName}
             onChange={(event) => setLastName(event.target.value)}
           />
-        </div>
+        </FormField>
       </div>
 
-      <div className="space-y-1.5">
-        <Label htmlFor="billing-address">Address</Label>
+      <FormField label="Address" htmlFor="billing-address">
         <Input
           id="billing-address"
           autoComplete="street-address"
@@ -121,11 +119,10 @@ export function BillingStep({
           value={address1}
           onChange={(event) => setAddress1(event.target.value)}
         />
-      </div>
+      </FormField>
 
       <div className="grid grid-cols-2 gap-3">
-        <div className="space-y-1.5">
-          <Label htmlFor="billing-city">City</Label>
+        <FormField label="City" htmlFor="billing-city">
           <Input
             id="billing-city"
             autoComplete="address-level2"
@@ -133,9 +130,8 @@ export function BillingStep({
             value={city}
             onChange={(event) => setCity(event.target.value)}
           />
-        </div>
-        <div className="space-y-1.5">
-          <Label htmlFor="billing-postal">Postal code</Label>
+        </FormField>
+        <FormField label="Postal code" htmlFor="billing-postal">
           <Input
             id="billing-postal"
             autoComplete="postal-code"
@@ -143,38 +139,42 @@ export function BillingStep({
             value={postalCode}
             onChange={(event) => setPostalCode(event.target.value)}
           />
-        </div>
+        </FormField>
       </div>
 
-      <div className="space-y-1.5">
-        <Label htmlFor="billing-country">Country</Label>
-        <select
+      <FormField label="Country" htmlFor="billing-country">
+        <Select
           id="billing-country"
           autoComplete="country"
           required
           value={countryCode}
           onChange={(event) => setCountryCode(event.target.value)}
-          className="border-input h-9 w-full rounded-md border bg-transparent px-3 text-sm shadow-xs"
         >
           {BILLING_COUNTRIES.map((country) => (
             <option key={country.code} value={country.code}>
               {country.label}
             </option>
           ))}
-        </select>
-      </div>
+        </Select>
+      </FormField>
 
-      <div className="space-y-1.5">
-        <Label htmlFor="billing-tax-number">
-          {taxIdLabel(countryCode)}{' '}
-          <span className="text-muted-foreground font-normal">(optional)</span>
-        </Label>
+      <FormField
+        label={
+          <>
+            {taxIdLabel(countryCode)}{' '}
+            <span className="text-muted-foreground font-normal">
+              (optional)
+            </span>
+          </>
+        }
+        htmlFor="billing-tax-number"
+      >
         <Input
           id="billing-tax-number"
           value={taxNumber}
           onChange={(event) => setTaxNumber(event.target.value)}
         />
-      </div>
+      </FormField>
 
       {error && (
         <p role="alert" className="text-sm text-destructive">

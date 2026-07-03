@@ -1,6 +1,7 @@
 'use client'
 
 import { Check } from 'lucide-react'
+import { toneDot } from '@/components/ui/status-tone'
 
 export type CheckoutStepId = 'account' | 'billing' | 'payment'
 
@@ -33,7 +34,7 @@ export function StepShell({
     <div
       data-testid={`checkout-step-${index}`}
       data-step-state={state}
-      className={`rounded-xl border ${
+      className={`rounded-md border ${
         state === 'active' ? 'bg-card shadow-sm' : 'bg-muted/30'
       }`}
     >
@@ -42,7 +43,9 @@ export function StepShell({
           aria-hidden
           className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs font-semibold ${
             state === 'done'
-              ? 'bg-green-500 text-white'
+              ? // text-white assumes the solid toneDot fills stay dark enough
+                // for a white glyph — revisit if the dot scale is retuned
+                `${toneDot.positive} text-white`
               : state === 'active'
                 ? 'bg-primary text-primary-foreground'
                 : 'bg-muted text-muted-foreground'

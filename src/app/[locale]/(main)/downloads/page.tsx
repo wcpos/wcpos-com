@@ -3,8 +3,10 @@ import { setRequestLocale } from 'next-intl/server'
 import { Laptop, Smartphone, Globe, ArrowRight } from 'lucide-react'
 import { Section, Container } from '@/components/ui/section'
 import { SectionHeading } from '@/components/ui/section-heading'
+import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
+import { TextLink } from '@/components/ui/text-link'
 import { Link } from '@/i18n/navigation'
 import { TrackedLocaleLink } from '@/components/analytics/tracked-locale-link'
 import { marketingMetadata } from '@/lib/seo'
@@ -140,9 +142,9 @@ function DeviceCard({
         <p className="font-medium">
           {title}
           {beta && (
-            <span className="ml-2 rounded bg-muted px-1.5 py-0.5 text-[0.65rem] font-semibold uppercase tracking-wide text-muted-foreground">
+            <Badge variant="muted-tint" className="ml-2">
               Beta
-            </span>
+            </Badge>
           )}
         </p>
         <div className="mt-1 text-sm text-muted-foreground">{children}</div>
@@ -196,9 +198,9 @@ export default async function DownloadsPage({
                 <div>
                   <p className="font-medium">
                     WCPOS
-                    <span className="ml-2 rounded bg-wcpos-red/10 px-1.5 py-0.5 text-[0.65rem] font-semibold uppercase tracking-wide text-wcpos-red-accent">
+                    <Badge variant="brand-tint" className="ml-2">
                       Free · GPL
-                    </span>
+                    </Badge>
                   </p>
                   <p className="mt-1 text-sm text-muted-foreground">
                     {freeVersion ? `Latest ${freeVersion} · ` : ''}WordPress
@@ -234,12 +236,7 @@ export default async function DownloadsPage({
                   <div className="flex flex-wrap gap-x-1 gap-y-1">
                     {DESKTOP_LINKS.map((link, index) => (
                       <span key={link.href}>
-                        <a
-                          href={link.href}
-                          className="font-medium text-wcpos-red-accent hover:underline"
-                        >
-                          {link.label}
-                        </a>
+                        <TextLink href={link.href}>{link.label}</TextLink>
                         {index < DESKTOP_LINKS.length - 1 && (
                           <span className="px-1 text-muted-foreground">·</span>
                         )}
@@ -248,28 +245,19 @@ export default async function DownloadsPage({
                   </div>
                 </DeviceCard>
                 <DeviceCard icon={Smartphone} title="iOS & iPad" beta>
-                  <a
-                    href={PLATFORMS.ios.href}
-                    className="font-medium text-wcpos-red-accent hover:underline"
-                  >
+                  <TextLink href={PLATFORMS.ios.href}>
                     Join the TestFlight beta
-                  </a>
+                  </TextLink>
                 </DeviceCard>
                 <DeviceCard icon={Smartphone} title="Android" beta>
-                  <a
-                    href={PLATFORMS.android.href}
-                    className="font-medium text-wcpos-red-accent hover:underline"
-                  >
+                  <TextLink href={PLATFORMS.android.href}>
                     Join on Google Play
-                  </a>
+                  </TextLink>
                 </DeviceCard>
                 <DeviceCard icon={Globe} title="Web">
-                  <a
-                    href={PLATFORMS.web.href}
-                    className="font-medium text-wcpos-red-accent hover:underline"
-                  >
+                  <TextLink href={PLATFORMS.web.href}>
                     Open the live demo
-                  </a>
+                  </TextLink>
                 </DeviceCard>
               </div>
             </li>

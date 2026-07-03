@@ -20,9 +20,12 @@ interface AskAideParams {
 interface AskAideResult {
   answer: string
   model?: string
+  /** False when the answerer escalated to Discord; `answer` carries the hand-off message. */
+  answered: boolean
+  sources: string[]
 }
 
-/** Server-only. Calls the openclaw /execute endpoint as the Aide support agent. */
+/** Server-only. Calls the openclaw /support/answer endpoint (grounded support answerer). */
 export async function askAide({
   question,
   sessionId,
@@ -34,17 +37,16 @@ export async function askAide({
 
   let response: Response
   try {
-    response = await fetch(`${env.OPENCLAW_GATEWAY_URL}/execute`, {
+    response = await fetch(`${env.OPENCLAW_GATEWAY_URL}/support/answer`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${env.OPENCLAW_TOKEN}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        agent_id: 'aide',
-        task_intent: env.OPENCLAW_SUPPORT_INTENT,
-        prompt: question,
+        question,
         session_id: sessionId,
+        channel: 'web',
       }),
       signal,
       cache: 'no-store',
@@ -61,7 +63,9 @@ export async function askAide({
   }
 
   const data = (await response.json().catch(() => ({}))) as {
-    content?: string
+    answer?: string
+    answered?: boolean
+    sources?: string[]
     model?: string
     error?: { code?: string; message?: string }
   }
@@ -74,5 +78,10 @@ export async function askAide({
     )
   }
 
-  return { answer: (data.content ?? '').trim(), model: data.model }
+  return {
+    answer: (data.answer ?? '').trim(),
+    model: data.model,
+    answered: data.answered === true,
+    sources: Array.isArray(data.sources) ? data.sources.filter((s) => typeof s === 'string') : [],
+  }
 }

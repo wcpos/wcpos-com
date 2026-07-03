@@ -82,7 +82,6 @@ const envSchema = z.object({
   // openclaw model-gateway (server-side support assistant)
   OPENCLAW_GATEWAY_URL: z.string().url().default('https://openclaw.wcpos.com'),
   OPENCLAW_TOKEN: z.string().optional(),
-  OPENCLAW_SUPPORT_INTENT: z.string().default('aide.web.support_question'),
 
   // Cloudflare Turnstile (bot protection for the public support box)
   NEXT_PUBLIC_TURNSTILE_SITE_KEY: z.string().optional(),

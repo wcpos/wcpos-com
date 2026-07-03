@@ -1,6 +1,7 @@
 'use client'
 
 import dynamic from 'next/dynamic'
+import { Section } from '@/components/ui/section'
 import { Skeleton } from '@/components/ui/skeleton'
 
 const DiscordWidget = dynamic(
@@ -13,7 +14,7 @@ const DiscordWidget = dynamic(
 
 export function DiscordSection() {
   return (
-    <section id="discord" className="container mx-auto px-4 py-16">
+    <Section id="discord" spacing="default">
       <div className="mx-auto mb-6 max-w-2xl text-center">
         <h2 className="mb-2 text-2xl font-bold text-foreground">Prefer to talk to a human?</h2>
         <p className="text-muted-foreground">
@@ -23,6 +24,6 @@ export function DiscordSection() {
       <div className="mx-auto h-[600px] max-w-3xl overflow-hidden rounded-md border">
         <DiscordWidget />
       </div>
-    </section>
+    </Section>
   )
 }

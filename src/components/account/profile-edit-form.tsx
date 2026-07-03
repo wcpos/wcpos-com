@@ -13,8 +13,8 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
+import { FormField } from '@/components/ui/form-field'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import { Select } from '@/components/ui/select'
 import { Mail } from 'lucide-react'
 import { GitHubMark, GoogleMark } from '@/components/auth/provider-marks'
@@ -325,20 +325,18 @@ export function ProfileEditForm({
                 ) : null}
                 <AvatarFallback>{initials}</AvatarFallback>
               </Avatar>
-              <div className="space-y-2">
-                <Label htmlFor="profile-avatar-upload">
-                  {t('avatarLabel')}
-                </Label>
+              <FormField
+                label={t('avatarLabel')}
+                htmlFor="profile-avatar-upload"
+                hint={t('avatarHint')}
+              >
                 <Input
                   id="profile-avatar-upload"
                   type="file"
                   accept="image/*"
                   onChange={handleAvatarFileChange}
                 />
-                <p className="text-xs text-muted-foreground">
-                  {t('avatarHint')}
-                </p>
-              </div>
+              </FormField>
             </div>
             {customAvatarDataUrl && (
               <Button
@@ -352,28 +350,25 @@ export function ProfileEditForm({
           </div>
 
           <div className="grid gap-4 md:grid-cols-2">
-            <div className="space-y-2">
-              <Label htmlFor="profile-first-name">{t('firstName')}</Label>
+            <FormField label={t('firstName')} htmlFor="profile-first-name">
               <Input
                 id="profile-first-name"
                 value={firstName}
                 onChange={(event) => setFirstName(event.target.value)}
                 autoComplete="given-name"
               />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="profile-last-name">{t('lastName')}</Label>
+            </FormField>
+            <FormField label={t('lastName')} htmlFor="profile-last-name">
               <Input
                 id="profile-last-name"
                 value={lastName}
                 onChange={(event) => setLastName(event.target.value)}
                 autoComplete="family-name"
               />
-            </div>
+            </FormField>
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="profile-email">{t('email')}</Label>
+          <FormField label={t('email')} htmlFor="profile-email">
             <Input
               id="profile-email"
               type="email"
@@ -382,10 +377,9 @@ export function ProfileEditForm({
               aria-readonly="true"
               autoComplete="email"
             />
-          </div>
+          </FormField>
 
-          <div className="space-y-2">
-            <Label htmlFor="profile-phone">{t('phone')}</Label>
+          <FormField label={t('phone')} htmlFor="profile-phone">
             <Input
               id="profile-phone"
               type="tel"
@@ -393,7 +387,7 @@ export function ProfileEditForm({
               onChange={(event) => setPhone(event.target.value)}
               autoComplete="tel"
             />
-          </div>
+          </FormField>
         </CardContent>
       </Card>
 
@@ -404,85 +398,81 @@ export function ProfileEditForm({
           <CardDescription>{t('billingDetailsHint')}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="space-y-2">
-          <Label htmlFor="profile-country">{t('country')}</Label>
-          <Select
-            id="profile-country"
-            value={countryCode}
-            onChange={(event) => setCountryCode(event.target.value)}
-          >
-            {countryOptions.map(([value, label]) => (
-              <option key={value} value={value}>
-                {label}
-              </option>
-            ))}
-          </Select>
-        </div>
+          <FormField label={t('country')} htmlFor="profile-country">
+            <Select
+              id="profile-country"
+              value={countryCode}
+              onChange={(event) => setCountryCode(event.target.value)}
+            >
+              {countryOptions.map(([value, label]) => (
+                <option key={value} value={value}>
+                  {label}
+                </option>
+              ))}
+            </Select>
+          </FormField>
 
-        <div className="space-y-2">
-          <Label htmlFor="profile-address-line-1">{t('addressLine1')}</Label>
+        <FormField label={t('addressLine1')} htmlFor="profile-address-line-1">
           <Input
             id="profile-address-line-1"
             value={addressLine1}
             onChange={(event) => setAddressLine1(event.target.value)}
             autoComplete="address-line1"
           />
-        </div>
+        </FormField>
 
-        <div className="space-y-2">
-          <Label htmlFor="profile-address-line-2">{t('addressLine2')}</Label>
+        <FormField label={t('addressLine2')} htmlFor="profile-address-line-2">
           <Input
             id="profile-address-line-2"
             value={addressLine2}
             onChange={(event) => setAddressLine2(event.target.value)}
             autoComplete="address-line2"
           />
-        </div>
+        </FormField>
 
         <div className="grid gap-4 md:grid-cols-3">
-          <div className="space-y-2">
-            <Label htmlFor="profile-city">{t('city')}</Label>
+          <FormField label={t('city')} htmlFor="profile-city">
             <Input
               id="profile-city"
               value={city}
               onChange={(event) => setCity(event.target.value)}
               autoComplete="address-level2"
             />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="profile-region">
-              {t(`regionLabels.${countryProfile.regionLabel}`)}
-            </Label>
+          </FormField>
+          <FormField
+            label={t(`regionLabels.${countryProfile.regionLabel}`)}
+            htmlFor="profile-region"
+          >
             <Input
               id="profile-region"
               value={region}
               onChange={(event) => setRegion(event.target.value)}
               autoComplete="address-level1"
             />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="profile-postal-code">
-              {t(`postalLabels.${countryProfile.postalLabel}`)}
-            </Label>
+          </FormField>
+          <FormField
+            label={t(`postalLabels.${countryProfile.postalLabel}`)}
+            htmlFor="profile-postal-code"
+          >
             <Input
               id="profile-postal-code"
               value={postalCode}
               onChange={(event) => setPostalCode(event.target.value)}
               autoComplete="postal-code"
             />
-          </div>
+          </FormField>
         </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="profile-tax-number">
-              {t(`taxLabels.${countryProfile.taxLabel}`)}
-            </Label>
+          <FormField
+            label={t(`taxLabels.${countryProfile.taxLabel}`)}
+            htmlFor="profile-tax-number"
+          >
             <Input
               id="profile-tax-number"
               value={taxNumber}
               onChange={(event) => setTaxNumber(event.target.value)}
             />
-          </div>
+          </FormField>
         </CardContent>
       </Card>
 

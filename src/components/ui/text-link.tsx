@@ -23,13 +23,34 @@ export interface TextLinkProps
 }
 
 const TextLink = React.forwardRef<HTMLAnchorElement, TextLinkProps>(
-  ({ className, asChild = false, arrow = false, children, ...props }, ref) => {
+  (
+    {
+      className,
+      asChild = false,
+      arrow = false,
+      children,
+      href,
+      target,
+      rel,
+      ...props
+    },
+    ref,
+  ) => {
+    const isExternal = typeof href === 'string' && /^https?:\/\//.test(href)
+    const safeTarget = target ?? (isExternal ? '_blank' : undefined)
+    const safeRel = rel ?? (isExternal ? 'noopener noreferrer' : undefined)
+    const linkProps = { href, target: safeTarget, rel: safeRel, ...props }
+
     // `asChild` routes through Radix Slot, which requires a SINGLE child — so it
     // renders the caller's element verbatim (no trailing arrow). The arrow only
     // applies to the default <a> render.
     if (asChild) {
       return (
-        <Slot ref={ref} className={cn(textLinkClassName, className)} {...props}>
+        <Slot
+          ref={ref}
+          className={cn(textLinkClassName, className)}
+          {...linkProps}
+        >
           {children}
         </Slot>
       )
@@ -42,7 +63,7 @@ const TextLink = React.forwardRef<HTMLAnchorElement, TextLinkProps>(
           arrow && 'inline-flex items-center gap-1',
           className,
         )}
-        {...props}
+        {...linkProps}
       >
         {children}
         {arrow && (

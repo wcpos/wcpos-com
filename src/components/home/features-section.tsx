@@ -8,6 +8,7 @@ import {
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
+import { FeatureCard } from '@/components/ui/feature-card'
 import { Section } from '@/components/ui/section'
 import { SectionHeading } from '@/components/ui/section-heading'
 
@@ -73,24 +74,15 @@ export function FeaturesSection() {
 
       <ul className="mx-auto grid max-w-5xl gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {features.map((feature) => (
-          <li
+          <FeatureCard
             key={feature.title}
-            className="rounded-md border border-slate-200 bg-white p-6 transition-colors hover:border-foreground/20 dark:border-slate-700 dark:bg-slate-800"
+            as="li"
+            icon={feature.icon}
+            title={feature.title}
+            badge={feature.pro && <Badge variant="pro">Pro</Badge>}
           >
-            <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-md bg-rose-50 dark:bg-rose-950/30">
-              <feature.icon
-                aria-hidden="true"
-                className="h-5 w-5 text-wcpos-red"
-              />
-            </div>
-            <h3 className="mb-1.5 flex items-center gap-2 text-base font-semibold text-slate-800 dark:text-slate-100">
-              {feature.title}
-              {feature.pro && <Badge variant="pro">Pro</Badge>}
-            </h3>
-            <p className="text-sm leading-relaxed text-slate-600 dark:text-slate-400">
-              {feature.description}
-            </p>
-          </li>
+            {feature.description}
+          </FeatureCard>
         ))}
       </ul>
     </Section>

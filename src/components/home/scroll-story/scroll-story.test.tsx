@@ -151,6 +151,34 @@ describe('ScrollStory', () => {
     expect(screen.getByTestId('story-static')).toBeInTheDocument()
   })
 
+  it('serves each viewport exactly one counter-photo download', () => {
+    // The pinned (desktop) and static (mobile) variants are both in the DOM,
+    // CSS-switched — so image gating must happen at the markup level:
+    // desktop sources carry a min-width media query, and the pinned img's
+    // mobile fallback src must be the SAME url as the static card (one
+    // shared fetch; the static card is lazy so desktop never loads it).
+    stubMatchMedia({ reducedMotion: false })
+    render(<ScrollStory />)
+
+    const scroller = screen.getByTestId('story-scroller')
+    const pinnedPicture = scroller.querySelector('picture')
+    expect(pinnedPicture).not.toBeNull()
+    const sources = pinnedPicture!.querySelectorAll('source')
+    expect(sources.length).toBeGreaterThan(0)
+    for (const source of sources) {
+      expect(source.getAttribute('media')).toBe('(min-width: 768px)')
+    }
+
+    const pinnedFallback = pinnedPicture!.querySelector('img')
+    const staticCard = within(
+      screen.getByTestId('story-static')
+    ).getByRole('img', { name: /shop counter/i })
+    expect(pinnedFallback?.getAttribute('src')).toBe(
+      staticCard.getAttribute('src')
+    )
+    expect(staticCard.getAttribute('loading')).toBe('lazy')
+  })
+
   it('drops the pinned scroller under prefers-reduced-motion', () => {
     stubMatchMedia({ reducedMotion: true })
     render(<ScrollStory />)
