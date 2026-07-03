@@ -21,12 +21,13 @@ function isAuthorized(request: NextRequest): boolean {
 }
 
 /**
- * Probe the canonical public host, never the deployment-internal URL (cron
- * requests arrive on the *.vercel.app host, whose origin would make every
- * redirect_uri look wrong). Apex wcpos.com 308s to www before the auth route
- * runs, so www is what customers' browsers send to the providers.
+ * Probe the canonical public host — apex, per owner preference — never the
+ * deployment-internal URL (cron requests arrive on the *.vercel.app host,
+ * whose origin would make every redirect_uri look wrong). The checker follows
+ * Vercel's primary-domain redirect (currently apex → www) itself, so it
+ * validates whatever host customers actually end up on.
  */
-const PROBE_BASE_URL = 'https://www.wcpos.com'
+const PROBE_BASE_URL = 'https://wcpos.com'
 
 function resolveBaseUrl(request: NextRequest): string {
   const override = request.nextUrl.searchParams.get('base')

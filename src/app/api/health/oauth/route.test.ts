@@ -76,10 +76,10 @@ describe('GET /api/health/oauth', () => {
     expect(response.status).toBe(401)
   })
 
-  it('probes the canonical www host by default and returns 200 when healthy', async () => {
+  it('probes the canonical apex host by default and returns 200 when healthy', async () => {
     const response = await GET(makeRequest(undefined, 'cron-secret'))
     expect(response.status).toBe(200)
-    expect(mockCheck).toHaveBeenCalledWith('https://www.wcpos.com')
+    expect(mockCheck).toHaveBeenCalledWith('https://wcpos.com')
     expect(mockFatal).not.toHaveBeenCalled()
     const json = await response.json()
     expect(json.ok).toBe(true)

@@ -11,8 +11,11 @@ import { ALLOWED_PROVIDERS } from '@/lib/oauth-providers'
  * 1. `GET {base}/api/auth/{provider}` must redirect to the provider's
  *    authorize page (proves the site → Medusa → provider handshake works).
  * 2. The `redirect_uri` in that authorize URL must be exactly
- *    `{base}/api/auth/{provider}/callback` (catches our side drifting — wrong
- *    host, apex vs www, staging leakage).
+ *    `{serving origin}/api/auth/{provider}/callback`, where the serving
+ *    origin is discovered by following same-site redirects from the base
+ *    (apex ⇄ www can point either way in Vercel's primary-domain setting;
+ *    the owner-preferred canonical is apex wcpos.com). This catches our side
+ *    drifting — wrong host, vercel.app leakage, staging host-keying.
  * 3. For Google only: fetch the authorize page and look for the
  *    `redirect_uri_mismatch` error, which Google renders before login. This
  *    catches the registered-URI list in Google Cloud Console being out of
@@ -32,6 +35,13 @@ export interface ProviderCheckResult {
   status: ProviderCheckStatus
   /** What the site sent as redirect_uri, when it got that far. */
   redirectUri?: string
+  /**
+   * The wcpos origin that actually issued the provider redirect, after
+   * following same-site hops (e.g. apex → www while Vercel's primary-domain
+   * redirect points that way). The owner-preferred canonical is the apex;
+   * this field makes the currently-serving host visible either way.
+   */
+  servingOrigin?: string
   /** Human-readable detail for alerts and the JSON response. */
   detail: string
   /** True when the provider's registered-URI list was actually verified. */
@@ -46,55 +56,90 @@ const AUTHORIZE_HOSTS: Record<string, string> = {
 
 type Fetcher = typeof fetch
 
+/** wcpos.com, *.wcpos.com, or localhost (dev) — hosts we own and may hop between. */
+function isOwnedHost(hostname: string): boolean {
+  return (
+    hostname === 'wcpos.com' ||
+    hostname.endsWith('.wcpos.com') ||
+    hostname === 'localhost'
+  )
+}
+
+const MAX_SAME_SITE_HOPS = 5
+
 async function checkProvider(
   baseUrl: string,
   provider: string,
   fetcher: Fetcher
 ): Promise<ProviderCheckResult> {
-  const expectedRedirectUri = `${baseUrl}/api/auth/${provider}/callback`
+  // Follow same-site redirects manually (e.g. the Vercel primary-domain
+  // redirect between apex and www) so the check works regardless of which
+  // direction that redirect points, and track which origin actually served
+  // the auth route — that origin is what the redirect_uri must match.
+  let currentUrl = new URL(`${baseUrl}/api/auth/${provider}`)
+  let authorizeUrl: URL | undefined
 
-  let initiateResponse: Response
-  try {
-    initiateResponse = await fetcher(`${baseUrl}/api/auth/${provider}`, {
-      redirect: 'manual',
-    })
-  } catch (error) {
+  for (let hop = 0; hop <= MAX_SAME_SITE_HOPS; hop++) {
+    let response: Response
+    try {
+      response = await fetcher(currentUrl.toString(), { redirect: 'manual' })
+    } catch (error) {
+      return {
+        provider,
+        status: 'initiate_failed',
+        detail: `GET ${currentUrl} threw: ${error}`,
+        registrationVerified: false,
+      }
+    }
+
+    const location = response.headers.get('location')
+    if (response.status < 300 || response.status >= 400 || !location) {
+      return {
+        provider,
+        status: 'initiate_failed',
+        detail: `GET ${currentUrl} returned ${response.status} without a provider redirect (Medusa down or provider disabled?)`,
+        registrationVerified: false,
+      }
+    }
+
+    let next: URL
+    try {
+      next = new URL(location, currentUrl)
+    } catch {
+      return {
+        provider,
+        status: 'initiate_failed',
+        detail: `GET ${currentUrl} redirected to an unparseable URL: ${location}`,
+        registrationVerified: false,
+      }
+    }
+
+    if (isOwnedHost(next.hostname)) {
+      currentUrl = next
+      continue
+    }
+    authorizeUrl = next
+    break
+  }
+
+  if (!authorizeUrl) {
     return {
       provider,
       status: 'initiate_failed',
-      detail: `GET /api/auth/${provider} threw: ${error}`,
+      detail: `Gave up after ${MAX_SAME_SITE_HOPS} same-site redirects starting from ${baseUrl}/api/auth/${provider} (redirect loop?)`,
       registrationVerified: false,
     }
   }
 
-  const location = initiateResponse.headers.get('location')
-  if (initiateResponse.status < 300 || initiateResponse.status >= 400 || !location) {
-    return {
-      provider,
-      status: 'initiate_failed',
-      detail: `GET /api/auth/${provider} returned ${initiateResponse.status} without a provider redirect (Medusa down or provider disabled?)`,
-      registrationVerified: false,
-    }
-  }
-
-  let authorizeUrl: URL
-  try {
-    authorizeUrl = new URL(location)
-  } catch {
-    return {
-      provider,
-      status: 'initiate_failed',
-      detail: `GET /api/auth/${provider} redirected to an unparseable URL: ${location}`,
-      registrationVerified: false,
-    }
-  }
+  const servingOrigin = currentUrl.origin
+  const expectedRedirectUri = `${servingOrigin}/api/auth/${provider}/callback`
 
   const expectedHost = AUTHORIZE_HOSTS[provider]
   if (expectedHost && !authorizeUrl.hostname.endsWith(expectedHost)) {
-    // A redirect back to /login?error=oauth_failed lands here too.
     return {
       provider,
       status: 'initiate_failed',
+      servingOrigin,
       detail: `Expected a redirect to ${expectedHost}, got ${authorizeUrl.hostname} (${authorizeUrl.pathname})`,
       registrationVerified: false,
     }
@@ -106,7 +151,8 @@ async function checkProvider(
       provider,
       status: 'wrong_redirect_uri',
       redirectUri: sentRedirectUri,
-      detail: `Site sent redirect_uri "${sentRedirectUri}", expected "${expectedRedirectUri}"`,
+      servingOrigin,
+      detail: `Site at ${servingOrigin} sent redirect_uri "${sentRedirectUri}", expected "${expectedRedirectUri}"`,
       registrationVerified: false,
     }
   }
@@ -123,6 +169,7 @@ async function checkProvider(
         status: 'initiate_failed',
         detail: `Could not fetch Google authorize page: ${error}`,
         redirectUri: sentRedirectUri,
+        servingOrigin,
         registrationVerified: false,
       }
     }
@@ -136,6 +183,7 @@ async function checkProvider(
         provider,
         status: 'provider_rejected',
         redirectUri: sentRedirectUri,
+        servingOrigin,
         detail: `Google rejected the authorize request (status ${authorizePage.status}${body.includes('redirect_uri_mismatch') ? ', redirect_uri_mismatch' : ''}) for redirect_uri "${sentRedirectUri}" — check the OAuth client in Google Cloud Console (see docs/runbooks/oauth-providers.md)`,
         registrationVerified: true,
       }
@@ -144,6 +192,7 @@ async function checkProvider(
       provider,
       status: 'ok',
       redirectUri: sentRedirectUri,
+      servingOrigin,
       detail: 'Authorize URL correct and accepted by Google',
       registrationVerified: true,
     }
@@ -153,6 +202,7 @@ async function checkProvider(
     provider,
     status: 'ok',
     redirectUri: sentRedirectUri,
+    servingOrigin,
     detail: `Authorize URL correct (${provider} only validates registration after login, so console-side drift is not detectable here)`,
     registrationVerified: false,
   }

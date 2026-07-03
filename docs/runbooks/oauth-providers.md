@@ -24,9 +24,18 @@ The URI pattern is `https://{host}/api/auth/{provider}/callback`.
 
 | Host | Why |
 |---|---|
-| `www.wcpos.com` | Production. Apex `wcpos.com` 308s to www before the route runs, so only www is needed. |
+| `wcpos.com` | **Preferred canonical (apex).** Register it even while Vercel still redirects apex → www, so flipping the primary domain can't break sign-in. |
+| `www.wcpos.com` | Currently the serving host — Vercel's primary-domain setting 308s apex → www before the auth route runs. |
 | `beta.wcpos.com` | Beta alias (while it exists). |
 | `localhost:3000` (`http://`) | Local dev. |
+
+**Owner preference: apex `wcpos.com` is the canonical host.** The apex ⇄ www
+direction is Vercel's primary-domain setting (Vercel → project → Settings →
+Domains), not anything in this repo. To make apex canonical: register the apex
+URIs in all three consoles first (table above), then set `wcpos.com` as the
+primary domain with `www.wcpos.com` redirecting to it. The health check
+follows the redirect either way and validates whichever host actually serves
+the route.
 
 ## Where to register (one console per provider)
 
@@ -52,28 +61,32 @@ GitHub/Discord console drift can only be caught by an authenticated login test.
 ## Automated monitoring
 
 `GET /api/health/oauth` (cron-guarded, `CRON_SECRET`) runs **hourly** via
-Vercel cron. For each provider it verifies the site hands the browser a
-correct authorize URL with the exact canonical `redirect_uri`
-(`https://www.wcpos.com/api/auth/{provider}/callback`), and for Google it also
-fetches the authorize page and fails on `redirect_uri_mismatch`. Any failure
-fires **authLogger.fatal → Discord + email** (see [alerting](./alerting.md)),
-once per provider per hourly run, until fixed.
+Vercel cron. It starts from apex `https://wcpos.com`, follows any same-site
+redirect (apex ⇄ www) to the actual serving host, verifies each provider is
+handed a correct authorize URL whose `redirect_uri` exactly matches
+`{serving origin}/api/auth/{provider}/callback`, and for Google also fetches
+the authorize page and fails on `redirect_uri_mismatch`. Any failure fires
+**authLogger.fatal → Discord + email** (see [alerting](./alerting.md)), once
+per provider per hourly run, until fixed. The JSON response includes
+`servingOrigin` per provider, so it also shows which host is currently
+canonical in Vercel.
 
-Manual run (any wcpos host):
+Manual run:
 
 ```bash
 curl -s -H "Authorization: Bearer $CRON_SECRET" \
-  'https://www.wcpos.com/api/health/oauth' | jq
+  'https://wcpos.com/api/health/oauth' | jq
 # staging/beta drill:
 curl -s -H "Authorization: Bearer $CRON_SECRET" \
-  'https://www.wcpos.com/api/health/oauth?base=https://beta.wcpos.com' | jq
+  'https://wcpos.com/api/health/oauth?base=https://beta.wcpos.com' | jq
 ```
 
-Quick unauthenticated spot-check of what production actually sends:
+Quick unauthenticated spot-check of what production actually sends
+(`-L` follows the apex→www hop while it exists):
 
 ```bash
 for p in google github discord; do
-  curl -sI "https://www.wcpos.com/api/auth/$p" | grep -i '^location'
+  curl -sIL "https://wcpos.com/api/auth/$p" | grep -i '^location' | tail -1
 done
 ```
 
