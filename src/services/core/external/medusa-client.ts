@@ -160,7 +160,8 @@ export async function getRegions(): Promise<MedusaRegionsResponse['regions']> {
 }
 
 /**
- * Payment provider ids registered and enabled on the backend's default region.
+ * Payment provider ids registered and enabled on the region a new cart will
+ * land in.
  *
  * Returns null when the backend cannot be asked (down, or a mock without the
  * endpoint) so callers can fail open instead of hiding every payment method
@@ -173,9 +174,6 @@ export async function getEnabledPaymentProviderIds(
     id: string
     payment_providers?: Array<{ id: string; is_enabled?: boolean }>
   }
-  interface StoreResponse {
-    store?: { default_region_id?: string | null }
-  }
 
   try {
     const response = await medusaFetch<{ regions: RegionWithProviders[] }>(
@@ -184,16 +182,14 @@ export async function getEnabledPaymentProviderIds(
       storeEnv
     )
     const regions = response.regions ?? []
-    let cartRegion: RegionWithProviders | undefined = regions[0]
-    if (regions.length > 1) {
-      const store = await medusaFetch<StoreResponse>('/store/store', {}, storeEnv)
-      const defaultRegionId = store.store?.default_region_id
-      cartRegion = regions.find((region) => region.id === defaultRegionId)
-      if (!cartRegion) {
-        storeLogger.warn`Default Medusa region ${defaultRegionId ?? 'unknown'} was not present in /store/regions; skipping method filtering`
-        return null
-      }
-    }
+    // Checkout creates its cart without a region_id, and Medusa's
+    // createCartWorkflow then defaults to the first region it lists — so the
+    // first region here is the one the cart will get. There is no store-API
+    // endpoint exposing a "default region": asking /store/store for one (it
+    // does not exist, 404) made this function fail open on every
+    // multi-region backend, which re-opened the BTCPay outage on beta
+    // (2026-07-03).
+    const cartRegion: RegionWithProviders | undefined = regions[0]
     const hasAnyProviderEvidence = regions.some(
       (region) => (region.payment_providers?.length ?? 0) > 0
     )

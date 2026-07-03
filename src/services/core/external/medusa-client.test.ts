@@ -259,7 +259,10 @@ describe('medusaClient', () => {
   })
 
   describe('getEnabledPaymentProviderIds', () => {
-    it('uses the cart default region providers instead of unioning every region', async () => {
+    it('uses the first region (the cart-creation default) instead of unioning every region', async () => {
+      // Single request: the old multi-region branch asked /store/store for a
+      // default region — an endpoint that does not exist (404) — so the
+      // filter failed open on every real multi-region backend.
       mockFetch.mockResolvedValueOnce({
         ok: true,
         json: async () => ({
@@ -268,6 +271,7 @@ describe('medusaClient', () => {
               id: 'reg_eu',
               name: 'EU',
               payment_providers: [
+                { id: 'pp_stripe_stripe', is_enabled: true },
                 { id: 'pp_paypal_paypal', is_enabled: true },
               ],
             },
@@ -275,16 +279,34 @@ describe('medusaClient', () => {
               id: 'reg_us',
               name: 'US',
               payment_providers: [
-                { id: 'pp_stripe_stripe', is_enabled: true },
+                { id: 'pp_btcpay_btcpay', is_enabled: true },
               ],
             },
           ],
         }),
       })
+
+      await expect(getEnabledPaymentProviderIds()).resolves.toEqual([
+        'pp_stripe_stripe',
+        'pp_paypal_paypal',
+      ])
+      expect(mockFetch).toHaveBeenCalledTimes(1)
+    })
+
+    it('excludes providers the region reports as disabled', async () => {
       mockFetch.mockResolvedValueOnce({
         ok: true,
         json: async () => ({
-          store: { default_region_id: 'reg_us' },
+          regions: [
+            {
+              id: 'reg_eu',
+              name: 'EU',
+              payment_providers: [
+                { id: 'pp_stripe_stripe', is_enabled: true },
+                { id: 'pp_btcpay_btcpay', is_enabled: false },
+              ],
+            },
+          ],
         }),
       })
 
@@ -293,18 +315,26 @@ describe('medusaClient', () => {
       ])
     })
 
-    it('fails open when the default region is absent from the regions response', async () => {
+    it('fails open when no region reports any providers', async () => {
       mockFetch.mockResolvedValueOnce({
         ok: true,
         json: async () => ({
           regions: [
-            {
-              id: 'reg_eu',
-              name: 'EU',
-              payment_providers: [
-                { id: 'pp_paypal_paypal', is_enabled: true },
-              ],
-            },
+            { id: 'reg_eu', name: 'EU', payment_providers: [] },
+            { id: 'reg_us', name: 'US' },
+          ],
+        }),
+      })
+
+      await expect(getEnabledPaymentProviderIds()).resolves.toBeNull()
+    })
+
+    it('filters everything when the cart region has no providers but another region does', async () => {
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          regions: [
+            { id: 'reg_eu', name: 'EU', payment_providers: [] },
             {
               id: 'reg_us',
               name: 'US',
@@ -315,11 +345,15 @@ describe('medusaClient', () => {
           ],
         }),
       })
+
+      await expect(getEnabledPaymentProviderIds()).resolves.toEqual([])
+    })
+
+    it('fails open when the regions request errors', async () => {
       mockFetch.mockResolvedValueOnce({
-        ok: true,
-        json: async () => ({
-          store: { default_region_id: 'reg_missing' },
-        }),
+        ok: false,
+        status: 500,
+        text: async () => 'boom',
       })
 
       await expect(getEnabledPaymentProviderIds()).resolves.toBeNull()
