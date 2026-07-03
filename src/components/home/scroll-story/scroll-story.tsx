@@ -332,11 +332,9 @@ function PinnedStoryScroller() {
               className="absolute inset-0 h-full w-full object-cover"
             />
           </picture>
-          {/* readability scrim under the act-1 copy */}
-          <div className="absolute inset-x-0 top-0 h-[40%] bg-gradient-to-b from-white/30 via-white/10 to-transparent" />
-          {/* life at the top edge: soft patches of shade and warm light
-              drift through a shallow masked band under the header — the
-              light shifting as customers move beyond the counter */}
+          {/* the window reflection, alive: a breathing white wash plus two
+              blurred bands-of-light layers sliding against each other — the
+              photo's window light rippling like a curtain in a breeze */}
           <div aria-hidden="true" className={styles.counterLife}>
             <span className={styles.counterLife1} />
             <span className={styles.counterLife2} />

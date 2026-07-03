@@ -205,100 +205,103 @@
   animation: story-sway 10s ease-in-out infinite alternate;
 }
 
-/* Act-1 counter photo: life at the top edge of the frame. A top-down camera
-   doesn't see the people beyond the counter — it sees the light along the
-   counter's far edge shift as bodies block and unblock the window. So: a
-   shallow band under the header where wide, soft patches of shade and warm
-   light drift sideways at different speeds (same family as the acts-2-4
-   ribbon gradients), masked to fade out well before the headline.
+/* Act-1 counter photo: the window reflection, alive. The photo already has
+   a wash of window light along the top — this layer makes it ripple gently,
+   like light through a curtain moving in a breeze: a soft white wash that
+   breathes, plus two blurred bands-of-light layers sliding slowly against
+   each other (their interference is the ripple). A really thin band under
+   the header, masked out well before the headline.
 
-   INTENT: deliberately faint per-pixel — the goal is that the top of the
-   photo never quite holds still, not that a shape is ever seen. Owner
-   rejected discrete silhouettes as "weird circles"; do not reintroduce
-   traveling shapes. Tune strength via the gradient alphas only. */
-@keyframes story-counter-life-a {
+   INTENT: white light only — owner rejected dark shadows, discrete shapes,
+   and yellow/grey tints in turn. Keep it faint, slow and shapeless; tune
+   via the gradient alphas and cycle durations only. */
+@keyframes story-counter-wash {
   from {
-    transform: translateX(-7%);
-    opacity: 0.55;
+    transform: translate3d(-5%, -2%, 0) scale(1);
+    opacity: 0.6;
   }
   to {
-    transform: translateX(10%);
+    transform: translate3d(7%, 2%, 0) scale(1.07);
     opacity: 1;
   }
 }
-@keyframes story-counter-life-b {
+@keyframes story-counter-ripple-a {
   from {
-    transform: translateX(8%);
-    opacity: 1;
-  }
-  to {
-    transform: translateX(-9%);
+    transform: translateX(-3%) skewX(-1.5deg);
     opacity: 0.5;
   }
+  to {
+    transform: translateX(3.5%) skewX(1.5deg);
+    opacity: 0.9;
+  }
 }
-@keyframes story-counter-life-c {
+@keyframes story-counter-ripple-b {
   from {
-    transform: translateX(-5%);
-    opacity: 0.45;
+    transform: translateX(3%) skewX(1deg);
+    opacity: 0.85;
   }
   to {
-    transform: translateX(6%);
-    opacity: 0.9;
+    transform: translateX(-3.5%) skewX(-2deg);
+    opacity: 0.45;
   }
 }
 .counterLife {
   position: absolute;
   inset: 0 0 auto 0;
-  height: 22%;
+  height: 20%;
   overflow: hidden;
-  mask-image: linear-gradient(to bottom, #000 0%, #000 18%, transparent 42%);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 30%, transparent 42%);
 }
 .counterLife1,
 .counterLife2,
 .counterLife3 {
   position: absolute;
-  top: -70%;
-  height: 220%;
-  border-radius: 50%;
-  filter: blur(26px);
   will-change: transform, opacity;
+  mix-blend-mode: screen;
 }
 .counterLife1 {
-  left: -12%;
-  width: 64%;
+  /* the broad window wash, breathing */
+  top: -70%;
+  left: -14%;
+  width: 66%;
+  height: 220%;
+  border-radius: 50%;
+  filter: blur(30px);
   background: radial-gradient(
     ellipse 50% 50% at 50% 50%,
-    rgb(45 33 20 / 0.3) 0%,
-    rgb(45 33 20 / 0.22) 50%,
+    rgb(255 255 255 / 0.5) 0%,
+    rgb(255 255 255 / 0.36) 50%,
     transparent 78%
   );
-  mix-blend-mode: multiply;
-  animation: story-counter-life-a 13s ease-in-out infinite alternate;
+  animation: story-counter-wash 29s ease-in-out infinite alternate;
+}
+.counterLife2,
+.counterLife3 {
+  top: -40%;
+  left: -10%;
+  width: 120%;
+  height: 180%;
+  filter: blur(22px);
 }
 .counterLife2 {
-  left: 30%;
-  width: 56%;
-  background: radial-gradient(
-    ellipse 50% 50% at 50% 50%,
-    rgb(255 226 180 / 0.5) 0%,
-    rgb(255 226 180 / 0.35) 50%,
-    transparent 78%
+  /* curtain folds: soft bands of light, drifting right */
+  background: repeating-linear-gradient(
+    104deg,
+    rgb(255 255 255 / 0.22) 0 70px,
+    transparent 120px 240px
   );
-  mix-blend-mode: soft-light;
-  animation: story-counter-life-b 19s ease-in-out infinite alternate;
+  animation: story-counter-ripple-a 13s ease-in-out infinite alternate;
 }
 .counterLife3 {
-  right: -14%;
-  width: 48%;
-  background: radial-gradient(
-    ellipse 50% 50% at 50% 50%,
-    rgb(45 33 20 / 0.26) 0%,
-    rgb(45 33 20 / 0.18) 50%,
-    transparent 78%
+  /* second fold layer, wider spacing, drifting left — the interference
+     between the two reads as the ripple */
+  background: repeating-linear-gradient(
+    99deg,
+    rgb(255 255 255 / 0.16) 0 110px,
+    transparent 180px 360px
   );
-  mix-blend-mode: multiply;
-  animation: story-counter-life-c 21s ease-in-out infinite alternate;
-  animation-delay: -8s;
+  animation: story-counter-ripple-b 19s ease-in-out infinite alternate;
+  animation-delay: -7s;
 }
 
 @media (prefers-reduced-motion: reduce) {
