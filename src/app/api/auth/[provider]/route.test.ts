@@ -77,20 +77,52 @@ describe('GET /api/auth/[provider] (OAuth initiate)', () => {
     )
   })
 
-  it('preserves a sanitized redirect target for Discord OAuth', async () => {
+  it('keeps the callback URL bare and carries the redirect target in a cookie', async () => {
+    // Providers match redirect_uri byte-for-byte against the registered URI
+    // (query string included) — a `?redirect=` on the callback URL fails with
+    // redirect_uri_mismatch even when the bare URI is registered (verified
+    // live against Google 2026-07-03).
     mockInitiateOAuth.mockResolvedValueOnce('https://discord.com/oauth2/authorize')
 
     const request = new NextRequest(
       'https://wcpos.com/api/auth/discord?redirect=%2Fpro%2Fcheckout%3Fvariant%3Dvariant_123'
     )
-    await GET(request, {
+    const response = await GET(request, {
       params: Promise.resolve({ provider: 'discord' }),
     })
 
     expect(mockInitiateOAuth).toHaveBeenCalledWith(
       'discord',
-      'https://wcpos.com/api/auth/discord/callback?redirect=%2Fpro%2Fcheckout%3Fvariant%3Dvariant_123'
+      'https://wcpos.com/api/auth/discord/callback'
     )
+    const cookie = response.cookies.get('oauth_redirect')
+    expect(cookie?.value).toBe('/pro/checkout?variant=variant_123')
+    expect(cookie?.httpOnly).toBe(true)
+    expect(cookie?.path).toBe('/api/auth')
+  })
+
+  it('sets the redirect cookie to the default on a plain sign-in (no stale-cookie hijack)', async () => {
+    mockInitiateOAuth.mockResolvedValueOnce('https://discord.com/oauth2/authorize')
+
+    const request = new NextRequest('https://wcpos.com/api/auth/discord')
+    const response = await GET(request, {
+      params: Promise.resolve({ provider: 'discord' }),
+    })
+
+    expect(response.cookies.get('oauth_redirect')?.value).toBe('/account')
+  })
+
+  it('sanitizes an absolute-URL redirect down to the safe default before storing it', async () => {
+    mockInitiateOAuth.mockResolvedValueOnce('https://discord.com/oauth2/authorize')
+
+    const request = new NextRequest(
+      'https://wcpos.com/api/auth/discord?redirect=https%3A%2F%2Fevil.example.com'
+    )
+    const response = await GET(request, {
+      params: Promise.resolve({ provider: 'discord' }),
+    })
+
+    expect(response.cookies.get('oauth_redirect')?.value).toBe('/account')
   })
 
   it('redirects to /login with oauth_failed when initiation fails', async () => {

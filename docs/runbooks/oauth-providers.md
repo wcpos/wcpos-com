@@ -12,11 +12,20 @@ where, why it breaks when a hostname changes, and how to verify it end to end.
 3. Medusa returns the provider authorize URL containing that `redirect_uri`;
    the browser is redirected there.
 4. **The provider only proceeds if `redirect_uri` exactly matches a URI
-   registered in its console.** This is the step that breaks every time the
-   site moves to a new hostname.
+   registered in its console — byte-for-byte, query string included.** This
+   is the step that breaks every time the site moves to a new hostname.
 
 Because the callback is derived from the request origin, **every hostname the
 site serves auth from must be registered in all three provider consoles.**
+
+**Trap: never put query params on the callback URL.** Exact matching includes
+the query string, so `…/callback?redirect=/pro` fails with
+`redirect_uri_mismatch` even when `…/callback` is registered (verified live
+against Google 2026-07-03 — this silently broke every deep-link sign-in, e.g.
+from checkout, for as long as the param existed). The post-sign-in
+destination travels in the short-lived `oauth_redirect` httpOnly cookie
+(`OAUTH_REDIRECT_COOKIE` in [oauth-providers.ts](../../src/lib/oauth-providers.ts)),
+set at initiate time and consumed by the callback.
 
 ## Registered redirect URIs (keep this table true)
 

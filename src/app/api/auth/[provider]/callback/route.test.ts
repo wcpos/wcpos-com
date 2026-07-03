@@ -213,7 +213,36 @@ describe('OAuth callback route', () => {
     })
   })
 
-  it('redirects to the sanitized redirect target after OAuth sign-in (Discord)', async () => {
+  it('redirects to the target carried by the oauth_redirect cookie and consumes it (Discord)', async () => {
+    mockEstablishOAuthSession.mockResolvedValue(
+      session({ email: 'discord@example.com' })
+    )
+
+    // The callback URL is bare — the destination arrives in the cookie set at
+    // initiate time (providers reject redirect_uri with extra query params).
+    const request = new NextRequest(
+      'https://wcpos.com/api/auth/discord/callback?code=abc&state=xyz',
+      { headers: { cookie: 'oauth_redirect=%2Fpro%2Fcheckout%3Fvariant%3Dvariant_123' } }
+    )
+
+    const response = await GET(request, {
+      params: Promise.resolve({ provider: 'discord' }),
+    })
+
+    expect(mockEstablishOAuthSession).toHaveBeenCalledWith('discord', {
+      code: 'abc',
+      state: 'xyz',
+    })
+    expect(response.status).toBe(307)
+    expect(response.headers.get('location')).toBe(
+      'https://wcpos.com/pro/checkout?variant=variant_123'
+    )
+    // Single-use: consumed on success.
+    expect(response.cookies.get('oauth_redirect')?.value).toBe('')
+    expect(response.cookies.get('oauth_redirect')?.maxAge).toBe(0)
+  })
+
+  it('still honors a legacy ?redirect= query param from flows initiated pre-deploy', async () => {
     mockEstablishOAuthSession.mockResolvedValue(
       session({ email: 'discord@example.com' })
     )
@@ -231,10 +260,26 @@ describe('OAuth callback route', () => {
       code: 'abc',
       state: 'xyz',
     })
-    expect(response.status).toBe(307)
     expect(response.headers.get('location')).toBe(
       'https://wcpos.com/pro/checkout?variant=variant_123'
     )
+  })
+
+  it('sanitizes a malicious cookie value down to the safe default', async () => {
+    mockEstablishOAuthSession.mockResolvedValue(
+      session({ email: 'discord@example.com' })
+    )
+
+    const request = new NextRequest(
+      'https://wcpos.com/api/auth/discord/callback?code=abc&state=xyz',
+      { headers: { cookie: 'oauth_redirect=https%3A%2F%2Fevil.example.com' } }
+    )
+
+    const response = await GET(request, {
+      params: Promise.resolve({ provider: 'discord' }),
+    })
+
+    expect(response.headers.get('location')).toBe('https://wcpos.com/account')
   })
 
   it('redirects to /login with error when establishing the session fails', async () => {

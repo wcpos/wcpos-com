@@ -4,8 +4,21 @@ import { establishOAuthSession } from '@/lib/oauth'
 import { authLogger } from '@/lib/logger'
 import { getConnectedAvatarUrlFromUserMetadata } from '@/lib/avatar'
 import { recordSignInProvider } from '@/lib/auth-providers/metadata'
-import { ALLOWED_PROVIDERS } from '@/lib/oauth-providers'
+import {
+  ALLOWED_PROVIDERS,
+  OAUTH_REDIRECT_COOKIE,
+  OAUTH_REDIRECT_COOKIE_OPTIONS,
+} from '@/lib/oauth-providers'
 import { sanitizeRedirectPath } from '@/lib/safe-redirect'
+
+/** The redirect cookie is single-use: consume it on every outcome. */
+function clearRedirectCookie(response: NextResponse): NextResponse {
+  response.cookies.set(OAUTH_REDIRECT_COOKIE, '', {
+    ...OAUTH_REDIRECT_COOKIE_OPTIONS,
+    maxAge: 0,
+  })
+  return response
+}
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return Boolean(value) && typeof value === 'object' && !Array.isArray(value)
@@ -62,7 +75,14 @@ export async function GET(
       )
     }
 
-    const redirectTo = sanitizeRedirectPath(request.nextUrl.searchParams.get('redirect'))
+    // The destination travels in the cookie set at initiate time — it must
+    // never be on the callback URL itself (see OAUTH_REDIRECT_COOKIE). The
+    // query param is honored as a fallback for flows initiated before that
+    // change deployed.
+    const redirectTo = sanitizeRedirectPath(
+      request.cookies.get(OAUTH_REDIRECT_COOKIE)?.value ??
+        request.nextUrl.searchParams.get('redirect')
+    )
 
     // Collect all query params from the OAuth provider (code, state, etc.)
     const callbackParams: Record<string, string> = {}
@@ -78,12 +98,14 @@ export async function GET(
     const { payload } = await establishOAuthSession(provider, callbackParams)
     await syncOauthProfile(provider, payload.user_metadata)
 
-    return NextResponse.redirect(new URL(redirectTo, request.url))
+    return clearRedirectCookie(
+      NextResponse.redirect(new URL(redirectTo, request.url))
+    )
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Unknown error'
     authLogger.error`OAuth callback failed: ${message}`
     const loginUrl = new URL('/login', request.url)
     loginUrl.searchParams.set('error', 'oauth_failed')
-    return NextResponse.redirect(loginUrl, 303)
+    return clearRedirectCookie(NextResponse.redirect(loginUrl, 303))
   }
 }
