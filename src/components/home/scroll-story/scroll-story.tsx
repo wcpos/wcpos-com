@@ -332,9 +332,9 @@ function PinnedStoryScroller() {
               className="absolute inset-0 h-full w-full object-cover"
             />
           </picture>
-          {/* life at the top edge: cloud-soft patches of white, table-warm
-              yellow and faint grey drift through a shallow masked band under
-              the header (no static scrim — this layer carries the light) */}
+          {/* the window reflection, alive: a breathing white wash plus two
+              blurred bands-of-light layers sliding against each other — the
+              photo's window light rippling like a curtain in a breeze */}
           <div aria-hidden="true" className={styles.counterLife}>
             <span className={styles.counterLife1} />
             <span className={styles.counterLife2} />

@@ -205,43 +205,44 @@
   animation: story-sway 10s ease-in-out infinite alternate;
 }
 
-/* Act-1 counter photo: clouds at the top of the frame. A really thin band
-   under the header where soft masses of white, table-warm yellow and faint
-   grey drift slowly past each other — dreamy, floaty, the same family as
-   the acts-2-4 ribbon gradients. No static scrim above the photo; this
-   layer IS the light at the counter's far edge.
+/* Act-1 counter photo: the window reflection, alive. The photo already has
+   a wash of window light along the top — this layer makes it ripple gently,
+   like light through a curtain moving in a breeze: a soft white wash that
+   breathes, plus two blurred bands-of-light layers sliding slowly against
+   each other (their interference is the ripple). A really thin band under
+   the header, masked out well before the headline.
 
-   INTENT: light tones only (owner rejected dark shadows and any discrete
-   traveling shape). Keep it faint and slow; tune via the gradient alphas
-   and the cycle durations only. */
-@keyframes story-counter-cloud-a {
+   INTENT: white light only — owner rejected dark shadows, discrete shapes,
+   and yellow/grey tints in turn. Keep it faint, slow and shapeless; tune
+   via the gradient alphas and cycle durations only. */
+@keyframes story-counter-wash {
   from {
-    transform: translate3d(-6%, -3%, 0) scale(1);
+    transform: translate3d(-5%, -2%, 0) scale(1);
     opacity: 0.6;
   }
   to {
-    transform: translate3d(8%, 3%, 0) scale(1.08);
+    transform: translate3d(7%, 2%, 0) scale(1.07);
     opacity: 1;
   }
 }
-@keyframes story-counter-cloud-b {
+@keyframes story-counter-ripple-a {
   from {
-    transform: translate3d(7%, 2%, 0) scale(1.06);
-    opacity: 1;
-  }
-  to {
-    transform: translate3d(-8%, -3%, 0) scale(0.96);
-    opacity: 0.55;
-  }
-}
-@keyframes story-counter-cloud-c {
-  from {
-    transform: translate3d(-4%, 2%, 0) scale(0.98);
+    transform: translateX(-3%) skewX(-1.5deg);
     opacity: 0.5;
   }
   to {
-    transform: translate3d(5%, -2%, 0) scale(1.06);
+    transform: translateX(3.5%) skewX(1.5deg);
     opacity: 0.9;
+  }
+}
+@keyframes story-counter-ripple-b {
+  from {
+    transform: translateX(3%) skewX(1deg);
+    opacity: 0.85;
+  }
+  to {
+    transform: translateX(-3.5%) skewX(-2deg);
+    opacity: 0.45;
   }
 }
 .counterLife {
@@ -255,51 +256,52 @@
 .counterLife2,
 .counterLife3 {
   position: absolute;
+  will-change: transform, opacity;
+  mix-blend-mode: screen;
+}
+.counterLife1 {
+  /* the broad window wash, breathing */
   top: -70%;
+  left: -14%;
+  width: 66%;
   height: 220%;
   border-radius: 50%;
   filter: blur(30px);
-  will-change: transform, opacity;
-}
-.counterLife1 {
-  /* white cloud */
-  left: -14%;
-  width: 62%;
   background: radial-gradient(
     ellipse 50% 50% at 50% 50%,
-    rgb(255 255 255 / 0.55) 0%,
-    rgb(255 255 255 / 0.4) 50%,
+    rgb(255 255 255 / 0.5) 0%,
+    rgb(255 255 255 / 0.36) 50%,
     transparent 78%
   );
-  mix-blend-mode: screen;
-  animation: story-counter-cloud-a 27s ease-in-out infinite alternate;
+  animation: story-counter-wash 29s ease-in-out infinite alternate;
+}
+.counterLife2,
+.counterLife3 {
+  top: -40%;
+  left: -10%;
+  width: 120%;
+  height: 180%;
+  filter: blur(22px);
 }
 .counterLife2 {
-  /* table-warm yellow */
-  left: 28%;
-  width: 58%;
-  background: radial-gradient(
-    ellipse 50% 50% at 50% 50%,
-    rgb(255 224 160 / 0.5) 0%,
-    rgb(255 224 160 / 0.35) 50%,
-    transparent 78%
+  /* curtain folds: soft bands of light, drifting right */
+  background: repeating-linear-gradient(
+    104deg,
+    rgb(255 255 255 / 0.22) 0 70px,
+    transparent 120px 240px
   );
-  mix-blend-mode: screen;
-  animation: story-counter-cloud-b 35s ease-in-out infinite alternate;
+  animation: story-counter-ripple-a 13s ease-in-out infinite alternate;
 }
 .counterLife3 {
-  /* a little grey, so the light doesn't read flat */
-  right: -12%;
-  width: 46%;
-  background: radial-gradient(
-    ellipse 50% 50% at 50% 50%,
-    rgb(148 145 140 / 0.32) 0%,
-    rgb(148 145 140 / 0.22) 50%,
-    transparent 78%
+  /* second fold layer, wider spacing, drifting left — the interference
+     between the two reads as the ripple */
+  background: repeating-linear-gradient(
+    99deg,
+    rgb(255 255 255 / 0.16) 0 110px,
+    transparent 180px 360px
   );
-  mix-blend-mode: soft-light;
-  animation: story-counter-cloud-c 43s ease-in-out infinite alternate;
-  animation-delay: -14s;
+  animation: story-counter-ripple-b 19s ease-in-out infinite alternate;
+  animation-delay: -7s;
 }
 
 @media (prefers-reduced-motion: reduce) {
