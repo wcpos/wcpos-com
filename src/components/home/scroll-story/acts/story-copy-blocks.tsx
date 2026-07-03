@@ -14,10 +14,8 @@ const toneStyles = {
   },
   onLight: {
     heading: 'text-slate-900',
-    body: 'text-slate-600',
     sideBody: 'text-slate-600',
     chip: 'border-slate-300 text-slate-600',
-    badges: 'text-slate-600',
   },
 } as const
 
@@ -75,7 +73,7 @@ export function CopyAct1({
       <p
         className={cn(
           'mx-auto mb-7 max-w-xl text-base md:text-lg',
-          tone === 'onLight' ? 'font-medium text-[#2a1e10]' : t.body
+          tone === 'onLight' ? 'font-medium text-[#2a1e10]' : toneStyles.onDark.body
         )}
       >
         {storyCopy.act1.body}
@@ -98,7 +96,7 @@ export function CopyAct1({
       <div
         className={cn(
           'mt-6 flex flex-wrap items-center justify-center gap-x-5 gap-y-1 text-xs font-medium',
-          tone === 'onLight' ? 'font-semibold text-[#2a1e10]' : t.badges
+          tone === 'onLight' ? 'font-semibold text-[#2a1e10]' : toneStyles.onDark.badges
         )}
       >
         {storyCopy.act1.trustBadges.map((badge) => (
