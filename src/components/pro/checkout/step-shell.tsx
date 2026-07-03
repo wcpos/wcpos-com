@@ -43,7 +43,9 @@ export function StepShell({
           aria-hidden
           className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs font-semibold ${
             state === 'done'
-              ? `${toneDot.positive} text-white`
+              ? // text-white assumes the solid toneDot fills stay dark enough
+                // for a white glyph — revisit if the dot scale is retuned
+                `${toneDot.positive} text-white`
               : state === 'active'
                 ? 'bg-primary text-primary-foreground'
                 : 'bg-muted text-muted-foreground'

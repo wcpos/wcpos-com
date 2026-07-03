@@ -30,7 +30,7 @@ export function CtaBand({
       <div className="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
         {actions.map((action) => (
           <Button
-            key={action.href}
+            key={`${action.href}-${action.label}`}
             asChild
             variant={action.variant ?? 'brand-on-dark'}
             size="xl"
