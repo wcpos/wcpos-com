@@ -94,9 +94,12 @@ export const K = {
   ], // vw
 
   // act 3: terminal / printer / scanner ring the tablet (center ~9vw at the
-  // hold): scanner at ~10 o'clock tucked behind the top-left corner, terminal
-  // at 3 fronting the right edge, printer at ~7 under the left half — each
-  // enters from its own side (right / below / above) and leaves the same way
+  // hold): scanner at ~10 o'clock fronting the top-left corner, terminal at
+  // 3 fronting the right edge, printer at ~7 under the left half — each
+  // enters from its own side (right / below / above) and leaves the same
+  // way. These vw/vh tracks are the pre-measure/SSR fallback; once the stage
+  // is measured, scroll-story's act3HardwareTracks replaces the rest stops
+  // with fixed px offsets from the tablet so the ring holds on wide stages.
   terminalOpacity: [
     [0, 0.46, 0.54, 0.7, 0.78, 1],
     [0, 0, 1, 1, 0, 0],

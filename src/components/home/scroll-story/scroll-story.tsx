@@ -170,6 +170,92 @@ function pinnedTabletTracks(size: StageSize | null): TabletTracks {
 }
 
 /**
+ * Act-3 hardware ring, px-resolved against the measured stage. The devices
+ * orbit the fixed-size tablet, so their rest positions are fixed px offsets
+ * from the tablet's act-3 hold (K.tabletX's 9vw stop) — with plain vw/vh
+ * offsets the ring scattered away from the tablet on wide stages. Entrances
+ * stay proportional (off-stage is off-stage at any width); the K tracks
+ * remain the pre-measure/SSR fallback.
+ */
+type HardwareTracks = {
+  terminalX: Track
+  printerX: Track
+  printerY: Track
+  scannerX: Track
+  scannerY: Track
+  /** true once values are px resolved against the measured stage */
+  px: boolean
+}
+
+/** rest offsets from the tablet's hold center, px (tuned at 1440×900) */
+const RING = {
+  terminal: { x: 216 },
+  printer: { x: -116, y: 232 },
+  scanner: { x: -216, y: -212 },
+} as const
+
+function act3HardwareTracks(size: StageSize | null): HardwareTracks {
+  if (!size) {
+    return {
+      terminalX: K.terminalX,
+      printerX: K.printerX,
+      printerY: K.printerY,
+      scannerX: K.scannerX,
+      scannerY: K.scannerY,
+      px: false,
+    }
+  }
+  const tabletCx = 0.09 * size.width
+  const offRight = 0.6 * size.width
+  const belowStage = 0.45 * size.height
+  const aboveStage = -0.55 * size.height
+  return {
+    terminalX: [
+      [0, 0.46, 0.58, 0.7, 0.8, 1],
+      [
+        offRight,
+        offRight,
+        tabletCx + RING.terminal.x,
+        tabletCx + RING.terminal.x,
+        offRight,
+        offRight,
+      ],
+    ],
+    printerX: [
+      [0, 1],
+      [tabletCx + RING.printer.x, tabletCx + RING.printer.x],
+    ],
+    printerY: [
+      [0, 0.46, 0.58, 0.7, 0.8, 1],
+      [
+        belowStage,
+        belowStage,
+        RING.printer.y,
+        RING.printer.y,
+        belowStage,
+        belowStage,
+      ],
+    ],
+    scannerX: [
+      [0, 1],
+      [tabletCx + RING.scanner.x, tabletCx + RING.scanner.x],
+    ],
+    scannerY: [
+      [0, 0.48, 0.6, 0.7, 0.8, 1],
+      [
+        aboveStage,
+        aboveStage,
+        RING.scanner.y,
+        RING.scanner.y,
+        aboveStage,
+        aboveStage,
+      ],
+    ],
+    px: true,
+  }
+}
+
+/**
  * The four-act pinned scroll story. Desktop (md+) gets the scrubbed
  * choreography; small viewports and prefers-reduced-motion get the static
  * stacked variant with identical copy (see StoryStatic). Both variants are
@@ -253,15 +339,21 @@ function PinnedStoryScroller() {
   const laptopOpacity = useTrack(progress, K.laptopOpacity)
   const laptopX = useTrack(progress, K.laptopX, 'vw')
 
-  // act 3 hardware
+  // act 3 hardware — ring offsets are px resolved against the measured stage
+  const hardwareTracks = React.useMemo(
+    () => act3HardwareTracks(stageSize),
+    [stageSize]
+  )
+  const hwUnit = (unit: 'vw' | 'vh') =>
+    hardwareTracks.px ? undefined : unit
   const terminalOpacity = useTrack(progress, K.terminalOpacity)
-  const terminalX = useTrack(progress, K.terminalX, 'vw')
+  const terminalX = useTrack(progress, hardwareTracks.terminalX, hwUnit('vw'))
   const printerOpacity = useTrack(progress, K.printerOpacity)
-  const printerX = useTrack(progress, K.printerX, 'vw')
-  const printerY = useTrack(progress, K.printerY, 'vh')
+  const printerX = useTrack(progress, hardwareTracks.printerX, hwUnit('vw'))
+  const printerY = useTrack(progress, hardwareTracks.printerY, hwUnit('vh'))
   const scannerOpacity = useTrack(progress, K.scannerOpacity)
-  const scannerX = useTrack(progress, K.scannerX, 'vw')
-  const scannerY = useTrack(progress, K.scannerY, 'vh')
+  const scannerX = useTrack(progress, hardwareTracks.scannerX, hwUnit('vw'))
+  const scannerY = useTrack(progress, hardwareTracks.scannerY, hwUnit('vh'))
 
   // act 4 cloud
   const cloudOpacity = useTrack(progress, K.cloudOpacity)
@@ -394,9 +486,10 @@ function PinnedStoryScroller() {
           </motion.div>
         </div>
 
-        {/* act 3: terminal fronts the tablet (payment moment); printer + scanner
-            behind. Each slot card-flips through its own category only — that's
-            the "any terminal, any printer, any scanner" message */}
+        {/* act 3: terminal and scanner front the tablet (payment moment);
+            printer behind, below. Each slot card-flips through its own
+            category only — that's the "any terminal, any printer, any
+            scanner" message */}
         <div className="absolute left-1/2 top-1/2 z-[11]">
           <motion.div
             className="-ml-[75px] -mt-28"
@@ -406,6 +499,16 @@ function PinnedStoryScroller() {
               <DeviceTerminal model={1} />
               <DeviceTerminal model={2} />
               <DeviceTerminal model={3} />
+            </FlipDevice>
+          </motion.div>
+          <motion.div
+            className="-ml-[60px] -mt-[95px]"
+            style={{ opacity: scannerOpacity, x: scannerX, y: scannerY }}
+          >
+            <FlipDevice active={act === 2} offsetMs={2300}>
+              <DeviceScanner model={1} />
+              <DeviceScanner model={2} />
+              <DeviceScanner model={3} />
             </FlipDevice>
           </motion.div>
         </div>
@@ -418,16 +521,6 @@ function PinnedStoryScroller() {
               <DevicePrinter model={1} />
               <DevicePrinter model={2} />
               <DevicePrinter model={3} />
-            </FlipDevice>
-          </motion.div>
-          <motion.div
-            className="-ml-[60px] -mt-[95px]"
-            style={{ opacity: scannerOpacity, x: scannerX, y: scannerY }}
-          >
-            <FlipDevice active={act === 2} offsetMs={2300}>
-              <DeviceScanner model={1} />
-              <DeviceScanner model={2} />
-              <DeviceScanner model={3} />
             </FlipDevice>
           </motion.div>
         </div>
