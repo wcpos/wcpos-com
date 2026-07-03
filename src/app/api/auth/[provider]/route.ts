@@ -1,7 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { initiateOAuth } from '@/lib/oauth'
 import { authLogger } from '@/lib/logger'
-import { ALLOWED_PROVIDERS } from '@/lib/oauth-providers'
+import {
+  ALLOWED_PROVIDERS,
+  OAUTH_REDIRECT_COOKIE,
+  OAUTH_REDIRECT_COOKIE_OPTIONS,
+} from '@/lib/oauth-providers'
 import { sanitizeRedirectPath } from '@/lib/safe-redirect'
 
 export async function GET(
@@ -18,16 +22,24 @@ export async function GET(
       )
     }
 
+    // The callback URL must stay byte-identical to the URI registered in the
+    // provider consoles — no query params, ever (see OAUTH_REDIRECT_COOKIE).
+    // The post-sign-in destination travels in a cookie instead.
     const origin = request.nextUrl.origin
     const callbackUrl = new URL(`/api/auth/${provider}/callback`, origin)
     const redirectTo = sanitizeRedirectPath(request.nextUrl.searchParams.get('redirect'))
-    if (redirectTo !== '/account') {
-      callbackUrl.searchParams.set('redirect', redirectTo)
-    }
 
     const location = await initiateOAuth(provider, callbackUrl.toString())
 
-    return NextResponse.redirect(location)
+    const response = NextResponse.redirect(location)
+    // Always set (not only for non-default targets) so a stale cookie from an
+    // abandoned flow can never hijack a fresh sign-in's destination.
+    response.cookies.set(
+      OAUTH_REDIRECT_COOKIE,
+      redirectTo,
+      OAUTH_REDIRECT_COOKIE_OPTIONS
+    )
+    return response
   } catch (error) {
     authLogger.error`Failed to initiate OAuth: ${error}`
     return NextResponse.redirect(
