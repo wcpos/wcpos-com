@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { act, cleanup, render, screen } from '@testing-library/react'
 import { FlipDevice } from './flip-device'
 
-const FAKE_TIMER_CONFIG = {
+const FAKE_TIMER_CONFIG: Parameters<typeof vi.useFakeTimers>[0] = {
   toFake: [
     'setTimeout',
     'clearTimeout',
@@ -11,7 +11,7 @@ const FAKE_TIMER_CONFIG = {
     'requestAnimationFrame',
     'cancelAnimationFrame',
   ],
-} as const
+}
 
 function stubMatchMedia({ reducedMotion }: { reducedMotion: boolean }) {
   vi.stubGlobal(
