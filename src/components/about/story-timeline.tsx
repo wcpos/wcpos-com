@@ -103,7 +103,7 @@ function Milestone({
     <span
       ref={markerRef}
       aria-hidden="true"
-      className="absolute -left-[31px] mt-1.5 h-3 w-3"
+      className="absolute -left-[29px] mt-1.5 h-3 w-3"
     >
       {/* hollow ring, waiting for the line to arrive */}
       <span className="absolute inset-0 rounded-full border-2 border-slate-300 bg-background dark:border-slate-700" />
@@ -119,7 +119,7 @@ function Milestone({
   ) : (
     <span
       aria-hidden="true"
-      className="absolute -left-[31px] mt-1.5 h-3 w-3 rounded-full bg-wcpos-red"
+      className="absolute -left-[29px] mt-1.5 h-3 w-3 rounded-full bg-wcpos-red"
     />
   )
 
@@ -240,17 +240,19 @@ export function StoryTimeline() {
           title="How it started, and why it's still here"
         />
 
-        <ol ref={listRef} className="relative">
+        {/* pt-4 lets the line start above the first marker, so the
+            scroll-drawn fill visibly arrives at it rather than starting on it */}
+        <ol ref={listRef} className="relative pt-4">
           {/* line track + scroll-drawn fill + traveling tip */}
           <span
             aria-hidden="true"
-            className="absolute bottom-1 left-0 top-1 w-0.5 rounded bg-slate-200 dark:bg-slate-800"
+            className="absolute bottom-1 left-0 top-0 w-0.5 rounded bg-slate-200 dark:bg-slate-800"
           />
           {!reducedMotion && (
             <>
               <motion.span
                 aria-hidden="true"
-                className="absolute bottom-1 left-0 top-1 w-0.5 origin-top rounded"
+                className="absolute bottom-1 left-0 top-0 w-0.5 origin-top rounded"
                 style={{
                   scaleY: scrollYProgress,
                   backgroundImage: LINE_GRADIENT,
