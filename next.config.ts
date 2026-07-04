@@ -52,6 +52,12 @@ const nextConfig: NextConfig = {
   // migration — see the cutover decision in the launch ledger.
   async redirects() {
     return [
+      // Vanity redirect to the community Discord server (guild 711884517081612298).
+      // Canonical share URL is the bare /discord (no locale prefix); the site
+      // never links to it via next-intl, so no locale-prefixed variants are
+      // needed. 302 (temporary) rather than 301 so browsers don't permanently
+      // cache the invite if it's ever rotated/revoked.
+      { source: '/discord', destination: 'https://discord.gg/MV3E9dSUD', statusCode: 302 },
       // High-value pages
       { source: '/shop', destination: '/pro', statusCode: 301 },
       { source: '/cart', destination: '/pro', statusCode: 301 },
