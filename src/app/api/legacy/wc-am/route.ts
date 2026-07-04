@@ -141,7 +141,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
     if (result.status === 200 && result.data?.valid) {
       // Only genuine activations carry landing-page attribution; status polls
       // (the plugin's frequent re-checks) must not inflate the event stream.
-      if (action === 'activation') {
+      if (action === 'activation' && result.data.activated) {
         recordActivationAttribution(params)
       }
       return reply({ success: true, activated: !!result.data.activated })

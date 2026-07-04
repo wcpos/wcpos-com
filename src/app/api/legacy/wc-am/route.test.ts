@@ -130,6 +130,19 @@ describe('WC API Manager compatibility shim', () => {
       expect(trackAttributedServerEvent).not.toHaveBeenCalled()
     })
 
+    it('does not capture when activation returns valid but inactive', async () => {
+      vi.spyOn(global, 'fetch').mockResolvedValue(
+        keygenJson({ status: 200, data: { valid: true, activated: false, status: 'inactive' } }),
+      )
+
+      const res = await call(
+        'wc-api=am-software-api&request=activation&api_key=KEY&instance=site-1&anon_id=anon-123',
+      )
+
+      expect(await res.json()).toEqual({ success: true, activated: false })
+      expect(trackAttributedServerEvent).not.toHaveBeenCalled()
+    })
+
     it('does not capture on a status poll, only on activation', async () => {
       vi.spyOn(global, 'fetch').mockResolvedValue(keygenJson(ACTIVE))
 
