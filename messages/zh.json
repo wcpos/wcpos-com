@@ -1,64 +1,64 @@
 {
   "common": {
-    "signIn": "Sign In",
-    "account": "Account",
-    "openMenu": "Open menu"
+    "signIn": "登录",
+    "account": "账户",
+    "openMenu": "打开菜单"
   },
   "header": {
-    "documentation": "Documentation",
-    "roadmap": "Roadmap",
+    "documentation": "文档",
+    "roadmap": "路线图",
     "pro": "Pro",
-    "support": "Support",
-    "downloads": "Downloads"
+    "support": "支持",
+    "downloads": "下载"
   },
   "footer": {
-    "downloads": "Downloads",
+    "downloads": "下载",
     "copyright": "© 2026 WCPOS",
-    "privacy": "Privacy",
-    "terms": "Terms",
-    "refunds": "Refunds",
-    "about": "About",
-    "language": "Language",
-    "theme": "Theme",
-    "themeLight": "Light",
-    "themeDark": "Dark",
-    "themeSystem": "System"
+    "privacy": "隐私",
+    "terms": "条款",
+    "refunds": "退款",
+    "about": "关于",
+    "language": "语言",
+    "theme": "主题",
+    "themeLight": "浅色",
+    "themeDark": "深色",
+    "themeSystem": "跟随系统"
   },
   "home": {
     "title": "WCPOS",
-    "subtitle": "A fast point of sale for WooCommerce"
+    "subtitle": "为 WooCommerce 打造的快速销售终端"
   },
   "roadmap": {
-    "title": "Roadmap",
-    "subtitle": "What we're building for WCPOS"
+    "title": "路线图",
+    "subtitle": "我们正在为 WCPOS 打造的功能"
   },
   "pro": {
     "features": {
-      "title": "What's included in Pro?",
-      "subtitle": "Everything in Free, plus the tools to run your whole store from the register — and priority support when you need a hand.",
+      "title": "Pro 包含哪些功能？",
+      "subtitle": "涵盖免费版的全部功能，另外提供从收银台管理整个商店所需的工具——以及在你需要帮助时的优先支持。",
       "terminal": {
-        "title": "Payment Terminal Integration",
-        "description": "Connect card readers and payment terminals for fast, accurate in-person payments."
+        "title": "支付终端集成",
+        "description": "连接读卡器和支付终端，实现快速、准确的当面收款。"
       },
       "stockPrice": {
-        "title": "Stock & Price Editing",
-        "description": "Update stock levels, prices, and product details right from the POS — no trip to the WordPress admin."
+        "title": "库存与价格编辑",
+        "description": "直接在 POS 上更新库存、价格和商品详情——无需前往 WordPress 后台。"
       },
       "orders": {
-        "title": "Order Management",
-        "description": "Browse order history, open past orders, and manage them without leaving the register."
+        "title": "订单管理",
+        "description": "浏览订单历史、打开历史订单并进行管理，无需离开收银台。"
       },
       "customers": {
-        "title": "Customer Management",
-        "description": "Add and edit customer details at the point of sale, kept in sync with WooCommerce."
+        "title": "客户管理",
+        "description": "在销售终端添加和编辑客户信息，并与 WooCommerce 保持同步。"
       },
       "reports": {
-        "title": "End-of-Day Reports",
-        "description": "Close the register with end-of-day summaries of sales, payments, and takings."
+        "title": "日终报表",
+        "description": "通过销售、收款和营收的日终汇总来完成收银结账。"
       },
       "gateways": {
-        "title": "Custom Payment Gateways",
-        "description": "Take payments with any WooCommerce-compatible gateway, not just the built-in options."
+        "title": "自定义支付网关",
+        "description": "使用任何兼容 WooCommerce 的支付网关收款，不限于内置选项。"
       }
     },
     "buyBox": {
@@ -89,220 +89,220 @@
       "unavailableDescription": "价格信息当前不可用。请稍后再试。"
     },
     "faq": {
-      "title": "Frequently Asked Questions",
+      "title": "常见问题",
       "freePlugin": {
-        "question": "Is the free plugin limited?",
-        "answer": "No. The free WCPOS plugin is GPL software with full point of sale features — unlimited products, orders, and customers, and no transaction fees. Pro adds the advanced tools listed above."
+        "question": "免费插件有功能限制吗？",
+        "answer": "没有。免费的 WCPOS 插件是 GPL 软件，具备完整的销售终端功能——商品、订单和客户数量不限，且无交易手续费。Pro 则额外提供上述高级工具。"
       },
       "yearlyVsLifetime": {
-        "question": "What's the difference between Yearly and Lifetime?",
-        "answer": "The Yearly license is a one-time payment that includes updates and priority support for one year. It does not renew automatically. The Lifetime license is a one-time payment that includes updates forever."
+        "question": "年付和终身版有什么区别？",
+        "answer": "年付许可证为一次性付款，包含一年的更新和优先支持，不会自动续订。终身许可证也是一次性付款，包含永久更新。"
       },
       "upgrade": {
-        "question": "Can I upgrade from Yearly to Lifetime?",
-        "answer": "Yes! Contact our support team and we'll credit the remaining time on your Yearly license towards a Lifetime license."
+        "question": "我可以从年付升级到终身版吗？",
+        "answer": "可以！联系我们的支持团队，我们会将你年付许可证的剩余时长抵扣到终身许可证。"
       },
       "siteLimits": {
-        "question": "How many sites can I use my license on?",
-        "answer": "Each license can be activated on multiple sites. Check your account dashboard for activation limits."
+        "question": "我的许可证可以用在多少个站点上？",
+        "answer": "每个许可证可以在多个站点上激活。请在你的账户面板查看激活数量限制。"
       },
       "paymentMethods": {
-        "question": "What payment methods do you accept?",
-        "answer": "We accept credit cards (Visa, Mastercard, Amex), PayPal, and Bitcoin."
+        "question": "你们接受哪些付款方式？",
+        "answer": "我们接受信用卡（Visa、Mastercard、Amex）、PayPal 和 Bitcoin。"
       }
     }
   },
   "account": {
     "nav": {
-      "title": "Account",
-      "orders": "Orders",
-      "licenses": "Licenses",
-      "downloads": "Downloads",
-      "profile": "Profile"
+      "title": "账户",
+      "orders": "订单",
+      "licenses": "许可证",
+      "downloads": "下载",
+      "profile": "个人资料"
     },
     "meta": {
       "orders": {
-        "title": "Order History",
-        "description": "View your WCPOS order history and receipts."
+        "title": "订单历史",
+        "description": "查看你的 WCPOS 订单历史和收据。"
       },
       "orderDetail": {
-        "title": "Order Details",
-        "description": "View the details of your WCPOS order."
+        "title": "订单详情",
+        "description": "查看你的 WCPOS 订单详情。"
       },
       "licenses": {
-        "title": "Licenses",
-        "description": "Manage your WCPOS Pro license keys and activations."
+        "title": "许可证",
+        "description": "管理你的 WCPOS Pro 许可证密钥和激活。"
       },
       "downloads": {
-        "title": "Downloads",
-        "description": "Download WCPOS Pro plugin releases for your licenses."
+        "title": "下载",
+        "description": "为你的许可证下载 WCPOS Pro 插件版本。"
       },
       "profile": {
-        "title": "Profile",
-        "description": "Manage your WCPOS account profile details."
+        "title": "个人资料",
+        "description": "管理你的 WCPOS 账户资料详情。"
       }
     },
     "header": {
-      "breadcrumb": "Account",
-      "signOut": "Sign out"
+      "breadcrumb": "账户",
+      "signOut": "退出登录"
     },
     "error": {
-      "heading": "Something went wrong loading this page.",
-      "description": "The error has been reported. You can try again, or come back later.",
-      "retry": "Try again"
+      "heading": "加载此页面时出错。",
+      "description": "错误已上报。你可以重试，或稍后再来。",
+      "retry": "重试"
     },
     "orders": {
-      "heading": "Order History",
-      "intro": "Invoices & receipts — every order includes a downloadable PDF tax receipt. Receipts use the billing address saved in your <profileLink>profile</profileLink>.",
-      "emptyTitle": "No orders yet.",
-      "emptyDescription": "Invoices and receipts will appear here after your first purchase.",
-      "browsePro": "Browse WCPOS Pro",
-      "orderNumber": "Order #{id}",
-      "dateAndItems": "{date} — {count, plural, =1 {# item} other {# items}}",
-      "receiptPdf": "Receipt (PDF)",
-      "downloadReceiptAria": "Download receipt for order #{id}",
+      "heading": "订单历史",
+      "intro": "发票与收据——每个订单都包含可下载的 PDF 税务收据。收据使用你在<profileLink>个人资料</profileLink>中保存的账单地址。",
+      "emptyTitle": "暂无订单。",
+      "emptyDescription": "首次购买后，发票和收据将显示在此处。",
+      "browsePro": "浏览 WCPOS Pro",
+      "orderNumber": "订单 #{id}",
+      "dateAndItems": "{date} — {count, plural, =1 {# 件商品} other {# 件商品}}",
+      "receiptPdf": "收据（PDF）",
+      "downloadReceiptAria": "下载订单 #{id} 的收据",
       "viewOrder": "查看",
       "viewOrderAria": "查看订单 #{id}"
     },
     "orderDetail": {
-      "backToOrders": "Back to orders",
-      "orderNumber": "Order #{id}",
-      "downloadReceipt": "Download tax receipt (PDF)",
-      "detailsTitle": "Order Details",
-      "dateLabel": "Date",
-      "statusLabel": "Status",
-      "emailLabel": "Email",
-      "totalLabel": "Total",
-      "itemsTitle": "Items",
-      "quantity": "Qty: {count}",
-      "licenseKeysTitle": "License Keys",
-      "manage": "Manage",
+      "backToOrders": "返回订单",
+      "orderNumber": "订单 #{id}",
+      "downloadReceipt": "下载税务收据（PDF）",
+      "detailsTitle": "订单详情",
+      "dateLabel": "日期",
+      "statusLabel": "状态",
+      "emailLabel": "邮箱",
+      "totalLabel": "总计",
+      "itemsTitle": "商品",
+      "quantity": "数量：{count}",
+      "licenseKeysTitle": "许可证密钥",
+      "manage": "管理",
       "licenseFromOrderTitle": "此订单的许可证",
       "manageLicence": "管理许可证 →"
     },
     "licenseStatus": {
-      "active": "active",
-      "expired": "expired",
-      "suspended": "suspended",
-      "revoked": "revoked",
-      "unknown": "unknown"
+      "active": "有效",
+      "expired": "已过期",
+      "suspended": "已暂停",
+      "revoked": "已吊销",
+      "unknown": "未知"
     },
     "licenses": {
-      "heading": "Licenses",
-      "loadError": "Failed to load licenses",
-      "deactivateError": "Failed to deactivate machine. Please try again.",
-      "emptyTitle": "No licenses found.",
-      "emptyDescription": "Purchase WCPOS Pro to get a license.",
-      "planYearly": "Yearly",
-      "planLifetime": "Lifetime",
-      "unknownStatusTooltip": "We couldn't verify this license right now",
-      "unverifiable": "We couldn't verify this license right now. Try again shortly or <supportLink>contact support</supportLink>.",
-      "expiresSoonRenew": "Your license expires on {date} — renew to keep receiving updates.",
-      "expiresSoon": "Your license expires on {date}.",
-      "renew": "Renew",
-      "expiresLabel": "Expires:",
-      "activationsLabel": "Activations:",
-      "activationsCount": "{count} of {max}",
-      "downloads": "Downloads",
-      "activatedMachines": "Activated Machines",
-      "machineAdded": "Added {date}",
-      "deactivateMachineAria": "Deactivate {name}",
-      "genericMachineName": "machine",
-      "coversLatestVersion": "Latest version {version} · via this licence",
-      "coversUpToVersion": "Covers updates up to {version}",
-      "siteUpdatesThrough": "Updates through {version}",
-      "discordHeading": "Discord access",
-      "discordMembers": "{count} of {cap} members",
-      "discordConnected": "Connected {date}",
-      "discordRemove": "Remove",
-      "discordRemoveAria": "Remove {handle}",
-      "discordConnectHint": "Connect with your license key to get the Pro role in our community Discord.",
-      "discordNoMembers": "No connected members yet.",
-      "discordRemoveError": "Failed to remove Discord member. Please try again."
+      "heading": "许可证",
+      "loadError": "加载许可证失败",
+      "deactivateError": "停用设备失败。请重试。",
+      "emptyTitle": "未找到许可证。",
+      "emptyDescription": "购买 WCPOS Pro 以获取许可证。",
+      "planYearly": "年付",
+      "planLifetime": "终身",
+      "unknownStatusTooltip": "我们目前无法验证此许可证",
+      "unverifiable": "我们目前无法验证此许可证。请稍后重试或<supportLink>联系支持</supportLink>。",
+      "expiresSoonRenew": "你的许可证将于 {date} 到期——续订以继续接收更新。",
+      "expiresSoon": "你的许可证将于 {date} 到期。",
+      "renew": "续订",
+      "expiresLabel": "到期：",
+      "activationsLabel": "激活次数：",
+      "activationsCount": "{count} / {max}",
+      "downloads": "下载",
+      "activatedMachines": "已激活的设备",
+      "machineAdded": "添加于 {date}",
+      "deactivateMachineAria": "停用 {name}",
+      "genericMachineName": "设备",
+      "coversLatestVersion": "最新版本 {version} · 通过此许可证",
+      "coversUpToVersion": "涵盖至 {version} 的更新",
+      "siteUpdatesThrough": "更新至 {version}",
+      "discordHeading": "Discord 访问权限",
+      "discordMembers": "{count} / {cap} 名成员",
+      "discordConnected": "连接于 {date}",
+      "discordRemove": "移除",
+      "discordRemoveAria": "移除 {handle}",
+      "discordConnectHint": "使用你的许可证密钥连接，即可在我们的社区 Discord 中获得 Pro 身份组。",
+      "discordNoMembers": "暂无已连接的成员。",
+      "discordRemoveError": "移除 Discord 成员失败。请重试。"
     },
     "downloads": {
-      "heading": "Downloads",
+      "heading": "下载",
       "subheading": "所有版本。您可以安装的版本取决于您的许可证。",
-      "expiredBanner": "Your license expired on {date}. You can still download versions released before then.",
-      "suspendedBanner": "Your license is suspended — contact support.",
-      "revokedBanner": "Your license has been revoked and no longer includes downloads. Contact support if you believe this is an error.",
-      "unknownBanner": "We couldn't verify your license — downloads may be temporarily limited. Try again shortly or contact support.",
-      "inactiveBanner": "You have no active license. Only versions released during your license term are available.",
-      "noLicenseBanner": "A WCPOS Pro license is required to download the plugin.",
-      "renewLicense": "Renew license",
-      "contactSupport": "Contact support",
-      "getPro": "Get WCPOS Pro",
+      "expiredBanner": "你的许可证已于 {date} 过期。你仍可以下载此日期之前发布的版本。",
+      "suspendedBanner": "你的许可证已暂停——请联系支持。",
+      "revokedBanner": "你的许可证已被吊销，不再包含下载。如果你认为这是错误，请联系支持。",
+      "unknownBanner": "我们无法验证你的许可证——下载可能暂时受限。请稍后重试或联系支持。",
+      "inactiveBanner": "你没有有效的许可证。仅提供在你许可证期限内发布的版本。",
+      "noLicenseBanner": "下载插件需要 WCPOS Pro 许可证。",
+      "renewLicense": "续订许可证",
+      "contactSupport": "联系支持",
+      "getPro": "获取 WCPOS Pro",
       "listTitle": "版本历史",
       "latestVersionLabel": "最新版本",
-      "latestBadge": "Latest",
+      "latestBadge": "最新",
       "majorBadge": "重大更新",
       "releaseNotes": "版本说明",
       "releaseCount": "{count, plural, other {# 个版本}}",
       "availableOnPlan": "可通过您的有效 {plan} 许可证获取",
       "availableOnActive": "可通过您的有效许可证获取",
-      "emptyList": "No downloadable versions were found.",
-      "reasonExpired": "Released after your license expired.",
-      "reasonUnknown": "We couldn't verify your license.",
-      "reasonInactive": "Requires an active license.",
-      "noReleaseNotes": "No release notes yet.",
-      "unavailable": "Unavailable",
-      "preparing": "Preparing...",
-      "download": "Download",
-      "pageOf": "Page {page} of {total}",
-      "previous": "Previous",
-      "previousPageAria": "Previous page",
-      "next": "Next",
-      "nextPageAria": "Next page",
-      "tokenErrorFallback": "Download is not available for this version",
-      "startErrorFallback": "Failed to start download"
+      "emptyList": "未找到可下载的版本。",
+      "reasonExpired": "在你的许可证过期后发布。",
+      "reasonUnknown": "我们无法验证你的许可证。",
+      "reasonInactive": "需要有效的许可证。",
+      "noReleaseNotes": "暂无版本说明。",
+      "unavailable": "不可用",
+      "preparing": "准备中……",
+      "download": "下载",
+      "pageOf": "第 {page} 页，共 {total} 页",
+      "previous": "上一页",
+      "previousPageAria": "上一页",
+      "next": "下一页",
+      "nextPageAria": "下一页",
+      "tokenErrorFallback": "此版本无法下载",
+      "startErrorFallback": "启动下载失败"
     },
     "profile": {
-      "heading": "Profile",
-      "cardTitle": "Profile details",
-      "memberSince": "Member since",
-      "avatarAlt": "Avatar",
-      "avatarLabel": "Profile avatar",
-      "avatarHint": "If your connected account has an avatar, it is used by default.",
-      "avatarTooLarge": "Avatar image must be 1MB or smaller.",
-      "avatarInvalid": "Please upload a valid image file.",
-      "removeAvatar": "Remove uploaded avatar",
-      "firstName": "First name",
-      "lastName": "Last name",
-      "email": "Email",
-      "phone": "Phone",
-      "billingDetails": "Billing details for receipts",
-      "country": "Country",
-      "addressLine1": "Address line 1",
-      "addressLine2": "Address line 2",
-      "city": "City",
+      "heading": "个人资料",
+      "cardTitle": "资料详情",
+      "memberSince": "注册时间",
+      "avatarAlt": "头像",
+      "avatarLabel": "个人资料头像",
+      "avatarHint": "如果你连接的账户有头像，默认将使用该头像。",
+      "avatarTooLarge": "头像图片必须不超过 1MB。",
+      "avatarInvalid": "请上传有效的图片文件。",
+      "removeAvatar": "移除已上传的头像",
+      "firstName": "名字",
+      "lastName": "姓氏",
+      "email": "邮箱",
+      "phone": "电话",
+      "billingDetails": "收据的账单信息",
+      "country": "国家/地区",
+      "addressLine1": "地址行 1",
+      "addressLine2": "地址行 2",
+      "city": "城市",
       "regionLabels": {
-        "state": "State",
-        "province": "Province",
-        "county": "County",
-        "stateTerritory": "State/Territory",
-        "region": "Region",
-        "prefecture": "Prefecture"
+        "state": "州",
+        "province": "省",
+        "county": "县",
+        "stateTerritory": "州/领地",
+        "region": "地区",
+        "prefecture": "都道府县"
       },
       "postalLabels": {
-        "zip": "ZIP code",
-        "postalCode": "Postal code",
-        "postcode": "Postcode"
+        "zip": "ZIP 编码",
+        "postalCode": "邮政编码",
+        "postcode": "邮编"
       },
       "taxLabels": {
-        "einTaxId": "EIN / Tax ID",
-        "gstHst": "GST/HST number",
-        "vat": "VAT number",
+        "einTaxId": "EIN / 税号",
+        "gstHst": "GST/HST 号码",
+        "vat": "VAT 号码",
         "abn": "ABN",
-        "nifVat": "NIF / VAT number",
+        "nifVat": "NIF / VAT 号码",
         "partitaIva": "Partita IVA",
-        "gst": "GST number",
-        "taxRegistration": "Tax registration number",
-        "genericTaxId": "Tax ID / VAT number"
+        "gst": "GST 号码",
+        "taxRegistration": "税务登记号",
+        "genericTaxId": "税号 / VAT 号码"
       },
-      "updateError": "Failed to update profile",
-      "updateSuccess": "Profile updated successfully.",
-      "saving": "Saving...",
-      "save": "Save changes",
+      "updateError": "更新个人资料失败",
+      "updateSuccess": "个人资料更新成功。",
+      "saving": "保存中……",
+      "save": "保存更改",
       "lede": "您的详细信息、账单信息和已连接的服务。",
       "billingDetailsHint": "用于您的收据。",
       "connectionsTitle": "连接",
@@ -328,8 +328,8 @@
       "discordNotConfigured": "尚未配置 Discord 关联。",
       "githubProvider": "GitHub",
       "githubDescription": "用于一键登录。",
-      "emailProvider": "Email & password",
-      "emailDescription": "You sign in with your email address."
+      "emailProvider": "邮箱和密码",
+      "emailDescription": "你使用邮箱地址登录。"
     }
   }
 }

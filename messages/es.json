@@ -1,64 +1,64 @@
 {
   "common": {
-    "signIn": "Sign In",
-    "account": "Account",
-    "openMenu": "Open menu"
+    "signIn": "Iniciar sesión",
+    "account": "Cuenta",
+    "openMenu": "Abrir menú"
   },
   "header": {
-    "documentation": "Documentation",
-    "roadmap": "Roadmap",
+    "documentation": "Documentación",
+    "roadmap": "Hoja de ruta",
     "pro": "Pro",
-    "support": "Support",
-    "downloads": "Downloads"
+    "support": "Soporte",
+    "downloads": "Descargas"
   },
   "footer": {
-    "downloads": "Downloads",
+    "downloads": "Descargas",
     "copyright": "© 2026 WCPOS",
-    "privacy": "Privacy",
-    "terms": "Terms",
-    "refunds": "Refunds",
-    "about": "About",
-    "language": "Language",
-    "theme": "Theme",
-    "themeLight": "Light",
-    "themeDark": "Dark",
-    "themeSystem": "System"
+    "privacy": "Privacidad",
+    "terms": "Términos",
+    "refunds": "Reembolsos",
+    "about": "Acerca de",
+    "language": "Idioma",
+    "theme": "Tema",
+    "themeLight": "Claro",
+    "themeDark": "Oscuro",
+    "themeSystem": "Sistema"
   },
   "home": {
     "title": "WCPOS",
-    "subtitle": "A fast point of sale for WooCommerce"
+    "subtitle": "Un punto de venta rápido para WooCommerce"
   },
   "roadmap": {
-    "title": "Roadmap",
-    "subtitle": "What we're building for WCPOS"
+    "title": "Hoja de ruta",
+    "subtitle": "Lo que estamos construyendo para WCPOS"
   },
   "pro": {
     "features": {
-      "title": "What's included in Pro?",
-      "subtitle": "Everything in Free, plus the tools to run your whole store from the register — and priority support when you need a hand.",
+      "title": "¿Qué incluye Pro?",
+      "subtitle": "Todo lo de la versión gratuita, más las herramientas para gestionar toda tu tienda desde la caja registradora, y soporte prioritario cuando necesites ayuda.",
       "terminal": {
-        "title": "Payment Terminal Integration",
-        "description": "Connect card readers and payment terminals for fast, accurate in-person payments."
+        "title": "Integración con terminal de pago",
+        "description": "Conecta lectores de tarjetas y terminales de pago para cobros presenciales rápidos y precisos."
       },
       "stockPrice": {
-        "title": "Stock & Price Editing",
-        "description": "Update stock levels, prices, and product details right from the POS — no trip to the WordPress admin."
+        "title": "Edición de stock y precios",
+        "description": "Actualiza niveles de stock, precios y detalles de productos directamente desde el POS, sin pasar por el panel de WordPress."
       },
       "orders": {
-        "title": "Order Management",
-        "description": "Browse order history, open past orders, and manage them without leaving the register."
+        "title": "Gestión de pedidos",
+        "description": "Consulta el historial de pedidos, abre pedidos anteriores y gestiónalos sin salir de la caja registradora."
       },
       "customers": {
-        "title": "Customer Management",
-        "description": "Add and edit customer details at the point of sale, kept in sync with WooCommerce."
+        "title": "Gestión de clientes",
+        "description": "Añade y edita los datos de los clientes en el punto de venta, sincronizados con WooCommerce."
       },
       "reports": {
-        "title": "End-of-Day Reports",
-        "description": "Close the register with end-of-day summaries of sales, payments, and takings."
+        "title": "Informes de cierre de día",
+        "description": "Cierra la caja con resúmenes de fin de día de ventas, pagos y recaudación."
       },
       "gateways": {
-        "title": "Custom Payment Gateways",
-        "description": "Take payments with any WooCommerce-compatible gateway, not just the built-in options."
+        "title": "Pasarelas de pago personalizadas",
+        "description": "Acepta pagos con cualquier pasarela compatible con WooCommerce, no solo las opciones integradas."
       }
     },
     "buyBox": {
@@ -89,220 +89,220 @@
       "unavailableDescription": "La información de precios no está disponible en este momento. Inténtalo de nuevo más tarde."
     },
     "faq": {
-      "title": "Frequently Asked Questions",
+      "title": "Preguntas frecuentes",
       "freePlugin": {
-        "question": "Is the free plugin limited?",
-        "answer": "No. The free WCPOS plugin is GPL software with full point of sale features — unlimited products, orders, and customers, and no transaction fees. Pro adds the advanced tools listed above."
+        "question": "¿Está limitado el plugin gratuito?",
+        "answer": "No. El plugin gratuito de WCPOS es software GPL con funciones completas de punto de venta: productos, pedidos y clientes ilimitados, y sin comisiones por transacción. Pro añade las herramientas avanzadas indicadas arriba."
       },
       "yearlyVsLifetime": {
-        "question": "What's the difference between Yearly and Lifetime?",
-        "answer": "The Yearly license is a one-time payment that includes updates and priority support for one year. It does not renew automatically. The Lifetime license is a one-time payment that includes updates forever."
+        "question": "¿Cuál es la diferencia entre Anual y De por vida?",
+        "answer": "La licencia Anual es un pago único que incluye actualizaciones y soporte prioritario durante un año. No se renueva automáticamente. La licencia De por vida es un pago único que incluye actualizaciones para siempre."
       },
       "upgrade": {
-        "question": "Can I upgrade from Yearly to Lifetime?",
-        "answer": "Yes! Contact our support team and we'll credit the remaining time on your Yearly license towards a Lifetime license."
+        "question": "¿Puedo pasar de Anual a De por vida?",
+        "answer": "¡Sí! Contacta con nuestro equipo de soporte y descontaremos el tiempo restante de tu licencia Anual del precio de una licencia De por vida."
       },
       "siteLimits": {
-        "question": "How many sites can I use my license on?",
-        "answer": "Each license can be activated on multiple sites. Check your account dashboard for activation limits."
+        "question": "¿En cuántos sitios puedo usar mi licencia?",
+        "answer": "Cada licencia se puede activar en varios sitios. Consulta el panel de tu cuenta para ver los límites de activación."
       },
       "paymentMethods": {
-        "question": "What payment methods do you accept?",
-        "answer": "We accept credit cards (Visa, Mastercard, Amex), PayPal, and Bitcoin."
+        "question": "¿Qué métodos de pago aceptáis?",
+        "answer": "Aceptamos tarjetas de crédito (Visa, Mastercard, Amex), PayPal y Bitcoin."
       }
     }
   },
   "account": {
     "nav": {
-      "title": "Account",
-      "orders": "Orders",
-      "licenses": "Licenses",
-      "downloads": "Downloads",
-      "profile": "Profile"
+      "title": "Cuenta",
+      "orders": "Pedidos",
+      "licenses": "Licencias",
+      "downloads": "Descargas",
+      "profile": "Perfil"
     },
     "meta": {
       "orders": {
-        "title": "Order History",
-        "description": "View your WCPOS order history and receipts."
+        "title": "Historial de pedidos",
+        "description": "Consulta el historial de pedidos y los recibos de WCPOS."
       },
       "orderDetail": {
-        "title": "Order Details",
-        "description": "View the details of your WCPOS order."
+        "title": "Detalles del pedido",
+        "description": "Consulta los detalles de tu pedido de WCPOS."
       },
       "licenses": {
-        "title": "Licenses",
-        "description": "Manage your WCPOS Pro license keys and activations."
+        "title": "Licencias",
+        "description": "Gestiona tus claves de licencia y activaciones de WCPOS Pro."
       },
       "downloads": {
-        "title": "Downloads",
-        "description": "Download WCPOS Pro plugin releases for your licenses."
+        "title": "Descargas",
+        "description": "Descarga las versiones del plugin WCPOS Pro para tus licencias."
       },
       "profile": {
-        "title": "Profile",
-        "description": "Manage your WCPOS account profile details."
+        "title": "Perfil",
+        "description": "Gestiona los datos del perfil de tu cuenta de WCPOS."
       }
     },
     "header": {
-      "breadcrumb": "Account",
-      "signOut": "Sign out"
+      "breadcrumb": "Cuenta",
+      "signOut": "Cerrar sesión"
     },
     "error": {
-      "heading": "Something went wrong loading this page.",
-      "description": "The error has been reported. You can try again, or come back later.",
-      "retry": "Try again"
+      "heading": "Algo salió mal al cargar esta página.",
+      "description": "El error se ha notificado. Puedes intentarlo de nuevo o volver más tarde.",
+      "retry": "Intentar de nuevo"
     },
     "orders": {
-      "heading": "Order History",
-      "intro": "Invoices & receipts — every order includes a downloadable PDF tax receipt. Receipts use the billing address saved in your <profileLink>profile</profileLink>.",
-      "emptyTitle": "No orders yet.",
-      "emptyDescription": "Invoices and receipts will appear here after your first purchase.",
-      "browsePro": "Browse WCPOS Pro",
-      "orderNumber": "Order #{id}",
-      "dateAndItems": "{date} — {count, plural, =1 {# item} other {# items}}",
-      "receiptPdf": "Receipt (PDF)",
-      "downloadReceiptAria": "Download receipt for order #{id}",
+      "heading": "Historial de pedidos",
+      "intro": "Facturas y recibos — cada pedido incluye un recibo fiscal en PDF descargable. Los recibos usan la dirección de facturación guardada en tu <profileLink>perfil</profileLink>.",
+      "emptyTitle": "Aún no hay pedidos.",
+      "emptyDescription": "Las facturas y los recibos aparecerán aquí después de tu primera compra.",
+      "browsePro": "Explorar WCPOS Pro",
+      "orderNumber": "Pedido n.º {id}",
+      "dateAndItems": "{date} — {count, plural, =1 {# artículo} other {# artículos}}",
+      "receiptPdf": "Recibo (PDF)",
+      "downloadReceiptAria": "Descargar recibo del pedido n.º {id}",
       "viewOrder": "Ver",
       "viewOrderAria": "Ver pedido n.º {id}"
     },
     "orderDetail": {
-      "backToOrders": "Back to orders",
-      "orderNumber": "Order #{id}",
-      "downloadReceipt": "Download tax receipt (PDF)",
-      "detailsTitle": "Order Details",
-      "dateLabel": "Date",
-      "statusLabel": "Status",
-      "emailLabel": "Email",
+      "backToOrders": "Volver a pedidos",
+      "orderNumber": "Pedido n.º {id}",
+      "downloadReceipt": "Descargar recibo fiscal (PDF)",
+      "detailsTitle": "Detalles del pedido",
+      "dateLabel": "Fecha",
+      "statusLabel": "Estado",
+      "emailLabel": "Correo electrónico",
       "totalLabel": "Total",
-      "itemsTitle": "Items",
-      "quantity": "Qty: {count}",
-      "licenseKeysTitle": "License Keys",
-      "manage": "Manage",
+      "itemsTitle": "Artículos",
+      "quantity": "Cantidad: {count}",
+      "licenseKeysTitle": "Claves de licencia",
+      "manage": "Gestionar",
       "licenseFromOrderTitle": "Licencia de este pedido",
       "manageLicence": "Gestionar licencia →"
     },
     "licenseStatus": {
-      "active": "active",
-      "expired": "expired",
-      "suspended": "suspended",
-      "revoked": "revoked",
-      "unknown": "unknown"
+      "active": "activa",
+      "expired": "caducada",
+      "suspended": "suspendida",
+      "revoked": "revocada",
+      "unknown": "desconocido"
     },
     "licenses": {
-      "heading": "Licenses",
-      "loadError": "Failed to load licenses",
-      "deactivateError": "Failed to deactivate machine. Please try again.",
-      "emptyTitle": "No licenses found.",
-      "emptyDescription": "Purchase WCPOS Pro to get a license.",
-      "planYearly": "Yearly",
-      "planLifetime": "Lifetime",
-      "unknownStatusTooltip": "We couldn't verify this license right now",
-      "unverifiable": "We couldn't verify this license right now. Try again shortly or <supportLink>contact support</supportLink>.",
-      "expiresSoonRenew": "Your license expires on {date} — renew to keep receiving updates.",
-      "expiresSoon": "Your license expires on {date}.",
-      "renew": "Renew",
-      "expiresLabel": "Expires:",
-      "activationsLabel": "Activations:",
-      "activationsCount": "{count} of {max}",
-      "downloads": "Downloads",
-      "activatedMachines": "Activated Machines",
-      "machineAdded": "Added {date}",
-      "deactivateMachineAria": "Deactivate {name}",
-      "genericMachineName": "machine",
-      "coversLatestVersion": "Latest version {version} · via this licence",
-      "coversUpToVersion": "Covers updates up to {version}",
-      "siteUpdatesThrough": "Updates through {version}",
-      "discordHeading": "Discord access",
-      "discordMembers": "{count} of {cap} members",
-      "discordConnected": "Connected {date}",
-      "discordRemove": "Remove",
-      "discordRemoveAria": "Remove {handle}",
-      "discordConnectHint": "Connect with your license key to get the Pro role in our community Discord.",
-      "discordNoMembers": "No connected members yet.",
-      "discordRemoveError": "Failed to remove Discord member. Please try again."
+      "heading": "Licencias",
+      "loadError": "No se pudieron cargar las licencias",
+      "deactivateError": "No se pudo desactivar la máquina. Inténtalo de nuevo.",
+      "emptyTitle": "No se encontraron licencias.",
+      "emptyDescription": "Compra WCPOS Pro para obtener una licencia.",
+      "planYearly": "Anual",
+      "planLifetime": "De por vida",
+      "unknownStatusTooltip": "No pudimos verificar esta licencia en este momento",
+      "unverifiable": "No pudimos verificar esta licencia en este momento. Inténtalo de nuevo en unos minutos o <supportLink>contacta con soporte</supportLink>.",
+      "expiresSoonRenew": "Tu licencia caduca el {date} — renuévala para seguir recibiendo actualizaciones.",
+      "expiresSoon": "Tu licencia caduca el {date}.",
+      "renew": "Renovar",
+      "expiresLabel": "Caduca:",
+      "activationsLabel": "Activaciones:",
+      "activationsCount": "{count} de {max}",
+      "downloads": "Descargas",
+      "activatedMachines": "Máquinas activadas",
+      "machineAdded": "Añadida el {date}",
+      "deactivateMachineAria": "Desactivar {name}",
+      "genericMachineName": "máquina",
+      "coversLatestVersion": "Última versión {version} · con esta licencia",
+      "coversUpToVersion": "Cubre actualizaciones hasta la {version}",
+      "siteUpdatesThrough": "Actualizaciones hasta la {version}",
+      "discordHeading": "Acceso a Discord",
+      "discordMembers": "{count} de {cap} miembros",
+      "discordConnected": "Conectado el {date}",
+      "discordRemove": "Eliminar",
+      "discordRemoveAria": "Eliminar {handle}",
+      "discordConnectHint": "Conecta con tu clave de licencia para obtener el rol Pro en nuestro Discord de la comunidad.",
+      "discordNoMembers": "Aún no hay miembros conectados.",
+      "discordRemoveError": "No se pudo eliminar el miembro de Discord. Inténtalo de nuevo."
     },
     "downloads": {
-      "heading": "Downloads",
+      "heading": "Descargas",
       "subheading": "Todas las versiones. Lo que puedes instalar depende de tu licencia.",
-      "expiredBanner": "Your license expired on {date}. You can still download versions released before then.",
-      "suspendedBanner": "Your license is suspended — contact support.",
-      "revokedBanner": "Your license has been revoked and no longer includes downloads. Contact support if you believe this is an error.",
-      "unknownBanner": "We couldn't verify your license — downloads may be temporarily limited. Try again shortly or contact support.",
-      "inactiveBanner": "You have no active license. Only versions released during your license term are available.",
-      "noLicenseBanner": "A WCPOS Pro license is required to download the plugin.",
-      "renewLicense": "Renew license",
-      "contactSupport": "Contact support",
-      "getPro": "Get WCPOS Pro",
+      "expiredBanner": "Tu licencia caducó el {date}. Aún puedes descargar las versiones publicadas antes de esa fecha.",
+      "suspendedBanner": "Tu licencia está suspendida — contacta con soporte.",
+      "revokedBanner": "Tu licencia ha sido revocada y ya no incluye descargas. Contacta con soporte si crees que se trata de un error.",
+      "unknownBanner": "No pudimos verificar tu licencia — las descargas pueden estar temporalmente limitadas. Inténtalo de nuevo en unos minutos o contacta con soporte.",
+      "inactiveBanner": "No tienes ninguna licencia activa. Solo están disponibles las versiones publicadas durante la vigencia de tu licencia.",
+      "noLicenseBanner": "Se requiere una licencia de WCPOS Pro para descargar el plugin.",
+      "renewLicense": "Renovar licencia",
+      "contactSupport": "Contactar con soporte",
+      "getPro": "Consigue WCPOS Pro",
       "listTitle": "Historial de versiones",
       "latestVersionLabel": "Última versión",
-      "latestBadge": "Latest",
+      "latestBadge": "Más reciente",
       "majorBadge": "Mayor",
       "releaseNotes": "Notas de la versión",
       "releaseCount": "{count, plural, one {# versión} other {# versiones}}",
       "availableOnPlan": "Disponible con tu licencia {plan} activa",
       "availableOnActive": "Disponible con tu licencia activa",
-      "emptyList": "No downloadable versions were found.",
-      "reasonExpired": "Released after your license expired.",
-      "reasonUnknown": "We couldn't verify your license.",
-      "reasonInactive": "Requires an active license.",
-      "noReleaseNotes": "No release notes yet.",
-      "unavailable": "Unavailable",
-      "preparing": "Preparing...",
-      "download": "Download",
-      "pageOf": "Page {page} of {total}",
-      "previous": "Previous",
-      "previousPageAria": "Previous page",
-      "next": "Next",
-      "nextPageAria": "Next page",
-      "tokenErrorFallback": "Download is not available for this version",
-      "startErrorFallback": "Failed to start download"
+      "emptyList": "No se encontraron versiones descargables.",
+      "reasonExpired": "Publicada después de que caducara tu licencia.",
+      "reasonUnknown": "No pudimos verificar tu licencia.",
+      "reasonInactive": "Requiere una licencia activa.",
+      "noReleaseNotes": "Aún no hay notas de la versión.",
+      "unavailable": "No disponible",
+      "preparing": "Preparando...",
+      "download": "Descargar",
+      "pageOf": "Página {page} de {total}",
+      "previous": "Anterior",
+      "previousPageAria": "Página anterior",
+      "next": "Siguiente",
+      "nextPageAria": "Página siguiente",
+      "tokenErrorFallback": "La descarga no está disponible para esta versión",
+      "startErrorFallback": "No se pudo iniciar la descarga"
     },
     "profile": {
-      "heading": "Profile",
-      "cardTitle": "Profile details",
-      "memberSince": "Member since",
+      "heading": "Perfil",
+      "cardTitle": "Datos del perfil",
+      "memberSince": "Miembro desde",
       "avatarAlt": "Avatar",
-      "avatarLabel": "Profile avatar",
-      "avatarHint": "If your connected account has an avatar, it is used by default.",
-      "avatarTooLarge": "Avatar image must be 1MB or smaller.",
-      "avatarInvalid": "Please upload a valid image file.",
-      "removeAvatar": "Remove uploaded avatar",
-      "firstName": "First name",
-      "lastName": "Last name",
-      "email": "Email",
-      "phone": "Phone",
-      "billingDetails": "Billing details for receipts",
-      "country": "Country",
-      "addressLine1": "Address line 1",
-      "addressLine2": "Address line 2",
-      "city": "City",
+      "avatarLabel": "Avatar del perfil",
+      "avatarHint": "Si tu cuenta conectada tiene un avatar, se usa de forma predeterminada.",
+      "avatarTooLarge": "La imagen del avatar debe ocupar 1 MB o menos.",
+      "avatarInvalid": "Sube un archivo de imagen válido.",
+      "removeAvatar": "Eliminar avatar subido",
+      "firstName": "Nombre",
+      "lastName": "Apellidos",
+      "email": "Correo electrónico",
+      "phone": "Teléfono",
+      "billingDetails": "Datos de facturación para los recibos",
+      "country": "País",
+      "addressLine1": "Dirección línea 1",
+      "addressLine2": "Dirección línea 2",
+      "city": "Ciudad",
       "regionLabels": {
-        "state": "State",
-        "province": "Province",
-        "county": "County",
-        "stateTerritory": "State/Territory",
-        "region": "Region",
-        "prefecture": "Prefecture"
+        "state": "Estado",
+        "province": "Provincia",
+        "county": "Condado",
+        "stateTerritory": "Estado/Territorio",
+        "region": "Región",
+        "prefecture": "Prefectura"
       },
       "postalLabels": {
-        "zip": "ZIP code",
-        "postalCode": "Postal code",
-        "postcode": "Postcode"
+        "zip": "Código ZIP",
+        "postalCode": "Código postal",
+        "postcode": "Código postal"
       },
       "taxLabels": {
-        "einTaxId": "EIN / Tax ID",
-        "gstHst": "GST/HST number",
-        "vat": "VAT number",
+        "einTaxId": "EIN / N.º de identificación fiscal",
+        "gstHst": "Número GST/HST",
+        "vat": "Número VAT",
         "abn": "ABN",
-        "nifVat": "NIF / VAT number",
+        "nifVat": "NIF / Número VAT",
         "partitaIva": "Partita IVA",
-        "gst": "GST number",
-        "taxRegistration": "Tax registration number",
-        "genericTaxId": "Tax ID / VAT number"
+        "gst": "Número GST",
+        "taxRegistration": "Número de registro fiscal",
+        "genericTaxId": "N.º de identificación fiscal / Número VAT"
       },
-      "updateError": "Failed to update profile",
-      "updateSuccess": "Profile updated successfully.",
-      "saving": "Saving...",
-      "save": "Save changes",
+      "updateError": "No se pudo actualizar el perfil",
+      "updateSuccess": "Perfil actualizado correctamente.",
+      "saving": "Guardando...",
+      "save": "Guardar cambios",
       "lede": "Tus datos, información de facturación y servicios conectados.",
       "billingDetailsHint": "Se usa en tus recibos.",
       "connectionsTitle": "Conexiones",
@@ -318,18 +318,18 @@
       "disconnecting": "Desconectando...",
       "disconnectError": "No se pudo desconectar. Inténtalo de nuevo.",
       "discordStatus": {
-        "linked": "Discord connected. Your Pro role will sync automatically.",
-        "unlinked": "Discord disconnected. The Pro role was removed if Discord allowed it.",
-        "synced": "Discord role resynced.",
+        "linked": "Discord conectado. Tu rol Pro se sincronizará automáticamente.",
+        "unlinked": "Discord desconectado. El rol Pro se eliminó si Discord lo permitió.",
+        "synced": "Rol de Discord resincronizado.",
         "join_server": "Únete al servidor de Discord y vuelve a sincronizar tu rol.",
-        "error": "Discord sync failed. Please try again or contact support.",
-        "already_linked": "That Discord account is already linked to another WCPOS customer."
+        "error": "La sincronización con Discord falló. Inténtalo de nuevo o contacta con soporte.",
+        "already_linked": "Esa cuenta de Discord ya está vinculada a otro cliente de WCPOS."
       },
-      "discordNotConfigured": "Discord linking is not configured yet.",
+      "discordNotConfigured": "La vinculación con Discord aún no está configurada.",
       "githubProvider": "GitHub",
       "githubDescription": "Se usa para iniciar sesión con un clic.",
-      "emailProvider": "Email & password",
-      "emailDescription": "You sign in with your email address."
+      "emailProvider": "Correo electrónico y contraseña",
+      "emailDescription": "Inicias sesión con tu dirección de correo electrónico."
     }
   }
 }

@@ -1,64 +1,64 @@
 {
   "common": {
-    "signIn": "Sign In",
-    "account": "Account",
-    "openMenu": "Open menu"
+    "signIn": "サインイン",
+    "account": "アカウント",
+    "openMenu": "メニューを開く"
   },
   "header": {
-    "documentation": "Documentation",
-    "roadmap": "Roadmap",
+    "documentation": "ドキュメント",
+    "roadmap": "ロードマップ",
     "pro": "Pro",
-    "support": "Support",
-    "downloads": "Downloads"
+    "support": "サポート",
+    "downloads": "ダウンロード"
   },
   "footer": {
-    "downloads": "Downloads",
+    "downloads": "ダウンロード",
     "copyright": "© 2026 WCPOS",
-    "privacy": "Privacy",
-    "terms": "Terms",
-    "refunds": "Refunds",
-    "about": "About",
-    "language": "Language",
-    "theme": "Theme",
-    "themeLight": "Light",
-    "themeDark": "Dark",
-    "themeSystem": "System"
+    "privacy": "プライバシー",
+    "terms": "利用規約",
+    "refunds": "返金",
+    "about": "概要",
+    "language": "言語",
+    "theme": "テーマ",
+    "themeLight": "ライト",
+    "themeDark": "ダーク",
+    "themeSystem": "システム"
   },
   "home": {
     "title": "WCPOS",
-    "subtitle": "A fast point of sale for WooCommerce"
+    "subtitle": "WooCommerce向けの高速なPOS"
   },
   "roadmap": {
-    "title": "Roadmap",
-    "subtitle": "What we're building for WCPOS"
+    "title": "ロードマップ",
+    "subtitle": "WCPOSで開発中の機能"
   },
   "pro": {
     "features": {
-      "title": "What's included in Pro?",
-      "subtitle": "Everything in Free, plus the tools to run your whole store from the register — and priority support when you need a hand.",
+      "title": "Proに含まれるもの",
+      "subtitle": "無料版のすべての機能に加え、レジからお店全体を運営できるツールと、困ったときの優先サポートが付いています。",
       "terminal": {
-        "title": "Payment Terminal Integration",
-        "description": "Connect card readers and payment terminals for fast, accurate in-person payments."
+        "title": "決済端末との連携",
+        "description": "カードリーダーや決済端末を接続して、対面での支払いを素早く正確に処理できます。"
       },
       "stockPrice": {
-        "title": "Stock & Price Editing",
-        "description": "Update stock levels, prices, and product details right from the POS — no trip to the WordPress admin."
+        "title": "在庫と価格の編集",
+        "description": "在庫数、価格、商品詳細をPOSから直接更新できます。WordPress管理画面を開く必要はありません。"
       },
       "orders": {
-        "title": "Order Management",
-        "description": "Browse order history, open past orders, and manage them without leaving the register."
+        "title": "注文管理",
+        "description": "注文履歴を閲覧し、過去の注文を開いて、レジを離れることなく管理できます。"
       },
       "customers": {
-        "title": "Customer Management",
-        "description": "Add and edit customer details at the point of sale, kept in sync with WooCommerce."
+        "title": "顧客管理",
+        "description": "販売時点で顧客情報を追加・編集でき、WooCommerceと同期されます。"
       },
       "reports": {
-        "title": "End-of-Day Reports",
-        "description": "Close the register with end-of-day summaries of sales, payments, and takings."
+        "title": "日次レポート",
+        "description": "売上、支払い、収入の日次サマリーでレジを締められます。"
       },
       "gateways": {
-        "title": "Custom Payment Gateways",
-        "description": "Take payments with any WooCommerce-compatible gateway, not just the built-in options."
+        "title": "カスタム決済ゲートウェイ",
+        "description": "組み込みのオプションだけでなく、WooCommerce対応の任意のゲートウェイで支払いを受け付けられます。"
       }
     },
     "buyBox": {
@@ -89,220 +89,220 @@
       "unavailableDescription": "現在、価格情報を取得できません。しばらくしてからもう一度お試しください。"
     },
     "faq": {
-      "title": "Frequently Asked Questions",
+      "title": "よくある質問",
       "freePlugin": {
-        "question": "Is the free plugin limited?",
-        "answer": "No. The free WCPOS plugin is GPL software with full point of sale features — unlimited products, orders, and customers, and no transaction fees. Pro adds the advanced tools listed above."
+        "question": "無料プラグインには制限がありますか？",
+        "answer": "いいえ。無料のWCPOSプラグインはGPLソフトウェアで、完全なPOS機能を備えています。商品、注文、顧客は無制限で、取引手数料もかかりません。Proは上記の高度なツールを追加します。"
       },
       "yearlyVsLifetime": {
-        "question": "What's the difference between Yearly and Lifetime?",
-        "answer": "The Yearly license is a one-time payment that includes updates and priority support for one year. It does not renew automatically. The Lifetime license is a one-time payment that includes updates forever."
+        "question": "年間と買い切りの違いは何ですか？",
+        "answer": "年間ライセンスは一回払いで、1年間のアップデートと優先サポートが含まれます。自動更新はされません。買い切りライセンスは一回払いで、永久にアップデートが含まれます。"
       },
       "upgrade": {
-        "question": "Can I upgrade from Yearly to Lifetime?",
-        "answer": "Yes! Contact our support team and we'll credit the remaining time on your Yearly license towards a Lifetime license."
+        "question": "年間から買い切りにアップグレードできますか？",
+        "answer": "はい！サポートチームまでお問い合わせいただければ、年間ライセンスの残り期間を買い切りライセンスに充当いたします。"
       },
       "siteLimits": {
-        "question": "How many sites can I use my license on?",
-        "answer": "Each license can be activated on multiple sites. Check your account dashboard for activation limits."
+        "question": "ライセンスは何サイトで使用できますか？",
+        "answer": "各ライセンスは複数のサイトで有効化できます。有効化の上限はアカウントダッシュボードでご確認ください。"
       },
       "paymentMethods": {
-        "question": "What payment methods do you accept?",
-        "answer": "We accept credit cards (Visa, Mastercard, Amex), PayPal, and Bitcoin."
+        "question": "どの支払い方法に対応していますか？",
+        "answer": "クレジットカード（Visa、Mastercard、Amex）、PayPal、Bitcoinに対応しています。"
       }
     }
   },
   "account": {
     "nav": {
-      "title": "Account",
-      "orders": "Orders",
-      "licenses": "Licenses",
-      "downloads": "Downloads",
-      "profile": "Profile"
+      "title": "アカウント",
+      "orders": "注文",
+      "licenses": "ライセンス",
+      "downloads": "ダウンロード",
+      "profile": "プロフィール"
     },
     "meta": {
       "orders": {
-        "title": "Order History",
-        "description": "View your WCPOS order history and receipts."
+        "title": "注文履歴",
+        "description": "WCPOSの注文履歴と領収書を表示します。"
       },
       "orderDetail": {
-        "title": "Order Details",
-        "description": "View the details of your WCPOS order."
+        "title": "注文の詳細",
+        "description": "WCPOSの注文の詳細を表示します。"
       },
       "licenses": {
-        "title": "Licenses",
-        "description": "Manage your WCPOS Pro license keys and activations."
+        "title": "ライセンス",
+        "description": "WCPOS Proのライセンスキーと有効化を管理します。"
       },
       "downloads": {
-        "title": "Downloads",
-        "description": "Download WCPOS Pro plugin releases for your licenses."
+        "title": "ダウンロード",
+        "description": "ライセンスに応じたWCPOS Proプラグインのリリースをダウンロードします。"
       },
       "profile": {
-        "title": "Profile",
-        "description": "Manage your WCPOS account profile details."
+        "title": "プロフィール",
+        "description": "WCPOSアカウントのプロフィール情報を管理します。"
       }
     },
     "header": {
-      "breadcrumb": "Account",
-      "signOut": "Sign out"
+      "breadcrumb": "アカウント",
+      "signOut": "サインアウト"
     },
     "error": {
-      "heading": "Something went wrong loading this page.",
-      "description": "The error has been reported. You can try again, or come back later.",
-      "retry": "Try again"
+      "heading": "このページの読み込み中に問題が発生しました。",
+      "description": "エラーは報告されました。もう一度お試しいただくか、後ほどお越しください。",
+      "retry": "もう一度試す"
     },
     "orders": {
-      "heading": "Order History",
-      "intro": "Invoices & receipts — every order includes a downloadable PDF tax receipt. Receipts use the billing address saved in your <profileLink>profile</profileLink>.",
-      "emptyTitle": "No orders yet.",
-      "emptyDescription": "Invoices and receipts will appear here after your first purchase.",
-      "browsePro": "Browse WCPOS Pro",
-      "orderNumber": "Order #{id}",
-      "dateAndItems": "{date} — {count, plural, =1 {# item} other {# items}}",
-      "receiptPdf": "Receipt (PDF)",
-      "downloadReceiptAria": "Download receipt for order #{id}",
+      "heading": "注文履歴",
+      "intro": "請求書と領収書 — すべての注文には、ダウンロード可能なPDF形式の税務領収書が含まれます。領収書には<profileLink>プロフィール</profileLink>に保存された請求先住所が使用されます。",
+      "emptyTitle": "まだ注文はありません。",
+      "emptyDescription": "最初のご購入後、請求書と領収書がここに表示されます。",
+      "browsePro": "WCPOS Proを見る",
+      "orderNumber": "注文 #{id}",
+      "dateAndItems": "{date} — {count, plural, =1 {# 点} other {# 点}}",
+      "receiptPdf": "領収書（PDF）",
+      "downloadReceiptAria": "注文 #{id} の領収書をダウンロード",
       "viewOrder": "表示",
       "viewOrderAria": "注文 #{id} を表示"
     },
     "orderDetail": {
-      "backToOrders": "Back to orders",
-      "orderNumber": "Order #{id}",
-      "downloadReceipt": "Download tax receipt (PDF)",
-      "detailsTitle": "Order Details",
-      "dateLabel": "Date",
-      "statusLabel": "Status",
-      "emailLabel": "Email",
-      "totalLabel": "Total",
-      "itemsTitle": "Items",
-      "quantity": "Qty: {count}",
-      "licenseKeysTitle": "License Keys",
-      "manage": "Manage",
+      "backToOrders": "注文一覧に戻る",
+      "orderNumber": "注文 #{id}",
+      "downloadReceipt": "税務領収書をダウンロード（PDF）",
+      "detailsTitle": "注文の詳細",
+      "dateLabel": "日付",
+      "statusLabel": "ステータス",
+      "emailLabel": "メール",
+      "totalLabel": "合計",
+      "itemsTitle": "商品",
+      "quantity": "数量: {count}",
+      "licenseKeysTitle": "ライセンスキー",
+      "manage": "管理",
       "licenseFromOrderTitle": "この注文のライセンス",
       "manageLicence": "ライセンスを管理 →"
     },
     "licenseStatus": {
-      "active": "active",
-      "expired": "expired",
-      "suspended": "suspended",
-      "revoked": "revoked",
-      "unknown": "unknown"
+      "active": "有効",
+      "expired": "期限切れ",
+      "suspended": "停止中",
+      "revoked": "取り消し済み",
+      "unknown": "不明"
     },
     "licenses": {
-      "heading": "Licenses",
-      "loadError": "Failed to load licenses",
-      "deactivateError": "Failed to deactivate machine. Please try again.",
-      "emptyTitle": "No licenses found.",
-      "emptyDescription": "Purchase WCPOS Pro to get a license.",
-      "planYearly": "Yearly",
-      "planLifetime": "Lifetime",
-      "unknownStatusTooltip": "We couldn't verify this license right now",
-      "unverifiable": "We couldn't verify this license right now. Try again shortly or <supportLink>contact support</supportLink>.",
-      "expiresSoonRenew": "Your license expires on {date} — renew to keep receiving updates.",
-      "expiresSoon": "Your license expires on {date}.",
-      "renew": "Renew",
-      "expiresLabel": "Expires:",
-      "activationsLabel": "Activations:",
-      "activationsCount": "{count} of {max}",
-      "downloads": "Downloads",
-      "activatedMachines": "Activated Machines",
-      "machineAdded": "Added {date}",
-      "deactivateMachineAria": "Deactivate {name}",
-      "genericMachineName": "machine",
-      "coversLatestVersion": "Latest version {version} · via this licence",
-      "coversUpToVersion": "Covers updates up to {version}",
-      "siteUpdatesThrough": "Updates through {version}",
-      "discordHeading": "Discord access",
-      "discordMembers": "{count} of {cap} members",
-      "discordConnected": "Connected {date}",
-      "discordRemove": "Remove",
-      "discordRemoveAria": "Remove {handle}",
-      "discordConnectHint": "Connect with your license key to get the Pro role in our community Discord.",
-      "discordNoMembers": "No connected members yet.",
-      "discordRemoveError": "Failed to remove Discord member. Please try again."
+      "heading": "ライセンス",
+      "loadError": "ライセンスの読み込みに失敗しました",
+      "deactivateError": "端末の無効化に失敗しました。もう一度お試しください。",
+      "emptyTitle": "ライセンスが見つかりません。",
+      "emptyDescription": "WCPOS Proを購入してライセンスを取得してください。",
+      "planYearly": "年間",
+      "planLifetime": "買い切り",
+      "unknownStatusTooltip": "現在このライセンスを確認できませんでした",
+      "unverifiable": "現在このライセンスを確認できませんでした。しばらくしてからもう一度お試しいただくか、<supportLink>サポートにお問い合わせ</supportLink>ください。",
+      "expiresSoonRenew": "ライセンスは{date}に期限切れになります — アップデートを受け取り続けるには更新してください。",
+      "expiresSoon": "ライセンスは{date}に期限切れになります。",
+      "renew": "更新",
+      "expiresLabel": "有効期限:",
+      "activationsLabel": "有効化数:",
+      "activationsCount": "{max} 中 {count}",
+      "downloads": "ダウンロード",
+      "activatedMachines": "有効化された端末",
+      "machineAdded": "{date} に追加",
+      "deactivateMachineAria": "{name} を無効化",
+      "genericMachineName": "端末",
+      "coversLatestVersion": "最新バージョン {version} · このライセンス経由",
+      "coversUpToVersion": "バージョン {version} までのアップデートに対応",
+      "siteUpdatesThrough": "バージョン {version} までのアップデート",
+      "discordHeading": "Discordアクセス",
+      "discordMembers": "{cap} 中 {count} 人のメンバー",
+      "discordConnected": "{date} に連携",
+      "discordRemove": "削除",
+      "discordRemoveAria": "{handle} を削除",
+      "discordConnectHint": "ライセンスキーで連携すると、コミュニティDiscordでProロールを取得できます。",
+      "discordNoMembers": "まだ連携済みのメンバーはいません。",
+      "discordRemoveError": "Discordメンバーの削除に失敗しました。もう一度お試しください。"
     },
     "downloads": {
-      "heading": "Downloads",
+      "heading": "ダウンロード",
       "subheading": "すべてのリリース。インストールできるバージョンはライセンスによって異なります。",
-      "expiredBanner": "Your license expired on {date}. You can still download versions released before then.",
-      "suspendedBanner": "Your license is suspended — contact support.",
-      "revokedBanner": "Your license has been revoked and no longer includes downloads. Contact support if you believe this is an error.",
-      "unknownBanner": "We couldn't verify your license — downloads may be temporarily limited. Try again shortly or contact support.",
-      "inactiveBanner": "You have no active license. Only versions released during your license term are available.",
-      "noLicenseBanner": "A WCPOS Pro license is required to download the plugin.",
-      "renewLicense": "Renew license",
-      "contactSupport": "Contact support",
-      "getPro": "Get WCPOS Pro",
+      "expiredBanner": "ライセンスは{date}に期限切れになりました。それ以前にリリースされたバージョンは引き続きダウンロードできます。",
+      "suspendedBanner": "ライセンスは停止中です — サポートにお問い合わせください。",
+      "revokedBanner": "ライセンスは取り消され、ダウンロードは含まれなくなりました。誤りだと思われる場合はサポートにお問い合わせください。",
+      "unknownBanner": "ライセンスを確認できませんでした — ダウンロードが一時的に制限される場合があります。しばらくしてからもう一度お試しいただくか、サポートにお問い合わせください。",
+      "inactiveBanner": "有効なライセンスがありません。ライセンス期間中にリリースされたバージョンのみ利用できます。",
+      "noLicenseBanner": "プラグインをダウンロードするにはWCPOS Proライセンスが必要です。",
+      "renewLicense": "ライセンスを更新",
+      "contactSupport": "サポートに問い合わせる",
+      "getPro": "WCPOS Proを入手",
       "listTitle": "バージョン履歴",
       "latestVersionLabel": "最新バージョン",
-      "latestBadge": "Latest",
+      "latestBadge": "最新",
       "majorBadge": "メジャー",
       "releaseNotes": "リリースノート",
       "releaseCount": "{count, plural, other {# 件のリリース}}",
       "availableOnPlan": "有効な{plan}ライセンスで利用可能",
       "availableOnActive": "有効なライセンスで利用可能",
-      "emptyList": "No downloadable versions were found.",
-      "reasonExpired": "Released after your license expired.",
-      "reasonUnknown": "We couldn't verify your license.",
-      "reasonInactive": "Requires an active license.",
-      "noReleaseNotes": "No release notes yet.",
-      "unavailable": "Unavailable",
-      "preparing": "Preparing...",
-      "download": "Download",
-      "pageOf": "Page {page} of {total}",
-      "previous": "Previous",
-      "previousPageAria": "Previous page",
-      "next": "Next",
-      "nextPageAria": "Next page",
-      "tokenErrorFallback": "Download is not available for this version",
-      "startErrorFallback": "Failed to start download"
+      "emptyList": "ダウンロード可能なバージョンが見つかりませんでした。",
+      "reasonExpired": "ライセンスの期限切れ後にリリースされました。",
+      "reasonUnknown": "ライセンスを確認できませんでした。",
+      "reasonInactive": "有効なライセンスが必要です。",
+      "noReleaseNotes": "まだリリースノートはありません。",
+      "unavailable": "利用不可",
+      "preparing": "準備中...",
+      "download": "ダウンロード",
+      "pageOf": "{total} ページ中 {page} ページ",
+      "previous": "前へ",
+      "previousPageAria": "前のページ",
+      "next": "次へ",
+      "nextPageAria": "次のページ",
+      "tokenErrorFallback": "このバージョンはダウンロードできません",
+      "startErrorFallback": "ダウンロードの開始に失敗しました"
     },
     "profile": {
-      "heading": "Profile",
-      "cardTitle": "Profile details",
-      "memberSince": "Member since",
-      "avatarAlt": "Avatar",
-      "avatarLabel": "Profile avatar",
-      "avatarHint": "If your connected account has an avatar, it is used by default.",
-      "avatarTooLarge": "Avatar image must be 1MB or smaller.",
-      "avatarInvalid": "Please upload a valid image file.",
-      "removeAvatar": "Remove uploaded avatar",
-      "firstName": "First name",
-      "lastName": "Last name",
-      "email": "Email",
-      "phone": "Phone",
-      "billingDetails": "Billing details for receipts",
-      "country": "Country",
-      "addressLine1": "Address line 1",
-      "addressLine2": "Address line 2",
-      "city": "City",
+      "heading": "プロフィール",
+      "cardTitle": "プロフィール情報",
+      "memberSince": "登録日",
+      "avatarAlt": "アバター",
+      "avatarLabel": "プロフィールアバター",
+      "avatarHint": "連携済みアカウントにアバターがある場合、デフォルトで使用されます。",
+      "avatarTooLarge": "アバター画像は1MB以下にしてください。",
+      "avatarInvalid": "有効な画像ファイルをアップロードしてください。",
+      "removeAvatar": "アップロードしたアバターを削除",
+      "firstName": "名",
+      "lastName": "姓",
+      "email": "メール",
+      "phone": "電話番号",
+      "billingDetails": "領収書用の請求情報",
+      "country": "国",
+      "addressLine1": "住所1",
+      "addressLine2": "住所2",
+      "city": "市区町村",
       "regionLabels": {
-        "state": "State",
-        "province": "Province",
-        "county": "County",
-        "stateTerritory": "State/Territory",
-        "region": "Region",
-        "prefecture": "Prefecture"
+        "state": "州",
+        "province": "州・省",
+        "county": "郡",
+        "stateTerritory": "州・準州",
+        "region": "地域",
+        "prefecture": "都道府県"
       },
       "postalLabels": {
-        "zip": "ZIP code",
-        "postalCode": "Postal code",
-        "postcode": "Postcode"
+        "zip": "ZIPコード",
+        "postalCode": "郵便番号",
+        "postcode": "郵便番号"
       },
       "taxLabels": {
-        "einTaxId": "EIN / Tax ID",
-        "gstHst": "GST/HST number",
-        "vat": "VAT number",
+        "einTaxId": "EIN / 納税者番号",
+        "gstHst": "GST/HST番号",
+        "vat": "VAT番号",
         "abn": "ABN",
-        "nifVat": "NIF / VAT number",
+        "nifVat": "NIF / VAT番号",
         "partitaIva": "Partita IVA",
-        "gst": "GST number",
-        "taxRegistration": "Tax registration number",
-        "genericTaxId": "Tax ID / VAT number"
+        "gst": "GST番号",
+        "taxRegistration": "納税登録番号",
+        "genericTaxId": "納税者番号 / VAT番号"
       },
-      "updateError": "Failed to update profile",
-      "updateSuccess": "Profile updated successfully.",
-      "saving": "Saving...",
-      "save": "Save changes",
+      "updateError": "プロフィールの更新に失敗しました",
+      "updateSuccess": "プロフィールを更新しました。",
+      "saving": "保存中...",
+      "save": "変更を保存",
       "lede": "あなたの情報、請求情報、連携サービス。",
       "billingDetailsHint": "領収書に使用されます。",
       "connectionsTitle": "連携",
@@ -318,18 +318,18 @@
       "disconnecting": "連携を解除しています...",
       "disconnectError": "連携を解除できませんでした。もう一度お試しください。",
       "discordStatus": {
-        "linked": "Discord connected. Your Pro role will sync automatically.",
-        "unlinked": "Discord disconnected. The Pro role was removed if Discord allowed it.",
-        "synced": "Discord role resynced.",
+        "linked": "Discordを連携しました。Proロールは自動的に同期されます。",
+        "unlinked": "Discordの連携を解除しました。Discordが許可していれば、Proロールは削除されました。",
+        "synced": "Discordロールを再同期しました。",
         "join_server": "Discord サーバーに参加してから、ロールを再同期してください。",
-        "error": "Discord sync failed. Please try again or contact support.",
-        "already_linked": "That Discord account is already linked to another WCPOS customer."
+        "error": "Discordの同期に失敗しました。もう一度お試しいただくか、サポートにお問い合わせください。",
+        "already_linked": "そのDiscordアカウントはすでに別のWCPOS顧客に連携されています。"
       },
-      "discordNotConfigured": "Discord linking is not configured yet.",
+      "discordNotConfigured": "Discord連携はまだ設定されていません。",
       "githubProvider": "GitHub",
       "githubDescription": "ワンクリックサインインに使用されます。",
-      "emailProvider": "Email & password",
-      "emailDescription": "You sign in with your email address."
+      "emailProvider": "メールとパスワード",
+      "emailDescription": "メールアドレスでサインインします。"
     }
   }
 }
