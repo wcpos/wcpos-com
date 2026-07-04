@@ -46,6 +46,22 @@ export function StripeProvider({
           variables: {
             colorPrimary: '#0f172a',
           },
+          // The payment method is already chosen and framed by the checkout's
+          // own method row, so strip the Element's own card/accordion chrome —
+          // no border, shadow, or inset padding — leaving just the fields.
+          // Avoids the "box within a box" the outer row would otherwise nest.
+          rules: {
+            '.AccordionItem': {
+              border: 'none',
+              boxShadow: 'none',
+              padding: '0',
+            },
+            '.Block': {
+              border: 'none',
+              boxShadow: 'none',
+              padding: '0',
+            },
+          },
         },
       }
     : undefined

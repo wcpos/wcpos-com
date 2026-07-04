@@ -159,9 +159,10 @@ export function CheckoutForm({
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="border rounded-md p-4">
-        <PaymentElement />
-      </div>
+      {/* No wrapper box: the method row already frames this, and Stripe's
+          Element is flattened (see stripe-provider appearance) so the fields
+          read as part of the row rather than a box-within-a-box. */}
+      <PaymentElement />
 
       <Button
         type="submit"
