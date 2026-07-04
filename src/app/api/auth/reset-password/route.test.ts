@@ -70,6 +70,22 @@ describe('POST /api/auth/reset-password', () => {
     expect(mockResetPassword).not.toHaveBeenCalled()
   })
 
+  it('accepts a new password at exactly the minimum length', async () => {
+    mockResetPassword.mockResolvedValueOnce(undefined)
+    mockLogin.mockResolvedValueOnce('fresh-jwt')
+
+    const response = await POST(
+      makeRequest({ ...validBody, password: '12345678' })
+    )
+
+    expect(response.status).toBe(200)
+    expect(mockResetPassword).toHaveBeenCalledWith({
+      email: 'user@example.com',
+      token: 'reset-jwt',
+      password: '12345678',
+    })
+  })
+
   it('resets the password, signs in, and returns signedIn: true', async () => {
     mockResetPassword.mockResolvedValueOnce(undefined)
     mockLogin.mockResolvedValueOnce('fresh-jwt')
