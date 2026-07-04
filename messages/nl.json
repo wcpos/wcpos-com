@@ -1,11 +1,11 @@
 {
   "common": {
-    "signIn": "Sign In",
+    "signIn": "Aanmelden",
     "account": "Account",
-    "openMenu": "Open menu"
+    "openMenu": "Menu openen"
   },
   "header": {
-    "documentation": "Documentation",
+    "documentation": "Documentatie",
     "roadmap": "Roadmap",
     "pro": "Pro",
     "support": "Support",
@@ -15,50 +15,50 @@
     "downloads": "Downloads",
     "copyright": "© 2026 WCPOS",
     "privacy": "Privacy",
-    "terms": "Terms",
-    "refunds": "Refunds",
-    "about": "About",
-    "language": "Language",
-    "theme": "Theme",
-    "themeLight": "Light",
-    "themeDark": "Dark",
-    "themeSystem": "System"
+    "terms": "Voorwaarden",
+    "refunds": "Terugbetalingen",
+    "about": "Over ons",
+    "language": "Taal",
+    "theme": "Thema",
+    "themeLight": "Licht",
+    "themeDark": "Donker",
+    "themeSystem": "Systeem"
   },
   "home": {
     "title": "WCPOS",
-    "subtitle": "A fast point of sale for WooCommerce"
+    "subtitle": "Een snel kassasysteem voor WooCommerce"
   },
   "roadmap": {
     "title": "Roadmap",
-    "subtitle": "What we're building for WCPOS"
+    "subtitle": "Wat we bouwen voor WCPOS"
   },
   "pro": {
     "features": {
-      "title": "What's included in Pro?",
-      "subtitle": "Everything in Free, plus the tools to run your whole store from the register — and priority support when you need a hand.",
+      "title": "Wat zit er in Pro?",
+      "subtitle": "Alles uit Free, plus de tools om je hele winkel vanaf de kassa te runnen — en priority support wanneer je hulp nodig hebt.",
       "terminal": {
-        "title": "Payment Terminal Integration",
-        "description": "Connect card readers and payment terminals for fast, accurate in-person payments."
+        "title": "Integratie met betaalterminals",
+        "description": "Koppel kaartlezers en betaalterminals voor snelle, nauwkeurige betalingen ter plaatse."
       },
       "stockPrice": {
-        "title": "Stock & Price Editing",
-        "description": "Update stock levels, prices, and product details right from the POS — no trip to the WordPress admin."
+        "title": "Voorraad en prijzen bewerken",
+        "description": "Werk voorraadniveaus, prijzen en productgegevens rechtstreeks vanuit de POS bij — zonder naar het WordPress-beheer te gaan."
       },
       "orders": {
-        "title": "Order Management",
-        "description": "Browse order history, open past orders, and manage them without leaving the register."
+        "title": "Bestelbeheer",
+        "description": "Blader door de bestelgeschiedenis, open eerdere bestellingen en beheer ze zonder de kassa te verlaten."
       },
       "customers": {
-        "title": "Customer Management",
-        "description": "Add and edit customer details at the point of sale, kept in sync with WooCommerce."
+        "title": "Klantbeheer",
+        "description": "Voeg klantgegevens toe en bewerk ze op de kassa, gesynchroniseerd met WooCommerce."
       },
       "reports": {
-        "title": "End-of-Day Reports",
-        "description": "Close the register with end-of-day summaries of sales, payments, and takings."
+        "title": "Dagafsluitingsrapporten",
+        "description": "Sluit de kassa af met dagoverzichten van verkopen, betalingen en opbrengsten."
       },
       "gateways": {
-        "title": "Custom Payment Gateways",
-        "description": "Take payments with any WooCommerce-compatible gateway, not just the built-in options."
+        "title": "Aangepaste betaalgateways",
+        "description": "Ontvang betalingen via elke WooCommerce-compatibele gateway, niet alleen de ingebouwde opties."
       }
     },
     "buyBox": {
@@ -89,220 +89,220 @@
       "unavailableDescription": "Prijsinformatie is momenteel niet beschikbaar. Probeer het later opnieuw."
     },
     "faq": {
-      "title": "Frequently Asked Questions",
+      "title": "Veelgestelde vragen",
       "freePlugin": {
-        "question": "Is the free plugin limited?",
-        "answer": "No. The free WCPOS plugin is GPL software with full point of sale features — unlimited products, orders, and customers, and no transaction fees. Pro adds the advanced tools listed above."
+        "question": "Is de gratis plugin beperkt?",
+        "answer": "Nee. De gratis WCPOS-plugin is GPL-software met volledige kassafuncties — onbeperkt producten, bestellingen en klanten, en geen transactiekosten. Pro voegt de hierboven genoemde geavanceerde tools toe."
       },
       "yearlyVsLifetime": {
-        "question": "What's the difference between Yearly and Lifetime?",
-        "answer": "The Yearly license is a one-time payment that includes updates and priority support for one year. It does not renew automatically. The Lifetime license is a one-time payment that includes updates forever."
+        "question": "Wat is het verschil tussen Jaarlijks en Levenslang?",
+        "answer": "De Jaarlijkse licentie is een eenmalige betaling met updates en priority support gedurende één jaar. Deze wordt niet automatisch verlengd. De Levenslange licentie is een eenmalige betaling met updates voor altijd."
       },
       "upgrade": {
-        "question": "Can I upgrade from Yearly to Lifetime?",
-        "answer": "Yes! Contact our support team and we'll credit the remaining time on your Yearly license towards a Lifetime license."
+        "question": "Kan ik upgraden van Jaarlijks naar Levenslang?",
+        "answer": "Ja! Neem contact op met ons supportteam en we verrekenen de resterende tijd van je Jaarlijkse licentie met een Levenslange licentie."
       },
       "siteLimits": {
-        "question": "How many sites can I use my license on?",
-        "answer": "Each license can be activated on multiple sites. Check your account dashboard for activation limits."
+        "question": "Op hoeveel sites kan ik mijn licentie gebruiken?",
+        "answer": "Elke licentie kan op meerdere sites worden geactiveerd. Bekijk je accountdashboard voor de activeringslimieten."
       },
       "paymentMethods": {
-        "question": "What payment methods do you accept?",
-        "answer": "We accept credit cards (Visa, Mastercard, Amex), PayPal, and Bitcoin."
+        "question": "Welke betaalmethoden accepteren jullie?",
+        "answer": "We accepteren creditcards (Visa, Mastercard, Amex), PayPal en Bitcoin."
       }
     }
   },
   "account": {
     "nav": {
       "title": "Account",
-      "orders": "Orders",
-      "licenses": "Licenses",
+      "orders": "Bestellingen",
+      "licenses": "Licenties",
       "downloads": "Downloads",
-      "profile": "Profile"
+      "profile": "Profiel"
     },
     "meta": {
       "orders": {
-        "title": "Order History",
-        "description": "View your WCPOS order history and receipts."
+        "title": "Bestelgeschiedenis",
+        "description": "Bekijk je WCPOS-bestelgeschiedenis en bonnen."
       },
       "orderDetail": {
-        "title": "Order Details",
-        "description": "View the details of your WCPOS order."
+        "title": "Bestelgegevens",
+        "description": "Bekijk de gegevens van je WCPOS-bestelling."
       },
       "licenses": {
-        "title": "Licenses",
-        "description": "Manage your WCPOS Pro license keys and activations."
+        "title": "Licenties",
+        "description": "Beheer je WCPOS Pro-licentiesleutels en activeringen."
       },
       "downloads": {
         "title": "Downloads",
-        "description": "Download WCPOS Pro plugin releases for your licenses."
+        "description": "Download WCPOS Pro-pluginreleases voor je licenties."
       },
       "profile": {
-        "title": "Profile",
-        "description": "Manage your WCPOS account profile details."
+        "title": "Profiel",
+        "description": "Beheer de profielgegevens van je WCPOS-account."
       }
     },
     "header": {
       "breadcrumb": "Account",
-      "signOut": "Sign out"
+      "signOut": "Afmelden"
     },
     "error": {
-      "heading": "Something went wrong loading this page.",
-      "description": "The error has been reported. You can try again, or come back later.",
-      "retry": "Try again"
+      "heading": "Er is iets misgegaan bij het laden van deze pagina.",
+      "description": "De fout is gemeld. Je kunt het opnieuw proberen of later terugkomen.",
+      "retry": "Opnieuw proberen"
     },
     "orders": {
-      "heading": "Order History",
-      "intro": "Invoices & receipts — every order includes a downloadable PDF tax receipt. Receipts use the billing address saved in your <profileLink>profile</profileLink>.",
-      "emptyTitle": "No orders yet.",
-      "emptyDescription": "Invoices and receipts will appear here after your first purchase.",
-      "browsePro": "Browse WCPOS Pro",
-      "orderNumber": "Order #{id}",
-      "dateAndItems": "{date} — {count, plural, =1 {# item} other {# items}}",
-      "receiptPdf": "Receipt (PDF)",
-      "downloadReceiptAria": "Download receipt for order #{id}",
+      "heading": "Bestelgeschiedenis",
+      "intro": "Facturen en bonnen — elke bestelling bevat een downloadbare pdf-belastingbon. Bonnen gebruiken het factuuradres dat is opgeslagen in je <profileLink>profiel</profileLink>.",
+      "emptyTitle": "Nog geen bestellingen.",
+      "emptyDescription": "Facturen en bonnen verschijnen hier na je eerste aankoop.",
+      "browsePro": "Bekijk WCPOS Pro",
+      "orderNumber": "Bestelling #{id}",
+      "dateAndItems": "{date} — {count, plural, =1 {# artikel} other {# artikelen}}",
+      "receiptPdf": "Bon (pdf)",
+      "downloadReceiptAria": "Bon downloaden voor bestelling #{id}",
       "viewOrder": "Bekijken",
       "viewOrderAria": "Bestelling #{id} bekijken"
     },
     "orderDetail": {
-      "backToOrders": "Back to orders",
-      "orderNumber": "Order #{id}",
-      "downloadReceipt": "Download tax receipt (PDF)",
-      "detailsTitle": "Order Details",
-      "dateLabel": "Date",
+      "backToOrders": "Terug naar bestellingen",
+      "orderNumber": "Bestelling #{id}",
+      "downloadReceipt": "Belastingbon downloaden (pdf)",
+      "detailsTitle": "Bestelgegevens",
+      "dateLabel": "Datum",
       "statusLabel": "Status",
-      "emailLabel": "Email",
-      "totalLabel": "Total",
+      "emailLabel": "E-mail",
+      "totalLabel": "Totaal",
       "itemsTitle": "Items",
-      "quantity": "Qty: {count}",
-      "licenseKeysTitle": "License Keys",
-      "manage": "Manage",
+      "quantity": "Aantal: {count}",
+      "licenseKeysTitle": "Licentiesleutels",
+      "manage": "Beheren",
       "licenseFromOrderTitle": "Licentie van deze bestelling",
       "manageLicence": "Licentie beheren →"
     },
     "licenseStatus": {
-      "active": "active",
-      "expired": "expired",
-      "suspended": "suspended",
-      "revoked": "revoked",
-      "unknown": "unknown"
+      "active": "actief",
+      "expired": "verlopen",
+      "suspended": "opgeschort",
+      "revoked": "ingetrokken",
+      "unknown": "onbekend"
     },
     "licenses": {
-      "heading": "Licenses",
-      "loadError": "Failed to load licenses",
-      "deactivateError": "Failed to deactivate machine. Please try again.",
-      "emptyTitle": "No licenses found.",
-      "emptyDescription": "Purchase WCPOS Pro to get a license.",
-      "planYearly": "Yearly",
-      "planLifetime": "Lifetime",
-      "unknownStatusTooltip": "We couldn't verify this license right now",
-      "unverifiable": "We couldn't verify this license right now. Try again shortly or <supportLink>contact support</supportLink>.",
-      "expiresSoonRenew": "Your license expires on {date} — renew to keep receiving updates.",
-      "expiresSoon": "Your license expires on {date}.",
-      "renew": "Renew",
-      "expiresLabel": "Expires:",
-      "activationsLabel": "Activations:",
-      "activationsCount": "{count} of {max}",
+      "heading": "Licenties",
+      "loadError": "Kan licenties niet laden",
+      "deactivateError": "Kan machine niet deactiveren. Probeer het opnieuw.",
+      "emptyTitle": "Geen licenties gevonden.",
+      "emptyDescription": "Koop WCPOS Pro om een licentie te krijgen.",
+      "planYearly": "Jaarlijks",
+      "planLifetime": "Levenslang",
+      "unknownStatusTooltip": "We konden deze licentie op dit moment niet verifiëren",
+      "unverifiable": "We konden deze licentie op dit moment niet verifiëren. Probeer het zo dadelijk opnieuw of <supportLink>neem contact op met support</supportLink>.",
+      "expiresSoonRenew": "Je licentie verloopt op {date} — verleng om updates te blijven ontvangen.",
+      "expiresSoon": "Je licentie verloopt op {date}.",
+      "renew": "Verlengen",
+      "expiresLabel": "Verloopt:",
+      "activationsLabel": "Activeringen:",
+      "activationsCount": "{count} van {max}",
       "downloads": "Downloads",
-      "activatedMachines": "Activated Machines",
-      "machineAdded": "Added {date}",
-      "deactivateMachineAria": "Deactivate {name}",
+      "activatedMachines": "Geactiveerde machines",
+      "machineAdded": "Toegevoegd op {date}",
+      "deactivateMachineAria": "{name} deactiveren",
       "genericMachineName": "machine",
-      "coversLatestVersion": "Latest version {version} · via this licence",
-      "coversUpToVersion": "Covers updates up to {version}",
-      "siteUpdatesThrough": "Updates through {version}",
-      "discordHeading": "Discord access",
-      "discordMembers": "{count} of {cap} members",
-      "discordConnected": "Connected {date}",
-      "discordRemove": "Remove",
-      "discordRemoveAria": "Remove {handle}",
-      "discordConnectHint": "Connect with your license key to get the Pro role in our community Discord.",
-      "discordNoMembers": "No connected members yet.",
-      "discordRemoveError": "Failed to remove Discord member. Please try again."
+      "coversLatestVersion": "Nieuwste versie {version} · via deze licentie",
+      "coversUpToVersion": "Dekt updates tot en met {version}",
+      "siteUpdatesThrough": "Updates tot en met {version}",
+      "discordHeading": "Discord-toegang",
+      "discordMembers": "{count} van {cap} leden",
+      "discordConnected": "Verbonden op {date}",
+      "discordRemove": "Verwijderen",
+      "discordRemoveAria": "{handle} verwijderen",
+      "discordConnectHint": "Verbind met je licentiesleutel om de Pro-rol in onze community-Discord te krijgen.",
+      "discordNoMembers": "Nog geen verbonden leden.",
+      "discordRemoveError": "Kan Discord-lid niet verwijderen. Probeer het opnieuw."
     },
     "downloads": {
       "heading": "Downloads",
-      "subheading": "Elke release. Wat u kunt installeren, hangt af van uw licentie.",
-      "expiredBanner": "Your license expired on {date}. You can still download versions released before then.",
-      "suspendedBanner": "Your license is suspended — contact support.",
-      "revokedBanner": "Your license has been revoked and no longer includes downloads. Contact support if you believe this is an error.",
-      "unknownBanner": "We couldn't verify your license — downloads may be temporarily limited. Try again shortly or contact support.",
-      "inactiveBanner": "You have no active license. Only versions released during your license term are available.",
-      "noLicenseBanner": "A WCPOS Pro license is required to download the plugin.",
-      "renewLicense": "Renew license",
-      "contactSupport": "Contact support",
-      "getPro": "Get WCPOS Pro",
+      "subheading": "Elke release. Wat je kunt installeren, hangt af van je licentie.",
+      "expiredBanner": "Je licentie is verlopen op {date}. Je kunt nog steeds versies downloaden die vóór die datum zijn uitgebracht.",
+      "suspendedBanner": "Je licentie is opgeschort — neem contact op met support.",
+      "revokedBanner": "Je licentie is ingetrokken en bevat geen downloads meer. Neem contact op met support als je denkt dat dit een fout is.",
+      "unknownBanner": "We konden je licentie niet verifiëren — downloads zijn mogelijk tijdelijk beperkt. Probeer het zo dadelijk opnieuw of neem contact op met support.",
+      "inactiveBanner": "Je hebt geen actieve licentie. Alleen versies die tijdens je licentieduur zijn uitgebracht, zijn beschikbaar.",
+      "noLicenseBanner": "Een WCPOS Pro-licentie is vereist om de plugin te downloaden.",
+      "renewLicense": "Licentie verlengen",
+      "contactSupport": "Contact opnemen met support",
+      "getPro": "WCPOS Pro aanschaffen",
       "listTitle": "Versiegeschiedenis",
       "latestVersionLabel": "Nieuwste versie",
-      "latestBadge": "Latest",
+      "latestBadge": "Nieuwste",
       "majorBadge": "Hoofdversie",
       "releaseNotes": "Release-opmerkingen",
       "releaseCount": "{count, plural, one {# release} other {# releases}}",
-      "availableOnPlan": "Beschikbaar met uw actieve {plan}-licentie",
-      "availableOnActive": "Beschikbaar met uw actieve licentie",
-      "emptyList": "No downloadable versions were found.",
-      "reasonExpired": "Released after your license expired.",
-      "reasonUnknown": "We couldn't verify your license.",
-      "reasonInactive": "Requires an active license.",
-      "noReleaseNotes": "No release notes yet.",
-      "unavailable": "Unavailable",
-      "preparing": "Preparing...",
-      "download": "Download",
-      "pageOf": "Page {page} of {total}",
-      "previous": "Previous",
-      "previousPageAria": "Previous page",
-      "next": "Next",
-      "nextPageAria": "Next page",
-      "tokenErrorFallback": "Download is not available for this version",
-      "startErrorFallback": "Failed to start download"
+      "availableOnPlan": "Beschikbaar met je actieve {plan}-licentie",
+      "availableOnActive": "Beschikbaar met je actieve licentie",
+      "emptyList": "Er zijn geen downloadbare versies gevonden.",
+      "reasonExpired": "Uitgebracht nadat je licentie verliep.",
+      "reasonUnknown": "We konden je licentie niet verifiëren.",
+      "reasonInactive": "Vereist een actieve licentie.",
+      "noReleaseNotes": "Nog geen release-opmerkingen.",
+      "unavailable": "Niet beschikbaar",
+      "preparing": "Voorbereiden...",
+      "download": "Downloaden",
+      "pageOf": "Pagina {page} van {total}",
+      "previous": "Vorige",
+      "previousPageAria": "Vorige pagina",
+      "next": "Volgende",
+      "nextPageAria": "Volgende pagina",
+      "tokenErrorFallback": "Download is niet beschikbaar voor deze versie",
+      "startErrorFallback": "Kan download niet starten"
     },
     "profile": {
-      "heading": "Profile",
-      "cardTitle": "Profile details",
-      "memberSince": "Member since",
+      "heading": "Profiel",
+      "cardTitle": "Profielgegevens",
+      "memberSince": "Lid sinds",
       "avatarAlt": "Avatar",
-      "avatarLabel": "Profile avatar",
-      "avatarHint": "If your connected account has an avatar, it is used by default.",
-      "avatarTooLarge": "Avatar image must be 1MB or smaller.",
-      "avatarInvalid": "Please upload a valid image file.",
-      "removeAvatar": "Remove uploaded avatar",
-      "firstName": "First name",
-      "lastName": "Last name",
-      "email": "Email",
-      "phone": "Phone",
-      "billingDetails": "Billing details for receipts",
-      "country": "Country",
-      "addressLine1": "Address line 1",
-      "addressLine2": "Address line 2",
-      "city": "City",
+      "avatarLabel": "Profielavatar",
+      "avatarHint": "Als je verbonden account een avatar heeft, wordt die standaard gebruikt.",
+      "avatarTooLarge": "De avatarafbeelding mag maximaal 1 MB zijn.",
+      "avatarInvalid": "Upload een geldig afbeeldingsbestand.",
+      "removeAvatar": "Geüploade avatar verwijderen",
+      "firstName": "Voornaam",
+      "lastName": "Achternaam",
+      "email": "E-mail",
+      "phone": "Telefoon",
+      "billingDetails": "Factuurgegevens voor bonnen",
+      "country": "Land",
+      "addressLine1": "Adresregel 1",
+      "addressLine2": "Adresregel 2",
+      "city": "Plaats",
       "regionLabels": {
-        "state": "State",
-        "province": "Province",
-        "county": "County",
-        "stateTerritory": "State/Territory",
-        "region": "Region",
-        "prefecture": "Prefecture"
+        "state": "Staat",
+        "province": "Provincie",
+        "county": "Graafschap",
+        "stateTerritory": "Staat/Territorium",
+        "region": "Regio",
+        "prefecture": "Prefectuur"
       },
       "postalLabels": {
-        "zip": "ZIP code",
-        "postalCode": "Postal code",
+        "zip": "ZIP-code",
+        "postalCode": "Postcode",
         "postcode": "Postcode"
       },
       "taxLabels": {
-        "einTaxId": "EIN / Tax ID",
-        "gstHst": "GST/HST number",
-        "vat": "VAT number",
+        "einTaxId": "EIN / fiscaal nummer",
+        "gstHst": "GST/HST-nummer",
+        "vat": "VAT-nummer",
         "abn": "ABN",
-        "nifVat": "NIF / VAT number",
+        "nifVat": "NIF / VAT-nummer",
         "partitaIva": "Partita IVA",
-        "gst": "GST number",
-        "taxRegistration": "Tax registration number",
-        "genericTaxId": "Tax ID / VAT number"
+        "gst": "GST-nummer",
+        "taxRegistration": "Fiscaal registratienummer",
+        "genericTaxId": "Fiscaal nummer / VAT-nummer"
       },
-      "updateError": "Failed to update profile",
-      "updateSuccess": "Profile updated successfully.",
-      "saving": "Saving...",
-      "save": "Save changes",
+      "updateError": "Kan profiel niet bijwerken",
+      "updateSuccess": "Profiel is bijgewerkt.",
+      "saving": "Opslaan...",
+      "save": "Wijzigingen opslaan",
       "lede": "Je gegevens, factuurgegevens en verbonden diensten.",
       "billingDetailsHint": "Gebruikt op je bonnen.",
       "connectionsTitle": "Verbindingen",
@@ -328,8 +328,8 @@
       "discordNotConfigured": "Discord-koppeling is nog niet geconfigureerd.",
       "githubProvider": "GitHub",
       "githubDescription": "Gebruikt voor aanmelden met één klik.",
-      "emailProvider": "Email & password",
-      "emailDescription": "You sign in with your email address."
+      "emailProvider": "E-mail en wachtwoord",
+      "emailDescription": "Je meldt je aan met je e-mailadres."
     }
   }
 }
