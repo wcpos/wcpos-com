@@ -73,6 +73,16 @@ export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
   const hostname = request.nextUrl.hostname.toLowerCase()
 
+  // Legacy WooCommerce API Manager licence calls from the deployed Pro plugin
+  // fleet still target wcpos.com/?wc-api=am-software-api (activation, etc.).
+  // Bridge them to the Keygen-backed compatibility shim. See
+  // src/app/api/legacy/wc-am/route.ts.
+  if (request.nextUrl.searchParams.get('wc-api') === 'am-software-api') {
+    const rewriteUrl = request.nextUrl.clone()
+    rewriteUrl.pathname = '/api/legacy/wc-am'
+    return NextResponse.rewrite(rewriteUrl)
+  }
+
   // Handle updates.wcpos.com — restrict to API routes only
   if (hostname === UPDATES_HOSTNAME) {
     if (pathname.startsWith('/api/')) {
