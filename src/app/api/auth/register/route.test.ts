@@ -61,7 +61,7 @@ describe('POST /api/auth/register', () => {
 
     const response = await postRegister({
       email: 'new@example.com',
-      password: 'weak',
+      password: 'long-enough-but-weak',
     })
     const json = await response.json()
 
@@ -78,6 +78,35 @@ describe('POST /api/auth/register', () => {
     expect(response.status).toBe(400)
     expect(json).toEqual({ error: 'Email and password are required' })
     expect(mockRegister).not.toHaveBeenCalled()
+  })
+
+  it('rejects a password shorter than the minimum with a 400 before hitting Medusa', async () => {
+    const response = await postRegister({
+      email: 'new@example.com',
+      password: 'short',
+    })
+    const json = await response.json()
+
+    expect(response.status).toBe(400)
+    expect(json).toEqual({ error: 'Password must be at least 8 characters' })
+    expect(mockRegister).not.toHaveBeenCalled()
+  })
+
+  it('accepts a password at exactly the minimum length', async () => {
+    mockRegister.mockResolvedValueOnce({
+      token: 'jwt',
+      customer: { id: 'cus_1' },
+    })
+
+    const response = await postRegister({
+      email: 'new@example.com',
+      password: '12345678',
+    })
+    const json = await response.json()
+
+    expect(response.status).toBe(200)
+    expect(json).toEqual({ success: true, customer: { id: 'cus_1' } })
+    expect(mockRegister).toHaveBeenCalledTimes(1)
   })
 
   it('treats a malformed JSON body as a missing-fields 400, not a failure', async () => {

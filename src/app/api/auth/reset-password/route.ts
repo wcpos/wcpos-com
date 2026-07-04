@@ -5,6 +5,10 @@ import { toErrorResponse } from '@/lib/api/to-error-response'
 import { authLogger } from '@/lib/logger'
 import { isSameOriginRequest } from '@/lib/api/same-origin'
 import { createRateLimiter, clientIp } from '@/lib/rate-limit'
+import {
+  isPasswordTooShort,
+  PASSWORD_TOO_SHORT_MESSAGE,
+} from '@/lib/password-policy'
 
 // Reset tokens are signed JWTs, so brute force is impractical — this limiter
 // just caps abuse of an unauthenticated endpoint. Fail-open.
@@ -40,6 +44,13 @@ export async function POST(request: Request) {
   if (!email || !token || !password) {
     return NextResponse.json(
       { error: 'Email, token, and password are required' },
+      { status: 400 }
+    )
+  }
+
+  if (isPasswordTooShort(password)) {
+    return NextResponse.json(
+      { error: PASSWORD_TOO_SHORT_MESSAGE },
       { status: 400 }
     )
   }
