@@ -8,7 +8,9 @@ let started = false
 /**
  * Initialize posthog-js once, only after the visitor has granted analytics
  * consent. Sets window.posthog (which trackClientEvent reads). Autocapture is
- * off — we send explicit funnel events to keep the data deterministic.
+ * off — we send explicit funnel events to keep the data deterministic. Pageviews
+ * are captured on History API changes so client-side (App Router) navigations
+ * register; this powers PostHog Web Analytics (visitors, top pages, sessions).
  */
 export function initPostHogBrowser(config: { key?: string; host?: string }) {
   if (started || typeof window === 'undefined') return
@@ -19,7 +21,8 @@ export function initPostHogBrowser(config: { key?: string; host?: string }) {
   posthog.init(config.key, {
     api_host: config.host,
     autocapture: false,
-    capture_pageview: false,
+    capture_pageview: 'history_change',
+    capture_pageleave: true,
     persistence: 'localStorage+cookie',
   })
   ;(window as unknown as { posthog: typeof posthog }).posthog = posthog

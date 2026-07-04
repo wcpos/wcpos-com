@@ -23,4 +23,15 @@ describe('initPostHogBrowser', () => {
     initPostHogBrowser({ key: 'phc_x', host: 'https://eu.i.posthog.com' })
     expect(initMock).toHaveBeenCalledTimes(1)
   })
+
+  it('captures pageviews on history changes so Web Analytics populates', async () => {
+    const { isAnalyticsGranted } = await import('./consent')
+    ;(isAnalyticsGranted as ReturnType<typeof vi.fn>).mockReturnValue(true)
+    const { initPostHogBrowser } = await import('./posthog-browser')
+    initPostHogBrowser({ key: 'phc_x', host: 'https://eu.i.posthog.com' })
+    expect(initMock).toHaveBeenCalledWith(
+      'phc_x',
+      expect.objectContaining({ capture_pageview: 'history_change' })
+    )
+  })
 })
