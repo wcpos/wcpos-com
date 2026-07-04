@@ -36,6 +36,22 @@ describe('middleware', () => {
     expect(response?.headers.get('location')).toBeNull()
   })
 
+  it('bridges legacy WC API Manager licence calls to the compatibility shim', () => {
+    const request = new NextRequest(
+      'https://wcpos.com/?wc-api=am-software-api&request=activation&api_key=KEY&instance=site-1'
+    )
+
+    const response = middleware(request)
+
+    const rewrite = response?.headers.get('x-middleware-rewrite')
+    expect(rewrite).not.toBeNull()
+    const rewriteUrl = new URL(rewrite as string)
+    expect(rewriteUrl.pathname).toBe('/api/legacy/wc-am')
+    // Query string (api_key, instance, request) is preserved for the handler.
+    expect(rewriteUrl.searchParams.get('api_key')).toBe('KEY')
+    expect(rewriteUrl.searchParams.get('request')).toBe('activation')
+  })
+
   it('lets unauthenticated visitors reach checkout (account is created inline)', () => {
     const request = new NextRequest(
       'https://wcpos.com/pro/checkout?variant=variant_123'
