@@ -5,9 +5,10 @@ import { PASSWORD_TOO_SHORT_MESSAGE } from '@/lib/password-policy'
 
 const mockRegister = vi.fn()
 const mockSetAuthToken = vi.fn()
-const { infoMock, errorMock } = vi.hoisted(() => ({
+const { infoMock, errorMock, consumeMock } = vi.hoisted(() => ({
   infoMock: vi.fn(),
   errorMock: vi.fn(),
+  consumeMock: vi.fn(),
 }))
 
 vi.mock('@/lib/medusa-auth', () => ({
@@ -16,6 +17,10 @@ vi.mock('@/lib/medusa-auth', () => ({
 }))
 vi.mock('@/lib/logger', () => ({
   authLogger: { info: infoMock, error: errorMock },
+}))
+vi.mock('@/lib/rate-limit', () => ({
+  createRateLimiter: () => ({ consume: consumeMock }),
+  clientIp: () => '203.0.113.7',
 }))
 
 function postRegister(body: Record<string, unknown>) {
@@ -31,6 +36,21 @@ function postRegister(body: Record<string, unknown>) {
 describe('POST /api/auth/register', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+    consumeMock.mockResolvedValue({ success: true, remaining: 4 })
+  })
+
+  it('returns 429 when the rate limit is exceeded', async () => {
+    consumeMock.mockResolvedValueOnce({ success: false, remaining: 0 })
+
+    const response = await postRegister({
+      email: 'new@example.com',
+      password: 'password123',
+    })
+    const json = await response.json()
+
+    expect(response.status).toBe(429)
+    expect(json.error).toBe('Too many attempts. Please try again later.')
+    expect(mockRegister).not.toHaveBeenCalled()
   })
 
   it('maps AccountExistsError to a 409 with the ACCOUNT_EXISTS code', async () => {

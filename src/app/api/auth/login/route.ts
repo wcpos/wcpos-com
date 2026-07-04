@@ -3,10 +3,27 @@ import { login, setAuthToken } from '@/lib/medusa-auth'
 import { InvalidCredentialsError } from '@/lib/api/errors'
 import { authLogger } from '@/lib/logger'
 import { isSameOriginRequest } from '@/lib/api/same-origin'
+import { createRateLimiter, clientIp } from '@/lib/rate-limit'
+
+// Login is the natural credential-stuffing target: generous enough for a
+// fumbled password, tight enough to blunt automated guessing. Fail-open.
+const limiter = createRateLimiter({
+  prefix: 'auth:login:ip',
+  limit: 10,
+  window: '5 m',
+})
 
 export async function POST(request: Request) {
   if (!isSameOriginRequest(request)) {
     return NextResponse.json({ error: 'Invalid origin' }, { status: 403 })
+  }
+
+  const { success } = await limiter.consume(clientIp(request))
+  if (!success) {
+    return NextResponse.json(
+      { error: 'Too many login attempts. Please try again later.' },
+      { status: 429 }
+    )
   }
 
   // Malformed JSON is client-caused: fall through to the 400 below instead of
