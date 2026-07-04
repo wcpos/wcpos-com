@@ -41,7 +41,7 @@ function MethodRow({
   return (
     <div
       className={`rounded-md border transition-colors ${
-        selected ? 'border-primary ring-1 ring-primary' : 'border-border'
+        selected ? 'border-primary bg-primary/[0.03]' : 'border-border'
       }`}
     >
       <button
