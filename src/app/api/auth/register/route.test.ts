@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { POST } from './route'
 import { AccountExistsError } from '@/lib/api/errors'
+import { PASSWORD_TOO_SHORT_MESSAGE } from '@/lib/password-policy'
 
 const mockRegister = vi.fn()
 const mockSetAuthToken = vi.fn()
@@ -88,7 +89,7 @@ describe('POST /api/auth/register', () => {
     const json = await response.json()
 
     expect(response.status).toBe(400)
-    expect(json).toEqual({ error: 'Password must be at least 8 characters' })
+    expect(json).toEqual({ error: PASSWORD_TOO_SHORT_MESSAGE })
     expect(mockRegister).not.toHaveBeenCalled()
   })
 
