@@ -1,4 +1,5 @@
 import { setRequestLocale } from 'next-intl/server'
+import { connection } from 'next/server'
 import { Suspense } from 'react'
 import { cookies } from 'next/headers'
 import { CheckoutClient } from '@/components/pro/checkout-client'
@@ -65,11 +66,16 @@ const OFFER_SUMMARY_TITLES: Record<string, string> = {
   lifetime: 'WCPOS Pro — Lifetime',
 }
 
-async function CheckoutContent({
+export async function CheckoutContent({
   searchParamsPromise,
 }: {
   searchParamsPromise: Promise<Record<string, string | string[] | undefined>>
 }) {
+  // Checkout is auth- and cart-sensitive. Stop prerendering at this Suspense
+  // boundary so the static shell is the skeleton, not an interactive
+  // signed-out form that can be served before request cookies are available.
+  await connection()
+
   const searchParams = await searchParamsPromise
   // Signed-out visitors are welcome: the checkout's first step creates the
   // account inline. The cart APIs still require auth server-side.
