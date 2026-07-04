@@ -8,10 +8,27 @@ import {
   isPasswordTooShort,
   PASSWORD_TOO_SHORT_MESSAGE,
 } from '@/lib/password-policy'
+import { createRateLimiter, clientIp } from '@/lib/rate-limit'
+
+// Every accepted request can create a real Medusa customer account, so gate
+// this harder than sign-in — a legitimate user registers once. Fail-open.
+const limiter = createRateLimiter({
+  prefix: 'auth:register:ip',
+  limit: 5,
+  window: '15 m',
+})
 
 export async function POST(request: Request) {
   if (!isSameOriginRequest(request)) {
     return NextResponse.json({ error: 'Invalid origin' }, { status: 403 })
+  }
+
+  const { success } = await limiter.consume(clientIp(request))
+  if (!success) {
+    return NextResponse.json(
+      { error: 'Too many attempts. Please try again later.' },
+      { status: 429 }
+    )
   }
 
   // Malformed JSON is client-caused: fall through to the 400 below instead of
