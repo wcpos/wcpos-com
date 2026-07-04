@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Alert } from '@/components/ui/alert'
+import { MIN_PASSWORD_LENGTH } from '@/lib/password-policy'
 import {
   Card,
   CardContent,
@@ -98,8 +99,12 @@ function ResetPasswordPageInner() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
+                  minLength={MIN_PASSWORD_LENGTH}
                   autoComplete="new-password"
                 />
+                <p className="text-xs text-muted-foreground">
+                  At least {MIN_PASSWORD_LENGTH} characters
+                </p>
               </div>
 
               <Button type="submit" className="w-full" disabled={loading}>

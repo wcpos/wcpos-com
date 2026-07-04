@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Alert } from '@/components/ui/alert'
 import { sanitizeRedirectPath } from '@/lib/safe-redirect'
+import { MIN_PASSWORD_LENGTH } from '@/lib/password-policy'
 import {
   Card,
   CardContent,
@@ -133,8 +134,12 @@ function RegisterPageInner() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
+                minLength={MIN_PASSWORD_LENGTH}
                 autoComplete="new-password"
               />
+              <p className="text-xs text-muted-foreground">
+                At least {MIN_PASSWORD_LENGTH} characters
+              </p>
             </div>
 
             <Button type="submit" className="w-full" disabled={loading}>

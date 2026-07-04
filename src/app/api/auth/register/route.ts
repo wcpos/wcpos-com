@@ -4,6 +4,10 @@ import { ApiError } from '@/lib/api/errors'
 import { toErrorResponse } from '@/lib/api/to-error-response'
 import { authLogger } from '@/lib/logger'
 import { isSameOriginRequest } from '@/lib/api/same-origin'
+import {
+  isPasswordTooShort,
+  PASSWORD_TOO_SHORT_MESSAGE,
+} from '@/lib/password-policy'
 
 export async function POST(request: Request) {
   if (!isSameOriginRequest(request)) {
@@ -26,6 +30,13 @@ export async function POST(request: Request) {
   if (!email || !password) {
     return NextResponse.json(
       { error: 'Email and password are required' },
+      { status: 400 }
+    )
+  }
+
+  if (isPasswordTooShort(password)) {
+    return NextResponse.json(
+      { error: PASSWORD_TOO_SHORT_MESSAGE },
       { status: 400 }
     )
   }
