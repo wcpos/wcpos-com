@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { trackAttributedServerEvent } from '@/services/core/analytics/posthog-service'
 
 /**
  * WooCommerce API Manager compatibility shim.
@@ -76,6 +77,33 @@ function activationBody(key: string, instance: string): RequestInit {
   }
 }
 
+/**
+ * Join a successful activation back to its landing-page exposure. The plugin
+ * forwards the marketing-site anon_id (and a stable site_uuid) as query args
+ * for attribution (wcpos-com#143); without capturing here that link is lost,
+ * since the plugin polls this shim instead of loading a page posthog-js runs on.
+ *
+ * Fire-and-forget by contract: this must never delay or fail the activation
+ * response. `trackAttributedServerEvent` captures synchronously, swallows its
+ * own errors, and self-registers delivery with the request's waitUntil — the
+ * try/catch only guards the unlikely throw from building the PostHog client.
+ * No anon_id ⇒ no attribution to record (and no consent to infer), so skip.
+ */
+function recordActivationAttribution(params: URLSearchParams): void {
+  const anonId = params.get('anon_id')
+  if (!anonId) return
+
+  try {
+    trackAttributedServerEvent('license_activated', anonId, {
+      site_uuid: params.get('site_uuid') ?? undefined,
+      instance: params.get('instance') ?? undefined,
+      source: 'wc-am-shim',
+    })
+  } catch {
+    // Attribution is best-effort; never let it disturb the activation reply.
+  }
+}
+
 export async function OPTIONS(): Promise<NextResponse> {
   return new NextResponse(null, { status: 204, headers: CORS_HEADERS })
 }
@@ -118,6 +146,11 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
     const result = await proxy(forwardPath, init)
 
     if (result.status === 200 && result.data?.valid) {
+      // Only genuine activations carry landing-page attribution; status polls
+      // (the plugin's frequent re-checks) must not inflate the event stream.
+      if (action === 'activation' && result.data.activated) {
+        recordActivationAttribution(params)
+      }
       return reply({ success: true, activated: !!result.data.activated })
     }
     return reply({ success: false, activated: false, error: errorText(result), code: result.status })

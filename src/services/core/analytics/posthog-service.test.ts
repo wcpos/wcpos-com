@@ -21,6 +21,7 @@ vi.mock('posthog-node', () => ({
 
 import {
   resolveProCheckoutVariant,
+  trackAttributedServerEvent,
   trackServerEvent,
 } from './posthog-service'
 
@@ -194,5 +195,44 @@ describe('trackServerEvent', () => {
     } finally {
       ctx.restore()
     }
+  })
+})
+
+describe('trackAttributedServerEvent', () => {
+  beforeEach(() => {
+    captureMock.mockClear()
+  })
+
+  afterEach(() => {
+    vi.unstubAllEnvs()
+    vi.unstubAllGlobals()
+    vi.restoreAllMocks()
+  })
+
+  it('captures a non-browser event keyed to the supplied distinctId without a request-scoped consent cookie', async () => {
+    // No consent cookie exists on a server-to-server call — the request-cookie
+    // gate would fail closed, yet consent is inherited from the anon_id.
+    stubConsent(undefined)
+    vi.stubEnv('NEXT_PUBLIC_POSTHOG_HOST', 'https://analytics.example.com')
+    vi.stubEnv('NEXT_PUBLIC_POSTHOG_KEY', 'phc_test')
+
+    trackAttributedServerEvent('license_activated', 'anon-123', {
+      site_uuid: 'uuid-abc',
+    })
+
+    expect(captureMock).toHaveBeenCalledTimes(1)
+    expect(captureMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        event: 'license_activated',
+        distinctId: 'anon-123',
+        properties: expect.objectContaining({ site_uuid: 'uuid-abc' }),
+      })
+    )
+  })
+
+  it('drops silently when no PostHog client is configured', () => {
+    trackAttributedServerEvent('license_activated', 'anon-123', {})
+
+    expect(captureMock).not.toHaveBeenCalled()
   })
 })
