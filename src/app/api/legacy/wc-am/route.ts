@@ -22,6 +22,7 @@ import { NextRequest, NextResponse } from 'next/server'
  */
 
 const UPDATES_BASE = 'https://updates.wcpos.com'
+const UPDATES_TIMEOUT_MS = 5000
 
 const CORS_HEADERS: Record<string, string> = {
   // The plugin calls this cross-origin from the merchant's wp-admin, with
@@ -59,7 +60,10 @@ async function proxy(
   path: string,
   init: RequestInit,
 ): Promise<LicenseResult> {
-  const res = await fetch(`${UPDATES_BASE}${path}`, init)
+  const res = await fetch(`${UPDATES_BASE}${path}`, {
+    ...init,
+    signal: AbortSignal.timeout(UPDATES_TIMEOUT_MS),
+  })
   const body = (await res.json().catch(() => ({}))) as LicenseResult
   return { ...body, status: body.status ?? res.status }
 }
@@ -90,9 +94,12 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
   try {
     if (action === 'deactivation') {
       const result = await proxy('/pro/license/deactivate', activationBody(key, instance))
-      // 200 = deactivated; 404 = the machine was already gone. Both mean the
-      // instance is no longer activated, which is the outcome the plugin wants.
-      if (result.status === 200 || result.status === 404) {
+      const notFoundText = `${result.error ?? ''} ${result.message ?? ''}`.toLowerCase()
+      const machineAlreadyGone =
+        result.status === 404 &&
+        (notFoundText.includes('machine') || notFoundText.includes('instance')) &&
+        (notFoundText.includes('not found') || notFoundText.includes('not activated'))
+      if (result.status === 200 || machineAlreadyGone) {
         return reply({ success: true, activated: false })
       }
       return reply({ success: false, activated: false, error: errorText(result), code: result.status })

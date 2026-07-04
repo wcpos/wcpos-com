@@ -32,6 +32,7 @@ describe('WC API Manager compatibility shim', () => {
     const [url, init] = fetchMock.mock.calls[0]
     expect(url).toBe('https://updates.wcpos.com/pro/license/activate')
     expect(init).toMatchObject({ method: 'POST' })
+    expect((init as RequestInit).signal).toBeInstanceOf(AbortSignal)
     expect(JSON.parse((init as RequestInit).body as string)).toEqual({ key: 'KEY', instance: 'site-1' })
   })
 
@@ -64,6 +65,24 @@ describe('WC API Manager compatibility shim', () => {
     expect(await res.json()).toEqual({ success: true, activated: false })
   })
 
+  it('reports non-machine 404 deactivation failures as success:false', async () => {
+    vi.spyOn(global, 'fetch').mockResolvedValue(
+      keygenJson(
+        { status: 404, error: 'Not Found', message: 'A customer account does not exist for this API Key.' },
+        404,
+      ),
+    )
+
+    const res = await call('wc-api=am-software-api&request=deactivation&api_key=BAD&instance=site-1')
+
+    expect(await res.json()).toMatchObject({
+      success: false,
+      activated: false,
+      error: 'A customer account does not exist for this API Key.',
+      code: 404,
+    })
+  })
+
   it('maps a status check to success + activation state', async () => {
     vi.spyOn(global, 'fetch').mockResolvedValue(keygenJson(ACTIVE))
 
@@ -88,6 +107,18 @@ describe('WC API Manager compatibility shim', () => {
 
     expect(res.status).toBe(200)
     expect(await res.json()).toMatchObject({ success: false })
+  })
+
+  it('maps an aborted upstream request to the temporary-unavailable response', async () => {
+    vi.spyOn(global, 'fetch').mockRejectedValue(new DOMException('Timed out', 'AbortError'))
+
+    const res = await call('wc-api=am-software-api&request=activation&api_key=KEY&instance=site-1')
+
+    expect(res.status).toBe(200)
+    expect(await res.json()).toEqual({
+      success: false,
+      error: 'The license server is temporarily unavailable. Please try again shortly.',
+    })
   })
 
   it('answers CORS preflight', async () => {
