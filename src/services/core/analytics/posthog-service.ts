@@ -170,3 +170,31 @@ export function trackServerEvent(
   deliver(tracked.catch(() => {}))
   return tracked
 }
+
+/**
+ * Capture a server event that did NOT originate from a browser request and so
+ * carries no request-scoped consent cookie — e.g. the WC API Manager licence
+ * shim, which the WCPOS Pro plugin calls server-to-server from a merchant's
+ * wp-admin (no cookies, no consent banner).
+ *
+ * The request-cookie gate in `trackServerEvent` is meaningless off a browser
+ * request (it always fails closed), so this path skips it. Consent is instead
+ * inherited from `distinctId`: it is the landing-page anon_id, which only
+ * exists because the visitor was tracked — with consent — by posthog-js on the
+ * marketing site. Callers pass it only when present (no anon_id ⇒ nothing to
+ * attribute ⇒ nothing to capture), so a visitor who declined analytics has no
+ * id to forward and is never recorded here.
+ *
+ * Capture is synchronous and fire-and-forget; the posthog-node client
+ * self-registers its delivery POST with the request's waitUntil (see
+ * server-analytics-waitUntil), so — like `trackServerEvent` — do NOT wrap this
+ * in `deliver()` at the call site. Must be invoked from within a request
+ * handler; firing it from detached work would open a phantom waitUntil cycle.
+ */
+export function trackAttributedServerEvent(
+  eventName: string,
+  distinctId: string,
+  properties: Record<string, unknown>
+): void {
+  serverRecorder.capture({ name: eventName, properties, distinctId })
+}

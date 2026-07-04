@@ -1,5 +1,12 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { NextRequest } from 'next/server'
+
+const trackAttributedServerEvent = vi.fn()
+vi.mock('@/services/core/analytics/posthog-service', () => ({
+  trackAttributedServerEvent: (...args: unknown[]) =>
+    trackAttributedServerEvent(...args),
+}))
+
 import { GET, OPTIONS } from './route'
 
 function keygenJson(body: unknown, status = 200) {
@@ -17,6 +24,7 @@ const ACTIVE = { status: 200, data: { valid: true, activated: true, status: 'act
 
 afterEach(() => {
   vi.restoreAllMocks()
+  trackAttributedServerEvent.mockClear()
 })
 
 describe('WC API Manager compatibility shim', () => {
@@ -94,5 +102,64 @@ describe('WC API Manager compatibility shim', () => {
     const res = await OPTIONS()
     expect(res.status).toBe(204)
     expect(res.headers.get('Access-Control-Allow-Origin')).toBe('*')
+  })
+
+  describe('landing-page attribution', () => {
+    it('captures a successful activation keyed to the forwarded anon_id', async () => {
+      vi.spyOn(global, 'fetch').mockResolvedValue(keygenJson(ACTIVE))
+
+      const res = await call(
+        'wc-api=am-software-api&request=activation&api_key=KEY&instance=site-1&anon_id=anon-123&site_uuid=uuid-abc',
+      )
+
+      // Attribution must never change the response contract.
+      expect(await res.json()).toEqual({ success: true, activated: true })
+      expect(trackAttributedServerEvent).toHaveBeenCalledTimes(1)
+      expect(trackAttributedServerEvent).toHaveBeenCalledWith('license_activated', 'anon-123', {
+        site_uuid: 'uuid-abc',
+        instance: 'site-1',
+        source: 'wc-am-shim',
+      })
+    })
+
+    it('does not capture when the plugin omits the anon_id', async () => {
+      vi.spyOn(global, 'fetch').mockResolvedValue(keygenJson(ACTIVE))
+
+      await call('wc-api=am-software-api&request=activation&api_key=KEY&instance=site-1')
+
+      expect(trackAttributedServerEvent).not.toHaveBeenCalled()
+    })
+
+    it('does not capture on a status poll, only on activation', async () => {
+      vi.spyOn(global, 'fetch').mockResolvedValue(keygenJson(ACTIVE))
+
+      await call('wc-api=am-software-api&request=status&api_key=KEY&instance=site-1&anon_id=anon-123')
+
+      expect(trackAttributedServerEvent).not.toHaveBeenCalled()
+    })
+
+    it('does not capture when activation fails', async () => {
+      vi.spyOn(global, 'fetch').mockResolvedValue(
+        keygenJson({ status: 404, message: 'A customer account does not exist for this API Key.' }, 404),
+      )
+
+      await call('wc-api=am-software-api&request=activation&api_key=BAD&instance=site-1&anon_id=anon-123')
+
+      expect(trackAttributedServerEvent).not.toHaveBeenCalled()
+    })
+
+    it('never lets an attribution failure disturb the activation reply', async () => {
+      vi.spyOn(global, 'fetch').mockResolvedValue(keygenJson(ACTIVE))
+      trackAttributedServerEvent.mockImplementationOnce(() => {
+        throw new Error('posthog client boom')
+      })
+
+      const res = await call(
+        'wc-api=am-software-api&request=activation&api_key=KEY&instance=site-1&anon_id=anon-123',
+      )
+
+      expect(res.status).toBe(200)
+      expect(await res.json()).toEqual({ success: true, activated: true })
+    })
   })
 })
