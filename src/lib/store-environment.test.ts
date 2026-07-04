@@ -53,4 +53,20 @@ describe('store environments', () => {
     expect(getStoreEnvironmentByName('test').payments.btcpayEnabled).toBe(true)
     expect(getStoreEnvironmentByName('dev').payments.btcpayEnabled).toBe(true)
   })
+
+  it('does not expose Stripe secret keys through public checkout config', async () => {
+    vi.resetModules()
+    vi.stubEnv(
+      'NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY',
+      'sk_live_12345678901234567890'
+    )
+
+    const { getStoreEnvironmentByName } = await import('./store-environment')
+
+    expect(
+      getStoreEnvironmentByName('live').payments.stripePublishableKey
+    ).toBeNull()
+
+    vi.unstubAllEnvs()
+  })
 })
