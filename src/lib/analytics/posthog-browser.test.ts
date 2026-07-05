@@ -34,4 +34,15 @@ describe('initPostHogBrowser', () => {
       expect.objectContaining({ capture_pageview: 'history_change' })
     )
   })
+
+  it('disables session replay (self-hosted /s/ ingest is not provisioned)', async () => {
+    const { isAnalyticsGranted } = await import('./consent')
+    ;(isAnalyticsGranted as ReturnType<typeof vi.fn>).mockReturnValue(true)
+    const { initPostHogBrowser } = await import('./posthog-browser')
+    initPostHogBrowser({ key: 'phc_x', host: 'https://eu.i.posthog.com' })
+    expect(initMock).toHaveBeenCalledWith(
+      'phc_x',
+      expect.objectContaining({ disable_session_recording: true })
+    )
+  })
 })
