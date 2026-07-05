@@ -268,6 +268,10 @@ export function LicensesClient({
           const discordMembers = discordAccess.members
           const keyRevealed = revealedKeys.has(license.id)
           const keyCopied = copiedKey === license.id
+          // Last-4 of the key distinguishes each card's controls in the
+          // accessible name — with multiple licences the buttons would
+          // otherwise all announce the same label to screen readers.
+          const keySuffix = license.key.slice(-4)
           return (
           <Card key={license.id}>
             <CardHeader>
@@ -279,8 +283,12 @@ export function LicensesClient({
                     type="button"
                     onClick={() => toggleRevealKey(license.id)}
                     aria-pressed={keyRevealed}
-                    title={t(keyRevealed ? 'hideKeyAria' : 'showKeyAria')}
-                    aria-label={t(keyRevealed ? 'hideKeyAria' : 'showKeyAria')}
+                    title={t(keyRevealed ? 'hideKeyAria' : 'showKeyAria', {
+                      suffix: keySuffix,
+                    })}
+                    aria-label={t(keyRevealed ? 'hideKeyAria' : 'showKeyAria', {
+                      suffix: keySuffix,
+                    })}
                     className="group flex min-w-0 items-center gap-2.5 rounded-md text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-wcpos-red/40"
                   >
                     <span
@@ -296,8 +304,16 @@ export function LicensesClient({
                   <button
                     type="button"
                     onClick={() => handleCopyKey(license.id, license.key)}
-                    title={t(keyCopied ? 'copiedKey' : 'copyKeyAria')}
-                    aria-label={t(keyCopied ? 'copiedKey' : 'copyKeyAria')}
+                    title={
+                      keyCopied
+                        ? t('copiedKey')
+                        : t('copyKeyAria', { suffix: keySuffix })
+                    }
+                    aria-label={
+                      keyCopied
+                        ? t('copiedKey')
+                        : t('copyKeyAria', { suffix: keySuffix })
+                    }
                     className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-wcpos-red/40"
                   >
                     {keyCopied ? (

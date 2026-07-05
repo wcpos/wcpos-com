@@ -219,9 +219,9 @@
       "discordConnectHint": "Connect with your license key to get the Pro role in our community Discord.",
       "discordNoMembers": "No connected members yet.",
       "discordRemoveError": "Failed to remove Discord member. Please try again.",
-      "showKeyAria": "Show license key",
-      "hideKeyAria": "Hide license key",
-      "copyKeyAria": "Copy license key",
+      "showKeyAria": "Show license key ending in {suffix}",
+      "hideKeyAria": "Hide license key ending in {suffix}",
+      "copyKeyAria": "Copy license key ending in {suffix}",
       "copiedKey": "Copied",
       "copyError": "Failed to copy license key. Please try again."
     },

@@ -75,7 +75,9 @@ describe('LicensesClient', () => {
   it('reveals the full license key when the key is clicked, then re-masks', () => {
     render(<LicensesClient initialLicenses={[makeLicense()]} />)
 
-    const toggle = screen.getByRole('button', { name: 'Show license key' })
+    const toggle = screen.getByRole('button', {
+      name: 'Show license key ending in MNOP',
+    })
     expect(screen.getByText('****-****-MNOP')).toBeInTheDocument()
     expect(screen.queryByText('ABCD-EFGH-IJKL-MNOP')).not.toBeInTheDocument()
 
@@ -83,10 +85,12 @@ describe('LicensesClient', () => {
     expect(screen.getByText('ABCD-EFGH-IJKL-MNOP')).toBeInTheDocument()
     expect(screen.queryByText('****-****-MNOP')).not.toBeInTheDocument()
     expect(
-      screen.getByRole('button', { name: 'Hide license key' })
+      screen.getByRole('button', { name: 'Hide license key ending in MNOP' })
     ).toHaveAttribute('aria-pressed', 'true')
 
-    fireEvent.click(screen.getByRole('button', { name: 'Hide license key' }))
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Hide license key ending in MNOP' })
+    )
     expect(screen.getByText('****-****-MNOP')).toBeInTheDocument()
     expect(screen.queryByText('ABCD-EFGH-IJKL-MNOP')).not.toBeInTheDocument()
   })
@@ -100,7 +104,9 @@ describe('LicensesClient', () => {
 
     render(<LicensesClient initialLicenses={[makeLicense()]} />)
 
-    const copyButton = screen.getByRole('button', { name: 'Copy license key' })
+    const copyButton = screen.getByRole('button', {
+      name: 'Copy license key ending in MNOP',
+    })
     fireEvent.click(copyButton)
 
     expect(writeText).toHaveBeenCalledWith('ABCD-EFGH-IJKL-MNOP')
@@ -110,7 +116,7 @@ describe('LicensesClient', () => {
     ).toBeInTheDocument()
   })
 
-  it('reveals keys independently per license card', () => {
+  it('gives each card a distinct accessible name and reveals keys independently', () => {
     render(
       <LicensesClient
         initialLicenses={[
@@ -120,9 +126,15 @@ describe('LicensesClient', () => {
       />
     )
 
-    const [firstToggle] = screen.getAllByRole('button', {
-      name: 'Show license key',
+    // Each card's toggle has a suffix-disambiguated accessible name, so
+    // screen readers (and this test) can target one card without getAllByRole.
+    const firstToggle = screen.getByRole('button', {
+      name: 'Show license key ending in MNOP',
     })
+    expect(
+      screen.getByRole('button', { name: 'Show license key ending in 0000' })
+    ).toBeInTheDocument()
+
     fireEvent.click(firstToggle)
 
     // Only the clicked card reveals; the other stays masked.

@@ -219,9 +219,9 @@
       "discordConnectHint": "Ligue com a sua chave de licença para obter o papel Pro no nosso Discord da comunidade.",
       "discordNoMembers": "Ainda não há membros ligados.",
       "discordRemoveError": "Falha ao remover o membro do Discord. Tente novamente.",
-      "showKeyAria": "Mostrar chave de licença",
-      "hideKeyAria": "Ocultar chave de licença",
-      "copyKeyAria": "Copiar chave de licença",
+      "showKeyAria": "Mostrar chave de licença terminada em {suffix}",
+      "hideKeyAria": "Ocultar chave de licença terminada em {suffix}",
+      "copyKeyAria": "Copiar chave de licença terminada em {suffix}",
       "copiedKey": "Copiada",
       "copyError": "Falha ao copiar a chave de licença. Tente novamente."
     },

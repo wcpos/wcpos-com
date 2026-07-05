@@ -219,9 +219,9 @@
       "discordConnectHint": "ライセンスキーで連携すると、コミュニティDiscordでProロールを取得できます。",
       "discordNoMembers": "まだ連携済みのメンバーはいません。",
       "discordRemoveError": "Discordメンバーの削除に失敗しました。もう一度お試しください。",
-      "showKeyAria": "ライセンスキーを表示",
-      "hideKeyAria": "ライセンスキーを非表示",
-      "copyKeyAria": "ライセンスキーをコピー",
+      "showKeyAria": "末尾が {suffix} のライセンスキーを表示",
+      "hideKeyAria": "末尾が {suffix} のライセンスキーを非表示",
+      "copyKeyAria": "末尾が {suffix} のライセンスキーをコピー",
       "copiedKey": "コピーしました",
       "copyError": "ライセンスキーをコピーできませんでした。もう一度お試しください。"
     },

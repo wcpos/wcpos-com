@@ -219,9 +219,9 @@
       "discordConnectHint": "Verbind met je licentiesleutel om de Pro-rol in onze community-Discord te krijgen.",
       "discordNoMembers": "Nog geen verbonden leden.",
       "discordRemoveError": "Kan Discord-lid niet verwijderen. Probeer het opnieuw.",
-      "showKeyAria": "Licentiesleutel tonen",
-      "hideKeyAria": "Licentiesleutel verbergen",
-      "copyKeyAria": "Licentiesleutel kopiëren",
+      "showKeyAria": "Licentiesleutel die eindigt op {suffix} tonen",
+      "hideKeyAria": "Licentiesleutel die eindigt op {suffix} verbergen",
+      "copyKeyAria": "Licentiesleutel die eindigt op {suffix} kopiëren",
       "copiedKey": "Gekopieerd",
       "copyError": "Kopiëren van licentiesleutel mislukt. Probeer het opnieuw."
     },
