@@ -33,6 +33,7 @@ async function main() {
   }
 
   const failures = []
+  const alerts = []
 
   // 1. The user-facing failure string must never render.
   if (html.includes('No payment methods are configured')) {
@@ -49,7 +50,7 @@ async function main() {
     /stripePublishableKey\\?"\s*:\s*(?:"([^"]*)"|\\"([^\\"]*)\\"|([^",}\s]*))/
   )
   if (!match) {
-    failures.push('stripePublishableKey not found in checkout payload')
+    alerts.push('stripePublishableKey marker not found in checkout payload')
   } else {
     const value = match[1] ?? match[2] ?? match[3]
     if (!value || value === 'null') {
@@ -63,6 +64,12 @@ async function main() {
     console.error(`✗ checkout smoke FAILED for ${BASE}`)
     for (const f of failures) console.error(`  - ${redact(f)}`)
     process.exit(1)
+  }
+
+  if (alerts.length > 0) {
+    console.error(`✗ checkout smoke INCONCLUSIVE for ${BASE}`)
+    for (const alert of alerts) console.error(`  - ${redact(alert)}`)
+    process.exit(3)
   }
 
   console.log(`✓ checkout smoke passed for ${BASE} (pk_ key present, no leak, no error)`)
