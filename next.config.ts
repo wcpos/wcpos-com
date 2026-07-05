@@ -1,7 +1,10 @@
 import type { NextConfig } from "next";
 import createNextIntlPlugin from "next-intl/plugin";
+import { locales } from "./src/i18n/config";
 
 const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
+const discordInviteUrl = "https://discord.gg/MV3E9dSUD";
+const localePattern = locales.join("|");
 
 // Report-Only CSP: logs violations to the browser console without blocking
 // anything. Origins cover Stripe, PayPal, PostHog, Sentry, and the WidgetBot
@@ -52,6 +55,12 @@ const nextConfig: NextConfig = {
   // migration — see the cutover decision in the launch ledger.
   async redirects() {
     return [
+      // Vanity redirect to the community Discord server (guild 711884517081612298).
+      // Includes locale-prefixed variants generated from the shared next-intl
+      // locale list. 302 (temporary) rather than 301 so browsers don't permanently
+      // cache the invite if it's ever rotated/revoked.
+      { source: '/discord', destination: discordInviteUrl, statusCode: 302 },
+      { source: `/:locale(${localePattern})/discord`, destination: discordInviteUrl, statusCode: 302 },
       // High-value pages
       { source: '/shop', destination: '/pro', statusCode: 301 },
       { source: '/cart', destination: '/pro', statusCode: 301 },
