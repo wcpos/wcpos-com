@@ -45,11 +45,13 @@ async function main() {
   }
 
   // 3. The Stripe publishable key must be a non-empty pk_ value, not null.
-  const match = html.match(/stripePublishableKey\\?"\s*:\s*("?)([^",}]*)\1/)
+  const match = html.match(
+    /stripePublishableKey\\?"\s*:\s*(?:"([^"]*)"|\\"([^\\"]*)\\"|([^",}\s]*))/
+  )
   if (!match) {
     failures.push('stripePublishableKey not found in checkout payload')
   } else {
-    const value = match[2]
+    const value = match[1] ?? match[2] ?? match[3]
     if (!value || value === 'null') {
       failures.push('stripePublishableKey is empty/null — Stripe (Card) hidden')
     } else if (!value.startsWith('pk_')) {
