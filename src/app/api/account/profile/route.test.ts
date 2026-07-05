@@ -29,7 +29,7 @@ describe('PATCH /api/account/profile', () => {
 
   it('returns 403 read_only_inspection while impersonating', async () => {
     const { ViewOnlyError } = await import('@/lib/impersonation')
-    assertViewOnly.mockRejectedValueOnce(new ViewOnlyError('read only'))
+    assertViewOnly.mockRejectedValueOnce(new ViewOnlyError())
 
     const response = await PATCH(
       new NextRequest('http://localhost:3000/api/account/profile', {
