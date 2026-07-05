@@ -24,6 +24,35 @@ function req(body: unknown, contentType = 'application/csp-report') {
   })
 }
 
+function oversizedStreamingReq() {
+  const encoder = new TextEncoder()
+  let pulledPastOversize = false
+  const body = new ReadableStream<Uint8Array>(
+    {
+      start(controller) {
+        controller.enqueue(encoder.encode('x'.repeat(8_193)))
+      },
+      pull(controller) {
+        pulledPastOversize = true
+        controller.enqueue(
+          encoder.encode(JSON.stringify({ 'csp-report': { 'violated-directive': 'script-src' } }))
+        )
+        controller.close()
+      },
+    },
+    { highWaterMark: 0 }
+  )
+
+  const request = new Request('http://localhost/api/csp-report', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/csp-report' },
+    body,
+    duplex: 'half',
+  } as RequestInit & { duplex: 'half' })
+
+  return { request, pulledPastOversize: () => pulledPastOversize }
+}
+
 // Concatenated tagged-template args (strings + interpolated values) for call N.
 function loggedText(n = 0): string {
   return warnMock.mock.calls[n].flat().join('|')
@@ -96,6 +125,42 @@ describe('POST /api/csp-report', () => {
     expect(loggedText()).not.toMatch(/[\r\n]/)
   })
 
+  it('strips query strings and fragments from reported URLs before logging', async () => {
+    await POST(
+      req({
+        'csp-report': {
+          'document-uri': 'https://wcpos.com/reset-password?token=secret&email=user@example.com#frag',
+          'violated-directive': 'script-src',
+          'blocked-uri': 'https://evil.example/x.js?session=secret#frag',
+        },
+      })
+    )
+    expect(warnMock).toHaveBeenCalledTimes(1)
+    const text = loggedText()
+    expect(text).toContain('https://wcpos.com/reset-password')
+    expect(text).toContain('https://evil.example/x.js')
+    expect(text).not.toContain('token=secret')
+    expect(text).not.toContain('email=user@example.com')
+    expect(text).not.toContain('session=secret')
+    expect(text).not.toContain('#frag')
+  })
+
+  it('caps logged violations from a modern batched report', async () => {
+    const violations = Array.from({ length: 12 }, (_, i) => ({
+      type: 'csp-violation',
+      body: {
+        effectiveDirective: `script-src-${i}`,
+        blockedURL: `https://evil.example/${i}.js`,
+      },
+    }))
+
+    const res = await POST(req(violations, 'application/reports+json'))
+
+    expect(res.status).toBe(204)
+    expect(warnMock).toHaveBeenCalledTimes(10)
+    expect(loggedText(9)).toContain('script-src-9')
+  })
+
   it('drops over-limit callers silently (204, no log)', async () => {
     consumeMock.mockResolvedValueOnce({ success: false, remaining: 0 })
     const res = await POST(
@@ -126,5 +191,15 @@ describe('POST /api/csp-report', () => {
     const res = await POST(big)
     expect(res.status).toBe(204)
     expect(warnMock).not.toHaveBeenCalled()
+  })
+
+  it('stops reading an actually oversized streamed body after the byte cap', async () => {
+    const { request, pulledPastOversize } = oversizedStreamingReq()
+
+    const res = await POST(request)
+
+    expect(res.status).toBe(204)
+    expect(warnMock).not.toHaveBeenCalled()
+    expect(pulledPastOversize()).toBe(false)
   })
 })

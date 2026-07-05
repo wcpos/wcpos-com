@@ -25,6 +25,7 @@ import { createRateLimiter, clientIp } from '@/lib/rate-limit'
 // Real reports are a few hundred bytes. Reject anything larger so this
 // unauthenticated endpoint can't be used to push large bodies into the logs.
 const MAX_BODY_BYTES = 8_192
+const MAX_VIOLATIONS_PER_REPORT = 10
 
 // Unauthenticated, browser-driven endpoint — cap abuse per IP. A page with
 // violations may emit a small burst on load; 60/min leaves headroom while
@@ -44,6 +45,44 @@ function sanitizeField(value: unknown): string {
   return value.replace(/[\r\n\t]+/g, ' ').replace(/[^\x20-\x7e]/g, '').slice(0, 256)
 }
 
+function sanitizeUrlField(value: unknown): string {
+  const sanitized = sanitizeField(value)
+  try {
+    const url = new URL(sanitized)
+    url.search = ''
+    url.hash = ''
+    return url.toString()
+  } catch {
+    return sanitized
+  }
+}
+
+async function readBodyUnderLimit(request: Request): Promise<string | null> {
+  if (!request.body) return ''
+
+  const reader = request.body.getReader()
+  const decoder = new TextDecoder()
+  let bytes = 0
+  let raw = ''
+
+  try {
+    while (true) {
+      const { done, value } = await reader.read()
+      if (done) break
+      bytes += value.byteLength
+      if (bytes > MAX_BODY_BYTES) {
+        await reader.cancel()
+        return null
+      }
+      raw += decoder.decode(value, { stream: true })
+    }
+  } finally {
+    reader.releaseLock()
+  }
+
+  return raw + decoder.decode()
+}
+
 interface NormalizedViolation {
   directive: string
   blockedUri: string
@@ -58,8 +97,8 @@ function extractViolations(body: unknown): NormalizedViolation[] {
     return [
       {
         directive: sanitizeField(r['violated-directive'] ?? r['effective-directive']),
-        blockedUri: sanitizeField(r['blocked-uri']),
-        documentUri: sanitizeField(r['document-uri']),
+        blockedUri: sanitizeUrlField(r['blocked-uri']),
+        documentUri: sanitizeUrlField(r['document-uri']),
       },
     ]
   }
@@ -68,12 +107,13 @@ function extractViolations(body: unknown): NormalizedViolation[] {
   if (Array.isArray(body)) {
     return body
       .filter((r) => r && typeof r === 'object' && r.type === 'csp-violation')
+      .slice(0, MAX_VIOLATIONS_PER_REPORT)
       .map((r) => {
         const b = (r.body ?? {}) as Record<string, unknown>
         return {
           directive: sanitizeField(b.effectiveDirective ?? b.violatedDirective),
-          blockedUri: sanitizeField(b.blockedURL),
-          documentUri: sanitizeField(b.documentURL),
+          blockedUri: sanitizeUrlField(b.blockedURL),
+          documentUri: sanitizeUrlField(b.documentURL),
         }
       })
   }
@@ -93,8 +133,8 @@ export async function POST(request: Request): Promise<NextResponse> {
     const { success } = await limiter.consume(clientIp(request))
     if (!success) return noContent
 
-    const raw = await request.text()
-    if (new TextEncoder().encode(raw).byteLength > MAX_BODY_BYTES) return noContent
+    const raw = await readBodyUnderLimit(request)
+    if (raw === null) return noContent
 
     const violations = extractViolations(JSON.parse(raw))
     for (const v of violations) {
