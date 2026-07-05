@@ -34,11 +34,20 @@ vi.mock('@/lib/store-environment', () => {
   }
 })
 
-const { mockGetAuthToken, mockWarn, mockError, mockFetch } = vi.hoisted(() => ({
+const {
+  mockGetAuthToken,
+  mockWarn,
+  mockError,
+  mockFetch,
+  mockGetImpersonation,
+  mockListAdminCustomerOrders,
+} = vi.hoisted(() => ({
   mockGetAuthToken: vi.fn(),
   mockWarn: vi.fn(),
   mockError: vi.fn(),
   mockFetch: vi.fn(),
+  mockGetImpersonation: vi.fn(),
+  mockListAdminCustomerOrders: vi.fn(),
 }))
 
 vi.mock('@/lib/medusa-auth', () => ({
@@ -49,6 +58,14 @@ vi.mock('@/lib/logger', () => ({
   storeLogger: { warn: mockWarn, error: mockError },
 }))
 
+vi.mock('@/lib/impersonation', () => ({
+  getImpersonation: () => mockGetImpersonation(),
+}))
+
+vi.mock('@/lib/discord/medusa-admin', () => ({
+  listAdminCustomerOrders: (id: string) => mockListAdminCustomerOrders(id),
+}))
+
 global.fetch = mockFetch
 
 import { getOrdersPage, getAllOrders, getOrderById } from './customer-orders'
@@ -56,6 +73,9 @@ import { getOrdersPage, getAllOrders, getOrderById } from './customer-orders'
 describe('customer-orders', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+    // Default: not impersonating, so the existing session-scoped tests below
+    // all exercise the non-impersonating path unchanged.
+    mockGetImpersonation.mockResolvedValue(null)
   })
 
   describe('getOrdersPage', () => {
@@ -269,6 +289,72 @@ describe('customer-orders', () => {
       mockGetAuthToken.mockResolvedValue(null)
 
       const order = await getOrderById('order_1')
+
+      expect(order).toBeNull()
+      expect(mockFetch).not.toHaveBeenCalled()
+    })
+  })
+
+  // When inspecting, every order read must resolve the TARGET customer's
+  // orders via the admin API — Medusa scopes /store/orders to the session's
+  // own actor_id, so the session token would return the ADMIN's orders.
+  describe('under impersonation', () => {
+    beforeEach(() => {
+      mockGetImpersonation.mockResolvedValue({
+        adminEmail: 'p@k.com',
+        targetId: 'cus_t',
+      })
+    })
+
+    it('getAllOrders fetches the TARGET orders via the admin API, not the session', async () => {
+      mockListAdminCustomerOrders.mockResolvedValue([
+        { id: 'ord_t', display_id: 1 },
+      ])
+
+      const orders = await getAllOrders()
+
+      expect(mockListAdminCustomerOrders).toHaveBeenCalledWith('cus_t')
+      expect(orders).toEqual([{ id: 'ord_t', display_id: 1 }])
+      expect(mockGetAuthToken).not.toHaveBeenCalled()
+      expect(mockFetch).not.toHaveBeenCalled()
+    })
+
+    it('getOrdersPage slices the TARGET order set for the requested window', async () => {
+      mockListAdminCustomerOrders.mockResolvedValue([
+        { id: 'ord_1', display_id: 1 },
+        { id: 'ord_2', display_id: 2 },
+        { id: 'ord_3', display_id: 3 },
+      ])
+
+      const page = await getOrdersPage(2, 1)
+
+      expect(mockListAdminCustomerOrders).toHaveBeenCalledWith('cus_t')
+      expect(page).toEqual([
+        { id: 'ord_2', display_id: 2 },
+        { id: 'ord_3', display_id: 3 },
+      ])
+      expect(mockFetch).not.toHaveBeenCalled()
+    })
+
+    it('getOrderById finds the order within the TARGET order set', async () => {
+      mockListAdminCustomerOrders.mockResolvedValue([
+        { id: 'ord_1', display_id: 1 },
+        { id: 'ord_2', display_id: 2 },
+      ])
+
+      const order = await getOrderById('ord_2')
+
+      expect(mockListAdminCustomerOrders).toHaveBeenCalledWith('cus_t')
+      expect(order).toEqual({ id: 'ord_2', display_id: 2 })
+      expect(mockFetch).not.toHaveBeenCalled()
+    })
+
+    it('getOrderById returns null when the id is not in the TARGET set', async () => {
+      mockListAdminCustomerOrders.mockResolvedValue([
+        { id: 'ord_1', display_id: 1 },
+      ])
+
+      const order = await getOrderById('ord_missing')
 
       expect(order).toBeNull()
       expect(mockFetch).not.toHaveBeenCalled()

@@ -13,6 +13,8 @@ import {
   InvalidCredentialsError,
   InvalidResetTokenError,
 } from '@/lib/api/errors'
+import { getImpersonation } from '@/lib/impersonation'
+import { getAdminCustomerById } from '@/lib/discord/medusa-admin'
 
 // ============================================================================
 // Types
@@ -356,10 +358,18 @@ export async function getSessionCustomer(): Promise<MedusaCustomer | null> {
   }
 }
 
-// Memoized per request with React `cache()`. Task 6 adds the impersonation
-// branch; for now it is the session customer.
+// Memoized per request. When inspecting (admin + account scope + cookie),
+// returns the TARGET customer via the admin API; otherwise the session
+// customer. Every account page/read flows through here, so the whole area
+// renders as the target.
 export const getCustomer = cache(
-  async (): Promise<MedusaCustomer | null> => getSessionCustomer()
+  async (): Promise<MedusaCustomer | null> => {
+    const impersonation = await getImpersonation()
+    if (impersonation) {
+      return getAdminCustomerById(impersonation.targetId)
+    }
+    return getSessionCustomer()
+  }
 )
 
 /**
