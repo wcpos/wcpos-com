@@ -1,5 +1,4 @@
-import { NextResponse } from 'next/server'
-import type { NextRequest } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import createIntlMiddleware from 'next-intl/middleware'
 import { routing } from '@/i18n/routing'
 import {
@@ -16,6 +15,10 @@ import { MEDUSA_TOKEN_COOKIE } from '@/lib/medusa-cookie'
 const COOKIE_NAME = MEDUSA_TOKEN_COOKIE
 const UPDATES_HOSTNAME = 'updates.wcpos.com'
 const MAIN_SITE_ORIGIN = 'https://wcpos.com'
+
+// Set on requests inside the account area so server code can scope
+// impersonation to /account only (see src/lib/impersonation.ts).
+const ACCOUNT_REQUEST_HEADER = 'x-wcpos-account-request'
 
 const intlMiddleware = createIntlMiddleware(routing)
 
@@ -106,8 +109,14 @@ export function middleware(request: NextRequest) {
     return withDistinctIdCookie(request, NextResponse.redirect(redirectUrl, 301))
   }
 
-  // API routes don't need locale processing
+  // API routes don't need locale processing. Account APIs get the
+  // account-request header so impersonation is scoped to /account.
   if (pathname.startsWith('/api/')) {
+    if (pathname.startsWith('/api/account/')) {
+      const headers = new Headers(request.headers)
+      headers.set(ACCOUNT_REQUEST_HEADER, '1')
+      return NextResponse.next({ request: { headers } })
+    }
     return NextResponse.next()
   }
 
@@ -141,6 +150,18 @@ export function middleware(request: NextRequest) {
         NextResponse.redirect(new URL('/account', request.url))
       )
     }
+  }
+
+  // Inside /account, stamp the account-request header before locale routing so
+  // impersonation is honored only here. next-intl copies the incoming request's
+  // headers onto the response it forwards (`NextResponse.rewrite`/`.next` with
+  // `{ request: { headers } }`), so a header set on the request it receives
+  // propagates to the RSC layer via `headers()`.
+  if (pathnameWithoutLocale.startsWith('/account')) {
+    const headers = new Headers(request.headers)
+    headers.set(ACCOUNT_REQUEST_HEADER, '1')
+    const requestWithHeader = new NextRequest(request, { headers })
+    return withDistinctIdCookie(request, intlMiddleware(requestWithHeader))
   }
 
   return withDistinctIdCookie(request, intlMiddleware(request))
