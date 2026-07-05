@@ -220,7 +220,10 @@
       "discordNoMembers": "Ainda não há membros ligados.",
       "discordRemoveError": "Falha ao remover o membro do Discord. Tente novamente.",
       "showKeyAria": "Mostrar chave de licença",
-      "hideKeyAria": "Ocultar chave de licença"
+      "hideKeyAria": "Ocultar chave de licença",
+      "copyKeyAria": "Copiar chave de licença",
+      "copiedKey": "Copiada",
+      "copyError": "Falha ao copiar a chave de licença. Tente novamente."
     },
     "downloads": {
       "heading": "Transferências",

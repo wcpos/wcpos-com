@@ -91,6 +91,25 @@ describe('LicensesClient', () => {
     expect(screen.queryByText('ABCD-EFGH-IJKL-MNOP')).not.toBeInTheDocument()
   })
 
+  it('copies the full license key to the clipboard when the copy button is clicked', async () => {
+    const writeText = vi.fn().mockResolvedValue(undefined)
+    Object.defineProperty(navigator, 'clipboard', {
+      value: { writeText },
+      configurable: true,
+    })
+
+    render(<LicensesClient initialLicenses={[makeLicense()]} />)
+
+    const copyButton = screen.getByRole('button', { name: 'Copy license key' })
+    fireEvent.click(copyButton)
+
+    expect(writeText).toHaveBeenCalledWith('ABCD-EFGH-IJKL-MNOP')
+    // Confirmation state flips the button's accessible name to "Copied".
+    expect(
+      await screen.findByRole('button', { name: 'Copied' })
+    ).toBeInTheDocument()
+  })
+
   it('reveals keys independently per license card', () => {
     render(
       <LicensesClient

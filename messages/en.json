@@ -220,7 +220,10 @@
       "discordNoMembers": "No connected members yet.",
       "discordRemoveError": "Failed to remove Discord member. Please try again.",
       "showKeyAria": "Show license key",
-      "hideKeyAria": "Hide license key"
+      "hideKeyAria": "Hide license key",
+      "copyKeyAria": "Copy license key",
+      "copiedKey": "Copied",
+      "copyError": "Failed to copy license key. Please try again."
     },
     "downloads": {
       "heading": "Downloads",

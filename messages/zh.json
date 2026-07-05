@@ -220,7 +220,10 @@
       "discordNoMembers": "暂无已连接的成员。",
       "discordRemoveError": "移除 Discord 成员失败。请重试。",
       "showKeyAria": "显示许可证密钥",
-      "hideKeyAria": "隐藏许可证密钥"
+      "hideKeyAria": "隐藏许可证密钥",
+      "copyKeyAria": "复制许可证密钥",
+      "copiedKey": "已复制",
+      "copyError": "复制许可证密钥失败。请重试。"
     },
     "downloads": {
       "heading": "下载",

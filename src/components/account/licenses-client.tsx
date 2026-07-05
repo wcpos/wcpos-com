@@ -10,7 +10,7 @@ import { DividedList, Row } from '@/components/ui/row'
 import { Alert } from '@/components/ui/alert'
 import { EmptyState } from '@/components/ui/empty-state'
 import { AccountNotice } from '@/components/account/account-notice'
-import { Key, Monitor, Trash2, Download } from 'lucide-react'
+import { Key, Monitor, Trash2, Download, Copy, Check } from 'lucide-react'
 import { Link } from '@/i18n/navigation'
 import { formatDateForLocale } from '@/lib/date-format'
 import type { CanonicalLicenseStatus } from '@/lib/license-status'
@@ -92,6 +92,9 @@ export function LicensesClient({
   // that card only. Tracked per licence id so revealing one leaves the rest
   // masked.
   const [revealedKeys, setRevealedKeys] = useState<Set<string>>(() => new Set())
+  // Licence id whose key was just copied, so its button can flash a
+  // "Copied" confirmation. Cleared after a short delay.
+  const [copiedKey, setCopiedKey] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [deactivating, setDeactivating] = useState<string | null>(null)
   const [removingDiscordMember, setRemovingDiscordMember] = useState<string | null>(null)
@@ -201,6 +204,20 @@ export function LicensesClient({
     })
   }
 
+  const handleCopyKey = async (licenseId: string, key: string) => {
+    try {
+      await navigator.clipboard.writeText(key)
+      setCopiedKey(licenseId)
+      // Reset the confirmation, but only if this card is still the copied
+      // one (guards against clobbering a later copy of a different card).
+      setTimeout(() => {
+        setCopiedKey((current) => (current === licenseId ? null : current))
+      }, 2000)
+    } catch {
+      setError(t('copyError'))
+    }
+  }
+
   // Keygen can report status "active" after the expiry date has passed;
   // present those licenses as expired so the UI matches download entitlement.
   // (Shared rule: unparseable expiry fails closed, matching the server.)
@@ -250,13 +267,14 @@ export function LicensesClient({
             discordAccessByLicenseState[license.id] ?? emptyDiscordAccess(license.id)
           const discordMembers = discordAccess.members
           const keyRevealed = revealedKeys.has(license.id)
+          const keyCopied = copiedKey === license.id
           return (
           <Card key={license.id}>
             <CardHeader>
               {/* flex-wrap so the badge/plan cluster drops below the key on
                   narrow phones instead of squeezing it. */}
               <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
-                <CardTitle className="min-w-0 text-lg">
+                <CardTitle className="flex min-w-0 items-center gap-1.5 text-lg">
                   <button
                     type="button"
                     onClick={() => toggleRevealKey(license.id)}
@@ -274,6 +292,19 @@ export function LicensesClient({
                     <code className="break-all font-mono text-sm tracking-wider">
                       {keyRevealed ? license.key : maskKey(license.key)}
                     </code>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleCopyKey(license.id, license.key)}
+                    title={t(keyCopied ? 'copiedKey' : 'copyKeyAria')}
+                    aria-label={t(keyCopied ? 'copiedKey' : 'copyKeyAria')}
+                    className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-wcpos-red/40"
+                  >
+                    {keyCopied ? (
+                      <Check className="h-4 w-4 text-green-600" />
+                    ) : (
+                      <Copy className="h-4 w-4" />
+                    )}
                   </button>
                 </CardTitle>
                 <div className="flex items-center gap-2">

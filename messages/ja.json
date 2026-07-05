@@ -220,7 +220,10 @@
       "discordNoMembers": "まだ連携済みのメンバーはいません。",
       "discordRemoveError": "Discordメンバーの削除に失敗しました。もう一度お試しください。",
       "showKeyAria": "ライセンスキーを表示",
-      "hideKeyAria": "ライセンスキーを非表示"
+      "hideKeyAria": "ライセンスキーを非表示",
+      "copyKeyAria": "ライセンスキーをコピー",
+      "copiedKey": "コピーしました",
+      "copyError": "ライセンスキーをコピーできませんでした。もう一度お試しください。"
     },
     "downloads": {
       "heading": "ダウンロード",

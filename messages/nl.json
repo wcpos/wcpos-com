@@ -220,7 +220,10 @@
       "discordNoMembers": "Nog geen verbonden leden.",
       "discordRemoveError": "Kan Discord-lid niet verwijderen. Probeer het opnieuw.",
       "showKeyAria": "Licentiesleutel tonen",
-      "hideKeyAria": "Licentiesleutel verbergen"
+      "hideKeyAria": "Licentiesleutel verbergen",
+      "copyKeyAria": "Licentiesleutel kopiëren",
+      "copiedKey": "Gekopieerd",
+      "copyError": "Kopiëren van licentiesleutel mislukt. Probeer het opnieuw."
     },
     "downloads": {
       "heading": "Downloads",

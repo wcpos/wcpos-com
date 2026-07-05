@@ -220,7 +220,10 @@
       "discordNoMembers": "Aún no hay miembros conectados.",
       "discordRemoveError": "No se pudo eliminar el miembro de Discord. Inténtalo de nuevo.",
       "showKeyAria": "Mostrar clave de licencia",
-      "hideKeyAria": "Ocultar clave de licencia"
+      "hideKeyAria": "Ocultar clave de licencia",
+      "copyKeyAria": "Copiar clave de licencia",
+      "copiedKey": "Copiada",
+      "copyError": "No se pudo copiar la clave de licencia. Inténtalo de nuevo."
     },
     "downloads": {
       "heading": "Descargas",

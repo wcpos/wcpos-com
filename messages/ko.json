@@ -220,7 +220,10 @@
       "discordNoMembers": "아직 연결된 멤버가 없습니다.",
       "discordRemoveError": "Discord 멤버를 제거하지 못했습니다. 다시 시도해 주세요.",
       "showKeyAria": "라이선스 키 표시",
-      "hideKeyAria": "라이선스 키 숨기기"
+      "hideKeyAria": "라이선스 키 숨기기",
+      "copyKeyAria": "라이선스 키 복사",
+      "copiedKey": "복사됨",
+      "copyError": "라이선스 키를 복사하지 못했습니다. 다시 시도해 주세요."
     },
     "downloads": {
       "heading": "다운로드",

@@ -220,7 +220,10 @@
       "discordNoMembers": "Noch keine verbundenen Mitglieder.",
       "discordRemoveError": "Discord-Mitglied konnte nicht entfernt werden. Bitte versuche es erneut.",
       "showKeyAria": "Lizenzschlüssel anzeigen",
-      "hideKeyAria": "Lizenzschlüssel ausblenden"
+      "hideKeyAria": "Lizenzschlüssel ausblenden",
+      "copyKeyAria": "Lizenzschlüssel kopieren",
+      "copiedKey": "Kopiert",
+      "copyError": "Lizenzschlüssel konnte nicht kopiert werden. Bitte versuche es erneut."
     },
     "downloads": {
       "heading": "Downloads",

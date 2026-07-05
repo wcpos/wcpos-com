@@ -220,7 +220,10 @@
       "discordNoMembers": "Aucun membre connecté pour le moment.",
       "discordRemoveError": "Échec du retrait du membre Discord. Veuillez réessayer.",
       "showKeyAria": "Afficher la clé de licence",
-      "hideKeyAria": "Masquer la clé de licence"
+      "hideKeyAria": "Masquer la clé de licence",
+      "copyKeyAria": "Copier la clé de licence",
+      "copiedKey": "Copiée",
+      "copyError": "Échec de la copie de la clé de licence. Veuillez réessayer."
     },
     "downloads": {
       "heading": "Téléchargements",
