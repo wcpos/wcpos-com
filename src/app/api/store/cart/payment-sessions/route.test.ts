@@ -125,7 +125,8 @@ describe('POST /api/store/cart/payment-sessions', () => {
     expect(mockCreatePaymentSession).toHaveBeenCalledWith(
       'paycol_1',
       'pp_stripe_stripe',
-      AUTH_TOKEN
+      AUTH_TOKEN,
+      undefined
     )
     expect(mockGetCart).toHaveBeenCalledWith('cart_1')
     expect(json).toEqual({
@@ -151,7 +152,8 @@ describe('POST /api/store/cart/payment-sessions', () => {
     expect(mockCreatePaymentSession).toHaveBeenCalledWith(
       'paycol_1',
       'pp_stripe_stripe',
-      'jwt_specific'
+      'jwt_specific',
+      undefined
     )
   })
 
@@ -173,7 +175,90 @@ describe('POST /api/store/cart/payment-sessions', () => {
     expect(mockCreatePaymentSession).toHaveBeenCalledWith(
       'paycol_1',
       'pp_stripe_stripe',
-      null
+      null,
+      undefined
+    )
+  })
+
+  it('saves the card off-session for a consenting yearly Stripe purchase', async () => {
+    mockCreatePaymentCollection.mockResolvedValueOnce({ id: 'paycol_1' })
+    mockCreatePaymentSession.mockResolvedValueOnce({
+      clientSecret: 'pi_secret',
+      paymentSessionId: 'payses_1',
+    })
+
+    const response = await POST(makeRequest({ cartId: 'cart_1', saveCard: true }))
+
+    expect(response.status).toBe(200)
+    expect(mockCreatePaymentSession).toHaveBeenCalledWith(
+      'paycol_1',
+      'pp_stripe_stripe',
+      AUTH_TOKEN,
+      'off_session'
+    )
+  })
+
+  it('does not save the card for a lifetime purchase even with consent', async () => {
+    mockGetCart.mockResolvedValue({
+      id: 'cart_1',
+      items: [{ variant_id: 'variant_lifetime_current', quantity: 1 }],
+    })
+    mockCreatePaymentCollection.mockResolvedValueOnce({ id: 'paycol_1' })
+    mockCreatePaymentSession.mockResolvedValueOnce({
+      clientSecret: 'pi_secret',
+      paymentSessionId: 'payses_1',
+    })
+
+    const response = await POST(makeRequest({ cartId: 'cart_1', saveCard: true }))
+
+    expect(response.status).toBe(200)
+    expect(mockCreatePaymentSession).toHaveBeenCalledWith(
+      'paycol_1',
+      'pp_stripe_stripe',
+      AUTH_TOKEN,
+      undefined
+    )
+  })
+
+  it('does not save the card for a non-Stripe provider even with consent', async () => {
+    mockCreatePaymentCollection.mockResolvedValueOnce({ id: 'paycol_1' })
+    mockCreatePaymentSession.mockResolvedValueOnce({
+      clientSecret: null,
+      paymentSessionId: 'payses_1',
+    })
+
+    const response = await POST(
+      makeRequest({
+        cartId: 'cart_1',
+        saveCard: true,
+        provider_id: 'pp_paypal_paypal',
+      })
+    )
+
+    expect(response.status).toBe(200)
+    expect(mockCreatePaymentSession).toHaveBeenCalledWith(
+      'paycol_1',
+      'pp_paypal_paypal',
+      AUTH_TOKEN,
+      undefined
+    )
+  })
+
+  it('does not save the card when consent is absent', async () => {
+    mockCreatePaymentCollection.mockResolvedValueOnce({ id: 'paycol_1' })
+    mockCreatePaymentSession.mockResolvedValueOnce({
+      clientSecret: 'pi_secret',
+      paymentSessionId: 'payses_1',
+    })
+
+    const response = await POST(makeRequest({ cartId: 'cart_1', saveCard: false }))
+
+    expect(response.status).toBe(200)
+    expect(mockCreatePaymentSession).toHaveBeenCalledWith(
+      'paycol_1',
+      'pp_stripe_stripe',
+      AUTH_TOKEN,
+      undefined
     )
   })
 
@@ -197,7 +282,8 @@ describe('POST /api/store/cart/payment-sessions', () => {
     expect(mockCreatePaymentSession).toHaveBeenCalledWith(
       'paycol_1',
       'pp_stripe_stripe',
-      AUTH_TOKEN
+      AUTH_TOKEN,
+      undefined
     )
   })
 
@@ -221,7 +307,8 @@ describe('POST /api/store/cart/payment-sessions', () => {
     expect(mockCreatePaymentSession).toHaveBeenCalledWith(
       'paycol_existing',
       'pp_custom',
-      AUTH_TOKEN
+      AUTH_TOKEN,
+      undefined
     )
     expect(json.paymentCollectionId).toBe('paycol_existing')
   })
@@ -246,7 +333,8 @@ describe('POST /api/store/cart/payment-sessions', () => {
     expect(mockCreatePaymentSession).toHaveBeenCalledWith(
       'paycol_1',
       'pp_stripe_stripe',
-      AUTH_TOKEN
+      AUTH_TOKEN,
+      undefined
     )
     expect(json.paymentCollectionId).toBe('paycol_1')
   })

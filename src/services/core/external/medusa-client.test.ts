@@ -669,6 +669,61 @@ describe('medusaClient', () => {
         )
       })
 
+      it('threads setup_future_usage into the session data when provided', async () => {
+        mockFetch.mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({
+            payment_collection: {
+              id: 'pay_col_123',
+              payment_sessions: [
+                {
+                  id: 'payses_123',
+                  provider_id: 'pp_stripe_stripe',
+                  status: 'pending',
+                  data: { client_secret: 'pi_secret_123' },
+                },
+              ],
+            },
+          }),
+        })
+
+        await createPaymentSession(
+          'pay_col_123',
+          'pp_stripe_stripe',
+          'jwt_abc',
+          'off_session'
+        )
+
+        const [, init] = mockFetch.mock.calls[0]
+        const parsed = JSON.parse(init.body as string)
+        expect(parsed.data).toEqual({ setup_future_usage: 'off_session' })
+      })
+
+      it('omits the data payload when setup_future_usage is not requested', async () => {
+        mockFetch.mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({
+            payment_collection: {
+              id: 'pay_col_123',
+              payment_sessions: [
+                {
+                  id: 'payses_123',
+                  provider_id: 'pp_stripe_stripe',
+                  status: 'pending',
+                  data: { client_secret: 'pi_secret_123' },
+                },
+              ],
+            },
+          }),
+        })
+
+        await createPaymentSession('pay_col_123', 'pp_stripe_stripe', 'jwt_abc')
+
+        const [, init] = mockFetch.mock.calls[0]
+        const parsed = JSON.parse(init.body as string)
+        expect(parsed.data).toBeUndefined()
+      })
+
       it('returns null on error', async () => {
         mockFetch.mockResolvedValueOnce({
           ok: false,

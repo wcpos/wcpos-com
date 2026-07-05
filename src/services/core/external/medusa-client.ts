@@ -405,18 +405,31 @@ export interface PaymentSessionResult {
  * workflow only creates/links a Stripe account holder `when("customer-id-exists")`.
  * Without the token the request is publishable-key-only, `actor_id` is empty, and
  * no `cus_...` is attached. Optional so anonymous/mock callers still work.
+ *
+ * `setupFutureUsage` (e.g. `'off_session'`) is forwarded verbatim as the session
+ * `data`: Medusa's store payment-sessions route passes `data` straight into the
+ * Stripe provider's `initiatePayment`, where `normalizePaymentIntentParameters`
+ * copies `setup_future_usage` onto the PaymentIntent — saving the card as a
+ * reusable off-session payment method against the attached Stripe Customer.
+ * Only meaningful with a Customer attached (i.e. alongside `authToken`).
  */
 export async function createPaymentSession(
   paymentCollectionId: string,
   providerId: string,
-  authToken?: string | null
+  authToken?: string | null,
+  setupFutureUsage?: 'off_session' | null
 ): Promise<PaymentSessionResult | null> {
   try {
     const response = await medusaFetch<PaymentCollectionResponse>(
       `/store/payment-collections/${paymentCollectionId}/payment-sessions`,
       {
         method: 'POST',
-        body: JSON.stringify({ provider_id: providerId }),
+        body: JSON.stringify({
+          provider_id: providerId,
+          ...(setupFutureUsage
+            ? { data: { setup_future_usage: setupFutureUsage } }
+            : {}),
+        }),
         headers: buildAuthHeaders(authToken),
       }
     )

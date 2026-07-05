@@ -54,6 +54,10 @@ export async function POST(request: NextRequest) {
       payload.paymentCollectionId.trim()
         ? payload.paymentCollectionId.trim()
         : undefined
+    // Opt-in consent to store the card for a future off-session renewal charge.
+    // No UI sets this yet — the consent copy/mandate is an owner decision — so
+    // in practice this is currently always false and every card stays one-shot.
+    const saveCard = payload.saveCard === true
 
     if (!cartId) {
       return NextResponse.json(
@@ -83,6 +87,17 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       )
     }
+
+    // Only save a card when it can actually be reused: the yearly plan renews
+    // (lifetime never does), the buyer consented, and it's the Stripe card
+    // provider (PayPal/BTCPay have no off-session-card concept). A saved card
+    // is only chargeable later because Phase 1 attaches a Stripe Customer.
+    const setupFutureUsage =
+      saveCard &&
+      selection.planId === 'yearly' &&
+      providerId.startsWith('pp_stripe')
+        ? ('off_session' as const)
+        : undefined
 
     // The cart is the source of truth for its payment collection: a
     // caller-supplied id that doesn't match the cart's own collection (stale
@@ -114,7 +129,12 @@ export async function POST(request: NextRequest) {
     }
 
     // Create session within the collection
-    const session = await createPaymentSession(collectionId, providerId, authToken)
+    const session = await createPaymentSession(
+      collectionId,
+      providerId,
+      authToken,
+      setupFutureUsage
+    )
     if (!session) {
       return NextResponse.json(
         { error: 'Failed to create payment session' },
