@@ -40,19 +40,34 @@ function stripePublishableKey(value: string | undefined): string | null {
   return candidate.startsWith('pk_') ? candidate : null
 }
 
-// TODO(launch): replace the env-var fallbacks below with the literal
-// publishable keys/client ids once pasted from the Stripe/PayPal/Medusa
-// dashboards. The fallbacks only exist so current env-var-based deploys keep
-// working during the transition; committed literals are the end state.
+function liveStripePublishableKey(value: string | undefined): string | null {
+  const candidate = stripePublishableKey(value)
+  return candidate?.startsWith('pk_live_') ? candidate : null
+}
+
+// Public live Stripe publishable key. Publishable keys are safe to commit and
+// are rendered into client HTML by design (unlike sk_ secret keys). It lives in
+// code — not a Vercel env var — because an empty NEXT_PUBLIC_STRIPE_PUBLISHABLE_
+// KEY on Vercel silently nulled Stripe (the only registered payment method) and
+// produced "No payment methods are configured" in production more than once.
+// Git is the flip mechanism; the env var, when set to a valid pk_live_ value, still
+// overrides for key rotation without a redeploy (anything else — empty, sk_,
+// junk — is ignored in favour of this literal).
+const LIVE_STRIPE_PUBLISHABLE_KEY = 'pk_live_KlgLwN0RGeiWCv3yx6qjv4ef'
+
+// TODO(launch): commit the live PayPal client id + live Medusa publishable key
+// as literals too (same rationale as the Stripe key above), retiring their
+// env-var fallbacks. Stripe is done.
 const STORE_ENVIRONMENTS: Record<StoreEnvironmentName, StoreEnvironment> = {
   live: {
     name: 'live',
     medusaBackendUrl: 'https://store-api.wcpos.com',
     medusaPublishableKey: process.env.MEDUSA_PUBLISHABLE_KEY ?? null,
     payments: {
-      stripePublishableKey: stripePublishableKey(
-        process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
-      ),
+      stripePublishableKey:
+        liveStripePublishableKey(
+          process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+        ) ?? liveStripePublishableKey(LIVE_STRIPE_PUBLISHABLE_KEY),
       paypalClientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID ?? null,
       btcpayEnabled: Boolean(process.env.NEXT_PUBLIC_BTCPAY_ENABLED),
     },
