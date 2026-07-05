@@ -98,7 +98,23 @@ describe('live Stripe publishable key', () => {
     vi.unstubAllEnvs()
   })
 
-  it('lets a valid pk_ env var override the committed literal (key rotation without a redeploy)', async () => {
+  it('rejects a pk_test_ env var for live and falls back to the committed pk_live_ literal', async () => {
+    vi.resetModules()
+    vi.stubEnv(
+      'NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY',
+      'pk_test_12345678901234567890'
+    )
+
+    const { getStoreEnvironmentByName } = await import('./store-environment')
+    const key = getStoreEnvironmentByName('live').payments.stripePublishableKey
+
+    expect(key).not.toBe('pk_test_12345678901234567890')
+    expect(key).toMatch(LIVE_PK_PATTERN)
+
+    vi.unstubAllEnvs()
+  })
+
+  it('lets a valid pk_live_ env var override the committed literal (key rotation without a redeploy)', async () => {
     vi.resetModules()
     vi.stubEnv(
       'NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY',
