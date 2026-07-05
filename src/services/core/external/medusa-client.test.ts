@@ -512,6 +512,38 @@ describe('medusaClient', () => {
         )
       })
 
+      it('forwards the customer JWT as Bearer auth when provided', async () => {
+        mockFetch.mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({
+            payment_collection: { id: 'pay_col_123' },
+          }),
+        })
+
+        await createPaymentCollection('cart_123', 'jwt_abc')
+
+        const [, init] = mockFetch.mock.calls[0]
+        expect((init.headers as Record<string, string>).Authorization).toBe(
+          'Bearer jwt_abc'
+        )
+      })
+
+      it('omits Authorization when no token is provided', async () => {
+        mockFetch.mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({
+            payment_collection: { id: 'pay_col_123' },
+          }),
+        })
+
+        await createPaymentCollection('cart_123')
+
+        const [, init] = mockFetch.mock.calls[0]
+        expect(
+          (init.headers as Record<string, string>).Authorization
+        ).toBeUndefined()
+      })
+
       it('returns null on error', async () => {
         mockFetch.mockResolvedValueOnce({
           ok: false,
@@ -609,6 +641,32 @@ describe('medusaClient', () => {
 
         expect(result?.paymentSessionId).toBe('payses_new')
         expect(result?.clientSecret).toBeNull()
+      })
+
+      it('forwards the customer JWT as Bearer auth when provided', async () => {
+        mockFetch.mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({
+            payment_collection: {
+              id: 'pay_col_123',
+              payment_sessions: [
+                {
+                  id: 'payses_123',
+                  provider_id: 'pp_stripe_stripe',
+                  status: 'pending',
+                  data: { client_secret: 'pi_secret_123' },
+                },
+              ],
+            },
+          }),
+        })
+
+        await createPaymentSession('pay_col_123', 'pp_stripe_stripe', 'jwt_abc')
+
+        const [, init] = mockFetch.mock.calls[0]
+        expect((init.headers as Record<string, string>).Authorization).toBe(
+          'Bearer jwt_abc'
+        )
       })
 
       it('returns null on error', async () => {

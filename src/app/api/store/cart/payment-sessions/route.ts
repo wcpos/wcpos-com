@@ -4,7 +4,7 @@ import {
   createPaymentSession,
   getCart,
 } from '@/services/core/external/medusa-client'
-import { getCustomer } from '@/lib/medusa-auth'
+import { getAuthToken, getCustomer } from '@/lib/medusa-auth'
 import { storeLogger } from '@/lib/logger'
 import {
   getProOfferCatalog,
@@ -30,6 +30,13 @@ export async function POST(request: NextRequest) {
         { status: 401 }
       )
     }
+
+    // getCustomer() above already validated this token against
+    // /store/customers/me, which rejects a JWT with an empty actor_id — so a
+    // non-null customer guarantees a token that resolves to a real customer.
+    // Forwarding it downstream is what makes Medusa attach a persistent Stripe
+    // Customer (cus_...) to the PaymentIntent instead of a "Guest".
+    const authToken = await getAuthToken()
 
     const body = await request.json().catch(() => null)
     if (!body || typeof body !== 'object' || Array.isArray(body)) {
@@ -96,7 +103,7 @@ export async function POST(request: NextRequest) {
     // Prefer the cart's own collection; create one only when none exists.
     let collectionId = cartCollectionId ?? existingCollectionId
     if (!collectionId) {
-      const collection = await createPaymentCollection(cartId)
+      const collection = await createPaymentCollection(cartId, authToken)
       if (!collection) {
         return NextResponse.json(
           { error: 'Failed to create payment collection' },
@@ -107,7 +114,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Create session within the collection
-    const session = await createPaymentSession(collectionId, providerId)
+    const session = await createPaymentSession(collectionId, providerId, authToken)
     if (!session) {
       return NextResponse.json(
         { error: 'Failed to create payment session' },
