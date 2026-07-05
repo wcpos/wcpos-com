@@ -107,4 +107,11 @@ describe('getAdminCustomerOrderById', () => {
 
     expect(await getAdminCustomerOrderById('cus_1', 'ord_1')).toBeNull()
   })
+
+  it('returns null and logs when the admin order lookup fails', async () => {
+    fetchMock.mockResolvedValueOnce({ ok: false, status: 500, text: async () => 'down' } as Response)
+
+    expect(await getAdminCustomerOrderById('cus_1', 'ord_1')).toBeNull()
+    expect(mockInfraError).toHaveBeenCalledTimes(1)
+  })
 })

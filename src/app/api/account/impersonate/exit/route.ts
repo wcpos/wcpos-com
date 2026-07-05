@@ -3,6 +3,7 @@ import { stopImpersonation } from '@/lib/impersonation'
 import { getSessionCustomer } from '@/lib/medusa-auth'
 import { authLogger } from '@/lib/logger'
 import { defaultLocale, locales } from '@/i18n/config'
+import { getPathname } from '@/i18n/navigation'
 
 function accountUrl(request: Request): URL {
   const requestUrl = new URL(request.url)
@@ -18,16 +19,13 @@ function accountUrl(request: Request): URL {
   const locale = locales.find(
     (candidate) => candidate === explicitLocale || candidate === refererLocale
   )
-  return new URL(
-    locale && locale !== defaultLocale ? `/${locale}/account` : '/account',
-    request.url
-  )
+  return new URL(getPathname({ href: '/account', locale: locale ?? defaultLocale }), request.url)
 }
 
 async function exit(request: Request) {
   const session = await getSessionCustomer()
   await stopImpersonation()
-  authLogger.info`Impersonation STOP: admin=${session?.email ?? 'unknown'}`
+  authLogger.info`Impersonation STOP: admin_id=${session?.id ?? 'unknown'}`
   return NextResponse.redirect(accountUrl(request), { status: 303 })
 }
 

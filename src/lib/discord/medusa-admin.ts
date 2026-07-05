@@ -103,11 +103,16 @@ export async function getAdminCustomerOrderById(
     id: orderId,
   })
 
-  const page = await medusaAdminFetch<AdminOrdersResponse>(
-    `/admin/orders?${query.toString()}`
-  )
-  const [order] = page.orders ?? []
-  return order?.id === orderId ? order : null
+  try {
+    const page = await medusaAdminFetch<AdminOrdersResponse>(
+      `/admin/orders?${query.toString()}`
+    )
+    const [order] = page.orders ?? []
+    return order?.id === orderId ? order : null
+  } catch (error) {
+    infraLogger.error`Failed to fetch admin order ${orderId} for customer ${customerId}: ${error}`
+    return null
+  }
 }
 
 interface AdminCustomerResponse {

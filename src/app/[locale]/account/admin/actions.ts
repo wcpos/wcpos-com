@@ -1,5 +1,6 @@
 'use server'
 
+import { createHash } from 'node:crypto'
 import { redirect } from '@/i18n/navigation'
 import { getSessionCustomer } from '@/lib/medusa-auth'
 import { isAdmin } from '@/lib/admin'
@@ -17,6 +18,10 @@ const limiter = createRateLimiter({
 function redirectToAccount(locale: string): never {
   redirect({ href: '/account', locale })
   throw new Error('Redirect failed')
+}
+
+function auditHash(value: string): string {
+  return createHash('sha256').update(value).digest('hex').slice(0, 12)
 }
 
 export type StartImpersonationResult =
@@ -48,11 +53,11 @@ export async function startImpersonationAction(input: {
   const email = input.email.trim().toLowerCase()
   const target = await findAdminCustomerByEmail(email)
   if (!target) {
-    authLogger.info`Impersonation lookup miss: admin=${adminEmail} target=${email}`
+    authLogger.info`Impersonation lookup miss: admin=${adminEmail} target_hash=${auditHash(email)}`
     return { error: 'not_found' }
   }
 
-  authLogger.info`Impersonation START: admin=${adminEmail} target=${target.email} (${target.id})`
+  authLogger.info`Impersonation START: admin=${adminEmail} target_id=${target.id}`
   await startImpersonation(target.id)
   redirectToAccount(input.locale)
 }
