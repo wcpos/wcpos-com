@@ -91,3 +91,44 @@ export async function listAdminCustomerOrders(
 
   return orders
 }
+
+interface AdminCustomerResponse {
+  customer?: MedusaCustomer
+}
+
+/**
+ * Find a single customer by exact email via the admin API. Returns null when
+ * there is no match. Uses the `email` filter so we never page all customers.
+ */
+export async function findAdminCustomerByEmail(
+  email: string
+): Promise<MedusaCustomer | null> {
+  const query = new URLSearchParams({
+    email: email.trim().toLowerCase(),
+    limit: '1',
+    fields: 'id,email,first_name,last_name,phone,has_account,metadata,created_at,updated_at',
+  })
+  const page = await medusaAdminFetch<AdminCustomersResponse>(
+    `/admin/customers?${query.toString()}`
+  )
+  return page.customers?.[0] ?? null
+}
+
+/**
+ * Fetch one customer by id via the admin API. Returns null if not found.
+ */
+export async function getAdminCustomerById(
+  id: string
+): Promise<MedusaCustomer | null> {
+  const query = new URLSearchParams({
+    fields: 'id,email,first_name,last_name,phone,has_account,metadata,created_at,updated_at',
+  })
+  try {
+    const data = await medusaAdminFetch<AdminCustomerResponse>(
+      `/admin/customers/${id}?${query.toString()}`
+    )
+    return data.customer ?? null
+  } catch {
+    return null
+  }
+}
