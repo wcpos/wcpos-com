@@ -218,7 +218,9 @@
       "discordRemoveAria": "{handle} verwijderen",
       "discordConnectHint": "Verbind met je licentiesleutel om de Pro-rol in onze community-Discord te krijgen.",
       "discordNoMembers": "Nog geen verbonden leden.",
-      "discordRemoveError": "Kan Discord-lid niet verwijderen. Probeer het opnieuw."
+      "discordRemoveError": "Kan Discord-lid niet verwijderen. Probeer het opnieuw.",
+      "showKeyAria": "Licentiesleutel tonen",
+      "hideKeyAria": "Licentiesleutel verbergen"
     },
     "downloads": {
       "heading": "Downloads",

@@ -218,7 +218,9 @@
       "discordRemoveAria": "{handle} を削除",
       "discordConnectHint": "ライセンスキーで連携すると、コミュニティDiscordでProロールを取得できます。",
       "discordNoMembers": "まだ連携済みのメンバーはいません。",
-      "discordRemoveError": "Discordメンバーの削除に失敗しました。もう一度お試しください。"
+      "discordRemoveError": "Discordメンバーの削除に失敗しました。もう一度お試しください。",
+      "showKeyAria": "ライセンスキーを表示",
+      "hideKeyAria": "ライセンスキーを非表示"
     },
     "downloads": {
       "heading": "ダウンロード",

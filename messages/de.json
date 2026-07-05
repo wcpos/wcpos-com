@@ -218,7 +218,9 @@
       "discordRemoveAria": "{handle} entfernen",
       "discordConnectHint": "Verbinde dich mit deinem Lizenzschlüssel, um die Pro-Rolle in unserem Community-Discord zu erhalten.",
       "discordNoMembers": "Noch keine verbundenen Mitglieder.",
-      "discordRemoveError": "Discord-Mitglied konnte nicht entfernt werden. Bitte versuche es erneut."
+      "discordRemoveError": "Discord-Mitglied konnte nicht entfernt werden. Bitte versuche es erneut.",
+      "showKeyAria": "Lizenzschlüssel anzeigen",
+      "hideKeyAria": "Lizenzschlüssel ausblenden"
     },
     "downloads": {
       "heading": "Downloads",

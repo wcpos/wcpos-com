@@ -218,7 +218,9 @@
       "discordRemoveAria": "Rimuovi {handle}",
       "discordConnectHint": "Collegati con la tua chiave di licenza per ottenere il ruolo Pro nel nostro Discord della community.",
       "discordNoMembers": "Ancora nessun membro collegato.",
-      "discordRemoveError": "Impossibile rimuovere il membro Discord. Riprova."
+      "discordRemoveError": "Impossibile rimuovere il membro Discord. Riprova.",
+      "showKeyAria": "Mostra chiave di licenza",
+      "hideKeyAria": "Nascondi chiave di licenza"
     },
     "downloads": {
       "heading": "Download",

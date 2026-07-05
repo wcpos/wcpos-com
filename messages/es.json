@@ -218,7 +218,9 @@
       "discordRemoveAria": "Eliminar {handle}",
       "discordConnectHint": "Conecta con tu clave de licencia para obtener el rol Pro en nuestro Discord de la comunidad.",
       "discordNoMembers": "Aún no hay miembros conectados.",
-      "discordRemoveError": "No se pudo eliminar el miembro de Discord. Inténtalo de nuevo."
+      "discordRemoveError": "No se pudo eliminar el miembro de Discord. Inténtalo de nuevo.",
+      "showKeyAria": "Mostrar clave de licencia",
+      "hideKeyAria": "Ocultar clave de licencia"
     },
     "downloads": {
       "heading": "Descargas",

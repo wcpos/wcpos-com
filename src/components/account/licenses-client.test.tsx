@@ -72,6 +72,46 @@ describe('LicensesClient', () => {
     expect(screen.getByText('****-****-MNOP')).toBeInTheDocument()
   })
 
+  it('reveals the full license key when the key is clicked, then re-masks', () => {
+    render(<LicensesClient initialLicenses={[makeLicense()]} />)
+
+    const toggle = screen.getByRole('button', { name: 'Show license key' })
+    expect(screen.getByText('****-****-MNOP')).toBeInTheDocument()
+    expect(screen.queryByText('ABCD-EFGH-IJKL-MNOP')).not.toBeInTheDocument()
+
+    fireEvent.click(toggle)
+    expect(screen.getByText('ABCD-EFGH-IJKL-MNOP')).toBeInTheDocument()
+    expect(screen.queryByText('****-****-MNOP')).not.toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: 'Hide license key' })
+    ).toHaveAttribute('aria-pressed', 'true')
+
+    fireEvent.click(screen.getByRole('button', { name: 'Hide license key' }))
+    expect(screen.getByText('****-****-MNOP')).toBeInTheDocument()
+    expect(screen.queryByText('ABCD-EFGH-IJKL-MNOP')).not.toBeInTheDocument()
+  })
+
+  it('reveals keys independently per license card', () => {
+    render(
+      <LicensesClient
+        initialLicenses={[
+          makeLicense({ id: 'lic-1', key: 'ABCD-EFGH-IJKL-MNOP' }),
+          makeLicense({ id: 'lic-2', key: 'WXYZ-WXYZ-WXYZ-0000' }),
+        ]}
+      />
+    )
+
+    const [firstToggle] = screen.getAllByRole('button', {
+      name: 'Show license key',
+    })
+    fireEvent.click(firstToggle)
+
+    // Only the clicked card reveals; the other stays masked.
+    expect(screen.getByText('ABCD-EFGH-IJKL-MNOP')).toBeInTheDocument()
+    expect(screen.getByText('****-****-0000')).toBeInTheDocument()
+    expect(screen.queryByText('WXYZ-WXYZ-WXYZ-0000')).not.toBeInTheDocument()
+  })
+
   it('shows download button for active licenses', () => {
     render(
       <LicensesClient initialLicenses={[makeLicense({ status: 'active' })]} />

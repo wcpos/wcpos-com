@@ -88,6 +88,10 @@ export function LicensesClient({
   const t = useTranslations('account.licenses')
   const tStatus = useTranslations('account.licenseStatus')
   const [licenses, setLicenses] = useState<License[]>(initialLicenses)
+  // License keys render masked; clicking a key reveals its full value for
+  // that card only. Tracked per licence id so revealing one leaves the rest
+  // masked.
+  const [revealedKeys, setRevealedKeys] = useState<Set<string>>(() => new Set())
   const [error, setError] = useState<string | null>(null)
   const [deactivating, setDeactivating] = useState<string | null>(null)
   const [removingDiscordMember, setRemovingDiscordMember] = useState<string | null>(null)
@@ -185,6 +189,18 @@ export function LicensesClient({
     return '****-****-' + key.slice(-4)
   }
 
+  const toggleRevealKey = (licenseId: string) => {
+    setRevealedKeys((prev) => {
+      const next = new Set(prev)
+      if (next.has(licenseId)) {
+        next.delete(licenseId)
+      } else {
+        next.add(licenseId)
+      }
+      return next
+    })
+  }
+
   // Keygen can report status "active" after the expiry date has passed;
   // present those licenses as expired so the UI matches download entitlement.
   // (Shared rule: unparseable expiry fails closed, matching the server.)
@@ -233,22 +249,32 @@ export function LicensesClient({
           const discordAccess =
             discordAccessByLicenseState[license.id] ?? emptyDiscordAccess(license.id)
           const discordMembers = discordAccess.members
+          const keyRevealed = revealedKeys.has(license.id)
           return (
           <Card key={license.id}>
             <CardHeader>
               {/* flex-wrap so the badge/plan cluster drops below the key on
                   narrow phones instead of squeezing it. */}
               <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
-                <CardTitle className="flex items-center gap-2.5 text-lg">
-                  <span
-                    aria-hidden="true"
-                    className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-wcpos-red/10 text-wcpos-red-accent"
+                <CardTitle className="min-w-0 text-lg">
+                  <button
+                    type="button"
+                    onClick={() => toggleRevealKey(license.id)}
+                    aria-pressed={keyRevealed}
+                    title={t(keyRevealed ? 'hideKeyAria' : 'showKeyAria')}
+                    aria-label={t(keyRevealed ? 'hideKeyAria' : 'showKeyAria')}
+                    className="group flex min-w-0 items-center gap-2.5 rounded-md text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-wcpos-red/40"
                   >
-                    <Key className="h-4 w-4" />
-                  </span>
-                  <code className="font-mono text-sm tracking-wider">
-                    {maskKey(license.key)}
-                  </code>
+                    <span
+                      aria-hidden="true"
+                      className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-wcpos-red/10 text-wcpos-red-accent transition-colors group-hover:bg-wcpos-red/20"
+                    >
+                      <Key className="h-4 w-4" />
+                    </span>
+                    <code className="break-all font-mono text-sm tracking-wider">
+                      {keyRevealed ? license.key : maskKey(license.key)}
+                    </code>
+                  </button>
                 </CardTitle>
                 <div className="flex items-center gap-2">
                   <StatusBadge

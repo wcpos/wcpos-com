@@ -218,7 +218,9 @@
       "discordRemoveAria": "Retirer {handle}",
       "discordConnectHint": "Connectez-vous avec votre clé de licence pour obtenir le rôle Pro sur notre Discord communautaire.",
       "discordNoMembers": "Aucun membre connecté pour le moment.",
-      "discordRemoveError": "Échec du retrait du membre Discord. Veuillez réessayer."
+      "discordRemoveError": "Échec du retrait du membre Discord. Veuillez réessayer.",
+      "showKeyAria": "Afficher la clé de licence",
+      "hideKeyAria": "Masquer la clé de licence"
     },
     "downloads": {
       "heading": "Téléchargements",

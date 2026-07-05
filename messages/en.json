@@ -218,7 +218,9 @@
       "discordRemoveAria": "Remove {handle}",
       "discordConnectHint": "Connect with your license key to get the Pro role in our community Discord.",
       "discordNoMembers": "No connected members yet.",
-      "discordRemoveError": "Failed to remove Discord member. Please try again."
+      "discordRemoveError": "Failed to remove Discord member. Please try again.",
+      "showKeyAria": "Show license key",
+      "hideKeyAria": "Hide license key"
     },
     "downloads": {
       "heading": "Downloads",
