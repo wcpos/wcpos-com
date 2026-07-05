@@ -54,7 +54,35 @@ describe('store environments', () => {
     expect(getStoreEnvironmentByName('dev').payments.btcpayEnabled).toBe(true)
   })
 
-  it('does not expose Stripe secret keys through public checkout config', async () => {
+})
+
+describe('live Stripe publishable key', () => {
+  const LIVE_PK_PATTERN = /^pk_live_[A-Za-z0-9]+$/
+
+  it('is a committed, non-empty pk_live_ key so live checkout never depends on a Vercel env var', () => {
+    // Regression guard for the recurring "No payment methods are configured"
+    // outage: an empty NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY on Vercel used to
+    // null out Stripe — the only registered payment method — collapsing
+    // checkout to zero methods. The live key is now committed in code.
+    expect(
+      getStoreEnvironmentByName('live').payments.stripePublishableKey
+    ).toMatch(LIVE_PK_PATTERN)
+  })
+
+  it('survives an empty env var by falling back to the committed literal', async () => {
+    vi.resetModules()
+    vi.stubEnv('NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY', '')
+
+    const { getStoreEnvironmentByName } = await import('./store-environment')
+
+    expect(
+      getStoreEnvironmentByName('live').payments.stripePublishableKey
+    ).toMatch(LIVE_PK_PATTERN)
+
+    vi.unstubAllEnvs()
+  })
+
+  it('never exposes a secret key: an sk_ env var is rejected and falls back to the committed pk_live_ literal', async () => {
     vi.resetModules()
     vi.stubEnv(
       'NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY',
@@ -62,10 +90,26 @@ describe('store environments', () => {
     )
 
     const { getStoreEnvironmentByName } = await import('./store-environment')
+    const key = getStoreEnvironmentByName('live').payments.stripePublishableKey
+
+    expect(key).not.toContain('sk_')
+    expect(key).toMatch(LIVE_PK_PATTERN)
+
+    vi.unstubAllEnvs()
+  })
+
+  it('lets a valid pk_ env var override the committed literal (key rotation without a redeploy)', async () => {
+    vi.resetModules()
+    vi.stubEnv(
+      'NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY',
+      'pk_live_rotated0000000000000000'
+    )
+
+    const { getStoreEnvironmentByName } = await import('./store-environment')
 
     expect(
       getStoreEnvironmentByName('live').payments.stripePublishableKey
-    ).toBeNull()
+    ).toBe('pk_live_rotated0000000000000000')
 
     vi.unstubAllEnvs()
   })

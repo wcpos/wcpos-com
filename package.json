@@ -16,7 +16,8 @@
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:headed": "playwright test --headed",
-    "playwright:install": "playwright install --with-deps"
+    "playwright:install": "playwright install --with-deps",
+    "smoke:checkout": "node scripts/smoke-checkout.mjs"
   },
   "dependencies": {
     "@logtape/logtape": "^2.2.2",
