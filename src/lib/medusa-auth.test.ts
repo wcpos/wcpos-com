@@ -58,6 +58,7 @@ import {
   requestPasswordReset,
   resetPassword,
   getCustomer,
+  getSessionCustomer,
   getAuthToken,
   setAuthToken,
   clearAuthToken,
@@ -568,5 +569,38 @@ describe('session cookie options', () => {
 
     expect(mockCookieStore.delete).toHaveBeenCalledTimes(1)
     expect(mockCookieStore.delete).toHaveBeenCalledWith('medusa-token')
+  })
+})
+
+// getSessionCustomer is the extracted body of the old getCustomer: the REAL
+// logged-in customer resolved from the session cookie. getCustomer (tested
+// above) now delegates to it — this file already provides the shared
+// next/headers + fetch mocks, so we reuse those rather than re-declaring
+// conflicting vi.mock() calls.
+describe('getSessionCustomer', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+  })
+
+  it('returns the /store/customers/me customer for the session token', async () => {
+    mockCookieStore.get.mockReturnValue({ value: 'valid_token' })
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ customer: { id: 'cus_me', email: 'me@x.com' } }),
+    })
+
+    const customer = await getSessionCustomer()
+
+    expect(customer?.id).toBe('cus_me')
+    expect(mockFetch.mock.calls[0][0]).toContain('/store/customers/me')
+  })
+
+  it('returns null when there is no session token', async () => {
+    mockCookieStore.get.mockReturnValue(undefined)
+
+    const customer = await getSessionCustomer()
+
+    expect(customer).toBeNull()
+    expect(mockFetch).not.toHaveBeenCalled()
   })
 })
