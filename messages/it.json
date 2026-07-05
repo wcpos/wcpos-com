@@ -218,7 +218,12 @@
       "discordRemoveAria": "Rimuovi {handle}",
       "discordConnectHint": "Collegati con la tua chiave di licenza per ottenere il ruolo Pro nel nostro Discord della community.",
       "discordNoMembers": "Ancora nessun membro collegato.",
-      "discordRemoveError": "Impossibile rimuovere il membro Discord. Riprova."
+      "discordRemoveError": "Impossibile rimuovere il membro Discord. Riprova.",
+      "showKeyAria": "Mostra la chiave di licenza che termina con {suffix}",
+      "hideKeyAria": "Nascondi la chiave di licenza che termina con {suffix}",
+      "copyKeyAria": "Copia la chiave di licenza che termina con {suffix}",
+      "copiedKey": "Copiata",
+      "copyError": "Impossibile copiare la chiave di licenza. Riprova."
     },
     "downloads": {
       "heading": "Download",

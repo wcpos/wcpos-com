@@ -10,7 +10,7 @@ import { DividedList, Row } from '@/components/ui/row'
 import { Alert } from '@/components/ui/alert'
 import { EmptyState } from '@/components/ui/empty-state'
 import { AccountNotice } from '@/components/account/account-notice'
-import { Key, Monitor, Trash2, Download } from 'lucide-react'
+import { Key, Monitor, Trash2, Download, Copy, Check } from 'lucide-react'
 import { Link } from '@/i18n/navigation'
 import { formatDateForLocale } from '@/lib/date-format'
 import type { CanonicalLicenseStatus } from '@/lib/license-status'
@@ -88,6 +88,13 @@ export function LicensesClient({
   const t = useTranslations('account.licenses')
   const tStatus = useTranslations('account.licenseStatus')
   const [licenses, setLicenses] = useState<License[]>(initialLicenses)
+  // License keys render masked; clicking a key reveals its full value for
+  // that card only. Tracked per licence id so revealing one leaves the rest
+  // masked.
+  const [revealedKeys, setRevealedKeys] = useState<Set<string>>(() => new Set())
+  // Licence id whose key was just copied, so its button can flash a
+  // "Copied" confirmation. Cleared after a short delay.
+  const [copiedKey, setCopiedKey] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [deactivating, setDeactivating] = useState<string | null>(null)
   const [removingDiscordMember, setRemovingDiscordMember] = useState<string | null>(null)
@@ -185,6 +192,32 @@ export function LicensesClient({
     return '****-****-' + key.slice(-4)
   }
 
+  const toggleRevealKey = (licenseId: string) => {
+    setRevealedKeys((prev) => {
+      const next = new Set(prev)
+      if (next.has(licenseId)) {
+        next.delete(licenseId)
+      } else {
+        next.add(licenseId)
+      }
+      return next
+    })
+  }
+
+  const handleCopyKey = async (licenseId: string, key: string) => {
+    try {
+      await navigator.clipboard.writeText(key)
+      setCopiedKey(licenseId)
+      // Reset the confirmation, but only if this card is still the copied
+      // one (guards against clobbering a later copy of a different card).
+      setTimeout(() => {
+        setCopiedKey((current) => (current === licenseId ? null : current))
+      }, 2000)
+    } catch {
+      setError(t('copyError'))
+    }
+  }
+
   // Keygen can report status "active" after the expiry date has passed;
   // present those licenses as expired so the UI matches download entitlement.
   // (Shared rule: unparseable expiry fails closed, matching the server.)
@@ -233,22 +266,62 @@ export function LicensesClient({
           const discordAccess =
             discordAccessByLicenseState[license.id] ?? emptyDiscordAccess(license.id)
           const discordMembers = discordAccess.members
+          const keyRevealed = revealedKeys.has(license.id)
+          const keyCopied = copiedKey === license.id
+          // Last-4 of the key distinguishes each card's controls in the
+          // accessible name — with multiple licences the buttons would
+          // otherwise all announce the same label to screen readers.
+          const keySuffix = license.key.slice(-4)
           return (
           <Card key={license.id}>
             <CardHeader>
               {/* flex-wrap so the badge/plan cluster drops below the key on
                   narrow phones instead of squeezing it. */}
               <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
-                <CardTitle className="flex items-center gap-2.5 text-lg">
-                  <span
-                    aria-hidden="true"
-                    className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-wcpos-red/10 text-wcpos-red-accent"
+                <CardTitle className="flex min-w-0 items-center gap-1.5 text-lg">
+                  <button
+                    type="button"
+                    onClick={() => toggleRevealKey(license.id)}
+                    aria-pressed={keyRevealed}
+                    title={t(keyRevealed ? 'hideKeyAria' : 'showKeyAria', {
+                      suffix: keySuffix,
+                    })}
+                    aria-label={t(keyRevealed ? 'hideKeyAria' : 'showKeyAria', {
+                      suffix: keySuffix,
+                    })}
+                    className="group flex min-w-0 items-center gap-2.5 rounded-md text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-wcpos-red/40"
                   >
-                    <Key className="h-4 w-4" />
-                  </span>
-                  <code className="font-mono text-sm tracking-wider">
-                    {maskKey(license.key)}
-                  </code>
+                    <span
+                      aria-hidden="true"
+                      className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-wcpos-red/10 text-wcpos-red-accent transition-colors group-hover:bg-wcpos-red/20"
+                    >
+                      <Key className="h-4 w-4" />
+                    </span>
+                    <code className="break-all font-mono text-sm tracking-wider">
+                      {keyRevealed ? license.key : maskKey(license.key)}
+                    </code>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleCopyKey(license.id, license.key)}
+                    title={
+                      keyCopied
+                        ? t('copiedKey')
+                        : t('copyKeyAria', { suffix: keySuffix })
+                    }
+                    aria-label={
+                      keyCopied
+                        ? t('copiedKey')
+                        : t('copyKeyAria', { suffix: keySuffix })
+                    }
+                    className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-wcpos-red/40"
+                  >
+                    {keyCopied ? (
+                      <Check className="h-4 w-4 text-green-600" />
+                    ) : (
+                      <Copy className="h-4 w-4" />
+                    )}
+                  </button>
                 </CardTitle>
                 <div className="flex items-center gap-2">
                   <StatusBadge

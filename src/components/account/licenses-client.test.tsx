@@ -72,6 +72,77 @@ describe('LicensesClient', () => {
     expect(screen.getByText('****-****-MNOP')).toBeInTheDocument()
   })
 
+  it('reveals the full license key when the key is clicked, then re-masks', () => {
+    render(<LicensesClient initialLicenses={[makeLicense()]} />)
+
+    const toggle = screen.getByRole('button', {
+      name: 'Show license key ending in MNOP',
+    })
+    expect(screen.getByText('****-****-MNOP')).toBeInTheDocument()
+    expect(screen.queryByText('ABCD-EFGH-IJKL-MNOP')).not.toBeInTheDocument()
+
+    fireEvent.click(toggle)
+    expect(screen.getByText('ABCD-EFGH-IJKL-MNOP')).toBeInTheDocument()
+    expect(screen.queryByText('****-****-MNOP')).not.toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: 'Hide license key ending in MNOP' })
+    ).toHaveAttribute('aria-pressed', 'true')
+
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Hide license key ending in MNOP' })
+    )
+    expect(screen.getByText('****-****-MNOP')).toBeInTheDocument()
+    expect(screen.queryByText('ABCD-EFGH-IJKL-MNOP')).not.toBeInTheDocument()
+  })
+
+  it('copies the full license key to the clipboard when the copy button is clicked', async () => {
+    const writeText = vi.fn().mockResolvedValue(undefined)
+    Object.defineProperty(navigator, 'clipboard', {
+      value: { writeText },
+      configurable: true,
+    })
+
+    render(<LicensesClient initialLicenses={[makeLicense()]} />)
+
+    const copyButton = screen.getByRole('button', {
+      name: 'Copy license key ending in MNOP',
+    })
+    fireEvent.click(copyButton)
+
+    expect(writeText).toHaveBeenCalledWith('ABCD-EFGH-IJKL-MNOP')
+    // Confirmation state flips the button's accessible name to "Copied".
+    expect(
+      await screen.findByRole('button', { name: 'Copied' })
+    ).toBeInTheDocument()
+  })
+
+  it('gives each card a distinct accessible name and reveals keys independently', () => {
+    render(
+      <LicensesClient
+        initialLicenses={[
+          makeLicense({ id: 'lic-1', key: 'ABCD-EFGH-IJKL-MNOP' }),
+          makeLicense({ id: 'lic-2', key: 'WXYZ-WXYZ-WXYZ-0000' }),
+        ]}
+      />
+    )
+
+    // Each card's toggle has a suffix-disambiguated accessible name, so
+    // screen readers (and this test) can target one card without getAllByRole.
+    const firstToggle = screen.getByRole('button', {
+      name: 'Show license key ending in MNOP',
+    })
+    expect(
+      screen.getByRole('button', { name: 'Show license key ending in 0000' })
+    ).toBeInTheDocument()
+
+    fireEvent.click(firstToggle)
+
+    // Only the clicked card reveals; the other stays masked.
+    expect(screen.getByText('ABCD-EFGH-IJKL-MNOP')).toBeInTheDocument()
+    expect(screen.getByText('****-****-0000')).toBeInTheDocument()
+    expect(screen.queryByText('WXYZ-WXYZ-WXYZ-0000')).not.toBeInTheDocument()
+  })
+
   it('shows download button for active licenses', () => {
     render(
       <LicensesClient initialLicenses={[makeLicense({ status: 'active' })]} />

@@ -218,7 +218,12 @@
       "discordRemoveAria": "移除 {handle}",
       "discordConnectHint": "使用你的许可证密钥连接，即可在我们的社区 Discord 中获得 Pro 身份组。",
       "discordNoMembers": "暂无已连接的成员。",
-      "discordRemoveError": "移除 Discord 成员失败。请重试。"
+      "discordRemoveError": "移除 Discord 成员失败。请重试。",
+      "showKeyAria": "显示以 {suffix} 结尾的许可证密钥",
+      "hideKeyAria": "隐藏以 {suffix} 结尾的许可证密钥",
+      "copyKeyAria": "复制以 {suffix} 结尾的许可证密钥",
+      "copiedKey": "已复制",
+      "copyError": "复制许可证密钥失败。请重试。"
     },
     "downloads": {
       "heading": "下载",
