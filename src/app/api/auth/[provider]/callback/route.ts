@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getCustomer, updateCustomer } from '@/lib/medusa-auth'
+import { getSessionCustomer, updateCustomer } from '@/lib/medusa-auth'
 import { establishOAuthSession } from '@/lib/oauth'
 import { authLogger } from '@/lib/logger'
 import { getConnectedAvatarUrlFromUserMetadata } from '@/lib/avatar'
@@ -29,7 +29,9 @@ async function syncOauthProfile(
   userMetadata: Record<string, string>
 ) {
   try {
-    const customer = await getCustomer()
+    // Use the real session identity, never an active impersonation target, so
+    // OAuth profile sync always writes to the signed-in owner's own customer.
+    const customer = await getSessionCustomer()
     if (!customer) return
 
     const metadata = isRecord(customer.metadata) ? customer.metadata : {}
@@ -94,7 +96,8 @@ export async function GET(
     // establishOAuthSession owns the link-then-refresh-then-persist ordering
     // and writes the session cookie; the route only drives profile sync and
     // the redirect. Profile sync runs after the session exists (it reads the
-    // cookie via getCustomer) and is best-effort — it must not block sign-in.
+    // session identity via getSessionCustomer) and is best-effort — it must
+    // not block sign-in.
     const { payload } = await establishOAuthSession(provider, callbackParams)
     await syncOauthProfile(provider, payload.user_metadata)
 

@@ -76,6 +76,14 @@ export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
   const hostname = request.nextUrl.hostname.toLowerCase()
 
+  // Only THIS middleware may set the account-request header. Strip any
+  // client-supplied value up front so a spoofed `x-wcpos-account-request: 1`
+  // on a non-account route can never reach server code via `headers()` and
+  // defeat the /account impersonation scoping. Downstream branches thread this
+  // sanitized copy (setting the header back on only for account paths).
+  const sanitizedHeaders = new Headers(request.headers)
+  sanitizedHeaders.delete(ACCOUNT_REQUEST_HEADER)
+
   // Legacy WooCommerce API Manager licence calls from the deployed Pro plugin
   // fleet still target wcpos.com/?wc-api=am-software-api (activation, etc.).
   // Bridge them to the Keygen-backed compatibility shim. See
@@ -113,11 +121,11 @@ export function middleware(request: NextRequest) {
   // account-request header so impersonation is scoped to /account.
   if (pathname.startsWith('/api/')) {
     if (pathname.startsWith('/api/account/')) {
-      const headers = new Headers(request.headers)
+      const headers = new Headers(sanitizedHeaders)
       headers.set(ACCOUNT_REQUEST_HEADER, '1')
       return NextResponse.next({ request: { headers } })
     }
-    return NextResponse.next()
+    return NextResponse.next({ request: { headers: sanitizedHeaders } })
   }
 
   // Strip locale prefix for auth checks (e.g., /fr/account -> /account)
@@ -158,13 +166,16 @@ export function middleware(request: NextRequest) {
   // `{ request: { headers } }`), so a header set on the request it receives
   // propagates to the RSC layer via `headers()`.
   if (pathnameWithoutLocale.startsWith('/account')) {
-    const headers = new Headers(request.headers)
+    const headers = new Headers(sanitizedHeaders)
     headers.set(ACCOUNT_REQUEST_HEADER, '1')
     const requestWithHeader = new NextRequest(request, { headers })
     return withDistinctIdCookie(request, intlMiddleware(requestWithHeader))
   }
 
-  return withDistinctIdCookie(request, intlMiddleware(request))
+  // Non-account render path: forward the sanitized headers (spoofed
+  // account-request header removed) so `headers()` never sees it off /account.
+  const sanitizedRequest = new NextRequest(request, { headers: sanitizedHeaders })
+  return withDistinctIdCookie(request, intlMiddleware(sanitizedRequest))
 }
 
 export const config = {
