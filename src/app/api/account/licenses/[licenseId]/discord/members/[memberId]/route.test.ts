@@ -7,9 +7,10 @@ const mockGetLicense = vi.fn()
 const mockUpdateLicenseMetadata = vi.fn()
 const mockSyncDiscordProRoleForMember = vi.fn()
 const mockCreateDiscordRoleSyncDependencies = vi.fn()
+const mockAssertViewOnly = vi.fn(async () => {})
 
 vi.mock('@/lib/impersonation', () => ({
-  assertViewOnly: async () => {},
+  assertViewOnly: () => mockAssertViewOnly(),
   ViewOnlyError: class ViewOnlyError extends Error {},
 }))
 
@@ -56,7 +57,21 @@ function callDelete(licenseId = 'lic_1', memberId = 'member_1') {
 }
 
 describe('DELETE /api/account/licenses/[licenseId]/discord/members/[memberId]', () => {
-  beforeEach(() => vi.clearAllMocks())
+  beforeEach(() => {
+    vi.clearAllMocks()
+    mockAssertViewOnly.mockResolvedValue(undefined)
+  })
+
+  it('returns 403 read_only_inspection while impersonating', async () => {
+    const { ViewOnlyError } = await import('@/lib/impersonation')
+    mockAssertViewOnly.mockRejectedValueOnce(new ViewOnlyError())
+
+    const response = await callDelete()
+
+    expect(response.status).toBe(403)
+    expect(await response.json()).toEqual({ error: 'read_only_inspection' })
+    expect(mockGetResolvedCustomerLicenses).not.toHaveBeenCalled()
+  })
 
   it('returns 401 when the holder is not authenticated', async () => {
     mockGetResolvedCustomerLicenses.mockResolvedValueOnce({ authenticated: false, licenses: [] })

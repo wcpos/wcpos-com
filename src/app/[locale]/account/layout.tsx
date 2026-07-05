@@ -28,7 +28,7 @@ async function AccountGate({ locale }: { locale: string }) {
     // their own /account. Only a genuinely signed-out visitor gets the
     // session-clearing login redirect.
     if (await getImpersonation()) {
-      redirect('/api/account/impersonate/exit')
+      redirect(`/api/account/impersonate/exit?locale=${locale}`)
     }
     return redirectToLoginClearingSession(locale)
   }

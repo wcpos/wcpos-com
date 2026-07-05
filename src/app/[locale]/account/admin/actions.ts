@@ -1,12 +1,11 @@
 'use server'
 
-import { headers } from 'next/headers'
-import { redirect } from 'next/navigation'
+import { redirect } from '@/i18n/navigation'
 import { getSessionCustomer } from '@/lib/medusa-auth'
 import { isAdmin } from '@/lib/admin'
 import { findAdminCustomerByEmail } from '@/lib/discord/medusa-admin'
 import { startImpersonation } from '@/lib/impersonation'
-import { createRateLimiter, clientIp } from '@/lib/rate-limit'
+import { createRateLimiter } from '@/lib/rate-limit'
 import { authLogger } from '@/lib/logger'
 
 const limiter = createRateLimiter({
@@ -14,6 +13,11 @@ const limiter = createRateLimiter({
   limit: 10,
   window: '10 m',
 })
+
+function redirectToAccount(locale: string): never {
+  redirect({ href: '/account', locale })
+  throw new Error('Redirect failed')
+}
 
 export type StartImpersonationResult =
   | { error: 'forbidden' }
@@ -28,25 +32,27 @@ export type StartImpersonationResult =
  */
 export async function startImpersonationAction(input: {
   email: string
+  locale: string
 }): Promise<StartImpersonationResult> {
   const session = await getSessionCustomer()
-  if (!isAdmin(session?.email)) {
+  if (!session?.email || !isAdmin(session.email)) {
     authLogger.warn`Non-admin impersonation attempt by ${session?.email ?? 'anon'}`
     return { error: 'forbidden' }
   }
+  const adminEmail = session.email
 
-  const ip = clientIp(new Request('http://local', { headers: await headers() }))
-  const { success } = await limiter.consume(ip)
+  const rateLimitKey = adminEmail.trim().toLowerCase()
+  const { success } = await limiter.consume(rateLimitKey)
   if (!success) return { error: 'rate_limited' }
 
   const email = input.email.trim().toLowerCase()
   const target = await findAdminCustomerByEmail(email)
   if (!target) {
-    authLogger.info`Impersonation lookup miss: admin=${session!.email} target=${email}`
+    authLogger.info`Impersonation lookup miss: admin=${adminEmail} target=${email}`
     return { error: 'not_found' }
   }
 
-  authLogger.info`Impersonation START: admin=${session!.email} target=${target.email} (${target.id})`
+  authLogger.info`Impersonation START: admin=${adminEmail} target=${target.email} (${target.id})`
   await startImpersonation(target.id)
-  redirect('/account')
+  redirectToAccount(input.locale)
 }

@@ -91,13 +91,15 @@ export function middleware(request: NextRequest) {
   if (request.nextUrl.searchParams.get('wc-api') === 'am-software-api') {
     const rewriteUrl = request.nextUrl.clone()
     rewriteUrl.pathname = '/api/legacy/wc-am'
-    return NextResponse.rewrite(rewriteUrl)
+    return NextResponse.rewrite(rewriteUrl, {
+      request: { headers: sanitizedHeaders },
+    })
   }
 
   // Handle updates.wcpos.com — restrict to API routes only
   if (hostname === UPDATES_HOSTNAME) {
     if (pathname.startsWith('/api/')) {
-      return NextResponse.next()
+      return NextResponse.next({ request: { headers: sanitizedHeaders } })
     }
 
     if (pathname === '/') {
@@ -120,7 +122,11 @@ export function middleware(request: NextRequest) {
   // API routes don't need locale processing. Account APIs get the
   // account-request header so impersonation is scoped to /account.
   if (pathname.startsWith('/api/')) {
-    if (pathname.startsWith('/api/account/')) {
+    if (
+      pathname.startsWith('/api/account/') ||
+      pathname === '/api/store/cart' ||
+      pathname.startsWith('/api/store/cart/')
+    ) {
       const headers = new Headers(sanitizedHeaders)
       headers.set(ACCOUNT_REQUEST_HEADER, '1')
       return NextResponse.next({ request: { headers } })
@@ -133,12 +139,15 @@ export function middleware(request: NextRequest) {
   const localeRegex = new RegExp(`^/(${localePattern})(?=/|$)`)
   const pathnameWithoutLocale = pathname.replace(localeRegex, '') || '/'
   const pathnameWithQuery = `${pathnameWithoutLocale}${request.nextUrl.search}`
+  const isAccountPath =
+    pathnameWithoutLocale === '/account' ||
+    pathnameWithoutLocale.startsWith('/account/')
 
   // Protected routes: /account/* requires a medusa-token cookie.
   // /pro/checkout is deliberately NOT gated: signed-out buyers create their
   // account inline in the checkout's first step (the cart APIs it calls
   // still enforce auth server-side).
-  const requiresAuth = pathnameWithoutLocale.startsWith('/account')
+  const requiresAuth = isAccountPath
 
   if (requiresAuth) {
     const token = request.cookies.get(COOKIE_NAME)?.value
@@ -165,7 +174,7 @@ export function middleware(request: NextRequest) {
   // headers onto the response it forwards (`NextResponse.rewrite`/`.next` with
   // `{ request: { headers } }`), so a header set on the request it receives
   // propagates to the RSC layer via `headers()`.
-  if (pathnameWithoutLocale.startsWith('/account')) {
+  if (isAccountPath) {
     const headers = new Headers(sanitizedHeaders)
     headers.set(ACCOUNT_REQUEST_HEADER, '1')
     const requestWithHeader = new NextRequest(request, { headers })

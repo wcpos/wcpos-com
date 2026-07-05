@@ -7,7 +7,10 @@ import {
   getMedusaPublishableKey,
 } from '@/lib/store-environment'
 import { getImpersonation } from '@/lib/impersonation'
-import { listAdminCustomerOrders } from '@/lib/discord/medusa-admin'
+import {
+  getAdminCustomerOrderById,
+  listAdminCustomerOrders,
+} from '@/lib/discord/medusa-admin'
 
 // ============================================================================
 // Types — the order shape this module owns
@@ -101,7 +104,25 @@ async function fetchOrders(
 async function fetchImpersonatedOrders(): Promise<MedusaOrder[] | null> {
   const impersonation = await getImpersonation()
   if (!impersonation) return null
-  return listAdminCustomerOrders(impersonation.targetId)
+  try {
+    return await listAdminCustomerOrders(impersonation.targetId)
+  } catch (error) {
+    storeLogger.error`Failed to fetch impersonated orders: ${error}`
+    return []
+  }
+}
+
+async function fetchImpersonatedOrderById(
+  orderId: string
+): Promise<MedusaOrder | null | undefined> {
+  const impersonation = await getImpersonation()
+  if (!impersonation) return undefined
+  try {
+    return await getAdminCustomerOrderById(impersonation.targetId, orderId)
+  } catch (error) {
+    storeLogger.error`Failed to fetch impersonated order ${orderId}: ${error}`
+    return null
+  }
 }
 
 // ============================================================================
@@ -188,8 +209,8 @@ export async function getAllOrders(
 export async function getOrderById(
   orderId: string
 ): Promise<MedusaOrder | null> {
-  const impersonated = await fetchImpersonatedOrders()
-  if (impersonated) return impersonated.find((o) => o.id === orderId) ?? null
+  const impersonated = await fetchImpersonatedOrderById(orderId)
+  if (impersonated !== undefined) return impersonated
 
   const token = await getAuthToken()
   if (!token) return null

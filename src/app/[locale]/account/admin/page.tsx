@@ -5,7 +5,12 @@ import { startImpersonationAction } from './actions'
 
 export const metadata = { robots: { index: false, follow: false } }
 
-export default async function AdminInspectPage() {
+export default async function AdminInspectPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}) {
+  const { locale } = await params
   // Gate on the REAL session — never getCustomer (which could be a target).
   const session = await getSessionCustomer()
   if (!isAdmin(session?.email)) notFound()
@@ -13,7 +18,7 @@ export default async function AdminInspectPage() {
   async function submit(formData: FormData) {
     'use server'
     const email = String(formData.get('email') ?? '')
-    await startImpersonationAction({ email })
+    await startImpersonationAction({ email, locale })
     // On success the action redirects; a returned error re-renders this page.
     // (For inline error messaging, upgrade to useActionState in a follow-up.)
   }

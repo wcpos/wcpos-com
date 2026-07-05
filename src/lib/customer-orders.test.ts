@@ -40,6 +40,7 @@ const {
   mockError,
   mockFetch,
   mockGetImpersonation,
+  mockGetAdminCustomerOrderById,
   mockListAdminCustomerOrders,
 } = vi.hoisted(() => ({
   mockGetAuthToken: vi.fn(),
@@ -47,6 +48,7 @@ const {
   mockError: vi.fn(),
   mockFetch: vi.fn(),
   mockGetImpersonation: vi.fn(),
+  mockGetAdminCustomerOrderById: vi.fn(),
   mockListAdminCustomerOrders: vi.fn(),
 }))
 
@@ -63,6 +65,8 @@ vi.mock('@/lib/impersonation', () => ({
 }))
 
 vi.mock('@/lib/discord/medusa-admin', () => ({
+  getAdminCustomerOrderById: (customerId: string, orderId: string) =>
+    mockGetAdminCustomerOrderById(customerId, orderId),
   listAdminCustomerOrders: (id: string) => mockListAdminCustomerOrders(id),
 }))
 
@@ -337,27 +341,41 @@ describe('customer-orders', () => {
     })
 
     it('getOrderById finds the order within the TARGET order set', async () => {
-      mockListAdminCustomerOrders.mockResolvedValue([
-        { id: 'ord_1', display_id: 1 },
-        { id: 'ord_2', display_id: 2 },
-      ])
+      mockGetAdminCustomerOrderById.mockResolvedValue({ id: 'ord_2', display_id: 2 })
 
       const order = await getOrderById('ord_2')
 
-      expect(mockListAdminCustomerOrders).toHaveBeenCalledWith('cus_t')
+      expect(mockGetAdminCustomerOrderById).toHaveBeenCalledWith('cus_t', 'ord_2')
       expect(order).toEqual({ id: 'ord_2', display_id: 2 })
+      expect(mockListAdminCustomerOrders).not.toHaveBeenCalled()
       expect(mockFetch).not.toHaveBeenCalled()
     })
 
-    it('getOrderById returns null when the id is not in the TARGET set', async () => {
-      mockListAdminCustomerOrders.mockResolvedValue([
-        { id: 'ord_1', display_id: 1 },
-      ])
+    it('getOrderById returns null when the TARGET order lookup misses', async () => {
+      mockGetAdminCustomerOrderById.mockResolvedValue(null)
 
       const order = await getOrderById('ord_missing')
 
       expect(order).toBeNull()
+      expect(mockGetAdminCustomerOrderById).toHaveBeenCalledWith(
+        'cus_t',
+        'ord_missing'
+      )
       expect(mockFetch).not.toHaveBeenCalled()
+    })
+
+    it('order pages degrade to an empty list when admin order lookup fails', async () => {
+      mockListAdminCustomerOrders.mockRejectedValueOnce(new Error('admin down'))
+
+      await expect(getAllOrders()).resolves.toEqual([])
+      expect(mockError).toHaveBeenCalledTimes(1)
+    })
+
+    it('single order lookup degrades to null when admin order lookup fails', async () => {
+      mockGetAdminCustomerOrderById.mockRejectedValueOnce(new Error('admin down'))
+
+      await expect(getOrderById('ord_1')).resolves.toBeNull()
+      expect(mockError).toHaveBeenCalledTimes(1)
     })
   })
 })

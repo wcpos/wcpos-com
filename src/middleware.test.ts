@@ -161,6 +161,60 @@ describe('middleware', () => {
         response?.headers.get(`x-middleware-request-${ACCOUNT_REQUEST_HEADER}`)
       ).toBe('1')
     })
+
+    it('sets the account-request header on store cart mutation API routes', () => {
+      const request = new NextRequest('https://wcpos.com/api/store/cart/complete', {
+        headers: { [ACCOUNT_REQUEST_HEADER]: 'spoofed' },
+      })
+
+      const response = middleware(request)
+
+      expect(
+        response?.headers.get(`x-middleware-request-${ACCOUNT_REQUEST_HEADER}`)
+      ).toBe('1')
+    })
+
+    it('does not set the account-request header for account-prefixed page segments', () => {
+      const request = new NextRequest('https://wcpos.com/accounting', {
+        headers: {
+          cookie: 'medusa-token=test-token',
+          [ACCOUNT_REQUEST_HEADER]: 'spoofed',
+        },
+      })
+
+      middleware(request)
+
+      expect(intlRequests).toHaveLength(1)
+      expect(intlRequests[0].headers.get(ACCOUNT_REQUEST_HEADER)).toBeNull()
+    })
+
+    it('strips the account-request header on legacy WC API Manager rewrites', () => {
+      const request = new NextRequest(
+        'https://wcpos.com/?wc-api=am-software-api&request=activation',
+        { headers: { [ACCOUNT_REQUEST_HEADER]: '1' } }
+      )
+
+      const response = middleware(request)
+
+      expect(
+        response?.headers.get(`x-middleware-request-${ACCOUNT_REQUEST_HEADER}`)
+      ).toBeNull()
+    })
+
+    it('strips the account-request header on updates API routes', () => {
+      const request = new NextRequest('https://updates.wcpos.com/api/check', {
+        headers: {
+          host: 'updates.wcpos.com',
+          [ACCOUNT_REQUEST_HEADER]: '1',
+        },
+      })
+
+      const response = middleware(request)
+
+      expect(
+        response?.headers.get(`x-middleware-request-${ACCOUNT_REQUEST_HEADER}`)
+      ).toBeNull()
+    })
   })
 
   describe('analytics consent gating', () => {

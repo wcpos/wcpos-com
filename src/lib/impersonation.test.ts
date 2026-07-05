@@ -34,7 +34,12 @@ vi.mock('@/lib/admin', () => ({
   isAdmin: (email?: string | null) => email === 'paul@kilbot.com',
 }))
 
-import { getImpersonation, assertViewOnly, ViewOnlyError } from './impersonation'
+import {
+  getImpersonation,
+  assertViewOnly,
+  startImpersonation,
+  ViewOnlyError,
+} from './impersonation'
 
 beforeEach(() => {
   cookieStore.value = undefined
@@ -70,10 +75,44 @@ describe('getImpersonation', () => {
     expect(cookieStore.delete).toHaveBeenCalledWith('wcpos-impersonate')
   })
 
+  it('returns null even if clearing the cookie throws in read-only context', async () => {
+    cookieStore.value = 'cus_target'
+    headerStore.value = '1'
+    cookieStore.delete.mockImplementationOnce(() => {
+      throw new Error('Cookies can only be modified in a Server Action or Route Handler')
+    })
+    getSessionCustomer.mockResolvedValue({ email: 'attacker@evil.com' })
+
+    await expect(getImpersonation()).resolves.toBeNull()
+  })
+
   it('returns null when there is no cookie', async () => {
     headerStore.value = '1'
     getSessionCustomer.mockResolvedValue({ email: 'paul@kilbot.com' })
     expect(await getImpersonation()).toBeNull()
+  })
+})
+
+describe('startImpersonation', () => {
+  it('sets the target cookie for an admin session', async () => {
+    getSessionCustomer.mockResolvedValue({ email: 'paul@kilbot.com' })
+
+    await startImpersonation('cus_target')
+
+    expect(cookieStore.set).toHaveBeenCalledWith(
+      'wcpos-impersonate',
+      'cus_target',
+      expect.objectContaining({ httpOnly: true, path: '/' })
+    )
+  })
+
+  it('rejects non-admin sessions before setting the cookie', async () => {
+    getSessionCustomer.mockResolvedValue({ email: 'attacker@evil.com' })
+
+    await expect(startImpersonation('cus_target')).rejects.toThrow(
+      'Not authorized to impersonate'
+    )
+    expect(cookieStore.set).not.toHaveBeenCalled()
   })
 })
 

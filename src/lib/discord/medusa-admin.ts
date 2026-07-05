@@ -2,6 +2,7 @@ import 'server-only'
 
 import { env } from '@/utils/env'
 import { getLiveStoreEnvironment } from '@/lib/store-environment'
+import { infraLogger } from '@/lib/logger'
 import type { MedusaOrder } from '@/lib/customer-orders'
 import type { MedusaCustomer } from '@/lib/medusa-auth'
 
@@ -92,6 +93,23 @@ export async function listAdminCustomerOrders(
   return orders
 }
 
+export async function getAdminCustomerOrderById(
+  customerId: string,
+  orderId: string
+): Promise<MedusaOrder | null> {
+  const query = new URLSearchParams({
+    limit: '1',
+    customer_id: customerId,
+    id: orderId,
+  })
+
+  const page = await medusaAdminFetch<AdminOrdersResponse>(
+    `/admin/orders?${query.toString()}`
+  )
+  const [order] = page.orders ?? []
+  return order?.id === orderId ? order : null
+}
+
 interface AdminCustomerResponse {
   customer?: MedusaCustomer
 }
@@ -105,13 +123,19 @@ export async function findAdminCustomerByEmail(
 ): Promise<MedusaCustomer | null> {
   const query = new URLSearchParams({
     email: email.trim().toLowerCase(),
-    limit: '1',
+    limit: '2',
     fields: 'id,email,first_name,last_name,phone,has_account,metadata,created_at,updated_at',
   })
-  const page = await medusaAdminFetch<AdminCustomersResponse>(
-    `/admin/customers?${query.toString()}`
-  )
-  return page.customers?.[0] ?? null
+  try {
+    const page = await medusaAdminFetch<AdminCustomersResponse>(
+      `/admin/customers?${query.toString()}`
+    )
+    const customers = page.customers ?? []
+    return customers.find((customer) => customer.has_account) ?? customers[0] ?? null
+  } catch (error) {
+    infraLogger.error`Failed to find admin customer by email: ${error}`
+    return null
+  }
 }
 
 /**
@@ -128,7 +152,8 @@ export async function getAdminCustomerById(
       `/admin/customers/${id}?${query.toString()}`
     )
     return data.customer ?? null
-  } catch {
+  } catch (error) {
+    infraLogger.error`Failed to fetch admin customer ${id}: ${error}`
     return null
   }
 }

@@ -70,6 +70,9 @@ export async function assertViewOnly(): Promise<void> {
 /** Begin inspecting a target customer (called from the admin action, which has
  *  already verified the caller is an admin). */
 export async function startImpersonation(targetId: string): Promise<void> {
+  const session = await getSessionCustomer()
+  if (!isAdmin(session?.email)) throw new Error('Not authorized to impersonate')
+
   const cookieStore = await cookies()
   cookieStore.set(IMPERSONATION_COOKIE, targetId, IMPERSONATION_COOKIE_OPTIONS)
 }
