@@ -5,6 +5,7 @@ import {
   type UpdateCustomerInput,
 } from '@/lib/medusa-auth'
 import { apiLogger } from '@/lib/logger'
+import { assertViewOnly, ViewOnlyError } from '@/lib/impersonation'
 import {
   mergeAccountProfileMetadataPatch,
   projectProfileMetadataForClient,
@@ -27,6 +28,18 @@ function normalizeField(value: unknown): string | undefined {
 }
 
 export async function PATCH(request: NextRequest) {
+  try {
+    await assertViewOnly()
+  } catch (error) {
+    if (error instanceof ViewOnlyError) {
+      return NextResponse.json(
+        { error: 'read_only_inspection' },
+        { status: 403 }
+      )
+    }
+    throw error
+  }
+
   const currentCustomer = await getCustomer()
   if (!currentCustomer) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })

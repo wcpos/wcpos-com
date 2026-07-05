@@ -8,6 +8,11 @@ const mockUpdateLicenseMetadata = vi.fn()
 const mockSyncDiscordProRoleForMember = vi.fn()
 const mockCreateDiscordRoleSyncDependencies = vi.fn()
 
+vi.mock('@/lib/impersonation', () => ({
+  assertViewOnly: async () => {},
+  ViewOnlyError: class ViewOnlyError extends Error {},
+}))
+
 vi.mock('@/lib/customer-licenses', () => ({
   getResolvedCustomerLicenses: (...args: unknown[]) => mockGetResolvedCustomerLicenses(...args),
 }))

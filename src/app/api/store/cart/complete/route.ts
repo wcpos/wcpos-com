@@ -3,6 +3,7 @@ import { cookies } from 'next/headers'
 import { completeCart, getCart } from '@/services/core/external/medusa-client'
 import { getCustomer } from '@/lib/medusa-auth'
 import { storeLogger } from '@/lib/logger'
+import { assertViewOnly, ViewOnlyError } from '@/lib/impersonation'
 import {
   resolveProCheckoutVariant,
   trackServerEvent,
@@ -21,6 +22,18 @@ import { ORDER_PENDING_CODE } from '@/lib/checkout-failure-taxonomy'
  * POST /api/store/cart/complete - Complete cart and create order
  */
 export async function POST(request: NextRequest) {
+  try {
+    await assertViewOnly()
+  } catch (error) {
+    if (error instanceof ViewOnlyError) {
+      return NextResponse.json(
+        { error: 'read_only_inspection' },
+        { status: 403 }
+      )
+    }
+    throw error
+  }
+
   try {
     const customer = await getCustomer()
     if (!customer) {
