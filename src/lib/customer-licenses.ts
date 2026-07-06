@@ -39,21 +39,21 @@ function buildLicensePlaceholder(reference: LicenseReference): LicenseDetail | n
  * The activation COUNT on `base` is already authoritative (from the public
  * validate-key response). Layer on the machine detail LIST only when a Keygen
  * token is configured — it powers the machine-management UI. When auth is
- * absent or the call fails, the list stays empty but the count is untouched:
- * an honest "N activations (details unavailable)", never a wrong "0".
+ * absent or the call fails, the list stays empty but the count is untouched
+ * (correct count, no detail rows) — never a wrong "0".
+ *
+ * Uses `base.id` — the canonical Keygen id from validate-key — so key-only and
+ * re-issued (stale-id) references still fetch the right machine list.
  */
-async function enrichWithMachineList(
-  base: LicenseDetail,
-  id: string | undefined
-): Promise<LicenseDetail> {
-  if (!id || !licenseClient.canManageMachines()) {
+async function enrichWithMachineList(base: LicenseDetail): Promise<LicenseDetail> {
+  if (!base.id || !licenseClient.canManageMachines()) {
     return base
   }
   try {
-    const machines = await licenseClient.getLicenseMachines(id)
+    const machines = await licenseClient.getLicenseMachines(base.id)
     return { ...base, machines, activationCount: machines.length }
   } catch (error) {
-    licenseLogger.warn`Machine list unavailable for license ${id}; showing count only: ${error}`
+    licenseLogger.warn`Machine list unavailable for license ${base.id}; showing count only: ${error}`
     return base
   }
 }
@@ -78,7 +78,7 @@ export async function resolveLicenseReference(
           status: normalizeLicenseStatus(validation.license.status),
           machines: [],
         }
-        return await enrichWithMachineList(base, reference.id)
+        return await enrichWithMachineList(base)
       }
       keyDefinitivelyMissing = true
     } catch (error) {

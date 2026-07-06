@@ -449,6 +449,59 @@ describe('getResolvedCustomerLicenses', () => {
     expect(result.licenses[0].activationCount).toBe(1)
   })
 
+  it('enriches a KEY-ONLY reference using the canonical id from validate-key', async () => {
+    mockGetCustomer.mockResolvedValueOnce({ id: 'cust_1' })
+    mockGetAllOrders.mockResolvedValueOnce([
+      {
+        id: 'order_keyonly',
+        status: 'completed',
+        display_id: 23,
+        email: 'user@example.com',
+        currency_code: 'usd',
+        total: 129,
+        subtotal: 129,
+        tax_total: 0,
+        created_at: '2026-01-01T00:00:00Z',
+        updated_at: '2026-01-01T00:00:00Z',
+        items: [],
+        // No license_id in metadata — key only.
+        metadata: { licenses: [{ license_key: 'WCPOS-KEYONLY-5555' }] },
+      },
+    ])
+    mockCanManageMachines.mockReturnValue(true)
+    mockValidateLicenseKey.mockResolvedValueOnce({
+      valid: true,
+      code: 'VALID',
+      detail: 'ok',
+      license: {
+        id: 'lic_canonical',
+        key: 'WCPOS-KEYONLY-5555',
+        status: 'active',
+        expiry: null,
+        maxMachines: 2,
+        activationCount: 1,
+        metadata: {},
+        policyId: 'policy_1',
+        createdAt: '2026-01-01T00:00:00Z',
+      },
+    })
+    mockGetLicenseMachines.mockResolvedValueOnce([
+      {
+        id: 'm-1',
+        fingerprint: 'fp-1',
+        name: null,
+        metadata: {},
+        createdAt: '2026-01-02T00:00:00Z',
+      },
+    ])
+
+    const result = await getResolvedCustomerLicenses()
+
+    // The reference had no id; enrichment must use the resolved canonical id.
+    expect(mockGetLicenseMachines).toHaveBeenCalledWith('lic_canonical')
+    expect(result.licenses[0].machines).toHaveLength(1)
+  })
+
   it('keeps the correct count when the machine-list enrichment fails', async () => {
     mockGetCustomer.mockResolvedValueOnce({ id: 'cust_1' })
     mockGetAllOrders.mockResolvedValueOnce([
