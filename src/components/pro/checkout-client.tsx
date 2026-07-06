@@ -26,6 +26,7 @@ import { Button } from '@/components/ui/button'
 import { toneText } from '@/components/ui/status-tone'
 import { ArrowLeft, Check, CheckCircle } from 'lucide-react'
 import { Link } from '@/i18n/navigation'
+import type { CheckoutPaymentConfig } from '@/lib/checkout-payment-config'
 import type { ProCheckoutVariant } from '@/services/core/analytics/posthog-service'
 
 interface CartItem {
@@ -79,21 +80,9 @@ function getProviderId(method: PaymentMethod): string {
   return PAYMENT_METHOD_PROVIDER_IDS[method]
 }
 
-/**
- * Which payment methods this checkout offers — resolved server-side from the
- * request host (wcpos.com => live keys, beta => test keys, localhost => dev;
- * see store-environment.ts) and passed in as a prop. All values are public
- * identifiers.
- */
-export interface CheckoutPaymentConfig {
-  stripePublishableKey: string | null
-  paypalClientId: string | null
-  btcpayEnabled: boolean
-}
-
 function derivePaymentSetup(payments: CheckoutPaymentConfig) {
   const stripeEnabled = Boolean(payments.stripePublishableKey)
-  const paypalEnabled = Boolean(payments.paypalClientId)
+  const paypalEnabled = Boolean(payments.paypal)
   const btcpayEnabled = payments.btcpayEnabled
   const anyEnabled = stripeEnabled || paypalEnabled || btcpayEnabled
   const defaultMethod: PaymentMethod = stripeEnabled
@@ -725,7 +714,7 @@ export function CheckoutClient({
                   btcpay: isBTCPayEnabled,
                 }}
                 stripePublishableKey={payments.stripePublishableKey}
-                paypalClientId={payments.paypalClientId}
+                paypal={payments.paypal}
                 experiment={PRO_CHECKOUT_EXPERIMENT}
                 experimentVariant={experimentVariant}
                 amount={cart.total}

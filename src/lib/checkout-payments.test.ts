@@ -3,7 +3,7 @@ import { filterPaymentsByBackendProviders } from './checkout-payments'
 
 const ALL = {
   stripePublishableKey: 'pk_test_x',
-  paypalClientId: 'paypal-client',
+  paypal: { clientId: 'paypal-client', environment: 'sandbox' as const },
   btcpayEnabled: true,
 }
 
@@ -23,12 +23,16 @@ describe('filterPaymentsByBackendProviders', () => {
     // no Stripe key — the checkout must not offer (or default to) BTCPay.
     expect(
       filterPaymentsByBackendProviders(
-        { stripePublishableKey: null, paypalClientId: null, btcpayEnabled: true },
+        {
+          stripePublishableKey: null,
+          paypal: null,
+          btcpayEnabled: true,
+        },
         ['pp_stripe_stripe', 'pp_system_default']
       )
     ).toEqual({
       stripePublishableKey: null,
-      paypalClientId: null,
+      paypal: null,
       btcpayEnabled: false,
     })
   })
@@ -38,7 +42,7 @@ describe('filterPaymentsByBackendProviders', () => {
       filterPaymentsByBackendProviders(ALL, ['pp_stripe_stripe'])
     ).toEqual({
       stripePublishableKey: 'pk_test_x',
-      paypalClientId: null,
+      paypal: null,
       btcpayEnabled: false,
     })
   })
@@ -50,12 +54,16 @@ describe('filterPaymentsByBackendProviders', () => {
   it('never enables a method the config disabled', () => {
     expect(
       filterPaymentsByBackendProviders(
-        { stripePublishableKey: null, paypalClientId: null, btcpayEnabled: false },
+        {
+          stripePublishableKey: null,
+          paypal: null,
+          btcpayEnabled: false,
+        },
         ['pp_stripe_stripe', 'pp_paypal_paypal', 'pp_btcpay_btcpay']
       )
     ).toEqual({
       stripePublishableKey: null,
-      paypalClientId: null,
+      paypal: null,
       btcpayEnabled: false,
     })
   })

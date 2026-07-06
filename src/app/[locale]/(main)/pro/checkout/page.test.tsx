@@ -30,7 +30,7 @@ vi.mock('@/lib/store-environment', () => ({
     medusaPublishableKey: 'pk_test',
     payments: {
       stripePublishableKey: null,
-      paypalClientId: null,
+      paypal: null,
       btcpayEnabled: true,
     },
   })),

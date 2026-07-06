@@ -1,6 +1,11 @@
 import 'server-only'
 
 import { headers } from 'next/headers'
+import type {
+  CheckoutPaymentConfig,
+  PayPalCheckoutConfig,
+  PayPalEnvironment,
+} from './checkout-payment-config'
 
 /**
  * Host-keyed store environments — config in code, git as the flip mechanism.
@@ -26,11 +31,7 @@ export interface StoreEnvironment {
   medusaBackendUrl: string
   medusaPublishableKey: string | null
   /** Public payment identifiers passed to the checkout client. */
-  payments: {
-    stripePublishableKey: string | null
-    paypalClientId: string | null
-    btcpayEnabled: boolean
-  }
+  payments: CheckoutPaymentConfig
 }
 
 function stripePublishableKey(value: string | undefined): string | null {
@@ -43,6 +44,14 @@ function stripePublishableKey(value: string | undefined): string | null {
 function liveStripePublishableKey(value: string | undefined): string | null {
   const candidate = stripePublishableKey(value)
   return candidate?.startsWith('pk_live_') ? candidate : null
+}
+
+function paypalCheckoutConfig(
+  clientId: string | undefined,
+  environment: PayPalEnvironment
+): PayPalCheckoutConfig {
+  const candidate = clientId?.trim()
+  return candidate ? { clientId: candidate, environment } : null
 }
 
 // Public live Stripe publishable key. Publishable keys are safe to commit and
@@ -68,7 +77,10 @@ const STORE_ENVIRONMENTS: Record<StoreEnvironmentName, StoreEnvironment> = {
         liveStripePublishableKey(
           process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
         ) ?? liveStripePublishableKey(LIVE_STRIPE_PUBLISHABLE_KEY),
-      paypalClientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID ?? null,
+      paypal: paypalCheckoutConfig(
+        process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID,
+        'production'
+      ),
       btcpayEnabled: Boolean(process.env.NEXT_PUBLIC_BTCPAY_ENABLED),
     },
   },
@@ -82,8 +94,10 @@ const STORE_ENVIRONMENTS: Record<StoreEnvironmentName, StoreEnvironment> = {
       stripePublishableKey: stripePublishableKey(
         process.env.NEXT_PUBLIC_STRIPE_TEST_PUBLISHABLE_KEY
       ),
-      paypalClientId:
-        process.env.NEXT_PUBLIC_PAYPAL_SANDBOX_CLIENT_ID ?? null,
+      paypal: paypalCheckoutConfig(
+        process.env.NEXT_PUBLIC_PAYPAL_SANDBOX_CLIENT_ID,
+        'sandbox'
+      ),
       btcpayEnabled: true,
     },
   },
@@ -99,7 +113,10 @@ const STORE_ENVIRONMENTS: Record<StoreEnvironmentName, StoreEnvironment> = {
       stripePublishableKey: stripePublishableKey(
         process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
       ),
-      paypalClientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID ?? null,
+      paypal: paypalCheckoutConfig(
+        process.env.NEXT_PUBLIC_PAYPAL_SANDBOX_CLIENT_ID,
+        'sandbox'
+      ),
       // BTCPay is a plain redirect (no client SDK), so the mocked suite can
       // exercise a full payment method end-to-end.
       btcpayEnabled: true,

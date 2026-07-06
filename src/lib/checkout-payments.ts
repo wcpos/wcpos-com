@@ -14,7 +14,7 @@
  * used by the client checkout when it creates payment sessions.
  */
 
-import type { CheckoutPaymentConfig } from '@/components/pro/checkout-client'
+import type { CheckoutPaymentConfig } from './checkout-payment-config'
 
 export const PAYMENT_METHOD_PROVIDER_IDS: Record<
   'stripe' | 'paypal' | 'btcpay',
@@ -43,8 +43,8 @@ export function filterPaymentsByBackendProviders(
     stripePublishableKey: available.has(PAYMENT_METHOD_PROVIDER_IDS.stripe)
       ? payments.stripePublishableKey
       : null,
-    paypalClientId: available.has(PAYMENT_METHOD_PROVIDER_IDS.paypal)
-      ? payments.paypalClientId
+    paypal: available.has(PAYMENT_METHOD_PROVIDER_IDS.paypal)
+      ? payments.paypal
       : null,
     btcpayEnabled:
       payments.btcpayEnabled &&
