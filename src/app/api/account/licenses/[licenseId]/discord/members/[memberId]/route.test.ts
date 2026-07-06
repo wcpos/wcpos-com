@@ -25,6 +25,12 @@ vi.mock('@/lib/discord/connected-member-service', () => ({
 }))
 
 vi.mock('@/services/core/external/license-client', () => ({
+  KeygenAuthNotConfiguredError: class KeygenAuthNotConfiguredError extends Error {
+    constructor() {
+      super('no token')
+      this.name = 'KeygenAuthNotConfiguredError'
+    }
+  },
   licenseClient: {
     getLicense: (...args: unknown[]) => mockGetLicense(...args),
     updateLicenseMetadata: (...args: unknown[]) => mockUpdateLicenseMetadata(...args),
@@ -48,6 +54,7 @@ vi.mock('@/lib/logger', () => ({
 }))
 
 import { DELETE } from './route'
+import { KeygenAuthNotConfiguredError } from '@/services/core/external/license-client'
 
 function callDelete(licenseId = 'lic_1', memberId = 'member_1') {
   return DELETE(
@@ -91,6 +98,18 @@ describe('DELETE /api/account/licenses/[licenseId]/discord/members/[memberId]', 
 
     expect(response.status).toBe(403)
     expect(await response.json()).toEqual({ error: 'Forbidden' })
+  })
+
+  it('returns 503 (fail loud) when Keygen seat management is not configured', async () => {
+    mockGetResolvedCustomerLicenses.mockResolvedValueOnce({ authenticated: true, licenses: [{ id: 'lic_1' }] })
+    // No KEYGEN_API_TOKEN → the authed getLicense inside removal throws.
+    mockRemoveConnectedDiscordMemberForHolder.mockRejectedValueOnce(new KeygenAuthNotConfiguredError())
+
+    const response = await callDelete('lic_1', 'member_1')
+
+    expect(response.status).toBe(503)
+    expect(await response.json()).toEqual({ error: 'Discord management is not configured' })
+    expect(mockSyncDiscordProRoleForMember).not.toHaveBeenCalled()
   })
 
   it('removes the member and resyncs that Discord user role', async () => {
