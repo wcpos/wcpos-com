@@ -128,6 +128,7 @@ export function ProBuyBox({
       <Button asChild size="lg" className="mt-5 w-full">
         <TrackedLocaleLink
           href={current.checkoutHref}
+          prefetch={false}
           eventName="click_start_checkout"
           eventProperties={current.eventProperties}
         >
