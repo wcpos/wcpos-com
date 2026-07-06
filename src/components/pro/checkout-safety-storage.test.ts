@@ -1,8 +1,10 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 
 import {
+  clearCheckoutSafetyStateForCart,
   clearCheckoutSafetyState,
   isProtectiveCheckoutFailureKind,
+  PROTECTIVE_FAILURE_TTL_MS,
   recordCheckoutFailure,
   restoreCheckoutSafetyState,
 } from './checkout-safety'
@@ -114,6 +116,50 @@ describe('recordCheckoutFailure / restoreCheckoutSafetyState', () => {
     expect(restoreCheckoutSafetyState()?.failure.kind).toBe('order_pending')
   })
 
+  it('expires stale protective failures so a resolved buyer can try again', () => {
+    vi.spyOn(Date, 'now').mockReturnValue(1_000)
+    recordCheckoutFailure('cart_stale', ORDER_PENDING_FAILURE)
+    vi.spyOn(Date, 'now').mockReturnValue(
+      1_000 + PROTECTIVE_FAILURE_TTL_MS + 1
+    )
+
+    expect(restoreCheckoutSafetyState()).toBeNull()
+    expect(sessionStorage.getItem('wcpos:checkout-pending:cart_stale')).toBeNull()
+  })
+
+  it('restores a fresh protective failure instead of an older expired order_pending entry', () => {
+    vi.spyOn(Date, 'now').mockReturnValue(1_000)
+    recordCheckoutFailure('cart_stale_pending', ORDER_PENDING_FAILURE)
+    vi.spyOn(Date, 'now').mockReturnValue(
+      1_000 + PROTECTIVE_FAILURE_TTL_MS + 1
+    )
+    recordCheckoutFailure('cart_fresh_uncertain', UNCERTAIN_FAILURE)
+
+    const restored = restoreCheckoutSafetyState()
+    expect(restored?.cartId).toBe('cart_fresh_uncertain')
+    expect(restored?.failure.kind).toBe('payment_uncertain')
+    expect(
+      sessionStorage.getItem('wcpos:checkout-pending:cart_stale_pending')
+    ).toBeNull()
+  })
+
+  it('restores a fresh protective failure even when expired-key cleanup fails', () => {
+    vi.spyOn(Date, 'now').mockReturnValue(1_000)
+    recordCheckoutFailure('cart_stale_pending', ORDER_PENDING_FAILURE)
+    vi.spyOn(Date, 'now').mockReturnValue(
+      1_000 + PROTECTIVE_FAILURE_TTL_MS + 1
+    )
+    recordCheckoutFailure('cart_fresh_uncertain', UNCERTAIN_FAILURE)
+    vi.spyOn(Storage.prototype, 'removeItem').mockImplementation(() => {
+      throw new DOMException('SecurityError')
+    })
+
+    const restored = restoreCheckoutSafetyState()
+
+    expect(restored?.cartId).toBe('cart_fresh_uncertain')
+    expect(restored?.failure.kind).toBe('payment_uncertain')
+  })
+
   it('ignores malformed JSON entries', () => {
     sessionStorage.setItem('wcpos:checkout-pending:cart_bad', 'not json {')
 
@@ -168,6 +214,23 @@ describe('recordCheckoutFailure / restoreCheckoutSafetyState', () => {
     })
 
     expect(restoreCheckoutSafetyState()).toBeNull()
+  })
+})
+
+describe('clearCheckoutSafetyStateForCart', () => {
+  it('removes only the targeted persisted protective failure', () => {
+    recordCheckoutFailure('cart_reset', ORDER_PENDING_FAILURE)
+    recordCheckoutFailure('cart_keep', UNCERTAIN_FAILURE)
+
+    clearCheckoutSafetyStateForCart('cart_reset')
+
+    const restored = restoreCheckoutSafetyState()
+    expect(restored?.cartId).toBe('cart_keep')
+    expect(restored?.failure.kind).toBe('payment_uncertain')
+    expect(sessionStorage.getItem('wcpos:checkout-pending:cart_reset')).toBeNull()
+    expect(
+      sessionStorage.getItem('wcpos:checkout-pending:cart_keep')
+    ).not.toBeNull()
   })
 })
 

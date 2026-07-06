@@ -293,6 +293,7 @@ export async function completeProviderConfirmedCheckout({
 // ---------------------------------------------------------------------------
 
 const STORAGE_KEY_PREFIX = 'wcpos:checkout-pending:'
+export const PROTECTIVE_FAILURE_TTL_MS = 15 * 60 * 1000
 
 interface PersistedCheckoutSafetyState {
   kind: ProtectiveCheckoutFailureKind
@@ -383,15 +384,30 @@ export function restoreCheckoutSafetyState(): RestoredCheckoutSafetyState | null
   if (!storage) return null
 
   const entries: PersistedCheckoutSafetyState[] = []
+  const expiredKeys: string[] = []
+  const now = Date.now()
   try {
     for (let i = 0; i < storage.length; i += 1) {
       const key = storage.key(i)
       if (!key || !key.startsWith(STORAGE_KEY_PREFIX)) continue
       const entry = parsePersistedEntry(storage.getItem(key))
-      if (entry) entries.push(entry)
+      if (!entry) continue
+      if (now - entry.storedAt > PROTECTIVE_FAILURE_TTL_MS) {
+        expiredKeys.push(key)
+        continue
+      }
+      entries.push(entry)
     }
   } catch {
     return null
+  }
+
+  for (const key of expiredKeys) {
+    try {
+      storage.removeItem(key)
+    } catch {
+      // Best effort — worst case a stale key lingers until the next cleanup.
+    }
   }
 
   if (entries.length === 0) return null
@@ -407,6 +423,22 @@ export function restoreCheckoutSafetyState(): RestoredCheckoutSafetyState | null
   return {
     cartId: top.cartId,
     failure: { kind: top.kind, message: top.message, reference: top.reference },
+  }
+}
+
+/**
+ * Remove one cart's persisted protective failure after support has confirmed
+ * that specific warning is safe to dismiss.
+ */
+export function clearCheckoutSafetyStateForCart(cartId: string): void {
+  if (!cartId) return
+  const storage = getSessionStorage()
+  if (!storage) return
+
+  try {
+    storage.removeItem(STORAGE_KEY_PREFIX + cartId)
+  } catch {
+    // Best effort — worst case the conservative notice shows again.
   }
 }
 

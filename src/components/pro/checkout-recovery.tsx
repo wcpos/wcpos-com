@@ -85,6 +85,7 @@ export function CheckoutErrorNotice({
 
 interface OrderPendingNoticeProps {
   failure: CheckoutFailure
+  onReset?: () => void
 }
 
 /**
@@ -92,7 +93,17 @@ interface OrderPendingNoticeProps {
  * order could not be created. Deliberately replaces the payment form so the
  * customer cannot pay a second time.
  */
-export function OrderPendingNotice({ failure }: OrderPendingNoticeProps) {
+export function OrderPendingNotice({ failure, onReset }: OrderPendingNoticeProps) {
+  function handleReset() {
+    if (
+      window.confirm(
+        'Only reset checkout after support confirms it is safe to try again. If your payment is still pending, resetting could lead to a second payment.'
+      )
+    ) {
+      onReset?.()
+    }
+  }
+
   return (
     <div
       role="alert"
@@ -120,6 +131,17 @@ export function OrderPendingNotice({ failure }: OrderPendingNoticeProps) {
           <Link href="/account/licenses">Check my licenses</Link>
         </Button>
       </div>
+      {onReset && (
+        <div className="mt-6 max-w-md border-t pt-4 text-sm text-muted-foreground">
+          <p className="mb-3">
+            If support has confirmed this old warning is resolved, you can clear
+            it and start a fresh checkout.
+          </p>
+          <Button type="button" variant="ghost" onClick={handleReset}>
+            Support told me to reset checkout
+          </Button>
+        </div>
+      )}
     </div>
   )
 }

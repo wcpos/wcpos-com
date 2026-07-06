@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { createPaymentSession } from './complete-cart'
 import { CheckoutErrorNotice, OrderPendingNotice } from './checkout-recovery'
 import {
+  clearCheckoutSafetyStateForCart,
   clearCheckoutSafetyState,
   createPaymentFailure,
   isProtectiveCheckoutFailureKind,
@@ -72,6 +73,20 @@ interface PaymentSessionResult {
 }
 
 const PRO_CHECKOUT_EXPERIMENT = 'pro_checkout_v1'
+const CHECKOUT_SAFETY_RESET_PARAM = 'reset_checkout'
+const CHECKOUT_SAFETY_RESET_VALUE = 'order_pending'
+const CHECKOUT_SAFETY_RESET_REFERENCE_PARAM = 'checkout_ref'
+
+function consumeCheckoutSafetyResetParams(): void {
+  const url = new URL(window.location.href)
+  url.searchParams.delete(CHECKOUT_SAFETY_RESET_PARAM)
+  url.searchParams.delete(CHECKOUT_SAFETY_RESET_REFERENCE_PARAM)
+  window.history.replaceState(
+    window.history.state,
+    '',
+    `${url.pathname}${url.search}${url.hash}`
+  )
+}
 
 // Map frontend payment method names to Medusa provider IDs. The Record is
 // total over PaymentMethod, so adding a method without a provider id is a
@@ -196,6 +211,8 @@ export function CheckoutClient({
   const [error, setError] = useState<string | null>(null)
   // Payment-stage failures — recoverable, rendered without unmounting the cart.
   const [failure, setFailure] = useState<CheckoutFailure | null>(null)
+  const [restoredOrderPendingGuardCartId, setRestoredOrderPendingGuardCartId] =
+    useState<string | null>(null)
   const [orderComplete, setOrderComplete] = useState(false)
   const [orderId, setOrderId] = useState<string | null>(null)
   const [paymentCollectionId, setPaymentCollectionId] = useState<
@@ -245,16 +262,55 @@ export function CheckoutClient({
     // (react-hooks/set-state-in-effect); sessionStorage is browser-only.
     Promise.resolve().then(() => {
       if (cancelled) return
-      const restored = restoreCheckoutSafetyState()
-      if (restored) {
+      const searchParams = new URLSearchParams(window.location.search)
+      const applyRestored = (
+        restored: ReturnType<typeof restoreCheckoutSafetyState>
+      ) => {
+        if (!restored) {
+          setFailure(null)
+          setRestoredOrderPendingGuardCartId(null)
+          return
+        }
+
         setFailure(restored.failure)
+        setRestoredOrderPendingGuardCartId(
+          restored.failure.kind === 'order_pending' ? restored.cartId : null
+        )
       }
+
+      if (
+        searchParams.get(CHECKOUT_SAFETY_RESET_PARAM) ===
+        CHECKOUT_SAFETY_RESET_VALUE
+      ) {
+        const restored = restoreCheckoutSafetyState()
+        const resetReference = searchParams.get(
+          CHECKOUT_SAFETY_RESET_REFERENCE_PARAM
+        )
+        if (
+          restored?.failure.kind === 'order_pending' &&
+          resetReference === restored.failure.reference
+        ) {
+          clearCheckoutSafetyStateForCart(restored.cartId)
+        }
+        consumeCheckoutSafetyResetParams()
+        applyRestored(restoreCheckoutSafetyState())
+        setSafetyRestored(true)
+        return
+      }
+      applyRestored(restoreCheckoutSafetyState())
       setSafetyRestored(true)
     })
     return () => {
       cancelled = true
     }
   }, [])
+
+  const resetOrderPendingGuard = useCallback(() => {
+    if (restoredOrderPendingGuardCartId) {
+      clearCheckoutSafetyStateForCart(restoredOrderPendingGuardCartId)
+    }
+    window.location.reload()
+  }, [restoredOrderPendingGuardCartId])
 
   const blockedByProtectiveFailure = failure
     ? shouldBlockCheckout(failure)
@@ -432,6 +488,7 @@ export function CheckoutClient({
   const handleFailure = useCallback(
     (nextFailure: CheckoutFailure | null) => {
       setFailure(nextFailure)
+      setRestoredOrderPendingGuardCartId(null)
       if (
         nextFailure &&
         activeCartId &&
@@ -582,7 +639,14 @@ export function CheckoutClient({
   // Payment captured but order creation failed — the worst customer state.
   // Replaces the whole checkout so the customer cannot pay a second time.
   if (failure?.kind === 'order_pending') {
-    return <OrderPendingNotice failure={failure} />
+    return (
+      <OrderPendingNotice
+        failure={failure}
+        onReset={
+          restoredOrderPendingGuardCartId ? resetOrderPendingGuard : undefined
+        }
+      />
+    )
   }
 
   const formatCurrency = (amount: number) =>
