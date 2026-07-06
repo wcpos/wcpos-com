@@ -18,7 +18,10 @@ export interface AccountOrderMoneyFact {
 
 export interface AccountOrderListRowFact {
   id: string
+  /** Current Medusa order number shown as the primary account order id. */
   displayId: number
+  /** Original WooCommerce order number for migrated orders, when different. */
+  legacyDisplayId?: number
   createdAt: string
   itemCount: number
   displayStatus: string
@@ -31,7 +34,10 @@ export interface AccountOrderListRowFact {
 
 export interface AccountOrderDetailFact {
   id: string
+  /** Current Medusa order number shown as the primary account order id. */
   displayId: number
+  /** Original WooCommerce order number for migrated orders, when different. */
+  legacyDisplayId?: number
   createdAt: string
   email: string
   displayStatus: string
@@ -69,7 +75,10 @@ export interface AccountOrderReceiptProfileFact {
 }
 
 export interface AccountOrderReceiptFact {
+  /** Current Medusa order number shown as the primary account order id. */
   displayId: number
+  /** Original WooCommerce order number for migrated orders, when different. */
+  legacyDisplayId?: number
   createdAt: string
   customerEmail: string
   currencyCode: string
@@ -103,21 +112,21 @@ function stringOrNull(value: unknown): string | null {
   return trimmed.length > 0 ? trimmed : null
 }
 
-function legacyDisplayId(order: MedusaOrder): number {
+function legacyDisplayId(order: MedusaOrder): number | undefined {
   const value = order.metadata?.wc_order_id
   if (typeof value === 'number' && Number.isInteger(value) && value > 0) {
-    return value
+    return value === order.display_id ? undefined : value
   }
 
   if (typeof value === 'string') {
     const trimmed = value.trim()
     const parsed = Number.parseInt(trimmed, 10)
     if (String(parsed) === trimmed && parsed > 0) {
-      return parsed
+      return parsed === order.display_id ? undefined : parsed
     }
   }
 
-  return order.display_id
+  return undefined
 }
 
 function legacyCreatedAt(order: MedusaOrder): string {
@@ -189,9 +198,12 @@ export function projectAccountOrderListRow(
       ...(product ? { product } : {}),
     }))
 
+  const legacyId = legacyDisplayId(order)
+
   return {
     id: order.id,
-    displayId: legacyDisplayId(order),
+    displayId: order.display_id,
+    ...(legacyId ? { legacyDisplayId: legacyId } : {}),
     createdAt: legacyCreatedAt(order),
     itemCount: order.items.length,
     displayStatus: getOrderDisplayStatus(order),
@@ -224,9 +236,12 @@ export function projectAccountOrderDetail(
       key: reference.key,
     }))
 
+  const legacyId = legacyDisplayId(order)
+
   return {
     id: order.id,
-    displayId: legacyDisplayId(order),
+    displayId: order.display_id,
+    ...(legacyId ? { legacyDisplayId: legacyId } : {}),
     createdAt: legacyCreatedAt(order),
     email: order.email,
     displayStatus: getOrderDisplayStatus(order),
@@ -268,8 +283,11 @@ export function projectAccountOrderReceipt(
   order: MedusaOrder,
   billingProfile: AccountOrderReceiptProfileFact
 ): AccountOrderReceiptFact {
+  const legacyId = legacyDisplayId(order)
+
   return {
-    displayId: legacyDisplayId(order),
+    displayId: order.display_id,
+    ...(legacyId ? { legacyDisplayId: legacyId } : {}),
     createdAt: legacyCreatedAt(order),
     customerEmail: order.email,
     currencyCode: order.currency_code,

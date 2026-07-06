@@ -181,7 +181,8 @@
       "receiptPdf": "Bon (pdf)",
       "downloadReceiptAria": "Bon downloaden voor bestelling #{id}",
       "viewOrder": "Bekijken",
-      "viewOrderAria": "Bestelling #{id} bekijken"
+      "viewOrderAria": "Bestelling #{id} bekijken",
+      "legacyOrderNumber": "WooCommerce-bestelling #{id}"
     },
     "orderDetail": {
       "backToOrders": "Terug naar bestellingen",
@@ -197,7 +198,8 @@
       "licenseKeysTitle": "Licentiesleutels",
       "manage": "Beheren",
       "licenseFromOrderTitle": "Licentie van deze bestelling",
-      "manageLicence": "Licentie beheren →"
+      "manageLicence": "Licentie beheren →",
+      "legacyOrderLabel": "WooCommerce-bestelling"
     },
     "licenseStatus": {
       "active": "actief",

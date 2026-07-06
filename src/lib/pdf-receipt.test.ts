@@ -69,6 +69,29 @@ describe('buildTaxReceiptPdf', () => {
     expect(decodedStream).toContain('31322D33343536373839')
   })
 
+  it('includes the legacy WooCommerce order number when provided', async () => {
+    const pdf = await buildTaxReceiptPdf({
+      ...baseReceipt,
+      displayId: 5397,
+      legacyDisplayId: 39509,
+    })
+
+    const bytes = Buffer.from(pdf)
+    const raw = bytes.toString('latin1')
+    const streamRegex = new RegExp('stream\\r?\\n([\\s\\S]*?)\\r?\\nendstream')
+    const streamMatch = raw.match(streamRegex)
+    const streamContent = streamMatch?.[1]
+    expect(streamContent).toBeTruthy()
+
+    const decodedStream = inflateSync(
+      Buffer.from(streamContent!, 'latin1')
+    ).toString('latin1')
+
+    expect(decodedStream).toContain(
+      '576F6F436F6D6D65726365206F7264657220233339353039'
+    )
+  })
+
   it('does not throw when order content includes unicode characters', async () => {
     const unicodeReceipt: AccountOrderReceiptFact = {
       ...baseReceipt,

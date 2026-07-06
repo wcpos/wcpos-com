@@ -181,7 +181,8 @@
       "receiptPdf": "收据（PDF）",
       "downloadReceiptAria": "下载订单 #{id} 的收据",
       "viewOrder": "查看",
-      "viewOrderAria": "查看订单 #{id}"
+      "viewOrderAria": "查看订单 #{id}",
+      "legacyOrderNumber": "WooCommerce 订单 #{id}"
     },
     "orderDetail": {
       "backToOrders": "返回订单",
@@ -197,7 +198,8 @@
       "licenseKeysTitle": "许可证密钥",
       "manage": "管理",
       "licenseFromOrderTitle": "此订单的许可证",
-      "manageLicence": "管理许可证 →"
+      "manageLicence": "管理许可证 →",
+      "legacyOrderLabel": "WooCommerce 订单"
     },
     "licenseStatus": {
       "active": "有效",

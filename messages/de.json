@@ -181,7 +181,8 @@
       "receiptPdf": "Beleg (PDF)",
       "downloadReceiptAria": "Beleg für Bestellung #{id} herunterladen",
       "viewOrder": "Ansehen",
-      "viewOrderAria": "Bestellung #{id} ansehen"
+      "viewOrderAria": "Bestellung #{id} ansehen",
+      "legacyOrderNumber": "WooCommerce-Bestellung #{id}"
     },
     "orderDetail": {
       "backToOrders": "Zurück zu den Bestellungen",
@@ -197,7 +198,8 @@
       "licenseKeysTitle": "Lizenzschlüssel",
       "manage": "Verwalten",
       "licenseFromOrderTitle": "Lizenz aus dieser Bestellung",
-      "manageLicence": "Lizenz verwalten →"
+      "manageLicence": "Lizenz verwalten →",
+      "legacyOrderLabel": "WooCommerce-Bestellung"
     },
     "licenseStatus": {
       "active": "aktiv",

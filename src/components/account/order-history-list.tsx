@@ -25,6 +25,7 @@ export interface OrderHistoryLicense {
 export interface OrderHistoryOrder {
   id: string
   displayId: number
+  legacyDisplayId?: number
   createdAt: string
   itemCount: number
   displayStatus: string
@@ -77,6 +78,11 @@ export function OrderHistoryList({ orders, locale }: OrderHistoryListProps) {
                 <p className="font-medium">
                   {t('orderNumber', { id: order.displayId })}
                 </p>
+                {order.legacyDisplayId && (
+                  <p className="text-sm text-muted-foreground">
+                    {t('legacyOrderNumber', { id: order.legacyDisplayId })}
+                  </p>
+                )}
                 <p className="text-sm text-muted-foreground">
                   {t('dateAndItems', {
                     date: formatDateForLocale(order.createdAt, locale),

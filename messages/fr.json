@@ -181,7 +181,8 @@
       "receiptPdf": "Reçu (PDF)",
       "downloadReceiptAria": "Télécharger le reçu de la commande n° {id}",
       "viewOrder": "Voir",
-      "viewOrderAria": "Voir la commande n° {id}"
+      "viewOrderAria": "Voir la commande n° {id}",
+      "legacyOrderNumber": "Commande WooCommerce n° {id}"
     },
     "orderDetail": {
       "backToOrders": "Retour aux commandes",
@@ -197,7 +198,8 @@
       "licenseKeysTitle": "Clés de licence",
       "manage": "Gérer",
       "licenseFromOrderTitle": "Licence issue de cette commande",
-      "manageLicence": "Gérer la licence →"
+      "manageLicence": "Gérer la licence →",
+      "legacyOrderLabel": "Commande WooCommerce"
     },
     "licenseStatus": {
       "active": "active",

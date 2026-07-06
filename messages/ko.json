@@ -181,7 +181,8 @@
       "receiptPdf": "영수증 (PDF)",
       "downloadReceiptAria": "주문 #{id}의 영수증 다운로드",
       "viewOrder": "보기",
-      "viewOrderAria": "주문 #{id} 보기"
+      "viewOrderAria": "주문 #{id} 보기",
+      "legacyOrderNumber": "WooCommerce 주문 #{id}"
     },
     "orderDetail": {
       "backToOrders": "주문으로 돌아가기",
@@ -197,7 +198,8 @@
       "licenseKeysTitle": "라이선스 키",
       "manage": "관리",
       "licenseFromOrderTitle": "이 주문의 라이선스",
-      "manageLicence": "라이선스 관리 →"
+      "manageLicence": "라이선스 관리 →",
+      "legacyOrderLabel": "WooCommerce 주문"
     },
     "licenseStatus": {
       "active": "활성",

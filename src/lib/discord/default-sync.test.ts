@@ -4,7 +4,7 @@ import type { LicenseDetail } from '@/types/license'
 const mocks = vi.hoisted(() => ({
   listAdminCustomers: vi.fn(),
   listAdminCustomerOrders: vi.fn(),
-  getResolvedLicensesFromOrders: vi.fn(),
+  getResolvedLicenseSnapshotFromOrders: vi.fn(),
   getMemberRoleState: vi.fn(async () => 'missing_role'),
   addRole: vi.fn(async () => undefined),
   removeRole: vi.fn(async () => undefined),
@@ -32,7 +32,7 @@ vi.mock('./medusa-admin', () => ({
 }))
 
 vi.mock('@/lib/customer-licenses', () => ({
-  getResolvedLicensesFromOrders: mocks.getResolvedLicensesFromOrders,
+  getResolvedLicenseSnapshotFromOrders: mocks.getResolvedLicenseSnapshotFromOrders,
 }))
 
 import {
@@ -79,15 +79,18 @@ describe('createDiscordReconcileDependencies', () => {
   it('reuses the resolved licence snapshot across a reconciliation dependency instance', async () => {
     mocks.listAdminCustomers.mockResolvedValue([{ id: 'cust_1' }])
     mocks.listAdminCustomerOrders.mockResolvedValue([order({ licenses: [{ license_id: 'lic_1' }] })])
-    mocks.getResolvedLicensesFromOrders.mockResolvedValue([
-      license({
-        discord_access: {
-          seatCap: 5,
-          blockedDiscordUserIds: [],
-          members: [{ id: 'member_1', discordUserId: 'discord_1', connectedAt: '2026-01-01T00:00:00.000Z' }],
-        },
-      }),
-    ])
+    mocks.getResolvedLicenseSnapshotFromOrders.mockResolvedValue({
+      licenses: [
+        license({
+          discord_access: {
+            seatCap: 5,
+            blockedDiscordUserIds: [],
+            members: [{ id: 'member_1', discordUserId: 'discord_1', connectedAt: '2026-01-01T00:00:00.000Z' }],
+          },
+        }),
+      ],
+      complete: true,
+    })
 
     const dependencies = createDiscordReconcileDependencies()
 
@@ -103,10 +106,13 @@ describe('createDiscordReconcileDependencies', () => {
   it('does not mark orphan removals safe when any resolved licence is unverifiable', async () => {
     mocks.listAdminCustomers.mockResolvedValue([{ id: 'cust_1' }])
     mocks.listAdminCustomerOrders.mockResolvedValue([order({ licenses: [{ license_id: 'lic_1' }] })])
-    mocks.getResolvedLicensesFromOrders.mockResolvedValue([
-      license({ discord_access: { seatCap: 5, blockedDiscordUserIds: [], members: [] } }),
-      { ...license({}), id: 'lic_unknown', status: 'unknown' },
-    ])
+    mocks.getResolvedLicenseSnapshotFromOrders.mockResolvedValue({
+      licenses: [
+        license({ discord_access: { seatCap: 5, blockedDiscordUserIds: [], members: [] } }),
+        { ...license({}), id: 'lic_unknown', status: 'unknown' },
+      ],
+      complete: false,
+    })
 
     const dependencies = createDiscordReconcileDependencies()
 
@@ -117,7 +123,7 @@ describe('createDiscordReconcileDependencies', () => {
   it('does not mark orphan removals safe when an id-only licence reference is omitted', async () => {
     mocks.listAdminCustomers.mockResolvedValue([{ id: 'cust_1' }])
     mocks.listAdminCustomerOrders.mockResolvedValue([order({ licenses: [{ license_id: 'lic_missing' }] })])
-    mocks.getResolvedLicensesFromOrders.mockResolvedValue([])
+    mocks.getResolvedLicenseSnapshotFromOrders.mockResolvedValue({ licenses: [], complete: false })
 
     const dependencies = createDiscordReconcileDependencies()
 
@@ -136,7 +142,7 @@ describe('createDiscordReconcileDependencies', () => {
       inFlight -= 1
       return []
     })
-    mocks.getResolvedLicensesFromOrders.mockResolvedValue([])
+    mocks.getResolvedLicenseSnapshotFromOrders.mockResolvedValue({ licenses: [], complete: false })
 
     const dependencies = createDiscordReconcileDependencies()
     await expect(dependencies.listConnectedDiscordUserIds()).resolves.toEqual([])
@@ -161,13 +167,13 @@ describe('createDiscordRoleSyncDependencies', () => {
 
     expect(mocks.listAdminCustomers).not.toHaveBeenCalled()
     expect(mocks.listAdminCustomerOrders).not.toHaveBeenCalled()
-    expect(mocks.getResolvedLicensesFromOrders).not.toHaveBeenCalled()
+    expect(mocks.getResolvedLicenseSnapshotFromOrders).not.toHaveBeenCalled()
   })
 
   it('surfaces incomplete admin snapshots as unverifiable during reconciliation sync', async () => {
     mocks.listAdminCustomers.mockResolvedValue([{ id: 'cust_1' }])
     mocks.listAdminCustomerOrders.mockResolvedValue([order({ licenses: [{ license_id: 'lic_missing' }] })])
-    mocks.getResolvedLicensesFromOrders.mockResolvedValue([])
+    mocks.getResolvedLicenseSnapshotFromOrders.mockResolvedValue({ licenses: [], complete: false })
 
     const dependencies = createDiscordReconcileDependencies()
 
