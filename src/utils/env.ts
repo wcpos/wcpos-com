@@ -92,10 +92,42 @@ const envSchema = z.object({
   UPSTASH_REDIS_REST_TOKEN: z.string().optional(),
   SUPPORT_DAILY_QUESTION_BUDGET: z.coerce.number().int().positive().default(500),
 
+  // Vercel deploy environment ('production' | 'preview' | 'development'), set
+  // by the platform during builds. Used to require deploy-critical secrets on
+  // the real production build without affecting local `next build` (which sets
+  // NODE_ENV=production but leaves VERCEL_ENV unset).
+  VERCEL_ENV: z.enum(['production', 'preview', 'development']).optional(),
+
   // Node environment
   NODE_ENV: z
     .enum(['development', 'production', 'test'])
     .default('development'),
+})
+
+/**
+ * Secrets that MUST be present on a real Vercel production deploy. Missing one
+ * fails the production BUILD (deploy is blocked) rather than silently shipping
+ * and 500ing every customer at request time. Gated on VERCEL_ENV === 'production'
+ * so local/preview/test builds are never blocked.
+ *
+ * DOWNLOAD_TOKEN_SECRET is the HMAC signing key for Pro-download tokens; without
+ * it both /api/account/download(s) routes fail closed. On 2026-07-05 it was
+ * never provisioned on Vercel → every Pro download 500'd. This turns that
+ * request-time fatal into a deploy-time failure.
+ */
+const REQUIRED_ON_PRODUCTION = ['DOWNLOAD_TOKEN_SECRET'] as const
+
+const envSchemaWithProdGuards = envSchema.superRefine((data, ctx) => {
+  if (data.VERCEL_ENV !== 'production') return
+  for (const key of REQUIRED_ON_PRODUCTION) {
+    if (!data[key]) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: [key],
+        message: `${key} is required on Vercel production deploys`,
+      })
+    }
+  }
 })
 
 /**
@@ -123,7 +155,7 @@ export function definedEnvEntries(
 }
 
 function validateEnv() {
-  const parsed = envSchema.safeParse(definedEnvEntries(process.env))
+  const parsed = envSchemaWithProdGuards.safeParse(definedEnvEntries(process.env))
 
   if (!parsed.success) {
     console.error('❌ Invalid environment variables:', parsed.error.flatten())
