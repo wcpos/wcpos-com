@@ -32,6 +32,7 @@ function makeLicense(
     status: CanonicalLicenseStatus
     expiry: string | null
     maxMachines: number
+    activationCount: number
     machines: Array<{
       id: string
       fingerprint: string
@@ -50,6 +51,7 @@ function makeLicense(
     status: 'active' as CanonicalLicenseStatus,
     expiry: '2027-01-01T00:00:00Z',
     maxMachines: 5,
+    activationCount: 0,
     machines: [],
     metadata: {},
     policyId: 'lifetime-policy',
@@ -409,6 +411,7 @@ describe('LicensesClient', () => {
         initialLicenses={[
           makeLicense({
             maxMachines: 5,
+            activationCount: 1,
             machines: [
               {
                 id: 'm-1',

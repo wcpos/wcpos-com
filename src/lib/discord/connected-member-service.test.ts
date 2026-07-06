@@ -17,6 +17,7 @@ function license(overrides: Partial<LicenseDetail> = {}): LicenseDetail {
     status: 'active',
     expiry: null,
     maxMachines: 5,
+    activationCount: 0,
     machines: [],
     metadata: {},
     policyId: 'policy_yearly',

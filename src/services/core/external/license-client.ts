@@ -37,12 +37,36 @@ export class KeygenRequestError extends Error {
   }
 }
 
+/**
+ * Thrown when an authenticated Keygen operation is attempted but no
+ * `KEYGEN_API_TOKEN` is configured. Fail LOUD rather than silently sending
+ * `Bearer undefined` (which 401s and, historically, degraded into a misleading
+ * "0 activations"). Read paths do not need auth — they use public validate-key —
+ * so only genuine management operations (machine list, deactivation) hit this.
+ */
+export class KeygenAuthNotConfiguredError extends Error {
+  constructor() {
+    super(
+      'KEYGEN_API_TOKEN is not configured; authenticated Keygen operations (machine management) are unavailable.'
+    )
+    this.name = 'KeygenAuthNotConfiguredError'
+  }
+}
+
 const JSON_API_HEADERS = {
   'Content-Type': 'application/vnd.api+json',
   Accept: 'application/vnd.api+json',
 }
 
+/** True when authenticated Keygen calls (machine list, deactivation) are possible. */
+function canAuthenticate(): boolean {
+  return Boolean(env.KEYGEN_API_TOKEN)
+}
+
 function authHeaders() {
+  if (!env.KEYGEN_API_TOKEN) {
+    throw new KeygenAuthNotConfiguredError()
+  }
   return {
     ...JSON_API_HEADERS,
     Authorization: `Bearer ${env.KEYGEN_API_TOKEN}`,
@@ -69,6 +93,9 @@ interface KeygenLicenseData {
   attributes: KeygenLicenseAttributes
   relationships: {
     policy: { data: { id: string } }
+    // Present on validate-key responses; `meta.count` is the authoritative
+    // active-machine (activation) count and needs NO admin token.
+    machines?: { meta?: { count?: number } }
   }
 }
 
@@ -102,6 +129,9 @@ function mapLicenseData(
     status: normalizeLicenseStatus(data.attributes.status),
     expiry: data.attributes.expiry,
     maxMachines: data.attributes.maxMachines,
+    // Authoritative activation count from the machines relationship meta. This
+    // is present on the public validate-key response — no admin token needed.
+    activationCount: data.relationships.machines?.meta?.count ?? 0,
     metadata: data.attributes.metadata,
     policyId: data.relationships.policy.data.id,
     createdAt: data.attributes.created,
@@ -275,7 +305,10 @@ async function getLicenseWithMachines(
   const license = await getLicense(licenseId)
   const machines = await getLicenseMachines(licenseId)
 
-  return { ...license, machines }
+  // With the full authed list in hand, its length is the authoritative count
+  // (the authed GET /licenses/{id} response carries no machines-relationship
+  // meta, so `license.activationCount` from it would be 0).
+  return { ...license, machines, activationCount: machines.length }
 }
 
 
@@ -339,18 +372,18 @@ async function validateLicense(
 
   const license = validation.license
 
-  // For valid licenses, fetch machines to get activation count
-  // and check if this instance is activated
-  let activationsCount = 0
+  // Activation count comes from validate-key (public, authoritative) — correct
+  // even without a Keygen admin token. The machine LIST is only needed for the
+  // per-instance `activated` check, and is a best-effort authed enrichment.
+  const activationsCount = license.activationCount
   let activated = false
 
-  if (validation.valid && license.id) {
+  if (validation.valid && license.id && canAuthenticate()) {
     try {
       const machines = await getLicenseMachines(license.id)
-      activationsCount = machines.length
       activated = machines.some((m) => m.fingerprint === instance)
-    } catch {
-      // If we can't fetch machines, still return what we have
+    } catch (error) {
+      licenseLogger.warn`Machine list unavailable for ${license.id}; per-instance activation state may be incomplete: ${error}`
     }
   }
 
@@ -417,4 +450,7 @@ export const licenseClient = {
   getLicenseWithMachines,
   updateLicenseMetadata,
   validateLicense,
+  /** Whether authenticated Keygen operations (machine list, deactivation) are
+   *  possible — i.e. a KEYGEN_API_TOKEN is configured. */
+  canManageMachines: canAuthenticate,
 }

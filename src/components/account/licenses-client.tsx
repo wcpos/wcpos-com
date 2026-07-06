@@ -36,6 +36,10 @@ interface License {
   status: CanonicalLicenseStatus
   expiry: string | null
   maxMachines: number
+  // Authoritative activation count (from Keygen validate-key). Render the
+  // "X of Y" count from this — `machines` (the detail list) can be empty when
+  // machine management is unauthenticated, even with activations present.
+  activationCount: number
   machines: Machine[]
   metadata: Record<string, unknown>
   policyId: string
@@ -420,7 +424,7 @@ export function LicensesClient({
                     </span>
                     <span className="font-medium">
                       {t('activationsCount', {
-                        count: license.machines.length,
+                        count: license.activationCount,
                         max: license.maxMachines,
                       })}
                     </span>

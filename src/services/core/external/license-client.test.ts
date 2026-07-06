@@ -16,11 +16,33 @@ const mockFetch = vi.fn()
 global.fetch = mockFetch
 
 // Import after mocks are set up
-import { licenseClient } from './license-client'
+import { licenseClient, KeygenAuthNotConfiguredError } from './license-client'
+import { env } from '@/utils/env'
 
 describe('licenseClient', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+  })
+
+  describe('authentication guard', () => {
+    it('canManageMachines reflects KEYGEN_API_TOKEN presence', () => {
+      expect(licenseClient.canManageMachines()).toBe(true)
+    })
+
+    it('fails loud (KeygenAuthNotConfiguredError) on authed calls when the token is absent', async () => {
+      const original = env.KEYGEN_API_TOKEN
+      ;(env as { KEYGEN_API_TOKEN?: string }).KEYGEN_API_TOKEN = undefined
+      try {
+        expect(licenseClient.canManageMachines()).toBe(false)
+        await expect(
+          licenseClient.getLicenseMachines('lic-1')
+        ).rejects.toBeInstanceOf(KeygenAuthNotConfiguredError)
+        // No network call should have been attempted.
+        expect(mockFetch).not.toHaveBeenCalled()
+      } finally {
+        ;(env as { KEYGEN_API_TOKEN?: string }).KEYGEN_API_TOKEN = original
+      }
+    })
   })
 
   describe('validateLicenseKey', () => {
@@ -41,6 +63,9 @@ describe('licenseClient', () => {
             },
             relationships: {
               policy: { data: { id: 'policy-yearly' } },
+              // Keygen returns the authoritative activation count here on the
+              // public validate-key response — no admin token needed.
+              machines: { meta: { count: 1 } },
             },
           },
         }),
@@ -58,6 +83,7 @@ describe('licenseClient', () => {
           status: 'active',
           expiry: '2027-01-01T00:00:00Z',
           maxMachines: 2,
+          activationCount: 1,
           metadata: {},
           policyId: 'policy-yearly',
           createdAt: '2026-01-01T00:00:00Z',
@@ -161,6 +187,9 @@ describe('licenseClient', () => {
         status: 'active',
         expiry: '2027-01-01T00:00:00Z',
         maxMachines: 2,
+        // getLicense (authed GET /licenses/{id}) carries no machines-relationship
+        // meta, so the count defaults to 0; getLicenseWithMachines overrides it.
+        activationCount: 0,
         machines: [],
         metadata: { tier: 'pro' },
         policyId: 'policy-yearly',
@@ -635,12 +664,15 @@ describe('licenseClient', () => {
             },
             relationships: {
               policy: { data: { id: 'policy-yearly' } },
+              // Authoritative activation count from validate-key (no token).
+              machines: { meta: { count: 1 } },
             },
           },
         }),
       })
 
-      // Mock getLicenseMachines call
+      // Mock getLicenseMachines call (used only for the per-instance
+      // `activated` check now, not for the count).
       mockFetch.mockResolvedValueOnce({
         ok: true,
         json: async () => ({

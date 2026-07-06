@@ -101,6 +101,11 @@ export default defineConfig({
             // case a local .env.local points elsewhere.
             MEDUSA_BACKEND_URL: 'https://store-api.wcpos.com',
             KEYGEN_HOST: 'license.wcpos.com',
+            // Authenticated Keygen ops (machine list + deactivation) require a
+            // token, which prod now has. The mock backend ignores auth, but the
+            // value must be present so authHeaders() doesn't fail loud
+            // (KeygenAuthNotConfiguredError) — mirroring production.
+            KEYGEN_API_TOKEN: 'e2e-keygen-token',
             DOWNLOAD_TOKEN_SECRET: 'e2e-download-token-secret',
             // Plan registry (src/lib/plans.ts) — match the policy ids the mock
             // backend issues (e2e/mocks/fixtures.json `policies`) so the plan

@@ -47,6 +47,7 @@ function license(metadata: Record<string, unknown>): LicenseDetail {
     status: 'active',
     expiry: null,
     maxMachines: 1,
+    activationCount: 0,
     machines: [],
     metadata,
     policyId: 'policy_1',
