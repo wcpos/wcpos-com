@@ -77,6 +77,8 @@ function MethodRow({
 interface PaymentStepProps {
   cartId: string
   clientSecret: string | null
+  /** Stripe CustomerSession secret → enables the optional save-card checkbox. */
+  customerSessionClientSecret: string | null
   paypalOrderId: string | null
   btcpayCheckoutLink: string | null
   method: PaymentMethod
@@ -116,6 +118,7 @@ function PreparingMethod() {
 export function PaymentStep({
   cartId,
   clientSecret,
+  customerSessionClientSecret,
   paypalOrderId,
   btcpayCheckoutLink,
   method,
@@ -240,6 +243,7 @@ export function PaymentStep({
     return (
       <StripeProvider
         clientSecret={clientSecret}
+        customerSessionClientSecret={customerSessionClientSecret}
         publishableKey={stripePublishableKey}
       >
         <ExpressCheckoutRow

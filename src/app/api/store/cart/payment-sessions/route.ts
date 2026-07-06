@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import {
+  createCustomerSession,
   createPaymentCollection,
   createPaymentSession,
   getCart,
@@ -144,11 +145,22 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    // For a yearly card checkout, mint a Stripe CustomerSession so the Payment
+    // Element can show its optional save-card checkbox. The payment session was
+    // created just above, so the customer's Stripe account holder now exists.
+    // Null for anything else (or on any error) → the storefront shows no
+    // checkbox; it never blocks checkout.
+    let customerSessionClientSecret: string | null = null
+    if (providerId.startsWith('pp_stripe') && selection.planId === 'yearly') {
+      customerSessionClientSecret = await createCustomerSession(cartId, authToken)
+    }
+
     return NextResponse.json({
       cart,
       paymentCollectionId: collectionId,
       clientSecret: session.clientSecret,
       paymentSessionId: session.paymentSessionId,
+      customerSessionClientSecret,
     })
   } catch (error) {
     storeLogger.error`Error with payment sessions: ${error}`

@@ -5,6 +5,7 @@ const mockGetCustomer = vi.fn()
 const mockGetAuthToken = vi.fn()
 const mockCreatePaymentCollection = vi.fn()
 const mockCreatePaymentSession = vi.fn()
+const mockCreateCustomerSession = vi.fn()
 const mockGetCart = vi.fn()
 const mockGetProOfferCatalog = vi.fn()
 
@@ -23,6 +24,8 @@ vi.mock('@/services/core/external/medusa-client', () => ({
     mockCreatePaymentCollection(...args),
   createPaymentSession: (...args: unknown[]) =>
     mockCreatePaymentSession(...args),
+  createCustomerSession: (...args: unknown[]) =>
+    mockCreateCustomerSession(...args),
   getCart: (...args: unknown[]) => mockGetCart(...args),
 }))
 
@@ -68,6 +71,7 @@ describe('POST /api/store/cart/payment-sessions', () => {
     mockGetCustomer.mockResolvedValue({ id: 'cust_1' })
     mockGetAuthToken.mockResolvedValue(AUTH_TOKEN)
     mockGetCart.mockResolvedValue(validCart)
+    mockCreateCustomerSession.mockResolvedValue('cuss_secret_test')
     mockGetProOfferCatalog.mockResolvedValue({
       offers: [
         { planId: 'yearly', handle: 'wcpos-pro-yearly', variantId: 'variant_yearly_current' },
@@ -138,7 +142,56 @@ describe('POST /api/store/cart/payment-sessions', () => {
       paymentCollectionId: 'paycol_1',
       clientSecret: 'pi_secret',
       paymentSessionId: 'payses_1',
+      customerSessionClientSecret: 'cuss_secret_test',
     })
+  })
+
+  it('mints a CustomerSession for a yearly Stripe checkout', async () => {
+    mockCreatePaymentCollection.mockResolvedValueOnce({ id: 'paycol_1' })
+    mockCreatePaymentSession.mockResolvedValueOnce({
+      clientSecret: 'pi_secret',
+      paymentSessionId: 'payses_1',
+    })
+
+    const response = await POST(makeRequest({ cartId: 'cart_1' }))
+    const json = await response.json()
+
+    expect(mockCreateCustomerSession).toHaveBeenCalledWith('cart_1', AUTH_TOKEN)
+    expect(json.customerSessionClientSecret).toBe('cuss_secret_test')
+  })
+
+  it('does not mint a CustomerSession for a lifetime cart', async () => {
+    mockGetCart.mockResolvedValue({
+      id: 'cart_1',
+      items: [{ variant_id: 'variant_lifetime_current', quantity: 1 }],
+    })
+    mockCreatePaymentCollection.mockResolvedValueOnce({ id: 'paycol_1' })
+    mockCreatePaymentSession.mockResolvedValueOnce({
+      clientSecret: 'pi_secret',
+      paymentSessionId: 'payses_1',
+    })
+
+    const response = await POST(makeRequest({ cartId: 'cart_1' }))
+    const json = await response.json()
+
+    expect(mockCreateCustomerSession).not.toHaveBeenCalled()
+    expect(json.customerSessionClientSecret).toBeNull()
+  })
+
+  it('does not mint a CustomerSession for a non-Stripe provider', async () => {
+    mockCreatePaymentCollection.mockResolvedValueOnce({ id: 'paycol_1' })
+    mockCreatePaymentSession.mockResolvedValueOnce({
+      clientSecret: null,
+      paymentSessionId: 'payses_1',
+    })
+
+    const response = await POST(
+      makeRequest({ cartId: 'cart_1', provider_id: 'pp_paypal_paypal' })
+    )
+    const json = await response.json()
+
+    expect(mockCreateCustomerSession).not.toHaveBeenCalled()
+    expect(json.customerSessionClientSecret).toBeNull()
   })
 
   it('forwards the session JWT so Medusa can attach a Stripe Customer', async () => {

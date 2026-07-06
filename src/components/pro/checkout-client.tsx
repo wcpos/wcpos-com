@@ -66,6 +66,8 @@ interface PaymentSessionResult {
   cart: Cart
   paymentCollectionId: string | null
   clientSecret?: string | null
+  /** Stripe CustomerSession secret → optional save-card checkbox (yearly+card). */
+  customerSessionClientSecret?: string | null
 }
 
 const PRO_CHECKOUT_EXPERIMENT = 'pro_checkout_v1'
@@ -195,6 +197,8 @@ export function CheckoutClient({
   const [taxNumber, setTaxNumber] = useState<string | null>(null)
   const [cart, setCart] = useState<Cart | null>(null)
   const [clientSecret, setClientSecret] = useState<string | null>(null)
+  const [customerSessionClientSecret, setCustomerSessionClientSecret] =
+    useState<string | null>(null)
   const [isProcessing, setIsProcessing] = useState(false)
   // True while a provider confirmation may be charging the customer —
   // billing Edit and method switching are locked for its duration.
@@ -340,6 +344,9 @@ export function CheckoutClient({
         if (paymentResult.clientSecret) {
           setClientSecret(paymentResult.clientSecret)
         }
+        setCustomerSessionClientSecret(
+          paymentResult.customerSessionClientSecret ?? null
+        )
 
         cartReadyRef.current?.resolve({
           cart: paymentResult.cart,
@@ -388,6 +395,11 @@ export function CheckoutClient({
 
         if (method === 'stripe' && paymentResult.clientSecret) {
           setClientSecret(paymentResult.clientSecret)
+        }
+        if (method === 'stripe') {
+          setCustomerSessionClientSecret(
+            paymentResult.customerSessionClientSecret ?? null
+          )
         }
       } catch (err) {
         setFailure(
@@ -517,6 +529,11 @@ export function CheckoutClient({
       setClientSecret(
         paymentMethod === 'stripe' && paymentResult.clientSecret
           ? paymentResult.clientSecret
+          : null
+      )
+      setCustomerSessionClientSecret(
+        paymentMethod === 'stripe'
+          ? paymentResult.customerSessionClientSecret ?? null
           : null
       )
       setBillingAddress(address)
@@ -694,6 +711,7 @@ export function CheckoutClient({
               <PaymentStep
                 cartId={cart.id}
                 clientSecret={clientSecret}
+                customerSessionClientSecret={customerSessionClientSecret}
                 paypalOrderId={paypalOrderId}
                 btcpayCheckoutLink={btcpayCheckoutLink}
                 method={paymentMethod}

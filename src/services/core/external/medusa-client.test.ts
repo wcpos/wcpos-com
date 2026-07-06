@@ -52,6 +52,7 @@ import {
   updateCart,
   createPaymentCollection,
   createPaymentSession,
+  createCustomerSession,
   completeCart,
 } from './medusa-client'
 
@@ -676,6 +677,44 @@ describe('medusaClient', () => {
         })
 
         const result = await createPaymentSession('pay_col_123', 'pp_stripe_stripe')
+        expect(result).toBeNull()
+      })
+    })
+
+    describe('createCustomerSession', () => {
+      it('returns the customer session client secret with Bearer auth', async () => {
+        mockFetch.mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({ customer_session_client_secret: 'cuss_abc' }),
+        })
+
+        const result = await createCustomerSession('cart_123', 'jwt_tok')
+
+        expect(result).toBe('cuss_abc')
+        const [url, init] = mockFetch.mock.calls[0]
+        expect(url).toBe(
+          'https://test-store-api.wcpos.com/store/carts/cart_123/customer-session'
+        )
+        expect(init.method).toBe('POST')
+        expect((init.headers as Record<string, string>).Authorization).toBe(
+          'Bearer jwt_tok'
+        )
+      })
+
+      it('returns null when the backend returns no secret', async () => {
+        mockFetch.mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({ customer_session_client_secret: null }),
+        })
+
+        const result = await createCustomerSession('cart_123', 'jwt_tok')
+        expect(result).toBeNull()
+      })
+
+      it('returns null on error so checkout is never blocked', async () => {
+        mockFetch.mockResolvedValueOnce({ ok: false, status: 500 })
+
+        const result = await createCustomerSession('cart_123', 'jwt_tok')
         expect(result).toBeNull()
       })
     })
