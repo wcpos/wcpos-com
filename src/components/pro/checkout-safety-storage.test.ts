@@ -21,6 +21,8 @@ const UNCERTAIN_FAILURE: CheckoutFailure = {
   reference: 'WCPOS-UNC-0001',
 }
 
+const PROTECTIVE_FAILURE_TTL_MS = 15 * 60 * 1000
+
 beforeEach(() => {
   sessionStorage.clear()
 })
@@ -113,6 +115,33 @@ describe('recordCheckoutFailure / restoreCheckoutSafetyState', () => {
 
     expect(sessionStorage.length).toBe(1)
     expect(restoreCheckoutSafetyState()?.failure.kind).toBe('order_pending')
+  })
+
+  it('expires stale protective failures so a resolved buyer can try again', () => {
+    vi.spyOn(Date, 'now').mockReturnValue(1_000)
+    recordCheckoutFailure('cart_stale', ORDER_PENDING_FAILURE)
+    vi.spyOn(Date, 'now').mockReturnValue(
+      1_000 + PROTECTIVE_FAILURE_TTL_MS + 1
+    )
+
+    expect(restoreCheckoutSafetyState()).toBeNull()
+    expect(sessionStorage.getItem('wcpos:checkout-pending:cart_stale')).toBeNull()
+  })
+
+  it('restores a fresh protective failure instead of an older expired order_pending entry', () => {
+    vi.spyOn(Date, 'now').mockReturnValue(1_000)
+    recordCheckoutFailure('cart_stale_pending', ORDER_PENDING_FAILURE)
+    vi.spyOn(Date, 'now').mockReturnValue(
+      1_000 + PROTECTIVE_FAILURE_TTL_MS + 1
+    )
+    recordCheckoutFailure('cart_fresh_uncertain', UNCERTAIN_FAILURE)
+
+    const restored = restoreCheckoutSafetyState()
+    expect(restored?.cartId).toBe('cart_fresh_uncertain')
+    expect(restored?.failure.kind).toBe('payment_uncertain')
+    expect(
+      sessionStorage.getItem('wcpos:checkout-pending:cart_stale_pending')
+    ).toBeNull()
   })
 
   it('ignores malformed JSON entries', () => {

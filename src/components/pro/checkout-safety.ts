@@ -293,6 +293,7 @@ export async function completeProviderConfirmedCheckout({
 // ---------------------------------------------------------------------------
 
 const STORAGE_KEY_PREFIX = 'wcpos:checkout-pending:'
+const PROTECTIVE_FAILURE_TTL_MS = 15 * 60 * 1000
 
 interface PersistedCheckoutSafetyState {
   kind: ProtectiveCheckoutFailureKind
@@ -383,12 +384,22 @@ export function restoreCheckoutSafetyState(): RestoredCheckoutSafetyState | null
   if (!storage) return null
 
   const entries: PersistedCheckoutSafetyState[] = []
+  const expiredKeys: string[] = []
+  const now = Date.now()
   try {
     for (let i = 0; i < storage.length; i += 1) {
       const key = storage.key(i)
       if (!key || !key.startsWith(STORAGE_KEY_PREFIX)) continue
       const entry = parsePersistedEntry(storage.getItem(key))
-      if (entry) entries.push(entry)
+      if (!entry) continue
+      if (now - entry.storedAt > PROTECTIVE_FAILURE_TTL_MS) {
+        expiredKeys.push(key)
+        continue
+      }
+      entries.push(entry)
+    }
+    for (const key of expiredKeys) {
+      storage.removeItem(key)
     }
   } catch {
     return null
