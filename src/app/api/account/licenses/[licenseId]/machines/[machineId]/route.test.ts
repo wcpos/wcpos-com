@@ -26,6 +26,12 @@ vi.mock('@/lib/licenses', () => ({
 }))
 
 vi.mock('@/services/core/external/license-client', () => ({
+  KeygenAuthNotConfiguredError: class KeygenAuthNotConfiguredError extends Error {
+    constructor() {
+      super('no token')
+      this.name = 'KeygenAuthNotConfiguredError'
+    }
+  },
   licenseClient: {
     getLicenseMachines: (...args: unknown[]) => mockGetLicenseMachines(...args),
     deactivateMachine: (...args: unknown[]) => mockDeactivateMachine(...args),
@@ -39,6 +45,7 @@ vi.mock('@/lib/logger', () => ({
 }))
 
 import { DELETE } from './route'
+import { KeygenAuthNotConfiguredError } from '@/services/core/external/license-client'
 
 function makeRequest(licenseId: string, machineId: string) {
   return new NextRequest(
@@ -130,6 +137,21 @@ describe('DELETE /api/account/licenses/[licenseId]/machines/[machineId]', () => 
     expect(response.status).toBe(500)
     const body = await response.json()
     expect(body.error).toBe('Failed to deactivate machine')
+  })
+
+  it('returns 503 (fail loud) when Keygen machine management is not configured', async () => {
+    mockGetCustomer.mockResolvedValueOnce({ id: 'cust_1' })
+    mockGetAllOrders.mockResolvedValueOnce([{ id: 'order_1' }])
+    mockExtractLicenseIdsFromOrders.mockReturnValueOnce(['lic_mine'])
+    // No KEYGEN_API_TOKEN → the authed machine list throws.
+    mockGetLicenseMachines.mockRejectedValueOnce(new KeygenAuthNotConfiguredError())
+
+    const response = await callDelete('lic_mine', 'machine_a')
+
+    expect(response.status).toBe(503)
+    const body = await response.json()
+    expect(body.error).toBe('Machine management is not configured')
+    expect(mockDeactivateMachine).not.toHaveBeenCalled()
   })
 
   it('returns 500 when an unexpected error is thrown', async () => {

@@ -3,7 +3,10 @@ import type { NextRequest } from 'next/server'
 import { getAllOrders } from '@/lib/customer-orders'
 import { getCustomer } from '@/lib/medusa-auth'
 import { extractLicenseIdsFromOrders } from '@/lib/licenses'
-import { licenseClient } from '@/services/core/external/license-client'
+import {
+  licenseClient,
+  KeygenAuthNotConfiguredError,
+} from '@/services/core/external/license-client'
 import { licenseLogger } from '@/lib/logger'
 import { assertViewOnly, ViewOnlyError } from '@/lib/impersonation'
 
@@ -79,6 +82,16 @@ export async function DELETE(
       { status: 200 }
     )
   } catch (error) {
+    // Fail LOUD when machine management can't authenticate to Keygen (no
+    // KEYGEN_API_TOKEN) rather than a vague 500 — the operator needs to know
+    // the credential is missing, not chase a phantom bug.
+    if (error instanceof KeygenAuthNotConfiguredError) {
+      licenseLogger.error`Machine deactivation unavailable: ${error.message}`
+      return NextResponse.json(
+        { error: 'Machine management is not configured' },
+        { status: 503 }
+      )
+    }
     licenseLogger.error`Failed to deactivate machine: ${error}`
     return NextResponse.json(
       { error: 'Internal server error' },

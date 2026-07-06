@@ -27,6 +27,7 @@ function buildLicensePlaceholder(reference: LicenseReference): LicenseDetail | n
     status: 'unknown',
     expiry: null,
     maxMachines: 0,
+    activationCount: 0,
     machines: [],
     metadata: {},
     policyId: 'unknown',
@@ -34,15 +35,62 @@ function buildLicensePlaceholder(reference: LicenseReference): LicenseDetail | n
   }
 }
 
+/**
+ * The activation COUNT on `base` is already authoritative (from the public
+ * validate-key response). Layer on the machine detail LIST only when a Keygen
+ * token is configured — it powers the machine-management UI. When auth is
+ * absent or the call fails, the list stays empty but the count is untouched:
+ * an honest "N activations (details unavailable)", never a wrong "0".
+ */
+async function enrichWithMachineList(
+  base: LicenseDetail,
+  id: string | undefined
+): Promise<LicenseDetail> {
+  if (!id || !licenseClient.canManageMachines()) {
+    return base
+  }
+  try {
+    const machines = await licenseClient.getLicenseMachines(id)
+    return { ...base, machines, activationCount: machines.length }
+  } catch (error) {
+    licenseLogger.warn`Machine list unavailable for license ${id}; showing count only: ${error}`
+    return base
+  }
+}
+
 export async function resolveLicenseReference(
   reference: LicenseReference
 ): Promise<LicenseDetail | null> {
-  // A 404 on the stored id means Keygen never had it (legacy migrated
-  // orders, or an id superseded by re-issue) — data, not an incident. The
-  // key fallback below still runs (a stale id can accompany a live key),
-  // but a definitively-missing id must not produce an "unknown" placeholder.
-  let idNotFound = false
+  // Primary path: the PUBLIC validate-key endpoint. It returns status, expiry,
+  // maxMachines, and the authoritative activation COUNT with NO admin token, so
+  // activation counts are correct even when KEYGEN_API_TOKEN is unset. The
+  // machine detail list is layered on afterwards only when auth is available.
+  // `keyDefinitivelyMissing` = validate-key ran and reported no such license
+  // (safe to drop). A THROWN validate-key error is transient and must NOT drop
+  // a possibly-real license — it stays false so the placeholder survives.
+  let keyDefinitivelyMissing = false
+  if (reference.key) {
+    try {
+      const validation = await licenseClient.validateLicenseKey(reference.key)
+      if (validation.license) {
+        const base: LicenseDetail = {
+          ...validation.license,
+          status: normalizeLicenseStatus(validation.license.status),
+          machines: [],
+        }
+        return await enrichWithMachineList(base, reference.id)
+      }
+      keyDefinitivelyMissing = true
+    } catch (error) {
+      licenseLogger.error`Failed to validate license key: ${error}`
+    }
+  }
 
+  // Fallback: authed lookup by id, for legacy id-only references or a key that
+  // didn't resolve. Requires KEYGEN_API_TOKEN; without it getLicenseWithMachines
+  // throws KeygenAuthNotConfiguredError, handled here as "unresolved". A 404
+  // means Keygen never had the id (legacy migration) — data, not an incident.
+  let idNotFound = false
   if (reference.id) {
     try {
       const license = await licenseClient.getLicenseWithMachines(reference.id)
@@ -50,32 +98,17 @@ export async function resolveLicenseReference(
     } catch (error) {
       if (error instanceof KeygenRequestError && error.status === 404) {
         idNotFound = true
-        licenseLogger.warn`License ${reference.id} not found in Keygen; trying key fallback`
+        licenseLogger.warn`License ${reference.id} not found in Keygen`
       } else {
         licenseLogger.error`Failed to fetch license ${reference.id}: ${error}`
       }
     }
   }
 
-  let keyLookupMissing = false
-
-  if (reference.key) {
-    try {
-      const validation = await licenseClient.validateLicenseKey(reference.key)
-      if (validation.license) {
-        return {
-          ...validation.license,
-          status: normalizeLicenseStatus(validation.license.status),
-          machines: [],
-        }
-      }
-      keyLookupMissing = true
-    } catch (error) {
-      licenseLogger.error`Failed to validate license key: ${error}`
-    }
-  }
-
-  return idNotFound && (!reference.key || keyLookupMissing)
+  // Drop to null ONLY when the id is definitively gone (404) AND the key is
+  // definitively absent (no key, or validate-key said not-found). A transient
+  // key/id error keeps the "unknown" placeholder rather than hiding a license.
+  return idNotFound && (!reference.key || keyDefinitivelyMissing)
     ? null
     : buildLicensePlaceholder(reference)
 }

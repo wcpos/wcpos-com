@@ -4,6 +4,8 @@ const mockGetCustomer = vi.fn()
 const mockGetAllOrders = vi.fn()
 const mockGetLicenseWithMachines = vi.fn()
 const mockValidateLicenseKey = vi.fn()
+const mockGetLicenseMachines = vi.fn()
+const mockCanManageMachines = vi.fn(() => false)
 
 vi.mock('@/lib/medusa-auth', () => ({
   getCustomer: (...args: unknown[]) => mockGetCustomer(...args),
@@ -30,6 +32,10 @@ vi.mock('@/services/core/external/license-client', () => {
         mockGetLicenseWithMachines(...args),
       validateLicenseKey: (...args: unknown[]) =>
         mockValidateLicenseKey(...args),
+      getLicenseMachines: (...args: unknown[]) =>
+        mockGetLicenseMachines(...args),
+      canManageMachines: (...args: unknown[]) =>
+        mockCanManageMachines(...args),
     },
   }
 })
@@ -42,6 +48,8 @@ import { getResolvedCustomerLicenses } from './customer-licenses'
 describe('getResolvedCustomerLicenses', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+    // Default: no Keygen token (activation count must still be correct).
+    mockCanManageMachines.mockReturnValue(false)
   })
 
   it('returns unauthenticated when customer is missing', async () => {
@@ -335,6 +343,156 @@ describe('getResolvedCustomerLicenses', () => {
     expect(result.licenses).toHaveLength(1)
     expect(result.licenses[0].key).toBe('WCPOS-DOWN-4040')
     expect(result.licenses[0].status).toBe('unknown')
+  })
+
+  it('reports the activation count from validate-key even with NO Keygen token (regression: the "0 activations" bug)', async () => {
+    mockGetCustomer.mockResolvedValueOnce({ id: 'cust_1' })
+    mockGetAllOrders.mockResolvedValueOnce([
+      {
+        id: 'order_active',
+        status: 'completed',
+        display_id: 20,
+        email: 'user@example.com',
+        currency_code: 'usd',
+        total: 129,
+        subtotal: 129,
+        tax_total: 0,
+        created_at: '2026-01-01T00:00:00Z',
+        updated_at: '2026-01-01T00:00:00Z',
+        items: [],
+        metadata: {
+          licenses: [{ license_id: 'lic_live', license_key: 'WCPOS-LIVE-2222' }],
+        },
+      },
+    ])
+    mockCanManageMachines.mockReturnValue(false) // KEYGEN_API_TOKEN unset
+    mockValidateLicenseKey.mockResolvedValueOnce({
+      valid: true,
+      code: 'VALID',
+      detail: 'ok',
+      license: {
+        id: 'lic_live',
+        key: 'WCPOS-LIVE-2222',
+        status: 'active',
+        expiry: null,
+        maxMachines: 2,
+        activationCount: 1, // authoritative, from validate-key relationships meta
+        metadata: {},
+        policyId: 'policy_1',
+        createdAt: '2026-01-01T00:00:00Z',
+      },
+    })
+
+    const result = await getResolvedCustomerLicenses()
+
+    expect(result.licenses).toHaveLength(1)
+    // The count is correct WITHOUT a token; the detail list is simply absent.
+    expect(result.licenses[0].activationCount).toBe(1)
+    expect(result.licenses[0].machines).toEqual([])
+    // No wasted authed calls when we know we can't authenticate.
+    expect(mockGetLicenseMachines).not.toHaveBeenCalled()
+    expect(mockGetLicenseWithMachines).not.toHaveBeenCalled()
+  })
+
+  it('enriches with the machine detail list when a Keygen token is configured', async () => {
+    mockGetCustomer.mockResolvedValueOnce({ id: 'cust_1' })
+    mockGetAllOrders.mockResolvedValueOnce([
+      {
+        id: 'order_active',
+        status: 'completed',
+        display_id: 21,
+        email: 'user@example.com',
+        currency_code: 'usd',
+        total: 129,
+        subtotal: 129,
+        tax_total: 0,
+        created_at: '2026-01-01T00:00:00Z',
+        updated_at: '2026-01-01T00:00:00Z',
+        items: [],
+        metadata: {
+          licenses: [{ license_id: 'lic_live', license_key: 'WCPOS-LIVE-3333' }],
+        },
+      },
+    ])
+    mockCanManageMachines.mockReturnValue(true) // KEYGEN_API_TOKEN present
+    mockValidateLicenseKey.mockResolvedValueOnce({
+      valid: true,
+      code: 'VALID',
+      detail: 'ok',
+      license: {
+        id: 'lic_live',
+        key: 'WCPOS-LIVE-3333',
+        status: 'active',
+        expiry: null,
+        maxMachines: 2,
+        activationCount: 9, // stale count from validate-key; overridden by the real list
+        metadata: {},
+        policyId: 'policy_1',
+        createdAt: '2026-01-01T00:00:00Z',
+      },
+    })
+    mockGetLicenseMachines.mockResolvedValueOnce([
+      {
+        id: 'm-1',
+        fingerprint: 'fp-1',
+        name: 'store.example',
+        metadata: {},
+        createdAt: '2026-01-02T00:00:00Z',
+      },
+    ])
+
+    const result = await getResolvedCustomerLicenses()
+
+    expect(mockGetLicenseMachines).toHaveBeenCalledWith('lic_live')
+    expect(result.licenses[0].machines).toHaveLength(1)
+    // count reconciles to the authoritative list length
+    expect(result.licenses[0].activationCount).toBe(1)
+  })
+
+  it('keeps the correct count when the machine-list enrichment fails', async () => {
+    mockGetCustomer.mockResolvedValueOnce({ id: 'cust_1' })
+    mockGetAllOrders.mockResolvedValueOnce([
+      {
+        id: 'order_active',
+        status: 'completed',
+        display_id: 22,
+        email: 'user@example.com',
+        currency_code: 'usd',
+        total: 129,
+        subtotal: 129,
+        tax_total: 0,
+        created_at: '2026-01-01T00:00:00Z',
+        updated_at: '2026-01-01T00:00:00Z',
+        items: [],
+        metadata: {
+          licenses: [{ license_id: 'lic_live', license_key: 'WCPOS-LIVE-4444' }],
+        },
+      },
+    ])
+    mockCanManageMachines.mockReturnValue(true)
+    mockValidateLicenseKey.mockResolvedValueOnce({
+      valid: true,
+      code: 'VALID',
+      detail: 'ok',
+      license: {
+        id: 'lic_live',
+        key: 'WCPOS-LIVE-4444',
+        status: 'active',
+        expiry: null,
+        maxMachines: 2,
+        activationCount: 2,
+        metadata: {},
+        policyId: 'policy_1',
+        createdAt: '2026-01-01T00:00:00Z',
+      },
+    })
+    mockGetLicenseMachines.mockRejectedValueOnce(new Error('keygen 500'))
+
+    const result = await getResolvedCustomerLicenses()
+
+    // Enrichment failed → list empty, but the validate-key count is preserved.
+    expect(result.licenses[0].activationCount).toBe(2)
+    expect(result.licenses[0].machines).toEqual([])
   })
 
   it('ignores license references on canceled orders', async () => {

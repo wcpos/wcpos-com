@@ -65,6 +65,19 @@ export interface LicenseDetail {
   status: CanonicalLicenseStatus
   expiry: string | null
   maxMachines: number
+  /**
+   * Authoritative count of active machines (activations), sourced from Keygen's
+   * public `validate-key` response (`relationships.machines.meta.count`). Always
+   * available WITHOUT an admin token, unlike `machines` (the detailed list).
+   * Render "X of Y activations" from this, never from `machines.length` — the
+   * list may be empty when unauthenticated even though activations exist.
+   */
+  activationCount: number
+  /**
+   * The detailed machine list (fingerprints, names) for the management UI.
+   * Populated only when a Keygen API token is configured; may be empty even
+   * when `activationCount > 0`.
+   */
   machines: LicenseMachine[]
   metadata: Record<string, unknown>
   policyId: string
