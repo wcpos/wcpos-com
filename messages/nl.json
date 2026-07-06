@@ -129,6 +129,187 @@
         "question": "Welke betaalmethoden accepteren jullie?",
         "answer": "We accepteren creditcards (Visa, Mastercard, Amex), PayPal en Bitcoin."
       }
+    },
+    "checkout": {
+      "page": {
+        "title": "Afrekenen",
+        "backToPricing": "Terug naar prijzen",
+        "metadata": {
+          "title": "Afrekenen",
+          "description": "Rond je aankoop van WCPOS Pro af"
+        }
+      },
+      "offers": {
+        "yearly": "WCPOS Pro — Jaarlijks",
+        "lifetime": "WCPOS Pro — Levenslang",
+        "default": "WCPOS Pro"
+      },
+      "backToPricing": "Terug naar prijzen",
+      "edit": "Bewerken",
+      "preparing": "Afrekenen voorbereiden...",
+      "steps": {
+        "account": "Account",
+        "billing": "Factuuradres",
+        "payment": "Betaling"
+      },
+      "complete": {
+        "title": "Bedankt voor je aankoop!",
+        "description": "Je licentiesleutel en downloadlink zijn naar je e-mail gestuurd.",
+        "orderId": "Bestel-ID: {orderId}",
+        "licenses": "Naar licenties",
+        "home": "Terug naar home"
+      },
+      "summary": {
+        "quantity": "Aantal: {quantity}",
+        "total": "Totaal",
+        "instantLicense": "Licentie direct geleverd",
+        "oneTimePayment": "Eenmalige betaling — nooit automatische verlenging",
+        "securePayment": "Veilige betalingsverwerking"
+      },
+      "account": {
+        "emailLabel": "E-mail",
+        "emailHint": "We maken je account aan met dit e-mailadres — je licentie en bon komen hier na aankoop aan.",
+        "passwordLabel": "Wachtwoord",
+        "existingAccountNotice": "Welkom terug — je hebt al een account. Voer je wachtwoord in om in te loggen en door te gaan.",
+        "submitting": "Een moment…",
+        "createContinue": "Account maken en doorgaan",
+        "signInContinue": "Inloggen en doorgaan",
+        "oauthPrompt": "Liever Google, GitHub of Discord?",
+        "oauthLink": "Log hier in",
+        "oauthSuffix": "— je komt direct terug bij afrekenen.",
+        "errors": {
+          "passwordFailed": "Dat wachtwoord werkte niet. Als je je hebt aangemeld met Google, GitHub of Discord, gebruik dan de inloglink hieronder — of reset je wachtwoord via de inlogpagina.",
+          "createFailed": "Je account kon niet worden gemaakt. Probeer het opnieuw.",
+          "signInFailed": "Inloggen mislukt. Controleer je wachtwoord.",
+          "generic": "Er is iets misgegaan. Probeer het opnieuw."
+        }
+      },
+      "billing": {
+        "fields": {
+          "firstName": "Voornaam",
+          "lastName": "Achternaam",
+          "addressLine1": "Adresregel 1",
+          "addressLine2": "Adresregel 2",
+          "city": "Plaats",
+          "province": "Staat / Provincie / Regio",
+          "postalCode": "Postcode",
+          "country": "Land"
+        },
+        "optional": "(optioneel)",
+        "saving": "Opslaan…",
+        "continue": "Doorgaan naar betaling",
+        "errors": {
+          "saveFailed": "Je factuuradres kon niet worden opgeslagen. Probeer het opnieuw."
+        }
+      },
+      "payment": {
+        "preparing": "Betaling voorbereiden...",
+        "processing": "Verwerken...",
+        "payAmount": "Betaal {amount}",
+        "walletSeparator": "of kies hoe je wilt betalen",
+        "noneConfigured": "Er zijn geen betaalmethoden geconfigureerd. Neem contact op met support.",
+        "ariaLabel": "Betaalmethode",
+        "methods": {
+          "card": {
+            "title": "Kaart",
+            "hint": "Visa · Mastercard · Amex"
+          },
+          "paypal": {
+            "hint": "Betaal met je PayPal-saldo of gekoppelde kaart"
+          },
+          "bitcoin": {
+            "title": "Bitcoin",
+            "hint": "On-chain of Lightning",
+            "description": "Er wordt een BTCPay-factuur met QR-code geopend — betaal on-chain of via Lightning en je keert hier terug."
+          }
+        },
+        "paypalButton": {
+          "loading": "Veilige PayPal-checkout laden...",
+          "loadFailed": "PayPal kon niet worden geladen. Probeer een andere betaalmethode."
+        },
+        "btcpayButton": {
+          "preparing": "Bitcoin-betaling voorbereiden...",
+          "pay": "Betaal met Bitcoin"
+        }
+      },
+      "errors": {
+        "noProductSelected": "Geen product geselecteerd",
+        "initializeFailed": "Afrekenen kon niet worden gestart. Probeer het opnieuw.",
+        "checkoutBusy": "Checkout is busy. Please try again.",
+        "paymentRefreshFailed": "Billing address was saved, but we couldn't prepare payment. Please try again.",
+        "methodSwitchFailed": "We couldn't prepare that payment method. Please try again or choose a different one.",
+        "genericPaymentFailed": "We were unable to process your payment. Please try again or use a different payment method.",
+        "genericCardFailed": "Your card could not be charged. Please check your card details, or try a different card or payment method.",
+        "unexpectedPaymentStatus": "We couldn't confirm the status of your payment. If you think you may have been charged, please contact support before trying again.",
+        "orderPending": "Your payment was received, but we couldn't finish creating your order. Please do not pay again — contact support and we will finish your order or refund the payment.",
+        "paypalFailed": "PayPal couldn't complete your payment. You have not been charged — please try again or use a different payment method.",
+        "paypalInitFailed": "We couldn't start the PayPal checkout. Please try again or use a different payment method.",
+        "paypalCancelled": "PayPal checkout was cancelled and you have not been charged. You can try again whenever you're ready.",
+        "btcpayInitFailed": "We couldn't start the Bitcoin payment. You have not been charged — please try again or use a different payment method.",
+        "stripeDeclines": {
+          "insufficientFunds": "Your card was declined due to insufficient funds. Please use a different card or payment method."
+        },
+        "stripeCodes": {
+          "cardDeclined": "Your card was declined. Please try a different card or payment method.",
+          "expiredCard": "Your card has expired. Please use a different card.",
+          "incorrectCvc": "Your card's security code is incorrect. Please check it and try again.",
+          "invalidCvc": "Your card's security code is invalid. Please check it and try again.",
+          "incorrectNumber": "Your card number appears to be invalid. Please check it and try again.",
+          "invalidNumber": "Your card number appears to be invalid. Please check it and try again.",
+          "invalidExpiryMonth": "Your card's expiry date is invalid. Please check it and try again.",
+          "invalidExpiryYear": "Your card's expiry date is invalid. Please check it and try again.",
+          "processingError": "Something went wrong while processing your card. You have not been charged — please try again.",
+          "authenticationFailure": "We couldn't verify your card with your bank. Please try again or use a different payment method.",
+          "authenticationRequired": "We couldn't verify your card with your bank. Please try again or use a different payment method."
+        }
+      },
+      "recovery": {
+        "contactSupport": "Neem contact op met support",
+        "contactSupportLower": "Neem contact op met support",
+        "switchMethod": "You can also choose a different payment method below.",
+        "cancelled": {
+          "title": "Payment cancelled"
+        },
+        "unknown": {
+          "title": "Payment status unknown",
+          "prefix": "Please",
+          "suffix": "and quote reference <reference></reference> — we will confirm whether your payment went through before you pay again."
+        },
+        "unsuccessful": {
+          "title": "Betaling mislukt",
+          "saved": "Your order details have been saved, so you can try again without starting over.",
+          "stuck": "Still stuck?",
+          "quote": "and quote reference <reference></reference>."
+        },
+        "orderPending": {
+          "resetConfirm": "Only reset checkout after support confirms it is safe to try again. If your payment is still pending, resetting could lead to a second payment.",
+          "title": "Payment received — order pending",
+          "description": "Your payment went through, but we hit a problem while creating your order.",
+          "doNotPayAgain": "Please do not pay again.",
+          "supportInstructions": "Contact support and quote reference <reference></reference> — we will finish setting up your order or refund your payment.",
+          "contactSupport": "Contact support",
+          "checkLicenses": "Check my licenses",
+          "resetHint": "If support has confirmed this old warning is resolved, you can clear it and start a fresh checkout.",
+          "resetButton": "Support told me to reset checkout"
+        }
+      },
+      "successPage": {
+        "metadata": {
+          "title": "Order Complete - WCPOS Pro",
+          "description": "Thank you for your purchase of WCPOS Pro"
+        },
+        "title": "Bedankt!",
+        "description": "Je aankoop van WCPOS Pro is voltooid.",
+        "nextTitle": "Wat gebeurt er nu?",
+        "next": {
+          "licenseEmail": "✓ Your license key and download link have been sent to your email",
+          "accountDownload": "✓ You can also download from your account's licenses page",
+          "install": "✓ Install and activate the plugin on your WordPress site",
+          "activate": "✓ Enter your license key to unlock Pro features"
+        },
+        "licenses": "Naar licenties",
+        "installationGuide": "Installatiegids"
+      }
     }
   },
   "account": {

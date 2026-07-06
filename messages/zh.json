@@ -129,6 +129,187 @@
         "question": "你们接受哪些付款方式？",
         "answer": "我们接受信用卡（Visa、Mastercard、Amex）、PayPal 和 Bitcoin。"
       }
+    },
+    "checkout": {
+      "page": {
+        "title": "结账",
+        "backToPricing": "返回价格",
+        "metadata": {
+          "title": "结账",
+          "description": "完成购买 WCPOS Pro"
+        }
+      },
+      "offers": {
+        "yearly": "WCPOS Pro — 年度",
+        "lifetime": "WCPOS Pro — 终身",
+        "default": "WCPOS Pro"
+      },
+      "backToPricing": "返回价格",
+      "edit": "编辑",
+      "preparing": "正在准备结账...",
+      "steps": {
+        "account": "账户",
+        "billing": "账单地址",
+        "payment": "付款"
+      },
+      "complete": {
+        "title": "感谢您的购买！",
+        "description": "许可证密钥和下载链接已发送到您的邮箱。",
+        "orderId": "订单 ID：{orderId}",
+        "licenses": "前往许可证",
+        "home": "返回首页"
+      },
+      "summary": {
+        "quantity": "数量：{quantity}",
+        "total": "总计",
+        "instantLicense": "许可证即时交付",
+        "oneTimePayment": "一次性付款 — 永不自动续订",
+        "securePayment": "安全支付处理"
+      },
+      "account": {
+        "emailLabel": "电子邮箱",
+        "emailHint": "我们将使用此邮箱创建您的账户 — 购买后许可证和收据会发送到这里。",
+        "passwordLabel": "密码",
+        "existingAccountNotice": "欢迎回来 — 您已有账户。请输入密码登录并继续。",
+        "submitting": "请稍候…",
+        "createContinue": "创建账户并继续",
+        "signInContinue": "登录并继续",
+        "oauthPrompt": "更愿意使用 Google、GitHub 或 Discord？",
+        "oauthLink": "在此登录",
+        "oauthSuffix": "— 您会直接回到结账。",
+        "errors": {
+          "passwordFailed": "该密码无效。如果您使用 Google、GitHub 或 Discord 注册，请使用下方登录链接 — 或在登录页重置密码。",
+          "createFailed": "无法创建账户。请重试。",
+          "signInFailed": "登录失败。请检查密码。",
+          "generic": "出现问题。请重试。"
+        }
+      },
+      "billing": {
+        "fields": {
+          "firstName": "名字",
+          "lastName": "姓氏",
+          "addressLine1": "地址第 1 行",
+          "addressLine2": "地址第 2 行",
+          "city": "城市",
+          "province": "州 / 省 / 地区",
+          "postalCode": "邮政编码",
+          "country": "国家/地区"
+        },
+        "optional": "（可选）",
+        "saving": "正在保存…",
+        "continue": "继续付款",
+        "errors": {
+          "saveFailed": "无法保存您的账单地址。请重试。"
+        }
+      },
+      "payment": {
+        "preparing": "正在准备付款...",
+        "processing": "处理中...",
+        "payAmount": "支付 {amount}",
+        "walletSeparator": "或选择付款方式",
+        "noneConfigured": "未配置付款方式。请联系支持团队。",
+        "ariaLabel": "付款方式",
+        "methods": {
+          "card": {
+            "title": "银行卡",
+            "hint": "Visa · Mastercard · Amex"
+          },
+          "paypal": {
+            "hint": "使用 PayPal 余额或关联银行卡付款"
+          },
+          "bitcoin": {
+            "title": "Bitcoin",
+            "hint": "链上或 Lightning",
+            "description": "BTCPay 发票将以二维码形式打开 — 通过链上或 Lightning 付款后，您会返回此处。"
+          }
+        },
+        "paypalButton": {
+          "loading": "正在加载 PayPal 安全结账...",
+          "loadFailed": "无法加载 PayPal。请尝试其他付款方式。"
+        },
+        "btcpayButton": {
+          "preparing": "正在准备 Bitcoin 付款...",
+          "pay": "使用 Bitcoin 付款"
+        }
+      },
+      "errors": {
+        "noProductSelected": "未选择产品",
+        "initializeFailed": "无法初始化结账。请重试。",
+        "checkoutBusy": "Checkout is busy. Please try again.",
+        "paymentRefreshFailed": "Billing address was saved, but we couldn't prepare payment. Please try again.",
+        "methodSwitchFailed": "We couldn't prepare that payment method. Please try again or choose a different one.",
+        "genericPaymentFailed": "We were unable to process your payment. Please try again or use a different payment method.",
+        "genericCardFailed": "Your card could not be charged. Please check your card details, or try a different card or payment method.",
+        "unexpectedPaymentStatus": "We couldn't confirm the status of your payment. If you think you may have been charged, please contact support before trying again.",
+        "orderPending": "Your payment was received, but we couldn't finish creating your order. Please do not pay again — contact support and we will finish your order or refund the payment.",
+        "paypalFailed": "PayPal couldn't complete your payment. You have not been charged — please try again or use a different payment method.",
+        "paypalInitFailed": "We couldn't start the PayPal checkout. Please try again or use a different payment method.",
+        "paypalCancelled": "PayPal checkout was cancelled and you have not been charged. You can try again whenever you're ready.",
+        "btcpayInitFailed": "We couldn't start the Bitcoin payment. You have not been charged — please try again or use a different payment method.",
+        "stripeDeclines": {
+          "insufficientFunds": "Your card was declined due to insufficient funds. Please use a different card or payment method."
+        },
+        "stripeCodes": {
+          "cardDeclined": "Your card was declined. Please try a different card or payment method.",
+          "expiredCard": "Your card has expired. Please use a different card.",
+          "incorrectCvc": "Your card's security code is incorrect. Please check it and try again.",
+          "invalidCvc": "Your card's security code is invalid. Please check it and try again.",
+          "incorrectNumber": "Your card number appears to be invalid. Please check it and try again.",
+          "invalidNumber": "Your card number appears to be invalid. Please check it and try again.",
+          "invalidExpiryMonth": "Your card's expiry date is invalid. Please check it and try again.",
+          "invalidExpiryYear": "Your card's expiry date is invalid. Please check it and try again.",
+          "processingError": "Something went wrong while processing your card. You have not been charged — please try again.",
+          "authenticationFailure": "We couldn't verify your card with your bank. Please try again or use a different payment method.",
+          "authenticationRequired": "We couldn't verify your card with your bank. Please try again or use a different payment method."
+        }
+      },
+      "recovery": {
+        "contactSupport": "联系支持",
+        "contactSupportLower": "联系支持",
+        "switchMethod": "You can also choose a different payment method below.",
+        "cancelled": {
+          "title": "Payment cancelled"
+        },
+        "unknown": {
+          "title": "Payment status unknown",
+          "prefix": "Please",
+          "suffix": "and quote reference <reference></reference> — we will confirm whether your payment went through before you pay again."
+        },
+        "unsuccessful": {
+          "title": "付款未成功",
+          "saved": "Your order details have been saved, so you can try again without starting over.",
+          "stuck": "Still stuck?",
+          "quote": "and quote reference <reference></reference>."
+        },
+        "orderPending": {
+          "resetConfirm": "Only reset checkout after support confirms it is safe to try again. If your payment is still pending, resetting could lead to a second payment.",
+          "title": "Payment received — order pending",
+          "description": "Your payment went through, but we hit a problem while creating your order.",
+          "doNotPayAgain": "Please do not pay again.",
+          "supportInstructions": "Contact support and quote reference <reference></reference> — we will finish setting up your order or refund your payment.",
+          "contactSupport": "Contact support",
+          "checkLicenses": "Check my licenses",
+          "resetHint": "If support has confirmed this old warning is resolved, you can clear it and start a fresh checkout.",
+          "resetButton": "Support told me to reset checkout"
+        }
+      },
+      "successPage": {
+        "metadata": {
+          "title": "Order Complete - WCPOS Pro",
+          "description": "Thank you for your purchase of WCPOS Pro"
+        },
+        "title": "谢谢！",
+        "description": "您已完成购买 WCPOS Pro。",
+        "nextTitle": "接下来会发生什么？",
+        "next": {
+          "licenseEmail": "✓ Your license key and download link have been sent to your email",
+          "accountDownload": "✓ You can also download from your account's licenses page",
+          "install": "✓ Install and activate the plugin on your WordPress site",
+          "activate": "✓ Enter your license key to unlock Pro features"
+        },
+        "licenses": "前往许可证",
+        "installationGuide": "安装指南"
+      }
     }
   },
   "account": {

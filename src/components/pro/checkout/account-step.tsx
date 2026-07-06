@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useTranslations } from 'next-intl'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -24,6 +25,7 @@ interface AccountStepProps {
 type Mode = 'register' | 'signin'
 
 export function AccountStep({ checkoutPath, onAuthenticated }: AccountStepProps) {
+  const t = useTranslations('pro.checkout.account')
   const [mode, setMode] = useState<Mode>('register')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -63,20 +65,18 @@ export function AccountStep({ checkoutPath, onAuthenticated }: AccountStepProps)
         // exactly what an OAuth-only account (Google/GitHub/Discord, no
         // password) looks like. Point at both exits, not just "check your
         // password", or OAuth customers dead-end here.
-        setError(
-          'That password didn’t work. If you signed up with Google, GitHub or Discord, use the sign-in link below instead — or reset your password from the sign-in page.'
-        )
+        setError(t('errors.passwordFailed'))
         return
       }
       setError(
         typeof body.error === 'string'
           ? body.error
           : mode === 'register'
-            ? 'Could not create your account. Please try again.'
-            : 'Sign in failed. Please check your password.'
+            ? t('errors.createFailed')
+            : t('errors.signInFailed')
       )
     } catch {
-      setError('Something went wrong. Please try again.')
+      setError(t('errors.generic'))
     } finally {
       setIsSubmitting(false)
     }
@@ -94,13 +94,12 @@ export function AccountStep({ checkoutPath, onAuthenticated }: AccountStepProps)
           data-testid="account-exists-notice"
           className="rounded-md bg-muted px-3 py-2 text-sm"
         >
-          Welcome back — you already have an account. Enter your password to
-          sign in and continue.
+          {t('existingAccountNotice')}
         </p>
       )}
 
       <div className="space-y-1.5">
-        <Label htmlFor="checkout-email">Email</Label>
+        <Label htmlFor="checkout-email">{t('emailLabel')}</Label>
         <Input
           id="checkout-email"
           type="email"
@@ -115,14 +114,13 @@ export function AccountStep({ checkoutPath, onAuthenticated }: AccountStepProps)
         />
         {mode === 'register' && (
           <p className="text-xs text-muted-foreground">
-            We&apos;ll create your account with this email — your license and
-            receipt arrive here after purchase.
+            {t('emailHint')}
           </p>
         )}
       </div>
 
       <div className="space-y-1.5">
-        <Label htmlFor="checkout-password">Password</Label>
+        <Label htmlFor="checkout-password">{t('passwordLabel')}</Label>
         <Input
           id="checkout-password"
           type="password"
@@ -142,18 +140,18 @@ export function AccountStep({ checkoutPath, onAuthenticated }: AccountStepProps)
 
       <Button type="submit" disabled={isSubmitting}>
         {isSubmitting
-          ? 'One moment…'
+          ? t('submitting')
           : mode === 'register'
-            ? 'Create account & continue'
-            : 'Sign in & continue'}
+            ? t('createContinue')
+            : t('signInContinue')}
       </Button>
 
       <p className="text-sm text-muted-foreground">
-        Prefer Google, GitHub or Discord?{' '}
+        {t('oauthPrompt')}{' '}
         <Link href={loginHref} className="underline underline-offset-4">
-          Sign in here
+          {t('oauthLink')}
         </Link>{' '}
-        — you&apos;ll come straight back to checkout.
+        {t('oauthSuffix')}
       </p>
     </form>
   )

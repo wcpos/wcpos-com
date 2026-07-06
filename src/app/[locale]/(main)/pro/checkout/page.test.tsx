@@ -13,6 +13,14 @@ vi.mock('next/server', () => ({
 
 vi.mock('next-intl/server', () => ({
   setRequestLocale: vi.fn(),
+  getTranslations: vi.fn(async () => (key: string) => {
+    const values: Record<string, string> = {
+      'offers.yearly': 'WCPOS Pro — Yearly',
+      'offers.lifetime': 'WCPOS Pro — Lifetime',
+      'offers.default': 'WCPOS Pro',
+    }
+    return values[key] ?? key
+  }),
 }))
 
 vi.mock('next/headers', () => ({
@@ -112,6 +120,7 @@ describe('CheckoutContent', () => {
     )
 
     const checkoutContent = CheckoutContent({
+      locale: 'en',
       searchParamsPromise: Promise.resolve({ product: 'wcpos-pro-yearly' }),
     })
     await Promise.resolve()

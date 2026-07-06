@@ -129,6 +129,187 @@
         "question": "Welche Zahlungsmethoden akzeptiert ihr?",
         "answer": "Wir akzeptieren Kreditkarten (Visa, Mastercard, Amex), PayPal und Bitcoin."
       }
+    },
+    "checkout": {
+      "page": {
+        "title": "Kasse",
+        "backToPricing": "Zurück zu den Preisen",
+        "metadata": {
+          "title": "Kasse",
+          "description": "Schließen Sie Ihren Kauf von WCPOS Pro ab"
+        }
+      },
+      "offers": {
+        "yearly": "WCPOS Pro — Jährlich",
+        "lifetime": "WCPOS Pro — Lebenslang",
+        "default": "WCPOS Pro"
+      },
+      "backToPricing": "Zurück zu den Preisen",
+      "edit": "Bearbeiten",
+      "preparing": "Kasse wird vorbereitet...",
+      "steps": {
+        "account": "Konto",
+        "billing": "Rechnungsadresse",
+        "payment": "Zahlung"
+      },
+      "complete": {
+        "title": "Vielen Dank für Ihren Kauf!",
+        "description": "Ihr Lizenzschlüssel und der Download-Link wurden an Ihre E-Mail-Adresse gesendet.",
+        "orderId": "Bestell-ID: {orderId}",
+        "licenses": "Zu den Lizenzen",
+        "home": "Zur Startseite"
+      },
+      "summary": {
+        "quantity": "Menge: {quantity}",
+        "total": "Gesamt",
+        "instantLicense": "Sofortige Lizenzzustellung",
+        "oneTimePayment": "Einmalzahlung — keine automatische Verlängerung",
+        "securePayment": "Sichere Zahlungsabwicklung"
+      },
+      "account": {
+        "emailLabel": "E-Mail",
+        "emailHint": "Wir erstellen Ihr Konto mit dieser E-Mail-Adresse — Lizenz und Beleg kommen nach dem Kauf hier an.",
+        "passwordLabel": "Passwort",
+        "existingAccountNotice": "Willkommen zurück — Sie haben bereits ein Konto. Geben Sie Ihr Passwort ein, um sich anzumelden und fortzufahren.",
+        "submitting": "Einen Moment…",
+        "createContinue": "Konto erstellen und fortfahren",
+        "signInContinue": "Anmelden und fortfahren",
+        "oauthPrompt": "Bevorzugen Sie Google, GitHub oder Discord?",
+        "oauthLink": "Hier anmelden",
+        "oauthSuffix": "— Sie kommen direkt zurück zur Kasse.",
+        "errors": {
+          "passwordFailed": "Dieses Passwort hat nicht funktioniert. Wenn Sie sich mit Google, GitHub oder Discord registriert haben, verwenden Sie unten den Anmeldelink — oder setzen Sie Ihr Passwort auf der Anmeldeseite zurück.",
+          "createFailed": "Ihr Konto konnte nicht erstellt werden. Bitte versuchen Sie es erneut.",
+          "signInFailed": "Anmeldung fehlgeschlagen. Bitte prüfen Sie Ihr Passwort.",
+          "generic": "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut."
+        }
+      },
+      "billing": {
+        "fields": {
+          "firstName": "Vorname",
+          "lastName": "Nachname",
+          "addressLine1": "Adresszeile 1",
+          "addressLine2": "Adresszeile 2",
+          "city": "Stadt",
+          "province": "Bundesland / Provinz / Region",
+          "postalCode": "Postleitzahl",
+          "country": "Land"
+        },
+        "optional": "(optional)",
+        "saving": "Wird gespeichert…",
+        "continue": "Weiter zur Zahlung",
+        "errors": {
+          "saveFailed": "Ihre Rechnungsadresse konnte nicht gespeichert werden. Bitte versuchen Sie es erneut."
+        }
+      },
+      "payment": {
+        "preparing": "Zahlung wird vorbereitet...",
+        "processing": "Wird verarbeitet...",
+        "payAmount": "{amount} bezahlen",
+        "walletSeparator": "oder Zahlungsart auswählen",
+        "noneConfigured": "Es sind keine Zahlungsarten konfiguriert. Bitte kontaktieren Sie den Support.",
+        "ariaLabel": "Zahlungsart",
+        "methods": {
+          "card": {
+            "title": "Karte",
+            "hint": "Visa · Mastercard · Amex"
+          },
+          "paypal": {
+            "hint": "Mit PayPal-Guthaben oder verknüpfter Karte bezahlen"
+          },
+          "bitcoin": {
+            "title": "Bitcoin",
+            "hint": "On-chain oder Lightning",
+            "description": "Eine BTCPay-Rechnung öffnet sich mit einem QR-Code — zahlen Sie on-chain oder per Lightning, danach kehren Sie hierher zurück."
+          }
+        },
+        "paypalButton": {
+          "loading": "Sichere PayPal-Kasse wird geladen...",
+          "loadFailed": "PayPal konnte nicht geladen werden. Bitte versuchen Sie eine andere Zahlungsart."
+        },
+        "btcpayButton": {
+          "preparing": "Bitcoin-Zahlung wird vorbereitet...",
+          "pay": "Mit Bitcoin bezahlen"
+        }
+      },
+      "errors": {
+        "noProductSelected": "Kein Produkt ausgewählt",
+        "initializeFailed": "Die Kasse konnte nicht initialisiert werden. Bitte versuchen Sie es erneut.",
+        "checkoutBusy": "Die Kasse ist beschäftigt. Bitte versuchen Sie es erneut.",
+        "paymentRefreshFailed": "Die Rechnungsadresse wurde gespeichert, aber die Zahlung konnte nicht vorbereitet werden. Bitte versuchen Sie es erneut.",
+        "methodSwitchFailed": "Diese Zahlungsart konnte nicht vorbereitet werden. Bitte versuchen Sie es erneut oder wählen Sie eine andere.",
+        "genericPaymentFailed": "Wir konnten Ihre Zahlung nicht verarbeiten. Bitte versuchen Sie es erneut oder verwenden Sie eine andere Zahlungsart.",
+        "genericCardFailed": "Ihre Karte konnte nicht belastet werden. Bitte prüfen Sie die Kartendaten oder versuchen Sie eine andere Karte oder Zahlungsart.",
+        "unexpectedPaymentStatus": "Wir konnten den Status Ihrer Zahlung nicht bestätigen. Wenn Sie glauben, belastet worden zu sein, kontaktieren Sie bitte den Support, bevor Sie es erneut versuchen.",
+        "orderPending": "Ihre Zahlung wurde erhalten, aber Ihre Bestellung konnte nicht fertig erstellt werden. Bitte zahlen Sie nicht erneut — kontaktieren Sie den Support und wir stellen die Bestellung fertig oder erstatten die Zahlung.",
+        "paypalFailed": "PayPal konnte Ihre Zahlung nicht abschließen. Sie wurden nicht belastet — bitte versuchen Sie es erneut oder verwenden Sie eine andere Zahlungsart.",
+        "paypalInitFailed": "Die PayPal-Kasse konnte nicht gestartet werden. Bitte versuchen Sie es erneut oder verwenden Sie eine andere Zahlungsart.",
+        "paypalCancelled": "Die PayPal-Kasse wurde abgebrochen und Sie wurden nicht belastet. Sie können es jederzeit erneut versuchen.",
+        "btcpayInitFailed": "Die Bitcoin-Zahlung konnte nicht gestartet werden. Sie wurden nicht belastet — bitte versuchen Sie es erneut oder verwenden Sie eine andere Zahlungsart.",
+        "stripeDeclines": {
+          "insufficientFunds": "Ihre Karte wurde wegen unzureichender Deckung abgelehnt. Bitte verwenden Sie eine andere Karte oder Zahlungsart."
+        },
+        "stripeCodes": {
+          "cardDeclined": "Ihre Karte wurde abgelehnt. Bitte versuchen Sie eine andere Karte oder Zahlungsart.",
+          "expiredCard": "Ihre Karte ist abgelaufen. Bitte verwenden Sie eine andere Karte.",
+          "incorrectCvc": "Der Sicherheitscode Ihrer Karte ist falsch. Bitte prüfen Sie ihn und versuchen Sie es erneut.",
+          "invalidCvc": "Der Sicherheitscode Ihrer Karte ist ungültig. Bitte prüfen Sie ihn und versuchen Sie es erneut.",
+          "incorrectNumber": "Ihre Kartennummer scheint ungültig zu sein. Bitte prüfen Sie sie und versuchen Sie es erneut.",
+          "invalidNumber": "Ihre Kartennummer scheint ungültig zu sein. Bitte prüfen Sie sie und versuchen Sie es erneut.",
+          "invalidExpiryMonth": "Das Ablaufdatum Ihrer Karte ist ungültig. Bitte prüfen Sie es und versuchen Sie es erneut.",
+          "invalidExpiryYear": "Das Ablaufdatum Ihrer Karte ist ungültig. Bitte prüfen Sie es und versuchen Sie es erneut.",
+          "processingError": "Beim Verarbeiten Ihrer Karte ist etwas schiefgelaufen. Sie wurden nicht belastet — bitte versuchen Sie es erneut.",
+          "authenticationFailure": "Wir konnten Ihre Karte nicht bei Ihrer Bank verifizieren. Bitte versuchen Sie es erneut oder verwenden Sie eine andere Zahlungsart.",
+          "authenticationRequired": "Wir konnten Ihre Karte nicht bei Ihrer Bank verifizieren. Bitte versuchen Sie es erneut oder verwenden Sie eine andere Zahlungsart."
+        }
+      },
+      "recovery": {
+        "contactSupport": "Support kontaktieren",
+        "contactSupportLower": "Support kontaktieren",
+        "switchMethod": "Sie können unten auch eine andere Zahlungsart auswählen.",
+        "cancelled": {
+          "title": "Zahlung abgebrochen"
+        },
+        "unknown": {
+          "title": "Zahlungsstatus unbekannt",
+          "prefix": "Bitte",
+          "suffix": "und nennen Sie die Referenz <reference></reference> — wir bestätigen, ob Ihre Zahlung eingegangen ist, bevor Sie erneut zahlen."
+        },
+        "unsuccessful": {
+          "title": "Zahlung nicht erfolgreich",
+          "saved": "Ihre Bestelldaten wurden gespeichert, sodass Sie es ohne Neustart erneut versuchen können.",
+          "stuck": "Kommen Sie nicht weiter?",
+          "quote": "und nennen Sie die Referenz <reference></reference>."
+        },
+        "orderPending": {
+          "resetConfirm": "Setzen Sie die Kasse nur zurück, nachdem der Support bestätigt hat, dass ein erneuter Versuch sicher ist. Wenn Ihre Zahlung noch aussteht, kann ein Zurücksetzen zu einer zweiten Zahlung führen.",
+          "title": "Zahlung erhalten — Bestellung ausstehend",
+          "description": "Ihre Zahlung ist eingegangen, aber beim Erstellen Ihrer Bestellung ist ein Problem aufgetreten.",
+          "doNotPayAgain": "Bitte zahlen Sie nicht erneut.",
+          "supportInstructions": "Kontaktieren Sie den Support und nennen Sie die Referenz <reference></reference> — wir richten Ihre Bestellung fertig ein oder erstatten Ihre Zahlung.",
+          "contactSupport": "Support kontaktieren",
+          "checkLicenses": "Meine Lizenzen prüfen",
+          "resetHint": "Wenn der Support bestätigt hat, dass diese alte Warnung erledigt ist, können Sie sie löschen und eine neue Kasse starten.",
+          "resetButton": "Support hat mich gebeten, die Kasse zurückzusetzen"
+        }
+      },
+      "successPage": {
+        "metadata": {
+          "title": "Bestellung abgeschlossen - WCPOS Pro",
+          "description": "Vielen Dank für Ihren Kauf von WCPOS Pro"
+        },
+        "title": "Vielen Dank!",
+        "description": "Ihr Kauf von WCPOS Pro ist abgeschlossen.",
+        "nextTitle": "Was passiert als Nächstes?",
+        "next": {
+          "licenseEmail": "✓ Ihr Lizenzschlüssel und der Download-Link wurden an Ihre E-Mail-Adresse gesendet",
+          "accountDownload": "✓ Sie können auch über die Lizenzseite Ihres Kontos herunterladen",
+          "install": "✓ Installieren und aktivieren Sie das Plugin auf Ihrer WordPress-Website",
+          "activate": "✓ Geben Sie Ihren Lizenzschlüssel ein, um Pro-Funktionen freizuschalten"
+        },
+        "licenses": "Zu den Lizenzen",
+        "installationGuide": "Installationsanleitung"
+      }
     }
   },
   "account": {

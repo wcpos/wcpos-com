@@ -129,6 +129,187 @@
         "question": "Quels moyens de paiement acceptez-vous ?",
         "answer": "Nous acceptons les cartes de crédit (Visa, Mastercard, Amex), PayPal et Bitcoin."
       }
+    },
+    "checkout": {
+      "page": {
+        "title": "Paiement",
+        "backToPricing": "Retour aux tarifs",
+        "metadata": {
+          "title": "Paiement",
+          "description": "Finalisez votre achat de WCPOS Pro"
+        }
+      },
+      "offers": {
+        "yearly": "WCPOS Pro — Annuel",
+        "lifetime": "WCPOS Pro — À vie",
+        "default": "WCPOS Pro"
+      },
+      "backToPricing": "Retour aux tarifs",
+      "edit": "Modifier",
+      "preparing": "Préparation du paiement...",
+      "steps": {
+        "account": "Compte",
+        "billing": "Adresse de facturation",
+        "payment": "Paiement"
+      },
+      "complete": {
+        "title": "Merci pour votre achat !",
+        "description": "Votre clé de licence et le lien de téléchargement ont été envoyés à votre e-mail.",
+        "orderId": "ID de commande : {orderId}",
+        "licenses": "Voir les licences",
+        "home": "Retour à l’accueil"
+      },
+      "summary": {
+        "quantity": "Qté : {quantity}",
+        "total": "Total",
+        "instantLicense": "Livraison instantanée de la licence",
+        "oneTimePayment": "Paiement unique — jamais de renouvellement automatique",
+        "securePayment": "Traitement sécurisé du paiement"
+      },
+      "account": {
+        "emailLabel": "E-mail",
+        "emailHint": "Nous créerons votre compte avec cet e-mail — votre licence et votre reçu y arriveront après l’achat.",
+        "passwordLabel": "Mot de passe",
+        "existingAccountNotice": "Bon retour — vous avez déjà un compte. Saisissez votre mot de passe pour vous connecter et continuer.",
+        "submitting": "Un instant…",
+        "createContinue": "Créer le compte et continuer",
+        "signInContinue": "Se connecter et continuer",
+        "oauthPrompt": "Vous préférez Google, GitHub ou Discord ?",
+        "oauthLink": "Connectez-vous ici",
+        "oauthSuffix": "— vous reviendrez directement au paiement.",
+        "errors": {
+          "passwordFailed": "Ce mot de passe n’a pas fonctionné. Si vous vous êtes inscrit avec Google, GitHub ou Discord, utilisez le lien de connexion ci-dessous — ou réinitialisez votre mot de passe depuis la page de connexion.",
+          "createFailed": "Impossible de créer votre compte. Veuillez réessayer.",
+          "signInFailed": "Connexion impossible. Vérifiez votre mot de passe.",
+          "generic": "Une erreur est survenue. Veuillez réessayer."
+        }
+      },
+      "billing": {
+        "fields": {
+          "firstName": "Prénom",
+          "lastName": "Nom",
+          "addressLine1": "Adresse ligne 1",
+          "addressLine2": "Adresse ligne 2",
+          "city": "Ville",
+          "province": "État / Province / Région",
+          "postalCode": "Code postal",
+          "country": "Pays"
+        },
+        "optional": "(facultatif)",
+        "saving": "Enregistrement…",
+        "continue": "Continuer vers le paiement",
+        "errors": {
+          "saveFailed": "Impossible d’enregistrer votre adresse de facturation. Veuillez réessayer."
+        }
+      },
+      "payment": {
+        "preparing": "Préparation du paiement...",
+        "processing": "Traitement...",
+        "payAmount": "Payer {amount}",
+        "walletSeparator": "ou choisissez comment payer",
+        "noneConfigured": "Aucun moyen de paiement n’est configuré. Veuillez contacter le support.",
+        "ariaLabel": "Moyen de paiement",
+        "methods": {
+          "card": {
+            "title": "Carte",
+            "hint": "Visa · Mastercard · Amex"
+          },
+          "paypal": {
+            "hint": "Payez avec votre solde PayPal ou une carte liée"
+          },
+          "bitcoin": {
+            "title": "Bitcoin",
+            "hint": "On-chain ou Lightning",
+            "description": "Une facture BTCPay s’ouvre avec un code QR — payez on-chain ou via Lightning, puis vous reviendrez ici."
+          }
+        },
+        "paypalButton": {
+          "loading": "Chargement du paiement sécurisé PayPal...",
+          "loadFailed": "Impossible de charger PayPal. Essayez un autre moyen de paiement."
+        },
+        "btcpayButton": {
+          "preparing": "Préparation du paiement Bitcoin...",
+          "pay": "Payer en Bitcoin"
+        }
+      },
+      "errors": {
+        "noProductSelected": "Aucun produit sélectionné",
+        "initializeFailed": "Impossible d’initialiser le paiement. Veuillez réessayer.",
+        "checkoutBusy": "Le paiement est en cours. Veuillez réessayer.",
+        "paymentRefreshFailed": "L’adresse de facturation a été enregistrée, mais nous n’avons pas pu préparer le paiement. Veuillez réessayer.",
+        "methodSwitchFailed": "Nous n’avons pas pu préparer ce moyen de paiement. Veuillez réessayer ou en choisir un autre.",
+        "genericPaymentFailed": "Nous n’avons pas pu traiter votre paiement. Veuillez réessayer ou utiliser un autre moyen de paiement.",
+        "genericCardFailed": "Votre carte n’a pas pu être débitée. Vérifiez les informations ou essayez une autre carte ou un autre moyen de paiement.",
+        "unexpectedPaymentStatus": "Nous n’avons pas pu confirmer le statut de votre paiement. Si vous pensez avoir été débité, contactez le support avant de réessayer.",
+        "orderPending": "Votre paiement a été reçu, mais nous n’avons pas pu finaliser votre commande. Ne payez pas à nouveau — contactez le support et nous terminerons votre commande ou rembourserons le paiement.",
+        "paypalFailed": "PayPal n’a pas pu terminer votre paiement. Vous n’avez pas été débité — veuillez réessayer ou utiliser un autre moyen de paiement.",
+        "paypalInitFailed": "Impossible de démarrer le paiement PayPal. Veuillez réessayer ou utiliser un autre moyen de paiement.",
+        "paypalCancelled": "Le paiement PayPal a été annulé et vous n’avez pas été débité. Vous pouvez réessayer quand vous le souhaitez.",
+        "btcpayInitFailed": "Impossible de démarrer le paiement Bitcoin. Vous n’avez pas été débité — veuillez réessayer ou utiliser un autre moyen de paiement.",
+        "stripeDeclines": {
+          "insufficientFunds": "Your card was declined due to insufficient funds. Please use a different card or payment method."
+        },
+        "stripeCodes": {
+          "cardDeclined": "Your card was declined. Please try a different card or payment method.",
+          "expiredCard": "Your card has expired. Please use a different card.",
+          "incorrectCvc": "Your card's security code is incorrect. Please check it and try again.",
+          "invalidCvc": "Your card's security code is invalid. Please check it and try again.",
+          "incorrectNumber": "Your card number appears to be invalid. Please check it and try again.",
+          "invalidNumber": "Your card number appears to be invalid. Please check it and try again.",
+          "invalidExpiryMonth": "Your card's expiry date is invalid. Please check it and try again.",
+          "invalidExpiryYear": "Your card's expiry date is invalid. Please check it and try again.",
+          "processingError": "Something went wrong while processing your card. You have not been charged — please try again.",
+          "authenticationFailure": "We couldn't verify your card with your bank. Please try again or use a different payment method.",
+          "authenticationRequired": "We couldn't verify your card with your bank. Please try again or use a different payment method."
+        }
+      },
+      "recovery": {
+        "contactSupport": "Contacter le support",
+        "contactSupportLower": "contacter le support",
+        "switchMethod": "Vous pouvez aussi choisir un autre moyen de paiement ci-dessous.",
+        "cancelled": {
+          "title": "Paiement annulé"
+        },
+        "unknown": {
+          "title": "Statut du paiement inconnu",
+          "prefix": "Veuillez",
+          "suffix": "et indiquez la référence <reference></reference> — nous confirmerons si votre paiement est passé avant que vous ne payiez à nouveau."
+        },
+        "unsuccessful": {
+          "title": "Paiement non réussi",
+          "saved": "Les détails de votre commande ont été enregistrés, vous pouvez donc réessayer sans recommencer.",
+          "stuck": "Toujours bloqué ?",
+          "quote": "et indiquez la référence <reference></reference>."
+        },
+        "orderPending": {
+          "resetConfirm": "Ne réinitialisez le paiement qu’après confirmation du support que vous pouvez réessayer en toute sécurité. Si votre paiement est encore en attente, cela pourrait entraîner un deuxième paiement.",
+          "title": "Paiement reçu — commande en attente",
+          "description": "Votre paiement est passé, mais un problème est survenu lors de la création de votre commande.",
+          "doNotPayAgain": "Veuillez ne pas payer à nouveau.",
+          "supportInstructions": "Contactez le support et indiquez la référence <reference></reference> — nous finaliserons votre commande ou rembourserons votre paiement.",
+          "contactSupport": "Contacter le support",
+          "checkLicenses": "Vérifier mes licences",
+          "resetHint": "Si le support a confirmé que cet ancien avertissement est résolu, vous pouvez l’effacer et démarrer un nouveau paiement.",
+          "resetButton": "Le support m’a demandé de réinitialiser le paiement"
+        }
+      },
+      "successPage": {
+        "metadata": {
+          "title": "Commande terminée - WCPOS Pro",
+          "description": "Merci pour votre achat de WCPOS Pro"
+        },
+        "title": "Merci !",
+        "description": "Votre achat de WCPOS Pro est terminé.",
+        "nextTitle": "Que se passe-t-il ensuite ?",
+        "next": {
+          "licenseEmail": "✓ Votre clé de licence et le lien de téléchargement ont été envoyés à votre e-mail",
+          "accountDownload": "✓ Vous pouvez aussi télécharger depuis la page des licences de votre compte",
+          "install": "✓ Installez et activez le plugin sur votre site WordPress",
+          "activate": "✓ Saisissez votre clé de licence pour débloquer les fonctionnalités Pro"
+        },
+        "licenses": "Voir les licences",
+        "installationGuide": "Guide d’installation"
+      }
     }
   },
   "account": {

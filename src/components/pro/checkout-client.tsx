@@ -1,6 +1,7 @@
 'use client'
 
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { useLocale, useTranslations } from 'next-intl'
 import { createPaymentSession } from './complete-cart'
 import { CheckoutErrorNotice, OrderPendingNotice } from './checkout-recovery'
 import {
@@ -8,7 +9,6 @@ import {
   clearCheckoutSafetyState,
   createPaymentFailure,
   isProtectiveCheckoutFailureKind,
-  METHOD_SWITCH_FAILED_MESSAGE,
   recordCheckoutFailure,
   restoreCheckoutSafetyState,
   shouldBlockCheckout,
@@ -181,6 +181,8 @@ export function CheckoutClient({
   experimentVariant,
   payments,
 }: CheckoutClientProps) {
+  const locale = useLocale()
+  const t = useTranslations('pro.checkout')
   const {
     stripeEnabled: isStripeEnabled,
     paypalEnabled: isPayPalEnabled,
@@ -250,7 +252,9 @@ export function CheckoutClient({
 
   const initStartedRef = useRef(false)
 
-  const prerequisiteError = !selectedOfferHandle ? 'No product selected' : null
+  const prerequisiteError = !selectedOfferHandle
+    ? t('errors.noProductSelected')
+    : null
 
   // A protective failure (payment may have been taken without an order)
   // survives reloads via sessionStorage. Restore it before initializing so
@@ -342,7 +346,7 @@ export function CheckoutClient({
         })
 
         if (!cartResponse.ok) {
-          throw new Error('Failed to create cart')
+          throw new Error('CART_CREATE_FAILED')
         }
 
         const { cart: newCart } = await cartResponse.json()
@@ -359,7 +363,7 @@ export function CheckoutClient({
         })
 
         if (!itemResponse.ok) {
-          throw new Error('Failed to add item to cart')
+          throw new Error('CART_ADD_ITEM_FAILED')
         }
 
         const { cart: cartWithItem } = await itemResponse.json()
@@ -379,7 +383,7 @@ export function CheckoutClient({
       } catch (err) {
         console.error('[CHECKOUT] Initialization failed:', err)
         setError(
-          err instanceof Error ? err.message : 'Failed to initialize checkout'
+          err instanceof Error ? err.message : 'CHECKOUT_INIT_FAILED'
         )
         cartReadyRef.current?.reject(err)
       }
@@ -412,7 +416,7 @@ export function CheckoutClient({
           cartId: cart.id,
           providerId: getProviderId(method),
           paymentCollectionId,
-          errorMessage: `Failed to select ${method} payment`,
+          errorMessage: 'PAYMENT_METHOD_SELECT_FAILED',
         })
 
         setCart(paymentResult.cart)
@@ -427,7 +431,7 @@ export function CheckoutClient({
         }
       } catch (err) {
         setFailure(
-          createPaymentFailure(METHOD_SWITCH_FAILED_MESSAGE, {
+          createPaymentFailure(t('errors.methodSwitchFailed'), {
             source: 'payment_method_switch',
             details: {
               cartId: cart.id,
@@ -440,7 +444,7 @@ export function CheckoutClient({
         setIsProcessing(false)
       }
     },
-    [cart, paymentCollectionId, isProcessing]
+    [cart, paymentCollectionId, isProcessing, t]
   )
 
   const handlePaymentMethodChange = (method: PaymentMethod) => {
@@ -487,7 +491,7 @@ export function CheckoutClient({
     // mutations racing can leave the mounted Stripe element and the Medusa
     // collection pointing at different intents.
     if (isProcessing) {
-      throw new Error('Checkout is busy. Please try again.')
+      throw new Error(t('errors.checkoutBusy'))
     }
 
     // Always await the init result: the ref carries the collection id even
@@ -513,7 +517,7 @@ export function CheckoutClient({
         }),
       })
       if (!response.ok) {
-        throw new Error('Failed to save billing address')
+        throw new Error('BILLING_SAVE_FAILED')
       }
       const { cart: updatedCart } = (await response.json()) as { cart?: Cart }
       const cartAfterBilling = updatedCart ?? init.cart
@@ -538,13 +542,11 @@ export function CheckoutClient({
             init.paymentCollectionId ??
             cartAfterBilling.payment_collection?.id ??
             null,
-          errorMessage: 'Failed to refresh payment',
+          errorMessage: 'PAYMENT_REFRESH_FAILED',
         })
       } catch {
         throw Object.assign(
-          new Error(
-            "Billing address was saved, but we couldn't prepare payment. Please try again."
-          ),
+          new Error(t('errors.paymentRefreshFailed')),
           { name: 'PaymentRefreshError' }
         )
       }
@@ -581,7 +583,7 @@ export function CheckoutClient({
         <Button asChild variant="outline">
           <Link href="/pro">
             <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to pricing
+            {t('backToPricing')}
           </Link>
         </Button>
       </div>
@@ -593,22 +595,22 @@ export function CheckoutClient({
       <div className="flex min-h-[400px] flex-col items-center justify-center text-center">
         <CheckCircle className={`mb-4 h-16 w-16 ${toneText.positive}`} />
         <h2 className="mb-2 text-2xl font-bold">
-          Thank you for your purchase!
+          {t('complete.title')}
         </h2>
         <p className="mb-4 text-muted-foreground">
-          Your license key and download link have been sent to your email.
+          {t('complete.description')}
         </p>
         {orderId && (
           <p className="mb-6 text-sm text-muted-foreground">
-            Order ID: {orderId}
+            {t('complete.orderId', { orderId })}
           </p>
         )}
         <div className="flex flex-col gap-3 sm:flex-row">
           <Button asChild>
-            <Link href="/account/licenses">Go to Licenses</Link>
+            <Link href="/account/licenses">{t('complete.licenses')}</Link>
           </Button>
           <Button asChild variant="outline">
-            <Link href="/">Return to Home</Link>
+            <Link href="/">{t('complete.home')}</Link>
           </Button>
         </div>
       </div>
@@ -629,7 +631,7 @@ export function CheckoutClient({
   }
 
   const formatCurrency = (amount: number) =>
-    new Intl.NumberFormat('en-US', {
+    new Intl.NumberFormat(locale, {
       style: 'currency',
       currency: (cart?.currency_code ?? 'usd').toUpperCase(),
     }).format(amount)
@@ -667,12 +669,12 @@ export function CheckoutClient({
   const initErrorNotice = (
     <div className="space-y-4">
       <p className="text-sm text-destructive">
-        Unable to initialize checkout. Please try again.
+        {t('errors.initializeFailed')}
       </p>
       <Button asChild variant="outline">
         <Link href="/pro">
           <ArrowLeft className="mr-2 h-4 w-4" />
-          Back to pricing
+          {t('backToPricing')}
         </Link>
       </Button>
     </div>
@@ -693,10 +695,10 @@ export function CheckoutClient({
         )}
         <StepShell
           index={1}
-          title="Account"
+          title={t('steps.account')}
           summary={email ?? undefined}
           state={stepState('account')}
-          editLabel="Edit"
+          editLabel={t('edit')}
         >
           <AccountStep
             checkoutPath={checkoutPath}
@@ -706,7 +708,7 @@ export function CheckoutClient({
 
         <StepShell
           index={2}
-          title="Billing address"
+          title={t('steps.billing')}
           summary={
             billingAddress ? billingAddressSummary(billingAddress) : undefined
           }
@@ -719,7 +721,7 @@ export function CheckoutClient({
               ? undefined
               : () => setStep('billing')
           }
-          editLabel="Edit"
+          editLabel={t('edit')}
         >
           {error ? (
             initErrorNotice
@@ -734,9 +736,9 @@ export function CheckoutClient({
 
         <StepShell
           index={3}
-          title="Payment"
+          title={t('steps.payment')}
           state={stepState('payment')}
-          editLabel="Edit"
+          editLabel={t('edit')}
         >
           <div className="space-y-4">
             {cart ? (
@@ -772,7 +774,7 @@ export function CheckoutClient({
                 <div className="h-6 w-40 animate-pulse rounded bg-muted" />
                 <div className="h-24 w-full animate-pulse rounded bg-muted" />
                 <p className="text-sm text-muted-foreground">
-                  Preparing checkout...
+                  {t('preparing')}
                 </p>
               </div>
             )}
@@ -792,7 +794,7 @@ export function CheckoutClient({
                 <div>
                   <p className="font-medium">{item.title}</p>
                   <p className="text-sm text-muted-foreground">
-                    Qty: {item.quantity}
+                    {t('summary.quantity', { quantity: item.quantity })}
                   </p>
                 </div>
                 <p className="font-medium">
@@ -801,7 +803,7 @@ export function CheckoutClient({
               </div>
             ))}
             <div className="mt-3 flex justify-between border-t pt-3 font-bold">
-              <span>Total</span>
+              <span>{t('summary.total')}</span>
               <span>{formatCurrency(cart.total)}</span>
             </div>
           </>
@@ -809,7 +811,7 @@ export function CheckoutClient({
           <>
             <p className="font-medium">{offerSummary.title}</p>
             <div className="mt-3 flex justify-between border-t pt-3 font-bold">
-              <span>Total</span>
+              <span>{t('summary.total')}</span>
               <span>{offerSummary.priceFormatted}</span>
             </div>
           </>
@@ -822,15 +824,15 @@ export function CheckoutClient({
         <ul className="mt-4 space-y-1.5 text-sm text-muted-foreground">
           <li className="flex gap-2">
             <Check className={`mt-0.5 h-4 w-4 shrink-0 ${toneText.positive}`} />
-            Instant license delivery
+            {t('summary.instantLicense')}
           </li>
           <li className="flex gap-2">
             <Check className={`mt-0.5 h-4 w-4 shrink-0 ${toneText.positive}`} />
-            One-time payment — never auto-renews
+            {t('summary.oneTimePayment')}
           </li>
           <li className="flex gap-2">
             <Check className={`mt-0.5 h-4 w-4 shrink-0 ${toneText.positive}`} />
-            Secure payment processing
+            {t('summary.securePayment')}
           </li>
         </ul>
       </div>

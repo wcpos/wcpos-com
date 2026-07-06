@@ -129,6 +129,187 @@
         "question": "どの支払い方法に対応していますか？",
         "answer": "クレジットカード（Visa、Mastercard、Amex）、PayPal、Bitcoinに対応しています。"
       }
+    },
+    "checkout": {
+      "page": {
+        "title": "チェックアウト",
+        "backToPricing": "料金に戻る",
+        "metadata": {
+          "title": "チェックアウト",
+          "description": "WCPOS Pro の購入を完了します"
+        }
+      },
+      "offers": {
+        "yearly": "WCPOS Pro — 年間",
+        "lifetime": "WCPOS Pro — ライフタイム",
+        "default": "WCPOS Pro"
+      },
+      "backToPricing": "料金に戻る",
+      "edit": "編集",
+      "preparing": "チェックアウトを準備しています...",
+      "steps": {
+        "account": "アカウント",
+        "billing": "請求先住所",
+        "payment": "支払い"
+      },
+      "complete": {
+        "title": "ご購入ありがとうございます！",
+        "description": "ライセンスキーとダウンロードリンクをメールで送信しました。",
+        "orderId": "注文 ID: {orderId}",
+        "licenses": "ライセンスへ",
+        "home": "ホームに戻る"
+      },
+      "summary": {
+        "quantity": "数量: {quantity}",
+        "total": "合計",
+        "instantLicense": "ライセンスを即時配信",
+        "oneTimePayment": "一回払い — 自動更新なし",
+        "securePayment": "安全な決済処理"
+      },
+      "account": {
+        "emailLabel": "メール",
+        "emailHint": "このメールアドレスでアカウントを作成します。購入後、ライセンスと領収書がここに届きます。",
+        "passwordLabel": "パスワード",
+        "existingAccountNotice": "おかえりなさい — 既にアカウントがあります。パスワードを入力して続行してください。",
+        "submitting": "少々お待ちください…",
+        "createContinue": "アカウントを作成して続行",
+        "signInContinue": "サインインして続行",
+        "oauthPrompt": "Google、GitHub、Discord を使用しますか？",
+        "oauthLink": "こちらからサインイン",
+        "oauthSuffix": "— チェックアウトに戻ります。",
+        "errors": {
+          "passwordFailed": "パスワードが違います。Google、GitHub、Discord で登録した場合は下のサインインリンクを使用するか、サインインページでパスワードをリセットしてください。",
+          "createFailed": "アカウントを作成できませんでした。もう一度お試しください。",
+          "signInFailed": "サインインに失敗しました。パスワードを確認してください。",
+          "generic": "問題が発生しました。もう一度お試しください。"
+        }
+      },
+      "billing": {
+        "fields": {
+          "firstName": "名",
+          "lastName": "姓",
+          "addressLine1": "住所 1",
+          "addressLine2": "住所 2",
+          "city": "市区町村",
+          "province": "都道府県 / 州 / 地域",
+          "postalCode": "郵便番号",
+          "country": "国"
+        },
+        "optional": "（任意）",
+        "saving": "保存中…",
+        "continue": "支払いへ進む",
+        "errors": {
+          "saveFailed": "請求先住所を保存できませんでした。もう一度お試しください。"
+        }
+      },
+      "payment": {
+        "preparing": "支払いを準備しています...",
+        "processing": "処理中...",
+        "payAmount": "{amount} を支払う",
+        "walletSeparator": "または支払い方法を選択",
+        "noneConfigured": "支払い方法が設定されていません。サポートへお問い合わせください。",
+        "ariaLabel": "支払い方法",
+        "methods": {
+          "card": {
+            "title": "カード",
+            "hint": "Visa · Mastercard · Amex"
+          },
+          "paypal": {
+            "hint": "PayPal 残高または登録済みカードで支払う"
+          },
+          "bitcoin": {
+            "title": "Bitcoin",
+            "hint": "オンチェーンまたは Lightning",
+            "description": "QR コード付きの BTCPay 請求書が開きます。オンチェーンまたは Lightning で支払うと、ここに戻ります。"
+          }
+        },
+        "paypalButton": {
+          "loading": "PayPal の安全なチェックアウトを読み込んでいます...",
+          "loadFailed": "PayPal を読み込めませんでした。別の支払い方法をお試しください。"
+        },
+        "btcpayButton": {
+          "preparing": "Bitcoin 支払いを準備しています...",
+          "pay": "Bitcoin で支払う"
+        }
+      },
+      "errors": {
+        "noProductSelected": "商品が選択されていません",
+        "initializeFailed": "チェックアウトを初期化できませんでした。もう一度お試しください。",
+        "checkoutBusy": "Checkout is busy. Please try again.",
+        "paymentRefreshFailed": "Billing address was saved, but we couldn't prepare payment. Please try again.",
+        "methodSwitchFailed": "We couldn't prepare that payment method. Please try again or choose a different one.",
+        "genericPaymentFailed": "We were unable to process your payment. Please try again or use a different payment method.",
+        "genericCardFailed": "Your card could not be charged. Please check your card details, or try a different card or payment method.",
+        "unexpectedPaymentStatus": "We couldn't confirm the status of your payment. If you think you may have been charged, please contact support before trying again.",
+        "orderPending": "Your payment was received, but we couldn't finish creating your order. Please do not pay again — contact support and we will finish your order or refund the payment.",
+        "paypalFailed": "PayPal couldn't complete your payment. You have not been charged — please try again or use a different payment method.",
+        "paypalInitFailed": "We couldn't start the PayPal checkout. Please try again or use a different payment method.",
+        "paypalCancelled": "PayPal checkout was cancelled and you have not been charged. You can try again whenever you're ready.",
+        "btcpayInitFailed": "We couldn't start the Bitcoin payment. You have not been charged — please try again or use a different payment method.",
+        "stripeDeclines": {
+          "insufficientFunds": "Your card was declined due to insufficient funds. Please use a different card or payment method."
+        },
+        "stripeCodes": {
+          "cardDeclined": "Your card was declined. Please try a different card or payment method.",
+          "expiredCard": "Your card has expired. Please use a different card.",
+          "incorrectCvc": "Your card's security code is incorrect. Please check it and try again.",
+          "invalidCvc": "Your card's security code is invalid. Please check it and try again.",
+          "incorrectNumber": "Your card number appears to be invalid. Please check it and try again.",
+          "invalidNumber": "Your card number appears to be invalid. Please check it and try again.",
+          "invalidExpiryMonth": "Your card's expiry date is invalid. Please check it and try again.",
+          "invalidExpiryYear": "Your card's expiry date is invalid. Please check it and try again.",
+          "processingError": "Something went wrong while processing your card. You have not been charged — please try again.",
+          "authenticationFailure": "We couldn't verify your card with your bank. Please try again or use a different payment method.",
+          "authenticationRequired": "We couldn't verify your card with your bank. Please try again or use a different payment method."
+        }
+      },
+      "recovery": {
+        "contactSupport": "サポートに連絡",
+        "contactSupportLower": "サポートに連絡",
+        "switchMethod": "You can also choose a different payment method below.",
+        "cancelled": {
+          "title": "Payment cancelled"
+        },
+        "unknown": {
+          "title": "Payment status unknown",
+          "prefix": "Please",
+          "suffix": "and quote reference <reference></reference> — we will confirm whether your payment went through before you pay again."
+        },
+        "unsuccessful": {
+          "title": "支払いに失敗しました",
+          "saved": "Your order details have been saved, so you can try again without starting over.",
+          "stuck": "Still stuck?",
+          "quote": "and quote reference <reference></reference>."
+        },
+        "orderPending": {
+          "resetConfirm": "Only reset checkout after support confirms it is safe to try again. If your payment is still pending, resetting could lead to a second payment.",
+          "title": "Payment received — order pending",
+          "description": "Your payment went through, but we hit a problem while creating your order.",
+          "doNotPayAgain": "Please do not pay again.",
+          "supportInstructions": "Contact support and quote reference <reference></reference> — we will finish setting up your order or refund your payment.",
+          "contactSupport": "Contact support",
+          "checkLicenses": "Check my licenses",
+          "resetHint": "If support has confirmed this old warning is resolved, you can clear it and start a fresh checkout.",
+          "resetButton": "Support told me to reset checkout"
+        }
+      },
+      "successPage": {
+        "metadata": {
+          "title": "Order Complete - WCPOS Pro",
+          "description": "Thank you for your purchase of WCPOS Pro"
+        },
+        "title": "ありがとうございます！",
+        "description": "WCPOS Pro の購入が完了しました。",
+        "nextTitle": "次の手順",
+        "next": {
+          "licenseEmail": "✓ Your license key and download link have been sent to your email",
+          "accountDownload": "✓ You can also download from your account's licenses page",
+          "install": "✓ Install and activate the plugin on your WordPress site",
+          "activate": "✓ Enter your license key to unlock Pro features"
+        },
+        "licenses": "ライセンスへ",
+        "installationGuide": "インストールガイド"
+      }
     }
   },
   "account": {

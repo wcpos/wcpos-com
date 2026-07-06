@@ -46,9 +46,12 @@ export const TAX_LABELS_EN: Record<TaxLabelKey, string> = {
   genericTaxId: 'Tax ID / VAT number',
 }
 
+export function taxIdLabelKey(countryCode: string): TaxLabelKey {
+  return COUNTRY_TAX_LABEL_KEYS[countryCode.toLowerCase()] ?? 'genericTaxId'
+}
+
 export function taxIdLabel(countryCode: string): string {
-  const key = COUNTRY_TAX_LABEL_KEYS[countryCode.toLowerCase()]
-  return TAX_LABELS_EN[key ?? 'genericTaxId']
+  return TAX_LABELS_EN[taxIdLabelKey(countryCode)]
 }
 
 const FALLBACK_COUNTRY_CODES = [

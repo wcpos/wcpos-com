@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useLocale, useTranslations } from 'next-intl'
 import {
   PaymentElement,
   useStripe,
@@ -13,9 +14,9 @@ import {
   createPaymentFailure,
   createUncertainPaymentFailure,
   mapStripeErrorMessage,
-  GENERIC_PAYMENT_FAILED_MESSAGE,
   type CheckoutFailure,
 } from './checkout-safety'
+import { useCheckoutFailureMessages } from './checkout/use-checkout-failure-messages'
 import type { ProCheckoutVariant } from '@/services/core/analytics/posthog-service'
 
 interface CheckoutFormProps {
@@ -48,6 +49,9 @@ export function CheckoutForm({
   onFailure,
   onProcessingChange,
 }: CheckoutFormProps) {
+  const locale = useLocale()
+  const t = useTranslations('pro.checkout.payment')
+  const failureMessages = useCheckoutFailureMessages()
   const stripe = useStripe()
   const elements = useElements()
   const [isLoading, setIsLoading] = useState(false)
@@ -77,7 +81,7 @@ export function CheckoutForm({
         // Payment failed before any charge succeeded — safe to retry.
         // Raw Stripe details stay in the logs; the customer sees mapped copy.
         onFailure(
-          createPaymentFailure(mapStripeErrorMessage(stripeError), {
+          createPaymentFailure(mapStripeErrorMessage(stripeError, failureMessages), {
             source: 'stripe_confirm_payment',
             details: {
               cartId,
@@ -105,6 +109,7 @@ export function CheckoutForm({
 
         const completion = await completeProviderConfirmedCheckout({
           complete: () => completeCart({ cartId, experiment, experimentVariant }),
+          messages: failureMessages,
           failureContext: {
             source: 'stripe_complete_cart',
             details: {
@@ -127,7 +132,7 @@ export function CheckoutForm({
       // uncertain state so the UI never suggests retrying or switching
       // payment method, which could double-charge the customer.
       onFailure(
-        createUncertainPaymentFailure({
+        createUncertainPaymentFailure(failureMessages, {
           source: 'stripe_unexpected_status',
           details: {
             cartId,
@@ -139,7 +144,7 @@ export function CheckoutForm({
     } catch (err) {
       // confirmPayment itself threw — no charge was made.
       onFailure(
-        createPaymentFailure(GENERIC_PAYMENT_FAILED_MESSAGE, {
+        createPaymentFailure(failureMessages.genericPaymentFailed, {
           source: 'stripe_checkout_unexpected',
           details: { cartId, error: err instanceof Error ? err.message : err },
         })
@@ -151,7 +156,7 @@ export function CheckoutForm({
   }
 
   const formatAmount = (amt: number, curr: string) => {
-    return new Intl.NumberFormat('en-US', {
+    return new Intl.NumberFormat(locale, {
       style: 'currency',
       currency: curr.toUpperCase(),
     }).format(amt)
@@ -170,7 +175,9 @@ export function CheckoutForm({
         size="lg"
         disabled={!stripe || !elements || isLoading}
       >
-        {isLoading ? 'Processing...' : `Pay ${formatAmount(amount, currency)}`}
+        {isLoading
+          ? t('processing')
+          : t('payAmount', { amount: formatAmount(amount, currency) })}
       </Button>
     </form>
   )

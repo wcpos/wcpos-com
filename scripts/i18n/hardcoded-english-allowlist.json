@@ -1,7 +1,7 @@
 {
   "version": 1,
   "generatedBy": "scripts/i18n/hardcoded-english.ts --update",
-  "updatedAt": "2026-07-06T22:53:44.555Z",
+  "updatedAt": "2026-07-06T23:12:36.934Z",
   "scope": [
     "src/app",
     "src/components",
@@ -815,142 +815,6 @@
       "category": "route/page",
       "attr": null,
       "text": "/pro/checkout?",
-      "count": 1
-    },
-    {
-      "id": "bd7ac64860e56e95",
-      "file": "src/app/[locale]/(main)/pro/checkout/page.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "Back to pricing",
-      "count": 1
-    },
-    {
-      "id": "e28abd225395610b",
-      "file": "src/app/[locale]/(main)/pro/checkout/page.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "Checkout",
-      "count": 2
-    },
-    {
-      "id": "8e2cf569f81604f3",
-      "file": "src/app/[locale]/(main)/pro/checkout/page.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "Complete your purchase of WCPOS Pro",
-      "count": 1
-    },
-    {
-      "id": "f7b55762342d609f",
-      "file": "src/app/[locale]/(main)/pro/checkout/page.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "WCPOS Pro",
-      "count": 1
-    },
-    {
-      "id": "498d9e2dce5df039",
-      "file": "src/app/[locale]/(main)/pro/checkout/page.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "WCPOS Pro — Lifetime",
-      "count": 1
-    },
-    {
-      "id": "4edd2dc2902ccf06",
-      "file": "src/app/[locale]/(main)/pro/checkout/page.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "WCPOS Pro — Yearly",
-      "count": 1
-    },
-    {
-      "id": "3989ea043e1638cd",
-      "file": "src/app/[locale]/(main)/pro/checkout/success/page.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "✓ Enter your license key to unlock Pro features",
-      "count": 1
-    },
-    {
-      "id": "6df9b2730f36db93",
-      "file": "src/app/[locale]/(main)/pro/checkout/success/page.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "✓ Install and activate the plugin on your WordPress site",
-      "count": 1
-    },
-    {
-      "id": "5bdd1225072e4b10",
-      "file": "src/app/[locale]/(main)/pro/checkout/success/page.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "✓ You can also download from your account&apos;s licenses page",
-      "count": 1
-    },
-    {
-      "id": "0e0d179fa55f02cb",
-      "file": "src/app/[locale]/(main)/pro/checkout/success/page.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "✓ Your license key and download link have been sent to your email",
-      "count": 1
-    },
-    {
-      "id": "25e33251c2dd6d38",
-      "file": "src/app/[locale]/(main)/pro/checkout/success/page.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "Go to Licenses",
-      "count": 1
-    },
-    {
-      "id": "7eec305e9fccd2ca",
-      "file": "src/app/[locale]/(main)/pro/checkout/success/page.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "Installation Guide",
-      "count": 1
-    },
-    {
-      "id": "ee115b4ea46d2448",
-      "file": "src/app/[locale]/(main)/pro/checkout/success/page.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "Order Complete - WCPOS Pro",
-      "count": 1
-    },
-    {
-      "id": "577ab4591f9a7df8",
-      "file": "src/app/[locale]/(main)/pro/checkout/success/page.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "Thank you for your purchase of WCPOS Pro",
-      "count": 1
-    },
-    {
-      "id": "ddea3a8b2111a3d8",
-      "file": "src/app/[locale]/(main)/pro/checkout/success/page.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "Thank You!",
-      "count": 1
-    },
-    {
-      "id": "819cb12f496cae7b",
-      "file": "src/app/[locale]/(main)/pro/checkout/success/page.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "What happens next?",
-      "count": 1
-    },
-    {
-      "id": "b5065a4b2da8b9c5",
-      "file": "src/app/[locale]/(main)/pro/checkout/success/page.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "Your purchase of WCPOS Pro is complete.",
       "count": 1
     },
     {
@@ -6458,38 +6322,6 @@
       "count": 1
     },
     {
-      "id": "c2d9676b84734ada",
-      "file": "src/components/pro/btcpay-button.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Failed to initialize Bitcoin payment",
-      "count": 1
-    },
-    {
-      "id": "881c6db134525b1f",
-      "file": "src/components/pro/btcpay-button.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "No checkout link returned",
-      "count": 1
-    },
-    {
-      "id": "97de63c1fb5b141c",
-      "file": "src/components/pro/btcpay-button.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Pay with Bitcoin",
-      "count": 1
-    },
-    {
-      "id": "468dd4c0fdf3e475",
-      "file": "src/components/pro/btcpay-button.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Preparing Bitcoin payment...",
-      "count": 1
-    },
-    {
       "id": "cdc9732cf15ebcfa",
       "file": "src/components/pro/btcpay-button.tsx",
       "category": "component",
@@ -6514,27 +6346,11 @@
       "count": 3
     },
     {
-      "id": "8ae647f8e6a8673e",
-      "file": "src/components/pro/checkout-client.tsx",
-      "category": "component",
-      "attr": "title",
-      "text": "Account",
-      "count": 1
-    },
-    {
       "id": "2ccfb38abc679e37",
       "file": "src/components/pro/checkout-client.tsx",
       "category": "component",
       "attr": null,
       "text": "active",
-      "count": 2
-    },
-    {
-      "id": "0f7c7d8b50ca82f1",
-      "file": "src/components/pro/checkout-client.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Back to pricing",
       "count": 2
     },
     {
@@ -6546,124 +6362,12 @@
       "count": 5
     },
     {
-      "id": "50f6b1c8459fb3cd",
-      "file": "src/components/pro/checkout-client.tsx",
-      "category": "component",
-      "attr": "title",
-      "text": "Billing address",
-      "count": 1
-    },
-    {
-      "id": "eb30396ccff96424",
-      "file": "src/components/pro/checkout-client.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Billing address was saved, but we couldn't prepare payment. Please try again.",
-      "count": 1
-    },
-    {
-      "id": "3aab11cacf5d0042",
-      "file": "src/components/pro/checkout-client.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Checkout is busy. Please try again.",
-      "count": 1
-    },
-    {
       "id": "221297e79457f150",
       "file": "src/components/pro/checkout-client.tsx",
       "category": "component",
       "attr": null,
       "text": "done",
       "count": 2
-    },
-    {
-      "id": "4a49dc6782adb5d9",
-      "file": "src/components/pro/checkout-client.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Failed to add item to cart",
-      "count": 1
-    },
-    {
-      "id": "818123fd8ff6bd9d",
-      "file": "src/components/pro/checkout-client.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Failed to create cart",
-      "count": 1
-    },
-    {
-      "id": "6c8974b71fe9e687",
-      "file": "src/components/pro/checkout-client.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Failed to initialize checkout",
-      "count": 1
-    },
-    {
-      "id": "eae778a30e7b299e",
-      "file": "src/components/pro/checkout-client.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Failed to refresh payment",
-      "count": 1
-    },
-    {
-      "id": "0bc9ab102c359324",
-      "file": "src/components/pro/checkout-client.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Failed to save billing address",
-      "count": 1
-    },
-    {
-      "id": "cbee818bf1157d43",
-      "file": "src/components/pro/checkout-client.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Failed to select",
-      "count": 1
-    },
-    {
-      "id": "b107aed83726da88",
-      "file": "src/components/pro/checkout-client.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Go to Licenses",
-      "count": 1
-    },
-    {
-      "id": "d2fcd577ae1f9db3",
-      "file": "src/components/pro/checkout-client.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Instant license delivery",
-      "count": 1
-    },
-    {
-      "id": "429e862f97821fd2",
-      "file": "src/components/pro/checkout-client.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "No product selected",
-      "count": 1
-    },
-    {
-      "id": "cb926512d92363ce",
-      "file": "src/components/pro/checkout-client.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "One-time payment — never auto-renews",
-      "count": 1
-    },
-    {
-      "id": "95038b8867c9ee5d",
-      "file": "src/components/pro/checkout-client.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Order ID:",
-      "count": 1
     },
     {
       "id": "37b0fddaeb5b4381",
@@ -6674,67 +6378,11 @@
       "count": 2
     },
     {
-      "id": "e0c1857cd918da40",
-      "file": "src/components/pro/checkout-client.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Preparing checkout...",
-      "count": 1
-    },
-    {
-      "id": "aa8eba8692e32537",
-      "file": "src/components/pro/checkout-client.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Return to Home",
-      "count": 1
-    },
-    {
-      "id": "f200e56d293b3a56",
-      "file": "src/components/pro/checkout-client.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Secure payment processing",
-      "count": 1
-    },
-    {
-      "id": "548ad7704c334309",
-      "file": "src/components/pro/checkout-client.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Thank you for your purchase!",
-      "count": 1
-    },
-    {
-      "id": "c0b8c8b2122780c9",
-      "file": "src/components/pro/checkout-client.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Total",
-      "count": 2
-    },
-    {
-      "id": "941922d4754a610e",
-      "file": "src/components/pro/checkout-client.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Unable to initialize checkout. Please try again.",
-      "count": 1
-    },
-    {
       "id": "4113ef0af355c926",
       "file": "src/components/pro/checkout-client.tsx",
       "category": "component",
       "attr": null,
       "text": "use client",
-      "count": 1
-    },
-    {
-      "id": "471713d8556da699",
-      "file": "src/components/pro/checkout-client.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Your license key and download link have been sent to your email.",
       "count": 1
     },
     {
@@ -6754,22 +6402,6 @@
       "count": 1
     },
     {
-      "id": "0d287f1c11426142",
-      "file": "src/components/pro/checkout-recovery.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "— we will confirm whether your payment went through before you pay again.",
-      "count": 1
-    },
-    {
-      "id": "6a27caa094ae888d",
-      "file": "src/components/pro/checkout-recovery.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "— we will finish setting up your order or refund your payment.",
-      "count": 1
-    },
-    {
       "id": "fdc20ba65db0c43e",
       "file": "src/components/pro/checkout-recovery.tsx",
       "category": "component",
@@ -6778,147 +6410,11 @@
       "count": 1
     },
     {
-      "id": "f512630b2b4765cf",
-      "file": "src/components/pro/checkout-recovery.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "and quote reference",
-      "count": 2
-    },
-    {
-      "id": "7989ffd9e89b92dd",
-      "file": "src/components/pro/checkout-recovery.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Check my licenses",
-      "count": 1
-    },
-    {
-      "id": "c2c8c10fc5e95225",
-      "file": "src/components/pro/checkout-recovery.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "contact support",
-      "count": 1
-    },
-    {
-      "id": "9244cbab182c10fd",
-      "file": "src/components/pro/checkout-recovery.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Contact support",
-      "count": 2
-    },
-    {
-      "id": "cb6d4584e5e3bcff",
-      "file": "src/components/pro/checkout-recovery.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Contact support and quote reference",
-      "count": 1
-    },
-    {
-      "id": "a0288e2ce74dc442",
-      "file": "src/components/pro/checkout-recovery.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "If support has confirmed this old warning is resolved, you can clear it and start a fresh checkout.",
-      "count": 1
-    },
-    {
-      "id": "777187958198e6f9",
-      "file": "src/components/pro/checkout-recovery.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Only reset checkout after support confirms it is safe to try again. If your payment is still pending, resetting could lead to a second payment.",
-      "count": 1
-    },
-    {
-      "id": "7606759adadfbf61",
-      "file": "src/components/pro/checkout-recovery.tsx",
-      "category": "component",
-      "attr": "title",
-      "text": "Payment cancelled",
-      "count": 1
-    },
-    {
-      "id": "76d3df400ea8ea5a",
-      "file": "src/components/pro/checkout-recovery.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Payment received — order pending",
-      "count": 1
-    },
-    {
-      "id": "998ce961d7853647",
-      "file": "src/components/pro/checkout-recovery.tsx",
-      "category": "component",
-      "attr": "title",
-      "text": "Payment status unknown",
-      "count": 1
-    },
-    {
-      "id": "d410bcd86c70b058",
-      "file": "src/components/pro/checkout-recovery.tsx",
-      "category": "component",
-      "attr": "title",
-      "text": "Payment unsuccessful",
-      "count": 1
-    },
-    {
-      "id": "a312843840d55188",
-      "file": "src/components/pro/checkout-recovery.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Please do not pay again.",
-      "count": 1
-    },
-    {
-      "id": "38e4675cff34dda2",
-      "file": "src/components/pro/checkout-recovery.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Still stuck?",
-      "count": 1
-    },
-    {
-      "id": "7a8a41eeb4c692f7",
-      "file": "src/components/pro/checkout-recovery.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Support told me to reset checkout",
-      "count": 1
-    },
-    {
       "id": "943dc4c39072aa11",
       "file": "src/components/pro/checkout-recovery.tsx",
       "category": "component",
       "attr": null,
       "text": "use client",
-      "count": 1
-    },
-    {
-      "id": "d0b048554241dd0b",
-      "file": "src/components/pro/checkout-recovery.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "You can also choose a different payment method below.",
-      "count": 2
-    },
-    {
-      "id": "25a23af6b9f29f16",
-      "file": "src/components/pro/checkout-recovery.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Your order details have been saved, so you can try again without starting over.",
-      "count": 1
-    },
-    {
-      "id": "7e9314fe83128ebe",
-      "file": "src/components/pro/checkout-recovery.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Your payment went through, but we hit a problem while creating your order.",
       "count": 1
     },
     {
@@ -6938,219 +6434,11 @@
       "count": 1
     },
     {
-      "id": "84bcfbc503b4e35d",
-      "file": "src/components/pro/checkout-safety.ts",
-      "category": "component",
-      "attr": null,
-      "text": "Cart completion did not produce an order",
-      "count": 1
-    },
-    {
       "id": "85ed588a33620a3c",
       "file": "src/components/pro/checkout-safety.ts",
       "category": "component",
       "attr": null,
       "text": "Checkout payment failure {reference}",
-      "count": 1
-    },
-    {
-      "id": "2004fded39d11e79",
-      "file": "src/components/pro/checkout-safety.ts",
-      "category": "component",
-      "attr": null,
-      "text": "PayPal checkout was cancelled and you have not been charged. You can try again whenever you're ready.",
-      "count": 1
-    },
-    {
-      "id": "f1867fcfc585f313",
-      "file": "src/components/pro/checkout-safety.ts",
-      "category": "component",
-      "attr": null,
-      "text": "PayPal couldn't complete your payment. You have not been charged — please try again or use a different payment method.",
-      "count": 1
-    },
-    {
-      "id": "e7538ae6d43e6c11",
-      "file": "src/components/pro/checkout-safety.ts",
-      "category": "component",
-      "attr": null,
-      "text": "Something went wrong while processing your card. You have not been charged — please try again.",
-      "count": 1
-    },
-    {
-      "id": "13faeb7b919dd56c",
-      "file": "src/components/pro/checkout-safety.ts",
-      "category": "component",
-      "attr": null,
-      "text": "We couldn't confirm the status of your payment. If you think you may have been charged, please contact support before trying again.",
-      "count": 1
-    },
-    {
-      "id": "e9d7ab176da6e7bd",
-      "file": "src/components/pro/checkout-safety.ts",
-      "category": "component",
-      "attr": null,
-      "text": "We couldn't prepare that payment method. Please try again or choose a different one.",
-      "count": 1
-    },
-    {
-      "id": "3f1b2aaadee602c7",
-      "file": "src/components/pro/checkout-safety.ts",
-      "category": "component",
-      "attr": null,
-      "text": "We couldn't start the Bitcoin payment. You have not been charged — please try again or use a different payment method.",
-      "count": 1
-    },
-    {
-      "id": "15ad16415d023576",
-      "file": "src/components/pro/checkout-safety.ts",
-      "category": "component",
-      "attr": null,
-      "text": "We couldn't start the PayPal checkout. Please try again or use a different payment method.",
-      "count": 1
-    },
-    {
-      "id": "99b6c7dcf5737d07",
-      "file": "src/components/pro/checkout-safety.ts",
-      "category": "component",
-      "attr": null,
-      "text": "We couldn't verify your card with your bank. Please try again or use a different payment method.",
-      "count": 2
-    },
-    {
-      "id": "c50277ad1c25ae22",
-      "file": "src/components/pro/checkout-safety.ts",
-      "category": "component",
-      "attr": null,
-      "text": "We were unable to process your payment. Please try again or use a different payment method.",
-      "count": 1
-    },
-    {
-      "id": "1495f888724c0d87",
-      "file": "src/components/pro/checkout-safety.ts",
-      "category": "component",
-      "attr": null,
-      "text": "Your card could not be charged. Please check your card details, or try a different card or payment method.",
-      "count": 1
-    },
-    {
-      "id": "ec583b3fd98026c3",
-      "file": "src/components/pro/checkout-safety.ts",
-      "category": "component",
-      "attr": null,
-      "text": "Your card has expired. Please use a different card.",
-      "count": 1
-    },
-    {
-      "id": "46a8369f4bdcb6ea",
-      "file": "src/components/pro/checkout-safety.ts",
-      "category": "component",
-      "attr": null,
-      "text": "Your card number appears to be invalid. Please check it and try again.",
-      "count": 2
-    },
-    {
-      "id": "d47f2e8de9d6b21e",
-      "file": "src/components/pro/checkout-safety.ts",
-      "category": "component",
-      "attr": null,
-      "text": "Your card was declined due to insufficient funds. Please use a different card or payment method.",
-      "count": 1
-    },
-    {
-      "id": "83d969c9b2ef555a",
-      "file": "src/components/pro/checkout-safety.ts",
-      "category": "component",
-      "attr": null,
-      "text": "Your card was declined. Please try a different card or payment method.",
-      "count": 1
-    },
-    {
-      "id": "9fc6c60d4d2ee0fb",
-      "file": "src/components/pro/checkout-safety.ts",
-      "category": "component",
-      "attr": null,
-      "text": "Your card's expiry date is invalid. Please check it and try again.",
-      "count": 2
-    },
-    {
-      "id": "cfe8ccde43957be5",
-      "file": "src/components/pro/checkout-safety.ts",
-      "category": "component",
-      "attr": null,
-      "text": "Your card's security code is incorrect. Please check it and try again.",
-      "count": 1
-    },
-    {
-      "id": "4b9baf86491f033f",
-      "file": "src/components/pro/checkout-safety.ts",
-      "category": "component",
-      "attr": null,
-      "text": "Your card's security code is invalid. Please check it and try again.",
-      "count": 1
-    },
-    {
-      "id": "78846393a75be1f7",
-      "file": "src/components/pro/checkout-safety.ts",
-      "category": "component",
-      "attr": null,
-      "text": "Your payment was received, but we couldn't finish creating your order. Please do not pay again — contact support and we will finish your order or refund the payment.",
-      "count": 1
-    },
-    {
-      "id": "232326f173720b26",
-      "file": "src/components/pro/checkout/account-step.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "— you&apos;ll come straight back to checkout.",
-      "count": 1
-    },
-    {
-      "id": "ca4c58960dff8606",
-      "file": "src/components/pro/checkout/account-step.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Could not create your account. Please try again.",
-      "count": 1
-    },
-    {
-      "id": "f518a3c71e3b8482",
-      "file": "src/components/pro/checkout/account-step.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Create account & continue",
-      "count": 1
-    },
-    {
-      "id": "0a33696352e6b9c3",
-      "file": "src/components/pro/checkout/account-step.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Email",
-      "count": 1
-    },
-    {
-      "id": "9fa2b89a87ac79d1",
-      "file": "src/components/pro/checkout/account-step.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "One moment…",
-      "count": 1
-    },
-    {
-      "id": "d9382136cf3f3d9b",
-      "file": "src/components/pro/checkout/account-step.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Password",
-      "count": 1
-    },
-    {
-      "id": "ffe3dc312ffb0422",
-      "file": "src/components/pro/checkout/account-step.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Prefer Google, GitHub or Discord?",
       "count": 1
     },
     {
@@ -7162,147 +6450,11 @@
       "count": 10
     },
     {
-      "id": "bc99ed7f18c259dc",
-      "file": "src/components/pro/checkout/account-step.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Sign in & continue",
-      "count": 1
-    },
-    {
-      "id": "3c41134577c911d5",
-      "file": "src/components/pro/checkout/account-step.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Sign in failed. Please check your password.",
-      "count": 1
-    },
-    {
-      "id": "30e391b11a018888",
-      "file": "src/components/pro/checkout/account-step.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Sign in here",
-      "count": 1
-    },
-    {
-      "id": "35228e9969bf448d",
-      "file": "src/components/pro/checkout/account-step.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Something went wrong. Please try again.",
-      "count": 1
-    },
-    {
-      "id": "a77599459aa9226a",
-      "file": "src/components/pro/checkout/account-step.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "That password didn’t work. If you signed up with Google, GitHub or Discord, use the sign-in link below instead — or reset your password from the sign-in page.",
-      "count": 1
-    },
-    {
       "id": "8530f0b226d2d8be",
       "file": "src/components/pro/checkout/account-step.tsx",
       "category": "component",
       "attr": null,
       "text": "use client",
-      "count": 1
-    },
-    {
-      "id": "171ec0f9e7c89990",
-      "file": "src/components/pro/checkout/account-step.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "We&apos;ll create your account with this email — your license and receipt arrive here after purchase.",
-      "count": 1
-    },
-    {
-      "id": "00d2930280e41d04",
-      "file": "src/components/pro/checkout/account-step.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Welcome back — you already have an account. Enter your password to sign in and continue.",
-      "count": 1
-    },
-    {
-      "id": "418b598acab9903c",
-      "file": "src/components/pro/checkout/billing-step.tsx",
-      "category": "component",
-      "attr": "label",
-      "text": "Address line 1",
-      "count": 1
-    },
-    {
-      "id": "0b45fad30bf4bc3a",
-      "file": "src/components/pro/checkout/billing-step.tsx",
-      "category": "component",
-      "attr": "label",
-      "text": "Address line 2",
-      "count": 1
-    },
-    {
-      "id": "416f3c9010af1e01",
-      "file": "src/components/pro/checkout/billing-step.tsx",
-      "category": "component",
-      "attr": "label",
-      "text": "City",
-      "count": 1
-    },
-    {
-      "id": "cefaffd0f0c6a011",
-      "file": "src/components/pro/checkout/billing-step.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Continue to payment",
-      "count": 1
-    },
-    {
-      "id": "7c0f9baa97c30c96",
-      "file": "src/components/pro/checkout/billing-step.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Could not save your billing address. Please try again.",
-      "count": 1
-    },
-    {
-      "id": "402ea6371d6b7554",
-      "file": "src/components/pro/checkout/billing-step.tsx",
-      "category": "component",
-      "attr": "label",
-      "text": "Country",
-      "count": 1
-    },
-    {
-      "id": "2c6c7725fd55986b",
-      "file": "src/components/pro/checkout/billing-step.tsx",
-      "category": "component",
-      "attr": "label",
-      "text": "First name",
-      "count": 1
-    },
-    {
-      "id": "0c1d6d5796ba841e",
-      "file": "src/components/pro/checkout/billing-step.tsx",
-      "category": "component",
-      "attr": "label",
-      "text": "Last name",
-      "count": 1
-    },
-    {
-      "id": "5aad7939b608386e",
-      "file": "src/components/pro/checkout/billing-step.tsx",
-      "category": "component",
-      "attr": "label",
-      "text": "Postal code",
-      "count": 1
-    },
-    {
-      "id": "c0c93d8a6826d3b3",
-      "file": "src/components/pro/checkout/billing-step.tsx",
-      "category": "component",
-      "attr": "label",
-      "text": "State / Province / Region",
       "count": 1
     },
     {
@@ -7314,14 +6466,6 @@
       "count": 1
     },
     {
-      "id": "b840d3d8d4b71117",
-      "file": "src/components/pro/checkout/express-checkout.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "or choose how to pay",
-      "count": 1
-    },
-    {
       "id": "71becb2b92ae037d",
       "file": "src/components/pro/checkout/express-checkout.tsx",
       "category": "component",
@@ -7330,67 +6474,11 @@
       "count": 1
     },
     {
-      "id": "4a68dd9dbd432d4c",
-      "file": "src/components/pro/checkout/payment-step.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "A BTCPay invoice opens with a QR code — pay on-chain or over Lightning, then you&apos;ll be returned here.",
-      "count": 1
-    },
-    {
-      "id": "5e53fe24cc40256b",
-      "file": "src/components/pro/checkout/payment-step.tsx",
-      "category": "component",
-      "attr": "title",
-      "text": "Bitcoin",
-      "count": 1
-    },
-    {
       "id": "9e0f2baa503bb437",
       "file": "src/components/pro/checkout/payment-step.tsx",
       "category": "component",
       "attr": null,
       "text": "border-primary bg-primary [box-shadow:inset_0_0_0_2.5px_var(--card)]",
-      "count": 1
-    },
-    {
-      "id": "c821543c66f82fc5",
-      "file": "src/components/pro/checkout/payment-step.tsx",
-      "category": "component",
-      "attr": "title",
-      "text": "Card",
-      "count": 1
-    },
-    {
-      "id": "2287d078a8cc79e0",
-      "file": "src/components/pro/checkout/payment-step.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "No payment methods are configured. Please contact support.",
-      "count": 1
-    },
-    {
-      "id": "86b37d9ac6dacb74",
-      "file": "src/components/pro/checkout/payment-step.tsx",
-      "category": "component",
-      "attr": "hint",
-      "text": "On-chain or Lightning",
-      "count": 1
-    },
-    {
-      "id": "6a129b50d16db3a0",
-      "file": "src/components/pro/checkout/payment-step.tsx",
-      "category": "component",
-      "attr": "hint",
-      "text": "Pay with your PayPal balance or linked card",
-      "count": 1
-    },
-    {
-      "id": "d8e4d6d116698357",
-      "file": "src/components/pro/checkout/payment-step.tsx",
-      "category": "component",
-      "attr": "aria-label",
-      "text": "Payment method",
       "count": 1
     },
     {
@@ -7410,27 +6498,11 @@
       "count": 1
     },
     {
-      "id": "09ff5f6e73469e25",
-      "file": "src/components/pro/checkout/payment-step.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Preparing payment...",
-      "count": 1
-    },
-    {
       "id": "be1d37f62bc87689",
       "file": "src/components/pro/checkout/payment-step.tsx",
       "category": "component",
       "attr": null,
       "text": "use client",
-      "count": 1
-    },
-    {
-      "id": "ed0998b843928924",
-      "file": "src/components/pro/checkout/payment-step.tsx",
-      "category": "component",
-      "attr": "hint",
-      "text": "Visa · Mastercard · Amex",
       "count": 1
     },
     {
@@ -7476,6 +6548,14 @@
     {
       "id": "8bdf725549a7696a",
       "file": "src/components/pro/checkout/step-shell.tsx",
+      "category": "component",
+      "attr": null,
+      "text": "use client",
+      "count": 1
+    },
+    {
+      "id": "4756d965459bd481",
+      "file": "src/components/pro/checkout/use-checkout-failure-messages.ts",
       "category": "component",
       "attr": null,
       "text": "use client",
@@ -7551,46 +6631,6 @@
       "category": "component",
       "attr": null,
       "text": "Failed to create payment session",
-      "count": 1
-    },
-    {
-      "id": "f66b5c2b4c21942a",
-      "file": "src/components/pro/paypal-button.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Failed to initialize PayPal payment",
-      "count": 1
-    },
-    {
-      "id": "0ff9e5975da2824b",
-      "file": "src/components/pro/paypal-button.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Failed to load PayPal. Please try another payment method.",
-      "count": 1
-    },
-    {
-      "id": "3b34ebcab93c5f9a",
-      "file": "src/components/pro/paypal-button.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Loading PayPal secure checkout...",
-      "count": 1
-    },
-    {
-      "id": "84183d4cd616cbd0",
-      "file": "src/components/pro/paypal-button.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Missing PayPal order id on approval",
-      "count": 1
-    },
-    {
-      "id": "7f0b6d57263db437",
-      "file": "src/components/pro/paypal-button.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "No PayPal order ID returned",
       "count": 1
     },
     {

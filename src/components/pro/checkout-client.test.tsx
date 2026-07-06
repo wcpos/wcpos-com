@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { render, screen, waitFor, fireEvent } from '@testing-library/react'
+import { screen, waitFor, fireEvent } from '@testing-library/react'
+import { renderWithIntl as render } from '@/test/intl'
 
 // Payment identifiers are host-resolved server-side and passed as a prop
 // (see store-environment.ts); tests exercise the all-providers setup.

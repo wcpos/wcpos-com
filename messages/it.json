@@ -129,6 +129,187 @@
         "question": "Quali metodi di pagamento accettate?",
         "answer": "Accettiamo carte di credito (Visa, Mastercard, Amex), PayPal e Bitcoin."
       }
+    },
+    "checkout": {
+      "page": {
+        "title": "Checkout",
+        "backToPricing": "Torna ai prezzi",
+        "metadata": {
+          "title": "Checkout",
+          "description": "Completa il tuo acquisto di WCPOS Pro"
+        }
+      },
+      "offers": {
+        "yearly": "WCPOS Pro — Annuale",
+        "lifetime": "WCPOS Pro — A vita",
+        "default": "WCPOS Pro"
+      },
+      "backToPricing": "Torna ai prezzi",
+      "edit": "Modifica",
+      "preparing": "Preparazione del checkout...",
+      "steps": {
+        "account": "Account",
+        "billing": "Indirizzo di fatturazione",
+        "payment": "Pagamento"
+      },
+      "complete": {
+        "title": "Grazie per il tuo acquisto!",
+        "description": "La chiave di licenza e il link di download sono stati inviati alla tua email.",
+        "orderId": "ID ordine: {orderId}",
+        "licenses": "Vai alle licenze",
+        "home": "Torna alla home"
+      },
+      "summary": {
+        "quantity": "Qtà: {quantity}",
+        "total": "Totale",
+        "instantLicense": "Consegna immediata della licenza",
+        "oneTimePayment": "Pagamento unico — nessun rinnovo automatico",
+        "securePayment": "Pagamento sicuro"
+      },
+      "account": {
+        "emailLabel": "Email",
+        "emailHint": "Creeremo il tuo account con questa email — licenza e ricevuta arriveranno qui dopo l’acquisto.",
+        "passwordLabel": "Password",
+        "existingAccountNotice": "Bentornato — hai già un account. Inserisci la password per accedere e continuare.",
+        "submitting": "Un momento…",
+        "createContinue": "Crea account e continua",
+        "signInContinue": "Accedi e continua",
+        "oauthPrompt": "Preferisci Google, GitHub o Discord?",
+        "oauthLink": "Accedi qui",
+        "oauthSuffix": "— tornerai direttamente al checkout.",
+        "errors": {
+          "passwordFailed": "La password non ha funzionato. Se ti sei registrato con Google, GitHub o Discord, usa il link di accesso qui sotto — oppure reimposta la password dalla pagina di accesso.",
+          "createFailed": "Impossibile creare l’account. Riprova.",
+          "signInFailed": "Accesso non riuscito. Controlla la password.",
+          "generic": "Qualcosa è andato storto. Riprova."
+        }
+      },
+      "billing": {
+        "fields": {
+          "firstName": "Nome",
+          "lastName": "Cognome",
+          "addressLine1": "Indirizzo riga 1",
+          "addressLine2": "Indirizzo riga 2",
+          "city": "Città",
+          "province": "Stato / Provincia / Regione",
+          "postalCode": "Codice postale",
+          "country": "Paese"
+        },
+        "optional": "(facoltativo)",
+        "saving": "Salvataggio…",
+        "continue": "Continua al pagamento",
+        "errors": {
+          "saveFailed": "Impossibile salvare l’indirizzo di fatturazione. Riprova."
+        }
+      },
+      "payment": {
+        "preparing": "Preparazione del pagamento...",
+        "processing": "Elaborazione...",
+        "payAmount": "Paga {amount}",
+        "walletSeparator": "oppure scegli come pagare",
+        "noneConfigured": "Nessun metodo di pagamento configurato. Contatta il supporto.",
+        "ariaLabel": "Metodo di pagamento",
+        "methods": {
+          "card": {
+            "title": "Carta",
+            "hint": "Visa · Mastercard · Amex"
+          },
+          "paypal": {
+            "hint": "Paga con saldo PayPal o carta collegata"
+          },
+          "bitcoin": {
+            "title": "Bitcoin",
+            "hint": "On-chain o Lightning",
+            "description": "Si apre una fattura BTCPay con codice QR — paga on-chain o tramite Lightning, poi tornerai qui."
+          }
+        },
+        "paypalButton": {
+          "loading": "Caricamento checkout sicuro PayPal...",
+          "loadFailed": "Impossibile caricare PayPal. Prova un altro metodo di pagamento."
+        },
+        "btcpayButton": {
+          "preparing": "Preparazione pagamento Bitcoin...",
+          "pay": "Paga con Bitcoin"
+        }
+      },
+      "errors": {
+        "noProductSelected": "Non è stato selezionato alcun prodotto",
+        "initializeFailed": "Impossibile inizializzare il checkout. Riprova.",
+        "checkoutBusy": "Checkout is busy. Please try again.",
+        "paymentRefreshFailed": "Billing address was saved, but we couldn't prepare payment. Please try again.",
+        "methodSwitchFailed": "We couldn't prepare that payment method. Please try again or choose a different one.",
+        "genericPaymentFailed": "We were unable to process your payment. Please try again or use a different payment method.",
+        "genericCardFailed": "Your card could not be charged. Please check your card details, or try a different card or payment method.",
+        "unexpectedPaymentStatus": "We couldn't confirm the status of your payment. If you think you may have been charged, please contact support before trying again.",
+        "orderPending": "Your payment was received, but we couldn't finish creating your order. Please do not pay again — contact support and we will finish your order or refund the payment.",
+        "paypalFailed": "PayPal couldn't complete your payment. You have not been charged — please try again or use a different payment method.",
+        "paypalInitFailed": "We couldn't start the PayPal checkout. Please try again or use a different payment method.",
+        "paypalCancelled": "PayPal checkout was cancelled and you have not been charged. You can try again whenever you're ready.",
+        "btcpayInitFailed": "We couldn't start the Bitcoin payment. You have not been charged — please try again or use a different payment method.",
+        "stripeDeclines": {
+          "insufficientFunds": "Your card was declined due to insufficient funds. Please use a different card or payment method."
+        },
+        "stripeCodes": {
+          "cardDeclined": "Your card was declined. Please try a different card or payment method.",
+          "expiredCard": "Your card has expired. Please use a different card.",
+          "incorrectCvc": "Your card's security code is incorrect. Please check it and try again.",
+          "invalidCvc": "Your card's security code is invalid. Please check it and try again.",
+          "incorrectNumber": "Your card number appears to be invalid. Please check it and try again.",
+          "invalidNumber": "Your card number appears to be invalid. Please check it and try again.",
+          "invalidExpiryMonth": "Your card's expiry date is invalid. Please check it and try again.",
+          "invalidExpiryYear": "Your card's expiry date is invalid. Please check it and try again.",
+          "processingError": "Something went wrong while processing your card. You have not been charged — please try again.",
+          "authenticationFailure": "We couldn't verify your card with your bank. Please try again or use a different payment method.",
+          "authenticationRequired": "We couldn't verify your card with your bank. Please try again or use a different payment method."
+        }
+      },
+      "recovery": {
+        "contactSupport": "Contatta il supporto",
+        "contactSupportLower": "Contatta il supporto",
+        "switchMethod": "You can also choose a different payment method below.",
+        "cancelled": {
+          "title": "Payment cancelled"
+        },
+        "unknown": {
+          "title": "Payment status unknown",
+          "prefix": "Please",
+          "suffix": "and quote reference <reference></reference> — we will confirm whether your payment went through before you pay again."
+        },
+        "unsuccessful": {
+          "title": "Pagamento non riuscito",
+          "saved": "Your order details have been saved, so you can try again without starting over.",
+          "stuck": "Still stuck?",
+          "quote": "and quote reference <reference></reference>."
+        },
+        "orderPending": {
+          "resetConfirm": "Only reset checkout after support confirms it is safe to try again. If your payment is still pending, resetting could lead to a second payment.",
+          "title": "Payment received — order pending",
+          "description": "Your payment went through, but we hit a problem while creating your order.",
+          "doNotPayAgain": "Please do not pay again.",
+          "supportInstructions": "Contact support and quote reference <reference></reference> — we will finish setting up your order or refund your payment.",
+          "contactSupport": "Contact support",
+          "checkLicenses": "Check my licenses",
+          "resetHint": "If support has confirmed this old warning is resolved, you can clear it and start a fresh checkout.",
+          "resetButton": "Support told me to reset checkout"
+        }
+      },
+      "successPage": {
+        "metadata": {
+          "title": "Order Complete - WCPOS Pro",
+          "description": "Thank you for your purchase of WCPOS Pro"
+        },
+        "title": "Grazie!",
+        "description": "Il tuo acquisto di WCPOS Pro è completo.",
+        "nextTitle": "Cosa succede ora?",
+        "next": {
+          "licenseEmail": "✓ Your license key and download link have been sent to your email",
+          "accountDownload": "✓ You can also download from your account's licenses page",
+          "install": "✓ Install and activate the plugin on your WordPress site",
+          "activate": "✓ Enter your license key to unlock Pro features"
+        },
+        "licenses": "Vai alle licenze",
+        "installationGuide": "Guida all’installazione"
+      }
     }
   },
   "account": {

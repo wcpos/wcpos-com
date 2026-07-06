@@ -1,13 +1,10 @@
 'use client'
 
 import { useState } from 'react'
+import { useTranslations } from 'next-intl'
 import { Button } from '@/components/ui/button'
 import { Bitcoin } from 'lucide-react'
-import {
-  createPaymentFailure,
-  BTCPAY_INIT_FAILED_MESSAGE,
-  type CheckoutFailure,
-} from './checkout-safety'
+import { createPaymentFailure, type CheckoutFailure } from './checkout-safety'
 
 interface BTCPayButtonProps {
   cartId: string
@@ -20,6 +17,8 @@ interface BTCPayButtonProps {
 }
 
 export function BTCPayButton({ cartId, checkoutLink, onFailure }: BTCPayButtonProps) {
+  const t = useTranslations('pro.checkout.payment.btcpayButton')
+  const tErrors = useTranslations('pro.checkout.errors')
   const [isLoading, setIsLoading] = useState(false)
 
   const handleClick = async () => {
@@ -43,7 +42,7 @@ export function BTCPayButton({ cartId, checkoutLink, onFailure }: BTCPayButtonPr
       })
 
       if (!response.ok) {
-        throw new Error('Failed to initialize Bitcoin payment')
+        throw new Error('BTCPAY_INIT_FAILED')
       }
 
       const { cart } = await response.json()
@@ -59,7 +58,7 @@ export function BTCPayButton({ cartId, checkoutLink, onFailure }: BTCPayButtonPr
         pendingBTCPaySession?.data?.checkoutLink || cart?.payment_session?.data?.checkoutLink
 
       if (!nextCheckoutLink) {
-        throw new Error('No checkout link returned')
+        throw new Error('BTCPAY_CHECKOUT_LINK_MISSING')
       }
 
       // Redirect to BTCPayServer checkout
@@ -67,7 +66,7 @@ export function BTCPayButton({ cartId, checkoutLink, onFailure }: BTCPayButtonPr
     } catch (err) {
       // No payment has happened yet — safe to retry.
       onFailure(
-        createPaymentFailure(BTCPAY_INIT_FAILED_MESSAGE, {
+        createPaymentFailure(tErrors('btcpayInitFailed'), {
           source: 'btcpay_init',
           details: { cartId, error: err instanceof Error ? err.message : err },
         })
@@ -86,12 +85,12 @@ export function BTCPayButton({ cartId, checkoutLink, onFailure }: BTCPayButtonPr
       {isLoading ? (
         <>
           <Bitcoin className="h-4 w-4 mr-2 opacity-80" />
-          Preparing Bitcoin payment...
+          {t('preparing')}
         </>
       ) : (
         <>
           <Bitcoin className="h-4 w-4 mr-2" />
-          Pay with Bitcoin
+          {t('pay')}
         </>
       )}
     </Button>

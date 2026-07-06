@@ -1,5 +1,6 @@
 import { describe, it, expect, vi } from 'vitest'
-import { render, screen, fireEvent, waitFor } from '@testing-library/react'
+import { screen, fireEvent, waitFor } from '@testing-library/react'
+import { renderWithIntl as render } from '@/test/intl'
 import { BillingStep, taxIdLabel } from './billing-step'
 
 describe('taxIdLabel', () => {

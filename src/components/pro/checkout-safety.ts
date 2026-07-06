@@ -41,7 +41,7 @@ export interface FailureLogContext {
  * step. Callers must treat this as Order pending and never as retryable.
  */
 export class OrderPendingError extends Error {
-  constructor(message = 'Cart completion did not produce an order') {
+  constructor(message = 'ORDER_PENDING') {
     super(message)
     this.name = 'OrderPendingError'
   }
@@ -51,32 +51,28 @@ export class OrderPendingError extends Error {
 // Customer-safe copy
 // ---------------------------------------------------------------------------
 
-export const GENERIC_PAYMENT_FAILED_MESSAGE =
-  'We were unable to process your payment. Please try again or use a different payment method.'
-
-export const GENERIC_CARD_FAILED_MESSAGE =
-  'Your card could not be charged. Please check your card details, or try a different card or payment method.'
-
-export const UNEXPECTED_PAYMENT_STATUS_MESSAGE =
-  "We couldn't confirm the status of your payment. If you think you may have been charged, please contact support before trying again."
-
-export const ORDER_PENDING_MESSAGE =
-  "Your payment was received, but we couldn't finish creating your order. Please do not pay again — contact support and we will finish your order or refund the payment."
-
-export const PAYPAL_FAILED_MESSAGE =
-  "PayPal couldn't complete your payment. You have not been charged — please try again or use a different payment method."
-
-export const PAYPAL_INIT_FAILED_MESSAGE =
-  "We couldn't start the PayPal checkout. Please try again or use a different payment method."
-
-export const PAYPAL_CANCELLED_MESSAGE =
-  "PayPal checkout was cancelled and you have not been charged. You can try again whenever you're ready."
-
-export const BTCPAY_INIT_FAILED_MESSAGE =
-  "We couldn't start the Bitcoin payment. You have not been charged — please try again or use a different payment method."
-
-export const METHOD_SWITCH_FAILED_MESSAGE =
-  "We couldn't prepare that payment method. Please try again or choose a different one."
+export interface CheckoutFailureMessages {
+  genericPaymentFailed: string
+  genericCardFailed: string
+  unexpectedPaymentStatus: string
+  orderPending: string
+  stripeDeclines: {
+    insufficientFunds: string
+  }
+  stripeCodes: {
+    cardDeclined: string
+    expiredCard: string
+    incorrectCvc: string
+    invalidCvc: string
+    incorrectNumber: string
+    invalidNumber: string
+    invalidExpiryMonth: string
+    invalidExpiryYear: string
+    processingError: string
+    authenticationFailure: string
+    authenticationRequired: string
+  }
+}
 
 // ---------------------------------------------------------------------------
 // Stripe error mapping
@@ -90,26 +86,27 @@ export interface StripeErrorLike {
   message?: string
 }
 
-const STRIPE_DECLINE_MESSAGES: Record<string, string> = {
-  insufficient_funds:
-    'Your card was declined due to insufficient funds. Please use a different card or payment method.',
+function stripeDeclineMessages(messages: CheckoutFailureMessages): Record<string, string> {
+  return {
+    insufficient_funds: messages.stripeDeclines.insufficientFunds,
+  }
 }
 
-const STRIPE_CODE_MESSAGES: Record<string, string> = {
-  card_declined: 'Your card was declined. Please try a different card or payment method.',
-  expired_card: 'Your card has expired. Please use a different card.',
-  incorrect_cvc: "Your card's security code is incorrect. Please check it and try again.",
-  invalid_cvc: "Your card's security code is invalid. Please check it and try again.",
-  incorrect_number: 'Your card number appears to be invalid. Please check it and try again.',
-  invalid_number: 'Your card number appears to be invalid. Please check it and try again.',
-  invalid_expiry_month: "Your card's expiry date is invalid. Please check it and try again.",
-  invalid_expiry_year: "Your card's expiry date is invalid. Please check it and try again.",
-  processing_error:
-    'Something went wrong while processing your card. You have not been charged — please try again.',
-  payment_intent_authentication_failure:
-    "We couldn't verify your card with your bank. Please try again or use a different payment method.",
-  authentication_required:
-    "We couldn't verify your card with your bank. Please try again or use a different payment method.",
+function stripeCodeMessages(messages: CheckoutFailureMessages): Record<string, string> {
+  return {
+    card_declined: messages.stripeCodes.cardDeclined,
+    expired_card: messages.stripeCodes.expiredCard,
+    incorrect_cvc: messages.stripeCodes.incorrectCvc,
+    invalid_cvc: messages.stripeCodes.invalidCvc,
+    incorrect_number: messages.stripeCodes.incorrectNumber,
+    invalid_number: messages.stripeCodes.invalidNumber,
+    invalid_expiry_month: messages.stripeCodes.invalidExpiryMonth,
+    invalid_expiry_year: messages.stripeCodes.invalidExpiryYear,
+    processing_error: messages.stripeCodes.processingError,
+    payment_intent_authentication_failure:
+      messages.stripeCodes.authenticationFailure,
+    authentication_required: messages.stripeCodes.authenticationRequired,
+  }
 }
 
 /**
@@ -117,17 +114,22 @@ const STRIPE_CODE_MESSAGES: Record<string, string> = {
  * get specific guidance; anything unknown gets a generic message. The raw
  * Stripe `message` is never returned — it stays in the logs.
  */
-export function mapStripeErrorMessage(error: StripeErrorLike): string {
-  if (error.decline_code && STRIPE_DECLINE_MESSAGES[error.decline_code]) {
-    return STRIPE_DECLINE_MESSAGES[error.decline_code]
+export function mapStripeErrorMessage(
+  error: StripeErrorLike,
+  messages: CheckoutFailureMessages
+): string {
+  const declineMessages = stripeDeclineMessages(messages)
+  if (error.decline_code && declineMessages[error.decline_code]) {
+    return declineMessages[error.decline_code]
   }
-  if (error.code && STRIPE_CODE_MESSAGES[error.code]) {
-    return STRIPE_CODE_MESSAGES[error.code]
+  const codeMessages = stripeCodeMessages(messages)
+  if (error.code && codeMessages[error.code]) {
+    return codeMessages[error.code]
   }
   if (error.type === 'card_error' || error.type === 'validation_error') {
-    return GENERIC_CARD_FAILED_MESSAGE
+    return messages.genericCardFailed
   }
-  return GENERIC_PAYMENT_FAILED_MESSAGE
+  return messages.genericPaymentFailed
 }
 
 // ---------------------------------------------------------------------------
@@ -233,8 +235,11 @@ export function createPaymentFailure(
  * The charge state could not be confirmed. Always uses fixed support-before-pay
  * copy so the UI never invites a retry or method switch that could double-charge.
  */
-export function createUncertainPaymentFailure(context: FailureLogContext): CheckoutFailure {
-  return buildFailure('payment_uncertain', UNEXPECTED_PAYMENT_STATUS_MESSAGE, context)
+export function createUncertainPaymentFailure(
+  messages: CheckoutFailureMessages,
+  context: FailureLogContext
+): CheckoutFailure {
+  return buildFailure('payment_uncertain', messages.unexpectedPaymentStatus, context)
 }
 
 /** The Customer cancelled the payment themselves. */
@@ -246,8 +251,11 @@ export function createCancelledFailure(
 }
 
 /** Payment went through but Order creation failed — the worst Customer state. */
-export function createOrderPendingFailure(context: FailureLogContext): CheckoutFailure {
-  return buildFailure('order_pending', ORDER_PENDING_MESSAGE, context)
+export function createOrderPendingFailure(
+  messages: CheckoutFailureMessages,
+  context: FailureLogContext
+): CheckoutFailure {
+  return buildFailure('order_pending', messages.orderPending, context)
 }
 
 export type ProviderConfirmedCompletionOutcome =
@@ -257,6 +265,7 @@ export type ProviderConfirmedCompletionOutcome =
 export interface ProviderConfirmedCompletionParams {
   /** Calls the existing completion adapter after the provider confirmed payment. */
   complete: () => Promise<string>
+  messages: CheckoutFailureMessages
   failureContext: FailureLogContext
 }
 
@@ -267,6 +276,7 @@ export interface ProviderConfirmedCompletionParams {
  */
 export async function completeProviderConfirmedCheckout({
   complete,
+  messages,
   failureContext,
 }: ProviderConfirmedCompletionParams): Promise<ProviderConfirmedCompletionOutcome> {
   try {
@@ -275,10 +285,11 @@ export async function completeProviderConfirmedCheckout({
   } catch (err) {
     return {
       ok: false,
-      failure: createOrderPendingFailure({
+      failure: createOrderPendingFailure(messages, {
         source: failureContext.source,
         details: {
-          ...(typeof failureContext.details === 'object' && failureContext.details !== null
+          ...(typeof failureContext.details === 'object' &&
+          failureContext.details !== null
             ? failureContext.details
             : { details: failureContext.details }),
           error: err instanceof Error ? err.message : err,
