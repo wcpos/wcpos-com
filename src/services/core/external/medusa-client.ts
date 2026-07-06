@@ -77,6 +77,16 @@ async function medusaFetch<T>(
 }
 
 /**
+ * Bearer-auth headers for a Medusa customer JWT, or `{}` when there is no token.
+ * Spread into a request's `headers` so authenticated store calls resolve
+ * `auth_context.actor_id` to the signed-in customer; anonymous/mock callers fall
+ * back to publishable-key-only. Keeps the header construction in one place.
+ */
+function buildAuthHeaders(authToken?: string | null): Record<string, string> {
+  return authToken ? { Authorization: `Bearer ${authToken}` } : {}
+}
+
+/**
  * Get all published products
  */
 export async function getProducts(
@@ -350,9 +360,15 @@ interface PaymentCollectionResponse {
 /**
  * Create a payment collection for a cart (Medusa v2)
  * Called once during checkout initialization.
+ *
+ * `authToken` is the caller's Medusa customer JWT. When present it is forwarded
+ * as Bearer auth so Medusa resolves `auth_context.actor_id` to the signed-in
+ * customer — the same reason it matters on `createPaymentSession` (see there).
+ * Optional so anonymous/mock callers keep working with the publishable key only.
  */
 export async function createPaymentCollection(
-  cartId: string
+  cartId: string,
+  authToken?: string | null
 ): Promise<PaymentCollectionResponse['payment_collection'] | null> {
   try {
     const response = await medusaFetch<PaymentCollectionResponse>(
@@ -360,6 +376,7 @@ export async function createPaymentCollection(
       {
         method: 'POST',
         body: JSON.stringify({ cart_id: cartId }),
+        headers: buildAuthHeaders(authToken),
       }
     )
     return response.payment_collection
@@ -380,10 +397,19 @@ export interface PaymentSessionResult {
 /**
  * Create a payment session within an existing collection (Medusa v2)
  * Called on init and when switching payment provider.
+ *
+ * `authToken` is the caller's Medusa customer JWT. Forwarding it as Bearer auth
+ * is what makes Medusa attach a persistent Stripe Customer to the PaymentIntent
+ * instead of a throwaway "Guest": the store payment-sessions route derives
+ * `customer_id` from `auth_context.actor_id`, and Medusa's create-payment-session
+ * workflow only creates/links a Stripe account holder `when("customer-id-exists")`.
+ * Without the token the request is publishable-key-only, `actor_id` is empty, and
+ * no `cus_...` is attached. Optional so anonymous/mock callers still work.
  */
 export async function createPaymentSession(
   paymentCollectionId: string,
-  providerId: string
+  providerId: string,
+  authToken?: string | null
 ): Promise<PaymentSessionResult | null> {
   try {
     const response = await medusaFetch<PaymentCollectionResponse>(
@@ -391,6 +417,7 @@ export async function createPaymentSession(
       {
         method: 'POST',
         body: JSON.stringify({ provider_id: providerId }),
+        headers: buildAuthHeaders(authToken),
       }
     )
 
