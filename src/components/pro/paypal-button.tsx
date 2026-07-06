@@ -43,6 +43,7 @@ interface PayPalButtonProps {
    * when the customer retries). Failure messages are already customer-safe.
    */
   onFailure: (failure: CheckoutFailure | null) => void
+  onProcessingChange?: (processing: boolean) => void
 }
 
 export function PayPalButton({
@@ -52,6 +53,7 @@ export function PayPalButton({
   paypalOrderId,
   onSuccess,
   onFailure,
+  onProcessingChange,
 }: PayPalButtonProps) {
   // When createOrder rejects, the PayPal SDK re-reports the same failure via
   // onError. The createOrder catch already reported it (with its own support
@@ -120,34 +122,39 @@ export function PayPalButton({
           return
         }
 
+        onProcessingChange?.(true)
         try {
-          await capturePayPalOrder({ cartId, orderId })
-        } catch (err) {
-          onFailure(
-            createPaymentFailure(PAYPAL_FAILED_MESSAGE, {
-              source: 'paypal_capture',
-              details: {
-                cartId,
-                orderId,
-                error: err instanceof Error ? err.message : String(err),
-              },
-            })
-          )
-          return
-        }
+          try {
+            await capturePayPalOrder({ cartId, orderId })
+          } catch (err) {
+            onFailure(
+              createPaymentFailure(PAYPAL_FAILED_MESSAGE, {
+                source: 'paypal_capture',
+                details: {
+                  cartId,
+                  orderId,
+                  error: err instanceof Error ? err.message : String(err),
+                },
+              })
+            )
+            return
+          }
 
-        const completion = await completeProviderConfirmedCheckout({
-          complete: () => completeCart({ cartId, experiment, experimentVariant }),
-          failureContext: {
-            source: 'paypal_complete_cart',
-            details: { cartId, orderId },
-          },
-        })
+          const completion = await completeProviderConfirmedCheckout({
+            complete: () => completeCart({ cartId, experiment, experimentVariant }),
+            failureContext: {
+              source: 'paypal_complete_cart',
+              details: { cartId, orderId },
+            },
+          })
 
-        if (completion.ok) {
-          onSuccess(completion.orderId)
-        } else {
-          onFailure(completion.failure)
+          if (completion.ok) {
+            onSuccess(completion.orderId)
+          } else {
+            onFailure(completion.failure)
+          }
+        } finally {
+          onProcessingChange?.(false)
         }
       },
       onError: (err) => {

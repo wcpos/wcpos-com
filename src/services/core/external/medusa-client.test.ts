@@ -747,6 +747,17 @@ describe('medusaClient', () => {
         )
       })
 
+      it('returns false when Medusa reports a non-completed PayPal capture', async () => {
+        mockFetch.mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({ order_id: 'PAYPAL_ORDER_1', status: 'PENDING' }),
+        })
+
+        const result = await capturePayPalOrder('cart_123', 'PAYPAL_ORDER_1')
+
+        expect(result).toBe(false)
+      })
+
       it('returns false when Medusa rejects PayPal capture', async () => {
         mockFetch.mockResolvedValueOnce({ ok: false, status: 502 })
 

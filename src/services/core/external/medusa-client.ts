@@ -471,7 +471,7 @@ export async function capturePayPalOrder(
   authToken?: string | null
 ): Promise<boolean> {
   try {
-    await medusaFetch<{ order_id: string; status: string }>(
+    const response = await medusaFetch<{ order_id: string; status: string }>(
       `/store/carts/${cartId}/paypal/capture`,
       {
         method: 'POST',
@@ -479,7 +479,7 @@ export async function capturePayPalOrder(
         headers: buildAuthHeaders(authToken),
       }
     )
-    return true
+    return response.status === 'COMPLETED'
   } catch (error) {
     storeLogger.error`Failed to capture PayPal order: ${error}`
     return false

@@ -203,6 +203,7 @@ export function PaymentStep({
                 paypalOrderId={paypalOrderId}
                 onSuccess={onSuccess}
                 onFailure={onFailure}
+                onProcessingChange={onProcessingChange}
               />
             </PayPalProvider>
           )}
