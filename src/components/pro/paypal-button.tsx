@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import {
   usePayPal,
   usePayPalOneTimePaymentSession,
@@ -53,6 +53,8 @@ export function PayPalButton({
   // reference), so onError must skip that echo — otherwise the customer sees
   // a second message under a different reference for one failure.
   const createOrderFailureReported = useRef(false)
+  const [keepRetryAfterCreateOrderFailure, setKeepRetryAfterCreateOrderFailure] =
+    useState(false)
   const { isHydrated } = usePayPal()
   const { error, isPending, handleClick } =
     usePayPalOneTimePaymentSession({
@@ -87,6 +89,7 @@ export function PayPalButton({
         } catch (err) {
           // No payment has happened yet — safe to retry.
           createOrderFailureReported.current = true
+          setKeepRetryAfterCreateOrderFailure(true)
           onFailure(
             createPaymentFailure(PAYPAL_INIT_FAILED_MESSAGE, {
               source: 'paypal_create_order',
@@ -120,6 +123,7 @@ export function PayPalButton({
           createOrderFailureReported.current = false
           return
         }
+        setKeepRetryAfterCreateOrderFailure(false)
         onFailure(
           createPaymentFailure(PAYPAL_FAILED_MESSAGE, {
             source: 'paypal_sdk',
@@ -151,7 +155,7 @@ export function PayPalButton({
     )
   }
 
-  if (error) {
+  if (error && !keepRetryAfterCreateOrderFailure) {
     return (
       <div className="text-center text-sm text-destructive py-4">
         Failed to load PayPal. Please try another payment method.

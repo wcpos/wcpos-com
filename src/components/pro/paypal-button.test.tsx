@@ -44,8 +44,8 @@ interface CapturedPayPalProps {
   onCancel: () => void
 }
 
-function renderButton(paypalOrderId: string | null = 'PAYPAL_ORDER_1') {
-  render(
+function buttonElement(paypalOrderId: string | null = 'PAYPAL_ORDER_1') {
+  return (
     <PayPalButton
       cartId="cart_1"
       experiment="pro_checkout_v1"
@@ -55,6 +55,10 @@ function renderButton(paypalOrderId: string | null = 'PAYPAL_ORDER_1') {
       onFailure={onFailure}
     />
   )
+}
+
+function renderButton(paypalOrderId: string | null = 'PAYPAL_ORDER_1') {
+  render(buttonElement(paypalOrderId))
   return capturePayPalSessionProps.mock.calls[0][0] as CapturedPayPalProps
 }
 
@@ -144,6 +148,22 @@ describe('PayPalButton', () => {
     expect(failure.kind).toBe('payment_failed')
     expect(failure.message).not.toContain('Medusa 500 stack trace')
     expect(failure.message).toContain('PayPal')
+  })
+
+  it('keeps PayPal retry available when a retryable createOrder failure becomes hook error state', async () => {
+    mockCreatePaymentSession.mockRejectedValue(new Error('Medusa 500 stack trace'))
+    const view = render(buttonElement(null))
+    const props = capturePayPalSessionProps.mock.calls[0][0] as CapturedPayPalProps
+
+    await expect(props.createOrder()).rejects.toThrow()
+
+    mockPayPalState.error = new Error('Medusa 500 stack trace')
+    view.rerender(buttonElement(null))
+
+    expect(document.querySelector('paypal-button')).toBeInTheDocument()
+    expect(
+      screen.queryByText('Failed to load PayPal. Please try another payment method.')
+    ).not.toBeInTheDocument()
   })
 
   it('clears a previous failure when a new attempt starts', async () => {
