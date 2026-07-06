@@ -94,14 +94,39 @@ describe('profilePatchFromBillingAddress', () => {
     ).toBeUndefined()
   })
 
-  it('never writes empty address fields over saved values', () => {
+  it('does not clear required address fields when they are submitted empty', () => {
     const patch = profilePatchFromBillingAddress(
       { ...address, city: '  ', address_1: '', address_2: '', province: '  ' },
       undefined
     )
     expect(patch.city).toBeUndefined()
     expect(patch.addressLine1).toBeUndefined()
+  })
+
+  it('clears submitted optional address fields when they are empty', () => {
+    const patch = profilePatchFromBillingAddress(
+      { ...address, address_2: '', province: '  ', postal_code: '' },
+      undefined
+    )
+    expect(patch.addressLine2).toBeNull()
+    expect(patch.region).toBeNull()
+    expect(patch.postalCode).toBeNull()
+  })
+
+  it('preserves optional address fields when checkout omits them', () => {
+    const patch = profilePatchFromBillingAddress(
+      {
+        first_name: address.first_name,
+        last_name: address.last_name,
+        address_1: address.address_1,
+        city: address.city,
+        country_code: address.country_code,
+      },
+      undefined
+    )
+
     expect(patch.addressLine2).toBeUndefined()
     expect(patch.region).toBeUndefined()
+    expect(patch.postalCode).toBeUndefined()
   })
 })

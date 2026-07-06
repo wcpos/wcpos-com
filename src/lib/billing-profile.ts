@@ -44,9 +44,9 @@ export function billingPrefillFromCustomer(
           first_name: customer.first_name ?? '',
           last_name: customer.last_name ?? '',
           address_1: profile.addressLine1,
-          address_2: profile.addressLine2 || undefined,
+          address_2: profile.addressLine2,
           city: profile.city,
-          province: profile.region || undefined,
+          province: profile.region,
           postal_code: profile.postalCode,
           country_code: countryCode,
         }
@@ -59,8 +59,10 @@ export function billingPrefillFromCustomer(
  * The account_profile patch a confirmed billing submission produces.
  * `taxNumber === undefined` means "field not submitted, preserve saved
  * value"; an empty string means "explicitly cleared" (the merge maps it to
- * null, which clears the profile field). Address fields are only written
- * when non-empty — checkout never blanks parts of a saved address.
+ * null, which clears the profile field). Required address fields are only
+ * written when non-empty. Optional address fields that checkout submitted are
+ * written as null when blank, so clearing them in checkout clears stale saved
+ * receipt/profile values too.
  */
 export function profilePatchFromBillingAddress(
   billingAddress: Record<string, unknown>,
@@ -68,16 +70,23 @@ export function profilePatchFromBillingAddress(
 ): Record<string, unknown> {
   const trimmed = (value: unknown) =>
     typeof value === 'string' && value.trim() ? value.trim() : undefined
+  const submittedTrimmedOrNull = (key: string) => {
+    if (!(key in billingAddress)) return undefined
+    const value = billingAddress[key]
+    if (typeof value !== 'string') return undefined
+    const normalized = value.trim()
+    return normalized.length > 0 ? normalized : null
+  }
 
   const country = trimmed(billingAddress.country_code)
 
   return {
     countryCode: country ? country.toUpperCase() : undefined,
     addressLine1: trimmed(billingAddress.address_1),
-    addressLine2: trimmed(billingAddress.address_2),
+    addressLine2: submittedTrimmedOrNull('address_2'),
     city: trimmed(billingAddress.city),
-    region: trimmed(billingAddress.province),
-    postalCode: trimmed(billingAddress.postal_code),
+    region: submittedTrimmedOrNull('province'),
+    postalCode: submittedTrimmedOrNull('postal_code'),
     taxNumber,
   }
 }

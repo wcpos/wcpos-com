@@ -16,9 +16,9 @@ export interface BillingAddress {
   first_name: string
   last_name: string
   address_1: string
-  address_2?: string
+  address_2: string
   city: string
-  province?: string
+  province: string
   postal_code: string
   country_code: string
 }
@@ -76,8 +76,6 @@ export function BillingStep({
     setIsSubmitting(true)
     setError(null)
     try {
-      const trimmedAddress2 = address2.trim()
-      const trimmedProvince = province.trim()
       const address: BillingAddress = {
         first_name: firstName.trim(),
         last_name: lastName.trim(),
@@ -85,12 +83,8 @@ export function BillingStep({
         city: city.trim(),
         postal_code: postalCode.trim(),
         country_code: countryCode,
-      }
-      if (trimmedAddress2) {
-        address.address_2 = trimmedAddress2
-      }
-      if (trimmedProvince) {
-        address.province = trimmedProvince
+        address_2: address2.trim(),
+        province: province.trim(),
       }
 
       await onSubmit(

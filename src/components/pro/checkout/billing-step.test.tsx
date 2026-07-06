@@ -102,7 +102,7 @@ describe('BillingStep prefill', () => {
     )
   })
 
-  it('submits optional address line 2 and province only when filled', async () => {
+  it('submits optional address fields when filled', async () => {
     const onSubmit = vi.fn(async () => {})
     render(<BillingStep onSubmit={onSubmit} />)
 
@@ -148,6 +148,46 @@ describe('BillingStep prefill', () => {
     )
   })
 
+  it('submits empty optional address fields so saved profile values can be cleared', async () => {
+    const onSubmit = vi.fn(async () => {})
+    render(
+      <BillingStep
+        initialAddress={{
+          first_name: 'Ada',
+          last_name: 'Lovelace',
+          address_1: '42 Wallaby Way',
+          address_2: 'Old Apt',
+          city: 'Sydney',
+          province: 'Old NSW',
+          postal_code: '2000',
+          country_code: 'au',
+        }}
+        onSubmit={onSubmit}
+      />
+    )
+
+    fireEvent.change(screen.getByLabelText('Address line 2'), {
+      target: { value: '' },
+    })
+    fireEvent.change(screen.getByLabelText('State / Province / Region'), {
+      target: { value: '' },
+    })
+    fireEvent.change(screen.getByLabelText('Postal code'), {
+      target: { value: '' },
+    })
+    fireEvent.submit(screen.getByTestId('billing-step-form'))
+
+    await waitFor(() => expect(onSubmit).toHaveBeenCalledTimes(1))
+    expect(onSubmit).toHaveBeenCalledWith(
+      expect.objectContaining({
+        address_2: '',
+        province: '',
+        postal_code: '',
+      }),
+      { taxNumber: '' }
+    )
+  })
+
   it('submits an empty tax number when the field is left blank', async () => {
     const onSubmit = vi.fn(async () => {})
     render(
@@ -156,7 +196,9 @@ describe('BillingStep prefill', () => {
           first_name: 'Paul',
           last_name: 'K',
           address_1: '1 Example St',
+          address_2: '',
           city: 'Perth',
+          province: '',
           postal_code: '6000',
           country_code: 'us',
         }}
