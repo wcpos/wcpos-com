@@ -18,6 +18,7 @@ import {
   findAdminCustomerByEmail,
   getAdminCustomerById,
   getAdminCustomerOrderById,
+  listAdminCustomerOrders,
 } from './medusa-admin'
 
 const fetchMock = vi.fn()
@@ -99,6 +100,29 @@ describe('getAdminCustomerById', () => {
     fetchMock.mockResolvedValueOnce({ ok: false, status: 404, text: async () => 'nope' } as Response)
     expect(await getAdminCustomerById('cus_x')).toBeNull()
     expect(mockInfraError).toHaveBeenCalledTimes(1)
+  })
+})
+
+describe('admin order fields', () => {
+  // /admin/orders omits email/currency_code/subtotal/tax_total by default;
+  // the account pages need them (undefined currency_code threw and broke the
+  // Orders page under "view as"). Both order fetchers must request them.
+  it('listAdminCustomerOrders requests currency_code, email and items', async () => {
+    fetchMock.mockResolvedValueOnce(ok({ orders: [] }))
+    await listAdminCustomerOrders('cus_1')
+    const url = fetchMock.mock.calls[0][0] as string
+    expect(url).toContain('fields=')
+    expect(decodeURIComponent(url)).toContain('currency_code')
+    expect(decodeURIComponent(url)).toContain('email')
+    expect(decodeURIComponent(url)).toContain('*items')
+  })
+
+  it('getAdminCustomerOrderById requests currency_code and email', async () => {
+    fetchMock.mockResolvedValueOnce(ok({ orders: [{ id: 'ord_1' }] }))
+    await getAdminCustomerOrderById('cus_1', 'ord_1')
+    const url = decodeURIComponent(fetchMock.mock.calls[0][0] as string)
+    expect(url).toContain('currency_code')
+    expect(url).toContain('email')
   })
 })
 
