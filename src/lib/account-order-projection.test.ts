@@ -297,6 +297,8 @@ describe('receipt projections', () => {
       displayId: 1001,
       createdAt: '2026-02-01T00:00:00Z',
       customerEmail: 'buyer@example.com',
+      customerName: null,
+      paymentStatus: 'captured',
       currencyCode: 'usd',
       billingProfile: {
         countryCode: null,
@@ -321,6 +323,21 @@ describe('receipt projections', () => {
         total: 129,
       },
     })
+  })
+
+  it('projects the billing name from the customer record', () => {
+    const profile = projectReceiptProfile(undefined)
+
+    expect(
+      projectAccountOrderReceipt(makeOrder(), profile, {
+        first_name: '  Paul ',
+        last_name: 'Kilmurray',
+      }).customerName
+    ).toBe('Paul Kilmurray')
+    expect(
+      projectAccountOrderReceipt(makeOrder(), profile, { first_name: '  ' })
+        .customerName
+    ).toBeNull()
   })
 
   it('uses legacy WooCommerce metadata for receipt identity', () => {
