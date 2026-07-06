@@ -21,6 +21,14 @@ function getStripePromise(publishableKey: string): Promise<Stripe | null> {
 interface StripeProviderProps {
   children: ReactNode
   clientSecret?: string
+  /**
+   * Stripe CustomerSession client secret. When present, the Payment Element
+   * renders Stripe's optional "save payment details" checkbox (with its
+   * card-network-compliant off-session mandate). Absent → no checkbox. Must be
+   * supplied at mount alongside clientSecret — Elements ignores option changes
+   * afterwards.
+   */
+  customerSessionClientSecret?: string | null
   /** Host-resolved public key; null renders the not-configured notice. */
   publishableKey: string | null
 }
@@ -28,6 +36,7 @@ interface StripeProviderProps {
 export function StripeProvider({
   children,
   clientSecret,
+  customerSessionClientSecret,
   publishableKey,
 }: StripeProviderProps) {
   if (!publishableKey) {
@@ -41,6 +50,9 @@ export function StripeProvider({
   const options = clientSecret
     ? {
         clientSecret,
+        ...(customerSessionClientSecret
+          ? { customerSessionClientSecret }
+          : {}),
         appearance: {
           theme: 'stripe' as const,
           variables: {

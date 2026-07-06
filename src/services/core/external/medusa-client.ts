@@ -435,6 +435,33 @@ export async function createPaymentSession(
 }
 
 /**
+ * Mint a Stripe CustomerSession for the cart (Medusa custom route).
+ *
+ * Returns the `customer_session_client_secret` the storefront hands to
+ * `<Elements>` so Stripe renders its optional "save my card" checkbox. The
+ * backend only mints one for yearly carts with an attached Stripe customer, and
+ * returns null otherwise — a null here (or any failure) just means "no
+ * checkbox", never a checkout error.
+ */
+export async function createCustomerSession(
+  cartId: string,
+  authToken?: string | null
+): Promise<string | null> {
+  try {
+    const response = await medusaFetch<{
+      customer_session_client_secret: string | null
+    }>(`/store/carts/${cartId}/customer-session`, {
+      method: 'POST',
+      headers: buildAuthHeaders(authToken),
+    })
+    return response.customer_session_client_secret ?? null
+  } catch (error) {
+    storeLogger.error`Failed to create customer session: ${error}`
+    return null
+  }
+}
+
+/**
  * Complete a cart (finalize payment and create order)
  */
 export async function completeCart(cartId: string): Promise<CompleteCartResponse | null> {
