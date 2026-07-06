@@ -22,6 +22,13 @@ function requireAdminToken(): string {
 }
 
 async function medusaAdminFetch<T>(path: string, init: RequestInit = {}): Promise<T> {
+  // Medusa v2 admin API keys authenticate via HTTP Basic auth (the secret key
+  // is the username, password empty) — the framework rejects `Bearer` for API
+  // keys (`Bearer` is only for short-lived user JWTs, which can't serve as a
+  // static env token). See @medusajs/framework authenticate-middleware
+  // getApiKeyInfo: it requires `tokenType === 'basic'`.
+  const basicCredential = Buffer.from(`${requireAdminToken()}:`).toString('base64')
+
   // Discord role-sync reconciles LIVE business data — it runs from webhooks
   // and cron with no meaningful request host, so it is pinned to live rather
   // than host-resolved.
@@ -29,7 +36,7 @@ async function medusaAdminFetch<T>(path: string, init: RequestInit = {}): Promis
     ...init,
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${requireAdminToken()}`,
+      Authorization: `Basic ${basicCredential}`,
       ...(init.headers as Record<string, string> | undefined),
     },
   })

@@ -32,6 +32,20 @@ function ok(body: unknown) {
   return { ok: true, json: async () => body } as Response
 }
 
+describe('admin auth header', () => {
+  it('authenticates with HTTP Basic (secret key as username), not Bearer', async () => {
+    fetchMock.mockResolvedValueOnce(ok({ customers: [] }))
+    await findAdminCustomerByEmail('a@b.com')
+
+    const init = fetchMock.mock.calls[0][1] as RequestInit
+    const auth = (init.headers as Record<string, string>).Authorization
+    expect(auth.startsWith('Basic ')).toBe(true)
+    // Medusa v2 rejects Bearer for API keys; the key is the Basic username.
+    const decoded = Buffer.from(auth.slice('Basic '.length), 'base64').toString('utf-8')
+    expect(decoded).toBe('admin-token:')
+  })
+})
+
 describe('findAdminCustomerByEmail', () => {
   it('queries /admin/customers by email and returns the first match', async () => {
     fetchMock.mockResolvedValueOnce(
