@@ -411,6 +411,22 @@ export function restoreCheckoutSafetyState(): RestoredCheckoutSafetyState | null
 }
 
 /**
+ * Remove one cart's persisted protective failure after support has confirmed
+ * that specific warning is safe to dismiss.
+ */
+export function clearCheckoutSafetyStateForCart(cartId: string): void {
+  if (!cartId) return
+  const storage = getSessionStorage()
+  if (!storage) return
+
+  try {
+    storage.removeItem(STORAGE_KEY_PREFIX + cartId)
+  } catch {
+    // Best effort — worst case the conservative notice shows again.
+  }
+}
+
+/**
  * Remove every persisted protective failure once an Order definitively exists.
  */
 export function clearCheckoutSafetyState(): void {

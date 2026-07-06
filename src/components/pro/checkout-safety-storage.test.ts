@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 
 import {
+  clearCheckoutSafetyStateForCart,
   clearCheckoutSafetyState,
   isProtectiveCheckoutFailureKind,
   recordCheckoutFailure,
@@ -172,6 +173,21 @@ describe('recordCheckoutFailure / restoreCheckoutSafetyState', () => {
 })
 
 describe('clearCheckoutSafetyState', () => {
+  it('removes only the targeted persisted protective failure', () => {
+    recordCheckoutFailure('cart_reset', ORDER_PENDING_FAILURE)
+    recordCheckoutFailure('cart_keep', UNCERTAIN_FAILURE)
+
+    clearCheckoutSafetyStateForCart('cart_reset')
+
+    const restored = restoreCheckoutSafetyState()
+    expect(restored?.cartId).toBe('cart_keep')
+    expect(restored?.failure.kind).toBe('payment_uncertain')
+    expect(sessionStorage.getItem('wcpos:checkout-pending:cart_reset')).toBeNull()
+    expect(
+      sessionStorage.getItem('wcpos:checkout-pending:cart_keep')
+    ).not.toBeNull()
+  })
+
   it('removes every persisted protective failure', () => {
     recordCheckoutFailure('cart_1', ORDER_PENDING_FAILURE)
     recordCheckoutFailure('cart_2', UNCERTAIN_FAILURE)

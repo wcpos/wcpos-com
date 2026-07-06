@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { createPaymentSession } from './complete-cart'
 import { CheckoutErrorNotice, OrderPendingNotice } from './checkout-recovery'
 import {
+  clearCheckoutSafetyStateForCart,
   clearCheckoutSafetyState,
   createPaymentFailure,
   isProtectiveCheckoutFailureKind,
@@ -74,6 +75,16 @@ interface PaymentSessionResult {
 const PRO_CHECKOUT_EXPERIMENT = 'pro_checkout_v1'
 const CHECKOUT_SAFETY_RESET_PARAM = 'reset_checkout'
 const CHECKOUT_SAFETY_RESET_VALUE = 'order_pending'
+
+function consumeCheckoutSafetyResetParam(): void {
+  const url = new URL(window.location.href)
+  url.searchParams.delete(CHECKOUT_SAFETY_RESET_PARAM)
+  window.history.replaceState(
+    window.history.state,
+    '',
+    `${url.pathname}${url.search}${url.hash}`
+  )
+}
 
 // Map frontend payment method names to Medusa provider IDs. The Record is
 // total over PaymentMethod, so adding a method without a provider id is a
@@ -198,6 +209,9 @@ export function CheckoutClient({
   const [error, setError] = useState<string | null>(null)
   // Payment-stage failures — recoverable, rendered without unmounting the cart.
   const [failure, setFailure] = useState<CheckoutFailure | null>(null)
+  const [orderPendingGuardCartId, setOrderPendingGuardCartId] = useState<
+    string | null
+  >(null)
   const [orderComplete, setOrderComplete] = useState(false)
   const [orderId, setOrderId] = useState<string | null>(null)
   const [paymentCollectionId, setPaymentCollectionId] = useState<
@@ -252,13 +266,29 @@ export function CheckoutClient({
         searchParams.get(CHECKOUT_SAFETY_RESET_PARAM) ===
         CHECKOUT_SAFETY_RESET_VALUE
       ) {
-        clearCheckoutSafetyState()
+        const restored = restoreCheckoutSafetyState()
+        if (restored?.failure.kind === 'order_pending') {
+          clearCheckoutSafetyStateForCart(restored.cartId)
+        }
+        consumeCheckoutSafetyResetParam()
+        const nextRestored = restoreCheckoutSafetyState()
+        if (nextRestored) {
+          setFailure(nextRestored.failure)
+          setOrderPendingGuardCartId(
+            nextRestored.failure.kind === 'order_pending'
+              ? nextRestored.cartId
+              : null
+          )
+        }
         setSafetyRestored(true)
         return
       }
       const restored = restoreCheckoutSafetyState()
       if (restored) {
         setFailure(restored.failure)
+        setOrderPendingGuardCartId(
+          restored.failure.kind === 'order_pending' ? restored.cartId : null
+        )
       }
       setSafetyRestored(true)
     })
@@ -268,9 +298,11 @@ export function CheckoutClient({
   }, [])
 
   const resetOrderPendingGuard = useCallback(() => {
-    clearCheckoutSafetyState()
+    if (orderPendingGuardCartId) {
+      clearCheckoutSafetyStateForCart(orderPendingGuardCartId)
+    }
     window.location.reload()
-  }, [])
+  }, [orderPendingGuardCartId])
 
   const blockedByProtectiveFailure = failure
     ? shouldBlockCheckout(failure)
@@ -448,6 +480,11 @@ export function CheckoutClient({
   const handleFailure = useCallback(
     (nextFailure: CheckoutFailure | null) => {
       setFailure(nextFailure)
+      setOrderPendingGuardCartId(
+        nextFailure?.kind === 'order_pending' && activeCartId
+          ? activeCartId
+          : null
+      )
       if (
         nextFailure &&
         activeCartId &&

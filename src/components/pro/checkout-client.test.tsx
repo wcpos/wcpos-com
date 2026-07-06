@@ -947,6 +947,12 @@ describe('CheckoutClient', () => {
         'Your payment was received, but we could not finish creating your order.',
       reference: 'WCPOS-RESTORED-PENDING',
     })
+    recordCheckoutFailure('cart-uncertain', {
+      kind: 'payment_uncertain',
+      message:
+        "We couldn't confirm the status of your payment. If you think you may have been charged, please contact support before trying again.",
+      reference: 'WCPOS-RESTORED-UNCERTAIN',
+    })
     window.history.pushState(
       {},
       '',
@@ -965,7 +971,10 @@ describe('CheckoutClient', () => {
     expect(
       screen.queryByText('Payment received — order pending')
     ).not.toBeInTheDocument()
-    expect(restoreCheckoutSafetyState()).toBeNull()
+    expect(window.location.search).not.toContain('reset_checkout')
+    const restored = restoreCheckoutSafetyState()
+    expect(restored?.cartId).toBe('cart-uncertain')
+    expect(restored?.failure.kind).toBe('payment_uncertain')
     await waitFor(() => {
       expect(mockFetch).toHaveBeenCalledWith(
         '/api/store/cart',
