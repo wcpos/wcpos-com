@@ -75,6 +75,8 @@ const FALLBACK_COUNTRY_CODES = [
   'VI', 'VN', 'VU', 'WF', 'WS', 'XK', 'YE', 'YT', 'ZA', 'ZM', 'ZW',
 ]
 
+const BILLABLE_COUNTRY_CODE_SET = new Set(FALLBACK_COUNTRY_CODES)
+
 function getCountryCodes(displayNames: Intl.DisplayNames | null): string[] {
   if (typeof Intl.supportedValuesOf === 'function') {
     try {
@@ -82,7 +84,7 @@ function getCountryCodes(displayNames: Intl.DisplayNames | null): string[] {
         key: string
       ) => string[]
       return getSupportedValues('region').filter((code) =>
-        /^[A-Z]{2}$/.test(code)
+        BILLABLE_COUNTRY_CODE_SET.has(code)
       )
     } catch {
       // Fall through to generated list.
@@ -100,7 +102,7 @@ function getCountryCodes(displayNames: Intl.DisplayNames | null): string[] {
     for (const second of alphabet) {
       const code = `${first}${second}`
       const label = displayNames.of(code)
-      if (label && label !== code) {
+      if (label && label !== code && BILLABLE_COUNTRY_CODE_SET.has(code)) {
         codes.push(code)
       }
     }
