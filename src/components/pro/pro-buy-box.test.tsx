@@ -7,13 +7,15 @@ vi.mock('@/i18n/navigation', () => ({
   Link: ({
     children,
     href,
+    prefetch,
     ...props
   }: {
     children: React.ReactNode
     href: string
+    prefetch?: boolean
     [key: string]: unknown
   }) => (
-    <a href={href} {...props}>
+    <a href={href} data-prefetch={String(prefetch)} {...props}>
       {children}
     </a>
   ),
@@ -92,6 +94,15 @@ describe('ProBuyBox', () => {
     expect(
       screen.getByText('Try the free version first')
     ).toBeInTheDocument()
+  })
+
+  it('does not prefetch checkout links because they resolve auth at request time', () => {
+    renderBuyBox()
+
+    expect(screen.getByRole('link', { name: 'Get Started' })).toHaveAttribute(
+      'data-prefetch',
+      'false'
+    )
   })
 
   it('switches CTA href and note when the other term is selected', () => {

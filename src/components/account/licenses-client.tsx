@@ -365,7 +365,9 @@ export function LicensesClient({
                 <AccountNotice
                   action={
                     <Button asChild size="sm">
-                      <Link href={renewHref}>{t('renew')}</Link>
+                      <Link href={renewHref} prefetch={false}>
+                        {t('renew')}
+                      </Link>
                     </Button>
                   }
                 >
@@ -442,7 +444,9 @@ export function LicensesClient({
                         size="sm"
                         variant={displayStatus === 'active' ? 'outline' : 'default'}
                       >
-                        <Link href={renewHref}>{t('renew')}</Link>
+                        <Link href={renewHref} prefetch={false}>
+                          {t('renew')}
+                        </Link>
                       </Button>
                     )}
                     {displayStatus === 'active' && (

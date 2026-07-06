@@ -10,13 +10,15 @@ vi.mock('@/i18n/navigation', () => ({
   Link: ({
     children,
     href,
+    prefetch,
     ...props
   }: {
     children: React.ReactNode
     href: string
+    prefetch?: boolean
     [key: string]: unknown
   }) => (
-    <a href={href} {...props}>
+    <a href={href} data-prefetch={String(prefetch)} {...props}>
       {children}
     </a>
   ),
@@ -281,6 +283,24 @@ describe('LicensesClient', () => {
     expect(screen.getByRole('link', { name: 'Renew' })).toHaveAttribute(
       'href',
       '/pro/checkout?product=wcpos-pro-yearly'
+    )
+  })
+
+  it('does not prefetch Renew checkout links because they resolve auth at request time', () => {
+    render(
+      <LicensesClient
+        initialLicenses={[
+          makeLicense({
+            status: 'active',
+            policyId: DEFAULT_YEARLY_POLICY_ID,
+          }),
+        ]}
+      />
+    )
+
+    expect(screen.getByRole('link', { name: 'Renew' })).toHaveAttribute(
+      'data-prefetch',
+      'false'
     )
   })
 
