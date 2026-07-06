@@ -73,15 +73,17 @@ export async function POST(request: Request) {
     // Top-of-funnel conversion: a visitor just became a (free) account holder.
     // Fire-and-forget, mirroring checkout_completed — trackServerEvent gates on
     // request consent and self-registers delivery, so the response is never
-    // blocked and the event survives the post-response freeze. Attributed to the
-    // landing-page anon id so it stitches onto the same person as their visit.
+    // blocked and the event survives the post-response freeze. Prefer the
+    // landing-page anon id so it stitches onto the same person as their visit;
+    // fall back to the unique customer.id (never a shared placeholder, which
+    // would merge unrelated signups into one PostHog person and break counts).
     try {
       const cookieStore = await cookies()
       const distinctId = cookieStore.get(ANALYTICS_DISTINCT_ID_COOKIE)?.value
       void trackServerEvent('signup_completed', {
         method: 'email',
         customer_id: customer.id,
-        distinct_id: distinctId ?? 'missing-distinct-id',
+        distinct_id: distinctId ?? customer.id,
         funnel_step: 'signup_completed',
         page: '/register',
       }).catch((trackingError) => {

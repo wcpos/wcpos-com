@@ -5,22 +5,32 @@ import { PASSWORD_TOO_SHORT_MESSAGE } from '@/lib/password-policy'
 
 const mockRegister = vi.fn()
 const mockSetAuthToken = vi.fn()
-const { infoMock, errorMock, consumeMock } = vi.hoisted(() => ({
-  infoMock: vi.fn(),
-  errorMock: vi.fn(),
-  consumeMock: vi.fn(),
-}))
+const { infoMock, errorMock, warnMock, consumeMock, trackServerEventMock, cookieGetMock } =
+  vi.hoisted(() => ({
+    infoMock: vi.fn(),
+    errorMock: vi.fn(),
+    warnMock: vi.fn(),
+    consumeMock: vi.fn(),
+    trackServerEventMock: vi.fn(),
+    cookieGetMock: vi.fn(),
+  }))
 
 vi.mock('@/lib/medusa-auth', () => ({
   register: (...args: unknown[]) => mockRegister(...args),
   setAuthToken: (...args: unknown[]) => mockSetAuthToken(...args),
 }))
 vi.mock('@/lib/logger', () => ({
-  authLogger: { info: infoMock, error: errorMock },
+  authLogger: { info: infoMock, error: errorMock, warn: warnMock },
 }))
 vi.mock('@/lib/rate-limit', () => ({
   createRateLimiter: () => ({ consume: consumeMock }),
   clientIp: () => '203.0.113.7',
+}))
+vi.mock('next/headers', () => ({
+  cookies: vi.fn(async () => ({ get: cookieGetMock })),
+}))
+vi.mock('@/services/core/analytics/posthog-service', () => ({
+  trackServerEvent: (...args: unknown[]) => trackServerEventMock(...args),
 }))
 
 function postRegister(body: Record<string, unknown>) {
@@ -37,6 +47,8 @@ describe('POST /api/auth/register', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     consumeMock.mockResolvedValue({ success: true, remaining: 4 })
+    trackServerEventMock.mockResolvedValue(undefined)
+    cookieGetMock.mockReturnValue({ value: 'anon_cookie_123' })
   })
 
   it('returns 429 when the rate limit is exceeded', async () => {
@@ -128,6 +140,47 @@ describe('POST /api/auth/register', () => {
     expect(response.status).toBe(200)
     expect(json).toEqual({ success: true, customer: { id: 'cus_1' } })
     expect(mockRegister).toHaveBeenCalledTimes(1)
+  })
+
+  it('tracks signup_completed with the visitor distinct-id from the cookie', async () => {
+    mockRegister.mockResolvedValueOnce({
+      token: 'jwt',
+      customer: { id: 'cus_42' },
+    })
+
+    const response = await postRegister({
+      email: 'new@example.com',
+      password: 'password123',
+    })
+
+    expect(response.status).toBe(200)
+    expect(trackServerEventMock).toHaveBeenCalledWith(
+      'signup_completed',
+      expect.objectContaining({
+        method: 'email',
+        customer_id: 'cus_42',
+        distinct_id: 'anon_cookie_123',
+      })
+    )
+  })
+
+  it('falls back to customer.id (never a shared placeholder) when the distinct-id cookie is absent', async () => {
+    cookieGetMock.mockReturnValue(undefined)
+    mockRegister.mockResolvedValueOnce({
+      token: 'jwt',
+      customer: { id: 'cus_99' },
+    })
+
+    const response = await postRegister({
+      email: 'new@example.com',
+      password: 'password123',
+    })
+
+    expect(response.status).toBe(200)
+    expect(trackServerEventMock).toHaveBeenCalledWith(
+      'signup_completed',
+      expect.objectContaining({ distinct_id: 'cus_99' })
+    )
   })
 
   it('treats a malformed JSON body as a missing-fields 400, not a failure', async () => {
