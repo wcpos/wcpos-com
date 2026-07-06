@@ -94,10 +94,7 @@ const STORE_ENVIRONMENTS: Record<StoreEnvironmentName, StoreEnvironment> = {
       stripePublishableKey: stripePublishableKey(
         process.env.NEXT_PUBLIC_STRIPE_TEST_PUBLISHABLE_KEY
       ),
-      paypal: paypalCheckoutConfig(
-        process.env.NEXT_PUBLIC_PAYPAL_SANDBOX_CLIENT_ID,
-        'sandbox'
-      ),
+      paypal: null,
       btcpayEnabled: true,
     },
   },
@@ -113,10 +110,7 @@ const STORE_ENVIRONMENTS: Record<StoreEnvironmentName, StoreEnvironment> = {
       stripePublishableKey: stripePublishableKey(
         process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
       ),
-      paypal: paypalCheckoutConfig(
-        process.env.NEXT_PUBLIC_PAYPAL_SANDBOX_CLIENT_ID,
-        'sandbox'
-      ),
+      paypal: null,
       // BTCPay is a plain redirect (no client SDK), so the mocked suite can
       // exercise a full payment method end-to-end.
       btcpayEnabled: true,

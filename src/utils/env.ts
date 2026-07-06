@@ -23,7 +23,6 @@ const envSchema = z.object({
 
   // PayPal (client-side client ID)
   NEXT_PUBLIC_PAYPAL_CLIENT_ID: z.string().optional(),
-  NEXT_PUBLIC_PAYPAL_SANDBOX_CLIENT_ID: z.string().optional(),
 
   // BTCPayServer (enabled flag - actual server URL is handled by Medusa)
   NEXT_PUBLIC_BTCPAY_ENABLED: z.string().optional(),

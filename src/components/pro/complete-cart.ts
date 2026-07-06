@@ -65,6 +65,41 @@ export async function completeCart({
   return orderId
 }
 
+export interface CapturePayPalOrderParams {
+  cartId: string
+  orderId: string
+}
+
+/**
+ * Capture an approved PayPal order before cart completion.
+ *
+ * PayPal SDK v6 approval does not capture by itself; Medusa will reject cart
+ * completion until the provider reports the PayPal order captured. This call is
+ * still pre-completion, so failures are retryable PayPal failures rather than
+ * the distinct order-pending/money-at-risk state.
+ */
+export async function capturePayPalOrder({
+  cartId,
+  orderId,
+}: CapturePayPalOrderParams): Promise<void> {
+  const response = await fetch('/api/store/cart/paypal/capture', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ cartId, orderId }),
+  })
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}))
+    console.error('[CHECKOUT] PayPal capture failed:', {
+      cartId,
+      orderId,
+      status: response.status,
+      error: errorData,
+    })
+    throw new Error('Failed to capture PayPal order')
+  }
+}
+
 export interface CreatePaymentSessionParams {
   cartId: string
   providerId: string

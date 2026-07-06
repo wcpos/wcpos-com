@@ -54,10 +54,9 @@ describe('store environments', () => {
     expect(getStoreEnvironmentByName('dev').payments.btcpayEnabled).toBe(true)
   })
 
-  it('keeps PayPal client ids paired atomically with the SDK environment', async () => {
+  it('uses the live PayPal client id only for the live checkout environment', async () => {
     vi.resetModules()
     vi.stubEnv('NEXT_PUBLIC_PAYPAL_CLIENT_ID', 'live-client')
-    vi.stubEnv('NEXT_PUBLIC_PAYPAL_SANDBOX_CLIENT_ID', 'sandbox-client')
 
     const { getStoreEnvironmentByName } = await import('./store-environment')
 
@@ -65,25 +64,7 @@ describe('store environments', () => {
       clientId: 'live-client',
       environment: 'production',
     })
-    expect(getStoreEnvironmentByName('test').payments.paypal).toEqual({
-      clientId: 'sandbox-client',
-      environment: 'sandbox',
-    })
-    expect(getStoreEnvironmentByName('dev').payments.paypal).toEqual({
-      clientId: 'sandbox-client',
-      environment: 'sandbox',
-    })
-
-    vi.unstubAllEnvs()
-  })
-
-  it('does not mix the live PayPal client-id variable into sandbox dev checkout', async () => {
-    vi.resetModules()
-    vi.stubEnv('NEXT_PUBLIC_PAYPAL_CLIENT_ID', 'live-client')
-    vi.stubEnv('NEXT_PUBLIC_PAYPAL_SANDBOX_CLIENT_ID', '')
-
-    const { getStoreEnvironmentByName } = await import('./store-environment')
-
+    expect(getStoreEnvironmentByName('test').payments.paypal).toBeNull()
     expect(getStoreEnvironmentByName('dev').payments.paypal).toBeNull()
 
     vi.unstubAllEnvs()

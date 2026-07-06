@@ -1,6 +1,10 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 
-import { completeCart, createPaymentSession } from './complete-cart'
+import {
+  capturePayPalOrder,
+  completeCart,
+  createPaymentSession,
+} from './complete-cart'
 import { OrderPendingError } from './checkout-safety'
 
 const mockFetch = vi.fn()
@@ -90,6 +94,31 @@ describe('completeCart', () => {
 
     await expect(promise).rejects.toThrow('Failed to complete order')
     await expect(promise).rejects.toBeInstanceOf(OrderPendingError)
+  })
+})
+
+describe('capturePayPalOrder', () => {
+  it('posts the cart and PayPal order ids to the capture proxy', async () => {
+    mockFetch.mockResolvedValue(jsonResponse({ ok: true }))
+
+    await capturePayPalOrder({ cartId: 'cart_1', orderId: 'PAYPAL_ORDER_1' })
+
+    expect(mockFetch).toHaveBeenCalledWith('/api/store/cart/paypal/capture', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        cartId: 'cart_1',
+        orderId: 'PAYPAL_ORDER_1',
+      }),
+    })
+  })
+
+  it('throws a retryable Error when PayPal capture fails', async () => {
+    mockFetch.mockResolvedValue(jsonResponse({ error: 'capture failed' }, false, 502))
+
+    await expect(
+      capturePayPalOrder({ cartId: 'cart_1', orderId: 'PAYPAL_ORDER_1' })
+    ).rejects.toThrow('Failed to capture PayPal order')
   })
 })
 

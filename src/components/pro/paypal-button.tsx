@@ -6,7 +6,11 @@ import {
   usePayPal,
   usePayPalOneTimePaymentSession,
 } from '@paypal/react-paypal-js/sdk-v6'
-import { completeCart, createPaymentSession } from './complete-cart'
+import {
+  capturePayPalOrder,
+  completeCart,
+  createPaymentSession,
+} from './complete-cart'
 import {
   createCancelledFailure,
   completeProviderConfirmedCheckout,
@@ -104,12 +108,39 @@ export function PayPalButton({
           throw err
         }
       },
-      onApprove: async () => {
+      onApprove: async (data) => {
+        const orderId = data?.orderId ?? paypalOrderId
+        if (!orderId) {
+          onFailure(
+            createPaymentFailure(PAYPAL_FAILED_MESSAGE, {
+              source: 'paypal_capture',
+              details: { cartId, error: 'Missing PayPal order id on approval' },
+            })
+          )
+          return
+        }
+
+        try {
+          await capturePayPalOrder({ cartId, orderId })
+        } catch (err) {
+          onFailure(
+            createPaymentFailure(PAYPAL_FAILED_MESSAGE, {
+              source: 'paypal_capture',
+              details: {
+                cartId,
+                orderId,
+                error: err instanceof Error ? err.message : String(err),
+              },
+            })
+          )
+          return
+        }
+
         const completion = await completeProviderConfirmedCheckout({
           complete: () => completeCart({ cartId, experiment, experimentVariant }),
           failureContext: {
             source: 'paypal_complete_cart',
-            details: { cartId },
+            details: { cartId, orderId },
           },
         })
 
