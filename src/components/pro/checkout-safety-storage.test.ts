@@ -4,6 +4,7 @@ import {
   clearCheckoutSafetyStateForCart,
   clearCheckoutSafetyState,
   isProtectiveCheckoutFailureKind,
+  PROTECTIVE_FAILURE_TTL_MS,
   recordCheckoutFailure,
   restoreCheckoutSafetyState,
 } from './checkout-safety'
@@ -20,8 +21,6 @@ const UNCERTAIN_FAILURE: CheckoutFailure = {
   message: "We couldn't confirm the status of your payment.",
   reference: 'WCPOS-UNC-0001',
 }
-
-const PROTECTIVE_FAILURE_TTL_MS = 15 * 60 * 1000
 
 beforeEach(() => {
   sessionStorage.clear()
@@ -144,6 +143,23 @@ describe('recordCheckoutFailure / restoreCheckoutSafetyState', () => {
     ).toBeNull()
   })
 
+  it('restores a fresh protective failure even when expired-key cleanup fails', () => {
+    vi.spyOn(Date, 'now').mockReturnValue(1_000)
+    recordCheckoutFailure('cart_stale_pending', ORDER_PENDING_FAILURE)
+    vi.spyOn(Date, 'now').mockReturnValue(
+      1_000 + PROTECTIVE_FAILURE_TTL_MS + 1
+    )
+    recordCheckoutFailure('cart_fresh_uncertain', UNCERTAIN_FAILURE)
+    vi.spyOn(Storage.prototype, 'removeItem').mockImplementation(() => {
+      throw new DOMException('SecurityError')
+    })
+
+    const restored = restoreCheckoutSafetyState()
+
+    expect(restored?.cartId).toBe('cart_fresh_uncertain')
+    expect(restored?.failure.kind).toBe('payment_uncertain')
+  })
+
   it('ignores malformed JSON entries', () => {
     sessionStorage.setItem('wcpos:checkout-pending:cart_bad', 'not json {')
 
@@ -201,7 +217,7 @@ describe('recordCheckoutFailure / restoreCheckoutSafetyState', () => {
   })
 })
 
-describe('clearCheckoutSafetyState', () => {
+describe('clearCheckoutSafetyStateForCart', () => {
   it('removes only the targeted persisted protective failure', () => {
     recordCheckoutFailure('cart_reset', ORDER_PENDING_FAILURE)
     recordCheckoutFailure('cart_keep', UNCERTAIN_FAILURE)
@@ -216,7 +232,9 @@ describe('clearCheckoutSafetyState', () => {
       sessionStorage.getItem('wcpos:checkout-pending:cart_keep')
     ).not.toBeNull()
   })
+})
 
+describe('clearCheckoutSafetyState', () => {
   it('removes every persisted protective failure', () => {
     recordCheckoutFailure('cart_1', ORDER_PENDING_FAILURE)
     recordCheckoutFailure('cart_2', UNCERTAIN_FAILURE)

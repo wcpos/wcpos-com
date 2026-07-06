@@ -873,6 +873,9 @@ describe('CheckoutClient', () => {
     ).not.toBeInTheDocument()
     expect(screen.queryByTestId('mock-pay-button')).not.toBeInTheDocument()
     expect(screen.queryByText('Payment unsuccessful')).not.toBeInTheDocument()
+    expect(
+      screen.queryByRole('button', { name: /support told me to reset checkout/i })
+    ).not.toBeInTheDocument()
   })
 
   it('persists the order-pending failure so a reload cannot re-enable payment', async () => {
@@ -931,6 +934,9 @@ describe('CheckoutClient', () => {
     // The protective copy and the persisted reference both survive the reload
     expect(screen.getByText(/do not pay again/i)).toBeInTheDocument()
     expect(screen.getByText('WCPOS-RESTORED-PENDING')).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: /support told me to reset checkout/i })
+    ).toBeInTheDocument()
 
     // No new cart or payment session is created — the customer cannot pay again
     expect(mockFetch).not.toHaveBeenCalled()
@@ -956,13 +962,13 @@ describe('CheckoutClient', () => {
     window.history.pushState(
       {},
       '',
-      '/pro/checkout?product=wcpos-pro-yearly&reset_checkout=order_pending'
+      '/pro/checkout?product=wcpos-pro-yearly&reset_checkout=order_pending&checkout_ref=WCPOS-RESTORED-PENDING'
     )
     mockSuccessfulCheckoutInit()
 
     renderSignedIn({
       checkoutPath:
-        '/pro/checkout?product=wcpos-pro-yearly&reset_checkout=order_pending',
+        '/pro/checkout?product=wcpos-pro-yearly&reset_checkout=order_pending&checkout_ref=WCPOS-RESTORED-PENDING',
     })
 
     await waitFor(() => {
@@ -972,6 +978,7 @@ describe('CheckoutClient', () => {
       screen.queryByText('Payment received — order pending')
     ).not.toBeInTheDocument()
     expect(window.location.search).not.toContain('reset_checkout')
+    expect(window.location.search).not.toContain('checkout_ref')
     const restored = restoreCheckoutSafetyState()
     expect(restored?.cartId).toBe('cart-uncertain')
     expect(restored?.failure.kind).toBe('payment_uncertain')
@@ -981,6 +988,65 @@ describe('CheckoutClient', () => {
         expect.objectContaining({ method: 'POST' })
       )
     })
+  })
+
+  it('does not clear a restored order-pending state from a guessable reset link', async () => {
+    recordCheckoutFailure('cart-old', {
+      kind: 'order_pending',
+      message:
+        'Your payment was received, but we could not finish creating your order.',
+      reference: 'WCPOS-RESTORED-PENDING',
+    })
+    window.history.pushState(
+      {},
+      '',
+      '/pro/checkout?product=wcpos-pro-yearly&reset_checkout=order_pending'
+    )
+
+    renderSignedIn({
+      checkoutPath:
+        '/pro/checkout?product=wcpos-pro-yearly&reset_checkout=order_pending',
+    })
+
+    await waitFor(() => {
+      expect(
+        screen.getByText('Payment received — order pending')
+      ).toBeInTheDocument()
+    })
+    expect(screen.getByText('WCPOS-RESTORED-PENDING')).toBeInTheDocument()
+    expect(window.location.search).not.toContain('reset_checkout')
+    expect(restoreCheckoutSafetyState()?.cartId).toBe('cart-old')
+    expect(mockFetch).not.toHaveBeenCalled()
+  })
+
+  it('does not clear a restored order-pending state when the reset reference does not match', async () => {
+    recordCheckoutFailure('cart-old', {
+      kind: 'order_pending',
+      message:
+        'Your payment was received, but we could not finish creating your order.',
+      reference: 'WCPOS-RESTORED-PENDING',
+    })
+    window.history.pushState(
+      {},
+      '',
+      '/pro/checkout?product=wcpos-pro-yearly&reset_checkout=order_pending&checkout_ref=WCPOS-WRONG-REF'
+    )
+
+    renderSignedIn({
+      checkoutPath:
+        '/pro/checkout?product=wcpos-pro-yearly&reset_checkout=order_pending&checkout_ref=WCPOS-WRONG-REF',
+    })
+
+    await waitFor(() => {
+      expect(
+        screen.getByText('Payment received — order pending')
+      ).toBeInTheDocument()
+    })
+    expect(screen.getByText('WCPOS-RESTORED-PENDING')).toBeInTheDocument()
+    expect(window.location.search).not.toContain('reset_checkout')
+    expect(window.location.search).not.toContain('checkout_ref')
+    expect(restoreCheckoutSafetyState()?.cartId).toBe('cart-old')
+    expect(mockFetch).not.toHaveBeenCalled()
   })
 
   it('restores the uncertain-payment warning on reload while keeping checkout mounted', async () => {

@@ -159,6 +159,9 @@ describe('OrderPendingNotice', () => {
 
     expect(screen.queryByText(/try again/i)).not.toBeInTheDocument()
     expect(screen.queryByRole('button', { name: /pay/i })).not.toBeInTheDocument()
+    expect(
+      screen.queryByRole('button', { name: /support told me to reset checkout/i })
+    ).not.toBeInTheDocument()
   })
 
   it('can reset a stale order-pending guard after support confirms it is safe', () => {

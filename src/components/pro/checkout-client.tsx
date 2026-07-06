@@ -75,10 +75,12 @@ interface PaymentSessionResult {
 const PRO_CHECKOUT_EXPERIMENT = 'pro_checkout_v1'
 const CHECKOUT_SAFETY_RESET_PARAM = 'reset_checkout'
 const CHECKOUT_SAFETY_RESET_VALUE = 'order_pending'
+const CHECKOUT_SAFETY_RESET_REFERENCE_PARAM = 'checkout_ref'
 
-function consumeCheckoutSafetyResetParam(): void {
+function consumeCheckoutSafetyResetParams(): void {
   const url = new URL(window.location.href)
   url.searchParams.delete(CHECKOUT_SAFETY_RESET_PARAM)
+  url.searchParams.delete(CHECKOUT_SAFETY_RESET_REFERENCE_PARAM)
   window.history.replaceState(
     window.history.state,
     '',
@@ -209,9 +211,8 @@ export function CheckoutClient({
   const [error, setError] = useState<string | null>(null)
   // Payment-stage failures — recoverable, rendered without unmounting the cart.
   const [failure, setFailure] = useState<CheckoutFailure | null>(null)
-  const [orderPendingGuardCartId, setOrderPendingGuardCartId] = useState<
-    string | null
-  >(null)
+  const [restoredOrderPendingGuardCartId, setRestoredOrderPendingGuardCartId] =
+    useState<string | null>(null)
   const [orderComplete, setOrderComplete] = useState(false)
   const [orderId, setOrderId] = useState<string | null>(null)
   const [paymentCollectionId, setPaymentCollectionId] = useState<
@@ -262,34 +263,41 @@ export function CheckoutClient({
     Promise.resolve().then(() => {
       if (cancelled) return
       const searchParams = new URLSearchParams(window.location.search)
+      const applyRestored = (
+        restored: ReturnType<typeof restoreCheckoutSafetyState>
+      ) => {
+        if (!restored) {
+          setFailure(null)
+          setRestoredOrderPendingGuardCartId(null)
+          return
+        }
+
+        setFailure(restored.failure)
+        setRestoredOrderPendingGuardCartId(
+          restored.failure.kind === 'order_pending' ? restored.cartId : null
+        )
+      }
+
       if (
         searchParams.get(CHECKOUT_SAFETY_RESET_PARAM) ===
         CHECKOUT_SAFETY_RESET_VALUE
       ) {
         const restored = restoreCheckoutSafetyState()
-        if (restored?.failure.kind === 'order_pending') {
+        const resetReference = searchParams.get(
+          CHECKOUT_SAFETY_RESET_REFERENCE_PARAM
+        )
+        if (
+          restored?.failure.kind === 'order_pending' &&
+          resetReference === restored.failure.reference
+        ) {
           clearCheckoutSafetyStateForCart(restored.cartId)
         }
-        consumeCheckoutSafetyResetParam()
-        const nextRestored = restoreCheckoutSafetyState()
-        if (nextRestored) {
-          setFailure(nextRestored.failure)
-          setOrderPendingGuardCartId(
-            nextRestored.failure.kind === 'order_pending'
-              ? nextRestored.cartId
-              : null
-          )
-        }
+        consumeCheckoutSafetyResetParams()
+        applyRestored(restoreCheckoutSafetyState())
         setSafetyRestored(true)
         return
       }
-      const restored = restoreCheckoutSafetyState()
-      if (restored) {
-        setFailure(restored.failure)
-        setOrderPendingGuardCartId(
-          restored.failure.kind === 'order_pending' ? restored.cartId : null
-        )
-      }
+      applyRestored(restoreCheckoutSafetyState())
       setSafetyRestored(true)
     })
     return () => {
@@ -298,11 +306,11 @@ export function CheckoutClient({
   }, [])
 
   const resetOrderPendingGuard = useCallback(() => {
-    if (orderPendingGuardCartId) {
-      clearCheckoutSafetyStateForCart(orderPendingGuardCartId)
+    if (restoredOrderPendingGuardCartId) {
+      clearCheckoutSafetyStateForCart(restoredOrderPendingGuardCartId)
     }
     window.location.reload()
-  }, [orderPendingGuardCartId])
+  }, [restoredOrderPendingGuardCartId])
 
   const blockedByProtectiveFailure = failure
     ? shouldBlockCheckout(failure)
@@ -480,11 +488,7 @@ export function CheckoutClient({
   const handleFailure = useCallback(
     (nextFailure: CheckoutFailure | null) => {
       setFailure(nextFailure)
-      setOrderPendingGuardCartId(
-        nextFailure?.kind === 'order_pending' && activeCartId
-          ? activeCartId
-          : null
-      )
+      setRestoredOrderPendingGuardCartId(null)
       if (
         nextFailure &&
         activeCartId &&
@@ -638,7 +642,9 @@ export function CheckoutClient({
     return (
       <OrderPendingNotice
         failure={failure}
-        onReset={resetOrderPendingGuard}
+        onReset={
+          restoredOrderPendingGuardCartId ? resetOrderPendingGuard : undefined
+        }
       />
     )
   }

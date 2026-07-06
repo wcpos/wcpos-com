@@ -293,7 +293,7 @@ export async function completeProviderConfirmedCheckout({
 // ---------------------------------------------------------------------------
 
 const STORAGE_KEY_PREFIX = 'wcpos:checkout-pending:'
-const PROTECTIVE_FAILURE_TTL_MS = 15 * 60 * 1000
+export const PROTECTIVE_FAILURE_TTL_MS = 15 * 60 * 1000
 
 interface PersistedCheckoutSafetyState {
   kind: ProtectiveCheckoutFailureKind
@@ -398,11 +398,16 @@ export function restoreCheckoutSafetyState(): RestoredCheckoutSafetyState | null
       }
       entries.push(entry)
     }
-    for (const key of expiredKeys) {
-      storage.removeItem(key)
-    }
   } catch {
     return null
+  }
+
+  for (const key of expiredKeys) {
+    try {
+      storage.removeItem(key)
+    } catch {
+      // Best effort — worst case a stale key lingers until the next cleanup.
+    }
   }
 
   if (entries.length === 0) return null
