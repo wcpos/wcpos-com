@@ -10,6 +10,11 @@ const mockGetAnalyticsConfig = vi.fn()
 const mockCookieGet = vi.fn()
 const mockGetProOfferCatalog = vi.fn()
 
+vi.mock('@/lib/impersonation', () => ({
+  assertViewOnly: async () => {},
+  ViewOnlyError: class ViewOnlyError extends Error {},
+}))
+
 vi.mock('@/lib/medusa-auth', () => ({
   getCustomer: (...args: unknown[]) => mockGetCustomer(...args),
 }))

@@ -3,10 +3,15 @@ import { NextRequest } from 'next/server'
 
 const mockGetCustomer = vi.fn()
 const mockUpdateCustomer = vi.fn()
-const { errorMock } = vi.hoisted(() => ({
+const { errorMock, assertViewOnly } = vi.hoisted(() => ({
   errorMock: vi.fn(),
+  assertViewOnly: vi.fn(),
 }))
 
+vi.mock('@/lib/impersonation', () => ({
+  assertViewOnly,
+  ViewOnlyError: class ViewOnlyError extends Error {},
+}))
 vi.mock('@/lib/medusa-auth', () => ({
   getCustomer: (...args: unknown[]) => mockGetCustomer(...args),
   updateCustomer: (...args: unknown[]) => mockUpdateCustomer(...args),
@@ -20,6 +25,23 @@ import { PATCH } from './route'
 describe('PATCH /api/account/profile', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+  })
+
+  it('returns 403 read_only_inspection while impersonating', async () => {
+    const { ViewOnlyError } = await import('@/lib/impersonation')
+    assertViewOnly.mockRejectedValueOnce(new ViewOnlyError())
+
+    const response = await PATCH(
+      new NextRequest('http://localhost:3000/api/account/profile', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: '{}',
+      })
+    )
+
+    expect(response.status).toBe(403)
+    expect(await response.json()).toEqual({ error: 'read_only_inspection' })
+    expect(mockGetCustomer).not.toHaveBeenCalled()
   })
 
   it('returns 401 when not authenticated', async () => {

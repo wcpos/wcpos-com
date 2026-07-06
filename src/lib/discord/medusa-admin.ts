@@ -2,6 +2,7 @@ import 'server-only'
 
 import { env } from '@/utils/env'
 import { getLiveStoreEnvironment } from '@/lib/store-environment'
+import { infraLogger } from '@/lib/logger'
 import type { MedusaOrder } from '@/lib/customer-orders'
 import type { MedusaCustomer } from '@/lib/medusa-auth'
 
@@ -21,6 +22,13 @@ function requireAdminToken(): string {
 }
 
 async function medusaAdminFetch<T>(path: string, init: RequestInit = {}): Promise<T> {
+  // Medusa v2 admin API keys authenticate via HTTP Basic auth (the secret key
+  // is the username, password empty) — the framework rejects `Bearer` for API
+  // keys (`Bearer` is only for short-lived user JWTs, which can't serve as a
+  // static env token). See @medusajs/framework authenticate-middleware
+  // getApiKeyInfo: it requires `tokenType === 'basic'`.
+  const basicCredential = Buffer.from(`${requireAdminToken()}:`).toString('base64')
+
   // Discord role-sync reconciles LIVE business data — it runs from webhooks
   // and cron with no meaningful request host, so it is pinned to live rather
   // than host-resolved.
@@ -28,7 +36,7 @@ async function medusaAdminFetch<T>(path: string, init: RequestInit = {}): Promis
     ...init,
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${requireAdminToken()}`,
+      Authorization: `Basic ${basicCredential}`,
       ...(init.headers as Record<string, string> | undefined),
     },
   })
@@ -90,4 +98,74 @@ export async function listAdminCustomerOrders(
   }
 
   return orders
+}
+
+export async function getAdminCustomerOrderById(
+  customerId: string,
+  orderId: string
+): Promise<MedusaOrder | null> {
+  const query = new URLSearchParams({
+    limit: '1',
+    customer_id: customerId,
+    id: orderId,
+  })
+
+  try {
+    const page = await medusaAdminFetch<AdminOrdersResponse>(
+      `/admin/orders?${query.toString()}`
+    )
+    const [order] = page.orders ?? []
+    return order?.id === orderId ? order : null
+  } catch (error) {
+    infraLogger.error`Failed to fetch admin order ${orderId} for customer ${customerId}: ${error}`
+    return null
+  }
+}
+
+interface AdminCustomerResponse {
+  customer?: MedusaCustomer
+}
+
+/**
+ * Find a single customer by exact email via the admin API. Returns null when
+ * there is no match. Uses the `email` filter so we never page all customers.
+ */
+export async function findAdminCustomerByEmail(
+  email: string
+): Promise<MedusaCustomer | null> {
+  const query = new URLSearchParams({
+    email: email.trim().toLowerCase(),
+    limit: '2',
+    fields: 'id,email,first_name,last_name,phone,has_account,metadata,created_at,updated_at',
+  })
+  try {
+    const page = await medusaAdminFetch<AdminCustomersResponse>(
+      `/admin/customers?${query.toString()}`
+    )
+    const customers = page.customers ?? []
+    return customers.find((customer) => customer.has_account) ?? customers[0] ?? null
+  } catch (error) {
+    infraLogger.error`Failed to find admin customer by email: ${error}`
+    return null
+  }
+}
+
+/**
+ * Fetch one customer by id via the admin API. Returns null if not found.
+ */
+export async function getAdminCustomerById(
+  id: string
+): Promise<MedusaCustomer | null> {
+  const query = new URLSearchParams({
+    fields: 'id,email,first_name,last_name,phone,has_account,metadata,created_at,updated_at',
+  })
+  try {
+    const data = await medusaAdminFetch<AdminCustomerResponse>(
+      `/admin/customers/${id}?${query.toString()}`
+    )
+    return data.customer ?? null
+  } catch (error) {
+    infraLogger.error`Failed to fetch admin customer ${id}: ${error}`
+    return null
+  }
 }

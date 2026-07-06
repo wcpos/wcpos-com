@@ -1,11 +1,19 @@
-import { describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { NextRequest, NextResponse } from 'next/server'
 import { ANALYTICS_DISTINCT_ID_COOKIE } from '@/lib/analytics/distinct-id'
 import { ANALYTICS_CONSENT_COOKIE } from '@/lib/analytics/consent'
 
+// Capture the request next-intl receives so tests can inspect the headers the
+// middleware forwards to the RSC render path.
+const intlRequests: NextRequest[] = []
 vi.mock('next-intl/middleware', () => ({
-  default: () => () => NextResponse.next(),
+  default: () => (request: NextRequest) => {
+    intlRequests.push(request)
+    return NextResponse.next()
+  },
 }))
+
+const ACCOUNT_REQUEST_HEADER = 'x-wcpos-account-request'
 
 import { middleware } from './middleware'
 
@@ -92,6 +100,121 @@ describe('middleware', () => {
 
     expect(response?.status).toBe(200)
     expect(response?.cookies.get(ANALYTICS_DISTINCT_ID_COOKIE)).toBeUndefined()
+  })
+
+  describe('account-request header sanitization', () => {
+    beforeEach(() => {
+      intlRequests.length = 0
+    })
+
+    it('strips a client-supplied account-request header on non-account pages', () => {
+      const request = new NextRequest('https://wcpos.com/', {
+        headers: { [ACCOUNT_REQUEST_HEADER]: '1' },
+      })
+
+      middleware(request)
+
+      // next-intl received the render request; the spoofed header is gone.
+      expect(intlRequests).toHaveLength(1)
+      expect(intlRequests[0].headers.get(ACCOUNT_REQUEST_HEADER)).toBeNull()
+    })
+
+    it('sets the account-request header on /account pages', () => {
+      const request = new NextRequest('https://wcpos.com/account', {
+        headers: {
+          cookie: 'medusa-token=test-token',
+          // Even a spoofed inbound value must be replaced (not trusted) with '1'.
+          [ACCOUNT_REQUEST_HEADER]: 'spoofed',
+        },
+      })
+
+      middleware(request)
+
+      expect(intlRequests).toHaveLength(1)
+      expect(intlRequests[0].headers.get(ACCOUNT_REQUEST_HEADER)).toBe('1')
+    })
+
+    it('strips a client-supplied account-request header on non-account API routes', () => {
+      const request = new NextRequest('https://wcpos.com/api/legacy/wc-am', {
+        headers: { [ACCOUNT_REQUEST_HEADER]: '1' },
+      })
+
+      const response = middleware(request)
+
+      // The forwarded request headers (NextResponse.next({ request })) carry the
+      // overwrite directive; the account-request header must not be among them.
+      const overwrite = response?.headers.get('x-middleware-override-headers')
+      expect(overwrite ?? '').not.toContain(ACCOUNT_REQUEST_HEADER)
+      expect(
+        response?.headers.get(`x-middleware-request-${ACCOUNT_REQUEST_HEADER}`)
+      ).toBeNull()
+    })
+
+    it('sets the account-request header on /api/account API routes', () => {
+      const request = new NextRequest('https://wcpos.com/api/account/impersonate', {
+        headers: { [ACCOUNT_REQUEST_HEADER]: 'spoofed' },
+      })
+
+      const response = middleware(request)
+
+      expect(
+        response?.headers.get(`x-middleware-request-${ACCOUNT_REQUEST_HEADER}`)
+      ).toBe('1')
+    })
+
+    it('sets the account-request header on store cart mutation API routes', () => {
+      const request = new NextRequest('https://wcpos.com/api/store/cart/complete', {
+        headers: { [ACCOUNT_REQUEST_HEADER]: 'spoofed' },
+      })
+
+      const response = middleware(request)
+
+      expect(
+        response?.headers.get(`x-middleware-request-${ACCOUNT_REQUEST_HEADER}`)
+      ).toBe('1')
+    })
+
+    it('does not set the account-request header for account-prefixed page segments', () => {
+      const request = new NextRequest('https://wcpos.com/accounting', {
+        headers: {
+          cookie: 'medusa-token=test-token',
+          [ACCOUNT_REQUEST_HEADER]: 'spoofed',
+        },
+      })
+
+      middleware(request)
+
+      expect(intlRequests).toHaveLength(1)
+      expect(intlRequests[0].headers.get(ACCOUNT_REQUEST_HEADER)).toBeNull()
+    })
+
+    it('strips the account-request header on legacy WC API Manager rewrites', () => {
+      const request = new NextRequest(
+        'https://wcpos.com/?wc-api=am-software-api&request=activation',
+        { headers: { [ACCOUNT_REQUEST_HEADER]: '1' } }
+      )
+
+      const response = middleware(request)
+
+      expect(
+        response?.headers.get(`x-middleware-request-${ACCOUNT_REQUEST_HEADER}`)
+      ).toBeNull()
+    })
+
+    it('strips the account-request header on updates API routes', () => {
+      const request = new NextRequest('https://updates.wcpos.com/api/check', {
+        headers: {
+          host: 'updates.wcpos.com',
+          [ACCOUNT_REQUEST_HEADER]: '1',
+        },
+      })
+
+      const response = middleware(request)
+
+      expect(
+        response?.headers.get(`x-middleware-request-${ACCOUNT_REQUEST_HEADER}`)
+      ).toBeNull()
+    })
   })
 
   describe('analytics consent gating', () => {

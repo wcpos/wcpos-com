@@ -7,6 +7,11 @@ const mockExtractLicenseIdsFromOrders = vi.fn()
 const mockGetLicenseMachines = vi.fn()
 const mockDeactivateMachine = vi.fn()
 
+vi.mock('@/lib/impersonation', () => ({
+  assertViewOnly: async () => {},
+  ViewOnlyError: class ViewOnlyError extends Error {},
+}))
+
 vi.mock('@/lib/medusa-auth', () => ({
   getCustomer: (...args: unknown[]) => mockGetCustomer(...args),
 }))

@@ -13,6 +13,8 @@ import {
   InvalidCredentialsError,
   InvalidResetTokenError,
 } from '@/lib/api/errors'
+import { getImpersonation } from '@/lib/impersonation'
+import { getAdminCustomerById } from '@/lib/discord/medusa-admin'
 
 // ============================================================================
 // Types
@@ -327,33 +329,46 @@ export async function logout(): Promise<void> {
 // dedupes them to a single request. It stays dynamic (reads cookies via
 // getAuthToken) — callers keep it inside Suspense, so PPR is unaffected; the
 // null-on-failure result is safe to memoize within a request.
+/**
+ * The REAL logged-in customer, resolved from the session cookie. This is the
+ * acting identity — used for the admin gate, audit, and the "you are X" banner.
+ * Not memoized itself; `getCustomer` (its default caller) is the cached seam.
+ */
+export async function getSessionCustomer(): Promise<MedusaCustomer | null> {
+  const token = await getAuthToken()
+  if (!token) return null
+
+  try {
+    const response = await fetch(
+      `${await getMedusaBackendUrl()}/store/customers/me`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+          'x-publishable-api-key': await getMedusaPublishableKey(),
+        },
+      }
+    )
+    if (!response.ok) return null
+    const data = await response.json()
+    return data.customer
+  } catch (error) {
+    authLogger.error`Failed to get customer: ${error}`
+    return null
+  }
+}
+
+// Memoized per request. When inspecting (admin + account scope + cookie),
+// returns the TARGET customer via the admin API; otherwise the session
+// customer. Every account page/read flows through here, so the whole area
+// renders as the target.
 export const getCustomer = cache(
   async (): Promise<MedusaCustomer | null> => {
-    const token = await getAuthToken()
-    if (!token) return null
-
-    try {
-      const response = await fetch(
-        `${await getMedusaBackendUrl()}/store/customers/me`,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-            'x-publishable-api-key': await getMedusaPublishableKey(),
-          },
-        }
-      )
-
-      if (!response.ok) {
-        return null
-      }
-
-      const data = await response.json()
-      return data.customer
-    } catch (error) {
-      authLogger.error`Failed to get customer: ${error}`
-      return null
+    const impersonation = await getImpersonation()
+    if (impersonation) {
+      return getAdminCustomerById(impersonation.targetId)
     }
+    return getSessionCustomer()
   }
 )
 

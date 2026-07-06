@@ -13,6 +13,7 @@ import { storeLogger } from '@/lib/logger'
 import { mergeAccountProfileMetadataPatch } from '@/lib/customer-profile-metadata'
 import { profilePatchFromBillingAddress } from '@/lib/billing-profile'
 import { deliver } from '@/lib/sinks/deliver'
+import { assertViewOnly, ViewOnlyError } from '@/lib/impersonation'
 import type { CreateCartInput } from '@/types/medusa'
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -48,6 +49,18 @@ async function syncBillingToProfile(
  * POST /api/store/cart - Create a new cart
  */
 export async function POST(request: NextRequest) {
+  try {
+    await assertViewOnly()
+  } catch (error) {
+    if (error instanceof ViewOnlyError) {
+      return NextResponse.json(
+        { error: 'read_only_inspection' },
+        { status: 403 }
+      )
+    }
+    throw error
+  }
+
   try {
     const customer = await getCustomer()
     if (!customer) {
@@ -139,6 +152,18 @@ export async function GET(request: NextRequest) {
  * session customer).
  */
 export async function PATCH(request: NextRequest) {
+  try {
+    await assertViewOnly()
+  } catch (error) {
+    if (error instanceof ViewOnlyError) {
+      return NextResponse.json(
+        { error: 'read_only_inspection' },
+        { status: 403 }
+      )
+    }
+    throw error
+  }
+
   try {
     const customer = await getCustomer()
     if (!customer) {

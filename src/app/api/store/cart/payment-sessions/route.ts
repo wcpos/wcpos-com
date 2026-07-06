@@ -6,6 +6,7 @@ import {
 } from '@/services/core/external/medusa-client'
 import { getAuthToken, getCustomer } from '@/lib/medusa-auth'
 import { storeLogger } from '@/lib/logger'
+import { assertViewOnly, ViewOnlyError } from '@/lib/impersonation'
 import {
   getProOfferCatalog,
   resolveProOfferCartSelection,
@@ -22,6 +23,18 @@ import {
  * Returns: { cart, paymentCollectionId, clientSecret, paymentSessionId }
  */
 export async function POST(request: NextRequest) {
+  try {
+    await assertViewOnly()
+  } catch (error) {
+    if (error instanceof ViewOnlyError) {
+      return NextResponse.json(
+        { error: 'read_only_inspection' },
+        { status: 403 }
+      )
+    }
+    throw error
+  }
+
   try {
     const customer = await getCustomer()
     if (!customer) {

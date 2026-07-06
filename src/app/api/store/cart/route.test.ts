@@ -7,6 +7,11 @@ const mockCreateCart = vi.fn()
 const mockGetCart = vi.fn()
 const mockUpdateCart = vi.fn()
 
+vi.mock('@/lib/impersonation', () => ({
+  assertViewOnly: async () => {},
+  ViewOnlyError: class ViewOnlyError extends Error {},
+}))
+
 vi.mock('@/lib/medusa-auth', () => ({
   getCustomer: (...args: unknown[]) => mockGetCustomer(...args),
   updateCustomer: (...args: unknown[]) => mockUpdateCustomer(...args),

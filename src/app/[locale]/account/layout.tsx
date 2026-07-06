@@ -1,8 +1,11 @@
 import { setRequestLocale } from 'next-intl/server'
+import { redirect } from 'next/navigation'
 import { Suspense } from 'react'
 import { getCustomer } from '@/lib/medusa-auth'
+import { getImpersonation } from '@/lib/impersonation'
 import { redirectToLoginClearingSession } from '@/lib/login-redirect'
 import { AccountSidebar } from '@/components/account/account-sidebar'
+import { ImpersonationBanner } from '@/components/account/impersonation-banner'
 import { SiteHeader } from '@/components/main/site-header'
 import { SiteFooter } from '@/components/main/site-footer'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -19,6 +22,14 @@ export const metadata: Metadata = {
 async function AccountGate({ locale }: { locale: string }) {
   const customer = await getCustomer()
   if (!customer) {
+    // A null customer while impersonating means the target no longer resolves
+    // (stale/deleted). Don't nuke the admin's own session — bounce to the exit
+    // route (a route handler CAN delete the cookie) so the owner lands back on
+    // their own /account. Only a genuinely signed-out visitor gets the
+    // session-clearing login redirect.
+    if (await getImpersonation()) {
+      redirect(`/api/account/impersonate/exit?locale=${locale}`)
+    }
     return redirectToLoginClearingSession(locale)
   }
   return null
@@ -74,6 +85,9 @@ export default async function AccountLayout({
           don't prerender a dynamic shell around it. */}
       <Suspense fallback={<HeaderSkeleton />}>
         <SiteHeader />
+      </Suspense>
+      <Suspense fallback={null}>
+        <ImpersonationBanner />
       </Suspense>
       <Suspense fallback={null}>
         <AccountGate locale={locale} />

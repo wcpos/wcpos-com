@@ -24,7 +24,7 @@ vi.mock('@/lib/logger', () => ({
 // responsibilities: provider validation, param forwarding, profile sync, and
 // the redirect. The ordering invariant is pinned in oauth.test.ts.
 const mockEstablishOAuthSession = vi.fn()
-const mockGetCustomer = vi.fn()
+const mockGetSessionCustomer = vi.fn()
 const mockUpdateCustomer = vi.fn()
 
 vi.mock('@/lib/oauth', () => ({
@@ -32,7 +32,7 @@ vi.mock('@/lib/oauth', () => ({
 }))
 
 vi.mock('@/lib/medusa-auth', () => ({
-  getCustomer: (...args: unknown[]) => mockGetCustomer(...args),
+  getSessionCustomer: (...args: unknown[]) => mockGetSessionCustomer(...args),
   updateCustomer: (...args: unknown[]) => mockUpdateCustomer(...args),
 }))
 
@@ -58,7 +58,7 @@ function session(
 describe('OAuth callback route', () => {
   beforeEach(() => {
     vi.clearAllMocks()
-    mockGetCustomer.mockResolvedValue({ id: 'cust_1', metadata: {} })
+    mockGetSessionCustomer.mockResolvedValue({ id: 'cust_1', metadata: {} })
     mockUpdateCustomer.mockResolvedValue(undefined)
   })
 
@@ -156,7 +156,7 @@ describe('OAuth callback route', () => {
   })
 
   it('does not re-write metadata when the provider is already the latest and the avatar is unchanged', async () => {
-    mockGetCustomer.mockResolvedValueOnce({
+    mockGetSessionCustomer.mockResolvedValueOnce({
       id: 'cust_1',
       metadata: { auth_providers: ['google'], last_sign_in_provider: 'google' },
     })

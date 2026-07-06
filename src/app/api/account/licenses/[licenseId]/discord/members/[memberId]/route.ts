@@ -10,6 +10,7 @@ import { syncDiscordProRoleForMember } from '@/lib/discord/sync'
 import type { LicenseLifecycle } from '@/lib/license'
 import { licenseClient } from '@/services/core/external/license-client'
 import { infraLogger } from '@/lib/logger'
+import { assertViewOnly, ViewOnlyError } from '@/lib/impersonation'
 
 const UNVERIFIABLE_DISCORD_ENTITLEMENT: LicenseLifecycle[] = [
   { status: 'unknown', expiry: null },
@@ -19,6 +20,18 @@ export async function DELETE(
   _request: NextRequest,
   { params }: { params: Promise<{ licenseId: string; memberId: string }> }
 ) {
+  try {
+    await assertViewOnly()
+  } catch (error) {
+    if (error instanceof ViewOnlyError) {
+      return NextResponse.json(
+        { error: 'read_only_inspection' },
+        { status: 403 }
+      )
+    }
+    throw error
+  }
+
   const { licenseId, memberId } = await params
   const { authenticated, licenses } = await getResolvedCustomerLicenses()
 

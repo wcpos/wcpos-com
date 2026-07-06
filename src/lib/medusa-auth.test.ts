@@ -47,6 +47,22 @@ vi.mock('next/headers', () => ({
   cookies: vi.fn(async () => mockCookieStore),
 }))
 
+// Impersonation seam (Task 6): getCustomer branches on getImpersonation().
+// Default null so every existing session-path test below is unaffected;
+// the impersonation describe overrides it per-case.
+const { mockGetImpersonation, mockGetAdminCustomerById } = vi.hoisted(() => ({
+  mockGetImpersonation: vi.fn(),
+  mockGetAdminCustomerById: vi.fn(),
+}))
+
+vi.mock('@/lib/impersonation', () => ({
+  getImpersonation: () => mockGetImpersonation(),
+}))
+
+vi.mock('@/lib/discord/medusa-admin', () => ({
+  getAdminCustomerById: (id: string) => mockGetAdminCustomerById(id),
+}))
+
 // Mock fetch globally
 const mockFetch = vi.fn()
 global.fetch = mockFetch
@@ -58,6 +74,7 @@ import {
   requestPasswordReset,
   resetPassword,
   getCustomer,
+  getSessionCustomer,
   getAuthToken,
   setAuthToken,
   clearAuthToken,
@@ -76,6 +93,9 @@ import {
 describe('medusa-auth', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+    // Not impersonating by default: getCustomer falls through to the session
+    // customer, so every getCustomer test below exercises the session path.
+    mockGetImpersonation.mockResolvedValue(null)
   })
 
   describe('login', () => {
@@ -415,6 +435,24 @@ describe('medusa-auth', () => {
 
       expect(customer).toBeNull()
     })
+
+    it('returns the TARGET customer via the admin API when impersonating', async () => {
+      mockGetImpersonation.mockResolvedValue({
+        adminEmail: 'p@k.com',
+        targetId: 'cus_t',
+      })
+      mockGetAdminCustomerById.mockResolvedValue({
+        id: 'cus_t',
+        email: 't@x.com',
+      })
+
+      const customer = await getCustomer()
+
+      expect(customer?.id).toBe('cus_t')
+      expect(mockGetAdminCustomerById).toHaveBeenCalledWith('cus_t')
+      // The session cookie path must NOT be consulted when inspecting.
+      expect(mockFetch).not.toHaveBeenCalled()
+    })
   })
 
   describe('getAuthToken', () => {
@@ -568,5 +606,38 @@ describe('session cookie options', () => {
 
     expect(mockCookieStore.delete).toHaveBeenCalledTimes(1)
     expect(mockCookieStore.delete).toHaveBeenCalledWith('medusa-token')
+  })
+})
+
+// getSessionCustomer is the extracted body of the old getCustomer: the REAL
+// logged-in customer resolved from the session cookie. getCustomer (tested
+// above) now delegates to it — this file already provides the shared
+// next/headers + fetch mocks, so we reuse those rather than re-declaring
+// conflicting vi.mock() calls.
+describe('getSessionCustomer', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+  })
+
+  it('returns the /store/customers/me customer for the session token', async () => {
+    mockCookieStore.get.mockReturnValue({ value: 'valid_token' })
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ customer: { id: 'cus_me', email: 'me@x.com' } }),
+    })
+
+    const customer = await getSessionCustomer()
+
+    expect(customer?.id).toBe('cus_me')
+    expect(mockFetch.mock.calls[0][0]).toContain('/store/customers/me')
+  })
+
+  it('returns null when there is no session token', async () => {
+    mockCookieStore.get.mockReturnValue(undefined)
+
+    const customer = await getSessionCustomer()
+
+    expect(customer).toBeNull()
+    expect(mockFetch).not.toHaveBeenCalled()
   })
 })

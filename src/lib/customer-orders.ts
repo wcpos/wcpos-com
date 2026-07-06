@@ -6,6 +6,11 @@ import {
   getMedusaBackendUrl,
   getMedusaPublishableKey,
 } from '@/lib/store-environment'
+import { getImpersonation } from '@/lib/impersonation'
+import {
+  getAdminCustomerOrderById,
+  listAdminCustomerOrders,
+} from '@/lib/discord/medusa-admin'
 
 // ============================================================================
 // Types — the order shape this module owns
@@ -90,6 +95,36 @@ async function fetchOrders(
   }
 }
 
+/**
+ * When inspecting, all order reads must resolve the TARGET customer's orders
+ * via the admin API (Medusa scopes /store/orders to the session's own
+ * actor_id, so the session token would return the admin's orders). Returns the
+ * full target order set, or null when not impersonating.
+ */
+async function fetchImpersonatedOrders(): Promise<MedusaOrder[] | null> {
+  const impersonation = await getImpersonation()
+  if (!impersonation) return null
+  try {
+    return await listAdminCustomerOrders(impersonation.targetId)
+  } catch (error) {
+    storeLogger.error`Failed to fetch impersonated orders: ${error}`
+    return []
+  }
+}
+
+async function fetchImpersonatedOrderById(
+  orderId: string
+): Promise<MedusaOrder | null | undefined> {
+  const impersonation = await getImpersonation()
+  if (!impersonation) return undefined
+  try {
+    return await getAdminCustomerOrderById(impersonation.targetId, orderId)
+  } catch (error) {
+    storeLogger.error`Failed to fetch impersonated order ${orderId}: ${error}`
+    return null
+  }
+}
+
 // ============================================================================
 // Public interface
 // ============================================================================
@@ -99,6 +134,9 @@ export async function getOrdersPage(
   limit: number = 10,
   offset: number = 0
 ): Promise<MedusaOrder[]> {
+  const impersonated = await fetchImpersonatedOrders()
+  if (impersonated) return impersonated.slice(offset, offset + limit)
+
   const token = await getAuthToken()
   if (!token) return []
 
@@ -122,6 +160,9 @@ export async function getAllOrders(
   batchSize: number = DEFAULT_BATCH_SIZE,
   maxBatches: number = DEFAULT_MAX_BATCHES
 ): Promise<MedusaOrder[]> {
+  const impersonated = await fetchImpersonatedOrders()
+  if (impersonated) return impersonated
+
   const token = await getAuthToken()
   if (!token) return []
 
@@ -168,6 +209,9 @@ export async function getAllOrders(
 export async function getOrderById(
   orderId: string
 ): Promise<MedusaOrder | null> {
+  const impersonated = await fetchImpersonatedOrderById(orderId)
+  if (impersonated !== undefined) return impersonated
+
   const token = await getAuthToken()
   if (!token) return null
 

@@ -5,6 +5,7 @@ import { getCustomer } from '@/lib/medusa-auth'
 import { extractLicenseIdsFromOrders } from '@/lib/licenses'
 import { licenseClient } from '@/services/core/external/license-client'
 import { licenseLogger } from '@/lib/logger'
+import { assertViewOnly, ViewOnlyError } from '@/lib/impersonation'
 
 /**
  * Machine Deactivation API
@@ -21,6 +22,18 @@ export async function DELETE(
   _request: NextRequest,
   { params }: { params: Promise<{ licenseId: string; machineId: string }> }
 ) {
+  try {
+    await assertViewOnly()
+  } catch (error) {
+    if (error instanceof ViewOnlyError) {
+      return NextResponse.json(
+        { error: 'read_only_inspection' },
+        { status: 403 }
+      )
+    }
+    throw error
+  }
+
   try {
     const { licenseId, machineId } = await params
 

@@ -1,5 +1,4 @@
-import { NextResponse } from 'next/server'
-import type { NextRequest } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import createIntlMiddleware from 'next-intl/middleware'
 import { routing } from '@/i18n/routing'
 import {
@@ -16,6 +15,10 @@ import { MEDUSA_TOKEN_COOKIE } from '@/lib/medusa-cookie'
 const COOKIE_NAME = MEDUSA_TOKEN_COOKIE
 const UPDATES_HOSTNAME = 'updates.wcpos.com'
 const MAIN_SITE_ORIGIN = 'https://wcpos.com'
+
+// Set on requests inside the account area so server code can scope
+// impersonation to /account only (see src/lib/impersonation.ts).
+const ACCOUNT_REQUEST_HEADER = 'x-wcpos-account-request'
 
 const intlMiddleware = createIntlMiddleware(routing)
 
@@ -73,6 +76,14 @@ export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
   const hostname = request.nextUrl.hostname.toLowerCase()
 
+  // Only THIS middleware may set the account-request header. Strip any
+  // client-supplied value up front so a spoofed `x-wcpos-account-request: 1`
+  // on a non-account route can never reach server code via `headers()` and
+  // defeat the /account impersonation scoping. Downstream branches thread this
+  // sanitized copy (setting the header back on only for account paths).
+  const sanitizedHeaders = new Headers(request.headers)
+  sanitizedHeaders.delete(ACCOUNT_REQUEST_HEADER)
+
   // Legacy WooCommerce API Manager licence calls from the deployed Pro plugin
   // fleet still target wcpos.com/?wc-api=am-software-api (activation, etc.).
   // Bridge them to the Keygen-backed compatibility shim. See
@@ -80,13 +91,15 @@ export function middleware(request: NextRequest) {
   if (request.nextUrl.searchParams.get('wc-api') === 'am-software-api') {
     const rewriteUrl = request.nextUrl.clone()
     rewriteUrl.pathname = '/api/legacy/wc-am'
-    return NextResponse.rewrite(rewriteUrl)
+    return NextResponse.rewrite(rewriteUrl, {
+      request: { headers: sanitizedHeaders },
+    })
   }
 
   // Handle updates.wcpos.com — restrict to API routes only
   if (hostname === UPDATES_HOSTNAME) {
     if (pathname.startsWith('/api/')) {
-      return NextResponse.next()
+      return NextResponse.next({ request: { headers: sanitizedHeaders } })
     }
 
     if (pathname === '/') {
@@ -106,9 +119,19 @@ export function middleware(request: NextRequest) {
     return withDistinctIdCookie(request, NextResponse.redirect(redirectUrl, 301))
   }
 
-  // API routes don't need locale processing
+  // API routes don't need locale processing. Account APIs get the
+  // account-request header so impersonation is scoped to /account.
   if (pathname.startsWith('/api/')) {
-    return NextResponse.next()
+    if (
+      pathname.startsWith('/api/account/') ||
+      pathname === '/api/store/cart' ||
+      pathname.startsWith('/api/store/cart/')
+    ) {
+      const headers = new Headers(sanitizedHeaders)
+      headers.set(ACCOUNT_REQUEST_HEADER, '1')
+      return NextResponse.next({ request: { headers } })
+    }
+    return NextResponse.next({ request: { headers: sanitizedHeaders } })
   }
 
   // Strip locale prefix for auth checks (e.g., /fr/account -> /account)
@@ -116,12 +139,15 @@ export function middleware(request: NextRequest) {
   const localeRegex = new RegExp(`^/(${localePattern})(?=/|$)`)
   const pathnameWithoutLocale = pathname.replace(localeRegex, '') || '/'
   const pathnameWithQuery = `${pathnameWithoutLocale}${request.nextUrl.search}`
+  const isAccountPath =
+    pathnameWithoutLocale === '/account' ||
+    pathnameWithoutLocale.startsWith('/account/')
 
   // Protected routes: /account/* requires a medusa-token cookie.
   // /pro/checkout is deliberately NOT gated: signed-out buyers create their
   // account inline in the checkout's first step (the cart APIs it calls
   // still enforce auth server-side).
-  const requiresAuth = pathnameWithoutLocale.startsWith('/account')
+  const requiresAuth = isAccountPath
 
   if (requiresAuth) {
     const token = request.cookies.get(COOKIE_NAME)?.value
@@ -143,7 +169,22 @@ export function middleware(request: NextRequest) {
     }
   }
 
-  return withDistinctIdCookie(request, intlMiddleware(request))
+  // Inside /account, stamp the account-request header before locale routing so
+  // impersonation is honored only here. next-intl copies the incoming request's
+  // headers onto the response it forwards (`NextResponse.rewrite`/`.next` with
+  // `{ request: { headers } }`), so a header set on the request it receives
+  // propagates to the RSC layer via `headers()`.
+  if (isAccountPath) {
+    const headers = new Headers(sanitizedHeaders)
+    headers.set(ACCOUNT_REQUEST_HEADER, '1')
+    const requestWithHeader = new NextRequest(request, { headers })
+    return withDistinctIdCookie(request, intlMiddleware(requestWithHeader))
+  }
+
+  // Non-account render path: forward the sanitized headers (spoofed
+  // account-request header removed) so `headers()` never sees it off /account.
+  const sanitizedRequest = new NextRequest(request, { headers: sanitizedHeaders })
+  return withDistinctIdCookie(request, intlMiddleware(sanitizedRequest))
 }
 
 export const config = {
