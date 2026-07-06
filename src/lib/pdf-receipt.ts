@@ -362,12 +362,16 @@ export async function buildReceiptPdf(
     font: bold,
     size: 12,
   })
-  y -= 16
-  drawRight(page, 'No tax has been added to this order.', amountRight, y, {
-    font: regular,
-    size: 8.5,
-    color: MUTED,
-  })
+  // Only reassure "no tax" when no Tax row was drawn — otherwise the receipt
+  // would show a Tax line and a contradicting "no tax" note directly below it.
+  if (taxAmount <= 0) {
+    y -= 16
+    drawRight(page, 'No tax has been added to this order.', amountRight, y, {
+      font: regular,
+      size: 8.5,
+      color: MUTED,
+    })
+  }
 
   // ── Footer ────────────────────────────────────────────────────────────
   const footerLines: Array<{ text: string; style: TextStyle }> = []

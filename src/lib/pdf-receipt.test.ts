@@ -123,6 +123,8 @@ describe('buildReceiptPdf', () => {
       )
     )
     expect(withTax).toContain(hex('Tax'))
+    // The "no tax" disclaimer must not appear alongside a rendered Tax row.
+    expect(withTax).not.toContain(hex('No tax has been added'))
   })
 
   it('does not throw when order content includes unicode characters', async () => {
