@@ -308,38 +308,17 @@ export function CheckoutClient({
 
         const { cart: cartWithItem } = await itemResponse.json()
 
-        // No provider configured: keep the cart usable and let PaymentStep
-        // surface its explicit "no payment methods" state instead of failing
-        // init with a misleading payment error.
-        if (!anyPaymentMethodEnabled) {
-          setCart(cartWithItem)
-          cartReadyRef.current?.resolve({
-            cart: cartWithItem,
-            paymentCollectionId: null,
-          })
-          return
-        }
-
-        // Initialize payment (Medusa v2 flow) with the default provider.
-        const paymentResult = await createPaymentSession<PaymentSessionResult>({
-          cartId: cartWithItem.id,
-          providerId: getProviderId(defaultPaymentMethod),
-          errorMessage: 'Failed to initialize payment',
-        })
-
-        setCart(paymentResult.cart)
-        setPaymentCollectionId(paymentResult.paymentCollectionId)
-
-        if (paymentResult.clientSecret) {
-          setClientSecret(paymentResult.clientSecret)
-        }
-        setCustomerSessionClientSecret(
-          paymentResult.customerSessionClientSecret ?? null
-        )
-
+        // Keep initialization limited to the cart. Creating a Medusa payment
+        // session for Stripe immediately creates a Stripe PaymentIntent, so do
+        // that only after billing is submitted and the payment step is about to
+        // render.
+        const initialPaymentCollectionId =
+          cartWithItem.payment_collection?.id ?? null
+        setCart(cartWithItem)
+        setPaymentCollectionId(initialPaymentCollectionId)
         cartReadyRef.current?.resolve({
-          cart: paymentResult.cart,
-          paymentCollectionId: paymentResult.paymentCollectionId,
+          cart: cartWithItem,
+          paymentCollectionId: initialPaymentCollectionId,
         })
       } catch (err) {
         console.error('[CHECKOUT] Initialization failed:', err)

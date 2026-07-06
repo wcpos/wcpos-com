@@ -12,6 +12,7 @@ import {
   YEARLY_CHECKOUT_PATH,
   completeAccountStep,
   completeBillingStep,
+  fillBillingAddressFields,
   openYearlyCheckout,
   signInAs,
 } from './helpers/checkout'
@@ -254,18 +255,29 @@ test.describe('Checkout safety net', () => {
     ).toBeVisible({ timeout: 15000 })
   })
 
-  test('a payment-session failure surfaces an init error instead of a dead end', async ({
+  test('a payment-session failure after billing stays recoverable', async ({
     page,
   }) => {
     // The fail-session+ email prefix makes the mock reject payment-collection
-    // creation — the init path's payment step should fail loudly.
+    // creation. Payment sessions are intentionally deferred until billing is
+    // submitted, so this should keep the billing step open with a recoverable
+    // payment-preparation error.
     const email = `${FAIL_SESSION_EMAIL_PREFIX}${randomUUID().slice(0, 8)}@example.com`
     await page.goto(YEARLY_CHECKOUT_PATH)
     await completeAccountStep(page, email, PASSWORD)
 
+    await fillBillingAddressFields(page)
+    await page.getByRole('button', { name: /continue to payment/i }).click()
+
     await expect(
-      page.getByText('Unable to initialize checkout. Please try again.')
+      page.getByText(
+        "Billing address was saved, but we couldn't prepare payment. Please try again."
+      )
     ).toBeVisible({ timeout: 15000 })
+    await expect(page.getByTestId('checkout-step-2')).toHaveAttribute(
+      'data-step-state',
+      'active'
+    )
   })
 })
 
