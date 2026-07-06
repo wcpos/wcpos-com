@@ -10,6 +10,7 @@ import { TextLink } from '@/components/ui/text-link'
 import { Link } from '@/i18n/navigation'
 import { TrackedLocaleLink } from '@/components/analytics/tracked-locale-link'
 import { TrackedExternalLink } from '@/components/analytics/tracked-external-link'
+import { formatDateForLocale } from '@/lib/date-format'
 import { marketingMetadata } from '@/lib/seo'
 import { DownloadsHero } from '@/components/downloads/download-hero'
 import { PLATFORMS } from '@/components/downloads/platforms'
@@ -82,15 +83,7 @@ const FALLBACK_RELEASES: FallbackRelease[] = [
 ]
 
 function formatReleaseDate(iso: string, locale: string): string {
-  try {
-    return new Intl.DateTimeFormat(locale, {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric',
-    }).format(new Date(iso))
-  } catch {
-    return ''
-  }
+  return formatDateForLocale(iso, locale)
 }
 
 function getFallbackReleases(locale: string): ReleaseEntry[] {

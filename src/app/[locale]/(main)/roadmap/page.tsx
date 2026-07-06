@@ -79,14 +79,14 @@ export default async function RoadmapPage({
         </header>
 
         <Suspense fallback={<TimelineSkeleton />}>
-          <RoadmapTimelineLoader />
+          <RoadmapTimelineLoader locale={locale} />
         </Suspense>
       </div>
     </main>
   )
 }
 
-async function RoadmapTimelineLoader() {
+async function RoadmapTimelineLoader({ locale }: { locale: string }) {
   let data = await getCachedRoadmapData()
 
   // Local dev has no GitHub App credentials, so the fetch returns empty;
@@ -104,5 +104,5 @@ async function RoadmapTimelineLoader() {
     data = ROADMAP_DEV_FIXTURE
   }
 
-  return <RoadmapTimeline data={data} />
+  return <RoadmapTimeline data={data} locale={locale} />
 }

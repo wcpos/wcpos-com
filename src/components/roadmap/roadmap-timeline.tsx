@@ -8,6 +8,7 @@ import {
   useMotionValueEvent,
 } from 'motion/react'
 import type { RoadmapData, RoadmapItem, RoadmapMilestone } from '@/types/roadmap'
+import { formatMonthYearForLocale } from '@/lib/date-format'
 import { usePrefersReducedMotion } from '@/lib/use-prefers-reduced-motion'
 import { BugFixList } from './bug-fix-list'
 import styles from './timeline.module.css'
@@ -81,15 +82,11 @@ const LABEL_TONE_IDLE: Record<Tone, string> = {
   shipped: 'border border-emerald-500/40 text-emerald-600 dark:text-emerald-400',
 }
 
-function fmtDue(dueOn: string | null): string | null {
+function fmtDue(dueOn: string | null, locale: string): string | null {
   if (!dueOn) return null
   // GitHub due dates are midnight-UTC timestamps; format in UTC so a
   // negative-offset server timezone can't shift them to the previous month.
-  return new Date(dueOn).toLocaleDateString('en', {
-    month: 'short',
-    year: 'numeric',
-    timeZone: 'UTC',
-  })
+  return formatMonthYearForLocale(dueOn, locale)
 }
 
 function StatusGlyph({ status }: { status: RoadmapItem['status'] }) {
@@ -226,18 +223,20 @@ function TimelineMilestone({
   animate,
   active,
   nodeRef,
+  locale,
 }: {
   milestone: RoadmapMilestone
   tone: Tone
   animate: boolean
   active: boolean
   nodeRef: (el: HTMLSpanElement | null) => void
+  locale: string
 }) {
   const pct =
     milestone.progress.total > 0
       ? Math.round((milestone.progress.completed / milestone.progress.total) * 100)
       : 0
-  const due = fmtDue(milestone.dueOn)
+  const due = fmtDue(milestone.dueOn, locale)
 
   return (
     <div className={tone === 'shipped' ? 'relative pb-14 opacity-60' : 'relative pb-14'}>
@@ -300,10 +299,12 @@ function RailGroupInner({
   label,
   milestones,
   tone,
+  locale,
 }: {
   label: string
   milestones: RoadmapMilestone[]
   tone: Tone
+  locale: string
 }) {
   const sectionRef = React.useRef<HTMLElement>(null)
   const nodeRefs = React.useRef<(HTMLSpanElement | null)[]>([])
@@ -430,6 +431,7 @@ function RailGroupInner({
             tone={tone}
             animate={!reducedMotion}
             active={i < reached}
+            locale={locale}
             nodeRef={(el) => {
               nodeRefs.current[i] = el
             }}
@@ -444,6 +446,7 @@ function RailGroup(props: {
   label: string
   milestones: RoadmapMilestone[]
   tone: Tone
+  locale: string
 }) {
   if (props.milestones.length === 0) return null
   return <RailGroupInner {...props} />
@@ -467,7 +470,7 @@ export function BoardLinkChip() {
   )
 }
 
-export function RoadmapTimeline({ data }: { data: RoadmapData }) {
+export function RoadmapTimeline({ data, locale = 'en' }: { data: RoadmapData; locale?: string }) {
   const hasContent =
     data.active.length > 0 || data.upcoming.length > 0 || data.shipped.length > 0
 
@@ -481,9 +484,9 @@ export function RoadmapTimeline({ data }: { data: RoadmapData }) {
 
   return (
     <div className="space-y-4">
-      <RailGroup label="Now" milestones={data.active} tone="now" />
-      <RailGroup label="Next" milestones={data.upcoming} tone="next" />
-      <RailGroup label="Shipped" milestones={data.shipped} tone="shipped" />
+      <RailGroup label="Now" milestones={data.active} tone="now" locale={locale} />
+      <RailGroup label="Next" milestones={data.upcoming} tone="next" locale={locale} />
+      <RailGroup label="Shipped" milestones={data.shipped} tone="shipped" locale={locale} />
     </div>
   )
 }

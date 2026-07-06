@@ -1,5 +1,6 @@
 import { clsx, type ClassValue } from 'clsx'
 import { twMerge } from 'tailwind-merge'
+import { formatDateForLocale, formatDateTimeForLocale } from './date-format'
 
 /**
  * Merge Tailwind CSS classes with clsx
@@ -12,24 +13,14 @@ export function cn(...inputs: ClassValue[]) {
  * Format a date for display
  */
 export function formatDate(date: Date | string): string {
-  return new Date(date).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-  })
+  return formatDateForLocale(date, 'en')
 }
 
 /**
  * Format a date with time for display
  */
 export function formatDateTime(date: Date | string): string {
-  return new Date(date).toLocaleString('en-US', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-  })
+  return formatDateTimeForLocale(date, 'en')
 }
 
 /**
@@ -58,4 +49,3 @@ export async function hashString(str: string): Promise<string> {
   const hashArray = Array.from(new Uint8Array(hashBuffer))
   return hashArray.map((b) => b.toString(16).padStart(2, '0')).join('')
 }
-

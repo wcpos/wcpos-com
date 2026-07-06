@@ -70,6 +70,12 @@ describe('RoadmapTimeline', () => {
     expect(screen.queryByText(/Aug 2026/)).not.toBeInTheDocument()
   })
 
+  it('localizes due-date month names when a locale is provided', () => {
+    render(<RoadmapTimeline data={ROADMAP_DEV_FIXTURE} locale="de-DE" />)
+    expect(screen.getByText(/due Sept\. 2026/)).toBeInTheDocument()
+    expect(screen.queryByText(/due Sep 2026/)).not.toBeInTheDocument()
+  })
+
   it('renders an empty state when there is no roadmap data', () => {
     render(<RoadmapTimeline data={EMPTY} />)
     expect(
