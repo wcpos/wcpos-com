@@ -144,6 +144,34 @@ function wrapText(
   return lines
 }
 
+/**
+ * Single-line fit: returns text unchanged if it fits maxWidth, otherwise
+ * trims words and appends an ellipsis so it can't overprint an adjacent
+ * column. Used for values drawn on a shared baseline (item titles beside the
+ * numeric columns, billed-to lines beside the details column).
+ */
+function truncateToWidth(
+  font: PDFFont,
+  text: string,
+  size: number,
+  maxWidth: number
+): string {
+  // Measure the encodable form — widthOfTextAtSize throws on glyphs the
+  // standard font can't encode (e.g. emoji), which drawText would replace.
+  text = sanitizeTextForFont(font, text)
+  if (font.widthOfTextAtSize(text, size) <= maxWidth) return text
+
+  const ellipsis = '…'
+  let truncated = text
+  while (
+    truncated &&
+    font.widthOfTextAtSize(truncated + ellipsis, size) > maxWidth
+  ) {
+    truncated = truncated.slice(0, -1).trimEnd()
+  }
+  return truncated ? truncated + ellipsis : ellipsis
+}
+
 type TextStyle = {
   font: PDFFont
   size: number
@@ -235,9 +263,12 @@ export async function buildReceiptPdf(
   if (countryCode) billingLines.push({ text: countryCode })
   if (taxNumber) billingLines.push({ text: `Tax ID: ${taxNumber}` })
 
+  // Keep billed-to text clear of the DETAILS column that shares these rows.
+  const billedToWidth = detailX - MARGIN - 16
   for (const line of billingLines) {
-    drawLeft(page, line.text, MARGIN, y, {
-      font: line.isName ? bold : regular,
+    const font = line.isName ? bold : regular
+    drawLeft(page, truncateToWidth(font, line.text, 10, billedToWidth), MARGIN, y, {
+      font,
       size: 10,
       color: line.isName ? INK : MUTED,
     })
@@ -310,7 +341,12 @@ export async function buildReceiptPdf(
         ? item.title.trim()
         : 'Untitled item'
 
-    drawLeft(page, itemTitle, MARGIN, y, { font: regular, size: 10 })
+    // Keep the title clear of the right-aligned QTY column on the same row.
+    const titleWidth = qtyRight - MARGIN - 30
+    drawLeft(page, truncateToWidth(regular, itemTitle, 10, titleWidth), MARGIN, y, {
+      font: regular,
+      size: 10,
+    })
     drawRight(page, normalize(item.quantity) || '--', qtyRight, y, {
       font: regular,
       size: 10,

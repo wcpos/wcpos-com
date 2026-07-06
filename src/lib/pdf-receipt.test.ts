@@ -127,6 +127,31 @@ describe('buildReceiptPdf', () => {
     expect(withTax).not.toContain(hex('No tax has been added'))
   })
 
+  it('truncates long item titles so they cannot overprint the numeric columns', async () => {
+    const longTitle =
+      'WCPOS Pro Yearly Subscription With An Extremely Long Product Name That Would Overflow The Column'
+    const stream = await pageStream(
+      await buildReceiptPdf({
+        ...baseReceipt,
+        items: [{ title: longTitle, quantity: 1, unitPrice: 129, total: 129 }],
+      })
+    )
+
+    // Full title is trimmed; a leading portion still renders.
+    expect(stream).not.toContain(hex(longTitle))
+    expect(stream).toContain(hex('WCPOS Pro Yearly'))
+  })
+
+  it('truncates long billed-to lines so they cannot overprint the details column', async () => {
+    const longEmail =
+      'an-extremely-long-customer-email-address-that-overflows@really-long-domain-example.com'
+    const stream = await pageStream(
+      await buildReceiptPdf({ ...baseReceipt, customerEmail: longEmail })
+    )
+
+    expect(stream).not.toContain(hex(longEmail))
+  })
+
   it('does not throw when order content includes unicode characters', async () => {
     const unicodeReceipt: AccountOrderReceiptFact = {
       ...baseReceipt,
