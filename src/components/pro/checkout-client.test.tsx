@@ -178,15 +178,6 @@ function mockSuccessfulCheckoutInit(cart = buildCheckoutCart()) {
     ok: true,
     json: async () => ({ cart }),
   })
-  // 3. POST /api/store/cart/payment-sessions
-  mockFetch.mockResolvedValueOnce({
-    ok: true,
-    json: async () => ({
-      cart,
-      paymentCollectionId: 'pay-col-123',
-      clientSecret: 'pi_test_secret',
-    }),
-  })
 }
 
 function renderSignedIn(props: Record<string, unknown> = {}) {
@@ -204,8 +195,8 @@ function renderSignedIn(props: Record<string, unknown> = {}) {
 
 /**
  * Fills the billing step and continues to payment. Queues the billing
- * PATCH response and refreshed payment session (the 4th and 5th fetches
- * after the 3 init calls).
+ * PATCH response and initial payment session (the 3rd and 4th fetches
+ * after the 2 init calls).
  */
 async function completeBillingStep(cartAfterBilling = buildCheckoutCart()) {
   await waitFor(() => {
@@ -299,6 +290,24 @@ describe('CheckoutClient', () => {
     )
   })
 
+  it('does not create a payment session before billing is submitted', async () => {
+    mockSuccessfulCheckoutInit()
+    renderSignedIn()
+
+    await waitFor(() => {
+      expect(mockFetch).toHaveBeenCalledWith(
+        '/api/store/cart/line-items',
+        expect.objectContaining({ method: 'POST' })
+      )
+    })
+
+    expect(
+      mockFetch.mock.calls.some(([url]) =>
+        String(url).includes('/api/store/cart/payment-sessions')
+      )
+    ).toBe(false)
+  })
+
   it('creates the cart in the provider-filter region when supplied', async () => {
     mockSuccessfulCheckoutInit()
     renderSignedIn({ cartRegionId: 'reg_eu' })
@@ -350,7 +359,7 @@ describe('CheckoutClient', () => {
       target: { value: 'hunter2hunter2' },
     })
 
-    // 1. register succeeds; then background cart init fires (3 calls).
+    // 1. register succeeds; then background cart init fires (2 calls).
     mockFetch.mockResolvedValueOnce({ ok: true, json: async () => ({}) })
     mockSuccessfulCheckoutInit()
     fireEvent.click(
@@ -434,9 +443,9 @@ describe('CheckoutClient', () => {
 
     await completeBillingStep()
 
-    // The 4th call is the billing PATCH.
+    // The 3rd call is the billing PATCH.
     expect(mockFetch).toHaveBeenNthCalledWith(
-      4,
+      3,
       '/api/store/cart',
       expect.objectContaining({
         method: 'PATCH',
@@ -487,7 +496,7 @@ describe('CheckoutClient', () => {
     await completeBillingStep(recalculatedCart)
 
     expect(mockFetch).toHaveBeenNthCalledWith(
-      5,
+      4,
       '/api/store/cart/payment-sessions',
       expect.objectContaining({
         method: 'POST',

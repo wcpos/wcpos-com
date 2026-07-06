@@ -73,6 +73,16 @@ export async function completeBillingStep(page: Page) {
   await expect(page.getByTestId('billing-step-form')).toBeVisible({
     timeout: 15000,
   })
+  await fillBillingAddressFields(page)
+  await page.getByRole('button', { name: /continue to payment/i }).click()
+  await expect(page.getByTestId('checkout-step-3')).toHaveAttribute(
+    'data-step-state',
+    'active',
+    { timeout: 15000 }
+  )
+}
+
+export async function fillBillingAddressFields(page: Page) {
   await fillLabeledField(page, 'First name', 'Ada')
   await fillLabeledField(page, 'Last name', 'Lovelace')
   await fillLabeledField(page, 'Address line 1', '42 Wallaby Way')
@@ -81,12 +91,6 @@ export async function completeBillingStep(page: Page) {
   await fillLabeledField(page, 'State / Province / Region', 'NSW')
   await fillLabeledField(page, 'Postal code', '2000')
   await selectLabeledOption(page, 'Country', 'au')
-  await page.getByRole('button', { name: /continue to payment/i }).click()
-  await expect(page.getByTestId('checkout-step-3')).toHaveAttribute(
-    'data-step-state',
-    'active',
-    { timeout: 15000 }
-  )
 }
 
 export async function completeAccountStep(
