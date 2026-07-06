@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Eyebrow } from '@/components/ui/eyebrow'
 import { TextLink } from '@/components/ui/text-link'
+import { trackClientEvent } from '@/lib/analytics/client-events'
 import {
   PLATFORMS,
   tileFor,
@@ -150,7 +151,16 @@ export function DownloadsHero({
 
         <p className="mt-6 text-sm text-muted-foreground">
           Every app connects to the{' '}
-          <TextLink href="https://wordpress.org/plugins/woocommerce-pos/">
+          <TextLink
+            href="https://wordpress.org/plugins/woocommerce-pos/"
+            onClick={() =>
+              trackClientEvent('download_clicked', {
+                plugin: 'free',
+                source: 'wordpress_org',
+                page: '/downloads',
+              })
+            }
+          >
             free WordPress plugin
           </TextLink>{' '}
           — install it first.
