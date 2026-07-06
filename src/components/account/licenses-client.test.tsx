@@ -226,7 +226,11 @@ describe('LicensesClient', () => {
     expect(
       screen.queryByText(/renew to keep receiving updates/)
     ).not.toBeInTheDocument()
-    expect(screen.queryByRole('link', { name: 'Renew' })).not.toBeInTheDocument()
+    // The expiry banner is gone, but the always-visible footer Renew remains.
+    expect(screen.getByRole('link', { name: 'Renew' })).toHaveAttribute(
+      'href',
+      '/pro'
+    )
   })
 
   it('does not warn for lifetime licenses', () => {
@@ -238,6 +242,10 @@ describe('LicensesClient', () => {
 
     expect(
       screen.queryByText(/renew to keep receiving updates/)
+    ).not.toBeInTheDocument()
+    // A lifetime licence never expires — there is nothing to renew.
+    expect(
+      screen.queryByRole('link', { name: 'Renew' })
     ).not.toBeInTheDocument()
   })
 
@@ -251,6 +259,26 @@ describe('LicensesClient', () => {
     )
 
     expect(screen.getByText('Yearly')).toBeInTheDocument()
+  })
+
+  it('deep-links the Renew button to the pre-filled yearly checkout', () => {
+    render(
+      <LicensesClient
+        initialLicenses={[
+          makeLicense({
+            status: 'active',
+            policyId: '261cb7e2-6e80-476e-98bd-fe7f406f258d',
+          }),
+        ]}
+      />
+    )
+
+    // An active, non-expiring yearly licence shows the always-visible Renew,
+    // deep-linked to the pre-filled yearly checkout (not the generic /pro).
+    expect(screen.getByRole('link', { name: 'Renew' })).toHaveAttribute(
+      'href',
+      '/pro/checkout?product=wcpos-pro-yearly'
+    )
   })
 
   it('does NOT label an unregistered/unknown policy as "Lifetime"', () => {
