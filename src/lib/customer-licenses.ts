@@ -18,6 +18,24 @@ import { licenseLogger } from '@/lib/logger'
 
 const LICENSE_LOOKUP_BATCH_SIZE = 10
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return Boolean(value) && typeof value === 'object' && !Array.isArray(value)
+}
+
+function stringOrNull(value: unknown): string | null {
+  if (typeof value !== 'string') return null
+  const trimmed = value.trim()
+  return trimmed.length > 0 ? trimmed : null
+}
+
+function legacyCustomerLicenseReferences(customer: {
+  metadata?: Record<string, unknown> | null
+}): LicenseReference[] {
+  const metadata = isRecord(customer.metadata) ? customer.metadata : {}
+  const key = stringOrNull(metadata.wc_master_api_key)
+  return key ? [{ key }] : []
+}
+
 function buildLicensePlaceholder(reference: LicenseReference): LicenseDetail | null {
   if (!reference.key) return null
 
@@ -118,9 +136,13 @@ export async function resolveLicenseReference(
 }
 
 export async function getResolvedLicensesFromOrders(
-  orders: MedusaOrder[]
+  orders: MedusaOrder[],
+  additionalReferences: LicenseReference[] = []
 ): Promise<LicenseDetail[]> {
-  const references = extractLicenseReferencesFromOrders(orders)
+  const references = [
+    ...extractLicenseReferencesFromOrders(orders),
+    ...additionalReferences,
+  ]
   const uniqueReferences = Array.from(
     new Map(
       references.map((reference) => [
@@ -152,6 +174,9 @@ export async function getResolvedCustomerLicenses(): Promise<{
 
   return {
     authenticated: true,
-    licenses: await getResolvedLicensesFromOrders(orders),
+    licenses: await getResolvedLicensesFromOrders(
+      orders,
+      legacyCustomerLicenseReferences(customer)
+    ),
   }
 }

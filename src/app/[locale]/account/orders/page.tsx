@@ -1,7 +1,7 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { Suspense } from 'react'
 import { getOrdersPage } from '@/lib/customer-orders'
-import { projectAccountOrderListRow } from '@/lib/account-order-projection'
+import { projectAccountOrderListRows } from '@/lib/account-order-projection'
 import { Link } from '@/i18n/navigation'
 import { Card, CardContent } from '@/components/ui/card'
 import { PageHeader } from '@/components/ui/page-header'
@@ -27,7 +27,7 @@ async function OrdersContent({ locale }: { locale: string }) {
 
   return (
     <OrderHistoryList
-      orders={orders.map(projectAccountOrderListRow)}
+      orders={projectAccountOrderListRows(orders)}
       locale={locale}
     />
   )

@@ -97,6 +97,50 @@ function productForOrder(order: MedusaOrder): string | undefined {
   return title || undefined
 }
 
+function stringOrNull(value: unknown): string | null {
+  if (typeof value !== 'string') return null
+  const trimmed = value.trim()
+  return trimmed.length > 0 ? trimmed : null
+}
+
+function legacyDisplayId(order: MedusaOrder): number {
+  const value = order.metadata?.wc_order_id
+  if (typeof value === 'number' && Number.isInteger(value) && value > 0) {
+    return value
+  }
+
+  if (typeof value === 'string') {
+    const trimmed = value.trim()
+    const parsed = Number.parseInt(trimmed, 10)
+    if (String(parsed) === trimmed && parsed > 0) {
+      return parsed
+    }
+  }
+
+  return order.display_id
+}
+
+function legacyCreatedAt(order: MedusaOrder): string {
+  return (
+    normalizeLegacyDate(
+      stringOrNull(order.metadata?.wc_order_date_gmt) ??
+        stringOrNull(order.metadata?.wc_order_date)
+    ) ?? order.created_at
+  )
+}
+
+function normalizeLegacyDate(value: string | null): string | null {
+  if (!value) return null
+  if (value.includes('T')) return value
+
+  const match = value.match(
+    /^(\d{4}-\d{2}-\d{2})\s+(\d{2}:\d{2}:\d{2})(?:\.\d+)?$/
+  )
+  if (!match) return value
+
+  return `${match[1]}T${match[2]}Z`
+}
+
 function referenceIdentity(reference: LicenseReference): string {
   return reference.id ? `id:${reference.id}` : `key:${reference.key}`
 }
@@ -147,13 +191,21 @@ export function projectAccountOrderListRow(
 
   return {
     id: order.id,
-    displayId: order.display_id,
-    createdAt: order.created_at,
+    displayId: legacyDisplayId(order),
+    createdAt: legacyCreatedAt(order),
     itemCount: order.items.length,
     displayStatus: getOrderDisplayStatus(order),
     total: money(order.total, order.currency_code),
     licenses,
   }
+}
+
+export function projectAccountOrderListRows(
+  orders: MedusaOrder[]
+): AccountOrderListRowFact[] {
+  return orders
+    .map(projectAccountOrderListRow)
+    .sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt))
 }
 
 export function projectAccountOrderDetail(
@@ -174,8 +226,8 @@ export function projectAccountOrderDetail(
 
   return {
     id: order.id,
-    displayId: order.display_id,
-    createdAt: order.created_at,
+    displayId: legacyDisplayId(order),
+    createdAt: legacyCreatedAt(order),
     email: order.email,
     displayStatus: getOrderDisplayStatus(order),
     total: money(order.total, order.currency_code),
@@ -192,12 +244,6 @@ export function projectAccountOrderDetail(
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return Boolean(value) && typeof value === 'object' && !Array.isArray(value)
-}
-
-function stringOrNull(value: unknown): string | null {
-  if (typeof value !== 'string') return null
-  const trimmed = value.trim()
-  return trimmed.length > 0 ? trimmed : null
 }
 
 export function projectReceiptProfile(
@@ -223,8 +269,8 @@ export function projectAccountOrderReceipt(
   billingProfile: AccountOrderReceiptProfileFact
 ): AccountOrderReceiptFact {
   return {
-    displayId: order.display_id,
-    createdAt: order.created_at,
+    displayId: legacyDisplayId(order),
+    createdAt: legacyCreatedAt(order),
     customerEmail: order.email,
     currencyCode: order.currency_code,
     billingProfile,

@@ -186,6 +186,62 @@ describe('getResolvedCustomerLicenses', () => {
     expect(result.licenses).toHaveLength(1)
     expect(result.licenses[0].key).toBe('WCPOS-SESSION-3333')
   })
+
+  it('falls back to the migrated customer master API key when orders have no license metadata', async () => {
+    mockGetCustomer.mockResolvedValueOnce({
+      id: 'cust_legacy',
+      metadata: {
+        wc_master_api_key: 'WCPOS-LEGACY-MASTER-9999',
+      },
+    })
+    mockGetAllOrders.mockResolvedValueOnce([
+      {
+        id: 'order_legacy',
+        status: 'completed',
+        display_id: 19524,
+        email: 'legacy@example.com',
+        currency_code: 'usd',
+        total: 129,
+        subtotal: 129,
+        tax_total: 0,
+        created_at: '2019-08-16T00:00:00Z',
+        updated_at: '2019-08-16T00:00:00Z',
+        items: [],
+        metadata: {
+          legacy: true,
+          wc_order_id: 19524,
+        },
+      },
+    ])
+    mockValidateLicenseKey.mockResolvedValueOnce({
+      valid: true,
+      code: 'VALID',
+      detail: 'ok',
+      license: {
+        id: 'lic_legacy_master',
+        key: 'WCPOS-LEGACY-MASTER-9999',
+        status: 'ACTIVE',
+        expiry: '2027-03-17T00:00:00Z',
+        maxMachines: 2,
+        activationCount: 1,
+        metadata: {
+          wcCustomerId: 1691,
+        },
+        policyId: 'policy_yearly',
+        createdAt: '2026-02-23T00:00:00Z',
+      },
+    })
+
+    const result = await getResolvedCustomerLicenses()
+
+    expect(mockValidateLicenseKey).toHaveBeenCalledWith(
+      'WCPOS-LEGACY-MASTER-9999'
+    )
+    expect(result.licenses).toHaveLength(1)
+    expect(result.licenses[0].id).toBe('lic_legacy_master')
+    expect(result.licenses[0].status).toBe('active')
+  })
+
   it('skips references whose license does not exist in Keygen (404) without a placeholder row', async () => {
     mockGetCustomer.mockResolvedValueOnce({ id: 'cust_1' })
     mockGetAllOrders.mockResolvedValueOnce([
