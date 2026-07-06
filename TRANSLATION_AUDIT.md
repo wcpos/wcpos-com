@@ -128,3 +128,102 @@ This date-format branch should not attempt a whole-site translation extraction b
 2. **Auth/checkout extraction** — move auth forms, checkout steps, payment/recovery errors, and checkout success copy into `messages/*.json`.
 3. **Medusa email i18n design** — add a locale source for orders/customers, translated template catalogs, and tests for at least one non-English receipt.
 4. **Translation quality review** — review identical-to-English message values and brand/legal exceptions with native speakers or a translation service.
+
+## Hard-coded English source-string inventory
+
+After feedback, this audit was expanded beyond message parity to search source code for hard-coded English literals anywhere they may become user-visible.
+
+### Methodology
+
+A TypeScript-aware scanner walked non-test source files and collected candidate English strings from:
+
+- JSX text nodes;
+- string literals;
+- template literals, including HTML email templates;
+- user-facing attributes such as `title`, `description`, `aria-label`, `alt`, `placeholder`, and `label`.
+
+The scanner intentionally skips obvious imports, paths, CSS class strings, URLs, identifiers, HTTP method/config constants, generated/build directories, and test/spec files. It is still an audit heuristic: every candidate needs human triage before extraction, but it catches much more than grep.
+
+### Full inventories
+
+- `wcpos-com`: `HARDCODED_ENGLISH_AUDIT.csv` — 1,573 candidate hard-coded English literals.
+- `wcpos-medusa`: companion PR includes `HARDCODED_ENGLISH_AUDIT.csv` — 568 candidate hard-coded English literals.
+
+CSV columns:
+
+- `file`
+- `line`
+- `col`
+- `category`
+- `attr`
+- `text`
+
+### wcpos-com category counts
+
+- `route/page`: 538
+- `component`: 751
+- `code/string`: 196
+- `error/status`: 77
+- `admin`: 11
+
+Largest `wcpos-com` source hotspots by candidate count:
+
+| Count | File |
+| ---: | --- |
+| 51 | `src/app/[locale]/(main)/privacy/page.tsx` |
+| 42 | `src/components/pro/checkout-client.tsx` |
+| 39 | `src/app/[locale]/(main)/terms/page.tsx` |
+| 35 | `src/components/roadmap/roadmap-timeline.tsx` |
+| 34 | `src/app/[locale]/(main)/downloads/page.tsx` |
+| 34 | `src/components/roadmap/dev-fixture.ts` |
+| 30 | `src/components/home/benefits-section.tsx` |
+| 30 | `src/components/home/scroll-story/devices/pos-screen.tsx` |
+| 27 | `src/components/about/story-timeline.tsx` |
+| 26 | `src/components/pro/checkout/account-step.tsx` |
+| 25 | `src/app/[locale]/(main)/refunds/page.tsx` |
+| 25 | `src/components/pro/checkout-safety.ts` |
+| 24 | `src/services/core/external/medusa-client.ts` |
+| 23 | `src/app/[locale]/(auth)/login/login-page-client.tsx` |
+| 21 | `src/components/account/profile-edit-form.tsx` |
+| 21 | `src/components/pro/checkout-recovery.tsx` |
+
+Interpretation:
+
+- The site is multilingual structurally, but large English copy surfaces are still embedded directly in source.
+- The biggest customer-facing extraction priorities are legal pages, checkout, downloads, roadmap, home/about marketing, auth flows, and support chat.
+- Some `code/string` and `error/status` hits are API/log/internal strings; they still need triage because some API errors are surfaced to users.
+
+### wcpos-medusa category counts
+
+- `email/template`: 197
+- `code/string`: 299
+- `error/status`: 57
+- `admin`: 15
+
+Largest `wcpos-medusa` source hotspots by candidate count:
+
+| Count | File |
+| ---: | --- |
+| 96 | `src/modules/resend/templates/index.ts` |
+| 52 | `src/subscribers/order-completed.ts` |
+| 48 | `src/scripts/seed.ts` |
+| 38 | `src/scripts/migrate-woocommerce/index.ts` |
+| 31 | `src/modules/keygen/keygen-client.ts` |
+| 31 | `src/scripts/seed-wcpos-products.ts` |
+| 26 | `src/scripts/migrate-woocommerce/extract.ts` |
+| 24 | `src/scripts/migrate-woocommerce/load-keygen.ts` |
+| 22 | `src/scripts/migrate-woocommerce/test-extract.ts` |
+| 22 | `src/subscribers/order-placed-email.ts` |
+| 20 | `src/scripts/migrate-woocommerce/load-medusa.ts` |
+| 16 | `src/modules/discord-auth/services/discord.ts` |
+| 15 | `src/scripts/backfill-emailpass-identities.ts` |
+| 13 | `src/api/store/carts/[id]/paypal/capture/route.ts` |
+| 13 | `src/scripts/migrate-woocommerce/provision-logins.ts` |
+| 11 | `src/admin/widgets/license-max-machines.tsx` |
+
+Interpretation:
+
+- Medusa has no translation framework for transactional emails/admin messages yet.
+- `src/modules/resend/templates/index.ts` is the main customer-facing blocker: every default email template is English-only.
+- Subscriber-generated HTML rows and email data strings are also English-only.
+- Many script/migration hits are operator-facing and lower priority than transactional emails/admin UI, but they are inventoried for completeness.

@@ -1,0 +1,1574 @@
+file,line,col,category,attr,text
+src/app/[locale]/(auth)/forgot-password/forgot-password-page-client.tsx,1,1,route/page,,use client
+src/app/[locale]/(auth)/forgot-password/forgot-password-page-client.tsx,39,32,route/page,,Something went wrong. Please try again.
+src/app/[locale]/(auth)/forgot-password/forgot-password-page-client.tsx,45,16,route/page,,Something went wrong. Please try again.
+src/app/[locale]/(auth)/forgot-password/forgot-password-page-client.tsx,57,13,route/page,,Forgot your password?
+src/app/[locale]/(auth)/forgot-password/forgot-password-page-client.tsx,60,13,route/page,,Enter your email and we&apos;ll send you a reset link
+src/app/[locale]/(auth)/forgot-password/forgot-password-page-client.tsx,66,15,route/page,,If an account exists for
+src/app/[locale]/(auth)/forgot-password/forgot-password-page-client.tsx,66,47,route/page,,", a password reset link is on its way. Check your inbox (and spam folder)."
+src/app/[locale]/(auth)/forgot-password/forgot-password-page-client.tsx,78,40,route/page,,Email
+src/app/[locale]/(auth)/forgot-password/forgot-password-page-client.tsx,86,32,route/page,autoComplete,email
+src/app/[locale]/(auth)/forgot-password/forgot-password-page-client.tsx,91,43,route/page,,Send reset link
+src/app/[locale]/(auth)/forgot-password/forgot-password-page-client.tsx,98,13,route/page,,Remembered it?
+src/app/[locale]/(auth)/forgot-password/forgot-password-page-client.tsx,100,15,route/page,,Sign in
+src/app/[locale]/(auth)/forgot-password/page.tsx,6,10,route/page,,Forgot password
+src/app/[locale]/(auth)/forgot-password/page.tsx,7,16,route/page,,Request a password reset link for your WCPOS account.
+src/app/[locale]/(auth)/login/login-page-client.tsx,1,1,route/page,,use client
+src/app/[locale]/(auth)/login/login-page-client.tsx,34,39,route/page,,error
+src/app/[locale]/(auth)/login/login-page-client.tsx,40,47,route/page,,OAuth sign-in failed. Please try again or use email/password.
+src/app/[locale]/(auth)/login/login-page-client.tsx,60,32,route/page,,Login failed
+src/app/[locale]/(auth)/login/login-page-client.tsx,66,16,route/page,,Something went wrong. Please try again.
+src/app/[locale]/(auth)/login/login-page-client.tsx,77,58,route/page,,Sign in
+src/app/[locale]/(auth)/login/login-page-client.tsx,79,13,route/page,,Sign in to your WCPOS account
+src/app/[locale]/(auth)/login/login-page-client.tsx,91,38,route/page,,Email
+src/app/[locale]/(auth)/login/login-page-client.tsx,99,30,route/page,autoComplete,email
+src/app/[locale]/(auth)/login/login-page-client.tsx,105,43,route/page,,Password
+src/app/[locale]/(auth)/login/login-page-client.tsx,110,19,route/page,,Forgot password?
+src/app/[locale]/(auth)/login/login-page-client.tsx,124,26,route/page,,Signing in...
+src/app/[locale]/(auth)/login/login-page-client.tsx,124,44,route/page,,Sign in
+src/app/[locale]/(auth)/login/login-page-client.tsx,134,17,route/page,,Or continue with
+src/app/[locale]/(auth)/login/login-page-client.tsx,148,23,route/page,,/api/auth/google?redirect=
+src/app/[locale]/(auth)/login/login-page-client.tsx,152,17,route/page,,Google
+src/app/[locale]/(auth)/login/login-page-client.tsx,157,23,route/page,,/api/auth/github?redirect=
+src/app/[locale]/(auth)/login/login-page-client.tsx,161,17,route/page,,GitHub
+src/app/[locale]/(auth)/login/login-page-client.tsx,166,23,route/page,,/api/auth/discord?redirect=
+src/app/[locale]/(auth)/login/login-page-client.tsx,170,17,route/page,,Discord
+src/app/[locale]/(auth)/login/login-page-client.tsx,177,13,route/page,,Don&apos;t have an account?
+src/app/[locale]/(auth)/login/login-page-client.tsx,179,21,route/page,,/register?redirect=
+src/app/[locale]/(auth)/login/login-page-client.tsx,182,15,route/page,,Sign up
+src/app/[locale]/(auth)/login/page.tsx,6,10,route/page,,Sign in
+src/app/[locale]/(auth)/login/page.tsx,7,16,route/page,,"Sign in to your WCPOS account to manage your orders, licenses, and downloads."
+src/app/[locale]/(auth)/register/page.tsx,6,10,route/page,,Create an account
+src/app/[locale]/(auth)/register/page.tsx,7,16,route/page,,"Sign up for a WCPOS account to purchase Pro, manage licenses, and access downloads."
+src/app/[locale]/(auth)/register/register-page-client.tsx,1,1,route/page,,use client
+src/app/[locale]/(auth)/register/register-page-client.tsx,57,20,route/page,,An account with this email already exists. Please sign in.
+src/app/[locale]/(auth)/register/register-page-client.tsx,61,32,route/page,,Registration failed
+src/app/[locale]/(auth)/register/register-page-client.tsx,67,16,route/page,,Something went wrong. Please try again.
+src/app/[locale]/(auth)/register/register-page-client.tsx,79,13,route/page,,Create an account
+src/app/[locale]/(auth)/register/register-page-client.tsx,82,13,route/page,,Sign up for a WCPOS account
+src/app/[locale]/(auth)/register/register-page-client.tsx,95,44,route/page,,First name
+src/app/[locale]/(auth)/register/register-page-client.tsx,105,43,route/page,,Last name
+src/app/[locale]/(auth)/register/register-page-client.tsx,117,38,route/page,,Email
+src/app/[locale]/(auth)/register/register-page-client.tsx,125,30,route/page,autoComplete,email
+src/app/[locale]/(auth)/register/register-page-client.tsx,130,41,route/page,,Password
+src/app/[locale]/(auth)/register/register-page-client.tsx,141,17,route/page,,At least
+src/app/[locale]/(auth)/register/register-page-client.tsx,146,26,route/page,,Creating account...
+src/app/[locale]/(auth)/register/register-page-client.tsx,146,50,route/page,,Create account
+src/app/[locale]/(auth)/register/register-page-client.tsx,152,13,route/page,,Already have an account?
+src/app/[locale]/(auth)/register/register-page-client.tsx,154,21,route/page,,/login?redirect=
+src/app/[locale]/(auth)/register/register-page-client.tsx,157,15,route/page,,Sign in
+src/app/[locale]/(auth)/reset-password/page.tsx,6,10,route/page,,Reset password
+src/app/[locale]/(auth)/reset-password/page.tsx,7,16,route/page,,Choose a new password for your WCPOS account.
+src/app/[locale]/(auth)/reset-password/reset-password-page-client.tsx,1,1,route/page,,use client
+src/app/[locale]/(auth)/reset-password/reset-password-page-client.tsx,34,34,route/page,,email
+src/app/[locale]/(auth)/reset-password/reset-password-page-client.tsx,55,32,route/page,,Failed to reset password
+src/app/[locale]/(auth)/reset-password/reset-password-page-client.tsx,63,16,route/page,,Something went wrong. Please try again.
+src/app/[locale]/(auth)/reset-password/reset-password-page-client.tsx,77,13,route/page,,Reset your password
+src/app/[locale]/(auth)/reset-password/reset-password-page-client.tsx,81,17,route/page,,Choose a new password for
+src/app/[locale]/(auth)/reset-password/reset-password-page-client.tsx,82,17,route/page,,This reset link is incomplete
+src/app/[locale]/(auth)/reset-password/reset-password-page-client.tsx,95,43,route/page,,New password
+src/app/[locale]/(auth)/reset-password/reset-password-page-client.tsx,106,19,route/page,,At least
+src/app/[locale]/(auth)/reset-password/reset-password-page-client.tsx,111,45,route/page,,Reset password
+src/app/[locale]/(auth)/reset-password/reset-password-page-client.tsx,116,15,route/page,,This link is missing its reset token — it may have been truncated by your email client. Request a new one below.
+src/app/[locale]/(auth)/reset-password/reset-password-page-client.tsx,123,28,route/page,,Link expired?
+src/app/[locale]/(auth)/reset-password/reset-password-page-client.tsx,123,46,route/page,,Need a fresh link?
+src/app/[locale]/(auth)/reset-password/reset-password-page-client.tsx,128,15,route/page,,Request a new reset link
+src/app/[locale]/(main)/about-us/page.tsx,25,7,route/page,,"The story behind WCPOS — an independent point of sale built by a former shopkeeper and funded by shopkeepers, not investors."
+src/app/[locale]/(main)/downloads/page.tsx,42,12,route/page,,Downloads
+src/app/[locale]/(main)/downloads/page.tsx,44,7,route/page,,"Download WCPOS — the free plugin plus the desktop, iOS, Android and web apps. See the latest version and recent release notes."
+src/app/[locale]/(main)/downloads/page.tsx,49,12,route/page,,macOS (Apple Silicon)
+src/app/[locale]/(main)/downloads/page.tsx,50,12,route/page,,macOS (Intel)
+src/app/[locale]/(main)/downloads/page.tsx,66,11,route/page,,"- Cash drawer support — auto-open after payment or via a new Open Drawer button, with per-printer connectors (ESC-POS, Epson, PrintNode, cloud) - Fixed analytics events firing too often - Updated translations"
+src/app/[locale]/(main)/downloads/page.tsx,71,11,route/page,,"- Fixed a payment-gateways API crash (HTTP 500 with some third-party gateways, e.g. ToyyibPay)"
+src/app/[locale]/(main)/downloads/page.tsx,76,11,route/page,,- Redesigned Bluetooth printer setup; serial printing for OS-paired Bluetooth Classic printers - Improved Windows raw printing; smoother USB flow
+src/app/[locale]/(main)/downloads/page.tsx,81,11,route/page,,- New receipt template gallery; thermal printing (58/80mm) - Customer Tax IDs; Pro coupons & refunds at the POS
+src/app/[locale]/(main)/downloads/page.tsx,110,34,route/page,,_No release notes for this version._
+src/app/[locale]/(main)/downloads/page.tsx,173,21,route/page,eyebrow,Get started
+src/app/[locale]/(main)/downloads/page.tsx,174,19,route/page,title,Three steps to your first sale
+src/app/[locale]/(main)/downloads/page.tsx,175,22,route/page,subtitle,"It takes about two minutes, start to finish."
+src/app/[locale]/(main)/downloads/page.tsx,180,17,route/page,,Install the free plugin
+src/app/[locale]/(main)/downloads/page.tsx,183,17,route/page,,"The foundation everything connects to. In your dashboard: Plugins → Add New, then search “WCPOS”."
+src/app/[locale]/(main)/downloads/page.tsx,191,23,route/page,,Free · GPL
+src/app/[locale]/(main)/downloads/page.tsx,195,68,route/page,,WordPress 5.6+ · WooCommerce 5.3+ · PHP 7.4+
+src/app/[locale]/(main)/downloads/page.tsx,205,33,route/page,,free
+src/app/[locale]/(main)/downloads/page.tsx,218,33,route/page,,free
+src/app/[locale]/(main)/downloads/page.tsx,232,17,route/page,,Pick your device
+src/app/[locale]/(main)/downloads/page.tsx,235,17,route/page,,"All free, all in sync. Grab the one we detected up top, or any of these."
+src/app/[locale]/(main)/downloads/page.tsx,239,49,route/page,title,Desktop app
+src/app/[locale]/(main)/downloads/page.tsx,251,53,route/page,title,iOS & iPad
+src/app/[locale]/(main)/downloads/page.tsx,253,21,route/page,,Join the TestFlight beta
+src/app/[locale]/(main)/downloads/page.tsx,258,21,route/page,,Join on Google Play
+src/app/[locale]/(main)/downloads/page.tsx,263,21,route/page,,Open the live demo
+src/app/[locale]/(main)/downloads/page.tsx,271,17,route/page,,Want more? Go Pro
+src/app/[locale]/(main)/downloads/page.tsx,274,17,route/page,,"A licensed plugin that adds terminal payments, refunds and stock control on the same foundation."
+src/app/[locale]/(main)/downloads/page.tsx,278,44,route/page,,Unlock the full till
+src/app/[locale]/(main)/downloads/page.tsx,280,19,route/page,,"Payments, refunds, stock &amp; pricing, order management, end-of-day reports, multi-store and priority Discord support."
+src/app/[locale]/(main)/downloads/page.tsx,286,23,route/page,,View Pro plans
+src/app/[locale]/(main)/downloads/page.tsx,291,23,route/page,,Sign in to download
+src/app/[locale]/(main)/downloads/page.tsx,306,19,route/page,eyebrow,Release history
+src/app/[locale]/(main)/downloads/page.tsx,307,17,route/page,title,What's new
+src/app/[locale]/(main)/downloads/page.tsx,308,20,route/page,subtitle,Recent changes — every app shares one version line.
+src/app/[locale]/(main)/page.tsx,16,5,route/page,,"Point of Sale for WooCommerce. Sync your products, sell offline, and connect real hardware with native apps for iOS, Android, and desktop."
+src/app/[locale]/(main)/page.tsx,46,30,route/page,,"Windows, macOS, Linux, iOS, Android"
+src/app/[locale]/(main)/privacy/page.tsx,5,10,route/page,,Privacy Policy
+src/app/[locale]/(main)/privacy/page.tsx,7,5,route/page,,"How WCPOS collects, uses, and protects your personal data, including analytics, cookies, payment processing, and your rights under GDPR."
+src/app/[locale]/(main)/privacy/page.tsx,21,49,route/page,,Privacy Policy
+src/app/[locale]/(main)/privacy/page.tsx,22,54,route/page,,Last updated: 2026-06-10
+src/app/[locale]/(main)/privacy/page.tsx,28,13,route/page,,"WCPOS (&quot;we&quot;, &quot;us&quot;) operates wcpos.com, the website for the WCPOS plugin and WCPOS Pro. This policy explains what personal data we collect when you use the site, why we collect it, who processes it on our behalf, and what rights you have over it. We aim to collect as little as we need to run the service."
+src/app/[locale]/(main)/privacy/page.tsx,37,55,route/page,,What we collect
+src/app/[locale]/(main)/privacy/page.tsx,40,61,route/page,,Account information.
+src/app/[locale]/(main)/privacy/page.tsx,41,15,route/page,,"Your email address and name when you create an account, either directly or by signing in with Google, GitHub, or Discord. When you use a sign-in provider, we receive only your basic profile (email, name or username, and avatar or picture URL) from that provider, and may store the avatar or picture URL on your account as"
+src/app/[locale]/(main)/privacy/page.tsx,48,61,route/page,,Billing details.
+src/app/[locale]/(main)/privacy/page.tsx,49,15,route/page,,"The billing address and any company details you enter at checkout, stored with your customer record so we can issue receipts and comply with tax rules."
+src/app/[locale]/(main)/privacy/page.tsx,54,61,route/page,,Order and license history.
+src/app/[locale]/(main)/privacy/page.tsx,55,15,route/page,,"Records of your purchases, license keys, and plugin downloads, so you can manage your licenses and we can provide support."
+src/app/[locale]/(main)/privacy/page.tsx,59,61,route/page,,Payment information.
+src/app/[locale]/(main)/privacy/page.tsx,60,15,route/page,,Payments are handled by Stripe and PayPal. Your full card number or payment credentials never reach our servers; we receive only a payment confirmation and the details needed for the receipt.
+src/app/[locale]/(main)/privacy/page.tsx,65,61,route/page,,Usage analytics.
+src/app/[locale]/(main)/privacy/page.tsx,66,15,route/page,,"We use PostHog to understand how the site is used (pages viewed, buttons clicked). To do this, we set a cookie containing a randomly generated identifier. It does not contain your name or email."
+src/app/[locale]/(main)/privacy/page.tsx,71,61,route/page,,Error reports.
+src/app/[locale]/(main)/privacy/page.tsx,72,15,route/page,,"If something breaks, an error report may be sent to Sentry. Reports can include technical details such as your browser and operating system and what the application was doing at the time of the error."
+src/app/[locale]/(main)/privacy/page.tsx,77,61,route/page,,Server logs.
+src/app/[locale]/(main)/privacy/page.tsx,78,15,route/page,,Our servers keep application logs (in Grafana Loki) for debugging and operating the service.
+src/app/[locale]/(main)/privacy/page.tsx,87,13,route/page,,We use a small number of first-party cookies. We do not use third-party advertising cookies.
+src/app/[locale]/(main)/privacy/page.tsx,92,81,route/page,,— keeps you signed in to your account. Expires after 1 day.
+src/app/[locale]/(main)/privacy/page.tsx,96,92,route/page,,— remembers your analytics consent choice (accepted or declined). Expires after 182 days.
+src/app/[locale]/(main)/privacy/page.tsx,101,86,route/page,,— a random identifier used for analytics. Only set after you accept analytics on the consent banner; removed if you decline. Expires after 1 year.
+src/app/[locale]/(main)/privacy/page.tsx,107,80,route/page,,— remembers your language preference.
+src/app/[locale]/(main)/privacy/page.tsx,111,15,route/page,,Your light/dark theme preference is stored locally in your browser and is never sent to us.
+src/app/[locale]/(main)/privacy/page.tsx,118,55,route/page,,Who processes your data
+src/app/[locale]/(main)/privacy/page.tsx,120,13,route/page,,We use the following service providers to run wcpos.com. Each receives only the data needed for its role:
+src/app/[locale]/(main)/privacy/page.tsx,125,61,route/page,,Our commerce backend (Medusa)
+src/app/[locale]/(main)/privacy/page.tsx,125,98,route/page,,"— self-hosted on Hetzner infrastructure in the EU. Stores accounts, customer records, and orders."
+src/app/[locale]/(main)/privacy/page.tsx,130,75,route/page,,— card payment processing.
+src/app/[locale]/(main)/privacy/page.tsx,134,61,route/page,,PayPal
+src/app/[locale]/(main)/privacy/page.tsx,134,75,route/page,,— PayPal payment processing.
+src/app/[locale]/(main)/privacy/page.tsx,138,75,route/page,,— software license management (license keys and activations).
+src/app/[locale]/(main)/privacy/page.tsx,142,76,route/page,,— product analytics.
+src/app/[locale]/(main)/privacy/page.tsx,146,75,route/page,,— error monitoring.
+src/app/[locale]/(main)/privacy/page.tsx,150,75,route/page,,— website hosting and content delivery.
+src/app/[locale]/(main)/privacy/page.tsx,157,55,route/page,,How long we keep data
+src/app/[locale]/(main)/privacy/page.tsx,160,15,route/page,,"Account and license data is kept while your account is active. If you ask us to delete your account, we delete it, except where we are legally required to keep records."
+src/app/[locale]/(main)/privacy/page.tsx,165,15,route/page,,Order and invoice records are kept for as long as tax and accounting laws require.
+src/app/[locale]/(main)/privacy/page.tsx,169,15,route/page,,The analytics identifier cookie expires after 1 year.
+src/app/[locale]/(main)/privacy/page.tsx,172,15,route/page,,Server logs and error reports are kept for a limited operational window and then deleted.
+src/app/[locale]/(main)/privacy/page.tsx,179,55,route/page,,Your rights
+src/app/[locale]/(main)/privacy/page.tsx,181,13,route/page,,"If you are in the EU/EEA or UK, you have rights under the GDPR, including the right to access, correct, delete, and export your personal data, and to object to or restrict certain processing. We extend the same rights to all users regardless of location."
+src/app/[locale]/(main)/privacy/page.tsx,187,13,route/page,,"To exercise any of these rights, email us at"
+src/app/[locale]/(main)/privacy/page.tsx,194,13,route/page,,so we can verify your identity privately. EU/EEA residents also have the right to lodge a complaint with their local data protection authority.
+src/app/[locale]/(main)/privacy/page.tsx,200,55,route/page,,Changes to this policy
+src/app/[locale]/(main)/privacy/page.tsx,202,13,route/page,,"If we make material changes to this policy, we will update the date at the top of this page. Continued use of the site after a change means the updated policy applies."
+src/app/[locale]/(main)/privacy/page.tsx,211,13,route/page,,Questions about this policy or your data? Email us at
+src/app/[locale]/(main)/privacy/page.tsx,218,13,route/page,,or ask general questions in the community chat on the
+src/app/[locale]/(main)/privacy/page.tsx,220,15,route/page,,support page
+src/app/[locale]/(main)/pro/checkout/page.tsx,25,10,route/page,,Checkout
+src/app/[locale]/(main)/pro/checkout/page.tsx,26,16,route/page,,Complete your purchase of WCPOS Pro
+src/app/[locale]/(main)/pro/checkout/page.tsx,49,24,route/page,,/pro/checkout?
+src/app/[locale]/(main)/pro/checkout/page.tsx,65,11,route/page,,WCPOS Pro — Yearly
+src/app/[locale]/(main)/pro/checkout/page.tsx,66,13,route/page,,WCPOS Pro — Lifetime
+src/app/[locale]/(main)/pro/checkout/page.tsx,131,17,route/page,,WCPOS Pro
+src/app/[locale]/(main)/pro/checkout/page.tsx,165,11,route/page,,Back to pricing
+src/app/[locale]/(main)/pro/checkout/page.tsx,168,61,route/page,,Checkout
+src/app/[locale]/(main)/pro/checkout/success/page.tsx,8,10,route/page,,Order Complete - WCPOS Pro
+src/app/[locale]/(main)/pro/checkout/success/page.tsx,9,16,route/page,,Thank you for your purchase of WCPOS Pro
+src/app/[locale]/(main)/pro/checkout/success/page.tsx,27,49,route/page,,Thank You!
+src/app/[locale]/(main)/pro/checkout/success/page.tsx,30,11,route/page,,Your purchase of WCPOS Pro is complete.
+src/app/[locale]/(main)/pro/checkout/success/page.tsx,34,46,route/page,,What happens next?
+src/app/[locale]/(main)/pro/checkout/success/page.tsx,36,17,route/page,,✓ Your license key and download link have been sent to your email
+src/app/[locale]/(main)/pro/checkout/success/page.tsx,37,17,route/page,,✓ You can also download from your account&apos;s licenses page
+src/app/[locale]/(main)/pro/checkout/success/page.tsx,38,17,route/page,,✓ Install and activate the plugin on your WordPress site
+src/app/[locale]/(main)/pro/checkout/success/page.tsx,39,17,route/page,,✓ Enter your license key to unlock Pro features
+src/app/[locale]/(main)/pro/checkout/success/page.tsx,47,15,route/page,,Go to Licenses
+src/app/[locale]/(main)/pro/checkout/success/page.tsx,53,15,route/page,,Installation Guide
+src/app/[locale]/(main)/pro/page.tsx,44,12,route/page,,Pro - Premium Features
+src/app/[locale]/(main)/pro/page.tsx,46,7,route/page,,"Upgrade WCPOS with Pro: terminal payments, stock and price editing, order and customer management, end-of-day reports, and priority support."
+src/app/[locale]/(main)/pro/page.tsx,57,3,route/page,,use cache
+src/app/[locale]/(main)/pro/page.tsx,99,42,route/page,,pro
+src/app/[locale]/(main)/pro/page.tsx,171,17,route/page,,WCPOS Pro
+src/app/[locale]/(main)/pro/page.tsx,173,13,route/page,,"Premium Point of Sale plugin for WooCommerce. Adds payment terminal integration, stock and price editing, order and customer management, end-of-day reports, custom payment gateways, and priority support."
+src/app/[locale]/(main)/pro/page.tsx,192,56,route/page,,pro
+src/app/[locale]/(main)/pro/page.tsx,210,17,route/page,title,WCPOS Pro
+src/app/[locale]/(main)/pro/page.tsx,211,20,route/page,subtitle,"Everything in the free POS, plus payment terminals, store management at the register, end-of-day reports, and priority support."
+src/app/[locale]/(main)/refunds/page.tsx,4,10,route/page,,Refund Policy
+src/app/[locale]/(main)/refunds/page.tsx,6,5,route/page,,"The WCPOS Pro refund policy: how to request a refund within 14 days of purchase, and how refunds are paid."
+src/app/[locale]/(main)/refunds/page.tsx,20,49,route/page,,Refund Policy
+src/app/[locale]/(main)/refunds/page.tsx,21,54,route/page,,Last updated: 2026-06-10
+src/app/[locale]/(main)/refunds/page.tsx,27,13,route/page,,"WCPOS Pro purchases — first purchase or renewal, yearly or lifetime — can be refunded within 14 days of purchase. Email us within that window and we refund you in full. You do not need to give a reason."
+src/app/[locale]/(main)/refunds/page.tsx,36,13,route/page,,The best refund is the one you never need
+src/app/[locale]/(main)/refunds/page.tsx,41,17,route/page,,Install the free plugin.
+src/app/[locale]/(main)/refunds/page.tsx,43,15,route/page,,Run the free version of WCPOS on your store for a couple of days before upgrading — that proves the plugin works on your site.
+src/app/[locale]/(main)/refunds/page.tsx,48,61,route/page,,Try the demo.
+src/app/[locale]/(main)/refunds/page.tsx,54,17,route/page,,online demo
+src/app/[locale]/(main)/refunds/page.tsx,56,15,route/page,,"runs the current version with Pro activated, so you can confirm it fulfils your store&apos;s requirements."
+src/app/[locale]/(main)/refunds/page.tsx,61,17,route/page,,Read the documentation.
+src/app/[locale]/(main)/refunds/page.tsx,63,15,route/page,,Check the
+src/app/[locale]/(main)/refunds/page.tsx,70,15,route/page,,"for the features you need, and email"
+src/app/[locale]/(main)/refunds/page.tsx,77,15,route/page,,with pre-sale questions — we answer openly and honestly.
+src/app/[locale]/(main)/refunds/page.tsx,83,55,route/page,,How to request a refund
+src/app/[locale]/(main)/refunds/page.tsx,85,13,route/page,,Email
+src/app/[locale]/(main)/refunds/page.tsx,92,13,route/page,,"from the email address you used for the purchase, within 14 days of buying. Telling us why helps us improve, but it is not required to get the refund."
+src/app/[locale]/(main)/refunds/page.tsx,99,55,route/page,,How refunds are paid
+src/app/[locale]/(main)/refunds/page.tsx,101,13,route/page,,"Refunds go back to the original payment method via Stripe or PayPal and typically appear on your statement within 5–10 business days, depending on your bank or card issuer. Refunded license keys are revoked and stop working immediately."
+src/app/[locale]/(main)/refunds/page.tsx,109,55,route/page,,License renewals
+src/app/[locale]/(main)/refunds/page.tsx,111,13,route/page,,Yearly licenses do not renew automatically — we never charge you again without a new purchase from you. The same 14-day refund window applies to renewal purchases.
+src/app/[locale]/(main)/refunds/page.tsx,118,55,route/page,,Your statutory rights
+src/app/[locale]/(main)/refunds/page.tsx,120,13,route/page,,"For consumers in the EU, EEA and UK: our 14-day refund window matches your statutory right of withdrawal for this kind of purchase, and exercising either works the same way — email us within 14 days."
+src/app/[locale]/(main)/refunds/page.tsx,126,13,route/page,,"If WCPOS Pro is defective or does not work as described, statutory remedies for faulty digital content apply at any time, independent of the 14-day window. And nothing in this policy limits any rights you have under the consumer protection laws of your country — where local law gives you stronger rights, those rights apply."
+src/app/[locale]/(main)/roadmap/page.tsx,25,12,route/page,,Roadmap
+src/app/[locale]/(main)/roadmap/page.tsx,27,7,route/page,,"See what we are building next for WCPOS — upcoming features, milestones, and release progress."
+src/app/[locale]/(main)/roadmap/page.tsx,32,3,route/page,,use cache
+src/app/[locale]/(main)/roadmap/page.tsx,33,13,route/page,,roadmap
+src/app/[locale]/(main)/roadmap/page.tsx,34,12,route/page,,roadmap
+src/app/[locale]/(main)/roadmap/page.tsx,69,13,route/page,,Roadmap
+src/app/[locale]/(main)/roadmap/page.tsx,72,13,route/page,,The release train
+src/app/[locale]/(main)/roadmap/page.tsx,75,13,route/page,,"Every stop on the way to a faster, offline-proof WCPOS — pulled straight from our GitHub, newest work first."
+src/app/[locale]/(main)/roadmap/page.tsx,102,7,route/page,,[roadmap] GitHub returned no roadmap data — rendering ROADMAP_DEV_FIXTURE (dev only)
+src/app/[locale]/(main)/support/page.tsx,16,12,route/page,,Support
+src/app/[locale]/(main)/support/page.tsx,18,7,route/page,,"Ask anything about WCPOS and get an instant answer from our docs, or chat with the community on Discord."
+src/app/[locale]/(main)/terms/page.tsx,5,10,route/page,,Terms of Service
+src/app/[locale]/(main)/terms/page.tsx,7,5,route/page,,"The terms that govern your use of wcpos.com, your WCPOS account, and WCPOS Pro licenses."
+src/app/[locale]/(main)/terms/page.tsx,21,49,route/page,,Terms of Service
+src/app/[locale]/(main)/terms/page.tsx,22,54,route/page,,Last updated: 2026-06-10
+src/app/[locale]/(main)/terms/page.tsx,28,13,route/page,,"These terms govern your use of wcpos.com, your WCPOS account, and any WCPOS Pro license you purchase. By using the site or buying a license, you agree to these terms. If you do not agree, please do not use the service."
+src/app/[locale]/(main)/terms/page.tsx,35,55,route/page,,The service
+src/app/[locale]/(main)/terms/page.tsx,37,13,route/page,,"WCPOS provides the wcpos.com website, user accounts, and paid WCPOS Pro licenses that unlock premium features, updates, and priority support for the WCPOS plugin."
+src/app/[locale]/(main)/terms/page.tsx,44,55,route/page,,The free plugin and the GPL
+src/app/[locale]/(main)/terms/page.tsx,46,13,route/page,,"The free WCPOS plugin is open-source software released under the GNU General Public License (GPL). Nothing in these terms limits the rights the GPL grants you over that code. A Pro license is separate: it covers access to Pro features, license keys, automatic updates, and priority support — not a restriction on the open-source code itself."
+src/app/[locale]/(main)/terms/page.tsx,55,55,route/page,,Your account
+src/app/[locale]/(main)/terms/page.tsx,57,17,route/page,,Provide accurate information when registering and keep it up to date.
+src/app/[locale]/(main)/terms/page.tsx,59,15,route/page,,Keep your credentials secure. You are responsible for activity that happens under your account.
+src/app/[locale]/(main)/terms/page.tsx,63,15,route/page,,Tell us promptly at
+src/app/[locale]/(main)/terms/page.tsx,70,15,route/page,,if you suspect unauthorized access to your account.
+src/app/[locale]/(main)/terms/page.tsx,76,55,route/page,,Purchases and licenses
+src/app/[locale]/(main)/terms/page.tsx,79,61,route/page,,Yearly license.
+src/app/[locale]/(main)/terms/page.tsx,79,84,route/page,,"A one-time payment that includes Pro features, automatic updates, and priority support for one year. It does not renew automatically and we never charge you again without a new purchase. When it expires, you can choose to renew it from your account for another year."
+src/app/[locale]/(main)/terms/page.tsx,86,61,route/page,,Lifetime license.
+src/app/[locale]/(main)/terms/page.tsx,86,86,route/page,,"A one-time purchase that includes Pro features, updates, and priority support for the lifetime of the product."
+src/app/[locale]/(main)/terms/page.tsx,91,15,route/page,,"License keys are for activating WCPOS Pro on your own sites within the limits of the license you purchased. Do not share, resell, or publish license keys."
+src/app/[locale]/(main)/terms/page.tsx,96,15,route/page,,Prices are shown at checkout before you pay. Payment is handled by Stripe or PayPal.
+src/app/[locale]/(main)/terms/page.tsx,100,15,route/page,,Refunds are handled according to our
+src/app/[locale]/(main)/terms/page.tsx,102,17,route/page,,refund policy
+src/app/[locale]/(main)/terms/page.tsx,110,55,route/page,,Acceptable use
+src/app/[locale]/(main)/terms/page.tsx,111,63,route/page,,"When using the service, you agree not to:"
+src/app/[locale]/(main)/terms/page.tsx,113,17,route/page,,Break the law or infringe the rights of others.
+src/app/[locale]/(main)/terms/page.tsx,115,15,route/page,,"Attempt to gain unauthorized access to accounts, systems, or data, or probe the service for vulnerabilities without permission."
+src/app/[locale]/(main)/terms/page.tsx,119,15,route/page,,"Interfere with the operation of the service, including overloading it or automated scraping at disruptive volumes."
+src/app/[locale]/(main)/terms/page.tsx,123,15,route/page,,Circumvent license checks or use license keys beyond the terms of your purchase. (This does not limit your GPL rights over the open-source plugin code.)
+src/app/[locale]/(main)/terms/page.tsx,131,55,route/page,,Warranty disclaimer
+src/app/[locale]/(main)/terms/page.tsx,133,13,route/page,,"The service and software are provided &quot;as is&quot; and &quot;as available&quot;, without warranties of any kind, express or implied, including merchantability, fitness for a particular purpose, and non-infringement. We do not promise that the service will be uninterrupted or error-free. Some jurisdictions do not allow certain warranty exclusions, so parts of this section may not apply to you."
+src/app/[locale]/(main)/terms/page.tsx,143,55,route/page,,Limitation of liability
+src/app/[locale]/(main)/terms/page.tsx,145,13,route/page,,"To the maximum extent permitted by law, WCPOS will not be liable for indirect, incidental, special, or consequential damages, or for lost profits, revenue, or data. Our total liability for any claim relating to the service is limited to the amount you paid us in the 12 months before the claim arose. Nothing in these terms excludes liability that cannot be excluded by law."
+src/app/[locale]/(main)/terms/page.tsx,157,13,route/page,,You can stop using the service and ask us to delete your account at any time. We may suspend or terminate accounts that violate these terms. Sections that by their nature should survive (such as the warranty disclaimer and liability limits) survive termination.
+src/app/[locale]/(main)/terms/page.tsx,165,55,route/page,,Changes to these terms
+src/app/[locale]/(main)/terms/page.tsx,167,13,route/page,,"If we make material changes, we will update the date at the top of this page. Continued use of the service after a change means the updated terms apply."
+src/app/[locale]/(main)/terms/page.tsx,176,13,route/page,,Questions about these terms? Email us at
+src/app/[locale]/(main)/terms/page.tsx,183,13,route/page,,or ask in the community chat on the
+src/app/[locale]/(main)/terms/page.tsx,185,15,route/page,,support page
+src/app/[locale]/account/admin/actions.ts,1,1,admin,,use server
+src/app/[locale]/account/admin/actions.ts,15,11,admin,,10 m
+src/app/[locale]/account/admin/actions.ts,20,19,admin,,Redirect failed
+src/app/[locale]/account/admin/actions.ts,44,20,admin,,Non-admin impersonation attempt by
+src/app/[locale]/account/admin/actions.ts,56,20,admin,,Impersonation lookup miss: admin=
+src/app/[locale]/account/admin/actions.ts,60,18,admin,,Impersonation START: admin=
+src/app/[locale]/account/admin/page.tsx,19,5,admin,,use server
+src/app/[locale]/account/admin/page.tsx,20,39,admin,,email
+src/app/[locale]/account/admin/page.tsx,28,45,admin,,Inspect a customer (read-only)
+src/app/[locale]/account/admin/page.tsx,30,9,admin,,Enter a customer email to view their account exactly as they see it. You cannot change their data while inspecting.
+src/app/[locale]/account/admin/page.tsx,45,11,admin,,View as
+src/app/[locale]/account/downloads/page.tsx,113,13,route/page,,account
+src/app/[locale]/account/error.tsx,1,1,route/page,,use client
+src/app/[locale]/account/error.tsx,21,23,route/page,,Account page error:
+src/app/[locale]/account/layout.tsx,31,16,route/page,,/api/account/impersonate/exit?locale=
+src/app/[locale]/account/profile/page.tsx,42,52,route/page,,email
+src/app/[locale]/error.tsx,1,1,route/page,,use client
+src/app/[locale]/error.tsx,22,23,route/page,,Page error:
+src/app/[locale]/error.tsx,33,13,route/page,,Something went wrong.
+src/app/[locale]/error.tsx,36,13,route/page,,"The error has been reported. You can try again, or come back later."
+src/app/[locale]/error.tsx,39,37,route/page,,Try again
+src/app/[locale]/error.tsx,41,30,route/page,,Go to homepage
+src/app/[locale]/layout.tsx,23,15,route/page,,%s | WCPOS
+src/app/[locale]/layout.tsx,24,14,route/page,,WCPOS - Point of Sale for WooCommerce
+src/app/[locale]/layout.tsx,27,5,route/page,,"Point of Sale for WooCommerce. Fast, reliable POS system for your WooCommerce store."
+src/app/[locale]/not-found.tsx,1,1,route/page,,use client
+src/app/[locale]/not-found.tsx,23,55,route/page,,Page not found
+src/app/[locale]/not-found.tsx,25,13,route/page,,The page you are looking for does not exist or may have moved.
+src/app/[locale]/not-found.tsx,29,30,route/page,,Go to homepage
+src/app/[locale]/not-found.tsx,32,33,route/page,,WCPOS Pro
+src/app/[locale]/not-found.tsx,35,37,route/page,,Support
+src/app/api/account/download/route.ts,26,25,route/page,,Download token secret not configured (customer
+src/app/api/account/download/route.ts,28,16,route/page,,Download token secret not configured
+src/app/api/account/download/route.ts,35,39,route/page,,Missing token
+src/app/api/account/download/route.ts,40,24,route/page,,Download denied: invalid/mismatched token. customer=
+src/app/api/account/download/route.ts,41,39,route/page,,Invalid token
+src/app/api/account/download/route.ts,50,11,route/page,,account
+src/app/api/account/download/route.ts,55,26,route/page,,Download denied: release not found. version=
+src/app/api/account/download/route.ts,55,88,route/page,,customer=
+src/app/api/account/download/route.ts,56,41,route/page,,Release not found
+src/app/api/account/download/route.ts,58,24,route/page,,Download denied: not entitled. version=
+src/app/api/account/download/route.ts,58,81,route/page,,customer=
+src/app/api/account/download/route.ts,67,25,route/page,,Failed to fetch release asset after retries. version=
+src/app/api/account/download/route.ts,67,96,route/page,,customer=
+src/app/api/account/download/route.ts,69,16,route/page,,Failed to fetch release asset
+src/app/api/account/download/route.ts,75,22,route/page,,Download served. customer=
+src/app/api/account/download/route.ts,81,30,route/page,,"attachment; filename="""
+src/app/api/account/download/route.ts,82,24,route/page,,"private, no-store"
+src/app/api/account/downloads/route.ts,15,11,route/page,,account
+src/app/api/account/downloads/token/route.ts,19,11,route/page,,10 m
+src/app/api/account/downloads/token/route.ts,35,27,route/page,,Download token secret not configured (customer
+src/app/api/account/downloads/token/route.ts,37,18,route/page,,Download token secret not configured
+src/app/api/account/downloads/token/route.ts,44,26,route/page,,Download token rate limited. customer=
+src/app/api/account/downloads/token/route.ts,46,18,route/page,,Too many download requests. Please wait a moment and try again.
+src/app/api/account/downloads/token/route.ts,57,13,route/page,,account
+src/app/api/account/downloads/token/route.ts,63,28,route/page,,Download token requested for missing release version=
+src/app/api/account/downloads/token/route.ts,63,91,route/page,,customer=
+src/app/api/account/downloads/token/route.ts,64,43,route/page,,Release not found
+src/app/api/account/downloads/token/route.ts,66,26,route/page,,Download token forbidden. version=
+src/app/api/account/downloads/token/route.ts,66,70,route/page,,customer=
+src/app/api/account/downloads/token/route.ts,80,24,route/page,,Download token issued. customer=
+src/app/api/account/downloads/token/route.ts,83,20,route/page,,/api/account/download?token=
+src/app/api/account/downloads/token/route.ts,87,25,route/page,,Download token endpoint failed:
+src/app/api/account/downloads/token/route.ts,89,16,route/page,,Internal server error
+src/app/api/account/impersonate/exit/route.ts,28,18,route/page,,Impersonation STOP: admin_id=
+src/app/api/account/licenses/[licenseId]/discord/members/[memberId]/route.ts,63,24,route/page,,Discord member removal unavailable:
+src/app/api/account/licenses/[licenseId]/discord/members/[memberId]/route.ts,65,18,route/page,,Discord management is not configured
+src/app/api/account/licenses/[licenseId]/discord/members/[memberId]/route.ts,76,39,route/page,,Member not found
+src/app/api/account/licenses/[licenseId]/discord/members/[memberId]/route.ts,95,23,route/page,,Discord role sync after member removal failed:
+src/app/api/account/licenses/[licenseId]/machines/[machineId]/route.ts,66,18,route/page,,Machine does not belong to this license
+src/app/api/account/licenses/[licenseId]/machines/[machineId]/route.ts,75,18,route/page,,Failed to deactivate machine
+src/app/api/account/licenses/[licenseId]/machines/[machineId]/route.ts,89,26,route/page,,Machine deactivation unavailable:
+src/app/api/account/licenses/[licenseId]/machines/[machineId]/route.ts,91,18,route/page,,Machine management is not configured
+src/app/api/account/licenses/[licenseId]/machines/[machineId]/route.ts,95,24,route/page,,Failed to deactivate machine:
+src/app/api/account/licenses/[licenseId]/machines/[machineId]/route.ts,97,16,route/page,,Internal server error
+src/app/api/account/licenses/route.ts,43,24,route/page,,Failed to fetch licenses:
+src/app/api/account/licenses/route.ts,45,16,route/page,,Internal server error
+src/app/api/account/orders/[orderId]/receipt/route.ts,41,41,route/page,,Order not found
+src/app/api/account/orders/[orderId]/receipt/route.ts,55,32,route/page,,"attachment; filename="""
+src/app/api/account/orders/[orderId]/receipt/route.ts,56,26,route/page,,"private, no-store"
+src/app/api/account/orders/[orderId]/receipt/route.ts,60,20,route/page,,Receipt generation failed. orderId=
+src/app/api/account/orders/[orderId]/receipt/route.ts,60,65,route/page,,error=
+src/app/api/account/orders/[orderId]/receipt/route.ts,62,16,route/page,,Failed to generate receipt
+src/app/api/account/profile/route.ts,78,20,route/page,,Profile update failed (PATCH /api/account/profile):
+src/app/api/account/profile/route.ts,81,48,route/page,,Failed to update profile
+src/app/api/auth/[provider]/callback/route.ts,62,21,route/page,,Failed to sync OAuth profile:
+src/app/api/auth/[provider]/callback/route.ts,75,18,route/page,,Unsupported provider:
+src/app/api/auth/[provider]/callback/route.ts,108,62,route/page,,Unknown error
+src/app/api/auth/[provider]/callback/route.ts,109,21,route/page,,OAuth callback failed:
+src/app/api/auth/[provider]/callback/route.ts,111,31,route/page,,error
+src/app/api/auth/[provider]/route.ts,20,18,route/page,,Unsupported provider:
+src/app/api/auth/[provider]/route.ts,44,21,route/page,,Failed to initiate OAuth:
+src/app/api/auth/[provider]/route.ts,46,15,route/page,,/login?error=oauth_failed
+src/app/api/auth/forgot-password/route.ts,12,11,route/page,,15 m
+src/app/api/auth/forgot-password/route.ts,17,39,route/page,,Invalid origin
+src/app/api/auth/forgot-password/route.ts,23,16,route/page,,Too many reset requests. Please try again later.
+src/app/api/auth/forgot-password/route.ts,35,39,route/page,,Email is required
+src/app/api/auth/forgot-password/route.ts,45,21,route/page,,Password reset request failed unexpectedly:
+src/app/api/auth/forgot-password/route.ts,47,16,route/page,,Something went wrong. Please try again.
+src/app/api/auth/login/route.ts,13,11,route/page,,5 m
+src/app/api/auth/login/route.ts,18,39,route/page,,Invalid origin
+src/app/api/auth/login/route.ts,24,16,route/page,,Too many login attempts. Please try again later.
+src/app/api/auth/login/route.ts,40,16,route/page,,Email and password are required
+src/app/api/auth/login/route.ts,52,48,route/page,,Login failed
+src/app/api/auth/login/route.ts,57,22,route/page,,Login rejected:
+src/app/api/auth/login/route.ts,59,23,route/page,,Login failed unexpectedly:
+src/app/api/auth/register/route.ts,21,11,route/page,,15 m
+src/app/api/auth/register/route.ts,26,39,route/page,,Invalid origin
+src/app/api/auth/register/route.ts,32,16,route/page,,Too many attempts. Please try again later.
+src/app/api/auth/register/route.ts,52,16,route/page,,Email and password are required
+src/app/api/auth/register/route.ts,84,17,route/page,,email
+src/app/api/auth/register/route.ts,90,24,route/page,,Signup tracking failed:
+src/app/api/auth/register/route.ts,93,22,route/page,,Signup tracking failed:
+src/app/api/auth/register/route.ts,102,22,route/page,,Registration rejected:
+src/app/api/auth/register/route.ts,107,21,route/page,,Registration failed unexpectedly:
+src/app/api/auth/register/route.ts,109,48,route/page,,Registration failed
+src/app/api/auth/reset-password/route.ts,18,11,route/page,,15 m
+src/app/api/auth/reset-password/route.ts,23,39,route/page,,Invalid origin
+src/app/api/auth/reset-password/route.ts,29,16,route/page,,Too many attempts. Please try again later.
+src/app/api/auth/reset-password/route.ts,46,16,route/page,,"Email, token, and password are required"
+src/app/api/auth/reset-password/route.ts,65,22,route/page,,Password reset rejected:
+src/app/api/auth/reset-password/route.ts,68,21,route/page,,Password reset failed unexpectedly:
+src/app/api/auth/reset-password/route.ts,70,48,route/page,,Failed to reset password
+src/app/api/auth/reset-password/route.ts,82,21,route/page,,Post-reset sign-in failed:
+src/app/api/checkout/report-failure/route.ts,28,11,route/page,,1 m
+src/app/api/checkout/report-failure/route.ts,64,23,route/page,,Checkout failure (money at risk):
+src/app/api/checkout/report-failure/route.ts,65,34,route/page,,error
+src/app/api/checkout/report-failure/route.ts,67,30,route/page,,Checkout payment failure:
+src/app/api/csp-report/route.ts,36,11,route/page,,1 m
+src/app/api/csp-report/route.ts,141,23,route/page,,CSP violation: directive=
+src/app/api/debug/alert-test/route.ts,22,19,route/page,,SYNTHETIC alert-chain test
+src/app/api/desktop-releases/route.ts,21,18,route/page,,No release found
+src/app/api/desktop-releases/route.ts,40,20,route/page,,Failed to fetch desktop release:
+src/app/api/desktop-releases/route.ts,42,16,route/page,,Failed to fetch release information
+src/app/api/discord/callback/route.ts,13,24,route/page,,discord
+src/app/api/discord/callback/route.ts,17,88,route/page,,status
+src/app/api/discord/callback/route.ts,29,14,route/page,,error
+src/app/api/discord/callback/route.ts,40,48,route/page,,error
+src/app/api/discord/callback/route.ts,74,25,route/page,,Discord role sync after member claim failed:
+src/app/api/discord/callback/route.ts,80,22,route/page,,Discord member claim callback failed:
+src/app/api/discord/callback/route.ts,81,48,route/page,,error
+src/app/api/discord/claim/route.ts,28,19,route/page,,Discord claim received a malformed JSON body:
+src/app/api/discord/reconcile/route.ts,21,21,route/page,,Discord role reconciliation complete:
+src/app/api/discord/reconcile/route.ts,24,22,route/page,,Discord role reconciliation failed:
+src/app/api/discord/reconcile/route.ts,25,39,route/page,,Reconciliation failed
+src/app/api/electron/[platform]/[version]/route.ts,32,3,route/page,,use cache
+src/app/api/electron/[platform]/[version]/route.ts,44,9,route/page,,error
+src/app/api/electron/[platform]/[version]/route.ts,49,34,route/page,,status
+src/app/api/electron/[platform]/[version]/route.ts,56,20,route/page,,Electron update check failed:
+src/app/api/electron/[platform]/[version]/route.ts,58,29,route/page,,Internal server error
+src/app/api/electron/download/[platform]/route.ts,30,3,route/page,,use cache
+src/app/api/electron/download/[platform]/route.ts,44,39,route/page,,error
+src/app/api/electron/download/[platform]/route.ts,51,20,route/page,,Electron download redirect failed:
+src/app/api/electron/download/[platform]/route.ts,53,29,route/page,,Internal server error
+src/app/api/legacy/wc-am/route.ts,32,35,route/page,,"GET, OPTIONS"
+src/app/api/legacy/wc-am/route.ts,33,35,route/page,,"Content-Type, Accept"
+src/app/api/legacy/wc-am/route.ts,57,44,route/page,,License request failed
+src/app/api/legacy/wc-am/route.ts,116,43,route/page,,status
+src/app/api/legacy/wc-am/route.ts,119,43,route/page,,Missing required parameters: api_key and instance
+src/app/api/legacy/wc-am/route.ts,129,32,route/page,,not found
+src/app/api/legacy/wc-am/route.ts,129,70,route/page,,not activated
+src/app/api/legacy/wc-am/route.ts,144,18,route/page,,?key=
+src/app/api/legacy/wc-am/route.ts,160,14,route/page,,The license server is temporarily unavailable. Please try again shortly.
+src/app/api/logs/route.ts,25,18,route/page,,Invalid log format
+src/app/api/logs/route.ts,39,20,route/page,,Invalid log entry format
+src/app/api/logs/route.ts,81,24,route/page,,Failed to forward browser logs to Loki: status=
+src/app/api/logs/route.ts,86,22,route/page,,Browser log forwarding failed:
+src/app/api/pro/download/[version]/route.ts,23,16,route/page,,Missing required parameters: key and instance
+src/app/api/pro/download/[version]/route.ts,31,39,route/page,,License validation failed
+src/app/api/pro/download/[version]/route.ts,43,16,route/page,,Requested version is not available for this license
+src/app/api/pro/download/[version]/route.ts,50,20,route/page,,Failed to fetch pro release asset. version=
+src/app/api/pro/download/[version]/route.ts,52,16,route/page,,Failed to fetch release asset
+src/app/api/pro/download/[version]/route.ts,61,30,route/page,,"attachment; filename="""
+src/app/api/pro/download/[version]/route.ts,62,24,route/page,,"private, no-store"
+src/app/api/pro/update/[version]/route.ts,27,16,route/page,,Missing required parameters: key and instance
+src/app/api/pro/update/[version]/route.ts,35,39,route/page,,License validation failed
+src/app/api/pro/update/[version]/route.ts,46,16,route/page,,No update is available for this license
+src/app/api/pro/update/[version]/route.ts,62,69,route/page,,?key=
+src/app/api/roadmap/revalidate/route.ts,14,19,route/page,,roadmap
+src/app/api/roadmap/revalidate/route.ts,14,30,route/page,,roadmap
+src/app/api/roadmap/revalidate/route.ts,15,19,route/page,,Roadmap cache revalidated via webhook
+src/app/api/roadmap/revalidate/route.ts,18,20,route/page,,Failed to revalidate roadmap cache:
+src/app/api/roadmap/revalidate/route.ts,19,39,route/page,,Revalidation failed
+src/app/api/store/cart/complete/route.ts,41,18,route/page,,Authentication required
+src/app/api/store/cart/complete/route.ts,51,18,route/page,,Cart ID is required
+src/app/api/store/cart/complete/route.ts,59,18,route/page,,Failed to fetch cart
+src/app/api/store/cart/complete/route.ts,67,41,route/page,,Cart not found
+src/app/api/store/cart/complete/route.ts,74,18,route/page,,Current Pro offer cart is required
+src/app/api/store/cart/complete/route.ts,83,18,route/page,,Failed to complete cart
+src/app/api/store/cart/complete/route.ts,96,24,route/page,,Cart completion produced no order: cartId=
+src/app/api/store/cart/complete/route.ts,101,27,route/page,,"Payment received, order pending"
+src/app/api/store/cart/complete/route.ts,129,25,route/page,,Checkout conversion tracking failed:
+src/app/api/store/cart/complete/route.ts,132,23,route/page,,Checkout conversion tracking failed:
+src/app/api/store/cart/complete/route.ts,137,22,route/page,,Error completing cart:
+src/app/api/store/cart/complete/route.ts,139,16,route/page,,Internal server error
+src/app/api/store/cart/line-items/route.ts,32,18,route/page,,Authentication required
+src/app/api/store/cart/line-items/route.ts,39,41,route/page,,Invalid request body
+src/app/api/store/cart/line-items/route.ts,48,18,route/page,,Cart ID is required
+src/app/api/store/cart/line-items/route.ts,55,18,route/page,,Quantity must be 1 for Pro checkout
+src/app/api/store/cart/line-items/route.ts,69,18,route/page,,Current Pro offer is required
+src/app/api/store/cart/line-items/route.ts,77,41,route/page,,Cart not found
+src/app/api/store/cart/line-items/route.ts,87,18,route/page,,Failed to add item to cart
+src/app/api/store/cart/line-items/route.ts,94,22,route/page,,Error adding line item:
+src/app/api/store/cart/line-items/route.ts,96,16,route/page,,Internal server error
+src/app/api/store/cart/payment-sessions/route.ts,43,18,route/page,,Authentication required
+src/app/api/store/cart/payment-sessions/route.ts,57,41,route/page,,Invalid request body
+src/app/api/store/cart/payment-sessions/route.ts,74,18,route/page,,Cart ID is required
+src/app/api/store/cart/payment-sessions/route.ts,82,18,route/page,,Failed to fetch cart
+src/app/api/store/cart/payment-sessions/route.ts,89,41,route/page,,Cart not found
+src/app/api/store/cart/payment-sessions/route.ts,96,18,route/page,,Current Pro offer cart is required
+src/app/api/store/cart/payment-sessions/route.ts,112,18,route/page,,Payment collection does not belong to this cart
+src/app/api/store/cart/payment-sessions/route.ts,123,20,route/page,,Failed to create payment collection
+src/app/api/store/cart/payment-sessions/route.ts,134,18,route/page,,Failed to create payment session
+src/app/api/store/cart/payment-sessions/route.ts,143,18,route/page,,Failed to fetch cart
+src/app/api/store/cart/payment-sessions/route.ts,166,22,route/page,,Error with payment sessions:
+src/app/api/store/cart/payment-sessions/route.ts,168,16,route/page,,Internal server error
+src/app/api/store/cart/paypal/capture/route.ts,39,18,route/page,,Authentication required
+src/app/api/store/cart/paypal/capture/route.ts,46,41,route/page,,Invalid request body
+src/app/api/store/cart/paypal/capture/route.ts,55,18,route/page,,Cart ID is required
+src/app/api/store/cart/paypal/capture/route.ts,62,18,route/page,,PayPal order ID is required
+src/app/api/store/cart/paypal/capture/route.ts,70,18,route/page,,Failed to fetch cart
+src/app/api/store/cart/paypal/capture/route.ts,76,41,route/page,,Cart not found
+src/app/api/store/cart/paypal/capture/route.ts,83,18,route/page,,Current Pro offer cart is required
+src/app/api/store/cart/paypal/capture/route.ts,92,18,route/page,,Failed to capture PayPal order
+src/app/api/store/cart/paypal/capture/route.ts,99,22,route/page,,Error capturing PayPal order:
+src/app/api/store/cart/paypal/capture/route.ts,101,16,route/page,,Internal server error
+src/app/api/store/cart/route.ts,44,22,route/page,,Failed to sync billing address to customer profile:
+src/app/api/store/cart/route.ts,68,18,route/page,,Authentication required
+src/app/api/store/cart/route.ts,90,18,route/page,,Failed to create cart
+src/app/api/store/cart/route.ts,97,22,route/page,,Error creating cart:
+src/app/api/store/cart/route.ts,99,16,route/page,,Internal server error
+src/app/api/store/cart/route.ts,113,18,route/page,,Authentication required
+src/app/api/store/cart/route.ts,122,18,route/page,,Cart ID is required
+src/app/api/store/cart/route.ts,131,18,route/page,,Cart not found
+src/app/api/store/cart/route.ts,138,22,route/page,,Error getting cart:
+src/app/api/store/cart/route.ts,140,16,route/page,,Internal server error
+src/app/api/store/cart/route.ts,171,18,route/page,,Authentication required
+src/app/api/store/cart/route.ts,179,18,route/page,,Invalid request body
+src/app/api/store/cart/route.ts,187,18,route/page,,Cart ID is required
+src/app/api/store/cart/route.ts,196,41,route/page,,Cart not found
+src/app/api/store/cart/route.ts,224,18,route/page,,Failed to update cart
+src/app/api/store/cart/route.ts,236,22,route/page,,Error updating cart:
+src/app/api/store/cart/route.ts,238,16,route/page,,Internal server error
+src/app/api/support/ask/route.ts,17,3,route/page,,"You're asking a lot of questions — please wait a few minutes, or hop into Discord."
+src/app/api/support/ask/route.ts,38,16,route/page,,Please enter a question (up to 1000 characters).
+src/app/api/support/ask/route.ts,47,16,route/page,,Bot check failed. Please reload and try again.
+src/app/api/support/ask/route.ts,59,16,route/page,,The assistant is busy right now. Please try Discord for a faster answer.
+src/app/api/support/ask/route.ts,76,22,route/page,,Support ask got an empty answer from the gateway. ip=
+src/app/api/support/ask/route.ts,78,18,route/page,,The assistant is temporarily unavailable. Please try Discord while we get it back.
+src/app/api/support/ask/route.ts,92,21,route/page,,Support ask rate-limited by the gateway. ip=
+src/app/api/support/ask/route.ts,101,11,route/page,,"That took too long. Please try again, or ask in Discord."
+src/app/api/support/ask/route.ts,102,11,route/page,,The assistant is temporarily unavailable. Please try Discord while we get it back.
+src/app/api/support/ask/route.ts,103,20,route/page,,Support ask failed. code=
+src/app/api/support/ask/route.ts,103,61,route/page,,error=
+src/app/api/test/license/route.ts,21,16,route/page,,Not available in production
+src/app/api/test/license/route.ts,35,22,route/page,,licenseKey required
+src/app/api/test/license/route.ts,47,22,route/page,,licenseId and fingerprint required
+src/app/api/test/license/route.ts,60,17,route/page,,Activation failed (limit reached or invalid license)
+src/app/api/test/license/route.ts,72,22,route/page,,machineId required
+src/app/api/test/license/route.ts,80,12,route/page,,status
+src/app/api/test/license/route.ts,84,22,route/page,,licenseId required
+src/app/api/test/license/route.ts,96,20,route/page,,Unknown action:
+src/app/api/test/license/route.ts,96,45,route/page,,". Valid actions: validate, activate, deactivate, status"
+src/app/api/test/license/route.ts,102,24,route/page,,Test harness error:
+src/app/api/test/license/route.ts,104,57,route/page,,Internal error
+src/app/global-error.tsx,1,1,route/page,,use client
+src/app/global-error.tsx,22,19,route/page,,Global error:
+src/app/global-error.tsx,24,25,route/page,,Global error:
+src/app/global-error.tsx,42,13,route/page,,"system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif"
+src/app/global-error.tsx,49,13,route/page,,Something went wrong
+src/app/global-error.tsx,52,13,route/page,,"An unexpected error occurred. The error has been reported. You can try again, or come back later."
+src/app/global-error.tsx,76,15,route/page,,Try again
+src/app/global-error.tsx,84,25,route/page,,1px solid #d4d4d4
+src/app/global-error.tsx,93,15,route/page,,Go to homepage
+src/app/not-found.tsx,23,13,route/page,,"system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif"
+src/app/not-found.tsx,41,13,route/page,,Page not found
+src/app/not-found.tsx,44,13,route/page,,The page you are looking for does not exist or may have moved.
+src/app/not-found.tsx,68,15,route/page,,Go to homepage
+src/app/not-found.tsx,75,25,route/page,,1px solid #d4d4d4
+src/app/not-found.tsx,83,15,route/page,,WCPOS Pro
+src/app/not-found.tsx,90,25,route/page,,1px solid #d4d4d4
+src/app/not-found.tsx,98,15,route/page,,Support
+src/app/robots.ts,15,9,route/page,,/*/account
+src/app/robots.ts,18,9,route/page,,/*/pro/checkout
+src/components/about/about-cta.tsx,6,13,component,title,Built by a shopkeeper. Funded by shopkeepers.
+src/components/about/about-cta.tsx,7,16,component,subtitle,"Try the live demo, download the free plugin, or see what Pro adds — and what keeps it all going."
+src/components/about/about-cta.tsx,9,18,component,,Try Live Demo
+src/components/about/about-cta.tsx,11,18,component,,Download Free
+src/components/about/about-cta.tsx,15,18,component,,See Pro
+src/components/about/about-hero.tsx,16,19,component,eyebrow,Our story
+src/components/about/about-hero.tsx,17,17,component,title,An independent point of sale for WooCommerce
+src/components/about/about-hero.tsx,18,20,component,subtitle,"Built by a former shopkeeper, funded by shopkeepers — not investors. One developer, more than a decade of releases, still shipping."
+src/components/about/founder-letter.tsx,14,3,component,,use cache
+src/components/about/founder-letter.tsx,37,15,component,,"repeating-linear-gradient(90deg,#CD2C24 0 22px,#F5E5C0 22px 44px)"
+src/components/about/founder-letter.tsx,45,17,component,alt,"Paul at Urban Locavore, his Perth shop"
+src/components/about/founder-letter.tsx,52,13,component,,"Urban Locavore, Perth — the store that started it all"
+src/components/about/founder-letter.tsx,57,11,component,,A note from the developer
+src/components/about/founder-letter.tsx,60,11,component,,Hi — I&apos;m Paul. I built WCPOS.
+src/components/about/founder-letter.tsx,64,11,component,,"That&apos;s me, back when it all started. I opened Urban Locavore in Perth in December 2011 with hundreds of products already in WooCommerce and no way to sell them at the counter — so I built a register myself. When the shop closed in April 2014, I put it on WordPress.org for anyone who needed it."
+src/components/about/founder-letter.tsx,70,13,component,,POS plugins for WooCommerce have come and gone since then. This one hasn&apos;t.
+src/components/about/founder-letter.tsx,73,11,component,,"More than a decade of releases, one developer, still shipping — and the free version is still the real thing: sell, print, stay in sync. It stays free."
+src/components/about/founder-letter.tsx,80,13,component,,Pro is why it&apos;s still here.
+src/components/about/founder-letter.tsx,82,11,component,,"It adds extra tools for running your store — card readers, refunds at the till, end-of-day reports, multi-store — and it funds every release, free ones included. No investors, no acquisition exit waiting. Shopkeepers fund it directly."
+src/components/about/founder-letter.tsx,89,11,component,,"And Pro users have a direct line: tell me what your shop needs, and it shapes what I build next."
+src/components/about/founder-letter.tsx,99,15,component,,Paul Kilmurray
+src/components/about/founder-letter.tsx,102,15,component,,developer &amp; former shopkeeper ·
+src/components/about/founder-letter.tsx,118,11,component,,— Pro is
+src/components/about/founder-letter.tsx,127,13,component,,available from the Pro page.
+src/components/about/founder-letter.tsx,129,11,component,,"If a licence lapses, Pro keeps working; you just stop getting updates."
+src/components/about/story-timeline.tsx,1,1,component,,use client
+src/components/about/story-timeline.tsx,17,11,component,,December 2011
+src/components/about/story-timeline.tsx,18,12,component,,Urban Locavore opens
+src/components/about/story-timeline.tsx,19,11,component,,"A small food store in Perth, with hundreds of products already in WooCommerce — and no way to sell them at the counter."
+src/components/about/story-timeline.tsx,23,12,component,,"A register, built out of necessity"
+src/components/about/story-timeline.tsx,24,11,component,,"With nothing on the market that fit, Paul built a point of sale for his own shop — Backbone.js and an in-browser IndexedDB database, on top of the store he already ran online."
+src/components/about/story-timeline.tsx,27,11,component,,April 2014
+src/components/about/story-timeline.tsx,28,12,component,,The shop closes
+src/components/about/story-timeline.tsx,29,11,component,,"Urban Locavore winds down — but the register it ran on still works, and other WooCommerce stores need the same thing."
+src/components/about/story-timeline.tsx,32,11,component,,11 May 2014
+src/components/about/story-timeline.tsx,33,12,component,,Released on WordPress.org
+src/components/about/story-timeline.tsx,34,11,component,,"WCPOS goes public, free for anyone who needs it. The free version does the actual job: sell, print, stay in sync."
+src/components/about/story-timeline.tsx,37,11,component,,4 May 2023
+src/components/about/story-timeline.tsx,38,12,component,,Rewritten in React Native
+src/components/about/story-timeline.tsx,39,11,component,,Four years of rebuilding from scratch land as v1.0.0: one codebase for every screen. The desktop app ships the same day — phones and tablets are next.
+src/components/about/story-timeline.tsx,42,11,component,,December 2025
+src/components/about/story-timeline.tsx,43,12,component,,Native mobile apps
+src/components/about/story-timeline.tsx,44,11,component,,"The React Native bet pays off: WCPOS arrives on iOS and Android in open beta — the same register, now on the hardware already in the shop."
+src/components/about/story-timeline.tsx,48,12,component,,Still shipping
+src/components/about/story-timeline.tsx,49,11,component,,"More than a decade on. One developer, funded by Pro, still releasing — and the free version is still the real thing."
+src/components/about/story-timeline.tsx,68,23,component,,"linear-gradient(to bottom,"
+src/components/about/story-timeline.tsx,133,39,component,,-12% 0px -12% 0px
+src/components/about/story-timeline.tsx,163,14,component,,start 0.78
+src/components/about/story-timeline.tsx,163,28,component,,end 0.6
+src/components/about/story-timeline.tsx,169,12,component,,"0 0 10px 2px color-mix(in srgb,"
+src/components/about/story-timeline.tsx,169,48,component,,"60%, transparent)"
+src/components/about/story-timeline.tsx,226,17,component,title,"How it started, and why it's still here"
+src/components/about/values-section.tsx,10,11,component,,"No investors, no acquisition exit waiting. The roadmap answers to the shopkeepers using it — not a board."
+src/components/about/values-section.tsx,14,12,component,,Funded by Pro
+src/components/about/values-section.tsx,15,11,component,,"Pro tools fund every release, free ones included. Shopkeepers pay for it directly, and that keeps the free version free."
+src/components/about/values-section.tsx,19,12,component,,Open & GPL
+src/components/about/values-section.tsx,20,11,component,,"Released on WordPress.org under the GPL. Yours to use, inspect, and keep — wherever WooCommerce runs."
+src/components/about/values-section.tsx,24,12,component,,A fair licence
+src/components/about/values-section.tsx,25,11,component,,"If a Pro licence lapses, Pro keeps working — you just stop getting updates. Nothing you rely on gets switched off."
+src/components/about/values-section.tsx,32,47,component,title,What it stands for
+src/components/account/account-notice.tsx,8,5,component,,border-amber-300/70 bg-amber-50 text-amber-900 dark:border-amber-400/20 dark:bg-amber-400/10 dark:text-amber-200
+src/components/account/account-notice.tsx,42,9,component,,flex flex-wrap items-center justify-between gap-3 rounded-md border p-3 text-sm sm:p-4
+src/components/account/account-sidebar.tsx,1,1,component,,use client
+src/components/account/account-sidebar.tsx,10,10,component,,licenses
+src/components/account/account-sidebar.tsx,11,10,component,,downloads
+src/components/account/account-sidebar.tsx,12,10,component,,orders
+src/components/account/account-sidebar.tsx,13,10,component,,profile
+src/components/account/account-sidebar.tsx,69,19,component,,flex items-center whitespace-nowrap rounded-md px-3 py-3 text-sm font-medium transition-colors md:py-2
+src/components/account/account-sidebar.tsx,71,23,component,,bg-wcpos-red/10 text-wcpos-red-accent dark:bg-wcpos-red/15
+src/components/account/downloads-client.tsx,1,1,component,,use client
+src/components/account/downloads-client.tsx,173,13,component,,download
+src/components/account/impersonation-banner.tsx,16,9,component,,🔍 Viewing
+src/components/account/impersonation-banner.tsx,17,36,component,,— you cannot change their account.
+src/components/account/licenses-client.tsx,1,1,component,,use client
+src/components/account/licenses-client.tsx,154,36,component,,Failed to deactivate
+src/components/account/licenses-client.tsx,177,25,component,,Failed to remove Discord member
+src/components/account/licenses-client.tsx,267,15,component,,/pro/checkout?product=
+src/components/account/licenses-client.tsx,277,32,component,,active
+src/components/account/licenses-client.tsx,277,62,component,,expired
+src/components/account/licenses-client.tsx,281,39,component,,/account/downloads?license=
+src/components/account/licenses-client.tsx,400,52,component,,active
+src/components/account/licenses-client.tsx,405,52,component,,expired
+src/components/account/licenses-client.tsx,435,37,component,,active
+src/components/account/licenses-client.tsx,436,37,component,,expired
+src/components/account/licenses-client.tsx,445,52,component,,active
+src/components/account/licenses-client.tsx,452,40,component,,active
+src/components/account/licenses-client.tsx,456,30,component,,downloads
+src/components/account/licenses-client.tsx,460,40,component,,expired
+src/components/account/licenses-client.tsx,467,30,component,,downloads
+src/components/account/licenses-client.tsx,500,48,component,,expired
+src/components/account/licenses-client.tsx,603,36,component,,active
+src/components/account/profile-edit-form.tsx,1,1,component,,use client
+src/components/account/profile-edit-form.tsx,39,25,component,,google
+src/components/account/profile-edit-form.tsx,39,36,component,,github
+src/components/account/profile-edit-form.tsx,39,47,component,,email
+src/components/account/profile-edit-form.tsx,52,23,component,,zip
+src/components/account/profile-edit-form.tsx,52,46,component,,postcode
+src/components/account/profile-edit-form.tsx,66,44,component,,zip
+src/components/account/profile-edit-form.tsx,68,45,component,,postcode
+src/components/account/profile-edit-form.tsx,69,53,component,,postcode
+src/components/account/profile-edit-form.tsx,75,45,component,,postcode
+src/components/account/profile-edit-form.tsx,299,31,component,,email
+src/components/account/profile-edit-form.tsx,306,28,component,autoComplete,email
+src/components/account/profile-edit-form.tsx,310,31,component,,phone
+src/components/account/profile-edit-form.tsx,329,31,component,,country
+src/components/account/profile-edit-form.tsx,362,31,component,,city
+src/components/account/profile-edit-form.tsx,416,50,component,,google
+src/components/account/profile-edit-form.tsx,418,53,component,,github
+src/components/account/profile-edit-form.tsx,426,52,component,,google
+src/components/account/profile-edit-form.tsx,428,55,component,,github
+src/components/account/profile-edit-form.tsx,433,52,component,,google
+src/components/account/profile-edit-form.tsx,435,55,component,,github
+src/components/analytics/tracked-external-link.tsx,1,1,component,,use client
+src/components/analytics/tracked-locale-link.tsx,1,1,component,,use client
+src/components/client-logging-init.tsx,1,1,component,,use client
+src/components/consent/consent-banner.tsx,1,1,component,,use client
+src/components/consent/consent-banner.tsx,57,18,component,aria-label,Cookie consent
+src/components/consent/consent-banner.tsx,62,11,component,,"We use an anonymous analytics cookie to understand how the site is used. No ads, no third-party tracking."
+src/components/consent/consent-banner.tsx,65,13,component,,Privacy policy
+src/components/downloads/download-hero.tsx,1,1,component,,use client
+src/components/downloads/download-hero.tsx,77,18,component,,Downloads
+src/components/downloads/download-hero.tsx,79,11,component,,"One till, every device."
+src/components/downloads/download-hero.tsx,84,22,component,aria-label,Choose your platform
+src/components/downloads/download-hero.tsx,97,19,component,,flex w-24 flex-col items-center gap-2 rounded-lg border py-4 text-sm font-medium transition-colors
+src/components/downloads/download-hero.tsx,127,15,component,,On an Intel Mac?
+src/components/downloads/download-hero.tsx,129,17,component,,Get the Intel build
+src/components/downloads/download-hero.tsx,153,11,component,,Every app connects to the
+src/components/downloads/download-hero.tsx,158,25,component,,free
+src/components/downloads/download-hero.tsx,164,13,component,,free WordPress plugin
+src/components/downloads/download-hero.tsx,166,11,component,,— install it first.
+src/components/downloads/get-started-steps.tsx,1,1,component,,use client
+src/components/downloads/get-started-steps.tsx,42,14,component,,start 0.78
+src/components/downloads/get-started-steps.tsx,42,28,component,,end 0.6
+src/components/downloads/get-started-steps.tsx,133,21,component,,"0 0 10px 2px color-mix(in srgb, hsl(var(--wcpos-red)) 60%, transparent)"
+src/components/downloads/get-started-steps.tsx,154,29,component,,GetStartedStep must be used within GetStartedSteps
+src/components/downloads/get-started-steps.tsx,163,11,component,,absolute -left-12 top-0 flex h-8 w-8 items-center justify-center rounded-full border-[1.5px] bg-background text-sm font-semibold
+src/components/downloads/how-it-fits.tsx,8,12,component,,One plugin is the only setup
+src/components/downloads/how-it-fits.tsx,9,11,component,,The free plugin adds a secure REST API to your WooCommerce store. That’s the whole install — nothing to host or configure per device.
+src/components/downloads/how-it-fits.tsx,13,12,component,,Every app reads and writes the same store
+src/components/downloads/how-it-fits.tsx,14,11,component,,"Ring up a sale on the desktop, refund it on your phone — one set of products, orders and customers, updating in real time."
+src/components/downloads/how-it-fits.tsx,18,12,component,,"Offline-first, so the till never stops"
+src/components/downloads/how-it-fits.tsx,19,11,component,,Each device keeps working without a connection and re-syncs the moment it’s back online.
+src/components/downloads/how-it-fits.tsx,24,3,component,,Products & prices
+src/components/downloads/how-it-fits.tsx,25,3,component,,Stock levels
+src/components/downloads/how-it-fits.tsx,26,3,component,,Orders
+src/components/downloads/how-it-fits.tsx,28,3,component,,Tax & receipts
+src/components/downloads/how-it-fits.tsx,44,15,component,,How it fits together
+src/components/downloads/how-it-fits.tsx,47,15,component,,One store at the centre. Every till in sync.
+src/components/downloads/how-it-fits.tsx,65,15,component,,What stays in sync
+src/components/downloads/platforms.ts,38,12,component,,Apple Silicon · .dmg
+src/components/downloads/platforms.ts,40,13,component,,Download for macOS
+src/components/downloads/platforms.ts,44,11,component,,macOS (Intel)
+src/components/downloads/platforms.ts,45,12,component,,Intel · .dmg
+src/components/downloads/platforms.ts,47,13,component,,Download for macOS
+src/components/downloads/platforms.ts,52,12,component,,Windows 10/11 · .exe
+src/components/downloads/platforms.ts,54,13,component,,Download for Windows
+src/components/downloads/platforms.ts,61,13,component,,Download for Linux
+src/components/downloads/platforms.ts,65,11,component,,iOS & iPad
+src/components/downloads/platforms.ts,66,12,component,,Public TestFlight beta
+src/components/downloads/platforms.ts,68,13,component,,Join the iOS beta
+src/components/downloads/platforms.ts,73,12,component,,Google Play testing beta
+src/components/downloads/platforms.ts,75,13,component,,Join the Android beta
+src/components/downloads/platforms.ts,80,12,component,,No install needed
+src/components/downloads/platforms.ts,82,13,component,,Open the web demo
+src/components/downloads/release-history.tsx,47,9,component,,Full history on GitHub —
+src/components/downloads/release-history.tsx,49,11,component,,Free
+src/components/downloads/sync-diagram.tsx,1,1,component,,use client
+src/components/downloads/sync-diagram.tsx,38,24,component,,iOS & iPad
+src/components/downloads/sync-diagram.tsx,65,20,component,,flex items-center justify-center rounded-full shadow-lg transition-all duration-200
+src/components/downloads/sync-diagram.tsx,99,15,component,,"radial-gradient(circle at 32% 26%, rgba(255,255,255,0.3), rgba(255,255,255,0) 48%), radial-gradient(circle at 70% 82%, rgba(0,0,0,0.2), rgba(0,0,0,0) 58%)"
+src/components/downloads/sync-diagram.tsx,100,24,component,,"0 20px 36px -16px rgba(160,40,30,0.55)"
+src/components/downloads/sync-diagram.tsx,104,13,component,,Your store
+src/components/downloads/sync-diagram.tsx,107,54,component,,+ WCPOS plugin
+src/components/downloads/sync-diagram.tsx,217,18,component,aria-label,"A WooCommerce store with the WCPOS plugin sits at the centre, connected over a REST API to the desktop, iOS, Android and web apps, which all stay in sync."
+src/components/downloads/sync-diagram.tsx,228,15,component,,@keyframes wcpos-sync-flow { to { stroke-dashoffset: -16; } } .wcpos-flow-line { stroke-dasharray: 1 7; animation: wcpos-sync-flow 1.4s linear infinite; } @media (prefers-reduced-motion: reduce) { .wcpos-flow-line { animation: none; opacity: 0.25; } }
+src/components/home/benefits-section.tsx,33,15,component,,"One catalog, two channels"
+src/components/home/benefits-section.tsx,35,7,component,,"Your WooCommerce products are your POS products. Update a price or stock level once — it syncs everywhere automatically. No manual entry, no conflicts, no guesswork."
+src/components/home/benefits-section.tsx,36,17,component,,Same products. Same prices. Same customers. Always in sync.
+src/components/home/benefits-section.tsx,41,15,component,,Works offline
+src/components/home/benefits-section.tsx,43,7,component,,Local-first architecture means the POS keeps running when your connection drops. Products are stored locally and open orders are preserved — they complete and sync as soon as the internet returns.
+src/components/home/benefits-section.tsx,44,17,component,,Never lose an order to internet issues.
+src/components/home/benefits-section.tsx,49,15,component,,"Native apps, real hardware"
+src/components/home/benefits-section.tsx,51,7,component,,"Native iOS and Android apps — not a browser tab pretending to be an app. Connect payment terminals, receipt printers, and barcode scanners directly."
+src/components/home/benefits-section.tsx,52,17,component,,"Supports Stripe Terminal, SumUp, and more payment hardware."
+src/components/home/benefits-section.tsx,57,15,component,,You own everything
+src/components/home/benefits-section.tsx,59,7,component,,"Your data stays in your WooCommerce store, on your hosting. No platform lock-in, no third party holding your business hostage. Open source (GPL) — inspect the code, extend it, contribute to it."
+src/components/home/benefits-section.tsx,60,17,component,,Open source. Self-hosted. You're in control.
+src/components/home/benefits-section.tsx,66,3,component,,flex w-full aspect-video items-center justify-center rounded-md border border-slate-200 bg-white p-6 dark:border-slate-700 dark:bg-slate-900
+src/components/home/benefits-section.tsx,83,26,component,,text-[10px] font-medium
+src/components/home/benefits-section.tsx,102,26,component,,rounded bg-white p-1.5 text-center dark:bg-slate-900
+src/components/home/benefits-section.tsx,108,28,component,,text-[9px] font-medium
+src/components/home/benefits-section.tsx,126,13,component,,Today&apos;s Sales
+src/components/home/benefits-section.tsx,132,11,component,,Sale #1024
+src/components/home/benefits-section.tsx,132,25,component,,Sale #1025
+src/components/home/benefits-section.tsx,132,39,component,,Sale #1026
+src/components/home/benefits-section.tsx,146,11,component,,3 sales queued — syncs when you&apos;re back online
+src/components/home/benefits-section.tsx,155,28,component,,iPad / Tablet
+src/components/home/benefits-section.tsx,156,32,component,,Card Terminal
+src/components/home/benefits-section.tsx,157,29,component,,Receipt Printer
+src/components/home/benefits-section.tsx,158,33,component,,Barcode Scanner
+src/components/home/benefits-section.tsx,191,13,component,,Your hosting
+src/components/home/benefits-section.tsx,191,29,component,,Your data
+src/components/home/benefits-section.tsx,191,42,component,,GPL licensed
+src/components/home/benefits-section.tsx,200,52,component,,Open source
+src/components/home/benefits-section.tsx,225,17,component,title,Why stores choose WCPOS
+src/components/home/cta-section.tsx,6,13,component,title,Ready to sell in-store with WooCommerce?
+src/components/home/cta-section.tsx,7,16,component,subtitle,Try the live demo or download the free plugin to get started.
+src/components/home/cta-section.tsx,9,18,component,,Try Live Demo
+src/components/home/cta-section.tsx,10,18,component,,Download Free
+src/components/home/ecosystem-section.tsx,19,12,component,,iOS & iPadOS
+src/components/home/ecosystem-section.tsx,20,18,component,,Native app with payment terminal and printer support.
+src/components/home/ecosystem-section.tsx,21,10,component,,Get the iOS beta
+src/components/home/ecosystem-section.tsx,28,18,component,,Native app with full hardware integration.
+src/components/home/ecosystem-section.tsx,29,10,component,,Get the Android beta
+src/components/home/ecosystem-section.tsx,35,12,component,,Windows & macOS
+src/components/home/ecosystem-section.tsx,36,18,component,,Desktop application for counter setups.
+src/components/home/ecosystem-section.tsx,37,10,component,,Download for Desktop
+src/components/home/ecosystem-section.tsx,43,12,component,,Web Browser
+src/components/home/ecosystem-section.tsx,44,18,component,,Try instantly — no installation required.
+src/components/home/ecosystem-section.tsx,45,10,component,,Try Live Demo
+src/components/home/ecosystem-section.tsx,56,15,component,title,One ecosystem. Multiple ways to sell.
+src/components/home/ecosystem-section.tsx,57,18,component,subtitle,"Install the WordPress plugin, then choose your device."
+src/components/home/ecosystem-section.tsx,64,13,component,,Your WooCommerce Store
+src/components/home/ecosystem-section.tsx,67,13,component,,WordPress Plugin Installed
+src/components/home/ecosystem-section.tsx,74,13,component,,REST API Sync
+src/components/home/ecosystem-section.tsx,116,9,component,,"All apps sync with your WooCommerce store via the REST API. Install the free WordPress plugin, then choose your device. Products, stock, and orders stay in sync automatically."
+src/components/home/features-section.tsx,25,12,component,,Fast product search
+src/components/home/features-section.tsx,27,7,component,,"Find products instantly with search, filters, and category browsing. Barcode scanner support."
+src/components/home/features-section.tsx,32,12,component,,Smooth checkout flow
+src/components/home/features-section.tsx,34,7,component,,"Add items, apply discounts, choose payment method. Supports Stripe Terminal, SumUp, cash, and custom gateways."
+src/components/home/features-section.tsx,39,12,component,,Customer profiles
+src/components/home/features-section.tsx,41,7,component,,"Add and edit customer info directly in the POS. Track regulars, offer better service."
+src/components/home/features-section.tsx,46,12,component,,Order history & management
+src/components/home/features-section.tsx,48,7,component,,"View past orders, process returns, check order status without switching to WP Admin."
+src/components/home/features-section.tsx,53,12,component,,Edit stock & prices on the fly
+src/components/home/features-section.tsx,55,7,component,,Fix a wrong price while serving a customer. Adjust stock without leaving the POS.
+src/components/home/features-section.tsx,60,12,component,,End-of-day reports
+src/components/home/features-section.tsx,62,7,component,,"Generate sales reports for each shift or day. Cash up quickly, track performance."
+src/components/home/features-section.tsx,72,15,component,title,Built for the demands of physical retail
+src/components/home/features-section.tsx,82,56,component,,Pro
+src/components/home/pricing-teaser-section.tsx,15,3,component,,WooCommerce sync
+src/components/home/pricing-teaser-section.tsx,16,3,component,,Product search & grid
+src/components/home/pricing-teaser-section.tsx,17,3,component,,Basic checkout
+src/components/home/pricing-teaser-section.tsx,18,3,component,,Offline mode
+src/components/home/pricing-teaser-section.tsx,19,3,component,,Receipt printing
+src/components/home/pricing-teaser-section.tsx,21,3,component,,Unlimited products
+src/components/home/pricing-teaser-section.tsx,25,3,component,,See full pricing for current Pro options. No per-register fees.
+src/components/home/pricing-teaser-section.tsx,32,3,component,,use cache
+src/components/home/pricing-teaser-section.tsx,52,15,component,title,Start free. Upgrade when you need more.
+src/components/home/pricing-teaser-section.tsx,60,13,component,,Free
+src/components/home/pricing-teaser-section.tsx,63,13,component,,Free forever. No transaction fees. No limits.
+src/components/home/pricing-teaser-section.tsx,84,13,component,,Pro
+src/components/home/pricing-teaser-section.tsx,90,13,component,,"Everything in Free, plus:"
+src/components/home/pricing-teaser-section.tsx,117,13,component,,See Full Pricing &amp; Features
+src/components/home/problem-section.tsx,8,12,component,,Double Entry
+src/components/home/problem-section.tsx,10,7,component,,Re-entering products in a separate POS wastes hours and creates errors.
+src/components/home/problem-section.tsx,14,12,component,,Offline Panic
+src/components/home/problem-section.tsx,16,7,component,,Internet drops and your sales stop. Customers wait. You lose money.
+src/components/home/problem-section.tsx,20,12,component,,Platform Lock-In
+src/components/home/problem-section.tsx,22,7,component,,Proprietary systems trap your data. Moving or customizing becomes impossible.
+src/components/home/problem-section.tsx,31,15,component,title,Running a WooCommerce store and a physical shop shouldn't mean double the work
+src/components/home/scroll-story/act-gravity.ts,1,1,component,,use client
+src/components/home/scroll-story/act-gravity.ts,47,25,component,,(prefers-reduced-motion: reduce)
+src/components/home/scroll-story/acts/cloud-sync.tsx,8,3,component,,"M 23.9 99.0 C 11.4 96.5, 15.0 92.2, 12.8 87.7 C 10.5 83.2, 9.5 76.9, 10.3 72.0 C 11.1 67.0, 13.9 61.4, 17.5 57.8 C 21.0 54.2, 26.5 51.3, 31.5 50.4 C 36.5 49.5, 44.5 54.5, 47.2 52.6 C 50.0 50.6, 47.0 43.1, 48.0 38.6 C 49.1 34.1, 50.9 29.5, 53.3 25.6 C 55.7 21.7, 58.9 17.9, 62.4 15.0 C 66.0 12.0, 70.2 9.5, 74.5 7.9 C 78.8 6.2, 83.6 5.2, 88.2 5.0 C 92.8 4.8, 97.7 5.4, 102.1 6.7 C 106.6 8.0, 111.0 10.2, 114.7 12.8 C 118.5 15.5, 121.7 21.5, 124.7 22.7 C 127.7 23.8, 130.0 20.5, 132.8 19.9 C 135.5 19.3, 138.4 19.0, 141.2 19.0 C 144.0 19.0, 146.9 19.4, 149.6 20.0 C 152.4 20.6, 155.1 21.6, 157.6 22.8 C 160.1 24.1, 162.6 25.6, 164.8 27.4 C 167.0 29.1, 169.0 31.2, 170.8 33.4 C 172.5 35.6, 173.1 39.4, 175.3 40.6 C 177.4 41.7, 181.0 39.9, 183.9 40.1 C 186.7 40.4, 189.6 41.2, 192.2 42.3 C 194.8 43.4, 197.4 44.9, 199.6 46.7 C 201.8 48.6, 203.8 50.8, 205.3 53.2 C 206.9 55.6, 206.3 58.9, 208.9 61.0 C 211.5 63.1, 217.9 63.1, 221.0 65.8 C 224.1 68.4, 226.8 72.9, 227.6 77.0 C 228.4 81.0, 227.7 86.2, 225.9 89.8 C 224.1 93.5, 228.9 96.9, 216.7 99.0 C 204.6 101.1, 174.6 101.9, 153.1 102.5 C 131.5 103.1, 109.0 103.1, 87.5 102.5 C 66.0 101.9, 36.3 101.5, 23.9 99.0 Z"
+src/components/home/scroll-story/acts/cloud-sync.tsx,33,21,component,,relative h-[300px] w-[560px]
+src/components/home/scroll-story/acts/cloud-sync.tsx,38,13,component,,absolute inset-0 overflow-visible
+src/components/home/scroll-story/acts/cloud-sync.tsx,39,22,component,,"drop-shadow-[0_12px_20px_rgba(51,65,85,0.14)]"
+src/components/home/scroll-story/acts/cloud-sync.tsx,134,13,component,,absolute left-1/2 top-1/2 z-[2] flex h-[62px] w-[62px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full
+src/components/home/scroll-story/acts/cloud-sync.tsx,195,11,component,,absolute -left-14 top-[60px] whitespace-nowrap rounded-lg border px-3 py-1.5 font-mono text-[11px]
+src/components/home/scroll-story/acts/cloud-sync.tsx,200,9,component,,"1,204 products"
+src/components/home/scroll-story/acts/cloud-sync.tsx,200,59,component,,● synced
+src/components/home/scroll-story/acts/cloud-sync.tsx,204,11,component,,absolute -right-16 top-[46px] whitespace-nowrap rounded-lg border px-3 py-1.5 font-mono text-[11px]
+src/components/home/scroll-story/acts/cloud-sync.tsx,210,9,component,,orders → Woo
+src/components/home/scroll-story/acts/cloud-sync.tsx,214,11,component,,absolute -right-10 top-[150px] whitespace-nowrap rounded-lg border px-3 py-1.5 font-mono text-[11px]
+src/components/home/scroll-story/acts/cloud-sync.tsx,220,9,component,,works offline
+src/components/home/scroll-story/acts/dot-orbit.tsx,1,1,component,,use client
+src/components/home/scroll-story/acts/dot-orbit.tsx,48,10,component,,"rgba(100, 116, 139, 0.55)"
+src/components/home/scroll-story/acts/dot-orbit.tsx,49,8,component,,"rgba(205, 32, 31, 0.5)"
+src/components/home/scroll-story/acts/dot-orbit.tsx,50,11,component,,"rgba(127, 84, 179, 0.55)"
+src/components/home/scroll-story/acts/dot-orbit.tsx,71,7,component,,(prefers-reduced-motion: reduce)
+src/components/home/scroll-story/acts/flip-device.tsx,1,1,component,,use client
+src/components/home/scroll-story/acts/flip-device.tsx,42,27,component,,(prefers-reduced-motion: reduce)
+src/components/home/scroll-story/acts/flip-device.tsx,101,39,component,,deg) scale(
+src/components/home/scroll-story/acts/flip-device.tsx,107,23,component,,"cubic-bezier(0.55, 0, 0.85, 0.4)"
+src/components/home/scroll-story/acts/flip-device.tsx,108,23,component,,"cubic-bezier(0.15, 0.6, 0.45, 1)"
+src/components/home/scroll-story/acts/flip-device.tsx,117,19,component,,absolute inset-0 flex items-end justify-center
+src/components/home/scroll-story/acts/story-copy-blocks.tsx,32,21,component,,"[text-shadow:1px_1px_0_rgba(255,252,245,0.45)]"
+src/components/home/scroll-story/copy.ts,11,13,component,,Point of Sale for WooCommerce
+src/components/home/scroll-story/copy.ts,12,14,component,,"Your WooCommerce store, at the counter."
+src/components/home/scroll-story/copy.ts,13,11,component,,"WCPOS turns the tablet into your register — same catalog, same stock, same prices, even offline."
+src/components/home/scroll-story/copy.ts,14,23,component,,Try Live Demo
+src/components/home/scroll-story/copy.ts,16,14,component,,Download Free
+src/components/home/scroll-story/copy.ts,20,19,component,,"5,000+ Active Stores"
+src/components/home/scroll-story/copy.ts,20,43,component,,Free & Open Source
+src/components/home/scroll-story/copy.ts,20,65,component,,Since 2014
+src/components/home/scroll-story/copy.ts,23,13,component,,Every screen you own
+src/components/home/scroll-story/copy.ts,24,14,component,,"One POS. Web, desktop, iOS & Android."
+src/components/home/scroll-story/copy.ts,25,11,component,,"Run the register on the tablet at the counter, the phone on the shop floor, or the laptop in the back office — same store, same data."
+src/components/home/scroll-story/copy.ts,29,13,component,,Bring your own hardware
+src/components/home/scroll-story/copy.ts,30,14,component,,Works with the equipment you already have.
+src/components/home/scroll-story/copy.ts,31,11,component,,"Card terminals, thermal receipt printers, barcode scanners — WCPOS doesn’t lock you into proprietary hardware. Plug in what’s already on your counter."
+src/components/home/scroll-story/copy.ts,34,13,component,,"Your store, your data"
+src/components/home/scroll-story/copy.ts,35,14,component,,"Synced with WooCommerce. Yours, even offline."
+src/components/home/scroll-story/copy.ts,36,11,component,,"Every sale lands in your WooCommerce store — you own the data, no middleman. Internet drops? Keep selling; WCPOS syncs when you’re back online."
+src/components/home/scroll-story/devices/laptop.tsx,8,26,component,,h-[250px] rounded-t-xl p-2.5 pb-1
+src/components/home/scroll-story/devices/laptop.tsx,9,46,component,register,Register 2
+src/components/home/scroll-story/devices/laptop.tsx,11,26,component,,-mx-6 h-3.5 rounded-b-2xl
+src/components/home/scroll-story/devices/phone.tsx,10,9,component,,h-[258px] w-[128px] rounded-[22px] p-2
+src/components/home/scroll-story/devices/pos-screen.tsx,30,11,component,,Tote Bag
+src/components/home/scroll-story/devices/pos-screen.tsx,33,11,component,,Soap Bar
+src/components/home/scroll-story/devices/pos-screen.tsx,35,11,component,,Tea Towel
+src/components/home/scroll-story/devices/pos-screen.tsx,40,11,component,,2× Mug
+src/components/home/scroll-story/devices/pos-screen.tsx,41,11,component,,Soap Bar
+src/components/home/scroll-story/devices/pos-screen.tsx,72,18,component,aria-label,WCPOS app
+src/components/home/scroll-story/devices/pos-screen.tsx,78,16,component,,M0 6 Q0 0 6 0 H
+src/components/home/scroll-story/devices/pos-screen.tsx,78,52,component,,6 V
+src/components/home/scroll-story/devices/pos-screen.tsx,78,62,component,,H0 Z
+src/components/home/scroll-story/devices/pos-screen.tsx,87,9,component,,POS — US Store
+src/components/home/scroll-story/devices/pos-screen.tsx,96,75,component,,H6 Q0
+src/components/home/scroll-story/devices/pos-screen.tsx,115,9,component,,Search Products
+src/components/home/scroll-story/devices/pos-screen.tsx,133,9,component,,In Stock ✕
+src/components/home/scroll-story/devices/pos-screen.tsx,135,21,component,,On Sale
+src/components/home/scroll-story/devices/pos-screen.tsx,192,9,component,,Tax based on: Shop base address
+src/components/home/scroll-story/devices/pos-screen.tsx,195,9,component,,Showing 16 of 18
+src/components/home/scroll-story/devices/pos-screen.tsx,206,9,component,,Guest ✕
+src/components/home/scroll-story/devices/pos-screen.tsx,228,9,component,,Subtotal
+src/components/home/scroll-story/devices/pos-screen.tsx,242,9,component,,Charge $69
+src/components/home/scroll-story/devices/pos-screen.tsx,263,18,component,aria-label,"WCPOS app, phone"
+src/components/home/scroll-story/devices/pos-screen.tsx,268,16,component,,M0 10 Q0 0 10 0 H
+src/components/home/scroll-story/devices/pos-screen.tsx,268,55,component,,10 V20 H0 Z
+src/components/home/scroll-story/devices/pos-screen.tsx,280,9,component,,Search Products
+src/components/home/scroll-story/devices/pos-screen.tsx,284,9,component,,In Stock ✕
+src/components/home/scroll-story/devices/pos-screen.tsx,317,9,component,,Charge $69
+src/components/home/scroll-story/devices/pos-screen.tsx,319,73,component,,H10 Q0
+src/components/home/scroll-story/devices/pos-screen.tsx,339,14,component,,Register 1
+src/components/home/scroll-story/devices/pos-screen.tsx,342,35,component,,phone
+src/components/home/scroll-story/devices/pos-screen.tsx,350,21,component,,phone
+src/components/home/scroll-story/devices/pos-screen.tsx,354,20,component,,phone
+src/components/home/scroll-story/devices/printer.tsx,32,21,component,,flex items-end justify-center
+src/components/home/scroll-story/devices/scanner.tsx,31,21,component,,flex items-end justify-center
+src/components/home/scroll-story/devices/tablet.tsx,15,9,component,,h-[318px] w-[460px] rounded-[18px] p-3
+src/components/home/scroll-story/devices/terminal.tsx,54,21,component,,flex items-end justify-center
+src/components/home/scroll-story/devices/terminal.tsx,68,53,component,,text-[13px] leading-tight
+src/components/home/scroll-story/devices/terminal.tsx,75,13,component,,uppercase tracking-widest text-cyan-200
+src/components/home/scroll-story/devices/terminal.tsx,79,11,component,,Tap to pay
+src/components/home/scroll-story/scroll-story.tsx,1,1,component,,use client
+src/components/home/scroll-story/scroll-story.tsx,294,14,component,,start start
+src/components/home/scroll-story/scroll-story.tsx,294,29,component,,end end
+src/components/home/scroll-story/scroll-story.tsx,384,25,component,,absolute inset-0
+src/components/home/scroll-story/scroll-story.tsx,393,21,component,media,(min-width: 768px)
+src/components/home/scroll-story/scroll-story.tsx,398,21,component,media,(min-width: 768px)
+src/components/home/scroll-story/scroll-story.tsx,423,13,component,,absolute inset-0 overflow-hidden
+src/components/home/scroll-story/scroll-story.tsx,433,15,component,,absolute -inset-x-[10%] -inset-y-[20%]
+src/components/home/scroll-story/scroll-story.tsx,437,32,component,,absolute left-[8%] top-[-18%] h-[70%] w-[55%] rounded-full
+src/components/home/scroll-story/scroll-story.tsx,438,32,component,,absolute right-[-6%] top-[6%] h-[75%] w-[60%] rounded-full
+src/components/home/scroll-story/scroll-story.tsx,439,32,component,,absolute bottom-[-22%] left-[34%] h-[60%] w-[46%] rounded-full
+src/components/home/scroll-story/scroll-story.tsx,440,32,component,,absolute bottom-[-8%] left-[-8%] h-[52%] w-[38%] rounded-full
+src/components/home/scroll-story/scroll-story.tsx,442,30,component,,absolute inset-0
+src/components/home/scroll-story/scroll-story.tsx,543,13,component,,absolute left-1/2 top-[10%] z-20 w-full max-w-2xl -translate-x-1/2 text-center
+src/components/home/scroll-story/scroll-story.tsx,573,13,component,,absolute bottom-6 left-1/2 z-20 -translate-x-1/2 rounded-full px-4 py-1.5 text-[11px] uppercase tracking-[0.14em]
+src/components/home/scroll-story/scroll-story.tsx,574,13,component,,bg-white/70 text-slate-500
+src/components/home/scroll-story/scroll-story.tsx,578,11,component,,Scroll ↓
+src/components/home/scroll-story/scroll-story.tsx,588,27,component,,Go to act
+src/components/home/scroll-story/scroll-story.tsx,588,45,component,,of 4
+src/components/home/scroll-story/story-static.tsx,37,9,component,,relative mt-10 flex items-center justify-center overflow-hidden
+src/components/home/scroll-story/story-static.tsx,67,19,component,alt,"A shop counter with a tablet running the WCPOS register, a receipt printer, a card terminal and a barcode scanner"
+src/components/home/trust-section.tsx,6,29,component,,Active Installations
+src/components/home/trust-section.tsx,7,27,component,,In Development Since
+src/components/home/trust-section.tsx,35,15,component,,GPL Licensed
+src/components/home/trust-section.tsx,37,39,component,,— WCPOS on GitHub
+src/components/home/trust-section.tsx,43,13,component,,Languages Supported
+src/components/home/trust-section.tsx,51,11,component,,"&ldquo;Straightforward, functional and simple to use. 10/10.&rdquo;"
+src/components/home/trust-section.tsx,60,13,component,,"Ward, wordpress.org review"
+src/components/home/trust-section.tsx,70,11,component,,Read our story →
+src/components/home/use-cases-section.tsx,21,11,component,,Retail Store
+src/components/home/use-cases-section.tsx,26,7,component,,"I did a lot of research when looking for a POS for my existing WC site, and nearly overlooked this one because it was free. But I’m glad I tried it. It does everything you want without asking for subscriptions or a percentage of your sales."
+src/components/home/use-cases-section.tsx,32,11,component,,Market Vendor
+src/components/home/use-cases-section.tsx,37,7,component,,"I’m a ceramicist in Annecy and I sell through my WooCommerce shop and at markets. I’ve been using WCPOS for over a year and bought the lifetime Pro license a few months ago — worth it, I think. Paul is responsive on Discord, even on weekends."
+src/components/home/use-cases-section.tsx,41,11,component,,translated from French
+src/components/home/use-cases-section.tsx,44,11,component,,Desktop & Offline
+src/components/home/use-cases-section.tsx,49,7,component,,"Great POS for your WooCommerce store, it has the desktop version which makes it better for places with weak internet connectivity. I believe there are more great features coming up."
+src/components/home/use-cases-section.tsx,59,47,component,title,Works for stores of all kinds
+src/components/home/use-cases-section.tsx,69,26,component,,flex h-28 items-center justify-center
+src/components/home/use-cases-section.tsx,91,37,component,,", wordpress.org review"
+src/components/main/language-selector.tsx,1,1,component,,use client
+src/components/main/site-footer.tsx,42,16,component,,downloads
+src/components/main/site-footer.tsx,43,16,component,,pro
+src/components/main/site-footer.tsx,44,16,component,,roadmap
+src/components/main/site-footer.tsx,49,16,component,,discord
+src/components/main/site-footer.tsx,50,16,component,,github
+src/components/main/site-footer.tsx,61,16,component,,privacy
+src/components/main/site-footer.tsx,62,16,component,,terms
+src/components/main/site-footer.tsx,63,16,component,,refunds
+src/components/main/site-header.tsx,42,9,component,,Sign In
+src/components/main/site-header.tsx,64,16,component,,downloads
+src/components/main/site-header.tsx,65,16,component,,pro
+src/components/main/site-header.tsx,67,16,component,,support
+src/components/main/site-header.tsx,68,16,component,,roadmap
+src/components/main/site-header.tsx,126,41,component,,Open menu
+src/components/main/theme-toggle.tsx,1,1,component,,use client
+src/components/main/user-menu.tsx,1,1,component,,use client
+src/components/main/user-menu.tsx,37,22,component,aria-label,Account menu
+src/components/main/user-menu.tsx,55,13,component,,Account
+src/components/main/user-menu.tsx,75,11,component,,Sign out
+src/components/pro/btcpay-button.tsx,1,1,component,,use client
+src/components/pro/btcpay-button.tsx,46,25,component,,Failed to initialize Bitcoin payment
+src/components/pro/btcpay-button.tsx,62,25,component,,No checkout link returned
+src/components/pro/btcpay-button.tsx,89,11,component,,Preparing Bitcoin payment...
+src/components/pro/btcpay-button.tsx,94,11,component,,Pay with Bitcoin
+src/components/pro/checkout-client.tsx,1,1,component,,use client
+src/components/pro/checkout-client.tsx,91,9,component,,paypal
+src/components/pro/checkout-client.tsx,96,15,component,,account
+src/components/pro/checkout-client.tsx,96,27,component,,billing
+src/components/pro/checkout-client.tsx,178,21,component,,billing
+src/components/pro/checkout-client.tsx,178,33,component,,account
+src/components/pro/checkout-client.tsx,236,52,component,,No product selected
+src/components/pro/checkout-client.tsx,289,27,component,,Failed to create cart
+src/components/pro/checkout-client.tsx,306,27,component,,Failed to add item to cart
+src/components/pro/checkout-client.tsx,327,25,component,,Failed to initialize payment
+src/components/pro/checkout-client.tsx,345,23,component,,[CHECKOUT] Initialization failed:
+src/components/pro/checkout-client.tsx,347,48,component,,Failed to initialize checkout
+src/components/pro/checkout-client.tsx,380,25,component,,Failed to select
+src/components/pro/checkout-client.tsx,454,23,component,,Checkout is busy. Please try again.
+src/components/pro/checkout-client.tsx,480,25,component,,Failed to save billing address
+src/components/pro/checkout-client.tsx,505,25,component,,Failed to refresh payment
+src/components/pro/checkout-client.tsx,510,13,component,,"Billing address was saved, but we couldn't prepare payment. Please try again."
+src/components/pro/checkout-client.tsx,538,13,component,,billing
+src/components/pro/checkout-client.tsx,548,13,component,,Back to pricing
+src/components/pro/checkout-client.tsx,560,11,component,,Thank you for your purchase!
+src/components/pro/checkout-client.tsx,563,11,component,,Your license key and download link have been sent to your email.
+src/components/pro/checkout-client.tsx,567,13,component,,Order ID:
+src/components/pro/checkout-client.tsx,572,44,component,,Go to Licenses
+src/components/pro/checkout-client.tsx,575,28,component,,Return to Home
+src/components/pro/checkout-client.tsx,595,49,component,,paypal
+src/components/pro/checkout-client.tsx,619,39,component,,done
+src/components/pro/checkout-client.tsx,619,48,component,,active
+src/components/pro/checkout-client.tsx,620,33,component,,active
+src/components/pro/checkout-client.tsx,621,50,component,,done
+src/components/pro/checkout-client.tsx,627,9,component,,Unable to initialize checkout. Please try again.
+src/components/pro/checkout-client.tsx,632,11,component,,Back to pricing
+src/components/pro/checkout-client.tsx,653,17,component,title,Account
+src/components/pro/checkout-client.tsx,655,28,component,,account
+src/components/pro/checkout-client.tsx,666,17,component,title,Billing address
+src/components/pro/checkout-client.tsx,670,28,component,,billing
+src/components/pro/checkout-client.tsx,677,31,component,,billing
+src/components/pro/checkout-client.tsx,732,19,component,,Preparing checkout...
+src/components/pro/checkout-client.tsx,761,21,component,,Total
+src/components/pro/checkout-client.tsx,769,21,component,,Total
+src/components/pro/checkout-client.tsx,782,13,component,,Instant license delivery
+src/components/pro/checkout-client.tsx,786,13,component,,One-time payment — never auto-renews
+src/components/pro/checkout-client.tsx,790,13,component,,Secure payment processing
+src/components/pro/checkout-form.tsx,1,1,component,,use client
+src/components/pro/checkout-form.tsx,100,21,component,,"[CHECKOUT] Payment authorized, completing cart:"
+src/components/pro/checkout-recovery.tsx,1,1,component,,use client
+src/components/pro/checkout-recovery.tsx,11,10,component,,/support?ref=
+src/components/pro/checkout-recovery.tsx,37,49,component,title,Payment cancelled
+src/components/pro/checkout-recovery.tsx,40,14,component,,You can also choose a different payment method below.
+src/components/pro/checkout-recovery.tsx,48,48,component,title,Payment status unknown
+src/components/pro/checkout-recovery.tsx,56,13,component,,contact support
+src/components/pro/checkout-recovery.tsx,58,11,component,,and quote reference
+src/components/pro/checkout-recovery.tsx,58,86,component,,— we will confirm whether your payment went through before you pay again.
+src/components/pro/checkout-recovery.tsx,66,47,component,title,Payment unsuccessful
+src/components/pro/checkout-recovery.tsx,69,9,component,,"Your order details have been saved, so you can try again without starting over."
+src/components/pro/checkout-recovery.tsx,70,29,component,,You can also choose a different payment method below.
+src/components/pro/checkout-recovery.tsx,73,9,component,,Still stuck?
+src/components/pro/checkout-recovery.tsx,78,11,component,,Contact support
+src/components/pro/checkout-recovery.tsx,80,9,component,,and quote reference
+src/components/pro/checkout-recovery.tsx,102,47,component,,Payment received — order pending
+src/components/pro/checkout-recovery.tsx,104,9,component,,"Your payment went through, but we hit a problem while creating your order."
+src/components/pro/checkout-recovery.tsx,106,41,component,,Please do not pay again.
+src/components/pro/checkout-recovery.tsx,108,9,component,,Contact support and quote reference
+src/components/pro/checkout-recovery.tsx,109,76,component,,— we will finish setting up your order or refund your payment.
+src/components/pro/checkout-recovery.tsx,116,13,component,,Contact support
+src/components/pro/checkout-recovery.tsx,120,42,component,,Check my licenses
+src/components/pro/checkout-safety.ts,44,25,component,,Cart completion did not produce an order
+src/components/pro/checkout-safety.ts,55,3,component,,We were unable to process your payment. Please try again or use a different payment method.
+src/components/pro/checkout-safety.ts,58,3,component,,"Your card could not be charged. Please check your card details, or try a different card or payment method."
+src/components/pro/checkout-safety.ts,61,3,component,,"We couldn't confirm the status of your payment. If you think you may have been charged, please contact support before trying again."
+src/components/pro/checkout-safety.ts,64,3,component,,"Your payment was received, but we couldn't finish creating your order. Please do not pay again — contact support and we will finish your order or refund the payment."
+src/components/pro/checkout-safety.ts,67,3,component,,PayPal couldn't complete your payment. You have not been charged — please try again or use a different payment method.
+src/components/pro/checkout-safety.ts,70,3,component,,We couldn't start the PayPal checkout. Please try again or use a different payment method.
+src/components/pro/checkout-safety.ts,73,3,component,,PayPal checkout was cancelled and you have not been charged. You can try again whenever you're ready.
+src/components/pro/checkout-safety.ts,76,3,component,,We couldn't start the Bitcoin payment. You have not been charged — please try again or use a different payment method.
+src/components/pro/checkout-safety.ts,79,3,component,,We couldn't prepare that payment method. Please try again or choose a different one.
+src/components/pro/checkout-safety.ts,95,5,component,,Your card was declined due to insufficient funds. Please use a different card or payment method.
+src/components/pro/checkout-safety.ts,99,18,component,,Your card was declined. Please try a different card or payment method.
+src/components/pro/checkout-safety.ts,100,17,component,,Your card has expired. Please use a different card.
+src/components/pro/checkout-safety.ts,101,18,component,,Your card's security code is incorrect. Please check it and try again.
+src/components/pro/checkout-safety.ts,102,16,component,,Your card's security code is invalid. Please check it and try again.
+src/components/pro/checkout-safety.ts,103,21,component,,Your card number appears to be invalid. Please check it and try again.
+src/components/pro/checkout-safety.ts,104,19,component,,Your card number appears to be invalid. Please check it and try again.
+src/components/pro/checkout-safety.ts,105,25,component,,Your card's expiry date is invalid. Please check it and try again.
+src/components/pro/checkout-safety.ts,106,24,component,,Your card's expiry date is invalid. Please check it and try again.
+src/components/pro/checkout-safety.ts,108,5,component,,Something went wrong while processing your card. You have not been charged — please try again.
+src/components/pro/checkout-safety.ts,110,5,component,,We couldn't verify your card with your bank. Please try again or use a different payment method.
+src/components/pro/checkout-safety.ts,112,5,component,,We couldn't verify your card with your bank. Please try again or use a different payment method.
+src/components/pro/checkout-safety.ts,192,17,component,,[CHECKOUT] Payment cancelled:
+src/components/pro/checkout-safety.ts,199,17,component,,[CHECKOUT] Payment failure:
+src/components/pro/checkout-safety.ts,210,24,component,,Checkout payment failure {reference}
+src/components/pro/checkout/account-step.tsx,1,1,component,,use client
+src/components/pro/checkout/account-step.tsx,24,13,component,,register
+src/components/pro/checkout/account-step.tsx,27,42,component,,register
+src/components/pro/checkout/account-step.tsx,41,18,component,,register
+src/components/pro/checkout/account-step.tsx,53,20,component,,register
+src/components/pro/checkout/account-step.tsx,67,11,component,,"That password didn’t work. If you signed up with Google, GitHub or Discord, use the sign-in link below instead — or reset your password from the sign-in page."
+src/components/pro/checkout/account-step.tsx,74,22,component,,register
+src/components/pro/checkout/account-step.tsx,75,15,component,,Could not create your account. Please try again.
+src/components/pro/checkout/account-step.tsx,76,15,component,,Sign in failed. Please check your password.
+src/components/pro/checkout/account-step.tsx,79,16,component,,Something went wrong. Please try again.
+src/components/pro/checkout/account-step.tsx,97,11,component,,Welcome back — you already have an account. Enter your password to sign in and continue.
+src/components/pro/checkout/account-step.tsx,103,41,component,,Email
+src/components/pro/checkout/account-step.tsx,107,24,component,autoComplete,email
+src/components/pro/checkout/account-step.tsx,112,44,component,,register
+src/components/pro/checkout/account-step.tsx,116,19,component,,register
+src/components/pro/checkout/account-step.tsx,118,13,component,,We&apos;ll create your account with this email — your license and receipt arrive here after purchase.
+src/components/pro/checkout/account-step.tsx,125,44,component,,Password
+src/components/pro/checkout/account-step.tsx,129,34,component,,register
+src/components/pro/checkout/account-step.tsx,131,31,component,,register
+src/components/pro/checkout/account-step.tsx,145,13,component,,One moment…
+src/components/pro/checkout/account-step.tsx,146,22,component,,register
+src/components/pro/checkout/account-step.tsx,147,15,component,,Create account & continue
+src/components/pro/checkout/account-step.tsx,148,15,component,,Sign in & continue
+src/components/pro/checkout/account-step.tsx,152,9,component,,"Prefer Google, GitHub or Discord?"
+src/components/pro/checkout/account-step.tsx,154,11,component,,Sign in here
+src/components/pro/checkout/account-step.tsx,156,9,component,,— you&apos;ll come straight back to checkout.
+src/components/pro/checkout/billing-step.tsx,1,1,component,,use client
+src/components/pro/checkout/billing-step.tsx,101,11,component,,Could not save your billing address. Please try again.
+src/components/pro/checkout/billing-step.tsx,111,26,component,label,First name
+src/components/pro/checkout/billing-step.tsx,120,26,component,label,Last name
+src/components/pro/checkout/billing-step.tsx,131,24,component,label,Address line 1
+src/components/pro/checkout/billing-step.tsx,141,24,component,label,Address line 2
+src/components/pro/checkout/billing-step.tsx,151,26,component,label,City
+src/components/pro/checkout/billing-step.tsx,161,17,component,label,State / Province / Region
+src/components/pro/checkout/billing-step.tsx,174,26,component,label,Postal code
+src/components/pro/checkout/billing-step.tsx,184,24,component,label,Country
+src/components/pro/checkout/billing-step.tsx,187,24,component,autoComplete,country
+src/components/pro/checkout/billing-step.tsx,225,37,component,,Continue to payment
+src/components/pro/checkout/express-checkout.tsx,1,1,component,,use client
+src/components/pro/checkout/express-checkout.tsx,139,9,component,,or choose how to pay
+src/components/pro/checkout/payment-step.tsx,1,1,component,,use client
+src/components/pro/checkout/payment-step.tsx,14,40,component,,paypal
+src/components/pro/checkout/payment-step.tsx,61,17,component,,border-primary bg-primary [box-shadow:inset_0_0_0_2.5px_var(--card)]
+src/components/pro/checkout/payment-step.tsx,114,52,component,,Preparing payment...
+src/components/pro/checkout/payment-step.tsx,147,9,component,,No payment methods are configured. Please contact support.
+src/components/pro/checkout/payment-step.tsx,153,61,component,aria-label,Payment method
+src/components/pro/checkout/payment-step.tsx,160,17,component,title,Card
+src/components/pro/checkout/payment-step.tsx,161,16,component,hint,Visa · Mastercard · Amex
+src/components/pro/checkout/payment-step.tsx,183,32,component,,paypal
+src/components/pro/checkout/payment-step.tsx,185,42,component,,paypal
+src/components/pro/checkout/payment-step.tsx,188,15,component,,PayPal
+src/components/pro/checkout/payment-step.tsx,192,16,component,hint,Pay with your PayPal balance or linked card
+src/components/pro/checkout/payment-step.tsx,219,17,component,title,Bitcoin
+src/components/pro/checkout/payment-step.tsx,220,16,component,hint,On-chain or Lightning
+src/components/pro/checkout/payment-step.tsx,228,17,component,,"A BTCPay invoice opens with a QR code — pay on-chain or over Lightning, then you&apos;ll be returned here."
+src/components/pro/checkout/step-shell.tsx,1,1,component,,use client
+src/components/pro/checkout/step-shell.tsx,6,30,component,,account
+src/components/pro/checkout/step-shell.tsx,6,42,component,,billing
+src/components/pro/checkout/step-shell.tsx,27,10,component,,done
+src/components/pro/checkout/step-shell.tsx,27,19,component,,active
+src/components/pro/checkout/step-shell.tsx,38,19,component,,active
+src/components/pro/checkout/step-shell.tsx,44,22,component,,flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs font-semibold
+src/components/pro/checkout/step-shell.tsx,45,23,component,,done
+src/components/pro/checkout/step-shell.tsx,49,27,component,,active
+src/components/pro/checkout/step-shell.tsx,54,22,component,,done
+src/components/pro/checkout/step-shell.tsx,58,49,component,,active
+src/components/pro/checkout/step-shell.tsx,62,22,component,,done
+src/components/pro/checkout/step-shell.tsx,66,20,component,,done
+src/components/pro/checkout/step-shell.tsx,79,18,component,,active
+src/components/pro/complete-cart.ts,41,19,component,,[CHECKOUT] Cart completion failed:
+src/components/pro/complete-cart.ts,47,33,component,,Failed to complete order
+src/components/pro/complete-cart.ts,57,19,component,,[CHECKOUT] Cart completion returned no order id:
+src/components/pro/complete-cart.ts,61,33,component,,Cart completion returned no order id
+src/components/pro/complete-cart.ts,64,15,component,,[CHECKOUT] Order created successfully:
+src/components/pro/complete-cart.ts,93,19,component,,[CHECKOUT] PayPal capture failed:
+src/components/pro/complete-cart.ts,99,21,component,,Failed to capture PayPal order
+src/components/pro/complete-cart.ts,127,18,component,,Failed to create payment session
+src/components/pro/complete-cart.ts,141,19,component,,[CHECKOUT] Payment session request failed:
+src/components/pro/paypal-button.tsx,1,1,component,,use client
+src/components/pro/paypal-button.tsx,85,27,component,,Failed to initialize PayPal payment
+src/components/pro/paypal-button.tsx,96,29,component,,No PayPal order ID returned
+src/components/pro/paypal-button.tsx,119,41,component,,Missing PayPal order id on approval
+src/components/pro/paypal-button.tsx,199,11,component,,Loading PayPal secure checkout...
+src/components/pro/paypal-button.tsx,212,9,component,,Failed to load PayPal. Please try another payment method.
+src/components/pro/paypal-provider.tsx,1,1,component,,use client
+src/components/pro/paypal-provider.tsx,30,16,component,pageType,checkout
+src/components/pro/pro-buy-box.tsx,1,1,component,,use client
+src/components/pro/pro-buy-box.tsx,104,23,component,,border-primary bg-primary [box-shadow:inset_0_0_0_2.5px_var(--card)]
+src/components/pro/pro-features.tsx,22,10,component,,orders
+src/components/pro/stripe-provider.tsx,1,1,component,,use client
+src/components/pro/stripe-provider.tsx,45,9,component,,Stripe is not configured for this environment.
+src/components/roadmap/bug-fix-list.tsx,4,39,component,,status
+src/components/roadmap/bug-fix-list.tsx,6,16,component,,in progress
+src/components/roadmap/bug-fix-list.tsx,7,12,component,,planned
+src/components/roadmap/bug-fix-list.tsx,10,38,component,,status
+src/components/roadmap/bug-fix-list.tsx,27,75,component,,& improvements
+src/components/roadmap/dev-fixture.ts,14,9,component,,"Offline & stock-state correctness: offline queues, overselling prevention, barcode reliability. Monthly dot-release cadence."
+src/components/roadmap/dev-fixture.ts,21,18,component,,Sync engine & offline overhaul: queuing architecture
+src/components/roadmap/dev-fixture.ts,23,13,component,,Epic: major update to the sync engine and offline capabilities. The sync engine gets a queuing architecture so writes made offline replay reliably when the connection returns.
+src/components/roadmap/dev-fixture.ts,31,18,component,,"Offline queue: email, order sync, customer sync"
+src/components/roadmap/dev-fixture.ts,33,13,component,,Phase 5 (offline rendering) disables the email button when offline rather than queuing emails. This is a stopgap — the broader question is how queued side-effects replay.
+src/components/roadmap/dev-fixture.ts,41,18,component,,Barcode scan: online fallback with auto-add
+src/components/roadmap/dev-fixture.ts,43,13,component,,"When a barcode scan finds no local match, the user currently sees a ""not found"" toast and has to manually trigger a server search. This two-step process should be one."
+src/components/roadmap/dev-fixture.ts,50,18,component,,Prevent overselling at POS
+src/components/roadmap/dev-fixture.ts,52,13,component,,One of the longest-standing feature requests. The WC REST API does not prevent overselling — orders created via the API (or WP Admin) skip stock validation entirely.
+src/components/roadmap/dev-fixture.ts,53,19,component,,planned
+src/components/roadmap/dev-fixture.ts,62,18,component,,Cart: fee lines dropped after cashier switch
+src/components/roadmap/dev-fixture.ts,64,19,component,,done
+src/components/roadmap/dev-fixture.ts,70,18,component,,Receipt preview blank when template file is missing
+src/components/roadmap/dev-fixture.ts,83,9,component,,"Checkout & payments: split payments, checkout conditions. Monthly dot-release cadence."
+src/components/roadmap/dev-fixture.ts,90,18,component,,Split payment support
+src/components/roadmap/dev-fixture.ts,92,13,component,,"Accept more than one payment method on a single order — cash plus card, gift card plus cash — with sub-order handling on the WooCommerce side."
+src/components/roadmap/dev-fixture.ts,93,19,component,,planned
+src/components/roadmap/dev-fixture.ts,100,18,component,,Checkout conditions system
+src/components/roadmap/dev-fixture.ts,102,13,component,,"Configurable rules that must be satisfied before checkout completes — required customer, minimum totals, custom prompts."
+src/components/roadmap/dev-fixture.ts,103,19,component,,planned
+src/components/roadmap/dev-fixture.ts,111,14,component,,Compliance / Fiscalization
+src/components/roadmap/dev-fixture.ts,113,9,component,,NF525 (France) / VeriFactu (Spain) fiscal compliance framework — VeriFactu deadline Jan 2027.
+src/components/roadmap/dev-fixture.ts,121,13,component,,"Fiscal compliance framework: NF525 (France), VeriFactu (Spain), and beyond"
+src/components/roadmap/dev-fixture.ts,123,13,component,,Countries worldwide are mandating that POS/cash register software guarantee transaction integrity through cryptographic mechanisms. We need a pluggable framework.
+src/components/roadmap/dev-fixture.ts,124,19,component,,planned
+src/components/roadmap/dev-fixture.ts,135,20,component,,Stabilization patches for the 1.9 line (rolling patch lane).
+src/components/roadmap/dev-fixture.ts,143,13,component,,Add server-side thermal engine renderer (gate server preview for thermal templates)
+src/components/roadmap/dev-fixture.ts,145,13,component,,"PR #596 introduces thermal engine templates in the gallery. However, the server-side receipt rendering path (includes/Templates/Receipt.php) cannot render them yet."
+src/components/roadmap/dev-fixture.ts,146,19,component,,done
+src/components/roadmap/dev-fixture.ts,162,18,component,,Refund support
+src/components/roadmap/dev-fixture.ts,164,13,component,,Support processing refunds directly from the POS. WooCommerce already exposes a refunds endpoint on orders — we wrap that in the Pro plugin and surface it in the cart.
+src/components/roadmap/dev-fixture.ts,165,19,component,,done
+src/components/roadmap/dev-fixture.ts,173,18,component,,Refund rounding mismatch on inclusive-tax stores
+src/components/roadmap/dev-fixture.ts,175,19,component,,done
+src/components/roadmap/roadmap-timeline.tsx,1,1,component,,use client
+src/components/roadmap/roadmap-timeline.tsx,34,30,component,,shipped
+src/components/roadmap/roadmap-timeline.tsx,69,8,component,,border border-transparent bg-wcpos-red text-white
+src/components/roadmap/roadmap-timeline.tsx,70,9,component,,border border-transparent bg-slate-500 text-white
+src/components/roadmap/roadmap-timeline.tsx,73,12,component,,border border-transparent bg-emerald-700 text-white
+src/components/roadmap/roadmap-timeline.tsx,81,9,component,,border border-slate-300 text-muted-foreground dark:border-slate-600
+src/components/roadmap/roadmap-timeline.tsx,82,12,component,,border border-emerald-500/40 text-emerald-600 dark:text-emerald-400
+src/components/roadmap/roadmap-timeline.tsx,92,56,component,,status
+src/components/roadmap/roadmap-timeline.tsx,93,18,component,,done
+src/components/roadmap/roadmap-timeline.tsx,95,76,component,aria-label,Done
+src/components/roadmap/roadmap-timeline.tsx,112,20,component,aria-label,In progress
+src/components/roadmap/roadmap-timeline.tsx,126,74,component,aria-label,Planned
+src/components/roadmap/roadmap-timeline.tsx,189,15,component,,absolute -left-[39px] top-2 size-4 sm:-left-[47px]
+src/components/roadmap/roadmap-timeline.tsx,205,20,component,,absolute inset-0 rounded-full border-2 bg-background
+src/components/roadmap/roadmap-timeline.tsx,209,20,component,,absolute inset-0 rounded-full
+src/components/roadmap/roadmap-timeline.tsx,242,30,component,,shipped
+src/components/roadmap/roadmap-timeline.tsx,242,42,component,,relative pb-14 opacity-60
+src/components/roadmap/roadmap-timeline.tsx,242,72,component,,relative pb-14
+src/components/roadmap/roadmap-timeline.tsx,260,21,component,,shipped
+src/components/roadmap/roadmap-timeline.tsx,261,15,component,,shipped
+src/components/roadmap/roadmap-timeline.tsx,262,77,component,,done
+src/components/roadmap/roadmap-timeline.tsx,263,28,component,,shipped
+src/components/roadmap/roadmap-timeline.tsx,263,54,component,,· due
+src/components/roadmap/roadmap-timeline.tsx,267,17,component,,shipped
+src/components/roadmap/roadmap-timeline.tsx,323,14,component,,start 0.78
+src/components/roadmap/roadmap-timeline.tsx,323,28,component,,end 0.6
+src/components/roadmap/roadmap-timeline.tsx,387,22,component,,absolute bottom-0 left-0 top-0 w-0.5 rounded
+src/components/roadmap/roadmap-timeline.tsx,397,24,component,,absolute bottom-0 left-0 top-0 w-0.5 origin-top rounded
+src/components/roadmap/roadmap-timeline.tsx,402,24,component,,absolute -left-[3px] size-2 rounded-full
+src/components/roadmap/roadmap-timeline.tsx,405,26,component,,"0 0 10px 2px color-mix(in srgb,"
+src/components/roadmap/roadmap-timeline.tsx,405,76,component,,"60%, transparent)"
+src/components/roadmap/roadmap-timeline.tsx,467,7,component,,live from the WCPOS project board
+src/components/roadmap/roadmap-timeline.tsx,480,9,component,,No roadmap items to display yet.
+src/components/roadmap/roadmap-timeline.tsx,489,24,component,label,Shipped
+src/components/roadmap/roadmap-timeline.tsx,489,65,component,tone,shipped
+src/components/support/discord-section.tsx,1,1,component,,use client
+src/components/support/discord-section.tsx,19,65,component,,Prefer to talk to a human?
+src/components/support/discord-section.tsx,21,11,component,,Join store owners and the team in our live Discord community.
+src/components/support/discord-widget.tsx,1,1,component,,use client
+src/components/support/support-chat.tsx,1,1,component,,use client
+src/components/support/support-chat.tsx,18,3,component,,Why is my licence inactive?
+src/components/support/support-chat.tsx,19,3,component,,Which barcode scanners are supported?
+src/components/support/support-chat.tsx,20,3,component,,How do I sync products from WooCommerce?
+src/components/support/support-chat.tsx,65,32,component,,Something went wrong.
+src/components/support/support-chat.tsx,76,16,component,,The assistant is unavailable right now. Please ask in Discord.
+src/components/support/support-chat.tsx,106,79,component,,How can we help?
+src/components/support/support-chat.tsx,108,13,component,,"Ask anything about WCPOS — setup, licensing, hardware, syncing, printing. You&apos;ll get an instant answer drawn from our docs."
+src/components/support/support-chat.tsx,131,47,component,,Was this helpful?
+src/components/support/support-chat.tsx,158,64,component,,Aide is thinking…
+src/components/support/support-chat.tsx,168,22,component,aria-label,Ask a support question
+src/components/support/support-chat.tsx,171,34,component,,Ask a follow-up…
+src/components/support/support-chat.tsx,187,13,component,,Ask in Discord →
+src/components/support/support-chat.tsx,211,9,component,,Answered by Aide · trained on the WCPOS docs &amp; wiki
+src/components/support/support-chat.tsx,250,13,component,,Contact support about your order
+src/components/support/support-chat.tsx,253,13,component,,Quote reference
+src/components/support/support-chat.tsx,253,89,component,,so we can confirm the payment or finish the order before you pay again.
+src/components/ui/avatar.tsx,1,1,component,,use client
+src/components/ui/avatar.tsx,14,7,component,,relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full
+src/components/ui/avatar.tsx,44,7,component,,flex h-full w-full items-center justify-center rounded-full
+src/components/ui/avatar.tsx,46,11,component,,bg-wcpos-red/10 font-medium text-wcpos-red-accent
+src/components/ui/button.tsx,7,3,component,,inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0
+src/components/ui/button.tsx,16,11,component,,border border-input bg-background shadow-xs hover:bg-accent hover:text-accent-foreground
+src/components/ui/button.tsx,19,16,component,,hover:bg-accent hover:text-accent-foreground
+src/components/ui/card.tsx,20,9,component,,border bg-card text-card-foreground
+src/components/ui/card.tsx,29,20,component,,Card
+src/components/ui/card.tsx,37,19,component,,flex flex-col space-y-1.5 p-6
+src/components/ui/card.tsx,81,19,component,,flex items-center p-6 pt-0
+src/components/ui/collapsible.tsx,39,11,component,,flex cursor-pointer list-none items-center justify-between gap-2 [&::-webkit-details-marker]:hidden
+src/components/ui/dialog.tsx,1,1,component,,use client
+src/components/ui/dialog.tsx,24,7,component,,fixed inset-0 z-50 bg-overlay/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0
+src/components/ui/dialog.tsx,41,9,component,,fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] sm:rounded-lg
+src/components/ui/dialog.tsx,62,7,component,,flex flex-col space-y-1.5 text-center sm:text-left
+src/components/ui/dialog.tsx,76,7,component,,flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2
+src/components/ui/dropdown-menu.tsx,1,1,component,,use client
+src/components/ui/dropdown-menu.tsx,24,7,component,,flex cursor-default select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none focus:bg-accent data-[state=open]:bg-accent [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0
+src/components/ui/dropdown-menu.tsx,44,7,component,,z-50 min-w-[8rem] overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-lg data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2
+src/components/ui/dropdown-menu.tsx,63,9,component,,data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2
+src/components/ui/dropdown-menu.tsx,81,7,component,,relative flex cursor-default select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&>svg]:size-4 [&>svg]:shrink-0
+src/components/ui/dropdown-menu.tsx,97,7,component,,relative flex cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50
+src/components/ui/dropdown-menu.tsx,121,7,component,,relative flex cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50
+src/components/ui/dropdown-menu.tsx,160,19,component,,-mx-1 my-1 h-px bg-muted
+src/components/ui/empty-state.tsx,32,21,component,,flex flex-col items-center py-12 text-center
+src/components/ui/icon-tile.tsx,19,13,component,,h-8 w-8 [&_svg]:size-4
+src/components/ui/icon-tile.tsx,20,13,component,,h-9 w-9 [&_svg]:size-[18px]
+src/components/ui/icon-tile.tsx,21,13,component,,h-12 w-12 [&_svg]:size-6
+src/components/ui/icon-tile.tsx,29,16,component,,bg-wcpos-red/10 text-wcpos-red-accent
+src/components/ui/input.tsx,10,11,component,,flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-xs transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:border-ring focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm
+src/components/ui/label.tsx,1,1,component,,use client
+src/components/ui/markdown.tsx,19,9,component,,[&_h1]:text-sm [&_h1]:font-semibold [&_h1]:text-foreground
+src/components/ui/markdown.tsx,20,9,component,,[&_h2]:text-sm [&_h2]:font-semibold [&_h2]:text-foreground
+src/components/ui/markdown.tsx,21,9,component,,[&_h3]:text-sm [&_h3]:font-semibold [&_h3]:text-foreground
+src/components/ui/markdown.tsx,22,9,component,,[&_p]:leading-relaxed
+src/components/ui/markdown.tsx,23,9,component,,[&_ul]:ml-4 [&_ul]:list-disc
+src/components/ui/markdown.tsx,24,9,component,,[&_ol]:ml-4 [&_ol]:list-decimal
+src/components/ui/markdown.tsx,25,9,component,,[&_code]:rounded [&_code]:bg-muted [&_code]:px-1 [&_code]:py-0.5
+src/components/ui/markdown.tsx,26,9,component,,[&_pre]:overflow-x-auto [&_pre]:rounded [&_pre]:bg-muted [&_pre]:p-2
+src/components/ui/markdown.tsx,27,9,component,,[&_a]:underline [&_a]:underline-offset-2
+src/components/ui/page-header.tsx,27,9,component,,flex flex-wrap items-start justify-between gap-4
+src/components/ui/row.tsx,34,7,component,,flex flex-wrap items-center justify-between gap-3 py-4
+src/components/ui/row.tsx,55,9,component,,flex flex-wrap items-center justify-between gap-3 py-3 text-sm
+src/components/ui/row.tsx,96,21,component,,flex items-center gap-3 py-3
+src/components/ui/select.tsx,18,9,component,,flex h-9 w-full appearance-none rounded-md border border-input bg-transparent px-3 py-1 pr-8 text-sm shadow-xs transition-colors focus-visible:border-ring focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50
+src/components/ui/separator.tsx,1,1,component,,use client
+src/components/ui/separator.tsx,21,40,component,,h-[1px] w-full
+src/components/ui/sheet.tsx,1,1,component,,use client
+src/components/ui/sheet.tsx,24,7,component,,fixed inset-0 z-50 bg-overlay/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0
+src/components/ui/sheet.tsx,34,3,component,,fixed z-50 gap-4 bg-background p-6 shadow-lg transition ease-in-out data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:duration-300 data-[state=open]:duration-500
+src/components/ui/sheet.tsx,38,14,component,,inset-x-0 top-0 border-b data-[state=closed]:slide-out-to-top data-[state=open]:slide-in-from-top
+src/components/ui/sheet.tsx,40,11,component,,inset-x-0 bottom-0 border-t data-[state=closed]:slide-out-to-bottom data-[state=open]:slide-in-from-bottom
+src/components/ui/sheet.tsx,41,15,component,,inset-y-0 left-0 h-full w-3/4 border-r data-[state=closed]:slide-out-to-left data-[state=open]:slide-in-from-left sm:max-w-sm
+src/components/ui/sheet.tsx,43,11,component,,inset-y-0 right-0 h-full w-3/4 border-l data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right sm:max-w-sm
+src/components/ui/sheet.tsx,83,7,component,,flex flex-col space-y-2 text-center sm:text-left
+src/components/ui/sheet.tsx,97,7,component,,flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2
+src/components/ui/table.tsx,22,34,component,,[&_tr]:border-b
+src/components/ui/table.tsx,32,19,component,,[&_tr:last-child]:border-0
+src/components/ui/table.tsx,45,7,component,,border-t bg-muted/50 font-medium [&>tr]:last:border-b-0
+src/components/ui/table.tsx,60,7,component,,border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted
+src/components/ui/table.tsx,75,7,component,,h-10 px-2 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]
+src/components/ui/table.tsx,90,7,component,,p-2 align-middle [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]
+src/components/ui/tabs.tsx,1,1,component,,use client
+src/components/ui/tabs.tsx,31,7,component,,inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-xs
+src/components/ui/text-link.tsx,41,42,component,,noopener noreferrer
+src/lib/analytics/consent.ts,100,58,code/string,,; Secure
+src/lib/analytics/consent.ts,102,58,code/string,,; Path=
+src/lib/analytics/consent.ts,102,80,code/string,,; Max-Age=
+src/lib/analytics/consent.ts,102,107,code/string,,; SameSite=Lax
+src/lib/analytics/consent.ts,105,54,code/string,,=; Path=/; Max-Age=0; SameSite=Lax
+src/lib/analytics/posthog-browser.ts,1,1,code/string,,use client
+src/lib/api/errors.ts,46,25,code/string,,An account with this email already exists
+src/lib/api/errors.ts,61,25,error/status,,Invalid email or password
+src/lib/api/errors.ts,77,15,error/status,,This password reset link is invalid or has expired. Please request a new one.
+src/lib/api/to-error-response.ts,26,14,error/status,,Internal server error
+src/lib/auth-providers/metadata.ts,12,30,code/string,,google
+src/lib/auth-providers/metadata.ts,12,41,code/string,,github
+src/lib/auth-providers/metadata.ts,12,52,code/string,,discord
+src/lib/auth-providers/metadata.ts,15,44,code/string,,google
+src/lib/auth-providers/metadata.ts,15,54,code/string,,github
+src/lib/auth-providers/metadata.ts,15,64,code/string,,discord
+src/lib/auth-providers/metadata.ts,19,30,code/string,,google
+src/lib/auth-providers/metadata.ts,19,41,code/string,,github
+src/lib/auth-providers/metadata.ts,28,20,code/string,,google
+src/lib/auth-providers/metadata.ts,28,42,code/string,,github
+src/lib/auth-providers/metadata.ts,32,29,code/string,,google
+src/lib/auth-providers/metadata.ts,33,29,code/string,,github
+src/lib/auth-providers/metadata.ts,34,22,code/string,,discord
+src/lib/auth-providers/metadata.ts,35,19,code/string,,discord
+src/lib/billing-countries.ts,14,5,code/string,,vat
+src/lib/billing-countries.ts,15,5,code/string,,abn
+src/lib/billing-countries.ts,24,7,code/string,,abn
+src/lib/billing-countries.ts,26,7,code/string,,vat
+src/lib/billing-countries.ts,28,7,code/string,,vat
+src/lib/billing-countries.ts,29,7,code/string,,vat
+src/lib/billing-countries.ts,32,7,code/string,,vat
+src/lib/billing-countries.ts,39,13,code/string,,EIN / Tax ID
+src/lib/billing-countries.ts,40,8,code/string,,GST number
+src/lib/billing-countries.ts,41,11,code/string,,GST/HST number
+src/lib/billing-countries.ts,42,11,code/string,,NIF / VAT number
+src/lib/billing-countries.ts,43,15,code/string,,Partita IVA
+src/lib/billing-countries.ts,44,20,code/string,,Tax registration number
+src/lib/billing-countries.ts,45,8,code/string,,VAT number
+src/lib/billing-countries.ts,46,17,code/string,,Tax ID / VAT number
+src/lib/checkout-failure-taxonomy.ts,19,54,error/status,,error
+src/lib/checkout-failure-taxonomy.ts,33,20,error/status,,error
+src/lib/checkout-failure-taxonomy.ts,85,52,error/status,,error
+src/lib/checkout-payments.ts,20,14,code/string,,paypal
+src/lib/client-logger.ts,1,1,code/string,,use client
+src/lib/client-logger.ts,79,48,error/status,,error
+src/lib/client-logger.ts,99,29,error/status,,error
+src/lib/client-logger.ts,101,20,error/status,,Uncaught error
+src/lib/client-logger.ts,109,20,code/string,,Unhandled promise rejection
+src/lib/client-logger.ts,113,19,error/status,,Failed to initialize client logging:
+src/lib/customer-avatar.ts,35,49,code/string,,?d=mp
+src/lib/customer-licenses.ts,83,23,code/string,,Machine list unavailable for license
+src/lib/customer-licenses.ts,83,70,code/string,,; showing count only:
+src/lib/customer-licenses.ts,112,26,error/status,,Failed to validate license key:
+src/lib/customer-licenses.ts,128,50,error/status,,not found in Keygen
+src/lib/customer-licenses.ts,130,28,error/status,,Failed to fetch license
+src/lib/customer-orders.ts,82,37,code/string,,/store/orders?
+src/lib/customer-orders.ts,93,22,error/status,,Failed to get orders:
+src/lib/customer-orders.ts,110,22,error/status,,Failed to fetch impersonated orders:
+src/lib/customer-orders.ts,123,22,error/status,,Failed to fetch impersonated order
+src/lib/customer-orders.ts,189,21,code/string,,getAllOrders fetched
+src/lib/customer-orders.ts,189,70,code/string,,orders (cap
+src/lib/customer-orders.ts,191,5,code/string,,); some orders were not fetched
+src/lib/customer-profile-metadata.ts,18,3,code/string,,city
+src/lib/customer-profile-metadata.ts,28,3,code/string,,city
+src/lib/discord/client.ts,65,23,error/status,,Discord OAuth token exchange failed:
+src/lib/discord/client.ts,78,23,error/status,,Discord user lookup failed:
+src/lib/discord/client.ts,102,23,error/status,,Discord member lookup failed:
+src/lib/discord/client.ts,117,23,error/status,,Discord role add failed:
+src/lib/discord/client.ts,129,23,error/status,,Discord role removal failed:
+src/lib/discord/client.ts,144,25,error/status,,Discord member list failed:
+src/lib/discord/config.ts,26,21,code/string,,Discord role sync is not configured:
+src/lib/discord/connected-member-service.ts,99,63,code/string,,Discord user
+src/lib/discord/medusa-admin.ts,24,3,code/string,,"id,display_id,created_at,updated_at,email,currency_code,total,subtotal,tax_total,status,payment_status,fulfillment_status,metadata,*items"
+src/lib/discord/medusa-admin.ts,28,21,code/string,,MEDUSA_ADMIN_API_TOKEN is required for Discord reconciliation
+src/lib/discord/medusa-admin.ts,55,21,error/status,,Medusa Admin API error
+src/lib/discord/medusa-admin.ts,71,15,code/string,,"id,email,first_name,last_name,metadata,created_at,updated_at"
+src/lib/discord/medusa-admin.ts,75,7,code/string,,/admin/customers?
+src/lib/discord/medusa-admin.ts,102,7,code/string,,/admin/orders?
+src/lib/discord/medusa-admin.ts,126,7,code/string,,/admin/orders?
+src/lib/discord/medusa-admin.ts,131,22,error/status,,Failed to fetch admin order
+src/lib/discord/medusa-admin.ts,131,60,code/string,,for customer
+src/lib/discord/medusa-admin.ts,150,13,code/string,,"id,email,first_name,last_name,phone,has_account,metadata,created_at,updated_at"
+src/lib/discord/medusa-admin.ts,154,7,code/string,,/admin/customers?
+src/lib/discord/medusa-admin.ts,159,22,error/status,,Failed to find admin customer by email:
+src/lib/discord/medusa-admin.ts,171,13,code/string,,"id,email,first_name,last_name,phone,has_account,metadata,created_at,updated_at"
+src/lib/discord/medusa-admin.ts,179,22,error/status,,Failed to fetch admin customer
+src/lib/impersonation.ts,27,11,code/string,,This action is disabled during read-only inspection.
+src/lib/impersonation.ts,74,49,code/string,,Not authorized to impersonate
+src/lib/license-status-presentation.ts,15,23,code/string,,active
+src/lib/license-status-presentation.ts,16,24,code/string,,expired
+src/lib/license-status-presentation.ts,17,26,code/string,,suspended
+src/lib/license-status.ts,14,5,code/string,,active
+src/lib/license-status.ts,15,5,code/string,,expired
+src/lib/license-status.ts,16,5,code/string,,suspended
+src/lib/license-status.ts,22,11,code/string,,active
+src/lib/license-status.ts,23,13,code/string,,active
+src/lib/license-status.ts,24,13,code/string,,active
+src/lib/license-status.ts,25,12,code/string,,expired
+src/lib/license-status.ts,26,14,code/string,,suspended
+src/lib/license.ts,33,26,code/string,,active
+src/lib/license.ts,36,14,code/string,,expired
+src/lib/license.ts,47,26,code/string,,active
+src/lib/license.ts,77,26,code/string,,active
+src/lib/license.ts,112,28,code/string,,active
+src/lib/license.ts,112,59,code/string,,expired
+src/lib/license.ts,151,51,code/string,,active
+src/lib/license.ts,170,53,code/string,,active
+src/lib/license.ts,203,37,code/string,,active
+src/lib/license.ts,211,57,code/string,,suspended
+src/lib/logger.ts,21,62,code/string,,download
+src/lib/login-redirect.ts,25,5,code/string,,/api/auth/logout?to=
+src/lib/medusa-auth.ts,135,54,error/status,,Login failed
+src/lib/medusa-auth.ts,170,40,error/status,,Failed to request password reset
+src/lib/medusa-auth.ts,205,54,error/status,,Failed to reset password
+src/lib/medusa-auth.ts,249,58,error/status,,Registration failed
+src/lib/medusa-auth.ts,284,7,error/status,,Failed to create customer
+src/lib/medusa-auth.ts,305,7,error/status,,"Your account was created, but signing you in failed. Please sign in to continue."
+src/lib/medusa-auth.ts,356,21,error/status,,Failed to get customer:
+src/lib/medusa-auth.ts,400,54,error/status,,Failed to update customer
+src/lib/oauth-providers.ts,5,54,code/string,,google
+src/lib/oauth-providers.ts,5,64,code/string,,github
+src/lib/oauth-providers.ts,5,74,code/string,,discord
+src/lib/oauth.ts,72,61,code/string,,/callback?
+src/lib/oauth.ts,76,54,error/status,,OAuth callback failed
+src/lib/oauth.ts,103,54,error/status,,Account linking failed
+src/lib/oauth.ts,125,54,error/status,,Token refresh failed
+src/lib/oauth.ts,155,54,error/status,,Failed to initiate OAuth
+src/lib/openclaw/client.ts,35,29,code/string,,support assistant not configured
+src/lib/openclaw/client.ts,59,7,code/string,,support assistant unreachable
+src/lib/openclaw/client.ts,75,30,error/status,,support assistant error
+src/lib/order-status.ts,5,23,code/string,,Partially refunded
+src/lib/order-status.ts,8,20,code/string,,Action required
+src/lib/password-policy.ts,6,43,code/string,,Password must be at least
+src/lib/pdf-receipt.ts,107,14,code/string,,Partially refunded
+src/lib/pdf-receipt.ts,231,19,code/string,,Order #
+src/lib/pdf-receipt.ts,245,18,code/string,,BILLED TO
+src/lib/pdf-receipt.ts,252,38,code/string,,No email provided
+src/lib/pdf-receipt.ts,264,44,code/string,,Tax ID:
+src/lib/pdf-receipt.ts,283,20,code/string,,Order date
+src/lib/pdf-receipt.ts,301,24,code/string,,This order was originally #
+src/lib/pdf-receipt.ts,301,69,code/string,,"in our previous store system. Older emails, invoices and records may reference that number."
+src/lib/pdf-receipt.ts,332,19,code/string,,UNIT PRICE
+src/lib/pdf-receipt.ts,342,11,code/string,,Untitled item
+src/lib/pdf-receipt.ts,372,18,code/string,,Subtotal
+src/lib/pdf-receipt.ts,386,20,code/string,,Tax
+src/lib/pdf-receipt.ts,396,18,code/string,,Total
+src/lib/pdf-receipt.ts,405,21,code/string,,No tax has been added to this order.
+src/lib/pdf-receipt.ts,415,21,code/string,,· ABN
+src/lib/pdf-receipt.ts,419,25,code/string,,is not registered for GST in Australia — no GST has been charged and this document is not a tax invoice.
+src/lib/pdf-receipt.ts,423,11,code/string,,This receipt may be used as proof of purchase for your tax records.
+src/lib/pdf-receipt.ts,427,11,code/string,,Questions?
+src/lib/pdf-receipt.ts,427,39,code/string,,/discord ·
+src/lib/pro-offer-catalog.ts,27,25,code/string,,Yearly License
+src/lib/pro-offer-catalog.ts,28,27,code/string,,Lifetime License
+src/lib/pro-offer-catalog.ts,76,5,code/string,,WCPOS Pro Yearly
+src/lib/pro-offer-catalog.ts,82,5,code/string,,WCPOS Pro Lifetime
+src/lib/pro-offer-catalog.ts,89,3,code/string,,Payment terminal integration
+src/lib/pro-offer-catalog.ts,90,3,code/string,,Stock & price editing in POS
+src/lib/pro-offer-catalog.ts,91,3,code/string,,Order history & management
+src/lib/pro-offer-catalog.ts,92,3,code/string,,Customer management
+src/lib/pro-offer-catalog.ts,93,3,code/string,,End-of-day reports
+src/lib/pro-offer-catalog.ts,94,3,code/string,,Custom payment gateways
+src/lib/pro-offer-catalog.ts,95,3,code/string,,Priority support
+src/lib/pro-offer-catalog.ts,200,23,code/string,,/pro/checkout?
+src/lib/pro-offer-catalog.ts,227,20,error/status,,"Pro offer catalog missing plans from Medusa, serving committed fallback prices:"
+src/lib/pro-offer-catalog.ts,327,33,code/string,,/year or
+src/lib/pro-offer-catalog.ts,327,67,code/string,,lifetime. No per-register fees.
+src/lib/pro-offer-catalog.ts,335,33,code/string,,/yr or
+src/lib/sinks/discord-sink.ts,16,16,code/string,,WCPOS Logger
+src/lib/sinks/discord-sink.ts,29,26,error/status,,error
+src/lib/sinks/email-sink.ts,59,21,code/string,,[FATAL] wcpos-com:
+src/lib/sinks/email-sink.ts,60,18,code/string,,"<div style=""font-family: system-ui, -apple-system, sans-serif; max-width: 600px; color: #111;""> <h2 style=""margin: 0 0 8px; color: #b91c1c;"">"
+src/lib/sinks/email-sink.ts,61,76,code/string,,"</h2> <p style=""white-space: pre-wrap; font-size: 15px;"">"
+src/lib/sinks/email-sink.ts,65,15,code/string,,"<pre style=""background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 6px; padding: 12px; font-size: 13px; white-space: pre-wrap; word-break: break-word; color: #374151;"">"
+src/lib/sinks/email-sink.ts,67,9,code/string,,"<p style=""color: #9ca3af; font-size: 12px;"">"
+src/lib/sinks/email-sink.ts,68,95,code/string,,· wcpos-com</p> </div>
+src/lib/sinks/sentry-sink.ts,19,26,error/status,,error
+src/lib/sinks/sentry-sink.ts,47,19,error/status,,error
+src/lib/sinks/sentry-sink.ts,55,53,error/status,,error
+src/lib/sinks/sentry-sink.ts,63,53,error/status,,error
+src/lib/sinks/stringify-log-part.ts,19,11,code/string,,Caused by:
+src/lib/sinks/stringify-log-part.ts,23,20,code/string,,Caused by:
+src/lib/support/rate-limit.ts,11,64,code/string,,10 m
+src/lib/support/rate-limit.ts,20,18,code/string,,support/rate-limit fail-open
+src/lib/support/rate-limit.ts,36,18,code/string,,support/rate-limit fail-open
+src/lib/use-prefers-reduced-motion.ts,1,1,code/string,,use client
+src/lib/use-prefers-reduced-motion.ts,17,37,code/string,,(prefers-reduced-motion: reduce)
+src/lib/use-prefers-reduced-motion.ts,23,25,code/string,,(prefers-reduced-motion: reduce)
+src/lib/utils.ts,34,28,code/string,,just now
+src/lib/utils.ts,35,57,code/string,,m ago
+src/lib/utils.ts,36,60,code/string,,h ago
+src/lib/utils.ts,37,62,code/string,,d ago
+src/services/core/analytics/posthog-service.ts,62,57,code/string,,/flags?v=2
+src/services/core/business/electron-service.ts,34,34,code/string,,Electron service not yet implemented
+src/services/core/business/electron-service.ts,41,34,code/string,,Electron service not yet implemented
+src/services/core/business/release-delivery.ts,26,13,code/string,,account
+src/services/core/external/github-asset.ts,38,21,code/string,,GitHub token unavailable for release asset fetch. asset=
+src/services/core/external/github-asset.ts,70,25,error/status,,Release asset attempt failed (
+src/services/core/external/github-asset.ts,70,70,code/string,,). status=
+src/services/core/external/github-asset.ts,80,23,error/status,,Release asset attempt error (
+src/services/core/external/github-asset.ts,80,67,code/string,,). asset=
+src/services/core/external/github-asset.ts,80,96,error/status,,error=
+src/services/core/external/github-auth.ts,28,21,code/string,,"GitHub App credentials not configured, using unauthenticated Octokit"
+src/services/core/external/github-auth.ts,49,22,error/status,,Failed to get GitHub installation token:
+src/services/core/external/github-client.ts,24,3,code/string,,use cache
+src/services/core/external/github-client.ts,36,3,code/string,,use cache
+src/services/core/external/github-client.ts,55,22,error/status,,Failed to fetch latest release for
+src/services/core/external/github-client.ts,79,22,error/status,,Failed to fetch release
+src/services/core/external/github-client.ts,93,22,error/status,,Failed to fetch releases for
+src/services/core/external/github-roadmap.ts,11,90,code/string,,roadmap
+src/services/core/external/github-roadmap.ts,19,14,code/string,,planned
+src/services/core/external/github-roadmap.ts,21,11,code/string,,done
+src/services/core/external/github-roadmap.ts,27,29,code/string,,"query($org: String!, $number: Int!, $cursor: String) { organization(login: $org) { projectV2(number: $number) { items(first: 100, after: $cursor) { pageInfo { hasNextPage endCursor } nodes { fieldValueByName(name: ""Status"") { ... on ProjectV2ItemFieldSingleSelectValue { name } } content { __typename ... on Issue { id title bodyText state number url labels(first: 10) { nodes { name } } milestone { title description dueOn state } repository { name } parent { id } subIssuesSummary { total completed } } } } } } } }"
+src/services/core/external/github-roadmap.ts,167,75,code/string,,done
+src/services/core/external/github-roadmap.ts,198,21,code/string,,"GITHUB_PROJECT_NUMBER not set, roadmap will be empty"
+src/services/core/external/github-roadmap.ts,226,22,error/status,,Failed to fetch roadmap data:
+src/services/core/external/keygen-base-url.ts,13,21,code/string,,KEYGEN_HOST must be a hostname only
+src/services/core/external/keygen-base-url.ts,25,21,code/string,,KEYGEN_HOST must be a hostname only
+src/services/core/external/keygen-base-url.ts,33,21,code/string,,KEYGEN_HOST must not include a port in production
+src/services/core/external/keygen-base-url.ts,37,21,code/string,,KEYGEN_HOST must be a trusted Keygen host
+src/services/core/external/license-client.ts,50,7,code/string,,KEYGEN_API_TOKEN is not configured; authenticated Keygen operations (machine management) are unavailable.
+src/services/core/external/license-client.ts,57,19,code/string,,application/vnd.api+json
+src/services/core/external/license-client.ts,58,11,code/string,,application/vnd.api+json
+src/services/core/external/license-client.ts,207,7,error/status,,Keygen getLicense failed (
+src/services/core/external/license-client.ts,237,7,error/status,,Keygen getLicenseMachines failed (
+src/services/core/external/license-client.ts,275,24,error/status,,activateMachine failed (
+src/services/core/external/license-client.ts,330,15,code/string,,licenses
+src/services/core/external/license-client.ts,338,21,error/status,,Keygen updateLicenseMetadata failed (
+src/services/core/external/license-client.ts,360,14,error/status,,License key not found
+src/services/core/external/license-client.ts,368,14,error/status,,Validation failed
+src/services/core/external/license-client.ts,386,25,code/string,,Machine list unavailable for
+src/services/core/external/license-client.ts,386,67,code/string,,; per-instance activation state may be incomplete:
+src/services/core/external/license-client.ts,392,13,code/string,,active
+src/services/core/external/license-client.ts,396,18,code/string,,WCPOS Pro
+src/services/core/external/license-client.ts,409,15,code/string,,expired
+src/services/core/external/license-client.ts,413,20,code/string,,WCPOS Pro
+src/services/core/external/license-client.ts,418,20,code/string,,WCPOS Pro
+src/services/core/external/license-client.ts,423,20,code/string,,WCPOS Pro
+src/services/core/external/license-client.ts,428,20,code/string,,WCPOS Pro
+src/services/core/external/medusa-client.ts,72,22,error/status,,Medusa API error
+src/services/core/external/medusa-client.ts,73,21,error/status,,Medusa API error:
+src/services/core/external/medusa-client.ts,97,7,code/string,,/store/products?fields=*variants.prices
+src/services/core/external/medusa-client.ts,103,22,error/status,,Failed to fetch products:
+src/services/core/external/medusa-client.ts,114,7,code/string,,/store/products?fields=*variants.prices
+src/services/core/external/medusa-client.ts,118,22,error/status,,Failed to fetch WCPOS Pro products:
+src/services/core/external/medusa-client.ts,131,7,code/string,,/store/products?handle=
+src/services/core/external/medusa-client.ts,131,39,code/string,,&fields=*variants.prices
+src/services/core/external/medusa-client.ts,136,22,error/status,,Failed to fetch product
+src/services/core/external/medusa-client.ts,149,28,code/string,,?fields=*variants.prices
+src/services/core/external/medusa-client.ts,154,22,error/status,,Failed to fetch product
+src/services/core/external/medusa-client.ts,167,22,error/status,,Failed to fetch regions:
+src/services/core/external/medusa-client.ts,195,7,code/string,,"/store/regions?fields=id,name,*payment_providers"
+src/services/core/external/medusa-client.ts,223,23,code/string,,No enabled payment providers reported by /store/regions; skipping method filtering
+src/services/core/external/medusa-client.ts,229,22,error/status,,Failed to fetch region payment providers:
+src/services/core/external/medusa-client.ts,279,22,error/status,,Failed to create cart:
+src/services/core/external/medusa-client.ts,292,22,error/status,,Failed to get cart
+src/services/core/external/medusa-client.ts,314,22,error/status,,Failed to add line item:
+src/services/core/external/medusa-client.ts,333,22,error/status,,Failed to update cart:
+src/services/core/external/medusa-client.ts,384,22,error/status,,Failed to create payment collection:
+src/services/core/external/medusa-client.ts,432,22,error/status,,Failed to create payment session:
+src/services/core/external/medusa-client.ts,459,22,error/status,,Failed to create customer session:
+src/services/core/external/medusa-client.ts,484,22,error/status,,Failed to capture PayPal order:
+src/services/core/external/medusa-client.ts,502,22,error/status,,Failed to complete cart:
+src/services/core/external/versions-client.ts,23,9,code/string,,WordPress Plugin (Free)
+src/services/core/external/versions-client.ts,24,8,code/string,,WordPress Plugin (Pro)
+src/services/core/external/versions-client.ts,25,12,code/string,,Desktop App
+src/services/core/external/versions-client.ts,26,9,code/string,,POS App (React Native Core)
+src/services/core/external/versions-client.ts,27,8,code/string,,iOS App
+src/services/core/external/versions-client.ts,28,12,code/string,,Android App
+src/services/core/external/versions-client.ts,42,3,code/string,,use cache
+src/services/core/external/versions-client.ts,51,23,code/string,,Versions feed responded
+src/services/core/external/versions-client.ts,65,3,code/string,,use cache
+src/services/core/external/versions-client.ts,71,22,error/status,,Failed to fetch product versions:
