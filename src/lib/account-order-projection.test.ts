@@ -46,6 +46,7 @@ function makeLicense(overrides: Partial<LicenseDetail> = {}): LicenseDetail {
     status: 'active',
     expiry: '2027-02-01T00:00:00Z',
     maxMachines: 1,
+    activationCount: 0,
     machines: [],
     metadata: {},
     policyId: 'pol_yearly',

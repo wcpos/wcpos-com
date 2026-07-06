@@ -51,7 +51,11 @@ async function enrichWithMachineList(base: LicenseDetail): Promise<LicenseDetail
   }
   try {
     const machines = await licenseClient.getLicenseMachines(base.id)
-    return { ...base, machines, activationCount: machines.length }
+    // Keep the authoritative `activationCount` from validate-key. `machines` is
+    // only the detail list, and getLicenseMachines returns a single (paginated)
+    // page — using its length as the count could UNDERCOUNT a license with more
+    // machines than one page. The list is for display/deactivation only.
+    return { ...base, machines }
   } catch (error) {
     licenseLogger.warn`Machine list unavailable for license ${base.id}; showing count only: ${error}`
     return base

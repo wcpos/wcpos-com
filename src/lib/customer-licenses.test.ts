@@ -34,8 +34,7 @@ vi.mock('@/services/core/external/license-client', () => {
         mockValidateLicenseKey(...args),
       getLicenseMachines: (...args: unknown[]) =>
         mockGetLicenseMachines(...args),
-      canManageMachines: (...args: unknown[]) =>
-        mockCanManageMachines(...args),
+      canManageMachines: () => mockCanManageMachines(),
     },
   }
 })
@@ -394,7 +393,7 @@ describe('getResolvedCustomerLicenses', () => {
     expect(mockGetLicenseWithMachines).not.toHaveBeenCalled()
   })
 
-  it('enriches with the machine detail list when a Keygen token is configured', async () => {
+  it('enriches with the machine detail list but PRESERVES the validate-key count (pagination-safe)', async () => {
     mockGetCustomer.mockResolvedValueOnce({ id: 'cust_1' })
     mockGetAllOrders.mockResolvedValueOnce([
       {
@@ -424,8 +423,10 @@ describe('getResolvedCustomerLicenses', () => {
         key: 'WCPOS-LIVE-3333',
         status: 'active',
         expiry: null,
-        maxMachines: 2,
-        activationCount: 9, // stale count from validate-key; overridden by the real list
+        maxMachines: 9,
+        // Authoritative total from validate-key. The machine-list call below
+        // returns only a partial page (1 of 9) — the count must NOT regress to 1.
+        activationCount: 9,
         metadata: {},
         policyId: 'policy_1',
         createdAt: '2026-01-01T00:00:00Z',
@@ -444,9 +445,10 @@ describe('getResolvedCustomerLicenses', () => {
     const result = await getResolvedCustomerLicenses()
 
     expect(mockGetLicenseMachines).toHaveBeenCalledWith('lic_live')
+    // Detail list from the (partial) page...
     expect(result.licenses[0].machines).toHaveLength(1)
-    // count reconciles to the authoritative list length
-    expect(result.licenses[0].activationCount).toBe(1)
+    // ...but the authoritative validate-key count is preserved, not overwritten.
+    expect(result.licenses[0].activationCount).toBe(9)
   })
 
   it('enriches a KEY-ONLY reference using the canonical id from validate-key', async () => {
