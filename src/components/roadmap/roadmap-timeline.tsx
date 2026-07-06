@@ -1,18 +1,66 @@
+'use client'
+
+import * as React from 'react'
+import {
+  motion,
+  useScroll,
+  useTransform,
+  useMotionValueEvent,
+} from 'motion/react'
 import type { RoadmapData, RoadmapItem, RoadmapMilestone } from '@/types/roadmap'
+import { usePrefersReducedMotion } from '@/lib/use-prefers-reduced-motion'
 import { BugFixList } from './bug-fix-list'
 import styles from './timeline.module.css'
 
 /**
  * RoadmapTimeline — the "release train": one continuous vertical spine where
  * time is the hierarchy. The active release sits on a pulsing red node,
- * upcoming work rides a dashed rail below it, shipped releases fade out at
- * the bottom. Milestones and items come straight from the GitHub project
- * board (see services/core/external/github-roadmap.ts for the bucketing).
+ * upcoming work rides below it, shipped releases fade out at the bottom.
+ * Milestones and items come straight from the GitHub project board (see
+ * services/core/external/github-roadmap.ts for the bucketing).
+ *
+ * Each phase group (Now / Next / Shipped) draws its own rail by scroll (ADR
+ * 0013: movement that means progress) — a tone-coloured fill grows down a
+ * muted track as the reader moves through the group and a glowing tip rides
+ * its end, igniting each milestone node as it passes. Same mechanism as the
+ * about-page StoryTimeline and downloads GetStartedSteps, kept per-group so
+ * the three phase colours (red / slate / emerald) stay distinct. Reduced
+ * motion renders a static, fully-drawn rail with solid nodes.
  */
 
 const PROJECT_BOARD_URL = 'https://github.com/orgs/wcpos/projects/4'
 
 type Tone = 'now' | 'next' | 'shipped'
+
+/**
+ * Per-phase rail colours, shared by the scroll-drawn fill, the traveling tip,
+ * and the node it ignites so the three can never drift apart. `glow` is the
+ * literal colour the tip's halo mixes with transparent (motion sets box-shadow
+ * in JS, where Tailwind classes don't reach).
+ */
+const TONE: Record<Tone, { fill: string; ring: string; glow: string }> = {
+  now: {
+    fill: 'bg-wcpos-red',
+    ring: 'border-wcpos-red',
+    glow: 'hsl(var(--wcpos-red))',
+  },
+  next: {
+    fill: 'bg-slate-400 dark:bg-slate-500',
+    ring: 'border-slate-400 dark:border-slate-500',
+    glow: '#94a3b8',
+  },
+  shipped: {
+    fill: 'bg-emerald-500',
+    ring: 'border-emerald-500',
+    glow: '#10b981',
+  },
+}
+
+const LABEL_TONE: Record<Tone, string> = {
+  now: 'bg-wcpos-red text-white',
+  next: 'border border-slate-300 text-muted-foreground dark:border-slate-600',
+  shipped: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400',
+}
 
 function fmtDue(dueOn: string | null): string | null {
   if (!dueOn) return null
@@ -102,18 +150,69 @@ function FeatureRow({ item }: { item: RoadmapItem }) {
   )
 }
 
-const NODE_TONE: Record<Tone, string> = {
-  now: `border-wcpos-red bg-wcpos-red ${styles.pulse}`,
-  next: 'border-slate-400 bg-background dark:border-slate-500',
-  shipped: 'border-emerald-500 bg-emerald-500',
+/**
+ * The node on the rail. When animated it starts as a hollow ring and a
+ * tone-coloured fill springs in the moment the traveling tip reaches it
+ * (`active`); scrolling back up retracts it. The "now" node pulses once lit.
+ * Static (reduced-motion) renders a solid node.
+ */
+function TimelineNode({
+  tone,
+  animate,
+  active,
+  nodeRef,
+}: {
+  tone: Tone
+  animate: boolean
+  active: boolean
+  nodeRef: (el: HTMLSpanElement | null) => void
+}) {
+  // Centered on the w-0.5 rail at the section's left edge: content sits at
+  // pl-8 (32px) / sm:pl-10 (40px), so a 16px node's center lands on the 2px
+  // track (center x≈1px) at these offsets.
+  const pos = 'absolute -left-[39px] top-2 size-4 sm:-left-[47px]'
+
+  if (!animate) {
+    return (
+      <span
+        aria-hidden
+        ref={nodeRef}
+        className={`${pos} rounded-full border-2 ${TONE[tone].ring} ${TONE[tone].fill}`}
+      />
+    )
+  }
+
+  return (
+    <span aria-hidden ref={nodeRef} className={pos}>
+      {/* hollow ring, waiting for the tip to arrive */}
+      <span
+        className={`absolute inset-0 rounded-full border-2 bg-background ${TONE[tone].ring}`}
+      />
+      {/* fill that pops in when the traveling tip passes this point */}
+      <motion.span
+        className={`absolute inset-0 rounded-full ${TONE[tone].fill} ${
+          tone === 'now' ? styles.pulse : ''
+        }`}
+        initial={false}
+        animate={{ scale: active ? 1 : 0, opacity: active ? 1 : 0 }}
+        transition={{ type: 'spring', stiffness: 420, damping: 22 }}
+      />
+    </span>
+  )
 }
 
 function TimelineMilestone({
   milestone,
   tone,
+  animate,
+  active,
+  nodeRef,
 }: {
   milestone: RoadmapMilestone
   tone: Tone
+  animate: boolean
+  active: boolean
+  nodeRef: (el: HTMLSpanElement | null) => void
 }) {
   const pct =
     milestone.progress.total > 0
@@ -123,11 +222,7 @@ function TimelineMilestone({
 
   return (
     <div className={tone === 'shipped' ? 'relative pb-14 opacity-60' : 'relative pb-14'}>
-      {/* Node on the rail */}
-      <span
-        className={`absolute -left-[38px] top-2 size-4 rounded-full border-2 sm:-left-[46px] ${NODE_TONE[tone]}`}
-        aria-hidden
-      />
+      <TimelineNode tone={tone} animate={animate} active={active} nodeRef={nodeRef} />
 
       {/* Ghost numeral behind the heading — version-style titles only */}
       {milestone.title.length <= 8 && (
@@ -177,19 +272,12 @@ function TimelineMilestone({
   )
 }
 
-const RAIL_TONE: Record<Tone, string> = {
-  now: 'border-wcpos-red/70',
-  next: 'border-dashed border-slate-300 dark:border-slate-700',
-  shipped: 'border-slate-200 dark:border-slate-800',
-}
-
-const LABEL_TONE: Record<Tone, string> = {
-  now: 'bg-wcpos-red text-white',
-  next: 'border border-slate-300 text-muted-foreground dark:border-slate-600',
-  shipped: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400',
-}
-
-function RailGroup({
+/**
+ * One phase group — its own scroll-drawn rail. Split from the emptiness check
+ * so the hooks (useScroll et al.) always run against a mounted section rather
+ * than a null target when a bucket is empty.
+ */
+function RailGroupInner({
   label,
   milestones,
   tone,
@@ -198,9 +286,101 @@ function RailGroup({
   milestones: RoadmapMilestone[]
   tone: Tone
 }) {
-  if (milestones.length === 0) return null
+  const sectionRef = React.useRef<HTMLElement>(null)
+  const nodeRefs = React.useRef<(HTMLSpanElement | null)[]>([])
+  const reducedMotion = usePrefersReducedMotion()
+
+  // Each node's fractional position down the section, measured so ignition
+  // coincides with the tip physically crossing it (milestone bodies vary in
+  // height, so index-based guesses drift).
+  const [thresholds, setThresholds] = React.useState<number[] | null>(null)
+  const [reached, setReached] = React.useState(0)
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start 0.78', 'end 0.6'],
+  })
+  const tipTop = useTransform(scrollYProgress, (v) => `${v * 100}%`)
+
+  const measure = React.useCallback(() => {
+    const section = sectionRef.current
+    if (!section || section.offsetHeight === 0) return
+    const next = nodeRefs.current.slice(0, milestones.length).map((el) => {
+      if (!el) return 1
+      // Walk offsetTop up to the section instead of using bounding rects:
+      // offset coordinates ignore transforms, so the entrance translateY on
+      // the .rise wrapper (still applied when this runs on mount) can't bias
+      // the thresholds and make every node ignite late.
+      let top = el.offsetTop + el.offsetHeight / 2
+      let parent = el.offsetParent as HTMLElement | null
+      while (parent && parent !== section) {
+        top += parent.offsetTop
+        parent = parent.offsetParent as HTMLElement | null
+      }
+      return top / section.offsetHeight
+    })
+    setThresholds((prev) =>
+      prev && prev.length === next.length && prev.every((t, i) => t === next[i])
+        ? prev
+        : next
+    )
+    // Seed the pass count from the current scroll position so nodes the tip
+    // already sits below are lit without waiting for a scroll event.
+    const v = scrollYProgress.get()
+    setReached(next.filter((t) => v >= t).length)
+  }, [scrollYProgress, milestones.length])
+
+  React.useEffect(() => {
+    if (reducedMotion) return
+    measure()
+    if (typeof ResizeObserver === 'undefined' || !sectionRef.current) return
+    const ro = new ResizeObserver(measure)
+    ro.observe(sectionRef.current)
+    return () => ro.disconnect()
+  }, [measure, reducedMotion])
+
+  // How many nodes the tip has passed — bidirectional, so scrolling back up
+  // retracts the fill and un-lights nodes in step with it.
+  const syncReached = React.useCallback(
+    (v: number) => {
+      if (!thresholds) return
+      const n = thresholds.filter((t) => v >= t).length
+      setReached((prev) => (prev === n ? prev : n))
+    },
+    [thresholds]
+  )
+  useMotionValueEvent(scrollYProgress, 'change', syncReached)
+
   return (
-    <section className={`relative border-l-2 pl-8 sm:pl-10 ${RAIL_TONE[tone]}`}>
+    <section ref={sectionRef} className="relative pl-8 sm:pl-10">
+      {/* rail: muted track + scroll-drawn tone fill + traveling tip */}
+      {reducedMotion ? (
+        <span
+          aria-hidden
+          className={`absolute bottom-0 left-0 top-0 w-0.5 rounded ${TONE[tone].fill}`}
+        />
+      ) : (
+        <>
+          <span
+            aria-hidden
+            className="absolute bottom-0 left-0 top-0 w-0.5 rounded bg-slate-200 dark:bg-slate-800"
+          />
+          <motion.span
+            aria-hidden
+            className={`absolute bottom-0 left-0 top-0 w-0.5 origin-top rounded ${TONE[tone].fill}`}
+            style={{ scaleY: scrollYProgress }}
+          />
+          <motion.span
+            aria-hidden
+            className={`absolute -left-[3px] size-2 rounded-full ${TONE[tone].fill}`}
+            style={{
+              top: tipTop,
+              boxShadow: `0 0 10px 2px color-mix(in srgb, ${TONE[tone].glow} 60%, transparent)`,
+            }}
+          />
+        </>
+      )}
+
       <div className="pb-8">
         <span
           className={`inline-block rounded-full px-3 py-1 font-mono text-[11px] font-semibold uppercase tracking-[0.2em] ${LABEL_TONE[tone]}`}
@@ -208,13 +388,35 @@ function RailGroup({
           {label}
         </span>
       </div>
+
       {milestones.map((m, i) => (
-        <div key={m.title} className={styles.rise} style={{ animationDelay: `${i * 90}ms` }}>
-          <TimelineMilestone milestone={m} tone={tone} />
+        <div
+          key={m.title}
+          className={styles.rise}
+          style={{ animationDelay: `${i * 90}ms` }}
+        >
+          <TimelineMilestone
+            milestone={m}
+            tone={tone}
+            animate={!reducedMotion}
+            active={i < reached}
+            nodeRef={(el) => {
+              nodeRefs.current[i] = el
+            }}
+          />
         </div>
       ))}
     </section>
   )
+}
+
+function RailGroup(props: {
+  label: string
+  milestones: RoadmapMilestone[]
+  tone: Tone
+}) {
+  if (props.milestones.length === 0) return null
+  return <RailGroupInner {...props} />
 }
 
 export function BoardLinkChip() {
