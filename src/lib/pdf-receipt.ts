@@ -3,9 +3,15 @@ import type {
   AccountOrderReceiptFact,
   AccountOrderReceiptProfileFact,
 } from './account-order-projection'
-import type { ReceiptSellerFact } from './receipt-seller'
 import { formatOrderAmount } from './order-display'
 import { formatDateForLocale } from './date-format'
+
+// Seller identity printed in the receipt footer.
+const SELLER_NAME = 'WCPOS'
+const SELLER_WEBSITE = 'wcpos.com'
+const SELLER_EMAIL = 'support@wcpos.com'
+// ABN, e.g. '11 222 333 444'. The ABN footer line is omitted while empty.
+const SELLER_ABN = ''
 
 /**
  * Order receipt PDF.
@@ -179,7 +185,6 @@ function drawRule(page: PDFPage, y: number, fromX = MARGIN, toX = PAGE_WIDTH - M
 
 export async function buildReceiptPdf(
   receipt: AccountOrderReceiptFact,
-  seller: ReceiptSellerFact,
   locale: string = 'en-US'
 ): Promise<Uint8Array> {
   const pdf = await PDFDocument.create()
@@ -191,8 +196,8 @@ export async function buildReceiptPdf(
 
   // ── Header ────────────────────────────────────────────────────────────
   let y = PAGE_HEIGHT - 78
-  drawLeft(page, 'WCPOS', MARGIN, y, { font: bold, size: 22 })
-  drawLeft(page, seller.website, MARGIN, y - 16, { font: regular, size: 9, color: MUTED })
+  drawLeft(page, SELLER_NAME, MARGIN, y, { font: bold, size: 22 })
+  drawLeft(page, SELLER_WEBSITE, MARGIN, y - 16, { font: regular, size: 9, color: MUTED })
 
   drawRight(page, 'Receipt', rightEdge, y, { font: bold, size: 22 })
   drawRight(page, `Order #${normalize(receipt.displayId) || '--'}`, rightEdge, y - 16, {
@@ -366,10 +371,12 @@ export async function buildReceiptPdf(
 
   // ── Footer ────────────────────────────────────────────────────────────
   const footerLines: Array<{ text: string; style: TextStyle }> = []
-  const sellerIdentity = seller.abn ? `${seller.name} · ABN ${seller.abn}` : seller.name
+  const sellerIdentity = SELLER_ABN
+    ? `${SELLER_NAME} · ABN ${SELLER_ABN}`
+    : `${SELLER_NAME} · ${SELLER_WEBSITE}`
   footerLines.push({ text: sellerIdentity, style: { font: bold, size: 9 } })
   footerLines.push({
-    text: `${seller.name} is not registered for GST in Australia — no GST has been charged and this document is not a tax invoice.`,
+    text: `${SELLER_NAME} is not registered for GST in Australia — no GST has been charged and this document is not a tax invoice.`,
     style: { font: regular, size: 9, color: MUTED },
   })
   footerLines.push({
@@ -377,7 +384,7 @@ export async function buildReceiptPdf(
     style: { font: regular, size: 9, color: MUTED },
   })
   footerLines.push({
-    text: `Questions? ${seller.website}/discord · ${seller.email}`,
+    text: `Questions? ${SELLER_WEBSITE}/discord · ${SELLER_EMAIL}`,
     style: { font: regular, size: 9, color: MUTED },
   })
 

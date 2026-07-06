@@ -2,7 +2,6 @@ import { describe, expect, it } from 'vitest'
 import { inflateSync } from 'zlib'
 import { buildReceiptPdf } from './pdf-receipt'
 import type { AccountOrderReceiptFact } from './account-order-projection'
-import type { ReceiptSellerFact } from './receipt-seller'
 
 const baseReceipt: AccountOrderReceiptFact = {
   displayId: 1001,
@@ -35,13 +34,6 @@ const baseReceipt: AccountOrderReceiptFact = {
   ],
 }
 
-const seller: ReceiptSellerFact = {
-  name: 'Kilbot',
-  abn: '11 222 333 444',
-  website: 'wcpos.com',
-  email: 'support@wcpos.com',
-}
-
 /** Decoded text-drawing stream of the PDF's single page. */
 async function pageStream(pdf: Uint8Array): Promise<string> {
   const raw = Buffer.from(pdf).toString('latin1')
@@ -57,7 +49,7 @@ function hex(text: string): string {
 
 describe('buildReceiptPdf', () => {
   it('builds a PDF document', async () => {
-    const pdf = await buildReceiptPdf(baseReceipt, seller)
+    const pdf = await buildReceiptPdf(baseReceipt)
     const bytes = Buffer.from(pdf)
 
     expect(bytes.subarray(0, 4).toString('utf8')).toBe('%PDF')
@@ -65,29 +57,20 @@ describe('buildReceiptPdf', () => {
   })
 
   it('titles the document Receipt, never Tax Invoice / Tax Receipt', async () => {
-    const stream = await pageStream(await buildReceiptPdf(baseReceipt, seller))
+    const stream = await pageStream(await buildReceiptPdf(baseReceipt))
 
     expect(stream).toContain(hex('Receipt'))
     expect(stream).not.toContain(hex('Tax Receipt'))
     expect(stream).not.toContain(hex('Tax Invoice'))
   })
 
-  it('prints seller identity, ABN and the GST statement', async () => {
-    const stream = await pageStream(await buildReceiptPdf(baseReceipt, seller))
+  it('prints the seller identity and the GST statement', async () => {
+    const stream = await pageStream(await buildReceiptPdf(baseReceipt))
 
-    expect(stream).toContain(hex('Kilbot · ABN 11 222 333 444'))
+    expect(stream).toContain(hex('WCPOS'))
     expect(stream).toContain(hex('not registered for GST in Australia'))
     expect(stream).toContain(hex('proof of purchase for your tax records'))
     expect(stream).toContain(hex('No tax has been added to this order.'))
-  })
-
-  it('omits the ABN line but keeps the GST statement when no ABN is configured', async () => {
-    const stream = await pageStream(
-      await buildReceiptPdf(baseReceipt, { ...seller, abn: null })
-    )
-
-    expect(stream).not.toContain(hex('ABN'))
-    expect(stream).toContain(hex('not registered for GST in Australia'))
   })
 
   it('renders billing name, details and tax number when provided', async () => {
@@ -105,8 +88,7 @@ describe('buildReceiptPdf', () => {
             postalCode: '78701',
             taxNumber: '12-3456789',
           },
-        },
-        seller
+        }
       )
     )
 
@@ -118,13 +100,13 @@ describe('buildReceiptPdf', () => {
 
   it('flags the WooCommerce order number on migrated orders', async () => {
     const withLegacy = await pageStream(
-      await buildReceiptPdf({ ...baseReceipt, legacyDisplayId: 5396 }, seller)
+      await buildReceiptPdf({ ...baseReceipt, legacyDisplayId: 5396 })
     )
     expect(withLegacy).toContain(hex('#5396'))
     expect(withLegacy).toContain(hex('previous'))
 
     const withoutLegacy = await pageStream(
-      await buildReceiptPdf(baseReceipt, seller)
+      await buildReceiptPdf(baseReceipt)
     )
     expect(withoutLegacy).not.toContain(hex('previous'))
   })
@@ -132,13 +114,12 @@ describe('buildReceiptPdf', () => {
   it('renders a Tax totals row only when tax is nonzero', async () => {
     // "Tax" (capital T) only appears as the totals label — the base receipt
     // has no tax number and the fixed copy uses lowercase "tax".
-    const zeroTax = await pageStream(await buildReceiptPdf(baseReceipt, seller))
+    const zeroTax = await pageStream(await buildReceiptPdf(baseReceipt))
     expect(zeroTax).not.toContain(hex('Tax'))
 
     const withTax = await pageStream(
       await buildReceiptPdf(
-        { ...baseReceipt, totals: { subtotal: 120, tax: 9, total: 129 } },
-        seller
+        { ...baseReceipt, totals: { subtotal: 120, tax: 9, total: 129 } }
       )
     )
     expect(withTax).toContain(hex('Tax'))
@@ -156,9 +137,9 @@ describe('buildReceiptPdf', () => {
       ],
     }
 
-    await expect(
-      buildReceiptPdf(unicodeReceipt, seller)
-    ).resolves.toBeInstanceOf(Uint8Array)
+    await expect(buildReceiptPdf(unicodeReceipt)).resolves.toBeInstanceOf(
+      Uint8Array
+    )
   })
 
   it('does not throw when order data includes unexpected values', async () => {
@@ -183,8 +164,8 @@ describe('buildReceiptPdf', () => {
       },
     }
 
-    await expect(
-      buildReceiptPdf(malformedReceipt, seller)
-    ).resolves.toBeInstanceOf(Uint8Array)
+    await expect(buildReceiptPdf(malformedReceipt)).resolves.toBeInstanceOf(
+      Uint8Array
+    )
   })
 })

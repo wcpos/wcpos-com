@@ -3,7 +3,6 @@ import { getOrderById } from '@/lib/customer-orders'
 import { getCustomer } from '@/lib/medusa-auth'
 import { projectAccountOrderReceipt } from '@/lib/account-order-projection'
 import { buildReceiptPdf } from '@/lib/pdf-receipt'
-import { getReceiptSeller } from '@/lib/receipt-seller'
 import { projectAccountProfileForReceipt } from '@/lib/customer-profile-metadata'
 import { apiLogger } from '@/lib/logger'
 
@@ -45,7 +44,7 @@ export async function GET(
     const profile = projectAccountProfileForReceipt(customer?.metadata)
     const receipt = projectAccountOrderReceipt(order, profile, customer)
     const locale = resolveLocale(request)
-    const pdf = await buildReceiptPdf(receipt, getReceiptSeller(), locale)
+    const pdf = await buildReceiptPdf(receipt, locale)
     const pdfBuffer = Buffer.from(pdf)
     const filename = `receipt-${order.display_id}.pdf`
 
