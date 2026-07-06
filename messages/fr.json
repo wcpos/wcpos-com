@@ -537,6 +537,39 @@
       "githubDescription": "Utilisé pour la connexion en un clic.",
       "emailProvider": "E-mail et mot de passe",
       "emailDescription": "Vous vous connectez avec votre adresse e-mail."
+    },
+    "receiptPdf": {
+      "title": "Reçu",
+      "orderNumber": "Commande n° {id}",
+      "billedTo": "FACTURÉ À",
+      "details": "DÉTAILS",
+      "noEmailProvided": "Aucun e-mail fourni",
+      "taxId": "ID fiscal : {taxNumber}",
+      "orderDate": "Date de commande",
+      "payment": "Paiement",
+      "currency": "Devise",
+      "legacyNotice": "Cette commande était initialement le n° {legacyDisplayId} dans notre ancien système de boutique. Les anciens e-mails, factures et dossiers peuvent faire référence à ce numéro.",
+      "description": "DESCRIPTION",
+      "quantity": "QTÉ",
+      "unitPrice": "PRIX UNITAIRE",
+      "amount": "MONTANT",
+      "untitledItem": "Article sans titre",
+      "subtotal": "Sous-total",
+      "tax": "Taxe",
+      "total": "Total",
+      "noTaxAdded": "Aucune taxe n’a été ajoutée à cette commande.",
+      "sellerIdentityWithAbn": "{sellerName} · ABN {sellerAbn}",
+      "sellerIdentity": "{sellerName}",
+      "gstNotice": "{sellerName} n’est pas enregistré à la GST en Australie — aucune GST n’a été facturée et ce document n’est pas une facture fiscale.",
+      "proofOfPurchase": "Ce reçu peut servir de preuve d’achat pour vos dossiers fiscaux.",
+      "questions": "Questions ? {website} · {email}",
+      "generated": "Généré le {date}",
+      "paymentStatus": {
+        "paid": "Payé",
+        "refunded": "Remboursé",
+        "partiallyRefunded": "Partiellement remboursé",
+        "canceled": "Annulé"
+      }
     }
   },
   "metadata": {

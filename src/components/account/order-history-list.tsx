@@ -114,7 +114,8 @@ export function OrderHistoryList({ orders, locale }: OrderHistoryListProps) {
                   <p className="font-medium tabular-nums">
                     {formatOrderAmount(
                       order.total.amount,
-                      order.total.currencyCode
+                      order.total.currencyCode,
+                      locale
                     )}
                   </p>
                   <p className="text-sm text-muted-foreground">

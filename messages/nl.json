@@ -537,6 +537,39 @@
       "githubDescription": "Gebruikt voor aanmelden met één klik.",
       "emailProvider": "E-mail en wachtwoord",
       "emailDescription": "Je meldt je aan met je e-mailadres."
+    },
+    "receiptPdf": {
+      "title": "Bon",
+      "orderNumber": "Bestelling #{id}",
+      "billedTo": "GEFACTUREERD AAN",
+      "details": "DETAILS",
+      "noEmailProvided": "Geen e-mail opgegeven",
+      "taxId": "Fiscaal ID: {taxNumber}",
+      "orderDate": "Besteldatum",
+      "payment": "Betaling",
+      "currency": "Valuta",
+      "legacyNotice": "Deze bestelling was oorspronkelijk #{legacyDisplayId} in ons vorige winkelsysteem. Oudere e-mails, facturen en administratie kunnen naar dat nummer verwijzen.",
+      "description": "OMSCHRIJVING",
+      "quantity": "AANT.",
+      "unitPrice": "STUKPRIJS",
+      "amount": "BEDRAG",
+      "untitledItem": "Naamloos item",
+      "subtotal": "Subtotaal",
+      "tax": "Belasting",
+      "total": "Totaal",
+      "noTaxAdded": "Er is geen belasting aan deze bestelling toegevoegd.",
+      "sellerIdentityWithAbn": "{sellerName} · ABN {sellerAbn}",
+      "sellerIdentity": "{sellerName}",
+      "gstNotice": "{sellerName} is niet geregistreerd voor GST in Australië — er is geen GST berekend en dit document is geen belastingfactuur.",
+      "proofOfPurchase": "Deze bon kan worden gebruikt als aankoopbewijs voor uw belastingadministratie.",
+      "questions": "Vragen? {website} · {email}",
+      "generated": "Gegenereerd op {date}",
+      "paymentStatus": {
+        "paid": "Betaald",
+        "refunded": "Terugbetaald",
+        "partiallyRefunded": "Gedeeltelijk terugbetaald",
+        "canceled": "Geannuleerd"
+      }
     }
   },
   "metadata": {

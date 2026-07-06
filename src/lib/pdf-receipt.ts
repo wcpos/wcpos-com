@@ -64,7 +64,40 @@ function sanitizeTextForFont(font: PDFFont, value: unknown): string {
   return safeText.replace(/\?{2,}/g, '?')
 }
 
-function formatAmount(amount: unknown, currencyCode: unknown): string {
+export interface ReceiptPdfCopy {
+  title: string
+  orderNumber: (id: string) => string
+  billedTo: string
+  details: string
+  noEmailProvided: string
+  taxId: (taxNumber: string) => string
+  orderDate: string
+  payment: string
+  currency: string
+  legacyNotice: (legacyDisplayId: number) => string
+  description: string
+  quantity: string
+  unitPrice: string
+  amount: string
+  untitledItem: string
+  subtotal: string
+  tax: string
+  total: string
+  noTaxAdded: string
+  sellerIdentity: (sellerName: string, sellerAbn: string | null) => string
+  gstNotice: (sellerName: string) => string
+  proofOfPurchase: string
+  questions: (website: string, email: string) => string
+  generated: (date: string) => string
+  paymentStatus: {
+    paid: string
+    refunded: string
+    partiallyRefunded: string
+    canceled: string
+  }
+}
+
+function formatAmount(amount: unknown, currencyCode: unknown, locale: string): string {
   const numericAmount =
     typeof amount === 'number'
       ? amount
@@ -80,33 +113,33 @@ function formatAmount(amount: unknown, currencyCode: unknown): string {
 
   if (/^[A-Z]{3}$/.test(normalizedCurrency)) {
     try {
-      return formatOrderAmount(numericAmount, normalizedCurrency)
+      return formatOrderAmount(numericAmount, normalizedCurrency, locale)
     } catch {
       // fall back below
     }
   }
 
-  return new Intl.NumberFormat('en-US', {
+  return new Intl.NumberFormat(locale, {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   }).format(numericAmount)
 }
 
 /** Human label for Medusa payment_status values. */
-function paymentLabel(status: unknown): string | null {
+function paymentLabel(status: unknown, copy: ReceiptPdfCopy): string | null {
   const normalized = normalize(status).toLowerCase()
   if (!normalized) return null
 
   switch (normalized) {
     case 'captured':
     case 'paid':
-      return 'Paid'
+      return copy.paymentStatus.paid
     case 'refunded':
-      return 'Refunded'
+      return copy.paymentStatus.refunded
     case 'partially_refunded':
-      return 'Partially refunded'
+      return copy.paymentStatus.partiallyRefunded
     case 'canceled':
-      return 'Canceled'
+      return copy.paymentStatus.canceled
     default:
       return normalized.replace(/_/g, ' ').replace(/^./, (c) => c.toUpperCase())
   }
@@ -213,6 +246,7 @@ function drawRule(page: PDFPage, y: number, fromX = MARGIN, toX = PAGE_WIDTH - M
 
 export async function buildReceiptPdf(
   receipt: AccountOrderReceiptFact,
+  copy: ReceiptPdfCopy,
   locale: string = 'en-US'
 ): Promise<Uint8Array> {
   const pdf = await PDFDocument.create()
@@ -227,8 +261,8 @@ export async function buildReceiptPdf(
   drawLeft(page, SELLER_NAME, MARGIN, y, { font: bold, size: 22 })
   drawLeft(page, SELLER_WEBSITE, MARGIN, y - 16, { font: regular, size: 9, color: MUTED })
 
-  drawRight(page, 'Receipt', rightEdge, y, { font: bold, size: 22 })
-  drawRight(page, `Order #${normalize(receipt.displayId) || '--'}`, rightEdge, y - 16, {
+  drawRight(page, copy.title, rightEdge, y, { font: bold, size: 22 })
+  drawRight(page, copy.orderNumber(normalize(receipt.displayId) || '--'), rightEdge, y - 16, {
     font: regular,
     size: 10,
     color: MUTED,
@@ -242,14 +276,14 @@ export async function buildReceiptPdf(
   const detailX = 330
   const columnTop = y
 
-  drawLeft(page, 'BILLED TO', MARGIN, y, { font: bold, size: 8, color: FAINT })
+  drawLeft(page, copy.billedTo, MARGIN, y, { font: bold, size: 8, color: FAINT })
   y -= 16
 
   const billingLines: Array<{ text: string; isName?: boolean }> = []
   const customerName = normalize(receipt.customerName)
   if (customerName) billingLines.push({ text: customerName, isName: true })
   const email = normalize(receipt.customerEmail)
-  billingLines.push({ text: email || 'No email provided', isName: !customerName })
+  billingLines.push({ text: email || copy.noEmailProvided, isName: !customerName })
 
   const addressLine1 = normalize(receipt.billingProfile.addressLine1)
   const addressLine2 = normalize(receipt.billingProfile.addressLine2)
@@ -261,7 +295,7 @@ export async function buildReceiptPdf(
   if (addressLine2) billingLines.push({ text: addressLine2 })
   if (locationLine) billingLines.push({ text: locationLine })
   if (countryCode) billingLines.push({ text: countryCode })
-  if (taxNumber) billingLines.push({ text: `Tax ID: ${taxNumber}` })
+  if (taxNumber) billingLines.push({ text: copy.taxId(taxNumber) })
 
   // Keep billed-to text clear of the DETAILS column that shares these rows.
   const billedToWidth = detailX - MARGIN - 16
@@ -276,14 +310,14 @@ export async function buildReceiptPdf(
   }
 
   let detailY = columnTop
-  drawLeft(page, 'DETAILS', detailX, detailY, { font: bold, size: 8, color: FAINT })
+  drawLeft(page, copy.details, detailX, detailY, { font: bold, size: 8, color: FAINT })
   detailY -= 16
 
   const detailRows: Array<[string, string]> = []
-  detailRows.push(['Order date', formatDateForLocale(receipt.createdAt, locale)])
-  const payment = paymentLabel(receipt.paymentStatus)
-  if (payment) detailRows.push(['Payment', payment])
-  detailRows.push(['Currency', normalize(receipt.currencyCode).toUpperCase() || '--'])
+  detailRows.push([copy.orderDate, formatDateForLocale(receipt.createdAt, locale)])
+  const payment = paymentLabel(receipt.paymentStatus, copy)
+  if (payment) detailRows.push([copy.payment, payment])
+  detailRows.push([copy.currency, normalize(receipt.currencyCode).toUpperCase() || '--'])
 
   for (const [label, value] of detailRows) {
     drawLeft(page, label, detailX, detailY, { font: regular, size: 10, color: MUTED })
@@ -298,7 +332,7 @@ export async function buildReceiptPdf(
   // order number. Flag it so customers can reconcile older records.
   const legacyDisplayId = receipt.legacyDisplayId
   if (legacyDisplayId) {
-    const noticeText = `This order was originally #${legacyDisplayId} in our previous store system. Older emails, invoices and records may reference that number.`
+    const noticeText = copy.legacyNotice(legacyDisplayId)
     const noticeLines = wrapText(regular, noticeText, 9, rightEdge - MARGIN - 24)
     const boxHeight = noticeLines.length * 12 + 18
 
@@ -327,10 +361,10 @@ export async function buildReceiptPdf(
   const unitRight = 460
   const amountRight = rightEdge
 
-  drawLeft(page, 'DESCRIPTION', MARGIN, y, { font: bold, size: 8, color: FAINT })
-  drawRight(page, 'QTY', qtyRight, y, { font: bold, size: 8, color: FAINT })
-  drawRight(page, 'UNIT PRICE', unitRight, y, { font: bold, size: 8, color: FAINT })
-  drawRight(page, 'AMOUNT', amountRight, y, { font: bold, size: 8, color: FAINT })
+  drawLeft(page, copy.description, MARGIN, y, { font: bold, size: 8, color: FAINT })
+  drawRight(page, copy.quantity, qtyRight, y, { font: bold, size: 8, color: FAINT })
+  drawRight(page, copy.unitPrice, unitRight, y, { font: bold, size: 8, color: FAINT })
+  drawRight(page, copy.amount, amountRight, y, { font: bold, size: 8, color: FAINT })
   y -= 8
   drawRule(page, y)
   y -= 18
@@ -339,7 +373,7 @@ export async function buildReceiptPdf(
     const itemTitle =
       typeof item?.title === 'string' && item.title.trim()
         ? item.title.trim()
-        : 'Untitled item'
+        : copy.untitledItem
 
     // Keep the title clear of the right-aligned QTY column on the same row.
     const titleWidth = qtyRight - MARGIN - 30
@@ -351,11 +385,11 @@ export async function buildReceiptPdf(
       font: regular,
       size: 10,
     })
-    drawRight(page, formatAmount(item.unitPrice, receipt.currencyCode), unitRight, y, {
+    drawRight(page, formatAmount(item.unitPrice, receipt.currencyCode, locale), unitRight, y, {
       font: regular,
       size: 10,
     })
-    drawRight(page, formatAmount(item.total, receipt.currencyCode), amountRight, y, {
+    drawRight(page, formatAmount(item.total, receipt.currencyCode, locale), amountRight, y, {
       font: regular,
       size: 10,
     })
@@ -369,8 +403,8 @@ export async function buildReceiptPdf(
   const totalsLabelX = 380
   y -= 20
 
-  drawLeft(page, 'Subtotal', totalsLabelX, y, { font: regular, size: 10, color: MUTED })
-  drawRight(page, formatAmount(receipt.totals.subtotal, receipt.currencyCode), amountRight, y, {
+  drawLeft(page, copy.subtotal, totalsLabelX, y, { font: regular, size: 10, color: MUTED })
+  drawRight(page, formatAmount(receipt.totals.subtotal, receipt.currencyCode, locale), amountRight, y, {
     font: regular,
     size: 10,
   })
@@ -383,8 +417,8 @@ export async function buildReceiptPdf(
       ? receipt.totals.tax
       : 0
   if (taxAmount > 0) {
-    drawLeft(page, 'Tax', totalsLabelX, y, { font: regular, size: 10, color: MUTED })
-    drawRight(page, formatAmount(taxAmount, receipt.currencyCode), amountRight, y, {
+    drawLeft(page, copy.tax, totalsLabelX, y, { font: regular, size: 10, color: MUTED })
+    drawRight(page, formatAmount(taxAmount, receipt.currencyCode, locale), amountRight, y, {
       font: regular,
       size: 10,
     })
@@ -393,8 +427,8 @@ export async function buildReceiptPdf(
 
   drawRule(page, y + 4, totalsLabelX, amountRight)
   y -= 8
-  drawLeft(page, 'Total', totalsLabelX, y, { font: bold, size: 12 })
-  drawRight(page, formatAmount(receipt.totals.total, receipt.currencyCode), amountRight, y, {
+  drawLeft(page, copy.total, totalsLabelX, y, { font: bold, size: 12 })
+  drawRight(page, formatAmount(receipt.totals.total, receipt.currencyCode, locale), amountRight, y, {
     font: bold,
     size: 12,
   })
@@ -402,7 +436,7 @@ export async function buildReceiptPdf(
   // would show a Tax line and a contradicting "no tax" note directly below it.
   if (taxAmount <= 0) {
     y -= 16
-    drawRight(page, 'No tax has been added to this order.', amountRight, y, {
+    drawRight(page, copy.noTaxAdded, amountRight, y, {
       font: regular,
       size: 8.5,
       color: MUTED,
@@ -411,26 +445,24 @@ export async function buildReceiptPdf(
 
   // ── Footer ────────────────────────────────────────────────────────────
   const footerLines: Array<{ text: string; style: TextStyle }> = []
-  const sellerIdentity = SELLER_ABN
-    ? `${SELLER_NAME} · ABN ${SELLER_ABN}`
-    : `${SELLER_NAME} · ${SELLER_WEBSITE}`
+  const sellerIdentity = copy.sellerIdentity(SELLER_NAME, SELLER_ABN || null)
   footerLines.push({ text: sellerIdentity, style: { font: bold, size: 9 } })
   footerLines.push({
-    text: `${SELLER_NAME} is not registered for GST in Australia — no GST has been charged and this document is not a tax invoice.`,
+    text: copy.gstNotice(SELLER_NAME),
     style: { font: regular, size: 9, color: MUTED },
   })
   footerLines.push({
-    text: 'This receipt may be used as proof of purchase for your tax records.',
+    text: copy.proofOfPurchase,
     style: { font: regular, size: 9, color: MUTED },
   })
   footerLines.push({
-    text: `Questions? ${SELLER_WEBSITE}/discord · ${SELLER_EMAIL}`,
+    text: copy.questions(`${SELLER_WEBSITE}/discord`, SELLER_EMAIL),
     style: { font: regular, size: 9, color: MUTED },
   })
 
   let footerY = MARGIN + footerLines.length * 13
   drawRule(page, footerY + 14)
-  drawRight(page, `Generated ${formatDateForLocale(new Date().toISOString(), locale)}`, rightEdge, footerY, {
+  drawRight(page, copy.generated(formatDateForLocale(new Date().toISOString(), locale)), rightEdge, footerY, {
     font: regular,
     size: 8,
     color: FAINT,

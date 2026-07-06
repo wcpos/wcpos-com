@@ -537,6 +537,39 @@
       "githubDescription": "ワンクリックサインインに使用されます。",
       "emailProvider": "メールとパスワード",
       "emailDescription": "メールアドレスでサインインします。"
+    },
+    "receiptPdf": {
+      "title": "領収書",
+      "orderNumber": "注文番号 {id}",
+      "billedTo": "請求先",
+      "details": "詳細",
+      "noEmailProvided": "メールアドレスなし",
+      "taxId": "税番号: {taxNumber}",
+      "orderDate": "注文日",
+      "payment": "支払い",
+      "currency": "通貨",
+      "legacyNotice": "この注文は以前のストアシステムでは #{legacyDisplayId} でした。古いメール、請求書、記録にはその番号が記載されている場合があります。",
+      "description": "説明",
+      "quantity": "数量",
+      "unitPrice": "単価",
+      "amount": "金額",
+      "untitledItem": "名称未設定の商品",
+      "subtotal": "小計",
+      "tax": "税",
+      "total": "合計",
+      "noTaxAdded": "この注文に税は追加されていません。",
+      "sellerIdentityWithAbn": "{sellerName} · ABN {sellerAbn}",
+      "sellerIdentity": "{sellerName}",
+      "gstNotice": "{sellerName} はオーストラリアで GST 登録されていません — GST は請求されておらず、この文書は税請求書ではありません。",
+      "proofOfPurchase": "この領収書は税務記録用の購入証明として使用できます。",
+      "questions": "ご質問: {website} · {email}",
+      "generated": "生成日 {date}",
+      "paymentStatus": {
+        "paid": "支払い済み",
+        "refunded": "返金済み",
+        "partiallyRefunded": "一部返金済み",
+        "canceled": "キャンセル済み"
+      }
     }
   },
   "metadata": {

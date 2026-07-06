@@ -537,6 +537,39 @@
       "githubDescription": "Se usa para iniciar sesión con un clic.",
       "emailProvider": "Correo electrónico y contraseña",
       "emailDescription": "Inicias sesión con tu dirección de correo electrónico."
+    },
+    "receiptPdf": {
+      "title": "Recibo",
+      "orderNumber": "Pedido n.º {id}",
+      "billedTo": "FACTURADO A",
+      "details": "DETALLES",
+      "noEmailProvided": "Sin correo electrónico",
+      "taxId": "ID fiscal: {taxNumber}",
+      "orderDate": "Fecha del pedido",
+      "payment": "Pago",
+      "currency": "Moneda",
+      "legacyNotice": "Este pedido era originalmente el n.º {legacyDisplayId} en nuestro sistema de tienda anterior. Correos, facturas y registros antiguos pueden hacer referencia a ese número.",
+      "description": "DESCRIPCIÓN",
+      "quantity": "CANT.",
+      "unitPrice": "PRECIO UNITARIO",
+      "amount": "IMPORTE",
+      "untitledItem": "Artículo sin título",
+      "subtotal": "Subtotal",
+      "tax": "Impuesto",
+      "total": "Total",
+      "noTaxAdded": "No se ha añadido ningún impuesto a este pedido.",
+      "sellerIdentityWithAbn": "{sellerName} · ABN {sellerAbn}",
+      "sellerIdentity": "{sellerName}",
+      "gstNotice": "{sellerName} no está registrado para GST en Australia — no se ha cobrado GST y este documento no es una factura fiscal.",
+      "proofOfPurchase": "Este recibo puede utilizarse como comprobante de compra para sus registros fiscales.",
+      "questions": "¿Preguntas? {website} · {email}",
+      "generated": "Generado el {date}",
+      "paymentStatus": {
+        "paid": "Pagado",
+        "refunded": "Reembolsado",
+        "partiallyRefunded": "Reembolsado parcialmente",
+        "canceled": "Cancelado"
+      }
     }
   },
   "metadata": {

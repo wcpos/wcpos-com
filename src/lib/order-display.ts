@@ -1,5 +1,9 @@
-export function formatOrderAmount(amount: number, currencyCode: string): string {
-  return new Intl.NumberFormat('en-US', {
+export function formatOrderAmount(
+  amount: number,
+  currencyCode: string,
+  locale: string = 'en-US'
+): string {
+  return new Intl.NumberFormat(locale, {
     style: 'currency',
     currency: currencyCode.toUpperCase(),
   }).format(amount)

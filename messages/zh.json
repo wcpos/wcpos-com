@@ -537,6 +537,39 @@
       "githubDescription": "用于一键登录。",
       "emailProvider": "邮箱和密码",
       "emailDescription": "你使用邮箱地址登录。"
+    },
+    "receiptPdf": {
+      "title": "收据",
+      "orderNumber": "订单 #{id}",
+      "billedTo": "账单抬头",
+      "details": "详情",
+      "noEmailProvided": "未提供电子邮箱",
+      "taxId": "税号：{taxNumber}",
+      "orderDate": "订单日期",
+      "payment": "付款",
+      "currency": "货币",
+      "legacyNotice": "此订单在我们之前的商店系统中原编号为 #{legacyDisplayId}。较早的邮件、发票和记录可能会引用该编号。",
+      "description": "描述",
+      "quantity": "数量",
+      "unitPrice": "单价",
+      "amount": "金额",
+      "untitledItem": "未命名项目",
+      "subtotal": "小计",
+      "tax": "税",
+      "total": "总计",
+      "noTaxAdded": "此订单未添加税费。",
+      "sellerIdentityWithAbn": "{sellerName} · ABN {sellerAbn}",
+      "sellerIdentity": "{sellerName}",
+      "gstNotice": "{sellerName} 未在澳大利亚注册 GST — 未收取 GST，且本文档不是税务发票。",
+      "proofOfPurchase": "此收据可作为税务记录的购买凭证。",
+      "questions": "有疑问？{website} · {email}",
+      "generated": "生成于 {date}",
+      "paymentStatus": {
+        "paid": "已付款",
+        "refunded": "已退款",
+        "partiallyRefunded": "部分退款",
+        "canceled": "已取消"
+      }
     }
   },
   "metadata": {

@@ -537,6 +537,39 @@
       "githubDescription": "Wird für die Ein-Klick-Anmeldung verwendet.",
       "emailProvider": "E-Mail & Passwort",
       "emailDescription": "Du meldest dich mit deiner E-Mail-Adresse an."
+    },
+    "receiptPdf": {
+      "title": "Beleg",
+      "orderNumber": "Bestellung #{id}",
+      "billedTo": "RECHNUNG AN",
+      "details": "DETAILS",
+      "noEmailProvided": "Keine E-Mail angegeben",
+      "taxId": "Steuer-ID: {taxNumber}",
+      "orderDate": "Bestelldatum",
+      "payment": "Zahlung",
+      "currency": "Währung",
+      "legacyNotice": "Diese Bestellung war ursprünglich #{legacyDisplayId} in unserem vorherigen Shopsystem. Ältere E-Mails, Rechnungen und Unterlagen können diese Nummer enthalten.",
+      "description": "BESCHREIBUNG",
+      "quantity": "ANZ.",
+      "unitPrice": "EINZELPREIS",
+      "amount": "BETRAG",
+      "untitledItem": "Unbenannter Artikel",
+      "subtotal": "Zwischensumme",
+      "tax": "Steuer",
+      "total": "Gesamt",
+      "noTaxAdded": "Dieser Bestellung wurde keine Steuer hinzugefügt.",
+      "sellerIdentityWithAbn": "{sellerName} · ABN {sellerAbn}",
+      "sellerIdentity": "{sellerName}",
+      "gstNotice": "{sellerName} ist in Australien nicht für GST registriert — es wurde keine GST berechnet und dieses Dokument ist keine Steuerrechnung.",
+      "proofOfPurchase": "Dieser Beleg kann als Kaufnachweis für Ihre Steuerunterlagen verwendet werden.",
+      "questions": "Fragen? {website} · {email}",
+      "generated": "Erstellt am {date}",
+      "paymentStatus": {
+        "paid": "Bezahlt",
+        "refunded": "Erstattet",
+        "partiallyRefunded": "Teilweise erstattet",
+        "canceled": "Storniert"
+      }
     }
   },
   "metadata": {

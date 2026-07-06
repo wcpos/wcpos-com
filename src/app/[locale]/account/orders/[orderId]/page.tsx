@@ -104,7 +104,8 @@ async function OrderDetailContent({
               <span>
                 {formatOrderAmount(
                   orderDetail.total.amount,
-                  orderDetail.total.currencyCode
+                  orderDetail.total.currencyCode,
+                  locale
                 )}
               </span>
             </div>
@@ -128,7 +129,8 @@ async function OrderDetailContent({
                   <p className="font-medium">
                     {formatOrderAmount(
                       item.total.amount,
-                      item.total.currencyCode
+                      item.total.currencyCode,
+                      locale
                     )}
                   </p>
                 </div>

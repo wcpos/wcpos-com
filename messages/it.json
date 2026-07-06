@@ -537,6 +537,39 @@
       "githubDescription": "Usato per l’accesso con un clic.",
       "emailProvider": "Email e password",
       "emailDescription": "Accedi con il tuo indirizzo email."
+    },
+    "receiptPdf": {
+      "title": "Ricevuta",
+      "orderNumber": "Ordine n. {id}",
+      "billedTo": "FATTURATO A",
+      "details": "DETTAGLI",
+      "noEmailProvided": "Nessuna email fornita",
+      "taxId": "ID fiscale: {taxNumber}",
+      "orderDate": "Data ordine",
+      "payment": "Pagamento",
+      "currency": "Valuta",
+      "legacyNotice": "Questo ordine era originariamente il n. {legacyDisplayId} nel nostro precedente sistema di vendita. Email, fatture e registri più vecchi potrebbero fare riferimento a quel numero.",
+      "description": "DESCRIZIONE",
+      "quantity": "QTÀ",
+      "unitPrice": "PREZZO UNITARIO",
+      "amount": "IMPORTO",
+      "untitledItem": "Articolo senza titolo",
+      "subtotal": "Subtotale",
+      "tax": "Imposta",
+      "total": "Totale",
+      "noTaxAdded": "A questo ordine non è stata aggiunta alcuna imposta.",
+      "sellerIdentityWithAbn": "{sellerName} · ABN {sellerAbn}",
+      "sellerIdentity": "{sellerName}",
+      "gstNotice": "{sellerName} non è registrato per GST in Australia — non è stata addebitata GST e questo documento non è una fattura fiscale.",
+      "proofOfPurchase": "Questa ricevuta può essere usata come prova di acquisto per i registri fiscali.",
+      "questions": "Domande? {website} · {email}",
+      "generated": "Generato il {date}",
+      "paymentStatus": {
+        "paid": "Pagato",
+        "refunded": "Rimborsato",
+        "partiallyRefunded": "Parzialmente rimborsato",
+        "canceled": "Annullato"
+      }
     }
   },
   "metadata": {

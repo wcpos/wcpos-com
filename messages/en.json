@@ -537,6 +537,39 @@
       "githubDescription": "Used for one-click sign-in.",
       "emailProvider": "Email & password",
       "emailDescription": "You sign in with your email address."
+    },
+    "receiptPdf": {
+      "title": "Receipt",
+      "orderNumber": "Order #{id}",
+      "billedTo": "BILLED TO",
+      "details": "DETAILS",
+      "noEmailProvided": "No email provided",
+      "taxId": "Tax ID: {taxNumber}",
+      "orderDate": "Order date",
+      "payment": "Payment",
+      "currency": "Currency",
+      "legacyNotice": "This order was originally #{legacyDisplayId} in our previous store system. Older emails, invoices and records may reference that number.",
+      "description": "DESCRIPTION",
+      "quantity": "QTY",
+      "unitPrice": "UNIT PRICE",
+      "amount": "AMOUNT",
+      "untitledItem": "Untitled item",
+      "subtotal": "Subtotal",
+      "tax": "Tax",
+      "total": "Total",
+      "noTaxAdded": "No tax has been added to this order.",
+      "sellerIdentityWithAbn": "{sellerName} · ABN {sellerAbn}",
+      "sellerIdentity": "{sellerName}",
+      "gstNotice": "{sellerName} is not registered for GST in Australia — no GST has been charged and this document is not a tax invoice.",
+      "proofOfPurchase": "This receipt may be used as proof of purchase for your tax records.",
+      "questions": "Questions? {website} · {email}",
+      "generated": "Generated {date}",
+      "paymentStatus": {
+        "paid": "Paid",
+        "refunded": "Refunded",
+        "partiallyRefunded": "Partially refunded",
+        "canceled": "Canceled"
+      }
     }
   },
   "metadata": {
