@@ -33,16 +33,54 @@ export async function openYearlyCheckout(page: Page) {
   })
 }
 
+async function fillLabeledField(page: Page, label: string, value: string) {
+  let lastError: unknown
+
+  for (let attempt = 0; attempt < 3; attempt += 1) {
+    const field = page.getByLabel(label)
+    try {
+      await expect(field).toBeVisible({ timeout: 5000 })
+      await field.fill(value, { timeout: 5000 })
+      await expect(field).toHaveValue(value, { timeout: 5000 })
+      return
+    } catch (error) {
+      lastError = error
+    }
+  }
+
+  throw lastError
+}
+
+async function selectLabeledOption(page: Page, label: string, value: string) {
+  let lastError: unknown
+
+  for (let attempt = 0; attempt < 3; attempt += 1) {
+    const field = page.getByLabel(label)
+    try {
+      await expect(field).toBeVisible({ timeout: 5000 })
+      await field.selectOption(value, { timeout: 5000 })
+      await expect(field).toHaveValue(value, { timeout: 5000 })
+      return
+    } catch (error) {
+      lastError = error
+    }
+  }
+
+  throw lastError
+}
+
 export async function completeBillingStep(page: Page) {
   await expect(page.getByTestId('billing-step-form')).toBeVisible({
     timeout: 15000,
   })
-  await page.getByLabel('First name').fill('Ada')
-  await page.getByLabel('Last name').fill('Lovelace')
-  await page.getByLabel('Address').fill('42 Wallaby Way')
-  await page.getByLabel('City').fill('Sydney')
-  await page.getByLabel('Postal code').fill('2000')
-  await page.getByLabel('Country').selectOption('au')
+  await fillLabeledField(page, 'First name', 'Ada')
+  await fillLabeledField(page, 'Last name', 'Lovelace')
+  await fillLabeledField(page, 'Address line 1', '42 Wallaby Way')
+  await fillLabeledField(page, 'Address line 2', 'Apt 7')
+  await fillLabeledField(page, 'City', 'Sydney')
+  await fillLabeledField(page, 'State / Province / Region', 'NSW')
+  await fillLabeledField(page, 'Postal code', '2000')
+  await selectLabeledOption(page, 'Country', 'au')
   await page.getByRole('button', { name: /continue to payment/i }).click()
   await expect(page.getByTestId('checkout-step-3')).toHaveAttribute(
     'data-step-state',
@@ -59,8 +97,8 @@ export async function completeAccountStep(
   await expect(page.getByTestId('account-step-form')).toBeVisible({
     timeout: 15000,
   })
-  await page.getByLabel('Email').fill(email)
-  await page.getByLabel('Password').fill(password)
+  await fillLabeledField(page, 'Email', email)
+  await fillLabeledField(page, 'Password', password)
   await page
     .getByRole('button', { name: /create account & continue/i })
     .click()
