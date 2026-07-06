@@ -260,6 +260,7 @@ describe('CheckoutClient', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     sessionStorage.clear()
+    window.history.pushState({}, '', '/pro/checkout?product=wcpos-pro-yearly')
   })
 
   it('starts at the billing step for signed-in customers with the account collapsed', async () => {
@@ -937,6 +938,40 @@ describe('CheckoutClient', () => {
       screen.queryByTestId('checkout-order-summary')
     ).not.toBeInTheDocument()
     expect(screen.queryByTestId('mock-pay-button')).not.toBeInTheDocument()
+  })
+
+  it('clears a stale order-pending state when opened with the support reset link', async () => {
+    recordCheckoutFailure('cart-old', {
+      kind: 'order_pending',
+      message:
+        'Your payment was received, but we could not finish creating your order.',
+      reference: 'WCPOS-RESTORED-PENDING',
+    })
+    window.history.pushState(
+      {},
+      '',
+      '/pro/checkout?product=wcpos-pro-yearly&reset_checkout=order_pending'
+    )
+    mockSuccessfulCheckoutInit()
+
+    renderSignedIn({
+      checkoutPath:
+        '/pro/checkout?product=wcpos-pro-yearly&reset_checkout=order_pending',
+    })
+
+    await waitFor(() => {
+      expect(screen.getByTestId('checkout-order-summary')).toBeInTheDocument()
+    })
+    expect(
+      screen.queryByText('Payment received — order pending')
+    ).not.toBeInTheDocument()
+    expect(restoreCheckoutSafetyState()).toBeNull()
+    await waitFor(() => {
+      expect(mockFetch).toHaveBeenCalledWith(
+        '/api/store/cart',
+        expect.objectContaining({ method: 'POST' })
+      )
+    })
   })
 
   it('restores the uncertain-payment warning on reload while keeping checkout mounted', async () => {

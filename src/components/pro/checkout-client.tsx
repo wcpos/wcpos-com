@@ -72,6 +72,8 @@ interface PaymentSessionResult {
 }
 
 const PRO_CHECKOUT_EXPERIMENT = 'pro_checkout_v1'
+const CHECKOUT_SAFETY_RESET_PARAM = 'reset_checkout'
+const CHECKOUT_SAFETY_RESET_VALUE = 'order_pending'
 
 // Map frontend payment method names to Medusa provider IDs. The Record is
 // total over PaymentMethod, so adding a method without a provider id is a
@@ -245,6 +247,15 @@ export function CheckoutClient({
     // (react-hooks/set-state-in-effect); sessionStorage is browser-only.
     Promise.resolve().then(() => {
       if (cancelled) return
+      const searchParams = new URLSearchParams(window.location.search)
+      if (
+        searchParams.get(CHECKOUT_SAFETY_RESET_PARAM) ===
+        CHECKOUT_SAFETY_RESET_VALUE
+      ) {
+        clearCheckoutSafetyState()
+        setSafetyRestored(true)
+        return
+      }
       const restored = restoreCheckoutSafetyState()
       if (restored) {
         setFailure(restored.failure)
@@ -254,6 +265,11 @@ export function CheckoutClient({
     return () => {
       cancelled = true
     }
+  }, [])
+
+  const resetOrderPendingGuard = useCallback(() => {
+    clearCheckoutSafetyState()
+    window.location.reload()
   }, [])
 
   const blockedByProtectiveFailure = failure
@@ -582,7 +598,12 @@ export function CheckoutClient({
   // Payment captured but order creation failed — the worst customer state.
   // Replaces the whole checkout so the customer cannot pay a second time.
   if (failure?.kind === 'order_pending') {
-    return <OrderPendingNotice failure={failure} />
+    return (
+      <OrderPendingNotice
+        failure={failure}
+        onReset={resetOrderPendingGuard}
+      />
+    )
   }
 
   const formatCurrency = (amount: number) =>

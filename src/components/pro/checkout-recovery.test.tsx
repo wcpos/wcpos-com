@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest'
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 
 // Mock the locale-aware Link as a simple anchor
 vi.mock('@/i18n/navigation', () => ({
@@ -154,10 +154,39 @@ describe('OrderPendingNotice', () => {
     expect(screen.getByText('WCPOS-TEST-REF3')).toBeInTheDocument()
   })
 
-  it('offers no retry affordance', () => {
+  it('offers no payment retry affordance', () => {
     render(<OrderPendingNotice failure={orderPending} />)
 
     expect(screen.queryByText(/try again/i)).not.toBeInTheDocument()
     expect(screen.queryByRole('button', { name: /pay/i })).not.toBeInTheDocument()
+  })
+
+  it('can reset a stale order-pending guard after support confirms it is safe', () => {
+    const onReset = vi.fn()
+    vi.spyOn(window, 'confirm').mockReturnValueOnce(true)
+
+    render(<OrderPendingNotice failure={orderPending} onReset={onReset} />)
+
+    fireEvent.click(
+      screen.getByRole('button', { name: /support told me to reset checkout/i })
+    )
+
+    expect(window.confirm).toHaveBeenCalledWith(
+      expect.stringContaining('Only reset checkout after support confirms')
+    )
+    expect(onReset).toHaveBeenCalledTimes(1)
+  })
+
+  it('does not reset the stale order-pending guard when confirmation is cancelled', () => {
+    const onReset = vi.fn()
+    vi.spyOn(window, 'confirm').mockReturnValueOnce(false)
+
+    render(<OrderPendingNotice failure={orderPending} onReset={onReset} />)
+
+    fireEvent.click(
+      screen.getByRole('button', { name: /support told me to reset checkout/i })
+    )
+
+    expect(onReset).not.toHaveBeenCalled()
   })
 })
