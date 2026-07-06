@@ -67,7 +67,7 @@ describe('buildReceiptPdf', () => {
   it('prints the seller identity and the GST statement', async () => {
     const stream = await pageStream(await buildReceiptPdf(baseReceipt))
 
-    expect(stream).toContain(hex('WCPOS'))
+    expect(stream).toContain(hex('WCPOS · ABN 86 792 035 060'))
     expect(stream).toContain(hex('not registered for GST in Australia'))
     expect(stream).toContain(hex('proof of purchase for your tax records'))
     expect(stream).toContain(hex('No tax has been added to this order.'))

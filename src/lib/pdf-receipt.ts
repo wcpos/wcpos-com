@@ -10,8 +10,8 @@ import { formatDateForLocale } from './date-format'
 const SELLER_NAME = 'WCPOS'
 const SELLER_WEBSITE = 'wcpos.com'
 const SELLER_EMAIL = 'support@wcpos.com'
-// ABN, e.g. '11 222 333 444'. The ABN footer line is omitted while empty.
-const SELLER_ABN = ''
+// The ABN footer line is omitted while empty.
+const SELLER_ABN = '86 792 035 060'
 
 /**
  * Order receipt PDF.
