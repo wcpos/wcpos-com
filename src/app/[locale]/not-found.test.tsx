@@ -23,6 +23,30 @@ vi.mock('next/font/google', () => ({
   Geist_Mono: () => ({ variable: '--font-geist-mono' }),
 }))
 
+const messages: Record<string, string> = {
+  'errors.notFoundTitle': 'Page not found',
+  'errors.notFoundDescription':
+    'The page you are looking for does not exist or may have moved.',
+  'errors.goHome': 'Go to homepage',
+  'header.support': 'Support',
+  'metadata.siteTitle': 'WCPOS - Point of Sale for WooCommerce',
+  'metadata.siteDescription':
+    'Point of Sale for WooCommerce. Fast, reliable POS system for your WooCommerce store.',
+}
+
+vi.mock('next-intl', () => ({
+  useTranslations: (namespace: string) => (key: string) =>
+    messages[`${namespace}.${key}`] ?? key,
+}))
+
+vi.mock('next-intl/server', () => ({
+  getMessages: vi.fn(async () => ({})),
+  getTranslations: vi.fn(async ({ namespace }: { namespace: string }) => (key: string) =>
+    messages[`${namespace}.${key}`] ?? key
+  ),
+  setRequestLocale: vi.fn(),
+}))
+
 describe('NotFoundPage (localized)', () => {
   it('renders the 404 message', () => {
     render(<NotFoundPage />)
@@ -56,7 +80,10 @@ describe('NotFoundPage (localized)', () => {
 
 describe('LocaleLayout metadata', () => {
   it('preserves the root social image for localized pages', async () => {
-    const { metadata } = await import('./layout')
+    const { generateMetadata } = await import('./layout')
+    const metadata = await generateMetadata({
+      params: Promise.resolve({ locale: 'en' }),
+    })
 
     expect(metadata.openGraph?.images).toEqual(['/opengraph-image.png'])
     expect(metadata.twitter?.images).toEqual(['/opengraph-image.png'])

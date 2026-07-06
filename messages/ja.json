@@ -357,5 +357,85 @@
       "emailProvider": "メールとパスワード",
       "emailDescription": "メールアドレスでサインインします。"
     }
+  },
+  "metadata": {
+    "siteTitle": "WCPOS - WooCommerce用POS",
+    "siteDescription": "WooCommerce用POS。WooCommerceストア向けの高速で信頼できるPOSシステムです。"
+  },
+  "errors": {
+    "genericTitle": "問題が発生しました。",
+    "genericDescription": "エラーは報告されました。もう一度お試しいただくか、後ほど戻ってきてください。",
+    "tryAgain": "再試行",
+    "goHome": "ホームへ移動",
+    "notFoundTitle": "ページが見つかりません",
+    "notFoundDescription": "お探しのページは存在しないか、移動された可能性があります。"
+  },
+  "consent": {
+    "label": "Cookieの同意",
+    "message": "サイトの利用状況を理解するため、匿名の分析Cookieを使用します。広告や第三者トラッキングはありません。<privacyLink>プライバシーポリシー</privacyLink>",
+    "privacyPolicy": "プライバシーポリシー",
+    "decline": "拒否",
+    "accept": "同意"
+  },
+  "auth": {
+    "common": {
+      "email": "メール",
+      "password": "パスワード",
+      "newPassword": "新しいパスワード",
+      "firstName": "名",
+      "lastName": "姓",
+      "emailPlaceholder": "you@example.com",
+      "passwordHint": "{min}文字以上",
+      "genericError": "問題が発生しました。もう一度お試しください。",
+      "signIn": "ログイン",
+      "signUp": "登録"
+    },
+    "login": {
+      "metaTitle": "ログイン",
+      "metaDescription": "WCPOSアカウントにログインして、注文、ライセンス、ダウンロードを管理します。",
+      "title": "ログイン",
+      "description": "WCPOSアカウントにログイン",
+      "forgotPassword": "パスワードをお忘れですか？",
+      "oauthFailed": "OAuthログインに失敗しました。もう一度試すか、メール/パスワードを使用してください。",
+      "loginFailed": "ログインに失敗しました",
+      "submitting": "ログイン中...",
+      "oauthDivider": "または次で続行",
+      "noAccount": "アカウントをお持ちではありませんか？"
+    },
+    "register": {
+      "metaTitle": "アカウントを作成",
+      "metaDescription": "WCPOSアカウントを作成して、Proの購入、ライセンス管理、ダウンロードにアクセスします。",
+      "title": "アカウントを作成",
+      "description": "WCPOSアカウントに登録",
+      "accountExists": "このメールアドレスのアカウントはすでに存在します。ログインしてください。",
+      "failed": "登録に失敗しました",
+      "submitting": "アカウントを作成中...",
+      "submit": "アカウントを作成",
+      "hasAccount": "すでにアカウントをお持ちですか？"
+    },
+    "forgotPassword": {
+      "metaTitle": "パスワードを忘れた場合",
+      "metaDescription": "WCPOSアカウントのパスワードリセットリンクをリクエストします。",
+      "title": "パスワードをお忘れですか？",
+      "description": "メールアドレスを入力すると、リセットリンクを送信します",
+      "submitted": "{email} のアカウントが存在する場合、パスワードリセットリンクを送信しました。受信トレイと迷惑メールフォルダを確認してください。",
+      "submitting": "送信中...",
+      "submit": "リセットリンクを送信",
+      "remembered": "思い出しましたか？"
+    },
+    "resetPassword": {
+      "metaTitle": "パスワードをリセット",
+      "metaDescription": "WCPOSアカウントの新しいパスワードを選択します。",
+      "title": "パスワードをリセット",
+      "descriptionValid": "{email} の新しいパスワードを選択",
+      "descriptionInvalid": "このリセットリンクは不完全です",
+      "failed": "パスワードをリセットできませんでした",
+      "submitting": "リセット中...",
+      "submit": "パスワードをリセット",
+      "invalidLink": "このリンクにはリセットトークンがありません。メールクライアントで切り詰められた可能性があります。下から新しいリンクをリクエストしてください。",
+      "linkExpired": "リンクの有効期限が切れましたか？",
+      "needFreshLink": "新しいリンクが必要ですか？",
+      "requestNew": "新しいリセットリンクをリクエスト"
+    }
   }
 }

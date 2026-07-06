@@ -357,5 +357,85 @@
       "emailProvider": "Email & password",
       "emailDescription": "You sign in with your email address."
     }
+  },
+  "metadata": {
+    "siteTitle": "WCPOS - Point of Sale for WooCommerce",
+    "siteDescription": "Point of Sale for WooCommerce. Fast, reliable POS system for your WooCommerce store."
+  },
+  "errors": {
+    "genericTitle": "Something went wrong.",
+    "genericDescription": "The error has been reported. You can try again, or come back later.",
+    "tryAgain": "Try again",
+    "goHome": "Go to homepage",
+    "notFoundTitle": "Page not found",
+    "notFoundDescription": "The page you are looking for does not exist or may have moved."
+  },
+  "consent": {
+    "label": "Cookie consent",
+    "message": "We use an anonymous analytics cookie to understand how the site is used. No ads, no third-party tracking. <privacyLink>Privacy policy</privacyLink>",
+    "privacyPolicy": "Privacy policy",
+    "decline": "Decline",
+    "accept": "Accept"
+  },
+  "auth": {
+    "common": {
+      "email": "Email",
+      "password": "Password",
+      "newPassword": "New password",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "emailPlaceholder": "you@example.com",
+      "passwordHint": "At least {min} characters",
+      "genericError": "Something went wrong. Please try again.",
+      "signIn": "Sign in",
+      "signUp": "Sign up"
+    },
+    "login": {
+      "metaTitle": "Sign in",
+      "metaDescription": "Sign in to your WCPOS account to manage your orders, licenses, and downloads.",
+      "title": "Sign in",
+      "description": "Sign in to your WCPOS account",
+      "forgotPassword": "Forgot password?",
+      "oauthFailed": "OAuth sign-in failed. Please try again or use email/password.",
+      "loginFailed": "Login failed",
+      "submitting": "Signing in...",
+      "oauthDivider": "Or continue with",
+      "noAccount": "Don’t have an account?"
+    },
+    "register": {
+      "metaTitle": "Create an account",
+      "metaDescription": "Sign up for a WCPOS account to purchase Pro, manage licenses, and access downloads.",
+      "title": "Create an account",
+      "description": "Sign up for a WCPOS account",
+      "accountExists": "An account with this email already exists. Please sign in.",
+      "failed": "Registration failed",
+      "submitting": "Creating account...",
+      "submit": "Create account",
+      "hasAccount": "Already have an account?"
+    },
+    "forgotPassword": {
+      "metaTitle": "Forgot password",
+      "metaDescription": "Request a password reset link for your WCPOS account.",
+      "title": "Forgot your password?",
+      "description": "Enter your email and we’ll send you a reset link",
+      "submitted": "If an account exists for {email}, a password reset link is on its way. Check your inbox (and spam folder).",
+      "submitting": "Sending...",
+      "submit": "Send reset link",
+      "remembered": "Remembered it?"
+    },
+    "resetPassword": {
+      "metaTitle": "Reset password",
+      "metaDescription": "Choose a new password for your WCPOS account.",
+      "title": "Reset your password",
+      "descriptionValid": "Choose a new password for {email}",
+      "descriptionInvalid": "This reset link is incomplete",
+      "failed": "Failed to reset password",
+      "submitting": "Resetting...",
+      "submit": "Reset password",
+      "invalidLink": "This link is missing its reset token — it may have been truncated by your email client. Request a new one below.",
+      "linkExpired": "Link expired?",
+      "needFreshLink": "Need a fresh link?",
+      "requestNew": "Request a new reset link"
+    }
   }
 }

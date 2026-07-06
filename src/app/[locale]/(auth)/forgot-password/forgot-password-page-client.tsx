@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/navigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -16,6 +17,8 @@ import {
 } from '@/components/ui/card'
 
 export function ForgotPasswordPageClient() {
+  const t = useTranslations('auth.forgotPassword')
+  const tCommon = useTranslations('auth.common')
   const [email, setEmail] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
@@ -36,13 +39,13 @@ export function ForgotPasswordPageClient() {
       const data = await response.json()
 
       if (!response.ok) {
-        setError(data.error || 'Something went wrong. Please try again.')
+        setError(data.error || tCommon('genericError'))
         return
       }
 
       setSubmitted(true)
     } catch {
-      setError('Something went wrong. Please try again.')
+      setError(tCommon('genericError'))
     } finally {
       setLoading(false)
     }
@@ -54,17 +57,16 @@ export function ForgotPasswordPageClient() {
       <Card elevated>
         <CardHeader className="text-center">
           <CardTitle className="text-2xl tracking-tight">
-            Forgot your password?
+            {t('title')}
           </CardTitle>
           <CardDescription>
-            Enter your email and we&apos;ll send you a reset link
+            {t('description')}
           </CardDescription>
         </CardHeader>
         <CardContent>
           {submitted ? (
             <Alert tone="positive" role="status">
-              If an account exists for {email}, a password reset link is on
-              its way. Check your inbox (and spam folder).
+              {t('submitted', { email })}
             </Alert>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -75,11 +77,11 @@ export function ForgotPasswordPageClient() {
               )}
 
               <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email">{tCommon('email')}</Label>
                 <Input
                   id="email"
                   type="email"
-                  placeholder="you@example.com"
+                  placeholder={tCommon('emailPlaceholder')}
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
@@ -88,16 +90,16 @@ export function ForgotPasswordPageClient() {
               </div>
 
               <Button type="submit" className="w-full" disabled={loading}>
-                {loading ? 'Sending...' : 'Send reset link'}
+                {loading ? t('submitting') : t('submit')}
               </Button>
             </form>
           )}
         </CardContent>
         <CardFooter className="justify-center">
           <p className="text-sm text-muted-foreground">
-            Remembered it?{' '}
+            {t('remembered')}{' '}
             <Link href="/login" className="text-primary hover:underline">
-              Sign in
+              {tCommon('signIn')}
             </Link>
           </p>
         </CardFooter>

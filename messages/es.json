@@ -357,5 +357,85 @@
       "emailProvider": "Correo electrónico y contraseña",
       "emailDescription": "Inicias sesión con tu dirección de correo electrónico."
     }
+  },
+  "metadata": {
+    "siteTitle": "WCPOS - Punto de venta para WooCommerce",
+    "siteDescription": "Punto de venta para WooCommerce. Un sistema POS rápido y fiable para tu tienda WooCommerce."
+  },
+  "errors": {
+    "genericTitle": "Algo salió mal.",
+    "genericDescription": "Se ha informado del error. Puedes intentarlo de nuevo o volver más tarde.",
+    "tryAgain": "Intentar de nuevo",
+    "goHome": "Ir a la página de inicio",
+    "notFoundTitle": "Página no encontrada",
+    "notFoundDescription": "La página que buscas no existe o puede haberse movido."
+  },
+  "consent": {
+    "label": "Consentimiento de cookies",
+    "message": "Usamos una cookie de analítica anónima para entender cómo se usa el sitio. Sin anuncios ni seguimiento de terceros. <privacyLink>Política de privacidad</privacyLink>",
+    "privacyPolicy": "Política de privacidad",
+    "decline": "Rechazar",
+    "accept": "Aceptar"
+  },
+  "auth": {
+    "common": {
+      "email": "Correo electrónico",
+      "password": "Contraseña",
+      "newPassword": "Nueva contraseña",
+      "firstName": "Nombre",
+      "lastName": "Apellidos",
+      "emailPlaceholder": "tu@example.com",
+      "passwordHint": "Al menos {min} caracteres",
+      "genericError": "Algo salió mal. Inténtalo de nuevo.",
+      "signIn": "Iniciar sesión",
+      "signUp": "Registrarse"
+    },
+    "login": {
+      "metaTitle": "Iniciar sesión",
+      "metaDescription": "Inicia sesión en tu cuenta de WCPOS para gestionar pedidos, licencias y descargas.",
+      "title": "Iniciar sesión",
+      "description": "Inicia sesión en tu cuenta de WCPOS",
+      "forgotPassword": "¿Olvidaste tu contraseña?",
+      "oauthFailed": "Error al iniciar sesión con OAuth. Inténtalo de nuevo o usa correo/contraseña.",
+      "loginFailed": "Error al iniciar sesión",
+      "submitting": "Iniciando sesión...",
+      "oauthDivider": "O continúa con",
+      "noAccount": "¿No tienes una cuenta?"
+    },
+    "register": {
+      "metaTitle": "Crear una cuenta",
+      "metaDescription": "Crea una cuenta de WCPOS para comprar Pro, gestionar licencias y acceder a descargas.",
+      "title": "Crear una cuenta",
+      "description": "Regístrate para obtener una cuenta de WCPOS",
+      "accountExists": "Ya existe una cuenta con este correo. Inicia sesión.",
+      "failed": "Error en el registro",
+      "submitting": "Creando cuenta...",
+      "submit": "Crear cuenta",
+      "hasAccount": "¿Ya tienes una cuenta?"
+    },
+    "forgotPassword": {
+      "metaTitle": "Contraseña olvidada",
+      "metaDescription": "Solicita un enlace para restablecer la contraseña de tu cuenta de WCPOS.",
+      "title": "¿Olvidaste tu contraseña?",
+      "description": "Introduce tu correo y te enviaremos un enlace de restablecimiento",
+      "submitted": "Si existe una cuenta para {email}, el enlace para restablecer la contraseña ya va en camino. Revisa tu bandeja de entrada y spam.",
+      "submitting": "Enviando...",
+      "submit": "Enviar enlace",
+      "remembered": "¿La recordaste?"
+    },
+    "resetPassword": {
+      "metaTitle": "Restablecer contraseña",
+      "metaDescription": "Elige una nueva contraseña para tu cuenta de WCPOS.",
+      "title": "Restablece tu contraseña",
+      "descriptionValid": "Elige una nueva contraseña para {email}",
+      "descriptionInvalid": "Este enlace de restablecimiento está incompleto",
+      "failed": "No se pudo restablecer la contraseña",
+      "submitting": "Restableciendo...",
+      "submit": "Restablecer contraseña",
+      "invalidLink": "A este enlace le falta el token de restablecimiento; puede que tu cliente de correo lo haya recortado. Solicita uno nuevo abajo.",
+      "linkExpired": "¿El enlace caducó?",
+      "needFreshLink": "¿Necesitas un enlace nuevo?",
+      "requestNew": "Solicitar un nuevo enlace"
+    }
   }
 }

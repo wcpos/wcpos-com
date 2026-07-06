@@ -22,6 +22,19 @@ vi.mock('@/i18n/navigation', () => ({
   ),
 }))
 
+const messages: Record<string, string> = {
+  'errors.genericTitle': 'Something went wrong.',
+  'errors.genericDescription':
+    'The error has been reported. You can try again, or come back later.',
+  'errors.tryAgain': 'Try again',
+  'errors.goHome': 'Go to homepage',
+}
+
+vi.mock('next-intl', () => ({
+  useTranslations: (namespace: string) => (key: string) =>
+    messages[`${namespace}.${key}`] ?? key,
+}))
+
 describe('LocaleError', () => {
   it('renders the error state and retries via reset', () => {
     const reset = vi.fn()

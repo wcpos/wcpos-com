@@ -1,11 +1,19 @@
 import type { Metadata } from 'next'
-import { setRequestLocale } from 'next-intl/server'
+import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { RegisterPageClient } from './register-page-client'
 
-export const metadata: Metadata = {
-  title: 'Create an account',
-  description: 'Sign up for a WCPOS account to purchase Pro, manage licenses, and access downloads.',
-  robots: { index: false, follow: false },
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}): Promise<Metadata> {
+  const { locale } = await params
+  const t = await getTranslations({ locale, namespace: 'auth.register' })
+  return {
+    title: t('metaTitle'),
+    description: t('metaDescription'),
+    robots: { index: false, follow: false },
+  }
 }
 
 export default async function RegisterPage({

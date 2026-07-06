@@ -357,5 +357,85 @@
       "emailProvider": "Email e password",
       "emailDescription": "Accedi con il tuo indirizzo email."
     }
+  },
+  "metadata": {
+    "siteTitle": "WCPOS - Punto vendita per WooCommerce",
+    "siteDescription": "Punto vendita per WooCommerce. Un sistema POS veloce e affidabile per il tuo negozio WooCommerce."
+  },
+  "errors": {
+    "genericTitle": "Qualcosa è andato storto.",
+    "genericDescription": "L’errore è stato segnalato. Puoi riprovare o tornare più tardi.",
+    "tryAgain": "Riprova",
+    "goHome": "Vai alla home",
+    "notFoundTitle": "Pagina non trovata",
+    "notFoundDescription": "La pagina che cerchi non esiste o potrebbe essere stata spostata."
+  },
+  "consent": {
+    "label": "Consenso cookie",
+    "message": "Usiamo un cookie analitico anonimo per capire come viene usato il sito. Niente annunci, nessun tracciamento di terze parti. <privacyLink>Informativa sulla privacy</privacyLink>",
+    "privacyPolicy": "Informativa sulla privacy",
+    "decline": "Rifiuta",
+    "accept": "Accetta"
+  },
+  "auth": {
+    "common": {
+      "email": "Email",
+      "password": "Password",
+      "newPassword": "Nuova password",
+      "firstName": "Nome",
+      "lastName": "Cognome",
+      "emailPlaceholder": "tu@example.com",
+      "passwordHint": "Almeno {min} caratteri",
+      "genericError": "Qualcosa è andato storto. Riprova.",
+      "signIn": "Accedi",
+      "signUp": "Registrati"
+    },
+    "login": {
+      "metaTitle": "Accedi",
+      "metaDescription": "Accedi al tuo account WCPOS per gestire ordini, licenze e download.",
+      "title": "Accedi",
+      "description": "Accedi al tuo account WCPOS",
+      "forgotPassword": "Password dimenticata?",
+      "oauthFailed": "Accesso OAuth non riuscito. Riprova o usa email/password.",
+      "loginFailed": "Accesso non riuscito",
+      "submitting": "Accesso in corso...",
+      "oauthDivider": "Oppure continua con",
+      "noAccount": "Non hai un account?"
+    },
+    "register": {
+      "metaTitle": "Crea un account",
+      "metaDescription": "Crea un account WCPOS per acquistare Pro, gestire licenze e accedere ai download.",
+      "title": "Crea un account",
+      "description": "Registrati per un account WCPOS",
+      "accountExists": "Esiste già un account con questa email. Accedi.",
+      "failed": "Registrazione non riuscita",
+      "submitting": "Creazione account...",
+      "submit": "Crea account",
+      "hasAccount": "Hai già un account?"
+    },
+    "forgotPassword": {
+      "metaTitle": "Password dimenticata",
+      "metaDescription": "Richiedi un link per reimpostare la password del tuo account WCPOS.",
+      "title": "Hai dimenticato la password?",
+      "description": "Inserisci la tua email e ti invieremo un link di reimpostazione",
+      "submitted": "Se esiste un account per {email}, un link per reimpostare la password è in arrivo. Controlla la posta in arrivo e lo spam.",
+      "submitting": "Invio...",
+      "submit": "Invia link di reimpostazione",
+      "remembered": "Te la ricordi?"
+    },
+    "resetPassword": {
+      "metaTitle": "Reimposta password",
+      "metaDescription": "Scegli una nuova password per il tuo account WCPOS.",
+      "title": "Reimposta la password",
+      "descriptionValid": "Scegli una nuova password per {email}",
+      "descriptionInvalid": "Questo link di reimpostazione è incompleto",
+      "failed": "Impossibile reimpostare la password",
+      "submitting": "Reimpostazione...",
+      "submit": "Reimposta password",
+      "invalidLink": "A questo link manca il token di reimpostazione: potrebbe essere stato troncato dal client email. Richiedine uno nuovo qui sotto.",
+      "linkExpired": "Link scaduto?",
+      "needFreshLink": "Serve un nuovo link?",
+      "requestNew": "Richiedi un nuovo link"
+    }
   }
 }

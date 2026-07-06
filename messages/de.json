@@ -357,5 +357,85 @@
       "emailProvider": "E-Mail & Passwort",
       "emailDescription": "Du meldest dich mit deiner E-Mail-Adresse an."
     }
+  },
+  "metadata": {
+    "siteTitle": "WCPOS - Kassensystem für WooCommerce",
+    "siteDescription": "Kassensystem für WooCommerce. Ein schnelles, zuverlässiges POS-System für deinen WooCommerce-Shop."
+  },
+  "errors": {
+    "genericTitle": "Etwas ist schiefgelaufen.",
+    "genericDescription": "Der Fehler wurde gemeldet. Du kannst es erneut versuchen oder später wiederkommen.",
+    "tryAgain": "Erneut versuchen",
+    "goHome": "Zur Startseite",
+    "notFoundTitle": "Seite nicht gefunden",
+    "notFoundDescription": "Die gesuchte Seite existiert nicht oder wurde verschoben."
+  },
+  "consent": {
+    "label": "Cookie-Zustimmung",
+    "message": "Wir verwenden ein anonymes Analyse-Cookie, um zu verstehen, wie die Website genutzt wird. Keine Werbung, kein Tracking durch Dritte. <privacyLink>Datenschutzerklärung</privacyLink>",
+    "privacyPolicy": "Datenschutzerklärung",
+    "decline": "Ablehnen",
+    "accept": "Akzeptieren"
+  },
+  "auth": {
+    "common": {
+      "email": "E-Mail",
+      "password": "Passwort",
+      "newPassword": "Neues Passwort",
+      "firstName": "Vorname",
+      "lastName": "Nachname",
+      "emailPlaceholder": "du@example.com",
+      "passwordHint": "Mindestens {min} Zeichen",
+      "genericError": "Etwas ist schiefgelaufen. Bitte versuche es erneut.",
+      "signIn": "Anmelden",
+      "signUp": "Registrieren"
+    },
+    "login": {
+      "metaTitle": "Anmelden",
+      "metaDescription": "Melde dich bei deinem WCPOS-Konto an, um Bestellungen, Lizenzen und Downloads zu verwalten.",
+      "title": "Anmelden",
+      "description": "Melde dich bei deinem WCPOS-Konto an",
+      "forgotPassword": "Passwort vergessen?",
+      "oauthFailed": "OAuth-Anmeldung fehlgeschlagen. Bitte versuche es erneut oder nutze E-Mail/Passwort.",
+      "loginFailed": "Anmeldung fehlgeschlagen",
+      "submitting": "Anmeldung läuft...",
+      "oauthDivider": "Oder weiter mit",
+      "noAccount": "Noch kein Konto?"
+    },
+    "register": {
+      "metaTitle": "Konto erstellen",
+      "metaDescription": "Erstelle ein WCPOS-Konto, um Pro zu kaufen, Lizenzen zu verwalten und Downloads zu erhalten.",
+      "title": "Konto erstellen",
+      "description": "Registriere dich für ein WCPOS-Konto",
+      "accountExists": "Für diese E-Mail-Adresse existiert bereits ein Konto. Bitte melde dich an.",
+      "failed": "Registrierung fehlgeschlagen",
+      "submitting": "Konto wird erstellt...",
+      "submit": "Konto erstellen",
+      "hasAccount": "Du hast bereits ein Konto?"
+    },
+    "forgotPassword": {
+      "metaTitle": "Passwort vergessen",
+      "metaDescription": "Fordere einen Link zum Zurücksetzen des Passworts für dein WCPOS-Konto an.",
+      "title": "Passwort vergessen?",
+      "description": "Gib deine E-Mail-Adresse ein und wir senden dir einen Link zum Zurücksetzen",
+      "submitted": "Wenn für {email} ein Konto existiert, ist ein Link zum Zurücksetzen des Passworts unterwegs. Prüfe deinen Posteingang und Spam-Ordner.",
+      "submitting": "Wird gesendet...",
+      "submit": "Reset-Link senden",
+      "remembered": "Wieder eingefallen?"
+    },
+    "resetPassword": {
+      "metaTitle": "Passwort zurücksetzen",
+      "metaDescription": "Wähle ein neues Passwort für dein WCPOS-Konto.",
+      "title": "Passwort zurücksetzen",
+      "descriptionValid": "Wähle ein neues Passwort für {email}",
+      "descriptionInvalid": "Dieser Reset-Link ist unvollständig",
+      "failed": "Passwort konnte nicht zurückgesetzt werden",
+      "submitting": "Wird zurückgesetzt...",
+      "submit": "Passwort zurücksetzen",
+      "invalidLink": "Diesem Link fehlt das Reset-Token — möglicherweise wurde er von deinem E-Mail-Programm gekürzt. Fordere unten einen neuen Link an.",
+      "linkExpired": "Link abgelaufen?",
+      "needFreshLink": "Brauchst du einen neuen Link?",
+      "requestNew": "Neuen Reset-Link anfordern"
+    }
   }
 }

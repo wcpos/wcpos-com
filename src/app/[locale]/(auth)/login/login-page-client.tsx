@@ -2,6 +2,7 @@
 
 import { Suspense, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import { Link, useRouter } from '@/i18n/navigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -28,6 +29,8 @@ export function LoginPageClient() {
 }
 
 function LoginPageInner() {
+  const t = useTranslations('auth.login')
+  const tCommon = useTranslations('auth.common')
   const router = useRouter()
   const searchParams = useSearchParams()
   const redirectTo = sanitizeRedirectPath(searchParams.get('redirect'))
@@ -37,7 +40,7 @@ function LoginPageInner() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState(() => {
     if (!oauthError) return ''
-    if (oauthError === 'oauth_failed') return 'OAuth sign-in failed. Please try again or use email/password.'
+    if (oauthError === 'oauth_failed') return t('oauthFailed')
     return oauthError
   })
   const [loading, setLoading] = useState(false)
@@ -57,13 +60,13 @@ function LoginPageInner() {
       const data = await response.json()
 
       if (!response.ok) {
-        setError(data.error || 'Login failed')
+        setError(data.error || t('loginFailed'))
         return
       }
 
       router.push(redirectTo)
     } catch {
-      setError('Something went wrong. Please try again.')
+      setError(tCommon('genericError'))
     } finally {
       setLoading(false)
     }
@@ -74,9 +77,9 @@ function LoginPageInner() {
     <div className="w-full max-w-md">
       <Card elevated>
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl tracking-tight">Sign in</CardTitle>
+          <CardTitle className="text-2xl tracking-tight">{t('title')}</CardTitle>
           <CardDescription>
-            Sign in to your WCPOS account
+            {t('description')}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -88,11 +91,11 @@ function LoginPageInner() {
             )}
 
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">{tCommon('email')}</Label>
               <Input
                 id="email"
                 type="email"
-                placeholder="you@example.com"
+                placeholder={tCommon('emailPlaceholder')}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -102,12 +105,12 @@ function LoginPageInner() {
 
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password">{tCommon('password')}</Label>
                 <Link
                   href="/forgot-password"
                   className="text-sm text-primary hover:underline"
                 >
-                  Forgot password?
+                  {t('forgotPassword')}
                 </Link>
               </div>
               <Input
@@ -121,7 +124,7 @@ function LoginPageInner() {
             </div>
 
             <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? 'Signing in...' : 'Sign in'}
+              {loading ? t('submitting') : tCommon('signIn')}
             </Button>
           </form>
 
@@ -131,7 +134,7 @@ function LoginPageInner() {
             </div>
             <div className="relative flex justify-center text-xs uppercase">
               <span className="bg-card px-2 text-muted-foreground">
-                Or continue with
+                {t('oauthDivider')}
               </span>
             </div>
           </div>
@@ -174,12 +177,12 @@ function LoginPageInner() {
         </CardContent>
         <CardFooter className="justify-center">
           <p className="text-sm text-muted-foreground">
-            Don&apos;t have an account?{' '}
+            {t('noAccount')}{' '}
             <Link
               href={`/register?redirect=${encodeURIComponent(redirectTo)}`}
               className="text-primary hover:underline"
             >
-              Sign up
+              {tCommon('signUp')}
             </Link>
           </p>
         </CardFooter>

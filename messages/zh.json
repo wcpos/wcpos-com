@@ -357,5 +357,85 @@
       "emailProvider": "邮箱和密码",
       "emailDescription": "你使用邮箱地址登录。"
     }
+  },
+  "metadata": {
+    "siteTitle": "WCPOS - WooCommerce 销售点系统",
+    "siteDescription": "WooCommerce 销售点系统。为您的 WooCommerce 商店提供快速可靠的 POS 系统。"
+  },
+  "errors": {
+    "genericTitle": "出了点问题。",
+    "genericDescription": "错误已报告。您可以重试，或稍后再回来。",
+    "tryAgain": "重试",
+    "goHome": "前往首页",
+    "notFoundTitle": "页面未找到",
+    "notFoundDescription": "您要查找的页面不存在，或可能已被移动。"
+  },
+  "consent": {
+    "label": "Cookie 同意",
+    "message": "我们使用匿名分析 Cookie 来了解网站的使用情况。没有广告，也没有第三方跟踪。<privacyLink>隐私政策</privacyLink>",
+    "privacyPolicy": "隐私政策",
+    "decline": "拒绝",
+    "accept": "接受"
+  },
+  "auth": {
+    "common": {
+      "email": "电子邮件",
+      "password": "密码",
+      "newPassword": "新密码",
+      "firstName": "名",
+      "lastName": "姓",
+      "emailPlaceholder": "you@example.com",
+      "passwordHint": "至少 {min} 个字符",
+      "genericError": "出了点问题。请重试。",
+      "signIn": "登录",
+      "signUp": "注册"
+    },
+    "login": {
+      "metaTitle": "登录",
+      "metaDescription": "登录您的 WCPOS 账户以管理订单、许可证和下载。",
+      "title": "登录",
+      "description": "登录您的 WCPOS 账户",
+      "forgotPassword": "忘记密码？",
+      "oauthFailed": "OAuth 登录失败。请重试或使用电子邮件/密码。",
+      "loginFailed": "登录失败",
+      "submitting": "正在登录...",
+      "oauthDivider": "或继续使用",
+      "noAccount": "还没有账户？"
+    },
+    "register": {
+      "metaTitle": "创建账户",
+      "metaDescription": "创建 WCPOS 账户以购买 Pro、管理许可证并访问下载。",
+      "title": "创建账户",
+      "description": "注册 WCPOS 账户",
+      "accountExists": "此电子邮件已存在账户。请登录。",
+      "failed": "注册失败",
+      "submitting": "正在创建账户...",
+      "submit": "创建账户",
+      "hasAccount": "已经有账户？"
+    },
+    "forgotPassword": {
+      "metaTitle": "忘记密码",
+      "metaDescription": "为您的 WCPOS 账户请求密码重置链接。",
+      "title": "忘记密码？",
+      "description": "输入您的电子邮件，我们会发送重置链接",
+      "submitted": "如果 {email} 存在账户，密码重置链接正在发送。请检查收件箱和垃圾邮件文件夹。",
+      "submitting": "正在发送...",
+      "submit": "发送重置链接",
+      "remembered": "想起来了？"
+    },
+    "resetPassword": {
+      "metaTitle": "重置密码",
+      "metaDescription": "为您的 WCPOS 账户选择新密码。",
+      "title": "重置密码",
+      "descriptionValid": "为 {email} 选择新密码",
+      "descriptionInvalid": "此重置链接不完整",
+      "failed": "无法重置密码",
+      "submitting": "正在重置...",
+      "submit": "重置密码",
+      "invalidLink": "此链接缺少重置令牌，可能被您的邮件客户端截断。请在下方请求新的链接。",
+      "linkExpired": "链接已过期？",
+      "needFreshLink": "需要新的链接？",
+      "requestNew": "请求新的重置链接"
+    }
   }
 }

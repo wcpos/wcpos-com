@@ -357,5 +357,85 @@
       "emailProvider": "Email e palavra-passe",
       "emailDescription": "Inicia sessão com o teu endereço de email."
     }
+  },
+  "metadata": {
+    "siteTitle": "WCPOS - Ponto de venda para WooCommerce",
+    "siteDescription": "Ponto de venda para WooCommerce. Um sistema POS rápido e fiável para a sua loja WooCommerce."
+  },
+  "errors": {
+    "genericTitle": "Algo correu mal.",
+    "genericDescription": "O erro foi comunicado. Pode tentar novamente ou voltar mais tarde.",
+    "tryAgain": "Tentar novamente",
+    "goHome": "Ir para a página inicial",
+    "notFoundTitle": "Página não encontrada",
+    "notFoundDescription": "A página que procura não existe ou pode ter sido movida."
+  },
+  "consent": {
+    "label": "Consentimento de cookies",
+    "message": "Usamos um cookie de análise anónimo para compreender como o site é utilizado. Sem anúncios, sem rastreamento de terceiros. <privacyLink>Política de privacidade</privacyLink>",
+    "privacyPolicy": "Política de privacidade",
+    "decline": "Recusar",
+    "accept": "Aceitar"
+  },
+  "auth": {
+    "common": {
+      "email": "Email",
+      "password": "Palavra-passe",
+      "newPassword": "Nova palavra-passe",
+      "firstName": "Nome",
+      "lastName": "Apelido",
+      "emailPlaceholder": "voce@example.com",
+      "passwordHint": "Pelo menos {min} caracteres",
+      "genericError": "Algo correu mal. Tente novamente.",
+      "signIn": "Iniciar sessão",
+      "signUp": "Registar"
+    },
+    "login": {
+      "metaTitle": "Iniciar sessão",
+      "metaDescription": "Inicie sessão na sua conta WCPOS para gerir encomendas, licenças e transferências.",
+      "title": "Iniciar sessão",
+      "description": "Inicie sessão na sua conta WCPOS",
+      "forgotPassword": "Esqueceu-se da palavra-passe?",
+      "oauthFailed": "O início de sessão OAuth falhou. Tente novamente ou use email/palavra-passe.",
+      "loginFailed": "Falha ao iniciar sessão",
+      "submitting": "A iniciar sessão...",
+      "oauthDivider": "Ou continue com",
+      "noAccount": "Ainda não tem uma conta?"
+    },
+    "register": {
+      "metaTitle": "Criar uma conta",
+      "metaDescription": "Crie uma conta WCPOS para comprar Pro, gerir licenças e aceder a transferências.",
+      "title": "Criar uma conta",
+      "description": "Registe-se para obter uma conta WCPOS",
+      "accountExists": "Já existe uma conta com este email. Inicie sessão.",
+      "failed": "Falha no registo",
+      "submitting": "A criar conta...",
+      "submit": "Criar conta",
+      "hasAccount": "Já tem uma conta?"
+    },
+    "forgotPassword": {
+      "metaTitle": "Palavra-passe esquecida",
+      "metaDescription": "Peça um link de reposição para a sua conta WCPOS.",
+      "title": "Esqueceu-se da palavra-passe?",
+      "description": "Introduza o seu email e enviaremos um link de reposição",
+      "submitted": "Se existir uma conta para {email}, um link de reposição da palavra-passe está a caminho. Verifique a caixa de entrada e o spam.",
+      "submitting": "A enviar...",
+      "submit": "Enviar link de reposição",
+      "remembered": "Lembrou-se?"
+    },
+    "resetPassword": {
+      "metaTitle": "Repor palavra-passe",
+      "metaDescription": "Escolha uma nova palavra-passe para a sua conta WCPOS.",
+      "title": "Repor a palavra-passe",
+      "descriptionValid": "Escolha uma nova palavra-passe para {email}",
+      "descriptionInvalid": "Este link de reposição está incompleto",
+      "failed": "Não foi possível repor a palavra-passe",
+      "submitting": "A repor...",
+      "submit": "Repor palavra-passe",
+      "invalidLink": "Este link não tem o token de reposição — pode ter sido cortado pelo seu cliente de email. Peça um novo abaixo.",
+      "linkExpired": "Link expirado?",
+      "needFreshLink": "Precisa de um novo link?",
+      "requestNew": "Pedir novo link de reposição"
+    }
   }
 }

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "generatedBy": "scripts/i18n/hardcoded-english.ts --update",
-  "updatedAt": "2026-07-06T22:44:39.951Z",
+  "updatedAt": "2026-07-06T22:53:44.555Z",
   "scope": [
     "src/app",
     "src/components",
@@ -10,107 +10,11 @@
   ],
   "entries": [
     {
-      "id": "1c64aa3f4b1f07b1",
-      "file": "src/app/[locale]/(auth)/forgot-password/forgot-password-page-client.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": ", a password reset link is on its way. Check your inbox (and spam folder).",
-      "count": 1
-    },
-    {
-      "id": "aa4f3643f58c419c",
-      "file": "src/app/[locale]/(auth)/forgot-password/forgot-password-page-client.tsx",
-      "category": "route/page",
-      "attr": "autoComplete",
-      "text": "email",
-      "count": 1
-    },
-    {
-      "id": "6207c42ffb7b904b",
-      "file": "src/app/[locale]/(auth)/forgot-password/forgot-password-page-client.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "Email",
-      "count": 1
-    },
-    {
-      "id": "bfcc2779bca0b0f6",
-      "file": "src/app/[locale]/(auth)/forgot-password/forgot-password-page-client.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "Enter your email and we&apos;ll send you a reset link",
-      "count": 1
-    },
-    {
-      "id": "3fedb33feb975ef6",
-      "file": "src/app/[locale]/(auth)/forgot-password/forgot-password-page-client.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "Forgot your password?",
-      "count": 1
-    },
-    {
-      "id": "feec5e2c570af009",
-      "file": "src/app/[locale]/(auth)/forgot-password/forgot-password-page-client.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "If an account exists for",
-      "count": 1
-    },
-    {
-      "id": "520c5e418ddd0280",
-      "file": "src/app/[locale]/(auth)/forgot-password/forgot-password-page-client.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "Remembered it?",
-      "count": 1
-    },
-    {
-      "id": "7f9803a6050ff1cf",
-      "file": "src/app/[locale]/(auth)/forgot-password/forgot-password-page-client.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "Send reset link",
-      "count": 1
-    },
-    {
-      "id": "3a8d81b62ddab0bb",
-      "file": "src/app/[locale]/(auth)/forgot-password/forgot-password-page-client.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "Sign in",
-      "count": 1
-    },
-    {
-      "id": "0c30dd4371ced148",
-      "file": "src/app/[locale]/(auth)/forgot-password/forgot-password-page-client.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "Something went wrong. Please try again.",
-      "count": 2
-    },
-    {
       "id": "9c22c6fc3a96fd20",
       "file": "src/app/[locale]/(auth)/forgot-password/forgot-password-page-client.tsx",
       "category": "route/page",
       "attr": null,
       "text": "use client",
-      "count": 1
-    },
-    {
-      "id": "4ffe4294bbc17172",
-      "file": "src/app/[locale]/(auth)/forgot-password/page.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "Forgot password",
-      "count": 1
-    },
-    {
-      "id": "4f3c97ffdb93a895",
-      "file": "src/app/[locale]/(auth)/forgot-password/page.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "Request a password reset link for your WCPOS account.",
       "count": 1
     },
     {
@@ -154,43 +58,11 @@
       "count": 1
     },
     {
-      "id": "f6e99a441414f7a6",
-      "file": "src/app/[locale]/(auth)/login/login-page-client.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "Don&apos;t have an account?",
-      "count": 1
-    },
-    {
-      "id": "d5469e7438dfe307",
-      "file": "src/app/[locale]/(auth)/login/login-page-client.tsx",
-      "category": "route/page",
-      "attr": "autoComplete",
-      "text": "email",
-      "count": 1
-    },
-    {
-      "id": "a2b7ba92abf21806",
-      "file": "src/app/[locale]/(auth)/login/login-page-client.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "Email",
-      "count": 1
-    },
-    {
       "id": "6136efe95a1c52dd",
       "file": "src/app/[locale]/(auth)/login/login-page-client.tsx",
       "category": "route/page",
       "attr": null,
       "text": "error",
-      "count": 1
-    },
-    {
-      "id": "5e1908d7061a945e",
-      "file": "src/app/[locale]/(auth)/login/login-page-client.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "Forgot password?",
       "count": 1
     },
     {
@@ -210,115 +82,11 @@
       "count": 1
     },
     {
-      "id": "ab7ab894d79c6370",
-      "file": "src/app/[locale]/(auth)/login/login-page-client.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "Login failed",
-      "count": 1
-    },
-    {
-      "id": "c36e33d63e00f293",
-      "file": "src/app/[locale]/(auth)/login/login-page-client.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "OAuth sign-in failed. Please try again or use email/password.",
-      "count": 1
-    },
-    {
-      "id": "d6d9491623db9341",
-      "file": "src/app/[locale]/(auth)/login/login-page-client.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "Or continue with",
-      "count": 1
-    },
-    {
-      "id": "ed3f45f7f572f410",
-      "file": "src/app/[locale]/(auth)/login/login-page-client.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "Password",
-      "count": 1
-    },
-    {
-      "id": "efd205867e151bb7",
-      "file": "src/app/[locale]/(auth)/login/login-page-client.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "Sign in",
-      "count": 2
-    },
-    {
-      "id": "7066fef9d0e5f75d",
-      "file": "src/app/[locale]/(auth)/login/login-page-client.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "Sign in to your WCPOS account",
-      "count": 1
-    },
-    {
-      "id": "ccdba63a41ca0b99",
-      "file": "src/app/[locale]/(auth)/login/login-page-client.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "Sign up",
-      "count": 1
-    },
-    {
-      "id": "ab2af6552fc27cf9",
-      "file": "src/app/[locale]/(auth)/login/login-page-client.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "Signing in...",
-      "count": 1
-    },
-    {
-      "id": "88ca96929982c818",
-      "file": "src/app/[locale]/(auth)/login/login-page-client.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "Something went wrong. Please try again.",
-      "count": 1
-    },
-    {
       "id": "d176b5c710a3c0c5",
       "file": "src/app/[locale]/(auth)/login/login-page-client.tsx",
       "category": "route/page",
       "attr": null,
       "text": "use client",
-      "count": 1
-    },
-    {
-      "id": "be845545ec945b9c",
-      "file": "src/app/[locale]/(auth)/login/page.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "Sign in",
-      "count": 1
-    },
-    {
-      "id": "7b396d94fe7224f2",
-      "file": "src/app/[locale]/(auth)/login/page.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "Sign in to your WCPOS account to manage your orders, licenses, and downloads.",
-      "count": 1
-    },
-    {
-      "id": "42485de02ce83feb",
-      "file": "src/app/[locale]/(auth)/register/page.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "Create an account",
-      "count": 1
-    },
-    {
-      "id": "a348b78eb88ded1a",
-      "file": "src/app/[locale]/(auth)/register/page.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "Sign up for a WCPOS account to purchase Pro, manage licenses, and access downloads.",
       "count": 1
     },
     {
@@ -330,126 +98,6 @@
       "count": 1
     },
     {
-      "id": "0716eda191accd73",
-      "file": "src/app/[locale]/(auth)/register/register-page-client.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "Already have an account?",
-      "count": 1
-    },
-    {
-      "id": "1e8f2da04aa1adec",
-      "file": "src/app/[locale]/(auth)/register/register-page-client.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "An account with this email already exists. Please sign in.",
-      "count": 1
-    },
-    {
-      "id": "21a6cc6b20a1b057",
-      "file": "src/app/[locale]/(auth)/register/register-page-client.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "At least",
-      "count": 1
-    },
-    {
-      "id": "7162b1f72e43e369",
-      "file": "src/app/[locale]/(auth)/register/register-page-client.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "Create account",
-      "count": 1
-    },
-    {
-      "id": "f5bf9c69f0673237",
-      "file": "src/app/[locale]/(auth)/register/register-page-client.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "Create an account",
-      "count": 1
-    },
-    {
-      "id": "1f40bb2388350b23",
-      "file": "src/app/[locale]/(auth)/register/register-page-client.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "Creating account...",
-      "count": 1
-    },
-    {
-      "id": "7d6b325cc1851398",
-      "file": "src/app/[locale]/(auth)/register/register-page-client.tsx",
-      "category": "route/page",
-      "attr": "autoComplete",
-      "text": "email",
-      "count": 1
-    },
-    {
-      "id": "95712146280eeada",
-      "file": "src/app/[locale]/(auth)/register/register-page-client.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "Email",
-      "count": 1
-    },
-    {
-      "id": "e1d06bd729e95db5",
-      "file": "src/app/[locale]/(auth)/register/register-page-client.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "First name",
-      "count": 1
-    },
-    {
-      "id": "7988815b85def62d",
-      "file": "src/app/[locale]/(auth)/register/register-page-client.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "Last name",
-      "count": 1
-    },
-    {
-      "id": "a388cd55be9c6280",
-      "file": "src/app/[locale]/(auth)/register/register-page-client.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "Password",
-      "count": 1
-    },
-    {
-      "id": "abb96c2fe93dc437",
-      "file": "src/app/[locale]/(auth)/register/register-page-client.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "Registration failed",
-      "count": 1
-    },
-    {
-      "id": "cbe6c72819b5e5df",
-      "file": "src/app/[locale]/(auth)/register/register-page-client.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "Sign in",
-      "count": 1
-    },
-    {
-      "id": "e8a449ff08b478f9",
-      "file": "src/app/[locale]/(auth)/register/register-page-client.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "Sign up for a WCPOS account",
-      "count": 1
-    },
-    {
-      "id": "b258e45fb0620992",
-      "file": "src/app/[locale]/(auth)/register/register-page-client.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "Something went wrong. Please try again.",
-      "count": 1
-    },
-    {
       "id": "7cdcc33e23ee9fe6",
       "file": "src/app/[locale]/(auth)/register/register-page-client.tsx",
       "category": "route/page",
@@ -458,123 +106,11 @@
       "count": 1
     },
     {
-      "id": "1318212abbd5fb53",
-      "file": "src/app/[locale]/(auth)/reset-password/page.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "Choose a new password for your WCPOS account.",
-      "count": 1
-    },
-    {
-      "id": "316c226c60a651c2",
-      "file": "src/app/[locale]/(auth)/reset-password/page.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "Reset password",
-      "count": 1
-    },
-    {
-      "id": "17d6597a47f65ba3",
-      "file": "src/app/[locale]/(auth)/reset-password/reset-password-page-client.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "At least",
-      "count": 1
-    },
-    {
-      "id": "28b7cb020ad373fa",
-      "file": "src/app/[locale]/(auth)/reset-password/reset-password-page-client.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "Choose a new password for",
-      "count": 1
-    },
-    {
       "id": "e75ae117afd05ece",
       "file": "src/app/[locale]/(auth)/reset-password/reset-password-page-client.tsx",
       "category": "route/page",
       "attr": null,
       "text": "email",
-      "count": 1
-    },
-    {
-      "id": "c9f951f32194f484",
-      "file": "src/app/[locale]/(auth)/reset-password/reset-password-page-client.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "Failed to reset password",
-      "count": 1
-    },
-    {
-      "id": "49d171f04a737808",
-      "file": "src/app/[locale]/(auth)/reset-password/reset-password-page-client.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "Link expired?",
-      "count": 1
-    },
-    {
-      "id": "469d30d1da14a9a1",
-      "file": "src/app/[locale]/(auth)/reset-password/reset-password-page-client.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "Need a fresh link?",
-      "count": 1
-    },
-    {
-      "id": "f36bf7fc870bc79d",
-      "file": "src/app/[locale]/(auth)/reset-password/reset-password-page-client.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "New password",
-      "count": 1
-    },
-    {
-      "id": "ac282340eec5038a",
-      "file": "src/app/[locale]/(auth)/reset-password/reset-password-page-client.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "Request a new reset link",
-      "count": 1
-    },
-    {
-      "id": "4bb02c56a1680547",
-      "file": "src/app/[locale]/(auth)/reset-password/reset-password-page-client.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "Reset password",
-      "count": 1
-    },
-    {
-      "id": "c5a0fa2b99ae79b8",
-      "file": "src/app/[locale]/(auth)/reset-password/reset-password-page-client.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "Reset your password",
-      "count": 1
-    },
-    {
-      "id": "47951da78cb86910",
-      "file": "src/app/[locale]/(auth)/reset-password/reset-password-page-client.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "Something went wrong. Please try again.",
-      "count": 1
-    },
-    {
-      "id": "b5b6cc2551828202",
-      "file": "src/app/[locale]/(auth)/reset-password/reset-password-page-client.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "This link is missing its reset token — it may have been truncated by your email client. Request a new one below.",
-      "count": 1
-    },
-    {
-      "id": "399a945e2bba0152",
-      "file": "src/app/[locale]/(auth)/reset-password/reset-password-page-client.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "This reset link is incomplete",
       "count": 1
     },
     {
@@ -2178,43 +1714,11 @@
       "count": 1
     },
     {
-      "id": "d34da65d73d32c80",
-      "file": "src/app/[locale]/error.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "Go to homepage",
-      "count": 1
-    },
-    {
       "id": "e3ad6288a124fc93",
       "file": "src/app/[locale]/error.tsx",
       "category": "route/page",
       "attr": null,
       "text": "Page error:",
-      "count": 1
-    },
-    {
-      "id": "ea642d2f83b25119",
-      "file": "src/app/[locale]/error.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "Something went wrong.",
-      "count": 1
-    },
-    {
-      "id": "9ee9c912f170517f",
-      "file": "src/app/[locale]/error.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "The error has been reported. You can try again, or come back later.",
-      "count": 1
-    },
-    {
-      "id": "7e3980ed6a290328",
-      "file": "src/app/[locale]/error.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "Try again",
       "count": 1
     },
     {
@@ -2231,54 +1735,6 @@
       "category": "route/page",
       "attr": null,
       "text": "%s | WCPOS",
-      "count": 1
-    },
-    {
-      "id": "ff51f6216184968e",
-      "file": "src/app/[locale]/layout.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "Point of Sale for WooCommerce. Fast, reliable POS system for your WooCommerce store.",
-      "count": 1
-    },
-    {
-      "id": "abbb926670baf02a",
-      "file": "src/app/[locale]/layout.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "WCPOS - Point of Sale for WooCommerce",
-      "count": 1
-    },
-    {
-      "id": "58711da048bb39d3",
-      "file": "src/app/[locale]/not-found.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "Go to homepage",
-      "count": 1
-    },
-    {
-      "id": "181cdcbd2799cc54",
-      "file": "src/app/[locale]/not-found.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "Page not found",
-      "count": 1
-    },
-    {
-      "id": "790405b1c049776c",
-      "file": "src/app/[locale]/not-found.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "Support",
-      "count": 1
-    },
-    {
-      "id": "b069e1696a60297c",
-      "file": "src/app/[locale]/not-found.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "The page you are looking for does not exist or may have moved.",
       "count": 1
     },
     {
@@ -4730,14 +4186,6 @@
       "count": 1
     },
     {
-      "id": "cc3e59daffab44c2",
-      "file": "src/components/account/downloads-client.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "download",
-      "count": 1
-    },
-    {
       "id": "d9e942edac60f058",
       "file": "src/components/account/downloads-client.tsx",
       "category": "component",
@@ -4786,14 +4234,6 @@
       "count": 6
     },
     {
-      "id": "a030607bbb93be01",
-      "file": "src/components/account/licenses-client.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "downloads",
-      "count": 2
-    },
-    {
       "id": "1ece3fe485bfbfdc",
       "file": "src/components/account/licenses-client.tsx",
       "category": "component",
@@ -4826,34 +4266,10 @@
       "count": 1
     },
     {
-      "id": "a653b9c279d38be1",
-      "file": "src/components/account/profile-edit-form.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "city",
-      "count": 1
-    },
-    {
-      "id": "543577e6c3de036b",
-      "file": "src/components/account/profile-edit-form.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "country",
-      "count": 1
-    },
-    {
       "id": "c24981173f2e4245",
       "file": "src/components/account/profile-edit-form.tsx",
       "category": "component",
       "attr": null,
-      "text": "email",
-      "count": 2
-    },
-    {
-      "id": "d6205e9808d98ae6",
-      "file": "src/components/account/profile-edit-form.tsx",
-      "category": "component",
-      "attr": "autoComplete",
       "text": "email",
       "count": 1
     },
@@ -4872,14 +4288,6 @@
       "attr": null,
       "text": "google",
       "count": 4
-    },
-    {
-      "id": "f4789688595f8542",
-      "file": "src/components/account/profile-edit-form.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "phone",
-      "count": 1
     },
     {
       "id": "158459892aa33b98",
@@ -4930,35 +4338,11 @@
       "count": 1
     },
     {
-      "id": "ad6519e4680e1b7d",
-      "file": "src/components/consent/consent-banner.tsx",
-      "category": "component",
-      "attr": "aria-label",
-      "text": "Cookie consent",
-      "count": 1
-    },
-    {
-      "id": "c30a4b10f921e048",
-      "file": "src/components/consent/consent-banner.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Privacy policy",
-      "count": 1
-    },
-    {
       "id": "14018a8ea4980906",
       "file": "src/components/consent/consent-banner.tsx",
       "category": "component",
       "attr": null,
       "text": "use client",
-      "count": 1
-    },
-    {
-      "id": "845c47c676475843",
-      "file": "src/components/consent/consent-banner.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "We use an anonymous analytics cookie to understand how the site is used. No ads, no third-party tracking.",
       "count": 1
     },
     {
@@ -7018,78 +6402,6 @@
       "count": 1
     },
     {
-      "id": "c6af9693a199c1fc",
-      "file": "src/components/main/site-footer.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "discord",
-      "count": 1
-    },
-    {
-      "id": "08c34cfa0e1cc19b",
-      "file": "src/components/main/site-footer.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "downloads",
-      "count": 1
-    },
-    {
-      "id": "4b5a7bf21b3589fe",
-      "file": "src/components/main/site-footer.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "github",
-      "count": 1
-    },
-    {
-      "id": "21a3b8d80683fda7",
-      "file": "src/components/main/site-footer.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "privacy",
-      "count": 1
-    },
-    {
-      "id": "c08e9de763cc73ad",
-      "file": "src/components/main/site-footer.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "pro",
-      "count": 1
-    },
-    {
-      "id": "91b3403fa29cbfa3",
-      "file": "src/components/main/site-footer.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "refunds",
-      "count": 1
-    },
-    {
-      "id": "c668548b9539920d",
-      "file": "src/components/main/site-footer.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "roadmap",
-      "count": 1
-    },
-    {
-      "id": "a68883d95c8fe164",
-      "file": "src/components/main/site-footer.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "terms",
-      "count": 1
-    },
-    {
-      "id": "4093861d2136db0f",
-      "file": "src/components/main/site-header.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "downloads",
-      "count": 1
-    },
-    {
       "id": "73bb42a79a0c29b2",
       "file": "src/components/main/site-header.tsx",
       "category": "component",
@@ -7098,35 +6410,11 @@
       "count": 1
     },
     {
-      "id": "5a5c523f501b62c2",
-      "file": "src/components/main/site-header.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "pro",
-      "count": 1
-    },
-    {
-      "id": "260c5f406a29b79e",
-      "file": "src/components/main/site-header.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "roadmap",
-      "count": 1
-    },
-    {
       "id": "6b5004c764ee4ed9",
       "file": "src/components/main/site-header.tsx",
       "category": "component",
       "attr": null,
       "text": "Sign In",
-      "count": 1
-    },
-    {
-      "id": "68f4ece24b07b9c6",
-      "file": "src/components/main/site-header.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "support",
       "count": 1
     },
     {
@@ -7834,14 +7122,6 @@
       "count": 1
     },
     {
-      "id": "49eaea5fdee83a49",
-      "file": "src/components/pro/checkout/account-step.tsx",
-      "category": "component",
-      "attr": "autoComplete",
-      "text": "email",
-      "count": 1
-    },
-    {
       "id": "0a33696352e6b9c3",
       "file": "src/components/pro/checkout/account-step.tsx",
       "category": "component",
@@ -7983,14 +7263,6 @@
       "category": "component",
       "attr": null,
       "text": "Could not save your billing address. Please try again.",
-      "count": 1
-    },
-    {
-      "id": "e9ef77f18ca97fed",
-      "file": "src/components/pro/checkout/billing-step.tsx",
-      "category": "component",
-      "attr": "autoComplete",
-      "text": "country",
       "count": 1
     },
     {

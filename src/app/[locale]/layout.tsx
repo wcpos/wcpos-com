@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import { NextIntlClientProvider } from 'next-intl'
-import { getMessages, setRequestLocale } from 'next-intl/server'
+import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server'
 import { ThemeProvider } from 'next-themes'
 import { locales } from '@/i18n/config'
 import { ClientLoggingInit } from '@/components/client-logging-init'
@@ -17,31 +17,39 @@ const geistMono = Geist_Mono({
   subsets: ['latin'],
 })
 
-export const metadata: Metadata = {
-  metadataBase: new URL('https://wcpos.com'),
-  title: {
-    template: '%s | WCPOS',
-    default: 'WCPOS - Point of Sale for WooCommerce',
-  },
-  description:
-    'Point of Sale for WooCommerce. Fast, reliable POS system for your WooCommerce store.',
-  openGraph: {
-    type: 'website',
-    siteName: 'WCPOS',
-    images: ['/opengraph-image.png'],
-    // og:image and twitter:image come from the static src/app/opengraph-image.png
-    // file convention. It lives at the APP ROOT, not under [locale]: a static
-    // metadata image inside a dynamic segment trips a Next.js cacheComponents
-    // prerender bug (vercel/next.js#88043 — generateStaticParams is ignored for
-    // opengraph-image), which fails the production build. The image is identical
-    // across locales, so one root image is both correct and bug-free. Do not
-    // move it back under [locale]. Regenerate it from scripts/og-image/
-    // (see the README there) when branding or the tagline changes.
-  },
-  twitter: {
-    card: 'summary_large_image',
-    images: ['/opengraph-image.png'],
-  },
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}): Promise<Metadata> {
+  const { locale } = await params
+  const t = await getTranslations({ locale, namespace: 'metadata' })
+
+  return {
+    metadataBase: new URL('https://wcpos.com'),
+    title: {
+      template: '%s | WCPOS',
+      default: t('siteTitle'),
+    },
+    description: t('siteDescription'),
+    openGraph: {
+      type: 'website',
+      siteName: 'WCPOS',
+      images: ['/opengraph-image.png'],
+      // og:image and twitter:image come from the static src/app/opengraph-image.png
+      // file convention. It lives at the APP ROOT, not under [locale]: a static
+      // metadata image inside a dynamic segment trips a Next.js cacheComponents
+      // prerender bug (vercel/next.js#88043 — generateStaticParams is ignored for
+      // opengraph-image), which fails the production build. The image is identical
+      // across locales, so one root image is both correct and bug-free. Do not
+      // move it back under [locale]. Regenerate it from scripts/og-image/
+      // (see the README there) when branding or the tagline changes.
+    },
+    twitter: {
+      card: 'summary_large_image',
+      images: ['/opengraph-image.png'],
+    },
+  }
 }
 
 export function generateStaticParams() {

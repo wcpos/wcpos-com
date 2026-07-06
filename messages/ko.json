@@ -357,5 +357,85 @@
       "emailProvider": "이메일 및 비밀번호",
       "emailDescription": "이메일 주소로 로그인합니다."
     }
+  },
+  "metadata": {
+    "siteTitle": "WCPOS - WooCommerce용 POS",
+    "siteDescription": "WooCommerce용 POS. WooCommerce 스토어를 위한 빠르고 안정적인 POS 시스템입니다."
+  },
+  "errors": {
+    "genericTitle": "문제가 발생했습니다.",
+    "genericDescription": "오류가 보고되었습니다. 다시 시도하거나 나중에 돌아와 주세요.",
+    "tryAgain": "다시 시도",
+    "goHome": "홈으로 이동",
+    "notFoundTitle": "페이지를 찾을 수 없습니다",
+    "notFoundDescription": "찾고 있는 페이지가 없거나 이동되었을 수 있습니다."
+  },
+  "consent": {
+    "label": "쿠키 동의",
+    "message": "사이트 사용 방식을 이해하기 위해 익명 분석 쿠키를 사용합니다. 광고도, 타사 추적도 없습니다. <privacyLink>개인정보 처리방침</privacyLink>",
+    "privacyPolicy": "개인정보 처리방침",
+    "decline": "거부",
+    "accept": "동의"
+  },
+  "auth": {
+    "common": {
+      "email": "이메일",
+      "password": "비밀번호",
+      "newPassword": "새 비밀번호",
+      "firstName": "이름",
+      "lastName": "성",
+      "emailPlaceholder": "you@example.com",
+      "passwordHint": "최소 {min}자",
+      "genericError": "문제가 발생했습니다. 다시 시도해 주세요.",
+      "signIn": "로그인",
+      "signUp": "가입"
+    },
+    "login": {
+      "metaTitle": "로그인",
+      "metaDescription": "WCPOS 계정에 로그인하여 주문, 라이선스, 다운로드를 관리하세요.",
+      "title": "로그인",
+      "description": "WCPOS 계정에 로그인",
+      "forgotPassword": "비밀번호를 잊으셨나요?",
+      "oauthFailed": "OAuth 로그인이 실패했습니다. 다시 시도하거나 이메일/비밀번호를 사용하세요.",
+      "loginFailed": "로그인 실패",
+      "submitting": "로그인 중...",
+      "oauthDivider": "또는 다음으로 계속",
+      "noAccount": "계정이 없으신가요?"
+    },
+    "register": {
+      "metaTitle": "계정 만들기",
+      "metaDescription": "WCPOS 계정을 만들어 Pro를 구매하고, 라이선스를 관리하고, 다운로드에 접근하세요.",
+      "title": "계정 만들기",
+      "description": "WCPOS 계정에 가입",
+      "accountExists": "이 이메일로 된 계정이 이미 있습니다. 로그인해 주세요.",
+      "failed": "가입 실패",
+      "submitting": "계정 생성 중...",
+      "submit": "계정 만들기",
+      "hasAccount": "이미 계정이 있으신가요?"
+    },
+    "forgotPassword": {
+      "metaTitle": "비밀번호 찾기",
+      "metaDescription": "WCPOS 계정의 비밀번호 재설정 링크를 요청하세요.",
+      "title": "비밀번호를 잊으셨나요?",
+      "description": "이메일을 입력하면 재설정 링크를 보내드립니다",
+      "submitted": "{email} 계정이 있으면 비밀번호 재설정 링크가 전송됩니다. 받은편지함과 스팸함을 확인하세요.",
+      "submitting": "보내는 중...",
+      "submit": "재설정 링크 보내기",
+      "remembered": "기억나셨나요?"
+    },
+    "resetPassword": {
+      "metaTitle": "비밀번호 재설정",
+      "metaDescription": "WCPOS 계정의 새 비밀번호를 선택하세요.",
+      "title": "비밀번호 재설정",
+      "descriptionValid": "{email}의 새 비밀번호를 선택하세요",
+      "descriptionInvalid": "이 재설정 링크는 완전하지 않습니다",
+      "failed": "비밀번호를 재설정하지 못했습니다",
+      "submitting": "재설정 중...",
+      "submit": "비밀번호 재설정",
+      "invalidLink": "이 링크에는 재설정 토큰이 없습니다. 이메일 클라이언트에서 잘렸을 수 있습니다. 아래에서 새 링크를 요청하세요.",
+      "linkExpired": "링크가 만료되었나요?",
+      "needFreshLink": "새 링크가 필요하신가요?",
+      "requestNew": "새 재설정 링크 요청"
+    }
   }
 }

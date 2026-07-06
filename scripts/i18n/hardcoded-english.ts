@@ -144,6 +144,7 @@ const skipAttr = new Set([
   'data-state',
   'data-slot',
   'data-step-state',
+  'autoComplete',
   'variant',
   'size',
   'color',
@@ -216,6 +217,17 @@ function isImportExportLiteral(node: ts.Node): boolean {
   )
 }
 
+function isTranslationKeyLiteral(node: ts.Node): boolean {
+  const parent = node.parent
+  if (!parent || !ts.isCallExpression(parent)) return false
+  const expression = parent.expression.getText()
+  return (
+    /^t[A-Z\w]*$/.test(expression) ||
+    expression === 'useTranslations' ||
+    expression === 'getTranslations'
+  )
+}
+
 function propName(node: ts.Node): string | null {
   const parent = node.parent
   if (parent && ts.isJsxAttribute(parent)) return parent.name.getText()
@@ -262,6 +274,7 @@ function scanFile(filePath: string): Hit[] {
       add(node, node.getText(sourceFile))
     } else if (ts.isStringLiteral(node) || ts.isNoSubstitutionTemplateLiteral(node)) {
       if (isImportExportLiteral(node)) return
+      if (isTranslationKeyLiteral(node)) return
       const attr = propName(node)
       if (attr === '__property_key__' || attr === '__property_access__') return
       if (attr && skipAttr.has(attr) && !interestingAttr.has(attr)) return

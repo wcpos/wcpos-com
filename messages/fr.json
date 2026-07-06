@@ -357,5 +357,85 @@
       "emailProvider": "E-mail et mot de passe",
       "emailDescription": "Vous vous connectez avec votre adresse e-mail."
     }
+  },
+  "metadata": {
+    "siteTitle": "WCPOS - Point de vente pour WooCommerce",
+    "siteDescription": "Point de vente pour WooCommerce. Un système POS rapide et fiable pour votre boutique WooCommerce."
+  },
+  "errors": {
+    "genericTitle": "Une erreur est survenue.",
+    "genericDescription": "L’erreur a été signalée. Vous pouvez réessayer ou revenir plus tard.",
+    "tryAgain": "Réessayer",
+    "goHome": "Aller à l’accueil",
+    "notFoundTitle": "Page introuvable",
+    "notFoundDescription": "La page que vous recherchez n’existe pas ou a peut-être été déplacée."
+  },
+  "consent": {
+    "label": "Consentement aux cookies",
+    "message": "Nous utilisons un cookie d’analyse anonyme pour comprendre l’utilisation du site. Pas de publicité, pas de suivi tiers. <privacyLink>Politique de confidentialité</privacyLink>",
+    "privacyPolicy": "Politique de confidentialité",
+    "decline": "Refuser",
+    "accept": "Accepter"
+  },
+  "auth": {
+    "common": {
+      "email": "E-mail",
+      "password": "Mot de passe",
+      "newPassword": "Nouveau mot de passe",
+      "firstName": "Prénom",
+      "lastName": "Nom",
+      "emailPlaceholder": "vous@example.com",
+      "passwordHint": "Au moins {min} caractères",
+      "genericError": "Une erreur est survenue. Veuillez réessayer.",
+      "signIn": "Se connecter",
+      "signUp": "S’inscrire"
+    },
+    "login": {
+      "metaTitle": "Se connecter",
+      "metaDescription": "Connectez-vous à votre compte WCPOS pour gérer vos commandes, licences et téléchargements.",
+      "title": "Se connecter",
+      "description": "Connectez-vous à votre compte WCPOS",
+      "forgotPassword": "Mot de passe oublié ?",
+      "oauthFailed": "La connexion OAuth a échoué. Réessayez ou utilisez e-mail/mot de passe.",
+      "loginFailed": "Échec de la connexion",
+      "submitting": "Connexion...",
+      "oauthDivider": "Ou continuer avec",
+      "noAccount": "Vous n’avez pas de compte ?"
+    },
+    "register": {
+      "metaTitle": "Créer un compte",
+      "metaDescription": "Créez un compte WCPOS pour acheter Pro, gérer vos licences et accéder aux téléchargements.",
+      "title": "Créer un compte",
+      "description": "Inscrivez-vous pour obtenir un compte WCPOS",
+      "accountExists": "Un compte existe déjà avec cet e-mail. Veuillez vous connecter.",
+      "failed": "Échec de l’inscription",
+      "submitting": "Création du compte...",
+      "submit": "Créer le compte",
+      "hasAccount": "Vous avez déjà un compte ?"
+    },
+    "forgotPassword": {
+      "metaTitle": "Mot de passe oublié",
+      "metaDescription": "Demandez un lien de réinitialisation pour votre compte WCPOS.",
+      "title": "Mot de passe oublié ?",
+      "description": "Saisissez votre e-mail et nous vous enverrons un lien de réinitialisation",
+      "submitted": "Si un compte existe pour {email}, un lien de réinitialisation est en route. Vérifiez votre boîte de réception et vos spams.",
+      "submitting": "Envoi...",
+      "submit": "Envoyer le lien",
+      "remembered": "Vous vous en souvenez ?"
+    },
+    "resetPassword": {
+      "metaTitle": "Réinitialiser le mot de passe",
+      "metaDescription": "Choisissez un nouveau mot de passe pour votre compte WCPOS.",
+      "title": "Réinitialiser votre mot de passe",
+      "descriptionValid": "Choisissez un nouveau mot de passe pour {email}",
+      "descriptionInvalid": "Ce lien de réinitialisation est incomplet",
+      "failed": "Impossible de réinitialiser le mot de passe",
+      "submitting": "Réinitialisation...",
+      "submit": "Réinitialiser le mot de passe",
+      "invalidLink": "Il manque le jeton de réinitialisation à ce lien — il a peut-être été tronqué par votre client de messagerie. Demandez-en un nouveau ci-dessous.",
+      "linkExpired": "Lien expiré ?",
+      "needFreshLink": "Besoin d’un nouveau lien ?",
+      "requestNew": "Demander un nouveau lien"
+    }
   }
 }
