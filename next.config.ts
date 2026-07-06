@@ -6,10 +6,17 @@ const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 const discordInviteUrl = "https://discord.gg/MV3E9dSUD";
 const localePattern = locales.join("|");
 
-// Report-Only CSP: logs violations to the browser console without blocking
+// Report-Only CSP: reports violations to /api/csp-report without blocking
 // anything. Origins cover Stripe, PayPal, PostHog, Sentry, and the WidgetBot
 // Discord embed. Promote to an enforcing Content-Security-Policy header once
 // it has been verified clean against real checkout/analytics traffic.
+//
+// A report-only policy with no reporting directive is inert (the browser warns
+// "the policy will have no effect"), so both reporting mechanisms are wired up:
+//   - report-to  → the "csp-endpoint" named in the Reporting-Endpoints header
+//     below (Chromium / Reporting API)
+//   - report-uri → a direct path fallback for Safari/Firefox, which don't yet
+//     honour report-to. Browsers that support report-to ignore report-uri.
 //
 // PostHog is self-hosted at ph.wcpos.com (NEXT_PUBLIC_POSTHOG_HOST) — the
 // browser never talks to PostHog Cloud (*.posthog.com), so that origin is not
@@ -17,6 +24,7 @@ const localePattern = locales.join("|");
 // (connect) both target the self-hosted origin directly; there is no /ingest
 // first-party proxy. analytics.wcpos.com is the Umami instance — nothing on
 // the site loads it today, but it stays allowed for a future re-add.
+const CSP_REPORT_PATH = "/api/csp-report";
 const cspReportOnly = [
   "default-src 'self'",
   "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://js.stripe.com https://www.paypal.com https://www.sandbox.paypal.com https://www.paypalobjects.com https://ph.wcpos.com https://analytics.wcpos.com https://challenges.cloudflare.com",
@@ -28,6 +36,8 @@ const cspReportOnly = [
   "object-src 'none'",
   "base-uri 'self'",
   "form-action 'self' https://www.paypal.com https://www.sandbox.paypal.com",
+  `report-uri ${CSP_REPORT_PATH}`,
+  "report-to csp-endpoint",
 ].join("; ");
 
 const securityHeaders = [
@@ -46,6 +56,13 @@ const securityHeaders = [
   {
     key: "Permissions-Policy",
     value: "camera=(), microphone=(), geolocation=(), browsing-topics=()",
+  },
+  // Names the "csp-endpoint" group that the CSP's report-to directive targets
+  // (Reporting API). Same-origin path so it follows whichever host served the
+  // page (wcpos.com / www).
+  {
+    key: "Reporting-Endpoints",
+    value: `csp-endpoint="${CSP_REPORT_PATH}"`,
   },
   { key: "Content-Security-Policy-Report-Only", value: cspReportOnly },
 ];
