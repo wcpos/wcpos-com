@@ -14,6 +14,15 @@ interface AdminOrdersResponse {
   orders?: MedusaOrder[]
 }
 
+// The account order pages (projection, receipts, license extraction) read these
+// off each order. Unlike `/store/orders`, `/admin/orders` does NOT return
+// `email`, `currency_code`, `subtotal`, or `tax_total` by default — omitting
+// them left `currency_code` undefined, which threw when formatting money and
+// broke the whole Orders page under "view as". `*items` expands the line items
+// (with their `metadata`); order `metadata` carries the license references.
+const ADMIN_ORDER_FIELDS =
+  'id,display_id,created_at,updated_at,email,currency_code,total,subtotal,tax_total,status,payment_status,fulfillment_status,metadata,*items'
+
 function requireAdminToken(): string {
   if (!env.MEDUSA_ADMIN_API_TOKEN) {
     throw new Error('MEDUSA_ADMIN_API_TOKEN is required for Discord reconciliation')
@@ -86,6 +95,7 @@ export async function listAdminCustomerOrders(
       limit: String(batchSize),
       offset: String(batch * batchSize),
       customer_id: customerId,
+      fields: ADMIN_ORDER_FIELDS,
     })
 
     const page = await medusaAdminFetch<AdminOrdersResponse>(
@@ -108,6 +118,7 @@ export async function getAdminCustomerOrderById(
     limit: '1',
     customer_id: customerId,
     id: orderId,
+    fields: ADMIN_ORDER_FIELDS,
   })
 
   try {
