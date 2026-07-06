@@ -1,7 +1,10 @@
 'use client'
 
 import { useRef } from 'react'
-import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js'
+import {
+  usePayPal,
+  usePayPalOneTimePaymentSession,
+} from '@paypal/react-paypal-js/sdk-v6'
 import { completeCart, createPaymentSession } from './complete-cart'
 import {
   createCancelledFailure,
@@ -45,48 +48,21 @@ export function PayPalButton({
   onSuccess,
   onFailure,
 }: PayPalButtonProps) {
-  const [{ isPending, isRejected }] = usePayPalScriptReducer()
-
   // When createOrder rejects, the PayPal SDK re-reports the same failure via
   // onError. The createOrder catch already reported it (with its own support
   // reference), so onError must skip that echo — otherwise the customer sees
   // a second message under a different reference for one failure.
   const createOrderFailureReported = useRef(false)
-
-  if (isPending) {
-    return (
-      <div className="space-y-2 rounded-md border border-dashed p-4">
-        <div className="h-10 animate-pulse rounded bg-muted" />
-        <p className="text-center text-sm text-muted-foreground">
-          Loading PayPal secure checkout...
-        </p>
-      </div>
-    )
-  }
-
-  if (isRejected) {
-    return (
-      <div className="text-center text-sm text-destructive py-4">
-        Failed to load PayPal. Please try another payment method.
-      </div>
-    )
-  }
-
-  return (
-    <PayPalButtons
-      style={{
-        layout: 'vertical',
-        color: 'gold',
-        shape: 'rect',
-        label: 'paypal',
-      }}
-      createOrder={async () => {
+  const { isHydrated } = usePayPal()
+  const { error, isPending, handleClick } =
+    usePayPalOneTimePaymentSession({
+      createOrder: async () => {
         createOrderFailureReported.current = false
         try {
           onFailure(null)
 
           if (paypalOrderId) {
-            return paypalOrderId
+            return { orderId: paypalOrderId }
           }
 
           // Set PayPal as the payment session
@@ -107,7 +83,7 @@ export function PayPalButton({
             throw new Error('No PayPal order ID returned')
           }
 
-          return fallbackPayPalOrderId
+          return { orderId: fallbackPayPalOrderId }
         } catch (err) {
           // No payment has happened yet — safe to retry.
           createOrderFailureReported.current = true
@@ -119,8 +95,8 @@ export function PayPalButton({
           )
           throw err
         }
-      }}
-      onApprove={async () => {
+      },
+      onApprove: async () => {
         const completion = await completeProviderConfirmedCheckout({
           complete: () => completeCart({ cartId, experiment, experimentVariant }),
           failureContext: {
@@ -134,8 +110,8 @@ export function PayPalButton({
         } else {
           onFailure(completion.failure)
         }
-      }}
-      onError={(err) => {
+      },
+      onError: (err) => {
         // Skip the SDK's echo of a createOrder failure that was already
         // reported (single failure, single reference). The flag is consumed
         // here and also reset at the start of every createOrder attempt, so
@@ -147,18 +123,41 @@ export function PayPalButton({
         onFailure(
           createPaymentFailure(PAYPAL_FAILED_MESSAGE, {
             source: 'paypal_sdk',
-            details: { cartId, error: err instanceof Error ? err.message : String(err) },
+            details: {
+              cartId,
+              error: err instanceof Error ? err.message : String(err),
+            },
           })
         )
-      }}
-      onCancel={() => {
+      },
+      onCancel: () => {
         onFailure(
           createCancelledFailure(PAYPAL_CANCELLED_MESSAGE, {
             source: 'paypal_cancel',
             details: { cartId },
           })
         )
-      }}
-    />
-  )
+      },
+    })
+
+  if (!isHydrated || isPending) {
+    return (
+      <div className="space-y-2 rounded-md border border-dashed p-4">
+        <div className="h-10 animate-pulse rounded bg-muted" />
+        <p className="text-center text-sm text-muted-foreground">
+          Loading PayPal secure checkout...
+        </p>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="text-center text-sm text-destructive py-4">
+        Failed to load PayPal. Please try another payment method.
+      </div>
+    )
+  }
+
+  return <paypal-button type="checkout" onClick={handleClick} />
 }

@@ -5,7 +5,7 @@ import { render, screen, waitFor, fireEvent } from '@testing-library/react'
 // (see store-environment.ts); tests exercise the all-providers setup.
 const ALL_PAYMENTS = {
   stripePublishableKey: 'pk_test_123',
-  paypalClientId: 'paypal_test_client',
+  paypal: { clientId: 'paypal_test_client', environment: 'sandbox' as const },
   btcpayEnabled: true,
 }
 

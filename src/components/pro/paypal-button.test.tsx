@@ -1,14 +1,25 @@
 import { describe, expect, it, vi, beforeEach } from 'vitest'
 import { render, screen } from '@testing-library/react'
 
-const mockUsePayPalScriptReducer = vi.fn()
-const capturePayPalButtonsProps = vi.fn()
+const capturePayPalSessionProps = vi.fn()
+const mockHandleClick = vi.fn()
+const mockHandleCancel = vi.fn()
+let mockPayPalState = {
+  isHydrated: true,
+  error: null as Error | null,
+  isPending: false,
+}
 
-vi.mock('@paypal/react-paypal-js', () => ({
-  usePayPalScriptReducer: () => mockUsePayPalScriptReducer(),
-  PayPalButtons: (props: Record<string, unknown>) => {
-    capturePayPalButtonsProps(props)
-    return <div data-testid="paypal-buttons">PayPal Buttons</div>
+vi.mock('@paypal/react-paypal-js/sdk-v6', () => ({
+  usePayPal: () => ({ isHydrated: mockPayPalState.isHydrated }),
+  usePayPalOneTimePaymentSession: (props: Record<string, unknown>) => {
+    capturePayPalSessionProps(props)
+    return {
+      error: mockPayPalState.error,
+      isPending: mockPayPalState.isPending,
+      handleClick: mockHandleClick,
+      handleCancel: mockHandleCancel,
+    }
   },
 }))
 
@@ -27,7 +38,7 @@ const onSuccess = vi.fn()
 const onFailure = vi.fn()
 
 interface CapturedPayPalProps {
-  createOrder: () => Promise<string>
+  createOrder: () => Promise<{ orderId: string }>
   onApprove: () => Promise<void>
   onError: (err: unknown) => void
   onCancel: () => void
@@ -44,7 +55,7 @@ function renderButton(paypalOrderId: string | null = 'PAYPAL_ORDER_1') {
       onFailure={onFailure}
     />
   )
-  return capturePayPalButtonsProps.mock.calls[0][0] as CapturedPayPalProps
+  return capturePayPalSessionProps.mock.calls[0][0] as CapturedPayPalProps
 }
 
 function lastFailure() {
@@ -53,29 +64,42 @@ function lastFailure() {
 
 beforeEach(() => {
   vi.clearAllMocks()
-  mockUsePayPalScriptReducer.mockReturnValue([{ isPending: false, isRejected: false }])
+  mockPayPalState = { isHydrated: true, error: null, isPending: false }
   vi.spyOn(console, 'error').mockImplementation(() => {})
   vi.spyOn(console, 'log').mockImplementation(() => {})
 })
 
 describe('PayPalButton', () => {
-  it('shows a non-spinner pending placeholder while the SDK loads', () => {
-    mockUsePayPalScriptReducer.mockReturnValue([{ isPending: true, isRejected: false }])
+  it('renders the v6 web component when the SDK session is ready', () => {
+    renderButton()
 
-    render(
-      <PayPalButton
-        cartId="cart_1"
-        experiment="pro_checkout_v1"
-        experimentVariant="control"
-        onSuccess={() => {}}
-        onFailure={() => {}}
-      />
+    expect(document.querySelector('paypal-button')).toBeInTheDocument()
+    expect(document.querySelector('paypal-button')).toHaveAttribute(
+      'type',
+      'checkout'
     )
+  })
+
+  it('shows a loading placeholder while the v6 SDK hydrates or initializes', () => {
+    mockPayPalState.isPending = true
+
+    renderButton()
 
     expect(
       screen.getByText('Loading PayPal secure checkout...')
     ).toBeInTheDocument()
-    expect(document.querySelector('.animate-spin')).not.toBeInTheDocument()
+    expect(document.querySelector('paypal-button')).not.toBeInTheDocument()
+  })
+
+  it('shows a visible fallback when the v6 SDK session fails to initialize', () => {
+    mockPayPalState.error = new Error('bad client/environment pair')
+
+    renderButton()
+
+    expect(
+      screen.getByText('Failed to load PayPal. Please try another payment method.')
+    ).toBeInTheDocument()
+    expect(document.querySelector('paypal-button')).not.toBeInTheDocument()
   })
 
   it('completes the cart and reports success on approval', async () => {
@@ -124,7 +148,9 @@ describe('PayPalButton', () => {
 
   it('clears a previous failure when a new attempt starts', async () => {
     const props = renderButton()
-    await props.createOrder()
+    await expect(props.createOrder()).resolves.toEqual({
+      orderId: 'PAYPAL_ORDER_1',
+    })
 
     expect(onFailure).toHaveBeenCalledWith(null)
   })

@@ -8,6 +8,7 @@ import { PayPalButton } from '../paypal-button'
 import { BTCPayButton } from '../btcpay-button'
 import { ExpressCheckoutRow } from './express-checkout'
 import type { CheckoutFailure } from '../checkout-safety'
+import type { PayPalCheckoutConfig } from '@/lib/checkout-payment-config'
 import type { ProCheckoutVariant } from '@/services/core/analytics/posthog-service'
 
 export type PaymentMethod = 'stripe' | 'paypal' | 'btcpay'
@@ -90,7 +91,7 @@ interface PaymentStepProps {
   enabled: { stripe: boolean; paypal: boolean; btcpay: boolean }
   /** Host-resolved public identifiers for the provider SDKs. */
   stripePublishableKey: string | null
-  paypalClientId: string | null
+  paypal: PayPalCheckoutConfig
   experiment: string
   experimentVariant: ProCheckoutVariant
   amount: number
@@ -124,7 +125,7 @@ export function PaymentStep({
   lockMethods = false,
   enabled,
   stripePublishableKey,
-  paypalClientId,
+  paypal,
   experiment,
   experimentVariant,
   amount,
@@ -191,7 +192,7 @@ export function PaymentStep({
           {isProcessing ? (
             <PreparingMethod />
           ) : (
-            <PayPalProvider clientId={paypalClientId}>
+            <PayPalProvider config={paypal}>
               <PayPalButton
                 cartId={cartId}
                 experiment={experiment}

@@ -7,7 +7,7 @@ import { evaluateCheckoutHtml } from '../../scripts/smoke-checkout.mjs'
 
 describe('evaluateCheckoutHtml', () => {
   it('accepts an escaped Flight-serialized pk_live_ value (the false-fail Codex flagged)', () => {
-    const html = String.raw`...\"stripePublishableKey\":\"pk_live_KlgLwN0RGeiWCv3yx6qjv4ef\",\"paypalClientId\":null...`
+    const html = String.raw`...\"stripePublishableKey\":\"pk_live_KlgLwN0RGeiWCv3yx6qjv4ef\",\"paypal\":null...`
     expect(evaluateCheckoutHtml(html)).toEqual({
       failures: [],
       markerFound: true,
@@ -15,7 +15,7 @@ describe('evaluateCheckoutHtml', () => {
   })
 
   it('accepts a plain (unescaped) pk_live_ value', () => {
-    const html = '{"stripePublishableKey":"pk_live_abc123","paypalClientId":null}'
+    const html = '{"stripePublishableKey":"pk_live_abc123","paypal":null}'
     expect(evaluateCheckoutHtml(html)).toEqual({
       failures: [],
       markerFound: true,
