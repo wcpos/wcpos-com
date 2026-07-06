@@ -181,7 +181,8 @@
       "receiptPdf": "領収書（PDF）",
       "downloadReceiptAria": "注文 #{id} の領収書をダウンロード",
       "viewOrder": "表示",
-      "viewOrderAria": "注文 #{id} を表示"
+      "viewOrderAria": "注文 #{id} を表示",
+      "legacyOrderNumber": "WooCommerce 注文 #{id}"
     },
     "orderDetail": {
       "backToOrders": "注文一覧に戻る",
@@ -197,7 +198,8 @@
       "licenseKeysTitle": "ライセンスキー",
       "manage": "管理",
       "licenseFromOrderTitle": "この注文のライセンス",
-      "manageLicence": "ライセンスを管理 →"
+      "manageLicence": "ライセンスを管理 →",
+      "legacyOrderLabel": "WooCommerce 注文"
     },
     "licenseStatus": {
       "active": "有効",

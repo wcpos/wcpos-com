@@ -78,7 +78,6 @@ describe('extractLicenseReferencesFromOrders', () => {
     expect(extractLicenseReferencesFromOrders([canceled])).toEqual([])
   })
 
-
   it('extracts references when metadata only includes license keys', () => {
     const orders = [
       makeOrder({
@@ -94,6 +93,23 @@ describe('extractLicenseReferencesFromOrders', () => {
       { key: 'WCPOS-AAAA-1111' },
       { key: 'WCPOS-BBBB-2222' },
       { key: 'WCPOS-CCCC-3333' },
+    ])
+  })
+
+
+  it('keeps same-key references with different ids so callers can try both fallbacks', () => {
+    const orders = [
+      makeOrder({
+        licenses: [
+          { license_id: 'lic_stale', license_key: 'WCPOS-AAAA-1111' },
+          { license_id: 'lic_current', license_key: 'WCPOS-AAAA-1111' },
+        ],
+      }),
+    ]
+
+    expect(extractLicenseReferencesFromOrders(orders)).toEqual([
+      { id: 'lic_stale', key: 'WCPOS-AAAA-1111' },
+      { id: 'lic_current', key: 'WCPOS-AAAA-1111' },
     ])
   })
 

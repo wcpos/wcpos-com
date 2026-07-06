@@ -143,6 +143,15 @@ export async function buildTaxReceiptPdf(
     size: 13,
     color: rgb(1, 1, 1),
   })
+  if (receipt.legacyDisplayId) {
+    page.drawText(`WooCommerce order #${receipt.legacyDisplayId}`, {
+      x: width - 200,
+      y: page.getHeight() - 78,
+      font: fontRegular,
+      size: 10,
+      color: rgb(0.9, 0.94, 1),
+    })
+  }
 
   const infoTopY = page.getHeight() - 145
   drawLabelValueRow({

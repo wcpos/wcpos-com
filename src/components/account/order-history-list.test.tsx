@@ -62,6 +62,21 @@ describe('OrderHistoryList', () => {
     ).toHaveAttribute('href', '/account/orders/order_123')
   })
 
+  it('shows current Medusa and legacy WooCommerce order numbers distinctly', () => {
+    render(
+      <OrderHistoryList
+        orders={[makeOrder({ displayId: 5397, legacyDisplayId: 39509 })]}
+        locale="en-US"
+      />
+    )
+
+    expect(screen.getByText('Order #5397')).toBeInTheDocument()
+    expect(screen.getByText('WooCommerce order #39509')).toBeInTheDocument()
+    expect(
+      screen.getByRole('link', { name: 'View order #5397' })
+    ).toHaveAttribute('href', '/account/orders/order_123')
+  })
+
   it('renders a masked licence chip with product when the order produced one', () => {
     render(
       <OrderHistoryList

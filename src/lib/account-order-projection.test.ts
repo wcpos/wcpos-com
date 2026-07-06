@@ -150,7 +150,8 @@ describe('projectAccountOrderListRow', () => {
       })
     )
 
-    expect(row.displayId).toBe(19524)
+    expect(row.displayId).toBe(1930)
+    expect(row.legacyDisplayId).toBe(19524)
     expect(row.createdAt).toBe('2019-08-16T08:38:12Z')
   })
 })
@@ -184,7 +185,12 @@ describe('projectAccountOrderListRows', () => {
       }),
     ])
 
-    expect(rows.map((row) => row.displayId)).toEqual([39509, 31343, 19524])
+    expect(rows.map((row) => row.displayId)).toEqual([4000, 3493, 2860])
+    expect(rows.map((row) => row.legacyDisplayId)).toEqual([
+      39509,
+      31343,
+      19524,
+    ])
   })
 })
 
@@ -251,7 +257,8 @@ describe('projectAccountOrderDetail', () => {
       0
     )
 
-    expect(detail.displayId).toBe(31343)
+    expect(detail.displayId).toBe(2860)
+    expect(detail.legacyDisplayId).toBe(31343)
     expect(detail.createdAt).toBe('2021-04-09T14:53:06.000Z')
   })
 })
@@ -332,7 +339,8 @@ describe('receipt projections', () => {
         profile
       )
     ).toMatchObject({
-      displayId: 39509,
+      displayId: 3493,
+      legacyDisplayId: 39509,
       createdAt: '2026-03-16T21:47:31.000Z',
     })
   })

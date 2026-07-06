@@ -3,8 +3,7 @@ import 'server-only'
 import { DiscordApiClient } from './client'
 import { getDiscordConfig } from './config'
 import { listAdminCustomerOrders, listAdminCustomers } from './medusa-admin'
-import { getResolvedLicensesFromOrders } from '@/lib/customer-licenses'
-import { extractLicenseReferencesFromOrders } from '@/lib/licenses'
+import { getResolvedLicenseSnapshotFromOrders } from '@/lib/customer-licenses'
 import {
   getConnectedDiscordUserIds,
   getLicensesForDiscordUser as getLicenseLifecyclesForDiscordUser,
@@ -23,10 +22,6 @@ interface DiscordLicenseSnapshot {
   complete: boolean
 }
 
-function referenceKey(reference: { id?: string; key?: string }): string {
-  return reference.id ? `id:${reference.id}` : `key:${reference.key}`
-}
-
 async function getAllResolvedLicensesForDiscordSync(): Promise<DiscordLicenseSnapshot> {
   const customers = await listAdminCustomers()
   const snapshots: DiscordLicenseSnapshot[] = []
@@ -36,15 +31,7 @@ async function getAllResolvedLicensesForDiscordSync(): Promise<DiscordLicenseSna
     snapshots.push(...(await Promise.all(
       customerBatch.map(async (customer) => {
         const orders = await listAdminCustomerOrders(customer.id)
-        const expectedReferenceCount = new Set(
-          extractLicenseReferencesFromOrders(orders).map(referenceKey)
-        ).size
-        const licenses = await getResolvedLicensesFromOrders(orders)
-        return {
-          licenses,
-          complete: licenses.length >= expectedReferenceCount &&
-            licenses.every((license) => license.status !== 'unknown'),
-        }
+        return getResolvedLicenseSnapshotFromOrders(orders)
       })
     )))
   }

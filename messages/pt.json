@@ -181,7 +181,8 @@
       "receiptPdf": "Recibo (PDF)",
       "downloadReceiptAria": "Transferir o recibo do pedido n.º {id}",
       "viewOrder": "Ver",
-      "viewOrderAria": "Ver pedido n.º {id}"
+      "viewOrderAria": "Ver pedido n.º {id}",
+      "legacyOrderNumber": "Pedido do WooCommerce n.º {id}"
     },
     "orderDetail": {
       "backToOrders": "Voltar aos pedidos",
@@ -197,7 +198,8 @@
       "licenseKeysTitle": "Chaves de Licença",
       "manage": "Gerir",
       "licenseFromOrderTitle": "Licença deste pedido",
-      "manageLicence": "Gerir licença →"
+      "manageLicence": "Gerir licença →",
+      "legacyOrderLabel": "Pedido do WooCommerce"
     },
     "licenseStatus": {
       "active": "ativa",

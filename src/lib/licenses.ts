@@ -63,11 +63,15 @@ function upsertLicenseReference(
   references: LicenseReference[],
   reference: LicenseReference
 ) {
-  const existing = references.find(
-    (current) =>
-      (reference.id && current.id === reference.id) ||
-      (reference.key && current.key === reference.key)
-  )
+  const existing = references.find((current) => {
+    if (reference.id && current.id === reference.id) return true
+    if (!reference.key || current.key !== reference.key) return false
+
+    // Same key usually means the same license, but keep separate references
+    // when both rows have different ids so callers can try both id fallbacks if
+    // validate-key is temporarily unavailable.
+    return !(reference.id && current.id && reference.id !== current.id)
+  })
 
   if (existing) {
     if (!existing.id && reference.id) existing.id = reference.id

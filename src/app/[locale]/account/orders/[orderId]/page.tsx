@@ -79,6 +79,14 @@ async function OrderDetailContent({
             <CardTitle className="text-lg">{t('detailsTitle')}</CardTitle>
           </CardHeader>
           <CardContent className="space-y-2">
+            {orderDetail.legacyDisplayId && (
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">
+                  {t('legacyOrderLabel')}
+                </span>
+                <span>#{orderDetail.legacyDisplayId}</span>
+              </div>
+            )}
             <div className="flex justify-between">
               <span className="text-muted-foreground">{t('dateLabel')}</span>
               <span>{formatDateForLocale(orderDetail.createdAt, locale)}</span>

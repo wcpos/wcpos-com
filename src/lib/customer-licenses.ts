@@ -18,6 +18,11 @@ import { licenseLogger } from '@/lib/logger'
 
 const LICENSE_LOOKUP_BATCH_SIZE = 10
 
+export interface ResolvedLicenseSnapshot {
+  licenses: LicenseDetail[]
+  complete: boolean
+}
+
 function isRecord(value: unknown): value is Record<string, unknown> {
   return Boolean(value) && typeof value === 'object' && !Array.isArray(value)
 }
@@ -135,30 +140,152 @@ export async function resolveLicenseReference(
     : buildLicensePlaceholder(reference)
 }
 
-export async function getResolvedLicensesFromOrders(
+function referenceKey(reference: LicenseReference): string | null {
+  return reference.key ? `key:${reference.key}` : null
+}
+
+function referenceId(reference: LicenseReference): string | null {
+  return reference.id ? `id:${reference.id}` : null
+}
+
+function findExistingReferenceIdentity(
+  references: Map<string, LicenseReference>,
+  reference: LicenseReference
+): string | undefined {
+  const keyIdentity = referenceKey(reference)
+  if (keyIdentity && references.has(keyIdentity)) return keyIdentity
+
+  const idIdentity = referenceId(reference)
+  if (idIdentity && references.has(idIdentity)) return idIdentity
+
+  for (const [identity, existing] of references.entries()) {
+    if (reference.key && existing.key === reference.key) return identity
+    if (reference.id && existing.id === reference.id) return identity
+  }
+
+  return undefined
+}
+
+function canonicalReferenceIdentity(reference: LicenseReference): string | null {
+  return referenceKey(reference) ?? referenceId(reference)
+}
+
+function mergeLicenseReferences(
+  references: LicenseReference[]
+): LicenseReference[] {
+  const uniqueReferences = new Map<string, LicenseReference>()
+
+  for (const reference of references) {
+    const existingIdentity = findExistingReferenceIdentity(
+      uniqueReferences,
+      reference
+    )
+    const existing = existingIdentity
+      ? uniqueReferences.get(existingIdentity)
+      : undefined
+
+    if (
+      existing?.key &&
+      reference.key === existing.key &&
+      existing.id &&
+      reference.id &&
+      existing.id !== reference.id
+    ) {
+      // Same key but different ids: keep both references so id fallback can
+      // still try the alternate id if validate-key is temporarily unavailable.
+      uniqueReferences.set(`id:${reference.id}`, reference)
+      continue
+    }
+
+    const merged = existing
+      ? {
+          ...existing,
+          id: existing.id ?? reference.id,
+          key: existing.key ?? reference.key,
+        }
+      : reference
+    const canonicalIdentity = canonicalReferenceIdentity(merged)
+
+    if (!canonicalIdentity) continue
+    if (existingIdentity && existingIdentity !== canonicalIdentity) {
+      uniqueReferences.delete(existingIdentity)
+    }
+    uniqueReferences.set(canonicalIdentity, merged)
+  }
+
+  return Array.from(uniqueReferences.values())
+}
+
+function licenseIdentity(license: LicenseDetail): string {
+  return license.key ? `key:${license.key}` : `id:${license.id}`
+}
+
+function preferResolvedLicense(
+  existing: LicenseDetail,
+  next: LicenseDetail
+): LicenseDetail {
+  if (existing.status === 'unknown' && next.status !== 'unknown') return next
+  return existing
+}
+
+function uniqueResolvedLicenses(licenses: LicenseDetail[]): LicenseDetail[] {
+  const uniqueLicenses = new Map<string, LicenseDetail>()
+
+  for (const license of licenses) {
+    const identity = licenseIdentity(license)
+    const existing = uniqueLicenses.get(identity)
+    uniqueLicenses.set(
+      identity,
+      existing ? preferResolvedLicense(existing, license) : license
+    )
+  }
+
+  return Array.from(uniqueLicenses.values())
+}
+
+export async function getResolvedLicenseSnapshotFromOrders(
   orders: MedusaOrder[],
   additionalReferences: LicenseReference[] = []
-): Promise<LicenseDetail[]> {
+): Promise<ResolvedLicenseSnapshot> {
   const references = [
     ...extractLicenseReferencesFromOrders(orders),
     ...additionalReferences,
   ]
-  const uniqueReferences = Array.from(
-    new Map(
-      references.map((reference) => [
-        reference.id ? `id:${reference.id}` : `key:${reference.key}`,
-        reference,
-      ])
-    ).values()
-  )
+  const uniqueReferences = mergeLicenseReferences(references)
 
-  const licenses: Array<LicenseDetail | null> = []
-  for (let index = 0; index < uniqueReferences.length; index += LICENSE_LOOKUP_BATCH_SIZE) {
+  const resolvedReferences: Array<LicenseDetail | null> = []
+  for (
+    let index = 0;
+    index < uniqueReferences.length;
+    index += LICENSE_LOOKUP_BATCH_SIZE
+  ) {
     const batch = uniqueReferences.slice(index, index + LICENSE_LOOKUP_BATCH_SIZE)
-    licenses.push(...(await Promise.all(batch.map(resolveLicenseReference))))
+    resolvedReferences.push(
+      ...(await Promise.all(batch.map(resolveLicenseReference)))
+    )
   }
 
-  return licenses.filter((license): license is LicenseDetail => Boolean(license))
+  const licenses = uniqueResolvedLicenses(
+    resolvedReferences.filter((license): license is LicenseDetail =>
+      Boolean(license)
+    )
+  )
+
+  return {
+    licenses,
+    complete:
+      resolvedReferences.every(Boolean) &&
+      licenses.every((license) => license.status !== 'unknown'),
+  }
+}
+
+export async function getResolvedLicensesFromOrders(
+  orders: MedusaOrder[],
+  additionalReferences: LicenseReference[] = []
+): Promise<LicenseDetail[]> {
+  return (
+    await getResolvedLicenseSnapshotFromOrders(orders, additionalReferences)
+  ).licenses
 }
 
 export async function getResolvedCustomerLicenses(): Promise<{
