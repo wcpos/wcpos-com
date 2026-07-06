@@ -218,11 +218,17 @@ async function completeBillingStep(cartAfterBilling = buildCheckoutCart()) {
   fireEvent.change(screen.getByLabelText('Last name'), {
     target: { value: 'Lovelace' },
   })
-  fireEvent.change(screen.getByLabelText('Address'), {
+  fireEvent.change(screen.getByLabelText('Address line 1'), {
     target: { value: '42 Wallaby Way' },
+  })
+  fireEvent.change(screen.getByLabelText('Address line 2'), {
+    target: { value: 'Apt 7' },
   })
   fireEvent.change(screen.getByLabelText('City'), {
     target: { value: 'Sydney' },
+  })
+  fireEvent.change(screen.getByLabelText('State / Province / Region'), {
+    target: { value: 'NSW' },
   })
   fireEvent.change(screen.getByLabelText('Postal code'), {
     target: { value: '2000' },
@@ -442,6 +448,8 @@ describe('CheckoutClient', () => {
             city: 'Sydney',
             postal_code: '2000',
             country_code: 'us',
+            address_2: 'Apt 7',
+            province: 'NSW',
           },
           // Always sent — an empty value clears a previously saved number.
           metadata: { taxNumber: '' },
@@ -454,7 +462,9 @@ describe('CheckoutClient', () => {
       'data-step-state',
       'done'
     )
-    expect(screen.getByText('42 Wallaby Way, Sydney 2000, US')).toBeInTheDocument()
+    expect(
+      screen.getByText('42 Wallaby Way, Apt 7, Sydney NSW 2000, US')
+    ).toBeInTheDocument()
     expect(
       screen.getByRole('button', { name: 'Edit Billing address' })
     ).toBeInTheDocument()
@@ -504,7 +514,7 @@ describe('CheckoutClient', () => {
     fireEvent.change(screen.getByLabelText('Last name'), {
       target: { value: 'Lovelace' },
     })
-    fireEvent.change(screen.getByLabelText('Address'), {
+    fireEvent.change(screen.getByLabelText('Address line 1'), {
       target: { value: '42 Wallaby Way' },
     })
     fireEvent.change(screen.getByLabelText('City'), {

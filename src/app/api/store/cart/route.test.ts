@@ -104,7 +104,9 @@ describe('PATCH /api/store/cart', () => {
     first_name: 'Ada',
     last_name: 'Lovelace',
     address_1: '42 Wallaby Way',
+    address_2: 'Apt 7',
     city: 'Sydney',
+    province: 'NSW',
     postal_code: '2000',
     country_code: 'au',
   }
@@ -206,18 +208,20 @@ describe('PATCH /api/store/cart', () => {
 
     expect(mockUpdateCustomer).toHaveBeenCalledWith({
       metadata: {
-        account_profile: {
-          countryCode: 'AU',
-          addressLine1: '42 Wallaby Way',
-          city: 'Sydney',
-          postalCode: '2000',
-          taxNumber: '51 824 753 556',
-        },
+          account_profile: {
+            countryCode: 'AU',
+            addressLine1: '42 Wallaby Way',
+            addressLine2: 'Apt 7',
+            city: 'Sydney',
+            region: 'NSW',
+            postalCode: '2000',
+            taxNumber: '51 824 753 556',
+          },
       },
     })
   })
 
-  it('keeps profile fields the checkout does not own (addressLine2, region)', async () => {
+  it('replaces profile address line 2 and region when checkout submits them', async () => {
     mockGetCustomer.mockResolvedValue({
       ...customer,
       metadata: {
@@ -236,13 +240,13 @@ describe('PATCH /api/store/cart', () => {
     expect(mockUpdateCustomer).toHaveBeenCalledWith({
       metadata: {
         account_profile: {
-          addressLine2: 'Unit 4',
-          region: 'NSW',
           // No tax number submitted — the saved one is preserved, not cleared.
           taxNumber: 'old-tax',
           countryCode: 'AU',
           addressLine1: '42 Wallaby Way',
+          addressLine2: 'Apt 7',
           city: 'Sydney',
+          region: 'NSW',
           postalCode: '2000',
         },
       },

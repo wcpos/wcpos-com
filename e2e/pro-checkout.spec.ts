@@ -304,7 +304,7 @@ test.describe('Checkout flow', () => {
       'done'
     )
     await expect(
-      page.getByText('42 Wallaby Way, Sydney 2000, AU')
+      page.getByText('42 Wallaby Way, Apt 7, Sydney NSW 2000, AU')
     ).toBeVisible()
 
     // The mocked build enables only BTCPay (no Stripe/PayPal keys), so the
@@ -321,7 +321,8 @@ test.describe('Checkout flow', () => {
     await page.getByRole('button', { name: 'Edit Billing address' }).click()
     await expect(page.getByTestId('billing-step-form')).toBeVisible()
     // Previously entered values survive the reopen.
-    await expect(page.getByLabel('Address')).toHaveValue('42 Wallaby Way')
+    await expect(page.getByLabel('Address line 1')).toHaveValue('42 Wallaby Way')
+    await expect(page.getByLabel('Address line 2')).toHaveValue('Apt 7')
   })
 
   test('shows error when no current Pro offer is provided', async ({

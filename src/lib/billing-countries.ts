@@ -51,34 +51,89 @@ export function taxIdLabel(countryCode: string): string {
   return TAX_LABELS_EN[key ?? 'genericTaxId']
 }
 
-/** The countries the checkout billing form offers. */
-export const BILLING_COUNTRIES: Array<{ code: string; label: string }> = [
-  { code: 'au', label: 'Australia' },
-  { code: 'at', label: 'Austria' },
-  { code: 'be', label: 'Belgium' },
-  { code: 'br', label: 'Brazil' },
-  { code: 'ca', label: 'Canada' },
-  { code: 'dk', label: 'Denmark' },
-  { code: 'fi', label: 'Finland' },
-  { code: 'fr', label: 'France' },
-  { code: 'de', label: 'Germany' },
-  { code: 'ie', label: 'Ireland' },
-  { code: 'it', label: 'Italy' },
-  { code: 'jp', label: 'Japan' },
-  { code: 'kr', label: 'South Korea' },
-  { code: 'mx', label: 'Mexico' },
-  { code: 'nl', label: 'Netherlands' },
-  { code: 'nz', label: 'New Zealand' },
-  { code: 'no', label: 'Norway' },
-  { code: 'pt', label: 'Portugal' },
-  { code: 'sg', label: 'Singapore' },
-  { code: 'za', label: 'South Africa' },
-  { code: 'es', label: 'Spain' },
-  { code: 'se', label: 'Sweden' },
-  { code: 'ch', label: 'Switzerland' },
-  { code: 'gb', label: 'United Kingdom' },
-  { code: 'us', label: 'United States' },
+const FALLBACK_COUNTRY_CODES = [
+  'AD', 'AE', 'AF', 'AG', 'AI', 'AL', 'AM', 'AO', 'AQ', 'AR', 'AS', 'AT',
+  'AU', 'AW', 'AX', 'AZ', 'BA', 'BB', 'BD', 'BE', 'BF', 'BG', 'BH', 'BI',
+  'BJ', 'BL', 'BM', 'BN', 'BO', 'BQ', 'BR', 'BS', 'BT', 'BV', 'BW', 'BY',
+  'BZ', 'CA', 'CC', 'CD', 'CF', 'CG', 'CH', 'CI', 'CK', 'CL', 'CM', 'CN',
+  'CO', 'CQ', 'CR', 'CU', 'CV', 'CW', 'CX', 'CY', 'CZ', 'DE', 'DJ', 'DK',
+  'DM', 'DO', 'DZ', 'EC', 'EE', 'EG', 'EH', 'ER', 'ES', 'ET', 'FI', 'FJ',
+  'FK', 'FM', 'FO', 'FR', 'GA', 'GB', 'GD', 'GE', 'GF', 'GG', 'GH', 'GI',
+  'GL', 'GM', 'GN', 'GP', 'GQ', 'GR', 'GS', 'GT', 'GU', 'GW', 'GY', 'HK',
+  'HM', 'HN', 'HR', 'HT', 'HU', 'ID', 'IE', 'IL', 'IM', 'IN', 'IO', 'IQ',
+  'IR', 'IS', 'IT', 'JE', 'JM', 'JO', 'JP', 'KE', 'KG', 'KH', 'KI', 'KM',
+  'KN', 'KP', 'KR', 'KW', 'KY', 'KZ', 'LA', 'LB', 'LC', 'LI', 'LK', 'LR',
+  'LS', 'LT', 'LU', 'LV', 'LY', 'MA', 'MC', 'MD', 'ME', 'MF', 'MG', 'MH',
+  'MK', 'ML', 'MM', 'MN', 'MO', 'MP', 'MQ', 'MR', 'MS', 'MT', 'MU', 'MV',
+  'MW', 'MX', 'MY', 'MZ', 'NA', 'NC', 'NE', 'NF', 'NG', 'NI', 'NL', 'NO',
+  'NP', 'NR', 'NU', 'NZ', 'OM', 'PA', 'PE', 'PF', 'PG', 'PH', 'PK', 'PL',
+  'PM', 'PN', 'PR', 'PS', 'PT', 'PW', 'PY', 'QA', 'RE', 'RO', 'RS', 'RU',
+  'RW', 'SA', 'SB', 'SC', 'SD', 'SE', 'SG', 'SH', 'SI', 'SJ', 'SK', 'SL',
+  'SM', 'SN', 'SO', 'SR', 'SS', 'ST', 'SV', 'SX', 'SY', 'SZ', 'TC', 'TD',
+  'TF', 'TG', 'TH', 'TJ', 'TK', 'TL', 'TM', 'TN', 'TO', 'TR', 'TT', 'TV',
+  'TW', 'TZ', 'UA', 'UG', 'UM', 'US', 'UY', 'UZ', 'VA', 'VC', 'VE', 'VG',
+  'VI', 'VN', 'VU', 'WF', 'WS', 'XK', 'YE', 'YT', 'ZA', 'ZM', 'ZW',
 ]
+
+function getCountryCodes(displayNames: Intl.DisplayNames | null): string[] {
+  if (typeof Intl.supportedValuesOf === 'function') {
+    try {
+      const getSupportedValues = Intl.supportedValuesOf as (
+        key: string
+      ) => string[]
+      return getSupportedValues('region').filter((code) =>
+        /^[A-Z]{2}$/.test(code)
+      )
+    } catch {
+      // Fall through to generated list.
+    }
+  }
+
+  if (!displayNames) {
+    return FALLBACK_COUNTRY_CODES
+  }
+
+  const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+  const codes: string[] = []
+
+  for (const first of alphabet) {
+    for (const second of alphabet) {
+      const code = `${first}${second}`
+      const label = displayNames.of(code)
+      if (label && label !== code) {
+        codes.push(code)
+      }
+    }
+  }
+
+  return codes
+}
+
+export function buildCountryOptions(
+  locale: string,
+  lowercaseValues = false
+): Array<[string, string]> {
+  const displayNames =
+    typeof Intl.DisplayNames === 'function'
+      ? new Intl.DisplayNames([locale], { type: 'region' })
+      : null
+
+  const uniqueCodes = Array.from(new Set(getCountryCodes(displayNames)))
+  const options = uniqueCodes
+    .map((code) => [
+      lowercaseValues ? code.toLowerCase() : code,
+      displayNames?.of(code) || code,
+    ] as [string, string])
+    .filter(([, label]) => Boolean(label))
+
+  options.sort((a, b) => a[1].localeCompare(b[1], locale))
+  return options
+}
+
+/** The countries the checkout billing form offers, using Medusa lowercase ISO-2 values. */
+export const BILLING_COUNTRIES = buildCountryOptions('en', true).map(
+  ([code, label]) => ({ code, label })
+)
 
 const BILLING_COUNTRY_CODES = new Set(BILLING_COUNTRIES.map((c) => c.code))
 

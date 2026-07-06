@@ -35,12 +35,18 @@ export function billingPrefillFromCustomer(
 
   // An all-empty prefill would just override the form's defaults with blanks.
   const address =
-    profile.addressLine1 || profile.city || profile.postalCode
+    profile.addressLine1 ||
+    profile.addressLine2 ||
+    profile.city ||
+    profile.region ||
+    profile.postalCode
       ? {
           first_name: customer.first_name ?? '',
           last_name: customer.last_name ?? '',
           address_1: profile.addressLine1,
+          address_2: profile.addressLine2 || undefined,
           city: profile.city,
+          province: profile.region || undefined,
           postal_code: profile.postalCode,
           country_code: countryCode,
         }
@@ -54,8 +60,7 @@ export function billingPrefillFromCustomer(
  * `taxNumber === undefined` means "field not submitted, preserve saved
  * value"; an empty string means "explicitly cleared" (the merge maps it to
  * null, which clears the profile field). Address fields are only written
- * when non-empty — checkout never blanks parts of a saved address, and
- * fields it does not own (addressLine2, region) are untouched by the merge.
+ * when non-empty — checkout never blanks parts of a saved address.
  */
 export function profilePatchFromBillingAddress(
   billingAddress: Record<string, unknown>,
@@ -69,7 +74,9 @@ export function profilePatchFromBillingAddress(
   return {
     countryCode: country ? country.toUpperCase() : undefined,
     addressLine1: trimmed(billingAddress.address_1),
+    addressLine2: trimmed(billingAddress.address_2),
     city: trimmed(billingAddress.city),
+    region: trimmed(billingAddress.province),
     postalCode: trimmed(billingAddress.postal_code),
     taxNumber,
   }
