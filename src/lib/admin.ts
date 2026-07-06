@@ -5,7 +5,7 @@
  * flip mechanism is git, and the value fails loudly if wrong. Add owner emails
  * here. Empty ⇒ nobody is admin (fail closed).
  */
-export const ADMIN_EMAILS: readonly string[] = ['paul@kilbot.com']
+export const ADMIN_EMAILS: readonly string[] = ['paul@kilbot.com.au']
 
 const NORMALIZED = new Set(ADMIN_EMAILS.map((e) => e.trim().toLowerCase()))
 
