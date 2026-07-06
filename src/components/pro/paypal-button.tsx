@@ -2,6 +2,7 @@
 
 import { useRef, useState } from 'react'
 import {
+  INSTANCE_LOADING_STATE,
   usePayPal,
   usePayPalOneTimePaymentSession,
 } from '@paypal/react-paypal-js/sdk-v6'
@@ -55,7 +56,11 @@ export function PayPalButton({
   const createOrderFailureReported = useRef(false)
   const [keepRetryAfterCreateOrderFailure, setKeepRetryAfterCreateOrderFailure] =
     useState(false)
-  const { isHydrated } = usePayPal()
+  const {
+    isHydrated,
+    loadingStatus: sdkLoadingStatus,
+    error: sdkError,
+  } = usePayPal()
   const { error, isPending, handleClick } =
     usePayPalOneTimePaymentSession({
       createOrder: async () => {
@@ -144,7 +149,11 @@ export function PayPalButton({
       },
     })
 
-  if (!isHydrated || isPending) {
+  if (
+    !isHydrated ||
+    isPending ||
+    sdkLoadingStatus === INSTANCE_LOADING_STATE.PENDING
+  ) {
     return (
       <div className="space-y-2 rounded-md border border-dashed p-4">
         <div className="h-10 animate-pulse rounded bg-muted" />
@@ -155,7 +164,11 @@ export function PayPalButton({
     )
   }
 
-  if (error && !keepRetryAfterCreateOrderFailure) {
+  if (
+    sdkError ||
+    sdkLoadingStatus === INSTANCE_LOADING_STATE.REJECTED ||
+    (error && !keepRetryAfterCreateOrderFailure)
+  ) {
     return (
       <div className="text-center text-sm text-destructive py-4">
         Failed to load PayPal. Please try another payment method.

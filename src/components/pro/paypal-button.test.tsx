@@ -6,12 +6,23 @@ const mockHandleClick = vi.fn()
 const mockHandleCancel = vi.fn()
 let mockPayPalState = {
   isHydrated: true,
+  loadingStatus: 'resolved',
+  sdkError: null as Error | null,
   error: null as Error | null,
   isPending: false,
 }
 
 vi.mock('@paypal/react-paypal-js/sdk-v6', () => ({
-  usePayPal: () => ({ isHydrated: mockPayPalState.isHydrated }),
+  INSTANCE_LOADING_STATE: {
+    PENDING: 'pending',
+    RESOLVED: 'resolved',
+    REJECTED: 'rejected',
+  },
+  usePayPal: () => ({
+    isHydrated: mockPayPalState.isHydrated,
+    loadingStatus: mockPayPalState.loadingStatus,
+    error: mockPayPalState.sdkError,
+  }),
   usePayPalOneTimePaymentSession: (props: Record<string, unknown>) => {
     capturePayPalSessionProps(props)
     return {
@@ -68,7 +79,13 @@ function lastFailure() {
 
 beforeEach(() => {
   vi.clearAllMocks()
-  mockPayPalState = { isHydrated: true, error: null, isPending: false }
+  mockPayPalState = {
+    isHydrated: true,
+    loadingStatus: 'resolved',
+    sdkError: null,
+    error: null,
+    isPending: false,
+  }
   vi.spyOn(console, 'error').mockImplementation(() => {})
   vi.spyOn(console, 'log').mockImplementation(() => {})
 })
@@ -97,6 +114,18 @@ describe('PayPalButton', () => {
 
   it('shows a visible fallback when the v6 SDK session fails to initialize', () => {
     mockPayPalState.error = new Error('bad client/environment pair')
+
+    renderButton()
+
+    expect(
+      screen.getByText('Failed to load PayPal. Please try another payment method.')
+    ).toBeInTheDocument()
+    expect(document.querySelector('paypal-button')).not.toBeInTheDocument()
+  })
+
+  it('shows a visible fallback when the v6 SDK itself fails to initialize', () => {
+    mockPayPalState.loadingStatus = 'rejected'
+    mockPayPalState.sdkError = new Error('PayPal SDK rejected')
 
     renderButton()
 
