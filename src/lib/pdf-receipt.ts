@@ -1,10 +1,32 @@
-import { PDFDocument, StandardFonts, rgb, type PDFFont } from 'pdf-lib'
+import { PDFDocument, StandardFonts, rgb, type PDFFont, type PDFPage } from 'pdf-lib'
 import type {
   AccountOrderReceiptFact,
   AccountOrderReceiptProfileFact,
 } from './account-order-projection'
+import type { ReceiptSellerFact } from './receipt-seller'
 import { formatOrderAmount } from './order-display'
 import { formatDateForLocale } from './date-format'
+
+/**
+ * Order receipt PDF.
+ *
+ * Deliberately monochrome and typographic — receipts get printed in black
+ * and white, so there are no filled colour blocks, only text weight,
+ * greyscale and hairline rules. The document is titled "Receipt", NOT
+ * "Tax Invoice": the seller is not registered for GST in Australia, and
+ * only GST-registered businesses may issue tax invoices. The footer states
+ * this so the receipt still works as proof of purchase for tax records.
+ */
+
+// Greyscale palette — prints faithfully in B&W.
+const INK = rgb(0.12, 0.13, 0.15)
+const MUTED = rgb(0.42, 0.44, 0.47)
+const FAINT = rgb(0.62, 0.64, 0.67)
+const LINE = rgb(0.8, 0.82, 0.84)
+
+const PAGE_WIDTH = 595.28 // A4
+const PAGE_HEIGHT = 841.89
+const MARGIN = 56
 
 function normalize(value: unknown): string {
   if (typeof value === 'string') {
@@ -16,43 +38,6 @@ function normalize(value: unknown): string {
   }
 
   return ''
-}
-
-function buildAddressLine(profile: AccountOrderReceiptProfileFact): string {
-  const city = normalize(profile.city)
-  const region = normalize(profile.region)
-  const postalCode = normalize(profile.postalCode)
-  return [city, region, postalCode].filter(Boolean).join(', ')
-}
-
-function drawLabelValueRow(params: {
-  page: import('pdf-lib').PDFPage
-  label: unknown
-  value: unknown
-  x: number
-  y: number
-  labelFont: import('pdf-lib').PDFFont
-  valueFont: import('pdf-lib').PDFFont
-  size?: number
-}) {
-  const { page, label, value, x, y, labelFont, valueFont, size = 10 } = params
-  const safeLabel = sanitizeTextForFont(labelFont, label)
-  const safeValue = sanitizeTextForFont(valueFont, value)
-
-  page.drawText(safeLabel, {
-    x,
-    y,
-    font: labelFont,
-    size,
-    color: rgb(0.33, 0.33, 0.33),
-  })
-  page.drawText(safeValue, {
-    x: x + 90,
-    y,
-    font: valueFont,
-    size,
-    color: rgb(0.1, 0.1, 0.1),
-  })
 }
 
 function sanitizeTextForFont(font: PDFFont, value: unknown): string {
@@ -101,245 +86,312 @@ function formatAmount(amount: unknown, currencyCode: unknown): string {
   }).format(numericAmount)
 }
 
-export async function buildTaxReceiptPdf(
+/** Human label for Medusa payment_status values. */
+function paymentLabel(status: unknown): string | null {
+  const normalized = normalize(status).toLowerCase()
+  if (!normalized) return null
+
+  switch (normalized) {
+    case 'captured':
+    case 'paid':
+      return 'Paid'
+    case 'refunded':
+      return 'Refunded'
+    case 'partially_refunded':
+      return 'Partially refunded'
+    case 'canceled':
+      return 'Canceled'
+    default:
+      return normalized.replace(/_/g, ' ').replace(/^./, (c) => c.toUpperCase())
+  }
+}
+
+function buildAddressLine(profile: AccountOrderReceiptProfileFact): string {
+  const city = normalize(profile.city)
+  const region = normalize(profile.region)
+  const postalCode = normalize(profile.postalCode)
+  return [city, region, postalCode].filter(Boolean).join(', ')
+}
+
+/** Greedy word-wrap against real glyph widths. */
+function wrapText(
+  font: PDFFont,
+  text: string,
+  size: number,
+  maxWidth: number
+): string[] {
+  const words = text.split(/\s+/).filter(Boolean)
+  const lines: string[] = []
+  let current = ''
+
+  for (const word of words) {
+    const candidate = current ? `${current} ${word}` : word
+    if (font.widthOfTextAtSize(candidate, size) <= maxWidth || !current) {
+      current = candidate
+    } else {
+      lines.push(current)
+      current = word
+    }
+  }
+
+  if (current) lines.push(current)
+  return lines
+}
+
+type TextStyle = {
+  font: PDFFont
+  size: number
+  color?: ReturnType<typeof rgb>
+}
+
+function drawLeft(page: PDFPage, text: string, x: number, y: number, style: TextStyle) {
+  const safe = sanitizeTextForFont(style.font, text)
+  if (!safe) return
+  page.drawText(safe, {
+    x,
+    y,
+    font: style.font,
+    size: style.size,
+    color: style.color ?? INK,
+  })
+}
+
+function drawRight(page: PDFPage, text: string, rightX: number, y: number, style: TextStyle) {
+  const safe = sanitizeTextForFont(style.font, text)
+  if (!safe) return
+  page.drawText(safe, {
+    x: rightX - style.font.widthOfTextAtSize(safe, style.size),
+    y,
+    font: style.font,
+    size: style.size,
+    color: style.color ?? INK,
+  })
+}
+
+function drawRule(page: PDFPage, y: number, fromX = MARGIN, toX = PAGE_WIDTH - MARGIN) {
+  page.drawLine({
+    start: { x: fromX, y },
+    end: { x: toX, y },
+    thickness: 0.75,
+    color: LINE,
+  })
+}
+
+export async function buildReceiptPdf(
   receipt: AccountOrderReceiptFact,
+  seller: ReceiptSellerFact,
   locale: string = 'en-US'
 ): Promise<Uint8Array> {
   const pdf = await PDFDocument.create()
-  const page = pdf.addPage([595.28, 841.89]) // A4
-  const fontRegular = await pdf.embedFont(StandardFonts.Helvetica)
-  const fontBold = await pdf.embedFont(StandardFonts.HelveticaBold)
+  const page = pdf.addPage([PAGE_WIDTH, PAGE_HEIGHT])
+  const regular = await pdf.embedFont(StandardFonts.Helvetica)
+  const bold = await pdf.embedFont(StandardFonts.HelveticaBold)
 
-  const margin = 48
-  const width = page.getWidth()
+  const rightEdge = PAGE_WIDTH - MARGIN
 
-  page.drawRectangle({
-    x: 0,
-    y: page.getHeight() - 110,
-    width,
-    height: 110,
-    color: rgb(0.1, 0.2, 0.5),
+  // ── Header ────────────────────────────────────────────────────────────
+  let y = PAGE_HEIGHT - 78
+  drawLeft(page, 'WCPOS', MARGIN, y, { font: bold, size: 22 })
+  drawLeft(page, seller.website, MARGIN, y - 16, { font: regular, size: 9, color: MUTED })
+
+  drawRight(page, 'Receipt', rightEdge, y, { font: bold, size: 22 })
+  drawRight(page, `Order #${normalize(receipt.displayId) || '--'}`, rightEdge, y - 16, {
+    font: regular,
+    size: 10,
+    color: MUTED,
   })
 
-  page.drawText('WCPOS', {
-    x: margin,
-    y: page.getHeight() - 56,
-    font: fontBold,
-    size: 22,
-    color: rgb(1, 1, 1),
-  })
-  page.drawText('Tax Receipt', {
-    x: margin,
-    y: page.getHeight() - 82,
-    font: fontRegular,
-    size: 13,
-    color: rgb(0.9, 0.94, 1),
-  })
+  y -= 42
+  drawRule(page, y)
 
-  page.drawText(`Order #${receipt.displayId}`, {
-    x: width - 200,
-    y: page.getHeight() - 60,
-    font: fontBold,
-    size: 13,
-    color: rgb(1, 1, 1),
-  })
-  if (receipt.legacyDisplayId) {
-    page.drawText(`WooCommerce order #${receipt.legacyDisplayId}`, {
-      x: width - 200,
-      y: page.getHeight() - 78,
-      font: fontRegular,
-      size: 10,
-      color: rgb(0.9, 0.94, 1),
-    })
-  }
+  // ── Billed to / order details columns ─────────────────────────────────
+  y -= 26
+  const detailX = 330
+  const columnTop = y
 
-  const infoTopY = page.getHeight() - 145
-  drawLabelValueRow({
-    page,
-    label: 'Order date',
-    value: formatDateForLocale(receipt.createdAt, locale),
-    x: margin,
-    y: infoTopY,
-    labelFont: fontRegular,
-    valueFont: fontBold,
-  })
-  drawLabelValueRow({
-    page,
-    label: 'Customer',
-    value: normalize(receipt.customerEmail) || 'No email provided',
-    x: margin,
-    y: infoTopY - 16,
-    labelFont: fontRegular,
-    valueFont: fontRegular,
-  })
+  drawLeft(page, 'BILLED TO', MARGIN, y, { font: bold, size: 8, color: FAINT })
+  y -= 16
 
-  const billingTopY = infoTopY - 56
-  page.drawText('Billing details', {
-    x: margin,
-    y: billingTopY,
-    font: fontBold,
-    size: 12,
-    color: rgb(0.1, 0.1, 0.1),
-  })
+  const billingLines: Array<{ text: string; isName?: boolean }> = []
+  const customerName = normalize(receipt.customerName)
+  if (customerName) billingLines.push({ text: customerName, isName: true })
+  const email = normalize(receipt.customerEmail)
+  billingLines.push({ text: email || 'No email provided', isName: !customerName })
 
-  const billingLines: string[] = []
   const addressLine1 = normalize(receipt.billingProfile.addressLine1)
   const addressLine2 = normalize(receipt.billingProfile.addressLine2)
   const locationLine = buildAddressLine(receipt.billingProfile)
-  const countryCode = normalize(receipt.billingProfile.countryCode)
+  const countryCode = normalize(receipt.billingProfile.countryCode).toUpperCase()
   const taxNumber = normalize(receipt.billingProfile.taxNumber)
 
-  if (addressLine1) billingLines.push(addressLine1)
-  if (addressLine2) billingLines.push(addressLine2)
-  if (locationLine) billingLines.push(locationLine)
-  if (countryCode) billingLines.push(countryCode)
-  if (taxNumber) billingLines.push(`Tax number: ${taxNumber}`)
-  if (billingLines.length === 0) {
-    billingLines.push('No billing details on file')
+  if (addressLine1) billingLines.push({ text: addressLine1 })
+  if (addressLine2) billingLines.push({ text: addressLine2 })
+  if (locationLine) billingLines.push({ text: locationLine })
+  if (countryCode) billingLines.push({ text: countryCode })
+  if (taxNumber) billingLines.push({ text: `Tax ID: ${taxNumber}` })
+
+  for (const line of billingLines) {
+    drawLeft(page, line.text, MARGIN, y, {
+      font: line.isName ? bold : regular,
+      size: 10,
+      color: line.isName ? INK : MUTED,
+    })
+    y -= 14
   }
 
-  billingLines.forEach((line, index) => {
-    page.drawText(sanitizeTextForFont(fontRegular, line), {
-      x: margin,
-      y: billingTopY - 18 - index * 14,
-      font: fontRegular,
-      size: 10,
-      color: rgb(0.18, 0.18, 0.18),
+  let detailY = columnTop
+  drawLeft(page, 'DETAILS', detailX, detailY, { font: bold, size: 8, color: FAINT })
+  detailY -= 16
+
+  const detailRows: Array<[string, string]> = []
+  detailRows.push(['Order date', formatDateForLocale(receipt.createdAt, locale)])
+  const payment = paymentLabel(receipt.paymentStatus)
+  if (payment) detailRows.push(['Payment', payment])
+  detailRows.push(['Currency', normalize(receipt.currencyCode).toUpperCase() || '--'])
+
+  for (const [label, value] of detailRows) {
+    drawLeft(page, label, detailX, detailY, { font: regular, size: 10, color: MUTED })
+    drawLeft(page, value, detailX + 80, detailY, { font: regular, size: 10 })
+    detailY -= 14
+  }
+
+  y = Math.min(y, detailY) - 14
+
+  // ── Legacy order-number notice ────────────────────────────────────────
+  // Orders migrated from the old WooCommerce store carried a different
+  // order number. Flag it so customers can reconcile older records.
+  const legacyDisplayId = receipt.legacyDisplayId
+  if (legacyDisplayId) {
+    const noticeText = `This order was originally #${legacyDisplayId} in our previous store system. Older emails, invoices and records may reference that number.`
+    const noticeLines = wrapText(regular, noticeText, 9, rightEdge - MARGIN - 24)
+    const boxHeight = noticeLines.length * 12 + 18
+
+    page.drawRectangle({
+      x: MARGIN,
+      y: y - boxHeight,
+      width: rightEdge - MARGIN,
+      height: boxHeight,
+      borderWidth: 0.75,
+      borderColor: LINE,
     })
-  })
 
-  const tableTopY = billingTopY - 120
-  page.drawRectangle({
-    x: margin,
-    y: tableTopY,
-    width: width - margin * 2,
-    height: 24,
-    color: rgb(0.94, 0.95, 0.97),
-  })
+    let noticeY = y - 15
+    for (const line of noticeLines) {
+      drawLeft(page, line, MARGIN + 12, noticeY, { font: regular, size: 9, color: MUTED })
+      noticeY -= 12
+    }
 
-  const qtyX = width - margin - 200
-  const unitX = width - margin - 140
-  const totalX = width - margin - 70
+    y -= boxHeight + 24
+  } else {
+    y -= 10
+  }
 
-  page.drawText('Item', {
-    x: margin + 8,
-    y: tableTopY + 8,
-    font: fontBold,
-    size: 10,
-  })
-  page.drawText('Qty', {
-    x: qtyX,
-    y: tableTopY + 8,
-    font: fontBold,
-    size: 10,
-  })
-  page.drawText('Unit', {
-    x: unitX,
-    y: tableTopY + 8,
-    font: fontBold,
-    size: 10,
-  })
-  page.drawText('Total', {
-    x: totalX,
-    y: tableTopY + 8,
-    font: fontBold,
-    size: 10,
-  })
+  // ── Items table ───────────────────────────────────────────────────────
+  const qtyRight = 380
+  const unitRight = 460
+  const amountRight = rightEdge
 
-  let rowY = tableTopY - 18
+  drawLeft(page, 'DESCRIPTION', MARGIN, y, { font: bold, size: 8, color: FAINT })
+  drawRight(page, 'QTY', qtyRight, y, { font: bold, size: 8, color: FAINT })
+  drawRight(page, 'UNIT PRICE', unitRight, y, { font: bold, size: 8, color: FAINT })
+  drawRight(page, 'AMOUNT', amountRight, y, { font: bold, size: 8, color: FAINT })
+  y -= 8
+  drawRule(page, y)
+  y -= 18
+
   for (const item of receipt.items ?? []) {
     const itemTitle =
       typeof item?.title === 'string' && item.title.trim()
-        ? item.title
+        ? item.title.trim()
         : 'Untitled item'
 
-    page.drawText(sanitizeTextForFont(fontRegular, itemTitle), {
-      x: margin + 8,
-      y: rowY,
-      font: fontRegular,
-      size: 10,
-      maxWidth: qtyX - margin - 16,
-    })
-    page.drawText(sanitizeTextForFont(fontRegular, String(item.quantity)), {
-      x: qtyX,
-      y: rowY,
-      font: fontRegular,
+    drawLeft(page, itemTitle, MARGIN, y, { font: regular, size: 10 })
+    drawRight(page, normalize(item.quantity) || '--', qtyRight, y, {
+      font: regular,
       size: 10,
     })
-    page.drawText(
-      sanitizeTextForFont(
-        fontRegular,
-        formatAmount(item.unitPrice, receipt.currencyCode)
-      ),
-      {
-      x: unitX,
-      y: rowY,
-      font: fontRegular,
+    drawRight(page, formatAmount(item.unitPrice, receipt.currencyCode), unitRight, y, {
+      font: regular,
       size: 10,
-      }
-    )
-    page.drawText(
-      sanitizeTextForFont(
-        fontRegular,
-        formatAmount(item.total, receipt.currencyCode)
-      ),
-      {
-      x: totalX,
-      y: rowY,
-      font: fontRegular,
+    })
+    drawRight(page, formatAmount(item.total, receipt.currencyCode), amountRight, y, {
+      font: regular,
       size: 10,
-      }
-    )
-    rowY -= 16
+    })
+    y -= 18
   }
 
-  rowY -= 8
-  page.drawLine({
-    start: { x: width - margin - 180, y: rowY },
-    end: { x: width - margin, y: rowY },
-    thickness: 1,
-    color: rgb(0.82, 0.82, 0.84),
-  })
-  rowY -= 16
+  y += 4
+  drawRule(page, y)
 
-  drawLabelValueRow({
-    page,
-    label: 'Subtotal',
-    value: formatAmount(receipt.totals.subtotal, receipt.currencyCode),
-    x: width - margin - 180,
-    y: rowY,
-    labelFont: fontRegular,
-    valueFont: fontRegular,
-  })
-  rowY -= 14
-  drawLabelValueRow({
-    page,
-    label: 'Tax',
-    value: formatAmount(receipt.totals.tax, receipt.currencyCode),
-    x: width - margin - 180,
-    y: rowY,
-    labelFont: fontRegular,
-    valueFont: fontRegular,
-  })
-  rowY -= 16
-  drawLabelValueRow({
-    page,
-    label: 'Total',
-    value: formatAmount(receipt.totals.total, receipt.currencyCode),
-    x: width - margin - 180,
-    y: rowY,
-    labelFont: fontBold,
-    valueFont: fontBold,
-    size: 11,
-  })
+  // ── Totals ────────────────────────────────────────────────────────────
+  const totalsLabelX = 380
+  y -= 20
 
-  page.drawText('Thank you for your WCPOS Pro purchase.', {
-    x: margin,
-    y: 72,
-    font: fontRegular,
+  drawLeft(page, 'Subtotal', totalsLabelX, y, { font: regular, size: 10, color: MUTED })
+  drawRight(page, formatAmount(receipt.totals.subtotal, receipt.currencyCode), amountRight, y, {
+    font: regular,
     size: 10,
-    color: rgb(0.35, 0.35, 0.35),
   })
+  y -= 16
+
+  // No GST registration → tax is always zero; only render a tax row in the
+  // unexpected case a nonzero amount ever appears, so it's never hidden.
+  const taxAmount =
+    typeof receipt.totals.tax === 'number' && Number.isFinite(receipt.totals.tax)
+      ? receipt.totals.tax
+      : 0
+  if (taxAmount > 0) {
+    drawLeft(page, 'Tax', totalsLabelX, y, { font: regular, size: 10, color: MUTED })
+    drawRight(page, formatAmount(taxAmount, receipt.currencyCode), amountRight, y, {
+      font: regular,
+      size: 10,
+    })
+    y -= 16
+  }
+
+  drawRule(page, y + 4, totalsLabelX, amountRight)
+  y -= 8
+  drawLeft(page, 'Total', totalsLabelX, y, { font: bold, size: 12 })
+  drawRight(page, formatAmount(receipt.totals.total, receipt.currencyCode), amountRight, y, {
+    font: bold,
+    size: 12,
+  })
+  y -= 16
+  drawRight(page, 'No tax has been added to this order.', amountRight, y, {
+    font: regular,
+    size: 8.5,
+    color: MUTED,
+  })
+
+  // ── Footer ────────────────────────────────────────────────────────────
+  const footerLines: Array<{ text: string; style: TextStyle }> = []
+  const sellerIdentity = seller.abn ? `${seller.name} · ABN ${seller.abn}` : seller.name
+  footerLines.push({ text: sellerIdentity, style: { font: bold, size: 9 } })
+  footerLines.push({
+    text: `${seller.name} is not registered for GST in Australia — no GST has been charged and this document is not a tax invoice.`,
+    style: { font: regular, size: 9, color: MUTED },
+  })
+  footerLines.push({
+    text: 'This receipt may be used as proof of purchase for your tax records.',
+    style: { font: regular, size: 9, color: MUTED },
+  })
+  footerLines.push({
+    text: `Questions? ${seller.website}/discord · ${seller.email}`,
+    style: { font: regular, size: 9, color: MUTED },
+  })
+
+  let footerY = MARGIN + footerLines.length * 13
+  drawRule(page, footerY + 14)
+  drawRight(page, `Generated ${formatDateForLocale(new Date().toISOString(), locale)}`, rightEdge, footerY, {
+    font: regular,
+    size: 8,
+    color: FAINT,
+  })
+  for (const line of footerLines) {
+    drawLeft(page, line.text, MARGIN, footerY, line.style)
+    footerY -= 13
+  }
 
   return pdf.save({
     useObjectStreams: false,

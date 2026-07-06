@@ -81,6 +81,10 @@ export interface AccountOrderReceiptFact {
   legacyDisplayId?: number
   createdAt: string
   customerEmail: string
+  /** Billing name from the customer record, or null when unavailable. */
+  customerName: string | null
+  /** Medusa payment_status (e.g. "captured"), or null when unavailable. */
+  paymentStatus: string | null
   currencyCode: string
   billingProfile: AccountOrderReceiptProfileFact
   items: Array<{
@@ -94,6 +98,11 @@ export interface AccountOrderReceiptFact {
     tax: number
     total: number
   }
+}
+
+export interface ReceiptCustomerFact {
+  first_name?: string
+  last_name?: string
 }
 
 function money(amount: number, currencyCode: string): AccountOrderMoneyFact {
@@ -279,9 +288,18 @@ export function projectReceiptProfile(
   }
 }
 
+function customerDisplayName(customer: ReceiptCustomerFact | null | undefined): string | null {
+  const name = [customer?.first_name, customer?.last_name]
+    .map((part) => (typeof part === 'string' ? part.trim() : ''))
+    .filter(Boolean)
+    .join(' ')
+  return name || null
+}
+
 export function projectAccountOrderReceipt(
   order: MedusaOrder,
-  billingProfile: AccountOrderReceiptProfileFact
+  billingProfile: AccountOrderReceiptProfileFact,
+  customer?: ReceiptCustomerFact | null
 ): AccountOrderReceiptFact {
   const legacyId = legacyDisplayId(order)
 
@@ -290,6 +308,8 @@ export function projectAccountOrderReceipt(
     ...(legacyId ? { legacyDisplayId: legacyId } : {}),
     createdAt: legacyCreatedAt(order),
     customerEmail: order.email,
+    customerName: customerDisplayName(customer),
+    paymentStatus: order.payment_status ?? null,
     currencyCode: order.currency_code,
     billingProfile,
     items: order.items.map((item) => ({

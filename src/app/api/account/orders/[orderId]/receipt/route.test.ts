@@ -165,7 +165,7 @@ describe('GET /api/account/orders/[orderId]/receipt', () => {
     })
 
     const buildPdfSpy = vi
-      .spyOn(pdfReceipt, 'buildTaxReceiptPdf')
+      .spyOn(pdfReceipt, 'buildReceiptPdf')
       .mockRejectedValueOnce(new Error('PDF failure'))
 
     const response = await GET(
