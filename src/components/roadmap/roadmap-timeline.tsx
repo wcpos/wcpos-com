@@ -64,16 +64,21 @@ const TONE: Record<Tone, { fill: string; ring: string; glow: string }> = {
  * and stays lit. Both states carry a border so lighting up never shifts the
  * chip's box.
  */
-const LABEL_TONE_IDLE: Record<Tone, string> = {
-  now: 'border border-transparent bg-wcpos-red text-white',
-  next: 'border border-slate-300 text-muted-foreground dark:border-slate-600',
-  shipped: 'border border-emerald-500/40 text-emerald-600 dark:text-emerald-400',
-}
-
 const LABEL_TONE_LIT: Record<Tone, string> = {
   now: 'border border-transparent bg-wcpos-red text-white',
   next: 'border border-transparent bg-slate-500 text-white',
-  shipped: 'border border-transparent bg-emerald-500 text-white',
+  // emerald-700 (not -500) so white text on the solid fill clears WCAG AA 4.5:1
+  // for the 11px label — same contrast discipline as --primary in globals.css.
+  shipped: 'border border-transparent bg-emerald-700 text-white',
+}
+
+// Idle reuses the lit "now" fill (Now never renders idle) and quiets the other
+// phases to outlines until their rail scrolls into view — one source for "now"
+// so the two maps can't drift.
+const LABEL_TONE_IDLE: Record<Tone, string> = {
+  ...LABEL_TONE_LIT,
+  next: 'border border-slate-300 text-muted-foreground dark:border-slate-600',
+  shipped: 'border border-emerald-500/40 text-emerald-600 dark:text-emerald-400',
 }
 
 function fmtDue(dueOn: string | null): string | null {
