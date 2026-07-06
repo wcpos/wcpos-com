@@ -64,9 +64,12 @@ function paypalCheckoutConfig(
 // junk — is ignored in favour of this literal).
 const LIVE_STRIPE_PUBLISHABLE_KEY = 'pk_live_KlgLwN0RGeiWCv3yx6qjv4ef'
 
-// TODO(launch): commit the live PayPal client id + live Medusa publishable key
-// as literals too (same rationale as the Stripe key above), retiring their
-// env-var fallbacks. Stripe is done.
+// Public live PayPal client id. Like Stripe's publishable key, this is safe
+// to render into client HTML and must not depend on a mutable Vercel env var.
+const LIVE_PAYPAL_CLIENT_ID = 'BAATFXRSUWu5scT7NbG9GRsFRQ0TyqeL409i7j88tZLA52k1rsaj6CrAKnpvs3XVPP7eZsK6JREKSOz7qE'
+
+// TODO(launch): commit the live Medusa publishable key as a literal too (same
+// rationale as the Stripe key above), retiring its env-var fallback.
 const STORE_ENVIRONMENTS: Record<StoreEnvironmentName, StoreEnvironment> = {
   live: {
     name: 'live',
@@ -77,10 +80,7 @@ const STORE_ENVIRONMENTS: Record<StoreEnvironmentName, StoreEnvironment> = {
         liveStripePublishableKey(
           process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
         ) ?? liveStripePublishableKey(LIVE_STRIPE_PUBLISHABLE_KEY),
-      paypal: paypalCheckoutConfig(
-        process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID,
-        'production'
-      ),
+      paypal: paypalCheckoutConfig(LIVE_PAYPAL_CLIENT_ID, 'production'),
       btcpayEnabled: Boolean(process.env.NEXT_PUBLIC_BTCPAY_ENABLED),
     },
   },
@@ -94,10 +94,7 @@ const STORE_ENVIRONMENTS: Record<StoreEnvironmentName, StoreEnvironment> = {
       stripePublishableKey: stripePublishableKey(
         process.env.NEXT_PUBLIC_STRIPE_TEST_PUBLISHABLE_KEY
       ),
-      paypal: paypalCheckoutConfig(
-        process.env.NEXT_PUBLIC_PAYPAL_SANDBOX_CLIENT_ID,
-        'sandbox'
-      ),
+      paypal: null,
       btcpayEnabled: true,
     },
   },
@@ -113,10 +110,7 @@ const STORE_ENVIRONMENTS: Record<StoreEnvironmentName, StoreEnvironment> = {
       stripePublishableKey: stripePublishableKey(
         process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
       ),
-      paypal: paypalCheckoutConfig(
-        process.env.NEXT_PUBLIC_PAYPAL_SANDBOX_CLIENT_ID,
-        'sandbox'
-      ),
+      paypal: null,
       // BTCPay is a plain redirect (no client SDK), so the mocked suite can
       // exercise a full payment method end-to-end.
       btcpayEnabled: true,

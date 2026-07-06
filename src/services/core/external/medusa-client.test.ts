@@ -53,6 +53,7 @@ import {
   createPaymentCollection,
   createPaymentSession,
   createCustomerSession,
+  capturePayPalOrder,
   completeCart,
 } from './medusa-client'
 
@@ -716,6 +717,53 @@ describe('medusaClient', () => {
 
         const result = await createCustomerSession('cart_123', 'jwt_tok')
         expect(result).toBeNull()
+      })
+    })
+
+    describe('capturePayPalOrder', () => {
+      it('captures through the Medusa store route with Bearer auth', async () => {
+        mockFetch.mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({ order_id: 'PAYPAL_ORDER_1', status: 'COMPLETED' }),
+        })
+
+        const result = await capturePayPalOrder(
+          'cart_123',
+          'PAYPAL_ORDER_1',
+          'jwt_tok'
+        )
+
+        expect(result).toBe(true)
+        const [url, init] = mockFetch.mock.calls[0]
+        expect(url).toBe(
+          'https://test-store-api.wcpos.com/store/carts/cart_123/paypal/capture'
+        )
+        expect(init.method).toBe('POST')
+        expect(JSON.parse(init.body as string)).toEqual({
+          order_id: 'PAYPAL_ORDER_1',
+        })
+        expect((init.headers as Record<string, string>).Authorization).toBe(
+          'Bearer jwt_tok'
+        )
+      })
+
+      it('returns false when Medusa reports a non-completed PayPal capture', async () => {
+        mockFetch.mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({ order_id: 'PAYPAL_ORDER_1', status: 'PENDING' }),
+        })
+
+        const result = await capturePayPalOrder('cart_123', 'PAYPAL_ORDER_1')
+
+        expect(result).toBe(false)
+      })
+
+      it('returns false when Medusa rejects PayPal capture', async () => {
+        mockFetch.mockResolvedValueOnce({ ok: false, status: 502 })
+
+        const result = await capturePayPalOrder('cart_123', 'PAYPAL_ORDER_1')
+
+        expect(result).toBe(false)
       })
     })
 

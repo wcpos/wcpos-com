@@ -462,6 +462,31 @@ export async function createCustomerSession(
 }
 
 /**
+ * Capture a PayPal order for a cart using the Medusa backend's PayPal
+ * credentials/environment.
+ */
+export async function capturePayPalOrder(
+  cartId: string,
+  orderId: string,
+  authToken?: string | null
+): Promise<boolean> {
+  try {
+    const response = await medusaFetch<{ order_id: string; status: string }>(
+      `/store/carts/${cartId}/paypal/capture`,
+      {
+        method: 'POST',
+        body: JSON.stringify({ order_id: orderId }),
+        headers: buildAuthHeaders(authToken),
+      }
+    )
+    return response.status === 'COMPLETED'
+  } catch (error) {
+    storeLogger.error`Failed to capture PayPal order: ${error}`
+    return false
+  }
+}
+
+/**
  * Complete a cart (finalize payment and create order)
  */
 export async function completeCart(cartId: string): Promise<CompleteCartResponse | null> {
@@ -496,5 +521,6 @@ export const medusaClient = {
   // Payment (Medusa v2)
   createPaymentCollection,
   createPaymentSession,
+  capturePayPalOrder,
   completeCart,
 }

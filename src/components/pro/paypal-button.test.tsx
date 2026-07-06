@@ -36,10 +36,12 @@ vi.mock('@paypal/react-paypal-js/sdk-v6', () => ({
 
 const mockCompleteCart = vi.fn()
 const mockCreatePaymentSession = vi.fn()
+const mockCapturePayPalOrder = vi.fn()
 
 vi.mock('./complete-cart', () => ({
   completeCart: (...args: unknown[]) => mockCompleteCart(...args),
   createPaymentSession: (...args: unknown[]) => mockCreatePaymentSession(...args),
+  capturePayPalOrder: (...args: unknown[]) => mockCapturePayPalOrder(...args),
 }))
 
 import { PayPalButton } from './paypal-button'
@@ -47,10 +49,11 @@ import { OrderPendingError } from './checkout-safety'
 
 const onSuccess = vi.fn()
 const onFailure = vi.fn()
+const onProcessingChange = vi.fn()
 
 interface CapturedPayPalProps {
   createOrder: () => Promise<{ orderId: string }>
-  onApprove: () => Promise<void>
+  onApprove: (data?: { orderId?: string }) => Promise<void>
   onError: (err: unknown) => void
   onCancel: () => void
 }
@@ -64,6 +67,7 @@ function buttonElement(paypalOrderId: string | null = 'PAYPAL_ORDER_1') {
       paypalOrderId={paypalOrderId}
       onSuccess={onSuccess}
       onFailure={onFailure}
+      onProcessingChange={onProcessingChange}
     />
   )
 }
@@ -86,6 +90,7 @@ beforeEach(() => {
     error: null,
     isPending: false,
   }
+  mockCapturePayPalOrder.mockResolvedValue(undefined)
   vi.spyOn(console, 'error').mockImplementation(() => {})
   vi.spyOn(console, 'log').mockImplementation(() => {})
 })
@@ -135,14 +140,63 @@ describe('PayPalButton', () => {
     expect(document.querySelector('paypal-button')).not.toBeInTheDocument()
   })
 
-  it('completes the cart and reports success on approval', async () => {
+  it('captures the PayPal order before completing the cart on approval', async () => {
+    mockCapturePayPalOrder.mockResolvedValue(undefined)
     mockCompleteCart.mockResolvedValue('order_7')
 
     const props = renderButton()
     await props.onApprove()
 
+    expect(mockCapturePayPalOrder).toHaveBeenCalledWith({
+      cartId: 'cart_1',
+      orderId: 'PAYPAL_ORDER_1',
+    })
+    expect(mockCompleteCart).toHaveBeenCalledWith({
+      cartId: 'cart_1',
+      experiment: 'pro_checkout_v1',
+      experimentVariant: 'control',
+    })
+    expect(mockCapturePayPalOrder.mock.invocationCallOrder[0]).toBeLessThan(
+      mockCompleteCart.mock.invocationCallOrder[0]
+    )
     expect(onSuccess).toHaveBeenCalledWith('order_7')
     expect(onFailure).not.toHaveBeenCalled()
+    expect(onProcessingChange.mock.calls).toEqual([[true], [false]])
+  })
+
+  it('keeps capture failures retryable because Medusa completion has not run yet', async () => {
+    mockCapturePayPalOrder.mockRejectedValue(new Error('capture failed'))
+
+    const props = renderButton()
+    await props.onApprove()
+
+    const failure = lastFailure()
+    expect(failure.kind).toBe('payment_failed')
+    expect(failure.message).toContain("PayPal couldn't complete your payment")
+    expect(mockCompleteCart).not.toHaveBeenCalled()
+    expect(onSuccess).not.toHaveBeenCalled()
+    expect(onProcessingChange.mock.calls).toEqual([[true], [false]])
+  })
+
+  it('holds the parent processing lock while capture and completion are in flight', async () => {
+    let releaseCapture!: () => void
+    mockCapturePayPalOrder.mockReturnValueOnce(
+      new Promise<void>((resolve) => {
+        releaseCapture = resolve
+      })
+    )
+    mockCompleteCart.mockResolvedValue('order_7')
+
+    const props = renderButton()
+    const approval = props.onApprove()
+
+    expect(onProcessingChange).toHaveBeenCalledWith(true)
+    expect(onProcessingChange).not.toHaveBeenCalledWith(false)
+
+    releaseCapture()
+    await approval
+
+    expect(onProcessingChange.mock.calls).toEqual([[true], [false]])
   })
 
   it('reports the distinct order-pending state when completion fails after approval', async () => {
