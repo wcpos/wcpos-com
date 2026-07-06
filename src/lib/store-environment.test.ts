@@ -54,20 +54,14 @@ describe('store environments', () => {
     expect(getStoreEnvironmentByName('dev').payments.btcpayEnabled).toBe(true)
   })
 
-  it('uses the live PayPal client id only for the live checkout environment', async () => {
-    vi.resetModules()
-    vi.stubEnv('NEXT_PUBLIC_PAYPAL_CLIENT_ID', 'live-client')
-
-    const { getStoreEnvironmentByName } = await import('./store-environment')
-
+  it('uses the committed live PayPal client id only for the live checkout environment', () => {
     expect(getStoreEnvironmentByName('live').payments.paypal).toEqual({
-      clientId: 'live-client',
+      clientId:
+        'BAATFXRSUWu5scT7NbG9GRsFRQ0TyqeL409i7j88tZLA52k1rsaj6CrAKnpvs3XVPP7eZsK6JREKSOz7qE',
       environment: 'production',
     })
     expect(getStoreEnvironmentByName('test').payments.paypal).toBeNull()
     expect(getStoreEnvironmentByName('dev').payments.paypal).toBeNull()
-
-    vi.unstubAllEnvs()
   })
 })
 

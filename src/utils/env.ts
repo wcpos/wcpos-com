@@ -21,9 +21,6 @@ const envSchema = z.object({
   // Stripe (client-side publishable key)
   NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: z.string().optional(),
 
-  // PayPal (client-side client ID)
-  NEXT_PUBLIC_PAYPAL_CLIENT_ID: z.string().optional(),
-
   // BTCPayServer (enabled flag - actual server URL is handled by Medusa)
   NEXT_PUBLIC_BTCPAY_ENABLED: z.string().optional(),
 
