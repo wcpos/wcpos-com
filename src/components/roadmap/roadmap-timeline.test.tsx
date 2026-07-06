@@ -18,6 +18,22 @@ describe('RoadmapTimeline', () => {
     expect(screen.getByRole('heading', { name: 'v1.9.x' })).toBeInTheDocument()
   })
 
+  it('lights the active-phase chip and leaves Next/Shipped as outlines until scrolled', () => {
+    render(<RoadmapTimeline data={ROADMAP_DEV_FIXTURE} />)
+    // "Now" is the active release — always a solid, filled chip.
+    const now = screen.getByText('Now')
+    expect(now.className).toContain('bg-wcpos-red')
+    expect(now.className).toContain('text-white')
+    // Next/Shipped start as quiet outlines; they only fill (light up) once
+    // their rail scrolls into view, which the browser drives via scroll.
+    const next = screen.getByText('Next')
+    expect(next.className).toContain('border-slate-300')
+    expect(next.className).not.toContain('bg-slate-500')
+    const shipped = screen.getByText('Shipped')
+    expect(shipped.className).toContain('border-emerald-500/40')
+    expect(shipped.className).not.toContain('bg-emerald-500')
+  })
+
   it('omits a rail group when its bucket is empty', () => {
     render(
       <RoadmapTimeline data={{ ...ROADMAP_DEV_FIXTURE, upcoming: [] }} />,

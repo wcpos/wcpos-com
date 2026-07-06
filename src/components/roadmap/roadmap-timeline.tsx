@@ -56,10 +56,24 @@ const TONE: Record<Tone, { fill: string; ring: string; glow: string }> = {
   },
 }
 
-const LABEL_TONE: Record<Tone, string> = {
-  now: 'bg-wcpos-red text-white',
+/**
+ * The phase chip in two states. It starts as a quiet outline and lights up to
+ * a solid tone-coloured fill with white text the moment its group's rail
+ * begins drawing — the same scroll signal that grows the fill — so the eye is
+ * pulled to the phase as the reader arrives at it. "Now" is the active release
+ * and stays lit. Both states carry a border so lighting up never shifts the
+ * chip's box.
+ */
+const LABEL_TONE_IDLE: Record<Tone, string> = {
+  now: 'border border-transparent bg-wcpos-red text-white',
   next: 'border border-slate-300 text-muted-foreground dark:border-slate-600',
-  shipped: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400',
+  shipped: 'border border-emerald-500/40 text-emerald-600 dark:text-emerald-400',
+}
+
+const LABEL_TONE_LIT: Record<Tone, string> = {
+  now: 'border border-transparent bg-wcpos-red text-white',
+  next: 'border border-transparent bg-slate-500 text-white',
+  shipped: 'border border-transparent bg-emerald-500 text-white',
 }
 
 function fmtDue(dueOn: string | null): string | null {
@@ -295,6 +309,8 @@ function RailGroupInner({
   // height, so index-based guesses drift).
   const [thresholds, setThresholds] = React.useState<number[] | null>(null)
   const [reached, setReached] = React.useState(0)
+  // Whether the group's rail has started drawing — lights the phase chip.
+  const [railLit, setRailLit] = React.useState(false)
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -324,10 +340,11 @@ function RailGroupInner({
         ? prev
         : next
     )
-    // Seed the pass count from the current scroll position so nodes the tip
-    // already sits below are lit without waiting for a scroll event.
+    // Seed from the current scroll position so a mid-page landing lights the
+    // nodes and chip the tip already sits below, without waiting for a scroll.
     const v = scrollYProgress.get()
     setReached(next.filter((t) => v >= t).length)
+    setRailLit(v > 0.02)
   }, [scrollYProgress, milestones.length])
 
   React.useEffect(() => {
@@ -343,6 +360,10 @@ function RailGroupInner({
   // retracts the fill and un-lights nodes in step with it.
   const syncReached = React.useCallback(
     (v: number) => {
+      setRailLit((prev) => {
+        const lit = v > 0.02
+        return prev === lit ? prev : lit
+      })
       if (!thresholds) return
       const n = thresholds.filter((t) => v >= t).length
       setReached((prev) => (prev === n ? prev : n))
@@ -383,7 +404,11 @@ function RailGroupInner({
 
       <div className="pb-8">
         <span
-          className={`inline-block rounded-full px-3 py-1 font-mono text-[11px] font-semibold uppercase tracking-[0.2em] ${LABEL_TONE[tone]}`}
+          className={`inline-block rounded-full px-3 py-1 font-mono text-[11px] font-semibold uppercase tracking-[0.2em] transition-colors duration-300 ${
+            reducedMotion || tone === 'now' || railLit
+              ? LABEL_TONE_LIT[tone]
+              : LABEL_TONE_IDLE[tone]
+          }`}
         >
           {label}
         </span>
