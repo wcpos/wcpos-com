@@ -4,6 +4,7 @@ import type { LicenseDetail } from '@/types/license'
 import {
   projectAccountOrderDetail,
   projectAccountOrderListRow,
+  projectAccountOrderListRows,
   projectAccountOrderReceipt,
   projectReceiptProfile,
 } from './account-order-projection'
@@ -135,6 +136,56 @@ describe('projectAccountOrderListRow', () => {
 
     expect(row.licenses).toEqual([{ maskedKey: '****-****-1234' }])
   })
+
+  it('uses legacy WooCommerce metadata for migrated order identity', () => {
+    const row = projectAccountOrderListRow(
+      makeOrder({
+        display_id: 1930,
+        created_at: '2026-02-23T19:24:40.000Z',
+        metadata: {
+          wc_order_id: 19524,
+          wc_order_date: '2019-08-16 16:38:12',
+          wc_order_date_gmt: '2019-08-16 08:38:12',
+        },
+      })
+    )
+
+    expect(row.displayId).toBe(19524)
+    expect(row.createdAt).toBe('2019-08-16T08:38:12Z')
+  })
+})
+
+describe('projectAccountOrderListRows', () => {
+  it('sorts migrated orders by projected WooCommerce date newest first', () => {
+    const rows = projectAccountOrderListRows([
+      makeOrder({
+        id: 'order_2019',
+        display_id: 2860,
+        metadata: {
+          wc_order_id: 19524,
+          wc_order_date: '2019-08-16 16:38:12',
+        },
+      }),
+      makeOrder({
+        id: 'order_2026',
+        display_id: 4000,
+        metadata: {
+          wc_order_id: 39509,
+          wc_order_date: '2026-03-17 05:47:31',
+        },
+      }),
+      makeOrder({
+        id: 'order_2021',
+        display_id: 3493,
+        metadata: {
+          wc_order_id: 31343,
+          wc_order_date: '2021-04-09 22:53:06',
+        },
+      }),
+    ])
+
+    expect(rows.map((row) => row.displayId)).toEqual([39509, 31343, 19524])
+  })
 })
 
 describe('projectAccountOrderDetail', () => {
@@ -184,6 +235,24 @@ describe('projectAccountOrderDetail', () => {
         },
       ],
     })
+  })
+
+  it('uses legacy WooCommerce metadata for migrated order detail identity', () => {
+    const detail = projectAccountOrderDetail(
+      makeOrder({
+        display_id: 2860,
+        created_at: '2026-02-23T19:24:40.000Z',
+        metadata: {
+          wc_order_id: '31343',
+          wc_order_date: '2021-04-09T14:53:06.000Z',
+        },
+      }),
+      [],
+      0
+    )
+
+    expect(detail.displayId).toBe(31343)
+    expect(detail.createdAt).toBe('2021-04-09T14:53:06.000Z')
   })
 })
 
@@ -244,6 +313,27 @@ describe('receipt projections', () => {
         tax: 9,
         total: 129,
       },
+    })
+  })
+
+  it('uses legacy WooCommerce metadata for receipt identity', () => {
+    const profile = projectReceiptProfile(undefined)
+
+    expect(
+      projectAccountOrderReceipt(
+        makeOrder({
+          display_id: 3493,
+          created_at: '2026-02-23T19:24:40.000Z',
+          metadata: {
+            wc_order_id: 39509,
+            wc_order_date: '2026-03-16T21:47:31.000Z',
+          },
+        }),
+        profile
+      )
+    ).toMatchObject({
+      displayId: 39509,
+      createdAt: '2026-03-16T21:47:31.000Z',
     })
   })
 })
