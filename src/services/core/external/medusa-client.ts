@@ -77,6 +77,16 @@ async function medusaFetch<T>(
 }
 
 /**
+ * Bearer-auth headers for a Medusa customer JWT, or `{}` when there is no token.
+ * Spread into a request's `headers` so authenticated store calls resolve
+ * `auth_context.actor_id` to the signed-in customer; anonymous/mock callers fall
+ * back to publishable-key-only. Keeps the header construction in one place.
+ */
+function buildAuthHeaders(authToken?: string | null): Record<string, string> {
+  return authToken ? { Authorization: `Bearer ${authToken}` } : {}
+}
+
+/**
  * Get all published products
  */
 export async function getProducts(
@@ -366,9 +376,7 @@ export async function createPaymentCollection(
       {
         method: 'POST',
         body: JSON.stringify({ cart_id: cartId }),
-        ...(authToken
-          ? { headers: { Authorization: `Bearer ${authToken}` } }
-          : {}),
+        headers: buildAuthHeaders(authToken),
       }
     )
     return response.payment_collection
@@ -409,9 +417,7 @@ export async function createPaymentSession(
       {
         method: 'POST',
         body: JSON.stringify({ provider_id: providerId }),
-        ...(authToken
-          ? { headers: { Authorization: `Bearer ${authToken}` } }
-          : {}),
+        headers: buildAuthHeaders(authToken),
       }
     )
 
