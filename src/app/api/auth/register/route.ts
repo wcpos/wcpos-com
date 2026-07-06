@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { cookies } from 'next/headers'
 import { register, setAuthToken } from '@/lib/medusa-auth'
 import { ApiError } from '@/lib/api/errors'
 import { toErrorResponse } from '@/lib/api/to-error-response'
@@ -9,6 +10,8 @@ import {
   PASSWORD_TOO_SHORT_MESSAGE,
 } from '@/lib/password-policy'
 import { createRateLimiter, clientIp } from '@/lib/rate-limit'
+import { trackServerEvent } from '@/services/core/analytics/posthog-service'
+import { ANALYTICS_DISTINCT_ID_COOKIE } from '@/lib/analytics/distinct-id'
 
 // Every accepted request can create a real Medusa customer account, so gate
 // this harder than sign-in — a legitimate user registers once. Fail-open.
@@ -66,6 +69,27 @@ export async function POST(request: Request) {
       lastName,
     })
     await setAuthToken(token)
+
+    // Top-of-funnel conversion: a visitor just became a (free) account holder.
+    // Fire-and-forget, mirroring checkout_completed — trackServerEvent gates on
+    // request consent and self-registers delivery, so the response is never
+    // blocked and the event survives the post-response freeze. Attributed to the
+    // landing-page anon id so it stitches onto the same person as their visit.
+    try {
+      const cookieStore = await cookies()
+      const distinctId = cookieStore.get(ANALYTICS_DISTINCT_ID_COOKIE)?.value
+      void trackServerEvent('signup_completed', {
+        method: 'email',
+        customer_id: customer.id,
+        distinct_id: distinctId ?? 'missing-distinct-id',
+        funnel_step: 'signup_completed',
+        page: '/register',
+      }).catch((trackingError) => {
+        authLogger.warn`Signup tracking failed: ${trackingError}`
+      })
+    } catch (trackingError) {
+      authLogger.warn`Signup tracking failed: ${trackingError}`
+    }
 
     return NextResponse.json({ success: true, customer })
   } catch (error) {

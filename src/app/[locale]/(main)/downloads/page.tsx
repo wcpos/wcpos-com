@@ -9,6 +9,7 @@ import { Card } from '@/components/ui/card'
 import { TextLink } from '@/components/ui/text-link'
 import { Link } from '@/i18n/navigation'
 import { TrackedLocaleLink } from '@/components/analytics/tracked-locale-link'
+import { TrackedExternalLink } from '@/components/analytics/tracked-external-link'
 import { marketingMetadata } from '@/lib/seo'
 import { DownloadsHero } from '@/components/downloads/download-hero'
 import { PLATFORMS } from '@/components/downloads/platforms'
@@ -204,14 +205,30 @@ export default async function DownloadsPage({
                 </div>
                 <div className="flex gap-2">
                   <Button asChild variant="brand" size="sm">
-                    <a href="https://wordpress.org/plugins/woocommerce-pos/">
+                    <TrackedExternalLink
+                      href="https://wordpress.org/plugins/woocommerce-pos/"
+                      eventName="download_clicked"
+                      eventProperties={{
+                        plugin: 'free',
+                        source: 'wordpress_org',
+                        page: '/downloads',
+                      }}
+                    >
                       WordPress.org
-                    </a>
+                    </TrackedExternalLink>
                   </Button>
                   <Button asChild variant="outline" size="sm">
-                    <a href="https://github.com/wcpos/woocommerce-pos/releases">
+                    <TrackedExternalLink
+                      href="https://github.com/wcpos/woocommerce-pos/releases"
+                      eventName="download_clicked"
+                      eventProperties={{
+                        plugin: 'free',
+                        source: 'github_zip',
+                        page: '/downloads',
+                      }}
+                    >
                       .zip
-                    </a>
+                    </TrackedExternalLink>
                   </Button>
                 </div>
               </Card>
