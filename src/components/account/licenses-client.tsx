@@ -224,11 +224,6 @@ export function LicensesClient({
   const getDisplayStatus = (license: License) =>
     getLicenseDisplayStatus(license, now)
 
-  const getPlanLabel = (policyId: string) => {
-    const plan = getPlanByPolicyId(policyId)
-    return plan ? t(plan.labelKey) : null
-  }
-
   // When another active license (e.g. a lifetime one) keeps update access
   // open beyond the warning window, the per-card notice drops the "renew to
   // keep receiving updates" urgency — updates are not actually at risk.
@@ -256,7 +251,26 @@ export function LicensesClient({
           const displayStatus = getDisplayStatus(license)
           const statusPresentation = presentLicenseStatus(displayStatus)
           const expiringSoon = isLicenseExpiringSoon(license, now)
-          const planLabel = getPlanLabel(license.policyId)
+          const plan = getPlanByPolicyId(license.policyId)
+          const planLabel = plan ? t(plan.labelKey) : null
+          // A licence is renewable when it has an expiry to extend; a lifetime
+          // licence (null expiry) never renews. Deep-link to the pre-filled
+          // yearly checkout when the plan handle resolves (else the generic
+          // /pro). On payment the Medusa order-completed subscriber extends the
+          // SAME licence using the locked max(expiry, now) + 1yr rule.
+          const isRenewable = license.expiry != null
+          const renewHref = plan?.handle
+            ? `/pro/checkout?product=${plan.handle}`
+            : '/pro'
+          // Always offer renewal on a renewable licence that is active or
+          // expired, EXCEPT while the expiring-soon banner is already showing
+          // its own Renew (avoids two identical CTAs on one card). Skip the
+          // exceptional states (suspended/revoked/unknown) where a charge would
+          // not restore access.
+          const showRenew =
+            isRenewable &&
+            !expiringSoon &&
+            (displayStatus === 'active' || displayStatus === 'expired')
           // Per-licence attributed version (ADR-0006): null when this licence
           // alone covers nothing.
           const coveredVersion = entitledVersions[license.id] ?? null
@@ -347,7 +361,7 @@ export function LicensesClient({
                 <AccountNotice
                   action={
                     <Button asChild size="sm">
-                      <Link href="/pro">{t('renew')}</Link>
+                      <Link href={renewHref}>{t('renew')}</Link>
                     </Button>
                   }
                 >
@@ -412,28 +426,40 @@ export function LicensesClient({
                     </span>
                   </div>
                 </div>
-                {displayStatus === 'active' && (
-                  <Button asChild size="sm">
-                    <Link href="/account/downloads">
-                      <Download className="mr-2 h-4 w-4" />
-                      {t('downloads')}
-                    </Link>
-                  </Button>
-                )}
-                {displayStatus === 'expired' && (
+                {(displayStatus === 'active' ||
+                  displayStatus === 'expired') && (
                   <div className="flex items-center gap-2">
-                    <Button asChild size="sm">
-                      <Link href="/pro">{t('renew')}</Link>
-                    </Button>
-                    {/* Expired licenses can still download versions released
-                        before their expiry; scope the downloads page to this
-                        licence so another active licence does not pool access. */}
-                    <Button asChild size="sm" variant="outline">
-                      <Link href={scopedDownloadsHref}>
-                        <Download className="mr-2 h-4 w-4" />
-                        {t('downloads')}
-                      </Link>
-                    </Button>
+                    {/* Renew is always offered on a yearly licence: primary when
+                        expired (needed to regain access), secondary when active
+                        (an optional early renewal — no days are lost). */}
+                    {showRenew && (
+                      <Button
+                        asChild
+                        size="sm"
+                        variant={displayStatus === 'active' ? 'outline' : 'default'}
+                      >
+                        <Link href={renewHref}>{t('renew')}</Link>
+                      </Button>
+                    )}
+                    {displayStatus === 'active' && (
+                      <Button asChild size="sm">
+                        <Link href="/account/downloads">
+                          <Download className="mr-2 h-4 w-4" />
+                          {t('downloads')}
+                        </Link>
+                      </Button>
+                    )}
+                    {displayStatus === 'expired' && (
+                      /* Expired licenses can still download versions released
+                         before their expiry; scope the downloads page to this
+                         licence so another active licence does not pool access. */
+                      <Button asChild size="sm" variant="outline">
+                        <Link href={scopedDownloadsHref}>
+                          <Download className="mr-2 h-4 w-4" />
+                          {t('downloads')}
+                        </Link>
+                      </Button>
+                    )}
                   </div>
                 )}
               </div>

@@ -3,6 +3,7 @@ import { fireEvent, screen } from '@testing-library/react'
 import { renderWithIntl as render } from '@/test/intl'
 import { LicensesClient } from './licenses-client'
 import type { CanonicalLicenseStatus } from '@/lib/license-status'
+import { DEFAULT_YEARLY_POLICY_ID } from '@/lib/plans'
 
 // Mock the locale-aware Link as a simple anchor
 vi.mock('@/i18n/navigation', () => ({
@@ -226,7 +227,11 @@ describe('LicensesClient', () => {
     expect(
       screen.queryByText(/renew to keep receiving updates/)
     ).not.toBeInTheDocument()
-    expect(screen.queryByRole('link', { name: 'Renew' })).not.toBeInTheDocument()
+    // The expiry banner is gone, but the always-visible footer Renew remains.
+    expect(screen.getByRole('link', { name: 'Renew' })).toHaveAttribute(
+      'href',
+      '/pro'
+    )
   })
 
   it('does not warn for lifetime licenses', () => {
@@ -239,18 +244,42 @@ describe('LicensesClient', () => {
     expect(
       screen.queryByText(/renew to keep receiving updates/)
     ).not.toBeInTheDocument()
+    // A lifetime licence never expires — there is nothing to renew.
+    expect(
+      screen.queryByRole('link', { name: 'Renew' })
+    ).not.toBeInTheDocument()
   })
 
   it('labels a yearly-policy license "Yearly"', () => {
     render(
       <LicensesClient
         initialLicenses={[
-          makeLicense({ policyId: '261cb7e2-6e80-476e-98bd-fe7f406f258d' }),
+          makeLicense({ policyId: DEFAULT_YEARLY_POLICY_ID }),
         ]}
       />
     )
 
     expect(screen.getByText('Yearly')).toBeInTheDocument()
+  })
+
+  it('deep-links the Renew button to the pre-filled yearly checkout', () => {
+    render(
+      <LicensesClient
+        initialLicenses={[
+          makeLicense({
+            status: 'active',
+            policyId: DEFAULT_YEARLY_POLICY_ID,
+          }),
+        ]}
+      />
+    )
+
+    // An active, non-expiring yearly licence shows the always-visible Renew,
+    // deep-linked to the pre-filled yearly checkout (not the generic /pro).
+    expect(screen.getByRole('link', { name: 'Renew' })).toHaveAttribute(
+      'href',
+      '/pro/checkout?product=wcpos-pro-yearly'
+    )
   })
 
   it('does NOT label an unregistered/unknown policy as "Lifetime"', () => {
