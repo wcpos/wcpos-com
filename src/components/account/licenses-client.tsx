@@ -426,8 +426,7 @@ export function LicensesClient({
                     </span>
                   </div>
                 </div>
-                {(showRenew ||
-                  displayStatus === 'active' ||
+                {(displayStatus === 'active' ||
                   displayStatus === 'expired') && (
                   <div className="flex items-center gap-2">
                     {/* Renew is always offered on a yearly licence: primary when
