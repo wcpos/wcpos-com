@@ -69,12 +69,31 @@ describe('getLatestRelease', () => {
     })
   })
 
-  it('returns null and logs when the request fails', async () => {
-    mockGetLatestRelease.mockRejectedValue(new Error('boom'))
+  it('returns null when the repository has no published release (404)', async () => {
+    mockGetLatestRelease.mockRejectedValue(
+      Object.assign(new Error('Not Found'), { status: 404 })
+    )
 
     const release = await getLatestRelease('electron')
 
     expect(release).toBeNull()
+    // A missing release is expected, not an error to be logged.
+    expect(mockLoggerError).not.toHaveBeenCalled()
+  })
+
+  it('rethrows and logs when the request fails transiently', async () => {
+    mockGetLatestRelease.mockRejectedValue(
+      Object.assign(new Error('rate limited'), { status: 403 })
+    )
+
+    await expect(getLatestRelease('electron')).rejects.toThrow('rate limited')
+    expect(mockLoggerError).toHaveBeenCalled()
+  })
+
+  it('rethrows non-HTTP failures (network errors) instead of reporting no release', async () => {
+    mockGetLatestRelease.mockRejectedValue(new Error('network down'))
+
+    await expect(getLatestRelease('electron')).rejects.toThrow('network down')
     expect(mockLoggerError).toHaveBeenCalled()
   })
 })

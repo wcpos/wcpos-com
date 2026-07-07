@@ -44,7 +44,24 @@ async function fetchReleases(repo: string): Promise<GitHubRelease[]> {
 }
 
 /**
- * Get the latest release for a repository
+ * Whether a GitHub error represents a genuine "not found" (HTTP 404) rather
+ * than a transient failure (rate limit, network, 5xx, etc.).
+ */
+function isNotFoundError(error: unknown): boolean {
+  return (
+    typeof error === 'object' &&
+    error !== null &&
+    'status' in error &&
+    (error as { status?: unknown }).status === 404
+  )
+}
+
+/**
+ * Get the latest release for a repository.
+ *
+ * Returns null only when the repository genuinely has no published release
+ * (GitHub responds 404). Transient failures (rate limit, network, 5xx) are
+ * rethrown so callers can distinguish an outage from a missing release.
  */
 export async function getLatestRelease(
   repo: string
@@ -52,8 +69,11 @@ export async function getLatestRelease(
   try {
     return transformRelease(await fetchLatestRelease(repo))
   } catch (error) {
+    if (isNotFoundError(error)) {
+      return null
+    }
     infraLogger.error`Failed to fetch latest release for ${repo}: ${error}`
-    return null
+    throw error
   }
 }
 
