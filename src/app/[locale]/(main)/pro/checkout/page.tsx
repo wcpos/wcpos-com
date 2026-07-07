@@ -130,7 +130,6 @@ export async function CheckoutContent({
                 OFFER_SUMMARY_TITLES[selectedFullOffer.planId] ??
                 'WCPOS Pro',
               priceFormatted: selectedFullOffer.price.formatted,
-              currencyCode: selectedFullOffer.price.currencyCode,
             }
           : undefined
       }
