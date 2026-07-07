@@ -1,5 +1,8 @@
 import { describe, expect, it, vi, beforeEach } from 'vitest'
 import { fireEvent, render, screen } from '@testing-library/react'
+import { NextIntlClientProvider } from 'next-intl'
+import type { ReactElement } from 'react'
+import messages from '../../../messages/en.json'
 
 vi.mock('@/lib/analytics/client-events', () => ({
   trackClientEvent: vi.fn(),
@@ -56,20 +59,28 @@ vi.mock('@/lib/pro-offer-catalog', () => ({
 
 const mockTrackClientEvent = vi.mocked(trackClientEvent)
 
+function renderWithIntl(ui: ReactElement) {
+  return render(
+    <NextIntlClientProvider locale="en" messages={messages}>
+      {ui}
+    </NextIntlClientProvider>
+  )
+}
+
 describe('PricingTeaserSection', () => {
   beforeEach(() => {
     vi.clearAllMocks()
   })
 
   it('renders Free and Pro columns', async () => {
-    render(await PricingTeaserSection())
+    renderWithIntl(await PricingTeaserSection())
 
     expect(screen.getByRole('heading', { name: 'Free' })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Pro' })).toBeInTheDocument()
   })
 
   it('shows pricing from the Pro offer catalog', async () => {
-    render(await PricingTeaserSection())
+    renderWithIntl(await PricingTeaserSection())
 
     expect(
       screen.getByText('$129/year or $399 lifetime. No per-register fees.')
@@ -77,7 +88,7 @@ describe('PricingTeaserSection', () => {
   })
 
   it('renders a non-price fallback while pricing loads', () => {
-    render(<PricingTeaserSectionFallback />)
+    renderWithIntl(<PricingTeaserSectionFallback />)
 
     expect(
       screen.getByText(
@@ -87,7 +98,7 @@ describe('PricingTeaserSection', () => {
   })
 
   it('links the CTA to the Pro page', async () => {
-    render(await PricingTeaserSection())
+    renderWithIntl(await PricingTeaserSection())
 
     const cta = screen.getByRole('link', {
       name: 'See Full Pricing & Features',
@@ -96,7 +107,7 @@ describe('PricingTeaserSection', () => {
   })
 
   it('tracks the CTA click', async () => {
-    render(await PricingTeaserSection())
+    renderWithIntl(await PricingTeaserSection())
 
     fireEvent.click(
       screen.getByRole('link', { name: 'See Full Pricing & Features' })
@@ -108,7 +119,7 @@ describe('PricingTeaserSection', () => {
   })
 
   it('lists key Free and Pro features', async () => {
-    render(await PricingTeaserSection())
+    renderWithIntl(await PricingTeaserSection())
 
     expect(screen.getByText('Offline mode')).toBeInTheDocument()
     expect(screen.getByText('Unlimited products')).toBeInTheDocument()

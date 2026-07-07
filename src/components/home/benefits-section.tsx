@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl'
 import {
   ArrowLeftRight,
   CreditCard,
@@ -18,46 +19,33 @@ import { Section } from '@/components/ui/section'
 import { SectionHeading } from '@/components/ui/section-heading'
 
 type VisualKey = 'sync' | 'offline' | 'hardware' | 'ownership'
+type BenefitId = VisualKey
 
 interface Benefit {
   icon: LucideIcon
-  headline: string
-  description: string
-  supporting: string
+  id: BenefitId
   visual: VisualKey
 }
 
 const benefits: Benefit[] = [
   {
     icon: RefreshCw,
-    headline: 'One catalog, two channels',
-    description:
-      'Your WooCommerce products are your POS products. Update a price or stock level once — it syncs everywhere automatically. No manual entry, no conflicts, no guesswork.',
-    supporting: 'Same products. Same prices. Same customers. Always in sync.',
+    id: 'sync',
     visual: 'sync',
   },
   {
     icon: WifiOff,
-    headline: 'Works offline',
-    description:
-      'Local-first architecture means the POS keeps running when your connection drops. Products are stored locally and open orders are preserved — they complete and sync as soon as the internet returns.',
-    supporting: 'Never lose an order to internet issues.',
+    id: 'offline',
     visual: 'offline',
   },
   {
     icon: Cpu,
-    headline: 'Native apps, real hardware',
-    description:
-      'Native iOS and Android apps — not a browser tab pretending to be an app. Connect payment terminals, receipt printers, and barcode scanners directly.',
-    supporting: 'Supports Stripe Terminal, SumUp, and more payment hardware.',
+    id: 'hardware',
     visual: 'hardware',
   },
   {
     icon: Shield,
-    headline: 'You own everything',
-    description:
-      'Your data stays in your WooCommerce store, on your hosting. No platform lock-in, no third party holding your business hostage. Open source (GPL) — inspect the code, extend it, contribute to it.',
-    supporting: "Open source. Self-hosted. You're in control.",
+    id: 'ownership',
     visual: 'ownership',
   },
 ]
@@ -118,32 +106,34 @@ function SyncVisual() {
 }
 
 function OfflineVisual() {
+  const t = useTranslations('home.benefits.visuals.offline')
+
   return (
     <div aria-hidden="true" className={visualFrame}>
       <div className="w-full max-w-xs select-none rounded-md border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-800">
         <div className="mb-3 flex items-center justify-between">
           <p className="text-[10px] font-semibold text-slate-500 dark:text-slate-400">
-            Today&apos;s Sales
+            {t('title')}
           </p>
           <span className="flex items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 text-[9px] font-semibold text-amber-800 dark:bg-amber-900/50 dark:text-amber-300">
-            <WifiOff className="h-2.5 w-2.5" /> Offline
+            <WifiOff className="h-2.5 w-2.5" /> {t('badge')}
           </span>
         </div>
-        {['Sale #1024', 'Sale #1025', 'Sale #1026'].map((sale) => (
+        {['1024', '1025', '1026'].map((sale) => (
           <div
             key={sale}
             className="mb-1.5 flex items-center justify-between rounded bg-white px-2.5 py-1.5 dark:bg-slate-900"
           >
             <span className="text-[10px] text-slate-600 dark:text-slate-300">
-              {sale}
+              {t('sale', { number: sale })}
             </span>
             <span className="flex items-center gap-1 text-[9px] font-medium text-emerald-600 dark:text-emerald-400">
-              <Check className="h-2.5 w-2.5" /> Completed
+              <Check className="h-2.5 w-2.5" /> {t('completed')}
             </span>
           </div>
         ))}
         <p className="mt-2 text-center text-[9px] text-slate-400 dark:text-slate-500">
-          3 sales queued — syncs when you&apos;re back online
+          {t('queued')}
         </p>
       </div>
     </div>
@@ -151,23 +141,24 @@ function OfflineVisual() {
 }
 
 function HardwareVisual() {
+  const t = useTranslations('home.benefits.visuals.hardware')
   const items = [
-    { icon: Tablet, label: 'iPad / Tablet' },
-    { icon: CreditCard, label: 'Card Terminal' },
-    { icon: Printer, label: 'Receipt Printer' },
-    { icon: ScanBarcode, label: 'Barcode Scanner' },
-  ]
+    { icon: Tablet, id: 'tablet' },
+    { icon: CreditCard, id: 'terminal' },
+    { icon: Printer, id: 'printer' },
+    { icon: ScanBarcode, id: 'scanner' },
+  ] as const
   return (
     <div aria-hidden="true" className={`${visualFrame} select-none`}>
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         {items.map((item) => (
           <div
-            key={item.label}
+            key={item.id}
             className="flex flex-col items-center gap-2 rounded-md border border-slate-200 bg-slate-50 px-3 py-4 dark:border-slate-700 dark:bg-slate-800"
           >
             <item.icon className="h-7 w-7 text-slate-600 dark:text-slate-300" />
             <span className="text-center text-[9px] font-medium text-slate-500 dark:text-slate-400">
-              {item.label}
+              {t(item.id)}
             </span>
           </div>
         ))}
@@ -177,6 +168,8 @@ function HardwareVisual() {
 }
 
 function OwnershipVisual() {
+  const t = useTranslations('home.benefits.visuals.ownership')
+
   return (
     <div aria-hidden="true" className={visualFrame}>
       <div className="w-full max-w-xs select-none rounded-md border border-slate-200 bg-slate-50 p-4 text-center dark:border-slate-700 dark:bg-slate-800">
@@ -188,16 +181,16 @@ function OwnershipVisual() {
           <ShieldCheck className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
         </div>
         <div className="flex flex-wrap items-center justify-center gap-2">
-          {['Your hosting', 'Your data', 'GPL licensed'].map((chip) => (
+          {(['hosting', 'data', 'license'] as const).map((chip) => (
             <span
               key={chip}
               className="rounded-full bg-white px-2.5 py-1 text-[9px] font-medium text-slate-600 dark:bg-slate-900 dark:text-slate-300"
             >
-              {chip}
+              {t(`chips.${chip}`)}
             </span>
           ))}
           <span className="flex items-center gap-1 rounded-full bg-white px-2.5 py-1 text-[9px] font-medium text-slate-600 dark:bg-slate-900 dark:text-slate-300">
-            <GithubIcon className="h-2.5 w-2.5" /> Open source
+            <GithubIcon className="h-2.5 w-2.5" /> {t('chips.openSource')}
           </span>
         </div>
       </div>
@@ -213,6 +206,8 @@ const visuals: Record<VisualKey, () => React.JSX.Element> = {
 }
 
 export function BenefitsSection() {
+  const t = useTranslations('home.benefits')
+
   return (
     <section aria-labelledby="benefits-heading">
       <Section
@@ -222,7 +217,7 @@ export function BenefitsSection() {
       >
         <SectionHeading
           id="benefits-heading"
-          title="Why stores choose WCPOS"
+          title={t('heading')}
         />
       </Section>
 
@@ -232,7 +227,7 @@ export function BenefitsSection() {
 
         return (
           <Section
-            key={benefit.headline}
+            key={benefit.id}
             tone={isEven ? 'muted' : 'default'}
             spacing="compact"
           >
@@ -247,13 +242,13 @@ export function BenefitsSection() {
                   className="mb-4 h-8 w-8 text-wcpos-red"
                 />
                 <h3 className="mb-3 text-xl font-semibold text-slate-800 dark:text-slate-100 md:text-2xl">
-                  {benefit.headline}
+                  {t(`items.${benefit.id}.headline`)}
                 </h3>
                 <p className="mb-4 leading-relaxed text-slate-600 dark:text-slate-400">
-                  {benefit.description}
+                  {t(`items.${benefit.id}.description`)}
                 </p>
                 <p className="text-sm italic text-slate-500 dark:text-slate-400">
-                  {benefit.supporting}
+                  {t(`items.${benefit.id}.supporting`)}
                 </p>
               </div>
             </div>

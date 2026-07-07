@@ -1,10 +1,21 @@
 import { describe, expect, it } from 'vitest'
 import { render, screen } from '@testing-library/react'
+import { NextIntlClientProvider } from 'next-intl'
+import type { ReactElement } from 'react'
 import { EcosystemSection } from './ecosystem-section'
+import messages from '../../../messages/en.json'
+
+function renderWithIntl(ui: ReactElement) {
+  return render(
+    <NextIntlClientProvider locale="en" messages={messages}>
+      {ui}
+    </NextIntlClientProvider>
+  )
+}
 
 describe('EcosystemSection', () => {
   it('renders the section heading', () => {
-    render(<EcosystemSection />)
+    renderWithIntl(<EcosystemSection />)
 
     expect(
       screen.getByRole('heading', {
@@ -14,7 +25,7 @@ describe('EcosystemSection', () => {
   })
 
   it('renders a card for each platform', () => {
-    render(<EcosystemSection />)
+    renderWithIntl(<EcosystemSection />)
 
     expect(screen.getByText('iOS & iPadOS')).toBeInTheDocument()
     expect(screen.getByText('Android')).toBeInTheDocument()
@@ -23,7 +34,7 @@ describe('EcosystemSection', () => {
   })
 
   it('links each platform CTA to a real download target', () => {
-    render(<EcosystemSection />)
+    renderWithIntl(<EcosystemSection />)
 
     expect(
       screen.getByRole('link', { name: /Get the iOS beta/ })
@@ -43,7 +54,7 @@ describe('EcosystemSection', () => {
   })
 
   it('marks beta platforms with a badge', () => {
-    render(<EcosystemSection />)
+    renderWithIntl(<EcosystemSection />)
 
     expect(screen.getAllByText('Beta')).toHaveLength(3)
   })

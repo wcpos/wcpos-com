@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl'
 import {
   BarChart3,
   PencilLine,
@@ -12,76 +13,67 @@ import { FeatureCard } from '@/components/ui/feature-card'
 import { Section } from '@/components/ui/section'
 import { SectionHeading } from '@/components/ui/section-heading'
 
+type FeatureId = 'f1' | 'f2' | 'f3' | 'f4' | 'f5' | 'f6'
+
 interface Feature {
   icon: LucideIcon
-  title: string
-  description: string
+  id: FeatureId
   pro: boolean
 }
 
 const features: Feature[] = [
   {
     icon: Search,
-    title: 'Fast product search',
-    description:
-      'Find products instantly with search, filters, and category browsing. Barcode scanner support.',
+    id: 'f1',
     pro: false,
   },
   {
     icon: ShoppingCart,
-    title: 'Smooth checkout flow',
-    description:
-      'Add items, apply discounts, choose payment method. Supports Stripe Terminal, SumUp, cash, and custom gateways.',
+    id: 'f2',
     pro: true,
   },
   {
     icon: Users,
-    title: 'Customer profiles',
-    description:
-      'Add and edit customer info directly in the POS. Track regulars, offer better service.',
+    id: 'f3',
     pro: true,
   },
   {
     icon: Receipt,
-    title: 'Order history & management',
-    description:
-      'View past orders, process returns, check order status without switching to WP Admin.',
+    id: 'f4',
     pro: true,
   },
   {
     icon: PencilLine,
-    title: 'Edit stock & prices on the fly',
-    description:
-      'Fix a wrong price while serving a customer. Adjust stock without leaving the POS.',
+    id: 'f5',
     pro: true,
   },
   {
     icon: BarChart3,
-    title: 'End-of-day reports',
-    description:
-      'Generate sales reports for each shift or day. Cash up quickly, track performance.',
+    id: 'f6',
     pro: true,
   },
 ]
 
 export function FeaturesSection() {
+  const t = useTranslations('home.features')
+
   return (
     <Section tone="default" spacing="default">
       <SectionHeading
         className="mb-12"
-        title="Built for the demands of physical retail"
+        title={t('heading')}
       />
 
       <ul className="mx-auto grid max-w-5xl gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {features.map((feature) => (
           <FeatureCard
-            key={feature.title}
+            key={feature.id}
             as="li"
             icon={feature.icon}
-            title={feature.title}
+            title={t(`items.${feature.id}.title`)}
             badge={feature.pro && <Badge variant="pro">Pro</Badge>}
           >
-            {feature.description}
+            {t(`items.${feature.id}.description`)}
           </FeatureCard>
         ))}
       </ul>

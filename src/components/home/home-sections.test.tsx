@@ -1,5 +1,8 @@
 import { describe, expect, it, vi } from 'vitest'
 import { render, screen, within } from '@testing-library/react'
+import { NextIntlClientProvider } from 'next-intl'
+import type { ReactElement } from 'react'
+import messages from '../../../messages/en.json'
 
 // Mock i18n navigation Link as a simple anchor (TrustSection links to /about-us)
 vi.mock('@/i18n/navigation', () => ({
@@ -56,9 +59,17 @@ import { FeaturesSection } from './features-section'
 import { TrustSection } from './trust-section'
 import { CtaSection } from './cta-section'
 
+function renderWithIntl(ui: ReactElement) {
+  return render(
+    <NextIntlClientProvider locale="en" messages={messages}>
+      {ui}
+    </NextIntlClientProvider>
+  )
+}
+
 describe('ProblemSection', () => {
   it('renders the three pain points', () => {
-    render(<ProblemSection />)
+    renderWithIntl(<ProblemSection />)
 
     expect(screen.getByText('Double Entry')).toBeInTheDocument()
     expect(screen.getByText('Offline Panic')).toBeInTheDocument()
@@ -68,7 +79,7 @@ describe('ProblemSection', () => {
 
 describe('BenefitsSection', () => {
   it('renders a section heading and all four benefits', () => {
-    render(<BenefitsSection />)
+    renderWithIntl(<BenefitsSection />)
 
     expect(
       screen.getByRole('heading', { name: 'Why stores choose WCPOS' })
@@ -88,7 +99,7 @@ describe('BenefitsSection', () => {
   })
 
   it('uses the canonical section seam for its heading and alternating bands', () => {
-    render(<BenefitsSection />)
+    renderWithIntl(<BenefitsSection />)
 
     const heading = screen.getByRole('heading', {
       name: 'Why stores choose WCPOS',
@@ -107,7 +118,7 @@ describe('BenefitsSection', () => {
   })
 
   it('keeps all benefits inside the labelled benefits region', () => {
-    render(<BenefitsSection />)
+    renderWithIntl(<BenefitsSection />)
 
     const region = screen.getByRole('region', {
       name: 'Why stores choose WCPOS',
@@ -139,7 +150,7 @@ describe('BenefitsSection', () => {
 
 describe('UseCasesSection', () => {
   it('renders the three testimonial cards with sourced attributions', () => {
-    render(<UseCasesSection />)
+    renderWithIntl(<UseCasesSection />)
 
     expect(screen.getByText('Retail Store')).toBeInTheDocument()
     expect(screen.getByText('Market Vendor')).toBeInTheDocument()
@@ -161,7 +172,7 @@ describe('UseCasesSection', () => {
 
 describe('FeaturesSection', () => {
   it('renders all six feature cards', () => {
-    render(<FeaturesSection />)
+    renderWithIntl(<FeaturesSection />)
 
     expect(screen.getByText('Fast product search')).toBeInTheDocument()
     expect(screen.getByText('Smooth checkout flow')).toBeInTheDocument()
@@ -176,7 +187,7 @@ describe('FeaturesSection', () => {
   })
 
   it('marks Pro features with a badge', () => {
-    render(<FeaturesSection />)
+    renderWithIntl(<FeaturesSection />)
 
     expect(screen.getAllByText('Pro')).toHaveLength(5)
   })
@@ -184,7 +195,7 @@ describe('FeaturesSection', () => {
 
 describe('TrustSection', () => {
   it('renders the stats', () => {
-    render(<TrustSection />)
+    renderWithIntl(<TrustSection />)
 
     expect(screen.getByText('5,000+')).toBeInTheDocument()
     expect(screen.getByText('Active Installations')).toBeInTheDocument()
@@ -192,7 +203,7 @@ describe('TrustSection', () => {
   })
 
   it('links the open source stat to GitHub', () => {
-    render(<TrustSection />)
+    renderWithIntl(<TrustSection />)
 
     expect(screen.getByRole('link', { name: /GPL Licensed/ })).toHaveAttribute(
       'href',
@@ -203,7 +214,7 @@ describe('TrustSection', () => {
 
 describe('CtaSection', () => {
   it('renders the final CTA links', () => {
-    render(<CtaSection />)
+    renderWithIntl(<CtaSection />)
 
     expect(screen.getByRole('link', { name: 'Try Live Demo' })).toHaveAttribute(
       'href',

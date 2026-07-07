@@ -45,7 +45,151 @@
   },
   "home": {
     "title": "WCPOS",
-    "subtitle": "A fast point of sale for WooCommerce"
+    "subtitle": "A fast point of sale for WooCommerce",
+    "meta": {
+      "description": "Point of Sale for WooCommerce. Sync your products, sell offline, and connect real hardware with native apps for iOS, Android, and desktop."
+    },
+    "benefits": {
+      "heading": "Why stores choose WCPOS",
+      "items": {
+        "sync": {
+          "headline": "One catalog, two channels",
+          "description": "Your WooCommerce products are your POS products. Update a price or stock level once — it syncs everywhere automatically. No manual entry, no conflicts, no guesswork.",
+          "supporting": "Same products. Same prices. Same customers. Always in sync."
+        },
+        "offline": {
+          "headline": "Works offline",
+          "description": "Local-first architecture means the POS keeps running when your connection drops. Products are stored locally and open orders are preserved — they complete and sync as soon as the internet returns.",
+          "supporting": "Never lose an order to internet issues."
+        },
+        "hardware": {
+          "headline": "Native apps, real hardware",
+          "description": "Native iOS and Android apps — not a browser tab pretending to be an app. Connect payment terminals, receipt printers, and barcode scanners directly.",
+          "supporting": "Supports Stripe Terminal, SumUp, and more payment hardware."
+        },
+        "ownership": {
+          "headline": "You own everything",
+          "description": "Your data stays in your WooCommerce store, on your hosting. No platform lock-in, no third party holding your business hostage. Open source (GPL) — inspect the code, extend it, contribute to it.",
+          "supporting": "Open source. Self-hosted. You're in control."
+        }
+      },
+      "visuals": {
+        "offline": {
+          "title": "Today's Sales",
+          "badge": "Offline",
+          "sale": "Sale #{number}",
+          "completed": "Completed",
+          "queued": "3 sales queued — syncs when you're back online"
+        },
+        "hardware": {
+          "tablet": "iPad / Tablet",
+          "terminal": "Card Terminal",
+          "printer": "Receipt Printer",
+          "scanner": "Barcode Scanner"
+        },
+        "ownership": {
+          "chips": {
+            "hosting": "Your hosting",
+            "data": "Your data",
+            "license": "GPL licensed",
+            "openSource": "Open source"
+          }
+        }
+      }
+    },
+    "features": {
+      "heading": "Built for the demands of physical retail",
+      "items": {
+        "f1": {
+          "title": "Fast product search",
+          "description": "Find products instantly with search, filters, and category browsing. Barcode scanner support."
+        },
+        "f2": {
+          "title": "Smooth checkout flow",
+          "description": "Add items, apply discounts, choose payment method. Supports Stripe Terminal, SumUp, cash, and custom gateways."
+        },
+        "f3": {
+          "title": "Customer profiles",
+          "description": "Add and edit customer info directly in the POS. Track regulars, offer better service."
+        },
+        "f4": {
+          "title": "Order history & management",
+          "description": "View past orders, process returns, check order status without switching to WP Admin."
+        },
+        "f5": {
+          "title": "Edit stock & prices on the fly",
+          "description": "Fix a wrong price while serving a customer. Adjust stock without leaving the POS."
+        },
+        "f6": {
+          "title": "End-of-day reports",
+          "description": "Generate sales reports for each shift or day. Cash up quickly, track performance."
+        }
+      }
+    },
+    "pricing": {
+      "heading": "Start free. Upgrade when you need more.",
+      "fallback": "See full pricing for current Pro options. No per-register fees.",
+      "free": {
+        "title": "Free",
+        "description": "Free forever. No transaction fees. No limits.",
+        "features": {
+          "f1": "WooCommerce sync",
+          "f2": "Product search & grid",
+          "f3": "Basic checkout",
+          "f4": "Offline mode",
+          "f5": "Receipt printing",
+          "f6": "Multi-currency",
+          "f7": "Unlimited products"
+        }
+      },
+      "pro": {
+        "title": "Pro",
+        "intro": "Everything in Free, plus:",
+        "features": {
+          "p1": "Payment terminal integration",
+          "p2": "Stock & price editing in POS",
+          "p3": "Order history & management",
+          "p4": "Customer management",
+          "p5": "End-of-day reports",
+          "p6": "Custom payment gateways",
+          "p7": "Priority support"
+        }
+      },
+      "cta": "See Full Pricing & Features"
+    },
+    "ecosystem": {
+      "heading": "One ecosystem. Multiple ways to sell.",
+      "subtitle": "Install the WordPress plugin, then choose your device.",
+      "flow": {
+        "store": "Your WooCommerce Store",
+        "plugin": "WordPress Plugin Installed",
+        "sync": "REST API Sync"
+      },
+      "badge": "Beta",
+      "devices": {
+        "ios": {
+          "label": "iOS & iPadOS",
+          "description": "Native app with payment terminal and printer support.",
+          "cta": "Get the iOS beta"
+        },
+        "android": {
+          "label": "Android",
+          "description": "Native app with full hardware integration.",
+          "cta": "Get the Android beta"
+        },
+        "desktop": {
+          "label": "Windows & macOS",
+          "description": "Desktop application for counter setups.",
+          "cta": "Download for Desktop"
+        },
+        "web": {
+          "label": "Web Browser",
+          "description": "Try instantly — no installation required.",
+          "cta": "Try Live Demo"
+        }
+      },
+      "description": "All apps sync with your WooCommerce store via the REST API. Install the free WordPress plugin, then choose your device. Products, stock, and orders stay in sync automatically."
+    }
   },
   "roadmap": {
     "meta": {
