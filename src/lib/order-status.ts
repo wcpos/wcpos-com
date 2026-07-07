@@ -30,6 +30,7 @@ const PAYMENT_STATUS_LABEL_KEYS: Record<string, keyof OrderStatusLabels> = {
   requires_action: 'actionRequired',
   awaiting: 'pending',
   not_paid: 'pending',
+  pending: 'pending',
 }
 
 function humanizeStatus(status: string, labels: OrderStatusLabels): string {
