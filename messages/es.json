@@ -651,5 +651,224 @@
       "needFreshLink": "¿Necesitas un enlace nuevo?",
       "requestNew": "Solicitar un nuevo enlace"
     }
+  },
+  "legal": {
+    "privacy": {
+      "meta": {
+        "title": "Privacy Policy",
+        "description": "How WCPOS collects, uses, and protects your personal data, including analytics, cookies, payment processing, and your rights under GDPR."
+      },
+      "title": "Privacy Policy",
+      "lastUpdated": "Last updated: {date}",
+      "intro": "WCPOS (\"we\", \"us\") operates wcpos.com, the website for the WCPOS plugin and WCPOS Pro. This policy explains what personal data we collect when you use the site, why we collect it, who processes it on our behalf, and what rights you have over it. We aim to collect as little as we need to run the service.",
+      "collect": {
+        "title": "What we collect",
+        "items": {
+          "c1": {
+            "label": "Account information.",
+            "body": "Your email address and name when you create an account, either directly or by signing in with Google, GitHub, or Discord. When you use a sign-in provider, we receive only your basic profile (email, name or username, and avatar or picture URL) from that provider, and may store the avatar or picture URL on your account as <code>oauth_avatar_url</code>."
+          },
+          "c2": {
+            "label": "Billing details.",
+            "body": "The billing address and any company details you enter at checkout, stored with your customer record so we can issue receipts and comply with tax rules."
+          },
+          "c3": {
+            "label": "Order and license history.",
+            "body": "Records of your purchases, license keys, and plugin downloads, so you can manage your licenses and we can provide support."
+          },
+          "c4": {
+            "label": "Payment information.",
+            "body": "Payments are handled by Stripe and PayPal. Your full card number or payment credentials never reach our servers; we receive only a payment confirmation and the details needed for the receipt."
+          },
+          "c5": {
+            "label": "Usage analytics.",
+            "body": "We use PostHog to understand how the site is used (pages viewed, buttons clicked). To do this, we set a cookie containing a randomly generated identifier. It does not contain your name or email."
+          },
+          "c6": {
+            "label": "Error reports.",
+            "body": "If something breaks, an error report may be sent to Sentry. Reports can include technical details such as your browser and operating system and what the application was doing at the time of the error."
+          },
+          "c7": {
+            "label": "Server logs.",
+            "body": "Our servers keep application logs (in Grafana Loki) for debugging and operating the service."
+          }
+        }
+      },
+      "cookies": {
+        "title": "Cookies",
+        "body": "We use a small number of first-party cookies. We do not use third-party advertising cookies.",
+        "items": {
+          "k1": "<code>medusa-token</code> — keeps you signed in to your account. Expires after 1 day.",
+          "k2": "<code>wcpos-analytics-consent</code> — remembers your analytics consent choice (accepted or declined). Expires after 182 days.",
+          "k3": "<code>wcpos-distinct-id</code> — a random identifier used for analytics. Only set after you accept analytics on the consent banner; removed if you decline. Expires after 1 year.",
+          "k4": "<code>NEXT_LOCALE</code> — remembers your language preference.",
+          "k5": "Your light/dark theme preference is stored locally in your browser and is never sent to us."
+        }
+      },
+      "processors": {
+        "title": "Who processes your data",
+        "body": "We use the following service providers to run wcpos.com. Each receives only the data needed for its role:",
+        "items": {
+          "p1": {
+            "label": "Our commerce backend (Medusa)",
+            "body": "— self-hosted on Hetzner infrastructure in the EU. Stores accounts, customer records, and orders."
+          },
+          "p2": {
+            "label": "Stripe",
+            "body": "— card payment processing."
+          },
+          "p3": {
+            "label": "PayPal",
+            "body": "— PayPal payment processing."
+          },
+          "p4": {
+            "label": "Keygen",
+            "body": "— software license management (license keys and activations)."
+          },
+          "p5": {
+            "label": "PostHog",
+            "body": "— product analytics."
+          },
+          "p6": {
+            "label": "Sentry",
+            "body": "— error monitoring."
+          },
+          "p7": {
+            "label": "Vercel",
+            "body": "— website hosting and content delivery."
+          }
+        }
+      },
+      "retention": {
+        "title": "How long we keep data",
+        "items": {
+          "r1": "Account and license data is kept while your account is active. If you ask us to delete your account, we delete it, except where we are legally required to keep records.",
+          "r2": "Order and invoice records are kept for as long as tax and accounting laws require.",
+          "r3": "The analytics identifier cookie expires after 1 year.",
+          "r4": "Server logs and error reports are kept for a limited operational window and then deleted."
+        }
+      },
+      "rights": {
+        "title": "Your rights",
+        "body": "If you are in the EU/EEA or UK, you have rights under the GDPR, including the right to access, correct, delete, and export your personal data, and to object to or restrict certain processing. We extend the same rights to all users regardless of location.",
+        "exercise": "To exercise any of these rights, email us at <email>support@wcpos.com</email> so we can verify your identity privately. EU/EEA residents also have the right to lodge a complaint with their local data protection authority."
+      },
+      "changes": {
+        "title": "Changes to this policy",
+        "body": "If we make material changes to this policy, we will update the date at the top of this page. Continued use of the site after a change means the updated policy applies."
+      },
+      "contact": {
+        "title": "Contact",
+        "body": "Questions about this policy or your data? Email us at <email>support@wcpos.com</email> or ask general questions in the community chat on the <support>support page</support>."
+      }
+    },
+    "refunds": {
+      "meta": {
+        "title": "Refund Policy",
+        "description": "The WCPOS Pro refund policy: how to request a refund within 14 days of purchase, and how refunds are paid."
+      },
+      "title": "Refund Policy",
+      "lastUpdated": "Last updated: {date}",
+      "intro": "WCPOS Pro purchases — first purchase or renewal, yearly or lifetime — can be refunded within 14 days of purchase. Email us within that window and we refund you in full. You do not need to give a reason.",
+      "prevention": {
+        "title": "The best refund is the one you never need",
+        "items": {
+          "p1": {
+            "label": "Install the free plugin.",
+            "body": "Run the free version of WCPOS on your store for a couple of days before upgrading — that proves the plugin works on your site."
+          },
+          "p2": {
+            "label": "Try the demo.",
+            "body": "The <demo>online demo</demo> runs the current version with Pro activated, so you can confirm it fulfils your store's requirements."
+          },
+          "p3": {
+            "label": "Read the documentation.",
+            "body": "Check the <docs>docs</docs> for the features you need, and email <email>support@wcpos.com</email> with pre-sale questions — we answer openly and honestly."
+          }
+        }
+      },
+      "request": {
+        "title": "How to request a refund",
+        "body": "Email <email>support@wcpos.com</email> from the email address you used for the purchase, within 14 days of buying. Telling us why helps us improve, but it is not required to get the refund."
+      },
+      "payment": {
+        "title": "How refunds are paid",
+        "body": "Refunds go back to the original payment method via Stripe or PayPal and typically appear on your statement within 5–10 business days, depending on your bank or card issuer. Refunded license keys are revoked and stop working immediately."
+      },
+      "renewals": {
+        "title": "License renewals",
+        "body": "Yearly licenses do not renew automatically — we never charge you again without a new purchase from you. The same 14-day refund window applies to renewal purchases."
+      },
+      "rights": {
+        "title": "Your statutory rights",
+        "body": "For consumers in the EU, EEA and UK: our 14-day refund window matches your statutory right of withdrawal for this kind of purchase, and exercising either works the same way — email us within 14 days.",
+        "defective": "If WCPOS Pro is defective or does not work as described, statutory remedies for faulty digital content apply at any time, independent of the 14-day window. And nothing in this policy limits any rights you have under the consumer protection laws of your country — where local law gives you stronger rights, those rights apply."
+      }
+    },
+    "terms": {
+      "meta": {
+        "title": "Terms of Service",
+        "description": "The terms that govern your use of wcpos.com, your WCPOS account, and WCPOS Pro licenses."
+      },
+      "title": "Terms of Service",
+      "lastUpdated": "Last updated: {date}",
+      "intro": "These terms govern your use of wcpos.com, your WCPOS account, and any WCPOS Pro license you purchase. By using the site or buying a license, you agree to these terms. If you do not agree, please do not use the service.",
+      "service": {
+        "title": "The service",
+        "body": "WCPOS provides the wcpos.com website, user accounts, and paid WCPOS Pro licenses that unlock premium features, updates, and priority support for the WCPOS plugin."
+      },
+      "gpl": {
+        "title": "The free plugin and the GPL",
+        "body": "The free WCPOS plugin is open-source software released under the GNU General Public License (GPL). Nothing in these terms limits the rights the GPL grants you over that code. A Pro license is separate: it covers access to Pro features, license keys, automatic updates, and priority support — not a restriction on the open-source code itself."
+      },
+      "account": {
+        "title": "Your account",
+        "items": {
+          "a1": "Provide accurate information when registering and keep it up to date.",
+          "a2": "Keep your credentials secure. You are responsible for activity that happens under your account.",
+          "a3": "Tell us promptly at <email>support@wcpos.com</email> if you suspect unauthorized access to your account."
+        }
+      },
+      "licenses": {
+        "title": "Purchases and licenses",
+        "items": {
+          "l1": "<strong>Yearly license.</strong> A one-time payment that includes Pro features, automatic updates, and priority support for one year. It does not renew automatically and we never charge you again without a new purchase. When it expires, you can choose to renew it from your account for another year.",
+          "l2": "<strong>Lifetime license.</strong> A one-time purchase that includes Pro features, updates, and priority support for the lifetime of the product.",
+          "l3": "License keys are for activating WCPOS Pro on your own sites within the limits of the license you purchased. Do not share, resell, or publish license keys.",
+          "l4": "Prices are shown at checkout before you pay. Payment is handled by Stripe or PayPal.",
+          "l5": "Refunds are handled according to our <policy>refund policy</policy>."
+        }
+      },
+      "acceptableUse": {
+        "title": "Acceptable use",
+        "body": "When using the service, you agree not to:",
+        "items": {
+          "u1": "Break the law or infringe the rights of others.",
+          "u2": "Attempt to gain unauthorized access to accounts, systems, or data, or probe the service for vulnerabilities without permission.",
+          "u3": "Interfere with the operation of the service, including overloading it or automated scraping at disruptive volumes.",
+          "u4": "Circumvent license checks or use license keys beyond the terms of your purchase. (This does not limit your GPL rights over the open-source plugin code.)"
+        }
+      },
+      "warranty": {
+        "title": "Warranty disclaimer",
+        "body": "The service and software are provided \"as is\" and \"as available\", without warranties of any kind, express or implied, including merchantability, fitness for a particular purpose, and non-infringement. We do not promise that the service will be uninterrupted or error-free. Some jurisdictions do not allow certain warranty exclusions, so parts of this section may not apply to you."
+      },
+      "liability": {
+        "title": "Limitation of liability",
+        "body": "To the maximum extent permitted by law, WCPOS will not be liable for indirect, incidental, special, or consequential damages, or for lost profits, revenue, or data. Our total liability for any claim relating to the service is limited to the amount you paid us in the 12 months before the claim arose. Nothing in these terms excludes liability that cannot be excluded by law."
+      },
+      "termination": {
+        "title": "Termination",
+        "body": "You can stop using the service and ask us to delete your account at any time. We may suspend or terminate accounts that violate these terms. Sections that by their nature should survive (such as the warranty disclaimer and liability limits) survive termination."
+      },
+      "changes": {
+        "title": "Changes to these terms",
+        "body": "If we make material changes, we will update the date at the top of this page. Continued use of the service after a change means the updated terms apply."
+      },
+      "contact": {
+        "title": "Contact",
+        "body": "Questions about these terms? Email us at <email>support@wcpos.com</email> or ask in the community chat on the <support>support page</support>."
+      }
+    }
   }
 }
