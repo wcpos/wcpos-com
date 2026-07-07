@@ -1,7 +1,7 @@
 {
   "version": 1,
   "generatedBy": "scripts/i18n/hardcoded-english.ts --update",
-  "updatedAt": "2026-07-07T03:04:45.584Z",
+  "updatedAt": "2026-07-07T03:07:58.084Z",
   "scope": [
     "src/app",
     "src/components",
@@ -2503,70 +2503,6 @@
       "category": "component",
       "attr": null,
       "text": "relative mt-10 flex items-center justify-center overflow-hidden",
-      "count": 1
-    },
-    {
-      "id": "8b90404fede952ec",
-      "file": "src/components/home/trust-section.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "— WCPOS on GitHub",
-      "count": 1
-    },
-    {
-      "id": "f3c49af4a46039f0",
-      "file": "src/components/home/trust-section.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "&ldquo;Straightforward, functional and simple to use. 10/10.&rdquo;",
-      "count": 1
-    },
-    {
-      "id": "542fe5d4cd828680",
-      "file": "src/components/home/trust-section.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Active Installations",
-      "count": 1
-    },
-    {
-      "id": "5642170d3515b204",
-      "file": "src/components/home/trust-section.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "GPL Licensed",
-      "count": 1
-    },
-    {
-      "id": "5323547721870ae8",
-      "file": "src/components/home/trust-section.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "In Development Since",
-      "count": 1
-    },
-    {
-      "id": "b8e66c29e36252a9",
-      "file": "src/components/home/trust-section.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Languages Supported",
-      "count": 1
-    },
-    {
-      "id": "de1f9c29f8a6753c",
-      "file": "src/components/home/trust-section.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Read our story →",
-      "count": 1
-    },
-    {
-      "id": "99ccaad66aa0ab36",
-      "file": "src/components/home/trust-section.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Ward, wordpress.org review",
       "count": 1
     },
     {

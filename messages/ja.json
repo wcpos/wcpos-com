@@ -57,6 +57,18 @@
       "liveDemo": "ライブデモを試す",
       "download": "無料でダウンロード"
     },
+    "trust": {
+      "stats": {
+        "activeInstallations": "有効インストール数",
+        "inDevelopmentSince": "開発開始",
+        "languagesSupported": "対応言語"
+      },
+      "license": "GPLライセンス",
+      "githubAria": "— GitHubのWCPOS",
+      "quote": "わかりやすく、機能的で、使いやすい。10/10。",
+      "attribution": "Ward、wordpress.orgレビュー",
+      "story": "ストーリーを読む →"
+    },
     "benefits": {
       "heading": "Why stores choose WCPOS",
       "items": {

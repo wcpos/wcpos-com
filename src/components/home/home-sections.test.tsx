@@ -210,6 +210,45 @@ describe('TrustSection', () => {
       'https://github.com/wcpos'
     )
   })
+
+  it('renders translated trust copy from messages', () => {
+    render(
+      <NextIntlClientProvider
+        locale="en"
+        messages={{
+          home: {
+            trust: {
+              stats: {
+                activeInstallations: 'Translated active installations',
+                inDevelopmentSince: 'Translated development since',
+                languagesSupported: 'Translated languages supported',
+              },
+              license: 'Translated license label',
+              githubAria: 'Translated GitHub screen reader label',
+              quote: 'Translated customer quote',
+              attribution: 'Translated review attribution',
+              story: 'Translated story link',
+            },
+          },
+        }}
+      >
+        <TrustSection />
+      </NextIntlClientProvider>
+    )
+
+    expect(screen.getByText('Translated active installations')).toBeInTheDocument()
+    expect(screen.getByText('Translated development since')).toBeInTheDocument()
+    expect(screen.getByText('Translated languages supported')).toBeInTheDocument()
+    expect(
+      screen.getByRole('link', { name: /Translated license label/ })
+    ).toHaveAttribute('href', 'https://github.com/wcpos')
+    expect(screen.getByText(/Translated customer quote/)).toBeInTheDocument()
+    expect(screen.getByText('Translated review attribution')).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Translated story link' })).toHaveAttribute(
+      'href',
+      '/about-us'
+    )
+  })
 })
 
 describe('CtaSection', () => {

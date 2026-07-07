@@ -57,6 +57,18 @@
       "liveDemo": "Live-Demo testen",
       "download": "Kostenlos herunterladen"
     },
+    "trust": {
+      "stats": {
+        "activeInstallations": "Aktive Installationen",
+        "inDevelopmentSince": "In Entwicklung seit",
+        "languagesSupported": "Unterstützte Sprachen"
+      },
+      "license": "GPL-lizenziert",
+      "githubAria": "— WCPOS auf GitHub",
+      "quote": "Geradlinig, funktional und einfach zu bedienen. 10/10.",
+      "attribution": "Ward, Bewertung auf wordpress.org",
+      "story": "Unsere Geschichte lesen →"
+    },
     "benefits": {
       "heading": "Why stores choose WCPOS",
       "items": {

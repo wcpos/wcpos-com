@@ -57,6 +57,18 @@
       "liveDemo": "试用在线演示",
       "download": "免费下载"
     },
+    "trust": {
+      "stats": {
+        "activeInstallations": "活跃安装量",
+        "inDevelopmentSince": "开发始于",
+        "languagesSupported": "支持的语言"
+      },
+      "license": "GPL 许可",
+      "githubAria": "— GitHub 上的 WCPOS",
+      "quote": "直观、实用且易于使用。10/10。",
+      "attribution": "Ward，wordpress.org 评价",
+      "story": "阅读我们的故事 →"
+    },
     "benefits": {
       "heading": "Why stores choose WCPOS",
       "items": {
