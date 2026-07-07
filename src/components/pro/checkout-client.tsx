@@ -815,7 +815,12 @@ export function CheckoutClient({
             <p className="font-medium">{offerSummary.title}</p>
             <div className="mt-3 flex justify-between border-t pt-3 font-bold">
               <span>Total</span>
-              <span>{offerSummary.priceFormatted}</span>
+              <span>
+                {offerSummary.priceFormatted}{' '}
+                <span className="text-sm font-normal text-muted-foreground">
+                  USD
+                </span>
+              </span>
             </div>
           </>
         ) : (
