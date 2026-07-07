@@ -46,6 +46,11 @@ function liveStripePublishableKey(value: string | undefined): string | null {
   return candidate?.startsWith('pk_live_') ? candidate : null
 }
 
+function testStripePublishableKey(value: string | undefined): string | null {
+  const candidate = stripePublishableKey(value)
+  return candidate?.startsWith('pk_test_') ? candidate : null
+}
+
 function paypalCheckoutConfig(
   clientId: string | undefined,
   environment: PayPalEnvironment
@@ -63,6 +68,16 @@ function paypalCheckoutConfig(
 // overrides for key rotation without a redeploy (anything else — empty, sk_,
 // junk — is ignored in favour of this literal).
 const LIVE_STRIPE_PUBLISHABLE_KEY = 'pk_live_KlgLwN0RGeiWCv3yx6qjv4ef'
+
+// Public test-mode Stripe publishable key for the staging/test environment
+// (beta.wcpos.com and Vercel *.vercel.app previews). Committed as a literal for
+// the same reason as the live key above: an empty NEXT_PUBLIC_STRIPE_TEST_
+// PUBLISHABLE_KEY on Vercel would silently null Stripe on beta, leaving the
+// test checkout with no card method. A valid pk_test_ env var still overrides
+// for rotation; anything else — empty, sk_, or a pk_live_ key — is ignored in
+// favour of this literal, so live money can never be charged in the test env.
+const TEST_STRIPE_PUBLISHABLE_KEY =
+  'pk_test_51SoAJ7IkyZ08YTHqHD4mP8sjD3IlpG25fKzjNO7Teb209JAe6eDhBfxVaQf58Wt9oUpE1di0S0yDQdyHCYoWa4Bs00Zgwwfbjr'
 
 // Public live PayPal client id. Like Stripe's publishable key, this is safe
 // to render into client HTML and must not depend on a mutable Vercel env var.
@@ -91,9 +106,10 @@ const STORE_ENVIRONMENTS: Record<StoreEnvironmentName, StoreEnvironment> = {
     medusaPublishableKey:
       'pk_399c0c1ca328579dc9055be3c3c29c640953d1b585c76803164aeea4029025e9',
     payments: {
-      stripePublishableKey: stripePublishableKey(
-        process.env.NEXT_PUBLIC_STRIPE_TEST_PUBLISHABLE_KEY
-      ),
+      stripePublishableKey:
+        testStripePublishableKey(
+          process.env.NEXT_PUBLIC_STRIPE_TEST_PUBLISHABLE_KEY
+        ) ?? testStripePublishableKey(TEST_STRIPE_PUBLISHABLE_KEY),
       paypal: null,
       btcpayEnabled: true,
     },

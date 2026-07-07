@@ -1,5 +1,19 @@
-import { describe, expect, it } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
+
+const mockHost = vi.hoisted(() => ({ value: null as string | null }))
+
+vi.mock('next/headers', () => ({
+  headers: async () => ({
+    get: (name: string) =>
+      name.toLowerCase() === 'host' ? mockHost.value : null,
+  }),
+}))
+
 import { GET, HEAD } from './route'
+
+beforeEach(() => {
+  mockHost.value = null
+})
 
 describe('GET /api/health', () => {
   it('returns 200 with the health payload', async () => {
@@ -11,6 +25,17 @@ describe('GET /api/health', () => {
     expect(typeof json.version).toBe('string')
     expect(json.version.length).toBeGreaterThan(0)
     expect(json.environment).toBe('test')
+  })
+
+  it('reports the host-resolved store environment (not the build env)', async () => {
+    mockHost.value = 'wcpos.com'
+    expect((await (await GET()).json()).storeEnvironment).toBe('live')
+
+    mockHost.value = 'beta.wcpos.com'
+    expect((await (await GET()).json()).storeEnvironment).toBe('test')
+
+    mockHost.value = 'localhost:3000'
+    expect((await (await GET()).json()).storeEnvironment).toBe('dev')
   })
 
   it('returns a valid ISO timestamp', async () => {

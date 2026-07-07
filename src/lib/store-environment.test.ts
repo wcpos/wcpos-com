@@ -139,3 +139,69 @@ describe('live Stripe publishable key', () => {
     vi.unstubAllEnvs()
   })
 })
+
+describe('test Stripe publishable key', () => {
+  const TEST_PK_PATTERN = /^pk_test_[A-Za-z0-9]+$/
+
+  it('is a committed, non-empty pk_test_ key so beta checkout never depends on a Vercel env var', () => {
+    // Same regression guard as the live key, for beta/staging: an empty
+    // NEXT_PUBLIC_STRIPE_TEST_PUBLISHABLE_KEY on Vercel would null Stripe on
+    // beta, leaving the test checkout with no card method.
+    expect(
+      getStoreEnvironmentByName('test').payments.stripePublishableKey
+    ).toMatch(TEST_PK_PATTERN)
+  })
+
+  it('survives an empty env var by falling back to the committed literal', async () => {
+    vi.resetModules()
+    vi.stubEnv('NEXT_PUBLIC_STRIPE_TEST_PUBLISHABLE_KEY', '')
+
+    const { getStoreEnvironmentByName } = await import('./store-environment')
+
+    expect(
+      getStoreEnvironmentByName('test').payments.stripePublishableKey
+    ).toMatch(TEST_PK_PATTERN)
+
+    vi.unstubAllEnvs()
+  })
+
+  it('never charges live money in test: a pk_live_ env var is rejected and falls back to the committed pk_test_ literal', async () => {
+    vi.resetModules()
+    vi.stubEnv(
+      'NEXT_PUBLIC_STRIPE_TEST_PUBLISHABLE_KEY',
+      'pk_live_00000000000000000000'
+    )
+
+    const { getStoreEnvironmentByName } = await import('./store-environment')
+    const key = getStoreEnvironmentByName('test').payments.stripePublishableKey
+
+    expect(key).not.toContain('pk_live_')
+    expect(key).toMatch(TEST_PK_PATTERN)
+
+    vi.unstubAllEnvs()
+  })
+
+  it('lets a valid pk_test_ env var override the committed literal (rotation without a redeploy)', async () => {
+    vi.resetModules()
+    vi.stubEnv(
+      'NEXT_PUBLIC_STRIPE_TEST_PUBLISHABLE_KEY',
+      'pk_test_rotated0000000000000000'
+    )
+
+    const { getStoreEnvironmentByName } = await import('./store-environment')
+
+    expect(
+      getStoreEnvironmentByName('test').payments.stripePublishableKey
+    ).toBe('pk_test_rotated0000000000000000')
+
+    vi.unstubAllEnvs()
+  })
+
+  it('leaves the live environment on its own committed pk_live_ literal', () => {
+    // Guard against the test key ever bleeding into live money.
+    const liveKey =
+      getStoreEnvironmentByName('live').payments.stripePublishableKey
+    expect(liveKey).toMatch(/^pk_live_[A-Za-z0-9]+$/)
+    expect(liveKey).not.toContain('pk_test_')
+  })
+})
