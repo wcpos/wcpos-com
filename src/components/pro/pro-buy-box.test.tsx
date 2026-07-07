@@ -34,6 +34,7 @@ const options: ProBuyBoxOption[] = [
     subtitle: 'Updates & support for 1 year',
     badgeLabel: 'Most Popular',
     priceText: '$129',
+    currencyCode: 'USD',
     priceSuffix: '/yr',
     ctaNote: 'One-time payment — never auto-renews.',
     checkoutHref:
@@ -51,6 +52,7 @@ const options: ProBuyBoxOption[] = [
     subtitle: 'Updates forever',
     badgeLabel: null,
     priceText: '$399',
+    currencyCode: 'USD',
     priceSuffix: 'once',
     ctaNote: 'About 3 years of Yearly — then $0 forever.',
     checkoutHref:

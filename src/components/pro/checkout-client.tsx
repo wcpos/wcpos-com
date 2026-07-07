@@ -802,7 +802,12 @@ export function CheckoutClient({
             ))}
             <div className="mt-3 flex justify-between border-t pt-3 font-bold">
               <span>Total</span>
-              <span>{formatCurrency(cart.total)}</span>
+              <span>
+                {formatCurrency(cart.total)}{' '}
+                <span className="text-sm font-normal text-muted-foreground">
+                  {(cart.currency_code ?? 'usd').toUpperCase()}
+                </span>
+              </span>
             </div>
           </>
         ) : offerSummary ? (

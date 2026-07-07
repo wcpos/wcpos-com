@@ -324,7 +324,8 @@ export function formatHomeProPriceSummary(offers: ProOffer[]): string | null {
   const lifetime = getOffer(offers, 'lifetime')
   if (!yearly || !lifetime) return null
 
-  return `${yearly.price.compact}/year or ${lifetime.price.compact} lifetime. No per-register fees.`
+  const currency = yearly.price.currencyCode.toUpperCase()
+  return `${yearly.price.compact}/year or ${lifetime.price.compact} lifetime (${currency}). No per-register fees.`
 }
 
 export function formatFounderProPriceSummary(offers: ProOffer[]): string | null {

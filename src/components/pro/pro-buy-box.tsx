@@ -116,6 +116,9 @@ export function ProBuyBox({
               </span>
               <span className="text-right shrink-0">
                 <span className="text-xl font-bold">{option.priceText}</span>
+                <span className="ml-1 text-sm font-medium text-muted-foreground">
+                  {option.currencyCode}
+                </span>
                 <span className="ml-1 text-sm text-muted-foreground">
                   {option.priceSuffix}
                 </span>
