@@ -226,7 +226,7 @@
       "activationsCount": "{max}개 중 {count}개",
       "downloads": "다운로드",
       "machineAdded": "{date} 추가됨",
-      "deactivateMachineAria": "{name} 비활성화",
+      "deactivateMachineAria": "Deactivate site: {name}",
       "genericMachineName": "기기",
       "coversLatestVersion": "최신 버전 {version} · 이 라이선스를 통해",
       "coversUpToVersion": "{version}까지의 업데이트 포함",

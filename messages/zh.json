@@ -226,7 +226,7 @@
       "activationsCount": "{count} / {max}",
       "downloads": "下载",
       "machineAdded": "添加于 {date}",
-      "deactivateMachineAria": "停用 {name}",
+      "deactivateMachineAria": "Deactivate site: {name}",
       "genericMachineName": "设备",
       "coversLatestVersion": "最新版本 {version} · 通过此许可证",
       "coversUpToVersion": "涵盖至 {version} 的更新",

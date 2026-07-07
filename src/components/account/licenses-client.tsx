@@ -509,18 +509,24 @@ export function LicensesClient({
                         machine.name ||
                         null
                       const lastSeen = metaString(metadata, 'lastSeenAt')
+                      const pluginVersion = metaString(
+                        metadata,
+                        'pluginVersion'
+                      )
+                      const wpVersion = metaString(metadata, 'wpVersion')
+                      const wcVersion = metaString(metadata, 'wcVersion')
                       const versionParts = [
-                        metaString(metadata, 'pluginVersion') &&
+                        pluginVersion &&
                           t('pluginVersionLabel', {
-                            version: metaString(metadata, 'pluginVersion')!,
+                            version: pluginVersion,
                           }),
-                        metaString(metadata, 'wpVersion') &&
+                        wpVersion &&
                           t('wpVersionLabel', {
-                            version: metaString(metadata, 'wpVersion')!,
+                            version: wpVersion,
                           }),
-                        metaString(metadata, 'wcVersion') &&
+                        wcVersion &&
                           t('wcVersionLabel', {
-                            version: metaString(metadata, 'wcVersion')!,
+                            version: wcVersion,
                           }),
                       ].filter(Boolean) as string[]
                       const isConfirming = confirmingDeactivate === machine.id
@@ -610,9 +616,9 @@ export function LicensesClient({
                                 setConfirmingDeactivate(machine.id)
                               }
                               disabled={isDeactivating}
-                              aria-label={`${t('deactivateSite')}: ${
-                                siteLabel || t('genericMachineName')
-                              }`}
+                              aria-label={t('deactivateMachineAria', {
+                                name: siteLabel || t('genericMachineName'),
+                              })}
                             >
                               <Trash2 className="mr-1.5 h-4 w-4" />
                               {t('deactivateSite')}
