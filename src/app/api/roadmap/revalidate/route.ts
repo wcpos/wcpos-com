@@ -7,7 +7,7 @@ export async function POST(request: NextRequest) {
   const secret = request.headers.get('x-webhook-secret')
 
   if (!env.GITHUB_WEBHOOK_SECRET || secret !== env.GITHUB_WEBHOOK_SECRET) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    return NextResponse.json({ errorCode: 'unauthorized' }, { status: 401 })
   }
 
   try {
@@ -16,6 +16,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ revalidated: true })
   } catch (error) {
     apiLogger.error`Failed to revalidate roadmap cache: ${error}`
-    return NextResponse.json({ error: 'Revalidation failed' }, { status: 500 })
+    return NextResponse.json({ errorCode: 'revalidation_failed' }, { status: 500 })
   }
 }
