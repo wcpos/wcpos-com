@@ -929,7 +929,8 @@
         "paid": "Paid",
         "refunded": "Refunded",
         "partiallyRefunded": "Partially refunded",
-        "canceled": "Canceled"
+        "canceled": "Canceled",
+        "unknown": "Unknown"
       }
     },
     "admin": {

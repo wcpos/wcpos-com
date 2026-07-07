@@ -929,7 +929,8 @@
         "paid": "Pagato",
         "refunded": "Rimborsato",
         "partiallyRefunded": "Parzialmente rimborsato",
-        "canceled": "Annullato"
+        "canceled": "Annullato",
+        "unknown": "Sconosciuto"
       }
     },
     "admin": {

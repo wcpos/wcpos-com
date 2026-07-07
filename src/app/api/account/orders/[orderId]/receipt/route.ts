@@ -104,6 +104,7 @@ async function receiptPdfCopy(locale: Locale): Promise<ReceiptPdfCopy> {
       refunded: t('paymentStatus.refunded'),
       partiallyRefunded: t('paymentStatus.partiallyRefunded'),
       canceled: t('paymentStatus.canceled'),
+      unknown: t('paymentStatus.unknown'),
     },
   }
 }

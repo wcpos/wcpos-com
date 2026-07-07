@@ -929,7 +929,8 @@
         "paid": "已付款",
         "refunded": "已退款",
         "partiallyRefunded": "部分退款",
-        "canceled": "已取消"
+        "canceled": "已取消",
+        "unknown": "未知"
       }
     },
     "admin": {

@@ -755,6 +755,7 @@ export interface ReceiptPdfCopy {
     refunded: string
     partiallyRefunded: string
     canceled: string
+    unknown: string
   }
 }
 
@@ -802,7 +803,7 @@ function paymentLabel(status: unknown, copy: ReceiptPdfCopy): string | null {
     case 'canceled':
       return copy.paymentStatus.canceled
     default:
-      return normalized.replace(/_/g, ' ').replace(/^./, (c) => c.toUpperCase())
+      return copy.paymentStatus.unknown
   }
 }
 

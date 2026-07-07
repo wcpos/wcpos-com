@@ -929,7 +929,8 @@
         "paid": "支払い済み",
         "refunded": "返金済み",
         "partiallyRefunded": "一部返金済み",
-        "canceled": "キャンセル済み"
+        "canceled": "キャンセル済み",
+        "unknown": "不明"
       }
     },
     "admin": {

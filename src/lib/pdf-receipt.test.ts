@@ -38,6 +38,7 @@ const TEST_COPY: ReceiptPdfCopy = {
     refunded: 'Refunded',
     partiallyRefunded: 'Partially refunded',
     canceled: 'Canceled',
+    unknown: 'Translated unknown payment status',
   },
 }
 
@@ -125,6 +126,18 @@ describe('buildReceiptPdf', () => {
 
     expect(stream).toContain(hex('February 1, 2026'))
     expect(stream).not.toContain(hex('2/1/2026'))
+  })
+
+  it('uses translated copy for unknown payment statuses instead of humanizing them in English', async () => {
+    const stream = await pageStream(
+      await buildTestReceiptPdf({
+        ...baseReceipt,
+        paymentStatus: 'requires_action',
+      })
+    )
+
+    expect(stream).toContain(hex('Translated unknown payment status'))
+    expect(stream).not.toContain(hex('Requires action'))
   })
 
   it('renders billing name, details and tax number when provided', async () => {
@@ -245,6 +258,7 @@ describe('buildReceiptPdf', () => {
         refunded: '已退款',
         partiallyRefunded: '部分退款',
         canceled: '已取消',
+        unknown: '未知付款状态',
       },
     }
     const stream = await pageStream(

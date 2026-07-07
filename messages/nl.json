@@ -929,7 +929,8 @@
         "paid": "Betaald",
         "refunded": "Terugbetaald",
         "partiallyRefunded": "Gedeeltelijk terugbetaald",
-        "canceled": "Geannuleerd"
+        "canceled": "Geannuleerd",
+        "unknown": "Onbekend"
       }
     },
     "admin": {
