@@ -52,7 +52,7 @@ export function SiteFooter() {
   ]
 
   const supportLinks: FooterLink[] = [
-    { label: t('documentation'), href: DOCS_URL, external: true },
+    { label: t('documentation'), href: DOCS_URL },
     { label: t('getSupport'), href: '/support' },
     { label: t('wordpressForum'), href: WORDPRESS_FORUM_URL, external: true },
   ]
