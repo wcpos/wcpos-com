@@ -214,7 +214,8 @@
           "p7": "Priority support"
         }
       },
-      "cta": "See Full Pricing & Features"
+      "cta": "See Full Pricing & Features",
+      "priceSummary": "{yearly}/ano ou {lifetime} vitalício. Sem taxas por caixa."
     },
     "ecosystem": {
       "heading": "One ecosystem. Multiple ways to sell.",
@@ -1430,7 +1431,8 @@
         "label": "P.S.",
         "withPrice": "— Pro is <price></price>.",
         "fallback": "— Pro is available from the Pro page.",
-        "licence": "If a licence lapses, Pro keeps working; you just stop getting updates."
+        "licence": "If a licence lapses, Pro keeps working; you just stop getting updates.",
+        "priceSummary": "{yearly}/ano ou {lifetime} uma vez"
       }
     },
     "timeline": {

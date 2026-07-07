@@ -1,7 +1,7 @@
 {
   "version": 1,
   "generatedBy": "scripts/i18n/hardcoded-english.ts --update",
-  "updatedAt": "2026-07-07T03:35:57.037Z",
+  "updatedAt": "2026-07-07T03:39:38.909Z",
   "scope": [
     "src/app",
     "src/components",
@@ -4330,22 +4330,6 @@
       "count": 1
     },
     {
-      "id": "bea208dffd95b3e4",
-      "file": "src/lib/pro-offer-catalog.ts",
-      "category": "code/string",
-      "attr": null,
-      "text": "/year or",
-      "count": 1
-    },
-    {
-      "id": "8bd2e9ebcaf398a3",
-      "file": "src/lib/pro-offer-catalog.ts",
-      "category": "code/string",
-      "attr": null,
-      "text": "/yr or",
-      "count": 1
-    },
-    {
       "id": "e1603a3a5d952686",
       "file": "src/lib/pro-offer-catalog.ts",
       "category": "code/string",
@@ -4375,14 +4359,6 @@
       "category": "code/string",
       "attr": null,
       "text": "Lifetime License",
-      "count": 1
-    },
-    {
-      "id": "148b7b950291a45d",
-      "file": "src/lib/pro-offer-catalog.ts",
-      "category": "code/string",
-      "attr": null,
-      "text": "lifetime. No per-register fees.",
       "count": 1
     },
     {

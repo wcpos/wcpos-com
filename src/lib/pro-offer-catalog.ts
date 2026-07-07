@@ -319,20 +319,37 @@ function getOffer(offers: ProOffer[], planId: PlanId): ProOffer | null {
   return offers.find((offer) => offer.planId === planId) ?? null
 }
 
-export function formatHomeProPriceSummary(offers: ProOffer[]): string | null {
+type ProPriceSummaryTranslateFn = (values: {
+  yearly: string
+  lifetime: string
+}) => string
+
+export function formatHomeProPriceSummary(
+  offers: ProOffer[],
+  t: ProPriceSummaryTranslateFn
+): string | null {
   const yearly = getOffer(offers, 'yearly')
   const lifetime = getOffer(offers, 'lifetime')
   if (!yearly || !lifetime) return null
 
-  return `${yearly.price.compact}/year or ${lifetime.price.compact} lifetime. No per-register fees.`
+  return t({
+    yearly: yearly.price.compact,
+    lifetime: lifetime.price.compact,
+  })
 }
 
-export function formatFounderProPriceSummary(offers: ProOffer[]): string | null {
+export function formatFounderProPriceSummary(
+  offers: ProOffer[],
+  t: ProPriceSummaryTranslateFn
+): string | null {
   const yearly = getOffer(offers, 'yearly')
   const lifetime = getOffer(offers, 'lifetime')
   if (!yearly || !lifetime) return null
 
-  return `${yearly.price.compact}/yr or ${lifetime.price.compact} once`
+  return t({
+    yearly: yearly.price.compact,
+    lifetime: lifetime.price.compact,
+  })
 }
 
 export function buildProOfferSchemaOffers(offers: ProOffer[]) {

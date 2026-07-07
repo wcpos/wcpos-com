@@ -259,11 +259,17 @@ describe('offer presentation helpers', () => {
     )
   })
 
-  it('builds shared price summaries for marketing surfaces', () => {
-    expect(formatHomeProPriceSummary(offers)).toBe(
-      '$129/year or $399 lifetime. No per-register fees.'
-    )
-    expect(formatFounderProPriceSummary(offers)).toBe('$129/yr or $399 once')
+  it('builds shared price summaries from caller-provided translations', () => {
+    expect(
+      formatHomeProPriceSummary(offers, (values) =>
+        `${values.yearly} translated ${values.lifetime}`
+      )
+    ).toBe('$129 translated $399')
+    expect(
+      formatFounderProPriceSummary(offers, (values) =>
+        `${values.yearly} founder ${values.lifetime}`
+      )
+    ).toBe('$129 founder $399')
   })
 
   it('builds schema.org offers from the same catalog facts', () => {

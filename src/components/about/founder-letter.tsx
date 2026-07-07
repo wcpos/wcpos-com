@@ -3,27 +3,28 @@ import {
   applyProOfferCatalogCachePolicy,
   formatFounderProPriceSummary,
   getProOfferCatalog,
+  type ProOffer,
 } from '@/lib/pro-offer-catalog'
 import { getLiveStoreEnvironment } from '@/lib/store-environment'
 import { Section } from '@/components/ui/section'
 
 export function FounderLetterFallback() {
-  return <FounderLetterContent priceSummary={null} />
+  return <FounderLetterContent offers={null} />
 }
 
-async function getCachedFounderPriceSummary() {
+async function getCachedFounderOffers() {
   'use cache'
 
   // Prerendered into the shared static shell — always live prices.
   const catalog = await getProOfferCatalog(undefined, getLiveStoreEnvironment())
   applyProOfferCatalogCachePolicy(catalog)
-  return formatFounderProPriceSummary(catalog.offers)
+  return catalog.offers
 }
 
 export async function FounderLetter() {
-  const priceSummary = await getCachedFounderPriceSummary()
+  const offers = await getCachedFounderOffers()
 
-  return <FounderLetterContent priceSummary={priceSummary} />
+  return <FounderLetterContent offers={offers} />
 }
 
 function Strong({ children }: { children: React.ReactNode }) {
@@ -35,11 +36,16 @@ function Strong({ children }: { children: React.ReactNode }) {
 }
 
 function FounderLetterContent({
-  priceSummary,
+  offers,
 }: {
-  priceSummary: string | null
+  offers: ProOffer[] | null
 }) {
   const t = useTranslations('about.founder')
+  const priceSummary = offers
+    ? formatFounderProPriceSummary(offers, (values) =>
+        t('ps.priceSummary', values)
+      )
+    : null
 
   return (
     <Section tone="muted" spacing="default">

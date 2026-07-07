@@ -8,6 +8,7 @@ import {
   applyProOfferCatalogCachePolicy,
   formatHomeProPriceSummary,
   getProOfferCatalog,
+  type ProOffer,
 } from '@/lib/pro-offer-catalog'
 import { getLiveStoreEnvironment } from '@/lib/store-environment'
 
@@ -31,30 +32,35 @@ const proFeatures = [
 ] as const
 
 export function PricingTeaserSectionFallback() {
-  return <PricingTeaserSectionContent priceSummary={null} />
+  return <PricingTeaserSectionContent offers={null} />
 }
 
-async function getCachedPriceSummary() {
+async function getCachedOffers() {
   'use cache'
 
   // Prerendered into the shared static homepage shell — always live prices.
   const catalog = await getProOfferCatalog(undefined, getLiveStoreEnvironment())
   applyProOfferCatalogCachePolicy(catalog)
-  return formatHomeProPriceSummary(catalog.offers)
+  return catalog.offers
 }
 
 export async function PricingTeaserSection() {
-  const priceSummary = await getCachedPriceSummary()
+  const offers = await getCachedOffers()
 
-  return <PricingTeaserSectionContent priceSummary={priceSummary} />
+  return <PricingTeaserSectionContent offers={offers} />
 }
 
 function PricingTeaserSectionContent({
-  priceSummary,
+  offers,
 }: {
-  priceSummary: string | null
+  offers: ProOffer[] | null
 }) {
   const t = useTranslations('home.pricing')
+  const priceSummary = offers
+    ? formatHomeProPriceSummary(offers, (values) =>
+        t('priceSummary', values)
+      )
+    : null
   const effectivePriceSummary = priceSummary ?? t('fallback')
 
   return (
