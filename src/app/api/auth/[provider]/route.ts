@@ -24,7 +24,7 @@ export async function GET(
 
     if (!ALLOWED_PROVIDERS.includes(provider)) {
       return NextResponse.json(
-        { error: `Unsupported provider: ${provider}` },
+        { errorCode: 'unsupported_provider', provider },
         { status: 400 }
       )
     }
