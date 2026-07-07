@@ -870,5 +870,139 @@
         "body": "Questions about these terms? Email us at <email>support@wcpos.com</email> or ask in the community chat on the <support>support page</support>."
       }
     }
+  },
+  "downloads": {
+    "meta": {
+      "title": "Downloads",
+      "description": "Download WCPOS — the free plugin plus the desktop, iOS, Android and web apps. See the latest version and recent release notes."
+    },
+    "platforms": {
+      "mac-arm": {
+        "name": "macOS",
+        "listLabel": "macOS (Apple Silicon)",
+        "short": "Apple Silicon · .dmg",
+        "action": "Download for macOS"
+      },
+      "mac-intel": {
+        "name": "macOS (Intel)",
+        "listLabel": "macOS (Intel)",
+        "short": "Intel · .dmg",
+        "action": "Download for macOS"
+      },
+      "win": {
+        "name": "Windows",
+        "listLabel": "Windows",
+        "short": "Windows 10/11 · .exe",
+        "action": "Download for Windows"
+      },
+      "linux": {
+        "name": "Linux",
+        "listLabel": "Linux",
+        "short": ".AppImage",
+        "action": "Download for Linux"
+      },
+      "ios": {
+        "name": "iOS & iPad",
+        "listLabel": "iOS & iPad",
+        "short": "Public TestFlight beta",
+        "action": "Join the iOS beta"
+      },
+      "android": {
+        "name": "Android",
+        "listLabel": "Android",
+        "short": "Google Play testing beta",
+        "action": "Join the Android beta"
+      },
+      "web": {
+        "name": "Web",
+        "listLabel": "Web",
+        "short": "No install needed",
+        "action": "Open the web demo"
+      }
+    },
+    "hero": {
+      "eyebrow": "Downloads",
+      "title": "One till, every device.",
+      "platformChooserLabel": "Choose your platform",
+      "versionMeta": "Version {version} · {platform}",
+      "detected": "Detected",
+      "intelMac": "On an Intel Mac? <intel>Get the Intel build</intel>",
+      "pluginNotice": "Every app connects to the <plugin>free WordPress plugin</plugin> — install it first."
+    },
+    "howItFits": {
+      "eyebrow": "How it fits together",
+      "title": "One store at the centre. Every till in sync.",
+      "points": {
+        "setup": {
+          "title": "One plugin is the only setup",
+          "body": "The free plugin adds a secure REST API to your WooCommerce store. That’s the whole install — nothing to host or configure per device."
+        },
+        "sync": {
+          "title": "Every app reads and writes the same store",
+          "body": "Ring up a sale on the desktop, refund it on your phone — one set of products, orders and customers, updating in real time."
+        },
+        "offline": {
+          "title": "Offline-first, so the till never stops",
+          "body": "Each device keeps working without a connection and re-syncs the moment it’s back online."
+        }
+      },
+      "syncLabel": "What stays in sync",
+      "chips": {
+        "c1": "Products & prices",
+        "c2": "Stock levels",
+        "c3": "Orders",
+        "c4": "Customers",
+        "c5": "Tax & receipts"
+      }
+    },
+    "page": {
+      "beta": "Beta",
+      "start": {
+        "eyebrow": "Get started",
+        "title": "Three steps to your first sale",
+        "subtitle": "It takes about two minutes, start to finish."
+      },
+      "steps": {
+        "plugin": {
+          "title": "Install the free plugin",
+          "body": "The foundation everything connects to. In your dashboard: Plugins → Add New, then search “WCPOS”.",
+          "badge": "Free · GPL",
+          "requirements": "WordPress 5.6+ · WooCommerce 5.3+ · PHP 7.4+",
+          "requirementsWithVersion": "Latest {version} · WordPress 5.6+ · WooCommerce 5.3+ · PHP 7.4+"
+        },
+        "device": {
+          "title": "Pick your device",
+          "body": "All free, all in sync. Grab the one we detected up top, or any of these.",
+          "desktopTitle": "Desktop app",
+          "iosCta": "Join the TestFlight beta",
+          "androidCta": "Join on Google Play",
+          "webCta": "Open the live demo"
+        },
+        "pro": {
+          "title": "Want more? Go Pro",
+          "body": "A licensed plugin that adds terminal payments, refunds and stock control on the same foundation.",
+          "cardTitle": "Unlock the full till",
+          "cardBody": "Payments, refunds, stock & pricing, order management, end-of-day reports, multi-store and priority Discord support.",
+          "plansCta": "View Pro plans",
+          "signInCta": "Sign in to download"
+        }
+      }
+    },
+    "releaseHistory": {
+      "eyebrow": "Release history",
+      "title": "What’s new",
+      "subtitle": "Recent changes — every app shares one version line.",
+      "latest": "Latest",
+      "fullHistory": "Full history on GitHub —",
+      "desktop": "Desktop",
+      "emptyNotes": "_No release notes for this version._",
+      "fallback": {
+        "v196": "- Cash drawer support — auto-open after payment or via a new Open Drawer button, with per-printer connectors (ESC-POS, Epson, PrintNode, cloud)\n- Fixed analytics events firing too often\n- Updated translations",
+        "v195": "- Fixed a payment-gateways API crash (HTTP 500 with some third-party gateways, e.g. ToyyibPay)",
+        "v194": "- Redesigned Bluetooth printer setup; serial printing for OS-paired Bluetooth Classic printers\n- Improved Windows raw printing; smoother USB flow",
+        "v190": "- New receipt template gallery; thermal printing (58/80mm)\n- Customer Tax IDs; Pro coupons & refunds at the POS"
+      },
+      "plugin": "Free"
+    }
   }
 }

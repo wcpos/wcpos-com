@@ -11,12 +11,18 @@ export interface ReleaseEntry {
   latest?: boolean
 }
 
-/**
- * Changelog built on the shared <Collapsible> primitive (which wraps a native
- * <details>/<summary>), so it works without client JavaScript; the first
- * (latest) entry is open by default.
- */
-export function ReleaseHistory({ releases }: { releases: ReleaseEntry[] }) {
+export function ReleaseHistory({
+  releases,
+  copy,
+}: {
+  releases: ReleaseEntry[]
+  copy: {
+    latest: string
+    fullHistory: string
+    plugin: string
+    desktop: string
+  }
+}) {
   return (
     <div className="mx-auto max-w-2xl">
       {releases.map((release, index) => (
@@ -30,7 +36,7 @@ export function ReleaseHistory({ releases }: { releases: ReleaseEntry[] }) {
               <span className="font-mono text-base font-medium">
                 {release.version}
               </span>
-              {release.latest && <Badge variant="brand-tint">Latest</Badge>}
+              {release.latest && <Badge variant="brand-tint">{copy.latest}</Badge>}
               <span className="text-sm text-muted-foreground">
                 {release.date}
               </span>
@@ -44,13 +50,13 @@ export function ReleaseHistory({ releases }: { releases: ReleaseEntry[] }) {
       ))}
 
       <p className="mt-8 text-center text-sm text-muted-foreground">
-        Full history on GitHub —{' '}
+        {copy.fullHistory}{' '}
         <TextLink href="https://github.com/wcpos/woocommerce-pos/releases">
-          Free
+          {copy.plugin}
         </TextLink>{' '}
         ·{' '}
         <TextLink href="https://github.com/wcpos/electron/releases">
-          Desktop
+          {copy.desktop}
         </TextLink>
       </p>
     </div>

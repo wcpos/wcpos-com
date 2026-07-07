@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { setRequestLocale } from 'next-intl/server'
+import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { Laptop, Smartphone, Globe, ArrowRight } from 'lucide-react'
 import { Section, Container } from '@/components/ui/section'
 import { SectionHeading } from '@/components/ui/section-heading'
@@ -11,8 +11,9 @@ import { Link } from '@/i18n/navigation'
 import { TrackedLocaleLink } from '@/components/analytics/tracked-locale-link'
 import { TrackedExternalLink } from '@/components/analytics/tracked-external-link'
 import { marketingMetadata } from '@/lib/seo'
+import { formatDateForLocale } from '@/lib/date-format'
 import { DownloadsHero } from '@/components/downloads/download-hero'
-import { PLATFORMS } from '@/components/downloads/platforms'
+import { PLATFORMS, type PlatformKey } from '@/components/downloads/platforms'
 import { HowItFits } from '@/components/downloads/how-it-fits'
 import {
   GetStartedSteps,
@@ -35,72 +36,58 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>
 }): Promise<Metadata> {
   const { locale } = await params
+  const t = await getTranslations({ locale, namespace: 'downloads.meta' })
   return marketingMetadata({
     locale,
     path: '/downloads',
-    title: 'Downloads',
-    description:
-      'Download WCPOS — the free plugin plus the desktop, iOS, Android and web apps. See the latest version and recent release notes.',
+    title: t('title'),
+    description: t('description'),
   })
 }
 
-const DESKTOP_LINKS = [
-  { label: 'macOS (Apple Silicon)', href: PLATFORMS['mac-arm'].href },
-  { label: 'macOS (Intel)', href: PLATFORMS['mac-intel'].href },
-  { label: 'Windows', href: PLATFORMS.win.href },
-  { label: 'Linux', href: PLATFORMS.linux.href },
-]
+type FallbackBodyKey = 'v196' | 'v195' | 'v194' | 'v190'
 
-/**
- * Shown only if the GitHub releases feed is unavailable at build/render time,
- * so the changelog is never empty. Mirrors the latest readme.txt highlights.
- */
-type FallbackRelease = Omit<ReleaseEntry, 'date'> & { publishedAt: string }
+type FallbackRelease = Omit<ReleaseEntry, 'date' | 'body'> & {
+  publishedAt: string
+  bodyKey: FallbackBodyKey
+}
 
 const FALLBACK_RELEASES: FallbackRelease[] = [
-  {
-    version: '1.9.6',
-    publishedAt: '2026-06-17T00:00:00.000Z',
-    latest: true,
-    body: '- Cash drawer support — auto-open after payment or via a new Open Drawer button, with per-printer connectors (ESC-POS, Epson, PrintNode, cloud)\n- Fixed analytics events firing too often\n- Updated translations',
-  },
-  {
-    version: '1.9.5',
-    publishedAt: '2026-06-15T00:00:00.000Z',
-    body: '- Fixed a payment-gateways API crash (HTTP 500 with some third-party gateways, e.g. ToyyibPay)',
-  },
-  {
-    version: '1.9.4',
-    publishedAt: '2026-06-13T00:00:00.000Z',
-    body: '- Redesigned Bluetooth printer setup; serial printing for OS-paired Bluetooth Classic printers\n- Improved Windows raw printing; smoother USB flow',
-  },
-  {
-    version: '1.9.0',
-    publishedAt: '2026-05-15T00:00:00.000Z',
-    body: '- New receipt template gallery; thermal printing (58/80mm)\n- Customer Tax IDs; Pro coupons & refunds at the POS',
-  },
+  { version: '1.9.6', publishedAt: '2026-06-17T00:00:00.000Z', latest: true, bodyKey: 'v196' },
+  { version: '1.9.5', publishedAt: '2026-06-15T00:00:00.000Z', bodyKey: 'v195' },
+  { version: '1.9.4', publishedAt: '2026-06-13T00:00:00.000Z', bodyKey: 'v194' },
+  { version: '1.9.0', publishedAt: '2026-05-15T00:00:00.000Z', bodyKey: 'v190' },
 ]
 
 function formatReleaseDate(iso: string, locale: string): string {
-  try {
-    return new Intl.DateTimeFormat(locale, {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric',
-    }).format(new Date(iso))
-  } catch {
-    return ''
-  }
+  return formatDateForLocale(iso, locale, {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  })
 }
 
-function getFallbackReleases(locale: string): ReleaseEntry[] {
-  return FALLBACK_RELEASES.map(({ publishedAt, ...release }) => ({
+function getFallbackReleases(
+  locale: string,
+  t: Awaited<ReturnType<typeof getTranslations>>
+): ReleaseEntry[] {
+  const fallbackBodies: Record<FallbackBodyKey, string> = {
+    v196: t('fallback.v196'),
+    v195: t('fallback.v195'),
+    v194: t('fallback.v194'),
+    v190: t('fallback.v190'),
+  }
+  return FALLBACK_RELEASES.map(({ publishedAt, bodyKey, ...release }) => ({
     ...release,
     date: formatReleaseDate(publishedAt, locale),
+    body: fallbackBodies[bodyKey],
   }))
 }
 
-async function getRecentReleases(locale: string): Promise<ReleaseEntry[]> {
+async function getRecentReleases(
+  locale: string,
+  t: Awaited<ReturnType<typeof getTranslations>>
+): Promise<ReleaseEntry[]> {
   const releases = await getReleases('woocommerce-pos')
   const published = releases
     .filter((release) => !release.draft && !release.prerelease)
@@ -108,13 +95,13 @@ async function getRecentReleases(locale: string): Promise<ReleaseEntry[]> {
     .slice(0, 6)
 
   if (published.length === 0) {
-    return getFallbackReleases(locale)
+    return getFallbackReleases(locale, t)
   }
 
   return published.map((release, index) => ({
     version: release.tagName.replace(/^v/, ''),
     date: formatReleaseDate(release.publishedAt, locale),
-    body: release.body.trim() || '_No release notes for this version._',
+    body: release.body.trim() || t('emptyNotes'),
     latest: index === 0,
   }))
 }
@@ -123,11 +110,13 @@ function DeviceCard({
   icon: Icon,
   title,
   beta,
+  betaLabel,
   children,
 }: {
   icon: typeof Laptop
   title: string
   beta?: boolean
+  betaLabel: string
   children: React.ReactNode
 }) {
   return (
@@ -140,7 +129,7 @@ function DeviceCard({
           {title}
           {beta && (
             <Badge variant="muted-tint" className="ml-2">
-              Beta
+              {betaLabel}
             </Badge>
           )}
         </p>
@@ -158,49 +147,77 @@ export default async function DownloadsPage({
   const { locale } = await params
   setRequestLocale(locale)
 
-  const [versions, releases] = await Promise.all([
+  const [pageT, platformT, releaseT, howItFitsT, versions] = await Promise.all([
+    getTranslations({ locale, namespace: 'downloads.page' }),
+    getTranslations({ locale, namespace: 'downloads.platforms' }),
+    getTranslations({ locale, namespace: 'downloads.releaseHistory' }),
+    getTranslations({ locale, namespace: 'downloads.howItFits' }),
     getProductVersions(),
-    getRecentReleases(locale),
   ])
+  const releases = await getRecentReleases(locale, releaseT)
   const desktopVersion = versionFor(versions, PRODUCT_LABELS.desktop)
   const freeVersion = versionFor(versions, PRODUCT_LABELS.free)
+  const desktopLinks: PlatformKey[] = ['mac-arm', 'mac-intel', 'win', 'linux']
 
   return (
     <main>
-      {/* HERO */}
       <DownloadsHero desktopVersion={desktopVersion} />
+      <HowItFits
+        copy={{
+          eyebrow: howItFitsT('eyebrow'),
+          title: howItFitsT('title'),
+          points: {
+            setup: {
+              title: howItFitsT('points.setup.title'),
+              body: howItFitsT('points.setup.body'),
+            },
+            sync: {
+              title: howItFitsT('points.sync.title'),
+              body: howItFitsT('points.sync.body'),
+            },
+            offline: {
+              title: howItFitsT('points.offline.title'),
+              body: howItFitsT('points.offline.body'),
+            },
+          },
+          syncLabel: howItFitsT('syncLabel'),
+          chips: {
+            c1: howItFitsT('chips.c1'),
+            c2: howItFitsT('chips.c2'),
+            c3: howItFitsT('chips.c3'),
+            c4: howItFitsT('chips.c4'),
+            c5: howItFitsT('chips.c5'),
+          },
+        }}
+      />
 
-      {/* HOW IT FITS TOGETHER */}
-      <HowItFits />
-
-      {/* GET STARTED */}
       <Section tone="default" spacing="default" bare>
         <Container width="content">
           <SectionHeading
-            eyebrow="Get started"
-            title="Three steps to your first sale"
-            subtitle="It takes about two minutes, start to finish."
+            eyebrow={pageT('start.eyebrow')}
+            title={pageT('start.title')}
+            subtitle={pageT('start.subtitle')}
           />
           <GetStartedSteps>
             <GetStartedStep step={1}>
               <h3 className="text-xl font-semibold tracking-tight">
-                Install the free plugin
+                {pageT('steps.plugin.title')}
               </h3>
               <p className="mt-1 text-muted-foreground">
-                The foundation everything connects to. In your dashboard:
-                Plugins → Add New, then search “WCPOS”.
+                {pageT('steps.plugin.body')}
               </p>
               <Card className="mt-4 flex flex-wrap items-center justify-between gap-4 p-5">
                 <div>
                   <p className="font-medium">
                     WCPOS
                     <Badge variant="brand-tint" className="ml-2">
-                      Free · GPL
+                      {pageT('steps.plugin.badge')}
                     </Badge>
                   </p>
                   <p className="mt-1 text-sm text-muted-foreground">
-                    {freeVersion ? `Latest ${freeVersion} · ` : ''}WordPress
-                    5.6+ · WooCommerce 5.3+ · PHP 7.4+
+                    {freeVersion
+                      ? pageT('steps.plugin.requirementsWithVersion', { version: freeVersion })
+                      : pageT('steps.plugin.requirements')}
                   </p>
                 </div>
                 <div className="flex gap-2">
@@ -208,11 +225,7 @@ export default async function DownloadsPage({
                     <TrackedExternalLink
                       href="https://wordpress.org/plugins/woocommerce-pos/"
                       eventName="download_clicked"
-                      eventProperties={{
-                        plugin: 'free',
-                        source: 'wordpress_org',
-                        page: '/downloads',
-                      }}
+                      eventProperties={{ plugin: 'free', source: 'wordpress_org', page: '/downloads' }}
                     >
                       WordPress.org
                     </TrackedExternalLink>
@@ -221,11 +234,7 @@ export default async function DownloadsPage({
                     <TrackedExternalLink
                       href="https://github.com/wcpos/woocommerce-pos/releases"
                       eventName="download_clicked"
-                      eventProperties={{
-                        plugin: 'free',
-                        source: 'github_zip',
-                        page: '/downloads',
-                      }}
+                      eventProperties={{ plugin: 'free', source: 'github_zip', page: '/downloads' }}
                     >
                       .zip
                     </TrackedExternalLink>
@@ -236,66 +245,55 @@ export default async function DownloadsPage({
 
             <GetStartedStep step={2}>
               <h3 className="text-xl font-semibold tracking-tight">
-                Pick your device
+                {pageT('steps.device.title')}
               </h3>
               <p className="mt-1 text-muted-foreground">
-                All free, all in sync. Grab the one we detected up top, or any
-                of these.
+                {pageT('steps.device.body')}
               </p>
               <div className="mt-4 grid gap-3 sm:grid-cols-2">
-                <DeviceCard icon={Laptop} title="Desktop app">
+                <DeviceCard icon={Laptop} title={pageT('steps.device.desktopTitle')} betaLabel={pageT('beta')}>
                   <div className="flex flex-wrap gap-x-1 gap-y-1">
-                    {DESKTOP_LINKS.map((link, index) => (
-                      <span key={link.href}>
-                        <TextLink href={link.href}>{link.label}</TextLink>
-                        {index < DESKTOP_LINKS.length - 1 && (
-                          <span className="px-1 text-muted-foreground">·</span>
-                        )}
+                    {desktopLinks.map((key, index) => (
+                      <span key={PLATFORMS[key].href}>
+                        <TextLink href={PLATFORMS[key].href}>{platformT(`${key}.listLabel`)}</TextLink>
+                        {index < desktopLinks.length - 1 && <span className="px-1 text-muted-foreground">·</span>}
                       </span>
                     ))}
                   </div>
                 </DeviceCard>
-                <DeviceCard icon={Smartphone} title="iOS & iPad" beta>
-                  <TextLink href={PLATFORMS.ios.href}>
-                    Join the TestFlight beta
-                  </TextLink>
+                <DeviceCard icon={Smartphone} title={platformT('ios.name')} beta betaLabel={pageT('beta')}>
+                  <TextLink href={PLATFORMS.ios.href}>{pageT('steps.device.iosCta')}</TextLink>
                 </DeviceCard>
-                <DeviceCard icon={Smartphone} title="Android" beta>
-                  <TextLink href={PLATFORMS.android.href}>
-                    Join on Google Play
-                  </TextLink>
+                <DeviceCard icon={Smartphone} title={platformT('android.name')} beta betaLabel={pageT('beta')}>
+                  <TextLink href={PLATFORMS.android.href}>{pageT('steps.device.androidCta')}</TextLink>
                 </DeviceCard>
-                <DeviceCard icon={Globe} title="Web">
-                  <TextLink href={PLATFORMS.web.href}>
-                    Open the live demo
-                  </TextLink>
+                <DeviceCard icon={Globe} title={platformT('web.name')} betaLabel={pageT('beta')}>
+                  <TextLink href={PLATFORMS.web.href}>{pageT('steps.device.webCta')}</TextLink>
                 </DeviceCard>
               </div>
             </GetStartedStep>
 
             <GetStartedStep step={3}>
               <h3 className="text-xl font-semibold tracking-tight">
-                Want more? Go Pro
+                {pageT('steps.pro.title')}
               </h3>
               <p className="mt-1 text-muted-foreground">
-                A licensed plugin that adds terminal payments, refunds and stock
-                control on the same foundation.
+                {pageT('steps.pro.body')}
               </p>
               <Card className="mt-4 p-5">
-                <p className="font-medium">Unlock the full till</p>
+                <p className="font-medium">{pageT('steps.pro.cardTitle')}</p>
                 <p className="mt-1 text-sm text-muted-foreground">
-                  Payments, refunds, stock &amp; pricing, order management,
-                  end-of-day reports, multi-store and priority Discord support.
+                  {pageT('steps.pro.cardBody')}
                 </p>
                 <div className="mt-4 flex flex-wrap items-center gap-2">
                   <Button asChild variant="brand" size="sm">
                     <TrackedLocaleLink href="/pro" eventName="click_pro_cta">
-                      View Pro plans
+                      {pageT('steps.pro.plansCta')}
                     </TrackedLocaleLink>
                   </Button>
                   <Button asChild variant="ghost" size="sm">
                     <Link href="/account/downloads">
-                      Sign in to download
+                      {pageT('steps.pro.signInCta')}
                       <ArrowRight aria-hidden="true" />
                     </Link>
                   </Button>
@@ -306,15 +304,22 @@ export default async function DownloadsPage({
         </Container>
       </Section>
 
-      {/* RELEASE HISTORY */}
       <Section tone="muted" spacing="default">
         <SectionHeading
           className="mb-10"
-          eyebrow="Release history"
-          title="What's new"
-          subtitle="Recent changes — every app shares one version line."
+          eyebrow={releaseT('eyebrow')}
+          title={releaseT('title')}
+          subtitle={releaseT('subtitle')}
         />
-        <ReleaseHistory releases={releases} />
+        <ReleaseHistory
+          releases={releases}
+          copy={{
+            latest: releaseT('latest'),
+            fullHistory: releaseT('fullHistory'),
+            plugin: releaseT('plugin'),
+            desktop: releaseT('desktop'),
+          }}
+        />
       </Section>
     </main>
   )

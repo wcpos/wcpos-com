@@ -1,9 +1,51 @@
 import { describe, expect, it, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
 
-vi.mock('next-intl/server', () => ({
-  setRequestLocale: vi.fn(),
-}))
+function readMessage(messages: Record<string, unknown>, namespace: string, key: string) {
+  return `${namespace}.${key}`
+    .split('.')
+    .reduce<unknown>(
+      (value, part) =>
+        value && typeof value === 'object'
+          ? (value as Record<string, unknown>)[part]
+          : undefined,
+      messages,
+    ) as string
+}
+
+vi.mock('next-intl/server', async () => {
+  const messages = (await import('../../../../../messages/en.json')).default
+  return {
+    setRequestLocale: vi.fn(),
+    getTranslations: vi.fn(
+      async ({ namespace }: { locale: string; namespace: string }) =>
+        (key: string, values?: Record<string, string>) => {
+          let message = readMessage(messages, namespace, key)
+          for (const [name, value] of Object.entries(values ?? {})) {
+            message = message.replace(`{${name}}`, value)
+          }
+          return message
+        },
+    ),
+  }
+})
+
+vi.mock('next-intl', async () => {
+  const messages = (await import('../../../../../messages/en.json')).default
+  return {
+    useTranslations: (namespace: string) => {
+      const t = (key: string, values?: Record<string, string>) => {
+        let message = readMessage(messages, namespace, key)
+        for (const [name, value] of Object.entries(values ?? {})) {
+          message = message.replace(`{${name}}`, value)
+        }
+        return message
+      }
+      t.rich = (key: string) => readMessage(messages, namespace, key)
+      return t
+    },
+  }
+})
 
 vi.mock('@/i18n/navigation', () => ({
   Link: ({
