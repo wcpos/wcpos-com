@@ -14,7 +14,29 @@ function errorResponse(errorCode: ReceiptErrorCode, status: number) {
   return NextResponse.json({ errorCode }, { status })
 }
 
+function supportedLocale(value: string | null): { intlLocale: string; messageLocale: Locale } | null {
+  if (!value || value === '*') return null
+
+  try {
+    const [canonical] = Intl.getCanonicalLocales(value)
+    const intlLocale = new Intl.Locale(canonical).baseName
+    const messageLocale = intlLocale
+      .split('-')[0]
+      ?.toLowerCase() as Locale | undefined
+    if (canonical && messageLocale && locales.includes(messageLocale)) {
+      return { intlLocale, messageLocale }
+    }
+  } catch {
+    return null
+  }
+
+  return null
+}
+
 function resolveLocale(request: Request): { intlLocale: string; messageLocale: Locale } {
+  const explicitLocale = supportedLocale(new URL(request.url).searchParams.get('locale'))
+  if (explicitLocale) return explicitLocale
+
   const header = request.headers.get('accept-language') || ''
   const candidates = header
     .split(',')
@@ -47,17 +69,8 @@ function resolveLocale(request: Request): { intlLocale: string; messageLocale: L
     .map((candidate) => candidate.language)
 
   for (const candidate of candidates) {
-    try {
-      const [canonical] = Intl.getCanonicalLocales(candidate)
-      const messageLocale = canonical
-        .split('-')[0]
-        ?.toLowerCase() as Locale | undefined
-      if (canonical && messageLocale && locales.includes(messageLocale)) {
-        return { intlLocale: canonical, messageLocale }
-      }
-    } catch {
-      // try next locale candidate
-    }
+    const locale = supportedLocale(candidate)
+    if (locale) return locale
   }
 
   return { intlLocale: defaultLocale, messageLocale: defaultLocale }

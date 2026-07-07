@@ -15,6 +15,7 @@ import { DividedList, Row } from '@/components/ui/row'
 import { PageHeader } from '@/components/ui/page-header'
 import { Skeleton } from '@/components/ui/skeleton'
 import { presentLicenseStatus } from '@/lib/license-status-presentation'
+import { receiptDownloadHref } from '@/lib/receipt-download'
 import type { Metadata } from 'next'
 import type { OrderStatusLabels } from '@/lib/order-status'
 
@@ -84,7 +85,7 @@ async function OrderDetailContent({
       <div>
         <Button asChild variant="outline" size="sm">
           <a
-            href={`/api/account/orders/${orderDetail.id}/receipt`}
+            href={receiptDownloadHref(orderDetail.id, locale)}
             target="_blank"
             rel="noreferrer"
           >

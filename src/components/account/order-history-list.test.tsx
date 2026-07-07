@@ -126,14 +126,14 @@ describe('OrderHistoryList', () => {
     expect(screen.queryByText(/\*\*\*\*-\*\*\*\*-/)).not.toBeInTheDocument()
   })
 
-  it('renders a PDF receipt download link for each order', () => {
+  it('renders locale-pinned PDF receipt download links for each order', () => {
     render(
       <OrderHistoryList
         orders={[
           makeOrder(),
           makeOrder({ id: 'order_456', displayId: 1043 }),
         ]}
-        locale="en-US"
+        locale="fr"
       />
     )
 
@@ -142,7 +142,7 @@ describe('OrderHistoryList', () => {
     })
     expect(firstReceipt).toHaveAttribute(
       'href',
-      '/api/account/orders/order_123/receipt'
+      '/api/account/orders/order_123/receipt?locale=fr'
     )
 
     const secondReceipt = screen.getByRole('link', {
@@ -150,7 +150,7 @@ describe('OrderHistoryList', () => {
     })
     expect(secondReceipt).toHaveAttribute(
       'href',
-      '/api/account/orders/order_456/receipt'
+      '/api/account/orders/order_456/receipt?locale=fr'
     )
   })
 

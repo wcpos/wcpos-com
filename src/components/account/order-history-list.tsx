@@ -9,6 +9,7 @@ import { CodeRef } from '@/components/ui/code-ref'
 import { TextLink } from '@/components/ui/text-link'
 import { formatOrderAmount } from '@/lib/order-display'
 import { formatDateForLocale } from '@/lib/date-format'
+import { receiptDownloadHref } from '@/lib/receipt-download'
 
 /**
  * A licence an order produced, ready for display. The key is ALREADY masked
@@ -125,7 +126,7 @@ export function OrderHistoryList({ orders, locale }: OrderHistoryListProps) {
                 <div className="flex items-center gap-2">
                   <Button asChild variant="outline" size="sm">
                     <a
-                      href={`/api/account/orders/${order.id}/receipt`}
+                      href={receiptDownloadHref(order.id, locale)}
                       target="_blank"
                       rel="noreferrer"
                       aria-label={t('downloadReceiptAria', {
