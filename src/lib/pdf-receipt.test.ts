@@ -197,6 +197,50 @@ describe('buildReceiptPdf', () => {
     expect(stream).not.toContain(hex(longEmail))
   })
 
+
+  it('embeds fallback fonts for CJK receipt text instead of replacing it with question marks', async () => {
+    const cjkCopy: ReceiptPdfCopy = {
+      ...TEST_COPY,
+      title: '收据',
+      billedTo: '开票给',
+      details: '詳細',
+      description: '설명',
+      noTaxAdded: '未添加税费。',
+      generated: (date) => `生成于 ${date}`,
+      questions: (website, email) => `问题：${website} · ${email}`,
+      paymentStatus: {
+        paid: '已付款',
+        refunded: '已退款',
+        partiallyRefunded: '部分退款',
+        canceled: '已取消',
+      },
+    }
+    const stream = await pageStream(
+      await buildReceiptPdf(
+        {
+          ...baseReceipt,
+          customerName: '山田太郎',
+          billingProfile: {
+            ...baseReceipt.billingProfile,
+            addressLine1: '東京都千代田区',
+            city: '서울',
+            countryCode: 'JP',
+          },
+          items: [
+            {
+              ...baseReceipt.items[0],
+              title: '收据 領収書 영수증',
+            },
+          ],
+        },
+        cjkCopy,
+        'zh-CN'
+      )
+    )
+
+    expect(stream).not.toContain(hex('?'))
+  })
+
   it('does not throw when order content includes unicode characters', async () => {
     const unicodeReceipt: AccountOrderReceiptFact = {
       ...baseReceipt,
