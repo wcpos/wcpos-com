@@ -1,7 +1,7 @@
 {
   "version": 1,
   "generatedBy": "scripts/i18n/hardcoded-english.ts --update",
-  "updatedAt": "2026-07-07T02:47:08.308Z",
+  "updatedAt": "2026-07-07T02:57:22.426Z",
   "scope": [
     "src/app",
     "src/components",
@@ -167,23 +167,7 @@
       "category": "route/page",
       "attr": null,
       "text": "pro",
-      "count": 2
-    },
-    {
-      "id": "b7a0fe148c965764",
-      "file": "src/app/[locale]/(main)/pro/page.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "Pro - Premium Features",
-      "count": 1
-    },
-    {
-      "id": "085b4a3ffcc8a13b",
-      "file": "src/app/[locale]/(main)/pro/page.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "Upgrade WCPOS with Pro: terminal payments, stock and price editing, order and customer management, end-of-day reports, and priority support.",
-      "count": 1
+      "count": 3
     },
     {
       "id": "591fe1ab35a29ac5",
@@ -3111,14 +3095,6 @@
       "category": "component",
       "attr": null,
       "text": "orders",
-      "count": 1
-    },
-    {
-      "id": "302d497067b9f80e",
-      "file": "src/components/pro/stripe-provider.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Stripe is not configured for this environment.",
       "count": 1
     },
     {

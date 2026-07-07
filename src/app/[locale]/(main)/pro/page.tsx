@@ -38,12 +38,12 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>
 }): Promise<Metadata> {
   const { locale } = await params
+  const t = await getTranslations({ locale, namespace: 'pro' })
   return marketingMetadata({
     locale,
     path: '/pro',
-    title: 'Pro - Premium Features',
-    description:
-      'Upgrade WCPOS with Pro: terminal payments, stock and price editing, order and customer management, end-of-day reports, and priority support.',
+    title: t('metadata.title'),
+    description: t('metadata.description'),
   })
 }
 

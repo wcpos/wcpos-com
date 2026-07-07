@@ -314,6 +314,10 @@
     }
   },
   "pro": {
+    "metadata": {
+      "title": "Pro - Premiumfuncties",
+      "description": "Breid WCPOS uit met Pro: terminalbetalingen, voorraad- en prijsbewerking, order- en klantbeheer, einde-dagrapporten en prioriteitssupport."
+    },
     "features": {
       "title": "Wat zit er in Pro?",
       "subtitle": "Alles uit Free, plus de tools om je hele winkel vanaf de kassa te runnen — en priority support wanneer je hulp nodig hebt.",

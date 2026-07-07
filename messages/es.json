@@ -314,6 +314,10 @@
     }
   },
   "pro": {
+    "metadata": {
+      "title": "Pro - Funciones premium",
+      "description": "Mejora WCPOS con Pro: pagos en terminal, edición de stock y precios, gestión de pedidos y clientes, informes de cierre del día y soporte prioritario."
+    },
     "features": {
       "title": "¿Qué incluye Pro?",
       "subtitle": "Todo lo de la versión gratuita, más las herramientas para gestionar toda tu tienda desde la caja registradora, y soporte prioritario cuando necesites ayuda.",

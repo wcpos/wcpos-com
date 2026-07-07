@@ -314,6 +314,10 @@
     }
   },
   "pro": {
+    "metadata": {
+      "title": "Pro - Premium Features",
+      "description": "Upgrade WCPOS with Pro: terminal payments, stock and price editing, order and customer management, end-of-day reports, and priority support."
+    },
     "features": {
       "title": "What's included in Pro?",
       "subtitle": "Everything in Free, plus the tools to run your whole store from the register — and priority support when you need a hand.",

@@ -17,6 +17,8 @@ vi.mock('react', async (importActual) => {
 vi.mock('next-intl/server', () => ({
   getTranslations: vi.fn(async () => (key: string) => {
     const messages: Record<string, string> = {
+      'metadata.title': 'Translated Pro metadata title',
+      'metadata.description': 'Translated Pro metadata description',
       'features.title': 'Pro features',
       'features.subtitle': 'Everything Pro adds to the register.',
       'features.terminal.title': 'Payment terminals',
@@ -133,7 +135,19 @@ vi.mock('@/components/ui/section-heading', () => ({
   ),
 }))
 
-import ProPage from './page'
+import ProPage, { generateMetadata } from './page'
+
+describe('Pro page metadata', () => {
+  it('uses localized metadata copy', async () => {
+    const metadata = await generateMetadata({
+      params: Promise.resolve({ locale: 'fr' }),
+    })
+
+    expect(metadata.title).toBe('Translated Pro metadata title')
+    expect(metadata.description).toBe('Translated Pro metadata description')
+    expect(metadata.alternates?.canonical).toBe('https://wcpos.com/fr/pro')
+  })
+})
 
 describe('ProPage', () => {
   it('renders hero and features statically with only the buy box suspending', async () => {
