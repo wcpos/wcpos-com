@@ -126,8 +126,11 @@ export async function POST(request: NextRequest) {
         // Revenue + plan: without these the funnel can only count sales, not
         // measure them. `revenue`/`currency` are the property names PostHog
         // revenue analytics recognises; `plan` splits yearly vs lifetime.
-        revenue: result.order.total,
-        currency: result.order.currency_code,
+        // Medusa's completion response may return only the created order's
+        // id/status, so fall back to the pre-completion cart totals (validated
+        // above) rather than sending `undefined` revenue/currency.
+        revenue: result.order.total ?? cart.total,
+        currency: result.order.currency_code ?? cart.currency_code,
         plan: selection.planId,
         plan_handle: selection.handle,
         funnel_step: 'checkout_completed',

@@ -66,12 +66,23 @@ describe('initPostHogBrowser', () => {
     )
   })
 
-  it('omits bootstrap when the shared cookie is absent (lets posthog mint its own id)', async () => {
+  it('mints and persists the shared cookie when absent, then bootstraps with it', async () => {
     const { isAnalyticsGranted } = await import('./consent')
     ;(isAnalyticsGranted as ReturnType<typeof vi.fn>).mockReturnValue(true)
     const { initPostHogBrowser } = await import('./posthog-browser')
     initPostHogBrowser({ key: 'phc_x', host: 'https://eu.i.posthog.com' })
-    expect(initMock.mock.calls[0][1]).not.toHaveProperty('bootstrap')
+
+    // A shared id is minted rather than left to posthog's own anon id, so the
+    // first SPA session and the server-side checkout_completed are one person.
+    const bootstrap = initMock.mock.calls[0][1].bootstrap
+    expect(bootstrap?.distinctID).toEqual(expect.any(String))
+    expect(bootstrap.distinctID).not.toHaveLength(0)
+
+    // The same id is written to the shared cookie so the server adopts it.
+    const cookieMatch = document.cookie
+      .split('; ')
+      .find((c) => c.startsWith('wcpos-distinct-id='))
+    expect(cookieMatch).toBe(`wcpos-distinct-id=${bootstrap.distinctID}`)
   })
 
   it('enables exception autocapture ($exception posts via /e/, safe on self-hosted)', async () => {

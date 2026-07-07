@@ -2,7 +2,11 @@
 
 import posthog from 'posthog-js'
 import { isAnalyticsGranted } from './consent'
-import { ANALYTICS_DISTINCT_ID_COOKIE } from './distinct-id'
+import {
+  ANALYTICS_DISTINCT_ID_COOKIE,
+  getDistinctIdCookieOptions,
+  newDistinctId,
+} from './distinct-id'
 
 let started = false
 
@@ -18,8 +22,28 @@ function readSharedDistinctId(): string | undefined {
   const prefix = `${ANALYTICS_DISTINCT_ID_COOKIE}=`
   const row = document.cookie.split('; ').find((c) => c.startsWith(prefix))
   if (!row) return undefined
-  const value = decodeURIComponent(row.slice(prefix.length))
-  return value || undefined
+  try {
+    const value = decodeURIComponent(row.slice(prefix.length))
+    return value || undefined
+  } catch {
+    // A malformed % escape in the user-controlled cookie must fail closed, not
+    // throw and leave window.posthog unset (every later init returns early).
+    return undefined
+  }
+}
+
+/**
+ * Persist a freshly-minted shared distinct id from the browser, mirroring the
+ * cookie middleware.ts sets (same name, path, and one-year max-age) so the
+ * server adopts it on the next request. Secure follows the page protocol rather
+ * than NODE_ENV — like writeAnalyticsConsent — because e2e serves a production
+ * build over http://localhost and WebKit drops Secure cookies set over http.
+ */
+function writeSharedDistinctId(id: string): void {
+  if (typeof document === 'undefined') return
+  const options = getDistinctIdCookieOptions()
+  const secure = window.location.protocol === 'https:' ? '; Secure' : ''
+  document.cookie = `${ANALYTICS_DISTINCT_ID_COOKIE}=${id}; Path=${options.path}; Max-Age=${options.maxAge}; SameSite=Lax${secure}`
 }
 
 /**
@@ -34,6 +58,13 @@ function readSharedDistinctId(): string | undefined {
  * checkout_completed it leads to resolve to one PostHog person — which is what
  * makes end-to-end funnels and source attribution work. The id stays anonymous
  * (isIdentifiedID omitted/false); no PII is attached.
+ *
+ * When the cookie is missing we mint and persist one BEFORE init instead of
+ * letting posthog-js create its own anon id. The ConsentBanner grants consent
+ * and inits synchronously, before middleware has minted the cookie on a page
+ * response — so without this the SPA session would live under posthog's id
+ * while the later cookie drives checkout_completed, splitting the first-session
+ * buyer funnel across two people.
  *
  * Exception autocapture is on (`capture_exceptions`): $exception events post via
  * the normal /e/ endpoint (unlike session replay's /s/), so they are safe on the
@@ -54,7 +85,11 @@ export function initPostHogBrowser(config: { key?: string; host?: string }) {
   if (!isAnalyticsGranted()) return
 
   started = true
-  const sharedDistinctId = readSharedDistinctId()
+  let sharedDistinctId = readSharedDistinctId()
+  if (!sharedDistinctId) {
+    sharedDistinctId = newDistinctId()
+    writeSharedDistinctId(sharedDistinctId)
+  }
   posthog.init(config.key, {
     api_host: config.host,
     autocapture: false,
@@ -63,9 +98,7 @@ export function initPostHogBrowser(config: { key?: string; host?: string }) {
     capture_exceptions: true,
     disable_session_recording: true,
     persistence: 'localStorage+cookie',
-    ...(sharedDistinctId
-      ? { bootstrap: { distinctID: sharedDistinctId } }
-      : {}),
+    bootstrap: { distinctID: sharedDistinctId },
   })
   ;(window as unknown as { posthog: typeof posthog }).posthog = posthog
 }
