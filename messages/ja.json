@@ -627,15 +627,15 @@
           "quote": "and quote reference <reference></reference>."
         },
         "orderPending": {
-          "resetConfirm": "Only reset checkout after support confirms it is safe to try again. If your payment is still pending, resetting could lead to a second payment.",
-          "title": "Payment received — order pending",
-          "description": "Your payment went through, but we hit a problem while creating your order.",
-          "doNotPayAgain": "Please do not pay again.",
-          "supportInstructions": "Contact support and quote reference <reference></reference> — we will finish setting up your order or refund your payment.",
-          "contactSupport": "Contact support",
-          "checkLicenses": "Check my licenses",
-          "resetHint": "If support has confirmed this old warning is resolved, you can clear it and start a fresh checkout.",
-          "resetButton": "Support told me to reset checkout"
+          "resetConfirm": "サポートが再試行しても安全だと確認した後にのみ、チェックアウトをリセットしてください。支払いがまだ保留中の場合、リセットすると二重払いになる可能性があります。",
+          "title": "お支払いを受け付けました — 注文は保留中です",
+          "description": "お支払いは完了しましたが、注文の作成中に問題が発生しました。",
+          "doNotPayAgain": "もう一度お支払いしないでください。",
+          "supportInstructions": "サポートに連絡し、参照番号 <reference></reference> をお伝えください。注文の設定を完了するか、お支払いを返金します。",
+          "contactSupport": "サポートに連絡",
+          "checkLicenses": "ライセンスを確認",
+          "resetHint": "この古い警告が解決済みであるとサポートが確認した場合は、警告を消去して新しいチェックアウトを開始できます。",
+          "resetButton": "サポートからチェックアウトのリセットを案内されました"
         }
       },
       "successPage": {

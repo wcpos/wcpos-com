@@ -627,15 +627,15 @@
           "quote": "and quote reference <reference></reference>."
         },
         "orderPending": {
-          "resetConfirm": "Only reset checkout after support confirms it is safe to try again. If your payment is still pending, resetting could lead to a second payment.",
-          "title": "Payment received — order pending",
-          "description": "Your payment went through, but we hit a problem while creating your order.",
-          "doNotPayAgain": "Please do not pay again.",
-          "supportInstructions": "Contact support and quote reference <reference></reference> — we will finish setting up your order or refund your payment.",
-          "contactSupport": "Contact support",
-          "checkLicenses": "Check my licenses",
-          "resetHint": "If support has confirmed this old warning is resolved, you can clear it and start a fresh checkout.",
-          "resetButton": "Support told me to reset checkout"
+          "resetConfirm": "Reset de checkout alleen nadat support heeft bevestigd dat opnieuw proberen veilig is. Als je betaling nog in behandeling is, kan resetten tot een tweede betaling leiden.",
+          "title": "Betaling ontvangen — bestelling in behandeling",
+          "description": "Je betaling is gelukt, maar er is een probleem opgetreden bij het aanmaken van je bestelling.",
+          "doNotPayAgain": "Betaal niet opnieuw.",
+          "supportInstructions": "Neem contact op met support en vermeld referentie <reference></reference> — we ronden je bestelling af of betalen je betaling terug.",
+          "contactSupport": "Contact opnemen met support",
+          "checkLicenses": "Mijn licenties controleren",
+          "resetHint": "Als support heeft bevestigd dat deze oude waarschuwing is opgelost, kun je deze wissen en een nieuwe checkout starten.",
+          "resetButton": "Support vroeg mij de checkout te resetten"
         }
       },
       "successPage": {

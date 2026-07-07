@@ -627,15 +627,15 @@
           "quote": "and quote reference <reference></reference>."
         },
         "orderPending": {
-          "resetConfirm": "Only reset checkout after support confirms it is safe to try again. If your payment is still pending, resetting could lead to a second payment.",
-          "title": "Payment received — order pending",
-          "description": "Your payment went through, but we hit a problem while creating your order.",
-          "doNotPayAgain": "Please do not pay again.",
-          "supportInstructions": "Contact support and quote reference <reference></reference> — we will finish setting up your order or refund your payment.",
-          "contactSupport": "Contact support",
-          "checkLicenses": "Check my licenses",
-          "resetHint": "If support has confirmed this old warning is resolved, you can clear it and start a fresh checkout.",
-          "resetButton": "Support told me to reset checkout"
+          "resetConfirm": "지원팀이 다시 시도해도 안전하다고 확인한 후에만 결제를 재설정하세요. 결제가 아직 보류 중이면 재설정으로 인해 중복 결제가 발생할 수 있습니다.",
+          "title": "결제가 접수됨 — 주문 보류 중",
+          "description": "결제는 완료되었지만 주문을 생성하는 중 문제가 발생했습니다.",
+          "doNotPayAgain": "다시 결제하지 마세요.",
+          "supportInstructions": "지원팀에 문의하고 참조 번호 <reference></reference> 를 알려 주세요. 주문 설정을 완료하거나 결제를 환불해 드리겠습니다.",
+          "contactSupport": "지원팀에 문의",
+          "checkLicenses": "내 라이선스 확인",
+          "resetHint": "지원팀이 이 이전 경고가 해결되었다고 확인했다면, 이를 지우고 새 결제를 시작할 수 있습니다.",
+          "resetButton": "지원팀이 결제 재설정을 안내했습니다"
         }
       },
       "successPage": {

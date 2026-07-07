@@ -21,6 +21,15 @@ function flattenKeys(messages: Messages, prefix = ''): string[] {
   })
 }
 
+function valueAtPath(messages: Messages, keyPath: string): string | undefined {
+  let value: string | Messages | undefined = messages
+  for (const key of keyPath.split('.')) {
+    if (typeof value !== 'object' || value === null) return undefined
+    value = value[key]
+  }
+  return typeof value === 'string' ? value : undefined
+}
+
 const messageFiles = fs
   .readdirSync(messagesDir)
   .filter((file) => file.endsWith('.json'))
@@ -28,6 +37,9 @@ const fileLocales = messageFiles.map((file) => file.replace(/\.json$/, ''))
 
 const enKeys = flattenKeys(loadMessages(defaultLocale))
 const otherLocales = fileLocales.filter((locale) => locale !== defaultLocale)
+const checkoutRecoveryKeys = enKeys.filter((key) =>
+  key.startsWith('pro.checkout.recovery.orderPending.')
+)
 
 describe('messages key parity', () => {
   it('has a messages file for every configured locale', () => {
@@ -75,6 +87,24 @@ describe('messages key parity', () => {
           .filter(Boolean)
           .join('\n')
       ).toEqual({ missing: [], extra: [] })
+    }
+  )
+
+  it.each(otherLocales)(
+    '%s.json translates the payment-received checkout recovery copy',
+    (locale) => {
+      const english = loadMessages(defaultLocale)
+      const localized = loadMessages(locale)
+      const untranslatedKeys = checkoutRecoveryKeys.filter((key) => {
+        const englishValue = valueAtPath(english, key)
+        const localizedValue = valueAtPath(localized, key)
+        return englishValue !== undefined && localizedValue === englishValue
+      })
+
+      expect(
+        untranslatedKeys,
+        `messages/${locale}.json must not copy English money-at-risk checkout recovery copy verbatim`
+      ).toEqual([])
     }
   )
 })

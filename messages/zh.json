@@ -627,15 +627,15 @@
           "quote": "and quote reference <reference></reference>."
         },
         "orderPending": {
-          "resetConfirm": "Only reset checkout after support confirms it is safe to try again. If your payment is still pending, resetting could lead to a second payment.",
-          "title": "Payment received — order pending",
-          "description": "Your payment went through, but we hit a problem while creating your order.",
-          "doNotPayAgain": "Please do not pay again.",
-          "supportInstructions": "Contact support and quote reference <reference></reference> — we will finish setting up your order or refund your payment.",
-          "contactSupport": "Contact support",
-          "checkLicenses": "Check my licenses",
-          "resetHint": "If support has confirmed this old warning is resolved, you can clear it and start a fresh checkout.",
-          "resetButton": "Support told me to reset checkout"
+          "resetConfirm": "只有在支持团队确认可以安全重试后，才重置结账。如果您的付款仍在处理中，重置可能会导致重复付款。",
+          "title": "已收到付款 — 订单待处理",
+          "description": "您的付款已成功，但我们在创建订单时遇到了问题。",
+          "doNotPayAgain": "请不要再次付款。",
+          "supportInstructions": "请联系支持团队并提供参考号 <reference></reference> — 我们会完成订单设置或退还您的付款。",
+          "contactSupport": "联系支持团队",
+          "checkLicenses": "检查我的许可证",
+          "resetHint": "如果支持团队已确认此旧警告已解决，您可以清除它并开始新的结账。",
+          "resetButton": "支持团队让我重置结账"
         }
       },
       "successPage": {
