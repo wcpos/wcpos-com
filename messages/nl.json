@@ -2,7 +2,8 @@
   "common": {
     "signIn": "Aanmelden",
     "account": "Account",
-    "openMenu": "Menu openen"
+    "openMenu": "Menu openen",
+    "dismiss": "Sluiten"
   },
   "header": {
     "documentation": "Documentatie",
@@ -244,7 +245,8 @@
       "hideKeyAria": "Licentiesleutel die eindigt op {suffix} verbergen",
       "copyKeyAria": "Licentiesleutel die eindigt op {suffix} kopiëren",
       "copiedKey": "Gekopieerd",
-      "copyError": "Kopiëren van licentiesleutel mislukt. Probeer het opnieuw."
+      "copyError": "Kopiëren van licentiesleutel mislukt. Probeer het opnieuw.",
+      "roadmapTeaser": "Bekijk wat eraan komt op de roadmap"
     },
     "downloads": {
       "heading": "Downloads",

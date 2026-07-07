@@ -2,7 +2,8 @@
   "common": {
     "signIn": "サインイン",
     "account": "アカウント",
-    "openMenu": "メニューを開く"
+    "openMenu": "メニューを開く",
+    "dismiss": "閉じる"
   },
   "header": {
     "documentation": "ドキュメント",
@@ -244,7 +245,8 @@
       "hideKeyAria": "末尾が {suffix} のライセンスキーを非表示",
       "copyKeyAria": "末尾が {suffix} のライセンスキーをコピー",
       "copiedKey": "コピーしました",
-      "copyError": "ライセンスキーをコピーできませんでした。もう一度お試しください。"
+      "copyError": "ライセンスキーをコピーできませんでした。もう一度お試しください。",
+      "roadmapTeaser": "ロードマップで今後の予定をチェック"
     },
     "downloads": {
       "heading": "ダウンロード",

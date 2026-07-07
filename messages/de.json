@@ -2,7 +2,8 @@
   "common": {
     "signIn": "Anmelden",
     "account": "Konto",
-    "openMenu": "Menü öffnen"
+    "openMenu": "Menü öffnen",
+    "dismiss": "Schließen"
   },
   "header": {
     "documentation": "Dokumentation",
@@ -244,7 +245,8 @@
       "hideKeyAria": "Lizenzschlüssel mit Endung {suffix} ausblenden",
       "copyKeyAria": "Lizenzschlüssel mit Endung {suffix} kopieren",
       "copiedKey": "Kopiert",
-      "copyError": "Lizenzschlüssel konnte nicht kopiert werden. Bitte versuche es erneut."
+      "copyError": "Lizenzschlüssel konnte nicht kopiert werden. Bitte versuche es erneut.",
+      "roadmapTeaser": "Sieh, was auf der Roadmap geplant ist"
     },
     "downloads": {
       "heading": "Downloads",

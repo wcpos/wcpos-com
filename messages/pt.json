@@ -2,7 +2,8 @@
   "common": {
     "signIn": "Iniciar sessão",
     "account": "Conta",
-    "openMenu": "Abrir menu"
+    "openMenu": "Abrir menu",
+    "dismiss": "Dispensar"
   },
   "header": {
     "documentation": "Documentação",
@@ -244,7 +245,8 @@
       "hideKeyAria": "Ocultar chave de licença terminada em {suffix}",
       "copyKeyAria": "Copiar chave de licença terminada em {suffix}",
       "copiedKey": "Copiada",
-      "copyError": "Falha ao copiar a chave de licença. Tente novamente."
+      "copyError": "Falha ao copiar a chave de licença. Tente novamente.",
+      "roadmapTeaser": "Veja o que vem por aí no roadmap"
     },
     "downloads": {
       "heading": "Transferências",
