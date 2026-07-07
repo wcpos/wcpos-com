@@ -328,6 +328,15 @@
           "products": "Products",
           "cart": "Cart"
         }
+      },
+      "terminal": {
+        "tapToPay": "Toca para pagar"
+      },
+      "cloudSync": {
+        "products": "{count, number} productos",
+        "synced": "sincronizados",
+        "ordersToWoo": "pedidos → Woo",
+        "worksOffline": "funciona sin conexión"
       }
     }
   },

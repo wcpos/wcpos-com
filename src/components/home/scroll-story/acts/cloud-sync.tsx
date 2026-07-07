@@ -1,4 +1,5 @@
 import { useId } from 'react'
+import { useTranslations } from 'next-intl'
 import { cn } from '@/lib/utils'
 import styles from '../story.module.css'
 
@@ -24,6 +25,7 @@ export function CloudSync({
   light?: boolean
 }) {
   const svgId = useId()
+  const t = useTranslations('home.story.cloudSync')
   const chipClass = light
     ? 'border-slate-300 bg-white/90 text-slate-600'
     : 'border-slate-600 bg-slate-800/90 text-slate-300'
@@ -197,7 +199,8 @@ export function CloudSync({
           styles.floaty
         )}
       >
-        1,204 products <span className="text-emerald-400">● synced</span>
+        {t('products', { count: 1204 })}{' '}
+        <span className="text-emerald-400">● {t('synced')}</span>
       </span>
       <span
         className={cn(
@@ -207,7 +210,7 @@ export function CloudSync({
         )}
         style={{ animationDelay: '1.2s' }}
       >
-        orders → Woo <span className="text-emerald-400">●</span>
+        {t('ordersToWoo')} <span className="text-emerald-400">●</span>
       </span>
       <span
         className={cn(
@@ -217,7 +220,7 @@ export function CloudSync({
         )}
         style={{ animationDelay: '0.6s' }}
       >
-        works offline <span className="text-emerald-400">●</span>
+        {t('worksOffline')} <span className="text-emerald-400">●</span>
       </span>
     </div>
   )

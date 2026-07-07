@@ -328,6 +328,15 @@
           "products": "Products",
           "cart": "Cart"
         }
+      },
+      "terminal": {
+        "tapToPay": "タップして支払い"
+      },
+      "cloudSync": {
+        "products": "商品 {count, number} 件",
+        "synced": "同期済み",
+        "ordersToWoo": "注文 → Woo",
+        "worksOffline": "オフライン対応"
       }
     }
   },

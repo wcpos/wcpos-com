@@ -328,6 +328,15 @@
           "products": "Products",
           "cart": "Cart"
         }
+      },
+      "terminal": {
+        "tapToPay": "탭하여 결제"
+      },
+      "cloudSync": {
+        "products": "상품 {count, number}개",
+        "synced": "동기화됨",
+        "ordersToWoo": "주문 → Woo",
+        "worksOffline": "오프라인 작동"
       }
     }
   },

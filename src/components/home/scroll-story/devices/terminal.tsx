@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl'
 import { cn } from '@/lib/utils'
 import { HardwareImage, type ScreenRect } from './hardware-image'
 
@@ -48,6 +49,7 @@ export function DeviceTerminal({
   model?: 1 | 2 | 3
 }) {
   const spec = MODELS[model]
+  const t = useTranslations('home.story.terminal')
   return (
     <div
       aria-hidden="true"
@@ -76,7 +78,7 @@ export function DeviceTerminal({
             spec.screenSize === 'lg' ? 'mt-1 text-[10px]' : 'text-[6px]'
           )}
         >
-          Tap to pay
+          {t('tapToPay')}
         </span>
       </HardwareImage>
     </div>

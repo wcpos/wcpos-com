@@ -328,6 +328,15 @@
           "products": "Products",
           "cart": "Cart"
         }
+      },
+      "terminal": {
+        "tapToPay": "Tik om te betalen"
+      },
+      "cloudSync": {
+        "products": "{count, number} producten",
+        "synced": "gesynchroniseerd",
+        "ordersToWoo": "bestellingen → Woo",
+        "worksOffline": "werkt offline"
       }
     }
   },

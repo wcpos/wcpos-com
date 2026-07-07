@@ -1,7 +1,7 @@
 {
   "version": 1,
   "generatedBy": "scripts/i18n/hardcoded-english.ts --update",
-  "updatedAt": "2026-07-07T03:16:55.592Z",
+  "updatedAt": "2026-07-07T03:22:07.785Z",
   "scope": [
     "src/app",
     "src/components",
@@ -1994,22 +1994,6 @@
       "count": 1
     },
     {
-      "id": "d44411f6fbac901b",
-      "file": "src/components/home/scroll-story/acts/cloud-sync.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "● synced",
-      "count": 1
-    },
-    {
-      "id": "b32fe416ba65f3e4",
-      "file": "src/components/home/scroll-story/acts/cloud-sync.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "1,204 products",
-      "count": 1
-    },
-    {
       "id": "81e258f7bb38169a",
       "file": "src/components/home/scroll-story/acts/cloud-sync.tsx",
       "category": "component",
@@ -2066,27 +2050,11 @@
       "count": 1
     },
     {
-      "id": "3c95ae43c0930e50",
-      "file": "src/components/home/scroll-story/acts/cloud-sync.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "orders → Woo",
-      "count": 1
-    },
-    {
       "id": "d1e37f1daa39d56a",
       "file": "src/components/home/scroll-story/acts/cloud-sync.tsx",
       "category": "component",
       "attr": null,
       "text": "relative h-[300px] w-[560px]",
-      "count": 1
-    },
-    {
-      "id": "7fc8973645c2f8f9",
-      "file": "src/components/home/scroll-story/acts/cloud-sync.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "works offline",
       "count": 1
     },
     {
@@ -2303,14 +2271,6 @@
       "category": "component",
       "attr": null,
       "text": "flex items-end justify-center",
-      "count": 1
-    },
-    {
-      "id": "32bb6237086f9f85",
-      "file": "src/components/home/scroll-story/devices/terminal.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Tap to pay",
       "count": 1
     },
     {

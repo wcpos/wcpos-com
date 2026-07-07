@@ -328,6 +328,15 @@
           "products": "Products",
           "cart": "Cart"
         }
+      },
+      "terminal": {
+        "tapToPay": "轻触付款"
+      },
+      "cloudSync": {
+        "products": "{count, number} 件商品",
+        "synced": "已同步",
+        "ordersToWoo": "订单 → Woo",
+        "worksOffline": "离线可用"
       }
     }
   },
