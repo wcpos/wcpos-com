@@ -1357,6 +1357,20 @@
         "c3": "Orders",
         "c4": "Customers",
         "c5": "Tax & receipts"
+      },
+      "diagram": {
+        "ariaLabel": "WCPOS 플러그인이 설치된 WooCommerce 스토어가 중앙에 있고 REST API를 통해 데스크톱, iOS, Android 및 웹 앱과 연결되어 모두 동기화됩니다.",
+        "devices": {
+          "desktop": "데스크톱",
+          "ios": "iOS 및 iPad",
+          "android": "Android",
+          "web": "Web"
+        },
+        "hub": {
+          "store": "내 스토어",
+          "platform": "WooCommerce",
+          "plugin": "+ WCPOS 플러그인"
+        }
       }
     },
     "page": {

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "generatedBy": "scripts/i18n/hardcoded-english.ts --update",
-  "updatedAt": "2026-07-07T03:47:18.728Z",
+  "updatedAt": "2026-07-07T04:30:44.624Z",
   "scope": [
     "src/app",
     "src/components",
@@ -1866,14 +1866,6 @@
       "count": 1
     },
     {
-      "id": "eec8f49f10456462",
-      "file": "src/components/downloads/sync-diagram.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "+ WCPOS plugin",
-      "count": 1
-    },
-    {
       "id": "7ca87855bb9947e5",
       "file": "src/components/downloads/sync-diagram.tsx",
       "category": "component",
@@ -1882,27 +1874,11 @@
       "count": 1
     },
     {
-      "id": "ad4aac9e37868488",
-      "file": "src/components/downloads/sync-diagram.tsx",
-      "category": "component",
-      "attr": "aria-label",
-      "text": "A WooCommerce store with the WCPOS plugin sits at the centre, connected over a REST API to the desktop, iOS, Android and web apps, which all stay in sync.",
-      "count": 1
-    },
-    {
       "id": "7a6d9b683712220e",
       "file": "src/components/downloads/sync-diagram.tsx",
       "category": "component",
       "attr": null,
       "text": "flex items-center justify-center rounded-full shadow-lg transition-all duration-200",
-      "count": 1
-    },
-    {
-      "id": "09ece502a0ed245e",
-      "file": "src/components/downloads/sync-diagram.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "iOS & iPad",
       "count": 1
     },
     {
@@ -1919,14 +1895,6 @@
       "category": "component",
       "attr": null,
       "text": "use client",
-      "count": 1
-    },
-    {
-      "id": "c1aea96f19548449",
-      "file": "src/components/downloads/sync-diagram.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Your store",
       "count": 1
     },
     {

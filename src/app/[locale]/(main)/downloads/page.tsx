@@ -188,6 +188,20 @@ export default async function DownloadsPage({
             c4: howItFitsT('chips.c4'),
             c5: howItFitsT('chips.c5'),
           },
+          diagram: {
+            ariaLabel: howItFitsT('diagram.ariaLabel'),
+            devices: {
+              desktop: howItFitsT('diagram.devices.desktop'),
+              ios: howItFitsT('diagram.devices.ios'),
+              android: howItFitsT('diagram.devices.android'),
+              web: howItFitsT('diagram.devices.web'),
+            },
+            hub: {
+              store: howItFitsT('diagram.hub.store'),
+              platform: howItFitsT('diagram.hub.platform'),
+              plugin: howItFitsT('diagram.hub.plugin'),
+            },
+          },
         }}
       />
 

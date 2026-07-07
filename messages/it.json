@@ -1357,6 +1357,20 @@
         "c3": "Orders",
         "c4": "Customers",
         "c5": "Tax & receipts"
+      },
+      "diagram": {
+        "ariaLabel": "Un negozio WooCommerce con il plugin WCPOS è al centro, collegato tramite una API REST alle app desktop, iOS, Android e web, tutte sincronizzate.",
+        "devices": {
+          "desktop": "Desktop",
+          "ios": "iOS e iPad",
+          "android": "Android",
+          "web": "Web"
+        },
+        "hub": {
+          "store": "Il tuo negozio",
+          "platform": "WooCommerce",
+          "plugin": "+ plugin WCPOS"
+        }
       }
     },
     "page": {

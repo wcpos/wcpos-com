@@ -28,7 +28,7 @@ export function HowItFits({
       <Container>
         <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
           <div className="flex justify-center">
-            <SyncDiagram />
+            <SyncDiagram labels={copy.diagram} />
           </div>
 
           <div>

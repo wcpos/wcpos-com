@@ -1357,6 +1357,20 @@
         "c3": "Orders",
         "c4": "Customers",
         "c5": "Tax & receipts"
+      },
+      "diagram": {
+        "ariaLabel": "WCPOS プラグインを備えた WooCommerce ストアが中央にあり、REST API を通じてデスクトップ、iOS、Android、Web アプリと接続され、すべて同期されます。",
+        "devices": {
+          "desktop": "デスクトップ",
+          "ios": "iOS と iPad",
+          "android": "Android",
+          "web": "Web"
+        },
+        "hub": {
+          "store": "あなたのストア",
+          "platform": "WooCommerce",
+          "plugin": "+ WCPOS プラグイン"
+        }
       }
     },
     "page": {

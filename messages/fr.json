@@ -1357,6 +1357,20 @@
         "c3": "Orders",
         "c4": "Customers",
         "c5": "Tax & receipts"
+      },
+      "diagram": {
+        "ariaLabel": "Une boutique WooCommerce avec l’extension WCPOS se trouve au centre, connectée via une API REST aux applications de bureau, iOS, Android et web, qui restent synchronisées.",
+        "devices": {
+          "desktop": "Bureau",
+          "ios": "iOS et iPad",
+          "android": "Android",
+          "web": "Web"
+        },
+        "hub": {
+          "store": "Votre boutique",
+          "platform": "WooCommerce",
+          "plugin": "+ extension WCPOS"
+        }
       }
     },
     "page": {

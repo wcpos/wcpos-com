@@ -1357,6 +1357,20 @@
         "c3": "Orders",
         "c4": "Customers",
         "c5": "Tax & receipts"
+      },
+      "diagram": {
+        "ariaLabel": "安装了 WCPOS 插件的 WooCommerce 商店位于中心，通过 REST API 连接到桌面、iOS、Android 和网页应用，并保持同步。",
+        "devices": {
+          "desktop": "桌面",
+          "ios": "iOS 和 iPad",
+          "android": "Android",
+          "web": "Web"
+        },
+        "hub": {
+          "store": "您的商店",
+          "platform": "WooCommerce",
+          "plugin": "+ WCPOS 插件"
+        }
       }
     },
     "page": {

@@ -1357,6 +1357,20 @@
         "c3": "Orders",
         "c4": "Customers",
         "c5": "Tax & receipts"
+      },
+      "diagram": {
+        "ariaLabel": "Een WooCommerce-winkel met de WCPOS-plugin staat centraal en is via een REST API verbonden met de desktop-, iOS-, Android- en webapps, die allemaal gesynchroniseerd blijven.",
+        "devices": {
+          "desktop": "Desktop",
+          "ios": "iOS en iPad",
+          "android": "Android",
+          "web": "Web"
+        },
+        "hub": {
+          "store": "Je winkel",
+          "platform": "WooCommerce",
+          "plugin": "+ WCPOS-plugin"
+        }
       }
     },
     "page": {
