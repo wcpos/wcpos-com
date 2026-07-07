@@ -226,7 +226,7 @@
       "activationsCount": "{max} 中 {count}",
       "downloads": "ダウンロード",
       "machineAdded": "{date} に追加",
-      "deactivateMachineAria": "Deactivate site: {name}",
+      "deactivateMachineAria": "{name} を無効化",
       "genericMachineName": "端末",
       "coversLatestVersion": "最新バージョン {version} · このライセンス経由",
       "coversUpToVersion": "バージョン {version} までのアップデートに対応",

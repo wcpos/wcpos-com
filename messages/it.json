@@ -226,7 +226,7 @@
       "activationsCount": "{count} di {max}",
       "downloads": "Download",
       "machineAdded": "Aggiunta il {date}",
-      "deactivateMachineAria": "Deactivate site: {name}",
+      "deactivateMachineAria": "Disattiva {name}",
       "genericMachineName": "macchina",
       "coversLatestVersion": "Ultima versione {version} · tramite questa licenza",
       "coversUpToVersion": "Include gli aggiornamenti fino alla versione {version}",
