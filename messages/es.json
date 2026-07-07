@@ -2,7 +2,8 @@
   "common": {
     "signIn": "Iniciar sesión",
     "account": "Cuenta",
-    "openMenu": "Abrir menú"
+    "openMenu": "Abrir menú",
+    "dismiss": "Descartar"
   },
   "header": {
     "documentation": "Documentación",

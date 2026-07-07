@@ -2,7 +2,8 @@
   "common": {
     "signIn": "登录",
     "account": "账户",
-    "openMenu": "打开菜单"
+    "openMenu": "打开菜单",
+    "dismiss": "关闭"
   },
   "header": {
     "documentation": "文档",

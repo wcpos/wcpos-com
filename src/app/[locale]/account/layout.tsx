@@ -5,6 +5,7 @@ import { getCustomer } from '@/lib/medusa-auth'
 import { getImpersonation } from '@/lib/impersonation'
 import { redirectToLoginClearingSession } from '@/lib/login-redirect'
 import { AccountSidebar } from '@/components/account/account-sidebar'
+import { AccountExpiryBanner } from '@/components/account/account-expiry-banner'
 import { ImpersonationBanner } from '@/components/account/impersonation-banner'
 import { SiteHeader } from '@/components/main/site-header'
 import { SiteFooter } from '@/components/main/site-footer'
@@ -101,7 +102,14 @@ export default async function AccountLayout({
             <AccountSidebar />
           </Suspense>
         </aside>
-        <main className="min-w-0 flex-1">{children}</main>
+        <main className="min-w-0 flex-1">
+          {/* Account-wide expiry notice (Phase 5); dynamic (reads licences),
+              so behind a boundary to keep the PPR shell static. */}
+          <Suspense fallback={null}>
+            <AccountExpiryBanner />
+          </Suspense>
+          {children}
+        </main>
       </div>
       <Suspense fallback={<AccountFooterSkeleton />}>
         <SiteFooter />
