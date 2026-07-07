@@ -610,10 +610,9 @@ export function LicensesClient({
                                 setConfirmingDeactivate(machine.id)
                               }
                               disabled={isDeactivating}
-                              aria-label={t('deactivateMachineAria', {
-                                name:
-                                  siteLabel || t('genericMachineName'),
-                              })}
+                              aria-label={`${t('deactivateSite')}: ${
+                                siteLabel || t('genericMachineName')
+                              }`}
                             >
                               <Trash2 className="mr-1.5 h-4 w-4" />
                               {t('deactivateSite')}

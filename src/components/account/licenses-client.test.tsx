@@ -685,7 +685,9 @@ describe('LicensesClient', () => {
       )
 
       // First click only reveals the confirmation — no request yet.
-      fireEvent.click(screen.getByRole('button', { name: 'Deactivate shop.example.com' }))
+      fireEvent.click(
+        screen.getByRole('button', { name: 'Deactivate site: shop.example.com' })
+      )
       expect(
         screen.getByText(
           'This frees one activation slot. If the site is still in use, it will need to activate again.'
@@ -713,7 +715,9 @@ describe('LicensesClient', () => {
         />
       )
 
-      fireEvent.click(screen.getByRole('button', { name: 'Deactivate shop.example.com' }))
+      fireEvent.click(
+        screen.getByRole('button', { name: 'Deactivate site: shop.example.com' })
+      )
       fireEvent.click(screen.getByRole('button', { name: 'Deactivate' }))
 
       expect(mockFetch).toHaveBeenCalledWith(
