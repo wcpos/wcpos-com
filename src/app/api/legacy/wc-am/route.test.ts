@@ -58,7 +58,7 @@ describe('WC API Manager compatibility shim', () => {
     expect(await res.json()).toMatchObject({
       success: false,
       activated: false,
-      error: 'A customer account does not exist for this API Key.',
+      error: 'license_request_failed',
       code: 404,
     })
   })
@@ -86,7 +86,7 @@ describe('WC API Manager compatibility shim', () => {
     expect(await res.json()).toMatchObject({
       success: false,
       activated: false,
-      error: 'A customer account does not exist for this API Key.',
+      error: 'license_request_failed',
       code: 404,
     })
   })
@@ -104,7 +104,10 @@ describe('WC API Manager compatibility shim', () => {
 
     const res = await call('wc-api=am-software-api&request=activation&instance=site-1')
 
-    expect(await res.json()).toMatchObject({ success: false })
+    expect(await res.json()).toEqual({
+      success: false,
+      error: 'missing_required_parameters',
+    })
     expect(fetchMock).not.toHaveBeenCalled()
   })
 
@@ -114,7 +117,10 @@ describe('WC API Manager compatibility shim', () => {
     const res = await call('wc-api=am-software-api&request=activation&api_key=KEY&instance=site-1')
 
     expect(res.status).toBe(200)
-    expect(await res.json()).toMatchObject({ success: false })
+    expect(await res.json()).toEqual({
+      success: false,
+      error: 'license_server_unavailable',
+    })
   })
 
   it('maps an aborted upstream request to the temporary-unavailable response', async () => {
@@ -125,7 +131,7 @@ describe('WC API Manager compatibility shim', () => {
     expect(res.status).toBe(200)
     expect(await res.json()).toEqual({
       success: false,
-      error: 'The license server is temporarily unavailable. Please try again shortly.',
+      error: 'license_server_unavailable',
     })
   })
 
