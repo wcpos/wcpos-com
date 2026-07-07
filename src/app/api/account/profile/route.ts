@@ -22,6 +22,15 @@ interface ProfilePayload {
   accountProfile?: AccountProfilePatchInput
 }
 
+type ProfileErrorCode =
+  | 'read_only_inspection'
+  | 'unauthorized'
+  | 'update_failed'
+
+function errorResponse(errorCode: ProfileErrorCode, status: number): NextResponse {
+  return NextResponse.json({ errorCode }, { status })
+}
+
 function normalizeField(value: unknown): string | undefined {
   if (typeof value !== 'string') return undefined
   return value.trim()
@@ -32,17 +41,14 @@ export async function PATCH(request: NextRequest) {
     await assertViewOnly()
   } catch (error) {
     if (error instanceof ViewOnlyError) {
-      return NextResponse.json(
-        { error: 'read_only_inspection' },
-        { status: 403 }
-      )
+      return errorResponse('read_only_inspection', 403)
     }
     throw error
   }
 
   const currentCustomer = await getCustomer()
   if (!currentCustomer) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    return errorResponse('unauthorized', 401)
   }
 
   try {
@@ -65,7 +71,7 @@ export async function PATCH(request: NextRequest) {
     const updatedCustomer = await updateCustomer(payload)
 
     if (!updatedCustomer) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+      return errorResponse('unauthorized', 401)
     }
 
     return NextResponse.json({
@@ -77,9 +83,6 @@ export async function PATCH(request: NextRequest) {
   } catch (error) {
     apiLogger.error`Profile update failed (PATCH /api/account/profile): ${error}`
 
-    const message =
-      error instanceof Error ? error.message : 'Failed to update profile'
-
-    return NextResponse.json({ error: message }, { status: 400 })
+    return errorResponse('update_failed', 400)
   }
 }

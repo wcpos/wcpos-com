@@ -1,7 +1,7 @@
 {
   "version": 1,
   "generatedBy": "scripts/i18n/hardcoded-english.ts --update",
-  "updatedAt": "2026-07-07T01:23:28.240Z",
+  "updatedAt": "2026-07-07T01:27:53.943Z",
   "scope": [
     "src/app",
     "src/components",
@@ -791,14 +791,6 @@
       "category": "route/page",
       "attr": null,
       "text": "Receipt generation failed. orderId=",
-      "count": 1
-    },
-    {
-      "id": "52172d960ecac07f",
-      "file": "src/app/api/account/profile/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Failed to update profile",
       "count": 1
     },
     {

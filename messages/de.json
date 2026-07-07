@@ -796,7 +796,12 @@
       "githubProvider": "GitHub",
       "githubDescription": "Wird für die Ein-Klick-Anmeldung verwendet.",
       "emailProvider": "E-Mail & Passwort",
-      "emailDescription": "Du meldest dich mit deiner E-Mail-Adresse an."
+      "emailDescription": "Du meldest dich mit deiner E-Mail-Adresse an.",
+      "apiErrors": {
+        "read_only_inspection": "You are viewing this account in read-only mode.",
+        "unauthorized": "Please sign in again to update your profile.",
+        "update_failed": "Failed to update profile"
+      }
     },
     "receiptPdf": {
       "title": "Beleg",

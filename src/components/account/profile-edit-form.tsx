@@ -50,6 +50,34 @@ type RegionLabelKey =
   | 'region'
   | 'prefecture'
 type PostalLabelKey = 'zip' | 'postalCode' | 'postcode'
+type ProfileErrorCode =
+  | 'read_only_inspection'
+  | 'unauthorized'
+  | 'update_failed'
+
+const PROFILE_ERROR_CODES = new Set<ProfileErrorCode>([
+  'read_only_inspection',
+  'unauthorized',
+  'update_failed',
+])
+
+function isProfileErrorCode(value: unknown): value is ProfileErrorCode {
+  return typeof value === 'string' && PROFILE_ERROR_CODES.has(value as ProfileErrorCode)
+}
+
+function getProfileErrorMessage(
+  errorCode: ProfileErrorCode,
+  t: ReturnType<typeof useTranslations<'account.profile'>>
+): string {
+  switch (errorCode) {
+    case 'read_only_inspection':
+      return t('apiErrors.read_only_inspection')
+    case 'unauthorized':
+      return t('apiErrors.unauthorized')
+    case 'update_failed':
+      return t('apiErrors.update_failed')
+  }
+}
 
 type CountryProfile = {
   regionLabel: RegionLabelKey
@@ -213,7 +241,11 @@ export function ProfileEditForm({
       const data = await response.json()
 
       if (!response.ok) {
-        throw new Error(data.error || t('updateError'))
+        throw new Error(
+          isProfileErrorCode(data.errorCode)
+            ? getProfileErrorMessage(data.errorCode, t)
+            : t('updateError')
+        )
       }
 
       const updated = getProfileDefaults(data.customer?.metadata)

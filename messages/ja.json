@@ -796,7 +796,12 @@
       "githubProvider": "GitHub",
       "githubDescription": "ワンクリックサインインに使用されます。",
       "emailProvider": "メールとパスワード",
-      "emailDescription": "メールアドレスでサインインします。"
+      "emailDescription": "メールアドレスでサインインします。",
+      "apiErrors": {
+        "read_only_inspection": "You are viewing this account in read-only mode.",
+        "unauthorized": "Please sign in again to update your profile.",
+        "update_failed": "Failed to update profile"
+      }
     },
     "receiptPdf": {
       "title": "領収書",

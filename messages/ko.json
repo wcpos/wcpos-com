@@ -796,7 +796,12 @@
       "githubProvider": "GitHub",
       "githubDescription": "원클릭 로그인에 사용됩니다.",
       "emailProvider": "이메일 및 비밀번호",
-      "emailDescription": "이메일 주소로 로그인합니다."
+      "emailDescription": "이메일 주소로 로그인합니다.",
+      "apiErrors": {
+        "read_only_inspection": "You are viewing this account in read-only mode.",
+        "unauthorized": "Please sign in again to update your profile.",
+        "update_failed": "Failed to update profile"
+      }
     },
     "receiptPdf": {
       "title": "영수증",

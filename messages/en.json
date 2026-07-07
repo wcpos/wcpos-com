@@ -796,7 +796,12 @@
       "githubProvider": "GitHub",
       "githubDescription": "Used for one-click sign-in.",
       "emailProvider": "Email & password",
-      "emailDescription": "You sign in with your email address."
+      "emailDescription": "You sign in with your email address.",
+      "apiErrors": {
+        "read_only_inspection": "You are viewing this account in read-only mode.",
+        "unauthorized": "Please sign in again to update your profile.",
+        "update_failed": "Failed to update profile"
+      }
     },
     "receiptPdf": {
       "title": "Receipt",

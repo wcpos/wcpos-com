@@ -40,7 +40,7 @@ describe('PATCH /api/account/profile', () => {
     )
 
     expect(response.status).toBe(403)
-    expect(await response.json()).toEqual({ error: 'read_only_inspection' })
+    expect(await response.json()).toEqual({ errorCode: 'read_only_inspection' })
     expect(mockGetCustomer).not.toHaveBeenCalled()
   })
 
@@ -56,6 +56,7 @@ describe('PATCH /api/account/profile', () => {
     )
 
     expect(response.status).toBe(401)
+    expect(await response.json()).toEqual({ errorCode: 'unauthorized' })
   })
 
   it('updates profile and returns customer', async () => {
@@ -134,7 +135,7 @@ describe('PATCH /api/account/profile', () => {
     const json = await response.json()
 
     expect(response.status).toBe(400)
-    expect(json.error).toBe('Failed to update customer')
+    expect(json).toEqual({ errorCode: 'update_failed' })
     expect(errorMock).toHaveBeenCalledTimes(1)
   })
 

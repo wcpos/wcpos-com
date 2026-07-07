@@ -796,7 +796,12 @@
       "githubProvider": "GitHub",
       "githubDescription": "Usato per l’accesso con un clic.",
       "emailProvider": "Email e password",
-      "emailDescription": "Accedi con il tuo indirizzo email."
+      "emailDescription": "Accedi con il tuo indirizzo email.",
+      "apiErrors": {
+        "read_only_inspection": "You are viewing this account in read-only mode.",
+        "unauthorized": "Please sign in again to update your profile.",
+        "update_failed": "Failed to update profile"
+      }
     },
     "receiptPdf": {
       "title": "Ricevuta",
