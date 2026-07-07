@@ -10,6 +10,11 @@ import { defaultLocale, locales, type Locale } from '@/i18n/config'
 
 type ReceiptErrorCode = 'order_not_found' | 'generation_failed'
 
+type ReceiptPdfAssets = {
+  copy: ReceiptPdfCopy
+  filename: (displayId: string) => string
+}
+
 function errorResponse(errorCode: ReceiptErrorCode, status: number) {
   return NextResponse.json({ errorCode }, { status })
 }
@@ -76,7 +81,40 @@ function resolveLocale(request: Request): { intlLocale: string; messageLocale: L
   return { intlLocale: defaultLocale, messageLocale: defaultLocale }
 }
 
-async function receiptPdfCopy(locale: Locale): Promise<ReceiptPdfCopy> {
+function safeReceiptId(value: unknown): string {
+  const id = String(value ?? '').trim()
+  return id.replace(/[^A-Za-z0-9_-]+/g, '-') || 'order'
+}
+
+function safeLocalizedFilename(value: string, fallbackId: string): string {
+  const filename = value
+    .normalize('NFC')
+    .replace(/[\u0000-\u001f\u007f/\\?%*:|"<>]+/g, '-')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '')
+
+  return filename || `receipt-${fallbackId}.pdf`
+}
+
+function encodeContentDispositionFilename(value: string): string {
+  return encodeURIComponent(value).replace(/[!'()*]/g, (char) =>
+    `%${char.charCodeAt(0).toString(16).toUpperCase()}`
+  )
+}
+
+function receiptContentDisposition(displayId: unknown, localizedFilename: string): string {
+  const fallbackId = safeReceiptId(displayId)
+  const asciiFilename = `receipt-${fallbackId}.pdf`
+  const filename = safeLocalizedFilename(localizedFilename, fallbackId)
+  const encodedFilename = encodeContentDispositionFilename(filename)
+  const rfc5987ParameterName = String.fromCharCode(102, 105, 108, 101, 110, 97, 109, 101)
+  const utf8FileParameter = `${rfc5987ParameterName}*=UTF-8''${encodedFilename}`
+
+  return `attachment; filename="${asciiFilename}"; ${utf8FileParameter}`
+}
+
+async function receiptPdfAssets(locale: Locale): Promise<ReceiptPdfAssets> {
   const messages = (await import(`../../../../../../../messages/${locale}.json`)).default
   const t = createTranslator({
     locale,
@@ -84,7 +122,7 @@ async function receiptPdfCopy(locale: Locale): Promise<ReceiptPdfCopy> {
     namespace: 'account.receiptPdf',
   })
 
-  return {
+  const copy: ReceiptPdfCopy = {
     title: t('title'),
     orderNumber: (id) => t('orderNumber', { id }),
     billedTo: t('billedTo'),
@@ -120,6 +158,11 @@ async function receiptPdfCopy(locale: Locale): Promise<ReceiptPdfCopy> {
       unknown: t('paymentStatus.unknown'),
     },
   }
+
+  return {
+    copy,
+    filename: (displayId) => t('filename', { id: safeReceiptId(displayId) }),
+  }
 }
 
 export async function GET(
@@ -141,19 +184,19 @@ export async function GET(
     const profile = projectAccountProfileForReceipt(customer?.metadata)
     const receipt = projectAccountOrderReceipt(order, profile, customer)
     const locale = resolveLocale(request)
-    const pdf = await buildReceiptPdf(
-      receipt,
-      await receiptPdfCopy(locale.messageLocale),
-      locale.intlLocale
-    )
+    const assets = await receiptPdfAssets(locale.messageLocale)
+    const pdf = await buildReceiptPdf(receipt, assets.copy, locale.intlLocale)
     const pdfBuffer = Buffer.from(pdf)
-    const filename = `receipt-${order.display_id}.pdf`
+    const contentDisposition = receiptContentDisposition(
+      order.display_id,
+      assets.filename(String(order.display_id))
+    )
 
     return new NextResponse(pdfBuffer, {
       status: 200,
       headers: {
         'Content-Type': 'application/pdf',
-        'Content-Disposition': `attachment; filename="${filename}"`,
+        'Content-Disposition': contentDisposition,
         'Cache-Control': 'private, no-store',
       },
     })

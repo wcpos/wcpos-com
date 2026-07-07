@@ -901,6 +901,7 @@
     },
     "receiptPdf": {
       "title": "領収書",
+      "filename": "領収書-{id}.pdf",
       "orderNumber": "注文番号 {id}",
       "billedTo": "請求先",
       "details": "詳細",

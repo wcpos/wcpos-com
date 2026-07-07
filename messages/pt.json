@@ -901,6 +901,7 @@
     },
     "receiptPdf": {
       "title": "Recibo",
+      "filename": "recibo-{id}.pdf",
       "orderNumber": "Encomenda n.º {id}",
       "billedTo": "FATURADO A",
       "details": "DETALHES",

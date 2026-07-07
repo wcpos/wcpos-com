@@ -901,6 +901,7 @@
     },
     "receiptPdf": {
       "title": "Beleg",
+      "filename": "beleg-{id}.pdf",
       "orderNumber": "Bestellung #{id}",
       "billedTo": "RECHNUNG AN",
       "details": "DETAILS",

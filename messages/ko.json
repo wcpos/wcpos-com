@@ -901,6 +901,7 @@
     },
     "receiptPdf": {
       "title": "영수증",
+      "filename": "영수증-{id}.pdf",
       "orderNumber": "주문 #{id}",
       "billedTo": "청구 대상",
       "details": "세부 정보",

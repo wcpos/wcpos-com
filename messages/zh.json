@@ -901,6 +901,7 @@
     },
     "receiptPdf": {
       "title": "收据",
+      "filename": "收据-{id}.pdf",
       "orderNumber": "订单 #{id}",
       "billedTo": "账单抬头",
       "details": "详情",

@@ -901,6 +901,7 @@
     },
     "receiptPdf": {
       "title": "Receipt",
+      "filename": "receipt-{id}.pdf",
       "orderNumber": "Order #{id}",
       "billedTo": "BILLED TO",
       "details": "DETAILS",

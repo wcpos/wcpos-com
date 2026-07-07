@@ -901,6 +901,7 @@
     },
     "receiptPdf": {
       "title": "Bon",
+      "filename": "bon-{id}.pdf",
       "orderNumber": "Bestelling #{id}",
       "billedTo": "GEFACTUREERD AAN",
       "details": "DETAILS",
