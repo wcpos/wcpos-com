@@ -640,7 +640,6 @@ file,line,col,category,attr,text
 "src/lib/openclaw/client.ts","75","30","error/status","","support assistant error"
 "src/lib/order-status.ts","13","19","code/string","","Action required"
 "src/lib/order-status.ts","17","22","code/string","","Partially refunded"
-"src/lib/password-policy.ts","6","43","code/string","","Password must be at least"
 "src/lib/pro-offer-catalog.ts","27","25","code/string","","Yearly License"
 "src/lib/pro-offer-catalog.ts","28","27","code/string","","Lifetime License"
 "src/lib/pro-offer-catalog.ts","76","5","code/string","","WCPOS Pro Yearly"

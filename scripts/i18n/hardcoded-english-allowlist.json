@@ -1,7 +1,7 @@
 {
   "version": 1,
   "generatedBy": "scripts/i18n/hardcoded-english.ts --update",
-  "updatedAt": "2026-07-07T03:32:53.329Z",
+  "updatedAt": "2026-07-07T03:35:57.037Z",
   "scope": [
     "src/app",
     "src/components",
@@ -4319,14 +4319,6 @@
       "category": "code/string",
       "attr": null,
       "text": "Partially refunded",
-      "count": 1
-    },
-    {
-      "id": "8f5448d337a817b2",
-      "file": "src/lib/password-policy.ts",
-      "category": "code/string",
-      "attr": null,
-      "text": "Password must be at least",
       "count": 1
     },
     {
