@@ -13,7 +13,7 @@ file,line,col,category,attr,text
 "src/app/[locale]/(auth)/register/register-page-client.tsx","193","21","route/page","","/login?redirect="
 "src/app/[locale]/(auth)/reset-password/reset-password-page-client.tsx","1","1","route/page","","use client"
 "src/app/[locale]/(auth)/reset-password/reset-password-page-client.tsx","59","34","route/page","","email"
-"src/app/[locale]/(main)/downloads/page.tsx","228","50","route/page","","free"
+"src/app/[locale]/(main)/downloads/page.tsx","228","51","route/page","","free"
 "src/app/[locale]/(main)/downloads/page.tsx","237","50","route/page","","free"
 "src/app/[locale]/(main)/page.tsx","53","30","route/page","","Windows, macOS, Linux, iOS, Android"
 "src/app/[locale]/(main)/pro/checkout/page.tsx","61","24","route/page","","/pro/checkout?"

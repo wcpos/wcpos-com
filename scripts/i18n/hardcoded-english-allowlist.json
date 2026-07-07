@@ -1,7 +1,7 @@
 {
   "version": 1,
   "generatedBy": "scripts/i18n/hardcoded-english.ts --update",
-  "updatedAt": "2026-07-07T03:42:13.202Z",
+  "updatedAt": "2026-07-07T03:47:18.728Z",
   "scope": [
     "src/app",
     "src/components",

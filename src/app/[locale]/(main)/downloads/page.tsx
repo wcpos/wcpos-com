@@ -209,7 +209,7 @@ export default async function DownloadsPage({
               <Card className="mt-4 flex flex-wrap items-center justify-between gap-4 p-5">
                 <div>
                   <p className="font-medium">
-                    WCPOS
+                    {pageT('steps.plugin.cardTitle')}
                     <Badge variant="brand-tint" className="ml-2">
                       {pageT('steps.plugin.badge')}
                     </Badge>
@@ -227,7 +227,7 @@ export default async function DownloadsPage({
                       eventName="download_clicked"
                       eventProperties={{ plugin: 'free', source: 'wordpress_org', page: '/downloads' }}
                     >
-                      WordPress.org
+                      {pageT('steps.plugin.wordpressOrgCta')}
                     </TrackedExternalLink>
                   </Button>
                   <Button asChild variant="outline" size="sm">
