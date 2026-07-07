@@ -1361,5 +1361,56 @@
         "pro": "See Pro"
       }
     }
+  },
+  "support": {
+    "meta": {
+      "title": "Support",
+      "description": "Ask anything about WCPOS and get an instant answer from our docs, or chat with the community on Discord."
+    },
+    "chat": {
+      "hero": {
+        "title": "How can we help?",
+        "subtitle": "Ask anything about WCPOS — setup, licensing, hardware, syncing, printing. You'll get an instant answer drawn from our docs."
+      },
+      "examples": {
+        "e1": "Why is my licence inactive?",
+        "e2": "Which barcode scanners are supported?",
+        "e3": "How do I sync products from WooCommerce?"
+      },
+      "feedback": {
+        "prompt": "Was this helpful?",
+        "yes": "Yes",
+        "no": "No"
+      },
+      "thinking": "Aide is thinking…",
+      "form": {
+        "label": "Ask a support question",
+        "placeholder": "e.g. How do I connect a receipt printer?",
+        "followUpPlaceholder": "Ask a follow-up…",
+        "submit": "Ask"
+      },
+      "discordLink": "Ask in Discord →",
+      "poweredBy": "Answered by Aide · trained on the WCPOS docs & wiki"
+    },
+    "errors": {
+      "invalid_question": "Please enter a question (up to 1000 characters).",
+      "bot_check_failed": "Bot check failed. Please reload and try again.",
+      "rate_limited": "You're asking a lot of questions — please wait a few minutes, or hop into Discord.",
+      "budget_exhausted": "The assistant is busy right now. Please try Discord for a faster answer.",
+      "empty_answer": "The assistant is temporarily unavailable. Please try Discord while we get it back.",
+      "gateway_rate_limited": "The assistant is busy right now — please try again later.",
+      "timeout": "That took too long. Please try again, or ask in Discord.",
+      "unavailable": "The assistant is temporarily unavailable. Please try Discord while we get it back.",
+      "network": "The assistant is unavailable right now. Please ask in Discord.",
+      "unknown": "Something went wrong."
+    },
+    "order": {
+      "title": "Contact support about your order",
+      "body": "Quote reference <ref></ref> so we can confirm the payment or finish the order before you pay again."
+    },
+    "discord": {
+      "title": "Prefer to talk to a human?",
+      "subtitle": "Join store owners and the team in our live Discord community."
+    }
   }
 }

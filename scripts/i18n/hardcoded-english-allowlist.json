@@ -1,7 +1,7 @@
 {
   "version": 1,
   "generatedBy": "scripts/i18n/hardcoded-english.ts --update",
-  "updatedAt": "2026-07-07T01:17:57.872Z",
+  "updatedAt": "2026-07-07T01:23:28.240Z",
   "scope": [
     "src/app",
     "src/components",
@@ -231,22 +231,6 @@
       "category": "route/page",
       "attr": null,
       "text": "use cache",
-      "count": 1
-    },
-    {
-      "id": "09996a5b7264a043",
-      "file": "src/app/[locale]/(main)/support/page.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "Ask anything about WCPOS and get an instant answer from our docs, or chat with the community on Discord.",
-      "count": 1
-    },
-    {
-      "id": "68295c618d73f929",
-      "file": "src/app/[locale]/(main)/support/page.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "Support",
       "count": 1
     },
     {
@@ -1994,27 +1978,11 @@
       "count": 1
     },
     {
-      "id": "421c8353a6d19524",
-      "file": "src/app/api/support/ask/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Bot check failed. Please reload and try again.",
-      "count": 1
-    },
-    {
       "id": "22a70b80aebb00e8",
       "file": "src/app/api/support/ask/route.ts",
       "category": "route/page",
       "attr": null,
       "text": "error=",
-      "count": 1
-    },
-    {
-      "id": "cbe8fedccccbbe49",
-      "file": "src/app/api/support/ask/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Please enter a question (up to 1000 characters).",
       "count": 1
     },
     {
@@ -2039,38 +2007,6 @@
       "category": "route/page",
       "attr": null,
       "text": "Support ask rate-limited by the gateway. ip=",
-      "count": 1
-    },
-    {
-      "id": "8ed68881f206f09c",
-      "file": "src/app/api/support/ask/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "That took too long. Please try again, or ask in Discord.",
-      "count": 1
-    },
-    {
-      "id": "5049ec7a0d3baacf",
-      "file": "src/app/api/support/ask/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "The assistant is busy right now. Please try Discord for a faster answer.",
-      "count": 1
-    },
-    {
-      "id": "05d84091f5653b16",
-      "file": "src/app/api/support/ask/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "The assistant is temporarily unavailable. Please try Discord while we get it back.",
-      "count": 2
-    },
-    {
-      "id": "bf8352b19b3ea404",
-      "file": "src/app/api/support/ask/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "You're asking a lot of questions — please wait a few minutes, or hop into Discord.",
       "count": 1
     },
     {
@@ -4146,22 +4082,6 @@
       "count": 1
     },
     {
-      "id": "c02f7819e4f7b913",
-      "file": "src/components/support/discord-section.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Join store owners and the team in our live Discord community.",
-      "count": 1
-    },
-    {
-      "id": "6c126e4603a46723",
-      "file": "src/components/support/discord-section.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Prefer to talk to a human?",
-      "count": 1
-    },
-    {
       "id": "a448f38e1b78f01b",
       "file": "src/components/support/discord-section.tsx",
       "category": "component",
@@ -4178,139 +4098,11 @@
       "count": 1
     },
     {
-      "id": "3653fdf63997b601",
-      "file": "src/components/support/support-chat.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Aide is thinking…",
-      "count": 1
-    },
-    {
-      "id": "47be40e288c4e624",
-      "file": "src/components/support/support-chat.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Answered by Aide · trained on the WCPOS docs &amp; wiki",
-      "count": 1
-    },
-    {
-      "id": "51bdba85145f7545",
-      "file": "src/components/support/support-chat.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Ask a follow-up…",
-      "count": 1
-    },
-    {
-      "id": "0ce3e7bfe5e491db",
-      "file": "src/components/support/support-chat.tsx",
-      "category": "component",
-      "attr": "aria-label",
-      "text": "Ask a support question",
-      "count": 1
-    },
-    {
-      "id": "946ad7860c06fc20",
-      "file": "src/components/support/support-chat.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Ask anything about WCPOS — setup, licensing, hardware, syncing, printing. You&apos;ll get an instant answer drawn from our docs.",
-      "count": 1
-    },
-    {
-      "id": "7d31ec3bf89a4258",
-      "file": "src/components/support/support-chat.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Ask in Discord →",
-      "count": 1
-    },
-    {
-      "id": "27cb041effe7ef58",
-      "file": "src/components/support/support-chat.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Contact support about your order",
-      "count": 1
-    },
-    {
-      "id": "d57dab0187b4856b",
-      "file": "src/components/support/support-chat.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "How can we help?",
-      "count": 1
-    },
-    {
-      "id": "50015af936979ebc",
-      "file": "src/components/support/support-chat.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "How do I sync products from WooCommerce?",
-      "count": 1
-    },
-    {
-      "id": "47a2d99fc7ef01e7",
-      "file": "src/components/support/support-chat.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Quote reference",
-      "count": 1
-    },
-    {
-      "id": "c568021084e859b3",
-      "file": "src/components/support/support-chat.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "so we can confirm the payment or finish the order before you pay again.",
-      "count": 1
-    },
-    {
-      "id": "a2304f51cbc7f905",
-      "file": "src/components/support/support-chat.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Something went wrong.",
-      "count": 1
-    },
-    {
-      "id": "7331e335dce95154",
-      "file": "src/components/support/support-chat.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "The assistant is unavailable right now. Please ask in Discord.",
-      "count": 1
-    },
-    {
       "id": "b499da0e86cc6b3e",
       "file": "src/components/support/support-chat.tsx",
       "category": "component",
       "attr": null,
       "text": "use client",
-      "count": 1
-    },
-    {
-      "id": "aabe8a3afbd3464c",
-      "file": "src/components/support/support-chat.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Was this helpful?",
-      "count": 1
-    },
-    {
-      "id": "00a06f101e84797a",
-      "file": "src/components/support/support-chat.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Which barcode scanners are supported?",
-      "count": 1
-    },
-    {
-      "id": "94c92889fc1d2d73",
-      "file": "src/components/support/support-chat.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Why is my licence inactive?",
       "count": 1
     },
     {

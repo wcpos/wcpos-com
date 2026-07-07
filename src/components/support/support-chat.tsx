@@ -4,6 +4,7 @@ import { useState, useRef, useEffect, type FormEvent } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { Turnstile, type TurnstileInstance } from '@marsidev/react-turnstile'
 import posthog from 'posthog-js'
+import { useTranslations } from 'next-intl'
 import { Button } from '@/components/ui/button'
 import { Markdown } from '@/components/ui/markdown'
 import { Section } from '@/components/ui/section'
@@ -14,11 +15,31 @@ interface Message {
   content: string
 }
 
-const EXAMPLES = [
-  'Why is my licence inactive?',
-  'Which barcode scanners are supported?',
-  'How do I sync products from WooCommerce?',
-]
+type SupportErrorCode =
+  | 'invalid_question'
+  | 'bot_check_failed'
+  | 'rate_limited'
+  | 'budget_exhausted'
+  | 'empty_answer'
+  | 'gateway_rate_limited'
+  | 'timeout'
+  | 'unavailable'
+
+const EXAMPLES = ['e1', 'e2', 'e3'] as const
+const SUPPORT_ERROR_CODES = new Set<SupportErrorCode>([
+  'invalid_question',
+  'bot_check_failed',
+  'rate_limited',
+  'budget_exhausted',
+  'empty_answer',
+  'gateway_rate_limited',
+  'timeout',
+  'unavailable',
+])
+
+function isSupportErrorCode(value: unknown): value is SupportErrorCode {
+  return typeof value === 'string' && SUPPORT_ERROR_CODES.has(value as SupportErrorCode)
+}
 
 function useSessionId() {
   const ref = useRef<string>('')
@@ -36,6 +57,8 @@ function useSessionId() {
 }
 
 export function SupportChat() {
+  const t = useTranslations('support.chat')
+  const tErrors = useTranslations('support.errors')
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
   const [status, setStatus] = useState<'idle' | 'asking'>('idle')
@@ -62,7 +85,11 @@ export function SupportChat() {
       })
       const data = await res.json()
       if (!res.ok) {
-        setError(data.error ?? 'Something went wrong.')
+        setError(
+          isSupportErrorCode(data.errorCode)
+            ? tErrors(data.errorCode)
+            : tErrors('unknown')
+        )
         return
       }
       if (data.sessionId) {
@@ -73,7 +100,7 @@ export function SupportChat() {
       setToken(null)
       turnstileRef.current?.reset()
     } catch {
-      setError('The assistant is unavailable right now. Please ask in Discord.')
+      setError(tErrors('network'))
     } finally {
       setStatus('idle')
     }
@@ -103,10 +130,9 @@ export function SupportChat() {
     <div className="mx-auto w-full max-w-2xl">
       {!started && (
         <div className="text-center">
-          <h1 className="mb-2 text-3xl font-bold text-foreground md:text-4xl">How can we help?</h1>
+          <h1 className="mb-2 text-3xl font-bold text-foreground md:text-4xl">{t('hero.title')}</h1>
           <p className="mb-6 text-base text-muted-foreground">
-            Ask anything about WCPOS — setup, licensing, hardware, syncing, printing. You&apos;ll get
-            an instant answer drawn from our docs.
+            {t('hero.subtitle')}
           </p>
         </div>
       )}
@@ -128,12 +154,12 @@ export function SupportChat() {
                 <div className="flex-1">
                   <Markdown content={m.content} className="text-sm text-foreground" />
                   <div className="mt-2 flex items-center gap-2 text-muted-foreground">
-                    <span className="text-xs">Was this helpful?</span>
+                    <span className="text-xs">{t('feedback.prompt')}</span>
                     <Button
                       type="button"
                       variant="outline"
                       size="sm"
-                      aria-label="Yes"
+                      aria-label={t('feedback.yes')}
                       onClick={() => feedback(true, i)}
                       className="h-auto px-2 py-1 text-xs hover:bg-muted"
                     >
@@ -143,7 +169,7 @@ export function SupportChat() {
                       type="button"
                       variant="outline"
                       size="sm"
-                      aria-label="No"
+                      aria-label={t('feedback.no')}
                       onClick={() => feedback(false, i)}
                       className="h-auto px-2 py-1 text-xs hover:bg-muted"
                     >
@@ -155,7 +181,7 @@ export function SupportChat() {
             )
           )}
           {status === 'asking' && (
-            <p className="pl-11 text-sm text-muted-foreground">Aide is thinking…</p>
+            <p className="pl-11 text-sm text-muted-foreground">{t('thinking')}</p>
           )}
         </div>
       )}
@@ -165,10 +191,10 @@ export function SupportChat() {
         className="flex items-center gap-2 rounded-md border-2 border-wcpos-red/40 bg-card p-1.5 pl-4 focus-within:border-wcpos-red"
       >
         <input
-          aria-label="Ask a support question"
+          aria-label={t('form.label')}
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder={started ? 'Ask a follow-up…' : 'e.g. How do I connect a receipt printer?'}
+          placeholder={started ? t('form.followUpPlaceholder') : t('form.placeholder')}
           maxLength={1000}
           className="flex-1 bg-transparent text-base outline-none placeholder:text-muted-foreground"
         />
@@ -176,7 +202,7 @@ export function SupportChat() {
           type="submit"
           disabled={status === 'asking' || !input.trim() || verifying}
         >
-          {status === 'asking' ? '…' : 'Ask'}
+          {status === 'asking' ? '…' : t('form.submit')}
         </Button>
       </form>
 
@@ -184,7 +210,7 @@ export function SupportChat() {
         <p className="mt-2 text-sm text-destructive">
           {error}{' '}
           <a href="#discord" className="underline">
-            Ask in Discord →
+            {t('discordLink')}
           </a>
         </p>
       )}
@@ -201,14 +227,14 @@ export function SupportChat() {
               disabled={verifying}
               className="h-auto rounded-full bg-card px-3 py-1.5 text-sm text-muted-foreground hover:bg-muted"
             >
-              {q}
+              {t(`examples.${q}`)}
             </Button>
           ))}
         </div>
       )}
 
       <p className="mt-4 text-center text-xs text-muted-foreground">
-        Answered by Aide · trained on the WCPOS docs &amp; wiki
+        {t('poweredBy')}
       </p>
 
       {siteKey && (
@@ -235,6 +261,7 @@ export function SupportDefaultContent() {
 }
 
 export function SupportPageContent() {
+  const t = useTranslations('support.order')
   const searchParams = useSearchParams()
   const supportRef = searchParams.get('ref')?.trim()
 
@@ -247,11 +274,12 @@ export function SupportPageContent() {
       <Section spacing="compact">
         <div className="mx-auto max-w-2xl text-center">
           <h1 className="mb-3 text-3xl font-bold text-foreground md:text-4xl">
-            Contact support about your order
+            {t('title')}
           </h1>
           <p className="text-base text-muted-foreground">
-            Quote reference <span className="font-mono font-medium">{supportRef}</span> so we can
-            confirm the payment or finish the order before you pay again.
+            {t.rich('body', {
+              ref: () => <span className="font-mono font-medium">{supportRef}</span>,
+            })}
           </p>
         </div>
       </Section>
