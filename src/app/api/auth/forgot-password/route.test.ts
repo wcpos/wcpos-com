@@ -41,7 +41,7 @@ describe('POST /api/auth/forgot-password', () => {
     const json = await response.json()
 
     expect(response.status).toBe(400)
-    expect(json.error).toBe('Email is required')
+    expect(json.errorCode).toBe('email_required')
     expect(mockRequestPasswordReset).not.toHaveBeenCalled()
   })
 
@@ -72,7 +72,7 @@ describe('POST /api/auth/forgot-password', () => {
     const json = await response.json()
 
     expect(response.status).toBe(429)
-    expect(json.error).toBe('Too many reset requests. Please try again later.')
+    expect(json.errorCode).toBe('rate_limited')
     expect(mockRequestPasswordReset).not.toHaveBeenCalled()
   })
 
@@ -85,7 +85,7 @@ describe('POST /api/auth/forgot-password', () => {
     // The Medusa error message is not forwarded — nothing here should hint at
     // whether the account exists.
     expect(response.status).toBe(500)
-    expect(json.error).toBe('Something went wrong. Please try again.')
+    expect(json.errorCode).toBe('reset_request_failed')
     expect(errorMock).toHaveBeenCalledTimes(1)
   })
 
@@ -99,7 +99,7 @@ describe('POST /api/auth/forgot-password', () => {
     const json = await response.json()
 
     expect(response.status).toBe(400)
-    expect(json.error).toBe('Email is required')
+    expect(json.errorCode).toBe('email_required')
     expect(mockRequestPasswordReset).not.toHaveBeenCalled()
   })
 })

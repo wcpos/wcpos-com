@@ -18,6 +18,28 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 
+
+type ResetPasswordErrorCode =
+  | 'invalid_origin'
+  | 'rate_limited'
+  | 'reset_fields_required'
+  | 'password_too_short'
+  | 'invalid_reset_token'
+  | 'reset_failed'
+
+function isResetPasswordErrorCode(
+  value: unknown
+): value is ResetPasswordErrorCode {
+  return (
+    value === 'invalid_origin' ||
+    value === 'rate_limited' ||
+    value === 'reset_fields_required' ||
+    value === 'password_too_short' ||
+    value === 'invalid_reset_token' ||
+    value === 'reset_failed'
+  )
+}
+
 export function ResetPasswordPageClient() {
   return (
     <Suspense>
@@ -40,6 +62,23 @@ function ResetPasswordPageInner() {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
+  const getResetPasswordErrorMessage = (errorCode: ResetPasswordErrorCode) => {
+    switch (errorCode) {
+      case 'invalid_origin':
+        return tCommon('apiErrors.invalid_origin')
+      case 'rate_limited':
+        return tCommon('apiErrors.rate_limited')
+      case 'reset_fields_required':
+        return tCommon('apiErrors.reset_fields_required')
+      case 'password_too_short':
+        return tCommon('apiErrors.password_too_short', { min: MIN_PASSWORD_LENGTH })
+      case 'invalid_reset_token':
+        return tCommon('apiErrors.invalid_reset_token')
+      case 'reset_failed':
+        return t('failed')
+    }
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setError('')
@@ -55,7 +94,11 @@ function ResetPasswordPageInner() {
       const data = await response.json()
 
       if (!response.ok) {
-        setError(data.error || t('failed'))
+        setError(
+          isResetPasswordErrorCode(data.errorCode)
+            ? getResetPasswordErrorMessage(data.errorCode)
+            : t('failed')
+        )
         return
       }
 

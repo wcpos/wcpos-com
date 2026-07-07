@@ -1,7 +1,7 @@
 {
   "version": 1,
   "generatedBy": "scripts/i18n/hardcoded-english.ts --update",
-  "updatedAt": "2026-07-07T01:37:52.197Z",
+  "updatedAt": "2026-07-07T01:43:29.588Z",
   "scope": [
     "src/app",
     "src/components",
@@ -730,22 +730,6 @@
       "count": 1
     },
     {
-      "id": "95e143b542b24e2f",
-      "file": "src/app/api/auth/forgot-password/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Email is required",
-      "count": 1
-    },
-    {
-      "id": "43438cb4e32da54c",
-      "file": "src/app/api/auth/forgot-password/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Invalid origin",
-      "count": 1
-    },
-    {
       "id": "4e89ea6ddf7d3a79",
       "file": "src/app/api/auth/forgot-password/route.ts",
       "category": "route/page",
@@ -754,43 +738,11 @@
       "count": 1
     },
     {
-      "id": "27a96c251117ed68",
-      "file": "src/app/api/auth/forgot-password/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Something went wrong. Please try again.",
-      "count": 1
-    },
-    {
-      "id": "d2cc85446bb91f19",
-      "file": "src/app/api/auth/forgot-password/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Too many reset requests. Please try again later.",
-      "count": 1
-    },
-    {
       "id": "56306fe9e880daf9",
       "file": "src/app/api/auth/login/route.ts",
       "category": "route/page",
       "attr": null,
       "text": "5 m",
-      "count": 1
-    },
-    {
-      "id": "6688c4b60ed29169",
-      "file": "src/app/api/auth/login/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Email and password are required",
-      "count": 1
-    },
-    {
-      "id": "63c9e4343229d275",
-      "file": "src/app/api/auth/login/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Invalid origin",
       "count": 1
     },
     {
@@ -818,14 +770,6 @@
       "count": 1
     },
     {
-      "id": "5089adc7c26cceec",
-      "file": "src/app/api/auth/login/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Too many login attempts. Please try again later.",
-      "count": 1
-    },
-    {
       "id": "d337edb80fcd48ec",
       "file": "src/app/api/auth/register/route.ts",
       "category": "route/page",
@@ -839,30 +783,6 @@
       "category": "route/page",
       "attr": null,
       "text": "email",
-      "count": 1
-    },
-    {
-      "id": "2966e91a299603d2",
-      "file": "src/app/api/auth/register/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Email and password are required",
-      "count": 1
-    },
-    {
-      "id": "70f9a1b6b2d29093",
-      "file": "src/app/api/auth/register/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Invalid origin",
-      "count": 1
-    },
-    {
-      "id": "97502ceeb6e3faf6",
-      "file": "src/app/api/auth/register/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Registration failed",
       "count": 1
     },
     {
@@ -890,43 +810,11 @@
       "count": 2
     },
     {
-      "id": "496fd512e39772d8",
-      "file": "src/app/api/auth/register/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Too many attempts. Please try again later.",
-      "count": 1
-    },
-    {
       "id": "f499003afe0c309e",
       "file": "src/app/api/auth/reset-password/route.ts",
       "category": "route/page",
       "attr": null,
       "text": "15 m",
-      "count": 1
-    },
-    {
-      "id": "94cbd4bdcbc3b4b5",
-      "file": "src/app/api/auth/reset-password/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Email, token, and password are required",
-      "count": 1
-    },
-    {
-      "id": "a5a74dbb3b8536b2",
-      "file": "src/app/api/auth/reset-password/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Failed to reset password",
-      "count": 1
-    },
-    {
-      "id": "2bdb963990f672c9",
-      "file": "src/app/api/auth/reset-password/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Invalid origin",
       "count": 1
     },
     {
@@ -951,14 +839,6 @@
       "category": "route/page",
       "attr": null,
       "text": "Post-reset sign-in failed:",
-      "count": 1
-    },
-    {
-      "id": "a7b4c469f1a97c6f",
-      "file": "src/app/api/auth/reset-password/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Too many attempts. Please try again later.",
       "count": 1
     },
     {

@@ -6,6 +6,16 @@ import { createRateLimiter, clientIp } from '@/lib/rate-limit'
 
 // Every accepted request fans out to a real email via the backend's
 // password-reset subscriber, so gate this harder than sign-in. Fail-open.
+type ForgotPasswordErrorCode =
+  | 'invalid_origin'
+  | 'rate_limited'
+  | 'email_required'
+  | 'reset_request_failed'
+
+function errorResponse(errorCode: ForgotPasswordErrorCode, status: number) {
+  return NextResponse.json({ errorCode }, { status })
+}
+
 const limiter = createRateLimiter({
   prefix: 'auth:forgot-password:ip',
   limit: 5,
@@ -14,15 +24,12 @@ const limiter = createRateLimiter({
 
 export async function POST(request: Request) {
   if (!isSameOriginRequest(request)) {
-    return NextResponse.json({ error: 'Invalid origin' }, { status: 403 })
+    return errorResponse('invalid_origin', 403)
   }
 
   const { success } = await limiter.consume(clientIp(request))
   if (!success) {
-    return NextResponse.json(
-      { error: 'Too many reset requests. Please try again later.' },
-      { status: 429 }
-    )
+    return errorResponse('rate_limited', 429)
   }
 
   // Malformed JSON is client-caused: fall through to the 400 below.
@@ -32,7 +39,7 @@ export async function POST(request: Request) {
   const email = typeof body.email === 'string' ? body.email.trim() : ''
 
   if (!email) {
-    return NextResponse.json({ error: 'Email is required' }, { status: 400 })
+    return errorResponse('email_required', 400)
   }
 
   try {
@@ -43,9 +50,6 @@ export async function POST(request: Request) {
   } catch (error) {
     // Only Medusa being down / a 4xx-5xx lands here — unexpected, alert-worthy.
     authLogger.error`Password reset request failed unexpectedly: ${error}`
-    return NextResponse.json(
-      { error: 'Something went wrong. Please try again.' },
-      { status: 500 }
-    )
+    return errorResponse('reset_request_failed', 500)
   }
 }

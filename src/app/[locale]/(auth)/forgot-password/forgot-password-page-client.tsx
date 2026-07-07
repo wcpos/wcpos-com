@@ -16,6 +16,24 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 
+
+type ForgotPasswordErrorCode =
+  | 'invalid_origin'
+  | 'rate_limited'
+  | 'email_required'
+  | 'reset_request_failed'
+
+function isForgotPasswordErrorCode(
+  value: unknown
+): value is ForgotPasswordErrorCode {
+  return (
+    value === 'invalid_origin' ||
+    value === 'rate_limited' ||
+    value === 'email_required' ||
+    value === 'reset_request_failed'
+  )
+}
+
 export function ForgotPasswordPageClient() {
   const t = useTranslations('auth.forgotPassword')
   const tCommon = useTranslations('auth.common')
@@ -23,6 +41,19 @@ export function ForgotPasswordPageClient() {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const [submitted, setSubmitted] = useState(false)
+
+  const getForgotPasswordErrorMessage = (errorCode: ForgotPasswordErrorCode) => {
+    switch (errorCode) {
+      case 'invalid_origin':
+        return tCommon('apiErrors.invalid_origin')
+      case 'rate_limited':
+        return tCommon('apiErrors.rate_limited')
+      case 'email_required':
+        return tCommon('apiErrors.email_required')
+      case 'reset_request_failed':
+        return tCommon('genericError')
+    }
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -39,7 +70,11 @@ export function ForgotPasswordPageClient() {
       const data = await response.json()
 
       if (!response.ok) {
-        setError(data.error || tCommon('genericError'))
+        setError(
+          isForgotPasswordErrorCode(data.errorCode)
+            ? getForgotPasswordErrorMessage(data.errorCode)
+            : tCommon('genericError')
+        )
         return
       }
 

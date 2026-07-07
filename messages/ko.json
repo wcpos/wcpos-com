@@ -878,7 +878,17 @@
       "passwordHint": "최소 {min}자",
       "genericError": "문제가 발생했습니다. 다시 시도해 주세요.",
       "signIn": "로그인",
-      "signUp": "가입"
+      "signUp": "가입",
+      "apiErrors": {
+        "invalid_origin": "Please refresh the page and try again.",
+        "rate_limited": "Too many attempts. Please try again later.",
+        "email_required": "Email is required.",
+        "credentials_required": "Email and password are required.",
+        "reset_fields_required": "Email, token, and password are required.",
+        "password_too_short": "Password must be at least {min} characters.",
+        "invalid_credentials": "Invalid email or password.",
+        "invalid_reset_token": "This password reset link is invalid or has expired. Please request a new one."
+      }
     },
     "login": {
       "metaTitle": "로그인",

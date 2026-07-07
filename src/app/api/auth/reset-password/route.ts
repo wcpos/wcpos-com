@@ -1,17 +1,27 @@
 import { NextResponse } from 'next/server'
 import { login, resetPassword, setAuthToken } from '@/lib/medusa-auth'
 import { ApiError } from '@/lib/api/errors'
-import { toErrorResponse } from '@/lib/api/to-error-response'
 import { authLogger } from '@/lib/logger'
 import { isSameOriginRequest } from '@/lib/api/same-origin'
 import { createRateLimiter, clientIp } from '@/lib/rate-limit'
 import {
   isPasswordTooShort,
-  PASSWORD_TOO_SHORT_MESSAGE,
 } from '@/lib/password-policy'
 
 // Reset tokens are signed JWTs, so brute force is impractical — this limiter
 // just caps abuse of an unauthenticated endpoint. Fail-open.
+type ResetPasswordErrorCode =
+  | 'invalid_origin'
+  | 'rate_limited'
+  | 'reset_fields_required'
+  | 'password_too_short'
+  | 'invalid_reset_token'
+  | 'reset_failed'
+
+function errorResponse(errorCode: ResetPasswordErrorCode, status: number) {
+  return NextResponse.json({ errorCode }, { status })
+}
+
 const limiter = createRateLimiter({
   prefix: 'auth:reset-password:ip',
   limit: 10,
@@ -20,15 +30,12 @@ const limiter = createRateLimiter({
 
 export async function POST(request: Request) {
   if (!isSameOriginRequest(request)) {
-    return NextResponse.json({ error: 'Invalid origin' }, { status: 403 })
+    return errorResponse('invalid_origin', 403)
   }
 
   const { success } = await limiter.consume(clientIp(request))
   if (!success) {
-    return NextResponse.json(
-      { error: 'Too many attempts. Please try again later.' },
-      { status: 429 }
-    )
+    return errorResponse('rate_limited', 429)
   }
 
   // Malformed JSON is client-caused: fall through to the 400 below.
@@ -42,17 +49,11 @@ export async function POST(request: Request) {
   const password = typeof body.password === 'string' ? body.password : ''
 
   if (!email || !token || !password) {
-    return NextResponse.json(
-      { error: 'Email, token, and password are required' },
-      { status: 400 }
-    )
+    return errorResponse('reset_fields_required', 400)
   }
 
   if (isPasswordTooShort(password)) {
-    return NextResponse.json(
-      { error: PASSWORD_TOO_SHORT_MESSAGE },
-      { status: 400 }
-    )
+    return errorResponse('password_too_short', 400)
   }
 
   try {
@@ -63,12 +64,10 @@ export async function POST(request: Request) {
     // out to alerts.
     if (error instanceof ApiError) {
       authLogger.info`Password reset rejected: ${error.message}`
-      return toErrorResponse(error)
+      return errorResponse('invalid_reset_token', error.status)
     }
     authLogger.error`Password reset failed unexpectedly: ${error}`
-    const message =
-      error instanceof Error ? error.message : 'Failed to reset password'
-    return NextResponse.json({ error: message }, { status: 400 })
+    return errorResponse('reset_failed', 400)
   }
 
   // The password is already changed at this point — a sign-in hiccup must not

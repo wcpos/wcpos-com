@@ -20,6 +20,23 @@ import { trackClientEvent } from '@/lib/analytics/client-events'
 import { sanitizeRedirectPath } from '@/lib/safe-redirect'
 import { DiscordMark, GitHubMark, GoogleMark } from '@/components/auth/provider-marks'
 
+type LoginErrorCode =
+  | 'invalid_origin'
+  | 'rate_limited'
+  | 'credentials_required'
+  | 'invalid_credentials'
+  | 'login_failed'
+
+function isLoginErrorCode(value: unknown): value is LoginErrorCode {
+  return (
+    value === 'invalid_origin' ||
+    value === 'rate_limited' ||
+    value === 'credentials_required' ||
+    value === 'invalid_credentials' ||
+    value === 'login_failed'
+  )
+}
+
 export function LoginPageClient() {
   return (
     <Suspense>
@@ -45,6 +62,21 @@ function LoginPageInner() {
   })
   const [loading, setLoading] = useState(false)
 
+  const getLoginErrorMessage = (errorCode: LoginErrorCode) => {
+    switch (errorCode) {
+      case 'invalid_origin':
+        return tCommon('apiErrors.invalid_origin')
+      case 'rate_limited':
+        return tCommon('apiErrors.rate_limited')
+      case 'credentials_required':
+        return tCommon('apiErrors.credentials_required')
+      case 'invalid_credentials':
+        return tCommon('apiErrors.invalid_credentials')
+      case 'login_failed':
+        return t('loginFailed')
+    }
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setError('')
@@ -60,7 +92,11 @@ function LoginPageInner() {
       const data = await response.json()
 
       if (!response.ok) {
-        setError(data.error || t('loginFailed'))
+        setError(
+          isLoginErrorCode(data.errorCode)
+            ? getLoginErrorMessage(data.errorCode)
+            : t('loginFailed')
+        )
         return
       }
 

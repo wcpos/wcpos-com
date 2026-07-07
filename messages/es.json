@@ -878,7 +878,17 @@
       "passwordHint": "Al menos {min} caracteres",
       "genericError": "Algo salió mal. Inténtalo de nuevo.",
       "signIn": "Iniciar sesión",
-      "signUp": "Registrarse"
+      "signUp": "Registrarse",
+      "apiErrors": {
+        "invalid_origin": "Please refresh the page and try again.",
+        "rate_limited": "Too many attempts. Please try again later.",
+        "email_required": "Email is required.",
+        "credentials_required": "Email and password are required.",
+        "reset_fields_required": "Email, token, and password are required.",
+        "password_too_short": "Password must be at least {min} characters.",
+        "invalid_credentials": "Invalid email or password.",
+        "invalid_reset_token": "This password reset link is invalid or has expired. Please request a new one."
+      }
     },
     "login": {
       "metaTitle": "Iniciar sesión",

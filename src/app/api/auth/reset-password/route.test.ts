@@ -55,7 +55,7 @@ describe('POST /api/auth/reset-password', () => {
     const json = await response.json()
 
     expect(response.status).toBe(400)
-    expect(json.error).toBe('Email, token, and password are required')
+    expect(json.errorCode).toBe('reset_fields_required')
     expect(mockResetPassword).not.toHaveBeenCalled()
   })
 
@@ -66,7 +66,7 @@ describe('POST /api/auth/reset-password', () => {
     const json = await response.json()
 
     expect(response.status).toBe(400)
-    expect(json.error).toBe('Password must be at least 8 characters')
+    expect(json.errorCode).toBe('password_too_short')
     expect(mockResetPassword).not.toHaveBeenCalled()
   })
 
@@ -127,9 +127,7 @@ describe('POST /api/auth/reset-password', () => {
     const json = await response.json()
 
     expect(response.status).toBe(401)
-    expect(json.error).toBe(
-      'This password reset link is invalid or has expired. Please request a new one.'
-    )
+    expect(json.errorCode).toBe('invalid_reset_token')
     expect(mockLogin).not.toHaveBeenCalled()
     // Expired links are routine — never error level, which fans out to alerts.
     expect(infoMock).toHaveBeenCalledTimes(1)
@@ -143,7 +141,7 @@ describe('POST /api/auth/reset-password', () => {
     const json = await response.json()
 
     expect(response.status).toBe(400)
-    expect(json.error).toBe('fetch failed')
+    expect(json.errorCode).toBe('reset_failed')
     expect(mockLogin).not.toHaveBeenCalled()
     expect(errorMock).toHaveBeenCalledTimes(1)
     expect(infoMock).not.toHaveBeenCalled()
@@ -156,7 +154,7 @@ describe('POST /api/auth/reset-password', () => {
     const json = await response.json()
 
     expect(response.status).toBe(429)
-    expect(json.error).toBe('Too many attempts. Please try again later.')
+    expect(json.errorCode).toBe('rate_limited')
     expect(mockResetPassword).not.toHaveBeenCalled()
   })
 })

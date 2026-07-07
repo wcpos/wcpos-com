@@ -47,7 +47,7 @@ describe('POST /api/auth/login', () => {
     const json = await response.json()
 
     expect(response.status).toBe(429)
-    expect(json.error).toBe('Too many login attempts. Please try again later.')
+    expect(json.errorCode).toBe('rate_limited')
     expect(mockLogin).not.toHaveBeenCalled()
   })
 
@@ -56,7 +56,7 @@ describe('POST /api/auth/login', () => {
     const json = await response.json()
 
     expect(response.status).toBe(400)
-    expect(json.error).toBe('Email and password are required')
+    expect(json.errorCode).toBe('credentials_required')
     expect(mockLogin).not.toHaveBeenCalled()
   })
 
@@ -65,7 +65,7 @@ describe('POST /api/auth/login', () => {
     const json = await response.json()
 
     expect(response.status).toBe(400)
-    expect(json.error).toBe('Email and password are required')
+    expect(json.errorCode).toBe('credentials_required')
     expect(mockLogin).not.toHaveBeenCalled()
   })
 
@@ -97,7 +97,7 @@ describe('POST /api/auth/login', () => {
     const json = await response.json()
 
     expect(response.status).toBe(401)
-    expect(json.error).toBe('Invalid email or password')
+    expect(json.errorCode).toBe('invalid_credentials')
     expect(mockSetAuthToken).not.toHaveBeenCalled()
     // Wrong passwords are routine — they must never hit error level, which
     // fans out to Discord alerts.
@@ -114,7 +114,7 @@ describe('POST /api/auth/login', () => {
     const json = await response.json()
 
     expect(response.status).toBe(401)
-    expect(json.error).toBe('fetch failed')
+    expect(json.errorCode).toBe('login_failed')
     expect(mockSetAuthToken).not.toHaveBeenCalled()
     expect(errorMock).toHaveBeenCalledTimes(1)
     expect(infoMock).not.toHaveBeenCalled()
@@ -132,7 +132,7 @@ describe('POST /api/auth/login', () => {
     // A malformed body is a client mistake, not a login failure: it falls
     // through to the missing-fields 400 and never reaches error level.
     expect(response.status).toBe(400)
-    expect(json.error).toBe('Email and password are required')
+    expect(json.errorCode).toBe('credentials_required')
     expect(mockLogin).not.toHaveBeenCalled()
     expect(errorMock).not.toHaveBeenCalled()
   })

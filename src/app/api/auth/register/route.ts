@@ -2,12 +2,10 @@ import { NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
 import { register, setAuthToken } from '@/lib/medusa-auth'
 import { ApiError } from '@/lib/api/errors'
-import { toErrorResponse } from '@/lib/api/to-error-response'
 import { authLogger } from '@/lib/logger'
 import { isSameOriginRequest } from '@/lib/api/same-origin'
 import {
   isPasswordTooShort,
-  PASSWORD_TOO_SHORT_MESSAGE,
 } from '@/lib/password-policy'
 import { createRateLimiter, clientIp } from '@/lib/rate-limit'
 import { trackServerEvent } from '@/services/core/analytics/posthog-service'
@@ -15,6 +13,18 @@ import { ANALYTICS_DISTINCT_ID_COOKIE } from '@/lib/analytics/distinct-id'
 
 // Every accepted request can create a real Medusa customer account, so gate
 // this harder than sign-in — a legitimate user registers once. Fail-open.
+type RegisterErrorCode =
+  | 'invalid_origin'
+  | 'rate_limited'
+  | 'credentials_required'
+  | 'password_too_short'
+  | 'account_exists'
+  | 'registration_failed'
+
+function errorResponse(errorCode: RegisterErrorCode, status: number, extra?: Record<string, string>) {
+  return NextResponse.json({ errorCode, ...extra }, { status })
+}
+
 const limiter = createRateLimiter({
   prefix: 'auth:register:ip',
   limit: 5,
@@ -23,15 +33,12 @@ const limiter = createRateLimiter({
 
 export async function POST(request: Request) {
   if (!isSameOriginRequest(request)) {
-    return NextResponse.json({ error: 'Invalid origin' }, { status: 403 })
+    return errorResponse('invalid_origin', 403)
   }
 
   const { success } = await limiter.consume(clientIp(request))
   if (!success) {
-    return NextResponse.json(
-      { error: 'Too many attempts. Please try again later.' },
-      { status: 429 }
-    )
+    return errorResponse('rate_limited', 429)
   }
 
   // Malformed JSON is client-caused: fall through to the 400 below instead of
@@ -48,17 +55,11 @@ export async function POST(request: Request) {
   const lastName = typeof body.lastName === 'string' ? body.lastName : undefined
 
   if (!email || !password) {
-    return NextResponse.json(
-      { error: 'Email and password are required' },
-      { status: 400 }
-    )
+    return errorResponse('credentials_required', 400)
   }
 
   if (isPasswordTooShort(password)) {
-    return NextResponse.json(
-      { error: PASSWORD_TOO_SHORT_MESSAGE },
-      { status: 400 }
-    )
+    return errorResponse('password_too_short', 400)
   }
 
   try {
@@ -100,13 +101,14 @@ export async function POST(request: Request) {
     // so log at info — error level fans out to alerts.
     if (error instanceof ApiError) {
       authLogger.info`Registration rejected: ${error.message}`
-      return toErrorResponse(error)
+      if (error.code === 'ACCOUNT_EXISTS') {
+        return errorResponse('account_exists', error.status, { code: error.code })
+      }
+      return errorResponse('registration_failed', error.status)
     }
     // Everything else is an unclassified registration failure surfaced as a
     // 400 with its message (unchanged) — but unexpected, so log at error.
     authLogger.error`Registration failed unexpectedly: ${error}`
-    const message =
-      error instanceof Error ? error.message : 'Registration failed'
-    return NextResponse.json({ error: message }, { status: 400 })
+    return errorResponse('registration_failed', 400)
   }
 }
