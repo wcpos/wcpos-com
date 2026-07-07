@@ -152,6 +152,29 @@ describe('buildReceiptPdf', () => {
     expect(stream).toContain(hex('Paid'))
   })
 
+  it('formats billing address locality lines for postal-code-first countries', async () => {
+    const stream = await pageStream(
+      await buildTestReceiptPdf(
+        {
+          ...baseReceipt,
+          billingProfile: {
+            ...baseReceipt.billingProfile,
+            countryCode: 'DE',
+            addressLine1: 'Invalidenstraße 117',
+            city: 'Berlin',
+            region: 'Berlin',
+            postalCode: '10115',
+          },
+        },
+        'de-DE'
+      )
+    )
+
+    expect(stream).toContain(hex('10115 Berlin'))
+    expect(stream).toContain(hex('Deutschland'))
+    expect(stream).not.toContain(hex('Berlin, Berlin, 10115'))
+  })
+
   it('flags the WooCommerce order number on migrated orders', async () => {
     const withLegacy = await pageStream(
       await buildTestReceiptPdf({ ...baseReceipt, legacyDisplayId: 5396 })
