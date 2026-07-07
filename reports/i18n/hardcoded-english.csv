@@ -376,8 +376,6 @@ file,line,col,category,attr,text
 "src/components/home/use-cases-section.tsx","69","26","component","","flex h-28 items-center justify-center"
 "src/components/home/use-cases-section.tsx","91","37","component","",", wordpress.org review"
 "src/components/main/language-selector.tsx","1","1","component","","use client"
-"src/components/main/site-header.tsx","42","9","component","","Sign In"
-"src/components/main/site-header.tsx","126","41","component","","Open menu"
 "src/components/main/theme-toggle.tsx","1","1","component","","use client"
 "src/components/main/user-menu.tsx","1","1","component","","use client"
 "src/components/main/user-menu.tsx","37","22","component","aria-label","Account menu"

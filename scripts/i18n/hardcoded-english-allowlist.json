@@ -1,7 +1,7 @@
 {
   "version": 1,
   "generatedBy": "scripts/i18n/hardcoded-english.ts --update",
-  "updatedAt": "2026-07-07T02:38:27.998Z",
+  "updatedAt": "2026-07-07T02:43:48.722Z",
   "scope": [
     "src/app",
     "src/components",
@@ -2735,22 +2735,6 @@
       "category": "component",
       "attr": null,
       "text": "use client",
-      "count": 1
-    },
-    {
-      "id": "73bb42a79a0c29b2",
-      "file": "src/components/main/site-header.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Open menu",
-      "count": 1
-    },
-    {
-      "id": "6b5004c764ee4ed9",
-      "file": "src/components/main/site-header.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Sign In",
       "count": 1
     },
     {

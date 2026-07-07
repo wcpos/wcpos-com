@@ -18,7 +18,7 @@ import {
 import { UserMenu } from '@/components/main/user-menu'
 import { WcposLogo } from '@/components/icons/wcpos-logo'
 
-async function AuthButton() {
+async function AuthButton({ signInLabel }: { signInLabel: string }) {
   let customer = null
   try {
     customer = await getCustomer()
@@ -39,7 +39,7 @@ async function AuthButton() {
   return (
     <Button size="sm" asChild>
       <TrackedLocaleLink href="/login" eventName="click_sign_in">
-        Sign In
+        {signInLabel}
       </TrackedLocaleLink>
     </Button>
   )
@@ -58,6 +58,7 @@ function navLinkClass(highlight?: boolean) {
 
 export function SiteHeader() {
   const t = useTranslations('header')
+  const tCommon = useTranslations('common')
 
   // Journey order: try → upgrade → learn → get help → what's coming.
   const navLinks = [
@@ -114,7 +115,7 @@ export function SiteHeader() {
         {/* Desktop Auth Button */}
         <div className="hidden md:block">
           <Suspense fallback={<AuthButtonFallback />}>
-            <AuthButton />
+            <AuthButton signInLabel={tCommon('signIn')} />
           </Suspense>
         </div>
 
@@ -123,7 +124,7 @@ export function SiteHeader() {
           <SheetTrigger asChild className="md:hidden">
             <Button variant="ghost" size="icon">
               <Menu className="h-5 w-5" />
-              <span className="sr-only">Open menu</span>
+              <span className="sr-only">{tCommon('openMenu')}</span>
             </Button>
           </SheetTrigger>
           <SheetContent side="right" className="w-72">
@@ -164,7 +165,7 @@ export function SiteHeader() {
               )}
               <div className="border-t pt-4 mt-2">
                 <Suspense fallback={<AuthButtonFallback />}>
-                  <AuthButton />
+                  <AuthButton signInLabel={tCommon('signIn')} />
                 </Suspense>
               </div>
             </nav>
