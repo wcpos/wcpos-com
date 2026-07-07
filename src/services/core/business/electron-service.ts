@@ -9,6 +9,11 @@ import 'server-only'
 
 interface ErrorResponse {
   status: number
+  // Human-readable message. Preserved for the versioned protocol consumed by
+  // already-shipped desktop auto-updater clients (see docs/adr/0010).
+  error: string
+  // Machine-readable code for newer clients. Added alongside `error`, never
+  // replacing it, to keep the shipped `{ status, error }` contract intact.
   errorCode: string
 }
 
@@ -31,14 +36,22 @@ class ElectronService {
     _platform: string,
     _version: string
   ): Promise<UpdateResult> {
-    return { status: 404, errorCode: 'electron_service_not_implemented' }
+    return {
+      status: 404,
+      error: 'Electron service not yet implemented',
+      errorCode: 'electron_service_not_implemented',
+    }
   }
 
   async getDownloadUrl(
     _platform: string,
     _version: string
   ): Promise<string | ErrorResponse> {
-    return { status: 404, errorCode: 'electron_service_not_implemented' }
+    return {
+      status: 404,
+      error: 'Electron service not yet implemented',
+      errorCode: 'electron_service_not_implemented',
+    }
   }
 }
 
