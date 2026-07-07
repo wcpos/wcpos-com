@@ -259,8 +259,6 @@ file,line,col,category,attr,text
 "src/components/downloads/get-started-steps.tsx","133","21","component","","0 0 10px 2px color-mix(in srgb, hsl(var(--wcpos-red)) 60%, transparent)"
 "src/components/downloads/get-started-steps.tsx","154","29","component","","GetStartedStep must be used within GetStartedSteps"
 "src/components/downloads/get-started-steps.tsx","163","11","component","","absolute -left-12 top-0 flex h-8 w-8 items-center justify-center rounded-full border-[1.5px] bg-background text-sm font-semibold"
-"src/components/downloads/platforms.ts","31","55","component","","macOS (Intel)"
-"src/components/downloads/platforms.ts","34","50","component","","iOS & iPad"
 "src/components/downloads/sync-diagram.tsx","1","1","component","","use client"
 "src/components/downloads/sync-diagram.tsx","79","20","component","","flex items-center justify-center rounded-full shadow-lg transition-all duration-200"
 "src/components/downloads/sync-diagram.tsx","119","15","component","","radial-gradient(circle at 32% 26%, rgba(255,255,255,0.3), rgba(255,255,255,0) 48%), radial-gradient(circle at 70% 82%, rgba(0,0,0,0.2), rgba(0,0,0,0) 58%)"

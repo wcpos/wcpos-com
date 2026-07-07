@@ -1,39 +1,54 @@
 import { describe, it, expect, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
 
-// next-intl: echo the key, and interpolate {platform} for appFor so the
-// download column can be asserted against the real platform names.
+// next-intl: keep footer copy realistic, and provide deliberately localized
+// platform labels so the download column cannot accidentally use the raw
+// platform metadata names.
 vi.mock('next-intl', () => ({
-  useTranslations: () => (key: string, values?: Record<string, string>) => {
-    const labels: Record<string, string> = {
-      productHeading: 'Product',
-      communityHeading: 'Community',
-      supportHeading: 'Support',
-      companyHeading: 'Company',
-      downloadHeading: 'Download',
-      downloads: 'Downloads',
-      pro: 'WCPOS Pro',
-      roadmap: 'Roadmap',
-      demo: 'Live Demo',
-      discord: 'Discord',
-      github: 'GitHub',
-      wordpressOrg: 'WordPress.org',
-      documentation: 'Documentation',
-      getSupport: 'Support',
-      wordpressForum: 'WordPress Forum',
-      wordpressPlugin: 'WordPress Plugin',
-      about: 'About',
-      privacy: 'Privacy',
-      terms: 'Terms',
-      refunds: 'Refunds',
-      copyright: '© 2026 WCPOS',
-      socialGithubAria: 'WCPOS on GitHub',
-      socialDiscordAria: 'Join the WCPOS Discord',
-      socialWordpressAria: 'WCPOS on WordPress.org',
+  useTranslations:
+    (namespace: string) => (key: string, values?: Record<string, string>) => {
+      const labels: Record<string, Record<string, string>> = {
+        footer: {
+          productHeading: 'Product',
+          communityHeading: 'Community',
+          supportHeading: 'Support',
+          companyHeading: 'Company',
+          downloadHeading: 'Download',
+          downloads: 'Downloads',
+          pro: 'WCPOS Pro',
+          roadmap: 'Roadmap',
+          demo: 'Live Demo',
+          discord: 'Discord',
+          github: 'GitHub',
+          wordpressOrg: 'WordPress.org',
+          documentation: 'Documentation',
+          getSupport: 'Support',
+          wordpressForum: 'WordPress Forum',
+          wordpressPlugin: 'WordPress Plugin',
+          about: 'About',
+          privacy: 'Privacy',
+          terms: 'Terms',
+          refunds: 'Refunds',
+          copyright: '© 2026 WCPOS',
+          socialGithubAria: 'WCPOS on GitHub',
+          socialDiscordAria: 'Join the WCPOS Discord',
+          socialWordpressAria: 'WCPOS on WordPress.org',
+        },
+        'downloads.platforms': {
+          'mac-arm.name': 'Translated macOS',
+          'win.name': 'Translated Windows',
+          'linux.name': 'Translated Linux',
+          'ios.name': 'Translated iPhone and iPad',
+          'android.name': 'Translated Android',
+          'mac-intel.name': 'Translated Intel macOS',
+          'web.name': 'Translated Web',
+        },
+      }
+      if (namespace === 'footer' && key === 'appFor') {
+        return `WCPOS for ${values?.platform ?? ''}`
+      }
+      return labels[namespace]?.[key] ?? key
     }
-    if (key === 'appFor') return `WCPOS for ${values?.platform ?? ''}`
-    return labels[key] ?? key
-  },
 }))
 
 // Locale-aware Link → plain anchor.
@@ -107,25 +122,24 @@ describe('SiteFooter', () => {
     expect(discord?.getAttribute('rel')).toBe('noopener noreferrer')
   })
 
-  it('lists one download entry per shipped platform (minus Intel + Web)', () => {
+  it('lists one translated download entry per shipped platform (minus Intel + Web)', () => {
     render(<SiteFooter />)
     // macOS, Windows, Linux, iOS & iPad, Android — the mac-intel and web
     // keys are deliberately omitted.
-    expect(hrefOf(`WCPOS for ${PLATFORMS['mac-arm'].name}`)).toBe(
+    expect(hrefOf('WCPOS for Translated macOS')).toBe(
       PLATFORMS['mac-arm'].href
     )
-    expect(hrefOf(`WCPOS for ${PLATFORMS.win.name}`)).toBe(PLATFORMS.win.href)
-    expect(hrefOf(`WCPOS for ${PLATFORMS.linux.name}`)).toBe(
-      PLATFORMS.linux.href
+    expect(hrefOf('WCPOS for Translated Windows')).toBe(PLATFORMS.win.href)
+    expect(hrefOf('WCPOS for Translated Linux')).toBe(PLATFORMS.linux.href)
+    expect(hrefOf('WCPOS for Translated iPhone and iPad')).toBe(
+      PLATFORMS.ios.href
     )
-    expect(hrefOf(`WCPOS for ${PLATFORMS.ios.name}`)).toBe(PLATFORMS.ios.href)
-    expect(hrefOf(`WCPOS for ${PLATFORMS.android.name}`)).toBe(
+    expect(hrefOf('WCPOS for Translated Android')).toBe(
       PLATFORMS.android.href
     )
-    expect(
-      screen.queryByText(`WCPOS for ${PLATFORMS['mac-intel'].name}`)
-    ).toBeNull()
-    expect(screen.queryByText(`WCPOS for ${PLATFORMS.web.name}`)).toBeNull()
+    expect(screen.queryByText('WCPOS for Translated Intel macOS')).toBeNull()
+    expect(screen.queryByText('WCPOS for Translated Web')).toBeNull()
+    expect(screen.queryByText('WCPOS for iOS & iPad')).toBeNull()
   })
 
   it('exposes accessible social buttons', () => {

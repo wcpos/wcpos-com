@@ -19,7 +19,6 @@ type Kind = 'desktop' | 'mobile' | 'web'
 interface Platform {
   kind: Kind
   icon: LucideIcon
-  name: string
   href: string
 }
 
@@ -27,13 +26,13 @@ const ELECTRON = (slug: string) =>
   `https://updates.wcpos.com/v1/electron/download/${slug}`
 
 export const PLATFORMS: Record<PlatformKey, Platform> = {
-  'mac-arm': { kind: 'desktop', icon: Laptop, name: 'macOS', href: ELECTRON('darwin-arm64') },
-  'mac-intel': { kind: 'desktop', icon: Laptop, name: 'macOS (Intel)', href: ELECTRON('darwin-x64') },
-  win: { kind: 'desktop', icon: Laptop, name: 'Windows', href: ELECTRON('win32-x64') },
-  linux: { kind: 'desktop', icon: Laptop, name: 'Linux', href: ELECTRON('linux-x64') },
-  ios: { kind: 'mobile', icon: Smartphone, name: 'iOS & iPad', href: 'https://testflight.apple.com/join/JGBdVRrW' },
-  android: { kind: 'mobile', icon: Smartphone, name: 'Android', href: 'https://play.google.com/apps/testing/com.wcpos.main' },
-  web: { kind: 'web', icon: Globe, name: 'Web', href: 'https://demo.wcpos.com/pos' },
+  'mac-arm': { kind: 'desktop', icon: Laptop, href: ELECTRON('darwin-arm64') },
+  'mac-intel': { kind: 'desktop', icon: Laptop, href: ELECTRON('darwin-x64') },
+  win: { kind: 'desktop', icon: Laptop, href: ELECTRON('win32-x64') },
+  linux: { kind: 'desktop', icon: Laptop, href: ELECTRON('linux-x64') },
+  ios: { kind: 'mobile', icon: Smartphone, href: 'https://testflight.apple.com/join/JGBdVRrW' },
+  android: { kind: 'mobile', icon: Smartphone, href: 'https://play.google.com/apps/testing/com.wcpos.main' },
+  web: { kind: 'web', icon: Globe, href: 'https://demo.wcpos.com/pos' },
 }
 
 /**
