@@ -1,7 +1,7 @@
 {
   "version": 1,
   "generatedBy": "scripts/i18n/hardcoded-english.ts --update",
-  "updatedAt": "2026-07-07T02:34:17.954Z",
+  "updatedAt": "2026-07-07T02:38:27.998Z",
   "scope": [
     "src/app",
     "src/components",
@@ -4927,38 +4927,6 @@
       "category": "code/string",
       "attr": null,
       "text": "use client",
-      "count": 1
-    },
-    {
-      "id": "9247536d02ab404e",
-      "file": "src/lib/utils.ts",
-      "category": "code/string",
-      "attr": null,
-      "text": "d ago",
-      "count": 1
-    },
-    {
-      "id": "644bed9b28f9f58f",
-      "file": "src/lib/utils.ts",
-      "category": "code/string",
-      "attr": null,
-      "text": "h ago",
-      "count": 1
-    },
-    {
-      "id": "9ef6097c47b95b4f",
-      "file": "src/lib/utils.ts",
-      "category": "code/string",
-      "attr": null,
-      "text": "just now",
-      "count": 1
-    },
-    {
-      "id": "4ae54feae2e44dd5",
-      "file": "src/lib/utils.ts",
-      "category": "code/string",
-      "attr": null,
-      "text": "m ago",
       "count": 1
     },
     {
