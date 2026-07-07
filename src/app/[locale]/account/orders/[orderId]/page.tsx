@@ -16,6 +16,21 @@ import { PageHeader } from '@/components/ui/page-header'
 import { Skeleton } from '@/components/ui/skeleton'
 import { presentLicenseStatus } from '@/lib/license-status-presentation'
 import type { Metadata } from 'next'
+import type { OrderStatusLabels } from '@/lib/order-status'
+
+
+function orderStatusLabels(t: (key: keyof OrderStatusLabels) => string): OrderStatusLabels {
+  return {
+    actionRequired: t('actionRequired'),
+    authorized: t('authorized'),
+    canceled: t('canceled'),
+    paid: t('paid'),
+    partiallyRefunded: t('partiallyRefunded'),
+    pending: t('pending'),
+    refunded: t('refunded'),
+    unknown: t('unknown'),
+  }
+}
 
 export async function generateMetadata({
   params,
@@ -36,9 +51,10 @@ async function OrderDetailContent({
   params: Promise<{ locale: string; orderId: string }>
 }) {
   const { orderId, locale } = await params
-  const [t, tStatus, order] = await Promise.all([
+  const [t, tStatus, tOrderStatus, order] = await Promise.all([
     getTranslations({ locale, namespace: 'account.orderDetail' }),
     getTranslations({ locale, namespace: 'account.licenseStatus' }),
+    getTranslations({ locale, namespace: 'account.orderStatus' }),
     getOrderById(orderId),
   ])
 
@@ -54,7 +70,12 @@ async function OrderDetailContent({
   // purity lint that flags `Date.now` directly in render.)
   const now = new Date().getTime()
   const resolvedLicenses = await getResolvedLicensesFromOrders([order])
-  const orderDetail = projectAccountOrderDetail(order, resolvedLicenses, now)
+  const orderDetail = projectAccountOrderDetail(
+    order,
+    resolvedLicenses,
+    now,
+    orderStatusLabels(tOrderStatus)
+  )
 
   return (
     <>

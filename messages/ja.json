@@ -935,6 +935,16 @@
     "impersonation": {
       "viewing": "🔍 Viewing <strong>{target}</strong> as <strong>read-only</strong> — you cannot change their account.",
       "exit": "Exit"
+    },
+    "orderStatus": {
+      "actionRequired": "対応が必要",
+      "authorized": "承認済み",
+      "canceled": "キャンセル済み",
+      "paid": "支払い済み",
+      "partiallyRefunded": "一部返金済み",
+      "pending": "保留中",
+      "refunded": "返金済み",
+      "unknown": "不明"
     }
   },
   "metadata": {

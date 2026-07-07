@@ -1,22 +1,45 @@
-const PAYMENT_STATUS_LABELS: Record<string, string> = {
-  authorized: 'Authorized',
-  captured: 'Paid',
-  paid: 'Paid',
-  partially_refunded: 'Partially refunded',
-  refunded: 'Refunded',
-  canceled: 'Canceled',
-  requires_action: 'Action required',
-  awaiting: 'Pending',
-  not_paid: 'Pending',
+export type OrderStatusLabels = {
+  actionRequired: string
+  authorized: string
+  canceled: string
+  paid: string
+  partiallyRefunded: string
+  pending: string
+  refunded: string
+  unknown: string
 }
 
-function humanizeStatus(status: string): string {
+export const DEFAULT_ORDER_STATUS_LABELS: OrderStatusLabels = {
+  actionRequired: 'Action required',
+  authorized: 'Authorized',
+  canceled: 'Canceled',
+  paid: 'Paid',
+  partiallyRefunded: 'Partially refunded',
+  pending: 'Pending',
+  refunded: 'Refunded',
+  unknown: 'Unknown',
+}
+
+const PAYMENT_STATUS_LABEL_KEYS: Record<string, keyof OrderStatusLabels> = {
+  authorized: 'authorized',
+  captured: 'paid',
+  paid: 'paid',
+  partially_refunded: 'partiallyRefunded',
+  refunded: 'refunded',
+  canceled: 'canceled',
+  requires_action: 'actionRequired',
+  awaiting: 'pending',
+  not_paid: 'pending',
+}
+
+function humanizeStatus(status: string, labels: OrderStatusLabels): string {
   const trimmed = status.trim()
-  if (!trimmed) return 'Unknown'
+  if (!trimmed) return labels.unknown
 
   const normalized = trimmed.toLowerCase()
-  if (PAYMENT_STATUS_LABELS[normalized]) {
-    return PAYMENT_STATUS_LABELS[normalized]
+  const labelKey = PAYMENT_STATUS_LABEL_KEYS[normalized]
+  if (labelKey) {
+    return labels[labelKey]
   }
 
   return normalized
@@ -25,14 +48,17 @@ function humanizeStatus(status: string): string {
     .join(' ')
 }
 
-export function getOrderDisplayStatus(order: {
-  status?: string
-  payment_status?: string
-}): string {
+export function getOrderDisplayStatus(
+  order: {
+    status?: string
+    payment_status?: string
+  },
+  labels: OrderStatusLabels = DEFAULT_ORDER_STATUS_LABELS
+): string {
   const paymentStatus = order.payment_status?.trim()
   if (paymentStatus) {
-    return humanizeStatus(paymentStatus)
+    return humanizeStatus(paymentStatus, labels)
   }
 
-  return humanizeStatus(order.status ?? '')
+  return humanizeStatus(order.status ?? '', labels)
 }

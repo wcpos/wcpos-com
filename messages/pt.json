@@ -935,6 +935,16 @@
     "impersonation": {
       "viewing": "🔍 Viewing <strong>{target}</strong> as <strong>read-only</strong> — you cannot change their account.",
       "exit": "Exit"
+    },
+    "orderStatus": {
+      "actionRequired": "Ação necessária",
+      "authorized": "Autorizado",
+      "canceled": "Cancelado",
+      "paid": "Pago",
+      "partiallyRefunded": "Parcialmente reembolsado",
+      "pending": "Pendente",
+      "refunded": "Reembolsado",
+      "unknown": "Desconhecido"
     }
   },
   "metadata": {

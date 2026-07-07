@@ -935,6 +935,16 @@
     "impersonation": {
       "viewing": "🔍 Viewing <strong>{target}</strong> as <strong>read-only</strong> — you cannot change their account.",
       "exit": "Exit"
+    },
+    "orderStatus": {
+      "actionRequired": "Actie vereist",
+      "authorized": "Geautoriseerd",
+      "canceled": "Geannuleerd",
+      "paid": "Betaald",
+      "partiallyRefunded": "Gedeeltelijk terugbetaald",
+      "pending": "In behandeling",
+      "refunded": "Terugbetaald",
+      "unknown": "Onbekend"
     }
   },
   "metadata": {

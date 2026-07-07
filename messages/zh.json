@@ -935,6 +935,16 @@
     "impersonation": {
       "viewing": "🔍 Viewing <strong>{target}</strong> as <strong>read-only</strong> — you cannot change their account.",
       "exit": "Exit"
+    },
+    "orderStatus": {
+      "actionRequired": "需要操作",
+      "authorized": "已授权",
+      "canceled": "已取消",
+      "paid": "已支付",
+      "partiallyRefunded": "部分退款",
+      "pending": "待处理",
+      "refunded": "已退款",
+      "unknown": "未知"
     }
   },
   "metadata": {
