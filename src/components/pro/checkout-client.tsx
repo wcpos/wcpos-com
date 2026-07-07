@@ -72,6 +72,12 @@ interface PaymentSessionResult {
   customerSessionClientSecret?: string | null
 }
 
+interface OfferSummary {
+  title: string
+  priceFormatted: string
+  currencyCode?: string
+}
+
 const PRO_CHECKOUT_EXPERIMENT = 'pro_checkout_v1'
 const CHECKOUT_SAFETY_RESET_PARAM = 'reset_checkout'
 const CHECKOUT_SAFETY_RESET_VALUE = 'order_pending'
@@ -124,7 +130,7 @@ interface CheckoutClientProps {
   selectedOfferHandle?: string
   cartRegionId?: string
   /** Static summary shown before the cart exists. */
-  offerSummary?: { title: string; priceFormatted: string; currencyCode?: string }
+  offerSummary?: OfferSummary
   /** Current checkout path (with query) for OAuth redirect-back. */
   checkoutPath: string
   experimentVariant: ProCheckoutVariant
