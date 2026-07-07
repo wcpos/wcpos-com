@@ -909,7 +909,21 @@
       "loginFailed": "Anmeldung fehlgeschlagen",
       "submitting": "Anmeldung läuft...",
       "oauthDivider": "Oder weiter mit",
-      "noAccount": "Noch kein Konto?"
+      "noAccount": "Noch kein Konto?",
+      "oauthErrors": {
+        "oauth_failed": "OAuth-Anmeldung fehlgeschlagen. Bitte versuche es erneut oder nutze E-Mail/Passwort.",
+        "oauth_callback_failed": "OAuth-Anmeldung fehlgeschlagen. Bitte versuche es erneut oder nutze E-Mail/Passwort.",
+        "oauth_provider_error": "OAuth-Anmeldung fehlgeschlagen. Bitte versuche es erneut oder nutze E-Mail/Passwort.",
+        "oauth_code_missing": "OAuth-Anmeldung fehlgeschlagen. Bitte versuche es erneut oder nutze E-Mail/Passwort.",
+        "oauth_state_missing": "OAuth-Anmeldung fehlgeschlagen. Bitte versuche es erneut oder nutze E-Mail/Passwort.",
+        "oauth_token_exchange_failed": "OAuth-Anmeldung fehlgeschlagen. Bitte versuche es erneut oder nutze E-Mail/Passwort.",
+        "oauth_access_token_missing": "OAuth-Anmeldung fehlgeschlagen. Bitte versuche es erneut oder nutze E-Mail/Passwort.",
+        "oauth_user_fetch_failed": "OAuth-Anmeldung fehlgeschlagen. Bitte versuche es erneut oder nutze E-Mail/Passwort.",
+        "oauth_email_missing": "OAuth-Anmeldung fehlgeschlagen. Bitte versuche es erneut oder nutze E-Mail/Passwort.",
+        "oauth_email_unverified": "OAuth-Anmeldung fehlgeschlagen. Bitte versuche es erneut oder nutze E-Mail/Passwort.",
+        "oauth_identity_update_failed": "OAuth-Anmeldung fehlgeschlagen. Bitte versuche es erneut oder nutze E-Mail/Passwort.",
+        "oauth_registration_not_supported": "OAuth-Anmeldung fehlgeschlagen. Bitte versuche es erneut oder nutze E-Mail/Passwort."
+      }
     },
     "register": {
       "metaTitle": "Konto erstellen",

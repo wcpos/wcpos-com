@@ -909,7 +909,21 @@
       "loginFailed": "ログインに失敗しました",
       "submitting": "ログイン中...",
       "oauthDivider": "または次で続行",
-      "noAccount": "アカウントをお持ちではありませんか？"
+      "noAccount": "アカウントをお持ちではありませんか？",
+      "oauthErrors": {
+        "oauth_failed": "OAuthログインに失敗しました。もう一度試すか、メール/パスワードを使用してください。",
+        "oauth_callback_failed": "OAuthログインに失敗しました。もう一度試すか、メール/パスワードを使用してください。",
+        "oauth_provider_error": "OAuthログインに失敗しました。もう一度試すか、メール/パスワードを使用してください。",
+        "oauth_code_missing": "OAuthログインに失敗しました。もう一度試すか、メール/パスワードを使用してください。",
+        "oauth_state_missing": "OAuthログインに失敗しました。もう一度試すか、メール/パスワードを使用してください。",
+        "oauth_token_exchange_failed": "OAuthログインに失敗しました。もう一度試すか、メール/パスワードを使用してください。",
+        "oauth_access_token_missing": "OAuthログインに失敗しました。もう一度試すか、メール/パスワードを使用してください。",
+        "oauth_user_fetch_failed": "OAuthログインに失敗しました。もう一度試すか、メール/パスワードを使用してください。",
+        "oauth_email_missing": "OAuthログインに失敗しました。もう一度試すか、メール/パスワードを使用してください。",
+        "oauth_email_unverified": "OAuthログインに失敗しました。もう一度試すか、メール/パスワードを使用してください。",
+        "oauth_identity_update_failed": "OAuthログインに失敗しました。もう一度試すか、メール/パスワードを使用してください。",
+        "oauth_registration_not_supported": "OAuthログインに失敗しました。もう一度試すか、メール/パスワードを使用してください。"
+      }
     },
     "register": {
       "metaTitle": "アカウントを作成",

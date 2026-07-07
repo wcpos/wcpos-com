@@ -909,7 +909,21 @@
       "loginFailed": "로그인 실패",
       "submitting": "로그인 중...",
       "oauthDivider": "또는 다음으로 계속",
-      "noAccount": "계정이 없으신가요?"
+      "noAccount": "계정이 없으신가요?",
+      "oauthErrors": {
+        "oauth_failed": "OAuth 로그인이 실패했습니다. 다시 시도하거나 이메일/비밀번호를 사용하세요.",
+        "oauth_callback_failed": "OAuth 로그인이 실패했습니다. 다시 시도하거나 이메일/비밀번호를 사용하세요.",
+        "oauth_provider_error": "OAuth 로그인이 실패했습니다. 다시 시도하거나 이메일/비밀번호를 사용하세요.",
+        "oauth_code_missing": "OAuth 로그인이 실패했습니다. 다시 시도하거나 이메일/비밀번호를 사용하세요.",
+        "oauth_state_missing": "OAuth 로그인이 실패했습니다. 다시 시도하거나 이메일/비밀번호를 사용하세요.",
+        "oauth_token_exchange_failed": "OAuth 로그인이 실패했습니다. 다시 시도하거나 이메일/비밀번호를 사용하세요.",
+        "oauth_access_token_missing": "OAuth 로그인이 실패했습니다. 다시 시도하거나 이메일/비밀번호를 사용하세요.",
+        "oauth_user_fetch_failed": "OAuth 로그인이 실패했습니다. 다시 시도하거나 이메일/비밀번호를 사용하세요.",
+        "oauth_email_missing": "OAuth 로그인이 실패했습니다. 다시 시도하거나 이메일/비밀번호를 사용하세요.",
+        "oauth_email_unverified": "OAuth 로그인이 실패했습니다. 다시 시도하거나 이메일/비밀번호를 사용하세요.",
+        "oauth_identity_update_failed": "OAuth 로그인이 실패했습니다. 다시 시도하거나 이메일/비밀번호를 사용하세요.",
+        "oauth_registration_not_supported": "OAuth 로그인이 실패했습니다. 다시 시도하거나 이메일/비밀번호를 사용하세요."
+      }
     },
     "register": {
       "metaTitle": "계정 만들기",

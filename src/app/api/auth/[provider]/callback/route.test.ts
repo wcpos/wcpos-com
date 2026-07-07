@@ -282,6 +282,39 @@ describe('OAuth callback route', () => {
     expect(response.headers.get('location')).toBe('https://wcpos.com/account')
   })
 
+
+  it('preserves safe OAuth error codes for localized login feedback', async () => {
+    mockEstablishOAuthSession.mockRejectedValue(new Error('oauth_email_unverified'))
+
+    const request = new NextRequest(
+      'https://wcpos.com/api/auth/discord/callback?code=abc&state=xyz'
+    )
+
+    const response = await GET(request, {
+      params: Promise.resolve({ provider: 'discord' }),
+    })
+
+    const location = new URL(response.headers.get('location')!)
+    expect(location.pathname).toBe('/login')
+    expect(location.searchParams.get('error')).toBe('oauth_email_unverified')
+  })
+
+  it('collapses raw OAuth exception messages to the generic login error code', async () => {
+    mockEstablishOAuthSession.mockRejectedValue(new Error('Invalid state parameter'))
+
+    const request = new NextRequest(
+      'https://wcpos.com/api/auth/google/callback?code=abc&state=tampered'
+    )
+
+    const response = await GET(request, {
+      params: Promise.resolve({ provider: 'google' }),
+    })
+
+    const location = new URL(response.headers.get('location')!)
+    expect(location.pathname).toBe('/login')
+    expect(location.searchParams.get('error')).toBe('oauth_failed')
+  })
+
   it('redirects to /login with error when establishing the session fails', async () => {
     mockEstablishOAuthSession.mockRejectedValue(
       new Error('Invalid state parameter')

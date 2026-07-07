@@ -909,7 +909,21 @@
       "loginFailed": "Échec de la connexion",
       "submitting": "Connexion...",
       "oauthDivider": "Ou continuer avec",
-      "noAccount": "Vous n’avez pas de compte ?"
+      "noAccount": "Vous n’avez pas de compte ?",
+      "oauthErrors": {
+        "oauth_failed": "La connexion OAuth a échoué. Réessayez ou utilisez e-mail/mot de passe.",
+        "oauth_callback_failed": "La connexion OAuth a échoué. Réessayez ou utilisez e-mail/mot de passe.",
+        "oauth_provider_error": "La connexion OAuth a échoué. Réessayez ou utilisez e-mail/mot de passe.",
+        "oauth_code_missing": "La connexion OAuth a échoué. Réessayez ou utilisez e-mail/mot de passe.",
+        "oauth_state_missing": "La connexion OAuth a échoué. Réessayez ou utilisez e-mail/mot de passe.",
+        "oauth_token_exchange_failed": "La connexion OAuth a échoué. Réessayez ou utilisez e-mail/mot de passe.",
+        "oauth_access_token_missing": "La connexion OAuth a échoué. Réessayez ou utilisez e-mail/mot de passe.",
+        "oauth_user_fetch_failed": "La connexion OAuth a échoué. Réessayez ou utilisez e-mail/mot de passe.",
+        "oauth_email_missing": "La connexion OAuth a échoué. Réessayez ou utilisez e-mail/mot de passe.",
+        "oauth_email_unverified": "La connexion OAuth a échoué. Réessayez ou utilisez e-mail/mot de passe.",
+        "oauth_identity_update_failed": "La connexion OAuth a échoué. Réessayez ou utilisez e-mail/mot de passe.",
+        "oauth_registration_not_supported": "La connexion OAuth a échoué. Réessayez ou utilisez e-mail/mot de passe."
+      }
     },
     "register": {
       "metaTitle": "Créer un compte",

@@ -909,7 +909,21 @@
       "loginFailed": "Falha ao iniciar sessão",
       "submitting": "A iniciar sessão...",
       "oauthDivider": "Ou continue com",
-      "noAccount": "Ainda não tem uma conta?"
+      "noAccount": "Ainda não tem uma conta?",
+      "oauthErrors": {
+        "oauth_failed": "O início de sessão OAuth falhou. Tente novamente ou use email/palavra-passe.",
+        "oauth_callback_failed": "O início de sessão OAuth falhou. Tente novamente ou use email/palavra-passe.",
+        "oauth_provider_error": "O início de sessão OAuth falhou. Tente novamente ou use email/palavra-passe.",
+        "oauth_code_missing": "O início de sessão OAuth falhou. Tente novamente ou use email/palavra-passe.",
+        "oauth_state_missing": "O início de sessão OAuth falhou. Tente novamente ou use email/palavra-passe.",
+        "oauth_token_exchange_failed": "O início de sessão OAuth falhou. Tente novamente ou use email/palavra-passe.",
+        "oauth_access_token_missing": "O início de sessão OAuth falhou. Tente novamente ou use email/palavra-passe.",
+        "oauth_user_fetch_failed": "O início de sessão OAuth falhou. Tente novamente ou use email/palavra-passe.",
+        "oauth_email_missing": "O início de sessão OAuth falhou. Tente novamente ou use email/palavra-passe.",
+        "oauth_email_unverified": "O início de sessão OAuth falhou. Tente novamente ou use email/palavra-passe.",
+        "oauth_identity_update_failed": "O início de sessão OAuth falhou. Tente novamente ou use email/palavra-passe.",
+        "oauth_registration_not_supported": "O início de sessão OAuth falhou. Tente novamente ou use email/palavra-passe."
+      }
     },
     "register": {
       "metaTitle": "Criar uma conta",

@@ -909,7 +909,21 @@
       "loginFailed": "Inloggen mislukt",
       "submitting": "Inloggen...",
       "oauthDivider": "Of ga verder met",
-      "noAccount": "Nog geen account?"
+      "noAccount": "Nog geen account?",
+      "oauthErrors": {
+        "oauth_failed": "OAuth-aanmelding mislukt. Probeer opnieuw of gebruik e-mail/wachtwoord.",
+        "oauth_callback_failed": "OAuth-aanmelding mislukt. Probeer opnieuw of gebruik e-mail/wachtwoord.",
+        "oauth_provider_error": "OAuth-aanmelding mislukt. Probeer opnieuw of gebruik e-mail/wachtwoord.",
+        "oauth_code_missing": "OAuth-aanmelding mislukt. Probeer opnieuw of gebruik e-mail/wachtwoord.",
+        "oauth_state_missing": "OAuth-aanmelding mislukt. Probeer opnieuw of gebruik e-mail/wachtwoord.",
+        "oauth_token_exchange_failed": "OAuth-aanmelding mislukt. Probeer opnieuw of gebruik e-mail/wachtwoord.",
+        "oauth_access_token_missing": "OAuth-aanmelding mislukt. Probeer opnieuw of gebruik e-mail/wachtwoord.",
+        "oauth_user_fetch_failed": "OAuth-aanmelding mislukt. Probeer opnieuw of gebruik e-mail/wachtwoord.",
+        "oauth_email_missing": "OAuth-aanmelding mislukt. Probeer opnieuw of gebruik e-mail/wachtwoord.",
+        "oauth_email_unverified": "OAuth-aanmelding mislukt. Probeer opnieuw of gebruik e-mail/wachtwoord.",
+        "oauth_identity_update_failed": "OAuth-aanmelding mislukt. Probeer opnieuw of gebruik e-mail/wachtwoord.",
+        "oauth_registration_not_supported": "OAuth-aanmelding mislukt. Probeer opnieuw of gebruik e-mail/wachtwoord."
+      }
     },
     "register": {
       "metaTitle": "Account aanmaken",

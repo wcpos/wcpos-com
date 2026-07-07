@@ -6,11 +6,12 @@ import { LoginPageClient } from './login-page-client'
 
 const mockPush = vi.fn()
 const mockFetch = vi.fn()
+let mockSearchParams = new URLSearchParams()
 
 vi.stubGlobal('fetch', mockFetch)
 
 vi.mock('next/navigation', () => ({
-  useSearchParams: () => new URLSearchParams(),
+  useSearchParams: () => mockSearchParams,
 }))
 
 vi.mock('@/i18n/navigation', () => ({
@@ -45,6 +46,7 @@ function renderLogin() {
 describe('LoginPageClient', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+    mockSearchParams = new URLSearchParams()
   })
 
   it('localizes login API error codes', async () => {
@@ -65,5 +67,26 @@ describe('LoginPageClient', () => {
 
     expect(await screen.findByText('Invalid email or password.')).toBeInTheDocument()
     expect(mockPush).not.toHaveBeenCalled()
+  })
+
+  it('localizes safe OAuth error codes from the callback URL', () => {
+    mockSearchParams = new URLSearchParams({ error: 'oauth_email_missing' })
+
+    renderLogin()
+
+    expect(
+      screen.getByText(
+        'Your OAuth profile did not include an email address. Make sure your email is available with the provider, then try again.'
+      )
+    ).toBeInTheDocument()
+  })
+
+  it('does not render raw unknown OAuth error query values', () => {
+    mockSearchParams = new URLSearchParams({ error: 'Invalid state parameter' })
+
+    renderLogin()
+
+    expect(screen.getByText(messages.auth.login.oauthFailed)).toBeInTheDocument()
+    expect(screen.queryByText('Invalid state parameter')).not.toBeInTheDocument()
   })
 })

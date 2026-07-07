@@ -19,6 +19,7 @@ import {
 import { trackClientEvent } from '@/lib/analytics/client-events'
 import { sanitizeRedirectPath } from '@/lib/safe-redirect'
 import { DiscordMark, GitHubMark, GoogleMark } from '@/components/auth/provider-marks'
+import { isOAuthErrorCode } from '@/lib/oauth-error-codes'
 
 type LoginErrorCode =
   | 'invalid_origin'
@@ -57,8 +58,10 @@ function LoginPageInner() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState(() => {
     if (!oauthError) return ''
-    if (oauthError === 'oauth_failed') return t('oauthFailed')
-    return oauthError
+    if (isOAuthErrorCode(oauthError)) {
+      return t(`oauthErrors.${oauthError}`)
+    }
+    return t('oauthFailed')
   })
   const [loading, setLoading] = useState(false)
 

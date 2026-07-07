@@ -909,7 +909,21 @@
       "loginFailed": "Accesso non riuscito",
       "submitting": "Accesso in corso...",
       "oauthDivider": "Oppure continua con",
-      "noAccount": "Non hai un account?"
+      "noAccount": "Non hai un account?",
+      "oauthErrors": {
+        "oauth_failed": "Accesso OAuth non riuscito. Riprova o usa email/password.",
+        "oauth_callback_failed": "Accesso OAuth non riuscito. Riprova o usa email/password.",
+        "oauth_provider_error": "Accesso OAuth non riuscito. Riprova o usa email/password.",
+        "oauth_code_missing": "Accesso OAuth non riuscito. Riprova o usa email/password.",
+        "oauth_state_missing": "Accesso OAuth non riuscito. Riprova o usa email/password.",
+        "oauth_token_exchange_failed": "Accesso OAuth non riuscito. Riprova o usa email/password.",
+        "oauth_access_token_missing": "Accesso OAuth non riuscito. Riprova o usa email/password.",
+        "oauth_user_fetch_failed": "Accesso OAuth non riuscito. Riprova o usa email/password.",
+        "oauth_email_missing": "Accesso OAuth non riuscito. Riprova o usa email/password.",
+        "oauth_email_unverified": "Accesso OAuth non riuscito. Riprova o usa email/password.",
+        "oauth_identity_update_failed": "Accesso OAuth non riuscito. Riprova o usa email/password.",
+        "oauth_registration_not_supported": "Accesso OAuth non riuscito. Riprova o usa email/password."
+      }
     },
     "register": {
       "metaTitle": "Crea un account",

@@ -909,7 +909,21 @@
       "loginFailed": "登录失败",
       "submitting": "正在登录...",
       "oauthDivider": "或继续使用",
-      "noAccount": "还没有账户？"
+      "noAccount": "还没有账户？",
+      "oauthErrors": {
+        "oauth_failed": "OAuth 登录失败。请重试或使用电子邮件/密码。",
+        "oauth_callback_failed": "OAuth 登录失败。请重试或使用电子邮件/密码。",
+        "oauth_provider_error": "OAuth 登录失败。请重试或使用电子邮件/密码。",
+        "oauth_code_missing": "OAuth 登录失败。请重试或使用电子邮件/密码。",
+        "oauth_state_missing": "OAuth 登录失败。请重试或使用电子邮件/密码。",
+        "oauth_token_exchange_failed": "OAuth 登录失败。请重试或使用电子邮件/密码。",
+        "oauth_access_token_missing": "OAuth 登录失败。请重试或使用电子邮件/密码。",
+        "oauth_user_fetch_failed": "OAuth 登录失败。请重试或使用电子邮件/密码。",
+        "oauth_email_missing": "OAuth 登录失败。请重试或使用电子邮件/密码。",
+        "oauth_email_unverified": "OAuth 登录失败。请重试或使用电子邮件/密码。",
+        "oauth_identity_update_failed": "OAuth 登录失败。请重试或使用电子邮件/密码。",
+        "oauth_registration_not_supported": "OAuth 登录失败。请重试或使用电子邮件/密码。"
+      }
     },
     "register": {
       "metaTitle": "创建账户",

@@ -10,6 +10,7 @@ import {
   OAUTH_REDIRECT_COOKIE_OPTIONS,
 } from '@/lib/oauth-providers'
 import { sanitizeRedirectPath } from '@/lib/safe-redirect'
+import { isOAuthErrorCode } from '@/lib/oauth-error-codes'
 
 /** The redirect cookie is single-use: consume it on every outcome. */
 function clearRedirectCookie(response: NextResponse): NextResponse {
@@ -108,7 +109,10 @@ export async function GET(
     const message = error instanceof Error ? error.message : 'Unknown error'
     authLogger.error`OAuth callback failed: ${message}`
     const loginUrl = new URL('/login', request.url)
-    loginUrl.searchParams.set('error', 'oauth_failed')
+    loginUrl.searchParams.set(
+      'error',
+      isOAuthErrorCode(message) ? message : 'oauth_failed'
+    )
     return clearRedirectCookie(NextResponse.redirect(loginUrl, 303))
   }
 }

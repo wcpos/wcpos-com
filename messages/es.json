@@ -909,7 +909,21 @@
       "loginFailed": "Error al iniciar sesión",
       "submitting": "Iniciando sesión...",
       "oauthDivider": "O continúa con",
-      "noAccount": "¿No tienes una cuenta?"
+      "noAccount": "¿No tienes una cuenta?",
+      "oauthErrors": {
+        "oauth_failed": "Error al iniciar sesión con OAuth. Inténtalo de nuevo o usa correo/contraseña.",
+        "oauth_callback_failed": "Error al iniciar sesión con OAuth. Inténtalo de nuevo o usa correo/contraseña.",
+        "oauth_provider_error": "Error al iniciar sesión con OAuth. Inténtalo de nuevo o usa correo/contraseña.",
+        "oauth_code_missing": "Error al iniciar sesión con OAuth. Inténtalo de nuevo o usa correo/contraseña.",
+        "oauth_state_missing": "Error al iniciar sesión con OAuth. Inténtalo de nuevo o usa correo/contraseña.",
+        "oauth_token_exchange_failed": "Error al iniciar sesión con OAuth. Inténtalo de nuevo o usa correo/contraseña.",
+        "oauth_access_token_missing": "Error al iniciar sesión con OAuth. Inténtalo de nuevo o usa correo/contraseña.",
+        "oauth_user_fetch_failed": "Error al iniciar sesión con OAuth. Inténtalo de nuevo o usa correo/contraseña.",
+        "oauth_email_missing": "Error al iniciar sesión con OAuth. Inténtalo de nuevo o usa correo/contraseña.",
+        "oauth_email_unverified": "Error al iniciar sesión con OAuth. Inténtalo de nuevo o usa correo/contraseña.",
+        "oauth_identity_update_failed": "Error al iniciar sesión con OAuth. Inténtalo de nuevo o usa correo/contraseña.",
+        "oauth_registration_not_supported": "Error al iniciar sesión con OAuth. Inténtalo de nuevo o usa correo/contraseña."
+      }
     },
     "register": {
       "metaTitle": "Crear una cuenta",

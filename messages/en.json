@@ -909,7 +909,21 @@
       "loginFailed": "Login failed",
       "submitting": "Signing in...",
       "oauthDivider": "Or continue with",
-      "noAccount": "Don’t have an account?"
+      "noAccount": "Don’t have an account?",
+      "oauthErrors": {
+        "oauth_failed": "OAuth sign-in failed. Please try again or use email/password.",
+        "oauth_callback_failed": "OAuth sign-in failed. Please try again or use email/password.",
+        "oauth_provider_error": "The OAuth provider cancelled or rejected sign-in. Please try again.",
+        "oauth_code_missing": "OAuth sign-in failed. Please try again or use email/password.",
+        "oauth_state_missing": "Your sign-in session expired. Please try again.",
+        "oauth_token_exchange_failed": "OAuth sign-in failed. Please try again or use email/password.",
+        "oauth_access_token_missing": "OAuth sign-in failed. Please try again or use email/password.",
+        "oauth_user_fetch_failed": "OAuth sign-in failed. Please try again or use email/password.",
+        "oauth_email_missing": "Your OAuth profile did not include an email address. Make sure your email is available with the provider, then try again.",
+        "oauth_email_unverified": "Your OAuth email address is not verified. Verify it with the provider, then try again.",
+        "oauth_identity_update_failed": "OAuth sign-in failed. Please try again or use email/password.",
+        "oauth_registration_not_supported": "OAuth sign-in failed. Please try again or use email/password."
+      }
     },
     "register": {
       "metaTitle": "Create an account",
