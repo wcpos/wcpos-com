@@ -212,7 +212,7 @@
     "licenses": {
       "heading": "Licenses",
       "loadError": "Failed to load licenses",
-      "deactivateError": "Failed to deactivate machine. Please try again.",
+      "deactivateError": "Failed to deactivate site. Please try again.",
       "emptyTitle": "No licenses found.",
       "emptyDescription": "Purchase WCPOS Pro to get a license.",
       "planYearly": "Yearly",
@@ -226,7 +226,6 @@
       "activationsLabel": "Activations:",
       "activationsCount": "{count} of {max}",
       "downloads": "Downloads",
-      "activatedMachines": "Activated Machines",
       "machineAdded": "Added {date}",
       "deactivateMachineAria": "Deactivate {name}",
       "genericMachineName": "machine",
@@ -246,7 +245,18 @@
       "copyKeyAria": "Copy license key ending in {suffix}",
       "copiedKey": "Copied",
       "copyError": "Failed to copy license key. Please try again.",
-      "roadmapTeaser": "See what's coming on the roadmap"
+      "roadmapTeaser": "See what's coming on the roadmap",
+      "activatedSites": "Activated Sites",
+      "activatedSitesHelp": "These are WordPress sites using this license. Deactivate a stale or test site to free an activation slot.",
+      "instanceId": "Instance ID: {id}",
+      "lastSeen": "Last seen {date}",
+      "pluginVersionLabel": "WCPOS Pro {version}",
+      "wpVersionLabel": "WP {version}",
+      "wcVersionLabel": "WooCommerce {version}",
+      "deactivateSite": "Deactivate site",
+      "deactivateSiteConfirm": "This frees one activation slot. If the site is still in use, it will need to activate again.",
+      "deactivateConfirm": "Deactivate",
+      "deactivateCancel": "Cancel"
     },
     "downloads": {
       "heading": "Downloads",

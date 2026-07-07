@@ -212,7 +212,7 @@
     "licenses": {
       "heading": "许可证",
       "loadError": "加载许可证失败",
-      "deactivateError": "停用设备失败。请重试。",
+      "deactivateError": "停用站点失败。请重试。",
       "emptyTitle": "未找到许可证。",
       "emptyDescription": "购买 WCPOS Pro 以获取许可证。",
       "planYearly": "年付",
@@ -226,7 +226,6 @@
       "activationsLabel": "激活次数：",
       "activationsCount": "{count} / {max}",
       "downloads": "下载",
-      "activatedMachines": "已激活的设备",
       "machineAdded": "添加于 {date}",
       "deactivateMachineAria": "停用 {name}",
       "genericMachineName": "设备",
@@ -246,7 +245,18 @@
       "copyKeyAria": "复制以 {suffix} 结尾的许可证密钥",
       "copiedKey": "已复制",
       "copyError": "复制许可证密钥失败。请重试。",
-      "roadmapTeaser": "查看路线图上即将推出的功能"
+      "roadmapTeaser": "查看路线图上即将推出的功能",
+      "activatedSites": "Activated Sites",
+      "activatedSitesHelp": "These are WordPress sites using this license. Deactivate a stale or test site to free an activation slot.",
+      "instanceId": "Instance ID: {id}",
+      "lastSeen": "Last seen {date}",
+      "pluginVersionLabel": "WCPOS Pro {version}",
+      "wpVersionLabel": "WP {version}",
+      "wcVersionLabel": "WooCommerce {version}",
+      "deactivateSite": "Deactivate site",
+      "deactivateSiteConfirm": "This frees one activation slot. If the site is still in use, it will need to activate again.",
+      "deactivateConfirm": "Deactivate",
+      "deactivateCancel": "Cancel"
     },
     "downloads": {
       "heading": "下载",

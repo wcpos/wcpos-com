@@ -207,8 +207,8 @@ test.describe('License activation and machine deactivation', () => {
     await page.goto('/account/licenses')
     const card = licenseCard(page, '****-****-1234')
     await expect(card.getByText('2 of 4')).toBeVisible()
-    await expect(card.getByText('Front Counter POS')).toBeVisible()
-    await expect(card.getByText('Back Office Mac')).toBeVisible()
+    await expect(card.getByText('shop.example.com')).toBeVisible()
+    await expect(card.getByText('office.example.com')).toBeVisible()
 
     // Simulate the POS plugin activating a third machine against the
     // license server (activation happens plugin-side, not in the account UI;
@@ -234,14 +234,17 @@ test.describe('License activation and machine deactivation', () => {
     // The account UI reflects the new activation.
     await page.reload()
     await expect(card.getByText('3 of 4')).toBeVisible()
-    await expect(card.getByText('Till 3')).toBeVisible()
+    await expect(card.getByText('till3.example.com')).toBeVisible()
 
     // Deactivate it from the account UI.
-    await card.getByRole('button', { name: 'Deactivate Till 3' }).click()
+    await card
+      .getByRole('button', { name: 'Deactivate site: till3.example.com' })
+      .click()
+    await card.getByRole('button', { name: 'Deactivate', exact: true }).click()
     await expect(card.getByText('2 of 4')).toBeVisible()
-    await expect(card.getByText('Till 3')).toHaveCount(0)
-    await expect(card.getByText('Front Counter POS')).toBeVisible()
-    await expect(card.getByText('Back Office Mac')).toBeVisible()
+    await expect(card.getByText('till3.example.com')).toHaveCount(0)
+    await expect(card.getByText('shop.example.com')).toBeVisible()
+    await expect(card.getByText('office.example.com')).toBeVisible()
   })
 
   test('deactivating a machine from the account UI updates the activation count', async ({
@@ -257,12 +260,13 @@ test.describe('License activation and machine deactivation', () => {
     await expect(card.getByText('2 of 4')).toBeVisible()
 
     await card
-      .getByRole('button', { name: 'Deactivate Back Office Mac' })
+      .getByRole('button', { name: 'Deactivate site: office.example.com' })
       .click()
+    await card.getByRole('button', { name: 'Deactivate', exact: true }).click()
 
     await expect(card.getByText('1 of 4')).toBeVisible()
-    await expect(card.getByText('Back Office Mac')).toHaveCount(0)
-    await expect(card.getByText('Front Counter POS')).toBeVisible()
+    await expect(card.getByText('office.example.com')).toHaveCount(0)
+    await expect(card.getByText('shop.example.com')).toBeVisible()
   })
 
   test('cannot deactivate machines on a license the customer does not own', async ({
