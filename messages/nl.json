@@ -318,6 +318,14 @@
       "title": "Pro - Premiumfuncties",
       "description": "Breid WCPOS uit met Pro: terminalbetalingen, voorraad- en prijsbewerking, order- en klantbeheer, einde-dagrapporten en prioriteitssupport."
     },
+    "hero": {
+      "title": "WCPOS Pro",
+      "subtitle": "Alles uit de gratis POS, plus betaalterminals, winkelbeheer aan de kassa, einde-dagrapporten en prioriteitssupport."
+    },
+    "schema": {
+      "name": "WCPOS Pro",
+      "description": "Premium point-of-sale-plugin voor WooCommerce. Voegt betaalterminalintegratie, voorraad- en prijsbewerking, order- en klantbeheer, einde-dagrapporten, aangepaste betaalgateways en prioriteitssupport toe."
+    },
     "features": {
       "title": "Wat zit er in Pro?",
       "subtitle": "Alles uit Free, plus de tools om je hele winkel vanaf de kassa te runnen — en priority support wanneer je hulp nodig hebt.",

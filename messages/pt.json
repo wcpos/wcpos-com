@@ -318,6 +318,14 @@
       "title": "Pro - Funcionalidades premium",
       "description": "Melhore o WCPOS com Pro: pagamentos no terminal, edição de stock e preços, gestão de encomendas e clientes, relatórios de fecho do dia e suporte prioritário."
     },
+    "hero": {
+      "title": "WCPOS Pro",
+      "subtitle": "Tudo o que existe no POS gratuito, mais terminais de pagamento, gestão da loja na caixa, relatórios de fecho do dia e suporte prioritário."
+    },
+    "schema": {
+      "name": "WCPOS Pro",
+      "description": "Plugin premium de ponto de venda para WooCommerce. Adiciona integração com terminais de pagamento, edição de stock e preços, gestão de encomendas e clientes, relatórios de fecho do dia, gateways de pagamento personalizados e suporte prioritário."
+    },
     "features": {
       "title": "O que está incluído no Pro?",
       "subtitle": "Tudo o que há na versão gratuita, além das ferramentas para gerir toda a sua loja a partir da caixa — e suporte prioritário quando precisar de ajuda.",

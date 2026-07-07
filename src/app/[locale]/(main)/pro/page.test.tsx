@@ -19,6 +19,10 @@ vi.mock('next-intl/server', () => ({
     const messages: Record<string, string> = {
       'metadata.title': 'Translated Pro metadata title',
       'metadata.description': 'Translated Pro metadata description',
+      'hero.title': 'Translated WCPOS Pro hero',
+      'hero.subtitle': 'Translated Pro hero subtitle',
+      'schema.name': 'Translated WCPOS Pro schema name',
+      'schema.description': 'Translated Pro schema description',
       'features.title': 'Pro features',
       'features.subtitle': 'Everything Pro adds to the register.',
       'features.terminal.title': 'Payment terminals',
@@ -135,7 +139,7 @@ vi.mock('@/components/ui/section-heading', () => ({
   ),
 }))
 
-import ProPage, { generateMetadata } from './page'
+import ProPage, { generateMetadata, ProProductJsonLd } from './page'
 
 describe('Pro page metadata', () => {
   it('uses localized metadata copy', async () => {
@@ -155,10 +159,11 @@ describe('ProPage', () => {
 
     const heroHeading = screen.getByRole('heading', {
       level: 1,
-      name: 'WCPOS Pro',
+      name: 'Translated WCPOS Pro hero',
     })
     expect(heroHeading.closest('[data-section-heading-size]'))
       .toHaveAttribute('data-section-heading-size', 'hero')
+    expect(screen.getByText('Translated Pro hero subtitle')).toBeInTheDocument()
 
     const sections = [...document.querySelectorAll('[data-section-tone]')]
     expect(
@@ -180,5 +185,18 @@ describe('ProPage', () => {
     expect(screen.getByText('Questions')).toBeInTheDocument()
     expect(screen.getByText('Do I need the free plugin?')).toBeInTheDocument()
     expect(screen.getAllByText('Yes.')).toHaveLength(2)
+  })
+})
+
+describe('ProProductJsonLd', () => {
+  it('uses localized product schema copy', async () => {
+    render(await ProProductJsonLd({ locale: 'fr' }))
+
+    const script = document.querySelector('script[type="application/ld+json"]')
+    expect(script).not.toBeNull()
+    const data = JSON.parse(script?.textContent ?? '{}')
+
+    expect(data.name).toBe('Translated WCPOS Pro schema name')
+    expect(data.description).toBe('Translated Pro schema description')
   })
 })

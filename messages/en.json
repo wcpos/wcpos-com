@@ -318,6 +318,14 @@
       "title": "Pro - Premium Features",
       "description": "Upgrade WCPOS with Pro: terminal payments, stock and price editing, order and customer management, end-of-day reports, and priority support."
     },
+    "hero": {
+      "title": "WCPOS Pro",
+      "subtitle": "Everything in the free POS, plus payment terminals, store management at the register, end-of-day reports, and priority support."
+    },
+    "schema": {
+      "name": "WCPOS Pro",
+      "description": "Premium Point of Sale plugin for WooCommerce. Adds payment terminal integration, stock and price editing, order and customer management, end-of-day reports, custom payment gateways, and priority support."
+    },
     "features": {
       "title": "What's included in Pro?",
       "subtitle": "Everything in Free, plus the tools to run your whole store from the register — and priority support when you need a hand.",

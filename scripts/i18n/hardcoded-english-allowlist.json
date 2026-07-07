@@ -1,7 +1,7 @@
 {
   "version": 1,
   "generatedBy": "scripts/i18n/hardcoded-english.ts --update",
-  "updatedAt": "2026-07-07T02:57:22.426Z",
+  "updatedAt": "2026-07-07T03:01:08.897Z",
   "scope": [
     "src/app",
     "src/components",
@@ -146,28 +146,12 @@
       "count": 1
     },
     {
-      "id": "687c7d9783faed31",
-      "file": "src/app/[locale]/(main)/pro/page.tsx",
-      "category": "route/page",
-      "attr": "subtitle",
-      "text": "Everything in the free POS, plus payment terminals, store management at the register, end-of-day reports, and priority support.",
-      "count": 1
-    },
-    {
-      "id": "a44830ed477fc674",
-      "file": "src/app/[locale]/(main)/pro/page.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "Premium Point of Sale plugin for WooCommerce. Adds payment terminal integration, stock and price editing, order and customer management, end-of-day reports, custom payment gateways, and priority support.",
-      "count": 1
-    },
-    {
       "id": "593de459aa267c0d",
       "file": "src/app/[locale]/(main)/pro/page.tsx",
       "category": "route/page",
       "attr": null,
       "text": "pro",
-      "count": 3
+      "count": 1
     },
     {
       "id": "591fe1ab35a29ac5",
@@ -175,22 +159,6 @@
       "category": "route/page",
       "attr": null,
       "text": "use cache",
-      "count": 1
-    },
-    {
-      "id": "e29c417ab880f71d",
-      "file": "src/app/[locale]/(main)/pro/page.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "WCPOS Pro",
-      "count": 1
-    },
-    {
-      "id": "7e566b2f3955dad0",
-      "file": "src/app/[locale]/(main)/pro/page.tsx",
-      "category": "route/page",
-      "attr": "title",
-      "text": "WCPOS Pro",
       "count": 1
     },
     {
