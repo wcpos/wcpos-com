@@ -74,7 +74,7 @@ export async function GET(
 
     if (!ALLOWED_PROVIDERS.includes(provider)) {
       return NextResponse.json(
-        { error: `Unsupported provider: ${provider}` },
+        { errorCode: 'unsupported_provider', provider },
         { status: 400 }
       )
     }
@@ -108,8 +108,10 @@ export async function GET(
       NextResponse.redirect(new URL(redirectTo, request.url))
     )
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'Unknown error'
-    authLogger.error`OAuth callback failed: ${message}`
+    const errorCode = error instanceof Error && isOAuthErrorCode(error.message)
+      ? error.message
+      : 'oauth_failed'
+    authLogger.error`OAuth callback failed: ${error}`
     const redirectTo = sanitizeRedirectPath(
       request.cookies.get(OAUTH_REDIRECT_COOKIE)?.value ??
         request.nextUrl.searchParams.get('redirect'),
@@ -119,10 +121,7 @@ export async function GET(
       loginPathForLocale(localeFromPath(redirectTo)),
       request.url
     )
-    loginUrl.searchParams.set(
-      'error',
-      isOAuthErrorCode(message) ? message : 'oauth_failed'
-    )
+    loginUrl.searchParams.set('error', errorCode)
     return clearRedirectCookie(NextResponse.redirect(loginUrl, 303))
   }
 }

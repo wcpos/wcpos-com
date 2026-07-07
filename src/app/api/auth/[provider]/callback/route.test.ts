@@ -187,7 +187,7 @@ describe('OAuth callback route', () => {
 
     expect(response.status).toBe(400)
     const body = await response.json()
-    expect(body.error).toContain('facebook')
+    expect(body).toEqual({ errorCode: 'unsupported_provider', provider: 'facebook' })
     expect(mockEstablishOAuthSession).not.toHaveBeenCalled()
   })
 
