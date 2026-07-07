@@ -721,7 +721,15 @@
       "next": "下一页",
       "nextPageAria": "下一页",
       "tokenErrorFallback": "此版本无法下载",
-      "startErrorFallback": "启动下载失败"
+      "startErrorFallback": "启动下载失败",
+      "apiErrors": {
+        "unauthorized": "Please sign in again to download WCPOS Pro.",
+        "download_token_secret_missing": "Downloads are temporarily unavailable. Please contact support.",
+        "rate_limited": "Too many download requests. Please wait a moment and try again.",
+        "release_not_found": "That WCPOS Pro release could not be found.",
+        "forbidden": "Your license does not include this download.",
+        "internal": "We could not prepare your download. Please try again."
+      }
     },
     "profile": {
       "heading": "个人资料",

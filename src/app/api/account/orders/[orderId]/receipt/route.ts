@@ -8,6 +8,12 @@ import { projectAccountProfileForReceipt } from '@/lib/customer-profile-metadata
 import { apiLogger } from '@/lib/logger'
 import { defaultLocale, locales, type Locale } from '@/i18n/config'
 
+type ReceiptErrorCode = 'order_not_found' | 'generation_failed'
+
+function errorResponse(errorCode: ReceiptErrorCode, status: number) {
+  return NextResponse.json({ errorCode }, { status })
+}
+
 function resolveLocale(request: Request): { intlLocale: string; messageLocale: Locale } {
   const header = request.headers.get('accept-language') || ''
   const candidates = header
@@ -90,7 +96,7 @@ export async function GET(
     ])
 
     if (!order) {
-      return NextResponse.json({ error: 'Order not found' }, { status: 404 })
+      return errorResponse('order_not_found', 404)
     }
 
     const profile = projectAccountProfileForReceipt(customer?.metadata)
@@ -114,9 +120,6 @@ export async function GET(
     })
   } catch (error) {
     apiLogger.error`Receipt generation failed. orderId=${orderId} error=${error}`
-    return NextResponse.json(
-      { error: 'Failed to generate receipt' },
-      { status: 500 }
-    )
+    return errorResponse('generation_failed', 500)
   }
 }

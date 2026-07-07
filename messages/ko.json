@@ -721,7 +721,15 @@
       "next": "다음",
       "nextPageAria": "다음 페이지",
       "tokenErrorFallback": "이 버전은 다운로드할 수 없습니다",
-      "startErrorFallback": "다운로드를 시작하지 못했습니다"
+      "startErrorFallback": "다운로드를 시작하지 못했습니다",
+      "apiErrors": {
+        "unauthorized": "Please sign in again to download WCPOS Pro.",
+        "download_token_secret_missing": "Downloads are temporarily unavailable. Please contact support.",
+        "rate_limited": "Too many download requests. Please wait a moment and try again.",
+        "release_not_found": "That WCPOS Pro release could not be found.",
+        "forbidden": "Your license does not include this download.",
+        "internal": "We could not prepare your download. Please try again."
+      }
     },
     "profile": {
       "heading": "프로필",

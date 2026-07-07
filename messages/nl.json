@@ -721,7 +721,15 @@
       "next": "Volgende",
       "nextPageAria": "Volgende pagina",
       "tokenErrorFallback": "Download is niet beschikbaar voor deze versie",
-      "startErrorFallback": "Kan download niet starten"
+      "startErrorFallback": "Kan download niet starten",
+      "apiErrors": {
+        "unauthorized": "Please sign in again to download WCPOS Pro.",
+        "download_token_secret_missing": "Downloads are temporarily unavailable. Please contact support.",
+        "rate_limited": "Too many download requests. Please wait a moment and try again.",
+        "release_not_found": "That WCPOS Pro release could not be found.",
+        "forbidden": "Your license does not include this download.",
+        "internal": "We could not prepare your download. Please try again."
+      }
     },
     "profile": {
       "heading": "Profiel",

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "generatedBy": "scripts/i18n/hardcoded-english.ts --update",
-  "updatedAt": "2026-07-07T01:27:53.943Z",
+  "updatedAt": "2026-07-07T01:33:52.073Z",
   "scope": [
     "src/app",
     "src/components",
@@ -458,27 +458,11 @@
       "count": 1
     },
     {
-      "id": "06267b32770c7678",
-      "file": "src/app/api/account/download/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Download token secret not configured",
-      "count": 1
-    },
-    {
       "id": "ea90b582dd16234f",
       "file": "src/app/api/account/download/route.ts",
       "category": "route/page",
       "attr": null,
       "text": "Download token secret not configured (customer",
-      "count": 1
-    },
-    {
-      "id": "9b6d90ec7dc6028c",
-      "file": "src/app/api/account/download/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Failed to fetch release asset",
       "count": 1
     },
     {
@@ -490,35 +474,11 @@
       "count": 1
     },
     {
-      "id": "c70d899eed54c6cc",
-      "file": "src/app/api/account/download/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Invalid token",
-      "count": 1
-    },
-    {
-      "id": "c45837bc39dbb562",
-      "file": "src/app/api/account/download/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Missing token",
-      "count": 1
-    },
-    {
       "id": "3d9627f7ffebc9f8",
       "file": "src/app/api/account/download/route.ts",
       "category": "route/page",
       "attr": null,
       "text": "private, no-store",
-      "count": 1
-    },
-    {
-      "id": "775bd2e77b57e842",
-      "file": "src/app/api/account/download/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Release not found",
       "count": 1
     },
     {
@@ -602,43 +562,11 @@
       "count": 1
     },
     {
-      "id": "0f13605235ae1c00",
-      "file": "src/app/api/account/downloads/token/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Download token secret not configured",
-      "count": 1
-    },
-    {
       "id": "5603e2ab9e1b2eed",
       "file": "src/app/api/account/downloads/token/route.ts",
       "category": "route/page",
       "attr": null,
       "text": "Download token secret not configured (customer",
-      "count": 1
-    },
-    {
-      "id": "e597e43029f0bd7b",
-      "file": "src/app/api/account/downloads/token/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Internal server error",
-      "count": 1
-    },
-    {
-      "id": "a69df4fcef6e8e9b",
-      "file": "src/app/api/account/downloads/token/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Release not found",
-      "count": 1
-    },
-    {
-      "id": "6ac45b1aa09f1788",
-      "file": "src/app/api/account/downloads/token/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Too many download requests. Please wait a moment and try again.",
       "count": 1
     },
     {
@@ -759,22 +687,6 @@
       "category": "route/page",
       "attr": null,
       "text": "error=",
-      "count": 1
-    },
-    {
-      "id": "f367392f4dbfafc8",
-      "file": "src/app/api/account/orders/[orderId]/receipt/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Failed to generate receipt",
-      "count": 1
-    },
-    {
-      "id": "f7f7e126372e5278",
-      "file": "src/app/api/account/orders/[orderId]/receipt/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Order not found",
       "count": 1
     },
     {

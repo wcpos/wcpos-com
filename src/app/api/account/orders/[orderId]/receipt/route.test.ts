@@ -69,6 +69,7 @@ describe('GET /api/account/orders/[orderId]/receipt', () => {
     )
 
     expect(response.status).toBe(404)
+    await expect(response.json()).resolves.toEqual({ errorCode: 'order_not_found' })
   })
 
   it('accepts weighted Accept-Language headers', async () => {
@@ -176,7 +177,7 @@ describe('GET /api/account/orders/[orderId]/receipt', () => {
     const body = await response.json()
 
     expect(response.status).toBe(500)
-    expect(body).toEqual({ error: 'Failed to generate receipt' })
+    expect(body).toEqual({ errorCode: 'generation_failed' })
 
     buildPdfSpy.mockRestore()
   })

@@ -480,6 +480,28 @@ describe('DownloadsClient', () => {
     expect(mockFetch).not.toHaveBeenCalled()
   })
 
+
+
+  it('localizes download token API error codes', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: false,
+      json: async () => ({ errorCode: 'rate_limited' }),
+    })
+
+    render(
+      <DownloadsClient initialReleases={[makeRelease()]} access={makeAccess()} />
+    )
+
+    const row = archiveRow('WCPOS Pro 1.9.0')
+    fireEvent.click(within(row).getByRole('button', { name: 'Download' }))
+
+    expect(
+      await screen.findByText(
+        'Too many download requests. Please wait a moment and try again.'
+      )
+    ).toBeInTheDocument()
+  })
+
   it('requests a download token for an allowed version', async () => {
     mockFetch.mockResolvedValueOnce({
       ok: true,
