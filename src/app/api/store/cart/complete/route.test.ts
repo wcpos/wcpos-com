@@ -94,7 +94,7 @@ describe('POST /api/store/cart/complete', () => {
 
   it('tracks checkout completion with server-validated variant', async () => {
     mockCompleteCart.mockResolvedValueOnce({
-      order: { id: 'order_1' },
+      order: { id: 'order_1', total: 129, currency_code: 'usd' },
     })
 
     const response = await POST(
@@ -120,6 +120,10 @@ describe('POST /api/store/cart/complete', () => {
       customer_id: 'cust_1',
       order_id: 'order_1',
       cart_id: 'cart_1',
+      revenue: 129,
+      currency: 'usd',
+      plan: 'yearly',
+      plan_handle: 'wcpos-pro-yearly',
       funnel_step: 'checkout_completed',
       page: '/pro/checkout',
     })

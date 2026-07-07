@@ -123,6 +123,13 @@ export async function POST(request: NextRequest) {
         customer_id: customer.id,
         order_id: result.order.id,
         cart_id: cartId,
+        // Revenue + plan: without these the funnel can only count sales, not
+        // measure them. `revenue`/`currency` are the property names PostHog
+        // revenue analytics recognises; `plan` splits yearly vs lifetime.
+        revenue: result.order.total,
+        currency: result.order.currency_code,
+        plan: selection.planId,
+        plan_handle: selection.handle,
         funnel_step: 'checkout_completed',
         page: '/pro/checkout',
       }).catch((trackingError) => {
