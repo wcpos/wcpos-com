@@ -124,7 +124,7 @@ interface CheckoutClientProps {
   selectedOfferHandle?: string
   cartRegionId?: string
   /** Static summary shown before the cart exists. */
-  offerSummary?: { title: string; priceFormatted: string }
+  offerSummary?: { title: string; priceFormatted: string; currencyCode?: string }
   /** Current checkout path (with query) for OAuth redirect-back. */
   checkoutPath: string
   experimentVariant: ProCheckoutVariant
@@ -628,10 +628,14 @@ export function CheckoutClient({
     )
   }
 
+  const currencyCode = (cart?.currency_code ?? 'usd').toUpperCase()
+  const offerSummaryCurrencyCode = (
+    offerSummary?.currencyCode ?? currencyCode
+  ).toUpperCase()
   const formatCurrency = (amount: number) =>
     new Intl.NumberFormat('en-US', {
       style: 'currency',
-      currency: (cart?.currency_code ?? 'usd').toUpperCase(),
+      currency: currencyCode,
     }).format(amount)
 
   const paypalSession = cart
@@ -805,7 +809,7 @@ export function CheckoutClient({
               <span>
                 {formatCurrency(cart.total)}{' '}
                 <span className="text-sm font-normal text-muted-foreground">
-                  {(cart.currency_code ?? 'usd').toUpperCase()}
+                  {currencyCode}
                 </span>
               </span>
             </div>
@@ -818,7 +822,7 @@ export function CheckoutClient({
               <span>
                 {offerSummary.priceFormatted}{' '}
                 <span className="text-sm font-normal text-muted-foreground">
-                  USD
+                  {offerSummaryCurrencyCode}
                 </span>
               </span>
             </div>

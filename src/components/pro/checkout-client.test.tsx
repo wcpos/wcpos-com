@@ -592,6 +592,7 @@ describe('CheckoutClient', () => {
       offerSummary: {
         title: 'WCPOS Pro — Yearly',
         priceFormatted: '$129.00',
+        currencyCode: 'eur',
       },
     })
 
@@ -599,7 +600,7 @@ describe('CheckoutClient', () => {
       screen.getByText('WCPOS Pro — Yearly')
     ).toBeInTheDocument()
     expect(screen.getByText('$129.00')).toBeInTheDocument()
-    expect(screen.getByText('USD')).toBeInTheDocument()
+    expect(screen.getByText('EUR')).toBeInTheDocument()
   })
 
   it('surfaces a cart-init failure with a back-to-pricing link', async () => {

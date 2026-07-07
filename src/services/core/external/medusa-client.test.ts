@@ -337,12 +337,51 @@ describe('medusaClient', () => {
                 { id: 'pp_stripe_stripe', is_enabled: true },
               ],
             },
+            {
+              id: 'reg_gbp',
+              name: 'UK',
+              currency_code: 'gbp',
+              payment_providers: [
+                { id: 'pp_paypal_paypal', is_enabled: true },
+              ],
+            },
           ],
         }),
       })
 
       await expect(getCartPaymentProviderContext()).resolves.toEqual({
         cartRegionId: 'reg_eu',
+        providerIds: ['pp_stripe_stripe'],
+      })
+    })
+
+    it('matches the USD region case-insensitively', async () => {
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          regions: [
+            {
+              id: 'reg_eu',
+              name: 'Europe',
+              currency_code: 'eur',
+              payment_providers: [
+                { id: 'pp_stripe-ideal_stripe', is_enabled: true },
+              ],
+            },
+            {
+              id: 'reg_us',
+              name: 'Worldwide',
+              currency_code: 'USD',
+              payment_providers: [
+                { id: 'pp_stripe_stripe', is_enabled: true },
+              ],
+            },
+          ],
+        }),
+      })
+
+      await expect(getCartPaymentProviderContext()).resolves.toEqual({
+        cartRegionId: 'reg_us',
         providerIds: ['pp_stripe_stripe'],
       })
     })
