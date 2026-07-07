@@ -391,7 +391,11 @@
     },
     "schema": {
       "name": "WCPOS Pro",
-      "description": "Premium point-of-sale-plugin voor WooCommerce. Voegt betaalterminalintegratie, voorraad- en prijsbewerking, order- en klantbeheer, einde-dagrapporten, aangepaste betaalgateways en prioriteitssupport toe."
+      "description": "Premium point-of-sale-plugin voor WooCommerce. Voegt betaalterminalintegratie, voorraad- en prijsbewerking, order- en klantbeheer, einde-dagrapporten, aangepaste betaalgateways en prioriteitssupport toe.",
+      "offers": {
+        "yearly": "Jaarlicentie",
+        "lifetime": "Levenslange licentie"
+      }
     },
     "features": {
       "title": "Wat zit er in Pro?",

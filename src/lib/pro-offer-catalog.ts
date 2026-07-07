@@ -14,20 +14,6 @@ import type { MedusaProduct, MedusaProductVariant } from '@/types/medusa'
 const PRO_CHECKOUT_EXPERIMENT = 'pro_checkout_v1'
 const DEFAULT_CURRENCY_CODE = 'usd'
 
-/**
- * Schema.org copy only. Customer-facing plan copy lives in the `pro.buyBox`
- * message namespace (10 locales) — the catalog carries domain data (prices,
- * handles, checkout paths), not display prose.
- */
-interface ProOfferCopy {
-  schemaName: string
-}
-
-const OFFER_COPY: Record<PlanId, ProOfferCopy> = {
-  yearly: { schemaName: 'Yearly License' },
-  lifetime: { schemaName: 'Lifetime License' },
-}
-
 function fallbackProduct(
   handle: string,
   title: string,
@@ -352,10 +338,13 @@ export function formatFounderProPriceSummary(
   })
 }
 
-export function buildProOfferSchemaOffers(offers: ProOffer[]) {
+export function buildProOfferSchemaOffers(
+  offers: ProOffer[],
+  planName: (planId: PlanId) => string
+) {
   return offers.map((offer) => ({
     '@type': 'Offer',
-    name: OFFER_COPY[offer.planId].schemaName,
+    name: planName(offer.planId),
     priceCurrency: offer.price.currencyCode.toUpperCase(),
     price: offer.price.schemaPrice,
     availability: 'https://schema.org/InStock',

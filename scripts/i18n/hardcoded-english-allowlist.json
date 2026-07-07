@@ -1,7 +1,7 @@
 {
   "version": 1,
   "generatedBy": "scripts/i18n/hardcoded-english.ts --update",
-  "updatedAt": "2026-07-07T03:39:38.909Z",
+  "updatedAt": "2026-07-07T03:42:13.202Z",
   "scope": [
     "src/app",
     "src/components",
@@ -4354,14 +4354,6 @@
       "count": 1
     },
     {
-      "id": "3052a8d1b3f3959f",
-      "file": "src/lib/pro-offer-catalog.ts",
-      "category": "code/string",
-      "attr": null,
-      "text": "Lifetime License",
-      "count": 1
-    },
-    {
       "id": "731b9795016bc0e4",
       "file": "src/lib/pro-offer-catalog.ts",
       "category": "code/string",
@@ -4415,14 +4407,6 @@
       "category": "code/string",
       "attr": null,
       "text": "WCPOS Pro Yearly",
-      "count": 1
-    },
-    {
-      "id": "022e33d3b9f70c81",
-      "file": "src/lib/pro-offer-catalog.ts",
-      "category": "code/string",
-      "attr": null,
-      "text": "Yearly License",
       "count": 1
     },
     {

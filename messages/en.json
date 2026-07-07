@@ -391,7 +391,11 @@
     },
     "schema": {
       "name": "WCPOS Pro",
-      "description": "Premium Point of Sale plugin for WooCommerce. Adds payment terminal integration, stock and price editing, order and customer management, end-of-day reports, custom payment gateways, and priority support."
+      "description": "Premium Point of Sale plugin for WooCommerce. Adds payment terminal integration, stock and price editing, order and customer management, end-of-day reports, custom payment gateways, and priority support.",
+      "offers": {
+        "yearly": "Yearly License",
+        "lifetime": "Lifetime License"
+      }
     },
     "features": {
       "title": "What's included in Pro?",

@@ -391,7 +391,11 @@
     },
     "schema": {
       "name": "WCPOS Pro",
-      "description": "Extension de point de vente premium pour WooCommerce. Ajoute l’intégration des terminaux de paiement, la modification du stock et des prix, la gestion des commandes et des clients, les rapports de fin de journée, les passerelles de paiement personnalisées et l’assistance prioritaire."
+      "description": "Extension de point de vente premium pour WooCommerce. Ajoute l’intégration des terminaux de paiement, la modification du stock et des prix, la gestion des commandes et des clients, les rapports de fin de journée, les passerelles de paiement personnalisées et l’assistance prioritaire.",
+      "offers": {
+        "yearly": "Licence annuelle",
+        "lifetime": "Licence à vie"
+      }
     },
     "features": {
       "title": "Que comprend Pro ?",

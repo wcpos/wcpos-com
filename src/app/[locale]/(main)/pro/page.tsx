@@ -179,7 +179,9 @@ export async function ProProductJsonLd({ locale }: { locale: string }) {
             '@type': 'Organization',
             name: 'WCPOS',
           },
-          offers: buildProOfferSchemaOffers(offers),
+          offers: buildProOfferSchemaOffers(offers, (planId) =>
+            t(`schema.offers.${planId}`)
+          ),
         }),
       }}
     />

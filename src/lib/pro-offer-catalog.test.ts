@@ -272,18 +272,22 @@ describe('offer presentation helpers', () => {
     ).toBe('$129 founder $399')
   })
 
-  it('builds schema.org offers from the same catalog facts', () => {
-    expect(buildProOfferSchemaOffers(offers)).toEqual([
+  it('builds schema.org offers from translated plan names and catalog facts', () => {
+    expect(
+      buildProOfferSchemaOffers(offers, (planId) =>
+        planId === 'yearly' ? 'Translated yearly' : 'Translated lifetime'
+      )
+    ).toEqual([
       {
         '@type': 'Offer',
-        name: 'Yearly License',
+        name: 'Translated yearly',
         priceCurrency: 'USD',
         price: '129',
         availability: 'https://schema.org/InStock',
       },
       {
         '@type': 'Offer',
-        name: 'Lifetime License',
+        name: 'Translated lifetime',
         priceCurrency: 'USD',
         price: '399',
         availability: 'https://schema.org/InStock',

@@ -391,7 +391,11 @@
     },
     "schema": {
       "name": "WCPOS Pro",
-      "description": "WooCommerce용 프리미엄 POS 플러그인입니다. 결제 단말기 연동, 재고 및 가격 편집, 주문 및 고객 관리, 마감 보고서, 사용자 지정 결제 게이트웨이, 우선 지원을 추가합니다."
+      "description": "WooCommerce용 프리미엄 POS 플러그인입니다. 결제 단말기 연동, 재고 및 가격 편집, 주문 및 고객 관리, 마감 보고서, 사용자 지정 결제 게이트웨이, 우선 지원을 추가합니다.",
+      "offers": {
+        "yearly": "연간 라이선스",
+        "lifetime": "평생 라이선스"
+      }
     },
     "features": {
       "title": "Pro에는 무엇이 포함되나요?",
