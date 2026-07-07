@@ -18,8 +18,33 @@ function resolveLocale(request: Request): { intlLocale: string; messageLocale: L
   const header = request.headers.get('accept-language') || ''
   const candidates = header
     .split(',')
-    .map((part) => part.split(';')[0]?.trim())
-    .filter((value): value is string => Boolean(value) && value !== '*')
+    .map((part, index) => {
+      const [language, ...parameters] = part.split(';')
+      const qualityParameter = parameters.find((parameter) =>
+        parameter.trim().toLowerCase().startsWith('q=')
+      )
+      const quality = qualityParameter
+        ? Number.parseFloat(qualityParameter.split('=')[1] || '0')
+        : 1
+
+      return {
+        language: language?.trim(),
+        quality: Number.isFinite(quality) ? quality : 0,
+        index,
+      }
+    })
+    .filter(
+      (candidate): candidate is {
+        language: string
+        quality: number
+        index: number
+      } =>
+        Boolean(candidate.language) &&
+        candidate.language !== '*' &&
+        candidate.quality > 0
+    )
+    .sort((a, b) => b.quality - a.quality || a.index - b.index)
+    .map((candidate) => candidate.language)
 
   for (const candidate of candidates) {
     try {
