@@ -92,7 +92,7 @@ describe('completeCart', () => {
       experimentVariant: 'control',
     })
 
-    await expect(promise).rejects.toThrow('Failed to complete order')
+    await expect(promise).rejects.toThrow('ORDER_PENDING')
     await expect(promise).rejects.toBeInstanceOf(OrderPendingError)
   })
 })
@@ -118,7 +118,7 @@ describe('capturePayPalOrder', () => {
 
     await expect(
       capturePayPalOrder({ cartId: 'cart_1', orderId: 'PAYPAL_ORDER_1' })
-    ).rejects.toThrow('Failed to capture PayPal order')
+    ).rejects.toThrow('PAYPAL_CAPTURE_FAILED')
   })
 })
 
@@ -175,19 +175,19 @@ describe('createPaymentSession', () => {
     expect(result.clientSecret).toBe('secret_1')
   })
 
-  it('throws the caller-supplied error message on failure', async () => {
+  it('throws the caller-supplied error code on failure', async () => {
     mockFetch.mockResolvedValue(jsonResponse({ error: 'nope' }, false, 422))
 
     await expect(
       createPaymentSession({
         cartId: 'cart_1',
         providerId: 'pp_stripe_stripe',
-        errorMessage: 'Failed to initialize payment',
+        errorMessage: 'PAYMENT_INIT_FAILED',
       })
-    ).rejects.toThrow('Failed to initialize payment')
+    ).rejects.toThrow('PAYMENT_INIT_FAILED')
   })
 
-  it('throws a default message when none is supplied', async () => {
+  it('throws a default error code when none is supplied', async () => {
     mockFetch.mockResolvedValue(jsonResponse({}, false, 500))
 
     await expect(
@@ -195,6 +195,6 @@ describe('createPaymentSession', () => {
         cartId: 'cart_1',
         providerId: 'pp_stripe_stripe',
       })
-    ).rejects.toThrow('Failed to create payment session')
+    ).rejects.toThrow('PAYMENT_SESSION_FAILED')
   })
 })

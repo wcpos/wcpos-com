@@ -1,7 +1,7 @@
 {
   "version": 1,
   "generatedBy": "scripts/i18n/hardcoded-english.ts --update",
-  "updatedAt": "2026-07-07T04:30:44.624Z",
+  "updatedAt": "2026-07-07T04:38:10.569Z",
   "scope": [
     "src/app",
     "src/components",
@@ -2687,38 +2687,6 @@
       "category": "component",
       "attr": null,
       "text": "[CHECKOUT] PayPal capture failed:",
-      "count": 1
-    },
-    {
-      "id": "233aa8556f530cd6",
-      "file": "src/components/pro/complete-cart.ts",
-      "category": "component",
-      "attr": null,
-      "text": "Cart completion returned no order id",
-      "count": 1
-    },
-    {
-      "id": "9c31fdf022e3a4c6",
-      "file": "src/components/pro/complete-cart.ts",
-      "category": "component",
-      "attr": null,
-      "text": "Failed to capture PayPal order",
-      "count": 1
-    },
-    {
-      "id": "15f6f708046c15dd",
-      "file": "src/components/pro/complete-cart.ts",
-      "category": "component",
-      "attr": null,
-      "text": "Failed to complete order",
-      "count": 1
-    },
-    {
-      "id": "0dcdc8b654a569a1",
-      "file": "src/components/pro/complete-cart.ts",
-      "category": "component",
-      "attr": null,
-      "text": "Failed to create payment session",
       "count": 1
     },
     {
