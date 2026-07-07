@@ -1,4 +1,4 @@
-import { setRequestLocale } from 'next-intl/server'
+import { getTranslations, setRequestLocale } from 'next-intl/server'
 import type { Metadata } from 'next'
 import { Suspense } from 'react'
 import { marketingMetadata } from '@/lib/seo'
@@ -17,12 +17,12 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>
 }): Promise<Metadata> {
   const { locale } = await params
+  const t = await getTranslations({ locale, namespace: 'about.meta' })
   return marketingMetadata({
     locale,
     path: '/about-us',
-    title: 'About',
-    description:
-      'The story behind WCPOS — an independent point of sale built by a former shopkeeper and funded by shopkeepers, not investors.',
+    title: t('title'),
+    description: t('description'),
   })
 }
 

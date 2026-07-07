@@ -1,7 +1,7 @@
 {
   "version": 1,
   "generatedBy": "scripts/i18n/hardcoded-english.ts --update",
-  "updatedAt": "2026-07-07T01:12:25.294Z",
+  "updatedAt": "2026-07-07T01:17:57.872Z",
   "scope": [
     "src/app",
     "src/components",
@@ -119,14 +119,6 @@
       "category": "route/page",
       "attr": null,
       "text": "use client",
-      "count": 1
-    },
-    {
-      "id": "d94fc5e40a1d5d24",
-      "file": "src/app/[locale]/(main)/about-us/page.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "The story behind WCPOS — an independent point of sale built by a former shopkeeper and funded by shopkeepers, not investors.",
       "count": 1
     },
     {
@@ -2306,195 +2298,11 @@
       "count": 1
     },
     {
-      "id": "5214dfef4d80d6e2",
-      "file": "src/components/about/about-cta.tsx",
-      "category": "component",
-      "attr": "title",
-      "text": "Built by a shopkeeper. Funded by shopkeepers.",
-      "count": 1
-    },
-    {
-      "id": "6f38aa08b4c8c5d9",
-      "file": "src/components/about/about-cta.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Download Free",
-      "count": 1
-    },
-    {
-      "id": "2cfaf09293725860",
-      "file": "src/components/about/about-cta.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "See Pro",
-      "count": 1
-    },
-    {
-      "id": "c9ce1d57d639aec1",
-      "file": "src/components/about/about-cta.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Try Live Demo",
-      "count": 1
-    },
-    {
-      "id": "d9a3edc1e92050b9",
-      "file": "src/components/about/about-cta.tsx",
-      "category": "component",
-      "attr": "subtitle",
-      "text": "Try the live demo, download the free plugin, or see what Pro adds — and what keeps it all going.",
-      "count": 1
-    },
-    {
-      "id": "a7021eb586c0e170",
-      "file": "src/components/about/about-hero.tsx",
-      "category": "component",
-      "attr": "title",
-      "text": "An independent point of sale for WooCommerce",
-      "count": 1
-    },
-    {
-      "id": "875e6f1dc26f64f0",
-      "file": "src/components/about/about-hero.tsx",
-      "category": "component",
-      "attr": "subtitle",
-      "text": "Built by a former shopkeeper, funded by shopkeepers — not investors. One developer, more than a decade of releases, still shipping.",
-      "count": 1
-    },
-    {
-      "id": "eae8f5a4c8a3ad5d",
-      "file": "src/components/about/about-hero.tsx",
-      "category": "component",
-      "attr": "eyebrow",
-      "text": "Our story",
-      "count": 1
-    },
-    {
-      "id": "44b615948fd0a84f",
-      "file": "src/components/about/founder-letter.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "— Pro is",
-      "count": 1
-    },
-    {
-      "id": "ed631cf58618f2a7",
-      "file": "src/components/about/founder-letter.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "A note from the developer",
-      "count": 1
-    },
-    {
-      "id": "29b32c3d27ad718c",
-      "file": "src/components/about/founder-letter.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "And Pro users have a direct line: tell me what your shop needs, and it shapes what I build next.",
-      "count": 1
-    },
-    {
-      "id": "9de7c8e2f2b11203",
-      "file": "src/components/about/founder-letter.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "available from the Pro page.",
-      "count": 1
-    },
-    {
-      "id": "1c8cea491bd4daf5",
-      "file": "src/components/about/founder-letter.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "developer &amp; former shopkeeper ·",
-      "count": 1
-    },
-    {
-      "id": "761b4080c4e58b36",
-      "file": "src/components/about/founder-letter.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Hi — I&apos;m Paul. I built WCPOS.",
-      "count": 1
-    },
-    {
-      "id": "cc79a641fda02648",
-      "file": "src/components/about/founder-letter.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "If a licence lapses, Pro keeps working; you just stop getting updates.",
-      "count": 1
-    },
-    {
-      "id": "0007f9bd68aa6bbc",
-      "file": "src/components/about/founder-letter.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "It adds extra tools for running your store — card readers, refunds at the till, end-of-day reports, multi-store — and it funds every release, free ones included. No investors, no acquisition exit waiting. Shopkeepers fund it directly.",
-      "count": 1
-    },
-    {
-      "id": "f55df5e87e4ec980",
-      "file": "src/components/about/founder-letter.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "More than a decade of releases, one developer, still shipping — and the free version is still the real thing: sell, print, stay in sync. It stays free.",
-      "count": 1
-    },
-    {
-      "id": "1f1237d0f2702d8c",
-      "file": "src/components/about/founder-letter.tsx",
-      "category": "component",
-      "attr": "alt",
-      "text": "Paul at Urban Locavore, his Perth shop",
-      "count": 1
-    },
-    {
-      "id": "ba2be82625f97920",
-      "file": "src/components/about/founder-letter.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Paul Kilmurray",
-      "count": 1
-    },
-    {
-      "id": "03e7cb21d8d8443d",
-      "file": "src/components/about/founder-letter.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "POS plugins for WooCommerce have come and gone since then. This one hasn&apos;t.",
-      "count": 1
-    },
-    {
-      "id": "62baa5f64e16ad9f",
-      "file": "src/components/about/founder-letter.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Pro is why it&apos;s still here.",
-      "count": 1
-    },
-    {
       "id": "a7d0de4ac17bb5ec",
       "file": "src/components/about/founder-letter.tsx",
       "category": "component",
       "attr": null,
       "text": "repeating-linear-gradient(90deg,#CD2C24 0 22px,#F5E5C0 22px 44px)",
-      "count": 1
-    },
-    {
-      "id": "c9a5b7d65970af35",
-      "file": "src/components/about/founder-letter.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "That&apos;s me, back when it all started. I opened Urban Locavore in Perth in December 2011 with hundreds of products already in WooCommerce and no way to sell them at the counter — so I built a register myself. When the shop closed in April 2014, I put it on WordPress.org for anyone who needed it.",
-      "count": 1
-    },
-    {
-      "id": "604c02bbecfd1c43",
-      "file": "src/components/about/founder-letter.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Urban Locavore, Perth — the store that started it all",
       "count": 1
     },
     {
@@ -2522,67 +2330,11 @@
       "count": 1
     },
     {
-      "id": "919537e5615e4bcd",
-      "file": "src/components/about/story-timeline.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "11 May 2014",
-      "count": 1
-    },
-    {
-      "id": "d4cd9ce06fb7e670",
-      "file": "src/components/about/story-timeline.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "4 May 2023",
-      "count": 1
-    },
-    {
       "id": "df47a928ac1ade90",
       "file": "src/components/about/story-timeline.tsx",
       "category": "component",
       "attr": null,
       "text": "60%, transparent)",
-      "count": 1
-    },
-    {
-      "id": "999cfa9421bd304e",
-      "file": "src/components/about/story-timeline.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "A register, built out of necessity",
-      "count": 1
-    },
-    {
-      "id": "78b2c29862c2ca65",
-      "file": "src/components/about/story-timeline.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "A small food store in Perth, with hundreds of products already in WooCommerce — and no way to sell them at the counter.",
-      "count": 1
-    },
-    {
-      "id": "3cc37e49cd84722d",
-      "file": "src/components/about/story-timeline.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "April 2014",
-      "count": 1
-    },
-    {
-      "id": "aa89bb25e3793a06",
-      "file": "src/components/about/story-timeline.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "December 2011",
-      "count": 1
-    },
-    {
-      "id": "2f77ea7c57a37ee4",
-      "file": "src/components/about/story-timeline.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "December 2025",
       "count": 1
     },
     {
@@ -2594,59 +2346,11 @@
       "count": 1
     },
     {
-      "id": "9079607f79dc33f0",
-      "file": "src/components/about/story-timeline.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Four years of rebuilding from scratch land as v1.0.0: one codebase for every screen. The desktop app ships the same day — phones and tablets are next.",
-      "count": 1
-    },
-    {
-      "id": "f988d6016e5a2966",
-      "file": "src/components/about/story-timeline.tsx",
-      "category": "component",
-      "attr": "title",
-      "text": "How it started, and why it's still here",
-      "count": 1
-    },
-    {
       "id": "eb06c7ac53501074",
       "file": "src/components/about/story-timeline.tsx",
       "category": "component",
       "attr": null,
       "text": "linear-gradient(to bottom,",
-      "count": 1
-    },
-    {
-      "id": "096a6c5e81b415d7",
-      "file": "src/components/about/story-timeline.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "More than a decade on. One developer, funded by Pro, still releasing — and the free version is still the real thing.",
-      "count": 1
-    },
-    {
-      "id": "9406789932d89b9c",
-      "file": "src/components/about/story-timeline.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Native mobile apps",
-      "count": 1
-    },
-    {
-      "id": "9b7a60d7ab9116ba",
-      "file": "src/components/about/story-timeline.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Released on WordPress.org",
-      "count": 1
-    },
-    {
-      "id": "aadcdafc55e73e48",
-      "file": "src/components/about/story-timeline.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Rewritten in React Native",
       "count": 1
     },
     {
@@ -2658,131 +2362,11 @@
       "count": 1
     },
     {
-      "id": "ac06e60596619eb2",
-      "file": "src/components/about/story-timeline.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Still shipping",
-      "count": 1
-    },
-    {
-      "id": "befb36a4d2af65eb",
-      "file": "src/components/about/story-timeline.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "The React Native bet pays off: WCPOS arrives on iOS and Android in open beta — the same register, now on the hardware already in the shop.",
-      "count": 1
-    },
-    {
-      "id": "2a468b4fd67be1b8",
-      "file": "src/components/about/story-timeline.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "The shop closes",
-      "count": 1
-    },
-    {
-      "id": "7c53243e4fca9171",
-      "file": "src/components/about/story-timeline.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Urban Locavore opens",
-      "count": 1
-    },
-    {
-      "id": "e8f5ae2b541a4feb",
-      "file": "src/components/about/story-timeline.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Urban Locavore winds down — but the register it ran on still works, and other WooCommerce stores need the same thing.",
-      "count": 1
-    },
-    {
       "id": "2a4ebe1664bcaf22",
       "file": "src/components/about/story-timeline.tsx",
       "category": "component",
       "attr": null,
       "text": "use client",
-      "count": 1
-    },
-    {
-      "id": "5109111e71a71be2",
-      "file": "src/components/about/story-timeline.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "WCPOS goes public, free for anyone who needs it. The free version does the actual job: sell, print, stay in sync.",
-      "count": 1
-    },
-    {
-      "id": "1256bd9c2706009f",
-      "file": "src/components/about/story-timeline.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "With nothing on the market that fit, Paul built a point of sale for his own shop — Backbone.js and an in-browser IndexedDB database, on top of the store he already ran online.",
-      "count": 1
-    },
-    {
-      "id": "b2b7eebbbd4c76c0",
-      "file": "src/components/about/values-section.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "A fair licence",
-      "count": 1
-    },
-    {
-      "id": "5e7489a5d56dcda8",
-      "file": "src/components/about/values-section.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Funded by Pro",
-      "count": 1
-    },
-    {
-      "id": "b6c94e94ed6b208f",
-      "file": "src/components/about/values-section.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "If a Pro licence lapses, Pro keeps working — you just stop getting updates. Nothing you rely on gets switched off.",
-      "count": 1
-    },
-    {
-      "id": "1d9ff681ee44de12",
-      "file": "src/components/about/values-section.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "No investors, no acquisition exit waiting. The roadmap answers to the shopkeepers using it — not a board.",
-      "count": 1
-    },
-    {
-      "id": "f1896cc6a28f0f70",
-      "file": "src/components/about/values-section.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Open & GPL",
-      "count": 1
-    },
-    {
-      "id": "f6c691ddeeaad0c4",
-      "file": "src/components/about/values-section.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Pro tools fund every release, free ones included. Shopkeepers pay for it directly, and that keeps the free version free.",
-      "count": 1
-    },
-    {
-      "id": "7c0e47886a70e02b",
-      "file": "src/components/about/values-section.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Released on WordPress.org under the GPL. Yours to use, inspect, and keep — wherever WooCommerce runs.",
-      "count": 1
-    },
-    {
-      "id": "2f2c3c7a4be8d495",
-      "file": "src/components/about/values-section.tsx",
-      "category": "component",
-      "attr": "title",
-      "text": "What it stands for",
       "count": 1
     },
     {

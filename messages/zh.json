@@ -1264,5 +1264,102 @@
       },
       "plugin": "Free"
     }
+  },
+  "about": {
+    "meta": {
+      "title": "About",
+      "description": "The story behind WCPOS — an independent point of sale built by a former shopkeeper and funded by shopkeepers, not investors."
+    },
+    "hero": {
+      "eyebrow": "Our story",
+      "title": "An independent point of sale for WooCommerce",
+      "subtitle": "Built by a former shopkeeper, funded by shopkeepers — not investors. One developer, more than a decade of releases, still shipping."
+    },
+    "founder": {
+      "photoAlt": "Paul at Urban Locavore, his Perth shop",
+      "photoCaption": "Urban Locavore, Perth — the store that started it all",
+      "eyebrow": "A note from the developer",
+      "intro": "Hi — I'm Paul. I built WCPOS.",
+      "p1": "That's me, back when it all started. I opened Urban Locavore in Perth in December 2011 with hundreds of products already in WooCommerce and no way to sell them at the counter — so I built a register myself. When the shop closed in April 2014, I put it on WordPress.org for anyone who needed it. <strong>POS plugins for WooCommerce have come and gone since then. This one hasn't.</strong> More than a decade of releases, one developer, still shipping — and the free version is still the real thing: sell, print, stay in sync. It stays free.",
+      "p2": "<strong>Pro is why it's still here.</strong> It adds extra tools for running your store — card readers, refunds at the till, end-of-day reports, multi-store — and it funds every release, free ones included. No investors, no acquisition exit waiting. Shopkeepers fund it directly.",
+      "p3": "And Pro users have a direct line: tell me what your shop needs, and it shapes what I build next.",
+      "signature": {
+        "name": "Paul Kilmurray",
+        "role": "developer & former shopkeeper ·"
+      },
+      "ps": {
+        "label": "P.S.",
+        "withPrice": "— Pro is <price></price>.",
+        "fallback": "— Pro is available from the Pro page.",
+        "licence": "If a licence lapses, Pro keeps working; you just stop getting updates."
+      }
+    },
+    "timeline": {
+      "heading": "How it started, and why it's still here",
+      "dates": {
+        "range": "{start} – {end}",
+        "today": "Today"
+      },
+      "items": {
+        "m1": {
+          "title": "Urban Locavore opens",
+          "body": "A small food store in Perth, with hundreds of products already in WooCommerce — and no way to sell them at the counter."
+        },
+        "m2": {
+          "title": "A register, built out of necessity",
+          "body": "With nothing on the market that fit, Paul built a point of sale for his own shop — Backbone.js and an in-browser IndexedDB database, on top of the store he already ran online."
+        },
+        "m3": {
+          "title": "The shop closes",
+          "body": "Urban Locavore winds down — but the register it ran on still works, and other WooCommerce stores need the same thing."
+        },
+        "m4": {
+          "title": "Released on WordPress.org",
+          "body": "WCPOS goes public, free for anyone who needs it. The free version does the actual job: sell, print, stay in sync."
+        },
+        "m5": {
+          "title": "Rewritten in React Native",
+          "body": "Four years of rebuilding from scratch land as v1.0.0: one codebase for every screen. The desktop app ships the same day — phones and tablets are next."
+        },
+        "m6": {
+          "title": "Native mobile apps",
+          "body": "The React Native bet pays off: WCPOS arrives on iOS and Android in open beta — the same register, now on the hardware already in the shop."
+        },
+        "m7": {
+          "title": "Still shipping",
+          "body": "More than a decade on. One developer, funded by Pro, still releasing — and the free version is still the real thing."
+        }
+      }
+    },
+    "values": {
+      "heading": "What it stands for",
+      "items": {
+        "v1": {
+          "title": "Independent",
+          "body": "No investors, no acquisition exit waiting. The roadmap answers to the shopkeepers using it — not a board."
+        },
+        "v2": {
+          "title": "Funded by Pro",
+          "body": "Pro tools fund every release, free ones included. Shopkeepers pay for it directly, and that keeps the free version free."
+        },
+        "v3": {
+          "title": "Open & GPL",
+          "body": "Released on WordPress.org under the GPL. Yours to use, inspect, and keep — wherever WooCommerce runs."
+        },
+        "v4": {
+          "title": "A fair licence",
+          "body": "If a Pro licence lapses, Pro keeps working — you just stop getting updates. Nothing you rely on gets switched off."
+        }
+      }
+    },
+    "cta": {
+      "title": "Built by a shopkeeper. Funded by shopkeepers.",
+      "subtitle": "Try the live demo, download the free plugin, or see what Pro adds — and what keeps it all going.",
+      "actions": {
+        "demo": "Try Live Demo",
+        "download": "Download Free",
+        "pro": "See Pro"
+      }
+    }
   }
 }
