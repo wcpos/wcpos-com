@@ -1,7 +1,10 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen, waitFor, fireEvent } from '@testing-library/react'
 
-const push = vi.fn()
+const { loggerError, push } = vi.hoisted(() => ({
+  loggerError: vi.fn(),
+  push: vi.fn(),
+}))
 
 vi.mock('@/i18n/navigation', () => ({
   useRouter: () => ({ push }),
@@ -28,11 +31,42 @@ vi.mock('@/components/pro/stripe-provider', () => ({
 }))
 
 vi.mock('@/components/pro/checkout-form', () => ({
-  CheckoutForm: ({ onSuccess }: { onSuccess: (id: string) => void }) => (
-    <button data-testid="checkout-form" onClick={() => onSuccess('order_1')}>
-      Pay
-    </button>
+  CheckoutForm: ({
+    amount,
+    currency,
+    onSuccess,
+    onFailure,
+  }: {
+    amount: number
+    currency: string
+    onSuccess: (id: string) => void
+    onFailure: (failure: unknown) => void
+  }) => (
+    <>
+      <div data-testid="checkout-total">
+        {amount} {currency}
+      </div>
+      <button data-testid="checkout-form" onClick={() => onSuccess('order_1')}>
+        Pay
+      </button>
+      <button
+        data-testid="fail-order-pending"
+        onClick={() =>
+          onFailure({
+            kind: 'order_pending',
+            message: 'Order pending',
+            reference: 'WCPOS-TEST',
+          })
+        }
+      >
+        Fail
+      </button>
+    </>
   ),
+}))
+
+vi.mock('@/lib/client-logger', () => ({
+  clientLogger: { error: loggerError },
 }))
 
 import { RenewClient } from './renew-client'
@@ -69,6 +103,7 @@ const mockFetch = vi.fn()
 
 beforeEach(() => {
   vi.clearAllMocks()
+  window.sessionStorage.clear()
   vi.stubGlobal('fetch', mockFetch)
 })
 
@@ -131,5 +166,91 @@ describe('RenewClient', () => {
         .getAttribute('href')
     ).toBe('/pro/checkout?product=wcpos-pro-yearly')
     expect(screen.queryByTestId('checkout-form')).toBeNull()
+    expect(loggerError).toHaveBeenCalledWith('Renewal preparation failed', {
+      error: expect.any(Error),
+    })
+  })
+
+  it('does not report prep failures after unmount', async () => {
+    let rejectCart: (error: Error) => void = () => {}
+    mockFetch.mockReturnValueOnce(
+      new Promise((_, reject) => {
+        rejectCart = reject
+      })
+    )
+
+    const { unmount } = render(<RenewClient {...props()} />)
+    unmount()
+    rejectCart(new Error('cart'))
+
+    await Promise.resolve()
+    expect(loggerError).not.toHaveBeenCalled()
+  })
+
+  it('falls back to checkout when payment session omits the client secret', async () => {
+    mockFetch
+      .mockResolvedValueOnce(okJson({ cart: { id: 'cart_1' } }))
+      .mockResolvedValueOnce(okJson({ cart: { id: 'cart_1' } }))
+      .mockResolvedValueOnce(okJson({ cart: { id: 'cart_1' } }))
+      .mockResolvedValueOnce(okJson({ clientSecret: null }))
+
+    render(<RenewClient {...props()} />)
+
+    await waitFor(() =>
+      expect(screen.getByRole('link', { name: /checkout/i })).toBeTruthy()
+    )
+    expect(screen.queryByTestId('checkout-form')).toBeNull()
+  })
+
+  it('passes the prepared cart total into checkout', async () => {
+    mockFetch
+      .mockResolvedValueOnce(
+        okJson({ cart: { id: 'cart_1', total: 12900, currency_code: 'usd' } })
+      )
+      .mockResolvedValueOnce(
+        okJson({ cart: { id: 'cart_1', total: 12900, currency_code: 'usd' } })
+      )
+      .mockResolvedValueOnce(
+        okJson({ cart: { id: 'cart_1', total: 15480, currency_code: 'usd' } })
+      )
+      .mockResolvedValueOnce(
+        okJson({
+          cart: { id: 'cart_1', total: 15480, currency_code: 'usd' },
+          clientSecret: 'cs_1',
+        })
+      )
+
+    render(<RenewClient {...props({ amount: 129, currency: 'usd' })} />)
+
+    await waitFor(() =>
+      expect(screen.getByTestId('checkout-total').textContent).toBe('15480 usd')
+    )
+  })
+
+  it('blocks a second payment attempt after an order-pending failure', async () => {
+    mockFetch
+      .mockResolvedValueOnce(okJson({ cart: { id: 'cart_1' } }))
+      .mockResolvedValueOnce(okJson({ cart: { id: 'cart_1' } }))
+      .mockResolvedValueOnce(okJson({ cart: { id: 'cart_1' } }))
+      .mockResolvedValueOnce(okJson({ clientSecret: 'cs_1' }))
+
+    const { unmount } = render(<RenewClient {...props()} />)
+    await waitFor(() => expect(screen.getByTestId('checkout-form')).toBeTruthy())
+
+    fireEvent.click(screen.getByTestId('fail-order-pending'))
+
+    expect(screen.getByTestId('renew-failure').textContent).toContain(
+      'Order pending'
+    )
+    expect(screen.queryByTestId('checkout-form')).toBeNull()
+
+    unmount()
+    render(<RenewClient {...props()} />)
+
+    expect(screen.getByTestId('renew-failure').textContent).toContain(
+      'Order pending'
+    )
+    expect(screen.queryByTestId('checkout-form')).toBeNull()
+    expect(mockFetch).toHaveBeenCalledTimes(4)
   })
 })

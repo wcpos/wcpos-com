@@ -7,7 +7,14 @@ import { StripeProvider } from '@/components/pro/stripe-provider'
 import { CheckoutForm } from '@/components/pro/checkout-form'
 import { Alert } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
-import type { CheckoutFailure } from '@/components/pro/checkout-safety'
+import {
+  isProtectiveCheckoutFailureKind,
+  recordCheckoutFailure,
+  restoreCheckoutSafetyState,
+  shouldBlockCheckout,
+  type CheckoutFailure,
+} from '@/components/pro/checkout-safety'
+import { clientLogger } from '@/lib/client-logger'
 import type { BillingAddress } from '@/components/pro/checkout/billing-step'
 
 /**
@@ -38,6 +45,11 @@ interface RenewClientProps {
 }
 
 type Phase = 'preparing' | 'ready' | 'error'
+type PreparedCart = {
+  id: string
+  total?: number
+  currency_code?: string
+}
 
 export function RenewClient({
   regionId,
@@ -52,16 +64,21 @@ export function RenewClient({
 }: RenewClientProps) {
   const router = useRouter()
   const [phase, setPhase] = useState<Phase>('preparing')
-  const [cartId, setCartId] = useState<string | null>(null)
+  const [cart, setCart] = useState<PreparedCart | null>(null)
   const [clientSecret, setClientSecret] = useState<string | null>(null)
   const [customerSessionClientSecret, setCustomerSessionClientSecret] =
     useState<string | null>(null)
-  const [failure, setFailure] = useState<CheckoutFailure | null>(null)
+  const [failure, setFailure] = useState<CheckoutFailure | null>(
+    () => restoreCheckoutSafetyState()?.failure ?? null
+  )
+  const blocksCheckout = failure ? shouldBlockCheckout(failure) : false
   const startedRef = useRef(false)
 
   useEffect(() => {
+    if (blocksCheckout) return
     if (startedRef.current) return
     startedRef.current = true
+    let cancelled = false
 
     async function prepare() {
       try {
@@ -97,6 +114,9 @@ export function RenewClient({
           }),
         })
         if (!billingRes.ok) throw new Error('billing')
+        const { cart: billedCart } = (await billingRes.json()) as {
+          cart?: PreparedCart
+        }
 
         const sessionRes = await fetch('/api/store/cart/payment-sessions', {
           method: 'POST',
@@ -105,25 +125,43 @@ export function RenewClient({
         })
         if (!sessionRes.ok) throw new Error('session')
         const session = await sessionRes.json()
+        if (!session.clientSecret) throw new Error('session:client-secret')
 
-        setCartId(cart.id)
+        if (cancelled) return
+        setCart(session.cart ?? billedCart ?? cart)
         setClientSecret(session.clientSecret ?? null)
         setCustomerSessionClientSecret(
           session.customerSessionClientSecret ?? null
         )
         setPhase('ready')
-      } catch {
+      } catch (error) {
+        if (cancelled) return
+        clientLogger.error('Renewal preparation failed', { error })
         setPhase('error')
       }
     }
 
     void prepare()
-  }, [regionId, offerHandle, billingAddress, taxNumber])
+    return () => {
+      cancelled = true
+    }
+  }, [regionId, offerHandle, billingAddress, taxNumber, blocksCheckout])
 
   function handleSuccess() {
     // The order-completed subscriber renews the licence server-side; the
     // licenses page shows a confirmation and the new expiry once it lands.
     router.push('/account/licenses?renewed=1')
+  }
+
+  function handleFailure(nextFailure: CheckoutFailure | null) {
+    setFailure(nextFailure)
+    if (
+      nextFailure &&
+      cart?.id &&
+      isProtectiveCheckoutFailureKind(nextFailure.kind)
+    ) {
+      recordCheckoutFailure(cart.id, nextFailure)
+    }
   }
 
   if (phase === 'error') {
@@ -173,7 +211,7 @@ export function RenewClient({
         </Alert>
       )}
 
-      {phase === 'preparing' || !clientSecret || !cartId ? (
+      {blocksCheckout ? null : phase === 'preparing' || !clientSecret || !cart ? (
         <div className="flex items-center gap-2 rounded-md border border-dashed p-6 text-sm text-muted-foreground">
           <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
           Preparing your renewal…
@@ -185,13 +223,13 @@ export function RenewClient({
           publishableKey={stripePublishableKey}
         >
           <CheckoutForm
-            cartId={cartId}
-            amount={amount}
-            currency={currency}
+            cartId={cart.id}
+            amount={cart.total ?? amount}
+            currency={cart.currency_code ?? currency}
             experiment="license_renewal"
             experimentVariant="control"
             onSuccess={handleSuccess}
-            onFailure={setFailure}
+            onFailure={handleFailure}
           />
         </StripeProvider>
       )}

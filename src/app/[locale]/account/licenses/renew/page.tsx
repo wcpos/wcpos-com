@@ -13,14 +13,14 @@ import { getRequestStoreEnvironment } from '@/lib/store-environment'
 import { getCartPaymentProviderContext } from '@/services/core/external/medusa-client'
 import { getResolvedCustomerLicenses } from '@/lib/customer-licenses'
 import { getProOfferCatalog } from '@/lib/pro-offer-catalog'
+import { getLicenseDisplayStatus } from '@/lib/license'
+import { getPlanByPolicyId, YEARLY_PRO_HANDLE } from '@/lib/plans'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'Renew your licence',
   robots: { index: false, follow: false },
 }
-
-const YEARLY_HANDLE = 'wcpos-pro-yearly'
 
 async function RenewContent({ locale }: { locale: string }) {
   // Auth- and cart-sensitive: stop prerendering here so the shell is the
@@ -34,11 +34,18 @@ async function RenewContent({ locale }: { locale: string }) {
   }
 
   const { licenses } = await getResolvedCustomerLicenses()
-  // Renewable = has an expiry to extend (lifetime licences never expire).
-  // Matches the licenses page's own isRenewable rule.
-  const hasRenewable = licenses.some((license) => license.expiry != null)
+  const now = new Date().getTime()
+  const hasRenewable = licenses.some((license) => {
+    const plan = getPlanByPolicyId(license.policyId)
+    const displayStatus = getLicenseDisplayStatus(license, now)
+    return (
+      license.expiry != null &&
+      plan?.handle === YEARLY_PRO_HANDLE &&
+      (displayStatus === 'active' || displayStatus === 'expired')
+    )
+  })
   if (!hasRenewable) {
-    // Nothing to renew (e.g. lifetime-only) — send them back.
+    // Nothing safely renewable through one-click renewal.
     redirect({ href: '/account/licenses', locale })
     return null
   }
@@ -47,7 +54,7 @@ async function RenewContent({ locale }: { locale: string }) {
   // checkout, which collects it.
   const prefill = billingPrefillFromCustomer(customer)
   if (!prefill.address) {
-    redirect({ href: `/pro/checkout?product=${YEARLY_HANDLE}`, locale })
+    redirect({ href: `/pro/checkout?product=${YEARLY_PRO_HANDLE}`, locale })
     return null
   }
 
@@ -56,22 +63,22 @@ async function RenewContent({ locale }: { locale: string }) {
     getProOfferCatalog(undefined, storeEnv),
     getCartPaymentProviderContext(storeEnv),
   ])
-  const yearly = offers.find((offer) => offer.handle === YEARLY_HANDLE)
+  const yearly = offers.find((offer) => offer.handle === YEARLY_PRO_HANDLE)
   if (!yearly) {
-    redirect({ href: `/pro/checkout?product=${YEARLY_HANDLE}`, locale })
+    redirect({ href: `/pro/checkout?product=${YEARLY_PRO_HANDLE}`, locale })
     return null
   }
 
   return (
     <RenewClient
       regionId={paymentContext.cartRegionId ?? undefined}
-      offerHandle={YEARLY_HANDLE}
+      offerHandle={YEARLY_PRO_HANDLE}
       billingAddress={prefill.address}
       taxNumber={prefill.taxNumber}
       amount={yearly.price.amount}
       currency={yearly.price.currencyCode}
       priceFormatted={yearly.price.formatted}
-      productTitle="WCPOS Pro — Yearly"
+      productTitle={yearly.title}
       stripePublishableKey={storeEnv.payments.stripePublishableKey}
     />
   )

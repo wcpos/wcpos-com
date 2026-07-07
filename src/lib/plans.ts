@@ -32,6 +32,7 @@ export interface Plan {
 // Default for the only policy id known to the codebase. Overridable per
 // environment via NEXT_PUBLIC_KEYGEN_YEARLY_POLICY_ID.
 export const DEFAULT_YEARLY_POLICY_ID = '261cb7e2-6e80-476e-98bd-fe7f406f258d'
+export const YEARLY_PRO_HANDLE = 'wcpos-pro-yearly'
 
 function normalizeEnvPolicyId(value: string | undefined): string | null {
   const trimmed = value?.trim()
@@ -47,7 +48,7 @@ function getPlans(): Plan[] {
   return [
     {
       id: 'yearly',
-      handle: 'wcpos-pro-yearly',
+      handle: YEARLY_PRO_HANDLE,
       policyId:
         normalizeEnvPolicyId(process.env.NEXT_PUBLIC_KEYGEN_YEARLY_POLICY_ID) ??
         DEFAULT_YEARLY_POLICY_ID,
