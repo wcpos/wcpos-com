@@ -7,7 +7,7 @@ import {
 } from '@/services/core/external/medusa-client'
 import { storeLogger } from '@/lib/logger'
 import type { PlanId } from '@/lib/plans'
-import { getPlanByHandle } from '@/lib/plans'
+import { getPlanByHandle, YEARLY_PRO_HANDLE } from '@/lib/plans'
 import type { StoreEnvironment } from '@/lib/store-environment'
 import type { MedusaProduct, MedusaProductVariant } from '@/types/medusa'
 
@@ -72,7 +72,7 @@ function fallbackProduct(
  */
 const FALLBACK_PRO_PRODUCTS: MedusaProduct[] = [
   fallbackProduct(
-    'wcpos-pro-yearly',
+    YEARLY_PRO_HANDLE,
     'WCPOS Pro Yearly',
     'variant_01KEMXD1D4HTKKP730PF2DP2W8',
     { usd: 129, eur: 119, gbp: 99, aud: 199 }
@@ -106,6 +106,7 @@ export interface ProOfferPrice {
 export interface ProOffer {
   planId: PlanId
   handle: string
+  title: string
   /** Current Medusa variant selected by the Pro offer catalog. */
   variantId: string
   price: ProOfferPrice
@@ -189,6 +190,7 @@ export function buildProOfferCatalog(
       return {
         planId: plan.id,
         handle: plan.handle,
+        title: product.title,
         variantId: variant.id,
         price: {
           amount,

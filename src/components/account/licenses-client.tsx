@@ -19,7 +19,7 @@ import {
   getLicenseDisplayStatus,
   isLicenseExpiringSoon,
 } from '@/lib/license'
-import { getPlanByPolicyId } from '@/lib/plans'
+import { getPlanByPolicyId, YEARLY_PRO_HANDLE } from '@/lib/plans'
 import { presentLicenseStatus } from '@/lib/license-status-presentation'
 
 interface Machine {
@@ -278,14 +278,20 @@ export function LicensesClient({
           const plan = getPlanByPolicyId(license.policyId)
           const planLabel = plan ? t(plan.labelKey) : null
           // A licence is renewable when it has an expiry to extend; a lifetime
-          // licence (null expiry) never renews. Deep-link to the pre-filled
-          // yearly checkout when the plan handle resolves (else the generic
-          // /pro). On payment the Medusa order-completed subscriber extends the
-          // SAME licence using the locked max(expiry, now) + 1yr rule.
+          // licence (null expiry) never renews. On payment the Medusa
+          // order-completed subscriber extends the SAME licence using the
+          // locked max(expiry, now) + 1yr rule.
           const isRenewable = license.expiry != null
-          const renewHref = plan?.handle
-            ? `/pro/checkout?product=${plan.handle}`
-            : '/pro'
+          // Yearly renewable licences use the one-click renewal flow (prefilled
+          // cart + saved card; falls back to the full checkout when billing
+          // isn't on file). Any other renewable/expired licence keeps the plain
+          // checkout deep-link.
+          const renewHref =
+            isRenewable && plan?.handle === YEARLY_PRO_HANDLE
+              ? '/account/licenses/renew'
+              : plan?.handle
+                ? `/pro/checkout?product=${plan.handle}`
+                : '/pro'
           // Always offer renewal on a renewable licence that is active or
           // expired, EXCEPT while the expiring-soon banner is already showing
           // its own Renew (avoids two identical CTAs on one card). Skip the

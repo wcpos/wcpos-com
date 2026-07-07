@@ -160,12 +160,38 @@ test.describe('Existing license holder data accuracy', () => {
     // downloads link stays, alongside a renew CTA.
     const renewLink = card.getByRole('link', { name: 'Renew' })
     await expect(renewLink).toBeVisible()
-    // Yearly licence → Renew deep-links to the pre-filled yearly checkout.
+    // Yearly licence → Renew starts the attended one-click renewal flow.
     await expect(renewLink).toHaveAttribute(
+      'href',
+      '/account/licenses/renew'
+    )
+    await expect(card.getByRole('link', { name: /Downloads/ })).toBeVisible()
+  })
+
+  test('renewal falls back to checkout when Stripe omits a client secret', async ({
+    page,
+    context,
+    baseURL,
+  }) => {
+    await signInAs(context, baseURL, 'e2e-active')
+    await page.route('**/api/store/cart/payment-sessions', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          cart: { id: 'cart_e2e_missing_secret', total: 129, currency_code: 'usd' },
+          clientSecret: null,
+        }),
+      })
+    })
+
+    await page.goto('/account/licenses/renew')
+
+    await expect(page.getByRole('link', { name: /checkout/i })).toHaveAttribute(
       'href',
       '/pro/checkout?product=wcpos-pro-yearly'
     )
-    await expect(card.getByRole('link', { name: /Downloads/ })).toBeVisible()
+    await expect(page.getByText('Preparing your renewal')).toHaveCount(0)
   })
 
   test('suspended holder sees suspended status and no downloads CTA', async ({
@@ -180,6 +206,18 @@ test.describe('Existing license holder data accuracy', () => {
     await expect(card).toBeVisible()
     await expect(card.getByText('suspended', { exact: true })).toBeVisible()
     await expect(card.getByRole('link', { name: /Downloads/ })).toHaveCount(0)
+  })
+
+  test('suspended yearly holder cannot open one-click renewal directly', async ({
+    page,
+    context,
+    baseURL,
+  }) => {
+    await signInAs(context, baseURL, 'e2e-suspended')
+
+    await page.goto('/account/licenses/renew')
+
+    await expect(page).toHaveURL(/\/account\/licenses$/)
   })
 
   test('customer without purchases sees the empty state', async ({
