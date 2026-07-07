@@ -207,6 +207,8 @@ export default async function DownloadsPage({
                   <Button asChild variant="brand" size="sm">
                     <TrackedExternalLink
                       href="https://wordpress.org/plugins/woocommerce-pos/"
+                      target="_blank"
+                      rel="noopener noreferrer"
                       eventName="download_clicked"
                       eventProperties={{
                         plugin: 'free',
@@ -220,6 +222,8 @@ export default async function DownloadsPage({
                   <Button asChild variant="outline" size="sm">
                     <TrackedExternalLink
                       href="https://github.com/wcpos/woocommerce-pos/releases"
+                      target="_blank"
+                      rel="noopener noreferrer"
                       eventName="download_clicked"
                       eventProperties={{
                         plugin: 'free',
