@@ -160,10 +160,10 @@ test.describe('Existing license holder data accuracy', () => {
     // downloads link stays, alongside a renew CTA.
     const renewLink = card.getByRole('link', { name: 'Renew' })
     await expect(renewLink).toBeVisible()
-    // Yearly licence → Renew deep-links to the pre-filled yearly checkout.
+    // Yearly licence → Renew starts the attended one-click renewal flow.
     await expect(renewLink).toHaveAttribute(
       'href',
-      '/pro/checkout?product=wcpos-pro-yearly'
+      '/account/licenses/renew'
     )
     await expect(card.getByRole('link', { name: /Downloads/ })).toBeVisible()
   })
