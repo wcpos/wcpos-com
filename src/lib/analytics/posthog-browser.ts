@@ -43,7 +43,7 @@ function writeSharedDistinctId(id: string): void {
   if (typeof document === 'undefined') return
   const options = getDistinctIdCookieOptions()
   const secure = window.location.protocol === 'https:' ? '; Secure' : ''
-  document.cookie = `${ANALYTICS_DISTINCT_ID_COOKIE}=${id}; Path=${options.path}; Max-Age=${options.maxAge}; SameSite=Lax${secure}`
+  document.cookie = `${ANALYTICS_DISTINCT_ID_COOKIE}=${encodeURIComponent(id)}; Path=${options.path}; Max-Age=${options.maxAge}; SameSite=Lax${secure}`
 }
 
 /**

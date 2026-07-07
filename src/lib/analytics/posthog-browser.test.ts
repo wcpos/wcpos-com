@@ -85,6 +85,22 @@ describe('initPostHogBrowser', () => {
     expect(cookieMatch).toBe(`wcpos-distinct-id=${bootstrap.distinctID}`)
   })
 
+  it('fails closed and mints a fresh id when the shared cookie is malformed', async () => {
+    const { isAnalyticsGranted } = await import('./consent')
+    ;(isAnalyticsGranted as ReturnType<typeof vi.fn>).mockReturnValue(true)
+    // An invalid % escape makes decodeURIComponent throw; reading it must fail
+    // closed (mint fresh) rather than throw and leave window.posthog unset.
+    document.cookie = 'wcpos-distinct-id=%E0%A4%A; path=/'
+    const { initPostHogBrowser } = await import('./posthog-browser')
+    initPostHogBrowser({ key: 'phc_x', host: 'https://eu.i.posthog.com' })
+
+    const bootstrap = initMock.mock.calls[0][1].bootstrap
+    expect(bootstrap?.distinctID).toEqual(expect.any(String))
+    expect(bootstrap.distinctID).not.toHaveLength(0)
+    // The malformed cookie value is never adopted as the distinct id.
+    expect(bootstrap.distinctID).not.toBe('%E0%A4%A')
+  })
+
   it('enables exception autocapture ($exception posts via /e/, safe on self-hosted)', async () => {
     const { isAnalyticsGranted } = await import('./consent')
     ;(isAnalyticsGranted as ReturnType<typeof vi.fn>).mockReturnValue(true)
