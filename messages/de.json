@@ -211,7 +211,7 @@
     "licenses": {
       "heading": "Lizenzen",
       "loadError": "Lizenzen konnten nicht geladen werden",
-      "deactivateError": "Rechner konnte nicht deaktiviert werden. Bitte versuche es erneut.",
+      "deactivateError": "Website konnte nicht deaktiviert werden. Bitte versuche es erneut.",
       "emptyTitle": "Keine Lizenzen gefunden.",
       "emptyDescription": "Kaufe WCPOS Pro, um eine Lizenz zu erhalten.",
       "planYearly": "Jährlich",

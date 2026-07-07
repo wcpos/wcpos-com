@@ -211,7 +211,7 @@
     "licenses": {
       "heading": "Licences",
       "loadError": "Échec du chargement des licences",
-      "deactivateError": "Échec de la désactivation de la machine. Veuillez réessayer.",
+      "deactivateError": "Échec de la désactivation du site. Veuillez réessayer.",
       "emptyTitle": "Aucune licence trouvée.",
       "emptyDescription": "Achetez WCPOS Pro pour obtenir une licence.",
       "planYearly": "Annuel",

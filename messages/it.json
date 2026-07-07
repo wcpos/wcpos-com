@@ -211,7 +211,7 @@
     "licenses": {
       "heading": "Licenze",
       "loadError": "Impossibile caricare le licenze",
-      "deactivateError": "Impossibile disattivare la macchina. Riprova.",
+      "deactivateError": "Impossibile disattivare il sito. Riprova.",
       "emptyTitle": "Nessuna licenza trovata.",
       "emptyDescription": "Acquista WCPOS Pro per ottenere una licenza.",
       "planYearly": "Annuale",

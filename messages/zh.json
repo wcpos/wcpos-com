@@ -211,7 +211,7 @@
     "licenses": {
       "heading": "许可证",
       "loadError": "加载许可证失败",
-      "deactivateError": "停用设备失败。请重试。",
+      "deactivateError": "停用站点失败。请重试。",
       "emptyTitle": "未找到许可证。",
       "emptyDescription": "购买 WCPOS Pro 以获取许可证。",
       "planYearly": "年付",

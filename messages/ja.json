@@ -211,7 +211,7 @@
     "licenses": {
       "heading": "ライセンス",
       "loadError": "ライセンスの読み込みに失敗しました",
-      "deactivateError": "端末の無効化に失敗しました。もう一度お試しください。",
+      "deactivateError": "サイトの無効化に失敗しました。もう一度お試しください。",
       "emptyTitle": "ライセンスが見つかりません。",
       "emptyDescription": "WCPOS Proを購入してライセンスを取得してください。",
       "planYearly": "年間",

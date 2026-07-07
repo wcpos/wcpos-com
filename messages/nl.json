@@ -211,7 +211,7 @@
     "licenses": {
       "heading": "Licenties",
       "loadError": "Kan licenties niet laden",
-      "deactivateError": "Kan machine niet deactiveren. Probeer het opnieuw.",
+      "deactivateError": "Kan site niet deactiveren. Probeer het opnieuw.",
       "emptyTitle": "Geen licenties gevonden.",
       "emptyDescription": "Koop WCPOS Pro om een licentie te krijgen.",
       "planYearly": "Jaarlijks",
