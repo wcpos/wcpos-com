@@ -282,6 +282,25 @@ describe('OAuth callback route', () => {
     expect(response.headers.get('location')).toBe('https://wcpos.com/account')
   })
 
+  it('preserves locale-prefixed redirect cookies on successful server redirects', async () => {
+    mockEstablishOAuthSession.mockResolvedValue(
+      session({ email: 'discord@example.com' })
+    )
+
+    const request = new NextRequest(
+      'https://wcpos.com/api/auth/discord/callback?code=abc&state=xyz',
+      { headers: { cookie: 'oauth_redirect=%2Ffr%2Faccount%2Flicenses' } }
+    )
+
+    const response = await GET(request, {
+      params: Promise.resolve({ provider: 'discord' }),
+    })
+
+    expect(response.headers.get('location')).toBe(
+      'https://wcpos.com/fr/account/licenses'
+    )
+  })
+
 
   it('preserves safe OAuth error codes for localized login feedback', async () => {
     mockEstablishOAuthSession.mockRejectedValue(new Error('oauth_email_unverified'))
@@ -296,6 +315,23 @@ describe('OAuth callback route', () => {
 
     const location = new URL(response.headers.get('location')!)
     expect(location.pathname).toBe('/login')
+    expect(location.searchParams.get('error')).toBe('oauth_email_unverified')
+  })
+
+  it('redirects OAuth failures back to the locale-prefixed login page', async () => {
+    mockEstablishOAuthSession.mockRejectedValue(new Error('oauth_email_unverified'))
+
+    const request = new NextRequest(
+      'https://wcpos.com/api/auth/discord/callback?code=abc&state=xyz',
+      { headers: { cookie: 'oauth_redirect=%2Ffr%2Faccount' } }
+    )
+
+    const response = await GET(request, {
+      params: Promise.resolve({ provider: 'discord' }),
+    })
+
+    const location = new URL(response.headers.get('location')!)
+    expect(location.pathname).toBe('/fr/login')
     expect(location.searchParams.get('error')).toBe('oauth_email_unverified')
   })
 

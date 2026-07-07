@@ -1,7 +1,7 @@
 {
   "version": 1,
   "generatedBy": "scripts/i18n/hardcoded-english.ts --update",
-  "updatedAt": "2026-07-07T05:01:08.502Z",
+  "updatedAt": "2026-07-07T06:40:49.462Z",
   "scope": [
     "src/app",
     "src/components",
@@ -18,27 +18,11 @@
       "count": 1
     },
     {
-      "id": "4d50956db0b13f5e",
+      "id": "c9e38cd4f3a8d61f",
       "file": "src/app/[locale]/(auth)/login/login-page-client.tsx",
       "category": "route/page",
       "attr": null,
-      "text": "/api/auth/discord?redirect=",
-      "count": 1
-    },
-    {
-      "id": "06e84a4bb00a4faa",
-      "file": "src/app/[locale]/(auth)/login/login-page-client.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "/api/auth/github?redirect=",
-      "count": 1
-    },
-    {
-      "id": "58e85719292066ff",
-      "file": "src/app/[locale]/(auth)/login/login-page-client.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "/api/auth/google?redirect=",
+      "text": "?locale=",
       "count": 1
     },
     {
@@ -48,6 +32,14 @@
       "attr": null,
       "text": "/register?redirect=",
       "count": 1
+    },
+    {
+      "id": "4a7a213212a8d781",
+      "file": "src/app/[locale]/(auth)/login/login-page-client.tsx",
+      "category": "route/page",
+      "attr": null,
+      "text": "discord",
+      "count": 2
     },
     {
       "id": "15369ddc4d2a6aad",
@@ -66,12 +58,28 @@
       "count": 1
     },
     {
+      "id": "242f0f50ebea5fa2",
+      "file": "src/app/[locale]/(auth)/login/login-page-client.tsx",
+      "category": "route/page",
+      "attr": null,
+      "text": "github",
+      "count": 2
+    },
+    {
       "id": "c35cc03a23d418c0",
       "file": "src/app/[locale]/(auth)/login/login-page-client.tsx",
       "category": "route/page",
       "attr": null,
       "text": "GitHub",
       "count": 1
+    },
+    {
+      "id": "0be5d092e0848e42",
+      "file": "src/app/[locale]/(auth)/login/login-page-client.tsx",
+      "category": "route/page",
+      "attr": null,
+      "text": "google",
+      "count": 2
     },
     {
       "id": "ec17df2541e605f2",
@@ -626,11 +634,11 @@
       "count": 1
     },
     {
-      "id": "65d76dbd78a234c9",
+      "id": "fbfb927434f2a3a4",
       "file": "src/app/api/auth/[provider]/route.ts",
       "category": "route/page",
       "attr": null,
-      "text": "/login?error=oauth_failed",
+      "text": "error",
       "count": 1
     },
     {

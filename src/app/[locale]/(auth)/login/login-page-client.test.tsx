@@ -35,9 +35,9 @@ vi.mock('@/lib/analytics/client-events', () => ({
   trackClientEvent: vi.fn(),
 }))
 
-function renderLogin() {
+function renderLogin(locale = 'en') {
   return render(
-    <NextIntlClientProvider locale="en" messages={messages}>
+    <NextIntlClientProvider locale={locale} messages={messages}>
       <LoginPageClient />
     </NextIntlClientProvider>
   )
@@ -88,5 +88,14 @@ describe('LoginPageClient', () => {
 
     expect(screen.getByText(messages.auth.login.oauthFailed)).toBeInTheDocument()
     expect(screen.queryByText('Invalid state parameter')).not.toBeInTheDocument()
+  })
+
+  it('passes the active locale to OAuth initiation links', () => {
+    renderLogin('fr')
+
+    expect(screen.getByRole('link', { name: /google/i })).toHaveAttribute(
+      'href',
+      '/api/auth/google?locale=fr&redirect=%2Faccount'
+    )
   })
 })

@@ -57,7 +57,7 @@ test.describe('Invalid medusa-token recovery', () => {
     await page.goto('/fr/account')
 
     await expect(page).toHaveURL(/\/fr\/login$/)
-    await expect(page.getByLabel('Email')).toBeVisible()
+    await expect(page.getByLabel('E-mail')).toBeVisible()
     expect(await medusaCookie(context)).toBeUndefined()
   })
 

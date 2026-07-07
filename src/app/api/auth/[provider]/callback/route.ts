@@ -9,7 +9,8 @@ import {
   OAUTH_REDIRECT_COOKIE,
   OAUTH_REDIRECT_COOKIE_OPTIONS,
 } from '@/lib/oauth-providers'
-import { sanitizeRedirectPath } from '@/lib/safe-redirect'
+import { loginPathForLocale } from '@/lib/login-redirect'
+import { localeFromPath, sanitizeRedirectPath } from '@/lib/safe-redirect'
 import { isOAuthErrorCode } from '@/lib/oauth-error-codes'
 
 /** The redirect cookie is single-use: consume it on every outcome. */
@@ -84,7 +85,8 @@ export async function GET(
     // change deployed.
     const redirectTo = sanitizeRedirectPath(
       request.cookies.get(OAUTH_REDIRECT_COOKIE)?.value ??
-        request.nextUrl.searchParams.get('redirect')
+        request.nextUrl.searchParams.get('redirect'),
+      { stripLocalePrefix: false }
     )
 
     // Collect all query params from the OAuth provider (code, state, etc.)
@@ -108,7 +110,15 @@ export async function GET(
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Unknown error'
     authLogger.error`OAuth callback failed: ${message}`
-    const loginUrl = new URL('/login', request.url)
+    const redirectTo = sanitizeRedirectPath(
+      request.cookies.get(OAUTH_REDIRECT_COOKIE)?.value ??
+        request.nextUrl.searchParams.get('redirect'),
+      { stripLocalePrefix: false }
+    )
+    const loginUrl = new URL(
+      loginPathForLocale(localeFromPath(redirectTo)),
+      request.url
+    )
     loginUrl.searchParams.set(
       'error',
       isOAuthErrorCode(message) ? message : 'oauth_failed'
