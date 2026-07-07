@@ -76,7 +76,7 @@ describe('DELETE /api/account/licenses/[licenseId]/discord/members/[memberId]', 
     const response = await callDelete()
 
     expect(response.status).toBe(403)
-    expect(await response.json()).toEqual({ error: 'read_only_inspection' })
+    expect(await response.json()).toEqual({ errorCode: 'read_only_inspection' })
     expect(mockGetResolvedCustomerLicenses).not.toHaveBeenCalled()
   })
 
@@ -86,7 +86,7 @@ describe('DELETE /api/account/licenses/[licenseId]/discord/members/[memberId]', 
     const response = await callDelete()
 
     expect(response.status).toBe(401)
-    expect(await response.json()).toEqual({ error: 'Unauthorized' })
+    expect(await response.json()).toEqual({ errorCode: 'unauthorized' })
     expect(mockRemoveConnectedDiscordMemberForHolder).not.toHaveBeenCalled()
   })
 
@@ -97,7 +97,7 @@ describe('DELETE /api/account/licenses/[licenseId]/discord/members/[memberId]', 
     const response = await callDelete('lic_other', 'member_1')
 
     expect(response.status).toBe(403)
-    expect(await response.json()).toEqual({ error: 'Forbidden' })
+    expect(await response.json()).toEqual({ errorCode: 'forbidden' })
   })
 
   it('returns 503 (fail loud) when Keygen seat management is not configured', async () => {
@@ -108,7 +108,7 @@ describe('DELETE /api/account/licenses/[licenseId]/discord/members/[memberId]', 
     const response = await callDelete('lic_1', 'member_1')
 
     expect(response.status).toBe(503)
-    expect(await response.json()).toEqual({ error: 'Discord management is not configured' })
+    expect(await response.json()).toEqual({ errorCode: 'discord_management_unconfigured' })
     expect(mockSyncDiscordProRoleForMember).not.toHaveBeenCalled()
   })
 

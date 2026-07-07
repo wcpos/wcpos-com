@@ -685,7 +685,10 @@
       "hideKeyAria": "Licentiesleutel die eindigt op {suffix} verbergen",
       "copyKeyAria": "Licentiesleutel die eindigt op {suffix} kopiëren",
       "copiedKey": "Gekopieerd",
-      "copyError": "Kopiëren van licentiesleutel mislukt. Probeer het opnieuw."
+      "copyError": "Kopiëren van licentiesleutel mislukt. Probeer het opnieuw.",
+      "apiErrors": {
+        "read_only_inspection": "You are viewing this account in read-only mode."
+      }
     },
     "downloads": {
       "heading": "Downloads",

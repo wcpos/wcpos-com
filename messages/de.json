@@ -685,7 +685,10 @@
       "hideKeyAria": "Lizenzschlüssel mit Endung {suffix} ausblenden",
       "copyKeyAria": "Lizenzschlüssel mit Endung {suffix} kopieren",
       "copiedKey": "Kopiert",
-      "copyError": "Lizenzschlüssel konnte nicht kopiert werden. Bitte versuche es erneut."
+      "copyError": "Lizenzschlüssel konnte nicht kopiert werden. Bitte versuche es erneut.",
+      "apiErrors": {
+        "read_only_inspection": "You are viewing this account in read-only mode."
+      }
     },
     "downloads": {
       "heading": "Downloads",

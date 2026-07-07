@@ -62,6 +62,13 @@ interface DiscordAccess {
 
 const DISCORD_DEFAULT_CAP = 5
 
+
+type LicenseActionErrorCode = 'read_only_inspection'
+
+function isLicenseActionErrorCode(value: unknown): value is LicenseActionErrorCode {
+  return value === 'read_only_inspection'
+}
+
 function emptyDiscordAccess(licenseId: string): DiscordAccess {
   return { licenseId, seatCap: DISCORD_DEFAULT_CAP, usedSeats: 0, members: [] }
 }
@@ -116,6 +123,17 @@ export function LicensesClient({
     )
   )
 
+  const getLicenseActionErrorMessage = async (
+    response: Response,
+    fallback: string
+  ) => {
+    const payload = await response.json().catch(() => ({}))
+    if (isLicenseActionErrorCode(payload.errorCode)) {
+      return t('apiErrors.read_only_inspection')
+    }
+    return fallback
+  }
+
   const fetchLicenses = async () => {
     setError(null)
     try {
@@ -151,10 +169,12 @@ export function LicensesClient({
       const res = await fetch(`/api/account/licenses/${licenseId}/machines/${machineId}`, {
         method: 'DELETE',
       })
-      if (!res.ok) throw new Error('Failed to deactivate')
+      if (!res.ok) {
+        throw new Error(await getLicenseActionErrorMessage(res, t('deactivateError')))
+      }
       await fetchLicenses()
-    } catch {
-      setError(t('deactivateError'))
+    } catch (err) {
+      setError(err instanceof Error ? err.message : t('deactivateError'))
     } finally {
       setDeactivating(null)
     }
@@ -174,7 +194,7 @@ export function LicensesClient({
           window.location.assign('/login')
           return
         }
-        throw new Error('Failed to remove Discord member')
+        throw new Error(await getLicenseActionErrorMessage(res, t('discordRemoveError')))
       }
       setDiscordAccessByLicenseState((accessByLicense) => {
         const current = accessByLicense[licenseId] ?? emptyDiscordAccess(licenseId)
@@ -184,8 +204,8 @@ export function LicensesClient({
           [licenseId]: { ...current, members, usedSeats: members.length },
         }
       })
-    } catch {
-      setError(t('discordRemoveError'))
+    } catch (err) {
+      setError(err instanceof Error ? err.message : t('discordRemoveError'))
     } finally {
       setRemovingDiscordMember(null)
     }

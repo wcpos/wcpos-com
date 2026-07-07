@@ -1,7 +1,7 @@
 {
   "version": 1,
   "generatedBy": "scripts/i18n/hardcoded-english.ts --update",
-  "updatedAt": "2026-07-07T01:33:52.073Z",
+  "updatedAt": "2026-07-07T01:37:52.197Z",
   "scope": [
     "src/app",
     "src/components",
@@ -578,14 +578,6 @@
       "count": 1
     },
     {
-      "id": "1c7b4a97fddab713",
-      "file": "src/app/api/account/licenses/[licenseId]/discord/members/[memberId]/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Discord management is not configured",
-      "count": 1
-    },
-    {
       "id": "ddebd78d946a2b11",
       "file": "src/app/api/account/licenses/[licenseId]/discord/members/[memberId]/route.ts",
       "category": "route/page",
@@ -602,35 +594,11 @@
       "count": 1
     },
     {
-      "id": "88cff66496071deb",
-      "file": "src/app/api/account/licenses/[licenseId]/discord/members/[memberId]/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Member not found",
-      "count": 1
-    },
-    {
-      "id": "5bc80d3ce6d22b00",
-      "file": "src/app/api/account/licenses/[licenseId]/machines/[machineId]/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Failed to deactivate machine",
-      "count": 1
-    },
-    {
       "id": "e1ff26fa6539de37",
       "file": "src/app/api/account/licenses/[licenseId]/machines/[machineId]/route.ts",
       "category": "route/page",
       "attr": null,
       "text": "Failed to deactivate machine:",
-      "count": 1
-    },
-    {
-      "id": "8f1f327c043bec6a",
-      "file": "src/app/api/account/licenses/[licenseId]/machines/[machineId]/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Internal server error",
       "count": 1
     },
     {
@@ -642,35 +610,11 @@
       "count": 1
     },
     {
-      "id": "b3fc9b653bd27fd2",
-      "file": "src/app/api/account/licenses/[licenseId]/machines/[machineId]/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Machine does not belong to this license",
-      "count": 1
-    },
-    {
-      "id": "49df27e960e4fbe7",
-      "file": "src/app/api/account/licenses/[licenseId]/machines/[machineId]/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Machine management is not configured",
-      "count": 1
-    },
-    {
       "id": "9681941a9babb8bb",
       "file": "src/app/api/account/licenses/route.ts",
       "category": "route/page",
       "attr": null,
       "text": "Failed to fetch licenses:",
-      "count": 1
-    },
-    {
-      "id": "6adcab4427926dfe",
-      "file": "src/app/api/account/licenses/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Internal server error",
       "count": 1
     },
     {
@@ -2336,22 +2280,6 @@
       "attr": null,
       "text": "expired",
       "count": 5
-    },
-    {
-      "id": "4a45afff4ed81cf5",
-      "file": "src/components/account/licenses-client.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Failed to deactivate",
-      "count": 1
-    },
-    {
-      "id": "05ce0b656ab3a58f",
-      "file": "src/components/account/licenses-client.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Failed to remove Discord member",
-      "count": 1
     },
     {
       "id": "fd2d76d49976b71e",

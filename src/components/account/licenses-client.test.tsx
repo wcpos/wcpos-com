@@ -453,6 +453,40 @@ describe('LicensesClient', () => {
     expect(mockFetch).not.toHaveBeenCalled()
   })
 
+
+
+  it('localizes read-only errors for machine deactivation', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: false,
+      status: 403,
+      json: async () => ({ errorCode: 'read_only_inspection' }),
+    })
+
+    render(
+      <LicensesClient
+        initialLicenses={[
+          makeLicense({
+            machines: [
+              {
+                id: 'm-1',
+                fingerprint: 'fp-1',
+                name: 'My Store',
+                metadata: {},
+                createdAt: '2025-06-01T00:00:00Z',
+              },
+            ],
+          }),
+        ]}
+      />
+    )
+
+    fireEvent.click(screen.getByRole('button', { name: 'Deactivate My Store' }))
+
+    expect(
+      await screen.findByText('You are viewing this account in read-only mode.')
+    ).toBeInTheDocument()
+  })
+
   it('attributes the latest covered version to an active licence', () => {
     render(
       <LicensesClient
@@ -575,6 +609,43 @@ describe('LicensesClient', () => {
     )
     expect(await screen.findByText('0 of 5 members')).toBeInTheDocument()
     expect(screen.queryByText('@ada')).not.toBeInTheDocument()
+  })
+
+
+
+  it('localizes read-only errors for Discord member removal', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: false,
+      status: 403,
+      json: async () => ({ errorCode: 'read_only_inspection' }),
+    })
+
+    render(
+      <LicensesClient
+        initialLicenses={[makeLicense({ id: 'lic-1' })]}
+        discordAccessByLicense={{
+          'lic-1': {
+            licenseId: 'lic-1',
+            seatCap: 5,
+            usedSeats: 1,
+            members: [
+              {
+                id: 'member-ada',
+                handle: '@ada',
+                avatarUrl: null,
+                connectedAt: '2026-06-01T00:00:00.000Z',
+              },
+            ],
+          },
+        }}
+      />
+    )
+
+    fireEvent.click(screen.getByRole('button', { name: 'Remove @ada' }))
+
+    expect(
+      await screen.findByText('You are viewing this account in read-only mode.')
+    ).toBeInTheDocument()
   })
 
   it('redirects to login when Discord member removal returns 401', async () => {

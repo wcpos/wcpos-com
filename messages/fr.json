@@ -685,7 +685,10 @@
       "hideKeyAria": "Masquer la clé de licence se terminant par {suffix}",
       "copyKeyAria": "Copier la clé de licence se terminant par {suffix}",
       "copiedKey": "Copiée",
-      "copyError": "Échec de la copie de la clé de licence. Veuillez réessayer."
+      "copyError": "Échec de la copie de la clé de licence. Veuillez réessayer.",
+      "apiErrors": {
+        "read_only_inspection": "You are viewing this account in read-only mode."
+      }
     },
     "downloads": {
       "heading": "Téléchargements",

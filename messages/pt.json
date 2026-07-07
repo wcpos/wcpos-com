@@ -685,7 +685,10 @@
       "hideKeyAria": "Ocultar chave de licença terminada em {suffix}",
       "copyKeyAria": "Copiar chave de licença terminada em {suffix}",
       "copiedKey": "Copiada",
-      "copyError": "Falha ao copiar a chave de licença. Tente novamente."
+      "copyError": "Falha ao copiar a chave de licença. Tente novamente.",
+      "apiErrors": {
+        "read_only_inspection": "You are viewing this account in read-only mode."
+      }
     },
     "downloads": {
       "heading": "Transferências",

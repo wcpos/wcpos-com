@@ -685,7 +685,10 @@
       "hideKeyAria": "Nascondi la chiave di licenza che termina con {suffix}",
       "copyKeyAria": "Copia la chiave di licenza che termina con {suffix}",
       "copiedKey": "Copiata",
-      "copyError": "Impossibile copiare la chiave di licenza. Riprova."
+      "copyError": "Impossibile copiare la chiave di licenza. Riprova.",
+      "apiErrors": {
+        "read_only_inspection": "You are viewing this account in read-only mode."
+      }
     },
     "downloads": {
       "heading": "Download",
