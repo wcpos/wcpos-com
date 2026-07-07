@@ -1,7 +1,7 @@
 {
   "version": 1,
   "generatedBy": "scripts/i18n/hardcoded-english.ts --update",
-  "updatedAt": "2026-07-07T03:12:46.191Z",
+  "updatedAt": "2026-07-07T03:16:55.592Z",
   "scope": [
     "src/app",
     "src/components",
@@ -1975,62 +1975,6 @@
       "category": "component",
       "attr": null,
       "text": "use cache",
-      "count": 1
-    },
-    {
-      "id": "42da5014d515a011",
-      "file": "src/components/home/problem-section.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Double Entry",
-      "count": 1
-    },
-    {
-      "id": "884848054be08128",
-      "file": "src/components/home/problem-section.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Internet drops and your sales stop. Customers wait. You lose money.",
-      "count": 1
-    },
-    {
-      "id": "a8ef7d8cfe0cd85b",
-      "file": "src/components/home/problem-section.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Offline Panic",
-      "count": 1
-    },
-    {
-      "id": "3fffe82ec116e36c",
-      "file": "src/components/home/problem-section.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Platform Lock-In",
-      "count": 1
-    },
-    {
-      "id": "f88b8ad2c41140cc",
-      "file": "src/components/home/problem-section.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Proprietary systems trap your data. Moving or customizing becomes impossible.",
-      "count": 1
-    },
-    {
-      "id": "52a33c3854c54a86",
-      "file": "src/components/home/problem-section.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Re-entering products in a separate POS wastes hours and creates errors.",
-      "count": 1
-    },
-    {
-      "id": "76ba906e3c8d11ea",
-      "file": "src/components/home/problem-section.tsx",
-      "category": "component",
-      "attr": "title",
-      "text": "Running a WooCommerce store and a physical shop shouldn't mean double the work",
       "count": 1
     },
     {

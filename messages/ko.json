@@ -51,6 +51,23 @@
     "meta": {
       "description": "Point of Sale for WooCommerce. Sync your products, sell offline, and connect real hardware with native apps for iOS, Android, and desktop."
     },
+    "problem": {
+      "title": "WooCommerce 스토어와 오프라인 매장 운영이 두 배의 일이 되어서는 안 됩니다",
+      "items": {
+        "doubleEntry": {
+          "label": "중복 입력",
+          "description": "별도 POS에 제품을 다시 입력하면 시간이 낭비되고 오류가 생깁니다."
+        },
+        "offlinePanic": {
+          "label": "오프라인 공포",
+          "description": "인터넷이 끊기면 판매가 멈춥니다. 고객은 기다리고 매출은 줄어듭니다."
+        },
+        "platformLockIn": {
+          "label": "플랫폼 종속",
+          "description": "폐쇄형 시스템은 데이터를 가둡니다. 이전하거나 맞춤 설정하기가 불가능해집니다."
+        }
+      }
+    },
     "cta": {
       "title": "WooCommerce로 매장 판매를 시작할 준비가 되셨나요?",
       "subtitle": "라이브 데모를 사용해 보거나 무료 플러그인을 다운로드해 시작하세요.",

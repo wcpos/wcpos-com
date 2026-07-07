@@ -75,6 +75,46 @@ describe('ProblemSection', () => {
     expect(screen.getByText('Offline Panic')).toBeInTheDocument()
     expect(screen.getByText('Platform Lock-In')).toBeInTheDocument()
   })
+
+  it('renders translated problem copy from messages', () => {
+    render(
+      <NextIntlClientProvider
+        locale="en"
+        messages={{
+          home: {
+            problem: {
+              title: 'Translated problem heading',
+              items: {
+                doubleEntry: {
+                  label: 'Translated double entry',
+                  description: 'Translated double entry description',
+                },
+                offlinePanic: {
+                  label: 'Translated offline panic',
+                  description: 'Translated offline panic description',
+                },
+                platformLockIn: {
+                  label: 'Translated lock-in',
+                  description: 'Translated lock-in description',
+                },
+              },
+            },
+          },
+        }}
+      >
+        <ProblemSection />
+      </NextIntlClientProvider>
+    )
+
+    expect(
+      screen.getByRole('heading', { name: 'Translated problem heading' })
+    ).toBeInTheDocument()
+    expect(screen.getByText('Translated double entry')).toBeInTheDocument()
+    expect(
+      screen.getByText('Translated offline panic description')
+    ).toBeInTheDocument()
+    expect(screen.getByText('Translated lock-in')).toBeInTheDocument()
+  })
 })
 
 describe('BenefitsSection', () => {

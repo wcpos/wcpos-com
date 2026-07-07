@@ -51,6 +51,23 @@
     "meta": {
       "description": "Point of Sale for WooCommerce. Sync your products, sell offline, and connect real hardware with native apps for iOS, Android, and desktop."
     },
+    "problem": {
+      "title": "Gestire un negozio WooCommerce e un negozio fisico non dovrebbe significare doppio lavoro",
+      "items": {
+        "doubleEntry": {
+          "label": "Doppio inserimento",
+          "description": "Reinserire i prodotti in un POS separato fa perdere ore e crea errori."
+        },
+        "offlinePanic": {
+          "label": "Panico offline",
+          "description": "Internet cade e le vendite si fermano. I clienti aspettano. Perdi denaro."
+        },
+        "platformLockIn": {
+          "label": "Vincolo alla piattaforma",
+          "description": "I sistemi proprietari intrappolano i tuoi dati. Migrare o personalizzare diventa impossibile."
+        }
+      }
+    },
     "cta": {
       "title": "Pronto a vendere in negozio con WooCommerce?",
       "subtitle": "Prova la demo live o scarica il plugin gratuito per iniziare.",

@@ -51,6 +51,23 @@
     "meta": {
       "description": "Point of Sale for WooCommerce. Sync your products, sell offline, and connect real hardware with native apps for iOS, Android, and desktop."
     },
+    "problem": {
+      "title": "经营 WooCommerce 商店和实体店不应该意味着双倍工作",
+      "items": {
+        "doubleEntry": {
+          "label": "重复录入",
+          "description": "在单独的 POS 中重新输入商品会浪费数小时并产生错误。"
+        },
+        "offlinePanic": {
+          "label": "离线恐慌",
+          "description": "网络中断，销售就停止。顾客等待，您损失收入。"
+        },
+        "platformLockIn": {
+          "label": "平台锁定",
+          "description": "专有系统会困住您的数据。迁移或自定义变得不可能。"
+        }
+      }
+    },
     "cta": {
       "title": "准备好使用 WooCommerce 进行店内销售了吗？",
       "subtitle": "试用在线演示或下载免费插件即可开始。",
