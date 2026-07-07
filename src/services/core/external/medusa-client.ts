@@ -187,12 +187,13 @@ export async function getCartPaymentProviderContext(
 ): Promise<CartPaymentProviderContext> {
   interface RegionWithProviders {
     id: string
+    currency_code?: string
     payment_providers?: Array<{ id: string; is_enabled?: boolean }>
   }
 
   try {
     const response = await medusaFetch<{ regions: RegionWithProviders[] }>(
-      '/store/regions?fields=id,name,*payment_providers',
+      '/store/regions?fields=id,name,currency_code,*payment_providers',
       {},
       storeEnv
     )
@@ -200,7 +201,15 @@ export async function getCartPaymentProviderContext(
     // Checkout passes this region_id when creating the cart, so provider
     // filtering and the cart's region stay coupled even if Medusa's implicit
     // default region differs from /store/regions order.
-    const cartRegion: RegionWithProviders | undefined = regions[0]
+    //
+    // The store advertises USD prices everywhere, so the cart must resolve to
+    // the USD region regardless of Medusa's region ordering (its implicit
+    // first region may be EUR, which would charge €-prices under a $-labelled
+    // catalog). Fall back to the first region only if no USD region exists.
+    const cartRegion: RegionWithProviders | undefined =
+      regions.find(
+        (region) => region.currency_code?.toLowerCase() === 'usd'
+      ) ?? regions[0]
     const hasAnyProviderEvidence = regions.some(
       (region) => (region.payment_providers?.length ?? 0) > 0
     )

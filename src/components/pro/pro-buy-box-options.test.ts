@@ -55,6 +55,7 @@ describe('buildProBuyBoxOptions', () => {
       subtitle: 'buyBox.yearly.subtitle',
       badgeLabel: 'buyBox.yearly.badgeLabel',
       priceText: '$129',
+      currencyCode: 'USD',
       priceSuffix: 'buyBox.yearly.priceSuffix',
       ctaNote: 'buyBox.yearly.ctaNote',
     })
