@@ -1,7 +1,7 @@
 {
   "version": 1,
   "generatedBy": "scripts/i18n/hardcoded-english.ts --update",
-  "updatedAt": "2026-07-07T01:43:29.588Z",
+  "updatedAt": "2026-07-07T01:45:58.044Z",
   "scope": [
     "src/app",
     "src/components",
@@ -290,35 +290,11 @@
       "count": 1
     },
     {
-      "id": "980c0003d039132d",
-      "file": "src/app/[locale]/account/admin/page.tsx",
-      "category": "admin",
-      "attr": null,
-      "text": "Enter a customer email to view their account exactly as they see it. You cannot change their data while inspecting.",
-      "count": 1
-    },
-    {
-      "id": "3fcab9ffe14536f7",
-      "file": "src/app/[locale]/account/admin/page.tsx",
-      "category": "admin",
-      "attr": null,
-      "text": "Inspect a customer (read-only)",
-      "count": 1
-    },
-    {
       "id": "e47324ab77d76816",
       "file": "src/app/[locale]/account/admin/page.tsx",
       "category": "admin",
       "attr": null,
       "text": "use server",
-      "count": 1
-    },
-    {
-      "id": "38b6f910baee787b",
-      "file": "src/app/[locale]/account/admin/page.tsx",
-      "category": "admin",
-      "attr": null,
-      "text": "View as",
       "count": 1
     },
     {
@@ -2111,22 +2087,6 @@
       "category": "component",
       "attr": null,
       "text": "use client",
-      "count": 1
-    },
-    {
-      "id": "72fac8cd70791032",
-      "file": "src/components/account/impersonation-banner.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "— you cannot change their account.",
-      "count": 1
-    },
-    {
-      "id": "6584c9f21dfd0065",
-      "file": "src/components/account/impersonation-banner.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "🔍 Viewing",
       "count": 1
     },
     {

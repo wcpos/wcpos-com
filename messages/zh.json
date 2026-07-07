@@ -846,6 +846,15 @@
         "partiallyRefunded": "部分退款",
         "canceled": "已取消"
       }
+    },
+    "admin": {
+      "title": "Inspect a customer (read-only)",
+      "description": "Enter a customer email to view their account exactly as they see it. You cannot change their data while inspecting.",
+      "submit": "View as"
+    },
+    "impersonation": {
+      "viewing": "🔍 Viewing <strong>{target}</strong> as <strong>read-only</strong> — you cannot change their account.",
+      "exit": "Exit"
     }
   },
   "metadata": {
