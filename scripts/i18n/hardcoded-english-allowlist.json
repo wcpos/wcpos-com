@@ -1,7 +1,7 @@
 {
   "version": 1,
   "generatedBy": "scripts/i18n/hardcoded-english.ts --update",
-  "updatedAt": "2026-07-07T03:07:58.084Z",
+  "updatedAt": "2026-07-07T03:12:46.191Z",
   "scope": [
     "src/app",
     "src/components",
@@ -2506,83 +2506,11 @@
       "count": 1
     },
     {
-      "id": "b40de1590325233b",
-      "file": "src/components/home/use-cases-section.tsx",
-      "category": "component",
-      "attr": null,
-      "text": ", wordpress.org review",
-      "count": 1
-    },
-    {
-      "id": "6942cc5c7d5534a0",
-      "file": "src/components/home/use-cases-section.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Desktop & Offline",
-      "count": 1
-    },
-    {
       "id": "8a5b092c609e3695",
       "file": "src/components/home/use-cases-section.tsx",
       "category": "component",
       "attr": null,
       "text": "flex h-28 items-center justify-center",
-      "count": 1
-    },
-    {
-      "id": "78be383abab74231",
-      "file": "src/components/home/use-cases-section.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Great POS for your WooCommerce store, it has the desktop version which makes it better for places with weak internet connectivity. I believe there are more great features coming up.",
-      "count": 1
-    },
-    {
-      "id": "a1fba30a20427393",
-      "file": "src/components/home/use-cases-section.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "I did a lot of research when looking for a POS for my existing WC site, and nearly overlooked this one because it was free. But I’m glad I tried it. It does everything you want without asking for subscriptions or a percentage of your sales.",
-      "count": 1
-    },
-    {
-      "id": "0f2a154be22d4ef5",
-      "file": "src/components/home/use-cases-section.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "I’m a ceramicist in Annecy and I sell through my WooCommerce shop and at markets. I’ve been using WCPOS for over a year and bought the lifetime Pro license a few months ago — worth it, I think. Paul is responsive on Discord, even on weekends.",
-      "count": 1
-    },
-    {
-      "id": "36409a318c49b032",
-      "file": "src/components/home/use-cases-section.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Market Vendor",
-      "count": 1
-    },
-    {
-      "id": "301ebf18a7843d5b",
-      "file": "src/components/home/use-cases-section.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Retail Store",
-      "count": 1
-    },
-    {
-      "id": "3502f3a1aee06a2c",
-      "file": "src/components/home/use-cases-section.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "translated from French",
-      "count": 1
-    },
-    {
-      "id": "e1e7bb6da164f4cc",
-      "file": "src/components/home/use-cases-section.tsx",
-      "category": "component",
-      "attr": "title",
-      "text": "Works for stores of all kinds",
       "count": 1
     },
     {

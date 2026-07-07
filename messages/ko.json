@@ -69,6 +69,28 @@
       "attribution": "Ward, wordpress.org 리뷰",
       "story": "우리 이야기 읽기 →"
     },
+    "useCases": {
+      "title": "모든 종류의 매장에 적합",
+      "reviewSuffix": "wordpress.org 리뷰",
+      "cards": {
+        "retail": {
+          "type": "소매 매장",
+          "quote": "기존 WC 사이트용 POS를 찾으면서 많은 조사를 했고, 무료라는 이유로 이 플러그인을 거의 지나칠 뻔했습니다. 하지만 사용해 보길 잘했습니다. 구독료나 매출 비율을 요구하지 않고 원하는 모든 기능을 제공합니다.",
+          "attribution": "nckllnpssy"
+        },
+        "market": {
+          "type": "시장 판매자",
+          "quote": "저는 안시의 도예가이며 WooCommerce 상점과 시장에서 판매합니다. WCPOS를 1년 넘게 사용했고 몇 달 전에 평생 Pro 라이선스를 구매했습니다. 그만한 가치가 있다고 생각합니다. Paul은 주말에도 Discord에서 빠르게 응답합니다.",
+          "attribution": "adeline",
+          "note": "프랑스어에서 번역"
+        },
+        "desktop": {
+          "type": "데스크톱 및 오프라인",
+          "quote": "WooCommerce 스토어를 위한 훌륭한 POS입니다. 데스크톱 버전이 있어 인터넷 연결이 약한 장소에서 더 좋습니다. 앞으로 더 좋은 기능이 나올 것이라고 믿습니다.",
+          "attribution": "rodriguekgl"
+        }
+      }
+    },
     "benefits": {
       "heading": "Why stores choose WCPOS",
       "items": {

@@ -69,6 +69,28 @@
       "attribution": "Ward，wordpress.org 评价",
       "story": "阅读我们的故事 →"
     },
+    "useCases": {
+      "title": "适用于各种类型的店铺",
+      "reviewSuffix": "wordpress.org 评价",
+      "cards": {
+        "retail": {
+          "type": "零售店",
+          "quote": "我为现有的 WC 网站寻找 POS 时做了很多研究，差点因为它是免费的而忽略了它。但我很庆幸试用了它。它能完成你想要的一切，而且不要求订阅费或抽取销售额比例。",
+          "attribution": "nckllnpssy"
+        },
+        "market": {
+          "type": "市集摊主",
+          "quote": "我是安纳西的一名陶艺师，通过 WooCommerce 商店和市集销售。我使用 WCPOS 已经一年多，几个月前购买了终身 Pro 许可证——我觉得很值得。Paul 在 Discord 上回复很及时，周末也一样。",
+          "attribution": "adeline",
+          "note": "由法语翻译"
+        },
+        "desktop": {
+          "type": "桌面与离线",
+          "quote": "这是适合 WooCommerce 商店的出色 POS，它有桌面版本，因此在网络连接较弱的地方更好用。我相信还会有更多优秀功能推出。",
+          "attribution": "rodriguekgl"
+        }
+      }
+    },
     "benefits": {
       "heading": "Why stores choose WCPOS",
       "items": {

@@ -69,6 +69,28 @@
       "attribution": "Ward, review op wordpress.org",
       "story": "Lees ons verhaal →"
     },
+    "useCases": {
+      "title": "Werkt voor allerlei soorten winkels",
+      "reviewSuffix": "review op wordpress.org",
+      "cards": {
+        "retail": {
+          "type": "Winkel",
+          "quote": "Ik heb veel onderzoek gedaan naar een POS voor mijn bestaande WC-site en zag deze bijna over het hoofd omdat hij gratis was. Maar ik ben blij dat ik hem geprobeerd heb. Hij doet alles wat je wilt zonder abonnementen of een percentage van je omzet te vragen.",
+          "attribution": "nckllnpssy"
+        },
+        "market": {
+          "type": "Marktverkoper",
+          "quote": "Ik ben keramiste in Annecy en verkoop via mijn WooCommerce-winkel en op markten. Ik gebruik WCPOS al meer dan een jaar en heb een paar maanden geleden de Lifetime Pro-licentie gekocht — de moeite waard, vind ik. Paul reageert op Discord, zelfs in het weekend.",
+          "attribution": "adeline",
+          "note": "vertaald uit het Frans"
+        },
+        "desktop": {
+          "type": "Desktop en offline",
+          "quote": "Geweldige POS voor je WooCommerce-winkel; er is een desktopversie, waardoor hij beter is voor plaatsen met zwakke internetverbinding. Ik denk dat er nog meer mooie functies aankomen.",
+          "attribution": "rodriguekgl"
+        }
+      }
+    },
     "benefits": {
       "heading": "Why stores choose WCPOS",
       "items": {

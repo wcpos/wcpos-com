@@ -69,6 +69,28 @@
       "attribution": "Ward, wordpress.org review",
       "story": "Read our story →"
     },
+    "useCases": {
+      "title": "Works for stores of all kinds",
+      "reviewSuffix": "wordpress.org review",
+      "cards": {
+        "retail": {
+          "type": "Retail Store",
+          "quote": "I did a lot of research when looking for a POS for my existing WC site, and nearly overlooked this one because it was free. But I’m glad I tried it. It does everything you want without asking for subscriptions or a percentage of your sales.",
+          "attribution": "nckllnpssy"
+        },
+        "market": {
+          "type": "Market Vendor",
+          "quote": "I’m a ceramicist in Annecy and I sell through my WooCommerce shop and at markets. I’ve been using WCPOS for over a year and bought the lifetime Pro license a few months ago — worth it, I think. Paul is responsive on Discord, even on weekends.",
+          "attribution": "adeline",
+          "note": "translated from French"
+        },
+        "desktop": {
+          "type": "Desktop & Offline",
+          "quote": "Great POS for your WooCommerce store, it has the desktop version which makes it better for places with weak internet connectivity. I believe there are more great features coming up.",
+          "attribution": "rodriguekgl"
+        }
+      }
+    },
     "benefits": {
       "heading": "Why stores choose WCPOS",
       "items": {

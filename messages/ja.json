@@ -69,6 +69,28 @@
       "attribution": "Ward、wordpress.orgレビュー",
       "story": "ストーリーを読む →"
     },
+    "useCases": {
+      "title": "さまざまな店舗に対応",
+      "reviewSuffix": "wordpress.orgレビュー",
+      "cards": {
+        "retail": {
+          "type": "小売店",
+          "quote": "既存のWCサイト用POSを探してかなり調べましたが、無料だったのでこれを見落とすところでした。でも試してよかったです。サブスクや売上の割合を求めずに、必要なことをすべてこなしてくれます。",
+          "attribution": "nckllnpssy"
+        },
+        "market": {
+          "type": "マーケット出店者",
+          "quote": "私はアヌシーの陶芸家で、WooCommerceショップとマーケットで販売しています。WCPOSを1年以上使っていて、数か月前にLifetime Proライセンスを購入しました。価値があると思います。PaulはDiscordで週末でもすぐに対応してくれます。",
+          "attribution": "adeline",
+          "note": "フランス語からの翻訳"
+        },
+        "desktop": {
+          "type": "デスクトップとオフライン",
+          "quote": "WooCommerceストアに最適なPOSです。デスクトップ版があり、インターネット接続が弱い場所ではさらに便利です。今後も素晴らしい機能が増えると思います。",
+          "attribution": "rodriguekgl"
+        }
+      }
+    },
     "benefits": {
       "heading": "Why stores choose WCPOS",
       "items": {

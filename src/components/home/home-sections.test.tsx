@@ -168,6 +168,57 @@ describe('UseCasesSection', () => {
       )
     }
   })
+
+  it('renders translated use-case copy from messages', () => {
+    render(
+      <NextIntlClientProvider
+        locale="en"
+        messages={{
+          home: {
+            useCases: {
+              title: 'Translated use cases title',
+              reviewSuffix: 'translated review suffix',
+              cards: {
+                retail: {
+                  type: 'Translated retail type',
+                  quote: 'Translated retail quote',
+                  attribution: 'Translated retail attribution',
+                },
+                market: {
+                  type: 'Translated market type',
+                  quote: 'Translated market quote',
+                  attribution: 'Translated market attribution',
+                  note: 'Translated market note',
+                },
+                desktop: {
+                  type: 'Translated desktop type',
+                  quote: 'Translated desktop quote',
+                  attribution: 'Translated desktop attribution',
+                },
+              },
+            },
+          },
+        }}
+      >
+        <UseCasesSection />
+      </NextIntlClientProvider>
+    )
+
+    expect(
+      screen.getByRole('heading', { name: 'Translated use cases title' })
+    ).toBeInTheDocument()
+    expect(screen.getByText('Translated retail type')).toBeInTheDocument()
+    expect(screen.getByText(/Translated market quote/)).toBeInTheDocument()
+    expect(screen.getByText(/Translated market note/)).toBeInTheDocument()
+    expect(
+      screen.getByRole('link', {
+        name: 'Translated desktop attribution, translated review suffix',
+      })
+    ).toHaveAttribute(
+      'href',
+      'https://wordpress.org/support/topic/great-pos-for-your-woocommerce-store/'
+    )
+  })
 })
 
 describe('FeaturesSection', () => {
