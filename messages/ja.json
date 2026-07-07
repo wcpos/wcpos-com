@@ -48,8 +48,43 @@
     "subtitle": "WooCommerce向けの高速なPOS"
   },
   "roadmap": {
-    "title": "ロードマップ",
-    "subtitle": "WCPOSで開発中の機能"
+    "meta": {
+      "title": "Roadmap",
+      "description": "See what we are building next for WCPOS — upcoming features, milestones, and release progress."
+    },
+    "page": {
+      "eyebrow": "Roadmap",
+      "title": "The release train",
+      "description": "Every stop on the way to a faster, offline-proof WCPOS — pulled straight from our GitHub, newest work first."
+    },
+    "board": {
+      "link": "live from the WCPOS project board"
+    },
+    "status": {
+      "done": "Done",
+      "inProgress": "In progress",
+      "planned": "Planned"
+    },
+    "timeline": {
+      "empty": "No roadmap items to display yet.",
+      "phases": {
+        "now": "Now",
+        "next": "Next",
+        "shipped": "Shipped"
+      },
+      "progress": "{completed} of {total} done",
+      "progressDue": "{completed} of {total} done · due {date}",
+      "shipped": "shipped",
+      "shippedWithDate": "shipped · {date}"
+    },
+    "bugs": {
+      "summary": "{count, plural, one {+ # bug fix & improvements} other {+ # bug fixes & improvements}}",
+      "status": {
+        "done": "fixed",
+        "in_progress": "in progress",
+        "planned": "planned"
+      }
+    }
   },
   "pro": {
     "features": {

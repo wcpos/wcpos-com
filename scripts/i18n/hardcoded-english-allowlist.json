@@ -1,7 +1,7 @@
 {
   "version": 1,
   "generatedBy": "scripts/i18n/hardcoded-english.ts --update",
-  "updatedAt": "2026-07-07T00:52:45.545Z",
+  "updatedAt": "2026-07-07T00:57:49.945Z",
   "scope": [
     "src/app",
     "src/components",
@@ -234,44 +234,12 @@
       "count": 1
     },
     {
-      "id": "680c55210407c601",
-      "file": "src/app/[locale]/(main)/roadmap/page.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "Every stop on the way to a faster, offline-proof WCPOS — pulled straight from our GitHub, newest work first.",
-      "count": 1
-    },
-    {
       "id": "6d7cfb97e1e4ccf1",
       "file": "src/app/[locale]/(main)/roadmap/page.tsx",
       "category": "route/page",
       "attr": null,
       "text": "roadmap",
       "count": 2
-    },
-    {
-      "id": "d179fab2987565af",
-      "file": "src/app/[locale]/(main)/roadmap/page.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "Roadmap",
-      "count": 2
-    },
-    {
-      "id": "821bb8817fdef053",
-      "file": "src/app/[locale]/(main)/roadmap/page.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "See what we are building next for WCPOS — upcoming features, milestones, and release progress.",
-      "count": 1
-    },
-    {
-      "id": "591397a24e4c596a",
-      "file": "src/app/[locale]/(main)/roadmap/page.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "The release train",
-      "count": 1
     },
     {
       "id": "2688b87e9ad513f6",
@@ -5266,43 +5234,19 @@
       "count": 1
     },
     {
-      "id": "9af14c9904660381",
-      "file": "src/components/roadmap/bug-fix-list.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "& improvements",
-      "count": 1
-    },
-    {
-      "id": "b166f75ed65fba26",
-      "file": "src/components/roadmap/bug-fix-list.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "in progress",
-      "count": 1
-    },
-    {
-      "id": "6ed4961206b706d9",
-      "file": "src/components/roadmap/bug-fix-list.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "planned",
-      "count": 1
-    },
-    {
       "id": "3c8e0172926bbc71",
       "file": "src/components/roadmap/bug-fix-list.tsx",
       "category": "component",
       "attr": null,
       "text": "status",
-      "count": 2
+      "count": 1
     },
     {
-      "id": "c2610a7a115440fd",
-      "file": "src/components/roadmap/roadmap-timeline.tsx",
+      "id": "9a46913442c17853",
+      "file": "src/components/roadmap/bug-fix-list.tsx",
       "category": "component",
       "attr": null,
-      "text": "· due",
+      "text": "use client",
       "count": 1
     },
     {
@@ -5415,14 +5359,6 @@
       "category": "component",
       "attr": null,
       "text": "done",
-      "count": 2
-    },
-    {
-      "id": "736327e69f7780df",
-      "file": "src/components/roadmap/roadmap-timeline.tsx",
-      "category": "component",
-      "attr": "aria-label",
-      "text": "Done",
       "count": 1
     },
     {
@@ -5431,38 +5367,6 @@
       "category": "component",
       "attr": null,
       "text": "end 0.6",
-      "count": 1
-    },
-    {
-      "id": "b33340b40f91c080",
-      "file": "src/components/roadmap/roadmap-timeline.tsx",
-      "category": "component",
-      "attr": "aria-label",
-      "text": "In progress",
-      "count": 1
-    },
-    {
-      "id": "b08b97046051badf",
-      "file": "src/components/roadmap/roadmap-timeline.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "live from the WCPOS project board",
-      "count": 1
-    },
-    {
-      "id": "fd43bd9672919e67",
-      "file": "src/components/roadmap/roadmap-timeline.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "No roadmap items to display yet.",
-      "count": 1
-    },
-    {
-      "id": "ee2a1c84072b81d9",
-      "file": "src/components/roadmap/roadmap-timeline.tsx",
-      "category": "component",
-      "attr": "aria-label",
-      "text": "Planned",
       "count": 1
     },
     {
@@ -5487,7 +5391,7 @@
       "category": "component",
       "attr": null,
       "text": "shipped",
-      "count": 6
+      "count": 4
     },
     {
       "id": "f7be611cd20383d2",
@@ -5495,14 +5399,6 @@
       "category": "component",
       "attr": "tone",
       "text": "shipped",
-      "count": 1
-    },
-    {
-      "id": "4aa335da57a97411",
-      "file": "src/components/roadmap/roadmap-timeline.tsx",
-      "category": "component",
-      "attr": "label",
-      "text": "Shipped",
       "count": 1
     },
     {

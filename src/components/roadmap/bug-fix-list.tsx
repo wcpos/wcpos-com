@@ -1,11 +1,8 @@
+'use client'
+
+import { useTranslations } from 'next-intl'
 import type { RoadmapItem } from '@/types/roadmap'
 import { Collapsible } from '@/components/ui/collapsible'
-
-const STATUS_WORD: Record<RoadmapItem['status'], string> = {
-  done: 'fixed',
-  in_progress: 'in progress',
-  planned: 'planned',
-}
 
 const STATUS_DOT: Record<RoadmapItem['status'], string> = {
   done: 'bg-emerald-500',
@@ -18,13 +15,15 @@ const STATUS_DOT: Record<RoadmapItem['status'], string> = {
  * Native <details> via the Collapsible primitive, so it works without JS.
  */
 export function BugFixList({ bugs }: { bugs: RoadmapItem[] }) {
+  const t = useTranslations('roadmap.bugs')
+
   if (bugs.length === 0) return null
 
   return (
     <Collapsible
       className="mt-2"
       summaryClassName="w-fit font-mono text-xs text-muted-foreground transition-colors hover:text-foreground"
-      summary={`+ ${bugs.length} bug ${bugs.length === 1 ? 'fix' : 'fixes'} & improvements`}
+      summary={t('summary', { count: bugs.length })}
     >
       <ul className="mt-2 space-y-1.5 pl-4">
         {bugs.map((bug) => (
@@ -43,7 +42,7 @@ export function BugFixList({ bugs }: { bugs: RoadmapItem[] }) {
                 {bug.title}
               </span>
               <span className="font-mono text-[11px]">
-                {STATUS_WORD[bug.status]}
+                {t(`status.${bug.status}`)}
               </span>
             </a>
           </li>
