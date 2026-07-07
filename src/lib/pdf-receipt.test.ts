@@ -118,6 +118,15 @@ describe('buildReceiptPdf', () => {
     expect(stream).toContain(hex('No tax has been added to this order.'))
   })
 
+  it('prints order dates in a localized non-ambiguous long format', async () => {
+    const stream = await pageStream(
+      await buildTestReceiptPdf(baseReceipt, 'en-US')
+    )
+
+    expect(stream).toContain(hex('February 1, 2026'))
+    expect(stream).not.toContain(hex('2/1/2026'))
+  })
+
   it('renders billing name, details and tax number when provided', async () => {
     const stream = await pageStream(
       await buildTestReceiptPdf(
