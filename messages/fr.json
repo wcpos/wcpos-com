@@ -2,7 +2,9 @@
   "common": {
     "signIn": "Se connecter",
     "account": "Compte",
-    "openMenu": "Ouvrir le menu"
+    "openMenu": "Ouvrir le menu",
+    "accountMenu": "Menu du compte",
+    "signOut": "Se déconnecter"
   },
   "header": {
     "documentation": "Documentation",

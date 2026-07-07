@@ -2,7 +2,9 @@
   "common": {
     "signIn": "登录",
     "account": "账户",
-    "openMenu": "打开菜单"
+    "openMenu": "打开菜单",
+    "accountMenu": "账户菜单",
+    "signOut": "退出登录"
   },
   "header": {
     "documentation": "文档",

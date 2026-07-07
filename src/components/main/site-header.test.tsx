@@ -30,6 +30,9 @@ vi.mock('next-intl', () => ({
       common: {
         signIn: 'Translated sign in',
         openMenu: 'Translated open menu',
+        account: 'Translated account',
+        accountMenu: 'Translated account menu',
+        signOut: 'Translated sign out',
       },
     }
     return translations[namespace]?.[key] ?? key
@@ -185,7 +188,7 @@ describe('SiteHeader', () => {
 
     // Authenticated state renders an avatar menu trigger, not a plain link.
     expect(
-      screen.getAllByRole('button', { name: /account menu/i }).length
+      screen.getAllByRole('button', { name: 'Translated account menu' }).length
     ).toBeGreaterThan(0)
   })
 

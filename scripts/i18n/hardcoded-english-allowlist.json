@@ -1,7 +1,7 @@
 {
   "version": 1,
   "generatedBy": "scripts/i18n/hardcoded-english.ts --update",
-  "updatedAt": "2026-07-07T02:43:48.722Z",
+  "updatedAt": "2026-07-07T02:47:08.308Z",
   "scope": [
     "src/app",
     "src/components",
@@ -2743,30 +2743,6 @@
       "category": "component",
       "attr": null,
       "text": "use client",
-      "count": 1
-    },
-    {
-      "id": "d17100bbd177855e",
-      "file": "src/components/main/user-menu.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Account",
-      "count": 1
-    },
-    {
-      "id": "919a2773de58b2c2",
-      "file": "src/components/main/user-menu.tsx",
-      "category": "component",
-      "attr": "aria-label",
-      "text": "Account menu",
-      "count": 1
-    },
-    {
-      "id": "58d698b4ad6a7907",
-      "file": "src/components/main/user-menu.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Sign out",
       "count": 1
     },
     {

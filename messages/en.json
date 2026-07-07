@@ -2,7 +2,9 @@
   "common": {
     "signIn": "Sign In",
     "account": "Account",
-    "openMenu": "Open menu"
+    "openMenu": "Open menu",
+    "accountMenu": "Account menu",
+    "signOut": "Sign out"
   },
   "header": {
     "documentation": "Documentation",

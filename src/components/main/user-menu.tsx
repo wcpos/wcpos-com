@@ -1,6 +1,7 @@
 'use client'
 
 import { useRef } from 'react'
+import { useTranslations } from 'next-intl'
 import { LogOut, User } from 'lucide-react'
 import { Link } from '@/i18n/navigation'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
@@ -25,6 +26,7 @@ interface UserMenuProps {
  * dropdown (email · Account · Sign out) is consistent on every page.
  */
 export function UserMenu({ email, avatarUrl, initials }: UserMenuProps) {
+  const t = useTranslations('common')
   const signOutForm = useRef<HTMLFormElement>(null)
 
   return (
@@ -34,7 +36,7 @@ export function UserMenu({ email, avatarUrl, initials }: UserMenuProps) {
           variant="ghost"
           size="icon"
           className="rounded-full"
-          aria-label="Account menu"
+          aria-label={t('accountMenu')}
         >
           <Avatar className="h-8 w-8">
             <AvatarImage src={avatarUrl} alt={email} />
@@ -52,7 +54,7 @@ export function UserMenu({ email, avatarUrl, initials }: UserMenuProps) {
         <DropdownMenuItem asChild>
           <Link href="/account">
             <User />
-            Account
+            {t('account')}
           </Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
@@ -72,7 +74,7 @@ export function UserMenu({ email, avatarUrl, initials }: UserMenuProps) {
           }}
         >
           <LogOut />
-          Sign out
+          {t('signOut')}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

@@ -2,7 +2,9 @@
   "common": {
     "signIn": "サインイン",
     "account": "アカウント",
-    "openMenu": "メニューを開く"
+    "openMenu": "メニューを開く",
+    "accountMenu": "アカウントメニュー",
+    "signOut": "ログアウト"
   },
   "header": {
     "documentation": "ドキュメント",
