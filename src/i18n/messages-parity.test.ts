@@ -40,6 +40,11 @@ const otherLocales = fileLocales.filter((locale) => locale !== defaultLocale)
 const checkoutRecoveryKeys = enKeys.filter((key) =>
   key.startsWith('pro.checkout.recovery.orderPending.')
 )
+const auditedFrenchNamespacePrefixes = ['roadmap.', 'support.']
+const frenchIdenticalCopyAllowlist = new Set([
+  'roadmap.meta.title',
+  'roadmap.page.eyebrow',
+])
 
 describe('messages key parity', () => {
   it('has a messages file for every configured locale', () => {
@@ -107,4 +112,29 @@ describe('messages key parity', () => {
       ).toEqual([])
     }
   )
+
+  it('fr.json translates the audited public support and roadmap copy', () => {
+    const english = loadMessages(defaultLocale)
+    const french = loadMessages('fr')
+    const auditedKeys = enKeys.filter(
+      (key) =>
+        auditedFrenchNamespacePrefixes.some((prefix) =>
+          key.startsWith(prefix)
+        ) && !frenchIdenticalCopyAllowlist.has(key)
+    )
+    const untranslatedKeys = auditedKeys.filter((key) => {
+      const englishValue = valueAtPath(english, key)
+      const frenchValue = valueAtPath(french, key)
+      return (
+        englishValue !== undefined &&
+        frenchValue === englishValue &&
+        /[A-Za-z]{3}/.test(englishValue)
+      )
+    })
+
+    expect(
+      untranslatedKeys,
+      'messages/fr.json must not copy audited support/roadmap English strings verbatim'
+    ).toEqual([])
+  })
 })

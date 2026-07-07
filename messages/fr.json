@@ -344,39 +344,39 @@
   "roadmap": {
     "meta": {
       "title": "Roadmap",
-      "description": "See what we are building next for WCPOS — upcoming features, milestones, and release progress."
+      "description": "Découvrez ce que nous construisons ensuite pour WCPOS — fonctionnalités à venir, jalons et progression des versions."
     },
     "page": {
       "eyebrow": "Roadmap",
-      "title": "The release train",
-      "description": "Every stop on the way to a faster, offline-proof WCPOS — pulled straight from our GitHub, newest work first."
+      "title": "Le train des versions",
+      "description": "Chaque étape vers un WCPOS plus rapide et prêt pour le hors ligne — directement depuis notre GitHub, les travaux les plus récents en premier."
     },
     "board": {
-      "link": "live from the WCPOS project board"
+      "link": "en direct depuis le tableau de projet WCPOS"
     },
     "status": {
-      "done": "Done",
-      "inProgress": "In progress",
-      "planned": "Planned"
+      "done": "Terminé",
+      "inProgress": "En cours",
+      "planned": "Prévu"
     },
     "timeline": {
-      "empty": "No roadmap items to display yet.",
+      "empty": "Aucun élément de feuille de route à afficher pour le moment.",
       "phases": {
-        "now": "Now",
-        "next": "Next",
-        "shipped": "Shipped"
+        "now": "Maintenant",
+        "next": "Ensuite",
+        "shipped": "Livré"
       },
-      "progress": "{completed} of {total} done",
-      "progressDue": "{completed} of {total} done · due {date}",
-      "shipped": "shipped",
-      "shippedWithDate": "shipped · {date}"
+      "progress": "{completed} sur {total} terminé(s)",
+      "progressDue": "{completed} sur {total} terminé(s) · prévu le {date}",
+      "shipped": "livré",
+      "shippedWithDate": "livré · {date}"
     },
     "bugs": {
-      "summary": "{count, plural, one {+ # bug fix & improvements} other {+ # bug fixes & improvements}}",
+      "summary": "{count, plural, one {+ # correction de bug et amélioration} other {+ # corrections de bugs et améliorations}}",
       "status": {
-        "done": "fixed",
-        "in_progress": "in progress",
-        "planned": "planned"
+        "done": "corrigé",
+        "in_progress": "en cours",
+        "planned": "prévu"
       }
     }
   },
@@ -1527,53 +1527,53 @@
   },
   "support": {
     "meta": {
-      "title": "Support",
-      "description": "Ask anything about WCPOS and get an instant answer from our docs, or chat with the community on Discord."
+      "title": "Assistance",
+      "description": "Posez vos questions sur WCPOS et obtenez une réponse instantanée tirée de notre documentation, ou discutez avec la communauté sur Discord."
     },
     "chat": {
       "hero": {
-        "title": "How can we help?",
-        "subtitle": "Ask anything about WCPOS — setup, licensing, hardware, syncing, printing. You'll get an instant answer drawn from our docs."
+        "title": "Comment pouvons-nous vous aider ?",
+        "subtitle": "Posez n’importe quelle question sur WCPOS — configuration, licences, matériel, synchronisation, impression. Vous recevrez une réponse instantanée issue de notre documentation."
       },
       "examples": {
-        "e1": "Why is my licence inactive?",
-        "e2": "Which barcode scanners are supported?",
-        "e3": "How do I sync products from WooCommerce?"
+        "e1": "Pourquoi ma licence est-elle inactive ?",
+        "e2": "Quels scanners de codes-barres sont pris en charge ?",
+        "e3": "Comment synchroniser les produits depuis WooCommerce ?"
       },
       "feedback": {
-        "prompt": "Was this helpful?",
-        "yes": "Yes",
+        "prompt": "Cette réponse vous a-t-elle été utile ?",
+        "yes": "Oui",
         "no": "No"
       },
-      "thinking": "Aide is thinking…",
+      "thinking": "Aide réfléchit…",
       "form": {
-        "label": "Ask a support question",
-        "placeholder": "e.g. How do I connect a receipt printer?",
-        "followUpPlaceholder": "Ask a follow-up…",
-        "submit": "Ask"
+        "label": "Poser une question d’assistance",
+        "placeholder": "p. ex. Comment connecter une imprimante de reçus ?",
+        "followUpPlaceholder": "Posez une question complémentaire…",
+        "submit": "Demander"
       },
-      "discordLink": "Ask in Discord →",
-      "poweredBy": "Answered by Aide · trained on the WCPOS docs & wiki"
+      "discordLink": "Demander sur Discord →",
+      "poweredBy": "Répondu par Aide · entraîné sur la documentation et le wiki WCPOS"
     },
     "errors": {
-      "invalid_question": "Please enter a question (up to 1000 characters).",
-      "bot_check_failed": "Bot check failed. Please reload and try again.",
-      "rate_limited": "You're asking a lot of questions — please wait a few minutes, or hop into Discord.",
-      "budget_exhausted": "The assistant is busy right now. Please try Discord for a faster answer.",
-      "empty_answer": "The assistant is temporarily unavailable. Please try Discord while we get it back.",
-      "gateway_rate_limited": "The assistant is busy right now — please try again later.",
-      "timeout": "That took too long. Please try again, or ask in Discord.",
-      "unavailable": "The assistant is temporarily unavailable. Please try Discord while we get it back.",
-      "network": "The assistant is unavailable right now. Please ask in Discord.",
-      "unknown": "Something went wrong."
+      "invalid_question": "Veuillez saisir une question (jusqu’à 1000 caractères).",
+      "bot_check_failed": "La vérification anti-robot a échoué. Veuillez recharger la page et réessayer.",
+      "rate_limited": "Vous posez beaucoup de questions — veuillez patienter quelques minutes, ou passez sur Discord.",
+      "budget_exhausted": "L’assistant est occupé pour le moment. Essayez Discord pour une réponse plus rapide.",
+      "empty_answer": "L’assistant est temporairement indisponible. Essayez Discord pendant que nous le remettons en service.",
+      "gateway_rate_limited": "L’assistant est occupé pour le moment — veuillez réessayer plus tard.",
+      "timeout": "Cela a pris trop de temps. Veuillez réessayer, ou poser la question sur Discord.",
+      "unavailable": "L’assistant est temporairement indisponible. Essayez Discord pendant que nous le remettons en service.",
+      "network": "L’assistant est indisponible pour le moment. Veuillez poser votre question sur Discord.",
+      "unknown": "Une erreur est survenue."
     },
     "order": {
-      "title": "Contact support about your order",
-      "body": "Quote reference <ref></ref> so we can confirm the payment or finish the order before you pay again."
+      "title": "Contacter l’assistance au sujet de votre commande",
+      "body": "Indiquez la référence <ref></ref> afin que nous puissions confirmer le paiement ou finaliser la commande avant que vous ne payiez à nouveau."
     },
     "discord": {
-      "title": "Prefer to talk to a human?",
-      "subtitle": "Join store owners and the team in our live Discord community."
+      "title": "Vous préférez parler à un humain ?",
+      "subtitle": "Rejoignez des propriétaires de boutiques et l’équipe dans notre communauté Discord en direct."
     }
   }
 }
