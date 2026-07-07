@@ -16,21 +16,16 @@ import { TextLink } from '@/components/ui/text-link'
 import { resolveProCheckoutVariant } from '@/services/core/analytics/posthog-service'
 import { ANALYTICS_DISTINCT_ID_COOKIE } from '@/lib/analytics/distinct-id'
 import { getAnalyticsConfig } from '@/lib/analytics/config'
-import {
-  getRequestStoreEnvironment,
-  getStoreEnvironmentByName,
-  type StoreEnvironmentName,
-} from '@/lib/store-environment'
+import { getRequestStoreEnvironment } from '@/lib/store-environment'
 import type { Metadata } from 'next'
 import { marketingMetadata } from '@/lib/seo'
-import {
-  applyProOfferCatalogCachePolicy,
-  buildProOfferSchemaOffers,
-  getProCheckoutCtaLabel,
-  getProOfferCatalog,
-} from '@/lib/pro-offer-catalog'
+import { getProCheckoutCtaLabel } from '@/lib/pro-offer-catalog'
 import { Section } from '@/components/ui/section'
 import { SectionHeading } from '@/components/ui/section-heading'
+import {
+  ProProductJsonLd,
+  getCachedProOfferCatalog,
+} from './pro-product-json-ld'
 
 const PRO_MESSAGE_NAMESPACE = 'pro'
 
@@ -47,22 +42,6 @@ export async function generateMetadata({
     title: t('metadata.title'),
     description: t('metadata.description'),
   })
-}
-
-/**
- * One cached catalog fetch shared by the buy box and the JSON-LD block —
- * keyed by the store environment (beta serves staging prices, wcpos.com
- * serves live; the two must never share a cache entry). Experiment variant
- * and locale stay outside the boundary as pure string work.
- */
-async function getCachedProOfferCatalog(envName: StoreEnvironmentName) {
-  'use cache'
-  const catalog = await getProOfferCatalog(
-    undefined,
-    getStoreEnvironmentByName(envName)
-  )
-  applyProOfferCatalogCachePolicy(catalog)
-  return catalog
 }
 
 function BuyBoxSkeleton() {
@@ -155,33 +134,6 @@ async function BuyBoxWithExperiment({ locale }: { locale: string }) {
           </p>
         </>
       }
-    />
-  )
-}
-
-export async function ProProductJsonLd({ locale }: { locale: string }) {
-  // SEO metadata is prerendered into the shared static shell — always live.
-  const [t, { offers }] = await Promise.all([
-    getTranslations({ locale, namespace: PRO_MESSAGE_NAMESPACE }),
-    getCachedProOfferCatalog('live'),
-  ])
-
-  return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{
-        __html: JSON.stringify({
-          '@context': 'https://schema.org',
-          '@type': 'Product',
-          name: t('schema.name'),
-          description: t('schema.description'),
-          brand: {
-            '@type': 'Organization',
-            name: 'WCPOS',
-          },
-          offers: buildProOfferSchemaOffers(offers),
-        }),
-      }}
     />
   )
 }
