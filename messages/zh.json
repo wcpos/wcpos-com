@@ -51,6 +51,12 @@
     "meta": {
       "description": "Point of Sale for WooCommerce. Sync your products, sell offline, and connect real hardware with native apps for iOS, Android, and desktop."
     },
+    "cta": {
+      "title": "准备好使用 WooCommerce 进行店内销售了吗？",
+      "subtitle": "试用在线演示或下载免费插件即可开始。",
+      "liveDemo": "试用在线演示",
+      "download": "免费下载"
+    },
     "benefits": {
       "heading": "Why stores choose WCPOS",
       "items": {

@@ -224,4 +224,35 @@ describe('CtaSection', () => {
       screen.getByRole('link', { name: 'Download Free' })
     ).toHaveAttribute('href', '/downloads')
   })
+
+  it('renders translated CTA copy from messages', () => {
+    render(
+      <NextIntlClientProvider
+        locale="en"
+        messages={{
+          home: {
+            cta: {
+              title: 'Translated CTA title',
+              subtitle: 'Translated CTA subtitle',
+              liveDemo: 'Translated live demo',
+              download: 'Translated download',
+            },
+          },
+        }}
+      >
+        <CtaSection />
+      </NextIntlClientProvider>
+    )
+
+    expect(
+      screen.getByRole('heading', { name: 'Translated CTA title' })
+    ).toBeInTheDocument()
+    expect(screen.getByText('Translated CTA subtitle')).toBeInTheDocument()
+    expect(
+      screen.getByRole('link', { name: 'Translated live demo' })
+    ).toHaveAttribute('href', 'https://demo.wcpos.com/pos')
+    expect(
+      screen.getByRole('link', { name: 'Translated download' })
+    ).toHaveAttribute('href', '/downloads')
+  })
 })

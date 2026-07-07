@@ -1,7 +1,7 @@
 {
   "version": 1,
   "generatedBy": "scripts/i18n/hardcoded-english.ts --update",
-  "updatedAt": "2026-07-07T03:01:08.897Z",
+  "updatedAt": "2026-07-07T03:04:45.584Z",
   "scope": [
     "src/app",
     "src/components",
@@ -1959,38 +1959,6 @@
       "category": "component",
       "attr": null,
       "text": "text-[9px] font-medium",
-      "count": 1
-    },
-    {
-      "id": "dac9addad2c4b11b",
-      "file": "src/components/home/cta-section.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Download Free",
-      "count": 1
-    },
-    {
-      "id": "32440990c2e634c3",
-      "file": "src/components/home/cta-section.tsx",
-      "category": "component",
-      "attr": "title",
-      "text": "Ready to sell in-store with WooCommerce?",
-      "count": 1
-    },
-    {
-      "id": "837920f63e8204ab",
-      "file": "src/components/home/cta-section.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Try Live Demo",
-      "count": 1
-    },
-    {
-      "id": "6a8ed9e29288cb7e",
-      "file": "src/components/home/cta-section.tsx",
-      "category": "component",
-      "attr": "subtitle",
-      "text": "Try the live demo or download the free plugin to get started.",
       "count": 1
     },
     {
