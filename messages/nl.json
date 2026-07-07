@@ -2,7 +2,8 @@
   "common": {
     "signIn": "Aanmelden",
     "account": "Account",
-    "openMenu": "Menu openen"
+    "openMenu": "Menu openen",
+    "dismiss": "Sluiten"
   },
   "header": {
     "documentation": "Documentatie",
@@ -244,6 +245,7 @@
       "copyKeyAria": "Licentiesleutel die eindigt op {suffix} kopiëren",
       "copiedKey": "Gekopieerd",
       "copyError": "Kopiëren van licentiesleutel mislukt. Probeer het opnieuw.",
+      "roadmapTeaser": "Bekijk wat eraan komt op de roadmap",
       "activatedSites": "Activated Sites",
       "activatedSitesHelp": "These are WordPress sites using this license. Deactivate a stale or test site to free an activation slot.",
       "instanceId": "Instance ID: {id}",

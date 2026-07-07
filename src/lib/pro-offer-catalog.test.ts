@@ -261,7 +261,7 @@ describe('offer presentation helpers', () => {
 
   it('builds shared price summaries for marketing surfaces', () => {
     expect(formatHomeProPriceSummary(offers)).toBe(
-      '$129/year or $399 lifetime. No per-register fees.'
+      '$129/year or $399 lifetime (USD). No per-register fees.'
     )
     expect(formatFounderProPriceSummary(offers)).toBe('$129/yr or $399 once')
   })

@@ -2,7 +2,8 @@
   "common": {
     "signIn": "로그인",
     "account": "계정",
-    "openMenu": "메뉴 열기"
+    "openMenu": "메뉴 열기",
+    "dismiss": "닫기"
   },
   "header": {
     "documentation": "문서",
@@ -244,6 +245,7 @@
       "copyKeyAria": "{suffix}(으)로 끝나는 라이선스 키 복사",
       "copiedKey": "복사됨",
       "copyError": "라이선스 키를 복사하지 못했습니다. 다시 시도해 주세요.",
+      "roadmapTeaser": "로드맵에서 향후 계획을 확인하세요",
       "activatedSites": "Activated Sites",
       "activatedSitesHelp": "These are WordPress sites using this license. Deactivate a stale or test site to free an activation slot.",
       "instanceId": "Instance ID: {id}",

@@ -2,7 +2,8 @@
   "common": {
     "signIn": "登录",
     "account": "账户",
-    "openMenu": "打开菜单"
+    "openMenu": "打开菜单",
+    "dismiss": "关闭"
   },
   "header": {
     "documentation": "文档",
@@ -244,6 +245,7 @@
       "copyKeyAria": "复制以 {suffix} 结尾的许可证密钥",
       "copiedKey": "已复制",
       "copyError": "复制许可证密钥失败。请重试。",
+      "roadmapTeaser": "查看路线图上即将推出的功能",
       "activatedSites": "Activated Sites",
       "activatedSitesHelp": "These are WordPress sites using this license. Deactivate a stale or test site to free an activation slot.",
       "instanceId": "Instance ID: {id}",

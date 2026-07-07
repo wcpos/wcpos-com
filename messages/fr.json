@@ -2,7 +2,8 @@
   "common": {
     "signIn": "Se connecter",
     "account": "Compte",
-    "openMenu": "Ouvrir le menu"
+    "openMenu": "Ouvrir le menu",
+    "dismiss": "Ignorer"
   },
   "header": {
     "documentation": "Documentation",
@@ -244,6 +245,7 @@
       "copyKeyAria": "Copier la clé de licence se terminant par {suffix}",
       "copiedKey": "Copiée",
       "copyError": "Échec de la copie de la clé de licence. Veuillez réessayer.",
+      "roadmapTeaser": "Découvrez ce qui arrive sur la feuille de route",
       "activatedSites": "Activated Sites",
       "activatedSitesHelp": "These are WordPress sites using this license. Deactivate a stale or test site to free an activation slot.",
       "instanceId": "Instance ID: {id}",

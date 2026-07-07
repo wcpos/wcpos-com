@@ -2,7 +2,8 @@
   "common": {
     "signIn": "サインイン",
     "account": "アカウント",
-    "openMenu": "メニューを開く"
+    "openMenu": "メニューを開く",
+    "dismiss": "閉じる"
   },
   "header": {
     "documentation": "ドキュメント",
@@ -244,6 +245,7 @@
       "copyKeyAria": "末尾が {suffix} のライセンスキーをコピー",
       "copiedKey": "コピーしました",
       "copyError": "ライセンスキーをコピーできませんでした。もう一度お試しください。",
+      "roadmapTeaser": "ロードマップで今後の予定をチェック",
       "activatedSites": "Activated Sites",
       "activatedSitesHelp": "These are WordPress sites using this license. Deactivate a stale or test site to free an activation slot.",
       "instanceId": "Instance ID: {id}",

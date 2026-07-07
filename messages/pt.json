@@ -2,7 +2,8 @@
   "common": {
     "signIn": "Iniciar sessão",
     "account": "Conta",
-    "openMenu": "Abrir menu"
+    "openMenu": "Abrir menu",
+    "dismiss": "Dispensar"
   },
   "header": {
     "documentation": "Documentação",
@@ -244,6 +245,7 @@
       "copyKeyAria": "Copiar chave de licença terminada em {suffix}",
       "copiedKey": "Copiada",
       "copyError": "Falha ao copiar a chave de licença. Tente novamente.",
+      "roadmapTeaser": "Veja o que vem por aí no roadmap",
       "activatedSites": "Activated Sites",
       "activatedSitesHelp": "These are WordPress sites using this license. Deactivate a stale or test site to free an activation slot.",
       "instanceId": "Instance ID: {id}",
