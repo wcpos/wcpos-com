@@ -249,6 +249,7 @@ export function PaymentStep({
         clientSecret={clientSecret}
         customerSessionClientSecret={customerSessionClientSecret}
         publishableKey={stripePublishableKey}
+        notConfiguredMessage={t('noneConfigured')}
       >
         <ExpressCheckoutRow
           cartId={cartId}
