@@ -283,9 +283,16 @@ export function LicensesClient({
           // /pro). On payment the Medusa order-completed subscriber extends the
           // SAME licence using the locked max(expiry, now) + 1yr rule.
           const isRenewable = license.expiry != null
-          const renewHref = plan?.handle
-            ? `/pro/checkout?product=${plan.handle}`
-            : '/pro'
+          // Yearly renewable licences use the one-click renewal flow (prefilled
+          // cart + saved card; falls back to the full checkout when billing
+          // isn't on file). Any other renewable/expired licence keeps the plain
+          // checkout deep-link.
+          const renewHref =
+            isRenewable && plan?.handle === 'wcpos-pro-yearly'
+              ? '/account/licenses/renew'
+              : plan?.handle
+                ? `/pro/checkout?product=${plan.handle}`
+                : '/pro'
           // Always offer renewal on a renewable licence that is active or
           // expired, EXCEPT while the expiring-soon banner is already showing
           // its own Renew (avoids two identical CTAs on one card). Skip the

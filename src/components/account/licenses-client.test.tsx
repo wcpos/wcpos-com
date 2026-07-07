@@ -266,7 +266,7 @@ describe('LicensesClient', () => {
     expect(screen.getByText('Yearly')).toBeInTheDocument()
   })
 
-  it('deep-links the Renew button to the pre-filled yearly checkout', () => {
+  it('routes the Renew button for a yearly licence to the one-click renewal flow', () => {
     render(
       <LicensesClient
         initialLicenses={[
@@ -278,11 +278,12 @@ describe('LicensesClient', () => {
       />
     )
 
-    // An active, non-expiring yearly licence shows the always-visible Renew,
-    // deep-linked to the pre-filled yearly checkout (not the generic /pro).
+    // An active yearly licence shows the always-visible Renew, pointed at the
+    // one-click renewal flow (prefilled cart + saved card), not the full
+    // checkout. That flow itself falls back to /pro/checkout without billing.
     expect(screen.getByRole('link', { name: 'Renew' })).toHaveAttribute(
       'href',
-      '/pro/checkout?product=wcpos-pro-yearly'
+      '/account/licenses/renew'
     )
   })
 
