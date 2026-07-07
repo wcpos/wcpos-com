@@ -225,7 +225,6 @@
       "activationsLabel": "Activeringen:",
       "activationsCount": "{count} van {max}",
       "downloads": "Downloads",
-      "activatedMachines": "Geactiveerde machines",
       "machineAdded": "Toegevoegd op {date}",
       "deactivateMachineAria": "{name} deactiveren",
       "genericMachineName": "machine",
@@ -244,7 +243,18 @@
       "hideKeyAria": "Licentiesleutel die eindigt op {suffix} verbergen",
       "copyKeyAria": "Licentiesleutel die eindigt op {suffix} kopiëren",
       "copiedKey": "Gekopieerd",
-      "copyError": "Kopiëren van licentiesleutel mislukt. Probeer het opnieuw."
+      "copyError": "Kopiëren van licentiesleutel mislukt. Probeer het opnieuw.",
+      "activatedSites": "Activated Sites",
+      "activatedSitesHelp": "These are WordPress sites using this license. Deactivate a stale or test site to free an activation slot.",
+      "instanceId": "Instance ID: {id}",
+      "lastSeen": "Last seen {date}",
+      "pluginVersionLabel": "WCPOS Pro {version}",
+      "wpVersionLabel": "WP {version}",
+      "wcVersionLabel": "WooCommerce {version}",
+      "deactivateSite": "Deactivate site",
+      "deactivateSiteConfirm": "This frees one activation slot. If the site is still in use, it will need to activate again.",
+      "deactivateConfirm": "Deactivate",
+      "deactivateCancel": "Cancel"
     },
     "downloads": {
       "heading": "Downloads",

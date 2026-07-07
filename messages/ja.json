@@ -225,7 +225,6 @@
       "activationsLabel": "有効化数:",
       "activationsCount": "{max} 中 {count}",
       "downloads": "ダウンロード",
-      "activatedMachines": "有効化された端末",
       "machineAdded": "{date} に追加",
       "deactivateMachineAria": "{name} を無効化",
       "genericMachineName": "端末",
@@ -244,7 +243,18 @@
       "hideKeyAria": "末尾が {suffix} のライセンスキーを非表示",
       "copyKeyAria": "末尾が {suffix} のライセンスキーをコピー",
       "copiedKey": "コピーしました",
-      "copyError": "ライセンスキーをコピーできませんでした。もう一度お試しください。"
+      "copyError": "ライセンスキーをコピーできませんでした。もう一度お試しください。",
+      "activatedSites": "Activated Sites",
+      "activatedSitesHelp": "These are WordPress sites using this license. Deactivate a stale or test site to free an activation slot.",
+      "instanceId": "Instance ID: {id}",
+      "lastSeen": "Last seen {date}",
+      "pluginVersionLabel": "WCPOS Pro {version}",
+      "wpVersionLabel": "WP {version}",
+      "wcVersionLabel": "WooCommerce {version}",
+      "deactivateSite": "Deactivate site",
+      "deactivateSiteConfirm": "This frees one activation slot. If the site is still in use, it will need to activate again.",
+      "deactivateConfirm": "Deactivate",
+      "deactivateCancel": "Cancel"
     },
     "downloads": {
       "heading": "ダウンロード",
