@@ -41,7 +41,7 @@ export async function GET(request: Request, { params }: RouteParams) {
     const result = await getCachedDownloadUrl(platform, version)
 
     // Check if it's an error response
-    if (typeof result === 'object' && 'error' in result) {
+    if (typeof result === 'object' && 'errorCode' in result) {
       return NextResponse.json(result, { status: result.status })
     }
 
@@ -50,7 +50,7 @@ export async function GET(request: Request, { params }: RouteParams) {
   } catch (error) {
     apiLogger.error`Electron download redirect failed: ${error}`
     return NextResponse.json(
-      { status: 500, error: 'Internal server error' },
+      { status: 500, errorCode: 'internal_server_error' },
       { status: 500 }
     )
   }

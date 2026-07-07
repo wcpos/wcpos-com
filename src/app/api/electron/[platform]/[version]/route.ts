@@ -41,7 +41,7 @@ export async function GET(request: Request, { params }: RouteParams) {
     const result = await getCachedUpdate(platform, version)
 
     // Check if it's an error response
-    if ('error' in result) {
+    if ('errorCode' in result) {
       return NextResponse.json(result, { status: result.status })
     }
 
@@ -55,7 +55,7 @@ export async function GET(request: Request, { params }: RouteParams) {
   } catch (error) {
     apiLogger.error`Electron update check failed: ${error}`
     return NextResponse.json(
-      { status: 500, error: 'Internal server error' },
+      { status: 500, errorCode: 'internal_server_error' },
       { status: 500 }
     )
   }
