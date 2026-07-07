@@ -79,9 +79,18 @@ export function ExpiryBannerClient({
         </div>
       }
     >
-      {t('expiresSoonRenew', {
-        date: formatDateForLocale(expiry, locale),
-      })}
+      <p>
+        {t('expiresSoonRenew', {
+          date: formatDateForLocale(expiry, locale),
+        })}
+      </p>
+      <Link
+        href="/roadmap"
+        prefetch={false}
+        className="inline-block text-sm font-medium underline underline-offset-2 hover:no-underline"
+      >
+        {t('roadmapTeaser')} <span aria-hidden="true">→</span>
+      </Link>
     </Alert>
   )
 }

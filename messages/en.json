@@ -245,7 +245,8 @@
       "hideKeyAria": "Hide license key ending in {suffix}",
       "copyKeyAria": "Copy license key ending in {suffix}",
       "copiedKey": "Copied",
-      "copyError": "Failed to copy license key. Please try again."
+      "copyError": "Failed to copy license key. Please try again.",
+      "roadmapTeaser": "See what's coming on the roadmap"
     },
     "downloads": {
       "heading": "Downloads",

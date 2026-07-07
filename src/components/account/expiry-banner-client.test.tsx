@@ -43,6 +43,13 @@ describe('ExpiryBannerClient', () => {
     expect(renew.getAttribute('href')).toBe(RENEW)
   })
 
+  it('links to the roadmap as a reason to renew', () => {
+    render(<ExpiryBannerClient expiry={EXPIRY} renewHref={RENEW} />)
+
+    const roadmap = screen.getByRole('link', { name: /roadmap/i })
+    expect(roadmap.getAttribute('href')).toBe('/roadmap')
+  })
+
   it('is suppressed on the licenses page (which has its own notices)', () => {
     pathnameRef.value = '/account/licenses'
     render(<ExpiryBannerClient expiry={EXPIRY} renewHref={RENEW} />)

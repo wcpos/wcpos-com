@@ -245,7 +245,8 @@
       "hideKeyAria": "Masquer la clé de licence se terminant par {suffix}",
       "copyKeyAria": "Copier la clé de licence se terminant par {suffix}",
       "copiedKey": "Copiée",
-      "copyError": "Échec de la copie de la clé de licence. Veuillez réessayer."
+      "copyError": "Échec de la copie de la clé de licence. Veuillez réessayer.",
+      "roadmapTeaser": "Découvrez ce qui arrive sur la feuille de route"
     },
     "downloads": {
       "heading": "Téléchargements",

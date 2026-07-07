@@ -245,7 +245,8 @@
       "hideKeyAria": "隐藏以 {suffix} 结尾的许可证密钥",
       "copyKeyAria": "复制以 {suffix} 结尾的许可证密钥",
       "copiedKey": "已复制",
-      "copyError": "复制许可证密钥失败。请重试。"
+      "copyError": "复制许可证密钥失败。请重试。",
+      "roadmapTeaser": "查看路线图上即将推出的功能"
     },
     "downloads": {
       "heading": "下载",

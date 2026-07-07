@@ -245,7 +245,8 @@
       "hideKeyAria": "Nascondi la chiave di licenza che termina con {suffix}",
       "copyKeyAria": "Copia la chiave di licenza che termina con {suffix}",
       "copiedKey": "Copiata",
-      "copyError": "Impossibile copiare la chiave di licenza. Riprova."
+      "copyError": "Impossibile copiare la chiave di licenza. Riprova.",
+      "roadmapTeaser": "Scopri cosa arriva nella roadmap"
     },
     "downloads": {
       "heading": "Download",
