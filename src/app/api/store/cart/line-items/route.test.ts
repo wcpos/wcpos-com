@@ -75,7 +75,7 @@ describe('POST /api/store/cart/line-items', () => {
     const json = await response.json()
 
     expect(response.status).toBe(401)
-    expect(json.error).toBe('Authentication required')
+    expect(json.errorCode).toBe('authentication_required')
     expect(mockAddLineItem).not.toHaveBeenCalled()
   })
 
@@ -84,7 +84,7 @@ describe('POST /api/store/cart/line-items', () => {
     const json = await response.json()
 
     expect(response.status).toBe(400)
-    expect(json.error).toBe('Cart ID is required')
+    expect(json.errorCode).toBe('cart_id_required')
     expect(mockAddLineItem).not.toHaveBeenCalled()
   })
 
@@ -93,7 +93,7 @@ describe('POST /api/store/cart/line-items', () => {
     const json = await response.json()
 
     expect(response.status).toBe(400)
-    expect(json.error).toBe('Invalid request body')
+    expect(json.errorCode).toBe('invalid_request_body')
     expect(mockAddLineItem).not.toHaveBeenCalled()
   })
 
@@ -104,7 +104,7 @@ describe('POST /api/store/cart/line-items', () => {
     const json = await response.json()
 
     expect(response.status).toBe(400)
-    expect(json.error).toBe('Cart ID is required')
+    expect(json.errorCode).toBe('cart_id_required')
     expect(mockAddLineItem).not.toHaveBeenCalled()
   })
 
@@ -113,7 +113,7 @@ describe('POST /api/store/cart/line-items', () => {
     const json = await response.json()
 
     expect(response.status).toBe(400)
-    expect(json.error).toBe('Current Pro offer is required')
+    expect(json.errorCode).toBe('current_pro_offer_required')
     expect(mockAddLineItem).not.toHaveBeenCalled()
   })
 
@@ -140,7 +140,7 @@ describe('POST /api/store/cart/line-items', () => {
     const json = await response.json()
 
     expect(response.status).toBe(400)
-    expect(json.error).toBe('Quantity must be 1 for Pro checkout')
+    expect(json.errorCode).toBe('quantity_must_be_one')
     expect(mockAddLineItem).not.toHaveBeenCalled()
   })
 
@@ -165,7 +165,7 @@ describe('POST /api/store/cart/line-items', () => {
     const json = await response.json()
 
     expect(response.status).toBe(400)
-    expect(json.error).toBe('Current Pro offer is required')
+    expect(json.errorCode).toBe('current_pro_offer_required')
     expect(mockAddLineItem).not.toHaveBeenCalled()
   })
 
@@ -178,7 +178,7 @@ describe('POST /api/store/cart/line-items', () => {
     const json = await response.json()
 
     expect(response.status).toBe(500)
-    expect(json.error).toBe('Failed to add item to cart')
+    expect(json.errorCode).toBe('failed_add_item')
   })
 
   it('returns 500 when the medusa client throws', async () => {
@@ -190,6 +190,6 @@ describe('POST /api/store/cart/line-items', () => {
     const json = await response.json()
 
     expect(response.status).toBe(500)
-    expect(json.error).toBe('Internal server error')
+    expect(json.errorCode).toBe('internal')
   })
 })

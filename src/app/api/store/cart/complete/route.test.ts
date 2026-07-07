@@ -141,7 +141,7 @@ describe('POST /api/store/cart/complete', () => {
     const json = await response.json()
 
     expect(response.status).toBe(400)
-    expect(json.error).toBe('Current Pro offer cart is required')
+    expect(json.errorCode).toBe('current_pro_offer_cart_required')
     expect(mockCompleteCart).not.toHaveBeenCalled()
     expect(mockTrackServerEvent).not.toHaveBeenCalled()
   })
@@ -163,7 +163,7 @@ describe('POST /api/store/cart/complete', () => {
 
     expect(response.status).toBe(409)
     expect(await response.json()).toEqual({
-      error: 'Payment received, order pending',
+      errorCode: 'order_pending',
       code: 'order_pending',
     })
     expect(mockTrackServerEvent).not.toHaveBeenCalled()

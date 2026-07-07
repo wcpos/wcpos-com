@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { storeCartErrorResponse } from '@/lib/store-cart-errors'
 import {
   createCustomerSession,
   createPaymentCollection,
@@ -28,10 +29,7 @@ export async function POST(request: NextRequest) {
     await assertViewOnly()
   } catch (error) {
     if (error instanceof ViewOnlyError) {
-      return NextResponse.json(
-        { error: 'read_only_inspection' },
-        { status: 403 }
-      )
+      return storeCartErrorResponse('read_only_inspection', 403)
     }
     throw error
   }
@@ -39,10 +37,7 @@ export async function POST(request: NextRequest) {
   try {
     const customer = await getCustomer()
     if (!customer) {
-      return NextResponse.json(
-        { error: 'Authentication required' },
-        { status: 401 }
-      )
+      return storeCartErrorResponse('authentication_required', 401)
     }
 
     // getCustomer() above already validated this token against
@@ -54,7 +49,7 @@ export async function POST(request: NextRequest) {
 
     const body = await request.json().catch(() => null)
     if (!body || typeof body !== 'object' || Array.isArray(body)) {
-      return NextResponse.json({ error: 'Invalid request body' }, { status: 400 })
+      return storeCartErrorResponse('invalid_request_body', 400)
     }
 
     const payload = body as Record<string, unknown>
@@ -70,32 +65,23 @@ export async function POST(request: NextRequest) {
         : undefined
 
     if (!cartId) {
-      return NextResponse.json(
-        { error: 'Cart ID is required' },
-        { status: 400 }
-      )
+      return storeCartErrorResponse('cart_id_required', 400)
     }
 
     const currentCart = await getCart(cartId)
     if (!currentCart) {
-      return NextResponse.json(
-        { error: 'Failed to fetch cart' },
-        { status: 500 }
-      )
+      return storeCartErrorResponse('failed_fetch_cart', 500)
     }
 
     // Bind the cart to the caller (carts carry the session customer's email).
     if (currentCart.email !== customer.email) {
-      return NextResponse.json({ error: 'Cart not found' }, { status: 404 })
+      return storeCartErrorResponse('cart_not_found', 404)
     }
 
     const { offers } = await getProOfferCatalog()
     const selection = resolveProOfferCartSelection(offers, currentCart)
     if (!selection) {
-      return NextResponse.json(
-        { error: 'Current Pro offer cart is required' },
-        { status: 400 }
-      )
+      return storeCartErrorResponse('current_pro_offer_cart_required', 400)
     }
 
     // The cart is the source of truth for its payment collection: a
@@ -108,10 +94,7 @@ export async function POST(request: NextRequest) {
       cartCollectionId &&
       existingCollectionId !== cartCollectionId
     ) {
-      return NextResponse.json(
-        { error: 'Payment collection does not belong to this cart' },
-        { status: 400 }
-      )
+      return storeCartErrorResponse('payment_collection_mismatch', 400)
     }
 
     // Prefer the cart's own collection; create one only when none exists.
@@ -119,10 +102,7 @@ export async function POST(request: NextRequest) {
     if (!collectionId) {
       const collection = await createPaymentCollection(cartId, authToken)
       if (!collection) {
-        return NextResponse.json(
-          { error: 'Failed to create payment collection' },
-          { status: 500 }
-        )
+        return storeCartErrorResponse('failed_create_payment_collection', 500)
       }
       collectionId = collection.id
     }
@@ -130,19 +110,13 @@ export async function POST(request: NextRequest) {
     // Create session within the collection
     const session = await createPaymentSession(collectionId, providerId, authToken)
     if (!session) {
-      return NextResponse.json(
-        { error: 'Failed to create payment session' },
-        { status: 500 }
-      )
+      return storeCartErrorResponse('failed_create_payment_session', 500)
     }
 
     // Get the updated cart
     const cart = await getCart(cartId)
     if (!cart) {
-      return NextResponse.json(
-        { error: 'Failed to fetch cart' },
-        { status: 500 }
-      )
+      return storeCartErrorResponse('failed_fetch_cart', 500)
     }
 
     // For a yearly card checkout, mint a Stripe CustomerSession so the Payment
@@ -164,9 +138,6 @@ export async function POST(request: NextRequest) {
     })
   } catch (error) {
     storeLogger.error`Error with payment sessions: ${error}`
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    )
+    return storeCartErrorResponse('internal', 500)
   }
 }

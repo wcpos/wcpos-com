@@ -85,7 +85,7 @@ describe('POST /api/store/cart/paypal/capture', () => {
     const response = await POST(request())
 
     expect(response.status).toBe(403)
-    expect(await response.json()).toEqual({ error: 'read_only_inspection' })
+    expect(await response.json()).toEqual({ errorCode: 'read_only_inspection' })
     expect(mocks.mockCapturePayPalOrder).not.toHaveBeenCalled()
   })
 
@@ -102,7 +102,7 @@ describe('POST /api/store/cart/paypal/capture', () => {
     const response = await POST(request('not-json'))
 
     expect(response.status).toBe(400)
-    expect(await response.json()).toEqual({ error: 'Invalid request body' })
+    expect(await response.json()).toEqual({ errorCode: 'invalid_request_body' })
     expect(mocks.mockCapturePayPalOrder).not.toHaveBeenCalled()
   })
 
@@ -110,7 +110,7 @@ describe('POST /api/store/cart/paypal/capture', () => {
     const response = await POST(request({ orderId: 'PAYPAL_ORDER_1' }))
 
     expect(response.status).toBe(400)
-    expect(await response.json()).toEqual({ error: 'Cart ID is required' })
+    expect(await response.json()).toEqual({ errorCode: 'cart_id_required' })
     expect(mocks.mockCapturePayPalOrder).not.toHaveBeenCalled()
   })
 
@@ -119,7 +119,7 @@ describe('POST /api/store/cart/paypal/capture', () => {
 
     expect(response.status).toBe(400)
     expect(await response.json()).toEqual({
-      error: 'PayPal order ID is required',
+      errorCode: 'paypal_order_id_required',
     })
     expect(mocks.mockCapturePayPalOrder).not.toHaveBeenCalled()
   })
@@ -133,7 +133,7 @@ describe('POST /api/store/cart/paypal/capture', () => {
     const response = await POST(request())
 
     expect(response.status).toBe(404)
-    expect(await response.json()).toEqual({ error: 'Cart not found' })
+    expect(await response.json()).toEqual({ errorCode: 'cart_not_found' })
     expect(mocks.mockCapturePayPalOrder).not.toHaveBeenCalled()
   })
 
@@ -144,7 +144,7 @@ describe('POST /api/store/cart/paypal/capture', () => {
 
     expect(response.status).toBe(400)
     expect(await response.json()).toEqual({
-      error: 'Current Pro offer cart is required',
+      errorCode: 'current_pro_offer_cart_required',
     })
     expect(mocks.mockCapturePayPalOrder).not.toHaveBeenCalled()
   })
@@ -156,7 +156,7 @@ describe('POST /api/store/cart/paypal/capture', () => {
 
     expect(response.status).toBe(502)
     expect(await response.json()).toEqual({
-      error: 'Failed to capture PayPal order',
+      errorCode: 'failed_capture_paypal_order',
     })
   })
 

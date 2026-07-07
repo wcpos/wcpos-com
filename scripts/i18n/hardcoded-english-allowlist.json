@@ -1,7 +1,7 @@
 {
   "version": 1,
   "generatedBy": "scripts/i18n/hardcoded-english.ts --update",
-  "updatedAt": "2026-07-07T01:45:58.044Z",
+  "updatedAt": "2026-07-07T01:50:32.429Z",
   "scope": [
     "src/app",
     "src/components",
@@ -1266,35 +1266,11 @@
       "count": 1
     },
     {
-      "id": "d862ea9e25f643ae",
-      "file": "src/app/api/store/cart/complete/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Authentication required",
-      "count": 1
-    },
-    {
       "id": "6e6ea0c3419f54da",
       "file": "src/app/api/store/cart/complete/route.ts",
       "category": "route/page",
       "attr": null,
       "text": "Cart completion produced no order: cartId=",
-      "count": 1
-    },
-    {
-      "id": "fe501c5991a9cde8",
-      "file": "src/app/api/store/cart/complete/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Cart ID is required",
-      "count": 1
-    },
-    {
-      "id": "3bcc293ebb2c767e",
-      "file": "src/app/api/store/cart/complete/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Cart not found",
       "count": 1
     },
     {
@@ -1306,83 +1282,11 @@
       "count": 2
     },
     {
-      "id": "85814d61b70cdac2",
-      "file": "src/app/api/store/cart/complete/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Current Pro offer cart is required",
-      "count": 1
-    },
-    {
       "id": "7abbca808dd37bad",
       "file": "src/app/api/store/cart/complete/route.ts",
       "category": "route/page",
       "attr": null,
       "text": "Error completing cart:",
-      "count": 1
-    },
-    {
-      "id": "ec83e5a969906efa",
-      "file": "src/app/api/store/cart/complete/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Failed to complete cart",
-      "count": 1
-    },
-    {
-      "id": "f0445bd6acdf5100",
-      "file": "src/app/api/store/cart/complete/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Failed to fetch cart",
-      "count": 1
-    },
-    {
-      "id": "ee0ad5a37f43c40f",
-      "file": "src/app/api/store/cart/complete/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Internal server error",
-      "count": 1
-    },
-    {
-      "id": "c0d2c53797b15494",
-      "file": "src/app/api/store/cart/complete/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Payment received, order pending",
-      "count": 1
-    },
-    {
-      "id": "b3226e736fc9de13",
-      "file": "src/app/api/store/cart/line-items/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Authentication required",
-      "count": 1
-    },
-    {
-      "id": "44bb43f32158777f",
-      "file": "src/app/api/store/cart/line-items/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Cart ID is required",
-      "count": 1
-    },
-    {
-      "id": "6c54c6407499dd7a",
-      "file": "src/app/api/store/cart/line-items/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Cart not found",
-      "count": 1
-    },
-    {
-      "id": "37507069a5a96e4c",
-      "file": "src/app/api/store/cart/line-items/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Current Pro offer is required",
       "count": 1
     },
     {
@@ -1394,155 +1298,11 @@
       "count": 1
     },
     {
-      "id": "6bd520adf99594ed",
-      "file": "src/app/api/store/cart/line-items/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Failed to add item to cart",
-      "count": 1
-    },
-    {
-      "id": "fdf2ce8debbe28f5",
-      "file": "src/app/api/store/cart/line-items/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Internal server error",
-      "count": 1
-    },
-    {
-      "id": "03b91fd3178d0d00",
-      "file": "src/app/api/store/cart/line-items/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Invalid request body",
-      "count": 1
-    },
-    {
-      "id": "014c2d885a507aba",
-      "file": "src/app/api/store/cart/line-items/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Quantity must be 1 for Pro checkout",
-      "count": 1
-    },
-    {
-      "id": "7dfa09ce596a128f",
-      "file": "src/app/api/store/cart/payment-sessions/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Authentication required",
-      "count": 1
-    },
-    {
-      "id": "4e4fec978647b526",
-      "file": "src/app/api/store/cart/payment-sessions/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Cart ID is required",
-      "count": 1
-    },
-    {
-      "id": "cbd1789056549861",
-      "file": "src/app/api/store/cart/payment-sessions/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Cart not found",
-      "count": 1
-    },
-    {
-      "id": "6e23da7a58812b5b",
-      "file": "src/app/api/store/cart/payment-sessions/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Current Pro offer cart is required",
-      "count": 1
-    },
-    {
       "id": "a71bebbccccc52bf",
       "file": "src/app/api/store/cart/payment-sessions/route.ts",
       "category": "route/page",
       "attr": null,
       "text": "Error with payment sessions:",
-      "count": 1
-    },
-    {
-      "id": "13c0cba719b881f9",
-      "file": "src/app/api/store/cart/payment-sessions/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Failed to create payment collection",
-      "count": 1
-    },
-    {
-      "id": "74d98ceb47f353ff",
-      "file": "src/app/api/store/cart/payment-sessions/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Failed to create payment session",
-      "count": 1
-    },
-    {
-      "id": "c1c7dfcbb44c3d4f",
-      "file": "src/app/api/store/cart/payment-sessions/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Failed to fetch cart",
-      "count": 2
-    },
-    {
-      "id": "4a35e0984daa6c71",
-      "file": "src/app/api/store/cart/payment-sessions/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Internal server error",
-      "count": 1
-    },
-    {
-      "id": "8b14bc8e18a6fb28",
-      "file": "src/app/api/store/cart/payment-sessions/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Invalid request body",
-      "count": 1
-    },
-    {
-      "id": "c1928d357d05e354",
-      "file": "src/app/api/store/cart/payment-sessions/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Payment collection does not belong to this cart",
-      "count": 1
-    },
-    {
-      "id": "e5bc7c3c955e71d5",
-      "file": "src/app/api/store/cart/paypal/capture/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Authentication required",
-      "count": 1
-    },
-    {
-      "id": "586d1a535661f69e",
-      "file": "src/app/api/store/cart/paypal/capture/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Cart ID is required",
-      "count": 1
-    },
-    {
-      "id": "5943fa770576e002",
-      "file": "src/app/api/store/cart/paypal/capture/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Cart not found",
-      "count": 1
-    },
-    {
-      "id": "f7e3efe960b1d75a",
-      "file": "src/app/api/store/cart/paypal/capture/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Current Pro offer cart is required",
       "count": 1
     },
     {
@@ -1552,70 +1312,6 @@
       "attr": null,
       "text": "Error capturing PayPal order:",
       "count": 1
-    },
-    {
-      "id": "96efc5dbe1aa3dab",
-      "file": "src/app/api/store/cart/paypal/capture/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Failed to capture PayPal order",
-      "count": 1
-    },
-    {
-      "id": "d0784b88ecd9dd00",
-      "file": "src/app/api/store/cart/paypal/capture/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Failed to fetch cart",
-      "count": 1
-    },
-    {
-      "id": "535dc6abac74d26d",
-      "file": "src/app/api/store/cart/paypal/capture/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Internal server error",
-      "count": 1
-    },
-    {
-      "id": "e05859bd76e180eb",
-      "file": "src/app/api/store/cart/paypal/capture/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Invalid request body",
-      "count": 1
-    },
-    {
-      "id": "b71301304a33a387",
-      "file": "src/app/api/store/cart/paypal/capture/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "PayPal order ID is required",
-      "count": 1
-    },
-    {
-      "id": "72fc4e286d2e34b9",
-      "file": "src/app/api/store/cart/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Authentication required",
-      "count": 3
-    },
-    {
-      "id": "44260e57ec7723d5",
-      "file": "src/app/api/store/cart/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Cart ID is required",
-      "count": 2
-    },
-    {
-      "id": "cede0d519beb3396",
-      "file": "src/app/api/store/cart/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Cart not found",
-      "count": 2
     },
     {
       "id": "e951fd7e996c66fd",
@@ -1642,43 +1338,11 @@
       "count": 1
     },
     {
-      "id": "7ae1147356d55be2",
-      "file": "src/app/api/store/cart/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Failed to create cart",
-      "count": 1
-    },
-    {
       "id": "9476a4918a77db65",
       "file": "src/app/api/store/cart/route.ts",
       "category": "route/page",
       "attr": null,
       "text": "Failed to sync billing address to customer profile:",
-      "count": 1
-    },
-    {
-      "id": "c2cc07415e28b07b",
-      "file": "src/app/api/store/cart/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Failed to update cart",
-      "count": 1
-    },
-    {
-      "id": "d071fd1e011942af",
-      "file": "src/app/api/store/cart/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Internal server error",
-      "count": 3
-    },
-    {
-      "id": "e16a3245a5920fe9",
-      "file": "src/app/api/store/cart/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Invalid request body",
       "count": 1
     },
     {

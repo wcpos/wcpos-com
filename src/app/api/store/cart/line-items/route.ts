@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { storeCartErrorResponse } from '@/lib/store-cart-errors'
 import { addLineItem, getCart } from '@/services/core/external/medusa-client'
 import { getCustomer } from '@/lib/medusa-auth'
 import { storeLogger } from '@/lib/logger'
@@ -17,10 +18,7 @@ export async function POST(request: NextRequest) {
     await assertViewOnly()
   } catch (error) {
     if (error instanceof ViewOnlyError) {
-      return NextResponse.json(
-        { error: 'read_only_inspection' },
-        { status: 403 }
-      )
+      return storeCartErrorResponse('read_only_inspection', 403)
     }
     throw error
   }
@@ -28,15 +26,12 @@ export async function POST(request: NextRequest) {
   try {
     const customer = await getCustomer()
     if (!customer) {
-      return NextResponse.json(
-        { error: 'Authentication required' },
-        { status: 401 }
-      )
+      return storeCartErrorResponse('authentication_required', 401)
     }
 
     const body = await request.json().catch(() => null)
     if (!body || typeof body !== 'object' || Array.isArray(body)) {
-      return NextResponse.json({ error: 'Invalid request body' }, { status: 400 })
+      return storeCartErrorResponse('invalid_request_body', 400)
     }
 
     const payload = body as Record<string, unknown>
@@ -44,17 +39,11 @@ export async function POST(request: NextRequest) {
     const { product, variant_id, quantity } = payload
 
     if (!cartId) {
-      return NextResponse.json(
-        { error: 'Cart ID is required' },
-        { status: 400 }
-      )
+      return storeCartErrorResponse('cart_id_required', 400)
     }
 
     if (quantity !== undefined && quantity !== 1) {
-      return NextResponse.json(
-        { error: 'Quantity must be 1 for Pro checkout' },
-        { status: 400 }
-      )
+      return storeCartErrorResponse('quantity_must_be_one', 400)
     }
 
     const { offers } = await getProOfferCatalog()
@@ -65,16 +54,13 @@ export async function POST(request: NextRequest) {
     const selection = resolveProOfferCheckoutSelection(offers, checkoutInput)
 
     if (!selection) {
-      return NextResponse.json(
-        { error: 'Current Pro offer is required' },
-        { status: 400 }
-      )
+      return storeCartErrorResponse('current_pro_offer_required', 400)
     }
 
     // Bind the cart to the caller (carts carry the session customer's email).
     const existingCart = await getCart(cartId)
     if (!existingCart || existingCart.email !== customer.email) {
-      return NextResponse.json({ error: 'Cart not found' }, { status: 404 })
+      return storeCartErrorResponse('cart_not_found', 404)
     }
 
     const cart = await addLineItem(cartId, {
@@ -83,18 +69,12 @@ export async function POST(request: NextRequest) {
     })
 
     if (!cart) {
-      return NextResponse.json(
-        { error: 'Failed to add item to cart' },
-        { status: 500 }
-      )
+      return storeCartErrorResponse('failed_add_item', 500)
     }
 
     return NextResponse.json({ cart })
   } catch (error) {
     storeLogger.error`Error adding line item: ${error}`
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    )
+    return storeCartErrorResponse('internal', 500)
   }
 }

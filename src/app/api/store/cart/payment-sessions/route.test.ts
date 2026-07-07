@@ -87,7 +87,7 @@ describe('POST /api/store/cart/payment-sessions', () => {
     const json = await response.json()
 
     expect(response.status).toBe(401)
-    expect(json.error).toBe('Authentication required')
+    expect(json.errorCode).toBe('authentication_required')
     expect(mockCreatePaymentCollection).not.toHaveBeenCalled()
   })
 
@@ -96,7 +96,7 @@ describe('POST /api/store/cart/payment-sessions', () => {
     const json = await response.json()
 
     expect(response.status).toBe(400)
-    expect(json.error).toBe('Cart ID is required')
+    expect(json.errorCode).toBe('cart_id_required')
     expect(mockCreatePaymentCollection).not.toHaveBeenCalled()
   })
 
@@ -105,7 +105,7 @@ describe('POST /api/store/cart/payment-sessions', () => {
     const json = await response.json()
 
     expect(response.status).toBe(400)
-    expect(json.error).toBe('Invalid request body')
+    expect(json.errorCode).toBe('invalid_request_body')
     expect(mockCreatePaymentCollection).not.toHaveBeenCalled()
   })
 
@@ -114,7 +114,7 @@ describe('POST /api/store/cart/payment-sessions', () => {
     const json = await response.json()
 
     expect(response.status).toBe(400)
-    expect(json.error).toBe('Cart ID is required')
+    expect(json.errorCode).toBe('cart_id_required')
     expect(mockGetCart).not.toHaveBeenCalled()
     expect(mockCreatePaymentCollection).not.toHaveBeenCalled()
   })
@@ -319,7 +319,7 @@ describe('POST /api/store/cart/payment-sessions', () => {
     const json = await response.json()
 
     expect(response.status).toBe(400)
-    expect(json.error).toBe('Current Pro offer cart is required')
+    expect(json.errorCode).toBe('current_pro_offer_cart_required')
     expect(mockCreatePaymentCollection).not.toHaveBeenCalled()
     expect(mockCreatePaymentSession).not.toHaveBeenCalled()
   })
@@ -331,7 +331,7 @@ describe('POST /api/store/cart/payment-sessions', () => {
     const json = await response.json()
 
     expect(response.status).toBe(500)
-    expect(json.error).toBe('Failed to create payment collection')
+    expect(json.errorCode).toBe('failed_create_payment_collection')
     expect(mockCreatePaymentSession).not.toHaveBeenCalled()
   })
 
@@ -343,7 +343,7 @@ describe('POST /api/store/cart/payment-sessions', () => {
     const json = await response.json()
 
     expect(response.status).toBe(500)
-    expect(json.error).toBe('Failed to create payment session')
+    expect(json.errorCode).toBe('failed_create_payment_session')
   })
 
   it('returns 500 when the updated cart cannot be fetched', async () => {
@@ -358,7 +358,7 @@ describe('POST /api/store/cart/payment-sessions', () => {
     const json = await response.json()
 
     expect(response.status).toBe(500)
-    expect(json.error).toBe('Failed to fetch cart')
+    expect(json.errorCode).toBe('failed_fetch_cart')
   })
 
   it('returns 500 when the medusa client throws', async () => {
@@ -370,6 +370,6 @@ describe('POST /api/store/cart/payment-sessions', () => {
     const json = await response.json()
 
     expect(response.status).toBe(500)
-    expect(json.error).toBe('Internal server error')
+    expect(json.errorCode).toBe('internal')
   })
 })
