@@ -1,7 +1,7 @@
 {
   "version": 1,
   "generatedBy": "scripts/i18n/hardcoded-english.ts --update",
-  "updatedAt": "2026-07-07T01:07:18.255Z",
+  "updatedAt": "2026-07-07T01:12:25.294Z",
   "scope": [
     "src/app",
     "src/components",
@@ -3522,142 +3522,6 @@
       "count": 1
     },
     {
-      "id": "7d6f7e39617a91d4",
-      "file": "src/components/home/scroll-story/copy.ts",
-      "category": "component",
-      "attr": null,
-      "text": "5,000+ Active Stores",
-      "count": 1
-    },
-    {
-      "id": "48166f3b34ea8488",
-      "file": "src/components/home/scroll-story/copy.ts",
-      "category": "component",
-      "attr": null,
-      "text": "Bring your own hardware",
-      "count": 1
-    },
-    {
-      "id": "e557a6034a06b61e",
-      "file": "src/components/home/scroll-story/copy.ts",
-      "category": "component",
-      "attr": null,
-      "text": "Card terminals, thermal receipt printers, barcode scanners — WCPOS doesn’t lock you into proprietary hardware. Plug in what’s already on your counter.",
-      "count": 1
-    },
-    {
-      "id": "15d36f801037fd62",
-      "file": "src/components/home/scroll-story/copy.ts",
-      "category": "component",
-      "attr": null,
-      "text": "Download Free",
-      "count": 1
-    },
-    {
-      "id": "2989db8ac6997a47",
-      "file": "src/components/home/scroll-story/copy.ts",
-      "category": "component",
-      "attr": null,
-      "text": "Every sale lands in your WooCommerce store — you own the data, no middleman. Internet drops? Keep selling; WCPOS syncs when you’re back online.",
-      "count": 1
-    },
-    {
-      "id": "0c6ab56f854e0581",
-      "file": "src/components/home/scroll-story/copy.ts",
-      "category": "component",
-      "attr": null,
-      "text": "Every screen you own",
-      "count": 1
-    },
-    {
-      "id": "7c5fe9c45cbe1ea3",
-      "file": "src/components/home/scroll-story/copy.ts",
-      "category": "component",
-      "attr": null,
-      "text": "Free & Open Source",
-      "count": 1
-    },
-    {
-      "id": "d6b88b7eb9deba76",
-      "file": "src/components/home/scroll-story/copy.ts",
-      "category": "component",
-      "attr": null,
-      "text": "One POS. Web, desktop, iOS & Android.",
-      "count": 1
-    },
-    {
-      "id": "50a318800da2992d",
-      "file": "src/components/home/scroll-story/copy.ts",
-      "category": "component",
-      "attr": null,
-      "text": "Point of Sale for WooCommerce",
-      "count": 1
-    },
-    {
-      "id": "636661a4f4419961",
-      "file": "src/components/home/scroll-story/copy.ts",
-      "category": "component",
-      "attr": null,
-      "text": "Run the register on the tablet at the counter, the phone on the shop floor, or the laptop in the back office — same store, same data.",
-      "count": 1
-    },
-    {
-      "id": "3bee64914796a011",
-      "file": "src/components/home/scroll-story/copy.ts",
-      "category": "component",
-      "attr": null,
-      "text": "Since 2014",
-      "count": 1
-    },
-    {
-      "id": "c4575fb3e3d507a3",
-      "file": "src/components/home/scroll-story/copy.ts",
-      "category": "component",
-      "attr": null,
-      "text": "Synced with WooCommerce. Yours, even offline.",
-      "count": 1
-    },
-    {
-      "id": "431f9db3f34be3d6",
-      "file": "src/components/home/scroll-story/copy.ts",
-      "category": "component",
-      "attr": null,
-      "text": "Try Live Demo",
-      "count": 1
-    },
-    {
-      "id": "898b09987215ee5d",
-      "file": "src/components/home/scroll-story/copy.ts",
-      "category": "component",
-      "attr": null,
-      "text": "WCPOS turns the tablet into your register — same catalog, same stock, same prices, even offline.",
-      "count": 1
-    },
-    {
-      "id": "f2f7cfe73b648ace",
-      "file": "src/components/home/scroll-story/copy.ts",
-      "category": "component",
-      "attr": null,
-      "text": "Works with the equipment you already have.",
-      "count": 1
-    },
-    {
-      "id": "26ea5dd463ad29e8",
-      "file": "src/components/home/scroll-story/copy.ts",
-      "category": "component",
-      "attr": null,
-      "text": "Your store, your data",
-      "count": 1
-    },
-    {
-      "id": "b32d74bb5068642e",
-      "file": "src/components/home/scroll-story/copy.ts",
-      "category": "component",
-      "attr": null,
-      "text": "Your WooCommerce store, at the counter.",
-      "count": 1
-    },
-    {
       "id": "cb449f15bd6e0a4d",
       "file": "src/components/home/scroll-story/devices/laptop.tsx",
       "category": "component",
@@ -3671,14 +3535,6 @@
       "category": "component",
       "attr": null,
       "text": "h-[250px] rounded-t-xl p-2.5 pb-1",
-      "count": 1
-    },
-    {
-      "id": "5795a80672221f97",
-      "file": "src/components/home/scroll-story/devices/laptop.tsx",
-      "category": "component",
-      "attr": "register",
-      "text": "Register 2",
       "count": 1
     },
     {
@@ -3698,35 +3554,11 @@
       "count": 1
     },
     {
-      "id": "376854577e7fb7e3",
-      "file": "src/components/home/scroll-story/devices/pos-screen.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "2× Mug",
-      "count": 1
-    },
-    {
       "id": "bb86530152dde138",
       "file": "src/components/home/scroll-story/devices/pos-screen.tsx",
       "category": "component",
       "attr": null,
       "text": "6 V",
-      "count": 1
-    },
-    {
-      "id": "fd47bd9ae9853f47",
-      "file": "src/components/home/scroll-story/devices/pos-screen.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Charge $69",
-      "count": 2
-    },
-    {
-      "id": "11ffb7252ca90fb8",
-      "file": "src/components/home/scroll-story/devices/pos-screen.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Guest ✕",
       "count": 1
     },
     {
@@ -3754,14 +3586,6 @@
       "count": 1
     },
     {
-      "id": "6000d6272f1061ed",
-      "file": "src/components/home/scroll-story/devices/pos-screen.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "In Stock ✕",
-      "count": 2
-    },
-    {
       "id": "01445f0144a446bf",
       "file": "src/components/home/scroll-story/devices/pos-screen.tsx",
       "category": "component",
@@ -3778,108 +3602,12 @@
       "count": 1
     },
     {
-      "id": "a1bb5f65043349dc",
-      "file": "src/components/home/scroll-story/devices/pos-screen.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "On Sale",
-      "count": 1
-    },
-    {
       "id": "69755b682d408767",
       "file": "src/components/home/scroll-story/devices/pos-screen.tsx",
       "category": "component",
       "attr": null,
       "text": "phone",
       "count": 3
-    },
-    {
-      "id": "f7144f7abeceb0fa",
-      "file": "src/components/home/scroll-story/devices/pos-screen.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "POS — US Store",
-      "count": 1
-    },
-    {
-      "id": "aea433cdad9de091",
-      "file": "src/components/home/scroll-story/devices/pos-screen.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Register 1",
-      "count": 1
-    },
-    {
-      "id": "3cfa736c677f9022",
-      "file": "src/components/home/scroll-story/devices/pos-screen.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Search Products",
-      "count": 2
-    },
-    {
-      "id": "93acc501cca32998",
-      "file": "src/components/home/scroll-story/devices/pos-screen.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Showing 16 of 18",
-      "count": 1
-    },
-    {
-      "id": "2d12a6fa4ecc5378",
-      "file": "src/components/home/scroll-story/devices/pos-screen.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Soap Bar",
-      "count": 2
-    },
-    {
-      "id": "bef566c16e527bd7",
-      "file": "src/components/home/scroll-story/devices/pos-screen.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Subtotal",
-      "count": 1
-    },
-    {
-      "id": "c448af6b06a824e1",
-      "file": "src/components/home/scroll-story/devices/pos-screen.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Tax based on: Shop base address",
-      "count": 1
-    },
-    {
-      "id": "c875bba13addce84",
-      "file": "src/components/home/scroll-story/devices/pos-screen.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Tea Towel",
-      "count": 1
-    },
-    {
-      "id": "c7d26f14915832e7",
-      "file": "src/components/home/scroll-story/devices/pos-screen.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Tote Bag",
-      "count": 1
-    },
-    {
-      "id": "a7720d35422b5cac",
-      "file": "src/components/home/scroll-story/devices/pos-screen.tsx",
-      "category": "component",
-      "attr": "aria-label",
-      "text": "WCPOS app",
-      "count": 1
-    },
-    {
-      "id": "0a732404b8cf9e1b",
-      "file": "src/components/home/scroll-story/devices/pos-screen.tsx",
-      "category": "component",
-      "attr": "aria-label",
-      "text": "WCPOS app, phone",
-      "count": 1
     },
     {
       "id": "13d794c4ac6f085f",
@@ -4034,30 +3762,6 @@
       "count": 1
     },
     {
-      "id": "81d7970590e0919a",
-      "file": "src/components/home/scroll-story/scroll-story.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Go to act",
-      "count": 1
-    },
-    {
-      "id": "e8ac9336887466bb",
-      "file": "src/components/home/scroll-story/scroll-story.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "of 4",
-      "count": 1
-    },
-    {
-      "id": "0689f68fd9b9b71a",
-      "file": "src/components/home/scroll-story/scroll-story.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Scroll ↓",
-      "count": 1
-    },
-    {
       "id": "5a26bea3f1be3010",
       "file": "src/components/home/scroll-story/scroll-story.tsx",
       "category": "component",
@@ -4071,14 +3775,6 @@
       "category": "component",
       "attr": null,
       "text": "use client",
-      "count": 1
-    },
-    {
-      "id": "ee2ccb31367d57d1",
-      "file": "src/components/home/scroll-story/story-static.tsx",
-      "category": "component",
-      "attr": "alt",
-      "text": "A shop counter with a tablet running the WCPOS register, a receipt printer, a card terminal and a barcode scanner",
       "count": 1
     },
     {

@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl'
 import { cn } from '@/lib/utils'
 
 /**
@@ -27,19 +28,19 @@ const ink = {
 const swatches = ['#f2a08c', '#9ed3b6', '#cbb197', '#e3e7ec', '#b7cede', '#f5c6c1']
 
 const demoProducts = [
-  { name: 'Tote Bag', price: '$29' },
-  { name: 'Candle', price: '$24' },
-  { name: 'Mug', price: '$18' },
-  { name: 'Soap Bar', price: '$9' },
-  { name: 'Notebook', price: '$14' },
-  { name: 'Tea Towel', price: '$16' },
-]
+  { id: 'p1', price: '$29' },
+  { id: 'p2', price: '$24' },
+  { id: 'p3', price: '$18' },
+  { id: 'p4', price: '$9' },
+  { id: 'p5', price: '$14' },
+  { id: 'p6', price: '$16' },
+] as const
 
 const demoCart = [
-  { name: 'Candle', total: '$24' },
-  { name: '2× Mug', total: '$36' },
-  { name: 'Soap Bar', total: '$9' },
-]
+  { id: 'c1', total: '$24' },
+  { id: 'c2', total: '$36' },
+  { id: 'c3', total: '$9' },
+] as const
 
 function LandscapePos({
   w,
@@ -48,8 +49,9 @@ function LandscapePos({
 }: {
   w: number
   h: number
-  register: string
+  register: number
 }) {
+  const t = useTranslations('home.story.pos')
   const rail = 24
   const bar = 20
   const cartW = Math.round(w * 0.26)
@@ -69,7 +71,7 @@ function LandscapePos({
       viewBox={`0 0 ${w} ${h}`}
       className="h-full w-full"
       role="img"
-      aria-label="WCPOS app"
+      aria-label={t('aria.main')}
     >
       {/* content background */}
       <rect width={w} height={h} rx={6} fill={ink.bg} />
@@ -84,12 +86,12 @@ function LandscapePos({
         fontWeight="700"
         fill="#ffffff"
       >
-        POS — US Store
+        {t('store')}
       </text>
       <circle cx={w - 34} cy={10} r={2.6} fill={ink.green} />
       <circle cx={w - 22} cy={10} r={5} fill="#41506270" stroke="#8ea0b5" strokeWidth="0.8" />
       <text x={w - 12} y={12.6} fontSize="6.5" fill="#c3cedb">
-        {register.replace(/Register /, 'R')}
+        {t('registerShort', { number: register })}
       </text>
 
       {/* left icon rail */}
@@ -112,7 +114,7 @@ function LandscapePos({
       {/* search + view toggles */}
       <rect x={gridX} y={27} width={gridW - 26} height={15} rx={5} fill={ink.card} stroke={ink.line} />
       <text x={gridX + 7} y={37} fontSize="6.5" fill={ink.faint}>
-        Search Products
+        {t('search')}
       </text>
       {[0, 1].map((i) => (
         <rect
@@ -130,9 +132,9 @@ function LandscapePos({
       {/* filter chips */}
       <rect x={gridX} y={48} width={46} height={11} rx={5.5} fill={ink.blue} />
       <text x={gridX + 7} y={55.8} fontSize="6" fontWeight="600" fill="#fff">
-        In Stock ✕
+        {t('filters.stock')}
       </text>
-      {['Featured', 'On Sale', 'Category'].map((label, i) => (
+      {(['featured', 'sale', 'category'] as const).map((label, i) => (
         <g key={label}>
           <rect
             x={gridX + 52 + i * 46}
@@ -150,7 +152,7 @@ function LandscapePos({
             fontSize="6"
             fill={ink.muted}
           >
-            {label}
+            {t(`filters.${label}`)}
           </text>
         </g>
       ))}
@@ -161,7 +163,7 @@ function LandscapePos({
         const cy = gridY + Math.floor(i / cols) * (cardH + gap)
         const imgH = cardH * 0.58
         return (
-          <g key={product.name}>
+          <g key={product.id}>
             <rect x={cx} y={cy} width={cardW} height={cardH} rx={4} fill={ink.card} stroke={ink.line} />
             <path
               d={`M${cx} ${cy + 4} Q${cx} ${cy} ${cx + 4} ${cy} H${cx + cardW - 4} Q${cx + cardW} ${cy} ${cx + cardW} ${cy + 4} V${cy + imgH} H${cx} Z`}
@@ -177,7 +179,7 @@ function LandscapePos({
               </g>
             )}
             <text x={cx + 5} y={cy + imgH + 11} fontSize="6.5" fontWeight="700" fill={ink.text}>
-              {product.name}
+              {t(`products.${product.id}`)}
             </text>
             <text x={cx + cardW - 5} y={cy + cardH - 5} textAnchor="end" fontSize="6.5" fill={ink.muted}>
               {product.price}
@@ -189,26 +191,26 @@ function LandscapePos({
       {/* status bar */}
       <rect x={rail} y={h - statusH} width={cartX - rail} height={statusH} fill={ink.strip} />
       <text x={gridX} y={h - 4.5} fontSize="5.5" fill={ink.muted}>
-        Tax based on: Shop base address
+        {t('tax')}
       </text>
       <text x={cartX - 8} y={h - 4.5} textAnchor="end" fontSize="5.5" fill={ink.muted}>
-        Showing 16 of 18
+        {t('showing', { shown: 16, total: 18 })}
       </text>
 
       {/* cart panel */}
       <path d={`M${cartX} ${bar} H${w} V${h - 6} Q${w} ${h} ${w - 6} ${h} H${cartX + 6} Q${cartX} ${h} ${cartX} ${h - 6} Z`} fill={ink.card} />
       <rect x={cartX} y={bar} width={cartW} height={16} fill={ink.strip} />
       <text x={cartX + 6} y={bar + 11} fontSize="6.5" fontWeight="600" fill={ink.text}>
-        Customer:
+        {t('customer')}
       </text>
       <rect x={cartX + 42} y={bar + 3} width={34} height={10.5} rx={5.25} fill={ink.blue} />
       <text x={cartX + 59} y={bar + 10.6} textAnchor="middle" fontSize="6" fill="#fff">
-        Guest ✕
+        {t('guest')}
       </text>
       {demoCart.map((line, i) => (
-        <g key={line.name}>
+        <g key={line.id}>
           <text x={cartX + 8} y={bar + 34 + i * 15} fontSize="6.5" fill={ink.text}>
-            {line.name}
+            {t(`cart.${line.id}`)}
           </text>
           <text x={w - 8} y={bar + 34 + i * 15} textAnchor="end" fontSize="6.5" fill={ink.text}>
             {line.total}
@@ -225,7 +227,7 @@ function LandscapePos({
       ))}
       <line x1={cartX + 8} y1={h - 40} x2={w - 8} y2={h - 40} stroke={ink.line} />
       <text x={cartX + 8} y={h - 31} fontSize="6" fill={ink.muted}>
-        Subtotal
+        {t('subtotal')}
       </text>
       <text x={w - 8} y={h - 31} textAnchor="end" fontSize="6" fontWeight="700" fill={ink.text}>
         $69.00
@@ -239,13 +241,14 @@ function LandscapePos({
         fontWeight="700"
         fill="#fff"
       >
-        Charge $69
+        {t('charge', { amount: '$69' })}
       </text>
     </svg>
   )
 }
 
 function PhonePos() {
+  const t = useTranslations('home.story.pos')
   const w = 112
   const h = 242
   const cols = 2
@@ -260,7 +263,7 @@ function PhonePos() {
       viewBox={`0 0 ${w} ${h}`}
       className="h-full w-full"
       role="img"
-      aria-label="WCPOS app, phone"
+      aria-label={t('aria.phone')}
     >
       <rect width={w} height={h} rx={10} fill={ink.bg} />
 
@@ -277,15 +280,15 @@ function PhonePos() {
       {/* search + chips */}
       <rect x={6} y={25} width={w - 12} height={13} rx={4.5} fill={ink.card} stroke={ink.line} />
       <text x={11} y={33.8} fontSize="6" fill={ink.faint}>
-        Search Products
+        {t('search')}
       </text>
       <rect x={6} y={42} width={40} height={10} rx={5} fill={ink.blue} />
       <text x={12} y={49.2} fontSize="5.5" fontWeight="600" fill="#fff">
-        In Stock ✕
+        {t('filters.stock')}
       </text>
       <rect x={50} y={42} width={34} height={10} rx={5} fill={ink.card} stroke={ink.line} />
       <text x={67} y={49.2} textAnchor="middle" fontSize="5.5" fill={ink.muted}>
-        Featured
+        {t('filters.featured')}
       </text>
 
       {/* 2-col product grid */}
@@ -294,7 +297,7 @@ function PhonePos() {
         const cy = gridY + Math.floor(i / cols) * (cardH + gap)
         const imgH = cardH * 0.55
         return (
-          <g key={product.name}>
+          <g key={product.id}>
             <rect x={cx} y={cy} width={cardW} height={cardH} rx={3.5} fill={ink.card} stroke={ink.line} />
             <path
               d={`M${cx} ${cy + 3.5} Q${cx} ${cy} ${cx + 3.5} ${cy} H${cx + cardW - 3.5} Q${cx + cardW} ${cy} ${cx + cardW} ${cy + 3.5} V${cy + imgH} H${cx} Z`}
@@ -302,7 +305,7 @@ function PhonePos() {
               opacity="0.55"
             />
             <text x={cx + 4} y={cy + imgH + 9} fontSize="5.8" fontWeight="700" fill={ink.text}>
-              {product.name}
+              {t(`products.${product.id}`)}
             </text>
             <text x={cx + cardW - 4} y={cy + cardH - 4} textAnchor="end" fontSize="5.8" fill={ink.muted}>
               {product.price}
@@ -314,13 +317,13 @@ function PhonePos() {
       {/* charge bar + bottom nav */}
       <rect x={6} y={h - navH - 20} width={w - 12} height={15} rx={4} fill={ink.red} />
       <text x={w / 2} y={h - navH - 9.5} textAnchor="middle" fontSize="6.5" fontWeight="700" fill="#fff">
-        Charge $69
+        {t('charge', { amount: '$69' })}
       </text>
       <path d={`M0 ${h - navH} H${w} V${h - 10} Q${w} ${h} ${w - 10} ${h} H10 Q0 ${h} 0 ${h - 10} Z`} fill={ink.card} />
       <line x1={0} y1={h - navH} x2={w} y2={h - navH} stroke={ink.line} />
       <rect x={22} y={h - 17.5} width={9} height={7} rx={1.5} fill={ink.blue} />
       <text x={26.5} y={h - 4.5} textAnchor="middle" fontSize="5.2" fontWeight="600" fill={ink.blue}>
-        Products
+        {t('tabs.products')}
       </text>
       <rect x={80} y={h - 17.5} width={9} height={7} rx={1.5} fill={ink.muted} opacity="0.6" />
       <circle cx={90.5} cy={h - 16.5} r={3.4} fill={ink.red} />
@@ -328,7 +331,7 @@ function PhonePos() {
         3
       </text>
       <text x={84.5} y={h - 4.5} textAnchor="middle" fontSize="5.2" fill={ink.muted}>
-        Cart
+        {t('tabs.cart')}
       </text>
     </svg>
   )
@@ -336,11 +339,11 @@ function PhonePos() {
 
 export function PosScreen({
   variant = 'tablet',
-  register = 'Register 1',
+  registerNumber = 1,
   className,
 }: {
   variant?: 'tablet' | 'laptop' | 'phone'
-  register?: string
+  registerNumber?: number
   className?: string
 }) {
   return (
@@ -357,7 +360,7 @@ export function PosScreen({
         <LandscapePos
           w={variant === 'tablet' ? 436 : 400}
           h={variant === 'tablet' ? 294 : 236}
-          register={register}
+          register={registerNumber}
         />
       )}
     </div>

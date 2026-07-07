@@ -1,13 +1,26 @@
 import { readFileSync } from 'node:fs'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { act, cleanup, render, screen, within } from '@testing-library/react'
+import { NextIntlClientProvider } from 'next-intl'
+import type { ReactElement } from 'react'
 import { PosScreen } from './devices/pos-screen'
 import { DeviceTerminal } from './devices/terminal'
 import { StoryStatic } from './story-static'
 import { ScrollStory } from './scroll-story'
-import { storyCopy } from './copy'
+import messages from '../../../../messages/en.json'
 
 type ProgressHandler = (value: number) => void
+
+const story = messages.home.story
+
+function renderWithIntl(ui: ReactElement) {
+  return render(
+    <NextIntlClientProvider locale="en" messages={messages}>
+      {ui}
+    </NextIntlClientProvider>
+  )
+}
+
 const motionMock = vi.hoisted(() => ({
   progressHandlers: [] as ProgressHandler[],
   animate: vi.fn(() => ({ stop: vi.fn() })),
@@ -55,7 +68,7 @@ function stubMatchMedia({ reducedMotion }: { reducedMotion: boolean }) {
 
 describe('PosScreen', () => {
   it('shows the product grid and cart panel on tablet screens', () => {
-    render(<PosScreen variant="tablet" />)
+    renderWithIntl(<PosScreen variant="tablet" />)
 
     expect(screen.getByText('Tote Bag')).toBeInTheDocument()
     expect(screen.getByText('Customer:')).toBeInTheDocument()
@@ -63,7 +76,7 @@ describe('PosScreen', () => {
   })
 
   it('shows the mobile layout with bottom nav on phone screens', () => {
-    render(<PosScreen variant="phone" />)
+    renderWithIntl(<PosScreen variant="phone" />)
 
     expect(screen.getByText('Tote Bag')).toBeInTheDocument()
     expect(screen.getByText('Products')).toBeInTheDocument()
@@ -74,14 +87,14 @@ describe('PosScreen', () => {
 
 describe('DeviceTerminal', () => {
   it('shows the tap-to-pay display', () => {
-    render(<DeviceTerminal />)
+    renderWithIntl(<DeviceTerminal />)
 
     expect(screen.getByText('$69.00')).toBeInTheDocument()
     expect(screen.getByText('Tap to pay')).toBeInTheDocument()
   })
 
   it('keeps the tap-to-pay overlay off screenless models', () => {
-    const { container } = render(<DeviceTerminal model={3} />)
+    const { container } = renderWithIntl(<DeviceTerminal model={3} />)
 
     expect(screen.queryByText('$69.00')).not.toBeInTheDocument()
     expect(container.querySelector('img')?.getAttribute('src')).toBe(
@@ -92,13 +105,13 @@ describe('DeviceTerminal', () => {
 
 describe('StoryStatic', () => {
   it('renders all four act headings', () => {
-    render(<StoryStatic />)
+    renderWithIntl(<StoryStatic />)
 
     for (const act of [
-      storyCopy.act1,
-      storyCopy.act2,
-      storyCopy.act3,
-      storyCopy.act4,
+      { heading: story.a1.h },
+      { heading: story.a2.h },
+      { heading: story.a3.h },
+      { heading: story.a4.h },
     ]) {
       expect(
         screen.getByRole('heading', { name: act.heading })
@@ -107,29 +120,29 @@ describe('StoryStatic', () => {
   })
 
   it('links the CTAs to demo and download', () => {
-    render(<StoryStatic />)
+    renderWithIntl(<StoryStatic />)
 
     expect(
-      screen.getByRole('link', { name: storyCopy.act1.demoCta.label })
-    ).toHaveAttribute('href', storyCopy.act1.demoCta.href)
+      screen.getByRole('link', { name: story.a1.c1 })
+    ).toHaveAttribute('href', 'https://demo.wcpos.com/pos')
     expect(
-      screen.getByRole('link', { name: storyCopy.act1.downloadCta.label })
-    ).toHaveAttribute('href', storyCopy.act1.downloadCta.href)
+      screen.getByRole('link', { name: story.a1.c2 })
+    ).toHaveAttribute('href', 'https://wordpress.org/plugins/woocommerce-pos/')
   })
 
   it('keeps a page h1 on static-only renders (mobile, reduced motion)', () => {
-    render(<StoryStatic />)
+    renderWithIntl(<StoryStatic />)
 
     const heading = screen.getByRole('heading', {
-      name: storyCopy.act1.heading,
+      name: story.a1.h,
     })
     expect(heading.tagName).toBe('H1')
   })
 
   it('shows the trust badges', () => {
-    render(<StoryStatic />)
+    renderWithIntl(<StoryStatic />)
 
-    for (const badge of storyCopy.act1.trustBadges) {
+    for (const badge of [story.a1.badges.b1, story.a1.badges.b2, story.a1.badges.b3]) {
       expect(screen.getByText(badge)).toBeInTheDocument()
     }
   })
@@ -144,16 +157,16 @@ describe('ScrollStory', () => {
 
   it('renders the pinned choreography with all act copy in the DOM', () => {
     stubMatchMedia({ reducedMotion: false })
-    render(<ScrollStory />)
+    renderWithIntl(<ScrollStory />)
 
     const scroller = screen.getByTestId('story-scroller')
     expect(
       within(scroller).getByRole('heading', {
         level: 1,
-        name: storyCopy.act1.heading,
+        name: story.a1.h,
       })
     ).toBeInTheDocument()
-    for (const act of [storyCopy.act2, storyCopy.act3, storyCopy.act4]) {
+    for (const act of [{ heading: story.a2.h }, { heading: story.a3.h }, { heading: story.a4.h }]) {
       expect(within(scroller).getByText(act.heading)).toBeInTheDocument()
     }
     // static variant also present (CSS-switched for small viewports)
@@ -167,7 +180,7 @@ describe('ScrollStory', () => {
     // mobile fallback src must be the SAME url as the static card (one
     // shared fetch; the static card is lazy so desktop never loads it).
     stubMatchMedia({ reducedMotion: false })
-    render(<ScrollStory />)
+    renderWithIntl(<ScrollStory />)
 
     const scroller = screen.getByTestId('story-scroller')
     const pinnedPicture = scroller.querySelector('picture')
@@ -190,7 +203,7 @@ describe('ScrollStory', () => {
 
   it('drops the pinned scroller under prefers-reduced-motion', () => {
     stubMatchMedia({ reducedMotion: true })
-    render(<ScrollStory />)
+    renderWithIntl(<ScrollStory />)
 
     expect(screen.queryByTestId('story-scroller')).not.toBeInTheDocument()
     // both the md+ slot and the mobile slot fall back to the static story
@@ -244,7 +257,7 @@ describe('ScrollStory', () => {
     // "any terminal, any printer, any scanner" only reads if a slot never
     // flips to a different device category
     stubMatchMedia({ reducedMotion: false })
-    render(<ScrollStory />)
+    renderWithIntl(<ScrollStory />)
 
     const scroller = screen.getByTestId('story-scroller')
     for (const category of ['terminal', 'printer', 'scanner']) {
@@ -267,7 +280,7 @@ describe('ScrollStory', () => {
 
   it('mounts the act-4 dot orbit', () => {
     stubMatchMedia({ reducedMotion: false })
-    render(<ScrollStory />)
+    renderWithIntl(<ScrollStory />)
 
     expect(
       within(screen.getByTestId('story-scroller')).getByTestId('dot-orbit')
@@ -276,11 +289,11 @@ describe('ScrollStory', () => {
 
   it('removes the Act 1 CTAs from interaction after Act 1 fades out', () => {
     stubMatchMedia({ reducedMotion: false })
-    render(<ScrollStory />)
+    renderWithIntl(<ScrollStory />)
 
     const act1Overlay = within(screen.getByTestId('story-scroller')).getByRole(
       'heading',
-      { level: 1, name: storyCopy.act1.heading }
+      { level: 1, name: story.a1.h }
     ).parentElement
 
     expect(act1Overlay).not.toHaveAttribute('inert')

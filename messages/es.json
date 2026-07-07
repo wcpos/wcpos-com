@@ -189,6 +189,87 @@
         }
       },
       "description": "All apps sync with your WooCommerce store via the REST API. Install the free WordPress plugin, then choose your device. Products, stock, and orders stay in sync automatically."
+    },
+    "story": {
+      "a1": {
+        "k": "Point of Sale for WooCommerce",
+        "h": "Your WooCommerce store, at the counter.",
+        "b": "WCPOS turns the tablet into your register — same catalog, same stock, same prices, even offline.",
+        "c1": "Try Live Demo",
+        "c2": "Download Free",
+        "badges": {
+          "b1": "5,000+ Active Stores",
+          "b2": "Free & Open Source",
+          "b3": "Since 2014"
+        }
+      },
+      "a2": {
+        "k": "Every screen you own",
+        "h": "One POS. Web, desktop, iOS & Android.",
+        "b": "Run the register on the tablet at the counter, the phone on the shop floor, or the laptop in the back office — same store, same data.",
+        "platforms": {
+          "p1": "Web",
+          "p2": "Windows",
+          "p3": "macOS",
+          "p4": "iOS",
+          "p5": "Android"
+        }
+      },
+      "a3": {
+        "k": "Bring your own hardware",
+        "h": "Works with the equipment you already have.",
+        "b": "Card terminals, thermal receipt printers, barcode scanners — WCPOS doesn’t lock you into proprietary hardware. Plug in what’s already on your counter."
+      },
+      "a4": {
+        "k": "Your store, your data",
+        "h": "Synced with WooCommerce. Yours, even offline.",
+        "b": "Every sale lands in your WooCommerce store — you own the data, no middleman. Internet drops? Keep selling; WCPOS syncs when you’re back online."
+      },
+      "nav": {
+        "s1": "Scroll ↓",
+        "s2": "Go to act {current} of {total}"
+      },
+      "static": {
+        "alt": "A shop counter with a tablet running the WCPOS register, a receipt printer, a card terminal and a barcode scanner"
+      },
+      "pos": {
+        "aria": {
+          "main": "WCPOS app",
+          "phone": "WCPOS app, phone"
+        },
+        "store": "POS — US Store",
+        "registerShort": "R{number}",
+        "search": "Search Products",
+        "filters": {
+          "stock": "In Stock ✕",
+          "featured": "Featured",
+          "sale": "On Sale",
+          "category": "Category"
+        },
+        "products": {
+          "p1": "Tote Bag",
+          "p2": "Candle",
+          "p3": "Mug",
+          "p4": "Soap Bar",
+          "p5": "Notebook",
+          "p6": "Tea Towel"
+        },
+        "cart": {
+          "c1": "Candle",
+          "c2": "2× Mug",
+          "c3": "Soap Bar"
+        },
+        "tax": "Tax based on: Shop base address",
+        "showing": "Showing {shown} of {total}",
+        "customer": "Customer:",
+        "guest": "Guest ✕",
+        "subtotal": "Subtotal",
+        "charge": "Charge {amount}",
+        "tabs": {
+          "products": "Products",
+          "cart": "Cart"
+        }
+      }
     }
   },
   "roadmap": {
