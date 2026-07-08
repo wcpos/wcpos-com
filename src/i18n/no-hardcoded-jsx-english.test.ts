@@ -74,7 +74,12 @@ function isLikelyEnglishUiCopy(text: string): boolean {
   if (normalized.length < 3) return false
   if (!/[A-Za-z]/.test(normalized)) return false
   if (/^[A-Z0-9_]+$/.test(normalized) && normalized !== 'WCPOS') return false
-  if (/^[a-z0-9_.:/#-]+$/.test(normalized)) return false
+  if (
+    /^[a-z0-9_.:/#-]+$/.test(normalized) &&
+    /[0-9_.:/#-]/.test(normalized)
+  ) {
+    return false
+  }
   return true
 }
 
@@ -111,7 +116,7 @@ function collectHits(filePath: string): Hit[] {
 describe('rendered JSX copy guard helpers', () => {
   it('detects uppercase and lowercase rendered English text', () => {
     const hits = collectHitsFromSource(
-      '<p>Welcome back</p><p>or continue with email</p>',
+      '<p>Welcome back</p><p>or continue with email</p><button>continue</button><span>checkout</span>',
       'src/components/example.tsx'
     )
 
@@ -125,6 +130,16 @@ describe('rendered JSX copy guard helpers', () => {
         file: 'src/components/example.tsx',
         kind: 'text',
         text: 'or continue with email',
+      },
+      {
+        file: 'src/components/example.tsx',
+        kind: 'text',
+        text: 'continue',
+      },
+      {
+        file: 'src/components/example.tsx',
+        kind: 'text',
+        text: 'checkout',
       },
     ])
   })
