@@ -869,6 +869,15 @@ describe('messages key parity', () => {
     ).toEqual([])
   })
 
+  it('nl.json translates support chat feedback labels used as aria labels', () => {
+    const english = loadMessages(defaultLocale)
+    const dutch = loadMessages('nl')
+
+    expect(valueAtPath(dutch, 'support.chat.feedback.no')).not.toBe(
+      valueAtPath(english, 'support.chat.feedback.no')
+    )
+  })
+
   it('ko.json translates the audited support, auth, roadmap, common, header, and footer copy', () => {
     const english = loadMessages(defaultLocale)
     const korean = loadMessages('ko')
