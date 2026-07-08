@@ -1416,7 +1416,7 @@
       "subtitle": "近期变更——每个应用共享同一版本线。",
       "latest": "最新",
       "fullHistory": "GitHub 上的完整历史 —",
-      "desktop": "Desktop",
+      "desktop": "桌面版",
       "emptyNotes": "_此版本没有发布说明。_",
       "fallback": {
         "v196": "- 支持钱箱——付款后自动打开，或通过新的“打开钱箱”按钮打开，并支持每台打印机的连接器（ESC-POS、Epson、PrintNode、云端）\n- 修复分析事件触发过于频繁的问题\n- 更新翻译",

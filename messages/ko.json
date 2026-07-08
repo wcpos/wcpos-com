@@ -1416,7 +1416,7 @@
       "subtitle": "최근 변경 사항 — 모든 앱은 하나의 버전 라인을 공유합니다.",
       "latest": "최신",
       "fullHistory": "GitHub의 전체 기록 —",
-      "desktop": "Desktop",
+      "desktop": "데스크톱",
       "emptyNotes": "_이 버전에 대한 릴리스 노트가 없습니다._",
       "fallback": {
         "v196": "- 금전함 지원 — 결제 후 자동 열기 또는 새 금전함 열기 버튼으로 열기, 프린터별 커넥터 지원(ESC-POS, Epson, PrintNode, cloud)\n- analytics 이벤트가 너무 자주 발생하던 문제 수정\n- 번역 업데이트",
