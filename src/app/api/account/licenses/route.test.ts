@@ -64,7 +64,7 @@ describe('GET /api/account/licenses', () => {
           machines: [],
           metadata: {
             public_note: 'keep',
-            discord_access: {
+            discordAccess: {
               seatCap: 5,
               blockedDiscordUserIds: ['discord_blocked'],
               removedMembers: [{ discordUserId: 'discord_removed' }],

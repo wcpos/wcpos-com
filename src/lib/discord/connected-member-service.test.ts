@@ -37,7 +37,7 @@ describe('connected member service', () => {
       license({
         id: 'lic_1',
         metadata: addConnectedDiscordMember(
-          { discord_access: { seatCap: 2 } },
+          { discordAccess: { seatCap: 2 } },
           {
             id: 'discord_1',
             username: 'ada',
@@ -127,20 +127,18 @@ describe('connected member service', () => {
       })
     ).resolves.toEqual({ status: 'claimed', licenseId: 'lic_1', memberId: 'discord-member-discord_1' })
 
-    expect(updateLicenseMetadata).toHaveBeenCalledWith(
-      'lic_1',
-      expect.objectContaining({
-        discord_access: expect.objectContaining({
-          members: [expect.objectContaining({ discordUserId: 'discord_1' })],
-        }),
-      })
-    )
+    const writtenClaim = JSON.parse(
+      (updateLicenseMetadata.mock.calls[0][1] as Record<string, string>).discordAccess
+    ) as { members: Array<{ discordUserId: string }> }
+    expect(writtenClaim.members).toEqual([
+      expect.objectContaining({ discordUserId: 'discord_1' }),
+    ])
   })
 
   it('refuses a claim when the licence seat cap is full', async () => {
     const full = license({
       metadata: addConnectedDiscordMember(
-        { discord_access: { seatCap: 1 } },
+        { discordAccess: { seatCap: 1 } },
         { id: 'discord_1', username: 'ada', avatar: null, connectedAt: new Date('2026-06-01T00:00:00.000Z') }
       ),
     })
@@ -160,14 +158,14 @@ describe('connected member service', () => {
   })
 
   it('checks the latest metadata before claiming the last seat', async () => {
-    let latest = license({ metadata: { discord_access: { seatCap: 1, members: [] } } })
+    let latest = license({ metadata: { discordAccess: { seatCap: 1, members: [] } } })
     const dependencies = {
       now: () => new Date('2026-06-17T00:00:00.000Z'),
       validateLicenseKey: vi.fn(async () => ({
         valid: true,
         code: 'VALID',
         detail: 'ok',
-        license: license({ metadata: { discord_access: { seatCap: 1, members: [] } } }),
+        license: license({ metadata: { discordAccess: { seatCap: 1, members: [] } } }),
       })),
       getLicense: vi.fn(async () => latest),
       updateLicenseMetadata: vi.fn(async (_licenseId: string, metadata: Record<string, unknown>) => {
@@ -219,12 +217,10 @@ describe('connected member service', () => {
       })
     ).resolves.toEqual({ status: 'removed', discordUserId: 'discord_1' })
 
-    expect(updateLicenseMetadata).toHaveBeenCalledWith(
-      'lic_1',
-      expect.objectContaining({
-        discord_access: expect.objectContaining({ blockedDiscordUserIds: ['discord_1'] }),
-      })
-    )
+    const writtenRemoval = JSON.parse(
+      (updateLicenseMetadata.mock.calls[0][1] as Record<string, string>).discordAccess
+    ) as { blockedDiscordUserIds: string[] }
+    expect(writtenRemoval.blockedDiscordUserIds).toEqual(['discord_1'])
   })
 
   it('self-unlink frees the seat without block-listing the member', async () => {
@@ -254,11 +250,11 @@ describe('connected member service', () => {
       })
     ).resolves.toEqual({ status: 'removed', licenseId: 'lic_1' })
 
-    const written = updateLicenseMetadata.mock.calls[0][1] as {
-      discord_access: { members: Array<{ removedAt?: string }>; blockedDiscordUserIds: string[] }
-    }
-    expect(written.discord_access.blockedDiscordUserIds).toEqual([])
-    expect(written.discord_access.members[0].removedAt).toBe('2026-06-18T00:00:00.000Z')
+    const written = JSON.parse(
+      (updateLicenseMetadata.mock.calls[0][1] as Record<string, string>).discordAccess
+    ) as { members: Array<{ removedAt?: string }>; blockedDiscordUserIds: string[] }
+    expect(written.blockedDiscordUserIds).toEqual([])
+    expect(written.members[0].removedAt).toBe('2026-06-18T00:00:00.000Z')
   })
 
   it('self-unlink reports not_connected without writing metadata', async () => {
@@ -305,7 +301,7 @@ describe('connected member service', () => {
 
   it('serializes holder removals against latest license metadata', async () => {
     const withAda = addConnectedDiscordMember(
-      { discord_access: { seatCap: 5 } },
+      { discordAccess: { seatCap: 5 } },
       { id: 'discord_1', username: 'ada', avatar: null, connectedAt: new Date('2026-06-01T00:00:00.000Z') }
     )
     let latest = license({
@@ -373,12 +369,10 @@ describe('connected member service', () => {
       })
     ).resolves.toEqual({ status: 'unblocked', discordUserId: 'discord_1' })
 
-    expect(updateLicenseMetadata).toHaveBeenCalledWith(
-      'lic_1',
-      expect.objectContaining({
-        discord_access: expect.objectContaining({ blockedDiscordUserIds: [] }),
-      })
-    )
+    const writtenUnblock = JSON.parse(
+      (updateLicenseMetadata.mock.calls[0][1] as Record<string, string>).discordAccess
+    ) as { blockedDiscordUserIds: string[] }
+    expect(writtenUnblock.blockedDiscordUserIds).toEqual([])
   })
 
   it('refuses to unblock on a licence the holder does not own', async () => {

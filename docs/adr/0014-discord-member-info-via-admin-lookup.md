@@ -54,5 +54,5 @@ anything back.
   with no wcpos.com account shows licence-backed facts only.
 - When the Linked Roles phase is picked up, it needs its own decision on
   refresh-token storage (the only per-member private store today is the
-  licence `discord_access` metadata) and on staleness tolerance; nothing in
+  licence `discordAccess` metadata) and on staleness tolerance; nothing in
   this decision blocks or presupposes that design.

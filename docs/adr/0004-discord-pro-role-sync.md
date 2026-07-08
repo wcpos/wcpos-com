@@ -80,7 +80,7 @@ Required secrets live only in server-side deployment environment variables:
 
 A dedicated external connected-member table is deferred for this greenfield
 slice. The current implementation stores the licence-member collection on
-Keygen licence metadata (`discord_access`) so access follows the licence record
+Keygen licence metadata (`discordAccess`, a JSON-string value — see ADR-0007) so access follows the licence record
 without customer-level link state. Promote to a dedicated store only if metadata
 contention, audit/history, or indexed reverse lookup becomes important.
 

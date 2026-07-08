@@ -22,7 +22,7 @@ describe('connected Discord member metadata', () => {
   it('parses active members and hides removed members from the holder view', () => {
     expect(
       getConnectedDiscordAccess({
-        discord_access: {
+        discordAccess: {
           seatCap: 3,
           blockedDiscordUserIds: ['discord_removed'],
           members: [
@@ -70,21 +70,22 @@ describe('connected Discord member metadata', () => {
       }
     )
 
-    expect(updated).toEqual({
-      plan_note: 'keep me',
-      discord_access: {
-        seatCap: DEFAULT_DISCORD_SEAT_CAP,
-        blockedDiscordUserIds: [],
-        members: [
-          {
-            id: 'discord-member-discord_1',
-            discordUserId: 'discord_1',
-            username: 'ada',
-            avatar: null,
-            connectedAt: '2026-06-17T10:00:00.000Z',
-          },
-        ],
-      },
+    expect(updated.plan_note).toBe('keep me')
+    // Stored as a single JSON string — Keygen rejects metadata nested deeper
+    // than 2 levels, and member records would sit at depth 3 as raw objects.
+    expect(typeof updated.discordAccess).toBe('string')
+    expect(JSON.parse(updated.discordAccess as string)).toEqual({
+      seatCap: DEFAULT_DISCORD_SEAT_CAP,
+      blockedDiscordUserIds: [],
+      members: [
+        {
+          id: 'discord-member-discord_1',
+          discordUserId: 'discord_1',
+          username: 'ada',
+          avatar: null,
+          connectedAt: '2026-06-17T10:00:00.000Z',
+        },
+      ],
     })
   })
 
@@ -107,9 +108,10 @@ describe('connected Discord member metadata', () => {
       members: [],
       blockedDiscordUserIds: ['discord_1'],
     })
-    expect((removed.discord_access as { members: Array<{ removedAt?: string }> }).members[0].removedAt).toBe(
-      '2026-06-18T00:00:00.000Z'
-    )
+    const removedRaw = JSON.parse(removed.discordAccess as string) as {
+      members: Array<{ removedAt?: string }>
+    }
+    expect(removedRaw.members[0].removedAt).toBe('2026-06-18T00:00:00.000Z')
   })
 
   it('frees the seat without block-listing when removal is a self-unlink (block: false)', () => {
@@ -159,7 +161,7 @@ describe('connected Discord member metadata', () => {
   it('returns a bare blocked entry when no member record backs the blocked id', () => {
     expect(
       getBlockedDiscordMembers({
-        discord_access: { blockedDiscordUserIds: ['discord_orphan'], members: [] },
+        discordAccess: { blockedDiscordUserIds: ['discord_orphan'], members: [] },
       })
     ).toEqual([
       { discordUserId: 'discord_orphan', username: null, avatar: null, removedAt: null },
@@ -191,7 +193,7 @@ describe('connected Discord member metadata', () => {
     expect(getConnectedDiscordAccess(unblocked).blockedDiscordUserIds).toEqual(['discord_2'])
     // The removed-member records stay as history; unblocking only lifts the block.
     expect(
-      (unblocked.discord_access as { members: Array<{ removedAt?: string }> }).members
+      (JSON.parse(unblocked.discordAccess as string) as { members: unknown[] }).members
     ).toHaveLength(2)
   })
 
