@@ -133,6 +133,24 @@ describe('establishOAuthSession', () => {
     )
   })
 
+  it('passes the storefront locale to account-link when creating a new OAuth customer', async () => {
+    const initialToken = fakeJwt({ actor_id: '', user_metadata: { email: 'fr@x.com' } })
+    mockFetch
+      .mockResolvedValueOnce(okJson({ token: initialToken }))
+      .mockResolvedValueOnce(okEmpty())
+      .mockResolvedValueOnce(okJson({ token: fakeJwt({ actor_id: 'cust_new', user_metadata: {} }) }))
+
+    await establishOAuthSession('google', { code: 'abc' }, { locale: 'fr' })
+
+    expect(mockFetch).toHaveBeenNthCalledWith(
+      2,
+      'https://test-store-api.wcpos.com/store/auth/account-link',
+      expect.objectContaining({
+        body: JSON.stringify({ locale: 'fr' }),
+      })
+    )
+  })
+
   it('persists the original token without linking or refreshing for an existing identity', async () => {
     const token = fakeJwt({ actor_id: 'cust_existing', user_metadata: { email: 'old@x.com' } })
     mockFetch.mockResolvedValueOnce(okJson({ token }))

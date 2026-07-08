@@ -102,14 +102,17 @@ export async function GET(
       if (key === 'redirect') return
       callbackParams[key] = value
     })
+    const locale = localeFromPath(redirectTo)
 
     // establishOAuthSession owns the link-then-refresh-then-persist ordering
     // and writes the session cookie; the route only drives profile sync and
     // the redirect. Profile sync runs after the session exists (it reads the
     // session identity via getSessionCustomer) and is best-effort — it must
     // not block sign-in.
-    const { payload } = await establishOAuthSession(provider, callbackParams)
-    await syncOauthProfile(provider, payload.user_metadata, localeFromPath(redirectTo))
+    const { payload } = locale === 'en'
+      ? await establishOAuthSession(provider, callbackParams)
+      : await establishOAuthSession(provider, callbackParams, { locale })
+    await syncOauthProfile(provider, payload.user_metadata, locale)
 
     return clearRedirectCookie(
       NextResponse.redirect(new URL(redirectTo, request.url))
