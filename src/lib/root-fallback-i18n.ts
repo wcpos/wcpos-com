@@ -30,7 +30,7 @@ interface RootFallbackCopy {
   support: string
 }
 
-type RootFallbackMessages = Omit<RootFallbackCopy, 'locale'>
+type RootFallbackMessages = Omit<RootFallbackCopy, 'locale' | 'direction'>
 
 const ROOT_FALLBACK_MESSAGES = {
   de: { errors: deMessages.errors, support: deMessages.header.support },
