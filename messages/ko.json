@@ -1609,5 +1609,262 @@
       "title": "사람과 직접 이야기하고 싶으신가요?",
       "subtitle": "매장 운영자와 팀이 함께하는 실시간 Discord 커뮤니티에 참여하세요."
     }
+  },
+  "compare": {
+    "disclosure": {
+      "title": "이 비교를 운영하는 곳",
+      "body": "이 페이지는 WCPOS 개발사인 kilbot이 게시합니다. 당연히 우리는 이해관계 당사자입니다. 그래서 모든 수치에 출처와 날짜를 명시하고, 경쟁사 자체 가격 페이지로 직접 링크하며, 경쟁 제품이 더 나은 선택일 때는 솔직하게 말씀드립니다. 모든 내용을 직접 확인해 보세요."
+    },
+    "hub": {
+      "metadata": {
+        "title": "WooCommerce POS 시스템 비교",
+        "description": "WooCommerce용 POS 시스템에 대한 정직하고 출처가 명확한 비교 — 아키텍처, 무료 플랜의 실제 제한, 가격, 오프라인 지원, 그리고 각 제품이 적합한 상황을 다룹니다."
+      },
+      "hero": {
+        "title": "WooCommerce POS 시스템 비교",
+        "subtitle": "웹에 있는 WooCommerce POS 순위 글은 하나같이 자사를 1위에 올린 업체 아니면 수수료 순으로 줄 세우는 제휴 사이트가 쓴 것입니다. 이 페이지는 다릅니다. 물론 업체가 게시했지만, 모든 사실에 출처와 날짜를 달아 검증할 수 있게 했고, 경쟁 제품이 더 잘 맞을 때는 그렇다고 말합니다."
+      },
+      "method": {
+        "title": "이 비교가 만들어지는 방식",
+        "body": "사실 정보는 업체 자체 가격 페이지와 WordPress.org에서 명시된 날짜에 수집하며, 분기마다 다시 검증합니다. 키오스크 모드, 업체 하드웨어, 앱스토어 완성도처럼 WCPOS가 뒤처지는 항목은 페이지에 그대로 적습니다. 오류를 발견하셨나요? support@wcpos.com으로 알려 주시면 수정하고 변경 내역을 기록합니다."
+      },
+      "oliverCard": {
+        "title": "WCPOS vs Oliver POS",
+        "description": "WordPress 네이티브 대 클라우드 SaaS: 데이터 소유권, 무료 플랜의 실제 제한, 일회성 결제와 구독의 차이, 그리고 Oliver가 진짜로 더 나은 부분.",
+        "cta": "비교 읽기"
+      },
+      "moreSoon": "Square for WooCommerce와 WooCommerce 공식 POS를 포함해 더 많은 비교가 준비 중입니다."
+    },
+    "oliver": {
+      "metadata": {
+        "title": "WCPOS vs Oliver POS (2026): 정직한 비교",
+        "description": "WCPOS 개발자가 직접 비교한 WCPOS와 Oliver POS — 아키텍처, 무료 플랜 제한, 가격, 카드 단말기, 오프라인 지원, 평점, 그리고 Oliver가 더 나은 선택인 경우. 모든 사실에 출처와 날짜를 명시했습니다."
+      },
+      "hero": {
+        "title": "WCPOS vs Oliver POS",
+        "subtitle": "같은 문제에 대한 정반대의 두 가지 답: WordPress 사이트 안에서 돌아가는 POS인가, 스토어를 동기화하는 클라우드 플랫폼인가."
+      },
+      "shortAnswer": {
+        "title": "간단한 결론",
+        "wcpos": "WCPOS는 WordPress 사이트 내부에서 실행됩니다. 판매 데이터가 스토어 밖으로 나가지 않고, 무료 버전은 정말로 무제한이며(제품, 고객, 현금 판매 — 어떤 것에도 상한 없음), 유료 라이선스는 일회성 결제로 만료된 후에도 계속 작동합니다. 여러분의 POS는 결코 꺼지지 않습니다.",
+        "oliver": "Oliver POS는 스토어를 자사 클라우드 플랫폼에 동기화합니다. 세련된 계산대 앱, 키오스크 모드, 하드웨어 생태계를 얻지만 Oliver 서버에 의존하게 되며, 무료 플랜은 제품 20개, 월 거래 50건이 상한입니다."
+      },
+      "glance": {
+        "title": "한눈에 보기",
+        "caption": "출처: oliverpos.com/pricing 및 wordpress.org(2026년 7월 8일 수집), wcpos.com/pro.",
+        "colWcpos": "WCPOS",
+        "colOliver": "Oliver POS",
+        "rows": {
+          "architecture": {
+            "label": "아키텍처",
+            "wcpos": "WordPress 네이티브 — 데이터가 WooCommerce에 그대로 유지",
+            "oliver": "클라우드 SaaS — REST API로 Oliver 서버에 동기화"
+          },
+          "freePlan": {
+            "label": "무료 플랜",
+            "wcpos": "제품, 주문, 고객 무제한",
+            "oliver": "제품 20개, 월 거래 50건, 직원 1명"
+          },
+          "pricing": {
+            "label": "유료 가격",
+            "wcpos": "$129에 1년 업데이트 또는 $399 평생 — 일회성 결제, 자동 갱신 없음",
+            "oliver": "연 $89~$489, 반복 결제(연간 청구)"
+          },
+          "stopPaying": {
+            "label": "결제를 중단하면",
+            "wcpos": "만료된 Pro 라이선스는 영원히 계속 작동합니다. 계산대, 데이터, 모든 기능이 그대로 유지되고 업데이트와 우선 지원만 중단됩니다",
+            "oliver": "유료 플랜은 반복 구독입니다. 유료 기능 사용은 결제 지속 여부에 달려 있으며, 무료 티어는 제품 20개, 월 거래 50건이 상한입니다"
+          },
+          "license": {
+            "label": "라이선스 범위",
+            "wcpos": "도메인당(활성화 2회: 운영 + 스테이징), 기기와 계산원 무제한",
+            "oliver": "라이선스당 WooCommerce 사이트 1개, 직원 수는 플랜별 상한"
+          },
+          "fees": {
+            "label": "거래 수수료",
+            "wcpos": "없음 — 모든 WooCommerce 결제 게이트웨이 사용 가능",
+            "oliver": "없음 — 결제 프로세서 제한 없음"
+          },
+          "terminals": {
+            "label": "카드 단말기",
+            "wcpos": "Stripe Terminal, SumUp, PayPal Reader(Zettle), Square Terminal, Mollie Terminal, Vipps MobilePay(Pro, 확장 카탈로그 제공)",
+            "oliver": "Stripe, Square, Adyen, Nets, Oliver Pay, 자체 하드웨어 허브"
+          },
+          "platforms": {
+            "label": "플랫폼",
+            "wcpos": "웹, 데스크톱 앱(Windows·macOS), iOS·Android 앱(베타)",
+            "oliver": "웹 계산대, iOS·Android 앱, 하드웨어 허브"
+          },
+          "offline": {
+            "label": "오프라인",
+            "wcpos": "오프라인 우선: 오프라인에서 상품 탐색과 장바구니 작성 가능, 결제 완료에는 연결 필요",
+            "oliver": "오프라인 거래를 대기열에 저장했다가 재연결 시 동기화한다고 주장"
+          },
+          "kiosk": {
+            "label": "키오스크 / 셀프 계산",
+            "wcpos": "없음",
+            "oliver": "있음"
+          },
+          "display": {
+            "label": "고객용 디스플레이",
+            "wcpos": "없음",
+            "oliver": "있음"
+          },
+          "openSource": {
+            "label": "오픈 소스",
+            "wcpos": "예 — github.com/wcpos",
+            "oliver": "아니요"
+          },
+          "wporg": {
+            "label": "WordPress.org",
+            "wcpos": "활성 설치 5,000+, 별점 3.7(리뷰 81개)",
+            "oliver": "활성 설치 800+, 별점 4.3(리뷰 90개)"
+          }
+        }
+      },
+      "architecture": {
+        "title": "아키텍처의 진짜 차이는 무엇인가요?",
+        "intro": "Oliver POS는 WordPress 플러그인을 커넥터로 삼는 클라우드 플랫폼입니다. 제품, 주문, 고객이 Oliver 서버로 동기화되고, 여러분이 조작하는 계산대는 Oliver 클라우드와 통신하는 Oliver 앱입니다. WCPOS는 정반대입니다. 계산대가 여러분의 WooCommerce 데이터베이스와 직접 통신하는 로컬 우선 클라이언트입니다. 실제로 달라지는 점은 다음과 같습니다.",
+        "dataOwnership": {
+          "title": "데이터 소유권",
+          "body": "WCPOS에서는 판매 데이터가 여러분의 서버 밖으로 나가지 않습니다. Oliver에서는 스토어 데이터가 그들의 클라우드에도 저장됩니다. 대부분의 매장에는 문제가 없지만, 개인정보 처리방침, 규제 대상 상품, 데이터 소재지를 약속한 에이전시 등 일부에게는 결정적인 걸림돌입니다."
+        },
+        "failureModes": {
+          "title": "장애 시나리오",
+          "body": "Oliver의 클라우드나 동기화 계층에 문제가 생기면 사이트가 멀쩡해도 계산대가 영향을 받습니다. 실제로 Oliver의 최근 WordPress.org 리뷰에는 주문이 0원으로 WooCommerce에 들어오거나 도입 과정에서 API 오류가 났다는 내용이 있습니다. WCPOS에는 고장 날 동기화 계층 자체가 없습니다. 다만 계산대 속도는 호스팅 속도에 좌우됩니다. 저가 공유 호스팅에서는 WCPOS가 느리게 느껴질 수 있지만, Oliver의 클라우드 계산대는 호스팅의 영향을 받지 않습니다."
+        },
+        "longevity": {
+          "title": "지속 가능성",
+          "body": "WCPOS는 오픈 소스이며 평생 라이선스 옵션이 있습니다. 회사가 내일 사라져도 POS는 계속 작동하고 코드는 포크할 수 있습니다. Oliver가 문을 닫으면 계산대는 멈춥니다. 이 분야에서 이는 가정이 아닙니다. Oliver의 플러그인도 2026년에 개발이 재개되기 전까지 약 1년간 업데이트가 없었고, 다른 WooCommerce POS 제품 중에는 아예 단종된 것도 있습니다."
+        }
+      },
+      "freeTier": {
+        "title": "무료 플랜으로 실제로 무엇을 할 수 있나요?",
+        "intro": "가장 큰 실질적 차이이자, 업체 비교 글이 흐려 놓는 지점입니다.",
+        "colFeature": "무료 플랜",
+        "rows": {
+          "products": {
+            "label": "제품",
+            "wcpos": "무제한",
+            "oliver": "20개"
+          },
+          "transactions": {
+            "label": "거래",
+            "wcpos": "무제한",
+            "oliver": "월 50건"
+          },
+          "devices": {
+            "label": "계산대 / 기기 / 직원",
+            "wcpos": "기기와 계산원 무제한",
+            "oliver": "매장 1, 스테이션 1, 직원 1명"
+          },
+          "offline": {
+            "label": "오프라인 탐색과 장바구니",
+            "wcpos": "지원",
+            "oliver": "지원(주장)"
+          },
+          "receipts": {
+            "label": "영수증 인쇄(감열식 포함)",
+            "wcpos": "지원",
+            "oliver": "지원"
+          }
+        },
+        "outro1": "월 50건이면 하루 2건도 안 되는 판매량입니다. Oliver의 무료 플랜은 만료일 없는 체험판에 불과합니다.",
+        "outro2": "WCPOS 무료 플러그인은 실제 매장을 기한 없이 운영할 수 있습니다: 전체 카탈로그, 무제한 고객 및 현금 판매, 감열 영수증 인쇄, 오프라인 우선 탐색을 모든 플랫폼에서 지원합니다."
+      },
+      "pricing": {
+        "title": "유료 버전은 실제로 얼마나 드나요?",
+        "oliver": "Oliver(연간 청구): Starter 연 $89 — 매장 1, 스테이션 2, 직원 3명. Pro 연 $289 — 매장 2, 스테이션 무제한, 직원 15명. Enterprise 연 $489 — 모두 무제한. 반복 결제이며 라이선스당 WooCommerce 사이트 1개입니다.",
+        "wcpos": "WCPOS Pro: $129 — 1년간의 업데이트와 우선 지원을 포함하는 일회성 결제입니다. 자동 갱신은 절대 없으며, 1년이 지나도 Pro 버전은 계속 작동합니다 — 아무것도 꺼지지 않습니다, 결코. 이는 의도적인 설계입니다: 갱신은 값어치를 하는 업데이트로 얻어내야 하기 때문입니다. 또는 $399 평생 라이선스를 선택할 수 있습니다. 각 라이선스는 도메인 하나와 스테이징 사이트 하나를 포함하며, 기기와 계산원 수는 무제한입니다. 연간 구매자는 차액 $270을 내고 평생 라이선스로 업그레이드할 수 있습니다. 14일 환불 보장.",
+        "math": "매장이 하나라면 첫해에는 Oliver Starter가 더 저렴합니다($89 대 $129). 하지만 2년 차부터는 계산이 뒤집힙니다. Oliver는 해마다 청구가 이어지는 반면, WCPOS 평생 라이선스는 Oliver의 가장 저렴한 플랜과 비교해도 4년 차부터 $0입니다. Oliver Enterprise 3년이면 $1,467+인데 WCPOS는 총 $399입니다.",
+        "proAdds": "Pro 추가 기능: 다중 매장 관리, 카드 단말기 연동, 쿠폰, POS API를 통한 환불, 주문 내역, 계산대 고객 관리, 매장별 가격, 재고·가격 편집, 마감 보고서, 확장 디렉터리.",
+        "demoPrefix": "먼저",
+        "demoLinkLabel": "demo.wcpos.com/pos",
+        "demoSuffix": "에서 모든 기능을 체험해 보세요(로그인 demo / demo)."
+      },
+      "oliverBetter": {
+        "title": "Oliver가 진짜로 더 나은 부분",
+        "intro": "정직한 비교라면 양쪽 모두를 봐야 합니다.",
+        "kiosk": "키오스크 / 셀프 계산 모드 — Oliver에는 있고 WCPOS에는 없습니다.",
+        "display": "고객용 디스플레이 — Oliver에는 있고 WCPOS에는 없습니다.",
+        "hardware": "전용 하드웨어 — Oliver는 턴키 방식의 카운터 구성을 위한 전용 계산대 허브를 판매합니다.",
+        "subscriptions": "WooCommerce Subscriptions 지원 — Oliver는 계산대에서 구독 상품 판매를 지원하지만 WCPOS는 지원하지 않습니다.",
+        "rating": "더 높은 WordPress.org 평점 — WCPOS의 3.7점 대비 4.3점(다만 두 제품 모두 최근 리뷰를 꼭 읽어 보세요 — 아래 참조).",
+        "outro": "턴키 키오스크나 업체가 공급하는 하드웨어 번들을 원하고, 클라우드 의존과 사이트별 반복 과금이 괜찮다면 Oliver가 더 잘 맞습니다."
+      },
+      "ratings": {
+        "title": "평점과 지원은 어떤가요?",
+        "intro": "평균 점수는 양쪽 방향 모두 현실보다 뒤처집니다. 두 플러그인의 최근 리뷰를 읽어 보세요.",
+        "wcpos": "WCPOS: 리뷰 81개에 별점 3.7 — 5점 50개, 1점 21개. 1점 리뷰 대부분은 전면 재작성 이전 시기(2016~2022년)와 2023년 v1.0 출시 시기의 것입니다. 당시 어떤 지적이 있었고 무엇이 바뀌었는지 공개 기록으로 관리하고 있습니다.",
+        "oliver": "Oliver: 리뷰 90개에 별점 4.3. 그러나 가장 최근 리뷰(2026년 2월~5월)에는 주문이 0원으로 WooCommerce에 동기화되고, 도입 중 Oliver API가 HTTP 500 오류를 반환하며, 지원이 지연된다는 보고가 있습니다. 한 리뷰어는 해결까지 6주가 걸렸다고 말합니다. 또한 Oliver 플러그인은 대략 2025년 4월부터 업데이트가 끊겼다가 2026년에야 개발이 재개되었습니다.",
+        "activity": "WCPOS의 개발 활동은 github.com/wcpos에서 모두 공개되며 업데이트가 꾸준히 배포되고 있습니다. 릴리스 기록이 곧 증거입니다."
+      },
+      "claims": {
+        "title": "Oliver 비교 페이지의 잘못된 주장",
+        "intro": "Oliver는 자체적으로 Oliver 대 WCPOS 비교 페이지를 운영합니다. 키오스크 모드, 하드웨어, 고객용 디스플레이처럼 타당한 주장도 있지만, 몇 가지는 그렇지 않습니다.",
+        "apps": {
+          "claim": "브라우저 전용, 앱은 개발 중",
+          "response": "WCPOS는 현재 Windows와 macOS용 데스크톱 앱을 제공하고 있으며, iOS와 Android 앱도 베타로 사용할 수 있습니다. 모든 앱의 최신 버전은 updates.wcpos.com에 게시됩니다."
+        },
+        "multiOutlet": {
+          "claim": "다중 매장: 기본 미지원",
+          "response": "다중 매장 관리는 WCPOS Pro의 핵심 기능입니다. 매장별 주소, 세율, 영수증 템플릿, 가격, 승인된 사용자를 설정할 수 있습니다."
+        },
+        "payments": {
+          "claim": "통합 결제: 제한적",
+          "response": "WCPOS Pro는 Stripe Terminal, SumUp, PayPal Reader(Zettle), Square Terminal, Mollie Terminal, Vipps MobilePay를 연동하며 확장 카탈로그에서 원클릭으로 설치할 수 있습니다. 게다가 결제가 WooCommerce 자체 결제 시스템을 통해 이루어지므로 WooCommerce 호환 게이트웨이라면 무엇이든 사용할 수 있습니다."
+        },
+        "hobbyShops": {
+          "claim": "취미 매장에 적합",
+          "response": "WordPress.org 기준으로 5,000+개의 활성 매장이 WCPOS를 사용하고 있습니다. Oliver 활성 설치 수의 6배가 넘으며, 2014년 이후 다운로드는 400,000회를 넘습니다."
+        },
+        "singleDev": {
+          "claim": "1인 개발 프로젝트, 업데이트는 관리자가 시간 날 때",
+          "response": "앞부분은 사실이고 우리는 그것을 부끄러워하지 않습니다(FAQ 참조). 뒷부분은 공개된 릴리스 기록과 모순됩니다. Oliver 자체 플러그인의 1년 가까운 업데이트 공백과 비교해 보세요."
+        }
+      },
+      "choose": {
+        "title": "무엇을 선택해야 할까요?",
+        "wcpos": {
+          "title": "이런 경우 WCPOS를 선택하세요:",
+          "body": "데이터를 내 서버에 두고 싶고, 실제 매장을 운영할 수 있는 무료 버전을 원하고, 구독 대신 일회성 결제를 선호하고, 무제한 기기와 계산원이 필요하고, 오픈 소스를 원하거나, 결제 프로세서를 자유롭게 고르고 싶다면 — 모든 WooCommerce 게이트웨이를 쓸 수 있습니다."
+        },
+        "oliver": {
+          "title": "이런 경우 Oliver POS를 선택하세요:",
+          "body": "키오스크나 셀프 계산, 고객용 디스플레이, 업체가 공급하는 계산대 하드웨어, 또는 계산대에서의 WooCommerce Subscriptions 판매가 필요하고, 클라우드 의존과 사이트별 반복 과금이 괜찮다면."
+        }
+      },
+      "faq": {
+        "title": "자주 묻는 질문",
+        "offline": {
+          "question": "WCPOS는 오프라인에서 작동하나요?",
+          "answer": "WCPOS는 오프라인 우선입니다. 제품, 고객, 장바구니가 로컬에 저장되므로 연결 없이도 카탈로그를 탐색하고 판매를 준비할 수 있으며, 연결이 복구되면 모두 동기화됩니다. 결제 완료와 쿠폰 검증에는 서버 연결이 필요합니다. Oliver는 오프라인 거래를 대기열에 저장했다가 재연결 시 동기화한다고 주장합니다."
+        },
+        "fees": {
+          "question": "두 POS 중 거래 수수료를 받는 쪽이 있나요?",
+          "answer": "없습니다. 둘 다 직접 계약한 요율로 자신의 결제 프로세서를 사용할 수 있습니다. Square 결제가 필수인 Square POS나 0.5~2.5퍼센트의 플랫폼 수수료를 얹는 Jovvie와는 다릅니다."
+        },
+        "singleDev": {
+          "question": "WCPOS는 정말 1인 프로젝트인가요?",
+          "answer": "네. WCPOS는 독립 1인 개발자가 (AI 지원 개발을 적극 활용하며) 만들고 있으며 2014년부터 꾸준히 배포해 왔습니다. 이 모델은 결과물로 판단해 주세요. 릴리스 주기, 변경 로그, 이슈 트래커가 모두 github.com/wcpos에 공개되어 있습니다. 이 분야에서 팀 규모는 아무것도 보장하지 않습니다. Oliver POS는 대규모 엔지니어링 팀을 내세우지만 그 플러그인도 약 1년간 업데이트가 없었습니다."
+        },
+        "subscription": {
+          "question": "WCPOS 연간 플랜은 구독인가요?",
+          "answer": "아닙니다. $129는 1년간의 업데이트와 우선 지원에 대한 일회성 결제이며, 자동 갱신이 없고 카드 정보도 저장되지 않습니다. 만료 후에도 Pro 기능은 계속 작동합니다. 갱신을 선택하기 전까지 새 업데이트를 받지 못할 뿐입니다."
+        },
+        "expiry": {
+          "question": "WCPOS Pro 라이선스가 만료되면 어떻게 되나요?",
+          "answer": "아무것도 꺼지지 않습니다. 지금 쓰시는 Pro 버전은 원하는 만큼 계속 작동합니다. 계산대도, 데이터도, 모든 기능도 그대로입니다. 갱신을 선택하기 전까지 새 업데이트와 우선 지원만 중단됩니다. 이는 의도된 설계입니다. 갱신은 돈 낼 가치가 있는 업데이트로 얻어내야 하고, 여러분의 POS가 원격으로 비활성화되는 일은 결코 없다는 보장이기도 합니다. 구독형 POS 플랫폼에서는 결제가 멈추면 유료 기능도 멈춥니다."
+        },
+        "trial": {
+          "question": "둘 다 무료로 써 볼 수 있나요?",
+          "answer": "네. WCPOS 무료 플러그인은 무제한이고, Pro의 전체 기능은 demo.wcpos.com/pos에서 체험할 수 있습니다. Oliver의 무료 플랜(제품 20개, 월 거래 50건)은 체험판으로 쓸 수 있습니다."
+        }
+      },
+      "footer": {
+        "factsVerified": "사실 확인: 2026년 7월 8일, oliverpos.com/pricing, wordpress.org/plugins/woocommerce-pos/, wordpress.org/plugins/oliver-pos/, wcpos.com 기준.",
+        "corrections": "오류를 발견하셨나요? support@wcpos.com으로 알려 주세요. 빠르게 수정하고 모든 변경을 기록합니다."
+      }
+    }
   }
 }

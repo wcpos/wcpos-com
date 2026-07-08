@@ -1609,5 +1609,262 @@
       "title": "Praat je liever met een mens?",
       "subtitle": "Sluit je aan bij winkeleigenaren en het team in onze live Discord-community."
     }
+  },
+  "compare": {
+    "disclosure": {
+      "title": "Wie deze vergelijking publiceert",
+      "body": "Deze pagina wordt gepubliceerd door kilbot, de maker van WCPOS. We hebben uiteraard een belang bij de uitkomst — daarom is elk cijfer voorzien van bron en datum, linken we naar de eigen prijspagina's van concurrenten en zeggen we ronduit wanneer een concurrent de betere keuze is. Controleer alles zelf."
+    },
+    "hub": {
+      "metadata": {
+        "title": "Vergelijk WooCommerce POS-systemen",
+        "description": "Eerlijke, onderbouwde vergelijkingen van kassasystemen voor WooCommerce — architectuur, echte limieten van gratis abonnementen, prijzen, offline ondersteuning en wanneer je welk systeem kiest."
+      },
+      "hero": {
+        "title": "Vergelijk WooCommerce POS-systemen",
+        "subtitle": "Elk WooCommerce POS-overzicht op het web is geschreven door een leverancier die zichzelf bovenaan zet of door een affiliate die rangschikt op commissie. Dit overzicht is anders: inderdaad gepubliceerd door een leverancier — maar elk feit is onderbouwd, gedateerd en controleerbaar, en we zeggen het wanneer een concurrent beter bij je past."
+      },
+      "method": {
+        "title": "Hoe deze vergelijkingen werken",
+        "body": "De feiten komen van de eigen prijspagina's van leveranciers en van WordPress.org, opgehaald op een vermelde datum en elk kwartaal opnieuw gecontroleerd. Waar WCPOS een categorie verliest — kioskmodus, hardware van de leverancier, app-store-afwerking — staat dat gewoon op de pagina. Een fout gezien? Mail naar support@wcpos.com en we corrigeren het en leggen de wijziging vast."
+      },
+      "oliverCard": {
+        "title": "WCPOS vs Oliver POS",
+        "description": "WordPress-native tegenover cloud-SaaS: eigendom van je data, echte limieten van gratis abonnementen, eenmalige prijzen tegenover abonnementen, en waar Oliver echt beter is.",
+        "cta": "Lees de vergelijking"
+      },
+      "moreSoon": "Er komen meer vergelijkingen aan, waaronder Square voor WooCommerce en de officiële POS van WooCommerce."
+    },
+    "oliver": {
+      "metadata": {
+        "title": "WCPOS vs Oliver POS (2026): een eerlijke vergelijking",
+        "description": "WCPOS en Oliver POS vergeleken door de maker van WCPOS — architectuur, limieten van gratis abonnementen, prijzen, pinterminals, offline ondersteuning, beoordelingen en wanneer Oliver de betere keuze is. Elk feit onderbouwd en gedateerd."
+      },
+      "hero": {
+        "title": "WCPOS vs Oliver POS",
+        "subtitle": "Twee tegenovergestelde antwoorden op hetzelfde probleem: een kassa binnen je WordPress-site, of een cloudplatform waarmee je winkel synchroniseert."
+      },
+      "shortAnswer": {
+        "title": "Het korte antwoord",
+        "wcpos": "WCPOS draait binnen je WordPress-site — je verkoopdata verlaat je winkel nooit, de gratis versie is echt onbeperkt (producten, klanten, contante verkopen — nergens een limiet op), en betaalde licenties zijn eenmalige betalingen die blijven werken, ook nadat ze zijn verlopen. Je kassa kan nooit worden uitgeschakeld.",
+        "oliver": "Oliver POS synchroniseert je winkel met zijn cloudplatform — je krijgt een verzorgde kassa-app, kioskmodus en een hardware-ecosysteem, maar je bent afhankelijk van de servers van Oliver, en het gratis abonnement stopt bij 20 producten en 50 transacties per maand."
+      },
+      "glance": {
+        "title": "In één oogopslag",
+        "caption": "Bronnen: oliverpos.com/pricing en wordpress.org, opgehaald op 8 juli 2026; wcpos.com/pro.",
+        "colWcpos": "WCPOS",
+        "colOliver": "Oliver POS",
+        "rows": {
+          "architecture": {
+            "label": "Architectuur",
+            "wcpos": "WordPress-native — data blijft in WooCommerce",
+            "oliver": "Cloud-SaaS — synchroniseert via REST API met de servers van Oliver"
+          },
+          "freePlan": {
+            "label": "Gratis abonnement",
+            "wcpos": "Onbeperkt producten, bestellingen en klanten",
+            "oliver": "20 producten, 50 transacties per maand, 1 medewerker"
+          },
+          "pricing": {
+            "label": "Betaalde prijzen",
+            "wcpos": "$129 voor één jaar updates, of $399 levenslang — eenmalige betalingen, geen automatische verlenging",
+            "oliver": "$89 tot $489 per jaar, terugkerend (jaarlijkse facturering)"
+          },
+          "stopPaying": {
+            "label": "Als je stopt met betalen",
+            "wcpos": "Een verlopen Pro-licentie blijft voor altijd werken — je behoudt je kassa, je data en elke functie; alleen updates en prioriteitsondersteuning pauzeren",
+            "oliver": "Betaalde plannen zijn terugkerende abonnementen — toegang tot betaalde functies hangt af van doorlopende betaling; de gratis versie is begrensd op 20 producten en 50 transacties per maand"
+          },
+          "license": {
+            "label": "Licentieomvang",
+            "wcpos": "Per domein (2 activeringen: live + staging); onbeperkt apparaten en kassamedewerkers",
+            "oliver": "Eén WooCommerce-site per licentie; aantal medewerkers begrensd per abonnement"
+          },
+          "fees": {
+            "label": "Transactiekosten",
+            "wcpos": "Geen — gebruik elke WooCommerce-betaalgateway",
+            "oliver": "Geen — onafhankelijk van de betaalverwerker"
+          },
+          "terminals": {
+            "label": "Pinterminals",
+            "wcpos": "Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Vipps MobilePay (Pro, via de extensiecatalogus)",
+            "oliver": "Stripe, Square, Adyen, Nets; Oliver Pay; eigen hardwarehub"
+          },
+          "platforms": {
+            "label": "Platformen",
+            "wcpos": "Web, desktop-apps (Windows en macOS), iOS- en Android-apps (bèta)",
+            "oliver": "Webkassa, iOS- en Android-apps, hardwarehub"
+          },
+          "offline": {
+            "label": "Offline",
+            "wcpos": "Offline-first: offline door producten bladeren en winkelwagens samenstellen; afrekenen vereist verbinding",
+            "oliver": "Claimt offline transacties in een wachtrij, gesynchroniseerd bij herverbinding"
+          },
+          "kiosk": {
+            "label": "Kiosk / zelfscan",
+            "wcpos": "Nee",
+            "oliver": "Ja"
+          },
+          "display": {
+            "label": "Klantendisplay",
+            "wcpos": "Nee",
+            "oliver": "Ja"
+          },
+          "openSource": {
+            "label": "Open source",
+            "wcpos": "Ja — github.com/wcpos",
+            "oliver": "Nee"
+          },
+          "wporg": {
+            "label": "WordPress.org",
+            "wcpos": "5,000+ actieve installaties, 3.7 sterren (81 beoordelingen)",
+            "oliver": "800+ actieve installaties, 4.3 sterren (90 beoordelingen)"
+          }
+        }
+      },
+      "architecture": {
+        "title": "Wat is het echte verschil in architectuur?",
+        "intro": "Oliver POS is een cloudplatform met een WordPress-plugin als connector: je producten, bestellingen en klanten synchroniseren met de servers van Oliver, en de kassa die je bedient is de app van Oliver die met de cloud van Oliver praat. WCPOS is het tegenovergestelde: de kassa is een local-first client die rechtstreeks met je eigen WooCommerce-database praat. De praktische gevolgen:",
+        "dataOwnership": {
+          "title": "Eigendom van je data",
+          "body": "Met WCPOS verlaat je verkoopdata je server nooit. Met Oliver staat je winkeldata ook in hun cloud — prima voor de meeste winkels, een breekpunt voor sommige: privacyverklaringen, gereguleerde goederen, bureaus met toezeggingen over dataresidentie."
+        },
+        "failureModes": {
+          "title": "Faalscenario's",
+          "body": "Als de cloud van Oliver of de synchronisatielaag problemen heeft, wordt je kassa geraakt terwijl je site gewoon online is — recente WordPress.org-beoordelingen van Oliver beschrijven bestellingen die met nulwaarde in WooCommerce binnenkomen en API-fouten tijdens de installatie. Bij WCPOS is er geen synchronisatielaag die kapot kan gaan — maar je kassa is precies zo snel als je hosting. Op goedkope shared hosting zal WCPOS traag aanvoelen; de cloudkassa van Oliver merkt daar niets van."
+        },
+        "longevity": {
+          "title": "Levensduur",
+          "body": "WCPOS is open source met een optie voor een levenslange licentie: als het bedrijf morgen zou verdwijnen, blijft je POS gewoon werken en kan de code geforkt worden. Als Oliver stopt, stopt de kassa. Dat is in deze categorie geen hypothetisch scenario — de eigen plugin van Oliver bleef ongeveer een jaar zonder updates voordat de ontwikkeling in 2026 werd hervat, en andere WooCommerce POS-producten zijn definitief uit de handel genomen."
+        }
+      },
+      "freeTier": {
+        "title": "Wat krijg je nu echt met het gratis abonnement?",
+        "intro": "Het grootste praktische verschil, en precies het verschil dat leveranciersvergelijkingen vervagen:",
+        "colFeature": "Gratis abonnement",
+        "rows": {
+          "products": {
+            "label": "Producten",
+            "wcpos": "Onbeperkt",
+            "oliver": "20"
+          },
+          "transactions": {
+            "label": "Transacties",
+            "wcpos": "Onbeperkt",
+            "oliver": "50 per maand"
+          },
+          "devices": {
+            "label": "Kassa's / apparaten / medewerkers",
+            "wcpos": "Onbeperkt apparaten en kassamedewerkers",
+            "oliver": "1 vestiging, 1 kassastation, 1 medewerker"
+          },
+          "offline": {
+            "label": "Offline bladeren en winkelwagens",
+            "wcpos": "Ja",
+            "oliver": "Ja (geclaimd)"
+          },
+          "receipts": {
+            "label": "Bonnen printen (incl. thermisch)",
+            "wcpos": "Ja",
+            "oliver": "Ja"
+          }
+        },
+        "outro1": "Vijftig transacties per maand is minder dan twee verkopen per dag — het gratis abonnement van Oliver is een proefperiode zonder einddatum.",
+        "outro2": "De gratis WCPOS-plugin draait onbeperkt een echte winkel: volledige catalogus, onbeperkte klanten en contante verkopen, thermisch bonnen printen, offline-first browsen, op elk platform."
+      },
+      "pricing": {
+        "title": "Wat kost betaald nu echt?",
+        "oliver": "Oliver (jaarlijkse facturering): Starter $89 per jaar — 1 vestiging, 2 kassastations, 3 medewerkers. Pro $289 per jaar — 2 vestigingen, onbeperkt kassastations, 15 medewerkers. Enterprise $489 per jaar — onbeperkt. Terugkerend, één WooCommerce-site per licentie.",
+        "wcpos": "WCPOS Pro: $129 — een eenmalige betaling voor een jaar updates en priority support. Het verlengt nooit automatisch, en de Pro-versie blijft werken als het jaar voorbij is — er gaat niets uit, nooit. Dat is bewust: verlengingen moeten worden verdiend met updates die hun geld waard zijn. Of $399 lifetime. Elke licentie dekt een domein plus een staging-site, met onbeperkte apparaten en kassamedewerkers. Jaarlicentiehouders kunnen upgraden naar lifetime door het verschil van $270 bij te betalen. 14 dagen geld-terug-garantie.",
+        "math": "Bij één vestiging is de Starter van Oliver in het eerste jaar goedkoper ($89 tegenover $129). Vanaf het tweede jaar slaat de rekensom om: Oliver blijft elk jaar factureren, terwijl een levenslange WCPOS-licentie vanaf jaar vier $0 kost, zelfs vergeleken met het goedkoopste abonnement van Oliver — en $399 in totaal tegenover $1,467+ voor drie jaar Oliver Enterprise.",
+        "proAdds": "Pro voegt toe: beheer van meerdere winkels, integraties met pinterminals, kortingsbonnen, terugbetalingen via de POS API, bestelgeschiedenis, klantbeheer aan de kassa, winkelspecifieke prijzen, voorraad- en prijsbewerking, dagafsluitingsrapporten en de extensiedirectory.",
+        "demoPrefix": "Probeer alles eerst op",
+        "demoLinkLabel": "demo.wcpos.com/pos",
+        "demoSuffix": "(inloggen demo / demo)."
+      },
+      "oliverBetter": {
+        "title": "Waar Oliver echt beter is",
+        "intro": "Een eerlijke vergelijking snijdt aan twee kanten:",
+        "kiosk": "Kiosk- / zelfscanmodus — Oliver heeft het; WCPOS niet.",
+        "display": "Klantendisplay — Oliver heeft het; WCPOS niet.",
+        "hardware": "Speciaal ontwikkelde hardware — Oliver verkoopt een eigen kassahub voor een kant-en-klare toonbankopstelling.",
+        "subscriptions": "Ondersteuning voor WooCommerce Subscriptions — Oliver ondersteunt het verkopen van abonnementen aan de kassa; WCPOS niet.",
+        "rating": "Hogere beoordeling op WordPress.org — 4.3 sterren tegenover 3.7 voor WCPOS (lees wel de recente beoordelingen van beide — zie hieronder).",
+        "outro": "Wil je een kant-en-klare kiosk of een hardwarebundel van de leverancier, en heb je vrede met een cloudafhankelijkheid en terugkerende facturering per site, dan is Oliver de betere keuze."
+      },
+      "ratings": {
+        "title": "Hoe zit het met beoordelingen en ondersteuning?",
+        "intro": "Gemiddelden lopen in beide richtingen achter op de werkelijkheid — lees de recente beoordelingen van beide plugins.",
+        "wcpos": "WCPOS: 3.7 sterren over 81 beoordelingen — 50 vijfsterren- en 21 eensterrenbeoordelingen. De meeste eensterrenbeoordelingen dateren uit de periode vóór de herbouw (2016 tot 2022) en de lanceerperiode van v1.0 in 2023; we houden een openbaar logboek bij van wat erin stond en wat er is veranderd.",
+        "oliver": "Oliver: 4.3 sterren over 90 beoordelingen, maar de meest recente beoordelingen (februari tot mei 2026) melden bestellingen die met nulwaarde in WooCommerce synchroniseren, HTTP 500-fouten van de API van Oliver tijdens de installatie en trage ondersteuning — één reviewer beschrijft een oplossing die zes weken duurde. De plugin van Oliver bleef bovendien vanaf ongeveer april 2025 zonder updates, totdat de ontwikkeling in 2026 werd hervat.",
+        "activity": "De ontwikkelactiviteit van WCPOS is openbaar: github.com/wcpos, met updates die doorlopend verschijnen — de releasegeschiedenis is het bewijs."
+      },
+      "claims": {
+        "title": "Wat de vergelijkingspagina van Oliver verkeerd heeft",
+        "intro": "Oliver publiceert zijn eigen Oliver-versus-WCPOS-pagina's. Sommige beweringen zijn terecht — kioskmodus, hardware, klantendisplay. Verschillende andere niet:",
+        "apps": {
+          "claim": "Alleen browser; app in ontwikkeling",
+          "response": "WCPOS levert vandaag al desktop-apps voor Windows en macOS, en de iOS- en Android-apps zijn beschikbaar in bèta; de actuele versies van allemaal staan gepubliceerd op updates.wcpos.com."
+        },
+        "multiOutlet": {
+          "claim": "Meerdere vestigingen: niet native ondersteund",
+          "response": "Beheer van meerdere winkels is een kernfunctie van WCPOS Pro: adressen, btw-tarieven, bonsjablonen, prijzen en geautoriseerde gebruikers per winkel."
+        },
+        "payments": {
+          "claim": "Geïntegreerde betalingen: beperkt",
+          "response": "WCPOS Pro integreert Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal en Vipps MobilePay, met één klik te installeren vanuit de extensiecatalogus — en omdat het afrekenen via het eigen betaalsysteem van WooCommerce loopt, kan elke WooCommerce-compatibele gateway werken."
+        },
+        "hobbyShops": {
+          "claim": "Het meest geschikt voor hobbywinkels",
+          "response": "Volgens WordPress.org draaien 5,000+ actieve winkels op WCPOS — ruim zes keer het aantal actieve installaties van Oliver — met meer dan 400,000 downloads sinds 2014."
+        },
+        "singleDev": {
+          "claim": "Project van één ontwikkelaar; updates wanneer de beheerder tijd heeft",
+          "response": "De eerste helft klopt, en daar schamen we ons niet voor (zie de FAQ). De tweede helft wordt weersproken door de openbare releasegeschiedenis — vergelijk die met het jaar durende gat in de plugin-updates van Oliver zelf."
+        }
+      },
+      "choose": {
+        "title": "Welke moet je kiezen?",
+        "wcpos": {
+          "title": "Kies WCPOS als:",
+          "body": "Je je data op je eigen server wilt, een gratis versie die een echte winkel draait, eenmalige prijzen in plaats van een abonnement, onbeperkt apparaten en kassamedewerkers, open source, of vrije keuze van betaalverwerker — elke WooCommerce-gateway."
+        },
+        "oliver": {
+          "title": "Kies Oliver POS als:",
+          "body": "Je een kiosk of zelfscan wilt, een klantendisplay, kassahardware van de leverancier, of WooCommerce Subscriptions aan de kassa — en je vrede hebt met cloudafhankelijkheid en terugkerende licentiekosten per site."
+        }
+      },
+      "faq": {
+        "title": "Veelgestelde vragen",
+        "offline": {
+          "question": "Werkt WCPOS offline?",
+          "answer": "WCPOS is offline-first: producten, klanten en winkelwagens worden lokaal opgeslagen, dus je kunt zonder verbinding door de catalogus bladeren en verkopen samenstellen, en alles synchroniseert zodra de verbinding terug is. Het afrekenen voltooien en kortingsbonnen valideren vereisen een serververbinding. Oliver claimt dat offline transacties in een wachtrij komen en bij herverbinding synchroniseren."
+        },
+        "fees": {
+          "question": "Rekent een van beide kassasystemen transactiekosten?",
+          "answer": "Nee — bij beide gebruik je je eigen betaalverwerker tegen je eigen onderhandelde tarieven. Anders dan Square POS, dat verwerking via Square vereist, of Jovvie, dat een platformtoeslag van 0.5 tot 2.5 procent toevoegt."
+        },
+        "singleDev": {
+          "question": "Is WCPOS echt het project van één persoon?",
+          "answer": "Ja — WCPOS wordt gebouwd door een onafhankelijke solo-ontwikkelaar (met intensief gebruik van AI-ondersteunde ontwikkeling) en levert al sinds 2014. Beoordeel het model op zijn resultaten: het releasetempo, de changelog en de issue tracker zijn allemaal openbaar op github.com/wcpos. Teamgrootte garandeert in deze categorie niets — Oliver POS adverteert met een groot engineeringteam en toch bleef zijn plugin ongeveer een jaar zonder update."
+        },
+        "subscription": {
+          "question": "Is het jaarabonnement van WCPOS een abonnement?",
+          "answer": "Nee. $129 is een eenmalige betaling voor een jaar updates en prioriteitsondersteuning; het verlengt nooit automatisch en er wordt geen kaart opgeslagen. Pro-functies blijven werken na afloop — je ontvangt alleen geen nieuwe updates meer totdat je besluit te verlengen."
+        },
+        "expiry": {
+          "question": "Wat gebeurt er wanneer een WCPOS Pro-licentie verloopt?",
+          "answer": "Er wordt niets uitgeschakeld. De Pro-versie die je hebt blijft werken zolang je wilt — je kassa, je data, elke functie. Je ontvangt alleen geen nieuwe updates en prioriteitsondersteuning meer totdat je besluit te verlengen. Dat is een bewuste keuze: het betekent dat verlengingen verdiend moeten worden met updates die het geld waard zijn, en het garandeert dat je kassa nooit op afstand kan worden uitgeschakeld. Bij POS-platformen op abonnementsbasis stoppen betaalde functies zodra de betalingen stoppen."
+        },
+        "trial": {
+          "question": "Kan ik beide gratis proberen?",
+          "answer": "Ja. De gratis plugin van WCPOS is onbeperkt, en de volledige Pro-ervaring vind je op demo.wcpos.com/pos. Het gratis abonnement van Oliver (20 producten en 50 transacties per maand) werkt als proefversie."
+        }
+      },
+      "footer": {
+        "factsVerified": "Feiten geverifieerd op 8 juli 2026 aan de hand van oliverpos.com/pricing, wordpress.org/plugins/woocommerce-pos/, wordpress.org/plugins/oliver-pos/ en wcpos.com.",
+        "corrections": "Een fout gezien? Mail naar support@wcpos.com — we corrigeren snel en leggen elke wijziging vast."
+      }
+    }
   }
 }

@@ -1609,5 +1609,262 @@
       "title": "¿Prefieres hablar con una persona?",
       "subtitle": "Únete a propietarios de tiendas y al equipo en nuestra comunidad de Discord en vivo."
     }
+  },
+  "compare": {
+    "disclosure": {
+      "title": "Quién está detrás de esta comparativa",
+      "body": "Esta página la publica kilbot, el creador de WCPOS. Obviamente tenemos intereses en juego — por eso cada cifra está documentada y fechada, enlazamos a las propias páginas de precios de la competencia y decimos con claridad cuándo un competidor es la mejor opción. Compruébelo todo."
+    },
+    "hub": {
+      "metadata": {
+        "title": "Comparar sistemas TPV para WooCommerce",
+        "description": "Comparativas honestas y documentadas de sistemas de punto de venta para WooCommerce — arquitectura, límites reales de los planes gratuitos, precios, funcionamiento sin conexión y cuándo elegir cada uno."
+      },
+      "hero": {
+        "title": "Compare los sistemas TPV para WooCommerce",
+        "subtitle": "Todos los rankings de TPV para WooCommerce que circulan por la web los escribe un proveedor que se coloca a sí mismo en primer lugar o un afiliado que ordena según la comisión. Este es distinto: lo publica un proveedor, sí — pero cada dato está documentado, fechado y es verificable, y decimos cuándo un competidor encaja mejor."
+      },
+      "method": {
+        "title": "Cómo funcionan estas comparativas",
+        "body": "Los datos proceden de las propias páginas de precios de los proveedores y de WordPress.org, consultadas en una fecha indicada y verificadas de nuevo cada trimestre. Donde WCPOS pierde una categoría — modo quiosco, hardware del proveedor, acabado de tienda de aplicaciones — la página lo dice. ¿Detecta un error? Escriba a support@wcpos.com y lo corregiremos dejando constancia del cambio."
+      },
+      "oliverCard": {
+        "title": "WCPOS vs Oliver POS",
+        "description": "WordPress nativo frente a SaaS en la nube: propiedad de los datos, límites reales del plan gratuito, pago único frente a suscripciones, y dónde Oliver es realmente mejor.",
+        "cta": "Leer la comparativa"
+      },
+      "moreSoon": "Hay más comparativas en camino, incluidas Square para WooCommerce y el TPV oficial de WooCommerce."
+    },
+    "oliver": {
+      "metadata": {
+        "title": "WCPOS vs Oliver POS (2026): una comparativa honesta",
+        "description": "WCPOS y Oliver POS comparados por el creador de WCPOS — arquitectura, límites de los planes gratuitos, precios, terminales, funcionamiento sin conexión, valoraciones y cuándo Oliver es la mejor opción. Cada dato documentado y fechado."
+      },
+      "hero": {
+        "title": "WCPOS vs Oliver POS",
+        "subtitle": "Dos respuestas opuestas al mismo problema: un punto de venta dentro de su sitio WordPress, o una plataforma en la nube con la que se sincroniza su tienda."
+      },
+      "shortAnswer": {
+        "title": "La respuesta corta",
+        "wcpos": "WCPOS funciona dentro de su sitio WordPress — sus datos de ventas nunca salen de su tienda, la versión gratuita es realmente ilimitada (productos, clientes, ventas en efectivo — sin topes de ningún tipo), y las licencias de pago son pagos únicos que siguen funcionando incluso después de expirar. Su punto de venta no puede apagarse nunca.",
+        "oliver": "Oliver POS sincroniza su tienda con su plataforma en la nube — obtiene una caja registradora pulida, modo quiosco y un ecosistema de hardware, pero depende de los servidores de Oliver, y su plan gratuito se queda en 20 productos y 50 transacciones al mes."
+      },
+      "glance": {
+        "title": "De un vistazo",
+        "caption": "Fuentes: oliverpos.com/pricing y wordpress.org, consultadas el 8 de julio de 2026; wcpos.com/pro.",
+        "colWcpos": "WCPOS",
+        "colOliver": "Oliver POS",
+        "rows": {
+          "architecture": {
+            "label": "Arquitectura",
+            "wcpos": "Nativo de WordPress — los datos permanecen en WooCommerce",
+            "oliver": "SaaS en la nube — se sincroniza con los servidores de Oliver mediante la API REST"
+          },
+          "freePlan": {
+            "label": "Plan gratuito",
+            "wcpos": "Productos, pedidos y clientes ilimitados",
+            "oliver": "20 productos, 50 transacciones al mes, 1 empleado"
+          },
+          "pricing": {
+            "label": "Precios de pago",
+            "wcpos": "$129 por un año de actualizaciones, o $399 de por vida — pagos únicos, sin renovación automática",
+            "oliver": "De $89 a $489 al año, recurrente (facturación anual)"
+          },
+          "stopPaying": {
+            "label": "Si deja de pagar",
+            "wcpos": "Una licencia Pro caducada sigue funcionando para siempre — conserva su caja, sus datos y todas las funciones; solo se pausan las actualizaciones y el soporte prioritario",
+            "oliver": "Los planes de pago son suscripciones recurrentes — el acceso a las funciones de pago depende de seguir pagando; el plan gratuito está limitado a 20 productos y 50 transacciones al mes"
+          },
+          "license": {
+            "label": "Alcance de la licencia",
+            "wcpos": "Por dominio (2 activaciones: producción + staging); dispositivos y cajeros ilimitados",
+            "oliver": "Un sitio WooCommerce por licencia; puestos de personal limitados según el plan"
+          },
+          "fees": {
+            "label": "Comisiones por transacción",
+            "wcpos": "Ninguna — use cualquier pasarela de pago de WooCommerce",
+            "oliver": "Ninguna — independiente del procesador"
+          },
+          "terminals": {
+            "label": "Terminales de tarjeta",
+            "wcpos": "Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Vipps MobilePay (Pro, a través del catálogo de extensiones)",
+            "oliver": "Stripe, Square, Adyen, Nets; Oliver Pay; hub de hardware propio"
+          },
+          "platforms": {
+            "label": "Plataformas",
+            "wcpos": "Web, aplicaciones de escritorio (Windows y macOS), aplicaciones para iOS y Android (beta)",
+            "oliver": "Caja web, aplicaciones para iOS y Android, hub de hardware"
+          },
+          "offline": {
+            "label": "Sin conexión",
+            "wcpos": "Offline primero: navegue por los productos y prepare carritos sin conexión; el cobro requiere conectividad",
+            "oliver": "Afirma poner en cola las transacciones sin conexión y sincronizarlas al reconectar"
+          },
+          "kiosk": {
+            "label": "Quiosco / autopago",
+            "wcpos": "No",
+            "oliver": "Sí"
+          },
+          "display": {
+            "label": "Pantalla orientada al cliente",
+            "wcpos": "No",
+            "oliver": "Sí"
+          },
+          "openSource": {
+            "label": "Código abierto",
+            "wcpos": "Sí — github.com/wcpos",
+            "oliver": "No"
+          },
+          "wporg": {
+            "label": "WordPress.org",
+            "wcpos": "Más de 5.000 instalaciones activas, 3,7 estrellas (81 reseñas)",
+            "oliver": "Más de 800 instalaciones activas, 4,3 estrellas (90 reseñas)"
+          }
+        }
+      },
+      "architecture": {
+        "title": "¿Cuál es la verdadera diferencia de arquitectura?",
+        "intro": "Oliver POS es una plataforma en la nube cuyo plugin de WordPress actúa como conector: sus productos, pedidos y clientes se sincronizan con los servidores de Oliver, y la caja que usted maneja es la aplicación de Oliver hablando con la nube de Oliver. WCPOS es lo contrario: la caja es un cliente local que se comunica directamente con su propia base de datos de WooCommerce. Las consecuencias prácticas:",
+        "dataOwnership": {
+          "title": "Propiedad de los datos",
+          "body": "Con WCPOS, los datos de ventas nunca salen de su servidor. Con Oliver, los datos de su tienda residen también en su nube — algo aceptable para la mayoría de los comercios, pero un motivo de descarte para algunos: políticas de privacidad, productos regulados, agencias con compromisos de residencia de datos."
+        },
+        "failureModes": {
+          "title": "Modos de fallo",
+          "body": "Si la nube de Oliver o su capa de sincronización tiene problemas, su caja se ve afectada aunque su sitio funcione — las reseñas recientes de Oliver en WordPress.org describen pedidos que llegan a WooCommerce con valor cero y errores de API durante la puesta en marcha. Con WCPOS no hay capa de sincronización que pueda romperse — pero su caja solo será tan rápida como su hosting. En un hosting compartido barato, WCPOS se sentirá lento; a la caja en la nube de Oliver le dará igual."
+        },
+        "longevity": {
+          "title": "Longevidad",
+          "body": "WCPOS es de código abierto y con opción de licencia de por vida: si la empresa desapareciera mañana, su TPV seguiría funcionando y el código podría bifurcarse. Si Oliver cerrara, la caja se detiene. No es una hipótesis en esta categoría — el propio plugin de Oliver pasó aproximadamente un año sin actualizaciones antes de que el desarrollo se retomara en 2026, y otros TPV para WooCommerce se han retirado por completo."
+        }
+      },
+      "freeTier": {
+        "title": "¿Qué ofrece realmente el plan gratuito?",
+        "intro": "La mayor diferencia práctica, y la que las comparativas de los proveedores difuminan:",
+        "colFeature": "Plan gratuito",
+        "rows": {
+          "products": {
+            "label": "Productos",
+            "wcpos": "Ilimitados",
+            "oliver": "20"
+          },
+          "transactions": {
+            "label": "Transacciones",
+            "wcpos": "Ilimitadas",
+            "oliver": "50 al mes"
+          },
+          "devices": {
+            "label": "Cajas / dispositivos / personal",
+            "wcpos": "Dispositivos y cajeros ilimitados",
+            "oliver": "1 establecimiento, 1 puesto, 1 empleado"
+          },
+          "offline": {
+            "label": "Navegación y carritos sin conexión",
+            "wcpos": "Sí",
+            "oliver": "Sí (según el proveedor)"
+          },
+          "receipts": {
+            "label": "Impresión de tickets (incl. térmica)",
+            "wcpos": "Sí",
+            "oliver": "Sí"
+          }
+        },
+        "outro1": "Cincuenta transacciones al mes son menos de dos ventas al día — el plan gratuito de Oliver es una prueba sin fecha de caducidad.",
+        "outro2": "El plugin gratuito de WCPOS hace funcionar una tienda real indefinidamente: catálogo completo, clientes y ventas en efectivo ilimitados, impresión térmica de recibos, navegación offline-first, en todas las plataformas."
+      },
+      "pricing": {
+        "title": "¿Cuánto cuesta realmente la versión de pago?",
+        "oliver": "Oliver (facturación anual): Starter, $89 al año — 1 establecimiento, 2 puestos, 3 empleados. Pro, $289 al año — 2 establecimientos, puestos ilimitados, 15 empleados. Enterprise, $489 al año — ilimitado. Recurrente, un sitio WooCommerce por licencia.",
+        "wcpos": "WCPOS Pro: $129 — un pago único que cubre un año de actualizaciones y soporte prioritario. Nunca se renueva automáticamente, y la versión Pro sigue funcionando cuando termina el año — nada se apaga, nunca. Es deliberado: cada renovación debe ganarse con actualizaciones que valgan lo que cuestan. O $399 de por vida. Cada licencia cubre un dominio más un sitio de staging, con dispositivos y cajeros ilimitados. Quienes compran la anual pueden pasar a la vitalicia pagando la diferencia de $270. Garantía de devolución de 14 días.",
+        "math": "Con un solo establecimiento, el Starter de Oliver es más barato el primer año ($89 frente a $129). A partir del segundo año la cuenta se invierte: Oliver sigue facturando cada año, mientras que una licencia de por vida de WCPOS cuesta $0 desde el cuarto año incluso frente al plan más barato de Oliver — y $399 en total frente a $1,467+ por tres años de Oliver Enterprise.",
+        "proAdds": "Pro añade: gestión multitienda, integraciones con terminales de tarjeta, cupones, reembolsos mediante la API del TPV, historial de pedidos, gestión de clientes en la caja, precios por tienda, edición de stock y precios, informes de cierre de caja y el directorio de extensiones.",
+        "demoPrefix": "Pruébelo todo primero en",
+        "demoLinkLabel": "demo.wcpos.com/pos",
+        "demoSuffix": "(acceso demo / demo)."
+      },
+      "oliverBetter": {
+        "title": "Dónde Oliver es realmente mejor",
+        "intro": "Una comparativa honesta corta en ambos sentidos:",
+        "kiosk": "Modo quiosco / autopago — Oliver lo tiene; WCPOS no.",
+        "display": "Pantalla orientada al cliente — Oliver la tiene; WCPOS no.",
+        "hardware": "Hardware específico — Oliver vende un hub de caja dedicado para un mostrador llave en mano.",
+        "subscriptions": "Compatibilidad con WooCommerce Subscriptions — Oliver permite vender suscripciones en la caja; WCPOS no.",
+        "rating": "Mejor valoración en WordPress.org — 4,3 estrellas frente a las 3,7 de WCPOS (aun así, lea las reseñas recientes de ambos — véase más abajo).",
+        "outro": "Si quiere un quiosco llave en mano o un paquete de hardware suministrado por el proveedor, y no le importa depender de la nube ni pagar una facturación recurrente por sitio, Oliver encaja mejor."
+      },
+      "ratings": {
+        "title": "¿Qué hay de las valoraciones y el soporte?",
+        "intro": "Las medias van por detrás de la realidad en ambos sentidos — lea las reseñas recientes de ambos plugins.",
+        "wcpos": "WCPOS: 3,7 estrellas en 81 reseñas — 50 de cinco estrellas y 21 de una estrella. La mayoría de las reseñas de una estrella datan de la era anterior a la reescritura (2016 a 2022) y del periodo de lanzamiento de la v1.0 en 2023; mantenemos un registro público de lo que decían y de lo que ha cambiado.",
+        "oliver": "Oliver: 4,3 estrellas en 90 reseñas, pero las más recientes (de febrero a mayo de 2026) describen pedidos que se sincronizan en WooCommerce con valor cero, errores HTTP 500 de la API de Oliver durante la puesta en marcha y retrasos en el soporte — un usuario relata una resolución que tardó seis semanas. Además, el plugin de Oliver estuvo sin actualizaciones desde aproximadamente abril de 2025 hasta que el desarrollo se retomó en 2026.",
+        "activity": "La actividad de desarrollo de WCPOS es pública: github.com/wcpos, con actualizaciones que se publican de forma continua — el historial de versiones es la prueba."
+      },
+      "claims": {
+        "title": "Lo que la página comparativa de Oliver cuenta mal",
+        "intro": "Oliver publica sus propias páginas de Oliver contra WCPOS. Algunas afirmaciones son justas — modo quiosco, hardware, pantalla para el cliente. Varias no lo son:",
+        "apps": {
+          "claim": "Solo navegador; aplicación en desarrollo",
+          "response": "WCPOS ofrece hoy aplicaciones de escritorio para Windows y macOS, y las aplicaciones para iOS y Android están disponibles en beta; las versiones actuales de todas ellas se publican en updates.wcpos.com."
+        },
+        "multiOutlet": {
+          "claim": "Multiestablecimiento: sin compatibilidad nativa",
+          "response": "La gestión multitienda es una función central de WCPOS Pro: direcciones, tipos impositivos, plantillas de ticket, precios y usuarios autorizados por tienda."
+        },
+        "payments": {
+          "claim": "Pagos integrados: limitados",
+          "response": "WCPOS Pro integra Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal y Vipps MobilePay, instalables con un clic desde el catálogo de extensiones — y como el cobro pasa por el propio sistema de pagos de WooCommerce, puede funcionar cualquier pasarela compatible con WooCommerce."
+        },
+        "hobbyShops": {
+          "claim": "Ideal para tiendas de aficionados",
+          "response": "Según WordPress.org, más de 5.000 tiendas activas usan WCPOS — más de seis veces las instalaciones activas de Oliver — con más de 400.000 descargas desde 2014."
+        },
+        "singleDev": {
+          "claim": "Proyecto de un solo desarrollador; actualizaciones cuando el mantenedor tiene tiempo",
+          "response": "La primera mitad es cierta, y no nos avergüenza (véase la sección de preguntas frecuentes). La segunda la desmiente el historial público de versiones — compárelo con el año entero sin actualizaciones del propio plugin de Oliver."
+        }
+      },
+      "choose": {
+        "title": "¿Cuál debería elegir?",
+        "wcpos": {
+          "title": "Elija WCPOS si:",
+          "body": "Quiere sus datos en su propio servidor, un plan gratuito capaz de sostener una tienda real, pago único en lugar de suscripción, dispositivos y cajeros ilimitados, código abierto o libertad de procesador — cualquier pasarela de WooCommerce."
+        },
+        "oliver": {
+          "title": "Elija Oliver POS si:",
+          "body": "Quiere quiosco o autopago, una pantalla orientada al cliente, hardware de caja suministrado por el proveedor o WooCommerce Subscriptions en la caja — y no le importan la dependencia de la nube ni la licencia recurrente por sitio."
+        }
+      },
+      "faq": {
+        "title": "Preguntas frecuentes",
+        "offline": {
+          "question": "¿Funciona WCPOS sin conexión?",
+          "answer": "WCPOS está diseñado offline primero: los productos, clientes y carritos se almacenan localmente, de modo que puede navegar por el catálogo y preparar ventas sin conexión, y todo se sincroniza cuando esta vuelve. Completar el cobro y validar cupones requieren conectividad con el servidor. Oliver afirma poner en cola las transacciones sin conexión y sincronizarlas al reconectar."
+        },
+        "fees": {
+          "question": "¿Alguno de los dos TPV cobra comisiones por transacción?",
+          "answer": "No — ambos le permiten usar su propio procesador de pagos con las tarifas que haya negociado. A diferencia de Square POS, que exige procesar con Square, o de Jovvie, que añade una comisión de plataforma del 0,5 al 2,5 por ciento."
+        },
+        "singleDev": {
+          "question": "¿Es WCPOS realmente el proyecto de una sola persona?",
+          "answer": "Sí — WCPOS lo construye un desarrollador independiente en solitario (con un uso intensivo de desarrollo asistido por IA), y lleva publicándose desde 2014. Juzgue el modelo por sus resultados: el ritmo de versiones, el changelog y el gestor de incidencias son públicos en github.com/wcpos. El tamaño del equipo no garantiza nada en esta categoría — Oliver POS presume de un gran equipo de ingeniería y aun así su plugin pasó cerca de un año sin actualizarse."
+        },
+        "subscription": {
+          "question": "¿Es el plan anual de WCPOS una suscripción?",
+          "answer": "No. $129 es un pago único por un año de actualizaciones y soporte prioritario; nunca se renueva automáticamente y no se guarda ninguna tarjeta. Las funciones Pro siguen operativas tras el vencimiento — simplemente deja de recibir nuevas actualizaciones hasta que decida renovar."
+        },
+        "expiry": {
+          "question": "¿Qué ocurre cuando caduca una licencia de WCPOS Pro?",
+          "answer": "No se desactiva nada. La versión Pro que tiene sigue funcionando todo el tiempo que quiera — su caja, sus datos, todas las funciones. Simplemente deja de recibir nuevas actualizaciones y soporte prioritario hasta que decida renovar. Es deliberado: obliga a que las renovaciones se ganen con actualizaciones que merezcan la pena, y garantiza que su punto de venta nunca podrá desactivarse de forma remota. Con las plataformas TPV por suscripción, las funciones de pago se detienen cuando se detienen los pagos."
+        },
+        "trial": {
+          "question": "¿Puedo probar ambos gratis?",
+          "answer": "Sí. El plugin gratuito de WCPOS es ilimitado, y la experiencia Pro completa está en demo.wcpos.com/pos. El plan gratuito de Oliver (20 productos y 50 transacciones al mes) sirve como prueba."
+        }
+      },
+      "footer": {
+        "factsVerified": "Datos verificados el 8 de julio de 2026 contra oliverpos.com/pricing, wordpress.org/plugins/woocommerce-pos/, wordpress.org/plugins/oliver-pos/ y wcpos.com.",
+        "corrections": "¿Detecta un error? Escriba a support@wcpos.com — corregimos rápido y dejamos constancia de cada cambio."
+      }
+    }
   }
 }
