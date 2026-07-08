@@ -46,6 +46,35 @@ const sharedAuditedNamespacePrefixes = [
 const checkoutRecoveryKeys = enKeys.filter((key) =>
   key.startsWith('pro.checkout.recovery.orderPending.')
 )
+const receiptPdfEnglishPhrases = [
+  'Receipt',
+  'Order #',
+  'BILLED TO',
+  'DETAILS',
+  'No email provided',
+  'Tax ID:',
+  'Order date',
+  'Payment',
+  'Currency',
+  'This order was originally',
+  'previous store system',
+  'Older emails',
+  'DESCRIPTION',
+  'QTY',
+  'UNIT PRICE',
+  'AMOUNT',
+  'Untitled item',
+  'No tax has been added',
+  'not registered for GST in Australia',
+  'no GST has been charged',
+  'tax invoice',
+  'proof of purchase',
+  'tax records',
+  'Generated',
+  'Partially refunded',
+  'Canceled',
+  'Unknown',
+]
 const auditedItalianNamespacePrefixes = [
   ...sharedAuditedNamespacePrefixes,
   'support.',
@@ -972,6 +1001,27 @@ describe('messages key parity', () => {
       expect(
         untranslatedKeys,
         `messages/${locale}.json must not copy English money-at-risk checkout recovery copy verbatim`
+      ).toEqual([])
+    }
+  )
+
+  it.each(otherLocales)(
+    '%s.json keeps PDF receipt copy free of key English phrases',
+    (locale) => {
+      const messages = loadMessages(locale)
+      const receiptValues = enKeys
+        .filter((key) => key.startsWith('account.receiptPdf.'))
+        .map((key) => valueAtPath(messages, key))
+        .filter((value): value is string => value !== undefined)
+      const receiptText = receiptValues.join('\n')
+
+      const leakedPhrases = receiptPdfEnglishPhrases.filter((phrase) =>
+        receiptText.includes(phrase)
+      )
+
+      expect(
+        leakedPhrases,
+        `messages/${locale}.json account.receiptPdf copy must not retain high-signal English receipt phrases`
       ).toEqual([])
     }
   )
