@@ -38,11 +38,17 @@ function isFormPost(request: NextRequest): boolean {
  * Form-encoded posts are CSRF-able "simple requests" (unlike JSON, which the
  * preflight already fences), so the browser-visible claim entry point checks
  * the request came from this site before starting an OAuth round-trip.
+ * Fail closed on a missing Origin header: every current browser sends it on
+ * form POSTs, and the JSON body path stays available for non-browser callers.
  */
 function isCrossSiteFormPost(request: NextRequest): boolean {
   const origin = request.headers.get('origin')
-  if (!origin) return false
-  return new URL(origin).host !== request.nextUrl.host
+  if (!origin) return true
+  try {
+    return new URL(origin).host !== request.nextUrl.host
+  } catch {
+    return true
+  }
 }
 
 export async function POST(request: NextRequest) {

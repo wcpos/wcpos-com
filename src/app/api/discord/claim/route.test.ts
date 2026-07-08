@@ -128,11 +128,25 @@ describe('POST /api/discord/claim', () => {
     const response = await POST(new NextRequest('https://wcpos.com/api/discord/claim', {
       method: 'POST',
       body: new URLSearchParams({ licenseKey: '   ' }).toString(),
-      headers: { 'content-type': 'application/x-www-form-urlencoded' },
+      headers: {
+        'content-type': 'application/x-www-form-urlencoded',
+        origin: 'https://wcpos.com',
+      },
     }))
 
     expect(response.status).toBe(400)
     expect(await response.json()).toEqual({ errorCode: 'license_key_required' })
+  })
+
+  it('rejects a form post without an Origin header (fail closed)', async () => {
+    const response = await POST(new NextRequest('https://wcpos.com/api/discord/claim', {
+      method: 'POST',
+      body: new URLSearchParams({ licenseKey: 'WCPOS-AAAA' }).toString(),
+      headers: { 'content-type': 'application/x-www-form-urlencoded' },
+    }))
+
+    expect(response.status).toBe(403)
+    expect(mockSetDiscordOAuthState).not.toHaveBeenCalled()
   })
 
   it('logs a malformed JSON body at info and rejects with 400', async () => {
