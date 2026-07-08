@@ -30,6 +30,19 @@ describe('sanitizeRedirectPath', () => {
     expect(sanitizeRedirectPath('/\\evil.com')).toBe('/account')
   })
 
+  // Browsers strip tab/CR/LF from a URL before parsing, so a path that only
+  // looks single-slashed reaches the network as a protocol-relative URL.
+  it('rejects control characters smuggled into the path', () => {
+    expect(sanitizeRedirectPath('/\n/evil.example')).toBe('/account')
+    expect(sanitizeRedirectPath('/\r/evil.example')).toBe('/account')
+    expect(sanitizeRedirectPath('/\t/evil.example')).toBe('/account')
+    expect(sanitizeRedirectPath('/\r\n/evil.example')).toBe('/account')
+    expect(sanitizeRedirectPath('/account\n')).toBe('/account')
+    expect(sanitizeRedirectPath('/\x00/evil.example')).toBe('/account')
+    expect(sanitizeRedirectPath('\n//evil.example')).toBe('/account')
+    expect(sanitizeRedirectPath('/fr\n/evil.example')).toBe('/account')
+  })
+
   it('strips a leading locale prefix so the locale router does not double-prefix', () => {
     expect(sanitizeRedirectPath('/fr/account')).toBe('/account')
     expect(sanitizeRedirectPath('/de/pro/checkout')).toBe('/pro/checkout')

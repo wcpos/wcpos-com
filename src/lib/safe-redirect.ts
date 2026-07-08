@@ -5,6 +5,10 @@ type SanitizeRedirectOptions = {
   stripLocalePrefix?: boolean
 }
 
+// Browsers strip \t, \n and \r from a URL before parsing it, so
+// "/\n/evil.example" would navigate to "//evil.example".
+const CONTROL_CHARS = /[\u0000-\u001f\u007f]/
+
 /**
  * Sanitizes a user-supplied post-auth redirect target.
  *
@@ -13,6 +17,8 @@ type SanitizeRedirectOptions = {
  * credential entry), so only same-origin relative paths survive:
  * - must start with exactly one "/" ("//host" and "/\host" are
  *   protocol-relative URLs to browsers)
+ * - no control characters: browsers strip tab/CR/LF anywhere in a URL before
+ *   parsing it, so "/\n/evil.example" reaches the network as "//evil.example"
  * - no URL scheme
  * - a leading locale prefix is stripped so next-intl's locale-aware router
  *   does not double-prefix (e.g. /fr/account pushed on an fr page would
@@ -32,6 +38,7 @@ export function sanitizeRedirectPath(
   const fallback = options.fallback
 
   if (!value) return fallback
+  if (CONTROL_CHARS.test(value)) return fallback
   if (!value.startsWith('/')) return fallback
   if (value.startsWith('//') || value.startsWith('/\\')) return fallback
 
