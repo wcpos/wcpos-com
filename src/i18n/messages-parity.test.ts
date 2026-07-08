@@ -159,6 +159,7 @@ const auditedChineseNamespacePrefixes = [
   'account.',
   'pro.',
   'downloads.',
+  'about.',
 ]
 const chineseIdenticalCopyAllowlist = new Set([
   'auth.common.emailPlaceholder',
@@ -206,6 +207,8 @@ const chineseIdenticalCopyAllowlist = new Set([
   'downloads.page.steps.plugin.cardTitle',
   'downloads.page.steps.plugin.wordpressOrgCta',
   'downloads.releaseHistory.desktop',
+  'about.founder.signature.name',
+  'about.timeline.dates.range',
 ])
 const auditedGermanNamespacePrefixes = [
   'support.',
@@ -620,7 +623,7 @@ describe('messages key parity', () => {
     ).toEqual([])
   })
 
-  it('zh.json translates the audited support, auth, roadmap, header, footer, account, pro, and downloads copy', () => {
+  it('zh.json translates the audited support, auth, roadmap, header, footer, account, pro, downloads, and about copy', () => {
     const english = loadMessages(defaultLocale)
     const chinese = loadMessages('zh')
     const auditedKeys = enKeys.filter(
@@ -641,7 +644,7 @@ describe('messages key parity', () => {
 
     expect(
       untranslatedKeys,
-      'messages/zh.json must not copy audited support/auth/roadmap/header/footer/account/pro/downloads English strings verbatim'
+      'messages/zh.json must not copy audited support/auth/roadmap/header/footer/account/pro/downloads/about English strings verbatim'
     ).toEqual([])
   })
 
