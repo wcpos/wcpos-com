@@ -195,6 +195,53 @@ test.describe('Journey: new customer buys with Bitcoin', () => {
   })
 })
 
+test.describe('Journey: returning customer signs in via the login page', () => {
+  // Regression: checkout → "Sign in here" → /login → sign-in is a purely
+  // client-side round trip, so the Next.js router cache still holds the
+  // signed-out checkout payload (the PPR shell advertises a 5-minute client
+  // stale time). Signing in must invalidate that cache — the customer has to
+  // come back to a checkout that already knows them, with no manual reload.
+  test('returns to checkout already authenticated, no reload needed', async ({
+    page,
+  }) => {
+    const email = uniqueEmail('login-return')
+    await registerViaApi(page.request, email)
+    await page.context().clearCookies()
+
+    await page.goto(YEARLY_CHECKOUT_PATH)
+    await expect(page.getByTestId('account-step-form')).toBeVisible({
+      timeout: 15000,
+    })
+
+    // The account step's OAuth/existing-customer exit: a client-side <Link>
+    // to /login with a redirect back to this checkout.
+    await page
+      .getByTestId('account-step-form')
+      .getByRole('link', { name: /sign in/i })
+      .click()
+    await expect(page).toHaveURL(/\/login\?redirect=/)
+    // The redirect must round-trip the FULL checkout destination — losing the
+    // product/variant query would land the customer on "No product selected".
+    expect(
+      new URL(page.url()).searchParams.get('redirect')
+    ).toBe(YEARLY_CHECKOUT_PATH)
+
+    await expect(page.locator('#email')).toBeVisible({ timeout: 15000 })
+    await page.locator('#email').fill(email)
+    await page.locator('#password').fill(PASSWORD)
+    await page.getByRole('button', { name: /^sign in$/i }).click()
+
+    await expect(page).toHaveURL(/\/pro\/checkout/, { timeout: 15000 })
+    // Without a reload, the account step must be done and billing active.
+    await expect(page.getByTestId('checkout-step-2')).toHaveAttribute(
+      'data-step-state',
+      'active',
+      { timeout: 15000 }
+    )
+    await expect(page.getByText(email)).toBeVisible()
+  })
+})
+
 test.describe('Journey: signed-in customer', () => {
   test('buys with Bitcoin end-to-end from an existing account', async ({
     page,

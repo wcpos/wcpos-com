@@ -3,7 +3,7 @@
 import { Suspense, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { useLocale, useTranslations } from 'next-intl'
-import { Link, useRouter } from '@/i18n/navigation'
+import { Link } from '@/i18n/navigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -17,7 +17,8 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { trackClientEvent } from '@/lib/analytics/client-events'
-import { sanitizeRedirectPath } from '@/lib/safe-redirect'
+import { navigateAfterAuthChange, sanitizeRedirectPath } from '@/lib/safe-redirect'
+import type { Locale } from '@/i18n/config'
 import { DiscordMark, GitHubMark, GoogleMark } from '@/components/auth/provider-marks'
 import { isOAuthErrorCode } from '@/lib/oauth-error-codes'
 
@@ -50,7 +51,6 @@ function LoginPageInner() {
   const t = useTranslations('auth.login')
   const tCommon = useTranslations('auth.common')
   const locale = useLocale()
-  const router = useRouter()
   const searchParams = useSearchParams()
   const redirectTo = sanitizeRedirectPath(searchParams.get('redirect'))
   const oauthHref = (provider: 'google' | 'github' | 'discord') =>
@@ -103,13 +103,16 @@ function LoginPageInner() {
             ? getLoginErrorMessage(data.errorCode)
             : t('loginFailed')
         )
+        setLoading(false)
         return
       }
 
-      router.push(redirectTo)
+      // Deliberately leaves `loading` true: the full document load takes a
+      // beat, and re-enabling the button here would open a double-submit
+      // window while the browser unloads.
+      navigateAfterAuthChange(redirectTo, locale as Locale)
     } catch {
       setError(tCommon('genericError'))
-    } finally {
       setLoading(false)
     }
   }
