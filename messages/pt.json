@@ -343,40 +343,40 @@
   },
   "roadmap": {
     "meta": {
-      "title": "Roadmap",
-      "description": "See what we are building next for WCPOS — upcoming features, milestones, and release progress."
+      "title": "Roteiro",
+      "description": "Veja o que estamos a criar a seguir para o WCPOS — funcionalidades futuras, marcos e progresso de lançamentos."
     },
     "page": {
-      "eyebrow": "Roadmap",
-      "title": "The release train",
-      "description": "Every stop on the way to a faster, offline-proof WCPOS — pulled straight from our GitHub, newest work first."
+      "eyebrow": "Roteiro",
+      "title": "O comboio de lançamentos",
+      "description": "Cada paragem rumo a um WCPOS mais rápido e preparado para funcionar offline — diretamente do nosso GitHub, com o trabalho mais recente primeiro."
     },
     "board": {
-      "link": "live from the WCPOS project board"
+      "link": "em direto do quadro do projeto WCPOS"
     },
     "status": {
-      "done": "Done",
-      "inProgress": "In progress",
-      "planned": "Planned"
+      "done": "Concluído",
+      "inProgress": "Em curso",
+      "planned": "Planeado"
     },
     "timeline": {
-      "empty": "No roadmap items to display yet.",
+      "empty": "Ainda não há itens do roteiro para mostrar.",
       "phases": {
-        "now": "Now",
-        "next": "Next",
-        "shipped": "Shipped"
+        "now": "Agora",
+        "next": "A seguir",
+        "shipped": "Lançado"
       },
-      "progress": "{completed} of {total} done",
-      "progressDue": "{completed} of {total} done · due {date}",
-      "shipped": "shipped",
-      "shippedWithDate": "shipped · {date}"
+      "progress": "{completed} de {total} concluído(s)",
+      "progressDue": "{completed} de {total} concluído(s) · previsto para {date}",
+      "shipped": "lançado",
+      "shippedWithDate": "lançado · {date}"
     },
     "bugs": {
-      "summary": "{count, plural, one {+ # bug fix & improvements} other {+ # bug fixes & improvements}}",
+      "summary": "{count, plural, one {+ # correção de erro e melhorias} other {+ # correções de erros e melhorias}}",
       "status": {
-        "done": "fixed",
-        "in_progress": "in progress",
-        "planned": "planned"
+        "done": "corrigido",
+        "in_progress": "em curso",
+        "planned": "planeado"
       }
     }
   },
@@ -975,7 +975,7 @@
   },
   "auth": {
     "common": {
-      "email": "Email",
+      "email": "E-mail",
       "password": "Palavra-passe",
       "newPassword": "Nova palavra-passe",
       "firstName": "Nome",
@@ -986,14 +986,14 @@
       "signIn": "Iniciar sessão",
       "signUp": "Registar",
       "apiErrors": {
-        "invalid_origin": "Please refresh the page and try again.",
-        "rate_limited": "Too many attempts. Please try again later.",
-        "email_required": "Email is required.",
-        "credentials_required": "Email and password are required.",
-        "reset_fields_required": "Email, token, and password are required.",
-        "password_too_short": "Password must be at least {min} characters.",
-        "invalid_credentials": "Invalid email or password.",
-        "invalid_reset_token": "This password reset link is invalid or has expired. Please request a new one."
+        "invalid_origin": "Atualize a página e tente novamente.",
+        "rate_limited": "Demasiadas tentativas. Tente novamente mais tarde.",
+        "email_required": "O e-mail é obrigatório.",
+        "credentials_required": "O e-mail e a palavra-passe são obrigatórios.",
+        "reset_fields_required": "O e-mail, o token e a palavra-passe são obrigatórios.",
+        "password_too_short": "A palavra-passe tem de ter pelo menos {min} caracteres.",
+        "invalid_credentials": "E-mail ou palavra-passe inválidos.",
+        "invalid_reset_token": "Este link de reposição da palavra-passe é inválido ou expirou. Peça um novo."
       }
     },
     "login": {
@@ -1002,24 +1002,24 @@
       "title": "Iniciar sessão",
       "description": "Inicie sessão na sua conta WCPOS",
       "forgotPassword": "Esqueceu-se da palavra-passe?",
-      "oauthFailed": "O início de sessão OAuth falhou. Tente novamente ou use email/palavra-passe.",
+      "oauthFailed": "O início de sessão OAuth falhou. Tente novamente ou use e-mail/palavra-passe.",
       "loginFailed": "Falha ao iniciar sessão",
       "submitting": "A iniciar sessão...",
       "oauthDivider": "Ou continue com",
       "noAccount": "Ainda não tem uma conta?",
       "oauthErrors": {
-        "oauth_failed": "O início de sessão OAuth falhou. Tente novamente ou use email/palavra-passe.",
-        "oauth_callback_failed": "O início de sessão OAuth falhou. Tente novamente ou use email/palavra-passe.",
-        "oauth_provider_error": "O início de sessão OAuth falhou. Tente novamente ou use email/palavra-passe.",
-        "oauth_code_missing": "O início de sessão OAuth falhou. Tente novamente ou use email/palavra-passe.",
-        "oauth_state_missing": "O início de sessão OAuth falhou. Tente novamente ou use email/palavra-passe.",
-        "oauth_token_exchange_failed": "O início de sessão OAuth falhou. Tente novamente ou use email/palavra-passe.",
-        "oauth_access_token_missing": "O início de sessão OAuth falhou. Tente novamente ou use email/palavra-passe.",
-        "oauth_user_fetch_failed": "O início de sessão OAuth falhou. Tente novamente ou use email/palavra-passe.",
-        "oauth_email_missing": "O início de sessão OAuth falhou. Tente novamente ou use email/palavra-passe.",
-        "oauth_email_unverified": "O início de sessão OAuth falhou. Tente novamente ou use email/palavra-passe.",
-        "oauth_identity_update_failed": "O início de sessão OAuth falhou. Tente novamente ou use email/palavra-passe.",
-        "oauth_registration_not_supported": "O início de sessão OAuth falhou. Tente novamente ou use email/palavra-passe."
+        "oauth_failed": "O início de sessão OAuth falhou. Tente novamente ou use e-mail/palavra-passe.",
+        "oauth_callback_failed": "O início de sessão OAuth falhou. Tente novamente ou use e-mail/palavra-passe.",
+        "oauth_provider_error": "O fornecedor OAuth cancelou ou rejeitou o início de sessão. Tente novamente.",
+        "oauth_code_missing": "O início de sessão OAuth falhou. Tente novamente ou use e-mail/palavra-passe.",
+        "oauth_state_missing": "A sua sessão de início de sessão expirou. Tente novamente.",
+        "oauth_token_exchange_failed": "O início de sessão OAuth falhou. Tente novamente ou use e-mail/palavra-passe.",
+        "oauth_access_token_missing": "O início de sessão OAuth falhou. Tente novamente ou use e-mail/palavra-passe.",
+        "oauth_user_fetch_failed": "O início de sessão OAuth falhou. Tente novamente ou use e-mail/palavra-passe.",
+        "oauth_email_missing": "O seu perfil OAuth não incluiu um endereço de e-mail. Confirme que o e-mail está disponível no fornecedor e tente novamente.",
+        "oauth_email_unverified": "O seu endereço de e-mail OAuth não está verificado. Verifique-o no fornecedor e tente novamente.",
+        "oauth_identity_update_failed": "O início de sessão OAuth falhou. Tente novamente ou use e-mail/palavra-passe.",
+        "oauth_registration_not_supported": "O início de sessão OAuth falhou. Tente novamente ou use e-mail/palavra-passe."
       }
     },
     "register": {
@@ -1027,7 +1027,7 @@
       "metaDescription": "Crie uma conta WCPOS para comprar Pro, gerir licenças e aceder a transferências.",
       "title": "Criar uma conta",
       "description": "Registe-se para obter uma conta WCPOS",
-      "accountExists": "Já existe uma conta com este email. Inicie sessão.",
+      "accountExists": "Já existe uma conta com este e-mail. Inicie sessão.",
       "failed": "Falha no registo",
       "submitting": "A criar conta...",
       "submit": "Criar conta",
@@ -1035,10 +1035,10 @@
     },
     "forgotPassword": {
       "metaTitle": "Palavra-passe esquecida",
-      "metaDescription": "Peça um link de reposição para a sua conta WCPOS.",
+      "metaDescription": "Peça um link de reposição da palavra-passe para a sua conta WCPOS.",
       "title": "Esqueceu-se da palavra-passe?",
-      "description": "Introduza o seu email e enviaremos um link de reposição",
-      "submitted": "Se existir uma conta para {email}, um link de reposição da palavra-passe está a caminho. Verifique a caixa de entrada e o spam.",
+      "description": "Introduza o seu e-mail e enviaremos um link de reposição",
+      "submitted": "Se existir uma conta para {email}, um link de reposição da palavra-passe está a caminho. Verifique a caixa de entrada (e a pasta de spam).",
       "submitting": "A enviar...",
       "submit": "Enviar link de reposição",
       "remembered": "Lembrou-se?"
@@ -1052,7 +1052,7 @@
       "failed": "Não foi possível repor a palavra-passe",
       "submitting": "A repor...",
       "submit": "Repor palavra-passe",
-      "invalidLink": "Este link não tem o token de reposição — pode ter sido cortado pelo seu cliente de email. Peça um novo abaixo.",
+      "invalidLink": "Este link não tem o token de reposição — pode ter sido cortado pelo seu cliente de e-mail. Peça um novo abaixo.",
       "linkExpired": "Link expirado?",
       "needFreshLink": "Precisa de um novo link?",
       "requestNew": "Pedir novo link de reposição"
@@ -1527,53 +1527,53 @@
   },
   "support": {
     "meta": {
-      "title": "Support",
-      "description": "Ask anything about WCPOS and get an instant answer from our docs, or chat with the community on Discord."
+      "title": "Suporte",
+      "description": "Pergunte qualquer coisa sobre o WCPOS e receba uma resposta imediata com base na nossa documentação, ou fale com a comunidade no Discord."
     },
     "chat": {
       "hero": {
-        "title": "How can we help?",
-        "subtitle": "Ask anything about WCPOS — setup, licensing, hardware, syncing, printing. You'll get an instant answer drawn from our docs."
+        "title": "Como podemos ajudar?",
+        "subtitle": "Pergunte qualquer coisa sobre o WCPOS — configuração, licenciamento, hardware, sincronização, impressão. Receberá uma resposta imediata baseada na nossa documentação."
       },
       "examples": {
-        "e1": "Why is my licence inactive?",
-        "e2": "Which barcode scanners are supported?",
-        "e3": "How do I sync products from WooCommerce?"
+        "e1": "Porque é que a minha licença está inativa?",
+        "e2": "Que leitores de códigos de barras são suportados?",
+        "e3": "Como sincronizo produtos do WooCommerce?"
       },
       "feedback": {
-        "prompt": "Was this helpful?",
-        "yes": "Yes",
-        "no": "No"
+        "prompt": "Isto foi útil?",
+        "yes": "Sim",
+        "no": "Não"
       },
-      "thinking": "Aide is thinking…",
+      "thinking": "Aide está a pensar…",
       "form": {
-        "label": "Ask a support question",
-        "placeholder": "e.g. How do I connect a receipt printer?",
-        "followUpPlaceholder": "Ask a follow-up…",
-        "submit": "Ask"
+        "label": "Faça uma pergunta de suporte",
+        "placeholder": "ex.: Como ligo uma impressora de recibos?",
+        "followUpPlaceholder": "Faça uma pergunta de seguimento…",
+        "submit": "Perguntar"
       },
-      "discordLink": "Ask in Discord →",
-      "poweredBy": "Answered by Aide · trained on the WCPOS docs & wiki"
+      "discordLink": "Perguntar no Discord →",
+      "poweredBy": "Respondido pela Aide · treinada na documentação e wiki do WCPOS"
     },
     "errors": {
-      "invalid_question": "Please enter a question (up to 1000 characters).",
-      "bot_check_failed": "Bot check failed. Please reload and try again.",
-      "rate_limited": "You're asking a lot of questions — please wait a few minutes, or hop into Discord.",
-      "budget_exhausted": "The assistant is busy right now. Please try Discord for a faster answer.",
-      "empty_answer": "The assistant is temporarily unavailable. Please try Discord while we get it back.",
-      "gateway_rate_limited": "The assistant is busy right now — please try again later.",
-      "timeout": "That took too long. Please try again, or ask in Discord.",
-      "unavailable": "The assistant is temporarily unavailable. Please try Discord while we get it back.",
-      "network": "The assistant is unavailable right now. Please ask in Discord.",
-      "unknown": "Something went wrong."
+      "invalid_question": "Introduza uma pergunta (até 1000 caracteres).",
+      "bot_check_failed": "A verificação anti-bot falhou. Recarregue a página e tente novamente.",
+      "rate_limited": "Está a fazer muitas perguntas — aguarde alguns minutos ou entre no Discord.",
+      "budget_exhausted": "O assistente está ocupado neste momento. Experimente o Discord para uma resposta mais rápida.",
+      "empty_answer": "O assistente está temporariamente indisponível. Experimente o Discord enquanto o repomos.",
+      "gateway_rate_limited": "O assistente está ocupado neste momento — tente novamente mais tarde.",
+      "timeout": "Isto demorou demasiado. Tente novamente ou pergunte no Discord.",
+      "unavailable": "O assistente está temporariamente indisponível. Experimente o Discord enquanto o repomos.",
+      "network": "O assistente está indisponível neste momento. Pergunte no Discord.",
+      "unknown": "Algo correu mal."
     },
     "order": {
-      "title": "Contact support about your order",
-      "body": "Quote reference <ref></ref> so we can confirm the payment or finish the order before you pay again."
+      "title": "Contactar o suporte sobre a sua encomenda",
+      "body": "Indique a referência <ref></ref> para podermos confirmar o pagamento ou concluir a encomenda antes de voltar a pagar."
     },
     "discord": {
-      "title": "Prefer to talk to a human?",
-      "subtitle": "Join store owners and the team in our live Discord community."
+      "title": "Prefere falar com uma pessoa?",
+      "subtitle": "Junte-se a lojistas e à equipa na nossa comunidade Discord em direto."
     }
   }
 }
