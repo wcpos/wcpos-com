@@ -10,6 +10,7 @@ import {
 import { createRateLimiter, clientIp } from '@/lib/rate-limit'
 import { trackServerEvent } from '@/services/core/analytics/posthog-service'
 import { ANALYTICS_DISTINCT_ID_COOKIE } from '@/lib/analytics/distinct-id'
+import { locales } from '@/i18n/config'
 
 // Every accepted request can create a real Medusa customer account, so gate
 // this harder than sign-in — a legitimate user registers once. Fail-open.
@@ -23,6 +24,23 @@ type RegisterErrorCode =
 
 function errorResponse(errorCode: RegisterErrorCode, status: number, extra?: Record<string, string>) {
   return NextResponse.json({ errorCode, ...extra }, { status })
+}
+
+
+function registrationLocale(value: unknown): string | undefined {
+  if (typeof value !== 'string') return undefined
+  const raw = value.trim()
+  if (!raw) return undefined
+
+  try {
+    const [canonical] = Intl.getCanonicalLocales(raw)
+    const base = canonical?.split('-')[0]?.toLowerCase()
+    return base && locales.includes(base as (typeof locales)[number])
+      ? canonical
+      : undefined
+  } catch {
+    return undefined
+  }
 }
 
 const limiter = createRateLimiter({
@@ -48,11 +66,13 @@ export async function POST(request: Request) {
     password?: unknown
     firstName?: unknown
     lastName?: unknown
+    locale?: unknown
   }
   const email = typeof body.email === 'string' ? body.email : ''
   const password = typeof body.password === 'string' ? body.password : ''
   const firstName = typeof body.firstName === 'string' ? body.firstName : undefined
   const lastName = typeof body.lastName === 'string' ? body.lastName : undefined
+  const locale = registrationLocale(body.locale)
 
   if (!email || !password) {
     return errorResponse('credentials_required', 400)
@@ -68,6 +88,7 @@ export async function POST(request: Request) {
       password,
       firstName,
       lastName,
+      locale,
     })
     await setAuthToken(token)
 

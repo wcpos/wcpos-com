@@ -141,6 +141,30 @@ describe('POST /api/auth/register', () => {
     expect(mockRegister).toHaveBeenCalledTimes(1)
   })
 
+  it('passes the requested locale into registration for customer email metadata', async () => {
+    mockRegister.mockResolvedValueOnce({
+      token: 'jwt',
+      customer: { id: 'cus_1' },
+    })
+
+    const response = await postRegister({
+      email: 'new@example.com',
+      password: 'password123',
+      firstName: 'Jane',
+      lastName: 'Doe',
+      locale: 'fr-FR',
+    })
+
+    expect(response.status).toBe(200)
+    expect(mockRegister).toHaveBeenCalledWith({
+      email: 'new@example.com',
+      password: 'password123',
+      firstName: 'Jane',
+      lastName: 'Doe',
+      locale: 'fr-FR',
+    })
+  })
+
   it('tracks signup_completed with the visitor distinct-id from the cookie', async () => {
     mockRegister.mockResolvedValueOnce({
       token: 'jwt',
