@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from 'next/font/google'
 import { NextIntlClientProvider } from 'next-intl'
 import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server'
 import { ThemeProvider } from 'next-themes'
-import { locales } from '@/i18n/config'
+import { localeDirections, locales, type Locale } from '@/i18n/config'
 import { ClientLoggingInit } from '@/components/client-logging-init'
 import { ConsentBanner } from '@/components/consent/consent-banner'
 
@@ -64,11 +64,12 @@ export default async function LocaleLayout({
   params: Promise<{ locale: string }>
 }>) {
   const { locale } = await params
-  setRequestLocale(locale)
+  const localeKey = locale as Locale
+  setRequestLocale(localeKey)
   const messages = await getMessages()
 
   return (
-    <html lang={locale} suppressHydrationWarning>
+    <html lang={localeKey} dir={localeDirections[localeKey]} suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

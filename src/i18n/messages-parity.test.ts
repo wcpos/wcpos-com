@@ -1,7 +1,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { describe, expect, it } from 'vitest'
-import { defaultLocale, locales } from './config'
+import { defaultLocale, localeDirections, locales } from './config'
 
 const messagesDir = path.resolve(process.cwd(), 'messages')
 
@@ -961,6 +961,11 @@ describe('messages key parity', () => {
 
   it(`${defaultLocale}.json has at least one key`, () => {
     expect(enKeys.length).toBeGreaterThan(0)
+  })
+
+  it('defines an explicit text direction for every configured locale', () => {
+    expect(Object.keys(localeDirections).sort()).toEqual([...locales].sort())
+    expect(Object.values(localeDirections).every((dir) => dir === 'ltr' || dir === 'rtl')).toBe(true)
   })
 
   it.each(otherLocales)(

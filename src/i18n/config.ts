@@ -16,3 +16,18 @@ export const localeNames: Record<Locale, string> = {
   nl: 'Nederlands',
   ko: '한국어',
 }
+
+export type LocaleDirection = 'ltr' | 'rtl'
+
+export const localeDirections: Record<Locale, LocaleDirection> = {
+  en: 'ltr',
+  fr: 'ltr',
+  de: 'ltr',
+  es: 'ltr',
+  ja: 'ltr',
+  zh: 'ltr',
+  pt: 'ltr',
+  it: 'ltr',
+  nl: 'ltr',
+  ko: 'ltr',
+}
