@@ -48,26 +48,33 @@ function deferredEphemeralReply(): NextResponse {
   return NextResponse.json({ type: 5, data: { flags: EPHEMERAL } })
 }
 
+// Discord application IDs are numeric snowflakes; interaction tokens are
+// base64url strings ([A-Za-z0-9_-]). Both are matched against anchored
+// allow-lists so no character that could alter the host or escape the path
+// segment (`/`, `\`, `@`, `.`, `:`) can reach the request URL.
+const DISCORD_APPLICATION_ID_PATTERN = /^[0-9]+$/
+const DISCORD_INTERACTION_TOKEN_PATTERN = /^[A-Za-z0-9_-]+$/
+
 /**
  * Build the interaction-token webhook URL from the (already signature-verified)
  * interaction payload, rejecting any values that could redirect the request off
  * Discord. Defence-in-depth against SSRF: the Ed25519 check already proves the
  * payload came from Discord, but the URL parts are still attacker-shaped input.
+ *
+ * The identifiers are validated against anchored allow-lists (not a reject
+ * list) so the whole value is proven safe before it is used to build the URL —
+ * this is the sanitising barrier CodeQL's request-forgery query recognises.
  */
 function buildEditOriginalUrl(interaction: DiscordInteraction): string {
   const { application_id: applicationId, token } = interaction
-  // Application IDs are numeric Discord snowflakes; tokens must not contain any
-  // character that could break out of the intended path segment.
-  if (!/^\d+$/.test(applicationId) || /[/\\@]|\.\./.test(token)) {
+  if (
+    !DISCORD_APPLICATION_ID_PATTERN.test(applicationId) ||
+    !DISCORD_INTERACTION_TOKEN_PATTERN.test(token)
+  ) {
     throw new Error('Invalid Discord interaction identifiers')
   }
-  const url = new URL(
-    `${DISCORD_API_BASE}/webhooks/${applicationId}/${token}/messages/@original`
-  )
-  if (url.hostname !== 'discord.com' || !url.pathname.startsWith('/api/v10/webhooks/')) {
-    throw new Error('Refusing to call non-Discord webhook URL')
-  }
-  return url.toString()
+  // Fixed, trusted base; only the validated segments are appended.
+  return `${DISCORD_API_BASE}/webhooks/${applicationId}/${token}/messages/@original`
 }
 
 /**
