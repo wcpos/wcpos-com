@@ -1,4 +1,10 @@
-export const DISCORD_ACCESS_METADATA_KEY = 'discord_access'
+// Two Keygen metadata constraints shape this key (both bit us live, 2026-07-09):
+// 1. Keygen rejects metadata nested deeper than 2 levels ("maximum depth of 2
+//    exceeded"), so the access blob is stored as a single JSON STRING value.
+// 2. Keygen camelizes metadata keys on write (discord_access → discordAccess),
+//    so the key is camelCase from the start — a snake_case key would be
+//    written under one name and read back under another.
+export const DISCORD_ACCESS_METADATA_KEY = 'discordAccess'
 export const DEFAULT_DISCORD_SEAT_CAP = 5
 
 export interface ConnectedDiscordIdentity {
@@ -61,6 +67,16 @@ function parseMember(value: unknown): ConnectedDiscordMemberRecord | null {
 
 function readRawAccess(metadata: Record<string, unknown> | null | undefined) {
   const raw = metadata?.[DISCORD_ACCESS_METADATA_KEY]
+  // Stored form is a JSON string (Keygen depth limit, see the key comment);
+  // a plain object is also accepted so in-memory fixtures stay ergonomic.
+  if (typeof raw === 'string') {
+    try {
+      const parsed: unknown = JSON.parse(raw)
+      return isRecord(parsed) ? parsed : {}
+    } catch {
+      return {}
+    }
+  }
   return isRecord(raw) ? raw : {}
 }
 
@@ -92,11 +108,13 @@ function writeAccessMetadata(
 ): Record<string, unknown> {
   return {
     ...(metadata ?? {}),
-    [DISCORD_ACCESS_METADATA_KEY]: {
+    // Serialized to one scalar string: Keygen rejects values nested deeper
+    // than 2 levels, and members are objects inside an array inside this blob.
+    [DISCORD_ACCESS_METADATA_KEY]: JSON.stringify({
       seatCap: access.seatCap,
       blockedDiscordUserIds: access.blockedDiscordUserIds,
       members: allMembers,
-    },
+    }),
   }
 }
 

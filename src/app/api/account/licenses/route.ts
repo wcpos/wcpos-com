@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { getResolvedCustomerLicenses } from '@/lib/customer-licenses'
 import { getDiscordAccessByLicense } from '@/lib/discord/connected-member-service'
+import { DISCORD_ACCESS_METADATA_KEY } from '@/lib/discord/connected-members'
 import { licenseLogger } from '@/lib/logger'
 import type { LicenseDetail } from '@/types/license'
 
@@ -25,7 +26,7 @@ function errorResponse(errorCode: LicensesErrorCode, status: number) {
 function stripDiscordAccessMetadata(licenses: LicenseDetail[]): LicenseDetail[] {
   return licenses.map((license) => {
     const metadata = { ...license.metadata }
-    delete metadata.discord_access
+    delete metadata[DISCORD_ACCESS_METADATA_KEY]
     return { ...license, metadata }
   })
 }

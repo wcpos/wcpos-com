@@ -82,7 +82,7 @@ describe('createDiscordReconcileDependencies', () => {
     mocks.getResolvedLicenseSnapshotFromOrders.mockResolvedValue({
       licenses: [
         license({
-          discord_access: {
+          discordAccess: {
             seatCap: 5,
             blockedDiscordUserIds: [],
             members: [{ id: 'member_1', discordUserId: 'discord_1', connectedAt: '2026-01-01T00:00:00.000Z' }],
@@ -108,7 +108,7 @@ describe('createDiscordReconcileDependencies', () => {
     mocks.listAdminCustomerOrders.mockResolvedValue([order({ licenses: [{ license_id: 'lic_1' }] })])
     mocks.getResolvedLicenseSnapshotFromOrders.mockResolvedValue({
       licenses: [
-        license({ discord_access: { seatCap: 5, blockedDiscordUserIds: [], members: [] } }),
+        license({ discordAccess: { seatCap: 5, blockedDiscordUserIds: [], members: [] } }),
         { ...license({}), id: 'lic_unknown', status: 'unknown' },
       ],
       complete: false,

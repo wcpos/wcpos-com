@@ -675,7 +675,7 @@ describe('licenseClient', () => {
               status: 'ACTIVE',
               expiry: null,
               maxMachines: 5,
-              metadata: { discord_access: { seatCap: 5 } },
+              metadata: { discordAccess: { seatCap: 5 } },
               created: '2026-01-01T00:00:00Z',
             },
             relationships: {
@@ -686,10 +686,10 @@ describe('licenseClient', () => {
       })
 
       const result = await licenseClient.updateLicenseMetadata('license-123', {
-        discord_access: { seatCap: 5 },
+        discordAccess: { seatCap: 5 },
       })
 
-      expect(result.metadata).toEqual({ discord_access: { seatCap: 5 } })
+      expect(result.metadata).toEqual({ discordAccess: { seatCap: 5 } })
       expect(result.machines).toEqual([])
       expect(mockFetch).toHaveBeenCalledWith(
         'https://license.wcpos.com/v1/licenses/license-123',
@@ -703,7 +703,7 @@ describe('licenseClient', () => {
             data: {
               type: 'licenses',
               id: 'license-123',
-              attributes: { metadata: { discord_access: { seatCap: 5 } } },
+              attributes: { metadata: { discordAccess: { seatCap: 5 } } },
             },
           }),
         })

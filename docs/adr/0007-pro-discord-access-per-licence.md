@@ -72,7 +72,11 @@ owner chose lower-friction key self-claim with the cap as the safeguard).
   plugin-activation credential. The seat cap bounds the blast radius of a
   leaked key for Discord; site activation remains separately capped. The
   greenfield wcpos.com slice stores this connected-member collection on the
-  licence metadata under `discord_access`.
+  licence metadata under `discordAccess`, serialized as a single JSON string:
+  Keygen rejects metadata nested deeper than 2 levels (member records would
+  sit at depth 3 as raw objects) and camelizes metadata keys on write (a
+  snake_case key is stored under a different name than it is read back
+  under). Both constraints were confirmed against live Keygen on 2026-07-09.
 - Reconciliation walks licence → connected members to grant roles, then
   groups by Discord user before removing roles so another active connected
   licence can preserve access.

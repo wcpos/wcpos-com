@@ -35,7 +35,10 @@ const cspReportOnly = [
   "frame-src https://js.stripe.com https://hooks.stripe.com https://m.stripe.network https://www.paypal.com https://www.sandbox.paypal.com https://*.widgetbot.io https://discord.com https://challenges.cloudflare.com",
   "object-src 'none'",
   "base-uri 'self'",
-  "form-action 'self' https://www.paypal.com https://www.sandbox.paypal.com",
+  // discord.com: the licence-card Connect form posts to /api/discord/claim,
+  // which 303s to Discord's OAuth authorize page — browsers apply form-action
+  // to the whole redirect chain (same reason PayPal is listed).
+  "form-action 'self' https://www.paypal.com https://www.sandbox.paypal.com https://discord.com",
   `report-uri ${CSP_REPORT_PATH}`,
   "report-to csp-endpoint",
 ].join("; ");
