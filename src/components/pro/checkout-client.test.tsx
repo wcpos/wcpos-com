@@ -1,5 +1,12 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { screen, waitFor, fireEvent } from '@testing-library/react'
+import {
+  screen,
+  waitFor,
+  fireEvent,
+  render as rtlRender,
+} from '@testing-library/react'
+import { NextIntlClientProvider } from 'next-intl'
+import frMessages from '../../../messages/fr.json'
 import { renderWithIntl as render } from '@/test/intl'
 
 // Payment identifiers are host-resolved server-side and passed as a prop
@@ -191,6 +198,27 @@ function renderSignedIn(props: Record<string, unknown> = {}) {
       payments={ALL_PAYMENTS}
       {...props}
     />
+  )
+}
+
+function renderSignedInFrench(props: Record<string, unknown> = {}) {
+  return rtlRender(
+    <NextIntlClientProvider
+      locale="fr"
+      messages={frMessages}
+      onError={(error) => {
+        throw error
+      }}
+    >
+      <CheckoutClient
+        customerEmail="user@example.com"
+        selectedOfferHandle="wcpos-pro-yearly"
+        checkoutPath="/pro/checkout?product=wcpos-pro-yearly"
+        experimentVariant="control"
+        payments={ALL_PAYMENTS}
+        {...props}
+      />
+    </NextIntlClientProvider>
   )
 }
 
@@ -584,6 +612,18 @@ describe('CheckoutClient', () => {
     await waitFor(() => {
       expect(screen.getByText('WCPOS Pro Lifetime')).toBeInTheDocument()
       expect(screen.getByText('Total')).toBeInTheDocument()
+    })
+  })
+
+  it('localizes known Medusa item titles in the order summary', async () => {
+    mockSuccessfulCheckoutInit(
+      buildCheckoutCart({ title: 'WCPOS Pro Lifetime' })
+    )
+    renderSignedInFrench()
+
+    await waitFor(() => {
+      expect(screen.getByText('WCPOS Pro à vie')).toBeInTheDocument()
+      expect(screen.queryByText('WCPOS Pro Lifetime')).not.toBeInTheDocument()
     })
   })
 

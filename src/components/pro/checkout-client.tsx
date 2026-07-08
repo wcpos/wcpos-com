@@ -28,6 +28,7 @@ import { toneText } from '@/components/ui/status-tone'
 import { ArrowLeft, Check, CheckCircle } from 'lucide-react'
 import { Link } from '@/i18n/navigation'
 import type { CheckoutPaymentConfig } from '@/lib/checkout-payment-config'
+import { localizeKnownProductTitle } from '@/lib/product-title-display'
 import type { ProCheckoutVariant } from '@/services/core/analytics/posthog-service'
 
 interface CartItem {
@@ -183,6 +184,11 @@ export function CheckoutClient({
 }: CheckoutClientProps) {
   const locale = useLocale()
   const t = useTranslations('pro.checkout')
+  const productTitleT = useTranslations('account.productTitles')
+  const productTitleMessages = {
+    yearly: productTitleT('yearly'),
+    lifetime: productTitleT('lifetime'),
+  }
   const {
     stripeEnabled: isStripeEnabled,
     paypalEnabled: isPayPalEnabled,
@@ -792,7 +798,9 @@ export function CheckoutClient({
             {cart.items.map((item) => (
               <div key={item.id} className="flex justify-between py-1">
                 <div>
-                  <p className="font-medium">{item.title}</p>
+                  <p className="font-medium">
+                    {localizeKnownProductTitle(item.title, productTitleMessages)}
+                  </p>
                   <p className="text-sm text-muted-foreground">
                     {t('summary.quantity', { quantity: item.quantity })}
                   </p>
