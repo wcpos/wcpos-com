@@ -1,4 +1,10 @@
-import { defaultLocale, locales, type Locale } from '@/i18n/config'
+import {
+  defaultLocale,
+  localeDirections,
+  locales,
+  type Locale,
+  type LocaleDirection,
+} from '@/i18n/config'
 import deMessages from '../../messages/de.json'
 import enMessages from '../../messages/en.json'
 import esMessages from '../../messages/es.json'
@@ -12,6 +18,7 @@ import zhMessages from '../../messages/zh.json'
 
 interface RootFallbackCopy {
   locale: Locale
+  direction: LocaleDirection
   errors: {
     genericTitle: string
     genericDescription: string
@@ -90,7 +97,7 @@ export function rootFallbackCopy(
   source?: string | readonly string[] | null
 ): RootFallbackCopy {
   const locale = resolveRootFallbackLocale(source)
-  return { locale, ...ROOT_FALLBACK_MESSAGES[locale] }
+  return { locale, direction: localeDirections[locale], ...ROOT_FALLBACK_MESSAGES[locale] }
 }
 
 

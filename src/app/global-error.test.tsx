@@ -36,6 +36,8 @@ describe('GlobalError', () => {
     expect(
       await screen.findByRole('heading', { name: 'Algo salió mal.' })
     ).toBeInTheDocument()
+    expect(document.documentElement).toHaveAttribute('lang', 'es')
+    expect(document.documentElement).toHaveAttribute('dir', 'ltr')
 
     fireEvent.click(screen.getByRole('button', { name: 'Intentar de nuevo' }))
     expect(reset).toHaveBeenCalledTimes(1)

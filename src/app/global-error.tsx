@@ -49,7 +49,7 @@ export default function GlobalError({
   const copy = rootFallbackCopy(languagePreferences)
 
   return (
-    <html lang={copy.locale}>
+    <html lang={copy.locale} dir={copy.direction}>
       <body
         style={{
           margin: 0,

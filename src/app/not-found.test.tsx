@@ -30,6 +30,8 @@ describe('RootNotFound', () => {
     expect(
       await screen.findByRole('heading', { name: 'Seite nicht gefunden' })
     ).toBeInTheDocument()
+    expect(document.documentElement).toHaveAttribute('lang', 'de')
+    expect(document.documentElement).toHaveAttribute('dir', 'ltr')
     expect(screen.getByText('404')).toBeInTheDocument()
   })
 
