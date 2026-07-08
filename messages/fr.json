@@ -506,7 +506,7 @@
       },
       "summary": {
         "quantity": "Qté : {quantity}",
-        "total": "Total",
+        "total": "Total à payer",
         "instantLicense": "Livraison instantanée de la licence",
         "oneTimePayment": "Paiement unique — jamais de renouvellement automatique",
         "securePayment": "Traitement sécurisé du paiement"
@@ -592,20 +592,20 @@
         "paypalCancelled": "Le paiement PayPal a été annulé et vous n’avez pas été débité. Vous pouvez réessayer quand vous le souhaitez.",
         "btcpayInitFailed": "Impossible de démarrer le paiement Bitcoin. Vous n’avez pas été débité — veuillez réessayer ou utiliser un autre moyen de paiement.",
         "stripeDeclines": {
-          "insufficientFunds": "Your card was declined due to insufficient funds. Please use a different card or payment method."
+          "insufficientFunds": "Votre carte a été refusée pour fonds insuffisants. Veuillez utiliser une autre carte ou un autre mode de paiement."
         },
         "stripeCodes": {
-          "cardDeclined": "Your card was declined. Please try a different card or payment method.",
-          "expiredCard": "Your card has expired. Please use a different card.",
-          "incorrectCvc": "Your card's security code is incorrect. Please check it and try again.",
-          "invalidCvc": "Your card's security code is invalid. Please check it and try again.",
-          "incorrectNumber": "Your card number appears to be invalid. Please check it and try again.",
-          "invalidNumber": "Your card number appears to be invalid. Please check it and try again.",
-          "invalidExpiryMonth": "Your card's expiry date is invalid. Please check it and try again.",
-          "invalidExpiryYear": "Your card's expiry date is invalid. Please check it and try again.",
-          "processingError": "Something went wrong while processing your card. You have not been charged — please try again.",
-          "authenticationFailure": "We couldn't verify your card with your bank. Please try again or use a different payment method.",
-          "authenticationRequired": "We couldn't verify your card with your bank. Please try again or use a different payment method."
+          "cardDeclined": "Votre carte a été refusée. Veuillez essayer une autre carte ou un autre mode de paiement.",
+          "expiredCard": "Votre carte a expiré. Veuillez utiliser une autre carte.",
+          "incorrectCvc": "Le code de sécurité de votre carte est incorrect. Veuillez le vérifier puis réessayer.",
+          "invalidCvc": "Le code de sécurité de votre carte est invalide. Veuillez le vérifier puis réessayer.",
+          "incorrectNumber": "Le numéro de votre carte semble invalide. Veuillez le vérifier puis réessayer.",
+          "invalidNumber": "Le numéro de votre carte semble invalide. Veuillez le vérifier puis réessayer.",
+          "invalidExpiryMonth": "La date d’expiration de votre carte est invalide. Veuillez la vérifier puis réessayer.",
+          "invalidExpiryYear": "La date d’expiration de votre carte est invalide. Veuillez la vérifier puis réessayer.",
+          "processingError": "Un problème est survenu pendant le traitement de votre carte. Vous n’avez pas été débité — veuillez réessayer.",
+          "authenticationFailure": "Nous n’avons pas pu vérifier votre carte auprès de votre banque. Veuillez réessayer ou utiliser un autre mode de paiement.",
+          "authenticationRequired": "Nous n’avons pas pu vérifier votre carte auprès de votre banque. Veuillez réessayer ou utiliser un autre mode de paiement."
         }
       },
       "recovery": {
