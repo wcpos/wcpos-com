@@ -859,7 +859,7 @@ describe('messages key parity', () => {
       return (
         englishValue !== undefined &&
         dutchValue === englishValue &&
-        /[A-Za-z]{3}/.test(englishValue)
+        /[A-Za-z]/.test(englishValue)
       )
     })
 
