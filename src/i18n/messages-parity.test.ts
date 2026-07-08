@@ -77,6 +77,8 @@ const auditedPortugueseNamespacePrefixes = [
   'support.',
   'auth.',
   'roadmap.',
+  'header.',
+  'footer.',
   'downloads.',
   'account.',
   'about.',
@@ -91,6 +93,12 @@ const auditedPortugueseNamespacePrefixes = [
   'home.subtitle',
 ]
 const portugueseIdenticalCopyAllowlist = new Set([
+  'header.pro',
+  'footer.copyright',
+  'footer.discord',
+  'footer.github',
+  'footer.pro',
+  'footer.wordpressOrg',
   'downloads.platforms.mac-arm.name',
   'downloads.platforms.mac-arm.listLabel',
   'downloads.platforms.mac-arm.short',
@@ -117,11 +125,8 @@ const portugueseIdenticalCopyAllowlist = new Set([
   'downloads.page.steps.plugin.cardTitle',
   'downloads.page.steps.plugin.wordpressOrgCta',
   'downloads.releaseHistory.desktop',
-  'account.orderDetail.emailLabel',
   'account.orderDetail.totalLabel',
-  'account.profile.avatarAlt',
   'account.profile.discordProvider',
-  'account.profile.email',
   'account.profile.githubProvider',
   'account.profile.googleProvider',
   'account.profile.taxLabels.abn',
@@ -132,7 +137,6 @@ const portugueseIdenticalCopyAllowlist = new Set([
   'account.receiptPdf.total',
   'about.founder.signature.name',
   'about.timeline.dates.range',
-  'pro.checkout.account.emailLabel',
   'pro.checkout.offers.default',
   'pro.checkout.payment.methods.bitcoin.title',
   'pro.checkout.payment.methods.card.hint',
@@ -839,7 +843,7 @@ describe('messages key parity', () => {
 
     expect(
       untranslatedKeys,
-      'messages/pt.json must not copy audited support/auth/roadmap/downloads/account/about/pro/legal/homepage-section/story English strings verbatim'
+      'messages/pt.json must not copy audited support/auth/roadmap/header/footer/downloads/account/about/pro/legal/homepage-section/story English strings verbatim'
     ).toEqual([])
   })
 })
