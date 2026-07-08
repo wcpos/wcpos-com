@@ -885,7 +885,7 @@ describe('messages key parity', () => {
       return (
         englishValue !== undefined &&
         dutchValue === englishValue &&
-        /[A-Za-z]{3}/.test(englishValue)
+        /[A-Za-z]/.test(englishValue)
       )
     })
 
@@ -893,6 +893,15 @@ describe('messages key parity', () => {
       untranslatedKeys,
       'messages/nl.json must not copy audited support/auth/roadmap/common/header/footer English strings verbatim'
     ).toEqual([])
+  })
+
+  it('nl.json translates support chat feedback labels used as aria labels', () => {
+    const english = loadMessages(defaultLocale)
+    const dutch = loadMessages('nl')
+
+    expect(valueAtPath(dutch, 'support.chat.feedback.no')).not.toBe(
+      valueAtPath(english, 'support.chat.feedback.no')
+    )
   })
 
   it('ko.json translates the audited support, auth, roadmap, common, header, footer, and downloads copy', () => {
