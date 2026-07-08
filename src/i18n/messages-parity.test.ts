@@ -76,6 +76,7 @@ const auditedPortugueseNamespacePrefixes = [
   'account.',
   'about.',
   'pro.',
+  'legal.',
 ]
 const portugueseIdenticalCopyAllowlist = new Set([
   'downloads.platforms.mac-arm.name',
@@ -126,6 +127,12 @@ const portugueseIdenticalCopyAllowlist = new Set([
   'pro.checkout.summary.total',
   'pro.hero.title',
   'pro.schema.name',
+  'legal.privacy.processors.items.p2.label',
+  'legal.privacy.processors.items.p3.label',
+  'legal.privacy.processors.items.p4.label',
+  'legal.privacy.processors.items.p5.label',
+  'legal.privacy.processors.items.p6.label',
+  'legal.privacy.processors.items.p7.label',
 ])
 
 const auditedJapaneseNamespacePrefixes = [
@@ -753,7 +760,7 @@ describe('messages key parity', () => {
     ).toEqual([])
   })
 
-  it('pt.json translates the audited support, auth, roadmap, downloads, account, about, and pro copy', () => {
+  it('pt.json translates the audited support, auth, roadmap, downloads, account, about, pro, and legal copy', () => {
     const english = loadMessages(defaultLocale)
     const portuguese = loadMessages('pt')
     const auditedKeys = enKeys.filter(
@@ -774,7 +781,7 @@ describe('messages key parity', () => {
 
     expect(
       untranslatedKeys,
-      'messages/pt.json must not copy audited support/auth/roadmap/downloads/account/about/pro English strings verbatim'
+      'messages/pt.json must not copy audited support/auth/roadmap/downloads/account/about/pro/legal English strings verbatim'
     ).toEqual([])
   })
 })
