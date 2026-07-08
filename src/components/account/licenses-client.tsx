@@ -333,7 +333,7 @@ export function LicensesClient({
       )
       if (!res.ok) {
         if (res.status === 401) {
-          window.location.assign(loginPath)
+          navigateAfterAuthChange('/login', locale as Locale)
           return
         }
         throw new Error(await getLicenseActionErrorMessage(res, t('discordUnblockError')))
