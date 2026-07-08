@@ -1,7 +1,7 @@
 {
   "version": 1,
   "generatedBy": "scripts/i18n/hardcoded-english.ts --update",
-  "updatedAt": "2026-07-08T16:34:41.104Z",
+  "updatedAt": "2026-07-08T23:23:23.769Z",
   "scope": [
     "src/app",
     "src/components",
@@ -538,6 +538,14 @@
       "count": 1
     },
     {
+      "id": "42840b57a791c5c3",
+      "file": "src/app/api/account/licenses/[licenseId]/discord/blocked/[discordUserId]/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "Discord member unblock unavailable:",
+      "count": 1
+    },
+    {
       "id": "ddebd78d946a2b11",
       "file": "src/app/api/account/licenses/[licenseId]/discord/members/[memberId]/route.ts",
       "category": "route/page",
@@ -898,11 +906,115 @@
       "count": 1
     },
     {
+      "id": "ffc26d273343fce2",
+      "file": "src/app/api/discord/claim/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "Discord claim received a malformed form body:",
+      "count": 1
+    },
+    {
       "id": "8c7eb3dd2cf862cb",
       "file": "src/app/api/discord/claim/route.ts",
       "category": "route/page",
       "attr": null,
       "text": "Discord claim received a malformed JSON body:",
+      "count": 1
+    },
+    {
+      "id": "324f8435319113f1",
+      "file": "src/app/api/discord/interactions/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "❌ Provide your license key: `/link key:<your-key>`.",
+      "count": 1
+    },
+    {
+      "id": "2a7c0f3a4c695f72",
+      "file": "src/app/api/discord/interactions/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "❌ Provide your license key: `/unlink key:<your-key>`.",
+      "count": 1
+    },
+    {
+      "id": "ded93160370e79e9",
+      "file": "src/app/api/discord/interactions/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "Discord /link command failed:",
+      "count": 1
+    },
+    {
+      "id": "7037417eec0cb10a",
+      "file": "src/app/api/discord/interactions/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "Discord /unlink command failed:",
+      "count": 1
+    },
+    {
+      "id": "aa0c4b77ee605b07",
+      "file": "src/app/api/discord/interactions/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "Discord Customer info command failed:",
+      "count": 1
+    },
+    {
+      "id": "c4d8fd8f2b49cb70",
+      "file": "src/app/api/discord/interactions/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "Discord interaction follow-up edit failed (",
+      "count": 1
+    },
+    {
+      "id": "47af416750e87fa3",
+      "file": "src/app/api/discord/interactions/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "Discord interaction follow-up edit failed:",
+      "count": 1
+    },
+    {
+      "id": "249f3ede594a5ecb",
+      "file": "src/app/api/discord/interactions/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "Discord interactions endpoint hit without DISCORD_GUILD_ID configured",
+      "count": 1
+    },
+    {
+      "id": "0c2b85eecd328f65",
+      "file": "src/app/api/discord/interactions/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "Discord interactions endpoint hit without DISCORD_PUBLIC_KEY configured",
+      "count": 1
+    },
+    {
+      "id": "b86e3938532ee68c",
+      "file": "src/app/api/discord/interactions/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "Discord role sync after /link claim failed:",
+      "count": 1
+    },
+    {
+      "id": "cebfef5b2aeb5906",
+      "file": "src/app/api/discord/interactions/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "Invalid Discord interaction identifiers",
+      "count": 1
+    },
+    {
+      "id": "44c3dfeaa1d6b989",
+      "file": "src/app/api/discord/interactions/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "Unknown command.",
       "count": 1
     },
     {
@@ -1127,6 +1239,14 @@
       "category": "route/page",
       "attr": null,
       "text": "Error capturing PayPal order:",
+      "count": 1
+    },
+    {
+      "id": "b6534b0abd7a0a24",
+      "file": "src/app/api/store/cart/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "Billing address sync skipped: no session token for customer",
       "count": 1
     },
     {
@@ -1480,6 +1600,22 @@
       "attr": null,
       "text": "active",
       "count": 6
+    },
+    {
+      "id": "b99fe590e12fe44b",
+      "file": "src/components/account/licenses-client.tsx",
+      "category": "component",
+      "attr": null,
+      "text": "discord",
+      "count": 3
+    },
+    {
+      "id": "402a02b6beac9c30",
+      "file": "src/components/account/licenses-client.tsx",
+      "category": "component",
+      "attr": null,
+      "text": "error",
+      "count": 1
     },
     {
       "id": "1ece3fe485bfbfdc",
@@ -3330,6 +3466,14 @@
       "count": 1
     },
     {
+      "id": "f9214c6f11f04c44",
+      "file": "src/lib/analytics/consent.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "; Domain=",
+      "count": 1
+    },
+    {
       "id": "647fa7b6b3edda4c",
       "file": "src/lib/analytics/consent.ts",
       "category": "code/string",
@@ -3367,7 +3511,7 @@
       "category": "code/string",
       "attr": null,
       "text": "=; Path=/; Max-Age=0; SameSite=Lax",
-      "count": 1
+      "count": 2
     },
     {
       "id": "367366c4d6ff6451",
@@ -3472,6 +3616,14 @@
       "attr": null,
       "text": "vat",
       "count": 5
+    },
+    {
+      "id": "e3080df74a1c4e95",
+      "file": "src/lib/billing-profile.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "city",
+      "count": 1
     },
     {
       "id": "9295d6ac9f615271",
@@ -3634,14 +3786,6 @@
       "count": 1
     },
     {
-      "id": "e16b5118ad61ea11",
-      "file": "src/lib/customer-profile-metadata.ts",
-      "category": "code/string",
-      "attr": null,
-      "text": "city",
-      "count": 2
-    },
-    {
       "id": "4f42fe89b33a8e8d",
       "file": "src/lib/discord/client.ts",
       "category": "error/status",
@@ -3698,11 +3842,227 @@
       "count": 1
     },
     {
+      "id": "15892f1bdaf48acc",
+      "file": "src/lib/discord/connected-member-service.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": ".png?size=64",
+      "count": 1
+    },
+    {
       "id": "87654633a4263b7a",
       "file": "src/lib/discord/connected-member-service.ts",
       "category": "code/string",
       "attr": null,
       "text": "Discord user",
+      "count": 1
+    },
+    {
+      "id": "7c7d3d8f08e9334b",
+      "file": "src/lib/discord/interactions.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "— the seat is free again. If no other license backs your Pro role, the nightly sync removes it.",
+      "count": 1
+    },
+    {
+      "id": "efbd71b8370e6224",
+      "file": "src/lib/discord/interactions.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": ". Your Pro role is on its way — welcome!",
+      "count": 1
+    },
+    {
+      "id": "0f2c50a20d9a1a7f",
+      "file": "src/lib/discord/interactions.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "…and",
+      "count": 2
+    },
+    {
+      "id": "4f7a1a1163e3e515",
+      "file": "src/lib/discord/interactions.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "· seats",
+      "count": 1
+    },
+    {
+      "id": "06fd7bb9e8c6e00c",
+      "file": "src/lib/discord/interactions.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "**Customer info —",
+      "count": 1
+    },
+    {
+      "id": "755ea9b3660f21b1",
+      "file": "src/lib/discord/interactions.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "✅ Disconnected from license",
+      "count": 1
+    },
+    {
+      "id": "2fe9c9a9885eb1fd",
+      "file": "src/lib/discord/interactions.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "✅ Discord connected to license",
+      "count": 1
+    },
+    {
+      "id": "a19222ce7bd77f66",
+      "file": "src/lib/discord/interactions.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "❌ That license has no free Discord seats. Ask the license holder to remove a member on wcpos.com first.",
+      "count": 1
+    },
+    {
+      "id": "5e973ceb6645f32e",
+      "file": "src/lib/discord/interactions.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "❌ That license is not active, so it cannot grant Discord access. Renewing it on wcpos.com restores the perk.",
+      "count": 1
+    },
+    {
+      "id": "d9cf82847b34bbf7",
+      "file": "src/lib/discord/interactions.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "❌ That license key was not recognised. You can copy it from Account → Licenses on wcpos.com.",
+      "count": 2
+    },
+    {
+      "id": "889c73417e8e1283",
+      "file": "src/lib/discord/interactions.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "❌ The license holder removed this Discord account from that license, so it cannot reconnect with this key.",
+      "count": 1
+    },
+    {
+      "id": "fe569118ef841a1a",
+      "file": "src/lib/discord/interactions.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "connection date unknown",
+      "count": 1
+    },
+    {
+      "id": "020e4cb9b19c709c",
+      "file": "src/lib/discord/interactions.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "Customer info",
+      "count": 1
+    },
+    {
+      "id": "7ca855b11f83bdd0",
+      "file": "src/lib/discord/interactions.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "Customer since:",
+      "count": 1
+    },
+    {
+      "id": "dbda2763db7edc08",
+      "file": "src/lib/discord/interactions.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "holder unknown",
+      "count": 1
+    },
+    {
+      "id": "b6294b128552ddf6",
+      "file": "src/lib/discord/interactions.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "ℹ️ This Discord account is already connected to license",
+      "count": 1
+    },
+    {
+      "id": "090ed4be373a4604",
+      "file": "src/lib/discord/interactions.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "ℹ️ This Discord account is not connected to license",
+      "count": 1
+    },
+    {
+      "id": "c62b1acd66b85336",
+      "file": "src/lib/discord/interactions.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "more licences omitted.",
+      "count": 2
+    },
+    {
+      "id": "0186278335a40aa2",
+      "file": "src/lib/discord/interactions.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "No licenses have this Discord account as a connected member.",
+      "count": 1
+    },
+    {
+      "id": "53a2daed3a6f11f3",
+      "file": "src/lib/discord/interactions.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "not held",
+      "count": 1
+    },
+    {
+      "id": "523bea6bc0455e4c",
+      "file": "src/lib/discord/interactions.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "Pro role:",
+      "count": 2
+    },
+    {
+      "id": "8f8b3f6d9b070225",
+      "file": "src/lib/discord/interactions.ts",
+      "category": "error/status",
+      "attr": null,
+      "text": "Something went wrong on our side. Please try again, or contact support@wcpos.com.",
+      "count": 1
+    },
+    {
+      "id": "ae53011cba920a64",
+      "file": "src/lib/discord/interactions.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "This command only works inside the WCPOS Discord server.",
+      "count": 1
+    },
+    {
+      "id": "f58f50c3ffd22b88",
+      "file": "src/lib/discord/interactions.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "unknown date",
+      "count": 2
+    },
+    {
+      "id": "50811953f50fc29b",
+      "file": "src/lib/discord/interactions.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "user not in server",
+      "count": 1
+    },
+    {
+      "id": "8191804927343d05",
+      "file": "src/lib/discord/interactions.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "You need the Manage Server permission to look up customer info.",
       "count": 1
     },
     {
@@ -3775,7 +4135,15 @@
       "category": "code/string",
       "attr": null,
       "text": "id,email,first_name,last_name,phone,has_account,metadata,created_at,updated_at",
-      "count": 2
+      "count": 1
+    },
+    {
+      "id": "571d83cd6139bb92",
+      "file": "src/lib/discord/medusa-admin.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "id,email,first_name,last_name,phone,has_account,metadata,created_at,updated_at,*addresses",
+      "count": 1
     },
     {
       "id": "18e9e76a2760edfe",
@@ -3927,6 +4295,14 @@
       "category": "error/status",
       "attr": null,
       "text": "Failed to reset password",
+      "count": 1
+    },
+    {
+      "id": "1c5d809e50a0caa7",
+      "file": "src/lib/medusa-auth.ts",
+      "category": "error/status",
+      "attr": null,
+      "text": "Failed to update billing address",
       "count": 1
     },
     {
@@ -4458,6 +4834,14 @@
       "count": 1
     },
     {
+      "id": "b6312141b0b3ce55",
+      "file": "src/services/core/external/license-client.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "/v1/licenses?page[size]=",
+      "count": 1
+    },
+    {
       "id": "89e0dfc654fadff0",
       "file": "src/services/core/external/license-client.ts",
       "category": "error/status",
@@ -4506,6 +4890,22 @@
       "count": 1
     },
     {
+      "id": "636fcc74083d5204",
+      "file": "src/services/core/external/license-client.ts",
+      "category": "error/status",
+      "attr": null,
+      "text": "Keygen listAllLicenses failed (",
+      "count": 1
+    },
+    {
+      "id": "d3a411464c5789d1",
+      "file": "src/services/core/external/license-client.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "Keygen listAllLicenses page",
+      "count": 1
+    },
+    {
       "id": "2fb67ed8cf26c25d",
       "file": "src/services/core/external/license-client.ts",
       "category": "error/status",
@@ -4543,6 +4943,22 @@
       "category": "code/string",
       "attr": null,
       "text": "Machine list unavailable for",
+      "count": 1
+    },
+    {
+      "id": "239771261bf710ba",
+      "file": "src/services/core/external/license-client.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "name",
+      "count": 1
+    },
+    {
+      "id": "3a244eda80ec6d8d",
+      "file": "src/services/core/external/license-client.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "timed out after",
       "count": 1
     },
     {
