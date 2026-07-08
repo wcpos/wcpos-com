@@ -66,6 +66,11 @@ const auditedSpanishNamespacePrefixes = [
   'about.',
   'home.',
   'legal.',
+  'home.meta.',
+  'home.benefits.',
+  'home.features.',
+  'home.pricing.',
+  'home.ecosystem.',
 ]
 
 const auditedPortugueseNamespacePrefixes = [
@@ -77,6 +82,11 @@ const auditedPortugueseNamespacePrefixes = [
   'about.',
   'pro.',
   'legal.',
+  'home.meta.',
+  'home.benefits.',
+  'home.features.',
+  'home.pricing.',
+  'home.ecosystem.',
 ]
 const portugueseIdenticalCopyAllowlist = new Set([
   'downloads.platforms.mac-arm.name',
@@ -133,6 +143,11 @@ const portugueseIdenticalCopyAllowlist = new Set([
   'legal.privacy.processors.items.p5.label',
   'legal.privacy.processors.items.p6.label',
   'legal.privacy.processors.items.p7.label',
+  'home.ecosystem.badge',
+  'home.ecosystem.devices.android.label',
+  'home.ecosystem.devices.desktop.label',
+  'home.ecosystem.devices.ios.label',
+  'home.pricing.pro.title',
 ])
 
 const auditedJapaneseNamespacePrefixes = [
@@ -147,6 +162,11 @@ const auditedJapaneseNamespacePrefixes = [
   'about.',
   'home.',
   'legal.',
+  'home.meta.',
+  'home.benefits.',
+  'home.features.',
+  'home.pricing.',
+  'home.ecosystem.',
 ]
 const japaneseIdenticalCopyAllowlist = new Set([
   'auth.common.emailPlaceholder',
@@ -216,6 +236,11 @@ const japaneseIdenticalCopyAllowlist = new Set([
   'legal.privacy.processors.items.p5.label',
   'legal.privacy.processors.items.p6.label',
   'legal.privacy.processors.items.p7.label',
+  'home.ecosystem.badge',
+  'home.ecosystem.devices.android.label',
+  'home.ecosystem.devices.desktop.label',
+  'home.ecosystem.devices.ios.label',
+  'home.pricing.pro.title',
 ])
 const auditedChineseNamespacePrefixes = [
   'support.',
@@ -229,6 +254,11 @@ const auditedChineseNamespacePrefixes = [
   'about.',
   'home.',
   'legal.',
+  'home.meta.',
+  'home.benefits.',
+  'home.features.',
+  'home.pricing.',
+  'home.ecosystem.',
 ]
 const chineseIdenticalCopyAllowlist = new Set([
   'auth.common.emailPlaceholder',
@@ -296,6 +326,11 @@ const chineseIdenticalCopyAllowlist = new Set([
   'legal.privacy.processors.items.p5.label',
   'legal.privacy.processors.items.p6.label',
   'legal.privacy.processors.items.p7.label',
+  'home.ecosystem.badge',
+  'home.ecosystem.devices.android.label',
+  'home.ecosystem.devices.desktop.label',
+  'home.ecosystem.devices.ios.label',
+  'home.pricing.pro.title',
 ])
 const auditedGermanNamespacePrefixes = [
   'support.',
@@ -309,6 +344,11 @@ const auditedGermanNamespacePrefixes = [
   'about.',
   'home.',
   'legal.',
+  'home.meta.',
+  'home.benefits.',
+  'home.features.',
+  'home.pricing.',
+  'home.ecosystem.',
 ]
 const germanIdenticalCopyAllowlist = new Set([
   'header.pro',
@@ -385,6 +425,11 @@ const germanIdenticalCopyAllowlist = new Set([
   'legal.privacy.processors.items.p5.label',
   'legal.privacy.processors.items.p6.label',
   'legal.privacy.processors.items.p7.label',
+  'home.ecosystem.badge',
+  'home.ecosystem.devices.android.label',
+  'home.ecosystem.devices.desktop.label',
+  'home.ecosystem.devices.ios.label',
+  'home.pricing.pro.title',
 ])
 const spanishIdenticalCopyAllowlist = new Set([
   'header.pro',
@@ -476,6 +521,11 @@ const spanishIdenticalCopyAllowlist = new Set([
   'legal.privacy.processors.items.p5.label',
   'legal.privacy.processors.items.p6.label',
   'legal.privacy.processors.items.p7.label',
+  'home.ecosystem.badge',
+  'home.ecosystem.devices.android.label',
+  'home.ecosystem.devices.desktop.label',
+  'home.ecosystem.devices.ios.label',
+  'home.pricing.pro.title',
 ])
 
 const frenchIdenticalCopyAllowlist = new Set([
@@ -760,7 +810,7 @@ describe('messages key parity', () => {
     ).toEqual([])
   })
 
-  it('pt.json translates the audited support, auth, roadmap, downloads, account, about, pro, and legal copy', () => {
+  it('pt.json translates the audited support, auth, roadmap, downloads, account, about, pro, legal, and homepage section copy', () => {
     const english = loadMessages(defaultLocale)
     const portuguese = loadMessages('pt')
     const auditedKeys = enKeys.filter(
@@ -781,7 +831,7 @@ describe('messages key parity', () => {
 
     expect(
       untranslatedKeys,
-      'messages/pt.json must not copy audited support/auth/roadmap/downloads/account/about/pro/legal English strings verbatim'
+      'messages/pt.json must not copy audited support/auth/roadmap/downloads/account/about/pro/legal/homepage-section English strings verbatim'
     ).toEqual([])
   })
 })

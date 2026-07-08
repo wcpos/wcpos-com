@@ -49,7 +49,7 @@
     "title": "WCPOS",
     "subtitle": "A fast point of sale for WooCommerce",
     "meta": {
-      "description": "Point of Sale for WooCommerce. Sync your products, sell offline, and connect real hardware with native apps for iOS, Android, and desktop."
+      "description": "Ponto de venda para WooCommerce. Sincronize os seus produtos, venda offline e ligue hardware real com aplicações nativas para iOS, Android e computador."
     },
     "problem": {
       "title": "Gerir uma loja WooCommerce e uma loja física não deve significar trabalho a dobrar",
@@ -109,146 +109,146 @@
       }
     },
     "benefits": {
-      "heading": "Why stores choose WCPOS",
+      "heading": "Porque as lojas escolhem o WCPOS",
       "items": {
         "sync": {
-          "headline": "One catalog, two channels",
-          "description": "Your WooCommerce products are your POS products. Update a price or stock level once — it syncs everywhere automatically. No manual entry, no conflicts, no guesswork.",
-          "supporting": "Same products. Same prices. Same customers. Always in sync."
+          "headline": "Um catálogo, dois canais",
+          "description": "Os seus produtos WooCommerce são os seus produtos no POS. Atualize um preço ou nível de stock uma vez — sincroniza automaticamente em todo o lado. Sem introdução manual, sem conflitos, sem adivinhação.",
+          "supporting": "Os mesmos produtos. Os mesmos preços. Os mesmos clientes. Sempre sincronizados."
         },
         "offline": {
-          "headline": "Works offline",
-          "description": "Local-first architecture means the POS keeps running when your connection drops. Products are stored locally and open orders are preserved — they complete and sync as soon as the internet returns.",
-          "supporting": "Never lose an order to internet issues."
+          "headline": "Funciona offline",
+          "description": "A arquitetura local-first significa que o POS continua a funcionar quando a ligação cai. Os produtos ficam guardados localmente e as encomendas abertas são preservadas — concluem-se e sincronizam assim que a internet regressa.",
+          "supporting": "Nunca perca uma encomenda por problemas de internet."
         },
         "hardware": {
-          "headline": "Native apps, real hardware",
-          "description": "Native iOS and Android apps — not a browser tab pretending to be an app. Connect payment terminals, receipt printers, and barcode scanners directly.",
-          "supporting": "Supports Stripe Terminal, SumUp, and more payment hardware."
+          "headline": "Aplicações nativas, hardware real",
+          "description": "Aplicações nativas para iOS e Android — não um separador do navegador a fingir ser uma aplicação. Ligue diretamente terminais de pagamento, impressoras de recibos e leitores de códigos de barras.",
+          "supporting": "Suporta Stripe Terminal, SumUp e mais hardware de pagamento."
         },
         "ownership": {
-          "headline": "You own everything",
-          "description": "Your data stays in your WooCommerce store, on your hosting. No platform lock-in, no third party holding your business hostage. Open source (GPL) — inspect the code, extend it, contribute to it.",
-          "supporting": "Open source. Self-hosted. You're in control."
+          "headline": "Tudo é seu",
+          "description": "Os seus dados ficam na sua loja WooCommerce, no seu alojamento. Sem dependência de plataforma, sem terceiros a manter o seu negócio refém. Open source (GPL) — inspecione o código, estenda-o, contribua para ele.",
+          "supporting": "Open source. Alojado por si. Está no controlo."
         }
       },
       "visuals": {
         "offline": {
-          "title": "Today's Sales",
-          "badge": "Offline",
-          "sale": "Sale #{number}",
-          "completed": "Completed",
-          "queued": "3 sales queued — syncs when you're back online"
+          "title": "Vendas de hoje",
+          "badge": "Sem ligação",
+          "sale": "Venda n.º {number}",
+          "completed": "Concluída",
+          "queued": "3 vendas em fila — sincronizam quando voltar a estar online"
         },
         "hardware": {
-          "tablet": "iPad / Tablet",
-          "terminal": "Card Terminal",
-          "printer": "Receipt Printer",
-          "scanner": "Barcode Scanner"
+          "tablet": "iPad / tablet",
+          "terminal": "Terminal de cartão",
+          "printer": "Impressora de recibos",
+          "scanner": "Leitor de códigos de barras"
         },
         "ownership": {
           "chips": {
-            "hosting": "Your hosting",
-            "data": "Your data",
-            "license": "GPL licensed",
-            "openSource": "Open source"
+            "hosting": "O seu alojamento",
+            "data": "Os seus dados",
+            "license": "Licenciado GPL",
+            "openSource": "Código aberto"
           }
         }
       }
     },
     "features": {
-      "heading": "Built for the demands of physical retail",
+      "heading": "Criado para as exigências do retalho físico",
       "items": {
         "f1": {
-          "title": "Fast product search",
-          "description": "Find products instantly with search, filters, and category browsing. Barcode scanner support."
+          "title": "Pesquisa rápida de produtos",
+          "description": "Encontre produtos instantaneamente com pesquisa, filtros e navegação por categorias. Suporte para leitor de códigos de barras."
         },
         "f2": {
-          "title": "Smooth checkout flow",
-          "description": "Add items, apply discounts, choose payment method. Supports Stripe Terminal, SumUp, cash, and custom gateways."
+          "title": "Fluxo de checkout fluido",
+          "description": "Adicione itens, aplique descontos e escolha o método de pagamento. Suporta Stripe Terminal, SumUp, dinheiro e gateways personalizados."
         },
         "f3": {
-          "title": "Customer profiles",
-          "description": "Add and edit customer info directly in the POS. Track regulars, offer better service."
+          "title": "Perfis de clientes",
+          "description": "Adicione e edite dados de clientes diretamente no POS. Acompanhe clientes habituais e preste um serviço melhor."
         },
         "f4": {
-          "title": "Order history & management",
-          "description": "View past orders, process returns, check order status without switching to WP Admin."
+          "title": "Histórico e gestão de encomendas",
+          "description": "Veja encomendas anteriores, processe devoluções e verifique o estado das encomendas sem mudar para o WP Admin."
         },
         "f5": {
-          "title": "Edit stock & prices on the fly",
-          "description": "Fix a wrong price while serving a customer. Adjust stock without leaving the POS."
+          "title": "Edite stock e preços na hora",
+          "description": "Corrija um preço errado enquanto atende um cliente. Ajuste o stock sem sair do POS."
         },
         "f6": {
-          "title": "End-of-day reports",
-          "description": "Generate sales reports for each shift or day. Cash up quickly, track performance."
+          "title": "Relatórios de fim de dia",
+          "description": "Gere relatórios de vendas para cada turno ou dia. Feche a caixa rapidamente e acompanhe o desempenho."
         }
       }
     },
     "pricing": {
-      "heading": "Start free. Upgrade when you need more.",
-      "fallback": "See full pricing for current Pro options. No per-register fees.",
+      "heading": "Comece gratuitamente. Atualize quando precisar de mais.",
+      "fallback": "Veja os preços completos das opções Pro atuais. Sem taxas por caixa.",
       "free": {
-        "title": "Free",
-        "description": "Free forever. No transaction fees. No limits.",
+        "title": "Gratuito",
+        "description": "Gratuito para sempre. Sem taxas de transação. Sem limites.",
         "features": {
-          "f1": "WooCommerce sync",
-          "f2": "Product search & grid",
-          "f3": "Basic checkout",
-          "f4": "Offline mode",
-          "f5": "Receipt printing",
-          "f6": "Multi-currency",
-          "f7": "Unlimited products"
+          "f1": "Sincronização WooCommerce",
+          "f2": "Pesquisa e grelha de produtos",
+          "f3": "Checkout básico",
+          "f4": "Modo offline",
+          "f5": "Impressão de recibos",
+          "f6": "Multimoeda",
+          "f7": "Produtos ilimitados"
         }
       },
       "pro": {
         "title": "Pro",
-        "intro": "Everything in Free, plus:",
+        "intro": "Tudo o que existe no Gratuito, mais:",
         "features": {
-          "p1": "Payment terminal integration",
-          "p2": "Stock & price editing in POS",
-          "p3": "Order history & management",
-          "p4": "Customer management",
-          "p5": "End-of-day reports",
-          "p6": "Custom payment gateways",
-          "p7": "Priority support"
+          "p1": "Integração com terminal de pagamento",
+          "p2": "Edição de stock e preços no POS",
+          "p3": "Histórico e gestão de encomendas",
+          "p4": "Gestão de clientes",
+          "p5": "Relatórios de fim de dia",
+          "p6": "Gateways de pagamento personalizados",
+          "p7": "Suporte prioritário"
         }
       },
-      "cta": "See Full Pricing & Features",
+      "cta": "Ver preços e funcionalidades completos",
       "priceSummary": "{yearly}/ano ou {lifetime} vitalício. Sem taxas por caixa."
     },
     "ecosystem": {
-      "heading": "One ecosystem. Multiple ways to sell.",
-      "subtitle": "Install the WordPress plugin, then choose your device.",
+      "heading": "Um ecossistema. Várias formas de vender.",
+      "subtitle": "Instale o plugin WordPress e escolha o seu dispositivo.",
       "flow": {
-        "store": "Your WooCommerce Store",
-        "plugin": "WordPress Plugin Installed",
-        "sync": "REST API Sync"
+        "store": "A sua loja WooCommerce",
+        "plugin": "Plugin WordPress instalado",
+        "sync": "Sincronização por REST API"
       },
       "badge": "Beta",
       "devices": {
         "ios": {
           "label": "iOS & iPadOS",
-          "description": "Native app with payment terminal and printer support.",
-          "cta": "Get the iOS beta"
+          "description": "Aplicação nativa com suporte para terminal de pagamento e impressora.",
+          "cta": "Obter a beta para iOS"
         },
         "android": {
           "label": "Android",
-          "description": "Native app with full hardware integration.",
-          "cta": "Get the Android beta"
+          "description": "Aplicação nativa com integração completa de hardware.",
+          "cta": "Obter a beta para Android"
         },
         "desktop": {
           "label": "Windows & macOS",
-          "description": "Desktop application for counter setups.",
-          "cta": "Download for Desktop"
+          "description": "Aplicação de computador para balcões de atendimento.",
+          "cta": "Transferir para computador"
         },
         "web": {
-          "label": "Web Browser",
-          "description": "Try instantly — no installation required.",
-          "cta": "Try Live Demo"
+          "label": "Navegador web",
+          "description": "Experimente instantaneamente — sem instalação necessária.",
+          "cta": "Experimentar demo em direto"
         }
       },
-      "description": "All apps sync with your WooCommerce store via the REST API. Install the free WordPress plugin, then choose your device. Products, stock, and orders stay in sync automatically."
+      "description": "Todas as aplicações sincronizam com a sua loja WooCommerce através da REST API. Instale o plugin WordPress gratuito e escolha o seu dispositivo. Produtos, stock e encomendas mantêm-se sincronizados automaticamente."
     },
     "story": {
       "a1": {
