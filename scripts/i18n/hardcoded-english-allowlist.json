@@ -1,7 +1,7 @@
 {
   "version": 1,
   "generatedBy": "scripts/i18n/hardcoded-english.ts --update",
-  "updatedAt": "2026-07-07T06:40:49.462Z",
+  "updatedAt": "2026-07-08T09:11:08.254Z",
   "scope": [
     "src/app",
     "src/components",
@@ -618,22 +618,6 @@
       "count": 1
     },
     {
-      "id": "9bcf06b8721bcfd1",
-      "file": "src/app/api/auth/[provider]/callback/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Unknown error",
-      "count": 1
-    },
-    {
-      "id": "b730a16a2d9c2743",
-      "file": "src/app/api/auth/[provider]/callback/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Unsupported provider:",
-      "count": 1
-    },
-    {
       "id": "fbfb927434f2a3a4",
       "file": "src/app/api/auth/[provider]/route.ts",
       "category": "route/page",
@@ -647,14 +631,6 @@
       "category": "route/page",
       "attr": null,
       "text": "Failed to initiate OAuth:",
-      "count": 1
-    },
-    {
-      "id": "dcec67b7f40aefe7",
-      "file": "src/app/api/auth/[provider]/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Unsupported provider:",
       "count": 1
     },
     {
@@ -842,22 +818,6 @@
       "count": 1
     },
     {
-      "id": "ef130068b96ce999",
-      "file": "src/app/api/desktop-releases/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Failed to fetch release information",
-      "count": 1
-    },
-    {
-      "id": "1efaa4487836e436",
-      "file": "src/app/api/desktop-releases/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "No release found",
-      "count": 1
-    },
-    {
       "id": "e4c5d14547529427",
       "file": "src/app/api/discord/callback/route.ts",
       "category": "route/page",
@@ -922,35 +882,11 @@
       "count": 1
     },
     {
-      "id": "6255440813e66518",
-      "file": "src/app/api/discord/reconcile/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Reconciliation failed",
-      "count": 1
-    },
-    {
       "id": "a3c719b490889df9",
       "file": "src/app/api/electron/[platform]/[version]/route.ts",
       "category": "route/page",
       "attr": null,
       "text": "Electron update check failed:",
-      "count": 1
-    },
-    {
-      "id": "39fef4b8e03981c5",
-      "file": "src/app/api/electron/[platform]/[version]/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "error",
-      "count": 1
-    },
-    {
-      "id": "fb7905ba25cb5915",
-      "file": "src/app/api/electron/[platform]/[version]/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Internal server error",
       "count": 1
     },
     {
@@ -975,22 +911,6 @@
       "category": "route/page",
       "attr": null,
       "text": "Electron download redirect failed:",
-      "count": 1
-    },
-    {
-      "id": "1fcec99dcf633043",
-      "file": "src/app/api/electron/download/[platform]/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "error",
-      "count": 1
-    },
-    {
-      "id": "dac6a1ed63c4d483",
-      "file": "src/app/api/electron/download/[platform]/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Internal server error",
       "count": 1
     },
     {
@@ -1026,22 +946,6 @@
       "count": 1
     },
     {
-      "id": "5f414a845b75b2b4",
-      "file": "src/app/api/legacy/wc-am/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "License request failed",
-      "count": 1
-    },
-    {
-      "id": "042b8acdf93f6acc",
-      "file": "src/app/api/legacy/wc-am/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Missing required parameters: api_key and instance",
-      "count": 1
-    },
-    {
       "id": "d0b777b5917a8275",
       "file": "src/app/api/legacy/wc-am/route.ts",
       "category": "route/page",
@@ -1066,14 +970,6 @@
       "count": 1
     },
     {
-      "id": "d2717dad9c340733",
-      "file": "src/app/api/legacy/wc-am/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "The license server is temporarily unavailable. Please try again shortly.",
-      "count": 1
-    },
-    {
       "id": "72f1ea74f2f886b8",
       "file": "src/app/api/logs/route.ts",
       "category": "route/page",
@@ -1087,22 +983,6 @@
       "category": "route/page",
       "attr": null,
       "text": "Failed to forward browser logs to Loki: status=",
-      "count": 1
-    },
-    {
-      "id": "ceab27143d03ac4c",
-      "file": "src/app/api/logs/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Invalid log entry format",
-      "count": 1
-    },
-    {
-      "id": "d820a30cd8993232",
-      "file": "src/app/api/logs/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Invalid log format",
       "count": 1
     },
     {
@@ -1122,43 +1002,11 @@
       "count": 1
     },
     {
-      "id": "3909f8bca8003e5b",
-      "file": "src/app/api/pro/download/[version]/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Failed to fetch release asset",
-      "count": 1
-    },
-    {
-      "id": "bae22cc711dbf3e5",
-      "file": "src/app/api/pro/download/[version]/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "License validation failed",
-      "count": 1
-    },
-    {
-      "id": "a298c63da301174b",
-      "file": "src/app/api/pro/download/[version]/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Missing required parameters: key and instance",
-      "count": 1
-    },
-    {
       "id": "2ab140bcd6262c91",
       "file": "src/app/api/pro/download/[version]/route.ts",
       "category": "route/page",
       "attr": null,
       "text": "private, no-store",
-      "count": 1
-    },
-    {
-      "id": "28831abe212b1b38",
-      "file": "src/app/api/pro/download/[version]/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Requested version is not available for this license",
       "count": 1
     },
     {
@@ -1170,43 +1018,11 @@
       "count": 1
     },
     {
-      "id": "771ab337e705836a",
-      "file": "src/app/api/pro/update/[version]/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "License validation failed",
-      "count": 1
-    },
-    {
-      "id": "d5aec4764ef94d62",
-      "file": "src/app/api/pro/update/[version]/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Missing required parameters: key and instance",
-      "count": 1
-    },
-    {
-      "id": "f66b4dd986acafa3",
-      "file": "src/app/api/pro/update/[version]/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "No update is available for this license",
-      "count": 1
-    },
-    {
       "id": "b7ac663f04497d14",
       "file": "src/app/api/roadmap/revalidate/route.ts",
       "category": "route/page",
       "attr": null,
       "text": "Failed to revalidate roadmap cache:",
-      "count": 1
-    },
-    {
-      "id": "8ebbe91a318bc3de",
-      "file": "src/app/api/roadmap/revalidate/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Revalidation failed",
       "count": 1
     },
     {
@@ -1338,70 +1154,6 @@
       "count": 1
     },
     {
-      "id": "481e300fff884c8c",
-      "file": "src/app/api/test/license/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": ". Valid actions: validate, activate, deactivate, status",
-      "count": 1
-    },
-    {
-      "id": "f4e22f0db2d6d113",
-      "file": "src/app/api/test/license/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Activation failed (limit reached or invalid license)",
-      "count": 1
-    },
-    {
-      "id": "5f41887de1c3b4a6",
-      "file": "src/app/api/test/license/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Internal error",
-      "count": 1
-    },
-    {
-      "id": "bb34c4be5f3e03fd",
-      "file": "src/app/api/test/license/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "licenseId and fingerprint required",
-      "count": 1
-    },
-    {
-      "id": "126cac25f2540b21",
-      "file": "src/app/api/test/license/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "licenseId required",
-      "count": 1
-    },
-    {
-      "id": "43d60741d1182116",
-      "file": "src/app/api/test/license/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "licenseKey required",
-      "count": 1
-    },
-    {
-      "id": "74a05bc6a228a2ca",
-      "file": "src/app/api/test/license/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "machineId required",
-      "count": 1
-    },
-    {
-      "id": "9b576be0b7d0ea4f",
-      "file": "src/app/api/test/license/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Not available in production",
-      "count": 1
-    },
-    {
       "id": "a95cb73d570ff7b4",
       "file": "src/app/api/test/license/route.ts",
       "category": "route/page",
@@ -1415,14 +1167,6 @@
       "category": "route/page",
       "attr": null,
       "text": "Test harness error:",
-      "count": 1
-    },
-    {
-      "id": "65ff334155a2e778",
-      "file": "src/app/api/test/license/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Unknown action:",
       "count": 1
     },
     {
@@ -3546,14 +3290,6 @@
       "count": 1
     },
     {
-      "id": "75fb45141ab9fcdb",
-      "file": "src/lib/api/to-error-response.ts",
-      "category": "error/status",
-      "attr": null,
-      "text": "Internal server error",
-      "count": 1
-    },
-    {
       "id": "c6cc586ff6b3be67",
       "file": "src/lib/auth-providers/metadata.ts",
       "category": "code/string",
@@ -3586,76 +3322,12 @@
       "count": 2
     },
     {
-      "id": "7c6e02fa03602c3a",
-      "file": "src/lib/billing-countries.ts",
-      "category": "code/string",
-      "attr": null,
-      "text": "EIN / Tax ID",
-      "count": 1
-    },
-    {
-      "id": "a7b5e2ca8c453333",
-      "file": "src/lib/billing-countries.ts",
-      "category": "code/string",
-      "attr": null,
-      "text": "GST number",
-      "count": 1
-    },
-    {
-      "id": "4608d52b4d42c784",
-      "file": "src/lib/billing-countries.ts",
-      "category": "code/string",
-      "attr": null,
-      "text": "GST/HST number",
-      "count": 1
-    },
-    {
-      "id": "815928745aa289f9",
-      "file": "src/lib/billing-countries.ts",
-      "category": "code/string",
-      "attr": null,
-      "text": "NIF / VAT number",
-      "count": 1
-    },
-    {
-      "id": "9f1e0878f506061c",
-      "file": "src/lib/billing-countries.ts",
-      "category": "code/string",
-      "attr": null,
-      "text": "Partita IVA",
-      "count": 1
-    },
-    {
-      "id": "2e197af1029d29cc",
-      "file": "src/lib/billing-countries.ts",
-      "category": "code/string",
-      "attr": null,
-      "text": "Tax ID / VAT number",
-      "count": 1
-    },
-    {
-      "id": "a771c9eac0b6b065",
-      "file": "src/lib/billing-countries.ts",
-      "category": "code/string",
-      "attr": null,
-      "text": "Tax registration number",
-      "count": 1
-    },
-    {
       "id": "f6814ae50a85a987",
       "file": "src/lib/billing-countries.ts",
       "category": "code/string",
       "attr": null,
       "text": "vat",
       "count": 5
-    },
-    {
-      "id": "b220679f616341ce",
-      "file": "src/lib/billing-countries.ts",
-      "category": "code/string",
-      "attr": null,
-      "text": "VAT number",
-      "count": 1
     },
     {
       "id": "9295d6ac9f615271",
@@ -4456,14 +4128,6 @@
       "attr": null,
       "text": "/flags?v=2",
       "count": 1
-    },
-    {
-      "id": "4ca73aa7d46290f9",
-      "file": "src/services/core/business/electron-service.ts",
-      "category": "code/string",
-      "attr": null,
-      "text": "Electron service not yet implemented",
-      "count": 2
     },
     {
       "id": "cb838e2905a4c7ba",
