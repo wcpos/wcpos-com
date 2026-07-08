@@ -49,6 +49,9 @@ const auditedFrenchNamespacePrefixes = [
   'about.',
   'account.',
   'pro.',
+  'auth.',
+  'header.',
+  'footer.',
 ]
 const frenchIdenticalCopyAllowlist = new Set([
   'roadmap.meta.title',
@@ -110,6 +113,12 @@ const frenchIdenticalCopyAllowlist = new Set([
   'pro.checkout.offers.default',
   'pro.checkout.payment.methods.card.hint',
   'pro.checkout.payment.methods.bitcoin.title',
+  'header.pro',
+  'footer.copyright',
+  'footer.discord',
+  'footer.github',
+  'footer.pro',
+  'footer.wordpressOrg',
 ])
 
 describe('messages key parity', () => {
@@ -179,7 +188,7 @@ describe('messages key parity', () => {
     }
   )
 
-  it('fr.json translates the audited public support, roadmap, downloads, legal, home, about, account, and pro copy', () => {
+  it('fr.json translates the audited public support, roadmap, downloads, legal, home, about, account, pro, auth, header, and footer copy', () => {
     const english = loadMessages(defaultLocale)
     const french = loadMessages('fr')
     const auditedKeys = enKeys.filter(
@@ -202,7 +211,7 @@ describe('messages key parity', () => {
 
     expect(
       untranslatedKeys,
-      'messages/fr.json must not copy audited support/roadmap/downloads/legal/home/about/account/pro English strings verbatim'
+      'messages/fr.json must not copy audited support/roadmap/downloads/legal/home/about/account/pro/auth/header/footer English strings verbatim'
     ).toEqual([])
   })
 })

@@ -7,10 +7,10 @@
     "signOut": "Se déconnecter"
   },
   "header": {
-    "documentation": "Documentation",
+    "documentation": "Guides",
     "roadmap": "Feuille de route",
     "pro": "Pro",
-    "support": "Support",
+    "support": "Assistance",
     "downloads": "Téléchargements"
   },
   "footer": {
@@ -31,12 +31,12 @@
     "companyHeading": "Entreprise",
     "downloadHeading": "Télécharger",
     "pro": "WCPOS Pro",
-    "roadmap": "Roadmap",
+    "roadmap": "Feuille de route",
     "demo": "Démo en direct",
     "discord": "Discord",
     "github": "GitHub",
     "wordpressOrg": "WordPress.org",
-    "documentation": "Documentation",
+    "documentation": "Guides",
     "getSupport": "Assistance",
     "wordpressForum": "Forum WordPress",
     "wordpressPlugin": "Extension WordPress",
@@ -986,14 +986,14 @@
       "signIn": "Se connecter",
       "signUp": "S’inscrire",
       "apiErrors": {
-        "invalid_origin": "Please refresh the page and try again.",
-        "rate_limited": "Too many attempts. Please try again later.",
-        "email_required": "Email is required.",
-        "credentials_required": "Email and password are required.",
-        "reset_fields_required": "Email, token, and password are required.",
-        "password_too_short": "Password must be at least {min} characters.",
-        "invalid_credentials": "Invalid email or password.",
-        "invalid_reset_token": "This password reset link is invalid or has expired. Please request a new one."
+        "invalid_origin": "Veuillez actualiser la page puis réessayer.",
+        "rate_limited": "Trop de tentatives. Veuillez réessayer plus tard.",
+        "email_required": "L’e-mail est obligatoire.",
+        "credentials_required": "L’e-mail et le mot de passe sont obligatoires.",
+        "reset_fields_required": "L’e-mail, le jeton et le mot de passe sont obligatoires.",
+        "password_too_short": "Le mot de passe doit contenir au moins {min} caractères.",
+        "invalid_credentials": "E-mail ou mot de passe invalide.",
+        "invalid_reset_token": "Ce lien de réinitialisation du mot de passe est invalide ou a expiré. Veuillez en demander un nouveau."
       }
     },
     "login": {
