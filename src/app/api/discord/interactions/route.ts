@@ -85,16 +85,20 @@ async function editOriginalResponse(
   interaction: DiscordInteraction,
   content: string
 ): Promise<void> {
-  const response = await fetch(
-    buildEditOriginalUrl(interaction),
-    {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ content }),
+  try {
+    const response = await fetch(
+      buildEditOriginalUrl(interaction),
+      {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ content }),
+      }
+    )
+    if (!response.ok) {
+      infraLogger.error`Discord interaction follow-up edit failed (${response.status}): ${await response.text()}`
     }
-  )
-  if (!response.ok) {
-    infraLogger.error`Discord interaction follow-up edit failed (${response.status}): ${await response.text()}`
+  } catch (error) {
+    infraLogger.error`Discord interaction follow-up edit failed: ${error}`
   }
 }
 
@@ -234,8 +238,16 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ errorCode: 'unsupported_interaction_type' }, { status: 400 })
   }
 
+  if (!env.DISCORD_GUILD_ID) {
+    infraLogger.error`Discord interactions endpoint hit without DISCORD_GUILD_ID configured`
+    return NextResponse.json(
+      { errorCode: 'discord_interactions_unconfigured' },
+      { status: 503 }
+    )
+  }
+
   const user = getInvokingUser(interaction)
-  if (!interaction.member || !user) {
+  if (!interaction.member || !user || interaction.guild_id !== env.DISCORD_GUILD_ID) {
     return ephemeralReply(GUILD_ONLY_REPLY)
   }
 

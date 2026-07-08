@@ -34,6 +34,7 @@ export interface DiscordInteraction {
   type: number
   application_id: string
   token: string
+  guild_id?: string
   data?: {
     name?: string
     type?: number

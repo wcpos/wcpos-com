@@ -13,7 +13,10 @@ const {
   warnMock,
 } = vi.hoisted(() => ({
   afterQueue: [] as Array<() => Promise<void> | void>,
-  envState: { DISCORD_PUBLIC_KEY: 'public-key' } as { DISCORD_PUBLIC_KEY?: string },
+  envState: { DISCORD_PUBLIC_KEY: 'public-key', DISCORD_GUILD_ID: 'guild_1' } as {
+    DISCORD_PUBLIC_KEY?: string
+    DISCORD_GUILD_ID?: string
+  },
   verifyMock: vi.fn(() => true),
   claimMock: vi.fn(),
   removeSelfMock: vi.fn(),
@@ -106,6 +109,7 @@ function linkInteraction(key = 'WCPOS-AAAA-1234') {
     type: 2,
     application_id: '123456789012345678',
     token: 'aW50ZXJhY3Rpb25fdG9rZW4',
+    guild_id: 'guild_1',
     member,
     data: { type: 1, name: 'link', options: [{ name: 'key', value: key }] },
   }
@@ -116,6 +120,7 @@ describe('POST /api/discord/interactions', () => {
     vi.clearAllMocks()
     afterQueue.length = 0
     envState.DISCORD_PUBLIC_KEY = 'public-key'
+    envState.DISCORD_GUILD_ID = 'guild_1'
     verifyMock.mockReturnValue(true)
   })
 
@@ -173,6 +178,16 @@ describe('POST /api/discord/interactions', () => {
     expect(errorMock).toHaveBeenCalled()
   })
 
+  it('does not let a rejected Discord follow-up edit escape the background task', async () => {
+    claimMock.mockRejectedValue(new Error('keygen down'))
+    fetchMock.mockRejectedValueOnce(new Error('discord down'))
+
+    await POST(makeRequest(linkInteraction()))
+    await expect(flushAfter()).resolves.toBeUndefined()
+
+    expect(errorMock).toHaveBeenCalled()
+  })
+
   it('defers /unlink and edits with the self-unlink outcome', async () => {
     removeSelfMock.mockResolvedValue({ status: 'removed', licenseId: 'lic_1' })
 
@@ -181,6 +196,7 @@ describe('POST /api/discord/interactions', () => {
         type: 2,
         application_id: '123456789012345678',
         token: 'aW50ZXJhY3Rpb25fdG9rZW4',
+        guild_id: 'guild_1',
         member,
         data: { type: 1, name: 'unlink', options: [{ name: 'key', value: 'WCPOS-AAAA-1234' }] },
       })
@@ -201,6 +217,7 @@ describe('POST /api/discord/interactions', () => {
         type: 2,
         application_id: '123456789012345678',
         token: 'aW50ZXJhY3Rpb25fdG9rZW4',
+        guild_id: 'guild_1',
         member: { ...member, permissions: '0' },
         data: { type: 2, name: 'Customer info', target_id: 'discord_9' },
       })
@@ -219,6 +236,7 @@ describe('POST /api/discord/interactions', () => {
         type: 2,
         application_id: '123456789012345678',
         token: 'aW50ZXJhY3Rpb25fdG9rZW4',
+        guild_id: 'guild_1',
         member: { ...member, permissions: '32' },
         data: {
           type: 2,
@@ -233,6 +251,16 @@ describe('POST /api/discord/interactions', () => {
     await flushAfter()
     expect(lookupMock).toHaveBeenCalledWith('discord_9', expect.anything())
     expect(editedContent()).toContain('@oceanwatcher')
+  })
+
+  it('rejects signed commands from any guild other than the configured WCPOS guild', async () => {
+    const response = await POST(makeRequest({ ...linkInteraction(), guild_id: 'staging_guild' }))
+
+    const payload = await response.json()
+    expect(payload.type).toBe(4)
+    expect(payload.data.content).toMatch(/inside the WCPOS Discord server/)
+    expect(claimMock).not.toHaveBeenCalled()
+    expect(afterQueue).toHaveLength(0)
   })
 
   it('tells DM invocations the commands are guild-only', async () => {
