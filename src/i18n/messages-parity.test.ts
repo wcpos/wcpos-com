@@ -21,6 +21,14 @@ function flattenKeys(messages: Messages, prefix = ''): string[] {
   })
 }
 
+
+function placeholders(value: string): string[] {
+  return Array.from(
+    value.matchAll(/\{\s*([A-Za-z][A-Za-z0-9_]*)\s*(?:,[^}]*)?\}/g),
+    (match) => match[1] ?? ''
+  ).sort()
+}
+
 function valueAtPath(messages: Messages, keyPath: string): string | undefined {
   let value: string | Messages | undefined = messages
   for (const key of keyPath.split('.')) {
@@ -989,6 +997,26 @@ describe('messages key parity', () => {
           .filter(Boolean)
           .join('\n')
       ).toEqual({ missing: [], extra: [] })
+    }
+  )
+
+  it.each(otherLocales)(
+    `%s.json preserves ICU/message placeholders from ${defaultLocale}.json`,
+    (locale) => {
+      const english = loadMessages(defaultLocale)
+      const localized = loadMessages(locale)
+      const mismatches = enKeys
+        .map((key) => ({
+          key,
+          expected: placeholders(valueAtPath(english, key) ?? ''),
+          actual: placeholders(valueAtPath(localized, key) ?? ''),
+        }))
+        .filter(({ expected, actual }) => expected.join(',') !== actual.join(','))
+
+      expect(
+        mismatches,
+        `messages/${locale}.json must keep the same interpolation placeholders as messages/${defaultLocale}.json`
+      ).toEqual([])
     }
   )
 
