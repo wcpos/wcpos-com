@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useSyncExternalStore } from 'react'
+import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/navigation'
 import { Button } from '@/components/ui/button'
 import {
@@ -31,6 +32,7 @@ function useConsentDecision() {
  * disables analytics and removes the distinct-id cookie.
  */
 export function ConsentBanner() {
+  const t = useTranslations('consent')
   const consent = useConsentDecision()
   const [dismissed, setDismissed] = useState(false)
 
@@ -54,16 +56,18 @@ export function ConsentBanner() {
   return (
     <div
       role="region"
-      aria-label="Cookie consent"
+      aria-label={t('label')}
       className="fixed inset-x-0 bottom-0 z-50 border-t bg-background p-4 shadow-lg"
     >
       <div className="mx-auto flex max-w-3xl flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-sm text-muted-foreground">
-          We use an anonymous analytics cookie to understand how the site is
-          used. No ads, no third-party tracking.{' '}
-          <Link href="/privacy" className="underline underline-offset-4">
-            Privacy policy
-          </Link>
+          {t.rich('message', {
+            privacyLink: (chunks) => (
+              <Link href="/privacy" className="underline underline-offset-4">
+                {chunks}
+              </Link>
+            ),
+          })}
         </p>
         <div className="flex shrink-0 gap-2">
           <Button
@@ -72,10 +76,10 @@ export function ConsentBanner() {
             size="sm"
             onClick={() => decide('denied')}
           >
-            Decline
+            {t('decline')}
           </Button>
           <Button type="button" size="sm" onClick={() => decide('granted')}>
-            Accept
+            {t('accept')}
           </Button>
         </div>
       </div>

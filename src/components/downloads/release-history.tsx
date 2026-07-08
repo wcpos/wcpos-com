@@ -8,17 +8,37 @@ export interface ReleaseEntry {
   date: string
   /** Release notes as markdown. */
   body: string
+  /** BCP 47 language tag for externally sourced release notes. */
+  contentLocale?: string
   latest?: boolean
 }
 
-/**
- * Changelog built on the shared <Collapsible> primitive (which wraps a native
- * <details>/<summary>), so it works without client JavaScript; the first
- * (latest) entry is open by default.
- */
-export function ReleaseHistory({ releases }: { releases: ReleaseEntry[] }) {
+export function ReleaseHistory({
+  releases,
+  copy,
+  locale,
+}: {
+  releases: ReleaseEntry[]
+  locale: string
+  copy: {
+    latest: string
+    fullHistory: string
+    plugin: string
+    desktop: string
+    externalContentNotice: string
+  }
+}) {
+  const hasExternalEnglishContent =
+    locale.split('-')[0]?.toLowerCase() !== 'en' &&
+    releases.some((release) => release.contentLocale === 'en')
+
   return (
     <div className="mx-auto max-w-2xl">
+      {hasExternalEnglishContent && (
+        <p className="mb-4 text-center text-xs text-muted-foreground">
+          {copy.externalContentNotice}
+        </p>
+      )}
       {releases.map((release, index) => (
         <Collapsible
           key={release.version}
@@ -30,27 +50,27 @@ export function ReleaseHistory({ releases }: { releases: ReleaseEntry[] }) {
               <span className="font-mono text-base font-medium">
                 {release.version}
               </span>
-              {release.latest && <Badge variant="brand-tint">Latest</Badge>}
+              {release.latest && <Badge variant="brand-tint">{copy.latest}</Badge>}
               <span className="text-sm text-muted-foreground">
                 {release.date}
               </span>
             </span>
           }
         >
-          <div className="pb-5 pl-1">
+          <div className="pb-5 pl-1" lang={release.contentLocale}>
             <Markdown content={release.body} className="text-sm" />
           </div>
         </Collapsible>
       ))}
 
       <p className="mt-8 text-center text-sm text-muted-foreground">
-        Full history on GitHub —{' '}
+        {copy.fullHistory}{' '}
         <TextLink href="https://github.com/wcpos/woocommerce-pos/releases">
-          Free
+          {copy.plugin}
         </TextLink>{' '}
         ·{' '}
         <TextLink href="https://github.com/wcpos/electron/releases">
-          Desktop
+          {copy.desktop}
         </TextLink>
       </p>
     </div>

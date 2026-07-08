@@ -1,4 +1,4 @@
-import { setRequestLocale } from 'next-intl/server'
+import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { Suspense } from 'react'
 import { cacheLife, cacheTag } from 'next/cache'
 import { fetchRoadmapData } from '@/services/core/external/github-roadmap'
@@ -19,12 +19,12 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>
 }): Promise<Metadata> {
   const { locale } = await params
+  const t = await getTranslations({ locale, namespace: 'roadmap.meta' })
   return marketingMetadata({
     locale,
     path: '/roadmap',
-    title: 'Roadmap',
-    description:
-      'See what we are building next for WCPOS — upcoming features, milestones, and release progress.',
+    title: t('title'),
+    description: t('description'),
   })
 }
 
@@ -60,20 +60,20 @@ export default async function RoadmapPage({
 }) {
   const { locale } = await params
   setRequestLocale(locale)
+  const t = await getTranslations({ locale, namespace: 'roadmap.page' })
 
   return (
     <main>
       <div className="mx-auto w-full max-w-3xl px-4 py-16 sm:py-24">
         <header className="mb-14">
           <Eyebrow size="sm" className="font-mono tracking-[0.25em]">
-            Roadmap
+            {t('eyebrow')}
           </Eyebrow>
           <h1 className="mt-3 text-4xl font-bold tracking-tight sm:text-5xl">
-            The release train
+            {t('title')}
           </h1>
           <p className="mt-4 max-w-xl text-lg text-muted-foreground">
-            Every stop on the way to a faster, offline-proof WCPOS —
-            pulled straight from our GitHub, newest work first.
+            {t('description')}
           </p>
           <BoardLinkChip />
         </header>

@@ -9,6 +9,10 @@ describe('formatOrderAmount', () => {
   it('formats decimal amounts correctly', () => {
     expect(formatOrderAmount(129.5, 'usd')).toBe('$129.50')
   })
+
+  it('falls back safely when a malformed locale reaches amount display', () => {
+    expect(formatOrderAmount(129, 'usd', 'not_a_locale')).toBe('$129.00')
+  })
 })
 
 describe('maskLicenseKey', () => {

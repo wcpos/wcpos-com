@@ -4,6 +4,12 @@ import { getDiscordAccessByLicense } from '@/lib/discord/connected-member-servic
 import { licenseLogger } from '@/lib/logger'
 import type { LicenseDetail } from '@/types/license'
 
+type LicensesErrorCode = 'unauthorized' | 'internal'
+
+function errorResponse(errorCode: LicensesErrorCode, status: number) {
+  return NextResponse.json({ errorCode }, { status })
+}
+
 /**
  * Customer Licenses API
  *
@@ -29,10 +35,7 @@ export async function GET() {
     const { authenticated, licenses } = await getResolvedCustomerLicenses()
 
     if (!authenticated) {
-      return NextResponse.json(
-        { error: 'Unauthorized' },
-        { status: 401 }
-      )
+      return errorResponse('unauthorized', 401)
     }
 
     return NextResponse.json({
@@ -41,9 +44,6 @@ export async function GET() {
     }, { status: 200 })
   } catch (error) {
     licenseLogger.error`Failed to fetch licenses: ${error}`
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    )
+    return errorResponse('internal', 500)
   }
 }

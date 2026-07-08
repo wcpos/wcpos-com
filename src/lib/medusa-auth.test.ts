@@ -283,6 +283,7 @@ describe('medusa-auth', () => {
         password: 'securepass',
         firstName: 'Jane',
         lastName: 'Doe',
+        locale: 'fr-FR',
       })
 
       // The SESSION token is returned, never the registration token.
@@ -330,6 +331,7 @@ describe('medusa-auth', () => {
             email: 'new@example.com',
             first_name: 'Jane',
             last_name: 'Doe',
+            metadata: { locale: 'fr-FR' },
           }),
         })
       )

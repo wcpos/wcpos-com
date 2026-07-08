@@ -59,6 +59,23 @@ describe('GET /api/pro/update/[version]', () => {
     )
 
     expect(response.status).toBe(400)
+    await expect(response.json()).resolves.toEqual({
+      errorCode: 'missing_required_parameters',
+    })
+  })
+
+  it('returns a stable error code when license validation fails', async () => {
+    mockValidateLicense.mockResolvedValueOnce({
+      status: 401,
+      error: 'Invalid license key',
+    })
+
+    const response = await requestFor('1.0.0')
+
+    expect(response.status).toBe(401)
+    await expect(response.json()).resolves.toEqual({
+      errorCode: 'license_validation_failed',
+    })
   })
 
   it('returns 403 for a suspended license even with a future expiry (ADR-0001)', async () => {
@@ -80,6 +97,9 @@ describe('GET /api/pro/update/[version]', () => {
     const response = await requestFor('1.0.0')
 
     expect(response.status).toBe(403)
+    await expect(response.json()).resolves.toEqual({
+      errorCode: 'no_update_available_for_license',
+    })
   })
 
   it('serves the update for an EXPIRING license (canonical active)', async () => {
@@ -126,5 +146,8 @@ describe('GET /api/pro/update/[version]', () => {
     const response = await requestFor('1.0.0')
 
     expect(response.status).toBe(403)
+    await expect(response.json()).resolves.toEqual({
+      errorCode: 'no_update_available_for_license',
+    })
   })
 })

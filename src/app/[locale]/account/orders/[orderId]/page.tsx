@@ -15,7 +15,24 @@ import { DividedList, Row } from '@/components/ui/row'
 import { PageHeader } from '@/components/ui/page-header'
 import { Skeleton } from '@/components/ui/skeleton'
 import { presentLicenseStatus } from '@/lib/license-status-presentation'
+import { receiptDownloadHref } from '@/lib/receipt-download'
+import { localizeKnownProductTitle } from '@/lib/product-title-display'
 import type { Metadata } from 'next'
+import type { OrderStatusLabels } from '@/lib/order-status'
+
+
+function orderStatusLabels(t: (key: keyof OrderStatusLabels) => string): OrderStatusLabels {
+  return {
+    actionRequired: t('actionRequired'),
+    authorized: t('authorized'),
+    canceled: t('canceled'),
+    paid: t('paid'),
+    partiallyRefunded: t('partiallyRefunded'),
+    pending: t('pending'),
+    refunded: t('refunded'),
+    unknown: t('unknown'),
+  }
+}
 
 export async function generateMetadata({
   params,
@@ -36,9 +53,11 @@ async function OrderDetailContent({
   params: Promise<{ locale: string; orderId: string }>
 }) {
   const { orderId, locale } = await params
-  const [t, tStatus, order] = await Promise.all([
+  const [t, tStatus, tOrderStatus, tProductTitles, order] = await Promise.all([
     getTranslations({ locale, namespace: 'account.orderDetail' }),
     getTranslations({ locale, namespace: 'account.licenseStatus' }),
+    getTranslations({ locale, namespace: 'account.orderStatus' }),
+    getTranslations({ locale, namespace: 'account.productTitles' }),
     getOrderById(orderId),
   ])
 
@@ -54,7 +73,16 @@ async function OrderDetailContent({
   // purity lint that flags `Date.now` directly in render.)
   const now = new Date().getTime()
   const resolvedLicenses = await getResolvedLicensesFromOrders([order])
-  const orderDetail = projectAccountOrderDetail(order, resolvedLicenses, now)
+  const orderDetail = projectAccountOrderDetail(
+    order,
+    resolvedLicenses,
+    now,
+    orderStatusLabels(tOrderStatus)
+  )
+  const productTitleMessages = {
+    yearly: tProductTitles('yearly'),
+    lifetime: tProductTitles('lifetime'),
+  }
 
   return (
     <>
@@ -63,7 +91,7 @@ async function OrderDetailContent({
       <div>
         <Button asChild variant="outline" size="sm">
           <a
-            href={`/api/account/orders/${orderDetail.id}/receipt`}
+            href={receiptDownloadHref(orderDetail.id, locale)}
             target="_blank"
             rel="noreferrer"
           >
@@ -104,7 +132,8 @@ async function OrderDetailContent({
               <span>
                 {formatOrderAmount(
                   orderDetail.total.amount,
-                  orderDetail.total.currencyCode
+                  orderDetail.total.currencyCode,
+                  locale
                 )}
               </span>
             </div>
@@ -120,7 +149,9 @@ async function OrderDetailContent({
               {orderDetail.items.map((item) => (
                 <div key={item.id} className="flex justify-between">
                   <div>
-                    <p className="font-medium">{item.title}</p>
+                    <p className="font-medium">
+                      {localizeKnownProductTitle(item.title, productTitleMessages)}
+                    </p>
                     <p className="text-sm text-muted-foreground">
                       {t('quantity', { count: item.quantity })}
                     </p>
@@ -128,7 +159,8 @@ async function OrderDetailContent({
                   <p className="font-medium">
                     {formatOrderAmount(
                       item.total.amount,
-                      item.total.currencyCode
+                      item.total.currencyCode,
+                      locale
                     )}
                   </p>
                 </div>
@@ -161,7 +193,7 @@ async function OrderDetailContent({
                       <div className="min-w-0">
                         {license.product && (
                           <p className="truncate font-medium">
-                            {license.product}
+                            {localizeKnownProductTitle(license.product, productTitleMessages)}
                           </p>
                         )}
                         <code className="font-mono text-sm tracking-wider text-muted-foreground">

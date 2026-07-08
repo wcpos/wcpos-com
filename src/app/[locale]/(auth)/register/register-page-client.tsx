@@ -2,6 +2,7 @@
 
 import { Suspense, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
+import { useLocale, useTranslations } from 'next-intl'
 import { Link, useRouter } from '@/i18n/navigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -18,6 +19,26 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 
+
+type RegisterErrorCode =
+  | 'invalid_origin'
+  | 'rate_limited'
+  | 'credentials_required'
+  | 'password_too_short'
+  | 'account_exists'
+  | 'registration_failed'
+
+function isRegisterErrorCode(value: unknown): value is RegisterErrorCode {
+  return (
+    value === 'invalid_origin' ||
+    value === 'rate_limited' ||
+    value === 'credentials_required' ||
+    value === 'password_too_short' ||
+    value === 'account_exists' ||
+    value === 'registration_failed'
+  )
+}
+
 export function RegisterPageClient() {
   return (
     <Suspense>
@@ -27,6 +48,9 @@ export function RegisterPageClient() {
 }
 
 function RegisterPageInner() {
+  const locale = useLocale()
+  const t = useTranslations('auth.register')
+  const tCommon = useTranslations('auth.common')
   const router = useRouter()
   const searchParams = useSearchParams()
   const redirectTo = sanitizeRedirectPath(searchParams.get('redirect'))
@@ -38,6 +62,23 @@ function RegisterPageInner() {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
+  const getRegisterErrorMessage = (errorCode: RegisterErrorCode) => {
+    switch (errorCode) {
+      case 'invalid_origin':
+        return tCommon('apiErrors.invalid_origin')
+      case 'rate_limited':
+        return tCommon('apiErrors.rate_limited')
+      case 'credentials_required':
+        return tCommon('apiErrors.credentials_required')
+      case 'password_too_short':
+        return tCommon('apiErrors.password_too_short', { min: MIN_PASSWORD_LENGTH })
+      case 'account_exists':
+        return t('accountExists')
+      case 'registration_failed':
+        return t('failed')
+    }
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setError('')
@@ -47,24 +88,23 @@ function RegisterPageInner() {
       const response = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password, firstName, lastName }),
+        body: JSON.stringify({ email, password, firstName, lastName, locale }),
       })
 
       const data = await response.json()
 
       if (!response.ok) {
-        if (response.status === 409 && data.code === 'ACCOUNT_EXISTS') {
-          setError('An account with this email already exists. Please sign in.')
-          return
-        }
-
-        setError(data.error || 'Registration failed')
+        setError(
+          isRegisterErrorCode(data.errorCode)
+            ? getRegisterErrorMessage(data.errorCode)
+            : t('failed')
+        )
         return
       }
 
       router.push(redirectTo)
     } catch {
-      setError('Something went wrong. Please try again.')
+      setError(tCommon('genericError'))
     } finally {
       setLoading(false)
     }
@@ -76,10 +116,10 @@ function RegisterPageInner() {
       <Card elevated>
         <CardHeader className="text-center">
           <CardTitle className="text-2xl tracking-tight">
-            Create an account
+            {t('title')}
           </CardTitle>
           <CardDescription>
-            Sign up for a WCPOS account
+            {t('description')}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -92,7 +132,7 @@ function RegisterPageInner() {
 
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-2">
-                <Label htmlFor="firstName">First name</Label>
+                <Label htmlFor="firstName">{tCommon('firstName')}</Label>
                 <Input
                   id="firstName"
                   type="text"
@@ -102,7 +142,7 @@ function RegisterPageInner() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="lastName">Last name</Label>
+                <Label htmlFor="lastName">{tCommon('lastName')}</Label>
                 <Input
                   id="lastName"
                   type="text"
@@ -114,11 +154,11 @@ function RegisterPageInner() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">{tCommon('email')}</Label>
               <Input
                 id="email"
                 type="email"
-                placeholder="you@example.com"
+                placeholder={tCommon('emailPlaceholder')}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -127,7 +167,7 @@ function RegisterPageInner() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password">{tCommon('password')}</Label>
               <Input
                 id="password"
                 type="password"
@@ -138,23 +178,23 @@ function RegisterPageInner() {
                 autoComplete="new-password"
               />
               <p className="text-xs text-muted-foreground">
-                At least {MIN_PASSWORD_LENGTH} characters
+                {tCommon('passwordHint', { min: MIN_PASSWORD_LENGTH })}
               </p>
             </div>
 
             <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? 'Creating account...' : 'Create account'}
+              {loading ? t('submitting') : t('submit')}
             </Button>
           </form>
         </CardContent>
         <CardFooter className="justify-center">
           <p className="text-sm text-muted-foreground">
-            Already have an account?{' '}
+            {t('hasAccount')}{' '}
             <Link
               href={`/login?redirect=${encodeURIComponent(redirectTo)}`}
               className="text-primary hover:underline"
             >
-              Sign in
+              {tCommon('signIn')}
             </Link>
           </p>
         </CardFooter>

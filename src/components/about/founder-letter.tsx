@@ -1,31 +1,58 @@
+import { useTranslations } from 'next-intl'
+import { getLocale } from 'next-intl/server'
 import {
   applyProOfferCatalogCachePolicy,
   formatFounderProPriceSummary,
   getProOfferCatalog,
+  type ProOffer,
 } from '@/lib/pro-offer-catalog'
 import { getLiveStoreEnvironment } from '@/lib/store-environment'
 import { Section } from '@/components/ui/section'
 
 export function FounderLetterFallback() {
-  return <FounderLetterContent priceSummary={null} />
+  return <FounderLetterContent offers={null} />
 }
 
-export async function FounderLetter() {
+async function getCachedFounderOffers(locale: string) {
   'use cache'
 
   // Prerendered into the shared static shell — always live prices.
-  const catalog = await getProOfferCatalog(undefined, getLiveStoreEnvironment())
+  const catalog = await getProOfferCatalog(
+    undefined,
+    getLiveStoreEnvironment(),
+    locale
+  )
   applyProOfferCatalogCachePolicy(catalog)
-  const priceSummary = formatFounderProPriceSummary(catalog.offers)
+  return catalog.offers
+}
 
-  return <FounderLetterContent priceSummary={priceSummary} />
+export async function FounderLetter() {
+  const locale = await getLocale()
+  const offers = await getCachedFounderOffers(locale)
+
+  return <FounderLetterContent offers={offers} />
+}
+
+function Strong({ children }: { children: React.ReactNode }) {
+  return (
+    <strong className="font-semibold text-slate-900 dark:text-slate-100">
+      {children}
+    </strong>
+  )
 }
 
 function FounderLetterContent({
-  priceSummary,
+  offers,
 }: {
-  priceSummary: string | null
+  offers: ProOffer[] | null
 }) {
+  const t = useTranslations('about.founder')
+  const priceSummary = offers
+    ? formatFounderProPriceSummary(offers, (values) =>
+        t('ps.priceSummary', values)
+      )
+    : null
+
   return (
     <Section tone="muted" spacing="default">
       <article className="mx-auto max-w-2xl rounded-sm bg-[#fffefb] p-8 shadow-lg md:p-12 dark:bg-slate-800">
@@ -42,52 +69,38 @@ function FounderLetterContent({
           {/* eslint-disable-next-line @next/next/no-img-element -- plain portrait from /public; repo uses next/image only in middleware */}
           <img
             src="/paul-urban-locavore.jpg"
-            alt="Paul at Urban Locavore, his Perth shop"
+            alt={t('photoAlt')}
             width={592}
             height={800}
             loading="lazy"
             className="w-full"
           />
           <figcaption className="mt-2 text-center text-[11px] text-slate-500">
-            Urban Locavore, Perth — the store that started it all
+            {t('photoCaption')}
           </figcaption>
         </figure>
 
         <p className="mb-5 text-xs uppercase tracking-wide text-slate-400">
-          A note from the developer
+          {t('eyebrow')}
         </p>
         <p className="mb-4 text-xl font-semibold text-slate-900 dark:text-slate-100">
-          Hi — I&apos;m Paul. I built WCPOS.
+          {t('intro')}
         </p>
 
         <p className="mb-4 leading-relaxed text-slate-700 dark:text-slate-300">
-          That&apos;s me, back when it all started. I opened Urban Locavore in
-          Perth in December 2011 with hundreds of products already in
-          WooCommerce and no way to sell them at the counter — so I built a
-          register myself. When the shop closed in April 2014, I put it on
-          WordPress.org for anyone who needed it.{' '}
-          <strong className="font-semibold text-slate-900 dark:text-slate-100">
-            POS plugins for WooCommerce have come and gone since then. This one
-            hasn&apos;t.
-          </strong>{' '}
-          More than a decade of releases, one developer, still shipping — and
-          the free version is still the real thing: sell, print, stay in sync.
-          It stays free.
+          {t.rich('p1', {
+            strong: (chunks) => <Strong>{chunks}</Strong>,
+          })}
         </p>
 
         <p className="mb-4 leading-relaxed text-slate-700 dark:text-slate-300">
-          <strong className="font-semibold text-slate-900 dark:text-slate-100">
-            Pro is why it&apos;s still here.
-          </strong>{' '}
-          It adds extra tools for running your store — card readers, refunds at
-          the till, end-of-day reports, multi-store — and it funds every
-          release, free ones included. No investors, no acquisition exit
-          waiting. Shopkeepers fund it directly.
+          {t.rich('p2', {
+            strong: (chunks) => <Strong>{chunks}</Strong>,
+          })}
         </p>
 
         <p className="mb-4 leading-relaxed text-slate-700 dark:text-slate-300">
-          And Pro users have a direct line: tell me what your shop needs, and
-          it shapes what I build next.
+          {t('p3')}
         </p>
 
         <div className="mt-6 flex items-center gap-3.5">
@@ -96,10 +109,10 @@ function FounderLetterContent({
           </span>
           <div>
             <div className="text-sm font-semibold text-slate-900 dark:text-slate-100">
-              Paul Kilmurray
+              {t('signature.name')}
             </div>
             <div className="text-xs text-slate-500 dark:text-slate-400">
-              developer &amp; former shopkeeper ·{' '}
+              {t('signature.role')}{' '}
               <a
                 href="https://github.com/kilbot"
                 className="underline underline-offset-2 hover:text-slate-700 dark:hover:text-slate-300"
@@ -112,22 +125,17 @@ function FounderLetterContent({
         </div>
 
         <p className="mt-6 border-t border-[#efece4] pt-4 text-sm text-slate-600 dark:border-slate-700 dark:text-slate-400">
-          <strong className="font-semibold text-slate-900 dark:text-slate-100">
-            P.S.
-          </strong>{' '}
-          — Pro is{' '}
+          <Strong>{t('ps.label')}</Strong>{' '}
           {priceSummary ? (
             <>
-              <strong className="font-semibold text-slate-900 dark:text-slate-100">
-                {priceSummary}
-              </strong>
-              .{' '}
+              {t.rich('ps.withPrice', {
+                price: () => <Strong>{priceSummary}</Strong>,
+              })}
             </>
           ) : (
-            'available from the Pro page. '
-          )}
-          If a licence lapses, Pro keeps working; you just stop getting
-          updates.
+            t('ps.fallback')
+          )}{' '}
+          {t('ps.licence')}
         </p>
       </article>
     </Section>

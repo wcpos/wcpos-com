@@ -72,7 +72,7 @@ describe('DELETE /api/account/licenses/[licenseId]/machines/[machineId]', () => 
 
     expect(response.status).toBe(401)
     const body = await response.json()
-    expect(body.error).toBe('Unauthorized')
+    expect(body.errorCode).toBe('unauthorized')
     expect(mockGetLicenseMachines).not.toHaveBeenCalled()
     expect(mockDeactivateMachine).not.toHaveBeenCalled()
   })
@@ -87,7 +87,7 @@ describe('DELETE /api/account/licenses/[licenseId]/machines/[machineId]', () => 
 
     expect(response.status).toBe(403)
     const body = await response.json()
-    expect(body.error).toBe('Forbidden')
+    expect(body.errorCode).toBe('forbidden')
     expect(mockGetLicenseMachines).not.toHaveBeenCalled()
     expect(mockDeactivateMachine).not.toHaveBeenCalled()
   })
@@ -105,7 +105,7 @@ describe('DELETE /api/account/licenses/[licenseId]/machines/[machineId]', () => 
 
     expect(response.status).toBe(403)
     const body = await response.json()
-    expect(body.error).toBe('Machine does not belong to this license')
+    expect(body.errorCode).toBe('machine_not_found_for_license')
     expect(mockDeactivateMachine).not.toHaveBeenCalled()
   })
 
@@ -136,7 +136,7 @@ describe('DELETE /api/account/licenses/[licenseId]/machines/[machineId]', () => 
 
     expect(response.status).toBe(500)
     const body = await response.json()
-    expect(body.error).toBe('Failed to deactivate machine')
+    expect(body.errorCode).toBe('deactivate_failed')
   })
 
   it('returns 503 (fail loud) when Keygen machine management is not configured', async () => {
@@ -150,7 +150,7 @@ describe('DELETE /api/account/licenses/[licenseId]/machines/[machineId]', () => 
 
     expect(response.status).toBe(503)
     const body = await response.json()
-    expect(body.error).toBe('Machine management is not configured')
+    expect(body.errorCode).toBe('machine_management_unconfigured')
     expect(mockDeactivateMachine).not.toHaveBeenCalled()
   })
 
@@ -164,7 +164,7 @@ describe('DELETE /api/account/licenses/[licenseId]/machines/[machineId]', () => 
 
     expect(response.status).toBe(500)
     const body = await response.json()
-    expect(body.error).toBe('Internal server error')
+    expect(body.errorCode).toBe('internal')
     expect(mockDeactivateMachine).not.toHaveBeenCalled()
   })
 })

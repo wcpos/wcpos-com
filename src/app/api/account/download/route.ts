@@ -9,13 +9,26 @@ import { fetchReleaseAsset } from '@/services/core/external/github-asset'
 import { downloadLogger } from '@/lib/logger'
 import { clientIp } from '@/lib/rate-limit'
 
+type DownloadErrorCode =
+  | 'unauthorized'
+  | 'download_token_secret_missing'
+  | 'missing_token'
+  | 'invalid_token'
+  | 'release_not_found'
+  | 'forbidden'
+  | 'asset_unavailable'
+
+function errorResponse(errorCode: DownloadErrorCode, status: number) {
+  return NextResponse.json({ errorCode }, { status })
+}
+
 export async function GET(request: NextRequest) {
   const ip = clientIp(request)
   const userAgent = request.headers.get('user-agent') ?? 'unknown'
 
   const customer = await getCustomer()
   if (!customer) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    return errorResponse('unauthorized', 401)
   }
 
   // Deliberately no fallback: broader API/customer tokens must never be used
@@ -24,21 +37,18 @@ export async function GET(request: NextRequest) {
   if (!secret) {
     // Infra broken — every paying customer is blocked. fatal → Discord + email.
     downloadLogger.fatal`Download token secret not configured (customer ${customer.id})`
-    return NextResponse.json(
-      { error: 'Download token secret not configured' },
-      { status: 500 }
-    )
+    return errorResponse('download_token_secret_missing', 500)
   }
 
   const token = request.nextUrl.searchParams.get('token')
   if (!token) {
-    return NextResponse.json({ error: 'Missing token' }, { status: 400 })
+    return errorResponse('missing_token', 400)
   }
 
   const payload = verifyDownloadToken(token, secret)
   if (!payload || payload.customerId !== customer.id) {
     downloadLogger.warn`Download denied: invalid/mismatched token. customer=${customer.id} ip=${ip}`
-    return NextResponse.json({ error: 'Invalid token' }, { status: 403 })
+    return errorResponse('invalid_token', 403)
   }
 
   const releases = await getProPluginReleases()
@@ -53,10 +63,10 @@ export async function GET(request: NextRequest) {
   if (!selection.ok) {
     if (selection.reason === 'not_found') {
       downloadLogger.warn`Download denied: release not found. version=${payload.version} customer=${customer.id} ip=${ip}`
-      return NextResponse.json({ error: 'Release not found' }, { status: 404 })
+      return errorResponse('release_not_found', 404)
     }
     downloadLogger.warn`Download denied: not entitled. version=${payload.version} customer=${customer.id} ip=${ip}`
-    return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+    return errorResponse('forbidden', 403)
   }
 
   const release = selection.release
@@ -65,10 +75,7 @@ export async function GET(request: NextRequest) {
     // All sources failed for an entitled customer — delivery is broken. error →
     // Discord (download category bypasses the rate limit, never throttled).
     downloadLogger.error`Failed to fetch release asset after retries. version=${release.version} customer=${customer.id} ip=${ip}`
-    return NextResponse.json(
-      { error: 'Failed to fetch release asset' },
-      { status: 502 }
-    )
+    return errorResponse('asset_unavailable', 502)
   }
 
   // Audit trail: who downloaded what, when, from where. info → Loki only.

@@ -22,6 +22,7 @@ describe('GET /api/account/licenses', () => {
 
     const response = await GET()
     expect(response.status).toBe(401)
+    await expect(response.json()).resolves.toEqual({ errorCode: 'unauthorized' })
   })
 
   it('returns resolved customer licenses', async () => {

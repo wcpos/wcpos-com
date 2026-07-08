@@ -1,7 +1,10 @@
+import { useTranslations } from 'next-intl'
 import { Section, Container } from '@/components/ui/section'
 import { SectionHeading } from '@/components/ui/section-heading'
 
 export function AboutHero() {
+  const t = useTranslations('about.hero')
+
   return (
     <Section tone="dark" spacing="hero" bare className="relative overflow-hidden">
       <div
@@ -13,9 +16,9 @@ export function AboutHero() {
           as="h1"
           size="hero"
           tone="inverse"
-          eyebrow="Our story"
-          title="An independent point of sale for WooCommerce"
-          subtitle="Built by a former shopkeeper, funded by shopkeepers — not investors. One developer, more than a decade of releases, still shipping."
+          eyebrow={t('eyebrow')}
+          title={t('title')}
+          subtitle={t('subtitle')}
         />
       </Container>
     </Section>

@@ -1,11 +1,12 @@
 'use client'
 
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
+import { useLocale, useTranslations } from 'next-intl'
 import { Button } from '@/components/ui/button'
 import { FormField } from '@/components/ui/form-field'
 import { Input } from '@/components/ui/input'
 import { Select } from '@/components/ui/select'
-import { BILLING_COUNTRIES, taxIdLabel } from '@/lib/billing-countries'
+import { buildCountryOptions, taxIdLabelKey } from '@/lib/billing-countries'
 
 /**
  * Billing address step — the minimum honest address block. The parent owns
@@ -36,8 +37,6 @@ export function billingAddressSummary(address: BillingAddress): string {
   ].filter(Boolean).join(', ')
 }
 
-export { taxIdLabel } from '@/lib/billing-countries'
-
 interface BillingStepProps {
   initialAddress?: BillingAddress | null
   /** Prefill for the optional tax field (customer profile's taxNumber). */
@@ -54,6 +53,9 @@ export function BillingStep({
   initialTaxNumber,
   onSubmit,
 }: BillingStepProps) {
+  const locale = useLocale()
+  const t = useTranslations('pro.checkout.billing')
+  const tTaxLabel = useTranslations('account.profile.taxLabels')
   const [firstName, setFirstName] = useState(initialAddress?.first_name ?? '')
   const [lastName, setLastName] = useState(initialAddress?.last_name ?? '')
   const [address1, setAddress1] = useState(initialAddress?.address_1 ?? '')
@@ -69,6 +71,14 @@ export function BillingStep({
   const [taxNumber, setTaxNumber] = useState(initialTaxNumber ?? '')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const billingCountries = useMemo(
+    () =>
+      buildCountryOptions(locale, true).map(([code, label]) => ({
+        code,
+        label,
+      })),
+    [locale]
+  )
 
   async function submit(event: React.FormEvent) {
     event.preventDefault()
@@ -98,7 +108,7 @@ export function BillingStep({
           : null
       setError(
         paymentRefreshError ??
-          'Could not save your billing address. Please try again.'
+          t('errors.saveFailed')
       )
     } finally {
       setIsSubmitting(false)
@@ -108,7 +118,7 @@ export function BillingStep({
   return (
     <form onSubmit={submit} className="space-y-4" data-testid="billing-step-form">
       <div className="grid grid-cols-2 gap-3">
-        <FormField label="First name" htmlFor="billing-first-name">
+        <FormField label={t('fields.firstName')} htmlFor="billing-first-name">
           <Input
             id="billing-first-name"
             autoComplete="given-name"
@@ -117,7 +127,7 @@ export function BillingStep({
             onChange={(event) => setFirstName(event.target.value)}
           />
         </FormField>
-        <FormField label="Last name" htmlFor="billing-last-name">
+        <FormField label={t('fields.lastName')} htmlFor="billing-last-name">
           <Input
             id="billing-last-name"
             autoComplete="family-name"
@@ -128,7 +138,7 @@ export function BillingStep({
         </FormField>
       </div>
 
-      <FormField label="Address line 1" htmlFor="billing-address-line-1">
+      <FormField label={t('fields.addressLine1')} htmlFor="billing-address-line-1">
         <Input
           id="billing-address-line-1"
           autoComplete="address-line1"
@@ -138,7 +148,7 @@ export function BillingStep({
         />
       </FormField>
 
-      <FormField label="Address line 2" htmlFor="billing-address-line-2">
+      <FormField label={t('fields.addressLine2')} htmlFor="billing-address-line-2">
         <Input
           id="billing-address-line-2"
           autoComplete="address-line2"
@@ -148,7 +158,7 @@ export function BillingStep({
       </FormField>
 
       <div className="grid grid-cols-2 gap-3">
-        <FormField label="City" htmlFor="billing-city">
+        <FormField label={t('fields.city')} htmlFor="billing-city">
           <Input
             id="billing-city"
             autoComplete="address-level2"
@@ -158,7 +168,7 @@ export function BillingStep({
           />
         </FormField>
         <FormField
-          label="State / Province / Region"
+          label={t('fields.province')}
           htmlFor="billing-province"
         >
           <Input
@@ -171,7 +181,7 @@ export function BillingStep({
       </div>
 
       <div className="grid grid-cols-2 gap-3">
-        <FormField label="Postal code" htmlFor="billing-postal">
+        <FormField label={t('fields.postalCode')} htmlFor="billing-postal">
           <Input
             id="billing-postal"
             autoComplete="postal-code"
@@ -181,7 +191,7 @@ export function BillingStep({
         </FormField>
       </div>
 
-      <FormField label="Country" htmlFor="billing-country">
+      <FormField label={t('fields.country')} htmlFor="billing-country">
         <Select
           id="billing-country"
           autoComplete="country"
@@ -189,7 +199,7 @@ export function BillingStep({
           value={countryCode}
           onChange={(event) => setCountryCode(event.target.value)}
         >
-          {BILLING_COUNTRIES.map((country) => (
+          {billingCountries.map((country) => (
             <option key={country.code} value={country.code}>
               {country.label}
             </option>
@@ -200,9 +210,9 @@ export function BillingStep({
       <FormField
         label={
           <>
-            {taxIdLabel(countryCode)}{' '}
+            {tTaxLabel(taxIdLabelKey(countryCode))}{' '}
             <span className="text-muted-foreground font-normal">
-              (optional)
+              {t('optional')}
             </span>
           </>
         }
@@ -222,7 +232,7 @@ export function BillingStep({
       )}
 
       <Button type="submit" disabled={isSubmitting}>
-        {isSubmitting ? 'Saving…' : 'Continue to payment'}
+        {isSubmitting ? t('saving') : t('continue')}
       </Button>
     </form>
   )

@@ -1,6 +1,7 @@
 'use client'
 
 import { useRef, useState } from 'react'
+import { useTranslations } from 'next-intl'
 import {
   INSTANCE_LOADING_STATE,
   usePayPal,
@@ -15,11 +16,9 @@ import {
   createCancelledFailure,
   completeProviderConfirmedCheckout,
   createPaymentFailure,
-  PAYPAL_CANCELLED_MESSAGE,
-  PAYPAL_FAILED_MESSAGE,
-  PAYPAL_INIT_FAILED_MESSAGE,
   type CheckoutFailure,
 } from './checkout-safety'
+import { useCheckoutFailureMessages } from './checkout/use-checkout-failure-messages'
 import type { ProCheckoutVariant } from '@/services/core/analytics/posthog-service'
 
 interface PayPalSessionCart {
@@ -55,6 +54,9 @@ export function PayPalButton({
   onFailure,
   onProcessingChange,
 }: PayPalButtonProps) {
+  const t = useTranslations('pro.checkout.payment.paypalButton')
+  const tErrors = useTranslations('pro.checkout.errors')
+  const failureMessages = useCheckoutFailureMessages()
   // When createOrder rejects, the PayPal SDK re-reports the same failure via
   // onError. The createOrder catch already reported it (with its own support
   // reference), so onError must skip that echo — otherwise the customer sees
@@ -82,7 +84,7 @@ export function PayPalButton({
           const { cart } = await createPaymentSession<{ cart?: PayPalSessionCart }>({
             cartId,
             providerId: 'pp_paypal_paypal',
-            errorMessage: 'Failed to initialize PayPal payment',
+            errorMessage: 'PAYPAL_INIT_FAILED',
           })
 
           const pendingPayPalSession = cart?.payment_collection?.payment_sessions?.find(
@@ -93,7 +95,7 @@ export function PayPalButton({
             pendingPayPalSession?.data?.id || cart?.payment_session?.data?.id
 
           if (!fallbackPayPalOrderId) {
-            throw new Error('No PayPal order ID returned')
+            throw new Error('PAYPAL_ORDER_ID_MISSING')
           }
 
           return { orderId: fallbackPayPalOrderId }
@@ -102,7 +104,7 @@ export function PayPalButton({
           createOrderFailureReported.current = true
           setKeepRetryAfterCreateOrderFailure(true)
           onFailure(
-            createPaymentFailure(PAYPAL_INIT_FAILED_MESSAGE, {
+            createPaymentFailure(tErrors('paypalInitFailed'), {
               source: 'paypal_create_order',
               details: { cartId, error: err instanceof Error ? err.message : err },
             })
@@ -114,9 +116,9 @@ export function PayPalButton({
         const orderId = data?.orderId ?? paypalOrderId
         if (!orderId) {
           onFailure(
-            createPaymentFailure(PAYPAL_FAILED_MESSAGE, {
+            createPaymentFailure(tErrors('paypalFailed'), {
               source: 'paypal_capture',
-              details: { cartId, error: 'Missing PayPal order id on approval' },
+              details: { cartId, error: 'PAYPAL_APPROVAL_ORDER_ID_MISSING' },
             })
           )
           return
@@ -128,7 +130,7 @@ export function PayPalButton({
             await capturePayPalOrder({ cartId, orderId })
           } catch (err) {
             onFailure(
-              createPaymentFailure(PAYPAL_FAILED_MESSAGE, {
+              createPaymentFailure(tErrors('paypalFailed'), {
                 source: 'paypal_capture',
                 details: {
                   cartId,
@@ -142,6 +144,7 @@ export function PayPalButton({
 
           const completion = await completeProviderConfirmedCheckout({
             complete: () => completeCart({ cartId, experiment, experimentVariant }),
+            messages: failureMessages,
             failureContext: {
               source: 'paypal_complete_cart',
               details: { cartId, orderId },
@@ -168,7 +171,7 @@ export function PayPalButton({
         }
         setKeepRetryAfterCreateOrderFailure(false)
         onFailure(
-          createPaymentFailure(PAYPAL_FAILED_MESSAGE, {
+          createPaymentFailure(tErrors('paypalFailed'), {
             source: 'paypal_sdk',
             details: {
               cartId,
@@ -179,7 +182,7 @@ export function PayPalButton({
       },
       onCancel: () => {
         onFailure(
-          createCancelledFailure(PAYPAL_CANCELLED_MESSAGE, {
+          createCancelledFailure(tErrors('paypalCancelled'), {
             source: 'paypal_cancel',
             details: { cartId },
           })
@@ -196,7 +199,7 @@ export function PayPalButton({
       <div className="space-y-2 rounded-md border border-dashed p-4">
         <div className="h-10 animate-pulse rounded bg-muted" />
         <p className="text-center text-sm text-muted-foreground">
-          Loading PayPal secure checkout...
+          {t('loading')}
         </p>
       </div>
     )
@@ -209,7 +212,7 @@ export function PayPalButton({
   ) {
     return (
       <div className="text-center text-sm text-destructive py-4">
-        Failed to load PayPal. Please try another payment method.
+        {t('loadFailed')}
       </div>
     )
   }

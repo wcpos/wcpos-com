@@ -8,6 +8,21 @@ import { PageHeader } from '@/components/ui/page-header'
 import { Skeleton } from '@/components/ui/skeleton'
 import { OrderHistoryList } from '@/components/account/order-history-list'
 import type { Metadata } from 'next'
+import type { OrderStatusLabels } from '@/lib/order-status'
+
+
+function orderStatusLabels(t: (key: keyof OrderStatusLabels) => string): OrderStatusLabels {
+  return {
+    actionRequired: t('actionRequired'),
+    authorized: t('authorized'),
+    canceled: t('canceled'),
+    paid: t('paid'),
+    partiallyRefunded: t('partiallyRefunded'),
+    pending: t('pending'),
+    refunded: t('refunded'),
+    unknown: t('unknown'),
+  }
+}
 
 export async function generateMetadata({
   params,
@@ -23,11 +38,14 @@ export async function generateMetadata({
 }
 
 async function OrdersContent({ locale }: { locale: string }) {
-  const orders = await getOrdersPage(50)
+  const [orders, tOrderStatus] = await Promise.all([
+    getOrdersPage(50),
+    getTranslations({ locale, namespace: 'account.orderStatus' }),
+  ])
 
   return (
     <OrderHistoryList
-      orders={projectAccountOrderListRows(orders)}
+      orders={projectAccountOrderListRows(orders, orderStatusLabels(tOrderStatus))}
       locale={locale}
     />
   )

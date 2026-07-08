@@ -1,11 +1,19 @@
 import type { Metadata } from 'next'
-import { setRequestLocale } from 'next-intl/server'
+import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { ResetPasswordPageClient } from './reset-password-page-client'
 
-export const metadata: Metadata = {
-  title: 'Reset password',
-  description: 'Choose a new password for your WCPOS account.',
-  robots: { index: false, follow: false },
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}): Promise<Metadata> {
+  const { locale } = await params
+  const t = await getTranslations({ locale, namespace: 'auth.resetPassword' })
+  return {
+    title: t('metaTitle'),
+    description: t('metaDescription'),
+    robots: { index: false, follow: false },
+  }
 }
 
 export default async function ResetPasswordPage({

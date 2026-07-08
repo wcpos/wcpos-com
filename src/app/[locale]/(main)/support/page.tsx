@@ -1,4 +1,4 @@
-import { setRequestLocale } from 'next-intl/server'
+import { getTranslations, setRequestLocale } from 'next-intl/server'
 import type { Metadata } from 'next'
 import { Suspense } from 'react'
 import { SupportDefaultContent, SupportPageContent } from '@/components/support/support-chat'
@@ -10,12 +10,12 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>
 }): Promise<Metadata> {
   const { locale } = await params
+  const t = await getTranslations({ locale, namespace: 'support.meta' })
   return marketingMetadata({
     locale,
     path: '/support',
-    title: 'Support',
-    description:
-      'Ask anything about WCPOS and get an instant answer from our docs, or chat with the community on Discord.',
+    title: t('title'),
+    description: t('description'),
   })
 }
 

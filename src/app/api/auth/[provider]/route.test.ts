@@ -58,7 +58,7 @@ describe('GET /api/auth/[provider] (OAuth initiate)', () => {
 
     expect(response.status).toBe(400)
     const body = await response.json()
-    expect(body.error).toContain('facebook')
+    expect(body).toEqual({ errorCode: 'unsupported_provider', provider: 'facebook' })
     expect(mockInitiateOAuth).not.toHaveBeenCalled()
   })
 
@@ -101,6 +101,36 @@ describe('GET /api/auth/[provider] (OAuth initiate)', () => {
     expect(cookie?.path).toBe('/api/auth')
   })
 
+  it('stores non-default locale redirect targets with their URL prefix for server redirects', async () => {
+    mockInitiateOAuth.mockResolvedValueOnce('https://discord.com/oauth2/authorize')
+
+    const request = new NextRequest(
+      'https://wcpos.com/api/auth/discord?locale=fr&redirect=%2Faccount%2Flicenses'
+    )
+    const response = await GET(request, {
+      params: Promise.resolve({ provider: 'discord' }),
+    })
+
+    expect(response.cookies.get('oauth_redirect')?.value).toBe(
+      '/fr/account/licenses'
+    )
+  })
+
+  it('stores regional locale redirect targets with their supported URL prefix', async () => {
+    mockInitiateOAuth.mockResolvedValueOnce('https://discord.com/oauth2/authorize')
+
+    const request = new NextRequest(
+      'https://wcpos.com/api/auth/discord?locale=pl-PL%3Bq%3D1.0%2C%20fr-FR%3Bq%3D0.9&redirect=%2Faccount%2Flicenses'
+    )
+    const response = await GET(request, {
+      params: Promise.resolve({ provider: 'discord' }),
+    })
+
+    expect(response.cookies.get('oauth_redirect')?.value).toBe(
+      '/fr/account/licenses'
+    )
+  })
+
   it('sets the redirect cookie to the default on a plain sign-in (no stale-cookie hijack)', async () => {
     mockInitiateOAuth.mockResolvedValueOnce('https://discord.com/oauth2/authorize')
 
@@ -136,6 +166,21 @@ describe('GET /api/auth/[provider] (OAuth initiate)', () => {
     expect(response.status).toBe(307)
     const location = new URL(response.headers.get('location')!)
     expect(location.pathname).toBe('/login')
+    expect(location.searchParams.get('error')).toBe('oauth_failed')
+  })
+
+  it('redirects to the localized login page when localized OAuth initiation fails', async () => {
+    mockInitiateOAuth.mockRejectedValueOnce(new Error('Medusa unreachable'))
+
+    const request = new NextRequest(
+      'https://wcpos.com/api/auth/google?locale=fr'
+    )
+    const response = await GET(request, {
+      params: Promise.resolve({ provider: 'google' }),
+    })
+
+    const location = new URL(response.headers.get('location')!)
+    expect(location.pathname).toBe('/fr/login')
     expect(location.searchParams.get('error')).toBe('oauth_failed')
   })
 })

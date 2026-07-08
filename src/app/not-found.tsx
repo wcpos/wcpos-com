@@ -1,4 +1,20 @@
+'use client'
+
+import { useSyncExternalStore } from 'react'
 import Link from 'next/link'
+import {
+  browserLanguagePreferences,
+  rootFallbackCopy,
+  rootFallbackHref,
+} from '@/lib/root-fallback-i18n'
+
+function subscribeToLanguagePreferences() {
+  return () => {}
+}
+
+function noLanguagePreferences() {
+  return undefined
+}
 
 /**
  * Root 404 page. Rendered for requests that never enter the [locale]
@@ -10,8 +26,16 @@ import Link from 'next/link'
  * keep it independent of the locale-scoped theming/fonts.
  */
 export default function RootNotFound() {
+  const languagePreferences = useSyncExternalStore(
+    subscribeToLanguagePreferences,
+    browserLanguagePreferences,
+    noLanguagePreferences
+  )
+  const copy = rootFallbackCopy(languagePreferences)
+  const homeHref = rootFallbackHref(copy.locale, '/')
+
   return (
-    <html lang="en">
+    <html lang={copy.locale} dir={copy.direction}>
       <body
         style={{
           margin: 0,
@@ -25,7 +49,9 @@ export default function RootNotFound() {
           color: '#171717',
         }}
       >
-        <main style={{ textAlign: 'center', padding: '2rem', maxWidth: '28rem' }}>
+        <main
+          style={{ textAlign: 'center', padding: '2rem', maxWidth: '28rem' }}
+        >
           <p
             style={{
               fontSize: '0.875rem',
@@ -37,11 +63,17 @@ export default function RootNotFound() {
           >
             404
           </p>
-          <h1 style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: '0.5rem' }}>
-            Page not found
+          <h1
+            style={{
+              fontSize: '1.5rem',
+              fontWeight: 700,
+              marginBottom: '0.5rem',
+            }}
+          >
+            {copy.errors.notFoundTitle}
           </h1>
           <p style={{ color: '#525252', marginBottom: '1.5rem' }}>
-            The page you are looking for does not exist or may have moved.
+            {copy.errors.notFoundDescription}
           </p>
           <div
             style={{
@@ -52,7 +84,7 @@ export default function RootNotFound() {
             }}
           >
             <Link
-              href="/"
+              href={homeHref}
               style={{
                 padding: '0.5rem 1rem',
                 borderRadius: '0.375rem',
@@ -65,10 +97,10 @@ export default function RootNotFound() {
                 display: 'inline-block',
               }}
             >
-              Go to homepage
+              {copy.errors.goHome}
             </Link>
             <Link
-              href="/pro"
+              href={rootFallbackHref(copy.locale, '/pro')}
               style={{
                 padding: '0.5rem 1rem',
                 borderRadius: '0.375rem',
@@ -83,7 +115,7 @@ export default function RootNotFound() {
               WCPOS Pro
             </Link>
             <Link
-              href="/support"
+              href={rootFallbackHref(copy.locale, '/support')}
               style={{
                 padding: '0.5rem 1rem',
                 borderRadius: '0.375rem',
@@ -95,7 +127,7 @@ export default function RootNotFound() {
                 display: 'inline-block',
               }}
             >
-              Support
+              {copy.support}
             </Link>
           </div>
         </main>

@@ -2,6 +2,7 @@
 
 import { Suspense, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
+import { useLocale, useTranslations } from 'next-intl'
 import { Link, useRouter } from '@/i18n/navigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -18,6 +19,24 @@ import {
 import { trackClientEvent } from '@/lib/analytics/client-events'
 import { sanitizeRedirectPath } from '@/lib/safe-redirect'
 import { DiscordMark, GitHubMark, GoogleMark } from '@/components/auth/provider-marks'
+import { isOAuthErrorCode } from '@/lib/oauth-error-codes'
+
+type LoginErrorCode =
+  | 'invalid_origin'
+  | 'rate_limited'
+  | 'credentials_required'
+  | 'invalid_credentials'
+  | 'login_failed'
+
+function isLoginErrorCode(value: unknown): value is LoginErrorCode {
+  return (
+    value === 'invalid_origin' ||
+    value === 'rate_limited' ||
+    value === 'credentials_required' ||
+    value === 'invalid_credentials' ||
+    value === 'login_failed'
+  )
+}
 
 export function LoginPageClient() {
   return (
@@ -28,19 +47,41 @@ export function LoginPageClient() {
 }
 
 function LoginPageInner() {
+  const t = useTranslations('auth.login')
+  const tCommon = useTranslations('auth.common')
+  const locale = useLocale()
   const router = useRouter()
   const searchParams = useSearchParams()
   const redirectTo = sanitizeRedirectPath(searchParams.get('redirect'))
+  const oauthHref = (provider: 'google' | 'github' | 'discord') =>
+    `/api/auth/${provider}?locale=${encodeURIComponent(locale)}&redirect=${encodeURIComponent(redirectTo)}`
   const oauthError = searchParams.get('error')
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState(() => {
     if (!oauthError) return ''
-    if (oauthError === 'oauth_failed') return 'OAuth sign-in failed. Please try again or use email/password.'
-    return oauthError
+    if (isOAuthErrorCode(oauthError)) {
+      return t(`oauthErrors.${oauthError}`)
+    }
+    return t('oauthFailed')
   })
   const [loading, setLoading] = useState(false)
+
+  const getLoginErrorMessage = (errorCode: LoginErrorCode) => {
+    switch (errorCode) {
+      case 'invalid_origin':
+        return tCommon('apiErrors.invalid_origin')
+      case 'rate_limited':
+        return tCommon('apiErrors.rate_limited')
+      case 'credentials_required':
+        return tCommon('apiErrors.credentials_required')
+      case 'invalid_credentials':
+        return tCommon('apiErrors.invalid_credentials')
+      case 'login_failed':
+        return t('loginFailed')
+    }
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -57,13 +98,17 @@ function LoginPageInner() {
       const data = await response.json()
 
       if (!response.ok) {
-        setError(data.error || 'Login failed')
+        setError(
+          isLoginErrorCode(data.errorCode)
+            ? getLoginErrorMessage(data.errorCode)
+            : t('loginFailed')
+        )
         return
       }
 
       router.push(redirectTo)
     } catch {
-      setError('Something went wrong. Please try again.')
+      setError(tCommon('genericError'))
     } finally {
       setLoading(false)
     }
@@ -74,9 +119,9 @@ function LoginPageInner() {
     <div className="w-full max-w-md">
       <Card elevated>
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl tracking-tight">Sign in</CardTitle>
+          <CardTitle className="text-2xl tracking-tight">{t('title')}</CardTitle>
           <CardDescription>
-            Sign in to your WCPOS account
+            {t('description')}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -88,11 +133,11 @@ function LoginPageInner() {
             )}
 
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">{tCommon('email')}</Label>
               <Input
                 id="email"
                 type="email"
-                placeholder="you@example.com"
+                placeholder={tCommon('emailPlaceholder')}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -102,12 +147,12 @@ function LoginPageInner() {
 
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password">{tCommon('password')}</Label>
                 <Link
                   href="/forgot-password"
                   className="text-sm text-primary hover:underline"
                 >
-                  Forgot password?
+                  {t('forgotPassword')}
                 </Link>
               </div>
               <Input
@@ -121,7 +166,7 @@ function LoginPageInner() {
             </div>
 
             <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? 'Signing in...' : 'Sign in'}
+              {loading ? t('submitting') : tCommon('signIn')}
             </Button>
           </form>
 
@@ -131,7 +176,7 @@ function LoginPageInner() {
             </div>
             <div className="relative flex justify-center text-xs uppercase">
               <span className="bg-card px-2 text-muted-foreground">
-                Or continue with
+                {t('oauthDivider')}
               </span>
             </div>
           </div>
@@ -145,7 +190,7 @@ function LoginPageInner() {
           <div className="grid gap-2.5">
             <Button variant="outline" asChild>
               <a
-                href={`/api/auth/google?redirect=${encodeURIComponent(redirectTo)}`}
+                href={oauthHref('google')}
                 onClick={() => trackClientEvent('click_oauth_google')}
               >
                 <GoogleMark className="mr-2 h-4 w-4" />
@@ -154,7 +199,7 @@ function LoginPageInner() {
             </Button>
             <Button variant="outline" asChild>
               <a
-                href={`/api/auth/github?redirect=${encodeURIComponent(redirectTo)}`}
+                href={oauthHref('github')}
                 onClick={() => trackClientEvent('click_oauth_github')}
               >
                 <GitHubMark className="mr-2 h-4 w-4" />
@@ -163,7 +208,7 @@ function LoginPageInner() {
             </Button>
             <Button variant="outline" asChild>
               <a
-                href={`/api/auth/discord?redirect=${encodeURIComponent(redirectTo)}`}
+                href={oauthHref('discord')}
                 onClick={() => trackClientEvent('click_oauth_discord')}
               >
                 <DiscordMark className="mr-2 h-4 w-4" />
@@ -174,12 +219,12 @@ function LoginPageInner() {
         </CardContent>
         <CardFooter className="justify-center">
           <p className="text-sm text-muted-foreground">
-            Don&apos;t have an account?{' '}
+            {t('noAccount')}{' '}
             <Link
               href={`/register?redirect=${encodeURIComponent(redirectTo)}`}
               className="text-primary hover:underline"
             >
-              Sign up
+              {tCommon('signUp')}
             </Link>
           </p>
         </CardFooter>

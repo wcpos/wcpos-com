@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useLocale, useTranslations } from 'next-intl'
 import {
   ExpressCheckoutElement,
   useElements,
@@ -12,9 +13,10 @@ import {
   createPaymentFailure,
   createUncertainPaymentFailure,
   mapStripeErrorMessage,
-  GENERIC_PAYMENT_FAILED_MESSAGE,
   type CheckoutFailure,
 } from '../checkout-safety'
+import { useCheckoutFailureMessages } from './use-checkout-failure-messages'
+import { checkoutSuccessReturnUrl } from './return-url'
 import type { ProCheckoutVariant } from '@/services/core/analytics/posthog-service'
 
 /**
@@ -44,6 +46,9 @@ export function ExpressCheckoutRow({
   onFailure,
   onProcessingChange,
 }: ExpressCheckoutRowProps) {
+  const locale = useLocale()
+  const t = useTranslations('pro.checkout.payment')
+  const failureMessages = useCheckoutFailureMessages()
   const stripe = useStripe()
   const elements = useElements()
   const [hasWallets, setHasWallets] = useState(false)
@@ -63,14 +68,14 @@ export function ExpressCheckoutRow({
         await stripe.confirmPayment({
           elements,
           confirmParams: {
-            return_url: `${window.location.origin}/pro/checkout/success`,
+            return_url: checkoutSuccessReturnUrl(window.location.origin, locale),
           },
           redirect: 'if_required',
         })
 
       if (stripeError) {
         onFailure(
-          createPaymentFailure(mapStripeErrorMessage(stripeError), {
+          createPaymentFailure(mapStripeErrorMessage(stripeError, failureMessages), {
             source: 'stripe_express_checkout',
             details: {
               cartId,
@@ -93,6 +98,7 @@ export function ExpressCheckoutRow({
         const outcome = await completeProviderConfirmedCheckout({
           complete: () =>
             completeCart({ cartId, experiment, experimentVariant }),
+          messages: failureMessages,
           failureContext: {
             source: 'stripe_express_checkout_complete',
             details: { cartId, paymentIntentId: paymentIntent.id },
@@ -107,14 +113,14 @@ export function ExpressCheckoutRow({
       }
 
       onFailure(
-        createUncertainPaymentFailure({
+        createUncertainPaymentFailure(failureMessages, {
           source: 'stripe_express_checkout_status',
           details: { cartId, status: paymentIntent?.status },
         })
       )
     } catch (err) {
       onFailure(
-        createPaymentFailure(GENERIC_PAYMENT_FAILED_MESSAGE, {
+        createPaymentFailure(failureMessages.genericPaymentFailed, {
           source: 'stripe_express_checkout',
           details: {
             cartId,
@@ -136,7 +142,7 @@ export function ExpressCheckoutRow({
       />
       <div className="mt-4 flex items-center gap-3 text-xs text-muted-foreground">
         <div className="h-px flex-1 bg-border" />
-        or choose how to pay
+        {t('walletSeparator')}
         <div className="h-px flex-1 bg-border" />
       </div>
     </div>

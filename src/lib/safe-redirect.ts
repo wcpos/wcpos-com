@@ -1,4 +1,9 @@
-import { locales } from '@/i18n/config'
+import { defaultLocale, locales, type Locale } from '@/i18n/config'
+
+type SanitizeRedirectOptions = {
+  fallback?: string
+  stripLocalePrefix?: boolean
+}
 
 /**
  * Sanitizes a user-supplied post-auth redirect target.
@@ -15,18 +20,44 @@ import { locales } from '@/i18n/config'
  */
 export function sanitizeRedirectPath(
   value: string | null | undefined,
-  fallback = '/account'
+  fallbackOrOptions: string | SanitizeRedirectOptions = '/account'
 ): string {
+  const options =
+    typeof fallbackOrOptions === 'string'
+      ? { fallback: fallbackOrOptions, stripLocalePrefix: true }
+      : {
+          fallback: fallbackOrOptions.fallback ?? '/account',
+          stripLocalePrefix: fallbackOrOptions.stripLocalePrefix ?? true,
+        }
+  const fallback = options.fallback
+
   if (!value) return fallback
   if (!value.startsWith('/')) return fallback
   if (value.startsWith('//') || value.startsWith('/\\')) return fallback
 
-  for (const locale of locales) {
-    if (value === `/${locale}`) return '/'
-    if (value.startsWith(`/${locale}/`)) {
-      return value.slice(locale.length + 1)
+  if (options.stripLocalePrefix) {
+    for (const locale of locales) {
+      if (value === `/${locale}`) return '/'
+      if (value.startsWith(`/${locale}/`)) {
+        return value.slice(locale.length + 1)
+      }
     }
   }
 
   return value
+}
+
+export function localeFromPath(path: string): Locale {
+  for (const locale of locales) {
+    if (path === `/${locale}` || path.startsWith(`/${locale}/`)) {
+      return locale
+    }
+  }
+  return defaultLocale
+}
+
+export function localizeRedirectPath(path: string, locale: Locale): string {
+  if (locale === defaultLocale) return path
+  if (path === '/') return `/${locale}`
+  return `/${locale}${path}`
 }

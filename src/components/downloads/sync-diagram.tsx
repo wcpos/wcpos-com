@@ -25,19 +25,31 @@ const ORBIT_RADIUS = 138
 const DRIFT_DEG_PER_MS = 0.0022 // one lap in ~2.7 minutes
 const PACKET_PERIOD_MS = 1100
 
+type DeviceKey = 'desktop' | 'ios' | 'android' | 'web'
+
+export type SyncDiagramLabels = {
+  ariaLabel: string
+  devices: Record<DeviceKey, string>
+  hub: {
+    store: string
+    platform: string
+    plugin: string
+  }
+}
+
 type DeviceNode = {
-  key: string
-  label: string
+  key: DeviceKey
   icon: LucideIcon
   angle: number
   size: number
 }
 
+
 const DEVICES: DeviceNode[] = [
-  { key: 'desktop', label: 'Desktop', icon: Laptop, angle: -90, size: 66 },
-  { key: 'ios', label: 'iOS & iPad', icon: Smartphone, angle: 0, size: 58 },
-  { key: 'android', label: 'Android', icon: Smartphone, angle: 90, size: 58 },
-  { key: 'web', label: 'Web', icon: Globe, angle: 180, size: 62 },
+  { key: 'desktop', icon: Laptop, angle: -90, size: 66 },
+  { key: 'ios', icon: Smartphone, angle: 0, size: 58 },
+  { key: 'android', icon: Smartphone, angle: 90, size: 58 },
+  { key: 'web', icon: Globe, angle: 180, size: 62 },
 ]
 
 function homeAt(angleDeg: number) {
@@ -52,9 +64,11 @@ const pct = (v: number) => `${(v / SIZE) * 100}%`
 
 function DeviceSphere({
   node,
+  label,
   hovered,
 }: {
   node: DeviceNode
+  label: string
   hovered: boolean
 }) {
   const Icon = node.icon
@@ -76,13 +90,19 @@ function DeviceSphere({
         />
       </div>
       <span className="absolute left-1/2 top-full mt-1.5 -translate-x-1/2 whitespace-nowrap text-[11px] font-medium text-muted-foreground">
-        {node.label}
+        {label}
       </span>
     </div>
   )
 }
 
-function StoreHub({ animate }: { animate: boolean }) {
+function StoreHub({
+  animate,
+  labels,
+}: {
+  animate: boolean
+  labels: SyncDiagramLabels['hub']
+}) {
   return (
     <div
       className="absolute -translate-x-1/2 -translate-y-1/2"
@@ -101,17 +121,21 @@ function StoreHub({ animate }: { animate: boolean }) {
           }}
         >
           <span className="text-[13px] font-semibold text-white">
-            Your store
+            {labels.store}
           </span>
-          <span className="text-[10.5px] text-white/90">WooCommerce</span>
-          <span className="text-[9px] text-white/70">+ WCPOS plugin</span>
+          <span className="text-[10.5px] text-white/90">{labels.platform}</span>
+          <span className="text-[9px] text-white/70">{labels.plugin}</span>
         </div>
       </motion.div>
     </div>
   )
 }
 
-export function SyncDiagram() {
+export function SyncDiagram({
+  labels,
+}: {
+  labels: SyncDiagramLabels
+}) {
   const reduced = usePrefersReducedMotion()
   const container = useRef<HTMLDivElement>(null)
   const wrappers = useRef<(HTMLDivElement | null)[]>([])
@@ -214,7 +238,7 @@ export function SyncDiagram() {
     <div
       ref={container}
       role="img"
-      aria-label="A WooCommerce store with the WCPOS plugin sits at the centre, connected over a REST API to the desktop, iOS, Android and web apps, which all stay in sync."
+      aria-label={labels.ariaLabel}
       className="relative aspect-square w-full max-w-[440px]"
       onPointerMove={reduced ? undefined : onPointerMove}
       onPointerLeave={
@@ -298,11 +322,15 @@ export function SyncDiagram() {
             onFocus={reduced ? undefined : () => setHover(i)}
             onBlur={reduced ? undefined : () => setHover(null)}
           >
-            <DeviceSphere node={node} hovered={hovered === i} />
+            <DeviceSphere
+              node={node}
+              label={labels.devices[node.key]}
+              hovered={hovered === i}
+            />
           </div>
         )
       })}
-      <StoreHub animate={!reduced} />
+      <StoreHub animate={!reduced} labels={labels.hub} />
     </div>
   )
 }

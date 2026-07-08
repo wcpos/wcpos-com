@@ -1,7 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { POST } from './route'
 import { AccountExistsError } from '@/lib/api/errors'
-import { PASSWORD_TOO_SHORT_MESSAGE } from '@/lib/password-policy'
 
 const mockRegister = vi.fn()
 const mockSetAuthToken = vi.fn()
@@ -61,7 +60,7 @@ describe('POST /api/auth/register', () => {
     const json = await response.json()
 
     expect(response.status).toBe(429)
-    expect(json.error).toBe('Too many attempts. Please try again later.')
+    expect(json.errorCode).toBe('rate_limited')
     expect(mockRegister).not.toHaveBeenCalled()
   })
 
@@ -80,7 +79,7 @@ describe('POST /api/auth/register', () => {
 
     expect(response.status).toBe(409)
     expect(json).toEqual({
-      error: 'Identity with email already exists',
+      errorCode: 'account_exists',
       code: 'ACCOUNT_EXISTS',
     })
     // Duplicate accounts are routine user behaviour — info, never error
@@ -99,7 +98,7 @@ describe('POST /api/auth/register', () => {
     const json = await response.json()
 
     expect(response.status).toBe(400)
-    expect(json).toEqual({ error: 'Password is too weak' })
+    expect(json).toEqual({ errorCode: 'registration_failed' })
     expect(errorMock).toHaveBeenCalledTimes(1)
     expect(infoMock).not.toHaveBeenCalled()
   })
@@ -109,7 +108,7 @@ describe('POST /api/auth/register', () => {
     const json = await response.json()
 
     expect(response.status).toBe(400)
-    expect(json).toEqual({ error: 'Email and password are required' })
+    expect(json).toEqual({ errorCode: 'credentials_required' })
     expect(mockRegister).not.toHaveBeenCalled()
   })
 
@@ -121,7 +120,7 @@ describe('POST /api/auth/register', () => {
     const json = await response.json()
 
     expect(response.status).toBe(400)
-    expect(json).toEqual({ error: PASSWORD_TOO_SHORT_MESSAGE })
+    expect(json).toEqual({ errorCode: 'password_too_short' })
     expect(mockRegister).not.toHaveBeenCalled()
   })
 
@@ -140,6 +139,48 @@ describe('POST /api/auth/register', () => {
     expect(response.status).toBe(200)
     expect(json).toEqual({ success: true, customer: { id: 'cus_1' } })
     expect(mockRegister).toHaveBeenCalledTimes(1)
+  })
+
+  it('passes the requested locale into registration for customer email metadata', async () => {
+    mockRegister.mockResolvedValueOnce({
+      token: 'jwt',
+      customer: { id: 'cus_1' },
+    })
+
+    const response = await postRegister({
+      email: 'new@example.com',
+      password: 'password123',
+      firstName: 'Jane',
+      lastName: 'Doe',
+      locale: 'fr-FR',
+    })
+
+    expect(response.status).toBe(200)
+    expect(mockRegister).toHaveBeenCalledWith({
+      email: 'new@example.com',
+      password: 'password123',
+      firstName: 'Jane',
+      lastName: 'Doe',
+      locale: 'fr-FR',
+    })
+  })
+
+  it('passes the first supported weighted locale-list candidate into registration', async () => {
+    mockRegister.mockResolvedValueOnce({
+      token: 'jwt',
+      customer: { id: 'cus_1' },
+    })
+
+    const response = await postRegister({
+      email: 'new@example.com',
+      password: 'password123',
+      locale: 'pl-PL;q=1.0, fr-FR;q=0.9, de-DE;q=0.8',
+    })
+
+    expect(response.status).toBe(200)
+    expect(mockRegister).toHaveBeenCalledWith(expect.objectContaining({
+      locale: 'fr-FR',
+    }))
   })
 
   it('tracks signup_completed with the visitor distinct-id from the cookie', async () => {
@@ -194,7 +235,7 @@ describe('POST /api/auth/register', () => {
     const json = await response.json()
 
     expect(response.status).toBe(400)
-    expect(json).toEqual({ error: 'Email and password are required' })
+    expect(json).toEqual({ errorCode: 'credentials_required' })
     expect(mockRegister).not.toHaveBeenCalled()
     expect(errorMock).not.toHaveBeenCalled()
   })

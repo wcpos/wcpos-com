@@ -19,67 +19,20 @@ type Kind = 'desktop' | 'mobile' | 'web'
 interface Platform {
   kind: Kind
   icon: LucideIcon
-  name: string
-  /** Short descriptor shown after the version, e.g. "Apple Silicon · .dmg". */
-  short: string
   href: string
-  /** Primary button label. */
-  action: string
 }
 
 const ELECTRON = (slug: string) =>
   `https://updates.wcpos.com/v1/electron/download/${slug}`
 
 export const PLATFORMS: Record<PlatformKey, Platform> = {
-  'mac-arm': {
-    kind: 'desktop',
-    icon: Laptop,
-    name: 'macOS',
-    short: 'Apple Silicon · .dmg',
-    href: ELECTRON('darwin-arm64'),
-    action: 'Download for macOS',  },
-  'mac-intel': {
-    kind: 'desktop',
-    icon: Laptop,
-    name: 'macOS (Intel)',
-    short: 'Intel · .dmg',
-    href: ELECTRON('darwin-x64'),
-    action: 'Download for macOS',  },
-  win: {
-    kind: 'desktop',
-    icon: Laptop,
-    name: 'Windows',
-    short: 'Windows 10/11 · .exe',
-    href: ELECTRON('win32-x64'),
-    action: 'Download for Windows',  },
-  linux: {
-    kind: 'desktop',
-    icon: Laptop,
-    name: 'Linux',
-    short: '.AppImage',
-    href: ELECTRON('linux-x64'),
-    action: 'Download for Linux',  },
-  ios: {
-    kind: 'mobile',
-    icon: Smartphone,
-    name: 'iOS & iPad',
-    short: 'Public TestFlight beta',
-    href: 'https://testflight.apple.com/join/JGBdVRrW',
-    action: 'Join the iOS beta',  },
-  android: {
-    kind: 'mobile',
-    icon: Smartphone,
-    name: 'Android',
-    short: 'Google Play testing beta',
-    href: 'https://play.google.com/apps/testing/com.wcpos.main',
-    action: 'Join the Android beta',  },
-  web: {
-    kind: 'web',
-    icon: Globe,
-    name: 'Web',
-    short: 'No install needed',
-    href: 'https://demo.wcpos.com/pos',
-    action: 'Open the web demo',  },
+  'mac-arm': { kind: 'desktop', icon: Laptop, href: ELECTRON('darwin-arm64') },
+  'mac-intel': { kind: 'desktop', icon: Laptop, href: ELECTRON('darwin-x64') },
+  win: { kind: 'desktop', icon: Laptop, href: ELECTRON('win32-x64') },
+  linux: { kind: 'desktop', icon: Laptop, href: ELECTRON('linux-x64') },
+  ios: { kind: 'mobile', icon: Smartphone, href: 'https://testflight.apple.com/join/JGBdVRrW' },
+  android: { kind: 'mobile', icon: Smartphone, href: 'https://play.google.com/apps/testing/com.wcpos.main' },
+  web: { kind: 'web', icon: Globe, href: 'https://demo.wcpos.com/pos' },
 }
 
 /**

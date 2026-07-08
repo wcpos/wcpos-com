@@ -18,7 +18,7 @@ export async function GET() {
     
     if (!release) {
       return NextResponse.json(
-        { error: 'No release found' },
+        { errorCode: 'release_not_found' },
         { status: 404 }
       )
     }
@@ -39,7 +39,7 @@ export async function GET() {
   } catch (error) {
     apiLogger.error`Failed to fetch desktop release: ${error}`
     return NextResponse.json(
-      { error: 'Failed to fetch release information' },
+      { errorCode: 'failed_fetch_release_information' },
       { status: 500 }
     )
   }

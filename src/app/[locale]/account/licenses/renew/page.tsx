@@ -1,4 +1,4 @@
-import { setRequestLocale } from 'next-intl/server'
+import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { connection } from 'next/server'
 import { Suspense } from 'react'
 import { redirect } from '@/i18n/navigation'
@@ -17,9 +17,17 @@ import { getLicenseDisplayStatus } from '@/lib/license'
 import { getPlanByPolicyId, YEARLY_PRO_HANDLE } from '@/lib/plans'
 import type { Metadata } from 'next'
 
-export const metadata: Metadata = {
-  title: 'Renew your licence',
-  robots: { index: false, follow: false },
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}): Promise<Metadata> {
+  const { locale } = await params
+  const t = await getTranslations({ locale, namespace: 'account.renew' })
+  return {
+    title: t('pageTitle'),
+    robots: { index: false, follow: false },
+  }
 }
 
 async function RenewContent({ locale }: { locale: string }) {
@@ -91,6 +99,7 @@ export default async function RenewPage({
 }) {
   const { locale } = await params
   setRequestLocale(locale)
+  const t = await getTranslations({ locale, namespace: 'account.renew' })
 
   return (
     <div className="space-y-6">
@@ -100,9 +109,9 @@ export default async function RenewPage({
         className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground"
       >
         <ArrowLeft className="mr-2 h-4 w-4" />
-        Back to licences
+        {t('backToLicences')}
       </Link>
-      <PageHeader title="Renew your licence" />
+      <PageHeader title={t('pageTitle')} />
       <Suspense
         fallback={
           <div className="mx-auto max-w-lg space-y-6">

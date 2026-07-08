@@ -14,20 +14,6 @@ import type { MedusaProduct, MedusaProductVariant } from '@/types/medusa'
 const PRO_CHECKOUT_EXPERIMENT = 'pro_checkout_v1'
 const DEFAULT_CURRENCY_CODE = 'usd'
 
-/**
- * Schema.org copy only. Customer-facing plan copy lives in the `pro.buyBox`
- * message namespace (10 locales) — the catalog carries domain data (prices,
- * handles, checkout paths), not display prose.
- */
-interface ProOfferCopy {
-  schemaName: string
-}
-
-const OFFER_COPY: Record<PlanId, ProOfferCopy> = {
-  yearly: { schemaName: 'Yearly License' },
-  lifetime: { schemaName: 'Lifetime License' },
-}
-
 function fallbackProduct(
   handle: string,
   title: string,
@@ -146,8 +132,22 @@ export interface ProOfferCartInput {
   }>
 }
 
-function compactPrice(amount: number, currencyCode: string): string {
-  return formatPrice(amount, currencyCode).replace(/\.00$/, '')
+function compactPrice(
+  amount: number,
+  currencyCode: string,
+  locale: string
+): string {
+  return formatPrice(
+    amount,
+    currencyCode,
+    locale,
+    Number.isInteger(amount)
+      ? {
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 0,
+        }
+      : undefined
+  )
 }
 
 function schemaPrice(amount: number): string {
@@ -167,7 +167,8 @@ function resolveCurrentProVariant(
 
 export function buildProOfferCatalog(
   products: MedusaProduct[],
-  currencyCode: string = DEFAULT_CURRENCY_CODE
+  currencyCode: string = DEFAULT_CURRENCY_CODE,
+  locale: string = 'en-US'
 ): ProOffer[] {
   return products
     .map((product): ProOffer | null => {
@@ -195,8 +196,8 @@ export function buildProOfferCatalog(
         price: {
           amount,
           currencyCode,
-          formatted: formatPrice(amount, currencyCode),
-          compact: compactPrice(amount, currencyCode),
+          formatted: formatPrice(amount, currencyCode, locale),
+          compact: compactPrice(amount, currencyCode, locale),
           schemaPrice: schemaPrice(amount),
         },
         checkoutPath: `/pro/checkout?${checkoutParams.toString()}`,
@@ -213,14 +214,16 @@ export async function getProOfferCatalog(
    * unavailable); request-scoped callers omit it and the backend resolves
    * from the request host.
    */
-  storeEnv?: StoreEnvironment
+  storeEnv?: StoreEnvironment,
+  locale: string = 'en-US'
 ): Promise<ProOfferCatalog> {
   const products = await getProducts(storeEnv)
-  const offers = buildProOfferCatalog(products, currencyCode)
+  const offers = buildProOfferCatalog(products, currencyCode, locale)
 
   const missing = buildProOfferCatalog(
     FALLBACK_PRO_PRODUCTS,
-    currencyCode
+    currencyCode,
+    locale
   ).filter(
     (fallback) => !offers.some((offer) => offer.planId === fallback.planId)
   )
@@ -321,27 +324,51 @@ function getOffer(offers: ProOffer[], planId: PlanId): ProOffer | null {
   return offers.find((offer) => offer.planId === planId) ?? null
 }
 
-export function formatHomeProPriceSummary(offers: ProOffer[]): string | null {
+type ProPriceSummaryTranslateFn = (values: {
+  yearly: string
+  lifetime: string
+  currency: string
+}) => string
+
+export function formatHomeProPriceSummary(
+  offers: ProOffer[],
+  t: ProPriceSummaryTranslateFn
+): string | null {
   const yearly = getOffer(offers, 'yearly')
   const lifetime = getOffer(offers, 'lifetime')
   if (!yearly || !lifetime) return null
 
   const currency = yearly.price.currencyCode.toUpperCase()
-  return `${yearly.price.compact}/year or ${lifetime.price.compact} lifetime (${currency}). No per-register fees.`
+  return t({
+    yearly: yearly.price.compact,
+    lifetime: lifetime.price.compact,
+    currency,
+  })
 }
 
-export function formatFounderProPriceSummary(offers: ProOffer[]): string | null {
+export function formatFounderProPriceSummary(
+  offers: ProOffer[],
+  t: ProPriceSummaryTranslateFn
+): string | null {
   const yearly = getOffer(offers, 'yearly')
   const lifetime = getOffer(offers, 'lifetime')
   if (!yearly || !lifetime) return null
 
-  return `${yearly.price.compact}/yr or ${lifetime.price.compact} once`
+  const currency = yearly.price.currencyCode.toUpperCase()
+  return t({
+    yearly: yearly.price.compact,
+    lifetime: lifetime.price.compact,
+    currency,
+  })
 }
 
-export function buildProOfferSchemaOffers(offers: ProOffer[]) {
+export function buildProOfferSchemaOffers(
+  offers: ProOffer[],
+  planName: (planId: PlanId) => string
+) {
   return offers.map((offer) => ({
     '@type': 'Offer',
-    name: OFFER_COPY[offer.planId].schemaName,
+    name: planName(offer.planId),
     priceCurrency: offer.price.currencyCode.toUpperCase(),
     price: offer.price.schemaPrice,
     availability: 'https://schema.org/InStock',

@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl'
 import { cn } from '@/lib/utils'
 import { Section } from '@/components/ui/section'
 import { CloudSync } from './acts/cloud-sync'
@@ -46,6 +47,8 @@ function StageStrip({
 }
 
 export function StoryStatic() {
+  const t = useTranslations('home.story')
+
   return (
     <div data-testid="story-static">
       <Section tone="none" spacing="hero" className={cn('overflow-hidden', styles.woodCounterLight)}>
@@ -64,7 +67,7 @@ export function StoryStatic() {
           <picture>
             <img
               src="/images/story/counter-photo-card.webp"
-              alt="A shop counter with a tablet running the WCPOS register, a receipt printer, a card terminal and a barcode scanner"
+              alt={t('static.alt')}
               width={1280}
               height={722}
               loading="lazy"

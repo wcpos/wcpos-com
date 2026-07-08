@@ -86,7 +86,7 @@ async function completeOAuthCallback(
  * provider metadata (not from the request body) for security.
  * POST /store/auth/account-link
  */
-async function linkOrCreateCustomer(token: string): Promise<void> {
+async function linkOrCreateCustomer(token: string, locale?: string): Promise<void> {
   const response = await fetch(
     `${await getMedusaBackendUrl()}/store/auth/account-link`,
     {
@@ -96,6 +96,7 @@ async function linkOrCreateCustomer(token: string): Promise<void> {
         Authorization: `Bearer ${token}`,
         'x-publishable-api-key': await getMedusaPublishableKey(),
       },
+      ...(locale ? { body: JSON.stringify({ locale }) } : {}),
     }
   )
 
@@ -166,6 +167,11 @@ export interface OAuthSession {
   linked: boolean
 }
 
+export interface OAuthSessionOptions {
+  /** Storefront locale from the sign-in surface, used for newly-created customers. */
+  locale?: string
+}
+
 /**
  * Establish a customer session from an OAuth callback and persist it in the
  * session cookie. Returns the decoded final token so the caller can drive
@@ -182,7 +188,8 @@ export interface OAuthSession {
  */
 export async function establishOAuthSession(
   provider: string,
-  params: Record<string, string>
+  params: Record<string, string>,
+  options: OAuthSessionOptions = {}
 ): Promise<OAuthSession> {
   const initialToken = await completeOAuthCallback(provider, params)
   const linked = !decodeMedusaToken(initialToken).actor_id
@@ -191,7 +198,7 @@ export async function establishOAuthSession(
   if (linked) {
     // No customer linked yet — link to existing or create new, then refresh
     // so the freshly-assigned actor_id is present in the persisted token.
-    await linkOrCreateCustomer(initialToken)
+    await linkOrCreateCustomer(initialToken, options.locale)
     token = await refreshToken(initialToken)
   }
   await setAuthToken(token)

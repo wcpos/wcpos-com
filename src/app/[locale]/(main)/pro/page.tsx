@@ -32,18 +32,20 @@ import {
 import { Section } from '@/components/ui/section'
 import { SectionHeading } from '@/components/ui/section-heading'
 
+const PRO_MESSAGE_NAMESPACE = 'pro'
+
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ locale: string }>
 }): Promise<Metadata> {
   const { locale } = await params
+  const t = await getTranslations({ locale, namespace: PRO_MESSAGE_NAMESPACE })
   return marketingMetadata({
     locale,
     path: '/pro',
-    title: 'Pro - Premium Features',
-    description:
-      'Upgrade WCPOS with Pro: terminal payments, stock and price editing, order and customer management, end-of-day reports, and priority support.',
+    title: t('metadata.title'),
+    description: t('metadata.description'),
   })
 }
 
@@ -53,11 +55,15 @@ export async function generateMetadata({
  * serves live; the two must never share a cache entry). Experiment variant
  * and locale stay outside the boundary as pure string work.
  */
-async function getCachedProOfferCatalog(envName: StoreEnvironmentName) {
+async function getCachedProOfferCatalog(
+  envName: StoreEnvironmentName,
+  locale: string
+) {
   'use cache'
   const catalog = await getProOfferCatalog(
     undefined,
-    getStoreEnvironmentByName(envName)
+    getStoreEnvironmentByName(envName),
+    locale
   )
   applyProOfferCatalogCachePolicy(catalog)
   return catalog
@@ -96,8 +102,8 @@ async function BuyBoxWithExperiment({ locale }: { locale: string }) {
 
   const storeEnv = await getRequestStoreEnvironment()
   const [t, { offers }] = await Promise.all([
-    getTranslations({ locale, namespace: 'pro' }),
-    getCachedProOfferCatalog(storeEnv.name),
+    getTranslations({ locale, namespace: PRO_MESSAGE_NAMESPACE }),
+    getCachedProOfferCatalog(storeEnv.name, locale),
   ])
   // next-intl's Translator is key-typed; the options builder takes a plain
   // string-keyed translate function.
@@ -157,9 +163,12 @@ async function BuyBoxWithExperiment({ locale }: { locale: string }) {
   )
 }
 
-async function ProProductJsonLd() {
+export async function ProProductJsonLd({ locale }: { locale: string }) {
   // SEO metadata is prerendered into the shared static shell — always live.
-  const { offers } = await getCachedProOfferCatalog('live')
+  const [t, { offers }] = await Promise.all([
+    getTranslations({ locale, namespace: PRO_MESSAGE_NAMESPACE }),
+    getCachedProOfferCatalog('live', locale),
+  ])
 
   return (
     <script
@@ -168,14 +177,15 @@ async function ProProductJsonLd() {
         __html: JSON.stringify({
           '@context': 'https://schema.org',
           '@type': 'Product',
-          name: 'WCPOS Pro',
-          description:
-            'Premium Point of Sale plugin for WooCommerce. Adds payment terminal integration, stock and price editing, order and customer management, end-of-day reports, custom payment gateways, and priority support.',
+          name: t('schema.name'),
+          description: t('schema.description'),
           brand: {
             '@type': 'Organization',
             name: 'WCPOS',
           },
-          offers: buildProOfferSchemaOffers(offers),
+          offers: buildProOfferSchemaOffers(offers, (planId) =>
+            t(`schema.offers.${planId}`)
+          ),
         }),
       }}
     />
@@ -189,7 +199,7 @@ export default async function ProPage({
 }) {
   const { locale } = await params
   setRequestLocale(locale)
-  const t = await getTranslations({ locale, namespace: 'pro' })
+  const t = await getTranslations({ locale, namespace: PRO_MESSAGE_NAMESPACE })
 
   const features = PRO_FEATURE_KEYS.map(({ key, Icon }) => ({
     Icon,
@@ -200,15 +210,15 @@ export default async function ProPage({
   return (
     <main>
       <Suspense fallback={null}>
-        <ProProductJsonLd />
+        <ProProductJsonLd locale={locale} />
       </Suspense>
 
       <Section tone="default" spacing="hero">
         <SectionHeading
           as="h1"
           size="hero"
-          title="WCPOS Pro"
-          subtitle="Everything in the free POS, plus payment terminals, store management at the register, end-of-day reports, and priority support."
+          title={t('hero.title')}
+          subtitle={t('hero.subtitle')}
         />
       </Section>
 

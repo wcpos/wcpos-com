@@ -1,7 +1,20 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useSyncExternalStore } from 'react'
 import { clientLogger } from '@/lib/client-logger'
+import {
+  browserLanguagePreferences,
+  rootFallbackCopy,
+  rootFallbackHref,
+} from '@/lib/root-fallback-i18n'
+
+function subscribeToLanguagePreferences() {
+  return () => {}
+}
+
+function noLanguagePreferences() {
+  return undefined
+}
 
 /**
  * Last-resort error boundary. Renders when the root layout (or anything
@@ -29,8 +42,16 @@ export default function GlobalError({
     }
   }, [error])
 
+  const languagePreferences = useSyncExternalStore(
+    subscribeToLanguagePreferences,
+    browserLanguagePreferences,
+    noLanguagePreferences
+  )
+  const copy = rootFallbackCopy(languagePreferences)
+  const homeHref = rootFallbackHref(copy.locale, '/')
+
   return (
-    <html lang="en">
+    <html lang={copy.locale} dir={copy.direction}>
       <body
         style={{
           margin: 0,
@@ -44,13 +65,20 @@ export default function GlobalError({
           color: '#171717',
         }}
       >
-        <main style={{ textAlign: 'center', padding: '2rem', maxWidth: '28rem' }}>
-          <h1 style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: '0.5rem' }}>
-            Something went wrong
+        <main
+          style={{ textAlign: 'center', padding: '2rem', maxWidth: '28rem' }}
+        >
+          <h1
+            style={{
+              fontSize: '1.5rem',
+              fontWeight: 700,
+              marginBottom: '0.5rem',
+            }}
+          >
+            {copy.errors.genericTitle}
           </h1>
           <p style={{ color: '#525252', marginBottom: '1.5rem' }}>
-            An unexpected error occurred. The error has been reported. You can
-            try again, or come back later.
+            {copy.errors.genericDescription}
           </p>
           <div
             style={{
@@ -73,11 +101,10 @@ export default function GlobalError({
                 cursor: 'pointer',
               }}
             >
-              Try again
+              {copy.errors.tryAgain}
             </button>
-            {/* eslint-disable-next-line @next/next/no-html-link-for-pages -- intentional full reload: client app state is broken when the global boundary renders */}
             <a
-              href="/"
+              href={homeHref}
               style={{
                 padding: '0.5rem 1rem',
                 borderRadius: '0.375rem',
@@ -90,7 +117,7 @@ export default function GlobalError({
                 display: 'inline-block',
               }}
             >
-              Go to homepage
+              {copy.errors.goHome}
             </a>
           </div>
         </main>

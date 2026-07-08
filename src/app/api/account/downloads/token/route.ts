@@ -10,6 +10,18 @@ import { createRateLimiter, clientIp } from '@/lib/rate-limit'
 
 const TOKEN_TTL_MS = 60_000
 
+type DownloadTokenErrorCode =
+  | 'unauthorized'
+  | 'download_token_secret_missing'
+  | 'rate_limited'
+  | 'release_not_found'
+  | 'forbidden'
+  | 'internal'
+
+function errorResponse(errorCode: DownloadTokenErrorCode, status: number) {
+  return NextResponse.json({ errorCode }, { status })
+}
+
 // Per-customer gate. Generous (a real customer clicks download a handful of
 // times) but stops a compromised session from minting tokens in a tight loop.
 // Fail-open — a Redis hiccup must never block a paying customer's download.
@@ -24,7 +36,7 @@ export async function POST(request: NextRequest) {
     const ip = clientIp(request)
     const customer = await getCustomer()
     if (!customer) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+      return errorResponse('unauthorized', 401)
     }
 
     // Deliberately no fallback: broader API/customer tokens must never be used
@@ -33,19 +45,13 @@ export async function POST(request: NextRequest) {
     if (!secret) {
       // Infra broken — every paying customer is blocked. fatal → Discord + email.
       downloadLogger.fatal`Download token secret not configured (customer ${customer.id})`
-      return NextResponse.json(
-        { error: 'Download token secret not configured' },
-        { status: 500 }
-      )
+      return errorResponse('download_token_secret_missing', 500)
     }
 
     const { success } = await limiter.consume(customer.id)
     if (!success) {
       downloadLogger.warn`Download token rate limited. customer=${customer.id} ip=${ip}`
-      return NextResponse.json(
-        { error: 'Too many download requests. Please wait a moment and try again.' },
-        { status: 429 }
-      )
+      return errorResponse('rate_limited', 429)
     }
 
     const body = await request.json().catch(() => ({}))
@@ -61,10 +67,10 @@ export async function POST(request: NextRequest) {
     if (!selection.ok) {
       if (selection.reason === 'not_found') {
         downloadLogger.warn`Download token requested for missing release version=${version} customer=${customer.id} ip=${ip}`
-        return NextResponse.json({ error: 'Release not found' }, { status: 404 })
+        return errorResponse('release_not_found', 404)
       }
       downloadLogger.warn`Download token forbidden. version=${version} customer=${customer.id} ip=${ip}`
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+      return errorResponse('forbidden', 403)
     }
 
     const release = selection.release
@@ -85,9 +91,6 @@ export async function POST(request: NextRequest) {
     })
   } catch (error) {
     downloadLogger.error`Download token endpoint failed: ${error}`
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    )
+    return errorResponse('internal', 500)
   }
 }

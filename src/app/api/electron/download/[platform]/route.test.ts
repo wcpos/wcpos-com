@@ -37,7 +37,7 @@ describe('GET /api/electron/download/[platform]', () => {
   it('defaults to the latest version when none is specified', async () => {
     mockGetDownloadUrl.mockResolvedValueOnce({
       status: 404,
-      error: 'No release found',
+      errorCode: 'release_not_found',
     })
 
     await GET(...makeArgs('darwin-arm64'))
@@ -48,7 +48,7 @@ describe('GET /api/electron/download/[platform]', () => {
   it('passes the requested version from the query string', async () => {
     mockGetDownloadUrl.mockResolvedValueOnce({
       status: 404,
-      error: 'No release found',
+      errorCode: 'release_not_found',
     })
 
     await GET(...makeArgs('win32-x64', '?version=1.4.0'))
@@ -59,14 +59,14 @@ describe('GET /api/electron/download/[platform]', () => {
   it('returns the error status when the service reports an error', async () => {
     mockGetDownloadUrl.mockResolvedValueOnce({
       status: 404,
-      error: 'No release found',
+      errorCode: 'release_not_found',
     })
 
     const response = await GET(...makeArgs())
     const json = await response.json()
 
     expect(response.status).toBe(404)
-    expect(json.error).toBe('No release found')
+    expect(json).toEqual({ status: 404, errorCode: 'release_not_found' })
   })
 
   it('redirects to the GitHub download URL with 302', async () => {
@@ -89,6 +89,6 @@ describe('GET /api/electron/download/[platform]', () => {
     const json = await response.json()
 
     expect(response.status).toBe(500)
-    expect(json.error).toBe('Internal server error')
+    expect(json).toEqual({ status: 500, errorCode: 'internal_server_error' })
   })
 })

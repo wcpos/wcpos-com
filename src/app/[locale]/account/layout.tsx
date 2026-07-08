@@ -88,7 +88,7 @@ export default async function AccountLayout({
         <SiteHeader />
       </Suspense>
       <Suspense fallback={null}>
-        <ImpersonationBanner />
+        <ImpersonationBanner locale={locale} />
       </Suspense>
       <Suspense fallback={null}>
         <AccountGate locale={locale} />

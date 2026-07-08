@@ -55,6 +55,28 @@ describe('GET /api/pro/download/[version]', () => {
     )
 
     expect(response.status).toBe(400)
+    await expect(response.json()).resolves.toEqual({
+      errorCode: 'missing_required_parameters',
+    })
+  })
+
+  it('returns a stable error code when license validation fails', async () => {
+    mockValidateLicense.mockResolvedValueOnce({
+      status: 401,
+      error: 'Invalid license key',
+    })
+
+    const response = await GET(
+      new NextRequest(
+        'http://localhost/api/pro/download/latest?key=BAD&instance=INST'
+      ),
+      { params: Promise.resolve({ version: 'latest' }) }
+    )
+
+    expect(response.status).toBe(401)
+    await expect(response.json()).resolves.toEqual({
+      errorCode: 'license_validation_failed',
+    })
   })
 
   it('returns 403 for a suspended license even with a future expiry (ADR-0001)', async () => {
@@ -79,6 +101,9 @@ describe('GET /api/pro/download/[version]', () => {
     )
 
     expect(response.status).toBe(403)
+    await expect(response.json()).resolves.toEqual({
+      errorCode: 'requested_version_not_available_for_license',
+    })
   })
 
   it('streams the asset for an entitled version', async () => {
@@ -138,5 +163,8 @@ describe('GET /api/pro/download/[version]', () => {
     )
 
     expect(response.status).toBe(502)
+    await expect(response.json()).resolves.toEqual({
+      errorCode: 'failed_fetch_release_asset',
+    })
   })
 })

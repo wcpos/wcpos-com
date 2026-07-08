@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useSyncExternalStore } from 'react'
+import { useTranslations } from 'next-intl'
 import { Download, ArrowRight } from 'lucide-react'
 import { Section } from '@/components/ui/section'
 import { Badge } from '@/components/ui/badge'
@@ -17,21 +18,7 @@ import {
 } from '@/components/downloads/platforms'
 import { cn } from '@/lib/utils'
 
-/**
- * One tile per device family — the two mac builds share the macOS tile
- * (browsers can't reliably tell Apple Silicon from Intel, so the Intel build
- * is a secondary link in the panel; `tileFor` owns that collapse).
- */
-const TILES: PlatformKey[] = [
-  'mac-arm',
-  'win',
-  'linux',
-  'ios',
-  'android',
-  'web',
-]
-
-/** Platform never changes within a session, so the store never emits. */
+const TILES: PlatformKey[] = ['mac-arm', 'win', 'linux', 'ios', 'android', 'web']
 const subscribePlatform = () => () => {}
 
 export function DownloadsHero({
@@ -39,9 +26,8 @@ export function DownloadsHero({
 }: {
   desktopVersion?: string | null
 }) {
-  // Server renders a desktop default; the client reads the real platform.
-  // useSyncExternalStore keeps SSR and hydration consistent without a
-  // setState-in-effect (the store is read-only and never emits).
+  const t = useTranslations('downloads.hero')
+  const platformT = useTranslations('downloads.platforms')
   const detected = useSyncExternalStore<PlatformKey>(
     subscribePlatform,
     () =>
@@ -53,8 +39,6 @@ export function DownloadsHero({
     () => 'mac-arm',
   )
 
-  // Until the visitor picks a tile, the selection follows the detected
-  // platform (derived, so SSR and hydration stay consistent).
   const [picked, setPicked] = useState<PlatformKey | null>(null)
   const selected = picked ?? tileFor(detected)
   const isDetected = selected === tileFor(detected)
@@ -62,10 +46,12 @@ export function DownloadsHero({
   const info = PLATFORMS[selected]
   const Icon = info.icon
   const PrimaryIcon = info.kind === 'desktop' ? Download : ArrowRight
+  const platformName = platformT(`${selected}.name`)
+  const platformShort = platformT(`${selected}.short`)
   const meta =
     info.kind === 'desktop' && desktopVersion
-      ? `Version ${desktopVersion} · ${info.short}`
-      : info.short
+      ? t('versionMeta', { version: desktopVersion, platform: platformShort })
+      : platformShort
 
   return (
     <Section
@@ -74,14 +60,14 @@ export function DownloadsHero({
       className="border-b bg-gradient-to-b from-muted/40 to-background"
     >
       <div className="mx-auto max-w-3xl text-center">
-        <Eyebrow>Downloads</Eyebrow>
+        <Eyebrow>{t('eyebrow')}</Eyebrow>
         <h1 className="mt-4 text-4xl font-bold leading-tight tracking-tight md:text-5xl">
-          One till, every device.
+          {t('title')}
         </h1>
 
         <div
           role="group"
-          aria-label="Choose your platform"
+          aria-label={t('platformChooserLabel')}
           className="mt-10 flex flex-wrap justify-center gap-2"
         >
           {TILES.map((key) => {
@@ -101,7 +87,7 @@ export function DownloadsHero({
                 )}
               >
                 <TileIcon className="h-6 w-6" aria-hidden="true" />
-                {PLATFORMS[key].name}
+                {platformT(`${key}.name`)}
               </button>
             )
           })}
@@ -111,38 +97,37 @@ export function DownloadsHero({
           <div className="flex flex-wrap items-center justify-center gap-3">
             <Icon className="h-6 w-6 text-muted-foreground" aria-hidden="true" />
             <span className="text-lg font-semibold tracking-tight">
-              {info.name}
+              {platformName}
             </span>
-            {isDetected && <Badge variant="brand-tint">Detected</Badge>}
+            {isDetected && <Badge variant="brand-tint">{t('detected')}</Badge>}
           </div>
           <p className="mt-1 text-sm text-muted-foreground">{meta}</p>
           <Button asChild variant="brand" size="xl" className="mt-6 w-full">
             <a href={info.href}>
               <PrimaryIcon aria-hidden="true" />
-              {info.action}
+              {platformT(`${selected}.action`)}
             </a>
           </Button>
           {selected === 'mac-arm' && (
             <p className="mt-3 text-xs text-muted-foreground">
-              On an Intel Mac?{' '}
-              <TextLink href={PLATFORMS['mac-intel'].href}>
-                Get the Intel build
-              </TextLink>
+              {t.rich('intelMac', {
+                intel: (chunks) => (
+                  <TextLink href={PLATFORMS['mac-intel'].href}>{chunks}</TextLink>
+                ),
+              })}
             </p>
           )}
         </Card>
 
-        {/* The tiles need JS; without it, list every build so no platform is
-            unreachable from the hero. */}
         <noscript>
           <ul className="mx-auto mt-6 max-w-xl space-y-2 text-left text-sm">
             {(Object.keys(PLATFORMS) as PlatformKey[]).map((key) => (
               <li key={key}>
                 <TextLink href={PLATFORMS[key].href}>
-                  {PLATFORMS[key].name}
+                  {platformT(`${key}.name`)}
                 </TextLink>{' '}
                 <span className="text-muted-foreground">
-                  {PLATFORMS[key].short}
+                  {platformT(`${key}.short`)}
                 </span>
               </li>
             ))}
@@ -150,20 +135,22 @@ export function DownloadsHero({
         </noscript>
 
         <p className="mt-6 text-sm text-muted-foreground">
-          Every app connects to the{' '}
-          <TextLink
-            href="https://wordpress.org/plugins/woocommerce-pos/"
-            onClick={() =>
-              trackClientEvent('download_clicked', {
-                plugin: 'free',
-                source: 'wordpress_org',
-                page: '/downloads',
-              })
-            }
-          >
-            free WordPress plugin
-          </TextLink>{' '}
-          — install it first.
+          {t.rich('pluginNotice', {
+            plugin: (chunks) => (
+              <TextLink
+                href="https://wordpress.org/plugins/woocommerce-pos/"
+                onClick={() =>
+                  trackClientEvent('download_clicked', {
+                    plugin: 'free',
+                    source: 'wordpress_org',
+                    page: '/downloads',
+                  })
+                }
+              >
+                {chunks}
+              </TextLink>
+            ),
+          })}
         </p>
       </div>
     </Section>

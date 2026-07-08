@@ -7,7 +7,31 @@ import {
   restoreCheckoutSafetyState,
   shouldBlockCheckout,
   type CheckoutFailure,
+  type CheckoutFailureMessages,
 } from './checkout-safety'
+
+const TEST_MESSAGES: CheckoutFailureMessages = {
+  genericPaymentFailed: 'generic payment failed',
+  genericCardFailed: 'generic card failed',
+  unexpectedPaymentStatus: 'contact support before trying again',
+  orderPending: 'do not pay again',
+  stripeDeclines: {
+    insufficientFunds: 'insufficient funds',
+  },
+  stripeCodes: {
+    cardDeclined: 'card declined',
+    expiredCard: 'expired card',
+    incorrectCvc: 'incorrect cvc',
+    invalidCvc: 'invalid cvc',
+    incorrectNumber: 'incorrect number',
+    invalidNumber: 'invalid number',
+    invalidExpiryMonth: 'invalid expiry month',
+    invalidExpiryYear: 'invalid expiry year',
+    processingError: 'processing error',
+    authenticationFailure: 'authentication failure',
+    authenticationRequired: 'authentication required',
+  },
+}
 
 const ORDER_PENDING_FAILURE: CheckoutFailure = {
   kind: 'order_pending',
@@ -27,6 +51,7 @@ describe('completeProviderConfirmedCheckout', () => {
 
     const result = await completeProviderConfirmedCheckout({
       complete,
+      messages: TEST_MESSAGES,
       failureContext: { source: 'stripe_complete_cart', details: { cartId: 'cart_1' } },
     })
 
@@ -39,6 +64,7 @@ describe('completeProviderConfirmedCheckout', () => {
 
     const result = await completeProviderConfirmedCheckout({
       complete,
+      messages: TEST_MESSAGES,
       failureContext: { source: 'paypal_complete_cart', details: { cartId: 'cart_1' } },
     })
 

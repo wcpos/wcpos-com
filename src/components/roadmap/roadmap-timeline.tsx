@@ -1,6 +1,7 @@
 'use client'
 
 import * as React from 'react'
+import { useLocale, useTranslations } from 'next-intl'
 import {
   motion,
   useScroll,
@@ -9,6 +10,7 @@ import {
 } from 'motion/react'
 import type { RoadmapData, RoadmapItem, RoadmapMilestone } from '@/types/roadmap'
 import { usePrefersReducedMotion } from '@/lib/use-prefers-reduced-motion'
+import { formatDateForLocale } from '@/lib/date-format'
 import { BugFixList } from './bug-fix-list'
 import styles from './timeline.module.css'
 
@@ -81,11 +83,11 @@ const LABEL_TONE_IDLE: Record<Tone, string> = {
   shipped: 'border border-emerald-500/40 text-emerald-600 dark:text-emerald-400',
 }
 
-function fmtDue(dueOn: string | null): string | null {
+function fmtDue(dueOn: string | null, locale: string): string | null {
   if (!dueOn) return null
   // GitHub due dates are midnight-UTC timestamps; format in UTC so a
   // negative-offset server timezone can't shift them to the previous month.
-  return new Date(dueOn).toLocaleDateString('en', {
+  return formatDateForLocale(dueOn, locale, {
     month: 'short',
     year: 'numeric',
     timeZone: 'UTC',
@@ -93,9 +95,11 @@ function fmtDue(dueOn: string | null): string | null {
 }
 
 function StatusGlyph({ status }: { status: RoadmapItem['status'] }) {
+  const t = useTranslations('roadmap.status')
+
   if (status === 'done') {
     return (
-      <svg viewBox="0 0 16 16" className="mt-1 size-4 shrink-0" aria-label="Done">
+      <svg viewBox="0 0 16 16" className="mt-1 size-4 shrink-0" aria-label={t('done')}>
         <circle cx="8" cy="8" r="7" className="fill-emerald-500" />
         <path
           d="M5 8.2l2 2 4-4.4"
@@ -112,7 +116,7 @@ function StatusGlyph({ status }: { status: RoadmapItem['status'] }) {
       <svg
         viewBox="0 0 16 16"
         className="mt-1 size-4 shrink-0"
-        aria-label="In progress"
+        aria-label={t('inProgress')}
       >
         <circle
           cx="8"
@@ -126,7 +130,7 @@ function StatusGlyph({ status }: { status: RoadmapItem['status'] }) {
     )
   }
   return (
-    <svg viewBox="0 0 16 16" className="mt-1 size-4 shrink-0" aria-label="Planned">
+    <svg viewBox="0 0 16 16" className="mt-1 size-4 shrink-0" aria-label={t('planned')}>
       <circle
         cx="8"
         cy="8"
@@ -150,11 +154,17 @@ function FeatureRow({ item }: { item: RoadmapItem }) {
       >
         <StatusGlyph status={item.status} />
         <span className="min-w-0 flex-1">
-          <span className="break-words font-medium group-hover:text-wcpos-red dark:group-hover:text-wcpos-red-accent">
+          <span
+            className="break-words font-medium group-hover:text-wcpos-red dark:group-hover:text-wcpos-red-accent"
+            lang="en"
+          >
             {item.title}
           </span>
           {item.description && (
-            <span className="mt-0.5 line-clamp-2 block text-sm text-muted-foreground">
+            <span
+              className="mt-0.5 line-clamp-2 block text-sm text-muted-foreground"
+              lang="en"
+            >
               {item.description}
             </span>
           )}
@@ -233,11 +243,28 @@ function TimelineMilestone({
   active: boolean
   nodeRef: (el: HTMLSpanElement | null) => void
 }) {
+  const locale = useLocale()
+  const t = useTranslations('roadmap.timeline')
   const pct =
     milestone.progress.total > 0
       ? Math.round((milestone.progress.completed / milestone.progress.total) * 100)
       : 0
-  const due = fmtDue(milestone.dueOn)
+  const due = fmtDue(milestone.dueOn, locale)
+  const progressText =
+    tone === 'shipped'
+      ? due
+        ? t('shippedWithDate', { date: due })
+        : t('shipped')
+      : due
+        ? t('progressDue', {
+            completed: milestone.progress.completed,
+            total: milestone.progress.total,
+            date: due,
+          })
+        : t('progress', {
+            completed: milestone.progress.completed,
+            total: milestone.progress.total,
+          })
 
   return (
     <div className={tone === 'shipped' ? 'relative pb-14 opacity-60' : 'relative pb-14'}>
@@ -254,14 +281,14 @@ function TimelineMilestone({
       )}
 
       <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-        <h3 className="break-words text-2xl font-semibold tracking-tight sm:text-3xl">
+        <h3
+          className="break-words text-2xl font-semibold tracking-tight sm:text-3xl"
+          lang="en"
+        >
           {milestone.title}
         </h3>
         <span className="font-mono text-xs uppercase tracking-wider text-muted-foreground">
-          {tone === 'shipped'
-            ? 'shipped'
-            : `${milestone.progress.completed} of ${milestone.progress.total} done`}
-          {due ? (tone === 'shipped' ? ` · ${due}` : ` · due ${due}`) : ''}
+          {progressText}
         </span>
       </div>
 
@@ -275,7 +302,9 @@ function TimelineMilestone({
       )}
 
       {milestone.description && (
-        <p className="mt-3 max-w-xl text-muted-foreground">{milestone.description}</p>
+        <p className="mt-3 max-w-xl text-muted-foreground" lang="en">
+          {milestone.description}
+        </p>
       )}
 
       {milestone.features.length > 0 && (
@@ -450,6 +479,8 @@ function RailGroup(props: {
 }
 
 export function BoardLinkChip() {
+  const t = useTranslations('roadmap.board')
+
   return (
     <a
       href={PROJECT_BOARD_URL}
@@ -461,29 +492,33 @@ export function BoardLinkChip() {
         <span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-400 opacity-60 motion-reduce:animate-none" />
         <span className="relative inline-flex size-2 rounded-full bg-emerald-500" />
       </span>
-      live from the WCPOS project board
+      {t('link')}
       <span aria-hidden>&#8599;</span>
     </a>
   )
 }
 
 export function RoadmapTimeline({ data }: { data: RoadmapData }) {
+  const t = useTranslations('roadmap.timeline')
   const hasContent =
     data.active.length > 0 || data.upcoming.length > 0 || data.shipped.length > 0
 
   if (!hasContent) {
     return (
       <p className="py-12 text-center text-muted-foreground">
-        No roadmap items to display yet.
+        {t('empty')}
       </p>
     )
   }
 
   return (
     <div className="space-y-4">
-      <RailGroup label="Now" milestones={data.active} tone="now" />
-      <RailGroup label="Next" milestones={data.upcoming} tone="next" />
-      <RailGroup label="Shipped" milestones={data.shipped} tone="shipped" />
+      <p className="text-center text-xs text-muted-foreground">
+        {t('externalContentNotice')}
+      </p>
+      <RailGroup label={t('phases.now')} milestones={data.active} tone="now" />
+      <RailGroup label={t('phases.next')} milestones={data.upcoming} tone="next" />
+      <RailGroup label={t('phases.shipped')} milestones={data.shipped} tone="shipped" />
     </div>
   )
 }

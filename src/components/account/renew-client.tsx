@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import { useTranslations } from 'next-intl'
 import { CalendarClock, Loader2 } from 'lucide-react'
 import { useRouter, Link } from '@/i18n/navigation'
 import { StripeProvider } from '@/components/pro/stripe-provider'
@@ -62,6 +63,7 @@ export function RenewClient({
   productTitle,
   stripePublishableKey,
 }: RenewClientProps) {
+  const t = useTranslations('account.renew')
   const router = useRouter()
   const [phase, setPhase] = useState<Phase>('preparing')
   const [cart, setCart] = useState<PreparedCart | null>(null)
@@ -167,13 +169,10 @@ export function RenewClient({
   if (phase === 'error') {
     return (
       <Alert tone="critical" className="mb-4">
-        <p className="mb-3">
-          We couldn&apos;t start your renewal just now. You can renew from the
-          full checkout instead.
-        </p>
+        <p className="mb-3">{t('errorBody')}</p>
         <Button asChild variant="outline" size="sm">
           <Link href={`/pro/checkout?product=${offerHandle}`} prefetch={false}>
-            Go to checkout
+            {t('goToCheckout')}
           </Link>
         </Button>
       </Alert>
@@ -188,7 +187,7 @@ export function RenewClient({
       >
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
           <CalendarClock className="h-4 w-4" aria-hidden />
-          Renewing your licence
+          {t('summaryLabel')}
         </div>
         <div className="mt-3 flex items-center justify-between">
           <span className="font-medium">{productTitle}</span>
@@ -199,10 +198,7 @@ export function RenewClient({
             </span>
           </span>
         </div>
-        <p className="mt-2 text-sm text-muted-foreground">
-          Extends your current licence by one year — no days are lost if you
-          renew early.
-        </p>
+        <p className="mt-2 text-sm text-muted-foreground">{t('extendsNote')}</p>
       </div>
 
       {failure && (
@@ -214,13 +210,14 @@ export function RenewClient({
       {blocksCheckout ? null : phase === 'preparing' || !clientSecret || !cart ? (
         <div className="flex items-center gap-2 rounded-md border border-dashed p-6 text-sm text-muted-foreground">
           <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
-          Preparing your renewal…
+          {t('preparing')}
         </div>
       ) : (
         <StripeProvider
           clientSecret={clientSecret}
           customerSessionClientSecret={customerSessionClientSecret}
           publishableKey={stripePublishableKey}
+          notConfiguredMessage={t('paymentNotConfigured')}
         >
           <CheckoutForm
             cartId={cart.id}
@@ -240,7 +237,7 @@ export function RenewClient({
           prefetch={false}
           className="underline underline-offset-2 hover:no-underline"
         >
-          Cancel
+          {t('cancel')}
         </Link>
       </p>
     </div>

@@ -1,5 +1,6 @@
 'use client'
 
+import { useTranslations } from 'next-intl'
 import { Bitcoin, CreditCard } from 'lucide-react'
 import { StripeProvider } from '../stripe-provider'
 import { PayPalProvider } from '../paypal-provider'
@@ -107,11 +108,12 @@ interface PaymentStepProps {
 /** Placeholder shown while a session mutation is in flight — the previous
  * session's pay buttons/links must not be clickable against stale data. */
 function PreparingMethod() {
+  const t = useTranslations('pro.checkout.payment')
   return (
     <div className="space-y-3 rounded-md border border-dashed p-4">
       <div className="h-5 w-44 animate-pulse rounded bg-muted" />
       <div className="h-10 w-full animate-pulse rounded bg-muted" />
-      <p className="text-sm text-muted-foreground">Preparing payment...</p>
+      <p className="text-sm text-muted-foreground">{t('preparing')}</p>
     </div>
   )
 }
@@ -137,6 +139,7 @@ export function PaymentStep({
   onFailure,
   onProcessingChange,
 }: PaymentStepProps) {
+  const t = useTranslations('pro.checkout.payment')
   const enabledCount = [enabled.stripe, enabled.paypal, enabled.btcpay].filter(
     Boolean
   ).length
@@ -144,21 +147,21 @@ export function PaymentStep({
   if (enabledCount === 0) {
     return (
       <p className="text-sm text-muted-foreground">
-        No payment methods are configured. Please contact support.
+        {t('noneConfigured')}
       </p>
     )
   }
 
   const selector = (
-    <div className="space-y-2" role="radiogroup" aria-label="Payment method">
+    <div className="space-y-2" role="radiogroup" aria-label={t('ariaLabel')}>
       {enabled.stripe && (
         <MethodRow
           selected={method === 'stripe'}
           disabled={isProcessing || lockMethods}
           onSelect={() => onMethodChange('stripe')}
           icon={<CreditCard className="h-4 w-4" aria-hidden />}
-          title="Card"
-          hint="Visa · Mastercard · Amex"
+          title={t('methods.card.title')}
+          hint={t('methods.card.hint')}
           testId="payment-method-stripe"
         >
           {isProcessing || !clientSecret ? (
@@ -189,7 +192,7 @@ export function PaymentStep({
             </span>
           }
           title=""
-          hint="Pay with your PayPal balance or linked card"
+          hint={t('methods.paypal.hint')}
           testId="payment-method-paypal"
         >
           {isProcessing ? (
@@ -216,8 +219,8 @@ export function PaymentStep({
           disabled={isProcessing || lockMethods}
           onSelect={() => onMethodChange('btcpay')}
           icon={<Bitcoin className="h-4 w-4 text-amber-500" aria-hidden />}
-          title="Bitcoin"
-          hint="On-chain or Lightning"
+          title={t('methods.bitcoin.title')}
+          hint={t('methods.bitcoin.hint')}
           testId="payment-method-btcpay"
         >
           {isProcessing ? (
@@ -225,8 +228,7 @@ export function PaymentStep({
           ) : (
             <div className="space-y-3">
               <p className="text-sm text-muted-foreground">
-                A BTCPay invoice opens with a QR code — pay on-chain or over
-                Lightning, then you&apos;ll be returned here.
+                {t('methods.bitcoin.description')}
               </p>
               <BTCPayButton
                 cartId={cartId}
@@ -247,6 +249,7 @@ export function PaymentStep({
         clientSecret={clientSecret}
         customerSessionClientSecret={customerSessionClientSecret}
         publishableKey={stripePublishableKey}
+        notConfiguredMessage={t('noneConfigured')}
       >
         <ExpressCheckoutRow
           cartId={cartId}

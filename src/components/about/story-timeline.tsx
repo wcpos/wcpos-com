@@ -1,6 +1,7 @@
 'use client'
 
 import * as React from 'react'
+import { useLocale, useTranslations } from 'next-intl'
 import {
   motion,
   transform,
@@ -11,44 +12,55 @@ import {
 import { Section, Container } from '@/components/ui/section'
 import { usePrefersReducedMotion } from '@/lib/use-prefers-reduced-motion'
 import { SectionHeading } from '@/components/ui/section-heading'
+import { formatDateForLocale } from '@/lib/date-format'
 
 const milestones = [
   {
-    date: 'December 2011',
-    title: 'Urban Locavore opens',
-    body: 'A small food store in Perth, with hundreds of products already in WooCommerce — and no way to sell them at the counter.',
+    id: 'm1',
+    date: { type: 'month', value: '2011-12-01T00:00:00Z' },
   },
   {
-    date: '2011 – 2014',
-    title: 'A register, built out of necessity',
-    body: 'With nothing on the market that fit, Paul built a point of sale for his own shop — Backbone.js and an in-browser IndexedDB database, on top of the store he already ran online.',
+    id: 'm2',
+    date: { type: 'range', start: 2011, end: 2014 },
   },
   {
-    date: 'April 2014',
-    title: 'The shop closes',
-    body: 'Urban Locavore winds down — but the register it ran on still works, and other WooCommerce stores need the same thing.',
+    id: 'm3',
+    date: { type: 'month', value: '2014-04-01T00:00:00Z' },
   },
   {
-    date: '11 May 2014',
-    title: 'Released on WordPress.org',
-    body: 'WCPOS goes public, free for anyone who needs it. The free version does the actual job: sell, print, stay in sync.',
+    id: 'm4',
+    date: { type: 'day', value: '2014-05-11T00:00:00Z' },
   },
   {
-    date: '4 May 2023',
-    title: 'Rewritten in React Native',
-    body: 'Four years of rebuilding from scratch land as v1.0.0: one codebase for every screen. The desktop app ships the same day — phones and tablets are next.',
+    id: 'm5',
+    date: { type: 'day', value: '2023-05-04T00:00:00Z' },
   },
   {
-    date: 'December 2025',
-    title: 'Native mobile apps',
-    body: 'The React Native bet pays off: WCPOS arrives on iOS and Android in open beta — the same register, now on the hardware already in the shop.',
+    id: 'm6',
+    date: { type: 'month', value: '2025-12-01T00:00:00Z' },
   },
   {
-    date: 'Today',
-    title: 'Still shipping',
-    body: 'More than a decade on. One developer, funded by Pro, still releasing — and the free version is still the real thing.',
+    id: 'm7',
+    date: { type: 'today' },
   },
-]
+] as const
+
+function formatTimelineDate(
+  date: (typeof milestones)[number]['date'],
+  locale: string,
+  t: (key: 'today' | 'range', values?: { start: number; end: number }) => string
+): string {
+  if (date.type === 'today') return t('today')
+  if (date.type === 'range') {
+    return t('range', { start: date.start, end: date.end })
+  }
+  return formatDateForLocale(date.value, locale, {
+    day: date.type === 'day' ? 'numeric' : undefined,
+    month: 'long',
+    year: 'numeric',
+    timeZone: 'UTC',
+  })
+}
 
 /**
  * The colours the scroll-drawn line passes through, top to bottom. Shared by
@@ -77,7 +89,10 @@ function Milestone({
   active,
   accent,
   markerRef,
-}: (typeof milestones)[number] & {
+}: {
+  date: string
+  title: string
+  body: string
   animate: boolean
   /** Whether the scroll-drawn line has reached this milestone. */
   active: boolean
@@ -148,6 +163,9 @@ function Milestone({
  * the static timeline with solid markers.
  */
 export function StoryTimeline() {
+  const locale = useLocale()
+  const t = useTranslations('about.timeline')
+  const dateT = useTranslations('about.timeline.dates')
   const listRef = React.useRef<HTMLOListElement>(null)
   const markerRefs = React.useRef<(HTMLSpanElement | null)[]>([])
   const reducedMotion = usePrefersReducedMotion()
@@ -223,7 +241,7 @@ export function StoryTimeline() {
       <Container width="prose">
         <SectionHeading
           className="mb-12"
-          title="How it started, and why it's still here"
+          title={t('heading')}
         />
 
         {/* pt-4 lets the line start above the first marker, so the
@@ -257,8 +275,10 @@ export function StoryTimeline() {
           )}
           {milestones.map((m, i) => (
             <Milestone
-              key={m.date}
-              {...m}
+              key={m.id}
+              date={formatTimelineDate(m.date, locale, dateT)}
+              title={t(`items.${m.id}.title`)}
+              body={t(`items.${m.id}.body`)}
               animate={!reducedMotion}
               active={i < reached}
               accent={colorAlongLine(

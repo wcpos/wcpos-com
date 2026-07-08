@@ -1,5 +1,6 @@
 import { describe, it, expect, vi } from 'vitest'
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, screen } from '@testing-library/react'
+import { renderWithIntl as render } from '@/test/intl'
 
 // Mock the locale-aware Link as a simple anchor
 vi.mock('@/i18n/navigation', () => ({

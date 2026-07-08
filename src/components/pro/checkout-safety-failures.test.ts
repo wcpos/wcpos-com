@@ -12,12 +12,34 @@ import {
   createUncertainPaymentFailure,
   generateErrorReference,
   mapStripeErrorMessage,
-  GENERIC_CARD_FAILED_MESSAGE,
-  GENERIC_PAYMENT_FAILED_MESSAGE,
-  ORDER_PENDING_MESSAGE,
-  UNEXPECTED_PAYMENT_STATUS_MESSAGE,
   OrderPendingError,
+  type CheckoutFailureMessages,
 } from './checkout-safety'
+
+
+const TEST_MESSAGES: CheckoutFailureMessages = {
+  genericPaymentFailed: 'generic payment failed translated message',
+  genericCardFailed: 'generic card failed translated message',
+  unexpectedPaymentStatus:
+    'translated message: contact support before trying again',
+  orderPending: 'translated message: do not pay again',
+  stripeDeclines: {
+    insufficientFunds: 'insufficient funds translated message',
+  },
+  stripeCodes: {
+    cardDeclined: 'card declined translated message',
+    expiredCard: 'expired translated message',
+    incorrectCvc: 'security code translated message',
+    invalidCvc: 'invalid security code translated message',
+    incorrectNumber: 'incorrect number translated message',
+    invalidNumber: 'invalid number translated message',
+    invalidExpiryMonth: 'invalid expiry month translated message',
+    invalidExpiryYear: 'invalid expiry year translated message',
+    processingError: 'You have not been charged translated message',
+    authenticationFailure: 'your bank translated message',
+    authenticationRequired: 'your bank translated message',
+  },
+}
 
 beforeEach(() => {
   // Restore first so each test gets a fresh spy with zeroed call counts.
@@ -42,9 +64,12 @@ describe('generateErrorReference', () => {
 
 describe('mapStripeErrorMessage', () => {
   it('maps card_declined to a human message', () => {
-    expect(mapStripeErrorMessage({ type: 'card_error', code: 'card_declined' })).toBe(
-      'Your card was declined. Please try a different card or payment method.'
-    )
+    expect(
+      mapStripeErrorMessage(
+        { type: 'card_error', code: 'card_declined' },
+        TEST_MESSAGES
+      )
+    ).toBe(TEST_MESSAGES.stripeCodes.cardDeclined)
   })
 
   it('prefers the decline code for insufficient funds', () => {
@@ -53,39 +78,39 @@ describe('mapStripeErrorMessage', () => {
         type: 'card_error',
         code: 'card_declined',
         decline_code: 'insufficient_funds',
-      })
+      }, TEST_MESSAGES)
     ).toContain('insufficient funds')
   })
 
   it('maps expired_card to a human message', () => {
-    expect(mapStripeErrorMessage({ code: 'expired_card' })).toContain('expired')
+    expect(mapStripeErrorMessage({ code: 'expired_card' }, TEST_MESSAGES)).toContain('expired')
   })
 
   it('maps incorrect_cvc to a human message', () => {
-    expect(mapStripeErrorMessage({ code: 'incorrect_cvc' })).toContain('security code')
+    expect(mapStripeErrorMessage({ code: 'incorrect_cvc' }, TEST_MESSAGES)).toContain('security code')
   })
 
   it('maps processing_error to a not-charged retry message', () => {
-    expect(mapStripeErrorMessage({ code: 'processing_error' })).toContain(
+    expect(mapStripeErrorMessage({ code: 'processing_error' }, TEST_MESSAGES)).toContain(
       'You have not been charged'
     )
   })
 
   it('maps bank authentication failures to a human message', () => {
     expect(
-      mapStripeErrorMessage({ code: 'payment_intent_authentication_failure' })
+      mapStripeErrorMessage({ code: 'payment_intent_authentication_failure' }, TEST_MESSAGES)
     ).toContain('your bank')
   })
 
   it('falls back to a generic card message for unknown card errors', () => {
     expect(
-      mapStripeErrorMessage({ type: 'card_error', code: 'some_future_code' })
-    ).toBe(GENERIC_CARD_FAILED_MESSAGE)
+      mapStripeErrorMessage({ type: 'card_error', code: 'some_future_code' }, TEST_MESSAGES)
+    ).toBe(TEST_MESSAGES.genericCardFailed)
   })
 
   it('falls back to a generic message for unknown error types', () => {
-    expect(mapStripeErrorMessage({ type: 'api_error' })).toBe(
-      GENERIC_PAYMENT_FAILED_MESSAGE
+    expect(mapStripeErrorMessage({ type: 'api_error' }, TEST_MESSAGES)).toBe(
+      TEST_MESSAGES.genericPaymentFailed
     )
   })
 
@@ -95,9 +120,9 @@ describe('mapStripeErrorMessage', () => {
       type: 'api_error',
       code: 'unmapped_code',
       message: raw,
-    })
+    }, TEST_MESSAGES)
     expect(mapped).not.toContain(raw)
-    expect(mapped).toBe(GENERIC_PAYMENT_FAILED_MESSAGE)
+    expect(mapped).toBe(TEST_MESSAGES.genericPaymentFailed)
   })
 })
 
@@ -131,18 +156,18 @@ describe('createPaymentFailure', () => {
 
 describe('createUncertainPaymentFailure', () => {
   it('always uses the contact-support-before-retrying copy', () => {
-    const failure = createUncertainPaymentFailure({
+    const failure = createUncertainPaymentFailure(TEST_MESSAGES, {
       source: 'stripe_unexpected_status',
     })
 
     expect(failure.kind).toBe('payment_uncertain')
-    expect(failure.message).toBe(UNEXPECTED_PAYMENT_STATUS_MESSAGE)
+    expect(failure.message).toBe(TEST_MESSAGES.unexpectedPaymentStatus)
     expect(failure.message).toContain('contact support before trying again')
     expect(failure.reference).toMatch(/^WCPOS-/)
   })
 
   it('logs the failure as an error for support correlation', () => {
-    const failure = createUncertainPaymentFailure({
+    const failure = createUncertainPaymentFailure(TEST_MESSAGES, {
       source: 'stripe_unexpected_status',
       details: { paymentIntentId: 'pi_1', status: 'processing' },
     })
@@ -160,16 +185,16 @@ describe('createUncertainPaymentFailure', () => {
 
 describe('createOrderPendingFailure', () => {
   it('always uses the do-not-pay-again copy', () => {
-    const failure = createOrderPendingFailure({ source: 'stripe_complete_cart' })
+    const failure = createOrderPendingFailure(TEST_MESSAGES, { source: 'stripe_complete_cart' })
 
     expect(failure.kind).toBe('order_pending')
-    expect(failure.message).toBe(ORDER_PENDING_MESSAGE)
+    expect(failure.message).toBe(TEST_MESSAGES.orderPending)
     expect(failure.message.toLowerCase()).toContain('do not pay again')
     expect(failure.reference).toMatch(/^WCPOS-/)
   })
 
   it('logs the failure as an error for support correlation', () => {
-    const failure = createOrderPendingFailure({
+    const failure = createOrderPendingFailure(TEST_MESSAGES, {
       source: 'paypal_complete_cart',
       details: { cartId: 'cart_1' },
     })
@@ -215,7 +240,7 @@ describe('server-side failure shipping (clientLogger)', () => {
   })
 
   it('ships order_pending failures so support can correlate the reference', () => {
-    const failure = createOrderPendingFailure({
+    const failure = createOrderPendingFailure(TEST_MESSAGES, {
       source: 'paypal_complete_cart',
       details: { cartId: 'cart_1' },
     })
@@ -231,7 +256,7 @@ describe('server-side failure shipping (clientLogger)', () => {
   })
 
   it('ships payment_uncertain failures', () => {
-    const failure = createUncertainPaymentFailure({
+    const failure = createUncertainPaymentFailure(TEST_MESSAGES, {
       source: 'stripe_unexpected_status',
     })
 
@@ -268,7 +293,31 @@ describe('server-side failure shipping (clientLogger)', () => {
 
 describe('buildFailure → server beacon', () => {
   let beacon: ReturnType<typeof vi.fn>
-  beforeEach(() => {
+  
+const TEST_MESSAGES: CheckoutFailureMessages = {
+  genericPaymentFailed: 'TEST_MESSAGES.genericPaymentFailed',
+  genericCardFailed: 'TEST_MESSAGES.genericCardFailed',
+  unexpectedPaymentStatus: 'TEST_MESSAGES.unexpectedPaymentStatus',
+  orderPending: 'TEST_MESSAGES.orderPending',
+  stripeDeclines: {
+    insufficientFunds: 'insufficient funds translated message',
+  },
+  stripeCodes: {
+    cardDeclined: 'card declined translated message',
+    expiredCard: 'expired translated message',
+    incorrectCvc: 'security code translated message',
+    invalidCvc: 'invalid security code translated message',
+    incorrectNumber: 'incorrect number translated message',
+    invalidNumber: 'invalid number translated message',
+    invalidExpiryMonth: 'invalid expiry month translated message',
+    invalidExpiryYear: 'invalid expiry year translated message',
+    processingError: 'You have not been charged translated message',
+    authenticationFailure: 'your bank translated message',
+    authenticationRequired: 'your bank translated message',
+  },
+}
+
+beforeEach(() => {
     beacon = vi.fn(() => true)
     vi.stubGlobal('navigator', { sendBeacon: beacon })
   })
@@ -277,7 +326,7 @@ describe('buildFailure → server beacon', () => {
   })
 
   it('beacons report-failure for money-at-risk kinds', () => {
-    createOrderPendingFailure({ source: 'stripe_complete_cart', details: { cartId: 'c1' } })
+    createOrderPendingFailure(TEST_MESSAGES, { source: 'stripe_complete_cart', details: { cartId: 'c1' } })
     expect(beacon).toHaveBeenCalledTimes(1)
     expect(beacon.mock.calls[0][0]).toBe('/api/checkout/report-failure')
     const payload = JSON.parse(beacon.mock.calls[0][1] as string)
@@ -308,7 +357,7 @@ describe('buildFailure → server beacon', () => {
     const fetchMock = vi.fn(() => Promise.resolve({ ok: true } as Response))
     vi.stubGlobal('fetch', fetchMock)
 
-    createOrderPendingFailure({ source: 'stripe_complete_cart', details: { cartId: 'c1' } })
+    createOrderPendingFailure(TEST_MESSAGES, { source: 'stripe_complete_cart', details: { cartId: 'c1' } })
 
     expect(fetchMock).toHaveBeenCalledTimes(1)
     const [url, init] = fetchMock.mock.calls[0] as unknown as [string, RequestInit]
@@ -329,6 +378,6 @@ describe('OrderPendingError', () => {
   })
 
   it('has a default message', () => {
-    expect(new OrderPendingError().message).toContain('did not produce an order')
+    expect(new OrderPendingError().message).toBe('ORDER_PENDING')
   })
 })

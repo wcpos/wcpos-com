@@ -15,6 +15,17 @@ import {
 import { infraLogger } from '@/lib/logger'
 import { assertViewOnly, ViewOnlyError } from '@/lib/impersonation'
 
+type DiscordMemberErrorCode =
+  | 'read_only_inspection'
+  | 'unauthorized'
+  | 'discord_management_unconfigured'
+  | 'forbidden'
+  | 'member_not_found'
+
+function errorResponse(errorCode: DiscordMemberErrorCode, status: number) {
+  return NextResponse.json({ errorCode }, { status })
+}
+
 const UNVERIFIABLE_DISCORD_ENTITLEMENT: LicenseLifecycle[] = [
   { status: 'unknown', expiry: null },
 ]
@@ -27,10 +38,7 @@ export async function DELETE(
     await assertViewOnly()
   } catch (error) {
     if (error instanceof ViewOnlyError) {
-      return NextResponse.json(
-        { error: 'read_only_inspection' },
-        { status: 403 }
-      )
+      return errorResponse('read_only_inspection', 403)
     }
     throw error
   }
@@ -39,7 +47,7 @@ export async function DELETE(
   const { authenticated, licenses } = await getResolvedCustomerLicenses()
 
   if (!authenticated) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    return errorResponse('unauthorized', 401)
   }
 
   let result
@@ -61,19 +69,16 @@ export async function DELETE(
     // bug. The token is set in prod; this only bites if it ever lapses.
     if (error instanceof KeygenAuthNotConfiguredError) {
       infraLogger.error`Discord member removal unavailable: ${error.message}`
-      return NextResponse.json(
-        { error: 'Discord management is not configured' },
-        { status: 503 }
-      )
+      return errorResponse('discord_management_unconfigured', 503)
     }
     throw error
   }
 
   if (result.status === 'license_not_found') {
-    return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+    return errorResponse('forbidden', 403)
   }
   if (result.status === 'member_not_found') {
-    return NextResponse.json({ error: 'Member not found' }, { status: 404 })
+    return errorResponse('member_not_found', 404)
   }
 
   if (isDiscordConfigured()) {

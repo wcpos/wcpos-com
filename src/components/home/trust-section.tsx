@@ -1,24 +1,27 @@
+import { useTranslations } from 'next-intl'
 import { GithubIcon } from '@/components/icons/github'
 import { Link } from '@/i18n/navigation'
 import { Section } from '@/components/ui/section'
 
 const stats = [
-  { value: '5,000+', label: 'Active Installations' },
-  { value: '2014', label: 'In Development Since' },
-]
+  { value: '5,000+', labelKey: 'activeInstallations' },
+  { value: '2014', labelKey: 'inDevelopmentSince' },
+] as const
 
 export function TrustSection() {
+  const t = useTranslations('home.trust')
+
   return (
     <Section tone="default" spacing="compact">
       {/* Stats Row */}
       <div className="mx-auto mb-12 grid max-w-3xl grid-cols-2 gap-8 md:grid-cols-4">
         {stats.map((stat) => (
-          <div key={stat.label} className="text-center">
+          <div key={stat.labelKey} className="text-center">
             <p className="text-3xl font-bold text-wcpos-red md:text-4xl">
               {stat.value}
             </p>
             <p className="text-sm text-slate-600 dark:text-slate-400">
-              {stat.label}
+              {t(`stats.${stat.labelKey}`)}
             </p>
           </div>
         ))}
@@ -32,15 +35,15 @@ export function TrustSection() {
               className="mx-auto mb-1 h-9 w-9 text-wcpos-red"
             />
             <span className="text-sm text-slate-600 group-hover:underline dark:text-slate-400">
-              GPL Licensed
+              {t('license')}
             </span>
-            <span className="sr-only">— WCPOS on GitHub</span>
+            <span className="sr-only">{t('githubAria')}</span>
           </a>
         </div>
         <div className="text-center">
           <p className="text-3xl font-bold text-wcpos-red md:text-4xl">25+</p>
           <p className="text-sm text-slate-600 dark:text-slate-400">
-            Languages Supported
+            {t('stats.languagesSupported')}
           </p>
         </div>
       </div>
@@ -48,7 +51,7 @@ export function TrustSection() {
       {/* Real customer quote — public wordpress.org review, linked below. */}
       <figure className="mx-auto max-w-2xl text-center">
         <blockquote className="mb-4 text-lg italic leading-relaxed text-slate-700 dark:text-slate-300">
-          &ldquo;Straightforward, functional and simple to use. 10/10.&rdquo;
+          &ldquo;{t('quote')}&rdquo;
         </blockquote>
         <figcaption className="text-sm text-slate-500 dark:text-slate-400">
           —{' '}
@@ -57,7 +60,7 @@ export function TrustSection() {
             className="underline underline-offset-4 hover:text-slate-700 dark:hover:text-slate-300"
             rel="noopener"
           >
-            Ward, wordpress.org review
+            {t('attribution')}
           </a>
         </figcaption>
       </figure>
@@ -67,7 +70,7 @@ export function TrustSection() {
           href="/about-us"
           className="font-medium text-wcpos-red underline-offset-4 hover:underline"
         >
-          Read our story →
+          {t('story')}
         </Link>
       </p>
     </Section>

@@ -1,4 +1,5 @@
 import { notFound } from 'next/navigation'
+import { getTranslations } from 'next-intl/server'
 import { getSessionCustomer } from '@/lib/medusa-auth'
 import { isAdmin } from '@/lib/admin'
 import { startImpersonationAction } from './actions'
@@ -11,6 +12,7 @@ export default async function AdminInspectPage({
   params: Promise<{ locale: string }>
 }) {
   const { locale } = await params
+  const t = await getTranslations({ locale, namespace: 'account.admin' })
   // Gate on the REAL session — never getCustomer (which could be a target).
   const session = await getSessionCustomer()
   if (!isAdmin(session?.email)) notFound()
@@ -25,10 +27,9 @@ export default async function AdminInspectPage({
 
   return (
     <div className="mx-auto max-w-md space-y-4">
-      <h1 className="text-xl font-semibold">Inspect a customer (read-only)</h1>
+      <h1 className="text-xl font-semibold">{t('title')}</h1>
       <p className="text-sm text-muted-foreground">
-        Enter a customer email to view their account exactly as they see it. You
-        cannot change their data while inspecting.
+        {t('description')}
       </p>
       <form action={submit} className="flex gap-2">
         <input
@@ -42,7 +43,7 @@ export default async function AdminInspectPage({
           type="submit"
           className="rounded-md bg-primary px-4 py-2 text-primary-foreground"
         >
-          View as
+          {t('submit')}
         </button>
       </form>
     </div>

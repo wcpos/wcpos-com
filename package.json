@@ -17,14 +17,21 @@
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:headed": "playwright test --headed",
     "playwright:install": "playwright install --with-deps",
-    "smoke:checkout": "node scripts/smoke-checkout.mjs"
+    "smoke:checkout": "node scripts/smoke-checkout.mjs",
+    "i18n:hardcoded": "tsx scripts/i18n/hardcoded-english.ts",
+    "i18n:hardcoded:update": "tsx scripts/i18n/hardcoded-english.ts --update"
   },
   "dependencies": {
+    "@fontsource-variable/noto-sans-jp": "5.2.10",
+    "@fontsource-variable/noto-sans-kr": "5.2.10",
+    "@fontsource-variable/noto-sans-sc": "5.2.10",
+    "@fontsource-variable/noto-sans-tc": "5.2.10",
     "@logtape/logtape": "^2.2.2",
     "@marsidev/react-turnstile": "^1.5.3",
     "@octokit/auth-app": "8.2.0",
     "@octokit/rest": "^22.0.1",
     "@paypal/react-paypal-js": "^10.1.1",
+    "@pdf-lib/fontkit": "1.1.1",
     "@radix-ui/react-avatar": "^1.2.1",
     "@radix-ui/react-dialog": "^1.1.18",
     "@radix-ui/react-dropdown-menu": "^2.1.19",

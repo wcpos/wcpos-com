@@ -19,6 +19,29 @@ describe('getOrderDisplayStatus', () => {
     ).toBe('Completed')
   })
 
+
+
+  it('uses caller-provided labels for known customer-facing statuses', () => {
+    expect(
+      getOrderDisplayStatus(
+        {
+          status: 'pending',
+          payment_status: 'requires_action',
+        },
+        {
+          actionRequired: 'Translated action required',
+          authorized: 'Translated authorized',
+          canceled: 'Translated canceled',
+          paid: 'Translated paid',
+          partiallyRefunded: 'Translated partially refunded',
+          pending: 'Translated pending',
+          refunded: 'Translated refunded',
+          unknown: 'Translated unknown',
+        }
+      )
+    ).toBe('Translated action required')
+  })
+
   it('returns Unknown for empty values', () => {
     expect(getOrderDisplayStatus({})).toBe('Unknown')
     expect(getOrderDisplayStatus({ status: '   ' })).toBe('Unknown')

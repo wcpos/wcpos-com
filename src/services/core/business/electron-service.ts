@@ -9,7 +9,7 @@ import 'server-only'
 
 interface ErrorResponse {
   status: number
-  error: string
+  errorCode: string
 }
 
 interface UpdateResponse {
@@ -31,14 +31,14 @@ class ElectronService {
     _platform: string,
     _version: string
   ): Promise<UpdateResult> {
-    return { status: 404, error: 'Electron service not yet implemented' }
+    return { status: 404, errorCode: 'electron_service_not_implemented' }
   }
 
   async getDownloadUrl(
     _platform: string,
     _version: string
   ): Promise<string | ErrorResponse> {
-    return { status: 404, error: 'Electron service not yet implemented' }
+    return { status: 404, errorCode: 'electron_service_not_implemented' }
   }
 }
 

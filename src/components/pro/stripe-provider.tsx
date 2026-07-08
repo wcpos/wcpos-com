@@ -31,6 +31,8 @@ interface StripeProviderProps {
   customerSessionClientSecret?: string | null
   /** Host-resolved public key; null renders the not-configured notice. */
   publishableKey: string | null
+  /** Localized copy to render when the host has not configured Stripe. */
+  notConfiguredMessage: string
 }
 
 export function StripeProvider({
@@ -38,11 +40,12 @@ export function StripeProvider({
   clientSecret,
   customerSessionClientSecret,
   publishableKey,
+  notConfiguredMessage,
 }: StripeProviderProps) {
   if (!publishableKey) {
     return (
       <div className="text-center text-muted-foreground p-4">
-        Stripe is not configured for this environment.
+        {notConfiguredMessage}
       </div>
     )
   }

@@ -14,13 +14,14 @@ import { licenseLogger } from '@/lib/logger'
  *   { action: 'deactivate', machineId: '...' }
  *   { action: 'status', licenseId: '...' }
  */
+function errorResponse(errorCode: string, status: number, extra: Record<string, unknown> = {}) {
+  return NextResponse.json({ errorCode, ...extra }, { status })
+}
+
 export async function POST(request: NextRequest) {
   // Block in production
   if (process.env.NODE_ENV === 'production') {
-    return NextResponse.json(
-      { error: 'Not available in production' },
-      { status: 403 }
-    )
+    return errorResponse('not_available_in_production', 403)
   }
 
   try {
@@ -31,10 +32,7 @@ export async function POST(request: NextRequest) {
       case 'validate': {
         const { licenseKey } = body
         if (!licenseKey) {
-          return NextResponse.json(
-            { error: 'licenseKey required' },
-            { status: 400 }
-          )
+          return errorResponse('license_key_required', 400)
         }
         const result = await licenseClient.validateLicenseKey(licenseKey)
         return NextResponse.json(result)
@@ -43,10 +41,7 @@ export async function POST(request: NextRequest) {
       case 'activate': {
         const { licenseId, fingerprint, metadata = {} } = body
         if (!licenseId || !fingerprint) {
-          return NextResponse.json(
-            { error: 'licenseId and fingerprint required' },
-            { status: 400 }
-          )
+          return errorResponse('license_id_and_fingerprint_required', 400)
         }
         const machine = await licenseClient.activateMachine(
           licenseId,
@@ -54,13 +49,7 @@ export async function POST(request: NextRequest) {
           metadata
         )
         if (!machine) {
-          return NextResponse.json(
-            {
-              error:
-                'Activation failed (limit reached or invalid license)',
-            },
-            { status: 422 }
-          )
+          return errorResponse('activation_failed', 422)
         }
         return NextResponse.json({ success: true, machine })
       }
@@ -68,10 +57,7 @@ export async function POST(request: NextRequest) {
       case 'deactivate': {
         const { machineId } = body
         if (!machineId) {
-          return NextResponse.json(
-            { error: 'machineId required' },
-            { status: 400 }
-          )
+          return errorResponse('machine_id_required', 400)
         }
         const success = await licenseClient.deactivateMachine(machineId)
         return NextResponse.json({ success })
@@ -80,10 +66,7 @@ export async function POST(request: NextRequest) {
       case 'status': {
         const { licenseId } = body
         if (!licenseId) {
-          return NextResponse.json(
-            { error: 'licenseId required' },
-            { status: 400 }
-          )
+          return errorResponse('license_id_required', 400)
         }
         const license =
           await licenseClient.getLicenseWithMachines(licenseId)
@@ -91,18 +74,10 @@ export async function POST(request: NextRequest) {
       }
 
       default:
-        return NextResponse.json(
-          {
-            error: `Unknown action: ${action}. Valid actions: validate, activate, deactivate, status`,
-          },
-          { status: 400 }
-        )
+        return errorResponse('unknown_action', 400, { action })
     }
   } catch (error) {
     licenseLogger.error`Test harness error: ${error}`
-    return NextResponse.json(
-      { error: error instanceof Error ? error.message : 'Internal error' },
-      { status: 500 }
-    )
+    return errorResponse('test_harness_error', 500)
   }
 }

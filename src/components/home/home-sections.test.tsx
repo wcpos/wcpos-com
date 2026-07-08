@@ -1,5 +1,8 @@
 import { describe, expect, it, vi } from 'vitest'
 import { render, screen, within } from '@testing-library/react'
+import { NextIntlClientProvider } from 'next-intl'
+import type { ReactElement } from 'react'
+import messages from '../../../messages/en.json'
 
 // Mock i18n navigation Link as a simple anchor (TrustSection links to /about-us)
 vi.mock('@/i18n/navigation', () => ({
@@ -56,19 +59,67 @@ import { FeaturesSection } from './features-section'
 import { TrustSection } from './trust-section'
 import { CtaSection } from './cta-section'
 
+function renderWithIntl(ui: ReactElement) {
+  return render(
+    <NextIntlClientProvider locale="en" messages={messages}>
+      {ui}
+    </NextIntlClientProvider>
+  )
+}
+
 describe('ProblemSection', () => {
   it('renders the three pain points', () => {
-    render(<ProblemSection />)
+    renderWithIntl(<ProblemSection />)
 
     expect(screen.getByText('Double Entry')).toBeInTheDocument()
     expect(screen.getByText('Offline Panic')).toBeInTheDocument()
     expect(screen.getByText('Platform Lock-In')).toBeInTheDocument()
   })
+
+  it('renders translated problem copy from messages', () => {
+    render(
+      <NextIntlClientProvider
+        locale="en"
+        messages={{
+          home: {
+            problem: {
+              title: 'Translated problem heading',
+              items: {
+                doubleEntry: {
+                  label: 'Translated double entry',
+                  description: 'Translated double entry description',
+                },
+                offlinePanic: {
+                  label: 'Translated offline panic',
+                  description: 'Translated offline panic description',
+                },
+                platformLockIn: {
+                  label: 'Translated lock-in',
+                  description: 'Translated lock-in description',
+                },
+              },
+            },
+          },
+        }}
+      >
+        <ProblemSection />
+      </NextIntlClientProvider>
+    )
+
+    expect(
+      screen.getByRole('heading', { name: 'Translated problem heading' })
+    ).toBeInTheDocument()
+    expect(screen.getByText('Translated double entry')).toBeInTheDocument()
+    expect(
+      screen.getByText('Translated offline panic description')
+    ).toBeInTheDocument()
+    expect(screen.getByText('Translated lock-in')).toBeInTheDocument()
+  })
 })
 
 describe('BenefitsSection', () => {
   it('renders a section heading and all four benefits', () => {
-    render(<BenefitsSection />)
+    renderWithIntl(<BenefitsSection />)
 
     expect(
       screen.getByRole('heading', { name: 'Why stores choose WCPOS' })
@@ -88,7 +139,7 @@ describe('BenefitsSection', () => {
   })
 
   it('uses the canonical section seam for its heading and alternating bands', () => {
-    render(<BenefitsSection />)
+    renderWithIntl(<BenefitsSection />)
 
     const heading = screen.getByRole('heading', {
       name: 'Why stores choose WCPOS',
@@ -107,7 +158,7 @@ describe('BenefitsSection', () => {
   })
 
   it('keeps all benefits inside the labelled benefits region', () => {
-    render(<BenefitsSection />)
+    renderWithIntl(<BenefitsSection />)
 
     const region = screen.getByRole('region', {
       name: 'Why stores choose WCPOS',
@@ -139,7 +190,7 @@ describe('BenefitsSection', () => {
 
 describe('UseCasesSection', () => {
   it('renders the three testimonial cards with sourced attributions', () => {
-    render(<UseCasesSection />)
+    renderWithIntl(<UseCasesSection />)
 
     expect(screen.getByText('Retail Store')).toBeInTheDocument()
     expect(screen.getByText('Market Vendor')).toBeInTheDocument()
@@ -157,11 +208,62 @@ describe('UseCasesSection', () => {
       )
     }
   })
+
+  it('renders translated use-case copy from messages', () => {
+    render(
+      <NextIntlClientProvider
+        locale="en"
+        messages={{
+          home: {
+            useCases: {
+              title: 'Translated use cases title',
+              reviewSuffix: 'translated review suffix',
+              cards: {
+                retail: {
+                  type: 'Translated retail type',
+                  quote: 'Translated retail quote',
+                  attribution: 'Translated retail attribution',
+                },
+                market: {
+                  type: 'Translated market type',
+                  quote: 'Translated market quote',
+                  attribution: 'Translated market attribution',
+                  note: 'Translated market note',
+                },
+                desktop: {
+                  type: 'Translated desktop type',
+                  quote: 'Translated desktop quote',
+                  attribution: 'Translated desktop attribution',
+                },
+              },
+            },
+          },
+        }}
+      >
+        <UseCasesSection />
+      </NextIntlClientProvider>
+    )
+
+    expect(
+      screen.getByRole('heading', { name: 'Translated use cases title' })
+    ).toBeInTheDocument()
+    expect(screen.getByText('Translated retail type')).toBeInTheDocument()
+    expect(screen.getByText(/Translated market quote/)).toBeInTheDocument()
+    expect(screen.getByText(/Translated market note/)).toBeInTheDocument()
+    expect(
+      screen.getByRole('link', {
+        name: 'Translated desktop attribution, translated review suffix',
+      })
+    ).toHaveAttribute(
+      'href',
+      'https://wordpress.org/support/topic/great-pos-for-your-woocommerce-store/'
+    )
+  })
 })
 
 describe('FeaturesSection', () => {
   it('renders all six feature cards', () => {
-    render(<FeaturesSection />)
+    renderWithIntl(<FeaturesSection />)
 
     expect(screen.getByText('Fast product search')).toBeInTheDocument()
     expect(screen.getByText('Smooth checkout flow')).toBeInTheDocument()
@@ -176,7 +278,7 @@ describe('FeaturesSection', () => {
   })
 
   it('marks Pro features with a badge', () => {
-    render(<FeaturesSection />)
+    renderWithIntl(<FeaturesSection />)
 
     expect(screen.getAllByText('Pro')).toHaveLength(5)
   })
@@ -184,7 +286,7 @@ describe('FeaturesSection', () => {
 
 describe('TrustSection', () => {
   it('renders the stats', () => {
-    render(<TrustSection />)
+    renderWithIntl(<TrustSection />)
 
     expect(screen.getByText('5,000+')).toBeInTheDocument()
     expect(screen.getByText('Active Installations')).toBeInTheDocument()
@@ -192,18 +294,57 @@ describe('TrustSection', () => {
   })
 
   it('links the open source stat to GitHub', () => {
-    render(<TrustSection />)
+    renderWithIntl(<TrustSection />)
 
     expect(screen.getByRole('link', { name: /GPL Licensed/ })).toHaveAttribute(
       'href',
       'https://github.com/wcpos'
     )
   })
+
+  it('renders translated trust copy from messages', () => {
+    render(
+      <NextIntlClientProvider
+        locale="en"
+        messages={{
+          home: {
+            trust: {
+              stats: {
+                activeInstallations: 'Translated active installations',
+                inDevelopmentSince: 'Translated development since',
+                languagesSupported: 'Translated languages supported',
+              },
+              license: 'Translated license label',
+              githubAria: 'Translated GitHub screen reader label',
+              quote: 'Translated customer quote',
+              attribution: 'Translated review attribution',
+              story: 'Translated story link',
+            },
+          },
+        }}
+      >
+        <TrustSection />
+      </NextIntlClientProvider>
+    )
+
+    expect(screen.getByText('Translated active installations')).toBeInTheDocument()
+    expect(screen.getByText('Translated development since')).toBeInTheDocument()
+    expect(screen.getByText('Translated languages supported')).toBeInTheDocument()
+    expect(
+      screen.getByRole('link', { name: /Translated license label/ })
+    ).toHaveAttribute('href', 'https://github.com/wcpos')
+    expect(screen.getByText(/Translated customer quote/)).toBeInTheDocument()
+    expect(screen.getByText('Translated review attribution')).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Translated story link' })).toHaveAttribute(
+      'href',
+      '/about-us'
+    )
+  })
 })
 
 describe('CtaSection', () => {
   it('renders the final CTA links', () => {
-    render(<CtaSection />)
+    renderWithIntl(<CtaSection />)
 
     expect(screen.getByRole('link', { name: 'Try Live Demo' })).toHaveAttribute(
       'href',
@@ -211,6 +352,37 @@ describe('CtaSection', () => {
     )
     expect(
       screen.getByRole('link', { name: 'Download Free' })
+    ).toHaveAttribute('href', '/downloads')
+  })
+
+  it('renders translated CTA copy from messages', () => {
+    render(
+      <NextIntlClientProvider
+        locale="en"
+        messages={{
+          home: {
+            cta: {
+              title: 'Translated CTA title',
+              subtitle: 'Translated CTA subtitle',
+              liveDemo: 'Translated live demo',
+              download: 'Translated download',
+            },
+          },
+        }}
+      >
+        <CtaSection />
+      </NextIntlClientProvider>
+    )
+
+    expect(
+      screen.getByRole('heading', { name: 'Translated CTA title' })
+    ).toBeInTheDocument()
+    expect(screen.getByText('Translated CTA subtitle')).toBeInTheDocument()
+    expect(
+      screen.getByRole('link', { name: 'Translated live demo' })
+    ).toHaveAttribute('href', 'https://demo.wcpos.com/pos')
+    expect(
+      screen.getByRole('link', { name: 'Translated download' })
     ).toHaveAttribute('href', '/downloads')
   })
 })

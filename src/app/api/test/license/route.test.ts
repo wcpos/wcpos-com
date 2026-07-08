@@ -48,7 +48,7 @@ describe('POST /api/test/license', () => {
     const res = await POST(makeRequest({ action: 'validate', licenseKey: 'test' }))
     expect(res.status).toBe(403)
     const json = await res.json()
-    expect(json.error).toBe('Not available in production')
+    expect(json).toEqual({ errorCode: 'not_available_in_production' })
   })
 
   describe('validate action', () => {
@@ -56,7 +56,7 @@ describe('POST /api/test/license', () => {
       const res = await POST(makeRequest({ action: 'validate' }))
       expect(res.status).toBe(400)
       const json = await res.json()
-      expect(json.error).toBe('licenseKey required')
+      expect(json).toEqual({ errorCode: 'license_key_required' })
     })
 
     it('calls validateLicenseKey and returns result', async () => {
@@ -85,7 +85,7 @@ describe('POST /api/test/license', () => {
       )
       expect(res.status).toBe(400)
       const json = await res.json()
-      expect(json.error).toBe('licenseId and fingerprint required')
+      expect(json).toEqual({ errorCode: 'license_id_and_fingerprint_required' })
     })
 
     it('returns 400 when fingerprint is missing', async () => {
@@ -107,7 +107,7 @@ describe('POST /api/test/license', () => {
       )
       expect(res.status).toBe(422)
       const json = await res.json()
-      expect(json.error).toContain('Activation failed')
+      expect(json).toEqual({ errorCode: 'activation_failed' })
     })
 
     it('returns machine data on successful activation', async () => {
@@ -138,7 +138,7 @@ describe('POST /api/test/license', () => {
       const res = await POST(makeRequest({ action: 'deactivate' }))
       expect(res.status).toBe(400)
       const json = await res.json()
-      expect(json.error).toBe('machineId required')
+      expect(json).toEqual({ errorCode: 'machine_id_required' })
     })
 
     it('calls deactivateMachine and returns result', async () => {
@@ -159,7 +159,7 @@ describe('POST /api/test/license', () => {
       const res = await POST(makeRequest({ action: 'status' }))
       expect(res.status).toBe(400)
       const json = await res.json()
-      expect(json.error).toBe('licenseId required')
+      expect(json).toEqual({ errorCode: 'license_id_required' })
     })
 
     it('returns license with machines', async () => {
@@ -185,7 +185,7 @@ describe('POST /api/test/license', () => {
     const res = await POST(makeRequest({ action: 'unknown' }))
     expect(res.status).toBe(400)
     const json = await res.json()
-    expect(json.error).toContain('Unknown action: unknown')
+    expect(json).toEqual({ errorCode: 'unknown_action', action: 'unknown' })
   })
 
   it('returns 500 when licenseClient throws', async () => {
@@ -198,6 +198,6 @@ describe('POST /api/test/license', () => {
     )
     expect(res.status).toBe(500)
     const json = await res.json()
-    expect(json.error).toBe('Connection refused')
+    expect(json).toEqual({ errorCode: 'test_harness_error' })
   })
 })

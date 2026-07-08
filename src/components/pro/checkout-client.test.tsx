@@ -1,5 +1,13 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { render, screen, waitFor, fireEvent } from '@testing-library/react'
+import {
+  screen,
+  waitFor,
+  fireEvent,
+  render as rtlRender,
+} from '@testing-library/react'
+import { NextIntlClientProvider } from 'next-intl'
+import frMessages from '../../../messages/fr.json'
+import { renderWithIntl as render } from '@/test/intl'
 
 // Payment identifiers are host-resolved server-side and passed as a prop
 // (see store-environment.ts); tests exercise the all-providers setup.
@@ -193,6 +201,27 @@ function renderSignedIn(props: Record<string, unknown> = {}) {
   )
 }
 
+function renderSignedInFrench(props: Record<string, unknown> = {}) {
+  return rtlRender(
+    <NextIntlClientProvider
+      locale="fr"
+      messages={frMessages}
+      onError={(error) => {
+        throw error
+      }}
+    >
+      <CheckoutClient
+        customerEmail="user@example.com"
+        selectedOfferHandle="wcpos-pro-yearly"
+        checkoutPath="/pro/checkout?product=wcpos-pro-yearly"
+        experimentVariant="control"
+        payments={ALL_PAYMENTS}
+        {...props}
+      />
+    </NextIntlClientProvider>
+  )
+}
+
 /**
  * Fills the billing step and continues to payment. Queues the billing
  * PATCH response and initial payment session (the 3rd and 4th fetches
@@ -328,6 +357,33 @@ describe('CheckoutClient', () => {
           metadata: {
             experiment: 'pro_checkout_v1',
             variant: 'control',
+            locale: 'en',
+          },
+        }),
+      })
+    )
+  })
+
+  it('includes the active locale in cart metadata for order email localization', async () => {
+    mockSuccessfulCheckoutInit()
+    renderSignedInFrench()
+
+    await waitFor(() => {
+      expect(mockFetch).toHaveBeenCalledWith(
+        '/api/store/cart',
+        expect.objectContaining({ method: 'POST' })
+      )
+    })
+    expect(mockFetch).toHaveBeenNthCalledWith(
+      1,
+      '/api/store/cart',
+      expect.objectContaining({
+        method: 'POST',
+        body: JSON.stringify({
+          metadata: {
+            experiment: 'pro_checkout_v1',
+            variant: 'control',
+            locale: 'fr',
           },
         }),
       })
@@ -382,6 +438,36 @@ describe('CheckoutClient', () => {
       expect(mockFetch).toHaveBeenCalledWith(
         '/api/store/cart',
         expect.objectContaining({ method: 'POST' })
+      )
+    })
+  })
+
+  it('passes the active locale when creating an account inline during checkout', async () => {
+    mockFetch.mockResolvedValueOnce({ ok: true, json: async () => ({}) })
+    mockSuccessfulCheckoutInit()
+
+    const { container } = renderSignedInFrench({ customerEmail: undefined })
+
+    fireEvent.change(container.querySelector('#checkout-email')!, {
+      target: { value: 'new@example.com' },
+    })
+    fireEvent.change(container.querySelector('#checkout-password')!, {
+      target: { value: 'hunter2hunter2' },
+    })
+    fireEvent.submit(screen.getByTestId('account-step-form'))
+
+    await waitFor(() => {
+      expect(mockFetch).toHaveBeenNthCalledWith(
+        1,
+        '/api/auth/register',
+        expect.objectContaining({
+          method: 'POST',
+          body: JSON.stringify({
+            email: 'new@example.com',
+            password: 'hunter2hunter2',
+            locale: 'fr',
+          }),
+        })
       )
     })
   })
@@ -583,6 +669,18 @@ describe('CheckoutClient', () => {
     await waitFor(() => {
       expect(screen.getByText('WCPOS Pro Lifetime')).toBeInTheDocument()
       expect(screen.getByText('Total')).toBeInTheDocument()
+    })
+  })
+
+  it('localizes known Medusa item titles in the order summary', async () => {
+    mockSuccessfulCheckoutInit(
+      buildCheckoutCart({ title: 'WCPOS Pro Lifetime' })
+    )
+    renderSignedInFrench()
+
+    await waitFor(() => {
+      expect(screen.getByText('WCPOS Pro à vie')).toBeInTheDocument()
+      expect(screen.queryByText('WCPOS Pro Lifetime')).not.toBeInTheDocument()
     })
   })
 

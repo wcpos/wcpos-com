@@ -104,7 +104,7 @@ describe('GET /api/account/download', () => {
     const json = await response.json()
 
     expect(response.status).toBe(500)
-    expect(json.error).toBe('Download token secret not configured')
+    expect(json.errorCode).toBe('download_token_secret_missing')
     expect(mockVerifyDownloadToken).not.toHaveBeenCalled()
     // Infra broken — fatal so Discord + email page on it.
     expect(mockDownloadFatal).toHaveBeenCalled()
@@ -118,7 +118,7 @@ describe('GET /api/account/download', () => {
     const json = await response.json()
 
     expect(response.status).toBe(500)
-    expect(json.error).toBe('Download token secret not configured')
+    expect(json.errorCode).toBe('download_token_secret_missing')
     expect(mockVerifyDownloadToken).not.toHaveBeenCalled()
     expect(mockDownloadFatal).toHaveBeenCalled()
   })
@@ -134,6 +134,7 @@ describe('GET /api/account/download', () => {
     const response = await GET(downloadRequest())
 
     expect(response.status).toBe(403)
+    await expect(response.json()).resolves.toEqual({ errorCode: 'invalid_token' })
     expect(mockDownloadWarn.mock.calls[0][0]).toEqual([
       'Download denied: invalid/mismatched token. customer=',
       ' ip=',
@@ -164,6 +165,7 @@ describe('GET /api/account/download', () => {
     const response = await GET(downloadRequest())
 
     expect(response.status).toBe(404)
+    await expect(response.json()).resolves.toEqual({ errorCode: 'release_not_found' })
     expect(mockDownloadWarn.mock.calls[0][0]).toEqual([
       'Download denied: release not found. version=',
       ' customer=',
@@ -197,6 +199,7 @@ describe('GET /api/account/download', () => {
     const response = await GET(downloadRequest())
 
     expect(response.status).toBe(403)
+    await expect(response.json()).resolves.toEqual({ errorCode: 'forbidden' })
     expect(mockDownloadWarn.mock.calls[0][0]).toEqual([
       'Download denied: not entitled. version=',
       ' customer=',
@@ -259,6 +262,7 @@ describe('GET /api/account/download', () => {
     const response = await GET(downloadRequest())
 
     expect(response.status).toBe(502)
+    await expect(response.json()).resolves.toEqual({ errorCode: 'asset_unavailable' })
     expect(mockDownloadError).toHaveBeenCalled()
   })
 })

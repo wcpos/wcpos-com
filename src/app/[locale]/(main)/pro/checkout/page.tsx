@@ -1,4 +1,4 @@
-import { setRequestLocale } from 'next-intl/server'
+import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { connection } from 'next/server'
 import { Suspense } from 'react'
 import { cookies } from 'next/headers'
@@ -21,11 +21,23 @@ import {
   type ProOfferCheckoutInput,
 } from '@/lib/pro-offer-catalog'
 
-export const metadata = {
-  title: 'Checkout',
-  description: 'Complete your purchase of WCPOS Pro',
-  // Auth-gated transactional page — keep out of search engines.
-  robots: { index: false, follow: false },
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}) {
+  const { locale } = await params
+  const t = await getTranslations({
+    locale,
+    namespace: 'pro.checkout.page.metadata',
+  })
+
+  return {
+    title: t('title'),
+    description: t('description'),
+    // Auth-gated transactional page — keep out of search engines.
+    robots: { index: false, follow: false },
+  }
 }
 
 function buildCheckoutRedirectPath(
@@ -61,14 +73,11 @@ function getSingleSearchParam(
   return value
 }
 
-const OFFER_SUMMARY_TITLES: Record<string, string> = {
-  yearly: 'WCPOS Pro — Yearly',
-  lifetime: 'WCPOS Pro — Lifetime',
-}
-
 export async function CheckoutContent({
+  locale,
   searchParamsPromise,
 }: {
+  locale: string
   searchParamsPromise: Promise<Record<string, string | string[] | undefined>>
 }) {
   // Checkout is auth- and cart-sensitive. Stop prerendering at this Suspense
@@ -77,6 +86,7 @@ export async function CheckoutContent({
   await connection()
 
   const searchParams = await searchParamsPromise
+  const t = await getTranslations({ locale, namespace: 'pro.checkout' })
   // Signed-out visitors are welcome: the checkout's first step creates the
   // account inline. The cart APIs still require auth server-side.
   // Host-keyed: wcpos.com takes live money, beta.wcpos.com uses the staging
@@ -95,7 +105,7 @@ export async function CheckoutContent({
   // backend drift independently (see checkout-payments.ts).
   const [{ offers }, paymentProviderContext, experimentVariant] =
     await Promise.all([
-      getProOfferCatalog(undefined, storeEnv),
+      getProOfferCatalog(undefined, storeEnv, locale),
       getCartPaymentProviderContext(storeEnv),
       distinctId
         ? resolveProCheckoutVariant({
@@ -127,8 +137,11 @@ export async function CheckoutContent({
         selectedFullOffer
           ? {
               title:
-                OFFER_SUMMARY_TITLES[selectedFullOffer.planId] ??
-                'WCPOS Pro',
+                selectedFullOffer.planId === 'yearly'
+                  ? t('offers.yearly')
+                  : selectedFullOffer.planId === 'lifetime'
+                    ? t('offers.lifetime')
+                    : t('offers.default'),
               priceFormatted: selectedFullOffer.price.formatted,
             }
           : undefined
@@ -153,6 +166,7 @@ export default async function CheckoutPage({
 }) {
   const { locale } = await params
   setRequestLocale(locale)
+  const t = await getTranslations({ locale, namespace: 'pro.checkout.page' })
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-background to-muted/20">
@@ -162,10 +176,10 @@ export default async function CheckoutPage({
           className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground mb-8"
         >
           <ArrowLeft className="mr-2 h-4 w-4" />
-          Back to pricing
+          {t('backToPricing')}
         </Link>
 
-        <h1 className="text-3xl font-bold mb-8 text-center">Checkout</h1>
+        <h1 className="text-3xl font-bold mb-8 text-center">{t('title')}</h1>
 
         <Suspense
           fallback={
@@ -186,7 +200,7 @@ export default async function CheckoutPage({
             </div>
           }
         >
-          <CheckoutContent searchParamsPromise={searchParams} />
+          <CheckoutContent locale={locale} searchParamsPromise={searchParams} />
         </Suspense>
       </div>
     </main>

@@ -2,8 +2,7 @@
  * Country vocabulary shared by the checkout billing step and the account
  * profile form so the two cannot drift: which countries checkout supports,
  * and what a tax registration is called per country (the profile form
- * translates these keys via account.profile.taxLabels; checkout renders the
- * English default).
+ * and checkout both translate these keys via account.profile.taxLabels).
  *
  * Pure module — imported by client components and server routes alike.
  */
@@ -34,21 +33,8 @@ export const COUNTRY_TAX_LABEL_KEYS: Record<string, TaxLabelKey> = {
   us: 'einTaxId',
 }
 
-export const TAX_LABELS_EN: Record<TaxLabelKey, string> = {
-  abn: 'ABN',
-  einTaxId: 'EIN / Tax ID',
-  gst: 'GST number',
-  gstHst: 'GST/HST number',
-  nifVat: 'NIF / VAT number',
-  partitaIva: 'Partita IVA',
-  taxRegistration: 'Tax registration number',
-  vat: 'VAT number',
-  genericTaxId: 'Tax ID / VAT number',
-}
-
-export function taxIdLabel(countryCode: string): string {
-  const key = COUNTRY_TAX_LABEL_KEYS[countryCode.toLowerCase()]
-  return TAX_LABELS_EN[key ?? 'genericTaxId']
+export function taxIdLabelKey(countryCode: string): TaxLabelKey {
+  return COUNTRY_TAX_LABEL_KEYS[countryCode.toLowerCase()] ?? 'genericTaxId'
 }
 
 const FALLBACK_COUNTRY_CODES = [

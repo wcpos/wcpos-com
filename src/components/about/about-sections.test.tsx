@@ -4,7 +4,14 @@ vi.mock('next/cache', () => ({
   cacheTag: vi.fn(),
 }))
 
+vi.mock('next-intl/server', () => ({
+  getLocale: vi.fn(async () => 'en'),
+}))
+
 import { render, screen } from '@testing-library/react'
+import { NextIntlClientProvider } from 'next-intl'
+import type { ReactElement } from 'react'
+import messages from '../../../messages/en.json'
 
 // Mock i18n navigation Link as a simple anchor (the about CTA only uses it for
 // an internal href), keeping these as pure render tests.
@@ -112,9 +119,17 @@ import { StoryTimeline } from './story-timeline'
 import { ValuesSection } from './values-section'
 import { AboutCta } from './about-cta'
 
+function renderWithIntl(ui: ReactElement) {
+  return render(
+    <NextIntlClientProvider locale="en" messages={messages}>
+      {ui}
+    </NextIntlClientProvider>
+  )
+}
+
 describe('AboutHero', () => {
   it('renders the page heading', () => {
-    render(<AboutHero />)
+    renderWithIntl(<AboutHero />)
     expect(
       screen.getByRole('heading', {
         level: 1,
@@ -124,7 +139,7 @@ describe('AboutHero', () => {
   })
 
   it('uses the canonical dark hero section seam', () => {
-    render(<AboutHero />)
+    renderWithIntl(<AboutHero />)
 
     const heading = screen.getByRole('heading', {
       level: 1,
@@ -144,7 +159,7 @@ describe('AboutHero', () => {
 
 describe('FounderLetter', () => {
   it('introduces Paul and shows the shop photo', async () => {
-    render(await FounderLetter())
+    renderWithIntl(await FounderLetter())
     expect(
       screen.getByText(/Hi — I'm Paul\. I built WCPOS\./)
     ).toBeInTheDocument()
@@ -155,17 +170,17 @@ describe('FounderLetter', () => {
   })
 
   it('states the Pro pricing', async () => {
-    render(await FounderLetter())
+    renderWithIntl(await FounderLetter())
     expect(screen.getByText(/\$129\/yr or \$399 once/)).toBeInTheDocument()
   })
 
   it('renders a non-price fallback while pricing loads', () => {
-    render(<FounderLetterFallback />)
+    renderWithIntl(<FounderLetterFallback />)
     expect(screen.getByText(/available from the Pro page/)).toBeInTheDocument()
   })
 
   it('uses the canonical muted section seam around the editorial letter', () => {
-    render(<FounderLetterFallback />)
+    renderWithIntl(<FounderLetterFallback />)
 
     const section = screen
       .getByText(/Hi — I'm Paul\. I built WCPOS\./)
@@ -178,17 +193,17 @@ describe('FounderLetter', () => {
 
 describe('StoryTimeline', () => {
   it('lists the WordPress.org release milestone', () => {
-    render(<StoryTimeline />)
-    expect(screen.getByText('11 May 2014')).toBeInTheDocument()
+    renderWithIntl(<StoryTimeline />)
+    expect(screen.getByText('May 11, 2014')).toBeInTheDocument()
     expect(
       screen.getByRole('heading', { name: 'Released on WordPress.org' })
     ).toBeInTheDocument()
   })
 
   it('lists the rewrite and mobile milestones with their verified dates', () => {
-    render(<StoryTimeline />)
+    renderWithIntl(<StoryTimeline />)
     // v1.0.0 shipped 2023-05-03 UTC — 4 May 2023 in Perth (github.com/wcpos/woocommerce-pos 1.0.0)
-    expect(screen.getByText('4 May 2023')).toBeInTheDocument()
+    expect(screen.getByText('May 4, 2023')).toBeInTheDocument()
     expect(
       screen.getByRole('heading', { name: 'Rewritten in React Native' })
     ).toBeInTheDocument()
@@ -200,12 +215,12 @@ describe('StoryTimeline', () => {
   })
 
   it('mentions the original Backbone.js and IndexedDB stack', () => {
-    render(<StoryTimeline />)
+    renderWithIntl(<StoryTimeline />)
     expect(screen.getByText(/Backbone\.js and an in-browser IndexedDB/)).toBeInTheDocument()
   })
 
   it('uses the canonical default section seam for the story band', () => {
-    render(<StoryTimeline />)
+    renderWithIntl(<StoryTimeline />)
 
     const section = screen
       .getByRole('heading', { name: "How it started, and why it's still here" })
@@ -219,7 +234,7 @@ describe('StoryTimeline', () => {
 
 describe('ValuesSection', () => {
   it('renders the four principles', () => {
-    render(<ValuesSection />)
+    renderWithIntl(<ValuesSection />)
     for (const title of [
       'Independent',
       'Funded by Pro',
@@ -233,7 +248,7 @@ describe('ValuesSection', () => {
   })
 
   it('uses the canonical muted section seam for the values band', () => {
-    render(<ValuesSection />)
+    renderWithIntl(<ValuesSection />)
 
     const section = screen
       .getByRole('heading', { name: 'What it stands for' })
@@ -246,7 +261,7 @@ describe('ValuesSection', () => {
 
 describe('AboutCta', () => {
   it('links the demo, download, and Pro CTAs', () => {
-    render(<AboutCta />)
+    renderWithIntl(<AboutCta />)
     expect(
       screen.getByRole('link', { name: 'Try Live Demo' })
     ).toHaveAttribute('href', 'https://demo.wcpos.com/pos')
@@ -260,7 +275,7 @@ describe('AboutCta', () => {
   })
 
   it('uses the canonical dark section and shared button seam', () => {
-    render(<AboutCta />)
+    renderWithIntl(<AboutCta />)
 
     const heading = screen.getByRole('heading', {
       name: 'Built by a shopkeeper. Funded by shopkeepers.',

@@ -53,8 +53,8 @@ function reply(body: WcAmResponse): NextResponse {
   return NextResponse.json(body, { status: 200, headers: CORS_HEADERS })
 }
 
-function errorText(result: LicenseResult): string {
-  return result.message || result.error || 'License request failed'
+function licenseFailureMessage(result: LicenseResult): string {
+  return result.message || result.error || 'license_request_failed'
 }
 
 async function proxy(
@@ -116,7 +116,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
   const action = params.get('request') ?? 'status'
 
   if (!key || !instance) {
-    return reply({ success: false, error: 'Missing required parameters: api_key and instance' })
+    return reply({ success: false, error: 'missing_required_parameters' })
   }
 
   try {
@@ -130,7 +130,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
       if (result.status === 200 || machineAlreadyGone) {
         return reply({ success: true, activated: false })
       }
-      return reply({ success: false, activated: false, error: errorText(result), code: result.status })
+      return reply({ success: false, activated: false, error: licenseFailureMessage(result), code: result.status })
     }
 
     const path = action === 'activation' ? '/pro/license/activate' : '/pro/license/status'
@@ -153,11 +153,11 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
       }
       return reply({ success: true, activated: !!result.data.activated })
     }
-    return reply({ success: false, activated: false, error: errorText(result), code: result.status })
+    return reply({ success: false, activated: false, error: licenseFailureMessage(result), code: result.status })
   } catch {
     return reply({
       success: false,
-      error: 'The license server is temporarily unavailable. Please try again shortly.',
+      error: 'license_server_unavailable',
     })
   }
 }

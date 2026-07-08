@@ -6,34 +6,50 @@ vi.mock('@/lib/client-logger', () => ({
   clientLogger: { error: vi.fn() },
 }))
 
+function setNavigatorLanguages(languages: readonly string[]) {
+  Object.defineProperty(window.navigator, 'languages', {
+    configurable: true,
+    value: languages,
+  })
+  Object.defineProperty(window.navigator, 'language', {
+    configurable: true,
+    value: languages[0],
+  })
+}
+
 describe('GlobalError', () => {
   beforeEach(() => {
     // GlobalError renders its own <html>/<body>, which React flags as
     // invalid nesting inside the jsdom test container. Silence the
     // expected console noise (the component also logs the error itself).
     vi.spyOn(console, 'error').mockImplementation(() => {})
+    setNavigatorLanguages(['en-US'])
   })
 
-  it('renders the error state and retries via reset', () => {
+  it('renders the localized error state and retries via reset', async () => {
     const reset = vi.fn()
     const error = Object.assign(new Error('boom'), { digest: 'digest-1' })
 
+    setNavigatorLanguages(['es-ES', 'en-US'])
     render(<GlobalError error={error} reset={reset} />)
 
     expect(
-      screen.getByRole('heading', { name: 'Something went wrong' })
+      await screen.findByRole('heading', { name: 'Algo salió mal.' })
     ).toBeInTheDocument()
+    expect(document.documentElement).toHaveAttribute('lang', 'es')
+    expect(document.documentElement).toHaveAttribute('dir', 'ltr')
 
-    fireEvent.click(screen.getByRole('button', { name: 'Try again' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Intentar de nuevo' }))
     expect(reset).toHaveBeenCalledTimes(1)
   })
 
-  it('links back to the homepage', () => {
+  it('links back to the localized homepage copy', async () => {
+    setNavigatorLanguages(['fr-FR', 'en-US'])
     render(<GlobalError error={new Error('boom')} reset={vi.fn()} />)
 
     expect(
-      screen.getByRole('link', { name: 'Go to homepage' })
-    ).toHaveAttribute('href', '/')
+      await screen.findByRole('link', { name: 'Aller à l’accueil' })
+    ).toHaveAttribute('href', '/fr')
   })
 
   it('logs the error to the console and clientLogger', async () => {

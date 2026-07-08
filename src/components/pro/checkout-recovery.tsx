@@ -1,5 +1,6 @@
 'use client'
 
+import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/navigation'
 import { AlertTriangle, LifeBuoy } from 'lucide-react'
 import { Alert } from '@/components/ui/alert'
@@ -32,12 +33,14 @@ export function CheckoutErrorNotice({
   failure,
   canSwitchMethod = false,
 }: CheckoutErrorNoticeProps) {
+  const t = useTranslations('pro.checkout.recovery')
+
   if (failure.kind === 'payment_cancelled') {
     return (
-      <Alert role="status" tone="neutral" title="Payment cancelled">
+      <Alert role="status" tone="neutral" title={t('cancelled.title')}>
         <p>{failure.message}</p>
         {canSwitchMethod && (
-          <p>You can also choose a different payment method below.</p>
+          <p>{t('switchMethod')}</p>
         )}
       </Alert>
     )
@@ -45,39 +48,46 @@ export function CheckoutErrorNotice({
 
   if (failure.kind === 'payment_uncertain') {
     return (
-      <Alert role="alert" tone="caution" title="Payment status unknown">
+      <Alert role="alert" tone="caution" title={t('unknown.title')}>
         <p>{failure.message}</p>
         <p>
-          Please{' '}
+          {t('unknown.prefix')}{' '}
           <Link
             href={supportHref(failure.reference)}
             className="font-medium underline underline-offset-2"
           >
-            contact support
+            {t('contactSupportLower')}
           </Link>{' '}
-          and quote reference <span className="font-mono">{failure.reference}</span> —
-          we will confirm whether your payment went through before you pay again.
+          {t.rich('unknown.suffix', {
+            reference: () => (
+              <span className="font-mono">{failure.reference}</span>
+            ),
+          })}
         </p>
       </Alert>
     )
   }
 
   return (
-    <Alert role="alert" tone="critical" title="Payment unsuccessful">
+    <Alert role="alert" tone="critical" title={t('unsuccessful.title')}>
       <p>{failure.message}</p>
       <p>
-        Your order details have been saved, so you can try again without starting over.
-        {canSwitchMethod && ' You can also choose a different payment method below.'}
+        {t('unsuccessful.saved')}
+        {canSwitchMethod && ` ${t('switchMethod')}`}
       </p>
       <p>
-        Still stuck?{' '}
+        {t('unsuccessful.stuck')}{' '}
         <Link
           href={supportHref(failure.reference)}
           className="font-medium underline underline-offset-2"
         >
-          Contact support
+          {t('contactSupport')}
         </Link>{' '}
-        and quote reference <span className="font-mono">{failure.reference}</span>.
+        {t.rich('unsuccessful.quote', {
+          reference: () => (
+            <span className="font-mono">{failure.reference}</span>
+          ),
+        })}
       </p>
     </Alert>
   )
@@ -94,11 +104,11 @@ interface OrderPendingNoticeProps {
  * customer cannot pay a second time.
  */
 export function OrderPendingNotice({ failure, onReset }: OrderPendingNoticeProps) {
+  const t = useTranslations('pro.checkout.recovery.orderPending')
+
   function handleReset() {
     if (
-      window.confirm(
-        'Only reset checkout after support confirms it is safe to try again. If your payment is still pending, resetting could lead to a second payment.'
-      )
+      window.confirm(t('resetConfirm'))
     ) {
       onReset?.()
     }
@@ -110,35 +120,36 @@ export function OrderPendingNotice({ failure, onReset }: OrderPendingNoticeProps
       className="flex flex-col items-center justify-center min-h-[400px] text-center max-w-xl mx-auto"
     >
       <AlertTriangle className={`h-16 w-16 mb-4 ${toneText.caution}`} />
-      <h2 className="text-2xl font-bold mb-2">Payment received — order pending</h2>
+      <h2 className="text-2xl font-bold mb-2">{t('title')}</h2>
       <p className="text-muted-foreground mb-2">
-        Your payment went through, but we hit a problem while creating your order.
+        {t('description')}
       </p>
-      <p className="font-semibold mb-4">Please do not pay again.</p>
+      <p className="font-semibold mb-4">{t('doNotPayAgain')}</p>
       <p className="text-sm text-muted-foreground mb-6">
-        Contact support and quote reference{' '}
-        <span className="font-mono font-medium">{failure.reference}</span> — we will
-        finish setting up your order or refund your payment.
+        {t.rich('supportInstructions', {
+          reference: () => (
+            <span className="font-mono font-medium">{failure.reference}</span>
+          ),
+        })}
       </p>
       <div className="flex flex-col sm:flex-row gap-3">
         <Button asChild>
           <Link href={supportHref(failure.reference)}>
             <LifeBuoy className="mr-2 h-4 w-4" />
-            Contact support
+            {t('contactSupport')}
           </Link>
         </Button>
         <Button asChild variant="outline">
-          <Link href="/account/licenses">Check my licenses</Link>
+          <Link href="/account/licenses">{t('checkLicenses')}</Link>
         </Button>
       </div>
       {onReset && (
         <div className="mt-6 max-w-md border-t pt-4 text-sm text-muted-foreground">
           <p className="mb-3">
-            If support has confirmed this old warning is resolved, you can clear
-            it and start a fresh checkout.
+            {t('resetHint')}
           </p>
           <Button type="button" variant="ghost" onClick={handleReset}>
-            Support told me to reset checkout
+            {t('resetButton')}
           </Button>
         </div>
       )}

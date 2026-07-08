@@ -5,6 +5,7 @@ import { apiLogger } from '@/lib/logger'
 import { askAide, OpenclawError } from '@/lib/openclaw/client'
 import { verifyTurnstile } from '@/lib/support/turnstile'
 import { consumeRateLimit, consumeDailyBudget } from '@/lib/support/rate-limit'
+import { locales } from '@/i18n/config'
 
 // Grounded answers can take ~20s — extend the function budget. Node is the
 // default runtime; an explicit `export const runtime` is incompatible with the
@@ -13,11 +14,23 @@ export const maxDuration = 60
 
 const GATEWAY_TIMEOUT_MS = 45_000
 
-const RATE_LIMIT_MESSAGE =
-  "You're asking a lot of questions — please wait a few minutes, or hop into Discord."
+type SupportErrorCode =
+  | 'invalid_question'
+  | 'bot_check_failed'
+  | 'rate_limited'
+  | 'budget_exhausted'
+  | 'empty_answer'
+  | 'gateway_rate_limited'
+  | 'timeout'
+  | 'unavailable'
+
+function errorResponse(errorCode: SupportErrorCode, status: number): NextResponse {
+  return NextResponse.json({ errorCode }, { status })
+}
 
 const bodySchema = z.object({
   question: z.string().trim().min(1).max(1000),
+  locale: z.enum(locales).optional(),
   sessionId: z.string().min(1).optional(),
   turnstileToken: z.string().optional().default(''),
 })
@@ -34,31 +47,22 @@ function utcDay(): string {
 export async function POST(request: Request): Promise<NextResponse> {
   const parsed = bodySchema.safeParse(await request.json().catch(() => null))
   if (!parsed.success) {
-    return NextResponse.json(
-      { error: 'Please enter a question (up to 1000 characters).' },
-      { status: 400 }
-    )
+    return errorResponse('invalid_question', 400)
   }
-  const { question, sessionId, turnstileToken } = parsed.data
+  const { question, locale, sessionId, turnstileToken } = parsed.data
   const ip = clientIp(request)
 
   if (!(await verifyTurnstile(turnstileToken, ip))) {
-    return NextResponse.json(
-      { error: 'Bot check failed. Please reload and try again.' },
-      { status: 403 }
-    )
+    return errorResponse('bot_check_failed', 403)
   }
 
   const ipLimit = await consumeRateLimit(ip)
   if (!ipLimit.success) {
-    return NextResponse.json({ error: RATE_LIMIT_MESSAGE }, { status: 429 })
+    return errorResponse('rate_limited', 429)
   }
   const budget = await consumeDailyBudget(utcDay())
   if (!budget.success) {
-    return NextResponse.json(
-      { error: 'The assistant is busy right now. Please try Discord for a faster answer.' },
-      { status: 429 }
-    )
+    return errorResponse('budget_exhausted', 429)
   }
 
   const resolvedSessionId = sessionId ?? randomUUID()
@@ -67,6 +71,7 @@ export async function POST(request: Request): Promise<NextResponse> {
   try {
     const { answer, model, answered, sources } = await askAide({
       question,
+      locale,
       sessionId: resolvedSessionId,
       signal: controller.signal,
     })
@@ -74,10 +79,7 @@ export async function POST(request: Request): Promise<NextResponse> {
     // hand-off message), so an empty one is a malformed gateway payload.
     if (!answer) {
       apiLogger.error`Support ask got an empty answer from the gateway. ip=${ip}`
-      return NextResponse.json(
-        { error: 'The assistant is temporarily unavailable. Please try Discord while we get it back.' },
-        { status: 502 }
-      )
+      return errorResponse('empty_answer', 502)
     }
     return NextResponse.json(
       { answer, model, answered, sources, sessionId: resolvedSessionId },
@@ -90,18 +92,11 @@ export async function POST(request: Request): Promise<NextResponse> {
     // instead of masking it as an outage.
     if (gatewayError?.status === 429) {
       apiLogger.warn`Support ask rate-limited by the gateway. ip=${ip}`
-      return NextResponse.json(
-        { error: gatewayError.message || RATE_LIMIT_MESSAGE },
-        { status: 429 }
-      )
+      return errorResponse('gateway_rate_limited', 429)
     }
     const code = gatewayError?.code ?? 'unknown'
-    const message =
-      code === 'timeout'
-        ? 'That took too long. Please try again, or ask in Discord.'
-        : 'The assistant is temporarily unavailable. Please try Discord while we get it back.'
     apiLogger.error`Support ask failed. code=${code} ip=${ip} error=${err}`
-    return NextResponse.json({ error: message }, { status: 503 })
+    return errorResponse(code === 'timeout' ? 'timeout' : 'unavailable', 503)
   } finally {
     clearTimeout(timer)
   }

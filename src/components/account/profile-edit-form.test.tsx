@@ -81,6 +81,31 @@ describe('ProfileEditForm', () => {
     ).toBeInTheDocument()
   })
 
+  it('localizes profile API error codes', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: false,
+      json: async () => ({ errorCode: 'unauthorized' }),
+    })
+
+    render(
+      <ProfileEditForm
+        customer={{
+          email: 'old@example.com',
+          first_name: 'Old',
+          last_name: 'Name',
+          phone: '',
+          metadata: {},
+        }}
+      />
+    )
+
+    fireEvent.click(screen.getByRole('button', { name: 'Save changes' }))
+
+    expect(
+      await screen.findByText('Please sign in again to update your profile.')
+    ).toBeInTheDocument()
+  })
+
   it('renders the email field read-only', () => {
     render(
       <ProfileEditForm

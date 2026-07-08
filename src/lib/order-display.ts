@@ -1,8 +1,18 @@
-export function formatOrderAmount(amount: number, currencyCode: string): string {
-  return new Intl.NumberFormat('en-US', {
+export function formatOrderAmount(
+  amount: number,
+  currencyCode: string,
+  locale: string = 'en-US'
+): string {
+  const options: Intl.NumberFormatOptions = {
     style: 'currency',
     currency: currencyCode.toUpperCase(),
-  }).format(amount)
+  }
+
+  try {
+    return new Intl.NumberFormat(locale, options).format(amount)
+  } catch {
+    return new Intl.NumberFormat('en-US', options).format(amount)
+  }
 }
 
 /**

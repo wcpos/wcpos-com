@@ -41,6 +41,21 @@ describe('POST /api/auth/logout', () => {
       'https://beta.wcpos.com/login'
     )
   })
+
+  it('redirects to a requested same-origin relative target', async () => {
+    const response = await POST(
+      new NextRequest(
+        'http://localhost:3000/api/auth/logout?to=%2Ffr%2Flogin',
+        { method: 'POST' }
+      )
+    )
+
+    expect(mockLogout).toHaveBeenCalledTimes(1)
+    expect(response.status).toBe(303)
+    expect(response.headers.get('location')).toBe(
+      'http://localhost:3000/fr/login'
+    )
+  })
 })
 
 describe('GET /api/auth/logout (invalid-token loop breaker)', () => {

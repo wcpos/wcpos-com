@@ -105,7 +105,7 @@ describe('POST /api/account/downloads/token', () => {
     const json = await response.json()
 
     expect(response.status).toBe(500)
-    expect(json.error).toBe('Download token secret not configured')
+    expect(json.errorCode).toBe('download_token_secret_missing')
     expect(mockDownloadFatal).toHaveBeenCalled()
     expect(mockConsume).not.toHaveBeenCalled()
     expect(mockCreateDownloadToken).not.toHaveBeenCalled()
@@ -119,7 +119,7 @@ describe('POST /api/account/downloads/token', () => {
     const json = await response.json()
 
     expect(response.status).toBe(500)
-    expect(json.error).toBe('Download token secret not configured')
+    expect(json.errorCode).toBe('download_token_secret_missing')
     expect(mockCreateDownloadToken).not.toHaveBeenCalled()
   })
 
@@ -130,6 +130,7 @@ describe('POST /api/account/downloads/token', () => {
     const response = await POST(tokenRequest('1.9.0'))
 
     expect(response.status).toBe(429)
+    await expect(response.json()).resolves.toEqual({ errorCode: 'rate_limited' })
     expect(mockCreateDownloadToken).not.toHaveBeenCalled()
     expect(mockGetProPluginReleases).not.toHaveBeenCalled()
     expect(mockDownloadWarn).toHaveBeenCalled()
@@ -174,6 +175,7 @@ describe('POST /api/account/downloads/token', () => {
     const response = await POST(tokenRequest('99.9.9'))
 
     expect(response.status).toBe(404)
+    await expect(response.json()).resolves.toEqual({ errorCode: 'release_not_found' })
     expect(mockDownloadWarn).toHaveBeenCalled()
     expect(mockCreateDownloadToken).not.toHaveBeenCalled()
   })
@@ -191,6 +193,7 @@ describe('POST /api/account/downloads/token', () => {
     const response = await POST(tokenRequest('1.9.0'))
 
     expect(response.status).toBe(403)
+    await expect(response.json()).resolves.toEqual({ errorCode: 'forbidden' })
     expect(mockDownloadWarn).toHaveBeenCalled()
     expect(mockCreateDownloadToken).not.toHaveBeenCalled()
   })

@@ -1,6 +1,7 @@
 'use client'
 
 import * as React from 'react'
+import { useTranslations } from 'next-intl'
 import {
   motion,
   useMotionValueEvent,
@@ -287,6 +288,7 @@ function PinnedStory() {
 }
 
 function PinnedStoryScroller() {
+  const t = useTranslations('home.story')
   const tone = 'onLight' as const
   const scrollerRef = React.useRef<HTMLDivElement>(null)
   const { scrollYProgress: progress } = useScroll({
@@ -575,7 +577,7 @@ function PinnedStoryScroller() {
           )}
           style={{ opacity: hintOpacity }}
         >
-          Scroll ↓
+          {t('nav.s1')}
         </motion.div>
 
         {/* act progress dots — click to jump to an act (targets are the
@@ -585,7 +587,7 @@ function PinnedStoryScroller() {
             <button
               key={i}
               type="button"
-              aria-label={`Go to act ${i + 1} of 4`}
+              aria-label={t('nav.s2', { current: i + 1, total: 4 })}
               aria-current={i === act ? 'step' : undefined}
               onClick={() => {
                 const scroller = scrollerRef.current

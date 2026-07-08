@@ -7,7 +7,7 @@ import { resolveEntitledReleases } from '@/services/core/business/release-delive
 export async function GET() {
   const { authenticated, licenses } = await getResolvedCustomerLicenses()
   if (!authenticated) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    return NextResponse.json({ errorCode: 'unauthorized' }, { status: 401 })
   }
 
   const releases = await getProPluginReleases()

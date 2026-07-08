@@ -3,6 +3,9 @@
     "signIn": "サインイン",
     "account": "アカウント",
     "openMenu": "メニューを開く",
+    "close": "閉じる",
+    "accountMenu": "アカウントメニュー",
+    "signOut": "ログアウト",
     "dismiss": "閉じる"
   },
   "header": {
@@ -30,7 +33,7 @@
     "companyHeading": "会社情報",
     "downloadHeading": "ダウンロード",
     "pro": "WCPOS Pro",
-    "roadmap": "Roadmap",
+    "roadmap": "ロードマップ",
     "demo": "ライブデモ",
     "discord": "Discord",
     "github": "GitHub",
@@ -46,13 +49,358 @@
   },
   "home": {
     "title": "WCPOS",
-    "subtitle": "WooCommerce向けの高速なPOS"
+    "subtitle": "WooCommerce向けの高速POS",
+    "meta": {
+      "description": "WooCommerce向けPOS。商品を同期し、オフラインでも販売し、iOS、Android、デスクトップ向けネイティブアプリで実機ハードウェアに接続できます。"
+    },
+    "problem": {
+      "title": "WooCommerceストアと実店舗の運営が二重作業になるべきではありません",
+      "items": {
+        "doubleEntry": {
+          "label": "二重入力",
+          "description": "別のPOSに商品を再入力すると、時間を浪費しエラーが発生します。"
+        },
+        "offlinePanic": {
+          "label": "オフラインの不安",
+          "description": "インターネットが切れると販売が止まり、お客様を待たせ、売上を失います。"
+        },
+        "platformLockIn": {
+          "label": "プラットフォームロックイン",
+          "description": "独自システムはデータを閉じ込めます。移行やカスタマイズが不可能になります。"
+        }
+      }
+    },
+    "cta": {
+      "title": "WooCommerceで店頭販売を始める準備はできましたか？",
+      "subtitle": "ライブデモを試すか、無料プラグインをダウンロードして始めましょう。",
+      "liveDemo": "ライブデモを試す",
+      "download": "無料でダウンロード"
+    },
+    "trust": {
+      "stats": {
+        "activeInstallations": "有効インストール数",
+        "inDevelopmentSince": "開発開始",
+        "languagesSupported": "対応言語"
+      },
+      "license": "GPLライセンス",
+      "githubAria": "— GitHubのWCPOS",
+      "quote": "わかりやすく、機能的で、使いやすい。10/10。",
+      "attribution": "Ward、wordpress.orgレビュー",
+      "story": "ストーリーを読む →"
+    },
+    "useCases": {
+      "title": "さまざまな店舗に対応",
+      "reviewSuffix": "wordpress.orgレビュー",
+      "cards": {
+        "retail": {
+          "type": "小売店",
+          "quote": "既存のWCサイト用POSを探してかなり調べましたが、無料だったのでこれを見落とすところでした。でも試してよかったです。サブスクや売上の割合を求めずに、必要なことをすべてこなしてくれます。",
+          "attribution": "nckllnpssy"
+        },
+        "market": {
+          "type": "マーケット出店者",
+          "quote": "私はアヌシーの陶芸家で、WooCommerceショップとマーケットで販売しています。WCPOSを1年以上使っていて、数か月前にLifetime Proライセンスを購入しました。価値があると思います。PaulはDiscordで週末でもすぐに対応してくれます。",
+          "attribution": "adeline",
+          "note": "フランス語からの翻訳"
+        },
+        "desktop": {
+          "type": "デスクトップとオフライン",
+          "quote": "WooCommerceストアに最適なPOSです。デスクトップ版があり、インターネット接続が弱い場所ではさらに便利です。今後も素晴らしい機能が増えると思います。",
+          "attribution": "rodriguekgl"
+        }
+      }
+    },
+    "benefits": {
+      "heading": "店舗がWCPOSを選ぶ理由",
+      "items": {
+        "sync": {
+          "headline": "1つの商品カタログで2つの販売チャネル",
+          "description": "WooCommerceの商品がそのままPOSの商品になります。価格や在庫数を一度更新するだけで、すべての場所に自動で同期されます。手入力も、食い違いも、推測も不要です。",
+          "supporting": "同じ商品。同じ価格。同じ顧客。常に同期されています。"
+        },
+        "offline": {
+          "headline": "オフラインでも動作",
+          "description": "ローカルファーストの設計により、接続が切れてもPOSは動き続けます。商品は端末内に保存され、未完了の注文も保持されます。インターネットが復旧するとすぐに完了・同期されます。",
+          "supporting": "インターネットの問題で注文を失うことはありません。"
+        },
+        "hardware": {
+          "headline": "ネイティブアプリと実機ハードウェア",
+          "description": "アプリのふりをしたブラウザータブではなく、iOSとAndroid向けのネイティブアプリです。決済端末、レシートプリンター、バーコードスキャナーを直接接続できます。",
+          "supporting": "Stripe Terminal、SumUp、その他の決済ハードウェアに対応しています。"
+        },
+        "ownership": {
+          "headline": "すべてを自分で所有",
+          "description": "データはあなたのホスティング上のWooCommerceストアに残ります。プラットフォームへの囲い込みも、第三者にビジネスを握られることもありません。オープンソース（GPL）なので、コードを確認し、拡張し、貢献できます。",
+          "supporting": "オープンソース。セルフホスト。管理するのはあなたです。"
+        }
+      },
+      "visuals": {
+        "offline": {
+          "title": "今日の売上",
+          "badge": "オフライン",
+          "sale": "販売 #{number}",
+          "completed": "完了",
+          "queued": "3件の販売が待機中 — オンラインに戻ると同期されます"
+        },
+        "hardware": {
+          "tablet": "iPad / タブレット",
+          "terminal": "カード端末",
+          "printer": "レシートプリンター",
+          "scanner": "バーコードスキャナー"
+        },
+        "ownership": {
+          "chips": {
+            "hosting": "あなたのホスティング",
+            "data": "あなたのデータ",
+            "license": "GPLライセンス",
+            "openSource": "オープンソース"
+          }
+        }
+      }
+    },
+    "features": {
+      "heading": "実店舗販売の要求に応える機能",
+      "items": {
+        "f1": {
+          "title": "高速な商品検索",
+          "description": "検索、フィルター、カテゴリー閲覧で商品をすぐに見つけられます。バーコードスキャナーにも対応しています。"
+        },
+        "f2": {
+          "title": "スムーズな会計フロー",
+          "description": "商品を追加し、割引を適用し、支払い方法を選択できます。Stripe Terminal、SumUp、現金、カスタムゲートウェイに対応しています。"
+        },
+        "f3": {
+          "title": "顧客プロフィール",
+          "description": "POSから顧客情報を直接追加・編集できます。常連のお客様を把握し、より良いサービスを提供できます。"
+        },
+        "f4": {
+          "title": "注文履歴と管理",
+          "description": "WP Adminに切り替えずに、過去の注文を表示し、返品を処理し、注文ステータスを確認できます。"
+        },
+        "f5": {
+          "title": "在庫と価格をその場で編集",
+          "description": "接客中に間違った価格を修正できます。POSを離れずに在庫を調整できます。"
+        },
+        "f6": {
+          "title": "日次締めレポート",
+          "description": "シフトごと、または1日ごとの売上レポートを生成できます。素早くレジ締めし、成果を確認できます。"
+        }
+      }
+    },
+    "pricing": {
+      "heading": "無料で開始。必要になったらアップグレード。",
+      "fallback": "現在のProオプションは料金ページでご確認ください。レジごとの追加料金はありません。",
+      "free": {
+        "title": "無料",
+        "description": "ずっと無料。取引手数料なし。制限なし。",
+        "features": {
+          "f1": "WooCommerce同期",
+          "f2": "商品検索とグリッド表示",
+          "f3": "基本的な会計",
+          "f4": "オフラインモード",
+          "f5": "レシート印刷",
+          "f6": "複数通貨",
+          "f7": "商品数無制限"
+        }
+      },
+      "pro": {
+        "title": "Pro",
+        "intro": "無料版のすべてに加えて：",
+        "features": {
+          "p1": "決済端末連携",
+          "p2": "POS内での在庫・価格編集",
+          "p3": "注文履歴と管理",
+          "p4": "顧客管理",
+          "p5": "日次締めレポート",
+          "p6": "カスタム決済ゲートウェイ",
+          "p7": "優先サポート"
+        }
+      },
+      "cta": "料金と機能をすべて見る",
+      "priceSummary": "{yearly}/年、または {lifetime} 買い切り（{currency}）。レジごとの追加料金はありません。"
+    },
+    "ecosystem": {
+      "heading": "1つのエコシステム。販売方法はいくつも。",
+      "subtitle": "WordPressプラグインをインストールして、使用する端末を選びます。",
+      "flow": {
+        "store": "あなたのWooCommerceストア",
+        "plugin": "WordPressプラグインをインストール済み",
+        "sync": "REST API同期"
+      },
+      "badge": "ベータ",
+      "devices": {
+        "ios": {
+          "label": "iOS & iPadOS",
+          "description": "決済端末とプリンターに対応したネイティブアプリ。",
+          "cta": "iOSベータを入手"
+        },
+        "android": {
+          "label": "Android",
+          "description": "ハードウェア連携を備えたネイティブアプリ。",
+          "cta": "Androidベータを入手"
+        },
+        "desktop": {
+          "label": "Windows & macOS",
+          "description": "カウンター設置向けのデスクトップアプリケーション。",
+          "cta": "デスクトップ版をダウンロード"
+        },
+        "web": {
+          "label": "ウェブブラウザー",
+          "description": "インストール不要ですぐに試せます。",
+          "cta": "ライブデモを試す"
+        }
+      },
+      "description": "すべてのアプリはREST API経由でWooCommerceストアと同期します。無料のWordPressプラグインをインストールして、使用する端末を選ぶだけです。商品、在庫、注文は自動で同期されます。"
+    },
+    "story": {
+      "a1": {
+        "k": "WooCommerce向けPOS",
+        "h": "WooCommerceストアを店頭レジに。",
+        "b": "WCPOSはタブレットをレジに変えます。同じカタログ、同じ在庫、同じ価格を、オフラインでも利用できます。",
+        "c1": "ライブデモを試す",
+        "c2": "無料でダウンロード",
+        "badges": {
+          "b1": "5,000以上の有効店舗",
+          "b2": "無料・オープンソース",
+          "b3": "2014年から開発"
+        }
+      },
+      "a2": {
+        "k": "手持ちのあらゆる画面で",
+        "h": "1つのPOSをウェブ、デスクトップ、iOS、Androidで。",
+        "b": "カウンターのタブレット、売り場のスマートフォン、バックオフィスのノートPCでレジを実行できます。同じストア、同じデータです。",
+        "platforms": {
+          "p1": "ウェブ",
+          "p2": "Windows",
+          "p3": "macOS",
+          "p4": "iOS",
+          "p5": "Android"
+        }
+      },
+      "a3": {
+        "k": "手持ちのハードウェアを利用",
+        "h": "すでにお持ちの機器で動作します。",
+        "b": "カード端末、感熱レシートプリンター、バーコードスキャナーなど。WCPOSは専用ハードウェアに縛りません。カウンターにある機器をそのまま接続できます。"
+      },
+      "a4": {
+        "k": "あなたの店舗、あなたのデータ",
+        "h": "WooCommerceと同期。オフラインでもあなたのもの。",
+        "b": "すべての販売はWooCommerceストアに記録されます。仲介者なしでデータを所有できます。インターネットが切れても販売を続けられ、WCPOSはオンラインに戻ると同期します。"
+      },
+      "nav": {
+        "s1": "スクロール ↓",
+        "s2": "アクト {current} / {total} へ移動"
+      },
+      "static": {
+        "alt": "WCPOSレジを表示したタブレット、レシートプリンター、カード端末、バーコードスキャナーが置かれた店舗カウンター"
+      },
+      "pos": {
+        "aria": {
+          "main": "WCPOSアプリ",
+          "phone": "WCPOSアプリ、スマートフォン"
+        },
+        "store": "POS — 米国店舗",
+        "registerShort": "R{number}",
+        "search": "商品を検索",
+        "filters": {
+          "stock": "在庫あり ✕",
+          "featured": "おすすめ",
+          "sale": "セール中",
+          "category": "カテゴリー"
+        },
+        "variantBadge": "バリエーション",
+        "products": {
+          "p1": "トートバッグ",
+          "p2": "キャンドル",
+          "p3": "マグカップ",
+          "p4": "ソープバー",
+          "p5": "ノートブック",
+          "p6": "ティータオル"
+        },
+        "cart": {
+          "c1": "キャンドル",
+          "c2": "2× マグカップ",
+          "c3": "ソープバー"
+        },
+        "tax": "税金の基準：店舗所在地",
+        "showing": "{total}件中{shown}件を表示",
+        "customer": "顧客：",
+        "guest": "ゲスト ✕",
+        "subtotal": "小計",
+        "charge": "{amount}を請求",
+        "tabs": {
+          "products": "商品",
+          "cart": "カート"
+        }
+      },
+      "terminal": {
+        "tapToPay": "タップして支払い"
+      },
+      "cloudSync": {
+        "products": "商品 {count, number} 件",
+        "synced": "同期済み",
+        "ordersToWoo": "注文 → Woo",
+        "worksOffline": "オフライン対応"
+      }
+    }
   },
   "roadmap": {
-    "title": "ロードマップ",
-    "subtitle": "WCPOSで開発中の機能"
+    "meta": {
+      "title": "ロードマップ",
+      "description": "WCPOSで次に開発している機能、今後の予定、マイルストーン、リリースの進捗をご覧ください。"
+    },
+    "page": {
+      "eyebrow": "ロードマップ",
+      "title": "リリースの流れ",
+      "description": "より高速でオフラインにも強いWCPOSへ向かう各ステップを、新しい作業から順にGitHubから直接表示します。"
+    },
+    "board": {
+      "link": "WCPOSプロジェクトボードからライブ取得"
+    },
+    "status": {
+      "done": "完了",
+      "inProgress": "進行中",
+      "planned": "予定"
+    },
+    "timeline": {
+      "empty": "表示するロードマップ項目はまだありません。",
+      "phases": {
+        "now": "現在",
+        "next": "次",
+        "shipped": "リリース済み"
+      },
+      "progress": "{total}件中{completed}件完了",
+      "progressDue": "{total}件中{completed}件完了 · 期限 {date}",
+      "shipped": "リリース済み",
+      "shippedWithDate": "リリース済み · {date}",
+      "externalContentNotice": "ロードマップ項目の詳細はGitHubから取得されるため、英語で表示される場合があります。"
+    },
+    "bugs": {
+      "summary": "{count, plural, one {+ # 件のバグ修正と改善} other {+ # 件のバグ修正と改善}}",
+      "status": {
+        "done": "修正済み",
+        "in_progress": "進行中",
+        "planned": "予定"
+      }
+    }
   },
   "pro": {
+    "metadata": {
+      "title": "Pro - プレミアム機能",
+      "description": "ProでWCPOSを強化：端末決済、在庫と価格の編集、注文と顧客の管理、営業終了レポート、優先サポートを利用できます。"
+    },
+    "hero": {
+      "title": "WCPOS Pro",
+      "subtitle": "無料POSのすべてに加えて、決済端末、レジでの店舗管理、営業終了レポート、優先サポートを利用できます。"
+    },
+    "schema": {
+      "name": "WCPOS Pro",
+      "description": "WooCommerce向けのプレミアムPOSプラグイン。決済端末連携、在庫と価格の編集、注文と顧客の管理、営業終了レポート、カスタム決済ゲートウェイ、優先サポートを追加します。",
+      "offers": {
+        "yearly": "年間ライセンス",
+        "lifetime": "永久ライセンス"
+      }
+    },
     "features": {
       "title": "Proに含まれるもの",
       "subtitle": "無料版のすべての機能に加え、レジからお店全体を運営できるツールと、困ったときの優先サポートが付いています。",
@@ -129,6 +477,187 @@
       "paymentMethods": {
         "question": "どの支払い方法に対応していますか？",
         "answer": "クレジットカード（Visa、Mastercard、Amex）、PayPal、Bitcoinに対応しています。"
+      }
+    },
+    "checkout": {
+      "page": {
+        "title": "チェックアウト",
+        "backToPricing": "料金に戻る",
+        "metadata": {
+          "title": "チェックアウト",
+          "description": "WCPOS Pro の購入を完了します"
+        }
+      },
+      "offers": {
+        "yearly": "WCPOS Pro — 年間",
+        "lifetime": "WCPOS Pro — ライフタイム",
+        "default": "WCPOS Pro"
+      },
+      "backToPricing": "料金に戻る",
+      "edit": "編集",
+      "preparing": "チェックアウトを準備しています...",
+      "steps": {
+        "account": "アカウント",
+        "billing": "請求先住所",
+        "payment": "支払い"
+      },
+      "complete": {
+        "title": "ご購入ありがとうございます！",
+        "description": "ライセンスキーとダウンロードリンクをメールで送信しました。",
+        "orderId": "注文 ID: {orderId}",
+        "licenses": "ライセンスへ",
+        "home": "ホームに戻る"
+      },
+      "summary": {
+        "quantity": "数量: {quantity}",
+        "total": "合計",
+        "instantLicense": "ライセンスを即時配信",
+        "oneTimePayment": "一回払い — 自動更新なし",
+        "securePayment": "安全な決済処理"
+      },
+      "account": {
+        "emailLabel": "メール",
+        "emailHint": "このメールアドレスでアカウントを作成します。購入後、ライセンスと領収書がここに届きます。",
+        "passwordLabel": "パスワード",
+        "existingAccountNotice": "おかえりなさい — 既にアカウントがあります。パスワードを入力して続行してください。",
+        "submitting": "少々お待ちください…",
+        "createContinue": "アカウントを作成して続行",
+        "signInContinue": "サインインして続行",
+        "oauthPrompt": "Google、GitHub、Discord を使用しますか？",
+        "oauthLink": "こちらからサインイン",
+        "oauthSuffix": "— チェックアウトに戻ります。",
+        "errors": {
+          "passwordFailed": "パスワードが違います。Google、GitHub、Discord で登録した場合は下のサインインリンクを使用するか、サインインページでパスワードをリセットしてください。",
+          "createFailed": "アカウントを作成できませんでした。もう一度お試しください。",
+          "signInFailed": "サインインに失敗しました。パスワードを確認してください。",
+          "generic": "問題が発生しました。もう一度お試しください。"
+        }
+      },
+      "billing": {
+        "fields": {
+          "firstName": "名",
+          "lastName": "姓",
+          "addressLine1": "住所 1",
+          "addressLine2": "住所 2",
+          "city": "市区町村",
+          "province": "都道府県 / 州 / 地域",
+          "postalCode": "郵便番号",
+          "country": "国"
+        },
+        "optional": "（任意）",
+        "saving": "保存中…",
+        "continue": "支払いへ進む",
+        "errors": {
+          "saveFailed": "請求先住所を保存できませんでした。もう一度お試しください。"
+        }
+      },
+      "payment": {
+        "preparing": "支払いを準備しています...",
+        "processing": "処理中...",
+        "payAmount": "{amount} を支払う",
+        "walletSeparator": "または支払い方法を選択",
+        "noneConfigured": "支払い方法が設定されていません。サポートへお問い合わせください。",
+        "ariaLabel": "支払い方法",
+        "methods": {
+          "card": {
+            "title": "カード",
+            "hint": "Visa · Mastercard · Amex"
+          },
+          "paypal": {
+            "hint": "PayPal 残高または登録済みカードで支払う"
+          },
+          "bitcoin": {
+            "title": "Bitcoin",
+            "hint": "オンチェーンまたは Lightning",
+            "description": "QR コード付きの BTCPay 請求書が開きます。オンチェーンまたは Lightning で支払うと、ここに戻ります。"
+          }
+        },
+        "paypalButton": {
+          "loading": "PayPal の安全なチェックアウトを読み込んでいます...",
+          "loadFailed": "PayPal を読み込めませんでした。別の支払い方法をお試しください。"
+        },
+        "btcpayButton": {
+          "preparing": "Bitcoin 支払いを準備しています...",
+          "pay": "Bitcoin で支払う"
+        }
+      },
+      "errors": {
+        "noProductSelected": "商品が選択されていません",
+        "initializeFailed": "チェックアウトを初期化できませんでした。もう一度お試しください。",
+        "checkoutBusy": "チェックアウトが処理中です。もう一度お試しください。",
+        "paymentRefreshFailed": "請求先住所は保存されましたが、支払いを準備できませんでした。もう一度お試しください。",
+        "methodSwitchFailed": "その支払い方法を準備できませんでした。もう一度試すか、別の方法を選択してください。",
+        "genericPaymentFailed": "お支払いを処理できませんでした。もう一度試すか、別の支払い方法をご利用ください。",
+        "genericCardFailed": "カードに請求できませんでした。カード情報を確認するか、別のカードまたは支払い方法をお試しください。",
+        "unexpectedPaymentStatus": "支払い状況を確認できませんでした。請求された可能性があると思われる場合は、再試行する前にサポートへお問い合わせください。",
+        "orderPending": "お支払いは受領しましたが、注文の作成を完了できませんでした。再度支払わないでください — サポートへ連絡してください。注文を完了するか、お支払いを返金します。",
+        "paypalFailed": "PayPalで支払いを完了できませんでした。請求は行われていません — もう一度試すか、別の支払い方法をご利用ください。",
+        "paypalInitFailed": "PayPalチェックアウトを開始できませんでした。もう一度試すか、別の支払い方法をご利用ください。",
+        "paypalCancelled": "PayPalチェックアウトはキャンセルされ、請求は行われていません。準備ができたらいつでも再試行できます。",
+        "btcpayInitFailed": "Bitcoin支払いを開始できませんでした。請求は行われていません — もう一度試すか、別の支払い方法をご利用ください。",
+        "stripeDeclines": {
+          "insufficientFunds": "残高不足のためカードが拒否されました。別のカードまたは支払い方法をご利用ください。"
+        },
+        "stripeCodes": {
+          "cardDeclined": "カードが拒否されました。別のカードまたは支払い方法をお試しください。",
+          "expiredCard": "カードの有効期限が切れています。別のカードをご利用ください。",
+          "incorrectCvc": "カードのセキュリティコードが正しくありません。確認してもう一度お試しください。",
+          "invalidCvc": "カードのセキュリティコードが無効です。確認してもう一度お試しください。",
+          "incorrectNumber": "カード番号が無効のようです。確認してもう一度お試しください。",
+          "invalidNumber": "カード番号が無効のようです。確認してもう一度お試しください。",
+          "invalidExpiryMonth": "カードの有効期限が無効です。確認してもう一度お試しください。",
+          "invalidExpiryYear": "カードの有効期限が無効です。確認してもう一度お試しください。",
+          "processingError": "カードの処理中に問題が発生しました。請求は行われていません — もう一度お試しください。",
+          "authenticationFailure": "銀行でカードを確認できませんでした。もう一度試すか、別の支払い方法をご利用ください。",
+          "authenticationRequired": "銀行でカードを確認できませんでした。もう一度試すか、別の支払い方法をご利用ください。"
+        }
+      },
+      "recovery": {
+        "contactSupport": "サポートに連絡",
+        "contactSupportLower": "サポートに連絡",
+        "switchMethod": "下で別の支払い方法を選択することもできます。",
+        "cancelled": {
+          "title": "支払いがキャンセルされました"
+        },
+        "unknown": {
+          "title": "支払い状況が不明です",
+          "prefix": "お手数ですが",
+          "suffix": "して、参照番号 <reference></reference> をお知らせください — 再度お支払いになる前に、支払いが完了しているか確認します。"
+        },
+        "unsuccessful": {
+          "title": "支払いに失敗しました",
+          "saved": "注文の詳細は保存されているため、最初からやり直さずに再試行できます。",
+          "stuck": "まだ解決しませんか？",
+          "quote": "して、参照番号 <reference></reference> をお知らせください。"
+        },
+        "orderPending": {
+          "resetConfirm": "サポートが再試行しても安全だと確認した後にのみ、チェックアウトをリセットしてください。支払いがまだ保留中の場合、リセットすると二重払いになる可能性があります。",
+          "title": "お支払いを受け付けました — 注文は保留中です",
+          "description": "お支払いは完了しましたが、注文の作成中に問題が発生しました。",
+          "doNotPayAgain": "もう一度お支払いしないでください。",
+          "supportInstructions": "サポートに連絡し、参照番号 <reference></reference> をお伝えください。注文の設定を完了するか、お支払いを返金します。",
+          "contactSupport": "サポートに連絡",
+          "checkLicenses": "ライセンスを確認",
+          "resetHint": "この古い警告が解決済みであるとサポートが確認した場合は、警告を消去して新しいチェックアウトを開始できます。",
+          "resetButton": "サポートからチェックアウトのリセットを案内されました"
+        }
+      },
+      "successPage": {
+        "metadata": {
+          "title": "注文完了 - WCPOS Pro",
+          "description": "WCPOS Proをご購入いただきありがとうございます"
+        },
+        "title": "ありがとうございます！",
+        "description": "WCPOS Pro の購入が完了しました。",
+        "nextTitle": "次の手順",
+        "next": {
+          "licenseEmail": "✓ ライセンスキーとダウンロードリンクをメールで送信しました",
+          "accountDownload": "✓ アカウントのライセンスページからもダウンロードできます",
+          "install": "✓ WordPressサイトにプラグインをインストールして有効化してください",
+          "activate": "✓ ライセンスキーを入力してPro機能を有効化してください"
+        },
+        "licenses": "ライセンスへ",
+        "installationGuide": "インストールガイド"
       }
     }
   },
@@ -226,6 +755,7 @@
       "activationsLabel": "有効化数:",
       "activationsCount": "{max} 中 {count}",
       "downloads": "ダウンロード",
+      "activatedMachines": "有効化された端末",
       "machineAdded": "{date} に追加",
       "deactivateMachineAria": "{name} を無効化",
       "genericMachineName": "端末",
@@ -245,18 +775,21 @@
       "copyKeyAria": "末尾が {suffix} のライセンスキーをコピー",
       "copiedKey": "コピーしました",
       "copyError": "ライセンスキーをコピーできませんでした。もう一度お試しください。",
-      "roadmapTeaser": "ロードマップで今後の予定をチェック",
-      "activatedSites": "Activated Sites",
-      "activatedSitesHelp": "These are WordPress sites using this license. Deactivate a stale or test site to free an activation slot.",
+      "apiErrors": {
+        "read_only_inspection": "このアカウントは読み取り専用モードで表示しています。"
+      },
+      "roadmapTeaser": "ロードマップで今後の予定を見る",
+      "activatedSites": "有効化済みサイト",
+      "activatedSitesHelp": "これらはこのライセンスを使用している WordPress サイトです。使われていないサイトやテスト用サイトを無効化すると、有効化枠を空けられます。",
       "instanceId": "Instance ID: {id}",
-      "lastSeen": "Last seen {date}",
+      "lastSeen": "最終アクセス {date}",
       "pluginVersionLabel": "WCPOS Pro {version}",
       "wpVersionLabel": "WP {version}",
       "wcVersionLabel": "WooCommerce {version}",
-      "deactivateSite": "Deactivate site",
-      "deactivateSiteConfirm": "This frees one activation slot. If the site is still in use, it will need to activate again.",
-      "deactivateConfirm": "Deactivate",
-      "deactivateCancel": "Cancel"
+      "deactivateSite": "サイトを無効化",
+      "deactivateSiteConfirm": "有効化枠が1つ空きます。サイトがまだ使用中の場合は、再度有効化が必要になります。",
+      "deactivateConfirm": "無効化",
+      "deactivateCancel": "キャンセル"
     },
     "downloads": {
       "heading": "ダウンロード",
@@ -292,7 +825,16 @@
       "next": "次へ",
       "nextPageAria": "次のページ",
       "tokenErrorFallback": "このバージョンはダウンロードできません",
-      "startErrorFallback": "ダウンロードの開始に失敗しました"
+      "startErrorFallback": "ダウンロードの開始に失敗しました",
+      "apiErrors": {
+        "unauthorized": "WCPOS Proをダウンロードするには、もう一度ログインしてください。",
+        "download_token_secret_missing": "ダウンロードは一時的に利用できません。サポートにお問い合わせください。",
+        "rate_limited": "ダウンロードリクエストが多すぎます。少し待ってからもう一度お試しください。",
+        "release_not_found": "そのWCPOS Proリリースは見つかりませんでした。",
+        "forbidden": "お使いのライセンスにはこのダウンロードが含まれていません。",
+        "internal": "ダウンロードを準備できませんでした。もう一度お試しください。"
+      },
+      "externalContentNotice": "リリースノートはGitHubから取得されるため、英語で表示される場合があります。"
     },
     "profile": {
       "heading": "プロフィール",
@@ -367,7 +909,704 @@
       "githubProvider": "GitHub",
       "githubDescription": "ワンクリックサインインに使用されます。",
       "emailProvider": "メールとパスワード",
-      "emailDescription": "メールアドレスでサインインします。"
+      "emailDescription": "メールアドレスでサインインします。",
+      "apiErrors": {
+        "read_only_inspection": "このアカウントは読み取り専用モードで表示しています。",
+        "unauthorized": "プロフィールを更新するには、もう一度ログインしてください。",
+        "update_failed": "プロフィールの更新に失敗しました"
+      }
+    },
+    "receiptPdf": {
+      "title": "領収書",
+      "filename": "領収書-{id}.pdf",
+      "orderNumber": "注文番号 {id}",
+      "billedTo": "請求先",
+      "details": "詳細",
+      "noEmailProvided": "メールアドレスなし",
+      "taxId": "税番号: {taxNumber}",
+      "orderDate": "注文日",
+      "payment": "支払い",
+      "currency": "通貨",
+      "legacyNotice": "この注文は以前のストアシステムでは #{legacyDisplayId} でした。古いメール、請求書、記録にはその番号が記載されている場合があります。",
+      "description": "説明",
+      "quantity": "数量",
+      "unitPrice": "単価",
+      "amount": "金額",
+      "untitledItem": "名称未設定の商品",
+      "subtotal": "小計",
+      "tax": "税",
+      "total": "合計",
+      "noTaxAdded": "この注文に税は追加されていません。",
+      "sellerIdentityWithAbn": "{sellerName} · ABN {sellerAbn}",
+      "sellerIdentity": "{sellerName}",
+      "gstNotice": "{sellerName} はオーストラリアで GST 登録されていません — GST は請求されておらず、この文書は税請求書ではありません。",
+      "proofOfPurchase": "この領収書は税務記録用の購入証明として使用できます。",
+      "questions": "ご質問: {website} · {email}",
+      "generated": "生成日 {date}",
+      "paymentStatus": {
+        "paid": "支払い済み",
+        "refunded": "返金済み",
+        "partiallyRefunded": "一部返金済み",
+        "canceled": "キャンセル済み",
+        "unknown": "不明"
+      }
+    },
+    "admin": {
+      "title": "顧客を確認（読み取り専用）",
+      "description": "顧客のメールアドレスを入力すると、その顧客に表示されるのと同じアカウント画面を確認できます。確認中はデータを変更できません。",
+      "submit": "この顧客として表示"
+    },
+    "impersonation": {
+      "viewing": "🔍 <strong>{target}</strong> を <strong>読み取り専用</strong> として表示中 — アカウントは変更できません。",
+      "exit": "終了"
+    },
+    "orderStatus": {
+      "actionRequired": "対応が必要",
+      "authorized": "承認済み",
+      "canceled": "キャンセル済み",
+      "paid": "支払い済み",
+      "partiallyRefunded": "一部返金済み",
+      "pending": "保留中",
+      "refunded": "返金済み",
+      "unknown": "不明"
+    },
+    "productTitles": {
+      "yearly": "WCPOS Pro 年間ライセンス",
+      "lifetime": "WCPOS Pro 永久ライセンス"
+    },
+    "renew": {
+      "summaryLabel": "ライセンスを更新します",
+      "extendsNote": "現在のライセンスを1年間延長します — 早めに更新しても日数は失われません。",
+      "preparing": "更新を準備しています…",
+      "errorBody": "現在、更新を開始できませんでした。代わりに通常のチェックアウトから更新できます。",
+      "goToCheckout": "チェックアウトへ進む",
+      "cancel": "キャンセル",
+      "paymentNotConfigured": "支払い方法が設定されていません。サポートへお問い合わせください。",
+      "pageTitle": "ライセンスを更新",
+      "backToLicences": "ライセンス一覧に戻る"
+    }
+  },
+  "metadata": {
+    "siteTitle": "WCPOS - WooCommerce用POS",
+    "siteDescription": "WooCommerce用POS。WooCommerceストア向けの高速で信頼できるPOSシステムです。"
+  },
+  "errors": {
+    "genericTitle": "問題が発生しました。",
+    "genericDescription": "エラーは報告されました。もう一度お試しいただくか、後ほど戻ってきてください。",
+    "tryAgain": "再試行",
+    "goHome": "ホームへ移動",
+    "notFoundTitle": "ページが見つかりません",
+    "notFoundDescription": "お探しのページは存在しないか、移動された可能性があります。"
+  },
+  "consent": {
+    "label": "Cookieの同意",
+    "message": "サイトの利用状況を理解するため、匿名の分析Cookieを使用します。広告や第三者トラッキングはありません。<privacyLink>プライバシーポリシー</privacyLink>",
+    "privacyPolicy": "プライバシーポリシー",
+    "decline": "拒否",
+    "accept": "同意"
+  },
+  "auth": {
+    "common": {
+      "email": "メール",
+      "password": "パスワード",
+      "newPassword": "新しいパスワード",
+      "firstName": "名",
+      "lastName": "姓",
+      "emailPlaceholder": "you@example.com",
+      "passwordHint": "{min}文字以上",
+      "genericError": "問題が発生しました。もう一度お試しください。",
+      "signIn": "ログイン",
+      "signUp": "登録",
+      "apiErrors": {
+        "invalid_origin": "ページを更新して、もう一度お試しください。",
+        "rate_limited": "試行回数が多すぎます。しばらくしてからもう一度お試しください。",
+        "email_required": "メールアドレスは必須です。",
+        "credentials_required": "メールアドレスとパスワードは必須です。",
+        "reset_fields_required": "メールアドレス、トークン、パスワードは必須です。",
+        "password_too_short": "パスワードは{min}文字以上で入力してください。",
+        "invalid_credentials": "メールアドレスまたはパスワードが正しくありません。",
+        "invalid_reset_token": "このパスワードリセットリンクは無効、または有効期限が切れています。新しいリンクをリクエストしてください。"
+      }
+    },
+    "login": {
+      "metaTitle": "ログイン",
+      "metaDescription": "WCPOSアカウントにログインして、注文、ライセンス、ダウンロードを管理します。",
+      "title": "ログイン",
+      "description": "WCPOSアカウントにログイン",
+      "forgotPassword": "パスワードをお忘れですか？",
+      "oauthFailed": "OAuthログインに失敗しました。もう一度試すか、メール/パスワードを使用してください。",
+      "loginFailed": "ログインに失敗しました",
+      "submitting": "ログイン中...",
+      "oauthDivider": "または次で続行",
+      "noAccount": "アカウントをお持ちではありませんか？",
+      "oauthErrors": {
+        "oauth_failed": "OAuthログインに失敗しました。もう一度試すか、メール/パスワードを使用してください。",
+        "oauth_callback_failed": "OAuthログインに失敗しました。もう一度試すか、メール/パスワードを使用してください。",
+        "oauth_provider_error": "OAuthログインに失敗しました。もう一度試すか、メール/パスワードを使用してください。",
+        "oauth_code_missing": "OAuthログインに失敗しました。もう一度試すか、メール/パスワードを使用してください。",
+        "oauth_state_missing": "OAuthログインに失敗しました。もう一度試すか、メール/パスワードを使用してください。",
+        "oauth_token_exchange_failed": "OAuthログインに失敗しました。もう一度試すか、メール/パスワードを使用してください。",
+        "oauth_access_token_missing": "OAuthログインに失敗しました。もう一度試すか、メール/パスワードを使用してください。",
+        "oauth_user_fetch_failed": "OAuthログインに失敗しました。もう一度試すか、メール/パスワードを使用してください。",
+        "oauth_email_missing": "OAuthログインに失敗しました。もう一度試すか、メール/パスワードを使用してください。",
+        "oauth_email_unverified": "OAuthログインに失敗しました。もう一度試すか、メール/パスワードを使用してください。",
+        "oauth_identity_update_failed": "OAuthログインに失敗しました。もう一度試すか、メール/パスワードを使用してください。",
+        "oauth_registration_not_supported": "OAuthログインに失敗しました。もう一度試すか、メール/パスワードを使用してください。"
+      }
+    },
+    "register": {
+      "metaTitle": "アカウントを作成",
+      "metaDescription": "WCPOSアカウントを作成して、Proの購入、ライセンス管理、ダウンロードにアクセスします。",
+      "title": "アカウントを作成",
+      "description": "WCPOSアカウントに登録",
+      "accountExists": "このメールアドレスのアカウントはすでに存在します。ログインしてください。",
+      "failed": "登録に失敗しました",
+      "submitting": "アカウントを作成中...",
+      "submit": "アカウントを作成",
+      "hasAccount": "すでにアカウントをお持ちですか？"
+    },
+    "forgotPassword": {
+      "metaTitle": "パスワードを忘れた場合",
+      "metaDescription": "WCPOSアカウントのパスワードリセットリンクをリクエストします。",
+      "title": "パスワードをお忘れですか？",
+      "description": "メールアドレスを入力すると、リセットリンクを送信します",
+      "submitted": "{email} のアカウントが存在する場合、パスワードリセットリンクを送信しました。受信トレイと迷惑メールフォルダを確認してください。",
+      "submitting": "送信中...",
+      "submit": "リセットリンクを送信",
+      "remembered": "思い出しましたか？"
+    },
+    "resetPassword": {
+      "metaTitle": "パスワードをリセット",
+      "metaDescription": "WCPOSアカウントの新しいパスワードを選択します。",
+      "title": "パスワードをリセット",
+      "descriptionValid": "{email} の新しいパスワードを選択",
+      "descriptionInvalid": "このリセットリンクは不完全です",
+      "failed": "パスワードをリセットできませんでした",
+      "submitting": "リセット中...",
+      "submit": "パスワードをリセット",
+      "invalidLink": "このリンクにはリセットトークンがありません。メールクライアントで切り詰められた可能性があります。下から新しいリンクをリクエストしてください。",
+      "linkExpired": "リンクの有効期限が切れましたか？",
+      "needFreshLink": "新しいリンクが必要ですか？",
+      "requestNew": "新しいリセットリンクをリクエスト"
+    }
+  },
+  "legal": {
+    "privacy": {
+      "meta": {
+        "title": "プライバシーポリシー",
+        "description": "WCPOSが個人データを収集、利用、保護する方法について。解析、Cookie、決済処理、GDPRに基づく権利を含みます。"
+      },
+      "title": "プライバシーポリシー",
+      "lastUpdated": "最終更新日：{date}",
+      "intro": "WCPOS（「当社」）は、WCPOSプラグインおよびWCPOS Proのウェブサイトである wcpos.com を運営しています。本ポリシーでは、サイト利用時に当社が収集する個人データ、その収集理由、当社に代わって処理する事業者、およびお客様がそのデータについて有する権利を説明します。当社は、サービス運営に必要な最小限のデータのみを収集することを目指しています。",
+      "collect": {
+        "title": "収集する情報",
+        "items": {
+          "c1": {
+            "label": "アカウント情報。",
+            "body": "直接アカウントを作成する場合、またはGoogle、GitHub、Discordでサインインする場合のメールアドレスと氏名。サインインプロバイダーを利用する場合、当社はそのプロバイダーから基本プロフィール（メールアドレス、氏名またはユーザー名、アバターまたは画像URL）のみを受け取り、アバターまたは画像URLを <code>oauth_avatar_url</code> としてアカウントに保存する場合があります。"
+          },
+          "c2": {
+            "label": "請求情報。",
+            "body": "チェックアウト時に入力した請求先住所および会社情報。領収書の発行と税務規則への対応のため、お客様レコードに保存されます。"
+          },
+          "c3": {
+            "label": "注文履歴とライセンス履歴。",
+            "body": "購入記録、ライセンスキー、プラグインのダウンロード記録。お客様がライセンスを管理できるようにし、当社がサポートを提供するために利用します。"
+          },
+          "c4": {
+            "label": "決済情報。",
+            "body": "決済はStripeおよびPayPalによって処理されます。完全なカード番号や決済認証情報が当社サーバーに届くことはありません。当社が受け取るのは、決済確認と領収書に必要な情報のみです。"
+          },
+          "c5": {
+            "label": "利用状況の解析。",
+            "body": "当社は、サイトの利用状況（閲覧ページ、クリックされたボタン）を把握するためにPostHogを使用します。そのために、ランダムに生成された識別子を含むCookieを設定します。このCookieには、お客様の氏名やメールアドレスは含まれません。"
+          },
+          "c6": {
+            "label": "エラーレポート。",
+            "body": "問題が発生した場合、エラーレポートがSentryに送信されることがあります。レポートには、お使いのブラウザーやOS、エラー発生時にアプリケーションが行っていた処理などの技術情報が含まれる場合があります。"
+          },
+          "c7": {
+            "label": "サーバーログ。",
+            "body": "当社サーバーは、デバッグとサービス運用のためにアプリケーションログ（Grafana Loki内）を保持します。"
+          }
+        }
+      },
+      "cookies": {
+        "title": "Cookie",
+        "body": "当社は少数のファーストパーティCookieを使用します。第三者広告Cookieは使用しません。",
+        "items": {
+          "k1": "<code>medusa-token</code> — アカウントへのログイン状態を維持します。有効期限は1日です。",
+          "k2": "<code>wcpos-analytics-consent</code> — 解析への同意選択（同意または拒否）を記憶します。有効期限は182日です。",
+          "k3": "<code>wcpos-distinct-id</code> — 解析に使用されるランダム識別子です。同意バナーで解析に同意した後にのみ設定され、拒否した場合は削除されます。有効期限は1年です。",
+          "k4": "<code>NEXT_LOCALE</code> — 言語設定を記憶します。",
+          "k5": "ライト／ダークテーマの設定はお使いのブラウザー内にローカル保存され、当社に送信されることはありません。"
+        }
+      },
+      "processors": {
+        "title": "データを処理する事業者",
+        "body": "当社は wcpos.com を運営するため、以下のサービスプロバイダーを使用します。各プロバイダーが受け取るのは、その役割に必要なデータのみです。",
+        "items": {
+          "p1": {
+            "label": "当社のコマースバックエンド（Medusa）",
+            "body": "— EU内のHetznerインフラ上でセルフホストされています。アカウント、顧客レコード、注文を保存します。"
+          },
+          "p2": {
+            "label": "Stripe",
+            "body": "— カード決済処理。"
+          },
+          "p3": {
+            "label": "PayPal",
+            "body": "— PayPal決済処理。"
+          },
+          "p4": {
+            "label": "Keygen",
+            "body": "— ソフトウェアライセンス管理（ライセンスキーとアクティベーション）。"
+          },
+          "p5": {
+            "label": "PostHog",
+            "body": "— 製品解析。"
+          },
+          "p6": {
+            "label": "Sentry",
+            "body": "— エラー監視。"
+          },
+          "p7": {
+            "label": "Vercel",
+            "body": "— ウェブサイトのホスティングとコンテンツ配信。"
+          }
+        }
+      },
+      "retention": {
+        "title": "データの保存期間",
+        "items": {
+          "r1": "アカウントおよびライセンスデータは、アカウントが有効な間保持されます。アカウント削除を依頼された場合、法的に記録保持が必要な場合を除き、当社は削除します。",
+          "r2": "注文および請求書の記録は、税務および会計法で求められる期間保持されます。",
+          "r3": "解析識別子Cookieは1年後に期限切れになります。",
+          "r4": "サーバーログおよびエラーレポートは、限定された運用期間だけ保持され、その後削除されます。"
+        }
+      },
+      "rights": {
+        "title": "お客様の権利",
+        "body": "EU/EEAまたは英国にお住まいの場合、GDPRに基づき、ご自身の個人データへのアクセス、訂正、削除、エクスポートを求める権利、および特定の処理に異議を述べる、または制限を求める権利があります。当社は所在地にかかわらず、すべてのユーザーに同じ権利を適用します。",
+        "exercise": "これらの権利を行使するには、非公開で本人確認を行えるよう <email>support@wcpos.com</email> までメールでご連絡ください。EU/EEA居住者には、現地のデータ保護当局に苦情を申し立てる権利もあります。"
+      },
+      "changes": {
+        "title": "本ポリシーの変更",
+        "body": "本ポリシーに重要な変更を加える場合、このページ上部の日付を更新します。変更後もサイトを継続して利用した場合、更新後のポリシーが適用されます。"
+      },
+      "contact": {
+        "title": "お問い合わせ",
+        "body": "本ポリシーまたはお客様のデータに関する質問は、<email>support@wcpos.com</email> までメールでご連絡ください。一般的な質問は <support>サポートページ</support> のコミュニティチャットでも受け付けています。"
+      }
+    },
+    "refunds": {
+      "meta": {
+        "title": "返金ポリシー",
+        "description": "WCPOS Proの返金ポリシー：購入から14日以内に返金を依頼する方法、および返金方法について。"
+      },
+      "title": "返金ポリシー",
+      "lastUpdated": "最終更新日：{date}",
+      "intro": "WCPOS Proの購入（初回購入または更新、年額またはライフタイム）は、購入日から14日以内であれば返金できます。その期間内にメールでご連絡いただければ、全額返金します。理由を伝える必要はありません。",
+      "prevention": {
+        "title": "最良の返金は、必要にならない返金です",
+        "items": {
+          "p1": {
+            "label": "無料プラグインをインストールしてください。",
+            "body": "アップグレードする前に、無料版のWCPOSを数日間ストアで実行してください。これにより、お客様のサイトでプラグインが動作することを確認できます。"
+          },
+          "p2": {
+            "label": "デモをお試しください。",
+            "body": "<demo>オンラインデモ</demo> はProが有効化された現行バージョンで動作しているため、ストアの要件を満たすか確認できます。"
+          },
+          "p3": {
+            "label": "ドキュメントをご確認ください。",
+            "body": "必要な機能について <docs>ドキュメント</docs> を確認し、購入前の質問は <email>support@wcpos.com</email> にメールしてください。当社は率直かつ誠実に回答します。"
+          }
+        }
+      },
+      "request": {
+        "title": "返金の依頼方法",
+        "body": "購入から14日以内に、購入時に使用したメールアドレスから <email>support@wcpos.com</email> へメールしてください。理由を教えていただけると改善に役立ちますが、返金を受けるために必須ではありません。"
+      },
+      "payment": {
+        "title": "返金方法",
+        "body": "返金はStripeまたはPayPal経由で元の支払い方法に戻され、銀行またはカード発行会社によって異なりますが、通常5〜10営業日以内に明細に反映されます。返金されたライセンスキーは取り消され、直ちに動作しなくなります。"
+      },
+      "renewals": {
+        "title": "ライセンス更新",
+        "body": "年額ライセンスは自動更新されません。お客様が新たに購入しない限り、当社が再度請求することはありません。更新購入にも同じ14日間の返金期間が適用されます。"
+      },
+      "rights": {
+        "title": "法定権利",
+        "body": "EU、EEA、英国の消費者については、当社の14日間の返金期間は、この種の購入に関する法定撤回権と一致します。どちらを行使する場合も手続きは同じで、14日以内にメールでご連絡ください。",
+        "defective": "WCPOS Proに欠陥がある、または説明どおりに動作しない場合、不具合のあるデジタルコンテンツに関する法定救済は、14日間の期間とは独立していつでも適用されます。また、本ポリシーは、お客様の国の消費者保護法に基づく権利を制限するものではありません。現地法がより強い権利を認めている場合、その権利が適用されます。"
+      }
+    },
+    "terms": {
+      "meta": {
+        "title": "利用規約",
+        "description": "wcpos.com、WCPOSアカウント、およびWCPOS Proライセンスの利用に適用される規約です。"
+      },
+      "title": "利用規約",
+      "lastUpdated": "最終更新日：{date}",
+      "intro": "本規約は、wcpos.com、WCPOSアカウント、および購入したWCPOS Proライセンスの利用に適用されます。サイトを利用する、またはライセンスを購入することにより、本規約に同意したものとみなされます。同意しない場合は、サービスを利用しないでください。",
+      "service": {
+        "title": "サービス",
+        "body": "WCPOSは、wcpos.comウェブサイト、ユーザーアカウント、およびWCPOSプラグインのプレミアム機能、アップデート、優先サポートを有効化する有料のWCPOS Proライセンスを提供します。"
+      },
+      "gpl": {
+        "title": "無料プラグインとGPL",
+        "body": "無料のWCPOSプラグインは、GNU General Public License（GPL）の下で公開されているオープンソースソフトウェアです。本規約のいかなる内容も、そのコードについてGPLがお客様に付与する権利を制限しません。Proライセンスは別個のものであり、Pro機能、ライセンスキー、自動アップデート、優先サポートへのアクセスを対象とします。オープンソースコード自体を制限するものではありません。"
+      },
+      "account": {
+        "title": "お客様のアカウント",
+        "items": {
+          "a1": "登録時には正確な情報を提供し、最新の状態に保ってください。",
+          "a2": "認証情報を安全に管理してください。アカウントで行われる活動についてはお客様が責任を負います。",
+          "a3": "アカウントへの不正アクセスが疑われる場合は、速やかに <email>support@wcpos.com</email> までお知らせください。"
+        }
+      },
+      "licenses": {
+        "title": "購入とライセンス",
+        "items": {
+          "l1": "<strong>年額ライセンス。</strong> 1回限りの支払いで、1年間Pro機能、自動アップデート、優先サポートが含まれます。自動更新はされず、新たに購入しない限り当社が再度請求することはありません。有効期限が切れた場合、アカウントからさらに1年間更新することを選択できます。",
+          "l2": "<strong>ライフタイムライセンス。</strong> 1回限りの購入で、製品の存続期間中、Pro機能、アップデート、優先サポートが含まれます。",
+          "l3": "ライセンスキーは、購入したライセンスの範囲内で、ご自身のサイト上のWCPOS Proを有効化するためのものです。ライセンスキーを共有、再販売、公開しないでください。",
+          "l4": "価格は支払い前のチェックアウト画面に表示されます。決済はStripeまたはPayPalによって処理されます。",
+          "l5": "返金は当社の <policy>返金ポリシー</policy> に従って処理されます。"
+        }
+      },
+      "acceptableUse": {
+        "title": "許容される利用",
+        "body": "サービスを利用する際、お客様は以下を行わないことに同意します。",
+        "items": {
+          "u1": "法律に違反すること、または他者の権利を侵害すること。",
+          "u2": "アカウント、システム、データへの不正アクセスを試みること、または許可なくサービスの脆弱性を調査すること。",
+          "u3": "サービスに過負荷をかけることや、支障をきたす規模で自動スクレイピングを行うことを含め、サービスの運用を妨害すること。",
+          "u4": "ライセンスチェックを回避すること、または購入条件を超えてライセンスキーを使用すること。（これはオープンソースプラグインコードに対するGPL上の権利を制限するものではありません。）"
+        }
+      },
+      "warranty": {
+        "title": "保証の免責",
+        "body": "サービスおよびソフトウェアは「現状有姿」かつ「提供可能な範囲」で提供され、商品性、特定目的への適合性、非侵害を含む、明示または黙示のいかなる保証もありません。当社は、サービスが中断されないこと、またはエラーがないことを約束しません。一部の法域では特定の保証除外が認められないため、本条の一部がお客様に適用されない場合があります。"
+      },
+      "liability": {
+        "title": "責任の制限",
+        "body": "法律で認められる最大限の範囲において、WCPOSは間接的、付随的、特別、または結果的損害、ならびに利益、収益、データの損失について責任を負いません。サービスに関連する請求についての当社の総責任は、その請求が発生する前の12か月間にお客様が当社に支払った金額を上限とします。本規約のいかなる内容も、法律上除外できない責任を除外するものではありません。"
+      },
+      "termination": {
+        "title": "終了",
+        "body": "お客様はいつでもサービスの利用を停止し、アカウント削除を依頼できます。当社は、本規約に違反するアカウントを停止または終了する場合があります。保証免責や責任制限など、その性質上存続すべき条項は終了後も存続します。"
+      },
+      "changes": {
+        "title": "本規約の変更",
+        "body": "重要な変更を加える場合、このページ上部の日付を更新します。変更後もサービスを継続して利用した場合、更新後の規約が適用されます。"
+      },
+      "contact": {
+        "title": "お問い合わせ",
+        "body": "本規約に関する質問は、<email>support@wcpos.com</email> までメールでご連絡ください。または <support>サポートページ</support> のコミュニティチャットでご質問ください。"
+      }
+    }
+  },
+  "downloads": {
+    "meta": {
+      "title": "ダウンロード",
+      "description": "WCPOSをダウンロード — 無料プラグインに加えて、デスクトップ、iOS、Android、ウェブアプリを入手できます。最新バージョンと最近のリリースノートを確認してください。"
+    },
+    "platforms": {
+      "mac-arm": {
+        "name": "macOS",
+        "listLabel": "macOS (Apple Silicon)",
+        "short": "Apple Silicon · .dmg",
+        "action": "macOS版をダウンロード"
+      },
+      "mac-intel": {
+        "name": "macOS (Intel)",
+        "listLabel": "macOS (Intel)",
+        "short": "Intel · .dmg",
+        "action": "macOS版をダウンロード"
+      },
+      "win": {
+        "name": "Windows",
+        "listLabel": "Windows",
+        "short": "Windows 10/11 · .exe",
+        "action": "Windows版をダウンロード"
+      },
+      "linux": {
+        "name": "Linux",
+        "listLabel": "Linux",
+        "short": ".AppImage",
+        "action": "Linux版をダウンロード"
+      },
+      "ios": {
+        "name": "iOS & iPad",
+        "listLabel": "iOS & iPad",
+        "short": "公開TestFlightベータ",
+        "action": "iOSベータに参加"
+      },
+      "android": {
+        "name": "Android",
+        "listLabel": "Android",
+        "short": "Google Playテストベータ",
+        "action": "Androidベータに参加"
+      },
+      "web": {
+        "name": "ウェブ",
+        "listLabel": "ウェブ",
+        "short": "インストール不要",
+        "action": "ウェブデモを開く"
+      }
+    },
+    "hero": {
+      "eyebrow": "ダウンロード",
+      "title": "1つのレジを、すべてのデバイスで。",
+      "platformChooserLabel": "プラットフォームを選択",
+      "versionMeta": "バージョン {version} · {platform}",
+      "detected": "検出済み",
+      "intelMac": "Intel Macをお使いですか？ <intel>Intel版を入手</intel>",
+      "pluginNotice": "すべてのアプリは<plugin>無料のWordPressプラグイン</plugin>に接続します — まずインストールしてください。"
+    },
+    "howItFits": {
+      "eyebrow": "全体の仕組み",
+      "title": "中心に1つの店舗。すべてのレジが同期。",
+      "points": {
+        "setup": {
+          "title": "必要な設定はプラグイン1つだけ",
+          "body": "無料プラグインがWooCommerceストアに安全なREST APIを追加します。インストールはそれだけです — デバイスごとにホスティングや設定は不要です。"
+        },
+        "sync": {
+          "title": "すべてのアプリが同じ店舗を読み書き",
+          "body": "デスクトップで販売し、スマートフォンで返金 — 商品、注文、顧客は1つのセットで、リアルタイムに更新されます。"
+        },
+        "offline": {
+          "title": "オフラインファーストなので、レジは止まりません",
+          "body": "各デバイスは接続がなくても動作し続け、オンラインに戻った瞬間に再同期します。"
+        }
+      },
+      "syncLabel": "同期されるもの",
+      "chips": {
+        "c1": "商品と価格",
+        "c2": "在庫数",
+        "c3": "注文",
+        "c4": "顧客",
+        "c5": "税金とレシート"
+      },
+      "diagram": {
+        "ariaLabel": "WCPOS プラグインを備えた WooCommerce ストアが中央にあり、REST API を通じてデスクトップ、iOS、Android、ウェブアプリと接続され、すべて同期されます。",
+        "devices": {
+          "desktop": "デスクトップ",
+          "ios": "iOS と iPad",
+          "android": "Android",
+          "web": "ウェブ"
+        },
+        "hub": {
+          "store": "あなたのストア",
+          "platform": "WooCommerce",
+          "plugin": "+ WCPOS プラグイン"
+        }
+      }
+    },
+    "page": {
+      "beta": "Beta",
+      "start": {
+        "eyebrow": "はじめに",
+        "title": "最初の販売まで3ステップ",
+        "subtitle": "最初から最後まで約2分で完了します。"
+      },
+      "steps": {
+        "plugin": {
+          "title": "無料プラグインをインストール",
+          "body": "すべてが接続する土台です。ダッシュボードで「プラグイン → 新規追加」を開き、「WCPOS」を検索してください。",
+          "badge": "無料 · GPL",
+          "requirements": "WordPress 5.6+ · WooCommerce 5.3+ · PHP 7.4+",
+          "requirementsWithVersion": "最新 {version} · WordPress 5.6+ · WooCommerce 5.3+ · PHP 7.4+",
+          "cardTitle": "WCPOS",
+          "wordpressOrgCta": "WordPress.org"
+        },
+        "device": {
+          "title": "デバイスを選択",
+          "body": "すべて無料で、すべて同期します。上で検出されたもの、または以下のいずれかを入手してください。",
+          "desktopTitle": "デスクトップアプリ",
+          "iosCta": "TestFlightベータに参加",
+          "androidCta": "Google Playで参加",
+          "webCta": "ライブデモを開く"
+        },
+        "pro": {
+          "title": "さらに必要ですか？Proへ",
+          "body": "同じ土台に端末決済、返金、在庫管理を追加するライセンス付きプラグインです。",
+          "cardTitle": "レジの全機能を解放",
+          "cardBody": "決済、返金、在庫と価格、注文管理、日次締めレポート、複数店舗、優先Discordサポート。",
+          "plansCta": "Proプランを見る",
+          "signInCta": "ログインしてダウンロード"
+        }
+      }
+    },
+    "releaseHistory": {
+      "eyebrow": "リリース履歴",
+      "title": "新機能",
+      "subtitle": "最近の変更 — すべてのアプリが1つのバージョン系列を共有します。",
+      "latest": "最新",
+      "fullHistory": "GitHubで全履歴を見る —",
+      "desktop": "デスクトップ",
+      "emptyNotes": "_このバージョンのリリースノートはありません。_",
+      "fallback": {
+        "v196": "- Cash drawer support — auto-open after payment or via a new Open Drawer button, with per-printer connectors (ESC-POS, Epson, PrintNode, cloud)\n- Fixed analytics events firing too often\n- Updated translations",
+        "v195": "- Fixed a payment-gateways API crash (HTTP 500 with some third-party gateways, e.g. ToyyibPay)",
+        "v194": "- Redesigned Bluetooth printer setup; serial printing for OS-paired Bluetooth Classic printers\n- Improved Windows raw printing; smoother USB flow",
+        "v190": "- New receipt template gallery; thermal printing (58/80mm)\n- Customer Tax IDs; Pro coupons & refunds at the POS"
+      },
+      "plugin": "無料",
+      "externalContentNotice": "リリースノートはGitHubから取得されるため、英語で表示される場合があります。"
+    }
+  },
+  "about": {
+    "meta": {
+      "title": "概要",
+      "description": "WCPOSの背景 — 元店主が作り、投資家ではなく店主たちによって支えられている独立系POSの物語。"
+    },
+    "hero": {
+      "eyebrow": "私たちの物語",
+      "title": "WooCommerceのための独立系POS",
+      "subtitle": "元店主が作り、店主たちが支えています — 投資家ではありません。1人の開発者、10年以上のリリース、今も開発を続けています。"
+    },
+    "founder": {
+      "photoAlt": "パースの店舗 Urban Locavore にいるPaul",
+      "photoCaption": "Urban Locavore、パース — すべての始まりとなった店",
+      "eyebrow": "開発者からのメッセージ",
+      "intro": "こんにちは — Paulです。WCPOSを作りました。",
+      "p1": "これが、すべてが始まったころの私です。2011年12月、パースでUrban Locavoreを開店しました。WooCommerceにはすでに何百もの商品がありましたが、店頭で販売する方法がありませんでした — そこで自分でレジを作りました。店が2014年4月に閉店した後、それを必要とする人のためにWordPress.orgで公開しました。<strong>WooCommerce向けPOSプラグインはその後いくつも現れては消えていきました。でもこれは残っています。</strong>10年以上のリリース、1人の開発者、今も出荷を続けています — そして無料版は今も本物です。販売し、印刷し、同期を保てます。無料のままです。",
+      "p2": "<strong>Proがあるから、今も続いています。</strong>Proは店舗運営のための追加ツール — カードリーダー、レジでの返金、日次締めレポート、複数店舗 — を追加し、無料版を含むすべてのリリースを支えています。投資家も、買収による出口戦略もありません。店主たちが直接支えています。",
+      "p3": "そしてProユーザーには直接の連絡先があります。あなたの店に必要なものを教えてください。それが次に作るものを形作ります。",
+      "signature": {
+        "name": "Paul Kilmurray",
+        "role": "開発者・元店主 ·"
+      },
+      "ps": {
+        "label": "P.S.",
+        "withPrice": "— Proは<price></price>です。",
+        "fallback": "— ProはProページから利用できます。",
+        "licence": "ライセンスが失効してもProは動作し続けます。更新を受け取れなくなるだけです。",
+        "priceSummary": "{yearly}/年、または {lifetime} 買い切り"
+      }
+    },
+    "timeline": {
+      "heading": "どのように始まり、なぜ今も続いているのか",
+      "dates": {
+        "range": "{start} – {end}",
+        "today": "現在"
+      },
+      "items": {
+        "m1": {
+          "title": "Urban Locavore開店",
+          "body": "パースの小さな食品店。WooCommerceにはすでに何百もの商品がありましたが、店頭で販売する方法がありませんでした。"
+        },
+        "m2": {
+          "title": "必要に迫られて作ったレジ",
+          "body": "市場に合うものがなかったため、Paulは自分の店のためにPOSを作りました — すでにオンラインで運営していたストアの上に、Backbone.jsとブラウザ内IndexedDBデータベースで構築しました。"
+        },
+        "m3": {
+          "title": "店の閉店",
+          "body": "Urban Locavoreは営業を終了しました — しかし、その店で使っていたレジはまだ動き、他のWooCommerceストアも同じものを必要としていました。"
+        },
+        "m4": {
+          "title": "WordPress.orgで公開",
+          "body": "WCPOSを公開し、必要とする誰もが無料で使えるようにしました。無料版は実際の仕事をこなします。販売し、印刷し、同期を保てます。"
+        },
+        "m5": {
+          "title": "React Nativeで再構築",
+          "body": "4年かけてゼロから作り直した成果がv1.0.0として到着しました。すべての画面に対応する1つのコードベースです。デスクトップアプリは同日に出荷され、次はスマートフォンとタブレットです。"
+        },
+        "m6": {
+          "title": "ネイティブモバイルアプリ",
+          "body": "React Nativeへの賭けが実を結びました。WCPOSはiOSとAndroidにオープンベータとして登場しました — 同じレジが、店にすでにあるハードウェアで使えるようになりました。"
+        },
+        "m7": {
+          "title": "今も出荷中",
+          "body": "10年以上が経ちました。1人の開発者、Proによる資金、今もリリースを続けています — そして無料版は今も本物です。"
+        }
+      }
+    },
+    "values": {
+      "heading": "大切にしていること",
+      "items": {
+        "v1": {
+          "title": "独立",
+          "body": "投資家も、買収による出口戦略もありません。ロードマップは取締役会ではなく、それを使う店主たちに向き合っています。"
+        },
+        "v2": {
+          "title": "Proによる支援",
+          "body": "Proツールが無料版を含むすべてのリリースを支えています。店主たちが直接支払うことで、無料版を無料のまま保てます。"
+        },
+        "v3": {
+          "title": "オープン & GPL",
+          "body": "WordPress.orgでGPLのもと公開されています。WooCommerceが動く場所ならどこでも、使い、確認し、持ち続けることができます。"
+        },
+        "v4": {
+          "title": "公正なライセンス",
+          "body": "Proライセンスが失効してもProは動作し続けます — 更新を受け取れなくなるだけです。頼っている機能が停止されることはありません。"
+        }
+      }
+    },
+    "cta": {
+      "title": "店主が作り、店主たちが支えるPOS。",
+      "subtitle": "ライブデモを試す、無料プラグインをダウンロードする、またはProで追加される機能と、それが全体を支えている仕組みをご覧ください。",
+      "actions": {
+        "demo": "ライブデモを試す",
+        "download": "無料ダウンロード",
+        "pro": "Proを見る"
+      }
+    }
+  },
+  "support": {
+    "meta": {
+      "title": "サポート",
+      "description": "WCPOSについて何でも質問すると、ドキュメントに基づいた即時回答を受け取れます。Discordでコミュニティと話すこともできます。"
+    },
+    "chat": {
+      "hero": {
+        "title": "どのようにお手伝いできますか？",
+        "subtitle": "WCPOSについて何でも質問してください — セットアップ、ライセンス、ハードウェア、同期、印刷など。ドキュメントに基づいた回答をすぐに表示します。"
+      },
+      "examples": {
+        "e1": "ライセンスが非アクティブなのはなぜですか？",
+        "e2": "対応しているバーコードスキャナーはどれですか？",
+        "e3": "WooCommerceから商品を同期するにはどうすればよいですか？"
+      },
+      "feedback": {
+        "prompt": "この回答は役に立ちましたか？",
+        "yes": "はい",
+        "no": "いいえ"
+      },
+      "thinking": "Aideが考え中です…",
+      "form": {
+        "label": "サポートに質問する",
+        "placeholder": "例：レシートプリンターを接続するには？",
+        "followUpPlaceholder": "追加の質問を入力…",
+        "submit": "質問する"
+      },
+      "discordLink": "Discordで質問 →",
+      "poweredBy": "Aideが回答 · WCPOSのドキュメントとWikiで学習"
+    },
+    "errors": {
+      "invalid_question": "質問を入力してください（最大1000文字）。",
+      "bot_check_failed": "Botチェックに失敗しました。ページを再読み込みしてもう一度お試しください。",
+      "rate_limited": "質問が多く送信されています。数分待つか、Discordに参加してください。",
+      "budget_exhausted": "現在アシスタントが混み合っています。早い回答が必要な場合はDiscordをお試しください。",
+      "empty_answer": "アシスタントは一時的に利用できません。復旧までの間はDiscordをお試しください。",
+      "gateway_rate_limited": "現在アシスタントが混み合っています — 後でもう一度お試しください。",
+      "timeout": "時間がかかりすぎました。もう一度試すか、Discordで質問してください。",
+      "unavailable": "アシスタントは一時的に利用できません。復旧までの間はDiscordをお試しください。",
+      "network": "現在アシスタントを利用できません。Discordで質問してください。",
+      "unknown": "問題が発生しました。"
+    },
+    "order": {
+      "title": "注文についてサポートに連絡する",
+      "body": "再度支払う前に、支払いの確認または注文の完了ができるよう、参照番号 <ref></ref> をお知らせください。"
+    },
+    "discord": {
+      "title": "人と直接話したいですか？",
+      "subtitle": "店舗オーナーとチームが参加するライブDiscordコミュニティに参加してください。"
     }
   }
 }

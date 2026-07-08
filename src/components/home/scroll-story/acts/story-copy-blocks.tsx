@@ -1,6 +1,6 @@
+import { useTranslations } from 'next-intl'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
-import { storyCopy } from '../copy'
 
 export type CopyTone = 'onDark' | 'onLight'
 
@@ -30,6 +30,8 @@ const toneStyles = {
 // the dark text reads as pressed into the counter. One hard-edged layer —
 // blur radii read as glow on the grain and are deliberately absent.
 const letterpress = '[text-shadow:1px_1px_0_rgba(255,252,245,0.45)]'
+const demoHref = 'https://demo.wcpos.com/pos'
+const downloadHref = 'https://wordpress.org/plugins/woocommerce-pos/'
 
 function Kicker({
   children,
@@ -65,10 +67,11 @@ export function CopyAct1({
 }) {
   const Heading = headingLevel === 1 ? 'h1' : 'h2'
   const t = toneStyles[tone]
+  const copy = useTranslations('home.story')
   return (
     <>
       <Kicker tone={tone} className={tone === 'onLight' ? letterpress : undefined}>
-        {storyCopy.act1.kicker}
+        {copy('a1.k')}
       </Kicker>
       <Heading
         className={cn(
@@ -76,7 +79,7 @@ export function CopyAct1({
           tone === 'onLight' ? cn('text-[#3b2a17]', letterpress) : t.heading
         )}
       >
-        {storyCopy.act1.heading}
+        {copy('a1.h')}
       </Heading>
       {/* small sizes on the photo go near-black and up a weight: contrast
           comes from ink and the static copyWash behind; the letterpress edge
@@ -89,11 +92,11 @@ export function CopyAct1({
             : toneStyles.onDark.body
         )}
       >
-        {storyCopy.act1.body}
+        {copy('a1.b')}
       </p>
       <div className="flex flex-wrap items-center justify-center gap-3">
         <Button asChild variant="brand-on-dark" size="xl">
-          <a href={storyCopy.act1.demoCta.href}>{storyCopy.act1.demoCta.label}</a>
+          <a href={demoHref}>{copy('a1.c1')}</a>
         </Button>
         {/* brand-outline is white-on-dark; flip to neutral outline on light */}
         <Button
@@ -101,9 +104,7 @@ export function CopyAct1({
           variant={tone === 'onLight' ? 'outline' : 'brand-outline'}
           size="xl"
         >
-          <a href={storyCopy.act1.downloadCta.href}>
-            {storyCopy.act1.downloadCta.label}
-          </a>
+          <a href={downloadHref}>{copy('a1.c2')}</a>
         </Button>
       </div>
       <div
@@ -114,10 +115,10 @@ export function CopyAct1({
             : toneStyles.onDark.badges
         )}
       >
-        {storyCopy.act1.trustBadges.map((badge) => (
+        {(['b1', 'b2', 'b3'] as const).map((badge) => (
           <span key={badge} className="flex items-center gap-1.5">
             <span aria-hidden="true" className="h-1 w-1 rounded-full bg-emerald-400" />
-            {badge}
+            {copy(`a1.badges.${badge}`)}
           </span>
         ))}
       </div>
@@ -127,22 +128,23 @@ export function CopyAct1({
 
 export function CopyAct2({ tone = 'onDark' }: { tone?: CopyTone }) {
   const t = toneStyles[tone]
+  const copy = useTranslations('home.story')
   return (
     <>
-      <Kicker tone={tone}>{storyCopy.act2.kicker}</Kicker>
+      <Kicker tone={tone}>{copy('a2.k')}</Kicker>
       <h2 className={cn('mb-3 text-3xl font-bold leading-[1.1] tracking-tight md:text-4xl', t.heading)}>
-        {storyCopy.act2.heading}
+        {copy('a2.h')}
       </h2>
       <p className={cn('mb-4 max-w-md text-base leading-relaxed', t.sideBody)}>
-        {storyCopy.act2.body}
+        {copy('a2.b')}
       </p>
       <div className="flex flex-wrap gap-2">
-        {storyCopy.act2.platforms.map((platform) => (
+        {(['p1', 'p2', 'p3', 'p4', 'p5'] as const).map((platform) => (
           <span
             key={platform}
             className={cn('rounded-full border px-3 py-1 text-[11px] font-semibold', t.chip)}
           >
-            {platform}
+            {copy(`a2.platforms.${platform}`)}
           </span>
         ))}
       </div>
@@ -152,14 +154,15 @@ export function CopyAct2({ tone = 'onDark' }: { tone?: CopyTone }) {
 
 export function CopyAct3({ tone = 'onDark' }: { tone?: CopyTone }) {
   const t = toneStyles[tone]
+  const copy = useTranslations('home.story')
   return (
     <>
-      <Kicker tone={tone}>{storyCopy.act3.kicker}</Kicker>
+      <Kicker tone={tone}>{copy('a3.k')}</Kicker>
       <h2 className={cn('mb-3 text-3xl font-bold leading-[1.1] tracking-tight md:text-4xl', t.heading)}>
-        {storyCopy.act3.heading}
+        {copy('a3.h')}
       </h2>
       <p className={cn('max-w-md text-base leading-relaxed', t.sideBody)}>
-        {storyCopy.act3.body}
+        {copy('a3.b')}
       </p>
     </>
   )
@@ -167,14 +170,15 @@ export function CopyAct3({ tone = 'onDark' }: { tone?: CopyTone }) {
 
 export function CopyAct4({ tone = 'onDark' }: { tone?: CopyTone }) {
   const t = toneStyles[tone]
+  const copy = useTranslations('home.story')
   return (
     <>
-      <Kicker tone={tone}>{storyCopy.act4.kicker}</Kicker>
+      <Kicker tone={tone}>{copy('a4.k')}</Kicker>
       <h2 className={cn('mb-3 text-3xl font-bold leading-[1.1] tracking-tight md:text-4xl', t.heading)}>
-        {storyCopy.act4.heading}
+        {copy('a4.h')}
       </h2>
       <p className={cn('max-w-md text-base leading-relaxed', t.sideBody)}>
-        {storyCopy.act4.body}
+        {copy('a4.b')}
       </p>
     </>
   )

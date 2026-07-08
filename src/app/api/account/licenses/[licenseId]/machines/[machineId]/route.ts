@@ -10,6 +10,19 @@ import {
 import { licenseLogger } from '@/lib/logger'
 import { assertViewOnly, ViewOnlyError } from '@/lib/impersonation'
 
+type MachineErrorCode =
+  | 'read_only_inspection'
+  | 'unauthorized'
+  | 'forbidden'
+  | 'machine_not_found_for_license'
+  | 'deactivate_failed'
+  | 'machine_management_unconfigured'
+  | 'internal'
+
+function errorResponse(errorCode: MachineErrorCode, status: number) {
+  return NextResponse.json({ errorCode }, { status })
+}
+
 /**
  * Machine Deactivation API
  *
@@ -29,10 +42,7 @@ export async function DELETE(
     await assertViewOnly()
   } catch (error) {
     if (error instanceof ViewOnlyError) {
-      return NextResponse.json(
-        { error: 'read_only_inspection' },
-        { status: 403 }
-      )
+      return errorResponse('read_only_inspection', 403)
     }
     throw error
   }
@@ -42,39 +52,27 @@ export async function DELETE(
 
     const customer = await getCustomer()
     if (!customer) {
-      return NextResponse.json(
-        { error: 'Unauthorized' },
-        { status: 401 }
-      )
+      return errorResponse('unauthorized', 401)
     }
 
     const orders = await getAllOrders()
     const licenseIds = extractLicenseIdsFromOrders(orders)
 
     if (!licenseIds.includes(licenseId)) {
-      return NextResponse.json(
-        { error: 'Forbidden' },
-        { status: 403 }
-      )
+      return errorResponse('forbidden', 403)
     }
 
     // Verify machine belongs to this license
     const machines = await licenseClient.getLicenseMachines(licenseId)
     const machineOwned = machines.some((m) => m.id === machineId)
     if (!machineOwned) {
-      return NextResponse.json(
-        { error: 'Machine does not belong to this license' },
-        { status: 403 }
-      )
+      return errorResponse('machine_not_found_for_license', 403)
     }
 
     const success = await licenseClient.deactivateMachine(machineId)
 
     if (!success) {
-      return NextResponse.json(
-        { error: 'Failed to deactivate machine' },
-        { status: 500 }
-      )
+      return errorResponse('deactivate_failed', 500)
     }
 
     return NextResponse.json(
@@ -87,15 +85,9 @@ export async function DELETE(
     // the credential is missing, not chase a phantom bug.
     if (error instanceof KeygenAuthNotConfiguredError) {
       licenseLogger.error`Machine deactivation unavailable: ${error.message}`
-      return NextResponse.json(
-        { error: 'Machine management is not configured' },
-        { status: 503 }
-      )
+      return errorResponse('machine_management_unconfigured', 503)
     }
     licenseLogger.error`Failed to deactivate machine: ${error}`
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    )
+    return errorResponse('internal', 500)
   }
 }

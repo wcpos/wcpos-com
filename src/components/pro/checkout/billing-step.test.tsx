@@ -1,16 +1,16 @@
 import { describe, it, expect, vi } from 'vitest'
-import { render, screen, fireEvent, waitFor } from '@testing-library/react'
-import { BillingStep, taxIdLabel } from './billing-step'
+import { screen, fireEvent, waitFor } from '@testing-library/react'
+import { renderWithIntl as render } from '@/test/intl'
+import { BillingStep } from './billing-step'
+import * as billingCountries from '@/lib/billing-countries'
 
-describe('taxIdLabel', () => {
-  it('names the field per country', () => {
-    expect(taxIdLabel('au')).toBe('ABN')
-    expect(taxIdLabel('GB')).toBe('VAT number')
-    expect(taxIdLabel('us')).toBe('EIN / Tax ID')
-  })
-
-  it('falls back to a generic label', () => {
-    expect(taxIdLabel('sg')).toBe('Tax ID / VAT number')
+describe('tax label i18n contract', () => {
+  it('exposes translation keys rather than English label helpers', () => {
+    expect(billingCountries.taxIdLabelKey('au')).toBe('abn')
+    expect(billingCountries.taxIdLabelKey('GB')).toBe('vat')
+    expect(billingCountries.taxIdLabelKey('us')).toBe('einTaxId')
+    expect(billingCountries.taxIdLabelKey('sg')).toBe('genericTaxId')
+    expect('taxIdLabel' in billingCountries).toBe(false)
   })
 })
 

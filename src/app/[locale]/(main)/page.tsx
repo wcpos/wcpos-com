@@ -1,4 +1,4 @@
-import { setRequestLocale } from 'next-intl/server'
+import { getTranslations, setRequestLocale } from 'next-intl/server'
 import type { Metadata } from 'next'
 import { Suspense } from 'react'
 import { ScrollStory } from '@/components/home/scroll-story'
@@ -10,10 +10,20 @@ import {
 } from '@/components/home/pricing-teaser-section'
 import { TrustSection } from '@/components/home/trust-section'
 import { CtaSection } from '@/components/home/cta-section'
+import { marketingMetadata } from '@/lib/seo'
 
-export const metadata: Metadata = {
-  description:
-    'Point of Sale for WooCommerce. Sync your products, sell offline, and connect real hardware with native apps for iOS, Android, and desktop.',
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}): Promise<Metadata> {
+  const { locale } = await params
+  const t = await getTranslations({ locale, namespace: 'home.meta' })
+  return marketingMetadata({
+    locale,
+    path: '/',
+    description: t('description'),
+  })
 }
 
 export default async function Home({

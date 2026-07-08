@@ -18,15 +18,26 @@ vi.mock('@/lib/analytics/client-events', () => ({
 
 // Mock next-intl
 vi.mock('next-intl', () => ({
-  useTranslations: () => (key: string) => {
-    const translations: Record<string, string> = {
+  useLocale: () => 'en',
+  useTranslations: (namespace: string) => (key: string) => {
+    const translations: Record<string, Record<string, string>> = {
+      header: {
       downloads: 'Downloads',
       documentation: 'Documentation',
       roadmap: 'Roadmap',
       pro: 'Pro',
       support: 'Support',
+      },
+      common: {
+        signIn: 'Translated sign in',
+        openMenu: 'Translated open menu',
+        close: 'Translated close',
+        account: 'Translated account',
+        accountMenu: 'Translated account menu',
+        signOut: 'Translated sign out',
+      },
     }
-    return translations[key] ?? key
+    return translations[namespace]?.[key] ?? key
   },
 }))
 
@@ -143,13 +154,40 @@ describe('SiteHeader', () => {
     expect(mockTrackClientEvent).toHaveBeenCalledWith('click_pro_cta', undefined)
   })
 
-  it('shows Sign In when not authenticated', async () => {
+
+  it('uses a translated accessible label for the mobile menu trigger', async () => {
     mockGetCustomer.mockResolvedValue(null)
     await act(async () => {
       render(<SiteHeader />)
     })
 
-    const signInLinks = screen.getAllByText('Sign In')
+    expect(
+      screen.getByRole('button', { name: 'Translated open menu' })
+    ).toBeInTheDocument()
+  })
+
+  it('uses a translated accessible label for the mobile menu close button', async () => {
+    mockGetCustomer.mockResolvedValue(null)
+    await act(async () => {
+      render(<SiteHeader />)
+    })
+
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Translated open menu' })
+    )
+
+    expect(
+      await screen.findByRole('button', { name: 'Translated close' })
+    ).toBeInTheDocument()
+  })
+
+  it('shows the translated sign-in label when not authenticated', async () => {
+    mockGetCustomer.mockResolvedValue(null)
+    await act(async () => {
+      render(<SiteHeader />)
+    })
+
+    const signInLinks = screen.getAllByText('Translated sign in')
     expect(signInLinks.length).toBeGreaterThan(0)
   })
 
@@ -167,17 +205,17 @@ describe('SiteHeader', () => {
 
     // Authenticated state renders an avatar menu trigger, not a plain link.
     expect(
-      screen.getAllByRole('button', { name: /account menu/i }).length
+      screen.getAllByRole('button', { name: 'Translated account menu' }).length
     ).toBeGreaterThan(0)
   })
 
-  it('tracks Sign In button clicks', async () => {
+  it('tracks translated sign-in button clicks', async () => {
     mockGetCustomer.mockResolvedValue(null)
     await act(async () => {
       render(<SiteHeader />)
     })
 
-    const signInLinks = screen.getAllByText('Sign In')
+    const signInLinks = screen.getAllByText('Translated sign in')
     const signInLink = signInLinks[0].closest('a')
     expect(signInLink).toBeTruthy()
 
@@ -186,13 +224,13 @@ describe('SiteHeader', () => {
     expect(mockTrackClientEvent).toHaveBeenCalledWith('click_sign_in', undefined)
   })
 
-  it('falls back to Sign In when getCustomer throws', async () => {
+  it('falls back to the translated sign-in label when getCustomer throws', async () => {
     mockGetCustomer.mockRejectedValue(new Error('cookie read failed'))
     await act(async () => {
       render(<SiteHeader />)
     })
 
-    const signInLinks = screen.getAllByText('Sign In')
+    const signInLinks = screen.getAllByText('Translated sign in')
     expect(signInLinks.length).toBeGreaterThan(0)
   })
 })

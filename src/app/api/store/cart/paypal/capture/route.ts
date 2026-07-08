@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { storeCartErrorResponse } from '@/lib/store-cart-errors'
 import {
   capturePayPalOrder,
   getCart,
@@ -24,10 +25,7 @@ export async function POST(request: NextRequest) {
     await assertViewOnly()
   } catch (error) {
     if (error instanceof ViewOnlyError) {
-      return NextResponse.json(
-        { error: 'read_only_inspection' },
-        { status: 403 }
-      )
+      return storeCartErrorResponse('read_only_inspection', 403)
     }
     throw error
   }
@@ -35,15 +33,12 @@ export async function POST(request: NextRequest) {
   try {
     const customer = await getCustomer()
     if (!customer) {
-      return NextResponse.json(
-        { error: 'Authentication required' },
-        { status: 401 }
-      )
+      return storeCartErrorResponse('authentication_required', 401)
     }
 
     const body = await request.json().catch(() => null)
     if (!body || typeof body !== 'object' || Array.isArray(body)) {
-      return NextResponse.json({ error: 'Invalid request body' }, { status: 400 })
+      return storeCartErrorResponse('invalid_request_body', 400)
     }
 
     const payload = body as Record<string, unknown>
@@ -51,55 +46,37 @@ export async function POST(request: NextRequest) {
     const orderId = typeof payload.orderId === 'string' ? payload.orderId.trim() : ''
 
     if (!cartId) {
-      return NextResponse.json(
-        { error: 'Cart ID is required' },
-        { status: 400 }
-      )
+      return storeCartErrorResponse('cart_id_required', 400)
     }
 
     if (!orderId) {
-      return NextResponse.json(
-        { error: 'PayPal order ID is required' },
-        { status: 400 }
-      )
+      return storeCartErrorResponse('paypal_order_id_required', 400)
     }
 
     const cart = await getCart(cartId)
     if (!cart) {
-      return NextResponse.json(
-        { error: 'Failed to fetch cart' },
-        { status: 500 }
-      )
+      return storeCartErrorResponse('failed_fetch_cart', 500)
     }
 
     if (cart.email !== customer.email) {
-      return NextResponse.json({ error: 'Cart not found' }, { status: 404 })
+      return storeCartErrorResponse('cart_not_found', 404)
     }
 
     const { offers } = await getProOfferCatalog()
     const selection = resolveProOfferCartSelection(offers, cart)
     if (!selection) {
-      return NextResponse.json(
-        { error: 'Current Pro offer cart is required' },
-        { status: 400 }
-      )
+      return storeCartErrorResponse('current_pro_offer_cart_required', 400)
     }
 
     const authToken = await getAuthToken()
     const captured = await capturePayPalOrder(cartId, orderId, authToken)
     if (!captured) {
-      return NextResponse.json(
-        { error: 'Failed to capture PayPal order' },
-        { status: 502 }
-      )
+      return storeCartErrorResponse('failed_capture_paypal_order', 502)
     }
 
     return NextResponse.json({ ok: true })
   } catch (error) {
     storeLogger.error`Error capturing PayPal order: ${error}`
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    )
+    return storeCartErrorResponse('internal', 500)
   }
 }

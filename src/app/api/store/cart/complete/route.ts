@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { storeCartErrorResponse } from '@/lib/store-cart-errors'
 import { cookies } from 'next/headers'
 import { completeCart, getCart } from '@/services/core/external/medusa-client'
 import { getCustomer } from '@/lib/medusa-auth'
@@ -10,8 +11,6 @@ import {
 } from '@/services/core/analytics/posthog-service'
 import { ANALYTICS_DISTINCT_ID_COOKIE } from '@/lib/analytics/distinct-id'
 import { getAnalyticsConfig } from '@/lib/analytics/config'
-import { ApiError } from '@/lib/api/errors'
-import { toErrorResponse } from '@/lib/api/to-error-response'
 import {
   getProOfferCatalog,
   resolveProOfferCartSelection,
@@ -26,10 +25,7 @@ export async function POST(request: NextRequest) {
     await assertViewOnly()
   } catch (error) {
     if (error instanceof ViewOnlyError) {
-      return NextResponse.json(
-        { error: 'read_only_inspection' },
-        { status: 403 }
-      )
+      return storeCartErrorResponse('read_only_inspection', 403)
     }
     throw error
   }
@@ -37,52 +33,37 @@ export async function POST(request: NextRequest) {
   try {
     const customer = await getCustomer()
     if (!customer) {
-      return NextResponse.json(
-        { error: 'Authentication required' },
-        { status: 401 }
-      )
+      return storeCartErrorResponse('authentication_required', 401)
     }
 
     const body = await request.json()
     const { cartId, experiment } = body
 
     if (!cartId) {
-      return NextResponse.json(
-        { error: 'Cart ID is required' },
-        { status: 400 }
-      )
+      return storeCartErrorResponse('cart_id_required', 400)
     }
 
     const cart = await getCart(cartId)
     if (!cart) {
-      return NextResponse.json(
-        { error: 'Failed to fetch cart' },
-        { status: 500 }
-      )
+      return storeCartErrorResponse('failed_fetch_cart', 500)
     }
 
     // Bind the cart to the caller: only the customer a cart was created for
     // may complete it (carts always carry the session customer's email).
     if (cart.email !== customer.email) {
-      return NextResponse.json({ error: 'Cart not found' }, { status: 404 })
+      return storeCartErrorResponse('cart_not_found', 404)
     }
 
     const { offers } = await getProOfferCatalog()
     const selection = resolveProOfferCartSelection(offers, cart)
     if (!selection) {
-      return NextResponse.json(
-        { error: 'Current Pro offer cart is required' },
-        { status: 400 }
-      )
+      return storeCartErrorResponse('current_pro_offer_cart_required', 400)
     }
 
     const result = await completeCart(cartId)
 
     if (!result) {
-      return NextResponse.json(
-        { error: 'Failed to complete cart' },
-        { status: 500 }
-      )
+      return storeCartErrorResponse('failed_complete_cart', 500)
     }
 
     // Medusa returns HTTP 200 with `type: 'cart'` (not an order) when the cart
@@ -96,10 +77,8 @@ export async function POST(request: NextRequest) {
       storeLogger.error`Cart completion produced no order: cartId=${cartId} type=${result.type}`
       // The one wire shape the checkout client and CONTEXT.md pin as the
       // distinct "Order pending" state. Routed through the shared adapter so the
-      // { error, code } contract has a single, tested home.
-      return toErrorResponse(
-        new ApiError(409, 'Payment received, order pending', ORDER_PENDING_CODE)
-      )
+      // { errorCode, code } contract has a single, tested home.
+      return storeCartErrorResponse('order_pending', 409, { code: ORDER_PENDING_CODE })
     }
 
     try {
@@ -145,9 +124,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(result)
   } catch (error) {
     storeLogger.error`Error completing cart: ${error}`
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    )
+    return storeCartErrorResponse('internal', 500)
   }
 }

@@ -24,7 +24,7 @@ export async function GET(
 
   if (!key || !instance) {
     return NextResponse.json(
-      { error: 'Missing required parameters: key and instance' },
+      { errorCode: 'missing_required_parameters' },
       { status: 400 }
     )
   }
@@ -32,7 +32,7 @@ export async function GET(
   const licenseStatus = await licenseClient.validateLicense(key, instance)
   if (licenseStatus.status !== 200 || !licenseStatus.data) {
     return NextResponse.json(
-      { error: licenseStatus.error || 'License validation failed' },
+      { errorCode: 'license_validation_failed' },
       { status: licenseStatus.status || 400 }
     )
   }
@@ -43,7 +43,7 @@ export async function GET(
 
   if (!selection.ok) {
     return NextResponse.json(
-      { error: 'No update is available for this license' },
+      { errorCode: 'no_update_available_for_license' },
       { status: 403 }
     )
   }

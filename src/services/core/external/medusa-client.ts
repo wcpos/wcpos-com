@@ -250,11 +250,23 @@ export async function getEnabledPaymentProviderIds(
 /**
  * Format price for display
  */
-export function formatPrice(amount: number, currencyCode: string): string {
-  return new Intl.NumberFormat('en-US', {
+export function formatPrice(
+  amount: number,
+  currencyCode: string,
+  locale: string = 'en-US',
+  options: Intl.NumberFormatOptions = {}
+): string {
+  const formatOptions: Intl.NumberFormatOptions = {
     style: 'currency',
     currency: currencyCode.toUpperCase(),
-  }).format(amount)
+    ...options,
+  }
+
+  try {
+    return new Intl.NumberFormat(locale, formatOptions).format(amount)
+  } catch {
+    return new Intl.NumberFormat('en-US', formatOptions).format(amount)
+  }
 }
 
 /**
@@ -418,14 +430,18 @@ export interface PaymentSessionResult {
 export async function createPaymentSession(
   paymentCollectionId: string,
   providerId: string,
-  authToken?: string | null
+  authToken?: string | null,
+  data?: Record<string, unknown>
 ): Promise<PaymentSessionResult | null> {
   try {
     const response = await medusaFetch<PaymentCollectionResponse>(
       `/store/payment-collections/${paymentCollectionId}/payment-sessions`,
       {
         method: 'POST',
-        body: JSON.stringify({ provider_id: providerId }),
+        body: JSON.stringify({
+          provider_id: providerId,
+          ...(data ? { data } : {}),
+        }),
         headers: buildAuthHeaders(authToken),
       }
     )

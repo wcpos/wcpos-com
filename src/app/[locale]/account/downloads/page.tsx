@@ -116,6 +116,7 @@ async function DownloadsContent({
     version: release.version,
     name: release.name,
     releaseNotes: release.releaseNotes,
+    contentLocale: release.contentLocale,
     publishedAt: release.publishedAt,
     allowed: release.allowed,
   }))

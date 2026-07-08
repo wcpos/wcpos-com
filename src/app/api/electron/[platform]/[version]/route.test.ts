@@ -35,7 +35,7 @@ describe('GET /api/electron/[platform]/[version]', () => {
   it('passes platform and version to the electron service', async () => {
     mockGetLatestUpdate.mockResolvedValueOnce({
       status: 404,
-      error: 'No release found',
+      errorCode: 'release_not_found',
     })
 
     await GET(...makeArgs('win32-x64', '1.3.0'))
@@ -46,14 +46,14 @@ describe('GET /api/electron/[platform]/[version]', () => {
   it('returns the error status when the service reports an error', async () => {
     mockGetLatestUpdate.mockResolvedValueOnce({
       status: 404,
-      error: 'No release found',
+      errorCode: 'release_not_found',
     })
 
     const response = await GET(...makeArgs())
     const json = await response.json()
 
     expect(response.status).toBe(404)
-    expect(json.error).toBe('No release found')
+    expect(json).toEqual({ status: 404, errorCode: 'release_not_found' })
   })
 
   it('returns 200 with the modern response shape (>= 1.4.0)', async () => {
@@ -100,6 +100,6 @@ describe('GET /api/electron/[platform]/[version]', () => {
     const json = await response.json()
 
     expect(response.status).toBe(500)
-    expect(json.error).toBe('Internal server error')
+    expect(json).toEqual({ status: 500, errorCode: 'internal_server_error' })
   })
 })
