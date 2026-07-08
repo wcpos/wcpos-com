@@ -935,7 +935,7 @@
       "untitledItem": "Article sans titre",
       "subtotal": "Sous-total",
       "tax": "Taxe",
-      "total": "MONTANT TOTAL",
+      "total": "Total",
       "noTaxAdded": "Aucune taxe n’a été ajoutée à cette commande.",
       "sellerIdentityWithAbn": "{sellerName} · ABN {sellerAbn}",
       "sellerIdentity": "{sellerName}",
