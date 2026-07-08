@@ -35,6 +35,7 @@ interface DownloadRelease {
   version: string
   name: string
   releaseNotes: string
+  contentLocale?: string
   publishedAt: string
   allowed: boolean
 }
@@ -104,6 +105,7 @@ export function DownloadsClient({
 }: DownloadsClientProps) {
   const locale = useLocale()
   const t = useTranslations('account.downloads')
+  const tCommon = useTranslations('common')
   const releases = initialReleases
   const [currentPage, setCurrentPage] = useState(1)
   const [downloadingVersion, setDownloadingVersion] = useState<string | null>(
@@ -116,6 +118,9 @@ export function DownloadsClient({
   // Releases arrive sorted newest-first; the first one is the "Latest" build.
   const latestRelease = releases[0]
   const latestVersion = latestRelease?.version
+  const hasExternalEnglishContent =
+    locale.split('-')[0]?.toLowerCase() !== 'en' &&
+    releases.some((release) => release.contentLocale === 'en')
   const totalPages = Math.max(1, Math.ceil(releases.length / RELEASES_PER_PAGE))
   // Derive the clamped page instead of syncing state in an effect.
   const safePage = Math.min(currentPage, totalPages)
@@ -227,6 +232,12 @@ export function DownloadsClient({
         </Alert>
       )}
 
+      {hasExternalEnglishContent && (
+        <p className="text-center text-xs text-muted-foreground">
+          {t('externalContentNotice')}
+        </p>
+      )}
+
       {expiredAccess && access.latestExpiry && (
         <AccountNotice
           action={
@@ -323,10 +334,12 @@ export function DownloadsClient({
           </CardHeader>
           <CardContent className="space-y-4">
             {hasNotes(latestRelease) ? (
-              <Markdown
-                className="line-clamp-3 max-w-prose text-sm text-muted-foreground"
-                content={latestRelease.releaseNotes}
-              />
+              <div lang={latestRelease.contentLocale}>
+                <Markdown
+                  className="line-clamp-3 max-w-prose text-sm text-muted-foreground"
+                  content={latestRelease.releaseNotes}
+                />
+              </div>
             ) : (
               <p className="text-sm text-muted-foreground">
                 {t('noReleaseNotes')}
@@ -483,7 +496,10 @@ export function DownloadsClient({
           if (!open) setNotesRelease(null)
         }}
       >
-        <DialogContent className="max-h-[85vh] sm:max-w-2xl">
+        <DialogContent
+          className="max-h-[85vh] sm:max-w-2xl"
+          closeLabel={tCommon('close')}
+        >
           <DialogHeader>
             <DialogTitle>{notesRelease?.name}</DialogTitle>
             {notesRelease && (
@@ -496,10 +512,12 @@ export function DownloadsClient({
           <Separator />
           <div className="max-h-[60vh] overflow-y-auto pr-1">
             {notesRelease && hasNotes(notesRelease) ? (
-              <Markdown
-                className="max-w-none space-y-2 break-words text-sm"
-                content={notesRelease.releaseNotes}
-              />
+              <div lang={notesRelease.contentLocale}>
+                <Markdown
+                  className="max-w-none space-y-2 break-words text-sm"
+                  content={notesRelease.releaseNotes}
+                />
+              </div>
             ) : (
               <p className="text-sm text-muted-foreground">
                 {t('noReleaseNotes')}

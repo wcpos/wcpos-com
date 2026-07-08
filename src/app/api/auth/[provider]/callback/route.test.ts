@@ -187,7 +187,7 @@ describe('OAuth callback route', () => {
 
     expect(response.status).toBe(400)
     const body = await response.json()
-    expect(body.error).toContain('facebook')
+    expect(body).toEqual({ errorCode: 'unsupported_provider', provider: 'facebook' })
     expect(mockEstablishOAuthSession).not.toHaveBeenCalled()
   })
 
@@ -282,6 +282,91 @@ describe('OAuth callback route', () => {
     expect(response.headers.get('location')).toBe('https://wcpos.com/account')
   })
 
+  it('preserves locale-prefixed redirect cookies on successful server redirects', async () => {
+    mockEstablishOAuthSession.mockResolvedValue(
+      session({ email: 'discord@example.com' })
+    )
+
+    const request = new NextRequest(
+      'https://wcpos.com/api/auth/discord/callback?code=abc&state=xyz',
+      { headers: { cookie: 'oauth_redirect=%2Ffr%2Faccount%2Flicenses' } }
+    )
+
+    const response = await GET(request, {
+      params: Promise.resolve({ provider: 'discord' }),
+    })
+
+    expect(response.headers.get('location')).toBe(
+      'https://wcpos.com/fr/account/licenses'
+    )
+  })
+
+  it('persists the locale from the OAuth redirect target for localized emails', async () => {
+    mockGetSessionCustomer.mockResolvedValueOnce({
+      id: 'cust_1',
+      metadata: { auth_providers: ['google'], last_sign_in_provider: 'google' },
+    })
+    mockEstablishOAuthSession.mockResolvedValue(
+      session({ email: 'locale@example.com' })
+    )
+
+    const request = new NextRequest(
+      'https://wcpos.com/api/auth/google/callback?code=abc&state=xyz',
+      { headers: { cookie: 'oauth_redirect=%2Ffr%2Faccount' } }
+    )
+
+    const response = await GET(request, {
+      params: Promise.resolve({ provider: 'google' }),
+    })
+
+    expect(mockEstablishOAuthSession).toHaveBeenCalledWith(
+      'google',
+      {
+        code: 'abc',
+        state: 'xyz',
+      },
+      { locale: 'fr' }
+    )
+    expect(response.headers.get('location')).toBe('https://wcpos.com/fr/account')
+    expect(mockUpdateCustomer).toHaveBeenCalledWith({
+      metadata: {
+        auth_providers: ['google'],
+        last_sign_in_provider: 'google',
+        locale: 'fr',
+      },
+    })
+  })
+
+  it('clears a stale OAuth locale when signing in from the English surface', async () => {
+    mockGetSessionCustomer.mockResolvedValueOnce({
+      id: 'cust_1',
+      metadata: {
+        auth_providers: ['google'],
+        last_sign_in_provider: 'google',
+        locale: 'fr',
+      },
+    })
+    mockEstablishOAuthSession.mockResolvedValue(
+      session({ email: 'english@example.com' })
+    )
+
+    const request = new NextRequest(
+      'https://wcpos.com/api/auth/google/callback?code=abc&state=xyz',
+      { headers: { cookie: 'oauth_redirect=%2Faccount' } }
+    )
+
+    await GET(request, {
+      params: Promise.resolve({ provider: 'google' }),
+    })
+
+    expect(mockUpdateCustomer).toHaveBeenCalledWith({
+      metadata: {
+        auth_providers: ['google'],
+        last_sign_in_provider: 'google',
+      },
+    })
+  })
+
 
   it('preserves safe OAuth error codes for localized login feedback', async () => {
     mockEstablishOAuthSession.mockRejectedValue(new Error('oauth_email_unverified'))
@@ -296,6 +381,23 @@ describe('OAuth callback route', () => {
 
     const location = new URL(response.headers.get('location')!)
     expect(location.pathname).toBe('/login')
+    expect(location.searchParams.get('error')).toBe('oauth_email_unverified')
+  })
+
+  it('redirects OAuth failures back to the locale-prefixed login page', async () => {
+    mockEstablishOAuthSession.mockRejectedValue(new Error('oauth_email_unverified'))
+
+    const request = new NextRequest(
+      'https://wcpos.com/api/auth/discord/callback?code=abc&state=xyz',
+      { headers: { cookie: 'oauth_redirect=%2Ffr%2Faccount' } }
+    )
+
+    const response = await GET(request, {
+      params: Promise.resolve({ provider: 'discord' }),
+    })
+
+    const location = new URL(response.headers.get('location')!)
+    expect(location.pathname).toBe('/fr/login')
     expect(location.searchParams.get('error')).toBe('oauth_email_unverified')
   })
 

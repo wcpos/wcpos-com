@@ -19,8 +19,8 @@ function safeRelativeTarget(value: string | null): string {
 
 export async function POST(request: Request) {
   await logout()
-  const url = new URL('/login', request.url)
-  return NextResponse.redirect(url, 303)
+  const to = safeRelativeTarget(new URL(request.url).searchParams.get('to'))
+  return NextResponse.redirect(new URL(to, request.url), 303)
 }
 
 /**

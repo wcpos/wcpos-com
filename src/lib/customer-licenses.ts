@@ -1,4 +1,5 @@
 import 'server-only'
+import { cache } from 'react'
 import type { LicenseDetail } from '@/types/license'
 import {
   getAllOrders,
@@ -288,22 +289,29 @@ export async function getResolvedLicensesFromOrders(
   ).licenses
 }
 
-export async function getResolvedCustomerLicenses(): Promise<{
-  authenticated: boolean
-  licenses: LicenseDetail[]
-}> {
-  const customer = await getCustomer()
-  if (!customer) {
-    return { authenticated: false, licenses: [] }
-  }
+/**
+ * Wrapped in React `cache()` so the account layout's expiry banner and the
+ * licenses page share a single orders+Keygen resolve within one request
+ * (both render on a full load of /account/licenses).
+ */
+export const getResolvedCustomerLicenses = cache(
+  async (): Promise<{
+    authenticated: boolean
+    licenses: LicenseDetail[]
+  }> => {
+    const customer = await getCustomer()
+    if (!customer) {
+      return { authenticated: false, licenses: [] }
+    }
 
-  const orders = await getAllOrders()
+    const orders = await getAllOrders()
 
-  return {
-    authenticated: true,
-    licenses: await getResolvedLicensesFromOrders(
-      orders,
-      legacyCustomerLicenseReferences(customer)
-    ),
+    return {
+      authenticated: true,
+      licenses: await getResolvedLicensesFromOrders(
+        orders,
+        legacyCustomerLicenseReferences(customer)
+      ),
+    }
   }
-}
+)

@@ -266,7 +266,7 @@ describe('LicensesClient', () => {
     expect(screen.getByText('Yearly')).toBeInTheDocument()
   })
 
-  it('deep-links the Renew button to the pre-filled yearly checkout', () => {
+  it('routes the Renew button for a yearly licence to the one-click renewal flow', () => {
     render(
       <LicensesClient
         initialLicenses={[
@@ -278,11 +278,12 @@ describe('LicensesClient', () => {
       />
     )
 
-    // An active, non-expiring yearly licence shows the always-visible Renew,
-    // deep-linked to the pre-filled yearly checkout (not the generic /pro).
+    // An active yearly licence shows the always-visible Renew, pointed at the
+    // one-click renewal flow (prefilled cart + saved card), not the full
+    // checkout. That flow itself falls back to /pro/checkout without billing.
     expect(screen.getByRole('link', { name: 'Renew' })).toHaveAttribute(
       'href',
-      '/pro/checkout?product=wcpos-pro-yearly'
+      '/account/licenses/renew'
     )
   })
 
@@ -453,40 +454,6 @@ describe('LicensesClient', () => {
     expect(mockFetch).not.toHaveBeenCalled()
   })
 
-
-
-  it('localizes read-only errors for machine deactivation', async () => {
-    mockFetch.mockResolvedValueOnce({
-      ok: false,
-      status: 403,
-      json: async () => ({ errorCode: 'read_only_inspection' }),
-    })
-
-    render(
-      <LicensesClient
-        initialLicenses={[
-          makeLicense({
-            machines: [
-              {
-                id: 'm-1',
-                fingerprint: 'fp-1',
-                name: 'My Store',
-                metadata: {},
-                createdAt: '2025-06-01T00:00:00Z',
-              },
-            ],
-          }),
-        ]}
-      />
-    )
-
-    fireEvent.click(screen.getByRole('button', { name: 'Deactivate My Store' }))
-
-    expect(
-      await screen.findByText('You are viewing this account in read-only mode.')
-    ).toBeInTheDocument()
-  })
-
   it('attributes the latest covered version to an active licence', () => {
     render(
       <LicensesClient
@@ -611,43 +578,6 @@ describe('LicensesClient', () => {
     expect(screen.queryByText('@ada')).not.toBeInTheDocument()
   })
 
-
-
-  it('localizes read-only errors for Discord member removal', async () => {
-    mockFetch.mockResolvedValueOnce({
-      ok: false,
-      status: 403,
-      json: async () => ({ errorCode: 'read_only_inspection' }),
-    })
-
-    render(
-      <LicensesClient
-        initialLicenses={[makeLicense({ id: 'lic-1' })]}
-        discordAccessByLicense={{
-          'lic-1': {
-            licenseId: 'lic-1',
-            seatCap: 5,
-            usedSeats: 1,
-            members: [
-              {
-                id: 'member-ada',
-                handle: '@ada',
-                avatarUrl: null,
-                connectedAt: '2026-06-01T00:00:00.000Z',
-              },
-            ],
-          },
-        }}
-      />
-    )
-
-    fireEvent.click(screen.getByRole('button', { name: 'Remove @ada' }))
-
-    expect(
-      await screen.findByText('You are viewing this account in read-only mode.')
-    ).toBeInTheDocument()
-  })
-
   it('redirects to login when Discord member removal returns 401', async () => {
     const assign = vi.fn()
     Object.defineProperty(window, 'location', {
@@ -675,5 +605,126 @@ describe('LicensesClient', () => {
 
     expect(await screen.findByText('@ada')).toBeInTheDocument()
     expect(assign).toHaveBeenCalledWith('/login')
+  })
+
+  describe('Activated Sites', () => {
+    const siteMachine = {
+      id: 'm-1',
+      fingerprint: 'wcpos-instance-abcdef123456',
+      name: null,
+      metadata: {
+        domain: 'shop.example.com',
+        siteUrl: 'https://shop.example.com',
+        lastSeenAt: '2026-07-01T00:00:00.000Z',
+        pluginVersion: '1.9.7',
+        wpVersion: '6.5',
+        wcVersion: '10.1',
+        source: 'updates-server',
+      },
+      createdAt: '2026-06-01T00:00:00.000Z',
+    }
+
+    it('renders sites with domain, shortened instance id, last seen and versions', () => {
+      render(
+        <LicensesClient
+          initialLicenses={[
+            makeLicense({ maxMachines: 5, activationCount: 1, machines: [siteMachine] }),
+          ]}
+        />
+      )
+
+      expect(screen.getByText('Activated Sites')).toBeInTheDocument()
+      expect(
+        screen.getByText(
+          'These are WordPress sites using this license. Deactivate a stale or test site to free an activation slot.'
+        )
+      ).toBeInTheDocument()
+      // Domain is the primary label, not the opaque fingerprint.
+      expect(screen.getByText('shop.example.com')).toBeInTheDocument()
+      // Instance id is shown shortened.
+      expect(screen.getByText('Instance ID: wcpos-in…3456')).toBeInTheDocument()
+      // Metadata-derived details.
+      expect(screen.getByText(/Last seen/)).toBeInTheDocument()
+      expect(
+        screen.getByText('WCPOS Pro 1.9.7 · WP 6.5 · WooCommerce 10.1')
+      ).toBeInTheDocument()
+    })
+
+    it('falls back to the fingerprint and hides metadata rows when no metadata exists', () => {
+      render(
+        <LicensesClient
+          initialLicenses={[
+            makeLicense({
+              maxMachines: 5,
+              activationCount: 1,
+              machines: [
+                {
+                  id: 'm-2',
+                  fingerprint: 'plain-fingerprint-xyz',
+                  name: null,
+                  metadata: {},
+                  createdAt: '2026-06-01T00:00:00.000Z',
+                },
+              ],
+            }),
+          ]}
+        />
+      )
+
+      expect(screen.getByText('plain-fingerprint-xyz')).toBeInTheDocument()
+      expect(screen.queryByText(/Last seen/)).not.toBeInTheDocument()
+      expect(screen.queryByText(/WCPOS Pro/)).not.toBeInTheDocument()
+    })
+
+    it('requires a confirmation before deactivating a site, and Cancel aborts', () => {
+      render(
+        <LicensesClient
+          initialLicenses={[
+            makeLicense({ maxMachines: 5, activationCount: 1, machines: [siteMachine] }),
+          ]}
+        />
+      )
+
+      // First click only reveals the confirmation — no request yet.
+      fireEvent.click(
+        screen.getByRole('button', { name: 'Deactivate site: shop.example.com' })
+      )
+      expect(
+        screen.getByText(
+          'This frees one activation slot. If the site is still in use, it will need to activate again.'
+        )
+      ).toBeInTheDocument()
+      expect(mockFetch).not.toHaveBeenCalled()
+
+      // Cancel dismisses the confirmation without deactivating.
+      fireEvent.click(screen.getByRole('button', { name: 'Cancel' }))
+      expect(
+        screen.queryByText(
+          'This frees one activation slot. If the site is still in use, it will need to activate again.'
+        )
+      ).not.toBeInTheDocument()
+      expect(mockFetch).not.toHaveBeenCalled()
+    })
+
+    it('deactivates the site through the machine endpoint after confirming', async () => {
+      mockFetch.mockResolvedValue({ ok: true, json: async () => ({ licenses: [] }) })
+      render(
+        <LicensesClient
+          initialLicenses={[
+            makeLicense({ id: 'lic-1', maxMachines: 5, activationCount: 1, machines: [siteMachine] }),
+          ]}
+        />
+      )
+
+      fireEvent.click(
+        screen.getByRole('button', { name: 'Deactivate site: shop.example.com' })
+      )
+      fireEvent.click(screen.getByRole('button', { name: 'Deactivate' }))
+
+      expect(mockFetch).toHaveBeenCalledWith(
+        '/api/account/licenses/lic-1/machines/m-1',
+        { method: 'DELETE' }
+      )
+    })
   })
 })

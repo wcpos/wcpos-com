@@ -42,6 +42,41 @@ describe('POST /api/discord/claim', () => {
     }))
   })
 
+  it('falls back to the locale-aware licenses page when returnTo is missing', async () => {
+    await POST(new NextRequest('https://wcpos.com/api/discord/claim', {
+      method: 'POST',
+      body: JSON.stringify({ licenseKey: 'WCPOS-AAAA' }),
+      headers: {
+        'content-type': 'application/json',
+        cookie: 'NEXT_LOCALE=fr',
+      },
+    }))
+
+    expect(mockSetDiscordOAuthState).toHaveBeenCalledWith(expect.objectContaining({
+      licenseKey: 'WCPOS-AAAA',
+      returnTo: '/fr/account/licenses',
+      state: expect.any(String),
+    }))
+  })
+
+  it('falls back to the best Accept-Language locale for unsafe returnTo values', async () => {
+    await POST(new NextRequest('https://wcpos.com/api/discord/claim', {
+      method: 'POST',
+      body: JSON.stringify({
+        licenseKey: 'WCPOS-AAAA',
+        returnTo: 'https://evil.example/account/licenses',
+      }),
+      headers: {
+        'content-type': 'application/json',
+        'accept-language': 'en-US;q=0.4, fr-FR;q=0.9',
+      },
+    }))
+
+    expect(mockSetDiscordOAuthState).toHaveBeenCalledWith(expect.objectContaining({
+      returnTo: '/fr/account/licenses',
+    }))
+  })
+
   it('rejects an empty licence key', async () => {
     const response = await POST(new NextRequest('https://wcpos.com/api/discord/claim', {
       method: 'POST',
@@ -50,7 +85,7 @@ describe('POST /api/discord/claim', () => {
     }))
 
     expect(response.status).toBe(400)
-    expect(await response.json()).toEqual({ error: 'license_key_required' })
+    expect(await response.json()).toEqual({ errorCode: 'license_key_required' })
   })
 
   it('logs a malformed JSON body at info and rejects with 400', async () => {
@@ -61,7 +96,7 @@ describe('POST /api/discord/claim', () => {
     }))
 
     expect(response.status).toBe(400)
-    expect(await response.json()).toEqual({ error: 'license_key_required' })
+    expect(await response.json()).toEqual({ errorCode: 'license_key_required' })
     // The parse failure is no longer swallowed silently, but it is
     // client-caused so it stays at info (error level fans out to alerts).
     expect(infoMock).toHaveBeenCalledTimes(1)

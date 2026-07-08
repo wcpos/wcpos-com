@@ -9,7 +9,8 @@ import {
   OAUTH_REDIRECT_COOKIE,
   OAUTH_REDIRECT_COOKIE_OPTIONS,
 } from '@/lib/oauth-providers'
-import { sanitizeRedirectPath } from '@/lib/safe-redirect'
+import { loginPathForLocale } from '@/lib/login-redirect'
+import { localeFromPath, sanitizeRedirectPath } from '@/lib/safe-redirect'
 import { isOAuthErrorCode } from '@/lib/oauth-error-codes'
 
 /** The redirect cookie is single-use: consume it on every outcome. */
@@ -27,7 +28,8 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 
 async function syncOauthProfile(
   provider: string,
-  userMetadata: Record<string, string>
+  userMetadata: Record<string, string>,
+  locale: string
 ) {
   try {
     // Use the real session identity, never an active impersonation target, so
@@ -48,12 +50,21 @@ async function syncOauthProfile(
     const alreadyLatest = metadata.last_sign_in_provider === provider
     const avatarUnchanged =
       !avatarUrl || avatarUrl === metadata.oauth_avatar_url
+    const localeToPersist = locale === 'en' ? undefined : locale
+    const localeUnchanged = metadata.locale === localeToPersist
 
     // Nothing to persist: provider already recorded as the latest and avatar
-    // unchanged.
-    if (providerAlreadyKnown && alreadyLatest && avatarUnchanged) return
+    // unchanged, and locale already matches the sign-in surface.
+    if (providerAlreadyKnown && alreadyLatest && avatarUnchanged && localeUnchanged) return
 
     let nextMetadata = recordSignInProvider(metadata, provider)
+    if (localeToPersist) {
+      nextMetadata = { ...nextMetadata, locale: localeToPersist }
+    } else if ('locale' in nextMetadata) {
+      const metadataWithoutLocale = { ...nextMetadata }
+      delete metadataWithoutLocale.locale
+      nextMetadata = metadataWithoutLocale
+    }
     if (avatarUrl && avatarUrl !== metadata.oauth_avatar_url) {
       nextMetadata = { ...nextMetadata, oauth_avatar_url: avatarUrl }
     }
@@ -73,7 +84,7 @@ export async function GET(
 
     if (!ALLOWED_PROVIDERS.includes(provider)) {
       return NextResponse.json(
-        { error: `Unsupported provider: ${provider}` },
+        { errorCode: 'unsupported_provider', provider },
         { status: 400 }
       )
     }
@@ -84,7 +95,8 @@ export async function GET(
     // change deployed.
     const redirectTo = sanitizeRedirectPath(
       request.cookies.get(OAUTH_REDIRECT_COOKIE)?.value ??
-        request.nextUrl.searchParams.get('redirect')
+        request.nextUrl.searchParams.get('redirect'),
+      { stripLocalePrefix: false }
     )
 
     // Collect all query params from the OAuth provider (code, state, etc.)
@@ -93,26 +105,36 @@ export async function GET(
       if (key === 'redirect') return
       callbackParams[key] = value
     })
+    const locale = localeFromPath(redirectTo)
 
     // establishOAuthSession owns the link-then-refresh-then-persist ordering
     // and writes the session cookie; the route only drives profile sync and
     // the redirect. Profile sync runs after the session exists (it reads the
     // session identity via getSessionCustomer) and is best-effort — it must
     // not block sign-in.
-    const { payload } = await establishOAuthSession(provider, callbackParams)
-    await syncOauthProfile(provider, payload.user_metadata)
+    const { payload } = locale === 'en'
+      ? await establishOAuthSession(provider, callbackParams)
+      : await establishOAuthSession(provider, callbackParams, { locale })
+    await syncOauthProfile(provider, payload.user_metadata, locale)
 
     return clearRedirectCookie(
       NextResponse.redirect(new URL(redirectTo, request.url))
     )
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'Unknown error'
-    authLogger.error`OAuth callback failed: ${message}`
-    const loginUrl = new URL('/login', request.url)
-    loginUrl.searchParams.set(
-      'error',
-      isOAuthErrorCode(message) ? message : 'oauth_failed'
+    const errorCode = error instanceof Error && isOAuthErrorCode(error.message)
+      ? error.message
+      : 'oauth_failed'
+    authLogger.error`OAuth callback failed: ${error}`
+    const redirectTo = sanitizeRedirectPath(
+      request.cookies.get(OAUTH_REDIRECT_COOKIE)?.value ??
+        request.nextUrl.searchParams.get('redirect'),
+      { stripLocalePrefix: false }
     )
+    const loginUrl = new URL(
+      loginPathForLocale(localeFromPath(redirectTo)),
+      request.url
+    )
+    loginUrl.searchParams.set('error', errorCode)
     return clearRedirectCookie(NextResponse.redirect(loginUrl, 303))
   }
 }

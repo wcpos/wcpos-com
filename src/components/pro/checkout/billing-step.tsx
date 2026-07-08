@@ -37,8 +37,6 @@ export function billingAddressSummary(address: BillingAddress): string {
   ].filter(Boolean).join(', ')
 }
 
-export { taxIdLabel } from '@/lib/billing-countries'
-
 interface BillingStepProps {
   initialAddress?: BillingAddress | null
   /** Prefill for the optional tax field (customer profile's taxNumber). */

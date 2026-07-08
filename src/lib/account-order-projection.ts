@@ -9,7 +9,7 @@ import {
   type LicenseReference,
 } from './licenses'
 import { maskLicenseKey } from './order-display'
-import { getOrderDisplayStatus } from './order-status'
+import { getOrderDisplayStatus, type OrderStatusLabels } from './order-status'
 
 export interface AccountOrderMoneyFact {
   amount: number
@@ -195,7 +195,8 @@ function projectItemTotal(
 }
 
 export function projectAccountOrderListRow(
-  order: MedusaOrder
+  order: MedusaOrder,
+  statusLabels?: OrderStatusLabels
 ): AccountOrderListRowFact {
   const product = productForOrder(order)
   const licenses = uniqueLicenseReferences(order)
@@ -215,24 +216,26 @@ export function projectAccountOrderListRow(
     ...(legacyId ? { legacyDisplayId: legacyId } : {}),
     createdAt: legacyCreatedAt(order),
     itemCount: order.items.length,
-    displayStatus: getOrderDisplayStatus(order),
+    displayStatus: getOrderDisplayStatus(order, statusLabels),
     total: money(order.total, order.currency_code),
     licenses,
   }
 }
 
 export function projectAccountOrderListRows(
-  orders: MedusaOrder[]
+  orders: MedusaOrder[],
+  statusLabels?: OrderStatusLabels
 ): AccountOrderListRowFact[] {
   return orders
-    .map(projectAccountOrderListRow)
+    .map((order) => projectAccountOrderListRow(order, statusLabels))
     .sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt))
 }
 
 export function projectAccountOrderDetail(
   order: MedusaOrder,
   resolvedLicenses: LicenseDetail[],
-  nowMs: number
+  nowMs: number,
+  statusLabels?: OrderStatusLabels
 ): AccountOrderDetailFact {
   const product = productForOrder(order)
   const activationKeys = uniqueLicenseReferences(order)
@@ -253,7 +256,7 @@ export function projectAccountOrderDetail(
     ...(legacyId ? { legacyDisplayId: legacyId } : {}),
     createdAt: legacyCreatedAt(order),
     email: order.email,
-    displayStatus: getOrderDisplayStatus(order),
+    displayStatus: getOrderDisplayStatus(order, statusLabels),
     total: money(order.total, order.currency_code),
     items: order.items.map((item) => projectItemTotal(item, order.currency_code)),
     licenseEntitlements: resolvedLicenses.map((license) => ({

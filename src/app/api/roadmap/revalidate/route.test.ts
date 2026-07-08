@@ -44,7 +44,7 @@ describe('POST /api/roadmap/revalidate', () => {
     const json = await response.json()
 
     expect(response.status).toBe(401)
-    expect(json.error).toBe('Unauthorized')
+    expect(json).toEqual({ errorCode: 'unauthorized' })
     expect(mockRevalidateTag).not.toHaveBeenCalled()
   })
 
@@ -80,6 +80,6 @@ describe('POST /api/roadmap/revalidate', () => {
     const json = await response.json()
 
     expect(response.status).toBe(500)
-    expect(json.error).toBe('Revalidation failed')
+    expect(json).toEqual({ errorCode: 'revalidation_failed' })
   })
 })

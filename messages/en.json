@@ -3,8 +3,10 @@
     "signIn": "Sign In",
     "account": "Account",
     "openMenu": "Open menu",
+    "close": "Close",
     "accountMenu": "Account menu",
-    "signOut": "Sign out"
+    "signOut": "Sign out",
+    "dismiss": "Dismiss"
   },
   "header": {
     "documentation": "Documentation",
@@ -50,6 +52,63 @@
     "subtitle": "A fast point of sale for WooCommerce",
     "meta": {
       "description": "Point of Sale for WooCommerce. Sync your products, sell offline, and connect real hardware with native apps for iOS, Android, and desktop."
+    },
+    "problem": {
+      "title": "Running a WooCommerce store and a physical shop shouldn't mean double the work",
+      "items": {
+        "doubleEntry": {
+          "label": "Double Entry",
+          "description": "Re-entering products in a separate POS wastes hours and creates errors."
+        },
+        "offlinePanic": {
+          "label": "Offline Panic",
+          "description": "Internet drops and your sales stop. Customers wait. You lose money."
+        },
+        "platformLockIn": {
+          "label": "Platform Lock-In",
+          "description": "Proprietary systems trap your data. Moving or customizing becomes impossible."
+        }
+      }
+    },
+    "cta": {
+      "title": "Ready to sell in-store with WooCommerce?",
+      "subtitle": "Try the live demo or download the free plugin to get started.",
+      "liveDemo": "Try Live Demo",
+      "download": "Download Free"
+    },
+    "trust": {
+      "stats": {
+        "activeInstallations": "Active Installations",
+        "inDevelopmentSince": "In Development Since",
+        "languagesSupported": "Languages Supported"
+      },
+      "license": "GPL Licensed",
+      "githubAria": "— WCPOS on GitHub",
+      "quote": "Straightforward, functional and simple to use. 10/10.",
+      "attribution": "Ward, wordpress.org review",
+      "story": "Read our story →"
+    },
+    "useCases": {
+      "title": "Works for stores of all kinds",
+      "reviewSuffix": "wordpress.org review",
+      "cards": {
+        "retail": {
+          "type": "Retail Store",
+          "quote": "I did a lot of research when looking for a POS for my existing WC site, and nearly overlooked this one because it was free. But I’m glad I tried it. It does everything you want without asking for subscriptions or a percentage of your sales.",
+          "attribution": "nckllnpssy"
+        },
+        "market": {
+          "type": "Market Vendor",
+          "quote": "I’m a ceramicist in Annecy and I sell through my WooCommerce shop and at markets. I’ve been using WCPOS for over a year and bought the lifetime Pro license a few months ago — worth it, I think. Paul is responsive on Discord, even on weekends.",
+          "attribution": "adeline",
+          "note": "translated from French"
+        },
+        "desktop": {
+          "type": "Desktop & Offline",
+          "quote": "Great POS for your WooCommerce store, it has the desktop version which makes it better for places with weak internet connectivity. I believe there are more great features coming up.",
+          "attribution": "rodriguekgl"
+        }
+      }
     },
     "benefits": {
       "heading": "Why stores choose WCPOS",
@@ -157,7 +216,8 @@
           "p7": "Priority support"
         }
       },
-      "cta": "See Full Pricing & Features"
+      "cta": "See Full Pricing & Features",
+      "priceSummary": "{yearly}/year or {lifetime} lifetime ({currency}). No per-register fees."
     },
     "ecosystem": {
       "heading": "One ecosystem. Multiple ways to sell.",
@@ -248,6 +308,7 @@
           "sale": "On Sale",
           "category": "Category"
         },
+        "variantBadge": "Variants",
         "products": {
           "p1": "Tote Bag",
           "p2": "Candle",
@@ -271,6 +332,15 @@
           "products": "Products",
           "cart": "Cart"
         }
+      },
+      "terminal": {
+        "tapToPay": "Tap to pay"
+      },
+      "cloudSync": {
+        "products": "{count, number} products",
+        "synced": "synced",
+        "ordersToWoo": "orders → Woo",
+        "worksOffline": "works offline"
       }
     }
   },
@@ -302,7 +372,8 @@
       "progress": "{completed} of {total} done",
       "progressDue": "{completed} of {total} done · due {date}",
       "shipped": "shipped",
-      "shippedWithDate": "shipped · {date}"
+      "shippedWithDate": "shipped · {date}",
+      "externalContentNotice": "Roadmap item details come from GitHub and may be shown in English."
     },
     "bugs": {
       "summary": "{count, plural, one {+ # bug fix & improvements} other {+ # bug fixes & improvements}}",
@@ -324,7 +395,11 @@
     },
     "schema": {
       "name": "WCPOS Pro",
-      "description": "Premium Point of Sale plugin for WooCommerce. Adds payment terminal integration, stock and price editing, order and customer management, end-of-day reports, custom payment gateways, and priority support."
+      "description": "Premium Point of Sale plugin for WooCommerce. Adds payment terminal integration, stock and price editing, order and customer management, end-of-day reports, custom payment gateways, and priority support.",
+      "offers": {
+        "yearly": "Yearly License",
+        "lifetime": "Lifetime License"
+      }
     },
     "features": {
       "title": "What's included in Pro?",
@@ -666,7 +741,7 @@
     "licenses": {
       "heading": "Licenses",
       "loadError": "Failed to load licenses",
-      "deactivateError": "Failed to deactivate machine. Please try again.",
+      "deactivateError": "Failed to deactivate site. Please try again.",
       "emptyTitle": "No licenses found.",
       "emptyDescription": "Purchase WCPOS Pro to get a license.",
       "planYearly": "Yearly",
@@ -702,7 +777,19 @@
       "copyError": "Failed to copy license key. Please try again.",
       "apiErrors": {
         "read_only_inspection": "You are viewing this account in read-only mode."
-      }
+      },
+      "roadmapTeaser": "See what's coming on the roadmap",
+      "activatedSites": "Activated Sites",
+      "activatedSitesHelp": "These are WordPress sites using this license. Deactivate a stale or test site to free an activation slot.",
+      "instanceId": "Instance ID: {id}",
+      "lastSeen": "Last seen {date}",
+      "pluginVersionLabel": "WCPOS Pro {version}",
+      "wpVersionLabel": "WP {version}",
+      "wcVersionLabel": "WooCommerce {version}",
+      "deactivateSite": "Deactivate site",
+      "deactivateSiteConfirm": "This frees one activation slot. If the site is still in use, it will need to activate again.",
+      "deactivateConfirm": "Deactivate",
+      "deactivateCancel": "Cancel"
     },
     "downloads": {
       "heading": "Downloads",
@@ -746,7 +833,8 @@
         "release_not_found": "That WCPOS Pro release could not be found.",
         "forbidden": "Your license does not include this download.",
         "internal": "We could not prepare your download. Please try again."
-      }
+      },
+      "externalContentNotice": "Release notes come from GitHub and may be shown in English."
     },
     "profile": {
       "heading": "Profile",
@@ -830,6 +918,7 @@
     },
     "receiptPdf": {
       "title": "Receipt",
+      "filename": "receipt-{id}.pdf",
       "orderNumber": "Order #{id}",
       "billedTo": "BILLED TO",
       "details": "DETAILS",
@@ -858,7 +947,8 @@
         "paid": "Paid",
         "refunded": "Refunded",
         "partiallyRefunded": "Partially refunded",
-        "canceled": "Canceled"
+        "canceled": "Canceled",
+        "unknown": "Unknown"
       }
     },
     "admin": {
@@ -869,6 +959,31 @@
     "impersonation": {
       "viewing": "🔍 Viewing <strong>{target}</strong> as <strong>read-only</strong> — you cannot change their account.",
       "exit": "Exit"
+    },
+    "orderStatus": {
+      "actionRequired": "Action required",
+      "authorized": "Authorized",
+      "canceled": "Canceled",
+      "paid": "Paid",
+      "partiallyRefunded": "Partially refunded",
+      "pending": "Pending",
+      "refunded": "Refunded",
+      "unknown": "Unknown"
+    },
+    "productTitles": {
+      "yearly": "WCPOS Pro Yearly",
+      "lifetime": "WCPOS Pro Lifetime"
+    },
+    "renew": {
+      "summaryLabel": "Renewing your licence",
+      "extendsNote": "Extends your current licence by one year — no days are lost if you renew early.",
+      "preparing": "Preparing your renewal…",
+      "errorBody": "We couldn't start your renewal just now. You can renew from the full checkout instead.",
+      "goToCheckout": "Go to checkout",
+      "cancel": "Cancel",
+      "paymentNotConfigured": "No payment methods are configured. Please contact support.",
+      "pageTitle": "Renew your licence",
+      "backToLicences": "Back to licences"
     }
   },
   "metadata": {
@@ -1276,6 +1391,20 @@
         "c3": "Orders",
         "c4": "Customers",
         "c5": "Tax & receipts"
+      },
+      "diagram": {
+        "ariaLabel": "A WooCommerce store with the WCPOS plugin sits at the centre, connected over a REST API to the desktop, iOS, Android and web apps, which all stay in sync.",
+        "devices": {
+          "desktop": "Desktop",
+          "ios": "iOS & iPad",
+          "android": "Android",
+          "web": "Web"
+        },
+        "hub": {
+          "store": "Your store",
+          "platform": "WooCommerce",
+          "plugin": "+ WCPOS plugin"
+        }
       }
     },
     "page": {
@@ -1291,7 +1420,9 @@
           "body": "The foundation everything connects to. In your dashboard: Plugins → Add New, then search “WCPOS”.",
           "badge": "Free · GPL",
           "requirements": "WordPress 5.6+ · WooCommerce 5.3+ · PHP 7.4+",
-          "requirementsWithVersion": "Latest {version} · WordPress 5.6+ · WooCommerce 5.3+ · PHP 7.4+"
+          "requirementsWithVersion": "Latest {version} · WordPress 5.6+ · WooCommerce 5.3+ · PHP 7.4+",
+          "cardTitle": "WCPOS",
+          "wordpressOrgCta": "WordPress.org"
         },
         "device": {
           "title": "Pick your device",
@@ -1325,7 +1456,8 @@
         "v194": "- Redesigned Bluetooth printer setup; serial printing for OS-paired Bluetooth Classic printers\n- Improved Windows raw printing; smoother USB flow",
         "v190": "- New receipt template gallery; thermal printing (58/80mm)\n- Customer Tax IDs; Pro coupons & refunds at the POS"
       },
-      "plugin": "Free"
+      "plugin": "Free",
+      "externalContentNotice": "Release notes come from GitHub and may be shown in English."
     }
   },
   "about": {
@@ -1354,7 +1486,8 @@
         "label": "P.S.",
         "withPrice": "— Pro is <price></price>.",
         "fallback": "— Pro is available from the Pro page.",
-        "licence": "If a licence lapses, Pro keeps working; you just stop getting updates."
+        "licence": "If a licence lapses, Pro keeps working; you just stop getting updates.",
+        "priceSummary": "{yearly}/yr or {lifetime} once"
       }
     },
     "timeline": {

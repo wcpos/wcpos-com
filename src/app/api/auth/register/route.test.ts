@@ -141,6 +141,48 @@ describe('POST /api/auth/register', () => {
     expect(mockRegister).toHaveBeenCalledTimes(1)
   })
 
+  it('passes the requested locale into registration for customer email metadata', async () => {
+    mockRegister.mockResolvedValueOnce({
+      token: 'jwt',
+      customer: { id: 'cus_1' },
+    })
+
+    const response = await postRegister({
+      email: 'new@example.com',
+      password: 'password123',
+      firstName: 'Jane',
+      lastName: 'Doe',
+      locale: 'fr-FR',
+    })
+
+    expect(response.status).toBe(200)
+    expect(mockRegister).toHaveBeenCalledWith({
+      email: 'new@example.com',
+      password: 'password123',
+      firstName: 'Jane',
+      lastName: 'Doe',
+      locale: 'fr-FR',
+    })
+  })
+
+  it('passes the first supported weighted locale-list candidate into registration', async () => {
+    mockRegister.mockResolvedValueOnce({
+      token: 'jwt',
+      customer: { id: 'cus_1' },
+    })
+
+    const response = await postRegister({
+      email: 'new@example.com',
+      password: 'password123',
+      locale: 'pl-PL;q=1.0, fr-FR;q=0.9, de-DE;q=0.8',
+    })
+
+    expect(response.status).toBe(200)
+    expect(mockRegister).toHaveBeenCalledWith(expect.objectContaining({
+      locale: 'fr-FR',
+    }))
+  })
+
   it('tracks signup_completed with the visitor distinct-id from the cookie', async () => {
     mockRegister.mockResolvedValueOnce({
       token: 'jwt',

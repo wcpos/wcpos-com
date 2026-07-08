@@ -3,8 +3,10 @@
     "signIn": "登录",
     "account": "账户",
     "openMenu": "打开菜单",
+    "close": "关闭",
     "accountMenu": "账户菜单",
-    "signOut": "退出登录"
+    "signOut": "退出登录",
+    "dismiss": "忽略"
   },
   "header": {
     "documentation": "文档",
@@ -31,7 +33,7 @@
     "companyHeading": "公司",
     "downloadHeading": "下载",
     "pro": "WCPOS Pro",
-    "roadmap": "Roadmap",
+    "roadmap": "路线图",
     "demo": "在线演示",
     "discord": "Discord",
     "github": "GitHub",
@@ -47,170 +49,228 @@
   },
   "home": {
     "title": "WCPOS",
-    "subtitle": "A fast point of sale for WooCommerce",
+    "subtitle": "面向 WooCommerce 的快速销售点系统",
     "meta": {
-      "description": "Point of Sale for WooCommerce. Sync your products, sell offline, and connect real hardware with native apps for iOS, Android, and desktop."
+      "description": "面向 WooCommerce 的销售点系统。同步商品、离线销售，并通过 iOS、Android 和桌面原生应用连接真实硬件。"
+    },
+    "problem": {
+      "title": "同时经营 WooCommerce 商店和实体店，不应该意味着双倍工作",
+      "items": {
+        "doubleEntry": {
+          "label": "重复录入",
+          "description": "在单独的 POS 中重新录入商品会浪费大量时间并产生错误。"
+        },
+        "offlinePanic": {
+          "label": "断网焦虑",
+          "description": "网络中断，销售也随之停止。顾客等待，你也损失收入。"
+        },
+        "platformLockIn": {
+          "label": "平台锁定",
+          "description": "专有系统会困住你的数据。迁移或定制都会变得不可能。"
+        }
+      }
+    },
+    "cta": {
+      "title": "准备好用 WooCommerce 做店内销售了吗？",
+      "subtitle": "试用在线演示，或下载免费插件开始使用。",
+      "liveDemo": "试用在线演示",
+      "download": "免费下载"
+    },
+    "trust": {
+      "stats": {
+        "activeInstallations": "活跃安装量",
+        "inDevelopmentSince": "开发始于",
+        "languagesSupported": "支持语言"
+      },
+      "license": "GPL 许可",
+      "githubAria": "— GitHub 上的 WCPOS",
+      "quote": "直接、实用且简单易用。10/10。",
+      "attribution": "Ward，wordpress.org 评价",
+      "story": "阅读我们的故事 →"
+    },
+    "useCases": {
+      "title": "适用于各种类型的商店",
+      "reviewSuffix": "wordpress.org 评价",
+      "cards": {
+        "retail": {
+          "type": "零售店",
+          "quote": "我在为现有 WC 网站寻找 POS 时做了很多研究，差点因为它是免费的而忽略了它。但我很高兴试用了它。它能完成你想要的一切，而且不要求订阅费或抽取销售额比例。",
+          "attribution": "nckllnpssy"
+        },
+        "market": {
+          "type": "市集摊主",
+          "quote": "我是在 Annecy 的陶艺师，通过自己的 WooCommerce 商店和市集销售。我已经使用 WCPOS 一年多了，几个月前购买了终身 Pro 许可证——我觉得很值得。Paul 在 Discord 上回复很快，即使是周末也一样。",
+          "attribution": "adeline",
+          "note": "译自法语"
+        },
+        "desktop": {
+          "type": "桌面端与离线",
+          "quote": "这是适合你的 WooCommerce 商店的优秀 POS，它有桌面版本，因此在网络连接较弱的地方更好用。我相信还会有更多优秀功能推出。",
+          "attribution": "rodriguekgl"
+        }
+      }
     },
     "benefits": {
-      "heading": "Why stores choose WCPOS",
+      "heading": "为什么商店选择 WCPOS",
       "items": {
         "sync": {
-          "headline": "One catalog, two channels",
-          "description": "Your WooCommerce products are your POS products. Update a price or stock level once — it syncs everywhere automatically. No manual entry, no conflicts, no guesswork.",
-          "supporting": "Same products. Same prices. Same customers. Always in sync."
+          "headline": "一个商品目录，两个销售渠道",
+          "description": "你的 WooCommerce 商品就是你的 POS 商品。只需更新一次价格或库存——它会自动同步到所有位置。无需手动录入，没有冲突，也不用猜。",
+          "supporting": "同样的商品。同样的价格。同样的客户。始终同步。"
         },
         "offline": {
-          "headline": "Works offline",
-          "description": "Local-first architecture means the POS keeps running when your connection drops. Products are stored locally and open orders are preserved — they complete and sync as soon as the internet returns.",
-          "supporting": "Never lose an order to internet issues."
+          "headline": "可离线运行",
+          "description": "本地优先架构意味着连接中断时 POS 仍可继续运行。商品保存在本地，未完成订单会被保留——网络恢复后会立即完成并同步。",
+          "supporting": "不会因为网络问题丢失订单。"
         },
         "hardware": {
-          "headline": "Native apps, real hardware",
-          "description": "Native iOS and Android apps — not a browser tab pretending to be an app. Connect payment terminals, receipt printers, and barcode scanners directly.",
-          "supporting": "Supports Stripe Terminal, SumUp, and more payment hardware."
+          "headline": "原生应用，真实硬件",
+          "description": "原生 iOS 和 Android 应用——不是伪装成应用的浏览器标签页。可直接连接支付终端、收据打印机和条码扫描器。",
+          "supporting": "支持 Stripe Terminal、SumUp 等支付硬件。"
         },
         "ownership": {
-          "headline": "You own everything",
-          "description": "Your data stays in your WooCommerce store, on your hosting. No platform lock-in, no third party holding your business hostage. Open source (GPL) — inspect the code, extend it, contribute to it.",
-          "supporting": "Open source. Self-hosted. You're in control."
+          "headline": "一切都属于你",
+          "description": "你的数据保留在自己的 WooCommerce 商店和托管环境中。没有平台锁定，也没有第三方挟持你的业务。开源（GPL）——你可以检查代码、扩展它并参与贡献。",
+          "supporting": "开源。自托管。由你掌控。"
         }
       },
       "visuals": {
         "offline": {
-          "title": "Today's Sales",
-          "badge": "Offline",
-          "sale": "Sale #{number}",
-          "completed": "Completed",
-          "queued": "3 sales queued — syncs when you're back online"
+          "title": "今日销售",
+          "badge": "离线",
+          "sale": "销售 #{number}",
+          "completed": "已完成",
+          "queued": "3 笔销售已排队——重新上线后同步"
         },
         "hardware": {
-          "tablet": "iPad / Tablet",
-          "terminal": "Card Terminal",
-          "printer": "Receipt Printer",
-          "scanner": "Barcode Scanner"
+          "tablet": "iPad / 平板电脑",
+          "terminal": "刷卡终端",
+          "printer": "收据打印机",
+          "scanner": "条码扫描器"
         },
         "ownership": {
           "chips": {
-            "hosting": "Your hosting",
-            "data": "Your data",
-            "license": "GPL licensed",
-            "openSource": "Open source"
+            "hosting": "你的托管",
+            "data": "你的数据",
+            "license": "GPL 许可",
+            "openSource": "开源"
           }
         }
       }
     },
     "features": {
-      "heading": "Built for the demands of physical retail",
+      "heading": "为实体零售的需求而构建",
       "items": {
         "f1": {
-          "title": "Fast product search",
-          "description": "Find products instantly with search, filters, and category browsing. Barcode scanner support."
+          "title": "快速商品搜索",
+          "description": "通过搜索、筛选和分类浏览即时找到商品。支持条码扫描器。"
         },
         "f2": {
-          "title": "Smooth checkout flow",
-          "description": "Add items, apply discounts, choose payment method. Supports Stripe Terminal, SumUp, cash, and custom gateways."
+          "title": "流畅的结账流程",
+          "description": "添加商品、应用折扣、选择支付方式。支持 Stripe Terminal、SumUp、现金和自定义网关。"
         },
         "f3": {
-          "title": "Customer profiles",
-          "description": "Add and edit customer info directly in the POS. Track regulars, offer better service."
+          "title": "客户资料",
+          "description": "直接在 POS 中添加和编辑客户信息。记录常客，提供更好的服务。"
         },
         "f4": {
-          "title": "Order history & management",
-          "description": "View past orders, process returns, check order status without switching to WP Admin."
+          "title": "订单历史与管理",
+          "description": "查看历史订单、处理退货、检查订单状态，无需切换到 WP Admin。"
         },
         "f5": {
-          "title": "Edit stock & prices on the fly",
-          "description": "Fix a wrong price while serving a customer. Adjust stock without leaving the POS."
+          "title": "即时编辑库存和价格",
+          "description": "服务客户时即可修正错误价格。不离开 POS 也能调整库存。"
         },
         "f6": {
-          "title": "End-of-day reports",
-          "description": "Generate sales reports for each shift or day. Cash up quickly, track performance."
+          "title": "日终报表",
+          "description": "为每个班次或每日生成销售报表。快速结账，跟踪业绩。"
         }
       }
     },
     "pricing": {
-      "heading": "Start free. Upgrade when you need more.",
-      "fallback": "See full pricing for current Pro options. No per-register fees.",
+      "heading": "免费开始。需要更多功能时再升级。",
+      "fallback": "查看完整价格以了解当前 Pro 选项。没有按收银机收费。",
       "free": {
-        "title": "Free",
-        "description": "Free forever. No transaction fees. No limits.",
+        "title": "免费版",
+        "description": "永久免费。无交易费。无限制。",
         "features": {
-          "f1": "WooCommerce sync",
-          "f2": "Product search & grid",
-          "f3": "Basic checkout",
-          "f4": "Offline mode",
-          "f5": "Receipt printing",
-          "f6": "Multi-currency",
-          "f7": "Unlimited products"
+          "f1": "WooCommerce 同步",
+          "f2": "商品搜索和网格",
+          "f3": "基础结账",
+          "f4": "离线模式",
+          "f5": "收据打印",
+          "f6": "多货币",
+          "f7": "无限商品"
         }
       },
       "pro": {
         "title": "Pro",
-        "intro": "Everything in Free, plus:",
+        "intro": "包含免费版全部功能，另外还有：",
         "features": {
-          "p1": "Payment terminal integration",
-          "p2": "Stock & price editing in POS",
-          "p3": "Order history & management",
-          "p4": "Customer management",
-          "p5": "End-of-day reports",
-          "p6": "Custom payment gateways",
-          "p7": "Priority support"
+          "p1": "支付终端集成",
+          "p2": "在 POS 中编辑库存和价格",
+          "p3": "订单历史与管理",
+          "p4": "客户管理",
+          "p5": "日终报表",
+          "p6": "自定义支付网关",
+          "p7": "优先支持"
         }
       },
-      "cta": "See Full Pricing & Features"
+      "cta": "查看完整价格和功能",
+      "priceSummary": "{yearly}/年或一次性 {lifetime} 终身（{currency}）。没有按收银机收费。"
     },
     "ecosystem": {
-      "heading": "One ecosystem. Multiple ways to sell.",
-      "subtitle": "Install the WordPress plugin, then choose your device.",
+      "heading": "一个生态系统。多种销售方式。",
+      "subtitle": "安装 WordPress 插件，然后选择你的设备。",
       "flow": {
-        "store": "Your WooCommerce Store",
-        "plugin": "WordPress Plugin Installed",
-        "sync": "REST API Sync"
+        "store": "你的 WooCommerce 商店",
+        "plugin": "已安装 WordPress 插件",
+        "sync": "REST API 同步"
       },
-      "badge": "Beta",
+      "badge": "测试版",
       "devices": {
         "ios": {
-          "label": "iOS & iPadOS",
-          "description": "Native app with payment terminal and printer support.",
-          "cta": "Get the iOS beta"
+          "label": "iOS 与 iPadOS",
+          "description": "支持支付终端和打印机的原生应用。",
+          "cta": "获取 iOS 测试版"
         },
         "android": {
           "label": "Android",
-          "description": "Native app with full hardware integration.",
-          "cta": "Get the Android beta"
+          "description": "具备完整硬件集成的原生应用。",
+          "cta": "获取 Android 测试版"
         },
         "desktop": {
-          "label": "Windows & macOS",
-          "description": "Desktop application for counter setups.",
-          "cta": "Download for Desktop"
+          "label": "Windows 与 macOS",
+          "description": "适用于柜台设置的桌面应用。",
+          "cta": "下载桌面版"
         },
         "web": {
-          "label": "Web Browser",
-          "description": "Try instantly — no installation required.",
-          "cta": "Try Live Demo"
+          "label": "网页浏览器",
+          "description": "立即试用——无需安装。",
+          "cta": "试用在线演示"
         }
       },
-      "description": "All apps sync with your WooCommerce store via the REST API. Install the free WordPress plugin, then choose your device. Products, stock, and orders stay in sync automatically."
+      "description": "所有应用都会通过 REST API 与你的 WooCommerce 商店同步。安装免费的 WordPress 插件，然后选择你的设备。商品、库存和订单会自动保持同步。"
     },
     "story": {
       "a1": {
-        "k": "Point of Sale for WooCommerce",
-        "h": "Your WooCommerce store, at the counter.",
-        "b": "WCPOS turns the tablet into your register — same catalog, same stock, same prices, even offline.",
-        "c1": "Try Live Demo",
-        "c2": "Download Free",
+        "k": "面向 WooCommerce 的销售点系统",
+        "h": "你的 WooCommerce 商店，就在柜台上。",
+        "b": "WCPOS 将平板变成你的收银机——同一个商品目录、同样的库存、同样的价格，即使离线也能使用。",
+        "c1": "试用在线演示",
+        "c2": "免费下载",
         "badges": {
-          "b1": "5,000+ Active Stores",
-          "b2": "Free & Open Source",
-          "b3": "Since 2014"
+          "b1": "5,000+ 活跃商店",
+          "b2": "免费且开源",
+          "b3": "始于 2014 年"
         }
       },
       "a2": {
-        "k": "Every screen you own",
-        "h": "One POS. Web, desktop, iOS & Android.",
-        "b": "Run the register on the tablet at the counter, the phone on the shop floor, or the laptop in the back office — same store, same data.",
+        "k": "你拥有的每块屏幕",
+        "h": "一个 POS。网页、桌面、iOS 和 Android。",
+        "b": "在柜台的平板、店内的手机或后办公室的笔记本上运行收银台——同一个商店，同一份数据。",
         "platforms": {
-          "p1": "Web",
+          "p1": "网页版",
           "p2": "Windows",
           "p3": "macOS",
           "p4": "iOS",
@@ -218,98 +278,109 @@
         }
       },
       "a3": {
-        "k": "Bring your own hardware",
-        "h": "Works with the equipment you already have.",
-        "b": "Card terminals, thermal receipt printers, barcode scanners — WCPOS doesn’t lock you into proprietary hardware. Plug in what’s already on your counter."
+        "k": "使用你自己的硬件",
+        "h": "兼容你已经拥有的设备。",
+        "b": "刷卡终端、热敏收据打印机、条码扫描器——WCPOS 不会把你锁定在专有硬件中。接入柜台上已有的设备即可。"
       },
       "a4": {
-        "k": "Your store, your data",
-        "h": "Synced with WooCommerce. Yours, even offline.",
-        "b": "Every sale lands in your WooCommerce store — you own the data, no middleman. Internet drops? Keep selling; WCPOS syncs when you’re back online."
+        "k": "你的商店，你的数据",
+        "h": "与 WooCommerce 同步。即使离线，也属于你。",
+        "b": "每笔销售都会进入你的 WooCommerce 商店——数据归你所有，没有中间商。网络断了？继续销售；WCPOS 会在重新上线后同步。"
       },
       "nav": {
-        "s1": "Scroll ↓",
-        "s2": "Go to act {current} of {total}"
+        "s1": "向下滚动 ↓",
+        "s2": "前往第 {current} 幕，共 {total} 幕"
       },
       "static": {
-        "alt": "A shop counter with a tablet running the WCPOS register, a receipt printer, a card terminal and a barcode scanner"
+        "alt": "一个商店柜台，上面有运行 WCPOS 收银台的平板、收据打印机、刷卡终端和条码扫描器"
       },
       "pos": {
         "aria": {
-          "main": "WCPOS app",
-          "phone": "WCPOS app, phone"
+          "main": "WCPOS 应用",
+          "phone": "WCPOS 应用，手机"
         },
-        "store": "POS — US Store",
+        "store": "POS — 美国商店",
         "registerShort": "R{number}",
-        "search": "Search Products",
+        "search": "搜索商品",
         "filters": {
-          "stock": "In Stock ✕",
-          "featured": "Featured",
-          "sale": "On Sale",
-          "category": "Category"
+          "stock": "有库存 ✕",
+          "featured": "精选",
+          "sale": "促销中",
+          "category": "分类"
         },
+        "variantBadge": "变体",
         "products": {
-          "p1": "Tote Bag",
-          "p2": "Candle",
-          "p3": "Mug",
-          "p4": "Soap Bar",
-          "p5": "Notebook",
-          "p6": "Tea Towel"
+          "p1": "托特包",
+          "p2": "蜡烛",
+          "p3": "马克杯",
+          "p4": "香皂",
+          "p5": "笔记本",
+          "p6": "茶巾"
         },
         "cart": {
-          "c1": "Candle",
-          "c2": "2× Mug",
-          "c3": "Soap Bar"
+          "c1": "蜡烛",
+          "c2": "2× 马克杯",
+          "c3": "香皂"
         },
-        "tax": "Tax based on: Shop base address",
-        "showing": "Showing {shown} of {total}",
-        "customer": "Customer:",
-        "guest": "Guest ✕",
-        "subtotal": "Subtotal",
-        "charge": "Charge {amount}",
+        "tax": "税费依据：商店基础地址",
+        "showing": "显示 {shown} / {total}",
+        "customer": "客户：",
+        "guest": "访客 ✕",
+        "subtotal": "小计",
+        "charge": "收取 {amount}",
         "tabs": {
-          "products": "Products",
-          "cart": "Cart"
+          "products": "商品",
+          "cart": "购物车"
         }
+      },
+      "terminal": {
+        "tapToPay": "轻触付款"
+      },
+      "cloudSync": {
+        "products": "{count, number} 件商品",
+        "synced": "已同步",
+        "ordersToWoo": "订单 → Woo",
+        "worksOffline": "可离线运行"
       }
     }
   },
   "roadmap": {
     "meta": {
-      "title": "Roadmap",
-      "description": "See what we are building next for WCPOS — upcoming features, milestones, and release progress."
+      "title": "路线图",
+      "description": "查看我们接下来为 WCPOS 构建的内容，包括即将推出的功能、里程碑和发布进度。"
     },
     "page": {
-      "eyebrow": "Roadmap",
-      "title": "The release train",
-      "description": "Every stop on the way to a faster, offline-proof WCPOS — pulled straight from our GitHub, newest work first."
+      "eyebrow": "路线图",
+      "title": "发布列车",
+      "description": "通往更快速、更可靠离线能力的 WCPOS 的每一站——直接来自我们的 GitHub，最新工作排在最前。"
     },
     "board": {
-      "link": "live from the WCPOS project board"
+      "link": "实时来自 WCPOS 项目看板"
     },
     "status": {
-      "done": "Done",
-      "inProgress": "In progress",
-      "planned": "Planned"
+      "done": "已完成",
+      "inProgress": "进行中",
+      "planned": "已计划"
     },
     "timeline": {
-      "empty": "No roadmap items to display yet.",
+      "empty": "暂无可显示的路线图项目。",
       "phases": {
-        "now": "Now",
-        "next": "Next",
-        "shipped": "Shipped"
+        "now": "现在",
+        "next": "接下来",
+        "shipped": "已发布"
       },
-      "progress": "{completed} of {total} done",
-      "progressDue": "{completed} of {total} done · due {date}",
-      "shipped": "shipped",
-      "shippedWithDate": "shipped · {date}"
+      "progress": "已完成 {completed} / {total}",
+      "progressDue": "已完成 {completed} / {total} · 截止 {date}",
+      "shipped": "已发布",
+      "shippedWithDate": "已发布 · {date}",
+      "externalContentNotice": "路线图项目详情来自 GitHub，可能会以英文显示。"
     },
     "bugs": {
-      "summary": "{count, plural, one {+ # bug fix & improvements} other {+ # bug fixes & improvements}}",
+      "summary": "{count, plural, one {+ # 个错误修复和改进} other {+ # 个错误修复和改进}}",
       "status": {
-        "done": "fixed",
-        "in_progress": "in progress",
-        "planned": "planned"
+        "done": "已修复",
+        "in_progress": "进行中",
+        "planned": "已计划"
       }
     }
   },
@@ -324,7 +395,11 @@
     },
     "schema": {
       "name": "WCPOS Pro",
-      "description": "适用于 WooCommerce 的高级销售点插件。增加支付终端集成、库存和价格编辑、订单和客户管理、日终报告、自定义支付网关以及优先支持。"
+      "description": "适用于 WooCommerce 的高级销售点插件。增加支付终端集成、库存和价格编辑、订单和客户管理、日终报告、自定义支付网关以及优先支持。",
+      "offers": {
+        "yearly": "年度许可证",
+        "lifetime": "终身许可证"
+      }
     },
     "features": {
       "title": "Pro 包含哪些功能？",
@@ -509,77 +584,77 @@
       "errors": {
         "noProductSelected": "未选择产品",
         "initializeFailed": "无法初始化结账。请重试。",
-        "checkoutBusy": "Checkout is busy. Please try again.",
-        "paymentRefreshFailed": "Billing address was saved, but we couldn't prepare payment. Please try again.",
-        "methodSwitchFailed": "We couldn't prepare that payment method. Please try again or choose a different one.",
-        "genericPaymentFailed": "We were unable to process your payment. Please try again or use a different payment method.",
-        "genericCardFailed": "Your card could not be charged. Please check your card details, or try a different card or payment method.",
-        "unexpectedPaymentStatus": "We couldn't confirm the status of your payment. If you think you may have been charged, please contact support before trying again.",
-        "orderPending": "Your payment was received, but we couldn't finish creating your order. Please do not pay again — contact support and we will finish your order or refund the payment.",
-        "paypalFailed": "PayPal couldn't complete your payment. You have not been charged — please try again or use a different payment method.",
-        "paypalInitFailed": "We couldn't start the PayPal checkout. Please try again or use a different payment method.",
-        "paypalCancelled": "PayPal checkout was cancelled and you have not been charged. You can try again whenever you're ready.",
-        "btcpayInitFailed": "We couldn't start the Bitcoin payment. You have not been charged — please try again or use a different payment method.",
+        "checkoutBusy": "结账正在处理中。请重试。",
+        "paymentRefreshFailed": "账单地址已保存，但我们无法准备付款。请重试。",
+        "methodSwitchFailed": "我们无法准备该付款方式。请重试或选择其他付款方式。",
+        "genericPaymentFailed": "我们无法处理您的付款。请重试或使用其他付款方式。",
+        "genericCardFailed": "无法从您的银行卡扣款。请检查卡片信息，或尝试其他银行卡或付款方式。",
+        "unexpectedPaymentStatus": "我们无法确认您的付款状态。如果您认为可能已经被扣款，请先联系支持，不要再次尝试付款。",
+        "orderPending": "我们已收到您的付款，但无法完成订单创建。请不要再次付款——请联系支持，我们会完成您的订单或退还款项。",
+        "paypalFailed": "PayPal 无法完成您的付款。您尚未被扣款——请重试或使用其他付款方式。",
+        "paypalInitFailed": "我们无法启动 PayPal 结账。请重试或使用其他付款方式。",
+        "paypalCancelled": "PayPal 结账已取消，您尚未被扣款。准备好后可以随时重试。",
+        "btcpayInitFailed": "我们无法启动 Bitcoin 付款。您尚未被扣款——请重试或使用其他付款方式。",
         "stripeDeclines": {
-          "insufficientFunds": "Your card was declined due to insufficient funds. Please use a different card or payment method."
+          "insufficientFunds": "由于余额不足，您的银行卡被拒绝。请使用其他银行卡或付款方式。"
         },
         "stripeCodes": {
-          "cardDeclined": "Your card was declined. Please try a different card or payment method.",
-          "expiredCard": "Your card has expired. Please use a different card.",
-          "incorrectCvc": "Your card's security code is incorrect. Please check it and try again.",
-          "invalidCvc": "Your card's security code is invalid. Please check it and try again.",
-          "incorrectNumber": "Your card number appears to be invalid. Please check it and try again.",
-          "invalidNumber": "Your card number appears to be invalid. Please check it and try again.",
-          "invalidExpiryMonth": "Your card's expiry date is invalid. Please check it and try again.",
-          "invalidExpiryYear": "Your card's expiry date is invalid. Please check it and try again.",
-          "processingError": "Something went wrong while processing your card. You have not been charged — please try again.",
-          "authenticationFailure": "We couldn't verify your card with your bank. Please try again or use a different payment method.",
-          "authenticationRequired": "We couldn't verify your card with your bank. Please try again or use a different payment method."
+          "cardDeclined": "您的银行卡被拒绝。请尝试其他银行卡或付款方式。",
+          "expiredCard": "您的银行卡已过期。请使用其他银行卡。",
+          "incorrectCvc": "您的银行卡安全码不正确。请检查后重试。",
+          "invalidCvc": "您的银行卡安全码无效。请检查后重试。",
+          "incorrectNumber": "您的银行卡号似乎无效。请检查后重试。",
+          "invalidNumber": "您的银行卡号似乎无效。请检查后重试。",
+          "invalidExpiryMonth": "您的银行卡有效期无效。请检查后重试。",
+          "invalidExpiryYear": "您的银行卡有效期无效。请检查后重试。",
+          "processingError": "处理您的银行卡时出了点问题。您尚未被扣款——请重试。",
+          "authenticationFailure": "我们无法通过您的银行验证银行卡。请重试或使用其他付款方式。",
+          "authenticationRequired": "我们无法通过您的银行验证银行卡。请重试或使用其他付款方式。"
         }
       },
       "recovery": {
         "contactSupport": "联系支持",
         "contactSupportLower": "联系支持",
-        "switchMethod": "You can also choose a different payment method below.",
+        "switchMethod": "您也可以在下方选择其他付款方式。",
         "cancelled": {
-          "title": "Payment cancelled"
+          "title": "付款已取消"
         },
         "unknown": {
-          "title": "Payment status unknown",
-          "prefix": "Please",
-          "suffix": "and quote reference <reference></reference> — we will confirm whether your payment went through before you pay again."
+          "title": "付款状态未知",
+          "prefix": "请",
+          "suffix": "并引用参考号 <reference></reference>——我们会在您再次付款前确认付款是否成功。"
         },
         "unsuccessful": {
           "title": "付款未成功",
-          "saved": "Your order details have been saved, so you can try again without starting over.",
-          "stuck": "Still stuck?",
-          "quote": "and quote reference <reference></reference>."
+          "saved": "您的订单详情已保存，因此可以重试而无需从头开始。",
+          "stuck": "仍然卡住了？",
+          "quote": "并引用参考号 <reference></reference>。"
         },
         "orderPending": {
-          "resetConfirm": "Only reset checkout after support confirms it is safe to try again. If your payment is still pending, resetting could lead to a second payment.",
-          "title": "Payment received — order pending",
-          "description": "Your payment went through, but we hit a problem while creating your order.",
-          "doNotPayAgain": "Please do not pay again.",
-          "supportInstructions": "Contact support and quote reference <reference></reference> — we will finish setting up your order or refund your payment.",
-          "contactSupport": "Contact support",
-          "checkLicenses": "Check my licenses",
-          "resetHint": "If support has confirmed this old warning is resolved, you can clear it and start a fresh checkout.",
-          "resetButton": "Support told me to reset checkout"
+          "resetConfirm": "只有在支持团队确认可以安全重试后，才重置结账。如果您的付款仍在处理中，重置可能会导致重复付款。",
+          "title": "已收到付款 — 订单待处理",
+          "description": "您的付款已成功，但我们在创建订单时遇到了问题。",
+          "doNotPayAgain": "请不要再次付款。",
+          "supportInstructions": "请联系支持团队并提供参考号 <reference></reference> — 我们会完成订单设置或退还您的付款。",
+          "contactSupport": "联系支持团队",
+          "checkLicenses": "检查我的许可证",
+          "resetHint": "如果支持团队已确认此旧警告已解决，您可以清除它并开始新的结账。",
+          "resetButton": "支持团队让我重置结账"
         }
       },
       "successPage": {
         "metadata": {
-          "title": "Order Complete - WCPOS Pro",
-          "description": "Thank you for your purchase of WCPOS Pro"
+          "title": "订单完成 - WCPOS Pro",
+          "description": "感谢您购买 WCPOS Pro"
         },
         "title": "谢谢！",
         "description": "您已完成购买 WCPOS Pro。",
         "nextTitle": "接下来会发生什么？",
         "next": {
-          "licenseEmail": "✓ Your license key and download link have been sent to your email",
-          "accountDownload": "✓ You can also download from your account's licenses page",
-          "install": "✓ Install and activate the plugin on your WordPress site",
-          "activate": "✓ Enter your license key to unlock Pro features"
+          "licenseEmail": "✓ 您的许可证密钥和下载链接已发送到您的电子邮件",
+          "accountDownload": "✓ 您也可以从账户的许可证页面下载",
+          "install": "✓ 在您的 WordPress 站点上安装并启用插件",
+          "activate": "✓ 输入许可证密钥以解锁 Pro 功能"
         },
         "licenses": "前往许可证",
         "installationGuide": "安装指南"
@@ -666,7 +741,7 @@
     "licenses": {
       "heading": "许可证",
       "loadError": "加载许可证失败",
-      "deactivateError": "停用设备失败。请重试。",
+      "deactivateError": "停用站点失败。请重试。",
       "emptyTitle": "未找到许可证。",
       "emptyDescription": "购买 WCPOS Pro 以获取许可证。",
       "planYearly": "年付",
@@ -701,8 +776,20 @@
       "copiedKey": "已复制",
       "copyError": "复制许可证密钥失败。请重试。",
       "apiErrors": {
-        "read_only_inspection": "You are viewing this account in read-only mode."
-      }
+        "read_only_inspection": "您正在以只读模式查看此账户。"
+      },
+      "roadmapTeaser": "查看路线图上即将推出的内容",
+      "activatedSites": "已激活的站点",
+      "activatedSitesHelp": "这些是使用此许可证的 WordPress 站点。停用不再使用或用于测试的站点，即可释放一个激活名额。",
+      "instanceId": "Instance ID：{id}",
+      "lastSeen": "最后活跃 {date}",
+      "pluginVersionLabel": "WCPOS Pro {version}",
+      "wpVersionLabel": "WP {version}",
+      "wcVersionLabel": "WooCommerce {version}",
+      "deactivateSite": "停用站点",
+      "deactivateSiteConfirm": "这将释放一个激活名额。如果该站点仍在使用，则需要重新激活。",
+      "deactivateConfirm": "停用",
+      "deactivateCancel": "取消"
     },
     "downloads": {
       "heading": "下载",
@@ -740,13 +827,14 @@
       "tokenErrorFallback": "此版本无法下载",
       "startErrorFallback": "启动下载失败",
       "apiErrors": {
-        "unauthorized": "Please sign in again to download WCPOS Pro.",
-        "download_token_secret_missing": "Downloads are temporarily unavailable. Please contact support.",
-        "rate_limited": "Too many download requests. Please wait a moment and try again.",
-        "release_not_found": "That WCPOS Pro release could not be found.",
-        "forbidden": "Your license does not include this download.",
-        "internal": "We could not prepare your download. Please try again."
-      }
+        "unauthorized": "请重新登录以下载 WCPOS Pro。",
+        "download_token_secret_missing": "下载暂时不可用。请联系支持。",
+        "rate_limited": "下载请求过多。请稍等片刻后重试。",
+        "release_not_found": "找不到该 WCPOS Pro 版本。",
+        "forbidden": "您的许可证不包含此下载。",
+        "internal": "我们无法准备您的下载。请重试。"
+      },
+      "externalContentNotice": "发布说明来自 GitHub，可能会以英文显示。"
     },
     "profile": {
       "heading": "个人资料",
@@ -823,13 +911,14 @@
       "emailProvider": "邮箱和密码",
       "emailDescription": "你使用邮箱地址登录。",
       "apiErrors": {
-        "read_only_inspection": "You are viewing this account in read-only mode.",
-        "unauthorized": "Please sign in again to update your profile.",
-        "update_failed": "Failed to update profile"
+        "read_only_inspection": "您正在以只读模式查看此账户。",
+        "unauthorized": "请重新登录以更新您的个人资料。",
+        "update_failed": "更新个人资料失败"
       }
     },
     "receiptPdf": {
       "title": "收据",
+      "filename": "收据-{id}.pdf",
       "orderNumber": "订单 #{id}",
       "billedTo": "账单抬头",
       "details": "详情",
@@ -858,17 +947,43 @@
         "paid": "已付款",
         "refunded": "已退款",
         "partiallyRefunded": "部分退款",
-        "canceled": "已取消"
+        "canceled": "已取消",
+        "unknown": "未知"
       }
     },
     "admin": {
-      "title": "Inspect a customer (read-only)",
-      "description": "Enter a customer email to view their account exactly as they see it. You cannot change their data while inspecting.",
-      "submit": "View as"
+      "title": "查看客户（只读）",
+      "description": "输入客户电子邮件，即可按客户看到的方式查看其账户。查看期间您无法更改他们的数据。",
+      "submit": "以此身份查看"
     },
     "impersonation": {
-      "viewing": "🔍 Viewing <strong>{target}</strong> as <strong>read-only</strong> — you cannot change their account.",
-      "exit": "Exit"
+      "viewing": "🔍 正在以<strong>只读</strong>方式查看 <strong>{target}</strong>——您无法更改其账户。",
+      "exit": "退出"
+    },
+    "orderStatus": {
+      "actionRequired": "需要操作",
+      "authorized": "已授权",
+      "canceled": "已取消",
+      "paid": "已支付",
+      "partiallyRefunded": "部分退款",
+      "pending": "待处理",
+      "refunded": "已退款",
+      "unknown": "未知"
+    },
+    "productTitles": {
+      "yearly": "WCPOS Pro 年度许可证",
+      "lifetime": "WCPOS Pro 终身许可证"
+    },
+    "renew": {
+      "summaryLabel": "正在续订你的许可证",
+      "extendsNote": "将你当前的许可证延长一年——提前续订也不会损失任何天数。",
+      "preparing": "正在准备续订…",
+      "errorBody": "我们暂时无法开始你的续订。你可以改从完整结账流程续订。",
+      "goToCheckout": "前往结账",
+      "cancel": "取消",
+      "paymentNotConfigured": "未配置付款方式。请联系支持团队。",
+      "pageTitle": "续订你的许可证",
+      "backToLicences": "返回许可证"
     }
   },
   "metadata": {
@@ -903,14 +1018,14 @@
       "signIn": "登录",
       "signUp": "注册",
       "apiErrors": {
-        "invalid_origin": "Please refresh the page and try again.",
-        "rate_limited": "Too many attempts. Please try again later.",
-        "email_required": "Email is required.",
-        "credentials_required": "Email and password are required.",
-        "reset_fields_required": "Email, token, and password are required.",
-        "password_too_short": "Password must be at least {min} characters.",
-        "invalid_credentials": "Invalid email or password.",
-        "invalid_reset_token": "This password reset link is invalid or has expired. Please request a new one."
+        "invalid_origin": "请刷新页面后重试。",
+        "rate_limited": "尝试次数过多。请稍后再试。",
+        "email_required": "请输入电子邮件。",
+        "credentials_required": "请输入电子邮件和密码。",
+        "reset_fields_required": "请输入电子邮件、令牌和密码。",
+        "password_too_short": "密码至少需要 {min} 个字符。",
+        "invalid_credentials": "电子邮件或密码无效。",
+        "invalid_reset_token": "此密码重置链接无效或已过期。请重新申请一个新链接。"
       }
     },
     "login": {
@@ -978,502 +1093,520 @@
   "legal": {
     "privacy": {
       "meta": {
-        "title": "Privacy Policy",
-        "description": "How WCPOS collects, uses, and protects your personal data, including analytics, cookies, payment processing, and your rights under GDPR."
+        "title": "隐私政策",
+        "description": "WCPOS 如何收集、使用和保护你的个人数据，包括分析、Cookie、付款处理，以及你在 GDPR 下的权利。"
       },
-      "title": "Privacy Policy",
-      "lastUpdated": "Last updated: {date}",
-      "intro": "WCPOS (\"we\", \"us\") operates wcpos.com, the website for the WCPOS plugin and WCPOS Pro. This policy explains what personal data we collect when you use the site, why we collect it, who processes it on our behalf, and what rights you have over it. We aim to collect as little as we need to run the service.",
+      "title": "隐私政策",
+      "lastUpdated": "最后更新：{date}",
+      "intro": "WCPOS（“我们”）运营 wcpos.com，这是 WCPOS 插件和 WCPOS Pro 的网站。本政策说明你使用本网站时我们会收集哪些个人数据、为什么收集、谁代表我们处理这些数据，以及你对这些数据拥有哪些权利。我们的目标是只收集运行服务所需的最少数据。",
       "collect": {
-        "title": "What we collect",
+        "title": "我们收集的内容",
         "items": {
           "c1": {
-            "label": "Account information.",
-            "body": "Your email address and name when you create an account, either directly or by signing in with Google, GitHub, or Discord. When you use a sign-in provider, we receive only your basic profile (email, name or username, and avatar or picture URL) from that provider, and may store the avatar or picture URL on your account as <code>oauth_avatar_url</code>."
+            "label": "账户信息。",
+            "body": "你创建账户时提供的电子邮件地址和姓名，无论是直接创建，还是通过 Google、GitHub 或 Discord 登录。当你使用登录提供商时，我们只会从该提供商接收你的基本资料（电子邮件、姓名或用户名，以及头像或图片 URL），并可能将头像或图片 URL 作为 <code>oauth_avatar_url</code> 存储在你的账户中。"
           },
           "c2": {
-            "label": "Billing details.",
-            "body": "The billing address and any company details you enter at checkout, stored with your customer record so we can issue receipts and comply with tax rules."
+            "label": "账单详情。",
+            "body": "你在结账时输入的账单地址和任何公司详情，会与客户记录一起保存，以便我们开具收据并遵守税务规则。"
           },
           "c3": {
-            "label": "Order and license history.",
-            "body": "Records of your purchases, license keys, and plugin downloads, so you can manage your licenses and we can provide support."
+            "label": "订单和许可证历史。",
+            "body": "你的购买记录、许可证密钥和插件下载记录，以便你管理许可证，并便于我们提供支持。"
           },
           "c4": {
-            "label": "Payment information.",
-            "body": "Payments are handled by Stripe and PayPal. Your full card number or payment credentials never reach our servers; we receive only a payment confirmation and the details needed for the receipt."
+            "label": "付款信息。",
+            "body": "付款由 Stripe 和 PayPal 处理。你的完整银行卡号或付款凭证永远不会到达我们的服务器；我们只会收到付款确认以及开具收据所需的详情。"
           },
           "c5": {
-            "label": "Usage analytics.",
-            "body": "We use PostHog to understand how the site is used (pages viewed, buttons clicked). To do this, we set a cookie containing a randomly generated identifier. It does not contain your name or email."
+            "label": "使用情况分析。",
+            "body": "我们使用 PostHog 了解网站的使用方式（浏览了哪些页面、点击了哪些按钮）。为此，我们会设置一个包含随机生成标识符的 Cookie。它不包含你的姓名或电子邮件。"
           },
           "c6": {
-            "label": "Error reports.",
-            "body": "If something breaks, an error report may be sent to Sentry. Reports can include technical details such as your browser and operating system and what the application was doing at the time of the error."
+            "label": "错误报告。",
+            "body": "如果出现故障，错误报告可能会发送到 Sentry。报告可能包含技术详情，例如你的浏览器、操作系统，以及错误发生时应用正在执行的操作。"
           },
           "c7": {
-            "label": "Server logs.",
-            "body": "Our servers keep application logs (in Grafana Loki) for debugging and operating the service."
+            "label": "服务器日志。",
+            "body": "我们的服务器会保留应用日志（存储在 Grafana Loki 中），用于调试和运营服务。"
           }
         }
       },
       "cookies": {
-        "title": "Cookies",
-        "body": "We use a small number of first-party cookies. We do not use third-party advertising cookies.",
+        "title": "Cookie",
+        "body": "我们使用少量第一方 Cookie。我们不使用第三方广告 Cookie。",
         "items": {
-          "k1": "<code>medusa-token</code> — keeps you signed in to your account. Expires after 1 day.",
-          "k2": "<code>wcpos-analytics-consent</code> — remembers your analytics consent choice (accepted or declined). Expires after 182 days.",
-          "k3": "<code>wcpos-distinct-id</code> — a random identifier used for analytics. Only set after you accept analytics on the consent banner; removed if you decline. Expires after 1 year.",
-          "k4": "<code>NEXT_LOCALE</code> — remembers your language preference.",
-          "k5": "Your light/dark theme preference is stored locally in your browser and is never sent to us."
+          "k1": "<code>medusa-token</code> — 让你保持账户登录状态。1 天后过期。",
+          "k2": "<code>wcpos-analytics-consent</code> — 记住你的分析同意选择（接受或拒绝）。182 天后过期。",
+          "k3": "<code>wcpos-distinct-id</code> — 用于分析的随机标识符。只有在你接受同意横幅中的分析后才会设置；如果你拒绝，则会移除。1 年后过期。",
+          "k4": "<code>NEXT_LOCALE</code> — 记住你的语言偏好。",
+          "k5": "你的浅色/深色主题偏好会本地存储在浏览器中，绝不会发送给我们。"
         }
       },
       "processors": {
-        "title": "Who processes your data",
-        "body": "We use the following service providers to run wcpos.com. Each receives only the data needed for its role:",
+        "title": "谁处理你的数据",
+        "body": "我们使用以下服务提供商来运行 wcpos.com。每个服务提供商只会接收其角色所需的数据：",
         "items": {
           "p1": {
-            "label": "Our commerce backend (Medusa)",
-            "body": "— self-hosted on Hetzner infrastructure in the EU. Stores accounts, customer records, and orders."
+            "label": "我们的商务后端（Medusa）",
+            "body": "— 自托管在欧盟的 Hetzner 基础设施上。存储账户、客户记录和订单。"
           },
           "p2": {
             "label": "Stripe",
-            "body": "— card payment processing."
+            "body": "— 银行卡付款处理。"
           },
           "p3": {
             "label": "PayPal",
-            "body": "— PayPal payment processing."
+            "body": "— PayPal 付款处理。"
           },
           "p4": {
             "label": "Keygen",
-            "body": "— software license management (license keys and activations)."
+            "body": "— 软件许可证管理（许可证密钥和激活）。"
           },
           "p5": {
             "label": "PostHog",
-            "body": "— product analytics."
+            "body": "— 产品分析。"
           },
           "p6": {
             "label": "Sentry",
-            "body": "— error monitoring."
+            "body": "— 错误监控。"
           },
           "p7": {
             "label": "Vercel",
-            "body": "— website hosting and content delivery."
+            "body": "— 网站托管和内容分发。"
           }
         }
       },
       "retention": {
-        "title": "How long we keep data",
+        "title": "我们保留数据的时长",
         "items": {
-          "r1": "Account and license data is kept while your account is active. If you ask us to delete your account, we delete it, except where we are legally required to keep records.",
-          "r2": "Order and invoice records are kept for as long as tax and accounting laws require.",
-          "r3": "The analytics identifier cookie expires after 1 year.",
-          "r4": "Server logs and error reports are kept for a limited operational window and then deleted."
+          "r1": "只要你的账户处于活跃状态，我们就会保留账户和许可证数据。如果你要求我们删除账户，我们会将其删除，除非法律要求我们保留记录。",
+          "r2": "订单和发票记录会按照税务和会计法律要求的期限保留。",
+          "r3": "分析标识符 Cookie 会在 1 年后过期。",
+          "r4": "服务器日志和错误报告会在有限的运营窗口内保留，之后删除。"
         }
       },
       "rights": {
-        "title": "Your rights",
-        "body": "If you are in the EU/EEA or UK, you have rights under the GDPR, including the right to access, correct, delete, and export your personal data, and to object to or restrict certain processing. We extend the same rights to all users regardless of location.",
-        "exercise": "To exercise any of these rights, email us at <email>support@wcpos.com</email> so we can verify your identity privately. EU/EEA residents also have the right to lodge a complaint with their local data protection authority."
+        "title": "你的权利",
+        "body": "如果你位于欧盟/欧洲经济区或英国，你在 GDPR 下享有权利，包括访问、更正、删除和导出个人数据的权利，以及反对或限制某些处理的权利。无论用户位于何处，我们都向所有用户提供相同权利。",
+        "exercise": "如需行使这些权利，请发送电子邮件至 <email>support@wcpos.com</email>，以便我们私下验证你的身份。欧盟/欧洲经济区居民也有权向当地数据保护机构投诉。"
       },
       "changes": {
-        "title": "Changes to this policy",
-        "body": "If we make material changes to this policy, we will update the date at the top of this page. Continued use of the site after a change means the updated policy applies."
+        "title": "本政策的变更",
+        "body": "如果我们对本政策作出重大变更，我们会更新本页面顶部的日期。变更后继续使用本网站即表示适用更新后的政策。"
       },
       "contact": {
-        "title": "Contact",
-        "body": "Questions about this policy or your data? Email us at <email>support@wcpos.com</email> or ask general questions in the community chat on the <support>support page</support>."
+        "title": "联系方式",
+        "body": "对本政策或你的数据有疑问？请发送电子邮件至 <email>support@wcpos.com</email>，或在<support>支持页面</support>的社区聊天中提出一般问题。"
       }
     },
     "refunds": {
       "meta": {
-        "title": "Refund Policy",
-        "description": "The WCPOS Pro refund policy: how to request a refund within 14 days of purchase, and how refunds are paid."
+        "title": "退款政策",
+        "description": "WCPOS Pro 退款政策：如何在购买后 14 天内申请退款，以及退款如何支付。"
       },
-      "title": "Refund Policy",
-      "lastUpdated": "Last updated: {date}",
-      "intro": "WCPOS Pro purchases — first purchase or renewal, yearly or lifetime — can be refunded within 14 days of purchase. Email us within that window and we refund you in full. You do not need to give a reason.",
+      "title": "退款政策",
+      "lastUpdated": "最后更新：{date}",
+      "intro": "WCPOS Pro 购买——首次购买或续订、年度或终身——可在购买后 14 天内退款。在该期限内给我们发送电子邮件，我们会全额退款。你无需说明理由。",
       "prevention": {
-        "title": "The best refund is the one you never need",
+        "title": "最好的退款，是你永远不需要的退款",
         "items": {
           "p1": {
-            "label": "Install the free plugin.",
-            "body": "Run the free version of WCPOS on your store for a couple of days before upgrading — that proves the plugin works on your site."
+            "label": "安装免费插件。",
+            "body": "升级前先在你的商店运行几天免费版 WCPOS——这能证明插件可以在你的网站上正常工作。"
           },
           "p2": {
-            "label": "Try the demo.",
-            "body": "The <demo>online demo</demo> runs the current version with Pro activated, so you can confirm it fulfils your store's requirements."
+            "label": "试用演示。",
+            "body": "<demo>在线演示</demo>运行的是已启用 Pro 的当前版本，因此你可以确认它是否满足商店需求。"
           },
           "p3": {
-            "label": "Read the documentation.",
-            "body": "Check the <docs>docs</docs> for the features you need, and email <email>support@wcpos.com</email> with pre-sale questions — we answer openly and honestly."
+            "label": "阅读文档。",
+            "body": "查看<docs>文档</docs>中你需要的功能，并将售前问题发送至 <email>support@wcpos.com</email>——我们会公开、诚实地回答。"
           }
         }
       },
       "request": {
-        "title": "How to request a refund",
-        "body": "Email <email>support@wcpos.com</email> from the email address you used for the purchase, within 14 days of buying. Telling us why helps us improve, but it is not required to get the refund."
+        "title": "如何申请退款",
+        "body": "请在购买后 14 天内，使用购买时的电子邮件地址发送邮件至 <email>support@wcpos.com</email>。告诉我们原因有助于改进产品，但这不是获得退款的必要条件。"
       },
       "payment": {
-        "title": "How refunds are paid",
-        "body": "Refunds go back to the original payment method via Stripe or PayPal and typically appear on your statement within 5–10 business days, depending on your bank or card issuer. Refunded license keys are revoked and stop working immediately."
+        "title": "退款如何支付",
+        "body": "退款会通过 Stripe 或 PayPal 退回原付款方式，通常会在 5–10 个工作日内显示在你的账单中，具体取决于你的银行或发卡机构。已退款的许可证密钥会被撤销，并立即停止工作。"
       },
       "renewals": {
-        "title": "License renewals",
-        "body": "Yearly licenses do not renew automatically — we never charge you again without a new purchase from you. The same 14-day refund window applies to renewal purchases."
+        "title": "许可证续订",
+        "body": "年度许可证不会自动续订——除非你主动重新购买，否则我们绝不会再次收费。同样的 14 天退款期限也适用于续订购买。"
       },
       "rights": {
-        "title": "Your statutory rights",
-        "body": "For consumers in the EU, EEA and UK: our 14-day refund window matches your statutory right of withdrawal for this kind of purchase, and exercising either works the same way — email us within 14 days.",
-        "defective": "If WCPOS Pro is defective or does not work as described, statutory remedies for faulty digital content apply at any time, independent of the 14-day window. And nothing in this policy limits any rights you have under the consumer protection laws of your country — where local law gives you stronger rights, those rights apply."
+        "title": "你的法定权利",
+        "body": "对于欧盟、欧洲经济区和英国消费者：我们的 14 天退款期限与你对此类购买享有的法定撤回权一致，行使任一权利的方式相同——请在 14 天内给我们发送电子邮件。",
+        "defective": "如果 WCPOS Pro 存在缺陷或未按描述工作，针对有缺陷数字内容的法定救济可随时适用，不受 14 天期限限制。本政策中的任何内容都不会限制你根据所在国家/地区消费者保护法律享有的任何权利——如果当地法律赋予你更强的权利，则适用这些权利。"
       }
     },
     "terms": {
       "meta": {
-        "title": "Terms of Service",
-        "description": "The terms that govern your use of wcpos.com, your WCPOS account, and WCPOS Pro licenses."
+        "title": "服务条款",
+        "description": "管理你使用 wcpos.com、WCPOS 账户和 WCPOS Pro 许可证的条款。"
       },
-      "title": "Terms of Service",
-      "lastUpdated": "Last updated: {date}",
-      "intro": "These terms govern your use of wcpos.com, your WCPOS account, and any WCPOS Pro license you purchase. By using the site or buying a license, you agree to these terms. If you do not agree, please do not use the service.",
+      "title": "服务条款",
+      "lastUpdated": "最后更新：{date}",
+      "intro": "这些条款适用于你使用 wcpos.com、WCPOS 账户，以及你购买的任何 WCPOS Pro 许可证。使用本网站或购买许可证，即表示你同意这些条款。如果你不同意，请不要使用本服务。",
       "service": {
-        "title": "The service",
-        "body": "WCPOS provides the wcpos.com website, user accounts, and paid WCPOS Pro licenses that unlock premium features, updates, and priority support for the WCPOS plugin."
+        "title": "本服务",
+        "body": "WCPOS 提供 wcpos.com 网站、用户账户，以及付费 WCPOS Pro 许可证，用于为 WCPOS 插件解锁高级功能、更新和优先支持。"
       },
       "gpl": {
-        "title": "The free plugin and the GPL",
-        "body": "The free WCPOS plugin is open-source software released under the GNU General Public License (GPL). Nothing in these terms limits the rights the GPL grants you over that code. A Pro license is separate: it covers access to Pro features, license keys, automatic updates, and priority support — not a restriction on the open-source code itself."
+        "title": "免费插件和 GPL",
+        "body": "免费的 WCPOS 插件是根据 GNU General Public License（GPL）发布的开源软件。本条款中的任何内容都不会限制 GPL 授予你对该代码的权利。Pro 许可证是独立的：它涵盖对 Pro 功能、许可证密钥、自动更新和优先支持的访问——而不是对开源代码本身的限制。"
       },
       "account": {
-        "title": "Your account",
+        "title": "你的账户",
         "items": {
-          "a1": "Provide accurate information when registering and keep it up to date.",
-          "a2": "Keep your credentials secure. You are responsible for activity that happens under your account.",
-          "a3": "Tell us promptly at <email>support@wcpos.com</email> if you suspect unauthorized access to your account."
+          "a1": "注册时提供准确的信息，并保持最新。",
+          "a2": "妥善保护你的凭证。你需要对账户下发生的活动负责。",
+          "a3": "如果你怀疑账户遭到未经授权的访问，请立即通过 <email>support@wcpos.com</email> 告知我们。"
         }
       },
       "licenses": {
-        "title": "Purchases and licenses",
+        "title": "购买和许可证",
         "items": {
-          "l1": "<strong>Yearly license.</strong> A one-time payment that includes Pro features, automatic updates, and priority support for one year. It does not renew automatically and we never charge you again without a new purchase. When it expires, you can choose to renew it from your account for another year.",
-          "l2": "<strong>Lifetime license.</strong> A one-time purchase that includes Pro features, updates, and priority support for the lifetime of the product.",
-          "l3": "License keys are for activating WCPOS Pro on your own sites within the limits of the license you purchased. Do not share, resell, or publish license keys.",
-          "l4": "Prices are shown at checkout before you pay. Payment is handled by Stripe or PayPal.",
-          "l5": "Refunds are handled according to our <policy>refund policy</policy>."
+          "l1": "<strong>年度许可证。</strong>一次性付款，包含一年的 Pro 功能、自动更新和优先支持。它不会自动续订，除非你重新购买，否则我们绝不会再次收费。到期后，你可以选择在账户中续订一年。",
+          "l2": "<strong>终身许可证。</strong>一次性购买，包含产品生命周期内的 Pro 功能、更新和优先支持。",
+          "l3": "许可证密钥用于在你自己的站点上激活 WCPOS Pro，并受你购买的许可证限制约束。请勿共享、转售或公开发布许可证密钥。",
+          "l4": "付款前，价格会显示在结账页面。付款由 Stripe 或 PayPal 处理。",
+          "l5": "退款按照我们的<policy>退款政策</policy>处理。"
         }
       },
       "acceptableUse": {
-        "title": "Acceptable use",
-        "body": "When using the service, you agree not to:",
+        "title": "可接受使用",
+        "body": "使用本服务时，你同意不会：",
         "items": {
-          "u1": "Break the law or infringe the rights of others.",
-          "u2": "Attempt to gain unauthorized access to accounts, systems, or data, or probe the service for vulnerabilities without permission.",
-          "u3": "Interfere with the operation of the service, including overloading it or automated scraping at disruptive volumes.",
-          "u4": "Circumvent license checks or use license keys beyond the terms of your purchase. (This does not limit your GPL rights over the open-source plugin code.)"
+          "u1": "违法或侵犯他人权利。",
+          "u2": "试图未经授权访问账户、系统或数据，或在未经许可的情况下探测服务漏洞。",
+          "u3": "干扰服务运行，包括使其过载或以破坏性规模进行自动抓取。",
+          "u4": "绕过许可证检查，或超出购买条款使用许可证密钥。（这不会限制你对开源插件代码享有的 GPL 权利。）"
         }
       },
       "warranty": {
-        "title": "Warranty disclaimer",
-        "body": "The service and software are provided \"as is\" and \"as available\", without warranties of any kind, express or implied, including merchantability, fitness for a particular purpose, and non-infringement. We do not promise that the service will be uninterrupted or error-free. Some jurisdictions do not allow certain warranty exclusions, so parts of this section may not apply to you."
+        "title": "免责声明",
+        "body": "本服务和软件按“原样”和“可用状态”提供，不作任何形式的明示或暗示保证，包括适销性、特定用途适用性和不侵权保证。我们不承诺服务不会中断或没有错误。某些司法管辖区不允许排除某些保证，因此本节部分内容可能不适用于你。"
       },
       "liability": {
-        "title": "Limitation of liability",
-        "body": "To the maximum extent permitted by law, WCPOS will not be liable for indirect, incidental, special, or consequential damages, or for lost profits, revenue, or data. Our total liability for any claim relating to the service is limited to the amount you paid us in the 12 months before the claim arose. Nothing in these terms excludes liability that cannot be excluded by law."
+        "title": "责任限制",
+        "body": "在法律允许的最大范围内，WCPOS 不对间接、附带、特殊或后果性损害负责，也不对利润、收入或数据损失负责。我们就与服务相关的任何索赔承担的总责任，限于索赔发生前 12 个月内你向我们支付的金额。本条款中的任何内容都不会排除法律不能排除的责任。"
       },
       "termination": {
-        "title": "Termination",
-        "body": "You can stop using the service and ask us to delete your account at any time. We may suspend or terminate accounts that violate these terms. Sections that by their nature should survive (such as the warranty disclaimer and liability limits) survive termination."
+        "title": "终止",
+        "body": "你可以随时停止使用本服务，并要求我们删除你的账户。我们可能暂停或终止违反这些条款的账户。按其性质应在终止后继续有效的条款（例如免责声明和责任限制）将在终止后继续有效。"
       },
       "changes": {
-        "title": "Changes to these terms",
-        "body": "If we make material changes, we will update the date at the top of this page. Continued use of the service after a change means the updated terms apply."
+        "title": "本条款的变更",
+        "body": "如果我们作出重大变更，我们会更新本页面顶部的日期。变更后继续使用本服务即表示适用更新后的条款。"
       },
       "contact": {
-        "title": "Contact",
-        "body": "Questions about these terms? Email us at <email>support@wcpos.com</email> or ask in the community chat on the <support>support page</support>."
+        "title": "联系方式",
+        "body": "对这些条款有疑问？请发送电子邮件至 <email>support@wcpos.com</email>，或在<support>支持页面</support>的社区聊天中提问。"
       }
     }
   },
   "downloads": {
     "meta": {
-      "title": "Downloads",
-      "description": "Download WCPOS — the free plugin plus the desktop, iOS, Android and web apps. See the latest version and recent release notes."
+      "title": "下载",
+      "description": "下载 WCPOS——免费插件，以及桌面、iOS、Android 和网页应用。查看最新版本和近期发布说明。"
     },
     "platforms": {
       "mac-arm": {
         "name": "macOS",
         "listLabel": "macOS (Apple Silicon)",
         "short": "Apple Silicon · .dmg",
-        "action": "Download for macOS"
+        "action": "下载 macOS 版"
       },
       "mac-intel": {
         "name": "macOS (Intel)",
         "listLabel": "macOS (Intel)",
         "short": "Intel · .dmg",
-        "action": "Download for macOS"
+        "action": "下载 macOS 版"
       },
       "win": {
         "name": "Windows",
         "listLabel": "Windows",
         "short": "Windows 10/11 · .exe",
-        "action": "Download for Windows"
+        "action": "下载 Windows 版"
       },
       "linux": {
         "name": "Linux",
         "listLabel": "Linux",
         "short": ".AppImage",
-        "action": "Download for Linux"
+        "action": "下载 Linux 版"
       },
       "ios": {
         "name": "iOS & iPad",
         "listLabel": "iOS & iPad",
-        "short": "Public TestFlight beta",
-        "action": "Join the iOS beta"
+        "short": "公开 TestFlight 测试版",
+        "action": "加入 iOS 测试版"
       },
       "android": {
         "name": "Android",
         "listLabel": "Android",
-        "short": "Google Play testing beta",
-        "action": "Join the Android beta"
+        "short": "Google Play 测试版",
+        "action": "加入 Android 测试版"
       },
       "web": {
-        "name": "Web",
-        "listLabel": "Web",
-        "short": "No install needed",
-        "action": "Open the web demo"
+        "name": "网页版",
+        "listLabel": "网页版",
+        "short": "无需安装",
+        "action": "打开网页演示"
       }
     },
     "hero": {
-      "eyebrow": "Downloads",
-      "title": "One till, every device.",
-      "platformChooserLabel": "Choose your platform",
-      "versionMeta": "Version {version} · {platform}",
-      "detected": "Detected",
-      "intelMac": "On an Intel Mac? <intel>Get the Intel build</intel>",
-      "pluginNotice": "Every app connects to the <plugin>free WordPress plugin</plugin> — install it first."
+      "eyebrow": "下载",
+      "title": "一个收银台，适配所有设备。",
+      "platformChooserLabel": "选择您的平台",
+      "versionMeta": "版本 {version} · {platform}",
+      "detected": "已检测到",
+      "intelMac": "使用 Intel Mac？<intel>获取 Intel 版本</intel>",
+      "pluginNotice": "每个应用都连接到<plugin>免费的 WordPress 插件</plugin>——请先安装它。"
     },
     "howItFits": {
-      "eyebrow": "How it fits together",
-      "title": "One store at the centre. Every till in sync.",
+      "eyebrow": "它如何协同工作",
+      "title": "一个商店居于中心。每个收银台保持同步。",
       "points": {
         "setup": {
-          "title": "One plugin is the only setup",
-          "body": "The free plugin adds a secure REST API to your WooCommerce store. That’s the whole install — nothing to host or configure per device."
+          "title": "唯一需要设置的是一个插件",
+          "body": "免费插件会为您的 WooCommerce 商店添加安全的 REST API。这就是全部安装内容——无需为每台设备托管或配置任何东西。"
         },
         "sync": {
-          "title": "Every app reads and writes the same store",
-          "body": "Ring up a sale on the desktop, refund it on your phone — one set of products, orders and customers, updating in real time."
+          "title": "每个应用都读写同一个商店",
+          "body": "在桌面端完成销售，在手机上退款——同一套商品、订单和客户数据，实时更新。"
         },
         "offline": {
-          "title": "Offline-first, so the till never stops",
-          "body": "Each device keeps working without a connection and re-syncs the moment it’s back online."
+          "title": "离线优先，让收银台不停机",
+          "body": "每台设备都能在无连接时继续工作，并在重新联网时立即重新同步。"
         }
       },
-      "syncLabel": "What stays in sync",
+      "syncLabel": "保持同步的内容",
       "chips": {
-        "c1": "Products & prices",
-        "c2": "Stock levels",
-        "c3": "Orders",
-        "c4": "Customers",
-        "c5": "Tax & receipts"
+        "c1": "商品和价格",
+        "c2": "库存水平",
+        "c3": "订单",
+        "c4": "客户",
+        "c5": "税费和收据"
+      },
+      "diagram": {
+        "ariaLabel": "安装了 WCPOS 插件的 WooCommerce 商店位于中心，通过 REST API 连接到桌面、iOS、Android 和网页应用，并保持同步。",
+        "devices": {
+          "desktop": "桌面",
+          "ios": "iOS 和 iPad",
+          "android": "Android",
+          "web": "网页版"
+        },
+        "hub": {
+          "store": "您的商店",
+          "platform": "WooCommerce",
+          "plugin": "+ WCPOS 插件"
+        }
       }
     },
     "page": {
       "beta": "Beta",
       "start": {
-        "eyebrow": "Get started",
-        "title": "Three steps to your first sale",
-        "subtitle": "It takes about two minutes, start to finish."
+        "eyebrow": "开始使用",
+        "title": "三步完成第一笔销售",
+        "subtitle": "从开始到完成大约只需两分钟。"
       },
       "steps": {
         "plugin": {
-          "title": "Install the free plugin",
-          "body": "The foundation everything connects to. In your dashboard: Plugins → Add New, then search “WCPOS”.",
-          "badge": "Free · GPL",
+          "title": "安装免费插件",
+          "body": "这是所有内容连接的基础。在您的仪表盘中：插件 → 安装插件，然后搜索“WCPOS”。",
+          "badge": "免费 · GPL",
           "requirements": "WordPress 5.6+ · WooCommerce 5.3+ · PHP 7.4+",
-          "requirementsWithVersion": "Latest {version} · WordPress 5.6+ · WooCommerce 5.3+ · PHP 7.4+"
+          "requirementsWithVersion": "最新 {version} · WordPress 5.6+ · WooCommerce 5.3+ · PHP 7.4+",
+          "cardTitle": "WCPOS",
+          "wordpressOrgCta": "WordPress.org"
         },
         "device": {
-          "title": "Pick your device",
-          "body": "All free, all in sync. Grab the one we detected up top, or any of these.",
-          "desktopTitle": "Desktop app",
-          "iosCta": "Join the TestFlight beta",
-          "androidCta": "Join on Google Play",
-          "webCta": "Open the live demo"
+          "title": "选择您的设备",
+          "body": "全部免费，全部同步。下载上方检测到的版本，或选择以下任意一个。",
+          "desktopTitle": "桌面应用",
+          "iosCta": "加入 TestFlight 测试版",
+          "androidCta": "在 Google Play 加入测试",
+          "webCta": "打开在线演示"
         },
         "pro": {
-          "title": "Want more? Go Pro",
-          "body": "A licensed plugin that adds terminal payments, refunds and stock control on the same foundation.",
-          "cardTitle": "Unlock the full till",
-          "cardBody": "Payments, refunds, stock & pricing, order management, end-of-day reports, multi-store and priority Discord support.",
-          "plansCta": "View Pro plans",
-          "signInCta": "Sign in to download"
+          "title": "想要更多功能？升级 Pro",
+          "body": "一个授权插件，在同一基础上添加终端付款、退款和库存控制。",
+          "cardTitle": "解锁完整收银台",
+          "cardBody": "付款、退款、库存和定价、订单管理、日终报表、多店铺以及优先 Discord 支持。",
+          "plansCta": "查看 Pro 套餐",
+          "signInCta": "登录以下载"
         }
       }
     },
     "releaseHistory": {
-      "eyebrow": "Release history",
-      "title": "What’s new",
-      "subtitle": "Recent changes — every app shares one version line.",
-      "latest": "Latest",
-      "fullHistory": "Full history on GitHub —",
-      "desktop": "Desktop",
-      "emptyNotes": "_No release notes for this version._",
+      "eyebrow": "发布历史",
+      "title": "最新变化",
+      "subtitle": "近期变更——每个应用共享同一版本线。",
+      "latest": "最新",
+      "fullHistory": "GitHub 上的完整历史 —",
+      "desktop": "桌面版",
+      "emptyNotes": "_此版本没有发布说明。_",
       "fallback": {
         "v196": "- Cash drawer support — auto-open after payment or via a new Open Drawer button, with per-printer connectors (ESC-POS, Epson, PrintNode, cloud)\n- Fixed analytics events firing too often\n- Updated translations",
         "v195": "- Fixed a payment-gateways API crash (HTTP 500 with some third-party gateways, e.g. ToyyibPay)",
         "v194": "- Redesigned Bluetooth printer setup; serial printing for OS-paired Bluetooth Classic printers\n- Improved Windows raw printing; smoother USB flow",
         "v190": "- New receipt template gallery; thermal printing (58/80mm)\n- Customer Tax IDs; Pro coupons & refunds at the POS"
       },
-      "plugin": "Free"
+      "plugin": "免费",
+      "externalContentNotice": "发布说明来自 GitHub，可能会以英文显示。"
     }
   },
   "about": {
     "meta": {
-      "title": "About",
-      "description": "The story behind WCPOS — an independent point of sale built by a former shopkeeper and funded by shopkeepers, not investors."
+      "title": "关于",
+      "description": "WCPOS 背后的故事——一个独立的销售点系统，由前店主打造，并由店主们而不是投资者资助。"
     },
     "hero": {
-      "eyebrow": "Our story",
-      "title": "An independent point of sale for WooCommerce",
-      "subtitle": "Built by a former shopkeeper, funded by shopkeepers — not investors. One developer, more than a decade of releases, still shipping."
+      "eyebrow": "我们的故事",
+      "title": "面向 WooCommerce 的独立销售点系统",
+      "subtitle": "由前店主打造，由店主们资助——不是投资者。一个开发者，十多年持续发布，至今仍在更新。"
     },
     "founder": {
-      "photoAlt": "Paul at Urban Locavore, his Perth shop",
-      "photoCaption": "Urban Locavore, Perth — the store that started it all",
-      "eyebrow": "A note from the developer",
-      "intro": "Hi — I'm Paul. I built WCPOS.",
-      "p1": "That's me, back when it all started. I opened Urban Locavore in Perth in December 2011 with hundreds of products already in WooCommerce and no way to sell them at the counter — so I built a register myself. When the shop closed in April 2014, I put it on WordPress.org for anyone who needed it. <strong>POS plugins for WooCommerce have come and gone since then. This one hasn't.</strong> More than a decade of releases, one developer, still shipping — and the free version is still the real thing: sell, print, stay in sync. It stays free.",
-      "p2": "<strong>Pro is why it's still here.</strong> It adds extra tools for running your store — card readers, refunds at the till, end-of-day reports, multi-store — and it funds every release, free ones included. No investors, no acquisition exit waiting. Shopkeepers fund it directly.",
-      "p3": "And Pro users have a direct line: tell me what your shop needs, and it shapes what I build next.",
+      "photoAlt": "Paul 在他位于 Perth 的 Urban Locavore 店内",
+      "photoCaption": "Perth 的 Urban Locavore——一切开始的那家店",
+      "eyebrow": "来自开发者的一封信",
+      "intro": "你好——我是 Paul。我创建了 WCPOS。",
+      "p1": "照片里的我，是一切刚开始的时候。2011 年 12 月，我在 Perth 开了 Urban Locavore，当时 WooCommerce 里已经有数百种商品，却没有办法在柜台销售——于是我自己做了一个收银系统。2014 年 4 月店铺关闭后，我把它发布到 WordPress.org，给任何需要它的人使用。<strong>从那以后，面向 WooCommerce 的 POS 插件来来去去。这个没有离开。</strong>十多年持续发布，一个开发者，仍在更新——而免费版依然是真正可用的版本：销售、打印、保持同步。它会继续免费。",
+      "p2": "<strong>Pro 是它仍然存在的原因。</strong>它为经营商店增加了额外工具——读卡器、收银台退款、日终报表、多店铺——并资助每一次发布，包括免费版。没有投资者，也没有等待出售退出。店主们直接支持它。",
+      "p3": "Pro 用户还有一条直接沟通渠道：告诉我你的店铺需要什么，这会影响我接下来构建的内容。",
       "signature": {
         "name": "Paul Kilmurray",
-        "role": "developer & former shopkeeper ·"
+        "role": "开发者兼前店主 ·"
       },
       "ps": {
-        "label": "P.S.",
-        "withPrice": "— Pro is <price></price>.",
-        "fallback": "— Pro is available from the Pro page.",
-        "licence": "If a licence lapses, Pro keeps working; you just stop getting updates."
+        "label": "附：",
+        "withPrice": "— Pro 的价格为 <price></price>。",
+        "fallback": "— Pro 可在 Pro 页面获取。",
+        "licence": "如果许可证到期，Pro 会继续运行；你只是停止接收更新。",
+        "priceSummary": "{yearly}/年或一次性 {lifetime}"
       }
     },
     "timeline": {
-      "heading": "How it started, and why it's still here",
+      "heading": "它如何开始，以及为什么仍然存在",
       "dates": {
         "range": "{start} – {end}",
-        "today": "Today"
+        "today": "今天"
       },
       "items": {
         "m1": {
-          "title": "Urban Locavore opens",
-          "body": "A small food store in Perth, with hundreds of products already in WooCommerce — and no way to sell them at the counter."
+          "title": "Urban Locavore 开业",
+          "body": "Perth 的一家小型食品店，WooCommerce 中已经有数百种商品——却没有办法在柜台销售。"
         },
         "m2": {
-          "title": "A register, built out of necessity",
-          "body": "With nothing on the market that fit, Paul built a point of sale for his own shop — Backbone.js and an in-browser IndexedDB database, on top of the store he already ran online."
+          "title": "出于需要而构建的收银系统",
+          "body": "市面上没有合适的产品，于是 Paul 在自己已经运营的线上商店之上，为自己的店构建了一个销售点系统——使用 Backbone.js 和浏览器内的 IndexedDB 数据库。"
         },
         "m3": {
-          "title": "The shop closes",
-          "body": "Urban Locavore winds down — but the register it ran on still works, and other WooCommerce stores need the same thing."
+          "title": "店铺关闭",
+          "body": "Urban Locavore 停业——但它使用的收银系统仍然可用，其他 WooCommerce 商店也需要同样的东西。"
         },
         "m4": {
-          "title": "Released on WordPress.org",
-          "body": "WCPOS goes public, free for anyone who needs it. The free version does the actual job: sell, print, stay in sync."
+          "title": "在 WordPress.org 发布",
+          "body": "WCPOS 公开发布，任何需要的人都可以免费使用。免费版完成真正的工作：销售、打印、保持同步。"
         },
         "m5": {
-          "title": "Rewritten in React Native",
-          "body": "Four years of rebuilding from scratch land as v1.0.0: one codebase for every screen. The desktop app ships the same day — phones and tablets are next."
+          "title": "用 React Native 重写",
+          "body": "历时四年从零重建，最终发布 v1.0.0：一个代码库适配所有屏幕。桌面应用同日发布——手机和平板紧随其后。"
         },
         "m6": {
-          "title": "Native mobile apps",
-          "body": "The React Native bet pays off: WCPOS arrives on iOS and Android in open beta — the same register, now on the hardware already in the shop."
+          "title": "原生移动应用",
+          "body": "React Native 的选择开始见效：WCPOS 以开放测试版登陆 iOS 和 Android——同一个收银系统，现在运行在店里已有的设备上。"
         },
         "m7": {
-          "title": "Still shipping",
-          "body": "More than a decade on. One developer, funded by Pro, still releasing — and the free version is still the real thing."
+          "title": "仍在持续发布",
+          "body": "十多年过去了。一个开发者，由 Pro 资助，仍在发布——而免费版依然是真正可用的版本。"
         }
       }
     },
     "values": {
-      "heading": "What it stands for",
+      "heading": "它坚持的原则",
       "items": {
         "v1": {
-          "title": "Independent",
-          "body": "No investors, no acquisition exit waiting. The roadmap answers to the shopkeepers using it — not a board."
+          "title": "独立",
+          "body": "没有投资者，也没有等待出售退出。路线图回应的是正在使用它的店主——不是董事会。"
         },
         "v2": {
-          "title": "Funded by Pro",
-          "body": "Pro tools fund every release, free ones included. Shopkeepers pay for it directly, and that keeps the free version free."
+          "title": "由 Pro 资助",
+          "body": "Pro 工具资助每一次发布，包括免费版。店主们直接付费支持它，这也让免费版得以保持免费。"
         },
         "v3": {
-          "title": "Open & GPL",
-          "body": "Released on WordPress.org under the GPL. Yours to use, inspect, and keep — wherever WooCommerce runs."
+          "title": "开放且遵循 GPL",
+          "body": "在 WordPress.org 上以 GPL 发布。无论 WooCommerce 在哪里运行，你都可以使用、检查并保留它。"
         },
         "v4": {
-          "title": "A fair licence",
-          "body": "If a Pro licence lapses, Pro keeps working — you just stop getting updates. Nothing you rely on gets switched off."
+          "title": "公平的许可证",
+          "body": "如果 Pro 许可证到期，Pro 会继续运行——你只是停止接收更新。你依赖的功能不会被关闭。"
         }
       }
     },
     "cta": {
-      "title": "Built by a shopkeeper. Funded by shopkeepers.",
-      "subtitle": "Try the live demo, download the free plugin, or see what Pro adds — and what keeps it all going.",
+      "title": "由店主打造。由店主资助。",
+      "subtitle": "试用在线演示，下载免费插件，或了解 Pro 增加了什么——以及是什么让这一切继续运转。",
       "actions": {
-        "demo": "Try Live Demo",
-        "download": "Download Free",
-        "pro": "See Pro"
+        "demo": "试用在线演示",
+        "download": "免费下载",
+        "pro": "查看 Pro"
       }
     }
   },
   "support": {
     "meta": {
-      "title": "Support",
-      "description": "Ask anything about WCPOS and get an instant answer from our docs, or chat with the community on Discord."
+      "title": "支持",
+      "description": "关于 WCPOS 的任何问题都可以提问，并从我们的文档中获得即时答案，或在 Discord 上与社区交流。"
     },
     "chat": {
       "hero": {
-        "title": "How can we help?",
-        "subtitle": "Ask anything about WCPOS — setup, licensing, hardware, syncing, printing. You'll get an instant answer drawn from our docs."
+        "title": "我们能帮您什么？",
+        "subtitle": "询问关于 WCPOS 的任何问题——设置、授权、硬件、同步、打印。您会从我们的文档中获得即时答案。"
       },
       "examples": {
-        "e1": "Why is my licence inactive?",
-        "e2": "Which barcode scanners are supported?",
-        "e3": "How do I sync products from WooCommerce?"
+        "e1": "为什么我的许可证处于非活动状态？",
+        "e2": "支持哪些条形码扫描器？",
+        "e3": "如何从 WooCommerce 同步商品？"
       },
       "feedback": {
-        "prompt": "Was this helpful?",
-        "yes": "Yes",
-        "no": "No"
+        "prompt": "这有帮助吗？",
+        "yes": "是",
+        "no": "否"
       },
-      "thinking": "Aide is thinking…",
+      "thinking": "Aide 正在思考…",
       "form": {
-        "label": "Ask a support question",
-        "placeholder": "e.g. How do I connect a receipt printer?",
-        "followUpPlaceholder": "Ask a follow-up…",
-        "submit": "Ask"
+        "label": "提出支持问题",
+        "placeholder": "例如：如何连接收据打印机？",
+        "followUpPlaceholder": "继续追问…",
+        "submit": "提问"
       },
-      "discordLink": "Ask in Discord →",
-      "poweredBy": "Answered by Aide · trained on the WCPOS docs & wiki"
+      "discordLink": "在 Discord 提问 →",
+      "poweredBy": "由 Aide 回答 · 基于 WCPOS 文档和 wiki 训练"
     },
     "errors": {
-      "invalid_question": "Please enter a question (up to 1000 characters).",
-      "bot_check_failed": "Bot check failed. Please reload and try again.",
-      "rate_limited": "You're asking a lot of questions — please wait a few minutes, or hop into Discord.",
-      "budget_exhausted": "The assistant is busy right now. Please try Discord for a faster answer.",
-      "empty_answer": "The assistant is temporarily unavailable. Please try Discord while we get it back.",
-      "gateway_rate_limited": "The assistant is busy right now — please try again later.",
-      "timeout": "That took too long. Please try again, or ask in Discord.",
-      "unavailable": "The assistant is temporarily unavailable. Please try Discord while we get it back.",
-      "network": "The assistant is unavailable right now. Please ask in Discord.",
-      "unknown": "Something went wrong."
+      "invalid_question": "请输入问题（最多 1000 个字符）。",
+      "bot_check_failed": "机器人验证失败。请重新加载后再试。",
+      "rate_limited": "您提问得有点多——请等待几分钟，或前往 Discord。",
+      "budget_exhausted": "助手现在很忙。请尝试使用 Discord 以获得更快回复。",
+      "empty_answer": "助手暂时不可用。在我们恢复服务期间，请尝试使用 Discord。",
+      "gateway_rate_limited": "助手现在很忙——请稍后再试。",
+      "timeout": "等待时间过长。请重试，或在 Discord 提问。",
+      "unavailable": "助手暂时不可用。在我们恢复服务期间，请尝试使用 Discord。",
+      "network": "助手目前不可用。请在 Discord 提问。",
+      "unknown": "出了点问题。"
     },
     "order": {
-      "title": "Contact support about your order",
-      "body": "Quote reference <ref></ref> so we can confirm the payment or finish the order before you pay again."
+      "title": "就您的订单联系支持",
+      "body": "请引用参考号 <ref></ref>，这样我们就能在您再次付款前确认付款或完成订单。"
     },
     "discord": {
-      "title": "Prefer to talk to a human?",
-      "subtitle": "Join store owners and the team in our live Discord community."
+      "title": "更想和真人沟通？",
+      "subtitle": "加入店主和团队所在的实时 Discord 社区。"
     }
   }
 }

@@ -698,6 +698,14 @@ function normalize(value: unknown): string {
   return ''
 }
 
+function pdfLanguageTag(locale: string): string {
+  try {
+    return Intl.getCanonicalLocales(locale)[0] ?? 'en'
+  } catch {
+    return 'en'
+  }
+}
+
 function fontForChar(font: PDFFont, fallbacks: FontFallback[], char: string): PDFFont | null {
   if (fontCanEncode(font, char)) return font
   return fallbacks.find((fallback) => fontCanEncode(fallback.font, char))?.font ?? null
@@ -755,6 +763,7 @@ export interface ReceiptPdfCopy {
     refunded: string
     partiallyRefunded: string
     canceled: string
+    unknown: string
   }
 }
 
@@ -780,10 +789,16 @@ function formatAmount(amount: unknown, currencyCode: unknown, locale: string): s
     }
   }
 
-  return new Intl.NumberFormat(locale, {
+  const options: Intl.NumberFormatOptions = {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
-  }).format(numericAmount)
+  }
+
+  try {
+    return new Intl.NumberFormat(locale, options).format(numericAmount)
+  } catch {
+    return new Intl.NumberFormat('en-US', options).format(numericAmount)
+  }
 }
 
 /** Human label for Medusa payment_status values. */
@@ -802,15 +817,81 @@ function paymentLabel(status: unknown, copy: ReceiptPdfCopy): string | null {
     case 'canceled':
       return copy.paymentStatus.canceled
     default:
-      return normalized.replace(/_/g, ' ').replace(/^./, (c) => c.toUpperCase())
+      return copy.paymentStatus.unknown
   }
 }
 
-function buildAddressLine(profile: AccountOrderReceiptProfileFact): string {
+const POSTAL_CODE_FIRST_COUNTRIES = new Set([
+  'AT',
+  'BE',
+  'CH',
+  'CZ',
+  'DE',
+  'DK',
+  'ES',
+  'FI',
+  'FR',
+  'IT',
+  'NL',
+  'NO',
+  'PL',
+  'PT',
+  'SE',
+])
+
+const POSTAL_REGION_CITY_COUNTRIES = new Set([
+  'CN',
+  'HK',
+  'JP',
+  'KR',
+  'MO',
+  'TW',
+])
+
+function displayCountryName(countryCode: unknown, locale: string): string {
+  const code = normalize(countryCode).toUpperCase()
+  if (!/^[A-Z]{2}$/.test(code)) return code
+
+  try {
+    return new Intl.DisplayNames([locale], { type: 'region' }).of(code) ?? code
+  } catch {
+    return code
+  }
+}
+
+function localityLine(profile: AccountOrderReceiptProfileFact): string {
+  const countryCode = normalize(profile.countryCode).toUpperCase()
   const city = normalize(profile.city)
   const region = normalize(profile.region)
   const postalCode = normalize(profile.postalCode)
-  return [city, region, postalCode].filter(Boolean).join(', ')
+  const distinctRegion = region && region !== city ? region : ''
+
+  if (POSTAL_REGION_CITY_COUNTRIES.has(countryCode)) {
+    return [postalCode, distinctRegion || region, city].filter(Boolean).join(' ')
+  }
+
+  if (POSTAL_CODE_FIRST_COUNTRIES.has(countryCode)) {
+    const postalCity = [postalCode, city].filter(Boolean).join(' ')
+    return [postalCity, distinctRegion].filter(Boolean).join(', ')
+  }
+
+  const regionPostal = [distinctRegion || region, postalCode]
+    .filter(Boolean)
+    .join(' ')
+  return [city, regionPostal].filter(Boolean).join(', ')
+}
+
+function billingAddressLines(
+  profile: AccountOrderReceiptProfileFact,
+  locale: string
+): string[] {
+  const lines = [
+    normalize(profile.addressLine1),
+    normalize(profile.addressLine2),
+    localityLine(profile),
+    displayCountryName(profile.countryCode, locale),
+  ]
+  return lines.filter(Boolean)
 }
 
 /** Greedy word-wrap against real glyph widths. */
@@ -965,10 +1046,7 @@ function collectReceiptText(
     normalize(receipt.displayId) || '--',
     normalize(receipt.customerName),
     normalize(receipt.customerEmail),
-    normalize(receipt.billingProfile.addressLine1),
-    normalize(receipt.billingProfile.addressLine2),
-    buildAddressLine(receipt.billingProfile),
-    normalize(receipt.billingProfile.countryCode).toUpperCase(),
+    ...billingAddressLines(receipt.billingProfile, locale),
     normalize(receipt.currencyCode).toUpperCase() || '--',
   ]
 
@@ -1004,6 +1082,13 @@ export async function buildReceiptPdf(
 ): Promise<Uint8Array> {
   const pdf = await PDFDocument.create()
   pdf.registerFontkit(fontkit)
+  const orderNumber = copy.orderNumber(normalize(receipt.displayId) || '--')
+  pdf.setTitle(copy.title, { showInWindowTitleBar: true })
+  pdf.setSubject(orderNumber)
+  pdf.setAuthor(SELLER_NAME)
+  pdf.setCreator(SELLER_NAME)
+  pdf.setProducer(SELLER_NAME)
+  pdf.setLanguage(pdfLanguageTag(locale))
   const page = pdf.addPage([PAGE_WIDTH, PAGE_HEIGHT])
   const regular = await pdf.embedFont(StandardFonts.Helvetica)
   const bold = await pdf.embedFont(StandardFonts.HelveticaBold)
@@ -1019,7 +1104,7 @@ export async function buildReceiptPdf(
   drawLeft(page, SELLER_WEBSITE, MARGIN, y - 16, style({ font: regular, size: 9, color: MUTED }))
 
   drawRight(page, copy.title, rightEdge, y, style({ font: bold, size: 22 }))
-  drawRight(page, copy.orderNumber(normalize(receipt.displayId) || '--'), rightEdge, y - 16, style({
+  drawRight(page, orderNumber, rightEdge, y - 16, style({
     font: regular,
     size: 10,
     color: MUTED,
@@ -1042,16 +1127,12 @@ export async function buildReceiptPdf(
   const email = normalize(receipt.customerEmail)
   billingLines.push({ text: email || copy.noEmailProvided, isName: !customerName })
 
-  const addressLine1 = normalize(receipt.billingProfile.addressLine1)
-  const addressLine2 = normalize(receipt.billingProfile.addressLine2)
-  const locationLine = buildAddressLine(receipt.billingProfile)
-  const countryCode = normalize(receipt.billingProfile.countryCode).toUpperCase()
+  const addressLines = billingAddressLines(receipt.billingProfile, locale)
   const taxNumber = normalize(receipt.billingProfile.taxNumber)
 
-  if (addressLine1) billingLines.push({ text: addressLine1 })
-  if (addressLine2) billingLines.push({ text: addressLine2 })
-  if (locationLine) billingLines.push({ text: locationLine })
-  if (countryCode) billingLines.push({ text: countryCode })
+  for (const line of addressLines) {
+    billingLines.push({ text: line })
+  }
   if (taxNumber) billingLines.push({ text: copy.taxId(taxNumber) })
 
   // Keep billed-to text clear of the DETAILS column that shares these rows.

@@ -9,6 +9,8 @@ import { CodeRef } from '@/components/ui/code-ref'
 import { TextLink } from '@/components/ui/text-link'
 import { formatOrderAmount } from '@/lib/order-display'
 import { formatDateForLocale } from '@/lib/date-format'
+import { receiptDownloadHref } from '@/lib/receipt-download'
+import { localizeKnownProductTitle } from '@/lib/product-title-display'
 
 /**
  * A licence an order produced, ready for display. The key is ALREADY masked
@@ -48,6 +50,11 @@ interface OrderHistoryListProps {
 
 export function OrderHistoryList({ orders, locale }: OrderHistoryListProps) {
   const t = useTranslations('account.orders')
+  const productTitles = useTranslations('account.productTitles')
+  const productTitleMessages = {
+    yearly: productTitles('yearly'),
+    lifetime: productTitles('lifetime'),
+  }
 
   if (orders.length === 0) {
     return (
@@ -100,7 +107,7 @@ export function OrderHistoryList({ orders, locale }: OrderHistoryListProps) {
                     />
                     {license.product && (
                       <span className="font-medium text-foreground">
-                        {license.product}
+                        {localizeKnownProductTitle(license.product, productTitleMessages)}
                       </span>
                     )}
                     <CodeRef className="tracking-wider">
@@ -125,7 +132,7 @@ export function OrderHistoryList({ orders, locale }: OrderHistoryListProps) {
                 <div className="flex items-center gap-2">
                   <Button asChild variant="outline" size="sm">
                     <a
-                      href={`/api/account/orders/${order.id}/receipt`}
+                      href={receiptDownloadHref(order.id, locale)}
                       target="_blank"
                       rel="noreferrer"
                       aria-label={t('downloadReceiptAria', {

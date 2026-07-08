@@ -1,7 +1,7 @@
 {
   "version": 1,
   "generatedBy": "scripts/i18n/hardcoded-english.ts --update",
-  "updatedAt": "2026-07-07T03:01:08.897Z",
+  "updatedAt": "2026-07-08T15:18:34.072Z",
   "scope": [
     "src/app",
     "src/components",
@@ -18,27 +18,11 @@
       "count": 1
     },
     {
-      "id": "4d50956db0b13f5e",
+      "id": "c9e38cd4f3a8d61f",
       "file": "src/app/[locale]/(auth)/login/login-page-client.tsx",
       "category": "route/page",
       "attr": null,
-      "text": "/api/auth/discord?redirect=",
-      "count": 1
-    },
-    {
-      "id": "06e84a4bb00a4faa",
-      "file": "src/app/[locale]/(auth)/login/login-page-client.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "/api/auth/github?redirect=",
-      "count": 1
-    },
-    {
-      "id": "58e85719292066ff",
-      "file": "src/app/[locale]/(auth)/login/login-page-client.tsx",
-      "category": "route/page",
-      "attr": null,
-      "text": "/api/auth/google?redirect=",
+      "text": "?locale=",
       "count": 1
     },
     {
@@ -48,6 +32,14 @@
       "attr": null,
       "text": "/register?redirect=",
       "count": 1
+    },
+    {
+      "id": "4a7a213212a8d781",
+      "file": "src/app/[locale]/(auth)/login/login-page-client.tsx",
+      "category": "route/page",
+      "attr": null,
+      "text": "discord",
+      "count": 2
     },
     {
       "id": "15369ddc4d2a6aad",
@@ -66,12 +58,28 @@
       "count": 1
     },
     {
+      "id": "242f0f50ebea5fa2",
+      "file": "src/app/[locale]/(auth)/login/login-page-client.tsx",
+      "category": "route/page",
+      "attr": null,
+      "text": "github",
+      "count": 2
+    },
+    {
       "id": "c35cc03a23d418c0",
       "file": "src/app/[locale]/(auth)/login/login-page-client.tsx",
       "category": "route/page",
       "attr": null,
       "text": "GitHub",
       "count": 1
+    },
+    {
+      "id": "0be5d092e0848e42",
+      "file": "src/app/[locale]/(auth)/login/login-page-client.tsx",
+      "category": "route/page",
+      "attr": null,
+      "text": "google",
+      "count": 2
     },
     {
       "id": "ec17df2541e605f2",
@@ -279,6 +287,30 @@
       "category": "route/page",
       "attr": null,
       "text": "/api/account/impersonate/exit?locale=",
+      "count": 1
+    },
+    {
+      "id": "b00998889091cb8d",
+      "file": "src/app/[locale]/account/licenses/renew/page.tsx",
+      "category": "route/page",
+      "attr": null,
+      "text": "/pro/checkout?product=",
+      "count": 2
+    },
+    {
+      "id": "980ca04438602fe7",
+      "file": "src/app/[locale]/account/licenses/renew/page.tsx",
+      "category": "route/page",
+      "attr": null,
+      "text": "active",
+      "count": 1
+    },
+    {
+      "id": "f811895466d309dc",
+      "file": "src/app/[locale]/account/licenses/renew/page.tsx",
+      "category": "route/page",
+      "attr": null,
+      "text": "expired",
       "count": 1
     },
     {
@@ -610,27 +642,11 @@
       "count": 1
     },
     {
-      "id": "9bcf06b8721bcfd1",
-      "file": "src/app/api/auth/[provider]/callback/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Unknown error",
-      "count": 1
-    },
-    {
-      "id": "b730a16a2d9c2743",
-      "file": "src/app/api/auth/[provider]/callback/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Unsupported provider:",
-      "count": 1
-    },
-    {
-      "id": "65d76dbd78a234c9",
+      "id": "fbfb927434f2a3a4",
       "file": "src/app/api/auth/[provider]/route.ts",
       "category": "route/page",
       "attr": null,
-      "text": "/login?error=oauth_failed",
+      "text": "error",
       "count": 1
     },
     {
@@ -639,14 +655,6 @@
       "category": "route/page",
       "attr": null,
       "text": "Failed to initiate OAuth:",
-      "count": 1
-    },
-    {
-      "id": "dcec67b7f40aefe7",
-      "file": "src/app/api/auth/[provider]/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Unsupported provider:",
       "count": 1
     },
     {
@@ -834,22 +842,6 @@
       "count": 1
     },
     {
-      "id": "ef130068b96ce999",
-      "file": "src/app/api/desktop-releases/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Failed to fetch release information",
-      "count": 1
-    },
-    {
-      "id": "1efaa4487836e436",
-      "file": "src/app/api/desktop-releases/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "No release found",
-      "count": 1
-    },
-    {
       "id": "e4c5d14547529427",
       "file": "src/app/api/discord/callback/route.ts",
       "category": "route/page",
@@ -914,35 +906,11 @@
       "count": 1
     },
     {
-      "id": "6255440813e66518",
-      "file": "src/app/api/discord/reconcile/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Reconciliation failed",
-      "count": 1
-    },
-    {
       "id": "a3c719b490889df9",
       "file": "src/app/api/electron/[platform]/[version]/route.ts",
       "category": "route/page",
       "attr": null,
       "text": "Electron update check failed:",
-      "count": 1
-    },
-    {
-      "id": "39fef4b8e03981c5",
-      "file": "src/app/api/electron/[platform]/[version]/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "error",
-      "count": 1
-    },
-    {
-      "id": "fb7905ba25cb5915",
-      "file": "src/app/api/electron/[platform]/[version]/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Internal server error",
       "count": 1
     },
     {
@@ -967,22 +935,6 @@
       "category": "route/page",
       "attr": null,
       "text": "Electron download redirect failed:",
-      "count": 1
-    },
-    {
-      "id": "1fcec99dcf633043",
-      "file": "src/app/api/electron/download/[platform]/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "error",
-      "count": 1
-    },
-    {
-      "id": "dac6a1ed63c4d483",
-      "file": "src/app/api/electron/download/[platform]/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Internal server error",
       "count": 1
     },
     {
@@ -1018,22 +970,6 @@
       "count": 1
     },
     {
-      "id": "5f414a845b75b2b4",
-      "file": "src/app/api/legacy/wc-am/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "License request failed",
-      "count": 1
-    },
-    {
-      "id": "042b8acdf93f6acc",
-      "file": "src/app/api/legacy/wc-am/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Missing required parameters: api_key and instance",
-      "count": 1
-    },
-    {
       "id": "d0b777b5917a8275",
       "file": "src/app/api/legacy/wc-am/route.ts",
       "category": "route/page",
@@ -1058,14 +994,6 @@
       "count": 1
     },
     {
-      "id": "d2717dad9c340733",
-      "file": "src/app/api/legacy/wc-am/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "The license server is temporarily unavailable. Please try again shortly.",
-      "count": 1
-    },
-    {
       "id": "72f1ea74f2f886b8",
       "file": "src/app/api/logs/route.ts",
       "category": "route/page",
@@ -1079,22 +1007,6 @@
       "category": "route/page",
       "attr": null,
       "text": "Failed to forward browser logs to Loki: status=",
-      "count": 1
-    },
-    {
-      "id": "ceab27143d03ac4c",
-      "file": "src/app/api/logs/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Invalid log entry format",
-      "count": 1
-    },
-    {
-      "id": "d820a30cd8993232",
-      "file": "src/app/api/logs/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Invalid log format",
       "count": 1
     },
     {
@@ -1114,43 +1026,11 @@
       "count": 1
     },
     {
-      "id": "3909f8bca8003e5b",
-      "file": "src/app/api/pro/download/[version]/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Failed to fetch release asset",
-      "count": 1
-    },
-    {
-      "id": "bae22cc711dbf3e5",
-      "file": "src/app/api/pro/download/[version]/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "License validation failed",
-      "count": 1
-    },
-    {
-      "id": "a298c63da301174b",
-      "file": "src/app/api/pro/download/[version]/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Missing required parameters: key and instance",
-      "count": 1
-    },
-    {
       "id": "2ab140bcd6262c91",
       "file": "src/app/api/pro/download/[version]/route.ts",
       "category": "route/page",
       "attr": null,
       "text": "private, no-store",
-      "count": 1
-    },
-    {
-      "id": "28831abe212b1b38",
-      "file": "src/app/api/pro/download/[version]/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Requested version is not available for this license",
       "count": 1
     },
     {
@@ -1162,43 +1042,11 @@
       "count": 1
     },
     {
-      "id": "771ab337e705836a",
-      "file": "src/app/api/pro/update/[version]/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "License validation failed",
-      "count": 1
-    },
-    {
-      "id": "d5aec4764ef94d62",
-      "file": "src/app/api/pro/update/[version]/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Missing required parameters: key and instance",
-      "count": 1
-    },
-    {
-      "id": "f66b4dd986acafa3",
-      "file": "src/app/api/pro/update/[version]/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "No update is available for this license",
-      "count": 1
-    },
-    {
       "id": "b7ac663f04497d14",
       "file": "src/app/api/roadmap/revalidate/route.ts",
       "category": "route/page",
       "attr": null,
       "text": "Failed to revalidate roadmap cache:",
-      "count": 1
-    },
-    {
-      "id": "8ebbe91a318bc3de",
-      "file": "src/app/api/roadmap/revalidate/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Revalidation failed",
       "count": 1
     },
     {
@@ -1330,70 +1178,6 @@
       "count": 1
     },
     {
-      "id": "481e300fff884c8c",
-      "file": "src/app/api/test/license/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": ". Valid actions: validate, activate, deactivate, status",
-      "count": 1
-    },
-    {
-      "id": "f4e22f0db2d6d113",
-      "file": "src/app/api/test/license/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Activation failed (limit reached or invalid license)",
-      "count": 1
-    },
-    {
-      "id": "5f41887de1c3b4a6",
-      "file": "src/app/api/test/license/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Internal error",
-      "count": 1
-    },
-    {
-      "id": "bb34c4be5f3e03fd",
-      "file": "src/app/api/test/license/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "licenseId and fingerprint required",
-      "count": 1
-    },
-    {
-      "id": "126cac25f2540b21",
-      "file": "src/app/api/test/license/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "licenseId required",
-      "count": 1
-    },
-    {
-      "id": "43d60741d1182116",
-      "file": "src/app/api/test/license/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "licenseKey required",
-      "count": 1
-    },
-    {
-      "id": "74a05bc6a228a2ca",
-      "file": "src/app/api/test/license/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "machineId required",
-      "count": 1
-    },
-    {
-      "id": "9b576be0b7d0ea4f",
-      "file": "src/app/api/test/license/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Not available in production",
-      "count": 1
-    },
-    {
       "id": "a95cb73d570ff7b4",
       "file": "src/app/api/test/license/route.ts",
       "category": "route/page",
@@ -1407,14 +1191,6 @@
       "category": "route/page",
       "attr": null,
       "text": "Test harness error:",
-      "count": 1
-    },
-    {
-      "id": "65ff334155a2e778",
-      "file": "src/app/api/test/license/route.ts",
-      "category": "route/page",
-      "attr": null,
-      "text": "Unknown action:",
       "count": 1
     },
     {
@@ -1570,6 +1346,14 @@
       "count": 1
     },
     {
+      "id": "9d2b2123e99116d1",
+      "file": "src/components/account/account-expiry-banner.tsx",
+      "category": "component",
+      "attr": "renewHref",
+      "text": "/pro/checkout?product=wcpos-pro-yearly",
+      "count": 1
+    },
+    {
       "id": "02b134eaa8057c8c",
       "file": "src/components/account/account-notice.tsx",
       "category": "component",
@@ -1644,6 +1428,14 @@
     {
       "id": "d9e942edac60f058",
       "file": "src/components/account/downloads-client.tsx",
+      "category": "component",
+      "attr": null,
+      "text": "use client",
+      "count": 1
+    },
+    {
+      "id": "e8a65ccddcac8f6b",
+      "file": "src/components/account/expiry-banner-client.tsx",
       "category": "component",
       "attr": null,
       "text": "use client",
@@ -1736,6 +1528,54 @@
       "attr": null,
       "text": "zip",
       "count": 2
+    },
+    {
+      "id": "a2b73585b12a1e74",
+      "file": "src/components/account/renew-client.tsx",
+      "category": "component",
+      "attr": null,
+      "text": "/account/licenses?renewed=1",
+      "count": 1
+    },
+    {
+      "id": "ba650af145532f35",
+      "file": "src/components/account/renew-client.tsx",
+      "category": "component",
+      "attr": null,
+      "text": "/pro/checkout?product=",
+      "count": 1
+    },
+    {
+      "id": "971fa2fa189fc905",
+      "file": "src/components/account/renew-client.tsx",
+      "category": "component",
+      "attr": null,
+      "text": "billing",
+      "count": 1
+    },
+    {
+      "id": "f5211448ca6b05fe",
+      "file": "src/components/account/renew-client.tsx",
+      "category": "component",
+      "attr": null,
+      "text": "error",
+      "count": 3
+    },
+    {
+      "id": "aadb126aea5515d5",
+      "file": "src/components/account/renew-client.tsx",
+      "category": "component",
+      "attr": null,
+      "text": "Renewal preparation failed",
+      "count": 1
+    },
+    {
+      "id": "4c2bb54fd526d43d",
+      "file": "src/components/account/renew-client.tsx",
+      "category": "component",
+      "attr": null,
+      "text": "use client",
+      "count": 1
     },
     {
       "id": "c85eda44594cd28a",
@@ -1842,35 +1682,11 @@
       "count": 1
     },
     {
-      "id": "0d79584255887cad",
-      "file": "src/components/downloads/platforms.ts",
-      "category": "component",
-      "attr": null,
-      "text": "iOS & iPad",
-      "count": 1
-    },
-    {
-      "id": "6d2df563f973a170",
-      "file": "src/components/downloads/platforms.ts",
-      "category": "component",
-      "attr": null,
-      "text": "macOS (Intel)",
-      "count": 1
-    },
-    {
       "id": "4301b38cf7662919",
       "file": "src/components/downloads/sync-diagram.tsx",
       "category": "component",
       "attr": null,
       "text": "@keyframes wcpos-sync-flow { to { stroke-dashoffset: -16; } } .wcpos-flow-line { stroke-dasharray: 1 7; animation: wcpos-sync-flow 1.4s linear infinite; } @media (prefers-reduced-motion: reduce) { .wcpos-flow-line { animation: none; opacity: 0.25; } }",
-      "count": 1
-    },
-    {
-      "id": "eec8f49f10456462",
-      "file": "src/components/downloads/sync-diagram.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "+ WCPOS plugin",
       "count": 1
     },
     {
@@ -1882,27 +1698,11 @@
       "count": 1
     },
     {
-      "id": "ad4aac9e37868488",
-      "file": "src/components/downloads/sync-diagram.tsx",
-      "category": "component",
-      "attr": "aria-label",
-      "text": "A WooCommerce store with the WCPOS plugin sits at the centre, connected over a REST API to the desktop, iOS, Android and web apps, which all stay in sync.",
-      "count": 1
-    },
-    {
       "id": "7a6d9b683712220e",
       "file": "src/components/downloads/sync-diagram.tsx",
       "category": "component",
       "attr": null,
       "text": "flex items-center justify-center rounded-full shadow-lg transition-all duration-200",
-      "count": 1
-    },
-    {
-      "id": "09ece502a0ed245e",
-      "file": "src/components/downloads/sync-diagram.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "iOS & iPad",
       "count": 1
     },
     {
@@ -1919,14 +1719,6 @@
       "category": "component",
       "attr": null,
       "text": "use client",
-      "count": 1
-    },
-    {
-      "id": "c1aea96f19548449",
-      "file": "src/components/downloads/sync-diagram.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Your store",
       "count": 1
     },
     {
@@ -1962,38 +1754,6 @@
       "count": 1
     },
     {
-      "id": "dac9addad2c4b11b",
-      "file": "src/components/home/cta-section.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Download Free",
-      "count": 1
-    },
-    {
-      "id": "32440990c2e634c3",
-      "file": "src/components/home/cta-section.tsx",
-      "category": "component",
-      "attr": "title",
-      "text": "Ready to sell in-store with WooCommerce?",
-      "count": 1
-    },
-    {
-      "id": "837920f63e8204ab",
-      "file": "src/components/home/cta-section.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Try Live Demo",
-      "count": 1
-    },
-    {
-      "id": "6a8ed9e29288cb7e",
-      "file": "src/components/home/cta-section.tsx",
-      "category": "component",
-      "attr": "subtitle",
-      "text": "Try the live demo or download the free plugin to get started.",
-      "count": 1
-    },
-    {
       "id": "ebc432a08c776afc",
       "file": "src/components/home/features-section.tsx",
       "category": "component",
@@ -2010,62 +1770,6 @@
       "count": 1
     },
     {
-      "id": "42da5014d515a011",
-      "file": "src/components/home/problem-section.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Double Entry",
-      "count": 1
-    },
-    {
-      "id": "884848054be08128",
-      "file": "src/components/home/problem-section.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Internet drops and your sales stop. Customers wait. You lose money.",
-      "count": 1
-    },
-    {
-      "id": "a8ef7d8cfe0cd85b",
-      "file": "src/components/home/problem-section.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Offline Panic",
-      "count": 1
-    },
-    {
-      "id": "3fffe82ec116e36c",
-      "file": "src/components/home/problem-section.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Platform Lock-In",
-      "count": 1
-    },
-    {
-      "id": "f88b8ad2c41140cc",
-      "file": "src/components/home/problem-section.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Proprietary systems trap your data. Moving or customizing becomes impossible.",
-      "count": 1
-    },
-    {
-      "id": "52a33c3854c54a86",
-      "file": "src/components/home/problem-section.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Re-entering products in a separate POS wastes hours and creates errors.",
-      "count": 1
-    },
-    {
-      "id": "76ba906e3c8d11ea",
-      "file": "src/components/home/problem-section.tsx",
-      "category": "component",
-      "attr": "title",
-      "text": "Running a WooCommerce store and a physical shop shouldn't mean double the work",
-      "count": 1
-    },
-    {
       "id": "074813f0c7e97819",
       "file": "src/components/home/scroll-story/act-gravity.ts",
       "category": "component",
@@ -2079,22 +1783,6 @@
       "category": "component",
       "attr": null,
       "text": "use client",
-      "count": 1
-    },
-    {
-      "id": "d44411f6fbac901b",
-      "file": "src/components/home/scroll-story/acts/cloud-sync.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "● synced",
-      "count": 1
-    },
-    {
-      "id": "b32fe416ba65f3e4",
-      "file": "src/components/home/scroll-story/acts/cloud-sync.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "1,204 products",
       "count": 1
     },
     {
@@ -2154,27 +1842,11 @@
       "count": 1
     },
     {
-      "id": "3c95ae43c0930e50",
-      "file": "src/components/home/scroll-story/acts/cloud-sync.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "orders → Woo",
-      "count": 1
-    },
-    {
       "id": "d1e37f1daa39d56a",
       "file": "src/components/home/scroll-story/acts/cloud-sync.tsx",
       "category": "component",
       "attr": null,
       "text": "relative h-[300px] w-[560px]",
-      "count": 1
-    },
-    {
-      "id": "7fc8973645c2f8f9",
-      "file": "src/components/home/scroll-story/acts/cloud-sync.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "works offline",
       "count": 1
     },
     {
@@ -2394,14 +2066,6 @@
       "count": 1
     },
     {
-      "id": "32bb6237086f9f85",
-      "file": "src/components/home/scroll-story/devices/terminal.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Tap to pay",
-      "count": 1
-    },
-    {
       "id": "5fdbeffea92c44cf",
       "file": "src/components/home/scroll-story/devices/terminal.tsx",
       "category": "component",
@@ -2538,147 +2202,11 @@
       "count": 1
     },
     {
-      "id": "8b90404fede952ec",
-      "file": "src/components/home/trust-section.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "— WCPOS on GitHub",
-      "count": 1
-    },
-    {
-      "id": "f3c49af4a46039f0",
-      "file": "src/components/home/trust-section.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "&ldquo;Straightforward, functional and simple to use. 10/10.&rdquo;",
-      "count": 1
-    },
-    {
-      "id": "542fe5d4cd828680",
-      "file": "src/components/home/trust-section.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Active Installations",
-      "count": 1
-    },
-    {
-      "id": "5642170d3515b204",
-      "file": "src/components/home/trust-section.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "GPL Licensed",
-      "count": 1
-    },
-    {
-      "id": "5323547721870ae8",
-      "file": "src/components/home/trust-section.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "In Development Since",
-      "count": 1
-    },
-    {
-      "id": "b8e66c29e36252a9",
-      "file": "src/components/home/trust-section.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Languages Supported",
-      "count": 1
-    },
-    {
-      "id": "de1f9c29f8a6753c",
-      "file": "src/components/home/trust-section.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Read our story →",
-      "count": 1
-    },
-    {
-      "id": "99ccaad66aa0ab36",
-      "file": "src/components/home/trust-section.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Ward, wordpress.org review",
-      "count": 1
-    },
-    {
-      "id": "b40de1590325233b",
-      "file": "src/components/home/use-cases-section.tsx",
-      "category": "component",
-      "attr": null,
-      "text": ", wordpress.org review",
-      "count": 1
-    },
-    {
-      "id": "6942cc5c7d5534a0",
-      "file": "src/components/home/use-cases-section.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Desktop & Offline",
-      "count": 1
-    },
-    {
       "id": "8a5b092c609e3695",
       "file": "src/components/home/use-cases-section.tsx",
       "category": "component",
       "attr": null,
       "text": "flex h-28 items-center justify-center",
-      "count": 1
-    },
-    {
-      "id": "78be383abab74231",
-      "file": "src/components/home/use-cases-section.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Great POS for your WooCommerce store, it has the desktop version which makes it better for places with weak internet connectivity. I believe there are more great features coming up.",
-      "count": 1
-    },
-    {
-      "id": "a1fba30a20427393",
-      "file": "src/components/home/use-cases-section.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "I did a lot of research when looking for a POS for my existing WC site, and nearly overlooked this one because it was free. But I’m glad I tried it. It does everything you want without asking for subscriptions or a percentage of your sales.",
-      "count": 1
-    },
-    {
-      "id": "0f2a154be22d4ef5",
-      "file": "src/components/home/use-cases-section.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "I’m a ceramicist in Annecy and I sell through my WooCommerce shop and at markets. I’ve been using WCPOS for over a year and bought the lifetime Pro license a few months ago — worth it, I think. Paul is responsive on Discord, even on weekends.",
-      "count": 1
-    },
-    {
-      "id": "36409a318c49b032",
-      "file": "src/components/home/use-cases-section.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Market Vendor",
-      "count": 1
-    },
-    {
-      "id": "301ebf18a7843d5b",
-      "file": "src/components/home/use-cases-section.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "Retail Store",
-      "count": 1
-    },
-    {
-      "id": "3502f3a1aee06a2c",
-      "file": "src/components/home/use-cases-section.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "translated from French",
-      "count": 1
-    },
-    {
-      "id": "e1e7bb6da164f4cc",
-      "file": "src/components/home/use-cases-section.tsx",
-      "category": "component",
-      "attr": "title",
-      "text": "Works for stores of all kinds",
       "count": 1
     },
     {
@@ -2695,6 +2223,14 @@
       "category": "component",
       "attr": null,
       "text": "use client",
+      "count": 1
+    },
+    {
+      "id": "d3e0f706d4289468",
+      "file": "src/components/main/user-menu.tsx",
+      "category": "component",
+      "attr": null,
+      "text": "/api/auth/logout?to=",
       "count": 1
     },
     {
@@ -2983,38 +2519,6 @@
       "category": "component",
       "attr": null,
       "text": "[CHECKOUT] PayPal capture failed:",
-      "count": 1
-    },
-    {
-      "id": "233aa8556f530cd6",
-      "file": "src/components/pro/complete-cart.ts",
-      "category": "component",
-      "attr": null,
-      "text": "Cart completion returned no order id",
-      "count": 1
-    },
-    {
-      "id": "9c31fdf022e3a4c6",
-      "file": "src/components/pro/complete-cart.ts",
-      "category": "component",
-      "attr": null,
-      "text": "Failed to capture PayPal order",
-      "count": 1
-    },
-    {
-      "id": "15f6f708046c15dd",
-      "file": "src/components/pro/complete-cart.ts",
-      "category": "component",
-      "attr": null,
-      "text": "Failed to complete order",
-      "count": 1
-    },
-    {
-      "id": "0dcdc8b654a569a1",
-      "file": "src/components/pro/complete-cart.ts",
-      "category": "component",
-      "attr": null,
-      "text": "Failed to create payment session",
       "count": 1
     },
     {
@@ -3850,6 +3354,38 @@
       "count": 1
     },
     {
+      "id": "367366c4d6ff6451",
+      "file": "src/lib/analytics/posthog-browser.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "; Max-Age=",
+      "count": 1
+    },
+    {
+      "id": "5a0b3eab6b96e360",
+      "file": "src/lib/analytics/posthog-browser.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "; Path=",
+      "count": 1
+    },
+    {
+      "id": "e8a26e795d9becb1",
+      "file": "src/lib/analytics/posthog-browser.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "; SameSite=Lax",
+      "count": 1
+    },
+    {
+      "id": "a62a17caa91a5e72",
+      "file": "src/lib/analytics/posthog-browser.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "; Secure",
+      "count": 1
+    },
+    {
       "id": "339add5c195fcfa2",
       "file": "src/lib/analytics/posthog-browser.ts",
       "category": "code/string",
@@ -3879,14 +3415,6 @@
       "category": "error/status",
       "attr": null,
       "text": "This password reset link is invalid or has expired. Please request a new one.",
-      "count": 1
-    },
-    {
-      "id": "75fb45141ab9fcdb",
-      "file": "src/lib/api/to-error-response.ts",
-      "category": "error/status",
-      "attr": null,
-      "text": "Internal server error",
       "count": 1
     },
     {
@@ -3922,76 +3450,12 @@
       "count": 2
     },
     {
-      "id": "7c6e02fa03602c3a",
-      "file": "src/lib/billing-countries.ts",
-      "category": "code/string",
-      "attr": null,
-      "text": "EIN / Tax ID",
-      "count": 1
-    },
-    {
-      "id": "a7b5e2ca8c453333",
-      "file": "src/lib/billing-countries.ts",
-      "category": "code/string",
-      "attr": null,
-      "text": "GST number",
-      "count": 1
-    },
-    {
-      "id": "4608d52b4d42c784",
-      "file": "src/lib/billing-countries.ts",
-      "category": "code/string",
-      "attr": null,
-      "text": "GST/HST number",
-      "count": 1
-    },
-    {
-      "id": "815928745aa289f9",
-      "file": "src/lib/billing-countries.ts",
-      "category": "code/string",
-      "attr": null,
-      "text": "NIF / VAT number",
-      "count": 1
-    },
-    {
-      "id": "9f1e0878f506061c",
-      "file": "src/lib/billing-countries.ts",
-      "category": "code/string",
-      "attr": null,
-      "text": "Partita IVA",
-      "count": 1
-    },
-    {
-      "id": "2e197af1029d29cc",
-      "file": "src/lib/billing-countries.ts",
-      "category": "code/string",
-      "attr": null,
-      "text": "Tax ID / VAT number",
-      "count": 1
-    },
-    {
-      "id": "a771c9eac0b6b065",
-      "file": "src/lib/billing-countries.ts",
-      "category": "code/string",
-      "attr": null,
-      "text": "Tax registration number",
-      "count": 1
-    },
-    {
       "id": "f6814ae50a85a987",
       "file": "src/lib/billing-countries.ts",
       "category": "code/string",
       "attr": null,
       "text": "vat",
       "count": 5
-    },
-    {
-      "id": "b220679f616341ce",
-      "file": "src/lib/billing-countries.ts",
-      "category": "code/string",
-      "attr": null,
-      "text": "VAT number",
-      "count": 1
     },
     {
       "id": "9295d6ac9f615271",
@@ -4586,35 +4050,11 @@
       "count": 1
     },
     {
-      "id": "8f5448d337a817b2",
-      "file": "src/lib/password-policy.ts",
-      "category": "code/string",
-      "attr": null,
-      "text": "Password must be at least",
-      "count": 1
-    },
-    {
       "id": "4d6d46661024caf9",
       "file": "src/lib/pro-offer-catalog.ts",
       "category": "code/string",
       "attr": null,
       "text": "/pro/checkout?",
-      "count": 1
-    },
-    {
-      "id": "bea208dffd95b3e4",
-      "file": "src/lib/pro-offer-catalog.ts",
-      "category": "code/string",
-      "attr": null,
-      "text": "/year or",
-      "count": 1
-    },
-    {
-      "id": "8bd2e9ebcaf398a3",
-      "file": "src/lib/pro-offer-catalog.ts",
-      "category": "code/string",
-      "attr": null,
-      "text": "/yr or",
       "count": 1
     },
     {
@@ -4639,22 +4079,6 @@
       "category": "code/string",
       "attr": null,
       "text": "End-of-day reports",
-      "count": 1
-    },
-    {
-      "id": "3052a8d1b3f3959f",
-      "file": "src/lib/pro-offer-catalog.ts",
-      "category": "code/string",
-      "attr": null,
-      "text": "Lifetime License",
-      "count": 1
-    },
-    {
-      "id": "148b7b950291a45d",
-      "file": "src/lib/pro-offer-catalog.ts",
-      "category": "code/string",
-      "attr": null,
-      "text": "lifetime. No per-register fees.",
       "count": 1
     },
     {
@@ -4711,14 +4135,6 @@
       "category": "code/string",
       "attr": null,
       "text": "WCPOS Pro Yearly",
-      "count": 1
-    },
-    {
-      "id": "022e33d3b9f70c81",
-      "file": "src/lib/pro-offer-catalog.ts",
-      "category": "code/string",
-      "attr": null,
-      "text": "Yearly License",
       "count": 1
     },
     {
@@ -4840,14 +4256,6 @@
       "attr": null,
       "text": "/flags?v=2",
       "count": 1
-    },
-    {
-      "id": "4ca73aa7d46290f9",
-      "file": "src/services/core/business/electron-service.ts",
-      "category": "code/string",
-      "attr": null,
-      "text": "Electron service not yet implemented",
-      "count": 2
     },
     {
       "id": "cb838e2905a4c7ba",
@@ -5162,11 +4570,11 @@
       "count": 1
     },
     {
-      "id": "3127345db994d4e8",
+      "id": "2d9532ee68e38691",
       "file": "src/services/core/external/medusa-client.ts",
       "category": "code/string",
       "attr": null,
-      "text": "/store/regions?fields=id,name,*payment_providers",
+      "text": "/store/regions?fields=id,name,currency_code,*payment_providers",
       "count": 1
     },
     {

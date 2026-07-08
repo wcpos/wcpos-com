@@ -12,6 +12,7 @@ import {
 import { Section, Container } from '@/components/ui/section'
 import { usePrefersReducedMotion } from '@/lib/use-prefers-reduced-motion'
 import { SectionHeading } from '@/components/ui/section-heading'
+import { formatDateForLocale } from '@/lib/date-format'
 
 const milestones = [
   {
@@ -53,12 +54,12 @@ function formatTimelineDate(
   if (date.type === 'range') {
     return t('range', { start: date.start, end: date.end })
   }
-  return new Intl.DateTimeFormat(locale, {
+  return formatDateForLocale(date.value, locale, {
     day: date.type === 'day' ? 'numeric' : undefined,
     month: 'long',
     year: 'numeric',
     timeZone: 'UTC',
-  }).format(new Date(date.value))
+  })
 }
 
 /**

@@ -27,7 +27,7 @@ const DOWNLOAD_APPS = (
   Object.entries(PLATFORMS) as [PlatformKey, (typeof PLATFORMS)[PlatformKey]][]
 )
   .filter(([key]) => key !== 'mac-intel' && key !== 'web')
-  .map(([key, platform]) => ({ key, name: platform.name, href: platform.href }))
+  .map(([key, platform]) => ({ key, href: platform.href }))
 
 interface FooterLink {
   label: string
@@ -37,6 +37,7 @@ interface FooterLink {
 
 export function SiteFooter() {
   const t = useTranslations('footer')
+  const platformT = useTranslations('downloads.platforms')
 
   const productLinks: FooterLink[] = [
     { label: t('downloads'), href: '/downloads' },
@@ -52,7 +53,7 @@ export function SiteFooter() {
   ]
 
   const supportLinks: FooterLink[] = [
-    { label: t('documentation'), href: DOCS_URL, external: true },
+    { label: t('documentation'), href: DOCS_URL },
     { label: t('getSupport'), href: '/support' },
     { label: t('wordpressForum'), href: WORDPRESS_FORUM_URL, external: true },
   ]
@@ -107,7 +108,9 @@ export function SiteFooter() {
                 <FooterItem
                   key={app.key}
                   link={{
-                    label: t('appFor', { platform: app.name }),
+                    label: t('appFor', {
+                      platform: platformT(`${app.key}.name`),
+                    }),
                     href: app.href,
                     external: true,
                   }}

@@ -28,6 +28,7 @@ import { toneText } from '@/components/ui/status-tone'
 import { ArrowLeft, Check, CheckCircle } from 'lucide-react'
 import { Link } from '@/i18n/navigation'
 import type { CheckoutPaymentConfig } from '@/lib/checkout-payment-config'
+import { localizeKnownProductTitle } from '@/lib/product-title-display'
 import type { ProCheckoutVariant } from '@/services/core/analytics/posthog-service'
 
 interface CartItem {
@@ -70,6 +71,12 @@ interface PaymentSessionResult {
   clientSecret?: string | null
   /** Stripe CustomerSession secret → optional save-card checkbox (yearly+card). */
   customerSessionClientSecret?: string | null
+}
+
+interface OfferSummary {
+  title: string
+  priceFormatted: string
+  currencyCode?: string
 }
 
 const PRO_CHECKOUT_EXPERIMENT = 'pro_checkout_v1'
@@ -124,7 +131,7 @@ interface CheckoutClientProps {
   selectedOfferHandle?: string
   cartRegionId?: string
   /** Static summary shown before the cart exists. */
-  offerSummary?: { title: string; priceFormatted: string }
+  offerSummary?: OfferSummary
   /** Current checkout path (with query) for OAuth redirect-back. */
   checkoutPath: string
   experimentVariant: ProCheckoutVariant
@@ -183,6 +190,11 @@ export function CheckoutClient({
 }: CheckoutClientProps) {
   const locale = useLocale()
   const t = useTranslations('pro.checkout')
+  const productTitleT = useTranslations('account.productTitles')
+  const productTitleMessages = {
+    yearly: productTitleT('yearly'),
+    lifetime: productTitleT('lifetime'),
+  }
   const {
     stripeEnabled: isStripeEnabled,
     paypalEnabled: isPayPalEnabled,
@@ -341,6 +353,7 @@ export function CheckoutClient({
             metadata: {
               experiment: PRO_CHECKOUT_EXPERIMENT,
               variant: experimentVariant,
+              locale,
             },
           }),
         })
@@ -398,6 +411,7 @@ export function CheckoutClient({
     selectedOfferHandle,
     cartRegionId,
     experimentVariant,
+    locale,
   ])
 
   // Select payment provider when method changes
@@ -630,10 +644,14 @@ export function CheckoutClient({
     )
   }
 
+  const currencyCode = (cart?.currency_code ?? 'usd').toUpperCase()
+  const offerSummaryCurrencyCode = (
+    offerSummary?.currencyCode ?? currencyCode
+  ).toUpperCase()
   const formatCurrency = (amount: number) =>
     new Intl.NumberFormat(locale, {
       style: 'currency',
-      currency: (cart?.currency_code ?? 'usd').toUpperCase(),
+      currency: currencyCode,
     }).format(amount)
 
   const paypalSession = cart
@@ -792,7 +810,9 @@ export function CheckoutClient({
             {cart.items.map((item) => (
               <div key={item.id} className="flex justify-between py-1">
                 <div>
-                  <p className="font-medium">{item.title}</p>
+                  <p className="font-medium">
+                    {localizeKnownProductTitle(item.title, productTitleMessages)}
+                  </p>
                   <p className="text-sm text-muted-foreground">
                     {t('summary.quantity', { quantity: item.quantity })}
                   </p>
@@ -804,7 +824,12 @@ export function CheckoutClient({
             ))}
             <div className="mt-3 flex justify-between border-t pt-3 font-bold">
               <span>{t('summary.total')}</span>
-              <span>{formatCurrency(cart.total)}</span>
+              <span>
+                {formatCurrency(cart.total)}{' '}
+                <span className="text-sm font-normal text-muted-foreground">
+                  {currencyCode}
+                </span>
+              </span>
             </div>
           </>
         ) : offerSummary ? (
@@ -812,7 +837,12 @@ export function CheckoutClient({
             <p className="font-medium">{offerSummary.title}</p>
             <div className="mt-3 flex justify-between border-t pt-3 font-bold">
               <span>{t('summary.total')}</span>
-              <span>{offerSummary.priceFormatted}</span>
+              <span>
+                {offerSummary.priceFormatted}{' '}
+                <span className="text-sm font-normal text-muted-foreground">
+                  {offerSummaryCurrencyCode}
+                </span>
+              </span>
             </div>
           </>
         ) : (

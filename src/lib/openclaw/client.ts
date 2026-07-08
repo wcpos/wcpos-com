@@ -13,6 +13,7 @@ export class OpenclawError extends Error {
 
 interface AskAideParams {
   question: string
+  locale?: string
   sessionId?: string
   signal?: AbortSignal
 }
@@ -28,6 +29,7 @@ interface AskAideResult {
 /** Server-only. Calls the openclaw /support/answer endpoint (grounded support answerer). */
 export async function askAide({
   question,
+  locale,
   sessionId,
   signal,
 }: AskAideParams): Promise<AskAideResult> {
@@ -45,6 +47,7 @@ export async function askAide({
       },
       body: JSON.stringify({
         question,
+        locale,
         session_id: sessionId,
         channel: 'web',
       }),

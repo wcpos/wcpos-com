@@ -20,7 +20,7 @@ export async function GET(
 
   if (!key || !instance) {
     return NextResponse.json(
-      { error: 'Missing required parameters: key and instance' },
+      { errorCode: 'missing_required_parameters' },
       { status: 400 }
     )
   }
@@ -28,7 +28,7 @@ export async function GET(
   const licenseStatus = await licenseClient.validateLicense(key, instance)
   if (licenseStatus.status !== 200 || !licenseStatus.data) {
     return NextResponse.json(
-      { error: licenseStatus.error || 'License validation failed' },
+      { errorCode: 'license_validation_failed' },
       { status: licenseStatus.status || 400 }
     )
   }
@@ -40,7 +40,7 @@ export async function GET(
   // both "unknown version" and "not entitled" collapse to one refusal.
   if (!selection.ok) {
     return NextResponse.json(
-      { error: 'Requested version is not available for this license' },
+      { errorCode: 'requested_version_not_available_for_license' },
       { status: 403 }
     )
   }
@@ -49,7 +49,7 @@ export async function GET(
   if (!served) {
     apiLogger.error`Failed to fetch pro release asset. version=${selection.release.version}`
     return NextResponse.json(
-      { error: 'Failed to fetch release asset' },
+      { errorCode: 'failed_fetch_release_asset' },
       { status: 502 }
     )
   }

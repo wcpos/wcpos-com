@@ -29,6 +29,7 @@ import {
   versionFor,
   PRODUCT_LABELS,
 } from '@/services/core/external/versions-client'
+import enMessages from '../../../../../messages/en.json'
 
 export async function generateMetadata({
   params,
@@ -59,6 +60,9 @@ const FALLBACK_RELEASES: FallbackRelease[] = [
   { version: '1.9.0', publishedAt: '2026-05-15T00:00:00.000Z', bodyKey: 'v190' },
 ]
 
+const ENGLISH_FALLBACK_RELEASE_BODIES: Record<FallbackBodyKey, string> =
+  enMessages.downloads.releaseHistory.fallback
+
 function formatReleaseDate(iso: string, locale: string): string {
   return formatDateForLocale(iso, locale, {
     month: 'short',
@@ -67,20 +71,12 @@ function formatReleaseDate(iso: string, locale: string): string {
   })
 }
 
-function getFallbackReleases(
-  locale: string,
-  t: Awaited<ReturnType<typeof getTranslations>>
-): ReleaseEntry[] {
-  const fallbackBodies: Record<FallbackBodyKey, string> = {
-    v196: t('fallback.v196'),
-    v195: t('fallback.v195'),
-    v194: t('fallback.v194'),
-    v190: t('fallback.v190'),
-  }
+function getFallbackReleases(locale: string): ReleaseEntry[] {
   return FALLBACK_RELEASES.map(({ publishedAt, bodyKey, ...release }) => ({
     ...release,
     date: formatReleaseDate(publishedAt, locale),
-    body: fallbackBodies[bodyKey],
+    body: ENGLISH_FALLBACK_RELEASE_BODIES[bodyKey],
+    contentLocale: 'en',
   }))
 }
 
@@ -95,15 +91,19 @@ async function getRecentReleases(
     .slice(0, 6)
 
   if (published.length === 0) {
-    return getFallbackReleases(locale, t)
+    return getFallbackReleases(locale)
   }
 
-  return published.map((release, index) => ({
-    version: release.tagName.replace(/^v/, ''),
-    date: formatReleaseDate(release.publishedAt, locale),
-    body: release.body.trim() || t('emptyNotes'),
-    latest: index === 0,
-  }))
+  return published.map((release, index) => {
+    const body = release.body.trim()
+    return {
+      version: release.tagName.replace(/^v/, ''),
+      date: formatReleaseDate(release.publishedAt, locale),
+      body: body || t('emptyNotes'),
+      contentLocale: body ? 'en' : locale,
+      latest: index === 0,
+    }
+  })
 }
 
 function DeviceCard({
@@ -188,6 +188,20 @@ export default async function DownloadsPage({
             c4: howItFitsT('chips.c4'),
             c5: howItFitsT('chips.c5'),
           },
+          diagram: {
+            ariaLabel: howItFitsT('diagram.ariaLabel'),
+            devices: {
+              desktop: howItFitsT('diagram.devices.desktop'),
+              ios: howItFitsT('diagram.devices.ios'),
+              android: howItFitsT('diagram.devices.android'),
+              web: howItFitsT('diagram.devices.web'),
+            },
+            hub: {
+              store: howItFitsT('diagram.hub.store'),
+              platform: howItFitsT('diagram.hub.platform'),
+              plugin: howItFitsT('diagram.hub.plugin'),
+            },
+          },
         }}
       />
 
@@ -209,7 +223,7 @@ export default async function DownloadsPage({
               <Card className="mt-4 flex flex-wrap items-center justify-between gap-4 p-5">
                 <div>
                   <p className="font-medium">
-                    WCPOS
+                    {pageT('steps.plugin.cardTitle')}
                     <Badge variant="brand-tint" className="ml-2">
                       {pageT('steps.plugin.badge')}
                     </Badge>
@@ -224,15 +238,19 @@ export default async function DownloadsPage({
                   <Button asChild variant="brand" size="sm">
                     <TrackedExternalLink
                       href="https://wordpress.org/plugins/woocommerce-pos/"
+                      target="_blank"
+                      rel="noopener noreferrer"
                       eventName="download_clicked"
                       eventProperties={{ plugin: 'free', source: 'wordpress_org', page: '/downloads' }}
                     >
-                      WordPress.org
+                      {pageT('steps.plugin.wordpressOrgCta')}
                     </TrackedExternalLink>
                   </Button>
                   <Button asChild variant="outline" size="sm">
                     <TrackedExternalLink
                       href="https://github.com/wcpos/woocommerce-pos/releases"
+                      target="_blank"
+                      rel="noopener noreferrer"
                       eventName="download_clicked"
                       eventProperties={{ plugin: 'free', source: 'github_zip', page: '/downloads' }}
                     >
@@ -313,11 +331,13 @@ export default async function DownloadsPage({
         />
         <ReleaseHistory
           releases={releases}
+          locale={locale}
           copy={{
             latest: releaseT('latest'),
             fullHistory: releaseT('fullHistory'),
             plugin: releaseT('plugin'),
             desktop: releaseT('desktop'),
+            externalContentNotice: releaseT('externalContentNotice'),
           }}
         />
       </Section>

@@ -2,51 +2,163 @@ import { NextResponse } from 'next/server'
 import { createTranslator } from 'next-intl'
 import { getOrderById } from '@/lib/customer-orders'
 import { getCustomer } from '@/lib/medusa-auth'
-import { projectAccountOrderReceipt } from '@/lib/account-order-projection'
+import {
+  projectAccountOrderReceipt,
+  type AccountOrderReceiptFact,
+} from '@/lib/account-order-projection'
 import { buildReceiptPdf, type ReceiptPdfCopy } from '@/lib/pdf-receipt'
+import { localizeKnownProductTitle } from '@/lib/product-title-display'
 import { projectAccountProfileForReceipt } from '@/lib/customer-profile-metadata'
 import { apiLogger } from '@/lib/logger'
 import { defaultLocale, locales, type Locale } from '@/i18n/config'
 
 type ReceiptErrorCode = 'order_not_found' | 'generation_failed'
 
+type ReceiptPdfAssets = {
+  copy: ReceiptPdfCopy
+  filename: (displayId: string) => string
+  productTitles: ReceiptProductTitles
+}
+
 function errorResponse(errorCode: ReceiptErrorCode, status: number) {
   return NextResponse.json({ errorCode }, { status })
 }
 
-function resolveLocale(request: Request): { intlLocale: string; messageLocale: Locale } {
+function supportedLocale(value: string | null): { intlLocale: string; messageLocale: Locale } | null {
+  if (!value || value === '*') return null
+
+  try {
+    const [canonical] = Intl.getCanonicalLocales(value)
+    const intlLocale = new Intl.Locale(canonical).baseName
+    const messageLocale = intlLocale
+      .split('-')[0]
+      ?.toLowerCase() as Locale | undefined
+    if (canonical && messageLocale && locales.includes(messageLocale)) {
+      return { intlLocale, messageLocale }
+    }
+  } catch {
+    return null
+  }
+
+  return null
+}
+
+function resolveLocale(
+  request: Request,
+  accountLocale?: unknown
+): { intlLocale: string; messageLocale: Locale } {
+  const explicitLocale = supportedLocale(new URL(request.url).searchParams.get('locale'))
+  if (explicitLocale) return explicitLocale
+
+  const savedLocale =
+    typeof accountLocale === 'string' ? supportedLocale(accountLocale) : null
+  if (savedLocale) return savedLocale
+
   const header = request.headers.get('accept-language') || ''
   const candidates = header
     .split(',')
-    .map((part) => part.split(';')[0]?.trim())
-    .filter((value): value is string => Boolean(value) && value !== '*')
+    .map((part, index) => {
+      const [language, ...parameters] = part.split(';')
+      const qualityParameter = parameters.find((parameter) =>
+        parameter.trim().toLowerCase().startsWith('q=')
+      )
+      const quality = qualityParameter
+        ? Number.parseFloat(qualityParameter.split('=')[1] || '0')
+        : 1
+
+      return {
+        language: language?.trim(),
+        quality: Number.isFinite(quality) ? quality : 0,
+        index,
+      }
+    })
+    .filter(
+      (candidate): candidate is {
+        language: string
+        quality: number
+        index: number
+      } =>
+        Boolean(candidate.language) &&
+        candidate.language !== '*' &&
+        candidate.quality > 0
+    )
+    .sort((a, b) => b.quality - a.quality || a.index - b.index)
+    .map((candidate) => candidate.language)
 
   for (const candidate of candidates) {
-    try {
-      const [canonical] = Intl.getCanonicalLocales(candidate)
-      const messageLocale = canonical
-        .split('-')[0]
-        ?.toLowerCase() as Locale | undefined
-      if (canonical && messageLocale && locales.includes(messageLocale)) {
-        return { intlLocale: canonical, messageLocale }
-      }
-    } catch {
-      // try next locale candidate
-    }
+    const locale = supportedLocale(candidate)
+    if (locale) return locale
   }
 
   return { intlLocale: defaultLocale, messageLocale: defaultLocale }
 }
 
-async function receiptPdfCopy(locale: Locale): Promise<ReceiptPdfCopy> {
+function safeReceiptId(value: unknown): string {
+  const id = String(value ?? '').trim()
+  return id.replace(/[^A-Za-z0-9_-]+/g, '-') || 'order'
+}
+
+function safeLocalizedFilename(value: string, fallbackId: string): string {
+  const filename = value
+    .normalize('NFC')
+    .replace(/[\u0000-\u001f\u007f/\\?%*:|"<>]+/g, '-')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '')
+
+  return filename || `receipt-${fallbackId}.pdf`
+}
+
+function encodeContentDispositionFilename(value: string): string {
+  return encodeURIComponent(value).replace(/[!'()*]/g, (char) =>
+    `%${char.charCodeAt(0).toString(16).toUpperCase()}`
+  )
+}
+
+function receiptContentDisposition(displayId: unknown, localizedFilename: string): string {
+  const fallbackId = safeReceiptId(displayId)
+  const asciiFilename = `receipt-${fallbackId}.pdf`
+  const filename = safeLocalizedFilename(localizedFilename, fallbackId)
+  const encodedFilename = encodeContentDispositionFilename(filename)
+  const rfc5987ParameterName = String.fromCharCode(102, 105, 108, 101, 110, 97, 109, 101)
+  const utf8FileParameter = `${rfc5987ParameterName}*=UTF-8''${encodedFilename}`
+
+  return `attachment; filename="${asciiFilename}"; ${utf8FileParameter}`
+}
+
+
+
+type ReceiptProductTitles = {
+  yearly: string
+  lifetime: string
+}
+
+function localizeReceiptItemTitles(
+  receipt: AccountOrderReceiptFact,
+  productTitles: ReceiptProductTitles
+): AccountOrderReceiptFact {
+  return {
+    ...receipt,
+    items: receipt.items.map((item) => ({
+      ...item,
+      title: localizeKnownProductTitle(item.title, productTitles),
+    })),
+  }
+}
+
+async function receiptPdfAssets(locale: Locale): Promise<ReceiptPdfAssets> {
   const messages = (await import(`../../../../../../../messages/${locale}.json`)).default
   const t = createTranslator({
     locale,
     messages,
     namespace: 'account.receiptPdf',
   })
+  const rootT = createTranslator({
+    locale,
+    messages,
+  })
 
-  return {
+  const copy: ReceiptPdfCopy = {
     title: t('title'),
     orderNumber: (id) => t('orderNumber', { id }),
     billedTo: t('billedTo'),
@@ -79,6 +191,16 @@ async function receiptPdfCopy(locale: Locale): Promise<ReceiptPdfCopy> {
       refunded: t('paymentStatus.refunded'),
       partiallyRefunded: t('paymentStatus.partiallyRefunded'),
       canceled: t('paymentStatus.canceled'),
+      unknown: t('paymentStatus.unknown'),
+    },
+  }
+
+  return {
+    copy,
+    filename: (displayId) => t('filename', { id: safeReceiptId(displayId) }),
+    productTitles: {
+      yearly: rootT('account.productTitles.yearly'),
+      lifetime: rootT('account.productTitles.lifetime'),
     },
   }
 }
@@ -101,20 +223,32 @@ export async function GET(
 
     const profile = projectAccountProfileForReceipt(customer?.metadata)
     const receipt = projectAccountOrderReceipt(order, profile, customer)
-    const locale = resolveLocale(request)
-    const pdf = await buildReceiptPdf(
+    const locale = resolveLocale(
+      request,
+      (customer?.metadata as Record<string, unknown> | undefined)?.locale
+    )
+    const assets = await receiptPdfAssets(locale.messageLocale)
+    const localizedReceipt = localizeReceiptItemTitles(
       receipt,
-      await receiptPdfCopy(locale.messageLocale),
+      assets.productTitles
+    )
+    const pdf = await buildReceiptPdf(
+      localizedReceipt,
+      assets.copy,
       locale.intlLocale
     )
     const pdfBuffer = Buffer.from(pdf)
-    const filename = `receipt-${order.display_id}.pdf`
+    const contentDisposition = receiptContentDisposition(
+      order.display_id,
+      assets.filename(String(order.display_id))
+    )
 
     return new NextResponse(pdfBuffer, {
       status: 200,
       headers: {
         'Content-Type': 'application/pdf',
-        'Content-Disposition': `attachment; filename="${filename}"`,
+        'Content-Language': locale.intlLocale,
+        'Content-Disposition': contentDisposition,
         'Cache-Control': 'private, no-store',
       },
     })

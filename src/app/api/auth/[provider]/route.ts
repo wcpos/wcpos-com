@@ -6,7 +6,14 @@ import {
   OAUTH_REDIRECT_COOKIE,
   OAUTH_REDIRECT_COOKIE_OPTIONS,
 } from '@/lib/oauth-providers'
-import { sanitizeRedirectPath } from '@/lib/safe-redirect'
+import { type Locale } from '@/i18n/config'
+import { supportedBaseLocaleOrDefault } from '@/lib/locale-preferences'
+import { loginPathForLocale } from '@/lib/login-redirect'
+import { localizeRedirectPath, sanitizeRedirectPath } from '@/lib/safe-redirect'
+
+function requestLocale(request: NextRequest): Locale {
+  return supportedBaseLocaleOrDefault(request.nextUrl.searchParams.get('locale'))
+}
 
 export async function GET(
   request: NextRequest,
@@ -17,7 +24,7 @@ export async function GET(
 
     if (!ALLOWED_PROVIDERS.includes(provider)) {
       return NextResponse.json(
-        { error: `Unsupported provider: ${provider}` },
+        { errorCode: 'unsupported_provider', provider },
         { status: 400 }
       )
     }
@@ -27,7 +34,11 @@ export async function GET(
     // The post-sign-in destination travels in a cookie instead.
     const origin = request.nextUrl.origin
     const callbackUrl = new URL(`/api/auth/${provider}/callback`, origin)
-    const redirectTo = sanitizeRedirectPath(request.nextUrl.searchParams.get('redirect'))
+    const locale = requestLocale(request)
+    const redirectTo = sanitizeRedirectPath(
+      request.nextUrl.searchParams.get('redirect')
+    )
+    const localizedRedirectTo = localizeRedirectPath(redirectTo, locale)
 
     const location = await initiateOAuth(provider, callbackUrl.toString())
 
@@ -36,14 +47,17 @@ export async function GET(
     // abandoned flow can never hijack a fresh sign-in's destination.
     response.cookies.set(
       OAUTH_REDIRECT_COOKIE,
-      redirectTo,
+      localizedRedirectTo,
       OAUTH_REDIRECT_COOKIE_OPTIONS
     )
     return response
   } catch (error) {
     authLogger.error`Failed to initiate OAuth: ${error}`
-    return NextResponse.redirect(
-      new URL('/login?error=oauth_failed', request.url)
+    const loginUrl = new URL(
+      loginPathForLocale(requestLocale(request)),
+      request.url
     )
+    loginUrl.searchParams.set('error', 'oauth_failed')
+    return NextResponse.redirect(loginUrl)
   }
 }

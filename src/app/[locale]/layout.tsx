@@ -3,9 +3,10 @@ import { Geist, Geist_Mono } from 'next/font/google'
 import { NextIntlClientProvider } from 'next-intl'
 import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server'
 import { ThemeProvider } from 'next-themes'
-import { locales } from '@/i18n/config'
+import { localeDirections, locales, type Locale } from '@/i18n/config'
 import { ClientLoggingInit } from '@/components/client-logging-init'
 import { ConsentBanner } from '@/components/consent/consent-banner'
+import { alternateOpenGraphLocales, openGraphLocale } from '@/lib/seo'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -23,7 +24,8 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>
 }): Promise<Metadata> {
   const { locale } = await params
-  const t = await getTranslations({ locale, namespace: 'metadata' })
+  const localeKey = locale as Locale
+  const t = await getTranslations({ locale: localeKey, namespace: 'metadata' })
 
   return {
     metadataBase: new URL('https://wcpos.com'),
@@ -35,6 +37,8 @@ export async function generateMetadata({
     openGraph: {
       type: 'website',
       siteName: 'WCPOS',
+      locale: openGraphLocale(localeKey),
+      alternateLocale: alternateOpenGraphLocales(localeKey),
       images: ['/opengraph-image.png'],
       // og:image and twitter:image come from the static src/app/opengraph-image.png
       // file convention. It lives at the APP ROOT, not under [locale]: a static
@@ -64,11 +68,12 @@ export default async function LocaleLayout({
   params: Promise<{ locale: string }>
 }>) {
   const { locale } = await params
-  setRequestLocale(locale)
+  const localeKey = locale as Locale
+  setRequestLocale(localeKey)
   const messages = await getMessages()
 
   return (
-    <html lang={locale} suppressHydrationWarning>
+    <html lang={localeKey} dir={localeDirections[localeKey]} suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

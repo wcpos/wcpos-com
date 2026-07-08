@@ -1,13 +1,16 @@
+import { useTranslations } from 'next-intl'
 import { CtaBand } from '@/components/main/cta-band'
 
 export function CtaSection() {
+  const t = useTranslations('home.cta')
+
   return (
     <CtaBand
-      title="Ready to sell in-store with WooCommerce?"
-      subtitle="Try the live demo or download the free plugin to get started."
+      title={t('title')}
+      subtitle={t('subtitle')}
       actions={[
-        { label: 'Try Live Demo', href: 'https://demo.wcpos.com/pos' },
-        { label: 'Download Free', href: '/downloads', variant: 'inverse' },
+        { label: t('liveDemo'), href: 'https://demo.wcpos.com/pos' },
+        { label: t('download'), href: '/downloads', variant: 'inverse' },
       ]}
     />
   )

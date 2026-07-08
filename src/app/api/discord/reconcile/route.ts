@@ -13,7 +13,7 @@ function isAuthorized(request: NextRequest): boolean {
 
 async function handle(request: NextRequest) {
   if (!isAuthorized(request)) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    return NextResponse.json({ errorCode: 'unauthorized' }, { status: 401 })
   }
 
   try {
@@ -22,7 +22,7 @@ async function handle(request: NextRequest) {
     return NextResponse.json({ ok: true, summary })
   } catch (error) {
     infraLogger.error`Discord role reconciliation failed: ${error}`
-    return NextResponse.json({ error: 'Reconciliation failed' }, { status: 500 })
+    return NextResponse.json({ errorCode: 'reconciliation_failed' }, { status: 500 })
   }
 }
 

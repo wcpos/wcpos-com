@@ -44,7 +44,7 @@ export async function completeCart({
       statusText: response.statusText,
       error: errorData,
     })
-    throw new OrderPendingError('Failed to complete order')
+    throw new OrderPendingError()
   }
 
   const result = await response.json()
@@ -58,7 +58,7 @@ export async function completeCart({
       cartId,
       result,
     })
-    throw new OrderPendingError('Cart completion returned no order id')
+    throw new OrderPendingError()
   }
 
   console.log('[CHECKOUT] Order created successfully:', { orderId })
@@ -96,7 +96,7 @@ export async function capturePayPalOrder({
       status: response.status,
       error: errorData,
     })
-    throw new Error('Failed to capture PayPal order')
+    throw new Error('PAYPAL_CAPTURE_FAILED')
   }
 }
 
@@ -105,8 +105,8 @@ export interface CreatePaymentSessionParams {
   providerId: string
   paymentCollectionId?: string | null
   /**
-   * Message for the thrown Error on failure, so each caller keeps its
-   * existing user-facing copy.
+   * Stable error code for the thrown Error on failure. Customer-facing copy
+   * belongs at the call site so it can come from translations.
    */
   errorMessage?: string
 }
@@ -124,7 +124,7 @@ export async function createPaymentSession<TResult = unknown>({
   cartId,
   providerId,
   paymentCollectionId,
-  errorMessage = 'Failed to create payment session',
+  errorMessage = 'PAYMENT_SESSION_FAILED',
 }: CreatePaymentSessionParams): Promise<TResult> {
   const response = await fetch('/api/store/cart/payment-sessions', {
     method: 'POST',

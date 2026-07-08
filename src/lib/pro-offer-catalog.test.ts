@@ -92,6 +92,37 @@ describe('buildProOfferCatalog', () => {
 
     expect(buildProOfferCatalog([yearly])).toEqual([])
   })
+
+  it('formats customer-facing offer prices with the caller locale', () => {
+    const offers = buildProOfferCatalog(
+      [product('wcpos-pro-yearly', 129, 'variant_yearly')],
+      'usd',
+      'fr'
+    )
+
+    const formatted = new Intl.NumberFormat('fr', {
+      style: 'currency',
+      currency: 'USD',
+    }).format(129)
+    const compact = new Intl.NumberFormat('fr', {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(129)
+
+    expect(offers[0].price.formatted).toBe(formatted)
+    expect(offers[0].price.compact).toBe(compact)
+    expect(offers[0].price.formatted).not.toBe('$129.00')
+  })
+
+  it('preserves cents in compact prices when the amount is fractional', () => {
+    const offers = buildProOfferCatalog([
+      product('wcpos-pro-yearly', 129.99, 'variant_yearly'),
+    ])
+
+    expect(offers[0].price.compact).toBe('$129.99')
+  })
 })
 
 describe('getProOfferCatalog', () => {
@@ -259,25 +290,35 @@ describe('offer presentation helpers', () => {
     )
   })
 
-  it('builds shared price summaries for marketing surfaces', () => {
-    expect(formatHomeProPriceSummary(offers)).toBe(
-      '$129/year or $399 lifetime. No per-register fees.'
-    )
-    expect(formatFounderProPriceSummary(offers)).toBe('$129/yr or $399 once')
+  it('builds shared price summaries from caller-provided translations', () => {
+    expect(
+      formatHomeProPriceSummary(offers, (values) =>
+        `${values.yearly} translated ${values.lifetime} (${values.currency})`
+      )
+    ).toBe('$129 translated $399 (USD)')
+    expect(
+      formatFounderProPriceSummary(offers, (values) =>
+        `${values.yearly} founder ${values.lifetime}`
+      )
+    ).toBe('$129 founder $399')
   })
 
-  it('builds schema.org offers from the same catalog facts', () => {
-    expect(buildProOfferSchemaOffers(offers)).toEqual([
+  it('builds schema.org offers from translated plan names and catalog facts', () => {
+    expect(
+      buildProOfferSchemaOffers(offers, (planId) =>
+        planId === 'yearly' ? 'Translated yearly' : 'Translated lifetime'
+      )
+    ).toEqual([
       {
         '@type': 'Offer',
-        name: 'Yearly License',
+        name: 'Translated yearly',
         priceCurrency: 'USD',
         price: '129',
         availability: 'https://schema.org/InStock',
       },
       {
         '@type': 'Offer',
-        name: 'Lifetime License',
+        name: 'Translated lifetime',
         priceCurrency: 'USD',
         price: '399',
         availability: 'https://schema.org/InStock',

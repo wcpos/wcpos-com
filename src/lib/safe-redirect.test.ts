@@ -32,6 +32,15 @@ describe('sanitizeRedirectPath', () => {
     expect(sanitizeRedirectPath('/fr')).toBe('/')
   })
 
+  it('can preserve a leading locale prefix for server-side redirects', () => {
+    expect(
+      sanitizeRedirectPath('/fr/account', { stripLocalePrefix: false })
+    ).toBe('/fr/account')
+    expect(
+      sanitizeRedirectPath('/de/pro/checkout', { stripLocalePrefix: false })
+    ).toBe('/de/pro/checkout')
+  })
+
   it('does not strip path segments that merely start with a locale string', () => {
     expect(sanitizeRedirectPath('/free-stuff')).toBe('/free-stuff')
   })

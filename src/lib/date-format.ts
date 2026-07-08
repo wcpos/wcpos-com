@@ -2,6 +2,7 @@ const DEFAULT_DATE_FORMAT_OPTIONS: Intl.DateTimeFormatOptions = {
   dateStyle: 'long',
   timeZone: 'UTC',
 }
+const DEFAULT_DATE_LOCALE = 'en'
 
 export function formatDateForLocale(
   date: string | number | Date,
@@ -15,5 +16,9 @@ export function formatDateForLocale(
     ? { timeZone: 'UTC', ...options }
     : DEFAULT_DATE_FORMAT_OPTIONS
 
-  return new Intl.DateTimeFormat(locale, formatOptions).format(parsed)
+  try {
+    return new Intl.DateTimeFormat(locale, formatOptions).format(parsed)
+  } catch {
+    return new Intl.DateTimeFormat(DEFAULT_DATE_LOCALE, formatOptions).format(parsed)
+  }
 }

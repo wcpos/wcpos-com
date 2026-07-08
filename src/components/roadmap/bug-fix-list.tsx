@@ -38,7 +38,10 @@ export function BugFixList({ bugs }: { bugs: RoadmapItem[] }) {
                 className={`size-1.5 shrink-0 self-center rounded-full ${STATUS_DOT[bug.status]}`}
                 aria-hidden
               />
-              <span className="group-hover:text-foreground group-hover:underline">
+              <span
+                className="group-hover:text-foreground group-hover:underline"
+                lang="en"
+              >
                 {bug.title}
               </span>
               <span className="font-mono text-[11px]">

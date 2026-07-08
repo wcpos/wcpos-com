@@ -29,6 +29,32 @@ describe('RoadmapTimeline', () => {
     expect(screen.getByRole('heading', { name: 'v1.9.x' })).toBeInTheDocument()
   })
 
+  it('marks GitHub-authored roadmap details with their source language', () => {
+    const { container } = renderWithIntl(
+      <RoadmapTimeline data={ROADMAP_DEV_FIXTURE} />,
+    )
+
+    expect(
+      screen.getByText(
+        'Roadmap item details come from GitHub and may be shown in English.',
+      ),
+    ).toBeInTheDocument()
+    expect(
+      container.querySelector('[lang="en"] h3') ??
+        container.querySelector('h3[lang="en"]'),
+    ).toHaveTextContent('v1.10.0')
+    expect(
+      screen
+        .getByText(/Offline & stock-state correctness/)
+        .closest('[lang="en"]'),
+    ).toHaveTextContent(/Offline & stock-state correctness/)
+    expect(
+      screen
+        .getByText('Sync engine & offline overhaul: queuing architecture')
+        .closest('[lang="en"]'),
+    ).toHaveTextContent('Sync engine & offline overhaul: queuing architecture')
+  })
+
   it('lights the active-phase chip and leaves Next/Shipped as outlines until scrolled', () => {
     renderWithIntl(<RoadmapTimeline data={ROADMAP_DEV_FIXTURE} />)
     // "Now" is the active release — always a solid, filled chip.

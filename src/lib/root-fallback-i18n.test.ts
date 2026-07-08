@@ -19,6 +19,7 @@ describe('root fallback i18n', () => {
     const copy = rootFallbackCopy('ja-JP,ja;q=0.9')
 
     expect(copy.locale).toBe('ja')
+    expect(copy.direction).toBe('ltr')
     expect(copy.errors.notFoundTitle).toBe('ページが見つかりません')
     expect(copy.support).toBe('サポート')
   })

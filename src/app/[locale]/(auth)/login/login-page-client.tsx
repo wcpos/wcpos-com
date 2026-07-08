@@ -2,7 +2,7 @@
 
 import { Suspense, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
-import { useTranslations } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 import { Link, useRouter } from '@/i18n/navigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -49,9 +49,12 @@ export function LoginPageClient() {
 function LoginPageInner() {
   const t = useTranslations('auth.login')
   const tCommon = useTranslations('auth.common')
+  const locale = useLocale()
   const router = useRouter()
   const searchParams = useSearchParams()
   const redirectTo = sanitizeRedirectPath(searchParams.get('redirect'))
+  const oauthHref = (provider: 'google' | 'github' | 'discord') =>
+    `/api/auth/${provider}?locale=${encodeURIComponent(locale)}&redirect=${encodeURIComponent(redirectTo)}`
   const oauthError = searchParams.get('error')
 
   const [email, setEmail] = useState('')
@@ -187,7 +190,7 @@ function LoginPageInner() {
           <div className="grid gap-2.5">
             <Button variant="outline" asChild>
               <a
-                href={`/api/auth/google?redirect=${encodeURIComponent(redirectTo)}`}
+                href={oauthHref('google')}
                 onClick={() => trackClientEvent('click_oauth_google')}
               >
                 <GoogleMark className="mr-2 h-4 w-4" />
@@ -196,7 +199,7 @@ function LoginPageInner() {
             </Button>
             <Button variant="outline" asChild>
               <a
-                href={`/api/auth/github?redirect=${encodeURIComponent(redirectTo)}`}
+                href={oauthHref('github')}
                 onClick={() => trackClientEvent('click_oauth_github')}
               >
                 <GitHubMark className="mr-2 h-4 w-4" />
@@ -205,7 +208,7 @@ function LoginPageInner() {
             </Button>
             <Button variant="outline" asChild>
               <a
-                href={`/api/auth/discord?redirect=${encodeURIComponent(redirectTo)}`}
+                href={oauthHref('discord')}
                 onClick={() => trackClientEvent('click_oauth_discord')}
               >
                 <DiscordMark className="mr-2 h-4 w-4" />

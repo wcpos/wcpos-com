@@ -17,6 +17,8 @@ export interface ProBuyBoxOption {
   subtitle: string
   badgeLabel: string | null
   priceText: string
+  /** ISO currency code (e.g. USD) shown beside the price so "$" is unambiguous. */
+  currencyCode: string
   priceSuffix: string
   ctaNote: string
   checkoutHref: string
@@ -63,6 +65,7 @@ export function buildProBuyBoxOptions(
     badgeLabel:
       offer.planId === 'yearly' ? t('buyBox.yearly.badgeLabel') : null,
     priceText: offer.price.compact,
+    currencyCode: offer.price.currencyCode.toUpperCase(),
     priceSuffix: t(`buyBox.${offer.planId}.priceSuffix`),
     ctaNote:
       offer.planId === 'lifetime'

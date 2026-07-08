@@ -78,7 +78,7 @@ async function BuyBoxWithExperiment({ locale }: { locale: string }) {
   const storeEnv = await getRequestStoreEnvironment()
   const [t, { offers }] = await Promise.all([
     getTranslations({ locale, namespace: PRO_MESSAGE_NAMESPACE }),
-    getCachedProOfferCatalog(storeEnv.name),
+    getCachedProOfferCatalog(storeEnv.name, locale),
   ])
   // next-intl's Translator is key-typed; the options builder takes a plain
   // string-keyed translate function.

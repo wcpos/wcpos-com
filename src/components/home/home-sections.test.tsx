@@ -75,6 +75,46 @@ describe('ProblemSection', () => {
     expect(screen.getByText('Offline Panic')).toBeInTheDocument()
     expect(screen.getByText('Platform Lock-In')).toBeInTheDocument()
   })
+
+  it('renders translated problem copy from messages', () => {
+    render(
+      <NextIntlClientProvider
+        locale="en"
+        messages={{
+          home: {
+            problem: {
+              title: 'Translated problem heading',
+              items: {
+                doubleEntry: {
+                  label: 'Translated double entry',
+                  description: 'Translated double entry description',
+                },
+                offlinePanic: {
+                  label: 'Translated offline panic',
+                  description: 'Translated offline panic description',
+                },
+                platformLockIn: {
+                  label: 'Translated lock-in',
+                  description: 'Translated lock-in description',
+                },
+              },
+            },
+          },
+        }}
+      >
+        <ProblemSection />
+      </NextIntlClientProvider>
+    )
+
+    expect(
+      screen.getByRole('heading', { name: 'Translated problem heading' })
+    ).toBeInTheDocument()
+    expect(screen.getByText('Translated double entry')).toBeInTheDocument()
+    expect(
+      screen.getByText('Translated offline panic description')
+    ).toBeInTheDocument()
+    expect(screen.getByText('Translated lock-in')).toBeInTheDocument()
+  })
 })
 
 describe('BenefitsSection', () => {
@@ -168,6 +208,57 @@ describe('UseCasesSection', () => {
       )
     }
   })
+
+  it('renders translated use-case copy from messages', () => {
+    render(
+      <NextIntlClientProvider
+        locale="en"
+        messages={{
+          home: {
+            useCases: {
+              title: 'Translated use cases title',
+              reviewSuffix: 'translated review suffix',
+              cards: {
+                retail: {
+                  type: 'Translated retail type',
+                  quote: 'Translated retail quote',
+                  attribution: 'Translated retail attribution',
+                },
+                market: {
+                  type: 'Translated market type',
+                  quote: 'Translated market quote',
+                  attribution: 'Translated market attribution',
+                  note: 'Translated market note',
+                },
+                desktop: {
+                  type: 'Translated desktop type',
+                  quote: 'Translated desktop quote',
+                  attribution: 'Translated desktop attribution',
+                },
+              },
+            },
+          },
+        }}
+      >
+        <UseCasesSection />
+      </NextIntlClientProvider>
+    )
+
+    expect(
+      screen.getByRole('heading', { name: 'Translated use cases title' })
+    ).toBeInTheDocument()
+    expect(screen.getByText('Translated retail type')).toBeInTheDocument()
+    expect(screen.getByText(/Translated market quote/)).toBeInTheDocument()
+    expect(screen.getByText(/Translated market note/)).toBeInTheDocument()
+    expect(
+      screen.getByRole('link', {
+        name: 'Translated desktop attribution, translated review suffix',
+      })
+    ).toHaveAttribute(
+      'href',
+      'https://wordpress.org/support/topic/great-pos-for-your-woocommerce-store/'
+    )
+  })
 })
 
 describe('FeaturesSection', () => {
@@ -210,6 +301,45 @@ describe('TrustSection', () => {
       'https://github.com/wcpos'
     )
   })
+
+  it('renders translated trust copy from messages', () => {
+    render(
+      <NextIntlClientProvider
+        locale="en"
+        messages={{
+          home: {
+            trust: {
+              stats: {
+                activeInstallations: 'Translated active installations',
+                inDevelopmentSince: 'Translated development since',
+                languagesSupported: 'Translated languages supported',
+              },
+              license: 'Translated license label',
+              githubAria: 'Translated GitHub screen reader label',
+              quote: 'Translated customer quote',
+              attribution: 'Translated review attribution',
+              story: 'Translated story link',
+            },
+          },
+        }}
+      >
+        <TrustSection />
+      </NextIntlClientProvider>
+    )
+
+    expect(screen.getByText('Translated active installations')).toBeInTheDocument()
+    expect(screen.getByText('Translated development since')).toBeInTheDocument()
+    expect(screen.getByText('Translated languages supported')).toBeInTheDocument()
+    expect(
+      screen.getByRole('link', { name: /Translated license label/ })
+    ).toHaveAttribute('href', 'https://github.com/wcpos')
+    expect(screen.getByText(/Translated customer quote/)).toBeInTheDocument()
+    expect(screen.getByText('Translated review attribution')).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Translated story link' })).toHaveAttribute(
+      'href',
+      '/about-us'
+    )
+  })
 })
 
 describe('CtaSection', () => {
@@ -222,6 +352,37 @@ describe('CtaSection', () => {
     )
     expect(
       screen.getByRole('link', { name: 'Download Free' })
+    ).toHaveAttribute('href', '/downloads')
+  })
+
+  it('renders translated CTA copy from messages', () => {
+    render(
+      <NextIntlClientProvider
+        locale="en"
+        messages={{
+          home: {
+            cta: {
+              title: 'Translated CTA title',
+              subtitle: 'Translated CTA subtitle',
+              liveDemo: 'Translated live demo',
+              download: 'Translated download',
+            },
+          },
+        }}
+      >
+        <CtaSection />
+      </NextIntlClientProvider>
+    )
+
+    expect(
+      screen.getByRole('heading', { name: 'Translated CTA title' })
+    ).toBeInTheDocument()
+    expect(screen.getByText('Translated CTA subtitle')).toBeInTheDocument()
+    expect(
+      screen.getByRole('link', { name: 'Translated live demo' })
+    ).toHaveAttribute('href', 'https://demo.wcpos.com/pos')
+    expect(
+      screen.getByRole('link', { name: 'Translated download' })
     ).toHaveAttribute('href', '/downloads')
   })
 })

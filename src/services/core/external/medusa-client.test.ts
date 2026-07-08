@@ -291,6 +291,101 @@ describe('medusaClient', () => {
       })
     })
 
+    it('selects the USD region even when Medusa lists another region first', async () => {
+      // The store advertises USD prices, so the cart must resolve to the USD
+      // region regardless of region ordering (Medusa may return EUR first).
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          regions: [
+            {
+              id: 'reg_eu',
+              name: 'Europe',
+              currency_code: 'eur',
+              payment_providers: [
+                { id: 'pp_stripe-ideal_stripe', is_enabled: true },
+              ],
+            },
+            {
+              id: 'reg_us',
+              name: 'Worldwide',
+              currency_code: 'usd',
+              payment_providers: [
+                { id: 'pp_stripe_stripe', is_enabled: true },
+              ],
+            },
+          ],
+        }),
+      })
+
+      await expect(getCartPaymentProviderContext()).resolves.toEqual({
+        cartRegionId: 'reg_us',
+        providerIds: ['pp_stripe_stripe'],
+      })
+    })
+
+    it('falls back to the first region when no USD region exists', async () => {
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          regions: [
+            {
+              id: 'reg_eu',
+              name: 'Europe',
+              currency_code: 'eur',
+              payment_providers: [
+                { id: 'pp_stripe_stripe', is_enabled: true },
+              ],
+            },
+            {
+              id: 'reg_gbp',
+              name: 'UK',
+              currency_code: 'gbp',
+              payment_providers: [
+                { id: 'pp_paypal_paypal', is_enabled: true },
+              ],
+            },
+          ],
+        }),
+      })
+
+      await expect(getCartPaymentProviderContext()).resolves.toEqual({
+        cartRegionId: 'reg_eu',
+        providerIds: ['pp_stripe_stripe'],
+      })
+    })
+
+    it('matches the USD region case-insensitively', async () => {
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          regions: [
+            {
+              id: 'reg_eu',
+              name: 'Europe',
+              currency_code: 'eur',
+              payment_providers: [
+                { id: 'pp_stripe-ideal_stripe', is_enabled: true },
+              ],
+            },
+            {
+              id: 'reg_us',
+              name: 'Worldwide',
+              currency_code: 'USD',
+              payment_providers: [
+                { id: 'pp_stripe_stripe', is_enabled: true },
+              ],
+            },
+          ],
+        }),
+      })
+
+      await expect(getCartPaymentProviderContext()).resolves.toEqual({
+        cartRegionId: 'reg_us',
+        providerIds: ['pp_stripe_stripe'],
+      })
+    })
+
     it('uses the explicit cart region instead of unioning every region', async () => {
       // Single request: the old multi-region branch asked /store/store for a
       // default region — an endpoint that does not exist (404) — so the
@@ -586,6 +681,42 @@ describe('medusaClient', () => {
           expect.objectContaining({
             method: 'POST',
             body: JSON.stringify({ provider_id: 'pp_stripe_stripe' }),
+          })
+        )
+      })
+
+
+      it('sends provider-specific payment-session data when supplied', async () => {
+        mockFetch.mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({
+            payment_collection: {
+              id: 'pay_col_123',
+              payment_sessions: [
+                {
+                  id: 'payses_btcpay',
+                  provider_id: 'pp_btcpay_btcpay',
+                  status: 'pending',
+                  data: { checkoutLink: 'https://btcpay.test/i/inv_123' },
+                },
+              ],
+            },
+          }),
+        })
+
+        await createPaymentSession('pay_col_123', 'pp_btcpay_btcpay', 'jwt_1', {
+          locale: 'fr-FR',
+        })
+
+        expect(mockFetch).toHaveBeenCalledWith(
+          'https://test-store-api.wcpos.com/store/payment-collections/pay_col_123/payment-sessions',
+          expect.objectContaining({
+            method: 'POST',
+            body: JSON.stringify({
+              provider_id: 'pp_btcpay_btcpay',
+              data: { locale: 'fr-FR' },
+            }),
+            headers: expect.objectContaining({ Authorization: 'Bearer jwt_1' }),
           })
         )
       })

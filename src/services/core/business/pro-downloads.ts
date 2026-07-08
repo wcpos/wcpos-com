@@ -9,6 +9,8 @@ export interface ProPluginRelease {
   tagName: string
   name: string
   releaseNotes: string
+  /** GitHub release notes are authored in English. */
+  contentLocale?: string
   publishedAt: string
   assetName: string
   assetApiUrl: string
@@ -34,22 +36,22 @@ export async function getProPluginReleases(): Promise<ProPluginRelease[]> {
 
   return releases
     .filter((release) => !release.draft && !release.prerelease)
-    .map((release) => {
+    .flatMap((release) => {
       const asset = getPrimaryZipAsset(release.assets)
-      if (!asset) return null
+      if (!asset) return []
 
-      return {
+      return [{
         version: normalizeReleaseVersion(release.tagName),
         tagName: release.tagName,
         name: release.name,
         releaseNotes: release.body || '',
+        contentLocale: release.body?.trim() ? 'en' : undefined,
         publishedAt: release.publishedAt,
         assetName: asset.name,
         assetApiUrl: asset.url,
         assetUrl: asset.browser_download_url,
-      } satisfies ProPluginRelease
+      } satisfies ProPluginRelease]
     })
-    .filter((release): release is ProPluginRelease => Boolean(release))
     .sort(
       (a, b) =>
         new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()

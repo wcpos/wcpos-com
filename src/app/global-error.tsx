@@ -5,6 +5,7 @@ import { clientLogger } from '@/lib/client-logger'
 import {
   browserLanguagePreferences,
   rootFallbackCopy,
+  rootFallbackHref,
 } from '@/lib/root-fallback-i18n'
 
 function subscribeToLanguagePreferences() {
@@ -47,9 +48,10 @@ export default function GlobalError({
     noLanguagePreferences
   )
   const copy = rootFallbackCopy(languagePreferences)
+  const homeHref = rootFallbackHref(copy.locale, '/')
 
   return (
-    <html lang={copy.locale}>
+    <html lang={copy.locale} dir={copy.direction}>
       <body
         style={{
           margin: 0,
@@ -101,9 +103,8 @@ export default function GlobalError({
             >
               {copy.errors.tryAgain}
             </button>
-            {/* eslint-disable-next-line @next/next/no-html-link-for-pages -- intentional full reload: client app state is broken when the global boundary renders */}
             <a
-              href="/"
+              href={homeHref}
               style={{
                 padding: '0.5rem 1rem',
                 borderRadius: '0.375rem',

@@ -1,5 +1,12 @@
 import { describe, it, expect } from 'vitest'
-import { localeUrl, languageAlternates, marketingMetadata, SITE_URL } from './seo'
+import {
+  alternateOpenGraphLocales,
+  languageAlternates,
+  localeUrl,
+  marketingMetadata,
+  openGraphLocale,
+  SITE_URL,
+} from './seo'
 import { locales } from '@/i18n/config'
 
 describe('localeUrl', () => {
@@ -57,5 +64,23 @@ describe('marketingMetadata', () => {
     const metadata = marketingMetadata({ locale: 'en', path: '/' })
     expect(metadata).not.toHaveProperty('title')
     expect(metadata).not.toHaveProperty('description')
+  })
+})
+
+describe('OpenGraph locale helpers', () => {
+  it('maps supported app locales to OpenGraph locale tags', () => {
+    expect(openGraphLocale('en')).toBe('en_US')
+    expect(openGraphLocale('fr')).toBe('fr_FR')
+    expect(openGraphLocale('ja')).toBe('ja_JP')
+    expect(openGraphLocale('zh')).toBe('zh_CN')
+  })
+
+  it('returns every other supported OpenGraph locale as alternates', () => {
+    const alternates = alternateOpenGraphLocales('fr')
+
+    expect(alternates).toContain('en_US')
+    expect(alternates).toContain('de_DE')
+    expect(alternates).not.toContain('fr_FR')
+    expect(alternates).toHaveLength(locales.length - 1)
   })
 })

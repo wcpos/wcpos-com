@@ -28,7 +28,7 @@ describe('GET /api/desktop-releases', () => {
     const json = await response.json()
 
     expect(response.status).toBe(404)
-    expect(json.error).toBe('No release found')
+    expect(json).toEqual({ errorCode: 'release_not_found' })
     expect(mockGetLatestRelease).toHaveBeenCalledWith('electron')
   })
 
@@ -90,6 +90,6 @@ describe('GET /api/desktop-releases', () => {
     const json = await response.json()
 
     expect(response.status).toBe(500)
-    expect(json.error).toBe('Failed to fetch release information')
+    expect(json).toEqual({ errorCode: 'failed_fetch_release_information' })
   })
 })

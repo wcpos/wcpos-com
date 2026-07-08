@@ -2,7 +2,7 @@
 
 import { Suspense, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
-import { useTranslations } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 import { Link, useRouter } from '@/i18n/navigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -48,6 +48,7 @@ export function RegisterPageClient() {
 }
 
 function RegisterPageInner() {
+  const locale = useLocale()
   const t = useTranslations('auth.register')
   const tCommon = useTranslations('auth.common')
   const router = useRouter()
@@ -87,7 +88,7 @@ function RegisterPageInner() {
       const response = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password, firstName, lastName }),
+        body: JSON.stringify({ email, password, firstName, lastName, locale }),
       })
 
       const data = await response.json()

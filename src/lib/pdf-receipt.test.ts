@@ -1,5 +1,6 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { inflateSync } from 'zlib'
+import { PDFDocument } from 'pdf-lib'
 import { buildReceiptPdf, type ReceiptPdfCopy } from './pdf-receipt'
 import type { AccountOrderReceiptFact } from './account-order-projection'
 
@@ -38,6 +39,7 @@ const TEST_COPY: ReceiptPdfCopy = {
     refunded: 'Refunded',
     partiallyRefunded: 'Partially refunded',
     canceled: 'Canceled',
+    unknown: 'Translated unknown payment status',
   },
 }
 
@@ -127,6 +129,76 @@ describe('buildReceiptPdf', () => {
     expect(stream).not.toContain(hex('2/1/2026'))
   })
 
+  it('prints localized PDF receipt dates for non-English locales', async () => {
+    const stream = await pageStream(
+      await buildTestReceiptPdf(baseReceipt, 'fr-FR')
+    )
+
+    expect(stream).toContain(hex('1 février 2026'))
+    expect(stream).not.toContain(hex('February 1, 2026'))
+    expect(stream).not.toContain(hex('01/02/2026'))
+  })
+
+  it('prints generated dates in the same localized non-ambiguous format', async () => {
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date('2026-07-08T00:00:00.000Z'))
+
+    try {
+      const localizedCopy: ReceiptPdfCopy = {
+        ...TEST_COPY,
+        generated: (date) => `Généré ${date}`,
+      }
+      const stream = await pageStream(
+        await buildReceiptPdf(baseReceipt, localizedCopy, 'fr-FR')
+      )
+
+      expect(stream).toContain(hex('Généré 8 juillet 2026'))
+      expect(stream).not.toContain(hex('Generated July 8, 2026'))
+      expect(stream).not.toContain(hex('07/08/2026'))
+    } finally {
+      vi.useRealTimers()
+    }
+  })
+
+  it('sets localized PDF document metadata for reader chrome and file previews', async () => {
+    const localizedCopy: ReceiptPdfCopy = {
+      ...TEST_COPY,
+      title: 'Reçu',
+      orderNumber: (id) => `Commande n° ${id}`,
+    }
+    const pdf = await PDFDocument.load(
+      await buildReceiptPdf(baseReceipt, localizedCopy, 'fr-FR')
+    )
+
+    expect(pdf.getTitle()).toBe('Reçu')
+    expect(pdf.getSubject()).toBe('Commande n° 1001')
+    expect(pdf.getAuthor()).toBe('WCPOS')
+    expect(
+      Buffer.from(await pdf.save({ useObjectStreams: false })).toString('latin1')
+    ).toContain('/Lang (fr-FR)')
+  })
+
+  it('falls back instead of throwing when receipt locale tags are malformed', async () => {
+    const stream = await pageStream(
+      await buildTestReceiptPdf(baseReceipt, 'not_a_locale')
+    )
+
+    expect(stream).toContain(hex('February 1, 2026'))
+    expect(stream).not.toContain(hex('2/1/2026'))
+  })
+
+  it('uses translated copy for unknown payment statuses instead of humanizing them in English', async () => {
+    const stream = await pageStream(
+      await buildTestReceiptPdf({
+        ...baseReceipt,
+        paymentStatus: 'requires_action',
+      })
+    )
+
+    expect(stream).toContain(hex('Translated unknown payment status'))
+    expect(stream).not.toContain(hex('Requires action'))
+  })
+
   it('renders billing name, details and tax number when provided', async () => {
     const stream = await pageStream(
       await buildTestReceiptPdf(
@@ -150,6 +222,29 @@ describe('buildReceiptPdf', () => {
     expect(stream).toContain(hex('123 Main St'))
     expect(stream).toContain(hex('Tax ID: 12-3456789'))
     expect(stream).toContain(hex('Paid'))
+  })
+
+  it('formats billing address locality lines for postal-code-first countries', async () => {
+    const stream = await pageStream(
+      await buildTestReceiptPdf(
+        {
+          ...baseReceipt,
+          billingProfile: {
+            ...baseReceipt.billingProfile,
+            countryCode: 'DE',
+            addressLine1: 'Invalidenstraße 117',
+            city: 'Berlin',
+            region: 'Berlin',
+            postalCode: '10115',
+          },
+        },
+        'de-DE'
+      )
+    )
+
+    expect(stream).toContain(hex('10115 Berlin'))
+    expect(stream).toContain(hex('Deutschland'))
+    expect(stream).not.toContain(hex('Berlin, Berlin, 10115'))
   })
 
   it('flags the WooCommerce order number on migrated orders', async () => {
@@ -222,6 +317,7 @@ describe('buildReceiptPdf', () => {
         refunded: '已退款',
         partiallyRefunded: '部分退款',
         canceled: '已取消',
+        unknown: '未知付款状态',
       },
     }
     const stream = await pageStream(

@@ -3,10 +3,16 @@ export function formatOrderAmount(
   currencyCode: string,
   locale: string = 'en-US'
 ): string {
-  return new Intl.NumberFormat(locale, {
+  const options: Intl.NumberFormatOptions = {
     style: 'currency',
     currency: currencyCode.toUpperCase(),
-  }).format(amount)
+  }
+
+  try {
+    return new Intl.NumberFormat(locale, options).format(amount)
+  } catch {
+    return new Intl.NumberFormat('en-US', options).format(amount)
+  }
 }
 
 /**

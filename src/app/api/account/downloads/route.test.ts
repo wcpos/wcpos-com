@@ -27,7 +27,10 @@ describe('GET /api/account/downloads', () => {
     })
 
     const response = await GET()
+    const json = await response.json()
+
     expect(response.status).toBe(401)
+    expect(json).toEqual({ errorCode: 'unauthorized' })
   })
 
   it('returns releases with allowed flags from real entitlement policy', async () => {

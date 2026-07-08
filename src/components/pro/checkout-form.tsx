@@ -17,6 +17,7 @@ import {
   type CheckoutFailure,
 } from './checkout-safety'
 import { useCheckoutFailureMessages } from './checkout/use-checkout-failure-messages'
+import { checkoutSuccessReturnUrl } from './checkout/return-url'
 import type { ProCheckoutVariant } from '@/services/core/analytics/posthog-service'
 
 interface CheckoutFormProps {
@@ -72,7 +73,7 @@ export function CheckoutForm({
       const { error: stripeError, paymentIntent } = await stripe.confirmPayment({
         elements,
         confirmParams: {
-          return_url: `${window.location.origin}/pro/checkout/success`,
+          return_url: checkoutSuccessReturnUrl(window.location.origin, locale),
         },
         redirect: 'if_required',
       })

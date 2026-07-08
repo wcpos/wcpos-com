@@ -10,6 +10,7 @@ import {
 } from '@/components/home/pricing-teaser-section'
 import { TrustSection } from '@/components/home/trust-section'
 import { CtaSection } from '@/components/home/cta-section'
+import { marketingMetadata } from '@/lib/seo'
 
 export async function generateMetadata({
   params,
@@ -18,9 +19,11 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params
   const t = await getTranslations({ locale, namespace: 'home.meta' })
-  return {
+  return marketingMetadata({
+    locale,
+    path: '/',
     description: t('description'),
-  }
+  })
 }
 
 export default async function Home({

@@ -14,6 +14,21 @@ import {
   resolveProOfferCartSelection,
 } from '@/lib/pro-offer-catalog'
 
+function btcpaySessionData(
+  providerId: string,
+  cart: unknown
+): Record<string, unknown> | undefined {
+  if (providerId !== 'pp_btcpay_btcpay' || !cart || typeof cart !== 'object') {
+    return undefined
+  }
+
+  const metadata = (cart as { metadata?: Record<string, unknown> }).metadata
+  const locale = metadata?.locale
+  return typeof locale === 'string' && locale.trim()
+    ? { locale: locale.trim() }
+    : undefined
+}
+
 /**
  * POST /api/store/cart/payment-sessions
  *
@@ -108,7 +123,10 @@ export async function POST(request: NextRequest) {
     }
 
     // Create session within the collection
-    const session = await createPaymentSession(collectionId, providerId, authToken)
+    const sessionData = btcpaySessionData(providerId, currentCart)
+    const session = sessionData
+      ? await createPaymentSession(collectionId, providerId, authToken, sessionData)
+      : await createPaymentSession(collectionId, providerId, authToken)
     if (!session) {
       return storeCartErrorResponse('failed_create_payment_session', 500)
     }

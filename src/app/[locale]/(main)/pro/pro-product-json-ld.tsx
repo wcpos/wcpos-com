@@ -17,11 +17,15 @@ const PRO_MESSAGE_NAMESPACE = 'pro'
  * serves live; the two must never share a cache entry). Experiment variant
  * and locale stay outside the boundary as pure string work.
  */
-export async function getCachedProOfferCatalog(envName: StoreEnvironmentName) {
+export async function getCachedProOfferCatalog(
+  envName: StoreEnvironmentName,
+  locale: string
+) {
   'use cache'
   const catalog = await getProOfferCatalog(
     undefined,
-    getStoreEnvironmentByName(envName)
+    getStoreEnvironmentByName(envName),
+    locale
   )
   applyProOfferCatalogCachePolicy(catalog)
   return catalog
@@ -31,7 +35,7 @@ export async function ProProductJsonLd({ locale }: { locale: string }) {
   // SEO metadata is prerendered into the shared static shell — always live.
   const [t, { offers }] = await Promise.all([
     getTranslations({ locale, namespace: PRO_MESSAGE_NAMESPACE }),
-    getCachedProOfferCatalog('live'),
+    getCachedProOfferCatalog('live', locale),
   ])
 
   return (
@@ -47,7 +51,9 @@ export async function ProProductJsonLd({ locale }: { locale: string }) {
             '@type': 'Organization',
             name: 'WCPOS',
           },
-          offers: buildProOfferSchemaOffers(offers),
+          offers: buildProOfferSchemaOffers(offers, (planId) =>
+            t(`schema.offers.${planId}`)
+          ),
         }),
       }}
     />

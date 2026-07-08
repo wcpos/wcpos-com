@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
     // Validate log structure
     if (!Array.isArray(logs) || logs.length === 0) {
       return NextResponse.json(
-        { error: 'Invalid log format' },
+        { errorCode: 'invalid_log_format' },
         { status: 400 }
       )
     }
@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
         isNaN(Number(entry[0]))
       ) {
         return NextResponse.json(
-          { error: 'Invalid log entry format' },
+          { errorCode: 'invalid_log_entry_format' },
           { status: 400 }
         )
       }

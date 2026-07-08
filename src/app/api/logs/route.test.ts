@@ -45,7 +45,7 @@ describe('POST /api/logs', () => {
 
     expect(response.status).toBe(400)
     const body = await response.json()
-    expect(body.error).toBe('Invalid log format')
+    expect(body).toEqual({ errorCode: 'invalid_log_format' })
   })
 
   it('rejects an empty array with 400', async () => {
@@ -53,7 +53,7 @@ describe('POST /api/logs', () => {
 
     expect(response.status).toBe(400)
     const body = await response.json()
-    expect(body.error).toBe('Invalid log format')
+    expect(body).toEqual({ errorCode: 'invalid_log_format' })
   })
 
   it.each([
@@ -66,7 +66,7 @@ describe('POST /api/logs', () => {
 
     expect(response.status).toBe(400)
     const body = await response.json()
-    expect(body.error).toBe('Invalid log entry format')
+    expect(body).toEqual({ errorCode: 'invalid_log_entry_format' })
   })
 
   it('succeeds without forwarding when Loki is not configured', async () => {
@@ -148,7 +148,7 @@ describe('POST /api/logs', () => {
 
     expect(response.status).toBe(400)
     const body = await response.json()
-    expect(body.error).toBe('Invalid log format')
+    expect(body).toEqual({ errorCode: 'invalid_log_format' })
     expect(mockFetch).not.toHaveBeenCalled()
     expect(errorMock).not.toHaveBeenCalled()
   })

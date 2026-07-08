@@ -5,6 +5,7 @@ import { NextIntlClientProvider } from 'next-intl'
 import type { ReactElement } from 'react'
 import { PosScreen } from './devices/pos-screen'
 import { DeviceTerminal } from './devices/terminal'
+import { CloudSync } from './acts/cloud-sync'
 import { StoryStatic } from './story-static'
 import { ScrollStory } from './scroll-story'
 import messages from '../../../../messages/en.json'
@@ -13,9 +14,12 @@ type ProgressHandler = (value: number) => void
 
 const story = messages.home.story
 
-function renderWithIntl(ui: ReactElement) {
+function renderWithIntl(
+  ui: ReactElement,
+  providerMessages: Parameters<typeof NextIntlClientProvider>[0]['messages'] = messages
+) {
   return render(
-    <NextIntlClientProvider locale="en" messages={messages}>
+    <NextIntlClientProvider locale="en" messages={providerMessages}>
       {ui}
     </NextIntlClientProvider>
   )
@@ -93,6 +97,21 @@ describe('DeviceTerminal', () => {
     expect(screen.getByText('Tap to pay')).toBeInTheDocument()
   })
 
+  it('renders the tap-to-pay label from locale messages', () => {
+    renderWithIntl(<DeviceTerminal />, {
+      home: {
+        story: {
+          terminal: {
+            tapToPay: 'Translated tap label',
+          },
+        },
+      },
+    })
+
+    expect(screen.getByText('Translated tap label')).toBeInTheDocument()
+    expect(screen.queryByText('Tap to pay')).not.toBeInTheDocument()
+  })
+
   it('keeps the tap-to-pay overlay off screenless models', () => {
     const { container } = renderWithIntl(<DeviceTerminal model={3} />)
 
@@ -100,6 +119,32 @@ describe('DeviceTerminal', () => {
     expect(container.querySelector('img')?.getAttribute('src')).toBe(
       '/images/story/hardware/terminal-3.webp'
     )
+  })
+})
+
+
+describe('CloudSync', () => {
+  it('renders status chips from locale messages', () => {
+    renderWithIntl(<CloudSync />, {
+      home: {
+        story: {
+          cloudSync: {
+            products: '{count, number} translated products',
+            synced: 'translated synced',
+            ordersToWoo: 'translated orders to Woo',
+            worksOffline: 'translated offline',
+          },
+        },
+      },
+    })
+
+    expect(screen.getByText('1,204 translated products')).toBeInTheDocument()
+    expect(
+      screen.getByText((_, element) => element?.textContent === '● translated synced')
+    ).toBeInTheDocument()
+    expect(screen.getByText('translated orders to Woo')).toBeInTheDocument()
+    expect(screen.getByText('translated offline')).toBeInTheDocument()
+    expect(screen.queryByText('works offline')).not.toBeInTheDocument()
   })
 })
 

@@ -10,6 +10,7 @@ import {
 } from 'motion/react'
 import type { RoadmapData, RoadmapItem, RoadmapMilestone } from '@/types/roadmap'
 import { usePrefersReducedMotion } from '@/lib/use-prefers-reduced-motion'
+import { formatDateForLocale } from '@/lib/date-format'
 import { BugFixList } from './bug-fix-list'
 import styles from './timeline.module.css'
 
@@ -86,11 +87,11 @@ function fmtDue(dueOn: string | null, locale: string): string | null {
   if (!dueOn) return null
   // GitHub due dates are midnight-UTC timestamps; format in UTC so a
   // negative-offset server timezone can't shift them to the previous month.
-  return new Intl.DateTimeFormat(locale, {
+  return formatDateForLocale(dueOn, locale, {
     month: 'short',
     year: 'numeric',
     timeZone: 'UTC',
-  }).format(new Date(dueOn))
+  })
 }
 
 function StatusGlyph({ status }: { status: RoadmapItem['status'] }) {
@@ -153,11 +154,17 @@ function FeatureRow({ item }: { item: RoadmapItem }) {
       >
         <StatusGlyph status={item.status} />
         <span className="min-w-0 flex-1">
-          <span className="break-words font-medium group-hover:text-wcpos-red dark:group-hover:text-wcpos-red-accent">
+          <span
+            className="break-words font-medium group-hover:text-wcpos-red dark:group-hover:text-wcpos-red-accent"
+            lang="en"
+          >
             {item.title}
           </span>
           {item.description && (
-            <span className="mt-0.5 line-clamp-2 block text-sm text-muted-foreground">
+            <span
+              className="mt-0.5 line-clamp-2 block text-sm text-muted-foreground"
+              lang="en"
+            >
               {item.description}
             </span>
           )}
@@ -274,7 +281,10 @@ function TimelineMilestone({
       )}
 
       <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-        <h3 className="break-words text-2xl font-semibold tracking-tight sm:text-3xl">
+        <h3
+          className="break-words text-2xl font-semibold tracking-tight sm:text-3xl"
+          lang="en"
+        >
           {milestone.title}
         </h3>
         <span className="font-mono text-xs uppercase tracking-wider text-muted-foreground">
@@ -292,7 +302,9 @@ function TimelineMilestone({
       )}
 
       {milestone.description && (
-        <p className="mt-3 max-w-xl text-muted-foreground">{milestone.description}</p>
+        <p className="mt-3 max-w-xl text-muted-foreground" lang="en">
+          {milestone.description}
+        </p>
       )}
 
       {milestone.features.length > 0 && (
@@ -501,6 +513,9 @@ export function RoadmapTimeline({ data }: { data: RoadmapData }) {
 
   return (
     <div className="space-y-4">
+      <p className="text-center text-xs text-muted-foreground">
+        {t('externalContentNotice')}
+      </p>
       <RailGroup label={t('phases.now')} milestones={data.active} tone="now" />
       <RailGroup label={t('phases.next')} milestones={data.upcoming} tone="next" />
       <RailGroup label={t('phases.shipped')} milestones={data.shipped} tone="shipped" />

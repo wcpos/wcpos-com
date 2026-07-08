@@ -229,11 +229,13 @@ export async function register({
   password,
   firstName,
   lastName,
+  locale,
 }: {
   email: string
   password: string
   firstName?: string
   lastName?: string
+  locale?: string
 }): Promise<{ token: string; customer: MedusaCustomer }> {
   // Step 1: Register auth identity
   const authResponse = await fetch(
@@ -274,6 +276,7 @@ export async function register({
         email,
         ...(firstName && { first_name: firstName }),
         ...(lastName && { last_name: lastName }),
+        ...(locale && { metadata: { locale } }),
       }),
     }
   )

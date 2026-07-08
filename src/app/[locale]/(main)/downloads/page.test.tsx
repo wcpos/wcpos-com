@@ -14,13 +14,31 @@ function readMessage(messages: Record<string, unknown>, namespace: string, key: 
 }
 
 vi.mock('next-intl/server', async () => {
-  const messages = (await import('../../../../../messages/en.json')).default
+  const enMessages = (await import('../../../../../messages/en.json')).default
+  const frMessages = (await import('../../../../../messages/fr.json')).default
+  const messagesByLocale = {
+    en: enMessages,
+    fr: frMessages,
+  } as const
+  const testOverrides: Record<string, Record<string, string>> = {
+    'downloads.page': {
+      'steps.plugin.cardTitle': 'Nom localisé du plugin',
+      'steps.plugin.wordpressOrgCta': 'Répertoire localisé',
+    },
+  }
+
   return {
     setRequestLocale: vi.fn(),
     getTranslations: vi.fn(
-      async ({ namespace }: { locale: string; namespace: string }) =>
+      async ({ locale, namespace }: { locale: string; namespace: string }) =>
         (key: string, values?: Record<string, string>) => {
-          let message = readMessage(messages, namespace, key)
+          const messages =
+            messagesByLocale[locale as keyof typeof messagesByLocale] ??
+            enMessages
+          let message =
+            locale === 'fr' && testOverrides[namespace]?.[key]
+              ? testOverrides[namespace][key]
+              : readMessage(messages, namespace, key)
           for (const [name, value] of Object.entries(values ?? {})) {
             message = message.replace(`{${name}}`, value)
           }
@@ -88,5 +106,40 @@ describe('DownloadsPage', () => {
     expect(
       screen.getByRole('heading', { level: 1, name: 'One till, every device.' }),
     ).toBeInTheDocument()
+  })
+
+  it('sources plugin card labels from translations', async () => {
+    const { default: DownloadsPage } = await import(
+      '@/app/[locale]/(main)/downloads/page'
+    )
+
+    render(await DownloadsPage({ params: Promise.resolve({ locale: 'fr' }) }))
+
+    expect(screen.getByText('Nom localisé du plugin')).toBeInTheDocument()
+    expect(
+      screen.getByRole('link', { name: 'Répertoire localisé' }),
+    ).toHaveAttribute('href', 'https://wordpress.org/plugins/woocommerce-pos/')
+  })
+
+  it('keeps fallback release-note bodies in English while localizing surrounding UI', async () => {
+    const { default: DownloadsPage } = await import(
+      '@/app/[locale]/(main)/downloads/page'
+    )
+
+    const { container } = render(
+      await DownloadsPage({ params: Promise.resolve({ locale: 'fr' }) }),
+    )
+
+    expect(
+      screen.getByText(
+        'Les notes de version proviennent de GitHub et peuvent s’afficher en anglais.',
+      ),
+    ).toBeInTheDocument()
+    expect(screen.getByText(/Cash drawer support/)).toBeInTheDocument()
+    expect(screen.queryByText(/Prise en charge du tiroir-caisse/)).not.toBeInTheDocument()
+    expect(
+      screen.getByText(/Cash drawer support/).closest('[lang="en"]'),
+    ).not.toBeNull()
+    expect(container.querySelector('[lang="fr"]')).toBeNull()
   })
 })

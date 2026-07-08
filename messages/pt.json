@@ -3,8 +3,10 @@
     "signIn": "Iniciar sessão",
     "account": "Conta",
     "openMenu": "Abrir menu",
+    "close": "Fechar",
     "accountMenu": "Menu da conta",
-    "signOut": "Terminar sessão"
+    "signOut": "Terminar sessão",
+    "dismiss": "Dispensar"
   },
   "header": {
     "documentation": "Documentação",
@@ -31,7 +33,7 @@
     "companyHeading": "Empresa",
     "downloadHeading": "Baixar",
     "pro": "WCPOS Pro",
-    "roadmap": "Roadmap",
+    "roadmap": "Roteiro",
     "demo": "Demo ao vivo",
     "discord": "Discord",
     "github": "GitHub",
@@ -47,168 +49,226 @@
   },
   "home": {
     "title": "WCPOS",
-    "subtitle": "A fast point of sale for WooCommerce",
+    "subtitle": "Um ponto de venda rápido para WooCommerce",
     "meta": {
-      "description": "Point of Sale for WooCommerce. Sync your products, sell offline, and connect real hardware with native apps for iOS, Android, and desktop."
+      "description": "Ponto de venda para WooCommerce. Sincronize os seus produtos, venda offline e ligue hardware real com aplicações nativas para iOS, Android e computador."
+    },
+    "problem": {
+      "title": "Gerir uma loja WooCommerce e uma loja física não deve significar trabalho a dobrar",
+      "items": {
+        "doubleEntry": {
+          "label": "Entrada duplicada",
+          "description": "Voltar a introduzir produtos num POS separado desperdiça horas e cria erros."
+        },
+        "offlinePanic": {
+          "label": "Pânico offline",
+          "description": "A internet cai e as vendas param. Os clientes esperam. Perde dinheiro."
+        },
+        "platformLockIn": {
+          "label": "Dependência da plataforma",
+          "description": "Os sistemas proprietários prendem os seus dados. Migrar ou personalizar torna-se impossível."
+        }
+      }
+    },
+    "cta": {
+      "title": "Pronto para vender na loja com WooCommerce?",
+      "subtitle": "Experimente a demonstração ao vivo ou descarregue o plugin gratuito para começar.",
+      "liveDemo": "Experimentar demo ao vivo",
+      "download": "Descarregar grátis"
+    },
+    "trust": {
+      "stats": {
+        "activeInstallations": "Instalações ativas",
+        "inDevelopmentSince": "Em desenvolvimento desde",
+        "languagesSupported": "Idiomas suportados"
+      },
+      "license": "Licença GPL",
+      "githubAria": "— WCPOS no GitHub",
+      "quote": "Direto, funcional e simples de usar. 10/10.",
+      "attribution": "Ward, avaliação no wordpress.org",
+      "story": "Ler a nossa história →"
+    },
+    "useCases": {
+      "title": "Funciona para lojas de todos os tipos",
+      "reviewSuffix": "avaliação no wordpress.org",
+      "cards": {
+        "retail": {
+          "type": "Loja de retalho",
+          "quote": "Pesquisei muito ao procurar um POS para o meu site WC existente e quase ignorei este por ser gratuito. Mas ainda bem que o experimentei. Faz tudo o que precisa sem pedir subscrições nem uma percentagem das suas vendas.",
+          "attribution": "nckllnpssy"
+        },
+        "market": {
+          "type": "Vendedora de mercado",
+          "quote": "Sou ceramista em Annecy e vendo através da minha loja WooCommerce e em mercados. Uso o WCPOS há mais de um ano e comprei a licença Pro vitalícia há alguns meses — acho que vale a pena. O Paul responde no Discord, mesmo aos fins de semana.",
+          "attribution": "adeline",
+          "note": "traduzido do francês"
+        },
+        "desktop": {
+          "type": "Desktop e offline",
+          "quote": "Ótimo POS para a sua loja WooCommerce; tem a versão desktop, o que o torna melhor para locais com ligação à internet fraca. Acredito que vêm aí mais excelentes funcionalidades.",
+          "attribution": "rodriguekgl"
+        }
+      }
     },
     "benefits": {
-      "heading": "Why stores choose WCPOS",
+      "heading": "Porque as lojas escolhem o WCPOS",
       "items": {
         "sync": {
-          "headline": "One catalog, two channels",
-          "description": "Your WooCommerce products are your POS products. Update a price or stock level once — it syncs everywhere automatically. No manual entry, no conflicts, no guesswork.",
-          "supporting": "Same products. Same prices. Same customers. Always in sync."
+          "headline": "Um catálogo, dois canais",
+          "description": "Os seus produtos WooCommerce são os seus produtos no POS. Atualize um preço ou nível de stock uma vez — sincroniza automaticamente em todo o lado. Sem introdução manual, sem conflitos, sem adivinhação.",
+          "supporting": "Os mesmos produtos. Os mesmos preços. Os mesmos clientes. Sempre sincronizados."
         },
         "offline": {
-          "headline": "Works offline",
-          "description": "Local-first architecture means the POS keeps running when your connection drops. Products are stored locally and open orders are preserved — they complete and sync as soon as the internet returns.",
-          "supporting": "Never lose an order to internet issues."
+          "headline": "Funciona offline",
+          "description": "A arquitetura local-first significa que o POS continua a funcionar quando a ligação cai. Os produtos ficam guardados localmente e as encomendas abertas são preservadas — concluem-se e sincronizam assim que a internet regressa.",
+          "supporting": "Nunca perca uma encomenda por problemas de internet."
         },
         "hardware": {
-          "headline": "Native apps, real hardware",
-          "description": "Native iOS and Android apps — not a browser tab pretending to be an app. Connect payment terminals, receipt printers, and barcode scanners directly.",
-          "supporting": "Supports Stripe Terminal, SumUp, and more payment hardware."
+          "headline": "Aplicações nativas, hardware real",
+          "description": "Aplicações nativas para iOS e Android — não um separador do navegador a fingir ser uma aplicação. Ligue diretamente terminais de pagamento, impressoras de recibos e leitores de códigos de barras.",
+          "supporting": "Suporta Stripe Terminal, SumUp e mais hardware de pagamento."
         },
         "ownership": {
-          "headline": "You own everything",
-          "description": "Your data stays in your WooCommerce store, on your hosting. No platform lock-in, no third party holding your business hostage. Open source (GPL) — inspect the code, extend it, contribute to it.",
-          "supporting": "Open source. Self-hosted. You're in control."
+          "headline": "Tudo é seu",
+          "description": "Os seus dados ficam na sua loja WooCommerce, no seu alojamento. Sem dependência de plataforma, sem terceiros a manter o seu negócio refém. Open source (GPL) — inspecione o código, estenda-o, contribua para ele.",
+          "supporting": "Open source. Alojado por si. Está no controlo."
         }
       },
       "visuals": {
         "offline": {
-          "title": "Today's Sales",
-          "badge": "Offline",
-          "sale": "Sale #{number}",
-          "completed": "Completed",
-          "queued": "3 sales queued — syncs when you're back online"
+          "title": "Vendas de hoje",
+          "badge": "Sem ligação",
+          "sale": "Venda n.º {number}",
+          "completed": "Concluída",
+          "queued": "3 vendas em fila — sincronizam quando voltar a estar online"
         },
         "hardware": {
-          "tablet": "iPad / Tablet",
-          "terminal": "Card Terminal",
-          "printer": "Receipt Printer",
-          "scanner": "Barcode Scanner"
+          "tablet": "iPad / tablet",
+          "terminal": "Terminal de cartão",
+          "printer": "Impressora de recibos",
+          "scanner": "Leitor de códigos de barras"
         },
         "ownership": {
           "chips": {
-            "hosting": "Your hosting",
-            "data": "Your data",
-            "license": "GPL licensed",
-            "openSource": "Open source"
+            "hosting": "O seu alojamento",
+            "data": "Os seus dados",
+            "license": "Licenciado GPL",
+            "openSource": "Código aberto"
           }
         }
       }
     },
     "features": {
-      "heading": "Built for the demands of physical retail",
+      "heading": "Criado para as exigências do retalho físico",
       "items": {
         "f1": {
-          "title": "Fast product search",
-          "description": "Find products instantly with search, filters, and category browsing. Barcode scanner support."
+          "title": "Pesquisa rápida de produtos",
+          "description": "Encontre produtos instantaneamente com pesquisa, filtros e navegação por categorias. Suporte para leitor de códigos de barras."
         },
         "f2": {
-          "title": "Smooth checkout flow",
-          "description": "Add items, apply discounts, choose payment method. Supports Stripe Terminal, SumUp, cash, and custom gateways."
+          "title": "Fluxo de checkout fluido",
+          "description": "Adicione itens, aplique descontos e escolha o método de pagamento. Suporta Stripe Terminal, SumUp, dinheiro e gateways personalizados."
         },
         "f3": {
-          "title": "Customer profiles",
-          "description": "Add and edit customer info directly in the POS. Track regulars, offer better service."
+          "title": "Perfis de clientes",
+          "description": "Adicione e edite dados de clientes diretamente no POS. Acompanhe clientes habituais e preste um serviço melhor."
         },
         "f4": {
-          "title": "Order history & management",
-          "description": "View past orders, process returns, check order status without switching to WP Admin."
+          "title": "Histórico e gestão de encomendas",
+          "description": "Veja encomendas anteriores, processe devoluções e verifique o estado das encomendas sem mudar para o WP Admin."
         },
         "f5": {
-          "title": "Edit stock & prices on the fly",
-          "description": "Fix a wrong price while serving a customer. Adjust stock without leaving the POS."
+          "title": "Edite stock e preços na hora",
+          "description": "Corrija um preço errado enquanto atende um cliente. Ajuste o stock sem sair do POS."
         },
         "f6": {
-          "title": "End-of-day reports",
-          "description": "Generate sales reports for each shift or day. Cash up quickly, track performance."
+          "title": "Relatórios de fim de dia",
+          "description": "Gere relatórios de vendas para cada turno ou dia. Feche a caixa rapidamente e acompanhe o desempenho."
         }
       }
     },
     "pricing": {
-      "heading": "Start free. Upgrade when you need more.",
-      "fallback": "See full pricing for current Pro options. No per-register fees.",
+      "heading": "Comece gratuitamente. Atualize quando precisar de mais.",
+      "fallback": "Veja os preços completos das opções Pro atuais. Sem taxas por caixa.",
       "free": {
-        "title": "Free",
-        "description": "Free forever. No transaction fees. No limits.",
+        "title": "Gratuito",
+        "description": "Gratuito para sempre. Sem taxas de transação. Sem limites.",
         "features": {
-          "f1": "WooCommerce sync",
-          "f2": "Product search & grid",
-          "f3": "Basic checkout",
-          "f4": "Offline mode",
-          "f5": "Receipt printing",
-          "f6": "Multi-currency",
-          "f7": "Unlimited products"
+          "f1": "Sincronização WooCommerce",
+          "f2": "Pesquisa e grelha de produtos",
+          "f3": "Checkout básico",
+          "f4": "Modo offline",
+          "f5": "Impressão de recibos",
+          "f6": "Multimoeda",
+          "f7": "Produtos ilimitados"
         }
       },
       "pro": {
         "title": "Pro",
-        "intro": "Everything in Free, plus:",
+        "intro": "Tudo o que existe no Gratuito, mais:",
         "features": {
-          "p1": "Payment terminal integration",
-          "p2": "Stock & price editing in POS",
-          "p3": "Order history & management",
-          "p4": "Customer management",
-          "p5": "End-of-day reports",
-          "p6": "Custom payment gateways",
-          "p7": "Priority support"
+          "p1": "Integração com terminal de pagamento",
+          "p2": "Edição de stock e preços no POS",
+          "p3": "Histórico e gestão de encomendas",
+          "p4": "Gestão de clientes",
+          "p5": "Relatórios de fim de dia",
+          "p6": "Gateways de pagamento personalizados",
+          "p7": "Suporte prioritário"
         }
       },
-      "cta": "See Full Pricing & Features"
+      "cta": "Ver preços e funcionalidades completos",
+      "priceSummary": "{yearly}/ano ou {lifetime} vitalício ({currency}). Sem taxas por caixa."
     },
     "ecosystem": {
-      "heading": "One ecosystem. Multiple ways to sell.",
-      "subtitle": "Install the WordPress plugin, then choose your device.",
+      "heading": "Um ecossistema. Várias formas de vender.",
+      "subtitle": "Instale o plugin WordPress e escolha o seu dispositivo.",
       "flow": {
-        "store": "Your WooCommerce Store",
-        "plugin": "WordPress Plugin Installed",
-        "sync": "REST API Sync"
+        "store": "A sua loja WooCommerce",
+        "plugin": "Plugin WordPress instalado",
+        "sync": "Sincronização por REST API"
       },
       "badge": "Beta",
       "devices": {
         "ios": {
           "label": "iOS & iPadOS",
-          "description": "Native app with payment terminal and printer support.",
-          "cta": "Get the iOS beta"
+          "description": "Aplicação nativa com suporte para terminal de pagamento e impressora.",
+          "cta": "Obter a beta para iOS"
         },
         "android": {
           "label": "Android",
-          "description": "Native app with full hardware integration.",
-          "cta": "Get the Android beta"
+          "description": "Aplicação nativa com integração completa de hardware.",
+          "cta": "Obter a beta para Android"
         },
         "desktop": {
           "label": "Windows & macOS",
-          "description": "Desktop application for counter setups.",
-          "cta": "Download for Desktop"
+          "description": "Aplicação de computador para balcões de atendimento.",
+          "cta": "Transferir para computador"
         },
         "web": {
-          "label": "Web Browser",
-          "description": "Try instantly — no installation required.",
-          "cta": "Try Live Demo"
+          "label": "Navegador web",
+          "description": "Experimente instantaneamente — sem instalação necessária.",
+          "cta": "Experimentar demo em direto"
         }
       },
-      "description": "All apps sync with your WooCommerce store via the REST API. Install the free WordPress plugin, then choose your device. Products, stock, and orders stay in sync automatically."
+      "description": "Todas as aplicações sincronizam com a sua loja WooCommerce através da REST API. Instale o plugin WordPress gratuito e escolha o seu dispositivo. Produtos, stock e encomendas mantêm-se sincronizados automaticamente."
     },
     "story": {
       "a1": {
-        "k": "Point of Sale for WooCommerce",
-        "h": "Your WooCommerce store, at the counter.",
-        "b": "WCPOS turns the tablet into your register — same catalog, same stock, same prices, even offline.",
-        "c1": "Try Live Demo",
-        "c2": "Download Free",
+        "k": "Ponto de venda para WooCommerce",
+        "h": "A sua loja WooCommerce no balcão.",
+        "b": "O WCPOS transforma o tablet na sua caixa — o mesmo catálogo, o mesmo stock, os mesmos preços, mesmo offline.",
+        "c1": "Experimentar demonstração",
+        "c2": "Descarregar grátis",
         "badges": {
-          "b1": "5,000+ Active Stores",
-          "b2": "Free & Open Source",
-          "b3": "Since 2014"
+          "b1": "Mais de 5.000 lojas ativas",
+          "b2": "Gratuito e de código aberto",
+          "b3": "Desde 2014"
         }
       },
       "a2": {
-        "k": "Every screen you own",
-        "h": "One POS. Web, desktop, iOS & Android.",
-        "b": "Run the register on the tablet at the counter, the phone on the shop floor, or the laptop in the back office — same store, same data.",
+        "k": "Todos os seus ecrãs",
+        "h": "Um POS. Web, desktop, iOS e Android.",
+        "b": "Use a caixa no tablet ao balcão, o telemóvel no atendimento em loja ou o portátil no escritório — a mesma loja, os mesmos dados.",
         "platforms": {
           "p1": "Web",
           "p2": "Windows",
@@ -218,98 +278,109 @@
         }
       },
       "a3": {
-        "k": "Bring your own hardware",
-        "h": "Works with the equipment you already have.",
-        "b": "Card terminals, thermal receipt printers, barcode scanners — WCPOS doesn’t lock you into proprietary hardware. Plug in what’s already on your counter."
+        "k": "Use o seu próprio hardware",
+        "h": "Funciona com o equipamento que já tem.",
+        "b": "Terminais de cartão, impressoras térmicas de recibos, leitores de códigos de barras — o WCPOS não o prende a hardware proprietário. Ligue o que já tem no balcão."
       },
       "a4": {
-        "k": "Your store, your data",
-        "h": "Synced with WooCommerce. Yours, even offline.",
-        "b": "Every sale lands in your WooCommerce store — you own the data, no middleman. Internet drops? Keep selling; WCPOS syncs when you’re back online."
+        "k": "A sua loja, os seus dados",
+        "h": "Sincronizado com WooCommerce. Seu, mesmo offline.",
+        "b": "Cada venda fica na sua loja WooCommerce — os dados são seus, sem intermediários. A internet caiu? Continue a vender; o WCPOS sincroniza quando voltar a estar online."
       },
       "nav": {
-        "s1": "Scroll ↓",
-        "s2": "Go to act {current} of {total}"
+        "s1": "Deslizar ↓",
+        "s2": "Ir para o ato {current} de {total}"
       },
       "static": {
-        "alt": "A shop counter with a tablet running the WCPOS register, a receipt printer, a card terminal and a barcode scanner"
+        "alt": "Um balcão de loja com um tablet a executar a caixa WCPOS, uma impressora de recibos, um terminal de cartão e um leitor de códigos de barras"
       },
       "pos": {
         "aria": {
-          "main": "WCPOS app",
-          "phone": "WCPOS app, phone"
+          "main": "Aplicação WCPOS",
+          "phone": "Aplicação WCPOS, telemóvel"
         },
-        "store": "POS — US Store",
-        "registerShort": "R{number}",
-        "search": "Search Products",
+        "store": "POS — Loja",
+        "registerShort": "C{number}",
+        "search": "Pesquisar produtos",
         "filters": {
-          "stock": "In Stock ✕",
-          "featured": "Featured",
-          "sale": "On Sale",
-          "category": "Category"
+          "stock": "Em stock ✕",
+          "featured": "Em destaque",
+          "sale": "Em promoção",
+          "category": "Categoria"
         },
+        "variantBadge": "Variantes",
         "products": {
-          "p1": "Tote Bag",
-          "p2": "Candle",
-          "p3": "Mug",
-          "p4": "Soap Bar",
-          "p5": "Notebook",
-          "p6": "Tea Towel"
+          "p1": "Saco de pano",
+          "p2": "Vela",
+          "p3": "Caneca",
+          "p4": "Sabonete",
+          "p5": "Caderno",
+          "p6": "Pano de cozinha"
         },
         "cart": {
-          "c1": "Candle",
-          "c2": "2× Mug",
-          "c3": "Soap Bar"
+          "c1": "Vela",
+          "c2": "2× Caneca",
+          "c3": "Sabonete"
         },
-        "tax": "Tax based on: Shop base address",
-        "showing": "Showing {shown} of {total}",
-        "customer": "Customer:",
-        "guest": "Guest ✕",
+        "tax": "Imposto baseado em: morada base da loja",
+        "showing": "A mostrar {shown} de {total}",
+        "customer": "Cliente:",
+        "guest": "Convidado ✕",
         "subtotal": "Subtotal",
-        "charge": "Charge {amount}",
+        "charge": "Cobrar {amount}",
         "tabs": {
-          "products": "Products",
-          "cart": "Cart"
+          "products": "Produtos",
+          "cart": "Carrinho"
         }
+      },
+      "terminal": {
+        "tapToPay": "Toque para pagar"
+      },
+      "cloudSync": {
+        "products": "{count, number} produtos",
+        "synced": "sincronizados",
+        "ordersToWoo": "pedidos → Woo",
+        "worksOffline": "funciona offline"
       }
     }
   },
   "roadmap": {
     "meta": {
-      "title": "Roadmap",
-      "description": "See what we are building next for WCPOS — upcoming features, milestones, and release progress."
+      "title": "Roteiro",
+      "description": "Veja o que estamos a criar a seguir para o WCPOS — funcionalidades futuras, marcos e progresso de lançamentos."
     },
     "page": {
-      "eyebrow": "Roadmap",
-      "title": "The release train",
-      "description": "Every stop on the way to a faster, offline-proof WCPOS — pulled straight from our GitHub, newest work first."
+      "eyebrow": "Roteiro",
+      "title": "O comboio de lançamentos",
+      "description": "Cada paragem rumo a um WCPOS mais rápido e preparado para funcionar offline — diretamente do nosso GitHub, com o trabalho mais recente primeiro."
     },
     "board": {
-      "link": "live from the WCPOS project board"
+      "link": "em direto do quadro do projeto WCPOS"
     },
     "status": {
-      "done": "Done",
-      "inProgress": "In progress",
-      "planned": "Planned"
+      "done": "Concluído",
+      "inProgress": "Em curso",
+      "planned": "Planeado"
     },
     "timeline": {
-      "empty": "No roadmap items to display yet.",
+      "empty": "Ainda não há itens do roteiro para mostrar.",
       "phases": {
-        "now": "Now",
-        "next": "Next",
-        "shipped": "Shipped"
+        "now": "Agora",
+        "next": "A seguir",
+        "shipped": "Lançado"
       },
-      "progress": "{completed} of {total} done",
-      "progressDue": "{completed} of {total} done · due {date}",
-      "shipped": "shipped",
-      "shippedWithDate": "shipped · {date}"
+      "progress": "{completed} de {total} concluído(s)",
+      "progressDue": "{completed} de {total} concluído(s) · previsto para {date}",
+      "shipped": "lançado",
+      "shippedWithDate": "lançado · {date}",
+      "externalContentNotice": "Os detalhes dos itens do roteiro vêm do GitHub e podem ser apresentados em inglês."
     },
     "bugs": {
-      "summary": "{count, plural, one {+ # bug fix & improvements} other {+ # bug fixes & improvements}}",
+      "summary": "{count, plural, one {+ # correção de erro e melhorias} other {+ # correções de erros e melhorias}}",
       "status": {
-        "done": "fixed",
-        "in_progress": "in progress",
-        "planned": "planned"
+        "done": "corrigido",
+        "in_progress": "em curso",
+        "planned": "planeado"
       }
     }
   },
@@ -324,7 +395,11 @@
     },
     "schema": {
       "name": "WCPOS Pro",
-      "description": "Plugin premium de ponto de venda para WooCommerce. Adiciona integração com terminais de pagamento, edição de stock e preços, gestão de encomendas e clientes, relatórios de fecho do dia, gateways de pagamento personalizados e suporte prioritário."
+      "description": "Plugin premium de ponto de venda para WooCommerce. Adiciona integração com terminais de pagamento, edição de stock e preços, gestão de encomendas e clientes, relatórios de fecho do dia, gateways de pagamento personalizados e suporte prioritário.",
+      "offers": {
+        "yearly": "Licença anual",
+        "lifetime": "Licença vitalícia"
+      }
     },
     "features": {
       "title": "O que está incluído no Pro?",
@@ -441,7 +516,7 @@
         "securePayment": "Processamento de pagamento seguro"
       },
       "account": {
-        "emailLabel": "Email",
+        "emailLabel": "E-mail",
         "emailHint": "Vamos criar a sua conta com este email — a licença e o recibo chegam aqui após a compra.",
         "passwordLabel": "Palavra-passe",
         "existingAccountNotice": "Bem-vindo de volta — já tem uma conta. Introduza a palavra-passe para iniciar sessão e continuar.",
@@ -509,77 +584,77 @@
       "errors": {
         "noProductSelected": "Nenhum produto selecionado",
         "initializeFailed": "Não foi possível iniciar a finalização da compra. Tente novamente.",
-        "checkoutBusy": "Checkout is busy. Please try again.",
-        "paymentRefreshFailed": "Billing address was saved, but we couldn't prepare payment. Please try again.",
-        "methodSwitchFailed": "We couldn't prepare that payment method. Please try again or choose a different one.",
-        "genericPaymentFailed": "We were unable to process your payment. Please try again or use a different payment method.",
-        "genericCardFailed": "Your card could not be charged. Please check your card details, or try a different card or payment method.",
-        "unexpectedPaymentStatus": "We couldn't confirm the status of your payment. If you think you may have been charged, please contact support before trying again.",
-        "orderPending": "Your payment was received, but we couldn't finish creating your order. Please do not pay again — contact support and we will finish your order or refund the payment.",
-        "paypalFailed": "PayPal couldn't complete your payment. You have not been charged — please try again or use a different payment method.",
-        "paypalInitFailed": "We couldn't start the PayPal checkout. Please try again or use a different payment method.",
-        "paypalCancelled": "PayPal checkout was cancelled and you have not been charged. You can try again whenever you're ready.",
-        "btcpayInitFailed": "We couldn't start the Bitcoin payment. You have not been charged — please try again or use a different payment method.",
+        "checkoutBusy": "A finalização da compra está ocupada. Tente novamente.",
+        "paymentRefreshFailed": "O endereço de faturação foi guardado, mas não foi possível preparar o pagamento. Tente novamente.",
+        "methodSwitchFailed": "Não foi possível preparar esse método de pagamento. Tente novamente ou escolha outro.",
+        "genericPaymentFailed": "Não foi possível processar o seu pagamento. Tente novamente ou use outro método de pagamento.",
+        "genericCardFailed": "Não foi possível cobrar o seu cartão. Verifique os dados do cartão ou tente outro cartão ou método de pagamento.",
+        "unexpectedPaymentStatus": "Não foi possível confirmar o estado do seu pagamento. Se acha que poderá ter sido cobrado, contacte o suporte antes de tentar novamente.",
+        "orderPending": "O seu pagamento foi recebido, mas não foi possível terminar a criação da encomenda. Não pague novamente — contacte o suporte e iremos concluir a encomenda ou reembolsar o pagamento.",
+        "paypalFailed": "O PayPal não conseguiu concluir o seu pagamento. Não foi cobrado — tente novamente ou use outro método de pagamento.",
+        "paypalInitFailed": "Não foi possível iniciar a finalização da compra com PayPal. Tente novamente ou use outro método de pagamento.",
+        "paypalCancelled": "A finalização da compra com PayPal foi cancelada e não foi cobrado. Pode tentar novamente quando quiser.",
+        "btcpayInitFailed": "Não foi possível iniciar o pagamento em Bitcoin. Não foi cobrado — tente novamente ou use outro método de pagamento.",
         "stripeDeclines": {
-          "insufficientFunds": "Your card was declined due to insufficient funds. Please use a different card or payment method."
+          "insufficientFunds": "O seu cartão foi recusado por fundos insuficientes. Use outro cartão ou método de pagamento."
         },
         "stripeCodes": {
-          "cardDeclined": "Your card was declined. Please try a different card or payment method.",
-          "expiredCard": "Your card has expired. Please use a different card.",
-          "incorrectCvc": "Your card's security code is incorrect. Please check it and try again.",
-          "invalidCvc": "Your card's security code is invalid. Please check it and try again.",
-          "incorrectNumber": "Your card number appears to be invalid. Please check it and try again.",
-          "invalidNumber": "Your card number appears to be invalid. Please check it and try again.",
-          "invalidExpiryMonth": "Your card's expiry date is invalid. Please check it and try again.",
-          "invalidExpiryYear": "Your card's expiry date is invalid. Please check it and try again.",
-          "processingError": "Something went wrong while processing your card. You have not been charged — please try again.",
-          "authenticationFailure": "We couldn't verify your card with your bank. Please try again or use a different payment method.",
-          "authenticationRequired": "We couldn't verify your card with your bank. Please try again or use a different payment method."
+          "cardDeclined": "O seu cartão foi recusado. Tente outro cartão ou método de pagamento.",
+          "expiredCard": "O seu cartão expirou. Use outro cartão.",
+          "incorrectCvc": "O código de segurança do cartão está incorreto. Verifique-o e tente novamente.",
+          "invalidCvc": "O código de segurança do cartão é inválido. Verifique-o e tente novamente.",
+          "incorrectNumber": "O número do cartão parece ser inválido. Verifique-o e tente novamente.",
+          "invalidNumber": "O número do cartão parece ser inválido. Verifique-o e tente novamente.",
+          "invalidExpiryMonth": "A data de validade do cartão é inválida. Verifique-a e tente novamente.",
+          "invalidExpiryYear": "A data de validade do cartão é inválida. Verifique-a e tente novamente.",
+          "processingError": "Ocorreu um problema ao processar o cartão. Não foi cobrado — tente novamente.",
+          "authenticationFailure": "Não foi possível verificar o cartão junto do seu banco. Tente novamente ou use outro método de pagamento.",
+          "authenticationRequired": "Não foi possível verificar o cartão junto do seu banco. Tente novamente ou use outro método de pagamento."
         }
       },
       "recovery": {
         "contactSupport": "Contactar suporte",
         "contactSupportLower": "Contactar suporte",
-        "switchMethod": "You can also choose a different payment method below.",
+        "switchMethod": "Também pode escolher outro método de pagamento abaixo.",
         "cancelled": {
-          "title": "Payment cancelled"
+          "title": "Pagamento cancelado"
         },
         "unknown": {
-          "title": "Payment status unknown",
-          "prefix": "Please",
-          "suffix": "and quote reference <reference></reference> — we will confirm whether your payment went through before you pay again."
+          "title": "Estado do pagamento desconhecido",
+          "prefix": "Por favor,",
+          "suffix": "e indique a referência <reference></reference> — iremos confirmar se o pagamento foi concluído antes de voltar a pagar."
         },
         "unsuccessful": {
           "title": "Pagamento sem sucesso",
-          "saved": "Your order details have been saved, so you can try again without starting over.",
-          "stuck": "Still stuck?",
-          "quote": "and quote reference <reference></reference>."
+          "saved": "Os detalhes da encomenda foram guardados, por isso pode tentar novamente sem começar do zero.",
+          "stuck": "Ainda está bloqueado?",
+          "quote": "e indique a referência <reference></reference>."
         },
         "orderPending": {
-          "resetConfirm": "Only reset checkout after support confirms it is safe to try again. If your payment is still pending, resetting could lead to a second payment.",
-          "title": "Payment received — order pending",
-          "description": "Your payment went through, but we hit a problem while creating your order.",
-          "doNotPayAgain": "Please do not pay again.",
-          "supportInstructions": "Contact support and quote reference <reference></reference> — we will finish setting up your order or refund your payment.",
-          "contactSupport": "Contact support",
-          "checkLicenses": "Check my licenses",
-          "resetHint": "If support has confirmed this old warning is resolved, you can clear it and start a fresh checkout.",
-          "resetButton": "Support told me to reset checkout"
+          "resetConfirm": "Só reinicie o checkout depois de o suporte confirmar que é seguro tentar novamente. Se o pagamento ainda estiver pendente, reiniciar pode causar um segundo pagamento.",
+          "title": "Pagamento recebido — encomenda pendente",
+          "description": "O pagamento foi concluído, mas ocorreu um problema ao criar a encomenda.",
+          "doNotPayAgain": "Não pague novamente.",
+          "supportInstructions": "Contacte o suporte e indique a referência <reference></reference> — iremos concluir a configuração da encomenda ou reembolsar o pagamento.",
+          "contactSupport": "Contactar o suporte",
+          "checkLicenses": "Verificar as minhas licenças",
+          "resetHint": "Se o suporte confirmou que este aviso antigo está resolvido, pode limpá-lo e iniciar um novo checkout.",
+          "resetButton": "O suporte pediu-me para reiniciar o checkout"
         }
       },
       "successPage": {
         "metadata": {
-          "title": "Order Complete - WCPOS Pro",
-          "description": "Thank you for your purchase of WCPOS Pro"
+          "title": "Encomenda concluída - WCPOS Pro",
+          "description": "Obrigado pela sua compra do WCPOS Pro"
         },
         "title": "Obrigado!",
         "description": "A sua compra do WCPOS Pro está concluída.",
         "nextTitle": "O que acontece a seguir?",
         "next": {
-          "licenseEmail": "✓ Your license key and download link have been sent to your email",
-          "accountDownload": "✓ You can also download from your account's licenses page",
-          "install": "✓ Install and activate the plugin on your WordPress site",
-          "activate": "✓ Enter your license key to unlock Pro features"
+          "licenseEmail": "✓ A sua chave de licença e o link de transferência foram enviados para o seu email",
+          "accountDownload": "✓ Também pode transferir a partir da página de licenças da sua conta",
+          "install": "✓ Instale e ative o plugin no seu site WordPress",
+          "activate": "✓ Introduza a chave de licença para desbloquear as funcionalidades Pro"
         },
         "licenses": "Ir para licenças",
         "installationGuide": "Guia de instalação"
@@ -646,7 +721,7 @@
       "detailsTitle": "Detalhes do Pedido",
       "dateLabel": "Data",
       "statusLabel": "Estado",
-      "emailLabel": "Email",
+      "emailLabel": "E-mail",
       "totalLabel": "Total",
       "itemsTitle": "Itens",
       "quantity": "Qtd.: {count}",
@@ -666,7 +741,7 @@
     "licenses": {
       "heading": "Licenças",
       "loadError": "Falha ao carregar as licenças",
-      "deactivateError": "Falha ao desativar a máquina. Tente novamente.",
+      "deactivateError": "Falha ao desativar o site. Tente novamente.",
       "emptyTitle": "Nenhuma licença encontrada.",
       "emptyDescription": "Adquira o WCPOS Pro para obter uma licença.",
       "planYearly": "Anual",
@@ -701,8 +776,20 @@
       "copiedKey": "Copiada",
       "copyError": "Falha ao copiar a chave de licença. Tente novamente.",
       "apiErrors": {
-        "read_only_inspection": "You are viewing this account in read-only mode."
-      }
+        "read_only_inspection": "Está a visualizar esta conta em modo só de leitura."
+      },
+      "roadmapTeaser": "Veja o que aí vem no roteiro",
+      "activatedSites": "Sites Ativados",
+      "activatedSitesHelp": "Estes são os sites WordPress que usam esta licença. Desative um site inativo ou de teste para libertar uma vaga de ativação.",
+      "instanceId": "Instance ID: {id}",
+      "lastSeen": "Visto pela última vez {date}",
+      "pluginVersionLabel": "WCPOS Pro {version}",
+      "wpVersionLabel": "WP {version}",
+      "wcVersionLabel": "WooCommerce {version}",
+      "deactivateSite": "Desativar site",
+      "deactivateSiteConfirm": "Isto liberta uma vaga de ativação. Se o site ainda estiver em uso, terá de ativar novamente.",
+      "deactivateConfirm": "Desativar",
+      "deactivateCancel": "Cancelar"
     },
     "downloads": {
       "heading": "Transferências",
@@ -740,19 +827,20 @@
       "tokenErrorFallback": "A transferência não está disponível para esta versão",
       "startErrorFallback": "Falha ao iniciar a transferência",
       "apiErrors": {
-        "unauthorized": "Please sign in again to download WCPOS Pro.",
-        "download_token_secret_missing": "Downloads are temporarily unavailable. Please contact support.",
-        "rate_limited": "Too many download requests. Please wait a moment and try again.",
-        "release_not_found": "That WCPOS Pro release could not be found.",
-        "forbidden": "Your license does not include this download.",
-        "internal": "We could not prepare your download. Please try again."
-      }
+        "unauthorized": "Inicie sessão novamente para transferir o WCPOS Pro.",
+        "download_token_secret_missing": "As transferências estão temporariamente indisponíveis. Contacte o suporte.",
+        "rate_limited": "Demasiados pedidos de transferência. Aguarde um momento e tente novamente.",
+        "release_not_found": "Não foi possível encontrar essa versão do WCPOS Pro.",
+        "forbidden": "A sua licença não inclui esta transferência.",
+        "internal": "Não foi possível preparar a sua transferência. Tente novamente."
+      },
+      "externalContentNotice": "As notas de lançamento vêm do GitHub e podem ser apresentadas em inglês."
     },
     "profile": {
       "heading": "Perfil",
       "cardTitle": "Detalhes do perfil",
       "memberSince": "Membro desde",
-      "avatarAlt": "Avatar",
+      "avatarAlt": "Imagem de perfil",
       "avatarLabel": "Avatar do perfil",
       "avatarHint": "Se a sua conta ligada tiver um avatar, este é usado por predefinição.",
       "avatarTooLarge": "A imagem do avatar deve ter 1 MB ou menos.",
@@ -760,7 +848,7 @@
       "removeAvatar": "Remover avatar carregado",
       "firstName": "Nome próprio",
       "lastName": "Apelido",
-      "email": "Email",
+      "email": "E-mail",
       "phone": "Telefone",
       "billingDetails": "Detalhes de faturação para recibos",
       "country": "País",
@@ -823,13 +911,14 @@
       "emailProvider": "Email e palavra-passe",
       "emailDescription": "Inicia sessão com o teu endereço de email.",
       "apiErrors": {
-        "read_only_inspection": "You are viewing this account in read-only mode.",
-        "unauthorized": "Please sign in again to update your profile.",
-        "update_failed": "Failed to update profile"
+        "read_only_inspection": "Está a visualizar esta conta em modo só de leitura.",
+        "unauthorized": "Inicie sessão novamente para atualizar o seu perfil.",
+        "update_failed": "Falha ao atualizar o perfil"
       }
     },
     "receiptPdf": {
       "title": "Recibo",
+      "filename": "recibo-{id}.pdf",
       "orderNumber": "Encomenda n.º {id}",
       "billedTo": "FATURADO A",
       "details": "DETALHES",
@@ -858,17 +947,43 @@
         "paid": "Pago",
         "refunded": "Reembolsado",
         "partiallyRefunded": "Parcialmente reembolsado",
-        "canceled": "Cancelado"
+        "canceled": "Cancelado",
+        "unknown": "Desconhecido"
       }
     },
     "admin": {
-      "title": "Inspect a customer (read-only)",
-      "description": "Enter a customer email to view their account exactly as they see it. You cannot change their data while inspecting.",
-      "submit": "View as"
+      "title": "Inspecionar um cliente (só de leitura)",
+      "description": "Introduza o email de um cliente para ver a conta exatamente como ele a vê. Não pode alterar os dados durante a inspeção.",
+      "submit": "Ver como"
     },
     "impersonation": {
-      "viewing": "🔍 Viewing <strong>{target}</strong> as <strong>read-only</strong> — you cannot change their account.",
-      "exit": "Exit"
+      "viewing": "🔍 A visualizar <strong>{target}</strong> em modo <strong>só de leitura</strong> — não pode alterar esta conta.",
+      "exit": "Sair"
+    },
+    "orderStatus": {
+      "actionRequired": "Ação necessária",
+      "authorized": "Autorizado",
+      "canceled": "Cancelado",
+      "paid": "Pago",
+      "partiallyRefunded": "Parcialmente reembolsado",
+      "pending": "Pendente",
+      "refunded": "Reembolsado",
+      "unknown": "Desconhecido"
+    },
+    "productTitles": {
+      "yearly": "WCPOS Pro anual",
+      "lifetime": "WCPOS Pro vitalício"
+    },
+    "renew": {
+      "summaryLabel": "A renovar a sua licença",
+      "extendsNote": "Estende a sua licença atual por um ano — não perde dias se renovar mais cedo.",
+      "preparing": "A preparar a sua renovação…",
+      "errorBody": "Não foi possível iniciar a sua renovação neste momento. Em alternativa, pode renovar através da finalização da compra completa.",
+      "goToCheckout": "Ir para a finalização da compra",
+      "cancel": "Cancelar",
+      "paymentNotConfigured": "Não há métodos de pagamento configurados. Contacte o suporte.",
+      "pageTitle": "Renove a sua licença",
+      "backToLicences": "Voltar às licenças"
     }
   },
   "metadata": {
@@ -892,7 +1007,7 @@
   },
   "auth": {
     "common": {
-      "email": "Email",
+      "email": "E-mail",
       "password": "Palavra-passe",
       "newPassword": "Nova palavra-passe",
       "firstName": "Nome",
@@ -903,14 +1018,14 @@
       "signIn": "Iniciar sessão",
       "signUp": "Registar",
       "apiErrors": {
-        "invalid_origin": "Please refresh the page and try again.",
-        "rate_limited": "Too many attempts. Please try again later.",
-        "email_required": "Email is required.",
-        "credentials_required": "Email and password are required.",
-        "reset_fields_required": "Email, token, and password are required.",
-        "password_too_short": "Password must be at least {min} characters.",
-        "invalid_credentials": "Invalid email or password.",
-        "invalid_reset_token": "This password reset link is invalid or has expired. Please request a new one."
+        "invalid_origin": "Atualize a página e tente novamente.",
+        "rate_limited": "Demasiadas tentativas. Tente novamente mais tarde.",
+        "email_required": "O e-mail é obrigatório.",
+        "credentials_required": "O e-mail e a palavra-passe são obrigatórios.",
+        "reset_fields_required": "O e-mail, o token e a palavra-passe são obrigatórios.",
+        "password_too_short": "A palavra-passe tem de ter pelo menos {min} caracteres.",
+        "invalid_credentials": "E-mail ou palavra-passe inválidos.",
+        "invalid_reset_token": "Este link de reposição da palavra-passe é inválido ou expirou. Peça um novo."
       }
     },
     "login": {
@@ -919,24 +1034,24 @@
       "title": "Iniciar sessão",
       "description": "Inicie sessão na sua conta WCPOS",
       "forgotPassword": "Esqueceu-se da palavra-passe?",
-      "oauthFailed": "O início de sessão OAuth falhou. Tente novamente ou use email/palavra-passe.",
+      "oauthFailed": "O início de sessão OAuth falhou. Tente novamente ou use e-mail/palavra-passe.",
       "loginFailed": "Falha ao iniciar sessão",
       "submitting": "A iniciar sessão...",
       "oauthDivider": "Ou continue com",
       "noAccount": "Ainda não tem uma conta?",
       "oauthErrors": {
-        "oauth_failed": "O início de sessão OAuth falhou. Tente novamente ou use email/palavra-passe.",
-        "oauth_callback_failed": "O início de sessão OAuth falhou. Tente novamente ou use email/palavra-passe.",
-        "oauth_provider_error": "O início de sessão OAuth falhou. Tente novamente ou use email/palavra-passe.",
-        "oauth_code_missing": "O início de sessão OAuth falhou. Tente novamente ou use email/palavra-passe.",
-        "oauth_state_missing": "O início de sessão OAuth falhou. Tente novamente ou use email/palavra-passe.",
-        "oauth_token_exchange_failed": "O início de sessão OAuth falhou. Tente novamente ou use email/palavra-passe.",
-        "oauth_access_token_missing": "O início de sessão OAuth falhou. Tente novamente ou use email/palavra-passe.",
-        "oauth_user_fetch_failed": "O início de sessão OAuth falhou. Tente novamente ou use email/palavra-passe.",
-        "oauth_email_missing": "O início de sessão OAuth falhou. Tente novamente ou use email/palavra-passe.",
-        "oauth_email_unverified": "O início de sessão OAuth falhou. Tente novamente ou use email/palavra-passe.",
-        "oauth_identity_update_failed": "O início de sessão OAuth falhou. Tente novamente ou use email/palavra-passe.",
-        "oauth_registration_not_supported": "O início de sessão OAuth falhou. Tente novamente ou use email/palavra-passe."
+        "oauth_failed": "O início de sessão OAuth falhou. Tente novamente ou use e-mail/palavra-passe.",
+        "oauth_callback_failed": "O início de sessão OAuth falhou. Tente novamente ou use e-mail/palavra-passe.",
+        "oauth_provider_error": "O fornecedor OAuth cancelou ou rejeitou o início de sessão. Tente novamente.",
+        "oauth_code_missing": "O início de sessão OAuth falhou. Tente novamente ou use e-mail/palavra-passe.",
+        "oauth_state_missing": "A sua sessão de início de sessão expirou. Tente novamente.",
+        "oauth_token_exchange_failed": "O início de sessão OAuth falhou. Tente novamente ou use e-mail/palavra-passe.",
+        "oauth_access_token_missing": "O início de sessão OAuth falhou. Tente novamente ou use e-mail/palavra-passe.",
+        "oauth_user_fetch_failed": "O início de sessão OAuth falhou. Tente novamente ou use e-mail/palavra-passe.",
+        "oauth_email_missing": "O seu perfil OAuth não incluiu um endereço de e-mail. Confirme que o e-mail está disponível no fornecedor e tente novamente.",
+        "oauth_email_unverified": "O seu endereço de e-mail OAuth não está verificado. Verifique-o no fornecedor e tente novamente.",
+        "oauth_identity_update_failed": "O início de sessão OAuth falhou. Tente novamente ou use e-mail/palavra-passe.",
+        "oauth_registration_not_supported": "O início de sessão OAuth falhou. Tente novamente ou use e-mail/palavra-passe."
       }
     },
     "register": {
@@ -944,7 +1059,7 @@
       "metaDescription": "Crie uma conta WCPOS para comprar Pro, gerir licenças e aceder a transferências.",
       "title": "Criar uma conta",
       "description": "Registe-se para obter uma conta WCPOS",
-      "accountExists": "Já existe uma conta com este email. Inicie sessão.",
+      "accountExists": "Já existe uma conta com este e-mail. Inicie sessão.",
       "failed": "Falha no registo",
       "submitting": "A criar conta...",
       "submit": "Criar conta",
@@ -952,10 +1067,10 @@
     },
     "forgotPassword": {
       "metaTitle": "Palavra-passe esquecida",
-      "metaDescription": "Peça um link de reposição para a sua conta WCPOS.",
+      "metaDescription": "Peça um link de reposição da palavra-passe para a sua conta WCPOS.",
       "title": "Esqueceu-se da palavra-passe?",
-      "description": "Introduza o seu email e enviaremos um link de reposição",
-      "submitted": "Se existir uma conta para {email}, um link de reposição da palavra-passe está a caminho. Verifique a caixa de entrada e o spam.",
+      "description": "Introduza o seu e-mail e enviaremos um link de reposição",
+      "submitted": "Se existir uma conta para {email}, um link de reposição da palavra-passe está a caminho. Verifique a caixa de entrada (e a pasta de spam).",
       "submitting": "A enviar...",
       "submit": "Enviar link de reposição",
       "remembered": "Lembrou-se?"
@@ -969,7 +1084,7 @@
       "failed": "Não foi possível repor a palavra-passe",
       "submitting": "A repor...",
       "submit": "Repor palavra-passe",
-      "invalidLink": "Este link não tem o token de reposição — pode ter sido cortado pelo seu cliente de email. Peça um novo abaixo.",
+      "invalidLink": "Este link não tem o token de reposição — pode ter sido cortado pelo seu cliente de e-mail. Peça um novo abaixo.",
       "linkExpired": "Link expirado?",
       "needFreshLink": "Precisa de um novo link?",
       "requestNew": "Pedir novo link de reposição"
@@ -978,502 +1093,520 @@
   "legal": {
     "privacy": {
       "meta": {
-        "title": "Privacy Policy",
-        "description": "How WCPOS collects, uses, and protects your personal data, including analytics, cookies, payment processing, and your rights under GDPR."
+        "title": "Política de Privacidade",
+        "description": "Como o WCPOS recolhe, utiliza e protege os seus dados pessoais, incluindo análises, cookies, processamento de pagamentos e os seus direitos ao abrigo do RGPD."
       },
-      "title": "Privacy Policy",
-      "lastUpdated": "Last updated: {date}",
-      "intro": "WCPOS (\"we\", \"us\") operates wcpos.com, the website for the WCPOS plugin and WCPOS Pro. This policy explains what personal data we collect when you use the site, why we collect it, who processes it on our behalf, and what rights you have over it. We aim to collect as little as we need to run the service.",
+      "title": "Política de Privacidade",
+      "lastUpdated": "Última atualização: {date}",
+      "intro": "O WCPOS (“nós”) opera o wcpos.com, o site do plugin WCPOS e do WCPOS Pro. Esta política explica que dados pessoais recolhemos quando utiliza o site, porque os recolhemos, quem os processa em nosso nome e que direitos tem sobre eles. Procuramos recolher apenas o mínimo necessário para operar o serviço.",
       "collect": {
-        "title": "What we collect",
+        "title": "O que recolhemos",
         "items": {
           "c1": {
-            "label": "Account information.",
-            "body": "Your email address and name when you create an account, either directly or by signing in with Google, GitHub, or Discord. When you use a sign-in provider, we receive only your basic profile (email, name or username, and avatar or picture URL) from that provider, and may store the avatar or picture URL on your account as <code>oauth_avatar_url</code>."
+            "label": "Informações da conta.",
+            "body": "O seu endereço de email e nome quando cria uma conta, diretamente ou ao iniciar sessão com Google, GitHub ou Discord. Quando utiliza um fornecedor de início de sessão, recebemos apenas o seu perfil básico (email, nome ou nome de utilizador, e avatar ou URL da imagem) desse fornecedor, e podemos guardar o URL do avatar ou da imagem na sua conta como <code>oauth_avatar_url</code>."
           },
           "c2": {
-            "label": "Billing details.",
-            "body": "The billing address and any company details you enter at checkout, stored with your customer record so we can issue receipts and comply with tax rules."
+            "label": "Dados de faturação.",
+            "body": "O endereço de faturação e quaisquer dados da empresa que introduza no checkout, guardados no seu registo de cliente para podermos emitir recibos e cumprir as regras fiscais."
           },
           "c3": {
-            "label": "Order and license history.",
-            "body": "Records of your purchases, license keys, and plugin downloads, so you can manage your licenses and we can provide support."
+            "label": "Histórico de encomendas e licenças.",
+            "body": "Registos das suas compras, chaves de licença e transferências de plugins, para que possa gerir as suas licenças e para podermos prestar suporte."
           },
           "c4": {
-            "label": "Payment information.",
-            "body": "Payments are handled by Stripe and PayPal. Your full card number or payment credentials never reach our servers; we receive only a payment confirmation and the details needed for the receipt."
+            "label": "Informações de pagamento.",
+            "body": "Os pagamentos são tratados pela Stripe e pelo PayPal. O número completo do cartão ou as credenciais de pagamento nunca chegam aos nossos servidores; recebemos apenas uma confirmação de pagamento e os dados necessários para o recibo."
           },
           "c5": {
-            "label": "Usage analytics.",
-            "body": "We use PostHog to understand how the site is used (pages viewed, buttons clicked). To do this, we set a cookie containing a randomly generated identifier. It does not contain your name or email."
+            "label": "Análises de utilização.",
+            "body": "Utilizamos o PostHog para compreender como o site é utilizado (páginas vistas, botões clicados). Para isso, definimos um cookie que contém um identificador gerado aleatoriamente. Não contém o seu nome nem o seu email."
           },
           "c6": {
-            "label": "Error reports.",
-            "body": "If something breaks, an error report may be sent to Sentry. Reports can include technical details such as your browser and operating system and what the application was doing at the time of the error."
+            "label": "Relatórios de erro.",
+            "body": "Se algo falhar, pode ser enviado um relatório de erro para a Sentry. Os relatórios podem incluir detalhes técnicos, como o navegador e o sistema operativo, e o que a aplicação estava a fazer no momento do erro."
           },
           "c7": {
-            "label": "Server logs.",
-            "body": "Our servers keep application logs (in Grafana Loki) for debugging and operating the service."
+            "label": "Registos do servidor.",
+            "body": "Os nossos servidores mantêm registos da aplicação (no Grafana Loki) para depuração e operação do serviço."
           }
         }
       },
       "cookies": {
-        "title": "Cookies",
-        "body": "We use a small number of first-party cookies. We do not use third-party advertising cookies.",
+        "title": "Ficheiros cookie",
+        "body": "Utilizamos um pequeno número de cookies próprios. Não utilizamos cookies de publicidade de terceiros.",
         "items": {
-          "k1": "<code>medusa-token</code> — keeps you signed in to your account. Expires after 1 day.",
-          "k2": "<code>wcpos-analytics-consent</code> — remembers your analytics consent choice (accepted or declined). Expires after 182 days.",
-          "k3": "<code>wcpos-distinct-id</code> — a random identifier used for analytics. Only set after you accept analytics on the consent banner; removed if you decline. Expires after 1 year.",
-          "k4": "<code>NEXT_LOCALE</code> — remembers your language preference.",
-          "k5": "Your light/dark theme preference is stored locally in your browser and is never sent to us."
+          "k1": "<code>medusa-token</code> — mantém a sessão iniciada na sua conta. Expira após 1 dia.",
+          "k2": "<code>wcpos-analytics-consent</code> — memoriza a sua escolha de consentimento para análises (aceite ou recusada). Expira após 182 dias.",
+          "k3": "<code>wcpos-distinct-id</code> — um identificador aleatório utilizado para análises. Só é definido depois de aceitar análises no banner de consentimento; é removido se recusar. Expira após 1 ano.",
+          "k4": "<code>NEXT_LOCALE</code> — memoriza a sua preferência de idioma.",
+          "k5": "A sua preferência de tema claro/escuro é guardada localmente no seu navegador e nunca nos é enviada."
         }
       },
       "processors": {
-        "title": "Who processes your data",
-        "body": "We use the following service providers to run wcpos.com. Each receives only the data needed for its role:",
+        "title": "Quem processa os seus dados",
+        "body": "Utilizamos os seguintes fornecedores de serviços para operar o wcpos.com. Cada um recebe apenas os dados necessários para a sua função:",
         "items": {
           "p1": {
-            "label": "Our commerce backend (Medusa)",
-            "body": "— self-hosted on Hetzner infrastructure in the EU. Stores accounts, customer records, and orders."
+            "label": "O nosso backend de comércio (Medusa)",
+            "body": "— alojado por nós em infraestrutura Hetzner na UE. Armazena contas, registos de clientes e encomendas."
           },
           "p2": {
             "label": "Stripe",
-            "body": "— card payment processing."
+            "body": "— processamento de pagamentos com cartão."
           },
           "p3": {
             "label": "PayPal",
-            "body": "— PayPal payment processing."
+            "body": "— processamento de pagamentos PayPal."
           },
           "p4": {
             "label": "Keygen",
-            "body": "— software license management (license keys and activations)."
+            "body": "— gestão de licenças de software (chaves de licença e ativações)."
           },
           "p5": {
             "label": "PostHog",
-            "body": "— product analytics."
+            "body": "— análises de produto."
           },
           "p6": {
             "label": "Sentry",
-            "body": "— error monitoring."
+            "body": "— monitorização de erros."
           },
           "p7": {
             "label": "Vercel",
-            "body": "— website hosting and content delivery."
+            "body": "— alojamento do site e entrega de conteúdo."
           }
         }
       },
       "retention": {
-        "title": "How long we keep data",
+        "title": "Durante quanto tempo conservamos os dados",
         "items": {
-          "r1": "Account and license data is kept while your account is active. If you ask us to delete your account, we delete it, except where we are legally required to keep records.",
-          "r2": "Order and invoice records are kept for as long as tax and accounting laws require.",
-          "r3": "The analytics identifier cookie expires after 1 year.",
-          "r4": "Server logs and error reports are kept for a limited operational window and then deleted."
+          "r1": "Os dados da conta e da licença são mantidos enquanto a sua conta estiver ativa. Se nos pedir para eliminar a sua conta, eliminamo-la, exceto quando formos legalmente obrigados a conservar registos.",
+          "r2": "Os registos de encomendas e faturas são mantidos durante o período exigido pelas leis fiscais e contabilísticas.",
+          "r3": "O cookie identificador de análises expira após 1 ano.",
+          "r4": "Os registos do servidor e relatórios de erro são mantidos durante uma janela operacional limitada e depois eliminados."
         }
       },
       "rights": {
-        "title": "Your rights",
-        "body": "If you are in the EU/EEA or UK, you have rights under the GDPR, including the right to access, correct, delete, and export your personal data, and to object to or restrict certain processing. We extend the same rights to all users regardless of location.",
-        "exercise": "To exercise any of these rights, email us at <email>support@wcpos.com</email> so we can verify your identity privately. EU/EEA residents also have the right to lodge a complaint with their local data protection authority."
+        "title": "Os seus direitos",
+        "body": "Se estiver na UE/EEE ou no Reino Unido, tem direitos ao abrigo do RGPD, incluindo o direito de aceder, corrigir, eliminar e exportar os seus dados pessoais, e de se opor ou restringir determinados tratamentos. Estendemos os mesmos direitos a todos os utilizadores, independentemente da localização.",
+        "exercise": "Para exercer qualquer destes direitos, envie-nos um email para <email>support@wcpos.com</email> para podermos verificar a sua identidade em privado. Os residentes da UE/EEE também têm o direito de apresentar uma reclamação junto da autoridade local de proteção de dados."
       },
       "changes": {
-        "title": "Changes to this policy",
-        "body": "If we make material changes to this policy, we will update the date at the top of this page. Continued use of the site after a change means the updated policy applies."
+        "title": "Alterações a esta política",
+        "body": "Se fizermos alterações materiais a esta política, atualizaremos a data no topo desta página. A utilização continuada do site após uma alteração significa que a política atualizada se aplica."
       },
       "contact": {
-        "title": "Contact",
-        "body": "Questions about this policy or your data? Email us at <email>support@wcpos.com</email> or ask general questions in the community chat on the <support>support page</support>."
+        "title": "Contacto",
+        "body": "Perguntas sobre esta política ou sobre os seus dados? Envie-nos um email para <email>support@wcpos.com</email> ou coloque perguntas gerais no chat da comunidade na <support>página de suporte</support>."
       }
     },
     "refunds": {
       "meta": {
-        "title": "Refund Policy",
-        "description": "The WCPOS Pro refund policy: how to request a refund within 14 days of purchase, and how refunds are paid."
+        "title": "Política de Reembolsos",
+        "description": "A política de reembolso do WCPOS Pro: como pedir um reembolso no prazo de 14 dias após a compra e como os reembolsos são pagos."
       },
-      "title": "Refund Policy",
-      "lastUpdated": "Last updated: {date}",
-      "intro": "WCPOS Pro purchases — first purchase or renewal, yearly or lifetime — can be refunded within 14 days of purchase. Email us within that window and we refund you in full. You do not need to give a reason.",
+      "title": "Política de Reembolsos",
+      "lastUpdated": "Última atualização: {date}",
+      "intro": "As compras do WCPOS Pro — primeira compra ou renovação, anual ou vitalícia — podem ser reembolsadas no prazo de 14 dias após a compra. Envie-nos um email dentro desse prazo e reembolsaremos o valor total. Não precisa de indicar um motivo.",
       "prevention": {
-        "title": "The best refund is the one you never need",
+        "title": "O melhor reembolso é aquele de que nunca precisa",
         "items": {
           "p1": {
-            "label": "Install the free plugin.",
-            "body": "Run the free version of WCPOS on your store for a couple of days before upgrading — that proves the plugin works on your site."
+            "label": "Instale o plugin gratuito.",
+            "body": "Execute a versão gratuita do WCPOS na sua loja durante alguns dias antes de atualizar — isso prova que o plugin funciona no seu site."
           },
           "p2": {
-            "label": "Try the demo.",
-            "body": "The <demo>online demo</demo> runs the current version with Pro activated, so you can confirm it fulfils your store's requirements."
+            "label": "Experimente a demo.",
+            "body": "A <demo>demo online</demo> executa a versão atual com o Pro ativado, para que possa confirmar que cumpre os requisitos da sua loja."
           },
           "p3": {
-            "label": "Read the documentation.",
-            "body": "Check the <docs>docs</docs> for the features you need, and email <email>support@wcpos.com</email> with pre-sale questions — we answer openly and honestly."
+            "label": "Leia a documentação.",
+            "body": "Consulte a <docs>documentação</docs> para as funcionalidades de que precisa e envie perguntas pré-venda para <email>support@wcpos.com</email> — respondemos de forma aberta e honesta."
           }
         }
       },
       "request": {
-        "title": "How to request a refund",
-        "body": "Email <email>support@wcpos.com</email> from the email address you used for the purchase, within 14 days of buying. Telling us why helps us improve, but it is not required to get the refund."
+        "title": "Como pedir um reembolso",
+        "body": "Envie um email para <email>support@wcpos.com</email> a partir do endereço de email que utilizou na compra, no prazo de 14 dias após comprar. Dizer-nos o motivo ajuda-nos a melhorar, mas não é necessário para obter o reembolso."
       },
       "payment": {
-        "title": "How refunds are paid",
-        "body": "Refunds go back to the original payment method via Stripe or PayPal and typically appear on your statement within 5–10 business days, depending on your bank or card issuer. Refunded license keys are revoked and stop working immediately."
+        "title": "Como os reembolsos são pagos",
+        "body": "Os reembolsos regressam ao método de pagamento original através da Stripe ou do PayPal e aparecem normalmente no seu extrato em 5–10 dias úteis, dependendo do seu banco ou emissor do cartão. As chaves de licença reembolsadas são revogadas e deixam de funcionar imediatamente."
       },
       "renewals": {
-        "title": "License renewals",
-        "body": "Yearly licenses do not renew automatically — we never charge you again without a new purchase from you. The same 14-day refund window applies to renewal purchases."
+        "title": "Renovações de licenças",
+        "body": "As licenças anuais não renovam automaticamente — nunca voltamos a cobrar sem uma nova compra da sua parte. A mesma janela de reembolso de 14 dias aplica-se às compras de renovação."
       },
       "rights": {
-        "title": "Your statutory rights",
-        "body": "For consumers in the EU, EEA and UK: our 14-day refund window matches your statutory right of withdrawal for this kind of purchase, and exercising either works the same way — email us within 14 days.",
-        "defective": "If WCPOS Pro is defective or does not work as described, statutory remedies for faulty digital content apply at any time, independent of the 14-day window. And nothing in this policy limits any rights you have under the consumer protection laws of your country — where local law gives you stronger rights, those rights apply."
+        "title": "Os seus direitos legais",
+        "body": "Para consumidores na UE, EEE e Reino Unido: a nossa janela de reembolso de 14 dias corresponde ao seu direito legal de retratação para este tipo de compra, e exercer qualquer um deles funciona da mesma forma — envie-nos um email no prazo de 14 dias.",
+        "defective": "Se o WCPOS Pro tiver defeito ou não funcionar conforme descrito, aplicam-se a qualquer momento os meios legais para conteúdo digital defeituoso, independentemente da janela de 14 dias. E nada nesta política limita quaisquer direitos que tenha ao abrigo das leis de proteção do consumidor do seu país — quando a lei local lhe conceder direitos mais fortes, esses direitos aplicam-se."
       }
     },
     "terms": {
       "meta": {
-        "title": "Terms of Service",
-        "description": "The terms that govern your use of wcpos.com, your WCPOS account, and WCPOS Pro licenses."
+        "title": "Termos de Serviço",
+        "description": "Os termos que regem a utilização do wcpos.com, da sua conta WCPOS e das licenças WCPOS Pro."
       },
-      "title": "Terms of Service",
-      "lastUpdated": "Last updated: {date}",
-      "intro": "These terms govern your use of wcpos.com, your WCPOS account, and any WCPOS Pro license you purchase. By using the site or buying a license, you agree to these terms. If you do not agree, please do not use the service.",
+      "title": "Termos de Serviço",
+      "lastUpdated": "Última atualização: {date}",
+      "intro": "Estes termos regem a utilização do wcpos.com, da sua conta WCPOS e de qualquer licença WCPOS Pro que compre. Ao utilizar o site ou comprar uma licença, aceita estes termos. Se não concordar, não utilize o serviço.",
       "service": {
-        "title": "The service",
-        "body": "WCPOS provides the wcpos.com website, user accounts, and paid WCPOS Pro licenses that unlock premium features, updates, and priority support for the WCPOS plugin."
+        "title": "O serviço",
+        "body": "O WCPOS fornece o site wcpos.com, contas de utilizador e licenças WCPOS Pro pagas que desbloqueiam funcionalidades premium, atualizações e suporte prioritário para o plugin WCPOS."
       },
       "gpl": {
-        "title": "The free plugin and the GPL",
-        "body": "The free WCPOS plugin is open-source software released under the GNU General Public License (GPL). Nothing in these terms limits the rights the GPL grants you over that code. A Pro license is separate: it covers access to Pro features, license keys, automatic updates, and priority support — not a restriction on the open-source code itself."
+        "title": "O plugin gratuito e a GPL",
+        "body": "O plugin gratuito WCPOS é software open-source lançado sob a GNU General Public License (GPL). Nada nestes termos limita os direitos que a GPL lhe concede sobre esse código. Uma licença Pro é separada: cobre o acesso às funcionalidades Pro, chaves de licença, atualizações automáticas e suporte prioritário — não é uma restrição ao próprio código open-source."
       },
       "account": {
-        "title": "Your account",
+        "title": "A sua conta",
         "items": {
-          "a1": "Provide accurate information when registering and keep it up to date.",
-          "a2": "Keep your credentials secure. You are responsible for activity that happens under your account.",
-          "a3": "Tell us promptly at <email>support@wcpos.com</email> if you suspect unauthorized access to your account."
+          "a1": "Forneça informações corretas ao registar-se e mantenha-as atualizadas.",
+          "a2": "Mantenha as suas credenciais seguras. É responsável pela atividade que acontece na sua conta.",
+          "a3": "Informe-nos rapidamente através de <email>support@wcpos.com</email> se suspeitar de acesso não autorizado à sua conta."
         }
       },
       "licenses": {
-        "title": "Purchases and licenses",
+        "title": "Compras e licenças",
         "items": {
-          "l1": "<strong>Yearly license.</strong> A one-time payment that includes Pro features, automatic updates, and priority support for one year. It does not renew automatically and we never charge you again without a new purchase. When it expires, you can choose to renew it from your account for another year.",
-          "l2": "<strong>Lifetime license.</strong> A one-time purchase that includes Pro features, updates, and priority support for the lifetime of the product.",
-          "l3": "License keys are for activating WCPOS Pro on your own sites within the limits of the license you purchased. Do not share, resell, or publish license keys.",
-          "l4": "Prices are shown at checkout before you pay. Payment is handled by Stripe or PayPal.",
-          "l5": "Refunds are handled according to our <policy>refund policy</policy>."
+          "l1": "<strong>Licença anual.</strong> Um pagamento único que inclui funcionalidades Pro, atualizações automáticas e suporte prioritário durante um ano. Não renova automaticamente e nunca voltamos a cobrar sem uma nova compra. Quando expirar, pode optar por renová-la na sua conta por mais um ano.",
+          "l2": "<strong>Licença vitalícia.</strong> Uma compra única que inclui funcionalidades Pro, atualizações e suporte prioritário durante a vida útil do produto.",
+          "l3": "As chaves de licença servem para ativar o WCPOS Pro nos seus próprios sites dentro dos limites da licença que comprou. Não partilhe, revenda nem publique chaves de licença.",
+          "l4": "Os preços são apresentados no checkout antes de pagar. O pagamento é tratado pela Stripe ou pelo PayPal.",
+          "l5": "Os reembolsos são tratados de acordo com a nossa <policy>política de reembolso</policy>."
         }
       },
       "acceptableUse": {
-        "title": "Acceptable use",
-        "body": "When using the service, you agree not to:",
+        "title": "Utilização aceitável",
+        "body": "Ao utilizar o serviço, concorda em não:",
         "items": {
-          "u1": "Break the law or infringe the rights of others.",
-          "u2": "Attempt to gain unauthorized access to accounts, systems, or data, or probe the service for vulnerabilities without permission.",
-          "u3": "Interfere with the operation of the service, including overloading it or automated scraping at disruptive volumes.",
-          "u4": "Circumvent license checks or use license keys beyond the terms of your purchase. (This does not limit your GPL rights over the open-source plugin code.)"
+          "u1": "Violar a lei ou infringir os direitos de terceiros.",
+          "u2": "Tentar obter acesso não autorizado a contas, sistemas ou dados, ou sondar o serviço em busca de vulnerabilidades sem permissão.",
+          "u3": "Interferir com a operação do serviço, incluindo sobrecarregá-lo ou realizar scraping automatizado em volumes disruptivos.",
+          "u4": "Contornar verificações de licença ou utilizar chaves de licença para além dos termos da sua compra. (Isto não limita os seus direitos GPL sobre o código open-source do plugin.)"
         }
       },
       "warranty": {
-        "title": "Warranty disclaimer",
-        "body": "The service and software are provided \"as is\" and \"as available\", without warranties of any kind, express or implied, including merchantability, fitness for a particular purpose, and non-infringement. We do not promise that the service will be uninterrupted or error-free. Some jurisdictions do not allow certain warranty exclusions, so parts of this section may not apply to you."
+        "title": "Exclusão de garantias",
+        "body": "O serviço e o software são fornecidos “tal como estão” e “conforme disponíveis”, sem garantias de qualquer tipo, expressas ou implícitas, incluindo comercialização, adequação a um fim específico e não infração. Não prometemos que o serviço seja ininterrupto ou isento de erros. Algumas jurisdições não permitem certas exclusões de garantia, pelo que partes desta secção podem não se aplicar a si."
       },
       "liability": {
-        "title": "Limitation of liability",
-        "body": "To the maximum extent permitted by law, WCPOS will not be liable for indirect, incidental, special, or consequential damages, or for lost profits, revenue, or data. Our total liability for any claim relating to the service is limited to the amount you paid us in the 12 months before the claim arose. Nothing in these terms excludes liability that cannot be excluded by law."
+        "title": "Limitação de responsabilidade",
+        "body": "Na máxima extensão permitida por lei, o WCPOS não será responsável por danos indiretos, incidentais, especiais ou consequenciais, nem por lucros, receitas ou dados perdidos. A nossa responsabilidade total por qualquer reclamação relacionada com o serviço limita-se ao valor que nos pagou nos 12 meses anteriores ao surgimento da reclamação. Nada nestes termos exclui responsabilidade que não possa ser excluída por lei."
       },
       "termination": {
-        "title": "Termination",
-        "body": "You can stop using the service and ask us to delete your account at any time. We may suspend or terminate accounts that violate these terms. Sections that by their nature should survive (such as the warranty disclaimer and liability limits) survive termination."
+        "title": "Cessação",
+        "body": "Pode deixar de utilizar o serviço e pedir-nos para eliminar a sua conta a qualquer momento. Podemos suspender ou encerrar contas que violem estes termos. As secções que pela sua natureza devam sobreviver (como a exclusão de garantias e os limites de responsabilidade) sobrevivem à cessação."
       },
       "changes": {
-        "title": "Changes to these terms",
-        "body": "If we make material changes, we will update the date at the top of this page. Continued use of the service after a change means the updated terms apply."
+        "title": "Alterações a estes termos",
+        "body": "Se fizermos alterações materiais, atualizaremos a data no topo desta página. A utilização continuada do serviço após uma alteração significa que os termos atualizados se aplicam."
       },
       "contact": {
-        "title": "Contact",
-        "body": "Questions about these terms? Email us at <email>support@wcpos.com</email> or ask in the community chat on the <support>support page</support>."
+        "title": "Contacto",
+        "body": "Perguntas sobre estes termos? Envie-nos um email para <email>support@wcpos.com</email> ou pergunte no chat da comunidade na <support>página de suporte</support>."
       }
     }
   },
   "downloads": {
     "meta": {
-      "title": "Downloads",
-      "description": "Download WCPOS — the free plugin plus the desktop, iOS, Android and web apps. See the latest version and recent release notes."
+      "title": "Transferências",
+      "description": "Transfira o WCPOS — o plugin gratuito, além das aplicações para computador, iOS, Android e web. Veja a versão mais recente e as notas de lançamento recentes."
     },
     "platforms": {
       "mac-arm": {
         "name": "macOS",
         "listLabel": "macOS (Apple Silicon)",
         "short": "Apple Silicon · .dmg",
-        "action": "Download for macOS"
+        "action": "Transferir para macOS"
       },
       "mac-intel": {
         "name": "macOS (Intel)",
         "listLabel": "macOS (Intel)",
         "short": "Intel · .dmg",
-        "action": "Download for macOS"
+        "action": "Transferir para macOS"
       },
       "win": {
         "name": "Windows",
         "listLabel": "Windows",
         "short": "Windows 10/11 · .exe",
-        "action": "Download for Windows"
+        "action": "Transferir para Windows"
       },
       "linux": {
         "name": "Linux",
         "listLabel": "Linux",
         "short": ".AppImage",
-        "action": "Download for Linux"
+        "action": "Transferir para Linux"
       },
       "ios": {
         "name": "iOS & iPad",
         "listLabel": "iOS & iPad",
-        "short": "Public TestFlight beta",
-        "action": "Join the iOS beta"
+        "short": "Beta público no TestFlight",
+        "action": "Aderir à beta do iOS"
       },
       "android": {
         "name": "Android",
         "listLabel": "Android",
-        "short": "Google Play testing beta",
-        "action": "Join the Android beta"
+        "short": "Beta de testes no Google Play",
+        "action": "Aderir à beta do Android"
       },
       "web": {
         "name": "Web",
         "listLabel": "Web",
-        "short": "No install needed",
-        "action": "Open the web demo"
+        "short": "Não precisa de instalação",
+        "action": "Abrir a demo web"
       }
     },
     "hero": {
-      "eyebrow": "Downloads",
-      "title": "One till, every device.",
-      "platformChooserLabel": "Choose your platform",
-      "versionMeta": "Version {version} · {platform}",
-      "detected": "Detected",
-      "intelMac": "On an Intel Mac? <intel>Get the Intel build</intel>",
-      "pluginNotice": "Every app connects to the <plugin>free WordPress plugin</plugin> — install it first."
+      "eyebrow": "Transferências",
+      "title": "Uma caixa, todos os dispositivos.",
+      "platformChooserLabel": "Escolha a sua plataforma",
+      "versionMeta": "Versão {version} · {platform}",
+      "detected": "Detetado",
+      "intelMac": "Num Mac Intel? <intel>Obtenha a versão Intel</intel>",
+      "pluginNotice": "Cada aplicação liga-se ao <plugin>plugin gratuito do WordPress</plugin> — instale-o primeiro."
     },
     "howItFits": {
-      "eyebrow": "How it fits together",
-      "title": "One store at the centre. Every till in sync.",
+      "eyebrow": "Como tudo se encaixa",
+      "title": "Uma loja no centro. Todas as caixas sincronizadas.",
       "points": {
         "setup": {
-          "title": "One plugin is the only setup",
-          "body": "The free plugin adds a secure REST API to your WooCommerce store. That’s the whole install — nothing to host or configure per device."
+          "title": "Um plugin é a única configuração necessária",
+          "body": "O plugin gratuito adiciona uma API REST segura à sua loja WooCommerce. Essa é toda a instalação — nada para alojar ou configurar por dispositivo."
         },
         "sync": {
-          "title": "Every app reads and writes the same store",
-          "body": "Ring up a sale on the desktop, refund it on your phone — one set of products, orders and customers, updating in real time."
+          "title": "Todas as aplicações leem e escrevem na mesma loja",
+          "body": "Registe uma venda no computador, faça o reembolso no telemóvel — um único conjunto de produtos, encomendas e clientes, atualizado em tempo real."
         },
         "offline": {
-          "title": "Offline-first, so the till never stops",
-          "body": "Each device keeps working without a connection and re-syncs the moment it’s back online."
+          "title": "Offline em primeiro lugar, para que a caixa nunca pare",
+          "body": "Cada dispositivo continua a funcionar sem ligação e volta a sincronizar assim que regressa à internet."
         }
       },
-      "syncLabel": "What stays in sync",
+      "syncLabel": "O que se mantém sincronizado",
       "chips": {
-        "c1": "Products & prices",
-        "c2": "Stock levels",
-        "c3": "Orders",
-        "c4": "Customers",
-        "c5": "Tax & receipts"
+        "c1": "Produtos e preços",
+        "c2": "Níveis de stock",
+        "c3": "Encomendas",
+        "c4": "Clientes",
+        "c5": "Impostos e recibos"
+      },
+      "diagram": {
+        "ariaLabel": "Uma loja WooCommerce com o plugin WCPOS fica no centro, ligada por uma API REST às aplicações de computador, iOS, Android e web, que se mantêm sincronizadas.",
+        "devices": {
+          "desktop": "Computador",
+          "ios": "iOS e iPad",
+          "android": "Android",
+          "web": "Web"
+        },
+        "hub": {
+          "store": "A sua loja",
+          "platform": "WooCommerce",
+          "plugin": "+ plugin WCPOS"
+        }
       }
     },
     "page": {
       "beta": "Beta",
       "start": {
-        "eyebrow": "Get started",
-        "title": "Three steps to your first sale",
-        "subtitle": "It takes about two minutes, start to finish."
+        "eyebrow": "Começar",
+        "title": "Três passos até à sua primeira venda",
+        "subtitle": "Demora cerca de dois minutos, do início ao fim."
       },
       "steps": {
         "plugin": {
-          "title": "Install the free plugin",
-          "body": "The foundation everything connects to. In your dashboard: Plugins → Add New, then search “WCPOS”.",
-          "badge": "Free · GPL",
+          "title": "Instale o plugin gratuito",
+          "body": "A base à qual tudo se liga. No seu painel: Plugins → Adicionar novo, depois procure “WCPOS”.",
+          "badge": "Gratuito · GPL",
           "requirements": "WordPress 5.6+ · WooCommerce 5.3+ · PHP 7.4+",
-          "requirementsWithVersion": "Latest {version} · WordPress 5.6+ · WooCommerce 5.3+ · PHP 7.4+"
+          "requirementsWithVersion": "Mais recente {version} · WordPress 5.6+ · WooCommerce 5.3+ · PHP 7.4+",
+          "cardTitle": "WCPOS",
+          "wordpressOrgCta": "WordPress.org"
         },
         "device": {
-          "title": "Pick your device",
-          "body": "All free, all in sync. Grab the one we detected up top, or any of these.",
-          "desktopTitle": "Desktop app",
-          "iosCta": "Join the TestFlight beta",
-          "androidCta": "Join on Google Play",
-          "webCta": "Open the live demo"
+          "title": "Escolha o seu dispositivo",
+          "body": "Tudo gratuito, tudo sincronizado. Obtenha o que detetámos acima ou escolha qualquer um destes.",
+          "desktopTitle": "Aplicação de computador",
+          "iosCta": "Aderir à beta do TestFlight",
+          "androidCta": "Aderir no Google Play",
+          "webCta": "Abrir a demo em direto"
         },
         "pro": {
-          "title": "Want more? Go Pro",
-          "body": "A licensed plugin that adds terminal payments, refunds and stock control on the same foundation.",
-          "cardTitle": "Unlock the full till",
-          "cardBody": "Payments, refunds, stock & pricing, order management, end-of-day reports, multi-store and priority Discord support.",
-          "plansCta": "View Pro plans",
-          "signInCta": "Sign in to download"
+          "title": "Quer mais? Passe para Pro",
+          "body": "Um plugin licenciado que adiciona pagamentos em terminal, reembolsos e controlo de stock sobre a mesma base.",
+          "cardTitle": "Desbloqueie a caixa completa",
+          "cardBody": "Pagamentos, reembolsos, stock e preços, gestão de encomendas, relatórios de fim de dia, várias lojas e suporte prioritário no Discord.",
+          "plansCta": "Ver planos Pro",
+          "signInCta": "Iniciar sessão para transferir"
         }
       }
     },
     "releaseHistory": {
-      "eyebrow": "Release history",
-      "title": "What’s new",
-      "subtitle": "Recent changes — every app shares one version line.",
-      "latest": "Latest",
-      "fullHistory": "Full history on GitHub —",
-      "desktop": "Desktop",
-      "emptyNotes": "_No release notes for this version._",
+      "eyebrow": "Histórico de lançamentos",
+      "title": "Novidades",
+      "subtitle": "Alterações recentes — todas as aplicações partilham a mesma linha de versões.",
+      "latest": "Mais recente",
+      "fullHistory": "Histórico completo no GitHub —",
+      "desktop": "Computador",
+      "emptyNotes": "_Sem notas de lançamento para esta versão._",
       "fallback": {
         "v196": "- Cash drawer support — auto-open after payment or via a new Open Drawer button, with per-printer connectors (ESC-POS, Epson, PrintNode, cloud)\n- Fixed analytics events firing too often\n- Updated translations",
         "v195": "- Fixed a payment-gateways API crash (HTTP 500 with some third-party gateways, e.g. ToyyibPay)",
         "v194": "- Redesigned Bluetooth printer setup; serial printing for OS-paired Bluetooth Classic printers\n- Improved Windows raw printing; smoother USB flow",
         "v190": "- New receipt template gallery; thermal printing (58/80mm)\n- Customer Tax IDs; Pro coupons & refunds at the POS"
       },
-      "plugin": "Free"
+      "plugin": "Gratuito",
+      "externalContentNotice": "As notas de lançamento vêm do GitHub e podem ser apresentadas em inglês."
     }
   },
   "about": {
     "meta": {
-      "title": "About",
-      "description": "The story behind WCPOS — an independent point of sale built by a former shopkeeper and funded by shopkeepers, not investors."
+      "title": "Sobre",
+      "description": "A história por trás do WCPOS — um ponto de venda independente criado por um antigo lojista e financiado por lojistas, não por investidores."
     },
     "hero": {
-      "eyebrow": "Our story",
-      "title": "An independent point of sale for WooCommerce",
-      "subtitle": "Built by a former shopkeeper, funded by shopkeepers — not investors. One developer, more than a decade of releases, still shipping."
+      "eyebrow": "A nossa história",
+      "title": "Um ponto de venda independente para WooCommerce",
+      "subtitle": "Criado por um antigo lojista, financiado por lojistas — não por investidores. Um programador, mais de uma década de lançamentos, ainda em desenvolvimento."
     },
     "founder": {
-      "photoAlt": "Paul at Urban Locavore, his Perth shop",
-      "photoCaption": "Urban Locavore, Perth — the store that started it all",
-      "eyebrow": "A note from the developer",
-      "intro": "Hi — I'm Paul. I built WCPOS.",
-      "p1": "That's me, back when it all started. I opened Urban Locavore in Perth in December 2011 with hundreds of products already in WooCommerce and no way to sell them at the counter — so I built a register myself. When the shop closed in April 2014, I put it on WordPress.org for anyone who needed it. <strong>POS plugins for WooCommerce have come and gone since then. This one hasn't.</strong> More than a decade of releases, one developer, still shipping — and the free version is still the real thing: sell, print, stay in sync. It stays free.",
-      "p2": "<strong>Pro is why it's still here.</strong> It adds extra tools for running your store — card readers, refunds at the till, end-of-day reports, multi-store — and it funds every release, free ones included. No investors, no acquisition exit waiting. Shopkeepers fund it directly.",
-      "p3": "And Pro users have a direct line: tell me what your shop needs, and it shapes what I build next.",
+      "photoAlt": "Paul na Urban Locavore, a sua loja em Perth",
+      "photoCaption": "Urban Locavore, Perth — a loja onde tudo começou",
+      "eyebrow": "Uma nota do programador",
+      "intro": "Olá — sou o Paul. Criei o WCPOS.",
+      "p1": "Sou eu, na altura em que tudo começou. Abri a Urban Locavore em Perth em dezembro de 2011 com centenas de produtos já no WooCommerce e sem forma de os vender ao balcão — por isso criei uma caixa registadora. Quando a loja fechou em abril de 2014, publiquei-a no WordPress.org para quem precisasse. <strong>Os plugins de POS para WooCommerce apareceram e desapareceram desde então. Este não.</strong> Mais de uma década de lançamentos, um programador, ainda em desenvolvimento — e a versão gratuita continua a ser real: vender, imprimir, manter tudo sincronizado. Continua gratuita.",
+      "p2": "<strong>O Pro é a razão pela qual isto continua aqui.</strong> Adiciona ferramentas extra para gerir a sua loja — leitores de cartões, reembolsos na caixa, relatórios de fim de dia, várias lojas — e financia todos os lançamentos, incluindo os gratuitos. Sem investidores, sem uma aquisição à espera. Os lojistas financiam-no diretamente.",
+      "p3": "E os utilizadores Pro têm uma linha direta: diga-me o que a sua loja precisa, e isso molda o que vou criar a seguir.",
       "signature": {
         "name": "Paul Kilmurray",
-        "role": "developer & former shopkeeper ·"
+        "role": "programador e antigo lojista ·"
       },
       "ps": {
         "label": "P.S.",
-        "withPrice": "— Pro is <price></price>.",
-        "fallback": "— Pro is available from the Pro page.",
-        "licence": "If a licence lapses, Pro keeps working; you just stop getting updates."
+        "withPrice": "— O Pro custa <price></price>.",
+        "fallback": "— O Pro está disponível na página Pro.",
+        "licence": "Se uma licença expirar, o Pro continua a funcionar; apenas deixa de receber atualizações.",
+        "priceSummary": "{yearly}/ano ou {lifetime} uma vez"
       }
     },
     "timeline": {
-      "heading": "How it started, and why it's still here",
+      "heading": "Como começou e porque continua aqui",
       "dates": {
         "range": "{start} – {end}",
-        "today": "Today"
+        "today": "Hoje"
       },
       "items": {
         "m1": {
-          "title": "Urban Locavore opens",
-          "body": "A small food store in Perth, with hundreds of products already in WooCommerce — and no way to sell them at the counter."
+          "title": "A Urban Locavore abre",
+          "body": "Uma pequena loja alimentar em Perth, com centenas de produtos já no WooCommerce — e sem forma de os vender ao balcão."
         },
         "m2": {
-          "title": "A register, built out of necessity",
-          "body": "With nothing on the market that fit, Paul built a point of sale for his own shop — Backbone.js and an in-browser IndexedDB database, on top of the store he already ran online."
+          "title": "Uma caixa criada por necessidade",
+          "body": "Sem nada no mercado que servisse, o Paul criou um ponto de venda para a sua própria loja — Backbone.js e uma base de dados IndexedDB no navegador, sobre a loja que já geria online."
         },
         "m3": {
-          "title": "The shop closes",
-          "body": "Urban Locavore winds down — but the register it ran on still works, and other WooCommerce stores need the same thing."
+          "title": "A loja fecha",
+          "body": "A Urban Locavore encerra — mas a caixa em que funcionava continua a trabalhar, e outras lojas WooCommerce precisam da mesma coisa."
         },
         "m4": {
-          "title": "Released on WordPress.org",
-          "body": "WCPOS goes public, free for anyone who needs it. The free version does the actual job: sell, print, stay in sync."
+          "title": "Lançado no WordPress.org",
+          "body": "O WCPOS torna-se público, gratuito para quem precisar. A versão gratuita faz o trabalho a sério: vender, imprimir, manter tudo sincronizado."
         },
         "m5": {
-          "title": "Rewritten in React Native",
-          "body": "Four years of rebuilding from scratch land as v1.0.0: one codebase for every screen. The desktop app ships the same day — phones and tablets are next."
+          "title": "Reescrito em React Native",
+          "body": "Quatro anos de reconstrução de raiz chegam como v1.0.0: uma única base de código para todos os ecrãs. A aplicação de computador é lançada no mesmo dia — telemóveis e tablets vêm a seguir."
         },
         "m6": {
-          "title": "Native mobile apps",
-          "body": "The React Native bet pays off: WCPOS arrives on iOS and Android in open beta — the same register, now on the hardware already in the shop."
+          "title": "Aplicações móveis nativas",
+          "body": "A aposta em React Native compensa: o WCPOS chega ao iOS e ao Android em beta aberta — a mesma caixa, agora no hardware que já está na loja."
         },
         "m7": {
-          "title": "Still shipping",
-          "body": "More than a decade on. One developer, funded by Pro, still releasing — and the free version is still the real thing."
+          "title": "Ainda em desenvolvimento",
+          "body": "Mais de uma década depois. Um programador, financiado pelo Pro, ainda a lançar versões — e a versão gratuita continua a ser real."
         }
       }
     },
     "values": {
-      "heading": "What it stands for",
+      "heading": "O que representa",
       "items": {
         "v1": {
-          "title": "Independent",
-          "body": "No investors, no acquisition exit waiting. The roadmap answers to the shopkeepers using it — not a board."
+          "title": "Independente",
+          "body": "Sem investidores, sem uma aquisição à espera. O roteiro responde aos lojistas que o utilizam — não a um conselho de administração."
         },
         "v2": {
-          "title": "Funded by Pro",
-          "body": "Pro tools fund every release, free ones included. Shopkeepers pay for it directly, and that keeps the free version free."
+          "title": "Financiado pelo Pro",
+          "body": "As ferramentas Pro financiam todos os lançamentos, incluindo os gratuitos. Os lojistas pagam diretamente por elas, e é isso que mantém a versão gratuita sem custos."
         },
         "v3": {
-          "title": "Open & GPL",
-          "body": "Released on WordPress.org under the GPL. Yours to use, inspect, and keep — wherever WooCommerce runs."
+          "title": "Aberto e GPL",
+          "body": "Lançado no WordPress.org sob a GPL. É seu para usar, inspecionar e manter — onde quer que o WooCommerce funcione."
         },
         "v4": {
-          "title": "A fair licence",
-          "body": "If a Pro licence lapses, Pro keeps working — you just stop getting updates. Nothing you rely on gets switched off."
+          "title": "Uma licença justa",
+          "body": "Se uma licença Pro expirar, o Pro continua a funcionar — apenas deixa de receber atualizações. Nada de que dependa é desligado."
         }
       }
     },
     "cta": {
-      "title": "Built by a shopkeeper. Funded by shopkeepers.",
-      "subtitle": "Try the live demo, download the free plugin, or see what Pro adds — and what keeps it all going.",
+      "title": "Criado por um lojista. Financiado por lojistas.",
+      "subtitle": "Experimente a demo em direto, transfira o plugin gratuito ou veja o que o Pro acrescenta — e o que mantém tudo isto em funcionamento.",
       "actions": {
-        "demo": "Try Live Demo",
-        "download": "Download Free",
-        "pro": "See Pro"
+        "demo": "Experimentar demo em direto",
+        "download": "Transferir gratuitamente",
+        "pro": "Ver Pro"
       }
     }
   },
   "support": {
     "meta": {
-      "title": "Support",
-      "description": "Ask anything about WCPOS and get an instant answer from our docs, or chat with the community on Discord."
+      "title": "Suporte",
+      "description": "Pergunte qualquer coisa sobre o WCPOS e receba uma resposta imediata com base na nossa documentação, ou fale com a comunidade no Discord."
     },
     "chat": {
       "hero": {
-        "title": "How can we help?",
-        "subtitle": "Ask anything about WCPOS — setup, licensing, hardware, syncing, printing. You'll get an instant answer drawn from our docs."
+        "title": "Como podemos ajudar?",
+        "subtitle": "Pergunte qualquer coisa sobre o WCPOS — configuração, licenciamento, hardware, sincronização, impressão. Receberá uma resposta imediata baseada na nossa documentação."
       },
       "examples": {
-        "e1": "Why is my licence inactive?",
-        "e2": "Which barcode scanners are supported?",
-        "e3": "How do I sync products from WooCommerce?"
+        "e1": "Porque é que a minha licença está inativa?",
+        "e2": "Que leitores de códigos de barras são suportados?",
+        "e3": "Como sincronizo produtos do WooCommerce?"
       },
       "feedback": {
-        "prompt": "Was this helpful?",
-        "yes": "Yes",
-        "no": "No"
+        "prompt": "Isto foi útil?",
+        "yes": "Sim",
+        "no": "Não"
       },
-      "thinking": "Aide is thinking…",
+      "thinking": "Aide está a pensar…",
       "form": {
-        "label": "Ask a support question",
-        "placeholder": "e.g. How do I connect a receipt printer?",
-        "followUpPlaceholder": "Ask a follow-up…",
-        "submit": "Ask"
+        "label": "Faça uma pergunta de suporte",
+        "placeholder": "ex.: Como ligo uma impressora de recibos?",
+        "followUpPlaceholder": "Faça uma pergunta de seguimento…",
+        "submit": "Perguntar"
       },
-      "discordLink": "Ask in Discord →",
-      "poweredBy": "Answered by Aide · trained on the WCPOS docs & wiki"
+      "discordLink": "Perguntar no Discord →",
+      "poweredBy": "Respondido pela Aide · treinada na documentação e wiki do WCPOS"
     },
     "errors": {
-      "invalid_question": "Please enter a question (up to 1000 characters).",
-      "bot_check_failed": "Bot check failed. Please reload and try again.",
-      "rate_limited": "You're asking a lot of questions — please wait a few minutes, or hop into Discord.",
-      "budget_exhausted": "The assistant is busy right now. Please try Discord for a faster answer.",
-      "empty_answer": "The assistant is temporarily unavailable. Please try Discord while we get it back.",
-      "gateway_rate_limited": "The assistant is busy right now — please try again later.",
-      "timeout": "That took too long. Please try again, or ask in Discord.",
-      "unavailable": "The assistant is temporarily unavailable. Please try Discord while we get it back.",
-      "network": "The assistant is unavailable right now. Please ask in Discord.",
-      "unknown": "Something went wrong."
+      "invalid_question": "Introduza uma pergunta (até 1000 caracteres).",
+      "bot_check_failed": "A verificação anti-bot falhou. Recarregue a página e tente novamente.",
+      "rate_limited": "Está a fazer muitas perguntas — aguarde alguns minutos ou entre no Discord.",
+      "budget_exhausted": "O assistente está ocupado neste momento. Experimente o Discord para uma resposta mais rápida.",
+      "empty_answer": "O assistente está temporariamente indisponível. Experimente o Discord enquanto o repomos.",
+      "gateway_rate_limited": "O assistente está ocupado neste momento — tente novamente mais tarde.",
+      "timeout": "Isto demorou demasiado. Tente novamente ou pergunte no Discord.",
+      "unavailable": "O assistente está temporariamente indisponível. Experimente o Discord enquanto o repomos.",
+      "network": "O assistente está indisponível neste momento. Pergunte no Discord.",
+      "unknown": "Algo correu mal."
     },
     "order": {
-      "title": "Contact support about your order",
-      "body": "Quote reference <ref></ref> so we can confirm the payment or finish the order before you pay again."
+      "title": "Contactar o suporte sobre a sua encomenda",
+      "body": "Indique a referência <ref></ref> para podermos confirmar o pagamento ou concluir a encomenda antes de voltar a pagar."
     },
     "discord": {
-      "title": "Prefer to talk to a human?",
-      "subtitle": "Join store owners and the team in our live Discord community."
+      "title": "Prefere falar com uma pessoa?",
+      "subtitle": "Junte-se a lojistas e à equipa na nossa comunidade Discord em direto."
     }
   }
 }

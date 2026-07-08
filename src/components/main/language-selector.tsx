@@ -12,7 +12,19 @@ export function LanguageSelector() {
   const t = useTranslations('footer')
 
   function onChange(e: React.ChangeEvent<HTMLSelectElement>) {
-    router.replace(pathname, { locale: e.target.value as Locale })
+    const nextLocale = e.target.value as Locale
+
+    void fetch('/api/account/locale', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ locale: nextLocale }),
+    }).catch(() => {
+      // Anonymous visitors and transient failures should not block the visible
+      // language change; the URL/cookie locale remains the immediate source of
+      // truth for rendering.
+    })
+
+    router.replace(pathname, { locale: nextLocale })
   }
 
   return (
