@@ -487,6 +487,41 @@ describe('LicensesClient', () => {
     ).toBeInTheDocument()
   })
 
+  it('redirects to localized login when license refresh returns 401', async () => {
+    const assign = vi.fn()
+    Object.defineProperty(window, 'location', {
+      configurable: true,
+      value: { ...window.location, assign },
+    })
+    mockFetch
+      .mockResolvedValueOnce({ ok: true, json: async () => ({ ok: true }) })
+      .mockResolvedValueOnce({ ok: false, status: 401 })
+
+    render(
+      <LicensesClient
+        initialLicenses={[
+          makeLicense({
+            machines: [
+              {
+                id: 'm-1',
+                fingerprint: 'fp-1',
+                name: 'My Store',
+                metadata: {},
+                createdAt: '2025-06-01T00:00:00Z',
+              },
+            ],
+          }),
+        ]}
+      />,
+      { locale: 'fr' }
+    )
+
+    fireEvent.click(screen.getByRole('button', { name: 'Deactivate My Store' }))
+
+    expect(await screen.findByText('My Store')).toBeInTheDocument()
+    expect(assign).toHaveBeenCalledWith('/fr/login')
+  })
+
   it('attributes the latest covered version to an active licence', () => {
     render(
       <LicensesClient
@@ -648,7 +683,7 @@ describe('LicensesClient', () => {
     ).toBeInTheDocument()
   })
 
-  it('redirects to login when Discord member removal returns 401', async () => {
+  it('redirects to localized login when Discord member removal returns 401', async () => {
     const assign = vi.fn()
     Object.defineProperty(window, 'location', {
       configurable: true,
@@ -668,12 +703,13 @@ describe('LicensesClient', () => {
             ],
           },
         }}
-      />
+      />,
+      { locale: 'fr' }
     )
 
     fireEvent.click(screen.getByRole('button', { name: 'Remove @ada' }))
 
     expect(await screen.findByText('@ada')).toBeInTheDocument()
-    expect(assign).toHaveBeenCalledWith('/login')
+    expect(assign).toHaveBeenCalledWith('/fr/login')
   })
 })

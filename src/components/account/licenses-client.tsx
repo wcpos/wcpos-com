@@ -12,7 +12,9 @@ import { EmptyState } from '@/components/ui/empty-state'
 import { AccountNotice } from '@/components/account/account-notice'
 import { Key, Monitor, Trash2, Download, Copy, Check } from 'lucide-react'
 import { Link } from '@/i18n/navigation'
+import type { Locale } from '@/i18n/config'
 import { formatDateForLocale } from '@/lib/date-format'
+import { localizeRedirectPath } from '@/lib/safe-redirect'
 import type { CanonicalLicenseStatus } from '@/lib/license-status'
 import {
   getExpiringSoonExpiry,
@@ -96,6 +98,7 @@ export function LicensesClient({
   discordAccessByLicense = {},
 }: LicensesClientProps) {
   const locale = useLocale()
+  const loginPath = localizeRedirectPath('/login', locale as Locale)
   const t = useTranslations('account.licenses')
   const tStatus = useTranslations('account.licenseStatus')
   const [licenses, setLicenses] = useState<License[]>(initialLicenses)
@@ -140,7 +143,7 @@ export function LicensesClient({
       const res = await fetch('/api/account/licenses')
       if (!res.ok) {
         if (res.status === 401) {
-          window.location.assign('/login')
+          window.location.assign(loginPath)
           return
         }
         throw new Error(t('loadError'))
@@ -191,7 +194,7 @@ export function LicensesClient({
       )
       if (!res.ok) {
         if (res.status === 401) {
-          window.location.assign('/login')
+          window.location.assign(loginPath)
           return
         }
         throw new Error(await getLicenseActionErrorMessage(res, t('discordRemoveError')))

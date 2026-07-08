@@ -12,10 +12,16 @@ import messages from '../../messages/en.json'
  * English messages. Tests keep asserting the actual rendered copy, and a
  * missing message key fails the test instead of rendering a fallback.
  */
-export function IntlWrapper({ children }: { children: ReactNode }) {
+export function IntlWrapper({
+  children,
+  locale = 'en',
+}: {
+  children: ReactNode
+  locale?: string
+}) {
   return (
     <NextIntlClientProvider
-      locale="en"
+      locale={locale}
       messages={messages}
       onError={(error) => {
         throw error
@@ -28,7 +34,14 @@ export function IntlWrapper({ children }: { children: ReactNode }) {
 
 export function renderWithIntl(
   ui: ReactElement,
-  options?: Omit<RenderOptions, 'wrapper'>
+  options?: Omit<RenderOptions, 'wrapper'> & { locale?: string }
 ): RenderResult {
-  return render(ui, { wrapper: IntlWrapper, ...options })
+  const { locale = 'en', ...renderOptions } = options ?? {}
+
+  return render(ui, {
+    wrapper: ({ children }) => (
+      <IntlWrapper locale={locale}>{children}</IntlWrapper>
+    ),
+    ...renderOptions,
+  })
 }
