@@ -50,7 +50,7 @@ describe('POST /api/discord/claim', () => {
     }))
 
     expect(response.status).toBe(400)
-    expect(await response.json()).toEqual({ error: 'license_key_required' })
+    expect(await response.json()).toEqual({ errorCode: 'license_key_required' })
   })
 
   it('logs a malformed JSON body at info and rejects with 400', async () => {
@@ -61,7 +61,7 @@ describe('POST /api/discord/claim', () => {
     }))
 
     expect(response.status).toBe(400)
-    expect(await response.json()).toEqual({ error: 'license_key_required' })
+    expect(await response.json()).toEqual({ errorCode: 'license_key_required' })
     // The parse failure is no longer swallowed silently, but it is
     // client-caused so it stays at info (error level fans out to alerts).
     expect(infoMock).toHaveBeenCalledTimes(1)

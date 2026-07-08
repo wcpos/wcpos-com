@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
   }) as { licenseKey?: unknown; returnTo?: unknown }
   const licenseKey = typeof body.licenseKey === 'string' ? body.licenseKey.trim() : ''
   if (!licenseKey) {
-    return NextResponse.json({ error: 'license_key_required' }, { status: 400 })
+    return NextResponse.json({ errorCode: 'license_key_required' }, { status: 400 })
   }
 
   const state = crypto.randomBytes(24).toString('base64url')
