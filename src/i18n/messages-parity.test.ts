@@ -73,6 +73,7 @@ const auditedPortugueseNamespacePrefixes = [
   'auth.',
   'roadmap.',
   'downloads.',
+  'account.',
 ]
 const portugueseIdenticalCopyAllowlist = new Set([
   'downloads.platforms.mac-arm.name',
@@ -101,6 +102,19 @@ const portugueseIdenticalCopyAllowlist = new Set([
   'downloads.page.steps.plugin.cardTitle',
   'downloads.page.steps.plugin.wordpressOrgCta',
   'downloads.releaseHistory.desktop',
+  'account.orderDetail.emailLabel',
+  'account.orderDetail.totalLabel',
+  'account.profile.avatarAlt',
+  'account.profile.discordProvider',
+  'account.profile.email',
+  'account.profile.githubProvider',
+  'account.profile.googleProvider',
+  'account.profile.taxLabels.abn',
+  'account.profile.taxLabels.partitaIva',
+  'account.receiptPdf.sellerIdentity',
+  'account.receiptPdf.sellerIdentityWithAbn',
+  'account.receiptPdf.subtotal',
+  'account.receiptPdf.total',
 ])
 
 const auditedJapaneseNamespacePrefixes = [
@@ -728,7 +742,7 @@ describe('messages key parity', () => {
     ).toEqual([])
   })
 
-  it('pt.json translates the audited support, auth, roadmap, and downloads copy', () => {
+  it('pt.json translates the audited support, auth, roadmap, downloads, and account copy', () => {
     const english = loadMessages(defaultLocale)
     const portuguese = loadMessages('pt')
     const auditedKeys = enKeys.filter(
@@ -749,7 +763,7 @@ describe('messages key parity', () => {
 
     expect(
       untranslatedKeys,
-      'messages/pt.json must not copy audited support/auth/roadmap/downloads English strings verbatim'
+      'messages/pt.json must not copy audited support/auth/roadmap/downloads/account English strings verbatim'
     ).toEqual([])
   })
 })

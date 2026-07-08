@@ -772,7 +772,7 @@
       "copiedKey": "Copiada",
       "copyError": "Falha ao copiar a chave de licença. Tente novamente.",
       "apiErrors": {
-        "read_only_inspection": "You are viewing this account in read-only mode."
+        "read_only_inspection": "Está a visualizar esta conta em modo só de leitura."
       }
     },
     "downloads": {
@@ -811,12 +811,12 @@
       "tokenErrorFallback": "A transferência não está disponível para esta versão",
       "startErrorFallback": "Falha ao iniciar a transferência",
       "apiErrors": {
-        "unauthorized": "Please sign in again to download WCPOS Pro.",
-        "download_token_secret_missing": "Downloads are temporarily unavailable. Please contact support.",
-        "rate_limited": "Too many download requests. Please wait a moment and try again.",
-        "release_not_found": "That WCPOS Pro release could not be found.",
-        "forbidden": "Your license does not include this download.",
-        "internal": "We could not prepare your download. Please try again."
+        "unauthorized": "Inicie sessão novamente para transferir o WCPOS Pro.",
+        "download_token_secret_missing": "As transferências estão temporariamente indisponíveis. Contacte o suporte.",
+        "rate_limited": "Demasiados pedidos de transferência. Aguarde um momento e tente novamente.",
+        "release_not_found": "Não foi possível encontrar essa versão do WCPOS Pro.",
+        "forbidden": "A sua licença não inclui esta transferência.",
+        "internal": "Não foi possível preparar a sua transferência. Tente novamente."
       }
     },
     "profile": {
@@ -894,9 +894,9 @@
       "emailProvider": "Email e palavra-passe",
       "emailDescription": "Inicia sessão com o teu endereço de email.",
       "apiErrors": {
-        "read_only_inspection": "You are viewing this account in read-only mode.",
-        "unauthorized": "Please sign in again to update your profile.",
-        "update_failed": "Failed to update profile"
+        "read_only_inspection": "Está a visualizar esta conta em modo só de leitura.",
+        "unauthorized": "Inicie sessão novamente para atualizar o seu perfil.",
+        "update_failed": "Falha ao atualizar o perfil"
       }
     },
     "receiptPdf": {
@@ -935,13 +935,13 @@
       }
     },
     "admin": {
-      "title": "Inspect a customer (read-only)",
-      "description": "Enter a customer email to view their account exactly as they see it. You cannot change their data while inspecting.",
-      "submit": "View as"
+      "title": "Inspecionar um cliente (só de leitura)",
+      "description": "Introduza o email de um cliente para ver a conta exatamente como ele a vê. Não pode alterar os dados durante a inspeção.",
+      "submit": "Ver como"
     },
     "impersonation": {
-      "viewing": "🔍 Viewing <strong>{target}</strong> as <strong>read-only</strong> — you cannot change their account.",
-      "exit": "Exit"
+      "viewing": "🔍 A visualizar <strong>{target}</strong> em modo <strong>só de leitura</strong> — não pode alterar esta conta.",
+      "exit": "Sair"
     },
     "orderStatus": {
       "actionRequired": "Ação necessária",
