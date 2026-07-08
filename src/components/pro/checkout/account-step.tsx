@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { useTranslations } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -25,6 +25,7 @@ interface AccountStepProps {
 type Mode = 'register' | 'signin'
 
 export function AccountStep({ checkoutPath, onAuthenticated }: AccountStepProps) {
+  const locale = useLocale()
   const t = useTranslations('pro.checkout.account')
   const [mode, setMode] = useState<Mode>('register')
   const [email, setEmail] = useState('')
@@ -39,12 +40,15 @@ export function AccountStep({ checkoutPath, onAuthenticated }: AccountStepProps)
     setError(null)
 
     try {
+      const isCreatingAccount = mode === 'register'
       const endpoint =
-        mode === 'register' ? '/api/auth/register' : '/api/auth/login'
+        isCreatingAccount ? '/api/auth/register' : '/api/auth/login'
       const response = await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify(
+          isCreatingAccount ? { email, password, locale } : { email, password }
+        ),
       })
 
       if (response.ok) {

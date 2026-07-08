@@ -442,6 +442,36 @@ describe('CheckoutClient', () => {
     })
   })
 
+  it('passes the active locale when creating an account inline during checkout', async () => {
+    mockFetch.mockResolvedValueOnce({ ok: true, json: async () => ({}) })
+    mockSuccessfulCheckoutInit()
+
+    const { container } = renderSignedInFrench({ customerEmail: undefined })
+
+    fireEvent.change(container.querySelector('#checkout-email')!, {
+      target: { value: 'new@example.com' },
+    })
+    fireEvent.change(container.querySelector('#checkout-password')!, {
+      target: { value: 'hunter2hunter2' },
+    })
+    fireEvent.submit(screen.getByTestId('account-step-form'))
+
+    await waitFor(() => {
+      expect(mockFetch).toHaveBeenNthCalledWith(
+        1,
+        '/api/auth/register',
+        expect.objectContaining({
+          method: 'POST',
+          body: JSON.stringify({
+            email: 'new@example.com',
+            password: 'hunter2hunter2',
+            locale: 'fr',
+          }),
+        })
+      )
+    })
+  })
+
   it('flips to sign-in mode when the account already exists', async () => {
     render(
       <CheckoutClient
