@@ -8,13 +8,13 @@
   },
   "header": {
     "documentation": "Dokumentation",
-    "roadmap": "Roadmap",
+    "roadmap": "Produktplanung",
     "pro": "Pro",
-    "support": "Support",
-    "downloads": "Downloads"
+    "support": "Hilfe",
+    "downloads": "Herunterladen"
   },
   "footer": {
-    "downloads": "Downloads",
+    "downloads": "Herunterladen",
     "copyright": "© 2026 WCPOS",
     "privacy": "Datenschutz",
     "terms": "AGB",
@@ -24,20 +24,20 @@
     "theme": "Design",
     "themeLight": "Hell",
     "themeDark": "Dunkel",
-    "themeSystem": "System",
+    "themeSystem": "Systemeinstellung",
     "productHeading": "Produkt",
-    "communityHeading": "Community",
-    "supportHeading": "Support",
+    "communityHeading": "Gemeinschaft",
+    "supportHeading": "Hilfe",
     "companyHeading": "Unternehmen",
-    "downloadHeading": "Download",
+    "downloadHeading": "Herunterladen",
     "pro": "WCPOS Pro",
-    "roadmap": "Roadmap",
+    "roadmap": "Produktplanung",
     "demo": "Live-Demo",
     "discord": "Discord",
     "github": "GitHub",
     "wordpressOrg": "WordPress.org",
     "documentation": "Dokumentation",
-    "getSupport": "Support",
+    "getSupport": "Hilfe erhalten",
     "wordpressForum": "WordPress-Forum",
     "wordpressPlugin": "WordPress-Plugin",
     "appFor": "WCPOS für {platform}",
@@ -540,7 +540,7 @@
           "postalCode": "Postleitzahl",
           "country": "Land"
         },
-        "optional": "(optional)",
+        "optional": "(freiwillig)",
         "saving": "Wird gespeichert…",
         "continue": "Weiter zur Zahlung",
         "errors": {
@@ -662,7 +662,7 @@
       "title": "Konto",
       "orders": "Bestellungen",
       "licenses": "Lizenzen",
-      "downloads": "Downloads",
+      "downloads": "Herunterladen",
       "profile": "Profil"
     },
     "meta": {
@@ -679,7 +679,7 @@
         "description": "Verwalte deine WCPOS Pro-Lizenzschlüssel und -Aktivierungen."
       },
       "downloads": {
-        "title": "Downloads",
+        "title": "Downloads für WCPOS Pro",
         "description": "Lade WCPOS Pro-Plugin-Releases für deine Lizenzen herunter."
       },
       "profile": {
@@ -716,7 +716,7 @@
       "downloadReceipt": "Steuerbeleg herunterladen (PDF)",
       "detailsTitle": "Bestelldetails",
       "dateLabel": "Datum",
-      "statusLabel": "Status",
+      "statusLabel": "Bestellstatus",
       "emailLabel": "E-Mail",
       "totalLabel": "Gesamt",
       "itemsTitle": "Artikel",
@@ -750,7 +750,7 @@
       "expiresLabel": "Läuft ab:",
       "activationsLabel": "Aktivierungen:",
       "activationsCount": "{count} von {max}",
-      "downloads": "Downloads",
+      "downloads": "Herunterladen",
       "activatedMachines": "Aktivierte Rechner",
       "machineAdded": "Hinzugefügt {date}",
       "deactivateMachineAria": "{name} deaktivieren",
@@ -772,11 +772,11 @@
       "copiedKey": "Kopiert",
       "copyError": "Lizenzschlüssel konnte nicht kopiert werden. Bitte versuche es erneut.",
       "apiErrors": {
-        "read_only_inspection": "You are viewing this account in read-only mode."
+        "read_only_inspection": "Du siehst dieses Konto im schreibgeschützten Modus."
       }
     },
     "downloads": {
-      "heading": "Downloads",
+      "heading": "Downloads für WCPOS Pro",
       "subheading": "Alle Versionen. Was Sie installieren können, hängt von Ihrer Lizenz ab.",
       "expiredBanner": "Deine Lizenz ist am {date} abgelaufen. Du kannst weiterhin Versionen herunterladen, die davor veröffentlicht wurden.",
       "suspendedBanner": "Deine Lizenz ist ausgesetzt — kontaktiere den Support.",
@@ -811,19 +811,19 @@
       "tokenErrorFallback": "Download ist für diese Version nicht verfügbar",
       "startErrorFallback": "Download konnte nicht gestartet werden",
       "apiErrors": {
-        "unauthorized": "Please sign in again to download WCPOS Pro.",
-        "download_token_secret_missing": "Downloads are temporarily unavailable. Please contact support.",
-        "rate_limited": "Too many download requests. Please wait a moment and try again.",
-        "release_not_found": "That WCPOS Pro release could not be found.",
-        "forbidden": "Your license does not include this download.",
-        "internal": "We could not prepare your download. Please try again."
+        "unauthorized": "Bitte melde dich erneut an, um WCPOS Pro herunterzuladen.",
+        "download_token_secret_missing": "Downloads sind vorübergehend nicht verfügbar. Bitte kontaktiere den Support.",
+        "rate_limited": "Zu viele Download-Anfragen. Bitte warte einen Moment und versuche es erneut.",
+        "release_not_found": "Diese WCPOS Pro-Version konnte nicht gefunden werden.",
+        "forbidden": "Deine Lizenz enthält diesen Download nicht.",
+        "internal": "Wir konnten deinen Download nicht vorbereiten. Bitte versuche es erneut."
       }
     },
     "profile": {
       "heading": "Profil",
       "cardTitle": "Profildaten",
       "memberSince": "Mitglied seit",
-      "avatarAlt": "Avatar",
+      "avatarAlt": "Profilbild",
       "avatarLabel": "Profil-Avatar",
       "avatarHint": "Wenn dein verbundenes Konto einen Avatar hat, wird dieser standardmäßig verwendet.",
       "avatarTooLarge": "Das Avatar-Bild darf höchstens 1 MB groß sein.",
@@ -843,7 +843,7 @@
         "province": "Provinz",
         "county": "Landkreis",
         "stateTerritory": "Staat/Territorium",
-        "region": "Region",
+        "region": "Region / Bundesland",
         "prefecture": "Präfektur"
       },
       "postalLabels": {
@@ -894,9 +894,9 @@
       "emailProvider": "E-Mail & Passwort",
       "emailDescription": "Du meldest dich mit deiner E-Mail-Adresse an.",
       "apiErrors": {
-        "read_only_inspection": "You are viewing this account in read-only mode.",
-        "unauthorized": "Please sign in again to update your profile.",
-        "update_failed": "Failed to update profile"
+        "read_only_inspection": "Du siehst dieses Konto im schreibgeschützten Modus.",
+        "unauthorized": "Bitte melde dich erneut an, um dein Profil zu aktualisieren.",
+        "update_failed": "Profil konnte nicht aktualisiert werden"
       }
     },
     "receiptPdf": {
@@ -904,7 +904,7 @@
       "filename": "beleg-{id}.pdf",
       "orderNumber": "Bestellung #{id}",
       "billedTo": "RECHNUNG AN",
-      "details": "DETAILS",
+      "details": "ANGABEN",
       "noEmailProvided": "Keine E-Mail angegeben",
       "taxId": "Steuer-ID: {taxNumber}",
       "orderDate": "Bestelldatum",
@@ -935,13 +935,13 @@
       }
     },
     "admin": {
-      "title": "Inspect a customer (read-only)",
-      "description": "Enter a customer email to view their account exactly as they see it. You cannot change their data while inspecting.",
-      "submit": "View as"
+      "title": "Kundenkonto prüfen (schreibgeschützt)",
+      "description": "Gib die E-Mail-Adresse eines Kunden ein, um sein Konto genau so zu sehen, wie er es sieht. Während der Prüfung kannst du seine Daten nicht ändern.",
+      "submit": "Als Kunde ansehen"
     },
     "impersonation": {
-      "viewing": "🔍 Viewing <strong>{target}</strong> as <strong>read-only</strong> — you cannot change their account.",
-      "exit": "Exit"
+      "viewing": "🔍 Du siehst <strong>{target}</strong> <strong>schreibgeschützt</strong> — du kannst dieses Konto nicht ändern.",
+      "exit": "Beenden"
     },
     "orderStatus": {
       "actionRequired": "Aktion erforderlich",

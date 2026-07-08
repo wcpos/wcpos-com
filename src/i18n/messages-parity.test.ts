@@ -71,8 +71,31 @@ const auditedGermanNamespacePrefixes = [
   'support.',
   'auth.',
   'roadmap.',
+  'header.',
+  'footer.',
+  'account.',
+  'pro.',
 ]
-const germanIdenticalCopyAllowlist = new Set<string>([])
+const germanIdenticalCopyAllowlist = new Set([
+  'header.pro',
+  'footer.copyright',
+  'footer.pro',
+  'footer.discord',
+  'footer.github',
+  'footer.wordpressOrg',
+  'pro.hero.title',
+  'pro.schema.name',
+  'pro.checkout.offers.default',
+  'pro.checkout.payment.methods.card.hint',
+  'pro.checkout.payment.methods.bitcoin.title',
+  'account.profile.taxLabels.abn',
+  'account.profile.taxLabels.partitaIva',
+  'account.profile.googleProvider',
+  'account.profile.discordProvider',
+  'account.profile.githubProvider',
+  'account.receiptPdf.sellerIdentityWithAbn',
+  'account.receiptPdf.sellerIdentity',
+])
 const spanishIdenticalCopyAllowlist = new Set([
   'header.pro',
   'footer.copyright',
@@ -306,7 +329,7 @@ describe('messages key parity', () => {
     ).toEqual([])
   })
 
-  it('de.json translates the audited support, auth, and roadmap copy', () => {
+  it('de.json translates the audited support, auth, roadmap, header, footer, account, and pro copy', () => {
     const english = loadMessages(defaultLocale)
     const german = loadMessages('de')
     const auditedKeys = enKeys.filter(
@@ -327,7 +350,7 @@ describe('messages key parity', () => {
 
     expect(
       untranslatedKeys,
-      'messages/de.json must not copy audited support/auth/roadmap English strings verbatim'
+      'messages/de.json must not copy audited support/auth/roadmap/header/footer/account/pro English strings verbatim'
     ).toEqual([])
   })
 
