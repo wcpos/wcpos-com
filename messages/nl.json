@@ -1,22 +1,22 @@
 {
   "common": {
     "signIn": "Aanmelden",
-    "account": "Account",
+    "account": "Mijn account",
     "openMenu": "Menu openen",
     "accountMenu": "Accountmenu",
     "signOut": "Uitloggen"
   },
   "header": {
     "documentation": "Documentatie",
-    "roadmap": "Roadmap",
+    "roadmap": "Routekaart",
     "pro": "Pro",
-    "support": "Support",
-    "downloads": "Downloads"
+    "support": "Ondersteuning",
+    "downloads": "Downloaden"
   },
   "footer": {
-    "downloads": "Downloads",
+    "downloads": "Downloaden",
     "copyright": "© 2026 WCPOS",
-    "privacy": "Privacy",
+    "privacy": "Privacybeleid",
     "terms": "Voorwaarden",
     "refunds": "Terugbetalingen",
     "about": "Over ons",
@@ -25,13 +25,13 @@
     "themeLight": "Licht",
     "themeDark": "Donker",
     "themeSystem": "Systeem",
-    "productHeading": "Product",
-    "communityHeading": "Community",
+    "productHeading": "Producten",
+    "communityHeading": "Gemeenschap",
     "supportHeading": "Ondersteuning",
     "companyHeading": "Bedrijf",
     "downloadHeading": "Downloaden",
     "pro": "WCPOS Pro",
-    "roadmap": "Roadmap",
+    "roadmap": "Routekaart",
     "demo": "Live demo",
     "discord": "Discord",
     "github": "GitHub",
@@ -343,40 +343,40 @@
   },
   "roadmap": {
     "meta": {
-      "title": "Roadmap",
-      "description": "See what we are building next for WCPOS — upcoming features, milestones, and release progress."
+      "title": "Routekaart",
+      "description": "Bekijk waar we nu aan werken voor WCPOS — aankomende functies, mijlpalen en voortgang van releases."
     },
     "page": {
-      "eyebrow": "Roadmap",
-      "title": "The release train",
-      "description": "Every stop on the way to a faster, offline-proof WCPOS — pulled straight from our GitHub, newest work first."
+      "eyebrow": "Routekaart",
+      "title": "De releasetrein",
+      "description": "Elke halte op weg naar een sneller, offline-bestendig WCPOS — rechtstreeks uit onze GitHub gehaald, nieuwste werk eerst."
     },
     "board": {
-      "link": "live from the WCPOS project board"
+      "link": "live vanaf het WCPOS-projectbord"
     },
     "status": {
-      "done": "Done",
-      "inProgress": "In progress",
-      "planned": "Planned"
+      "done": "Klaar",
+      "inProgress": "Bezig",
+      "planned": "Gepland"
     },
     "timeline": {
-      "empty": "No roadmap items to display yet.",
+      "empty": "Er zijn nog geen routekaartitems om weer te geven.",
       "phases": {
-        "now": "Now",
-        "next": "Next",
-        "shipped": "Shipped"
+        "now": "Nu",
+        "next": "Volgende",
+        "shipped": "Uitgebracht"
       },
-      "progress": "{completed} of {total} done",
-      "progressDue": "{completed} of {total} done · due {date}",
-      "shipped": "shipped",
-      "shippedWithDate": "shipped · {date}"
+      "progress": "{completed} van {total} klaar",
+      "progressDue": "{completed} van {total} klaar · deadline {date}",
+      "shipped": "uitgebracht",
+      "shippedWithDate": "uitgebracht · {date}"
     },
     "bugs": {
-      "summary": "{count, plural, one {+ # bug fix & improvements} other {+ # bug fixes & improvements}}",
+      "summary": "{count, plural, one {+ # bugfix en verbetering} other {+ # bugfixes en verbeteringen}}",
       "status": {
-        "done": "fixed",
-        "in_progress": "in progress",
-        "planned": "planned"
+        "done": "opgelost",
+        "in_progress": "bezig",
+        "planned": "gepland"
       }
     }
   },
@@ -986,14 +986,14 @@
       "signIn": "Inloggen",
       "signUp": "Registreren",
       "apiErrors": {
-        "invalid_origin": "Please refresh the page and try again.",
-        "rate_limited": "Too many attempts. Please try again later.",
-        "email_required": "Email is required.",
-        "credentials_required": "Email and password are required.",
-        "reset_fields_required": "Email, token, and password are required.",
-        "password_too_short": "Password must be at least {min} characters.",
-        "invalid_credentials": "Invalid email or password.",
-        "invalid_reset_token": "This password reset link is invalid or has expired. Please request a new one."
+        "invalid_origin": "Vernieuw de pagina en probeer het opnieuw.",
+        "rate_limited": "Te veel pogingen. Probeer het later opnieuw.",
+        "email_required": "E-mailadres is verplicht.",
+        "credentials_required": "E-mailadres en wachtwoord zijn verplicht.",
+        "reset_fields_required": "E-mailadres, token en wachtwoord zijn verplicht.",
+        "password_too_short": "Het wachtwoord moet minimaal {min} tekens bevatten.",
+        "invalid_credentials": "Ongeldig e-mailadres of wachtwoord.",
+        "invalid_reset_token": "Deze link voor het opnieuw instellen van het wachtwoord is ongeldig of verlopen. Vraag een nieuwe aan."
       }
     },
     "login": {
@@ -1527,53 +1527,53 @@
   },
   "support": {
     "meta": {
-      "title": "Support",
-      "description": "Ask anything about WCPOS and get an instant answer from our docs, or chat with the community on Discord."
+      "title": "Ondersteuning",
+      "description": "Vraag alles over WCPOS en krijg direct antwoord uit onze documentatie, of chat met de community op Discord."
     },
     "chat": {
       "hero": {
-        "title": "How can we help?",
-        "subtitle": "Ask anything about WCPOS — setup, licensing, hardware, syncing, printing. You'll get an instant answer drawn from our docs."
+        "title": "Waarmee kunnen we helpen?",
+        "subtitle": "Vraag alles over WCPOS — installatie, licenties, hardware, synchronisatie, afdrukken. Je krijgt direct een antwoord op basis van onze documentatie."
       },
       "examples": {
-        "e1": "Why is my licence inactive?",
-        "e2": "Which barcode scanners are supported?",
-        "e3": "How do I sync products from WooCommerce?"
+        "e1": "Waarom is mijn licentie inactief?",
+        "e2": "Welke barcodescanners worden ondersteund?",
+        "e3": "Hoe synchroniseer ik producten vanuit WooCommerce?"
       },
       "feedback": {
-        "prompt": "Was this helpful?",
-        "yes": "Yes",
+        "prompt": "Was dit nuttig?",
+        "yes": "Ja",
         "no": "No"
       },
-      "thinking": "Aide is thinking…",
+      "thinking": "Aide denkt na…",
       "form": {
-        "label": "Ask a support question",
-        "placeholder": "e.g. How do I connect a receipt printer?",
-        "followUpPlaceholder": "Ask a follow-up…",
-        "submit": "Ask"
+        "label": "Stel een supportvraag",
+        "placeholder": "bijv. Hoe verbind ik een bonprinter?",
+        "followUpPlaceholder": "Stel een vervolgvraag…",
+        "submit": "Vraag stellen"
       },
-      "discordLink": "Ask in Discord →",
-      "poweredBy": "Answered by Aide · trained on the WCPOS docs & wiki"
+      "discordLink": "Vraag het op Discord →",
+      "poweredBy": "Beantwoord door Aide · getraind op de WCPOS-documentatie en wiki"
     },
     "errors": {
-      "invalid_question": "Please enter a question (up to 1000 characters).",
-      "bot_check_failed": "Bot check failed. Please reload and try again.",
-      "rate_limited": "You're asking a lot of questions — please wait a few minutes, or hop into Discord.",
-      "budget_exhausted": "The assistant is busy right now. Please try Discord for a faster answer.",
-      "empty_answer": "The assistant is temporarily unavailable. Please try Discord while we get it back.",
-      "gateway_rate_limited": "The assistant is busy right now — please try again later.",
-      "timeout": "That took too long. Please try again, or ask in Discord.",
-      "unavailable": "The assistant is temporarily unavailable. Please try Discord while we get it back.",
-      "network": "The assistant is unavailable right now. Please ask in Discord.",
-      "unknown": "Something went wrong."
+      "invalid_question": "Voer een vraag in (maximaal 1000 tekens).",
+      "bot_check_failed": "Botcontrole mislukt. Herlaad de pagina en probeer het opnieuw.",
+      "rate_limited": "Je stelt veel vragen — wacht een paar minuten of kom naar Discord.",
+      "budget_exhausted": "De assistent is nu druk. Probeer Discord voor een sneller antwoord.",
+      "empty_answer": "De assistent is tijdelijk niet beschikbaar. Probeer Discord terwijl we dit herstellen.",
+      "gateway_rate_limited": "De assistent is nu druk — probeer het later opnieuw.",
+      "timeout": "Dat duurde te lang. Probeer het opnieuw of vraag het op Discord.",
+      "unavailable": "De assistent is tijdelijk niet beschikbaar. Probeer Discord terwijl we dit herstellen.",
+      "network": "De assistent is nu niet beschikbaar. Stel je vraag op Discord.",
+      "unknown": "Er is iets misgegaan."
     },
     "order": {
-      "title": "Contact support about your order",
-      "body": "Quote reference <ref></ref> so we can confirm the payment or finish the order before you pay again."
+      "title": "Neem contact op met support over je bestelling",
+      "body": "Vermeld referentie <ref></ref> zodat we de betaling kunnen bevestigen of de bestelling kunnen afronden voordat je opnieuw betaalt."
     },
     "discord": {
-      "title": "Prefer to talk to a human?",
-      "subtitle": "Join store owners and the team in our live Discord community."
+      "title": "Praat je liever met een mens?",
+      "subtitle": "Sluit je aan bij winkeleigenaren en het team in onze live Discord-community."
     }
   }
 }
