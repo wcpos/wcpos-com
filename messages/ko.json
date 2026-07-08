@@ -1279,86 +1279,86 @@
   },
   "downloads": {
     "meta": {
-      "title": "Downloads",
-      "description": "Download WCPOS — the free plugin plus the desktop, iOS, Android and web apps. See the latest version and recent release notes."
+      "title": "다운로드",
+      "description": "WCPOS를 다운로드하세요 — 무료 플러그인과 데스크톱, iOS, Android, 웹 앱을 제공합니다. 최신 버전과 최근 릴리스 노트를 확인하세요."
     },
     "platforms": {
       "mac-arm": {
         "name": "macOS",
         "listLabel": "macOS (Apple Silicon)",
         "short": "Apple Silicon · .dmg",
-        "action": "Download for macOS"
+        "action": "macOS용 다운로드"
       },
       "mac-intel": {
         "name": "macOS (Intel)",
         "listLabel": "macOS (Intel)",
         "short": "Intel · .dmg",
-        "action": "Download for macOS"
+        "action": "macOS용 다운로드"
       },
       "win": {
         "name": "Windows",
         "listLabel": "Windows",
         "short": "Windows 10/11 · .exe",
-        "action": "Download for Windows"
+        "action": "Windows용 다운로드"
       },
       "linux": {
         "name": "Linux",
         "listLabel": "Linux",
         "short": ".AppImage",
-        "action": "Download for Linux"
+        "action": "Linux용 다운로드"
       },
       "ios": {
         "name": "iOS & iPad",
         "listLabel": "iOS & iPad",
-        "short": "Public TestFlight beta",
-        "action": "Join the iOS beta"
+        "short": "공개 TestFlight 베타",
+        "action": "iOS 베타 참여"
       },
       "android": {
         "name": "Android",
         "listLabel": "Android",
-        "short": "Google Play testing beta",
-        "action": "Join the Android beta"
+        "short": "Google Play 테스트 베타",
+        "action": "Android 베타 참여"
       },
       "web": {
         "name": "Web",
         "listLabel": "Web",
-        "short": "No install needed",
-        "action": "Open the web demo"
+        "short": "설치 필요 없음",
+        "action": "웹 데모 열기"
       }
     },
     "hero": {
-      "eyebrow": "Downloads",
-      "title": "One till, every device.",
-      "platformChooserLabel": "Choose your platform",
-      "versionMeta": "Version {version} · {platform}",
-      "detected": "Detected",
-      "intelMac": "On an Intel Mac? <intel>Get the Intel build</intel>",
-      "pluginNotice": "Every app connects to the <plugin>free WordPress plugin</plugin> — install it first."
+      "eyebrow": "다운로드",
+      "title": "하나의 계산대, 모든 기기에서.",
+      "platformChooserLabel": "플랫폼 선택",
+      "versionMeta": "버전 {version} · {platform}",
+      "detected": "감지됨",
+      "intelMac": "Intel Mac을 사용 중인가요? <intel>Intel 빌드 받기</intel>",
+      "pluginNotice": "모든 앱은 <plugin>무료 WordPress 플러그인</plugin>에 연결됩니다 — 먼저 설치하세요."
     },
     "howItFits": {
-      "eyebrow": "How it fits together",
-      "title": "One store at the centre. Every till in sync.",
+      "eyebrow": "함께 작동하는 방식",
+      "title": "하나의 매장을 중심으로. 모든 계산대가 동기화됩니다.",
       "points": {
         "setup": {
-          "title": "One plugin is the only setup",
-          "body": "The free plugin adds a secure REST API to your WooCommerce store. That’s the whole install — nothing to host or configure per device."
+          "title": "설정은 플러그인 하나면 충분합니다",
+          "body": "무료 플러그인은 WooCommerce 매장에 안전한 REST API를 추가합니다. 설치는 이것으로 끝입니다 — 기기마다 호스팅하거나 설정할 것이 없습니다."
         },
         "sync": {
-          "title": "Every app reads and writes the same store",
-          "body": "Ring up a sale on the desktop, refund it on your phone — one set of products, orders and customers, updating in real time."
+          "title": "모든 앱이 같은 매장을 읽고 씁니다",
+          "body": "데스크톱에서 판매를 처리하고 휴대폰에서 환불하세요 — 제품, 주문, 고객이 하나의 세트로 실시간 업데이트됩니다."
         },
         "offline": {
-          "title": "Offline-first, so the till never stops",
-          "body": "Each device keeps working without a connection and re-syncs the moment it’s back online."
+          "title": "오프라인 우선, 계산대가 멈추지 않도록",
+          "body": "각 기기는 연결이 없어도 계속 작동하며, 다시 온라인이 되는 순간 재동기화됩니다."
         }
       },
-      "syncLabel": "What stays in sync",
+      "syncLabel": "동기화되는 항목",
       "chips": {
-        "c1": "Products & prices",
-        "c2": "Stock levels",
-        "c3": "Orders",
-        "c4": "Customers",
-        "c5": "Tax & receipts"
+        "c1": "제품 및 가격",
+        "c2": "재고 수준",
+        "c3": "주문",
+        "c4": "고객",
+        "c5": "세금 및 영수증"
       },
       "diagram": {
         "ariaLabel": "WCPOS 플러그인이 설치된 WooCommerce 스토어가 중앙에 있고 REST API를 통해 데스크톱, iOS, Android 및 웹 앱과 연결되어 모두 동기화됩니다.",
@@ -1376,55 +1376,55 @@
       }
     },
     "page": {
-      "beta": "Beta",
+      "beta": "베타",
       "start": {
-        "eyebrow": "Get started",
-        "title": "Three steps to your first sale",
-        "subtitle": "It takes about two minutes, start to finish."
+        "eyebrow": "시작하기",
+        "title": "첫 판매까지 세 단계",
+        "subtitle": "처음부터 끝까지 약 2분이면 됩니다."
       },
       "steps": {
         "plugin": {
-          "title": "Install the free plugin",
-          "body": "The foundation everything connects to. In your dashboard: Plugins → Add New, then search “WCPOS”.",
-          "badge": "Free · GPL",
+          "title": "무료 플러그인 설치",
+          "body": "모든 것이 연결되는 기반입니다. 대시보드에서 플러그인 → 새로 추가로 이동한 뒤 “WCPOS”를 검색하세요.",
+          "badge": "무료 · GPL",
           "requirements": "WordPress 5.6+ · WooCommerce 5.3+ · PHP 7.4+",
-          "requirementsWithVersion": "Latest {version} · WordPress 5.6+ · WooCommerce 5.3+ · PHP 7.4+",
+          "requirementsWithVersion": "최신 {version} · WordPress 5.6+ · WooCommerce 5.3+ · PHP 7.4+",
           "cardTitle": "WCPOS",
           "wordpressOrgCta": "WordPress.org"
         },
         "device": {
-          "title": "Pick your device",
-          "body": "All free, all in sync. Grab the one we detected up top, or any of these.",
-          "desktopTitle": "Desktop app",
-          "iosCta": "Join the TestFlight beta",
-          "androidCta": "Join on Google Play",
-          "webCta": "Open the live demo"
+          "title": "기기 선택",
+          "body": "모두 무료이며 모두 동기화됩니다. 위에서 감지된 항목을 받거나, 아래 중 하나를 선택하세요.",
+          "desktopTitle": "데스크톱 앱",
+          "iosCta": "TestFlight 베타 참여",
+          "androidCta": "Google Play에서 참여",
+          "webCta": "라이브 데모 열기"
         },
         "pro": {
-          "title": "Want more? Go Pro",
-          "body": "A licensed plugin that adds terminal payments, refunds and stock control on the same foundation.",
-          "cardTitle": "Unlock the full till",
-          "cardBody": "Payments, refunds, stock & pricing, order management, end-of-day reports, multi-store and priority Discord support.",
-          "plansCta": "View Pro plans",
-          "signInCta": "Sign in to download"
+          "title": "더 많은 기능이 필요하신가요? Pro로 업그레이드하세요",
+          "body": "터미널 결제, 환불, 재고 관리를 같은 기반 위에 추가하는 라이선스 플러그인입니다.",
+          "cardTitle": "전체 계산대 기능 잠금 해제",
+          "cardBody": "결제, 환불, 재고 및 가격 관리, 주문 관리, 일일 마감 보고서, 다중 매장, 우선 Discord 지원.",
+          "plansCta": "Pro 요금제 보기",
+          "signInCta": "로그인하여 다운로드"
         }
       }
     },
     "releaseHistory": {
-      "eyebrow": "Release history",
-      "title": "What’s new",
-      "subtitle": "Recent changes — every app shares one version line.",
-      "latest": "Latest",
-      "fullHistory": "Full history on GitHub —",
+      "eyebrow": "릴리스 기록",
+      "title": "새로운 기능",
+      "subtitle": "최근 변경 사항 — 모든 앱은 하나의 버전 라인을 공유합니다.",
+      "latest": "최신",
+      "fullHistory": "GitHub의 전체 기록 —",
       "desktop": "Desktop",
-      "emptyNotes": "_No release notes for this version._",
+      "emptyNotes": "_이 버전에 대한 릴리스 노트가 없습니다._",
       "fallback": {
-        "v196": "- Cash drawer support — auto-open after payment or via a new Open Drawer button, with per-printer connectors (ESC-POS, Epson, PrintNode, cloud)\n- Fixed analytics events firing too often\n- Updated translations",
-        "v195": "- Fixed a payment-gateways API crash (HTTP 500 with some third-party gateways, e.g. ToyyibPay)",
-        "v194": "- Redesigned Bluetooth printer setup; serial printing for OS-paired Bluetooth Classic printers\n- Improved Windows raw printing; smoother USB flow",
-        "v190": "- New receipt template gallery; thermal printing (58/80mm)\n- Customer Tax IDs; Pro coupons & refunds at the POS"
+        "v196": "- 금전함 지원 — 결제 후 자동 열기 또는 새 금전함 열기 버튼으로 열기, 프린터별 커넥터 지원(ESC-POS, Epson, PrintNode, cloud)\n- analytics 이벤트가 너무 자주 발생하던 문제 수정\n- 번역 업데이트",
+        "v195": "- 일부 타사 게이트웨이(예: ToyyibPay)에서 발생하던 결제 게이트웨이 API 충돌(HTTP 500) 수정",
+        "v194": "- Bluetooth 프린터 설정 재설계; OS에 페어링된 Bluetooth Classic 프린터용 시리얼 인쇄\n- Windows raw 인쇄 개선; USB 흐름 개선",
+        "v190": "- 새 영수증 템플릿 갤러리; 열전사 인쇄(58/80mm)\n- 고객 세금 ID; POS에서 Pro 쿠폰 및 환불"
       },
-      "plugin": "Free"
+      "plugin": "무료"
     }
   },
   "about": {
