@@ -42,6 +42,41 @@ describe('POST /api/discord/claim', () => {
     }))
   })
 
+  it('falls back to the locale-aware licenses page when returnTo is missing', async () => {
+    await POST(new NextRequest('https://wcpos.com/api/discord/claim', {
+      method: 'POST',
+      body: JSON.stringify({ licenseKey: 'WCPOS-AAAA' }),
+      headers: {
+        'content-type': 'application/json',
+        cookie: 'NEXT_LOCALE=fr',
+      },
+    }))
+
+    expect(mockSetDiscordOAuthState).toHaveBeenCalledWith(expect.objectContaining({
+      licenseKey: 'WCPOS-AAAA',
+      returnTo: '/fr/account/licenses',
+      state: expect.any(String),
+    }))
+  })
+
+  it('falls back to the best Accept-Language locale for unsafe returnTo values', async () => {
+    await POST(new NextRequest('https://wcpos.com/api/discord/claim', {
+      method: 'POST',
+      body: JSON.stringify({
+        licenseKey: 'WCPOS-AAAA',
+        returnTo: 'https://evil.example/account/licenses',
+      }),
+      headers: {
+        'content-type': 'application/json',
+        'accept-language': 'en-US;q=0.4, fr-FR;q=0.9',
+      },
+    }))
+
+    expect(mockSetDiscordOAuthState).toHaveBeenCalledWith(expect.objectContaining({
+      returnTo: '/fr/account/licenses',
+    }))
+  })
+
   it('rejects an empty licence key', async () => {
     const response = await POST(new NextRequest('https://wcpos.com/api/discord/claim', {
       method: 'POST',
