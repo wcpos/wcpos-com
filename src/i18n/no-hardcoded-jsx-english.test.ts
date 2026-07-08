@@ -23,7 +23,7 @@ const skipDirs = new Set([
 ])
 
 const checkedAttributes = ['aria-label', 'alt', 'placeholder', 'title']
-const jsxTextPattern = />\s*([A-Z][A-Za-z0-9 ,.'’!?/&+()#:\-]{1,})\s*</g
+const jsxTextPattern = />\s*([A-Za-z][A-Za-z0-9 ,.'’!?/&+()#:\-]{1,})\s*(?=<\/)/g
 const attributePattern = new RegExp(
   `\\b(${checkedAttributes.join('|')})\\s*=\\s*"([^"]*[A-Za-z][^"]*)"`,
   'g'
@@ -78,9 +78,7 @@ function isLikelyEnglishUiCopy(text: string): boolean {
   return true
 }
 
-function collectHits(filePath: string): Hit[] {
-  const source = readFileSync(filePath, 'utf8')
-  const relative = path.relative(root, filePath)
+function collectHitsFromSource(source: string, file: string): Hit[] {
   const hits: Hit[] = []
 
   for (const match of source.matchAll(jsxTextPattern)) {
@@ -89,19 +87,48 @@ function collectHits(filePath: string): Hit[] {
     }
     const text = normalizeText(match[1] ?? '')
     if (isLikelyEnglishUiCopy(text)) {
-      hits.push({ file: relative, kind: 'text', text })
+      hits.push({ file, kind: 'text', text })
     }
   }
 
   for (const match of source.matchAll(attributePattern)) {
     const text = normalizeText(match[2] ?? '')
     if (isLikelyEnglishUiCopy(text)) {
-      hits.push({ file: relative, kind: 'attribute', text })
+      hits.push({ file, kind: 'attribute', text })
     }
   }
 
   return hits
 }
+
+function collectHits(filePath: string): Hit[] {
+  return collectHitsFromSource(
+    readFileSync(filePath, 'utf8'),
+    path.relative(root, filePath)
+  )
+}
+
+describe('rendered JSX copy guard helpers', () => {
+  it('detects uppercase and lowercase rendered English text', () => {
+    const hits = collectHitsFromSource(
+      '<p>Welcome back</p><p>or continue with email</p>',
+      'src/components/example.tsx'
+    )
+
+    expect(hits).toEqual([
+      {
+        file: 'src/components/example.tsx',
+        kind: 'text',
+        text: 'Welcome back',
+      },
+      {
+        file: 'src/components/example.tsx',
+        kind: 'text',
+        text: 'or continue with email',
+      },
+    ])
+  })
+})
 
 describe('rendered JSX copy', () => {
   it('does not hard-code English UI strings outside the brand allowlist', () => {
