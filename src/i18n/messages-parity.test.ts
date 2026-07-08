@@ -47,7 +47,14 @@ const auditedItalianNamespacePrefixes = [
   'footer.',
   'header.',
   'common.',
+  'account.nav.',
+  'account.header.',
+  'account.licenses.apiErrors.',
   'account.downloads.apiErrors.',
+  'account.profile.apiErrors.',
+  'account.profile.avatarAlt',
+  'account.admin.',
+  'account.impersonation.',
   'pro.checkout.errors.',
   'pro.checkout.recovery.',
   'pro.checkout.successPage.',
@@ -715,7 +722,7 @@ describe('messages key parity', () => {
     }
   )
 
-  it('it.json translates the audited support, auth, roadmap, common, header, and footer copy', () => {
+  it('it.json translates the audited Italian support, auth, account, checkout, roadmap, common, header, and footer copy', () => {
     const english = loadMessages(defaultLocale)
     const italian = loadMessages('it')
     const auditedKeys = enKeys.filter(
@@ -736,7 +743,7 @@ describe('messages key parity', () => {
 
     expect(
       untranslatedKeys,
-      'messages/it.json must not copy audited support/auth/roadmap/common/header/footer English strings verbatim'
+      'messages/it.json must not copy audited Italian support/auth/account/checkout/roadmap/common/header/footer English strings verbatim'
     ).toEqual([])
   })
 

@@ -659,7 +659,7 @@
   },
   "account": {
     "nav": {
-      "title": "Account",
+      "title": "Il mio account",
       "orders": "Ordini",
       "licenses": "Licenze",
       "downloads": "Download",
@@ -688,7 +688,7 @@
       }
     },
     "header": {
-      "breadcrumb": "Account",
+      "breadcrumb": "Il mio account",
       "signOut": "Esci"
     },
     "error": {
@@ -772,7 +772,7 @@
       "copiedKey": "Copiata",
       "copyError": "Impossibile copiare la chiave di licenza. Riprova.",
       "apiErrors": {
-        "read_only_inspection": "You are viewing this account in read-only mode."
+        "read_only_inspection": "Stai visualizzando questo account in modalità sola lettura."
       }
     },
     "downloads": {
@@ -823,7 +823,7 @@
       "heading": "Profilo",
       "cardTitle": "Dettagli del profilo",
       "memberSince": "Membro dal",
-      "avatarAlt": "Avatar",
+      "avatarAlt": "Avatar del profilo",
       "avatarLabel": "Avatar del profilo",
       "avatarHint": "Se il tuo account collegato ha un avatar, viene usato per impostazione predefinita.",
       "avatarTooLarge": "L'immagine dell'avatar deve essere di 1 MB o meno.",
@@ -894,9 +894,9 @@
       "emailProvider": "Email e password",
       "emailDescription": "Accedi con il tuo indirizzo email.",
       "apiErrors": {
-        "read_only_inspection": "You are viewing this account in read-only mode.",
-        "unauthorized": "Please sign in again to update your profile.",
-        "update_failed": "Failed to update profile"
+        "read_only_inspection": "Stai visualizzando questo account in modalità sola lettura.",
+        "unauthorized": "Accedi di nuovo per aggiornare il profilo.",
+        "update_failed": "Impossibile aggiornare il profilo"
       }
     },
     "receiptPdf": {
@@ -935,13 +935,13 @@
       }
     },
     "admin": {
-      "title": "Inspect a customer (read-only)",
-      "description": "Enter a customer email to view their account exactly as they see it. You cannot change their data while inspecting.",
-      "submit": "View as"
+      "title": "Ispeziona un cliente (sola lettura)",
+      "description": "Inserisci l’email di un cliente per visualizzare il suo account esattamente come lo vede lui. Durante l’ispezione non puoi modificare i suoi dati.",
+      "submit": "Visualizza come"
     },
     "impersonation": {
-      "viewing": "🔍 Viewing <strong>{target}</strong> as <strong>read-only</strong> — you cannot change their account.",
-      "exit": "Exit"
+      "viewing": "🔍 Stai visualizzando <strong>{target}</strong> in modalità <strong>sola lettura</strong> — non puoi modificare il suo account.",
+      "exit": "Esci"
     },
     "orderStatus": {
       "actionRequired": "Azione richiesta",
