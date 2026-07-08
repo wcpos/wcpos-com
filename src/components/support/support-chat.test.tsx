@@ -5,6 +5,7 @@ import type { Ref } from 'react'
 import { NextIntlClientProvider } from 'next-intl'
 import type { ReactElement } from 'react'
 import messages from '../../../messages/en.json'
+import frMessages from '../../../messages/fr.json'
 
 const { resetTurnstile } = vi.hoisted(() => ({ resetTurnstile: vi.fn() }))
 
@@ -31,9 +32,9 @@ vi.mock('@marsidev/react-turnstile', () => ({
 
 import { SupportChat } from './support-chat'
 
-function renderWithIntl(ui: ReactElement, locale = 'en') {
+function renderWithIntl(ui: ReactElement, locale = 'en', providerMessages = messages) {
   return render(
-    <NextIntlClientProvider locale={locale} messages={messages}>
+    <NextIntlClientProvider locale={locale} messages={providerMessages}>
       {ui}
     </NextIntlClientProvider>
   )
@@ -101,5 +102,19 @@ describe('SupportChat', () => {
     expect(
       screen.getByRole('button', { name: 'Why is my licence inactive?' }).className,
     ).toContain('inline-flex')
+  })
+
+  it('sends the localized example text rather than the internal example key', async () => {
+    renderWithIntl(<SupportChat />, 'fr', frMessages)
+
+    fireEvent.click(screen.getByRole('button', { name: 'Pourquoi ma licence est-elle inactive ?' }))
+
+    await waitFor(() => expect(screen.getByText(/Open Settings/)).toBeInTheDocument())
+
+    const [, init] = vi.mocked(fetch).mock.calls[0]
+    expect(JSON.parse(String(init?.body))).toMatchObject({
+      question: 'Pourquoi ma licence est-elle inactive ?',
+      locale: 'fr',
+    })
   })
 })
