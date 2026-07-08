@@ -15,6 +15,12 @@ import {
 } from '@/lib/api/errors'
 import { getImpersonation } from '@/lib/impersonation'
 import { getAdminCustomerById } from '@/lib/discord/medusa-admin'
+import {
+  pickDefaultBillingAddress,
+  TAX_NUMBER_ADDRESS_METADATA_KEY,
+  type BillingAddressPatch,
+  type MedusaCustomerAddress,
+} from '@/lib/billing-profile'
 
 // ============================================================================
 // Types
@@ -30,6 +36,8 @@ export interface MedusaCustomer {
   created_at: string
   updated_at: string
   metadata?: Record<string, unknown>
+  // GET/POST /store/customers/me include *addresses in the default fields.
+  addresses?: MedusaCustomerAddress[]
 }
 
 // NOTE: `email` is deliberately absent — Medusa's store update-customer schema
@@ -401,6 +409,70 @@ export async function updateCustomer(
 
   if (!response.ok) {
     throw new Error(await parseMedusaError(response, 'Failed to update customer'))
+  }
+
+  const data = await response.json()
+  return data.customer
+}
+
+/**
+ * Upsert the customer's default billing address — the single source of truth
+ * for billing details (see billing-profile.ts). Updates the existing default
+ * billing address (creating one when the customer has none), and merges
+ * `tax_number` into the address metadata so a patch that omits it preserves
+ * the saved registration.
+ *
+ * Returns the refetched customer (the store address endpoints respond with
+ * the parent customer, addresses included), or null when unauthenticated.
+ */
+export async function upsertDefaultBillingAddress(
+  patch: BillingAddressPatch
+): Promise<MedusaCustomer | null> {
+  const token = await getAuthToken()
+  if (!token) return null
+
+  const customer = await getSessionCustomer()
+  if (!customer) return null
+
+  const existing = pickDefaultBillingAddress(customer.addresses)
+  const { tax_number, ...addressFields } = patch
+
+  const body: Record<string, unknown> = {}
+  for (const [key, value] of Object.entries(addressFields)) {
+    if (value !== undefined) body[key] = value
+  }
+  if (tax_number !== undefined) {
+    body.metadata = {
+      ...(existing?.metadata ?? {}),
+      [TAX_NUMBER_ADDRESS_METADATA_KEY]: tax_number,
+    }
+  }
+  if (!existing) {
+    // Seed names so the record reads sensibly in Medusa admin even when the
+    // caller (the profile form) doesn't submit them.
+    body.first_name ??= customer.first_name ?? ''
+    body.last_name ??= customer.last_name ?? ''
+  }
+  // Also normalizes a pre-existing address that lost its default flag.
+  body.is_default_billing = true
+
+  const path = existing
+    ? `/store/customers/me/addresses/${existing.id}`
+    : '/store/customers/me/addresses'
+  const response = await fetch(`${await getMedusaBackendUrl()}${path}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+      'x-publishable-api-key': await getMedusaPublishableKey(),
+    },
+    body: JSON.stringify(body),
+  })
+
+  if (!response.ok) {
+    throw new Error(
+      await parseMedusaError(response, 'Failed to update billing address')
+    )
   }
 
   const data = await response.json()

@@ -22,6 +22,7 @@ import { Mail } from 'lucide-react'
 import { GitHubMark, GoogleMark } from '@/components/auth/provider-marks'
 import { getConnectedAvatarUrlFromMetadata } from '@/lib/avatar'
 import { readAccountProfileMetadata } from '@/lib/customer-profile-metadata'
+import type { BillingDetails } from '@/lib/billing-profile'
 import {
   buildCountryOptions,
   COUNTRY_TAX_LABEL_KEYS,
@@ -36,6 +37,9 @@ interface ProfileEditFormProps {
     phone?: string
     metadata?: Record<string, unknown>
   }
+  /** Projected from the default billing customer address (the single source
+   * of truth for billing details) by the server component. */
+  billingDetails: BillingDetails
   memberSince?: string
   connections?: {
     signIn: { provider: 'google' | 'github' | 'email'; email: string }
@@ -117,17 +121,10 @@ function getInitials(firstName: string, lastName: string, email: string): string
   return email.trim().charAt(0).toUpperCase() || 'U'
 }
 
-function getProfileDefaults(metadata: Record<string, unknown> | undefined): {
+function getAvatarDefaults(metadata: Record<string, unknown> | undefined): {
   oauthAvatarUrl: string
   customAvatarUrl: string
   customAvatarDataUrl: string
-  countryCode: string
-  addressLine1: string
-  addressLine2: string
-  city: string
-  region: string
-  postalCode: string
-  taxNumber: string
 } {
   const accountProfile = readAccountProfileMetadata(metadata)
 
@@ -135,18 +132,12 @@ function getProfileDefaults(metadata: Record<string, unknown> | undefined): {
     oauthAvatarUrl: getConnectedAvatarUrlFromMetadata(metadata),
     customAvatarUrl: accountProfile.avatarUrl,
     customAvatarDataUrl: accountProfile.avatarDataUrl,
-    countryCode: accountProfile.countryCode,
-    addressLine1: accountProfile.addressLine1,
-    addressLine2: accountProfile.addressLine2,
-    city: accountProfile.city,
-    region: accountProfile.region,
-    postalCode: accountProfile.postalCode,
-    taxNumber: accountProfile.taxNumber,
   }
 }
 
 export function ProfileEditForm({
   customer,
+  billingDetails,
   memberSince,
   connections,
 }: ProfileEditFormProps) {
@@ -154,7 +145,7 @@ export function ProfileEditForm({
   const t = useTranslations('account.profile')
   const router = useRouter()
   const pathname = usePathname()
-  const metadataDefaults = getProfileDefaults(customer.metadata)
+  const avatarDefaults = getAvatarDefaults(customer.metadata)
 
   // Changing the language persists the preference to the account and reloads
   // the page in that locale. Mirrors the header LanguageSelector; the URL/cookie
@@ -180,18 +171,20 @@ export function ProfileEditForm({
   const [firstName, setFirstName] = useState(customer.first_name ?? '')
   const [lastName, setLastName] = useState(customer.last_name ?? '')
   const [phone, setPhone] = useState(customer.phone ?? '')
-  const [countryCode, setCountryCode] = useState(metadataDefaults.countryCode)
-  const [addressLine1, setAddressLine1] = useState(metadataDefaults.addressLine1)
-  const [addressLine2, setAddressLine2] = useState(metadataDefaults.addressLine2)
-  const [city, setCity] = useState(metadataDefaults.city)
-  const [region, setRegion] = useState(metadataDefaults.region)
-  const [postalCode, setPostalCode] = useState(metadataDefaults.postalCode)
-  const [taxNumber, setTaxNumber] = useState(metadataDefaults.taxNumber)
+  const [countryCode, setCountryCode] = useState(
+    billingDetails.countryCode || 'US'
+  )
+  const [addressLine1, setAddressLine1] = useState(billingDetails.addressLine1)
+  const [addressLine2, setAddressLine2] = useState(billingDetails.addressLine2)
+  const [city, setCity] = useState(billingDetails.city)
+  const [region, setRegion] = useState(billingDetails.region)
+  const [postalCode, setPostalCode] = useState(billingDetails.postalCode)
+  const [taxNumber, setTaxNumber] = useState(billingDetails.taxNumber)
   const [customAvatarDataUrl, setCustomAvatarDataUrl] = useState(
-    metadataDefaults.customAvatarDataUrl
+    avatarDefaults.customAvatarDataUrl
   )
   const [customAvatarUrl, setCustomAvatarUrl] = useState(
-    metadataDefaults.customAvatarUrl
+    avatarDefaults.customAvatarUrl
   )
   const [saving, setSaving] = useState(false)
   const [success, setSuccess] = useState<string | null>(null)
@@ -202,8 +195,8 @@ export function ProfileEditForm({
 
 
   const avatarUrl = useMemo(() => {
-    return customAvatarDataUrl || customAvatarUrl || metadataDefaults.oauthAvatarUrl
-  }, [customAvatarDataUrl, customAvatarUrl, metadataDefaults.oauthAvatarUrl])
+    return customAvatarDataUrl || customAvatarUrl || avatarDefaults.oauthAvatarUrl
+  }, [customAvatarDataUrl, customAvatarUrl, avatarDefaults.oauthAvatarUrl])
 
   const initials = getInitials(firstName, lastName, email)
 
@@ -245,9 +238,11 @@ export function ProfileEditForm({
           first_name: firstName,
           last_name: lastName,
           phone,
-          accountProfile: {
+          avatar: {
             avatarDataUrl: customAvatarDataUrl || null,
             avatarUrl: customAvatarUrl || null,
+          },
+          billingAddress: {
             countryCode,
             addressLine1,
             addressLine2: addressLine2 || null,
@@ -269,20 +264,21 @@ export function ProfileEditForm({
         )
       }
 
-      const updated = getProfileDefaults(data.customer?.metadata)
+      const updatedAvatar = getAvatarDefaults(data.customer?.metadata)
+      const updatedBilling = (data.billingDetails ?? {}) as Partial<BillingDetails>
 
       setFirstName(data.customer.first_name ?? '')
       setLastName(data.customer.last_name ?? '')
       setPhone(data.customer.phone ?? '')
-      setCountryCode(updated.countryCode || 'US')
-      setAddressLine1(updated.addressLine1)
-      setAddressLine2(updated.addressLine2)
-      setCity(updated.city)
-      setRegion(updated.region)
-      setPostalCode(updated.postalCode)
-      setTaxNumber(updated.taxNumber)
-      setCustomAvatarDataUrl(updated.customAvatarDataUrl)
-      setCustomAvatarUrl(updated.customAvatarUrl)
+      setCountryCode(updatedBilling.countryCode || 'US')
+      setAddressLine1(updatedBilling.addressLine1 ?? '')
+      setAddressLine2(updatedBilling.addressLine2 ?? '')
+      setCity(updatedBilling.city ?? '')
+      setRegion(updatedBilling.region ?? '')
+      setPostalCode(updatedBilling.postalCode ?? '')
+      setTaxNumber(updatedBilling.taxNumber ?? '')
+      setCustomAvatarDataUrl(updatedAvatar.customAvatarDataUrl)
+      setCustomAvatarUrl(updatedAvatar.customAvatarUrl)
       setSuccess(t('updateSuccess'))
     } catch (err) {
       setError(err instanceof Error ? err.message : t('updateError'))

@@ -10,6 +10,11 @@ import {
 } from './licenses'
 import { maskLicenseKey } from './order-display'
 import { getOrderDisplayStatus, type OrderStatusLabels } from './order-status'
+import {
+  billingDetailsFromAddress,
+  pickDefaultBillingAddress,
+  type MedusaCustomerAddress,
+} from './billing-profile'
 
 export interface AccountOrderMoneyFact {
   amount: number
@@ -269,25 +274,23 @@ export function projectAccountOrderDetail(
   }
 }
 
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return Boolean(value) && typeof value === 'object' && !Array.isArray(value)
-}
-
 export function projectReceiptProfile(
-  metadata: Record<string, unknown> | undefined
+  customer: { addresses?: MedusaCustomerAddress[] } | null | undefined
 ): AccountOrderReceiptProfileFact {
-  const accountProfile = isRecord(metadata?.account_profile)
-    ? metadata.account_profile
-    : {}
+  // Billing details come from the default billing customer address — the
+  // same source the profile page edits (see billing-profile.ts).
+  const details = billingDetailsFromAddress(
+    pickDefaultBillingAddress(customer?.addresses)
+  )
 
   return {
-    countryCode: stringOrNull(accountProfile.countryCode),
-    addressLine1: stringOrNull(accountProfile.addressLine1),
-    addressLine2: stringOrNull(accountProfile.addressLine2),
-    city: stringOrNull(accountProfile.city),
-    region: stringOrNull(accountProfile.region),
-    postalCode: stringOrNull(accountProfile.postalCode),
-    taxNumber: stringOrNull(accountProfile.taxNumber),
+    countryCode: details.countryCode || null,
+    addressLine1: details.addressLine1 || null,
+    addressLine2: details.addressLine2 || null,
+    city: details.city || null,
+    region: details.region || null,
+    postalCode: details.postalCode || null,
+    taxNumber: details.taxNumber || null,
   }
 }
 

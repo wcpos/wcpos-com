@@ -121,9 +121,10 @@ interface CheckoutClientProps {
   /** Absent when the visitor is not signed in — the account step handles it. */
   customerEmail?: string
   /**
-   * Saved profile address (customer.metadata.account_profile) to prefill the
-   * billing form with. Prefill only — billingAddress state stays "what was
-   * submitted", so the step summary never shows an unsaved address.
+   * Saved billing address (the customer's default billing customer_address)
+   * to prefill the billing form with. Prefill only — billingAddress state
+   * stays "what was submitted", so the step summary never shows an unsaved
+   * address.
    */
   initialBillingAddress?: BillingAddress | null
   /** Saved profile tax registration (ABN/VAT/EIN…) to prefill. */

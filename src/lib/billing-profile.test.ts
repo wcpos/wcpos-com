@@ -1,28 +1,75 @@
 import { describe, it, expect } from 'vitest'
 import {
+  billingDetailsFromAddress,
+  billingPatchFromCheckout,
+  billingPatchFromProfileForm,
   billingPrefillFromCustomer,
-  profilePatchFromBillingAddress,
+  pickDefaultBillingAddress,
+  type MedusaCustomerAddress,
 } from './billing-profile'
 
-describe('billingPrefillFromCustomer', () => {
-  const base = {
-    first_name: 'Paul',
-    last_name: 'K',
-    metadata: {
-        account_profile: {
-          countryCode: 'AU',
-          addressLine1: '1 Example St',
-          addressLine2: 'Unit 4',
-          city: 'Perth',
-          region: 'WA',
-          postalCode: '6000',
-          taxNumber: '51 824 753 556',
-        },
-    },
-  }
+const savedAddress: MedusaCustomerAddress = {
+  id: 'caddr_1',
+  first_name: 'Paul',
+  last_name: 'K',
+  address_1: '1 Example St',
+  address_2: 'Unit 4',
+  city: 'Perth',
+  province: 'WA',
+  postal_code: '6000',
+  country_code: 'au',
+  is_default_billing: true,
+  metadata: { tax_number: '51 824 753 556' },
+}
 
-  it('maps a saved profile to a billing prefill', () => {
-    expect(billingPrefillFromCustomer(base)).toEqual({
+describe('pickDefaultBillingAddress', () => {
+  it('prefers the default billing address over earlier entries', () => {
+    const other: MedusaCustomerAddress = { id: 'caddr_0' }
+    expect(pickDefaultBillingAddress([other, savedAddress])).toBe(savedAddress)
+  })
+
+  it('falls back to the first address when none is flagged', () => {
+    const first: MedusaCustomerAddress = { id: 'caddr_0' }
+    expect(pickDefaultBillingAddress([first, { id: 'caddr_1' }])).toBe(first)
+  })
+
+  it('returns null for a customer without addresses', () => {
+    expect(pickDefaultBillingAddress([])).toBeNull()
+    expect(pickDefaultBillingAddress(undefined)).toBeNull()
+  })
+})
+
+describe('billingDetailsFromAddress', () => {
+  it('projects the saved address with an uppercase country', () => {
+    expect(billingDetailsFromAddress(savedAddress)).toEqual({
+      countryCode: 'AU',
+      addressLine1: '1 Example St',
+      addressLine2: 'Unit 4',
+      city: 'Perth',
+      region: 'WA',
+      postalCode: '6000',
+      taxNumber: '51 824 753 556',
+    })
+  })
+
+  it('projects empty strings when there is no saved address', () => {
+    expect(billingDetailsFromAddress(null)).toEqual({
+      countryCode: '',
+      addressLine1: '',
+      addressLine2: '',
+      city: '',
+      region: '',
+      postalCode: '',
+      taxNumber: '',
+    })
+  })
+})
+
+describe('billingPrefillFromCustomer', () => {
+  it('maps the saved default billing address to a billing prefill', () => {
+    expect(
+      billingPrefillFromCustomer({ addresses: [savedAddress] })
+    ).toEqual({
       address: {
         first_name: 'Paul',
         last_name: 'K',
@@ -37,30 +84,43 @@ describe('billingPrefillFromCustomer', () => {
     })
   })
 
-  it('returns no address when nothing address-like is saved', () => {
-    expect(
-      billingPrefillFromCustomer({ metadata: { account_profile: {} } })
-    ).toEqual({ address: null, taxNumber: undefined })
+  it('falls back to the customer name when the address has none', () => {
+    const prefill = billingPrefillFromCustomer({
+      first_name: 'Grace',
+      last_name: 'Hopper',
+      addresses: [{ ...savedAddress, first_name: null, last_name: null }],
+    })
+    expect(prefill.address?.first_name).toBe('Grace')
+    expect(prefill.address?.last_name).toBe('Hopper')
   })
 
-  it('does not assert a country the customer never saved (reader defaults to US)', () => {
+  it('returns no address when nothing address-like is saved', () => {
+    expect(billingPrefillFromCustomer({ addresses: [] })).toEqual({
+      address: null,
+      taxNumber: undefined,
+    })
+  })
+
+  it('does not assert a country the customer never saved', () => {
     const prefill = billingPrefillFromCustomer({
-      metadata: { account_profile: { addressLine1: '1 Example St' } },
+      addresses: [
+        { id: 'caddr_2', address_1: '1 Example St', country_code: null },
+      ],
     })
     expect(prefill.address?.country_code).toBe('us')
   })
 
   it('preserves a saved worldwide country in the checkout country list', () => {
     const prefill = billingPrefillFromCustomer({
-      metadata: {
-        account_profile: { countryCode: 'PL', addressLine1: 'ul. Prosta 1' },
-      },
+      addresses: [
+        { id: 'caddr_3', address_1: 'ul. Prosta 1', country_code: 'pl' },
+      ],
     })
     expect(prefill.address?.country_code).toBe('pl')
   })
 })
 
-describe('profilePatchFromBillingAddress', () => {
+describe('billingPatchFromCheckout', () => {
   const address = {
     first_name: 'Ada',
     last_name: 'Lovelace',
@@ -69,52 +129,54 @@ describe('profilePatchFromBillingAddress', () => {
     city: 'Sydney',
     province: 'NSW',
     postal_code: '2000',
-    country_code: 'au',
+    country_code: 'AU',
   }
 
-  it('projects the owned fields and uppercases the country', () => {
-    expect(profilePatchFromBillingAddress(address, 'abn-1')).toEqual({
-      countryCode: 'AU',
-      addressLine1: '42 Wallaby Way',
-      addressLine2: 'Apt 7',
+  it('projects the owned fields and lowercases the country for storage', () => {
+    expect(billingPatchFromCheckout(address, 'abn-1')).toEqual({
+      first_name: 'Ada',
+      last_name: 'Lovelace',
+      country_code: 'au',
+      address_1: '42 Wallaby Way',
+      address_2: 'Apt 7',
       city: 'Sydney',
-      region: 'NSW',
-      postalCode: '2000',
-      taxNumber: 'abn-1',
+      province: 'NSW',
+      postal_code: '2000',
+      tax_number: 'abn-1',
     })
   })
 
-  it('passes an explicit empty tax number through so the merge clears it', () => {
-    expect(profilePatchFromBillingAddress(address, '').taxNumber).toBe('')
+  it('maps an explicit empty tax number to null so the write clears it', () => {
+    expect(billingPatchFromCheckout(address, '').tax_number).toBeNull()
   })
 
   it('omits the tax number entirely when it was not submitted', () => {
     expect(
-      profilePatchFromBillingAddress(address, undefined).taxNumber
+      billingPatchFromCheckout(address, undefined).tax_number
     ).toBeUndefined()
   })
 
   it('does not clear required address fields when they are submitted empty', () => {
-    const patch = profilePatchFromBillingAddress(
-      { ...address, city: '  ', address_1: '', address_2: '', province: '  ' },
+    const patch = billingPatchFromCheckout(
+      { ...address, city: '  ', address_1: '' },
       undefined
     )
     expect(patch.city).toBeUndefined()
-    expect(patch.addressLine1).toBeUndefined()
+    expect(patch.address_1).toBeUndefined()
   })
 
   it('clears submitted optional address fields when they are empty', () => {
-    const patch = profilePatchFromBillingAddress(
+    const patch = billingPatchFromCheckout(
       { ...address, address_2: '', province: '  ', postal_code: '' },
       undefined
     )
-    expect(patch.addressLine2).toBeNull()
-    expect(patch.region).toBeNull()
-    expect(patch.postalCode).toBeNull()
+    expect(patch.address_2).toBeNull()
+    expect(patch.province).toBeNull()
+    expect(patch.postal_code).toBeNull()
   })
 
   it('preserves optional address fields when checkout omits them', () => {
-    const patch = profilePatchFromBillingAddress(
+    const patch = billingPatchFromCheckout(
       {
         first_name: address.first_name,
         last_name: address.last_name,
@@ -125,8 +187,61 @@ describe('profilePatchFromBillingAddress', () => {
       undefined
     )
 
-    expect(patch.addressLine2).toBeUndefined()
-    expect(patch.region).toBeUndefined()
-    expect(patch.postalCode).toBeUndefined()
+    expect(patch.address_2).toBeUndefined()
+    expect(patch.province).toBeUndefined()
+    expect(patch.postal_code).toBeUndefined()
+  })
+})
+
+describe('billingPatchFromProfileForm', () => {
+  it('normalizes the full form submission into an address patch', () => {
+    expect(
+      billingPatchFromProfileForm({
+        countryCode: 'AU',
+        addressLine1: '1 Example St',
+        addressLine2: null,
+        city: 'Perth',
+        region: 'WA',
+        postalCode: '6000',
+        taxNumber: 'abn-1',
+      })
+    ).toEqual({
+      country_code: 'au',
+      address_1: '1 Example St',
+      address_2: null,
+      city: 'Perth',
+      province: 'WA',
+      postal_code: '6000',
+      tax_number: 'abn-1',
+    })
+  })
+
+  it('maps submitted empty fields to null so the save clears them', () => {
+    const patch = billingPatchFromProfileForm({
+      countryCode: 'US',
+      addressLine1: '  ',
+      city: '',
+      taxNumber: null,
+    })
+    expect(patch).toMatchObject({
+      address_1: null,
+      city: null,
+      tax_number: null,
+    })
+  })
+
+  it('ignores a country outside the billing vocabulary', () => {
+    const patch = billingPatchFromProfileForm({
+      countryCode: 'XX',
+      addressLine1: '1 Example St',
+    })
+    expect(patch?.country_code).toBeUndefined()
+    expect(patch?.address_1).toBe('1 Example St')
+  })
+
+  it('returns null for a non-object or empty submission', () => {
+    expect(billingPatchFromProfileForm(undefined)).toBeNull()
+    expect(billingPatchFromProfileForm('nope')).toBeNull()
+    expect(billingPatchFromProfileForm({})).toBeNull()
   })
 })

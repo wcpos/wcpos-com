@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import {
   getCustomer,
   updateCustomer,
+  upsertDefaultBillingAddress,
   type UpdateCustomerInput,
 } from '@/lib/medusa-auth'
 import { apiLogger } from '@/lib/logger'
@@ -11,6 +12,11 @@ import {
   projectProfileMetadataForClient,
   type AccountProfilePatchInput,
 } from '@/lib/customer-profile-metadata'
+import {
+  billingDetailsFromAddress,
+  billingPatchFromProfileForm,
+  pickDefaultBillingAddress,
+} from '@/lib/billing-profile'
 
 // `email` is intentionally not read from the body: it is not editable on this
 // endpoint, and Medusa's store update-customer schema rejects unknown fields
@@ -19,7 +25,10 @@ interface ProfilePayload {
   first_name?: string
   last_name?: string
   phone?: string
-  accountProfile?: AccountProfilePatchInput
+  /** Avatar-only metadata patch (account_profile). */
+  avatar?: AccountProfilePatchInput
+  /** Billing details — written to the default billing customer address. */
+  billingAddress?: unknown
 }
 
 type ProfileErrorCode =
@@ -62,16 +71,24 @@ export async function PATCH(request: NextRequest) {
 
     const metadata = mergeAccountProfileMetadataPatch(
       currentCustomer.metadata,
-      body.accountProfile
+      body.avatar
     )
     if (metadata) {
       payload.metadata = metadata
     }
 
-    const updatedCustomer = await updateCustomer(payload)
+    let updatedCustomer = await updateCustomer(payload)
 
     if (!updatedCustomer) {
       return errorResponse('unauthorized', 401)
+    }
+
+    // Billing details live on the default billing address (the single source
+    // of truth receipts and checkout share), not in customer metadata.
+    const billingPatch = billingPatchFromProfileForm(body.billingAddress)
+    if (billingPatch) {
+      updatedCustomer =
+        (await upsertDefaultBillingAddress(billingPatch)) ?? updatedCustomer
     }
 
     return NextResponse.json({
@@ -79,6 +96,9 @@ export async function PATCH(request: NextRequest) {
         ...updatedCustomer,
         metadata: projectProfileMetadataForClient(updatedCustomer.metadata),
       },
+      billingDetails: billingDetailsFromAddress(
+        pickDefaultBillingAddress(updatedCustomer.addresses)
+      ),
     }, { status: 200 })
   } catch (error) {
     apiLogger.error`Profile update failed (PATCH /api/account/profile): ${error}`

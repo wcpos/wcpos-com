@@ -168,7 +168,11 @@ export async function getAdminCustomerById(
   id: string
 ): Promise<MedusaCustomer | null> {
   const query = new URLSearchParams({
-    fields: 'id,email,first_name,last_name,phone,has_account,metadata,created_at,updated_at',
+    // *addresses keeps parity with /store/customers/me: the account area
+    // renders billing details from the default billing address, including
+    // during read-only inspection (view-as).
+    fields:
+      'id,email,first_name,last_name,phone,has_account,metadata,created_at,updated_at,*addresses',
   })
   try {
     const data = await medusaAdminFetch<AdminCustomerResponse>(

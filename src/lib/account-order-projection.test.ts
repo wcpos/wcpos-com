@@ -264,20 +264,23 @@ describe('projectAccountOrderDetail', () => {
 })
 
 describe('receipt projections', () => {
-  it('whitelists account profile metadata for receipts', () => {
+  it('projects the default billing address for receipts', () => {
     expect(
       projectReceiptProfile({
-        account_profile: {
-          countryCode: 'AU',
-          addressLine1: '1 Market St',
-          addressLine2: 'Suite 2',
-          city: 'Sydney',
-          region: 'NSW',
-          postalCode: '2000',
-          taxNumber: 'ABN 123',
-          avatarDataUrl: 'data:image/png;base64,secret',
-        },
-        discord_user_id: 'not-for-receipt',
+        addresses: [
+          { id: 'caddr_0', city: 'Elsewhere' },
+          {
+            id: 'caddr_1',
+            country_code: 'au',
+            address_1: '1 Market St',
+            address_2: 'Suite 2',
+            city: 'Sydney',
+            province: 'NSW',
+            postal_code: '2000',
+            is_default_billing: true,
+            metadata: { tax_number: 'ABN 123' },
+          },
+        ],
       })
     ).toEqual({
       countryCode: 'AU',
@@ -290,8 +293,22 @@ describe('receipt projections', () => {
     })
   })
 
+  it('projects all-null billing fields for a customer without addresses', () => {
+    expect(projectReceiptProfile(null)).toEqual({
+      countryCode: null,
+      addressLine1: null,
+      addressLine2: null,
+      city: null,
+      region: null,
+      postalCode: null,
+      taxNumber: null,
+    })
+  })
+
   it('projects receipt facts from an order and billing profile', () => {
-    const profile = projectReceiptProfile({ account_profile: { city: 'Sydney' } })
+    const profile = projectReceiptProfile({
+      addresses: [{ id: 'caddr_1', city: 'Sydney', is_default_billing: true }],
+    })
 
     expect(projectAccountOrderReceipt(makeOrder(), profile)).toEqual({
       displayId: 1001,

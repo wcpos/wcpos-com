@@ -9,6 +9,16 @@ vi.mock('@/i18n/navigation', () => ({
 
 import { ProfileEditForm } from './profile-edit-form'
 
+const emptyBillingDetails = {
+  countryCode: '',
+  addressLine1: '',
+  addressLine2: '',
+  city: '',
+  region: '',
+  postalCode: '',
+  taxNumber: '',
+}
+
 const mockFetch = vi.fn()
 vi.stubGlobal('fetch', mockFetch)
 
@@ -26,6 +36,33 @@ describe('ProfileEditForm', () => {
     })
   })
 
+  it('prefills billing details from the default billing address projection', () => {
+    render(
+      <ProfileEditForm
+        customer={{ email: 'dk@example.com', metadata: {} }}
+        billingDetails={{
+          countryCode: 'DK',
+          addressLine1: 'Gl. Hovedvej 8',
+          addressLine2: '',
+          city: 'Aarup',
+          region: '',
+          postalCode: '5560',
+          taxNumber: '',
+        }}
+      />
+    )
+
+    expect(
+      (screen.getByLabelText('Country') as HTMLSelectElement).value
+    ).toBe('DK')
+    expect(
+      (screen.getByLabelText('Address line 1') as HTMLInputElement).value
+    ).toBe('Gl. Hovedvej 8')
+    expect((screen.getByLabelText('City') as HTMLInputElement).value).toBe(
+      'Aarup'
+    )
+  })
+
   it('allows customers to update profile details', async () => {
     mockFetch.mockResolvedValueOnce({
       ok: true,
@@ -35,11 +72,16 @@ describe('ProfileEditForm', () => {
           first_name: 'Updated',
           last_name: 'Name',
           phone: '+15551234567',
-          metadata: {
-            account_profile: {
-              countryCode: 'US',
-            },
-          },
+          metadata: {},
+        },
+        billingDetails: {
+          countryCode: 'US',
+          addressLine1: '',
+          addressLine2: '',
+          city: '',
+          region: '',
+          postalCode: '',
+          taxNumber: '',
         },
       }),
     })
@@ -53,6 +95,7 @@ describe('ProfileEditForm', () => {
           phone: '',
           metadata: {},
         }}
+        billingDetails={emptyBillingDetails}
       />
     )
 
@@ -74,10 +117,13 @@ describe('ProfileEditForm', () => {
       first_name: 'Updated',
       last_name: 'Name',
       phone: '+15551234567',
-      accountProfile: {
+      billingAddress: {
         countryCode: 'US',
       },
     })
+    // Billing details ride the billingAddress payload (written to the
+    // default billing customer address), never metadata.
+    expect(parsedBody).not.toHaveProperty('accountProfile')
     // Email is not editable — sending it made Medusa reject EVERY profile
     // save with 400 "Unrecognized fields: 'email'".
     expect(parsedBody).not.toHaveProperty('email')
@@ -102,6 +148,7 @@ describe('ProfileEditForm', () => {
           phone: '',
           metadata: {},
         }}
+        billingDetails={emptyBillingDetails}
       />
     )
 
@@ -116,6 +163,7 @@ describe('ProfileEditForm', () => {
     render(
       <ProfileEditForm
         customer={{ email: 'fixed@example.com', metadata: {} }}
+        billingDetails={emptyBillingDetails}
       />
     )
 
@@ -131,6 +179,7 @@ describe('ProfileEditForm', () => {
           email: 'world@example.com',
           metadata: {},
         }}
+        billingDetails={emptyBillingDetails}
       />
     )
 
@@ -148,6 +197,7 @@ describe('ProfileEditForm', () => {
     render(
       <ProfileEditForm
         customer={{ email: 'noconn@example.com', metadata: {} }}
+        billingDetails={emptyBillingDetails}
       />
     )
 
@@ -164,6 +214,7 @@ describe('ProfileEditForm', () => {
     render(
       <ProfileEditForm
         customer={{ email: 'ada@gmail.com', metadata: {} }}
+        billingDetails={emptyBillingDetails}
         connections={{
           signIn: { provider: 'google', email: 'ada@gmail.com' },
         }}
@@ -183,6 +234,7 @@ describe('ProfileEditForm', () => {
     render(
       <ProfileEditForm
         customer={{ email: 'ada@github.com', metadata: {} }}
+        billingDetails={emptyBillingDetails}
         connections={{
           signIn: { provider: 'github', email: 'ada@github.com' },
         }}
@@ -199,6 +251,7 @@ describe('ProfileEditForm', () => {
     render(
       <ProfileEditForm
         customer={{ email: 'ada@example.com', metadata: {} }}
+        billingDetails={emptyBillingDetails}
         connections={{
           signIn: { provider: 'email', email: 'ada@example.com' },
         }}
@@ -214,6 +267,7 @@ describe('ProfileEditForm', () => {
     render(
       <ProfileEditForm
         customer={{ email: 'ada@gmail.com', metadata: {} }}
+        billingDetails={emptyBillingDetails}
         memberSince="January 2024"
       />
     )
