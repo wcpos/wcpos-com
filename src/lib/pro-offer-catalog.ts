@@ -136,10 +136,17 @@ function compactPrice(
   currencyCode: string,
   locale: string
 ): string {
-  return formatPrice(amount, currencyCode, locale, {
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  })
+  return formatPrice(
+    amount,
+    currencyCode,
+    locale,
+    Number.isInteger(amount)
+      ? {
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 0,
+        }
+      : undefined
+  )
 }
 
 function schemaPrice(amount: number): string {

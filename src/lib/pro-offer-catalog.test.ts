@@ -115,6 +115,14 @@ describe('buildProOfferCatalog', () => {
     expect(offers[0].price.compact).toBe(compact)
     expect(offers[0].price.formatted).not.toBe('$129.00')
   })
+
+  it('preserves cents in compact prices when the amount is fractional', () => {
+    const offers = buildProOfferCatalog([
+      product('wcpos-pro-yearly', 129.99, 'variant_yearly'),
+    ])
+
+    expect(offers[0].price.compact).toBe('$129.99')
+  })
 })
 
 describe('getProOfferCatalog', () => {
