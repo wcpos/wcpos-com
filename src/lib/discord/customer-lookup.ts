@@ -77,18 +77,21 @@ export async function lookupDiscordCustomerInfo(
     })
   }
 
-  const orderDates: Array<string | null> = []
-  for (const email of holderEmails) {
-    try {
-      const customer = await dependencies.findCustomerByEmail(email)
-      if (!customer) continue
-      const orders = await dependencies.listCustomerOrders(customer.id)
-      orderDates.push(...orders.map((order) => order.created_at ?? null))
-    } catch {
-      // Best-effort enrichment: a Medusa hiccup should not sink the lookup —
-      // the licence facts above are already useful on their own.
-    }
-  }
+  const orderDateGroups = await Promise.all(
+    Array.from(holderEmails).map(async (email) => {
+      try {
+        const customer = await dependencies.findCustomerByEmail(email)
+        if (!customer) return []
+        const orders = await dependencies.listCustomerOrders(customer.id)
+        return orders.map((order) => order.created_at ?? null)
+      } catch {
+        // Best-effort enrichment: a Medusa hiccup should not sink the lookup —
+        // the licence facts above are already useful on their own.
+        return []
+      }
+    })
+  )
+  const orderDates = orderDateGroups.flat()
 
   return {
     licences,

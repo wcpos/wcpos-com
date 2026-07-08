@@ -119,4 +119,38 @@ describe('lookupDiscordCustomerInfo', () => {
     expect(info.customerSince).toBe('2026-01-01T00:00:00.000Z')
     expect(info.roleState).toBe('unknown')
   })
+
+  it('enriches distinct holder emails concurrently', async () => {
+    let activeLookups = 0
+    let maxActiveLookups = 0
+    const findCustomerByEmail = vi.fn(async (email: string) => {
+      activeLookups++
+      maxActiveLookups = Math.max(maxActiveLookups, activeLookups)
+      await new Promise((resolve) => setTimeout(resolve, 10))
+      activeLookups--
+      return { ...customer, id: email, email }
+    })
+
+    const info = await lookupDiscordCustomerInfo('discord_1', {
+      listAllLicenses: async () => [
+        license({
+          id: 'lic_a',
+          key: 'WCPOS-AAAA-1111',
+          metadata: connectedTo({ email: 'a@example.com' }, 'discord_1'),
+        }),
+        license({
+          id: 'lic_b',
+          key: 'WCPOS-BBBB-2222',
+          metadata: connectedTo({ email: 'b@example.com' }, 'discord_1'),
+        }),
+      ],
+      findCustomerByEmail,
+      listCustomerOrders: vi.fn(async () => [order('2021-05-01T00:00:00.000Z')]),
+      getMemberRoleState: async () => 'has_role',
+    })
+
+    expect(info.licences).toHaveLength(2)
+    expect(findCustomerByEmail).toHaveBeenCalledTimes(2)
+    expect(maxActiveLookups).toBe(2)
+  })
 })
