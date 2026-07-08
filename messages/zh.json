@@ -914,7 +914,9 @@
         "read_only_inspection": "您正在以只读模式查看此账户。",
         "unauthorized": "请重新登录以更新您的个人资料。",
         "update_failed": "更新个人资料失败"
-      }
+      },
+      "languageTitle": "语言",
+      "languageHint": "用于您的账户、电子邮件和收据的语言。更改后将重新加载页面。"
     },
     "receiptPdf": {
       "title": "收据",

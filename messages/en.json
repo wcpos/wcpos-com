@@ -914,7 +914,9 @@
         "read_only_inspection": "You are viewing this account in read-only mode.",
         "unauthorized": "Please sign in again to update your profile.",
         "update_failed": "Failed to update profile"
-      }
+      },
+      "languageTitle": "Language",
+      "languageHint": "The language used across your account, emails, and receipts. Changing it reloads the page."
     },
     "receiptPdf": {
       "title": "Receipt",

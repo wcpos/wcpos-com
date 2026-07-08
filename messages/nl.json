@@ -914,7 +914,9 @@
         "read_only_inspection": "Je bekijkt dit account in alleen-lezenmodus.",
         "unauthorized": "Log opnieuw in om je profiel bij te werken.",
         "update_failed": "Profiel bijwerken mislukt"
-      }
+      },
+      "languageTitle": "Taal",
+      "languageHint": "De taal voor je account, e-mails en bonnen. Bij wijziging wordt de pagina opnieuw geladen."
     },
     "receiptPdf": {
       "title": "Bon",

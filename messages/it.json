@@ -914,7 +914,9 @@
         "read_only_inspection": "Stai visualizzando questo account in modalità sola lettura.",
         "unauthorized": "Accedi di nuovo per aggiornare il profilo.",
         "update_failed": "Impossibile aggiornare il profilo"
-      }
+      },
+      "languageTitle": "Lingua",
+      "languageHint": "La lingua usata nel tuo account, nelle email e nelle ricevute. Modificandola la pagina viene ricaricata."
     },
     "receiptPdf": {
       "title": "Ricevuta",

@@ -914,7 +914,9 @@
         "read_only_inspection": "Vous consultez ce compte en mode lecture seule.",
         "unauthorized": "Veuillez vous reconnecter pour mettre à jour votre profil.",
         "update_failed": "Échec de la mise à jour du profil"
-      }
+      },
+      "languageTitle": "Langue",
+      "languageHint": "La langue utilisée dans votre compte, vos e-mails et vos reçus. La modifier recharge la page."
     },
     "receiptPdf": {
       "title": "Reçu",

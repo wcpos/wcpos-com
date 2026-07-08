@@ -1,6 +1,12 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { renderWithIntl as render } from '@/test/intl'
+
+vi.mock('@/i18n/navigation', () => ({
+  useRouter: () => ({ replace: vi.fn(), push: vi.fn() }),
+  usePathname: () => '/account/profile',
+}))
+
 import { ProfileEditForm } from './profile-edit-form'
 
 const mockFetch = vi.fn()
