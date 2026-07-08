@@ -58,6 +58,8 @@ const JSON_API_HEADERS = {
   Accept: 'application/vnd.api+json',
 }
 
+const LIST_ALL_LICENSES_PAGE_TIMEOUT_MS = 10_000
+
 /** True when authenticated Keygen calls (machine list, deactivation) are possible. */
 function canAuthenticate(): boolean {
   return Boolean(env.KEYGEN_API_TOKEN)
@@ -75,6 +77,15 @@ function authHeaders() {
 
 function encodeKeygenPathSegment(value: string): string {
   return encodeURIComponent(value)
+}
+
+function isAbortError(error: unknown): boolean {
+  return (
+    typeof error === 'object' &&
+    error !== null &&
+    'name' in error &&
+    error.name === 'AbortError'
+  )
 }
 
 // ---- JSON:API response shape helpers ----
@@ -218,7 +229,7 @@ async function getLicense(licenseId: string): Promise<LicenseDetail> {
 /**
  * List every license in the account (requires auth), paged.
  *
- * GET /v1/licenses?page[size]=100&page[number]=N
+ * GET /v1/licenses?page[size]=100&page[cursor]=<last-license-id>
  *
  * The Discord "Customer info" lookup needs licence metadata fleet-wide;
  * paging Keygen directly (~25 requests for the current fleet) is orders of
@@ -230,12 +241,32 @@ async function listAllLicenses(): Promise<Omit<LicenseDetail, 'machines'>[]> {
   // far beyond the current fleet.
   const MAX_PAGES = 500
   const licenses: Omit<LicenseDetail, 'machines'>[] = []
+  let cursor = ''
 
   for (let page = 1; page <= MAX_PAGES; page++) {
-    const res = await fetch(
-      `${BASE_URL}/v1/licenses?page[size]=${PAGE_SIZE}&page[number]=${page}`,
-      { method: 'GET', headers: authHeaders() }
+    const controller = new AbortController()
+    const timeout = setTimeout(
+      () => controller.abort(),
+      LIST_ALL_LICENSES_PAGE_TIMEOUT_MS
     )
+
+    let res: Response
+    try {
+      res = await fetch(
+        `${BASE_URL}/v1/licenses?page[size]=${PAGE_SIZE}&page[cursor]=${encodeURIComponent(cursor)}`,
+        { method: 'GET', headers: authHeaders(), signal: controller.signal }
+      )
+    } catch (error) {
+      if (isAbortError(error)) {
+        throw new KeygenRequestError(
+          `Keygen listAllLicenses page ${page} timed out after ${LIST_ALL_LICENSES_PAGE_TIMEOUT_MS}ms`,
+          408
+        )
+      }
+      throw error
+    } finally {
+      clearTimeout(timeout)
+    }
 
     if (!res.ok) {
       throw new KeygenRequestError(
@@ -247,6 +278,8 @@ async function listAllLicenses(): Promise<Omit<LicenseDetail, 'machines'>[]> {
     const json: { data: KeygenLicenseData[] } = await res.json()
     licenses.push(...json.data.map(mapLicenseData))
     if (json.data.length < PAGE_SIZE) break
+    cursor = json.data[json.data.length - 1]?.id ?? ''
+    if (!cursor) break
   }
 
   return licenses

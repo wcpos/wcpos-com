@@ -16,8 +16,25 @@ const mockFetch = vi.fn()
 global.fetch = mockFetch
 
 // Import after mocks are set up
-import { licenseClient, KeygenAuthNotConfiguredError } from './license-client'
+import { licenseClient, KeygenAuthNotConfiguredError, KeygenRequestError } from './license-client'
 import { env } from '@/utils/env'
+
+function keygenLicenseData(id: string) {
+  return {
+    id,
+    attributes: {
+      key: `KEY-${id}`,
+      status: 'ACTIVE',
+      expiry: null,
+      maxMachines: 5,
+      metadata: {},
+      created: '2026-01-01T00:00:00Z',
+    },
+    relationships: {
+      policy: { data: { id: 'policy-yearly' } },
+    },
+  }
+}
 
 describe('licenseClient', () => {
   beforeEach(() => {
@@ -234,6 +251,55 @@ describe('licenseClient', () => {
       expect(mockFetch).toHaveBeenCalledWith(
         'https://license.wcpos.com/v1/licenses/license%2F123',
         expect.anything()
+      )
+    })
+  })
+
+  describe('listAllLicenses', () => {
+    it('uses Keygen cursor pagination rather than deprecated numbered pages', async () => {
+      const firstPage = Array.from({ length: 100 }, (_, index) =>
+        keygenLicenseData(`lic-${String(index + 1).padStart(3, '0')}`)
+      )
+      mockFetch
+        .mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({ data: firstPage }),
+        })
+        .mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({ data: [keygenLicenseData('lic-101')] }),
+        })
+
+      const result = await licenseClient.listAllLicenses()
+
+      expect(result).toHaveLength(101)
+      expect(mockFetch).toHaveBeenNthCalledWith(
+        1,
+        'https://license.wcpos.com/v1/licenses?page[size]=100&page[cursor]=',
+        expect.anything()
+      )
+      expect(mockFetch).toHaveBeenNthCalledWith(
+        2,
+        'https://license.wcpos.com/v1/licenses?page[size]=100&page[cursor]=lic-100',
+        expect.anything()
+      )
+      expect(mockFetch.mock.calls.every(([url]) => !String(url).includes('page[number]'))).toBe(
+        true
+      )
+    })
+
+    it('surfaces a timed-out page fetch as a KeygenRequestError', async () => {
+      mockFetch.mockRejectedValueOnce(new DOMException('The operation was aborted.', 'AbortError'))
+
+      await expect(licenseClient.listAllLicenses()).rejects.toMatchObject({
+        name: 'KeygenRequestError',
+        status: 408,
+        message: expect.stringContaining('timed out'),
+      } satisfies Partial<KeygenRequestError>)
+
+      expect(mockFetch).toHaveBeenCalledWith(
+        'https://license.wcpos.com/v1/licenses?page[size]=100&page[cursor]=',
+        expect.objectContaining({ signal: expect.any(AbortSignal) })
       )
     })
   })
