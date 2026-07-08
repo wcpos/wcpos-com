@@ -13,6 +13,7 @@ import {
   getProOfferCatalog,
   resolveProOfferCartSelection,
 } from '@/lib/pro-offer-catalog'
+import { supportedBaseLocaleOrDefault } from '@/lib/locale-preferences'
 
 function btcpaySessionData(
   providerId: string,
@@ -24,9 +25,15 @@ function btcpaySessionData(
 
   const metadata = (cart as { metadata?: Record<string, unknown> }).metadata
   const locale = metadata?.locale
-  return typeof locale === 'string' && locale.trim()
-    ? { locale: locale.trim() }
-    : undefined
+  if (typeof locale !== 'string' || !locale.trim()) {
+    return undefined
+  }
+
+  // Cart metadata is custom and unvalidated, so an unsupported or path-like
+  // locale could otherwise be forwarded verbatim and produce a bad BTCPay
+  // checkout return URL. Normalize to a supported base locale (config.ts),
+  // falling back to the default locale.
+  return { locale: supportedBaseLocaleOrDefault(locale) }
 }
 
 /**

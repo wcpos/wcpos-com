@@ -194,7 +194,7 @@ describe('POST /api/store/cart/payment-sessions', () => {
     expect(json.customerSessionClientSecret).toBeNull()
   })
 
-  it('passes the cart locale as BTCPay payment-session data', async () => {
+  it('normalizes a regional cart locale to a supported base locale for BTCPay', async () => {
     mockGetCart.mockResolvedValue({
       ...validCart,
       metadata: { locale: 'fr-FR' },
@@ -214,7 +214,78 @@ describe('POST /api/store/cart/payment-sessions', () => {
       'paycol_1',
       'pp_btcpay_btcpay',
       AUTH_TOKEN,
-      { locale: 'fr-FR' }
+      { locale: 'fr' }
+    )
+  })
+
+  it('falls back to the default locale when the cart locale is unsupported', async () => {
+    mockGetCart.mockResolvedValue({
+      ...validCart,
+      metadata: { locale: 'xx' },
+    })
+    mockCreatePaymentCollection.mockResolvedValueOnce({ id: 'paycol_1' })
+    mockCreatePaymentSession.mockResolvedValueOnce({
+      clientSecret: null,
+      paymentSessionId: 'payses_btcpay',
+    })
+
+    const response = await POST(
+      makeRequest({ cartId: 'cart_1', provider_id: 'pp_btcpay_btcpay' })
+    )
+
+    expect(response.status).toBe(200)
+    expect(mockCreatePaymentSession).toHaveBeenCalledWith(
+      'paycol_1',
+      'pp_btcpay_btcpay',
+      AUTH_TOKEN,
+      { locale: 'en' }
+    )
+  })
+
+  it('falls back to the default locale when the cart locale is path-like', async () => {
+    mockGetCart.mockResolvedValue({
+      ...validCart,
+      metadata: { locale: '../../evil/path' },
+    })
+    mockCreatePaymentCollection.mockResolvedValueOnce({ id: 'paycol_1' })
+    mockCreatePaymentSession.mockResolvedValueOnce({
+      clientSecret: null,
+      paymentSessionId: 'payses_btcpay',
+    })
+
+    const response = await POST(
+      makeRequest({ cartId: 'cart_1', provider_id: 'pp_btcpay_btcpay' })
+    )
+
+    expect(response.status).toBe(200)
+    expect(mockCreatePaymentSession).toHaveBeenCalledWith(
+      'paycol_1',
+      'pp_btcpay_btcpay',
+      AUTH_TOKEN,
+      { locale: 'en' }
+    )
+  })
+
+  it('omits BTCPay session data when the cart has no locale', async () => {
+    mockGetCart.mockResolvedValue({
+      ...validCart,
+      metadata: {},
+    })
+    mockCreatePaymentCollection.mockResolvedValueOnce({ id: 'paycol_1' })
+    mockCreatePaymentSession.mockResolvedValueOnce({
+      clientSecret: null,
+      paymentSessionId: 'payses_btcpay',
+    })
+
+    const response = await POST(
+      makeRequest({ cartId: 'cart_1', provider_id: 'pp_btcpay_btcpay' })
+    )
+
+    expect(response.status).toBe(200)
+    expect(mockCreatePaymentSession).toHaveBeenCalledWith(
+      'paycol_1',
+      'pp_btcpay_btcpay',
+      AUTH_TOKEN
     )
   })
 
