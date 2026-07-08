@@ -1061,219 +1061,219 @@
   "legal": {
     "privacy": {
       "meta": {
-        "title": "Privacy Policy",
-        "description": "How WCPOS collects, uses, and protects your personal data, including analytics, cookies, payment processing, and your rights under GDPR."
+        "title": "プライバシーポリシー",
+        "description": "WCPOSが個人データを収集、利用、保護する方法について。解析、Cookie、決済処理、GDPRに基づく権利を含みます。"
       },
-      "title": "Privacy Policy",
-      "lastUpdated": "Last updated: {date}",
-      "intro": "WCPOS (\"we\", \"us\") operates wcpos.com, the website for the WCPOS plugin and WCPOS Pro. This policy explains what personal data we collect when you use the site, why we collect it, who processes it on our behalf, and what rights you have over it. We aim to collect as little as we need to run the service.",
+      "title": "プライバシーポリシー",
+      "lastUpdated": "最終更新日：{date}",
+      "intro": "WCPOS（「当社」）は、WCPOSプラグインおよびWCPOS Proのウェブサイトである wcpos.com を運営しています。本ポリシーでは、サイト利用時に当社が収集する個人データ、その収集理由、当社に代わって処理する事業者、およびお客様がそのデータについて有する権利を説明します。当社は、サービス運営に必要な最小限のデータのみを収集することを目指しています。",
       "collect": {
-        "title": "What we collect",
+        "title": "収集する情報",
         "items": {
           "c1": {
-            "label": "Account information.",
-            "body": "Your email address and name when you create an account, either directly or by signing in with Google, GitHub, or Discord. When you use a sign-in provider, we receive only your basic profile (email, name or username, and avatar or picture URL) from that provider, and may store the avatar or picture URL on your account as <code>oauth_avatar_url</code>."
+            "label": "アカウント情報。",
+            "body": "直接アカウントを作成する場合、またはGoogle、GitHub、Discordでサインインする場合のメールアドレスと氏名。サインインプロバイダーを利用する場合、当社はそのプロバイダーから基本プロフィール（メールアドレス、氏名またはユーザー名、アバターまたは画像URL）のみを受け取り、アバターまたは画像URLを <code>oauth_avatar_url</code> としてアカウントに保存する場合があります。"
           },
           "c2": {
-            "label": "Billing details.",
-            "body": "The billing address and any company details you enter at checkout, stored with your customer record so we can issue receipts and comply with tax rules."
+            "label": "請求情報。",
+            "body": "チェックアウト時に入力した請求先住所および会社情報。領収書の発行と税務規則への対応のため、お客様レコードに保存されます。"
           },
           "c3": {
-            "label": "Order and license history.",
-            "body": "Records of your purchases, license keys, and plugin downloads, so you can manage your licenses and we can provide support."
+            "label": "注文履歴とライセンス履歴。",
+            "body": "購入記録、ライセンスキー、プラグインのダウンロード記録。お客様がライセンスを管理できるようにし、当社がサポートを提供するために利用します。"
           },
           "c4": {
-            "label": "Payment information.",
-            "body": "Payments are handled by Stripe and PayPal. Your full card number or payment credentials never reach our servers; we receive only a payment confirmation and the details needed for the receipt."
+            "label": "決済情報。",
+            "body": "決済はStripeおよびPayPalによって処理されます。完全なカード番号や決済認証情報が当社サーバーに届くことはありません。当社が受け取るのは、決済確認と領収書に必要な情報のみです。"
           },
           "c5": {
-            "label": "Usage analytics.",
-            "body": "We use PostHog to understand how the site is used (pages viewed, buttons clicked). To do this, we set a cookie containing a randomly generated identifier. It does not contain your name or email."
+            "label": "利用状況の解析。",
+            "body": "当社は、サイトの利用状況（閲覧ページ、クリックされたボタン）を把握するためにPostHogを使用します。そのために、ランダムに生成された識別子を含むCookieを設定します。このCookieには、お客様の氏名やメールアドレスは含まれません。"
           },
           "c6": {
-            "label": "Error reports.",
-            "body": "If something breaks, an error report may be sent to Sentry. Reports can include technical details such as your browser and operating system and what the application was doing at the time of the error."
+            "label": "エラーレポート。",
+            "body": "問題が発生した場合、エラーレポートがSentryに送信されることがあります。レポートには、お使いのブラウザーやOS、エラー発生時にアプリケーションが行っていた処理などの技術情報が含まれる場合があります。"
           },
           "c7": {
-            "label": "Server logs.",
-            "body": "Our servers keep application logs (in Grafana Loki) for debugging and operating the service."
+            "label": "サーバーログ。",
+            "body": "当社サーバーは、デバッグとサービス運用のためにアプリケーションログ（Grafana Loki内）を保持します。"
           }
         }
       },
       "cookies": {
-        "title": "Cookies",
-        "body": "We use a small number of first-party cookies. We do not use third-party advertising cookies.",
+        "title": "Cookie",
+        "body": "当社は少数のファーストパーティCookieを使用します。第三者広告Cookieは使用しません。",
         "items": {
-          "k1": "<code>medusa-token</code> — keeps you signed in to your account. Expires after 1 day.",
-          "k2": "<code>wcpos-analytics-consent</code> — remembers your analytics consent choice (accepted or declined). Expires after 182 days.",
-          "k3": "<code>wcpos-distinct-id</code> — a random identifier used for analytics. Only set after you accept analytics on the consent banner; removed if you decline. Expires after 1 year.",
-          "k4": "<code>NEXT_LOCALE</code> — remembers your language preference.",
-          "k5": "Your light/dark theme preference is stored locally in your browser and is never sent to us."
+          "k1": "<code>medusa-token</code> — アカウントへのログイン状態を維持します。有効期限は1日です。",
+          "k2": "<code>wcpos-analytics-consent</code> — 解析への同意選択（同意または拒否）を記憶します。有効期限は182日です。",
+          "k3": "<code>wcpos-distinct-id</code> — 解析に使用されるランダム識別子です。同意バナーで解析に同意した後にのみ設定され、拒否した場合は削除されます。有効期限は1年です。",
+          "k4": "<code>NEXT_LOCALE</code> — 言語設定を記憶します。",
+          "k5": "ライト／ダークテーマの設定はお使いのブラウザー内にローカル保存され、当社に送信されることはありません。"
         }
       },
       "processors": {
-        "title": "Who processes your data",
-        "body": "We use the following service providers to run wcpos.com. Each receives only the data needed for its role:",
+        "title": "データを処理する事業者",
+        "body": "当社は wcpos.com を運営するため、以下のサービスプロバイダーを使用します。各プロバイダーが受け取るのは、その役割に必要なデータのみです。",
         "items": {
           "p1": {
-            "label": "Our commerce backend (Medusa)",
-            "body": "— self-hosted on Hetzner infrastructure in the EU. Stores accounts, customer records, and orders."
+            "label": "当社のコマースバックエンド（Medusa）",
+            "body": "— EU内のHetznerインフラ上でセルフホストされています。アカウント、顧客レコード、注文を保存します。"
           },
           "p2": {
             "label": "Stripe",
-            "body": "— card payment processing."
+            "body": "— カード決済処理。"
           },
           "p3": {
             "label": "PayPal",
-            "body": "— PayPal payment processing."
+            "body": "— PayPal決済処理。"
           },
           "p4": {
             "label": "Keygen",
-            "body": "— software license management (license keys and activations)."
+            "body": "— ソフトウェアライセンス管理（ライセンスキーとアクティベーション）。"
           },
           "p5": {
             "label": "PostHog",
-            "body": "— product analytics."
+            "body": "— 製品解析。"
           },
           "p6": {
             "label": "Sentry",
-            "body": "— error monitoring."
+            "body": "— エラー監視。"
           },
           "p7": {
             "label": "Vercel",
-            "body": "— website hosting and content delivery."
+            "body": "— ウェブサイトのホスティングとコンテンツ配信。"
           }
         }
       },
       "retention": {
-        "title": "How long we keep data",
+        "title": "データの保存期間",
         "items": {
-          "r1": "Account and license data is kept while your account is active. If you ask us to delete your account, we delete it, except where we are legally required to keep records.",
-          "r2": "Order and invoice records are kept for as long as tax and accounting laws require.",
-          "r3": "The analytics identifier cookie expires after 1 year.",
-          "r4": "Server logs and error reports are kept for a limited operational window and then deleted."
+          "r1": "アカウントおよびライセンスデータは、アカウントが有効な間保持されます。アカウント削除を依頼された場合、法的に記録保持が必要な場合を除き、当社は削除します。",
+          "r2": "注文および請求書の記録は、税務および会計法で求められる期間保持されます。",
+          "r3": "解析識別子Cookieは1年後に期限切れになります。",
+          "r4": "サーバーログおよびエラーレポートは、限定された運用期間だけ保持され、その後削除されます。"
         }
       },
       "rights": {
-        "title": "Your rights",
-        "body": "If you are in the EU/EEA or UK, you have rights under the GDPR, including the right to access, correct, delete, and export your personal data, and to object to or restrict certain processing. We extend the same rights to all users regardless of location.",
-        "exercise": "To exercise any of these rights, email us at <email>support@wcpos.com</email> so we can verify your identity privately. EU/EEA residents also have the right to lodge a complaint with their local data protection authority."
+        "title": "お客様の権利",
+        "body": "EU/EEAまたは英国にお住まいの場合、GDPRに基づき、ご自身の個人データへのアクセス、訂正、削除、エクスポートを求める権利、および特定の処理に異議を述べる、または制限を求める権利があります。当社は所在地にかかわらず、すべてのユーザーに同じ権利を適用します。",
+        "exercise": "これらの権利を行使するには、非公開で本人確認を行えるよう <email>support@wcpos.com</email> までメールでご連絡ください。EU/EEA居住者には、現地のデータ保護当局に苦情を申し立てる権利もあります。"
       },
       "changes": {
-        "title": "Changes to this policy",
-        "body": "If we make material changes to this policy, we will update the date at the top of this page. Continued use of the site after a change means the updated policy applies."
+        "title": "本ポリシーの変更",
+        "body": "本ポリシーに重要な変更を加える場合、このページ上部の日付を更新します。変更後もサイトを継続して利用した場合、更新後のポリシーが適用されます。"
       },
       "contact": {
-        "title": "Contact",
-        "body": "Questions about this policy or your data? Email us at <email>support@wcpos.com</email> or ask general questions in the community chat on the <support>support page</support>."
+        "title": "お問い合わせ",
+        "body": "本ポリシーまたはお客様のデータに関する質問は、<email>support@wcpos.com</email> までメールでご連絡ください。一般的な質問は <support>サポートページ</support> のコミュニティチャットでも受け付けています。"
       }
     },
     "refunds": {
       "meta": {
-        "title": "Refund Policy",
-        "description": "The WCPOS Pro refund policy: how to request a refund within 14 days of purchase, and how refunds are paid."
+        "title": "返金ポリシー",
+        "description": "WCPOS Proの返金ポリシー：購入から14日以内に返金を依頼する方法、および返金方法について。"
       },
-      "title": "Refund Policy",
-      "lastUpdated": "Last updated: {date}",
-      "intro": "WCPOS Pro purchases — first purchase or renewal, yearly or lifetime — can be refunded within 14 days of purchase. Email us within that window and we refund you in full. You do not need to give a reason.",
+      "title": "返金ポリシー",
+      "lastUpdated": "最終更新日：{date}",
+      "intro": "WCPOS Proの購入（初回購入または更新、年額またはライフタイム）は、購入日から14日以内であれば返金できます。その期間内にメールでご連絡いただければ、全額返金します。理由を伝える必要はありません。",
       "prevention": {
-        "title": "The best refund is the one you never need",
+        "title": "最良の返金は、必要にならない返金です",
         "items": {
           "p1": {
-            "label": "Install the free plugin.",
-            "body": "Run the free version of WCPOS on your store for a couple of days before upgrading — that proves the plugin works on your site."
+            "label": "無料プラグインをインストールしてください。",
+            "body": "アップグレードする前に、無料版のWCPOSを数日間ストアで実行してください。これにより、お客様のサイトでプラグインが動作することを確認できます。"
           },
           "p2": {
-            "label": "Try the demo.",
-            "body": "The <demo>online demo</demo> runs the current version with Pro activated, so you can confirm it fulfils your store's requirements."
+            "label": "デモをお試しください。",
+            "body": "<demo>オンラインデモ</demo> はProが有効化された現行バージョンで動作しているため、ストアの要件を満たすか確認できます。"
           },
           "p3": {
-            "label": "Read the documentation.",
-            "body": "Check the <docs>docs</docs> for the features you need, and email <email>support@wcpos.com</email> with pre-sale questions — we answer openly and honestly."
+            "label": "ドキュメントをご確認ください。",
+            "body": "必要な機能について <docs>ドキュメント</docs> を確認し、購入前の質問は <email>support@wcpos.com</email> にメールしてください。当社は率直かつ誠実に回答します。"
           }
         }
       },
       "request": {
-        "title": "How to request a refund",
-        "body": "Email <email>support@wcpos.com</email> from the email address you used for the purchase, within 14 days of buying. Telling us why helps us improve, but it is not required to get the refund."
+        "title": "返金の依頼方法",
+        "body": "購入から14日以内に、購入時に使用したメールアドレスから <email>support@wcpos.com</email> へメールしてください。理由を教えていただけると改善に役立ちますが、返金を受けるために必須ではありません。"
       },
       "payment": {
-        "title": "How refunds are paid",
-        "body": "Refunds go back to the original payment method via Stripe or PayPal and typically appear on your statement within 5–10 business days, depending on your bank or card issuer. Refunded license keys are revoked and stop working immediately."
+        "title": "返金方法",
+        "body": "返金はStripeまたはPayPal経由で元の支払い方法に戻され、銀行またはカード発行会社によって異なりますが、通常5〜10営業日以内に明細に反映されます。返金されたライセンスキーは取り消され、直ちに動作しなくなります。"
       },
       "renewals": {
-        "title": "License renewals",
-        "body": "Yearly licenses do not renew automatically — we never charge you again without a new purchase from you. The same 14-day refund window applies to renewal purchases."
+        "title": "ライセンス更新",
+        "body": "年額ライセンスは自動更新されません。お客様が新たに購入しない限り、当社が再度請求することはありません。更新購入にも同じ14日間の返金期間が適用されます。"
       },
       "rights": {
-        "title": "Your statutory rights",
-        "body": "For consumers in the EU, EEA and UK: our 14-day refund window matches your statutory right of withdrawal for this kind of purchase, and exercising either works the same way — email us within 14 days.",
-        "defective": "If WCPOS Pro is defective or does not work as described, statutory remedies for faulty digital content apply at any time, independent of the 14-day window. And nothing in this policy limits any rights you have under the consumer protection laws of your country — where local law gives you stronger rights, those rights apply."
+        "title": "法定権利",
+        "body": "EU、EEA、英国の消費者については、当社の14日間の返金期間は、この種の購入に関する法定撤回権と一致します。どちらを行使する場合も手続きは同じで、14日以内にメールでご連絡ください。",
+        "defective": "WCPOS Proに欠陥がある、または説明どおりに動作しない場合、不具合のあるデジタルコンテンツに関する法定救済は、14日間の期間とは独立していつでも適用されます。また、本ポリシーは、お客様の国の消費者保護法に基づく権利を制限するものではありません。現地法がより強い権利を認めている場合、その権利が適用されます。"
       }
     },
     "terms": {
       "meta": {
-        "title": "Terms of Service",
-        "description": "The terms that govern your use of wcpos.com, your WCPOS account, and WCPOS Pro licenses."
+        "title": "利用規約",
+        "description": "wcpos.com、WCPOSアカウント、およびWCPOS Proライセンスの利用に適用される規約です。"
       },
-      "title": "Terms of Service",
-      "lastUpdated": "Last updated: {date}",
-      "intro": "These terms govern your use of wcpos.com, your WCPOS account, and any WCPOS Pro license you purchase. By using the site or buying a license, you agree to these terms. If you do not agree, please do not use the service.",
+      "title": "利用規約",
+      "lastUpdated": "最終更新日：{date}",
+      "intro": "本規約は、wcpos.com、WCPOSアカウント、および購入したWCPOS Proライセンスの利用に適用されます。サイトを利用する、またはライセンスを購入することにより、本規約に同意したものとみなされます。同意しない場合は、サービスを利用しないでください。",
       "service": {
-        "title": "The service",
-        "body": "WCPOS provides the wcpos.com website, user accounts, and paid WCPOS Pro licenses that unlock premium features, updates, and priority support for the WCPOS plugin."
+        "title": "サービス",
+        "body": "WCPOSは、wcpos.comウェブサイト、ユーザーアカウント、およびWCPOSプラグインのプレミアム機能、アップデート、優先サポートを有効化する有料のWCPOS Proライセンスを提供します。"
       },
       "gpl": {
-        "title": "The free plugin and the GPL",
-        "body": "The free WCPOS plugin is open-source software released under the GNU General Public License (GPL). Nothing in these terms limits the rights the GPL grants you over that code. A Pro license is separate: it covers access to Pro features, license keys, automatic updates, and priority support — not a restriction on the open-source code itself."
+        "title": "無料プラグインとGPL",
+        "body": "無料のWCPOSプラグインは、GNU General Public License（GPL）の下で公開されているオープンソースソフトウェアです。本規約のいかなる内容も、そのコードについてGPLがお客様に付与する権利を制限しません。Proライセンスは別個のものであり、Pro機能、ライセンスキー、自動アップデート、優先サポートへのアクセスを対象とします。オープンソースコード自体を制限するものではありません。"
       },
       "account": {
-        "title": "Your account",
+        "title": "お客様のアカウント",
         "items": {
-          "a1": "Provide accurate information when registering and keep it up to date.",
-          "a2": "Keep your credentials secure. You are responsible for activity that happens under your account.",
-          "a3": "Tell us promptly at <email>support@wcpos.com</email> if you suspect unauthorized access to your account."
+          "a1": "登録時には正確な情報を提供し、最新の状態に保ってください。",
+          "a2": "認証情報を安全に管理してください。アカウントで行われる活動についてはお客様が責任を負います。",
+          "a3": "アカウントへの不正アクセスが疑われる場合は、速やかに <email>support@wcpos.com</email> までお知らせください。"
         }
       },
       "licenses": {
-        "title": "Purchases and licenses",
+        "title": "購入とライセンス",
         "items": {
-          "l1": "<strong>Yearly license.</strong> A one-time payment that includes Pro features, automatic updates, and priority support for one year. It does not renew automatically and we never charge you again without a new purchase. When it expires, you can choose to renew it from your account for another year.",
-          "l2": "<strong>Lifetime license.</strong> A one-time purchase that includes Pro features, updates, and priority support for the lifetime of the product.",
-          "l3": "License keys are for activating WCPOS Pro on your own sites within the limits of the license you purchased. Do not share, resell, or publish license keys.",
-          "l4": "Prices are shown at checkout before you pay. Payment is handled by Stripe or PayPal.",
-          "l5": "Refunds are handled according to our <policy>refund policy</policy>."
+          "l1": "<strong>年額ライセンス。</strong> 1回限りの支払いで、1年間Pro機能、自動アップデート、優先サポートが含まれます。自動更新はされず、新たに購入しない限り当社が再度請求することはありません。有効期限が切れた場合、アカウントからさらに1年間更新することを選択できます。",
+          "l2": "<strong>ライフタイムライセンス。</strong> 1回限りの購入で、製品の存続期間中、Pro機能、アップデート、優先サポートが含まれます。",
+          "l3": "ライセンスキーは、購入したライセンスの範囲内で、ご自身のサイト上のWCPOS Proを有効化するためのものです。ライセンスキーを共有、再販売、公開しないでください。",
+          "l4": "価格は支払い前のチェックアウト画面に表示されます。決済はStripeまたはPayPalによって処理されます。",
+          "l5": "返金は当社の <policy>返金ポリシー</policy> に従って処理されます。"
         }
       },
       "acceptableUse": {
-        "title": "Acceptable use",
-        "body": "When using the service, you agree not to:",
+        "title": "許容される利用",
+        "body": "サービスを利用する際、お客様は以下を行わないことに同意します。",
         "items": {
-          "u1": "Break the law or infringe the rights of others.",
-          "u2": "Attempt to gain unauthorized access to accounts, systems, or data, or probe the service for vulnerabilities without permission.",
-          "u3": "Interfere with the operation of the service, including overloading it or automated scraping at disruptive volumes.",
-          "u4": "Circumvent license checks or use license keys beyond the terms of your purchase. (This does not limit your GPL rights over the open-source plugin code.)"
+          "u1": "法律に違反すること、または他者の権利を侵害すること。",
+          "u2": "アカウント、システム、データへの不正アクセスを試みること、または許可なくサービスの脆弱性を調査すること。",
+          "u3": "サービスに過負荷をかけることや、支障をきたす規模で自動スクレイピングを行うことを含め、サービスの運用を妨害すること。",
+          "u4": "ライセンスチェックを回避すること、または購入条件を超えてライセンスキーを使用すること。（これはオープンソースプラグインコードに対するGPL上の権利を制限するものではありません。）"
         }
       },
       "warranty": {
-        "title": "Warranty disclaimer",
-        "body": "The service and software are provided \"as is\" and \"as available\", without warranties of any kind, express or implied, including merchantability, fitness for a particular purpose, and non-infringement. We do not promise that the service will be uninterrupted or error-free. Some jurisdictions do not allow certain warranty exclusions, so parts of this section may not apply to you."
+        "title": "保証の免責",
+        "body": "サービスおよびソフトウェアは「現状有姿」かつ「提供可能な範囲」で提供され、商品性、特定目的への適合性、非侵害を含む、明示または黙示のいかなる保証もありません。当社は、サービスが中断されないこと、またはエラーがないことを約束しません。一部の法域では特定の保証除外が認められないため、本条の一部がお客様に適用されない場合があります。"
       },
       "liability": {
-        "title": "Limitation of liability",
-        "body": "To the maximum extent permitted by law, WCPOS will not be liable for indirect, incidental, special, or consequential damages, or for lost profits, revenue, or data. Our total liability for any claim relating to the service is limited to the amount you paid us in the 12 months before the claim arose. Nothing in these terms excludes liability that cannot be excluded by law."
+        "title": "責任の制限",
+        "body": "法律で認められる最大限の範囲において、WCPOSは間接的、付随的、特別、または結果的損害、ならびに利益、収益、データの損失について責任を負いません。サービスに関連する請求についての当社の総責任は、その請求が発生する前の12か月間にお客様が当社に支払った金額を上限とします。本規約のいかなる内容も、法律上除外できない責任を除外するものではありません。"
       },
       "termination": {
-        "title": "Termination",
-        "body": "You can stop using the service and ask us to delete your account at any time. We may suspend or terminate accounts that violate these terms. Sections that by their nature should survive (such as the warranty disclaimer and liability limits) survive termination."
+        "title": "終了",
+        "body": "お客様はいつでもサービスの利用を停止し、アカウント削除を依頼できます。当社は、本規約に違反するアカウントを停止または終了する場合があります。保証免責や責任制限など、その性質上存続すべき条項は終了後も存続します。"
       },
       "changes": {
-        "title": "Changes to these terms",
-        "body": "If we make material changes, we will update the date at the top of this page. Continued use of the service after a change means the updated terms apply."
+        "title": "本規約の変更",
+        "body": "重要な変更を加える場合、このページ上部の日付を更新します。変更後もサービスを継続して利用した場合、更新後の規約が適用されます。"
       },
       "contact": {
-        "title": "Contact",
-        "body": "Questions about these terms? Email us at <email>support@wcpos.com</email> or ask in the community chat on the <support>support page</support>."
+        "title": "お問い合わせ",
+        "body": "本規約に関する質問は、<email>support@wcpos.com</email> までメールでご連絡ください。または <support>サポートページ</support> のコミュニティチャットでご質問ください。"
       }
     }
   },

@@ -79,6 +79,7 @@ const auditedJapaneseNamespacePrefixes = [
   'downloads.',
   'about.',
   'home.',
+  'legal.',
 ]
 const japaneseIdenticalCopyAllowlist = new Set([
   'auth.common.emailPlaceholder',
@@ -142,6 +143,12 @@ const japaneseIdenticalCopyAllowlist = new Set([
   'home.story.a2.platforms.p4',
   'home.story.a2.platforms.p5',
   'home.story.pos.registerShort',
+  'legal.privacy.processors.items.p2.label',
+  'legal.privacy.processors.items.p3.label',
+  'legal.privacy.processors.items.p4.label',
+  'legal.privacy.processors.items.p5.label',
+  'legal.privacy.processors.items.p6.label',
+  'legal.privacy.processors.items.p7.label',
 ])
 const auditedGermanNamespacePrefixes = [
   'support.',
@@ -531,7 +538,7 @@ describe('messages key parity', () => {
   })
 
 
-  it('ja.json translates the audited support, auth, roadmap, header, footer, account, pro, downloads, about, and home copy', () => {
+  it('ja.json translates the audited support, auth, roadmap, header, footer, account, pro, downloads, about, home, and legal copy', () => {
     const english = loadMessages(defaultLocale)
     const japanese = loadMessages('ja')
     const auditedKeys = enKeys.filter(
@@ -552,7 +559,7 @@ describe('messages key parity', () => {
 
     expect(
       untranslatedKeys,
-      'messages/ja.json must not copy audited support/auth/roadmap/header/footer/account/pro/downloads/about/home English strings verbatim'
+      'messages/ja.json must not copy audited support/auth/roadmap/header/footer/account/pro/downloads/about/home/legal English strings verbatim'
     ).toEqual([])
   })
 
