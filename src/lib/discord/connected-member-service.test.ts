@@ -5,10 +5,12 @@ import {
   getDiscordAccessByLicense,
   removeConnectedDiscordMemberForHolder,
   removeConnectedDiscordMemberSelf,
+  unblockConnectedDiscordUserForHolder,
 } from './connected-member-service'
 import {
   addConnectedDiscordMember,
   getConnectedDiscordAccess,
+  removeConnectedDiscordMember,
 } from './connected-members'
 
 function license(overrides: Partial<LicenseDetail> = {}): LicenseDetail {
@@ -54,13 +56,36 @@ describe('connected member service', () => {
         members: [
           {
             id: 'discord-member-discord_1',
+            discordUserId: 'discord_1',
             handle: '@ada',
             avatarUrl: 'https://cdn.discordapp.com/avatars/discord_1/hash.png?size=64',
             connectedAt: '2026-06-01T00:00:00.000Z',
           },
         ],
+        blockedMembers: [],
       },
     })
+  })
+
+  it('projects blocked Discord users with the handle from their removed record', () => {
+    const metadata = removeConnectedDiscordMember(
+      addConnectedDiscordMember({}, {
+        id: 'discord_1',
+        username: 'ada',
+        avatar: 'hash',
+        connectedAt: new Date('2026-06-01T00:00:00.000Z'),
+      }),
+      'discord-member-discord_1',
+      new Date('2026-06-02T00:00:00.000Z')
+    )
+
+    expect(getDiscordAccessByLicense([license({ metadata })]).lic_1.blockedMembers).toEqual([
+      {
+        discordUserId: 'discord_1',
+        handle: '@ada',
+        avatarUrl: 'https://cdn.discordapp.com/avatars/discord_1/hash.png?size=64',
+      },
+    ])
   })
 
   it('leaves avatarUrl null for members on a default Discord avatar (no hash)', () => {
@@ -319,5 +344,73 @@ describe('connected member service', () => {
     const access = getConnectedDiscordAccess(latest.metadata)
     expect(access.members).toEqual([])
     expect(access.blockedDiscordUserIds.sort()).toEqual(['discord_1', 'discord_2'])
+  })
+
+  it('unblocks a holder-removed Discord user so they can reclaim a seat', async () => {
+    const blocked = license({
+      metadata: removeConnectedDiscordMember(
+        addConnectedDiscordMember(
+          {},
+          { id: 'discord_1', username: 'ada', avatar: null, connectedAt: new Date('2026-06-01T00:00:00.000Z') }
+        ),
+        'discord-member-discord_1',
+        new Date('2026-06-02T00:00:00.000Z')
+      ),
+    })
+    const updateLicenseMetadata = vi.fn(async (_licenseId: string, metadata: Record<string, unknown>) =>
+      license({ metadata })
+    )
+
+    await expect(
+      unblockConnectedDiscordUserForHolder({
+        licenseId: 'lic_1',
+        discordUserId: 'discord_1',
+        holderLicenses: [blocked],
+        dependencies: {
+          getLicense: vi.fn(async () => blocked),
+          updateLicenseMetadata,
+        },
+      })
+    ).resolves.toEqual({ status: 'unblocked', discordUserId: 'discord_1' })
+
+    expect(updateLicenseMetadata).toHaveBeenCalledWith(
+      'lic_1',
+      expect.objectContaining({
+        discord_access: expect.objectContaining({ blockedDiscordUserIds: [] }),
+      })
+    )
+  })
+
+  it('refuses to unblock on a licence the holder does not own', async () => {
+    await expect(
+      unblockConnectedDiscordUserForHolder({
+        licenseId: 'lic_other',
+        discordUserId: 'discord_1',
+        holderLicenses: [license()],
+        dependencies: {
+          getLicense: vi.fn(),
+          updateLicenseMetadata: vi.fn(),
+        },
+      })
+    ).resolves.toEqual({ status: 'license_not_found' })
+  })
+
+  it('reports not_blocked without writing when the id is not on the block list', async () => {
+    const owned = license()
+    const updateLicenseMetadata = vi.fn()
+
+    await expect(
+      unblockConnectedDiscordUserForHolder({
+        licenseId: 'lic_1',
+        discordUserId: 'discord_1',
+        holderLicenses: [owned],
+        dependencies: {
+          getLicense: vi.fn(async () => owned),
+          updateLicenseMetadata,
+        },
+      })
+    ).resolves.toEqual({ status: 'not_blocked' })
+
+    expect(updateLicenseMetadata).not.toHaveBeenCalled()
   })
 })
