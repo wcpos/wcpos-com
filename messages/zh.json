@@ -343,40 +343,40 @@
   },
   "roadmap": {
     "meta": {
-      "title": "Roadmap",
-      "description": "See what we are building next for WCPOS — upcoming features, milestones, and release progress."
+      "title": "路线图",
+      "description": "查看我们接下来为 WCPOS 构建的内容，包括即将推出的功能、里程碑和发布进度。"
     },
     "page": {
-      "eyebrow": "Roadmap",
-      "title": "The release train",
-      "description": "Every stop on the way to a faster, offline-proof WCPOS — pulled straight from our GitHub, newest work first."
+      "eyebrow": "路线图",
+      "title": "发布列车",
+      "description": "通往更快速、更可靠离线能力的 WCPOS 的每一站——直接来自我们的 GitHub，最新工作排在最前。"
     },
     "board": {
-      "link": "live from the WCPOS project board"
+      "link": "实时来自 WCPOS 项目看板"
     },
     "status": {
-      "done": "Done",
-      "inProgress": "In progress",
-      "planned": "Planned"
+      "done": "已完成",
+      "inProgress": "进行中",
+      "planned": "已计划"
     },
     "timeline": {
-      "empty": "No roadmap items to display yet.",
+      "empty": "暂无可显示的路线图项目。",
       "phases": {
-        "now": "Now",
-        "next": "Next",
-        "shipped": "Shipped"
+        "now": "现在",
+        "next": "接下来",
+        "shipped": "已发布"
       },
-      "progress": "{completed} of {total} done",
-      "progressDue": "{completed} of {total} done · due {date}",
-      "shipped": "shipped",
-      "shippedWithDate": "shipped · {date}"
+      "progress": "已完成 {completed} / {total}",
+      "progressDue": "已完成 {completed} / {total} · 截止 {date}",
+      "shipped": "已发布",
+      "shippedWithDate": "已发布 · {date}"
     },
     "bugs": {
-      "summary": "{count, plural, one {+ # bug fix & improvements} other {+ # bug fixes & improvements}}",
+      "summary": "{count, plural, one {+ # 个错误修复和改进} other {+ # 个错误修复和改进}}",
       "status": {
-        "done": "fixed",
-        "in_progress": "in progress",
-        "planned": "planned"
+        "done": "已修复",
+        "in_progress": "进行中",
+        "planned": "已计划"
       }
     }
   },
@@ -986,14 +986,14 @@
       "signIn": "登录",
       "signUp": "注册",
       "apiErrors": {
-        "invalid_origin": "Please refresh the page and try again.",
-        "rate_limited": "Too many attempts. Please try again later.",
-        "email_required": "Email is required.",
-        "credentials_required": "Email and password are required.",
-        "reset_fields_required": "Email, token, and password are required.",
-        "password_too_short": "Password must be at least {min} characters.",
-        "invalid_credentials": "Invalid email or password.",
-        "invalid_reset_token": "This password reset link is invalid or has expired. Please request a new one."
+        "invalid_origin": "请刷新页面后重试。",
+        "rate_limited": "尝试次数过多。请稍后再试。",
+        "email_required": "请输入电子邮件。",
+        "credentials_required": "请输入电子邮件和密码。",
+        "reset_fields_required": "请输入电子邮件、令牌和密码。",
+        "password_too_short": "密码至少需要 {min} 个字符。",
+        "invalid_credentials": "电子邮件或密码无效。",
+        "invalid_reset_token": "此密码重置链接无效或已过期。请重新申请一个新链接。"
       }
     },
     "login": {
@@ -1527,53 +1527,53 @@
   },
   "support": {
     "meta": {
-      "title": "Support",
-      "description": "Ask anything about WCPOS and get an instant answer from our docs, or chat with the community on Discord."
+      "title": "支持",
+      "description": "关于 WCPOS 的任何问题都可以提问，并从我们的文档中获得即时答案，或在 Discord 上与社区交流。"
     },
     "chat": {
       "hero": {
-        "title": "How can we help?",
-        "subtitle": "Ask anything about WCPOS — setup, licensing, hardware, syncing, printing. You'll get an instant answer drawn from our docs."
+        "title": "我们能帮您什么？",
+        "subtitle": "询问关于 WCPOS 的任何问题——设置、授权、硬件、同步、打印。您会从我们的文档中获得即时答案。"
       },
       "examples": {
-        "e1": "Why is my licence inactive?",
-        "e2": "Which barcode scanners are supported?",
-        "e3": "How do I sync products from WooCommerce?"
+        "e1": "为什么我的许可证处于非活动状态？",
+        "e2": "支持哪些条形码扫描器？",
+        "e3": "如何从 WooCommerce 同步商品？"
       },
       "feedback": {
-        "prompt": "Was this helpful?",
-        "yes": "Yes",
-        "no": "No"
+        "prompt": "这有帮助吗？",
+        "yes": "是",
+        "no": "否"
       },
-      "thinking": "Aide is thinking…",
+      "thinking": "Aide 正在思考…",
       "form": {
-        "label": "Ask a support question",
-        "placeholder": "e.g. How do I connect a receipt printer?",
-        "followUpPlaceholder": "Ask a follow-up…",
-        "submit": "Ask"
+        "label": "提出支持问题",
+        "placeholder": "例如：如何连接收据打印机？",
+        "followUpPlaceholder": "继续追问…",
+        "submit": "提问"
       },
-      "discordLink": "Ask in Discord →",
-      "poweredBy": "Answered by Aide · trained on the WCPOS docs & wiki"
+      "discordLink": "在 Discord 提问 →",
+      "poweredBy": "由 Aide 回答 · 基于 WCPOS 文档和 wiki 训练"
     },
     "errors": {
-      "invalid_question": "Please enter a question (up to 1000 characters).",
-      "bot_check_failed": "Bot check failed. Please reload and try again.",
-      "rate_limited": "You're asking a lot of questions — please wait a few minutes, or hop into Discord.",
-      "budget_exhausted": "The assistant is busy right now. Please try Discord for a faster answer.",
-      "empty_answer": "The assistant is temporarily unavailable. Please try Discord while we get it back.",
-      "gateway_rate_limited": "The assistant is busy right now — please try again later.",
-      "timeout": "That took too long. Please try again, or ask in Discord.",
-      "unavailable": "The assistant is temporarily unavailable. Please try Discord while we get it back.",
-      "network": "The assistant is unavailable right now. Please ask in Discord.",
-      "unknown": "Something went wrong."
+      "invalid_question": "请输入问题（最多 1000 个字符）。",
+      "bot_check_failed": "机器人验证失败。请重新加载后再试。",
+      "rate_limited": "您提问得有点多——请等待几分钟，或前往 Discord。",
+      "budget_exhausted": "助手现在很忙。请尝试使用 Discord 以获得更快回复。",
+      "empty_answer": "助手暂时不可用。在我们恢复服务期间，请尝试使用 Discord。",
+      "gateway_rate_limited": "助手现在很忙——请稍后再试。",
+      "timeout": "等待时间过长。请重试，或在 Discord 提问。",
+      "unavailable": "助手暂时不可用。在我们恢复服务期间，请尝试使用 Discord。",
+      "network": "助手目前不可用。请在 Discord 提问。",
+      "unknown": "出了点问题。"
     },
     "order": {
-      "title": "Contact support about your order",
-      "body": "Quote reference <ref></ref> so we can confirm the payment or finish the order before you pay again."
+      "title": "就您的订单联系支持",
+      "body": "请引用参考号 <ref></ref>，这样我们就能在您再次付款前确认付款或完成订单。"
     },
     "discord": {
-      "title": "Prefer to talk to a human?",
-      "subtitle": "Join store owners and the team in our live Discord community."
+      "title": "更想和真人沟通？",
+      "subtitle": "加入店主和团队所在的实时 Discord 社区。"
     }
   }
 }

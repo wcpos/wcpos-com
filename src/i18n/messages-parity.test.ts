@@ -150,6 +150,14 @@ const japaneseIdenticalCopyAllowlist = new Set([
   'legal.privacy.processors.items.p6.label',
   'legal.privacy.processors.items.p7.label',
 ])
+const auditedChineseNamespacePrefixes = [
+  'support.',
+  'auth.',
+  'roadmap.',
+]
+const chineseIdenticalCopyAllowlist = new Set([
+  'auth.common.emailPlaceholder',
+])
 const auditedGermanNamespacePrefixes = [
   'support.',
   'auth.',
@@ -560,6 +568,31 @@ describe('messages key parity', () => {
     expect(
       untranslatedKeys,
       'messages/ja.json must not copy audited support/auth/roadmap/header/footer/account/pro/downloads/about/home/legal English strings verbatim'
+    ).toEqual([])
+  })
+
+  it('zh.json translates the audited support, auth, and roadmap copy', () => {
+    const english = loadMessages(defaultLocale)
+    const chinese = loadMessages('zh')
+    const auditedKeys = enKeys.filter(
+      (key) =>
+        auditedChineseNamespacePrefixes.some((prefix) =>
+          key.startsWith(prefix)
+        ) && !chineseIdenticalCopyAllowlist.has(key)
+    )
+    const untranslatedKeys = auditedKeys.filter((key) => {
+      const englishValue = valueAtPath(english, key)
+      const chineseValue = valueAtPath(chinese, key)
+      return (
+        englishValue !== undefined &&
+        chineseValue === englishValue &&
+        /[A-Za-z]{3}/.test(englishValue)
+      )
+    })
+
+    expect(
+      untranslatedKeys,
+      'messages/zh.json must not copy audited support/auth/roadmap English strings verbatim'
     ).toEqual([])
   })
 
