@@ -10,6 +10,7 @@ import { TextLink } from '@/components/ui/text-link'
 import { formatOrderAmount } from '@/lib/order-display'
 import { formatDateForLocale } from '@/lib/date-format'
 import { receiptDownloadHref } from '@/lib/receipt-download'
+import { localizeKnownProductTitle } from '@/lib/product-title-display'
 
 /**
  * A licence an order produced, ready for display. The key is ALREADY masked
@@ -49,6 +50,11 @@ interface OrderHistoryListProps {
 
 export function OrderHistoryList({ orders, locale }: OrderHistoryListProps) {
   const t = useTranslations('account.orders')
+  const productTitles = useTranslations('account.productTitles')
+  const productTitleMessages = {
+    yearly: productTitles('yearly'),
+    lifetime: productTitles('lifetime'),
+  }
 
   if (orders.length === 0) {
     return (
@@ -101,7 +107,7 @@ export function OrderHistoryList({ orders, locale }: OrderHistoryListProps) {
                     />
                     {license.product && (
                       <span className="font-medium text-foreground">
-                        {license.product}
+                        {localizeKnownProductTitle(license.product, productTitleMessages)}
                       </span>
                     )}
                     <CodeRef className="tracking-wider">

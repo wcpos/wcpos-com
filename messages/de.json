@@ -932,10 +932,6 @@
         "partiallyRefunded": "Teilweise erstattet",
         "canceled": "Storniert",
         "unknown": "Unbekannt"
-      },
-      "productTitles": {
-        "yearly": "WCPOS Pro Jahreslizenz",
-        "lifetime": "WCPOS Pro Lifetime-Lizenz"
       }
     },
     "admin": {
@@ -956,6 +952,10 @@
       "pending": "Ausstehend",
       "refunded": "Erstattet",
       "unknown": "Unbekannt"
+    },
+    "productTitles": {
+      "yearly": "WCPOS Pro Jahreslizenz",
+      "lifetime": "WCPOS Pro Lifetime-Lizenz"
     }
   },
   "metadata": {

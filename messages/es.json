@@ -932,10 +932,6 @@
         "partiallyRefunded": "Reembolsado parcialmente",
         "canceled": "Cancelado",
         "unknown": "Desconocido"
-      },
-      "productTitles": {
-        "yearly": "WCPOS Pro anual",
-        "lifetime": "WCPOS Pro de por vida"
       }
     },
     "admin": {
@@ -956,6 +952,10 @@
       "pending": "Pendiente",
       "refunded": "Reembolsado",
       "unknown": "Desconocido"
+    },
+    "productTitles": {
+      "yearly": "WCPOS Pro anual",
+      "lifetime": "WCPOS Pro de por vida"
     }
   },
   "metadata": {
