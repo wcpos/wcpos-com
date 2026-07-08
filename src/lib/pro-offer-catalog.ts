@@ -131,8 +131,15 @@ export interface ProOfferCartInput {
   }>
 }
 
-function compactPrice(amount: number, currencyCode: string): string {
-  return formatPrice(amount, currencyCode).replace(/\.00$/, '')
+function compactPrice(
+  amount: number,
+  currencyCode: string,
+  locale: string
+): string {
+  return formatPrice(amount, currencyCode, locale, {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  })
 }
 
 function schemaPrice(amount: number): string {
@@ -152,7 +159,8 @@ function resolveCurrentProVariant(
 
 export function buildProOfferCatalog(
   products: MedusaProduct[],
-  currencyCode: string = DEFAULT_CURRENCY_CODE
+  currencyCode: string = DEFAULT_CURRENCY_CODE,
+  locale: string = 'en-US'
 ): ProOffer[] {
   return products
     .map((product): ProOffer | null => {
@@ -179,8 +187,8 @@ export function buildProOfferCatalog(
         price: {
           amount,
           currencyCode,
-          formatted: formatPrice(amount, currencyCode),
-          compact: compactPrice(amount, currencyCode),
+          formatted: formatPrice(amount, currencyCode, locale),
+          compact: compactPrice(amount, currencyCode, locale),
           schemaPrice: schemaPrice(amount),
         },
         checkoutPath: `/pro/checkout?${checkoutParams.toString()}`,
@@ -197,14 +205,16 @@ export async function getProOfferCatalog(
    * unavailable); request-scoped callers omit it and the backend resolves
    * from the request host.
    */
-  storeEnv?: StoreEnvironment
+  storeEnv?: StoreEnvironment,
+  locale: string = 'en-US'
 ): Promise<ProOfferCatalog> {
   const products = await getProducts(storeEnv)
-  const offers = buildProOfferCatalog(products, currencyCode)
+  const offers = buildProOfferCatalog(products, currencyCode, locale)
 
   const missing = buildProOfferCatalog(
     FALLBACK_PRO_PRODUCTS,
-    currencyCode
+    currencyCode,
+    locale
   ).filter(
     (fallback) => !offers.some((offer) => offer.planId === fallback.planId)
   )

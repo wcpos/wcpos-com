@@ -13,6 +13,10 @@ vi.mock('next/cache', () => ({
   cacheTag: vi.fn(),
 }))
 
+vi.mock('next-intl/server', () => ({
+  getLocale: vi.fn(async () => 'en'),
+}))
+
 // Mock i18n navigation Link as a simple anchor
 vi.mock('@/i18n/navigation', () => ({
   Link: ({

@@ -1,4 +1,5 @@
 import { useTranslations } from 'next-intl'
+import { getLocale } from 'next-intl/server'
 import {
   applyProOfferCatalogCachePolicy,
   formatFounderProPriceSummary,
@@ -12,17 +13,22 @@ export function FounderLetterFallback() {
   return <FounderLetterContent offers={null} />
 }
 
-async function getCachedFounderOffers() {
+async function getCachedFounderOffers(locale: string) {
   'use cache'
 
   // Prerendered into the shared static shell — always live prices.
-  const catalog = await getProOfferCatalog(undefined, getLiveStoreEnvironment())
+  const catalog = await getProOfferCatalog(
+    undefined,
+    getLiveStoreEnvironment(),
+    locale
+  )
   applyProOfferCatalogCachePolicy(catalog)
   return catalog.offers
 }
 
 export async function FounderLetter() {
-  const offers = await getCachedFounderOffers()
+  const locale = await getLocale()
+  const offers = await getCachedFounderOffers(locale)
 
   return <FounderLetterContent offers={offers} />
 }

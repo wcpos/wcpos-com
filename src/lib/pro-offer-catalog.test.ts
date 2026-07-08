@@ -92,6 +92,29 @@ describe('buildProOfferCatalog', () => {
 
     expect(buildProOfferCatalog([yearly])).toEqual([])
   })
+
+  it('formats customer-facing offer prices with the caller locale', () => {
+    const offers = buildProOfferCatalog(
+      [product('wcpos-pro-yearly', 129, 'variant_yearly')],
+      'usd',
+      'fr'
+    )
+
+    const formatted = new Intl.NumberFormat('fr', {
+      style: 'currency',
+      currency: 'USD',
+    }).format(129)
+    const compact = new Intl.NumberFormat('fr', {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(129)
+
+    expect(offers[0].price.formatted).toBe(formatted)
+    expect(offers[0].price.compact).toBe(compact)
+    expect(offers[0].price.formatted).not.toBe('$129.00')
+  })
 })
 
 describe('getProOfferCatalog', () => {

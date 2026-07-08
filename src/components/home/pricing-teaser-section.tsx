@@ -1,4 +1,5 @@
 import { useTranslations } from 'next-intl'
+import { getLocale } from 'next-intl/server'
 import { Check } from 'lucide-react'
 import { TrackedLocaleLink } from '@/components/analytics/tracked-locale-link'
 import { Button } from '@/components/ui/button'
@@ -35,17 +36,22 @@ export function PricingTeaserSectionFallback() {
   return <PricingTeaserSectionContent offers={null} />
 }
 
-async function getCachedOffers() {
+async function getCachedOffers(locale: string) {
   'use cache'
 
   // Prerendered into the shared static homepage shell — always live prices.
-  const catalog = await getProOfferCatalog(undefined, getLiveStoreEnvironment())
+  const catalog = await getProOfferCatalog(
+    undefined,
+    getLiveStoreEnvironment(),
+    locale
+  )
   applyProOfferCatalogCachePolicy(catalog)
   return catalog.offers
 }
 
 export async function PricingTeaserSection() {
-  const offers = await getCachedOffers()
+  const locale = await getLocale()
+  const offers = await getCachedOffers(locale)
 
   return <PricingTeaserSectionContent offers={offers} />
 }

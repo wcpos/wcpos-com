@@ -241,11 +241,23 @@ export async function getEnabledPaymentProviderIds(
 /**
  * Format price for display
  */
-export function formatPrice(amount: number, currencyCode: string): string {
-  return new Intl.NumberFormat('en-US', {
+export function formatPrice(
+  amount: number,
+  currencyCode: string,
+  locale: string = 'en-US',
+  options: Intl.NumberFormatOptions = {}
+): string {
+  const formatOptions: Intl.NumberFormatOptions = {
     style: 'currency',
     currency: currencyCode.toUpperCase(),
-  }).format(amount)
+    ...options,
+  }
+
+  try {
+    return new Intl.NumberFormat(locale, formatOptions).format(amount)
+  } catch {
+    return new Intl.NumberFormat('en-US', formatOptions).format(amount)
+  }
 }
 
 /**
