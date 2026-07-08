@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { inflateSync } from 'zlib'
 import { PDFDocument } from 'pdf-lib'
 import { buildReceiptPdf, type ReceiptPdfCopy } from './pdf-receipt'
@@ -137,6 +137,27 @@ describe('buildReceiptPdf', () => {
     expect(stream).toContain(hex('1 février 2026'))
     expect(stream).not.toContain(hex('February 1, 2026'))
     expect(stream).not.toContain(hex('01/02/2026'))
+  })
+
+  it('prints generated dates in the same localized non-ambiguous format', async () => {
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date('2026-07-08T00:00:00.000Z'))
+
+    try {
+      const localizedCopy: ReceiptPdfCopy = {
+        ...TEST_COPY,
+        generated: (date) => `Généré ${date}`,
+      }
+      const stream = await pageStream(
+        await buildReceiptPdf(baseReceipt, localizedCopy, 'fr-FR')
+      )
+
+      expect(stream).toContain(hex('Généré 8 juillet 2026'))
+      expect(stream).not.toContain(hex('Generated July 8, 2026'))
+      expect(stream).not.toContain(hex('07/08/2026'))
+    } finally {
+      vi.useRealTimers()
+    }
   })
 
   it('sets localized PDF document metadata for reader chrome and file previews', async () => {
