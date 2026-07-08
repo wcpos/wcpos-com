@@ -69,6 +69,7 @@ const auditedItalianNamespacePrefixes = [
   'downloads.',
   'about.',
   'pro.',
+  'legal.',
 ]
 const italianIdenticalCopyAllowlist = new Set([
   'home.title',
@@ -115,6 +116,12 @@ const italianIdenticalCopyAllowlist = new Set([
   'pro.checkout.offers.default',
   'pro.checkout.payment.methods.card.hint',
   'pro.checkout.payment.methods.bitcoin.title',
+  'legal.privacy.processors.items.p2.label',
+  'legal.privacy.processors.items.p3.label',
+  'legal.privacy.processors.items.p4.label',
+  'legal.privacy.processors.items.p5.label',
+  'legal.privacy.processors.items.p6.label',
+  'legal.privacy.processors.items.p7.label',
   'header.pro',
   'footer.copyright',
   'footer.discord',
