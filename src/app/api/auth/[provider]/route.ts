@@ -6,13 +6,13 @@ import {
   OAUTH_REDIRECT_COOKIE,
   OAUTH_REDIRECT_COOKIE_OPTIONS,
 } from '@/lib/oauth-providers'
-import { defaultLocale, locales, type Locale } from '@/i18n/config'
+import { type Locale } from '@/i18n/config'
+import { supportedBaseLocaleOrDefault } from '@/lib/locale-preferences'
 import { loginPathForLocale } from '@/lib/login-redirect'
 import { localizeRedirectPath, sanitizeRedirectPath } from '@/lib/safe-redirect'
 
 function requestLocale(request: NextRequest): Locale {
-  const locale = request.nextUrl.searchParams.get('locale')
-  return locales.includes(locale as Locale) ? (locale as Locale) : defaultLocale
+  return supportedBaseLocaleOrDefault(request.nextUrl.searchParams.get('locale'))
 }
 
 export async function GET(

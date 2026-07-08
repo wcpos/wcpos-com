@@ -116,6 +116,21 @@ describe('GET /api/auth/[provider] (OAuth initiate)', () => {
     )
   })
 
+  it('stores regional locale redirect targets with their supported URL prefix', async () => {
+    mockInitiateOAuth.mockResolvedValueOnce('https://discord.com/oauth2/authorize')
+
+    const request = new NextRequest(
+      'https://wcpos.com/api/auth/discord?locale=pl-PL%3Bq%3D1.0%2C%20fr-FR%3Bq%3D0.9&redirect=%2Faccount%2Flicenses'
+    )
+    const response = await GET(request, {
+      params: Promise.resolve({ provider: 'discord' }),
+    })
+
+    expect(response.cookies.get('oauth_redirect')?.value).toBe(
+      '/fr/account/licenses'
+    )
+  })
+
   it('sets the redirect cookie to the default on a plain sign-in (no stale-cookie hijack)', async () => {
     mockInitiateOAuth.mockResolvedValueOnce('https://discord.com/oauth2/authorize')
 

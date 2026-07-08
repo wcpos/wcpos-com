@@ -1,10 +1,9 @@
 import {
-  defaultLocale,
   localeDirections,
-  locales,
   type Locale,
   type LocaleDirection,
 } from '@/i18n/config'
+import { supportedBaseLocaleOrDefault } from '@/lib/locale-preferences'
 import deMessages from '../../messages/de.json'
 import enMessages from '../../messages/en.json'
 import esMessages from '../../messages/es.json'
@@ -45,52 +44,10 @@ const ROOT_FALLBACK_MESSAGES = {
   zh: { errors: zhMessages.errors, support: zhMessages.header.support },
 } satisfies Record<Locale, RootFallbackMessages>
 
-function isLocale(value: string): value is Locale {
-  return locales.includes(value as Locale)
-}
-
-function parseLanguagePreferences(
-  source?: string | readonly string[] | null
-): string[] {
-  if (!source) return []
-
-  if (typeof source !== 'string') {
-    return [...source].filter(Boolean)
-  }
-
-  return source
-    .split(',')
-    .map((part, index) => {
-      const [language = '', ...params] = part.trim().split(';')
-      const qParam = params.find((param) => param.trim().startsWith('q='))
-      const q = qParam ? Number.parseFloat(qParam.split('=')[1] ?? '') : 1
-      return {
-        language: language.trim(),
-        q: Number.isFinite(q) ? q : 0,
-        index,
-      }
-    })
-    .filter(({ language, q }) => Boolean(language) && language !== '*' && q > 0)
-    .sort((a, b) => b.q - a.q || a.index - b.index)
-    .map(({ language }) => language)
-}
-
 export function resolveRootFallbackLocale(
   source?: string | readonly string[] | null
 ): Locale {
-  for (const preference of parseLanguagePreferences(source)) {
-    try {
-      const [canonical] = Intl.getCanonicalLocales(preference)
-      const language = canonical?.split('-')[0]?.toLowerCase()
-      if (language && isLocale(language)) {
-        return language
-      }
-    } catch {
-      // Ignore malformed language tags and continue through preferences.
-    }
-  }
-
-  return defaultLocale
+  return supportedBaseLocaleOrDefault(source)
 }
 
 export function rootFallbackCopy(

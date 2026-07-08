@@ -10,7 +10,7 @@ import {
 import { createRateLimiter, clientIp } from '@/lib/rate-limit'
 import { trackServerEvent } from '@/services/core/analytics/posthog-service'
 import { ANALYTICS_DISTINCT_ID_COOKIE } from '@/lib/analytics/distinct-id'
-import { locales } from '@/i18n/config'
+import { supportedCanonicalLocale } from '@/lib/locale-preferences'
 
 // Every accepted request can create a real Medusa customer account, so gate
 // this harder than sign-in — a legitimate user registers once. Fail-open.
@@ -28,37 +28,9 @@ function errorResponse(errorCode: RegisterErrorCode, status: number, extra?: Rec
 
 
 function registrationLocale(value: unknown): string | undefined {
-  if (typeof value !== 'string') return undefined
-
-  const candidates = value
-    .split(',')
-    .map((part, index) => {
-      const [language = '', ...params] = part.trim().split(';')
-      const qParam = params.find((param) => param.trim().startsWith('q='))
-      const q = qParam ? Number.parseFloat(qParam.split('=')[1] ?? '') : 1
-      return {
-        language: language.trim(),
-        q: Number.isFinite(q) ? q : 0,
-        index,
-      }
-    })
-    .filter(({ language, q }) => Boolean(language) && language !== '*' && q > 0)
-    .sort((a, b) => b.q - a.q || a.index - b.index)
-
-  for (const { language } of candidates) {
-    try {
-      const [canonical] = Intl.getCanonicalLocales(language)
-      const base = canonical?.split('-')[0]?.toLowerCase()
-      if (base && locales.includes(base as (typeof locales)[number])) {
-        return canonical
-      }
-    } catch {
-      // Ignore malformed tags and continue through remaining candidates.
-    }
-  }
-
-  return undefined
+  return typeof value === 'string' ? supportedCanonicalLocale(value) : undefined
 }
+
 
 const limiter = createRateLimiter({
   prefix: 'auth:register:ip',
