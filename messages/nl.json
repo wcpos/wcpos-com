@@ -659,7 +659,7 @@
   },
   "account": {
     "nav": {
-      "title": "Account",
+      "title": "Mijn account",
       "orders": "Bestellingen",
       "licenses": "Licenties",
       "downloads": "Downloads",
@@ -688,7 +688,7 @@
       }
     },
     "header": {
-      "breadcrumb": "Account",
+      "breadcrumb": "Mijn account",
       "signOut": "Afmelden"
     },
     "error": {
@@ -719,7 +719,7 @@
       "statusLabel": "Status",
       "emailLabel": "E-mail",
       "totalLabel": "Totaal",
-      "itemsTitle": "Items",
+      "itemsTitle": "Artikelen",
       "quantity": "Aantal: {count}",
       "licenseKeysTitle": "Licentiesleutels",
       "manage": "Beheren",
@@ -754,7 +754,7 @@
       "activatedMachines": "Geactiveerde machines",
       "machineAdded": "Toegevoegd op {date}",
       "deactivateMachineAria": "{name} deactiveren",
-      "genericMachineName": "machine",
+      "genericMachineName": "apparaat",
       "coversLatestVersion": "Nieuwste versie {version} · via deze licentie",
       "coversUpToVersion": "Dekt updates tot en met {version}",
       "siteUpdatesThrough": "Updates tot en met {version}",
@@ -772,7 +772,7 @@
       "copiedKey": "Gekopieerd",
       "copyError": "Kopiëren van licentiesleutel mislukt. Probeer het opnieuw.",
       "apiErrors": {
-        "read_only_inspection": "You are viewing this account in read-only mode."
+        "read_only_inspection": "Je bekijkt dit account in alleen-lezenmodus."
       }
     },
     "downloads": {
@@ -792,7 +792,7 @@
       "latestBadge": "Nieuwste",
       "majorBadge": "Hoofdversie",
       "releaseNotes": "Release-opmerkingen",
-      "releaseCount": "{count, plural, one {# release} other {# releases}}",
+      "releaseCount": "{count, plural, one {# uitgave} other {# uitgaven}}",
       "availableOnPlan": "Beschikbaar met je actieve {plan}-licentie",
       "availableOnActive": "Beschikbaar met je actieve licentie",
       "emptyList": "Er zijn geen downloadbare versies gevonden.",
@@ -811,19 +811,19 @@
       "tokenErrorFallback": "Download is niet beschikbaar voor deze versie",
       "startErrorFallback": "Kan download niet starten",
       "apiErrors": {
-        "unauthorized": "Please sign in again to download WCPOS Pro.",
-        "download_token_secret_missing": "Downloads are temporarily unavailable. Please contact support.",
-        "rate_limited": "Too many download requests. Please wait a moment and try again.",
-        "release_not_found": "That WCPOS Pro release could not be found.",
-        "forbidden": "Your license does not include this download.",
-        "internal": "We could not prepare your download. Please try again."
+        "unauthorized": "Log opnieuw in om WCPOS Pro te downloaden.",
+        "download_token_secret_missing": "Downloads zijn tijdelijk niet beschikbaar. Neem contact op met support.",
+        "rate_limited": "Te veel downloadverzoeken. Wacht even en probeer het opnieuw.",
+        "release_not_found": "Die WCPOS Pro-release kon niet worden gevonden.",
+        "forbidden": "Je licentie bevat deze download niet.",
+        "internal": "We konden je download niet voorbereiden. Probeer het opnieuw."
       }
     },
     "profile": {
       "heading": "Profiel",
       "cardTitle": "Profielgegevens",
       "memberSince": "Lid sinds",
-      "avatarAlt": "Avatar",
+      "avatarAlt": "Profielfoto",
       "avatarLabel": "Profielavatar",
       "avatarHint": "Als je verbonden account een avatar heeft, wordt die standaard gebruikt.",
       "avatarTooLarge": "De avatarafbeelding mag maximaal 1 MB zijn.",
@@ -894,9 +894,9 @@
       "emailProvider": "E-mail en wachtwoord",
       "emailDescription": "Je meldt je aan met je e-mailadres.",
       "apiErrors": {
-        "read_only_inspection": "You are viewing this account in read-only mode.",
-        "unauthorized": "Please sign in again to update your profile.",
-        "update_failed": "Failed to update profile"
+        "read_only_inspection": "Je bekijkt dit account in alleen-lezenmodus.",
+        "unauthorized": "Log opnieuw in om je profiel bij te werken.",
+        "update_failed": "Profiel bijwerken mislukt"
       }
     },
     "receiptPdf": {
@@ -904,7 +904,7 @@
       "filename": "bon-{id}.pdf",
       "orderNumber": "Bestelling #{id}",
       "billedTo": "GEFACTUREERD AAN",
-      "details": "DETAILS",
+      "details": "GEGEVENS",
       "noEmailProvided": "Geen e-mail opgegeven",
       "taxId": "Fiscaal ID: {taxNumber}",
       "orderDate": "Besteldatum",
@@ -935,13 +935,13 @@
       }
     },
     "admin": {
-      "title": "Inspect a customer (read-only)",
-      "description": "Enter a customer email to view their account exactly as they see it. You cannot change their data while inspecting.",
-      "submit": "View as"
+      "title": "Klant inspecteren (alleen lezen)",
+      "description": "Voer het e-mailadres van een klant in om het account precies zo te bekijken als de klant het ziet. Tijdens inspectie kun je geen gegevens wijzigen.",
+      "submit": "Bekijken als"
     },
     "impersonation": {
-      "viewing": "🔍 Viewing <strong>{target}</strong> as <strong>read-only</strong> — you cannot change their account.",
-      "exit": "Exit"
+      "viewing": "🔍 Je bekijkt <strong>{target}</strong> als <strong>alleen-lezen</strong> — je kunt dit account niet wijzigen.",
+      "exit": "Afsluiten"
     },
     "orderStatus": {
       "actionRequired": "Actie vereist",

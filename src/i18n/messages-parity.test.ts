@@ -138,8 +138,22 @@ const auditedDutchNamespacePrefixes = [
   'header.',
   'footer.',
   'downloads.',
+  'account.',
 ]
 const dutchIdenticalCopyAllowlist = new Set([
+  'account.nav.downloads',
+  'account.meta.downloads.title',
+  'account.orderDetail.statusLabel',
+  'account.licenses.downloads',
+  'account.downloads.heading',
+  'account.profile.postalLabels.postcode',
+  'account.profile.taxLabels.abn',
+  'account.profile.taxLabels.partitaIva',
+  'account.profile.googleProvider',
+  'account.profile.discordProvider',
+  'account.profile.githubProvider',
+  'account.receiptPdf.sellerIdentityWithAbn',
+  'account.receiptPdf.sellerIdentity',
   'downloads.meta.title',
   'downloads.hero.eyebrow',
   'downloads.platforms.mac-arm.name',
@@ -168,13 +182,6 @@ const dutchIdenticalCopyAllowlist = new Set([
   'downloads.page.steps.plugin.cardTitle',
   'downloads.page.steps.plugin.wordpressOrgCta',
   'downloads.releaseHistory.desktop',
-  'account.profile.taxLabels.abn',
-  'account.profile.taxLabels.partitaIva',
-  'account.profile.googleProvider',
-  'account.profile.discordProvider',
-  'account.profile.githubProvider',
-  'account.receiptPdf.sellerIdentityWithAbn',
-  'account.receiptPdf.sellerIdentity',
   'header.pro',
   'footer.copyright',
   'footer.pro',
@@ -914,7 +921,7 @@ describe('messages key parity', () => {
     ).toEqual([])
   })
 
-  it('nl.json translates the audited support, auth, roadmap, common, header, footer, and downloads copy', () => {
+  it('nl.json translates the audited support, auth, roadmap, common, header, footer, downloads, and account copy', () => {
     const english = loadMessages(defaultLocale)
     const dutch = loadMessages('nl')
     const auditedKeys = enKeys.filter(
