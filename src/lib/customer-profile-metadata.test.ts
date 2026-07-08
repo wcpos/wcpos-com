@@ -2,41 +2,26 @@ import { describe, expect, it } from 'vitest'
 import {
   getCustomProfileAvatar,
   mergeAccountProfileMetadataPatch,
-  projectAccountProfileForReceipt,
   projectProfileMetadataForClient,
   readAccountProfileMetadata,
 } from './customer-profile-metadata'
 
 describe('customer profile metadata', () => {
-  it('reads account_profile with client defaults and ignores non-string fields', () => {
+  it('reads avatar fields and ignores non-string values', () => {
     expect(
       readAccountProfileMetadata({
         account_profile: {
           avatarDataUrl: 'data:image/png;base64,AAAA',
           avatarUrl: 123,
-          countryCode: '',
-          addressLine1: '123 Main St',
-          addressLine2: null,
-          city: 'Austin',
-          region: 'TX',
-          postalCode: '78701',
-          taxNumber: false,
         },
       })
     ).toEqual({
       avatarDataUrl: 'data:image/png;base64,AAAA',
       avatarUrl: '',
-      countryCode: 'US',
-      addressLine1: '123 Main St',
-      addressLine2: '',
-      city: 'Austin',
-      region: 'TX',
-      postalCode: '78701',
-      taxNumber: '',
     })
   })
 
-  it('merges a normalized account profile patch without dropping unrelated metadata', () => {
+  it('merges a normalized avatar patch without dropping unrelated metadata', () => {
     expect(
       mergeAccountProfileMetadataPatch(
         {
@@ -44,20 +29,12 @@ describe('customer profile metadata', () => {
           private_flag: true,
           account_profile: {
             legacyField: 'keep me',
-            addressLine2: 'Old suite',
-            taxNumber: 'OLD',
+            avatarUrl: 'https://example.com/old.png',
           },
         },
         {
           avatarDataUrl: ' data:image/png;base64,AAAA ',
           avatarUrl: '',
-          countryCode: ' US ',
-          addressLine1: ' 123 Main St ',
-          addressLine2: null,
-          city: ' Austin ',
-          region: ' TX ',
-          postalCode: ' 78701 ',
-          taxNumber: undefined,
           ignored: 'nope',
         }
       )
@@ -66,24 +43,37 @@ describe('customer profile metadata', () => {
       private_flag: true,
       account_profile: {
         legacyField: 'keep me',
-        addressLine2: null,
-        taxNumber: 'OLD',
         avatarDataUrl: 'data:image/png;base64,AAAA',
         avatarUrl: null,
-        countryCode: 'US',
-        addressLine1: '123 Main St',
-        city: 'Austin',
-        region: 'TX',
-        postalCode: '78701',
       },
     })
   })
 
-  it('returns null for a patch that contains no profile fields', () => {
+  it('leaves legacy billing keys untouched — the backfill owns their cleanup', () => {
+    expect(
+      mergeAccountProfileMetadataPatch(
+        {
+          account_profile: {
+            taxNumber: 'legacy-tax',
+            legacyField: 'keep me',
+          },
+        },
+        { avatarUrl: 'https://example.com/custom.png' }
+      )
+    ).toEqual({
+      account_profile: {
+        taxNumber: 'legacy-tax',
+        legacyField: 'keep me',
+        avatarUrl: 'https://example.com/custom.png',
+      },
+    })
+  })
+
+  it('returns null for a patch that contains no avatar fields', () => {
     expect(
       mergeAccountProfileMetadataPatch(
         { marketing_opt_in: true },
-        { ignored: 'value' }
+        { ignored: 'value', countryCode: 'US' }
       )
     ).toBeNull()
   })
@@ -98,9 +88,6 @@ describe('customer profile metadata', () => {
         account_profile: {
           avatarDataUrl: 'data:image/png;base64,AAAA',
           avatarUrl: 'https://example.com/custom.png',
-          countryCode: 'GB',
-          addressLine1: '221B Baker St',
-          city: 'London',
           secretField: 'do not leak',
         },
       })
@@ -110,49 +97,7 @@ describe('customer profile metadata', () => {
       account_profile: {
         avatarDataUrl: 'data:image/png;base64,AAAA',
         avatarUrl: 'https://example.com/custom.png',
-        countryCode: 'GB',
-        addressLine1: '221B Baker St',
-        addressLine2: '',
-        city: 'London',
-        region: '',
-        postalCode: '',
-        taxNumber: '',
       },
-    })
-  })
-
-  it('projects receipt billing fields without inventing form defaults', () => {
-    expect(
-      projectAccountProfileForReceipt({
-        account_profile: {
-          countryCode: 'ES',
-          addressLine1: 'Carrer de Mallorca',
-          addressLine2: '',
-          city: 'Barcelona',
-          region: 'Catalonia',
-          postalCode: '08013',
-          taxNumber: 123,
-          avatarUrl: 'https://example.com/avatar.png',
-        },
-      })
-    ).toEqual({
-      countryCode: 'ES',
-      addressLine1: 'Carrer de Mallorca',
-      addressLine2: '',
-      city: 'Barcelona',
-      region: 'Catalonia',
-      postalCode: '08013',
-      taxNumber: null,
-    })
-
-    expect(projectAccountProfileForReceipt({})).toEqual({
-      countryCode: null,
-      addressLine1: null,
-      addressLine2: null,
-      city: null,
-      region: null,
-      postalCode: null,
-      taxNumber: null,
     })
   })
 

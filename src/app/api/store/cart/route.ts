@@ -7,12 +7,11 @@ import {
 } from '@/services/core/external/medusa-client'
 import {
   getCustomer,
-  updateCustomer,
+  upsertDefaultBillingAddress,
   type MedusaCustomer,
 } from '@/lib/medusa-auth'
 import { storeLogger } from '@/lib/logger'
-import { mergeAccountProfileMetadataPatch } from '@/lib/customer-profile-metadata'
-import { profilePatchFromBillingAddress } from '@/lib/billing-profile'
+import { billingPatchFromCheckout } from '@/lib/billing-profile'
 import { deliver } from '@/lib/sinks/deliver'
 import { assertViewOnly, ViewOnlyError } from '@/lib/impersonation'
 import type { CreateCartInput } from '@/types/medusa'
@@ -22,25 +21,27 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 }
 
 /**
- * Mirror confirmed billing details into the customer profile
- * (metadata.account_profile) — receipts read the profile, and the next
- * checkout prefills from it. Best-effort: profile sync must never fail or
- * delay the purchase, so callers hand the returned promise to deliver()
+ * Mirror confirmed billing details onto the customer's default billing
+ * address — the single source of truth receipts and the profile page read,
+ * and the next checkout prefills from. Best-effort: the sync must never fail
+ * or delay the purchase, so callers hand the returned promise to deliver()
  * and errors are logged and swallowed.
  */
-async function syncBillingToProfile(
+async function syncBillingToCustomerAddress(
   customer: MedusaCustomer,
   billingAddress: Record<string, unknown>,
   taxNumber: string | undefined
 ): Promise<void> {
-  const metadata = mergeAccountProfileMetadataPatch(
-    customer.metadata,
-    profilePatchFromBillingAddress(billingAddress, taxNumber)
-  )
-  if (!metadata) return
-
   try {
-    await updateCustomer({ metadata })
+    const updated = await upsertDefaultBillingAddress(
+      customer,
+      billingPatchFromCheckout(billingAddress, taxNumber)
+    )
+    if (!updated) {
+      // Null is a failed write (no session token), not a no-op — without
+      // this the mirror could stop working with zero signal.
+      storeLogger.error`Billing address sync skipped: no session token for customer ${customer.id}`
+    }
   } catch (error) {
     storeLogger.error`Failed to sync billing address to customer profile: ${error}`
   }
@@ -190,7 +191,9 @@ export async function PATCH(request: NextRequest) {
 
     if (isRecord(body.billing_address)) {
       // Off the critical path: the response must not wait on profile sync.
-      deliver(syncBillingToProfile(customer, body.billing_address, taxNumber))
+      deliver(
+        syncBillingToCustomerAddress(customer, body.billing_address, taxNumber)
+      )
     }
 
     return NextResponse.json({ cart })

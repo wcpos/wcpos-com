@@ -4,11 +4,11 @@ import { getOrderById } from '@/lib/customer-orders'
 import { getCustomer } from '@/lib/medusa-auth'
 import {
   projectAccountOrderReceipt,
+  projectReceiptProfile,
   type AccountOrderReceiptFact,
 } from '@/lib/account-order-projection'
 import { buildReceiptPdf, type ReceiptPdfCopy } from '@/lib/pdf-receipt'
 import { localizeKnownProductTitle } from '@/lib/product-title-display'
-import { projectAccountProfileForReceipt } from '@/lib/customer-profile-metadata'
 import { apiLogger } from '@/lib/logger'
 import { defaultLocale, locales, type Locale } from '@/i18n/config'
 
@@ -221,7 +221,7 @@ export async function GET(
       return errorResponse('order_not_found', 404)
     }
 
-    const profile = projectAccountProfileForReceipt(customer?.metadata)
+    const profile = projectReceiptProfile(customer)
     const receipt = projectAccountOrderReceipt(order, profile, customer)
     const locale = resolveLocale(
       request,

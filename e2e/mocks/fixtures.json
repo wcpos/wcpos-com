@@ -13,15 +13,18 @@
         "first_name": "Ada",
         "last_name": "Active",
         "has_account": true,
-        "metadata": {
-          "account_profile": {
-            "countryCode": "US",
-            "addressLine1": "123 Renewal St",
+        "metadata": {},
+        "addresses": [
+          {
+            "id": "cuaddr_e2e_active_billing",
+            "address_1": "123 Renewal St",
             "city": "Testville",
-            "region": "CA",
-            "postalCode": "90001"
+            "province": "CA",
+            "postal_code": "90001",
+            "country_code": "us",
+            "is_default_billing": true
           }
-        },
+        ],
         "created_at": "2026-01-10T09:00:00.000Z",
         "updated_at": "2026-01-10T09:00:00.000Z"
       },

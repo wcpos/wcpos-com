@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { NextRequest } from 'next/server'
 
 const mockGetCustomer = vi.fn()
-const mockUpdateCustomer = vi.fn()
+const mockUpsertBillingAddress = vi.fn()
 const mockCreateCart = vi.fn()
 const mockGetCart = vi.fn()
 const mockUpdateCart = vi.fn()
@@ -14,7 +14,8 @@ vi.mock('@/lib/impersonation', () => ({
 
 vi.mock('@/lib/medusa-auth', () => ({
   getCustomer: (...args: unknown[]) => mockGetCustomer(...args),
-  updateCustomer: (...args: unknown[]) => mockUpdateCustomer(...args),
+  upsertDefaultBillingAddress: (...args: unknown[]) =>
+    mockUpsertBillingAddress(...args),
 }))
 
 vi.mock('@/services/core/external/medusa-client', () => ({
@@ -123,7 +124,7 @@ describe('PATCH /api/store/cart', () => {
     mockGetCustomer.mockResolvedValue(customer)
     mockGetCart.mockResolvedValue({ id: 'cart_1', email: customer.email })
     mockUpdateCart.mockResolvedValue({ id: 'cart_1' })
-    mockUpdateCustomer.mockResolvedValue(customer)
+    mockUpsertBillingAddress.mockResolvedValue(customer)
   })
 
   it('forwards the tax number as cart metadata', async () => {
@@ -176,12 +177,7 @@ describe('PATCH /api/store/cart', () => {
     })
   })
 
-  it('clears the profile tax number when the field is submitted empty', async () => {
-    mockGetCustomer.mockResolvedValue({
-      ...customer,
-      metadata: { account_profile: { taxNumber: 'stale-abn' } },
-    })
-
+  it('clears the saved tax number when the field is submitted empty', async () => {
     await PATCH(
       patchRequest({
         cartId: 'cart_1',
@@ -190,14 +186,13 @@ describe('PATCH /api/store/cart', () => {
       })
     )
 
-    expect(mockUpdateCustomer).toHaveBeenCalledWith({
-      metadata: {
-        account_profile: expect.objectContaining({ taxNumber: null }),
-      },
-    })
+    expect(mockUpsertBillingAddress).toHaveBeenCalledWith(
+      customer,
+      expect.objectContaining({ tax_number: null })
+    )
   })
 
-  it('mirrors the billing address and tax number into the customer profile', async () => {
+  it('mirrors the billing address and tax number onto the customer address', async () => {
     await PATCH(
       patchRequest({
         cartId: 'cart_1',
@@ -206,55 +201,32 @@ describe('PATCH /api/store/cart', () => {
       })
     )
 
-    expect(mockUpdateCustomer).toHaveBeenCalledWith({
-      metadata: {
-          account_profile: {
-            countryCode: 'AU',
-            addressLine1: '42 Wallaby Way',
-            addressLine2: 'Apt 7',
-            city: 'Sydney',
-            region: 'NSW',
-            postalCode: '2000',
-            taxNumber: '51 824 753 556',
-          },
-      },
+    expect(mockUpsertBillingAddress).toHaveBeenCalledWith(customer, {
+      first_name: 'Ada',
+      last_name: 'Lovelace',
+      country_code: 'au',
+      address_1: '42 Wallaby Way',
+      address_2: 'Apt 7',
+      city: 'Sydney',
+      province: 'NSW',
+      postal_code: '2000',
+      tax_number: '51 824 753 556',
     })
   })
 
-  it('replaces profile address line 2 and region when checkout submits them', async () => {
-    mockGetCustomer.mockResolvedValue({
-      ...customer,
-      metadata: {
-        account_profile: {
-          addressLine2: 'Unit 4',
-          region: 'NSW',
-          taxNumber: 'old-tax',
-        },
-      },
-    })
-
+  it('preserves the saved tax number when checkout does not submit one', async () => {
     await PATCH(
       patchRequest({ cartId: 'cart_1', billing_address: billingAddress })
     )
 
-    expect(mockUpdateCustomer).toHaveBeenCalledWith({
-      metadata: {
-        account_profile: {
-          // No tax number submitted — the saved one is preserved, not cleared.
-          taxNumber: 'old-tax',
-          countryCode: 'AU',
-          addressLine1: '42 Wallaby Way',
-          addressLine2: 'Apt 7',
-          city: 'Sydney',
-          region: 'NSW',
-          postalCode: '2000',
-        },
-      },
-    })
+    expect(mockUpsertBillingAddress).toHaveBeenCalledWith(
+      customer,
+      expect.objectContaining({ tax_number: undefined })
+    )
   })
 
-  it('still succeeds when the profile sync fails', async () => {
-    mockUpdateCustomer.mockRejectedValueOnce(new Error('medusa down'))
+  it('still succeeds when the address sync fails', async () => {
+    mockUpsertBillingAddress.mockRejectedValueOnce(new Error('medusa down'))
 
     const response = await PATCH(
       patchRequest({ cartId: 'cart_1', billing_address: billingAddress })
@@ -263,9 +235,9 @@ describe('PATCH /api/store/cart', () => {
     expect(response.status).toBe(200)
   })
 
-  it('does not touch the profile when only non-address fields change', async () => {
+  it('does not touch the customer address when only non-address fields change', async () => {
     await PATCH(patchRequest({ cartId: 'cart_1' }))
 
-    expect(mockUpdateCustomer).not.toHaveBeenCalled()
+    expect(mockUpsertBillingAddress).not.toHaveBeenCalled()
   })
 })

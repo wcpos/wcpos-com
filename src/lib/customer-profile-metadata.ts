@@ -9,51 +9,18 @@ const AVATAR_METADATA_KEYS = [
   'profile_image_url',
 ] as const
 
-const ACCOUNT_PROFILE_FIELDS = [
-  'avatarDataUrl',
-  'avatarUrl',
-  'countryCode',
-  'addressLine1',
-  'addressLine2',
-  'city',
-  'region',
-  'postalCode',
-  'taxNumber',
-] as const
-
-const RECEIPT_PROFILE_FIELDS = [
-  'countryCode',
-  'addressLine1',
-  'addressLine2',
-  'city',
-  'region',
-  'postalCode',
-  'taxNumber',
-] as const
+// Billing details used to live under account_profile too; they moved to the
+// customer's default billing address in Medusa (see billing-profile.ts) and
+// stale metadata copies were cleaned up by a one-off backfill. Only avatar
+// fields remain readable/writable here.
+const ACCOUNT_PROFILE_FIELDS = ['avatarDataUrl', 'avatarUrl'] as const
 
 export interface AccountProfileMetadata {
   avatarDataUrl: string
   avatarUrl: string
-  countryCode: string
-  addressLine1: string
-  addressLine2: string
-  city: string
-  region: string
-  postalCode: string
-  taxNumber: string
-}
-
-export interface AccountProfileMetadataRead {
-  profile: AccountProfileMetadata
-  hasCountryCode: boolean
 }
 
 export type AccountProfilePatchInput = Record<string, unknown> | null | undefined
-
-export type ReceiptAccountProfileMetadata = Record<
-  (typeof RECEIPT_PROFILE_FIELDS)[number],
-  string | null
->
 
 export type ClientProfileMetadata = Partial<
   Record<(typeof AVATAR_METADATA_KEYS)[number], string>
@@ -67,10 +34,6 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 
 function asString(value: unknown): string {
   return typeof value === 'string' ? value : ''
-}
-
-function stringOrNull(value: unknown): string | null {
-  return typeof value === 'string' ? value : null
 }
 
 function normalizePatchField(value: unknown): string | null | undefined {
@@ -89,28 +52,11 @@ function rawAccountProfile(
 export function readAccountProfileMetadata(
   metadata: Record<string, unknown> | null | undefined
 ): AccountProfileMetadata {
-  return readAccountProfileMetadataWithPresence(metadata).profile
-}
-
-export function readAccountProfileMetadataWithPresence(
-  metadata: Record<string, unknown> | null | undefined
-): AccountProfileMetadataRead {
   const accountProfile = rawAccountProfile(metadata)
-  const countryCode = asString(accountProfile.countryCode)
 
   return {
-    profile: {
-      avatarDataUrl: asString(accountProfile.avatarDataUrl),
-      avatarUrl: asString(accountProfile.avatarUrl),
-      countryCode: countryCode || 'US',
-      addressLine1: asString(accountProfile.addressLine1),
-      addressLine2: asString(accountProfile.addressLine2),
-      city: asString(accountProfile.city),
-      region: asString(accountProfile.region),
-      postalCode: asString(accountProfile.postalCode),
-      taxNumber: asString(accountProfile.taxNumber),
-    },
-    hasCountryCode: Boolean(countryCode),
+    avatarDataUrl: asString(accountProfile.avatarDataUrl),
+    avatarUrl: asString(accountProfile.avatarUrl),
   }
 }
 
@@ -139,12 +85,11 @@ export function mergeAccountProfileMetadataPatch(
   if (Object.keys(normalized).length === 0) return null
 
   const currentMetadata = isRecord(metadata) ? metadata : {}
-  const currentAccountProfile = rawAccountProfile(currentMetadata)
 
   return {
     ...currentMetadata,
     account_profile: {
-      ...currentAccountProfile,
+      ...rawAccountProfile(currentMetadata),
       ...normalized,
     },
   }
@@ -166,17 +111,4 @@ export function projectProfileMetadataForClient(
   }
 
   return Object.keys(projected).length > 0 ? projected : undefined
-}
-
-export function projectAccountProfileForReceipt(
-  metadata: Record<string, unknown> | null | undefined
-): ReceiptAccountProfileMetadata {
-  const accountProfile = rawAccountProfile(metadata)
-  const projected = {} as ReceiptAccountProfileMetadata
-
-  for (const field of RECEIPT_PROFILE_FIELDS) {
-    projected[field] = stringOrNull(accountProfile[field])
-  }
-
-  return projected
 }
