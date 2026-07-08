@@ -1,5 +1,9 @@
-import { describe, expect, it } from 'vitest'
-import { sanitizeRedirectPath } from './safe-redirect'
+import { describe, expect, it, vi } from 'vitest'
+import {
+  localizeRedirectPath,
+  navigateAfterAuthChange,
+  sanitizeRedirectPath,
+} from './safe-redirect'
 
 describe('sanitizeRedirectPath', () => {
   it('allows simple same-origin paths', () => {
@@ -47,5 +51,36 @@ describe('sanitizeRedirectPath', () => {
 
   it('honours a custom fallback', () => {
     expect(sanitizeRedirectPath('https://evil.com', '/')).toBe('/')
+  })
+})
+
+describe('localizeRedirectPath', () => {
+  // The default locale must stay unprefixed (localePrefix: 'as-needed') —
+  // '/en/account' is not a route and would 404 the post-auth navigation.
+  it('leaves default-locale paths unprefixed', () => {
+    expect(localizeRedirectPath('/account', 'en')).toBe('/account')
+    expect(localizeRedirectPath('/', 'en')).toBe('/')
+  })
+
+  it('prefixes non-default locales, including the bare root', () => {
+    expect(localizeRedirectPath('/pro/checkout?variant=yearly', 'fr')).toBe(
+      '/fr/pro/checkout?variant=yearly'
+    )
+    expect(localizeRedirectPath('/', 'de')).toBe('/de')
+  })
+})
+
+describe('navigateAfterAuthChange', () => {
+  it('performs a full document navigation to the localized path', () => {
+    const assign = vi.fn()
+    vi.stubGlobal('location', { assign } as unknown as Location)
+
+    navigateAfterAuthChange('/account', 'en')
+    expect(assign).toHaveBeenCalledWith('/account')
+
+    navigateAfterAuthChange('/pro/checkout', 'fr')
+    expect(assign).toHaveBeenCalledWith('/fr/pro/checkout')
+
+    vi.unstubAllGlobals()
   })
 })

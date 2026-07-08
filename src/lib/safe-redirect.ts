@@ -61,3 +61,23 @@ export function localizeRedirectPath(path: string, locale: Locale): string {
   if (path === '/') return `/${locale}`
   return `/${locale}${path}`
 }
+
+/**
+ * Navigate after the session cookie changed identity (sign-in, sign-up,
+ * reset-that-signs-in, or a dead session detected on a 401).
+ *
+ * Always a FULL document navigation, never router.push: the client router
+ * keeps RSC payloads rendered under the old identity (PPR shells advertise a
+ * 5-minute client stale time under cacheComponents), and router.refresh()
+ * provably does not purge them — a soft navigation kept re-rendering the
+ * signed-out checkout until the customer manually reloaded. A full load also
+ * matches the auth transitions that never had this bug: OAuth returns via
+ * HTTP redirects and logout is a real form POST.
+ *
+ * `path` must already be sanitized (sanitizeRedirectPath) and bare of any
+ * locale prefix; the current surface locale is re-applied here because,
+ * unlike the i18n router, the browser will not add it for us.
+ */
+export function navigateAfterAuthChange(path: string, locale: Locale): void {
+  window.location.assign(localizeRedirectPath(path, locale))
+}

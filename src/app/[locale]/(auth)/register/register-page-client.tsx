@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Alert } from '@/components/ui/alert'
-import { localizeRedirectPath, sanitizeRedirectPath } from '@/lib/safe-redirect'
+import { navigateAfterAuthChange, sanitizeRedirectPath } from '@/lib/safe-redirect'
 import type { Locale } from '@/i18n/config'
 import { MIN_PASSWORD_LENGTH } from '@/lib/password-policy'
 import {
@@ -99,17 +99,15 @@ function RegisterPageInner() {
             ? getRegisterErrorMessage(data.errorCode)
             : t('failed')
         )
+        setLoading(false)
         return
       }
 
-      // Full document navigation, deliberately NOT router.push — same as the
-      // login page: the session cookie just changed identity, and the client
-      // router keeps signed-out RSC payloads that router.refresh() provably
-      // does not purge (see login-page-client.tsx).
-      window.location.assign(localizeRedirectPath(redirectTo, locale as Locale))
+      // Deliberately leaves `loading` true — see navigateAfterAuthChange for
+      // why this must be a full document navigation.
+      navigateAfterAuthChange(redirectTo, locale as Locale)
     } catch {
       setError(tCommon('genericError'))
-    } finally {
       setLoading(false)
     }
   }
