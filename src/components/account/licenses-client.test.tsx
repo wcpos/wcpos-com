@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { fireEvent, screen } from '@testing-library/react'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { renderWithIntl as render } from '@/test/intl'
 import { LicensesClient } from './licenses-client'
 import type { CanonicalLicenseStatus } from '@/lib/license-status'
@@ -537,11 +537,13 @@ describe('LicensesClient', () => {
             members: [
               {
                 id: 'member-ada',
+                discordUserId: 'discord-ada',
                 handle: '@ada',
                 avatarUrl: null,
                 connectedAt: '2026-06-01T00:00:00.000Z',
               },
             ],
+            blockedMembers: [],
           },
         }}
       />
@@ -571,8 +573,9 @@ describe('LicensesClient', () => {
             seatCap: 5,
             usedSeats: 1,
             members: [
-              { id: 'member-ada', handle: '@ada', avatarUrl: null, connectedAt: '2026-06-01T00:00:00.000Z' },
+              { id: 'member-ada', discordUserId: 'discord-ada', handle: '@ada', avatarUrl: null, connectedAt: '2026-06-01T00:00:00.000Z' },
             ],
+            blockedMembers: [],
           },
         }}
       />
@@ -585,7 +588,105 @@ describe('LicensesClient', () => {
       { method: 'DELETE' }
     )
     expect(await screen.findByText('0 of 5 members')).toBeInTheDocument()
+    // Holder removal block-lists the member (ADR-0007): the row moves to the
+    // removed-members list, where the holder can undo the block.
+    expect(screen.getByText('Removed members')).toBeInTheDocument()
+    expect(screen.getByText('@ada')).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: 'Allow @ada to reconnect' })
+    ).toBeInTheDocument()
+    expect(
+      screen.queryByRole('button', { name: 'Remove @ada' })
+    ).not.toBeInTheDocument()
+  })
+
+  it('renders blocked members with an allow-reconnect action', () => {
+    render(
+      <LicensesClient
+        initialLicenses={[makeLicense({ id: 'lic-1' })]}
+        discordAccessByLicense={{
+          'lic-1': {
+            licenseId: 'lic-1',
+            seatCap: 5,
+            usedSeats: 0,
+            members: [],
+            blockedMembers: [
+              { discordUserId: 'discord-ada', handle: '@ada', avatarUrl: null },
+            ],
+          },
+        }}
+      />
+    )
+
+    expect(screen.getByText('Removed members')).toBeInTheDocument()
+    expect(screen.getByText('@ada')).toBeInTheDocument()
+    expect(
+      screen.getByText('Blocked from reconnecting with this key.')
+    ).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: 'Allow @ada to reconnect' })
+    ).toBeInTheDocument()
+  })
+
+  it('unblocks a removed member through the holder endpoint', async () => {
+    mockFetch.mockResolvedValueOnce({ ok: true, json: async () => ({ ok: true }) })
+    render(
+      <LicensesClient
+        initialLicenses={[makeLicense({ id: 'lic-1' })]}
+        discordAccessByLicense={{
+          'lic-1': {
+            licenseId: 'lic-1',
+            seatCap: 5,
+            usedSeats: 0,
+            members: [],
+            blockedMembers: [
+              { discordUserId: 'discord-ada', handle: '@ada', avatarUrl: null },
+            ],
+          },
+        }}
+      />
+    )
+
+    fireEvent.click(screen.getByRole('button', { name: 'Allow @ada to reconnect' }))
+
+    expect(mockFetch).toHaveBeenCalledWith(
+      '/api/account/licenses/lic-1/discord/blocked/discord-ada',
+      { method: 'DELETE' }
+    )
+    // Unblocking only lifts the block — no member row reappears until the
+    // person reconnects through the claim flow.
+    await waitFor(() =>
+      expect(screen.queryByText('Removed members')).not.toBeInTheDocument()
+    )
     expect(screen.queryByText('@ada')).not.toBeInTheDocument()
+    expect(screen.getByText('0 of 5 members')).toBeInTheDocument()
+  })
+
+  it('surfaces an error when unblocking fails', async () => {
+    mockFetch.mockResolvedValueOnce({ ok: false, status: 500, json: async () => ({}) })
+    render(
+      <LicensesClient
+        initialLicenses={[makeLicense({ id: 'lic-1' })]}
+        discordAccessByLicense={{
+          'lic-1': {
+            licenseId: 'lic-1',
+            seatCap: 5,
+            usedSeats: 0,
+            members: [],
+            blockedMembers: [
+              { discordUserId: 'discord-ada', handle: '@ada', avatarUrl: null },
+            ],
+          },
+        }}
+      />
+    )
+
+    fireEvent.click(screen.getByRole('button', { name: 'Allow @ada to reconnect' }))
+
+    expect(
+      await screen.findByText('Failed to allow reconnecting. Please try again.')
+    ).toBeInTheDocument()
+    expect(screen.getByText('@ada')).toBeInTheDocument()
   })
 
   it('redirects to login when Discord member removal returns 401', async () => {
@@ -604,8 +705,9 @@ describe('LicensesClient', () => {
             seatCap: 5,
             usedSeats: 1,
             members: [
-              { id: 'member-ada', handle: '@ada', avatarUrl: null, connectedAt: '2026-06-01T00:00:00.000Z' },
+              { id: 'member-ada', discordUserId: 'discord-ada', handle: '@ada', avatarUrl: null, connectedAt: '2026-06-01T00:00:00.000Z' },
             ],
+            blockedMembers: [],
           },
         }}
       />
@@ -663,8 +765,9 @@ describe('LicensesClient', () => {
             seatCap: 1,
             usedSeats: 1,
             members: [
-              { id: 'member-ada', handle: '@ada', avatarUrl: null, connectedAt: '2026-06-01T00:00:00.000Z' },
+              { id: 'member-ada', discordUserId: 'discord-ada', handle: '@ada', avatarUrl: null, connectedAt: '2026-06-01T00:00:00.000Z' },
             ],
+            blockedMembers: [],
           },
         }}
       />

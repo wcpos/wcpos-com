@@ -86,6 +86,13 @@ describe('GET /api/account/licenses', () => {
       seatCap: 5,
       usedSeats: 0,
       members: [],
+      blockedMembers: [
+        {
+          discordUserId: 'discord_blocked',
+          handle: 'Discord user discord_blocked',
+          avatarUrl: null,
+        },
+      ],
     })
   })
 })

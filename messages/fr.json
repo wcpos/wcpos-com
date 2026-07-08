@@ -770,6 +770,11 @@
       "discordConnectHint": "Connectez-vous avec votre clé de licence pour obtenir le rôle Pro sur notre Discord communautaire.",
       "discordNoMembers": "Aucun membre connecté pour le moment.",
       "discordRemoveError": "Échec du retrait du membre Discord. Veuillez réessayer.",
+      "discordBlockedHeading": "Membres retirés",
+      "discordBlockedNote": "Reconnexion bloquée avec cette clé.",
+      "discordUnblock": "Autoriser la reconnexion",
+      "discordUnblockAria": "Autoriser {handle} à se reconnecter",
+      "discordUnblockError": "Échec de l'autorisation de reconnexion. Veuillez réessayer.",
       "discordConnectCta": "Connecter Discord",
       "discordConnectCtaAria": "Connecter Discord pour la licence se terminant par {suffix}",
       "discordClaimStatus": {

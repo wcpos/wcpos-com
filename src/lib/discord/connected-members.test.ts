@@ -2,8 +2,10 @@ import { describe, expect, it } from 'vitest'
 import {
   DEFAULT_DISCORD_SEAT_CAP,
   addConnectedDiscordMember,
+  getBlockedDiscordMembers,
   getConnectedDiscordAccess,
   removeConnectedDiscordMember,
+  unblockDiscordUserForLicence,
 } from './connected-members'
 
 const now = new Date('2026-06-17T10:00:00.000Z')
@@ -130,5 +132,79 @@ describe('connected Discord member metadata', () => {
       members: [],
       blockedDiscordUserIds: [],
     })
+  })
+
+  it('joins blocked ids with their removed-member history for the holder view', () => {
+    const metadata = removeConnectedDiscordMember(
+      addConnectedDiscordMember({}, {
+        id: 'discord_1',
+        username: 'ada',
+        avatar: 'avatar_hash',
+        connectedAt: now,
+      }),
+      'discord-member-discord_1',
+      new Date('2026-06-18T00:00:00.000Z')
+    )
+
+    expect(getBlockedDiscordMembers(metadata)).toEqual([
+      {
+        discordUserId: 'discord_1',
+        username: 'ada',
+        avatar: 'avatar_hash',
+        removedAt: '2026-06-18T00:00:00.000Z',
+      },
+    ])
+  })
+
+  it('returns a bare blocked entry when no member record backs the blocked id', () => {
+    expect(
+      getBlockedDiscordMembers({
+        discord_access: { blockedDiscordUserIds: ['discord_orphan'], members: [] },
+      })
+    ).toEqual([
+      { discordUserId: 'discord_orphan', username: null, avatar: null, removedAt: null },
+    ])
+  })
+
+  it('unblocks a Discord user without touching member history or other blocks', () => {
+    const blockedBoth = removeConnectedDiscordMember(
+      removeConnectedDiscordMember(
+        addConnectedDiscordMember(
+          addConnectedDiscordMember({ plan_note: 'keep me' }, {
+            id: 'discord_1',
+            username: 'ada',
+            avatar: null,
+            connectedAt: now,
+          }),
+          { id: 'discord_2', username: 'devon', avatar: null, connectedAt: now }
+        ),
+        'discord-member-discord_1',
+        new Date('2026-06-18T00:00:00.000Z')
+      ),
+      'discord-member-discord_2',
+      new Date('2026-06-19T00:00:00.000Z')
+    )
+
+    const unblocked = unblockDiscordUserForLicence(blockedBoth, 'discord_1')
+
+    expect(unblocked.plan_note).toBe('keep me')
+    expect(getConnectedDiscordAccess(unblocked).blockedDiscordUserIds).toEqual(['discord_2'])
+    // The removed-member records stay as history; unblocking only lifts the block.
+    expect(
+      (unblocked.discord_access as { members: Array<{ removedAt?: string }> }).members
+    ).toHaveLength(2)
+  })
+
+  it('leaves metadata unchanged in shape when unblocking an id that is not blocked', () => {
+    const metadata = addConnectedDiscordMember({}, {
+      id: 'discord_1',
+      username: 'ada',
+      avatar: null,
+      connectedAt: now,
+    })
+
+    const unblocked = unblockDiscordUserForLicence(metadata, 'discord_other')
+
+    expect(getConnectedDiscordAccess(unblocked)).toEqual(getConnectedDiscordAccess(metadata))
   })
 })

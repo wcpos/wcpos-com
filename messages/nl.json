@@ -770,6 +770,11 @@
       "discordConnectHint": "Verbind met je licentiesleutel om de Pro-rol in onze community-Discord te krijgen.",
       "discordNoMembers": "Nog geen verbonden leden.",
       "discordRemoveError": "Kan Discord-lid niet verwijderen. Probeer het opnieuw.",
+      "discordBlockedHeading": "Verwijderde leden",
+      "discordBlockedNote": "Geblokkeerd voor opnieuw verbinden met deze sleutel.",
+      "discordUnblock": "Opnieuw verbinden toestaan",
+      "discordUnblockAria": "{handle} toestaan opnieuw te verbinden",
+      "discordUnblockError": "Kan opnieuw verbinden niet toestaan. Probeer het opnieuw.",
       "discordConnectCta": "Discord verbinden",
       "discordConnectCtaAria": "Discord verbinden voor licentie eindigend op {suffix}",
       "discordClaimStatus": {

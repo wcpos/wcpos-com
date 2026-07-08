@@ -70,9 +70,21 @@ interface License {
 
 interface DiscordMember {
   id: string
+  discordUserId: string
   handle: string
   avatarUrl: string | null
   connectedAt: string
+}
+
+/**
+ * A Discord user a holder removed from this licence: block-listed from
+ * reclaiming a seat with the same key until the holder allows it again
+ * (ADR-0007 removal semantics).
+ */
+interface BlockedDiscordMember {
+  discordUserId: string
+  handle: string
+  avatarUrl: string | null
 }
 
 interface DiscordAccess {
@@ -80,6 +92,7 @@ interface DiscordAccess {
   seatCap: number
   usedSeats: number
   members: DiscordMember[]
+  blockedMembers: BlockedDiscordMember[]
 }
 
 const DISCORD_DEFAULT_CAP = 5
@@ -112,7 +125,13 @@ function isLicenseActionErrorCode(value: unknown): value is LicenseActionErrorCo
 }
 
 function emptyDiscordAccess(licenseId: string): DiscordAccess {
-  return { licenseId, seatCap: DISCORD_DEFAULT_CAP, usedSeats: 0, members: [] }
+  return {
+    licenseId,
+    seatCap: DISCORD_DEFAULT_CAP,
+    usedSeats: 0,
+    members: [],
+    blockedMembers: [],
+  }
 }
 
 function memberInitials(handle: string): string {
@@ -164,6 +183,7 @@ export function LicensesClient({
   const [deactivating, setDeactivating] = useState<string | null>(null)
   const [confirmingDeactivate, setConfirmingDeactivate] = useState<string | null>(null)
   const [removingDiscordMember, setRemovingDiscordMember] = useState<string | null>(null)
+  const [unblockingDiscordUser, setUnblockingDiscordUser] = useState<string | null>(null)
   // Captured once per mount so render stays pure for the React compiler.
   const [now] = useState(() => Date.now())
 
@@ -270,16 +290,70 @@ export function LicensesClient({
       }
       setDiscordAccessByLicenseState((accessByLicense) => {
         const current = accessByLicense[licenseId] ?? emptyDiscordAccess(licenseId)
+        const removed = current.members.find((member) => member.id === memberId)
         const members = current.members.filter((member) => member.id !== memberId)
+        // Holder removal block-lists the Discord user (ADR-0007), so the
+        // person moves to the blocked list rather than vanishing — that is
+        // where the holder finds the undo.
+        const blockedMembers =
+          removed &&
+          !current.blockedMembers.some(
+            (blocked) => blocked.discordUserId === removed.discordUserId
+          )
+            ? [
+                ...current.blockedMembers,
+                {
+                  discordUserId: removed.discordUserId,
+                  handle: removed.handle,
+                  avatarUrl: removed.avatarUrl,
+                },
+              ]
+            : current.blockedMembers
         return {
           ...accessByLicense,
-          [licenseId]: { ...current, members, usedSeats: members.length },
+          [licenseId]: { ...current, members, usedSeats: members.length, blockedMembers },
         }
       })
     } catch (err) {
       setError(err instanceof Error ? err.message : t('discordRemoveError'))
     } finally {
       setRemovingDiscordMember(null)
+    }
+  }
+
+  const handleUnblockDiscordMember = async (licenseId: string, discordUserId: string) => {
+    setUnblockingDiscordUser(discordUserId)
+    setError(null)
+    try {
+      const res = await fetch(
+        `/api/account/licenses/${licenseId}/discord/blocked/${encodeURIComponent(discordUserId)}`,
+        { method: 'DELETE' }
+      )
+      if (!res.ok) {
+        if (res.status === 401) {
+          window.location.assign(loginPath)
+          return
+        }
+        throw new Error(await getLicenseActionErrorMessage(res, t('discordUnblockError')))
+      }
+      // Unblocking only lifts the block — the person still reconnects through
+      // the normal claim flow, so no member row appears until they do.
+      setDiscordAccessByLicenseState((accessByLicense) => {
+        const current = accessByLicense[licenseId] ?? emptyDiscordAccess(licenseId)
+        return {
+          ...accessByLicense,
+          [licenseId]: {
+            ...current,
+            blockedMembers: current.blockedMembers.filter(
+              (blocked) => blocked.discordUserId !== discordUserId
+            ),
+          },
+        }
+      })
+    } catch (err) {
+      setError(err instanceof Error ? err.message : t('discordUnblockError'))
+    } finally {
+      setUnblockingDiscordUser(null)
     }
   }
 
@@ -789,6 +863,59 @@ export function LicensesClient({
                     </Row>
                     ))}
                   </DividedList>
+                )}
+                {/* Members the holder removed stay block-listed for this
+                    licence (ADR-0007) until the holder allows them back.
+                    "Allow reconnect" only lifts the block — the person still
+                    has to reconnect themselves via the normal claim flow. */}
+                {discordAccess.blockedMembers.length > 0 && (
+                  <div className="mt-3">
+                    <p className="text-xs font-medium text-muted-foreground">
+                      {t('discordBlockedHeading')}
+                    </p>
+                    <DividedList className="mt-1">
+                      {discordAccess.blockedMembers.map((blocked) => (
+                        <Row key={blocked.discordUserId} className="gap-2">
+                          <div className="flex min-w-0 items-center gap-2.5 opacity-70">
+                            <Avatar aria-hidden="true" className="h-7 w-7 shrink-0">
+                              {blocked.avatarUrl && (
+                                <AvatarImage src={blocked.avatarUrl} alt="" />
+                              )}
+                              <AvatarFallback className="bg-muted text-xs font-medium text-muted-foreground">
+                                {memberInitials(blocked.handle)}
+                              </AvatarFallback>
+                            </Avatar>
+                            <div className="min-w-0">
+                              <p className="truncate text-sm font-medium">
+                                {blocked.handle}
+                              </p>
+                              <p className="text-xs text-muted-foreground">
+                                {t('discordBlockedNote')}
+                              </p>
+                            </div>
+                          </div>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() =>
+                              handleUnblockDiscordMember(
+                                license.id,
+                                blocked.discordUserId
+                              )
+                            }
+                            disabled={
+                              unblockingDiscordUser === blocked.discordUserId
+                            }
+                            aria-label={t('discordUnblockAria', {
+                              handle: blocked.handle,
+                            })}
+                          >
+                            {t('discordUnblock')}
+                          </Button>
+                        </Row>
+                      ))}
+                    </DividedList>
+                  </div>
                 )}
                 {displayStatus === 'active' && (
                   <div className="mt-3 flex flex-wrap items-center justify-between gap-x-3 gap-y-2">

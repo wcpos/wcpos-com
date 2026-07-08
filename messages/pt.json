@@ -770,6 +770,11 @@
       "discordConnectHint": "Ligue com a sua chave de licença para obter o papel Pro no nosso Discord da comunidade.",
       "discordNoMembers": "Ainda não há membros ligados.",
       "discordRemoveError": "Falha ao remover o membro do Discord. Tente novamente.",
+      "discordBlockedHeading": "Membros removidos",
+      "discordBlockedNote": "Bloqueado de voltar a ligar-se com esta chave.",
+      "discordUnblock": "Permitir nova ligação",
+      "discordUnblockAria": "Permitir que {handle} volte a ligar-se",
+      "discordUnblockError": "Falha ao permitir a nova ligação. Tente novamente.",
       "discordConnectCta": "Ligar Discord",
       "discordConnectCtaAria": "Ligar o Discord para a licença terminada em {suffix}",
       "discordClaimStatus": {

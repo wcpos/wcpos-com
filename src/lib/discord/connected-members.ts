@@ -157,6 +157,53 @@ export function removeConnectedDiscordMember(
   )
 }
 
+export interface BlockedDiscordMemberRecord {
+  discordUserId: string
+  username: string | null
+  avatar: string | null
+  removedAt: string | null
+}
+
+/**
+ * Blocked Discord users joined with their removed-member history, so the
+ * holder view can show who is behind each blocked id. The block list itself
+ * only stores ids; the handle/avatar come from the most recent removed member
+ * record for that id (null fields when no record survives).
+ */
+export function getBlockedDiscordMembers(
+  metadata: Record<string, unknown> | null | undefined
+): BlockedDiscordMemberRecord[] {
+  const access = getConnectedDiscordAccess(metadata)
+  const allMembers = getAllMemberRecords(metadata)
+  return access.blockedDiscordUserIds.map((discordUserId) => {
+    const record = allMembers
+      .filter((member) => member.discordUserId === discordUserId && member.removedAt)
+      .sort((a, b) => a.removedAt!.localeCompare(b.removedAt!))
+      .pop()
+    return {
+      discordUserId,
+      username: record?.username ?? null,
+      avatar: record?.avatar ?? null,
+      removedAt: record?.removedAt ?? null,
+    }
+  })
+}
+
+export function unblockDiscordUserForLicence(
+  metadata: Record<string, unknown> | null | undefined,
+  discordUserId: string
+): Record<string, unknown> {
+  const access = getConnectedDiscordAccess(metadata)
+  return writeAccessMetadata(
+    metadata,
+    {
+      ...access,
+      blockedDiscordUserIds: access.blockedDiscordUserIds.filter((id) => id !== discordUserId),
+    },
+    getAllMemberRecords(metadata)
+  )
+}
+
 export function isDiscordUserBlockedForLicence(
   metadata: Record<string, unknown> | null | undefined,
   discordUserId: string

@@ -770,6 +770,11 @@
       "discordConnectHint": "Conecta con tu clave de licencia para obtener el rol Pro en nuestro Discord de la comunidad.",
       "discordNoMembers": "Aún no hay miembros conectados.",
       "discordRemoveError": "No se pudo eliminar el miembro de Discord. Inténtalo de nuevo.",
+      "discordBlockedHeading": "Miembros eliminados",
+      "discordBlockedNote": "Bloqueado para volver a conectarse con esta clave.",
+      "discordUnblock": "Permitir reconexión",
+      "discordUnblockAria": "Permitir que {handle} vuelva a conectarse",
+      "discordUnblockError": "No se pudo permitir la reconexión. Inténtalo de nuevo.",
       "discordConnectCta": "Conectar Discord",
       "discordConnectCtaAria": "Conectar Discord para la licencia que termina en {suffix}",
       "discordClaimStatus": {
