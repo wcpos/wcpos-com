@@ -160,12 +160,38 @@ test.describe('Existing license holder data accuracy', () => {
     // downloads link stays, alongside a renew CTA.
     const renewLink = card.getByRole('link', { name: 'Renew' })
     await expect(renewLink).toBeVisible()
-    // Yearly licence → Renew deep-links to the pre-filled yearly checkout.
+    // Yearly licence → Renew starts the attended one-click renewal flow.
     await expect(renewLink).toHaveAttribute(
+      'href',
+      '/account/licenses/renew'
+    )
+    await expect(card.getByRole('link', { name: /Downloads/ })).toBeVisible()
+  })
+
+  test('renewal falls back to checkout when Stripe omits a client secret', async ({
+    page,
+    context,
+    baseURL,
+  }) => {
+    await signInAs(context, baseURL, 'e2e-active')
+    await page.route('**/api/store/cart/payment-sessions', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          cart: { id: 'cart_e2e_missing_secret', total: 129, currency_code: 'usd' },
+          clientSecret: null,
+        }),
+      })
+    })
+
+    await page.goto('/account/licenses/renew')
+
+    await expect(page.getByRole('link', { name: /checkout/i })).toHaveAttribute(
       'href',
       '/pro/checkout?product=wcpos-pro-yearly'
     )
-    await expect(card.getByRole('link', { name: /Downloads/ })).toBeVisible()
+    await expect(page.getByText('Preparing your renewal')).toHaveCount(0)
   })
 
   test('suspended holder sees suspended status and no downloads CTA', async ({
@@ -180,6 +206,18 @@ test.describe('Existing license holder data accuracy', () => {
     await expect(card).toBeVisible()
     await expect(card.getByText('suspended', { exact: true })).toBeVisible()
     await expect(card.getByRole('link', { name: /Downloads/ })).toHaveCount(0)
+  })
+
+  test('suspended yearly holder cannot open one-click renewal directly', async ({
+    page,
+    context,
+    baseURL,
+  }) => {
+    await signInAs(context, baseURL, 'e2e-suspended')
+
+    await page.goto('/account/licenses/renew')
+
+    await expect(page).toHaveURL(/\/account\/licenses$/)
   })
 
   test('customer without purchases sees the empty state', async ({
@@ -207,8 +245,8 @@ test.describe('License activation and machine deactivation', () => {
     await page.goto('/account/licenses')
     const card = licenseCard(page, '****-****-1234')
     await expect(card.getByText('2 of 4')).toBeVisible()
-    await expect(card.getByText('Front Counter POS')).toBeVisible()
-    await expect(card.getByText('Back Office Mac')).toBeVisible()
+    await expect(card.getByText('shop.example.com')).toBeVisible()
+    await expect(card.getByText('office.example.com')).toBeVisible()
 
     // Simulate the POS plugin activating a third machine against the
     // license server (activation happens plugin-side, not in the account UI;
@@ -234,14 +272,17 @@ test.describe('License activation and machine deactivation', () => {
     // The account UI reflects the new activation.
     await page.reload()
     await expect(card.getByText('3 of 4')).toBeVisible()
-    await expect(card.getByText('Till 3')).toBeVisible()
+    await expect(card.getByText('till3.example.com')).toBeVisible()
 
     // Deactivate it from the account UI.
-    await card.getByRole('button', { name: 'Deactivate Till 3' }).click()
+    await card
+      .getByRole('button', { name: 'Deactivate site: till3.example.com' })
+      .click()
+    await card.getByRole('button', { name: 'Deactivate', exact: true }).click()
     await expect(card.getByText('2 of 4')).toBeVisible()
-    await expect(card.getByText('Till 3')).toHaveCount(0)
-    await expect(card.getByText('Front Counter POS')).toBeVisible()
-    await expect(card.getByText('Back Office Mac')).toBeVisible()
+    await expect(card.getByText('till3.example.com')).toHaveCount(0)
+    await expect(card.getByText('shop.example.com')).toBeVisible()
+    await expect(card.getByText('office.example.com')).toBeVisible()
   })
 
   test('deactivating a machine from the account UI updates the activation count', async ({
@@ -257,12 +298,13 @@ test.describe('License activation and machine deactivation', () => {
     await expect(card.getByText('2 of 4')).toBeVisible()
 
     await card
-      .getByRole('button', { name: 'Deactivate Back Office Mac' })
+      .getByRole('button', { name: 'Deactivate site: office.example.com' })
       .click()
+    await card.getByRole('button', { name: 'Deactivate', exact: true }).click()
 
     await expect(card.getByText('1 of 4')).toBeVisible()
-    await expect(card.getByText('Back Office Mac')).toHaveCount(0)
-    await expect(card.getByText('Front Counter POS')).toBeVisible()
+    await expect(card.getByText('office.example.com')).toHaveCount(0)
+    await expect(card.getByText('shop.example.com')).toBeVisible()
   })
 
   test('cannot deactivate machines on a license the customer does not own', async ({

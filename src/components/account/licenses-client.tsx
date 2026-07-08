@@ -19,7 +19,7 @@ import {
   getLicenseDisplayStatus,
   isLicenseExpiringSoon,
 } from '@/lib/license'
-import { getPlanByPolicyId } from '@/lib/plans'
+import { getPlanByPolicyId, YEARLY_PRO_HANDLE } from '@/lib/plans'
 import { presentLicenseStatus } from '@/lib/license-status-presentation'
 
 interface Machine {
@@ -28,6 +28,24 @@ interface Machine {
   name: string | null
   metadata: Record<string, unknown>
   createdAt: string
+}
+
+/** Read a non-empty string field from a machine's Keygen metadata blob. */
+function metaString(
+  metadata: Record<string, unknown>,
+  key: string
+): string | undefined {
+  const value = metadata?.[key]
+  return typeof value === 'string' && value.trim() !== '' ? value : undefined
+}
+
+/**
+ * Instance fingerprints are opaque hashes/tokens. Show a recognisable but
+ * compact form so the row stays readable on a phone.
+ */
+function shortenInstance(fingerprint: string): string {
+  if (fingerprint.length <= 14) return fingerprint
+  return `${fingerprint.slice(0, 8)}…${fingerprint.slice(-4)}`
 }
 
 interface License {
@@ -108,6 +126,7 @@ export function LicensesClient({
   const [copiedKey, setCopiedKey] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [deactivating, setDeactivating] = useState<string | null>(null)
+  const [confirmingDeactivate, setConfirmingDeactivate] = useState<string | null>(null)
   const [removingDiscordMember, setRemovingDiscordMember] = useState<string | null>(null)
   // Captured once per mount so render stays pure for the React compiler.
   const [now] = useState(() => Date.now())
@@ -177,6 +196,7 @@ export function LicensesClient({
       setError(err instanceof Error ? err.message : t('deactivateError'))
     } finally {
       setDeactivating(null)
+      setConfirmingDeactivate(null)
     }
   }
 
@@ -278,14 +298,20 @@ export function LicensesClient({
           const plan = getPlanByPolicyId(license.policyId)
           const planLabel = plan ? t(plan.labelKey) : null
           // A licence is renewable when it has an expiry to extend; a lifetime
-          // licence (null expiry) never renews. Deep-link to the pre-filled
-          // yearly checkout when the plan handle resolves (else the generic
-          // /pro). On payment the Medusa order-completed subscriber extends the
-          // SAME licence using the locked max(expiry, now) + 1yr rule.
+          // licence (null expiry) never renews. On payment the Medusa
+          // order-completed subscriber extends the SAME licence using the
+          // locked max(expiry, now) + 1yr rule.
           const isRenewable = license.expiry != null
-          const renewHref = plan?.handle
-            ? `/pro/checkout?product=${plan.handle}`
-            : '/pro'
+          // Yearly renewable licences use the one-click renewal flow (prefilled
+          // cart + saved card; falls back to the full checkout when billing
+          // isn't on file). Any other renewable/expired licence keeps the plain
+          // checkout deep-link.
+          const renewHref =
+            isRenewable && plan?.handle === YEARLY_PRO_HANDLE
+              ? '/account/licenses/renew'
+              : plan?.handle
+                ? `/pro/checkout?product=${plan.handle}`
+                : '/pro'
           // Always offer renewal on a renewable licence that is active or
           // expired, EXCEPT while the expiring-soon banner is already showing
           // its own Renew (avoids two identical CTAs on one card). Skip the
@@ -495,66 +521,138 @@ export function LicensesClient({
               {license.machines.length > 0 && (
                 <div className="border-t pt-4">
                   <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-                    {t('activatedMachines')}
+                    {t('activatedSites')}
                   </p>
-                  <DividedList className="mt-1">
-                    {license.machines.map((machine) => (
-                      <Row key={machine.id} className="items-start gap-2">
-                        <div className="flex min-w-0 items-start gap-2.5">
-                          <Monitor className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground" />
-                          <div className="min-w-0">
-                            {/* Fingerprints are unbroken machine hashes — they
-                                must be allowed to break anywhere or they blow
-                                out the card on phones. */}
-                            <p className="break-all text-sm font-medium">
-                              {machine.name || machine.fingerprint}
-                            </p>
-                            {machine.name && (
-                              <p className="break-all font-mono text-xs text-muted-foreground">
-                                {machine.fingerprint}
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    {t('activatedSitesHelp')}
+                  </p>
+                  <DividedList className="mt-2">
+                    {license.machines.map((machine) => {
+                      const metadata = machine.metadata ?? {}
+                      const siteLabel =
+                        metaString(metadata, 'domain') ||
+                        metaString(metadata, 'siteUrl') ||
+                        machine.name ||
+                        null
+                      const lastSeen = metaString(metadata, 'lastSeenAt')
+                      const pluginVersion = metaString(
+                        metadata,
+                        'pluginVersion'
+                      )
+                      const wpVersion = metaString(metadata, 'wpVersion')
+                      const wcVersion = metaString(metadata, 'wcVersion')
+                      const versionParts = [
+                        pluginVersion &&
+                          t('pluginVersionLabel', {
+                            version: pluginVersion,
+                          }),
+                        wpVersion &&
+                          t('wpVersionLabel', {
+                            version: wpVersion,
+                          }),
+                        wcVersion &&
+                          t('wcVersionLabel', {
+                            version: wcVersion,
+                          }),
+                      ].filter(Boolean) as string[]
+                      const isConfirming = confirmingDeactivate === machine.id
+                      const isDeactivating = deactivating === machine.id
+
+                      return (
+                        <Row key={machine.id} className="items-start gap-2">
+                          <div className="flex min-w-0 items-start gap-2.5">
+                            <Monitor className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground" />
+                            <div className="min-w-0">
+                              {/* Site domain when we know it, otherwise fall
+                                  back to the opaque fingerprint (which must be
+                                  allowed to break anywhere on phones). */}
+                              <p className="break-all text-sm font-medium">
+                                {siteLabel || machine.fingerprint}
                               </p>
-                            )}
-                            {/* Expired licences still cover pre-expiry versions:
-                                tell each activated site which version it can
-                                still update through (ADR-0006, per licence). */}
-                            {displayStatus === 'expired' && coveredVersion && (
-                              <p className="mt-0.5 text-xs text-muted-foreground">
-                                {t('siteUpdatesThrough', {
-                                  version: coveredVersion,
+                              <p className="break-all font-mono text-xs text-muted-foreground">
+                                {t('instanceId', {
+                                  id: shortenInstance(machine.fingerprint),
                                 })}
                               </p>
-                            )}
-                            <p className="mt-0.5 text-xs text-muted-foreground">
-                              {t('machineAdded', {
-                                date: formatDateForLocale(
-                                  machine.createdAt,
-                                  locale
-                                ),
-                              })}
-                            </p>
+                              {/* Expired licences still cover pre-expiry
+                                  versions: tell each activated site which
+                                  version it can still update through
+                                  (ADR-0006, per licence). */}
+                              {displayStatus === 'expired' && coveredVersion && (
+                                <p className="mt-0.5 text-xs text-muted-foreground">
+                                  {t('siteUpdatesThrough', {
+                                    version: coveredVersion,
+                                  })}
+                                </p>
+                              )}
+                              <p className="mt-0.5 text-xs text-muted-foreground">
+                                {t('machineAdded', {
+                                  date: formatDateForLocale(
+                                    machine.createdAt,
+                                    locale
+                                  ),
+                                })}
+                              </p>
+                              {lastSeen && (
+                                <p className="mt-0.5 text-xs text-muted-foreground">
+                                  {t('lastSeen', {
+                                    date: formatDateForLocale(lastSeen, locale),
+                                  })}
+                                </p>
+                              )}
+                              {versionParts.length > 0 && (
+                                <p className="mt-0.5 text-xs text-muted-foreground">
+                                  {versionParts.join(' · ')}
+                                </p>
+                              )}
+                            </div>
                           </div>
-                        </div>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() =>
-                            handleDeactivate(license.id, machine.id)
-                          }
-                          disabled={deactivating === machine.id}
-                          aria-label={t('deactivateMachineAria', {
-                            name: machine.name || t('genericMachineName'),
-                          })}
-                        >
-                          <Trash2
-                            className={`h-4 w-4 ${
-                              deactivating === machine.id
-                                ? 'text-muted-foreground'
-                                : 'text-destructive'
-                            }`}
-                          />
-                        </Button>
-                      </Row>
-                    ))}
+                          {isConfirming ? (
+                            <div className="flex max-w-[15rem] shrink-0 flex-col items-end gap-1.5 text-right">
+                              <p className="text-xs text-muted-foreground">
+                                {t('deactivateSiteConfirm')}
+                              </p>
+                              <div className="flex gap-2">
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={() => setConfirmingDeactivate(null)}
+                                  disabled={isDeactivating}
+                                >
+                                  {t('deactivateCancel')}
+                                </Button>
+                                <Button
+                                  variant="destructive"
+                                  size="sm"
+                                  onClick={() =>
+                                    handleDeactivate(license.id, machine.id)
+                                  }
+                                  disabled={isDeactivating}
+                                >
+                                  {t('deactivateConfirm')}
+                                </Button>
+                              </div>
+                            </div>
+                          ) : (
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="shrink-0 text-destructive"
+                              onClick={() =>
+                                setConfirmingDeactivate(machine.id)
+                              }
+                              disabled={isDeactivating}
+                              aria-label={`${t('deactivateSite')}: ${
+                                siteLabel || t('genericMachineName')
+                              }`}
+                            >
+                              <Trash2 className="mr-1.5 h-4 w-4" />
+                              {t('deactivateSite')}
+                            </Button>
+                          )}
+                        </Row>
+                      )
+                    })}
                   </DividedList>
                 </div>
               )}

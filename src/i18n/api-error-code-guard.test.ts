@@ -13,7 +13,7 @@ const apiRoot = path.join(root, 'src/app/api')
 const sourceExtensions = new Set(['.ts', '.tsx', '.js', '.jsx'])
 const skipPath = /(?:\.test\.|\.spec\.)/
 const skipDirs = new Set(['node_modules', '.git', '.next', 'coverage'])
-const jsonObjectPattern = /\b(?:NextResponse|Response)\.json\(\s*\{(?<body>[^}]*)\}/g
+const jsonObjectPattern = /\b(?:NextResponse|Response)\.json\(\s*\{([^}]*)\}/g
 const displayEnglishJsonPropertyPattern = /\b(error|message|statusText)\s*:/g
 
 function walk(dir: string, out: string[] = []): string[] {
@@ -45,7 +45,7 @@ function collectDisplayEnglishJsonPropertyHitsFromSource(
   const hits: Hit[] = []
 
   for (const objectMatch of source.matchAll(jsonObjectPattern)) {
-    const body = objectMatch.groups?.body ?? ''
+    const body = objectMatch[1] ?? ''
     const bodyStart = (objectMatch.index ?? 0) + objectMatch[0].indexOf(body)
 
     for (const propertyMatch of body.matchAll(displayEnglishJsonPropertyPattern)) {

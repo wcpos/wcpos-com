@@ -94,7 +94,7 @@ describe('POST /api/store/cart/complete', () => {
 
   it('tracks checkout completion with server-validated variant', async () => {
     mockCompleteCart.mockResolvedValueOnce({
-      order: { id: 'order_1' },
+      order: { id: 'order_1', total: 129, currency_code: 'usd' },
     })
 
     const response = await POST(
@@ -120,9 +120,39 @@ describe('POST /api/store/cart/complete', () => {
       customer_id: 'cust_1',
       order_id: 'order_1',
       cart_id: 'cart_1',
+      revenue: 129,
+      currency: 'usd',
+      plan: 'yearly',
+      plan_handle: 'wcpos-pro-yearly',
       funnel_step: 'checkout_completed',
       page: '/pro/checkout',
     })
+  })
+
+  it('falls back to cart totals when the order response omits revenue/currency', async () => {
+    // Medusa's completion response may carry only the created order's id/status;
+    // the pre-completion cart still holds the validated totals.
+    mockGetCart.mockResolvedValueOnce({
+      ...validCart,
+      total: 129,
+      currency_code: 'usd',
+    })
+    mockCompleteCart.mockResolvedValueOnce({
+      order: { id: 'order_1', status: 'pending' },
+    })
+
+    const response = await POST(
+      new NextRequest('http://localhost:3000/api/store/cart/complete', {
+        method: 'POST',
+        body: JSON.stringify({ cartId: 'cart_1' }),
+      })
+    )
+
+    expect(response.status).toBe(200)
+    expect(mockTrackServerEvent).toHaveBeenCalledWith(
+      'checkout_completed',
+      expect.objectContaining({ revenue: 129, currency: 'usd' })
+    )
   })
 
   it('returns 400 and does not complete dirty carts', async () => {

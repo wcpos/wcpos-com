@@ -5,7 +5,8 @@
     "openMenu": "Open menu",
     "close": "Close",
     "accountMenu": "Account menu",
-    "signOut": "Sign out"
+    "signOut": "Sign out",
+    "dismiss": "Dismiss"
   },
   "header": {
     "documentation": "Documentation",
@@ -216,7 +217,7 @@
         }
       },
       "cta": "See Full Pricing & Features",
-      "priceSummary": "{yearly}/year or {lifetime} lifetime. No per-register fees."
+      "priceSummary": "{yearly}/year or {lifetime} lifetime ({currency}). No per-register fees."
     },
     "ecosystem": {
       "heading": "One ecosystem. Multiple ways to sell.",
@@ -740,7 +741,7 @@
     "licenses": {
       "heading": "Licenses",
       "loadError": "Failed to load licenses",
-      "deactivateError": "Failed to deactivate machine. Please try again.",
+      "deactivateError": "Failed to deactivate site. Please try again.",
       "emptyTitle": "No licenses found.",
       "emptyDescription": "Purchase WCPOS Pro to get a license.",
       "planYearly": "Yearly",
@@ -776,7 +777,19 @@
       "copyError": "Failed to copy license key. Please try again.",
       "apiErrors": {
         "read_only_inspection": "You are viewing this account in read-only mode."
-      }
+      },
+      "roadmapTeaser": "See what's coming on the roadmap",
+      "activatedSites": "Activated Sites",
+      "activatedSitesHelp": "These are WordPress sites using this license. Deactivate a stale or test site to free an activation slot.",
+      "instanceId": "Instance ID: {id}",
+      "lastSeen": "Last seen {date}",
+      "pluginVersionLabel": "WCPOS Pro {version}",
+      "wpVersionLabel": "WP {version}",
+      "wcVersionLabel": "WooCommerce {version}",
+      "deactivateSite": "Deactivate site",
+      "deactivateSiteConfirm": "This frees one activation slot. If the site is still in use, it will need to activate again.",
+      "deactivateConfirm": "Deactivate",
+      "deactivateCancel": "Cancel"
     },
     "downloads": {
       "heading": "Downloads",
@@ -959,6 +972,17 @@
     "productTitles": {
       "yearly": "WCPOS Pro Yearly",
       "lifetime": "WCPOS Pro Lifetime"
+    },
+    "renew": {
+      "summaryLabel": "Renewing your licence",
+      "extendsNote": "Extends your current licence by one year — no days are lost if you renew early.",
+      "preparing": "Preparing your renewal…",
+      "errorBody": "We couldn't start your renewal just now. You can renew from the full checkout instead.",
+      "goToCheckout": "Go to checkout",
+      "cancel": "Cancel",
+      "paymentNotConfigured": "No payment methods are configured. Please contact support.",
+      "pageTitle": "Renew your licence",
+      "backToLicences": "Back to licences"
     }
   },
   "metadata": {

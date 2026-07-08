@@ -5,7 +5,8 @@
     "openMenu": "打开菜单",
     "close": "关闭",
     "accountMenu": "账户菜单",
-    "signOut": "退出登录"
+    "signOut": "退出登录",
+    "dismiss": "忽略"
   },
   "header": {
     "documentation": "文档",
@@ -216,7 +217,7 @@
         }
       },
       "cta": "查看完整价格和功能",
-      "priceSummary": "{yearly}/年或一次性 {lifetime} 终身。没有按收银机收费。"
+      "priceSummary": "{yearly}/年或一次性 {lifetime} 终身（{currency}）。没有按收银机收费。"
     },
     "ecosystem": {
       "heading": "一个生态系统。多种销售方式。",
@@ -740,7 +741,7 @@
     "licenses": {
       "heading": "许可证",
       "loadError": "加载许可证失败",
-      "deactivateError": "停用设备失败。请重试。",
+      "deactivateError": "停用站点失败。请重试。",
       "emptyTitle": "未找到许可证。",
       "emptyDescription": "购买 WCPOS Pro 以获取许可证。",
       "planYearly": "年付",
@@ -776,7 +777,19 @@
       "copyError": "复制许可证密钥失败。请重试。",
       "apiErrors": {
         "read_only_inspection": "您正在以只读模式查看此账户。"
-      }
+      },
+      "roadmapTeaser": "查看路线图上即将推出的内容",
+      "activatedSites": "已激活的站点",
+      "activatedSitesHelp": "这些是使用此许可证的 WordPress 站点。停用不再使用或用于测试的站点，即可释放一个激活名额。",
+      "instanceId": "Instance ID：{id}",
+      "lastSeen": "最后活跃 {date}",
+      "pluginVersionLabel": "WCPOS Pro {version}",
+      "wpVersionLabel": "WP {version}",
+      "wcVersionLabel": "WooCommerce {version}",
+      "deactivateSite": "停用站点",
+      "deactivateSiteConfirm": "这将释放一个激活名额。如果该站点仍在使用，则需要重新激活。",
+      "deactivateConfirm": "停用",
+      "deactivateCancel": "取消"
     },
     "downloads": {
       "heading": "下载",
@@ -959,6 +972,17 @@
     "productTitles": {
       "yearly": "WCPOS Pro 年度许可证",
       "lifetime": "WCPOS Pro 终身许可证"
+    },
+    "renew": {
+      "summaryLabel": "正在续订你的许可证",
+      "extendsNote": "将你当前的许可证延长一年——提前续订也不会损失任何天数。",
+      "preparing": "正在准备续订…",
+      "errorBody": "我们暂时无法开始你的续订。你可以改从完整结账流程续订。",
+      "goToCheckout": "前往结账",
+      "cancel": "取消",
+      "paymentNotConfigured": "未配置付款方式。请联系支持团队。",
+      "pageTitle": "续订你的许可证",
+      "backToLicences": "返回许可证"
     }
   },
   "metadata": {

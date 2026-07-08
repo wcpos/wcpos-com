@@ -291,6 +291,101 @@ describe('medusaClient', () => {
       })
     })
 
+    it('selects the USD region even when Medusa lists another region first', async () => {
+      // The store advertises USD prices, so the cart must resolve to the USD
+      // region regardless of region ordering (Medusa may return EUR first).
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          regions: [
+            {
+              id: 'reg_eu',
+              name: 'Europe',
+              currency_code: 'eur',
+              payment_providers: [
+                { id: 'pp_stripe-ideal_stripe', is_enabled: true },
+              ],
+            },
+            {
+              id: 'reg_us',
+              name: 'Worldwide',
+              currency_code: 'usd',
+              payment_providers: [
+                { id: 'pp_stripe_stripe', is_enabled: true },
+              ],
+            },
+          ],
+        }),
+      })
+
+      await expect(getCartPaymentProviderContext()).resolves.toEqual({
+        cartRegionId: 'reg_us',
+        providerIds: ['pp_stripe_stripe'],
+      })
+    })
+
+    it('falls back to the first region when no USD region exists', async () => {
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          regions: [
+            {
+              id: 'reg_eu',
+              name: 'Europe',
+              currency_code: 'eur',
+              payment_providers: [
+                { id: 'pp_stripe_stripe', is_enabled: true },
+              ],
+            },
+            {
+              id: 'reg_gbp',
+              name: 'UK',
+              currency_code: 'gbp',
+              payment_providers: [
+                { id: 'pp_paypal_paypal', is_enabled: true },
+              ],
+            },
+          ],
+        }),
+      })
+
+      await expect(getCartPaymentProviderContext()).resolves.toEqual({
+        cartRegionId: 'reg_eu',
+        providerIds: ['pp_stripe_stripe'],
+      })
+    })
+
+    it('matches the USD region case-insensitively', async () => {
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          regions: [
+            {
+              id: 'reg_eu',
+              name: 'Europe',
+              currency_code: 'eur',
+              payment_providers: [
+                { id: 'pp_stripe-ideal_stripe', is_enabled: true },
+              ],
+            },
+            {
+              id: 'reg_us',
+              name: 'Worldwide',
+              currency_code: 'USD',
+              payment_providers: [
+                { id: 'pp_stripe_stripe', is_enabled: true },
+              ],
+            },
+          ],
+        }),
+      })
+
+      await expect(getCartPaymentProviderContext()).resolves.toEqual({
+        cartRegionId: 'reg_us',
+        providerIds: ['pp_stripe_stripe'],
+      })
+    })
+
     it('uses the explicit cart region instead of unioning every region', async () => {
       // Single request: the old multi-region branch asked /store/store for a
       // default region — an endpoint that does not exist (404) — so the

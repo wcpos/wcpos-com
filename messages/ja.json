@@ -5,7 +5,8 @@
     "openMenu": "メニューを開く",
     "close": "閉じる",
     "accountMenu": "アカウントメニュー",
-    "signOut": "ログアウト"
+    "signOut": "ログアウト",
+    "dismiss": "閉じる"
   },
   "header": {
     "documentation": "ドキュメント",
@@ -216,7 +217,7 @@
         }
       },
       "cta": "料金と機能をすべて見る",
-      "priceSummary": "{yearly}/年、または {lifetime} 買い切り。レジごとの追加料金はありません。"
+      "priceSummary": "{yearly}/年、または {lifetime} 買い切り（{currency}）。レジごとの追加料金はありません。"
     },
     "ecosystem": {
       "heading": "1つのエコシステム。販売方法はいくつも。",
@@ -740,7 +741,7 @@
     "licenses": {
       "heading": "ライセンス",
       "loadError": "ライセンスの読み込みに失敗しました",
-      "deactivateError": "端末の無効化に失敗しました。もう一度お試しください。",
+      "deactivateError": "サイトの無効化に失敗しました。もう一度お試しください。",
       "emptyTitle": "ライセンスが見つかりません。",
       "emptyDescription": "WCPOS Proを購入してライセンスを取得してください。",
       "planYearly": "年間",
@@ -776,7 +777,19 @@
       "copyError": "ライセンスキーをコピーできませんでした。もう一度お試しください。",
       "apiErrors": {
         "read_only_inspection": "このアカウントは読み取り専用モードで表示しています。"
-      }
+      },
+      "roadmapTeaser": "ロードマップで今後の予定を見る",
+      "activatedSites": "有効化済みサイト",
+      "activatedSitesHelp": "これらはこのライセンスを使用している WordPress サイトです。使われていないサイトやテスト用サイトを無効化すると、有効化枠を空けられます。",
+      "instanceId": "Instance ID: {id}",
+      "lastSeen": "最終アクセス {date}",
+      "pluginVersionLabel": "WCPOS Pro {version}",
+      "wpVersionLabel": "WP {version}",
+      "wcVersionLabel": "WooCommerce {version}",
+      "deactivateSite": "サイトを無効化",
+      "deactivateSiteConfirm": "有効化枠が1つ空きます。サイトがまだ使用中の場合は、再度有効化が必要になります。",
+      "deactivateConfirm": "無効化",
+      "deactivateCancel": "キャンセル"
     },
     "downloads": {
       "heading": "ダウンロード",
@@ -959,6 +972,17 @@
     "productTitles": {
       "yearly": "WCPOS Pro 年間ライセンス",
       "lifetime": "WCPOS Pro 永久ライセンス"
+    },
+    "renew": {
+      "summaryLabel": "ライセンスを更新します",
+      "extendsNote": "現在のライセンスを1年間延長します — 早めに更新しても日数は失われません。",
+      "preparing": "更新を準備しています…",
+      "errorBody": "現在、更新を開始できませんでした。代わりに通常のチェックアウトから更新できます。",
+      "goToCheckout": "チェックアウトへ進む",
+      "cancel": "キャンセル",
+      "paymentNotConfigured": "支払い方法が設定されていません。サポートへお問い合わせください。",
+      "pageTitle": "ライセンスを更新",
+      "backToLicences": "ライセンス一覧に戻る"
     }
   },
   "metadata": {

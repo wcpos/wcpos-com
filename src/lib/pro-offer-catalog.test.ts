@@ -262,9 +262,9 @@ describe('offer presentation helpers', () => {
   it('builds shared price summaries from caller-provided translations', () => {
     expect(
       formatHomeProPriceSummary(offers, (values) =>
-        `${values.yearly} translated ${values.lifetime}`
+        `${values.yearly} translated ${values.lifetime} (${values.currency})`
       )
-    ).toBe('$129 translated $399')
+    ).toBe('$129 translated $399 (USD)')
     expect(
       formatFounderProPriceSummary(offers, (values) =>
         `${values.yearly} founder ${values.lifetime}`

@@ -5,7 +5,8 @@
     "openMenu": "Abrir menú",
     "close": "Cerrar",
     "accountMenu": "Menú de cuenta",
-    "signOut": "Cerrar sesión"
+    "signOut": "Cerrar sesión",
+    "dismiss": "Descartar"
   },
   "header": {
     "documentation": "Documentación",
@@ -216,7 +217,7 @@
         }
       },
       "cta": "Ver precios y funciones completos",
-      "priceSummary": "{yearly}/año o {lifetime} de por vida. Sin tarifas por caja."
+      "priceSummary": "{yearly}/año o {lifetime} de por vida ({currency}). Sin tarifas por caja."
     },
     "ecosystem": {
       "heading": "Un ecosistema. Varias formas de vender.",
@@ -740,7 +741,7 @@
     "licenses": {
       "heading": "Licencias",
       "loadError": "No se pudieron cargar las licencias",
-      "deactivateError": "No se pudo desactivar la máquina. Inténtalo de nuevo.",
+      "deactivateError": "No se pudo desactivar el sitio. Inténtalo de nuevo.",
       "emptyTitle": "No se encontraron licencias.",
       "emptyDescription": "Compra WCPOS Pro para obtener una licencia.",
       "planYearly": "Anual",
@@ -776,7 +777,19 @@
       "copyError": "No se pudo copiar la clave de licencia. Inténtalo de nuevo.",
       "apiErrors": {
         "read_only_inspection": "Estás viendo esta cuenta en modo de solo lectura."
-      }
+      },
+      "roadmapTeaser": "Mira lo que viene en la hoja de ruta",
+      "activatedSites": "Sitios activados",
+      "activatedSitesHelp": "Estos son los sitios de WordPress que usan esta licencia. Desactiva un sitio obsoleto o de prueba para liberar una ranura de activación.",
+      "instanceId": "Instance ID: {id}",
+      "lastSeen": "Visto por última vez el {date}",
+      "pluginVersionLabel": "WCPOS Pro {version}",
+      "wpVersionLabel": "WP {version}",
+      "wcVersionLabel": "WooCommerce {version}",
+      "deactivateSite": "Desactivar sitio",
+      "deactivateSiteConfirm": "Esto libera una ranura de activación. Si el sitio sigue en uso, tendrá que activarse de nuevo.",
+      "deactivateConfirm": "Desactivar",
+      "deactivateCancel": "Cancelar"
     },
     "downloads": {
       "heading": "Descargas",
@@ -959,6 +972,17 @@
     "productTitles": {
       "yearly": "WCPOS Pro anual",
       "lifetime": "WCPOS Pro de por vida"
+    },
+    "renew": {
+      "summaryLabel": "Renovando tu licencia",
+      "extendsNote": "Amplía tu licencia actual un año más — no pierdes ningún día si renuevas antes de tiempo.",
+      "preparing": "Preparando tu renovación…",
+      "errorBody": "No pudimos iniciar tu renovación en este momento. En su lugar, puedes renovar desde la compra completa.",
+      "goToCheckout": "Ir a la compra",
+      "cancel": "Cancelar",
+      "paymentNotConfigured": "No hay métodos de pago configurados. Ponte en contacto con soporte.",
+      "pageTitle": "Renueva tu licencia",
+      "backToLicences": "Volver a licencias"
     }
   },
   "metadata": {

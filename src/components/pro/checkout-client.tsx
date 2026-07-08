@@ -73,6 +73,12 @@ interface PaymentSessionResult {
   customerSessionClientSecret?: string | null
 }
 
+interface OfferSummary {
+  title: string
+  priceFormatted: string
+  currencyCode?: string
+}
+
 const PRO_CHECKOUT_EXPERIMENT = 'pro_checkout_v1'
 const CHECKOUT_SAFETY_RESET_PARAM = 'reset_checkout'
 const CHECKOUT_SAFETY_RESET_VALUE = 'order_pending'
@@ -125,7 +131,7 @@ interface CheckoutClientProps {
   selectedOfferHandle?: string
   cartRegionId?: string
   /** Static summary shown before the cart exists. */
-  offerSummary?: { title: string; priceFormatted: string }
+  offerSummary?: OfferSummary
   /** Current checkout path (with query) for OAuth redirect-back. */
   checkoutPath: string
   experimentVariant: ProCheckoutVariant
@@ -638,10 +644,14 @@ export function CheckoutClient({
     )
   }
 
+  const currencyCode = (cart?.currency_code ?? 'usd').toUpperCase()
+  const offerSummaryCurrencyCode = (
+    offerSummary?.currencyCode ?? currencyCode
+  ).toUpperCase()
   const formatCurrency = (amount: number) =>
     new Intl.NumberFormat(locale, {
       style: 'currency',
-      currency: (cart?.currency_code ?? 'usd').toUpperCase(),
+      currency: currencyCode,
     }).format(amount)
 
   const paypalSession = cart
@@ -814,7 +824,12 @@ export function CheckoutClient({
             ))}
             <div className="mt-3 flex justify-between border-t pt-3 font-bold">
               <span>{t('summary.total')}</span>
-              <span>{formatCurrency(cart.total)}</span>
+              <span>
+                {formatCurrency(cart.total)}{' '}
+                <span className="text-sm font-normal text-muted-foreground">
+                  {currencyCode}
+                </span>
+              </span>
             </div>
           </>
         ) : offerSummary ? (
@@ -822,7 +837,12 @@ export function CheckoutClient({
             <p className="font-medium">{offerSummary.title}</p>
             <div className="mt-3 flex justify-between border-t pt-3 font-bold">
               <span>{t('summary.total')}</span>
-              <span>{offerSummary.priceFormatted}</span>
+              <span>
+                {offerSummary.priceFormatted}{' '}
+                <span className="text-sm font-normal text-muted-foreground">
+                  {offerSummaryCurrencyCode}
+                </span>
+              </span>
             </div>
           </>
         ) : (

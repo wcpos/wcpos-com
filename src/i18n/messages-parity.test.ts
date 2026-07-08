@@ -181,6 +181,10 @@ const auditedItalianNamespacePrefixes = [
   'legal.',
 ]
 const italianIdenticalCopyAllowlist = new Set([
+  'account.licenses.instanceId',
+  'account.licenses.pluginVersionLabel',
+  'account.licenses.wpVersionLabel',
+  'account.licenses.wcVersionLabel',
   'account.orderDetail.emailLabel',
   'account.profile.email',
   'account.profile.taxLabels.abn',
@@ -264,6 +268,10 @@ const auditedDutchNamespacePrefixes = [
   'about.',
 ]
 const dutchIdenticalCopyAllowlist = new Set([
+  'account.licenses.instanceId',
+  'account.licenses.pluginVersionLabel',
+  'account.licenses.wpVersionLabel',
+  'account.licenses.wcVersionLabel',
   'about.founder.signature.name',
   'about.timeline.dates.range',
   'home.title',
@@ -360,6 +368,10 @@ const auditedKoreanNamespacePrefixes = [
   'about.',
 ]
 const koreanIdenticalCopyAllowlist = new Set([
+  'account.licenses.instanceId',
+  'account.licenses.pluginVersionLabel',
+  'account.licenses.wpVersionLabel',
+  'account.licenses.wcVersionLabel',
   'about.founder.signature.name',
   'about.timeline.dates.range',
   'home.title',
@@ -481,6 +493,10 @@ const auditedPortugueseNamespacePrefixes = [
   'home.subtitle',
 ]
 const portugueseIdenticalCopyAllowlist = new Set([
+  'account.licenses.instanceId',
+  'account.licenses.pluginVersionLabel',
+  'account.licenses.wpVersionLabel',
+  'account.licenses.wcVersionLabel',
   'header.pro',
   'footer.copyright',
   'footer.discord',
@@ -569,6 +585,10 @@ const auditedJapaneseNamespacePrefixes = [
   'home.ecosystem.',
 ]
 const japaneseIdenticalCopyAllowlist = new Set([
+  'account.licenses.instanceId',
+  'account.licenses.pluginVersionLabel',
+  'account.licenses.wpVersionLabel',
+  'account.licenses.wcVersionLabel',
   'auth.common.emailPlaceholder',
   'header.pro',
   'footer.copyright',
@@ -662,6 +682,10 @@ const auditedChineseNamespacePrefixes = [
   'home.ecosystem.',
 ]
 const chineseIdenticalCopyAllowlist = new Set([
+  'account.licenses.instanceId',
+  'account.licenses.pluginVersionLabel',
+  'account.licenses.wpVersionLabel',
+  'account.licenses.wcVersionLabel',
   'auth.common.emailPlaceholder',
   'header.pro',
   'footer.copyright',
@@ -753,6 +777,10 @@ const auditedGermanNamespacePrefixes = [
   'home.ecosystem.',
 ]
 const germanIdenticalCopyAllowlist = new Set([
+  'account.licenses.instanceId',
+  'account.licenses.pluginVersionLabel',
+  'account.licenses.wpVersionLabel',
+  'account.licenses.wcVersionLabel',
   'header.pro',
   'footer.copyright',
   'footer.pro',
@@ -834,6 +862,10 @@ const germanIdenticalCopyAllowlist = new Set([
   'home.pricing.pro.title',
 ])
 const spanishIdenticalCopyAllowlist = new Set([
+  'account.licenses.instanceId',
+  'account.licenses.pluginVersionLabel',
+  'account.licenses.wpVersionLabel',
+  'account.licenses.wcVersionLabel',
   'header.pro',
   'footer.copyright',
   'footer.discord',
@@ -931,6 +963,10 @@ const spanishIdenticalCopyAllowlist = new Set([
 ])
 
 const frenchIdenticalCopyAllowlist = new Set([
+  'account.licenses.instanceId',
+  'account.licenses.pluginVersionLabel',
+  'account.licenses.wpVersionLabel',
+  'account.licenses.wcVersionLabel',
   'downloads.platforms.mac-arm.name',
   'downloads.platforms.mac-arm.listLabel',
   'downloads.platforms.mac-arm.short',

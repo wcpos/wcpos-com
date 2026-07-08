@@ -1,7 +1,7 @@
 {
   "version": 1,
   "generatedBy": "scripts/i18n/hardcoded-english.ts --update",
-  "updatedAt": "2026-07-08T09:11:08.254Z",
+  "updatedAt": "2026-07-08T10:44:38.719Z",
   "scope": [
     "src/app",
     "src/components",
@@ -287,6 +287,30 @@
       "category": "route/page",
       "attr": null,
       "text": "/api/account/impersonate/exit?locale=",
+      "count": 1
+    },
+    {
+      "id": "b00998889091cb8d",
+      "file": "src/app/[locale]/account/licenses/renew/page.tsx",
+      "category": "route/page",
+      "attr": null,
+      "text": "/pro/checkout?product=",
+      "count": 2
+    },
+    {
+      "id": "980ca04438602fe7",
+      "file": "src/app/[locale]/account/licenses/renew/page.tsx",
+      "category": "route/page",
+      "attr": null,
+      "text": "active",
+      "count": 1
+    },
+    {
+      "id": "f811895466d309dc",
+      "file": "src/app/[locale]/account/licenses/renew/page.tsx",
+      "category": "route/page",
+      "attr": null,
+      "text": "expired",
       "count": 1
     },
     {
@@ -1322,6 +1346,14 @@
       "count": 1
     },
     {
+      "id": "9d2b2123e99116d1",
+      "file": "src/components/account/account-expiry-banner.tsx",
+      "category": "component",
+      "attr": "renewHref",
+      "text": "/pro/checkout?product=wcpos-pro-yearly",
+      "count": 1
+    },
+    {
       "id": "02b134eaa8057c8c",
       "file": "src/components/account/account-notice.tsx",
       "category": "component",
@@ -1396,6 +1428,14 @@
     {
       "id": "d9e942edac60f058",
       "file": "src/components/account/downloads-client.tsx",
+      "category": "component",
+      "attr": null,
+      "text": "use client",
+      "count": 1
+    },
+    {
+      "id": "e8a65ccddcac8f6b",
+      "file": "src/components/account/expiry-banner-client.tsx",
       "category": "component",
       "attr": null,
       "text": "use client",
@@ -1488,6 +1528,54 @@
       "attr": null,
       "text": "zip",
       "count": 2
+    },
+    {
+      "id": "a2b73585b12a1e74",
+      "file": "src/components/account/renew-client.tsx",
+      "category": "component",
+      "attr": null,
+      "text": "/account/licenses?renewed=1",
+      "count": 1
+    },
+    {
+      "id": "ba650af145532f35",
+      "file": "src/components/account/renew-client.tsx",
+      "category": "component",
+      "attr": null,
+      "text": "/pro/checkout?product=",
+      "count": 1
+    },
+    {
+      "id": "971fa2fa189fc905",
+      "file": "src/components/account/renew-client.tsx",
+      "category": "component",
+      "attr": null,
+      "text": "billing",
+      "count": 1
+    },
+    {
+      "id": "f5211448ca6b05fe",
+      "file": "src/components/account/renew-client.tsx",
+      "category": "component",
+      "attr": null,
+      "text": "error",
+      "count": 3
+    },
+    {
+      "id": "aadb126aea5515d5",
+      "file": "src/components/account/renew-client.tsx",
+      "category": "component",
+      "attr": null,
+      "text": "Renewal preparation failed",
+      "count": 1
+    },
+    {
+      "id": "4c2bb54fd526d43d",
+      "file": "src/components/account/renew-client.tsx",
+      "category": "component",
+      "attr": null,
+      "text": "use client",
+      "count": 1
     },
     {
       "id": "c85eda44594cd28a",
@@ -3258,6 +3346,38 @@
       "count": 1
     },
     {
+      "id": "367366c4d6ff6451",
+      "file": "src/lib/analytics/posthog-browser.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "; Max-Age=",
+      "count": 1
+    },
+    {
+      "id": "5a0b3eab6b96e360",
+      "file": "src/lib/analytics/posthog-browser.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "; Path=",
+      "count": 1
+    },
+    {
+      "id": "e8a26e795d9becb1",
+      "file": "src/lib/analytics/posthog-browser.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "; SameSite=Lax",
+      "count": 1
+    },
+    {
+      "id": "a62a17caa91a5e72",
+      "file": "src/lib/analytics/posthog-browser.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "; Secure",
+      "count": 1
+    },
+    {
       "id": "339add5c195fcfa2",
       "file": "src/lib/analytics/posthog-browser.ts",
       "category": "code/string",
@@ -4442,11 +4562,11 @@
       "count": 1
     },
     {
-      "id": "3127345db994d4e8",
+      "id": "2d9532ee68e38691",
       "file": "src/services/core/external/medusa-client.ts",
       "category": "code/string",
       "attr": null,
-      "text": "/store/regions?fields=id,name,*payment_providers",
+      "text": "/store/regions?fields=id,name,currency_code,*payment_providers",
       "count": 1
     },
     {

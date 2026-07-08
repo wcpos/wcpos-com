@@ -5,7 +5,8 @@
     "openMenu": "Menu openen",
     "close": "Sluiten",
     "accountMenu": "Accountmenu",
-    "signOut": "Uitloggen"
+    "signOut": "Uitloggen",
+    "dismiss": "Sluiten"
   },
   "header": {
     "documentation": "Documentatie",
@@ -216,7 +217,7 @@
         }
       },
       "cta": "Bekijk alle prijzen en functies",
-      "priceSummary": "{yearly}/jaar of {lifetime} levenslang. Geen kosten per kassa."
+      "priceSummary": "{yearly}/jaar of {lifetime} levenslang ({currency}). Geen kosten per kassa."
     },
     "ecosystem": {
       "heading": "Eén ecosysteem. Meerdere manieren om te verkopen.",
@@ -740,7 +741,7 @@
     "licenses": {
       "heading": "Licenties",
       "loadError": "Kan licenties niet laden",
-      "deactivateError": "Kan machine niet deactiveren. Probeer het opnieuw.",
+      "deactivateError": "Kan site niet deactiveren. Probeer het opnieuw.",
       "emptyTitle": "Geen licenties gevonden.",
       "emptyDescription": "Koop WCPOS Pro om een licentie te krijgen.",
       "planYearly": "Jaarlijks",
@@ -776,7 +777,19 @@
       "copyError": "Kopiëren van licentiesleutel mislukt. Probeer het opnieuw.",
       "apiErrors": {
         "read_only_inspection": "Je bekijkt dit account in alleen-lezenmodus."
-      }
+      },
+      "roadmapTeaser": "Bekijk wat er op de routekaart aankomt",
+      "activatedSites": "Geactiveerde sites",
+      "activatedSitesHelp": "Dit zijn de WordPress-sites die deze licentie gebruiken. Deactiveer een verouderde of testsite om een activeringsslot vrij te maken.",
+      "instanceId": "Instance ID: {id}",
+      "lastSeen": "Laatst gezien {date}",
+      "pluginVersionLabel": "WCPOS Pro {version}",
+      "wpVersionLabel": "WP {version}",
+      "wcVersionLabel": "WooCommerce {version}",
+      "deactivateSite": "Site deactiveren",
+      "deactivateSiteConfirm": "Dit maakt één activeringsslot vrij. Als de site nog in gebruik is, moet deze opnieuw activeren.",
+      "deactivateConfirm": "Deactiveren",
+      "deactivateCancel": "Annuleren"
     },
     "downloads": {
       "heading": "Downloads",
@@ -959,6 +972,17 @@
     "productTitles": {
       "yearly": "WCPOS Pro jaarlicentie",
       "lifetime": "WCPOS Pro levenslange licentie"
+    },
+    "renew": {
+      "summaryLabel": "Je licentie verlengen",
+      "extendsNote": "Verlengt je huidige licentie met één jaar — er gaan geen dagen verloren als je vroeg verlengt.",
+      "preparing": "Je verlenging voorbereiden…",
+      "errorBody": "We konden je verlenging op dit moment niet starten. Je kunt in plaats daarvan verlengen via het volledige afrekenproces.",
+      "goToCheckout": "Naar afrekenen",
+      "cancel": "Annuleren",
+      "paymentNotConfigured": "Er zijn geen betaalmethoden geconfigureerd. Neem contact op met support.",
+      "pageTitle": "Verleng je licentie",
+      "backToLicences": "Terug naar licenties"
     }
   },
   "metadata": {

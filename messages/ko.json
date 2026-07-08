@@ -5,7 +5,8 @@
     "openMenu": "메뉴 열기",
     "close": "닫기",
     "accountMenu": "계정 메뉴",
-    "signOut": "로그아웃"
+    "signOut": "로그아웃",
+    "dismiss": "닫기"
   },
   "header": {
     "documentation": "문서",
@@ -216,7 +217,7 @@
         }
       },
       "cta": "전체 가격 및 기능 보기",
-      "priceSummary": "{yearly}/년 또는 {lifetime} 평생. 계산대별 추가 요금 없음."
+      "priceSummary": "{yearly}/년 또는 {lifetime} 평생 ({currency}). 계산대별 추가 요금 없음."
     },
     "ecosystem": {
       "heading": "하나의 생태계. 여러 판매 방식.",
@@ -740,7 +741,7 @@
     "licenses": {
       "heading": "라이선스",
       "loadError": "라이선스를 불러오지 못했습니다",
-      "deactivateError": "기기를 비활성화하지 못했습니다. 다시 시도해 주세요.",
+      "deactivateError": "사이트를 비활성화하지 못했습니다. 다시 시도해 주세요.",
       "emptyTitle": "라이선스를 찾을 수 없습니다.",
       "emptyDescription": "라이선스를 받으려면 WCPOS Pro를 구매하세요.",
       "planYearly": "연간",
@@ -776,7 +777,19 @@
       "copyError": "라이선스 키를 복사하지 못했습니다. 다시 시도해 주세요.",
       "apiErrors": {
         "read_only_inspection": "이 계정을 읽기 전용 모드로 보고 있습니다."
-      }
+      },
+      "roadmapTeaser": "로드맵에서 예정된 기능을 확인하세요",
+      "activatedSites": "활성화된 사이트",
+      "activatedSitesHelp": "이 라이선스를 사용 중인 WordPress 사이트입니다. 오래되었거나 테스트용 사이트를 비활성화하여 활성화 슬롯을 확보하세요.",
+      "instanceId": "Instance ID: {id}",
+      "lastSeen": "마지막 확인 {date}",
+      "pluginVersionLabel": "WCPOS Pro {version}",
+      "wpVersionLabel": "WP {version}",
+      "wcVersionLabel": "WooCommerce {version}",
+      "deactivateSite": "사이트 비활성화",
+      "deactivateSiteConfirm": "활성화 슬롯 하나가 확보됩니다. 사이트를 계속 사용 중이라면 다시 활성화해야 합니다.",
+      "deactivateConfirm": "비활성화",
+      "deactivateCancel": "취소"
     },
     "downloads": {
       "heading": "다운로드",
@@ -959,6 +972,17 @@
     "productTitles": {
       "yearly": "WCPOS Pro 연간 라이선스",
       "lifetime": "WCPOS Pro 평생 라이선스"
+    },
+    "renew": {
+      "summaryLabel": "라이선스 갱신 중",
+      "extendsNote": "현재 라이선스를 1년 연장합니다 — 미리 갱신해도 남은 기간은 사라지지 않습니다.",
+      "preparing": "갱신을 준비하는 중…",
+      "errorBody": "지금은 갱신을 시작할 수 없었습니다. 대신 전체 결제 페이지에서 갱신할 수 있습니다.",
+      "goToCheckout": "결제로 이동",
+      "cancel": "취소",
+      "paymentNotConfigured": "설정된 결제 방법이 없습니다. 지원팀에 문의하세요.",
+      "pageTitle": "라이선스 갱신",
+      "backToLicences": "라이선스로 돌아가기"
     }
   },
   "metadata": {
