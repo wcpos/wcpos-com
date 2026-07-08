@@ -73,7 +73,7 @@ export function DeviceTerminal({
         <span
           className={cn(
             'font-bold text-white',
-            spec.screenSize === 'lg' ? 'text-2xl' : 'text-[13px] leading-tight'
+            spec.screenSize === 'lg' ? 'text-base overflow-hidden' : 'text-[13px] leading-tight'
           )}
         >
           {amount}
