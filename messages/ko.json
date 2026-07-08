@@ -49,7 +49,7 @@
     "title": "WCPOS",
     "subtitle": "WooCommerce를 위한 빠른 POS",
     "meta": {
-      "description": "WooCommerce용 POS. 제품을 동기화하고, 오프라인으로 판매하며, iOS, Android 및 데스크톱용 native 앱으로 실제 하드웨어를 연결하세요."
+      "description": "WooCommerce용 POS. 제품을 동기화하고, 오프라인으로 판매하며, iOS, Android 및 데스크톱용 네이티브 앱으로 실제 하드웨어를 연결하세요."
     },
     "problem": {
       "title": "WooCommerce 스토어와 오프라인 매장 운영이 두 배의 일이 되어서는 안 됩니다",
@@ -122,8 +122,8 @@
           "supporting": "인터넷 문제로 주문을 잃지 마세요."
         },
         "hardware": {
-          "headline": "Native 앱, 실제 하드웨어",
-          "description": "앱인 척하는 브라우저 탭이 아니라 native iOS 및 Android 앱입니다. 결제 단말기, 영수증 프린터, 바코드 스캐너를 직접 연결하세요.",
+          "headline": "네이티브 앱, 실제 하드웨어",
+          "description": "앱인 척하는 브라우저 탭이 아니라 iOS 및 Android용 네이티브 앱입니다. 결제 단말기, 영수증 프린터, 바코드 스캐너를 직접 연결하세요.",
           "supporting": "Stripe Terminal, SumUp 등 다양한 결제 하드웨어를 지원합니다."
         },
         "ownership": {
@@ -229,12 +229,12 @@
       "devices": {
         "ios": {
           "label": "iOS & iPadOS",
-          "description": "결제 단말기와 프린터를 지원하는 native 앱입니다.",
+          "description": "결제 단말기와 프린터를 지원하는 네이티브 앱입니다.",
           "cta": "iOS 베타 받기"
         },
         "android": {
           "label": "Android",
-          "description": "완전한 하드웨어 통합을 제공하는 native 앱입니다.",
+          "description": "완전한 하드웨어 통합을 제공하는 네이티브 앱입니다.",
           "cta": "Android 베타 받기"
         },
         "desktop": {
@@ -311,7 +311,7 @@
           "p2": "양초",
           "p3": "머그컵",
           "p4": "비누 바",
-          "p5": "노트북",
+          "p5": "노트",
           "p6": "티타월"
         },
         "cart": {
@@ -1485,7 +1485,7 @@
           "body": "Four years of rebuilding from scratch land as v1.0.0: one codebase for every screen. The desktop app ships the same day — phones and tablets are next."
         },
         "m6": {
-          "title": "Native mobile apps",
+          "title": "네이티브 모바일 앱",
           "body": "The React Native bet pays off: WCPOS arrives on iOS and Android in open beta — the same register, now on the hardware already in the shop."
         },
         "m7": {
