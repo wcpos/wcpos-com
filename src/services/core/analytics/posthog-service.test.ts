@@ -2,11 +2,11 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { ANALYTICS_CONSENT_COOKIE } from '@/lib/analytics/consent'
 import { stubVercelRequestContext } from '@/test/vercel-request-context'
 
-const mockCookieGet = vi.fn()
+const mockHeaderGet = vi.fn()
 
 vi.mock('next/headers', () => ({
-  cookies: vi.fn(async () => ({
-    get: mockCookieGet,
+  headers: vi.fn(async () => ({
+    get: mockHeaderGet,
   })),
 }))
 
@@ -26,10 +26,10 @@ import {
 } from './posthog-service'
 
 function stubConsent(value: string | undefined) {
-  mockCookieGet.mockImplementation((name: string) =>
-    name === ANALYTICS_CONSENT_COOKIE && value !== undefined
-      ? { value }
-      : undefined
+  mockHeaderGet.mockImplementation((name: string) =>
+    name === 'cookie' && value !== undefined
+      ? `${ANALYTICS_CONSENT_COOKIE}=${value}`
+      : null
   )
 }
 

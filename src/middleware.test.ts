@@ -328,6 +328,23 @@ describe('middleware', () => {
       expect(response?.cookies.get(ANALYTICS_DISTINCT_ID_COOKIE)).toBeUndefined()
     })
 
+    it('honors a denial when a stale duplicate granted cookie also exists', () => {
+      // Migration case: an existing visitor still carries the legacy host-scoped
+      // `granted` alongside the shared `.wcpos.com` `denied`. The header reader
+      // must reconcile fail-closed and remove the distinct-id cookie.
+      const request = new NextRequest('https://wcpos.com/', {
+        headers: {
+          cookie: `${ANALYTICS_CONSENT_COOKIE}=granted; ${ANALYTICS_CONSENT_COOKIE}=denied; ${ANALYTICS_DISTINCT_ID_COOKIE}=anon_existing`,
+        },
+      })
+
+      const response = middleware(request)
+
+      const cleared = response?.cookies.get(ANALYTICS_DISTINCT_ID_COOKIE)
+      expect(cleared?.value).toBe('')
+      expect(cleared?.expires).toEqual(new Date(0))
+    })
+
     it('gates the distinct-id cookie on updates.wcpos.com redirects too', () => {
       const request = new NextRequest('https://updates.wcpos.com/download', {
         headers: {

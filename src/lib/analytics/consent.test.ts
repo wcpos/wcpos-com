@@ -6,8 +6,10 @@ import {
   getConsentCookieOptions,
   hasAnalyticsConsent,
   isAnalyticsGranted,
+  mostRestrictiveConsent,
   parseAnalyticsConsent,
   readAnalyticsConsent,
+  readAnalyticsConsentFromCookieHeader,
   writeAnalyticsConsent,
 } from './consent'
 
@@ -31,6 +33,54 @@ describe('parseAnalyticsConsent', () => {
     expect(parseAnalyticsConsent(null)).toBeNull()
     expect(parseAnalyticsConsent('')).toBeNull()
     expect(parseAnalyticsConsent('yes')).toBeNull()
+  })
+})
+
+describe('mostRestrictiveConsent', () => {
+  it('lets denial win over a coexisting grant (fail-closed)', () => {
+    // The migration case: a stale host-scoped `granted` alongside a later
+    // shared `denied` must resolve to denied, whatever order they appear in.
+    expect(mostRestrictiveConsent(['granted', 'denied'])).toBe('denied')
+    expect(mostRestrictiveConsent(['denied', 'granted'])).toBe('denied')
+  })
+
+  it('returns granted only when every present value grants', () => {
+    expect(mostRestrictiveConsent(['granted'])).toBe('granted')
+    expect(mostRestrictiveConsent(['granted', 'granted'])).toBe('granted')
+  })
+
+  it('returns null when nothing has been decided, ignoring junk values', () => {
+    expect(mostRestrictiveConsent([])).toBeNull()
+    expect(mostRestrictiveConsent([undefined, null, '', 'yes'])).toBeNull()
+    // A junk value must not mask a real grant.
+    expect(mostRestrictiveConsent(['yes', 'granted'])).toBe('granted')
+  })
+})
+
+describe('readAnalyticsConsentFromCookieHeader', () => {
+  it('reads the decision from a raw Cookie header', () => {
+    expect(
+      readAnalyticsConsentFromCookieHeader(
+        `foo=1; ${ANALYTICS_CONSENT_COOKIE}=granted; bar=2`
+      )
+    ).toBe('granted')
+  })
+
+  it('honors a denial even when a duplicate granted cookie is also present', () => {
+    // request.cookies.get() would collapse these to one arbitrary value; the
+    // header reader sees both and must fail closed to denied.
+    expect(
+      readAnalyticsConsentFromCookieHeader(
+        `${ANALYTICS_CONSENT_COOKIE}=granted; ${ANALYTICS_CONSENT_COOKIE}=denied`
+      )
+    ).toBe('denied')
+  })
+
+  it('returns null for an empty, missing, or decision-free header', () => {
+    expect(readAnalyticsConsentFromCookieHeader('')).toBeNull()
+    expect(readAnalyticsConsentFromCookieHeader(null)).toBeNull()
+    expect(readAnalyticsConsentFromCookieHeader(undefined)).toBeNull()
+    expect(readAnalyticsConsentFromCookieHeader('other=1')).toBeNull()
   })
 })
 

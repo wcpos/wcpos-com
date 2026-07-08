@@ -59,32 +59,85 @@ export function getConsentCookieOptions() {
   }
 }
 
-function readDocumentCookie(name: string): string | null {
-  if (typeof document === 'undefined') {
-    return null
-  }
-
+/**
+ * Collect every value stored under `name` in a Cookie-header-formatted string
+ * ("a=1; b=2; a=3"). One name can legitimately appear more than once when
+ * same-name cookies exist at different scopes — e.g. a legacy host-scoped
+ * `wcpos-analytics-consent` alongside the shared `.wcpos.com` one this change
+ * introduces. Callers reconcile duplicates via mostRestrictiveConsent.
+ */
+function collectCookieValues(cookieString: string, name: string): string[] {
   const prefix = `${name}=`
-  const match = document.cookie
-    .split('; ')
-    .find((part) => part.startsWith(prefix))
+  const values: string[] = []
 
-  if (!match) {
-    return null
+  for (const part of cookieString.split('; ')) {
+    if (!part.startsWith(prefix)) {
+      continue
+    }
+    try {
+      values.push(decodeURIComponent(part.slice(prefix.length)))
+    } catch {
+      // Malformed % sequences in user-controlled cookies must fail closed
+      // (skip this entry), not crash consent reads.
+    }
   }
 
-  try {
-    return decodeURIComponent(match.slice(prefix.length))
-  } catch {
-    // Malformed % sequences in user-controlled cookies must fail closed,
-    // not crash consent reads.
-    return null
+  return values
+}
+
+/**
+ * Reconcile possibly-conflicting consent values into one decision:
+ * denial wins over consent, which wins over "undecided".
+ *
+ * Deliberately fail-closed. During the migration to the shared `.wcpos.com`
+ * cookie an existing visitor can briefly carry both a stale host-scoped cookie
+ * and the new shared one; a browser exposes both under the same name with no
+ * way to tell which is newer. If they disagree we must never let a leftover
+ * `granted` override a later `denied` — analytics stays off unless every
+ * present value agrees it may run.
+ */
+export function mostRestrictiveConsent(
+  values: Array<string | null | undefined>
+): AnalyticsConsentStatus | null {
+  let sawGranted = false
+
+  for (const value of values) {
+    const parsed = parseAnalyticsConsent(value)
+    if (parsed === 'denied') {
+      return 'denied'
+    }
+    if (parsed === 'granted') {
+      sawGranted = true
+    }
   }
+
+  return sawGranted ? 'granted' : null
 }
 
 /** Client-side read of the consent decision. Returns null when undecided. */
 export function readAnalyticsConsent(): AnalyticsConsentStatus | null {
-  return parseAnalyticsConsent(readDocumentCookie(ANALYTICS_CONSENT_COOKIE))
+  if (typeof document === 'undefined') {
+    return null
+  }
+
+  return mostRestrictiveConsent(
+    collectCookieValues(document.cookie, ANALYTICS_CONSENT_COOKIE)
+  )
+}
+
+/**
+ * Server-side read of the consent decision from a raw Cookie header
+ * ("a=1; b=2"). Middleware and server analytics see the raw header and can
+ * therefore observe duplicate same-name cookies that `request.cookies.get()` /
+ * `cookies().get()` collapse to a single value — so they must reconcile here
+ * with the same fail-closed rule as the client. Returns null when undecided.
+ */
+export function readAnalyticsConsentFromCookieHeader(
+  cookieHeader: string | null | undefined
+): AnalyticsConsentStatus | null {
+  return mostRestrictiveConsent(
+    collectCookieValues(cookieHeader ?? '', ANALYTICS_CONSENT_COOKIE)
+  )
 }
 
 /**
@@ -121,6 +174,14 @@ export function writeAnalyticsConsent(status: AnalyticsConsentStatus): void {
   const domainAttr = domain ? `; Domain=${domain}` : ''
 
   document.cookie = `${ANALYTICS_CONSENT_COOKIE}=${status}; Path=${options.path}; Max-Age=${options.maxAge}; SameSite=Lax${secure}${domainAttr}`
+
+  if (domain) {
+    // We just wrote the shared `.wcpos.com` cookie. Expire any legacy
+    // host-scoped cookie of the same name (deleting without a Domain attribute
+    // targets only the host-scoped entry, leaving the shared cookie intact) so
+    // a stale host `granted` can never outlive — and shadow — this decision.
+    document.cookie = `${ANALYTICS_CONSENT_COOKIE}=; Path=/; Max-Age=0; SameSite=Lax${secure}`
+  }
 
   if (status === 'denied') {
     document.cookie = `${ANALYTICS_DISTINCT_ID_COOKIE}=; Path=/; Max-Age=0; SameSite=Lax${secure}`

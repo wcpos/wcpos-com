@@ -1,10 +1,7 @@
 import 'server-only'
-import { cookies } from 'next/headers'
+import { headers } from 'next/headers'
 import { getAnalyticsConfig } from '@/lib/analytics/config'
-import {
-  ANALYTICS_CONSENT_COOKIE,
-  hasAnalyticsConsent,
-} from '@/lib/analytics/consent'
+import { readAnalyticsConsentFromCookieHeader } from '@/lib/analytics/consent'
 import { createPostHogServerRecorder } from './posthog-server-recorder'
 import { deliver } from '@/lib/sinks/deliver'
 
@@ -23,14 +20,21 @@ const DEFAULT_TIMEOUT_MS = 150
 const PRO_CHECKOUT_EXPERIMENT = 'pro_checkout_v1'
 
 /**
- * GDPR gate for server-side analytics. Reads the consent cookie from the
- * current request scope; fails closed (no consent) when called outside a
- * request or when the visitor has not explicitly granted consent.
+ * GDPR gate for server-side analytics. Reads consent from the raw Cookie
+ * header of the current request; fails closed (no consent) when called outside
+ * a request or when the visitor has not explicitly granted consent.
+ *
+ * Reads the raw header rather than cookies().get() so a legacy host-scoped
+ * cookie left over from before consent was shared across `.wcpos.com` cannot
+ * shadow a later denial — see readAnalyticsConsentFromCookieHeader.
  */
 async function hasRequestAnalyticsConsent(): Promise<boolean> {
   try {
-    const cookieStore = await cookies()
-    return hasAnalyticsConsent(cookieStore.get(ANALYTICS_CONSENT_COOKIE)?.value)
+    const headerStore = await headers()
+    return (
+      readAnalyticsConsentFromCookieHeader(headerStore.get('cookie')) ===
+      'granted'
+    )
   } catch {
     return false
   }
