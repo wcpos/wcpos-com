@@ -421,14 +421,18 @@ export interface PaymentSessionResult {
 export async function createPaymentSession(
   paymentCollectionId: string,
   providerId: string,
-  authToken?: string | null
+  authToken?: string | null,
+  data?: Record<string, unknown>
 ): Promise<PaymentSessionResult | null> {
   try {
     const response = await medusaFetch<PaymentCollectionResponse>(
       `/store/payment-collections/${paymentCollectionId}/payment-sessions`,
       {
         method: 'POST',
-        body: JSON.stringify({ provider_id: providerId }),
+        body: JSON.stringify({
+          provider_id: providerId,
+          ...(data ? { data } : {}),
+        }),
         headers: buildAuthHeaders(authToken),
       }
     )

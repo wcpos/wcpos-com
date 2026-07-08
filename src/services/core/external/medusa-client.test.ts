@@ -590,6 +590,42 @@ describe('medusaClient', () => {
         )
       })
 
+
+      it('sends provider-specific payment-session data when supplied', async () => {
+        mockFetch.mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({
+            payment_collection: {
+              id: 'pay_col_123',
+              payment_sessions: [
+                {
+                  id: 'payses_btcpay',
+                  provider_id: 'pp_btcpay_btcpay',
+                  status: 'pending',
+                  data: { checkoutLink: 'https://btcpay.test/i/inv_123' },
+                },
+              ],
+            },
+          }),
+        })
+
+        await createPaymentSession('pay_col_123', 'pp_btcpay_btcpay', 'jwt_1', {
+          locale: 'fr-FR',
+        })
+
+        expect(mockFetch).toHaveBeenCalledWith(
+          'https://test-store-api.wcpos.com/store/payment-collections/pay_col_123/payment-sessions',
+          expect.objectContaining({
+            method: 'POST',
+            body: JSON.stringify({
+              provider_id: 'pp_btcpay_btcpay',
+              data: { locale: 'fr-FR' },
+            }),
+            headers: expect.objectContaining({ Authorization: 'Bearer jwt_1' }),
+          })
+        )
+      })
+
       it('returns null client secret when provider does not return one', async () => {
         mockFetch.mockResolvedValueOnce({
           ok: true,
