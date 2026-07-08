@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it } from 'vitest'
 import { ANALYTICS_DISTINCT_ID_COOKIE } from './distinct-id'
 import {
   ANALYTICS_CONSENT_COOKIE,
+  consentCookieDomain,
   getConsentCookieOptions,
   hasAnalyticsConsent,
   isAnalyticsGranted,
@@ -55,6 +56,23 @@ describe('isAnalyticsGranted', () => {
 
     document.cookie = `${ANALYTICS_CONSENT_COOKIE}=granted; Path=/`
     expect(isAnalyticsGranted()).toBe(true)
+  })
+})
+
+describe('consentCookieDomain', () => {
+  it('scopes consent to .wcpos.com across the production family so a decision is shared', () => {
+    expect(consentCookieDomain('wcpos.com')).toBe('.wcpos.com')
+    expect(consentCookieDomain('docs.wcpos.com')).toBe('.wcpos.com')
+    expect(consentCookieDomain('www.wcpos.com')).toBe('.wcpos.com')
+  })
+
+  it('stays host-scoped (null) off the wcpos.com family so the cookie is not rejected', () => {
+    // localhost dev, e2e over http://localhost, and Vercel preview deploys must
+    // keep working: a Domain=.wcpos.com cookie set from these hosts is dropped.
+    expect(consentCookieDomain('localhost')).toBeNull()
+    expect(consentCookieDomain('wcpos-com-git-preview.vercel.app')).toBeNull()
+    // A lookalike suffix must not match — only wcpos.com itself or a subdomain.
+    expect(consentCookieDomain('notwcpos.com')).toBeNull()
   })
 })
 

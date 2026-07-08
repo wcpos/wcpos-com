@@ -9,6 +9,11 @@ import { ANALYTICS_DISTINCT_ID_COOKIE } from './distinct-id'
  * - missing cookie  -> no decision yet: banner shown, analytics disabled
  * - 'granted'       -> analytics enabled, middleware may set the distinct-id cookie
  * - 'denied'        -> analytics disabled, distinct-id cookie is removed
+ *
+ * The cookie is scoped to `.wcpos.com` (see consentCookieDomain) so a decision
+ * made here carries to the other properties in the family — accept/decline once
+ * on wcpos.com and docs.wcpos.com honours it without showing its own banner,
+ * and vice versa. The docs writer sets the same Domain, so both ends agree.
  */
 export const ANALYTICS_CONSENT_COOKIE = 'wcpos-analytics-consent'
 
@@ -16,6 +21,20 @@ export type AnalyticsConsentStatus = 'granted' | 'denied'
 
 /** CNIL guidance caps consent validity at 13 months; we re-ask after 6. */
 const CONSENT_MAX_AGE_SECONDS = 60 * 60 * 24 * 182
+
+/**
+ * Cookie Domain that shares the consent decision across every *.wcpos.com
+ * property. Returns null for any other host — localhost dev, e2e (served over
+ * http://localhost), Vercel preview deploys — because a browser silently
+ * rejects a `Domain=.wcpos.com` cookie set from a host that isn't under
+ * wcpos.com, which would break consent persistence there. Kept as a pure
+ * function of the hostname so it is testable without a DOM.
+ */
+export function consentCookieDomain(hostname: string): string | null {
+  return hostname === 'wcpos.com' || hostname.endsWith('.wcpos.com')
+    ? '.wcpos.com'
+    : null
+}
 
 export function parseAnalyticsConsent(
   value: string | null | undefined
@@ -98,8 +117,10 @@ export function writeAnalyticsConsent(status: AnalyticsConsentStatus): void {
 
   const options = getConsentCookieOptions()
   const secure = window.location.protocol === 'https:' ? '; Secure' : ''
+  const domain = consentCookieDomain(window.location.hostname)
+  const domainAttr = domain ? `; Domain=${domain}` : ''
 
-  document.cookie = `${ANALYTICS_CONSENT_COOKIE}=${status}; Path=${options.path}; Max-Age=${options.maxAge}; SameSite=Lax${secure}`
+  document.cookie = `${ANALYTICS_CONSENT_COOKIE}=${status}; Path=${options.path}; Max-Age=${options.maxAge}; SameSite=Lax${secure}${domainAttr}`
 
   if (status === 'denied') {
     document.cookie = `${ANALYTICS_DISTINCT_ID_COOKIE}=; Path=/; Max-Age=0; SameSite=Lax${secure}`
