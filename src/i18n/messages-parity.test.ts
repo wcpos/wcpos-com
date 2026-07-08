@@ -53,6 +53,23 @@ const auditedFrenchNamespacePrefixes = [
   'header.',
   'footer.',
 ]
+
+const auditedSpanishNamespacePrefixes = [
+  'support.',
+  'roadmap.',
+  'auth.',
+  'header.',
+  'footer.',
+]
+const spanishIdenticalCopyAllowlist = new Set([
+  'header.pro',
+  'footer.copyright',
+  'footer.discord',
+  'footer.github',
+  'footer.pro',
+  'footer.wordpressOrg',
+])
+
 const frenchIdenticalCopyAllowlist = new Set([
   'downloads.platforms.mac-arm.name',
   'downloads.platforms.mac-arm.listLabel',
@@ -208,6 +225,31 @@ describe('messages key parity', () => {
     expect(
       untranslatedKeys,
       'messages/fr.json must not copy audited support/roadmap/downloads/legal/home/about/account/pro/auth/header/footer English strings verbatim'
+    ).toEqual([])
+  })
+
+  it('es.json translates the audited support, roadmap, auth, header, and footer copy', () => {
+    const english = loadMessages(defaultLocale)
+    const spanish = loadMessages('es')
+    const auditedKeys = enKeys.filter(
+      (key) =>
+        auditedSpanishNamespacePrefixes.some((prefix) =>
+          key.startsWith(prefix)
+        ) && !spanishIdenticalCopyAllowlist.has(key)
+    )
+    const untranslatedKeys = auditedKeys.filter((key) => {
+      const englishValue = valueAtPath(english, key)
+      const spanishValue = valueAtPath(spanish, key)
+      return (
+        englishValue !== undefined &&
+        spanishValue === englishValue &&
+        /[A-Za-z]{3}/.test(englishValue)
+      )
+    })
+
+    expect(
+      untranslatedKeys,
+      'messages/es.json must not copy audited support/roadmap/auth/header/footer English strings verbatim'
     ).toEqual([])
   })
 })
