@@ -1036,6 +1036,23 @@ describe('messages key parity', () => {
     ).toEqual([])
   })
 
+  it('nl.json and ko.json translate short support feedback labels that are too short for the broad English-copy regex', () => {
+    const english = loadMessages(defaultLocale)
+
+    for (const [locale, expectedNo] of [
+      ['nl', 'Nee'],
+      ['ko', '아니요'],
+    ] as const) {
+      const localized = loadMessages(locale)
+      const localizedNo = valueAtPath(localized, 'support.chat.feedback.no')
+
+      expect(localizedNo).toBe(expectedNo)
+      expect(localizedNo).not.toBe(
+        valueAtPath(english, 'support.chat.feedback.no')
+      )
+    }
+  })
+
   it('fr.json translates the audited public support, roadmap, downloads, legal, home, about, account, pro, auth, header, and footer copy', () => {
     const english = loadMessages(defaultLocale)
     const french = loadMessages('fr')

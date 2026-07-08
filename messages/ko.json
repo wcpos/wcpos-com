@@ -1543,7 +1543,7 @@
       "feedback": {
         "prompt": "도움이 되었나요?",
         "yes": "예",
-        "no": "No"
+        "no": "아니요"
       },
       "thinking": "Aide가 생각 중입니다…",
       "form": {
