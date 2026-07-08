@@ -580,51 +580,51 @@
       "errors": {
         "noProductSelected": "Nenhum produto selecionado",
         "initializeFailed": "Não foi possível iniciar a finalização da compra. Tente novamente.",
-        "checkoutBusy": "Checkout is busy. Please try again.",
-        "paymentRefreshFailed": "Billing address was saved, but we couldn't prepare payment. Please try again.",
-        "methodSwitchFailed": "We couldn't prepare that payment method. Please try again or choose a different one.",
-        "genericPaymentFailed": "We were unable to process your payment. Please try again or use a different payment method.",
-        "genericCardFailed": "Your card could not be charged. Please check your card details, or try a different card or payment method.",
-        "unexpectedPaymentStatus": "We couldn't confirm the status of your payment. If you think you may have been charged, please contact support before trying again.",
-        "orderPending": "Your payment was received, but we couldn't finish creating your order. Please do not pay again — contact support and we will finish your order or refund the payment.",
-        "paypalFailed": "PayPal couldn't complete your payment. You have not been charged — please try again or use a different payment method.",
-        "paypalInitFailed": "We couldn't start the PayPal checkout. Please try again or use a different payment method.",
-        "paypalCancelled": "PayPal checkout was cancelled and you have not been charged. You can try again whenever you're ready.",
-        "btcpayInitFailed": "We couldn't start the Bitcoin payment. You have not been charged — please try again or use a different payment method.",
+        "checkoutBusy": "A finalização da compra está ocupada. Tente novamente.",
+        "paymentRefreshFailed": "O endereço de faturação foi guardado, mas não foi possível preparar o pagamento. Tente novamente.",
+        "methodSwitchFailed": "Não foi possível preparar esse método de pagamento. Tente novamente ou escolha outro.",
+        "genericPaymentFailed": "Não foi possível processar o seu pagamento. Tente novamente ou use outro método de pagamento.",
+        "genericCardFailed": "Não foi possível cobrar o seu cartão. Verifique os dados do cartão ou tente outro cartão ou método de pagamento.",
+        "unexpectedPaymentStatus": "Não foi possível confirmar o estado do seu pagamento. Se acha que poderá ter sido cobrado, contacte o suporte antes de tentar novamente.",
+        "orderPending": "O seu pagamento foi recebido, mas não foi possível terminar a criação da encomenda. Não pague novamente — contacte o suporte e iremos concluir a encomenda ou reembolsar o pagamento.",
+        "paypalFailed": "O PayPal não conseguiu concluir o seu pagamento. Não foi cobrado — tente novamente ou use outro método de pagamento.",
+        "paypalInitFailed": "Não foi possível iniciar a finalização da compra com PayPal. Tente novamente ou use outro método de pagamento.",
+        "paypalCancelled": "A finalização da compra com PayPal foi cancelada e não foi cobrado. Pode tentar novamente quando quiser.",
+        "btcpayInitFailed": "Não foi possível iniciar o pagamento em Bitcoin. Não foi cobrado — tente novamente ou use outro método de pagamento.",
         "stripeDeclines": {
-          "insufficientFunds": "Your card was declined due to insufficient funds. Please use a different card or payment method."
+          "insufficientFunds": "O seu cartão foi recusado por fundos insuficientes. Use outro cartão ou método de pagamento."
         },
         "stripeCodes": {
-          "cardDeclined": "Your card was declined. Please try a different card or payment method.",
-          "expiredCard": "Your card has expired. Please use a different card.",
-          "incorrectCvc": "Your card's security code is incorrect. Please check it and try again.",
-          "invalidCvc": "Your card's security code is invalid. Please check it and try again.",
-          "incorrectNumber": "Your card number appears to be invalid. Please check it and try again.",
-          "invalidNumber": "Your card number appears to be invalid. Please check it and try again.",
-          "invalidExpiryMonth": "Your card's expiry date is invalid. Please check it and try again.",
-          "invalidExpiryYear": "Your card's expiry date is invalid. Please check it and try again.",
-          "processingError": "Something went wrong while processing your card. You have not been charged — please try again.",
-          "authenticationFailure": "We couldn't verify your card with your bank. Please try again or use a different payment method.",
-          "authenticationRequired": "We couldn't verify your card with your bank. Please try again or use a different payment method."
+          "cardDeclined": "O seu cartão foi recusado. Tente outro cartão ou método de pagamento.",
+          "expiredCard": "O seu cartão expirou. Use outro cartão.",
+          "incorrectCvc": "O código de segurança do cartão está incorreto. Verifique-o e tente novamente.",
+          "invalidCvc": "O código de segurança do cartão é inválido. Verifique-o e tente novamente.",
+          "incorrectNumber": "O número do cartão parece ser inválido. Verifique-o e tente novamente.",
+          "invalidNumber": "O número do cartão parece ser inválido. Verifique-o e tente novamente.",
+          "invalidExpiryMonth": "A data de validade do cartão é inválida. Verifique-a e tente novamente.",
+          "invalidExpiryYear": "A data de validade do cartão é inválida. Verifique-a e tente novamente.",
+          "processingError": "Ocorreu um problema ao processar o cartão. Não foi cobrado — tente novamente.",
+          "authenticationFailure": "Não foi possível verificar o cartão junto do seu banco. Tente novamente ou use outro método de pagamento.",
+          "authenticationRequired": "Não foi possível verificar o cartão junto do seu banco. Tente novamente ou use outro método de pagamento."
         }
       },
       "recovery": {
         "contactSupport": "Contactar suporte",
         "contactSupportLower": "Contactar suporte",
-        "switchMethod": "You can also choose a different payment method below.",
+        "switchMethod": "Também pode escolher outro método de pagamento abaixo.",
         "cancelled": {
-          "title": "Payment cancelled"
+          "title": "Pagamento cancelado"
         },
         "unknown": {
-          "title": "Payment status unknown",
-          "prefix": "Please",
-          "suffix": "and quote reference <reference></reference> — we will confirm whether your payment went through before you pay again."
+          "title": "Estado do pagamento desconhecido",
+          "prefix": "Por favor,",
+          "suffix": "e indique a referência <reference></reference> — iremos confirmar se o pagamento foi concluído antes de voltar a pagar."
         },
         "unsuccessful": {
           "title": "Pagamento sem sucesso",
-          "saved": "Your order details have been saved, so you can try again without starting over.",
-          "stuck": "Still stuck?",
-          "quote": "and quote reference <reference></reference>."
+          "saved": "Os detalhes da encomenda foram guardados, por isso pode tentar novamente sem começar do zero.",
+          "stuck": "Ainda está bloqueado?",
+          "quote": "e indique a referência <reference></reference>."
         },
         "orderPending": {
           "resetConfirm": "Só reinicie o checkout depois de o suporte confirmar que é seguro tentar novamente. Se o pagamento ainda estiver pendente, reiniciar pode causar um segundo pagamento.",
@@ -640,17 +640,17 @@
       },
       "successPage": {
         "metadata": {
-          "title": "Order Complete - WCPOS Pro",
-          "description": "Thank you for your purchase of WCPOS Pro"
+          "title": "Encomenda concluída - WCPOS Pro",
+          "description": "Obrigado pela sua compra do WCPOS Pro"
         },
         "title": "Obrigado!",
         "description": "A sua compra do WCPOS Pro está concluída.",
         "nextTitle": "O que acontece a seguir?",
         "next": {
-          "licenseEmail": "✓ Your license key and download link have been sent to your email",
-          "accountDownload": "✓ You can also download from your account's licenses page",
-          "install": "✓ Install and activate the plugin on your WordPress site",
-          "activate": "✓ Enter your license key to unlock Pro features"
+          "licenseEmail": "✓ A sua chave de licença e o link de transferência foram enviados para o seu email",
+          "accountDownload": "✓ Também pode transferir a partir da página de licenças da sua conta",
+          "install": "✓ Instale e ative o plugin no seu site WordPress",
+          "activate": "✓ Introduza a chave de licença para desbloquear as funcionalidades Pro"
         },
         "licenses": "Ir para licenças",
         "installationGuide": "Guia de instalação"
