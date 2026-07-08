@@ -13,7 +13,8 @@ const apiRoot = path.join(root, 'src/app/api')
 const sourceExtensions = new Set(['.ts', '.tsx', '.js', '.jsx'])
 const skipPath = /(?:\.test\.|\.spec\.)/
 const skipDirs = new Set(['node_modules', '.git', '.next', 'coverage'])
-const jsonErrorPropertyPattern = /\b(?:NextResponse|Response)\.json\(\s*\{[^}]*\berror\s*:/g
+const jsonObjectPattern = /\b(?:NextResponse|Response)\.json\(\s*\{(?<body>[^}]*)\}/g
+const displayEnglishJsonPropertyPattern = /\b(error|message|statusText)\s*:/g
 
 function walk(dir: string, out: string[] = []): string[] {
   for (const entry of readdirSync(dir)) {
@@ -36,20 +37,31 @@ function lineForIndex(source: string, index: number): number {
   return source.slice(0, index).split('\n').length
 }
 
-function collectJsonErrorPropertyHitsFromSource(
+function collectDisplayEnglishJsonPropertyHitsFromSource(
   source: string,
   filePath: string
 ): Hit[] {
   const relative = path.relative(root, filePath)
-  return Array.from(source.matchAll(jsonErrorPropertyPattern), (match) => ({
-    file: relative,
-    line: lineForIndex(source, match.index ?? 0),
-    property: 'error',
-  }))
+  const hits: Hit[] = []
+
+  for (const objectMatch of source.matchAll(jsonObjectPattern)) {
+    const body = objectMatch.groups?.body ?? ''
+    const bodyStart = (objectMatch.index ?? 0) + objectMatch[0].indexOf(body)
+
+    for (const propertyMatch of body.matchAll(displayEnglishJsonPropertyPattern)) {
+      hits.push({
+        file: relative,
+        line: lineForIndex(source, bodyStart + (propertyMatch.index ?? 0)),
+        property: propertyMatch[1] ?? '',
+      })
+    }
+  }
+
+  return hits
 }
 
-function collectJsonErrorPropertyHits(filePath: string): Hit[] {
-  return collectJsonErrorPropertyHitsFromSource(
+function collectDisplayEnglishJsonPropertyHits(filePath: string): Hit[] {
+  return collectDisplayEnglishJsonPropertyHitsFromSource(
     readFileSync(filePath, 'utf8'),
     filePath
   )
@@ -57,8 +69,8 @@ function collectJsonErrorPropertyHits(filePath: string): Hit[] {
 
 describe('API error localization guard helpers', () => {
   it('detects JSON error fields that would bypass client-side localization', () => {
-    const hits = collectJsonErrorPropertyHitsFromSource(
-      "return NextResponse.json({ error: 'Something went wrong' }, { status: 400 })\n",
+    const hits = collectDisplayEnglishJsonPropertyHitsFromSource(
+      "return NextResponse.json({ error: 'Something went wrong', message: 'Try again', statusText: 'Bad request' }, { status: 400 })\n",
       path.join(root, 'src/app/api/example/route.ts')
     )
 
@@ -68,13 +80,23 @@ describe('API error localization guard helpers', () => {
         line: 1,
         property: 'error',
       },
+      {
+        file: 'src/app/api/example/route.ts',
+        line: 1,
+        property: 'message',
+      },
+      {
+        file: 'src/app/api/example/route.ts',
+        line: 1,
+        property: 'statusText',
+      },
     ])
   })
 })
 
 describe('API error responses', () => {
-  it('return stable errorCode fields instead of display-English error fields', () => {
-    const hits = walk(apiRoot).flatMap(collectJsonErrorPropertyHits)
+  it('return stable codes instead of display-English error, message, or statusText fields', () => {
+    const hits = walk(apiRoot).flatMap(collectDisplayEnglishJsonPropertyHits)
 
     expect(hits).toEqual([])
   })
