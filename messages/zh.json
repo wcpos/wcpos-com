@@ -31,7 +31,7 @@
     "companyHeading": "公司",
     "downloadHeading": "下载",
     "pro": "WCPOS Pro",
-    "roadmap": "Roadmap",
+    "roadmap": "路线图",
     "demo": "在线演示",
     "discord": "Discord",
     "github": "GitHub",
@@ -580,51 +580,51 @@
       "errors": {
         "noProductSelected": "未选择产品",
         "initializeFailed": "无法初始化结账。请重试。",
-        "checkoutBusy": "Checkout is busy. Please try again.",
-        "paymentRefreshFailed": "Billing address was saved, but we couldn't prepare payment. Please try again.",
-        "methodSwitchFailed": "We couldn't prepare that payment method. Please try again or choose a different one.",
-        "genericPaymentFailed": "We were unable to process your payment. Please try again or use a different payment method.",
-        "genericCardFailed": "Your card could not be charged. Please check your card details, or try a different card or payment method.",
-        "unexpectedPaymentStatus": "We couldn't confirm the status of your payment. If you think you may have been charged, please contact support before trying again.",
-        "orderPending": "Your payment was received, but we couldn't finish creating your order. Please do not pay again — contact support and we will finish your order or refund the payment.",
-        "paypalFailed": "PayPal couldn't complete your payment. You have not been charged — please try again or use a different payment method.",
-        "paypalInitFailed": "We couldn't start the PayPal checkout. Please try again or use a different payment method.",
-        "paypalCancelled": "PayPal checkout was cancelled and you have not been charged. You can try again whenever you're ready.",
-        "btcpayInitFailed": "We couldn't start the Bitcoin payment. You have not been charged — please try again or use a different payment method.",
+        "checkoutBusy": "结账正在处理中。请重试。",
+        "paymentRefreshFailed": "账单地址已保存，但我们无法准备付款。请重试。",
+        "methodSwitchFailed": "我们无法准备该付款方式。请重试或选择其他付款方式。",
+        "genericPaymentFailed": "我们无法处理您的付款。请重试或使用其他付款方式。",
+        "genericCardFailed": "无法从您的银行卡扣款。请检查卡片信息，或尝试其他银行卡或付款方式。",
+        "unexpectedPaymentStatus": "我们无法确认您的付款状态。如果您认为可能已经被扣款，请先联系支持，不要再次尝试付款。",
+        "orderPending": "我们已收到您的付款，但无法完成订单创建。请不要再次付款——请联系支持，我们会完成您的订单或退还款项。",
+        "paypalFailed": "PayPal 无法完成您的付款。您尚未被扣款——请重试或使用其他付款方式。",
+        "paypalInitFailed": "我们无法启动 PayPal 结账。请重试或使用其他付款方式。",
+        "paypalCancelled": "PayPal 结账已取消，您尚未被扣款。准备好后可以随时重试。",
+        "btcpayInitFailed": "我们无法启动 Bitcoin 付款。您尚未被扣款——请重试或使用其他付款方式。",
         "stripeDeclines": {
-          "insufficientFunds": "Your card was declined due to insufficient funds. Please use a different card or payment method."
+          "insufficientFunds": "由于余额不足，您的银行卡被拒绝。请使用其他银行卡或付款方式。"
         },
         "stripeCodes": {
-          "cardDeclined": "Your card was declined. Please try a different card or payment method.",
-          "expiredCard": "Your card has expired. Please use a different card.",
-          "incorrectCvc": "Your card's security code is incorrect. Please check it and try again.",
-          "invalidCvc": "Your card's security code is invalid. Please check it and try again.",
-          "incorrectNumber": "Your card number appears to be invalid. Please check it and try again.",
-          "invalidNumber": "Your card number appears to be invalid. Please check it and try again.",
-          "invalidExpiryMonth": "Your card's expiry date is invalid. Please check it and try again.",
-          "invalidExpiryYear": "Your card's expiry date is invalid. Please check it and try again.",
-          "processingError": "Something went wrong while processing your card. You have not been charged — please try again.",
-          "authenticationFailure": "We couldn't verify your card with your bank. Please try again or use a different payment method.",
-          "authenticationRequired": "We couldn't verify your card with your bank. Please try again or use a different payment method."
+          "cardDeclined": "您的银行卡被拒绝。请尝试其他银行卡或付款方式。",
+          "expiredCard": "您的银行卡已过期。请使用其他银行卡。",
+          "incorrectCvc": "您的银行卡安全码不正确。请检查后重试。",
+          "invalidCvc": "您的银行卡安全码无效。请检查后重试。",
+          "incorrectNumber": "您的银行卡号似乎无效。请检查后重试。",
+          "invalidNumber": "您的银行卡号似乎无效。请检查后重试。",
+          "invalidExpiryMonth": "您的银行卡有效期无效。请检查后重试。",
+          "invalidExpiryYear": "您的银行卡有效期无效。请检查后重试。",
+          "processingError": "处理您的银行卡时出了点问题。您尚未被扣款——请重试。",
+          "authenticationFailure": "我们无法通过您的银行验证银行卡。请重试或使用其他付款方式。",
+          "authenticationRequired": "我们无法通过您的银行验证银行卡。请重试或使用其他付款方式。"
         }
       },
       "recovery": {
         "contactSupport": "联系支持",
         "contactSupportLower": "联系支持",
-        "switchMethod": "You can also choose a different payment method below.",
+        "switchMethod": "您也可以在下方选择其他付款方式。",
         "cancelled": {
-          "title": "Payment cancelled"
+          "title": "付款已取消"
         },
         "unknown": {
-          "title": "Payment status unknown",
-          "prefix": "Please",
-          "suffix": "and quote reference <reference></reference> — we will confirm whether your payment went through before you pay again."
+          "title": "付款状态未知",
+          "prefix": "请",
+          "suffix": "并引用参考号 <reference></reference>——我们会在您再次付款前确认付款是否成功。"
         },
         "unsuccessful": {
           "title": "付款未成功",
-          "saved": "Your order details have been saved, so you can try again without starting over.",
-          "stuck": "Still stuck?",
-          "quote": "and quote reference <reference></reference>."
+          "saved": "您的订单详情已保存，因此可以重试而无需从头开始。",
+          "stuck": "仍然卡住了？",
+          "quote": "并引用参考号 <reference></reference>。"
         },
         "orderPending": {
           "resetConfirm": "只有在支持团队确认可以安全重试后，才重置结账。如果您的付款仍在处理中，重置可能会导致重复付款。",
@@ -640,17 +640,17 @@
       },
       "successPage": {
         "metadata": {
-          "title": "Order Complete - WCPOS Pro",
-          "description": "Thank you for your purchase of WCPOS Pro"
+          "title": "订单完成 - WCPOS Pro",
+          "description": "感谢您购买 WCPOS Pro"
         },
         "title": "谢谢！",
         "description": "您已完成购买 WCPOS Pro。",
         "nextTitle": "接下来会发生什么？",
         "next": {
-          "licenseEmail": "✓ Your license key and download link have been sent to your email",
-          "accountDownload": "✓ You can also download from your account's licenses page",
-          "install": "✓ Install and activate the plugin on your WordPress site",
-          "activate": "✓ Enter your license key to unlock Pro features"
+          "licenseEmail": "✓ 您的许可证密钥和下载链接已发送到您的电子邮件",
+          "accountDownload": "✓ 您也可以从账户的许可证页面下载",
+          "install": "✓ 在您的 WordPress 站点上安装并启用插件",
+          "activate": "✓ 输入许可证密钥以解锁 Pro 功能"
         },
         "licenses": "前往许可证",
         "installationGuide": "安装指南"
@@ -772,7 +772,7 @@
       "copiedKey": "已复制",
       "copyError": "复制许可证密钥失败。请重试。",
       "apiErrors": {
-        "read_only_inspection": "You are viewing this account in read-only mode."
+        "read_only_inspection": "您正在以只读模式查看此账户。"
       }
     },
     "downloads": {
@@ -811,12 +811,12 @@
       "tokenErrorFallback": "此版本无法下载",
       "startErrorFallback": "启动下载失败",
       "apiErrors": {
-        "unauthorized": "Please sign in again to download WCPOS Pro.",
-        "download_token_secret_missing": "Downloads are temporarily unavailable. Please contact support.",
-        "rate_limited": "Too many download requests. Please wait a moment and try again.",
-        "release_not_found": "That WCPOS Pro release could not be found.",
-        "forbidden": "Your license does not include this download.",
-        "internal": "We could not prepare your download. Please try again."
+        "unauthorized": "请重新登录以下载 WCPOS Pro。",
+        "download_token_secret_missing": "下载暂时不可用。请联系支持。",
+        "rate_limited": "下载请求过多。请稍等片刻后重试。",
+        "release_not_found": "找不到该 WCPOS Pro 版本。",
+        "forbidden": "您的许可证不包含此下载。",
+        "internal": "我们无法准备您的下载。请重试。"
       }
     },
     "profile": {
@@ -894,9 +894,9 @@
       "emailProvider": "邮箱和密码",
       "emailDescription": "你使用邮箱地址登录。",
       "apiErrors": {
-        "read_only_inspection": "You are viewing this account in read-only mode.",
-        "unauthorized": "Please sign in again to update your profile.",
-        "update_failed": "Failed to update profile"
+        "read_only_inspection": "您正在以只读模式查看此账户。",
+        "unauthorized": "请重新登录以更新您的个人资料。",
+        "update_failed": "更新个人资料失败"
       }
     },
     "receiptPdf": {
@@ -935,13 +935,13 @@
       }
     },
     "admin": {
-      "title": "Inspect a customer (read-only)",
-      "description": "Enter a customer email to view their account exactly as they see it. You cannot change their data while inspecting.",
-      "submit": "View as"
+      "title": "查看客户（只读）",
+      "description": "输入客户电子邮件，即可按客户看到的方式查看其账户。查看期间您无法更改他们的数据。",
+      "submit": "以此身份查看"
     },
     "impersonation": {
-      "viewing": "🔍 Viewing <strong>{target}</strong> as <strong>read-only</strong> — you cannot change their account.",
-      "exit": "Exit"
+      "viewing": "🔍 正在以<strong>只读</strong>方式查看 <strong>{target}</strong>——您无法更改其账户。",
+      "exit": "退出"
     },
     "orderStatus": {
       "actionRequired": "需要操作",
