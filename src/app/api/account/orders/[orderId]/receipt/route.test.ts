@@ -236,6 +236,57 @@ describe('GET /api/account/orders/[orderId]/receipt', () => {
     expect(response.status).toBe(200)
   })
 
+  it('uses the saved account locale for direct PDF receipt downloads without a locale query', async () => {
+    mockGetCustomer.mockResolvedValueOnce({
+      id: 'cust_1',
+      metadata: { locale: 'fr-FR' },
+    })
+    mockGetOrderById.mockResolvedValueOnce({
+      id: 'order_1',
+      status: 'completed',
+      display_id: 1001,
+      email: 'user@example.com',
+      currency_code: 'usd',
+      total: 129,
+      subtotal: 120,
+      tax_total: 9,
+      created_at: '2026-02-01T00:00:00Z',
+      updated_at: '2026-02-01T00:00:00Z',
+      items: [
+        {
+          id: 'item_1',
+          title: 'WCPOS Pro Yearly',
+          quantity: 1,
+          unit_price: 129,
+          total: 129,
+        },
+      ],
+    })
+    const buildPdfSpy = vi
+      .spyOn(pdfReceipt, 'buildReceiptPdf')
+      .mockResolvedValueOnce(new Uint8Array([0x25, 0x50, 0x44, 0x46]))
+
+    try {
+      const response = await GET(
+        new Request('http://localhost:3000/api/account/orders/order_1/receipt', {
+          headers: {
+            'accept-language': 'en-US,en;q=0.9',
+          },
+        }),
+        { params: Promise.resolve({ orderId: 'order_1' }) }
+      )
+
+      expect(response.status).toBe(200)
+      expect(response.headers.get('content-language')).toBe('fr-FR')
+      expect(buildPdfSpy).toHaveBeenCalledTimes(1)
+      const [, copy, intlLocale] = buildPdfSpy.mock.calls[0]
+      expect(copy.title).toBe('Reçu')
+      expect(intlLocale).toBe('fr-FR')
+    } finally {
+      buildPdfSpy.mockRestore()
+    }
+  })
+
   it('honours Accept-Language quality weights for PDF receipt copy', async () => {
     mockGetOrderById.mockResolvedValueOnce({
       id: 'order_1',

@@ -43,9 +43,16 @@ function supportedLocale(value: string | null): { intlLocale: string; messageLoc
   return null
 }
 
-function resolveLocale(request: Request): { intlLocale: string; messageLocale: Locale } {
+function resolveLocale(
+  request: Request,
+  accountLocale?: unknown
+): { intlLocale: string; messageLocale: Locale } {
   const explicitLocale = supportedLocale(new URL(request.url).searchParams.get('locale'))
   if (explicitLocale) return explicitLocale
+
+  const savedLocale =
+    typeof accountLocale === 'string' ? supportedLocale(accountLocale) : null
+  if (savedLocale) return savedLocale
 
   const header = request.headers.get('accept-language') || ''
   const candidates = header
@@ -216,7 +223,10 @@ export async function GET(
 
     const profile = projectAccountProfileForReceipt(customer?.metadata)
     const receipt = projectAccountOrderReceipt(order, profile, customer)
-    const locale = resolveLocale(request)
+    const locale = resolveLocale(
+      request,
+      (customer?.metadata as Record<string, unknown> | undefined)?.locale
+    )
     const assets = await receiptPdfAssets(locale.messageLocale)
     const localizedReceipt = localizeReceiptItemTitles(
       receipt,
