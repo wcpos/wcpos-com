@@ -235,8 +235,22 @@ const auditedKoreanNamespacePrefixes = [
   'account.',
   'pro.checkout.',
   'legal.',
+  'home.',
 ]
 const koreanIdenticalCopyAllowlist = new Set([
+  'home.title',
+  'home.useCases.cards.retail.attribution',
+  'home.useCases.cards.market.attribution',
+  'home.useCases.cards.desktop.attribution',
+  'home.pricing.pro.title',
+  'home.ecosystem.devices.ios.label',
+  'home.ecosystem.devices.android.label',
+  'home.story.a2.platforms.p1',
+  'home.story.a2.platforms.p2',
+  'home.story.a2.platforms.p3',
+  'home.story.a2.platforms.p4',
+  'home.story.a2.platforms.p5',
+  'home.story.pos.registerShort',
   'auth.common.emailPlaceholder',
   'downloads.platforms.mac-arm.name',
   'downloads.platforms.mac-arm.listLabel',
@@ -991,7 +1005,7 @@ describe('messages key parity', () => {
     ).toEqual([])
   })
 
-  it('ko.json translates the audited support, auth, roadmap, common, header, footer, downloads, account, checkout, and legal copy', () => {
+  it('ko.json translates the audited support, auth, roadmap, common, header, footer, downloads, account, checkout, legal, and home copy', () => {
     const english = loadMessages(defaultLocale)
     const korean = loadMessages('ko')
     const auditedKeys = enKeys.filter(

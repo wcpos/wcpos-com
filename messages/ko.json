@@ -47,9 +47,9 @@
   },
   "home": {
     "title": "WCPOS",
-    "subtitle": "A fast point of sale for WooCommerce",
+    "subtitle": "WooCommerce를 위한 빠른 POS",
     "meta": {
-      "description": "Point of Sale for WooCommerce. Sync your products, sell offline, and connect real hardware with native apps for iOS, Android, and desktop."
+      "description": "WooCommerce용 POS. 제품을 동기화하고, 오프라인으로 판매하며, iOS, Android 및 데스크톱용 native 앱으로 실제 하드웨어를 연결하세요."
     },
     "problem": {
       "title": "WooCommerce 스토어와 오프라인 매장 운영이 두 배의 일이 되어서는 안 됩니다",
@@ -109,164 +109,164 @@
       }
     },
     "benefits": {
-      "heading": "Why stores choose WCPOS",
+      "heading": "매장이 WCPOS를 선택하는 이유",
       "items": {
         "sync": {
-          "headline": "One catalog, two channels",
-          "description": "Your WooCommerce products are your POS products. Update a price or stock level once — it syncs everywhere automatically. No manual entry, no conflicts, no guesswork.",
-          "supporting": "Same products. Same prices. Same customers. Always in sync."
+          "headline": "하나의 카탈로그, 두 개의 채널",
+          "description": "WooCommerce 제품이 곧 POS 제품입니다. 가격이나 재고 수준을 한 번 업데이트하면 모든 곳에 자동으로 동기화됩니다. 수동 입력, 충돌, 추측이 없습니다.",
+          "supporting": "같은 제품. 같은 가격. 같은 고객. 항상 동기화됩니다."
         },
         "offline": {
-          "headline": "Works offline",
-          "description": "Local-first architecture means the POS keeps running when your connection drops. Products are stored locally and open orders are preserved — they complete and sync as soon as the internet returns.",
-          "supporting": "Never lose an order to internet issues."
+          "headline": "오프라인에서도 작동",
+          "description": "Local-first 아키텍처 덕분에 연결이 끊겨도 POS가 계속 실행됩니다. 제품은 로컬에 저장되고 열린 주문은 보존됩니다 — 인터넷이 돌아오면 완료되고 동기화됩니다.",
+          "supporting": "인터넷 문제로 주문을 잃지 마세요."
         },
         "hardware": {
-          "headline": "Native apps, real hardware",
-          "description": "Native iOS and Android apps — not a browser tab pretending to be an app. Connect payment terminals, receipt printers, and barcode scanners directly.",
-          "supporting": "Supports Stripe Terminal, SumUp, and more payment hardware."
+          "headline": "Native 앱, 실제 하드웨어",
+          "description": "앱인 척하는 브라우저 탭이 아니라 native iOS 및 Android 앱입니다. 결제 단말기, 영수증 프린터, 바코드 스캐너를 직접 연결하세요.",
+          "supporting": "Stripe Terminal, SumUp 등 다양한 결제 하드웨어를 지원합니다."
         },
         "ownership": {
-          "headline": "You own everything",
-          "description": "Your data stays in your WooCommerce store, on your hosting. No platform lock-in, no third party holding your business hostage. Open source (GPL) — inspect the code, extend it, contribute to it.",
-          "supporting": "Open source. Self-hosted. You're in control."
+          "headline": "모든 것은 당신의 소유입니다",
+          "description": "데이터는 당신의 호스팅에 있는 WooCommerce 스토어에 남습니다. 플랫폼 종속도, 비즈니스를 붙잡는 제3자도 없습니다. 오픈소스(GPL) — 코드를 확인하고, 확장하고, 기여하세요.",
+          "supporting": "오픈소스. 자체 호스팅. 당신이 제어합니다."
         }
       },
       "visuals": {
         "offline": {
-          "title": "Today's Sales",
-          "badge": "Offline",
-          "sale": "Sale #{number}",
-          "completed": "Completed",
-          "queued": "3 sales queued — syncs when you're back online"
+          "title": "오늘의 매출",
+          "badge": "오프라인",
+          "sale": "판매 #{number}",
+          "completed": "완료됨",
+          "queued": "판매 3건 대기 중 — 다시 온라인이 되면 동기화됩니다"
         },
         "hardware": {
-          "tablet": "iPad / Tablet",
-          "terminal": "Card Terminal",
-          "printer": "Receipt Printer",
-          "scanner": "Barcode Scanner"
+          "tablet": "iPad / 태블릿",
+          "terminal": "카드 단말기",
+          "printer": "영수증 프린터",
+          "scanner": "바코드 스캐너"
         },
         "ownership": {
           "chips": {
-            "hosting": "Your hosting",
-            "data": "Your data",
-            "license": "GPL licensed",
-            "openSource": "Open source"
+            "hosting": "당신의 호스팅",
+            "data": "당신의 데이터",
+            "license": "GPL 라이선스",
+            "openSource": "오픈소스"
           }
         }
       }
     },
     "features": {
-      "heading": "Built for the demands of physical retail",
+      "heading": "오프라인 매장의 요구에 맞게 구축됨",
       "items": {
         "f1": {
-          "title": "Fast product search",
-          "description": "Find products instantly with search, filters, and category browsing. Barcode scanner support."
+          "title": "빠른 제품 검색",
+          "description": "검색, 필터, 카테고리 탐색으로 제품을 즉시 찾으세요. 바코드 스캐너를 지원합니다."
         },
         "f2": {
-          "title": "Smooth checkout flow",
-          "description": "Add items, apply discounts, choose payment method. Supports Stripe Terminal, SumUp, cash, and custom gateways."
+          "title": "매끄러운 결제 흐름",
+          "description": "상품을 추가하고, 할인을 적용하고, 결제 방법을 선택하세요. Stripe Terminal, SumUp, 현금 및 맞춤 게이트웨이를 지원합니다."
         },
         "f3": {
-          "title": "Customer profiles",
-          "description": "Add and edit customer info directly in the POS. Track regulars, offer better service."
+          "title": "고객 프로필",
+          "description": "POS에서 고객 정보를 직접 추가하고 편집하세요. 단골을 파악하고 더 나은 서비스를 제공하세요."
         },
         "f4": {
-          "title": "Order history & management",
-          "description": "View past orders, process returns, check order status without switching to WP Admin."
+          "title": "주문 내역 및 관리",
+          "description": "WP Admin으로 전환하지 않고 이전 주문을 보고, 반품을 처리하고, 주문 상태를 확인하세요."
         },
         "f5": {
-          "title": "Edit stock & prices on the fly",
-          "description": "Fix a wrong price while serving a customer. Adjust stock without leaving the POS."
+          "title": "재고와 가격을 즉시 편집",
+          "description": "고객을 응대하는 중에도 잘못된 가격을 수정하세요. POS를 떠나지 않고 재고를 조정할 수 있습니다."
         },
         "f6": {
-          "title": "End-of-day reports",
-          "description": "Generate sales reports for each shift or day. Cash up quickly, track performance."
+          "title": "마감 보고서",
+          "description": "각 근무조 또는 하루의 판매 보고서를 생성하세요. 빠르게 정산하고 성과를 추적하세요."
         }
       }
     },
     "pricing": {
-      "heading": "Start free. Upgrade when you need more.",
-      "fallback": "See full pricing for current Pro options. No per-register fees.",
+      "heading": "무료로 시작하세요. 더 필요할 때 업그레이드하세요.",
+      "fallback": "현재 Pro 옵션의 전체 가격을 확인하세요. 계산대별 요금은 없습니다.",
       "free": {
-        "title": "Free",
-        "description": "Free forever. No transaction fees. No limits.",
+        "title": "무료",
+        "description": "영원히 무료입니다. 거래 수수료도, 제한도 없습니다.",
         "features": {
-          "f1": "WooCommerce sync",
-          "f2": "Product search & grid",
-          "f3": "Basic checkout",
-          "f4": "Offline mode",
-          "f5": "Receipt printing",
-          "f6": "Multi-currency",
-          "f7": "Unlimited products"
+          "f1": "WooCommerce 동기화",
+          "f2": "제품 검색 및 그리드",
+          "f3": "기본 결제",
+          "f4": "오프라인 모드",
+          "f5": "영수증 출력",
+          "f6": "다중 통화",
+          "f7": "무제한 제품"
         }
       },
       "pro": {
         "title": "Pro",
-        "intro": "Everything in Free, plus:",
+        "intro": "무료 기능 모두에 더해:",
         "features": {
-          "p1": "Payment terminal integration",
-          "p2": "Stock & price editing in POS",
-          "p3": "Order history & management",
-          "p4": "Customer management",
-          "p5": "End-of-day reports",
-          "p6": "Custom payment gateways",
-          "p7": "Priority support"
+          "p1": "결제 단말기 통합",
+          "p2": "POS에서 재고 및 가격 편집",
+          "p3": "주문 내역 및 관리",
+          "p4": "고객 관리",
+          "p5": "마감 보고서",
+          "p6": "맞춤 결제 게이트웨이",
+          "p7": "우선 지원"
         }
       },
-      "cta": "See Full Pricing & Features",
+      "cta": "전체 가격 및 기능 보기",
       "priceSummary": "{yearly}/년 또는 {lifetime} 평생. 계산대별 추가 요금 없음."
     },
     "ecosystem": {
-      "heading": "One ecosystem. Multiple ways to sell.",
-      "subtitle": "Install the WordPress plugin, then choose your device.",
+      "heading": "하나의 생태계. 여러 판매 방식.",
+      "subtitle": "WordPress 플러그인을 설치한 다음 기기를 선택하세요.",
       "flow": {
-        "store": "Your WooCommerce Store",
-        "plugin": "WordPress Plugin Installed",
-        "sync": "REST API Sync"
+        "store": "당신의 WooCommerce 스토어",
+        "plugin": "WordPress 플러그인 설치됨",
+        "sync": "REST API 동기화"
       },
-      "badge": "Beta",
+      "badge": "베타",
       "devices": {
         "ios": {
           "label": "iOS & iPadOS",
-          "description": "Native app with payment terminal and printer support.",
-          "cta": "Get the iOS beta"
+          "description": "결제 단말기와 프린터를 지원하는 native 앱입니다.",
+          "cta": "iOS 베타 받기"
         },
         "android": {
           "label": "Android",
-          "description": "Native app with full hardware integration.",
-          "cta": "Get the Android beta"
+          "description": "완전한 하드웨어 통합을 제공하는 native 앱입니다.",
+          "cta": "Android 베타 받기"
         },
         "desktop": {
-          "label": "Windows & macOS",
-          "description": "Desktop application for counter setups.",
-          "cta": "Download for Desktop"
+          "label": "Windows 및 macOS",
+          "description": "카운터 환경을 위한 데스크톱 애플리케이션입니다.",
+          "cta": "데스크톱용 다운로드"
         },
         "web": {
-          "label": "Web Browser",
-          "description": "Try instantly — no installation required.",
-          "cta": "Try Live Demo"
+          "label": "웹 브라우저",
+          "description": "설치 없이 즉시 사용해 보세요.",
+          "cta": "라이브 데모 사용해 보기"
         }
       },
-      "description": "All apps sync with your WooCommerce store via the REST API. Install the free WordPress plugin, then choose your device. Products, stock, and orders stay in sync automatically."
+      "description": "모든 앱은 REST API를 통해 WooCommerce 스토어와 동기화됩니다. 무료 WordPress 플러그인을 설치한 다음 기기를 선택하세요. 제품, 재고, 주문이 자동으로 동기화됩니다."
     },
     "story": {
       "a1": {
-        "k": "Point of Sale for WooCommerce",
-        "h": "Your WooCommerce store, at the counter.",
-        "b": "WCPOS turns the tablet into your register — same catalog, same stock, same prices, even offline.",
-        "c1": "Try Live Demo",
-        "c2": "Download Free",
+        "k": "WooCommerce용 POS",
+        "h": "카운터 위의 WooCommerce 스토어.",
+        "b": "WCPOS는 태블릿을 계산대로 바꿉니다 — 같은 카탈로그, 같은 재고, 같은 가격, 오프라인에서도 그대로입니다.",
+        "c1": "라이브 데모 사용해 보기",
+        "c2": "무료 다운로드",
         "badges": {
-          "b1": "5,000+ Active Stores",
-          "b2": "Free & Open Source",
-          "b3": "Since 2014"
+          "b1": "활성 매장 5,000개 이상",
+          "b2": "무료 및 오픈소스",
+          "b3": "2014년부터"
         }
       },
       "a2": {
-        "k": "Every screen you own",
-        "h": "One POS. Web, desktop, iOS & Android.",
-        "b": "Run the register on the tablet at the counter, the phone on the shop floor, or the laptop in the back office — same store, same data.",
+        "k": "보유한 모든 화면",
+        "h": "하나의 POS. 웹, 데스크톱, iOS 및 Android.",
+        "b": "카운터의 태블릿, 매장 안의 휴대폰, 백오피스의 노트북에서 계산대를 실행하세요 — 같은 매장, 같은 데이터입니다.",
         "platforms": {
           "p1": "Web",
           "p2": "Windows",
@@ -276,58 +276,58 @@
         }
       },
       "a3": {
-        "k": "Bring your own hardware",
-        "h": "Works with the equipment you already have.",
-        "b": "Card terminals, thermal receipt printers, barcode scanners — WCPOS doesn’t lock you into proprietary hardware. Plug in what’s already on your counter."
+        "k": "원하는 하드웨어를 사용하세요",
+        "h": "이미 가진 장비와 함께 작동합니다.",
+        "b": "카드 단말기, 감열 영수증 프린터, 바코드 스캐너 — WCPOS는 독점 하드웨어에 묶어 두지 않습니다. 이미 카운터에 있는 장비를 연결하세요."
       },
       "a4": {
-        "k": "Your store, your data",
-        "h": "Synced with WooCommerce. Yours, even offline.",
-        "b": "Every sale lands in your WooCommerce store — you own the data, no middleman. Internet drops? Keep selling; WCPOS syncs when you’re back online."
+        "k": "당신의 매장, 당신의 데이터",
+        "h": "WooCommerce와 동기화됩니다. 오프라인에서도 당신의 것입니다.",
+        "b": "모든 판매는 WooCommerce 스토어에 저장됩니다 — 중간자 없이 데이터는 당신의 소유입니다. 인터넷이 끊겨도 계속 판매하세요. 다시 온라인이 되면 WCPOS가 동기화합니다."
       },
       "nav": {
-        "s1": "Scroll ↓",
-        "s2": "Go to act {current} of {total}"
+        "s1": "스크롤 ↓",
+        "s2": "{total}막 중 {current}막으로 이동"
       },
       "static": {
-        "alt": "A shop counter with a tablet running the WCPOS register, a receipt printer, a card terminal and a barcode scanner"
+        "alt": "WCPOS 계산대가 실행 중인 태블릿, 영수증 프린터, 카드 단말기, 바코드 스캐너가 있는 매장 카운터"
       },
       "pos": {
         "aria": {
-          "main": "WCPOS app",
-          "phone": "WCPOS app, phone"
+          "main": "WCPOS 앱",
+          "phone": "WCPOS 앱, 휴대폰"
         },
-        "store": "POS — US Store",
+        "store": "POS — 미국 매장",
         "registerShort": "R{number}",
-        "search": "Search Products",
+        "search": "제품 검색",
         "filters": {
-          "stock": "In Stock ✕",
-          "featured": "Featured",
-          "sale": "On Sale",
-          "category": "Category"
+          "stock": "재고 있음 ✕",
+          "featured": "추천",
+          "sale": "할인 중",
+          "category": "카테고리"
         },
         "products": {
-          "p1": "Tote Bag",
-          "p2": "Candle",
-          "p3": "Mug",
-          "p4": "Soap Bar",
-          "p5": "Notebook",
-          "p6": "Tea Towel"
+          "p1": "토트백",
+          "p2": "양초",
+          "p3": "머그컵",
+          "p4": "비누 바",
+          "p5": "노트북",
+          "p6": "티타월"
         },
         "cart": {
-          "c1": "Candle",
-          "c2": "2× Mug",
-          "c3": "Soap Bar"
+          "c1": "양초",
+          "c2": "2× 머그컵",
+          "c3": "비누 바"
         },
-        "tax": "Tax based on: Shop base address",
-        "showing": "Showing {shown} of {total}",
-        "customer": "Customer:",
-        "guest": "Guest ✕",
-        "subtotal": "Subtotal",
-        "charge": "Charge {amount}",
+        "tax": "세금 기준: 매장 기본 주소",
+        "showing": "{total}개 중 {shown}개 표시",
+        "customer": "고객:",
+        "guest": "게스트 ✕",
+        "subtotal": "소계",
+        "charge": "{amount} 결제",
         "tabs": {
-          "products": "Products",
-          "cart": "Cart"
+          "products": "제품",
+          "cart": "장바구니"
         }
       },
       "terminal": {
