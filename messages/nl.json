@@ -1061,219 +1061,219 @@
   "legal": {
     "privacy": {
       "meta": {
-        "title": "Privacy Policy",
-        "description": "How WCPOS collects, uses, and protects your personal data, including analytics, cookies, payment processing, and your rights under GDPR."
+        "title": "Privacybeleid",
+        "description": "Hoe WCPOS je persoonsgegevens verzamelt, gebruikt en beschermt, inclusief analytics, cookies, betalingsverwerking en je rechten onder de AVG."
       },
-      "title": "Privacy Policy",
-      "lastUpdated": "Last updated: {date}",
-      "intro": "WCPOS (\"we\", \"us\") operates wcpos.com, the website for the WCPOS plugin and WCPOS Pro. This policy explains what personal data we collect when you use the site, why we collect it, who processes it on our behalf, and what rights you have over it. We aim to collect as little as we need to run the service.",
+      "title": "Privacybeleid",
+      "lastUpdated": "Laatst bijgewerkt: {date}",
+      "intro": "WCPOS (\"wij\", \"ons\") beheert wcpos.com, de website voor de WCPOS-plugin en WCPOS Pro. Dit beleid legt uit welke persoonsgegevens we verzamelen wanneer je de site gebruikt, waarom we die verzamelen, wie ze namens ons verwerkt en welke rechten je erover hebt. We proberen niet meer te verzamelen dan nodig is om de dienst te leveren.",
       "collect": {
-        "title": "What we collect",
+        "title": "Wat we verzamelen",
         "items": {
           "c1": {
-            "label": "Account information.",
-            "body": "Your email address and name when you create an account, either directly or by signing in with Google, GitHub, or Discord. When you use a sign-in provider, we receive only your basic profile (email, name or username, and avatar or picture URL) from that provider, and may store the avatar or picture URL on your account as <code>oauth_avatar_url</code>."
+            "label": "Accountgegevens.",
+            "body": "Je e-mailadres en naam wanneer je een account maakt, rechtstreeks of door in te loggen met Google, GitHub of Discord. Wanneer je een aanmeldprovider gebruikt, ontvangen we alleen je basisprofiel (e-mail, naam of gebruikersnaam, en avatar- of foto-URL) van die provider en kunnen we de avatar- of foto-URL opslaan in je account als <code>oauth_avatar_url</code>."
           },
           "c2": {
-            "label": "Billing details.",
-            "body": "The billing address and any company details you enter at checkout, stored with your customer record so we can issue receipts and comply with tax rules."
+            "label": "Factuurgegevens.",
+            "body": "Het factuuradres en eventuele bedrijfsgegevens die je tijdens het afrekenen invoert, opgeslagen bij je klantrecord zodat we bonnen kunnen uitgeven en aan belastingregels kunnen voldoen."
           },
           "c3": {
-            "label": "Order and license history.",
-            "body": "Records of your purchases, license keys, and plugin downloads, so you can manage your licenses and we can provide support."
+            "label": "Bestel- en licentiegeschiedenis.",
+            "body": "Gegevens over je aankopen, licentiesleutels en plugindownloads, zodat je je licenties kunt beheren en wij support kunnen bieden."
           },
           "c4": {
-            "label": "Payment information.",
-            "body": "Payments are handled by Stripe and PayPal. Your full card number or payment credentials never reach our servers; we receive only a payment confirmation and the details needed for the receipt."
+            "label": "Betalingsgegevens.",
+            "body": "Betalingen worden verwerkt door Stripe en PayPal. Je volledige kaartnummer of betaalgegevens bereiken onze servers nooit; we ontvangen alleen een betalingsbevestiging en de gegevens die nodig zijn voor de bon."
           },
           "c5": {
-            "label": "Usage analytics.",
-            "body": "We use PostHog to understand how the site is used (pages viewed, buttons clicked). To do this, we set a cookie containing a randomly generated identifier. It does not contain your name or email."
+            "label": "Gebruiksanalytics.",
+            "body": "We gebruiken PostHog om te begrijpen hoe de site wordt gebruikt (bekeken pagina’s, aangeklikte knoppen). Hiervoor plaatsen we een cookie met een willekeurig gegenereerde identificatiecode. Deze bevat niet je naam of e-mailadres."
           },
           "c6": {
-            "label": "Error reports.",
-            "body": "If something breaks, an error report may be sent to Sentry. Reports can include technical details such as your browser and operating system and what the application was doing at the time of the error."
+            "label": "Foutrapporten.",
+            "body": "Als er iets stukgaat, kan er een foutrapport naar Sentry worden gestuurd. Rapporten kunnen technische gegevens bevatten, zoals je browser en besturingssysteem, en wat de applicatie deed op het moment van de fout."
           },
           "c7": {
-            "label": "Server logs.",
-            "body": "Our servers keep application logs (in Grafana Loki) for debugging and operating the service."
+            "label": "Serverlogs.",
+            "body": "Onze servers bewaren applicatielogs (in Grafana Loki) voor debugging en het beheren van de dienst."
           }
         }
       },
       "cookies": {
         "title": "Cookies",
-        "body": "We use a small number of first-party cookies. We do not use third-party advertising cookies.",
+        "body": "We gebruiken een klein aantal first-party cookies. We gebruiken geen advertentiecookies van derden.",
         "items": {
-          "k1": "<code>medusa-token</code> — keeps you signed in to your account. Expires after 1 day.",
-          "k2": "<code>wcpos-analytics-consent</code> — remembers your analytics consent choice (accepted or declined). Expires after 182 days.",
-          "k3": "<code>wcpos-distinct-id</code> — a random identifier used for analytics. Only set after you accept analytics on the consent banner; removed if you decline. Expires after 1 year.",
-          "k4": "<code>NEXT_LOCALE</code> — remembers your language preference.",
-          "k5": "Your light/dark theme preference is stored locally in your browser and is never sent to us."
+          "k1": "<code>medusa-token</code> — houdt je ingelogd op je account. Verloopt na 1 dag.",
+          "k2": "<code>wcpos-analytics-consent</code> — onthoudt je keuze voor analytics-toestemming (geaccepteerd of geweigerd). Verloopt na 182 dagen.",
+          "k3": "<code>wcpos-distinct-id</code> — een willekeurige identificatiecode die wordt gebruikt voor analytics. Wordt alleen geplaatst nadat je analytics accepteert in de toestemmingsbanner; wordt verwijderd als je weigert. Verloopt na 1 jaar.",
+          "k4": "<code>NEXT_LOCALE</code> — onthoudt je taalvoorkeur.",
+          "k5": "Je voorkeur voor licht/donker thema wordt lokaal in je browser opgeslagen en wordt nooit naar ons verzonden."
         }
       },
       "processors": {
-        "title": "Who processes your data",
-        "body": "We use the following service providers to run wcpos.com. Each receives only the data needed for its role:",
+        "title": "Wie je gegevens verwerkt",
+        "body": "We gebruiken de volgende dienstverleners om wcpos.com te laten werken. Iedere partij ontvangt alleen de gegevens die nodig zijn voor haar rol:",
         "items": {
           "p1": {
-            "label": "Our commerce backend (Medusa)",
-            "body": "— self-hosted on Hetzner infrastructure in the EU. Stores accounts, customer records, and orders."
+            "label": "Onze commerce-backend (Medusa)",
+            "body": "— zelf gehost op Hetzner-infrastructuur in de EU. Slaat accounts, klantrecords en bestellingen op."
           },
           "p2": {
             "label": "Stripe",
-            "body": "— card payment processing."
+            "body": "— verwerking van kaartbetalingen."
           },
           "p3": {
             "label": "PayPal",
-            "body": "— PayPal payment processing."
+            "body": "— verwerking van PayPal-betalingen."
           },
           "p4": {
             "label": "Keygen",
-            "body": "— software license management (license keys and activations)."
+            "body": "— beheer van softwarelicenties (licentiesleutels en activeringen)."
           },
           "p5": {
             "label": "PostHog",
-            "body": "— product analytics."
+            "body": "— productanalytics."
           },
           "p6": {
             "label": "Sentry",
-            "body": "— error monitoring."
+            "body": "— foutmonitoring."
           },
           "p7": {
             "label": "Vercel",
-            "body": "— website hosting and content delivery."
+            "body": "— websitehosting en contentlevering."
           }
         }
       },
       "retention": {
-        "title": "How long we keep data",
+        "title": "Hoe lang we gegevens bewaren",
         "items": {
-          "r1": "Account and license data is kept while your account is active. If you ask us to delete your account, we delete it, except where we are legally required to keep records.",
-          "r2": "Order and invoice records are kept for as long as tax and accounting laws require.",
-          "r3": "The analytics identifier cookie expires after 1 year.",
-          "r4": "Server logs and error reports are kept for a limited operational window and then deleted."
+          "r1": "Account- en licentiegegevens worden bewaard zolang je account actief is. Als je ons vraagt je account te verwijderen, verwijderen we het, behalve waar we wettelijk verplicht zijn gegevens te bewaren.",
+          "r2": "Bestel- en factuurgegevens worden bewaard zolang belasting- en boekhoudwetgeving dat vereist.",
+          "r3": "De analytics-identificatiecookie verloopt na 1 jaar.",
+          "r4": "Serverlogs en foutrapporten worden gedurende een beperkte operationele periode bewaard en daarna verwijderd."
         }
       },
       "rights": {
-        "title": "Your rights",
-        "body": "If you are in the EU/EEA or UK, you have rights under the GDPR, including the right to access, correct, delete, and export your personal data, and to object to or restrict certain processing. We extend the same rights to all users regardless of location.",
-        "exercise": "To exercise any of these rights, email us at <email>support@wcpos.com</email> so we can verify your identity privately. EU/EEA residents also have the right to lodge a complaint with their local data protection authority."
+        "title": "Je rechten",
+        "body": "Als je in de EU/EER of het VK bent, heb je rechten onder de AVG, waaronder het recht op inzage, correctie, verwijdering en export van je persoonsgegevens, en het recht bezwaar te maken tegen bepaalde verwerkingen of die te beperken. We bieden dezelfde rechten aan alle gebruikers, ongeacht locatie.",
+        "exercise": "Om een van deze rechten uit te oefenen, mail je ons via <email>support@wcpos.com</email> zodat we je identiteit privé kunnen verifiëren. Inwoners van de EU/EER hebben ook het recht een klacht in te dienen bij hun lokale gegevensbeschermingsautoriteit."
       },
       "changes": {
-        "title": "Changes to this policy",
-        "body": "If we make material changes to this policy, we will update the date at the top of this page. Continued use of the site after a change means the updated policy applies."
+        "title": "Wijzigingen in dit beleid",
+        "body": "Als we materiële wijzigingen in dit beleid aanbrengen, werken we de datum bovenaan deze pagina bij. Als je de site na een wijziging blijft gebruiken, geldt het bijgewerkte beleid."
       },
       "contact": {
         "title": "Contact",
-        "body": "Questions about this policy or your data? Email us at <email>support@wcpos.com</email> or ask general questions in the community chat on the <support>support page</support>."
+        "body": "Vragen over dit beleid of je gegevens? Mail ons via <email>support@wcpos.com</email> of stel algemene vragen in de communitychat op de <support>supportpagina</support>."
       }
     },
     "refunds": {
       "meta": {
-        "title": "Refund Policy",
-        "description": "The WCPOS Pro refund policy: how to request a refund within 14 days of purchase, and how refunds are paid."
+        "title": "Restitutiebeleid",
+        "description": "Het restitutiebeleid van WCPOS Pro: hoe je binnen 14 dagen na aankoop een restitutie aanvraagt en hoe restituties worden uitbetaald."
       },
-      "title": "Refund Policy",
-      "lastUpdated": "Last updated: {date}",
-      "intro": "WCPOS Pro purchases — first purchase or renewal, yearly or lifetime — can be refunded within 14 days of purchase. Email us within that window and we refund you in full. You do not need to give a reason.",
+      "title": "Restitutiebeleid",
+      "lastUpdated": "Laatst bijgewerkt: {date}",
+      "intro": "Aankopen van WCPOS Pro — eerste aankoop of verlenging, jaarlijks of levenslang — kunnen binnen 14 dagen na aankoop worden terugbetaald. Mail ons binnen die periode en we betalen het volledige bedrag terug. Je hoeft geen reden op te geven.",
       "prevention": {
-        "title": "The best refund is the one you never need",
+        "title": "De beste restitutie is die je nooit nodig hebt",
         "items": {
           "p1": {
-            "label": "Install the free plugin.",
-            "body": "Run the free version of WCPOS on your store for a couple of days before upgrading — that proves the plugin works on your site."
+            "label": "Installeer de gratis plugin.",
+            "body": "Gebruik de gratis versie van WCPOS een paar dagen op je winkel voordat je upgradet — zo weet je dat de plugin op je site werkt."
           },
           "p2": {
-            "label": "Try the demo.",
-            "body": "The <demo>online demo</demo> runs the current version with Pro activated, so you can confirm it fulfils your store's requirements."
+            "label": "Probeer de demo.",
+            "body": "De <demo>online demo</demo> draait op de huidige versie met Pro geactiveerd, zodat je kunt controleren of deze voldoet aan de eisen van je winkel."
           },
           "p3": {
-            "label": "Read the documentation.",
-            "body": "Check the <docs>docs</docs> for the features you need, and email <email>support@wcpos.com</email> with pre-sale questions — we answer openly and honestly."
+            "label": "Lees de documentatie.",
+            "body": "Controleer in de <docs>documentatie</docs> de functies die je nodig hebt en mail <email>support@wcpos.com</email> met vragen vóór aankoop — we antwoorden open en eerlijk."
           }
         }
       },
       "request": {
-        "title": "How to request a refund",
-        "body": "Email <email>support@wcpos.com</email> from the email address you used for the purchase, within 14 days of buying. Telling us why helps us improve, but it is not required to get the refund."
+        "title": "Een restitutie aanvragen",
+        "body": "Mail <email>support@wcpos.com</email> vanaf het e-mailadres dat je voor de aankoop hebt gebruikt, binnen 14 dagen na aankoop. Als je vertelt waarom, helpt dat ons verbeteren, maar het is niet verplicht om de restitutie te krijgen."
       },
       "payment": {
-        "title": "How refunds are paid",
-        "body": "Refunds go back to the original payment method via Stripe or PayPal and typically appear on your statement within 5–10 business days, depending on your bank or card issuer. Refunded license keys are revoked and stop working immediately."
+        "title": "Hoe restituties worden uitbetaald",
+        "body": "Restituties gaan via Stripe of PayPal terug naar de oorspronkelijke betaalmethode en verschijnen meestal binnen 5–10 werkdagen op je afschrift, afhankelijk van je bank of kaartuitgever. Terugbetaalde licentiesleutels worden ingetrokken en werken onmiddellijk niet meer."
       },
       "renewals": {
-        "title": "License renewals",
-        "body": "Yearly licenses do not renew automatically — we never charge you again without a new purchase from you. The same 14-day refund window applies to renewal purchases."
+        "title": "Licentieverlengingen",
+        "body": "Jaarlicenties worden niet automatisch verlengd — we brengen nooit opnieuw kosten in rekening zonder een nieuwe aankoop van jou. Dezelfde restitutietermijn van 14 dagen geldt voor verlengingsaankopen."
       },
       "rights": {
-        "title": "Your statutory rights",
-        "body": "For consumers in the EU, EEA and UK: our 14-day refund window matches your statutory right of withdrawal for this kind of purchase, and exercising either works the same way — email us within 14 days.",
-        "defective": "If WCPOS Pro is defective or does not work as described, statutory remedies for faulty digital content apply at any time, independent of the 14-day window. And nothing in this policy limits any rights you have under the consumer protection laws of your country — where local law gives you stronger rights, those rights apply."
+        "title": "Je wettelijke rechten",
+        "body": "Voor consumenten in de EU, EER en het VK: onze restitutietermijn van 14 dagen komt overeen met je wettelijke herroepingsrecht voor dit soort aankoop, en het uitoefenen van beide werkt op dezelfde manier — mail ons binnen 14 dagen.",
+        "defective": "Als WCPOS Pro gebrekkig is of niet werkt zoals beschreven, gelden wettelijke remedies voor ondeugdelijke digitale inhoud op elk moment, los van de termijn van 14 dagen. Niets in dit beleid beperkt bovendien rechten die je hebt onder de consumentenbeschermingswetten van je land — waar lokale wetgeving je sterkere rechten geeft, gelden die rechten."
       }
     },
     "terms": {
       "meta": {
-        "title": "Terms of Service",
-        "description": "The terms that govern your use of wcpos.com, your WCPOS account, and WCPOS Pro licenses."
+        "title": "Servicevoorwaarden",
+        "description": "De voorwaarden voor je gebruik van wcpos.com, je WCPOS-account en WCPOS Pro-licenties."
       },
-      "title": "Terms of Service",
-      "lastUpdated": "Last updated: {date}",
-      "intro": "These terms govern your use of wcpos.com, your WCPOS account, and any WCPOS Pro license you purchase. By using the site or buying a license, you agree to these terms. If you do not agree, please do not use the service.",
+      "title": "Servicevoorwaarden",
+      "lastUpdated": "Laatst bijgewerkt: {date}",
+      "intro": "Deze voorwaarden gelden voor je gebruik van wcpos.com, je WCPOS-account en elke WCPOS Pro-licentie die je koopt. Door de site te gebruiken of een licentie te kopen, ga je akkoord met deze voorwaarden. Als je niet akkoord gaat, gebruik de dienst dan niet.",
       "service": {
-        "title": "The service",
-        "body": "WCPOS provides the wcpos.com website, user accounts, and paid WCPOS Pro licenses that unlock premium features, updates, and priority support for the WCPOS plugin."
+        "title": "De dienst",
+        "body": "WCPOS levert de website wcpos.com, gebruikersaccounts en betaalde WCPOS Pro-licenties die premiumfuncties, updates en priority support voor de WCPOS-plugin ontgrendelen."
       },
       "gpl": {
-        "title": "The free plugin and the GPL",
-        "body": "The free WCPOS plugin is open-source software released under the GNU General Public License (GPL). Nothing in these terms limits the rights the GPL grants you over that code. A Pro license is separate: it covers access to Pro features, license keys, automatic updates, and priority support — not a restriction on the open-source code itself."
+        "title": "De gratis plugin en de GPL",
+        "body": "De gratis WCPOS-plugin is opensourcesoftware die is uitgebracht onder de GNU General Public License (GPL). Niets in deze voorwaarden beperkt de rechten die de GPL je op die code geeft. Een Pro-licentie staat daar los van: deze dekt toegang tot Pro-functies, licentiesleutels, automatische updates en priority support — geen beperking op de opensourcecode zelf."
       },
       "account": {
-        "title": "Your account",
+        "title": "Je account",
         "items": {
-          "a1": "Provide accurate information when registering and keep it up to date.",
-          "a2": "Keep your credentials secure. You are responsible for activity that happens under your account.",
-          "a3": "Tell us promptly at <email>support@wcpos.com</email> if you suspect unauthorized access to your account."
+          "a1": "Geef juiste informatie bij registratie en houd deze up-to-date.",
+          "a2": "Houd je inloggegevens veilig. Je bent verantwoordelijk voor activiteit die onder je account plaatsvindt.",
+          "a3": "Laat het ons direct weten via <email>support@wcpos.com</email> als je vermoedt dat er onbevoegde toegang tot je account is."
         }
       },
       "licenses": {
-        "title": "Purchases and licenses",
+        "title": "Aankopen en licenties",
         "items": {
-          "l1": "<strong>Yearly license.</strong> A one-time payment that includes Pro features, automatic updates, and priority support for one year. It does not renew automatically and we never charge you again without a new purchase. When it expires, you can choose to renew it from your account for another year.",
-          "l2": "<strong>Lifetime license.</strong> A one-time purchase that includes Pro features, updates, and priority support for the lifetime of the product.",
-          "l3": "License keys are for activating WCPOS Pro on your own sites within the limits of the license you purchased. Do not share, resell, or publish license keys.",
-          "l4": "Prices are shown at checkout before you pay. Payment is handled by Stripe or PayPal.",
-          "l5": "Refunds are handled according to our <policy>refund policy</policy>."
+          "l1": "<strong>Jaarlicentie.</strong> Een eenmalige betaling die Pro-functies, automatische updates en priority support voor één jaar omvat. Deze wordt niet automatisch verlengd en we brengen nooit opnieuw kosten in rekening zonder een nieuwe aankoop. Wanneer de licentie verloopt, kun je ervoor kiezen deze vanuit je account met nog een jaar te verlengen.",
+          "l2": "<strong>Levenslange licentie.</strong> Een eenmalige aankoop die Pro-functies, updates en priority support voor de levensduur van het product omvat.",
+          "l3": "Licentiesleutels zijn bedoeld om WCPOS Pro op je eigen sites te activeren binnen de limieten van de licentie die je hebt gekocht. Deel, verkoop of publiceer licentiesleutels niet.",
+          "l4": "Prijzen worden bij het afrekenen getoond voordat je betaalt. Betaling wordt verwerkt door Stripe of PayPal.",
+          "l5": "Restituties worden afgehandeld volgens ons <policy>restitutiebeleid</policy>."
         }
       },
       "acceptableUse": {
-        "title": "Acceptable use",
-        "body": "When using the service, you agree not to:",
+        "title": "Aanvaardbaar gebruik",
+        "body": "Wanneer je de dienst gebruikt, ga je ermee akkoord dat je niet:",
         "items": {
-          "u1": "Break the law or infringe the rights of others.",
-          "u2": "Attempt to gain unauthorized access to accounts, systems, or data, or probe the service for vulnerabilities without permission.",
-          "u3": "Interfere with the operation of the service, including overloading it or automated scraping at disruptive volumes.",
-          "u4": "Circumvent license checks or use license keys beyond the terms of your purchase. (This does not limit your GPL rights over the open-source plugin code.)"
+          "u1": "De wet overtreedt of inbreuk maakt op de rechten van anderen.",
+          "u2": "Probeert onbevoegde toegang te krijgen tot accounts, systemen of gegevens, of de dienst zonder toestemming onderzoekt op kwetsbaarheden.",
+          "u3": "De werking van de dienst verstoort, onder meer door deze te overbelasten of door geautomatiseerd scrapen met verstorende volumes.",
+          "u4": "Licentiecontroles omzeilt of licentiesleutels gebruikt buiten de voorwaarden van je aankoop. (Dit beperkt je GPL-rechten op de opensourceplugincode niet.)"
         }
       },
       "warranty": {
-        "title": "Warranty disclaimer",
-        "body": "The service and software are provided \"as is\" and \"as available\", without warranties of any kind, express or implied, including merchantability, fitness for a particular purpose, and non-infringement. We do not promise that the service will be uninterrupted or error-free. Some jurisdictions do not allow certain warranty exclusions, so parts of this section may not apply to you."
+        "title": "Afwijzing van garanties",
+        "body": "De dienst en software worden geleverd \"zoals ze zijn\" en \"zoals beschikbaar\", zonder enige vorm van garantie, expliciet of impliciet, waaronder verkoopbaarheid, geschiktheid voor een bepaald doel en niet-inbreuk. We beloven niet dat de dienst ononderbroken of foutloos zal zijn. Sommige rechtsgebieden staan bepaalde garantie-uitsluitingen niet toe, waardoor delen van deze sectie mogelijk niet op jou van toepassing zijn."
       },
       "liability": {
-        "title": "Limitation of liability",
-        "body": "To the maximum extent permitted by law, WCPOS will not be liable for indirect, incidental, special, or consequential damages, or for lost profits, revenue, or data. Our total liability for any claim relating to the service is limited to the amount you paid us in the 12 months before the claim arose. Nothing in these terms excludes liability that cannot be excluded by law."
+        "title": "Beperking van aansprakelijkheid",
+        "body": "Voor zover wettelijk toegestaan is WCPOS niet aansprakelijk voor indirecte, incidentele, speciale of gevolgschade, of voor gederfde winst, omzet of gegevens. Onze totale aansprakelijkheid voor een claim met betrekking tot de dienst is beperkt tot het bedrag dat je ons hebt betaald in de 12 maanden voordat de claim ontstond. Niets in deze voorwaarden sluit aansprakelijkheid uit die wettelijk niet kan worden uitgesloten."
       },
       "termination": {
-        "title": "Termination",
-        "body": "You can stop using the service and ask us to delete your account at any time. We may suspend or terminate accounts that violate these terms. Sections that by their nature should survive (such as the warranty disclaimer and liability limits) survive termination."
+        "title": "Beëindiging",
+        "body": "Je kunt op elk moment stoppen met het gebruik van de dienst en ons vragen je account te verwijderen. We kunnen accounts opschorten of beëindigen die deze voorwaarden schenden. Secties die naar hun aard moeten blijven gelden (zoals de afwijzing van garanties en aansprakelijkheidsbeperkingen) blijven na beëindiging van kracht."
       },
       "changes": {
-        "title": "Changes to these terms",
-        "body": "If we make material changes, we will update the date at the top of this page. Continued use of the service after a change means the updated terms apply."
+        "title": "Wijzigingen in deze voorwaarden",
+        "body": "Als we materiële wijzigingen aanbrengen, werken we de datum bovenaan deze pagina bij. Als je de dienst na een wijziging blijft gebruiken, gelden de bijgewerkte voorwaarden."
       },
       "contact": {
         "title": "Contact",
-        "body": "Questions about these terms? Email us at <email>support@wcpos.com</email> or ask in the community chat on the <support>support page</support>."
+        "body": "Vragen over deze voorwaarden? Mail ons via <email>support@wcpos.com</email> of stel ze in de communitychat op de <support>supportpagina</support>."
       }
     }
   },

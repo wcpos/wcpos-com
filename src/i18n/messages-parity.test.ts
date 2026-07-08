@@ -142,6 +142,7 @@ const auditedDutchNamespacePrefixes = [
   'downloads.',
   'account.',
   'pro.checkout.',
+  'legal.',
 ]
 const dutchIdenticalCopyAllowlist = new Set([
   'account.nav.downloads',
@@ -195,6 +196,15 @@ const dutchIdenticalCopyAllowlist = new Set([
   'pro.checkout.steps.account',
   'pro.checkout.payment.methods.card.hint',
   'pro.checkout.payment.methods.bitcoin.title',
+  'legal.privacy.cookies.title',
+  'legal.privacy.processors.items.p2.label',
+  'legal.privacy.processors.items.p3.label',
+  'legal.privacy.processors.items.p4.label',
+  'legal.privacy.processors.items.p5.label',
+  'legal.privacy.processors.items.p6.label',
+  'legal.privacy.processors.items.p7.label',
+  'legal.privacy.contact.title',
+  'legal.terms.contact.title',
 ])
 
 const auditedKoreanNamespacePrefixes = [
@@ -932,7 +942,7 @@ describe('messages key parity', () => {
     ).toEqual([])
   })
 
-  it('nl.json translates the audited support, auth, roadmap, common, header, footer, downloads, account, and checkout copy', () => {
+  it('nl.json translates the audited support, auth, roadmap, common, header, footer, downloads, account, checkout, and legal copy', () => {
     const english = loadMessages(defaultLocale)
     const dutch = loadMessages('nl')
     const auditedKeys = enKeys.filter(
