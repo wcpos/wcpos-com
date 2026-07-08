@@ -28,7 +28,8 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 
 async function syncOauthProfile(
   provider: string,
-  userMetadata: Record<string, string>
+  userMetadata: Record<string, string>,
+  locale: string
 ) {
   try {
     // Use the real session identity, never an active impersonation target, so
@@ -49,12 +50,18 @@ async function syncOauthProfile(
     const alreadyLatest = metadata.last_sign_in_provider === provider
     const avatarUnchanged =
       !avatarUrl || avatarUrl === metadata.oauth_avatar_url
+    const localeToPersist = locale === 'en' ? undefined : locale
+    const localeUnchanged =
+      !localeToPersist || metadata.locale === localeToPersist
 
     // Nothing to persist: provider already recorded as the latest and avatar
-    // unchanged.
-    if (providerAlreadyKnown && alreadyLatest && avatarUnchanged) return
+    // unchanged, and locale already matches the sign-in surface.
+    if (providerAlreadyKnown && alreadyLatest && avatarUnchanged && localeUnchanged) return
 
     let nextMetadata = recordSignInProvider(metadata, provider)
+    if (localeToPersist) {
+      nextMetadata = { ...nextMetadata, locale: localeToPersist }
+    }
     if (avatarUrl && avatarUrl !== metadata.oauth_avatar_url) {
       nextMetadata = { ...nextMetadata, oauth_avatar_url: avatarUrl }
     }
@@ -102,7 +109,7 @@ export async function GET(
     // session identity via getSessionCustomer) and is best-effort — it must
     // not block sign-in.
     const { payload } = await establishOAuthSession(provider, callbackParams)
-    await syncOauthProfile(provider, payload.user_metadata)
+    await syncOauthProfile(provider, payload.user_metadata, localeFromPath(redirectTo))
 
     return clearRedirectCookie(
       NextResponse.redirect(new URL(redirectTo, request.url))
