@@ -174,7 +174,7 @@ function LandscapePos({
               <g>
                 <rect x={cx + cardW - 30} y={cy + 3.5} width={27} height={9} rx={4.5} fill={ink.pill} />
                 <text x={cx + cardW - 16.5} y={cy + 10} textAnchor="middle" fontSize="5.4" fill="#fff">
-                  Variants
+                  {t('variantBadge')}
                 </text>
               </g>
             )}

@@ -307,6 +307,7 @@
           "sale": "Im Angebot",
           "category": "Kategorie"
         },
+        "variantBadge": "Varianten",
         "products": {
           "p1": "Stofftasche",
           "p2": "Kerze",

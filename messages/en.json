@@ -307,6 +307,7 @@
           "sale": "On Sale",
           "category": "Category"
         },
+        "variantBadge": "Variants",
         "products": {
           "p1": "Tote Bag",
           "p2": "Candle",

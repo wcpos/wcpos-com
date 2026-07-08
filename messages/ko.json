@@ -307,6 +307,7 @@
           "sale": "할인 중",
           "category": "카테고리"
         },
+        "variantBadge": "옵션",
         "products": {
           "p1": "토트백",
           "p2": "양초",
