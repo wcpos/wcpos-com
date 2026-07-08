@@ -1427,10 +1427,10 @@
       "desktop": "Desktop",
       "emptyNotes": "_Geen release-opmerkingen voor deze versie._",
       "fallback": {
-        "v196": "- Ondersteuning voor kassalade — automatisch openen na betaling of via een nieuwe knop Lade openen, met connectoren per printer (ESC-POS, Epson, PrintNode, cloud)\n- Probleem opgelost waarbij analytics-events te vaak werden verzonden\n- Vertalingen bijgewerkt",
-        "v195": "- Crash in de payment-gateways API opgelost (HTTP 500 met sommige gateways van derden, bijv. ToyyibPay)",
-        "v194": "- Bluetooth-printerconfiguratie opnieuw ontworpen; seriële afdruk voor via het OS gekoppelde Bluetooth Classic-printers\n- Verbeterde raw printing op Windows; soepelere USB-flow",
-        "v190": "- Nieuwe galerij met bon-sjablonen; thermisch printen (58/80 mm)\n- Belasting-ID’s voor klanten; Pro-kortingsbonnen en terugbetalingen in de POS"
+        "v196": "- Cash drawer support — auto-open after payment or via a new Open Drawer button, with per-printer connectors (ESC-POS, Epson, PrintNode, cloud)\n- Fixed analytics events firing too often\n- Updated translations",
+        "v195": "- Fixed a payment-gateways API crash (HTTP 500 with some third-party gateways, e.g. ToyyibPay)",
+        "v194": "- Redesigned Bluetooth printer setup; serial printing for OS-paired Bluetooth Classic printers\n- Improved Windows raw printing; smoother USB flow",
+        "v190": "- New receipt template gallery; thermal printing (58/80mm)\n- Customer Tax IDs; Pro coupons & refunds at the POS"
       },
       "plugin": "Gratis",
       "externalContentNotice": "Release-opmerkingen komen van GitHub en kunnen in het Engels worden weergegeven."

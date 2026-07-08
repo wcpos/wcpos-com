@@ -155,6 +155,12 @@ const receiptPdfEnglishPhrases = [
   'Canceled',
   'Unknown',
 ]
+const releaseNoteFallbackEnglishOnlyKeys = [
+  'downloads.releaseHistory.fallback.v196',
+  'downloads.releaseHistory.fallback.v195',
+  'downloads.releaseHistory.fallback.v194',
+  'downloads.releaseHistory.fallback.v190',
+]
 const auditedItalianNamespacePrefixes = [
   ...sharedAuditedNamespacePrefixes,
   'support.',
@@ -181,6 +187,7 @@ const auditedItalianNamespacePrefixes = [
   'legal.',
 ]
 const italianIdenticalCopyAllowlist = new Set([
+  ...releaseNoteFallbackEnglishOnlyKeys,
   'account.orderDetail.emailLabel',
   'account.profile.email',
   'account.profile.taxLabels.abn',
@@ -264,6 +271,7 @@ const auditedDutchNamespacePrefixes = [
   'about.',
 ]
 const dutchIdenticalCopyAllowlist = new Set([
+  ...releaseNoteFallbackEnglishOnlyKeys,
   'about.founder.signature.name',
   'about.timeline.dates.range',
   'home.title',
@@ -360,6 +368,7 @@ const auditedKoreanNamespacePrefixes = [
   'about.',
 ]
 const koreanIdenticalCopyAllowlist = new Set([
+  ...releaseNoteFallbackEnglishOnlyKeys,
   'about.founder.signature.name',
   'about.timeline.dates.range',
   'home.title',
@@ -481,6 +490,7 @@ const auditedPortugueseNamespacePrefixes = [
   'home.subtitle',
 ]
 const portugueseIdenticalCopyAllowlist = new Set([
+  ...releaseNoteFallbackEnglishOnlyKeys,
   'header.pro',
   'footer.copyright',
   'footer.discord',
@@ -569,6 +579,7 @@ const auditedJapaneseNamespacePrefixes = [
   'home.ecosystem.',
 ]
 const japaneseIdenticalCopyAllowlist = new Set([
+  ...releaseNoteFallbackEnglishOnlyKeys,
   'auth.common.emailPlaceholder',
   'header.pro',
   'footer.copyright',
@@ -662,6 +673,7 @@ const auditedChineseNamespacePrefixes = [
   'home.ecosystem.',
 ]
 const chineseIdenticalCopyAllowlist = new Set([
+  ...releaseNoteFallbackEnglishOnlyKeys,
   'auth.common.emailPlaceholder',
   'header.pro',
   'footer.copyright',
@@ -753,6 +765,7 @@ const auditedGermanNamespacePrefixes = [
   'home.ecosystem.',
 ]
 const germanIdenticalCopyAllowlist = new Set([
+  ...releaseNoteFallbackEnglishOnlyKeys,
   'header.pro',
   'footer.copyright',
   'footer.pro',
@@ -834,6 +847,7 @@ const germanIdenticalCopyAllowlist = new Set([
   'home.pricing.pro.title',
 ])
 const spanishIdenticalCopyAllowlist = new Set([
+  ...releaseNoteFallbackEnglishOnlyKeys,
   'header.pro',
   'footer.copyright',
   'footer.discord',
@@ -931,6 +945,7 @@ const spanishIdenticalCopyAllowlist = new Set([
 ])
 
 const frenchIdenticalCopyAllowlist = new Set([
+  ...releaseNoteFallbackEnglishOnlyKeys,
   'downloads.platforms.mac-arm.name',
   'downloads.platforms.mac-arm.listLabel',
   'downloads.platforms.mac-arm.short',
@@ -1185,6 +1200,29 @@ describe('messages key parity', () => {
       expect(
         leakedPhrases,
         `messages/${locale}.json account.receiptPdf copy must not retain high-signal English receipt phrases`
+      ).toEqual([])
+    }
+  )
+
+  it.each(otherLocales)(
+    '%s.json keeps release-note fallback bodies in English',
+    (locale) => {
+      const english = loadMessages(defaultLocale)
+      const localized = loadMessages(locale)
+      const fallbackKeys = enKeys.filter((key) =>
+        key.startsWith('downloads.releaseHistory.fallback.')
+      )
+      const translatedFallbacks = fallbackKeys
+        .map((key) => ({
+          key,
+          english: valueAtPath(english, key),
+          localized: valueAtPath(localized, key),
+        }))
+        .filter(({ english, localized }) => localized !== english)
+
+      expect(
+        translatedFallbacks,
+        `messages/${locale}.json release-note fallbacks must stay English; GitHub release notes are not translated`
       ).toEqual([])
     }
   )
