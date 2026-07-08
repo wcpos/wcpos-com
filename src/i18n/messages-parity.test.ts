@@ -137,8 +137,37 @@ const auditedDutchNamespacePrefixes = [
   'common.',
   'header.',
   'footer.',
+  'downloads.',
 ]
 const dutchIdenticalCopyAllowlist = new Set([
+  'downloads.meta.title',
+  'downloads.hero.eyebrow',
+  'downloads.platforms.mac-arm.name',
+  'downloads.platforms.mac-arm.listLabel',
+  'downloads.platforms.mac-arm.short',
+  'downloads.platforms.mac-intel.name',
+  'downloads.platforms.mac-intel.listLabel',
+  'downloads.platforms.mac-intel.short',
+  'downloads.platforms.win.name',
+  'downloads.platforms.win.listLabel',
+  'downloads.platforms.win.short',
+  'downloads.platforms.linux.name',
+  'downloads.platforms.linux.listLabel',
+  'downloads.platforms.linux.short',
+  'downloads.platforms.ios.name',
+  'downloads.platforms.ios.listLabel',
+  'downloads.platforms.android.name',
+  'downloads.platforms.android.listLabel',
+  'downloads.platforms.web.name',
+  'downloads.platforms.web.listLabel',
+  'downloads.howItFits.diagram.devices.desktop',
+  'downloads.howItFits.diagram.devices.android',
+  'downloads.howItFits.diagram.devices.web',
+  'downloads.howItFits.diagram.hub.platform',
+  'downloads.page.steps.plugin.requirements',
+  'downloads.page.steps.plugin.cardTitle',
+  'downloads.page.steps.plugin.wordpressOrgCta',
+  'downloads.releaseHistory.desktop',
   'header.pro',
   'footer.copyright',
   'footer.pro',
@@ -870,7 +899,7 @@ describe('messages key parity', () => {
     ).toEqual([])
   })
 
-  it('nl.json translates the audited support, auth, roadmap, common, header, and footer copy', () => {
+  it('nl.json translates the audited support, auth, roadmap, common, header, footer, and downloads copy', () => {
     const english = loadMessages(defaultLocale)
     const dutch = loadMessages('nl')
     const auditedKeys = enKeys.filter(
@@ -891,7 +920,7 @@ describe('messages key parity', () => {
 
     expect(
       untranslatedKeys,
-      'messages/nl.json must not copy audited support/auth/roadmap/common/header/footer English strings verbatim'
+      'messages/nl.json must not copy audited support/auth/roadmap/common/header/footer/downloads English strings verbatim'
     ).toEqual([])
   })
 

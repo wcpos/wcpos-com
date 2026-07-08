@@ -1280,85 +1280,85 @@
   "downloads": {
     "meta": {
       "title": "Downloads",
-      "description": "Download WCPOS — the free plugin plus the desktop, iOS, Android and web apps. See the latest version and recent release notes."
+      "description": "Download WCPOS — de gratis plugin plus de desktop-, iOS-, Android- en webapps. Bekijk de nieuwste versie en recente release-opmerkingen."
     },
     "platforms": {
       "mac-arm": {
         "name": "macOS",
         "listLabel": "macOS (Apple Silicon)",
         "short": "Apple Silicon · .dmg",
-        "action": "Download for macOS"
+        "action": "Download voor macOS"
       },
       "mac-intel": {
         "name": "macOS (Intel)",
         "listLabel": "macOS (Intel)",
         "short": "Intel · .dmg",
-        "action": "Download for macOS"
+        "action": "Download voor macOS"
       },
       "win": {
         "name": "Windows",
         "listLabel": "Windows",
         "short": "Windows 10/11 · .exe",
-        "action": "Download for Windows"
+        "action": "Download voor Windows"
       },
       "linux": {
         "name": "Linux",
         "listLabel": "Linux",
         "short": ".AppImage",
-        "action": "Download for Linux"
+        "action": "Download voor Linux"
       },
       "ios": {
         "name": "iOS & iPad",
         "listLabel": "iOS & iPad",
-        "short": "Public TestFlight beta",
-        "action": "Join the iOS beta"
+        "short": "Openbare TestFlight-bèta",
+        "action": "Doe mee met de iOS-bèta"
       },
       "android": {
         "name": "Android",
         "listLabel": "Android",
-        "short": "Google Play testing beta",
-        "action": "Join the Android beta"
+        "short": "Google Play-testbèta",
+        "action": "Doe mee met de Android-bèta"
       },
       "web": {
         "name": "Web",
         "listLabel": "Web",
-        "short": "No install needed",
-        "action": "Open the web demo"
+        "short": "Geen installatie nodig",
+        "action": "Open de webdemo"
       }
     },
     "hero": {
       "eyebrow": "Downloads",
-      "title": "One till, every device.",
-      "platformChooserLabel": "Choose your platform",
-      "versionMeta": "Version {version} · {platform}",
-      "detected": "Detected",
-      "intelMac": "On an Intel Mac? <intel>Get the Intel build</intel>",
-      "pluginNotice": "Every app connects to the <plugin>free WordPress plugin</plugin> — install it first."
+      "title": "Eén kassa, elk apparaat.",
+      "platformChooserLabel": "Kies je platform",
+      "versionMeta": "Versie {version} · {platform}",
+      "detected": "Gedetecteerd",
+      "intelMac": "Op een Intel Mac? <intel>Download de Intel-build</intel>",
+      "pluginNotice": "Elke app maakt verbinding met de <plugin>gratis WordPress-plugin</plugin> — installeer die eerst."
     },
     "howItFits": {
-      "eyebrow": "How it fits together",
-      "title": "One store at the centre. Every till in sync.",
+      "eyebrow": "Hoe het samenwerkt",
+      "title": "Eén winkel in het midden. Elke kassa synchroon.",
       "points": {
         "setup": {
-          "title": "One plugin is the only setup",
-          "body": "The free plugin adds a secure REST API to your WooCommerce store. That’s the whole install — nothing to host or configure per device."
+          "title": "Eén plugin is de enige setup",
+          "body": "De gratis plugin voegt een veilige REST API toe aan je WooCommerce-winkel. Dat is de hele installatie — niets om per apparaat te hosten of configureren."
         },
         "sync": {
-          "title": "Every app reads and writes the same store",
-          "body": "Ring up a sale on the desktop, refund it on your phone — one set of products, orders and customers, updating in real time."
+          "title": "Elke app leest en schrijft naar dezelfde winkel",
+          "body": "Sla een verkoop aan op de desktop, verwerk een terugbetaling op je telefoon — één set producten, bestellingen en klanten, realtime bijgewerkt."
         },
         "offline": {
-          "title": "Offline-first, so the till never stops",
-          "body": "Each device keeps working without a connection and re-syncs the moment it’s back online."
+          "title": "Offline-first, zodat de kassa nooit stopt",
+          "body": "Elk apparaat blijft werken zonder verbinding en synchroniseert opnieuw zodra het weer online is."
         }
       },
-      "syncLabel": "What stays in sync",
+      "syncLabel": "Wat synchroon blijft",
       "chips": {
-        "c1": "Products & prices",
-        "c2": "Stock levels",
-        "c3": "Orders",
-        "c4": "Customers",
-        "c5": "Tax & receipts"
+        "c1": "Producten en prijzen",
+        "c2": "Voorraadniveaus",
+        "c3": "Bestellingen",
+        "c4": "Klanten",
+        "c5": "Belasting en bonnen"
       },
       "diagram": {
         "ariaLabel": "Een WooCommerce-winkel met de WCPOS-plugin staat centraal en is via een REST API verbonden met de desktop-, iOS-, Android- en webapps, die allemaal gesynchroniseerd blijven.",
@@ -1376,55 +1376,55 @@
       }
     },
     "page": {
-      "beta": "Beta",
+      "beta": "Bèta",
       "start": {
-        "eyebrow": "Get started",
-        "title": "Three steps to your first sale",
-        "subtitle": "It takes about two minutes, start to finish."
+        "eyebrow": "Aan de slag",
+        "title": "Drie stappen naar je eerste verkoop",
+        "subtitle": "Van begin tot eind duurt het ongeveer twee minuten."
       },
       "steps": {
         "plugin": {
-          "title": "Install the free plugin",
-          "body": "The foundation everything connects to. In your dashboard: Plugins → Add New, then search “WCPOS”.",
-          "badge": "Free · GPL",
+          "title": "Installeer de gratis plugin",
+          "body": "De basis waar alles mee verbindt. In je dashboard: Plugins → Nieuwe toevoegen, zoek daarna naar “WCPOS”.",
+          "badge": "Gratis · GPL",
           "requirements": "WordPress 5.6+ · WooCommerce 5.3+ · PHP 7.4+",
-          "requirementsWithVersion": "Latest {version} · WordPress 5.6+ · WooCommerce 5.3+ · PHP 7.4+",
+          "requirementsWithVersion": "Nieuwste {version} · WordPress 5.6+ · WooCommerce 5.3+ · PHP 7.4+",
           "cardTitle": "WCPOS",
           "wordpressOrgCta": "WordPress.org"
         },
         "device": {
-          "title": "Pick your device",
-          "body": "All free, all in sync. Grab the one we detected up top, or any of these.",
-          "desktopTitle": "Desktop app",
-          "iosCta": "Join the TestFlight beta",
-          "androidCta": "Join on Google Play",
-          "webCta": "Open the live demo"
+          "title": "Kies je apparaat",
+          "body": "Allemaal gratis, allemaal synchroon. Download degene die we hierboven hebben gedetecteerd, of een van deze.",
+          "desktopTitle": "Desktop-app",
+          "iosCta": "Doe mee met de TestFlight-bèta",
+          "androidCta": "Doe mee op Google Play",
+          "webCta": "Open de live demo"
         },
         "pro": {
-          "title": "Want more? Go Pro",
-          "body": "A licensed plugin that adds terminal payments, refunds and stock control on the same foundation.",
-          "cardTitle": "Unlock the full till",
-          "cardBody": "Payments, refunds, stock & pricing, order management, end-of-day reports, multi-store and priority Discord support.",
-          "plansCta": "View Pro plans",
-          "signInCta": "Sign in to download"
+          "title": "Meer nodig? Kies Pro",
+          "body": "Een gelicentieerde plugin die terminalbetalingen, terugbetalingen en voorraadbeheer toevoegt op dezelfde basis.",
+          "cardTitle": "Ontgrendel de volledige kassa",
+          "cardBody": "Betalingen, terugbetalingen, voorraad en prijzen, orderbeheer, dagafsluitingsrapporten, meerdere winkels en prioritaire Discord-support.",
+          "plansCta": "Bekijk Pro-abonnementen",
+          "signInCta": "Log in om te downloaden"
         }
       }
     },
     "releaseHistory": {
-      "eyebrow": "Release history",
-      "title": "What’s new",
-      "subtitle": "Recent changes — every app shares one version line.",
-      "latest": "Latest",
-      "fullHistory": "Full history on GitHub —",
+      "eyebrow": "Releasegeschiedenis",
+      "title": "Wat is nieuw",
+      "subtitle": "Recente wijzigingen — elke app deelt één versielijn.",
+      "latest": "Nieuwste",
+      "fullHistory": "Volledige geschiedenis op GitHub —",
       "desktop": "Desktop",
-      "emptyNotes": "_No release notes for this version._",
+      "emptyNotes": "_Geen release-opmerkingen voor deze versie._",
       "fallback": {
-        "v196": "- Cash drawer support — auto-open after payment or via a new Open Drawer button, with per-printer connectors (ESC-POS, Epson, PrintNode, cloud)\n- Fixed analytics events firing too often\n- Updated translations",
-        "v195": "- Fixed a payment-gateways API crash (HTTP 500 with some third-party gateways, e.g. ToyyibPay)",
-        "v194": "- Redesigned Bluetooth printer setup; serial printing for OS-paired Bluetooth Classic printers\n- Improved Windows raw printing; smoother USB flow",
-        "v190": "- New receipt template gallery; thermal printing (58/80mm)\n- Customer Tax IDs; Pro coupons & refunds at the POS"
+        "v196": "- Ondersteuning voor kassalade — automatisch openen na betaling of via een nieuwe knop Lade openen, met connectoren per printer (ESC-POS, Epson, PrintNode, cloud)\n- Probleem opgelost waarbij analytics-events te vaak werden verzonden\n- Vertalingen bijgewerkt",
+        "v195": "- Crash in de payment-gateways API opgelost (HTTP 500 met sommige gateways van derden, bijv. ToyyibPay)",
+        "v194": "- Bluetooth-printerconfiguratie opnieuw ontworpen; seriële afdruk voor via het OS gekoppelde Bluetooth Classic-printers\n- Verbeterde raw printing op Windows; soepelere USB-flow",
+        "v190": "- Nieuwe galerij met bon-sjablonen; thermisch printen (58/80 mm)\n- Belasting-ID’s voor klanten; Pro-kortingsbonnen en terugbetalingen in de POS"
       },
-      "plugin": "Free"
+      "plugin": "Gratis"
     }
   },
   "about": {
