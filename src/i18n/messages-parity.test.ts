@@ -29,6 +29,13 @@ function placeholders(value: string): string[] {
   ).sort()
 }
 
+function richTextTags(value: string): string[] {
+  return Array.from(
+    value.matchAll(/<\/?([A-Za-z][A-Za-z0-9_-]*)\b[^>]*>/g),
+    (match) => match[0] ?? ''
+  ).sort()
+}
+
 function valueAtPath(messages: Messages, keyPath: string): string | undefined {
   let value: string | Messages | undefined = messages
   for (const key of keyPath.split('.')) {
@@ -1016,6 +1023,26 @@ describe('messages key parity', () => {
       expect(
         mismatches,
         `messages/${locale}.json must keep the same interpolation placeholders as messages/${defaultLocale}.json`
+      ).toEqual([])
+    }
+  )
+
+  it.each(otherLocales)(
+    `%s.json preserves rich-text tags from ${defaultLocale}.json`,
+    (locale) => {
+      const english = loadMessages(defaultLocale)
+      const localized = loadMessages(locale)
+      const mismatches = enKeys
+        .map((key) => ({
+          key,
+          expected: richTextTags(valueAtPath(english, key) ?? ''),
+          actual: richTextTags(valueAtPath(localized, key) ?? ''),
+        }))
+        .filter(({ expected, actual }) => expected.join('|') !== actual.join('|'))
+
+      expect(
+        mismatches,
+        `messages/${locale}.json must keep the same rich-text tags as messages/${defaultLocale}.json`
       ).toEqual([])
     }
   )
