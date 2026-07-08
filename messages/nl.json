@@ -580,51 +580,51 @@
       "errors": {
         "noProductSelected": "Geen product geselecteerd",
         "initializeFailed": "Afrekenen kon niet worden gestart. Probeer het opnieuw.",
-        "checkoutBusy": "Checkout is busy. Please try again.",
-        "paymentRefreshFailed": "Billing address was saved, but we couldn't prepare payment. Please try again.",
-        "methodSwitchFailed": "We couldn't prepare that payment method. Please try again or choose a different one.",
-        "genericPaymentFailed": "We were unable to process your payment. Please try again or use a different payment method.",
-        "genericCardFailed": "Your card could not be charged. Please check your card details, or try a different card or payment method.",
-        "unexpectedPaymentStatus": "We couldn't confirm the status of your payment. If you think you may have been charged, please contact support before trying again.",
-        "orderPending": "Your payment was received, but we couldn't finish creating your order. Please do not pay again — contact support and we will finish your order or refund the payment.",
-        "paypalFailed": "PayPal couldn't complete your payment. You have not been charged — please try again or use a different payment method.",
-        "paypalInitFailed": "We couldn't start the PayPal checkout. Please try again or use a different payment method.",
-        "paypalCancelled": "PayPal checkout was cancelled and you have not been charged. You can try again whenever you're ready.",
-        "btcpayInitFailed": "We couldn't start the Bitcoin payment. You have not been charged — please try again or use a different payment method.",
+        "checkoutBusy": "Afrekenen is bezig. Probeer het opnieuw.",
+        "paymentRefreshFailed": "Het factuuradres is opgeslagen, maar we konden de betaling niet voorbereiden. Probeer het opnieuw.",
+        "methodSwitchFailed": "We konden die betaalmethode niet voorbereiden. Probeer het opnieuw of kies een andere betaalmethode.",
+        "genericPaymentFailed": "We konden je betaling niet verwerken. Probeer het opnieuw of gebruik een andere betaalmethode.",
+        "genericCardFailed": "Je kaart kon niet worden belast. Controleer je kaartgegevens of probeer een andere kaart of betaalmethode.",
+        "unexpectedPaymentStatus": "We konden de status van je betaling niet bevestigen. Als je denkt dat er mogelijk een bedrag is afgeschreven, neem dan contact op met support voordat je het opnieuw probeert.",
+        "orderPending": "Je betaling is ontvangen, maar we konden je bestelling niet afronden. Betaal niet opnieuw — neem contact op met support en we ronden je bestelling af of betalen je betaling terug.",
+        "paypalFailed": "PayPal kon je betaling niet voltooien. Er is niets afgeschreven — probeer het opnieuw of gebruik een andere betaalmethode.",
+        "paypalInitFailed": "We konden de PayPal-checkout niet starten. Probeer het opnieuw of gebruik een andere betaalmethode.",
+        "paypalCancelled": "De PayPal-checkout is geannuleerd en er is niets afgeschreven. Je kunt het opnieuw proberen wanneer je klaar bent.",
+        "btcpayInitFailed": "We konden de Bitcoin-betaling niet starten. Er is niets afgeschreven — probeer het opnieuw of gebruik een andere betaalmethode.",
         "stripeDeclines": {
-          "insufficientFunds": "Your card was declined due to insufficient funds. Please use a different card or payment method."
+          "insufficientFunds": "Je kaart is geweigerd wegens onvoldoende saldo. Gebruik een andere kaart of betaalmethode."
         },
         "stripeCodes": {
-          "cardDeclined": "Your card was declined. Please try a different card or payment method.",
-          "expiredCard": "Your card has expired. Please use a different card.",
-          "incorrectCvc": "Your card's security code is incorrect. Please check it and try again.",
-          "invalidCvc": "Your card's security code is invalid. Please check it and try again.",
-          "incorrectNumber": "Your card number appears to be invalid. Please check it and try again.",
-          "invalidNumber": "Your card number appears to be invalid. Please check it and try again.",
-          "invalidExpiryMonth": "Your card's expiry date is invalid. Please check it and try again.",
-          "invalidExpiryYear": "Your card's expiry date is invalid. Please check it and try again.",
-          "processingError": "Something went wrong while processing your card. You have not been charged — please try again.",
-          "authenticationFailure": "We couldn't verify your card with your bank. Please try again or use a different payment method.",
-          "authenticationRequired": "We couldn't verify your card with your bank. Please try again or use a different payment method."
+          "cardDeclined": "Je kaart is geweigerd. Probeer een andere kaart of betaalmethode.",
+          "expiredCard": "Je kaart is verlopen. Gebruik een andere kaart.",
+          "incorrectCvc": "De beveiligingscode van je kaart is onjuist. Controleer de code en probeer het opnieuw.",
+          "invalidCvc": "De beveiligingscode van je kaart is ongeldig. Controleer de code en probeer het opnieuw.",
+          "incorrectNumber": "Je kaartnummer lijkt ongeldig. Controleer het nummer en probeer het opnieuw.",
+          "invalidNumber": "Je kaartnummer lijkt ongeldig. Controleer het nummer en probeer het opnieuw.",
+          "invalidExpiryMonth": "De vervaldatum van je kaart is ongeldig. Controleer deze en probeer het opnieuw.",
+          "invalidExpiryYear": "De vervaldatum van je kaart is ongeldig. Controleer deze en probeer het opnieuw.",
+          "processingError": "Er is iets misgegaan bij het verwerken van je kaart. Er is niets afgeschreven — probeer het opnieuw.",
+          "authenticationFailure": "We konden je kaart niet verifiëren bij je bank. Probeer het opnieuw of gebruik een andere betaalmethode.",
+          "authenticationRequired": "We konden je kaart niet verifiëren bij je bank. Probeer het opnieuw of gebruik een andere betaalmethode."
         }
       },
       "recovery": {
-        "contactSupport": "Neem contact op met support",
-        "contactSupportLower": "Neem contact op met support",
-        "switchMethod": "You can also choose a different payment method below.",
+        "contactSupport": "Contact opnemen met support",
+        "contactSupportLower": "contact op met support",
+        "switchMethod": "Je kunt hieronder ook een andere betaalmethode kiezen.",
         "cancelled": {
-          "title": "Payment cancelled"
+          "title": "Betaling geannuleerd"
         },
         "unknown": {
-          "title": "Payment status unknown",
-          "prefix": "Please",
-          "suffix": "and quote reference <reference></reference> — we will confirm whether your payment went through before you pay again."
+          "title": "Betalingsstatus onbekend",
+          "prefix": "Neem",
+          "suffix": "en vermeld referentie <reference></reference> — we bevestigen of je betaling is gelukt voordat je opnieuw betaalt."
         },
         "unsuccessful": {
           "title": "Betaling mislukt",
-          "saved": "Your order details have been saved, so you can try again without starting over.",
-          "stuck": "Still stuck?",
-          "quote": "and quote reference <reference></reference>."
+          "saved": "Je bestelgegevens zijn opgeslagen, zodat je het opnieuw kunt proberen zonder opnieuw te beginnen.",
+          "stuck": "Loop je nog vast?",
+          "quote": "en vermeld referentie <reference></reference>."
         },
         "orderPending": {
           "resetConfirm": "Reset de checkout alleen nadat support heeft bevestigd dat opnieuw proberen veilig is. Als je betaling nog in behandeling is, kan resetten tot een tweede betaling leiden.",
@@ -640,17 +640,17 @@
       },
       "successPage": {
         "metadata": {
-          "title": "Order Complete - WCPOS Pro",
-          "description": "Thank you for your purchase of WCPOS Pro"
+          "title": "Bestelling voltooid - WCPOS Pro",
+          "description": "Bedankt voor je aankoop van WCPOS Pro"
         },
         "title": "Bedankt!",
         "description": "Je aankoop van WCPOS Pro is voltooid.",
         "nextTitle": "Wat gebeurt er nu?",
         "next": {
-          "licenseEmail": "✓ Your license key and download link have been sent to your email",
-          "accountDownload": "✓ You can also download from your account's licenses page",
-          "install": "✓ Install and activate the plugin on your WordPress site",
-          "activate": "✓ Enter your license key to unlock Pro features"
+          "licenseEmail": "✓ Je licentiesleutel en downloadlink zijn naar je e-mail gestuurd",
+          "accountDownload": "✓ Je kunt ook downloaden via de licentiepagina van je account",
+          "install": "✓ Installeer en activeer de plugin op je WordPress-site",
+          "activate": "✓ Voer je licentiesleutel in om Pro-functies te ontgrendelen"
         },
         "licenses": "Naar licenties",
         "installationGuide": "Installatiegids"
