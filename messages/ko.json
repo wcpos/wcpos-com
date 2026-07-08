@@ -914,7 +914,9 @@
         "read_only_inspection": "이 계정을 읽기 전용 모드로 보고 있습니다.",
         "unauthorized": "프로필을 업데이트하려면 다시 로그인해 주세요.",
         "update_failed": "프로필 업데이트에 실패했습니다"
-      }
+      },
+      "languageTitle": "언어",
+      "languageHint": "계정, 이메일, 영수증에 사용되는 언어입니다. 변경하면 페이지가 새로고침됩니다."
     },
     "receiptPdf": {
       "title": "영수증",

@@ -914,7 +914,9 @@
         "read_only_inspection": "このアカウントは読み取り専用モードで表示しています。",
         "unauthorized": "プロフィールを更新するには、もう一度ログインしてください。",
         "update_failed": "プロフィールの更新に失敗しました"
-      }
+      },
+      "languageTitle": "言語",
+      "languageHint": "アカウント、メール、領収書で使用される言語です。変更するとページが再読み込みされます。"
     },
     "receiptPdf": {
       "title": "領収書",

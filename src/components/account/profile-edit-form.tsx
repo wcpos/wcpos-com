@@ -2,6 +2,8 @@
 
 import { useMemo, useState } from 'react'
 import { useLocale, useTranslations } from 'next-intl'
+import { useRouter, usePathname } from '@/i18n/navigation'
+import { locales, localeNames, type Locale } from '@/i18n/config'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -150,7 +152,26 @@ export function ProfileEditForm({
 }: ProfileEditFormProps) {
   const locale = useLocale()
   const t = useTranslations('account.profile')
+  const router = useRouter()
+  const pathname = usePathname()
   const metadataDefaults = getProfileDefaults(customer.metadata)
+
+  // Changing the language persists the preference to the account and reloads
+  // the page in that locale. Mirrors the header LanguageSelector; the URL/cookie
+  // locale is the immediate source of truth so anonymous/failed writes still
+  // switch the visible language.
+  function handleLanguageChange(
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) {
+    const nextLocale = event.target.value as Locale
+    if (nextLocale === locale) return
+    void fetch('/api/account/locale', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ locale: nextLocale }),
+    }).catch(() => {})
+    router.replace(pathname, { locale: nextLocale })
+  }
   const countryOptions = useMemo(() => buildCountryOptions(locale), [locale])
 
   // Email is not editable: the profile API deliberately never forwards it to
@@ -271,7 +292,29 @@ export function ProfileEditForm({
   }
 
   return (
-    <form className="space-y-6" onSubmit={handleSubmit}>
+    <div className="space-y-6">
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-lg">{t('languageTitle')}</CardTitle>
+          <CardDescription>{t('languageHint')}</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Select
+            aria-label={t('languageTitle')}
+            value={locale}
+            onChange={handleLanguageChange}
+            className="max-w-xs"
+          >
+            {locales.map((loc) => (
+              <option key={loc} value={loc}>
+                {localeNames[loc]}
+              </option>
+            ))}
+          </Select>
+        </CardContent>
+      </Card>
+
+      <form className="space-y-6" onSubmit={handleSubmit}>
       <Card>
         <CardHeader>
           <CardTitle className="text-lg">{t('cardTitle')}</CardTitle>
@@ -501,6 +544,7 @@ export function ProfileEditForm({
           </span>
         )}
       </div>
-    </form>
+      </form>
+    </div>
   )
 }

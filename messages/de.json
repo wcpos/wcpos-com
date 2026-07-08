@@ -914,7 +914,9 @@
         "read_only_inspection": "Du siehst dieses Konto im schreibgeschützten Modus.",
         "unauthorized": "Bitte melde dich erneut an, um dein Profil zu aktualisieren.",
         "update_failed": "Profil konnte nicht aktualisiert werden"
-      }
+      },
+      "languageTitle": "Sprache",
+      "languageHint": "Die Sprache für dein Konto, E-Mails und Belege. Beim Ändern wird die Seite neu geladen."
     },
     "receiptPdf": {
       "title": "Beleg",

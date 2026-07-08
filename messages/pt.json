@@ -914,7 +914,9 @@
         "read_only_inspection": "Está a visualizar esta conta em modo só de leitura.",
         "unauthorized": "Inicie sessão novamente para atualizar o seu perfil.",
         "update_failed": "Falha ao atualizar o perfil"
-      }
+      },
+      "languageTitle": "Idioma",
+      "languageHint": "O idioma usado na sua conta, e-mails e recibos. Alterá-lo recarrega a página."
     },
     "receiptPdf": {
       "title": "Recibo",
