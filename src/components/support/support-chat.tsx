@@ -223,7 +223,7 @@ export function SupportChat() {
               type="button"
               variant="outline"
               size="sm"
-              onClick={() => void ask(q)}
+              onClick={() => void ask(t(`examples.${q}`))}
               disabled={verifying}
               className="h-auto rounded-full bg-card px-3 py-1.5 text-sm text-muted-foreground hover:bg-muted"
             >
