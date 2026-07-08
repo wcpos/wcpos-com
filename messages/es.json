@@ -506,7 +506,7 @@
       },
       "summary": {
         "quantity": "Cant.: {quantity}",
-        "total": "Total",
+        "total": "Total a pagar",
         "instantLicense": "Entrega instantánea de la licencia",
         "oneTimePayment": "Pago único — nunca se renueva automáticamente",
         "securePayment": "Procesamiento de pago seguro"
@@ -718,7 +718,7 @@
       "dateLabel": "Fecha",
       "statusLabel": "Estado",
       "emailLabel": "Correo electrónico",
-      "totalLabel": "Total",
+      "totalLabel": "Importe total",
       "itemsTitle": "Artículos",
       "quantity": "Cantidad: {count}",
       "licenseKeysTitle": "Claves de licencia",
@@ -772,7 +772,7 @@
       "copiedKey": "Copiada",
       "copyError": "No se pudo copiar la clave de licencia. Inténtalo de nuevo.",
       "apiErrors": {
-        "read_only_inspection": "You are viewing this account in read-only mode."
+        "read_only_inspection": "Estás viendo esta cuenta en modo de solo lectura."
       }
     },
     "downloads": {
@@ -811,12 +811,12 @@
       "tokenErrorFallback": "La descarga no está disponible para esta versión",
       "startErrorFallback": "No se pudo iniciar la descarga",
       "apiErrors": {
-        "unauthorized": "Please sign in again to download WCPOS Pro.",
-        "download_token_secret_missing": "Downloads are temporarily unavailable. Please contact support.",
-        "rate_limited": "Too many download requests. Please wait a moment and try again.",
-        "release_not_found": "That WCPOS Pro release could not be found.",
-        "forbidden": "Your license does not include this download.",
-        "internal": "We could not prepare your download. Please try again."
+        "unauthorized": "Inicia sesión de nuevo para descargar WCPOS Pro.",
+        "download_token_secret_missing": "Las descargas no están disponibles temporalmente. Contacta con soporte.",
+        "rate_limited": "Demasiadas solicitudes de descarga. Espera un momento e inténtalo de nuevo.",
+        "release_not_found": "No se pudo encontrar esa versión de WCPOS Pro.",
+        "forbidden": "Tu licencia no incluye esta descarga.",
+        "internal": "No pudimos preparar tu descarga. Inténtalo de nuevo."
       }
     },
     "profile": {
@@ -894,9 +894,9 @@
       "emailProvider": "Correo electrónico y contraseña",
       "emailDescription": "Inicias sesión con tu dirección de correo electrónico.",
       "apiErrors": {
-        "read_only_inspection": "You are viewing this account in read-only mode.",
-        "unauthorized": "Please sign in again to update your profile.",
-        "update_failed": "Failed to update profile"
+        "read_only_inspection": "Estás viendo esta cuenta en modo de solo lectura.",
+        "unauthorized": "Inicia sesión de nuevo para actualizar tu perfil.",
+        "update_failed": "No se pudo actualizar el perfil"
       }
     },
     "receiptPdf": {
@@ -935,13 +935,13 @@
       }
     },
     "admin": {
-      "title": "Inspect a customer (read-only)",
-      "description": "Enter a customer email to view their account exactly as they see it. You cannot change their data while inspecting.",
-      "submit": "View as"
+      "title": "Inspeccionar un cliente (solo lectura)",
+      "description": "Introduce el correo electrónico de un cliente para ver su cuenta exactamente como la ve. No puedes cambiar sus datos mientras la inspeccionas.",
+      "submit": "Ver como"
     },
     "impersonation": {
-      "viewing": "🔍 Viewing <strong>{target}</strong> as <strong>read-only</strong> — you cannot change their account.",
-      "exit": "Exit"
+      "viewing": "🔍 Viendo <strong>{target}</strong> en modo de <strong>solo lectura</strong> — no puedes cambiar su cuenta.",
+      "exit": "Salir"
     },
     "orderStatus": {
       "actionRequired": "Acción requerida",

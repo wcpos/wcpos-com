@@ -60,6 +60,8 @@ const auditedSpanishNamespacePrefixes = [
   'auth.',
   'header.',
   'footer.',
+  'account.',
+  'pro.',
 ]
 const spanishIdenticalCopyAllowlist = new Set([
   'header.pro',
@@ -68,6 +70,22 @@ const spanishIdenticalCopyAllowlist = new Set([
   'footer.github',
   'footer.pro',
   'footer.wordpressOrg',
+  'header.pro',
+  'account.profile.taxLabels.abn',
+  'account.profile.taxLabels.partitaIva',
+  'account.profile.googleProvider',
+  'account.profile.discordProvider',
+  'account.profile.githubProvider',
+  'account.receiptPdf.sellerIdentityWithAbn',
+  'account.receiptPdf.sellerIdentity',
+  'account.profile.avatarAlt',
+  'account.receiptPdf.subtotal',
+  'account.receiptPdf.total',
+  'pro.hero.title',
+  'pro.schema.name',
+  'pro.checkout.offers.default',
+  'pro.checkout.payment.methods.card.hint',
+  'pro.checkout.payment.methods.bitcoin.title',
 ])
 
 const frenchIdenticalCopyAllowlist = new Set([
@@ -122,6 +140,9 @@ const frenchIdenticalCopyAllowlist = new Set([
   'account.profile.githubProvider',
   'account.receiptPdf.sellerIdentityWithAbn',
   'account.receiptPdf.sellerIdentity',
+  'account.profile.avatarAlt',
+  'account.receiptPdf.subtotal',
+  'account.receiptPdf.total',
   'pro.hero.title',
   'pro.schema.name',
   'pro.checkout.offers.default',
@@ -228,7 +249,7 @@ describe('messages key parity', () => {
     ).toEqual([])
   })
 
-  it('es.json translates the audited support, roadmap, auth, header, and footer copy', () => {
+  it('es.json translates the audited support, roadmap, auth, header, footer, account, and pro copy', () => {
     const english = loadMessages(defaultLocale)
     const spanish = loadMessages('es')
     const auditedKeys = enKeys.filter(
@@ -249,7 +270,7 @@ describe('messages key parity', () => {
 
     expect(
       untranslatedKeys,
-      'messages/es.json must not copy audited support/roadmap/auth/header/footer English strings verbatim'
+      'messages/es.json must not copy audited support/roadmap/auth/header/footer/account/pro English strings verbatim'
     ).toEqual([])
   })
 })
