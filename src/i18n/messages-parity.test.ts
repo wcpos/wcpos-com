@@ -77,6 +77,7 @@ const auditedGermanNamespacePrefixes = [
   'pro.',
   'downloads.',
   'about.',
+  'home.',
 ]
 const germanIdenticalCopyAllowlist = new Set([
   'header.pro',
@@ -129,6 +130,23 @@ const germanIdenticalCopyAllowlist = new Set([
   'downloads.releaseHistory.desktop',
   'about.founder.signature.name',
   'about.timeline.dates.range',
+  'home.title',
+  'home.useCases.cards.retail.attribution',
+  'home.useCases.cards.market.attribution',
+  'home.useCases.cards.desktop.attribution',
+  'home.useCases.cards.desktop.type',
+  'home.benefits.visuals.offline.badge',
+  'home.benefits.visuals.hardware.tablet',
+  'home.pricing.pro.title',
+  'home.ecosystem.badge',
+  'home.ecosystem.devices.ios.label',
+  'home.ecosystem.devices.android.label',
+  'home.ecosystem.devices.desktop.label',
+  'home.story.a2.platforms.p1',
+  'home.story.a2.platforms.p2',
+  'home.story.a2.platforms.p3',
+  'home.story.a2.platforms.p4',
+  'home.story.a2.platforms.p5',
 ])
 const spanishIdenticalCopyAllowlist = new Set([
   'header.pro',
@@ -184,6 +202,26 @@ const spanishIdenticalCopyAllowlist = new Set([
   'home.useCases.cards.retail.attribution',
   'home.useCases.cards.market.attribution',
   'home.useCases.cards.desktop.attribution',
+  'home.useCases.cards.desktop.type',
+  'home.benefits.visuals.offline.badge',
+  'home.benefits.visuals.hardware.tablet',
+  'home.pricing.pro.title',
+  'home.ecosystem.badge',
+  'home.ecosystem.devices.ios.label',
+  'home.ecosystem.devices.android.label',
+  'home.ecosystem.devices.desktop.label',
+  'home.story.a2.platforms.p1',
+  'home.story.a2.platforms.p2',
+  'home.story.a2.platforms.p3',
+  'home.story.a2.platforms.p4',
+  'home.story.a2.platforms.p5',
+  'home.title',
+  'home.useCases.cards.retail.attribution',
+  'home.useCases.cards.market.attribution',
+  'home.useCases.cards.desktop.attribution',
+  'home.useCases.cards.desktop.type',
+  'home.benefits.visuals.offline.badge',
+  'home.benefits.visuals.hardware.tablet',
   'home.pricing.pro.title',
   'home.ecosystem.badge',
   'home.ecosystem.devices.android.label',
@@ -238,6 +276,9 @@ const frenchIdenticalCopyAllowlist = new Set([
   'home.useCases.cards.retail.attribution',
   'home.useCases.cards.market.attribution',
   'home.useCases.cards.desktop.attribution',
+  'home.useCases.cards.desktop.type',
+  'home.benefits.visuals.offline.badge',
+  'home.benefits.visuals.hardware.tablet',
   'home.pricing.pro.title',
   'home.ecosystem.devices.android.label',
   'home.story.a2.platforms.p1',
@@ -247,6 +288,23 @@ const frenchIdenticalCopyAllowlist = new Set([
   'home.story.a2.platforms.p5',
   'about.founder.signature.name',
   'about.timeline.dates.range',
+  'home.title',
+  'home.useCases.cards.retail.attribution',
+  'home.useCases.cards.market.attribution',
+  'home.useCases.cards.desktop.attribution',
+  'home.useCases.cards.desktop.type',
+  'home.benefits.visuals.offline.badge',
+  'home.benefits.visuals.hardware.tablet',
+  'home.pricing.pro.title',
+  'home.ecosystem.badge',
+  'home.ecosystem.devices.ios.label',
+  'home.ecosystem.devices.android.label',
+  'home.ecosystem.devices.desktop.label',
+  'home.story.a2.platforms.p1',
+  'home.story.a2.platforms.p2',
+  'home.story.a2.platforms.p3',
+  'home.story.a2.platforms.p4',
+  'home.story.a2.platforms.p5',
   'account.profile.taxLabels.abn',
   'account.profile.taxLabels.partitaIva',
   'account.profile.googleProvider',
@@ -363,7 +421,7 @@ describe('messages key parity', () => {
     ).toEqual([])
   })
 
-  it('de.json translates the audited support, auth, roadmap, header, footer, account, pro, downloads, and about copy', () => {
+  it('de.json translates the audited support, auth, roadmap, header, footer, account, pro, downloads, about, and home copy', () => {
     const english = loadMessages(defaultLocale)
     const german = loadMessages('de')
     const auditedKeys = enKeys.filter(
@@ -384,7 +442,7 @@ describe('messages key parity', () => {
 
     expect(
       untranslatedKeys,
-      'messages/de.json must not copy audited support/auth/roadmap/header/footer/account/pro/downloads/about English strings verbatim'
+      'messages/de.json must not copy audited support/auth/roadmap/header/footer/account/pro/downloads/about/home English strings verbatim'
     ).toEqual([])
   })
 
