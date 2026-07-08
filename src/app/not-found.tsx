@@ -5,6 +5,7 @@ import Link from 'next/link'
 import {
   browserLanguagePreferences,
   rootFallbackCopy,
+  rootFallbackHref,
 } from '@/lib/root-fallback-i18n'
 
 function subscribeToLanguagePreferences() {
@@ -31,6 +32,7 @@ export default function RootNotFound() {
     noLanguagePreferences
   )
   const copy = rootFallbackCopy(languagePreferences)
+  const homeHref = rootFallbackHref(copy.locale, '/')
 
   return (
     <html lang={copy.locale} dir={copy.direction}>
@@ -82,7 +84,7 @@ export default function RootNotFound() {
             }}
           >
             <Link
-              href="/"
+              href={homeHref}
               style={{
                 padding: '0.5rem 1rem',
                 borderRadius: '0.375rem',
@@ -98,7 +100,7 @@ export default function RootNotFound() {
               {copy.errors.goHome}
             </Link>
             <Link
-              href="/pro"
+              href={rootFallbackHref(copy.locale, '/pro')}
               style={{
                 padding: '0.5rem 1rem',
                 borderRadius: '0.375rem',
@@ -113,7 +115,7 @@ export default function RootNotFound() {
               WCPOS Pro
             </Link>
             <Link
-              href="/support"
+              href={rootFallbackHref(copy.locale, '/support')}
               style={{
                 padding: '0.5rem 1rem',
                 borderRadius: '0.375rem',

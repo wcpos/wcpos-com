@@ -57,6 +57,12 @@ export function rootFallbackCopy(
   return { locale, direction: localeDirections[locale], ...ROOT_FALLBACK_MESSAGES[locale] }
 }
 
+export function rootFallbackHref(locale: Locale, pathname: `/${string}`): string {
+  const normalizedPathname = pathname === '/' ? '' : pathname
+  const localePrefix = locale === 'en' ? '' : `/${locale}`
+
+  return `${localePrefix}${normalizedPathname}` || '/'
+}
 
 export function browserLanguagePreferences(): string | readonly string[] | undefined {
   if (typeof navigator === 'undefined') return undefined
