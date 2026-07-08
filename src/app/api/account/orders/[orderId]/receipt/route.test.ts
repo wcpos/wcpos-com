@@ -1,5 +1,8 @@
+import fs from 'node:fs'
+import path from 'node:path'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import * as pdfReceipt from '@/lib/pdf-receipt'
+import { defaultLocale, locales } from '@/i18n/config'
 
 const mockGetOrderById = vi.fn()
 const mockGetCustomer = vi.fn()
@@ -13,6 +16,39 @@ vi.mock('@/lib/customer-orders', () => ({
 }))
 
 import { GET } from './route'
+
+function receiptMessages(locale: string) {
+  return JSON.parse(
+    fs.readFileSync(
+      path.resolve(process.cwd(), `messages/${locale}.json`),
+      'utf8'
+    )
+  ).account.receiptPdf
+}
+
+function mockReceiptOrder() {
+  mockGetOrderById.mockResolvedValueOnce({
+    id: 'order_1',
+    status: 'completed',
+    display_id: 1001,
+    email: 'user@example.com',
+    currency_code: 'usd',
+    total: 129,
+    subtotal: 120,
+    tax_total: 9,
+    created_at: '2026-02-01T00:00:00Z',
+    updated_at: '2026-02-01T00:00:00Z',
+    items: [
+      {
+        id: 'item_1',
+        title: 'WCPOS Pro Yearly',
+        quantity: 1,
+        unit_price: 129,
+        total: 129,
+      },
+    ],
+  })
+}
 
 describe('GET /api/account/orders/[orderId]/receipt', () => {
   beforeEach(() => {
@@ -94,6 +130,36 @@ describe('GET /api/account/orders/[orderId]/receipt', () => {
     expect(disposition).toContain('filename="receipt-1001.pdf"')
     expect(disposition).toContain("filename*=UTF-8''re%C3%A7u-1001.pdf")
     expect(disposition).not.toBe('attachment; filename="receipt-1001.pdf"')
+  })
+
+  it('uses translated PDF receipt copy for every supported account locale', async () => {
+    const englishTitle = receiptMessages(defaultLocale).title
+    const buildPdfSpy = vi
+      .spyOn(pdfReceipt, 'buildReceiptPdf')
+      .mockResolvedValue(new Uint8Array([0x25, 0x50, 0x44, 0x46]))
+
+    try {
+      for (const locale of locales.filter(
+        (locale) => locale !== defaultLocale
+      )) {
+        mockReceiptOrder()
+
+        const response = await GET(
+          new Request(
+            `http://localhost:3000/api/account/orders/order_1/receipt?locale=${locale}`
+          ),
+          { params: Promise.resolve({ orderId: 'order_1' }) }
+        )
+
+        expect(response.status).toBe(200)
+        const [, copy, intlLocale] = buildPdfSpy.mock.calls.at(-1)!
+        expect(copy.title).toBe(receiptMessages(locale).title)
+        expect(copy.title).not.toBe(englishTitle)
+        expect(intlLocale).toBe(locale)
+      }
+    } finally {
+      buildPdfSpy.mockRestore()
+    }
   })
 
   it('returns 404 when the order is not owned by the customer', async () => {
