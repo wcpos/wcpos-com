@@ -26,13 +26,55 @@ function safeReturnTo(value: unknown, request: NextRequest): string {
     : fallback
 }
 
+function isFormPost(request: NextRequest): boolean {
+  const contentType = request.headers.get('content-type') ?? ''
+  return (
+    contentType.includes('application/x-www-form-urlencoded') ||
+    contentType.includes('multipart/form-data')
+  )
+}
+
+/**
+ * Every path below mints OAuth state and starts a browser redirect, so this is
+ * a state-changing entry point that must reject cross-site callers. Form-encoded
+ * AND text/plain bodies are CSRF-able "simple requests" that skip the CORS
+ * preflight, so the Origin check has to cover every content type — not just form
+ * posts — or a cross-site page could POST text/plain and slip through to the
+ * JSON parser. Fail closed on a missing Origin header: every current browser
+ * sends it on a state-changing POST, and the OAuth round-trip needs a browser
+ * anyway, so a non-browser caller has nothing to complete here.
+ */
+function isCrossSiteRequest(request: NextRequest): boolean {
+  const origin = request.headers.get('origin')
+  if (!origin) return true
+  try {
+    return new URL(origin).host !== request.nextUrl.host
+  } catch {
+    return true
+  }
+}
+
 export async function POST(request: NextRequest) {
-  // A malformed body is client-caused (it falls through to the 400 below), so
-  // log at info rather than swallowing it silently.
-  const body = await request.json().catch((error: unknown) => {
-    apiLogger.info`Discord claim received a malformed JSON body: ${error}`
-    return {}
-  }) as { licenseKey?: unknown; returnTo?: unknown }
+  if (isCrossSiteRequest(request)) {
+    return NextResponse.json({ errorCode: 'cross_site_request' }, { status: 403 })
+  }
+  let body: { licenseKey?: unknown; returnTo?: unknown }
+  if (isFormPost(request)) {
+    // The licences page submits a real HTML form so the 303 → Discord →
+    // callback chain runs as a top-level navigation.
+    const form = await request.formData().catch((error: unknown) => {
+      apiLogger.info`Discord claim received a malformed form body: ${error}`
+      return new FormData()
+    })
+    body = { licenseKey: form.get('licenseKey'), returnTo: form.get('returnTo') }
+  } else {
+    // A malformed body is client-caused (it falls through to the 400 below), so
+    // log at info rather than swallowing it silently.
+    body = await request.json().catch((error: unknown) => {
+      apiLogger.info`Discord claim received a malformed JSON body: ${error}`
+      return {}
+    }) as { licenseKey?: unknown; returnTo?: unknown }
+  }
   const licenseKey = typeof body.licenseKey === 'string' ? body.licenseKey.trim() : ''
   if (!licenseKey) {
     return NextResponse.json({ errorCode: 'license_key_required' }, { status: 400 })

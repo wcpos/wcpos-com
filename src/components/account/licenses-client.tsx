@@ -1,8 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { useLocale, useTranslations } from 'next-intl'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { StatusBadge } from '@/components/ui/status-badge'
@@ -82,6 +84,26 @@ interface DiscordAccess {
 
 const DISCORD_DEFAULT_CAP = 5
 
+/**
+ * Claim outcomes the Discord OAuth callback reports back via the `?discord=`
+ * query param (see /api/discord/callback statusToQuery). Anything outside this
+ * set is ignored rather than rendered, so a crafted URL can't inject copy.
+ */
+const DISCORD_CLAIM_STATUSES = [
+  'claimed',
+  'seat_cap_reached',
+  'blocked',
+  'license_not_active',
+  'error',
+] as const
+
+type DiscordClaimStatus = (typeof DISCORD_CLAIM_STATUSES)[number]
+
+function parseDiscordClaimStatus(value: string | null): DiscordClaimStatus | null {
+  return DISCORD_CLAIM_STATUSES.includes(value as DiscordClaimStatus)
+    ? (value as DiscordClaimStatus)
+    : null
+}
 
 type LicenseActionErrorCode = 'read_only_inspection'
 
@@ -108,16 +130,27 @@ interface LicensesClientProps {
    */
   entitledVersions?: Record<string, string | null>
   discordAccessByLicense?: Record<string, DiscordAccess>
+  /**
+   * True when an admin is inspecting this account read-only. The account
+   * mutation routes fence themselves with assertViewOnly(), but the Discord
+   * claim CTA posts to the public /api/discord/claim route (outside
+   * /api/account), which never sees the account-request header — so the gate
+   * has to happen here, or an admin could bind their own Discord to the
+   * inspected customer's licence.
+   */
+  viewOnly?: boolean
 }
 
 export function LicensesClient({
   initialLicenses,
   entitledVersions = {},
   discordAccessByLicense = {},
+  viewOnly = false,
 }: LicensesClientProps) {
   const locale = useLocale()
   const loginPath = localizeRedirectPath('/login', locale as Locale)
   const t = useTranslations('account.licenses')
+  const tCommon = useTranslations('common')
   const tStatus = useTranslations('account.licenseStatus')
   const [licenses, setLicenses] = useState<License[]>(initialLicenses)
   // License keys render masked; clicking a key reveals its full value for
@@ -133,6 +166,22 @@ export function LicensesClient({
   const [removingDiscordMember, setRemovingDiscordMember] = useState<string | null>(null)
   // Captured once per mount so render stays pure for the React compiler.
   const [now] = useState(() => Date.now())
+
+  // Claim outcome handed back by the Discord OAuth callback redirect. Captured
+  // once on mount, then scrubbed from the address bar so a reload (or a copied
+  // link) doesn't replay a stale banner.
+  const searchParams = useSearchParams()
+  const [discordClaimStatus, setDiscordClaimStatus] = useState<DiscordClaimStatus | null>(
+    () => parseDiscordClaimStatus(searchParams.get('discord'))
+  )
+  useEffect(() => {
+    if (!parseDiscordClaimStatus(new URL(window.location.href).searchParams.get('discord'))) {
+      return
+    }
+    const url = new URL(window.location.href)
+    url.searchParams.delete('discord')
+    window.history.replaceState(null, '', url.toString())
+  }, [])
 
   const [discordAccessByLicenseState, setDiscordAccessByLicenseState] = useState<
     Record<string, DiscordAccess>
@@ -279,6 +328,24 @@ export function LicensesClient({
 
   return (
     <>
+      {discordClaimStatus && (
+        <Alert
+          tone={discordClaimStatus === 'claimed' ? 'positive' : 'critical'}
+          role="status"
+          action={
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setDiscordClaimStatus(null)}
+              aria-label={tCommon('dismiss')}
+            >
+              {tCommon('dismiss')}
+            </Button>
+          }
+        >
+          {t(`discordClaimStatus.${discordClaimStatus}`)}
+        </Alert>
+      )}
       {error && (
         <Alert tone="critical" role="alert">
           {error}
@@ -684,12 +751,14 @@ export function LicensesClient({
                     {discordMembers.map((member) => (
                     <Row key={member.id} className="gap-2">
                       <div className="flex min-w-0 items-center gap-2.5">
-                        <span
-                          aria-hidden="true"
-                          className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-wcpos-red/10 text-xs font-medium text-wcpos-red-accent"
-                        >
-                          {memberInitials(member.handle)}
-                        </span>
+                        <Avatar aria-hidden="true" className="h-7 w-7 shrink-0">
+                          {member.avatarUrl && (
+                            <AvatarImage src={member.avatarUrl} alt="" />
+                          )}
+                          <AvatarFallback className="bg-wcpos-red/10 text-xs font-medium text-wcpos-red-accent">
+                            {memberInitials(member.handle)}
+                          </AvatarFallback>
+                        </Avatar>
                         <div className="min-w-0">
                           <p className="truncate text-sm font-medium">
                             {member.handle}
@@ -722,9 +791,44 @@ export function LicensesClient({
                   </DividedList>
                 )}
                 {displayStatus === 'active' && (
-                  <p className="mt-3 text-xs text-muted-foreground">
-                    {t('discordConnectHint')}
-                  </p>
+                  <div className="mt-3 flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
+                    <p className="text-xs text-muted-foreground">
+                      {t('discordConnectHint')}
+                    </p>
+                    {viewOnly ? (
+                      /* Read-only inspection: don't offer the claim flow. The
+                         public /api/discord/claim route can't be fenced by
+                         assertViewOnly(), so hide the CTA and mirror the
+                         read-only messaging the account routes return. */
+                      discordAccess.usedSeats < discordAccess.seatCap && (
+                        <p className="text-xs text-muted-foreground">
+                          {t('apiErrors.read_only_inspection')}
+                        </p>
+                      )
+                    ) : (
+                      discordAccess.usedSeats < discordAccess.seatCap && (
+                        /* A real form post: the 303 to Discord's authorize page
+                           (and the OAuth round-trip back) must run as a
+                           top-level navigation, which fetch() cannot do. */
+                        <form method="POST" action="/api/discord/claim">
+                          <input type="hidden" name="licenseKey" value={license.key} />
+                          <input
+                            type="hidden"
+                            name="returnTo"
+                            value={localizeRedirectPath('/account/licenses', locale as Locale)}
+                          />
+                          <Button
+                            type="submit"
+                            variant="outline"
+                            size="sm"
+                            aria-label={t('discordConnectCtaAria', { suffix: keySuffix })}
+                          >
+                            {t('discordConnectCta')}
+                          </Button>
+                        </form>
+                      )
+                    )}
+                  </div>
                 )}
               </div>
             </CardContent>

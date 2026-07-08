@@ -30,7 +30,7 @@ describe('POST /api/discord/claim', () => {
     const response = await POST(new NextRequest('https://wcpos.com/api/discord/claim', {
       method: 'POST',
       body: JSON.stringify({ licenseKey: ' WCPOS-AAAA ', returnTo: '/account/licenses' }),
-      headers: { 'content-type': 'application/json' },
+      headers: { 'content-type': 'application/json', origin: 'https://wcpos.com' },
     }))
 
     expect(response.status).toBe(303)
@@ -48,6 +48,7 @@ describe('POST /api/discord/claim', () => {
       body: JSON.stringify({ licenseKey: 'WCPOS-AAAA' }),
       headers: {
         'content-type': 'application/json',
+        origin: 'https://wcpos.com',
         cookie: 'NEXT_LOCALE=fr',
       },
     }))
@@ -68,6 +69,7 @@ describe('POST /api/discord/claim', () => {
       }),
       headers: {
         'content-type': 'application/json',
+        origin: 'https://wcpos.com',
         'accept-language': 'en-US;q=0.4, fr-FR;q=0.9',
       },
     }))
@@ -81,18 +83,126 @@ describe('POST /api/discord/claim', () => {
     const response = await POST(new NextRequest('https://wcpos.com/api/discord/claim', {
       method: 'POST',
       body: JSON.stringify({ licenseKey: '' }),
-      headers: { 'content-type': 'application/json' },
+      headers: { 'content-type': 'application/json', origin: 'https://wcpos.com' },
     }))
 
     expect(response.status).toBe(400)
     expect(await response.json()).toEqual({ errorCode: 'license_key_required' })
   })
 
+  it('accepts a same-site form post (the licences-page Connect button)', async () => {
+    const response = await POST(new NextRequest('https://wcpos.com/api/discord/claim', {
+      method: 'POST',
+      body: new URLSearchParams({
+        licenseKey: ' WCPOS-AAAA ',
+        returnTo: '/account/licenses',
+      }).toString(),
+      headers: {
+        'content-type': 'application/x-www-form-urlencoded',
+        origin: 'https://wcpos.com',
+      },
+    }))
+
+    expect(response.status).toBe(303)
+    expect(response.headers.get('location')).toBe('https://discord.com/oauth2/authorize?state=abc')
+    expect(mockSetDiscordOAuthState).toHaveBeenCalledWith(expect.objectContaining({
+      licenseKey: 'WCPOS-AAAA',
+      returnTo: '/account/licenses',
+    }))
+  })
+
+  it('rejects a cross-site form post without starting an OAuth round-trip', async () => {
+    const response = await POST(new NextRequest('https://wcpos.com/api/discord/claim', {
+      method: 'POST',
+      body: new URLSearchParams({ licenseKey: 'WCPOS-AAAA' }).toString(),
+      headers: {
+        'content-type': 'application/x-www-form-urlencoded',
+        origin: 'https://evil.example',
+      },
+    }))
+
+    expect(response.status).toBe(403)
+    expect(await response.json()).toEqual({ errorCode: 'cross_site_request' })
+    expect(mockSetDiscordOAuthState).not.toHaveBeenCalled()
+  })
+
+  it('rejects a form post with an empty licence key', async () => {
+    const response = await POST(new NextRequest('https://wcpos.com/api/discord/claim', {
+      method: 'POST',
+      body: new URLSearchParams({ licenseKey: '   ' }).toString(),
+      headers: {
+        'content-type': 'application/x-www-form-urlencoded',
+        origin: 'https://wcpos.com',
+      },
+    }))
+
+    expect(response.status).toBe(400)
+    expect(await response.json()).toEqual({ errorCode: 'license_key_required' })
+  })
+
+  it('rejects a form post without an Origin header (fail closed)', async () => {
+    const response = await POST(new NextRequest('https://wcpos.com/api/discord/claim', {
+      method: 'POST',
+      body: new URLSearchParams({ licenseKey: 'WCPOS-AAAA' }).toString(),
+      headers: { 'content-type': 'application/x-www-form-urlencoded' },
+    }))
+
+    expect(response.status).toBe(403)
+    expect(mockSetDiscordOAuthState).not.toHaveBeenCalled()
+  })
+
+  it('rejects a cross-site text/plain post (a CSRF-able simple request)', async () => {
+    // text/plain is a CORS "simple request" that skips the preflight, so a
+    // malicious page can POST it cross-site; request.json() would still parse
+    // it, so the Origin check has to cover this content type too.
+    const response = await POST(new NextRequest('https://wcpos.com/api/discord/claim', {
+      method: 'POST',
+      body: JSON.stringify({ licenseKey: 'WCPOS-AAAA' }),
+      headers: {
+        'content-type': 'text/plain',
+        origin: 'https://evil.example',
+      },
+    }))
+
+    expect(response.status).toBe(403)
+    expect(await response.json()).toEqual({ errorCode: 'cross_site_request' })
+    expect(mockSetDiscordOAuthState).not.toHaveBeenCalled()
+  })
+
+  it('accepts a same-site text/plain post', async () => {
+    const response = await POST(new NextRequest('https://wcpos.com/api/discord/claim', {
+      method: 'POST',
+      body: JSON.stringify({ licenseKey: 'WCPOS-AAAA', returnTo: '/account/licenses' }),
+      headers: {
+        'content-type': 'text/plain',
+        origin: 'https://wcpos.com',
+      },
+    }))
+
+    expect(response.status).toBe(303)
+    expect(mockSetDiscordOAuthState).toHaveBeenCalledWith(expect.objectContaining({
+      licenseKey: 'WCPOS-AAAA',
+      returnTo: '/account/licenses',
+    }))
+  })
+
+  it('rejects a JSON post without an Origin header (fail closed on every content type)', async () => {
+    const response = await POST(new NextRequest('https://wcpos.com/api/discord/claim', {
+      method: 'POST',
+      body: JSON.stringify({ licenseKey: 'WCPOS-AAAA' }),
+      headers: { 'content-type': 'application/json' },
+    }))
+
+    expect(response.status).toBe(403)
+    expect(await response.json()).toEqual({ errorCode: 'cross_site_request' })
+    expect(mockSetDiscordOAuthState).not.toHaveBeenCalled()
+  })
+
   it('logs a malformed JSON body at info and rejects with 400', async () => {
     const response = await POST(new NextRequest('https://wcpos.com/api/discord/claim', {
       method: 'POST',
       body: 'not-json',
-      headers: { 'content-type': 'application/json' },
+      headers: { 'content-type': 'application/json', origin: 'https://wcpos.com' },
     }))
 
     expect(response.status).toBe(400)

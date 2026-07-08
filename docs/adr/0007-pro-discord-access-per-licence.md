@@ -89,3 +89,34 @@ owner chose lower-friction key self-claim with the cap as the safeguard).
 - **Cap basis and number** — implemented initially as a dedicated Discord seat
   cap of 5 per licence, separate from site activations. This can move to a
   per-plan registry field when product wants different caps by plan.
+- **Unblocking** — holder removal block-lists the Discord user for that
+  licence with no unblock control yet; restoring a mistakenly removed member
+  currently needs support intervention. A holder-facing unblock (or block
+  expiry) is a follow-up.
+
+## Amendment (2026-07-08): claim entry points finalised
+
+Decision 2 left two claim entry points open ("Discord-first `/link <key>`, or
+a website linking page"). The **public website linking page is dropped**; the
+two shipped entry points are:
+
+1. **Account-area Connect button** (licence card, signed-in holder). The form
+   pre-fills the licence key the holder already owns and runs the same OAuth
+   `identify` claim. The holder's own connection consumes a seat like any
+   other member — there is no holder-exempt seat.
+2. **`/link <key>` in the Discord server** (any member, no wcpos.com account).
+
+Rationale for dropping the public page: every claimant must join the Discord
+server anyway to receive the role, so a slash command inside the server is
+never less reachable; the command inherits guild membership as a prerequisite
+and Discord's interaction rate limits, whereas an unauthenticated key-entry
+page is an extra licence-key brute-force surface needing its own abuse
+controls for no added reach.
+
+Removal semantics are asymmetric by design:
+
+- **Holder removal** (decision 4) block-lists the removed Discord user for
+  that licence — it is the holder's abuse control over a shared key.
+- **Self-unlink** (`/unlink`, a member releasing their own seat) frees the
+  seat **without** block-listing — leaving voluntarily is not an offence, and
+  block-listing here would make an accidental unlink permanent.

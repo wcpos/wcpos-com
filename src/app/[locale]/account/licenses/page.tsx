@@ -3,6 +3,7 @@ import { Suspense } from 'react'
 import { redirectToLoginClearingSession } from '@/lib/login-redirect'
 import { LicensesClient } from '@/components/account/licenses-client'
 import { getResolvedCustomerLicenses } from '@/lib/customer-licenses'
+import { getImpersonation } from '@/lib/impersonation'
 import { getDiscordAccessByLicense } from '@/lib/discord/connected-member-service'
 import { getProPluginReleases } from '@/services/core/business/pro-downloads'
 import { selectEntitledRelease } from '@/services/core/business/release-delivery'
@@ -86,12 +87,17 @@ async function LicensesContent({ locale }: { locale: string }) {
   }
   const entitledVersions = buildEntitledVersions(licenses, releases, nowMs)
   const discordAccessByLicense = getDiscordAccessByLicense(licenses)
+  // An admin inspecting this account read-only must not be able to start the
+  // public Discord claim OAuth flow (it posts outside /api/account, so
+  // assertViewOnly() can't fence it) — gate the CTA client-side instead.
+  const viewOnly = (await getImpersonation()) !== null
 
   return (
     <LicensesClient
       initialLicenses={licenses}
       entitledVersions={entitledVersions}
       discordAccessByLicense={discordAccessByLicense}
+      viewOnly={viewOnly}
     />
   )
 }

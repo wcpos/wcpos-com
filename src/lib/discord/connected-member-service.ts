@@ -82,6 +82,16 @@ async function withLicenseMetadataLock<T>(
   }
 }
 
+/**
+ * Discord serves member avatars from its public CDN, addressed by the avatar
+ * hash captured at claim time. A null hash means the member uses a default
+ * Discord avatar — the UI falls back to initials.
+ */
+function discordAvatarUrl(discordUserId: string, avatarHash: string | null): string | null {
+  if (!avatarHash) return null
+  return `https://cdn.discordapp.com/avatars/${discordUserId}/${avatarHash}.png?size=64`
+}
+
 export function getDiscordAccessByLicense(
   licenses: LicenseDetail[]
 ): Record<string, LicenceDiscordAccessView> {
@@ -97,7 +107,7 @@ export function getDiscordAccessByLicense(
           members: access.members.map((member) => ({
             id: member.id,
             handle: member.username ? `@${member.username}` : `Discord user ${member.discordUserId}`,
-            avatarUrl: null,
+            avatarUrl: discordAvatarUrl(member.discordUserId, member.avatar),
             connectedAt: member.connectedAt,
           })),
         },
