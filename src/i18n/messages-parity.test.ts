@@ -841,8 +841,7 @@ describe('messages key parity', () => {
       const koreanValue = valueAtPath(korean, key)
       return (
         englishValue !== undefined &&
-        koreanValue === englishValue &&
-        /[A-Za-z]{3}/.test(englishValue)
+        koreanValue === englishValue
       )
     })
 
