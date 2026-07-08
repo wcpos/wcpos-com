@@ -580,51 +580,51 @@
       "errors": {
         "noProductSelected": "선택된 제품이 없습니다",
         "initializeFailed": "결제를 초기화할 수 없습니다. 다시 시도하세요.",
-        "checkoutBusy": "Checkout is busy. Please try again.",
-        "paymentRefreshFailed": "Billing address was saved, but we couldn't prepare payment. Please try again.",
-        "methodSwitchFailed": "We couldn't prepare that payment method. Please try again or choose a different one.",
-        "genericPaymentFailed": "We were unable to process your payment. Please try again or use a different payment method.",
-        "genericCardFailed": "Your card could not be charged. Please check your card details, or try a different card or payment method.",
-        "unexpectedPaymentStatus": "We couldn't confirm the status of your payment. If you think you may have been charged, please contact support before trying again.",
-        "orderPending": "Your payment was received, but we couldn't finish creating your order. Please do not pay again — contact support and we will finish your order or refund the payment.",
-        "paypalFailed": "PayPal couldn't complete your payment. You have not been charged — please try again or use a different payment method.",
-        "paypalInitFailed": "We couldn't start the PayPal checkout. Please try again or use a different payment method.",
-        "paypalCancelled": "PayPal checkout was cancelled and you have not been charged. You can try again whenever you're ready.",
-        "btcpayInitFailed": "We couldn't start the Bitcoin payment. You have not been charged — please try again or use a different payment method.",
+        "checkoutBusy": "결제 처리 중입니다. 다시 시도하세요.",
+        "paymentRefreshFailed": "청구 주소는 저장되었지만 결제를 준비할 수 없었습니다. 다시 시도하세요.",
+        "methodSwitchFailed": "해당 결제 방법을 준비할 수 없었습니다. 다시 시도하거나 다른 결제 방법을 선택하세요.",
+        "genericPaymentFailed": "결제를 처리할 수 없었습니다. 다시 시도하거나 다른 결제 방법을 사용하세요.",
+        "genericCardFailed": "카드로 결제할 수 없었습니다. 카드 정보를 확인하거나 다른 카드 또는 결제 방법을 시도하세요.",
+        "unexpectedPaymentStatus": "결제 상태를 확인할 수 없었습니다. 금액이 청구되었을 수 있다고 생각되면 다시 시도하기 전에 지원팀에 문의하세요.",
+        "orderPending": "결제가 접수되었지만 주문 생성을 완료할 수 없었습니다. 다시 결제하지 마세요 — 지원팀에 문의해 주시면 주문을 완료하거나 결제를 환불해 드리겠습니다.",
+        "paypalFailed": "PayPal에서 결제를 완료할 수 없었습니다. 금액은 청구되지 않았습니다 — 다시 시도하거나 다른 결제 방법을 사용하세요.",
+        "paypalInitFailed": "PayPal 결제를 시작할 수 없었습니다. 다시 시도하거나 다른 결제 방법을 사용하세요.",
+        "paypalCancelled": "PayPal 결제가 취소되었으며 금액은 청구되지 않았습니다. 준비되면 언제든 다시 시도할 수 있습니다.",
+        "btcpayInitFailed": "Bitcoin 결제를 시작할 수 없었습니다. 금액은 청구되지 않았습니다 — 다시 시도하거나 다른 결제 방법을 사용하세요.",
         "stripeDeclines": {
-          "insufficientFunds": "Your card was declined due to insufficient funds. Please use a different card or payment method."
+          "insufficientFunds": "잔액 부족으로 카드가 거절되었습니다. 다른 카드 또는 결제 방법을 사용하세요."
         },
         "stripeCodes": {
-          "cardDeclined": "Your card was declined. Please try a different card or payment method.",
-          "expiredCard": "Your card has expired. Please use a different card.",
-          "incorrectCvc": "Your card's security code is incorrect. Please check it and try again.",
-          "invalidCvc": "Your card's security code is invalid. Please check it and try again.",
-          "incorrectNumber": "Your card number appears to be invalid. Please check it and try again.",
-          "invalidNumber": "Your card number appears to be invalid. Please check it and try again.",
-          "invalidExpiryMonth": "Your card's expiry date is invalid. Please check it and try again.",
-          "invalidExpiryYear": "Your card's expiry date is invalid. Please check it and try again.",
-          "processingError": "Something went wrong while processing your card. You have not been charged — please try again.",
-          "authenticationFailure": "We couldn't verify your card with your bank. Please try again or use a different payment method.",
-          "authenticationRequired": "We couldn't verify your card with your bank. Please try again or use a different payment method."
+          "cardDeclined": "카드가 거절되었습니다. 다른 카드 또는 결제 방법을 시도하세요.",
+          "expiredCard": "카드가 만료되었습니다. 다른 카드를 사용하세요.",
+          "incorrectCvc": "카드 보안 코드가 올바르지 않습니다. 확인한 후 다시 시도하세요.",
+          "invalidCvc": "카드 보안 코드가 유효하지 않습니다. 확인한 후 다시 시도하세요.",
+          "incorrectNumber": "카드 번호가 유효하지 않은 것 같습니다. 확인한 후 다시 시도하세요.",
+          "invalidNumber": "카드 번호가 유효하지 않은 것 같습니다. 확인한 후 다시 시도하세요.",
+          "invalidExpiryMonth": "카드 만료일이 유효하지 않습니다. 확인한 후 다시 시도하세요.",
+          "invalidExpiryYear": "카드 만료일이 유효하지 않습니다. 확인한 후 다시 시도하세요.",
+          "processingError": "카드를 처리하는 중 문제가 발생했습니다. 금액은 청구되지 않았습니다 — 다시 시도하세요.",
+          "authenticationFailure": "은행에서 카드를 확인할 수 없었습니다. 다시 시도하거나 다른 결제 방법을 사용하세요.",
+          "authenticationRequired": "은행에서 카드를 확인할 수 없었습니다. 다시 시도하거나 다른 결제 방법을 사용하세요."
         }
       },
       "recovery": {
         "contactSupport": "지원팀에 문의",
         "contactSupportLower": "지원팀에 문의",
-        "switchMethod": "You can also choose a different payment method below.",
+        "switchMethod": "아래에서 다른 결제 방법을 선택할 수도 있습니다.",
         "cancelled": {
-          "title": "Payment cancelled"
+          "title": "결제가 취소되었습니다"
         },
         "unknown": {
-          "title": "Payment status unknown",
-          "prefix": "Please",
-          "suffix": "and quote reference <reference></reference> — we will confirm whether your payment went through before you pay again."
+          "title": "결제 상태를 알 수 없음",
+          "prefix": "다시 결제하기 전에",
+          "suffix": "하고 참조 번호 <reference></reference>를 알려 주세요 — 결제가 완료되었는지 확인해 드리겠습니다."
         },
         "unsuccessful": {
           "title": "결제 실패",
-          "saved": "Your order details have been saved, so you can try again without starting over.",
-          "stuck": "Still stuck?",
-          "quote": "and quote reference <reference></reference>."
+          "saved": "주문 정보가 저장되었으므로 처음부터 다시 시작하지 않고 다시 시도할 수 있습니다.",
+          "stuck": "아직 문제가 있나요?",
+          "quote": "하고 참조 번호 <reference></reference>를 알려 주세요."
         },
         "orderPending": {
           "resetConfirm": "지원팀이 다시 시도해도 안전하다고 확인한 후에만 결제를 재설정하세요. 결제가 아직 보류 중이면 재설정으로 인해 중복 결제가 발생할 수 있습니다.",
@@ -640,17 +640,17 @@
       },
       "successPage": {
         "metadata": {
-          "title": "Order Complete - WCPOS Pro",
-          "description": "Thank you for your purchase of WCPOS Pro"
+          "title": "주문 완료 - WCPOS Pro",
+          "description": "WCPOS Pro를 구매해 주셔서 감사합니다"
         },
         "title": "감사합니다!",
         "description": "WCPOS Pro 구매가 완료되었습니다.",
         "nextTitle": "다음 단계",
         "next": {
-          "licenseEmail": "✓ Your license key and download link have been sent to your email",
-          "accountDownload": "✓ You can also download from your account's licenses page",
-          "install": "✓ Install and activate the plugin on your WordPress site",
-          "activate": "✓ Enter your license key to unlock Pro features"
+          "licenseEmail": "✓ 라이선스 키와 다운로드 링크를 이메일로 보냈습니다",
+          "accountDownload": "✓ 계정의 라이선스 페이지에서도 다운로드할 수 있습니다",
+          "install": "✓ WordPress 사이트에 플러그인을 설치하고 활성화하세요",
+          "activate": "✓ 라이선스 키를 입력해 Pro 기능을 잠금 해제하세요"
         },
         "licenses": "라이선스로 이동",
         "installationGuide": "설치 가이드"

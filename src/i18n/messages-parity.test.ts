@@ -206,6 +206,7 @@ const auditedKoreanNamespacePrefixes = [
   'footer.',
   'downloads.',
   'account.',
+  'pro.checkout.',
 ]
 const koreanIdenticalCopyAllowlist = new Set([
   'auth.common.emailPlaceholder',
@@ -247,6 +248,9 @@ const koreanIdenticalCopyAllowlist = new Set([
   'footer.discord',
   'footer.github',
   'footer.wordpressOrg',
+  'pro.checkout.offers.default',
+  'pro.checkout.payment.methods.card.hint',
+  'pro.checkout.payment.methods.bitcoin.title',
 ])
 
 const auditedFrenchNamespacePrefixes = [
@@ -953,7 +957,7 @@ describe('messages key parity', () => {
     ).toEqual([])
   })
 
-  it('ko.json translates the audited support, auth, roadmap, common, header, footer, downloads, and account copy', () => {
+  it('ko.json translates the audited support, auth, roadmap, common, header, footer, downloads, account, and checkout copy', () => {
     const english = loadMessages(defaultLocale)
     const korean = loadMessages('ko')
     const auditedKeys = enKeys.filter(
