@@ -67,6 +67,7 @@ const auditedItalianNamespacePrefixes = [
   'home.ecosystem.',
   'home.story.',
   'downloads.',
+  'about.',
 ]
 const italianIdenticalCopyAllowlist = new Set([
   'home.title',
@@ -106,6 +107,8 @@ const italianIdenticalCopyAllowlist = new Set([
   'downloads.page.steps.plugin.cardTitle',
   'downloads.page.steps.plugin.wordpressOrgCta',
   'downloads.releaseHistory.desktop',
+  'about.founder.signature.name',
+  'about.timeline.dates.range',
   'header.pro',
   'footer.copyright',
   'footer.discord',
