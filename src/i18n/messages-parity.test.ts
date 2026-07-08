@@ -63,6 +63,7 @@ const auditedSpanishNamespacePrefixes = [
   'account.',
   'pro.',
   'downloads.',
+  'about.',
 ]
 const spanishIdenticalCopyAllowlist = new Set([
   'header.pro',
@@ -112,6 +113,8 @@ const spanishIdenticalCopyAllowlist = new Set([
   'downloads.page.steps.plugin.cardTitle',
   'downloads.page.steps.plugin.wordpressOrgCta',
   'downloads.page.beta',
+  'about.founder.signature.name',
+  'about.timeline.dates.range',
 ])
 
 const frenchIdenticalCopyAllowlist = new Set([
@@ -275,7 +278,7 @@ describe('messages key parity', () => {
     ).toEqual([])
   })
 
-  it('es.json translates the audited support, roadmap, auth, header, footer, account, pro, and downloads copy', () => {
+  it('es.json translates the audited support, roadmap, auth, header, footer, account, pro, downloads, and about copy', () => {
     const english = loadMessages(defaultLocale)
     const spanish = loadMessages('es')
     const auditedKeys = enKeys.filter(
@@ -296,7 +299,7 @@ describe('messages key parity', () => {
 
     expect(
       untranslatedKeys,
-      'messages/es.json must not copy audited support/roadmap/auth/header/footer/account/pro/downloads English strings verbatim'
+      'messages/es.json must not copy audited support/roadmap/auth/header/footer/account/pro/downloads/about English strings verbatim'
     ).toEqual([])
   })
 })
