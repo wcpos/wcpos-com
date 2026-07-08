@@ -162,3 +162,16 @@ role grants only after confirming the holder has no active licence-member
 link and no legacy active customer link. Inline syncs are best-effort;
 reconciliation is the correctness guarantee.
 _Avoid_: one-way cleanup, cron-only expiry check
+
+**Self-unlink**:
+A connected member releasing their own seat on a licence. Frees the seat
+without block-listing the member — leaving is not an offence. Contrast with
+holder removal, which block-lists the removed Discord user for that licence
+(docs/adr/0007).
+_Avoid_: disconnect (ambiguous with the legacy per-customer link)
+
+**Customer info lookup**:
+The admin-only, ephemeral view of the customer facts behind a Discord member
+(connected licences, status/expiry, seat usage, customer-since). Visible only
+to the invoking admin, never on the public profile (docs/adr/0014).
+_Avoid_: profile metadata, linked-roles badge

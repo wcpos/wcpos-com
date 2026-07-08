@@ -88,6 +88,53 @@ describe('POST /api/discord/claim', () => {
     expect(await response.json()).toEqual({ errorCode: 'license_key_required' })
   })
 
+  it('accepts a same-site form post (the licences-page Connect button)', async () => {
+    const response = await POST(new NextRequest('https://wcpos.com/api/discord/claim', {
+      method: 'POST',
+      body: new URLSearchParams({
+        licenseKey: ' WCPOS-AAAA ',
+        returnTo: '/account/licenses',
+      }).toString(),
+      headers: {
+        'content-type': 'application/x-www-form-urlencoded',
+        origin: 'https://wcpos.com',
+      },
+    }))
+
+    expect(response.status).toBe(303)
+    expect(response.headers.get('location')).toBe('https://discord.com/oauth2/authorize?state=abc')
+    expect(mockSetDiscordOAuthState).toHaveBeenCalledWith(expect.objectContaining({
+      licenseKey: 'WCPOS-AAAA',
+      returnTo: '/account/licenses',
+    }))
+  })
+
+  it('rejects a cross-site form post without starting an OAuth round-trip', async () => {
+    const response = await POST(new NextRequest('https://wcpos.com/api/discord/claim', {
+      method: 'POST',
+      body: new URLSearchParams({ licenseKey: 'WCPOS-AAAA' }).toString(),
+      headers: {
+        'content-type': 'application/x-www-form-urlencoded',
+        origin: 'https://evil.example',
+      },
+    }))
+
+    expect(response.status).toBe(403)
+    expect(await response.json()).toEqual({ errorCode: 'cross_site_request' })
+    expect(mockSetDiscordOAuthState).not.toHaveBeenCalled()
+  })
+
+  it('rejects a form post with an empty licence key', async () => {
+    const response = await POST(new NextRequest('https://wcpos.com/api/discord/claim', {
+      method: 'POST',
+      body: new URLSearchParams({ licenseKey: '   ' }).toString(),
+      headers: { 'content-type': 'application/x-www-form-urlencoded' },
+    }))
+
+    expect(response.status).toBe(400)
+    expect(await response.json()).toEqual({ errorCode: 'license_key_required' })
+  })
+
   it('logs a malformed JSON body at info and rejects with 400', async () => {
     const response = await POST(new NextRequest('https://wcpos.com/api/discord/claim', {
       method: 'POST',

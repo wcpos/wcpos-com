@@ -54,12 +54,28 @@ describe('connected member service', () => {
           {
             id: 'discord-member-discord_1',
             handle: '@ada',
-            avatarUrl: null,
+            avatarUrl: 'https://cdn.discordapp.com/avatars/discord_1/hash.png?size=64',
             connectedAt: '2026-06-01T00:00:00.000Z',
           },
         ],
       },
     })
+  })
+
+  it('leaves avatarUrl null for members on a default Discord avatar (no hash)', () => {
+    const licences = [
+      license({
+        id: 'lic_1',
+        metadata: addConnectedDiscordMember({}, {
+          id: 'discord_2',
+          username: 'devon',
+          avatar: null,
+          connectedAt: new Date('2026-06-02T00:00:00.000Z'),
+        }),
+      }),
+    ]
+
+    expect(getDiscordAccessByLicense(licences).lic_1.members[0].avatarUrl).toBeNull()
   })
 
   it('claims an active licence key and persists the member on licence metadata', async () => {

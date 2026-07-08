@@ -26,13 +26,46 @@ function safeReturnTo(value: unknown, request: NextRequest): string {
     : fallback
 }
 
+function isFormPost(request: NextRequest): boolean {
+  const contentType = request.headers.get('content-type') ?? ''
+  return (
+    contentType.includes('application/x-www-form-urlencoded') ||
+    contentType.includes('multipart/form-data')
+  )
+}
+
+/**
+ * Form-encoded posts are CSRF-able "simple requests" (unlike JSON, which the
+ * preflight already fences), so the browser-visible claim entry point checks
+ * the request came from this site before starting an OAuth round-trip.
+ */
+function isCrossSiteFormPost(request: NextRequest): boolean {
+  const origin = request.headers.get('origin')
+  if (!origin) return false
+  return new URL(origin).host !== request.nextUrl.host
+}
+
 export async function POST(request: NextRequest) {
-  // A malformed body is client-caused (it falls through to the 400 below), so
-  // log at info rather than swallowing it silently.
-  const body = await request.json().catch((error: unknown) => {
-    apiLogger.info`Discord claim received a malformed JSON body: ${error}`
-    return {}
-  }) as { licenseKey?: unknown; returnTo?: unknown }
+  let body: { licenseKey?: unknown; returnTo?: unknown }
+  if (isFormPost(request)) {
+    // The licences page submits a real HTML form so the 303 → Discord →
+    // callback chain runs as a top-level navigation.
+    if (isCrossSiteFormPost(request)) {
+      return NextResponse.json({ errorCode: 'cross_site_request' }, { status: 403 })
+    }
+    const form = await request.formData().catch((error: unknown) => {
+      apiLogger.info`Discord claim received a malformed form body: ${error}`
+      return new FormData()
+    })
+    body = { licenseKey: form.get('licenseKey'), returnTo: form.get('returnTo') }
+  } else {
+    // A malformed body is client-caused (it falls through to the 400 below), so
+    // log at info rather than swallowing it silently.
+    body = await request.json().catch((error: unknown) => {
+      apiLogger.info`Discord claim received a malformed JSON body: ${error}`
+      return {}
+    }) as { licenseKey?: unknown; returnTo?: unknown }
+  }
   const licenseKey = typeof body.licenseKey === 'string' ? body.licenseKey.trim() : ''
   if (!licenseKey) {
     return NextResponse.json({ errorCode: 'license_key_required' }, { status: 400 })

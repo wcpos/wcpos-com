@@ -24,6 +24,15 @@ vi.mock('@/i18n/navigation', () => ({
   ),
 }))
 
+// The component reads the Discord claim outcome from the URL query. Tests
+// steer it through this mutable ref (vi.mock factories are hoisted).
+const { searchParamsRef } = vi.hoisted(() => ({
+  searchParamsRef: { current: new URLSearchParams() },
+}))
+vi.mock('next/navigation', () => ({
+  useSearchParams: () => searchParamsRef.current,
+}))
+
 const mockFetch = vi.fn()
 vi.stubGlobal('fetch', mockFetch)
 
@@ -65,6 +74,7 @@ function makeLicense(
 describe('LicensesClient', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+    searchParamsRef.current = new URLSearchParams()
   })
 
   it('shows empty state when no licenses exist', () => {
@@ -605,6 +615,93 @@ describe('LicensesClient', () => {
 
     expect(await screen.findByText('@ada')).toBeInTheDocument()
     expect(assign).toHaveBeenCalledWith('/login')
+  })
+
+  it('offers Connect Discord on an active licence with free seats, posting the key', () => {
+    render(<LicensesClient initialLicenses={[makeLicense({ id: 'lic-1' })]} />)
+
+    const button = screen.getByRole('button', {
+      name: 'Connect Discord for license ending in MNOP',
+    })
+    const form = button.closest('form')
+    expect(form).toHaveAttribute('action', '/api/discord/claim')
+    expect(form).toHaveAttribute('method', 'POST')
+    expect(form?.querySelector('input[name="licenseKey"]')).toHaveValue(
+      'ABCD-EFGH-IJKL-MNOP'
+    )
+    expect(form?.querySelector('input[name="returnTo"]')).toHaveValue(
+      '/account/licenses'
+    )
+  })
+
+  it('hides Connect Discord when every seat is taken', () => {
+    render(
+      <LicensesClient
+        initialLicenses={[makeLicense({ id: 'lic-1' })]}
+        discordAccessByLicense={{
+          'lic-1': {
+            licenseId: 'lic-1',
+            seatCap: 1,
+            usedSeats: 1,
+            members: [
+              { id: 'member-ada', handle: '@ada', avatarUrl: null, connectedAt: '2026-06-01T00:00:00.000Z' },
+            ],
+          },
+        }}
+      />
+    )
+    expect(
+      screen.queryByRole('button', { name: /Connect Discord/ })
+    ).not.toBeInTheDocument()
+  })
+
+  it('hides Connect Discord on an expired licence', () => {
+    render(
+      <LicensesClient
+        initialLicenses={[
+          makeLicense({ id: 'lic-1', expiry: '2020-01-01T00:00:00Z' }),
+        ]}
+      />
+    )
+    expect(
+      screen.queryByRole('button', { name: /Connect Discord/ })
+    ).not.toBeInTheDocument()
+  })
+
+  it('shows the claim success banner from the callback redirect and dismisses it', () => {
+    searchParamsRef.current = new URLSearchParams('discord=claimed')
+    render(<LicensesClient initialLicenses={[makeLicense()]} />)
+
+    expect(
+      screen.getByText(
+        'Discord connected. Your Pro role will be applied in our community Discord.'
+      )
+    ).toBeInTheDocument()
+
+    fireEvent.click(screen.getByRole('button', { name: 'Dismiss' }))
+    expect(
+      screen.queryByText(
+        'Discord connected. Your Pro role will be applied in our community Discord.'
+      )
+    ).not.toBeInTheDocument()
+  })
+
+  it('shows the seat-cap claim failure banner', () => {
+    searchParamsRef.current = new URLSearchParams('discord=seat_cap_reached')
+    render(<LicensesClient initialLicenses={[makeLicense()]} />)
+
+    expect(
+      screen.getByText(
+        'This license has no free Discord seats. Remove a member to free one.'
+      )
+    ).toBeInTheDocument()
+  })
+
+  it('ignores unknown discord query values', () => {
+    searchParamsRef.current = new URLSearchParams('discord=<script>')
+    render(<LicensesClient initialLicenses={[makeLicense()]} />)
+
+    expect(screen.queryByRole('status')).not.toBeInTheDocument()
   })
 
   describe('Activated Sites', () => {
