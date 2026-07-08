@@ -932,6 +932,10 @@
         "partiallyRefunded": "Gedeeltelijk terugbetaald",
         "canceled": "Geannuleerd",
         "unknown": "Onbekend"
+      },
+      "productTitles": {
+        "yearly": "WCPOS Pro jaarlicentie",
+        "lifetime": "WCPOS Pro levenslange licentie"
       }
     },
     "admin": {

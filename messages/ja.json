@@ -932,6 +932,10 @@
         "partiallyRefunded": "一部返金済み",
         "canceled": "キャンセル済み",
         "unknown": "不明"
+      },
+      "productTitles": {
+        "yearly": "WCPOS Pro 年間ライセンス",
+        "lifetime": "WCPOS Pro 永久ライセンス"
       }
     },
     "admin": {

@@ -132,6 +132,30 @@ describe('GET /api/account/orders/[orderId]/receipt', () => {
     expect(disposition).not.toBe('attachment; filename="receipt-1001.pdf"')
   })
 
+  it('localizes known WCPOS Pro product titles in PDF receipt line items', async () => {
+    mockReceiptOrder()
+    const buildPdfSpy = vi
+      .spyOn(pdfReceipt, 'buildReceiptPdf')
+      .mockResolvedValueOnce(new Uint8Array([0x25, 0x50, 0x44, 0x46]))
+
+    try {
+      const response = await GET(
+        new Request(
+          'http://localhost:3000/api/account/orders/order_1/receipt?locale=fr'
+        ),
+        { params: Promise.resolve({ orderId: 'order_1' }) }
+      )
+
+      expect(response.status).toBe(200)
+      expect(buildPdfSpy).toHaveBeenCalledTimes(1)
+      const [receipt] = buildPdfSpy.mock.calls[0]
+      expect(receipt.items[0]?.title).toBe('WCPOS Pro annuel')
+      expect(receipt.items[0]?.title).not.toBe('WCPOS Pro Yearly')
+    } finally {
+      buildPdfSpy.mockRestore()
+    }
+  })
+
   it('uses translated PDF receipt copy for every supported account locale', async () => {
     const englishTitle = receiptMessages(defaultLocale).title
     const buildPdfSpy = vi

@@ -2,7 +2,10 @@ import { NextResponse } from 'next/server'
 import { createTranslator } from 'next-intl'
 import { getOrderById } from '@/lib/customer-orders'
 import { getCustomer } from '@/lib/medusa-auth'
-import { projectAccountOrderReceipt } from '@/lib/account-order-projection'
+import {
+  projectAccountOrderReceipt,
+  type AccountOrderReceiptFact,
+} from '@/lib/account-order-projection'
 import { buildReceiptPdf, type ReceiptPdfCopy } from '@/lib/pdf-receipt'
 import { projectAccountProfileForReceipt } from '@/lib/customer-profile-metadata'
 import { apiLogger } from '@/lib/logger'
@@ -13,6 +16,7 @@ type ReceiptErrorCode = 'order_not_found' | 'generation_failed'
 type ReceiptPdfAssets = {
   copy: ReceiptPdfCopy
   filename: (displayId: string) => string
+  productTitles: ReceiptProductTitles
 }
 
 function errorResponse(errorCode: ReceiptErrorCode, status: number) {
@@ -114,6 +118,39 @@ function receiptContentDisposition(displayId: unknown, localizedFilename: string
   return `attachment; filename="${asciiFilename}"; ${utf8FileParameter}`
 }
 
+
+type ReceiptProductTitles = {
+  yearly: string
+  lifetime: string
+}
+
+function localizedReceiptItemTitle(
+  title: string,
+  productTitles: ReceiptProductTitles
+): string {
+  const normalized = title.trim().toLowerCase()
+  if (/^wcpos pro\s*(?:\(|-|–)?\s*yearly\)?$/.test(normalized)) {
+    return productTitles.yearly
+  }
+  if (/^wcpos pro\s*(?:\(|-|–)?\s*lifetime\)?$/.test(normalized)) {
+    return productTitles.lifetime
+  }
+  return title
+}
+
+function localizeReceiptItemTitles(
+  receipt: AccountOrderReceiptFact,
+  productTitles: ReceiptProductTitles
+): AccountOrderReceiptFact {
+  return {
+    ...receipt,
+    items: receipt.items.map((item) => ({
+      ...item,
+      title: localizedReceiptItemTitle(item.title, productTitles),
+    })),
+  }
+}
+
 async function receiptPdfAssets(locale: Locale): Promise<ReceiptPdfAssets> {
   const messages = (await import(`../../../../../../../messages/${locale}.json`)).default
   const t = createTranslator({
@@ -162,6 +199,10 @@ async function receiptPdfAssets(locale: Locale): Promise<ReceiptPdfAssets> {
   return {
     copy,
     filename: (displayId) => t('filename', { id: safeReceiptId(displayId) }),
+    productTitles: {
+      yearly: t('productTitles.yearly'),
+      lifetime: t('productTitles.lifetime'),
+    },
   }
 }
 
@@ -185,7 +226,15 @@ export async function GET(
     const receipt = projectAccountOrderReceipt(order, profile, customer)
     const locale = resolveLocale(request)
     const assets = await receiptPdfAssets(locale.messageLocale)
-    const pdf = await buildReceiptPdf(receipt, assets.copy, locale.intlLocale)
+    const localizedReceipt = localizeReceiptItemTitles(
+      receipt,
+      assets.productTitles
+    )
+    const pdf = await buildReceiptPdf(
+      localizedReceipt,
+      assets.copy,
+      locale.intlLocale
+    )
     const pdfBuffer = Buffer.from(pdf)
     const contentDisposition = receiptContentDisposition(
       order.display_id,

@@ -932,6 +932,10 @@
         "partiallyRefunded": "部分退款",
         "canceled": "已取消",
         "unknown": "未知"
+      },
+      "productTitles": {
+        "yearly": "WCPOS Pro 年度许可证",
+        "lifetime": "WCPOS Pro 终身许可证"
       }
     },
     "admin": {

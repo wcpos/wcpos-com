@@ -932,6 +932,10 @@
         "partiallyRefunded": "Partially refunded",
         "canceled": "Canceled",
         "unknown": "Unknown"
+      },
+      "productTitles": {
+        "yearly": "WCPOS Pro Yearly",
+        "lifetime": "WCPOS Pro Lifetime"
       }
     },
     "admin": {
