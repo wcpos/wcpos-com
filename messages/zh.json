@@ -243,7 +243,7 @@
           "cta": "下载桌面版"
         },
         "web": {
-          "label": "Web 浏览器",
+          "label": "网页浏览器",
           "description": "立即试用——无需安装。",
           "cta": "试用在线演示"
         }
@@ -265,10 +265,10 @@
       },
       "a2": {
         "k": "你拥有的每块屏幕",
-        "h": "一个 POS。Web、桌面、iOS 和 Android。",
+        "h": "一个 POS。网页、桌面、iOS 和 Android。",
         "b": "在柜台的平板、店内的手机或后办公室的笔记本上运行收银台——同一个商店，同一份数据。",
         "platforms": {
-          "p1": "Web",
+          "p1": "网页版",
           "p2": "Windows",
           "p3": "macOS",
           "p4": "iOS",
@@ -1280,7 +1280,7 @@
   "downloads": {
     "meta": {
       "title": "下载",
-      "description": "下载 WCPOS——免费插件，以及桌面、iOS、Android 和 Web 应用。查看最新版本和近期发布说明。"
+      "description": "下载 WCPOS——免费插件，以及桌面、iOS、Android 和网页应用。查看最新版本和近期发布说明。"
     },
     "platforms": {
       "mac-arm": {
@@ -1320,10 +1320,10 @@
         "action": "加入 Android 测试版"
       },
       "web": {
-        "name": "Web",
-        "listLabel": "Web",
+        "name": "网页版",
+        "listLabel": "网页版",
         "short": "无需安装",
-        "action": "打开 Web 演示"
+        "action": "打开网页演示"
       }
     },
     "hero": {
@@ -1366,7 +1366,7 @@
           "desktop": "桌面",
           "ios": "iOS 和 iPad",
           "android": "Android",
-          "web": "Web"
+          "web": "网页版"
         },
         "hub": {
           "store": "您的商店",

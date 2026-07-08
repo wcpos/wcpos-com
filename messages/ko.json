@@ -268,7 +268,7 @@
         "h": "하나의 POS. 웹, 데스크톱, iOS 및 Android.",
         "b": "카운터의 태블릿, 매장 안의 휴대폰, 백오피스의 노트북에서 계산대를 실행하세요 — 같은 매장, 같은 데이터입니다.",
         "platforms": {
-          "p1": "Web",
+          "p1": "웹",
           "p2": "Windows",
           "p3": "macOS",
           "p4": "iOS",
@@ -1320,8 +1320,8 @@
         "action": "Android 베타 참여"
       },
       "web": {
-        "name": "Web",
-        "listLabel": "Web",
+        "name": "웹",
+        "listLabel": "웹",
         "short": "설치 필요 없음",
         "action": "웹 데모 열기"
       }
@@ -1366,7 +1366,7 @@
           "desktop": "데스크톱",
           "ios": "iOS 및 iPad",
           "android": "Android",
-          "web": "Web"
+          "web": "웹"
         },
         "hub": {
           "store": "내 스토어",

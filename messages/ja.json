@@ -243,7 +243,7 @@
           "cta": "デスクトップ版をダウンロード"
         },
         "web": {
-          "label": "Webブラウザー",
+          "label": "ウェブブラウザー",
           "description": "インストール不要ですぐに試せます。",
           "cta": "ライブデモを試す"
         }
@@ -265,10 +265,10 @@
       },
       "a2": {
         "k": "手持ちのあらゆる画面で",
-        "h": "1つのPOSをWeb、デスクトップ、iOS、Androidで。",
+        "h": "1つのPOSをウェブ、デスクトップ、iOS、Androidで。",
         "b": "カウンターのタブレット、売り場のスマートフォン、バックオフィスのノートPCでレジを実行できます。同じストア、同じデータです。",
         "platforms": {
-          "p1": "Web",
+          "p1": "ウェブ",
           "p2": "Windows",
           "p3": "macOS",
           "p4": "iOS",
@@ -1280,7 +1280,7 @@
   "downloads": {
     "meta": {
       "title": "ダウンロード",
-      "description": "WCPOSをダウンロード — 無料プラグインに加えて、デスクトップ、iOS、Android、Webアプリを入手できます。最新バージョンと最近のリリースノートを確認してください。"
+      "description": "WCPOSをダウンロード — 無料プラグインに加えて、デスクトップ、iOS、Android、ウェブアプリを入手できます。最新バージョンと最近のリリースノートを確認してください。"
     },
     "platforms": {
       "mac-arm": {
@@ -1320,10 +1320,10 @@
         "action": "Androidベータに参加"
       },
       "web": {
-        "name": "Web",
-        "listLabel": "Web",
+        "name": "ウェブ",
+        "listLabel": "ウェブ",
         "short": "インストール不要",
-        "action": "Webデモを開く"
+        "action": "ウェブデモを開く"
       }
     },
     "hero": {
@@ -1361,12 +1361,12 @@
         "c5": "税金とレシート"
       },
       "diagram": {
-        "ariaLabel": "WCPOS プラグインを備えた WooCommerce ストアが中央にあり、REST API を通じてデスクトップ、iOS、Android、Web アプリと接続され、すべて同期されます。",
+        "ariaLabel": "WCPOS プラグインを備えた WooCommerce ストアが中央にあり、REST API を通じてデスクトップ、iOS、Android、ウェブアプリと接続され、すべて同期されます。",
         "devices": {
           "desktop": "デスクトップ",
           "ios": "iOS と iPad",
           "android": "Android",
-          "web": "Web"
+          "web": "ウェブ"
         },
         "hub": {
           "store": "あなたのストア",
