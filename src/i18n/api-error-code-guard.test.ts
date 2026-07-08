@@ -13,8 +13,9 @@ const apiRoot = path.join(root, 'src/app/api')
 const sourceExtensions = new Set(['.ts', '.tsx', '.js', '.jsx'])
 const skipPath = /(?:\.test\.|\.spec\.)/
 const skipDirs = new Set(['node_modules', '.git', '.next', 'coverage'])
-const jsonObjectPattern = /\b(?:NextResponse|Response)\.json\(\s*\{(?<body>[^}]*)\}/g
-const displayEnglishJsonPropertyPattern = /\b(error|message|statusText)\s*:/g
+const jsonObjectStartPattern = /\b(?:NextResponse|Response)\.json\(\s*\{/g
+const displayEnglishJsonPropertyPattern =
+  /(?:^|[,{])\s*(?:(['"])(error|message|statusText)\1\s*:|(error|message|statusText)\s*(?::|(?=,|\}|$)))/g
 
 function walk(dir: string, out: string[] = []): string[] {
   for (const entry of readdirSync(dir)) {
@@ -37,6 +38,38 @@ function lineForIndex(source: string, index: number): number {
   return source.slice(0, index).split('\n').length
 }
 
+function findClosingBrace(source: string, openBraceIndex: number): number {
+  let depth = 0
+  let quote: string | null = null
+  let escaped = false
+
+  for (let index = openBraceIndex; index < source.length; index += 1) {
+    const character = source[index]
+
+    if (quote) {
+      if (escaped) {
+        escaped = false
+      } else if (character === '\\') {
+        escaped = true
+      } else if (character === quote) {
+        quote = null
+      }
+      continue
+    }
+
+    if (character === '"' || character === "'" || character === '`') {
+      quote = character
+    } else if (character === '{') {
+      depth += 1
+    } else if (character === '}') {
+      depth -= 1
+      if (depth === 0) return index
+    }
+  }
+
+  return -1
+}
+
 function collectDisplayEnglishJsonPropertyHitsFromSource(
   source: string,
   filePath: string
@@ -44,15 +77,25 @@ function collectDisplayEnglishJsonPropertyHitsFromSource(
   const relative = path.relative(root, filePath)
   const hits: Hit[] = []
 
-  for (const objectMatch of source.matchAll(jsonObjectPattern)) {
-    const body = objectMatch.groups?.body ?? ''
-    const bodyStart = (objectMatch.index ?? 0) + objectMatch[0].indexOf(body)
+  for (const objectMatch of source.matchAll(jsonObjectStartPattern)) {
+    const openBraceIndex = (objectMatch.index ?? 0) + objectMatch[0].length - 1
+    const closingBraceIndex = findClosingBrace(source, openBraceIndex)
+    if (closingBraceIndex === -1) continue
+
+    const bodyStart = openBraceIndex + 1
+    const body = source.slice(bodyStart, closingBraceIndex)
 
     for (const propertyMatch of body.matchAll(displayEnglishJsonPropertyPattern)) {
+      const property = propertyMatch[2] ?? propertyMatch[3] ?? ''
+      const propertyOffset = propertyMatch[0].indexOf(property)
+
       hits.push({
         file: relative,
-        line: lineForIndex(source, bodyStart + (propertyMatch.index ?? 0)),
-        property: propertyMatch[1] ?? '',
+        line: lineForIndex(
+          source,
+          bodyStart + (propertyMatch.index ?? 0) + propertyOffset
+        ),
+        property,
       })
     }
   }
@@ -89,6 +132,56 @@ describe('API error localization guard helpers', () => {
         file: 'src/app/api/example/route.ts',
         line: 1,
         property: 'statusText',
+      },
+    ])
+  })
+
+  it('detects display-English fields after nested response objects', () => {
+    const hits = collectDisplayEnglishJsonPropertyHitsFromSource(
+      "return NextResponse.json({ details: { id }, message: 'Try again' }, { status: 400 })\n",
+      path.join(root, 'src/app/api/example/route.ts')
+    )
+
+    expect(hits).toEqual([
+      {
+        file: 'src/app/api/example/route.ts',
+        line: 1,
+        property: 'message',
+      },
+    ])
+  })
+
+  it('detects quoted display-English response keys', () => {
+    const hits = collectDisplayEnglishJsonPropertyHitsFromSource(
+      `return NextResponse.json({ 'message': 'Try again', "statusText": 'Bad request' }, { status: 400 })\n`,
+      path.join(root, 'src/app/api/example/route.ts')
+    )
+
+    expect(hits).toEqual([
+      {
+        file: 'src/app/api/example/route.ts',
+        line: 1,
+        property: 'message',
+      },
+      {
+        file: 'src/app/api/example/route.ts',
+        line: 1,
+        property: 'statusText',
+      },
+    ])
+  })
+
+  it('detects shorthand display-English response properties', () => {
+    const hits = collectDisplayEnglishJsonPropertyHitsFromSource(
+      "const message = 'Try again'; return NextResponse.json({ message }, { status: 400 })\n",
+      path.join(root, 'src/app/api/example/route.ts')
+    )
+
+    expect(hits).toEqual([
+      {
+        file: 'src/app/api/example/route.ts',
+        line: 1,
+        property: 'message',
       },
     ])
   })
