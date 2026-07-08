@@ -4,6 +4,7 @@ import {
   claimConnectedDiscordMember,
   getDiscordAccessByLicense,
   removeConnectedDiscordMemberForHolder,
+  removeConnectedDiscordMemberSelf,
 } from './connected-member-service'
 import {
   addConnectedDiscordMember,
@@ -183,6 +184,82 @@ describe('connected member service', () => {
         discord_access: expect.objectContaining({ blockedDiscordUserIds: ['discord_1'] }),
       })
     )
+  })
+
+  it('self-unlink frees the seat without block-listing the member', async () => {
+    const connected = license({
+      metadata: addConnectedDiscordMember(
+        {},
+        { id: 'discord_1', username: 'ada', avatar: null, connectedAt: new Date('2026-06-01T00:00:00.000Z') }
+      ),
+    })
+    const updateLicenseMetadata = vi.fn(async (_licenseId: string, metadata: Record<string, unknown>) => license({ metadata }))
+
+    await expect(
+      removeConnectedDiscordMemberSelf({
+        licenseKey: 'WCPOS-AAAA',
+        discordUserId: 'discord_1',
+        dependencies: {
+          now: () => new Date('2026-06-18T00:00:00.000Z'),
+          validateLicenseKey: vi.fn(async () => ({
+            valid: true,
+            code: 'VALID',
+            detail: 'ok',
+            license: connected,
+          })),
+          getLicense: vi.fn(async () => connected),
+          updateLicenseMetadata,
+        },
+      })
+    ).resolves.toEqual({ status: 'removed', licenseId: 'lic_1' })
+
+    const written = updateLicenseMetadata.mock.calls[0][1] as {
+      discord_access: { members: Array<{ removedAt?: string }>; blockedDiscordUserIds: string[] }
+    }
+    expect(written.discord_access.blockedDiscordUserIds).toEqual([])
+    expect(written.discord_access.members[0].removedAt).toBe('2026-06-18T00:00:00.000Z')
+  })
+
+  it('self-unlink reports not_connected without writing metadata', async () => {
+    const updateLicenseMetadata = vi.fn()
+
+    await expect(
+      removeConnectedDiscordMemberSelf({
+        licenseKey: 'WCPOS-AAAA',
+        discordUserId: 'discord_absent',
+        dependencies: {
+          now: () => new Date('2026-06-18T00:00:00.000Z'),
+          validateLicenseKey: vi.fn(async () => ({
+            valid: true,
+            code: 'VALID',
+            detail: 'ok',
+            license: license(),
+          })),
+          getLicense: vi.fn(async () => license()),
+          updateLicenseMetadata,
+        },
+      })
+    ).resolves.toEqual({ status: 'not_connected', licenseId: 'lic_1' })
+    expect(updateLicenseMetadata).not.toHaveBeenCalled()
+  })
+
+  it('self-unlink reports invalid_license for an unrecognised key', async () => {
+    await expect(
+      removeConnectedDiscordMemberSelf({
+        licenseKey: 'WCPOS-NOPE',
+        discordUserId: 'discord_1',
+        dependencies: {
+          now: () => new Date('2026-06-18T00:00:00.000Z'),
+          validateLicenseKey: vi.fn(async () => ({
+            valid: false,
+            code: 'NOT_FOUND',
+            detail: 'missing',
+          })),
+          getLicense: vi.fn(),
+          updateLicenseMetadata: vi.fn(),
+        },
+      })
+    ).resolves.toEqual({ status: 'invalid_license' })
   })
 
   it('serializes holder removals against latest license metadata', async () => {

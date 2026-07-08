@@ -187,6 +187,47 @@ export async function removeConnectedDiscordMemberForHolder({
   })
 }
 
+export type DiscordSelfUnlinkResult =
+  | { status: 'removed'; licenseId: string }
+  | { status: 'not_connected'; licenseId: string }
+  | { status: 'invalid_license' }
+
+/**
+ * A connected member releasing their own seat, authenticated by the licence
+ * key (the same credential that claimed it). Unlike holder removal this does
+ * NOT block-list the member — see the ADR-0007 amendment.
+ */
+export async function removeConnectedDiscordMemberSelf({
+  licenseKey,
+  discordUserId,
+  dependencies,
+}: {
+  licenseKey: string
+  discordUserId: string
+  dependencies: ClaimDependencies
+}): Promise<DiscordSelfUnlinkResult> {
+  const validation = await dependencies.validateLicenseKey(licenseKey)
+  if (!validation.license) return { status: 'invalid_license' }
+
+  const license = validation.license
+  return withLicenseMetadataLock(license.id, async () => {
+    const latestLicense = await dependencies.getLicense(license.id)
+    const member = getConnectedDiscordAccess(latestLicense.metadata).members.find(
+      (candidate) => candidate.discordUserId === discordUserId
+    )
+    if (!member) return { status: 'not_connected', licenseId: latestLicense.id }
+
+    const metadata = removeConnectedDiscordMember(
+      latestLicense.metadata,
+      member.id,
+      dependencies.now(),
+      { block: false }
+    )
+    await dependencies.updateLicenseMetadata(latestLicense.id, metadata)
+    return { status: 'removed', licenseId: latestLicense.id }
+  })
+}
+
 export function getLicensesForDiscordUser(
   discordUserId: string,
   licenses: LicenseDetail[]
