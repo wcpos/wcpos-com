@@ -1061,219 +1061,219 @@
   "legal": {
     "privacy": {
       "meta": {
-        "title": "Privacy Policy",
-        "description": "How WCPOS collects, uses, and protects your personal data, including analytics, cookies, payment processing, and your rights under GDPR."
+        "title": "隐私政策",
+        "description": "WCPOS 如何收集、使用和保护你的个人数据，包括分析、Cookie、付款处理，以及你在 GDPR 下的权利。"
       },
-      "title": "Privacy Policy",
-      "lastUpdated": "Last updated: {date}",
-      "intro": "WCPOS (\"we\", \"us\") operates wcpos.com, the website for the WCPOS plugin and WCPOS Pro. This policy explains what personal data we collect when you use the site, why we collect it, who processes it on our behalf, and what rights you have over it. We aim to collect as little as we need to run the service.",
+      "title": "隐私政策",
+      "lastUpdated": "最后更新：{date}",
+      "intro": "WCPOS（“我们”）运营 wcpos.com，这是 WCPOS 插件和 WCPOS Pro 的网站。本政策说明你使用本网站时我们会收集哪些个人数据、为什么收集、谁代表我们处理这些数据，以及你对这些数据拥有哪些权利。我们的目标是只收集运行服务所需的最少数据。",
       "collect": {
-        "title": "What we collect",
+        "title": "我们收集的内容",
         "items": {
           "c1": {
-            "label": "Account information.",
-            "body": "Your email address and name when you create an account, either directly or by signing in with Google, GitHub, or Discord. When you use a sign-in provider, we receive only your basic profile (email, name or username, and avatar or picture URL) from that provider, and may store the avatar or picture URL on your account as <code>oauth_avatar_url</code>."
+            "label": "账户信息。",
+            "body": "你创建账户时提供的电子邮件地址和姓名，无论是直接创建，还是通过 Google、GitHub 或 Discord 登录。当你使用登录提供商时，我们只会从该提供商接收你的基本资料（电子邮件、姓名或用户名，以及头像或图片 URL），并可能将头像或图片 URL 作为 <code>oauth_avatar_url</code> 存储在你的账户中。"
           },
           "c2": {
-            "label": "Billing details.",
-            "body": "The billing address and any company details you enter at checkout, stored with your customer record so we can issue receipts and comply with tax rules."
+            "label": "账单详情。",
+            "body": "你在结账时输入的账单地址和任何公司详情，会与客户记录一起保存，以便我们开具收据并遵守税务规则。"
           },
           "c3": {
-            "label": "Order and license history.",
-            "body": "Records of your purchases, license keys, and plugin downloads, so you can manage your licenses and we can provide support."
+            "label": "订单和许可证历史。",
+            "body": "你的购买记录、许可证密钥和插件下载记录，以便你管理许可证，并便于我们提供支持。"
           },
           "c4": {
-            "label": "Payment information.",
-            "body": "Payments are handled by Stripe and PayPal. Your full card number or payment credentials never reach our servers; we receive only a payment confirmation and the details needed for the receipt."
+            "label": "付款信息。",
+            "body": "付款由 Stripe 和 PayPal 处理。你的完整银行卡号或付款凭证永远不会到达我们的服务器；我们只会收到付款确认以及开具收据所需的详情。"
           },
           "c5": {
-            "label": "Usage analytics.",
-            "body": "We use PostHog to understand how the site is used (pages viewed, buttons clicked). To do this, we set a cookie containing a randomly generated identifier. It does not contain your name or email."
+            "label": "使用情况分析。",
+            "body": "我们使用 PostHog 了解网站的使用方式（浏览了哪些页面、点击了哪些按钮）。为此，我们会设置一个包含随机生成标识符的 Cookie。它不包含你的姓名或电子邮件。"
           },
           "c6": {
-            "label": "Error reports.",
-            "body": "If something breaks, an error report may be sent to Sentry. Reports can include technical details such as your browser and operating system and what the application was doing at the time of the error."
+            "label": "错误报告。",
+            "body": "如果出现故障，错误报告可能会发送到 Sentry。报告可能包含技术详情，例如你的浏览器、操作系统，以及错误发生时应用正在执行的操作。"
           },
           "c7": {
-            "label": "Server logs.",
-            "body": "Our servers keep application logs (in Grafana Loki) for debugging and operating the service."
+            "label": "服务器日志。",
+            "body": "我们的服务器会保留应用日志（存储在 Grafana Loki 中），用于调试和运营服务。"
           }
         }
       },
       "cookies": {
-        "title": "Cookies",
-        "body": "We use a small number of first-party cookies. We do not use third-party advertising cookies.",
+        "title": "Cookie",
+        "body": "我们使用少量第一方 Cookie。我们不使用第三方广告 Cookie。",
         "items": {
-          "k1": "<code>medusa-token</code> — keeps you signed in to your account. Expires after 1 day.",
-          "k2": "<code>wcpos-analytics-consent</code> — remembers your analytics consent choice (accepted or declined). Expires after 182 days.",
-          "k3": "<code>wcpos-distinct-id</code> — a random identifier used for analytics. Only set after you accept analytics on the consent banner; removed if you decline. Expires after 1 year.",
-          "k4": "<code>NEXT_LOCALE</code> — remembers your language preference.",
-          "k5": "Your light/dark theme preference is stored locally in your browser and is never sent to us."
+          "k1": "<code>medusa-token</code> — 让你保持账户登录状态。1 天后过期。",
+          "k2": "<code>wcpos-analytics-consent</code> — 记住你的分析同意选择（接受或拒绝）。182 天后过期。",
+          "k3": "<code>wcpos-distinct-id</code> — 用于分析的随机标识符。只有在你接受同意横幅中的分析后才会设置；如果你拒绝，则会移除。1 年后过期。",
+          "k4": "<code>NEXT_LOCALE</code> — 记住你的语言偏好。",
+          "k5": "你的浅色/深色主题偏好会本地存储在浏览器中，绝不会发送给我们。"
         }
       },
       "processors": {
-        "title": "Who processes your data",
-        "body": "We use the following service providers to run wcpos.com. Each receives only the data needed for its role:",
+        "title": "谁处理你的数据",
+        "body": "我们使用以下服务提供商来运行 wcpos.com。每个服务提供商只会接收其角色所需的数据：",
         "items": {
           "p1": {
-            "label": "Our commerce backend (Medusa)",
-            "body": "— self-hosted on Hetzner infrastructure in the EU. Stores accounts, customer records, and orders."
+            "label": "我们的商务后端（Medusa）",
+            "body": "— 自托管在欧盟的 Hetzner 基础设施上。存储账户、客户记录和订单。"
           },
           "p2": {
             "label": "Stripe",
-            "body": "— card payment processing."
+            "body": "— 银行卡付款处理。"
           },
           "p3": {
             "label": "PayPal",
-            "body": "— PayPal payment processing."
+            "body": "— PayPal 付款处理。"
           },
           "p4": {
             "label": "Keygen",
-            "body": "— software license management (license keys and activations)."
+            "body": "— 软件许可证管理（许可证密钥和激活）。"
           },
           "p5": {
             "label": "PostHog",
-            "body": "— product analytics."
+            "body": "— 产品分析。"
           },
           "p6": {
             "label": "Sentry",
-            "body": "— error monitoring."
+            "body": "— 错误监控。"
           },
           "p7": {
             "label": "Vercel",
-            "body": "— website hosting and content delivery."
+            "body": "— 网站托管和内容分发。"
           }
         }
       },
       "retention": {
-        "title": "How long we keep data",
+        "title": "我们保留数据的时长",
         "items": {
-          "r1": "Account and license data is kept while your account is active. If you ask us to delete your account, we delete it, except where we are legally required to keep records.",
-          "r2": "Order and invoice records are kept for as long as tax and accounting laws require.",
-          "r3": "The analytics identifier cookie expires after 1 year.",
-          "r4": "Server logs and error reports are kept for a limited operational window and then deleted."
+          "r1": "只要你的账户处于活跃状态，我们就会保留账户和许可证数据。如果你要求我们删除账户，我们会将其删除，除非法律要求我们保留记录。",
+          "r2": "订单和发票记录会按照税务和会计法律要求的期限保留。",
+          "r3": "分析标识符 Cookie 会在 1 年后过期。",
+          "r4": "服务器日志和错误报告会在有限的运营窗口内保留，之后删除。"
         }
       },
       "rights": {
-        "title": "Your rights",
-        "body": "If you are in the EU/EEA or UK, you have rights under the GDPR, including the right to access, correct, delete, and export your personal data, and to object to or restrict certain processing. We extend the same rights to all users regardless of location.",
-        "exercise": "To exercise any of these rights, email us at <email>support@wcpos.com</email> so we can verify your identity privately. EU/EEA residents also have the right to lodge a complaint with their local data protection authority."
+        "title": "你的权利",
+        "body": "如果你位于欧盟/欧洲经济区或英国，你在 GDPR 下享有权利，包括访问、更正、删除和导出个人数据的权利，以及反对或限制某些处理的权利。无论用户位于何处，我们都向所有用户提供相同权利。",
+        "exercise": "如需行使这些权利，请发送电子邮件至 <email>support@wcpos.com</email>，以便我们私下验证你的身份。欧盟/欧洲经济区居民也有权向当地数据保护机构投诉。"
       },
       "changes": {
-        "title": "Changes to this policy",
-        "body": "If we make material changes to this policy, we will update the date at the top of this page. Continued use of the site after a change means the updated policy applies."
+        "title": "本政策的变更",
+        "body": "如果我们对本政策作出重大变更，我们会更新本页面顶部的日期。变更后继续使用本网站即表示适用更新后的政策。"
       },
       "contact": {
-        "title": "Contact",
-        "body": "Questions about this policy or your data? Email us at <email>support@wcpos.com</email> or ask general questions in the community chat on the <support>support page</support>."
+        "title": "联系方式",
+        "body": "对本政策或你的数据有疑问？请发送电子邮件至 <email>support@wcpos.com</email>，或在<support>支持页面</support>的社区聊天中提出一般问题。"
       }
     },
     "refunds": {
       "meta": {
-        "title": "Refund Policy",
-        "description": "The WCPOS Pro refund policy: how to request a refund within 14 days of purchase, and how refunds are paid."
+        "title": "退款政策",
+        "description": "WCPOS Pro 退款政策：如何在购买后 14 天内申请退款，以及退款如何支付。"
       },
-      "title": "Refund Policy",
-      "lastUpdated": "Last updated: {date}",
-      "intro": "WCPOS Pro purchases — first purchase or renewal, yearly or lifetime — can be refunded within 14 days of purchase. Email us within that window and we refund you in full. You do not need to give a reason.",
+      "title": "退款政策",
+      "lastUpdated": "最后更新：{date}",
+      "intro": "WCPOS Pro 购买——首次购买或续订、年度或终身——可在购买后 14 天内退款。在该期限内给我们发送电子邮件，我们会全额退款。你无需说明理由。",
       "prevention": {
-        "title": "The best refund is the one you never need",
+        "title": "最好的退款，是你永远不需要的退款",
         "items": {
           "p1": {
-            "label": "Install the free plugin.",
-            "body": "Run the free version of WCPOS on your store for a couple of days before upgrading — that proves the plugin works on your site."
+            "label": "安装免费插件。",
+            "body": "升级前先在你的商店运行几天免费版 WCPOS——这能证明插件可以在你的网站上正常工作。"
           },
           "p2": {
-            "label": "Try the demo.",
-            "body": "The <demo>online demo</demo> runs the current version with Pro activated, so you can confirm it fulfils your store's requirements."
+            "label": "试用演示。",
+            "body": "<demo>在线演示</demo>运行的是已启用 Pro 的当前版本，因此你可以确认它是否满足商店需求。"
           },
           "p3": {
-            "label": "Read the documentation.",
-            "body": "Check the <docs>docs</docs> for the features you need, and email <email>support@wcpos.com</email> with pre-sale questions — we answer openly and honestly."
+            "label": "阅读文档。",
+            "body": "查看<docs>文档</docs>中你需要的功能，并将售前问题发送至 <email>support@wcpos.com</email>——我们会公开、诚实地回答。"
           }
         }
       },
       "request": {
-        "title": "How to request a refund",
-        "body": "Email <email>support@wcpos.com</email> from the email address you used for the purchase, within 14 days of buying. Telling us why helps us improve, but it is not required to get the refund."
+        "title": "如何申请退款",
+        "body": "请在购买后 14 天内，使用购买时的电子邮件地址发送邮件至 <email>support@wcpos.com</email>。告诉我们原因有助于改进产品，但这不是获得退款的必要条件。"
       },
       "payment": {
-        "title": "How refunds are paid",
-        "body": "Refunds go back to the original payment method via Stripe or PayPal and typically appear on your statement within 5–10 business days, depending on your bank or card issuer. Refunded license keys are revoked and stop working immediately."
+        "title": "退款如何支付",
+        "body": "退款会通过 Stripe 或 PayPal 退回原付款方式，通常会在 5–10 个工作日内显示在你的账单中，具体取决于你的银行或发卡机构。已退款的许可证密钥会被撤销，并立即停止工作。"
       },
       "renewals": {
-        "title": "License renewals",
-        "body": "Yearly licenses do not renew automatically — we never charge you again without a new purchase from you. The same 14-day refund window applies to renewal purchases."
+        "title": "许可证续订",
+        "body": "年度许可证不会自动续订——除非你主动重新购买，否则我们绝不会再次收费。同样的 14 天退款期限也适用于续订购买。"
       },
       "rights": {
-        "title": "Your statutory rights",
-        "body": "For consumers in the EU, EEA and UK: our 14-day refund window matches your statutory right of withdrawal for this kind of purchase, and exercising either works the same way — email us within 14 days.",
-        "defective": "If WCPOS Pro is defective or does not work as described, statutory remedies for faulty digital content apply at any time, independent of the 14-day window. And nothing in this policy limits any rights you have under the consumer protection laws of your country — where local law gives you stronger rights, those rights apply."
+        "title": "你的法定权利",
+        "body": "对于欧盟、欧洲经济区和英国消费者：我们的 14 天退款期限与你对此类购买享有的法定撤回权一致，行使任一权利的方式相同——请在 14 天内给我们发送电子邮件。",
+        "defective": "如果 WCPOS Pro 存在缺陷或未按描述工作，针对有缺陷数字内容的法定救济可随时适用，不受 14 天期限限制。本政策中的任何内容都不会限制你根据所在国家/地区消费者保护法律享有的任何权利——如果当地法律赋予你更强的权利，则适用这些权利。"
       }
     },
     "terms": {
       "meta": {
-        "title": "Terms of Service",
-        "description": "The terms that govern your use of wcpos.com, your WCPOS account, and WCPOS Pro licenses."
+        "title": "服务条款",
+        "description": "管理你使用 wcpos.com、WCPOS 账户和 WCPOS Pro 许可证的条款。"
       },
-      "title": "Terms of Service",
-      "lastUpdated": "Last updated: {date}",
-      "intro": "These terms govern your use of wcpos.com, your WCPOS account, and any WCPOS Pro license you purchase. By using the site or buying a license, you agree to these terms. If you do not agree, please do not use the service.",
+      "title": "服务条款",
+      "lastUpdated": "最后更新：{date}",
+      "intro": "这些条款适用于你使用 wcpos.com、WCPOS 账户，以及你购买的任何 WCPOS Pro 许可证。使用本网站或购买许可证，即表示你同意这些条款。如果你不同意，请不要使用本服务。",
       "service": {
-        "title": "The service",
-        "body": "WCPOS provides the wcpos.com website, user accounts, and paid WCPOS Pro licenses that unlock premium features, updates, and priority support for the WCPOS plugin."
+        "title": "本服务",
+        "body": "WCPOS 提供 wcpos.com 网站、用户账户，以及付费 WCPOS Pro 许可证，用于为 WCPOS 插件解锁高级功能、更新和优先支持。"
       },
       "gpl": {
-        "title": "The free plugin and the GPL",
-        "body": "The free WCPOS plugin is open-source software released under the GNU General Public License (GPL). Nothing in these terms limits the rights the GPL grants you over that code. A Pro license is separate: it covers access to Pro features, license keys, automatic updates, and priority support — not a restriction on the open-source code itself."
+        "title": "免费插件和 GPL",
+        "body": "免费的 WCPOS 插件是根据 GNU General Public License（GPL）发布的开源软件。本条款中的任何内容都不会限制 GPL 授予你对该代码的权利。Pro 许可证是独立的：它涵盖对 Pro 功能、许可证密钥、自动更新和优先支持的访问——而不是对开源代码本身的限制。"
       },
       "account": {
-        "title": "Your account",
+        "title": "你的账户",
         "items": {
-          "a1": "Provide accurate information when registering and keep it up to date.",
-          "a2": "Keep your credentials secure. You are responsible for activity that happens under your account.",
-          "a3": "Tell us promptly at <email>support@wcpos.com</email> if you suspect unauthorized access to your account."
+          "a1": "注册时提供准确的信息，并保持最新。",
+          "a2": "妥善保护你的凭证。你需要对账户下发生的活动负责。",
+          "a3": "如果你怀疑账户遭到未经授权的访问，请立即通过 <email>support@wcpos.com</email> 告知我们。"
         }
       },
       "licenses": {
-        "title": "Purchases and licenses",
+        "title": "购买和许可证",
         "items": {
-          "l1": "<strong>Yearly license.</strong> A one-time payment that includes Pro features, automatic updates, and priority support for one year. It does not renew automatically and we never charge you again without a new purchase. When it expires, you can choose to renew it from your account for another year.",
-          "l2": "<strong>Lifetime license.</strong> A one-time purchase that includes Pro features, updates, and priority support for the lifetime of the product.",
-          "l3": "License keys are for activating WCPOS Pro on your own sites within the limits of the license you purchased. Do not share, resell, or publish license keys.",
-          "l4": "Prices are shown at checkout before you pay. Payment is handled by Stripe or PayPal.",
-          "l5": "Refunds are handled according to our <policy>refund policy</policy>."
+          "l1": "<strong>年度许可证。</strong>一次性付款，包含一年的 Pro 功能、自动更新和优先支持。它不会自动续订，除非你重新购买，否则我们绝不会再次收费。到期后，你可以选择在账户中续订一年。",
+          "l2": "<strong>终身许可证。</strong>一次性购买，包含产品生命周期内的 Pro 功能、更新和优先支持。",
+          "l3": "许可证密钥用于在你自己的站点上激活 WCPOS Pro，并受你购买的许可证限制约束。请勿共享、转售或公开发布许可证密钥。",
+          "l4": "付款前，价格会显示在结账页面。付款由 Stripe 或 PayPal 处理。",
+          "l5": "退款按照我们的<policy>退款政策</policy>处理。"
         }
       },
       "acceptableUse": {
-        "title": "Acceptable use",
-        "body": "When using the service, you agree not to:",
+        "title": "可接受使用",
+        "body": "使用本服务时，你同意不会：",
         "items": {
-          "u1": "Break the law or infringe the rights of others.",
-          "u2": "Attempt to gain unauthorized access to accounts, systems, or data, or probe the service for vulnerabilities without permission.",
-          "u3": "Interfere with the operation of the service, including overloading it or automated scraping at disruptive volumes.",
-          "u4": "Circumvent license checks or use license keys beyond the terms of your purchase. (This does not limit your GPL rights over the open-source plugin code.)"
+          "u1": "违法或侵犯他人权利。",
+          "u2": "试图未经授权访问账户、系统或数据，或在未经许可的情况下探测服务漏洞。",
+          "u3": "干扰服务运行，包括使其过载或以破坏性规模进行自动抓取。",
+          "u4": "绕过许可证检查，或超出购买条款使用许可证密钥。（这不会限制你对开源插件代码享有的 GPL 权利。）"
         }
       },
       "warranty": {
-        "title": "Warranty disclaimer",
-        "body": "The service and software are provided \"as is\" and \"as available\", without warranties of any kind, express or implied, including merchantability, fitness for a particular purpose, and non-infringement. We do not promise that the service will be uninterrupted or error-free. Some jurisdictions do not allow certain warranty exclusions, so parts of this section may not apply to you."
+        "title": "免责声明",
+        "body": "本服务和软件按“原样”和“可用状态”提供，不作任何形式的明示或暗示保证，包括适销性、特定用途适用性和不侵权保证。我们不承诺服务不会中断或没有错误。某些司法管辖区不允许排除某些保证，因此本节部分内容可能不适用于你。"
       },
       "liability": {
-        "title": "Limitation of liability",
-        "body": "To the maximum extent permitted by law, WCPOS will not be liable for indirect, incidental, special, or consequential damages, or for lost profits, revenue, or data. Our total liability for any claim relating to the service is limited to the amount you paid us in the 12 months before the claim arose. Nothing in these terms excludes liability that cannot be excluded by law."
+        "title": "责任限制",
+        "body": "在法律允许的最大范围内，WCPOS 不对间接、附带、特殊或后果性损害负责，也不对利润、收入或数据损失负责。我们就与服务相关的任何索赔承担的总责任，限于索赔发生前 12 个月内你向我们支付的金额。本条款中的任何内容都不会排除法律不能排除的责任。"
       },
       "termination": {
-        "title": "Termination",
-        "body": "You can stop using the service and ask us to delete your account at any time. We may suspend or terminate accounts that violate these terms. Sections that by their nature should survive (such as the warranty disclaimer and liability limits) survive termination."
+        "title": "终止",
+        "body": "你可以随时停止使用本服务，并要求我们删除你的账户。我们可能暂停或终止违反这些条款的账户。按其性质应在终止后继续有效的条款（例如免责声明和责任限制）将在终止后继续有效。"
       },
       "changes": {
-        "title": "Changes to these terms",
-        "body": "If we make material changes, we will update the date at the top of this page. Continued use of the service after a change means the updated terms apply."
+        "title": "本条款的变更",
+        "body": "如果我们作出重大变更，我们会更新本页面顶部的日期。变更后继续使用本服务即表示适用更新后的条款。"
       },
       "contact": {
-        "title": "Contact",
-        "body": "Questions about these terms? Email us at <email>support@wcpos.com</email> or ask in the community chat on the <support>support page</support>."
+        "title": "联系方式",
+        "body": "对这些条款有疑问？请发送电子邮件至 <email>support@wcpos.com</email>，或在<support>支持页面</support>的社区聊天中提问。"
       }
     }
   },
