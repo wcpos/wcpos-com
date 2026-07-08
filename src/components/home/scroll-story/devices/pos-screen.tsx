@@ -1,4 +1,4 @@
-import { useTranslations } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 import { cn } from '@/lib/utils'
 
 /**
@@ -28,19 +28,40 @@ const ink = {
 const swatches = ['#f2a08c', '#9ed3b6', '#cbb197', '#e3e7ec', '#b7cede', '#f5c6c1']
 
 const demoProducts = [
-  { id: 'p1', price: '$29' },
-  { id: 'p2', price: '$24' },
-  { id: 'p3', price: '$18' },
-  { id: 'p4', price: '$9' },
-  { id: 'p5', price: '$14' },
-  { id: 'p6', price: '$16' },
+  { id: 'p1', price: 29 },
+  { id: 'p2', price: 24 },
+  { id: 'p3', price: 18 },
+  { id: 'p4', price: 9 },
+  { id: 'p5', price: 14 },
+  { id: 'p6', price: 16 },
 ] as const
 
 const demoCart = [
-  { id: 'c1', total: '$24' },
-  { id: 'c2', total: '$36' },
-  { id: 'c3', total: '$9' },
+  { id: 'c1', total: 24 },
+  { id: 'c2', total: 36 },
+  { id: 'c3', total: 9 },
 ] as const
+
+export function formatUsdDemoAmount(
+  locale: string,
+  amount: number,
+  options: Pick<
+    Intl.NumberFormatOptions,
+    'minimumFractionDigits' | 'maximumFractionDigits'
+  > = {}
+): string {
+  const formatOptions: Intl.NumberFormatOptions = {
+    style: 'currency',
+    currency: 'USD',
+    ...options,
+  }
+
+  try {
+    return new Intl.NumberFormat(locale, formatOptions).format(amount)
+  } catch {
+    return new Intl.NumberFormat('en', formatOptions).format(amount)
+  }
+}
 
 function LandscapePos({
   w,
@@ -52,6 +73,17 @@ function LandscapePos({
   register: number
 }) {
   const t = useTranslations('home.story.pos')
+  const locale = useLocale()
+  const compactCurrency = (amount: number) =>
+    formatUsdDemoAmount(locale, amount, {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    })
+  const fullCurrency = (amount: number) =>
+    formatUsdDemoAmount(locale, amount, {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    })
   const rail = 24
   const bar = 20
   const cartW = Math.round(w * 0.26)
@@ -182,7 +214,7 @@ function LandscapePos({
               {t(`products.${product.id}`)}
             </text>
             <text x={cx + cardW - 5} y={cy + cardH - 5} textAnchor="end" fontSize="6.5" fill={ink.muted}>
-              {product.price}
+              {compactCurrency(product.price)}
             </text>
           </g>
         )
@@ -213,7 +245,7 @@ function LandscapePos({
             {t(`cart.${line.id}`)}
           </text>
           <text x={w - 8} y={bar + 34 + i * 15} textAnchor="end" fontSize="6.5" fill={ink.text}>
-            {line.total}
+            {compactCurrency(line.total)}
           </text>
           <line
             x1={cartX + 8}
@@ -230,7 +262,7 @@ function LandscapePos({
         {t('subtotal')}
       </text>
       <text x={w - 8} y={h - 31} textAnchor="end" fontSize="6" fontWeight="700" fill={ink.text}>
-        $69.00
+        {fullCurrency(69)}
       </text>
       <rect x={cartX + 8} y={h - 25} width={cartW - 16} height={16} rx={4} fill={ink.red} />
       <text
@@ -241,7 +273,7 @@ function LandscapePos({
         fontWeight="700"
         fill="#fff"
       >
-        {t('charge', { amount: '$69' })}
+        {t('charge', { amount: compactCurrency(69) })}
       </text>
     </svg>
   )
@@ -249,6 +281,12 @@ function LandscapePos({
 
 function PhonePos() {
   const t = useTranslations('home.story.pos')
+  const locale = useLocale()
+  const compactCurrency = (amount: number) =>
+    formatUsdDemoAmount(locale, amount, {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    })
   const w = 112
   const h = 242
   const cols = 2
@@ -308,7 +346,7 @@ function PhonePos() {
               {t(`products.${product.id}`)}
             </text>
             <text x={cx + cardW - 4} y={cy + cardH - 4} textAnchor="end" fontSize="5.8" fill={ink.muted}>
-              {product.price}
+              {compactCurrency(product.price)}
             </text>
           </g>
         )
@@ -317,7 +355,7 @@ function PhonePos() {
       {/* charge bar + bottom nav */}
       <rect x={6} y={h - navH - 20} width={w - 12} height={15} rx={4} fill={ink.red} />
       <text x={w / 2} y={h - navH - 9.5} textAnchor="middle" fontSize="6.5" fontWeight="700" fill="#fff">
-        {t('charge', { amount: '$69' })}
+        {t('charge', { amount: compactCurrency(69) })}
       </text>
       <path d={`M0 ${h - navH} H${w} V${h - 10} Q${w} ${h} ${w - 10} ${h} H10 Q0 ${h} 0 ${h - 10} Z`} fill={ink.card} />
       <line x1={0} y1={h - navH} x2={w} y2={h - navH} stroke={ink.line} />
