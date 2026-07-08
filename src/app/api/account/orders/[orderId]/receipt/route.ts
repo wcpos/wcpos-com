@@ -124,11 +124,16 @@ type ReceiptProductTitles = {
   lifetime: string
 }
 
-function localizedReceiptItemTitle(
-  title: string,
+function localizedReceiptItemTitle<T>(
+  title: T,
   productTitles: ReceiptProductTitles
-): string {
-  const normalized = title.trim().toLowerCase()
+): T | string {
+  if (typeof title !== 'string') return title
+
+  const trimmedTitle = title.trim()
+  if (!trimmedTitle) return title
+
+  const normalized = trimmedTitle.toLowerCase()
   if (/^wcpos pro\s*(?:\(|-|–)?\s*yearly\)?$/.test(normalized)) {
     return productTitles.yearly
   }
