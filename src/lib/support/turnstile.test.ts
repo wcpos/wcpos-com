@@ -58,6 +58,10 @@ describe('verifyTurnstile', () => {
     expect(fetchMock).not.toHaveBeenCalled()
   })
 
+  it('does not admit deployed API aliases without a token', async () => {
+    expect(await verifyTurnstile('', 'updates.wcpos.com')).toBe(false)
+  })
+
   it('fails closed for an unexpected siteverify network error', async () => {
     vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new Error('boom')))
     expect(await verifyTurnstile('token', 'wcpos.com')).toBe(false)
