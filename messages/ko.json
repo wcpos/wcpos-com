@@ -31,7 +31,7 @@
     "companyHeading": "회사",
     "downloadHeading": "다운로드",
     "pro": "WCPOS Pro",
-    "roadmap": "Roadmap",
+    "roadmap": "로드맵",
     "demo": "라이브 데모",
     "discord": "Discord",
     "github": "GitHub",
@@ -343,40 +343,40 @@
   },
   "roadmap": {
     "meta": {
-      "title": "Roadmap",
-      "description": "See what we are building next for WCPOS — upcoming features, milestones, and release progress."
+      "title": "로드맵",
+      "description": "WCPOS를 위해 다음에 무엇을 만들고 있는지 — 예정된 기능, 마일스톤, 릴리스 진행 상황을 확인하세요."
     },
     "page": {
-      "eyebrow": "Roadmap",
-      "title": "The release train",
-      "description": "Every stop on the way to a faster, offline-proof WCPOS — pulled straight from our GitHub, newest work first."
+      "eyebrow": "로드맵",
+      "title": "릴리스 일정",
+      "description": "더 빠르고 오프라인에 강한 WCPOS로 가는 모든 단계 — GitHub에서 가져온 최신 작업부터 표시합니다."
     },
     "board": {
-      "link": "live from the WCPOS project board"
+      "link": "WCPOS 프로젝트 보드에서 실시간으로 보기"
     },
     "status": {
-      "done": "Done",
-      "inProgress": "In progress",
-      "planned": "Planned"
+      "done": "완료",
+      "inProgress": "진행 중",
+      "planned": "예정됨"
     },
     "timeline": {
-      "empty": "No roadmap items to display yet.",
+      "empty": "아직 표시할 로드맵 항목이 없습니다.",
       "phases": {
-        "now": "Now",
-        "next": "Next",
-        "shipped": "Shipped"
+        "now": "현재",
+        "next": "다음",
+        "shipped": "출시 완료"
       },
-      "progress": "{completed} of {total} done",
-      "progressDue": "{completed} of {total} done · due {date}",
-      "shipped": "shipped",
-      "shippedWithDate": "shipped · {date}"
+      "progress": "{completed}/{total} 완료",
+      "progressDue": "{completed}/{total} 완료 · 마감 {date}",
+      "shipped": "출시됨",
+      "shippedWithDate": "출시됨 · {date}"
     },
     "bugs": {
-      "summary": "{count, plural, one {+ # bug fix & improvements} other {+ # bug fixes & improvements}}",
+      "summary": "{count, plural, one {+ 버그 수정 및 개선 #건} other {+ 버그 수정 및 개선 #건}}",
       "status": {
-        "done": "fixed",
-        "in_progress": "in progress",
-        "planned": "planned"
+        "done": "수정됨",
+        "in_progress": "진행 중",
+        "planned": "예정됨"
       }
     }
   },
@@ -986,14 +986,14 @@
       "signIn": "로그인",
       "signUp": "가입",
       "apiErrors": {
-        "invalid_origin": "Please refresh the page and try again.",
-        "rate_limited": "Too many attempts. Please try again later.",
-        "email_required": "Email is required.",
-        "credentials_required": "Email and password are required.",
-        "reset_fields_required": "Email, token, and password are required.",
-        "password_too_short": "Password must be at least {min} characters.",
-        "invalid_credentials": "Invalid email or password.",
-        "invalid_reset_token": "This password reset link is invalid or has expired. Please request a new one."
+        "invalid_origin": "페이지를 새로고침한 뒤 다시 시도해 주세요.",
+        "rate_limited": "시도 횟수가 너무 많습니다. 나중에 다시 시도해 주세요.",
+        "email_required": "이메일은 필수입니다.",
+        "credentials_required": "이메일과 비밀번호가 필요합니다.",
+        "reset_fields_required": "이메일, 토큰, 비밀번호가 필요합니다.",
+        "password_too_short": "비밀번호는 최소 {min}자 이상이어야 합니다.",
+        "invalid_credentials": "이메일 또는 비밀번호가 올바르지 않습니다.",
+        "invalid_reset_token": "이 비밀번호 재설정 링크가 잘못되었거나 만료되었습니다. 새 링크를 요청해 주세요."
       }
     },
     "login": {
@@ -1527,53 +1527,53 @@
   },
   "support": {
     "meta": {
-      "title": "Support",
-      "description": "Ask anything about WCPOS and get an instant answer from our docs, or chat with the community on Discord."
+      "title": "지원",
+      "description": "WCPOS에 대해 무엇이든 물어보고 문서에서 가져온 즉시 답변을 받거나 Discord 커뮤니티에서 대화하세요."
     },
     "chat": {
       "hero": {
-        "title": "How can we help?",
-        "subtitle": "Ask anything about WCPOS — setup, licensing, hardware, syncing, printing. You'll get an instant answer drawn from our docs."
+        "title": "무엇을 도와드릴까요?",
+        "subtitle": "WCPOS에 대해 무엇이든 물어보세요 — 설정, 라이선스, 하드웨어, 동기화, 인쇄까지. 문서에서 가져온 즉시 답변을 받을 수 있습니다."
       },
       "examples": {
-        "e1": "Why is my licence inactive?",
-        "e2": "Which barcode scanners are supported?",
-        "e3": "How do I sync products from WooCommerce?"
+        "e1": "내 라이선스가 비활성 상태인 이유는 무엇인가요?",
+        "e2": "지원되는 바코드 스캐너는 무엇인가요?",
+        "e3": "WooCommerce에서 제품을 어떻게 동기화하나요?"
       },
       "feedback": {
-        "prompt": "Was this helpful?",
-        "yes": "Yes",
+        "prompt": "도움이 되었나요?",
+        "yes": "예",
         "no": "No"
       },
-      "thinking": "Aide is thinking…",
+      "thinking": "Aide가 생각 중입니다…",
       "form": {
-        "label": "Ask a support question",
-        "placeholder": "e.g. How do I connect a receipt printer?",
-        "followUpPlaceholder": "Ask a follow-up…",
-        "submit": "Ask"
+        "label": "지원 질문하기",
+        "placeholder": "예: 영수증 프린터는 어떻게 연결하나요?",
+        "followUpPlaceholder": "추가 질문하기…",
+        "submit": "질문하기"
       },
-      "discordLink": "Ask in Discord →",
-      "poweredBy": "Answered by Aide · trained on the WCPOS docs & wiki"
+      "discordLink": "Discord에서 질문하기 →",
+      "poweredBy": "Aide가 답변합니다 · WCPOS 문서와 위키로 학습됨"
     },
     "errors": {
-      "invalid_question": "Please enter a question (up to 1000 characters).",
-      "bot_check_failed": "Bot check failed. Please reload and try again.",
-      "rate_limited": "You're asking a lot of questions — please wait a few minutes, or hop into Discord.",
-      "budget_exhausted": "The assistant is busy right now. Please try Discord for a faster answer.",
-      "empty_answer": "The assistant is temporarily unavailable. Please try Discord while we get it back.",
-      "gateway_rate_limited": "The assistant is busy right now — please try again later.",
-      "timeout": "That took too long. Please try again, or ask in Discord.",
-      "unavailable": "The assistant is temporarily unavailable. Please try Discord while we get it back.",
-      "network": "The assistant is unavailable right now. Please ask in Discord.",
-      "unknown": "Something went wrong."
+      "invalid_question": "질문을 입력해 주세요(최대 1000자).",
+      "bot_check_failed": "봇 확인에 실패했습니다. 새로고침한 뒤 다시 시도해 주세요.",
+      "rate_limited": "질문이 너무 많습니다 — 몇 분 기다리거나 Discord로 들어와 주세요.",
+      "budget_exhausted": "지금 어시스턴트가 바쁩니다. 더 빠른 답변은 Discord를 이용해 주세요.",
+      "empty_answer": "어시스턴트를 일시적으로 사용할 수 없습니다. 복구하는 동안 Discord를 이용해 주세요.",
+      "gateway_rate_limited": "지금 어시스턴트가 바쁩니다 — 나중에 다시 시도해 주세요.",
+      "timeout": "시간이 너무 오래 걸렸습니다. 다시 시도하거나 Discord에서 질문해 주세요.",
+      "unavailable": "어시스턴트를 일시적으로 사용할 수 없습니다. 복구하는 동안 Discord를 이용해 주세요.",
+      "network": "지금 어시스턴트를 사용할 수 없습니다. Discord에서 질문해 주세요.",
+      "unknown": "문제가 발생했습니다."
     },
     "order": {
-      "title": "Contact support about your order",
-      "body": "Quote reference <ref></ref> so we can confirm the payment or finish the order before you pay again."
+      "title": "주문 관련 지원 문의",
+      "body": "다시 결제하기 전에 결제를 확인하거나 주문을 완료할 수 있도록 참조 번호 <ref></ref>를 알려 주세요."
     },
     "discord": {
-      "title": "Prefer to talk to a human?",
-      "subtitle": "Join store owners and the team in our live Discord community."
+      "title": "사람과 직접 이야기하고 싶으신가요?",
+      "subtitle": "매장 운영자와 팀이 함께하는 실시간 Discord 커뮤니티에 참여하세요."
     }
   }
 }

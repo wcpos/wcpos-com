@@ -130,6 +130,24 @@ const italianIdenticalCopyAllowlist = new Set([
   'footer.wordpressOrg',
 ])
 
+const auditedKoreanNamespacePrefixes = [
+  'support.',
+  'auth.',
+  'roadmap.',
+  'common.',
+  'header.',
+  'footer.',
+]
+const koreanIdenticalCopyAllowlist = new Set([
+  'auth.common.emailPlaceholder',
+  'header.pro',
+  'footer.copyright',
+  'footer.pro',
+  'footer.discord',
+  'footer.github',
+  'footer.wordpressOrg',
+])
+
 const auditedFrenchNamespacePrefixes = [
   'roadmap.',
   'support.',
@@ -806,6 +824,31 @@ describe('messages key parity', () => {
     expect(
       untranslatedKeys,
       'messages/it.json must not copy audited Italian support/auth/account/checkout/roadmap/common/header/footer English strings verbatim'
+    ).toEqual([])
+  })
+
+  it('ko.json translates the audited support, auth, roadmap, common, header, and footer copy', () => {
+    const english = loadMessages(defaultLocale)
+    const korean = loadMessages('ko')
+    const auditedKeys = enKeys.filter(
+      (key) =>
+        auditedKoreanNamespacePrefixes.some((prefix) =>
+          key.startsWith(prefix)
+        ) && !koreanIdenticalCopyAllowlist.has(key)
+    )
+    const untranslatedKeys = auditedKeys.filter((key) => {
+      const englishValue = valueAtPath(english, key)
+      const koreanValue = valueAtPath(korean, key)
+      return (
+        englishValue !== undefined &&
+        koreanValue === englishValue &&
+        /[A-Za-z]{3}/.test(englishValue)
+      )
+    })
+
+    expect(
+      untranslatedKeys,
+      'messages/ko.json must not copy audited support/auth/roadmap/common/header/footer English strings verbatim'
     ).toEqual([])
   })
 
