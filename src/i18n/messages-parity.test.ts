@@ -6,6 +6,7 @@ import { defaultLocale, localeDirections, locales } from './config'
 const messagesDir = path.resolve(process.cwd(), 'messages')
 
 type Messages = { [key: string]: string | Messages }
+type IcuFormat = { signature: string; options: string[] }
 
 function loadMessages(locale: string): Messages {
   const raw = fs.readFileSync(path.join(messagesDir, `${locale}.json`), 'utf8')
@@ -59,6 +60,70 @@ function richTextTagBalanceError(value: string): string | undefined {
 
   const unclosedTag = stack.pop()
   return unclosedTag ? `Missing closing tag </${unclosedTag}>` : undefined
+}
+
+function icuFormats(value: string): IcuFormat[] {
+  return Array.from(
+    value.matchAll(
+      /\{\s*([A-Za-z][A-Za-z0-9_]*)\s*,\s*(plural|select|selectordinal)\s*,/g
+    ),
+    (match) => {
+      const formatStart = match.index ?? -1
+      const formatEnd = findMatchingBrace(value, formatStart)
+      const options =
+        formatEnd === -1
+          ? []
+          : icuOptionSelectors(value.slice(formatStart + match[0].length, formatEnd))
+
+      return {
+        signature: `${match[1]}:${match[2]}`,
+        options,
+      }
+    }
+  ).sort((a, b) => a.signature.localeCompare(b.signature))
+}
+
+function findMatchingBrace(value: string, start: number): number {
+  if (start < 0 || value[start] !== '{') return -1
+
+  let depth = 0
+  for (let index = start; index < value.length; index += 1) {
+    if (value[index] === '{') depth += 1
+    if (value[index] === '}') depth -= 1
+    if (depth === 0) return index
+  }
+
+  return -1
+}
+
+function icuOptionSelectors(value: string): string[] {
+  const selectors: string[] = []
+  let index = 0
+
+  while (index < value.length) {
+    while (/[\s,]/.test(value[index] ?? '')) index += 1
+
+    const tokenStart = index
+    while (/[^{}\s]/.test(value[index] ?? '')) index += 1
+
+    const token = value.slice(tokenStart, index)
+    while (/\s/.test(value[index] ?? '')) index += 1
+
+    if (token && value[index] === '{') selectors.push(token)
+    if (value[index] !== '{') {
+      index += 1
+      continue
+    }
+
+    let depth = 0
+    do {
+      if (value[index] === '{') depth += 1
+      if (value[index] === '}') depth -= 1
+      index += 1
+    } while (index < value.length && depth > 0)
+  }
+
+  return selectors.sort()
 }
 
 function valueAtPath(messages: Messages, keyPath: string): string | undefined {
@@ -1080,6 +1145,44 @@ describe('messages key parity', () => {
       ).toEqual([])
     }
   )
+
+  it.each(otherLocales)(
+    `%s.json preserves ICU plural/select formats from ${defaultLocale}.json`,
+    (locale) => {
+      const english = loadMessages(defaultLocale)
+      const localized = loadMessages(locale)
+      const mismatches = enKeys
+        .map((key) => ({
+          key,
+          expected: icuFormats(valueAtPath(english, key) ?? '').map(
+            (format) => format.signature
+          ),
+          actual: icuFormats(valueAtPath(localized, key) ?? '').map(
+            (format) => format.signature
+          ),
+        }))
+        .filter(({ expected, actual }) => expected.join(',') !== actual.join(','))
+
+      expect(
+        mismatches,
+        `messages/${locale}.json must keep the same ICU plural/select formats as messages/${defaultLocale}.json`
+      ).toEqual([])
+    }
+  )
+
+  it.each(fileLocales)('%s.json gives every ICU plural/select an other fallback', (locale) => {
+    const messages = loadMessages(locale)
+    const missingFallbacks = enKeys.flatMap((key) =>
+      icuFormats(valueAtPath(messages, key) ?? '')
+        .filter((format) => !format.options.includes('other'))
+        .map((format) => `${key} (${format.signature})`)
+    )
+
+    expect(
+      missingFallbacks,
+      `messages/${locale}.json ICU plural/select messages must include an other fallback`
+    ).toEqual([])
+  })
 
   it.each(otherLocales)(
     '%s.json translates the payment-received checkout recovery copy',
