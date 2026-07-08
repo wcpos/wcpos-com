@@ -131,7 +131,11 @@ export function addConnectedDiscordMember(
 export function removeConnectedDiscordMember(
   metadata: Record<string, unknown> | null | undefined,
   memberId: string,
-  removedAt: Date
+  removedAt: Date,
+  // Block-listing is the HOLDER-removal semantic (stops an immediate reclaim
+  // with the same shared key). A member releasing their own seat passes
+  // block: false — leaving voluntarily is not an offence (ADR-0007 amendment).
+  { block = true }: { block?: boolean } = {}
 ): Record<string, unknown> {
   const access = getConnectedDiscordAccess(metadata)
   const allMembers = getAllMemberRecords(metadata)
@@ -142,7 +146,7 @@ export function removeConnectedDiscordMember(
     return { ...member, removedAt: removedAt.toISOString() }
   })
 
-  const blockedDiscordUserIds = removedDiscordUserId
+  const blockedDiscordUserIds = block && removedDiscordUserId
     ? Array.from(new Set([...access.blockedDiscordUserIds, removedDiscordUserId]))
     : access.blockedDiscordUserIds
 

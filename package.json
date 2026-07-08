@@ -18,6 +18,7 @@
     "test:e2e:headed": "playwright test --headed",
     "playwright:install": "playwright install --with-deps",
     "smoke:checkout": "node scripts/smoke-checkout.mjs",
+    "discord:register-commands": "node scripts/register-discord-commands.mjs",
     "i18n:hardcoded": "tsx scripts/i18n/hardcoded-english.ts",
     "i18n:hardcoded:update": "tsx scripts/i18n/hardcoded-english.ts --update"
   },

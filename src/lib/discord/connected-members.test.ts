@@ -109,4 +109,26 @@ describe('connected Discord member metadata', () => {
       '2026-06-18T00:00:00.000Z'
     )
   })
+
+  it('frees the seat without block-listing when removal is a self-unlink (block: false)', () => {
+    const metadata = addConnectedDiscordMember({}, {
+      id: 'discord_1',
+      username: 'ada',
+      avatar: null,
+      connectedAt: now,
+    })
+
+    const removed = removeConnectedDiscordMember(
+      metadata,
+      'discord-member-discord_1',
+      new Date('2026-06-18T00:00:00.000Z'),
+      { block: false }
+    )
+
+    expect(getConnectedDiscordAccess(removed)).toEqual({
+      seatCap: DEFAULT_DISCORD_SEAT_CAP,
+      members: [],
+      blockedDiscordUserIds: [],
+    })
+  })
 })
