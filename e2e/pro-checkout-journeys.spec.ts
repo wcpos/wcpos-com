@@ -215,8 +215,16 @@ test.describe('Journey: returning customer signs in via the login page', () => {
 
     // The account step's OAuth/existing-customer exit: a client-side <Link>
     // to /login with a redirect back to this checkout.
-    await page.getByTestId('account-step-form').getByRole('link').click()
+    await page
+      .getByTestId('account-step-form')
+      .getByRole('link', { name: /sign in/i })
+      .click()
     await expect(page).toHaveURL(/\/login\?redirect=/)
+    // The redirect must round-trip the FULL checkout destination — losing the
+    // product/variant query would land the customer on "No product selected".
+    expect(
+      new URL(page.url()).searchParams.get('redirect')
+    ).toBe(YEARLY_CHECKOUT_PATH)
 
     await expect(page.locator('#email')).toBeVisible({ timeout: 15000 })
     await page.locator('#email').fill(email)
