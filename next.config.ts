@@ -79,6 +79,7 @@ const nextConfig: NextConfig = {
       { source: '/discord', destination: discordInviteUrl, statusCode: 302 },
       { source: `/:locale(${localePattern})/discord`, destination: discordInviteUrl, statusCode: 302 },
       // High-value pages
+      { source: '/pricing', destination: '/pro', statusCode: 301 },
       { source: '/shop', destination: '/pro', statusCode: 301 },
       { source: '/cart', destination: '/pro', statusCode: 301 },
       { source: '/checkout', destination: '/pro', statusCode: 301 },
