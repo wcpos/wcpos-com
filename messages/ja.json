@@ -1429,99 +1429,99 @@
   },
   "about": {
     "meta": {
-      "title": "About",
-      "description": "The story behind WCPOS — an independent point of sale built by a former shopkeeper and funded by shopkeepers, not investors."
+      "title": "概要",
+      "description": "WCPOSの背景 — 元店主が作り、投資家ではなく店主たちによって支えられている独立系POSの物語。"
     },
     "hero": {
-      "eyebrow": "Our story",
-      "title": "An independent point of sale for WooCommerce",
-      "subtitle": "Built by a former shopkeeper, funded by shopkeepers — not investors. One developer, more than a decade of releases, still shipping."
+      "eyebrow": "私たちの物語",
+      "title": "WooCommerceのための独立系POS",
+      "subtitle": "元店主が作り、店主たちが支えています — 投資家ではありません。1人の開発者、10年以上のリリース、今も開発を続けています。"
     },
     "founder": {
-      "photoAlt": "Paul at Urban Locavore, his Perth shop",
-      "photoCaption": "Urban Locavore, Perth — the store that started it all",
-      "eyebrow": "A note from the developer",
-      "intro": "Hi — I'm Paul. I built WCPOS.",
-      "p1": "That's me, back when it all started. I opened Urban Locavore in Perth in December 2011 with hundreds of products already in WooCommerce and no way to sell them at the counter — so I built a register myself. When the shop closed in April 2014, I put it on WordPress.org for anyone who needed it. <strong>POS plugins for WooCommerce have come and gone since then. This one hasn't.</strong> More than a decade of releases, one developer, still shipping — and the free version is still the real thing: sell, print, stay in sync. It stays free.",
-      "p2": "<strong>Pro is why it's still here.</strong> It adds extra tools for running your store — card readers, refunds at the till, end-of-day reports, multi-store — and it funds every release, free ones included. No investors, no acquisition exit waiting. Shopkeepers fund it directly.",
-      "p3": "And Pro users have a direct line: tell me what your shop needs, and it shapes what I build next.",
+      "photoAlt": "パースの店舗 Urban Locavore にいるPaul",
+      "photoCaption": "Urban Locavore、パース — すべての始まりとなった店",
+      "eyebrow": "開発者からのメッセージ",
+      "intro": "こんにちは — Paulです。WCPOSを作りました。",
+      "p1": "これが、すべてが始まったころの私です。2011年12月、パースでUrban Locavoreを開店しました。WooCommerceにはすでに何百もの商品がありましたが、店頭で販売する方法がありませんでした — そこで自分でレジを作りました。店が2014年4月に閉店した後、それを必要とする人のためにWordPress.orgで公開しました。<strong>WooCommerce向けPOSプラグインはその後いくつも現れては消えていきました。でもこれは残っています。</strong>10年以上のリリース、1人の開発者、今も出荷を続けています — そして無料版は今も本物です。販売し、印刷し、同期を保てます。無料のままです。",
+      "p2": "<strong>Proがあるから、今も続いています。</strong>Proは店舗運営のための追加ツール — カードリーダー、レジでの返金、日次締めレポート、複数店舗 — を追加し、無料版を含むすべてのリリースを支えています。投資家も、買収による出口戦略もありません。店主たちが直接支えています。",
+      "p3": "そしてProユーザーには直接の連絡先があります。あなたの店に必要なものを教えてください。それが次に作るものを形作ります。",
       "signature": {
         "name": "Paul Kilmurray",
-        "role": "developer & former shopkeeper ·"
+        "role": "開発者・元店主 ·"
       },
       "ps": {
         "label": "P.S.",
-        "withPrice": "— Pro is <price></price>.",
-        "fallback": "— Pro is available from the Pro page.",
-        "licence": "If a licence lapses, Pro keeps working; you just stop getting updates.",
+        "withPrice": "— Proは<price></price>です。",
+        "fallback": "— ProはProページから利用できます。",
+        "licence": "ライセンスが失効してもProは動作し続けます。更新を受け取れなくなるだけです。",
         "priceSummary": "{yearly}/年、または {lifetime} 買い切り"
       }
     },
     "timeline": {
-      "heading": "How it started, and why it's still here",
+      "heading": "どのように始まり、なぜ今も続いているのか",
       "dates": {
         "range": "{start} – {end}",
-        "today": "Today"
+        "today": "現在"
       },
       "items": {
         "m1": {
-          "title": "Urban Locavore opens",
-          "body": "A small food store in Perth, with hundreds of products already in WooCommerce — and no way to sell them at the counter."
+          "title": "Urban Locavore開店",
+          "body": "パースの小さな食品店。WooCommerceにはすでに何百もの商品がありましたが、店頭で販売する方法がありませんでした。"
         },
         "m2": {
-          "title": "A register, built out of necessity",
-          "body": "With nothing on the market that fit, Paul built a point of sale for his own shop — Backbone.js and an in-browser IndexedDB database, on top of the store he already ran online."
+          "title": "必要に迫られて作ったレジ",
+          "body": "市場に合うものがなかったため、Paulは自分の店のためにPOSを作りました — すでにオンラインで運営していたストアの上に、Backbone.jsとブラウザ内IndexedDBデータベースで構築しました。"
         },
         "m3": {
-          "title": "The shop closes",
-          "body": "Urban Locavore winds down — but the register it ran on still works, and other WooCommerce stores need the same thing."
+          "title": "店の閉店",
+          "body": "Urban Locavoreは営業を終了しました — しかし、その店で使っていたレジはまだ動き、他のWooCommerceストアも同じものを必要としていました。"
         },
         "m4": {
-          "title": "Released on WordPress.org",
-          "body": "WCPOS goes public, free for anyone who needs it. The free version does the actual job: sell, print, stay in sync."
+          "title": "WordPress.orgで公開",
+          "body": "WCPOSを公開し、必要とする誰もが無料で使えるようにしました。無料版は実際の仕事をこなします。販売し、印刷し、同期を保てます。"
         },
         "m5": {
-          "title": "Rewritten in React Native",
-          "body": "Four years of rebuilding from scratch land as v1.0.0: one codebase for every screen. The desktop app ships the same day — phones and tablets are next."
+          "title": "React Nativeで再構築",
+          "body": "4年かけてゼロから作り直した成果がv1.0.0として到着しました。すべての画面に対応する1つのコードベースです。デスクトップアプリは同日に出荷され、次はスマートフォンとタブレットです。"
         },
         "m6": {
-          "title": "Native mobile apps",
-          "body": "The React Native bet pays off: WCPOS arrives on iOS and Android in open beta — the same register, now on the hardware already in the shop."
+          "title": "ネイティブモバイルアプリ",
+          "body": "React Nativeへの賭けが実を結びました。WCPOSはiOSとAndroidにオープンベータとして登場しました — 同じレジが、店にすでにあるハードウェアで使えるようになりました。"
         },
         "m7": {
-          "title": "Still shipping",
-          "body": "More than a decade on. One developer, funded by Pro, still releasing — and the free version is still the real thing."
+          "title": "今も出荷中",
+          "body": "10年以上が経ちました。1人の開発者、Proによる資金、今もリリースを続けています — そして無料版は今も本物です。"
         }
       }
     },
     "values": {
-      "heading": "What it stands for",
+      "heading": "大切にしていること",
       "items": {
         "v1": {
-          "title": "Independent",
-          "body": "No investors, no acquisition exit waiting. The roadmap answers to the shopkeepers using it — not a board."
+          "title": "独立",
+          "body": "投資家も、買収による出口戦略もありません。ロードマップは取締役会ではなく、それを使う店主たちに向き合っています。"
         },
         "v2": {
-          "title": "Funded by Pro",
-          "body": "Pro tools fund every release, free ones included. Shopkeepers pay for it directly, and that keeps the free version free."
+          "title": "Proによる支援",
+          "body": "Proツールが無料版を含むすべてのリリースを支えています。店主たちが直接支払うことで、無料版を無料のまま保てます。"
         },
         "v3": {
-          "title": "Open & GPL",
-          "body": "Released on WordPress.org under the GPL. Yours to use, inspect, and keep — wherever WooCommerce runs."
+          "title": "オープン & GPL",
+          "body": "WordPress.orgでGPLのもと公開されています。WooCommerceが動く場所ならどこでも、使い、確認し、持ち続けることができます。"
         },
         "v4": {
-          "title": "A fair licence",
-          "body": "If a Pro licence lapses, Pro keeps working — you just stop getting updates. Nothing you rely on gets switched off."
+          "title": "公正なライセンス",
+          "body": "Proライセンスが失効してもProは動作し続けます — 更新を受け取れなくなるだけです。頼っている機能が停止されることはありません。"
         }
       }
     },
     "cta": {
-      "title": "Built by a shopkeeper. Funded by shopkeepers.",
-      "subtitle": "Try the live demo, download the free plugin, or see what Pro adds — and what keeps it all going.",
+      "title": "店主が作り、店主たちが支えるPOS。",
+      "subtitle": "ライブデモを試す、無料プラグインをダウンロードする、またはProで追加される機能と、それが全体を支えている仕組みをご覧ください。",
       "actions": {
-        "demo": "Try Live Demo",
-        "download": "Download Free",
-        "pro": "See Pro"
+        "demo": "ライブデモを試す",
+        "download": "無料ダウンロード",
+        "pro": "Proを見る"
       }
     }
   },

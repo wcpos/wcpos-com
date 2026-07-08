@@ -77,6 +77,7 @@ const auditedJapaneseNamespacePrefixes = [
   'account.',
   'pro.',
   'downloads.',
+  'about.',
 ]
 const japaneseIdenticalCopyAllowlist = new Set([
   'auth.common.emailPlaceholder',
@@ -124,6 +125,8 @@ const japaneseIdenticalCopyAllowlist = new Set([
   'downloads.page.steps.plugin.cardTitle',
   'downloads.page.steps.plugin.wordpressOrgCta',
   'downloads.releaseHistory.desktop',
+  'about.founder.signature.name',
+  'about.timeline.dates.range',
 ])
 const auditedGermanNamespacePrefixes = [
   'support.',
@@ -513,7 +516,7 @@ describe('messages key parity', () => {
   })
 
 
-  it('ja.json translates the audited support, auth, roadmap, header, footer, account, pro, and downloads copy', () => {
+  it('ja.json translates the audited support, auth, roadmap, header, footer, account, pro, downloads, and about copy', () => {
     const english = loadMessages(defaultLocale)
     const japanese = loadMessages('ja')
     const auditedKeys = enKeys.filter(
@@ -534,7 +537,7 @@ describe('messages key parity', () => {
 
     expect(
       untranslatedKeys,
-      'messages/ja.json must not copy audited support/auth/roadmap/header/footer/account/pro/downloads English strings verbatim'
+      'messages/ja.json must not copy audited support/auth/roadmap/header/footer/account/pro/downloads/about English strings verbatim'
     ).toEqual([])
   })
 
