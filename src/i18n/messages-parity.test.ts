@@ -168,6 +168,13 @@ const dutchIdenticalCopyAllowlist = new Set([
   'downloads.page.steps.plugin.cardTitle',
   'downloads.page.steps.plugin.wordpressOrgCta',
   'downloads.releaseHistory.desktop',
+  'account.profile.taxLabels.abn',
+  'account.profile.taxLabels.partitaIva',
+  'account.profile.googleProvider',
+  'account.profile.discordProvider',
+  'account.profile.githubProvider',
+  'account.receiptPdf.sellerIdentityWithAbn',
+  'account.receiptPdf.sellerIdentity',
   'header.pro',
   'footer.copyright',
   'footer.pro',
@@ -184,6 +191,7 @@ const auditedKoreanNamespacePrefixes = [
   'header.',
   'footer.',
   'downloads.',
+  'account.',
 ]
 const koreanIdenticalCopyAllowlist = new Set([
   'auth.common.emailPlaceholder',
@@ -212,6 +220,13 @@ const koreanIdenticalCopyAllowlist = new Set([
   'downloads.page.steps.plugin.cardTitle',
   'downloads.page.steps.plugin.wordpressOrgCta',
   'downloads.releaseHistory.desktop',
+  'account.profile.taxLabels.abn',
+  'account.profile.taxLabels.partitaIva',
+  'account.profile.googleProvider',
+  'account.profile.discordProvider',
+  'account.profile.githubProvider',
+  'account.receiptPdf.sellerIdentityWithAbn',
+  'account.receiptPdf.sellerIdentity',
   'header.pro',
   'footer.copyright',
   'footer.pro',
@@ -924,7 +939,7 @@ describe('messages key parity', () => {
     ).toEqual([])
   })
 
-  it('ko.json translates the audited support, auth, roadmap, common, header, footer, and downloads copy', () => {
+  it('ko.json translates the audited support, auth, roadmap, common, header, footer, downloads, and account copy', () => {
     const english = loadMessages(defaultLocale)
     const korean = loadMessages('ko')
     const auditedKeys = enKeys.filter(
@@ -945,7 +960,7 @@ describe('messages key parity', () => {
 
     expect(
       untranslatedKeys,
-      'messages/ko.json must not copy audited support/auth/roadmap/common/header/footer/downloads English strings verbatim'
+      'messages/ko.json must not copy audited support/auth/roadmap/common/header/footer/downloads/account English strings verbatim'
     ).toEqual([])
   })
 
