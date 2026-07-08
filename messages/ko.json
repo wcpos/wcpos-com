@@ -1061,219 +1061,219 @@
   "legal": {
     "privacy": {
       "meta": {
-        "title": "Privacy Policy",
-        "description": "How WCPOS collects, uses, and protects your personal data, including analytics, cookies, payment processing, and your rights under GDPR."
+        "title": "개인정보 처리방침",
+        "description": "WCPOS가 analytics, 쿠키, 결제 처리 및 GDPR에 따른 권리를 포함하여 개인정보를 수집, 사용, 보호하는 방법입니다."
       },
-      "title": "Privacy Policy",
-      "lastUpdated": "Last updated: {date}",
-      "intro": "WCPOS (\"we\", \"us\") operates wcpos.com, the website for the WCPOS plugin and WCPOS Pro. This policy explains what personal data we collect when you use the site, why we collect it, who processes it on our behalf, and what rights you have over it. We aim to collect as little as we need to run the service.",
+      "title": "개인정보 처리방침",
+      "lastUpdated": "마지막 업데이트: {date}",
+      "intro": "WCPOS(“당사”, “저희”)는 WCPOS 플러그인과 WCPOS Pro를 위한 웹사이트인 wcpos.com을 운영합니다. 이 방침은 사이트 이용 시 수집하는 개인정보, 수집 이유, 당사를 대신해 이를 처리하는 주체, 그리고 해당 정보에 대해 이용자가 가지는 권리를 설명합니다. 당사는 서비스를 운영하는 데 필요한 최소한의 정보만 수집하는 것을 목표로 합니다.",
       "collect": {
-        "title": "What we collect",
+        "title": "수집하는 정보",
         "items": {
           "c1": {
-            "label": "Account information.",
-            "body": "Your email address and name when you create an account, either directly or by signing in with Google, GitHub, or Discord. When you use a sign-in provider, we receive only your basic profile (email, name or username, and avatar or picture URL) from that provider, and may store the avatar or picture URL on your account as <code>oauth_avatar_url</code>."
+            "label": "계정 정보.",
+            "body": "직접 계정을 만들거나 Google, GitHub 또는 Discord로 로그인할 때의 이메일 주소와 이름입니다. 로그인 제공업체를 사용하는 경우, 해당 제공업체로부터 기본 프로필(이메일, 이름 또는 사용자 이름, 아바타 또는 사진 URL)만 받으며, 아바타 또는 사진 URL을 계정에 <code>oauth_avatar_url</code>로 저장할 수 있습니다."
           },
           "c2": {
-            "label": "Billing details.",
-            "body": "The billing address and any company details you enter at checkout, stored with your customer record so we can issue receipts and comply with tax rules."
+            "label": "청구 정보.",
+            "body": "결제 시 입력하는 청구 주소와 회사 정보가 있는 경우 이를 고객 기록과 함께 저장하여 영수증을 발급하고 세금 규정을 준수합니다."
           },
           "c3": {
-            "label": "Order and license history.",
-            "body": "Records of your purchases, license keys, and plugin downloads, so you can manage your licenses and we can provide support."
+            "label": "주문 및 라이선스 내역.",
+            "body": "구매, 라이선스 키, 플러그인 다운로드 기록으로, 이용자가 라이선스를 관리하고 당사가 지원을 제공할 수 있도록 합니다."
           },
           "c4": {
-            "label": "Payment information.",
-            "body": "Payments are handled by Stripe and PayPal. Your full card number or payment credentials never reach our servers; we receive only a payment confirmation and the details needed for the receipt."
+            "label": "결제 정보.",
+            "body": "결제는 Stripe와 PayPal이 처리합니다. 전체 카드 번호나 결제 자격 증명은 당사 서버에 도달하지 않으며, 당사는 결제 확인과 영수증에 필요한 정보만 받습니다."
           },
           "c5": {
-            "label": "Usage analytics.",
-            "body": "We use PostHog to understand how the site is used (pages viewed, buttons clicked). To do this, we set a cookie containing a randomly generated identifier. It does not contain your name or email."
+            "label": "사용 analytics.",
+            "body": "당사는 사이트 사용 방식(조회한 페이지, 클릭한 버튼)을 이해하기 위해 PostHog를 사용합니다. 이를 위해 무작위로 생성된 식별자가 포함된 쿠키를 설정합니다. 이 쿠키에는 이름이나 이메일이 포함되지 않습니다."
           },
           "c6": {
-            "label": "Error reports.",
-            "body": "If something breaks, an error report may be sent to Sentry. Reports can include technical details such as your browser and operating system and what the application was doing at the time of the error."
+            "label": "오류 보고서.",
+            "body": "문제가 발생하면 오류 보고서가 Sentry로 전송될 수 있습니다. 보고서에는 브라우저, 운영체제, 오류 발생 시 애플리케이션이 수행하던 작업 등 기술적 세부 정보가 포함될 수 있습니다."
           },
           "c7": {
-            "label": "Server logs.",
-            "body": "Our servers keep application logs (in Grafana Loki) for debugging and operating the service."
+            "label": "서버 로그.",
+            "body": "당사 서버는 디버깅과 서비스 운영을 위해 애플리케이션 로그(Grafana Loki)를 보관합니다."
           }
         }
       },
       "cookies": {
-        "title": "Cookies",
-        "body": "We use a small number of first-party cookies. We do not use third-party advertising cookies.",
+        "title": "쿠키",
+        "body": "당사는 소수의 first-party 쿠키를 사용합니다. 제3자 광고 쿠키는 사용하지 않습니다.",
         "items": {
-          "k1": "<code>medusa-token</code> — keeps you signed in to your account. Expires after 1 day.",
-          "k2": "<code>wcpos-analytics-consent</code> — remembers your analytics consent choice (accepted or declined). Expires after 182 days.",
-          "k3": "<code>wcpos-distinct-id</code> — a random identifier used for analytics. Only set after you accept analytics on the consent banner; removed if you decline. Expires after 1 year.",
-          "k4": "<code>NEXT_LOCALE</code> — remembers your language preference.",
-          "k5": "Your light/dark theme preference is stored locally in your browser and is never sent to us."
+          "k1": "<code>medusa-token</code> — 계정 로그인 상태를 유지합니다. 1일 후 만료됩니다.",
+          "k2": "<code>wcpos-analytics-consent</code> — analytics 동의 선택(수락 또는 거부)을 기억합니다. 182일 후 만료됩니다.",
+          "k3": "<code>wcpos-distinct-id</code> — analytics에 사용되는 무작위 식별자입니다. 동의 배너에서 analytics를 수락한 후에만 설정되며, 거부하면 삭제됩니다. 1년 후 만료됩니다.",
+          "k4": "<code>NEXT_LOCALE</code> — 언어 기본 설정을 기억합니다.",
+          "k5": "라이트/다크 테마 기본 설정은 브라우저에 로컬로 저장되며 당사로 전송되지 않습니다."
         }
       },
       "processors": {
-        "title": "Who processes your data",
-        "body": "We use the following service providers to run wcpos.com. Each receives only the data needed for its role:",
+        "title": "데이터 처리 주체",
+        "body": "당사는 wcpos.com 운영을 위해 다음 서비스 제공업체를 사용합니다. 각 제공업체는 자신의 역할에 필요한 데이터만 받습니다.",
         "items": {
           "p1": {
-            "label": "Our commerce backend (Medusa)",
-            "body": "— self-hosted on Hetzner infrastructure in the EU. Stores accounts, customer records, and orders."
+            "label": "당사의 커머스 백엔드(Medusa)",
+            "body": "— EU 내 Hetzner 인프라에 자체 호스팅됩니다. 계정, 고객 기록, 주문을 저장합니다."
           },
           "p2": {
             "label": "Stripe",
-            "body": "— card payment processing."
+            "body": "— 카드 결제 처리."
           },
           "p3": {
             "label": "PayPal",
-            "body": "— PayPal payment processing."
+            "body": "— PayPal 결제 처리."
           },
           "p4": {
             "label": "Keygen",
-            "body": "— software license management (license keys and activations)."
+            "body": "— 소프트웨어 라이선스 관리(라이선스 키 및 활성화)."
           },
           "p5": {
             "label": "PostHog",
-            "body": "— product analytics."
+            "body": "— 제품 analytics."
           },
           "p6": {
             "label": "Sentry",
-            "body": "— error monitoring."
+            "body": "— 오류 모니터링."
           },
           "p7": {
             "label": "Vercel",
-            "body": "— website hosting and content delivery."
+            "body": "— 웹사이트 호스팅 및 콘텐츠 전송."
           }
         }
       },
       "retention": {
-        "title": "How long we keep data",
+        "title": "데이터 보관 기간",
         "items": {
-          "r1": "Account and license data is kept while your account is active. If you ask us to delete your account, we delete it, except where we are legally required to keep records.",
-          "r2": "Order and invoice records are kept for as long as tax and accounting laws require.",
-          "r3": "The analytics identifier cookie expires after 1 year.",
-          "r4": "Server logs and error reports are kept for a limited operational window and then deleted."
+          "r1": "계정 및 라이선스 데이터는 계정이 활성 상태인 동안 보관됩니다. 계정 삭제를 요청하면, 법적으로 기록 보관이 요구되는 경우를 제외하고 삭제합니다.",
+          "r2": "주문 및 인보이스 기록은 세금 및 회계 법률이 요구하는 기간 동안 보관됩니다.",
+          "r3": "analytics 식별자 쿠키는 1년 후 만료됩니다.",
+          "r4": "서버 로그와 오류 보고서는 제한된 운영 기간 동안 보관된 후 삭제됩니다."
         }
       },
       "rights": {
-        "title": "Your rights",
-        "body": "If you are in the EU/EEA or UK, you have rights under the GDPR, including the right to access, correct, delete, and export your personal data, and to object to or restrict certain processing. We extend the same rights to all users regardless of location.",
-        "exercise": "To exercise any of these rights, email us at <email>support@wcpos.com</email> so we can verify your identity privately. EU/EEA residents also have the right to lodge a complaint with their local data protection authority."
+        "title": "이용자의 권리",
+        "body": "EU/EEA 또는 영국에 거주하는 경우, GDPR에 따라 개인정보에 대한 열람, 정정, 삭제, 내보내기 권리와 특정 처리에 반대하거나 제한할 권리가 있습니다. 당사는 위치와 관계없이 모든 이용자에게 동일한 권리를 제공합니다.",
+        "exercise": "이러한 권리를 행사하려면 <email>support@wcpos.com</email>으로 이메일을 보내 주세요. 당사는 비공개로 신원을 확인할 수 있습니다. EU/EEA 거주자는 현지 데이터 보호 기관에 불만을 제기할 권리도 있습니다."
       },
       "changes": {
-        "title": "Changes to this policy",
-        "body": "If we make material changes to this policy, we will update the date at the top of this page. Continued use of the site after a change means the updated policy applies."
+        "title": "이 방침의 변경",
+        "body": "이 방침에 중대한 변경이 있는 경우, 이 페이지 상단의 날짜를 업데이트합니다. 변경 후 사이트를 계속 사용하면 업데이트된 방침이 적용됩니다."
       },
       "contact": {
-        "title": "Contact",
-        "body": "Questions about this policy or your data? Email us at <email>support@wcpos.com</email> or ask general questions in the community chat on the <support>support page</support>."
+        "title": "문의",
+        "body": "이 방침이나 데이터에 대해 궁금한 점이 있나요? <email>support@wcpos.com</email>으로 이메일을 보내거나 <support>지원 페이지</support>의 커뮤니티 채팅에서 일반 질문을 해 주세요."
       }
     },
     "refunds": {
       "meta": {
-        "title": "Refund Policy",
-        "description": "The WCPOS Pro refund policy: how to request a refund within 14 days of purchase, and how refunds are paid."
+        "title": "환불 정책",
+        "description": "WCPOS Pro 환불 정책: 구매 후 14일 이내 환불 요청 방법과 환불 지급 방식입니다."
       },
-      "title": "Refund Policy",
-      "lastUpdated": "Last updated: {date}",
-      "intro": "WCPOS Pro purchases — first purchase or renewal, yearly or lifetime — can be refunded within 14 days of purchase. Email us within that window and we refund you in full. You do not need to give a reason.",
+      "title": "환불 정책",
+      "lastUpdated": "마지막 업데이트: {date}",
+      "intro": "WCPOS Pro 구매(첫 구매 또는 갱신, 연간 또는 평생)는 구매 후 14일 이내에 환불받을 수 있습니다. 해당 기간 내 이메일을 보내 주시면 전액 환불합니다. 사유를 제공할 필요는 없습니다.",
       "prevention": {
-        "title": "The best refund is the one you never need",
+        "title": "가장 좋은 환불은 필요하지 않은 환불입니다",
         "items": {
           "p1": {
-            "label": "Install the free plugin.",
-            "body": "Run the free version of WCPOS on your store for a couple of days before upgrading — that proves the plugin works on your site."
+            "label": "무료 플러그인을 설치하세요.",
+            "body": "업그레이드하기 전에 WCPOS 무료 버전을 매장에서 며칠간 실행해 보세요 — 이를 통해 플러그인이 사이트에서 작동하는지 확인할 수 있습니다."
           },
           "p2": {
-            "label": "Try the demo.",
-            "body": "The <demo>online demo</demo> runs the current version with Pro activated, so you can confirm it fulfils your store's requirements."
+            "label": "데모를 사용해 보세요.",
+            "body": "<demo>온라인 데모</demo>는 Pro가 활성화된 현재 버전으로 실행되므로, 매장의 요구사항을 충족하는지 확인할 수 있습니다."
           },
           "p3": {
-            "label": "Read the documentation.",
-            "body": "Check the <docs>docs</docs> for the features you need, and email <email>support@wcpos.com</email> with pre-sale questions — we answer openly and honestly."
+            "label": "문서를 읽어 보세요.",
+            "body": "필요한 기능은 <docs>문서</docs>에서 확인하고, 구매 전 질문은 <email>support@wcpos.com</email>으로 이메일을 보내 주세요 — 당사는 솔직하고 투명하게 답변합니다."
           }
         }
       },
       "request": {
-        "title": "How to request a refund",
-        "body": "Email <email>support@wcpos.com</email> from the email address you used for the purchase, within 14 days of buying. Telling us why helps us improve, but it is not required to get the refund."
+        "title": "환불 요청 방법",
+        "body": "구매 후 14일 이내에 구매에 사용한 이메일 주소로 <email>support@wcpos.com</email>에 이메일을 보내 주세요. 이유를 알려 주시면 개선에 도움이 되지만, 환불을 받기 위해 필수는 아닙니다."
       },
       "payment": {
-        "title": "How refunds are paid",
-        "body": "Refunds go back to the original payment method via Stripe or PayPal and typically appear on your statement within 5–10 business days, depending on your bank or card issuer. Refunded license keys are revoked and stop working immediately."
+        "title": "환불 지급 방식",
+        "body": "환불은 Stripe 또는 PayPal을 통해 원래 결제 수단으로 반환되며, 은행이나 카드 발급사에 따라 일반적으로 5~10영업일 내 명세서에 표시됩니다. 환불된 라이선스 키는 취소되며 즉시 작동을 중지합니다."
       },
       "renewals": {
-        "title": "License renewals",
-        "body": "Yearly licenses do not renew automatically — we never charge you again without a new purchase from you. The same 14-day refund window applies to renewal purchases."
+        "title": "라이선스 갱신",
+        "body": "연간 라이선스는 자동 갱신되지 않습니다 — 이용자의 새 구매 없이 다시 청구하지 않습니다. 갱신 구매에도 동일한 14일 환불 기간이 적용됩니다."
       },
       "rights": {
-        "title": "Your statutory rights",
-        "body": "For consumers in the EU, EEA and UK: our 14-day refund window matches your statutory right of withdrawal for this kind of purchase, and exercising either works the same way — email us within 14 days.",
-        "defective": "If WCPOS Pro is defective or does not work as described, statutory remedies for faulty digital content apply at any time, independent of the 14-day window. And nothing in this policy limits any rights you have under the consumer protection laws of your country — where local law gives you stronger rights, those rights apply."
+        "title": "법정 권리",
+        "body": "EU, EEA 및 영국 소비자: 당사의 14일 환불 기간은 이러한 유형의 구매에 대한 법정 철회권과 일치하며, 어느 쪽을 행사하든 방식은 동일합니다 — 14일 이내에 이메일을 보내 주세요.",
+        "defective": "WCPOS Pro에 결함이 있거나 설명대로 작동하지 않는 경우, 결함 있는 디지털 콘텐츠에 대한 법정 구제수단은 14일 기간과 관계없이 언제든 적용됩니다. 또한 이 정책의 어떤 내용도 이용자 국가의 소비자 보호법에 따른 권리를 제한하지 않습니다 — 현지 법률이 더 강한 권리를 제공하는 경우 그 권리가 적용됩니다."
       }
     },
     "terms": {
       "meta": {
-        "title": "Terms of Service",
-        "description": "The terms that govern your use of wcpos.com, your WCPOS account, and WCPOS Pro licenses."
+        "title": "서비스 약관",
+        "description": "wcpos.com, WCPOS 계정 및 WCPOS Pro 라이선스 사용에 적용되는 약관입니다."
       },
-      "title": "Terms of Service",
-      "lastUpdated": "Last updated: {date}",
-      "intro": "These terms govern your use of wcpos.com, your WCPOS account, and any WCPOS Pro license you purchase. By using the site or buying a license, you agree to these terms. If you do not agree, please do not use the service.",
+      "title": "서비스 약관",
+      "lastUpdated": "마지막 업데이트: {date}",
+      "intro": "이 약관은 wcpos.com, WCPOS 계정 및 구매하는 모든 WCPOS Pro 라이선스 사용에 적용됩니다. 사이트를 사용하거나 라이선스를 구매하면 이 약관에 동의하는 것입니다. 동의하지 않는 경우 서비스를 사용하지 마세요.",
       "service": {
-        "title": "The service",
-        "body": "WCPOS provides the wcpos.com website, user accounts, and paid WCPOS Pro licenses that unlock premium features, updates, and priority support for the WCPOS plugin."
+        "title": "서비스",
+        "body": "WCPOS는 wcpos.com 웹사이트, 사용자 계정, 그리고 WCPOS 플러그인의 프리미엄 기능, 업데이트 및 우선 지원을 제공하는 유료 WCPOS Pro 라이선스를 제공합니다."
       },
       "gpl": {
-        "title": "The free plugin and the GPL",
-        "body": "The free WCPOS plugin is open-source software released under the GNU General Public License (GPL). Nothing in these terms limits the rights the GPL grants you over that code. A Pro license is separate: it covers access to Pro features, license keys, automatic updates, and priority support — not a restriction on the open-source code itself."
+        "title": "무료 플러그인과 GPL",
+        "body": "무료 WCPOS 플러그인은 GNU General Public License(GPL)에 따라 배포되는 오픈소스 소프트웨어입니다. 이 약관의 어떤 내용도 해당 코드에 대해 GPL이 부여하는 권리를 제한하지 않습니다. Pro 라이선스는 별도입니다. Pro 기능, 라이선스 키, 자동 업데이트 및 우선 지원에 대한 접근을 다루며, 오픈소스 코드 자체에 대한 제한이 아닙니다."
       },
       "account": {
-        "title": "Your account",
+        "title": "계정",
         "items": {
-          "a1": "Provide accurate information when registering and keep it up to date.",
-          "a2": "Keep your credentials secure. You are responsible for activity that happens under your account.",
-          "a3": "Tell us promptly at <email>support@wcpos.com</email> if you suspect unauthorized access to your account."
+          "a1": "등록 시 정확한 정보를 제공하고 최신 상태로 유지하세요.",
+          "a2": "자격 증명을 안전하게 보관하세요. 계정에서 발생하는 활동에 대한 책임은 이용자에게 있습니다.",
+          "a3": "계정에 대한 무단 접근이 의심되는 경우 즉시 <email>support@wcpos.com</email>으로 알려 주세요."
         }
       },
       "licenses": {
-        "title": "Purchases and licenses",
+        "title": "구매 및 라이선스",
         "items": {
-          "l1": "<strong>Yearly license.</strong> A one-time payment that includes Pro features, automatic updates, and priority support for one year. It does not renew automatically and we never charge you again without a new purchase. When it expires, you can choose to renew it from your account for another year.",
-          "l2": "<strong>Lifetime license.</strong> A one-time purchase that includes Pro features, updates, and priority support for the lifetime of the product.",
-          "l3": "License keys are for activating WCPOS Pro on your own sites within the limits of the license you purchased. Do not share, resell, or publish license keys.",
-          "l4": "Prices are shown at checkout before you pay. Payment is handled by Stripe or PayPal.",
-          "l5": "Refunds are handled according to our <policy>refund policy</policy>."
+          "l1": "<strong>연간 라이선스.</strong> Pro 기능, 자동 업데이트 및 우선 지원 1년을 포함하는 일회성 결제입니다. 자동 갱신되지 않으며, 이용자의 새 구매 없이 다시 청구하지 않습니다. 만료되면 계정에서 1년 더 갱신할 수 있습니다.",
+          "l2": "<strong>평생 라이선스.</strong> 제품 수명 동안 Pro 기능, 업데이트 및 우선 지원을 포함하는 일회성 구매입니다.",
+          "l3": "라이선스 키는 구매한 라이선스 한도 내에서 이용자 소유 사이트에 WCPOS Pro를 활성화하기 위한 것입니다. 라이선스 키를 공유, 재판매 또는 공개하지 마세요.",
+          "l4": "가격은 결제 전에 체크아웃에서 표시됩니다. 결제는 Stripe 또는 PayPal이 처리합니다.",
+          "l5": "환불은 당사의 <policy>환불 정책</policy>에 따라 처리됩니다."
         }
       },
       "acceptableUse": {
-        "title": "Acceptable use",
-        "body": "When using the service, you agree not to:",
+        "title": "허용되는 사용",
+        "body": "서비스를 사용할 때 이용자는 다음 행위를 하지 않는 데 동의합니다.",
         "items": {
-          "u1": "Break the law or infringe the rights of others.",
-          "u2": "Attempt to gain unauthorized access to accounts, systems, or data, or probe the service for vulnerabilities without permission.",
-          "u3": "Interfere with the operation of the service, including overloading it or automated scraping at disruptive volumes.",
-          "u4": "Circumvent license checks or use license keys beyond the terms of your purchase. (This does not limit your GPL rights over the open-source plugin code.)"
+          "u1": "법을 위반하거나 타인의 권리를 침해하는 행위.",
+          "u2": "계정, 시스템 또는 데이터에 무단 접근을 시도하거나, 허가 없이 서비스의 취약점을 탐색하는 행위.",
+          "u3": "서비스를 과부하시키거나 방해가 되는 규모의 자동 스크래핑을 포함하여 서비스 운영을 방해하는 행위.",
+          "u4": "라이선스 확인을 우회하거나 구매 조건을 넘어 라이선스 키를 사용하는 행위. (이는 오픈소스 플러그인 코드에 대한 GPL 권리를 제한하지 않습니다.)"
         }
       },
       "warranty": {
-        "title": "Warranty disclaimer",
-        "body": "The service and software are provided \"as is\" and \"as available\", without warranties of any kind, express or implied, including merchantability, fitness for a particular purpose, and non-infringement. We do not promise that the service will be uninterrupted or error-free. Some jurisdictions do not allow certain warranty exclusions, so parts of this section may not apply to you."
+        "title": "보증 부인",
+        "body": "서비스와 소프트웨어는 상품성, 특정 목적 적합성 및 비침해에 대한 보증을 포함하여 명시적 또는 묵시적 어떤 종류의 보증 없이 “있는 그대로” 및 “사용 가능한 상태로” 제공됩니다. 당사는 서비스가 중단 없이 또는 오류 없이 제공된다고 약속하지 않습니다. 일부 관할권은 특정 보증 제외를 허용하지 않으므로 이 섹션의 일부가 이용자에게 적용되지 않을 수 있습니다."
       },
       "liability": {
-        "title": "Limitation of liability",
-        "body": "To the maximum extent permitted by law, WCPOS will not be liable for indirect, incidental, special, or consequential damages, or for lost profits, revenue, or data. Our total liability for any claim relating to the service is limited to the amount you paid us in the 12 months before the claim arose. Nothing in these terms excludes liability that cannot be excluded by law."
+        "title": "책임 제한",
+        "body": "법이 허용하는 최대 범위에서 WCPOS는 간접적, 부수적, 특별 또는 결과적 손해, 또는 이익, 매출, 데이터 손실에 대해 책임지지 않습니다. 서비스와 관련된 청구에 대한 당사의 총 책임은 청구가 발생하기 전 12개월 동안 이용자가 당사에 지급한 금액으로 제한됩니다. 이 약관의 어떤 내용도 법으로 배제할 수 없는 책임을 배제하지 않습니다."
       },
       "termination": {
-        "title": "Termination",
-        "body": "You can stop using the service and ask us to delete your account at any time. We may suspend or terminate accounts that violate these terms. Sections that by their nature should survive (such as the warranty disclaimer and liability limits) survive termination."
+        "title": "종료",
+        "body": "이용자는 언제든 서비스 사용을 중단하고 계정 삭제를 요청할 수 있습니다. 당사는 이 약관을 위반하는 계정을 정지하거나 종료할 수 있습니다. 성격상 존속되어야 하는 조항(예: 보증 부인 및 책임 제한)은 종료 후에도 존속합니다."
       },
       "changes": {
-        "title": "Changes to these terms",
-        "body": "If we make material changes, we will update the date at the top of this page. Continued use of the service after a change means the updated terms apply."
+        "title": "이 약관의 변경",
+        "body": "중대한 변경이 있는 경우 이 페이지 상단의 날짜를 업데이트합니다. 변경 후 서비스를 계속 사용하면 업데이트된 약관이 적용됩니다."
       },
       "contact": {
-        "title": "Contact",
-        "body": "Questions about these terms? Email us at <email>support@wcpos.com</email> or ask in the community chat on the <support>support page</support>."
+        "title": "문의",
+        "body": "이 약관에 대해 궁금한 점이 있나요? <email>support@wcpos.com</email>으로 이메일을 보내거나 <support>지원 페이지</support>의 커뮤니티 채팅에서 문의해 주세요."
       }
     }
   },
