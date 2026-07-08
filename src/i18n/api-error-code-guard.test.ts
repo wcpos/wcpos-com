@@ -13,7 +13,8 @@ const apiRoot = path.join(root, 'src/app/api')
 const sourceExtensions = new Set(['.ts', '.tsx', '.js', '.jsx'])
 const skipPath = /(?:\.test\.|\.spec\.)/
 const skipDirs = new Set(['node_modules', '.git', '.next', 'coverage'])
-const jsonErrorPropertyPattern = /\b(?:NextResponse|Response)\.json\(\s*\{[^}]*\berror\s*:/g
+const jsonCallPattern = /\b(?:NextResponse|Response)\.json\(\s*\{/g
+const errorPropertyPattern = /\berror\s*:/g
 
 function walk(dir: string, out: string[] = []): string[] {
   for (const entry of readdirSync(dir)) {
@@ -36,16 +37,42 @@ function lineForIndex(source: string, index: number): number {
   return source.slice(0, index).split('\n').length
 }
 
+function findBalancedObjectEnd(source: string, start: number): number {
+  let depth = 0
+
+  for (let index = start; index < source.length; index += 1) {
+    const char = source[index]
+
+    if (char === '{') depth += 1
+    if (char === '}' && --depth === 0) return index
+  }
+
+  return -1
+}
+
 function collectJsonErrorPropertyHitsFromSource(
   source: string,
   filePath: string
 ): Hit[] {
   const relative = path.relative(root, filePath)
-  return Array.from(source.matchAll(jsonErrorPropertyPattern), (match) => ({
-    file: relative,
-    line: lineForIndex(source, match.index ?? 0),
-    property: 'error',
-  }))
+  const hits: Hit[] = []
+
+  for (const match of source.matchAll(jsonCallPattern)) {
+    const objectStart = source.indexOf('{', match.index ?? 0)
+    const objectEnd = findBalancedObjectEnd(source, objectStart)
+    if (objectEnd === -1) continue
+
+    const objectLiteral = source.slice(objectStart, objectEnd + 1)
+    for (const errorMatch of objectLiteral.matchAll(errorPropertyPattern)) {
+      hits.push({
+        file: relative,
+        line: lineForIndex(source, objectStart + (errorMatch.index ?? 0)),
+        property: 'error',
+      })
+    }
+  }
+
+  return hits
 }
 
 function collectJsonErrorPropertyHits(filePath: string): Hit[] {
@@ -58,7 +85,10 @@ function collectJsonErrorPropertyHits(filePath: string): Hit[] {
 describe('API error localization guard helpers', () => {
   it('detects JSON error fields that would bypass client-side localization', () => {
     const hits = collectJsonErrorPropertyHitsFromSource(
-      "return NextResponse.json({ error: 'Something went wrong' }, { status: 400 })\n",
+      [
+        "return NextResponse.json({ error: 'Something went wrong' }, { status: 400 })",
+        "return NextResponse.json({ details: { field: 'licenseKey' }, error: 'Something went wrong' })",
+      ].join('\n'),
       path.join(root, 'src/app/api/example/route.ts')
     )
 
@@ -66,6 +96,11 @@ describe('API error localization guard helpers', () => {
       {
         file: 'src/app/api/example/route.ts',
         line: 1,
+        property: 'error',
+      },
+      {
+        file: 'src/app/api/example/route.ts',
+        line: 2,
         property: 'error',
       },
     ])
