@@ -129,6 +129,16 @@ describe('buildReceiptPdf', () => {
     expect(stream).not.toContain(hex('2/1/2026'))
   })
 
+  it('prints localized PDF receipt dates for non-English locales', async () => {
+    const stream = await pageStream(
+      await buildTestReceiptPdf(baseReceipt, 'fr-FR')
+    )
+
+    expect(stream).toContain(hex('1 février 2026'))
+    expect(stream).not.toContain(hex('February 1, 2026'))
+    expect(stream).not.toContain(hex('01/02/2026'))
+  })
+
   it('sets localized PDF document metadata for reader chrome and file previews', async () => {
     const localizedCopy: ReceiptPdfCopy = {
       ...TEST_COPY,
