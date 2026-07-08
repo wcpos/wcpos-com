@@ -820,7 +820,8 @@
         "release_not_found": "そのWCPOS Proリリースは見つかりませんでした。",
         "forbidden": "お使いのライセンスにはこのダウンロードが含まれていません。",
         "internal": "ダウンロードを準備できませんでした。もう一度お試しください。"
-      }
+      },
+      "externalContentNotice": "リリースノートはGitHubから取得されるため、英語で表示される場合があります。"
     },
     "profile": {
       "heading": "プロフィール",

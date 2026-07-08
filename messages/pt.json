@@ -820,7 +820,8 @@
         "release_not_found": "Não foi possível encontrar essa versão do WCPOS Pro.",
         "forbidden": "A sua licença não inclui esta transferência.",
         "internal": "Não foi possível preparar a sua transferência. Tente novamente."
-      }
+      },
+      "externalContentNotice": "As notas de lançamento vêm do GitHub e podem ser apresentadas em inglês."
     },
     "profile": {
       "heading": "Perfil",

@@ -9,6 +9,8 @@ export interface ProPluginRelease {
   tagName: string
   name: string
   releaseNotes: string
+  /** GitHub release notes are authored in English. */
+  contentLocale?: string
   publishedAt: string
   assetName: string
   assetApiUrl: string
@@ -43,6 +45,7 @@ export async function getProPluginReleases(): Promise<ProPluginRelease[]> {
         tagName: release.tagName,
         name: release.name,
         releaseNotes: release.body || '',
+        contentLocale: release.body?.trim() ? 'en' : undefined,
         publishedAt: release.publishedAt,
         assetName: asset.name,
         assetApiUrl: asset.url,

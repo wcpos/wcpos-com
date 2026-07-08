@@ -113,6 +113,28 @@ describe('DownloadsClient', () => {
     expect(screen.getByText('Faster checkout')).toBeInTheDocument()
   })
 
+  it('marks externally sourced English release notes with a language notice', async () => {
+    render(
+      <DownloadsClient
+        initialReleases={[makeRelease({ contentLocale: 'en' })]}
+        access={makeAccess()}
+      />
+    )
+
+    expect(
+      screen.getByText('Release notes come from GitHub and may be shown in English.')
+    ).toBeInTheDocument()
+    expect(screen.getByText('Bug fixes').closest('[lang="en"]')).not.toBeNull()
+
+    const row = archiveRow('WCPOS Pro 1.9.0')
+    fireEvent.click(within(row).getByRole('button', { name: 'Release notes' }))
+
+    const dialog = await screen.findByRole('dialog')
+    expect(
+      within(dialog).getByText('Bug fixes').closest('[lang="en"]')
+    ).not.toBeNull()
+  })
+
   it('surfaces the latest build in a hero with a Latest badge', () => {
     render(
       <DownloadsClient

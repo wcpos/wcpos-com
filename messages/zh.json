@@ -820,7 +820,8 @@
         "release_not_found": "找不到该 WCPOS Pro 版本。",
         "forbidden": "您的许可证不包含此下载。",
         "internal": "我们无法准备您的下载。请重试。"
-      }
+      },
+      "externalContentNotice": "发布说明来自 GitHub，可能会以英文显示。"
     },
     "profile": {
       "heading": "个人资料",
