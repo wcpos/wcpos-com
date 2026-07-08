@@ -104,6 +104,7 @@ export function DownloadsClient({
 }: DownloadsClientProps) {
   const locale = useLocale()
   const t = useTranslations('account.downloads')
+  const tCommon = useTranslations('common')
   const releases = initialReleases
   const [currentPage, setCurrentPage] = useState(1)
   const [downloadingVersion, setDownloadingVersion] = useState<string | null>(
@@ -483,7 +484,10 @@ export function DownloadsClient({
           if (!open) setNotesRelease(null)
         }}
       >
-        <DialogContent className="max-h-[85vh] sm:max-w-2xl">
+        <DialogContent
+          className="max-h-[85vh] sm:max-w-2xl"
+          closeLabel={tCommon('close')}
+        >
           <DialogHeader>
             <DialogTitle>{notesRelease?.name}</DialogTitle>
             {notesRelease && (

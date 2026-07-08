@@ -30,6 +30,7 @@ vi.mock('next-intl', () => ({
       common: {
         signIn: 'Translated sign in',
         openMenu: 'Translated open menu',
+        close: 'Translated close',
         account: 'Translated account',
         accountMenu: 'Translated account menu',
         signOut: 'Translated sign out',
@@ -161,6 +162,21 @@ describe('SiteHeader', () => {
 
     expect(
       screen.getByRole('button', { name: 'Translated open menu' })
+    ).toBeInTheDocument()
+  })
+
+  it('uses a translated accessible label for the mobile menu close button', async () => {
+    mockGetCustomer.mockResolvedValue(null)
+    await act(async () => {
+      render(<SiteHeader />)
+    })
+
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Translated open menu' })
+    )
+
+    expect(
+      await screen.findByRole('button', { name: 'Translated close' })
     ).toBeInTheDocument()
   })
 

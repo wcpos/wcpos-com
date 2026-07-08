@@ -127,7 +127,7 @@ export function SiteHeader() {
               <span className="sr-only">{tCommon('openMenu')}</span>
             </Button>
           </SheetTrigger>
-          <SheetContent side="right" className="w-72">
+          <SheetContent side="right" className="w-72" closeLabel={tCommon('close')}>
             <SheetTitle className="flex items-center gap-2 text-lg font-bold">
               <WcposLogo className="h-6 w-6" />
               WCPOS

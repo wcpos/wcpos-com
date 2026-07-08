@@ -208,6 +208,9 @@ describe('DownloadsClient', () => {
     expect(
       within(dialog).getByRole('heading', { name: 'Changes' })
     ).toBeInTheDocument()
+    expect(
+      within(dialog).getByRole('button', { name: 'Close' })
+    ).toBeInTheDocument()
     // The notes live in a bounded, scrollable region.
     expect(dialog.querySelector('.overflow-y-auto')).not.toBeNull()
   })
