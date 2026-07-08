@@ -18,7 +18,7 @@ type AmbiguousDateHit = {
 type JsonValue = string | number | boolean | null | JsonValue[] | { [key: string]: JsonValue }
 
 const root = process.cwd()
-const sourceRoots = ['src/app', 'src/components', 'src/lib', 'src/services']
+const sourceRoots = ['src']
 const sourceExtensions = new Set(['.ts', '.tsx', '.js', '.jsx'])
 const skipPath = /(?:\.test\.|\.spec\.|\.stories\.|dev-fixture\.tsx?$)/
 const skipDirs = new Set([
@@ -31,8 +31,9 @@ const skipDirs = new Set([
 ])
 
 const directLocaleDatePattern = /\.\s*(toLocaleDateString|toLocaleTimeString|toLocaleString)\s*\(/g
-const ambiguousNumericDatePattern = /\b\d{1,2}[/-]\d{1,2}[/-]\d{2,4}\b/
-const quotedStringPattern = /(['"`])((?:\\.|(?!\1)[\s\S])*)\1/g
+const ambiguousNumericDatePattern = /(?<![\d./-])\d{1,2}[/.-]\d{1,2}[/.-]\d{2,4}(?![\d./-])/
+const quotedStringPattern = /'((?:\\.|[^'\\\r\n])*)'|"((?:\\.|[^"\\\r\n])*)"|`((?:\\.|(?!`)[\s\S])*)`/g
+const jsxTextDatePattern = />(\d{1,2}[/.-]\d{1,2}[/.-]\d{2,4})<\//g
 
 function walk(dir: string, out: string[] = []): string[] {
   for (const entry of readdirSync(dir)) {
@@ -84,7 +85,7 @@ function decodeSourceStringLiteral(value: string): string {
 function isSvgPathLiteral(value: string): boolean {
   return (
     value.length > 80 &&
-    /^[Mm][0-9 .,\-CcLlHhVvSsQqTtAaZz]+$/.test(value)
+    /^[Mm][0-9 .,\-MmCcLlHhVvSsQqTtAaZz]+$/.test(value)
   )
 }
 
@@ -94,7 +95,7 @@ function collectAmbiguousSourceDateHits(filePath: string): AmbiguousDateHit[] {
   const hits: AmbiguousDateHit[] = []
 
   for (const match of source.matchAll(quotedStringPattern)) {
-    const rawValue = match[2] ?? ''
+    const rawValue = match[1] ?? match[2] ?? match[3] ?? ''
     const value = decodeSourceStringLiteral(rawValue)
     if (isSvgPathLiteral(value)) continue
     if (ambiguousNumericDatePattern.test(value)) {
@@ -104,6 +105,14 @@ function collectAmbiguousSourceDateHits(filePath: string): AmbiguousDateHit[] {
         value,
       })
     }
+  }
+
+  for (const match of source.matchAll(jsxTextDatePattern)) {
+    hits.push({
+      file: relative,
+      line: lineForIndex(source, match.index ?? 0),
+      value: match[1] ?? '',
+    })
   }
 
   return hits
@@ -159,11 +168,21 @@ describe('date display localization guard helpers', () => {
   it('detects ambiguous numeric date strings in source literals and messages', () => {
     const fixture = path.join(root, 'src/components/example.tsx')
     const sourceHit = collectAmbiguousSourceDateHitsFromSource(
-      'const placeholder = "02/01/2021"\n',
+      [
+        'const placeholder = "02/01/2021"',
+        'const dottedPlaceholder = "02.01.2021"',
+        'export function Example() { return <time>02/01/2021</time> }',
+        '',
+      ].join('\n'),
       fixture
     )
     const messageHit = collectAmbiguousMessageDateHits(
-      { account: { example: 'Paid on 02-01-2021' } },
+      {
+        account: {
+          example: 'Paid on 02-01-2021',
+          dottedExample: 'Paid on 02.01.2021',
+        },
+      },
       'messages/en.json'
     )
 
@@ -173,12 +192,27 @@ describe('date display localization guard helpers', () => {
         line: 1,
         value: '02/01/2021',
       },
+      {
+        file: 'src/components/example.tsx',
+        line: 2,
+        value: '02.01.2021',
+      },
+      {
+        file: 'src/components/example.tsx',
+        line: 3,
+        value: '02/01/2021',
+      },
     ])
     expect(messageHit).toEqual([
       {
         file: 'messages/en.json',
         path: 'account.example',
         value: 'Paid on 02-01-2021',
+      },
+      {
+        file: 'messages/en.json',
+        path: 'account.dottedExample',
+        value: 'Paid on 02.01.2021',
       },
     ])
   })
@@ -225,7 +259,7 @@ function collectAmbiguousSourceDateHitsFromSource(
   const hits: AmbiguousDateHit[] = []
 
   for (const match of source.matchAll(quotedStringPattern)) {
-    const value = decodeSourceStringLiteral(match[2] ?? '')
+    const value = decodeSourceStringLiteral(match[1] ?? match[2] ?? match[3] ?? '')
     if (isSvgPathLiteral(value)) continue
     if (ambiguousNumericDatePattern.test(value)) {
       hits.push({
@@ -234,6 +268,14 @@ function collectAmbiguousSourceDateHitsFromSource(
         value,
       })
     }
+  }
+
+  for (const match of source.matchAll(jsxTextDatePattern)) {
+    hits.push({
+      file: relative,
+      line: lineForIndex(source, match.index ?? 0),
+      value: match[1] ?? '',
+    })
   }
 
   return hits
