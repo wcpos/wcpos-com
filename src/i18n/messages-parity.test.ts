@@ -143,8 +143,25 @@ const auditedDutchNamespacePrefixes = [
   'account.',
   'pro.checkout.',
   'legal.',
+  'home.',
 ]
 const dutchIdenticalCopyAllowlist = new Set([
+  'home.title',
+  'home.useCases.cards.retail.attribution',
+  'home.useCases.cards.market.attribution',
+  'home.useCases.cards.desktop.attribution',
+  'home.benefits.visuals.offline.badge',
+  'home.benefits.visuals.ownership.chips.openSource',
+  'home.pricing.pro.title',
+  'home.ecosystem.devices.ios.label',
+  'home.ecosystem.devices.android.label',
+  'home.story.a2.platforms.p1',
+  'home.story.a2.platforms.p2',
+  'home.story.a2.platforms.p3',
+  'home.story.a2.platforms.p4',
+  'home.story.a2.platforms.p5',
+  'home.story.nav.s1',
+  'home.story.pos.registerShort',
   'account.nav.downloads',
   'account.meta.downloads.title',
   'account.orderDetail.statusLabel',
@@ -949,7 +966,7 @@ describe('messages key parity', () => {
     ).toEqual([])
   })
 
-  it('nl.json translates the audited support, auth, roadmap, common, header, footer, downloads, account, checkout, and legal copy', () => {
+  it('nl.json translates the audited support, auth, roadmap, common, header, footer, downloads, account, checkout, legal, and home copy', () => {
     const english = loadMessages(defaultLocale)
     const dutch = loadMessages('nl')
     const auditedKeys = enKeys.filter(
