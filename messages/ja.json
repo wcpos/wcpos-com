@@ -343,40 +343,40 @@
   },
   "roadmap": {
     "meta": {
-      "title": "Roadmap",
-      "description": "See what we are building next for WCPOS — upcoming features, milestones, and release progress."
+      "title": "ロードマップ",
+      "description": "WCPOSで次に開発している機能、今後の予定、マイルストーン、リリースの進捗をご覧ください。"
     },
     "page": {
-      "eyebrow": "Roadmap",
-      "title": "The release train",
-      "description": "Every stop on the way to a faster, offline-proof WCPOS — pulled straight from our GitHub, newest work first."
+      "eyebrow": "ロードマップ",
+      "title": "リリースの流れ",
+      "description": "より高速でオフラインにも強いWCPOSへ向かう各ステップを、新しい作業から順にGitHubから直接表示します。"
     },
     "board": {
-      "link": "live from the WCPOS project board"
+      "link": "WCPOSプロジェクトボードからライブ取得"
     },
     "status": {
-      "done": "Done",
-      "inProgress": "In progress",
-      "planned": "Planned"
+      "done": "完了",
+      "inProgress": "進行中",
+      "planned": "予定"
     },
     "timeline": {
-      "empty": "No roadmap items to display yet.",
+      "empty": "表示するロードマップ項目はまだありません。",
       "phases": {
-        "now": "Now",
-        "next": "Next",
-        "shipped": "Shipped"
+        "now": "現在",
+        "next": "次",
+        "shipped": "リリース済み"
       },
-      "progress": "{completed} of {total} done",
-      "progressDue": "{completed} of {total} done · due {date}",
-      "shipped": "shipped",
-      "shippedWithDate": "shipped · {date}"
+      "progress": "{total}件中{completed}件完了",
+      "progressDue": "{total}件中{completed}件完了 · 期限 {date}",
+      "shipped": "リリース済み",
+      "shippedWithDate": "リリース済み · {date}"
     },
     "bugs": {
-      "summary": "{count, plural, one {+ # bug fix & improvements} other {+ # bug fixes & improvements}}",
+      "summary": "{count, plural, one {+ # 件のバグ修正と改善} other {+ # 件のバグ修正と改善}}",
       "status": {
-        "done": "fixed",
-        "in_progress": "in progress",
-        "planned": "planned"
+        "done": "修正済み",
+        "in_progress": "進行中",
+        "planned": "予定"
       }
     }
   },
@@ -986,14 +986,14 @@
       "signIn": "ログイン",
       "signUp": "登録",
       "apiErrors": {
-        "invalid_origin": "Please refresh the page and try again.",
-        "rate_limited": "Too many attempts. Please try again later.",
-        "email_required": "Email is required.",
-        "credentials_required": "Email and password are required.",
-        "reset_fields_required": "Email, token, and password are required.",
-        "password_too_short": "Password must be at least {min} characters.",
-        "invalid_credentials": "Invalid email or password.",
-        "invalid_reset_token": "This password reset link is invalid or has expired. Please request a new one."
+        "invalid_origin": "ページを更新して、もう一度お試しください。",
+        "rate_limited": "試行回数が多すぎます。しばらくしてからもう一度お試しください。",
+        "email_required": "メールアドレスは必須です。",
+        "credentials_required": "メールアドレスとパスワードは必須です。",
+        "reset_fields_required": "メールアドレス、トークン、パスワードは必須です。",
+        "password_too_short": "パスワードは{min}文字以上で入力してください。",
+        "invalid_credentials": "メールアドレスまたはパスワードが正しくありません。",
+        "invalid_reset_token": "このパスワードリセットリンクは無効、または有効期限が切れています。新しいリンクをリクエストしてください。"
       }
     },
     "login": {
@@ -1527,53 +1527,53 @@
   },
   "support": {
     "meta": {
-      "title": "Support",
-      "description": "Ask anything about WCPOS and get an instant answer from our docs, or chat with the community on Discord."
+      "title": "サポート",
+      "description": "WCPOSについて何でも質問すると、ドキュメントに基づいた即時回答を受け取れます。Discordでコミュニティと話すこともできます。"
     },
     "chat": {
       "hero": {
-        "title": "How can we help?",
-        "subtitle": "Ask anything about WCPOS — setup, licensing, hardware, syncing, printing. You'll get an instant answer drawn from our docs."
+        "title": "どのようにお手伝いできますか？",
+        "subtitle": "WCPOSについて何でも質問してください — セットアップ、ライセンス、ハードウェア、同期、印刷など。ドキュメントに基づいた回答をすぐに表示します。"
       },
       "examples": {
-        "e1": "Why is my licence inactive?",
-        "e2": "Which barcode scanners are supported?",
-        "e3": "How do I sync products from WooCommerce?"
+        "e1": "ライセンスが非アクティブなのはなぜですか？",
+        "e2": "対応しているバーコードスキャナーはどれですか？",
+        "e3": "WooCommerceから商品を同期するにはどうすればよいですか？"
       },
       "feedback": {
-        "prompt": "Was this helpful?",
-        "yes": "Yes",
-        "no": "No"
+        "prompt": "この回答は役に立ちましたか？",
+        "yes": "はい",
+        "no": "いいえ"
       },
-      "thinking": "Aide is thinking…",
+      "thinking": "Aideが考え中です…",
       "form": {
-        "label": "Ask a support question",
-        "placeholder": "e.g. How do I connect a receipt printer?",
-        "followUpPlaceholder": "Ask a follow-up…",
-        "submit": "Ask"
+        "label": "サポートに質問する",
+        "placeholder": "例：レシートプリンターを接続するには？",
+        "followUpPlaceholder": "追加の質問を入力…",
+        "submit": "質問する"
       },
-      "discordLink": "Ask in Discord →",
-      "poweredBy": "Answered by Aide · trained on the WCPOS docs & wiki"
+      "discordLink": "Discordで質問 →",
+      "poweredBy": "Aideが回答 · WCPOSのドキュメントとWikiで学習"
     },
     "errors": {
-      "invalid_question": "Please enter a question (up to 1000 characters).",
-      "bot_check_failed": "Bot check failed. Please reload and try again.",
-      "rate_limited": "You're asking a lot of questions — please wait a few minutes, or hop into Discord.",
-      "budget_exhausted": "The assistant is busy right now. Please try Discord for a faster answer.",
-      "empty_answer": "The assistant is temporarily unavailable. Please try Discord while we get it back.",
-      "gateway_rate_limited": "The assistant is busy right now — please try again later.",
-      "timeout": "That took too long. Please try again, or ask in Discord.",
-      "unavailable": "The assistant is temporarily unavailable. Please try Discord while we get it back.",
-      "network": "The assistant is unavailable right now. Please ask in Discord.",
-      "unknown": "Something went wrong."
+      "invalid_question": "質問を入力してください（最大1000文字）。",
+      "bot_check_failed": "Botチェックに失敗しました。ページを再読み込みしてもう一度お試しください。",
+      "rate_limited": "質問が多く送信されています。数分待つか、Discordに参加してください。",
+      "budget_exhausted": "現在アシスタントが混み合っています。早い回答が必要な場合はDiscordをお試しください。",
+      "empty_answer": "アシスタントは一時的に利用できません。復旧までの間はDiscordをお試しください。",
+      "gateway_rate_limited": "現在アシスタントが混み合っています — 後でもう一度お試しください。",
+      "timeout": "時間がかかりすぎました。もう一度試すか、Discordで質問してください。",
+      "unavailable": "アシスタントは一時的に利用できません。復旧までの間はDiscordをお試しください。",
+      "network": "現在アシスタントを利用できません。Discordで質問してください。",
+      "unknown": "問題が発生しました。"
     },
     "order": {
-      "title": "Contact support about your order",
-      "body": "Quote reference <ref></ref> so we can confirm the payment or finish the order before you pay again."
+      "title": "注文についてサポートに連絡する",
+      "body": "再度支払う前に、支払いの確認または注文の完了ができるよう、参照番号 <ref></ref> をお知らせください。"
     },
     "discord": {
-      "title": "Prefer to talk to a human?",
-      "subtitle": "Join store owners and the team in our live Discord community."
+      "title": "人と直接話したいですか？",
+      "subtitle": "店舗オーナーとチームが参加するライブDiscordコミュニティに参加してください。"
     }
   }
 }

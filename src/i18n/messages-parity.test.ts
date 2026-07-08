@@ -67,6 +67,15 @@ const auditedSpanishNamespacePrefixes = [
   'home.',
   'legal.',
 ]
+
+const auditedJapaneseNamespacePrefixes = [
+  'support.',
+  'auth.',
+  'roadmap.',
+]
+const japaneseIdenticalCopyAllowlist = new Set([
+  'auth.common.emailPlaceholder',
+])
 const auditedGermanNamespacePrefixes = [
   'support.',
   'auth.',
@@ -451,6 +460,32 @@ describe('messages key parity', () => {
     expect(
       untranslatedKeys,
       'messages/de.json must not copy audited support/auth/roadmap/header/footer/account/pro/downloads/about/home/legal English strings verbatim'
+    ).toEqual([])
+  })
+
+
+  it('ja.json translates the audited support, auth, and roadmap copy', () => {
+    const english = loadMessages(defaultLocale)
+    const japanese = loadMessages('ja')
+    const auditedKeys = enKeys.filter(
+      (key) =>
+        auditedJapaneseNamespacePrefixes.some((prefix) =>
+          key.startsWith(prefix)
+        ) && !japaneseIdenticalCopyAllowlist.has(key)
+    )
+    const untranslatedKeys = auditedKeys.filter((key) => {
+      const englishValue = valueAtPath(english, key)
+      const japaneseValue = valueAtPath(japanese, key)
+      return (
+        englishValue !== undefined &&
+        japaneseValue === englishValue &&
+        /[A-Za-z]{3}/.test(englishValue)
+      )
+    })
+
+    expect(
+      untranslatedKeys,
+      'messages/ja.json must not copy audited support/auth/roadmap English strings verbatim'
     ).toEqual([])
   })
 
