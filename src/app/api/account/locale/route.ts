@@ -49,7 +49,6 @@ export async function PATCH(request: NextRequest) {
 
     const payload: UpdateCustomerInput = {
       metadata: {
-        ...(currentCustomer.metadata ?? {}),
         locale: body.locale,
       },
     }

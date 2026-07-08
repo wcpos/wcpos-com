@@ -36,6 +36,31 @@ describe('LanguageSelector', () => {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ locale: 'fr' }),
+      signal: expect.any(AbortSignal),
+    })
+  })
+
+  it('aborts the previous locale preference write when the selection changes again', () => {
+    mockFetch.mockReturnValue(new Promise(() => {}))
+    render(<LanguageSelector />)
+
+    fireEvent.change(screen.getByLabelText('Language'), {
+      target: { value: 'fr' },
+    })
+    fireEvent.change(screen.getByLabelText('Language'), {
+      target: { value: 'es' },
+    })
+
+    const firstSignal = mockFetch.mock.calls[0]?.[1]?.signal as AbortSignal
+    const secondSignal = mockFetch.mock.calls[1]?.[1]?.signal as AbortSignal
+
+    expect(firstSignal.aborted).toBe(true)
+    expect(secondSignal.aborted).toBe(false)
+    expect(mockFetch).toHaveBeenLastCalledWith('/api/account/locale', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ locale: 'es' }),
+      signal: secondSignal,
     })
   })
 })

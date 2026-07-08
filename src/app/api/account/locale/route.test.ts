@@ -34,7 +34,7 @@ describe('PATCH /api/account/locale', () => {
     vi.clearAllMocks()
   })
 
-  it('merges the selected locale into customer metadata for localized emails', async () => {
+  it('updates only the locale metadata key for localized emails', async () => {
     mockGetCustomer.mockResolvedValueOnce({
       id: 'cust_1',
       metadata: {
@@ -49,8 +49,6 @@ describe('PATCH /api/account/locale', () => {
     expect(response.status).toBe(200)
     expect(mockUpdateCustomer).toHaveBeenCalledWith({
       metadata: {
-        marketing_opt_in: true,
-        account_profile: { countryCode: 'FR' },
         locale: 'fr',
       },
     })
