@@ -160,6 +160,7 @@ const auditedChineseNamespacePrefixes = [
   'pro.',
   'downloads.',
   'about.',
+  'home.',
 ]
 const chineseIdenticalCopyAllowlist = new Set([
   'auth.common.emailPlaceholder',
@@ -209,6 +210,18 @@ const chineseIdenticalCopyAllowlist = new Set([
   'downloads.releaseHistory.desktop',
   'about.founder.signature.name',
   'about.timeline.dates.range',
+  'home.title',
+  'home.useCases.cards.retail.attribution',
+  'home.useCases.cards.market.attribution',
+  'home.useCases.cards.desktop.attribution',
+  'home.pricing.pro.title',
+  'home.ecosystem.devices.android.label',
+  'home.story.a2.platforms.p1',
+  'home.story.a2.platforms.p2',
+  'home.story.a2.platforms.p3',
+  'home.story.a2.platforms.p4',
+  'home.story.a2.platforms.p5',
+  'home.story.pos.registerShort',
 ])
 const auditedGermanNamespacePrefixes = [
   'support.',
@@ -623,7 +636,7 @@ describe('messages key parity', () => {
     ).toEqual([])
   })
 
-  it('zh.json translates the audited support, auth, roadmap, header, footer, account, pro, downloads, and about copy', () => {
+  it('zh.json translates the audited support, auth, roadmap, header, footer, account, pro, downloads, about, and home copy', () => {
     const english = loadMessages(defaultLocale)
     const chinese = loadMessages('zh')
     const auditedKeys = enKeys.filter(
@@ -644,7 +657,7 @@ describe('messages key parity', () => {
 
     expect(
       untranslatedKeys,
-      'messages/zh.json must not copy audited support/auth/roadmap/header/footer/account/pro/downloads/about English strings verbatim'
+      'messages/zh.json must not copy audited support/auth/roadmap/header/footer/account/pro/downloads/about/home English strings verbatim'
     ).toEqual([])
   })
 
