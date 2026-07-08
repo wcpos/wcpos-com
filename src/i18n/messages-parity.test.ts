@@ -29,11 +29,36 @@ function placeholders(value: string): string[] {
   ).sort()
 }
 
+const richTextTagPattern = /<\/?([A-Za-z][A-Za-z0-9_-]*)\b[^>]*>/g
+
 function richTextTags(value: string): string[] {
   return Array.from(
-    value.matchAll(/<\/?([A-Za-z][A-Za-z0-9_-]*)\b[^>]*>/g),
+    value.matchAll(richTextTagPattern),
     (match) => match[0] ?? ''
   ).sort()
+}
+
+function richTextTagBalanceError(value: string): string | undefined {
+  const stack: string[] = []
+
+  for (const match of value.matchAll(richTextTagPattern)) {
+    const tag = match[1] ?? ''
+
+    if ((match[0] ?? '').startsWith('</')) {
+      const openingTag = stack.pop()
+
+      if (openingTag !== tag) {
+        return `Unexpected closing tag </${tag}>`
+      }
+
+      continue
+    }
+
+    stack.push(tag)
+  }
+
+  const unclosedTag = stack.pop()
+  return unclosedTag ? `Missing closing tag </${unclosedTag}>` : undefined
 }
 
 function valueAtPath(messages: Messages, keyPath: string): string | undefined {
@@ -1033,12 +1058,21 @@ describe('messages key parity', () => {
       const english = loadMessages(defaultLocale)
       const localized = loadMessages(locale)
       const mismatches = enKeys
-        .map((key) => ({
-          key,
-          expected: richTextTags(valueAtPath(english, key) ?? ''),
-          actual: richTextTags(valueAtPath(localized, key) ?? ''),
-        }))
-        .filter(({ expected, actual }) => expected.join('|') !== actual.join('|'))
+        .map((key) => {
+          const localizedValue = valueAtPath(localized, key) ?? ''
+
+          return {
+            key,
+            tagBalanceError: richTextTagBalanceError(localizedValue),
+            expected: richTextTags(valueAtPath(english, key) ?? ''),
+            actual: richTextTags(localizedValue),
+          }
+        })
+        .filter(
+          ({ tagBalanceError, expected, actual }) =>
+            tagBalanceError !== undefined ||
+            expected.join('|') !== actual.join('|')
+        )
 
       expect(
         mismatches,
