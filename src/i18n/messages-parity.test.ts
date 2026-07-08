@@ -47,6 +47,10 @@ const auditedItalianNamespacePrefixes = [
   'footer.',
   'header.',
   'common.',
+  'account.downloads.apiErrors.',
+  'pro.checkout.errors.',
+  'pro.checkout.recovery.',
+  'pro.checkout.successPage.',
 ]
 const italianIdenticalCopyAllowlist = new Set([
   'header.pro',

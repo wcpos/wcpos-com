@@ -580,51 +580,51 @@
       "errors": {
         "noProductSelected": "Non è stato selezionato alcun prodotto",
         "initializeFailed": "Impossibile inizializzare il checkout. Riprova.",
-        "checkoutBusy": "Checkout is busy. Please try again.",
-        "paymentRefreshFailed": "Billing address was saved, but we couldn't prepare payment. Please try again.",
-        "methodSwitchFailed": "We couldn't prepare that payment method. Please try again or choose a different one.",
-        "genericPaymentFailed": "We were unable to process your payment. Please try again or use a different payment method.",
-        "genericCardFailed": "Your card could not be charged. Please check your card details, or try a different card or payment method.",
-        "unexpectedPaymentStatus": "We couldn't confirm the status of your payment. If you think you may have been charged, please contact support before trying again.",
-        "orderPending": "Your payment was received, but we couldn't finish creating your order. Please do not pay again — contact support and we will finish your order or refund the payment.",
-        "paypalFailed": "PayPal couldn't complete your payment. You have not been charged — please try again or use a different payment method.",
-        "paypalInitFailed": "We couldn't start the PayPal checkout. Please try again or use a different payment method.",
-        "paypalCancelled": "PayPal checkout was cancelled and you have not been charged. You can try again whenever you're ready.",
-        "btcpayInitFailed": "We couldn't start the Bitcoin payment. You have not been charged — please try again or use a different payment method.",
+        "checkoutBusy": "Il checkout è occupato. Riprova.",
+        "paymentRefreshFailed": "L'indirizzo di fatturazione è stato salvato, ma non siamo riusciti a preparare il pagamento. Riprova.",
+        "methodSwitchFailed": "Non siamo riusciti a preparare quel metodo di pagamento. Riprova o scegline un altro.",
+        "genericPaymentFailed": "Non siamo riusciti a elaborare il pagamento. Riprova o usa un metodo di pagamento diverso.",
+        "genericCardFailed": "Non è stato possibile addebitare la carta. Controlla i dati della carta oppure prova con un'altra carta o un altro metodo di pagamento.",
+        "unexpectedPaymentStatus": "Non siamo riusciti a confermare lo stato del pagamento. Se pensi che l'addebito possa essere avvenuto, contatta il supporto prima di riprovare.",
+        "orderPending": "Il pagamento è stato ricevuto, ma non siamo riusciti a completare la creazione dell'ordine. Non pagare di nuovo — contatta il supporto e completeremo l'ordine o rimborseremo il pagamento.",
+        "paypalFailed": "PayPal non ha potuto completare il pagamento. Non ti è stato addebitato nulla — riprova o usa un metodo di pagamento diverso.",
+        "paypalInitFailed": "Non siamo riusciti ad avviare il checkout PayPal. Riprova o usa un metodo di pagamento diverso.",
+        "paypalCancelled": "Il checkout PayPal è stato annullato e non ti è stato addebitato nulla. Puoi riprovare quando vuoi.",
+        "btcpayInitFailed": "Non siamo riusciti ad avviare il pagamento Bitcoin. Non ti è stato addebitato nulla — riprova o usa un metodo di pagamento diverso.",
         "stripeDeclines": {
-          "insufficientFunds": "Your card was declined due to insufficient funds. Please use a different card or payment method."
+          "insufficientFunds": "La carta è stata rifiutata per fondi insufficienti. Usa un'altra carta o un altro metodo di pagamento."
         },
         "stripeCodes": {
-          "cardDeclined": "Your card was declined. Please try a different card or payment method.",
-          "expiredCard": "Your card has expired. Please use a different card.",
-          "incorrectCvc": "Your card's security code is incorrect. Please check it and try again.",
-          "invalidCvc": "Your card's security code is invalid. Please check it and try again.",
-          "incorrectNumber": "Your card number appears to be invalid. Please check it and try again.",
-          "invalidNumber": "Your card number appears to be invalid. Please check it and try again.",
-          "invalidExpiryMonth": "Your card's expiry date is invalid. Please check it and try again.",
-          "invalidExpiryYear": "Your card's expiry date is invalid. Please check it and try again.",
-          "processingError": "Something went wrong while processing your card. You have not been charged — please try again.",
-          "authenticationFailure": "We couldn't verify your card with your bank. Please try again or use a different payment method.",
-          "authenticationRequired": "We couldn't verify your card with your bank. Please try again or use a different payment method."
+          "cardDeclined": "La carta è stata rifiutata. Prova un'altra carta o un altro metodo di pagamento.",
+          "expiredCard": "La carta è scaduta. Usa un'altra carta.",
+          "incorrectCvc": "Il codice di sicurezza della carta non è corretto. Controllalo e riprova.",
+          "invalidCvc": "Il codice di sicurezza della carta non è valido. Controllalo e riprova.",
+          "incorrectNumber": "Il numero della carta sembra non valido. Controllalo e riprova.",
+          "invalidNumber": "Il numero della carta sembra non valido. Controllalo e riprova.",
+          "invalidExpiryMonth": "La data di scadenza della carta non è valida. Controllala e riprova.",
+          "invalidExpiryYear": "La data di scadenza della carta non è valida. Controllala e riprova.",
+          "processingError": "Si è verificato un errore durante l'elaborazione della carta. Non ti è stato addebitato nulla — riprova.",
+          "authenticationFailure": "Non siamo riusciti a verificare la carta con la tua banca. Riprova o usa un metodo di pagamento diverso.",
+          "authenticationRequired": "Non siamo riusciti a verificare la carta con la tua banca. Riprova o usa un metodo di pagamento diverso."
         }
       },
       "recovery": {
         "contactSupport": "Contatta il supporto",
-        "contactSupportLower": "Contatta il supporto",
-        "switchMethod": "You can also choose a different payment method below.",
+        "contactSupportLower": "contattare il supporto",
+        "switchMethod": "Puoi anche scegliere un metodo di pagamento diverso qui sotto.",
         "cancelled": {
-          "title": "Payment cancelled"
+          "title": "Pagamento annullato"
         },
         "unknown": {
-          "title": "Payment status unknown",
-          "prefix": "Please",
-          "suffix": "and quote reference <reference></reference> — we will confirm whether your payment went through before you pay again."
+          "title": "Stato del pagamento sconosciuto",
+          "prefix": "Ti preghiamo di",
+          "suffix": "e indica il riferimento <reference></reference> — confermeremo se il pagamento è andato a buon fine prima che tu paghi di nuovo."
         },
         "unsuccessful": {
           "title": "Pagamento non riuscito",
-          "saved": "Your order details have been saved, so you can try again without starting over.",
-          "stuck": "Still stuck?",
-          "quote": "and quote reference <reference></reference>."
+          "saved": "I dettagli dell'ordine sono stati salvati, quindi puoi riprovare senza ricominciare da capo.",
+          "stuck": "Ancora bloccato?",
+          "quote": "e indica il riferimento <reference></reference>."
         },
         "orderPending": {
           "resetConfirm": "Reimposta il checkout solo dopo che il supporto ha confermato che è sicuro riprovare. Se il pagamento è ancora in sospeso, la reimpostazione potrebbe causare un secondo pagamento.",
@@ -640,17 +640,17 @@
       },
       "successPage": {
         "metadata": {
-          "title": "Order Complete - WCPOS Pro",
-          "description": "Thank you for your purchase of WCPOS Pro"
+          "title": "Ordine completato - WCPOS Pro",
+          "description": "Grazie per il tuo acquisto di WCPOS Pro"
         },
         "title": "Grazie!",
         "description": "Il tuo acquisto di WCPOS Pro è completo.",
         "nextTitle": "Cosa succede ora?",
         "next": {
-          "licenseEmail": "✓ Your license key and download link have been sent to your email",
-          "accountDownload": "✓ You can also download from your account's licenses page",
-          "install": "✓ Install and activate the plugin on your WordPress site",
-          "activate": "✓ Enter your license key to unlock Pro features"
+          "licenseEmail": "✓ La chiave di licenza e il link di download sono stati inviati alla tua email",
+          "accountDownload": "✓ Puoi scaricare il plugin anche dalla pagina delle licenze del tuo account",
+          "install": "✓ Installa e attiva il plugin sul tuo sito WordPress",
+          "activate": "✓ Inserisci la chiave di licenza per sbloccare le funzioni Pro"
         },
         "licenses": "Vai alle licenze",
         "installationGuide": "Guida all’installazione"
@@ -811,12 +811,12 @@
       "tokenErrorFallback": "Il download non è disponibile per questa versione",
       "startErrorFallback": "Impossibile avviare il download",
       "apiErrors": {
-        "unauthorized": "Please sign in again to download WCPOS Pro.",
-        "download_token_secret_missing": "Downloads are temporarily unavailable. Please contact support.",
-        "rate_limited": "Too many download requests. Please wait a moment and try again.",
-        "release_not_found": "That WCPOS Pro release could not be found.",
-        "forbidden": "Your license does not include this download.",
-        "internal": "We could not prepare your download. Please try again."
+        "unauthorized": "Accedi di nuovo per scaricare WCPOS Pro.",
+        "download_token_secret_missing": "I download sono temporaneamente non disponibili. Contatta il supporto.",
+        "rate_limited": "Troppe richieste di download. Attendi un momento e riprova.",
+        "release_not_found": "Questa versione di WCPOS Pro non è stata trovata.",
+        "forbidden": "La tua licenza non include questo download.",
+        "internal": "Non siamo riusciti a preparare il download. Riprova."
       }
     },
     "profile": {

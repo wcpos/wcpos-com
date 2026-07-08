@@ -299,7 +299,7 @@ test.describe('Expired license version gating in downloads', () => {
       blockedRow.getByRole('button', { name: 'Unavailable' })
     ).toBeDisabled()
     await expect(
-      blockedRow.getByText('Released after your license expired.')
+      blockedRow.getByText('Released after your license expired.').first()
     ).toBeVisible()
     await expect(
       page.getByRole('link', { name: 'Renew license' })
