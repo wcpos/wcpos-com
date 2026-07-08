@@ -52,7 +52,9 @@ async function syncOauthProfile(
       !avatarUrl || avatarUrl === metadata.oauth_avatar_url
     const localeToPersist = locale === 'en' ? undefined : locale
     const localeUnchanged =
-      !localeToPersist || metadata.locale === localeToPersist
+      localeToPersist
+        ? metadata.locale === localeToPersist
+        : metadata.locale === undefined
 
     // Nothing to persist: provider already recorded as the latest and avatar
     // unchanged, and locale already matches the sign-in surface.
@@ -61,6 +63,8 @@ async function syncOauthProfile(
     let nextMetadata = recordSignInProvider(metadata, provider)
     if (localeToPersist) {
       nextMetadata = { ...nextMetadata, locale: localeToPersist }
+    } else {
+      delete nextMetadata.locale
     }
     if (avatarUrl && avatarUrl !== metadata.oauth_avatar_url) {
       nextMetadata = { ...nextMetadata, oauth_avatar_url: avatarUrl }
