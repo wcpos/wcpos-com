@@ -72,7 +72,36 @@ const auditedPortugueseNamespacePrefixes = [
   'support.',
   'auth.',
   'roadmap.',
+  'downloads.',
 ]
+const portugueseIdenticalCopyAllowlist = new Set([
+  'downloads.platforms.mac-arm.name',
+  'downloads.platforms.mac-arm.listLabel',
+  'downloads.platforms.mac-arm.short',
+  'downloads.platforms.mac-intel.name',
+  'downloads.platforms.mac-intel.listLabel',
+  'downloads.platforms.mac-intel.short',
+  'downloads.platforms.win.name',
+  'downloads.platforms.win.listLabel',
+  'downloads.platforms.win.short',
+  'downloads.platforms.linux.name',
+  'downloads.platforms.linux.listLabel',
+  'downloads.platforms.linux.short',
+  'downloads.platforms.ios.name',
+  'downloads.platforms.ios.listLabel',
+  'downloads.platforms.android.name',
+  'downloads.platforms.android.listLabel',
+  'downloads.platforms.web.name',
+  'downloads.platforms.web.listLabel',
+  'downloads.howItFits.diagram.devices.android',
+  'downloads.howItFits.diagram.devices.web',
+  'downloads.howItFits.diagram.hub.platform',
+  'downloads.page.beta',
+  'downloads.page.steps.plugin.requirements',
+  'downloads.page.steps.plugin.cardTitle',
+  'downloads.page.steps.plugin.wordpressOrgCta',
+  'downloads.releaseHistory.desktop',
+])
 
 const auditedJapaneseNamespacePrefixes = [
   'support.',
@@ -699,13 +728,14 @@ describe('messages key parity', () => {
     ).toEqual([])
   })
 
-  it('pt.json translates the audited support, auth, and roadmap copy', () => {
+  it('pt.json translates the audited support, auth, roadmap, and downloads copy', () => {
     const english = loadMessages(defaultLocale)
     const portuguese = loadMessages('pt')
-    const auditedKeys = enKeys.filter((key) =>
-      auditedPortugueseNamespacePrefixes.some((prefix) =>
-        key.startsWith(prefix)
-      )
+    const auditedKeys = enKeys.filter(
+      (key) =>
+        auditedPortugueseNamespacePrefixes.some((prefix) =>
+          key.startsWith(prefix)
+        ) && !portugueseIdenticalCopyAllowlist.has(key)
     )
     const untranslatedKeys = auditedKeys.filter((key) => {
       const englishValue = valueAtPath(english, key)
@@ -719,7 +749,7 @@ describe('messages key parity', () => {
 
     expect(
       untranslatedKeys,
-      'messages/pt.json must not copy audited support/auth/roadmap English strings verbatim'
+      'messages/pt.json must not copy audited support/auth/roadmap/downloads English strings verbatim'
     ).toEqual([])
   })
 })
