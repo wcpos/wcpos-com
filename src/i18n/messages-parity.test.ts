@@ -161,6 +161,39 @@ const releaseNoteFallbackEnglishOnlyKeys = [
   'downloads.releaseHistory.fallback.v194',
   'downloads.releaseHistory.fallback.v190',
 ]
+const globallyLanguageNeutralOrEnglishOnlyKeys = new Set([
+  ...releaseNoteFallbackEnglishOnlyKeys,
+  'about.founder.signature.name',
+  'about.timeline.dates.range',
+  'account.profile.taxLabels.partitaIva',
+  'account.receiptPdf.sellerIdentityWithAbn',
+  'auth.common.emailPlaceholder',
+  'downloads.hero.versionMeta',
+  'downloads.page.steps.plugin.requirements',
+  'downloads.page.steps.plugin.wordpressOrgCta',
+  'downloads.platforms.ios.listLabel',
+  'downloads.platforms.ios.name',
+  'downloads.platforms.linux.short',
+  'downloads.platforms.mac-arm.listLabel',
+  'downloads.platforms.mac-arm.short',
+  'downloads.platforms.mac-intel.listLabel',
+  'downloads.platforms.mac-intel.name',
+  'downloads.platforms.mac-intel.short',
+  'downloads.platforms.win.short',
+  'footer.copyright',
+  'footer.pro',
+  'footer.wordpressOrg',
+  'home.benefits.visuals.hardware.tablet',
+  'home.benefits.visuals.ownership.chips.openSource',
+  'home.ecosystem.devices.desktop.label',
+  'home.ecosystem.devices.ios.label',
+  'home.story.nav.s1',
+  'home.useCases.cards.desktop.type',
+  'pro.checkout.offers.default',
+  'pro.checkout.payment.methods.card.hint',
+  'pro.hero.title',
+  'pro.schema.name',
+])
 const auditedItalianNamespacePrefixes = [
   ...sharedAuditedNamespacePrefixes,
   'support.',
@@ -1226,6 +1259,35 @@ describe('messages key parity', () => {
       ).toEqual([])
     }
   )
+
+  it('non-English locale files do not copy English prose outside intentional exceptions', () => {
+    const english = loadMessages(defaultLocale)
+    const copiedEnglish = otherLocales.flatMap((locale) => {
+      const localized = loadMessages(locale)
+
+      return enKeys
+        .map((key) => ({
+          locale,
+          key,
+          value: valueAtPath(english, key),
+          localizedValue: valueAtPath(localized, key),
+        }))
+        .filter(
+          ({ key, value, localizedValue }) =>
+            value !== undefined &&
+            localizedValue === value &&
+            !globallyLanguageNeutralOrEnglishOnlyKeys.has(key) &&
+            /[A-Za-z]{3}/.test(value) &&
+            /[\s.!?]/.test(value)
+        )
+        .map(({ locale, key }) => `${locale}:${key}`)
+    })
+
+    expect(
+      copiedEnglish,
+      'Non-English message files must not copy English prose verbatim unless the key is explicitly documented as language-neutral or English-only.'
+    ).toEqual([])
+  })
 
   it('it.json translates the audited Italian support, auth, account, checkout, roadmap, common, header, and footer copy', () => {
     const english = loadMessages(defaultLocale)
