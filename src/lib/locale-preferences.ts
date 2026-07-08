@@ -10,7 +10,7 @@ export function languagePreferences(
   return parts
     .map((part, index) => {
       const [language = '', ...params] = part.trim().split(';')
-      const qParam = params.find((param) => param.trim().startsWith('q='))
+      const qParam = params.find((param) => param.trim().toLowerCase().startsWith('q='))
       const q = qParam ? Number.parseFloat(qParam.split('=')[1] ?? '') : 1
       return {
         language: language.trim(),
