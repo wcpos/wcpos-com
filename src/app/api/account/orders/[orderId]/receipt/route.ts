@@ -237,6 +237,7 @@ export async function GET(
       status: 200,
       headers: {
         'Content-Type': 'application/pdf',
+        'Content-Language': locale.intlLocale,
         'Content-Disposition': contentDisposition,
         'Cache-Control': 'private, no-store',
       },

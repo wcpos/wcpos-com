@@ -127,6 +127,7 @@ describe('GET /api/account/orders/[orderId]/receipt', () => {
     const disposition = response.headers.get('content-disposition')
 
     expect(response.status).toBe(200)
+    expect(response.headers.get('content-language')).toBe('fr')
     expect(disposition).toContain('filename="receipt-1001.pdf"')
     expect(disposition).toContain("filename*=UTF-8''re%C3%A7u-1001.pdf")
     expect(disposition).not.toBe('attachment; filename="receipt-1001.pdf"')
@@ -272,6 +273,7 @@ describe('GET /api/account/orders/[orderId]/receipt', () => {
       )
 
       expect(response.status).toBe(200)
+      expect(response.headers.get('content-language')).toBe('fr-FR')
       expect(buildPdfSpy).toHaveBeenCalledTimes(1)
       const [, copy, intlLocale] = buildPdfSpy.mock.calls[0]
       expect(copy.title).toBe('Reçu')
