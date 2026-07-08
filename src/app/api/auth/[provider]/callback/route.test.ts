@@ -319,6 +319,14 @@ describe('OAuth callback route', () => {
       params: Promise.resolve({ provider: 'google' }),
     })
 
+    expect(mockEstablishOAuthSession).toHaveBeenCalledWith(
+      'google',
+      {
+        code: 'abc',
+        state: 'xyz',
+      },
+      { locale: 'fr' }
+    )
     expect(response.headers.get('location')).toBe('https://wcpos.com/fr/account')
     expect(mockUpdateCustomer).toHaveBeenCalledWith({
       metadata: {

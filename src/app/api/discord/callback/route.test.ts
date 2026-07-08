@@ -67,4 +67,26 @@ describe('GET /api/discord/callback', () => {
     expect(response.headers.get('location')).toBe('https://wcpos.com/account/licenses?discord=error')
     expect(mockClaimConnectedDiscordMember).not.toHaveBeenCalled()
   })
+
+  it('falls back to localized licenses page when callback state is missing', async () => {
+    mockConsumeDiscordOAuthState.mockResolvedValueOnce(null)
+
+    const response = await GET(new NextRequest('https://wcpos.com/api/discord/callback?code=abc&state=actual', {
+      headers: { cookie: 'NEXT_LOCALE=fr' },
+    }))
+
+    expect(response.headers.get('location')).toBe('https://wcpos.com/fr/account/licenses?discord=error')
+    expect(mockClaimConnectedDiscordMember).not.toHaveBeenCalled()
+  })
+
+  it('falls back to Accept-Language when callback state is invalid and no locale cookie exists', async () => {
+    mockConsumeDiscordOAuthState.mockResolvedValueOnce(null)
+
+    const response = await GET(new NextRequest('https://wcpos.com/api/discord/callback?code=abc&state=actual', {
+      headers: { 'accept-language': 'en-US;q=0.4, de-DE;q=0.9' },
+    }))
+
+    expect(response.headers.get('location')).toBe('https://wcpos.com/de/account/licenses?discord=error')
+    expect(mockClaimConnectedDiscordMember).not.toHaveBeenCalled()
+  })
 })

@@ -1,6 +1,14 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { fireEvent, screen, waitFor, within } from '@testing-library/react'
+import {
+  fireEvent,
+  render as rtlRender,
+  screen,
+  waitFor,
+  within,
+} from '@testing-library/react'
+import { NextIntlClientProvider } from 'next-intl'
 import { renderWithIntl as render } from '@/test/intl'
+import frMessages from '../../../messages/fr.json'
 import { DownloadsClient, type DownloadAccess } from './downloads-client'
 
 // Mock the locale-aware Link as a simple anchor
@@ -54,6 +62,20 @@ function makeAccess(overrides: Partial<DownloadAccess> = {}): DownloadAccess {
     unknownCount: 0,
     ...overrides,
   }
+}
+
+function renderWithFrenchAccount(ui: React.ReactElement) {
+  return rtlRender(
+    <NextIntlClientProvider
+      locale="fr"
+      messages={frMessages}
+      onError={(error) => {
+        throw error
+      }}
+    >
+      {ui}
+    </NextIntlClientProvider>
+  )
 }
 
 /**
@@ -111,6 +133,42 @@ describe('DownloadsClient', () => {
       screen.getByRole('heading', { name: 'Highlights' })
     ).toBeInTheDocument()
     expect(screen.getByText('Faster checkout')).toBeInTheDocument()
+  })
+
+  it('marks externally sourced English release notes with a localized language notice', async () => {
+    renderWithFrenchAccount(
+      <DownloadsClient
+        initialReleases={[makeRelease({ contentLocale: 'en' })]}
+        access={makeAccess()}
+      />
+    )
+
+    expect(
+      screen.getByText('Les notes de version proviennent de GitHub et peuvent s’afficher en anglais.')
+    ).toBeInTheDocument()
+    expect(screen.getByText('Bug fixes').closest('[lang="en"]')).not.toBeNull()
+
+    const row = archiveRow('WCPOS Pro 1.9.0')
+    fireEvent.click(within(row).getByRole('button', { name: 'Notes de version' }))
+
+    const dialog = await screen.findByRole('dialog')
+    expect(
+      within(dialog).getByText('Bug fixes').closest('[lang="en"]')
+    ).not.toBeNull()
+  })
+
+  it('does not show the external-English notice on English account pages', () => {
+    render(
+      <DownloadsClient
+        initialReleases={[makeRelease({ contentLocale: 'en' })]}
+        access={makeAccess()}
+      />
+    )
+
+    expect(
+      screen.queryByText('Release notes come from GitHub and may be shown in English.')
+    ).not.toBeInTheDocument()
+    expect(screen.getByText('Bug fixes').closest('[lang="en"]')).not.toBeNull()
   })
 
   it('surfaces the latest build in a hero with a Latest badge', () => {

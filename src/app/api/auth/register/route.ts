@@ -10,7 +10,7 @@ import {
 import { createRateLimiter, clientIp } from '@/lib/rate-limit'
 import { trackServerEvent } from '@/services/core/analytics/posthog-service'
 import { ANALYTICS_DISTINCT_ID_COOKIE } from '@/lib/analytics/distinct-id'
-import { locales } from '@/i18n/config'
+import { supportedCanonicalLocale } from '@/lib/locale-preferences'
 
 // Every accepted request can create a real Medusa customer account, so gate
 // this harder than sign-in — a legitimate user registers once. Fail-open.
@@ -28,20 +28,9 @@ function errorResponse(errorCode: RegisterErrorCode, status: number, extra?: Rec
 
 
 function registrationLocale(value: unknown): string | undefined {
-  if (typeof value !== 'string') return undefined
-  const raw = value.trim()
-  if (!raw) return undefined
-
-  try {
-    const [canonical] = Intl.getCanonicalLocales(raw)
-    const base = canonical?.split('-')[0]?.toLowerCase()
-    return base && locales.includes(base as (typeof locales)[number])
-      ? canonical
-      : undefined
-  } catch {
-    return undefined
-  }
+  return typeof value === 'string' ? supportedCanonicalLocale(value) : undefined
 }
+
 
 const limiter = createRateLimiter({
   prefix: 'auth:register:ip',

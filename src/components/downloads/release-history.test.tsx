@@ -11,7 +11,7 @@ const baseCopy = {
 }
 
 describe('ReleaseHistory', () => {
-  it('marks GitHub-authored release notes with their source language', () => {
+  it('marks GitHub-authored release notes with their source language and a notice on non-English pages', () => {
     const releases: ReleaseEntry[] = [
       {
         version: '1.9.6',
@@ -23,12 +23,34 @@ describe('ReleaseHistory', () => {
     ]
 
     const { container } = render(
-      <ReleaseHistory releases={releases} copy={baseCopy} />,
+      <ReleaseHistory releases={releases} copy={baseCopy} locale="fr" />,
     )
 
     expect(
       screen.getByText('Release notes come from GitHub and may be shown in English.'),
     ).toBeInTheDocument()
+    const localizedRegion = container.querySelector('[lang="en"]')
+    expect(localizedRegion).toHaveTextContent('Fixed checkout bug')
+  })
+
+  it('does not show the GitHub-English notice on English pages', () => {
+    const releases: ReleaseEntry[] = [
+      {
+        version: '1.9.6',
+        date: 'June 17, 2026',
+        body: '- Fixed checkout bug',
+        contentLocale: 'en',
+        latest: true,
+      },
+    ]
+
+    const { container } = render(
+      <ReleaseHistory releases={releases} copy={baseCopy} locale="en" />,
+    )
+
+    expect(
+      screen.queryByText('Release notes come from GitHub and may be shown in English.'),
+    ).not.toBeInTheDocument()
     const localizedRegion = container.querySelector('[lang="en"]')
     expect(localizedRegion).toHaveTextContent('Fixed checkout bug')
   })
@@ -44,7 +66,7 @@ describe('ReleaseHistory', () => {
       },
     ]
 
-    render(<ReleaseHistory releases={releases} copy={baseCopy} />)
+    render(<ReleaseHistory releases={releases} copy={baseCopy} locale="fr" />)
 
     expect(
       screen.queryByText('Release notes come from GitHub and may be shown in English.'),

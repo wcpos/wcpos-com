@@ -194,6 +194,30 @@ describe('POST /api/store/cart/payment-sessions', () => {
     expect(json.customerSessionClientSecret).toBeNull()
   })
 
+  it('passes the cart locale as BTCPay payment-session data', async () => {
+    mockGetCart.mockResolvedValue({
+      ...validCart,
+      metadata: { locale: 'fr-FR' },
+    })
+    mockCreatePaymentCollection.mockResolvedValueOnce({ id: 'paycol_1' })
+    mockCreatePaymentSession.mockResolvedValueOnce({
+      clientSecret: null,
+      paymentSessionId: 'payses_btcpay',
+    })
+
+    const response = await POST(
+      makeRequest({ cartId: 'cart_1', provider_id: 'pp_btcpay_btcpay' })
+    )
+
+    expect(response.status).toBe(200)
+    expect(mockCreatePaymentSession).toHaveBeenCalledWith(
+      'paycol_1',
+      'pp_btcpay_btcpay',
+      AUTH_TOKEN,
+      { locale: 'fr-FR' }
+    )
+  })
+
   it('forwards the session JWT so Medusa can attach a Stripe Customer', async () => {
     mockGetAuthToken.mockResolvedValueOnce('jwt_specific')
     mockCreatePaymentCollection.mockResolvedValueOnce({ id: 'paycol_1' })

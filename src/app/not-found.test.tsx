@@ -42,14 +42,14 @@ describe('RootNotFound', () => {
 
     expect(
       await screen.findByRole('link', { name: 'Ir para a página inicial' })
-    ).toHaveAttribute('href', '/')
+    ).toHaveAttribute('href', '/pt')
     expect(screen.getByRole('link', { name: 'WCPOS Pro' })).toHaveAttribute(
       'href',
-      '/pro'
+      '/pt/pro'
     )
     expect(screen.getByRole('link', { name: 'Suporte' })).toHaveAttribute(
       'href',
-      '/support'
+      '/pt/support'
     )
   })
 })

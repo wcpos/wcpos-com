@@ -7,6 +7,16 @@ import { createDiscordRoleSyncDependencies } from '@/lib/discord/default-sync'
 import { syncDiscordProRoleForMember } from '@/lib/discord/sync'
 import { licenseClient } from '@/services/core/external/license-client'
 import { infraLogger } from '@/lib/logger'
+import { supportedBaseLocaleOrDefault } from '@/lib/locale-preferences'
+import { localizeRedirectPath } from '@/lib/safe-redirect'
+
+function fallbackReturnTo(request: NextRequest): string {
+  const locale = supportedBaseLocaleOrDefault(
+    request.cookies.get('NEXT_LOCALE')?.value ||
+      request.headers.get('accept-language')
+  )
+  return localizeRedirectPath('/account/licenses', locale)
+}
 
 function callbackRedirect(request: NextRequest, path: string, status: string): NextResponse {
   const url = new URL(path, request.url)
@@ -34,7 +44,7 @@ export async function GET(request: NextRequest) {
   const code = request.nextUrl.searchParams.get('code')
   const state = request.nextUrl.searchParams.get('state')
   const storedState = await consumeDiscordOAuthState()
-  const returnTo = storedState?.returnTo ?? '/account/licenses'
+  const returnTo = storedState?.returnTo ?? fallbackReturnTo(request)
 
   if (!code || !state || !storedState || storedState.state !== state || !storedState.licenseKey) {
     return callbackRedirect(request, returnTo, 'error')

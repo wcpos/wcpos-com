@@ -57,10 +57,31 @@ describe('PATCH /api/account/locale', () => {
     await expect(response.json()).resolves.toEqual({ locale: 'fr' })
   })
 
+  it('normalizes regional and weighted locale preferences before saving', async () => {
+    mockGetCustomer.mockResolvedValueOnce({
+      id: 'cust_1',
+      metadata: {
+        marketing_opt_in: true,
+      },
+    })
+    mockUpdateCustomer.mockResolvedValueOnce({ id: 'cust_1' })
+
+    const response = await PATCH(localeRequest('pl-PL;q=1.0, fr-FR;q=0.9'))
+
+    expect(response.status).toBe(200)
+    expect(mockUpdateCustomer).toHaveBeenCalledWith({
+      metadata: {
+        marketing_opt_in: true,
+        locale: 'fr',
+      },
+    })
+    await expect(response.json()).resolves.toEqual({ locale: 'fr' })
+  })
+
   it('rejects unsupported locales before updating the customer', async () => {
     mockGetCustomer.mockResolvedValueOnce({ id: 'cust_1', metadata: {} })
 
-    const response = await PATCH(localeRequest('fr-CA'))
+    const response = await PATCH(localeRequest('pl-PL, xx-INVALID'))
 
     expect(response.status).toBe(400)
     await expect(response.json()).resolves.toEqual({ errorCode: 'invalid_locale' })

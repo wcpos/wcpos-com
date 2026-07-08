@@ -29,6 +29,7 @@ import {
   versionFor,
   PRODUCT_LABELS,
 } from '@/services/core/external/versions-client'
+import enMessages from '../../../../../messages/en.json'
 
 export async function generateMetadata({
   params,
@@ -59,6 +60,9 @@ const FALLBACK_RELEASES: FallbackRelease[] = [
   { version: '1.9.0', publishedAt: '2026-05-15T00:00:00.000Z', bodyKey: 'v190' },
 ]
 
+const ENGLISH_FALLBACK_RELEASE_BODIES: Record<FallbackBodyKey, string> =
+  enMessages.downloads.releaseHistory.fallback
+
 function formatReleaseDate(iso: string, locale: string): string {
   return formatDateForLocale(iso, locale, {
     month: 'short',
@@ -67,21 +71,12 @@ function formatReleaseDate(iso: string, locale: string): string {
   })
 }
 
-function getFallbackReleases(
-  locale: string,
-  t: Awaited<ReturnType<typeof getTranslations>>
-): ReleaseEntry[] {
-  const fallbackBodies: Record<FallbackBodyKey, string> = {
-    v196: t('fallback.v196'),
-    v195: t('fallback.v195'),
-    v194: t('fallback.v194'),
-    v190: t('fallback.v190'),
-  }
+function getFallbackReleases(locale: string): ReleaseEntry[] {
   return FALLBACK_RELEASES.map(({ publishedAt, bodyKey, ...release }) => ({
     ...release,
     date: formatReleaseDate(publishedAt, locale),
-    body: fallbackBodies[bodyKey],
-    contentLocale: locale,
+    body: ENGLISH_FALLBACK_RELEASE_BODIES[bodyKey],
+    contentLocale: 'en',
   }))
 }
 
@@ -96,7 +91,7 @@ async function getRecentReleases(
     .slice(0, 6)
 
   if (published.length === 0) {
-    return getFallbackReleases(locale, t)
+    return getFallbackReleases(locale)
   }
 
   return published.map((release, index) => {
@@ -336,6 +331,7 @@ export default async function DownloadsPage({
         />
         <ReleaseHistory
           releases={releases}
+          locale={locale}
           copy={{
             latest: releaseT('latest'),
             fullHistory: releaseT('fullHistory'),

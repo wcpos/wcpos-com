@@ -49,7 +49,7 @@ describe('GlobalError', () => {
 
     expect(
       await screen.findByRole('link', { name: 'Aller à l’accueil' })
-    ).toHaveAttribute('href', '/')
+    ).toHaveAttribute('href', '/fr')
   })
 
   it('logs the error to the console and clientLogger', async () => {

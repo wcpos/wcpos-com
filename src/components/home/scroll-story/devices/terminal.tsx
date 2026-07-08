@@ -1,6 +1,7 @@
-import { useTranslations } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 import { cn } from '@/lib/utils'
 import { HardwareImage, type ScreenRect } from './hardware-image'
+import { formatUsdDemoAmount } from './pos-screen'
 
 /**
  * Card payment terminals, photoreal renders (see
@@ -50,6 +51,11 @@ export function DeviceTerminal({
 }) {
   const spec = MODELS[model]
   const t = useTranslations('home.story.terminal')
+  const locale = useLocale()
+  const amount = formatUsdDemoAmount(locale, 69, {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  })
   return (
     <div
       aria-hidden="true"
@@ -70,7 +76,7 @@ export function DeviceTerminal({
             spec.screenSize === 'lg' ? 'text-2xl' : 'text-[13px] leading-tight'
           )}
         >
-          $69.00
+          {amount}
         </span>
         <span
           className={cn(

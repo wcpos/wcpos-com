@@ -105,7 +105,7 @@ export async function CheckoutContent({
   // backend drift independently (see checkout-payments.ts).
   const [{ offers }, paymentProviderContext, experimentVariant] =
     await Promise.all([
-      getProOfferCatalog(undefined, storeEnv),
+      getProOfferCatalog(undefined, storeEnv, locale),
       getCartPaymentProviderContext(storeEnv),
       distinctId
         ? resolveProCheckoutVariant({

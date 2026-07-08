@@ -18,6 +18,7 @@ vi.mock('@/lib/analytics/client-events', () => ({
 
 // Mock next-intl
 vi.mock('next-intl', () => ({
+  useLocale: () => 'en',
   useTranslations: (namespace: string) => (key: string) => {
     const translations: Record<string, Record<string, string>> = {
       header: {

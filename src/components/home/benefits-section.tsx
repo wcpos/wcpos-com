@@ -1,4 +1,4 @@
-import { useTranslations } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 import {
   ArrowLeftRight,
   CreditCard,
@@ -53,7 +53,25 @@ const benefits: Benefit[] = [
 const visualFrame =
   'flex w-full aspect-video items-center justify-center rounded-md border border-slate-200 bg-white p-6 dark:border-slate-700 dark:bg-slate-900'
 
+function formatBenefitDemoAmount(locale: string, amount: number): string {
+  const options: Intl.NumberFormatOptions = {
+    style: 'currency',
+    currency: 'USD',
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }
+
+  try {
+    return new Intl.NumberFormat(locale, options).format(amount)
+  } catch {
+    return new Intl.NumberFormat('en', options).format(amount)
+  }
+}
+
 function SyncVisual() {
+  const locale = useLocale()
+  const formatAmount = (amount: number) => formatBenefitDemoAmount(locale, amount)
+
   return (
     <div aria-hidden="true" className={`${visualFrame} select-none gap-4`}>
       {/* WooCommerce admin list */}
@@ -61,7 +79,7 @@ function SyncVisual() {
         <p className="mb-2 text-[10px] font-semibold text-slate-500 dark:text-slate-400">
           WooCommerce
         </p>
-        {['$24', '$18', '$9'].map((price, i) => (
+        {[24, 18, 9].map((price, i) => (
           <div
             key={i}
             className="mb-1.5 flex items-center justify-between rounded bg-white px-2 py-1.5 dark:bg-slate-900"
@@ -70,7 +88,7 @@ function SyncVisual() {
             <span
               className={`text-[10px] font-medium ${i === 0 ? 'text-wcpos-red' : 'text-slate-400'}`}
             >
-              {price}
+              {formatAmount(price)}
             </span>
           </div>
         ))}
@@ -84,7 +102,7 @@ function SyncVisual() {
           POS
         </p>
         <div className="grid grid-cols-2 gap-1.5">
-          {['$24', '$18', '$9', '$14'].map((price, i) => (
+          {[24, 18, 9, 14].map((price, i) => (
             <div
               key={i}
               className={`rounded bg-white p-1.5 text-center dark:bg-slate-900 ${
@@ -95,7 +113,7 @@ function SyncVisual() {
               <span
                 className={`text-[9px] font-medium ${i === 0 ? 'text-wcpos-red' : 'text-slate-400'}`}
               >
-                {price}
+                {formatAmount(price)}
               </span>
             </div>
           ))}

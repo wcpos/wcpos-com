@@ -1,9 +1,11 @@
 'use client'
 
 import { useRef } from 'react'
-import { useTranslations } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 import { LogOut, User } from 'lucide-react'
 import { Link } from '@/i18n/navigation'
+import type { Locale } from '@/i18n/config'
+import { localizeRedirectPath } from '@/lib/safe-redirect'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import {
@@ -26,8 +28,12 @@ interface UserMenuProps {
  * dropdown (email · Account · Sign out) is consistent on every page.
  */
 export function UserMenu({ email, avatarUrl, initials }: UserMenuProps) {
+  const locale = useLocale()
   const t = useTranslations('common')
   const signOutForm = useRef<HTMLFormElement>(null)
+  const signOutAction = `/api/auth/logout?to=${encodeURIComponent(
+    localizeRedirectPath('/login', locale as Locale)
+  )}`
 
   return (
     <DropdownMenu>
@@ -62,7 +68,7 @@ export function UserMenu({ email, avatarUrl, initials }: UserMenuProps) {
             matching the previous header behaviour. */}
         <form
           ref={signOutForm}
-          action="/api/auth/logout"
+          action={signOutAction}
           method="POST"
           className="hidden"
         />

@@ -833,7 +833,8 @@
         "release_not_found": "找不到该 WCPOS Pro 版本。",
         "forbidden": "您的许可证不包含此下载。",
         "internal": "我们无法准备您的下载。请重试。"
-      }
+      },
+      "externalContentNotice": "发布说明来自 GitHub，可能会以英文显示。"
     },
     "profile": {
       "heading": "个人资料",
@@ -1450,10 +1451,10 @@
       "desktop": "桌面版",
       "emptyNotes": "_此版本没有发布说明。_",
       "fallback": {
-        "v196": "- 支持钱箱——付款后自动打开，或通过新的“打开钱箱”按钮打开，并支持每台打印机的连接器（ESC-POS、Epson、PrintNode、云端）\n- 修复分析事件触发过于频繁的问题\n- 更新翻译",
-        "v195": "- 修复支付网关 API 崩溃问题（某些第三方网关会出现 HTTP 500，例如 ToyyibPay）",
-        "v194": "- 重新设计蓝牙打印机设置；支持通过串口打印到系统已配对的 Bluetooth Classic 打印机\n- 改进 Windows 原始打印；USB 流程更顺畅",
-        "v190": "- 新增收据模板库；热敏打印（58/80mm）\n- 客户税号；POS 中的 Pro 优惠券和退款"
+        "v196": "- Cash drawer support — auto-open after payment or via a new Open Drawer button, with per-printer connectors (ESC-POS, Epson, PrintNode, cloud)\n- Fixed analytics events firing too often\n- Updated translations",
+        "v195": "- Fixed a payment-gateways API crash (HTTP 500 with some third-party gateways, e.g. ToyyibPay)",
+        "v194": "- Redesigned Bluetooth printer setup; serial printing for OS-paired Bluetooth Classic printers\n- Improved Windows raw printing; smoother USB flow",
+        "v190": "- New receipt template gallery; thermal printing (58/80mm)\n- Customer Tax IDs; Pro coupons & refunds at the POS"
       },
       "plugin": "免费",
       "externalContentNotice": "发布说明来自 GitHub，可能会以英文显示。"

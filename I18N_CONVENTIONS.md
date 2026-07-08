@@ -46,6 +46,14 @@ The site is not fully translated unless these non-obvious surfaces are covered t
 - consent/privacy UI;
 - release/download labels and roadmap status labels.
 
+## Release notes and other third-party authored content
+
+Release notes are intentionally English-only. They are authored upstream in GitHub releases and should flow through from GitHub in English rather than being copied into separate translated versions. Keep the surrounding release-history UI translated, but mark English release-note bodies with `contentLocale: 'en'` so the page can show the localized English-content notice and set the rendered Markdown `lang` attribute correctly.
+
+Do not translate fallback release-note bodies in non-English message files. If GitHub has no release body for a version, use the approved English fallback body and keep the same English-content notice visible.
+
+Roadmap issue details are also third-party authored GitHub content and may be shown in English, but all roadmap labels, status text, filters, notices, and page chrome must remain translated.
+
 ## Dates, numbers, currency, and receipts
 
 Dates must be localized and unambiguous for international audiences. Avoid numeric-only display such as `02/01/2021`.

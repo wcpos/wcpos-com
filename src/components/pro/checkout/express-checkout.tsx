@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { useTranslations } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 import {
   ExpressCheckoutElement,
   useElements,
@@ -16,6 +16,7 @@ import {
   type CheckoutFailure,
 } from '../checkout-safety'
 import { useCheckoutFailureMessages } from './use-checkout-failure-messages'
+import { checkoutSuccessReturnUrl } from './return-url'
 import type { ProCheckoutVariant } from '@/services/core/analytics/posthog-service'
 
 /**
@@ -45,6 +46,7 @@ export function ExpressCheckoutRow({
   onFailure,
   onProcessingChange,
 }: ExpressCheckoutRowProps) {
+  const locale = useLocale()
   const t = useTranslations('pro.checkout.payment')
   const failureMessages = useCheckoutFailureMessages()
   const stripe = useStripe()
@@ -66,7 +68,7 @@ export function ExpressCheckoutRow({
         await stripe.confirmPayment({
           elements,
           confirmParams: {
-            return_url: `${window.location.origin}/pro/checkout/success`,
+            return_url: checkoutSuccessReturnUrl(window.location.origin, locale),
           },
           redirect: 'if_required',
         })

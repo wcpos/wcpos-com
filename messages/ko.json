@@ -833,7 +833,8 @@
         "release_not_found": "해당 WCPOS Pro 릴리스를 찾을 수 없습니다.",
         "forbidden": "이 라이선스에는 이 다운로드가 포함되어 있지 않습니다.",
         "internal": "다운로드를 준비할 수 없습니다. 다시 시도해 주세요."
-      }
+      },
+      "externalContentNotice": "릴리스 노트는 GitHub에서 가져오며 영어로 표시될 수 있습니다."
     },
     "profile": {
       "heading": "프로필",
@@ -1450,10 +1451,10 @@
       "desktop": "데스크톱",
       "emptyNotes": "_이 버전에 대한 릴리스 노트가 없습니다._",
       "fallback": {
-        "v196": "- 금전함 지원 — 결제 후 자동 열기 또는 새 금전함 열기 버튼으로 열기, 프린터별 커넥터 지원(ESC-POS, Epson, PrintNode, cloud)\n- analytics 이벤트가 너무 자주 발생하던 문제 수정\n- 번역 업데이트",
-        "v195": "- 일부 타사 게이트웨이(예: ToyyibPay)에서 발생하던 결제 게이트웨이 API 충돌(HTTP 500) 수정",
-        "v194": "- Bluetooth 프린터 설정 재설계; OS에 페어링된 Bluetooth Classic 프린터용 시리얼 인쇄\n- Windows raw 인쇄 개선; USB 흐름 개선",
-        "v190": "- 새 영수증 템플릿 갤러리; 열전사 인쇄(58/80mm)\n- 고객 세금 ID; POS에서 Pro 쿠폰 및 환불"
+        "v196": "- Cash drawer support — auto-open after payment or via a new Open Drawer button, with per-printer connectors (ESC-POS, Epson, PrintNode, cloud)\n- Fixed analytics events firing too often\n- Updated translations",
+        "v195": "- Fixed a payment-gateways API crash (HTTP 500 with some third-party gateways, e.g. ToyyibPay)",
+        "v194": "- Redesigned Bluetooth printer setup; serial printing for OS-paired Bluetooth Classic printers\n- Improved Windows raw printing; smoother USB flow",
+        "v190": "- New receipt template gallery; thermal printing (58/80mm)\n- Customer Tax IDs; Pro coupons & refunds at the POS"
       },
       "plugin": "무료",
       "externalContentNotice": "릴리스 노트는 GitHub에서 가져오며 영어로 표시될 수 있습니다."

@@ -47,6 +47,32 @@ describe('askAide', () => {
     })
   })
 
+  it('includes the requested locale in the gateway payload', async () => {
+    const fetchMock = vi.fn().mockResolvedValue(
+      new Response(
+        JSON.stringify({
+          answered: true,
+          answer: 'Voici comment.',
+          sources: [],
+          confidence: 0.9,
+          model: 'sonnet',
+        }),
+        { status: 200 }
+      )
+    )
+    vi.stubGlobal('fetch', fetchMock)
+
+    await askAide({ question: 'Comment imprimer ?', sessionId: 's1', locale: 'fr' })
+
+    const [, init] = fetchMock.mock.calls[0]
+    expect(JSON.parse(init.body)).toMatchObject({
+      question: 'Comment imprimer ?',
+      session_id: 's1',
+      channel: 'web',
+      locale: 'fr',
+    })
+  })
+
   it('returns the hand-off message when the answerer escalates (still HTTP 200)', async () => {
     vi.stubGlobal('fetch', vi.fn().mockResolvedValue(
       new Response(

@@ -833,7 +833,8 @@
         "release_not_found": "Cette version de WCPOS Pro est introuvable.",
         "forbidden": "Votre licence n’inclut pas ce téléchargement.",
         "internal": "Nous n’avons pas pu préparer votre téléchargement. Veuillez réessayer."
-      }
+      },
+      "externalContentNotice": "Les notes de version proviennent de GitHub et peuvent s’afficher en anglais."
     },
     "profile": {
       "heading": "Profil",
@@ -1450,10 +1451,10 @@
       "desktop": "Bureau",
       "emptyNotes": "_Aucune note de version pour cette version._",
       "fallback": {
-        "v196": "- Prise en charge du tiroir-caisse — ouverture automatique après paiement ou via un nouveau bouton Ouvrir le tiroir, avec connecteurs par imprimante (ESC-POS, Epson, PrintNode, cloud)\n- Correction des événements d’analyse déclenchés trop souvent\n- Traductions mises à jour",
-        "v195": "- Correction d’un plantage de l’API des passerelles de paiement (HTTP 500 avec certaines passerelles tierces, par ex. ToyyibPay)",
-        "v194": "- Refonte de la configuration des imprimantes Bluetooth ; impression série pour les imprimantes Bluetooth Classic appairées au système\n- Amélioration de l’impression brute sous Windows ; flux USB plus fluide",
-        "v190": "- Nouvelle galerie de modèles de reçus ; impression thermique (58/80 mm)\n- Identifiants fiscaux clients ; coupons Pro et remboursements depuis la caisse"
+        "v196": "- Cash drawer support — auto-open after payment or via a new Open Drawer button, with per-printer connectors (ESC-POS, Epson, PrintNode, cloud)\n- Fixed analytics events firing too often\n- Updated translations",
+        "v195": "- Fixed a payment-gateways API crash (HTTP 500 with some third-party gateways, e.g. ToyyibPay)",
+        "v194": "- Redesigned Bluetooth printer setup; serial printing for OS-paired Bluetooth Classic printers\n- Improved Windows raw printing; smoother USB flow",
+        "v190": "- New receipt template gallery; thermal printing (58/80mm)\n- Customer Tax IDs; Pro coupons & refunds at the POS"
       },
       "plugin": "Gratuit",
       "externalContentNotice": "Les notes de version proviennent de GitHub et peuvent s’afficher en anglais."

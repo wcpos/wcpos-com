@@ -833,7 +833,8 @@
         "release_not_found": "That WCPOS Pro release could not be found.",
         "forbidden": "Your license does not include this download.",
         "internal": "We could not prepare your download. Please try again."
-      }
+      },
+      "externalContentNotice": "Release notes come from GitHub and may be shown in English."
     },
     "profile": {
       "heading": "Profile",

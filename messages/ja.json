@@ -833,7 +833,8 @@
         "release_not_found": "そのWCPOS Proリリースは見つかりませんでした。",
         "forbidden": "お使いのライセンスにはこのダウンロードが含まれていません。",
         "internal": "ダウンロードを準備できませんでした。もう一度お試しください。"
-      }
+      },
+      "externalContentNotice": "リリースノートはGitHubから取得されるため、英語で表示される場合があります。"
     },
     "profile": {
       "heading": "プロフィール",
@@ -1450,10 +1451,10 @@
       "desktop": "デスクトップ",
       "emptyNotes": "_このバージョンのリリースノートはありません。_",
       "fallback": {
-        "v196": "- キャッシュドロワー対応 — 支払い後の自動オープン、または新しい「ドロワーを開く」ボタンから、プリンター別コネクタ（ESC-POS、Epson、PrintNode、クラウド）で操作可能\n- 分析イベントが頻繁に発火しすぎる問題を修正\n- 翻訳を更新",
-        "v195": "- 一部のサードパーティゲートウェイ（例：ToyyibPay）で発生する支払いゲートウェイAPIのクラッシュ（HTTP 500）を修正",
-        "v194": "- Bluetoothプリンター設定を刷新。OSでペアリング済みのBluetooth Classicプリンター向けシリアル印刷に対応\n- WindowsのRAW印刷を改善し、USBフローをよりスムーズに",
-        "v190": "- 新しいレシートテンプレートギャラリー。サーマル印刷（58/80mm）\n- 顧客の税ID。POSでのProクーポンと返金"
+        "v196": "- Cash drawer support — auto-open after payment or via a new Open Drawer button, with per-printer connectors (ESC-POS, Epson, PrintNode, cloud)\n- Fixed analytics events firing too often\n- Updated translations",
+        "v195": "- Fixed a payment-gateways API crash (HTTP 500 with some third-party gateways, e.g. ToyyibPay)",
+        "v194": "- Redesigned Bluetooth printer setup; serial printing for OS-paired Bluetooth Classic printers\n- Improved Windows raw printing; smoother USB flow",
+        "v190": "- New receipt template gallery; thermal printing (58/80mm)\n- Customer Tax IDs; Pro coupons & refunds at the POS"
       },
       "plugin": "無料",
       "externalContentNotice": "リリースノートはGitHubから取得されるため、英語で表示される場合があります。"

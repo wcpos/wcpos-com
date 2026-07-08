@@ -11,6 +11,7 @@ import {
   parseAnalyticsConsent,
 } from '@/lib/analytics/consent'
 import { MEDUSA_TOKEN_COOKIE } from '@/lib/medusa-cookie'
+import { localeFromPath, localizeRedirectPath } from '@/lib/safe-redirect'
 
 const COOKIE_NAME = MEDUSA_TOKEN_COOKIE
 const UPDATES_HOSTNAME = 'updates.wcpos.com'
@@ -152,7 +153,10 @@ export function middleware(request: NextRequest) {
   if (requiresAuth) {
     const token = request.cookies.get(COOKIE_NAME)?.value
     if (!token) {
-      const loginUrl = new URL('/login', request.url)
+      const loginUrl = new URL(
+        localizeRedirectPath('/login', localeFromPath(pathname)),
+        request.url
+      )
       loginUrl.searchParams.set('redirect', pathnameWithQuery)
       return withDistinctIdCookie(request, NextResponse.redirect(loginUrl))
     }
@@ -164,7 +168,12 @@ export function middleware(request: NextRequest) {
     if (token) {
       return withDistinctIdCookie(
         request,
-        NextResponse.redirect(new URL('/account', request.url))
+        NextResponse.redirect(
+          new URL(
+            localizeRedirectPath('/account', localeFromPath(pathname)),
+            request.url
+          )
+        )
       )
     }
   }

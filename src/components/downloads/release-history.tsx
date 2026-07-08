@@ -16,8 +16,10 @@ export interface ReleaseEntry {
 export function ReleaseHistory({
   releases,
   copy,
+  locale,
 }: {
   releases: ReleaseEntry[]
+  locale: string
   copy: {
     latest: string
     fullHistory: string
@@ -26,9 +28,9 @@ export function ReleaseHistory({
     externalContentNotice: string
   }
 }) {
-  const hasExternalEnglishContent = releases.some(
-    (release) => release.contentLocale === 'en'
-  )
+  const hasExternalEnglishContent =
+    locale.split('-')[0]?.toLowerCase() !== 'en' &&
+    releases.some((release) => release.contentLocale === 'en')
 
   return (
     <div className="mx-auto max-w-2xl">

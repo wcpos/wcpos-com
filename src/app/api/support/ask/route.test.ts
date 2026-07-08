@@ -83,6 +83,19 @@ describe('POST /api/support/ask', () => {
     })
   })
 
+  it('passes the requested locale to Aide', async () => {
+    vi.mocked(verifyTurnstile).mockResolvedValue(true)
+    vi.mocked(askAide).mockResolvedValue({ answer: 'Faites X.', model: 'sonnet', answered: true, sources: [] })
+    const res = await POST(req({ question: 'Comment ?', turnstileToken: 't', sessionId: 's1', locale: 'fr' }))
+
+    expect(res.status).toBe(200)
+    expect(askAide).toHaveBeenCalledWith(expect.objectContaining({
+      question: 'Comment ?',
+      sessionId: 's1',
+      locale: 'fr',
+    }))
+  })
+
   it('502 and an error log when the gateway sends an empty answer', async () => {
     vi.mocked(verifyTurnstile).mockResolvedValue(true)
     vi.mocked(askAide).mockResolvedValue({ answer: '', model: 'sonnet', answered: false, sources: [] })

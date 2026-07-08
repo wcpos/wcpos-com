@@ -833,7 +833,8 @@
         "release_not_found": "Diese WCPOS Pro-Version konnte nicht gefunden werden.",
         "forbidden": "Deine Lizenz enthält diesen Download nicht.",
         "internal": "Wir konnten deinen Download nicht vorbereiten. Bitte versuche es erneut."
-      }
+      },
+      "externalContentNotice": "Versionshinweise stammen von GitHub und werden möglicherweise auf Englisch angezeigt."
     },
     "profile": {
       "heading": "Profil",
@@ -1450,10 +1451,10 @@
       "desktop": "Desktop",
       "emptyNotes": "_Keine Versionshinweise für diese Version._",
       "fallback": {
-        "v196": "- Unterstützung für Kassenschubladen — automatisches Öffnen nach der Zahlung oder über eine neue Schaltfläche „Schublade öffnen“, mit Anschlüssen pro Drucker (ESC-POS, Epson, PrintNode, Cloud)\n- Korrektur von Analyseereignissen, die zu häufig ausgelöst wurden\n- Übersetzungen aktualisiert",
-        "v195": "- Fehler in der API für Zahlungs-Gateways behoben (HTTP 500 mit einigen Drittanbieter-Gateways, z. B. ToyyibPay)",
-        "v194": "- Bluetooth-Druckereinrichtung neu gestaltet; serielles Drucken für per Betriebssystem gekoppelte Bluetooth-Classic-Drucker\n- Verbesserter Windows-Raw-Druck; reibungsloserer USB-Ablauf",
-        "v190": "- Neue Galerie für Belegvorlagen; Thermodruck (58/80 mm)\n- Kunden-Steuer-IDs; Pro-Gutscheine & Erstattungen am POS"
+        "v196": "- Cash drawer support — auto-open after payment or via a new Open Drawer button, with per-printer connectors (ESC-POS, Epson, PrintNode, cloud)\n- Fixed analytics events firing too often\n- Updated translations",
+        "v195": "- Fixed a payment-gateways API crash (HTTP 500 with some third-party gateways, e.g. ToyyibPay)",
+        "v194": "- Redesigned Bluetooth printer setup; serial printing for OS-paired Bluetooth Classic printers\n- Improved Windows raw printing; smoother USB flow",
+        "v190": "- New receipt template gallery; thermal printing (58/80mm)\n- Customer Tax IDs; Pro coupons & refunds at the POS"
       },
       "plugin": "Kostenlos",
       "externalContentNotice": "Versionshinweise stammen von GitHub und werden möglicherweise auf Englisch angezeigt."

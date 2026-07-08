@@ -833,7 +833,8 @@
         "release_not_found": "Questa versione di WCPOS Pro non è stata trovata.",
         "forbidden": "La tua licenza non include questo download.",
         "internal": "Non siamo riusciti a preparare il download. Riprova."
-      }
+      },
+      "externalContentNotice": "Le note di rilascio provengono da GitHub e potrebbero essere visualizzate in inglese."
     },
     "profile": {
       "heading": "Profilo",
@@ -1450,10 +1451,10 @@
       "desktop": "Desktop",
       "emptyNotes": "_Nessuna nota di rilascio per questa versione._",
       "fallback": {
-        "v196": "- Supporto per cassetto contanti — apertura automatica dopo il pagamento o tramite un nuovo pulsante Apri cassetto, con connettori per stampante (ESC-POS, Epson, PrintNode, cloud)\n- Risolti eventi analytics inviati troppo spesso\n- Traduzioni aggiornate",
-        "v195": "- Risolto un crash dell’API dei gateway di pagamento (HTTP 500 con alcuni gateway di terze parti, ad es. ToyyibPay)",
-        "v194": "- Configurazione delle stampanti Bluetooth riprogettata; stampa seriale per stampanti Bluetooth Classic abbinate al sistema operativo\n- Stampa raw su Windows migliorata; flusso USB più fluido",
-        "v190": "- Nuova galleria di template ricevuta; stampa termica (58/80 mm)\n- ID fiscali cliente; coupon Pro e rimborsi nel POS"
+        "v196": "- Cash drawer support — auto-open after payment or via a new Open Drawer button, with per-printer connectors (ESC-POS, Epson, PrintNode, cloud)\n- Fixed analytics events firing too often\n- Updated translations",
+        "v195": "- Fixed a payment-gateways API crash (HTTP 500 with some third-party gateways, e.g. ToyyibPay)",
+        "v194": "- Redesigned Bluetooth printer setup; serial printing for OS-paired Bluetooth Classic printers\n- Improved Windows raw printing; smoother USB flow",
+        "v190": "- New receipt template gallery; thermal printing (58/80mm)\n- Customer Tax IDs; Pro coupons & refunds at the POS"
       },
       "plugin": "Gratis",
       "externalContentNotice": "Le note di rilascio provengono da GitHub e potrebbero essere visualizzate in inglese."

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "generatedBy": "scripts/i18n/hardcoded-english.ts --update",
-  "updatedAt": "2026-07-08T10:44:38.719Z",
+  "updatedAt": "2026-07-08T15:18:34.072Z",
   "scope": [
     "src/app",
     "src/components",
@@ -2223,6 +2223,14 @@
       "category": "component",
       "attr": null,
       "text": "use client",
+      "count": 1
+    },
+    {
+      "id": "d3e0f706d4289468",
+      "file": "src/components/main/user-menu.tsx",
+      "category": "component",
+      "attr": null,
+      "text": "/api/auth/logout?to=",
       "count": 1
     },
     {

@@ -86,6 +86,43 @@ describe('middleware', () => {
     )
   })
 
+  it('keeps localized unauthenticated account redirects on the same locale', () => {
+    const request = new NextRequest('https://wcpos.com/fr/account/licenses')
+
+    const response = middleware(request)
+
+    expect(response?.status).toBe(307)
+    expect(response?.headers.get('location')).toBe(
+      'https://wcpos.com/fr/login?redirect=%2Faccount%2Flicenses'
+    )
+  })
+
+  it('keeps localized logged-in auth pages on the same locale', () => {
+    const request = new NextRequest('https://wcpos.com/de/login', {
+      headers: {
+        cookie: 'medusa-token=test-token',
+      },
+    })
+
+    const response = middleware(request)
+
+    expect(response?.status).toBe(307)
+    expect(response?.headers.get('location')).toBe('https://wcpos.com/de/account')
+  })
+
+  it('keeps default-locale logged-in auth redirects unprefixed', () => {
+    const request = new NextRequest('https://wcpos.com/login', {
+      headers: {
+        cookie: 'medusa-token=test-token',
+      },
+    })
+
+    const response = middleware(request)
+
+    expect(response?.status).toBe(307)
+    expect(response?.headers.get('location')).toBe('https://wcpos.com/account')
+  })
+
   it('allows checkout requests when the auth cookie is present', () => {
     const request = new NextRequest(
       'https://wcpos.com/pro/checkout?variant=variant_123',
