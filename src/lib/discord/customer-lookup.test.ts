@@ -45,15 +45,12 @@ function order(created_at: string): MedusaOrder {
 describe('lookupDiscordCustomerInfo', () => {
   it('projects the licences backing a member and derives customer-since from orders', async () => {
     const info = await lookupDiscordCustomerInfo('discord_1', {
-      getLicenseSnapshot: async () => ({
-        licenses: [
-          license({
-            metadata: connectedTo({ email: 'owner@example.com' }, 'discord_1'),
-          }),
-          license({ id: 'lic_other', key: 'WCPOS-XXXX-9999' }),
-        ],
-        complete: true,
-      }),
+      listAllLicenses: async () => [
+        license({
+          metadata: connectedTo({ email: 'owner@example.com' }, 'discord_1'),
+        }),
+        license({ id: 'lic_other', key: 'WCPOS-XXXX-9999' }),
+      ],
       findCustomerByEmail: vi.fn(async () => customer),
       listCustomerOrders: vi.fn(async () => [
         order('2021-05-01T00:00:00.000Z'),
@@ -81,10 +78,7 @@ describe('lookupDiscordCustomerInfo', () => {
 
   it('falls back to licence creation when no order history resolves', async () => {
     const info = await lookupDiscordCustomerInfo('discord_1', {
-      getLicenseSnapshot: async () => ({
-        licenses: [license({ metadata: connectedTo({}, 'discord_1') })],
-        complete: true,
-      }),
+      listAllLicenses: async () => [license({ metadata: connectedTo({}, 'discord_1') })],
       findCustomerByEmail: vi.fn(async () => null),
       listCustomerOrders: vi.fn(async () => []),
       getMemberRoleState: async () => 'missing_role',
@@ -96,7 +90,7 @@ describe('lookupDiscordCustomerInfo', () => {
   it('returns an empty card for a user connected to nothing', async () => {
     const findCustomerByEmail = vi.fn()
     const info = await lookupDiscordCustomerInfo('discord_unknown', {
-      getLicenseSnapshot: async () => ({ licenses: [license()], complete: true }),
+      listAllLicenses: async () => [license()],
       findCustomerByEmail,
       listCustomerOrders: vi.fn(),
       getMemberRoleState: async () => 'not_in_guild',
@@ -109,12 +103,9 @@ describe('lookupDiscordCustomerInfo', () => {
 
   it('keeps the licence facts when Medusa enrichment or role lookup fails', async () => {
     const info = await lookupDiscordCustomerInfo('discord_1', {
-      getLicenseSnapshot: async () => ({
-        licenses: [
-          license({ metadata: connectedTo({ email: 'owner@example.com' }, 'discord_1') }),
-        ],
-        complete: true,
-      }),
+      listAllLicenses: async () => [
+        license({ metadata: connectedTo({ email: 'owner@example.com' }, 'discord_1') }),
+      ],
       findCustomerByEmail: vi.fn(async () => {
         throw new Error('medusa down')
       }),

@@ -17,18 +17,9 @@ import type { LicenseDetail } from '@/types/license'
 
 const ADMIN_ORDER_SCAN_CONCURRENCY = 5
 
-export interface DiscordLicenseSnapshot {
+interface DiscordLicenseSnapshot {
   licenses: LicenseDetail[]
   complete: boolean
-}
-
-/**
- * Full licence fleet as reconciliation sees it (admin customers → orders →
- * resolved licences). Also serves the admin "Customer info" lookup
- * (ADR-0014), which needs the same licence→connected-members view.
- */
-export async function getDiscordLicenseSnapshot(): Promise<DiscordLicenseSnapshot> {
-  return getAllResolvedLicensesForDiscordSync()
 }
 
 async function getAllResolvedLicensesForDiscordSync(): Promise<DiscordLicenseSnapshot> {

@@ -216,6 +216,43 @@ async function getLicense(licenseId: string): Promise<LicenseDetail> {
 }
 
 /**
+ * List every license in the account (requires auth), paged.
+ *
+ * GET /v1/licenses?page[size]=100&page[number]=N
+ *
+ * The Discord "Customer info" lookup needs licence metadata fleet-wide;
+ * paging Keygen directly (~25 requests for the current fleet) is orders of
+ * magnitude cheaper than resolving licences through admin customers → orders.
+ */
+async function listAllLicenses(): Promise<Omit<LicenseDetail, 'machines'>[]> {
+  const PAGE_SIZE = 100
+  // Backstop against a paging bug looping forever; 500 pages = 50k licences,
+  // far beyond the current fleet.
+  const MAX_PAGES = 500
+  const licenses: Omit<LicenseDetail, 'machines'>[] = []
+
+  for (let page = 1; page <= MAX_PAGES; page++) {
+    const res = await fetch(
+      `${BASE_URL}/v1/licenses?page[size]=${PAGE_SIZE}&page[number]=${page}`,
+      { method: 'GET', headers: authHeaders() }
+    )
+
+    if (!res.ok) {
+      throw new KeygenRequestError(
+        `Keygen listAllLicenses failed (${res.status}): ${await res.text()}`,
+        res.status
+      )
+    }
+
+    const json: { data: KeygenLicenseData[] } = await res.json()
+    licenses.push(...json.data.map(mapLicenseData))
+    if (json.data.length < PAGE_SIZE) break
+  }
+
+  return licenses
+}
+
+/**
  * Get machines for a license (requires auth).
  *
  * GET /v1/licenses/{id}/machines
@@ -444,6 +481,7 @@ async function validateLicense(
 export const licenseClient = {
   validateLicenseKey,
   getLicense,
+  listAllLicenses,
   getLicenseMachines,
   activateMachine,
   deactivateMachine,

@@ -43,7 +43,6 @@ vi.mock('@/lib/discord/connected-member-service', () => ({
 vi.mock('@/lib/discord/sync', () => ({ syncDiscordProRoleForMember: syncMock }))
 vi.mock('@/lib/discord/default-sync', () => ({
   createDiscordRoleSyncDependencies: vi.fn(() => ({})),
-  getDiscordLicenseSnapshot: vi.fn(),
 }))
 vi.mock('@/lib/discord/customer-lookup', () => ({ lookupDiscordCustomerInfo: lookupMock }))
 vi.mock('@/lib/discord/medusa-admin', () => ({
@@ -64,6 +63,7 @@ vi.mock('@/services/core/external/license-client', () => ({
     validateLicenseKey: vi.fn(),
     getLicense: vi.fn(async () => ({ status: 'active', expiry: null })),
     updateLicenseMetadata: vi.fn(),
+    listAllLicenses: vi.fn(async () => []),
   },
 }))
 

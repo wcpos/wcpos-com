@@ -25,18 +25,16 @@ import {
   removeConnectedDiscordMemberSelf,
 } from '@/lib/discord/connected-member-service'
 import { syncDiscordProRoleForMember } from '@/lib/discord/sync'
-import {
-  createDiscordRoleSyncDependencies,
-  getDiscordLicenseSnapshot,
-} from '@/lib/discord/default-sync'
+import { createDiscordRoleSyncDependencies } from '@/lib/discord/default-sync'
 import { lookupDiscordCustomerInfo } from '@/lib/discord/customer-lookup'
 import { findAdminCustomerByEmail, listAdminCustomerOrders } from '@/lib/discord/medusa-admin'
 import { DiscordApiClient } from '@/lib/discord/client'
 import { getDiscordConfig, isDiscordConfigured } from '@/lib/discord/config'
 import { licenseClient } from '@/services/core/external/license-client'
 
-// The Customer info lookup walks admin customers → orders → licences; give
-// the deferred follow-up the same ceiling as the other slow route.
+// The Customer info lookup pages the whole Keygen licence fleet (~25
+// requests today); give the deferred follow-up the same ceiling as the other
+// slow route.
 export const maxDuration = 60
 
 const EPHEMERAL = 64
@@ -144,7 +142,7 @@ async function runCustomerInfoCommand(
   try {
     const client = new DiscordApiClient(getDiscordConfig())
     const info = await lookupDiscordCustomerInfo(targetId, {
-      getLicenseSnapshot: getDiscordLicenseSnapshot,
+      listAllLicenses: licenseClient.listAllLicenses,
       findCustomerByEmail: findAdminCustomerByEmail,
       listCustomerOrders: listAdminCustomerOrders,
       getMemberRoleState: (discordUserId) => client.getMemberRoleState(discordUserId),

@@ -7,7 +7,13 @@ import { getConnectedDiscordAccess } from './connected-members'
 import type { DiscordCustomerInfo, DiscordCustomerLicenceInfo } from './interactions'
 
 export interface DiscordCustomerLookupDependencies {
-  getLicenseSnapshot(): Promise<{ licenses: LicenseDetail[]; complete: boolean }>
+  /**
+   * The full licence fleet straight from Keygen. Deliberately NOT the
+   * reconcile-style admin-customers→orders walk: that scan takes minutes at
+   * fleet scale and can never answer an interactive command; paging Keygen's
+   * licence list is ~25 requests.
+   */
+  listAllLicenses(): Promise<Array<Omit<LicenseDetail, 'machines'>>>
   findCustomerByEmail(email: string): Promise<MedusaCustomer | null>
   listCustomerOrders(customerId: string): Promise<MedusaOrder[]>
   getMemberRoleState(
@@ -15,7 +21,7 @@ export interface DiscordCustomerLookupDependencies {
   ): Promise<'has_role' | 'missing_role' | 'not_in_guild'>
 }
 
-function holderEmail(license: LicenseDetail): string | null {
+function holderEmail(license: Omit<LicenseDetail, 'machines'>): string | null {
   const email = license.metadata?.email
   return typeof email === 'string' && email.length > 0 ? email : null
 }
@@ -41,8 +47,8 @@ export async function lookupDiscordCustomerInfo(
   discordUserId: string,
   dependencies: DiscordCustomerLookupDependencies
 ): Promise<DiscordCustomerInfo> {
-  const [snapshot, roleState] = await Promise.all([
-    dependencies.getLicenseSnapshot(),
+  const [allLicenses, roleState] = await Promise.all([
+    dependencies.listAllLicenses(),
     dependencies
       .getMemberRoleState(discordUserId)
       .catch(() => 'unknown' as const),
@@ -52,7 +58,7 @@ export async function lookupDiscordCustomerInfo(
   const holderEmails = new Set<string>()
   const licenceCreationDates: Array<string | null> = []
 
-  for (const license of snapshot.licenses) {
+  for (const license of allLicenses) {
     const access = getConnectedDiscordAccess(license.metadata)
     const member = access.members.find((candidate) => candidate.discordUserId === discordUserId)
     if (!member) continue
