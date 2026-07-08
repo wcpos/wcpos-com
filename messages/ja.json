@@ -1279,86 +1279,86 @@
   },
   "downloads": {
     "meta": {
-      "title": "Downloads",
-      "description": "Download WCPOS — the free plugin plus the desktop, iOS, Android and web apps. See the latest version and recent release notes."
+      "title": "ダウンロード",
+      "description": "WCPOSをダウンロード — 無料プラグインに加えて、デスクトップ、iOS、Android、Webアプリを入手できます。最新バージョンと最近のリリースノートを確認してください。"
     },
     "platforms": {
       "mac-arm": {
         "name": "macOS",
         "listLabel": "macOS (Apple Silicon)",
         "short": "Apple Silicon · .dmg",
-        "action": "Download for macOS"
+        "action": "macOS版をダウンロード"
       },
       "mac-intel": {
         "name": "macOS (Intel)",
         "listLabel": "macOS (Intel)",
         "short": "Intel · .dmg",
-        "action": "Download for macOS"
+        "action": "macOS版をダウンロード"
       },
       "win": {
         "name": "Windows",
         "listLabel": "Windows",
         "short": "Windows 10/11 · .exe",
-        "action": "Download for Windows"
+        "action": "Windows版をダウンロード"
       },
       "linux": {
         "name": "Linux",
         "listLabel": "Linux",
         "short": ".AppImage",
-        "action": "Download for Linux"
+        "action": "Linux版をダウンロード"
       },
       "ios": {
         "name": "iOS & iPad",
         "listLabel": "iOS & iPad",
-        "short": "Public TestFlight beta",
-        "action": "Join the iOS beta"
+        "short": "公開TestFlightベータ",
+        "action": "iOSベータに参加"
       },
       "android": {
         "name": "Android",
         "listLabel": "Android",
-        "short": "Google Play testing beta",
-        "action": "Join the Android beta"
+        "short": "Google Playテストベータ",
+        "action": "Androidベータに参加"
       },
       "web": {
         "name": "Web",
         "listLabel": "Web",
-        "short": "No install needed",
-        "action": "Open the web demo"
+        "short": "インストール不要",
+        "action": "Webデモを開く"
       }
     },
     "hero": {
-      "eyebrow": "Downloads",
-      "title": "One till, every device.",
-      "platformChooserLabel": "Choose your platform",
-      "versionMeta": "Version {version} · {platform}",
-      "detected": "Detected",
-      "intelMac": "On an Intel Mac? <intel>Get the Intel build</intel>",
-      "pluginNotice": "Every app connects to the <plugin>free WordPress plugin</plugin> — install it first."
+      "eyebrow": "ダウンロード",
+      "title": "1つのレジを、すべてのデバイスで。",
+      "platformChooserLabel": "プラットフォームを選択",
+      "versionMeta": "バージョン {version} · {platform}",
+      "detected": "検出済み",
+      "intelMac": "Intel Macをお使いですか？ <intel>Intel版を入手</intel>",
+      "pluginNotice": "すべてのアプリは<plugin>無料のWordPressプラグイン</plugin>に接続します — まずインストールしてください。"
     },
     "howItFits": {
-      "eyebrow": "How it fits together",
-      "title": "One store at the centre. Every till in sync.",
+      "eyebrow": "全体の仕組み",
+      "title": "中心に1つの店舗。すべてのレジが同期。",
       "points": {
         "setup": {
-          "title": "One plugin is the only setup",
-          "body": "The free plugin adds a secure REST API to your WooCommerce store. That’s the whole install — nothing to host or configure per device."
+          "title": "必要な設定はプラグイン1つだけ",
+          "body": "無料プラグインがWooCommerceストアに安全なREST APIを追加します。インストールはそれだけです — デバイスごとにホスティングや設定は不要です。"
         },
         "sync": {
-          "title": "Every app reads and writes the same store",
-          "body": "Ring up a sale on the desktop, refund it on your phone — one set of products, orders and customers, updating in real time."
+          "title": "すべてのアプリが同じ店舗を読み書き",
+          "body": "デスクトップで販売し、スマートフォンで返金 — 商品、注文、顧客は1つのセットで、リアルタイムに更新されます。"
         },
         "offline": {
-          "title": "Offline-first, so the till never stops",
-          "body": "Each device keeps working without a connection and re-syncs the moment it’s back online."
+          "title": "オフラインファーストなので、レジは止まりません",
+          "body": "各デバイスは接続がなくても動作し続け、オンラインに戻った瞬間に再同期します。"
         }
       },
-      "syncLabel": "What stays in sync",
+      "syncLabel": "同期されるもの",
       "chips": {
-        "c1": "Products & prices",
-        "c2": "Stock levels",
-        "c3": "Orders",
-        "c4": "Customers",
-        "c5": "Tax & receipts"
+        "c1": "商品と価格",
+        "c2": "在庫数",
+        "c3": "注文",
+        "c4": "顧客",
+        "c5": "税金とレシート"
       },
       "diagram": {
         "ariaLabel": "WCPOS プラグインを備えた WooCommerce ストアが中央にあり、REST API を通じてデスクトップ、iOS、Android、Web アプリと接続され、すべて同期されます。",
@@ -1378,53 +1378,53 @@
     "page": {
       "beta": "Beta",
       "start": {
-        "eyebrow": "Get started",
-        "title": "Three steps to your first sale",
-        "subtitle": "It takes about two minutes, start to finish."
+        "eyebrow": "はじめに",
+        "title": "最初の販売まで3ステップ",
+        "subtitle": "最初から最後まで約2分で完了します。"
       },
       "steps": {
         "plugin": {
-          "title": "Install the free plugin",
-          "body": "The foundation everything connects to. In your dashboard: Plugins → Add New, then search “WCPOS”.",
-          "badge": "Free · GPL",
+          "title": "無料プラグインをインストール",
+          "body": "すべてが接続する土台です。ダッシュボードで「プラグイン → 新規追加」を開き、「WCPOS」を検索してください。",
+          "badge": "無料 · GPL",
           "requirements": "WordPress 5.6+ · WooCommerce 5.3+ · PHP 7.4+",
-          "requirementsWithVersion": "Latest {version} · WordPress 5.6+ · WooCommerce 5.3+ · PHP 7.4+",
+          "requirementsWithVersion": "最新 {version} · WordPress 5.6+ · WooCommerce 5.3+ · PHP 7.4+",
           "cardTitle": "WCPOS",
           "wordpressOrgCta": "WordPress.org"
         },
         "device": {
-          "title": "Pick your device",
-          "body": "All free, all in sync. Grab the one we detected up top, or any of these.",
-          "desktopTitle": "Desktop app",
-          "iosCta": "Join the TestFlight beta",
-          "androidCta": "Join on Google Play",
-          "webCta": "Open the live demo"
+          "title": "デバイスを選択",
+          "body": "すべて無料で、すべて同期します。上で検出されたもの、または以下のいずれかを入手してください。",
+          "desktopTitle": "デスクトップアプリ",
+          "iosCta": "TestFlightベータに参加",
+          "androidCta": "Google Playで参加",
+          "webCta": "ライブデモを開く"
         },
         "pro": {
-          "title": "Want more? Go Pro",
-          "body": "A licensed plugin that adds terminal payments, refunds and stock control on the same foundation.",
-          "cardTitle": "Unlock the full till",
-          "cardBody": "Payments, refunds, stock & pricing, order management, end-of-day reports, multi-store and priority Discord support.",
-          "plansCta": "View Pro plans",
-          "signInCta": "Sign in to download"
+          "title": "さらに必要ですか？Proへ",
+          "body": "同じ土台に端末決済、返金、在庫管理を追加するライセンス付きプラグインです。",
+          "cardTitle": "レジの全機能を解放",
+          "cardBody": "決済、返金、在庫と価格、注文管理、日次締めレポート、複数店舗、優先Discordサポート。",
+          "plansCta": "Proプランを見る",
+          "signInCta": "ログインしてダウンロード"
         }
       }
     },
     "releaseHistory": {
-      "eyebrow": "Release history",
-      "title": "What’s new",
-      "subtitle": "Recent changes — every app shares one version line.",
-      "latest": "Latest",
-      "fullHistory": "Full history on GitHub —",
+      "eyebrow": "リリース履歴",
+      "title": "新機能",
+      "subtitle": "最近の変更 — すべてのアプリが1つのバージョン系列を共有します。",
+      "latest": "最新",
+      "fullHistory": "GitHubで全履歴を見る —",
       "desktop": "Desktop",
-      "emptyNotes": "_No release notes for this version._",
+      "emptyNotes": "_このバージョンのリリースノートはありません。_",
       "fallback": {
-        "v196": "- Cash drawer support — auto-open after payment or via a new Open Drawer button, with per-printer connectors (ESC-POS, Epson, PrintNode, cloud)\n- Fixed analytics events firing too often\n- Updated translations",
-        "v195": "- Fixed a payment-gateways API crash (HTTP 500 with some third-party gateways, e.g. ToyyibPay)",
-        "v194": "- Redesigned Bluetooth printer setup; serial printing for OS-paired Bluetooth Classic printers\n- Improved Windows raw printing; smoother USB flow",
-        "v190": "- New receipt template gallery; thermal printing (58/80mm)\n- Customer Tax IDs; Pro coupons & refunds at the POS"
+        "v196": "- キャッシュドロワー対応 — 支払い後の自動オープン、または新しい「ドロワーを開く」ボタンから、プリンター別コネクタ（ESC-POS、Epson、PrintNode、クラウド）で操作可能\n- 分析イベントが頻繁に発火しすぎる問題を修正\n- 翻訳を更新",
+        "v195": "- 一部のサードパーティゲートウェイ（例：ToyyibPay）で発生する支払いゲートウェイAPIのクラッシュ（HTTP 500）を修正",
+        "v194": "- Bluetoothプリンター設定を刷新。OSでペアリング済みのBluetooth Classicプリンター向けシリアル印刷に対応\n- WindowsのRAW印刷を改善し、USBフローをよりスムーズに",
+        "v190": "- 新しいレシートテンプレートギャラリー。サーマル印刷（58/80mm）\n- 顧客の税ID。POSでのProクーポンと返金"
       },
-      "plugin": "Free"
+      "plugin": "無料"
     }
   },
   "about": {
