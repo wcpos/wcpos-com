@@ -371,7 +371,8 @@
       "progress": "{completed}/{total} 완료",
       "progressDue": "{completed}/{total} 완료 · 마감 {date}",
       "shipped": "출시됨",
-      "shippedWithDate": "출시됨 · {date}"
+      "shippedWithDate": "출시됨 · {date}",
+      "externalContentNotice": "로드맵 항목 세부 정보는 GitHub에서 가져오며 영어로 표시될 수 있습니다."
     },
     "bugs": {
       "summary": "{count, plural, one {+ 버그 수정 및 개선 #건} other {+ 버그 수정 및 개선 #건}}",
@@ -1430,7 +1431,8 @@
         "v194": "- Bluetooth 프린터 설정 재설계; OS에 페어링된 Bluetooth Classic 프린터용 시리얼 인쇄\n- Windows raw 인쇄 개선; USB 흐름 개선",
         "v190": "- 새 영수증 템플릿 갤러리; 열전사 인쇄(58/80mm)\n- 고객 세금 ID; POS에서 Pro 쿠폰 및 환불"
       },
-      "plugin": "무료"
+      "plugin": "무료",
+      "externalContentNotice": "릴리스 노트는 GitHub에서 가져오며 영어로 표시될 수 있습니다."
     }
   },
   "about": {

@@ -371,7 +371,8 @@
       "progress": "{completed} van {total} klaar",
       "progressDue": "{completed} van {total} klaar · deadline {date}",
       "shipped": "uitgebracht",
-      "shippedWithDate": "uitgebracht · {date}"
+      "shippedWithDate": "uitgebracht · {date}",
+      "externalContentNotice": "Details van routekaartitems komen van GitHub en kunnen in het Engels worden weergegeven."
     },
     "bugs": {
       "summary": "{count, plural, one {+ # bugfix en verbetering} other {+ # bugfixes en verbeteringen}}",
@@ -1430,7 +1431,8 @@
         "v194": "- Bluetooth-printerconfiguratie opnieuw ontworpen; seriële afdruk voor via het OS gekoppelde Bluetooth Classic-printers\n- Verbeterde raw printing op Windows; soepelere USB-flow",
         "v190": "- Nieuwe galerij met bon-sjablonen; thermisch printen (58/80 mm)\n- Belasting-ID’s voor klanten; Pro-kortingsbonnen en terugbetalingen in de POS"
       },
-      "plugin": "Gratis"
+      "plugin": "Gratis",
+      "externalContentNotice": "Release-opmerkingen komen van GitHub en kunnen in het Engels worden weergegeven."
     }
   },
   "about": {

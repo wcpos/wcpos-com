@@ -8,6 +8,8 @@ export interface ReleaseEntry {
   date: string
   /** Release notes as markdown. */
   body: string
+  /** BCP 47 language tag for externally sourced release notes. */
+  contentLocale?: string
   latest?: boolean
 }
 
@@ -21,10 +23,20 @@ export function ReleaseHistory({
     fullHistory: string
     plugin: string
     desktop: string
+    externalContentNotice: string
   }
 }) {
+  const hasExternalEnglishContent = releases.some(
+    (release) => release.contentLocale === 'en'
+  )
+
   return (
     <div className="mx-auto max-w-2xl">
+      {hasExternalEnglishContent && (
+        <p className="mb-4 text-center text-xs text-muted-foreground">
+          {copy.externalContentNotice}
+        </p>
+      )}
       {releases.map((release, index) => (
         <Collapsible
           key={release.version}
@@ -43,7 +55,7 @@ export function ReleaseHistory({
             </span>
           }
         >
-          <div className="pb-5 pl-1">
+          <div className="pb-5 pl-1" lang={release.contentLocale}>
             <Markdown content={release.body} className="text-sm" />
           </div>
         </Collapsible>

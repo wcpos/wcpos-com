@@ -371,7 +371,8 @@
       "progress": "{completed} sur {total} terminé(s)",
       "progressDue": "{completed} sur {total} terminé(s) · prévu le {date}",
       "shipped": "livré",
-      "shippedWithDate": "livré · {date}"
+      "shippedWithDate": "livré · {date}",
+      "externalContentNotice": "Les détails de la feuille de route proviennent de GitHub et peuvent s’afficher en anglais."
     },
     "bugs": {
       "summary": "{count, plural, one {+ # correction de bug et amélioration} other {+ # corrections de bugs et améliorations}}",
@@ -1430,7 +1431,8 @@
         "v194": "- Refonte de la configuration des imprimantes Bluetooth ; impression série pour les imprimantes Bluetooth Classic appairées au système\n- Amélioration de l’impression brute sous Windows ; flux USB plus fluide",
         "v190": "- Nouvelle galerie de modèles de reçus ; impression thermique (58/80 mm)\n- Identifiants fiscaux clients ; coupons Pro et remboursements depuis la caisse"
       },
-      "plugin": "Gratuit"
+      "plugin": "Gratuit",
+      "externalContentNotice": "Les notes de version proviennent de GitHub et peuvent s’afficher en anglais."
     }
   },
   "about": {

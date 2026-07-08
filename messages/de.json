@@ -371,7 +371,8 @@
       "progress": "{completed} von {total} erledigt",
       "progressDue": "{completed} von {total} erledigt · fällig am {date}",
       "shipped": "ausgeliefert",
-      "shippedWithDate": "ausgeliefert · {date}"
+      "shippedWithDate": "ausgeliefert · {date}",
+      "externalContentNotice": "Details zu Roadmap-Einträgen stammen von GitHub und werden möglicherweise auf Englisch angezeigt."
     },
     "bugs": {
       "summary": "{count, plural, one {+ # Fehlerbehebung & Verbesserung} other {+ # Fehlerbehebungen & Verbesserungen}}",
@@ -1430,7 +1431,8 @@
         "v194": "- Bluetooth-Druckereinrichtung neu gestaltet; serielles Drucken für per Betriebssystem gekoppelte Bluetooth-Classic-Drucker\n- Verbesserter Windows-Raw-Druck; reibungsloserer USB-Ablauf",
         "v190": "- Neue Galerie für Belegvorlagen; Thermodruck (58/80 mm)\n- Kunden-Steuer-IDs; Pro-Gutscheine & Erstattungen am POS"
       },
-      "plugin": "Kostenlos"
+      "plugin": "Kostenlos",
+      "externalContentNotice": "Versionshinweise stammen von GitHub und werden möglicherweise auf Englisch angezeigt."
     }
   },
   "about": {

@@ -371,7 +371,8 @@
       "progress": "{total}件中{completed}件完了",
       "progressDue": "{total}件中{completed}件完了 · 期限 {date}",
       "shipped": "リリース済み",
-      "shippedWithDate": "リリース済み · {date}"
+      "shippedWithDate": "リリース済み · {date}",
+      "externalContentNotice": "ロードマップ項目の詳細はGitHubから取得されるため、英語で表示される場合があります。"
     },
     "bugs": {
       "summary": "{count, plural, one {+ # 件のバグ修正と改善} other {+ # 件のバグ修正と改善}}",
@@ -1430,7 +1431,8 @@
         "v194": "- Bluetoothプリンター設定を刷新。OSでペアリング済みのBluetooth Classicプリンター向けシリアル印刷に対応\n- WindowsのRAW印刷を改善し、USBフローをよりスムーズに",
         "v190": "- 新しいレシートテンプレートギャラリー。サーマル印刷（58/80mm）\n- 顧客の税ID。POSでのProクーポンと返金"
       },
-      "plugin": "無料"
+      "plugin": "無料",
+      "externalContentNotice": "リリースノートはGitHubから取得されるため、英語で表示される場合があります。"
     }
   },
   "about": {

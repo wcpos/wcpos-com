@@ -81,6 +81,7 @@ function getFallbackReleases(
     ...release,
     date: formatReleaseDate(publishedAt, locale),
     body: fallbackBodies[bodyKey],
+    contentLocale: locale,
   }))
 }
 
@@ -98,12 +99,16 @@ async function getRecentReleases(
     return getFallbackReleases(locale, t)
   }
 
-  return published.map((release, index) => ({
-    version: release.tagName.replace(/^v/, ''),
-    date: formatReleaseDate(release.publishedAt, locale),
-    body: release.body.trim() || t('emptyNotes'),
-    latest: index === 0,
-  }))
+  return published.map((release, index) => {
+    const body = release.body.trim()
+    return {
+      version: release.tagName.replace(/^v/, ''),
+      date: formatReleaseDate(release.publishedAt, locale),
+      body: body || t('emptyNotes'),
+      contentLocale: body ? 'en' : locale,
+      latest: index === 0,
+    }
+  })
 }
 
 function DeviceCard({
@@ -332,6 +337,7 @@ export default async function DownloadsPage({
             fullHistory: releaseT('fullHistory'),
             plugin: releaseT('plugin'),
             desktop: releaseT('desktop'),
+            externalContentNotice: releaseT('externalContentNotice'),
           }}
         />
       </Section>

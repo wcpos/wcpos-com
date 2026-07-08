@@ -371,7 +371,8 @@
       "progress": "已完成 {completed} / {total}",
       "progressDue": "已完成 {completed} / {total} · 截止 {date}",
       "shipped": "已发布",
-      "shippedWithDate": "已发布 · {date}"
+      "shippedWithDate": "已发布 · {date}",
+      "externalContentNotice": "路线图项目详情来自 GitHub，可能会以英文显示。"
     },
     "bugs": {
       "summary": "{count, plural, one {+ # 个错误修复和改进} other {+ # 个错误修复和改进}}",
@@ -1430,7 +1431,8 @@
         "v194": "- 重新设计蓝牙打印机设置；支持通过串口打印到系统已配对的 Bluetooth Classic 打印机\n- 改进 Windows 原始打印；USB 流程更顺畅",
         "v190": "- 新增收据模板库；热敏打印（58/80mm）\n- 客户税号；POS 中的 Pro 优惠券和退款"
       },
-      "plugin": "免费"
+      "plugin": "免费",
+      "externalContentNotice": "发布说明来自 GitHub，可能会以英文显示。"
     }
   },
   "about": {

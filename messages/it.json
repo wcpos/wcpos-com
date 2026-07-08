@@ -371,7 +371,8 @@
         "now": "Ora",
         "next": "Prossimo",
         "shipped": "Rilasciati"
-      }
+      },
+      "externalContentNotice": "I dettagli della roadmap provengono da GitHub e potrebbero essere visualizzati in inglese."
     },
     "bugs": {
       "summary": "{count, plural, one {+ # correzione bug e miglioramento} other {+ # correzioni bug e miglioramenti}}",
@@ -1430,7 +1431,8 @@
         "v194": "- Configurazione delle stampanti Bluetooth riprogettata; stampa seriale per stampanti Bluetooth Classic abbinate al sistema operativo\n- Stampa raw su Windows migliorata; flusso USB più fluido",
         "v190": "- Nuova galleria di template ricevuta; stampa termica (58/80 mm)\n- ID fiscali cliente; coupon Pro e rimborsi nel POS"
       },
-      "plugin": "Gratis"
+      "plugin": "Gratis",
+      "externalContentNotice": "Le note di rilascio provengono da GitHub e potrebbero essere visualizzate in inglese."
     }
   },
   "about": {
