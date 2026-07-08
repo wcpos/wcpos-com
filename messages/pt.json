@@ -47,7 +47,7 @@
   },
   "home": {
     "title": "WCPOS",
-    "subtitle": "A fast point of sale for WooCommerce",
+    "subtitle": "Um ponto de venda rápido para WooCommerce",
     "meta": {
       "description": "Ponto de venda para WooCommerce. Sincronize os seus produtos, venda offline e ligue hardware real com aplicações nativas para iOS, Android e computador."
     },
@@ -252,21 +252,21 @@
     },
     "story": {
       "a1": {
-        "k": "Point of Sale for WooCommerce",
-        "h": "Your WooCommerce store, at the counter.",
-        "b": "WCPOS turns the tablet into your register — same catalog, same stock, same prices, even offline.",
-        "c1": "Try Live Demo",
-        "c2": "Download Free",
+        "k": "Ponto de venda para WooCommerce",
+        "h": "A sua loja WooCommerce no balcão.",
+        "b": "O WCPOS transforma o tablet na sua caixa — o mesmo catálogo, o mesmo stock, os mesmos preços, mesmo offline.",
+        "c1": "Experimentar demonstração",
+        "c2": "Descarregar grátis",
         "badges": {
-          "b1": "5,000+ Active Stores",
-          "b2": "Free & Open Source",
-          "b3": "Since 2014"
+          "b1": "Mais de 5.000 lojas ativas",
+          "b2": "Gratuito e de código aberto",
+          "b3": "Desde 2014"
         }
       },
       "a2": {
-        "k": "Every screen you own",
-        "h": "One POS. Web, desktop, iOS & Android.",
-        "b": "Run the register on the tablet at the counter, the phone on the shop floor, or the laptop in the back office — same store, same data.",
+        "k": "Todos os seus ecrãs",
+        "h": "Um POS. Web, desktop, iOS e Android.",
+        "b": "Use a caixa no tablet ao balcão, o telemóvel no atendimento em loja ou o portátil no escritório — a mesma loja, os mesmos dados.",
         "platforms": {
           "p1": "Web",
           "p2": "Windows",
@@ -276,58 +276,58 @@
         }
       },
       "a3": {
-        "k": "Bring your own hardware",
-        "h": "Works with the equipment you already have.",
-        "b": "Card terminals, thermal receipt printers, barcode scanners — WCPOS doesn’t lock you into proprietary hardware. Plug in what’s already on your counter."
+        "k": "Use o seu próprio hardware",
+        "h": "Funciona com o equipamento que já tem.",
+        "b": "Terminais de cartão, impressoras térmicas de recibos, leitores de códigos de barras — o WCPOS não o prende a hardware proprietário. Ligue o que já tem no balcão."
       },
       "a4": {
-        "k": "Your store, your data",
-        "h": "Synced with WooCommerce. Yours, even offline.",
-        "b": "Every sale lands in your WooCommerce store — you own the data, no middleman. Internet drops? Keep selling; WCPOS syncs when you’re back online."
+        "k": "A sua loja, os seus dados",
+        "h": "Sincronizado com WooCommerce. Seu, mesmo offline.",
+        "b": "Cada venda fica na sua loja WooCommerce — os dados são seus, sem intermediários. A internet caiu? Continue a vender; o WCPOS sincroniza quando voltar a estar online."
       },
       "nav": {
-        "s1": "Scroll ↓",
-        "s2": "Go to act {current} of {total}"
+        "s1": "Deslizar ↓",
+        "s2": "Ir para o ato {current} de {total}"
       },
       "static": {
-        "alt": "A shop counter with a tablet running the WCPOS register, a receipt printer, a card terminal and a barcode scanner"
+        "alt": "Um balcão de loja com um tablet a executar a caixa WCPOS, uma impressora de recibos, um terminal de cartão e um leitor de códigos de barras"
       },
       "pos": {
         "aria": {
-          "main": "WCPOS app",
-          "phone": "WCPOS app, phone"
+          "main": "Aplicação WCPOS",
+          "phone": "Aplicação WCPOS, telemóvel"
         },
-        "store": "POS — US Store",
-        "registerShort": "R{number}",
-        "search": "Search Products",
+        "store": "POS — Loja",
+        "registerShort": "C{number}",
+        "search": "Pesquisar produtos",
         "filters": {
-          "stock": "In Stock ✕",
-          "featured": "Featured",
-          "sale": "On Sale",
-          "category": "Category"
+          "stock": "Em stock ✕",
+          "featured": "Em destaque",
+          "sale": "Em promoção",
+          "category": "Categoria"
         },
         "products": {
-          "p1": "Tote Bag",
-          "p2": "Candle",
-          "p3": "Mug",
-          "p4": "Soap Bar",
-          "p5": "Notebook",
-          "p6": "Tea Towel"
+          "p1": "Saco de pano",
+          "p2": "Vela",
+          "p3": "Caneca",
+          "p4": "Sabonete",
+          "p5": "Caderno",
+          "p6": "Pano de cozinha"
         },
         "cart": {
-          "c1": "Candle",
-          "c2": "2× Mug",
-          "c3": "Soap Bar"
+          "c1": "Vela",
+          "c2": "2× Caneca",
+          "c3": "Sabonete"
         },
-        "tax": "Tax based on: Shop base address",
-        "showing": "Showing {shown} of {total}",
-        "customer": "Customer:",
-        "guest": "Guest ✕",
+        "tax": "Imposto baseado em: morada base da loja",
+        "showing": "A mostrar {shown} de {total}",
+        "customer": "Cliente:",
+        "guest": "Convidado ✕",
         "subtotal": "Subtotal",
-        "charge": "Charge {amount}",
+        "charge": "Cobrar {amount}",
         "tabs": {
-          "products": "Products",
-          "cart": "Cart"
+          "products": "Produtos",
+          "cart": "Carrinho"
         }
       },
       "terminal": {

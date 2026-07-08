@@ -87,6 +87,8 @@ const auditedPortugueseNamespacePrefixes = [
   'home.features.',
   'home.pricing.',
   'home.ecosystem.',
+  'home.story.',
+  'home.subtitle',
 ]
 const portugueseIdenticalCopyAllowlist = new Set([
   'downloads.platforms.mac-arm.name',
@@ -148,6 +150,12 @@ const portugueseIdenticalCopyAllowlist = new Set([
   'home.ecosystem.devices.desktop.label',
   'home.ecosystem.devices.ios.label',
   'home.pricing.pro.title',
+  'home.story.a2.platforms.p1',
+  'home.story.a2.platforms.p2',
+  'home.story.a2.platforms.p3',
+  'home.story.a2.platforms.p4',
+  'home.story.a2.platforms.p5',
+  'home.story.pos.subtotal',
 ])
 
 const auditedJapaneseNamespacePrefixes = [
@@ -831,7 +839,7 @@ describe('messages key parity', () => {
 
     expect(
       untranslatedKeys,
-      'messages/pt.json must not copy audited support/auth/roadmap/downloads/account/about/pro/legal/homepage-section English strings verbatim'
+      'messages/pt.json must not copy audited support/auth/roadmap/downloads/account/about/pro/legal/homepage-section/story English strings verbatim'
     ).toEqual([])
   })
 })
