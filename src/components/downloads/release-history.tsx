@@ -8,8 +8,10 @@ export interface ReleaseEntry {
   date: string
   /** Release notes as markdown. */
   body: string
-  /** BCP 47 language tag for externally sourced release notes. */
+  /** BCP 47 language tag for the release notes body. */
   contentLocale?: string
+  /** True when the release notes came from an external source such as GitHub. */
+  isExternalContent?: boolean
   latest?: boolean
 }
 
@@ -27,7 +29,7 @@ export function ReleaseHistory({
   }
 }) {
   const hasExternalEnglishContent = releases.some(
-    (release) => release.contentLocale === 'en'
+    (release) => release.isExternalContent && release.contentLocale === 'en'
   )
 
   return (

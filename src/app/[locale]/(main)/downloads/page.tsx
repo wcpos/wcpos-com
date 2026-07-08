@@ -82,6 +82,7 @@ function getFallbackReleases(
     date: formatReleaseDate(publishedAt, locale),
     body: fallbackBodies[bodyKey],
     contentLocale: locale,
+    isExternalContent: false,
   }))
 }
 
@@ -106,6 +107,7 @@ async function getRecentReleases(
       date: formatReleaseDate(release.publishedAt, locale),
       body: body || t('emptyNotes'),
       contentLocale: body ? 'en' : locale,
+      isExternalContent: body.length > 0,
       latest: index === 0,
     }
   })

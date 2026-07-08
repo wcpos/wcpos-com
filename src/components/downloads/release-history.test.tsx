@@ -18,6 +18,7 @@ describe('ReleaseHistory', () => {
         date: 'Jun 17, 2026',
         body: '- Fixed checkout bug',
         contentLocale: 'en',
+        isExternalContent: true,
         latest: true,
       },
     ]
@@ -37,9 +38,9 @@ describe('ReleaseHistory', () => {
     const releases: ReleaseEntry[] = [
       {
         version: '1.9.6',
-        date: '17 juin 2026',
-        body: '- Correction du paiement',
-        contentLocale: 'fr',
+        date: 'Jun 17, 2026',
+        body: '- Fixed checkout bug',
+        contentLocale: 'en',
         latest: true,
       },
     ]
