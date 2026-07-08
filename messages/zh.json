@@ -1279,86 +1279,86 @@
   },
   "downloads": {
     "meta": {
-      "title": "Downloads",
-      "description": "Download WCPOS — the free plugin plus the desktop, iOS, Android and web apps. See the latest version and recent release notes."
+      "title": "下载",
+      "description": "下载 WCPOS——免费插件，以及桌面、iOS、Android 和 Web 应用。查看最新版本和近期发布说明。"
     },
     "platforms": {
       "mac-arm": {
         "name": "macOS",
         "listLabel": "macOS (Apple Silicon)",
         "short": "Apple Silicon · .dmg",
-        "action": "Download for macOS"
+        "action": "下载 macOS 版"
       },
       "mac-intel": {
         "name": "macOS (Intel)",
         "listLabel": "macOS (Intel)",
         "short": "Intel · .dmg",
-        "action": "Download for macOS"
+        "action": "下载 macOS 版"
       },
       "win": {
         "name": "Windows",
         "listLabel": "Windows",
         "short": "Windows 10/11 · .exe",
-        "action": "Download for Windows"
+        "action": "下载 Windows 版"
       },
       "linux": {
         "name": "Linux",
         "listLabel": "Linux",
         "short": ".AppImage",
-        "action": "Download for Linux"
+        "action": "下载 Linux 版"
       },
       "ios": {
         "name": "iOS & iPad",
         "listLabel": "iOS & iPad",
-        "short": "Public TestFlight beta",
-        "action": "Join the iOS beta"
+        "short": "公开 TestFlight 测试版",
+        "action": "加入 iOS 测试版"
       },
       "android": {
         "name": "Android",
         "listLabel": "Android",
-        "short": "Google Play testing beta",
-        "action": "Join the Android beta"
+        "short": "Google Play 测试版",
+        "action": "加入 Android 测试版"
       },
       "web": {
         "name": "Web",
         "listLabel": "Web",
-        "short": "No install needed",
-        "action": "Open the web demo"
+        "short": "无需安装",
+        "action": "打开 Web 演示"
       }
     },
     "hero": {
-      "eyebrow": "Downloads",
-      "title": "One till, every device.",
-      "platformChooserLabel": "Choose your platform",
-      "versionMeta": "Version {version} · {platform}",
-      "detected": "Detected",
-      "intelMac": "On an Intel Mac? <intel>Get the Intel build</intel>",
-      "pluginNotice": "Every app connects to the <plugin>free WordPress plugin</plugin> — install it first."
+      "eyebrow": "下载",
+      "title": "一个收银台，适配所有设备。",
+      "platformChooserLabel": "选择您的平台",
+      "versionMeta": "版本 {version} · {platform}",
+      "detected": "已检测到",
+      "intelMac": "使用 Intel Mac？<intel>获取 Intel 版本</intel>",
+      "pluginNotice": "每个应用都连接到<plugin>免费的 WordPress 插件</plugin>——请先安装它。"
     },
     "howItFits": {
-      "eyebrow": "How it fits together",
-      "title": "One store at the centre. Every till in sync.",
+      "eyebrow": "它如何协同工作",
+      "title": "一个商店居于中心。每个收银台保持同步。",
       "points": {
         "setup": {
-          "title": "One plugin is the only setup",
-          "body": "The free plugin adds a secure REST API to your WooCommerce store. That’s the whole install — nothing to host or configure per device."
+          "title": "唯一需要设置的是一个插件",
+          "body": "免费插件会为您的 WooCommerce 商店添加安全的 REST API。这就是全部安装内容——无需为每台设备托管或配置任何东西。"
         },
         "sync": {
-          "title": "Every app reads and writes the same store",
-          "body": "Ring up a sale on the desktop, refund it on your phone — one set of products, orders and customers, updating in real time."
+          "title": "每个应用都读写同一个商店",
+          "body": "在桌面端完成销售，在手机上退款——同一套商品、订单和客户数据，实时更新。"
         },
         "offline": {
-          "title": "Offline-first, so the till never stops",
-          "body": "Each device keeps working without a connection and re-syncs the moment it’s back online."
+          "title": "离线优先，让收银台不停机",
+          "body": "每台设备都能在无连接时继续工作，并在重新联网时立即重新同步。"
         }
       },
-      "syncLabel": "What stays in sync",
+      "syncLabel": "保持同步的内容",
       "chips": {
-        "c1": "Products & prices",
-        "c2": "Stock levels",
-        "c3": "Orders",
-        "c4": "Customers",
-        "c5": "Tax & receipts"
+        "c1": "商品和价格",
+        "c2": "库存水平",
+        "c3": "订单",
+        "c4": "客户",
+        "c5": "税费和收据"
       },
       "diagram": {
         "ariaLabel": "安装了 WCPOS 插件的 WooCommerce 商店位于中心，通过 REST API 连接到桌面、iOS、Android 和网页应用，并保持同步。",
@@ -1378,53 +1378,53 @@
     "page": {
       "beta": "Beta",
       "start": {
-        "eyebrow": "Get started",
-        "title": "Three steps to your first sale",
-        "subtitle": "It takes about two minutes, start to finish."
+        "eyebrow": "开始使用",
+        "title": "三步完成第一笔销售",
+        "subtitle": "从开始到完成大约只需两分钟。"
       },
       "steps": {
         "plugin": {
-          "title": "Install the free plugin",
-          "body": "The foundation everything connects to. In your dashboard: Plugins → Add New, then search “WCPOS”.",
-          "badge": "Free · GPL",
+          "title": "安装免费插件",
+          "body": "这是所有内容连接的基础。在您的仪表盘中：插件 → 安装插件，然后搜索“WCPOS”。",
+          "badge": "免费 · GPL",
           "requirements": "WordPress 5.6+ · WooCommerce 5.3+ · PHP 7.4+",
-          "requirementsWithVersion": "Latest {version} · WordPress 5.6+ · WooCommerce 5.3+ · PHP 7.4+",
+          "requirementsWithVersion": "最新 {version} · WordPress 5.6+ · WooCommerce 5.3+ · PHP 7.4+",
           "cardTitle": "WCPOS",
           "wordpressOrgCta": "WordPress.org"
         },
         "device": {
-          "title": "Pick your device",
-          "body": "All free, all in sync. Grab the one we detected up top, or any of these.",
-          "desktopTitle": "Desktop app",
-          "iosCta": "Join the TestFlight beta",
-          "androidCta": "Join on Google Play",
-          "webCta": "Open the live demo"
+          "title": "选择您的设备",
+          "body": "全部免费，全部同步。下载上方检测到的版本，或选择以下任意一个。",
+          "desktopTitle": "桌面应用",
+          "iosCta": "加入 TestFlight 测试版",
+          "androidCta": "在 Google Play 加入测试",
+          "webCta": "打开在线演示"
         },
         "pro": {
-          "title": "Want more? Go Pro",
-          "body": "A licensed plugin that adds terminal payments, refunds and stock control on the same foundation.",
-          "cardTitle": "Unlock the full till",
-          "cardBody": "Payments, refunds, stock & pricing, order management, end-of-day reports, multi-store and priority Discord support.",
-          "plansCta": "View Pro plans",
-          "signInCta": "Sign in to download"
+          "title": "想要更多功能？升级 Pro",
+          "body": "一个授权插件，在同一基础上添加终端付款、退款和库存控制。",
+          "cardTitle": "解锁完整收银台",
+          "cardBody": "付款、退款、库存和定价、订单管理、日终报表、多店铺以及优先 Discord 支持。",
+          "plansCta": "查看 Pro 套餐",
+          "signInCta": "登录以下载"
         }
       }
     },
     "releaseHistory": {
-      "eyebrow": "Release history",
-      "title": "What’s new",
-      "subtitle": "Recent changes — every app shares one version line.",
-      "latest": "Latest",
-      "fullHistory": "Full history on GitHub —",
+      "eyebrow": "发布历史",
+      "title": "最新变化",
+      "subtitle": "近期变更——每个应用共享同一版本线。",
+      "latest": "最新",
+      "fullHistory": "GitHub 上的完整历史 —",
       "desktop": "Desktop",
-      "emptyNotes": "_No release notes for this version._",
+      "emptyNotes": "_此版本没有发布说明。_",
       "fallback": {
-        "v196": "- Cash drawer support — auto-open after payment or via a new Open Drawer button, with per-printer connectors (ESC-POS, Epson, PrintNode, cloud)\n- Fixed analytics events firing too often\n- Updated translations",
-        "v195": "- Fixed a payment-gateways API crash (HTTP 500 with some third-party gateways, e.g. ToyyibPay)",
-        "v194": "- Redesigned Bluetooth printer setup; serial printing for OS-paired Bluetooth Classic printers\n- Improved Windows raw printing; smoother USB flow",
-        "v190": "- New receipt template gallery; thermal printing (58/80mm)\n- Customer Tax IDs; Pro coupons & refunds at the POS"
+        "v196": "- 支持钱箱——付款后自动打开，或通过新的“打开钱箱”按钮打开，并支持每台打印机的连接器（ESC-POS、Epson、PrintNode、云端）\n- 修复分析事件触发过于频繁的问题\n- 更新翻译",
+        "v195": "- 修复支付网关 API 崩溃问题（某些第三方网关会出现 HTTP 500，例如 ToyyibPay）",
+        "v194": "- 重新设计蓝牙打印机设置；支持通过串口打印到系统已配对的 Bluetooth Classic 打印机\n- 改进 Windows 原始打印；USB 流程更顺畅",
+        "v190": "- 新增收据模板库；热敏打印（58/80mm）\n- 客户税号；POS 中的 Pro 优惠券和退款"
       },
-      "plugin": "Free"
+      "plugin": "免费"
     }
   },
   "about": {

@@ -158,6 +158,7 @@ const auditedChineseNamespacePrefixes = [
   'footer.',
   'account.',
   'pro.',
+  'downloads.',
 ]
 const chineseIdenticalCopyAllowlist = new Set([
   'auth.common.emailPlaceholder',
@@ -179,6 +180,32 @@ const chineseIdenticalCopyAllowlist = new Set([
   'account.profile.githubProvider',
   'account.receiptPdf.sellerIdentityWithAbn',
   'account.receiptPdf.sellerIdentity',
+  'downloads.platforms.mac-arm.name',
+  'downloads.platforms.mac-arm.listLabel',
+  'downloads.platforms.mac-arm.short',
+  'downloads.platforms.mac-intel.name',
+  'downloads.platforms.mac-intel.listLabel',
+  'downloads.platforms.mac-intel.short',
+  'downloads.platforms.win.name',
+  'downloads.platforms.win.listLabel',
+  'downloads.platforms.win.short',
+  'downloads.platforms.linux.name',
+  'downloads.platforms.linux.listLabel',
+  'downloads.platforms.linux.short',
+  'downloads.platforms.ios.name',
+  'downloads.platforms.ios.listLabel',
+  'downloads.platforms.android.name',
+  'downloads.platforms.android.listLabel',
+  'downloads.platforms.web.name',
+  'downloads.platforms.web.listLabel',
+  'downloads.howItFits.diagram.devices.android',
+  'downloads.howItFits.diagram.devices.web',
+  'downloads.howItFits.diagram.hub.platform',
+  'downloads.page.beta',
+  'downloads.page.steps.plugin.requirements',
+  'downloads.page.steps.plugin.cardTitle',
+  'downloads.page.steps.plugin.wordpressOrgCta',
+  'downloads.releaseHistory.desktop',
 ])
 const auditedGermanNamespacePrefixes = [
   'support.',
@@ -593,7 +620,7 @@ describe('messages key parity', () => {
     ).toEqual([])
   })
 
-  it('zh.json translates the audited support, auth, roadmap, header, footer, account, and pro copy', () => {
+  it('zh.json translates the audited support, auth, roadmap, header, footer, account, pro, and downloads copy', () => {
     const english = loadMessages(defaultLocale)
     const chinese = loadMessages('zh')
     const auditedKeys = enKeys.filter(
@@ -614,7 +641,7 @@ describe('messages key parity', () => {
 
     expect(
       untranslatedKeys,
-      'messages/zh.json must not copy audited support/auth/roadmap/header/footer/account/pro English strings verbatim'
+      'messages/zh.json must not copy audited support/auth/roadmap/header/footer/account/pro/downloads English strings verbatim'
     ).toEqual([])
   })
 
