@@ -31,7 +31,7 @@
     "companyHeading": "会社情報",
     "downloadHeading": "ダウンロード",
     "pro": "WCPOS Pro",
-    "roadmap": "Roadmap",
+    "roadmap": "ロードマップ",
     "demo": "ライブデモ",
     "discord": "Discord",
     "github": "GitHub",
@@ -580,51 +580,51 @@
       "errors": {
         "noProductSelected": "商品が選択されていません",
         "initializeFailed": "チェックアウトを初期化できませんでした。もう一度お試しください。",
-        "checkoutBusy": "Checkout is busy. Please try again.",
-        "paymentRefreshFailed": "Billing address was saved, but we couldn't prepare payment. Please try again.",
-        "methodSwitchFailed": "We couldn't prepare that payment method. Please try again or choose a different one.",
-        "genericPaymentFailed": "We were unable to process your payment. Please try again or use a different payment method.",
-        "genericCardFailed": "Your card could not be charged. Please check your card details, or try a different card or payment method.",
-        "unexpectedPaymentStatus": "We couldn't confirm the status of your payment. If you think you may have been charged, please contact support before trying again.",
-        "orderPending": "Your payment was received, but we couldn't finish creating your order. Please do not pay again — contact support and we will finish your order or refund the payment.",
-        "paypalFailed": "PayPal couldn't complete your payment. You have not been charged — please try again or use a different payment method.",
-        "paypalInitFailed": "We couldn't start the PayPal checkout. Please try again or use a different payment method.",
-        "paypalCancelled": "PayPal checkout was cancelled and you have not been charged. You can try again whenever you're ready.",
-        "btcpayInitFailed": "We couldn't start the Bitcoin payment. You have not been charged — please try again or use a different payment method.",
+        "checkoutBusy": "チェックアウトが処理中です。もう一度お試しください。",
+        "paymentRefreshFailed": "請求先住所は保存されましたが、支払いを準備できませんでした。もう一度お試しください。",
+        "methodSwitchFailed": "その支払い方法を準備できませんでした。もう一度試すか、別の方法を選択してください。",
+        "genericPaymentFailed": "お支払いを処理できませんでした。もう一度試すか、別の支払い方法をご利用ください。",
+        "genericCardFailed": "カードに請求できませんでした。カード情報を確認するか、別のカードまたは支払い方法をお試しください。",
+        "unexpectedPaymentStatus": "支払い状況を確認できませんでした。請求された可能性があると思われる場合は、再試行する前にサポートへお問い合わせください。",
+        "orderPending": "お支払いは受領しましたが、注文の作成を完了できませんでした。再度支払わないでください — サポートへ連絡してください。注文を完了するか、お支払いを返金します。",
+        "paypalFailed": "PayPalで支払いを完了できませんでした。請求は行われていません — もう一度試すか、別の支払い方法をご利用ください。",
+        "paypalInitFailed": "PayPalチェックアウトを開始できませんでした。もう一度試すか、別の支払い方法をご利用ください。",
+        "paypalCancelled": "PayPalチェックアウトはキャンセルされ、請求は行われていません。準備ができたらいつでも再試行できます。",
+        "btcpayInitFailed": "Bitcoin支払いを開始できませんでした。請求は行われていません — もう一度試すか、別の支払い方法をご利用ください。",
         "stripeDeclines": {
-          "insufficientFunds": "Your card was declined due to insufficient funds. Please use a different card or payment method."
+          "insufficientFunds": "残高不足のためカードが拒否されました。別のカードまたは支払い方法をご利用ください。"
         },
         "stripeCodes": {
-          "cardDeclined": "Your card was declined. Please try a different card or payment method.",
-          "expiredCard": "Your card has expired. Please use a different card.",
-          "incorrectCvc": "Your card's security code is incorrect. Please check it and try again.",
-          "invalidCvc": "Your card's security code is invalid. Please check it and try again.",
-          "incorrectNumber": "Your card number appears to be invalid. Please check it and try again.",
-          "invalidNumber": "Your card number appears to be invalid. Please check it and try again.",
-          "invalidExpiryMonth": "Your card's expiry date is invalid. Please check it and try again.",
-          "invalidExpiryYear": "Your card's expiry date is invalid. Please check it and try again.",
-          "processingError": "Something went wrong while processing your card. You have not been charged — please try again.",
-          "authenticationFailure": "We couldn't verify your card with your bank. Please try again or use a different payment method.",
-          "authenticationRequired": "We couldn't verify your card with your bank. Please try again or use a different payment method."
+          "cardDeclined": "カードが拒否されました。別のカードまたは支払い方法をお試しください。",
+          "expiredCard": "カードの有効期限が切れています。別のカードをご利用ください。",
+          "incorrectCvc": "カードのセキュリティコードが正しくありません。確認してもう一度お試しください。",
+          "invalidCvc": "カードのセキュリティコードが無効です。確認してもう一度お試しください。",
+          "incorrectNumber": "カード番号が無効のようです。確認してもう一度お試しください。",
+          "invalidNumber": "カード番号が無効のようです。確認してもう一度お試しください。",
+          "invalidExpiryMonth": "カードの有効期限が無効です。確認してもう一度お試しください。",
+          "invalidExpiryYear": "カードの有効期限が無効です。確認してもう一度お試しください。",
+          "processingError": "カードの処理中に問題が発生しました。請求は行われていません — もう一度お試しください。",
+          "authenticationFailure": "銀行でカードを確認できませんでした。もう一度試すか、別の支払い方法をご利用ください。",
+          "authenticationRequired": "銀行でカードを確認できませんでした。もう一度試すか、別の支払い方法をご利用ください。"
         }
       },
       "recovery": {
         "contactSupport": "サポートに連絡",
         "contactSupportLower": "サポートに連絡",
-        "switchMethod": "You can also choose a different payment method below.",
+        "switchMethod": "下で別の支払い方法を選択することもできます。",
         "cancelled": {
-          "title": "Payment cancelled"
+          "title": "支払いがキャンセルされました"
         },
         "unknown": {
-          "title": "Payment status unknown",
-          "prefix": "Please",
-          "suffix": "and quote reference <reference></reference> — we will confirm whether your payment went through before you pay again."
+          "title": "支払い状況が不明です",
+          "prefix": "お手数ですが",
+          "suffix": "して、参照番号 <reference></reference> をお知らせください — 再度お支払いになる前に、支払いが完了しているか確認します。"
         },
         "unsuccessful": {
           "title": "支払いに失敗しました",
-          "saved": "Your order details have been saved, so you can try again without starting over.",
-          "stuck": "Still stuck?",
-          "quote": "and quote reference <reference></reference>."
+          "saved": "注文の詳細は保存されているため、最初からやり直さずに再試行できます。",
+          "stuck": "まだ解決しませんか？",
+          "quote": "して、参照番号 <reference></reference> をお知らせください。"
         },
         "orderPending": {
           "resetConfirm": "サポートが再試行しても安全だと確認した後にのみ、チェックアウトをリセットしてください。支払いがまだ保留中の場合、リセットすると二重払いになる可能性があります。",
@@ -640,17 +640,17 @@
       },
       "successPage": {
         "metadata": {
-          "title": "Order Complete - WCPOS Pro",
-          "description": "Thank you for your purchase of WCPOS Pro"
+          "title": "注文完了 - WCPOS Pro",
+          "description": "WCPOS Proをご購入いただきありがとうございます"
         },
         "title": "ありがとうございます！",
         "description": "WCPOS Pro の購入が完了しました。",
         "nextTitle": "次の手順",
         "next": {
-          "licenseEmail": "✓ Your license key and download link have been sent to your email",
-          "accountDownload": "✓ You can also download from your account's licenses page",
-          "install": "✓ Install and activate the plugin on your WordPress site",
-          "activate": "✓ Enter your license key to unlock Pro features"
+          "licenseEmail": "✓ ライセンスキーとダウンロードリンクをメールで送信しました",
+          "accountDownload": "✓ アカウントのライセンスページからもダウンロードできます",
+          "install": "✓ WordPressサイトにプラグインをインストールして有効化してください",
+          "activate": "✓ ライセンスキーを入力してPro機能を有効化してください"
         },
         "licenses": "ライセンスへ",
         "installationGuide": "インストールガイド"
@@ -772,7 +772,7 @@
       "copiedKey": "コピーしました",
       "copyError": "ライセンスキーをコピーできませんでした。もう一度お試しください。",
       "apiErrors": {
-        "read_only_inspection": "You are viewing this account in read-only mode."
+        "read_only_inspection": "このアカウントは読み取り専用モードで表示しています。"
       }
     },
     "downloads": {
@@ -811,12 +811,12 @@
       "tokenErrorFallback": "このバージョンはダウンロードできません",
       "startErrorFallback": "ダウンロードの開始に失敗しました",
       "apiErrors": {
-        "unauthorized": "Please sign in again to download WCPOS Pro.",
-        "download_token_secret_missing": "Downloads are temporarily unavailable. Please contact support.",
-        "rate_limited": "Too many download requests. Please wait a moment and try again.",
-        "release_not_found": "That WCPOS Pro release could not be found.",
-        "forbidden": "Your license does not include this download.",
-        "internal": "We could not prepare your download. Please try again."
+        "unauthorized": "WCPOS Proをダウンロードするには、もう一度ログインしてください。",
+        "download_token_secret_missing": "ダウンロードは一時的に利用できません。サポートにお問い合わせください。",
+        "rate_limited": "ダウンロードリクエストが多すぎます。少し待ってからもう一度お試しください。",
+        "release_not_found": "そのWCPOS Proリリースは見つかりませんでした。",
+        "forbidden": "お使いのライセンスにはこのダウンロードが含まれていません。",
+        "internal": "ダウンロードを準備できませんでした。もう一度お試しください。"
       }
     },
     "profile": {
@@ -894,9 +894,9 @@
       "emailProvider": "メールとパスワード",
       "emailDescription": "メールアドレスでサインインします。",
       "apiErrors": {
-        "read_only_inspection": "You are viewing this account in read-only mode.",
-        "unauthorized": "Please sign in again to update your profile.",
-        "update_failed": "Failed to update profile"
+        "read_only_inspection": "このアカウントは読み取り専用モードで表示しています。",
+        "unauthorized": "プロフィールを更新するには、もう一度ログインしてください。",
+        "update_failed": "プロフィールの更新に失敗しました"
       }
     },
     "receiptPdf": {
@@ -935,13 +935,13 @@
       }
     },
     "admin": {
-      "title": "Inspect a customer (read-only)",
-      "description": "Enter a customer email to view their account exactly as they see it. You cannot change their data while inspecting.",
-      "submit": "View as"
+      "title": "顧客を確認（読み取り専用）",
+      "description": "顧客のメールアドレスを入力すると、その顧客に表示されるのと同じアカウント画面を確認できます。確認中はデータを変更できません。",
+      "submit": "この顧客として表示"
     },
     "impersonation": {
-      "viewing": "🔍 Viewing <strong>{target}</strong> as <strong>read-only</strong> — you cannot change their account.",
-      "exit": "Exit"
+      "viewing": "🔍 <strong>{target}</strong> を <strong>読み取り専用</strong> として表示中 — アカウントは変更できません。",
+      "exit": "終了"
     },
     "orderStatus": {
       "actionRequired": "対応が必要",
