@@ -62,6 +62,7 @@ const auditedSpanishNamespacePrefixes = [
   'footer.',
   'account.',
   'pro.',
+  'downloads.',
 ]
 const spanishIdenticalCopyAllowlist = new Set([
   'header.pro',
@@ -86,6 +87,31 @@ const spanishIdenticalCopyAllowlist = new Set([
   'pro.checkout.offers.default',
   'pro.checkout.payment.methods.card.hint',
   'pro.checkout.payment.methods.bitcoin.title',
+  'downloads.platforms.mac-arm.name',
+  'downloads.platforms.mac-arm.listLabel',
+  'downloads.platforms.mac-arm.short',
+  'downloads.platforms.mac-intel.name',
+  'downloads.platforms.mac-intel.listLabel',
+  'downloads.platforms.mac-intel.short',
+  'downloads.platforms.win.name',
+  'downloads.platforms.win.listLabel',
+  'downloads.platforms.win.short',
+  'downloads.platforms.linux.name',
+  'downloads.platforms.linux.listLabel',
+  'downloads.platforms.linux.short',
+  'downloads.platforms.ios.name',
+  'downloads.platforms.ios.listLabel',
+  'downloads.platforms.android.name',
+  'downloads.platforms.android.listLabel',
+  'downloads.platforms.web.name',
+  'downloads.platforms.web.listLabel',
+  'downloads.howItFits.diagram.devices.android',
+  'downloads.howItFits.diagram.devices.web',
+  'downloads.howItFits.diagram.hub.platform',
+  'downloads.page.steps.plugin.requirements',
+  'downloads.page.steps.plugin.cardTitle',
+  'downloads.page.steps.plugin.wordpressOrgCta',
+  'downloads.page.beta',
 ])
 
 const frenchIdenticalCopyAllowlist = new Set([
@@ -249,7 +275,7 @@ describe('messages key parity', () => {
     ).toEqual([])
   })
 
-  it('es.json translates the audited support, roadmap, auth, header, footer, account, and pro copy', () => {
+  it('es.json translates the audited support, roadmap, auth, header, footer, account, pro, and downloads copy', () => {
     const english = loadMessages(defaultLocale)
     const spanish = loadMessages('es')
     const auditedKeys = enKeys.filter(
@@ -270,7 +296,7 @@ describe('messages key parity', () => {
 
     expect(
       untranslatedKeys,
-      'messages/es.json must not copy audited support/roadmap/auth/header/footer/account/pro English strings verbatim'
+      'messages/es.json must not copy audited support/roadmap/auth/header/footer/account/pro/downloads English strings verbatim'
     ).toEqual([])
   })
 })
