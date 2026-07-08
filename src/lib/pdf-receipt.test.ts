@@ -128,6 +128,15 @@ describe('buildReceiptPdf', () => {
     expect(stream).not.toContain(hex('2/1/2026'))
   })
 
+  it('falls back instead of throwing when receipt locale tags are malformed', async () => {
+    const stream = await pageStream(
+      await buildTestReceiptPdf(baseReceipt, 'not_a_locale')
+    )
+
+    expect(stream).toContain(hex('February 1, 2026'))
+    expect(stream).not.toContain(hex('2/1/2026'))
+  })
+
   it('uses translated copy for unknown payment statuses instead of humanizing them in English', async () => {
     const stream = await pageStream(
       await buildTestReceiptPdf({

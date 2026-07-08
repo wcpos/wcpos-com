@@ -781,10 +781,16 @@ function formatAmount(amount: unknown, currencyCode: unknown, locale: string): s
     }
   }
 
-  return new Intl.NumberFormat(locale, {
+  const options: Intl.NumberFormatOptions = {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
-  }).format(numericAmount)
+  }
+
+  try {
+    return new Intl.NumberFormat(locale, options).format(numericAmount)
+  } catch {
+    return new Intl.NumberFormat('en-US', options).format(numericAmount)
+  }
 }
 
 /** Human label for Medusa payment_status values. */

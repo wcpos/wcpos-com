@@ -10,6 +10,7 @@ import {
 } from 'motion/react'
 import type { RoadmapData, RoadmapItem, RoadmapMilestone } from '@/types/roadmap'
 import { usePrefersReducedMotion } from '@/lib/use-prefers-reduced-motion'
+import { formatDateForLocale } from '@/lib/date-format'
 import { BugFixList } from './bug-fix-list'
 import styles from './timeline.module.css'
 
@@ -86,11 +87,11 @@ function fmtDue(dueOn: string | null, locale: string): string | null {
   if (!dueOn) return null
   // GitHub due dates are midnight-UTC timestamps; format in UTC so a
   // negative-offset server timezone can't shift them to the previous month.
-  return new Intl.DateTimeFormat(locale, {
+  return formatDateForLocale(dueOn, locale, {
     month: 'short',
     year: 'numeric',
     timeZone: 'UTC',
-  }).format(new Date(dueOn))
+  })
 }
 
 function StatusGlyph({ status }: { status: RoadmapItem['status'] }) {
