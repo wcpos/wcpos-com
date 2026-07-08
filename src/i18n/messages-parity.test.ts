@@ -45,6 +45,7 @@ const auditedFrenchNamespacePrefixes = [
   'support.',
   'downloads.',
   'legal.',
+  'home.',
 ]
 const frenchIdenticalCopyAllowlist = new Set([
   'roadmap.meta.title',
@@ -80,6 +81,18 @@ const frenchIdenticalCopyAllowlist = new Set([
   'legal.privacy.processors.items.p5.label',
   'legal.privacy.processors.items.p6.label',
   'legal.privacy.processors.items.p7.label',
+  'home.title',
+  'home.useCases.cards.retail.attribution',
+  'home.useCases.cards.market.attribution',
+  'home.useCases.cards.desktop.attribution',
+  'home.benefits.visuals.ownership.chips.openSource',
+  'home.pricing.pro.title',
+  'home.ecosystem.devices.android.label',
+  'home.story.a2.platforms.p1',
+  'home.story.a2.platforms.p2',
+  'home.story.a2.platforms.p3',
+  'home.story.a2.platforms.p4',
+  'home.story.a2.platforms.p5',
 ])
 
 describe('messages key parity', () => {
@@ -149,7 +162,7 @@ describe('messages key parity', () => {
     }
   )
 
-  it('fr.json translates the audited public support, roadmap, downloads, and legal copy', () => {
+  it('fr.json translates the audited public support, roadmap, downloads, legal, and home copy', () => {
     const english = loadMessages(defaultLocale)
     const french = loadMessages('fr')
     const auditedKeys = enKeys.filter(
@@ -172,7 +185,7 @@ describe('messages key parity', () => {
 
     expect(
       untranslatedKeys,
-      'messages/fr.json must not copy audited support/roadmap/downloads/legal English strings verbatim'
+      'messages/fr.json must not copy audited support/roadmap/downloads/legal/home English strings verbatim'
     ).toEqual([])
   })
 })
