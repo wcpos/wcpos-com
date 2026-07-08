@@ -519,7 +519,9 @@ describe('LicensesClient', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Deactivate My Store' }))
 
     expect(await screen.findByText('My Store')).toBeInTheDocument()
-    expect(assign).toHaveBeenCalledWith('/fr/login')
+    expect(assign).toHaveBeenCalledWith(
+      `/api/auth/logout?to=${encodeURIComponent('/fr/login')}`
+    )
   })
 
   it('attributes the latest covered version to an active licence', () => {
@@ -710,6 +712,8 @@ describe('LicensesClient', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Remove @ada' }))
 
     expect(await screen.findByText('@ada')).toBeInTheDocument()
-    expect(assign).toHaveBeenCalledWith('/fr/login')
+    expect(assign).toHaveBeenCalledWith(
+      `/api/auth/logout?to=${encodeURIComponent('/fr/login')}`
+    )
   })
 })

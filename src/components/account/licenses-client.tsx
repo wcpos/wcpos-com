@@ -98,7 +98,14 @@ export function LicensesClient({
   discordAccessByLicense = {},
 }: LicensesClientProps) {
   const locale = useLocale()
+  // Route stale-session 401s through the logout handler so the invalid
+  // medusa-token cookie is cleared before landing on login. Navigating
+  // straight to the localized /login would loop through middleware — cookie
+  // presence is treated as logged-in, bouncing /login back to default
+  // /account and dropping the locale — so the localized path travels as the
+  // logout `to` target instead (mirrors redirectToLoginClearingSession).
   const loginPath = localizeRedirectPath('/login', locale as Locale)
+  const logoutRedirectPath = `/api/auth/logout?to=${encodeURIComponent(loginPath)}`
   const t = useTranslations('account.licenses')
   const tStatus = useTranslations('account.licenseStatus')
   const [licenses, setLicenses] = useState<License[]>(initialLicenses)
@@ -143,7 +150,7 @@ export function LicensesClient({
       const res = await fetch('/api/account/licenses')
       if (!res.ok) {
         if (res.status === 401) {
-          window.location.assign(loginPath)
+          window.location.assign(logoutRedirectPath)
           return
         }
         throw new Error(t('loadError'))
@@ -194,7 +201,7 @@ export function LicensesClient({
       )
       if (!res.ok) {
         if (res.status === 401) {
-          window.location.assign(loginPath)
+          window.location.assign(logoutRedirectPath)
           return
         }
         throw new Error(await getLicenseActionErrorMessage(res, t('discordRemoveError')))
