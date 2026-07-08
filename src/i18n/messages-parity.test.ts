@@ -47,6 +47,7 @@ const auditedFrenchNamespacePrefixes = [
   'legal.',
   'home.',
   'about.',
+  'account.',
 ]
 const frenchIdenticalCopyAllowlist = new Set([
   'roadmap.meta.title',
@@ -96,6 +97,13 @@ const frenchIdenticalCopyAllowlist = new Set([
   'home.story.a2.platforms.p5',
   'about.founder.signature.name',
   'about.timeline.dates.range',
+  'account.profile.taxLabels.abn',
+  'account.profile.taxLabels.partitaIva',
+  'account.profile.googleProvider',
+  'account.profile.discordProvider',
+  'account.profile.githubProvider',
+  'account.receiptPdf.sellerIdentityWithAbn',
+  'account.receiptPdf.sellerIdentity',
 ])
 
 describe('messages key parity', () => {
@@ -165,7 +173,7 @@ describe('messages key parity', () => {
     }
   )
 
-  it('fr.json translates the audited public support, roadmap, downloads, legal, home, and about copy', () => {
+  it('fr.json translates the audited public support, roadmap, downloads, legal, home, about, and account copy', () => {
     const english = loadMessages(defaultLocale)
     const french = loadMessages('fr')
     const auditedKeys = enKeys.filter(
@@ -188,7 +196,7 @@ describe('messages key parity', () => {
 
     expect(
       untranslatedKeys,
-      'messages/fr.json must not copy audited support/roadmap/downloads/legal/home/about English strings verbatim'
+      'messages/fr.json must not copy audited support/roadmap/downloads/legal/home/about/account English strings verbatim'
     ).toEqual([])
   })
 })

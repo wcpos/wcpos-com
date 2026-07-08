@@ -715,10 +715,10 @@
       "orderNumber": "Commande n° {id}",
       "downloadReceipt": "Télécharger le reçu fiscal (PDF)",
       "detailsTitle": "Détails de la commande",
-      "dateLabel": "Date",
+      "dateLabel": "Date de commande",
       "statusLabel": "Statut",
       "emailLabel": "E-mail",
-      "totalLabel": "Total",
+      "totalLabel": "Montant total",
       "itemsTitle": "Articles",
       "quantity": "Qté : {count}",
       "licenseKeysTitle": "Clés de licence",
@@ -728,7 +728,7 @@
       "legacyOrderLabel": "Commande WooCommerce"
     },
     "licenseStatus": {
-      "active": "active",
+      "active": "actif",
       "expired": "expirée",
       "suspended": "suspendue",
       "revoked": "révoquée",
@@ -754,7 +754,7 @@
       "activatedMachines": "Machines activées",
       "machineAdded": "Ajoutée le {date}",
       "deactivateMachineAria": "Désactiver {name}",
-      "genericMachineName": "machine",
+      "genericMachineName": "appareil",
       "coversLatestVersion": "Dernière version {version} · via cette licence",
       "coversUpToVersion": "Couvre les mises à jour jusqu'à {version}",
       "siteUpdatesThrough": "Mises à jour jusqu'à {version}",
@@ -772,7 +772,7 @@
       "copiedKey": "Copiée",
       "copyError": "Échec de la copie de la clé de licence. Veuillez réessayer.",
       "apiErrors": {
-        "read_only_inspection": "You are viewing this account in read-only mode."
+        "read_only_inspection": "Vous consultez ce compte en mode lecture seule."
       }
     },
     "downloads": {
@@ -811,19 +811,19 @@
       "tokenErrorFallback": "Le téléchargement n'est pas disponible pour cette version",
       "startErrorFallback": "Échec du démarrage du téléchargement",
       "apiErrors": {
-        "unauthorized": "Please sign in again to download WCPOS Pro.",
-        "download_token_secret_missing": "Downloads are temporarily unavailable. Please contact support.",
-        "rate_limited": "Too many download requests. Please wait a moment and try again.",
-        "release_not_found": "That WCPOS Pro release could not be found.",
-        "forbidden": "Your license does not include this download.",
-        "internal": "We could not prepare your download. Please try again."
+        "unauthorized": "Veuillez vous reconnecter pour télécharger WCPOS Pro.",
+        "download_token_secret_missing": "Les téléchargements sont temporairement indisponibles. Veuillez contacter l’assistance.",
+        "rate_limited": "Trop de demandes de téléchargement. Veuillez patienter un instant puis réessayer.",
+        "release_not_found": "Cette version de WCPOS Pro est introuvable.",
+        "forbidden": "Votre licence n’inclut pas ce téléchargement.",
+        "internal": "Nous n’avons pas pu préparer votre téléchargement. Veuillez réessayer."
       }
     },
     "profile": {
       "heading": "Profil",
       "cardTitle": "Détails du profil",
       "memberSince": "Membre depuis",
-      "avatarAlt": "Avatar",
+      "avatarAlt": "Photo de profil",
       "avatarLabel": "Avatar du profil",
       "avatarHint": "Si votre compte connecté possède un avatar, il est utilisé par défaut.",
       "avatarTooLarge": "L'image de l'avatar doit faire 1 Mo ou moins.",
@@ -840,7 +840,7 @@
       "city": "Ville",
       "regionLabels": {
         "state": "État",
-        "province": "Province",
+        "province": "Province / région",
         "county": "Comté",
         "stateTerritory": "État/Territoire",
         "region": "Région",
@@ -894,9 +894,9 @@
       "emailProvider": "E-mail et mot de passe",
       "emailDescription": "Vous vous connectez avec votre adresse e-mail.",
       "apiErrors": {
-        "read_only_inspection": "You are viewing this account in read-only mode.",
-        "unauthorized": "Please sign in again to update your profile.",
-        "update_failed": "Failed to update profile"
+        "read_only_inspection": "Vous consultez ce compte en mode lecture seule.",
+        "unauthorized": "Veuillez vous reconnecter pour mettre à jour votre profil.",
+        "update_failed": "Échec de la mise à jour du profil"
       }
     },
     "receiptPdf": {
@@ -911,14 +911,14 @@
       "payment": "Paiement",
       "currency": "Devise",
       "legacyNotice": "Cette commande était initialement le n° {legacyDisplayId} dans notre ancien système de boutique. Les anciens e-mails, factures et dossiers peuvent faire référence à ce numéro.",
-      "description": "DESCRIPTION",
+      "description": "DÉSIGNATION",
       "quantity": "QTÉ",
       "unitPrice": "PRIX UNITAIRE",
       "amount": "MONTANT",
       "untitledItem": "Article sans titre",
       "subtotal": "Sous-total",
       "tax": "Taxe",
-      "total": "Total",
+      "total": "MONTANT TOTAL",
       "noTaxAdded": "Aucune taxe n’a été ajoutée à cette commande.",
       "sellerIdentityWithAbn": "{sellerName} · ABN {sellerAbn}",
       "sellerIdentity": "{sellerName}",
@@ -935,13 +935,13 @@
       }
     },
     "admin": {
-      "title": "Inspect a customer (read-only)",
-      "description": "Enter a customer email to view their account exactly as they see it. You cannot change their data while inspecting.",
-      "submit": "View as"
+      "title": "Inspecter un client (lecture seule)",
+      "description": "Saisissez l’e-mail d’un client pour voir son compte exactement comme lui. Vous ne pouvez pas modifier ses données pendant l’inspection.",
+      "submit": "Voir comme"
     },
     "impersonation": {
-      "viewing": "🔍 Viewing <strong>{target}</strong> as <strong>read-only</strong> — you cannot change their account.",
-      "exit": "Exit"
+      "viewing": "🔍 Consultation de <strong>{target}</strong> en <strong>lecture seule</strong> — vous ne pouvez pas modifier son compte.",
+      "exit": "Quitter"
     },
     "orderStatus": {
       "actionRequired": "Action requise",
