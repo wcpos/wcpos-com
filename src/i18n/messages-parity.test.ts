@@ -78,6 +78,7 @@ const auditedGermanNamespacePrefixes = [
   'downloads.',
   'about.',
   'home.',
+  'legal.',
 ]
 const germanIdenticalCopyAllowlist = new Set([
   'header.pro',
@@ -147,6 +148,13 @@ const germanIdenticalCopyAllowlist = new Set([
   'home.story.a2.platforms.p3',
   'home.story.a2.platforms.p4',
   'home.story.a2.platforms.p5',
+  'legal.privacy.cookies.title',
+  'legal.privacy.processors.items.p2.label',
+  'legal.privacy.processors.items.p3.label',
+  'legal.privacy.processors.items.p4.label',
+  'legal.privacy.processors.items.p5.label',
+  'legal.privacy.processors.items.p6.label',
+  'legal.privacy.processors.items.p7.label',
 ])
 const spanishIdenticalCopyAllowlist = new Set([
   'header.pro',
@@ -421,7 +429,7 @@ describe('messages key parity', () => {
     ).toEqual([])
   })
 
-  it('de.json translates the audited support, auth, roadmap, header, footer, account, pro, downloads, about, and home copy', () => {
+  it('de.json translates the audited support, auth, roadmap, header, footer, account, pro, downloads, about, home, and legal copy', () => {
     const english = loadMessages(defaultLocale)
     const german = loadMessages('de')
     const auditedKeys = enKeys.filter(
@@ -442,7 +450,7 @@ describe('messages key parity', () => {
 
     expect(
       untranslatedKeys,
-      'messages/de.json must not copy audited support/auth/roadmap/header/footer/account/pro/downloads/about/home English strings verbatim'
+      'messages/de.json must not copy audited support/auth/roadmap/header/footer/account/pro/downloads/about/home/legal English strings verbatim'
     ).toEqual([])
   })
 
