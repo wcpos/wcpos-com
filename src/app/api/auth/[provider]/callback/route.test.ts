@@ -329,6 +329,36 @@ describe('OAuth callback route', () => {
     })
   })
 
+  it('clears a stale OAuth locale when signing in from the English surface', async () => {
+    mockGetSessionCustomer.mockResolvedValueOnce({
+      id: 'cust_1',
+      metadata: {
+        auth_providers: ['google'],
+        last_sign_in_provider: 'google',
+        locale: 'fr',
+      },
+    })
+    mockEstablishOAuthSession.mockResolvedValue(
+      session({ email: 'english@example.com' })
+    )
+
+    const request = new NextRequest(
+      'https://wcpos.com/api/auth/google/callback?code=abc&state=xyz',
+      { headers: { cookie: 'oauth_redirect=%2Faccount' } }
+    )
+
+    await GET(request, {
+      params: Promise.resolve({ provider: 'google' }),
+    })
+
+    expect(mockUpdateCustomer).toHaveBeenCalledWith({
+      metadata: {
+        auth_providers: ['google'],
+        last_sign_in_provider: 'google',
+      },
+    })
+  })
+
 
   it('preserves safe OAuth error codes for localized login feedback', async () => {
     mockEstablishOAuthSession.mockRejectedValue(new Error('oauth_email_unverified'))
