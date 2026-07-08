@@ -7,6 +7,7 @@ import {
   type AccountOrderReceiptFact,
 } from '@/lib/account-order-projection'
 import { buildReceiptPdf, type ReceiptPdfCopy } from '@/lib/pdf-receipt'
+import { localizeKnownProductTitle } from '@/lib/product-title-display'
 import { projectAccountProfileForReceipt } from '@/lib/customer-profile-metadata'
 import { apiLogger } from '@/lib/logger'
 import { defaultLocale, locales, type Locale } from '@/i18n/config'
@@ -119,28 +120,10 @@ function receiptContentDisposition(displayId: unknown, localizedFilename: string
 }
 
 
+
 type ReceiptProductTitles = {
   yearly: string
   lifetime: string
-}
-
-function localizedReceiptItemTitle<T>(
-  title: T,
-  productTitles: ReceiptProductTitles
-): T | string {
-  if (typeof title !== 'string') return title
-
-  const trimmedTitle = title.trim()
-  if (!trimmedTitle) return title
-
-  const normalized = trimmedTitle.toLowerCase()
-  if (/^wcpos pro\s*(?:\(|-|–)?\s*yearly\)?$/.test(normalized)) {
-    return productTitles.yearly
-  }
-  if (/^wcpos pro\s*(?:\(|-|–)?\s*lifetime\)?$/.test(normalized)) {
-    return productTitles.lifetime
-  }
-  return title
 }
 
 function localizeReceiptItemTitles(
@@ -151,7 +134,7 @@ function localizeReceiptItemTitles(
     ...receipt,
     items: receipt.items.map((item) => ({
       ...item,
-      title: localizedReceiptItemTitle(item.title, productTitles),
+      title: localizeKnownProductTitle(item.title, productTitles),
     })),
   }
 }
@@ -162,6 +145,10 @@ async function receiptPdfAssets(locale: Locale): Promise<ReceiptPdfAssets> {
     locale,
     messages,
     namespace: 'account.receiptPdf',
+  })
+  const rootT = createTranslator({
+    locale,
+    messages,
   })
 
   const copy: ReceiptPdfCopy = {
@@ -205,8 +192,8 @@ async function receiptPdfAssets(locale: Locale): Promise<ReceiptPdfAssets> {
     copy,
     filename: (displayId) => t('filename', { id: safeReceiptId(displayId) }),
     productTitles: {
-      yearly: t('productTitles.yearly'),
-      lifetime: t('productTitles.lifetime'),
+      yearly: rootT('account.productTitles.yearly'),
+      lifetime: rootT('account.productTitles.lifetime'),
     },
   }
 }

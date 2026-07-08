@@ -1,5 +1,7 @@
 import { describe, it, expect, vi } from 'vitest'
-import { screen } from '@testing-library/react'
+import { render as rtlRender, screen } from '@testing-library/react'
+import { NextIntlClientProvider } from 'next-intl'
+import frMessages from '../../../messages/fr.json'
 import { renderWithIntl as render } from '@/test/intl'
 import { OrderHistoryList, type OrderHistoryOrder } from './order-history-list'
 
@@ -77,20 +79,25 @@ describe('OrderHistoryList', () => {
     ).toHaveAttribute('href', '/account/orders/order_123')
   })
 
-  it('renders a masked licence chip with product when the order produced one', () => {
-    render(
-      <OrderHistoryList
-        orders={[
-          makeOrder({
-            licenses: [{ maskedKey: '****-****-1234', product: 'WCPOS Pro Yearly' }],
-          }),
-        ]}
-        locale="en-US"
-      />
+  it('renders a masked licence chip with a localized known product title', () => {
+    rtlRender(
+      <NextIntlClientProvider locale="fr" messages={frMessages}>
+        <OrderHistoryList
+          orders={[
+            makeOrder({
+              licenses: [
+                { maskedKey: '****-****-1234', product: 'WCPOS Pro Yearly' },
+              ],
+            }),
+          ]}
+          locale="fr"
+        />
+      </NextIntlClientProvider>
     )
 
     expect(screen.getByText('****-****-1234')).toBeInTheDocument()
-    expect(screen.getByText('WCPOS Pro Yearly')).toBeInTheDocument()
+    expect(screen.getByText('WCPOS Pro annuel')).toBeInTheDocument()
+    expect(screen.queryByText('WCPOS Pro Yearly')).not.toBeInTheDocument()
   })
 
   it('does not reuse React keys for licences with the same masked key', () => {
