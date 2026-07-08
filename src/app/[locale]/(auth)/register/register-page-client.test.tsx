@@ -4,11 +4,15 @@ import { NextIntlClientProvider } from 'next-intl'
 import messages from '../../../../../messages/en.json'
 import { RegisterPageClient } from './register-page-client'
 
-const mockPush = vi.fn()
+// Registration deliberately performs a full document navigation (not
+// router.push) so the browser drops every client-side RSC cache rendered
+// signed-out.
+const mockAssign = vi.fn()
 const mockFetch = vi.fn()
 let mockSearchParams = new URLSearchParams()
 
 vi.stubGlobal('fetch', mockFetch)
+vi.stubGlobal('location', { assign: mockAssign } as unknown as Location)
 
 vi.mock('next/navigation', () => ({
   useSearchParams: () => mockSearchParams,
@@ -28,7 +32,6 @@ vi.mock('@/i18n/navigation', () => ({
       {children}
     </a>
   ),
-  useRouter: () => ({ push: mockPush }),
 }))
 
 function renderRegister(locale = 'en') {
@@ -61,7 +64,8 @@ describe('RegisterPageClient', () => {
     })
     fireEvent.click(screen.getByRole('button', { name: 'Create account' }))
 
-    await waitFor(() => expect(mockPush).toHaveBeenCalledWith('/account'))
+    // Locale-prefixed full navigation: the fr surface keeps the customer on fr.
+    await waitFor(() => expect(mockAssign).toHaveBeenCalledWith('/fr/account'))
     expect(mockFetch).toHaveBeenCalledWith(
       '/api/auth/register',
       expect.objectContaining({

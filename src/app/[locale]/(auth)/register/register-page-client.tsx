@@ -3,12 +3,13 @@
 import { Suspense, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { useLocale, useTranslations } from 'next-intl'
-import { Link, useRouter } from '@/i18n/navigation'
+import { Link } from '@/i18n/navigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Alert } from '@/components/ui/alert'
-import { sanitizeRedirectPath } from '@/lib/safe-redirect'
+import { localizeRedirectPath, sanitizeRedirectPath } from '@/lib/safe-redirect'
+import type { Locale } from '@/i18n/config'
 import { MIN_PASSWORD_LENGTH } from '@/lib/password-policy'
 import {
   Card,
@@ -51,7 +52,6 @@ function RegisterPageInner() {
   const locale = useLocale()
   const t = useTranslations('auth.register')
   const tCommon = useTranslations('auth.common')
-  const router = useRouter()
   const searchParams = useSearchParams()
   const redirectTo = sanitizeRedirectPath(searchParams.get('redirect'))
 
@@ -102,7 +102,11 @@ function RegisterPageInner() {
         return
       }
 
-      router.push(redirectTo)
+      // Full document navigation, deliberately NOT router.push — same as the
+      // login page: the session cookie just changed identity, and the client
+      // router keeps signed-out RSC payloads that router.refresh() provably
+      // does not purge (see login-page-client.tsx).
+      window.location.assign(localizeRedirectPath(redirectTo, locale as Locale))
     } catch {
       setError(tCommon('genericError'))
     } finally {

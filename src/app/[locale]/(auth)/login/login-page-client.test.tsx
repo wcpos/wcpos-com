@@ -4,11 +4,14 @@ import { NextIntlClientProvider } from 'next-intl'
 import messages from '../../../../../messages/en.json'
 import { LoginPageClient } from './login-page-client'
 
-const mockPush = vi.fn()
+// Sign-in deliberately performs a full document navigation (not router.push)
+// so the browser drops every client-side RSC cache rendered signed-out.
+const mockAssign = vi.fn()
 const mockFetch = vi.fn()
 let mockSearchParams = new URLSearchParams()
 
 vi.stubGlobal('fetch', mockFetch)
+vi.stubGlobal('location', { assign: mockAssign } as unknown as Location)
 
 vi.mock('next/navigation', () => ({
   useSearchParams: () => mockSearchParams,
@@ -28,7 +31,6 @@ vi.mock('@/i18n/navigation', () => ({
       {children}
     </a>
   ),
-  useRouter: () => ({ push: mockPush }),
 }))
 
 vi.mock('@/lib/analytics/client-events', () => ({
@@ -66,7 +68,29 @@ describe('LoginPageClient', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Sign in' }))
 
     expect(await screen.findByText('Invalid email or password.')).toBeInTheDocument()
-    expect(mockPush).not.toHaveBeenCalled()
+    expect(mockAssign).not.toHaveBeenCalled()
+  })
+
+  it('signs in with a full document navigation to the locale-prefixed redirect', async () => {
+    mockSearchParams = new URLSearchParams({ redirect: '/pro/checkout' })
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ success: true }),
+    })
+
+    renderLogin('fr')
+
+    fireEvent.change(screen.getByLabelText('Email'), {
+      target: { value: 'user@example.com' },
+    })
+    fireEvent.change(screen.getByLabelText('Password'), {
+      target: { value: 'correct-password' },
+    })
+    fireEvent.click(screen.getByRole('button', { name: 'Sign in' }))
+
+    await vi.waitFor(() =>
+      expect(mockAssign).toHaveBeenCalledWith('/fr/pro/checkout')
+    )
   })
 
   it('localizes safe OAuth error codes from the callback URL', () => {
