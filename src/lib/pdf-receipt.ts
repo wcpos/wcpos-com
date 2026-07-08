@@ -698,6 +698,14 @@ function normalize(value: unknown): string {
   return ''
 }
 
+function pdfLanguageTag(locale: string): string {
+  try {
+    return Intl.getCanonicalLocales(locale)[0] ?? 'en'
+  } catch {
+    return 'en'
+  }
+}
+
 function fontForChar(font: PDFFont, fallbacks: FontFallback[], char: string): PDFFont | null {
   if (fontCanEncode(font, char)) return font
   return fallbacks.find((fallback) => fontCanEncode(fallback.font, char))?.font ?? null
@@ -1074,6 +1082,13 @@ export async function buildReceiptPdf(
 ): Promise<Uint8Array> {
   const pdf = await PDFDocument.create()
   pdf.registerFontkit(fontkit)
+  const orderNumber = copy.orderNumber(normalize(receipt.displayId) || '--')
+  pdf.setTitle(copy.title, { showInWindowTitleBar: true })
+  pdf.setSubject(orderNumber)
+  pdf.setAuthor(SELLER_NAME)
+  pdf.setCreator(SELLER_NAME)
+  pdf.setProducer(SELLER_NAME)
+  pdf.setLanguage(pdfLanguageTag(locale))
   const page = pdf.addPage([PAGE_WIDTH, PAGE_HEIGHT])
   const regular = await pdf.embedFont(StandardFonts.Helvetica)
   const bold = await pdf.embedFont(StandardFonts.HelveticaBold)
@@ -1089,7 +1104,7 @@ export async function buildReceiptPdf(
   drawLeft(page, SELLER_WEBSITE, MARGIN, y - 16, style({ font: regular, size: 9, color: MUTED }))
 
   drawRight(page, copy.title, rightEdge, y, style({ font: bold, size: 22 }))
-  drawRight(page, copy.orderNumber(normalize(receipt.displayId) || '--'), rightEdge, y - 16, style({
+  drawRight(page, orderNumber, rightEdge, y - 16, style({
     font: regular,
     size: 10,
     color: MUTED,

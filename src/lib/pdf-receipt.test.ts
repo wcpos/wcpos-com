@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { inflateSync } from 'zlib'
+import { PDFDocument } from 'pdf-lib'
 import { buildReceiptPdf, type ReceiptPdfCopy } from './pdf-receipt'
 import type { AccountOrderReceiptFact } from './account-order-projection'
 
@@ -126,6 +127,24 @@ describe('buildReceiptPdf', () => {
 
     expect(stream).toContain(hex('February 1, 2026'))
     expect(stream).not.toContain(hex('2/1/2026'))
+  })
+
+  it('sets localized PDF document metadata for reader chrome and file previews', async () => {
+    const localizedCopy: ReceiptPdfCopy = {
+      ...TEST_COPY,
+      title: 'Reçu',
+      orderNumber: (id) => `Commande n° ${id}`,
+    }
+    const pdf = await PDFDocument.load(
+      await buildReceiptPdf(baseReceipt, localizedCopy, 'fr-FR')
+    )
+
+    expect(pdf.getTitle()).toBe('Reçu')
+    expect(pdf.getSubject()).toBe('Commande n° 1001')
+    expect(pdf.getAuthor()).toBe('WCPOS')
+    expect(
+      Buffer.from(await pdf.save({ useObjectStreams: false })).toString('latin1')
+    ).toContain('/Lang (fr-FR)')
   })
 
   it('falls back instead of throwing when receipt locale tags are malformed', async () => {
