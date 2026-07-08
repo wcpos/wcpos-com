@@ -327,6 +327,7 @@ export default async function DownloadsPage({
         />
         <ReleaseHistory
           releases={releases}
+          locale={locale}
           copy={{
             latest: releaseT('latest'),
             fullHistory: releaseT('fullHistory'),
