@@ -31,9 +31,9 @@ vi.mock('@marsidev/react-turnstile', () => ({
 
 import { SupportChat } from './support-chat'
 
-function renderWithIntl(ui: ReactElement) {
+function renderWithIntl(ui: ReactElement, locale = 'en') {
   return render(
-    <NextIntlClientProvider locale="en" messages={messages}>
+    <NextIntlClientProvider locale={locale} messages={messages}>
       {ui}
     </NextIntlClientProvider>
   )
@@ -79,6 +79,21 @@ describe('SupportChat', () => {
     await waitFor(() => expect(screen.getByText(/Check Hardware/)).toBeInTheDocument())
     expect(screen.getByText('How do I add another?')).toBeInTheDocument()
     expect(resetTurnstile).toHaveBeenCalled()
+  })
+
+  it('sends the active locale with support questions', async () => {
+    renderWithIntl(<SupportChat />, 'fr')
+
+    fireEvent.change(screen.getByRole('textbox'), { target: { value: 'Comment imprimer ?' } })
+    fireEvent.submit(screen.getByRole('textbox').closest('form')!)
+
+    await waitFor(() => expect(screen.getByText(/Open Settings/)).toBeInTheDocument())
+
+    const [, init] = vi.mocked(fetch).mock.calls[0]
+    expect(JSON.parse(String(init?.body))).toMatchObject({
+      question: 'Comment imprimer ?',
+      locale: 'fr',
+    })
   })
 
   it('renders example questions with the shared button styling', () => {

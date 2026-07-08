@@ -5,6 +5,7 @@ import { apiLogger } from '@/lib/logger'
 import { askAide, OpenclawError } from '@/lib/openclaw/client'
 import { verifyTurnstile } from '@/lib/support/turnstile'
 import { consumeRateLimit, consumeDailyBudget } from '@/lib/support/rate-limit'
+import { locales } from '@/i18n/config'
 
 // Grounded answers can take ~20s — extend the function budget. Node is the
 // default runtime; an explicit `export const runtime` is incompatible with the
@@ -29,6 +30,7 @@ function errorResponse(errorCode: SupportErrorCode, status: number): NextRespons
 
 const bodySchema = z.object({
   question: z.string().trim().min(1).max(1000),
+  locale: z.enum(locales).optional(),
   sessionId: z.string().min(1).optional(),
   turnstileToken: z.string().optional().default(''),
 })
@@ -47,7 +49,7 @@ export async function POST(request: Request): Promise<NextResponse> {
   if (!parsed.success) {
     return errorResponse('invalid_question', 400)
   }
-  const { question, sessionId, turnstileToken } = parsed.data
+  const { question, locale, sessionId, turnstileToken } = parsed.data
   const ip = clientIp(request)
 
   if (!(await verifyTurnstile(turnstileToken, ip))) {
@@ -69,6 +71,7 @@ export async function POST(request: Request): Promise<NextResponse> {
   try {
     const { answer, model, answered, sources } = await askAide({
       question,
+      locale,
       sessionId: resolvedSessionId,
       signal: controller.signal,
     })

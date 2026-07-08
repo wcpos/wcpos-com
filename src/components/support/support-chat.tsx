@@ -4,7 +4,7 @@ import { useState, useRef, useEffect, type FormEvent } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { Turnstile, type TurnstileInstance } from '@marsidev/react-turnstile'
 import posthog from 'posthog-js'
-import { useTranslations } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 import { Button } from '@/components/ui/button'
 import { Markdown } from '@/components/ui/markdown'
 import { Section } from '@/components/ui/section'
@@ -57,6 +57,7 @@ function useSessionId() {
 }
 
 export function SupportChat() {
+  const locale = useLocale()
   const t = useTranslations('support.chat')
   const tErrors = useTranslations('support.errors')
   const [messages, setMessages] = useState<Message[]>([])
@@ -79,6 +80,7 @@ export function SupportChat() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           question,
+          locale,
           sessionId: sessionIdRef.current || undefined,
           turnstileToken: token ?? '',
         }),
