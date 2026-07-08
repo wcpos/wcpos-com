@@ -770,6 +770,11 @@
       "discordConnectHint": "Connect with your license key to get the Pro role in our community Discord.",
       "discordNoMembers": "No connected members yet.",
       "discordRemoveError": "Failed to remove Discord member. Please try again.",
+      "discordBlockedHeading": "Removed members",
+      "discordBlockedNote": "Blocked from reconnecting with this key.",
+      "discordUnblock": "Allow reconnect",
+      "discordUnblockAria": "Allow {handle} to reconnect",
+      "discordUnblockError": "Failed to allow reconnecting. Please try again.",
       "discordConnectCta": "Connect Discord",
       "discordConnectCtaAria": "Connect Discord for license ending in {suffix}",
       "discordClaimStatus": {

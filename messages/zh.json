@@ -770,6 +770,11 @@
       "discordConnectHint": "使用你的许可证密钥连接，即可在我们的社区 Discord 中获得 Pro 身份组。",
       "discordNoMembers": "暂无已连接的成员。",
       "discordRemoveError": "移除 Discord 成员失败。请重试。",
+      "discordBlockedHeading": "已移除的成员",
+      "discordBlockedNote": "已被阻止使用此密钥重新连接。",
+      "discordUnblock": "允许重新连接",
+      "discordUnblockAria": "允许 {handle} 重新连接",
+      "discordUnblockError": "允许重新连接失败。请重试。",
       "discordConnectCta": "连接 Discord",
       "discordConnectCtaAria": "为尾号为 {suffix} 的许可证连接 Discord",
       "discordClaimStatus": {

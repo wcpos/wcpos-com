@@ -770,6 +770,11 @@
       "discordConnectHint": "라이선스 키로 연결하면 커뮤니티 Discord에서 Pro 역할을 받을 수 있습니다.",
       "discordNoMembers": "아직 연결된 멤버가 없습니다.",
       "discordRemoveError": "Discord 멤버를 제거하지 못했습니다. 다시 시도해 주세요.",
+      "discordBlockedHeading": "제거된 멤버",
+      "discordBlockedNote": "이 키로 다시 연결할 수 없도록 차단되어 있습니다.",
+      "discordUnblock": "재연결 허용",
+      "discordUnblockAria": "{handle} 재연결 허용",
+      "discordUnblockError": "재연결을 허용하지 못했습니다. 다시 시도해 주세요.",
       "discordConnectCta": "Discord 연결",
       "discordConnectCtaAria": "{suffix}(으)로 끝나는 라이선스에 Discord 연결",
       "discordClaimStatus": {

@@ -89,10 +89,11 @@ owner chose lower-friction key self-claim with the cap as the safeguard).
 - **Cap basis and number** — implemented initially as a dedicated Discord seat
   cap of 5 per licence, separate from site activations. This can move to a
   per-plan registry field when product wants different caps by plan.
-- **Unblocking** — holder removal block-lists the Discord user for that
-  licence with no unblock control yet; restoring a mistakenly removed member
-  currently needs support intervention. A holder-facing unblock (or block
-  expiry) is a follow-up.
+- ~~**Unblocking**~~ — resolved: the licence card lists removed (blocked)
+  members with a holder-facing "Allow reconnect" control. Unblocking only
+  lifts the block — it restores no seat and grants no role; the person
+  reconnects through the normal claim flow, subject to the seat cap and
+  licence status like any other claim.
 
 ## Amendment (2026-07-08): claim entry points finalised
 

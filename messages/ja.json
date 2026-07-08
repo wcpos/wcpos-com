@@ -770,6 +770,11 @@
       "discordConnectHint": "ライセンスキーで連携すると、コミュニティDiscordでProロールを取得できます。",
       "discordNoMembers": "まだ連携済みのメンバーはいません。",
       "discordRemoveError": "Discordメンバーの削除に失敗しました。もう一度お試しください。",
+      "discordBlockedHeading": "削除済みのメンバー",
+      "discordBlockedNote": "このキーでの再連携はブロックされています。",
+      "discordUnblock": "再連携を許可",
+      "discordUnblockAria": "{handle} の再連携を許可",
+      "discordUnblockError": "再連携の許可に失敗しました。もう一度お試しください。",
       "discordConnectCta": "Discordを連携",
       "discordConnectCtaAria": "末尾が{suffix}のライセンスにDiscordを連携",
       "discordClaimStatus": {

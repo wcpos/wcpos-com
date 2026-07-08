@@ -5,18 +5,27 @@ import type { LicenseLifecycle } from '@/lib/license'
 import { isLicenseActive } from '@/lib/license'
 import {
   addConnectedDiscordMember,
+  getBlockedDiscordMembers,
   getConnectedDiscordAccess,
   hasConnectedDiscordMember,
   isDiscordUserBlockedForLicence,
   removeConnectedDiscordMember,
+  unblockDiscordUserForLicence,
   type ConnectedDiscordIdentity,
 } from './connected-members'
 
 export interface ConnectedMemberView {
   id: string
+  discordUserId: string
   handle: string
   avatarUrl: string | null
   connectedAt: string
+}
+
+export interface BlockedMemberView {
+  discordUserId: string
+  handle: string
+  avatarUrl: string | null
 }
 
 export interface LicenceDiscordAccessView {
@@ -24,6 +33,7 @@ export interface LicenceDiscordAccessView {
   seatCap: number
   usedSeats: number
   members: ConnectedMemberView[]
+  blockedMembers: BlockedMemberView[]
 }
 
 export type DiscordClaimResult =
@@ -39,6 +49,11 @@ export type DiscordRemoveResult =
   | { status: 'license_not_found' }
   | { status: 'member_not_found' }
 
+export type DiscordUnblockResult =
+  | { status: 'unblocked'; discordUserId: string }
+  | { status: 'license_not_found' }
+  | { status: 'not_blocked' }
+
 interface ClaimDependencies {
   now(): Date
   validateLicenseKey(key: string): Promise<{
@@ -53,6 +68,11 @@ interface ClaimDependencies {
 
 interface RemoveDependencies {
   now(): Date
+  getLicense(licenseId: string): Promise<Omit<LicenseDetail, 'machines'>>
+  updateLicenseMetadata(licenseId: string, metadata: Record<string, unknown>): Promise<LicenseDetail>
+}
+
+interface UnblockDependencies {
   getLicense(licenseId: string): Promise<Omit<LicenseDetail, 'machines'>>
   updateLicenseMetadata(licenseId: string, metadata: Record<string, unknown>): Promise<LicenseDetail>
 }
@@ -92,6 +112,10 @@ function discordAvatarUrl(discordUserId: string, avatarHash: string | null): str
   return `https://cdn.discordapp.com/avatars/${discordUserId}/${avatarHash}.png?size=64`
 }
 
+function memberHandle(discordUserId: string, username: string | null): string {
+  return username ? `@${username}` : `Discord user ${discordUserId}`
+}
+
 export function getDiscordAccessByLicense(
   licenses: LicenseDetail[]
 ): Record<string, LicenceDiscordAccessView> {
@@ -106,9 +130,15 @@ export function getDiscordAccessByLicense(
           usedSeats: access.members.length,
           members: access.members.map((member) => ({
             id: member.id,
-            handle: member.username ? `@${member.username}` : `Discord user ${member.discordUserId}`,
+            discordUserId: member.discordUserId,
+            handle: memberHandle(member.discordUserId, member.username),
             avatarUrl: discordAvatarUrl(member.discordUserId, member.avatar),
             connectedAt: member.connectedAt,
+          })),
+          blockedMembers: getBlockedDiscordMembers(license.metadata).map((blocked) => ({
+            discordUserId: blocked.discordUserId,
+            handle: memberHandle(blocked.discordUserId, blocked.username),
+            avatarUrl: discordAvatarUrl(blocked.discordUserId, blocked.avatar),
           })),
         },
       ]
@@ -235,6 +265,38 @@ export async function removeConnectedDiscordMemberSelf({
     )
     await dependencies.updateLicenseMetadata(latestLicense.id, metadata)
     return { status: 'removed', licenseId: latestLicense.id }
+  })
+}
+
+/**
+ * Holder undo for a mistaken removal (ADR-0007 Open item): clears the block
+ * so the person can reconnect through the normal claim flow. It does NOT
+ * restore the seat — reclaiming still needs the key, a free seat, and an
+ * active licence, and the claim path does its own role sync.
+ */
+export async function unblockConnectedDiscordUserForHolder({
+  licenseId,
+  discordUserId,
+  holderLicenses,
+  dependencies,
+}: {
+  licenseId: string
+  discordUserId: string
+  holderLicenses: LicenseDetail[]
+  dependencies: UnblockDependencies
+}): Promise<DiscordUnblockResult> {
+  const license = holderLicenses.find((candidate) => candidate.id === licenseId)
+  if (!license) return { status: 'license_not_found' }
+
+  return withLicenseMetadataLock(license.id, async () => {
+    const latestLicense = await dependencies.getLicense(license.id)
+    if (!isDiscordUserBlockedForLicence(latestLicense.metadata, discordUserId)) {
+      return { status: 'not_blocked' }
+    }
+
+    const metadata = unblockDiscordUserForLicence(latestLicense.metadata, discordUserId)
+    await dependencies.updateLicenseMetadata(latestLicense.id, metadata)
+    return { status: 'unblocked', discordUserId }
   })
 }
 

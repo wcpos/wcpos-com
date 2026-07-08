@@ -770,6 +770,11 @@
       "discordConnectHint": "Collegati con la tua chiave di licenza per ottenere il ruolo Pro nel nostro Discord della community.",
       "discordNoMembers": "Ancora nessun membro collegato.",
       "discordRemoveError": "Impossibile rimuovere il membro Discord. Riprova.",
+      "discordBlockedHeading": "Membri rimossi",
+      "discordBlockedNote": "Non può ricollegarsi con questa chiave.",
+      "discordUnblock": "Consenti la riconnessione",
+      "discordUnblockAria": "Consenti a {handle} di ricollegarsi",
+      "discordUnblockError": "Impossibile consentire la riconnessione. Riprova.",
       "discordConnectCta": "Collega Discord",
       "discordConnectCtaAria": "Collega Discord per la licenza che termina con {suffix}",
       "discordClaimStatus": {
