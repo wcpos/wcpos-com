@@ -49,6 +49,28 @@ function deferredEphemeralReply(): NextResponse {
 }
 
 /**
+ * Build the interaction-token webhook URL from the (already signature-verified)
+ * interaction payload, rejecting any values that could redirect the request off
+ * Discord. Defence-in-depth against SSRF: the Ed25519 check already proves the
+ * payload came from Discord, but the URL parts are still attacker-shaped input.
+ */
+function buildEditOriginalUrl(interaction: DiscordInteraction): string {
+  const { application_id: applicationId, token } = interaction
+  // Application IDs are numeric Discord snowflakes; tokens must not contain any
+  // character that could break out of the intended path segment.
+  if (!/^\d+$/.test(applicationId) || /[/\\@]|\.\./.test(token)) {
+    throw new Error('Invalid Discord interaction identifiers')
+  }
+  const url = new URL(
+    `${DISCORD_API_BASE}/webhooks/${applicationId}/${token}/messages/@original`
+  )
+  if (url.hostname !== 'discord.com' || !url.pathname.startsWith('/api/v10/webhooks/')) {
+    throw new Error('Refusing to call non-Discord webhook URL')
+  }
+  return url.toString()
+}
+
+/**
  * Deferred interactions answer by editing the original response through the
  * interaction-token webhook — the bot token is not involved.
  */
@@ -57,7 +79,7 @@ async function editOriginalResponse(
   content: string
 ): Promise<void> {
   const response = await fetch(
-    `${DISCORD_API_BASE}/webhooks/${interaction.application_id}/${interaction.token}/messages/@original`,
+    buildEditOriginalUrl(interaction),
     {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },

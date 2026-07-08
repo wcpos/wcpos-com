@@ -104,8 +104,8 @@ const member = {
 function linkInteraction(key = 'WCPOS-AAAA-1234') {
   return {
     type: 2,
-    application_id: 'app_1',
-    token: 'tok_1',
+    application_id: '123456789012345678',
+    token: 'aW50ZXJhY3Rpb25fdG9rZW4',
     member,
     data: { type: 1, name: 'link', options: [{ name: 'key', value: key }] },
   }
@@ -156,7 +156,7 @@ describe('POST /api/discord/interactions', () => {
     )
     expect(syncMock).toHaveBeenCalledWith('discord_1', expect.anything())
     expect(fetchMock).toHaveBeenCalledWith(
-      'https://discord.com/api/v10/webhooks/app_1/tok_1/messages/@original',
+      'https://discord.com/api/v10/webhooks/123456789012345678/aW50ZXJhY3Rpb25fdG9rZW4/messages/@original',
       expect.objectContaining({ method: 'PATCH' })
     )
     expect(editedContent()).toContain('✅')
@@ -179,8 +179,8 @@ describe('POST /api/discord/interactions', () => {
     const response = await POST(
       makeRequest({
         type: 2,
-        application_id: 'app_1',
-        token: 'tok_1',
+        application_id: '123456789012345678',
+        token: 'aW50ZXJhY3Rpb25fdG9rZW4',
         member,
         data: { type: 1, name: 'unlink', options: [{ name: 'key', value: 'WCPOS-AAAA-1234' }] },
       })
@@ -199,8 +199,8 @@ describe('POST /api/discord/interactions', () => {
     const response = await POST(
       makeRequest({
         type: 2,
-        application_id: 'app_1',
-        token: 'tok_1',
+        application_id: '123456789012345678',
+        token: 'aW50ZXJhY3Rpb25fdG9rZW4',
         member: { ...member, permissions: '0' },
         data: { type: 2, name: 'Customer info', target_id: 'discord_9' },
       })
@@ -217,8 +217,8 @@ describe('POST /api/discord/interactions', () => {
     const response = await POST(
       makeRequest({
         type: 2,
-        application_id: 'app_1',
-        token: 'tok_1',
+        application_id: '123456789012345678',
+        token: 'aW50ZXJhY3Rpb25fdG9rZW4',
         member: { ...member, permissions: '32' },
         data: {
           type: 2,
@@ -239,8 +239,8 @@ describe('POST /api/discord/interactions', () => {
     const response = await POST(
       makeRequest({
         type: 2,
-        application_id: 'app_1',
-        token: 'tok_1',
+        application_id: '123456789012345678',
+        token: 'aW50ZXJhY3Rpb25fdG9rZW4',
         user: { id: 'discord_1', username: 'ada', avatar: null },
         data: { type: 1, name: 'link', options: [{ name: 'key', value: 'WCPOS-AAAA-1234' }] },
       })
