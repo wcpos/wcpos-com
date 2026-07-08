@@ -1609,5 +1609,262 @@
       "title": "更想和真人沟通？",
       "subtitle": "加入店主和团队所在的实时 Discord 社区。"
     }
+  },
+  "compare": {
+    "disclosure": {
+      "title": "这份对比由谁发布",
+      "body": "本页面由 WCPOS 的开发者 kilbot 发布。我们显然是利益相关方——因此每一个数字都注明来源和日期，我们直接链接到竞争对手自己的定价页面，并且在竞争对手是更好选择时坦率地告诉你。请自行核实所有内容。"
+    },
+    "hub": {
+      "metadata": {
+        "title": "WooCommerce POS 系统对比",
+        "description": "对 WooCommerce 销售点系统进行诚实、有据可查的对比——架构、免费版的真实限制、定价、离线支持，以及各自适合的场景。"
+      },
+      "hero": {
+        "title": "对比 WooCommerce POS 系统",
+        "subtitle": "网上每一篇 WooCommerce POS 排行榜，不是厂商把自己排在第一，就是联盟客按佣金高低排序。这一篇不一样：确实由厂商发布，但每一个事实都注明来源和日期、可供核查，而且当竞争对手更适合你时，我们会直说。"
+      },
+      "method": {
+        "title": "这些对比是如何做出来的",
+        "body": "事实数据来自厂商自己的定价页面和 WordPress.org，在注明的日期抓取，并每季度重新核实。在 WCPOS 落后的类别——自助终端模式、厂商硬件、应用商店的打磨程度——页面会如实说明。发现错误？发邮件到 support@wcpos.com，我们会更正并记录每次修改。"
+      },
+      "oliverCard": {
+        "title": "WCPOS vs Oliver POS",
+        "description": "WordPress 原生对决云端 SaaS：数据所有权、免费版的真实限制、一次性买断与订阅制的差别，以及 Oliver 真正更胜一筹的地方。",
+        "cta": "阅读对比"
+      },
+      "moreSoon": "更多对比即将上线，包括 Square for WooCommerce 和 WooCommerce 官方 POS。"
+    },
+    "oliver": {
+      "metadata": {
+        "title": "WCPOS vs Oliver POS（2026）：一份诚实的对比",
+        "description": "由 WCPOS 的开发者对 WCPOS 和 Oliver POS 进行对比——架构、免费版限制、定价、刷卡终端、离线支持、评分，以及什么时候 Oliver 是更好的选择。每个事实都注明来源和日期。"
+      },
+      "hero": {
+        "title": "WCPOS vs Oliver POS",
+        "subtitle": "对同一个问题的两种截然相反的答案：在你的 WordPress 站点内部运行的销售点，还是让你的商店同步过去的云平台。"
+      },
+      "shortAnswer": {
+        "title": "简短结论",
+        "wcpos": "WCPOS 在你的 WordPress 站点内部运行——销售数据从不离开你的商店，免费版真正不设限（商品、顾客、现金销售——任何方面都没有上限），付费许可证为一次性付款，即使过期后也能继续使用。你的收银台永远不会被关闭。",
+        "oliver": "Oliver POS 将你的商店同步到它的云平台——你会得到一个精致的收银应用、自助终端模式和硬件生态，但你依赖 Oliver 的服务器，而且其免费套餐上限为 20 个商品、每月 50 笔交易。"
+      },
+      "glance": {
+        "title": "一览对比",
+        "caption": "来源：oliverpos.com/pricing 和 wordpress.org，抓取于 2026 年 7 月 8 日；wcpos.com/pro。",
+        "colWcpos": "WCPOS",
+        "colOliver": "Oliver POS",
+        "rows": {
+          "architecture": {
+            "label": "架构",
+            "wcpos": "WordPress 原生——数据保留在 WooCommerce 中",
+            "oliver": "云端 SaaS——通过 REST API 同步到 Oliver 的服务器"
+          },
+          "freePlan": {
+            "label": "免费套餐",
+            "wcpos": "商品、订单和客户均不限量",
+            "oliver": "20 个商品、每月 50 笔交易、1 名员工"
+          },
+          "pricing": {
+            "label": "付费定价",
+            "wcpos": "$129 含一年更新，或 $399 终身——一次性付款，不自动续费",
+            "oliver": "每年 $89 至 $489，持续计费（按年结算）"
+          },
+          "stopPaying": {
+            "label": "如果你停止付费",
+            "wcpos": "过期的 Pro 许可证会永远继续工作——收银台、数据和每一项功能都保留；只有更新和优先支持暂停",
+            "oliver": "付费套餐是持续订阅——付费功能的使用取决于持续付款；免费版上限为 20 个商品、每月 50 笔交易"
+          },
+          "license": {
+            "label": "许可证范围",
+            "wcpos": "按域名授权（2 次激活：正式站 + 测试站）；设备和收银员不限量",
+            "oliver": "每个许可证限一个 WooCommerce 站点；员工席位按套餐设上限"
+          },
+          "fees": {
+            "label": "交易手续费",
+            "wcpos": "无——可使用任何 WooCommerce 支付网关",
+            "oliver": "无——不绑定支付处理商"
+          },
+          "terminals": {
+            "label": "刷卡终端",
+            "wcpos": "Stripe Terminal、SumUp、PayPal Reader（Zettle）、Square Terminal、Mollie Terminal、Vipps MobilePay（Pro 版，通过扩展目录安装）",
+            "oliver": "Stripe、Square、Adyen、Nets；Oliver Pay；自有硬件主机"
+          },
+          "platforms": {
+            "label": "平台",
+            "wcpos": "网页、桌面应用（Windows 和 macOS）、iOS 和 Android 应用（测试版）",
+            "oliver": "网页收银台、iOS 和 Android 应用、硬件主机"
+          },
+          "offline": {
+            "label": "离线",
+            "wcpos": "离线优先：可离线浏览商品和创建购物车；结账需要网络连接",
+            "oliver": "宣称支持离线交易排队，重新联网后同步"
+          },
+          "kiosk": {
+            "label": "自助终端 / 自助结账",
+            "wcpos": "无",
+            "oliver": "有"
+          },
+          "display": {
+            "label": "顾客显示屏",
+            "wcpos": "无",
+            "oliver": "有"
+          },
+          "openSource": {
+            "label": "开源",
+            "wcpos": "是——github.com/wcpos",
+            "oliver": "否"
+          },
+          "wporg": {
+            "label": "WordPress.org",
+            "wcpos": "5,000+ 活跃安装，3.7 星（81 条评价）",
+            "oliver": "800+ 活跃安装，4.3 星（90 条评价）"
+          }
+        }
+      },
+      "architecture": {
+        "title": "架构上的真正区别是什么？",
+        "intro": "Oliver POS 是一个以 WordPress 插件作为连接器的云平台：你的商品、订单和客户会同步到 Oliver 的服务器，而你操作的收银台是与 Oliver 云端通信的 Oliver 应用。WCPOS 恰恰相反：收银台是一个本地优先的客户端，直接与你自己的 WooCommerce 数据库通信。实际影响如下：",
+        "dataOwnership": {
+          "title": "数据所有权",
+          "body": "使用 WCPOS，销售数据从不离开你的服务器。使用 Oliver，你的商店数据同时也存放在他们的云端——对多数商家来说没问题，但对某些商家是硬伤：隐私政策、受监管商品、对数据驻留有承诺的代理机构。"
+        },
+        "failureModes": {
+          "title": "故障模式",
+          "body": "如果 Oliver 的云端或其同步层出问题，即使你的站点正常运行，收银台也会受影响——Oliver 近期的 WordPress.org 评价就描述了订单以零金额进入 WooCommerce、以及接入过程中出现 API 错误的情况。WCPOS 没有可以坏掉的同步层——但收银台的速度取决于你的主机。在廉价的共享主机上，WCPOS 会显得慢；Oliver 的云端收银台则不受影响。"
+        },
+        "longevity": {
+          "title": "长期可用性",
+          "body": "WCPOS 是开源的，并提供终身许可选项：即使公司明天消失，你的 POS 仍能继续工作，代码也可以被 fork。如果 Oliver 关停，收银台就停摆。在这个品类里这并非假设——Oliver 自己的插件曾大约一年没有更新，直到 2026 年才恢复开发，而其他一些 WooCommerce POS 产品已被彻底停售。"
+        }
+      },
+      "freeTier": {
+        "title": "免费套餐实际能给你什么？",
+        "intro": "这是最大的实际差异，也是厂商对比文章刻意模糊的一点：",
+        "colFeature": "免费套餐",
+        "rows": {
+          "products": {
+            "label": "商品",
+            "wcpos": "不限量",
+            "oliver": "20 个"
+          },
+          "transactions": {
+            "label": "交易",
+            "wcpos": "不限量",
+            "oliver": "每月 50 笔"
+          },
+          "devices": {
+            "label": "收银台 / 设备 / 员工",
+            "wcpos": "设备和收银员不限量",
+            "oliver": "1 个门店、1 个工作站、1 名员工"
+          },
+          "offline": {
+            "label": "离线浏览和购物车",
+            "wcpos": "支持",
+            "oliver": "支持（自称）"
+          },
+          "receipts": {
+            "label": "小票打印（含热敏打印）",
+            "wcpos": "支持",
+            "oliver": "支持"
+          }
+        },
+        "outro1": "每月 50 笔交易意味着每天不到两单——Oliver 的免费套餐只是一个没有截止日期的试用版。",
+        "outro2": "WCPOS 免费插件可以无限期地运营一家真实的商店：完整目录、不限顾客数和现金销售、热敏小票打印、离线优先浏览，支持所有平台。"
+      },
+      "pricing": {
+        "title": "付费版实际要花多少钱？",
+        "oliver": "Oliver（按年计费）：Starter 每年 $89——1 个门店、2 个工作站、3 名员工。Pro 每年 $289——2 个门店、不限工作站、15 名员工。Enterprise 每年 $489——全部不限量。持续计费，每个许可证限一个 WooCommerce 站点。",
+        "wcpos": "WCPOS Pro：$129——一次性付款，包含一年的更新和优先支持。绝不自动续费，一年结束后 Pro 版本继续正常运行——什么都不会被关闭，永远不会。这是有意为之：续费必须靠值得付费的更新来赢得。或选择 $399 终身版。每个许可证涵盖一个正式域名加一个测试站点，设备和收银员数量不限。年度版用户可补差价 $270 升级为终身版。14 天退款保证。",
+        "math": "在单门店场景下，第一年 Oliver 的 Starter 更便宜（$89 对 $129）。从第二年起形势反转：Oliver 年年计费，而 WCPOS 终身许可即便与 Oliver 最便宜的套餐相比，从第四年起也是 $0——三年 Oliver Enterprise 要 $1,467+，而 WCPOS 总共 $399。",
+        "proAdds": "Pro 版新增：多店铺管理、刷卡终端集成、优惠券、通过 POS API 退款、订单历史、收银台客户管理、按店铺定价、库存和价格编辑、日终报告，以及扩展目录。",
+        "demoPrefix": "先到",
+        "demoLinkLabel": "demo.wcpos.com/pos",
+        "demoSuffix": "试用全部功能（登录 demo / demo）。"
+      },
+      "oliverBetter": {
+        "title": "Oliver 真正更胜一筹的地方",
+        "intro": "诚实的对比应当双向成立：",
+        "kiosk": "自助终端 / 自助结账模式——Oliver 有；WCPOS 没有。",
+        "display": "顾客显示屏——Oliver 有；WCPOS 没有。",
+        "hardware": "专用硬件——Oliver 销售专用收银主机，可实现开箱即用的柜台方案。",
+        "subscriptions": "WooCommerce Subscriptions 支持——Oliver 支持在收银台销售订阅商品；WCPOS 不支持。",
+        "rating": "WordPress.org 评分更高——4.3 星对 WCPOS 的 3.7 星（不过请阅读双方的近期评价——见下文）。",
+        "outro": "如果你想要开箱即用的自助终端或厂商提供的硬件套装，并且能接受云端依赖和按站点持续计费，Oliver 是更好的选择。"
+      },
+      "ratings": {
+        "title": "评分和支持情况如何？",
+        "intro": "平均分在两个方向上都滞后于现实——请阅读两款插件的近期评价。",
+        "wcpos": "WCPOS：81 条评价，平均 3.7 星——50 条五星和 21 条一星。大多数一星评价来自重写之前的年代（2016 至 2022 年）以及 2023 年 v1.0 发布期；这些评价说了什么、后来改了什么，我们都有公开记录。",
+        "oliver": "Oliver：90 条评价，平均 4.3 星，但最近的评价（2026 年 2 月至 5 月）报告了订单以零金额同步进 WooCommerce、接入时 Oliver 的 API 返回 HTTP 500 错误，以及支持响应迟缓——一位评价者描述了长达六周才解决的经历。Oliver 的插件也曾从大约 2025 年 4 月起停更，直到 2026 年才恢复开发。",
+        "activity": "WCPOS 的开发活动完全公开：github.com/wcpos，更新持续发布——发布历史就是凭证。"
+      },
+      "claims": {
+        "title": "Oliver 的对比页面哪里说错了",
+        "intro": "Oliver 发布了自己的 Oliver 对比 WCPOS 页面。有些说法是公允的——自助终端模式、硬件、顾客显示屏。但有几条并不属实：",
+        "apps": {
+          "claim": "仅支持浏览器；应用开发中",
+          "response": "WCPOS 如今已提供 Windows 和 macOS 桌面应用，iOS 和 Android 应用也已开放测试版；所有应用的最新版本都发布在 updates.wcpos.com。"
+        },
+        "multiOutlet": {
+          "claim": "多门店：无原生支持",
+          "response": "多店铺管理是 WCPOS Pro 的核心功能：按店铺设置地址、税率、小票模板、定价和授权用户。"
+        },
+        "payments": {
+          "claim": "集成支付：有限",
+          "response": "WCPOS Pro 集成 Stripe Terminal、SumUp、PayPal Reader（Zettle）、Square Terminal、Mollie Terminal 和 Vipps MobilePay，可在扩展目录中一键安装——而且由于结账走的是 WooCommerce 自己的支付系统，任何兼容 WooCommerce 的网关都有可能使用。"
+        },
+        "hobbyShops": {
+          "claim": "最适合业余小店",
+          "response": "据 WordPress.org 统计，有 5,000+ 家活跃商店在运行 WCPOS——是 Oliver 活跃安装量的六倍多——自 2014 年以来下载量超过 400,000 次。"
+        },
+        "singleDev": {
+          "claim": "单人开发项目；维护者有空才更新",
+          "response": "前半句属实，我们并不为此感到难为情（见常见问题）。后半句与公开的发布历史相矛盾——不妨对比一下 Oliver 自家插件长达一年的更新空窗期。"
+        }
+      },
+      "choose": {
+        "title": "你该选哪一个？",
+        "wcpos": {
+          "title": "选择 WCPOS，如果：",
+          "body": "你希望数据放在自己的服务器上、想要一个能运营真实商店的免费版、偏好一次性买断而非订阅、需要不限量的设备和收银员、看重开源，或者想要支付处理商自由——任何 WooCommerce 网关皆可。"
+        },
+        "oliver": {
+          "title": "选择 Oliver POS，如果：",
+          "body": "你需要自助终端或自助结账、顾客显示屏、厂商提供的收银硬件，或在收银台销售 WooCommerce Subscriptions——并且能接受云端依赖和按站点持续计费。"
+        }
+      },
+      "faq": {
+        "title": "常见问题",
+        "offline": {
+          "question": "WCPOS 支持离线使用吗？",
+          "answer": "WCPOS 是离线优先的：商品、客户和购物车都存储在本地，因此没有网络也能浏览目录、组建订单，网络恢复后一切自动同步。完成结账和验证优惠券需要连接服务器。Oliver 宣称支持离线交易排队、重新联网后同步。"
+        },
+        "fees": {
+          "question": "这两款 POS 收交易手续费吗？",
+          "answer": "不收——两者都允许你使用自己的支付处理商和自己谈好的费率。不像 Square POS 要求必须使用 Square 收单，也不像 Jovvie 要加收 0.5 至 2.5 个百分点的平台费。"
+        },
+        "singleDev": {
+          "question": "WCPOS 真的是一个人的项目吗？",
+          "answer": "是的——WCPOS 由一位独立开发者打造（大量借助 AI 辅助开发），并且自 2014 年以来持续发布。请用产出来评判这种模式：发布节奏、更新日志和问题跟踪器都公开在 github.com/wcpos。在这个品类里，团队规模什么也保证不了——Oliver POS 宣传拥有庞大的工程团队，其插件照样一年左右没有更新。"
+        },
+        "subscription": {
+          "question": "WCPOS 的年度方案是订阅吗？",
+          "answer": "不是。$129 是一次性付款，换取一年的更新和优先支持；永不自动续费，也不保存银行卡信息。到期后 Pro 功能继续可用——只是不再收到新更新，直到你决定续期。"
+        },
+        "expiry": {
+          "question": "WCPOS Pro 许可证到期后会发生什么？",
+          "answer": "什么都不会被关掉。你手上的 Pro 版本想用多久就用多久——你的收银台、你的数据、每一项功能都在。到期后你只是不再收到新更新和优先支持，直到你决定续期。这是有意为之：续费必须靠值得付费的更新来赢得，同时也保证你的销售点永远不会被远程停用。而在订阅制 POS 平台上，付款一停，付费功能就停。"
+        },
+        "trial": {
+          "question": "两款都能免费试用吗？",
+          "answer": "可以。WCPOS 的免费插件不限量，完整的 Pro 体验在 demo.wcpos.com/pos。Oliver 的免费套餐（20 个商品、每月 50 笔交易）可当作试用版。"
+        }
+      },
+      "footer": {
+        "factsVerified": "事实核验于 2026 年 7 月 8 日，依据 oliverpos.com/pricing、wordpress.org/plugins/woocommerce-pos/、wordpress.org/plugins/oliver-pos/ 和 wcpos.com。",
+        "corrections": "发现错误？发邮件到 support@wcpos.com——我们会尽快更正并记录每次修改。"
+      }
+    }
   }
 }
