@@ -54,8 +54,6 @@ const auditedFrenchNamespacePrefixes = [
   'footer.',
 ]
 const frenchIdenticalCopyAllowlist = new Set([
-  'roadmap.meta.title',
-  'roadmap.page.eyebrow',
   'downloads.platforms.mac-arm.name',
   'downloads.platforms.mac-arm.listLabel',
   'downloads.platforms.mac-arm.short',
@@ -91,7 +89,6 @@ const frenchIdenticalCopyAllowlist = new Set([
   'home.useCases.cards.retail.attribution',
   'home.useCases.cards.market.attribution',
   'home.useCases.cards.desktop.attribution',
-  'home.benefits.visuals.ownership.chips.openSource',
   'home.pricing.pro.title',
   'home.ecosystem.devices.android.label',
   'home.story.a2.platforms.p1',
@@ -196,8 +193,7 @@ describe('messages key parity', () => {
         auditedFrenchNamespacePrefixes.some((prefix) =>
           key.startsWith(prefix)
         ) &&
-        !frenchIdenticalCopyAllowlist.has(key) &&
-        !key.startsWith('downloads.releaseHistory.fallback.')
+        !frenchIdenticalCopyAllowlist.has(key)
     )
     const untranslatedKeys = auditedKeys.filter((key) => {
       const englishValue = valueAtPath(english, key)
