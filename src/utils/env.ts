@@ -80,7 +80,11 @@ const envSchema = z.object({
   OPENCLAW_GATEWAY_URL: z.string().url().default('https://openclaw.wcpos.com'),
   OPENCLAW_TOKEN: z.string().optional(),
 
-  // Cloudflare Turnstile (bot protection for the public support box)
+  // Cloudflare Turnstile (bot protection for the public support box).
+  // The site key's source of truth is the committed host-resolved literal in
+  // src/lib/support/turnstile-keys.ts; this env var is a rotation OVERRIDE
+  // only (honoured on live hosts when it looks like a real 0x… widget key,
+  // and only on remote builds — prebuilt deploys bake it empty).
   NEXT_PUBLIC_TURNSTILE_SITE_KEY: z.string().optional(),
   TURNSTILE_SECRET_KEY: z.string().optional(),
 

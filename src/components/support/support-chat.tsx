@@ -268,8 +268,19 @@ export function SupportChat() {
           onSuccess={setToken}
           // Widget failure or token expiry must clear the stale token (the
           // widget retries/refreshes itself) — a dead token would otherwise
-          // disable the form until a full page reload.
-          onError={() => setToken(null)}
+          // disable the form until a full page reload. A widget error also
+          // surfaces the network message: an ad-blocker or CSP that blocks
+          // challenges.cloudflare.com would otherwise disable the form with
+          // no explanation and no signal.
+          onError={() => {
+            setToken(null)
+            setError(tErrors('network'))
+            try {
+              posthog.capture('support_turnstile_error')
+            } catch {
+              /* best-effort */
+            }
+          }}
           onExpire={() => setToken(null)}
           options={{ size: 'invisible' }}
         />

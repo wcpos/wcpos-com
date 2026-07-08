@@ -1,6 +1,7 @@
 import { headers } from 'next/headers'
 import { NextResponse } from 'next/server'
 import { resolveStoreEnvironmentName } from '@/lib/store-environment'
+import { resolveTurnstileSiteKey } from '@/lib/support/turnstile-keys'
 import { env } from '@/utils/env'
 
 /**
@@ -26,12 +27,13 @@ export async function GET() {
     // and *.vercel.app → "test" (staging + test-mode Stripe); anything else →
     // "dev".
     storeEnvironment: resolveStoreEnvironmentName(host),
-    // Support-box config diagnostics. The Turnstile site key is public by
-    // design (Cloudflare renders it into client HTML); secrets are reported
-    // as presence only. Exists because an empty baked site key silently took
+    // Support-box config diagnostics. turnstileSiteKey is the EFFECTIVE
+    // host-resolved key the widget on this host actually renders (public by
+    // design — Cloudflare puts it in client HTML); secrets are reported as
+    // presence only. Exists because an empty baked site key silently took
     // the support box down (2026-07-08).
     support: {
-      turnstileSiteKey: env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? null,
+      turnstileSiteKey: resolveTurnstileSiteKey(host),
       turnstileSecretKey: Boolean(env.TURNSTILE_SECRET_KEY),
       openclawToken: Boolean(env.OPENCLAW_TOKEN),
     },

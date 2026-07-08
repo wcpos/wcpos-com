@@ -1,13 +1,12 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 
-vi.mock('@/utils/env', () => ({ env: { TURNSTILE_SECRET_KEY: 'secret', NODE_ENV: 'production' } }))
+vi.mock('@/utils/env', () => ({ env: { TURNSTILE_SECRET_KEY: 'secret' } }))
 import { verifyTurnstile } from './turnstile'
 import { TEST_TURNSTILE_SECRET_KEY } from './turnstile-keys'
 import { env } from '@/utils/env'
 
 beforeEach(() => {
   env.TURNSTILE_SECRET_KEY = 'secret'
-  env.NODE_ENV = 'production'
 })
 afterEach(() => vi.unstubAllGlobals())
 
@@ -41,10 +40,21 @@ describe('verifyTurnstile', () => {
     expect(form.get('secret')).toBe(TEST_TURNSTILE_SECRET_KEY)
   })
 
-  it('admits dev hosts without a token or a siteverify call', async () => {
+  it('admits local dev hosts without a token or a siteverify call', async () => {
     const fetchMock = vi.fn()
     vi.stubGlobal('fetch', fetchMock)
-    expect(await verifyTurnstile('', 'localhost:3000')).toBe(true)
+    for (const host of ['localhost:3000', '127.0.0.1:3000', '[::1]:3000']) {
+      expect(await verifyTurnstile('', host), host).toBe(true)
+    }
+    expect(fetchMock).not.toHaveBeenCalled()
+  })
+
+  it('fails closed for unrecognized non-local hosts instead of skipping the check', async () => {
+    const fetchMock = vi.fn()
+    vi.stubGlobal('fetch', fetchMock)
+    for (const host of ['wcpos.com.', 'evil.example.com', null, '']) {
+      expect(await verifyTurnstile('token', host), String(host)).toBe(false)
+    }
     expect(fetchMock).not.toHaveBeenCalled()
   })
 

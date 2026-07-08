@@ -53,20 +53,17 @@ export async function POST(request: Request): Promise<NextResponse> {
   const { question, locale, sessionId, turnstileToken } = parsed.data
   const ip = clientIp(request)
   const host = request.headers.get('host')
-  // Rate-limit keys are scoped per store environment: test hosts run the
-  // always-pass demo widget, so unchallenged beta traffic must never be able
-  // to drain the live IP windows or the shared daily budget.
   const envScope = resolveStoreEnvironmentName(host)
 
   if (!(await verifyTurnstile(turnstileToken, host, ip))) {
     return errorResponse('bot_check_failed', 403)
   }
 
-  const ipLimit = await consumeRateLimit(`${envScope}:${ip}`)
+  const ipLimit = await consumeRateLimit(envScope, ip)
   if (!ipLimit.success) {
     return errorResponse('rate_limited', 429)
   }
-  const budget = await consumeDailyBudget(`${envScope}:${utcDay()}`)
+  const budget = await consumeDailyBudget(envScope, utcDay())
   if (!budget.success) {
     return errorResponse('budget_exhausted', 429)
   }
