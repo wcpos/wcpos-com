@@ -1061,219 +1061,219 @@
   "legal": {
     "privacy": {
       "meta": {
-        "title": "Privacy Policy",
-        "description": "How WCPOS collects, uses, and protects your personal data, including analytics, cookies, payment processing, and your rights under GDPR."
+        "title": "Politique de confidentialité",
+        "description": "Comment WCPOS collecte, utilise et protège vos données personnelles, y compris les données d’analyse, les cookies, le traitement des paiements et vos droits au titre du RGPD."
       },
-      "title": "Privacy Policy",
-      "lastUpdated": "Last updated: {date}",
-      "intro": "WCPOS (\"we\", \"us\") operates wcpos.com, the website for the WCPOS plugin and WCPOS Pro. This policy explains what personal data we collect when you use the site, why we collect it, who processes it on our behalf, and what rights you have over it. We aim to collect as little as we need to run the service.",
+      "title": "Politique de confidentialité",
+      "lastUpdated": "Dernière mise à jour : {date}",
+      "intro": "WCPOS (« nous ») exploite wcpos.com, le site web du plugin WCPOS et de WCPOS Pro. Cette politique explique quelles données personnelles nous collectons lorsque vous utilisez le site, pourquoi nous les collectons, qui les traite pour notre compte et quels droits vous détenez sur ces données. Nous cherchons à collecter uniquement ce qui est nécessaire pour faire fonctionner le service.",
       "collect": {
-        "title": "What we collect",
+        "title": "Ce que nous collectons",
         "items": {
           "c1": {
-            "label": "Account information.",
-            "body": "Your email address and name when you create an account, either directly or by signing in with Google, GitHub, or Discord. When you use a sign-in provider, we receive only your basic profile (email, name or username, and avatar or picture URL) from that provider, and may store the avatar or picture URL on your account as <code>oauth_avatar_url</code>."
+            "label": "Informations de compte.",
+            "body": "Votre adresse e-mail et votre nom lorsque vous créez un compte, directement ou en vous connectant avec Google, GitHub ou Discord. Lorsque vous utilisez un fournisseur de connexion, nous recevons uniquement votre profil de base (e-mail, nom ou nom d’utilisateur, et URL d’avatar ou de photo) de ce fournisseur, et pouvons enregistrer l’URL de l’avatar ou de la photo sur votre compte sous <code>oauth_avatar_url</code>."
           },
           "c2": {
-            "label": "Billing details.",
-            "body": "The billing address and any company details you enter at checkout, stored with your customer record so we can issue receipts and comply with tax rules."
+            "label": "Coordonnées de facturation.",
+            "body": "L’adresse de facturation et les éventuelles informations d’entreprise que vous saisissez lors du paiement, enregistrées dans votre dossier client afin que nous puissions émettre des reçus et respecter les règles fiscales."
           },
           "c3": {
-            "label": "Order and license history.",
-            "body": "Records of your purchases, license keys, and plugin downloads, so you can manage your licenses and we can provide support."
+            "label": "Historique des commandes et des licences.",
+            "body": "Les enregistrements de vos achats, clés de licence et téléchargements de plugin, afin que vous puissiez gérer vos licences et que nous puissions fournir l’assistance."
           },
           "c4": {
-            "label": "Payment information.",
-            "body": "Payments are handled by Stripe and PayPal. Your full card number or payment credentials never reach our servers; we receive only a payment confirmation and the details needed for the receipt."
+            "label": "Informations de paiement.",
+            "body": "Les paiements sont traités par Stripe et PayPal. Votre numéro de carte complet ou vos identifiants de paiement n’atteignent jamais nos serveurs ; nous recevons uniquement une confirmation de paiement et les informations nécessaires au reçu."
           },
           "c5": {
-            "label": "Usage analytics.",
-            "body": "We use PostHog to understand how the site is used (pages viewed, buttons clicked). To do this, we set a cookie containing a randomly generated identifier. It does not contain your name or email."
+            "label": "Données d’analyse d’utilisation.",
+            "body": "Nous utilisons PostHog pour comprendre comment le site est utilisé (pages consultées, boutons cliqués). Pour cela, nous plaçons un cookie contenant un identifiant généré aléatoirement. Il ne contient ni votre nom ni votre adresse e-mail."
           },
           "c6": {
-            "label": "Error reports.",
-            "body": "If something breaks, an error report may be sent to Sentry. Reports can include technical details such as your browser and operating system and what the application was doing at the time of the error."
+            "label": "Rapports d’erreur.",
+            "body": "Si quelque chose se casse, un rapport d’erreur peut être envoyé à Sentry. Ces rapports peuvent inclure des détails techniques tels que votre navigateur, votre système d’exploitation et ce que l’application faisait au moment de l’erreur."
           },
           "c7": {
-            "label": "Server logs.",
-            "body": "Our servers keep application logs (in Grafana Loki) for debugging and operating the service."
+            "label": "Journaux serveur.",
+            "body": "Nos serveurs conservent des journaux d’application (dans Grafana Loki) pour le débogage et l’exploitation du service."
           }
         }
       },
       "cookies": {
-        "title": "Cookies",
-        "body": "We use a small number of first-party cookies. We do not use third-party advertising cookies.",
+        "title": "Témoins (cookies)",
+        "body": "Nous utilisons un petit nombre de cookies internes. Nous n’utilisons pas de cookies publicitaires tiers.",
         "items": {
-          "k1": "<code>medusa-token</code> — keeps you signed in to your account. Expires after 1 day.",
-          "k2": "<code>wcpos-analytics-consent</code> — remembers your analytics consent choice (accepted or declined). Expires after 182 days.",
-          "k3": "<code>wcpos-distinct-id</code> — a random identifier used for analytics. Only set after you accept analytics on the consent banner; removed if you decline. Expires after 1 year.",
-          "k4": "<code>NEXT_LOCALE</code> — remembers your language preference.",
-          "k5": "Your light/dark theme preference is stored locally in your browser and is never sent to us."
+          "k1": "<code>medusa-token</code> — vous maintient connecté à votre compte. Expire après 1 jour.",
+          "k2": "<code>wcpos-analytics-consent</code> — mémorise votre choix de consentement aux analyses (accepté ou refusé). Expire après 182 jours.",
+          "k3": "<code>wcpos-distinct-id</code> — identifiant aléatoire utilisé pour les analyses. Il n’est défini qu’après votre acceptation des analyses dans la bannière de consentement ; il est supprimé si vous refusez. Expire après 1 an.",
+          "k4": "<code>NEXT_LOCALE</code> — mémorise votre préférence de langue.",
+          "k5": "Votre préférence de thème clair/sombre est stockée localement dans votre navigateur et ne nous est jamais envoyée."
         }
       },
       "processors": {
-        "title": "Who processes your data",
-        "body": "We use the following service providers to run wcpos.com. Each receives only the data needed for its role:",
+        "title": "Qui traite vos données",
+        "body": "Nous utilisons les prestataires suivants pour faire fonctionner wcpos.com. Chacun reçoit uniquement les données nécessaires à son rôle :",
         "items": {
           "p1": {
-            "label": "Our commerce backend (Medusa)",
-            "body": "— self-hosted on Hetzner infrastructure in the EU. Stores accounts, customer records, and orders."
+            "label": "Notre backend de commerce (Medusa)",
+            "body": "— auto-hébergé sur une infrastructure Hetzner dans l’UE. Stocke les comptes, les dossiers clients et les commandes."
           },
           "p2": {
             "label": "Stripe",
-            "body": "— card payment processing."
+            "body": "— traitement des paiements par carte."
           },
           "p3": {
             "label": "PayPal",
-            "body": "— PayPal payment processing."
+            "body": "— traitement des paiements PayPal."
           },
           "p4": {
             "label": "Keygen",
-            "body": "— software license management (license keys and activations)."
+            "body": "— gestion des licences logicielles (clés de licence et activations)."
           },
           "p5": {
             "label": "PostHog",
-            "body": "— product analytics."
+            "body": "— analyses produit."
           },
           "p6": {
             "label": "Sentry",
-            "body": "— error monitoring."
+            "body": "— surveillance des erreurs."
           },
           "p7": {
             "label": "Vercel",
-            "body": "— website hosting and content delivery."
+            "body": "— hébergement du site web et diffusion de contenu."
           }
         }
       },
       "retention": {
-        "title": "How long we keep data",
+        "title": "Durée de conservation des données",
         "items": {
-          "r1": "Account and license data is kept while your account is active. If you ask us to delete your account, we delete it, except where we are legally required to keep records.",
-          "r2": "Order and invoice records are kept for as long as tax and accounting laws require.",
-          "r3": "The analytics identifier cookie expires after 1 year.",
-          "r4": "Server logs and error reports are kept for a limited operational window and then deleted."
+          "r1": "Les données de compte et de licence sont conservées tant que votre compte est actif. Si vous nous demandez de supprimer votre compte, nous le supprimons, sauf lorsque la loi nous impose de conserver certains enregistrements.",
+          "r2": "Les enregistrements de commandes et de factures sont conservés aussi longtemps que l’exigent les lois fiscales et comptables.",
+          "r3": "Le cookie d’identifiant analytique expire après 1 an.",
+          "r4": "Les journaux serveur et les rapports d’erreur sont conservés pendant une fenêtre opérationnelle limitée, puis supprimés."
         }
       },
       "rights": {
-        "title": "Your rights",
-        "body": "If you are in the EU/EEA or UK, you have rights under the GDPR, including the right to access, correct, delete, and export your personal data, and to object to or restrict certain processing. We extend the same rights to all users regardless of location.",
-        "exercise": "To exercise any of these rights, email us at <email>support@wcpos.com</email> so we can verify your identity privately. EU/EEA residents also have the right to lodge a complaint with their local data protection authority."
+        "title": "Vos droits",
+        "body": "Si vous vous trouvez dans l’UE/EEE ou au Royaume-Uni, vous disposez de droits au titre du RGPD, notamment le droit d’accéder à vos données personnelles, de les corriger, de les supprimer et de les exporter, ainsi que de vous opposer à certains traitements ou d’en demander la limitation. Nous accordons les mêmes droits à tous les utilisateurs, quel que soit leur lieu de résidence.",
+        "exercise": "Pour exercer l’un de ces droits, envoyez-nous un e-mail à <email>support@wcpos.com</email> afin que nous puissions vérifier votre identité en privé. Les résidents de l’UE/EEE ont également le droit de déposer une plainte auprès de leur autorité locale de protection des données."
       },
       "changes": {
-        "title": "Changes to this policy",
-        "body": "If we make material changes to this policy, we will update the date at the top of this page. Continued use of the site after a change means the updated policy applies."
+        "title": "Modifications de cette politique",
+        "body": "Si nous apportons des modifications importantes à cette politique, nous mettrons à jour la date en haut de cette page. La poursuite de l’utilisation du site après une modification signifie que la politique mise à jour s’applique."
       },
       "contact": {
-        "title": "Contact",
-        "body": "Questions about this policy or your data? Email us at <email>support@wcpos.com</email> or ask general questions in the community chat on the <support>support page</support>."
+        "title": "Nous contacter",
+        "body": "Des questions sur cette politique ou vos données ? Envoyez-nous un e-mail à <email>support@wcpos.com</email> ou posez vos questions générales dans le chat communautaire sur la <support>page d’assistance</support>."
       }
     },
     "refunds": {
       "meta": {
-        "title": "Refund Policy",
-        "description": "The WCPOS Pro refund policy: how to request a refund within 14 days of purchase, and how refunds are paid."
+        "title": "Politique de remboursement",
+        "description": "La politique de remboursement de WCPOS Pro : comment demander un remboursement dans les 14 jours suivant l’achat, et comment les remboursements sont versés."
       },
-      "title": "Refund Policy",
-      "lastUpdated": "Last updated: {date}",
-      "intro": "WCPOS Pro purchases — first purchase or renewal, yearly or lifetime — can be refunded within 14 days of purchase. Email us within that window and we refund you in full. You do not need to give a reason.",
+      "title": "Politique de remboursement",
+      "lastUpdated": "Dernière mise à jour : {date}",
+      "intro": "Les achats de WCPOS Pro — premier achat ou renouvellement, annuel ou à vie — peuvent être remboursés dans les 14 jours suivant l’achat. Envoyez-nous un e-mail dans ce délai et nous vous remboursons intégralement. Vous n’avez pas besoin de donner de motif.",
       "prevention": {
-        "title": "The best refund is the one you never need",
+        "title": "Le meilleur remboursement est celui dont vous n’avez jamais besoin",
         "items": {
           "p1": {
-            "label": "Install the free plugin.",
-            "body": "Run the free version of WCPOS on your store for a couple of days before upgrading — that proves the plugin works on your site."
+            "label": "Installez le plugin gratuit.",
+            "body": "Utilisez la version gratuite de WCPOS sur votre boutique pendant quelques jours avant de passer à la version supérieure — cela confirme que le plugin fonctionne sur votre site."
           },
           "p2": {
-            "label": "Try the demo.",
-            "body": "The <demo>online demo</demo> runs the current version with Pro activated, so you can confirm it fulfils your store's requirements."
+            "label": "Essayez la démo.",
+            "body": "La <demo>démo en ligne</demo> exécute la version actuelle avec Pro activé, afin que vous puissiez confirmer qu’elle répond aux besoins de votre boutique."
           },
           "p3": {
-            "label": "Read the documentation.",
-            "body": "Check the <docs>docs</docs> for the features you need, and email <email>support@wcpos.com</email> with pre-sale questions — we answer openly and honestly."
+            "label": "Lisez la documentation.",
+            "body": "Consultez la <docs>documentation</docs> pour les fonctionnalités dont vous avez besoin, et envoyez un e-mail à <email>support@wcpos.com</email> pour toute question avant achat — nous répondons ouvertement et honnêtement."
           }
         }
       },
       "request": {
-        "title": "How to request a refund",
-        "body": "Email <email>support@wcpos.com</email> from the email address you used for the purchase, within 14 days of buying. Telling us why helps us improve, but it is not required to get the refund."
+        "title": "Comment demander un remboursement",
+        "body": "Envoyez un e-mail à <email>support@wcpos.com</email> depuis l’adresse e-mail utilisée pour l’achat, dans les 14 jours suivant celui-ci. Nous dire pourquoi nous aide à nous améliorer, mais ce n’est pas nécessaire pour obtenir le remboursement."
       },
       "payment": {
-        "title": "How refunds are paid",
-        "body": "Refunds go back to the original payment method via Stripe or PayPal and typically appear on your statement within 5–10 business days, depending on your bank or card issuer. Refunded license keys are revoked and stop working immediately."
+        "title": "Comment les remboursements sont versés",
+        "body": "Les remboursements sont renvoyés vers le moyen de paiement d’origine via Stripe ou PayPal et apparaissent généralement sur votre relevé sous 5 à 10 jours ouvrés, selon votre banque ou l’émetteur de votre carte. Les clés de licence remboursées sont révoquées et cessent immédiatement de fonctionner."
       },
       "renewals": {
-        "title": "License renewals",
-        "body": "Yearly licenses do not renew automatically — we never charge you again without a new purchase from you. The same 14-day refund window applies to renewal purchases."
+        "title": "Renouvellements de licence",
+        "body": "Les licences annuelles ne se renouvellent pas automatiquement — nous ne vous débitons jamais à nouveau sans nouvel achat de votre part. La même fenêtre de remboursement de 14 jours s’applique aux achats de renouvellement."
       },
       "rights": {
-        "title": "Your statutory rights",
-        "body": "For consumers in the EU, EEA and UK: our 14-day refund window matches your statutory right of withdrawal for this kind of purchase, and exercising either works the same way — email us within 14 days.",
-        "defective": "If WCPOS Pro is defective or does not work as described, statutory remedies for faulty digital content apply at any time, independent of the 14-day window. And nothing in this policy limits any rights you have under the consumer protection laws of your country — where local law gives you stronger rights, those rights apply."
+        "title": "Vos droits légaux",
+        "body": "Pour les consommateurs de l’UE, de l’EEE et du Royaume-Uni : notre fenêtre de remboursement de 14 jours correspond à votre droit légal de rétractation pour ce type d’achat, et l’exercice de l’un ou l’autre fonctionne de la même façon — envoyez-nous un e-mail dans les 14 jours.",
+        "defective": "Si WCPOS Pro est défectueux ou ne fonctionne pas comme décrit, les recours légaux applicables aux contenus numériques défectueux s’appliquent à tout moment, indépendamment de la fenêtre de 14 jours. Rien dans cette politique ne limite les droits dont vous bénéficiez en vertu des lois de protection des consommateurs de votre pays — lorsque la loi locale vous accorde des droits plus forts, ces droits s’appliquent."
       }
     },
     "terms": {
       "meta": {
-        "title": "Terms of Service",
-        "description": "The terms that govern your use of wcpos.com, your WCPOS account, and WCPOS Pro licenses."
+        "title": "Conditions d’utilisation",
+        "description": "Les conditions qui régissent votre utilisation de wcpos.com, de votre compte WCPOS et des licences WCPOS Pro."
       },
-      "title": "Terms of Service",
-      "lastUpdated": "Last updated: {date}",
-      "intro": "These terms govern your use of wcpos.com, your WCPOS account, and any WCPOS Pro license you purchase. By using the site or buying a license, you agree to these terms. If you do not agree, please do not use the service.",
+      "title": "Conditions d’utilisation",
+      "lastUpdated": "Dernière mise à jour : {date}",
+      "intro": "Ces conditions régissent votre utilisation de wcpos.com, de votre compte WCPOS et de toute licence WCPOS Pro que vous achetez. En utilisant le site ou en achetant une licence, vous acceptez ces conditions. Si vous ne les acceptez pas, veuillez ne pas utiliser le service.",
       "service": {
-        "title": "The service",
-        "body": "WCPOS provides the wcpos.com website, user accounts, and paid WCPOS Pro licenses that unlock premium features, updates, and priority support for the WCPOS plugin."
+        "title": "Le service",
+        "body": "WCPOS fournit le site web wcpos.com, des comptes utilisateur et des licences WCPOS Pro payantes qui débloquent des fonctionnalités premium, des mises à jour et une assistance prioritaire pour le plugin WCPOS."
       },
       "gpl": {
-        "title": "The free plugin and the GPL",
-        "body": "The free WCPOS plugin is open-source software released under the GNU General Public License (GPL). Nothing in these terms limits the rights the GPL grants you over that code. A Pro license is separate: it covers access to Pro features, license keys, automatic updates, and priority support — not a restriction on the open-source code itself."
+        "title": "Le plugin gratuit et la GPL",
+        "body": "Le plugin gratuit WCPOS est un logiciel open source publié sous la licence publique générale GNU (GPL). Rien dans ces conditions ne limite les droits que la GPL vous accorde sur ce code. Une licence Pro est distincte : elle couvre l’accès aux fonctionnalités Pro, aux clés de licence, aux mises à jour automatiques et à l’assistance prioritaire — elle ne constitue pas une restriction sur le code open source lui-même."
       },
       "account": {
-        "title": "Your account",
+        "title": "Votre compte",
         "items": {
-          "a1": "Provide accurate information when registering and keep it up to date.",
-          "a2": "Keep your credentials secure. You are responsible for activity that happens under your account.",
-          "a3": "Tell us promptly at <email>support@wcpos.com</email> if you suspect unauthorized access to your account."
+          "a1": "Fournissez des informations exactes lors de votre inscription et tenez-les à jour.",
+          "a2": "Gardez vos identifiants en sécurité. Vous êtes responsable de l’activité effectuée depuis votre compte.",
+          "a3": "Prévenez-nous rapidement à <email>support@wcpos.com</email> si vous soupçonnez un accès non autorisé à votre compte."
         }
       },
       "licenses": {
-        "title": "Purchases and licenses",
+        "title": "Achats et licences",
         "items": {
-          "l1": "<strong>Yearly license.</strong> A one-time payment that includes Pro features, automatic updates, and priority support for one year. It does not renew automatically and we never charge you again without a new purchase. When it expires, you can choose to renew it from your account for another year.",
-          "l2": "<strong>Lifetime license.</strong> A one-time purchase that includes Pro features, updates, and priority support for the lifetime of the product.",
-          "l3": "License keys are for activating WCPOS Pro on your own sites within the limits of the license you purchased. Do not share, resell, or publish license keys.",
-          "l4": "Prices are shown at checkout before you pay. Payment is handled by Stripe or PayPal.",
-          "l5": "Refunds are handled according to our <policy>refund policy</policy>."
+          "l1": "<strong>Licence annuelle.</strong> Un paiement unique qui inclut les fonctionnalités Pro, les mises à jour automatiques et l’assistance prioritaire pendant un an. Elle ne se renouvelle pas automatiquement et nous ne vous débitons jamais à nouveau sans nouvel achat. À son expiration, vous pouvez choisir de la renouveler depuis votre compte pour une année supplémentaire.",
+          "l2": "<strong>Licence à vie.</strong> Un achat unique qui inclut les fonctionnalités Pro, les mises à jour et l’assistance prioritaire pendant toute la durée de vie du produit.",
+          "l3": "Les clés de licence servent à activer WCPOS Pro sur vos propres sites dans les limites de la licence achetée. Ne partagez pas, ne revendez pas et ne publiez pas vos clés de licence.",
+          "l4": "Les prix sont affichés lors du paiement avant que vous ne payiez. Le paiement est traité par Stripe ou PayPal.",
+          "l5": "Les remboursements sont traités conformément à notre <policy>politique de remboursement</policy>."
         }
       },
       "acceptableUse": {
-        "title": "Acceptable use",
-        "body": "When using the service, you agree not to:",
+        "title": "Utilisation acceptable",
+        "body": "Lorsque vous utilisez le service, vous acceptez de ne pas :",
         "items": {
-          "u1": "Break the law or infringe the rights of others.",
-          "u2": "Attempt to gain unauthorized access to accounts, systems, or data, or probe the service for vulnerabilities without permission.",
-          "u3": "Interfere with the operation of the service, including overloading it or automated scraping at disruptive volumes.",
-          "u4": "Circumvent license checks or use license keys beyond the terms of your purchase. (This does not limit your GPL rights over the open-source plugin code.)"
+          "u1": "Enfreindre la loi ou porter atteinte aux droits d’autrui.",
+          "u2": "Tenter d’obtenir un accès non autorisé à des comptes, systèmes ou données, ou sonder le service à la recherche de vulnérabilités sans autorisation.",
+          "u3": "Perturber le fonctionnement du service, notamment en le surchargeant ou en effectuant du scraping automatisé à des volumes perturbateurs.",
+          "u4": "Contourner les vérifications de licence ou utiliser des clés de licence au-delà des conditions de votre achat. (Cela ne limite pas vos droits GPL sur le code open source du plugin.)"
         }
       },
       "warranty": {
-        "title": "Warranty disclaimer",
-        "body": "The service and software are provided \"as is\" and \"as available\", without warranties of any kind, express or implied, including merchantability, fitness for a particular purpose, and non-infringement. We do not promise that the service will be uninterrupted or error-free. Some jurisdictions do not allow certain warranty exclusions, so parts of this section may not apply to you."
+        "title": "Exclusion de garantie",
+        "body": "Le service et le logiciel sont fournis « en l’état » et « selon disponibilité », sans garanties d’aucune sorte, expresses ou implicites, y compris les garanties de qualité marchande, d’adéquation à un usage particulier et de non-contrefaçon. Nous ne promettons pas que le service sera ininterrompu ou exempt d’erreurs. Certaines juridictions n’autorisent pas certaines exclusions de garantie, de sorte que certaines parties de cette section peuvent ne pas s’appliquer à vous."
       },
       "liability": {
-        "title": "Limitation of liability",
-        "body": "To the maximum extent permitted by law, WCPOS will not be liable for indirect, incidental, special, or consequential damages, or for lost profits, revenue, or data. Our total liability for any claim relating to the service is limited to the amount you paid us in the 12 months before the claim arose. Nothing in these terms excludes liability that cannot be excluded by law."
+        "title": "Limitation de responsabilité",
+        "body": "Dans toute la mesure permise par la loi, WCPOS ne sera pas responsable des dommages indirects, accessoires, spéciaux ou consécutifs, ni des pertes de bénéfices, de revenus ou de données. Notre responsabilité totale pour toute réclamation liée au service est limitée au montant que vous nous avez payé au cours des 12 mois précédant la naissance de la réclamation. Rien dans ces conditions n’exclut une responsabilité qui ne peut pas être exclue par la loi."
       },
       "termination": {
-        "title": "Termination",
-        "body": "You can stop using the service and ask us to delete your account at any time. We may suspend or terminate accounts that violate these terms. Sections that by their nature should survive (such as the warranty disclaimer and liability limits) survive termination."
+        "title": "Résiliation",
+        "body": "Vous pouvez cesser d’utiliser le service et nous demander de supprimer votre compte à tout moment. Nous pouvons suspendre ou résilier les comptes qui enfreignent ces conditions. Les sections qui, par leur nature, doivent survivre (comme l’exclusion de garantie et les limites de responsabilité) survivent à la résiliation."
       },
       "changes": {
-        "title": "Changes to these terms",
-        "body": "If we make material changes, we will update the date at the top of this page. Continued use of the service after a change means the updated terms apply."
+        "title": "Modifications de ces conditions",
+        "body": "Si nous apportons des modifications importantes, nous mettrons à jour la date en haut de cette page. La poursuite de l’utilisation du service après une modification signifie que les conditions mises à jour s’appliquent."
       },
       "contact": {
-        "title": "Contact",
-        "body": "Questions about these terms? Email us at <email>support@wcpos.com</email> or ask in the community chat on the <support>support page</support>."
+        "title": "Nous contacter",
+        "body": "Des questions sur ces conditions ? Envoyez-nous un e-mail à <email>support@wcpos.com</email> ou posez-les dans le chat communautaire sur la <support>page d’assistance</support>."
       }
     }
   },
@@ -1543,7 +1543,7 @@
       "feedback": {
         "prompt": "Cette réponse vous a-t-elle été utile ?",
         "yes": "Oui",
-        "no": "No"
+        "no": "Non"
       },
       "thinking": "Aide réfléchit…",
       "form": {
