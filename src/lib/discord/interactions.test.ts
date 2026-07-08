@@ -121,6 +121,28 @@ describe('discord interaction replies', () => {
     expect(reply).toContain('`****-9999` — expired, lifetime · holder unknown · seats 1/5 · connection date unknown')
   })
 
+  it('caps customer info cards to Discord content limits and reports omitted licences', () => {
+    const reply = formatCustomerInfoReply(
+      {
+        licences: Array.from({ length: 60 }, (_, index) => ({
+          keySuffix: String(index).padStart(4, '0'),
+          status: 'active',
+          expiry: '2027-02-16T00:00:00.000Z',
+          holderEmail: `owner-${index}@example.com`,
+          usedSeats: 2,
+          seatCap: 5,
+          connectedAt: '2026-06-01T00:00:00.000Z',
+        })),
+        customerSince: '2019-03-05T12:00:00.000Z',
+        roleState: 'has_role',
+      },
+      { id: 'u1', username: 'ada' }
+    )
+
+    expect(reply.length).toBeLessThanOrEqual(2000)
+    expect(reply).toMatch(/more licences omitted/)
+  })
+
   it('formats the no-licences card with a mention fallback for the username', () => {
     const reply = formatCustomerInfoReply(
       { licences: [], customerSince: null, roleState: 'not_in_guild' },

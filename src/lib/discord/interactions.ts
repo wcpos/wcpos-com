@@ -149,6 +149,8 @@ const ROLE_STATE_LABEL: Record<DiscordCustomerInfo['roleState'], string> = {
   unknown: 'unknown',
 }
 
+const DISCORD_MESSAGE_CONTENT_LIMIT = 2000
+
 export function formatCustomerInfoReply(
   info: DiscordCustomerInfo,
   target: { id: string; username: string | null }
@@ -172,10 +174,31 @@ export function formatCustomerInfoReply(
     return `• \`****-${licence.keySuffix}\` — ${licence.status}, ${expiry} · ${holder} · seats ${licence.usedSeats}/${licence.seatCap} · ${connected}`
   })
 
-  return [
+  const prefixLines = [
     header,
     `Customer since: ${info.customerSince ? formatDate(info.customerSince) : 'unknown'}`,
     `Pro role: ${ROLE_STATE_LABEL[info.roleState]}.`,
-    ...lines,
+  ]
+  const visibleLines: string[] = []
+
+  for (const line of lines) {
+    const remaining = lines.length - visibleLines.length - 1
+    const omittedLine = remaining > 0 ? `…and ${remaining} more licences omitted.` : null
+    const candidate = [
+      ...prefixLines,
+      ...visibleLines,
+      line,
+      ...(omittedLine ? [omittedLine] : []),
+    ].join('\n')
+
+    if (candidate.length > DISCORD_MESSAGE_CONTENT_LIMIT) break
+    visibleLines.push(line)
+  }
+
+  const omittedCount = lines.length - visibleLines.length
+  return [
+    ...prefixLines,
+    ...visibleLines,
+    ...(omittedCount > 0 ? [`…and ${omittedCount} more licences omitted.`] : []),
   ].join('\n')
 }
