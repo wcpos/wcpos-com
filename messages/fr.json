@@ -1279,86 +1279,86 @@
   },
   "downloads": {
     "meta": {
-      "title": "Downloads",
-      "description": "Download WCPOS — the free plugin plus the desktop, iOS, Android and web apps. See the latest version and recent release notes."
+      "title": "Téléchargements",
+      "description": "Téléchargez WCPOS — le plugin gratuit ainsi que les applications de bureau, iOS, Android et web. Consultez la dernière version et les notes de version récentes."
     },
     "platforms": {
       "mac-arm": {
         "name": "macOS",
         "listLabel": "macOS (Apple Silicon)",
         "short": "Apple Silicon · .dmg",
-        "action": "Download for macOS"
+        "action": "Télécharger pour macOS"
       },
       "mac-intel": {
         "name": "macOS (Intel)",
         "listLabel": "macOS (Intel)",
         "short": "Intel · .dmg",
-        "action": "Download for macOS"
+        "action": "Télécharger pour macOS"
       },
       "win": {
         "name": "Windows",
         "listLabel": "Windows",
         "short": "Windows 10/11 · .exe",
-        "action": "Download for Windows"
+        "action": "Télécharger pour Windows"
       },
       "linux": {
         "name": "Linux",
         "listLabel": "Linux",
         "short": ".AppImage",
-        "action": "Download for Linux"
+        "action": "Télécharger pour Linux"
       },
       "ios": {
         "name": "iOS & iPad",
         "listLabel": "iOS & iPad",
-        "short": "Public TestFlight beta",
-        "action": "Join the iOS beta"
+        "short": "Bêta publique TestFlight",
+        "action": "Rejoindre la bêta iOS"
       },
       "android": {
         "name": "Android",
         "listLabel": "Android",
-        "short": "Google Play testing beta",
-        "action": "Join the Android beta"
+        "short": "Bêta de test Google Play",
+        "action": "Rejoindre la bêta Android"
       },
       "web": {
         "name": "Web",
         "listLabel": "Web",
-        "short": "No install needed",
-        "action": "Open the web demo"
+        "short": "Aucune installation nécessaire",
+        "action": "Ouvrir la démo web"
       }
     },
     "hero": {
-      "eyebrow": "Downloads",
-      "title": "One till, every device.",
-      "platformChooserLabel": "Choose your platform",
+      "eyebrow": "Téléchargements",
+      "title": "Une caisse, tous vos appareils.",
+      "platformChooserLabel": "Choisissez votre plateforme",
       "versionMeta": "Version {version} · {platform}",
-      "detected": "Detected",
-      "intelMac": "On an Intel Mac? <intel>Get the Intel build</intel>",
-      "pluginNotice": "Every app connects to the <plugin>free WordPress plugin</plugin> — install it first."
+      "detected": "Détecté",
+      "intelMac": "Sur un Mac Intel ? <intel>Téléchargez la version Intel</intel>",
+      "pluginNotice": "Chaque application se connecte au <plugin>plugin WordPress gratuit</plugin> — installez-le d’abord."
     },
     "howItFits": {
-      "eyebrow": "How it fits together",
-      "title": "One store at the centre. Every till in sync.",
+      "eyebrow": "Comment tout s’assemble",
+      "title": "Un magasin au centre. Chaque caisse synchronisée.",
       "points": {
         "setup": {
-          "title": "One plugin is the only setup",
-          "body": "The free plugin adds a secure REST API to your WooCommerce store. That’s the whole install — nothing to host or configure per device."
+          "title": "Un seul plugin suffit pour démarrer",
+          "body": "Le plugin gratuit ajoute une API REST sécurisée à votre boutique WooCommerce. C’est toute l’installation — rien à héberger ni à configurer appareil par appareil."
         },
         "sync": {
-          "title": "Every app reads and writes the same store",
-          "body": "Ring up a sale on the desktop, refund it on your phone — one set of products, orders and customers, updating in real time."
+          "title": "Chaque application lit et écrit dans la même boutique",
+          "body": "Encaissez une vente sur l’ordinateur, remboursez-la sur votre téléphone — un seul jeu de produits, commandes et clients, mis à jour en temps réel."
         },
         "offline": {
-          "title": "Offline-first, so the till never stops",
-          "body": "Each device keeps working without a connection and re-syncs the moment it’s back online."
+          "title": "Pensé pour le hors ligne, pour que la caisse ne s’arrête jamais",
+          "body": "Chaque appareil continue de fonctionner sans connexion et se resynchronise dès qu’il revient en ligne."
         }
       },
-      "syncLabel": "What stays in sync",
+      "syncLabel": "Ce qui reste synchronisé",
       "chips": {
-        "c1": "Products & prices",
-        "c2": "Stock levels",
-        "c3": "Orders",
-        "c4": "Customers",
-        "c5": "Tax & receipts"
+        "c1": "Produits et prix",
+        "c2": "Niveaux de stock",
+        "c3": "Commandes",
+        "c4": "Clients",
+        "c5": "Taxes et reçus"
       },
       "diagram": {
         "ariaLabel": "Une boutique WooCommerce avec l’extension WCPOS se trouve au centre, connectée via une API REST aux applications de bureau, iOS, Android et web, qui restent synchronisées.",
@@ -1376,55 +1376,55 @@
       }
     },
     "page": {
-      "beta": "Beta",
+      "beta": "Bêta",
       "start": {
-        "eyebrow": "Get started",
-        "title": "Three steps to your first sale",
-        "subtitle": "It takes about two minutes, start to finish."
+        "eyebrow": "Premiers pas",
+        "title": "Trois étapes jusqu’à votre première vente",
+        "subtitle": "Cela prend environ deux minutes, du début à la fin."
       },
       "steps": {
         "plugin": {
-          "title": "Install the free plugin",
-          "body": "The foundation everything connects to. In your dashboard: Plugins → Add New, then search “WCPOS”.",
-          "badge": "Free · GPL",
+          "title": "Installez le plugin gratuit",
+          "body": "La base à laquelle tout se connecte. Dans votre tableau de bord : Extensions → Ajouter, puis recherchez « WCPOS ».",
+          "badge": "Gratuit · GPL",
           "requirements": "WordPress 5.6+ · WooCommerce 5.3+ · PHP 7.4+",
-          "requirementsWithVersion": "Latest {version} · WordPress 5.6+ · WooCommerce 5.3+ · PHP 7.4+",
+          "requirementsWithVersion": "Dernière version {version} · WordPress 5.6+ · WooCommerce 5.3+ · PHP 7.4+",
           "cardTitle": "WCPOS",
           "wordpressOrgCta": "WordPress.org"
         },
         "device": {
-          "title": "Pick your device",
-          "body": "All free, all in sync. Grab the one we detected up top, or any of these.",
-          "desktopTitle": "Desktop app",
-          "iosCta": "Join the TestFlight beta",
-          "androidCta": "Join on Google Play",
-          "webCta": "Open the live demo"
+          "title": "Choisissez votre appareil",
+          "body": "Tous gratuits, tous synchronisés. Prenez celui détecté ci-dessus, ou l’un de ceux-ci.",
+          "desktopTitle": "Application de bureau",
+          "iosCta": "Rejoindre la bêta TestFlight",
+          "androidCta": "Rejoindre sur Google Play",
+          "webCta": "Ouvrir la démo en direct"
         },
         "pro": {
-          "title": "Want more? Go Pro",
-          "body": "A licensed plugin that adds terminal payments, refunds and stock control on the same foundation.",
-          "cardTitle": "Unlock the full till",
-          "cardBody": "Payments, refunds, stock & pricing, order management, end-of-day reports, multi-store and priority Discord support.",
-          "plansCta": "View Pro plans",
-          "signInCta": "Sign in to download"
+          "title": "Besoin de plus ? Passez à Pro",
+          "body": "Un plugin sous licence qui ajoute les paiements par terminal, les remboursements et le contrôle du stock sur la même base.",
+          "cardTitle": "Débloquez toute la caisse",
+          "cardBody": "Paiements, remboursements, stock et prix, gestion des commandes, rapports de fin de journée, multi-boutique et assistance prioritaire sur Discord.",
+          "plansCta": "Voir les offres Pro",
+          "signInCta": "Connectez-vous pour télécharger"
         }
       }
     },
     "releaseHistory": {
-      "eyebrow": "Release history",
-      "title": "What’s new",
-      "subtitle": "Recent changes — every app shares one version line.",
-      "latest": "Latest",
-      "fullHistory": "Full history on GitHub —",
-      "desktop": "Desktop",
-      "emptyNotes": "_No release notes for this version._",
+      "eyebrow": "Historique des versions",
+      "title": "Nouveautés",
+      "subtitle": "Changements récents — chaque application partage la même ligne de version.",
+      "latest": "Dernière version",
+      "fullHistory": "Historique complet sur GitHub —",
+      "desktop": "Bureau",
+      "emptyNotes": "_Aucune note de version pour cette version._",
       "fallback": {
         "v196": "- Cash drawer support — auto-open after payment or via a new Open Drawer button, with per-printer connectors (ESC-POS, Epson, PrintNode, cloud)\n- Fixed analytics events firing too often\n- Updated translations",
         "v195": "- Fixed a payment-gateways API crash (HTTP 500 with some third-party gateways, e.g. ToyyibPay)",
         "v194": "- Redesigned Bluetooth printer setup; serial printing for OS-paired Bluetooth Classic printers\n- Improved Windows raw printing; smoother USB flow",
         "v190": "- New receipt template gallery; thermal printing (58/80mm)\n- Customer Tax IDs; Pro coupons & refunds at the POS"
       },
-      "plugin": "Free"
+      "plugin": "Gratuit"
     }
   },
   "about": {

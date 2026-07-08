@@ -40,10 +40,35 @@ const otherLocales = fileLocales.filter((locale) => locale !== defaultLocale)
 const checkoutRecoveryKeys = enKeys.filter((key) =>
   key.startsWith('pro.checkout.recovery.orderPending.')
 )
-const auditedFrenchNamespacePrefixes = ['roadmap.', 'support.']
+const auditedFrenchNamespacePrefixes = ['roadmap.', 'support.', 'downloads.']
 const frenchIdenticalCopyAllowlist = new Set([
   'roadmap.meta.title',
   'roadmap.page.eyebrow',
+  'downloads.platforms.mac-arm.name',
+  'downloads.platforms.mac-arm.listLabel',
+  'downloads.platforms.mac-arm.short',
+  'downloads.platforms.mac-intel.name',
+  'downloads.platforms.mac-intel.listLabel',
+  'downloads.platforms.mac-intel.short',
+  'downloads.platforms.win.name',
+  'downloads.platforms.win.listLabel',
+  'downloads.platforms.win.short',
+  'downloads.platforms.linux.name',
+  'downloads.platforms.linux.listLabel',
+  'downloads.platforms.linux.short',
+  'downloads.platforms.ios.name',
+  'downloads.platforms.ios.listLabel',
+  'downloads.platforms.android.name',
+  'downloads.platforms.android.listLabel',
+  'downloads.platforms.web.name',
+  'downloads.platforms.web.listLabel',
+  'downloads.hero.versionMeta',
+  'downloads.howItFits.diagram.devices.android',
+  'downloads.howItFits.diagram.devices.web',
+  'downloads.howItFits.diagram.hub.platform',
+  'downloads.page.steps.plugin.requirements',
+  'downloads.page.steps.plugin.cardTitle',
+  'downloads.page.steps.plugin.wordpressOrgCta',
 ])
 
 describe('messages key parity', () => {
@@ -113,14 +138,16 @@ describe('messages key parity', () => {
     }
   )
 
-  it('fr.json translates the audited public support and roadmap copy', () => {
+  it('fr.json translates the audited public support, roadmap, and downloads copy', () => {
     const english = loadMessages(defaultLocale)
     const french = loadMessages('fr')
     const auditedKeys = enKeys.filter(
       (key) =>
         auditedFrenchNamespacePrefixes.some((prefix) =>
           key.startsWith(prefix)
-        ) && !frenchIdenticalCopyAllowlist.has(key)
+        ) &&
+        !frenchIdenticalCopyAllowlist.has(key) &&
+        !key.startsWith('downloads.releaseHistory.fallback.')
     )
     const untranslatedKeys = auditedKeys.filter((key) => {
       const englishValue = valueAtPath(english, key)
@@ -134,7 +161,7 @@ describe('messages key parity', () => {
 
     expect(
       untranslatedKeys,
-      'messages/fr.json must not copy audited support/roadmap English strings verbatim'
+      'messages/fr.json must not copy audited support/roadmap/downloads English strings verbatim'
     ).toEqual([])
   })
 })
