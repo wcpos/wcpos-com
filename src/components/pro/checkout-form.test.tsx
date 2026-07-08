@@ -1,6 +1,8 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { screen, fireEvent, waitFor } from '@testing-library/react'
+import { render as rtlRender, screen, fireEvent, waitFor } from '@testing-library/react'
+import { NextIntlClientProvider } from 'next-intl'
 import { renderWithIntl as render } from '@/test/intl'
+import frMessages from '../../../messages/fr.json'
 
 const mockConfirmPayment = vi.fn()
 
@@ -33,6 +35,22 @@ function renderForm() {
       onSuccess={onSuccess}
       onFailure={onFailure}
     />
+  )
+}
+
+function renderFormWithLocale(locale: string, messages: typeof frMessages) {
+  return rtlRender(
+    <NextIntlClientProvider locale={locale} messages={messages}>
+      <CheckoutForm
+        cartId="cart_1"
+        amount={129}
+        currency="usd"
+        experiment="pro_checkout_v1"
+        experimentVariant="control"
+        onSuccess={onSuccess}
+        onFailure={onFailure}
+      />
+    </NextIntlClientProvider>
   )
 }
 
@@ -79,6 +97,24 @@ describe('CheckoutForm', () => {
       experiment: 'pro_checkout_v1',
       experimentVariant: 'control',
     })
+  })
+
+  it('keeps Stripe return URLs on the active locale route', async () => {
+    mockConfirmPayment.mockResolvedValue({
+      error: { type: 'card_error', code: 'card_declined' },
+    })
+
+    renderFormWithLocale('fr', frMessages)
+    submit()
+
+    await waitFor(() => expect(mockConfirmPayment).toHaveBeenCalled())
+    expect(mockConfirmPayment).toHaveBeenCalledWith(
+      expect.objectContaining({
+        confirmParams: expect.objectContaining({
+          return_url: 'http://localhost:3000/fr/pro/checkout/success',
+        }),
+      })
+    )
   })
 
   it('also completes the cart for requires_capture intents', async () => {
