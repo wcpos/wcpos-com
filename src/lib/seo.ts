@@ -1,7 +1,30 @@
 import type { Metadata } from 'next'
-import { locales, defaultLocale } from '@/i18n/config'
+import { locales, defaultLocale, type Locale } from '@/i18n/config'
 
 export const SITE_URL = 'https://wcpos.com'
+
+const OPEN_GRAPH_LOCALES: Record<Locale, string> = {
+  de: 'de_DE',
+  en: 'en_US',
+  es: 'es_ES',
+  fr: 'fr_FR',
+  it: 'it_IT',
+  ja: 'ja_JP',
+  ko: 'ko_KR',
+  nl: 'nl_NL',
+  pt: 'pt_PT',
+  zh: 'zh_CN',
+}
+
+export function openGraphLocale(locale: Locale): string {
+  return OPEN_GRAPH_LOCALES[locale]
+}
+
+export function alternateOpenGraphLocales(locale: Locale): string[] {
+  return locales
+    .filter((alternateLocale) => alternateLocale !== locale)
+    .map((alternateLocale) => openGraphLocale(alternateLocale))
+}
 
 /**
  * Build the public URL for a path in a given locale.

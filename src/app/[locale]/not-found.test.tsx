@@ -112,13 +112,16 @@ describe('LocaleLayout runtime attributes', () => {
 })
 
 describe('LocaleLayout metadata', () => {
-  it('preserves the root social image for localized pages', async () => {
+  it('preserves the root social image and localizes OpenGraph metadata', async () => {
     const { generateMetadata } = await import('./layout')
     const metadata = await generateMetadata({
-      params: Promise.resolve({ locale: 'en' }),
+      params: Promise.resolve({ locale: 'fr' }),
     })
 
     expect(metadata.openGraph?.images).toEqual(['/opengraph-image.png'])
     expect(metadata.twitter?.images).toEqual(['/opengraph-image.png'])
+    expect(metadata.openGraph?.locale).toBe('fr_FR')
+    expect(metadata.openGraph?.alternateLocale).toContain('en_US')
+    expect(metadata.openGraph?.alternateLocale).not.toContain('fr_FR')
   })
 })
