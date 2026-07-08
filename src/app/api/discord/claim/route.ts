@@ -35,13 +35,16 @@ function isFormPost(request: NextRequest): boolean {
 }
 
 /**
- * Form-encoded posts are CSRF-able "simple requests" (unlike JSON, which the
- * preflight already fences), so the browser-visible claim entry point checks
- * the request came from this site before starting an OAuth round-trip.
- * Fail closed on a missing Origin header: every current browser sends it on
- * form POSTs, and the JSON body path stays available for non-browser callers.
+ * Every path below mints OAuth state and starts a browser redirect, so this is
+ * a state-changing entry point that must reject cross-site callers. Form-encoded
+ * AND text/plain bodies are CSRF-able "simple requests" that skip the CORS
+ * preflight, so the Origin check has to cover every content type — not just form
+ * posts — or a cross-site page could POST text/plain and slip through to the
+ * JSON parser. Fail closed on a missing Origin header: every current browser
+ * sends it on a state-changing POST, and the OAuth round-trip needs a browser
+ * anyway, so a non-browser caller has nothing to complete here.
  */
-function isCrossSiteFormPost(request: NextRequest): boolean {
+function isCrossSiteRequest(request: NextRequest): boolean {
   const origin = request.headers.get('origin')
   if (!origin) return true
   try {
@@ -52,13 +55,13 @@ function isCrossSiteFormPost(request: NextRequest): boolean {
 }
 
 export async function POST(request: NextRequest) {
+  if (isCrossSiteRequest(request)) {
+    return NextResponse.json({ errorCode: 'cross_site_request' }, { status: 403 })
+  }
   let body: { licenseKey?: unknown; returnTo?: unknown }
   if (isFormPost(request)) {
     // The licences page submits a real HTML form so the 303 → Discord →
     // callback chain runs as a top-level navigation.
-    if (isCrossSiteFormPost(request)) {
-      return NextResponse.json({ errorCode: 'cross_site_request' }, { status: 403 })
-    }
     const form = await request.formData().catch((error: unknown) => {
       apiLogger.info`Discord claim received a malformed form body: ${error}`
       return new FormData()

@@ -634,6 +634,25 @@ describe('LicensesClient', () => {
     )
   })
 
+  it('hides Connect Discord during read-only inspection and shows the read-only note', () => {
+    const { container } = render(
+      <LicensesClient
+        initialLicenses={[makeLicense({ id: 'lic-1' })]}
+        viewOnly
+      />
+    )
+
+    expect(
+      screen.queryByRole('button', { name: /Connect Discord/ })
+    ).not.toBeInTheDocument()
+    expect(
+      container.querySelector('form[action="/api/discord/claim"]')
+    ).toBeNull()
+    expect(
+      screen.getByText('You are viewing this account in read-only mode.')
+    ).toBeInTheDocument()
+  })
+
   it('hides Connect Discord when every seat is taken', () => {
     render(
       <LicensesClient

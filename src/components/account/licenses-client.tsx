@@ -130,12 +130,22 @@ interface LicensesClientProps {
    */
   entitledVersions?: Record<string, string | null>
   discordAccessByLicense?: Record<string, DiscordAccess>
+  /**
+   * True when an admin is inspecting this account read-only. The account
+   * mutation routes fence themselves with assertViewOnly(), but the Discord
+   * claim CTA posts to the public /api/discord/claim route (outside
+   * /api/account), which never sees the account-request header — so the gate
+   * has to happen here, or an admin could bind their own Discord to the
+   * inspected customer's licence.
+   */
+  viewOnly?: boolean
 }
 
 export function LicensesClient({
   initialLicenses,
   entitledVersions = {},
   discordAccessByLicense = {},
+  viewOnly = false,
 }: LicensesClientProps) {
   const locale = useLocale()
   const loginPath = localizeRedirectPath('/login', locale as Locale)
@@ -785,26 +795,38 @@ export function LicensesClient({
                     <p className="text-xs text-muted-foreground">
                       {t('discordConnectHint')}
                     </p>
-                    {discordAccess.usedSeats < discordAccess.seatCap && (
-                      /* A real form post: the 303 to Discord's authorize page
-                         (and the OAuth round-trip back) must run as a
-                         top-level navigation, which fetch() cannot do. */
-                      <form method="POST" action="/api/discord/claim">
-                        <input type="hidden" name="licenseKey" value={license.key} />
-                        <input
-                          type="hidden"
-                          name="returnTo"
-                          value={localizeRedirectPath('/account/licenses', locale as Locale)}
-                        />
-                        <Button
-                          type="submit"
-                          variant="outline"
-                          size="sm"
-                          aria-label={t('discordConnectCtaAria', { suffix: keySuffix })}
-                        >
-                          {t('discordConnectCta')}
-                        </Button>
-                      </form>
+                    {viewOnly ? (
+                      /* Read-only inspection: don't offer the claim flow. The
+                         public /api/discord/claim route can't be fenced by
+                         assertViewOnly(), so hide the CTA and mirror the
+                         read-only messaging the account routes return. */
+                      discordAccess.usedSeats < discordAccess.seatCap && (
+                        <p className="text-xs text-muted-foreground">
+                          {t('apiErrors.read_only_inspection')}
+                        </p>
+                      )
+                    ) : (
+                      discordAccess.usedSeats < discordAccess.seatCap && (
+                        /* A real form post: the 303 to Discord's authorize page
+                           (and the OAuth round-trip back) must run as a
+                           top-level navigation, which fetch() cannot do. */
+                        <form method="POST" action="/api/discord/claim">
+                          <input type="hidden" name="licenseKey" value={license.key} />
+                          <input
+                            type="hidden"
+                            name="returnTo"
+                            value={localizeRedirectPath('/account/licenses', locale as Locale)}
+                          />
+                          <Button
+                            type="submit"
+                            variant="outline"
+                            size="sm"
+                            aria-label={t('discordConnectCtaAria', { suffix: keySuffix })}
+                          >
+                            {t('discordConnectCta')}
+                          </Button>
+                        </form>
+                      )
                     )}
                   </div>
                 )}
