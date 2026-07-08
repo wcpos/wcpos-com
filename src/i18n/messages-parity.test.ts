@@ -71,6 +71,8 @@ const receiptPdfEnglishPhrases = [
   'proof of purchase',
   'tax records',
   'Generated',
+  'Paid',
+  'Refunded',
   'Partially refunded',
   'Canceled',
   'Unknown',
