@@ -124,7 +124,6 @@ const portugueseIdenticalCopyAllowlist = new Set([
   'downloads.page.steps.plugin.requirements',
   'downloads.page.steps.plugin.cardTitle',
   'downloads.page.steps.plugin.wordpressOrgCta',
-  'downloads.releaseHistory.desktop',
   'account.orderDetail.totalLabel',
   'account.profile.discordProvider',
   'account.profile.githubProvider',

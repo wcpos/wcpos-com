@@ -1416,7 +1416,7 @@
       "subtitle": "Alterações recentes — todas as aplicações partilham a mesma linha de versões.",
       "latest": "Mais recente",
       "fullHistory": "Histórico completo no GitHub —",
-      "desktop": "Desktop",
+      "desktop": "Computador",
       "emptyNotes": "_Sem notas de lançamento para esta versão._",
       "fallback": {
         "v196": "- Suporte para gaveta de dinheiro — abertura automática após pagamento ou através do novo botão Abrir gaveta, com conectores por impressora (ESC-POS, Epson, PrintNode, cloud)\n- Corrigidos eventos de análise disparados demasiadas vezes\n- Traduções atualizadas",
