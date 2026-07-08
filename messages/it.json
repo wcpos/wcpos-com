@@ -1,14 +1,14 @@
 {
   "common": {
     "signIn": "Accedi",
-    "account": "Account",
+    "account": "Area account",
     "openMenu": "Apri menu",
     "accountMenu": "Menu account",
     "signOut": "Esci"
   },
   "header": {
     "documentation": "Documentazione",
-    "roadmap": "Roadmap",
+    "roadmap": "Piano di sviluppo",
     "pro": "Pro",
     "support": "Supporto",
     "downloads": "Download"
@@ -16,7 +16,7 @@
   "footer": {
     "downloads": "Download",
     "copyright": "© 2026 WCPOS",
-    "privacy": "Privacy",
+    "privacy": "Informativa privacy",
     "terms": "Termini",
     "refunds": "Rimborsi",
     "about": "Informazioni",
@@ -26,12 +26,12 @@
     "themeDark": "Scuro",
     "themeSystem": "Sistema",
     "productHeading": "Prodotto",
-    "communityHeading": "Community",
+    "communityHeading": "Comunità",
     "supportHeading": "Supporto",
     "companyHeading": "Azienda",
-    "downloadHeading": "Download",
+    "downloadHeading": "Scarica",
     "pro": "WCPOS Pro",
-    "roadmap": "Roadmap",
+    "roadmap": "Piano di sviluppo",
     "demo": "Demo dal vivo",
     "discord": "Discord",
     "github": "GitHub",

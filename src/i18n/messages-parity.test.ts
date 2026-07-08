@@ -44,8 +44,18 @@ const auditedItalianNamespacePrefixes = [
   'support.',
   'auth.',
   'roadmap.',
+  'footer.',
+  'header.',
+  'common.',
 ]
-const italianIdenticalCopyAllowlist = new Set<string>([])
+const italianIdenticalCopyAllowlist = new Set([
+  'header.pro',
+  'footer.copyright',
+  'footer.discord',
+  'footer.github',
+  'footer.pro',
+  'footer.wordpressOrg',
+])
 
 const auditedFrenchNamespacePrefixes = [
   'roadmap.',
@@ -701,7 +711,7 @@ describe('messages key parity', () => {
     }
   )
 
-  it('it.json translates the audited support, auth, and roadmap copy', () => {
+  it('it.json translates the audited support, auth, roadmap, common, header, and footer copy', () => {
     const english = loadMessages(defaultLocale)
     const italian = loadMessages('it')
     const auditedKeys = enKeys.filter(
@@ -722,7 +732,7 @@ describe('messages key parity', () => {
 
     expect(
       untranslatedKeys,
-      'messages/it.json must not copy audited support/auth/roadmap English strings verbatim'
+      'messages/it.json must not copy audited support/auth/roadmap/common/header/footer English strings verbatim'
     ).toEqual([])
   })
 
