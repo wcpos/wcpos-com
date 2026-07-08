@@ -357,6 +357,33 @@ describe('CheckoutClient', () => {
           metadata: {
             experiment: 'pro_checkout_v1',
             variant: 'control',
+            locale: 'en',
+          },
+        }),
+      })
+    )
+  })
+
+  it('includes the active locale in cart metadata for order email localization', async () => {
+    mockSuccessfulCheckoutInit()
+    renderSignedInFrench()
+
+    await waitFor(() => {
+      expect(mockFetch).toHaveBeenCalledWith(
+        '/api/store/cart',
+        expect.objectContaining({ method: 'POST' })
+      )
+    })
+    expect(mockFetch).toHaveBeenNthCalledWith(
+      1,
+      '/api/store/cart',
+      expect.objectContaining({
+        method: 'POST',
+        body: JSON.stringify({
+          metadata: {
+            experiment: 'pro_checkout_v1',
+            variant: 'control',
+            locale: 'fr',
           },
         }),
       })

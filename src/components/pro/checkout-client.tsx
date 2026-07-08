@@ -347,6 +347,7 @@ export function CheckoutClient({
             metadata: {
               experiment: PRO_CHECKOUT_EXPERIMENT,
               variant: experimentVariant,
+              locale,
             },
           }),
         })
@@ -404,6 +405,7 @@ export function CheckoutClient({
     selectedOfferHandle,
     cartRegionId,
     experimentVariant,
+    locale,
   ])
 
   // Select payment provider when method changes
