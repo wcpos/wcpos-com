@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { resolveTurnstileSiteKey } from '@/lib/support/turnstile-keys'
 
 const mockHost = vi.hoisted(() => ({ value: null as string | null }))
 
@@ -36,6 +37,25 @@ describe('GET /api/health', () => {
 
     mockHost.value = 'localhost:3000'
     expect((await (await GET()).json()).storeEnvironment).toBe('dev')
+  })
+
+  it('reports support config as the public site key plus presence booleans', async () => {
+    const support = (await (await GET()).json()).support
+    expect(support).toEqual({
+      turnstileSiteKey: expect.toSatisfy(
+        (v: unknown) => v === null || typeof v === 'string'
+      ),
+      turnstileSecretKey: expect.any(Boolean),
+      openclawToken: expect.any(Boolean),
+    })
+  })
+
+  it('reports the same host-resolved Turnstile site key as the support widget', async () => {
+    mockHost.value = 'wcpos.com'
+
+    const support = (await (await GET()).json()).support
+
+    expect(support.turnstileSiteKey).toBe(resolveTurnstileSiteKey('wcpos.com'))
   })
 
   it('returns a valid ISO timestamp', async () => {

@@ -1,11 +1,17 @@
 import 'server-only'
 
 import { headers } from 'next/headers'
+import {
+  resolveStoreEnvironmentName,
+  type StoreEnvironmentName,
+} from './store-environment-name'
 import type {
   CheckoutPaymentConfig,
   PayPalCheckoutConfig,
   PayPalEnvironment,
 } from './checkout-payment-config'
+
+export { resolveStoreEnvironmentName, type StoreEnvironmentName }
 
 /**
  * Host-keyed store environments — config in code, git as the flip mechanism.
@@ -23,8 +29,6 @@ import type {
  * as props from a server component (the host is a request-time fact; module
  * scope in the client bundle cannot know it without hydration mismatches).
  */
-
-export type StoreEnvironmentName = 'live' | 'test' | 'dev'
 
 export interface StoreEnvironment {
   name: StoreEnvironmentName
@@ -132,24 +136,6 @@ const STORE_ENVIRONMENTS: Record<StoreEnvironmentName, StoreEnvironment> = {
       btcpayEnabled: true,
     },
   },
-}
-
-const LIVE_HOSTNAMES = new Set(['wcpos.com', 'www.wcpos.com'])
-const TEST_HOSTNAME_SUFFIXES = ['.vercel.app']
-const TEST_HOSTNAMES = new Set(['beta.wcpos.com'])
-
-/** Pure host → environment mapping (exported for tests). */
-export function resolveStoreEnvironmentName(
-  host: string | null | undefined
-): StoreEnvironmentName {
-  const hostname = (host ?? '').trim().toLowerCase().split(':')[0]
-
-  if (LIVE_HOSTNAMES.has(hostname)) return 'live'
-  if (TEST_HOSTNAMES.has(hostname)) return 'test'
-  if (TEST_HOSTNAME_SUFFIXES.some((suffix) => hostname.endsWith(suffix))) {
-    return 'test'
-  }
-  return 'dev'
 }
 
 export function getStoreEnvironmentByName(

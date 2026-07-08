@@ -4,6 +4,7 @@ import { randomUUID } from 'crypto'
 import { apiLogger } from '@/lib/logger'
 import { askAide, OpenclawError } from '@/lib/openclaw/client'
 import { verifyTurnstile } from '@/lib/support/turnstile'
+import { resolveStoreEnvironmentName } from '@/lib/store-environment-name'
 import { consumeRateLimit, consumeDailyBudget } from '@/lib/support/rate-limit'
 import { locales } from '@/i18n/config'
 
@@ -51,16 +52,18 @@ export async function POST(request: Request): Promise<NextResponse> {
   }
   const { question, locale, sessionId, turnstileToken } = parsed.data
   const ip = clientIp(request)
+  const host = request.headers.get('host')
+  const envScope = resolveStoreEnvironmentName(host)
 
-  if (!(await verifyTurnstile(turnstileToken, ip))) {
+  if (!(await verifyTurnstile(turnstileToken, host, ip))) {
     return errorResponse('bot_check_failed', 403)
   }
 
-  const ipLimit = await consumeRateLimit(ip)
+  const ipLimit = await consumeRateLimit(envScope, ip)
   if (!ipLimit.success) {
     return errorResponse('rate_limited', 429)
   }
-  const budget = await consumeDailyBudget(utcDay())
+  const budget = await consumeDailyBudget(envScope, utcDay())
   if (!budget.success) {
     return errorResponse('budget_exhausted', 429)
   }

@@ -7,7 +7,7 @@ import { consumeRateLimit, consumeDailyBudget } from './rate-limit'
 
 describe('rate-limit (unconfigured)', () => {
   it('allows requests when Upstash is not configured', async () => {
-    expect(await consumeRateLimit('1.2.3.4')).toMatchObject({ success: true })
-    expect(await consumeDailyBudget('2026-06-16')).toMatchObject({ success: true })
+    expect(await consumeRateLimit('live', '1.2.3.4')).toMatchObject({ success: true })
+    expect(await consumeDailyBudget('live', '2026-06-16')).toMatchObject({ success: true })
   })
 })

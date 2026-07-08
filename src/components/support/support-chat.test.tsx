@@ -9,6 +9,13 @@ import frMessages from '../../../messages/fr.json'
 
 const { resetTurnstile } = vi.hoisted(() => ({ resetTurnstile: vi.fn() }))
 
+// Pin a widget for every test host: the component resolves its site key from
+// window.location (jsdom = localhost = no widget otherwise); host mapping
+// itself is covered by turnstile-keys.test.ts.
+vi.mock('@/lib/support/turnstile-keys', () => ({
+  resolveTurnstileSiteKey: () => 'site-key',
+}))
+
 vi.mock('@marsidev/react-turnstile', () => ({
   Turnstile: ({
     onSuccess,
@@ -42,7 +49,6 @@ function renderWithIntl(ui: ReactElement, locale = 'en', providerMessages = mess
 
 beforeEach(() => {
   resetTurnstile.mockClear()
-  process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY = 'site-key'
   vi.stubGlobal(
     'fetch',
     vi
@@ -60,7 +66,6 @@ beforeEach(() => {
   )
 })
 afterEach(() => {
-  delete process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY
   vi.unstubAllGlobals()
 })
 
