@@ -3,6 +3,7 @@ import {
   billingDetailsFromAddress,
   billingPatchFromCheckout,
   billingPatchFromProfileForm,
+  billingPatchHasAddressContent,
   billingPrefillFromCustomer,
   pickDefaultBillingAddress,
   type MedusaCustomerAddress,
@@ -28,14 +29,36 @@ describe('pickDefaultBillingAddress', () => {
     expect(pickDefaultBillingAddress([other, savedAddress])).toBe(savedAddress)
   })
 
-  it('falls back to the first address when none is flagged', () => {
-    const first: MedusaCustomerAddress = { id: 'caddr_0' }
-    expect(pickDefaultBillingAddress([first, { id: 'caddr_1' }])).toBe(first)
+  it('never falls back to an unflagged address — that record is not billing-owned', () => {
+    // A shipping or imported address must not become a read source (or,
+    // via upsertDefaultBillingAddress, a write target).
+    const shipping: MedusaCustomerAddress = {
+      id: 'caddr_0',
+      is_default_shipping: true,
+    }
+    expect(pickDefaultBillingAddress([shipping, { id: 'caddr_1' }])).toBeNull()
   })
 
   it('returns null for a customer without addresses', () => {
     expect(pickDefaultBillingAddress([])).toBeNull()
     expect(pickDefaultBillingAddress(undefined)).toBeNull()
+  })
+})
+
+describe('billingPatchHasAddressContent', () => {
+  it('is false for a country-only patch (the form dropdown default)', () => {
+    expect(billingPatchHasAddressContent({ country_code: 'us' })).toBe(false)
+  })
+
+  it('is false for a names-only patch', () => {
+    expect(
+      billingPatchHasAddressContent({ first_name: 'Ada', last_name: 'L' })
+    ).toBe(false)
+  })
+
+  it('is true when any concrete address field or tax number is present', () => {
+    expect(billingPatchHasAddressContent({ city: 'Perth' })).toBe(true)
+    expect(billingPatchHasAddressContent({ tax_number: 'abn-1' })).toBe(true)
   })
 })
 
@@ -104,7 +127,12 @@ describe('billingPrefillFromCustomer', () => {
   it('does not assert a country the customer never saved', () => {
     const prefill = billingPrefillFromCustomer({
       addresses: [
-        { id: 'caddr_2', address_1: '1 Example St', country_code: null },
+        {
+          id: 'caddr_2',
+          address_1: '1 Example St',
+          country_code: null,
+          is_default_billing: true,
+        },
       ],
     })
     expect(prefill.address?.country_code).toBe('us')
@@ -113,7 +141,12 @@ describe('billingPrefillFromCustomer', () => {
   it('preserves a saved worldwide country in the checkout country list', () => {
     const prefill = billingPrefillFromCustomer({
       addresses: [
-        { id: 'caddr_3', address_1: 'ul. Prosta 1', country_code: 'pl' },
+        {
+          id: 'caddr_3',
+          address_1: 'ul. Prosta 1',
+          country_code: 'pl',
+          is_default_billing: true,
+        },
       ],
     })
     expect(prefill.address?.country_code).toBe('pl')

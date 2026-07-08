@@ -171,15 +171,21 @@ export function ProfileEditForm({
   const [firstName, setFirstName] = useState(customer.first_name ?? '')
   const [lastName, setLastName] = useState(customer.last_name ?? '')
   const [phone, setPhone] = useState(customer.phone ?? '')
-  const [countryCode, setCountryCode] = useState(
-    billingDetails.countryCode || 'US'
+  // Saved billing state, normalized to the form's vocabulary (the country
+  // dropdown always shows a value). Saves that leave billing untouched omit
+  // it from the payload so the server doesn't rewrite an identical address.
+  const savedBilling = useMemo(
+    () => ({ ...billingDetails, countryCode: billingDetails.countryCode || 'US' }),
+    [billingDetails]
   )
-  const [addressLine1, setAddressLine1] = useState(billingDetails.addressLine1)
-  const [addressLine2, setAddressLine2] = useState(billingDetails.addressLine2)
-  const [city, setCity] = useState(billingDetails.city)
-  const [region, setRegion] = useState(billingDetails.region)
-  const [postalCode, setPostalCode] = useState(billingDetails.postalCode)
-  const [taxNumber, setTaxNumber] = useState(billingDetails.taxNumber)
+  const [billingBaseline, setBillingBaseline] = useState(savedBilling)
+  const [countryCode, setCountryCode] = useState(savedBilling.countryCode)
+  const [addressLine1, setAddressLine1] = useState(savedBilling.addressLine1)
+  const [addressLine2, setAddressLine2] = useState(savedBilling.addressLine2)
+  const [city, setCity] = useState(savedBilling.city)
+  const [region, setRegion] = useState(savedBilling.region)
+  const [postalCode, setPostalCode] = useState(savedBilling.postalCode)
+  const [taxNumber, setTaxNumber] = useState(savedBilling.taxNumber)
   const [customAvatarDataUrl, setCustomAvatarDataUrl] = useState(
     avatarDefaults.customAvatarDataUrl
   )
@@ -230,6 +236,15 @@ export function ProfileEditForm({
     setSuccess(null)
     setError(null)
 
+    const billingChanged =
+      countryCode !== billingBaseline.countryCode ||
+      addressLine1 !== billingBaseline.addressLine1 ||
+      addressLine2 !== billingBaseline.addressLine2 ||
+      city !== billingBaseline.city ||
+      region !== billingBaseline.region ||
+      postalCode !== billingBaseline.postalCode ||
+      taxNumber !== billingBaseline.taxNumber
+
     try {
       const response = await fetch('/api/account/profile', {
         method: 'PATCH',
@@ -242,15 +257,21 @@ export function ProfileEditForm({
             avatarDataUrl: customAvatarDataUrl || null,
             avatarUrl: customAvatarUrl || null,
           },
-          billingAddress: {
-            countryCode,
-            addressLine1,
-            addressLine2: addressLine2 || null,
-            city,
-            region,
-            postalCode,
-            taxNumber: taxNumber || null,
-          },
+          // Only assert billing when the user actually changed it — an
+          // untouched form must not write (or create) an address record.
+          ...(billingChanged
+            ? {
+                billingAddress: {
+                  countryCode,
+                  addressLine1,
+                  addressLine2: addressLine2 || null,
+                  city,
+                  region,
+                  postalCode,
+                  taxNumber: taxNumber || null,
+                },
+              }
+            : {}),
         }),
       })
 
@@ -266,17 +287,27 @@ export function ProfileEditForm({
 
       const updatedAvatar = getAvatarDefaults(data.customer?.metadata)
       const updatedBilling = (data.billingDetails ?? {}) as Partial<BillingDetails>
+      const nextBilling = {
+        countryCode: updatedBilling.countryCode || 'US',
+        addressLine1: updatedBilling.addressLine1 ?? '',
+        addressLine2: updatedBilling.addressLine2 ?? '',
+        city: updatedBilling.city ?? '',
+        region: updatedBilling.region ?? '',
+        postalCode: updatedBilling.postalCode ?? '',
+        taxNumber: updatedBilling.taxNumber ?? '',
+      }
 
       setFirstName(data.customer.first_name ?? '')
       setLastName(data.customer.last_name ?? '')
       setPhone(data.customer.phone ?? '')
-      setCountryCode(updatedBilling.countryCode || 'US')
-      setAddressLine1(updatedBilling.addressLine1 ?? '')
-      setAddressLine2(updatedBilling.addressLine2 ?? '')
-      setCity(updatedBilling.city ?? '')
-      setRegion(updatedBilling.region ?? '')
-      setPostalCode(updatedBilling.postalCode ?? '')
-      setTaxNumber(updatedBilling.taxNumber ?? '')
+      setBillingBaseline(nextBilling)
+      setCountryCode(nextBilling.countryCode)
+      setAddressLine1(nextBilling.addressLine1)
+      setAddressLine2(nextBilling.addressLine2)
+      setCity(nextBilling.city)
+      setRegion(nextBilling.region)
+      setPostalCode(nextBilling.postalCode)
+      setTaxNumber(nextBilling.taxNumber)
       setCustomAvatarDataUrl(updatedAvatar.customAvatarDataUrl)
       setCustomAvatarUrl(updatedAvatar.customAvatarUrl)
       setSuccess(t('updateSuccess'))

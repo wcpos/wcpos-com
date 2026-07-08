@@ -3,10 +3,7 @@ import { Suspense } from 'react'
 import { getCustomer } from '@/lib/medusa-auth'
 import { getPrimarySignInProvider } from '@/lib/auth-providers/metadata'
 import { projectProfileMetadataForClient } from '@/lib/customer-profile-metadata'
-import {
-  billingDetailsFromAddress,
-  pickDefaultBillingAddress,
-} from '@/lib/billing-profile'
+import { billingDetailsFromCustomer } from '@/lib/billing-profile'
 import { formatDateForLocale } from '@/lib/date-format'
 import { redirectToLoginClearingSession } from '@/lib/login-redirect'
 import { Card, CardContent } from '@/components/ui/card'
@@ -54,9 +51,7 @@ async function ProfileContent({ locale }: { locale: string }) {
         phone: customer.phone,
         metadata: projectProfileMetadataForClient(customer.metadata),
       }}
-      billingDetails={billingDetailsFromAddress(
-        pickDefaultBillingAddress(customer.addresses)
-      )}
+      billingDetails={billingDetailsFromCustomer(customer)}
       memberSince={formatDateForLocale(customer.created_at, locale)}
       connections={{
         signIn: { provider: signInProvider, email: customer.email },

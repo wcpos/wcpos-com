@@ -117,12 +117,9 @@ describe('ProfileEditForm', () => {
       first_name: 'Updated',
       last_name: 'Name',
       phone: '+15551234567',
-      billingAddress: {
-        countryCode: 'US',
-      },
     })
-    // Billing details ride the billingAddress payload (written to the
-    // default billing customer address), never metadata.
+    // Billing untouched — the payload must not assert (and rewrite) it.
+    expect(parsedBody).not.toHaveProperty('billingAddress')
     expect(parsedBody).not.toHaveProperty('accountProfile')
     // Email is not editable — sending it made Medusa reject EVERY profile
     // save with 400 "Unrecognized fields: 'email'".
@@ -131,6 +128,54 @@ describe('ProfileEditForm', () => {
     expect(
       await screen.findByText('Profile updated successfully.')
     ).toBeInTheDocument()
+  })
+
+  it('submits billing details only when the user changed them', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        customer: { email: 'old@example.com', metadata: {} },
+        billingDetails: {
+          countryCode: 'AU',
+          addressLine1: '1 New St',
+          addressLine2: '',
+          city: 'Perth',
+          region: '',
+          postalCode: '',
+          taxNumber: '',
+        },
+      }),
+    })
+
+    render(
+      <ProfileEditForm
+        customer={{ email: 'old@example.com', metadata: {} }}
+        billingDetails={emptyBillingDetails}
+      />
+    )
+
+    fireEvent.change(screen.getByLabelText('Country'), {
+      target: { value: 'AU' },
+    })
+    fireEvent.change(screen.getByLabelText('Address line 1'), {
+      target: { value: '1 New St' },
+    })
+    fireEvent.change(screen.getByLabelText('City'), {
+      target: { value: 'Perth' },
+    })
+    fireEvent.click(screen.getByRole('button', { name: 'Save changes' }))
+
+    await waitFor(() => {
+      expect(mockFetch).toHaveBeenCalledTimes(1)
+    })
+
+    const [, requestInit] = mockFetch.mock.calls[0]
+    const parsedBody = JSON.parse((requestInit as RequestInit).body as string)
+    expect(parsedBody.billingAddress).toMatchObject({
+      countryCode: 'AU',
+      addressLine1: '1 New St',
+      city: 'Perth',
+    })
   })
 
   it('localizes profile API error codes', async () => {

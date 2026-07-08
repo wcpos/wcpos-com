@@ -66,11 +66,36 @@ function asString(value: unknown): string {
   return typeof value === 'string' ? value : ''
 }
 
+/**
+ * Only an address flagged is_default_billing counts — this is also the write
+ * target of upsertDefaultBillingAddress, and falling back to an arbitrary
+ * other address would turn a display heuristic into an overwrite of a record
+ * this module does not own (e.g. a shipping address).
+ */
 export function pickDefaultBillingAddress(
   addresses: MedusaCustomerAddress[] | null | undefined
 ): MedusaCustomerAddress | null {
-  if (!addresses?.length) return null
-  return addresses.find((address) => address.is_default_billing) ?? addresses[0]
+  return addresses?.find((address) => address.is_default_billing) ?? null
+}
+
+/**
+ * Whether a patch carries actual address content (not just a country/name).
+ * Guards address creation: the profile form always submits a country (the
+ * dropdown default) and checkout can submit an empty billing object, and
+ * neither should mint a junk default-billing record for a customer who never
+ * entered an address.
+ */
+export function billingPatchHasAddressContent(
+  patch: BillingAddressPatch
+): boolean {
+  return Boolean(
+    patch.address_1 ||
+      patch.address_2 ||
+      patch.city ||
+      patch.province ||
+      patch.postal_code ||
+      patch.tax_number
+  )
 }
 
 export function billingDetailsFromAddress(
@@ -87,6 +112,13 @@ export function billingDetailsFromAddress(
       address?.metadata?.[TAX_NUMBER_ADDRESS_METADATA_KEY]
     ),
   }
+}
+
+/** The pick-then-project pairing every reader shares. */
+export function billingDetailsFromCustomer(customer: {
+  addresses?: MedusaCustomerAddress[]
+}): BillingDetails {
+  return billingDetailsFromAddress(pickDefaultBillingAddress(customer.addresses))
 }
 
 export interface BillingPrefill {

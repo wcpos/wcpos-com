@@ -164,12 +164,8 @@ describe('PATCH /api/account/profile', () => {
   })
 
   it('writes billing details to the default billing address, not metadata', async () => {
-    mockGetCustomer.mockResolvedValueOnce({ id: 'cust_1', metadata: {} })
-    mockUpdateCustomer.mockResolvedValueOnce({
-      id: 'cust_1',
-      email: 'user@example.com',
-      addresses: [],
-    })
+    const currentCustomer = { id: 'cust_1', metadata: {}, addresses: [] }
+    mockGetCustomer.mockResolvedValueOnce(currentCustomer)
     mockUpsertBillingAddress.mockResolvedValueOnce({
       id: 'cust_1',
       email: 'user@example.com',
@@ -207,7 +203,7 @@ describe('PATCH /api/account/profile', () => {
     const json = await response.json()
 
     expect(response.status).toBe(200)
-    expect(mockUpsertBillingAddress).toHaveBeenCalledWith({
+    expect(mockUpsertBillingAddress).toHaveBeenCalledWith(currentCustomer, {
       country_code: 'us',
       address_1: '123 Main St',
       address_2: null,
@@ -216,8 +212,8 @@ describe('PATCH /api/account/profile', () => {
       postal_code: '78701',
       tax_number: '12-3456789',
     })
-    // Billing details never ride customer metadata anymore.
-    expect(mockUpdateCustomer.mock.calls[0][0]).not.toHaveProperty('metadata')
+    // A billing-only PATCH has nothing customer-level to write.
+    expect(mockUpdateCustomer).not.toHaveBeenCalled()
     expect(json.billingDetails).toEqual({
       countryCode: 'US',
       addressLine1: '123 Main St',
@@ -227,6 +223,75 @@ describe('PATCH /api/account/profile', () => {
       postalCode: '78701',
       taxNumber: '12-3456789',
     })
+  })
+
+  it('accepts the legacy accountProfile payload from stale client bundles', async () => {
+    const currentCustomer = { id: 'cust_1', metadata: {}, addresses: [] }
+    mockGetCustomer.mockResolvedValueOnce(currentCustomer)
+    mockUpdateCustomer.mockResolvedValueOnce({
+      id: 'cust_1',
+      email: 'user@example.com',
+      metadata: {},
+      addresses: [],
+    })
+    mockUpsertBillingAddress.mockResolvedValueOnce({
+      id: 'cust_1',
+      email: 'user@example.com',
+      metadata: {},
+      addresses: [
+        {
+          id: 'caddr_1',
+          address_1: '1 Old Bundle Rd',
+          country_code: 'au',
+          is_default_billing: true,
+        },
+      ],
+    })
+
+    const response = await PATCH(
+      new NextRequest('http://localhost:3000/api/account/profile', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          accountProfile: {
+            avatarUrl: 'https://example.com/a.png',
+            countryCode: 'AU',
+            addressLine1: '1 Old Bundle Rd',
+          },
+        }),
+      })
+    )
+
+    expect(response.status).toBe(200)
+    // Avatar half still lands in metadata…
+    expect(mockUpdateCustomer.mock.calls[0][0].metadata).toMatchObject({
+      account_profile: { avatarUrl: 'https://example.com/a.png' },
+    })
+    // …and the billing half lands on the address.
+    expect(mockUpsertBillingAddress.mock.calls[0][1]).toMatchObject({
+      country_code: 'au',
+      address_1: '1 Old Bundle Rd',
+    })
+  })
+
+  it('reports failure when the billing address write cannot be attempted', async () => {
+    // A null upsert (no session token) is a failed write; a 200 here would
+    // silently revert the user's billing edits with a success toast.
+    mockGetCustomer.mockResolvedValueOnce({ id: 'cust_1', addresses: [] })
+    mockUpsertBillingAddress.mockResolvedValueOnce(null)
+
+    const response = await PATCH(
+      new NextRequest('http://localhost:3000/api/account/profile', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          billingAddress: { countryCode: 'US', addressLine1: '1 Main St' },
+        }),
+      })
+    )
+
+    expect(response.status).toBe(401)
+    expect(await response.json()).toEqual({ errorCode: 'unauthorized' })
   })
 
   it('merges avatar metadata via account_profile', async () => {

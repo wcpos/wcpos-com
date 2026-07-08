@@ -16,6 +16,7 @@ import {
 import { getImpersonation } from '@/lib/impersonation'
 import { getAdminCustomerById } from '@/lib/discord/medusa-admin'
 import {
+  billingPatchHasAddressContent,
   pickDefaultBillingAddress,
   TAX_NUMBER_ADDRESS_METADATA_KEY,
   type BillingAddressPatch,
@@ -417,24 +418,27 @@ export async function updateCustomer(
 
 /**
  * Upsert the customer's default billing address — the single source of truth
- * for billing details (see billing-profile.ts). Updates the existing default
- * billing address (creating one when the customer has none), and merges
- * `tax_number` into the address metadata so a patch that omits it preserves
- * the saved registration.
+ * for billing details (see billing-profile.ts). Updates the customer's
+ * default billing address, creating one only when the patch carries actual
+ * address content (a country/name alone never mints a record). `tax_number`
+ * is merged into the address metadata so a patch that omits it preserves the
+ * saved registration.
  *
- * Returns the refetched customer (the store address endpoints respond with
- * the parent customer, addresses included), or null when unauthenticated.
+ * Callers pass the customer they already fetched this request — the store
+ * address endpoints respond with the refetched parent customer (addresses
+ * included), which is returned. Null means the write could not be attempted
+ * (no session token); a no-op patch returns the customer unchanged.
  */
 export async function upsertDefaultBillingAddress(
+  customer: MedusaCustomer,
   patch: BillingAddressPatch
 ): Promise<MedusaCustomer | null> {
   const token = await getAuthToken()
   if (!token) return null
 
-  const customer = await getSessionCustomer()
-  if (!customer) return null
-
   const existing = pickDefaultBillingAddress(customer.addresses)
+  if (!existing && !billingPatchHasAddressContent(patch)) return customer
+
   const { tax_number, ...addressFields } = patch
 
   const body: Record<string, unknown> = {}
@@ -447,13 +451,13 @@ export async function upsertDefaultBillingAddress(
       [TAX_NUMBER_ADDRESS_METADATA_KEY]: tax_number,
     }
   }
+  if (existing && Object.keys(body).length === 0) return customer
   if (!existing) {
     // Seed names so the record reads sensibly in Medusa admin even when the
     // caller (the profile form) doesn't submit them.
     body.first_name ??= customer.first_name ?? ''
     body.last_name ??= customer.last_name ?? ''
   }
-  // Also normalizes a pre-existing address that lost its default flag.
   body.is_default_billing = true
 
   const path = existing

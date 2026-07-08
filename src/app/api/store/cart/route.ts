@@ -8,6 +8,7 @@ import {
 import {
   getCustomer,
   upsertDefaultBillingAddress,
+  type MedusaCustomer,
 } from '@/lib/medusa-auth'
 import { storeLogger } from '@/lib/logger'
 import { billingPatchFromCheckout } from '@/lib/billing-profile'
@@ -27,13 +28,20 @@ function isRecord(value: unknown): value is Record<string, unknown> {
  * and errors are logged and swallowed.
  */
 async function syncBillingToCustomerAddress(
+  customer: MedusaCustomer,
   billingAddress: Record<string, unknown>,
   taxNumber: string | undefined
 ): Promise<void> {
   try {
-    await upsertDefaultBillingAddress(
+    const updated = await upsertDefaultBillingAddress(
+      customer,
       billingPatchFromCheckout(billingAddress, taxNumber)
     )
+    if (!updated) {
+      // Null is a failed write (no session token), not a no-op — without
+      // this the mirror could stop working with zero signal.
+      storeLogger.error`Billing address sync skipped: no session token for customer ${customer.id}`
+    }
   } catch (error) {
     storeLogger.error`Failed to sync billing address to customer profile: ${error}`
   }
@@ -183,7 +191,9 @@ export async function PATCH(request: NextRequest) {
 
     if (isRecord(body.billing_address)) {
       // Off the critical path: the response must not wait on profile sync.
-      deliver(syncBillingToCustomerAddress(body.billing_address, taxNumber))
+      deliver(
+        syncBillingToCustomerAddress(customer, body.billing_address, taxNumber)
+      )
     }
 
     return NextResponse.json({ cart })

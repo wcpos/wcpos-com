@@ -9,20 +9,11 @@ const AVATAR_METADATA_KEYS = [
   'profile_image_url',
 ] as const
 
-const ACCOUNT_PROFILE_FIELDS = ['avatarDataUrl', 'avatarUrl'] as const
-
 // Billing details used to live under account_profile too; they moved to the
-// customer's default billing address in Medusa (see billing-profile.ts).
-// Every profile write drops the stale copies so old metadata converges.
-const LEGACY_BILLING_PROFILE_FIELDS = [
-  'countryCode',
-  'addressLine1',
-  'addressLine2',
-  'city',
-  'region',
-  'postalCode',
-  'taxNumber',
-] as const
+// customer's default billing address in Medusa (see billing-profile.ts) and
+// stale metadata copies were cleaned up by a one-off backfill. Only avatar
+// fields remain readable/writable here.
+const ACCOUNT_PROFILE_FIELDS = ['avatarDataUrl', 'avatarUrl'] as const
 
 export interface AccountProfileMetadata {
   avatarDataUrl: string
@@ -94,17 +85,13 @@ export function mergeAccountProfileMetadataPatch(
   if (Object.keys(normalized).length === 0) return null
 
   const currentMetadata = isRecord(metadata) ? metadata : {}
-  const merged: Record<string, unknown> = {
-    ...rawAccountProfile(currentMetadata),
-    ...normalized,
-  }
-  for (const field of LEGACY_BILLING_PROFILE_FIELDS) {
-    delete merged[field]
-  }
 
   return {
     ...currentMetadata,
-    account_profile: merged,
+    account_profile: {
+      ...rawAccountProfile(currentMetadata),
+      ...normalized,
+    },
   }
 }
 

@@ -187,6 +187,7 @@ describe('PATCH /api/store/cart', () => {
     )
 
     expect(mockUpsertBillingAddress).toHaveBeenCalledWith(
+      customer,
       expect.objectContaining({ tax_number: null })
     )
   })
@@ -200,7 +201,7 @@ describe('PATCH /api/store/cart', () => {
       })
     )
 
-    expect(mockUpsertBillingAddress).toHaveBeenCalledWith({
+    expect(mockUpsertBillingAddress).toHaveBeenCalledWith(customer, {
       first_name: 'Ada',
       last_name: 'Lovelace',
       country_code: 'au',
@@ -219,6 +220,7 @@ describe('PATCH /api/store/cart', () => {
     )
 
     expect(mockUpsertBillingAddress).toHaveBeenCalledWith(
+      customer,
       expect.objectContaining({ tax_number: undefined })
     )
   })

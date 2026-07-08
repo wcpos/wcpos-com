@@ -11,8 +11,7 @@ import {
 import { maskLicenseKey } from './order-display'
 import { getOrderDisplayStatus, type OrderStatusLabels } from './order-status'
 import {
-  billingDetailsFromAddress,
-  pickDefaultBillingAddress,
+  billingDetailsFromCustomer,
   type MedusaCustomerAddress,
 } from './billing-profile'
 
@@ -279,9 +278,7 @@ export function projectReceiptProfile(
 ): AccountOrderReceiptProfileFact {
   // Billing details come from the default billing customer address — the
   // same source the profile page edits (see billing-profile.ts).
-  const details = billingDetailsFromAddress(
-    pickDefaultBillingAddress(customer?.addresses)
-  )
+  const details = billingDetailsFromCustomer(customer ?? {})
 
   return {
     countryCode: details.countryCode || null,

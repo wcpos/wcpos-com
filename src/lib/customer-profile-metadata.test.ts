@@ -49,17 +49,12 @@ describe('customer profile metadata', () => {
     })
   })
 
-  it('drops stale billing fields left over from the metadata era', () => {
-    // Billing details moved to the default billing customer address
-    // (billing-profile.ts); saves converge old metadata by removing them.
+  it('leaves legacy billing keys untouched — the backfill owns their cleanup', () => {
     expect(
       mergeAccountProfileMetadataPatch(
         {
           account_profile: {
-            countryCode: 'AU',
-            addressLine1: '1 Example St',
-            city: 'Perth',
-            taxNumber: 'OLD',
+            taxNumber: 'legacy-tax',
             legacyField: 'keep me',
           },
         },
@@ -67,6 +62,7 @@ describe('customer profile metadata', () => {
       )
     ).toEqual({
       account_profile: {
+        taxNumber: 'legacy-tax',
         legacyField: 'keep me',
         avatarUrl: 'https://example.com/custom.png',
       },

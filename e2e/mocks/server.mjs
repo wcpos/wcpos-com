@@ -369,6 +369,38 @@ const server = createServer(async (req, res) => {
     return sendJson(res, 200, { customer: auth.persona.customer })
   }
 
+  // Customer addresses — the billing source of truth. Create and update
+  // mirror real Medusa: both respond with the refetched parent customer.
+  const addressUpdateMatch = pathname.match(
+    /^\/store\/customers\/me\/addresses(?:\/([^/]+))?$/
+  )
+  if (addressUpdateMatch && method === 'POST') {
+    const auth = personaForRequest(req)
+    if (!auth) return sendJson(res, 401, { message: 'Unauthorized' })
+    const body = await readJson(req)
+    const customer = auth.persona.customer
+    customer.addresses ??= []
+    const addressId = addressUpdateMatch[1]
+    if (addressId) {
+      const address = customer.addresses.find((a) => a.id === addressId)
+      if (!address) {
+        return sendJson(res, 404, { message: `Address ${addressId} not found` })
+      }
+      Object.assign(address, body)
+    } else {
+      if (body.is_default_billing) {
+        for (const address of customer.addresses) {
+          address.is_default_billing = false
+        }
+      }
+      customer.addresses.push({
+        id: `cuaddr_e2e_${randomUUID().slice(0, 8)}`,
+        ...body,
+      })
+    }
+    return sendJson(res, 200, { customer })
+  }
+
   if (pathname === '/store/orders' && method === 'GET') {
     const auth = personaForRequest(req)
     if (!auth) return sendJson(res, 401, { message: 'Unauthorized' })
