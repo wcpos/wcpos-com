@@ -97,11 +97,20 @@ describe('SupportChat', () => {
     })
   })
 
-  it('renders example questions with the shared button styling', () => {
+  it('submits the translated example prompt when an example is clicked', async () => {
     renderWithIntl(<SupportChat />)
-    expect(
-      screen.getByRole('button', { name: 'Why is my licence inactive?' }).className,
-    ).toContain('inline-flex')
+    const example = screen.getByRole('button', { name: 'Why is my licence inactive?' })
+
+    expect(example.className).toContain('inline-flex')
+    fireEvent.click(example)
+
+    await waitFor(() => expect(screen.getByText(/Open Settings/)).toBeInTheDocument())
+    expect(fetch).toHaveBeenCalledWith('/api/support/ask', expect.objectContaining({
+      body: expect.stringContaining('Why is my licence inactive?'),
+    }))
+    expect(fetch).not.toHaveBeenCalledWith('/api/support/ask', expect.objectContaining({
+      body: expect.stringContaining('"e1"'),
+    }))
   })
 
   it('sends the localized example text rather than the internal example key', async () => {

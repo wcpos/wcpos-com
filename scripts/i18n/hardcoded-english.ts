@@ -222,7 +222,7 @@ function isTranslationKeyLiteral(node: ts.Node): boolean {
   if (!parent || !ts.isCallExpression(parent)) return false
   const expression = parent.expression.getText()
   return (
-    /^t[A-Z\w]*$/.test(expression) ||
+    /^t\w*$/.test(expression) ||
     expression === 'useTranslations' ||
     expression === 'getTranslations'
   )

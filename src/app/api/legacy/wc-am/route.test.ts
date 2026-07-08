@@ -58,7 +58,7 @@ describe('WC API Manager compatibility shim', () => {
     expect(await res.json()).toMatchObject({
       success: false,
       activated: false,
-      error: 'license_request_failed',
+      error: 'A customer account does not exist for this API Key.',
       code: 404,
     })
   })
@@ -86,7 +86,7 @@ describe('WC API Manager compatibility shim', () => {
     expect(await res.json()).toMatchObject({
       success: false,
       activated: false,
-      error: 'license_request_failed',
+      error: 'A customer account does not exist for this API Key.',
       code: 404,
     })
   })
