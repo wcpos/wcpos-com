@@ -118,9 +118,9 @@ export function DownloadsClient({
   // Releases arrive sorted newest-first; the first one is the "Latest" build.
   const latestRelease = releases[0]
   const latestVersion = latestRelease?.version
-  const hasExternalEnglishContent = releases.some(
-    (release) => release.contentLocale === 'en'
-  )
+  const hasExternalEnglishContent =
+    locale.split('-')[0]?.toLowerCase() !== 'en' &&
+    releases.some((release) => release.contentLocale === 'en')
   const totalPages = Math.max(1, Math.ceil(releases.length / RELEASES_PER_PAGE))
   // Derive the clamped page instead of syncing state in an effect.
   const safePage = Math.min(currentPage, totalPages)
