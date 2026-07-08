@@ -131,6 +131,14 @@ describe('POST /api/discord/interactions', () => {
     expect(errorMock).toHaveBeenCalled()
   })
 
+  it('fails loud (503) when the guild id is not configured', async () => {
+    delete envState.DISCORD_GUILD_ID
+    const response = await POST(makeRequest(linkInteraction()))
+    expect(response.status).toBe(503)
+    expect(await response.json()).toEqual({ errorCode: 'discord_interactions_unconfigured' })
+    expect(errorMock).toHaveBeenCalled()
+  })
+
   it('rejects an invalid signature with 401 before doing any work', async () => {
     verifyMock.mockReturnValue(false)
     const response = await POST(makeRequest(linkInteraction()))
