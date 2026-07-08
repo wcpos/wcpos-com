@@ -12,6 +12,11 @@ import {
 import { loginPathForLocale } from '@/lib/login-redirect'
 import { localeFromPath, sanitizeRedirectPath } from '@/lib/safe-redirect'
 import { isOAuthErrorCode } from '@/lib/oauth-error-codes'
+import { rootFallbackHref } from '@/lib/root-fallback-i18n'
+import {
+  savedCustomerLocale,
+  setLocaleCookieOnResponse,
+} from '@/lib/account-locale'
 
 /** The redirect cookie is single-use: consume it on every outcome. */
 function clearRedirectCookie(response: NextResponse): NextResponse {
@@ -50,20 +55,23 @@ async function syncOauthProfile(
     const alreadyLatest = metadata.last_sign_in_provider === provider
     const avatarUnchanged =
       !avatarUrl || avatarUrl === metadata.oauth_avatar_url
-    const localeToPersist = locale === 'en' ? undefined : locale
-    const localeUnchanged = metadata.locale === localeToPersist
+    // Capture the sign-in-surface locale ONLY for accounts that have not
+    // chosen one yet (new customer / first sign-in). A saved preference from
+    // Profile or the language switcher is durable — never overwrite or clear
+    // it on a later sign-in, even from a different-language surface.
+    const hasSavedLocale =
+      typeof metadata.locale === 'string' && metadata.locale.length > 0
+    const localeToPersist =
+      !hasSavedLocale && locale !== 'en' ? locale : undefined
+    const localeUnchanged = localeToPersist === undefined
 
-    // Nothing to persist: provider already recorded as the latest and avatar
-    // unchanged, and locale already matches the sign-in surface.
+    // Nothing to persist: provider already recorded as the latest, avatar
+    // unchanged, and no first-time locale to capture.
     if (providerAlreadyKnown && alreadyLatest && avatarUnchanged && localeUnchanged) return
 
     let nextMetadata = recordSignInProvider(metadata, provider)
     if (localeToPersist) {
       nextMetadata = { ...nextMetadata, locale: localeToPersist }
-    } else if ('locale' in nextMetadata) {
-      const metadataWithoutLocale = { ...nextMetadata }
-      delete metadataWithoutLocale.locale
-      nextMetadata = metadataWithoutLocale
     }
     if (avatarUrl && avatarUrl !== metadata.oauth_avatar_url) {
       nextMetadata = { ...nextMetadata, oauth_avatar_url: avatarUrl }
@@ -116,6 +124,27 @@ export async function GET(
       ? await establishOAuthSession(provider, callbackParams)
       : await establishOAuthSession(provider, callbackParams, { locale })
     await syncOauthProfile(provider, payload.user_metadata, locale)
+
+    // Serve the account's saved language: when it differs from the sign-in
+    // surface, redirect to the saved-locale path and seed the locale cookie so
+    // the durable preference wins over the surface/Accept-Language. Best-effort:
+    // never let a locale lookup turn a successful sign-in into an error.
+    const savedLocale = await savedCustomerLocale().catch((error) => {
+      authLogger.error`Failed to resolve saved locale after sign-in: ${error}`
+      return null
+    })
+    if (savedLocale) {
+      const barePath = sanitizeRedirectPath(redirectTo, {
+        stripLocalePrefix: true,
+      }) as `/${string}`
+      const response = clearRedirectCookie(
+        NextResponse.redirect(
+          new URL(rootFallbackHref(savedLocale, barePath), request.url)
+        )
+      )
+      setLocaleCookieOnResponse(response, savedLocale)
+      return response
+    }
 
     return clearRedirectCookie(
       NextResponse.redirect(new URL(redirectTo, request.url))

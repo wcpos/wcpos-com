@@ -1,7 +1,7 @@
 {
   "version": 1,
   "generatedBy": "scripts/i18n/hardcoded-english.ts --update",
-  "updatedAt": "2026-07-08T15:18:34.072Z",
+  "updatedAt": "2026-07-08T16:34:41.104Z",
   "scope": [
     "src/app",
     "src/components",
@@ -626,6 +626,14 @@
       "count": 1
     },
     {
+      "id": "f7d78e571b3936b2",
+      "file": "src/app/api/auth/[provider]/callback/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "Failed to resolve saved locale after sign-in:",
+      "count": 1
+    },
+    {
       "id": "c14224be73fbead9",
       "file": "src/app/api/auth/[provider]/callback/route.ts",
       "category": "route/page",
@@ -679,6 +687,14 @@
       "category": "route/page",
       "attr": null,
       "text": "5 m",
+      "count": 1
+    },
+    {
+      "id": "9242ed3038ce8d72",
+      "file": "src/app/api/auth/login/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "Failed to apply saved locale on login:",
       "count": 1
     },
     {
