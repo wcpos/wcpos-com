@@ -6,10 +6,7 @@ import {
   getDistinctIdCookieOptions,
   newDistinctId,
 } from '@/lib/analytics/distinct-id'
-import {
-  ANALYTICS_CONSENT_COOKIE,
-  parseAnalyticsConsent,
-} from '@/lib/analytics/consent'
+import { readAnalyticsConsentFromCookieHeader } from '@/lib/analytics/consent'
 import { MEDUSA_TOKEN_COOKIE } from '@/lib/medusa-cookie'
 import { localeFromPath, localizeRedirectPath } from '@/lib/safe-redirect'
 
@@ -32,8 +29,13 @@ const intlMiddleware = createIntlMiddleware(routing)
  * - no decision yet -> do nothing (existing cookies are not refreshed)
  */
 function withDistinctIdCookie(request: NextRequest, response: NextResponse) {
-  const consent = parseAnalyticsConsent(
-    request.cookies.get(ANALYTICS_CONSENT_COOKIE)?.value
+  // Read from the raw Cookie header, not request.cookies.get(): during the
+  // migration to the shared `.wcpos.com` cookie a visitor can carry both a
+  // legacy host-scoped and the new shared cookie under the same name, and
+  // request.cookies collapses those to one arbitrary value. The header reader
+  // reconciles duplicates fail-closed so a later denial is always honored.
+  const consent = readAnalyticsConsentFromCookieHeader(
+    request.headers.get('cookie')
   )
   const existingDistinctId = request.cookies.get(ANALYTICS_DISTINCT_ID_COOKIE)?.value
 
