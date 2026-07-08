@@ -343,40 +343,40 @@
   },
   "roadmap": {
     "meta": {
-      "title": "Roadmap",
-      "description": "See what we are building next for WCPOS — upcoming features, milestones, and release progress."
+      "title": "Piano di sviluppo",
+      "description": "Scopri cosa stiamo costruendo per WCPOS — funzionalità in arrivo, milestone e avanzamento dei rilasci."
     },
     "page": {
-      "eyebrow": "Roadmap",
-      "title": "The release train",
-      "description": "Every stop on the way to a faster, offline-proof WCPOS — pulled straight from our GitHub, newest work first."
+      "eyebrow": "Piano di sviluppo",
+      "title": "Il treno dei rilasci",
+      "description": "Ogni tappa verso un WCPOS più veloce e resistente all’offline — presa direttamente da GitHub, con i lavori più recenti per primi."
     },
     "board": {
-      "link": "live from the WCPOS project board"
+      "link": "in tempo reale dalla bacheca del progetto WCPOS"
     },
     "status": {
-      "done": "Done",
-      "inProgress": "In progress",
-      "planned": "Planned"
+      "planned": "Pianificato",
+      "inProgress": "In corso",
+      "done": "Completato"
     },
     "timeline": {
-      "empty": "No roadmap items to display yet.",
+      "empty": "Nessun elemento della roadmap da mostrare per ora.",
+      "progress": "{completed} di {total} completati",
+      "progressDue": "{completed} di {total} completati · scadenza {date}",
+      "shipped": "rilasciato",
+      "shippedWithDate": "rilasciato · {date}",
       "phases": {
-        "now": "Now",
-        "next": "Next",
-        "shipped": "Shipped"
-      },
-      "progress": "{completed} of {total} done",
-      "progressDue": "{completed} of {total} done · due {date}",
-      "shipped": "shipped",
-      "shippedWithDate": "shipped · {date}"
+        "now": "Ora",
+        "next": "Prossimo",
+        "shipped": "Rilasciati"
+      }
     },
     "bugs": {
-      "summary": "{count, plural, one {+ # bug fix & improvements} other {+ # bug fixes & improvements}}",
+      "summary": "{count, plural, one {+ # correzione bug e miglioramento} other {+ # correzioni bug e miglioramenti}}",
       "status": {
-        "done": "fixed",
-        "in_progress": "in progress",
-        "planned": "planned"
+        "planned": "pianificato",
+        "in_progress": "in corso",
+        "done": "risolto"
       }
     }
   },
@@ -975,8 +975,8 @@
   },
   "auth": {
     "common": {
-      "email": "Email",
-      "password": "Password",
+      "email": "E-mail",
+      "password": "Parola d’accesso",
       "newPassword": "Nuova password",
       "firstName": "Nome",
       "lastName": "Cognome",
@@ -986,14 +986,14 @@
       "signIn": "Accedi",
       "signUp": "Registrati",
       "apiErrors": {
-        "invalid_origin": "Please refresh the page and try again.",
-        "rate_limited": "Too many attempts. Please try again later.",
-        "email_required": "Email is required.",
-        "credentials_required": "Email and password are required.",
-        "reset_fields_required": "Email, token, and password are required.",
-        "password_too_short": "Password must be at least {min} characters.",
-        "invalid_credentials": "Invalid email or password.",
-        "invalid_reset_token": "This password reset link is invalid or has expired. Please request a new one."
+        "credentials_required": "Sono richiesti e-mail e password.",
+        "email_required": "L’e-mail è obbligatoria.",
+        "invalid_credentials": "E-mail o password non valida.",
+        "invalid_origin": "Aggiorna la pagina e riprova.",
+        "invalid_reset_token": "Questo link per reimpostare la password non è valido o è scaduto. Richiedine uno nuovo.",
+        "password_too_short": "La password deve contenere almeno {min} caratteri.",
+        "rate_limited": "Troppi tentativi. Riprova più tardi.",
+        "reset_fields_required": "Sono richiesti e-mail, token e password."
       }
     },
     "login": {
@@ -1527,53 +1527,53 @@
   },
   "support": {
     "meta": {
-      "title": "Support",
-      "description": "Ask anything about WCPOS and get an instant answer from our docs, or chat with the community on Discord."
+      "title": "Supporto",
+      "description": "Chiedi qualsiasi cosa su WCPOS e ricevi una risposta immediata dalla nostra documentazione, oppure chatta con la community su Discord."
     },
     "chat": {
       "hero": {
-        "title": "How can we help?",
-        "subtitle": "Ask anything about WCPOS — setup, licensing, hardware, syncing, printing. You'll get an instant answer drawn from our docs."
+        "title": "Come possiamo aiutarti?",
+        "subtitle": "Chiedi qualsiasi cosa su WCPOS — configurazione, licenze, hardware, sincronizzazione, stampa. Riceverai una risposta immediata tratta dalla nostra documentazione."
       },
       "examples": {
-        "e1": "Why is my licence inactive?",
-        "e2": "Which barcode scanners are supported?",
-        "e3": "How do I sync products from WooCommerce?"
+        "e1": "Perché la mia licenza non è attiva?",
+        "e2": "Quali lettori di codici a barre sono supportati?",
+        "e3": "Come sincronizzo i prodotti da WooCommerce?"
       },
       "feedback": {
-        "prompt": "Was this helpful?",
-        "yes": "Yes",
+        "prompt": "Ti è stato utile?",
+        "yes": "Sì",
         "no": "No"
       },
-      "thinking": "Aide is thinking…",
+      "thinking": "Aide sta pensando…",
       "form": {
-        "label": "Ask a support question",
-        "placeholder": "e.g. How do I connect a receipt printer?",
-        "followUpPlaceholder": "Ask a follow-up…",
-        "submit": "Ask"
+        "label": "Fai una domanda al supporto",
+        "placeholder": "es. Come collego una stampante per ricevute?",
+        "followUpPlaceholder": "Fai un'altra domanda…",
+        "submit": "Chiedi"
       },
-      "discordLink": "Ask in Discord →",
-      "poweredBy": "Answered by Aide · trained on the WCPOS docs & wiki"
+      "discordLink": "Chiedi su Discord →",
+      "poweredBy": "Risposta da Aide · addestrata sulla documentazione e sul wiki di WCPOS"
     },
     "errors": {
-      "invalid_question": "Please enter a question (up to 1000 characters).",
-      "bot_check_failed": "Bot check failed. Please reload and try again.",
-      "rate_limited": "You're asking a lot of questions — please wait a few minutes, or hop into Discord.",
-      "budget_exhausted": "The assistant is busy right now. Please try Discord for a faster answer.",
-      "empty_answer": "The assistant is temporarily unavailable. Please try Discord while we get it back.",
-      "gateway_rate_limited": "The assistant is busy right now — please try again later.",
-      "timeout": "That took too long. Please try again, or ask in Discord.",
-      "unavailable": "The assistant is temporarily unavailable. Please try Discord while we get it back.",
-      "network": "The assistant is unavailable right now. Please ask in Discord.",
-      "unknown": "Something went wrong."
+      "invalid_question": "Inserisci una domanda (fino a 1000 caratteri).",
+      "rate_limited": "Stai facendo molte domande — attendi qualche minuto oppure passa su Discord.",
+      "bot_check_failed": "Controllo anti-bot non riuscito. Ricarica la pagina e riprova.",
+      "timeout": "Ci sta mettendo troppo. Riprova oppure chiedi su Discord.",
+      "gateway_rate_limited": "L’assistente è occupato in questo momento — riprova più tardi.",
+      "budget_exhausted": "L’assistente è occupato in questo momento. Prova Discord per una risposta più rapida.",
+      "empty_answer": "L’assistente è temporaneamente non disponibile. Prova Discord mentre lo ripristiniamo.",
+      "network": "L’assistente non è disponibile in questo momento. Chiedi su Discord.",
+      "unavailable": "L’assistente è temporaneamente non disponibile. Prova Discord mentre lo ripristiniamo.",
+      "unknown": "Qualcosa è andato storto."
     },
     "order": {
-      "title": "Contact support about your order",
-      "body": "Quote reference <ref></ref> so we can confirm the payment or finish the order before you pay again."
+      "title": "Contatta il supporto per il tuo ordine",
+      "body": "Cita il riferimento <ref></ref> così possiamo confermare il pagamento o completare l’ordine prima che tu paghi di nuovo."
     },
     "discord": {
-      "title": "Prefer to talk to a human?",
-      "subtitle": "Join store owners and the team in our live Discord community."
+      "title": "Preferisci parlare con una persona?",
+      "subtitle": "Unisciti ai proprietari di negozi e al team nella nostra community Discord live."
     }
   }
 }

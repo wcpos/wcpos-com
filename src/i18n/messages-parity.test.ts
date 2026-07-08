@@ -40,6 +40,13 @@ const otherLocales = fileLocales.filter((locale) => locale !== defaultLocale)
 const checkoutRecoveryKeys = enKeys.filter((key) =>
   key.startsWith('pro.checkout.recovery.orderPending.')
 )
+const auditedItalianNamespacePrefixes = [
+  'support.',
+  'auth.',
+  'roadmap.',
+]
+const italianIdenticalCopyAllowlist = new Set<string>([])
+
 const auditedFrenchNamespacePrefixes = [
   'roadmap.',
   'support.',
@@ -693,6 +700,31 @@ describe('messages key parity', () => {
       ).toEqual([])
     }
   )
+
+  it('it.json translates the audited support, auth, and roadmap copy', () => {
+    const english = loadMessages(defaultLocale)
+    const italian = loadMessages('it')
+    const auditedKeys = enKeys.filter(
+      (key) =>
+        auditedItalianNamespacePrefixes.some((prefix) =>
+          key.startsWith(prefix)
+        ) && !italianIdenticalCopyAllowlist.has(key)
+    )
+    const untranslatedKeys = auditedKeys.filter((key) => {
+      const englishValue = valueAtPath(english, key)
+      const italianValue = valueAtPath(italian, key)
+      return (
+        englishValue !== undefined &&
+        italianValue === englishValue &&
+        /[A-Za-z]{3}/.test(englishValue)
+      )
+    })
+
+    expect(
+      untranslatedKeys,
+      'messages/it.json must not copy audited support/auth/roadmap English strings verbatim'
+    ).toEqual([])
+  })
 
   it('fr.json translates the audited public support, roadmap, downloads, legal, home, about, account, pro, auth, header, and footer copy', () => {
     const english = loadMessages(defaultLocale)
