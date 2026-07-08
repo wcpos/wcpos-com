@@ -4,15 +4,27 @@ import { InvalidCredentialsError } from '@/lib/api/errors'
 
 const mockLogin = vi.fn()
 const mockSetAuthToken = vi.fn()
-const { infoMock, errorMock, consumeMock } = vi.hoisted(() => ({
+const {
+  infoMock,
+  errorMock,
+  consumeMock,
+  savedCustomerLocaleMock,
+  writeLocaleCookieMock,
+} = vi.hoisted(() => ({
   infoMock: vi.fn(),
   errorMock: vi.fn(),
   consumeMock: vi.fn(),
+  savedCustomerLocaleMock: vi.fn(),
+  writeLocaleCookieMock: vi.fn(),
 }))
 
 vi.mock('@/lib/medusa-auth', () => ({
   login: (...args: unknown[]) => mockLogin(...args),
   setAuthToken: (...args: unknown[]) => mockSetAuthToken(...args),
+}))
+vi.mock('@/lib/account-locale', () => ({
+  savedCustomerLocale: (...args: unknown[]) => savedCustomerLocaleMock(...args),
+  writeLocaleCookie: (...args: unknown[]) => writeLocaleCookieMock(...args),
 }))
 vi.mock('@/lib/logger', () => ({
   authLogger: { info: infoMock, error: errorMock },
@@ -36,6 +48,7 @@ describe('POST /api/auth/login', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     consumeMock.mockResolvedValue({ success: true, remaining: 9 })
+    savedCustomerLocaleMock.mockResolvedValue(null)
   })
 
   it('returns 429 when the rate limit is exceeded', async () => {
@@ -82,8 +95,35 @@ describe('POST /api/auth/login', () => {
     expect(json).toEqual({ success: true })
     expect(mockLogin).toHaveBeenCalledWith('user@example.com', 'secret')
     expect(mockSetAuthToken).toHaveBeenCalledWith('jwt-token')
+    expect(writeLocaleCookieMock).not.toHaveBeenCalled()
     expect(infoMock).not.toHaveBeenCalled()
     expect(errorMock).not.toHaveBeenCalled()
+  })
+
+  it('seeds the saved account language cookie on a successful login', async () => {
+    mockLogin.mockResolvedValueOnce('jwt-token')
+    mockSetAuthToken.mockResolvedValueOnce(undefined)
+    savedCustomerLocaleMock.mockResolvedValueOnce('fr')
+
+    const response = await POST(
+      makeRequest({ email: 'user@example.com', password: 'secret' })
+    )
+
+    expect(response.status).toBe(200)
+    expect(writeLocaleCookieMock).toHaveBeenCalledWith('fr')
+  })
+
+  it('never fails login when applying the saved locale throws', async () => {
+    mockLogin.mockResolvedValueOnce('jwt-token')
+    mockSetAuthToken.mockResolvedValueOnce(undefined)
+    savedCustomerLocaleMock.mockRejectedValueOnce(new Error('medusa down'))
+
+    const response = await POST(
+      makeRequest({ email: 'user@example.com', password: 'secret' })
+    )
+
+    expect(response.status).toBe(200)
+    expect(errorMock).toHaveBeenCalled()
   })
 
   it('returns 401 and logs at info for a routine wrong-password rejection', async () => {

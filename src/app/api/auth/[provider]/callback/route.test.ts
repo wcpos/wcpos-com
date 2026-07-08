@@ -337,8 +337,10 @@ describe('OAuth callback route', () => {
     })
   })
 
-  it('clears a stale OAuth locale when signing in from the English surface', async () => {
-    mockGetSessionCustomer.mockResolvedValueOnce({
+  it('preserves the saved locale and serves it, even from the English surface', async () => {
+    // A durable preference (set in Profile / the switcher) must survive a
+    // later sign-in from a different-language surface, and win for the landing.
+    mockGetSessionCustomer.mockResolvedValue({
       id: 'cust_1',
       metadata: {
         auth_providers: ['google'],
@@ -355,16 +357,15 @@ describe('OAuth callback route', () => {
       { headers: { cookie: 'oauth_redirect=%2Faccount' } }
     )
 
-    await GET(request, {
+    const response = await GET(request, {
       params: Promise.resolve({ provider: 'google' }),
     })
 
-    expect(mockUpdateCustomer).toHaveBeenCalledWith({
-      metadata: {
-        auth_providers: ['google'],
-        last_sign_in_provider: 'google',
-      },
-    })
+    // The saved fr preference is never overwritten or cleared...
+    expect(mockUpdateCustomer).not.toHaveBeenCalled()
+    // ...and it beats the English sign-in surface for the redirect + cookie.
+    expect(response.headers.get('location')).toBe('https://wcpos.com/fr/account')
+    expect(response.headers.get('set-cookie') ?? '').toContain('NEXT_LOCALE=fr')
   })
 
 

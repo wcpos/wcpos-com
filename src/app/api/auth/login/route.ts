@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { login, setAuthToken } from '@/lib/medusa-auth'
+import { savedCustomerLocale, writeLocaleCookie } from '@/lib/account-locale'
 import { InvalidCredentialsError } from '@/lib/api/errors'
 import { authLogger } from '@/lib/logger'
 import { isSameOriginRequest } from '@/lib/api/same-origin'
@@ -50,6 +51,19 @@ export async function POST(request: Request) {
   try {
     const token = await login(email, password)
     await setAuthToken(token)
+
+    // Serve the account's saved language on the next request by seeding the
+    // locale cookie the middleware reads — so a returning user's preference
+    // wins over the browser's Accept-Language on a fresh browser. Best-effort:
+    // a locale lookup hiccup must never fail an otherwise-successful sign-in.
+    try {
+      const savedLocale = await savedCustomerLocale()
+      if (savedLocale) {
+        await writeLocaleCookie(savedLocale)
+      }
+    } catch (error) {
+      authLogger.error`Failed to apply saved locale on login: ${error}`
+    }
 
     return NextResponse.json({ success: true })
   } catch (error) {
