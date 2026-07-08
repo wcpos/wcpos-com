@@ -29,18 +29,35 @@ function errorResponse(errorCode: RegisterErrorCode, status: number, extra?: Rec
 
 function registrationLocale(value: unknown): string | undefined {
   if (typeof value !== 'string') return undefined
-  const raw = value.trim()
-  if (!raw) return undefined
 
-  try {
-    const [canonical] = Intl.getCanonicalLocales(raw)
-    const base = canonical?.split('-')[0]?.toLowerCase()
-    return base && locales.includes(base as (typeof locales)[number])
-      ? canonical
-      : undefined
-  } catch {
-    return undefined
+  const candidates = value
+    .split(',')
+    .map((part, index) => {
+      const [language = '', ...params] = part.trim().split(';')
+      const qParam = params.find((param) => param.trim().startsWith('q='))
+      const q = qParam ? Number.parseFloat(qParam.split('=')[1] ?? '') : 1
+      return {
+        language: language.trim(),
+        q: Number.isFinite(q) ? q : 0,
+        index,
+      }
+    })
+    .filter(({ language, q }) => Boolean(language) && language !== '*' && q > 0)
+    .sort((a, b) => b.q - a.q || a.index - b.index)
+
+  for (const { language } of candidates) {
+    try {
+      const [canonical] = Intl.getCanonicalLocales(language)
+      const base = canonical?.split('-')[0]?.toLowerCase()
+      if (base && locales.includes(base as (typeof locales)[number])) {
+        return canonical
+      }
+    } catch {
+      // Ignore malformed tags and continue through remaining candidates.
+    }
   }
+
+  return undefined
 }
 
 const limiter = createRateLimiter({
