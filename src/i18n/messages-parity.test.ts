@@ -37,10 +37,17 @@ const fileLocales = messageFiles.map((file) => file.replace(/\.json$/, ''))
 
 const enKeys = flattenKeys(loadMessages(defaultLocale))
 const otherLocales = fileLocales.filter((locale) => locale !== defaultLocale)
+const sharedAuditedNamespacePrefixes = [
+  'common.',
+  'consent.',
+  'errors.',
+  'metadata.',
+]
 const checkoutRecoveryKeys = enKeys.filter((key) =>
   key.startsWith('pro.checkout.recovery.orderPending.')
 )
 const auditedItalianNamespacePrefixes = [
+  ...sharedAuditedNamespacePrefixes,
   'support.',
   'auth.',
   'roadmap.',
@@ -133,6 +140,7 @@ const italianIdenticalCopyAllowlist = new Set([
 ])
 
 const auditedDutchNamespacePrefixes = [
+  ...sharedAuditedNamespacePrefixes,
   'support.',
   'auth.',
   'roadmap.',
@@ -228,6 +236,7 @@ const dutchIdenticalCopyAllowlist = new Set([
 ])
 
 const auditedKoreanNamespacePrefixes = [
+  ...sharedAuditedNamespacePrefixes,
   'support.',
   'auth.',
   'roadmap.',
@@ -308,6 +317,7 @@ const koreanIdenticalCopyAllowlist = new Set([
 ])
 
 const auditedFrenchNamespacePrefixes = [
+  ...sharedAuditedNamespacePrefixes,
   'roadmap.',
   'support.',
   'downloads.',
@@ -322,6 +332,7 @@ const auditedFrenchNamespacePrefixes = [
 ]
 
 const auditedSpanishNamespacePrefixes = [
+  ...sharedAuditedNamespacePrefixes,
   'support.',
   'roadmap.',
   'auth.',
@@ -341,6 +352,7 @@ const auditedSpanishNamespacePrefixes = [
 ]
 
 const auditedPortugueseNamespacePrefixes = [
+  ...sharedAuditedNamespacePrefixes,
   'support.',
   'auth.',
   'roadmap.',
@@ -429,6 +441,7 @@ const portugueseIdenticalCopyAllowlist = new Set([
 ])
 
 const auditedJapaneseNamespacePrefixes = [
+  ...sharedAuditedNamespacePrefixes,
   'support.',
   'auth.',
   'roadmap.',
@@ -521,6 +534,7 @@ const japaneseIdenticalCopyAllowlist = new Set([
   'home.pricing.pro.title',
 ])
 const auditedChineseNamespacePrefixes = [
+  ...sharedAuditedNamespacePrefixes,
   'support.',
   'auth.',
   'roadmap.',
@@ -611,6 +625,7 @@ const chineseIdenticalCopyAllowlist = new Set([
   'home.pricing.pro.title',
 ])
 const auditedGermanNamespacePrefixes = [
+  ...sharedAuditedNamespacePrefixes,
   'support.',
   'auth.',
   'roadmap.',
