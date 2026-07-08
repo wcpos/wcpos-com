@@ -4,6 +4,10 @@ vi.mock('next/cache', () => ({
   cacheTag: vi.fn(),
 }))
 
+vi.mock('next-intl/server', () => ({
+  getLocale: vi.fn(async () => 'en'),
+}))
+
 import { render, screen } from '@testing-library/react'
 import { NextIntlClientProvider } from 'next-intl'
 import type { ReactElement } from 'react'
