@@ -68,6 +68,7 @@ const auditedItalianNamespacePrefixes = [
   'home.story.',
   'downloads.',
   'about.',
+  'pro.',
 ]
 const italianIdenticalCopyAllowlist = new Set([
   'home.title',
@@ -109,6 +110,11 @@ const italianIdenticalCopyAllowlist = new Set([
   'downloads.releaseHistory.desktop',
   'about.founder.signature.name',
   'about.timeline.dates.range',
+  'pro.hero.title',
+  'pro.schema.name',
+  'pro.checkout.offers.default',
+  'pro.checkout.payment.methods.card.hint',
+  'pro.checkout.payment.methods.bitcoin.title',
   'header.pro',
   'footer.copyright',
   'footer.discord',

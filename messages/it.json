@@ -477,10 +477,10 @@
     },
     "checkout": {
       "page": {
-        "title": "Checkout",
+        "title": "Pagamento",
         "backToPricing": "Torna ai prezzi",
         "metadata": {
-          "title": "Checkout",
+          "title": "Pagamento",
           "description": "Completa il tuo acquisto di WCPOS Pro"
         }
       },
@@ -493,7 +493,7 @@
       "edit": "Modifica",
       "preparing": "Preparazione del checkout...",
       "steps": {
-        "account": "Account",
+        "account": "Dati account",
         "billing": "Indirizzo di fatturazione",
         "payment": "Pagamento"
       },
@@ -512,9 +512,9 @@
         "securePayment": "Pagamento sicuro"
       },
       "account": {
-        "emailLabel": "Email",
+        "emailLabel": "Indirizzo email",
         "emailHint": "Creeremo il tuo account con questa email — licenza e ricevuta arriveranno qui dopo l’acquisto.",
-        "passwordLabel": "Password",
+        "passwordLabel": "Password dell’account",
         "existingAccountNotice": "Bentornato — hai già un account. Inserisci la password per accedere e continuare.",
         "submitting": "Un momento…",
         "createContinue": "Crea account e continua",
