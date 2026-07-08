@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 
 vi.mock('@/utils/env', () => ({ env: { TURNSTILE_SECRET_KEY: 'secret', NODE_ENV: 'production' } }))
 import { verifyTurnstile } from './turnstile'
+import { TEST_TURNSTILE_SECRET_KEY } from './turnstile-keys'
 import { env } from '@/utils/env'
 
 beforeEach(() => {
@@ -11,25 +12,44 @@ beforeEach(() => {
 afterEach(() => vi.unstubAllGlobals())
 
 describe('verifyTurnstile', () => {
-  it('returns true when siteverify succeeds', async () => {
+  it('returns true on a live host when siteverify succeeds', async () => {
     vi.stubGlobal('fetch', vi.fn().mockResolvedValue(new Response(JSON.stringify({ success: true }), { status: 200 })))
-    expect(await verifyTurnstile('token', '1.2.3.4')).toBe(true)
+    expect(await verifyTurnstile('token', 'wcpos.com', '1.2.3.4')).toBe(true)
   })
-  it('returns false when siteverify fails', async () => {
+
+  it('returns false on a live host when siteverify fails', async () => {
     vi.stubGlobal('fetch', vi.fn().mockResolvedValue(new Response(JSON.stringify({ success: false }), { status: 200 })))
-    expect(await verifyTurnstile('token')).toBe(false)
+    expect(await verifyTurnstile('token', 'wcpos.com')).toBe(false)
   })
-  it('returns false for an empty token', async () => {
-    expect(await verifyTurnstile('')).toBe(false)
+
+  it('returns false on a live host for an empty token', async () => {
+    expect(await verifyTurnstile('', 'wcpos.com')).toBe(false)
   })
-  it('fails closed in production when the secret key is absent', async () => {
+
+  it('fails closed on a live host when the secret key is absent', async () => {
     env.TURNSTILE_SECRET_KEY = undefined
-    env.NODE_ENV = 'production'
-    expect(await verifyTurnstile('token')).toBe(false)
+    expect(await verifyTurnstile('token', 'wcpos.com')).toBe(false)
   })
-  it('allows local development when the secret key is absent', async () => {
-    env.TURNSTILE_SECRET_KEY = undefined
-    env.NODE_ENV = 'development'
-    expect(await verifyTurnstile('token')).toBe(true)
+
+  it('verifies test hosts against the committed always-pass demo secret', async () => {
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValue(new Response(JSON.stringify({ success: true }), { status: 200 }))
+    vi.stubGlobal('fetch', fetchMock)
+    expect(await verifyTurnstile('token', 'beta.wcpos.com')).toBe(true)
+    const form = fetchMock.mock.calls[0][1].body as URLSearchParams
+    expect(form.get('secret')).toBe(TEST_TURNSTILE_SECRET_KEY)
+  })
+
+  it('admits dev hosts without a token or a siteverify call', async () => {
+    const fetchMock = vi.fn()
+    vi.stubGlobal('fetch', fetchMock)
+    expect(await verifyTurnstile('', 'localhost:3000')).toBe(true)
+    expect(fetchMock).not.toHaveBeenCalled()
+  })
+
+  it('fails closed for an unexpected siteverify network error', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new Error('boom')))
+    expect(await verifyTurnstile('token', 'wcpos.com')).toBe(false)
   })
 })

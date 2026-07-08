@@ -38,6 +38,17 @@ describe('GET /api/health', () => {
     expect((await (await GET()).json()).storeEnvironment).toBe('dev')
   })
 
+  it('reports support config as the public site key plus presence booleans', async () => {
+    const support = (await (await GET()).json()).support
+    expect(support).toEqual({
+      turnstileSiteKey: expect.toSatisfy(
+        (v: unknown) => v === null || typeof v === 'string'
+      ),
+      turnstileSecretKey: expect.any(Boolean),
+      openclawToken: expect.any(Boolean),
+    })
+  })
+
   it('returns a valid ISO timestamp', async () => {
     const before = Date.now()
     const response = await GET()

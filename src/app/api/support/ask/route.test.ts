@@ -51,7 +51,7 @@ describe('POST /api/support/ask', () => {
     vi.mocked(askAide).mockResolvedValue({ answer: 'Do X.', model: 'sonnet', answered: true, sources: [] })
     const res = await POST(req({ question: 'How?', turnstileToken: '' }))
     expect(res.status).toBe(200)
-    expect(verifyTurnstile).toHaveBeenCalledWith('', 'unknown')
+    expect(verifyTurnstile).toHaveBeenCalledWith('', null, 'unknown')
   })
 
   it('429 when rate limited', async () => {

@@ -52,7 +52,7 @@ export async function POST(request: Request): Promise<NextResponse> {
   const { question, locale, sessionId, turnstileToken } = parsed.data
   const ip = clientIp(request)
 
-  if (!(await verifyTurnstile(turnstileToken, ip))) {
+  if (!(await verifyTurnstile(turnstileToken, request.headers.get('host'), ip))) {
     return errorResponse('bot_check_failed', 403)
   }
 

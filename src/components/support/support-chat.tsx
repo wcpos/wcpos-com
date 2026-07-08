@@ -1,8 +1,9 @@
 'use client'
 
-import { useState, useRef, useEffect, type FormEvent } from 'react'
+import { useState, useRef, useEffect, useSyncExternalStore, type FormEvent } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { Turnstile, type TurnstileInstance } from '@marsidev/react-turnstile'
+import { resolveTurnstileSiteKey } from '@/lib/support/turnstile-keys'
 import posthog from 'posthog-js'
 import { useLocale, useTranslations } from 'next-intl'
 import { Button } from '@/components/ui/button'
@@ -41,6 +42,11 @@ function isSupportErrorCode(value: unknown): value is SupportErrorCode {
   return typeof value === 'string' && SUPPORT_ERROR_CODES.has(value as SupportErrorCode)
 }
 
+// The host never changes within a page lifetime — subscribe to nothing.
+function subscribeNever() {
+  return () => {}
+}
+
 function useSessionId() {
   const ref = useRef<string>('')
   useEffect(() => {
@@ -65,6 +71,14 @@ export function SupportChat() {
   const [status, setStatus] = useState<'idle' | 'asking'>('idle')
   const [error, setError] = useState<string | null>(null)
   const [token, setToken] = useState<string | null>(null)
+  // undefined = host not resolved yet (server render); null = no widget (dev).
+  // The site key is a host-time fact resolved on the client because this
+  // page is statically prerendered — see turnstile-keys.ts.
+  const siteKey = useSyncExternalStore(
+    subscribeNever,
+    () => resolveTurnstileSiteKey(window.location.host),
+    () => undefined
+  )
   const sessionIdRef = useSessionId()
   const turnstileRef = useRef<TurnstileInstance | null>(null)
 
@@ -87,6 +101,13 @@ export function SupportChat() {
       })
       const data = await res.json()
       if (!res.ok) {
+        // A failed bot check usually means the token went stale (single-use,
+        // ~5 min validity) — reset the widget so the next attempt carries a
+        // fresh one instead of failing forever.
+        if (data.errorCode === 'bot_check_failed') {
+          setToken(null)
+          turnstileRef.current?.reset()
+        }
         setError(
           isSupportErrorCode(data.errorCode)
             ? tErrors(data.errorCode)
@@ -121,11 +142,12 @@ export function SupportChat() {
     }
   }
 
-  const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY
-  // When a Turnstile site key is configured, hold submissions until the invisible
-  // widget has issued a token — otherwise the first eager click posts an empty
-  // token and gets a confusing 403 from the bot check.
-  const verifying = Boolean(siteKey) && !token
+  // When this host renders a Turnstile widget, hold submissions until the
+  // invisible widget has issued a token — otherwise the first eager click
+  // posts an empty token and gets a confusing 403 from the bot check. Before
+  // the host resolves (SSR + first client render) treat it as verifying so
+  // the markup is hydration-stable in every environment.
+  const verifying = siteKey === undefined || (Boolean(siteKey) && !token)
   const started = messages.length > 0
 
   return (
@@ -244,6 +266,11 @@ export function SupportChat() {
           ref={turnstileRef}
           siteKey={siteKey}
           onSuccess={setToken}
+          // Widget failure or token expiry must clear the stale token (the
+          // widget retries/refreshes itself) — a dead token would otherwise
+          // disable the form until a full page reload.
+          onError={() => setToken(null)}
+          onExpire={() => setToken(null)}
           options={{ size: 'invisible' }}
         />
       )}
