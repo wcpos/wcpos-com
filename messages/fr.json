@@ -1543,7 +1543,7 @@
       "feedback": {
         "prompt": "Cette réponse vous a-t-elle été utile ?",
         "yes": "Oui",
-        "no": "No"
+        "no": "Non"
       },
       "thinking": "Aide réfléchit…",
       "form": {
