@@ -14,7 +14,12 @@ function readMessage(messages: Record<string, unknown>, namespace: string, key: 
 }
 
 vi.mock('next-intl/server', async () => {
-  const messages = (await import('../../../../../messages/en.json')).default
+  const enMessages = (await import('../../../../../messages/en.json')).default
+  const frMessages = (await import('../../../../../messages/fr.json')).default
+  const messagesByLocale = {
+    en: enMessages,
+    fr: frMessages,
+  } as const
   const testOverrides: Record<string, Record<string, string>> = {
     'downloads.page': {
       'steps.plugin.cardTitle': 'Nom localisé du plugin',
@@ -27,6 +32,9 @@ vi.mock('next-intl/server', async () => {
     getTranslations: vi.fn(
       async ({ locale, namespace }: { locale: string; namespace: string }) =>
         (key: string, values?: Record<string, string>) => {
+          const messages =
+            messagesByLocale[locale as keyof typeof messagesByLocale] ??
+            enMessages
           let message =
             locale === 'fr' && testOverrides[namespace]?.[key]
               ? testOverrides[namespace][key]
@@ -111,5 +119,27 @@ describe('DownloadsPage', () => {
     expect(
       screen.getByRole('link', { name: 'Répertoire localisé' }),
     ).toHaveAttribute('href', 'https://wordpress.org/plugins/woocommerce-pos/')
+  })
+
+  it('keeps fallback release-note bodies in English while localizing surrounding UI', async () => {
+    const { default: DownloadsPage } = await import(
+      '@/app/[locale]/(main)/downloads/page'
+    )
+
+    const { container } = render(
+      await DownloadsPage({ params: Promise.resolve({ locale: 'fr' }) }),
+    )
+
+    expect(
+      screen.getByText(
+        'Les notes de version proviennent de GitHub et peuvent s’afficher en anglais.',
+      ),
+    ).toBeInTheDocument()
+    expect(screen.getByText(/Cash drawer support/)).toBeInTheDocument()
+    expect(screen.queryByText(/Prise en charge du tiroir-caisse/)).not.toBeInTheDocument()
+    expect(
+      screen.getByText(/Cash drawer support/).closest('[lang="en"]'),
+    ).not.toBeNull()
+    expect(container.querySelector('[lang="fr"]')).toBeNull()
   })
 })
