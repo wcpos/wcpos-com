@@ -1429,99 +1429,99 @@
   },
   "about": {
     "meta": {
-      "title": "About",
-      "description": "The story behind WCPOS — an independent point of sale built by a former shopkeeper and funded by shopkeepers, not investors."
+      "title": "소개",
+      "description": "WCPOS의 이야기 — 전직 상점 주인이 만들고 투자자가 아닌 상점 주인들이 지원하는 독립적인 POS입니다."
     },
     "hero": {
-      "eyebrow": "Our story",
-      "title": "An independent point of sale for WooCommerce",
-      "subtitle": "Built by a former shopkeeper, funded by shopkeepers — not investors. One developer, more than a decade of releases, still shipping."
+      "eyebrow": "우리의 이야기",
+      "title": "WooCommerce를 위한 독립적인 POS",
+      "subtitle": "전직 상점 주인이 만들고, 투자자가 아닌 상점 주인들이 지원합니다. 한 명의 개발자, 10년이 넘는 릴리스, 지금도 계속 개발 중입니다."
     },
     "founder": {
-      "photoAlt": "Paul at Urban Locavore, his Perth shop",
-      "photoCaption": "Urban Locavore, Perth — the store that started it all",
-      "eyebrow": "A note from the developer",
-      "intro": "Hi — I'm Paul. I built WCPOS.",
-      "p1": "That's me, back when it all started. I opened Urban Locavore in Perth in December 2011 with hundreds of products already in WooCommerce and no way to sell them at the counter — so I built a register myself. When the shop closed in April 2014, I put it on WordPress.org for anyone who needed it. <strong>POS plugins for WooCommerce have come and gone since then. This one hasn't.</strong> More than a decade of releases, one developer, still shipping — and the free version is still the real thing: sell, print, stay in sync. It stays free.",
-      "p2": "<strong>Pro is why it's still here.</strong> It adds extra tools for running your store — card readers, refunds at the till, end-of-day reports, multi-store — and it funds every release, free ones included. No investors, no acquisition exit waiting. Shopkeepers fund it directly.",
-      "p3": "And Pro users have a direct line: tell me what your shop needs, and it shapes what I build next.",
+      "photoAlt": "퍼스에 있던 자신의 매장 Urban Locavore의 Paul",
+      "photoCaption": "Urban Locavore, Perth — 모든 것이 시작된 매장",
+      "eyebrow": "개발자의 메모",
+      "intro": "안녕하세요 — 저는 Paul입니다. 제가 WCPOS를 만들었습니다.",
+      "p1": "모든 것이 시작되었을 때의 제 모습입니다. 2011년 12월 퍼스에서 Urban Locavore를 열었고, 이미 WooCommerce에 수백 개의 제품이 있었지만 카운터에서 판매할 방법이 없었습니다 — 그래서 직접 계산대를 만들었습니다. 2014년 4월 매장이 문을 닫았을 때, 필요한 사람 누구나 사용할 수 있도록 WordPress.org에 공개했습니다. <strong>WooCommerce용 POS 플러그인은 그 이후로 생겼다가 사라졌습니다. 이것은 사라지지 않았습니다.</strong> 10년이 넘는 릴리스, 한 명의 개발자, 지금도 계속 개발 중이며 — 무료 버전도 여전히 진짜입니다: 판매하고, 출력하고, 동기화 상태를 유지합니다. 무료로 유지됩니다.",
+      "p2": "<strong>Pro가 있기 때문에 지금도 계속됩니다.</strong> Pro는 매장을 운영하기 위한 추가 도구 — 카드 리더, 계산대 환불, 마감 보고서, 다중 매장 — 를 제공하고, 무료 릴리스를 포함한 모든 릴리스를 지원합니다. 투자자도, 기다리는 인수 매각도 없습니다. 상점 주인들이 직접 지원합니다.",
+      "p3": "그리고 Pro 사용자는 직접 연결됩니다. 매장에 필요한 것을 알려 주면, 제가 다음에 만들 것을 결정하는 데 반영됩니다.",
       "signature": {
         "name": "Paul Kilmurray",
-        "role": "developer & former shopkeeper ·"
+        "role": "개발자 및 전직 상점 주인 ·"
       },
       "ps": {
-        "label": "P.S.",
-        "withPrice": "— Pro is <price></price>.",
-        "fallback": "— Pro is available from the Pro page.",
-        "licence": "If a licence lapses, Pro keeps working; you just stop getting updates.",
+        "label": "추신",
+        "withPrice": "— Pro는 <price></price>입니다.",
+        "fallback": "— Pro는 Pro 페이지에서 이용할 수 있습니다.",
+        "licence": "라이선스가 만료되어도 Pro는 계속 작동합니다. 업데이트만 더 이상 받지 못합니다.",
         "priceSummary": "{yearly}/년 또는 {lifetime} 1회 결제"
       }
     },
     "timeline": {
-      "heading": "How it started, and why it's still here",
+      "heading": "어떻게 시작되었고, 왜 아직도 계속되는가",
       "dates": {
         "range": "{start} – {end}",
-        "today": "Today"
+        "today": "오늘"
       },
       "items": {
         "m1": {
-          "title": "Urban Locavore opens",
-          "body": "A small food store in Perth, with hundreds of products already in WooCommerce — and no way to sell them at the counter."
+          "title": "Urban Locavore 개점",
+          "body": "퍼스의 작은 식료품 매장. 이미 WooCommerce에 수백 개의 제품이 있었지만 카운터에서 판매할 방법이 없었습니다."
         },
         "m2": {
-          "title": "A register, built out of necessity",
-          "body": "With nothing on the market that fit, Paul built a point of sale for his own shop — Backbone.js and an in-browser IndexedDB database, on top of the store he already ran online."
+          "title": "필요해서 만든 계산대",
+          "body": "시장에 맞는 것이 없었기 때문에 Paul은 자신의 매장을 위한 POS를 만들었습니다 — 이미 온라인에서 운영하던 매장 위에 Backbone.js와 브라우저 내 IndexedDB 데이터베이스를 올렸습니다."
         },
         "m3": {
-          "title": "The shop closes",
-          "body": "Urban Locavore winds down — but the register it ran on still works, and other WooCommerce stores need the same thing."
+          "title": "매장 폐점",
+          "body": "Urban Locavore는 문을 닫았지만 — 그 매장에서 사용하던 계산대는 여전히 작동했고, 다른 WooCommerce 매장들도 같은 것이 필요했습니다."
         },
         "m4": {
-          "title": "Released on WordPress.org",
-          "body": "WCPOS goes public, free for anyone who needs it. The free version does the actual job: sell, print, stay in sync."
+          "title": "WordPress.org에 공개",
+          "body": "WCPOS가 필요한 누구나 사용할 수 있도록 무료로 공개되었습니다. 무료 버전은 실제 일을 합니다: 판매하고, 출력하고, 동기화 상태를 유지합니다."
         },
         "m5": {
-          "title": "Rewritten in React Native",
-          "body": "Four years of rebuilding from scratch land as v1.0.0: one codebase for every screen. The desktop app ships the same day — phones and tablets are next."
+          "title": "React Native로 재작성",
+          "body": "4년에 걸쳐 처음부터 다시 만든 결과가 v1.0.0으로 나왔습니다: 모든 화면을 위한 하나의 코드베이스. 데스크톱 앱은 같은 날 출시되었고 — 휴대폰과 태블릿이 다음 차례였습니다."
         },
         "m6": {
-          "title": "Native mobile apps",
-          "body": "The React Native bet pays off: WCPOS arrives on iOS and Android in open beta — the same register, now on the hardware already in the shop."
+          "title": "네이티브 모바일 앱",
+          "body": "React Native 선택이 결실을 맺었습니다: WCPOS가 iOS와 Android에 오픈 베타로 도착했습니다 — 같은 계산대가 이제 매장에 이미 있는 하드웨어 위에서 실행됩니다."
         },
         "m7": {
-          "title": "Still shipping",
-          "body": "More than a decade on. One developer, funded by Pro, still releasing — and the free version is still the real thing."
+          "title": "계속 개발 중",
+          "body": "10년이 넘었습니다. 한 명의 개발자, Pro의 지원, 계속되는 릴리스 — 그리고 무료 버전은 여전히 진짜입니다."
         }
       }
     },
     "values": {
-      "heading": "What it stands for",
+      "heading": "지향하는 가치",
       "items": {
         "v1": {
-          "title": "Independent",
-          "body": "No investors, no acquisition exit waiting. The roadmap answers to the shopkeepers using it — not a board."
+          "title": "독립적",
+          "body": "투자자도, 기다리는 인수 매각도 없습니다. 로드맵은 이 제품을 사용하는 상점 주인들에게 답합니다 — 이사회가 아닙니다."
         },
         "v2": {
-          "title": "Funded by Pro",
-          "body": "Pro tools fund every release, free ones included. Shopkeepers pay for it directly, and that keeps the free version free."
+          "title": "Pro로 지원됨",
+          "body": "Pro 도구는 무료 릴리스를 포함한 모든 릴리스를 지원합니다. 상점 주인들이 직접 비용을 지불하고, 그것이 무료 버전을 계속 무료로 유지합니다."
         },
         "v3": {
-          "title": "Open & GPL",
-          "body": "Released on WordPress.org under the GPL. Yours to use, inspect, and keep — wherever WooCommerce runs."
+          "title": "오픈 및 GPL",
+          "body": "WordPress.org에 GPL로 공개되었습니다. WooCommerce가 실행되는 곳이라면 어디서든 사용할 수 있고, 확인할 수 있고, 계속 보유할 수 있습니다."
         },
         "v4": {
-          "title": "A fair licence",
-          "body": "If a Pro licence lapses, Pro keeps working — you just stop getting updates. Nothing you rely on gets switched off."
+          "title": "공정한 라이선스",
+          "body": "Pro 라이선스가 만료되어도 Pro는 계속 작동합니다 — 업데이트만 더 이상 받지 못합니다. 의존하던 기능이 꺼지지 않습니다."
         }
       }
     },
     "cta": {
-      "title": "Built by a shopkeeper. Funded by shopkeepers.",
-      "subtitle": "Try the live demo, download the free plugin, or see what Pro adds — and what keeps it all going.",
+      "title": "상점 주인이 만들고, 상점 주인들이 지원합니다.",
+      "subtitle": "라이브 데모를 사용해 보고, 무료 플러그인을 다운로드하거나, Pro가 무엇을 더하고 무엇이 이 모든 것을 계속 가능하게 하는지 확인하세요.",
       "actions": {
-        "demo": "Try Live Demo",
-        "download": "Download Free",
-        "pro": "See Pro"
+        "demo": "라이브 데모 사용해 보기",
+        "download": "무료 다운로드",
+        "pro": "Pro 보기"
       }
     }
   },
