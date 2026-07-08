@@ -44,4 +44,15 @@ describe('homepage POS demo currency formatting', () => {
     expect(screen.getByText(byNormalizedText(formatUsd(69, 2)))).toBeInTheDocument()
     expect(screen.queryByText('$69.00')).not.toBeInTheDocument()
   })
+
+  it('constrains the smart terminal amount to its screen width', () => {
+    render(<DeviceTerminal model={2} />)
+
+    expect(screen.getByText(byNormalizedText(formatUsd(69, 2)))).toHaveClass(
+      'w-full',
+      'whitespace-nowrap',
+      'overflow-hidden',
+      'text-sm'
+    )
+  })
 })
