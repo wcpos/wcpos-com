@@ -103,6 +103,34 @@ describe('btcpay-modal seam', () => {
     await expect(promise).rejects.toThrow('BTCPAY_MODAL_LOAD_FAILED')
   })
 
+  it('treats Invalid as a payment issue rather than an unpaid invoice', async () => {
+    const { isPaymentIssueStatus } = await freshModule()
+
+    expect(isPaymentIssueStatus('Invalid')).toBe(true)
+    expect(isPaymentIssueStatus('invalid')).toBe(true)
+    for (const status of ['New', 'Expired', 'Settled', '']) {
+      expect(isPaymentIssueStatus(status)).toBe(false)
+    }
+  })
+
+  it('hides the invoice frame without ever throwing at the caller', async () => {
+    const { hideBtcpayModal } = await freshModule()
+
+    // Callers hide the frame on the way to /processing; a throw here would
+    // abort that navigation and strand a paid customer on checkout.
+    expect(() => hideBtcpayModal()).not.toThrow()
+
+    const btcpay = makeBtcpayGlobal()
+    ;(window as { btcpay?: unknown }).btcpay = btcpay
+    hideBtcpayModal()
+    expect(btcpay.hideFrame).toHaveBeenCalledTimes(1)
+
+    btcpay.hideFrame.mockImplementation(() => {
+      throw new Error('no frame mounted')
+    })
+    expect(() => hideBtcpayModal()).not.toThrow()
+  })
+
   it('reuses an already-present btcpay global without reinjecting', async () => {
     const { openBtcpayModal } = await freshModule()
     const btcpay = makeBtcpayGlobal()

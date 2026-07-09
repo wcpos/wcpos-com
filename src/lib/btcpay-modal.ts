@@ -136,9 +136,18 @@ export async function openBtcpayModal(
  *
  * btcpay.js mounts the iframe outside React, directly under `<body>`, so a
  * route change on its own leaves it covering whatever renders next.
+ *
+ * Callers hide the frame immediately before navigating away from a paid
+ * invoice, so this must never throw: a stray error here would strand a
+ * customer who has already paid on the checkout page. A cosmetic overlay is
+ * the lesser failure.
  */
 export function hideBtcpayModal(): void {
-  window.btcpay?.hideFrame()
+  try {
+    window.btcpay?.hideFrame()
+  } catch {
+    // Script loaded but no frame to hide — nothing to clean up.
+  }
 }
 
 /** Statuses that mean BTCPay has seen the payment (settled or on the way). */
