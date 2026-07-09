@@ -4,10 +4,7 @@ import {
   CHECKOUT_FAILURE_KINDS,
   ORDER_PENDING_CODE,
   compareCheckoutFailureKindSafety,
-  isCheckoutFailureKind,
-  isMoneyAtRiskCheckoutFailureKind,
   isProtectiveCheckoutFailureKind,
-  isRoutineCheckoutFailureKind,
   ownerSeverityForCheckoutFailure,
   shouldBlockCheckoutForFailureKind,
 } from './checkout-failure-taxonomy'
@@ -30,8 +27,6 @@ describe('checkout failure taxonomy', () => {
       'payment_uncertain',
       'order_pending',
     ])
-    expect(isCheckoutFailureKind('order_pending')).toBe(true)
-    expect(isCheckoutFailureKind('banana')).toBe(false)
   })
 
   it('keeps owner alert severity routing in one pure classification', () => {
@@ -49,17 +44,7 @@ describe('checkout failure taxonomy', () => {
       value: undefined,
     })
 
-    expect(isCheckoutFailureKind('order_pending')).toBe(true)
     expect(ownerSeverityForCheckoutFailure('payment_uncertain')).toBe('fatal')
-    expect(isCheckoutFailureKind('banana')).toBe(false)
-  })
-
-  it('names the owner-alert severity classes for callers that need boolean checks', () => {
-    expect(isMoneyAtRiskCheckoutFailureKind('order_pending')).toBe(true)
-    expect(isMoneyAtRiskCheckoutFailureKind('payment_uncertain')).toBe(true)
-    expect(isMoneyAtRiskCheckoutFailureKind('payment_failed')).toBe(false)
-    expect(isRoutineCheckoutFailureKind('payment_failed')).toBe(true)
-    expect(isRoutineCheckoutFailureKind('payment_cancelled')).toBe(false)
   })
 
   it('identifies browser-protective kinds without treating all reported failures as protective', () => {

@@ -11,7 +11,7 @@ import { parseMedusaError, setAuthToken } from '@/lib/medusa-auth'
 //
 // This module owns the whole "sign a customer in with an OAuth provider" flow
 // for google / github / discord (the generic `/api/auth/[provider]` plumbing —
-// see docs/adr/0006-discord-first-class-sign-in.md). The ordering rule that
+// see docs/adr/0015-discord-first-class-sign-in.md). The ordering rule that
 // establishes a session — link a brand-new identity, THEN refresh so the new
 // actor_id lands in the JWT, THEN persist only the refreshed token — used to
 // live as caller discipline in the callback route. It now lives behind

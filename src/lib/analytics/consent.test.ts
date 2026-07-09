@@ -4,7 +4,6 @@ import {
   ANALYTICS_CONSENT_COOKIE,
   consentCookieDomain,
   getConsentCookieOptions,
-  hasAnalyticsConsent,
   isAnalyticsGranted,
   mostRestrictiveConsent,
   parseAnalyticsConsent,
@@ -81,15 +80,6 @@ describe('readAnalyticsConsentFromCookieHeader', () => {
     expect(readAnalyticsConsentFromCookieHeader(null)).toBeNull()
     expect(readAnalyticsConsentFromCookieHeader(undefined)).toBeNull()
     expect(readAnalyticsConsentFromCookieHeader('other=1')).toBeNull()
-  })
-})
-
-describe('hasAnalyticsConsent', () => {
-  it('is true only for an explicit grant', () => {
-    expect(hasAnalyticsConsent('granted')).toBe(true)
-    expect(hasAnalyticsConsent('denied')).toBe(false)
-    expect(hasAnalyticsConsent(undefined)).toBe(false)
-    expect(hasAnalyticsConsent('anything-else')).toBe(false)
   })
 })
 

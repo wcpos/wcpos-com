@@ -1,7 +1,7 @@
 # Runbook: store alerting
 
 How the owner alerts work, what each one means, and how to verify the whole
-chain before launch. See [ADR 0011](../adr/0011-observability-and-owner-alerting.md)
+chain before launch. See [ADR 0016](../adr/0016-observability-and-owner-alerting.md)
 for the design.
 
 ## Channels

@@ -57,17 +57,3 @@ export async function getProPluginReleases(): Promise<ProPluginRelease[]> {
         new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
     )
 }
-
-export async function findReleaseByVersion(
-  version: string
-): Promise<ProPluginRelease | null> {
-  const releases = await getProPluginReleases()
-  if (version === 'latest') {
-    return releases[0] ?? null
-  }
-
-  const normalizedVersion = normalizeReleaseVersion(version)
-  return (
-    releases.find((release) => release.version === normalizedVersion) ?? null
-  )
-}
