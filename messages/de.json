@@ -658,6 +658,41 @@
         },
         "licenses": "Zu den Lizenzen",
         "installationGuide": "Installationsanleitung"
+      },
+      "processingPage": {
+        "metadata": {
+          "title": "Zahlung wird verarbeitet",
+          "description": "Wir bestätigen deine Bitcoin-Zahlung."
+        },
+        "checking": {
+          "title": "Zahlung wird geprüft…",
+          "description": "Einen Moment — wir prüfen den Status deiner Bitcoin-Zahlung."
+        },
+        "confirming": {
+          "title": "Zahlung eingegangen",
+          "description": "Das Bitcoin-Netzwerk bestätigt deine Zahlung. Deine Bestellung wird automatisch abgeschlossen, sobald sie bestätigt ist — du kannst diese Seite jederzeit verlassen.",
+          "hint": "Deine Lizenz wird dir per E-Mail zugeschickt, sobald die Zahlung bestätigt ist. On-Chain-Zahlungen können etwas dauern; Lightning ist meist sofort."
+        },
+        "awaiting": {
+          "title": "Rechnung noch nicht bezahlt",
+          "description": "Die Bitcoin-Rechnung wurde anscheinend noch nicht bezahlt. Dir wurde nichts berechnet — du kannst die Rechnung erneut öffnen oder eine andere Zahlungsmethode wählen.",
+          "reopenInvoice": "Bitcoin-Rechnung erneut öffnen"
+        },
+        "expired": {
+          "title": "Rechnung abgelaufen",
+          "description": "Die Bitcoin-Rechnung ist abgelaufen, bevor die Zahlung abgeschlossen wurde. Dir wurde nichts berechnet — kehre zur Kasse zurück und versuche es erneut."
+        },
+        "signIn": {
+          "title": "Melde dich an, um deine Bestellung zu sehen",
+          "description": "Melde dich mit dem Konto an, das du an der Kasse verwendet hast, um deine Zahlung zu verfolgen.",
+          "action": "Anmelden"
+        },
+        "error": {
+          "title": "Zahlung konnte nicht geprüft werden",
+          "description": "Beim Prüfen des Zahlungsstatus ist ein Fehler aufgetreten. Wenn du bezahlt hast, kommen Bestellung und Lizenz-E-Mail trotzdem automatisch an.",
+          "viewOrders": "Bestellungen ansehen"
+        },
+        "backToCheckout": "Zurück zur Kasse"
       }
     }
   },

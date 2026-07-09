@@ -658,6 +658,41 @@
         },
         "licenses": "Naar licenties",
         "installationGuide": "Installatiegids"
+      },
+      "processingPage": {
+        "metadata": {
+          "title": "Betaling wordt verwerkt",
+          "description": "We bevestigen je Bitcoin-betaling."
+        },
+        "checking": {
+          "title": "Betaling controleren…",
+          "description": "Een ogenblik — we controleren de status van je Bitcoin-betaling."
+        },
+        "confirming": {
+          "title": "Betaling ontvangen",
+          "description": "Het Bitcoin-netwerk bevestigt je betaling. Je bestelling wordt automatisch afgerond zodra de betaling is verwerkt — je kunt deze pagina op elk moment verlaten.",
+          "hint": "Je licentie wordt per e-mail verstuurd zodra de betaling is verwerkt. On-chain-betalingen kunnen even duren; Lightning is meestal direct."
+        },
+        "awaiting": {
+          "title": "Factuur nog niet betaald",
+          "description": "Het lijkt erop dat de Bitcoin-factuur nog niet is betaald. Er is niets afgeschreven — je kunt de factuur opnieuw openen of een andere betaalmethode kiezen.",
+          "reopenInvoice": "Bitcoin-factuur opnieuw openen"
+        },
+        "expired": {
+          "title": "Factuur verlopen",
+          "description": "De Bitcoin-factuur is verlopen voordat de betaling was afgerond. Er is niets afgeschreven — ga terug naar de checkout om het opnieuw te proberen."
+        },
+        "signIn": {
+          "title": "Log in om je bestelling te zien",
+          "description": "Log in met het account dat je bij de checkout gebruikte om je betaling te volgen.",
+          "action": "Inloggen"
+        },
+        "error": {
+          "title": "We konden je betaling niet controleren",
+          "description": "Er ging iets mis bij het controleren van de betaalstatus. Als je hebt betaald, komen je bestelling en licentie-e-mail alsnog automatisch aan.",
+          "viewOrders": "Bekijk je bestellingen"
+        },
+        "backToCheckout": "Terug naar checkout"
       }
     }
   },

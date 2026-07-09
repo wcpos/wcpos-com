@@ -658,6 +658,41 @@
         },
         "licenses": "Go to Licenses",
         "installationGuide": "Installation Guide"
+      },
+      "processingPage": {
+        "metadata": {
+          "title": "Processing your payment",
+          "description": "We're confirming your Bitcoin payment."
+        },
+        "checking": {
+          "title": "Checking your payment…",
+          "description": "One moment — we're checking the status of your Bitcoin payment."
+        },
+        "confirming": {
+          "title": "Payment received",
+          "description": "The Bitcoin network is confirming your payment. Your order completes automatically once it settles — you can leave this page at any time.",
+          "hint": "Your licence will be emailed to you as soon as the payment settles. On-chain payments can take a while; Lightning is usually instant."
+        },
+        "awaiting": {
+          "title": "Invoice not paid yet",
+          "description": "It looks like the Bitcoin invoice hasn't been paid. You have not been charged — you can reopen the invoice or choose a different payment method.",
+          "reopenInvoice": "Reopen Bitcoin invoice"
+        },
+        "expired": {
+          "title": "Invoice expired",
+          "description": "The Bitcoin invoice expired before payment completed. You have not been charged — return to checkout to try again."
+        },
+        "signIn": {
+          "title": "Sign in to see your order",
+          "description": "Sign in with the account you used at checkout to track your payment.",
+          "action": "Sign in"
+        },
+        "error": {
+          "title": "We couldn't check your payment",
+          "description": "Something went wrong while checking the payment status. If you've paid, your order and licence email will still arrive automatically.",
+          "viewOrders": "View your orders"
+        },
+        "backToCheckout": "Back to checkout"
       }
     }
   },

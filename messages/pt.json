@@ -658,6 +658,41 @@
         },
         "licenses": "Ir para licenças",
         "installationGuide": "Guia de instalação"
+      },
+      "processingPage": {
+        "metadata": {
+          "title": "Processando seu pagamento",
+          "description": "Estamos confirmando seu pagamento em Bitcoin."
+        },
+        "checking": {
+          "title": "Verificando seu pagamento…",
+          "description": "Um momento — estamos verificando o status do seu pagamento em Bitcoin."
+        },
+        "confirming": {
+          "title": "Pagamento recebido",
+          "description": "A rede Bitcoin está confirmando seu pagamento. Seu pedido será concluído automaticamente assim que for liquidado — você pode sair desta página a qualquer momento.",
+          "hint": "Sua licença será enviada por e-mail assim que o pagamento for liquidado. Pagamentos on-chain podem demorar; Lightning costuma ser instantâneo."
+        },
+        "awaiting": {
+          "title": "Fatura ainda não paga",
+          "description": "Parece que a fatura Bitcoin ainda não foi paga. Nada foi cobrado — você pode reabrir a fatura ou escolher outra forma de pagamento.",
+          "reopenInvoice": "Reabrir fatura Bitcoin"
+        },
+        "expired": {
+          "title": "Fatura expirada",
+          "description": "A fatura Bitcoin expirou antes da conclusão do pagamento. Nada foi cobrado — volte ao checkout para tentar novamente."
+        },
+        "signIn": {
+          "title": "Entre para ver seu pedido",
+          "description": "Entre com a conta usada no checkout para acompanhar seu pagamento.",
+          "action": "Entrar"
+        },
+        "error": {
+          "title": "Não foi possível verificar seu pagamento",
+          "description": "Algo deu errado ao verificar o status do pagamento. Se você já pagou, seu pedido e o e-mail com a licença chegarão automaticamente.",
+          "viewOrders": "Ver seus pedidos"
+        },
+        "backToCheckout": "Voltar ao checkout"
       }
     }
   },
