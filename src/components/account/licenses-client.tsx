@@ -3,19 +3,19 @@
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { useLocale, useTranslations } from 'next-intl'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent } from '@/components/ui/card'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
-import { StatusBadge } from '@/components/ui/status-badge'
-import { DividedList, Row } from '@/components/ui/row'
 import { Alert } from '@/components/ui/alert'
 import { EmptyState } from '@/components/ui/empty-state'
+import { Progress } from '@/components/ui/progress'
+import { DividedList, Row } from '@/components/ui/row'
 import { AccountNotice } from '@/components/account/account-notice'
-import { Key, Monitor, Trash2, Download, Copy, Check } from 'lucide-react'
+import { Key, Trash2, Copy, Check, ChevronDown } from 'lucide-react'
 import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/config'
 import { formatDateForLocale } from '@/lib/date-format'
+import { cn } from '@/lib/utils'
 import {
   localizeRedirectPath,
   navigateAfterAuthChange,
@@ -27,7 +27,10 @@ import {
   isLicenseExpiringSoon,
 } from '@/lib/license'
 import { getPlanByPolicyId, YEARLY_PRO_HANDLE } from '@/lib/plans'
-import { presentLicenseStatus } from '@/lib/license-status-presentation'
+import {
+  presentLicenseStatus,
+  type LicenseStatusTone,
+} from '@/lib/license-status-presentation'
 
 interface Machine {
   id: string
@@ -143,6 +146,48 @@ function memberInitials(handle: string): string {
   return cleaned.slice(0, 2).toUpperCase()
 }
 
+const DAY_MS = 24 * 60 * 60 * 1000
+
+/**
+ * Support-runway meter: fraction of a full yearly term still ahead. Purely
+ * presentational (the meter under "Updates & priority support"); entitlement
+ * decisions never read this.
+ */
+function supportRunwayPercent(expiryMs: number, nowMs: number): number {
+  const remaining = expiryMs - nowMs
+  if (remaining <= 0) return 0
+  return Math.min(100, (remaining / (365 * DAY_MS)) * 100)
+}
+
+function daysUntil(expiryMs: number, nowMs: number): number {
+  return Math.max(0, Math.ceil((expiryMs - nowMs) / DAY_MS))
+}
+
+/**
+ * A machine that phoned home recently gets a green presence dot; anything
+ * older (or without a lastSeenAt yet) stays neutral. Decorative only — the
+ * dot is aria-hidden and no behaviour hangs off it.
+ */
+const RECENTLY_SEEN_MS = 48 * 60 * 60 * 1000
+
+function isRecentlySeen(lastSeen: string | undefined, nowMs: number): boolean {
+  if (!lastSeen) return false
+  const seenMs = Date.parse(lastSeen)
+  if (Number.isNaN(seenMs)) return false
+  return nowMs - seenMs <= RECENTLY_SEEN_MS
+}
+
+/**
+ * Status label colors on the dark key band. Lifted variants of the shared
+ * status-tone families so small text clears contrast on slate-950.
+ */
+const bandStatusText: Record<LicenseStatusTone, string> = {
+  positive: 'text-green-400',
+  caution: 'text-amber-400',
+  critical: 'text-red-400',
+  neutral: 'text-slate-400',
+}
+
 interface LicensesClientProps {
   initialLicenses: License[]
   /**
@@ -188,6 +233,24 @@ export function LicensesClient({
   const [unblockingDiscordUser, setUnblockingDiscordUser] = useState<string | null>(null)
   // Captured once per mount so render stays pure for the React compiler.
   const [now] = useState(() => Date.now())
+  // With several licences the page opens scannable: the first card starts
+  // expanded, and so does any card that needs attention (not plain-active, or
+  // expiring soon). The rest collapse to their key band until clicked.
+  // Uses the SAME `now` capture as the status presentation so the initial
+  // open set and the rendered statuses can never disagree.
+  const [openLicenses, setOpenLicenses] = useState<Set<string>>(
+    () =>
+      new Set(
+        initialLicenses
+          .filter(
+            (license, index) =>
+              index === 0 ||
+              getLicenseDisplayStatus(license, now) !== 'active' ||
+              isLicenseExpiringSoon(license, now)
+          )
+          .map((license) => license.id)
+      )
+  )
 
   // Claim outcome handed back by the Discord OAuth callback redirect. Captured
   // once on mount, then scrubbed from the address bar so a reload (or a copied
@@ -376,6 +439,18 @@ export function LicensesClient({
     })
   }
 
+  const toggleOpenLicense = (licenseId: string) => {
+    setOpenLicenses((prev) => {
+      const next = new Set(prev)
+      if (next.has(licenseId)) {
+        next.delete(licenseId)
+      } else {
+        next.add(licenseId)
+      }
+      return next
+    })
+  }
+
   const handleCopyKey = async (licenseId: string, key: string) => {
     try {
       await navigator.clipboard.writeText(key)
@@ -482,77 +557,133 @@ export function LicensesClient({
           // accessible name — with multiple licences the buttons would
           // otherwise all announce the same label to screen readers.
           const keySuffix = license.key.slice(-4)
+          const isOpen = openLicenses.has(license.id)
+          const detailId = `license-detail-${license.id}`
+          const expiryMs = license.expiry ? Date.parse(license.expiry) : null
+          const hasValidExpiry = expiryMs != null && !Number.isNaN(expiryMs)
+          // Collapsed band digest: the one line that still answers "is this
+          // licence fine" without opening the card.
+          const bandSitesSummary = t('bandSites', {
+            count: license.activationCount,
+            max: license.maxMachines,
+          })
+          const bandSummary =
+            hasValidExpiry && displayStatus === 'active'
+              ? `${t('factUntil', {
+                  date: formatDateForLocale(license.expiry as string, locale),
+                })} · ${bandSitesSummary}`
+              : bandSitesSummary
+
           return (
-          <Card key={license.id}>
-            <CardHeader>
-              {/* flex-wrap so the badge/plan cluster drops below the key on
-                  narrow phones instead of squeezing it. */}
-              <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
-                <CardTitle className="flex min-w-0 items-center gap-1.5 text-lg">
-                  <button
-                    type="button"
-                    onClick={() => toggleRevealKey(license.id)}
-                    aria-pressed={keyRevealed}
-                    title={t(keyRevealed ? 'hideKeyAria' : 'showKeyAria', {
-                      suffix: keySuffix,
-                    })}
-                    aria-label={t(keyRevealed ? 'hideKeyAria' : 'showKeyAria', {
-                      suffix: keySuffix,
-                    })}
-                    className="group flex min-w-0 items-center gap-2.5 rounded-md text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-wcpos-red/40"
-                  >
-                    <span
-                      aria-hidden="true"
-                      className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-wcpos-red/10 text-wcpos-red-accent transition-colors group-hover:bg-wcpos-red/20"
-                    >
-                      <Key className="h-4 w-4" />
-                    </span>
-                    <code className="break-all font-mono text-sm tracking-wider">
-                      {keyRevealed ? license.key : maskKey(license.key)}
-                    </code>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => handleCopyKey(license.id, license.key)}
-                    title={
-                      keyCopied
-                        ? t('copiedKey')
-                        : t('copyKeyAria', { suffix: keySuffix })
-                    }
-                    aria-label={
-                      keyCopied
-                        ? t('copiedKey')
-                        : t('copyKeyAria', { suffix: keySuffix })
-                    }
-                    className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-wcpos-red/40"
-                  >
-                    {keyCopied ? (
-                      <Check className="h-4 w-4 text-green-600" />
-                    ) : (
-                      <Copy className="h-4 w-4" />
-                    )}
-                  </button>
-                </CardTitle>
-                <div className="flex items-center gap-2">
-                  <StatusBadge
-                    tone={statusPresentation.tone}
-                    title={
-                      statusPresentation.titleKey
-                        ? t(statusPresentation.titleKey)
-                        : undefined
-                    }
-                  >
-                    {tStatus(statusPresentation.labelKey)}
-                  </StatusBadge>
-                  {planLabel && (
-                    <Badge variant="outline" className="text-muted-foreground">
-                      {planLabel}
-                    </Badge>
+          <Card key={license.id} className="overflow-hidden">
+            {/* Dark key band: the licence's identity strip. Constant slate-950
+                in both themes (like the checkout's dark summary), with a faint
+                red radial sheen echoing the brand mark. */}
+            <div className="relative isolate flex flex-wrap items-center gap-x-3 gap-y-2 bg-slate-950 px-4 py-3.5 text-slate-100 sm:px-5">
+              <div
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-0 bg-[radial-gradient(120%_180%_at_100%_0%,rgba(190,45,32,0.16),transparent_45%)]"
+              />
+              <button
+                type="button"
+                onClick={() => toggleRevealKey(license.id)}
+                aria-pressed={keyRevealed}
+                title={t(keyRevealed ? 'hideKeyAria' : 'showKeyAria', {
+                  suffix: keySuffix,
+                })}
+                aria-label={t(keyRevealed ? 'hideKeyAria' : 'showKeyAria', {
+                  suffix: keySuffix,
+                })}
+                className="group relative flex min-w-0 items-center gap-3 rounded-md text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50"
+              >
+                <span
+                  aria-hidden="true"
+                  className={cn(
+                    'grid h-9 w-9 shrink-0 place-items-center rounded-lg text-white transition-transform group-hover:scale-105',
+                    displayStatus === 'active'
+                      ? 'bg-gradient-to-br from-[#d63a2d] to-[#a91f14] shadow-[0_2px_8px_rgba(169,31,20,0.45)]'
+                      : 'bg-gradient-to-br from-slate-600 to-slate-800'
                   )}
-                </div>
+                >
+                  <Key className="h-4 w-4" />
+                </span>
+                <span className="min-w-0">
+                  <span className="block text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-400">
+                    WCPOS Pro{planLabel ? <> · <span>{planLabel}</span></> : null}
+                  </span>
+                  <code className="block break-all font-mono text-sm tracking-wider text-slate-100">
+                    {keyRevealed ? license.key : maskKey(license.key)}
+                  </code>
+                </span>
+              </button>
+              <button
+                type="button"
+                onClick={() => handleCopyKey(license.id, license.key)}
+                title={
+                  keyCopied
+                    ? t('copiedKey')
+                    : t('copyKeyAria', { suffix: keySuffix })
+                }
+                aria-label={
+                  keyCopied
+                    ? t('copiedKey')
+                    : t('copyKeyAria', { suffix: keySuffix })
+                }
+                className="relative flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-slate-400 transition-colors hover:bg-white/10 hover:text-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50"
+              >
+                {keyCopied ? (
+                  <Check className="h-4 w-4 text-green-400" />
+                ) : (
+                  <Copy className="h-4 w-4" />
+                )}
+              </button>
+              <span
+                className={cn(
+                  'relative inline-flex items-center gap-1.5 text-xs font-semibold',
+                  bandStatusText[statusPresentation.tone]
+                )}
+                title={
+                  statusPresentation.titleKey
+                    ? t(statusPresentation.titleKey)
+                    : undefined
+                }
+              >
+                <span
+                  aria-hidden="true"
+                  className="size-1.5 rounded-full bg-current shadow-[0_0_8px_currentColor]"
+                />
+                {tStatus(statusPresentation.labelKey)}
+              </span>
+              <div className="relative ml-auto flex items-center gap-2">
+                {!isOpen && (
+                  <span className="hidden text-xs tabular-nums text-slate-400 md:inline">
+                    {bandSummary}
+                  </span>
+                )}
+                <button
+                  type="button"
+                  onClick={() => toggleOpenLicense(license.id)}
+                  aria-expanded={isOpen}
+                  // The detail node is unmounted while collapsed, so only
+                  // reference it when it exists.
+                  aria-controls={isOpen ? detailId : undefined}
+                  aria-label={t(isOpen ? 'collapseAria' : 'expandAria', {
+                    suffix: keySuffix,
+                  })}
+                  className="flex h-7 w-7 items-center justify-center rounded-md text-slate-400 transition-colors hover:bg-white/10 hover:text-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50"
+                >
+                  <ChevronDown
+                    className={cn(
+                      'h-4 w-4 transition-transform',
+                      isOpen && 'rotate-180'
+                    )}
+                  />
+                </button>
               </div>
-            </CardHeader>
-            <CardContent className="space-y-4">
+            </div>
+
+            {isOpen && (
+            <CardContent id={detailId} className="space-y-5 pt-5">
               {expiringSoon && license.expiry && (
                 <AccountNotice
                   action={
@@ -585,94 +716,150 @@ export function LicensesClient({
                 </p>
               )}
 
-              {/* Per-licence covered version (ADR-0006): an active licence shows
-                  the latest version it grants; an expired one shows the last
-                  version released during its term. Update access is attributed
-                  to THIS licence, never pooled across licences. */}
-              {coveredVersion && displayStatus === 'active' && (
-                <p className="text-sm text-muted-foreground">
-                  {t('coversLatestVersion', { version: coveredVersion })}
-                </p>
-              )}
-              {coveredVersion && displayStatus === 'expired' && (
-                <p className="text-sm text-muted-foreground">
-                  {t('coversUpToVersion', { version: coveredVersion })}
-                </p>
-              )}
-
-              <div className="flex flex-wrap items-center justify-between gap-3">
-                <div className="flex flex-wrap gap-x-6 gap-y-1 text-sm">
-                  {license.expiry && (
-                    <div>
-                      <span className="text-muted-foreground">
-                        {t('expiresLabel')}{' '}
-                      </span>
-                      <span className="font-medium">
-                        {formatDateForLocale(license.expiry, locale)}
-                      </span>
-                    </div>
+              {/* Facts row: the licence's vitals as unboxed columns —
+                  whitespace instead of borders (account redesign 2026-07). */}
+              <div className="flex flex-wrap items-start gap-x-10 gap-y-4">
+                <div>
+                  <p className="text-xs text-muted-foreground">
+                    {t('factUpdates')}
+                  </p>
+                  <p className="mt-0.5 text-sm font-semibold tabular-nums">
+                    {/* Lifetime means NO expiry. An expiry that fails to parse
+                        is NOT lifetime — the display status already failed
+                        closed to expired, so show no date rather than a
+                        contradictory "lifetime" claim. */}
+                    {license.expiry == null
+                      ? t('factLifetime')
+                      : hasValidExpiry
+                        ? t(
+                            displayStatus === 'expired'
+                              ? 'factEnded'
+                              : 'factUntil',
+                            {
+                              date: formatDateForLocale(
+                                license.expiry,
+                                locale
+                              ),
+                            }
+                          )
+                        : '—'}
+                  </p>
+                  {hasValidExpiry && displayStatus === 'active' && (
+                    <>
+                      <Progress
+                        tone="positive"
+                        value={supportRunwayPercent(expiryMs as number, now)}
+                        className="mt-2 w-40"
+                      />
+                      <p className="mt-1 text-xs tabular-nums text-muted-foreground">
+                        {t('daysLeft', {
+                          days: daysUntil(expiryMs as number, now),
+                        })}
+                      </p>
+                    </>
                   )}
+                  {displayStatus === 'expired' && (
+                    <p className="mt-1 max-w-56 text-xs text-muted-foreground">
+                      {t('expiredKeepsRunning')}
+                    </p>
+                  )}
+                </div>
+
+                <div>
+                  <p className="text-xs text-muted-foreground">{t('factSites')}</p>
+                  <p className="mt-0.5 text-sm font-semibold tabular-nums">
+                    {t('activationsCount', {
+                      count: license.activationCount,
+                      max: license.maxMachines,
+                    })}
+                  </p>
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    {t('slotsFree', {
+                      count: Math.max(
+                        0,
+                        license.maxMachines - license.activationCount
+                      ),
+                    })}
+                  </p>
+                </div>
+
+                <div>
+                  <p className="text-xs text-muted-foreground">{t('factSeats')}</p>
+                  <p className="mt-0.5 text-sm font-semibold tabular-nums">
+                    {t('seatsCount', {
+                      used: discordAccess.usedSeats,
+                      cap: discordAccess.seatCap,
+                    })}
+                  </p>
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    {t('seatsFree', {
+                      count: Math.max(
+                        0,
+                        discordAccess.seatCap - discordAccess.usedSeats
+                      ),
+                    })}
+                  </p>
+                </div>
+
+                {(displayStatus === 'active' || displayStatus === 'expired') && (
                   <div>
-                    <span className="text-muted-foreground">
-                      {t('activationsLabel')}{' '}
-                    </span>
-                    <span className="font-medium">
+                    <p className="text-xs text-muted-foreground">
+                      {t('factDownloads')}
+                    </p>
+                    <p className="mt-0.5 text-sm font-semibold tabular-nums">
+                      {coveredVersion
+                        ? displayStatus === 'expired'
+                          ? t('downloadsUpTo', { version: coveredVersion })
+                          : coveredVersion
+                        : '—'}
+                    </p>
+                    <p className="mt-1 text-xs">
+                      <Link
+                        href={
+                          displayStatus === 'expired'
+                            ? scopedDownloadsHref
+                            : '/account/downloads'
+                        }
+                        className="font-medium text-wcpos-red-accent hover:underline"
+                      >
+                        {t('downloads')}
+                      </Link>
+                    </p>
+                  </div>
+                )}
+
+                {showRenew && (
+                  <div className="ms-auto self-center">
+                    {/* Renew is always offered on a yearly licence: primary when
+                        expired (needed to regain access), secondary when active
+                        (an optional early renewal — no days are lost). */}
+                    <Button
+                      asChild
+                      size="sm"
+                      variant={displayStatus === 'active' ? 'outline' : 'default'}
+                    >
+                      <Link href={renewHref} prefetch={false}>
+                        {t('renew')}
+                      </Link>
+                    </Button>
+                  </div>
+                )}
+              </div>
+
+              {license.machines.length > 0 ? (
+                <div className="border-t pt-4">
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+                      {t('activatedSites')}
+                    </p>
+                    <span className="text-xs font-medium tabular-nums text-muted-foreground">
                       {t('activationsCount', {
                         count: license.activationCount,
                         max: license.maxMachines,
                       })}
                     </span>
                   </div>
-                </div>
-                {(displayStatus === 'active' ||
-                  displayStatus === 'expired') && (
-                  <div className="flex items-center gap-2">
-                    {/* Renew is always offered on a yearly licence: primary when
-                        expired (needed to regain access), secondary when active
-                        (an optional early renewal — no days are lost). */}
-                    {showRenew && (
-                      <Button
-                        asChild
-                        size="sm"
-                        variant={displayStatus === 'active' ? 'outline' : 'default'}
-                      >
-                        <Link href={renewHref} prefetch={false}>
-                          {t('renew')}
-                        </Link>
-                      </Button>
-                    )}
-                    {displayStatus === 'active' && (
-                      <Button asChild size="sm">
-                        <Link href="/account/downloads">
-                          <Download className="mr-2 h-4 w-4" />
-                          {t('downloads')}
-                        </Link>
-                      </Button>
-                    )}
-                    {displayStatus === 'expired' && (
-                      /* Expired licenses can still download versions released
-                         before their expiry; scope the downloads page to this
-                         licence so another active licence does not pool access. */
-                      <Button asChild size="sm" variant="outline">
-                        <Link href={scopedDownloadsHref}>
-                          <Download className="mr-2 h-4 w-4" />
-                          {t('downloads')}
-                        </Link>
-                      </Button>
-                    )}
-                  </div>
-                )}
-              </div>
-
-              {license.machines.length > 0 && (
-                <div className="border-t pt-4">
-                  <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-                    {t('activatedSites')}
-                  </p>
-                  <p className="mt-1 text-xs text-muted-foreground">
-                    {t('activatedSitesHelp')}
-                  </p>
-                  <DividedList className="mt-2">
+                  <DividedList className="mt-1">
                     {license.machines.map((machine) => {
                       const metadata = machine.metadata ?? {}
                       const siteLabel =
@@ -687,18 +874,24 @@ export function LicensesClient({
                       )
                       const wpVersion = metaString(metadata, 'wpVersion')
                       const wcVersion = metaString(metadata, 'wcVersion')
-                      const versionParts = [
+                      // One quiet meta line per site: added · last seen ·
+                      // versions · instance id. Everything secondary lives
+                      // here so the domain stays the only loud thing.
+                      const metaParts = [
+                        t('machineAdded', {
+                          date: formatDateForLocale(machine.createdAt, locale),
+                        }),
+                        lastSeen &&
+                          t('lastSeen', {
+                            date: formatDateForLocale(lastSeen, locale),
+                          }),
                         pluginVersion &&
-                          t('pluginVersionLabel', {
-                            version: pluginVersion,
-                          }),
-                        wpVersion &&
-                          t('wpVersionLabel', {
-                            version: wpVersion,
-                          }),
-                        wcVersion &&
-                          t('wcVersionLabel', {
-                            version: wcVersion,
+                          t('pluginVersionLabel', { version: pluginVersion }),
+                        wpVersion && t('wpVersionLabel', { version: wpVersion }),
+                        wcVersion && t('wcVersionLabel', { version: wcVersion }),
+                        siteLabel &&
+                          t('instanceId', {
+                            id: shortenInstance(machine.fingerprint),
                           }),
                       ].filter(Boolean) as string[]
                       const isConfirming = confirmingDeactivate === machine.id
@@ -707,7 +900,15 @@ export function LicensesClient({
                       return (
                         <Row key={machine.id} className="items-start gap-2">
                           <div className="flex min-w-0 items-start gap-2.5">
-                            <Monitor className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground" />
+                            <span
+                              aria-hidden="true"
+                              className={cn(
+                                'mt-1.5 size-2 shrink-0 rounded-full',
+                                isRecentlySeen(lastSeen, now)
+                                  ? 'bg-green-500 ring-[3px] ring-green-500/15'
+                                  : 'bg-muted-foreground/40 ring-[3px] ring-muted'
+                              )}
+                            />
                             <div className="min-w-0">
                               {/* Site domain when we know it, otherwise fall
                                   back to the opaque fingerprint (which must be
@@ -715,10 +916,8 @@ export function LicensesClient({
                               <p className="break-all text-sm font-medium">
                                 {siteLabel || machine.fingerprint}
                               </p>
-                              <p className="break-all font-mono text-xs text-muted-foreground">
-                                {t('instanceId', {
-                                  id: shortenInstance(machine.fingerprint),
-                                })}
+                              <p className="mt-0.5 break-all text-xs text-muted-foreground">
+                                {metaParts.join(' · ')}
                               </p>
                               {/* Expired licences still cover pre-expiry
                                   versions: tell each activated site which
@@ -729,26 +928,6 @@ export function LicensesClient({
                                   {t('siteUpdatesThrough', {
                                     version: coveredVersion,
                                   })}
-                                </p>
-                              )}
-                              <p className="mt-0.5 text-xs text-muted-foreground">
-                                {t('machineAdded', {
-                                  date: formatDateForLocale(
-                                    machine.createdAt,
-                                    locale
-                                  ),
-                                })}
-                              </p>
-                              {lastSeen && (
-                                <p className="mt-0.5 text-xs text-muted-foreground">
-                                  {t('lastSeen', {
-                                    date: formatDateForLocale(lastSeen, locale),
-                                  })}
-                                </p>
-                              )}
-                              {versionParts.length > 0 && (
-                                <p className="mt-0.5 text-xs text-muted-foreground">
-                                  {versionParts.join(' · ')}
                                 </p>
                               )}
                             </div>
@@ -801,6 +980,21 @@ export function LicensesClient({
                     })}
                   </DividedList>
                 </div>
+              ) : (
+                /* Only claim "no sites" when the AUTHORITATIVE count agrees —
+                   the machine detail list can be empty while activations
+                   exist (unauthenticated machine management). */
+                displayStatus === 'active' &&
+                license.activationCount === 0 && (
+                  <div className="border-t pt-4">
+                    <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+                      {t('activatedSites')}
+                    </p>
+                    <p className="mt-2 rounded-md border border-dashed px-3 py-2.5 text-xs text-muted-foreground">
+                      {t('noSites')}
+                    </p>
+                  </div>
+                )
               )}
 
               {/* Discord access is scoped to this licence. Connected members
@@ -811,7 +1005,7 @@ export function LicensesClient({
                   <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
                     {t('discordHeading')}
                   </p>
-                  <span className="text-xs font-medium text-muted-foreground">
+                  <span className="text-xs font-medium tabular-nums text-muted-foreground">
                     {t('discordMembers', {
                       count: discordAccess.usedSeats,
                       cap: discordAccess.seatCap,
@@ -961,6 +1155,7 @@ export function LicensesClient({
                 )}
               </div>
             </CardContent>
+            )}
           </Card>
           )
         })

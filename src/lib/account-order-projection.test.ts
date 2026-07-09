@@ -101,6 +101,7 @@ describe('projectAccountOrderListRow', () => {
       createdAt: '2026-02-01T00:00:00Z',
       itemCount: 1,
       displayStatus: 'Paid',
+      statusKey: 'paid',
       total: { amount: 129, currencyCode: 'usd' },
       licenses: [
         {

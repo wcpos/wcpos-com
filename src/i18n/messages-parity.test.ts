@@ -320,6 +320,9 @@ const auditedDutchNamespacePrefixes = [
   'about.',
 ]
 const dutchIdenticalCopyAllowlist = new Set([
+  // 'Sites'/'Downloads' are the standard Dutch terms (account facts row).
+  'account.licenses.factSites',
+  'account.licenses.factDownloads',
   'account.licenses.instanceId',
   'account.licenses.pluginVersionLabel',
   'account.licenses.wpVersionLabel',
@@ -545,6 +548,9 @@ const auditedPortugueseNamespacePrefixes = [
   'home.subtitle',
 ]
 const portugueseIdenticalCopyAllowlist = new Set([
+  // 'Sites'/'Downloads' are the standard Portuguese terms (account facts row).
+  'account.licenses.factSites',
+  'account.licenses.factDownloads',
   'account.licenses.instanceId',
   'account.licenses.pluginVersionLabel',
   'account.licenses.wpVersionLabel',
@@ -829,6 +835,8 @@ const auditedGermanNamespacePrefixes = [
   'home.ecosystem.',
 ]
 const germanIdenticalCopyAllowlist = new Set([
+  // 'Downloads' is the standard German term (account facts row).
+  'account.licenses.factDownloads',
   'account.licenses.instanceId',
   'account.licenses.pluginVersionLabel',
   'account.licenses.wpVersionLabel',
@@ -1015,6 +1023,8 @@ const spanishIdenticalCopyAllowlist = new Set([
 ])
 
 const frenchIdenticalCopyAllowlist = new Set([
+  // « Sites » is the correct French word (account facts row).
+  'account.licenses.factSites',
   'account.licenses.instanceId',
   'account.licenses.pluginVersionLabel',
   'account.licenses.wpVersionLabel',

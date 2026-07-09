@@ -153,9 +153,10 @@ test.describe('Existing license holder data accuracy', () => {
     const card = licenseCard(page, '****-****-5678')
     await expect(card).toBeVisible()
     await expect(card.getByText('expired', { exact: true })).toBeVisible()
-    await expect(card.getByText('Expires:')).toBeVisible()
-    await expect(card.getByText(/2025/)).toBeVisible()
-    await expect(card.getByText('0 of 1')).toBeVisible()
+    // The redesigned facts row shows the support window as "Ended {date}".
+    await expect(card.getByText(/^Ended /)).toBeVisible()
+    await expect(card.getByText(/2025/).first()).toBeVisible()
+    await expect(card.getByText('0 of 1').first()).toBeVisible()
     // Expired holders can still download pre-expiry versions, so the
     // downloads link stays, alongside a renew CTA.
     const renewLink = card.getByRole('link', { name: 'Renew' })
@@ -244,7 +245,7 @@ test.describe('License activation and machine deactivation', () => {
 
     await page.goto('/account/licenses')
     const card = licenseCard(page, '****-****-1234')
-    await expect(card.getByText('2 of 4')).toBeVisible()
+    await expect(card.getByText('2 of 4').first()).toBeVisible()
     await expect(card.getByText('shop.example.com')).toBeVisible()
     await expect(card.getByText('office.example.com')).toBeVisible()
 
@@ -271,7 +272,7 @@ test.describe('License activation and machine deactivation', () => {
 
     // The account UI reflects the new activation.
     await page.reload()
-    await expect(card.getByText('3 of 4')).toBeVisible()
+    await expect(card.getByText('3 of 4').first()).toBeVisible()
     await expect(card.getByText('till3.example.com')).toBeVisible()
 
     // Deactivate it from the account UI.
@@ -279,7 +280,7 @@ test.describe('License activation and machine deactivation', () => {
       .getByRole('button', { name: 'Deactivate site: till3.example.com' })
       .click()
     await card.getByRole('button', { name: 'Deactivate', exact: true }).click()
-    await expect(card.getByText('2 of 4')).toBeVisible()
+    await expect(card.getByText('2 of 4').first()).toBeVisible()
     await expect(card.getByText('till3.example.com')).toHaveCount(0)
     await expect(card.getByText('shop.example.com')).toBeVisible()
     await expect(card.getByText('office.example.com')).toBeVisible()
@@ -295,14 +296,14 @@ test.describe('License activation and machine deactivation', () => {
 
     await page.goto('/account/licenses')
     const card = licenseCard(page, '****-****-1234')
-    await expect(card.getByText('2 of 4')).toBeVisible()
+    await expect(card.getByText('2 of 4').first()).toBeVisible()
 
     await card
       .getByRole('button', { name: 'Deactivate site: office.example.com' })
       .click()
     await card.getByRole('button', { name: 'Deactivate', exact: true }).click()
 
-    await expect(card.getByText('1 of 4')).toBeVisible()
+    await expect(card.getByText('1 of 4').first()).toBeVisible()
     await expect(card.getByText('office.example.com')).toHaveCount(0)
     await expect(card.getByText('shop.example.com')).toBeVisible()
   })

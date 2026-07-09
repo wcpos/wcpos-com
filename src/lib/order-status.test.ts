@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { getOrderDisplayStatus } from './order-status'
+import { getOrderDisplayStatus, getOrderStatusLabelKey } from './order-status'
 
 describe('getOrderDisplayStatus', () => {
   it('prefers payment status when order status is pending', () => {
@@ -53,5 +53,27 @@ describe('getOrderDisplayStatus', () => {
         status: 'awaiting_fulfillment',
       })
     ).toBe('Awaiting Fulfillment')
+  })
+})
+
+describe('getOrderStatusLabelKey', () => {
+  it('resolves the same status the display label uses, as a key', () => {
+    expect(getOrderStatusLabelKey({ payment_status: 'captured' })).toBe('paid')
+    expect(getOrderStatusLabelKey({ payment_status: 'requires_action' })).toBe(
+      'actionRequired'
+    )
+    expect(getOrderStatusLabelKey({ status: 'canceled' })).toBe('canceled')
+  })
+
+  it('prefers payment_status over status, matching the label', () => {
+    expect(
+      getOrderStatusLabelKey({ status: 'canceled', payment_status: 'paid' })
+    ).toBe('paid')
+  })
+
+  it('returns unknown for empty and null for unmapped statuses', () => {
+    expect(getOrderStatusLabelKey({})).toBe('unknown')
+    expect(getOrderStatusLabelKey({ status: '   ' })).toBe('unknown')
+    expect(getOrderStatusLabelKey({ status: 'awaiting_fulfillment' })).toBeNull()
   })
 })

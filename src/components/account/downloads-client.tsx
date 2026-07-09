@@ -318,43 +318,44 @@ export function DownloadsClient({
           latest release would duplicate the archive's "Unavailable" row (and
           the page banner already explains the lapse). */}
       {latestRelease && latestRelease.allowed && (
-        <Card>
-          <CardHeader className="gap-3">
-            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-              {t('latestVersionLabel')}
-            </p>
-            <div className="flex flex-wrap items-center gap-2">
-              <CardTitle className="text-xl">{latestRelease.name}</CardTitle>
-              <Badge variant="default">{t('latestBadge')}</Badge>
-            </div>
-            <p className="text-sm text-muted-foreground">
-              v{latestRelease.version} •{' '}
-              {formatDateForLocale(latestRelease.publishedAt, locale)}
-            </p>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {hasNotes(latestRelease) ? (
-              <div lang={latestRelease.contentLocale}>
-                <Markdown
-                  className="line-clamp-3 max-w-prose text-sm text-muted-foreground"
-                  content={latestRelease.releaseNotes}
+        <Card className="overflow-hidden">
+          {/* Two panels: the release story on the left, one clear action
+              column on the right — the page's single red CTA lives there. */}
+          <div className="grid md:grid-cols-[1.6fr_1fr]">
+            <div className="p-6">
+              <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-wcpos-red-accent">
+                <span
+                  aria-hidden="true"
+                  className="size-1.5 rounded-full bg-wcpos-red"
                 />
+                {t('latestVersionLabel')}
+              </p>
+              <div className="mt-2 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                <CardTitle className="text-2xl tracking-tight">
+                  {latestRelease.name}
+                </CardTitle>
+                <span className="text-sm tabular-nums text-muted-foreground">
+                  v{latestRelease.version} •{' '}
+                  {formatDateForLocale(latestRelease.publishedAt, locale)}
+                </span>
               </div>
-            ) : (
-              <p className="text-sm text-muted-foreground">
-                {t('noReleaseNotes')}
-              </p>
-            )}
-
-            {latestAvailabilityLabel && (
-              <p className="text-sm font-medium text-foreground">
-                {latestAvailabilityLabel}
-              </p>
-            )}
-
-            <div className="flex flex-wrap items-center gap-2">
+              <div className="mt-3">
+                {hasNotes(latestRelease) ? (
+                  <div lang={latestRelease.contentLocale}>
+                    <Markdown
+                      className="line-clamp-3 max-w-prose text-sm text-muted-foreground"
+                      content={latestRelease.releaseNotes}
+                    />
+                  </div>
+                ) : (
+                  <p className="text-sm text-muted-foreground">
+                    {t('noReleaseNotes')}
+                  </p>
+                )}
+              </div>
+            </div>
+            <div className="flex flex-col justify-center gap-2 border-t bg-muted/40 p-6 md:border-l md:border-t-0">
               <Button
-                size="sm"
                 disabled={downloadingVersion === latestRelease.version}
                 onClick={() => startDownload(latestRelease.version)}
               >
@@ -363,7 +364,6 @@ export function DownloadsClient({
               </Button>
               {hasNotes(latestRelease) && (
                 <Button
-                  size="sm"
                   variant="outline"
                   onClick={() => setNotesRelease(latestRelease)}
                 >
@@ -371,8 +371,13 @@ export function DownloadsClient({
                   {t('releaseNotes')}
                 </Button>
               )}
+              {latestAvailabilityLabel && (
+                <p className="text-center text-xs text-muted-foreground">
+                  {latestAvailabilityLabel}
+                </p>
+              )}
             </div>
-          </CardContent>
+          </div>
         </Card>
       )}
 
@@ -402,25 +407,37 @@ export function DownloadsClient({
                       release.allowed ? '' : 'opacity-60'
                     }`}
                   >
-                  <div className="min-w-0 flex-1 basis-60">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <p className="font-medium">{release.name}</p>
-                      {release.version === latestVersion && (
-                        <Badge variant="default">{t('latestBadge')}</Badge>
-                      )}
-                      {isMajorRelease(release.version) && (
-                        <Badge variant="secondary">{t('majorBadge')}</Badge>
+                  <div className="flex min-w-0 flex-1 basis-60 items-start gap-3">
+                    {/* Timeline node: the latest release glows brand-red, the
+                        archive stays quiet. Decorative only. */}
+                    <span
+                      aria-hidden="true"
+                      className={`mt-1.5 size-2 shrink-0 rounded-full ${
+                        release.version === latestVersion
+                          ? 'bg-wcpos-red ring-[3px] ring-wcpos-red/15'
+                          : 'bg-muted-foreground/40 ring-[3px] ring-muted'
+                      }`}
+                    />
+                    <div className="min-w-0">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <p className="font-medium">{release.name}</p>
+                        {release.version === latestVersion && (
+                          <Badge variant="brand-tint">{t('latestBadge')}</Badge>
+                        )}
+                        {isMajorRelease(release.version) && (
+                          <Badge variant="muted-tint">{t('majorBadge')}</Badge>
+                        )}
+                      </div>
+                      <p className="text-sm tabular-nums text-muted-foreground">
+                        v{release.version} •{' '}
+                        {formatDateForLocale(release.publishedAt, locale)}
+                      </p>
+                      {!release.allowed && (
+                        <p className="mt-1 text-xs text-amber-700 dark:text-amber-400">
+                          {blockedReason}
+                        </p>
                       )}
                     </div>
-                    <p className="text-sm text-muted-foreground">
-                      v{release.version} •{' '}
-                      {formatDateForLocale(release.publishedAt, locale)}
-                    </p>
-                    {!release.allowed && (
-                      <p className="mt-1 text-xs text-amber-700 dark:text-amber-400">
-                        {blockedReason}
-                      </p>
-                    )}
                   </div>
                   <div className="flex shrink-0 flex-wrap items-center gap-2">
                     {hasNotes(release) && (
@@ -435,7 +452,7 @@ export function DownloadsClient({
                     )}
                     <Button
                       size="sm"
-                      variant={release.allowed ? 'default' : 'outline'}
+                      variant="outline"
                       disabled={
                         !release.allowed ||
                         downloadingVersion === release.version

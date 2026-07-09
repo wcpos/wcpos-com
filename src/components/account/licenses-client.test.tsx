@@ -190,6 +190,11 @@ describe('LicensesClient', () => {
       />
     )
     expect(screen.getByText('expired')).toBeInTheDocument()
+    // Fail-closed expiry must NOT read as a lifetime licence (only a null
+    // expiry is lifetime); the fact value degrades to a dash instead.
+    expect(screen.queryByText('Lifetime — no expiry')).not.toBeInTheDocument()
+    // Both the updates fact and the (empty) downloads fact degrade to a dash.
+    expect(screen.getAllByText('—').length).toBeGreaterThan(0)
   })
 
   it('presents an active license past its expiry date as expired', () => {
@@ -456,7 +461,9 @@ describe('LicensesClient', () => {
         ]}
       />
     )
-    expect(screen.getByText('1 of 5')).toBeInTheDocument()
+    // The activation count appears in the facts row and again in the
+    // Activated Sites section header.
+    expect(screen.getAllByText('1 of 5').length).toBeGreaterThan(0)
   })
 
   it('does not fetch licenses on initial render', () => {
@@ -471,9 +478,13 @@ describe('LicensesClient', () => {
         entitledVersions={{ 'lic-1': '3.2.0' }}
       />
     )
-    expect(
-      screen.getByText(/Latest version 3\.2\.0 · via this licence/)
-    ).toBeInTheDocument()
+    // The covered version is the Downloads fact value, linking to the
+    // downloads page.
+    expect(screen.getByText('3.2.0')).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Downloads' })).toHaveAttribute(
+      'href',
+      expect.stringContaining('/account/downloads')
+    )
   })
 
   it('shows the last covered version for an expired licence', () => {
@@ -485,9 +496,13 @@ describe('LicensesClient', () => {
         entitledVersions={{ 'lic-1': '2.8.0' }}
       />
     )
-    expect(
-      screen.getByText(/Covers updates up to 2\.8\.0/)
-    ).toBeInTheDocument()
+    // An expired licence shows the last covered version as "Up to X" and
+    // scopes the downloads link to this licence.
+    expect(screen.getByText('Up to 2.8.0')).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Downloads' })).toHaveAttribute(
+      'href',
+      expect.stringContaining('license=lic-1')
+    )
   })
 
   it('annotates each activated site of an expired licence with its update ceiling', () => {
@@ -853,20 +868,15 @@ describe('LicensesClient', () => {
       )
 
       expect(screen.getByText('Activated Sites')).toBeInTheDocument()
-      expect(
-        screen.getByText(
-          'These are WordPress sites using this license. Deactivate a stale or test site to free an activation slot.'
-        )
-      ).toBeInTheDocument()
       // Domain is the primary label, not the opaque fingerprint.
       expect(screen.getByText('shop.example.com')).toBeInTheDocument()
-      // Instance id is shown shortened.
-      expect(screen.getByText('Instance ID: wcpos-in…3456')).toBeInTheDocument()
-      // Metadata-derived details.
+      // Secondary details collapse into one muted meta line: added · last
+      // seen · versions · shortened instance id.
       expect(screen.getByText(/Last seen/)).toBeInTheDocument()
       expect(
-        screen.getByText('WCPOS Pro 1.9.7 · WP 6.5 · WooCommerce 10.1')
+        screen.getByText(/WCPOS Pro 1\.9\.7 · WP 6\.5 · WooCommerce 10\.1/)
       ).toBeInTheDocument()
+      expect(screen.getByText(/Instance ID: wcpos-in…3456/)).toBeInTheDocument()
     })
 
     it('falls back to the fingerprint and hides metadata rows when no metadata exists', () => {
@@ -892,7 +902,12 @@ describe('LicensesClient', () => {
 
       expect(screen.getByText('plain-fingerprint-xyz')).toBeInTheDocument()
       expect(screen.queryByText(/Last seen/)).not.toBeInTheDocument()
-      expect(screen.queryByText(/WCPOS Pro/)).not.toBeInTheDocument()
+      // No plugin/WP/WooCommerce version fragments in the meta line. (The key
+      // band always says "WCPOS Pro", so match the version pattern instead.)
+      expect(screen.queryByText(/WCPOS Pro \d/)).not.toBeInTheDocument()
+      // Without a domain there is no instance-id fragment either — the
+      // fingerprint is already the primary label.
+      expect(screen.queryByText(/Instance ID:/)).not.toBeInTheDocument()
     })
 
     it('requires a confirmation before deactivating a site, and Cancel aborts', () => {
@@ -944,6 +959,83 @@ describe('LicensesClient', () => {
         '/api/account/licenses/lic-1/machines/m-1',
         { method: 'DELETE' }
       )
+    })
+  })
+  it('does not claim "no sites" when activations exist but the machine list is empty', () => {
+    render(
+      <LicensesClient
+        initialLicenses={[
+          makeLicense({ maxMachines: 4, activationCount: 2, machines: [] }),
+        ]}
+      />
+    )
+    expect(screen.getByText('2 of 4')).toBeInTheDocument()
+    expect(screen.queryByText(/No sites yet/)).not.toBeInTheDocument()
+  })
+
+  it('shows the no-sites hint only when the authoritative count is zero', () => {
+    render(
+      <LicensesClient
+        initialLicenses={[
+          makeLicense({ maxMachines: 4, activationCount: 0, machines: [] }),
+        ]}
+      />
+    )
+    expect(screen.getByText(/No sites yet/)).toBeInTheDocument()
+  })
+
+  describe('collapse behaviour with multiple licences', () => {
+    const first = () =>
+      makeLicense({ id: 'lic-first', key: 'AAAA-BBBB-CCCC-1111' })
+    const secondActive = () =>
+      makeLicense({ id: 'lic-second', key: 'DDDD-EEEE-FFFF-2222' })
+    const secondExpired = () =>
+      makeLicense({
+        id: 'lic-second',
+        key: 'DDDD-EEEE-FFFF-2222',
+        status: 'expired' as CanonicalLicenseStatus,
+        expiry: '2025-01-01T00:00:00Z',
+      })
+
+    it('opens the first card and collapses a second plain-active card', () => {
+      render(
+        <LicensesClient initialLicenses={[first(), secondActive()]} />
+      )
+      const toggles = screen.getAllByRole('button', {
+        name: /Show details|Hide details/,
+      })
+      expect(toggles).toHaveLength(2)
+      expect(toggles[0]).toHaveAttribute('aria-expanded', 'true')
+      expect(toggles[1]).toHaveAttribute('aria-expanded', 'false')
+      // Collapsed card keeps its identity visible: masked key + status.
+      expect(screen.getByText('****-****-2222')).toBeInTheDocument()
+    })
+
+    it('auto-opens a non-active card even when it is not first', () => {
+      render(
+        <LicensesClient initialLicenses={[first(), secondExpired()]} />
+      )
+      const toggles = screen.getAllByRole('button', {
+        name: /Show details|Hide details/,
+      })
+      expect(toggles[1]).toHaveAttribute('aria-expanded', 'true')
+    })
+
+    it('expands a collapsed card on toggle click', () => {
+      render(
+        <LicensesClient initialLicenses={[first(), secondActive()]} />
+      )
+      const collapsed = screen.getByRole('button', {
+        name: 'Show details for license ending in 2222',
+      })
+      fireEvent.click(collapsed)
+      expect(
+        screen.getByRole('button', {
+          name: 'Hide details for license ending in 2222',
+        })
+      ).toHaveAttribute('aria-expanded', 'true')
+      // Detail content for the second licence is now rendered.
+      expect(screen.getAllByText('Discord access')).toHaveLength(2)
     })
   })
 })
