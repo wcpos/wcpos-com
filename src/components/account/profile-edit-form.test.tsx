@@ -7,6 +7,11 @@ vi.mock('@/i18n/navigation', () => ({
   usePathname: () => '/account/profile',
 }))
 
+vi.mock('sonner', () => ({
+  toast: { success: vi.fn(), error: vi.fn() },
+}))
+
+import { toast } from 'sonner'
 import { ProfileEditForm } from './profile-edit-form'
 
 const emptyBillingDetails = {
@@ -63,7 +68,7 @@ describe('ProfileEditForm', () => {
     )
   })
 
-  it('allows customers to update profile details', async () => {
+  it('autosaves profile details on blur and confirms with a toast', async () => {
     mockFetch.mockResolvedValueOnce({
       ok: true,
       json: async () => ({
@@ -105,7 +110,7 @@ describe('ProfileEditForm', () => {
     fireEvent.change(screen.getByLabelText('Phone'), {
       target: { value: '+15551234567' },
     })
-    fireEvent.click(screen.getByRole('button', { name: 'Save changes' }))
+    fireEvent.blur(screen.getByLabelText('Phone'))
 
     await waitFor(() => {
       expect(mockFetch).toHaveBeenCalledTimes(1)
@@ -121,22 +126,58 @@ describe('ProfileEditForm', () => {
     // Billing untouched — the payload must not assert (and rewrite) it.
     expect(parsedBody).not.toHaveProperty('billingAddress')
     expect(parsedBody).not.toHaveProperty('accountProfile')
+    // Avatar untouched — a name edit must not re-send the data URL.
+    expect(parsedBody).not.toHaveProperty('avatar')
     // Email is not editable — sending it made Medusa reject EVERY profile
     // save with 400 "Unrecognized fields: 'email'".
     expect(parsedBody).not.toHaveProperty('email')
 
-    expect(
-      await screen.findByText('Profile updated successfully.')
-    ).toBeInTheDocument()
+    await waitFor(() => {
+      expect(toast.success).toHaveBeenCalledWith('Profile saved')
+    })
   })
 
-  it('submits billing details only when the user changed them', async () => {
+  it('does not save (or toast) when focus moves without edits', async () => {
+    render(
+      <ProfileEditForm
+        customer={{
+          email: 'old@example.com',
+          first_name: 'Old',
+          last_name: 'Name',
+          phone: '',
+          metadata: {},
+        }}
+        billingDetails={emptyBillingDetails}
+      />
+    )
+
+    fireEvent.blur(screen.getByLabelText('First name'))
+    fireEvent.blur(screen.getByLabelText('Phone'))
+
+    expect(mockFetch).not.toHaveBeenCalled()
+    expect(toast.success).not.toHaveBeenCalled()
+  })
+
+  it('has no submit button — the form is autosave only', () => {
+    render(
+      <ProfileEditForm
+        customer={{ email: 'old@example.com', metadata: {} }}
+        billingDetails={emptyBillingDetails}
+      />
+    )
+
+    expect(
+      screen.queryByRole('button', { name: 'Save changes' })
+    ).not.toBeInTheDocument()
+  })
+
+  it('submits billing details on blur only when the user changed them', async () => {
     mockFetch.mockResolvedValueOnce({
       ok: true,
       json: async () => ({
         customer: { email: 'old@example.com', metadata: {} },
         billingDetails: {
-          countryCode: 'AU',
+          countryCode: 'US',
           addressLine1: '1 New St',
           addressLine2: '',
           city: 'Perth',
@@ -154,16 +195,79 @@ describe('ProfileEditForm', () => {
       />
     )
 
-    fireEvent.change(screen.getByLabelText('Country'), {
-      target: { value: 'AU' },
-    })
     fireEvent.change(screen.getByLabelText('Address line 1'), {
       target: { value: '1 New St' },
     })
     fireEvent.change(screen.getByLabelText('City'), {
       target: { value: 'Perth' },
     })
-    fireEvent.click(screen.getByRole('button', { name: 'Save changes' }))
+    fireEvent.blur(screen.getByLabelText('City'))
+
+    await waitFor(() => {
+      expect(mockFetch).toHaveBeenCalledTimes(1)
+    })
+
+    const [, requestInit] = mockFetch.mock.calls[0]
+    const parsedBody = JSON.parse((requestInit as RequestInit).body as string)
+    expect(parsedBody.billingAddress).toMatchObject({
+      addressLine1: '1 New St',
+      city: 'Perth',
+    })
+    // Profile fields untouched — a billing edit must not rewrite the customer.
+    expect(parsedBody).not.toHaveProperty('first_name')
+  })
+
+  it('does not save a bare country change when no address exists', () => {
+    // Mirrors the server rule: a country with no address content never
+    // creates an address record, so saving it would toast success while
+    // persisting nothing.
+    render(
+      <ProfileEditForm
+        customer={{ email: 'old@example.com', metadata: {} }}
+        billingDetails={emptyBillingDetails}
+      />
+    )
+
+    fireEvent.change(screen.getByLabelText('Country'), {
+      target: { value: 'AU' },
+    })
+
+    expect(mockFetch).not.toHaveBeenCalled()
+    expect(toast.success).not.toHaveBeenCalled()
+  })
+
+  it('saves a country change immediately when the address has content', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        customer: { email: 'old@example.com', metadata: {} },
+        billingDetails: {
+          countryCode: 'AU',
+          addressLine1: '1 Existing St',
+          addressLine2: '',
+          city: 'Perth',
+          region: '',
+          postalCode: '',
+          taxNumber: '',
+        },
+      }),
+    })
+
+    render(
+      <ProfileEditForm
+        customer={{ email: 'old@example.com', metadata: {} }}
+        billingDetails={{
+          ...emptyBillingDetails,
+          countryCode: 'US',
+          addressLine1: '1 Existing St',
+          city: 'Perth',
+        }}
+      />
+    )
+
+    fireEvent.change(screen.getByLabelText('Country'), {
+      target: { value: 'AU' },
+    })
 
     await waitFor(() => {
       expect(mockFetch).toHaveBeenCalledTimes(1)
@@ -173,12 +277,52 @@ describe('ProfileEditForm', () => {
     const parsedBody = JSON.parse((requestInit as RequestInit).body as string)
     expect(parsedBody.billingAddress).toMatchObject({
       countryCode: 'AU',
-      addressLine1: '1 New St',
-      city: 'Perth',
+      addressLine1: '1 Existing St',
     })
   })
 
-  it('localizes profile API error codes', async () => {
+  it('saves on Enter without waiting for blur', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        customer: {
+          email: 'old@example.com',
+          first_name: 'Entered',
+          last_name: 'Name',
+          phone: '',
+          metadata: {},
+        },
+        billingDetails: emptyBillingDetails,
+      }),
+    })
+
+    render(
+      <ProfileEditForm
+        customer={{
+          email: 'old@example.com',
+          first_name: 'Old',
+          last_name: 'Name',
+          phone: '',
+          metadata: {},
+        }}
+        billingDetails={emptyBillingDetails}
+      />
+    )
+
+    const firstName = screen.getByLabelText('First name')
+    fireEvent.change(firstName, { target: { value: 'Entered' } })
+    fireEvent.keyDown(firstName, { key: 'Enter' })
+
+    await waitFor(() => {
+      expect(mockFetch).toHaveBeenCalledTimes(1)
+    })
+
+    const [, requestInit] = mockFetch.mock.calls[0]
+    const parsedBody = JSON.parse((requestInit as RequestInit).body as string)
+    expect(parsedBody).toMatchObject({ first_name: 'Entered' })
+  })
+
+  it('localizes profile API error codes into an error toast', async () => {
     mockFetch.mockResolvedValueOnce({
       ok: false,
       json: async () => ({ errorCode: 'unauthorized' }),
@@ -197,11 +341,126 @@ describe('ProfileEditForm', () => {
       />
     )
 
-    fireEvent.click(screen.getByRole('button', { name: 'Save changes' }))
+    fireEvent.change(screen.getByLabelText('First name'), {
+      target: { value: 'Changed' },
+    })
+    fireEvent.blur(screen.getByLabelText('First name'))
+
+    await waitFor(() => {
+      expect(toast.error).toHaveBeenCalledWith(
+        'Please sign in again to update your profile.'
+      )
+    })
+  })
+
+  it('uploads a new avatar from the identity card and saves immediately', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        customer: {
+          email: 'ada@example.com',
+          metadata: {
+            account_profile: { avatarDataUrl: 'data:image/png;base64,abc' },
+          },
+        },
+        billingDetails: emptyBillingDetails,
+      }),
+    })
+
+    const { container } = render(
+      <ProfileEditForm
+        customer={{ email: 'ada@example.com', metadata: {} }}
+        billingDetails={emptyBillingDetails}
+      />
+    )
 
     expect(
-      await screen.findByText('Please sign in again to update your profile.')
+      screen.getByRole('button', { name: 'Change profile photo' })
     ).toBeInTheDocument()
+
+    const fileInput = container.querySelector(
+      'input[type="file"]'
+    ) as HTMLInputElement
+    const file = new File(['fake-image-bytes'], 'avatar.png', {
+      type: 'image/png',
+    })
+    fireEvent.change(fileInput, { target: { files: [file] } })
+
+    await waitFor(() => {
+      expect(mockFetch).toHaveBeenCalledTimes(1)
+    })
+
+    const [, requestInit] = mockFetch.mock.calls[0]
+    const parsedBody = JSON.parse((requestInit as RequestInit).body as string)
+    expect(parsedBody.avatar.avatarDataUrl).toMatch(/^data:image\//)
+    expect(parsedBody.avatar.avatarUrl).toBeNull()
+    // An avatar pick saves the avatar alone.
+    expect(parsedBody).not.toHaveProperty('first_name')
+    expect(parsedBody).not.toHaveProperty('billingAddress')
+
+    await waitFor(() => {
+      expect(toast.success).toHaveBeenCalledWith('Profile saved')
+    })
+  })
+
+  it('rejects oversized avatar files with an error toast and no save', () => {
+    const { container } = render(
+      <ProfileEditForm
+        customer={{ email: 'ada@example.com', metadata: {} }}
+        billingDetails={emptyBillingDetails}
+      />
+    )
+
+    const fileInput = container.querySelector(
+      'input[type="file"]'
+    ) as HTMLInputElement
+    const bigFile = new File([new ArrayBuffer(1024 * 1024 + 1)], 'big.png', {
+      type: 'image/png',
+    })
+    fireEvent.change(fileInput, { target: { files: [bigFile] } })
+
+    expect(toast.error).toHaveBeenCalledWith(
+      'Avatar image must be 1MB or smaller.'
+    )
+    expect(mockFetch).not.toHaveBeenCalled()
+  })
+
+  it('removes a custom avatar from the identity card menu', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        customer: { email: 'ada@example.com', metadata: {} },
+        billingDetails: emptyBillingDetails,
+      }),
+    })
+
+    render(
+      <ProfileEditForm
+        customer={{
+          email: 'ada@example.com',
+          metadata: {
+            account_profile: { avatarDataUrl: 'data:image/png;base64,abc' },
+          },
+        }}
+        billingDetails={emptyBillingDetails}
+      />
+    )
+
+    // Open the avatar menu via keyboard (Radix trigger).
+    fireEvent.keyDown(
+      screen.getByRole('button', { name: 'Change profile photo' }),
+      { key: 'Enter' }
+    )
+
+    fireEvent.click(await screen.findByText('Remove photo'))
+
+    await waitFor(() => {
+      expect(mockFetch).toHaveBeenCalledTimes(1)
+    })
+
+    const [, requestInit] = mockFetch.mock.calls[0]
+    const parsedBody = JSON.parse((requestInit as RequestInit).body as string)
+    expect(parsedBody.avatar).toEqual({ avatarDataUrl: null, avatarUrl: null })
   })
 
   it('renders the email field read-only', () => {

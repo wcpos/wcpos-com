@@ -369,6 +369,23 @@ const server = createServer(async (req, res) => {
     return sendJson(res, 200, { customer: auth.persona.customer })
   }
 
+  // Customer update (profile page saves: name/phone/metadata). Mirrors real
+  // Medusa: unknown fields are rejected, known fields are merged.
+  if (pathname === '/store/customers/me' && method === 'POST') {
+    const auth = personaForRequest(req)
+    if (!auth) return sendJson(res, 401, { message: 'Unauthorized' })
+    const body = await readJson(req)
+    const allowed = ['first_name', 'last_name', 'phone', 'metadata', 'company_name']
+    const unknown = Object.keys(body).filter((key) => !allowed.includes(key))
+    if (unknown.length > 0) {
+      return sendJson(res, 400, {
+        message: `Unrecognized fields: '${unknown.join("', '")}'`,
+      })
+    }
+    Object.assign(auth.persona.customer, body)
+    return sendJson(res, 200, { customer: auth.persona.customer })
+  }
+
   // Customer addresses — the billing source of truth. Create and update
   // mirror real Medusa: both respond with the refetched parent customer.
   const addressUpdateMatch = pathname.match(

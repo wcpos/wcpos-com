@@ -11,6 +11,7 @@ import { ImpersonationBanner } from '@/components/account/impersonation-banner'
 import { SiteHeader } from '@/components/main/site-header'
 import { SiteFooter } from '@/components/main/site-footer'
 import { Skeleton } from '@/components/ui/skeleton'
+import { Toaster } from '@/components/ui/sonner'
 import type { Metadata } from 'next'
 import { clientMessages } from '@/i18n/client-messages'
 
@@ -127,6 +128,9 @@ export default async function AccountLayout({
           <SiteFooter />
         </Suspense>
       </div>
+      {/* Feedback channel for self-saving account forms (e.g. profile
+          autosave). Account-scoped: marketing routes don't toast. */}
+      <Toaster />
     </NextIntlClientProvider>
   )
 }
