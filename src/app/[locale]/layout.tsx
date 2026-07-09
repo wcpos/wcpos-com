@@ -5,6 +5,7 @@ import { NextIntlClientProvider } from 'next-intl'
 import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server'
 import { ThemeProvider } from 'next-themes'
 import { localeDirections, locales, type Locale } from '@/i18n/config'
+import { clientMessages } from '@/i18n/client-messages'
 import { ClientLoggingInit } from '@/components/client-logging-init'
 import { ConsentBanner } from '@/components/consent/consent-banner'
 import { alternateOpenGraphLocales, openGraphLocale } from '@/lib/seo'
@@ -107,7 +108,7 @@ export default async function LocaleLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <NextIntlClientProvider messages={messages}>
+          <NextIntlClientProvider messages={clientMessages(messages)}>
             {children}
             <ConsentBanner />
           </NextIntlClientProvider>

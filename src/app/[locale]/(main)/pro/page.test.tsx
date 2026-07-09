@@ -139,7 +139,8 @@ vi.mock('@/components/ui/section-heading', () => ({
   ),
 }))
 
-import ProPage, { generateMetadata, ProProductJsonLd } from './page'
+import ProPage, { generateMetadata } from './page'
+import { ProProductJsonLd } from './pro-product-json-ld'
 
 describe('Pro page metadata', () => {
   it('uses localized metadata copy', async () => {
