@@ -27,7 +27,17 @@ export async function generateMetadata({
 }
 
 async function ProfileContent({ locale }: { locale: string }) {
-  const customer = await getCustomer()
+  // Independent requests: getCustomerAuthMethods() authenticates from the
+  // session token itself rather than from `customer`, so awaiting them in
+  // series would only double the round-trip latency.
+  //
+  // DB truth for the Connections card (null → backend without the
+  // auth-methods endpoint yet; the card degrades to the metadata-derived
+  // read-only display).
+  const [customer, authMethods] = await Promise.all([
+    getCustomer(),
+    getCustomerAuthMethods(),
+  ])
 
   if (!customer) {
     // `return` is needed for TypeScript narrowing: next-intl's redirect is
@@ -42,11 +52,6 @@ async function ProfileContent({ locale }: { locale: string }) {
   // managed per licence on the licences page.
   const signInProvider =
     getPrimarySignInProvider(customer.metadata) ?? 'email'
-
-  // DB truth for the Connections card (null → backend without the
-  // auth-methods endpoint yet; the card degrades to the metadata-derived
-  // read-only display).
-  const authMethods = await getCustomerAuthMethods()
 
   return (
     <ProfileEditForm

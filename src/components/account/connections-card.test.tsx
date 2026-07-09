@@ -143,6 +143,91 @@ describe('ConnectionsCard', () => {
     })
   })
 
+  it('locks out disconnect while the password email is in flight', async () => {
+    // Both handlers rewrite `providers` from their own response; overlapping
+    // runs would let whichever settles last clobber the other.
+    let settlePasswordEmail: (value: unknown) => void = () => {}
+    mockFetch.mockReturnValueOnce(
+      new Promise((resolve) => {
+        settlePasswordEmail = resolve
+      })
+    )
+
+    render(
+      <ConnectionsCard
+        signIn={googleSignIn}
+        methods={{ providers: ['emailpass', 'google'] }}
+      />
+    )
+
+    fireEvent.click(screen.getByRole('button', { name: 'Change password' }))
+
+    const disconnect = await screen.findByRole('button', { name: 'Disconnect' })
+    expect(disconnect).toBeDisabled()
+    // Even if the disabled attribute is bypassed, the handler refuses to run.
+    fireEvent.click(disconnect)
+    expect(screen.queryByText('Disconnect Google?')).not.toBeInTheDocument()
+    expect(mockFetch).toHaveBeenCalledTimes(1)
+
+    settlePasswordEmail({
+      ok: true,
+      json: async () => ({ providers: ['emailpass', 'google'] }),
+    })
+
+    // Once the in-flight request settles, the controls re-enable.
+    await waitFor(() => {
+      expect(screen.getByRole('button', { name: 'Disconnect' })).toBeEnabled()
+    })
+    expect(
+      screen.getByRole('button', { name: 'Change password' })
+    ).toBeEnabled()
+  })
+
+  it('locks out the password email while a disconnect is in flight', async () => {
+    let settleDisconnect: (value: unknown) => void = () => {}
+    mockFetch.mockReturnValueOnce(
+      new Promise((resolve) => {
+        settleDisconnect = resolve
+      })
+    )
+
+    render(
+      <ConnectionsCard
+        signIn={googleSignIn}
+        methods={{ providers: ['emailpass', 'google'] }}
+      />
+    )
+
+    fireEvent.click(screen.getByRole('button', { name: 'Disconnect' }))
+    const confirmButtons = await screen.findAllByRole('button', {
+      name: 'Disconnect',
+    })
+    fireEvent.click(confirmButtons[confirmButtons.length - 1])
+
+    // The open dialog marks the card behind it aria-hidden, so reach the
+    // password button explicitly rather than through the accessible tree.
+    const changePassword = () =>
+      screen.getByRole('button', { name: 'Change password', hidden: true })
+    await waitFor(() => expect(changePassword()).toBeDisabled())
+    fireEvent.click(changePassword())
+    expect(mockFetch).toHaveBeenCalledTimes(1)
+    expect(mockFetch).not.toHaveBeenCalledWith(
+      '/api/account/password',
+      expect.anything()
+    )
+
+    settleDisconnect({
+      ok: true,
+      json: async () => ({ providers: ['emailpass'] }),
+    })
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole('button', { name: 'Change password' })
+      ).toBeEnabled()
+    })
+  })
+
   it('surfaces the last-method guard as a localized error toast', async () => {
     mockFetch.mockResolvedValueOnce({
       ok: false,

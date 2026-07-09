@@ -81,7 +81,13 @@ export function ConnectionsCard({ signIn, methods }: ConnectionsCardProps) {
   const providerName = (provider: OAuthProvider) =>
     provider === 'google' ? t('googleProvider') : t('githubProvider')
 
+  // `handleSendPasswordEmail` and `handleDisconnect` both rewrite `providers`
+  // from their own response body, so overlapping runs would let whichever
+  // settles last silently clobber the other's result. They are mutually
+  // exclusive: each refuses to start while the other is in flight, and each
+  // finally-block clears only its own flag.
   const handleSendPasswordEmail = async () => {
+    if (sendingPasswordEmail || disconnecting) return
     setSendingPasswordEmail(true)
     try {
       const response = await fetch('/api/account/password', { method: 'POST' })
@@ -115,6 +121,7 @@ export function ConnectionsCard({ signIn, methods }: ConnectionsCardProps) {
   }
 
   const handleDisconnect = async (provider: OAuthProvider) => {
+    if (disconnecting || sendingPasswordEmail) return
     setDisconnecting(true)
     try {
       const response = await fetch(`/api/account/connections/${provider}`, {
@@ -224,6 +231,7 @@ export function ConnectionsCard({ signIn, methods }: ConnectionsCardProps) {
                     size="sm"
                     className="-ml-2 mt-1 h-7 px-2 text-muted-foreground hover:text-destructive"
                     onClick={() => setConfirmProvider(provider)}
+                    disabled={disconnecting || sendingPasswordEmail}
                   >
                     {t('disconnect')}
                   </Button>
@@ -247,7 +255,7 @@ export function ConnectionsCard({ signIn, methods }: ConnectionsCardProps) {
                 size="sm"
                 className="-ml-2 mt-1 h-7 px-2 text-muted-foreground hover:text-foreground"
                 onClick={handleSendPasswordEmail}
-                disabled={sendingPasswordEmail}
+                disabled={sendingPasswordEmail || disconnecting}
               >
                 {hasPassword ? t('changePassword') : t('setPassword')}
               </Button>
