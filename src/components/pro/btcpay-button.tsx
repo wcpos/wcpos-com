@@ -65,6 +65,28 @@ export function BTCPayButton({ cartId, checkoutLink, onFailure }: BTCPayButtonPr
     router.push({ pathname: '/processing', query: { cart: cartId } })
   }
 
+  // Closing the modal is NOT proof nothing was paid: a wallet payment can be
+  // in flight before BTCPay posts a status. One auth-bound backend check
+  // decides between handing over to /processing and quietly resting.
+  const settleAfterClose = async () => {
+    try {
+      const response = await fetch(
+        `/api/store/cart/payment-status?cartId=${encodeURIComponent(cartId)}`
+      )
+      if (response.ok) {
+        const { state } = (await response.json()) as { state?: string }
+        if (state === 'completed' || state === 'confirming') {
+          goToProcessing()
+          return
+        }
+      }
+    } catch {
+      // Status check unavailable — fall through to the resting state; the
+      // webhook still completes any real payment and emails the licence.
+    }
+    setIsLoading(false)
+  }
+
   const resolveInvoice = async (): Promise<BTCPayInvoiceRef> => {
     if (invoiceRef.current) {
       return invoiceRef.current
@@ -150,9 +172,7 @@ export function BTCPayButton({ cartId, checkoutLink, onFailure }: BTCPayButtonPr
             goToProcessing()
             return
           }
-          // Closed without paying: the invoice stays valid, nothing was
-          // charged — quietly return the button to its resting state.
-          setIsLoading(false)
+          void settleAfterClose()
         }
       })
     } catch {

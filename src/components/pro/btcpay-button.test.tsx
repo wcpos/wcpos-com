@@ -44,6 +44,17 @@ function sessionResponse() {
   }
 }
 
+/** Routes fetch by endpoint: session creation POST vs the close-time
+ * payment-status check. */
+function routeFetch({ statusState = 'awaiting_payment' }: { statusState?: string } = {}) {
+  mockFetch.mockImplementation(async (url: string) => {
+    if (String(url).includes('/api/store/cart/payment-status')) {
+      return { ok: true, json: async () => ({ state: statusState }) }
+    }
+    return sessionResponse()
+  })
+}
+
 /** Captures the modal event callback so tests can drive checkout events. */
 function modalOpensAndCaptures(): { emit: (e: BtcpayModalEvent) => void } {
   const captured: { emit: (e: BtcpayModalEvent) => void } = { emit: () => {} }
@@ -147,7 +158,7 @@ describe('BTCPayButton', () => {
   })
 
   it('quietly re-enables when the modal closes without payment', async () => {
-    mockFetch.mockResolvedValue(sessionResponse())
+    routeFetch()
     const modal = modalOpensAndCaptures()
     const onFailure = vi.fn()
 
@@ -169,8 +180,28 @@ describe('BTCPayButton', () => {
     expect(onFailure).toHaveBeenCalledWith(null)
   })
 
+  it('hands over to /processing when a close-time check finds the payment', async () => {
+    // Wallet payment in flight: the modal never posted a paid status, but by
+    // close time the backend already sees it.
+    routeFetch({ statusState: 'confirming' })
+    const modal = modalOpensAndCaptures()
+
+    render(<BTCPayButton cartId="cart_1" onFailure={() => {}} />)
+    fireEvent.click(screen.getByRole('button', { name: 'Pay with Bitcoin' }))
+    await waitFor(() => expect(mockOpenBtcpayModal).toHaveBeenCalled())
+
+    modal.emit({ kind: 'close' })
+
+    await waitFor(() =>
+      expect(mockPush).toHaveBeenCalledWith({
+        pathname: '/processing',
+        query: { cart: 'cart_1' },
+      })
+    )
+  })
+
   it('reuses the same invoice when the customer clicks again after closing', async () => {
-    mockFetch.mockResolvedValue(sessionResponse())
+    routeFetch()
     const modal = modalOpensAndCaptures()
 
     render(<BTCPayButton cartId="cart_1" onFailure={() => {}} />)
@@ -186,8 +217,12 @@ describe('BTCPayButton', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Pay with Bitcoin' }))
 
     await waitFor(() => expect(mockOpenBtcpayModal).toHaveBeenCalledTimes(2))
-    // Session created once; second click reopens the remembered invoice.
-    expect(mockFetch).toHaveBeenCalledTimes(1)
+    // Session created once; the close-time status check is the only other
+    // call — the second click reopens the remembered invoice.
+    const sessionPosts = mockFetch.mock.calls.filter(([url]) =>
+      String(url).includes('/api/store/cart/payment-sessions')
+    )
+    expect(sessionPosts).toHaveLength(1)
   })
 
   it('falls back to the full-page redirect when the modal script fails', async () => {

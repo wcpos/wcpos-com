@@ -114,11 +114,12 @@ export async function openBtcpayModal(
 
   btcpay.onModalReceiveMessage((event: MessageEvent) => {
     // btcpay.js already origin-checks before relaying; filter to the shapes
-    // the checkout actually posts.
+    // the checkout actually posts, and only for the invoice we opened — a
+    // stale or unrelated same-origin status must not drive this checkout.
     const data: unknown = event.data
     if (data && typeof data === 'object' && 'status' in data && 'invoiceId' in data) {
       const { invoiceId: id, status } = data as { invoiceId: unknown; status: unknown }
-      if (typeof id === 'string' && typeof status === 'string') {
+      if (id === invoiceId && typeof status === 'string') {
         onEvent({ kind: 'status', invoiceId: id, status })
       }
     }

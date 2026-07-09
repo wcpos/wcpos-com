@@ -82,6 +82,8 @@ describe('btcpay-modal seam', () => {
     const onMessage = btcpay.onModalReceiveMessage.mock.calls[0][0]
     onMessage({ data: { invoiceId: 'inv_1', status: 'Processing' } })
     onMessage({ data: 'loaded' }) // relay noise — must be ignored
+    // Another invoice's status must not drive this checkout.
+    onMessage({ data: { invoiceId: 'inv_other', status: 'Settled' } })
     const onLeave = btcpay.onModalWillLeave.mock.calls[0][0]
     onLeave()
 
