@@ -103,6 +103,7 @@ describe('auth methods under impersonation (lib layer)', () => {
     await expect(getCustomerAuthMethods()).resolves.toEqual({
       providers: ['emailpass'],
       emailpassIdentifier: 'a@x.com',
+      emailpassPending: false,
     })
     expect(mockFetch).toHaveBeenCalledTimes(1)
   })
