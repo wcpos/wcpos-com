@@ -214,12 +214,22 @@ export function getVariantPrice(
 
 /**
  * Create a new cart
+ *
+ * `authToken` is the caller's Medusa customer JWT. When present it is forwarded
+ * as Bearer auth so Medusa resolves `auth_context.actor_id` and sets
+ * `cart.customer_id` to the signed-in customer — otherwise the cart (and any
+ * order completed from it) stays an email-bound guest (see #284). Optional so
+ * anonymous/mock callers keep working with the publishable key only.
  */
-export async function createCart(input: CreateCartInput = {}): Promise<MedusaCart | null> {
+export async function createCart(
+  input: CreateCartInput = {},
+  authToken?: string | null
+): Promise<MedusaCart | null> {
   try {
     const response = await medusaFetch<MedusaCartResponse>('/store/carts', {
       method: 'POST',
       body: JSON.stringify(input),
+      headers: buildAuthHeaders(authToken),
     })
     return response.cart
   } catch (error) {
@@ -243,10 +253,17 @@ export async function getCart(cartId: string): Promise<MedusaCart | null> {
 
 /**
  * Add a line item to a cart
+ *
+ * `authToken` is the caller's Medusa customer JWT, forwarded as Bearer auth for
+ * the same reason as `createCart`/`updateCart`: mutating a now-customer-linked
+ * cart must carry the matching auth context so Medusa keeps `cart.customer_id`
+ * (and does not reject the mutation of a customer-owned cart). Optional so
+ * anonymous/mock callers keep working with the publishable key only (see #284).
  */
 export async function addLineItem(
   cartId: string,
-  item: AddLineItemInput
+  item: AddLineItemInput,
+  authToken?: string | null
 ): Promise<MedusaCart | null> {
   try {
     const response = await medusaFetch<MedusaCartResponse>(
@@ -254,6 +271,7 @@ export async function addLineItem(
       {
         method: 'POST',
         body: JSON.stringify(item),
+        headers: buildAuthHeaders(authToken),
       }
     )
     return response.cart
@@ -265,15 +283,22 @@ export async function addLineItem(
 
 /**
  * Update cart (email, addresses)
+ *
+ * `authToken` is the caller's Medusa customer JWT, forwarded as Bearer auth for
+ * the same reason as `createCart`: it lets Medusa keep/set `cart.customer_id`
+ * from the auth context so the cart stays linked to the signed-in customer
+ * (see #284). Optional so anonymous/mock callers keep working.
  */
 export async function updateCart(
   cartId: string,
-  input: UpdateCartInput
+  input: UpdateCartInput,
+  authToken?: string | null
 ): Promise<MedusaCart | null> {
   try {
     const response = await medusaFetch<MedusaCartResponse>(`/store/carts/${cartId}`, {
       method: 'POST',
       body: JSON.stringify(input),
+      headers: buildAuthHeaders(authToken),
     })
     return response.cart
   } catch (error) {
@@ -439,13 +464,23 @@ export async function capturePayPalOrder(
 
 /**
  * Complete a cart (finalize payment and create order)
+ *
+ * `authToken` is the caller's Medusa customer JWT, forwarded as Bearer auth for
+ * the same reason as `createCart`/`updateCart`: completing a now-customer-linked
+ * cart must carry the matching auth context so Medusa lets the owning customer
+ * finalize it (and links the created order to that customer). Optional so
+ * anonymous/mock callers keep working with the publishable key only (see #284).
  */
-export async function completeCart(cartId: string): Promise<CompleteCartResponse | null> {
+export async function completeCart(
+  cartId: string,
+  authToken?: string | null
+): Promise<CompleteCartResponse | null> {
   try {
     const response = await medusaFetch<CompleteCartResponse>(
       `/store/carts/${cartId}/complete`,
       {
         method: 'POST',
+        headers: buildAuthHeaders(authToken),
       }
     )
     return response
