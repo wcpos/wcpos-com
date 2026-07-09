@@ -977,6 +977,7 @@
       "changePassword": "비밀번호 변경",
       "passwordEmailSent": "받은 편지함을 확인하세요. 비밀번호 설정 링크를 보냈습니다.",
       "disconnect": "연결 해제",
+      "disconnectAria": "{provider} 연결 해제",
       "disconnected": "{provider} 연결이 해제되었습니다.",
       "disconnectTitle": "{provider} 연결을 해제할까요?",
       "disconnectBody": "더 이상 {provider}(으)로 로그인할 수 없습니다. 언제든지 {provider}(으)로 다시 로그인하면 재연결됩니다.",

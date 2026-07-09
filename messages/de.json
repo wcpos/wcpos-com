@@ -977,6 +977,7 @@
       "changePassword": "Passwort ändern",
       "passwordEmailSent": "Sieh in deinem Posteingang nach — wir haben dir einen Link zum Festlegen deines Passworts geschickt.",
       "disconnect": "Trennen",
+      "disconnectAria": "{provider} trennen",
       "disconnected": "{provider} getrennt.",
       "disconnectTitle": "{provider} trennen?",
       "disconnectBody": "Du kannst dich dann nicht mehr mit {provider} anmelden. Du kannst dich jederzeit wieder verbinden, indem du dich erneut mit {provider} anmeldest.",

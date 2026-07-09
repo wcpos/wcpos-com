@@ -224,6 +224,25 @@ export function ConnectionsCard({ signIn, methods }: ConnectionsCardProps) {
         providers?: string[]
       }
       if (!response.ok) {
+        if (data.errorCode === 'provider_not_connected') {
+          // Already gone (disconnected in another tab/session): reflect
+          // reality instead of erroring over an impossible action.
+          setState((previous) =>
+            previous
+              ? {
+                  ...previous,
+                  providers: previous.providers.filter(
+                    (name) => name !== provider
+                  ),
+                  providerDetails: previous.providerDetails.filter(
+                    (detail) => detail.provider !== provider
+                  ),
+                }
+              : previous
+          )
+          toast.success(t('disconnected', { provider: providerName(provider) }))
+          return
+        }
         toast.error(
           data.errorCode === 'last_sign_in_method'
             ? t('apiErrors.last_sign_in_method')
@@ -336,7 +355,9 @@ export function ConnectionsCard({ signIn, methods }: ConnectionsCardProps) {
               <div key={provider} className="flex items-start gap-3 py-3">
                 <ProviderAvatar provider={provider} detail={detail} />
                 <div className="min-w-0 flex-1">
-                  <p className="text-sm font-medium leading-tight">
+                  {/* break-words: the name/handle is provider-controlled and
+                      may be one unbroken run that would overflow the rail. */}
+                  <p className="break-words text-sm font-medium leading-tight">
                     {providerName(provider)}
                     {who ? (
                       <span className="font-normal text-muted-foreground">
@@ -362,6 +383,9 @@ export function ConnectionsCard({ signIn, methods }: ConnectionsCardProps) {
                     className="-mr-2 flex-none"
                     onClick={() => setConfirmProvider(provider)}
                     disabled={disconnecting || sendingPasswordEmail}
+                    aria-label={t('disconnectAria', {
+                      provider: providerName(provider),
+                    })}
                   >
                     {t('disconnect')}
                   </Button>

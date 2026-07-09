@@ -977,6 +977,7 @@
       "changePassword": "Cambiar contraseña",
       "passwordEmailSent": "Revisa tu bandeja de entrada: te enviamos un enlace para establecer tu contraseña.",
       "disconnect": "Desconectar",
+      "disconnectAria": "Desconectar {provider}",
       "disconnected": "{provider} desconectado.",
       "disconnectTitle": "¿Desconectar {provider}?",
       "disconnectBody": "Ya no podrás iniciar sesión con {provider}. Puedes volver a conectarlo en cualquier momento iniciando sesión con {provider} de nuevo.",

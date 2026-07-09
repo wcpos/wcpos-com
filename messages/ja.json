@@ -977,6 +977,7 @@
       "changePassword": "パスワードを変更",
       "passwordEmailSent": "受信トレイをご確認ください。パスワード設定用のリンクをお送りしました。",
       "disconnect": "連携を解除",
+      "disconnectAria": "{provider}の連携を解除",
       "disconnected": "{provider}の連携を解除しました。",
       "disconnectTitle": "{provider}の連携を解除しますか？",
       "disconnectBody": "{provider}でのサインインはできなくなります。再度{provider}でサインインすれば、いつでも再連携できます。",

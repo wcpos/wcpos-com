@@ -977,6 +977,7 @@
       "changePassword": "修改密码",
       "passwordEmailSent": "请查收邮件 — 我们已发送设置密码的链接。",
       "disconnect": "断开连接",
+      "disconnectAria": "断开 {provider} 连接",
       "disconnected": "已断开 {provider} 连接。",
       "disconnectTitle": "断开 {provider} 连接？",
       "disconnectBody": "断开后将无法使用 {provider} 登录。随时可以再次用 {provider} 登录以重新连接。",

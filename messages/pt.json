@@ -977,6 +977,7 @@
       "changePassword": "Alterar palavra-passe",
       "passwordEmailSent": "Verifica a tua caixa de entrada — enviámos-te uma ligação para definires a palavra-passe.",
       "disconnect": "Desligar",
+      "disconnectAria": "Desligar {provider}",
       "disconnected": "{provider} desligado.",
       "disconnectTitle": "Desligar {provider}?",
       "disconnectBody": "Deixarás de poder iniciar sessão com {provider}. Podes voltar a ligar em qualquer altura iniciando sessão novamente com {provider}.",

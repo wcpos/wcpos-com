@@ -977,6 +977,7 @@
       "changePassword": "Changer le mot de passe",
       "passwordEmailSent": "Vérifiez votre boîte de réception — nous vous avons envoyé un lien pour définir votre mot de passe.",
       "disconnect": "Déconnecter",
+      "disconnectAria": "Déconnecter {provider}",
       "disconnected": "{provider} déconnecté.",
       "disconnectTitle": "Déconnecter {provider} ?",
       "disconnectBody": "Vous ne pourrez plus vous connecter avec {provider}. Vous pourrez le reconnecter à tout moment en vous connectant à nouveau avec {provider}.",

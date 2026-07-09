@@ -62,7 +62,10 @@ describe('ConnectionsCard', () => {
     expect(
       screen.getByRole('button', { name: 'Change password' })
     ).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'Disconnect' })).toBeInTheDocument()
+    // The row button names its provider for screen readers.
+    expect(
+      screen.getByRole('button', { name: 'Disconnect Google' })
+    ).toBeInTheDocument()
   })
 
   it('sends the password email; a pending identity stays "Set a password" with no disconnect', async () => {
@@ -251,7 +254,7 @@ describe('ConnectionsCard', () => {
       />
     )
 
-    fireEvent.click(screen.getByRole('button', { name: 'Disconnect' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Disconnect Google' }))
     // Nothing sent until the dialog confirms.
     expect(mockFetch).not.toHaveBeenCalled()
     expect(await screen.findByText('Disconnect Google?')).toBeInTheDocument()
@@ -290,7 +293,9 @@ describe('ConnectionsCard', () => {
 
     fireEvent.click(screen.getByRole('button', { name: 'Change password' }))
 
-    const disconnect = await screen.findByRole('button', { name: 'Disconnect' })
+    const disconnect = await screen.findByRole('button', {
+      name: 'Disconnect Google',
+    })
     expect(disconnect).toBeDisabled()
     // Even if the disabled attribute is bypassed, the handler refuses to run.
     fireEvent.click(disconnect)
@@ -304,7 +309,9 @@ describe('ConnectionsCard', () => {
 
     // Once the in-flight request settles, the controls re-enable.
     await waitFor(() => {
-      expect(screen.getByRole('button', { name: 'Disconnect' })).toBeEnabled()
+      expect(
+        screen.getByRole('button', { name: 'Disconnect Google' })
+      ).toBeEnabled()
     })
     expect(
       screen.getByRole('button', { name: 'Change password' })
@@ -326,7 +333,7 @@ describe('ConnectionsCard', () => {
       />
     )
 
-    fireEvent.click(screen.getByRole('button', { name: 'Disconnect' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Disconnect Google' }))
     await clickConfirmDisconnect()
 
     // The open dialog marks the card behind it aria-hidden, so reach the
@@ -366,11 +373,7 @@ describe('ConnectionsCard', () => {
       />
     )
 
-    // Rows render in OAUTH_PROVIDERS order, so Google is first.
-    const [googleDisconnect] = screen.getAllByRole('button', {
-      name: 'Disconnect',
-    })
-    fireEvent.click(googleDisconnect)
+    fireEvent.click(screen.getByRole('button', { name: 'Disconnect Google' }))
     // Pin which row was opened, so a row reorder fails loudly here.
     expect(await screen.findByText('Disconnect Google?')).toBeInTheDocument()
     await clickConfirmDisconnect()
@@ -382,6 +385,31 @@ describe('ConnectionsCard', () => {
     })
     // Row remains connected.
     expect(screen.getByText('Google')).toBeInTheDocument()
+  })
+
+  it('removes the row when the provider was already disconnected elsewhere', async () => {
+    // Another tab/session got there first: the backend 404s, but the row is
+    // stale — reflect reality instead of erroring over an impossible action.
+    mockFetch.mockResolvedValueOnce({
+      ok: false,
+      json: async () => ({ errorCode: 'provider_not_connected' }),
+    })
+
+    render(
+      <ConnectionsCard
+        signIn={googleSignIn}
+        methods={{ providers: ['emailpass', 'google'] }}
+      />
+    )
+
+    fireEvent.click(screen.getByRole('button', { name: 'Disconnect Google' }))
+    await clickConfirmDisconnect()
+
+    await waitFor(() => {
+      expect(screen.queryByText('Google')).not.toBeInTheDocument()
+    })
+    expect(toast.success).toHaveBeenCalledWith('Google disconnected.')
+    expect(toast.error).not.toHaveBeenCalled()
   })
 
   it('never renders a Discord row (managed per-licence)', () => {

@@ -977,6 +977,7 @@
       "changePassword": "Change password",
       "passwordEmailSent": "Check your inbox — we sent you a link to set your password.",
       "disconnect": "Disconnect",
+      "disconnectAria": "Disconnect {provider}",
       "disconnected": "{provider} disconnected.",
       "disconnectTitle": "Disconnect {provider}?",
       "disconnectBody": "You'll no longer be able to sign in with {provider}. You can reconnect anytime by signing in with {provider} again.",
