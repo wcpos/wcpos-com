@@ -101,6 +101,8 @@ describe('GET /api/store/cart/payment-status', () => {
     ['Settled', 'confirming'],
     ['Expired', 'expired'],
     ['Invalid', 'expired'],
+    // A status this build doesn't recognise must never read as unpaid.
+    ['SomeFutureStatus', 'unknown'],
   ])('maps invoice status %s to state %s', async (invoiceStatus, expected) => {
     mockGetCart.mockResolvedValue(cartWithInvoice(invoiceStatus))
 
@@ -109,6 +111,22 @@ describe('GET /api/store/cart/payment-status', () => {
     expect(response.status).toBe(200)
     expect(await response.json()).toEqual({
       state: expected,
+      checkoutLink: CHECKOUT_LINK,
+    })
+  })
+
+  it('reports unknown when the session carries no invoice status', async () => {
+    const cart = cartWithInvoice('New')
+    cart.payment_collection.payment_sessions[0].data = {
+      checkoutLink: CHECKOUT_LINK,
+    } as (typeof cart.payment_collection.payment_sessions)[0]['data']
+
+    mockGetCart.mockResolvedValue(cart)
+
+    const response = await GET(makeRequest('cart_1'))
+
+    expect(await response.json()).toEqual({
+      state: 'unknown',
       checkoutLink: CHECKOUT_LINK,
     })
   })

@@ -17,13 +17,18 @@ export type CartPaymentState =
   | 'awaiting_payment'
   | 'expired'
   | 'no_payment'
+  | 'unknown'
 
 const BTCPAY_PROVIDER_ID = 'pp_btcpay_btcpay'
 
 // Greenfield invoice.status values. Anything paid-but-not-final reads as
-// "confirming"; the webhook completes the cart when BTCPay settles.
+// "confirming"; the webhook completes the cart when BTCPay settles. Only a
+// positively-reported 'New' may read as unpaid — a missing or unrecognized
+// status must NOT collapse to awaiting_payment, because that state renders
+// "we haven't seen your payment" copy on the return page.
 const CONFIRMING_STATUSES = new Set(['Processing', 'Settled', 'Complete'])
 const DEAD_STATUSES = new Set(['Expired', 'Invalid'])
+const UNPAID_STATUSES = new Set(['New'])
 
 function derivePaymentState(cart: MedusaCart): {
   state: CartPaymentState
@@ -53,7 +58,10 @@ function derivePaymentState(cart: MedusaCart): {
   if (typeof invoiceStatus === 'string' && CONFIRMING_STATUSES.has(invoiceStatus)) {
     return { state: 'confirming', checkoutLink }
   }
-  return { state: 'awaiting_payment', checkoutLink }
+  if (typeof invoiceStatus === 'string' && UNPAID_STATUSES.has(invoiceStatus)) {
+    return { state: 'awaiting_payment', checkoutLink }
+  }
+  return { state: 'unknown', checkoutLink }
 }
 
 /**

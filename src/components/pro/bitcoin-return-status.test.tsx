@@ -76,13 +76,48 @@ describe('BitcoinReturnStatus', () => {
     ).toBeInTheDocument()
   })
 
-  it('sends expired invoices back to checkout without charging language', async () => {
+  it('sends expired invoices back to checkout without asserting non-payment', async () => {
     mockFetch.mockResolvedValue(statusResponse('expired'))
 
     render(<BitcoinReturnStatus cartId="cart_1" />)
 
     expect(await screen.findByText('Invoice expired')).toBeInTheDocument()
-    expect(screen.getByText(/have not been charged/)).toBeInTheDocument()
+    // Honest under webhook lag: paid-before-expiry still completes.
+    expect(
+      screen.getByText(/If you paid before it expired/)
+    ).toBeInTheDocument()
+  })
+
+  it('keeps polling after expired so a racing completion still wins', async () => {
+    vi.useFakeTimers()
+    try {
+      mockFetch
+        .mockResolvedValueOnce(statusResponse('expired'))
+        .mockResolvedValue(statusResponse('completed'))
+
+      render(<BitcoinReturnStatus cartId="cart_1" />)
+
+      await vi.waitFor(() =>
+        expect(screen.getByText('Invoice expired')).toBeInTheDocument()
+      )
+
+      await vi.advanceTimersByTimeAsync(5000)
+
+      await vi.waitFor(() =>
+        expect(mockReplace).toHaveBeenCalledWith('/pro/checkout/success')
+      )
+    } finally {
+      vi.useRealTimers()
+    }
+  })
+
+  it('holds the neutral checking state on inconclusive invoice data', async () => {
+    mockFetch.mockResolvedValue(statusResponse('unknown'))
+
+    render(<BitcoinReturnStatus cartId="cart_1" />)
+
+    expect(await screen.findByText('Checking your payment…')).toBeInTheDocument()
+    expect(screen.queryByText("We couldn't check your payment")).not.toBeInTheDocument()
   })
 
   it('asks the customer to sign in when the session is gone', async () => {

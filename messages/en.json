@@ -675,12 +675,12 @@
         },
         "awaiting": {
           "title": "Invoice not paid yet",
-          "description": "It looks like the Bitcoin invoice hasn't been paid. You have not been charged — you can reopen the invoice or choose a different payment method.",
+          "description": "We haven't seen your payment yet. If you've already paid, this page updates automatically in a moment. Otherwise you can reopen the invoice or choose a different payment method.",
           "reopenInvoice": "Reopen Bitcoin invoice"
         },
         "expired": {
           "title": "Invoice expired",
-          "description": "The Bitcoin invoice expired before payment completed. You have not been charged — return to checkout to try again."
+          "description": "The Bitcoin invoice expired. If you paid before it expired, your order completes automatically and this page will update. If you didn't pay, you have not been charged — return to checkout to try again."
         },
         "signIn": {
           "title": "Sign in to see your order",

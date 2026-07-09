@@ -675,12 +675,12 @@
         },
         "awaiting": {
           "title": "Facture pas encore payée",
-          "description": "Il semble que la facture Bitcoin n'ait pas été payée. Vous n'avez pas été débité — vous pouvez rouvrir la facture ou choisir un autre moyen de paiement.",
+          "description": "Nous n'avons pas encore vu votre paiement. Si vous avez déjà payé, cette page se mettra à jour automatiquement dans un instant. Sinon, vous pouvez rouvrir la facture ou choisir un autre moyen de paiement.",
           "reopenInvoice": "Rouvrir la facture Bitcoin"
         },
         "expired": {
           "title": "Facture expirée",
-          "description": "La facture Bitcoin a expiré avant la fin du paiement. Vous n'avez pas été débité — retournez au paiement pour réessayer."
+          "description": "La facture Bitcoin a expiré. Si vous avez payé avant son expiration, votre commande sera finalisée automatiquement et cette page se mettra à jour. Si vous n'avez pas payé, vous n'avez pas été débité — retournez au paiement pour réessayer."
         },
         "signIn": {
           "title": "Connectez-vous pour voir votre commande",

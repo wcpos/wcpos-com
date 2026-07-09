@@ -675,12 +675,12 @@
         },
         "awaiting": {
           "title": "Fattura non ancora pagata",
-          "description": "Sembra che la fattura Bitcoin non sia stata pagata. Non ti è stato addebitato nulla — puoi riaprire la fattura o scegliere un altro metodo di pagamento.",
+          "description": "Non abbiamo ancora visto il tuo pagamento. Se hai già pagato, questa pagina si aggiornerà automaticamente tra un istante. Altrimenti puoi riaprire la fattura o scegliere un altro metodo di pagamento.",
           "reopenInvoice": "Riapri la fattura Bitcoin"
         },
         "expired": {
           "title": "Fattura scaduta",
-          "description": "La fattura Bitcoin è scaduta prima del completamento del pagamento. Non ti è stato addebitato nulla — torna al checkout per riprovare."
+          "description": "La fattura Bitcoin è scaduta. Se hai pagato prima della scadenza, il tuo ordine verrà completato automaticamente e questa pagina si aggiornerà. Se non hai pagato, non ti è stato addebitato nulla — torna al checkout per riprovare."
         },
         "signIn": {
           "title": "Accedi per vedere il tuo ordine",

@@ -675,12 +675,12 @@
         },
         "awaiting": {
           "title": "Rechnung noch nicht bezahlt",
-          "description": "Die Bitcoin-Rechnung wurde anscheinend noch nicht bezahlt. Dir wurde nichts berechnet — du kannst die Rechnung erneut öffnen oder eine andere Zahlungsmethode wählen.",
+          "description": "Wir haben deine Zahlung noch nicht gesehen. Wenn du bereits bezahlt hast, aktualisiert sich diese Seite gleich automatisch. Andernfalls kannst du die Rechnung erneut öffnen oder eine andere Zahlungsmethode wählen.",
           "reopenInvoice": "Bitcoin-Rechnung erneut öffnen"
         },
         "expired": {
           "title": "Rechnung abgelaufen",
-          "description": "Die Bitcoin-Rechnung ist abgelaufen, bevor die Zahlung abgeschlossen wurde. Dir wurde nichts berechnet — kehre zur Kasse zurück und versuche es erneut."
+          "description": "Die Bitcoin-Rechnung ist abgelaufen. Wenn du vor Ablauf bezahlt hast, wird deine Bestellung automatisch abgeschlossen und diese Seite aktualisiert sich. Wenn du nicht bezahlt hast, wurde dir nichts berechnet — kehre zur Kasse zurück und versuche es erneut."
         },
         "signIn": {
           "title": "Melde dich an, um deine Bestellung zu sehen",

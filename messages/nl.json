@@ -675,12 +675,12 @@
         },
         "awaiting": {
           "title": "Factuur nog niet betaald",
-          "description": "Het lijkt erop dat de Bitcoin-factuur nog niet is betaald. Er is niets afgeschreven — je kunt de factuur opnieuw openen of een andere betaalmethode kiezen.",
+          "description": "We hebben je betaling nog niet gezien. Als je al hebt betaald, wordt deze pagina zo automatisch bijgewerkt. Zo niet, dan kun je de factuur opnieuw openen of een andere betaalmethode kiezen.",
           "reopenInvoice": "Bitcoin-factuur opnieuw openen"
         },
         "expired": {
           "title": "Factuur verlopen",
-          "description": "De Bitcoin-factuur is verlopen voordat de betaling was afgerond. Er is niets afgeschreven — ga terug naar de checkout om het opnieuw te proberen."
+          "description": "De Bitcoin-factuur is verlopen. Als je vóór het verlopen hebt betaald, wordt je bestelling automatisch afgerond en wordt deze pagina bijgewerkt. Heb je niet betaald, dan is er niets afgeschreven — ga terug naar de checkout om het opnieuw te proberen."
         },
         "signIn": {
           "title": "Log in om je bestelling te zien",

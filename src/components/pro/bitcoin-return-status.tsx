@@ -15,17 +15,17 @@ type PaymentState =
   | 'awaiting_payment'
   | 'expired'
   | 'no_payment'
+  | 'unknown'
   | 'unauthenticated'
   | 'error'
 
 const POLL_INTERVAL_MS = 5000
 
-// States that end the poll loop. Everything else keeps watching, since an
-// on-chain payment can take a while to confirm.
+// States that end the poll loop. Every payment-derived state keeps watching:
+// they come from non-authoritative invoice data and can race the webhook that
+// completes the cart — only completion itself (or a lost session) is final.
 const TERMINAL_STATES: ReadonlySet<PaymentState> = new Set([
   'completed',
-  'expired',
-  'no_payment',
   'unauthenticated',
 ])
 
@@ -69,6 +69,7 @@ export function BitcoinReturnStatus({ cartId }: BitcoinReturnStatusProps) {
         case 'awaiting_payment':
         case 'expired':
         case 'no_payment':
+        case 'unknown':
           return body.state
         default:
           return null
@@ -93,7 +94,10 @@ export function BitcoinReturnStatus({ cartId }: BitcoinReturnStatusProps) {
       if (cancelled) {
         return
       }
-      if (next) {
+      if (next === 'unknown') {
+        // Inconclusive invoice data: keep whatever the customer currently
+        // sees (the neutral checking state on first load) and keep watching.
+      } else if (next) {
         setState(next)
       } else {
         // Transient failures shouldn't scare a paying customer: only surface
