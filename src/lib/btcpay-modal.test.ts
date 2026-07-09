@@ -61,6 +61,29 @@ describe('btcpay-modal seam', () => {
     }
   })
 
+  it('recognises Invalid as a payment issue rather than an unpaid invoice', async () => {
+    const { isPaymentIssueStatus } = await freshModule()
+
+    expect(isPaymentIssueStatus('Invalid')).toBe(true)
+    expect(isPaymentIssueStatus('invalid')).toBe(true)
+    for (const status of ['New', 'Expired', 'Settled', 'Processing', '']) {
+      expect(isPaymentIssueStatus(status)).toBe(false)
+    }
+  })
+
+  it('hides the frame, and stays quiet when the script never loaded', async () => {
+    const { hideBtcpayModal } = await freshModule()
+
+    // No global yet — callers navigate away regardless of modal state.
+    expect(() => hideBtcpayModal()).not.toThrow()
+
+    const btcpay = makeBtcpayGlobal()
+    ;(window as { btcpay?: unknown }).btcpay = btcpay
+    hideBtcpayModal()
+
+    expect(btcpay.hideFrame).toHaveBeenCalledTimes(1)
+  })
+
   it('opens the invoice and relays status + close events', async () => {
     const { openBtcpayModal } = await freshModule()
     const events: unknown[] = []

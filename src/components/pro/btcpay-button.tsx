@@ -7,8 +7,10 @@ import { Bitcoin } from 'lucide-react'
 import { useRouter } from '@/i18n/navigation'
 import {
   btcpayOriginFromCheckoutLink,
+  hideBtcpayModal,
   invoiceIdFromCheckoutLink,
   isPaidStatus,
+  isPaymentIssueStatus,
   openBtcpayModal,
 } from '@/lib/btcpay-modal'
 import { createPaymentFailure, type CheckoutFailure } from './checkout-safety'
@@ -22,9 +24,22 @@ interface BTCPaySession {
 }
 
 interface BTCPayInvoiceRef {
-  origin: string
-  invoiceId: string
+  /** The hosted checkout page — always usable as a full-page redirect. */
   link: string
+  /** Null when the link can't drive the modal (see `canOpenModally`). */
+  origin: string | null
+  invoiceId: string | null
+}
+
+/**
+ * The modal needs an HTTPS origin serving `/modal/btcpay.js` and an invoice
+ * id. A link that supplies neither (a plain-HTTP dev/e2e server, a permalink
+ * that isn't `/i/{id}`) is still a perfectly good hosted checkout page.
+ */
+function canOpenModally(
+  invoice: BTCPayInvoiceRef
+): invoice is BTCPayInvoiceRef & { origin: string; invoiceId: string } {
+  return Boolean(invoice.origin && invoice.invoiceId)
 }
 
 interface BTCPayButtonProps {
@@ -43,8 +58,8 @@ export function BTCPayButton({ cartId, checkoutLink, onFailure }: BTCPayButtonPr
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
   // The modal streams events after handleClick returns; refs keep the
-  // paid-then-closed sequencing race-free without re-registering listeners.
-  const sawPaidStatus = useRef(false)
+  // handled-then-closed sequencing race-free without re-registering listeners.
+  const invoiceHandled = useRef(false)
   const navigated = useRef(false)
 
   // The BTCPay session (and its invoice) survives a closed modal — remember
@@ -53,7 +68,7 @@ export function BTCPayButton({ cartId, checkoutLink, onFailure }: BTCPayButtonPr
 
   useEffect(() => {
     invoiceRef.current = null
-    sawPaidStatus.current = false
+    invoiceHandled.current = false
     navigated.current = false
   }, [cartId])
 
@@ -62,6 +77,9 @@ export function BTCPayButton({ cartId, checkoutLink, onFailure }: BTCPayButtonPr
       return
     }
     navigated.current = true
+    // /processing is a client-side route; the BTCPay frame lives outside React
+    // under document.body and would otherwise cover the page we route to.
+    hideBtcpayModal()
     router.push({ pathname: '/processing', query: { cart: cartId } })
   }
 
@@ -128,13 +146,13 @@ export function BTCPayButton({ cartId, checkoutLink, onFailure }: BTCPayButtonPr
       throw new Error('BTCPAY_CHECKOUT_LINK_MISSING')
     }
 
-    const origin = btcpayOriginFromCheckoutLink(link)
-    invoiceId = invoiceId ?? invoiceIdFromCheckoutLink(link)
-    if (!origin || !invoiceId) {
-      throw new Error('BTCPAY_CHECKOUT_LINK_MISSING')
+    // A link the modal can't drive is not an init failure — handleClick
+    // redirects to it. Only a missing link leaves the customer with nothing.
+    invoiceRef.current = {
+      link,
+      origin: btcpayOriginFromCheckoutLink(link),
+      invoiceId: invoiceId ?? invoiceIdFromCheckoutLink(link),
     }
-
-    invoiceRef.current = { origin, invoiceId, link }
     return invoiceRef.current
   }
 
@@ -157,18 +175,27 @@ export function BTCPayButton({ cartId, checkoutLink, onFailure }: BTCPayButtonPr
       return
     }
 
+    if (!canOpenModally(invoice)) {
+      // Nothing to open in-page — same fallback as a modal that won't load.
+      window.location.href = invoice.link
+      return
+    }
+
     try {
       await openBtcpayModal(invoice.origin, invoice.invoiceId, (event) => {
-        if (event.kind === 'status' && isPaidStatus(event.status)) {
-          // BTCPay has seen the payment — hand over to /processing, which
-          // tracks confirmation and forwards to the success page once the
-          // webhook completes the order.
-          sawPaidStatus.current = true
-          goToProcessing()
+        if (event.kind === 'status') {
+          // Paid: /processing tracks confirmation and forwards to the success
+          // page once the webhook completes the order. Invalid: money arrived
+          // but the payment failed, and /processing owns that conversation —
+          // either way the customer must not pay again from checkout.
+          if (isPaidStatus(event.status) || isPaymentIssueStatus(event.status)) {
+            invoiceHandled.current = true
+            goToProcessing()
+          }
           return
         }
         if (event.kind === 'close') {
-          if (sawPaidStatus.current) {
+          if (invoiceHandled.current) {
             goToProcessing()
             return
           }

@@ -22,8 +22,12 @@ vi.mock('@/lib/btcpay-modal', async (importOriginal) => {
 })
 
 const CHECKOUT_LINK = 'https://btcpay.wcpos.com/i/inv_test1'
+// What the mocked/e2e BTCPay simulator hands back: plain HTTP, and a path
+// that isn't the `/i/{id}` permalink — neither origin nor invoice id can be
+// derived from it, so the modal cannot be opened.
+const UNMODALABLE_LINK = 'http://127.0.0.1:4000/btcpay/checkout/paycol_test1'
 
-function sessionResponse() {
+function sessionResponse(data?: Record<string, unknown>) {
   return {
     ok: true,
     json: async () => ({
@@ -32,7 +36,7 @@ function sessionResponse() {
           payment_sessions: [
             {
               provider_id: 'pp_btcpay_btcpay',
-              data: {
+              data: data ?? {
                 checkoutLink: CHECKOUT_LINK,
                 btc_invoice: { id: 'inv_test1', checkoutLink: CHECKOUT_LINK },
               },
@@ -70,10 +74,20 @@ function modalOpensAndCaptures(): { emit: (e: BtcpayModalEvent) => void } {
   return captured
 }
 
+/** btcpay.js installs `window.btcpay` once its script loads; the modal frame
+ * it mounts lives outside React, so teardown goes through this global. */
+const mockHideFrame = vi.fn()
+
 describe('BTCPayButton', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     vi.spyOn(console, 'error').mockImplementation(() => {})
+    vi.stubGlobal('btcpay', {
+      showInvoice: vi.fn(),
+      hideFrame: mockHideFrame,
+      onModalReceiveMessage: vi.fn(),
+      onModalWillLeave: vi.fn(),
+    })
   })
 
   it('shows non-spinner loading state while preparing checkout', () => {
@@ -155,6 +169,71 @@ describe('BTCPayButton', () => {
       pathname: '/processing',
       query: { cart: 'cart_1' },
     })
+  })
+
+  it('hides the BTCPay frame before routing to /processing', async () => {
+    // /processing is a client-side route: leaving the fullscreen frame up
+    // renders the new page behind it, so the handoff looks stuck.
+    mockFetch.mockResolvedValue(sessionResponse())
+    const modal = modalOpensAndCaptures()
+
+    render(<BTCPayButton cartId="cart_1" onFailure={() => {}} />)
+    fireEvent.click(screen.getByRole('button', { name: 'Pay with Bitcoin' }))
+    await waitFor(() => expect(mockOpenBtcpayModal).toHaveBeenCalled())
+
+    modal.emit({ kind: 'status', invoiceId: 'inv_test1', status: 'Settled' })
+
+    expect(mockHideFrame).toHaveBeenCalledTimes(1)
+    expect(mockHideFrame.mock.invocationCallOrder[0]).toBeLessThan(
+      mockPush.mock.invocationCallOrder[0]
+    )
+  })
+
+  it('hands an Invalid invoice over to /processing instead of re-enabling checkout', async () => {
+    // Invalid means money arrived but the payment failed — the customer must
+    // not be invited to pay a second time from the checkout page.
+    routeFetch()
+    const modal = modalOpensAndCaptures()
+
+    render(<BTCPayButton cartId="cart_1" onFailure={() => {}} />)
+    fireEvent.click(screen.getByRole('button', { name: 'Pay with Bitcoin' }))
+    await waitFor(() => expect(mockOpenBtcpayModal).toHaveBeenCalled())
+
+    modal.emit({ kind: 'status', invoiceId: 'inv_test1', status: 'Invalid' })
+    // Closing after an Invalid must not fall through to "closed without paying".
+    modal.emit({ kind: 'close' })
+
+    expect(mockPush).toHaveBeenCalledTimes(1)
+    expect(mockPush).toHaveBeenCalledWith({
+      pathname: '/processing',
+      query: { cart: 'cart_1' },
+    })
+    expect(
+      screen.getByRole('button', { name: 'Preparing Bitcoin payment...' })
+    ).toBeDisabled()
+    const statusChecks = mockFetch.mock.calls.filter(([url]) =>
+      String(url).includes('/api/store/cart/payment-status')
+    )
+    expect(statusChecks).toHaveLength(0)
+  })
+
+  it('redirects when the checkout link cannot be opened modally', async () => {
+    // The mocked/e2e simulator serves plain HTTP at a non-permalink path: a
+    // valid hosted checkout, just not one the modal can drive.
+    mockFetch.mockResolvedValue(sessionResponse({ checkoutLink: UNMODALABLE_LINK }))
+    modalOpensAndCaptures()
+    const onFailure = vi.fn()
+    const location = { href: '' }
+    vi.stubGlobal('location', location)
+
+    render(<BTCPayButton cartId="cart_1" onFailure={onFailure} />)
+    fireEvent.click(screen.getByRole('button', { name: 'Pay with Bitcoin' }))
+
+    await waitFor(() => expect(location.href).toBe(UNMODALABLE_LINK))
+    expect(mockOpenBtcpayModal).not.toHaveBeenCalled()
+    // A usable link is not an init failure — no error banner.
+    expect(onFailure).toHaveBeenCalledTimes(1)
+    expect(onFailure).toHaveBeenCalledWith(null)
   })
 
   it('quietly re-enables when the modal closes without payment', async () => {
