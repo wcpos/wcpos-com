@@ -45,3 +45,20 @@ Adopters:
 - The `{ error, code }` contract has one home and one table-driven test (`to-error-response.test.ts`) instead of N routes re-asserting the shape.
 - `register`'s brittle provider-string classification moved down to `register()`; the route is a clean delegate. The classification assertion moved with it (now a `medusa-auth.test.ts` case); the route test asserts delegation.
 - Future routes that need a machine-readable code adopt `toErrorResponse`; the simple `{ error }` one-liners are deliberately left alone. `cart/complete` is the template for the next adopter.
+
+## Amended 2026-07-09
+
+The `toErrorResponse` adapter was never adopted as the route-layer seam and has
+been removed. The current API wire contract is the translatable token shape
+`{ errorCode }`, not the older `{ error, code? }` description above. A small
+number of routes still append a route-local legacy `code` for shipped client
+branches, but `errorCode` is the public token clients translate.
+
+Typed errors are now classified at the Medusa adapter seam and carried by the
+four narrow classes in `src/lib/api/errors.ts`: `ApiError`,
+`AccountExistsError`, `InvalidCredentialsError`, and `InvalidResetTokenError`.
+Each route that needs to expose one of those classifications currently defines
+its own local `errorResponse` helper that returns `NextResponse.json({ errorCode }, { status })` (with any route-specific legacy extras kept local).
+
+The Electron `{ status, error }` / `{ status, errorCode }` protocol remains a
+shipped-client contract and is untouched by this amendment.

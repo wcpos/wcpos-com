@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { render, screen, within } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { NextIntlClientProvider } from 'next-intl'
 import type { ReactElement } from 'react'
 import messages from '../../../messages/en.json'
@@ -52,8 +52,6 @@ vi.mock('@/components/ui/section', () => ({
   }) => <div data-container-width={width}>{children}</div>,
 }))
 
-import { ProblemSection } from './problem-section'
-import { BenefitsSection } from './benefits-section'
 import { UseCasesSection } from './use-cases-section'
 import { FeaturesSection } from './features-section'
 import { TrustSection } from './trust-section'
@@ -66,127 +64,6 @@ function renderWithIntl(ui: ReactElement) {
     </NextIntlClientProvider>
   )
 }
-
-describe('ProblemSection', () => {
-  it('renders the three pain points', () => {
-    renderWithIntl(<ProblemSection />)
-
-    expect(screen.getByText('Double Entry')).toBeInTheDocument()
-    expect(screen.getByText('Offline Panic')).toBeInTheDocument()
-    expect(screen.getByText('Platform Lock-In')).toBeInTheDocument()
-  })
-
-  it('renders translated problem copy from messages', () => {
-    render(
-      <NextIntlClientProvider
-        locale="en"
-        messages={{
-          home: {
-            problem: {
-              title: 'Translated problem heading',
-              items: {
-                doubleEntry: {
-                  label: 'Translated double entry',
-                  description: 'Translated double entry description',
-                },
-                offlinePanic: {
-                  label: 'Translated offline panic',
-                  description: 'Translated offline panic description',
-                },
-                platformLockIn: {
-                  label: 'Translated lock-in',
-                  description: 'Translated lock-in description',
-                },
-              },
-            },
-          },
-        }}
-      >
-        <ProblemSection />
-      </NextIntlClientProvider>
-    )
-
-    expect(
-      screen.getByRole('heading', { name: 'Translated problem heading' })
-    ).toBeInTheDocument()
-    expect(screen.getByText('Translated double entry')).toBeInTheDocument()
-    expect(
-      screen.getByText('Translated offline panic description')
-    ).toBeInTheDocument()
-    expect(screen.getByText('Translated lock-in')).toBeInTheDocument()
-  })
-})
-
-describe('BenefitsSection', () => {
-  it('renders a section heading and all four benefits', () => {
-    renderWithIntl(<BenefitsSection />)
-
-    expect(
-      screen.getByRole('heading', { name: 'Why stores choose WCPOS' })
-    ).toBeInTheDocument()
-    expect(
-      screen.getByRole('heading', { name: 'One catalog, two channels' })
-    ).toBeInTheDocument()
-    expect(
-      screen.getByRole('heading', { name: 'Works offline' })
-    ).toBeInTheDocument()
-    expect(
-      screen.getByRole('heading', { name: 'Native apps, real hardware' })
-    ).toBeInTheDocument()
-    expect(
-      screen.getByRole('heading', { name: 'You own everything' })
-    ).toBeInTheDocument()
-  })
-
-  it('uses the canonical section seam for its heading and alternating bands', () => {
-    renderWithIntl(<BenefitsSection />)
-
-    const heading = screen.getByRole('heading', {
-      name: 'Why stores choose WCPOS',
-    })
-    expect(heading.closest('[data-section-tone]')).toHaveAttribute(
-      'data-section-tone',
-      'muted'
-    )
-
-    const sections = document.querySelectorAll('[data-section-tone]')
-    expect(
-      [...sections].map((section) =>
-        section.getAttribute('data-section-tone')
-      )
-    ).toEqual(['muted', 'muted', 'default', 'muted', 'default'])
-  })
-
-  it('keeps all benefits inside the labelled benefits region', () => {
-    renderWithIntl(<BenefitsSection />)
-
-    const region = screen.getByRole('region', {
-      name: 'Why stores choose WCPOS',
-    })
-
-    expect(
-      within(region).getByRole('heading', {
-        name: 'Why stores choose WCPOS',
-      })
-    ).toBeInTheDocument()
-    expect(
-      within(region).getByRole('heading', {
-        name: 'One catalog, two channels',
-      })
-    ).toBeInTheDocument()
-    expect(
-      within(region).getByRole('heading', { name: 'Works offline' })
-    ).toBeInTheDocument()
-    expect(
-      within(region).getByRole('heading', {
-        name: 'Native apps, real hardware',
-      })
-    ).toBeInTheDocument()
-    expect(
-      within(region).getByRole('heading', { name: 'You own everything' })
-    ).toBeInTheDocument()
-  })
-})
 
 describe('UseCasesSection', () => {
   it('renders the three testimonial cards with sourced attributions', () => {

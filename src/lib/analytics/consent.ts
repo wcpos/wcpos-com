@@ -45,10 +45,6 @@ export function parseAnalyticsConsent(
   return null
 }
 
-export function hasAnalyticsConsent(value: string | null | undefined): boolean {
-  return parseAnalyticsConsent(value) === 'granted'
-}
-
 export function getConsentCookieOptions() {
   return {
     path: '/',

@@ -9,7 +9,7 @@
  *
  * Pure module — no `next/server` import — so these can be thrown from any layer
  * (services, lib, route handlers) without pulling the server runtime into a
- * service. The HTTP mapping lives in `to-error-response.ts`.
+ * service. Routes classify these errors locally into `{ errorCode }` responses.
  *
  * Scope is deliberately narrow (see docs/adr/0010): this is NOT a universal
  * wrapper for every `{ error }` one-liner, and it does not touch the per-surface

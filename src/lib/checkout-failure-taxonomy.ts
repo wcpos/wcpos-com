@@ -55,7 +55,7 @@ const CHECKOUT_FAILURE_TAXONOMY = {
   },
 } satisfies Record<CheckoutFailureKind, CheckoutFailureTaxonomyEntry>
 
-export function isCheckoutFailureKind(value: unknown): value is CheckoutFailureKind {
+function isCheckoutFailureKind(value: unknown): value is CheckoutFailureKind {
   return (
     typeof value === 'string' &&
     Object.prototype.hasOwnProperty.call(CHECKOUT_FAILURE_TAXONOMY, value)
@@ -73,16 +73,6 @@ export function isOwnerReportedCheckoutFailureKind(
   kind: unknown
 ): kind is CheckoutFailureKind {
   return ownerSeverityForCheckoutFailure(kind) !== null
-}
-
-export function isMoneyAtRiskCheckoutFailureKind(
-  kind: unknown
-): kind is ProtectiveCheckoutFailureKind {
-  return ownerSeverityForCheckoutFailure(kind) === 'fatal'
-}
-
-export function isRoutineCheckoutFailureKind(kind: unknown): kind is 'payment_failed' {
-  return ownerSeverityForCheckoutFailure(kind) === 'error'
 }
 
 export function isProtectiveCheckoutFailureKind(

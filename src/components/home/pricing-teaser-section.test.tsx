@@ -50,15 +50,6 @@ vi.mock('@/lib/pro-offer-catalog', () => ({
   })),
   applyProOfferCatalogCachePolicy: vi.fn(),
   formatHomeProPriceSummary: vi.fn(() => '$129/year or $399 lifetime. No per-register fees.'),
-  PRO_TEASER_FEATURES: [
-    'Payment terminal integration',
-    'Stock & price editing in POS',
-    'Order history & management',
-    'Customer management',
-    'End-of-day reports',
-    'Custom payment gateways',
-    'Priority support',
-  ],
 }))
 
 const mockTrackClientEvent = vi.mocked(trackClientEvent)

@@ -5,12 +5,9 @@ import {
   type StoreEnvironment,
 } from '@/lib/store-environment'
 import { storeLogger } from '@/lib/logger'
-import { getPlanByHandle } from '@/lib/plans'
 import type {
   MedusaProduct,
   MedusaProductsResponse,
-  MedusaProductResponse,
-  MedusaRegionsResponse,
   MedusaCart,
   MedusaCartResponse,
   CreateCartInput,
@@ -105,70 +102,6 @@ export async function getProducts(
   }
 }
 
-/**
- * Get WCPOS Pro license products specifically
- */
-export async function getWcposProProducts(): Promise<MedusaProduct[]> {
-  try {
-    const response = await medusaFetch<MedusaProductsResponse>(
-      '/store/products?fields=*variants.prices'
-    )
-    return response.products.filter((p) => getPlanByHandle(p.handle) !== null)
-  } catch (error) {
-    storeLogger.error`Failed to fetch WCPOS Pro products: ${error}`
-    return []
-  }
-}
-
-/**
- * Get a single product by handle
- */
-export async function getProductByHandle(
-  handle: string
-): Promise<MedusaProduct | null> {
-  try {
-    const response = await medusaFetch<MedusaProductsResponse>(
-      `/store/products?handle=${handle}&fields=*variants.prices`
-    )
-
-    return response.products[0] || null
-  } catch (error) {
-    storeLogger.error`Failed to fetch product ${handle}: ${error}`
-    return null
-  }
-}
-
-/**
- * Get a single product by ID
- */
-export async function getProductById(
-  id: string
-): Promise<MedusaProduct | null> {
-  try {
-    const response = await medusaFetch<MedusaProductResponse>(
-      `/store/products/${id}?fields=*variants.prices`
-    )
-
-    return response.product || null
-  } catch (error) {
-    storeLogger.error`Failed to fetch product ${id}: ${error}`
-    return null
-  }
-}
-
-/**
- * Get available regions
- */
-export async function getRegions(): Promise<MedusaRegionsResponse['regions']> {
-  try {
-    const response = await medusaFetch<MedusaRegionsResponse>('/store/regions')
-    return response.regions
-  } catch (error) {
-    storeLogger.error`Failed to fetch regions: ${error}`
-    return []
-  }
-}
-
 interface CartPaymentProviderContext {
   cartRegionId: string | null
   providerIds: string[] | null
@@ -238,13 +171,6 @@ export async function getCartPaymentProviderContext(
     storeLogger.error`Failed to fetch region payment providers: ${error}`
     return { cartRegionId: null, providerIds: null }
   }
-}
-
-export async function getEnabledPaymentProviderIds(
-  storeEnv?: StoreEnvironment
-): Promise<string[] | null> {
-  const { providerIds } = await getCartPaymentProviderContext(storeEnv)
-  return providerIds
 }
 
 /**
@@ -527,25 +453,4 @@ export async function completeCart(cartId: string): Promise<CompleteCartResponse
     storeLogger.error`Failed to complete cart: ${error}`
     return null
   }
-}
-
-export const medusaClient = {
-  // Products
-  getProducts,
-  getWcposProProducts,
-  getProductByHandle,
-  getProductById,
-  getRegions,
-  formatPrice,
-  getVariantPrice,
-  // Cart
-  createCart,
-  getCart,
-  addLineItem,
-  updateCart,
-  // Payment (Medusa v2)
-  createPaymentCollection,
-  createPaymentSession,
-  capturePayPalOrder,
-  completeCart,
 }

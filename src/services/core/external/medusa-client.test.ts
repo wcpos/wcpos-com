@@ -38,12 +38,7 @@ vi.mock('@/lib/store-environment', () => {
 // Import after mocks are set up
 import {
   getProducts,
-  getWcposProProducts,
-  getProductByHandle,
-  getProductById,
-  getRegions,
   getCartPaymentProviderContext,
-  getEnabledPaymentProviderIds,
   formatPrice,
   getVariantPrice,
   createCart,
@@ -179,89 +174,7 @@ describe('medusaClient', () => {
 
   })
 
-  describe('getWcposProProducts', () => {
-    it('filters products to only registered Pro plan handles', async () => {
-      const otherProduct = { ...mockProduct, id: 'prod_other', handle: 'other-product' }
-      const unregisteredProProduct = {
-        ...mockProduct,
-        id: 'prod_monthly',
-        handle: 'wcpos-pro-monthly',
-      }
-      mockFetch.mockResolvedValueOnce({
-        ok: true,
-        json: async () => ({
-          products: [mockProduct, mockLifetimeProduct, unregisteredProProduct, otherProduct],
-        }),
-      })
-
-      const products = await getWcposProProducts()
-
-      expect(products).toHaveLength(2)
-      expect(products.map((p) => p.handle)).toEqual([
-        'wcpos-pro-yearly',
-        'wcpos-pro-lifetime',
-      ])
-    })
-  })
-
-  describe('getProductByHandle', () => {
-    it('fetches a single product by handle', async () => {
-      mockFetch.mockResolvedValueOnce({
-        ok: true,
-        json: async () => ({ products: [mockProduct] }),
-      })
-
-      const product = await getProductByHandle('wcpos-pro-yearly')
-
-      expect(product).not.toBeNull()
-      expect(product?.handle).toBe('wcpos-pro-yearly')
-    })
-
-    it('returns null if product not found', async () => {
-      mockFetch.mockResolvedValueOnce({
-        ok: true,
-        json: async () => ({ products: [] }),
-      })
-
-      const product = await getProductByHandle('nonexistent')
-
-      expect(product).toBeNull()
-    })
-  })
-
-  describe('getProductById', () => {
-    it('fetches a single product by ID', async () => {
-      mockFetch.mockResolvedValueOnce({
-        ok: true,
-        json: async () => ({ product: mockProduct }),
-      })
-
-      const product = await getProductById('prod_123')
-
-      expect(product).not.toBeNull()
-      expect(product?.id).toBe('prod_123')
-    })
-  })
-
-  describe('getRegions', () => {
-    it('fetches available regions', async () => {
-      mockFetch.mockResolvedValueOnce({
-        ok: true,
-        json: async () => ({
-          regions: [
-            { id: 'reg_1', name: 'US', currency_code: 'usd', countries: [] },
-          ],
-        }),
-      })
-
-      const regions = await getRegions()
-
-      expect(regions).toHaveLength(1)
-      expect(regions[0].name).toBe('US')
-    })
-  })
-
-  describe('getEnabledPaymentProviderIds', () => {
+  describe('getCartPaymentProviderContext', () => {
     it('returns the provider-filter region id for explicit cart creation', async () => {
       mockFetch.mockResolvedValueOnce({
         ok: true,
@@ -386,105 +299,6 @@ describe('medusaClient', () => {
       })
     })
 
-    it('uses the explicit cart region instead of unioning every region', async () => {
-      // Single request: the old multi-region branch asked /store/store for a
-      // default region — an endpoint that does not exist (404) — so the
-      // filter failed open on every real multi-region backend.
-      mockFetch.mockResolvedValueOnce({
-        ok: true,
-        json: async () => ({
-          regions: [
-            {
-              id: 'reg_eu',
-              name: 'EU',
-              payment_providers: [
-                { id: 'pp_stripe_stripe', is_enabled: true },
-                { id: 'pp_paypal_paypal', is_enabled: true },
-              ],
-            },
-            {
-              id: 'reg_us',
-              name: 'US',
-              payment_providers: [
-                { id: 'pp_btcpay_btcpay', is_enabled: true },
-              ],
-            },
-          ],
-        }),
-      })
-
-      await expect(getEnabledPaymentProviderIds()).resolves.toEqual([
-        'pp_stripe_stripe',
-        'pp_paypal_paypal',
-      ])
-      expect(mockFetch).toHaveBeenCalledTimes(1)
-    })
-
-    it('excludes providers the region reports as disabled', async () => {
-      mockFetch.mockResolvedValueOnce({
-        ok: true,
-        json: async () => ({
-          regions: [
-            {
-              id: 'reg_eu',
-              name: 'EU',
-              payment_providers: [
-                { id: 'pp_stripe_stripe', is_enabled: true },
-                { id: 'pp_btcpay_btcpay', is_enabled: false },
-              ],
-            },
-          ],
-        }),
-      })
-
-      await expect(getEnabledPaymentProviderIds()).resolves.toEqual([
-        'pp_stripe_stripe',
-      ])
-    })
-
-    it('fails open when no region reports any providers', async () => {
-      mockFetch.mockResolvedValueOnce({
-        ok: true,
-        json: async () => ({
-          regions: [
-            { id: 'reg_eu', name: 'EU', payment_providers: [] },
-            { id: 'reg_us', name: 'US' },
-          ],
-        }),
-      })
-
-      await expect(getEnabledPaymentProviderIds()).resolves.toBeNull()
-    })
-
-    it('filters everything when one region has no providers but another does', async () => {
-      mockFetch.mockResolvedValueOnce({
-        ok: true,
-        json: async () => ({
-          regions: [
-            { id: 'reg_eu', name: 'EU', payment_providers: [] },
-            {
-              id: 'reg_us',
-              name: 'US',
-              payment_providers: [
-                { id: 'pp_stripe_stripe', is_enabled: true },
-              ],
-            },
-          ],
-        }),
-      })
-
-      await expect(getEnabledPaymentProviderIds()).resolves.toEqual([])
-    })
-
-    it('fails open when the regions request errors', async () => {
-      mockFetch.mockResolvedValueOnce({
-        ok: false,
-        status: 500,
-        text: async () => 'boom',
-      })
-
-      await expect(getEnabledPaymentProviderIds()).resolves.toBeNull()
-    })
   })
 
   describe('formatPrice', () => {

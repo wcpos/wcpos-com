@@ -71,16 +71,6 @@ const FALLBACK_PRO_PRODUCTS: MedusaProduct[] = [
   ),
 ]
 
-export const PRO_TEASER_FEATURES = [
-  'Payment terminal integration',
-  'Stock & price editing in POS',
-  'Order history & management',
-  'Customer management',
-  'End-of-day reports',
-  'Custom payment gateways',
-  'Priority support',
-]
-
 export interface ProOfferPrice {
   amount: number
   currencyCode: string
