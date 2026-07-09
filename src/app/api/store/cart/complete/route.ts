@@ -98,7 +98,12 @@ export async function POST(request: NextRequest) {
       void trackServerEvent('checkout_completed', {
         experiment: typeof experiment === 'string' ? experiment : 'pro_checkout_v1',
         variant,
-        distinct_id: distinctId ?? 'missing-distinct-id',
+        // Prefer the landing-page anon id so it stitches onto the same person
+        // as the shopper's visit; fall back to the unique customer.id (never a
+        // shared placeholder, which would merge unrelated purchases into one
+        // PostHog person and corrupt per-customer attribution). Mirrors the
+        // signup_completed fallback in src/app/api/auth/register/route.ts.
+        distinct_id: distinctId ?? customer.id,
         customer_id: customer.id,
         order_id: result.order.id,
         cart_id: cartId,
