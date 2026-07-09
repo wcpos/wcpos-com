@@ -4,6 +4,8 @@ import type { LicenseDetail } from '@/types/license'
 const mocks = vi.hoisted(() => ({
   listAdminCustomers: vi.fn(),
   listAdminCustomerOrders: vi.fn(),
+  findAdminCustomerByEmail: vi.fn(),
+  isDiscordDirectoryConfigured: vi.fn(() => false),
   getResolvedLicenseSnapshotFromOrders: vi.fn(),
   getMemberRoleState: vi.fn(async () => 'missing_role'),
   addRole: vi.fn(async () => undefined),
@@ -22,13 +24,18 @@ vi.mock('./client', () => ({
   }),
 }))
 
+// These factories replace the whole module, so every named export that
+// default-sync.ts imports has to appear here — a missing one resolves to
+// undefined and only explodes when the code under test calls it.
 vi.mock('./config', () => ({
   getDiscordConfig: () => ({ clientId: 'client', clientSecret: 'secret', botToken: 'bot', guildId: 'guild', proRoleId: 'role' }),
+  isDiscordDirectoryConfigured: mocks.isDiscordDirectoryConfigured,
 }))
 
 vi.mock('./medusa-admin', () => ({
   listAdminCustomers: mocks.listAdminCustomers,
   listAdminCustomerOrders: mocks.listAdminCustomerOrders,
+  findAdminCustomerByEmail: mocks.findAdminCustomerByEmail,
 }))
 
 vi.mock('@/lib/customer-licenses', () => ({
@@ -38,6 +45,8 @@ vi.mock('@/lib/customer-licenses', () => ({
 import {
   createDiscordReconcileDependencies,
   createDiscordRoleSyncDependencies,
+  reconcileDiscordDirectory,
+  syncDiscordDirectoryForMember,
 } from './default-sync'
 
 function license(metadata: Record<string, unknown>): LicenseDetail {
@@ -150,6 +159,27 @@ describe('createDiscordReconcileDependencies', () => {
     expect(maxInFlight).toBeLessThanOrEqual(5)
   })
 
+})
+
+describe('directory sync gating', () => {
+  beforeEach(() => vi.clearAllMocks())
+
+  it('is a silent no-op until DISCORD_DIRECTORY_CHANNEL_ID is configured', async () => {
+    mocks.isDiscordDirectoryConfigured.mockReturnValue(false)
+
+    await expect(syncDiscordDirectoryForMember('discord_1')).resolves.toBeUndefined()
+    await expect(reconcileDiscordDirectory()).resolves.toBeNull()
+  })
+
+  it('fails loud when the directory is flagged on but the channel id is absent', async () => {
+    mocks.isDiscordDirectoryConfigured.mockReturnValue(true)
+
+    // getDiscordConfig is mocked without directoryChannelId, so dependency
+    // construction must reject rather than silently posting nowhere.
+    await expect(syncDiscordDirectoryForMember('discord_1')).rejects.toThrow(
+      /DISCORD_DIRECTORY_CHANNEL_ID/
+    )
+  })
 })
 
 describe('createDiscordRoleSyncDependencies', () => {

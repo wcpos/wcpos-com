@@ -23,6 +23,18 @@ interface DiscordGuildMember {
   roles?: string[]
 }
 
+export interface DiscordChannelMessage {
+  id: string
+  embeds?: Array<{ footer?: { text?: string } }>
+}
+
+export interface DiscordMessagePayload {
+  content?: string
+  embeds?: unknown[]
+  /** `{ parse: [] }` disables all pings — card text embeds customer data. */
+  allowed_mentions?: { parse: string[] }
+}
+
 async function parseDiscordError(response: Response): Promise<string> {
   const text = await response.text()
   try {
@@ -127,6 +139,72 @@ export class DiscordApiClient {
     if (response.status === 404) return
     if (!response.ok) {
       throw new Error(`Discord role removal failed: ${await parseDiscordError(response)}`)
+    }
+  }
+
+  /**
+   * All messages in a channel, oldest-first pagination irrelevant to callers —
+   * the directory sync only needs the full set. Locked to bot-authored
+   * channels in practice (#member-directory), so volume is one message per
+   * linked member.
+   */
+  async listChannelMessages(channelId: string): Promise<DiscordChannelMessage[]> {
+    const messages: DiscordChannelMessage[] = []
+    let before: string | undefined
+
+    do {
+      const url = new URL(`${DISCORD_API_BASE}/channels/${channelId}/messages`)
+      url.searchParams.set('limit', '100')
+      if (before) url.searchParams.set('before', before)
+
+      const response = await this.botFetch(url.pathname + url.search)
+      if (!response.ok) {
+        throw new Error(`Discord channel message list failed: ${await parseDiscordError(response)}`)
+      }
+
+      const page = (await response.json()) as DiscordChannelMessage[]
+      messages.push(...page)
+      before = page.at(-1)?.id
+      if (page.length < 100) break
+    } while (before)
+
+    return messages
+  }
+
+  async createChannelMessage(channelId: string, payload: DiscordMessagePayload): Promise<void> {
+    const response = await this.botFetch(`/channels/${channelId}/messages`, {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    })
+    if (!response.ok) {
+      throw new Error(`Discord channel message create failed: ${await parseDiscordError(response)}`)
+    }
+  }
+
+  async editChannelMessage(
+    channelId: string,
+    messageId: string,
+    payload: DiscordMessagePayload
+  ): Promise<void> {
+    const response = await this.botFetch(`/channels/${channelId}/messages/${messageId}`, {
+      method: 'PATCH',
+      body: JSON.stringify(payload),
+    })
+    // A hand-deleted card between list and edit is not an error — the next
+    // sync recreates it.
+    if (response.status === 404) return
+    if (!response.ok) {
+      throw new Error(`Discord channel message edit failed: ${await parseDiscordError(response)}`)
+    }
+  }
+
+  async deleteChannelMessage(channelId: string, messageId: string): Promise<void> {
+    const response = await this.botFetch(`/channels/${channelId}/messages/${messageId}`, {
+      method: 'DELETE',
+    })
+    if (response.status === 404) return
+    if (!response.ok) {
+      throw new Error(`Discord channel message delete failed: ${await parseDiscordError(response)}`)
     }
   }
 
