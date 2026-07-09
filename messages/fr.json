@@ -1624,7 +1624,10 @@
     },
     "discord": {
       "title": "Vous préférez parler à un humain ?",
-      "subtitle": "Rejoignez des propriétaires de boutiques et l’équipe dans notre communauté Discord en direct."
+      "subtitle": "Rejoignez des propriétaires de boutiques et l’équipe dans notre communauté Discord en direct.",
+      "loadChat": "Charger le chat en direct",
+      "embedNote": "Le chat en direct est intégré depuis Discord — son chargement connecte votre navigateur à Discord.",
+      "openInDiscord": "Ou ouvrir Discord dans un nouvel onglet"
     }
   },
   "compare": {

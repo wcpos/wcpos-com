@@ -1624,7 +1624,10 @@
     },
     "discord": {
       "title": "更想和真人沟通？",
-      "subtitle": "加入店主和团队所在的实时 Discord 社区。"
+      "subtitle": "加入店主和团队所在的实时 Discord 社区。",
+      "loadChat": "加载实时聊天",
+      "embedNote": "实时聊天嵌入自 Discord——加载后浏览器将连接到 Discord。",
+      "openInDiscord": "或在新标签页中打开 Discord"
     }
   },
   "compare": {

@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import { useTranslations } from 'next-intl'
 import { getLocale } from 'next-intl/server'
 import {
@@ -66,13 +67,12 @@ function FounderLetterContent({
         />
 
         <figure className="float-right mb-3 ml-5 w-[180px] rotate-[1.6deg] bg-white p-2.5 shadow-lg md:w-[218px]">
-          {/* eslint-disable-next-line @next/next/no-img-element -- plain portrait from /public; repo uses next/image only in middleware */}
-          <img
+          <Image
             src="/paul-urban-locavore.jpg"
             alt={t('photoAlt')}
             width={592}
             height={800}
-            loading="lazy"
+            sizes="(min-width: 768px) 218px, 180px"
             className="w-full"
           />
           <figcaption className="mt-2 text-center text-[11px] text-slate-500">

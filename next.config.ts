@@ -131,6 +131,12 @@ const nextConfig: NextConfig = {
   },
 
 
+  // AVIF first for next/image (WebP fallback is implicit). Only local
+  // /public images are optimized today, so no remotePatterns.
+  images: {
+    formats: ['image/avif', 'image/webp'],
+  },
+
   // Enable PPR via cacheComponents (Next.js 16+)
   // With this enabled, all routes are dynamic by default
   // Use 'use cache' directive to opt into caching
