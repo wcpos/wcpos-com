@@ -377,6 +377,10 @@ describe('middleware matcher', () => {
     expect(runsOn('/_vercel/insights/script.js')).toBe(false)
   })
 
+  it('still runs on similarly prefixed app routes', () => {
+    expect(runsOn('/_vercelish')).toBe(true)
+  })
+
   it('skips Next.js internals and static files', () => {
     expect(runsOn('/_next/static/chunks/main.js')).toBe(false)
     expect(runsOn('/_next/image')).toBe(false)

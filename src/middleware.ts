@@ -210,5 +210,5 @@ export const config = {
   // Web Analytics to /_vercel/insights/event. Both are extension-less, so the
   // dot rule does not catch them and next-intl would rewrite the beacons into
   // localized pages, losing the measurements.
-  matcher: ['/((?!_next/static|_next/image|_vercel|.*\\..*).*)'],
+  matcher: ['/((?!_next/static|_next/image|_vercel(?:/|$)|.*\\..*).*)'],
 }
