@@ -57,6 +57,22 @@ export async function getLatestRelease(
   }
 }
 
+async function fetchReleaseByTag(
+  repo: string,
+  tag: string
+): Promise<GitHubRelease> {
+  'use cache'
+  cacheLife('api-short')
+
+  const response = await octokit.repos.getReleaseByTag({
+    owner: GITHUB_OWNER,
+    repo,
+    tag,
+  })
+
+  return response.data
+}
+
 /**
  * Get a specific release by tag
  */
@@ -68,13 +84,7 @@ export async function getReleaseByTag(
     // Ensure tag has 'v' prefix
     const normalizedTag = tag.startsWith('v') ? tag : `v${tag}`
 
-    const response = await octokit.repos.getReleaseByTag({
-      owner: GITHUB_OWNER,
-      repo,
-      tag: normalizedTag,
-    })
-
-    return transformRelease(response.data)
+    return transformRelease(await fetchReleaseByTag(repo, normalizedTag))
   } catch (error) {
     infraLogger.error`Failed to fetch release ${tag} for ${repo}: ${error}`
     return null

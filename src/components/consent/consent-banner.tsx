@@ -45,7 +45,8 @@ export function ConsentBanner() {
     if (status === 'granted') {
       // Start capture in the same session consent is granted; the consent
       // cookie was just written, so initPostHogBrowser's gate now passes.
-      initPostHogBrowser({
+      // Fire-and-forget: the SDK loads async and nothing here depends on it.
+      void initPostHogBrowser({
         key: process.env.NEXT_PUBLIC_POSTHOG_KEY,
         host: process.env.NEXT_PUBLIC_POSTHOG_HOST,
       })

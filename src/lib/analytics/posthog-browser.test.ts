@@ -19,7 +19,7 @@ describe('initPostHogBrowser', () => {
     const { isAnalyticsGranted } = await import('./consent')
     ;(isAnalyticsGranted as ReturnType<typeof vi.fn>).mockReturnValue(false)
     const { initPostHogBrowser } = await import('./posthog-browser')
-    initPostHogBrowser({ key: 'phc_x', host: 'https://eu.i.posthog.com' })
+    await initPostHogBrowser({ key: 'phc_x', host: 'https://eu.i.posthog.com' })
     expect(initMock).not.toHaveBeenCalled()
   })
 
@@ -27,8 +27,8 @@ describe('initPostHogBrowser', () => {
     const { isAnalyticsGranted } = await import('./consent')
     ;(isAnalyticsGranted as ReturnType<typeof vi.fn>).mockReturnValue(true)
     const { initPostHogBrowser } = await import('./posthog-browser')
-    initPostHogBrowser({ key: 'phc_x', host: 'https://eu.i.posthog.com' })
-    initPostHogBrowser({ key: 'phc_x', host: 'https://eu.i.posthog.com' })
+    await initPostHogBrowser({ key: 'phc_x', host: 'https://eu.i.posthog.com' })
+    await initPostHogBrowser({ key: 'phc_x', host: 'https://eu.i.posthog.com' })
     expect(initMock).toHaveBeenCalledTimes(1)
   })
 
@@ -36,7 +36,7 @@ describe('initPostHogBrowser', () => {
     const { isAnalyticsGranted } = await import('./consent')
     ;(isAnalyticsGranted as ReturnType<typeof vi.fn>).mockReturnValue(true)
     const { initPostHogBrowser } = await import('./posthog-browser')
-    initPostHogBrowser({ key: 'phc_x', host: 'https://eu.i.posthog.com' })
+    await initPostHogBrowser({ key: 'phc_x', host: 'https://eu.i.posthog.com' })
     expect(initMock).toHaveBeenCalledWith(
       'phc_x',
       expect.objectContaining({ capture_pageview: 'history_change' })
@@ -47,7 +47,7 @@ describe('initPostHogBrowser', () => {
     const { isAnalyticsGranted } = await import('./consent')
     ;(isAnalyticsGranted as ReturnType<typeof vi.fn>).mockReturnValue(true)
     const { initPostHogBrowser } = await import('./posthog-browser')
-    initPostHogBrowser({ key: 'phc_x', host: 'https://eu.i.posthog.com' })
+    await initPostHogBrowser({ key: 'phc_x', host: 'https://eu.i.posthog.com' })
     expect(initMock).toHaveBeenCalledWith(
       'phc_x',
       expect.objectContaining({ disable_session_recording: true })
@@ -59,7 +59,7 @@ describe('initPostHogBrowser', () => {
     ;(isAnalyticsGranted as ReturnType<typeof vi.fn>).mockReturnValue(true)
     document.cookie = 'wcpos-distinct-id=shared_abc; path=/'
     const { initPostHogBrowser } = await import('./posthog-browser')
-    initPostHogBrowser({ key: 'phc_x', host: 'https://eu.i.posthog.com' })
+    await initPostHogBrowser({ key: 'phc_x', host: 'https://eu.i.posthog.com' })
     expect(initMock).toHaveBeenCalledWith(
       'phc_x',
       expect.objectContaining({ bootstrap: { distinctID: 'shared_abc' } })
@@ -70,7 +70,7 @@ describe('initPostHogBrowser', () => {
     const { isAnalyticsGranted } = await import('./consent')
     ;(isAnalyticsGranted as ReturnType<typeof vi.fn>).mockReturnValue(true)
     const { initPostHogBrowser } = await import('./posthog-browser')
-    initPostHogBrowser({ key: 'phc_x', host: 'https://eu.i.posthog.com' })
+    await initPostHogBrowser({ key: 'phc_x', host: 'https://eu.i.posthog.com' })
 
     // A shared id is minted rather than left to posthog's own anon id, so the
     // first SPA session and the server-side checkout_completed are one person.
@@ -92,7 +92,7 @@ describe('initPostHogBrowser', () => {
     // closed (mint fresh) rather than throw and leave window.posthog unset.
     document.cookie = 'wcpos-distinct-id=%E0%A4%A; path=/'
     const { initPostHogBrowser } = await import('./posthog-browser')
-    initPostHogBrowser({ key: 'phc_x', host: 'https://eu.i.posthog.com' })
+    await initPostHogBrowser({ key: 'phc_x', host: 'https://eu.i.posthog.com' })
 
     const bootstrap = initMock.mock.calls[0][1].bootstrap
     expect(bootstrap?.distinctID).toEqual(expect.any(String))
@@ -101,11 +101,30 @@ describe('initPostHogBrowser', () => {
     expect(bootstrap.distinctID).not.toBe('%E0%A4%A')
   })
 
+  it('contains an SDK init failure instead of rejecting (callers use void)', async () => {
+    const { isAnalyticsGranted } = await import('./consent')
+    ;(isAnalyticsGranted as ReturnType<typeof vi.fn>).mockReturnValue(true)
+    initMock.mockImplementation(() => {
+      throw new Error('chunk blocked')
+    })
+    const { initPostHogBrowser } = await import('./posthog-browser')
+    // Must resolve (not reject): both call sites fire-and-forget with `void`,
+    // so a rejection here would surface as an unhandled promise rejection.
+    await expect(
+      initPostHogBrowser({ key: 'phc_x', host: 'https://eu.i.posthog.com' })
+    ).resolves.toBeUndefined()
+    // A later attempt (e.g. consent banner after a transient failure) retries
+    // rather than finding the module permanently marked as started.
+    initMock.mockReset()
+    await initPostHogBrowser({ key: 'phc_x', host: 'https://eu.i.posthog.com' })
+    expect(initMock).toHaveBeenCalledTimes(1)
+  })
+
   it('enables exception autocapture ($exception posts via /e/, safe on self-hosted)', async () => {
     const { isAnalyticsGranted } = await import('./consent')
     ;(isAnalyticsGranted as ReturnType<typeof vi.fn>).mockReturnValue(true)
     const { initPostHogBrowser } = await import('./posthog-browser')
-    initPostHogBrowser({ key: 'phc_x', host: 'https://eu.i.posthog.com' })
+    await initPostHogBrowser({ key: 'phc_x', host: 'https://eu.i.posthog.com' })
     expect(initMock).toHaveBeenCalledWith(
       'phc_x',
       expect.objectContaining({ capture_exceptions: true })

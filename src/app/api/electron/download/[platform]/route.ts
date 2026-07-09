@@ -45,8 +45,16 @@ export async function GET(request: Request, { params }: RouteParams) {
       return NextResponse.json(result, { status: result.status })
     }
 
-    // Redirect to GitHub download URL
-    return NextResponse.redirect(result, 302)
+    // Redirect to GitHub download URL. Cached at the CDN for the same window
+    // as the underlying 'use cache' data. Deliberately no
+    // stale-while-revalidate: ?version=latest must not serve the previous
+    // release's redirect long after a new release ships.
+    return NextResponse.redirect(result, {
+      status: 302,
+      headers: {
+        'Cache-Control': 'public, s-maxage=300',
+      },
+    })
   } catch (error) {
     apiLogger.error`Electron download redirect failed: ${error}`
     return NextResponse.json(

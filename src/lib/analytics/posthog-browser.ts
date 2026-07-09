@@ -1,6 +1,5 @@
 'use client'
 
-import posthog from 'posthog-js'
 import { isAnalyticsGranted } from './consent'
 import {
   ANALYTICS_DISTINCT_ID_COOKIE,
@@ -59,12 +58,13 @@ function writeSharedDistinctId(id: string): void {
  * makes end-to-end funnels and source attribution work. The id stays anonymous
  * (isIdentifiedID omitted/false); no PII is attached.
  *
- * When the cookie is missing we mint and persist one BEFORE init instead of
- * letting posthog-js create its own anon id. The ConsentBanner grants consent
- * and inits synchronously, before middleware has minted the cookie on a page
- * response — so without this the SPA session would live under posthog's id
- * while the later cookie drives checkout_completed, splitting the first-session
- * buyer funnel across two people.
+ * When the cookie is missing we mint and persist one BEFORE init (and before
+ * the SDK import awaits) instead of letting posthog-js create its own anon id.
+ * The ConsentBanner grants consent and calls this in the same task, before
+ * middleware has minted the cookie on a page response — so without this the
+ * SPA session would live under posthog's id while the later cookie drives
+ * checkout_completed, splitting the first-session buyer funnel across two
+ * people.
  *
  * Exception autocapture is on (`capture_exceptions`): $exception events post via
  * the normal /e/ endpoint (unlike session replay's /s/), so they are safe on the
@@ -79,7 +79,7 @@ function writeSharedDistinctId(id: string): void {
  * working. Re-enable (remove this flag) once /s/ is wired up on the PostHog
  * deployment.
  */
-export function initPostHogBrowser(config: { key?: string; host?: string }) {
+export async function initPostHogBrowser(config: { key?: string; host?: string }) {
   if (started || typeof window === 'undefined') return
   if (!config.key || !config.host) return
   if (!isAnalyticsGranted()) return
@@ -90,15 +90,30 @@ export function initPostHogBrowser(config: { key?: string; host?: string }) {
     sharedDistinctId = newDistinctId()
     writeSharedDistinctId(sharedDistinctId)
   }
-  posthog.init(config.key, {
-    api_host: config.host,
-    autocapture: false,
-    capture_pageview: 'history_change',
-    capture_pageleave: true,
-    capture_exceptions: true,
-    disable_session_recording: true,
-    persistence: 'localStorage+cookie',
-    bootstrap: { distinctID: sharedDistinctId },
-  })
-  ;(window as unknown as { posthog: typeof posthog }).posthog = posthog
+  // posthog-js is imported here, after the consent gate, instead of at module
+  // top level: this module is in the initial client graph of every page (via
+  // ClientLoggingInit and ConsentBanner), and a static import would ship the
+  // ~60KB SDK to every visitor — including the unconsented ones it may never
+  // initialize for.
+  try {
+    const { default: posthog } = await import('posthog-js')
+    posthog.init(config.key, {
+      api_host: config.host,
+      autocapture: false,
+      capture_pageview: 'history_change',
+      capture_pageleave: true,
+      capture_exceptions: true,
+      disable_session_recording: true,
+      persistence: 'localStorage+cookie',
+      bootstrap: { distinctID: sharedDistinctId },
+    })
+    ;(window as unknown as { posthog: typeof posthog }).posthog = posthog
+  } catch {
+    // Chunk load failed (offline, or an adblocker that filters "posthog" in
+    // URLs). Callers fire-and-forget with `void`, so the rejection must be
+    // contained here — and `started` is reset so a later call (e.g. the
+    // consent banner after a transient failure) can retry instead of the
+    // session being permanently dark.
+    started = false
+  }
 }

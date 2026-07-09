@@ -1,5 +1,6 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 import { NextIntlClientProvider } from 'next-intl'
 import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server'
 import { ThemeProvider } from 'next-themes'
@@ -56,6 +57,15 @@ export async function generateMetadata({
   }
 }
 
+// Browser-chrome colour matching --background in globals.css for each scheme
+// (next-themes defaults to system, so the media queries pick the right one).
+export const viewport: Viewport = {
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
+    { media: '(prefers-color-scheme: dark)', color: '#020817' },
+  ],
+}
+
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }))
 }
@@ -102,6 +112,9 @@ export default async function LocaleLayout({
             <ConsentBanner />
           </NextIntlClientProvider>
         </ThemeProvider>
+        {/* Real-user Core Web Vitals (Vercel Speed Insights). Cookieless and
+            anonymous, so it is not gated behind the analytics consent. */}
+        <SpeedInsights />
       </body>
     </html>
   )

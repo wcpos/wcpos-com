@@ -27,7 +27,9 @@
   
   /* Muted colors */
   --muted: 210 40% 96.1%;
-  --muted-foreground: 215.4 16.3% 46.9%;
+  /* 45% (not shadcn's 46.9%): text-sm muted copy on bg-muted was 4.34:1,
+     just under WCAG AA's 4.5:1. 45% clears AA on both white and muted. */
+  --muted-foreground: 215.4 16.3% 45%;
   
   /* Accent colors */
   --accent: 210 40% 96.1%;
