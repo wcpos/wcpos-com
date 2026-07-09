@@ -1,7 +1,11 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useSyncExternalStore } from 'react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
+
+const subscribe = () => () => {}
+const getHydratedSnapshot = () => true
+const getServerSnapshot = () => false
 
 /**
  * Mounts Vercel Speed Insights only after hydration. The component's internal
@@ -12,8 +16,7 @@ import { SpeedInsights } from '@vercel/speed-insights/next'
  * loses nothing.
  */
 export function ClientSpeedInsights() {
-  const [mounted, setMounted] = useState(false)
-  useEffect(() => setMounted(true), [])
-  if (!mounted) return null
+  const hydrated = useSyncExternalStore(subscribe, getHydratedSnapshot, getServerSnapshot)
+  if (!hydrated) return null
   return <SpeedInsights />
 }
