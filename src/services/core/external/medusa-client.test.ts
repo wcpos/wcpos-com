@@ -348,6 +348,34 @@ describe('medusaClient', () => {
           })
         )
       })
+
+      it('forwards the customer JWT as Bearer auth so the cart is customer-linked', async () => {
+        mockFetch.mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({ cart: mockCart }),
+        })
+
+        await createCart({ email: 'test@example.com' }, 'jwt_abc')
+
+        const [, init] = mockFetch.mock.calls[0]
+        expect((init.headers as Record<string, string>).Authorization).toBe(
+          'Bearer jwt_abc'
+        )
+      })
+
+      it('omits Authorization when no token is provided (guest)', async () => {
+        mockFetch.mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({ cart: mockCart }),
+        })
+
+        await createCart({})
+
+        const [, init] = mockFetch.mock.calls[0]
+        expect(
+          (init.headers as Record<string, string>).Authorization
+        ).toBeUndefined()
+      })
     })
 
     describe('getCart', () => {
@@ -394,6 +422,34 @@ describe('medusaClient', () => {
         const cart = await updateCart('cart_123', { email: 'test@example.com' })
 
         expect(cart?.email).toBe('test@example.com')
+      })
+
+      it('forwards the customer JWT as Bearer auth so the cart stays customer-linked', async () => {
+        mockFetch.mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({ cart: mockCart }),
+        })
+
+        await updateCart('cart_123', { email: 'test@example.com' }, 'jwt_abc')
+
+        const [, init] = mockFetch.mock.calls[0]
+        expect((init.headers as Record<string, string>).Authorization).toBe(
+          'Bearer jwt_abc'
+        )
+      })
+
+      it('omits Authorization when no token is provided (guest)', async () => {
+        mockFetch.mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({ cart: mockCart }),
+        })
+
+        await updateCart('cart_123', { email: 'test@example.com' })
+
+        const [, init] = mockFetch.mock.calls[0]
+        expect(
+          (init.headers as Record<string, string>).Authorization
+        ).toBeUndefined()
       })
     })
 

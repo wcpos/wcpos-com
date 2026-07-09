@@ -6,6 +6,7 @@ import {
   updateCart,
 } from '@/services/core/external/medusa-client'
 import {
+  getAuthToken,
   getCustomer,
   upsertDefaultBillingAddress,
   type MedusaCustomer,
@@ -66,6 +67,13 @@ export async function POST(request: NextRequest) {
       return storeCartErrorResponse('authentication_required', 401)
     }
 
+    // getCustomer() above already validated this token against
+    // /store/customers/me (which rejects a JWT with an empty actor_id), so a
+    // non-null customer guarantees a real session token. Forwarding it is what
+    // makes Medusa set cart.customer_id from the auth context instead of
+    // leaving the cart an email-bound guest (#284).
+    const authToken = await getAuthToken()
+
     const body = await request.json().catch(() => ({}))
     const createCartInput: CreateCartInput = {
       email: customer.email,
@@ -79,7 +87,7 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    const cart = await createCart(createCartInput)
+    const cart = await createCart(createCartInput, authToken)
 
     if (!cart) {
       return storeCartErrorResponse('failed_create_cart', 500)
@@ -145,6 +153,10 @@ export async function PATCH(request: NextRequest) {
       return storeCartErrorResponse('authentication_required', 401)
     }
 
+    // See POST: a non-null customer guarantees a real session token; forward it
+    // so the cart keeps its customer_id link (#284).
+    const authToken = await getAuthToken()
+
     const body = await request.json().catch(() => null)
     if (!isRecord(body)) {
       return storeCartErrorResponse('invalid_request_body', 400)
@@ -180,10 +192,14 @@ export async function PATCH(request: NextRequest) {
       updateData.metadata = { taxNumber: taxNumber || null }
     }
 
-    const cart = await updateCart(cartId, {
-      ...updateData,
-      email: customer.email,
-    })
+    const cart = await updateCart(
+      cartId,
+      {
+        ...updateData,
+        email: customer.email,
+      },
+      authToken
+    )
 
     if (!cart) {
       return storeCartErrorResponse('failed_update_cart', 500)
