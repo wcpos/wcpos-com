@@ -149,6 +149,33 @@ describe('POST /api/store/cart/complete', () => {
     expect(mockCompleteCart).toHaveBeenCalledWith('cart_1', 'jwt_complete')
   })
 
+  it('falls back to the unique customer.id when the distinct-id cookie is absent', async () => {
+    // Regression: a shared placeholder here would merge unrelated purchases
+    // into one PostHog person and corrupt per-customer attribution (#276,
+    // mirrors the signup_completed fallback fixed in #267).
+    mockCookieGet.mockReturnValueOnce(undefined)
+    mockCompleteCart.mockResolvedValueOnce({
+      order: { id: 'order_1', total: 129, currency_code: 'usd' },
+    })
+
+    const response = await POST(
+      new NextRequest('http://localhost:3000/api/store/cart/complete', {
+        method: 'POST',
+        body: JSON.stringify({ cartId: 'cart_1' }),
+      })
+    )
+
+    expect(response.status).toBe(200)
+    expect(mockResolveProCheckoutVariant).not.toHaveBeenCalled()
+    expect(mockTrackServerEvent).toHaveBeenCalledWith(
+      'checkout_completed',
+      expect.objectContaining({
+        distinct_id: 'cust_1',
+        customer_id: 'cust_1',
+      })
+    )
+  })
+
   it('falls back to cart totals when the order response omits revenue/currency', async () => {
     // Medusa's completion response may carry only the created order's id/status;
     // the pre-completion cart still holds the validated totals.
