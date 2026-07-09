@@ -46,6 +46,7 @@ export interface ConnectionsCardProps {
   methods?: {
     providers: string[]
     providerDetails?: ConnectionProviderDetail[]
+    emailpassIdentifier?: string | null
     emailpassPending?: boolean
     emailpassUpdatedAt?: string | null
     emailpassReserved?: boolean
@@ -72,6 +73,7 @@ type PasswordErrorCode =
 interface MethodsState {
   providers: string[]
   providerDetails: ConnectionProviderDetail[]
+  emailpassIdentifier: string | null
   emailpassPending: boolean
   emailpassUpdatedAt: string | null
   emailpassReserved: boolean
@@ -121,6 +123,7 @@ export function ConnectionsCard({ signIn, methods }: ConnectionsCardProps) {
       ? {
           providers: methods.providers,
           providerDetails: methods.providerDetails ?? [],
+          emailpassIdentifier: methods.emailpassIdentifier ?? null,
           emailpassPending: methods.emailpassPending === true,
           emailpassUpdatedAt: methods.emailpassUpdatedAt ?? null,
           emailpassReserved: methods.emailpassReserved === true,
@@ -144,6 +147,7 @@ export function ConnectionsCard({ signIn, methods }: ConnectionsCardProps) {
   const applyMethodsResponse = (data: {
     providers?: unknown
     providerDetails?: unknown
+    emailpassIdentifier?: unknown
     emailpassPending?: unknown
     emailpassUpdatedAt?: unknown
     emailpassReserved?: unknown
@@ -156,6 +160,12 @@ export function ConnectionsCard({ signIn, methods }: ConnectionsCardProps) {
       providerDetails: Array.isArray(data.providerDetails)
         ? (data.providerDetails as ConnectionProviderDetail[])
         : (previous?.providerDetails ?? []),
+      emailpassIdentifier:
+        typeof data.emailpassIdentifier === 'string'
+          ? data.emailpassIdentifier
+          : data.emailpassIdentifier === null
+            ? null
+          : (previous?.emailpassIdentifier ?? null),
       emailpassPending: data.emailpassPending === true,
       emailpassUpdatedAt:
         typeof data.emailpassUpdatedAt === 'string'
@@ -473,7 +483,10 @@ export function ConnectionsCard({ signIn, methods }: ConnectionsCardProps) {
                 <p className="min-w-0 text-muted-foreground">
                   <span className="break-all">
                     {t('passwordLinkSent', {
-                      email: passwordLinkSentTo ?? signIn.email,
+                      email:
+                        passwordLinkSentTo ??
+                        state.emailpassIdentifier ??
+                        signIn.email,
                     })}
                   </span>{' '}
                   <button

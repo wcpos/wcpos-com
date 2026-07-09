@@ -118,13 +118,17 @@ describe('ConnectionsCard', () => {
     render(
       <ConnectionsCard
         signIn={googleSignIn}
-        methods={{ providers: ['emailpass', 'google'], emailpassPending: true }}
+        methods={{
+          providers: ['emailpass', 'google'],
+          emailpassIdentifier: 'Ada@Gmail.com',
+          emailpassPending: true,
+        }}
       />
     )
 
     // A minted identity from an earlier visit: the link is out there.
     expect(
-      screen.getByText('Setup link sent to ada@gmail.com — check your inbox.')
+      screen.getByText('Setup link sent to Ada@Gmail.com — check your inbox.')
     ).toBeInTheDocument()
   })
 
