@@ -658,6 +658,47 @@
         },
         "licenses": "Ir a licencias",
         "installationGuide": "Guía de instalación"
+      },
+      "processingPage": {
+        "metadata": {
+          "title": "Procesando tu pago",
+          "description": "Estamos confirmando tu pago con Bitcoin."
+        },
+        "checking": {
+          "title": "Comprobando tu pago…",
+          "description": "Un momento — estamos comprobando el estado de tu pago con Bitcoin."
+        },
+        "confirming": {
+          "title": "Pago recibido",
+          "description": "La red de Bitcoin está confirmando tu pago. Tu pedido se completará automáticamente cuando se liquide — puedes salir de esta página cuando quieras.",
+          "hint": "Te enviaremos tu licencia por correo en cuanto se liquide el pago. Los pagos on-chain pueden tardar; Lightning suele ser instantáneo."
+        },
+        "awaiting": {
+          "title": "Factura aún sin pagar",
+          "description": "Aún no hemos visto tu pago. Si ya pagaste, esta página se actualizará automáticamente en un momento. Si no, puedes reabrir la factura o elegir otro método de pago.",
+          "reopenInvoice": "Reabrir factura de Bitcoin"
+        },
+        "expired": {
+          "title": "Factura caducada",
+          "description": "La factura de Bitcoin caducó. Si pagaste antes de que caducara, tu pedido se completará automáticamente y esta página se actualizará. Si no pagaste, no se te ha cobrado nada — vuelve al checkout para intentarlo de nuevo."
+        },
+        "paymentIssue": {
+          "title": "No pudimos confirmar tu pago",
+          "description": "La factura de Bitcoin se marcó como no válida — normalmente significa que un pago llegó demasiado tarde o no se confirmó a tiempo. Si enviaste Bitcoin, no vuelvas a enviarlo: revisa tus pedidos y escríbenos si el pedido no aparece.",
+          "contactSupport": "Contactar con soporte"
+        },
+        "signIn": {
+          "title": "Inicia sesión para ver tu pedido",
+          "description": "Inicia sesión con la cuenta que usaste en el checkout para seguir tu pago.",
+          "action": "Iniciar sesión"
+        },
+        "error": {
+          "title": "No pudimos comprobar tu pago",
+          "description": "Algo falló al comprobar el estado del pago. Si ya pagaste, tu pedido y el correo con la licencia llegarán automáticamente.",
+          "viewOrders": "Ver tus pedidos"
+        },
+        "backToCheckout": "Volver al checkout",
+        "backToPricing": "Volver a precios"
       }
     }
   },

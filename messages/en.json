@@ -658,6 +658,47 @@
         },
         "licenses": "Go to Licenses",
         "installationGuide": "Installation Guide"
+      },
+      "processingPage": {
+        "metadata": {
+          "title": "Processing your payment",
+          "description": "We're confirming your Bitcoin payment."
+        },
+        "checking": {
+          "title": "Checking your payment…",
+          "description": "One moment — we're checking the status of your Bitcoin payment."
+        },
+        "confirming": {
+          "title": "Payment received",
+          "description": "The Bitcoin network is confirming your payment. Your order completes automatically once it settles — you can leave this page at any time.",
+          "hint": "Your licence will be emailed to you as soon as the payment settles. On-chain payments can take a while; Lightning is usually instant."
+        },
+        "awaiting": {
+          "title": "Invoice not paid yet",
+          "description": "We haven't seen your payment yet. If you've already paid, this page updates automatically in a moment. Otherwise you can reopen the invoice or choose a different payment method.",
+          "reopenInvoice": "Reopen Bitcoin invoice"
+        },
+        "expired": {
+          "title": "Invoice expired",
+          "description": "The Bitcoin invoice expired. If you paid before it expired, your order completes automatically and this page will update. If you didn't pay, you have not been charged — return to checkout to try again."
+        },
+        "paymentIssue": {
+          "title": "We couldn't confirm your payment",
+          "description": "The Bitcoin invoice was marked invalid — that usually means a payment arrived too late or didn't confirm in time. If you sent Bitcoin, don't send it again: check your orders, and contact us if the order doesn't appear.",
+          "contactSupport": "Contact support"
+        },
+        "signIn": {
+          "title": "Sign in to see your order",
+          "description": "Sign in with the account you used at checkout to track your payment.",
+          "action": "Sign in"
+        },
+        "error": {
+          "title": "We couldn't check your payment",
+          "description": "Something went wrong while checking the payment status. If you've paid, your order and licence email will still arrive automatically.",
+          "viewOrders": "View your orders"
+        },
+        "backToCheckout": "Back to checkout",
+        "backToPricing": "Back to pricing"
       }
     }
   },

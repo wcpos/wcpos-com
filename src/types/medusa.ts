@@ -63,6 +63,8 @@ export interface MedusaCart {
   email?: string
   region_id: string
   currency_code: string
+  /** Set once the cart has been turned into an order (Medusa keeps the cart). */
+  completed_at?: string | null
   items: MedusaCartItem[]
   subtotal: number
   tax_total: number

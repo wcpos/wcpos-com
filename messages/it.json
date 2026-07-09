@@ -658,6 +658,47 @@
         },
         "licenses": "Vai alle licenze",
         "installationGuide": "Guida all’installazione"
+      },
+      "processingPage": {
+        "metadata": {
+          "title": "Elaborazione del pagamento",
+          "description": "Stiamo confermando il tuo pagamento in Bitcoin."
+        },
+        "checking": {
+          "title": "Verifica del pagamento…",
+          "description": "Un attimo — stiamo verificando lo stato del tuo pagamento in Bitcoin."
+        },
+        "confirming": {
+          "title": "Pagamento ricevuto",
+          "description": "La rete Bitcoin sta confermando il tuo pagamento. Il tuo ordine verrà completato automaticamente al regolamento — puoi lasciare questa pagina in qualsiasi momento.",
+          "hint": "La licenza ti sarà inviata via e-mail non appena il pagamento sarà regolato. I pagamenti on-chain possono richiedere tempo; Lightning è di solito istantaneo."
+        },
+        "awaiting": {
+          "title": "Fattura non ancora pagata",
+          "description": "Non abbiamo ancora visto il tuo pagamento. Se hai già pagato, questa pagina si aggiornerà automaticamente tra un istante. Altrimenti puoi riaprire la fattura o scegliere un altro metodo di pagamento.",
+          "reopenInvoice": "Riapri la fattura Bitcoin"
+        },
+        "expired": {
+          "title": "Fattura scaduta",
+          "description": "La fattura Bitcoin è scaduta. Se hai pagato prima della scadenza, il tuo ordine verrà completato automaticamente e questa pagina si aggiornerà. Se non hai pagato, non ti è stato addebitato nulla — torna al checkout per riprovare."
+        },
+        "paymentIssue": {
+          "title": "Non siamo riusciti a confermare il tuo pagamento",
+          "description": "La fattura Bitcoin è stata contrassegnata come non valida — di solito significa che un pagamento è arrivato troppo tardi o non è stato confermato in tempo. Se hai inviato Bitcoin, non inviarli di nuovo: controlla i tuoi ordini e scrivici se l'ordine non compare.",
+          "contactSupport": "Contatta l'assistenza"
+        },
+        "signIn": {
+          "title": "Accedi per vedere il tuo ordine",
+          "description": "Accedi con l'account usato al checkout per seguire il tuo pagamento.",
+          "action": "Accedi"
+        },
+        "error": {
+          "title": "Impossibile verificare il pagamento",
+          "description": "Si è verificato un errore durante la verifica dello stato del pagamento. Se hai pagato, ordine ed e-mail con la licenza arriveranno comunque automaticamente.",
+          "viewOrders": "Vedi i tuoi ordini"
+        },
+        "backToCheckout": "Torna al checkout",
+        "backToPricing": "Torna ai prezzi"
       }
     }
   },

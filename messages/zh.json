@@ -658,6 +658,47 @@
         },
         "licenses": "前往许可证",
         "installationGuide": "安装指南"
+      },
+      "processingPage": {
+        "metadata": {
+          "title": "正在处理您的付款",
+          "description": "我们正在确认您的 Bitcoin 付款。"
+        },
+        "checking": {
+          "title": "正在检查您的付款…",
+          "description": "请稍候 — 我们正在检查您的 Bitcoin 付款状态。"
+        },
+        "confirming": {
+          "title": "已收到付款",
+          "description": "Bitcoin 网络正在确认您的付款。结算完成后订单会自动完成 — 您可以随时离开此页面。",
+          "hint": "付款结算后，我们会立即将许可证发送到您的邮箱。链上支付可能需要一段时间；Lightning 通常即时到账。"
+        },
+        "awaiting": {
+          "title": "账单尚未支付",
+          "description": "我们尚未看到您的付款。如果您已经付款，此页面稍后会自动更新。否则，您可以重新打开账单或选择其他付款方式。",
+          "reopenInvoice": "重新打开 Bitcoin 账单"
+        },
+        "expired": {
+          "title": "账单已过期",
+          "description": "Bitcoin 账单已过期。如果您在过期前已付款，订单会自动完成，此页面也会更新。如果您未付款，则没有被扣款 — 请返回结账页面重试。"
+        },
+        "paymentIssue": {
+          "title": "我们无法确认您的付款",
+          "description": "此 Bitcoin 账单被标记为无效 — 通常是因为付款到得太晚，或未在期限内获得确认。如果您已经转出 Bitcoin，请不要重复付款：请查看您的订单；若订单未出现，请联系我们。",
+          "contactSupport": "联系客服"
+        },
+        "signIn": {
+          "title": "登录以查看订单",
+          "description": "使用结账时的账户登录，即可跟踪您的付款。",
+          "action": "登录"
+        },
+        "error": {
+          "title": "无法检查您的付款",
+          "description": "检查付款状态时出现问题。如果您已付款，订单和许可证邮件仍会自动送达。",
+          "viewOrders": "查看订单"
+        },
+        "backToCheckout": "返回结账",
+        "backToPricing": "返回价格"
       }
     }
   },

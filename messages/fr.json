@@ -658,6 +658,47 @@
         },
         "licenses": "Voir les licences",
         "installationGuide": "Guide d’installation"
+      },
+      "processingPage": {
+        "metadata": {
+          "title": "Traitement de votre paiement",
+          "description": "Nous confirmons votre paiement en Bitcoin."
+        },
+        "checking": {
+          "title": "Vérification de votre paiement…",
+          "description": "Un instant — nous vérifions le statut de votre paiement en Bitcoin."
+        },
+        "confirming": {
+          "title": "Paiement reçu",
+          "description": "Le réseau Bitcoin confirme votre paiement. Votre commande sera finalisée automatiquement une fois le règlement effectué — vous pouvez quitter cette page à tout moment.",
+          "hint": "Votre licence vous sera envoyée par e-mail dès que le paiement sera réglé. Les paiements on-chain peuvent prendre du temps ; Lightning est généralement instantané."
+        },
+        "awaiting": {
+          "title": "Facture pas encore payée",
+          "description": "Nous n'avons pas encore vu votre paiement. Si vous avez déjà payé, cette page se mettra à jour automatiquement dans un instant. Sinon, vous pouvez rouvrir la facture ou choisir un autre moyen de paiement.",
+          "reopenInvoice": "Rouvrir la facture Bitcoin"
+        },
+        "expired": {
+          "title": "Facture expirée",
+          "description": "La facture Bitcoin a expiré. Si vous avez payé avant son expiration, votre commande sera finalisée automatiquement et cette page se mettra à jour. Si vous n'avez pas payé, vous n'avez pas été débité — retournez au paiement pour réessayer."
+        },
+        "paymentIssue": {
+          "title": "Nous n'avons pas pu confirmer votre paiement",
+          "description": "La facture Bitcoin a été marquée comme non valide — cela signifie généralement qu'un paiement est arrivé trop tard ou n'a pas été confirmé à temps. Si vous avez envoyé des bitcoins, ne les renvoyez pas : consultez vos commandes et contactez-nous si la commande n'apparaît pas.",
+          "contactSupport": "Contacter le support"
+        },
+        "signIn": {
+          "title": "Connectez-vous pour voir votre commande",
+          "description": "Connectez-vous avec le compte utilisé lors du paiement pour suivre votre paiement.",
+          "action": "Se connecter"
+        },
+        "error": {
+          "title": "Impossible de vérifier votre paiement",
+          "description": "Une erreur s'est produite lors de la vérification du statut du paiement. Si vous avez payé, votre commande et l'e-mail de licence arriveront automatiquement.",
+          "viewOrders": "Voir vos commandes"
+        },
+        "backToCheckout": "Retour au paiement",
+        "backToPricing": "Retour aux tarifs"
       }
     }
   },
