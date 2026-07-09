@@ -483,10 +483,10 @@ export function ProfileEditForm({
   }
 
   return (
-    // 2fr/3fr, not a fixed rail: the identity rail grows wide enough for the
-    // Connections rows (avatar + email on its own line + Disconnect), while
-    // the billing/address column stays the wider of the two at every viewport.
-    <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,2fr)_3fr]">
+    // Identity rail capped at 400px (owner's call): wide enough for the
+    // Connections rows (avatar + email on its own line + Disconnect); the
+    // billing/address form takes the rest.
+    <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,25rem)_1fr]">
       {/* Identity rail: who you are + account-level settings. Everything
           here is either display-only or self-saving (language), so it lives
           outside the profile <form>. */}
