@@ -31,6 +31,8 @@ export interface DiscordChannelMessage {
 export interface DiscordMessagePayload {
   content?: string
   embeds?: unknown[]
+  /** `{ parse: [] }` disables all pings — card text embeds customer data. */
+  allowed_mentions?: { parse: string[] }
 }
 
 async function parseDiscordError(response: Response): Promise<string> {

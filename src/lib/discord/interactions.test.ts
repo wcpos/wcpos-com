@@ -219,6 +219,81 @@ describe('discord interaction replies', () => {
     expect(embed.fields[0].value.endsWith('…')).toBe(true)
   })
 
+  it('keeps the aggregate embed under Discord’s 6,000-char ceiling with many long licences', () => {
+    const longSites = Array.from({ length: 3 }, (_, index) => ({
+      label: `${'x'.repeat(300)}-${index}.example.com`,
+      url: null,
+      lastSeenAt: null,
+      pluginVersion: null,
+    }))
+    const embed = buildMemberCardEmbed(
+      {
+        licences: Array.from({ length: 8 }, (_, index) => ({
+          keySuffix: String(index).padStart(4, '0'),
+          status: 'active',
+          expiry: '2027-02-16T00:00:00.000Z',
+          planId: 'yearly' as const,
+          holderEmail: `owner-${index}@example.com`,
+          holderName: null,
+          usedSeats: 2,
+          seatCap: 5,
+          connectedAt: '2026-06-01T00:00:00.000Z',
+          sites: longSites,
+        })),
+        customerSince: '2019-03-05T12:00:00.000Z',
+      },
+      { id: 'u1', username: 'ada' },
+      { directoryFooter: true }
+    )
+
+    const totalChars =
+      embed.title.length +
+      embed.description.length +
+      (embed.footer?.text.length ?? 0) +
+      embed.fields.reduce((sum, field) => sum + field.name.length + field.value.length, 0)
+    expect(totalChars).toBeLessThanOrEqual(6000)
+    expect(embed.fields.at(-1)?.value).toMatch(/more licences omitted/)
+  })
+
+  it('escapes markdown in customer-controlled labels so links cannot be spoofed', () => {
+    const embed = buildMemberCardEmbed(
+      {
+        licences: [
+          {
+            keySuffix: '1234',
+            status: 'active',
+            expiry: null,
+            planId: 'lifetime',
+            holderEmail: 'a@example.com',
+            holderName: '**bold** [x](y)',
+            usedSeats: 1,
+            seatCap: 5,
+            connectedAt: null,
+            sites: [
+              {
+                label: 'evil](https://evil.example.com) real.example.com',
+                url: 'https://real.example.com/path)?q=1',
+                lastSeenAt: null,
+                pluginVersion: '`1.0`',
+              },
+            ],
+          },
+        ],
+        customerSince: null,
+      },
+      { id: 'u1', username: 'ada' }
+    )
+
+    const value = embed.fields[0].value
+    // The `]`/`(` in the label and the `)` in the URL are neutralized, so the
+    // crafted label cannot terminate the link early and point it at evil.
+    expect(value).toContain('evil\\]\\(https://evil.example.com\\)')
+    expect(value).not.toContain('evil](https://evil.example.com)')
+    expect(value).toContain('%29?q=1')
+    expect(value).toContain('\\*\\*bold\\*\\*')
+    expect(value).toContain('\\`1.0\\`')
+  })
+
   it('builds the no-licences card with a mention fallback for the username', () => {
     const embed = buildMemberCardEmbed(
       { licences: [], customerSince: null },

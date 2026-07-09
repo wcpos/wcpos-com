@@ -174,10 +174,10 @@ const EMBED_COLOR = {
 } as const
 
 // Discord embed hard limits we can realistically hit: 25 fields per embed and
-// 6,000 chars across the embed. Eight licence fields with capped site lines
-// stay comfortably inside both.
+// 6,000 chars across the whole embed (title + description + fields + footer).
 const MAX_LICENCE_FIELDS = 8
 const MAX_SITE_LINES = 3
+const EMBED_TOTAL_BUDGET = 5900
 
 export interface DiscordEmbedField {
   name: string
@@ -200,17 +200,29 @@ function expiryLabel(licence: DiscordCustomerLicenceInfo): string {
   return licence.planId === 'lifetime' ? 'lifetime' : 'no expiry on record'
 }
 
+/**
+ * Site labels, holder names and plugin versions originate in customer-writable
+ * data (machine metadata via the WP plugin, Medusa profile fields) — escape
+ * Discord's markdown control characters so crafted values cannot restyle the
+ * card or break out of a link label.
+ */
+function escapeMarkdown(value: string): string {
+  return value.replace(/([\\`*_~|[\]()<>])/g, '\\$1')
+}
+
 function siteLine(site: DiscordLicenceSite): string {
-  const label = site.url ? `[${site.label}](${site.url})` : site.label
+  // `)` would terminate the markdown link target early.
+  const safeUrl = site.url?.replaceAll(')', '%29')
+  const label = safeUrl ? `[${escapeMarkdown(site.label)}](${safeUrl})` : escapeMarkdown(site.label)
   const seen = site.lastSeenAt ? `seen ${formatDate(site.lastSeenAt)}` : 'never seen'
-  const plugin = site.pluginVersion ? ` · plugin ${site.pluginVersion}` : ''
+  const plugin = site.pluginVersion ? ` · plugin ${escapeMarkdown(site.pluginVersion)}` : ''
   return `${label} — ${seen}${plugin}`
 }
 
 function licenceField(licence: DiscordCustomerLicenceInfo): DiscordEmbedField {
   const plan = licence.planId ? ` · ${PLAN_LABEL[licence.planId]}` : ''
   const holder = licence.holderEmail
-    ? `holder ${licence.holderEmail}${licence.holderName ? ` (${licence.holderName})` : ''}`
+    ? `holder ${escapeMarkdown(licence.holderEmail)}${licence.holderName ? ` (${escapeMarkdown(licence.holderName)})` : ''}`
     : 'holder unknown'
   const connected = licence.connectedAt
     ? `connected ${formatDate(licence.connectedAt)}`
@@ -265,20 +277,39 @@ export function buildMemberCardEmbed(
     descriptionLines.unshift('No licenses have this Discord account as a connected member.')
   }
 
-  const fields = info.licences.slice(0, MAX_LICENCE_FIELDS).map(licenceField)
-  if (info.licences.length > MAX_LICENCE_FIELDS) {
+  const title = `Customer info — ${target.username ? `@${escapeMarkdown(target.username)}` : `<@${target.id}>`}`
+  const description = descriptionLines.join('\n')
+  const footerText = options.directoryFooter ? directoryFooterText(target.id) : null
+
+  // Discord rejects an embed whose title + description + field names/values +
+  // footer exceed 6,000 chars in aggregate; per-field caps alone cannot
+  // guarantee that with several long licences. Stop adding licence fields
+  // before crossing the budget (reserving room for the omitted-count field).
+  const OMITTED_FIELD_RESERVE = 60
+  let budget =
+    EMBED_TOTAL_BUDGET - title.length - description.length - (footerText?.length ?? 0)
+  const fields: DiscordEmbedField[] = []
+  for (const licence of info.licences) {
+    if (fields.length >= MAX_LICENCE_FIELDS) break
+    const field = licenceField(licence)
+    const cost = field.name.length + field.value.length
+    if (cost > budget - OMITTED_FIELD_RESERVE) break
+    budget -= cost
+    fields.push(field)
+  }
+  if (info.licences.length > fields.length) {
     fields.push({
       name: 'More licences',
-      value: `…and ${info.licences.length - MAX_LICENCE_FIELDS} more licences omitted.`,
+      value: `…and ${info.licences.length - fields.length} more licences omitted.`,
     })
   }
 
   return {
-    title: `Customer info — ${target.username ? `@${target.username}` : `<@${target.id}>`}`,
-    description: descriptionLines.join('\n'),
+    title,
+    description,
     color: embedColor(info.licences),
     fields,
-    ...(options.directoryFooter ? { footer: { text: directoryFooterText(target.id) } } : {}),
+    ...(footerText ? { footer: { text: footerText } } : {}),
   }
 }
 

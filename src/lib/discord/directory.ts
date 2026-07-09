@@ -157,7 +157,15 @@ export async function upsertDirectoryCardForMember(
     dependencies.listAllLicenses(),
     dependencies.listDirectoryMessages(),
   ])
-  const existingId = messages.find((message) => message.memberId === discordUserId)?.id
+  // A concurrent upsert racing this one (or a past race) can leave several
+  // cards for the same member — treat the first as canonical and delete the
+  // rest, so duplicates heal on the next event, not only overnight.
+  const [existingId, ...duplicateIds] = messages
+    .filter((message) => message.memberId === discordUserId)
+    .map((message) => message.id)
+  for (const duplicateId of duplicateIds) {
+    await dependencies.deleteDirectoryCard(duplicateId)
+  }
   const member = listLinkedMembers(licenses).find(
     (candidate) => candidate.discordUserId === discordUserId
   )

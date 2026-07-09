@@ -101,9 +101,10 @@ function createDiscordDirectoryDependencies(): DiscordDirectoryDependencies {
       }),
     listDirectoryMessages: async () =>
       (await client.listChannelMessages(channelId)).map(parseDirectoryMessage),
-    createDirectoryCard: (embed) => client.createChannelMessage(channelId, { embeds: [embed] }),
+    createDirectoryCard: (embed) =>
+      client.createChannelMessage(channelId, { embeds: [embed], allowed_mentions: { parse: [] } }),
     editDirectoryCard: (messageId, embed) =>
-      client.editChannelMessage(channelId, messageId, { embeds: [embed] }),
+      client.editChannelMessage(channelId, messageId, { embeds: [embed], allowed_mentions: { parse: [] } }),
     deleteDirectoryCard: (messageId) => client.deleteChannelMessage(channelId, messageId),
   }
 }

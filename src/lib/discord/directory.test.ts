@@ -129,6 +129,22 @@ describe('upsertDirectoryCardForMember', () => {
     expect(deps.editDirectoryCard).not.toHaveBeenCalled()
   })
 
+  it('deletes duplicate cards at event time, editing the first', async () => {
+    const deps = dependencies({
+      listAllLicenses: async () => [license({ metadata: connectedTo({}, '111') })],
+      listDirectoryMessages: async () => [
+        { id: 'msg_first', memberId: '111' },
+        { id: 'msg_dup_a', memberId: '111' },
+        { id: 'msg_dup_b', memberId: '111' },
+      ],
+    })
+    await upsertDirectoryCardForMember('111', deps)
+    expect(deps.deleteDirectoryCard).toHaveBeenCalledWith('msg_dup_a')
+    expect(deps.deleteDirectoryCard).toHaveBeenCalledWith('msg_dup_b')
+    expect(deps.editDirectoryCard).toHaveBeenCalledWith('msg_first', expect.anything())
+    expect(deps.createDirectoryCard).not.toHaveBeenCalled()
+  })
+
   it('edits the existing card in place', async () => {
     const deps = dependencies({
       listAllLicenses: async () => [license({ metadata: connectedTo({}, '111') })],
