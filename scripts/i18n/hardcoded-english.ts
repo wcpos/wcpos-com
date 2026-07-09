@@ -1,5 +1,6 @@
 #!/usr/bin/env tsx
-import { parse, type TSESTree } from '@typescript-eslint/typescript-estree'
+import * as ts from 'typescript/unstable/ast'
+import { API } from 'typescript/unstable/sync'
 import { createHash } from 'node:crypto'
 import { existsSync, mkdirSync, readFileSync, readdirSync, statSync, writeFileSync } from 'node:fs'
 import path from 'node:path'
@@ -204,34 +205,23 @@ function candidate(value: string): string | null {
   return null
 }
 
-type AstNode = TSESTree.Node
-
-function loc(node: AstNode): Pick<Hit, 'line' | 'col'> {
-  return { line: node.loc.start.line, col: node.loc.start.column + 1 }
+function loc(sourceFile: ts.SourceFile, node: ts.Node): Pick<Hit, 'line' | 'col'> {
+  const location = sourceFile.getLineAndCharacterOfPosition(node.getStart(sourceFile))
+  return { line: location.line + 1, col: location.character + 1 }
 }
 
-function isImportExportLiteral(parent: AstNode | null): boolean {
+function isImportExportLiteral(node: ts.Node): boolean {
+  const parent = node.parent
   return Boolean(
     parent &&
-      [
-        'ExportAllDeclaration',
-        'ExportNamedDeclaration',
-        'ImportDeclaration',
-        'ImportExpression',
-        'TSExternalModuleReference',
-      ].includes(parent.type)
+      (ts.isImportDeclaration(parent) || ts.isExportDeclaration(parent) || ts.isExternalModuleReference(parent))
   )
 }
 
-function textForNode(node: AstNode): string {
-  if ('name' in node && typeof node.name === 'string') return node.name
-  if ('property' in node && node.property && typeof node.property === 'object') return textForNode(node.property as AstNode)
-  return ''
-}
-
-function isTranslationKeyLiteral(parent: AstNode | null): boolean {
-  if (!parent || parent.type !== 'CallExpression') return false
-  const expression = textForNode(parent.callee)
+function isTranslationKeyLiteral(node: ts.Node): boolean {
+  const parent = node.parent
+  if (!parent || !ts.isCallExpression(parent)) return false
+  const expression = parent.expression.getText()
   return (
     /^t\w*$/.test(expression) ||
     expression === 'useTranslations' ||
@@ -239,12 +229,11 @@ function isTranslationKeyLiteral(parent: AstNode | null): boolean {
   )
 }
 
-function propName(node: AstNode, parent: AstNode | null): string | null {
-  if (parent?.type === 'JSXAttribute' && 'name' in parent.name && typeof parent.name.name === 'string') {
-    return parent.name.name
-  }
-  if (parent?.type === 'Property' && parent.key === node) return '__property_key__'
-  if (parent?.type === 'MemberExpression' && parent.property === node) return '__property_access__'
+function propName(node: ts.Node): string | null {
+  const parent = node.parent
+  if (parent && ts.isJsxAttribute(parent)) return parent.name.getText()
+  if (parent && ts.isPropertyAssignment(parent) && parent.name === node) return '__property_key__'
+  if (parent && ts.isPropertyAccessExpression(parent)) return '__property_access__'
   return null
 }
 
@@ -258,59 +247,56 @@ function category(filePath: string, text: string, attr: string | null): string {
   return attr ? 'attribute' : 'code/string'
 }
 
-function scanFile(filePath: string): Hit[] {
-  const source = readFileSync(filePath, 'utf8')
-  const ast = parse(source, {
-    comment: false,
-    errorOnTypeScriptSyntacticAndSemanticIssues: false,
-    filePath,
-    jsx: filePath.endsWith('.tsx') || filePath.endsWith('.jsx'),
-    loc: true,
-    range: true,
-    tokens: false,
-  })
+function scanFile(sourceFile: ts.SourceFile): Hit[] {
+  const filePath = sourceFile.fileName
   const hits: Hit[] = []
 
-  function add(node: AstNode, raw: string, attr: string | null = null) {
+  function add(node: ts.Node, raw: string, attr: string | null = null) {
     const text = candidate(raw)
     if (!text) return
     hits.push({
       file: path.relative(root, filePath),
-      ...loc(node),
+      ...loc(sourceFile, node),
       category: category(filePath, text, attr),
       attr,
       text,
     })
   }
 
-  function visit(node: AstNode, parent: AstNode | null = null) {
-    if (node.type === 'JSXText') {
-      add(node, node.value)
-    } else if (node.type === 'Literal' && typeof node.value === 'string') {
-      if (isImportExportLiteral(parent)) return
-      if (isTranslationKeyLiteral(parent)) return
-      const attr = propName(node, parent)
+  function visit(node: ts.Node) {
+    if (ts.isJsxText(node)) {
+      add(node, node.getText(sourceFile))
+    } else if (ts.isStringLiteral(node) || ts.isNoSubstitutionTemplateLiteral(node)) {
+      if (isImportExportLiteral(node)) return
+      if (isTranslationKeyLiteral(node)) return
+      const attr = propName(node)
       if (attr === '__property_key__' || attr === '__property_access__') return
       if (attr && skipAttr.has(attr) && !interestingAttr.has(attr)) return
-      add(node, node.value, attr)
-    } else if (node.type === 'TemplateElement') {
-      add(node, node.value.cooked ?? node.value.raw)
+      add(node, node.text, attr)
+    } else if (ts.isTemplateExpression(node)) {
+      add(node, node.head.text)
+      for (const span of node.templateSpans) add(span.literal, span.literal.text)
     }
-
-    for (const [key, value] of Object.entries(node)) {
-      if (key === 'loc' || key === 'range' || key === 'parent') continue
-      if (Array.isArray(value)) {
-        for (const child of value) {
-          if (child && typeof child === 'object' && 'type' in child) visit(child as AstNode, node)
-        }
-      } else if (value && typeof value === 'object' && 'type' in value) {
-        visit(value as AstNode, node)
-      }
-    }
+    node.forEachChild(visit)
   }
 
-  visit(ast)
+  visit(sourceFile)
   return hits
+}
+
+function scanFiles(files: string[]): Hit[] {
+  const api = new API({ cwd: root })
+  try {
+    const snapshot = api.updateSnapshot({ openFiles: files })
+    return files.flatMap((filePath) => {
+      const project = snapshot.getDefaultProjectForFile(filePath)
+      const sourceFile = project?.program.getSourceFile(filePath)
+      if (!sourceFile) throw new Error(`Unable to parse ${path.relative(root, filePath)}`)
+      return scanFile(sourceFile)
+    })
+  } finally {
+    api.close()
+  }
 }
 
 function signature(hit: Pick<Hit, 'file' | 'category' | 'attr' | 'text'>): string {
@@ -368,7 +354,7 @@ const files = scope.flatMap((item) => {
   const stat = statSync(absolute)
   return stat.isDirectory() ? walk(absolute) : [absolute]
 })
-const hits = files.flatMap(scanFile).sort((a, b) => a.file.localeCompare(b.file) || a.line - b.line)
+const hits = scanFiles(files).sort((a, b) => a.file.localeCompare(b.file) || a.line - b.line)
 const entries = summarize(hits)
 
 if (update) {
