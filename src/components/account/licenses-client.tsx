@@ -236,19 +236,21 @@ export function LicensesClient({
   // With several licences the page opens scannable: the first card starts
   // expanded, and so does any card that needs attention (not plain-active, or
   // expiring soon). The rest collapse to their key band until clicked.
-  const [openLicenses, setOpenLicenses] = useState<Set<string>>(() => {
-    const nowMs = Date.now()
-    return new Set(
-      initialLicenses
-        .filter(
-          (license, index) =>
-            index === 0 ||
-            getLicenseDisplayStatus(license, nowMs) !== 'active' ||
-            isLicenseExpiringSoon(license, nowMs)
-        )
-        .map((license) => license.id)
-    )
-  })
+  // Uses the SAME `now` capture as the status presentation so the initial
+  // open set and the rendered statuses can never disagree.
+  const [openLicenses, setOpenLicenses] = useState<Set<string>>(
+    () =>
+      new Set(
+        initialLicenses
+          .filter(
+            (license, index) =>
+              index === 0 ||
+              getLicenseDisplayStatus(license, now) !== 'active' ||
+              isLicenseExpiringSoon(license, now)
+          )
+          .map((license) => license.id)
+      )
+  )
 
   // Claim outcome handed back by the Discord OAuth callback redirect. Captured
   // once on mount, then scrubbed from the address bar so a reload (or a copied
@@ -662,7 +664,9 @@ export function LicensesClient({
                   type="button"
                   onClick={() => toggleOpenLicense(license.id)}
                   aria-expanded={isOpen}
-                  aria-controls={detailId}
+                  // The detail node is unmounted while collapsed, so only
+                  // reference it when it exists.
+                  aria-controls={isOpen ? detailId : undefined}
                   aria-label={t(isOpen ? 'collapseAria' : 'expandAria', {
                     suffix: keySuffix,
                   })}
@@ -720,14 +724,25 @@ export function LicensesClient({
                     {t('factUpdates')}
                   </p>
                   <p className="mt-0.5 text-sm font-semibold tabular-nums">
-                    {hasValidExpiry
-                      ? t(displayStatus === 'expired' ? 'factEnded' : 'factUntil', {
-                          date: formatDateForLocale(
-                            license.expiry as string,
-                            locale
-                          ),
-                        })
-                      : t('factLifetime')}
+                    {/* Lifetime means NO expiry. An expiry that fails to parse
+                        is NOT lifetime — the display status already failed
+                        closed to expired, so show no date rather than a
+                        contradictory "lifetime" claim. */}
+                    {license.expiry == null
+                      ? t('factLifetime')
+                      : hasValidExpiry
+                        ? t(
+                            displayStatus === 'expired'
+                              ? 'factEnded'
+                              : 'factUntil',
+                            {
+                              date: formatDateForLocale(
+                                license.expiry,
+                                locale
+                              ),
+                            }
+                          )
+                        : '—'}
                   </p>
                   {hasValidExpiry && displayStatus === 'active' && (
                     <>

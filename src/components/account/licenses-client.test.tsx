@@ -190,6 +190,11 @@ describe('LicensesClient', () => {
       />
     )
     expect(screen.getByText('expired')).toBeInTheDocument()
+    // Fail-closed expiry must NOT read as a lifetime licence (only a null
+    // expiry is lifetime); the fact value degrades to a dash instead.
+    expect(screen.queryByText('Lifetime — no expiry')).not.toBeInTheDocument()
+    // Both the updates fact and the (empty) downloads fact degrade to a dash.
+    expect(screen.getAllByText('—').length).toBeGreaterThan(0)
   })
 
   it('presents an active license past its expiry date as expired', () => {
