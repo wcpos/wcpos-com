@@ -131,9 +131,32 @@ export async function openBtcpayModal(
   btcpay.showInvoice(invoiceId)
 }
 
+/**
+ * Take the fullscreen invoice frame down.
+ *
+ * btcpay.js mounts the iframe outside React, directly under `<body>`, so a
+ * route change on its own leaves it covering whatever renders next.
+ */
+export function hideBtcpayModal(): void {
+  window.btcpay?.hideFrame()
+}
+
 /** Statuses that mean BTCPay has seen the payment (settled or on the way). */
 const PAID_STATUSES = new Set(['processing', 'settled', 'complete', 'confirmed', 'paid'])
 
 export function isPaidStatus(status: string): boolean {
   return PAID_STATUSES.has(status.toLowerCase())
+}
+
+/**
+ * `Invalid` is not "unpaid": BTCPay marks an invoice invalid when money did
+ * arrive but the payment failed (late, underpaid, or unconfirmed before the
+ * monitoring window closed). It needs the same hand-off as a paid invoice —
+ * the return page owns the outcome, and never the "you have not been charged"
+ * copy that re-enabling checkout implies.
+ */
+const PAYMENT_ISSUE_STATUSES = new Set(['invalid'])
+
+export function isPaymentIssueStatus(status: string): boolean {
+  return PAYMENT_ISSUE_STATUSES.has(status.toLowerCase())
 }
