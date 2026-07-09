@@ -15,6 +15,7 @@ const WORDPRESS_FORUM_URL =
   'https://wordpress.org/support/plugin/woocommerce-pos/'
 const DOCS_URL = 'https://docs.wcpos.com'
 const DEMO_URL = 'https://demo.wcpos.com/pos'
+const STATUS_URL = 'https://status.wcpos.com/'
 
 /**
  * The desktop + mobile app builds shown in the Download column, derived from
@@ -55,6 +56,7 @@ export function SiteFooter() {
   const supportLinks: FooterLink[] = [
     { label: t('documentation'), href: DOCS_URL },
     { label: t('getSupport'), href: '/support' },
+    { label: t('status'), href: STATUS_URL, external: true },
     { label: t('wordpressForum'), href: WORDPRESS_FORUM_URL, external: true },
   ]
 
@@ -86,8 +88,6 @@ export function SiteFooter() {
             <FooterHeading>{t('companyHeading')}</FooterHeading>
             <ul className="flex flex-col gap-2.5">
               <FooterItem link={{ label: t('about'), href: '/about-us' }} />
-            </ul>
-            <ul className="mt-3 flex flex-col gap-2.5 border-t pt-3">
               {legalLinks.map((link) => (
                 <FooterItem key={link.href} link={link} />
               ))}

@@ -244,6 +244,8 @@ const italianIdenticalCopyAllowlist = new Set([
   'account.profile.taxLabels.partitaIva',
   'account.profile.googleProvider',
   'account.profile.githubProvider',
+  // "Password" is the standard Italian loanword for password.
+  'account.profile.passwordTitle',
   'account.receiptPdf.sellerIdentityWithAbn',
   'account.receiptPdf.sellerIdentity',
   'home.title',
@@ -392,6 +394,8 @@ const dutchIdenticalCopyAllowlist = new Set([
   'footer.discord',
   'footer.github',
   'footer.wordpressOrg',
+  // "Status" is the correct Dutch technical term — identical to English by design.
+  'footer.status',
   'pro.checkout.offers.default',
   'pro.checkout.steps.account',
   'pro.checkout.payment.methods.card.hint',
@@ -562,6 +566,8 @@ const portugueseIdenticalCopyAllowlist = new Set([
   'footer.github',
   'footer.pro',
   'footer.wordpressOrg',
+  // "Status" is used verbatim in Brazilian Portuguese — identical to English by design.
+  'footer.status',
   'downloads.platforms.mac-arm.name',
   'downloads.platforms.mac-arm.listLabel',
   'downloads.platforms.mac-arm.short',
@@ -848,6 +854,8 @@ const germanIdenticalCopyAllowlist = new Set([
   'footer.discord',
   'footer.github',
   'footer.wordpressOrg',
+  // "Status" is the correct German technical term — identical to English by design.
+  'footer.status',
   'pro.hero.title',
   'pro.schema.name',
   'pro.checkout.offers.default',

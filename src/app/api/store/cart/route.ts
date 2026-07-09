@@ -6,18 +6,51 @@ import {
   updateCart,
 } from '@/services/core/external/medusa-client'
 import {
+  getAuthToken,
   getCustomer,
+  updateCustomer,
   upsertDefaultBillingAddress,
   type MedusaCustomer,
 } from '@/lib/medusa-auth'
 import { storeLogger } from '@/lib/logger'
-import { billingPatchFromCheckout } from '@/lib/billing-profile'
+import {
+  billingPatchFromCheckout,
+  type BillingAddressPatch,
+} from '@/lib/billing-profile'
 import { deliver } from '@/lib/sinks/deliver'
 import { assertViewOnly, ViewOnlyError } from '@/lib/impersonation'
 import type { CreateCartInput } from '@/types/medusa'
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value)
+}
+
+function nonEmptyString(value: unknown): string | undefined {
+  return typeof value === 'string' && value.trim() ? value.trim() : undefined
+}
+
+async function backfillMissingCustomerNames(
+  customer: MedusaCustomer,
+  billingPatch: BillingAddressPatch
+): Promise<void> {
+  const profilePatch: { first_name?: string; last_name?: string } = {}
+
+  if (!nonEmptyString(customer.first_name) && billingPatch.first_name) {
+    profilePatch.first_name = billingPatch.first_name
+  }
+  if (!nonEmptyString(customer.last_name) && billingPatch.last_name) {
+    profilePatch.last_name = billingPatch.last_name
+  }
+  if (Object.keys(profilePatch).length === 0) return
+
+  try {
+    const updated = await updateCustomer(profilePatch)
+    if (!updated) {
+      storeLogger.error`Customer name backfill skipped: no session token for customer ${customer.id}`
+    }
+  } catch (error) {
+    storeLogger.error`Failed to backfill customer names from checkout billing: ${error}`
+  }
 }
 
 /**
@@ -29,13 +62,12 @@ function isRecord(value: unknown): value is Record<string, unknown> {
  */
 async function syncBillingToCustomerAddress(
   customer: MedusaCustomer,
-  billingAddress: Record<string, unknown>,
-  taxNumber: string | undefined
+  billingPatch: BillingAddressPatch
 ): Promise<void> {
   try {
     const updated = await upsertDefaultBillingAddress(
       customer,
-      billingPatchFromCheckout(billingAddress, taxNumber)
+      billingPatch
     )
     if (!updated) {
       // Null is a failed write (no session token), not a no-op — without
@@ -66,6 +98,13 @@ export async function POST(request: NextRequest) {
       return storeCartErrorResponse('authentication_required', 401)
     }
 
+    // getCustomer() above already validated this token against
+    // /store/customers/me (which rejects a JWT with an empty actor_id), so a
+    // non-null customer guarantees a real session token. Forwarding it is what
+    // makes Medusa set cart.customer_id from the auth context instead of
+    // leaving the cart an email-bound guest (#284).
+    const authToken = await getAuthToken()
+
     const body = await request.json().catch(() => ({}))
     const createCartInput: CreateCartInput = {
       email: customer.email,
@@ -79,7 +118,7 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    const cart = await createCart(createCartInput)
+    const cart = await createCart(createCartInput, authToken)
 
     if (!cart) {
       return storeCartErrorResponse('failed_create_cart', 500)
@@ -145,6 +184,10 @@ export async function PATCH(request: NextRequest) {
       return storeCartErrorResponse('authentication_required', 401)
     }
 
+    // See POST: a non-null customer guarantees a real session token; forward it
+    // so the cart keeps its customer_id link (#284).
+    const authToken = await getAuthToken()
+
     const body = await request.json().catch(() => null)
     if (!isRecord(body)) {
       return storeCartErrorResponse('invalid_request_body', 400)
@@ -180,20 +223,35 @@ export async function PATCH(request: NextRequest) {
       updateData.metadata = { taxNumber: taxNumber || null }
     }
 
-    const cart = await updateCart(cartId, {
-      ...updateData,
-      email: customer.email,
-    })
+    const cart = await updateCart(
+      cartId,
+      {
+        ...updateData,
+        email: customer.email,
+      },
+      authToken
+    )
 
     if (!cart) {
       return storeCartErrorResponse('failed_update_cart', 500)
     }
 
     if (isRecord(body.billing_address)) {
-      // Off the critical path: the response must not wait on profile sync.
-      deliver(
-        syncBillingToCustomerAddress(customer, body.billing_address, taxNumber)
+      const billingPatch = billingPatchFromCheckout(
+        body.billing_address,
+        taxNumber
       )
+      // The Medusa customer row is the profile name source of truth. Checkout
+      // collects the name later than account creation, so missing customer
+      // names must be written before this billing save is reported successful;
+      // otherwise a customer can land on Account > Profile and still see blank
+      // fields even though their order/billing address has names.
+      await backfillMissingCustomerNames(customer, billingPatch)
+
+      // The default billing address remains the source for receipt/address
+      // details and checkout prefill. Keep it off the critical payment path:
+      // failure here must not block checkout after the cart itself was saved.
+      deliver(syncBillingToCustomerAddress(customer, billingPatch))
     }
 
     return NextResponse.json({ cart })

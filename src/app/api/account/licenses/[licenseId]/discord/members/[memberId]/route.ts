@@ -4,7 +4,10 @@ import {
   getLicensesForDiscordUser,
   removeConnectedDiscordMemberForHolder,
 } from '@/lib/discord/connected-member-service'
-import { createDiscordRoleSyncDependencies } from '@/lib/discord/default-sync'
+import {
+  createDiscordRoleSyncDependencies,
+  syncDiscordDirectoryForMember,
+} from '@/lib/discord/default-sync'
 import { isDiscordConfigured } from '@/lib/discord/config'
 import { syncDiscordProRoleForMember } from '@/lib/discord/sync'
 import type { LicenseLifecycle } from '@/lib/license'
@@ -98,6 +101,13 @@ export async function DELETE(
       )
     } catch (error) {
       infraLogger.warn`Discord role sync after member removal failed: ${error}`
+    }
+
+    try {
+      await syncDiscordDirectoryForMember(result.discordUserId)
+    } catch (error) {
+      // Best-effort: the nightly directory reconcile heals any miss.
+      infraLogger.warn`Discord directory sync after member removal failed: ${error}`
     }
   }
 

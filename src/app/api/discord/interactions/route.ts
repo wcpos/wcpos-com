@@ -11,7 +11,7 @@ import {
   DISCORD_UNLINK_COMMAND,
   GENERIC_FAILURE_REPLY,
   GUILD_ONLY_REPLY,
-  formatCustomerInfoReply,
+  buildMemberCardEmbed,
   formatLinkReply,
   formatUnlinkReply,
   getInvokingUser,
@@ -25,7 +25,10 @@ import {
   removeConnectedDiscordMemberSelf,
 } from '@/lib/discord/connected-member-service'
 import { syncDiscordProRoleForMember } from '@/lib/discord/sync'
-import { createDiscordRoleSyncDependencies } from '@/lib/discord/default-sync'
+import {
+  createDiscordRoleSyncDependencies,
+  syncDiscordDirectoryForMember,
+} from '@/lib/discord/default-sync'
 import { lookupDiscordCustomerInfo } from '@/lib/discord/customer-lookup'
 import { findAdminCustomerByEmail, listAdminCustomerOrders } from '@/lib/discord/medusa-admin'
 import { DiscordApiClient } from '@/lib/discord/client'
@@ -83,7 +86,7 @@ function buildEditOriginalUrl(interaction: DiscordInteraction): string {
  */
 async function editOriginalResponse(
   interaction: DiscordInteraction,
-  content: string
+  reply: string | { content?: string; embeds?: unknown[] }
 ): Promise<void> {
   try {
     const response = await fetch(
@@ -91,7 +94,7 @@ async function editOriginalResponse(
       {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ content }),
+        body: JSON.stringify(typeof reply === 'string' ? { content: reply } : reply),
       }
     )
     if (!response.ok) {
@@ -99,6 +102,22 @@ async function editOriginalResponse(
     }
   } catch (error) {
     infraLogger.error`Discord interaction follow-up edit failed: ${error}`
+  }
+}
+
+/**
+ * Directory upserts are best-effort and can be slow (a fleet scan plus one or
+ * more channel calls). They must never sit between the command result and the
+ * user's deferred reply: that holds the interaction in its loading state and
+ * can outlive the 15-minute interaction token even though the command already
+ * succeeded. Always edit the original response first, then call this. The
+ * nightly reconcile heals any miss.
+ */
+async function syncDirectoryAfterReply(discordUserId: string, context: string): Promise<void> {
+  try {
+    await syncDiscordDirectoryForMember(discordUserId)
+  } catch (directoryError) {
+    infraLogger.warn`Discord directory sync after ${context} failed: ${directoryError}`
   }
 }
 
@@ -141,6 +160,10 @@ async function runLinkCommand(
     }
 
     await editOriginalResponse(interaction, formatLinkReply(result, licenseKey))
+
+    if (result.status === 'claimed' || result.status === 'already_connected') {
+      await syncDirectoryAfterReply(user.id, '/link claim')
+    }
   } catch (error) {
     infraLogger.error`Discord /link command failed: ${error}`
     await editOriginalResponse(interaction, GENERIC_FAILURE_REPLY)
@@ -158,10 +181,15 @@ async function runUnlinkCommand(
       discordUserId: user.id,
       dependencies: claimDependencies(),
     })
-    // No inline role removal: another licence may still back this member, and
-    // only the full-fleet view can tell. Reconciliation (the correctness
-    // mechanism, ADR-0004) settles the role overnight.
     await editOriginalResponse(interaction, formatUnlinkReply(result, licenseKey))
+
+    if (result.status === 'removed') {
+      // No inline role removal: another licence may still back this member, and
+      // only the full-fleet view can tell. Reconciliation (the correctness
+      // mechanism, ADR-0004) settles the role overnight. The directory upsert
+      // IS fleet-wide, so it can refresh (or drop) the card immediately.
+      await syncDirectoryAfterReply(user.id, '/unlink')
+    }
   } catch (error) {
     infraLogger.error`Discord /unlink command failed: ${error}`
     await editOriginalResponse(interaction, GENERIC_FAILURE_REPLY)
@@ -178,16 +206,16 @@ async function runCustomerInfoCommand(
       listAllLicenses: licenseClient.listAllLicenses,
       findCustomerByEmail: findAdminCustomerByEmail,
       listCustomerOrders: listAdminCustomerOrders,
+      getLicenseMachines: licenseClient.getLicenseMachines,
       getMemberRoleState: (discordUserId) => client.getMemberRoleState(discordUserId),
     })
     const resolvedTarget = interaction.data?.resolved?.users?.[targetId]
-    await editOriginalResponse(
-      interaction,
-      formatCustomerInfoReply(info, {
-        id: targetId,
-        username: resolvedTarget?.username ?? null,
-      })
+    const embed = buildMemberCardEmbed(
+      info,
+      { id: targetId, username: resolvedTarget?.username ?? null },
+      { roleState: info.roleState }
     )
+    await editOriginalResponse(interaction, { embeds: [embed] })
   } catch (error) {
     infraLogger.error`Discord Customer info command failed: ${error}`
     await editOriginalResponse(interaction, GENERIC_FAILURE_REPLY)

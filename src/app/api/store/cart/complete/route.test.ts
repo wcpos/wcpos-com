@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { NextRequest } from 'next/server'
 
 const mockGetCustomer = vi.fn()
+const mockGetAuthToken = vi.fn()
 const mockCompleteCart = vi.fn()
 const mockGetCart = vi.fn()
 const mockResolveProCheckoutVariant = vi.fn()
@@ -17,6 +18,7 @@ vi.mock('@/lib/impersonation', () => ({
 
 vi.mock('@/lib/medusa-auth', () => ({
   getCustomer: (...args: unknown[]) => mockGetCustomer(...args),
+  getAuthToken: (...args: unknown[]) => mockGetAuthToken(...args),
 }))
 
 vi.mock('@/services/core/external/medusa-client', () => ({
@@ -65,6 +67,7 @@ describe('POST /api/store/cart/complete', () => {
       id: 'cust_1',
       email: 'customer@example.com',
     })
+    mockGetAuthToken.mockResolvedValue('jwt_session')
     mockGetCart.mockResolvedValue(validCart)
     mockGetProOfferCatalog.mockResolvedValue({
       offers: [
@@ -127,6 +130,50 @@ describe('POST /api/store/cart/complete', () => {
       funnel_step: 'checkout_completed',
       page: '/pro/checkout',
     })
+  })
+
+  it('forwards the session token so Medusa links the order to the customer', async () => {
+    mockGetAuthToken.mockResolvedValueOnce('jwt_complete')
+    mockCompleteCart.mockResolvedValueOnce({
+      order: { id: 'order_1', total: 129, currency_code: 'usd' },
+    })
+
+    const response = await POST(
+      new NextRequest('http://localhost:3000/api/store/cart/complete', {
+        method: 'POST',
+        body: JSON.stringify({ cartId: 'cart_1' }),
+      })
+    )
+
+    expect(response.status).toBe(200)
+    expect(mockCompleteCart).toHaveBeenCalledWith('cart_1', 'jwt_complete')
+  })
+
+  it('falls back to the unique customer.id when the distinct-id cookie is absent', async () => {
+    // Regression: a shared placeholder here would merge unrelated purchases
+    // into one PostHog person and corrupt per-customer attribution (#276,
+    // mirrors the signup_completed fallback fixed in #267).
+    mockCookieGet.mockReturnValueOnce(undefined)
+    mockCompleteCart.mockResolvedValueOnce({
+      order: { id: 'order_1', total: 129, currency_code: 'usd' },
+    })
+
+    const response = await POST(
+      new NextRequest('http://localhost:3000/api/store/cart/complete', {
+        method: 'POST',
+        body: JSON.stringify({ cartId: 'cart_1' }),
+      })
+    )
+
+    expect(response.status).toBe(200)
+    expect(mockResolveProCheckoutVariant).not.toHaveBeenCalled()
+    expect(mockTrackServerEvent).toHaveBeenCalledWith(
+      'checkout_completed',
+      expect.objectContaining({
+        distinct_id: 'cust_1',
+        customer_id: 'cust_1',
+      })
+    )
   })
 
   it('falls back to cart totals when the order response omits revenue/currency', async () => {

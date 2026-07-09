@@ -9,6 +9,7 @@ const {
   removeSelfMock,
   lookupMock,
   syncMock,
+  directorySyncMock,
   errorMock,
   warnMock,
 } = vi.hoisted(() => ({
@@ -22,6 +23,7 @@ const {
   removeSelfMock: vi.fn(),
   lookupMock: vi.fn(),
   syncMock: vi.fn(),
+  directorySyncMock: vi.fn(),
   errorMock: vi.fn(),
   warnMock: vi.fn(),
 }))
@@ -46,6 +48,7 @@ vi.mock('@/lib/discord/connected-member-service', () => ({
 vi.mock('@/lib/discord/sync', () => ({ syncDiscordProRoleForMember: syncMock }))
 vi.mock('@/lib/discord/default-sync', () => ({
   createDiscordRoleSyncDependencies: vi.fn(() => ({})),
+  syncDiscordDirectoryForMember: directorySyncMock,
 }))
 vi.mock('@/lib/discord/customer-lookup', () => ({ lookupDiscordCustomerInfo: lookupMock }))
 vi.mock('@/lib/discord/medusa-admin', () => ({
@@ -77,9 +80,13 @@ const fetchMock = vi.fn<(...args: unknown[]) => Promise<{ ok: boolean; text(): P
 )
 vi.stubGlobal('fetch', fetchMock)
 
-function editedContent(): string {
+function editedPayload(): { content?: string; embeds?: Array<{ title: string; description: string }> } {
   const init = fetchMock.mock.calls[0][1] as { body: string }
-  return (JSON.parse(init.body) as { content: string }).content
+  return JSON.parse(init.body) as ReturnType<typeof editedPayload>
+}
+
+function editedContent(): string {
+  return editedPayload().content ?? ''
 }
 
 function makeRequest(body: unknown): NextRequest {
@@ -102,6 +109,17 @@ async function flushAfter() {
 const member = {
   user: { id: 'discord_1', username: 'ada', avatar: 'hash' },
   permissions: '0',
+}
+
+function unlinkInteraction(key = 'WCPOS-AAAA-1234') {
+  return {
+    type: 2,
+    application_id: '123456789012345678',
+    token: 'aW50ZXJhY3Rpb25fdG9rZW4',
+    guild_id: 'guild_1',
+    member,
+    data: { type: 1, name: 'unlink', options: [{ name: 'key', value: key }] },
+  }
 }
 
 function linkInteraction(key = 'WCPOS-AAAA-1234') {
@@ -219,6 +237,58 @@ describe('POST /api/discord/interactions', () => {
     expect(syncMock).not.toHaveBeenCalled()
   })
 
+  // The directory upsert is a slow, best-effort fleet scan. Awaiting it before
+  // the follow-up edit would strand the user in the loading state and can
+  // outlive the interaction token even though the command already succeeded.
+  it('edits the /link reply before kicking off the directory upsert', async () => {
+    claimMock.mockResolvedValue({ status: 'claimed', licenseId: 'lic_1', memberId: 'm1' })
+
+    await POST(makeRequest(linkInteraction()))
+    await flushAfter()
+
+    expect(directorySyncMock).toHaveBeenCalledWith('discord_1')
+    expect(fetchMock.mock.invocationCallOrder[0]).toBeLessThan(
+      directorySyncMock.mock.invocationCallOrder[0]
+    )
+  })
+
+  it('edits the /unlink reply before kicking off the directory upsert', async () => {
+    removeSelfMock.mockResolvedValue({ status: 'removed', licenseId: 'lic_1' })
+
+    await POST(makeRequest(unlinkInteraction()))
+    await flushAfter()
+
+    expect(directorySyncMock).toHaveBeenCalledWith('discord_1')
+    expect(fetchMock.mock.invocationCallOrder[0]).toBeLessThan(
+      directorySyncMock.mock.invocationCallOrder[0]
+    )
+  })
+
+  it('keeps the successful /link reply when the best-effort directory upsert throws', async () => {
+    claimMock.mockResolvedValue({ status: 'claimed', licenseId: 'lic_1', memberId: 'm1' })
+    directorySyncMock.mockRejectedValueOnce(new Error('directory channel gone'))
+
+    await POST(makeRequest(linkInteraction()))
+    await expect(flushAfter()).resolves.toBeUndefined()
+
+    // One edit only: the success reply is never overwritten by the failure reply.
+    expect(fetchMock).toHaveBeenCalledTimes(1)
+    expect(editedContent()).toContain('✅')
+    expect(warnMock).toHaveBeenCalled()
+  })
+
+  it('keeps the successful /unlink reply when the best-effort directory upsert throws', async () => {
+    removeSelfMock.mockResolvedValue({ status: 'removed', licenseId: 'lic_1' })
+    directorySyncMock.mockRejectedValueOnce(new Error('directory channel gone'))
+
+    await POST(makeRequest(unlinkInteraction()))
+    await expect(flushAfter()).resolves.toBeUndefined()
+
+    expect(fetchMock).toHaveBeenCalledTimes(1)
+    expect(errorMock).not.toHaveBeenCalled()
+    expect(warnMock).toHaveBeenCalled()
+  })
+
   it('refuses Customer info for members without Manage Server', async () => {
     const response = await POST(
       makeRequest({
@@ -258,7 +328,9 @@ describe('POST /api/discord/interactions', () => {
 
     await flushAfter()
     expect(lookupMock).toHaveBeenCalledWith('discord_9', expect.anything())
-    expect(editedContent()).toContain('@oceanwatcher')
+    const embed = editedPayload().embeds?.[0]
+    expect(embed?.title).toContain('@oceanwatcher')
+    expect(embed?.description).toContain('No licenses have this Discord account')
   })
 
   it('rejects signed commands from any guild other than the configured WCPOS guild', async () => {

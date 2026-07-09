@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { NextRequest } from 'next/server'
 
 const mockGetCustomer = vi.fn()
+const mockGetAuthToken = vi.fn()
 const mockAddLineItem = vi.fn()
 const mockGetCart = vi.fn()
 const mockGetProOfferCatalog = vi.fn()
@@ -13,6 +14,7 @@ vi.mock('@/lib/impersonation', () => ({
 
 vi.mock('@/lib/medusa-auth', () => ({
   getCustomer: (...args: unknown[]) => mockGetCustomer(...args),
+  getAuthToken: (...args: unknown[]) => mockGetAuthToken(...args),
 }))
 
 vi.mock('@/services/core/external/medusa-client', () => ({
@@ -51,6 +53,7 @@ describe('POST /api/store/cart/line-items', () => {
       id: 'cust_1',
       email: 'customer@example.com',
     })
+    mockGetAuthToken.mockResolvedValue('jwt_session')
     // Ownership binding: the route only mutates carts carrying the session
     // customer's email.
     mockGetCart.mockResolvedValue({
@@ -126,11 +129,31 @@ describe('POST /api/store/cart/line-items', () => {
     const json = await response.json()
 
     expect(response.status).toBe(200)
-    expect(mockAddLineItem).toHaveBeenCalledWith('cart_1', {
-      variant_id: 'variant_yearly_current',
-      quantity: 1,
-    })
+    expect(mockAddLineItem).toHaveBeenCalledWith(
+      'cart_1',
+      {
+        variant_id: 'variant_yearly_current',
+        quantity: 1,
+      },
+      'jwt_session'
+    )
     expect(json.cart.id).toBe('cart_1')
+  })
+
+  it('forwards the session token so Medusa keeps the cart customer-linked', async () => {
+    mockGetAuthToken.mockResolvedValueOnce('jwt_line')
+    mockAddLineItem.mockResolvedValueOnce({ id: 'cart_1', items: [] })
+
+    const response = await POST(
+      makeRequest({ cartId: 'cart_1', product: 'wcpos-pro-yearly' })
+    )
+
+    expect(response.status).toBe(200)
+    expect(mockAddLineItem).toHaveBeenCalledWith(
+      'cart_1',
+      expect.objectContaining({ variant_id: 'variant_yearly_current' }),
+      'jwt_line'
+    )
   })
 
   it('rejects Pro checkout quantities other than 1', async () => {
@@ -152,10 +175,14 @@ describe('POST /api/store/cart/line-items', () => {
     )
 
     expect(response.status).toBe(200)
-    expect(mockAddLineItem).toHaveBeenCalledWith('cart_1', {
-      variant_id: 'variant_lifetime_current',
-      quantity: 1,
-    })
+    expect(mockAddLineItem).toHaveBeenCalledWith(
+      'cart_1',
+      {
+        variant_id: 'variant_lifetime_current',
+        quantity: 1,
+      },
+      'jwt_session'
+    )
   })
 
   it('rejects non-current or non-Pro variant ids', async () => {

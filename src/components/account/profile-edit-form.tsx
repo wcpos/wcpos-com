@@ -1,13 +1,12 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import { useLocale, useTranslations } from 'next-intl'
+import { toast } from 'sonner'
 import { useRouter, usePathname } from '@/i18n/navigation'
 import { locales, localeNames, type Locale } from '@/i18n/config'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { Alert } from '@/components/ui/alert'
 import {
   Card,
   CardContent,
@@ -15,11 +14,20 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 import { FormField } from '@/components/ui/form-field'
 import { Input } from '@/components/ui/input'
 import { Select } from '@/components/ui/select'
-import { Mail } from 'lucide-react'
-import { GitHubMark, GoogleMark } from '@/components/auth/provider-marks'
+import { Camera, ImagePlus, Trash2 } from 'lucide-react'
+import {
+  ConnectionsCard,
+  type ConnectionsCardProps,
+} from '@/components/account/connections-card'
 import { getConnectedAvatarUrlFromMetadata } from '@/lib/avatar'
 import { readAccountProfileMetadata } from '@/lib/customer-profile-metadata'
 import type { BillingDetails } from '@/lib/billing-profile'
@@ -42,7 +50,9 @@ interface ProfileEditFormProps {
   billingDetails: BillingDetails
   memberSince?: string
   connections?: {
-    signIn: { provider: 'google' | 'github' | 'email'; email: string }
+    signIn: ConnectionsCardProps['signIn']
+    /** DB truth from the auth-methods endpoint; absent → read-only card. */
+    methods?: ConnectionsCardProps['methods']
   }
 }
 
@@ -83,6 +93,22 @@ function getProfileErrorMessage(
     case 'update_failed':
       return t('apiErrors.update_failed')
   }
+}
+
+/** Everything one autosave asserts, captured at trigger time. */
+type FormSnapshot = {
+  firstName: string
+  lastName: string
+  phone: string
+  countryCode: string
+  addressLine1: string
+  addressLine2: string
+  city: string
+  region: string
+  postalCode: string
+  taxNumber: string
+  avatarDataUrl: string
+  avatarUrl: string
 }
 
 type CountryProfile = {
@@ -178,7 +204,6 @@ export function ProfileEditForm({
     () => ({ ...billingDetails, countryCode: billingDetails.countryCode || 'US' }),
     [billingDetails]
   )
-  const [billingBaseline, setBillingBaseline] = useState(savedBilling)
   const [countryCode, setCountryCode] = useState(savedBilling.countryCode)
   const [addressLine1, setAddressLine1] = useState(savedBilling.addressLine1)
   const [addressLine2, setAddressLine2] = useState(savedBilling.addressLine2)
@@ -192,9 +217,29 @@ export function ProfileEditForm({
   const [customAvatarUrl, setCustomAvatarUrl] = useState(
     avatarDefaults.customAvatarUrl
   )
-  const [saving, setSaving] = useState(false)
-  const [success, setSuccess] = useState<string | null>(null)
-  const [error, setError] = useState<string | null>(null)
+
+  // Last server-confirmed values, used to decide whether a blur actually has
+  // something to save. Refs (not state): dirty checks happen inside the async
+  // save pipeline, and a queued save must see the baseline its predecessor
+  // just committed, not the one captured at render time. Comparisons use
+  // trimmed values because the server trims — otherwise a value like "Paul "
+  // would re-save (and re-toast) on every subsequent blur.
+  const profileBaselineRef = useRef({
+    firstName: (customer.first_name ?? '').trim(),
+    lastName: (customer.last_name ?? '').trim(),
+    phone: (customer.phone ?? '').trim(),
+  })
+  const billingBaselineRef = useRef(savedBilling)
+  const avatarBaselineRef = useRef({
+    avatarDataUrl: avatarDefaults.customAvatarDataUrl,
+    avatarUrl: avatarDefaults.customAvatarUrl,
+  })
+
+  // Saves are serialized: one request in flight, at most one (latest-wins)
+  // snapshot queued behind it, so rapid blurs can't race each other.
+  const inFlightRef = useRef(false)
+  const pendingSnapshotRef = useRef<FormSnapshot | null>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   const countryProfile =
     COUNTRY_PROFILES[countryCode] ?? COUNTRY_PROFILES.US
@@ -204,71 +249,130 @@ export function ProfileEditForm({
     return customAvatarDataUrl || customAvatarUrl || avatarDefaults.oauthAvatarUrl
   }, [customAvatarDataUrl, customAvatarUrl, avatarDefaults.oauthAvatarUrl])
 
+  const hasCustomAvatar = Boolean(customAvatarDataUrl || customAvatarUrl)
   const initials = getInitials(firstName, lastName, email)
 
-  const handleAvatarFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0]
-    if (!file) return
+  // Overrides cover values that changed in the same event that triggers the
+  // save (avatar picks, the country select), where React state hasn't
+  // re-rendered yet.
+  function collectSnapshot(overrides?: Partial<FormSnapshot>): FormSnapshot {
+    return {
+      firstName,
+      lastName,
+      phone,
+      countryCode,
+      addressLine1,
+      addressLine2,
+      city,
+      region,
+      postalCode,
+      taxNumber,
+      avatarDataUrl: customAvatarDataUrl,
+      avatarUrl: customAvatarUrl,
+      ...overrides,
+    }
+  }
 
-    if (file.size > 1024 * 1024) {
-      setError(t('avatarTooLarge'))
+  function requestSave(overrides?: Partial<FormSnapshot>) {
+    void runSave(collectSnapshot(overrides))
+  }
+
+  async function runSave(snapshot: FormSnapshot) {
+    if (inFlightRef.current) {
+      pendingSnapshotRef.current = snapshot
       return
     }
 
-    const reader = new FileReader()
-    reader.onload = () => {
-      const result = typeof reader.result === 'string' ? reader.result : ''
-      if (!result.startsWith('data:image/')) {
-        setError(t('avatarInvalid'))
-        return
-      }
-
-      setError(null)
-      setCustomAvatarDataUrl(result)
-      setCustomAvatarUrl('')
+    const profileBaseline = profileBaselineRef.current
+    const nextProfile = {
+      firstName: snapshot.firstName.trim(),
+      lastName: snapshot.lastName.trim(),
+      phone: snapshot.phone.trim(),
     }
-    reader.readAsDataURL(file)
-  }
+    const profileChanged =
+      nextProfile.firstName !== profileBaseline.firstName ||
+      nextProfile.lastName !== profileBaseline.lastName ||
+      nextProfile.phone !== profileBaseline.phone
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    setSaving(true)
-    setSuccess(null)
-    setError(null)
-
+    const billingBaseline = billingBaselineRef.current
+    const billingContentChanged =
+      snapshot.addressLine1.trim() !== billingBaseline.addressLine1 ||
+      snapshot.addressLine2.trim() !== billingBaseline.addressLine2 ||
+      snapshot.city.trim() !== billingBaseline.city ||
+      snapshot.region.trim() !== billingBaseline.region ||
+      snapshot.postalCode.trim() !== billingBaseline.postalCode ||
+      snapshot.taxNumber.trim() !== billingBaseline.taxNumber
+    // A country change with no address content anywhere mirrors the server's
+    // rule (upsertDefaultBillingAddress): a bare country never creates an
+    // address record, so saving it would toast success while persisting
+    // nothing — and then re-send forever. The selection stays local until
+    // the user adds actual address content.
+    const billingHasAnyContent =
+      Boolean(
+        snapshot.addressLine1.trim() ||
+          snapshot.addressLine2.trim() ||
+          snapshot.city.trim() ||
+          snapshot.region.trim() ||
+          snapshot.postalCode.trim() ||
+          snapshot.taxNumber.trim()
+      ) ||
+      Boolean(
+        billingBaseline.addressLine1 ||
+          billingBaseline.addressLine2 ||
+          billingBaseline.city ||
+          billingBaseline.region ||
+          billingBaseline.postalCode ||
+          billingBaseline.taxNumber
+      )
     const billingChanged =
-      countryCode !== billingBaseline.countryCode ||
-      addressLine1 !== billingBaseline.addressLine1 ||
-      addressLine2 !== billingBaseline.addressLine2 ||
-      city !== billingBaseline.city ||
-      region !== billingBaseline.region ||
-      postalCode !== billingBaseline.postalCode ||
-      taxNumber !== billingBaseline.taxNumber
+      billingContentChanged ||
+      (snapshot.countryCode !== billingBaseline.countryCode &&
+        billingHasAnyContent)
+
+    const avatarBaseline = avatarBaselineRef.current
+    const avatarChanged =
+      snapshot.avatarDataUrl !== avatarBaseline.avatarDataUrl ||
+      snapshot.avatarUrl !== avatarBaseline.avatarUrl
+
+    // Blur fires on every focus move through the form; only real edits save
+    // (and toast).
+    if (!profileChanged && !billingChanged && !avatarChanged) return
+
+    inFlightRef.current = true
 
     try {
       const response = await fetch('/api/account/profile', {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          first_name: firstName,
-          last_name: lastName,
-          phone,
-          avatar: {
-            avatarDataUrl: customAvatarDataUrl || null,
-            avatarUrl: customAvatarUrl || null,
-          },
-          // Only assert billing when the user actually changed it — an
-          // untouched form must not write (or create) an address record.
+          // Each section is asserted only when it changed: an untouched
+          // billing form must not write (or create) an address record, and
+          // a name edit must not re-send a ~1MB avatar data URL.
+          ...(profileChanged
+            ? {
+                first_name: nextProfile.firstName,
+                last_name: nextProfile.lastName,
+                phone: nextProfile.phone,
+              }
+            : {}),
+          ...(avatarChanged
+            ? {
+                avatar: {
+                  avatarDataUrl: snapshot.avatarDataUrl || null,
+                  avatarUrl: snapshot.avatarUrl || null,
+                },
+              }
+            : {}),
           ...(billingChanged
             ? {
                 billingAddress: {
-                  countryCode,
-                  addressLine1,
-                  addressLine2: addressLine2 || null,
-                  city,
-                  region,
-                  postalCode,
-                  taxNumber: taxNumber || null,
+                  countryCode: snapshot.countryCode,
+                  addressLine1: snapshot.addressLine1,
+                  addressLine2: snapshot.addressLine2 || null,
+                  city: snapshot.city,
+                  region: snapshot.region,
+                  postalCode: snapshot.postalCode,
+                  taxNumber: snapshot.taxNumber || null,
                 },
               }
             : {}),
@@ -285,9 +389,21 @@ export function ProfileEditForm({
         )
       }
 
+      // Advance the baselines to the server-confirmed values but leave the
+      // live field state alone — the user may already be typing in the next
+      // field, and clobbering it with the response would eat keystrokes.
+      profileBaselineRef.current = {
+        firstName: (data.customer?.first_name ?? '').trim(),
+        lastName: (data.customer?.last_name ?? '').trim(),
+        phone: (data.customer?.phone ?? '').trim(),
+      }
       const updatedAvatar = getAvatarDefaults(data.customer?.metadata)
+      avatarBaselineRef.current = {
+        avatarDataUrl: updatedAvatar.customAvatarDataUrl,
+        avatarUrl: updatedAvatar.customAvatarUrl,
+      }
       const updatedBilling = (data.billingDetails ?? {}) as Partial<BillingDetails>
-      const nextBilling = {
+      billingBaselineRef.current = {
         countryCode: updatedBilling.countryCode || 'US',
         addressLine1: updatedBilling.addressLine1 ?? '',
         addressLine2: updatedBilling.addressLine2 ?? '',
@@ -297,41 +413,134 @@ export function ProfileEditForm({
         taxNumber: updatedBilling.taxNumber ?? '',
       }
 
-      setFirstName(data.customer.first_name ?? '')
-      setLastName(data.customer.last_name ?? '')
-      setPhone(data.customer.phone ?? '')
-      setBillingBaseline(nextBilling)
-      setCountryCode(nextBilling.countryCode)
-      setAddressLine1(nextBilling.addressLine1)
-      setAddressLine2(nextBilling.addressLine2)
-      setCity(nextBilling.city)
-      setRegion(nextBilling.region)
-      setPostalCode(nextBilling.postalCode)
-      setTaxNumber(nextBilling.taxNumber)
-      setCustomAvatarDataUrl(updatedAvatar.customAvatarDataUrl)
-      setCustomAvatarUrl(updatedAvatar.customAvatarUrl)
-      setSuccess(t('updateSuccess'))
+      toast.success(t('updateSuccess'))
     } catch (err) {
-      setError(err instanceof Error ? err.message : t('updateError'))
+      toast.error(err instanceof Error ? err.message : t('updateError'))
     } finally {
-      setSaving(false)
+      inFlightRef.current = false
+      const queued = pendingSnapshotRef.current
+      if (queued) {
+        pendingSnapshotRef.current = null
+        void runSave(queued)
+      }
+    }
+  }
+
+  const handleAvatarFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const input = event.target
+    const file = input.files?.[0]
+    // Reset so picking the same file again still fires a change event.
+    input.value = ''
+    if (!file) return
+
+    if (file.size > 1024 * 1024) {
+      toast.error(t('avatarTooLarge'))
+      return
+    }
+
+    const reader = new FileReader()
+    reader.onload = () => {
+      const result = typeof reader.result === 'string' ? reader.result : ''
+      if (!result.startsWith('data:image/')) {
+        toast.error(t('avatarInvalid'))
+        return
+      }
+
+      setCustomAvatarDataUrl(result)
+      setCustomAvatarUrl('')
+      requestSave({ avatarDataUrl: result, avatarUrl: '' })
+    }
+    reader.readAsDataURL(file)
+  }
+
+  const handleAvatarRemove = () => {
+    setCustomAvatarDataUrl('')
+    setCustomAvatarUrl('')
+    requestSave({ avatarDataUrl: '', avatarUrl: '' })
+  }
+
+  // The form autosaves: field blurs (React's onBlur is focusout, so it
+  // bubbles here from every field) and Enter both funnel into the same
+  // dirty-checked save.
+  const handleFormBlur = () => {
+    requestSave()
+  }
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    requestSave()
+  }
+
+  // Enter must save explicitly: with several text fields and no submit
+  // button, browsers suppress implicit form submission, so onSubmit alone
+  // never fires from the keyboard.
+  const handleFormKeyDown = (event: React.KeyboardEvent<HTMLFormElement>) => {
+    if (event.key !== 'Enter') return
+    if (event.target instanceof HTMLInputElement) {
+      event.preventDefault()
+      requestSave()
     }
   }
 
   return (
-    <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,19rem)_1fr]">
+    // Identity rail capped at 400px (owner's call): wide enough for the
+    // Connections rows (avatar + email on its own line + Disconnect); the
+    // billing/address form takes the rest.
+    <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,25rem)_1fr]">
       {/* Identity rail: who you are + account-level settings. Everything
           here is either display-only or self-saving (language), so it lives
           outside the profile <form>. */}
       <div className="space-y-6">
         <Card>
           <CardContent className="flex flex-col items-center gap-1 pt-6 text-center">
-            <Avatar className="h-16 w-16">
-              {avatarUrl ? (
-                <AvatarImage src={avatarUrl} alt={t('avatarAlt')} />
-              ) : null}
-              <AvatarFallback>{initials}</AvatarFallback>
-            </Avatar>
+            {/* The avatar is the edit affordance: clicking it opens the
+                photo menu; picking or removing a photo saves immediately. */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button
+                  type="button"
+                  aria-label={t('avatarEdit')}
+                  className="group relative rounded-full outline-none ring-offset-background focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                >
+                  <Avatar className="h-16 w-16">
+                    {avatarUrl ? (
+                      <AvatarImage src={avatarUrl} alt={t('avatarAlt')} />
+                    ) : null}
+                    <AvatarFallback>{initials}</AvatarFallback>
+                  </Avatar>
+                  <span
+                    aria-hidden="true"
+                    className="absolute inset-0 flex items-center justify-center rounded-full bg-foreground/45 opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100 group-data-[state=open]:opacity-100"
+                  >
+                    <Camera className="h-5 w-5 text-background" />
+                  </span>
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="center">
+                <DropdownMenuItem
+                  onSelect={() => fileInputRef.current?.click()}
+                >
+                  <ImagePlus />
+                  {t('uploadPhoto')}
+                </DropdownMenuItem>
+                {hasCustomAvatar && (
+                  <DropdownMenuItem onSelect={handleAvatarRemove}>
+                    <Trash2 />
+                    {t('removePhoto')}
+                  </DropdownMenuItem>
+                )}
+              </DropdownMenuContent>
+            </DropdownMenu>
+            <input
+              ref={fileInputRef}
+              id="profile-avatar-upload"
+              type="file"
+              accept="image/*"
+              className="hidden"
+              tabIndex={-1}
+              aria-hidden="true"
+              onChange={handleAvatarFileChange}
+            />
             {/* Live preview: reflects the name fields as they are edited. */}
             <p className="mt-2 font-semibold">
               {[firstName, lastName].filter(Boolean).join(' ') || email}
@@ -366,85 +575,24 @@ export function ProfileEditForm({
         </Card>
 
         {connections && (
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg">{t('connectionsTitle')}</CardTitle>
-              <CardDescription>{t('connectionsHint')}</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-1">
-              <div className="flex items-center gap-4 py-3">
-                <span className="flex h-10 w-10 flex-none items-center justify-center rounded-md border">
-                  {connections.signIn.provider === 'google' ? (
-                    <GoogleMark className="h-5 w-5" />
-                  ) : connections.signIn.provider === 'github' ? (
-                    <GitHubMark className="h-5 w-5" />
-                  ) : (
-                    <Mail className="h-5 w-5 text-muted-foreground" />
-                  )}
-                </span>
-                <div className="min-w-0 flex-1">
-                  <p className="font-medium leading-none">
-                    {connections.signIn.provider === 'google'
-                      ? t('googleProvider')
-                      : connections.signIn.provider === 'github'
-                        ? t('githubProvider')
-                        : t('emailProvider')}
-                  </p>
-                  <p className="mt-1 break-all text-sm text-muted-foreground">
-                    {connections.signIn.provider === 'google'
-                      ? t('googleDescription')
-                      : connections.signIn.provider === 'github'
-                        ? t('githubDescription')
-                        : t('emailDescription')}
-                  </p>
-                </div>
-              </div>
-              <Badge variant="success" className="break-all">
-                {t('connectedAs', { account: connections.signIn.email })}
-              </Badge>
-            </CardContent>
-          </Card>
+          <ConnectionsCard
+            signIn={connections.signIn}
+            methods={connections.methods}
+          />
         )}
       </div>
 
-      <form className="space-y-6" onSubmit={handleSubmit}>
+      <form
+        className="space-y-6"
+        onSubmit={handleSubmit}
+        onBlur={handleFormBlur}
+        onKeyDown={handleFormKeyDown}
+      >
       <Card>
         <CardHeader>
           <CardTitle className="text-lg">{t('cardTitle')}</CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
-          <div className="space-y-3 border-b pb-6">
-            <div className="flex items-center gap-4">
-              <Avatar className="h-16 w-16">
-                {avatarUrl ? (
-                  <AvatarImage src={avatarUrl} alt={t('avatarAlt')} />
-                ) : null}
-                <AvatarFallback>{initials}</AvatarFallback>
-              </Avatar>
-              <FormField
-                label={t('avatarLabel')}
-                htmlFor="profile-avatar-upload"
-                hint={t('avatarHint')}
-              >
-                <Input
-                  id="profile-avatar-upload"
-                  type="file"
-                  accept="image/*"
-                  onChange={handleAvatarFileChange}
-                />
-              </FormField>
-            </div>
-            {customAvatarDataUrl && (
-              <Button
-                type="button"
-                variant="ghost"
-                onClick={() => setCustomAvatarDataUrl('')}
-              >
-                {t('removeAvatar')}
-              </Button>
-            )}
-          </div>
-
           <div className="grid gap-4 md:grid-cols-2">
             <FormField label={t('firstName')} htmlFor="profile-first-name">
               <Input
@@ -498,7 +646,13 @@ export function ProfileEditForm({
             <Select
               id="profile-country"
               value={countryCode}
-              onChange={(event) => setCountryCode(event.target.value)}
+              onChange={(event) => {
+                // A select is a discrete choice — save on change rather than
+                // waiting for focus to leave it.
+                const next = event.target.value
+                setCountryCode(next)
+                requestSave({ countryCode: next })
+              }}
             >
               {countryOptions.map(([value, label]) => (
                 <option key={value} value={value}>
@@ -572,24 +726,6 @@ export function ProfileEditForm({
         </CardContent>
       </Card>
 
-      {error && (
-        <Alert tone="critical" role="alert">
-          {error}
-        </Alert>
-      )}
-
-      {success && (
-        <Alert tone="positive" role="status">
-          {success}
-        </Alert>
-      )}
-
-      {/* Save bar: a quiet card-footer strip closing the form column. */}
-      <div className="flex items-center justify-end gap-4 rounded-md border bg-card p-4 shadow-xs">
-        <Button type="submit" disabled={saving}>
-          {saving ? t('saving') : t('save')}
-        </Button>
-      </div>
       </form>
     </div>
   )

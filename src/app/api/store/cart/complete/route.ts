@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { storeCartErrorResponse } from '@/lib/store-cart-errors'
 import { cookies } from 'next/headers'
 import { completeCart, getCart } from '@/services/core/external/medusa-client'
-import { getCustomer } from '@/lib/medusa-auth'
+import { getAuthToken, getCustomer } from '@/lib/medusa-auth'
 import { storeLogger } from '@/lib/logger'
 import { assertViewOnly, ViewOnlyError } from '@/lib/impersonation'
 import {
@@ -36,6 +36,11 @@ export async function POST(request: NextRequest) {
       return storeCartErrorResponse('authentication_required', 401)
     }
 
+    // getCustomer() above already validated this token; forward it so the
+    // completion carries the cart's owning auth context and Medusa lets the
+    // owning customer finalize it, linking the created order to them (#284).
+    const authToken = await getAuthToken()
+
     const body = await request.json()
     const { cartId, experiment } = body
 
@@ -60,7 +65,7 @@ export async function POST(request: NextRequest) {
       return storeCartErrorResponse('current_pro_offer_cart_required', 400)
     }
 
-    const result = await completeCart(cartId)
+    const result = await completeCart(cartId, authToken)
 
     if (!result) {
       return storeCartErrorResponse('failed_complete_cart', 500)
@@ -98,7 +103,12 @@ export async function POST(request: NextRequest) {
       void trackServerEvent('checkout_completed', {
         experiment: typeof experiment === 'string' ? experiment : 'pro_checkout_v1',
         variant,
-        distinct_id: distinctId ?? 'missing-distinct-id',
+        // Prefer the landing-page anon id so it stitches onto the same person
+        // as the shopper's visit; fall back to the unique customer.id (never a
+        // shared placeholder, which would merge unrelated purchases into one
+        // PostHog person and corrupt per-customer attribution). Mirrors the
+        // signup_completed fallback in src/app/api/auth/register/route.ts.
+        distinct_id: distinctId ?? customer.id,
         customer_id: customer.id,
         order_id: result.order.id,
         cart_id: cartId,

@@ -30,6 +30,13 @@ vi.mock('@/lib/admin', () => ({
 }))
 vi.mock('@/lib/medusa-auth', () => ({
   getSessionCustomer: async () => ({ email: 'paul@kilbot.com' }),
+  // The bearer token always belongs to the REAL session — the admin — even
+  // when getCustomer() resolves the impersonated target.
+  getAuthToken: async () => 'admin-jwt',
+}))
+vi.mock('@/lib/store-environment', () => ({
+  getMedusaBackendUrl: async () => 'https://medusa.test',
+  getMedusaPublishableKey: async () => 'pk_test',
 }))
 vi.mock('@/lib/discord/medusa-admin', () => ({
   getAdminCustomerById: async (id: string) => ({ id, email: 'target@x.com' }),
@@ -40,10 +47,15 @@ vi.mock('@/lib/discord/medusa-admin', () => ({
 
 import { getImpersonation } from './impersonation'
 import { getAllOrders } from './customer-orders'
+import { getCustomerAuthMethods } from './auth-methods'
+
+const mockFetch = vi.fn()
+vi.stubGlobal('fetch', mockFetch)
 
 beforeEach(() => {
   state.header = '1'
   state.cookie = 'cus_target'
+  mockFetch.mockReset()
 })
 
 describe('impersonation end-to-end (lib layer)', () => {
@@ -59,5 +71,43 @@ describe('impersonation end-to-end (lib layer)', () => {
   it('is inert outside the account area', async () => {
     state.header = null
     expect(await getImpersonation()).toBeNull()
+  })
+})
+
+/**
+ * The profile page renders the Connections card from getCustomer() (the
+ * impersonated TARGET) but getCustomerAuthMethods() authenticates as the REAL
+ * session — the admin. Without the short-circuit the admin's password/OAuth
+ * rows render on the target's profile, so support staff read the wrong
+ * connection state for the account they are inspecting.
+ *
+ * These wire the real getImpersonation into the real getCustomerAuthMethods:
+ * they fail if the guard is dropped, and — unlike a test that mocks
+ * getImpersonation — they also fail if /account scoping stops resolving, which
+ * would silently turn the guard into a no-op.
+ */
+describe('auth methods under impersonation (lib layer)', () => {
+  it('never fetches auth methods while inspecting a target', async () => {
+    await expect(getCustomerAuthMethods()).resolves.toBeNull()
+    expect(mockFetch).not.toHaveBeenCalled()
+  })
+
+  it('fetches auth methods for a customer viewing their own profile', async () => {
+    state.cookie = null // no impersonation cookie → an ordinary account request
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      status: 200,
+      json: async () => ({ providers: ['emailpass'], emailpass_identifier: 'a@x.com' }),
+    })
+
+    await expect(getCustomerAuthMethods()).resolves.toEqual({
+      providers: ['emailpass'],
+      providerDetails: [],
+      emailpassIdentifier: 'a@x.com',
+      emailpassPending: false,
+      emailpassUpdatedAt: null,
+      emailpassReserved: false,
+    })
+    expect(mockFetch).toHaveBeenCalledTimes(1)
   })
 })

@@ -121,3 +121,35 @@ export function getPrimarySignInProvider(
 
   return getLinkedAuthProviders(metadata).find(isDisplayProvider) ?? null
 }
+
+/**
+ * Remove a disconnected provider from the persisted attribution so the
+ * profile stops showing it as connected. `last_sign_in_provider` is
+ * repointed to the first remaining provider (or nulled). The legacy
+ * `oauth_avatar_url` fallback is also nulled when it attributes to the
+ * removed provider, so `getLinkedAuthProviders` can't resurrect it.
+ * Cleared keys are set to null (not deleted) so the result stays correct
+ * whether Medusa merges or replaces the metadata object.
+ */
+export function removeAuthProviderFromMetadata(
+  metadata: Record<string, unknown> | null | undefined,
+  provider: string
+): Record<string, unknown> {
+  const next = { ...(metadata ?? {}) }
+  if (!isKnownProvider(provider)) return next
+
+  const remaining = getLinkedAuthProviders(next).filter(
+    (linked) => linked !== provider
+  )
+  next.auth_providers = remaining
+
+  if (next.last_sign_in_provider === provider) {
+    next.last_sign_in_provider = remaining[0] ?? null
+  }
+
+  if (inferProviderFromAvatar(next.oauth_avatar_url) === provider) {
+    next.oauth_avatar_url = null
+  }
+
+  return next
+}

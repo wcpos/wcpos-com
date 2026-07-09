@@ -1,6 +1,7 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { Suspense } from 'react'
 import { getCustomer } from '@/lib/medusa-auth'
+import { getCustomerAuthMethods } from '@/lib/auth-methods'
 import { getPrimarySignInProvider } from '@/lib/auth-providers/metadata'
 import { projectProfileMetadataForClient } from '@/lib/customer-profile-metadata'
 import { billingDetailsFromCustomer } from '@/lib/billing-profile'
@@ -26,7 +27,17 @@ export async function generateMetadata({
 }
 
 async function ProfileContent({ locale }: { locale: string }) {
-  const customer = await getCustomer()
+  // Independent requests: getCustomerAuthMethods() authenticates from the
+  // session token itself rather than from `customer`, so awaiting them in
+  // series would only double the round-trip latency.
+  //
+  // DB truth for the Connections card (null → backend without the
+  // auth-methods endpoint yet; the card degrades to the metadata-derived
+  // read-only display).
+  const [customer, authMethods] = await Promise.all([
+    getCustomer(),
+    getCustomerAuthMethods(),
+  ])
 
   if (!customer) {
     // `return` is needed for TypeScript narrowing: next-intl's redirect is
@@ -55,6 +66,16 @@ async function ProfileContent({ locale }: { locale: string }) {
       memberSince={formatDateForLocale(customer.created_at, locale)}
       connections={{
         signIn: { provider: signInProvider, email: customer.email },
+        methods: authMethods
+          ? {
+              providers: authMethods.providers,
+              providerDetails: authMethods.providerDetails,
+              emailpassIdentifier: authMethods.emailpassIdentifier,
+              emailpassPending: authMethods.emailpassPending,
+              emailpassUpdatedAt: authMethods.emailpassUpdatedAt,
+              emailpassReserved: authMethods.emailpassReserved,
+            }
+          : null,
       }}
     />
   )
