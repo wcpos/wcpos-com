@@ -416,6 +416,28 @@ describe('ConnectionsCard', () => {
     expect(toast.error).not.toHaveBeenCalled()
   })
 
+  it('attributes "Most recent sign-in" to the password row for email-primary users', () => {
+    render(
+      <ConnectionsCard
+        signIn={{ provider: 'email', email: 'ada@gmail.com' }}
+        methods={{ providers: ['emailpass', 'google'] }}
+      />
+    )
+
+    expect(screen.getByText('Most recent sign-in')).toBeInTheDocument()
+  })
+
+  it('never claims an email sign-in while the minted identity is unusable', () => {
+    render(
+      <ConnectionsCard
+        signIn={{ provider: 'email', email: 'ada@gmail.com' }}
+        methods={{ providers: ['emailpass', 'google'], emailpassPending: true }}
+      />
+    )
+
+    expect(screen.queryByText('Most recent sign-in')).not.toBeInTheDocument()
+  })
+
   it('never renders a Discord row (managed per-licence)', () => {
     render(
       <ConnectionsCard

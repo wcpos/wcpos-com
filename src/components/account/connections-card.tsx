@@ -79,6 +79,17 @@ interface MethodsState {
   emailpassReserved: boolean
 }
 
+/** The methods slice both account endpoints return alongside their own
+ * fields — everything applyMethodsResponse reads. */
+type MethodsResponseBody = {
+  providers?: string[]
+  providerDetails?: ConnectionProviderDetail[]
+  emailpassIdentifier?: string | null
+  emailpassPending?: boolean
+  emailpassUpdatedAt?: string | null
+  emailpassReserved?: boolean
+}
+
 /** The provider identity's photo with the provider mark pinned to its
  * corner — "this Google account", not just "Google". */
 function ProviderAvatar({
@@ -188,8 +199,7 @@ export function ConnectionsCard({ signIn, methods }: ConnectionsCardProps) {
       const data = (await response.json().catch(() => ({}))) as {
         errorCode?: PasswordErrorCode
         sentTo?: string
-        providers?: string[]
-      }
+      } & MethodsResponseBody
       if (!response.ok) {
         if (data.errorCode === 'email_identity_reserved') {
           // A retry can never succeed — flip the row into its persistent
@@ -231,8 +241,7 @@ export function ConnectionsCard({ signIn, methods }: ConnectionsCardProps) {
       })
       const data = (await response.json().catch(() => ({}))) as {
         errorCode?: DisconnectErrorCode
-        providers?: string[]
-      }
+      } & MethodsResponseBody
       if (!response.ok) {
         if (data.errorCode === 'provider_not_connected') {
           // Already gone (disconnected in another tab/session): reflect
@@ -427,6 +436,14 @@ export function ConnectionsCard({ signIn, methods }: ConnectionsCardProps) {
                       ? t('passwordNotSetShort')
                       : t('passwordNotSet', { email: signIn.email })}
                 </p>
+                {/* Same attribution the OAuth rows get. Gated on a usable
+                    password so the hint never claims a sign-in that can't
+                    happen (e.g. a pending minted identity). */}
+                {signIn.provider === 'email' && hasPassword && (
+                  <p className="mt-0.5 text-xs text-muted-foreground/80">
+                    {t('mostRecentSignIn')}
+                  </p>
+                )}
               </div>
               {!(state.emailpassReserved && !hasPassword) && (
                 <Button
