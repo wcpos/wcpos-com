@@ -454,7 +454,7 @@ export function ConnectionsCard({ signIn, methods }: ConnectionsCardProps) {
                   </span>{' '}
                   <button
                     type="button"
-                    className="font-medium text-foreground underline underline-offset-2 disabled:opacity-50"
+                    className="rounded-sm font-medium text-foreground underline underline-offset-2 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:opacity-50"
                     onClick={handleSendPasswordEmail}
                     disabled={sendingPasswordEmail || disconnecting}
                   >
