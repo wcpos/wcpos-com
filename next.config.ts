@@ -137,6 +137,11 @@ const nextConfig: NextConfig = {
     formats: ['image/avif', 'image/webp'],
   },
 
+  // React Compiler: build-time auto-memoization of client components
+  // (scroll story, checkout, account tables) — removes re-render work
+  // without hand-written useMemo/useCallback.
+  reactCompiler: true,
+
   // Enable PPR via cacheComponents (Next.js 16+)
   // With this enabled, all routes are dynamic by default
   // Use 'use cache' directive to opt into caching
