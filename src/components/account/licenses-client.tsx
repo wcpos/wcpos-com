@@ -960,9 +960,9 @@ export function LicensesClient({
                             </div>
                           ) : (
                             <Button
-                              variant="ghost"
+                              variant="ghost-destructive"
                               size="sm"
-                              className="shrink-0 text-destructive"
+                              className="shrink-0"
                               onClick={() =>
                                 setConfirmingDeactivate(machine.id)
                               }
@@ -1044,7 +1044,7 @@ export function LicensesClient({
                         </div>
                       </div>
                       <Button
-                        variant="ghost"
+                        variant="ghost-destructive"
                         size="sm"
                         onClick={() =>
                           handleRemoveDiscordMember(license.id, member.id)

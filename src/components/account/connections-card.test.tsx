@@ -71,6 +71,9 @@ describe('ConnectionsCard', () => {
       json: async () => ({
         sent: true,
         created: true,
+        // The exact identifier the reset email went to (may differ in casing
+        // from the customer record) — the inline state must show THIS.
+        sentTo: 'Ada@Gmail.com',
         providers: ['emailpass', 'google'],
         // The minted identity holds an unusable placeholder password until
         // the reset link is claimed — it must not unlock disconnects.
@@ -98,6 +101,127 @@ describe('ConnectionsCard', () => {
       screen.getByRole('button', { name: 'Set a password' })
     ).toBeInTheDocument()
     expect(screen.queryByText('Disconnect')).not.toBeInTheDocument()
+    // The toast vanishes; the row keeps saying where the link went, with a
+    // resend affordance.
+    expect(
+      screen.getByText('Setup link sent to Ada@Gmail.com — check your inbox.')
+    ).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: 'Send it again' })
+    ).toBeInTheDocument()
+  })
+
+  it('shows the link-sent state on load for a still-unclaimed identity', () => {
+    render(
+      <ConnectionsCard
+        signIn={googleSignIn}
+        methods={{ providers: ['emailpass', 'google'], emailpassPending: true }}
+      />
+    )
+
+    // A minted identity from an earlier visit: the link is out there.
+    expect(
+      screen.getByText('Setup link sent to ada@gmail.com — check your inbox.')
+    ).toBeInTheDocument()
+  })
+
+  it('renders which account each provider row is connected to', () => {
+    render(
+      <ConnectionsCard
+        signIn={googleSignIn}
+        methods={{
+          providers: ['github', 'google'],
+          providerDetails: [
+            {
+              provider: 'google',
+              email: 'ada@gmail.com',
+              name: 'Ada Lovelace',
+              avatar: 'https://lh3.example/photo.jpg',
+              handle: null,
+            },
+            {
+              provider: 'github',
+              email: 'ada@work.example',
+              name: 'Ada Lovelace',
+              avatar: 'https://avatars.example/u/1',
+              handle: 'adalove',
+            },
+          ],
+        }}
+      />
+    )
+
+    // "Google · Ada Lovelace" with the email on its own line.
+    expect(screen.getByText('· Ada Lovelace', { exact: false })).toBeInTheDocument()
+    expect(screen.getByText('ada@gmail.com')).toBeInTheDocument()
+    // GitHub prefers the handle over the display name.
+    expect(screen.getByText('· @adalove', { exact: false })).toBeInTheDocument()
+    expect(screen.getByText('ada@work.example')).toBeInTheDocument()
+    // The most recently used provider is attributed.
+    expect(screen.getByText('Most recent sign-in')).toBeInTheDocument()
+  })
+
+  it('explains a reserved email inline and drops the dead-end button (prop-driven)', () => {
+    render(
+      <ConnectionsCard
+        signIn={googleSignIn}
+        methods={{ providers: ['google'], emailpassReserved: true }}
+      />
+    )
+
+    expect(
+      screen.queryByRole('button', { name: 'Set a password' })
+    ).not.toBeInTheDocument()
+    expect(
+      screen.getByText('A password sign-in for ada@gmail.com already exists', {
+        exact: false,
+      })
+    ).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Email support' })).toHaveAttribute(
+      'href',
+      'mailto:support@wcpos.com'
+    )
+  })
+
+  it('flips into the reserved explanation when the send 409s', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: false,
+      json: async () => ({ errorCode: 'email_identity_reserved' }),
+    })
+
+    render(
+      <ConnectionsCard signIn={googleSignIn} methods={{ providers: ['google'] }} />
+    )
+
+    fireEvent.click(screen.getByRole('button', { name: 'Set a password' }))
+
+    // Persistent inline explanation, not a vanishing toast.
+    expect(
+      await screen.findByText(
+        'A password sign-in for ada@gmail.com already exists',
+        { exact: false }
+      )
+    ).toBeInTheDocument()
+    expect(toast.error).not.toHaveBeenCalled()
+    expect(
+      screen.queryByRole('button', { name: 'Set a password' })
+    ).not.toBeInTheDocument()
+  })
+
+  it('shows when the password was last changed', () => {
+    render(
+      <ConnectionsCard
+        signIn={googleSignIn}
+        methods={{
+          providers: ['emailpass', 'google'],
+          emailpassUpdatedAt: '2026-03-14T09:00:00.000Z',
+        }}
+      />
+    )
+
+    expect(
+      screen.getByText('Last changed March 2026')
+    ).toBeInTheDocument()
   })
 
   it('treats a pending emailpass identity as no password (prop-driven)', () => {

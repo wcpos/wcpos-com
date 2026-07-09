@@ -24,7 +24,10 @@ import { FormField } from '@/components/ui/form-field'
 import { Input } from '@/components/ui/input'
 import { Select } from '@/components/ui/select'
 import { Camera, ImagePlus, Trash2 } from 'lucide-react'
-import { ConnectionsCard } from '@/components/account/connections-card'
+import {
+  ConnectionsCard,
+  type ConnectionsCardProps,
+} from '@/components/account/connections-card'
 import { getConnectedAvatarUrlFromMetadata } from '@/lib/avatar'
 import { readAccountProfileMetadata } from '@/lib/customer-profile-metadata'
 import type { BillingDetails } from '@/lib/billing-profile'
@@ -47,9 +50,9 @@ interface ProfileEditFormProps {
   billingDetails: BillingDetails
   memberSince?: string
   connections?: {
-    signIn: { provider: 'google' | 'github' | 'email'; email: string }
+    signIn: ConnectionsCardProps['signIn']
     /** DB truth from the auth-methods endpoint; absent → read-only card. */
-    methods?: { providers: string[]; emailpassPending?: boolean } | null
+    methods?: ConnectionsCardProps['methods']
   }
 }
 
@@ -480,7 +483,10 @@ export function ProfileEditForm({
   }
 
   return (
-    <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,19rem)_1fr]">
+    // 2fr/3fr, not a fixed rail: the identity rail grows wide enough for the
+    // Connections rows (avatar + email on its own line + Disconnect), while
+    // the billing/address column stays the wider of the two at every viewport.
+    <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,2fr)_3fr]">
       {/* Identity rail: who you are + account-level settings. Everything
           here is either display-only or self-saving (language), so it lives
           outside the profile <form>. */}

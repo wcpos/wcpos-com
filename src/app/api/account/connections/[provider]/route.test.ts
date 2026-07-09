@@ -80,14 +80,42 @@ describe('DELETE /api/account/connections/[provider]', () => {
     expect(response.status).toBe(403)
   })
 
-  it('disconnects and scrubs the attribution metadata', async () => {
-    mockDisconnect.mockResolvedValueOnce({ providers: ['emailpass', 'github'] })
+  it('disconnects, scrubs the attribution metadata, and returns the summary', async () => {
+    mockDisconnect.mockResolvedValueOnce({
+      providers: ['emailpass', 'github'],
+      providerDetails: [
+        {
+          provider: 'github',
+          email: 'ada@example.com',
+          name: 'Ada Lovelace',
+          avatar: 'https://avatars.example/u/1',
+          handle: 'adalove',
+        },
+      ],
+      emailpassIdentifier: 'ada@example.com',
+      emailpassPending: false,
+      emailpassUpdatedAt: '2026-03-14T09:00:00.000Z',
+      emailpassReserved: false,
+    })
 
     const response = await callDelete('google')
 
     expect(response.status).toBe(200)
+    // The full re-summarized methods, so the card re-renders every row.
     expect(await response.json()).toEqual({
       providers: ['emailpass', 'github'],
+      providerDetails: [
+        {
+          provider: 'github',
+          email: 'ada@example.com',
+          name: 'Ada Lovelace',
+          avatar: 'https://avatars.example/u/1',
+          handle: 'adalove',
+        },
+      ],
+      emailpassPending: false,
+      emailpassUpdatedAt: '2026-03-14T09:00:00.000Z',
+      emailpassReserved: false,
     })
     expect(mockDisconnect).toHaveBeenCalledWith('google')
     expect(mockUpdateCustomer).toHaveBeenCalledWith({
@@ -99,7 +127,14 @@ describe('DELETE /api/account/connections/[provider]', () => {
   })
 
   it('still succeeds when the metadata scrub fails (identity already gone)', async () => {
-    mockDisconnect.mockResolvedValueOnce({ providers: ['emailpass'] })
+    mockDisconnect.mockResolvedValueOnce({
+      providers: ['emailpass'],
+      providerDetails: [],
+      emailpassIdentifier: 'ada@example.com',
+      emailpassPending: false,
+      emailpassUpdatedAt: null,
+      emailpassReserved: false,
+    })
     mockUpdateCustomer.mockRejectedValueOnce(new Error('metadata boom'))
 
     const response = await callDelete('google')

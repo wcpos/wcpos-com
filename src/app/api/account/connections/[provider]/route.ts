@@ -60,7 +60,7 @@ export async function DELETE(
   }
 
   try {
-    const { providers } = await disconnectCustomerAuthMethod(provider)
+    const methods = await disconnectCustomerAuthMethod(provider)
 
     // Scrub attribution metadata so the sign-in row stops naming the
     // provider. Best-effort: identity deletion already succeeded, and stale
@@ -73,7 +73,15 @@ export async function DELETE(
       apiLogger.warn`Disconnected ${provider} but metadata scrub failed: ${error}`
     }
 
-    return NextResponse.json({ providers })
+    // The full re-summarized methods, so the card re-renders every row
+    // (identity details included) from one response.
+    return NextResponse.json({
+      providers: methods.providers,
+      providerDetails: methods.providerDetails,
+      emailpassPending: methods.emailpassPending,
+      emailpassUpdatedAt: methods.emailpassUpdatedAt,
+      emailpassReserved: methods.emailpassReserved,
+    })
   } catch (error) {
     if (error instanceof AuthMethodError) {
       if (error.code === 'last_sign_in_method') {

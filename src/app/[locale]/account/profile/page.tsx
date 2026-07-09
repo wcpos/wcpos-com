@@ -69,7 +69,10 @@ async function ProfileContent({ locale }: { locale: string }) {
         methods: authMethods
           ? {
               providers: authMethods.providers,
+              providerDetails: authMethods.providerDetails,
               emailpassPending: authMethods.emailpassPending,
+              emailpassUpdatedAt: authMethods.emailpassUpdatedAt,
+              emailpassReserved: authMethods.emailpassReserved,
             }
           : null,
       }}

@@ -95,8 +95,19 @@ describe('POST /api/account/password', () => {
     mockEnsureEmailpass.mockResolvedValueOnce({
       created: true,
       providers: ['emailpass', 'google'],
+      providerDetails: [
+        {
+          provider: 'google',
+          email: 'ada@example.com',
+          name: 'Ada Lovelace',
+          avatar: null,
+          handle: null,
+        },
+      ],
       emailpassIdentifier: 'Ada@Example.com',
       emailpassPending: true,
+      emailpassUpdatedAt: null,
+      emailpassReserved: false,
     })
 
     const response = await POST(makeRequest())
@@ -106,8 +117,21 @@ describe('POST /api/account/password', () => {
     expect(await response.json()).toEqual({
       sent: true,
       created: true,
+      // The card's "link sent to …" state shows exactly this address.
+      sentTo: 'Ada@Example.com',
       providers: ['emailpass', 'google'],
+      providerDetails: [
+        {
+          provider: 'google',
+          email: 'ada@example.com',
+          name: 'Ada Lovelace',
+          avatar: null,
+          handle: null,
+        },
+      ],
       emailpassPending: true,
+      emailpassUpdatedAt: null,
+      emailpassReserved: false,
     })
   })
 
@@ -118,7 +142,11 @@ describe('POST /api/account/password', () => {
 
     expect(response.status).toBe(200)
     expect(mockRequestPasswordReset).toHaveBeenCalledWith('ada@example.com')
-    expect(await response.json()).toEqual({ sent: true, created: false })
+    expect(await response.json()).toEqual({
+      sent: true,
+      created: false,
+      sentTo: 'ada@example.com',
+    })
   })
 
   it('maps a reserved email identity to 409', async () => {
