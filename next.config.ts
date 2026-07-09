@@ -27,12 +27,13 @@ const localePattern = locales.join("|");
 const CSP_REPORT_PATH = "/api/csp-report";
 const cspReportOnly = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://js.stripe.com https://www.paypal.com https://www.sandbox.paypal.com https://www.paypalobjects.com https://ph.wcpos.com https://analytics.wcpos.com https://challenges.cloudflare.com",
+  // btcpay.wcpos.com: the Bitcoin checkout modal (script + invoice iframe).
+  "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://js.stripe.com https://www.paypal.com https://www.sandbox.paypal.com https://www.paypalobjects.com https://ph.wcpos.com https://analytics.wcpos.com https://challenges.cloudflare.com https://btcpay.wcpos.com",
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' blob: data: https:",
   "font-src 'self' data:",
   "connect-src 'self' https://api.stripe.com https://m.stripe.com https://m.stripe.network https://www.paypal.com https://www.sandbox.paypal.com https://ph.wcpos.com https://analytics.wcpos.com https://*.sentry.io https://*.ingest.sentry.io https://*.ingest.us.sentry.io https://challenges.cloudflare.com",
-  "frame-src https://js.stripe.com https://hooks.stripe.com https://m.stripe.network https://www.paypal.com https://www.sandbox.paypal.com https://*.widgetbot.io https://discord.com https://challenges.cloudflare.com",
+  "frame-src https://js.stripe.com https://hooks.stripe.com https://m.stripe.network https://www.paypal.com https://www.sandbox.paypal.com https://*.widgetbot.io https://discord.com https://challenges.cloudflare.com https://btcpay.wcpos.com",
   "object-src 'none'",
   "base-uri 'self'",
   // discord.com: the licence-card Connect form posts to /api/discord/claim,
