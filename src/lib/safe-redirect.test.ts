@@ -43,6 +43,15 @@ describe('sanitizeRedirectPath', () => {
     expect(sanitizeRedirectPath('/fr\n/evil.example')).toBe('/account')
   })
 
+  // Stripping "/fr" off "/fr//evil.example" re-derives "//evil.example", a
+  // protocol-relative URL. The guard has to run on what is returned, not only
+  // on what came in.
+  it('rejects a protocol-relative URL smuggled behind a locale prefix', () => {
+    expect(sanitizeRedirectPath('/fr//evil.example')).toBe('/account')
+    expect(sanitizeRedirectPath('/de/\\evil.example')).toBe('/account')
+    expect(sanitizeRedirectPath('/ko//evil.example', '/')).toBe('/')
+  })
+
   it('strips a leading locale prefix so the locale router does not double-prefix', () => {
     expect(sanitizeRedirectPath('/fr/account')).toBe('/account')
     expect(sanitizeRedirectPath('/de/pro/checkout')).toBe('/pro/checkout')
@@ -95,5 +104,41 @@ describe('navigateAfterAuthChange', () => {
     expect(assign).toHaveBeenCalledWith('/fr/pro/checkout')
 
     vi.unstubAllGlobals()
+  })
+
+  // The end-to-end property the sanitizer exists to guarantee: whatever an
+  // attacker puts in ?redirect=, the URL handed to the browser must resolve
+  // back to our own origin.
+  it('never navigates off-origin for any attacker-supplied redirect', () => {
+    const hostile = [
+      'https://evil.example',
+      '//evil.example',
+      '/\\evil.example',
+      '/\n/evil.example',
+      '/\r\n//evil.example',
+      '/\t//evil.example',
+      '/fr//evil.example',
+      '/de/\\evil.example',
+      '/ja/\n//evil.example',
+      'javascript:alert(1)',
+    ]
+
+    for (const locale of ['en', 'fr'] as const) {
+      for (const value of hostile) {
+        const assign = vi.fn()
+        vi.stubGlobal('location', { assign } as unknown as Location)
+
+        navigateAfterAuthChange(sanitizeRedirectPath(value), locale)
+
+        const target = assign.mock.calls[0][0] as string
+        // Resolve exactly as the browser would, against our own origin.
+        const resolved = new URL(target, 'https://wcpos.com')
+        expect(resolved.origin, `${value} @ ${locale} -> ${target}`).toBe(
+          'https://wcpos.com'
+        )
+
+        vi.unstubAllGlobals()
+      }
+    }
   })
 })
