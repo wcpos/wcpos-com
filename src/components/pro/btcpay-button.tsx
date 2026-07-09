@@ -9,6 +9,7 @@ import {
   btcpayOriginFromCheckoutLink,
   hideBtcpayModal,
   invoiceIdFromCheckoutLink,
+  isExpiredStatus,
   isPaidStatus,
   isPaymentIssueStatus,
   openBtcpayModal,
@@ -183,6 +184,12 @@ export function BTCPayButton({ cartId, checkoutLink, onFailure }: BTCPayButtonPr
           // completes the order, or explains an invoice that went Invalid.
           handedOff.current = true
           goToProcessing()
+          return
+        }
+        if (event.kind === 'status' && isExpiredStatus(event.status)) {
+          // This invoice can never be paid — forget it so the next click
+          // mints a fresh session instead of reopening a dead invoice.
+          invoiceRef.current = null
           return
         }
         if (event.kind === 'close') {

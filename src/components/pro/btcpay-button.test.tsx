@@ -281,6 +281,33 @@ describe('BTCPayButton', () => {
     )
   })
 
+  it('mints a fresh session after the invoice expires in the modal', async () => {
+    routeFetch()
+    const modal = modalOpensAndCaptures()
+
+    render(<BTCPayButton cartId="cart_1" onFailure={() => {}} />)
+    fireEvent.click(screen.getByRole('button', { name: 'Pay with Bitcoin' }))
+    await waitFor(() => expect(mockOpenBtcpayModal).toHaveBeenCalledTimes(1))
+
+    modal.emit({ kind: 'status', invoiceId: 'inv_test1', status: 'Expired' })
+    modal.emit({ kind: 'close' })
+    await waitFor(() =>
+      expect(
+        screen.getByRole('button', { name: 'Pay with Bitcoin' })
+      ).not.toBeDisabled()
+    )
+
+    fireEvent.click(screen.getByRole('button', { name: 'Pay with Bitcoin' }))
+
+    // A dead invoice must not be reopened — a second session POST happens.
+    await waitFor(() => {
+      const sessionPosts = mockFetch.mock.calls.filter(([url]) =>
+        String(url).includes('/api/store/cart/payment-sessions')
+      )
+      expect(sessionPosts).toHaveLength(2)
+    })
+  })
+
   it('reuses the same invoice when the customer clicks again after closing', async () => {
     routeFetch()
     const modal = modalOpensAndCaptures()

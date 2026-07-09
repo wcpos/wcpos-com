@@ -160,3 +160,9 @@ const PAYMENT_ISSUE_STATUSES = new Set(['invalid'])
 export function isPaymentIssueStatus(status: string): boolean {
   return PAYMENT_ISSUE_STATUSES.has(status.toLowerCase())
 }
+
+/** An expired invoice can never be paid — the button must mint a fresh
+ * session on the next attempt instead of reopening it. */
+export function isExpiredStatus(status: string): boolean {
+  return status.toLowerCase() === 'expired'
+}
