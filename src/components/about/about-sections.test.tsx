@@ -163,9 +163,11 @@ describe('FounderLetter', () => {
     expect(
       screen.getByText(/Hi — I'm Paul\. I built WCPOS\./)
     ).toBeInTheDocument()
+    // next/image rewrites src through the optimizer (/_next/image?url=…), so
+    // assert on the encoded original path rather than the literal URL.
     expect(screen.getByRole('img')).toHaveAttribute(
       'src',
-      '/paul-urban-locavore.jpg'
+      expect.stringContaining(encodeURIComponent('/paul-urban-locavore.jpg'))
     )
   })
 
