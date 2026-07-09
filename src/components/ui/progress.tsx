@@ -12,6 +12,12 @@ export interface ProgressProps
   value: number
   max?: number
   size?: 'sm' | 'md'
+  /**
+   * Fill register. `brand` is the red default; `positive` is the green
+   * semantic fill for "healthy amount remaining" meters (licence support
+   * runway), matching the toneDot.positive family.
+   */
+  tone?: 'brand' | 'positive'
 }
 
 function Progress({
@@ -19,6 +25,7 @@ function Progress({
   value,
   max = 100,
   size = 'sm',
+  tone = 'brand',
   ...props
 }: ProgressProps) {
   const pct = max > 0 ? Math.min(100, Math.max(0, (value / max) * 100)) : 0
@@ -36,7 +43,10 @@ function Progress({
       {...props}
     >
       <div
-        className="h-full rounded-full bg-primary transition-all"
+        className={cn(
+          'h-full rounded-full transition-all',
+          tone === 'positive' ? 'bg-green-500' : 'bg-primary',
+        )}
         style={{ width: `${pct}%` }}
       />
     </div>

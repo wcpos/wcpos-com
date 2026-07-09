@@ -6,11 +6,14 @@ import { Card } from '@/components/ui/card'
 import { DividedList, Row } from '@/components/ui/row'
 import { EmptyState } from '@/components/ui/empty-state'
 import { CodeRef } from '@/components/ui/code-ref'
+import { StatusBadge } from '@/components/ui/status-badge'
 import { TextLink } from '@/components/ui/text-link'
 import { formatOrderAmount } from '@/lib/order-display'
 import { formatDateForLocale } from '@/lib/date-format'
 import { receiptDownloadHref } from '@/lib/receipt-download'
 import { localizeKnownProductTitle } from '@/lib/product-title-display'
+import { presentOrderStatus } from '@/lib/order-status-presentation'
+import type { OrderStatusLabels } from '@/lib/order-status'
 
 /**
  * A licence an order produced, ready for display. The key is ALREADY masked
@@ -31,6 +34,8 @@ export interface OrderHistoryOrder {
   createdAt: string
   itemCount: number
   displayStatus: string
+  /** Semantic status register for the status pill; absent/null → neutral. */
+  statusKey?: keyof OrderStatusLabels | null
   total: {
     amount: number
     currencyCode: string
@@ -117,7 +122,7 @@ export function OrderHistoryList({ orders, locale }: OrderHistoryListProps) {
                 ))}
               </div>
               <div className="flex flex-wrap items-center gap-4">
-                <div className="text-right">
+                <div className="flex flex-col items-end gap-1">
                   <p className="font-medium tabular-nums">
                     {formatOrderAmount(
                       order.total.amount,
@@ -125,9 +130,9 @@ export function OrderHistoryList({ orders, locale }: OrderHistoryListProps) {
                       locale
                     )}
                   </p>
-                  <p className="text-sm text-muted-foreground">
+                  <StatusBadge tone={presentOrderStatus(order.statusKey ?? null)}>
                     {order.displayStatus}
-                  </p>
+                  </StatusBadge>
                 </div>
                 <div className="flex items-center gap-2">
                   <Button asChild variant="outline" size="sm">

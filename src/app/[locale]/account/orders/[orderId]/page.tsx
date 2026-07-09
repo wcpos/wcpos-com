@@ -15,6 +15,7 @@ import { DividedList, Row } from '@/components/ui/row'
 import { PageHeader } from '@/components/ui/page-header'
 import { Skeleton } from '@/components/ui/skeleton'
 import { presentLicenseStatus } from '@/lib/license-status-presentation'
+import { presentOrderStatus } from '@/lib/order-status-presentation'
 import { receiptDownloadHref } from '@/lib/receipt-download'
 import { localizeKnownProductTitle } from '@/lib/product-title-display'
 import type { Metadata } from 'next'
@@ -119,17 +120,20 @@ async function OrderDetailContent({
               <span className="text-muted-foreground">{t('dateLabel')}</span>
               <span>{formatDateForLocale(orderDetail.createdAt, locale)}</span>
             </div>
-            <div className="flex justify-between">
+            <div className="flex items-center justify-between">
               <span className="text-muted-foreground">{t('statusLabel')}</span>
-              <span>{orderDetail.displayStatus}</span>
+              <StatusBadge tone={presentOrderStatus(orderDetail.statusKey)}>
+                {orderDetail.displayStatus}
+              </StatusBadge>
             </div>
             <div className="flex justify-between">
               <span className="text-muted-foreground">{t('emailLabel')}</span>
               <span>{orderDetail.email}</span>
             </div>
-            <div className="flex justify-between font-medium pt-2 border-t">
+            {/* Receipt-style rule before the total, echoing the PDF receipt. */}
+            <div className="flex justify-between border-t border-dashed pt-3 text-base font-semibold">
               <span>{t('totalLabel')}</span>
-              <span>
+              <span className="tabular-nums">
                 {formatOrderAmount(
                   orderDetail.total.amount,
                   orderDetail.total.currencyCode,

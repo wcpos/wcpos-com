@@ -9,7 +9,11 @@ import {
   type LicenseReference,
 } from './licenses'
 import { maskLicenseKey } from './order-display'
-import { getOrderDisplayStatus, type OrderStatusLabels } from './order-status'
+import {
+  getOrderDisplayStatus,
+  getOrderStatusLabelKey,
+  type OrderStatusLabels,
+} from './order-status'
 import {
   billingDetailsFromCustomer,
   type MedusaCustomerAddress,
@@ -29,6 +33,8 @@ export interface AccountOrderListRowFact {
   createdAt: string
   itemCount: number
   displayStatus: string
+  /** Semantic status register for the status pill; null → neutral. */
+  statusKey: keyof OrderStatusLabels | null
   total: AccountOrderMoneyFact
   licenses: Array<{
     maskedKey: string
@@ -45,6 +51,8 @@ export interface AccountOrderDetailFact {
   createdAt: string
   email: string
   displayStatus: string
+  /** Semantic status register for the status pill; null → neutral. */
+  statusKey: keyof OrderStatusLabels | null
   total: AccountOrderMoneyFact
   items: Array<{
     id: string
@@ -221,6 +229,7 @@ export function projectAccountOrderListRow(
     createdAt: legacyCreatedAt(order),
     itemCount: order.items.length,
     displayStatus: getOrderDisplayStatus(order, statusLabels),
+    statusKey: getOrderStatusLabelKey(order),
     total: money(order.total, order.currency_code),
     licenses,
   }
@@ -261,6 +270,7 @@ export function projectAccountOrderDetail(
     createdAt: legacyCreatedAt(order),
     email: order.email,
     displayStatus: getOrderDisplayStatus(order, statusLabels),
+    statusKey: getOrderStatusLabelKey(order),
     total: money(order.total, order.currency_code),
     items: order.items.map((item) => projectItemTotal(item, order.currency_code)),
     licenseEntitlements: resolvedLicenses.map((license) => ({

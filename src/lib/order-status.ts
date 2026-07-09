@@ -32,6 +32,21 @@ const PAYMENT_STATUS_LABEL_KEYS: Record<string, keyof OrderStatusLabels> = {
   not_paid: 'pending',
 }
 
+/**
+ * Resolve the same status the display label uses, but as the LABEL KEY —
+ * for callers that need a semantic register (status pill tone) alongside the
+ * localized label. Null when the raw status has no mapping (the label then
+ * falls back to a humanized raw string).
+ */
+export function getOrderStatusLabelKey(order: {
+  status?: string
+  payment_status?: string
+}): keyof OrderStatusLabels | null {
+  const raw = (order.payment_status?.trim() || order.status || '').trim()
+  if (!raw) return 'unknown'
+  return PAYMENT_STATUS_LABEL_KEYS[raw.toLowerCase()] ?? null
+}
+
 function humanizeStatus(status: string, labels: OrderStatusLabels): string {
   const trimmed = status.trim()
   if (!trimmed) return labels.unknown

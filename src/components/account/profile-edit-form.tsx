@@ -319,27 +319,93 @@ export function ProfileEditForm({
   }
 
   return (
-    <div className="space-y-6">
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">{t('languageTitle')}</CardTitle>
-          <CardDescription>{t('languageHint')}</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Select
-            aria-label={t('languageTitle')}
-            value={locale}
-            onChange={handleLanguageChange}
-            className="max-w-xs"
-          >
-            {locales.map((loc) => (
-              <option key={loc} value={loc}>
-                {localeNames[loc]}
-              </option>
-            ))}
-          </Select>
-        </CardContent>
-      </Card>
+    <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,19rem)_1fr]">
+      {/* Identity rail: who you are + account-level settings. Everything
+          here is either display-only or self-saving (language), so it lives
+          outside the profile <form>. */}
+      <div className="space-y-6">
+        <Card>
+          <CardContent className="flex flex-col items-center gap-1 pt-6 text-center">
+            <Avatar className="h-16 w-16">
+              {avatarUrl ? (
+                <AvatarImage src={avatarUrl} alt={t('avatarAlt')} />
+              ) : null}
+              <AvatarFallback>{initials}</AvatarFallback>
+            </Avatar>
+            {/* Live preview: reflects the name fields as they are edited. */}
+            <p className="mt-2 font-semibold">
+              {[firstName, lastName].filter(Boolean).join(' ') || email}
+            </p>
+            <p className="text-sm text-muted-foreground">{email}</p>
+            {memberSince && (
+              <Badge variant="muted-tint" className="mt-2">
+                {t('memberSince')} {memberSince}
+              </Badge>
+            )}
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg">{t('languageTitle')}</CardTitle>
+            <CardDescription>{t('languageHint')}</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Select
+              aria-label={t('languageTitle')}
+              value={locale}
+              onChange={handleLanguageChange}
+            >
+              {locales.map((loc) => (
+                <option key={loc} value={loc}>
+                  {localeNames[loc]}
+                </option>
+              ))}
+            </Select>
+          </CardContent>
+        </Card>
+
+        {connections && (
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg">{t('connectionsTitle')}</CardTitle>
+              <CardDescription>{t('connectionsHint')}</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-1">
+              <div className="flex items-center gap-4 py-3">
+                <span className="flex h-10 w-10 flex-none items-center justify-center rounded-md border">
+                  {connections.signIn.provider === 'google' ? (
+                    <GoogleMark className="h-5 w-5" />
+                  ) : connections.signIn.provider === 'github' ? (
+                    <GitHubMark className="h-5 w-5" />
+                  ) : (
+                    <Mail className="h-5 w-5 text-muted-foreground" />
+                  )}
+                </span>
+                <div className="min-w-0 flex-1">
+                  <p className="font-medium leading-none">
+                    {connections.signIn.provider === 'google'
+                      ? t('googleProvider')
+                      : connections.signIn.provider === 'github'
+                        ? t('githubProvider')
+                        : t('emailProvider')}
+                  </p>
+                  <p className="mt-1 break-all text-sm text-muted-foreground">
+                    {connections.signIn.provider === 'google'
+                      ? t('googleDescription')
+                      : connections.signIn.provider === 'github'
+                        ? t('githubDescription')
+                        : t('emailDescription')}
+                  </p>
+                </div>
+              </div>
+              <Badge variant="success" className="break-all">
+                {t('connectedAs', { account: connections.signIn.email })}
+              </Badge>
+            </CardContent>
+          </Card>
+        )}
+      </div>
 
       <form className="space-y-6" onSubmit={handleSubmit}>
       <Card>
@@ -506,49 +572,6 @@ export function ProfileEditForm({
         </CardContent>
       </Card>
 
-      {connections && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">{t('connectionsTitle')}</CardTitle>
-            <CardDescription>{t('connectionsHint')}</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-1">
-            <div className="flex items-center gap-4 py-3">
-              <span className="flex h-10 w-10 flex-none items-center justify-center rounded-md border">
-                {connections.signIn.provider === 'google' ? (
-                  <GoogleMark className="h-5 w-5" />
-                ) : connections.signIn.provider === 'github' ? (
-                  <GitHubMark className="h-5 w-5" />
-                ) : (
-                  <Mail className="h-5 w-5 text-muted-foreground" />
-                )}
-              </span>
-              <div className="min-w-0 flex-1">
-                <p className="font-medium leading-none">
-                  {connections.signIn.provider === 'google'
-                    ? t('googleProvider')
-                    : connections.signIn.provider === 'github'
-                      ? t('githubProvider')
-                      : t('emailProvider')}
-                </p>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  {connections.signIn.provider === 'google'
-                    ? t('googleDescription')
-                    : connections.signIn.provider === 'github'
-                      ? t('githubDescription')
-                      : t('emailDescription')}
-                </p>
-              </div>
-              <div className="flex flex-none items-center gap-2">
-                <Badge variant="success">
-                  {t('connectedAs', { account: connections.signIn.email })}
-                </Badge>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      )}
-
       {error && (
         <Alert tone="critical" role="alert">
           {error}
@@ -561,15 +584,11 @@ export function ProfileEditForm({
         </Alert>
       )}
 
-      <div className="flex items-center justify-between gap-4">
+      {/* Save bar: a quiet card-footer strip closing the form column. */}
+      <div className="flex items-center justify-end gap-4 rounded-md border bg-card p-4 shadow-xs">
         <Button type="submit" disabled={saving}>
           {saving ? t('saving') : t('save')}
         </Button>
-        {memberSince && (
-          <span className="text-sm text-muted-foreground">
-            {t('memberSince')} {memberSince}
-          </span>
-        )}
       </div>
       </form>
     </div>
