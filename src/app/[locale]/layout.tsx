@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
-import { SpeedInsights } from '@vercel/speed-insights/next'
+import { ClientSpeedInsights } from '@/components/client-speed-insights'
 import { NextIntlClientProvider } from 'next-intl'
 import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server'
 import { ThemeProvider } from 'next-themes'
@@ -115,7 +115,7 @@ export default async function LocaleLayout({
         </ThemeProvider>
         {/* Real-user Core Web Vitals (Vercel Speed Insights). Cookieless and
             anonymous, so it is not gated behind the analytics consent. */}
-        <SpeedInsights />
+        <ClientSpeedInsights />
       </body>
     </html>
   )
