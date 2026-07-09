@@ -25,19 +25,21 @@ describe('getCustomerAuthMethods', () => {
     getImpersonation.mockResolvedValue(null)
   })
 
-  it('parses providers and the emailpass identifier', async () => {
+  it('parses providers, the emailpass identifier, and the pending flag', async () => {
     mockFetch.mockResolvedValueOnce({
       ok: true,
       status: 200,
       json: async () => ({
         providers: ['emailpass', 'google'],
         emailpass_identifier: 'Ada@Example.com',
+        emailpass_pending: true,
       }),
     })
 
     await expect(getCustomerAuthMethods()).resolves.toEqual({
       providers: ['emailpass', 'google'],
       emailpassIdentifier: 'Ada@Example.com',
+      emailpassPending: true,
     })
     expect(mockFetch).toHaveBeenCalledWith(
       'https://medusa.test/store/customers/me/auth-methods',

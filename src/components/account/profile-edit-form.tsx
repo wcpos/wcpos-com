@@ -49,7 +49,7 @@ interface ProfileEditFormProps {
   connections?: {
     signIn: { provider: 'google' | 'github' | 'email'; email: string }
     /** DB truth from the auth-methods endpoint; absent → read-only card. */
-    methods?: { providers: string[] } | null
+    methods?: { providers: string[]; emailpassPending?: boolean } | null
   }
 }
 

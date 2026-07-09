@@ -58,13 +58,16 @@ describe('ConnectionsCard', () => {
     expect(screen.getByRole('button', { name: 'Disconnect' })).toBeInTheDocument()
   })
 
-  it('sends the password email and flips the row to "Change password"', async () => {
+  it('sends the password email; a pending identity stays "Set a password" with no disconnect', async () => {
     mockFetch.mockResolvedValueOnce({
       ok: true,
       json: async () => ({
         sent: true,
         created: true,
         providers: ['emailpass', 'google'],
+        // The minted identity holds an unusable placeholder password until
+        // the reset link is claimed — it must not unlock disconnects.
+        emailpassPending: true,
       }),
     })
 
@@ -85,10 +88,23 @@ describe('ConnectionsCard', () => {
       )
     })
     expect(
-      await screen.findByRole('button', { name: 'Change password' })
+      screen.getByRole('button', { name: 'Set a password' })
     ).toBeInTheDocument()
-    // A password now exists, so disconnect becomes available.
-    expect(screen.getByRole('button', { name: 'Disconnect' })).toBeInTheDocument()
+    expect(screen.queryByText('Disconnect')).not.toBeInTheDocument()
+  })
+
+  it('treats a pending emailpass identity as no password (prop-driven)', () => {
+    render(
+      <ConnectionsCard
+        signIn={googleSignIn}
+        methods={{ providers: ['emailpass', 'google'], emailpassPending: true }}
+      />
+    )
+
+    expect(
+      screen.getByRole('button', { name: 'Set a password' })
+    ).toBeInTheDocument()
+    expect(screen.queryByText('Disconnect')).not.toBeInTheDocument()
   })
 
   it('confirms before disconnecting, then removes the provider row', async () => {

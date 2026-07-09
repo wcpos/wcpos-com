@@ -29,8 +29,10 @@ export interface ConnectionsCardProps {
    * DB truth from GET /store/customers/me/auth-methods (may include
    * 'emailpass'). Absent when the backend doesn't expose the endpoint yet —
    * the card then degrades to the metadata-derived read-only display.
+   * `emailpassPending` marks an emailpass identity whose reset link hasn't
+   * been claimed: connected, but not yet a usable sign-in method.
    */
-  methods?: { providers: string[] } | null
+  methods?: { providers: string[]; emailpassPending?: boolean } | null
 }
 
 type OAuthProvider = 'google' | 'github'
@@ -67,6 +69,9 @@ export function ConnectionsCard({ signIn, methods }: ConnectionsCardProps) {
   const [providers, setProviders] = useState<string[] | null>(
     methods?.providers ?? null
   )
+  const [emailpassPending, setEmailpassPending] = useState(
+    methods?.emailpassPending === true
+  )
   const [confirmProvider, setConfirmProvider] = useState<OAuthProvider | null>(
     null
   )
@@ -83,6 +88,7 @@ export function ConnectionsCard({ signIn, methods }: ConnectionsCardProps) {
       const data = (await response.json().catch(() => ({}))) as {
         errorCode?: PasswordErrorCode
         providers?: string[]
+        emailpassPending?: boolean
       }
       if (!response.ok) {
         toast.error(
@@ -96,7 +102,10 @@ export function ConnectionsCard({ signIn, methods }: ConnectionsCardProps) {
         )
         return
       }
-      if (Array.isArray(data.providers)) setProviders(data.providers)
+      if (Array.isArray(data.providers)) {
+        setProviders(data.providers)
+        setEmailpassPending(data.emailpassPending === true)
+      }
       toast.success(t('passwordEmailSent'))
     } catch {
       toast.error(t('apiErrors.password_email_failed'))
@@ -177,10 +186,16 @@ export function ConnectionsCard({ signIn, methods }: ConnectionsCardProps) {
   const connectedOAuth = OAUTH_PROVIDERS.filter((provider) =>
     providers.includes(provider)
   )
-  const hasPassword = providers.includes('emailpass')
+  // A pending emailpass identity (reset link sent, not yet claimed) is not a
+  // password the customer can sign in with.
+  const hasPassword = providers.includes('emailpass') && !emailpassPending
   // Server-guarded too; hiding the action avoids offering a disconnect that
-  // can only fail with "set a password first".
-  const canDisconnect = providers.length > 1
+  // can only fail with "set a password first". The guard counts USABLE
+  // methods, so a pending emailpass identity doesn't unlock disconnects.
+  const usableProviders = providers.filter(
+    (provider) => provider !== 'emailpass' || hasPassword
+  )
+  const canDisconnect = usableProviders.length > 1
 
   return (
     <Card>

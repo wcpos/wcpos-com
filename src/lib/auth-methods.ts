@@ -24,6 +24,13 @@ export interface AuthMethods {
    * historical identities.
    */
   emailpassIdentifier: string | null
+  /**
+   * True while a minted emailpass identity still holds its unusable
+   * placeholder password (the reset link hasn't been claimed). A pending
+   * identity is connected but NOT a usable sign-in method — the backend's
+   * last-method disconnect guard ignores it, and so must the UI.
+   */
+  emailpassPending: boolean
 }
 
 /** Message codes the Medusa endpoints surface (MedusaError messages). */
@@ -88,6 +95,7 @@ async function authMethodsFetch(
 function parseAuthMethods(body: {
   providers?: unknown
   emailpass_identifier?: unknown
+  emailpass_pending?: unknown
 }): AuthMethods {
   return {
     providers: Array.isArray(body.providers)
@@ -99,6 +107,7 @@ function parseAuthMethods(body: {
       typeof body.emailpass_identifier === 'string'
         ? body.emailpass_identifier
         : null,
+    emailpassPending: body.emailpass_pending === true,
   }
 }
 

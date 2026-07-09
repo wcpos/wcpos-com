@@ -61,7 +61,12 @@ async function ProfileContent({ locale }: { locale: string }) {
       memberSince={formatDateForLocale(customer.created_at, locale)}
       connections={{
         signIn: { provider: signInProvider, email: customer.email },
-        methods: authMethods ? { providers: authMethods.providers } : null,
+        methods: authMethods
+          ? {
+              providers: authMethods.providers,
+              emailpassPending: authMethods.emailpassPending,
+            }
+          : null,
       }}
     />
   )

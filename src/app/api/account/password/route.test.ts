@@ -96,6 +96,7 @@ describe('POST /api/account/password', () => {
       created: true,
       providers: ['emailpass', 'google'],
       emailpassIdentifier: 'Ada@Example.com',
+      emailpassPending: true,
     })
 
     const response = await POST(makeRequest())
@@ -106,6 +107,7 @@ describe('POST /api/account/password', () => {
       sent: true,
       created: true,
       providers: ['emailpass', 'google'],
+      emailpassPending: true,
     })
   })
 

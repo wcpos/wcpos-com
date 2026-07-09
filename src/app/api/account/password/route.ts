@@ -71,7 +71,12 @@ export async function POST(request: Request) {
     return NextResponse.json({
       sent: true,
       created: ensured?.created ?? false,
-      ...(ensured ? { providers: ensured.providers } : {}),
+      ...(ensured
+        ? {
+            providers: ensured.providers,
+            emailpassPending: ensured.emailpassPending,
+          }
+        : {}),
     })
   } catch (error) {
     if (

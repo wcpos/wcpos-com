@@ -396,12 +396,19 @@ const server = createServer(async (req, res) => {
     if (!auth) return sendJson(res, 401, { message: 'Unauthorized' })
     // Fixture personas predate the seeding: default to emailpass-only.
     auth.persona.authProviders ??= new Set(['emailpass'])
+    // A minted-but-unclaimed emailpass identity: connected, not usable.
+    auth.persona.emailpassPending ??= false
     const providersOf = () => [...auth.persona.authProviders].sort()
+    const usableCount = () =>
+      providersOf().filter(
+        (name) => name !== 'emailpass' || !auth.persona.emailpassPending
+      ).length
     const summary = () => ({
       providers: providersOf(),
       emailpass_identifier: auth.persona.authProviders.has('emailpass')
         ? (auth.persona.customer?.email ?? null)
         : null,
+      emailpass_pending: auth.persona.emailpassPending,
     })
     const provider = authMethodMatch[1]
 
@@ -411,6 +418,7 @@ const server = createServer(async (req, res) => {
     if (provider === 'emailpass' && method === 'POST') {
       const created = !auth.persona.authProviders.has('emailpass')
       auth.persona.authProviders.add('emailpass')
+      if (created) auth.persona.emailpassPending = true
       return sendJson(res, created ? 201 : 200, { created, ...summary() })
     }
     if (provider && method === 'DELETE') {
@@ -420,7 +428,8 @@ const server = createServer(async (req, res) => {
       if (!auth.persona.authProviders.has(provider)) {
         return sendJson(res, 404, { message: 'provider_not_connected' })
       }
-      if (auth.persona.authProviders.size <= 1) {
+      // Mirrors the real guard: only USABLE remaining methods count.
+      if (usableCount() <= 1) {
         return sendJson(res, 400, { message: 'last_sign_in_method' })
       }
       auth.persona.authProviders.delete(provider)
