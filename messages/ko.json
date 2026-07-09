@@ -1624,10 +1624,7 @@
     },
     "discord": {
       "title": "사람과 직접 이야기하고 싶으신가요?",
-      "subtitle": "매장 운영자와 팀이 함께하는 실시간 Discord 커뮤니티에 참여하세요.",
-      "loadChat": "실시간 채팅 불러오기",
-      "embedNote": "실시간 채팅은 Discord에서 임베드됩니다. 불러오면 브라우저가 Discord에 연결됩니다.",
-      "openInDiscord": "또는 새 탭에서 Discord 열기"
+      "subtitle": "매장 운영자와 팀이 함께하는 실시간 Discord 커뮤니티에 참여하세요."
     }
   },
   "compare": {

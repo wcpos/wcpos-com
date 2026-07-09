@@ -21,8 +21,4 @@ test('support page answers a question and shows Discord', async ({ page }) => {
   await expect(page.getByText('How do I print receipts?')).toBeVisible()
   await expect(page.getByText(/Settings → Printing/)).toBeVisible()
   await expect(page.getByRole('heading', { name: /talk to a human/i })).toBeVisible()
-  // The Discord embed is behind a click-to-load facade — the widget itself
-  // (third-party iframe) must NOT mount until requested.
-  await expect(page.getByRole('button', { name: /load live chat/i })).toBeVisible()
-  await expect(page.locator('iframe[src*="widgetbot"]')).toHaveCount(0)
 })

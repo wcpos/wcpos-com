@@ -1624,10 +1624,7 @@
     },
     "discord": {
       "title": "人と直接話したいですか？",
-      "subtitle": "店舗オーナーとチームが参加するライブDiscordコミュニティに参加してください。",
-      "loadChat": "ライブチャットを読み込む",
-      "embedNote": "ライブチャットはDiscordから埋め込まれています。読み込むとブラウザがDiscordに接続します。",
-      "openInDiscord": "または新しいタブでDiscordを開く"
+      "subtitle": "店舗オーナーとチームが参加するライブDiscordコミュニティに参加してください。"
     }
   },
   "compare": {

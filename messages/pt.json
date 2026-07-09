@@ -1624,10 +1624,7 @@
     },
     "discord": {
       "title": "Prefere falar com uma pessoa?",
-      "subtitle": "Junte-se a lojistas e à equipa na nossa comunidade Discord em direto.",
-      "loadChat": "Carregar o chat ao vivo",
-      "embedNote": "O chat ao vivo é incorporado a partir do Discord — ao carregá-lo, o seu navegador liga-se ao Discord.",
-      "openInDiscord": "Ou abrir o Discord num novo separador"
+      "subtitle": "Junte-se a lojistas e à equipa na nossa comunidade Discord em direto."
     }
   },
   "compare": {

@@ -1624,10 +1624,7 @@
     },
     "discord": {
       "title": "Prefer to talk to a human?",
-      "subtitle": "Join store owners and the team in our live Discord community.",
-      "loadChat": "Load live chat",
-      "embedNote": "Live chat is embedded from Discord — loading it connects your browser to Discord.",
-      "openInDiscord": "Or open Discord in a new tab"
+      "subtitle": "Join store owners and the team in our live Discord community."
     }
   },
   "compare": {

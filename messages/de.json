@@ -1624,10 +1624,7 @@
     },
     "discord": {
       "title": "Möchtest du lieber mit einem Menschen sprechen?",
-      "subtitle": "Tritt Ladenbesitzern und dem Team in unserer Live-Discord-Community bei.",
-      "loadChat": "Live-Chat laden",
-      "embedNote": "Der Live-Chat wird von Discord eingebettet — beim Laden verbindet sich dein Browser mit Discord.",
-      "openInDiscord": "Oder Discord in einem neuen Tab öffnen"
+      "subtitle": "Tritt Ladenbesitzern und dem Team in unserer Live-Discord-Community bei."
     }
   },
   "compare": {

@@ -1624,10 +1624,7 @@
     },
     "discord": {
       "title": "¿Prefieres hablar con una persona?",
-      "subtitle": "Únete a propietarios de tiendas y al equipo en nuestra comunidad de Discord en vivo.",
-      "loadChat": "Cargar el chat en vivo",
-      "embedNote": "El chat en vivo está integrado desde Discord: al cargarlo, tu navegador se conecta a Discord.",
-      "openInDiscord": "O abre Discord en una pestaña nueva"
+      "subtitle": "Únete a propietarios de tiendas y al equipo en nuestra comunidad de Discord en vivo."
     }
   },
   "compare": {
