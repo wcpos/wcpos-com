@@ -8,17 +8,49 @@ import {
 import {
   getAuthToken,
   getCustomer,
+  updateCustomer,
   upsertDefaultBillingAddress,
   type MedusaCustomer,
 } from '@/lib/medusa-auth'
 import { storeLogger } from '@/lib/logger'
-import { billingPatchFromCheckout } from '@/lib/billing-profile'
+import {
+  billingPatchFromCheckout,
+  type BillingAddressPatch,
+} from '@/lib/billing-profile'
 import { deliver } from '@/lib/sinks/deliver'
 import { assertViewOnly, ViewOnlyError } from '@/lib/impersonation'
 import type { CreateCartInput } from '@/types/medusa'
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value)
+}
+
+function nonEmptyString(value: unknown): string | undefined {
+  return typeof value === 'string' && value.trim() ? value.trim() : undefined
+}
+
+async function backfillMissingCustomerNames(
+  customer: MedusaCustomer,
+  billingPatch: BillingAddressPatch
+): Promise<void> {
+  const profilePatch: { first_name?: string; last_name?: string } = {}
+
+  if (!nonEmptyString(customer.first_name) && billingPatch.first_name) {
+    profilePatch.first_name = billingPatch.first_name
+  }
+  if (!nonEmptyString(customer.last_name) && billingPatch.last_name) {
+    profilePatch.last_name = billingPatch.last_name
+  }
+  if (Object.keys(profilePatch).length === 0) return
+
+  try {
+    const updated = await updateCustomer(profilePatch)
+    if (!updated) {
+      storeLogger.error`Customer name backfill skipped: no session token for customer ${customer.id}`
+    }
+  } catch (error) {
+    storeLogger.error`Failed to backfill customer names from checkout billing: ${error}`
+  }
 }
 
 /**
@@ -30,13 +62,12 @@ function isRecord(value: unknown): value is Record<string, unknown> {
  */
 async function syncBillingToCustomerAddress(
   customer: MedusaCustomer,
-  billingAddress: Record<string, unknown>,
-  taxNumber: string | undefined
+  billingPatch: BillingAddressPatch
 ): Promise<void> {
   try {
     const updated = await upsertDefaultBillingAddress(
       customer,
-      billingPatchFromCheckout(billingAddress, taxNumber)
+      billingPatch
     )
     if (!updated) {
       // Null is a failed write (no session token), not a no-op — without
@@ -206,10 +237,21 @@ export async function PATCH(request: NextRequest) {
     }
 
     if (isRecord(body.billing_address)) {
-      // Off the critical path: the response must not wait on profile sync.
-      deliver(
-        syncBillingToCustomerAddress(customer, body.billing_address, taxNumber)
+      const billingPatch = billingPatchFromCheckout(
+        body.billing_address,
+        taxNumber
       )
+      // The Medusa customer row is the profile name source of truth. Checkout
+      // collects the name later than account creation, so missing customer
+      // names must be written before this billing save is reported successful;
+      // otherwise a customer can land on Account > Profile and still see blank
+      // fields even though their order/billing address has names.
+      await backfillMissingCustomerNames(customer, billingPatch)
+
+      // The default billing address remains the source for receipt/address
+      // details and checkout prefill. Keep it off the critical payment path:
+      // failure here must not block checkout after the cart itself was saved.
+      deliver(syncBillingToCustomerAddress(customer, billingPatch))
     }
 
     return NextResponse.json({ cart })
