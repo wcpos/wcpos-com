@@ -23,6 +23,7 @@ vi.mock('next-intl', () => ({
           wordpressOrg: 'WordPress.org',
           documentation: 'Documentation',
           getSupport: 'Support',
+          status: 'Status',
           wordpressForum: 'WordPress Forum',
           wordpressPlugin: 'WordPress Plugin',
           about: 'About',
@@ -140,6 +141,14 @@ describe('SiteFooter', () => {
     expect(screen.queryByText('WCPOS for Translated Intel macOS')).toBeNull()
     expect(screen.queryByText('WCPOS for Translated Web')).toBeNull()
     expect(screen.queryByText('WCPOS for iOS & iPad')).toBeNull()
+  })
+
+  it('links Status at the external status page in a new tab', () => {
+    render(<SiteFooter />)
+    const status = screen.getByText('Status').closest('a')
+    expect(status?.getAttribute('href')).toBe('https://status.wcpos.com/')
+    expect(status?.getAttribute('target')).toBe('_blank')
+    expect(status?.getAttribute('rel')).toBe('noopener noreferrer')
   })
 
   it('exposes accessible social buttons', () => {
