@@ -5,6 +5,7 @@ import {
   getMedusaPublishableKey,
 } from '@/lib/store-environment'
 import { getAuthToken } from '@/lib/medusa-auth'
+import { getImpersonation } from '@/lib/impersonation'
 
 /**
  * Customer auth-method management against the Medusa
@@ -108,6 +109,12 @@ function parseAuthMethods(body: {
  */
 export async function getCustomerAuthMethods(): Promise<AuthMethods | null> {
   try {
+    // During read-only account inspection getCustomer() resolves the
+    // impersonated TARGET, but the session bearer token is the admin's own —
+    // /auth-methods would list the ADMIN's providers on the target's
+    // profile. Degrade to the metadata-derived read-only card instead.
+    if (await getImpersonation()) return null
+
     const response = await authMethodsFetch('', 'GET')
     if (!response || !response.ok) return null
     return parseAuthMethods(await response.json())
