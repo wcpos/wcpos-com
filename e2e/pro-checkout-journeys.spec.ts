@@ -40,7 +40,7 @@ function uniqueEmail(prefix = 'buyer') {
   return `${prefix}+${randomUUID().slice(0, 8)}@example.com`
 }
 
-const PASSWORD = 'e2e-ch…ss-1'
+const PASSWORD = 'e2e-checkout-pass-1'
 
 /** Drives the app's own API routes with the request context's cookies. */
 async function apiCheckout(
@@ -187,7 +187,9 @@ test.describe('Journey: new customer buys with Bitcoin', () => {
     await expect(page.getByTestId('account-exists-notice')).toBeVisible()
 
     await page.getByRole('button', { name: /sign in & continue/i }).click()
-    await expect(page.getByRole('alert').filter({ hasText: /password/i })).toBeVisible()
+    await expect(
+      page.getByRole('alert').filter({ hasText: /that password didn’t work/i })
+    ).toBeVisible()
     await expect(page.getByTestId('checkout-step-1')).toHaveAttribute(
       'data-step-state',
       'active'
@@ -376,7 +378,10 @@ test.describe('API-level provider matrix', () => {
   }) => {
     // The order-pending+ email prefix makes the mock return HTTP 200 with no
     // order — the paid-but-stuck state the client treats as money-at-risk.
-    await registerViaApi(page.request, `${ORDER_PENDING_EMAIL_PREFIX}${randomUUID().slice(0, 8)}@example.com`)
+    await registerViaApi(
+      request,
+      `${ORDER_PENDING_EMAIL_PREFIX}${randomUUID().slice(0, 8)}@example.com`
+    )
 
     const { complete } = await apiCheckout(request)
 
@@ -388,7 +393,10 @@ test.describe('API-level provider matrix', () => {
   test('completion failure (5xx from Medusa) also maps to the protective contract', async ({
     request,
   }) => {
-    await registerViaApi(page.request, `${FAIL_COMPLETE_EMAIL_PREFIX}${randomUUID().slice(0, 8)}@example.com`)
+    await registerViaApi(
+      request,
+      `${FAIL_COMPLETE_EMAIL_PREFIX}${randomUUID().slice(0, 8)}@example.com`
+    )
 
     const { complete } = await apiCheckout(request)
 
