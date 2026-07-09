@@ -961,6 +961,29 @@ describe('LicensesClient', () => {
       )
     })
   })
+  it('does not claim "no sites" when activations exist but the machine list is empty', () => {
+    render(
+      <LicensesClient
+        initialLicenses={[
+          makeLicense({ maxMachines: 4, activationCount: 2, machines: [] }),
+        ]}
+      />
+    )
+    expect(screen.getByText('2 of 4')).toBeInTheDocument()
+    expect(screen.queryByText(/No sites yet/)).not.toBeInTheDocument()
+  })
+
+  it('shows the no-sites hint only when the authoritative count is zero', () => {
+    render(
+      <LicensesClient
+        initialLicenses={[
+          makeLicense({ maxMachines: 4, activationCount: 0, machines: [] }),
+        ]}
+      />
+    )
+    expect(screen.getByText(/No sites yet/)).toBeInTheDocument()
+  })
+
   describe('collapse behaviour with multiple licences', () => {
     const first = () =>
       makeLicense({ id: 'lic-first', key: 'AAAA-BBBB-CCCC-1111' })

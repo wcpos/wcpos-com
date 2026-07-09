@@ -981,7 +981,11 @@ export function LicensesClient({
                   </DividedList>
                 </div>
               ) : (
-                displayStatus === 'active' && (
+                /* Only claim "no sites" when the AUTHORITATIVE count agrees —
+                   the machine detail list can be empty while activations
+                   exist (unauthenticated machine management). */
+                displayStatus === 'active' &&
+                license.activationCount === 0 && (
                   <div className="border-t pt-4">
                     <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
                       {t('activatedSites')}
