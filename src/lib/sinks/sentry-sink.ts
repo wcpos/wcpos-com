@@ -1,10 +1,28 @@
 import type { LogRecord, Sink } from '@logtape/logtape'
-import * as Sentry from '@sentry/nextjs'
 
 import { stringifyLogPart } from './stringify-log-part'
 
 interface SentrySinkOptions {
   ignoredCategoryPrefixes?: string[]
+}
+
+type SentryModule = typeof import('@sentry/nextjs')
+
+// The Sentry SDK is imported on demand, the first time an error/fatal record
+// actually reaches the sink. A static `import * as Sentry` here would pull the
+// whole browser SDK into the initial client bundle of every page (client-logger
+// imports this module unconditionally), paying ~10s of KB for a path that only
+// runs when something breaks.
+let sentryModule: Promise<SentryModule> | null = null
+
+function loadSentry(): Promise<SentryModule> {
+  if (!sentryModule) {
+    sentryModule = import('@sentry/nextjs').catch((err) => {
+      sentryModule = null
+      throw err
+    })
+  }
+  return sentryModule
 }
 
 /**
@@ -49,23 +67,32 @@ export function createSentrySink(options: SentrySinkOptions = {}): Sink {
       }
     }
 
-    // Send to Sentry
-    if (error) {
-      Sentry.captureException(error, {
-        level: record.level === 'fatal' ? 'fatal' : 'error',
-        extra: { ...extra, message },
-        tags: {
-          category,
-        },
+    // Send to Sentry. LogTape sinks are synchronous, so delivery is
+    // fire-and-forget; a failed SDK load must not throw into the logger.
+    void loadSentry()
+      .then((Sentry) => {
+        if (error) {
+          Sentry.captureException(error, {
+            level: record.level === 'fatal' ? 'fatal' : 'error',
+            extra: { ...extra, message },
+            tags: {
+              category,
+            },
+          })
+        } else {
+          Sentry.captureMessage(message, {
+            level: record.level === 'fatal' ? 'fatal' : 'error',
+            extra,
+            tags: {
+              category,
+            },
+          })
+        }
       })
-    } else {
-      Sentry.captureMessage(message, {
-        level: record.level === 'fatal' ? 'fatal' : 'error',
-        extra,
-        tags: {
-          category,
-        },
+      .catch(() => {
+        // Swallows both SDK load failures and capture throws — a sink must
+        // never throw into the logger; the record already went to the other
+        // sinks.
       })
-    }
   }
 }

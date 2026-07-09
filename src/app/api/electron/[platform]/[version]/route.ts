@@ -45,13 +45,19 @@ export async function GET(request: Request, { params }: RouteParams) {
       return NextResponse.json(result, { status: result.status })
     }
 
+    // The data layer is already 'use cache' (api-short); the header lets the
+    // Vercel CDN answer the auto-updater fleet without invoking the function.
+    const cdnCache = {
+      'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=3600',
+    }
+
     // For legacy responses (< 1.4.0), return flat object
     if ('version' in result && !('status' in result)) {
-      return NextResponse.json(result, { status: 200 })
+      return NextResponse.json(result, { status: 200, headers: cdnCache })
     }
 
     // For modern responses (>= 1.4.0), return with status
-    return NextResponse.json(result, { status: 200 })
+    return NextResponse.json(result, { status: 200, headers: cdnCache })
   } catch (error) {
     apiLogger.error`Electron update check failed: ${error}`
     return NextResponse.json(

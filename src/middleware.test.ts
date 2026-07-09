@@ -15,7 +15,7 @@ vi.mock('next-intl/middleware', () => ({
 
 const ACCOUNT_REQUEST_HEADER = 'x-wcpos-account-request'
 
-import { middleware } from './middleware'
+import { config, middleware } from './middleware'
 
 describe('middleware', () => {
   it('redirects updates.wcpos.com page requests to the main domain', () => {
@@ -360,5 +360,36 @@ describe('middleware', () => {
         response?.cookies.get(ANALYTICS_DISTINCT_ID_COOKIE)?.value
       ).toBeTruthy()
     })
+  })
+})
+
+describe('middleware matcher', () => {
+  const runsOn = (pathname: string) =>
+    config.matcher.some((pattern) => new RegExp(`^${pattern}$`).test(pathname))
+
+  it('skips the Vercel collector routes served by the platform, not this app', () => {
+    // Speed Insights and Web Analytics beacons are extension-less, so the
+    // dot rule does not catch them; without an explicit bypass next-intl
+    // rewrites them into localized pages and the measurements are lost.
+    expect(runsOn('/_vercel/speed-insights/vitals')).toBe(false)
+    expect(runsOn('/_vercel/speed-insights/script.js')).toBe(false)
+    expect(runsOn('/_vercel/insights/event')).toBe(false)
+    expect(runsOn('/_vercel/insights/script.js')).toBe(false)
+  })
+
+  it('still runs on similarly prefixed app routes', () => {
+    expect(runsOn('/_vercelish')).toBe(true)
+  })
+
+  it('skips Next.js internals and static files', () => {
+    expect(runsOn('/_next/static/chunks/main.js')).toBe(false)
+    expect(runsOn('/_next/image')).toBe(false)
+    expect(runsOn('/favicon.ico')).toBe(false)
+  })
+
+  it('still runs on app pages, including locale-prefixed and account routes', () => {
+    expect(runsOn('/')).toBe(true)
+    expect(runsOn('/pro')).toBe(true)
+    expect(runsOn('/fr/account/licences')).toBe(true)
   })
 })

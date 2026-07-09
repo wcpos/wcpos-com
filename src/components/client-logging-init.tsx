@@ -10,8 +10,8 @@ import { initPostHogBrowser } from '@/lib/analytics/posthog-browser'
  */
 export function ClientLoggingInit() {
   useEffect(() => {
-    initializeClientLogging()
-    initPostHogBrowser({
+    void initializeClientLogging()
+    void initPostHogBrowser({
       key: process.env.NEXT_PUBLIC_POSTHOG_KEY,
       host: process.env.NEXT_PUBLIC_POSTHOG_HOST,
     })

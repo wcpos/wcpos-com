@@ -1,6 +1,7 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 import type { Metadata } from 'next'
 import { Suspense } from 'react'
+import { preload } from 'react-dom'
 import { ScrollStory } from '@/components/home/scroll-story'
 import { UseCasesSection } from '@/components/home/use-cases-section'
 import { FeaturesSection } from '@/components/home/features-section'
@@ -33,6 +34,18 @@ export default async function Home({
 }) {
   const { locale } = await params
   setRequestLocale(locale)
+
+  // The act-1 wood-counter texture is a CSS-module background image, so the
+  // browser only discovers it after the stylesheet loads and the section is
+  // matched — and on mobile it IS the LCP resource (the section is the LCP
+  // element). Preloading (~2.5KB) moves the request into the initial document.
+  // Both the mobile static variant and the desktop pinned variant use the
+  // light texture; the counter photos are <img>/<picture> and discoverable on
+  // their own.
+  preload('/images/story/counter-wood-light.svg', {
+    as: 'image',
+    fetchPriority: 'high',
+  })
 
   return (
     <main>

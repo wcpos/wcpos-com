@@ -4,7 +4,7 @@ import { useState, useRef, useEffect, useSyncExternalStore, type FormEvent } fro
 import { useSearchParams } from 'next/navigation'
 import { Turnstile, type TurnstileInstance } from '@marsidev/react-turnstile'
 import { resolveTurnstileSiteKey } from '@/lib/support/turnstile-keys'
-import posthog from 'posthog-js'
+import { trackClientEvent } from '@/lib/analytics/client-events'
 import { useLocale, useTranslations } from 'next-intl'
 import { Button } from '@/components/ui/button'
 import { Markdown } from '@/components/ui/markdown'
@@ -135,11 +135,10 @@ export function SupportChat() {
   }
 
   function feedback(helpful: boolean, idx: number) {
-    try {
-      posthog.capture('support_answer_feedback', { helpful, turn: idx })
-    } catch {
-      /* best-effort */
-    }
+    // Recorder seam: consent-gated, reads window.posthog at capture time
+    // (set by initPostHogBrowser), never throws — and keeps the posthog-js
+    // SDK out of this route's pre-consent bundle.
+    trackClientEvent('support_answer_feedback', { helpful, turn: idx })
   }
 
   // When this host renders a Turnstile widget, hold submissions until the
@@ -275,11 +274,7 @@ export function SupportChat() {
           onError={() => {
             setToken(null)
             setError(tErrors('network'))
-            try {
-              posthog.capture('support_turnstile_error')
-            } catch {
-              /* best-effort */
-            }
+            trackClientEvent('support_turnstile_error')
           }}
           onExpire={() => setToken(null)}
           options={{ size: 'invisible' }}

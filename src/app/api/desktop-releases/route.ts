@@ -35,7 +35,13 @@ export async function GET() {
       notes: release.body,
     }
     
-    return NextResponse.json(response)
+    // The data layer is already 'use cache' (api-short); this header lets the
+    // Vercel CDN serve repeat hits without invoking the function at all.
+    return NextResponse.json(response, {
+      headers: {
+        'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=3600',
+      },
+    })
   } catch (error) {
     apiLogger.error`Failed to fetch desktop release: ${error}`
     return NextResponse.json(
