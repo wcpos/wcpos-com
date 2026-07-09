@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { storeCartErrorResponse } from '@/lib/store-cart-errors'
 import { addLineItem, getCart } from '@/services/core/external/medusa-client'
-import { getCustomer } from '@/lib/medusa-auth'
+import { getAuthToken, getCustomer } from '@/lib/medusa-auth'
 import { storeLogger } from '@/lib/logger'
 import { assertViewOnly, ViewOnlyError } from '@/lib/impersonation'
 import {
@@ -28,6 +28,11 @@ export async function POST(request: NextRequest) {
     if (!customer) {
       return storeCartErrorResponse('authentication_required', 401)
     }
+
+    // getCustomer() above already validated this token; forward it so the
+    // mutation carries the cart's owning auth context and Medusa keeps
+    // cart.customer_id instead of rejecting or unlinking the cart (#284).
+    const authToken = await getAuthToken()
 
     const body = await request.json().catch(() => null)
     if (!body || typeof body !== 'object' || Array.isArray(body)) {
@@ -63,10 +68,14 @@ export async function POST(request: NextRequest) {
       return storeCartErrorResponse('cart_not_found', 404)
     }
 
-    const cart = await addLineItem(cartId, {
-      variant_id: selection.variantId,
-      quantity: 1,
-    })
+    const cart = await addLineItem(
+      cartId,
+      {
+        variant_id: selection.variantId,
+        quantity: 1,
+      },
+      authToken
+    )
 
     if (!cart) {
       return storeCartErrorResponse('failed_add_item', 500)

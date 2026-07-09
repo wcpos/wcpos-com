@@ -409,6 +409,34 @@ describe('medusaClient', () => {
 
         expect(cart?.items).toHaveLength(1)
       })
+
+      it('forwards the customer JWT as Bearer auth so the cart stays customer-linked', async () => {
+        mockFetch.mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({ cart: mockCart }),
+        })
+
+        await addLineItem('cart_123', { variant_id: 'variant_123', quantity: 1 }, 'jwt_abc')
+
+        const [, init] = mockFetch.mock.calls[0]
+        expect((init.headers as Record<string, string>).Authorization).toBe(
+          'Bearer jwt_abc'
+        )
+      })
+
+      it('omits Authorization when no token is provided (guest)', async () => {
+        mockFetch.mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({ cart: mockCart }),
+        })
+
+        await addLineItem('cart_123', { variant_id: 'variant_123', quantity: 1 })
+
+        const [, init] = mockFetch.mock.calls[0]
+        expect(
+          (init.headers as Record<string, string>).Authorization
+        ).toBeUndefined()
+      })
     })
 
     describe('updateCart', () => {
@@ -782,6 +810,40 @@ describe('medusaClient', () => {
 
         expect(result?.type).toBe('order')
         expect(result?.order?.id).toBe('order_123')
+      })
+
+      it('forwards the customer JWT as Bearer auth so the order is customer-linked', async () => {
+        mockFetch.mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({
+            type: 'order',
+            order: { id: 'order_123', status: 'pending' },
+          }),
+        })
+
+        await completeCart('cart_123', 'jwt_abc')
+
+        const [, init] = mockFetch.mock.calls[0]
+        expect((init.headers as Record<string, string>).Authorization).toBe(
+          'Bearer jwt_abc'
+        )
+      })
+
+      it('omits Authorization when no token is provided (guest)', async () => {
+        mockFetch.mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({
+            type: 'order',
+            order: { id: 'order_123', status: 'pending' },
+          }),
+        })
+
+        await completeCart('cart_123')
+
+        const [, init] = mockFetch.mock.calls[0]
+        expect(
+          (init.headers as Record<string, string>).Authorization
+        ).toBeUndefined()
       })
     })
   })
