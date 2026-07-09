@@ -10,6 +10,20 @@ type SanitizeRedirectOptions = {
 const CONTROL_CHARS = /[\u0000-\u001f\u007f]/
 
 /**
+ * A path is only same-origin if it starts with exactly one "/". Both "//host"
+ * and "/\host" are protocol-relative URLs to a browser.
+ *
+ * Applied to the *returned* path, not just the input: stripping a locale
+ * prefix re-derives a path ("/fr//evil.example" -> "//evil.example"), so a
+ * check that only ran on the input would hand a protocol-relative URL to
+ * window.location.assign.
+ */
+function isSameOriginPath(path: string): boolean {
+  if (!path.startsWith('/')) return false
+  return !path.startsWith('//') && !path.startsWith('/\\')
+}
+
+/**
  * Sanitizes a user-supplied post-auth redirect target.
  *
  * The ?redirect query param is attacker-controllable (an emailed link like
@@ -39,14 +53,14 @@ export function sanitizeRedirectPath(
 
   if (!value) return fallback
   if (CONTROL_CHARS.test(value)) return fallback
-  if (!value.startsWith('/')) return fallback
-  if (value.startsWith('//') || value.startsWith('/\\')) return fallback
+  if (!isSameOriginPath(value)) return fallback
 
   if (options.stripLocalePrefix) {
     for (const locale of locales) {
       if (value === `/${locale}`) return '/'
       if (value.startsWith(`/${locale}/`)) {
-        return value.slice(locale.length + 1)
+        const stripped = value.slice(locale.length + 1)
+        return isSameOriginPath(stripped) ? stripped : fallback
       }
     }
   }
