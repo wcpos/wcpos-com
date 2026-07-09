@@ -1,4 +1,5 @@
-import { setRequestLocale } from 'next-intl/server'
+import { NextIntlClientProvider } from 'next-intl'
+import { getMessages, setRequestLocale } from 'next-intl/server'
 import { redirect } from 'next/navigation'
 import { Suspense } from 'react'
 import { getCustomer } from '@/lib/medusa-auth'
@@ -11,6 +12,7 @@ import { SiteHeader } from '@/components/main/site-header'
 import { SiteFooter } from '@/components/main/site-footer'
 import { Skeleton } from '@/components/ui/skeleton'
 import type { Metadata } from 'next'
+import { clientMessages } from '@/i18n/client-messages'
 
 // Account pages are private — keep them out of search engines.
 export const metadata: Metadata = {
@@ -77,43 +79,46 @@ export default async function AccountLayout({
 }) {
   const { locale } = await params
   setRequestLocale(locale)
+  const messages = await getMessages()
 
   return (
-    <div className="flex min-h-screen flex-col bg-background">
-      {/* The shared header reads auth (dynamic); on the account's PPR shell
+    <NextIntlClientProvider messages={clientMessages(messages, ['account'])}>
+      <div className="flex min-h-screen flex-col bg-background">
+        {/* The shared header reads auth (dynamic); on the account's PPR shell
           it must be deferred behind a boundary, as the old account header
           was. The marketing layout renders it bare because those routes
           don't prerender a dynamic shell around it. */}
-      <Suspense fallback={<HeaderSkeleton />}>
-        <SiteHeader />
-      </Suspense>
-      <Suspense fallback={null}>
-        <ImpersonationBanner locale={locale} />
-      </Suspense>
-      <Suspense fallback={null}>
-        <AccountGate locale={locale} />
-      </Suspense>
-      <div className="container mx-auto flex w-full flex-1 flex-col gap-6 px-4 py-6 md:flex-row md:gap-10 md:py-8">
-        <aside className="md:w-56 md:flex-none">
-          {/* Suspense is required: the locale-aware Link and usePathname read
+        <Suspense fallback={<HeaderSkeleton />}>
+          <SiteHeader />
+        </Suspense>
+        <Suspense fallback={null}>
+          <ImpersonationBanner locale={locale} />
+        </Suspense>
+        <Suspense fallback={null}>
+          <AccountGate locale={locale} />
+        </Suspense>
+        <div className="container mx-auto flex w-full flex-1 flex-col gap-6 px-4 py-6 md:flex-row md:gap-10 md:py-8">
+          <aside className="md:w-56 md:flex-none">
+            {/* Suspense is required: the locale-aware Link and usePathname read
               the pathname, which is dynamic on fallback shells of dynamic
               routes such as /account/orders/[orderId] (cacheComponents/PPR). */}
-          <Suspense fallback={<AccountSidebarSkeleton />}>
-            <AccountSidebar />
-          </Suspense>
-        </aside>
-        <main className="min-w-0 flex-1">
-          {/* Account-wide expiry notice (Phase 5); dynamic (reads licences),
+            <Suspense fallback={<AccountSidebarSkeleton />}>
+              <AccountSidebar />
+            </Suspense>
+          </aside>
+          <main className="min-w-0 flex-1">
+            {/* Account-wide expiry notice (Phase 5); dynamic (reads licences),
               so behind a boundary to keep the PPR shell static. */}
-          <Suspense fallback={null}>
-            <AccountExpiryBanner />
-          </Suspense>
-          {children}
-        </main>
+            <Suspense fallback={null}>
+              <AccountExpiryBanner />
+            </Suspense>
+            {children}
+          </main>
+        </div>
+        <Suspense fallback={<AccountFooterSkeleton />}>
+          <SiteFooter />
+        </Suspense>
       </div>
-      <Suspense fallback={<AccountFooterSkeleton />}>
-        <SiteFooter />
-      </Suspense>
-    </div>
+    </NextIntlClientProvider>
   )
 }

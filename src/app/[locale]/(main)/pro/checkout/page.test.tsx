@@ -103,7 +103,7 @@ vi.mock('lucide-react', () => ({
   ArrowLeft: () => <span data-testid="arrow-left" />,
 }))
 
-import { CheckoutContent } from './page'
+import { CheckoutContent } from './checkout-content'
 
 describe('CheckoutContent', () => {
   beforeEach(() => {

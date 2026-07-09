@@ -20,6 +20,7 @@ vi.mock('next-intl/server', async () => {
     en: enMessages,
     fr: frMessages,
   } as const
+  let currentLocale: keyof typeof messagesByLocale = 'en'
   const testOverrides: Record<string, Record<string, string>> = {
     'downloads.page': {
       'steps.plugin.cardTitle': 'Nom localisé du plugin',
@@ -28,7 +29,10 @@ vi.mock('next-intl/server', async () => {
   }
 
   return {
-    setRequestLocale: vi.fn(),
+    setRequestLocale: vi.fn((locale: string) => {
+      currentLocale = locale as keyof typeof messagesByLocale
+    }),
+    getMessages: vi.fn(async () => messagesByLocale[currentLocale] ?? enMessages),
     getTranslations: vi.fn(
       async ({ locale, namespace }: { locale: string; namespace: string }) =>
         (key: string, values?: Record<string, string>) => {
@@ -51,6 +55,9 @@ vi.mock('next-intl/server', async () => {
 vi.mock('next-intl', async () => {
   const messages = (await import('../../../../../messages/en.json')).default
   return {
+    NextIntlClientProvider: ({ children }: { children: React.ReactNode }) => (
+      <>{children}</>
+    ),
     useTranslations: (namespace: string) => {
       const t = (key: string, values?: Record<string, string>) => {
         let message = readMessage(messages, namespace, key)

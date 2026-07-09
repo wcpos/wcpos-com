@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
-import { getTranslations, setRequestLocale } from 'next-intl/server'
+import { NextIntlClientProvider } from 'next-intl'
+import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server'
 import { Laptop, Smartphone, Globe, ArrowRight } from 'lucide-react'
 import { Section, Container } from '@/components/ui/section'
 import { SectionHeading } from '@/components/ui/section-heading'
@@ -30,6 +31,7 @@ import {
   PRODUCT_LABELS,
 } from '@/services/core/external/versions-client'
 import enMessages from '../../../../../messages/en.json'
+import { clientMessages } from '@/i18n/client-messages'
 
 export async function generateMetadata({
   params,
@@ -147,63 +149,71 @@ export default async function DownloadsPage({
   const { locale } = await params
   setRequestLocale(locale)
 
-  const [pageT, platformT, releaseT, howItFitsT, versions] = await Promise.all([
-    getTranslations({ locale, namespace: 'downloads.page' }),
-    getTranslations({ locale, namespace: 'downloads.platforms' }),
-    getTranslations({ locale, namespace: 'downloads.releaseHistory' }),
-    getTranslations({ locale, namespace: 'downloads.howItFits' }),
-    getProductVersions(),
-  ])
+  const [messages, pageT, platformT, releaseT, howItFitsT, versions] =
+    await Promise.all([
+      getMessages(),
+      getTranslations({ locale, namespace: 'downloads.page' }),
+      getTranslations({ locale, namespace: 'downloads.platforms' }),
+      getTranslations({ locale, namespace: 'downloads.releaseHistory' }),
+      getTranslations({ locale, namespace: 'downloads.howItFits' }),
+      getProductVersions(),
+    ])
   const releases = await getRecentReleases(locale, releaseT)
   const desktopVersion = versionFor(versions, PRODUCT_LABELS.desktop)
   const freeVersion = versionFor(versions, PRODUCT_LABELS.free)
   const desktopLinks: PlatformKey[] = ['mac-arm', 'mac-intel', 'win', 'linux']
 
   return (
-    <main>
-      <DownloadsHero desktopVersion={desktopVersion} />
-      <HowItFits
-        copy={{
-          eyebrow: howItFitsT('eyebrow'),
-          title: howItFitsT('title'),
-          points: {
-            setup: {
-              title: howItFitsT('points.setup.title'),
-              body: howItFitsT('points.setup.body'),
+    <NextIntlClientProvider
+      messages={clientMessages(messages, [
+        'downloads.hero',
+        'downloads.platforms',
+      ])}
+    >
+      <main>
+        <DownloadsHero desktopVersion={desktopVersion} />
+        <HowItFits
+          copy={{
+            eyebrow: howItFitsT('eyebrow'),
+            title: howItFitsT('title'),
+            points: {
+              setup: {
+                title: howItFitsT('points.setup.title'),
+                body: howItFitsT('points.setup.body'),
+              },
+              sync: {
+                title: howItFitsT('points.sync.title'),
+                body: howItFitsT('points.sync.body'),
+              },
+              offline: {
+                title: howItFitsT('points.offline.title'),
+                body: howItFitsT('points.offline.body'),
+              },
             },
-            sync: {
-              title: howItFitsT('points.sync.title'),
-              body: howItFitsT('points.sync.body'),
+            syncLabel: howItFitsT('syncLabel'),
+            chips: {
+              c1: howItFitsT('chips.c1'),
+              c2: howItFitsT('chips.c2'),
+              c3: howItFitsT('chips.c3'),
+              c4: howItFitsT('chips.c4'),
+              c5: howItFitsT('chips.c5'),
             },
-            offline: {
-              title: howItFitsT('points.offline.title'),
-              body: howItFitsT('points.offline.body'),
+            diagram: {
+              ariaLabel: howItFitsT('diagram.ariaLabel'),
+              devices: {
+                desktop: howItFitsT('diagram.devices.desktop'),
+                ios: howItFitsT('diagram.devices.ios'),
+                android: howItFitsT('diagram.devices.android'),
+                web: howItFitsT('diagram.devices.web'),
+              },
+              hub: {
+                store: howItFitsT('diagram.hub.store'),
+                platform: howItFitsT('diagram.hub.platform'),
+                plugin: howItFitsT('diagram.hub.plugin'),
+              },
             },
-          },
-          syncLabel: howItFitsT('syncLabel'),
-          chips: {
-            c1: howItFitsT('chips.c1'),
-            c2: howItFitsT('chips.c2'),
-            c3: howItFitsT('chips.c3'),
-            c4: howItFitsT('chips.c4'),
-            c5: howItFitsT('chips.c5'),
-          },
-          diagram: {
-            ariaLabel: howItFitsT('diagram.ariaLabel'),
-            devices: {
-              desktop: howItFitsT('diagram.devices.desktop'),
-              ios: howItFitsT('diagram.devices.ios'),
-              android: howItFitsT('diagram.devices.android'),
-              web: howItFitsT('diagram.devices.web'),
-            },
-            hub: {
-              store: howItFitsT('diagram.hub.store'),
-              platform: howItFitsT('diagram.hub.platform'),
-              plugin: howItFitsT('diagram.hub.plugin'),
-            },
-          },
-        }}
-      />
+          }}
+        />
 
       <Section tone="default" spacing="default" bare>
         <Container width="content">
@@ -341,6 +351,7 @@ export default async function DownloadsPage({
           }}
         />
       </Section>
-    </main>
+      </main>
+    </NextIntlClientProvider>
   )
 }

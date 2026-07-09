@@ -1,4 +1,5 @@
-import { getTranslations, setRequestLocale } from 'next-intl/server'
+import { NextIntlClientProvider } from 'next-intl'
+import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server'
 import { Suspense } from 'react'
 import { cacheLife, cacheTag } from 'next/cache'
 import { fetchRoadmapData } from '@/services/core/external/github-roadmap'
@@ -12,6 +13,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 import type { RoadmapData } from '@/types/roadmap'
 import type { Metadata } from 'next'
 import { marketingMetadata } from '@/lib/seo'
+import { clientMessages } from '@/i18n/client-messages'
 
 export async function generateMetadata({
   params,
@@ -60,29 +62,34 @@ export default async function RoadmapPage({
 }) {
   const { locale } = await params
   setRequestLocale(locale)
-  const t = await getTranslations({ locale, namespace: 'roadmap.page' })
+  const [messages, t] = await Promise.all([
+    getMessages(),
+    getTranslations({ locale, namespace: 'roadmap.page' }),
+  ])
 
   return (
-    <main>
-      <div className="mx-auto w-full max-w-3xl px-4 py-16 sm:py-24">
-        <header className="mb-14">
-          <Eyebrow size="sm" className="font-mono tracking-[0.25em]">
-            {t('eyebrow')}
-          </Eyebrow>
-          <h1 className="mt-3 text-4xl font-bold tracking-tight sm:text-5xl">
-            {t('title')}
-          </h1>
-          <p className="mt-4 max-w-xl text-lg text-muted-foreground">
-            {t('description')}
-          </p>
-          <BoardLinkChip />
-        </header>
+    <NextIntlClientProvider messages={clientMessages(messages, ['roadmap'])}>
+      <main>
+        <div className="mx-auto w-full max-w-3xl px-4 py-16 sm:py-24">
+          <header className="mb-14">
+            <Eyebrow size="sm" className="font-mono tracking-[0.25em]">
+              {t('eyebrow')}
+            </Eyebrow>
+            <h1 className="mt-3 text-4xl font-bold tracking-tight sm:text-5xl">
+              {t('title')}
+            </h1>
+            <p className="mt-4 max-w-xl text-lg text-muted-foreground">
+              {t('description')}
+            </p>
+            <BoardLinkChip />
+          </header>
 
-        <Suspense fallback={<TimelineSkeleton />}>
-          <RoadmapTimelineLoader />
-        </Suspense>
-      </div>
-    </main>
+          <Suspense fallback={<TimelineSkeleton />}>
+            <RoadmapTimelineLoader />
+          </Suspense>
+        </div>
+      </main>
+    </NextIntlClientProvider>
   )
 }
 

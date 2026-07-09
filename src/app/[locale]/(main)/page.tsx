@@ -1,4 +1,5 @@
-import { getTranslations, setRequestLocale } from 'next-intl/server'
+import { NextIntlClientProvider } from 'next-intl'
+import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server'
 import type { Metadata } from 'next'
 import { Suspense } from 'react'
 import { ScrollStory } from '@/components/home/scroll-story'
@@ -11,6 +12,7 @@ import {
 import { TrustSection } from '@/components/home/trust-section'
 import { CtaSection } from '@/components/home/cta-section'
 import { marketingMetadata } from '@/lib/seo'
+import { clientMessages } from '@/i18n/client-messages'
 
 export async function generateMetadata({
   params,
@@ -33,36 +35,39 @@ export default async function Home({
 }) {
   const { locale } = await params
   setRequestLocale(locale)
+  const messages = await getMessages()
 
   return (
-    <main>
-      <ScrollStory />
-      <UseCasesSection />
-      <FeaturesSection />
-      <Suspense fallback={<PricingTeaserSectionFallback />}>
-        <PricingTeaserSection />
-      </Suspense>
-      <TrustSection />
-      <CtaSection />
+    <NextIntlClientProvider messages={clientMessages(messages, ['home.story'])}>
+      <main>
+        <ScrollStory />
+        <UseCasesSection />
+        <FeaturesSection />
+        <Suspense fallback={<PricingTeaserSectionFallback />}>
+          <PricingTeaserSection />
+        </Suspense>
+        <TrustSection />
+        <CtaSection />
 
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            '@context': 'https://schema.org',
-            '@type': 'SoftwareApplication',
-            name: 'WCPOS',
-            applicationCategory: 'BusinessApplication',
-            operatingSystem: 'Windows, macOS, Linux, iOS, Android',
-            url: 'https://wcpos.com',
-            offers: {
-              '@type': 'Offer',
-              price: '0',
-              priceCurrency: 'USD',
-            },
-          }),
-        }}
-      />
-    </main>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'SoftwareApplication',
+              name: 'WCPOS',
+              applicationCategory: 'BusinessApplication',
+              operatingSystem: 'Windows, macOS, Linux, iOS, Android',
+              url: 'https://wcpos.com',
+              offers: {
+                '@type': 'Offer',
+                price: '0',
+                priceCurrency: 'USD',
+              },
+            }),
+          }}
+        />
+      </main>
+    </NextIntlClientProvider>
   )
 }
