@@ -684,7 +684,8 @@
         },
         "paymentIssue": {
           "title": "Wir konnten deine Zahlung nicht bestätigen",
-          "description": "Die Bitcoin-Rechnung wurde als ungültig markiert — meist heißt das, dass eine Zahlung zu spät ankam oder nicht rechtzeitig bestätigt wurde. Wenn du Bitcoin gesendet hast, sende sie nicht erneut: Sieh in deinen Bestellungen nach und melde dich bei uns, falls die Bestellung nicht erscheint."
+          "description": "Die Bitcoin-Rechnung wurde als ungültig markiert — meist heißt das, dass eine Zahlung zu spät ankam oder nicht rechtzeitig bestätigt wurde. Wenn du Bitcoin gesendet hast, sende sie nicht erneut: Sieh in deinen Bestellungen nach und melde dich bei uns, falls die Bestellung nicht erscheint.",
+          "contactSupport": "Support kontaktieren"
         },
         "signIn": {
           "title": "Melde dich an, um deine Bestellung zu sehen",

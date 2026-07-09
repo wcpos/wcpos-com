@@ -684,7 +684,8 @@
         },
         "paymentIssue": {
           "title": "Nous n'avons pas pu confirmer votre paiement",
-          "description": "La facture Bitcoin a été marquée comme non valide — cela signifie généralement qu'un paiement est arrivé trop tard ou n'a pas été confirmé à temps. Si vous avez envoyé des bitcoins, ne les renvoyez pas : consultez vos commandes et contactez-nous si la commande n'apparaît pas."
+          "description": "La facture Bitcoin a été marquée comme non valide — cela signifie généralement qu'un paiement est arrivé trop tard ou n'a pas été confirmé à temps. Si vous avez envoyé des bitcoins, ne les renvoyez pas : consultez vos commandes et contactez-nous si la commande n'apparaît pas.",
+          "contactSupport": "Contacter le support"
         },
         "signIn": {
           "title": "Connectez-vous pour voir votre commande",

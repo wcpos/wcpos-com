@@ -684,7 +684,8 @@
         },
         "paymentIssue": {
           "title": "Non siamo riusciti a confermare il tuo pagamento",
-          "description": "La fattura Bitcoin è stata contrassegnata come non valida — di solito significa che un pagamento è arrivato troppo tardi o non è stato confermato in tempo. Se hai inviato Bitcoin, non inviarli di nuovo: controlla i tuoi ordini e scrivici se l'ordine non compare."
+          "description": "La fattura Bitcoin è stata contrassegnata come non valida — di solito significa che un pagamento è arrivato troppo tardi o non è stato confermato in tempo. Se hai inviato Bitcoin, non inviarli di nuovo: controlla i tuoi ordini e scrivici se l'ordine non compare.",
+          "contactSupport": "Contatta l'assistenza"
         },
         "signIn": {
           "title": "Accedi per vedere il tuo ordine",

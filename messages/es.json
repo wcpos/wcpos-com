@@ -684,7 +684,8 @@
         },
         "paymentIssue": {
           "title": "No pudimos confirmar tu pago",
-          "description": "La factura de Bitcoin se marcó como no válida — normalmente significa que un pago llegó demasiado tarde o no se confirmó a tiempo. Si enviaste Bitcoin, no vuelvas a enviarlo: revisa tus pedidos y escríbenos si el pedido no aparece."
+          "description": "La factura de Bitcoin se marcó como no válida — normalmente significa que un pago llegó demasiado tarde o no se confirmó a tiempo. Si enviaste Bitcoin, no vuelvas a enviarlo: revisa tus pedidos y escríbenos si el pedido no aparece.",
+          "contactSupport": "Contactar con soporte"
         },
         "signIn": {
           "title": "Inicia sesión para ver tu pedido",

@@ -684,7 +684,8 @@
         },
         "paymentIssue": {
           "title": "We konden je betaling niet bevestigen",
-          "description": "De Bitcoin-factuur is als ongeldig gemarkeerd — meestal betekent dat dat een betaling te laat binnenkwam of niet op tijd is bevestigd. Heb je Bitcoin verstuurd, stuur die dan niet opnieuw: bekijk je bestellingen en neem contact met ons op als de bestelling er niet bij staat."
+          "description": "De Bitcoin-factuur is als ongeldig gemarkeerd — meestal betekent dat dat een betaling te laat binnenkwam of niet op tijd is bevestigd. Heb je Bitcoin verstuurd, stuur die dan niet opnieuw: bekijk je bestellingen en neem contact met ons op als de bestelling er niet bij staat.",
+          "contactSupport": "Contact met support"
         },
         "signIn": {
           "title": "Log in om je bestelling te zien",

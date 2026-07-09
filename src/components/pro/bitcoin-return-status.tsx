@@ -176,7 +176,11 @@ export function BitcoinReturnStatus({ cartId }: BitcoinReturnStatusProps) {
           <Button asChild>
             <Link href="/account/orders">{t('error.viewOrders')}</Link>
           </Button>
-          <ResumeCheckoutButton variantId={variantId} buttonVariant="outline" />
+          {/* The copy says "contact us" — give that an affordance: no order
+              exists yet in this state, so support is what resolves it. */}
+          <Button asChild variant="outline">
+            <Link href="/support">{t('paymentIssue.contactSupport')}</Link>
+          </Button>
         </div>
       </StatusShell>
     )

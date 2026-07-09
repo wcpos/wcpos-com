@@ -684,7 +684,8 @@
         },
         "paymentIssue": {
           "title": "We couldn't confirm your payment",
-          "description": "The Bitcoin invoice was marked invalid — that usually means a payment arrived too late or didn't confirm in time. If you sent Bitcoin, don't send it again: check your orders, and contact us if the order doesn't appear."
+          "description": "The Bitcoin invoice was marked invalid — that usually means a payment arrived too late or didn't confirm in time. If you sent Bitcoin, don't send it again: check your orders, and contact us if the order doesn't appear.",
+          "contactSupport": "Contact support"
         },
         "signIn": {
           "title": "Sign in to see your order",

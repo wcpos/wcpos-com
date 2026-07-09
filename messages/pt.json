@@ -684,7 +684,8 @@
         },
         "paymentIssue": {
           "title": "Não foi possível confirmar seu pagamento",
-          "description": "A fatura Bitcoin foi marcada como inválida — normalmente isso significa que um pagamento chegou tarde demais ou não foi confirmado a tempo. Se você enviou Bitcoin, não envie de novo: confira seus pedidos e fale com a gente se o pedido não aparecer."
+          "description": "A fatura Bitcoin foi marcada como inválida — normalmente isso significa que um pagamento chegou tarde demais ou não foi confirmado a tempo. Se você enviou Bitcoin, não envie de novo: confira seus pedidos e fale com a gente se o pedido não aparecer.",
+          "contactSupport": "Falar com o suporte"
         },
         "signIn": {
           "title": "Entre para ver seu pedido",
