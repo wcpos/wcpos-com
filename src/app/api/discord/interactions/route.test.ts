@@ -111,6 +111,17 @@ const member = {
   permissions: '0',
 }
 
+function unlinkInteraction(key = 'WCPOS-AAAA-1234') {
+  return {
+    type: 2,
+    application_id: '123456789012345678',
+    token: 'aW50ZXJhY3Rpb25fdG9rZW4',
+    guild_id: 'guild_1',
+    member,
+    data: { type: 1, name: 'unlink', options: [{ name: 'key', value: key }] },
+  }
+}
+
 function linkInteraction(key = 'WCPOS-AAAA-1234') {
   return {
     type: 2,
@@ -224,6 +235,58 @@ describe('POST /api/discord/interactions', () => {
     )
     // No inline role removal on unlink — reconciliation settles the role.
     expect(syncMock).not.toHaveBeenCalled()
+  })
+
+  // The directory upsert is a slow, best-effort fleet scan. Awaiting it before
+  // the follow-up edit would strand the user in the loading state and can
+  // outlive the interaction token even though the command already succeeded.
+  it('edits the /link reply before kicking off the directory upsert', async () => {
+    claimMock.mockResolvedValue({ status: 'claimed', licenseId: 'lic_1', memberId: 'm1' })
+
+    await POST(makeRequest(linkInteraction()))
+    await flushAfter()
+
+    expect(directorySyncMock).toHaveBeenCalledWith('discord_1')
+    expect(fetchMock.mock.invocationCallOrder[0]).toBeLessThan(
+      directorySyncMock.mock.invocationCallOrder[0]
+    )
+  })
+
+  it('edits the /unlink reply before kicking off the directory upsert', async () => {
+    removeSelfMock.mockResolvedValue({ status: 'removed', licenseId: 'lic_1' })
+
+    await POST(makeRequest(unlinkInteraction()))
+    await flushAfter()
+
+    expect(directorySyncMock).toHaveBeenCalledWith('discord_1')
+    expect(fetchMock.mock.invocationCallOrder[0]).toBeLessThan(
+      directorySyncMock.mock.invocationCallOrder[0]
+    )
+  })
+
+  it('keeps the successful /link reply when the best-effort directory upsert throws', async () => {
+    claimMock.mockResolvedValue({ status: 'claimed', licenseId: 'lic_1', memberId: 'm1' })
+    directorySyncMock.mockRejectedValueOnce(new Error('directory channel gone'))
+
+    await POST(makeRequest(linkInteraction()))
+    await expect(flushAfter()).resolves.toBeUndefined()
+
+    // One edit only: the success reply is never overwritten by the failure reply.
+    expect(fetchMock).toHaveBeenCalledTimes(1)
+    expect(editedContent()).toContain('✅')
+    expect(warnMock).toHaveBeenCalled()
+  })
+
+  it('keeps the successful /unlink reply when the best-effort directory upsert throws', async () => {
+    removeSelfMock.mockResolvedValue({ status: 'removed', licenseId: 'lic_1' })
+    directorySyncMock.mockRejectedValueOnce(new Error('directory channel gone'))
+
+    await POST(makeRequest(unlinkInteraction()))
+    await expect(flushAfter()).resolves.toBeUndefined()
+
+    expect(fetchMock).toHaveBeenCalledTimes(1)
+    expect(errorMock).not.toHaveBeenCalled()
+    expect(warnMock).toHaveBeenCalled()
   })
 
   it('refuses Customer info for members without Manage Server', async () => {

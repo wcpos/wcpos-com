@@ -105,6 +105,22 @@ async function editOriginalResponse(
   }
 }
 
+/**
+ * Directory upserts are best-effort and can be slow (a fleet scan plus one or
+ * more channel calls). They must never sit between the command result and the
+ * user's deferred reply: that holds the interaction in its loading state and
+ * can outlive the 15-minute interaction token even though the command already
+ * succeeded. Always edit the original response first, then call this. The
+ * nightly reconcile heals any miss.
+ */
+async function syncDirectoryAfterReply(discordUserId: string, context: string): Promise<void> {
+  try {
+    await syncDiscordDirectoryForMember(discordUserId)
+  } catch (directoryError) {
+    infraLogger.warn`Discord directory sync after ${context} failed: ${directoryError}`
+  }
+}
+
 function claimDependencies() {
   return {
     now: () => new Date(),
@@ -143,16 +159,11 @@ async function runLinkCommand(
       }
     }
 
-    if (result.status === 'claimed' || result.status === 'already_connected') {
-      try {
-        await syncDiscordDirectoryForMember(user.id)
-      } catch (directoryError) {
-        // Best-effort: the nightly directory reconcile heals any miss.
-        infraLogger.warn`Discord directory sync after /link claim failed: ${directoryError}`
-      }
-    }
-
     await editOriginalResponse(interaction, formatLinkReply(result, licenseKey))
+
+    if (result.status === 'claimed' || result.status === 'already_connected') {
+      await syncDirectoryAfterReply(user.id, '/link claim')
+    }
   } catch (error) {
     infraLogger.error`Discord /link command failed: ${error}`
     await editOriginalResponse(interaction, GENERIC_FAILURE_REPLY)
@@ -170,19 +181,15 @@ async function runUnlinkCommand(
       discordUserId: user.id,
       dependencies: claimDependencies(),
     })
-    // No inline role removal: another licence may still back this member, and
-    // only the full-fleet view can tell. Reconciliation (the correctness
-    // mechanism, ADR-0004) settles the role overnight.
-    if (result.status === 'removed') {
-      try {
-        // The directory upsert IS fleet-wide, so it can refresh (or drop) the
-        // card immediately even though the role has to wait for reconcile.
-        await syncDiscordDirectoryForMember(user.id)
-      } catch (directoryError) {
-        infraLogger.warn`Discord directory sync after /unlink failed: ${directoryError}`
-      }
-    }
     await editOriginalResponse(interaction, formatUnlinkReply(result, licenseKey))
+
+    if (result.status === 'removed') {
+      // No inline role removal: another licence may still back this member, and
+      // only the full-fleet view can tell. Reconciliation (the correctness
+      // mechanism, ADR-0004) settles the role overnight. The directory upsert
+      // IS fleet-wide, so it can refresh (or drop) the card immediately.
+      await syncDirectoryAfterReply(user.id, '/unlink')
+    }
   } catch (error) {
     infraLogger.error`Discord /unlink command failed: ${error}`
     await editOriginalResponse(interaction, GENERIC_FAILURE_REPLY)
