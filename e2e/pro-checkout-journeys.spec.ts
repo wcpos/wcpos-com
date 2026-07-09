@@ -187,7 +187,9 @@ test.describe('Journey: new customer buys with Bitcoin', () => {
     await expect(page.getByTestId('account-exists-notice')).toBeVisible()
 
     await page.getByRole('button', { name: /sign in & continue/i }).click()
-    await expect(page.getByRole('alert')).toBeVisible()
+    await expect(
+      page.getByRole('alert').filter({ hasText: /that password didn’t work/i })
+    ).toBeVisible()
     await expect(page.getByTestId('checkout-step-1')).toHaveAttribute(
       'data-step-state',
       'active'
