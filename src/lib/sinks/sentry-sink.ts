@@ -16,7 +16,12 @@ type SentryModule = typeof import('@sentry/nextjs')
 let sentryModule: Promise<SentryModule> | null = null
 
 function loadSentry(): Promise<SentryModule> {
-  sentryModule ??= import('@sentry/nextjs')
+  if (!sentryModule) {
+    sentryModule = import('@sentry/nextjs').catch((err) => {
+      sentryModule = null
+      throw err
+    })
+  }
   return sentryModule
 }
 
