@@ -93,7 +93,7 @@ describe('lookupDiscordCustomerInfo', () => {
         sites: [
           {
             label: 'shop.example.com',
-            url: 'https://shop.example.com',
+            url: 'https://shop.example.com/',
             lastSeenAt: '2026-07-01T00:00:00.000Z',
             pluginVersion: '1.9.8',
           },
@@ -211,10 +211,10 @@ describe('mapMachineToSite', () => {
   it('prefers domain, then siteUrl, then machine name — the account-UI precedence', () => {
     expect(
       mapMachineToSite(machine({ metadata: { domain: 'shop.example.com', siteUrl: 'https://www.shop.example.com' } }))
-    ).toMatchObject({ label: 'shop.example.com', url: 'https://www.shop.example.com' })
+    ).toMatchObject({ label: 'shop.example.com', url: 'https://www.shop.example.com/' })
     expect(
       mapMachineToSite(machine({ metadata: { siteUrl: 'https://other.example.com' } }))
-    ).toMatchObject({ label: 'https://other.example.com', url: 'https://other.example.com' })
+    ).toMatchObject({ label: 'https://other.example.com/', url: 'https://other.example.com/' })
     expect(mapMachineToSite(machine())).toMatchObject({ label: 'machine-name', url: null })
   })
 
@@ -225,5 +225,17 @@ describe('mapMachineToSite', () => {
       lastSeenAt: null,
       pluginVersion: null,
     })
+  })
+
+  it('refuses non-http(s) URLs from customer-controlled metadata', () => {
+    expect(
+      mapMachineToSite(machine({ metadata: { siteUrl: 'javascript:alert(1)' } })).url
+    ).toBeNull()
+    expect(
+      mapMachineToSite(machine({ metadata: { domain: 'not a domain !!' } })).url
+    ).toBeNull()
+    expect(
+      mapMachineToSite(machine({ metadata: { siteUrl: 'https://ok.example.com' } })).url
+    ).toBe('https://ok.example.com/')
   })
 })

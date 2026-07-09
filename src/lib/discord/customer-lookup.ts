@@ -43,6 +43,18 @@ function metadataString(metadata: Record<string, unknown>, key: string): string 
   return typeof value === 'string' && value.length > 0 ? value : null
 }
 
+// Machine metadata is customer-controlled (written by their WP plugin); only
+// let http(s) URLs become clickable in the admin card.
+function safeHttpUrl(value: string | null): string | null {
+  if (!value) return null
+  try {
+    const parsed = new URL(value)
+    return parsed.protocol === 'https:' || parsed.protocol === 'http:' ? parsed.toString() : null
+  } catch {
+    return null
+  }
+}
+
 /**
  * Same site identity the account UI shows (licenses-client): domain first,
  * then siteUrl, then the machine's display name. Domain-only is the store
@@ -50,11 +62,12 @@ function metadataString(metadata: Record<string, unknown>, key: string): string 
  */
 export function mapMachineToSite(machine: LicenseMachine): DiscordLicenceSite {
   const domain = metadataString(machine.metadata, 'domain')
-  const siteUrl =
+  const siteUrl = safeHttpUrl(
     metadataString(machine.metadata, 'siteUrl') ??
-    metadataString(machine.metadata, 'homeUrl')
+      metadataString(machine.metadata, 'homeUrl')
+  )
   const label = domain ?? siteUrl ?? machine.name ?? machine.fingerprint
-  const url = siteUrl ?? (domain ? `https://${domain}` : null)
+  const url = siteUrl ?? safeHttpUrl(domain ? `https://${domain}` : null)
   return {
     label,
     url,

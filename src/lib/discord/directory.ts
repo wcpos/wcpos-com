@@ -102,19 +102,25 @@ export async function syncMemberDirectory(
   ])
   const members = listLinkedMembers(licenses)
   const memberIds = new Set(members.map((member) => member.discordUserId))
-  const messageByMemberId = new Map(
-    messages
-      .filter((message): message is DirectoryMessage & { memberId: string } =>
-        Boolean(message.memberId)
-      )
-      .map((message) => [message.memberId, message.id])
-  )
 
   const summary: DirectorySyncSummary = {
     members: members.length,
     created: 0,
     updated: 0,
     deleted: 0,
+  }
+
+  // First card per member wins; later duplicates (an event upsert racing a
+  // sync can create one) are deleted here, so the nightly pass self-heals.
+  const messageByMemberId = new Map<string, string>()
+  for (const message of messages) {
+    if (!message.memberId) continue
+    if (messageByMemberId.has(message.memberId)) {
+      await dependencies.deleteDirectoryCard(message.id)
+      summary.deleted += 1
+      continue
+    }
+    messageByMemberId.set(message.memberId, message.id)
   }
 
   for (const member of members) {

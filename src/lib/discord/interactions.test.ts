@@ -189,6 +189,36 @@ describe('discord interaction replies', () => {
     expect(totalChars).toBeLessThanOrEqual(6000)
   })
 
+  it('caps a licence field value at the 1,024-char embed limit', () => {
+    const embed = buildMemberCardEmbed(
+      {
+        licences: [
+          {
+            keySuffix: '1234',
+            status: 'active',
+            expiry: null,
+            planId: 'lifetime',
+            holderEmail: null,
+            holderName: null,
+            usedSeats: 1,
+            seatCap: 5,
+            connectedAt: null,
+            sites: Array.from({ length: 3 }, (_, index) => ({
+              label: `${'x'.repeat(400)}-${index}.example.com`,
+              url: null,
+              lastSeenAt: null,
+              pluginVersion: null,
+            })),
+          },
+        ],
+        customerSince: null,
+      },
+      { id: 'u1', username: 'ada' }
+    )
+    expect(embed.fields[0].value.length).toBeLessThanOrEqual(1024)
+    expect(embed.fields[0].value.endsWith('…')).toBe(true)
+  })
+
   it('builds the no-licences card with a mention fallback for the username', () => {
     const embed = buildMemberCardEmbed(
       { licences: [], customerSince: null },

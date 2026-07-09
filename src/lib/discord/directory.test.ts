@@ -101,6 +101,22 @@ describe('syncMemberDirectory', () => {
     expect(deps.deleteDirectoryCard).toHaveBeenCalledWith('msg_orphan')
     expect(deps.deleteDirectoryCard).toHaveBeenCalledTimes(1)
   })
+
+  it('deletes duplicate cards for the same member, keeping the first', async () => {
+    const deps = dependencies({
+      listAllLicenses: async () => [license({ metadata: connectedTo({}, '111') })],
+      listDirectoryMessages: async () => [
+        { id: 'msg_first', memberId: '111' },
+        { id: 'msg_duplicate', memberId: '111' },
+      ],
+    })
+
+    const summary = await syncMemberDirectory(deps)
+
+    expect(deps.deleteDirectoryCard).toHaveBeenCalledWith('msg_duplicate')
+    expect(deps.editDirectoryCard).toHaveBeenCalledWith('msg_first', expect.anything())
+    expect(summary).toEqual({ members: 1, created: 0, updated: 1, deleted: 1 })
+  })
 })
 
 describe('upsertDirectoryCardForMember', () => {

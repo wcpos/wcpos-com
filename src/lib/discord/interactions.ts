@@ -225,14 +225,17 @@ function licenceField(licence: DiscordCustomerLicenceInfo): DiscordEmbedField {
             : []),
         ]
 
+  // Discord rejects embed field values over 1,024 chars; site labels are
+  // customer-controlled, so cap defensively rather than trust their length.
+  const value = [
+    `${licence.status}, ${expiryLabel(licence)}`,
+    holder,
+    `seats ${licence.usedSeats}/${licence.seatCap} · ${connected}`,
+    ...siteLines,
+  ].join('\n')
   return {
     name: `****-${licence.keySuffix}${plan}`,
-    value: [
-      `${licence.status}, ${expiryLabel(licence)}`,
-      holder,
-      `seats ${licence.usedSeats}/${licence.seatCap} · ${connected}`,
-      ...siteLines,
-    ].join('\n'),
+    value: value.length > 1024 ? `${value.slice(0, 1023)}…` : value,
   }
 }
 
