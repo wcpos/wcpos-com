@@ -17,6 +17,11 @@ const buttonVariants = cva(
         secondary:
           'bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80',
         ghost: 'hover:bg-accent hover:text-accent-foreground',
+        // Quiet destructive action (disconnect, remove, deactivate): red at
+        // rest, red wash on hover. Confirm dialogs keep solid `destructive`
+        // for the final commit action.
+        'ghost-destructive':
+          'text-destructive/90 hover:bg-destructive/10 hover:text-destructive',
         link: 'text-primary underline-offset-4 hover:underline',
         // Inline brand link in button clothing — the Button-side complement to
         // the TextLink atom, on the accessible accent red.

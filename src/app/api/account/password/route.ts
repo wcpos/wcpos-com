@@ -71,10 +71,16 @@ export async function POST(request: Request) {
     return NextResponse.json({
       sent: true,
       created: ensured?.created ?? false,
+      // Where the email went — the card shows this in its "link sent" state.
+      // The customer's own address, on an authed same-origin response.
+      sentTo: identifier,
       ...(ensured
         ? {
             providers: ensured.providers,
+            providerDetails: ensured.providerDetails,
             emailpassPending: ensured.emailpassPending,
+            emailpassUpdatedAt: ensured.emailpassUpdatedAt,
+            emailpassReserved: ensured.emailpassReserved,
           }
         : {}),
     })

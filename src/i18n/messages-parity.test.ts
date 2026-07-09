@@ -244,6 +244,8 @@ const italianIdenticalCopyAllowlist = new Set([
   'account.profile.taxLabels.partitaIva',
   'account.profile.googleProvider',
   'account.profile.githubProvider',
+  // "Password" is the standard Italian loanword for password.
+  'account.profile.passwordTitle',
   'account.receiptPdf.sellerIdentityWithAbn',
   'account.receiptPdf.sellerIdentity',
   'home.title',

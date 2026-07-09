@@ -15,8 +15,23 @@ import { getImpersonation } from '@/lib/impersonation'
  * OAuth provider (the backend refuses to remove the last method).
  */
 
+/**
+ * What the account UI may show about a linked identity — the backend
+ * whitelists these out of the provider's profile claims.
+ */
+export interface AuthProviderDetail {
+  provider: string
+  email: string | null
+  name: string | null
+  avatar: string | null
+  /** Provider handle where one exists (the GitHub login). */
+  handle: string | null
+}
+
 export interface AuthMethods {
   providers: string[]
+  /** Per-provider identity details so the UI can say WHICH account. */
+  providerDetails: AuthProviderDetail[]
   /**
    * The exact identifier the password-reset flow must use. Stored emails are
    * verbatim and reset-token lookup is exact-match, so requesting the reset
@@ -31,6 +46,14 @@ export interface AuthMethods {
    * last-method disconnect guard ignores it, and so must the UI.
    */
   emailpassPending: boolean
+  /** The emailpass identity's updated_at — once claimed, "last changed". */
+  emailpassUpdatedAt: string | null
+  /**
+   * True when no emailpass identity exists and none can be minted because
+   * the email is owned by a different account. The UI explains the dead end
+   * up front instead of surfacing a 409 after the click.
+   */
+  emailpassReserved: boolean
 }
 
 /** Message codes the Medusa endpoints surface (MedusaError messages). */
@@ -92,10 +115,37 @@ async function authMethodsFetch(
   )
 }
 
+function stringOrNull(value: unknown): string | null {
+  return typeof value === 'string' && value.length > 0 ? value : null
+}
+
+function parseProviderDetails(value: unknown): AuthProviderDetail[] {
+  if (!Array.isArray(value)) return []
+  const details: AuthProviderDetail[] = []
+  for (const entry of value) {
+    if (typeof entry !== 'object' || entry === null) continue
+    const record = entry as Record<string, unknown>
+    if (typeof record.provider !== 'string' || record.provider.length === 0) {
+      continue
+    }
+    details.push({
+      provider: record.provider,
+      email: stringOrNull(record.email),
+      name: stringOrNull(record.name),
+      avatar: stringOrNull(record.avatar),
+      handle: stringOrNull(record.handle),
+    })
+  }
+  return details
+}
+
 function parseAuthMethods(body: {
   providers?: unknown
+  provider_details?: unknown
   emailpass_identifier?: unknown
   emailpass_pending?: unknown
+  emailpass_updated_at?: unknown
+  emailpass_reserved?: unknown
 }): AuthMethods {
   return {
     providers: Array.isArray(body.providers)
@@ -103,11 +153,11 @@ function parseAuthMethods(body: {
           (provider): provider is string => typeof provider === 'string'
         )
       : [],
-    emailpassIdentifier:
-      typeof body.emailpass_identifier === 'string'
-        ? body.emailpass_identifier
-        : null,
+    providerDetails: parseProviderDetails(body.provider_details),
+    emailpassIdentifier: stringOrNull(body.emailpass_identifier),
     emailpassPending: body.emailpass_pending === true,
+    emailpassUpdatedAt: stringOrNull(body.emailpass_updated_at),
+    emailpassReserved: body.emailpass_reserved === true,
   }
 }
 
@@ -151,17 +201,17 @@ export async function ensureEmailpassAuthMethod(): Promise<
   }
 }
 
-/** Disconnect an OAuth provider. Throws AuthMethodError with the backend's
- * guard codes (last_sign_in_method, provider_not_connected, …). */
+/** Disconnect an OAuth provider. Returns the re-summarized methods (the
+ * backend responds with a fresh summary). Throws AuthMethodError with the
+ * backend's guard codes (last_sign_in_method, provider_not_connected, …). */
 export async function disconnectCustomerAuthMethod(
   provider: string
-): Promise<{ providers: string[] }> {
+): Promise<AuthMethods> {
   const response = await authMethodsFetch(
     `/${encodeURIComponent(provider)}`,
     'DELETE'
   )
   if (!response) throw new AuthMethodError('request_failed', 401)
   if (!response.ok) throw await errorFrom(response)
-  const body = (await response.json()) as { providers?: unknown }
-  return { providers: parseAuthMethods(body).providers }
+  return parseAuthMethods((await response.json()) as Record<string, unknown>)
 }
