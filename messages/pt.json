@@ -682,6 +682,10 @@
           "title": "Fatura expirada",
           "description": "A fatura Bitcoin expirou. Se você pagou antes de ela expirar, seu pedido será concluído automaticamente e esta página será atualizada. Se você não pagou, nada foi cobrado — volte ao checkout para tentar novamente."
         },
+        "paymentIssue": {
+          "title": "Não foi possível confirmar seu pagamento",
+          "description": "A fatura Bitcoin foi marcada como inválida — normalmente isso significa que um pagamento chegou tarde demais ou não foi confirmado a tempo. Se você enviou Bitcoin, não envie de novo: confira seus pedidos e fale com a gente se o pedido não aparecer."
+        },
         "signIn": {
           "title": "Entre para ver seu pedido",
           "description": "Entre com a conta usada no checkout para acompanhar seu pagamento.",
@@ -692,7 +696,8 @@
           "description": "Algo deu errado ao verificar o status do pagamento. Se você já pagou, seu pedido e o e-mail com a licença chegarão automaticamente.",
           "viewOrders": "Ver seus pedidos"
         },
-        "backToCheckout": "Voltar ao checkout"
+        "backToCheckout": "Voltar ao checkout",
+        "backToPricing": "Voltar aos preços"
       }
     }
   },

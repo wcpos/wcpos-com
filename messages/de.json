@@ -682,6 +682,10 @@
           "title": "Rechnung abgelaufen",
           "description": "Die Bitcoin-Rechnung ist abgelaufen. Wenn du vor Ablauf bezahlt hast, wird deine Bestellung automatisch abgeschlossen und diese Seite aktualisiert sich. Wenn du nicht bezahlt hast, wurde dir nichts berechnet — kehre zur Kasse zurück und versuche es erneut."
         },
+        "paymentIssue": {
+          "title": "Wir konnten deine Zahlung nicht bestätigen",
+          "description": "Die Bitcoin-Rechnung wurde als ungültig markiert — meist heißt das, dass eine Zahlung zu spät ankam oder nicht rechtzeitig bestätigt wurde. Wenn du Bitcoin gesendet hast, sende sie nicht erneut: Sieh in deinen Bestellungen nach und melde dich bei uns, falls die Bestellung nicht erscheint."
+        },
         "signIn": {
           "title": "Melde dich an, um deine Bestellung zu sehen",
           "description": "Melde dich mit dem Konto an, das du an der Kasse verwendet hast, um deine Zahlung zu verfolgen.",
@@ -692,7 +696,8 @@
           "description": "Beim Prüfen des Zahlungsstatus ist ein Fehler aufgetreten. Wenn du bezahlt hast, kommen Bestellung und Lizenz-E-Mail trotzdem automatisch an.",
           "viewOrders": "Bestellungen ansehen"
         },
-        "backToCheckout": "Zurück zur Kasse"
+        "backToCheckout": "Zurück zur Kasse",
+        "backToPricing": "Zurück zu den Preisen"
       }
     }
   },

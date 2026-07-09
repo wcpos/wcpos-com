@@ -682,6 +682,10 @@
           "title": "Factura caducada",
           "description": "La factura de Bitcoin caducó. Si pagaste antes de que caducara, tu pedido se completará automáticamente y esta página se actualizará. Si no pagaste, no se te ha cobrado nada — vuelve al checkout para intentarlo de nuevo."
         },
+        "paymentIssue": {
+          "title": "No pudimos confirmar tu pago",
+          "description": "La factura de Bitcoin se marcó como no válida — normalmente significa que un pago llegó demasiado tarde o no se confirmó a tiempo. Si enviaste Bitcoin, no vuelvas a enviarlo: revisa tus pedidos y escríbenos si el pedido no aparece."
+        },
         "signIn": {
           "title": "Inicia sesión para ver tu pedido",
           "description": "Inicia sesión con la cuenta que usaste en el checkout para seguir tu pago.",
@@ -692,7 +696,8 @@
           "description": "Algo falló al comprobar el estado del pago. Si ya pagaste, tu pedido y el correo con la licencia llegarán automáticamente.",
           "viewOrders": "Ver tus pedidos"
         },
-        "backToCheckout": "Volver al checkout"
+        "backToCheckout": "Volver al checkout",
+        "backToPricing": "Volver a precios"
       }
     }
   },

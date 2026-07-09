@@ -21,6 +21,7 @@ vi.mock('@/lib/logger', () => ({
 import { GET } from './route'
 
 const CHECKOUT_LINK = 'https://btcpay.example/i/inv_1'
+const VARIANT_ID = 'variant_yearly'
 
 function makeRequest(cartId?: string) {
   const url = new URL('http://localhost:3000/api/store/cart/payment-status')
@@ -35,6 +36,7 @@ function cartWithInvoice(invoiceStatus: string, completedAt: string | null = nul
     id: 'cart_1',
     email: 'buyer@example.com',
     completed_at: completedAt,
+    items: [{ id: 'item_1', variant_id: 'variant_yearly', quantity: 1 }],
     payment_collection: {
       id: 'pay_col_1',
       payment_sessions: [
@@ -92,6 +94,7 @@ describe('GET /api/store/cart/payment-status', () => {
     expect(await response.json()).toEqual({
       state: 'completed',
       checkoutLink: CHECKOUT_LINK,
+      variantId: VARIANT_ID,
     })
   })
 
@@ -100,7 +103,8 @@ describe('GET /api/store/cart/payment-status', () => {
     ['Processing', 'confirming'],
     ['Settled', 'confirming'],
     ['Expired', 'expired'],
-    ['Invalid', 'expired'],
+    // 'Invalid' means money arrived but failed — never the unpaid-expiry copy.
+    ['Invalid', 'payment_issue'],
     // A status this build doesn't recognise must never read as unpaid.
     ['SomeFutureStatus', 'unknown'],
   ])('maps invoice status %s to state %s', async (invoiceStatus, expected) => {
@@ -112,7 +116,25 @@ describe('GET /api/store/cart/payment-status', () => {
     expect(await response.json()).toEqual({
       state: expected,
       checkoutLink: CHECKOUT_LINK,
+      variantId: VARIANT_ID,
     })
+  })
+
+  it.each([
+    ['no items', []],
+    ['more than one line', [
+      { id: 'item_1', variant_id: 'variant_yearly', quantity: 1 },
+      { id: 'item_2', variant_id: 'variant_lifetime', quantity: 1 },
+    ]],
+    ['a multi-quantity line', [
+      { id: 'item_1', variant_id: 'variant_yearly', quantity: 2 },
+    ]],
+  ])('reports no resume variant for a cart with %s', async (_case, items) => {
+    mockGetCart.mockResolvedValue({ ...cartWithInvoice('Expired'), items })
+
+    const response = await GET(makeRequest('cart_1'))
+
+    expect(await response.json()).toMatchObject({ variantId: null })
   })
 
   it('reports unknown when the session carries no invoice status', async () => {
@@ -128,6 +150,7 @@ describe('GET /api/store/cart/payment-status', () => {
     expect(await response.json()).toEqual({
       state: 'unknown',
       checkoutLink: CHECKOUT_LINK,
+      variantId: VARIANT_ID,
     })
   })
 
@@ -136,12 +159,17 @@ describe('GET /api/store/cart/payment-status', () => {
       id: 'cart_1',
       email: 'buyer@example.com',
       completed_at: null,
+      items: [{ id: 'item_1', variant_id: VARIANT_ID, quantity: 1 }],
       payment_collection: { id: 'pay_col_1', payment_sessions: [] },
     })
 
     const response = await GET(makeRequest('cart_1'))
 
-    expect(await response.json()).toEqual({ state: 'no_payment', checkoutLink: null })
+    expect(await response.json()).toEqual({
+      state: 'no_payment',
+      checkoutLink: null,
+      variantId: VARIANT_ID,
+    })
   })
 
   it('falls back to the nested invoice checkoutLink', async () => {
@@ -159,6 +187,7 @@ describe('GET /api/store/cart/payment-status', () => {
     expect(await response.json()).toEqual({
       state: 'awaiting_payment',
       checkoutLink: CHECKOUT_LINK,
+      variantId: VARIANT_ID,
     })
   })
 

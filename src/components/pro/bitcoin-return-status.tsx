@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from 'react'
 import { useTranslations } from 'next-intl'
-import { Bitcoin, CheckCircle, Clock, XCircle } from 'lucide-react'
+import { AlertTriangle, Bitcoin, CheckCircle, Clock, XCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Link, useRouter } from '@/i18n/navigation'
 import { toneText } from '@/components/ui/status-tone'
@@ -14,6 +14,7 @@ type PaymentState =
   | 'confirming'
   | 'awaiting_payment'
   | 'expired'
+  | 'payment_issue'
   | 'no_payment'
   | 'unknown'
   | 'unauthenticated'
@@ -44,6 +45,7 @@ export function BitcoinReturnStatus({ cartId }: BitcoinReturnStatusProps) {
   const router = useRouter()
   const [state, setState] = useState<PaymentState>('checking')
   const [checkoutLink, setCheckoutLink] = useState<string | null>(null)
+  const [variantId, setVariantId] = useState<string | null>(null)
 
   // Resolves to the next state, or null on a transient failure (bad payload,
   // network hiccup, 5xx) that shouldn't disturb what the customer sees.
@@ -61,13 +63,16 @@ export function BitcoinReturnStatus({ cartId }: BitcoinReturnStatusProps) {
       const body = (await response.json()) as {
         state?: string
         checkoutLink?: string | null
+        variantId?: string | null
       }
       setCheckoutLink(body.checkoutLink ?? null)
+      setVariantId(body.variantId ?? null)
       switch (body.state) {
         case 'completed':
         case 'confirming':
         case 'awaiting_payment':
         case 'expired':
+        case 'payment_issue':
         case 'no_payment':
         case 'unknown':
           return body.state
@@ -154,9 +159,24 @@ export function BitcoinReturnStatus({ cartId }: BitcoinReturnStatusProps) {
               <a href={checkoutLink}>{t('awaiting.reopenInvoice')}</a>
             </Button>
           ) : null}
-          <Button asChild variant="outline">
-            <Link href="/pro/checkout">{t('backToCheckout')}</Link>
+          <ResumeCheckoutButton variantId={variantId} buttonVariant="outline" />
+        </div>
+      </StatusShell>
+    )
+  }
+
+  if (state === 'payment_issue') {
+    return (
+      <StatusShell
+        icon={<AlertTriangle className={`h-20 w-20 mx-auto mb-6 ${toneText.caution}`} />}
+        title={t('paymentIssue.title')}
+        description={t('paymentIssue.description')}
+      >
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <Button asChild>
+            <Link href="/account/orders">{t('error.viewOrders')}</Link>
           </Button>
+          <ResumeCheckoutButton variantId={variantId} buttonVariant="outline" />
         </div>
       </StatusShell>
     )
@@ -169,9 +189,7 @@ export function BitcoinReturnStatus({ cartId }: BitcoinReturnStatusProps) {
         title={t('expired.title')}
         description={t('expired.description')}
       >
-        <Button asChild>
-          <Link href="/pro/checkout">{t('backToCheckout')}</Link>
-        </Button>
+        <ResumeCheckoutButton variantId={variantId} />
       </StatusShell>
     )
   }
@@ -207,6 +225,34 @@ export function BitcoinReturnStatus({ cartId }: BitcoinReturnStatusProps) {
         <Link href="/account/orders">{t('error.viewOrders')}</Link>
       </Button>
     </StatusShell>
+  )
+}
+
+/**
+ * Sends the customer back to a checkout that still knows what they were
+ * buying. A bare /pro/checkout has no product or variant param and renders
+ * "no product selected", so without the cart's variant the only honest
+ * destination is the pricing page.
+ */
+function ResumeCheckoutButton({
+  variantId,
+  buttonVariant = 'default',
+}: {
+  variantId: string | null
+  buttonVariant?: 'default' | 'outline'
+}) {
+  const t = useTranslations('pro.checkout.processingPage')
+
+  return (
+    <Button asChild variant={buttonVariant}>
+      {variantId ? (
+        <Link href={{ pathname: '/pro/checkout', query: { variant: variantId } }}>
+          {t('backToCheckout')}
+        </Link>
+      ) : (
+        <Link href="/pro">{t('backToPricing')}</Link>
+      )}
+    </Button>
   )
 }
 

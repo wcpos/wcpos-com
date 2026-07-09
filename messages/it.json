@@ -682,6 +682,10 @@
           "title": "Fattura scaduta",
           "description": "La fattura Bitcoin è scaduta. Se hai pagato prima della scadenza, il tuo ordine verrà completato automaticamente e questa pagina si aggiornerà. Se non hai pagato, non ti è stato addebitato nulla — torna al checkout per riprovare."
         },
+        "paymentIssue": {
+          "title": "Non siamo riusciti a confermare il tuo pagamento",
+          "description": "La fattura Bitcoin è stata contrassegnata come non valida — di solito significa che un pagamento è arrivato troppo tardi o non è stato confermato in tempo. Se hai inviato Bitcoin, non inviarli di nuovo: controlla i tuoi ordini e scrivici se l'ordine non compare."
+        },
         "signIn": {
           "title": "Accedi per vedere il tuo ordine",
           "description": "Accedi con l'account usato al checkout per seguire il tuo pagamento.",
@@ -692,7 +696,8 @@
           "description": "Si è verificato un errore durante la verifica dello stato del pagamento. Se hai pagato, ordine ed e-mail con la licenza arriveranno comunque automaticamente.",
           "viewOrders": "Vedi i tuoi ordini"
         },
-        "backToCheckout": "Torna al checkout"
+        "backToCheckout": "Torna al checkout",
+        "backToPricing": "Torna ai prezzi"
       }
     }
   },

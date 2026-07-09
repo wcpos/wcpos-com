@@ -16,6 +16,7 @@ export type CartPaymentState =
   | 'confirming'
   | 'awaiting_payment'
   | 'expired'
+  | 'payment_issue'
   | 'no_payment'
   | 'unknown'
 
@@ -27,7 +28,13 @@ const BTCPAY_PROVIDER_ID = 'pp_btcpay_btcpay'
 // status must NOT collapse to awaiting_payment, because that state renders
 // "we haven't seen your payment" copy on the return page.
 const CONFIRMING_STATUSES = new Set(['Processing', 'Settled', 'Complete'])
-const DEAD_STATUSES = new Set(['Expired', 'Invalid'])
+// 'Expired' is the only status that means the invoice window closed with no
+// payment registered. 'Invalid' does NOT mean that: BTCPay marks an invoice
+// invalid when money did arrive but failed (late, underpaid, or not confirmed
+// before the monitoring window closed), so it gets its own state rather than
+// the "you have not been charged" expiry copy.
+const EXPIRED_STATUSES = new Set(['Expired'])
+const INVALID_STATUSES = new Set(['Invalid'])
 const UNPAID_STATUSES = new Set(['New'])
 
 function derivePaymentState(cart: MedusaCart): {
@@ -52,8 +59,11 @@ function derivePaymentState(cart: MedusaCart): {
   }
 
   const invoiceStatus = data.btc_invoice?.status
-  if (typeof invoiceStatus === 'string' && DEAD_STATUSES.has(invoiceStatus)) {
+  if (typeof invoiceStatus === 'string' && EXPIRED_STATUSES.has(invoiceStatus)) {
     return { state: 'expired', checkoutLink }
+  }
+  if (typeof invoiceStatus === 'string' && INVALID_STATUSES.has(invoiceStatus)) {
+    return { state: 'payment_issue', checkoutLink }
   }
   if (typeof invoiceStatus === 'string' && CONFIRMING_STATUSES.has(invoiceStatus)) {
     return { state: 'confirming', checkoutLink }
@@ -65,14 +75,36 @@ function derivePaymentState(cart: MedusaCart): {
 }
 
 /**
+ * The variant the customer was buying, so the return page can send them back
+ * to a checkout that still knows what's in the basket (/pro/checkout with no
+ * product or variant renders "no product selected"). Mirrors
+ * resolveProOfferCartSelection's single-line guard without loading the offer
+ * catalog on every poll — /pro/checkout validates the id against the catalog.
+ */
+function deriveResumeVariantId(cart: MedusaCart): string | null {
+  const items = cart.items ?? []
+  if (items.length !== 1) {
+    return null
+  }
+
+  const [item] = items
+  if (item.quantity !== 1 || typeof item.variant_id !== 'string' || !item.variant_id) {
+    return null
+  }
+
+  return item.variant_id
+}
+
+/**
  * GET /api/store/cart/payment-status?cartId=...
  *
  * Read-only poll target for the BTCPay return page (/processing). Reports
  * where the customer's payment stands so the page can forward them to the
  * success page once the webhook has completed the cart into an order.
  *
- * Returns: { state, checkoutLink } — checkoutLink lets the page offer
- * "reopen the invoice" while the invoice is still unpaid.
+ * Returns: { state, checkoutLink, variantId } — checkoutLink lets the page
+ * offer "reopen the invoice" while the invoice is still unpaid, and variantId
+ * lets it link back to a checkout that still has the offer selected.
  */
 export async function GET(request: NextRequest) {
   try {
@@ -96,7 +128,10 @@ export async function GET(request: NextRequest) {
       return storeCartErrorResponse('cart_not_found', 404)
     }
 
-    return NextResponse.json(derivePaymentState(cart))
+    return NextResponse.json({
+      ...derivePaymentState(cart),
+      variantId: deriveResumeVariantId(cart),
+    })
   } catch (error) {
     storeLogger.error`Error checking cart payment status: ${error}`
     return storeCartErrorResponse('internal', 500)

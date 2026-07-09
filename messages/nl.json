@@ -682,6 +682,10 @@
           "title": "Factuur verlopen",
           "description": "De Bitcoin-factuur is verlopen. Als je vóór het verlopen hebt betaald, wordt je bestelling automatisch afgerond en wordt deze pagina bijgewerkt. Heb je niet betaald, dan is er niets afgeschreven — ga terug naar de checkout om het opnieuw te proberen."
         },
+        "paymentIssue": {
+          "title": "We konden je betaling niet bevestigen",
+          "description": "De Bitcoin-factuur is als ongeldig gemarkeerd — meestal betekent dat dat een betaling te laat binnenkwam of niet op tijd is bevestigd. Heb je Bitcoin verstuurd, stuur die dan niet opnieuw: bekijk je bestellingen en neem contact met ons op als de bestelling er niet bij staat."
+        },
         "signIn": {
           "title": "Log in om je bestelling te zien",
           "description": "Log in met het account dat je bij de checkout gebruikte om je betaling te volgen.",
@@ -692,7 +696,8 @@
           "description": "Er ging iets mis bij het controleren van de betaalstatus. Als je hebt betaald, komen je bestelling en licentie-e-mail alsnog automatisch aan.",
           "viewOrders": "Bekijk je bestellingen"
         },
-        "backToCheckout": "Terug naar checkout"
+        "backToCheckout": "Terug naar checkout",
+        "backToPricing": "Terug naar prijzen"
       }
     }
   },

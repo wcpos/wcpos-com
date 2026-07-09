@@ -682,6 +682,10 @@
           "title": "Invoice expired",
           "description": "The Bitcoin invoice expired. If you paid before it expired, your order completes automatically and this page will update. If you didn't pay, you have not been charged — return to checkout to try again."
         },
+        "paymentIssue": {
+          "title": "We couldn't confirm your payment",
+          "description": "The Bitcoin invoice was marked invalid — that usually means a payment arrived too late or didn't confirm in time. If you sent Bitcoin, don't send it again: check your orders, and contact us if the order doesn't appear."
+        },
         "signIn": {
           "title": "Sign in to see your order",
           "description": "Sign in with the account you used at checkout to track your payment.",
@@ -692,7 +696,8 @@
           "description": "Something went wrong while checking the payment status. If you've paid, your order and licence email will still arrive automatically.",
           "viewOrders": "View your orders"
         },
-        "backToCheckout": "Back to checkout"
+        "backToCheckout": "Back to checkout",
+        "backToPricing": "Back to pricing"
       }
     }
   },

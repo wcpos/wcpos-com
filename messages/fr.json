@@ -682,6 +682,10 @@
           "title": "Facture expirée",
           "description": "La facture Bitcoin a expiré. Si vous avez payé avant son expiration, votre commande sera finalisée automatiquement et cette page se mettra à jour. Si vous n'avez pas payé, vous n'avez pas été débité — retournez au paiement pour réessayer."
         },
+        "paymentIssue": {
+          "title": "Nous n'avons pas pu confirmer votre paiement",
+          "description": "La facture Bitcoin a été marquée comme non valide — cela signifie généralement qu'un paiement est arrivé trop tard ou n'a pas été confirmé à temps. Si vous avez envoyé des bitcoins, ne les renvoyez pas : consultez vos commandes et contactez-nous si la commande n'apparaît pas."
+        },
         "signIn": {
           "title": "Connectez-vous pour voir votre commande",
           "description": "Connectez-vous avec le compte utilisé lors du paiement pour suivre votre paiement.",
@@ -692,7 +696,8 @@
           "description": "Une erreur s'est produite lors de la vérification du statut du paiement. Si vous avez payé, votre commande et l'e-mail de licence arriveront automatiquement.",
           "viewOrders": "Voir vos commandes"
         },
-        "backToCheckout": "Retour au paiement"
+        "backToCheckout": "Retour au paiement",
+        "backToPricing": "Retour aux tarifs"
       }
     }
   },
