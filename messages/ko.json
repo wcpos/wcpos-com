@@ -40,6 +40,7 @@
     "wordpressOrg": "WordPress.org",
     "documentation": "문서",
     "getSupport": "지원",
+    "status": "상태",
     "wordpressForum": "WordPress 포럼",
     "wordpressPlugin": "WordPress 플러그인",
     "appFor": "{platform}용 WCPOS",
