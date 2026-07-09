@@ -311,10 +311,28 @@ const server = createServer(async (req, res) => {
     }
     registrationSequence += 1
     const token = `e2e-reg-${registrationSequence}-${randomUUID().slice(0, 8)}`
-    const persona = { customer: null, orders: [], licenses: {} }
+    // Auth methods (mirrors the real backend's auth-methods endpoints).
+    // Test emails can seed extra linked OAuth providers ("+google"/"+github"
+    // in the local part) or an OAuth-only account with no password
+    // ("+oauthonly", implies google) to exercise the Connections card.
+    const authProviders = new Set()
+    if (!email.includes('+oauthonly')) authProviders.add('emailpass')
+    if (email.includes('+google') || email.includes('+oauthonly')) {
+      authProviders.add('google')
+    }
+    if (email.includes('+github')) authProviders.add('github')
+    const persona = { customer: null, orders: [], licenses: {}, authProviders }
     registeredCredentials.set(email, { password, persona })
     dynamicTokens.set(token, { persona, kind: 'registration' })
     return sendJson(res, 200, { token })
+  }
+
+  // Password reset request — Medusa always 201s (no enumeration signal).
+  if (
+    pathname === '/auth/customer/emailpass/reset-password' &&
+    method === 'POST'
+  ) {
+    return sendJson(res, 201, {})
   }
 
   if (pathname === '/auth/customer/emailpass' && method === 'POST') {
@@ -367,6 +385,48 @@ const server = createServer(async (req, res) => {
     const auth = personaForRequest(req)
     if (!auth) return sendJson(res, 401, { message: 'Unauthorized' })
     return sendJson(res, 200, { customer: auth.persona.customer })
+  }
+
+  // Customer auth-method management (custom wcpos-medusa endpoints).
+  const authMethodMatch = pathname.match(
+    /^\/store\/customers\/me\/auth-methods(?:\/([^/]+))?$/
+  )
+  if (authMethodMatch) {
+    const auth = personaForRequest(req)
+    if (!auth) return sendJson(res, 401, { message: 'Unauthorized' })
+    // Fixture personas predate the seeding: default to emailpass-only.
+    auth.persona.authProviders ??= new Set(['emailpass'])
+    const providersOf = () => [...auth.persona.authProviders].sort()
+    const summary = () => ({
+      providers: providersOf(),
+      emailpass_identifier: auth.persona.authProviders.has('emailpass')
+        ? (auth.persona.customer?.email ?? null)
+        : null,
+    })
+    const provider = authMethodMatch[1]
+
+    if (!provider && method === 'GET') {
+      return sendJson(res, 200, summary())
+    }
+    if (provider === 'emailpass' && method === 'POST') {
+      const created = !auth.persona.authProviders.has('emailpass')
+      auth.persona.authProviders.add('emailpass')
+      return sendJson(res, created ? 201 : 200, { created, ...summary() })
+    }
+    if (provider && method === 'DELETE') {
+      if (!['google', 'github', 'discord'].includes(provider)) {
+        return sendJson(res, 400, { message: 'provider_not_disconnectable' })
+      }
+      if (!auth.persona.authProviders.has(provider)) {
+        return sendJson(res, 404, { message: 'provider_not_connected' })
+      }
+      if (auth.persona.authProviders.size <= 1) {
+        return sendJson(res, 400, { message: 'last_sign_in_method' })
+      }
+      auth.persona.authProviders.delete(provider)
+      return sendJson(res, 200, { providers: providersOf() })
+    }
+    return sendJson(res, 405, { message: 'Method not allowed' })
   }
 
   // Customer update (profile page saves: name/phone/metadata). Mirrors real

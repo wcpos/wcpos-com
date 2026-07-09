@@ -4,6 +4,7 @@ import {
   addAuthProviderToMetadata,
   recordSignInProvider,
   getPrimarySignInProvider,
+  removeAuthProviderFromMetadata,
 } from './metadata'
 
 describe('getLinkedAuthProviders', () => {
@@ -145,5 +146,55 @@ describe('getPrimarySignInProvider', () => {
     expect(
       getPrimarySignInProvider({ last_sign_in_provider: 'discord' })
     ).toBeNull()
+  })
+})
+
+describe('removeAuthProviderFromMetadata', () => {
+  it('removes the provider and repoints last_sign_in_provider', () => {
+    const next = removeAuthProviderFromMetadata(
+      {
+        auth_providers: ['google', 'github'],
+        last_sign_in_provider: 'google',
+      },
+      'google'
+    )
+
+    expect(next.auth_providers).toEqual(['github'])
+    expect(next.last_sign_in_provider).toBe('github')
+  })
+
+  it('nulls (not deletes) cleared keys so a metadata merge still applies them', () => {
+    const next = removeAuthProviderFromMetadata(
+      {
+        auth_providers: ['google'],
+        last_sign_in_provider: 'google',
+        oauth_avatar_url: 'https://lh3.googleusercontent.com/a/pic',
+      },
+      'google'
+    )
+
+    expect(next.auth_providers).toEqual([])
+    expect(next.last_sign_in_provider).toBeNull()
+    // The legacy avatar fallback would resurrect the provider otherwise.
+    expect(next.oauth_avatar_url).toBeNull()
+  })
+
+  it('keeps an avatar attributed to a different provider', () => {
+    const next = removeAuthProviderFromMetadata(
+      {
+        auth_providers: ['google', 'github'],
+        oauth_avatar_url: 'https://avatars.githubusercontent.com/u/1',
+      },
+      'google'
+    )
+
+    expect(next.oauth_avatar_url).toBe('https://avatars.githubusercontent.com/u/1')
+  })
+
+  it('ignores unknown providers and preserves unrelated metadata', () => {
+    const metadata = { auth_providers: ['google'], account_profile: { a: 1 } }
+    const next = removeAuthProviderFromMetadata(metadata, 'facebook')
+
+    expect(next).toEqual(metadata)
   })
 })

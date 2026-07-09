@@ -965,10 +965,25 @@
       "githubDescription": "원클릭 로그인에 사용됩니다.",
       "emailProvider": "이메일 및 비밀번호",
       "emailDescription": "이메일 주소로 로그인합니다.",
+      "passwordReady": "이메일 주소와 비밀번호로 로그인할 수 있습니다.",
+      "passwordMissing": "비밀번호가 아직 없습니다. 설정하면 이메일로도 로그인할 수 있습니다.",
+      "setPassword": "비밀번호 설정",
+      "changePassword": "비밀번호 변경",
+      "passwordEmailSent": "받은 편지함을 확인하세요. 비밀번호 설정 링크를 보냈습니다.",
+      "disconnect": "연결 해제",
+      "disconnected": "{provider} 연결이 해제되었습니다.",
+      "disconnectTitle": "{provider} 연결을 해제할까요?",
+      "disconnectBody": "더 이상 {provider}(으)로 로그인할 수 없습니다. 언제든지 {provider}(으)로 다시 로그인하면 재연결됩니다.",
+      "disconnectCancel": "취소",
       "apiErrors": {
         "read_only_inspection": "이 계정을 읽기 전용 모드로 보고 있습니다.",
         "unauthorized": "프로필을 업데이트하려면 다시 로그인해 주세요.",
-        "update_failed": "프로필 업데이트에 실패했습니다"
+        "update_failed": "프로필 업데이트에 실패했습니다",
+        "last_sign_in_method": "유일한 로그인 방법입니다. 먼저 비밀번호를 설정하세요.",
+        "email_identity_reserved": "이 이메일은 이미 다른 계정에서 사용 중입니다. 지원팀에 문의하세요.",
+        "password_email_failed": "이메일을 보내지 못했습니다. 다시 시도해 주세요.",
+        "disconnect_failed": "연결을 해제하지 못했습니다. 다시 시도해 주세요.",
+        "rate_limited": "시도가 너무 많습니다. 몇 분 후에 다시 시도해 주세요."
       },
       "languageTitle": "언어",
       "languageHint": "계정, 이메일, 영수증에 사용되는 언어입니다. 변경하면 페이지가 새로고침됩니다."

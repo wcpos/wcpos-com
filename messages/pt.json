@@ -965,10 +965,25 @@
       "githubDescription": "Usado para iniciar sessão com um clique.",
       "emailProvider": "Email e palavra-passe",
       "emailDescription": "Inicia sessão com o teu endereço de email.",
+      "passwordReady": "Inicia sessão com o teu email e a tua palavra-passe.",
+      "passwordMissing": "Ainda sem palavra-passe — define uma para iniciares sessão também com o email.",
+      "setPassword": "Definir palavra-passe",
+      "changePassword": "Alterar palavra-passe",
+      "passwordEmailSent": "Verifica a tua caixa de entrada — enviámos-te uma ligação para definires a palavra-passe.",
+      "disconnect": "Desligar",
+      "disconnected": "{provider} desligado.",
+      "disconnectTitle": "Desligar {provider}?",
+      "disconnectBody": "Deixarás de poder iniciar sessão com {provider}. Podes voltar a ligar em qualquer altura iniciando sessão novamente com {provider}.",
+      "disconnectCancel": "Cancelar",
       "apiErrors": {
         "read_only_inspection": "Está a visualizar esta conta em modo só de leitura.",
         "unauthorized": "Inicie sessão novamente para atualizar o seu perfil.",
-        "update_failed": "Falha ao atualizar o perfil"
+        "update_failed": "Falha ao atualizar o perfil",
+        "last_sign_in_method": "É a tua única forma de iniciar sessão. Define primeiro uma palavra-passe.",
+        "email_identity_reserved": "Este email já é usado por outra conta. Contacta o suporte.",
+        "password_email_failed": "Não foi possível enviar o email. Tenta novamente.",
+        "disconnect_failed": "Não foi possível desligar. Tenta novamente.",
+        "rate_limited": "Demasiadas tentativas — tenta novamente dentro de alguns minutos."
       },
       "languageTitle": "Idioma",
       "languageHint": "O idioma usado na sua conta, e-mails e recibos. Alterá-lo recarrega a página."

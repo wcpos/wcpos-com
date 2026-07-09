@@ -965,10 +965,25 @@
       "githubDescription": "ワンクリックサインインに使用されます。",
       "emailProvider": "メールとパスワード",
       "emailDescription": "メールアドレスでサインインします。",
+      "passwordReady": "メールアドレスとパスワードでサインインできます。",
+      "passwordMissing": "パスワード未設定 — 設定するとメールでもサインインできます。",
+      "setPassword": "パスワードを設定",
+      "changePassword": "パスワードを変更",
+      "passwordEmailSent": "受信トレイをご確認ください。パスワード設定用のリンクをお送りしました。",
+      "disconnect": "連携を解除",
+      "disconnected": "{provider}の連携を解除しました。",
+      "disconnectTitle": "{provider}の連携を解除しますか？",
+      "disconnectBody": "{provider}でのサインインはできなくなります。再度{provider}でサインインすれば、いつでも再連携できます。",
+      "disconnectCancel": "キャンセル",
       "apiErrors": {
         "read_only_inspection": "このアカウントは読み取り専用モードで表示しています。",
         "unauthorized": "プロフィールを更新するには、もう一度ログインしてください。",
-        "update_failed": "プロフィールの更新に失敗しました"
+        "update_failed": "プロフィールの更新に失敗しました",
+        "last_sign_in_method": "これが唯一のサインイン方法です。先にパスワードを設定してください。",
+        "email_identity_reserved": "このメールアドレスは別のアカウントで使用されています。サポートにお問い合わせください。",
+        "password_email_failed": "メールを送信できませんでした。もう一度お試しください。",
+        "disconnect_failed": "連携を解除できませんでした。もう一度お試しください。",
+        "rate_limited": "試行回数が多すぎます。数分後にもう一度お試しください。"
       },
       "languageTitle": "言語",
       "languageHint": "アカウント、メール、領収書で使用される言語です。変更するとページが再読み込みされます。"

@@ -1,6 +1,7 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { Suspense } from 'react'
 import { getCustomer } from '@/lib/medusa-auth'
+import { getCustomerAuthMethods } from '@/lib/auth-methods'
 import { getPrimarySignInProvider } from '@/lib/auth-providers/metadata'
 import { projectProfileMetadataForClient } from '@/lib/customer-profile-metadata'
 import { billingDetailsFromCustomer } from '@/lib/billing-profile'
@@ -42,6 +43,11 @@ async function ProfileContent({ locale }: { locale: string }) {
   const signInProvider =
     getPrimarySignInProvider(customer.metadata) ?? 'email'
 
+  // DB truth for the Connections card (null → backend without the
+  // auth-methods endpoint yet; the card degrades to the metadata-derived
+  // read-only display).
+  const authMethods = await getCustomerAuthMethods()
+
   return (
     <ProfileEditForm
       customer={{
@@ -55,6 +61,7 @@ async function ProfileContent({ locale }: { locale: string }) {
       memberSince={formatDateForLocale(customer.created_at, locale)}
       connections={{
         signIn: { provider: signInProvider, email: customer.email },
+        methods: authMethods ? { providers: authMethods.providers } : null,
       }}
     />
   )

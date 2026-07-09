@@ -965,10 +965,25 @@
       "githubDescription": "Usato per l’accesso con un clic.",
       "emailProvider": "Email e password",
       "emailDescription": "Accedi con il tuo indirizzo email.",
+      "passwordReady": "Accedi con il tuo indirizzo email e la tua password.",
+      "passwordMissing": "Nessuna password: creane una per accedere anche con l'email.",
+      "setPassword": "Imposta una password",
+      "changePassword": "Cambia password",
+      "passwordEmailSent": "Controlla la tua casella di posta: ti abbiamo inviato un link per impostare la password.",
+      "disconnect": "Disconnetti",
+      "disconnected": "{provider} disconnesso.",
+      "disconnectTitle": "Disconnettere {provider}?",
+      "disconnectBody": "Non potrai più accedere con {provider}. Puoi ricollegarlo in qualsiasi momento accedendo di nuovo con {provider}.",
+      "disconnectCancel": "Annulla",
       "apiErrors": {
         "read_only_inspection": "Stai visualizzando questo account in modalità sola lettura.",
         "unauthorized": "Accedi di nuovo per aggiornare il profilo.",
-        "update_failed": "Impossibile aggiornare il profilo"
+        "update_failed": "Impossibile aggiornare il profilo",
+        "last_sign_in_method": "È il tuo unico metodo di accesso. Prima imposta una password.",
+        "email_identity_reserved": "Questa email è già usata da un altro account. Contatta il supporto.",
+        "password_email_failed": "Impossibile inviare l'email. Riprova.",
+        "disconnect_failed": "Impossibile disconnettere. Riprova.",
+        "rate_limited": "Troppi tentativi: riprova tra qualche minuto."
       },
       "languageTitle": "Lingua",
       "languageHint": "La lingua usata nel tuo account, nelle email e nelle ricevute. Modificandola la pagina viene ricaricata."
