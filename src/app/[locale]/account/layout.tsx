@@ -82,7 +82,15 @@ export default async function AccountLayout({
   const messages = await getMessages()
 
   return (
-    <NextIntlClientProvider messages={clientMessages(messages, ['account'])}>
+    <NextIntlClientProvider
+      messages={clientMessages(messages, [
+        'account',
+        // /account/licenses/renew renders the shared CheckoutForm, which reads
+        // these two namespaces on the client.
+        'pro.checkout.payment',
+        'pro.checkout.errors',
+      ])}
+    >
       <div className="flex min-h-screen flex-col bg-background">
         {/* The shared header reads auth (dynamic); on the account's PPR shell
           it must be deferred behind a boundary, as the old account header
