@@ -9,6 +9,62 @@ import {
 
 let started = false
 
+type QueuedCapture = { name: string; properties?: Record<string, unknown> }
+
+type WindowWithPostHog = Window & {
+  posthog?: {
+    capture?: (name: string, properties?: Record<string, unknown>) => void
+  }
+}
+
+/**
+ * Captures fired while the dynamically-imported SDK is still in flight are held
+ * here and replayed once `window.posthog` exists. Without this, a visitor who
+ * clicks a tracked CTA (download, checkout, support feedback) in the few hundred
+ * ms between consent opening the gate and the posthog-js chunk landing loses the
+ * event — the static import used to make init synchronous, the dynamic one does
+ * not.
+ *
+ * Non-null ONLY while an init is in flight, so a session that never initializes
+ * (no consent, no key, chunk load failed) drops captures instead of growing an
+ * unbounded queue. The cap bounds a pathological burst during that window.
+ */
+const MAX_QUEUED_CAPTURES = 50
+let pendingCaptures: QueuedCapture[] | null = null
+
+/**
+ * Send an event to posthog-js, or queue it if the SDK is still loading.
+ * Fire-and-forget: never throws. Consent is enforced upstream (see
+ * client-events.ts); this only decides capture-now vs capture-later vs drop.
+ */
+export function capturePostHogBrowser(
+  name: string,
+  properties?: Record<string, unknown>
+): void {
+  if (typeof window === 'undefined') return
+  const posthog = (window as WindowWithPostHog).posthog
+  if (posthog?.capture) {
+    posthog.capture(name, properties)
+    return
+  }
+  if (!pendingCaptures || pendingCaptures.length >= MAX_QUEUED_CAPTURES) return
+  pendingCaptures.push({ name, properties })
+}
+
+function flushPendingCaptures(): void {
+  const queued = pendingCaptures
+  pendingCaptures = null
+  if (!queued?.length) return
+  const posthog = (window as WindowWithPostHog).posthog
+  for (const { name, properties } of queued) {
+    try {
+      posthog?.capture?.(name, properties)
+    } catch {
+      // Analytics is fire-and-forget: one bad replay must not drop the rest.
+    }
+  }
+}
+
 /**
  * The `wcpos-distinct-id` cookie is minted by middleware.ts (httpOnly: false)
  * and every server-side funnel event (checkout_completed, signup_completed) is
@@ -85,6 +141,9 @@ export async function initPostHogBrowser(config: { key?: string; host?: string }
   if (!isAnalyticsGranted()) return
 
   started = true
+  // Open the queue before the first await: captures raced against the SDK
+  // import land here and are replayed once posthog-js is on window.
+  pendingCaptures = []
   let sharedDistinctId = readSharedDistinctId()
   if (!sharedDistinctId) {
     sharedDistinctId = newDistinctId()
@@ -108,12 +167,15 @@ export async function initPostHogBrowser(config: { key?: string; host?: string }
       bootstrap: { distinctID: sharedDistinctId },
     })
     ;(window as unknown as { posthog: typeof posthog }).posthog = posthog
+    flushPendingCaptures()
   } catch {
     // Chunk load failed (offline, or an adblocker that filters "posthog" in
     // URLs). Callers fire-and-forget with `void`, so the rejection must be
     // contained here — and `started` is reset so a later call (e.g. the
     // consent banner after a transient failure) can retry instead of the
-    // session being permanently dark.
+    // session being permanently dark. Queued captures are dropped rather than
+    // held for a retry that may never come.
     started = false
+    pendingCaptures = null
   }
 }

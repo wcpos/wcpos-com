@@ -204,5 +204,11 @@ export const config = {
   // follow the same root 404 rule as not-found.tsx. Only extension-less _next/*
   // internals need explicit entries, and no code or routes reference
   // extension-less metadata paths like /opengraph-image or /twitter-image.
-  matcher: ['/((?!_next/static|_next/image|.*\\..*).*)'],
+  //
+  // `_vercel` covers the Vercel collector routes served by the platform, not by
+  // this app: Speed Insights posts vitals to /_vercel/speed-insights/vitals and
+  // Web Analytics to /_vercel/insights/event. Both are extension-less, so the
+  // dot rule does not catch them and next-intl would rewrite the beacons into
+  // localized pages, losing the measurements.
+  matcher: ['/((?!_next/static|_next/image|_vercel|.*\\..*).*)'],
 }
