@@ -50,6 +50,8 @@ const envSchema = z.object({
   DISCORD_GUILD_ID: z.string().optional(),
   DISCORD_PRO_ROLE_ID: z.string().optional(),
   DISCORD_PUBLIC_KEY: z.string().optional(),
+  // Locked #member-directory channel (owner + bot); directory ships dark without it.
+  DISCORD_DIRECTORY_CHANNEL_ID: z.string().optional(),
   CRON_SECRET: z.string().optional(),
   MEDUSA_ADMIN_API_TOKEN: z.string().optional(),
 

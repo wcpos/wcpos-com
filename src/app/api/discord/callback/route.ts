@@ -3,7 +3,10 @@ import { DiscordApiClient } from '@/lib/discord/client'
 import { getDiscordConfig, isDiscordConfigured } from '@/lib/discord/config'
 import { consumeDiscordOAuthState } from '@/lib/discord/oauth-state'
 import { claimConnectedDiscordMember } from '@/lib/discord/connected-member-service'
-import { createDiscordRoleSyncDependencies } from '@/lib/discord/default-sync'
+import {
+  createDiscordRoleSyncDependencies,
+  syncDiscordDirectoryForMember,
+} from '@/lib/discord/default-sync'
 import { syncDiscordProRoleForMember } from '@/lib/discord/sync'
 import { licenseClient } from '@/services/core/external/license-client'
 import { infraLogger } from '@/lib/logger'
@@ -82,6 +85,13 @@ export async function GET(request: NextRequest) {
         )
       } catch (syncError) {
         infraLogger.warn`Discord role sync after member claim failed: ${syncError}`
+      }
+
+      try {
+        await syncDiscordDirectoryForMember(discordUser.id)
+      } catch (directoryError) {
+        // Best-effort: the nightly directory reconcile heals any miss.
+        infraLogger.warn`Discord directory sync after member claim failed: ${directoryError}`
       }
     }
 

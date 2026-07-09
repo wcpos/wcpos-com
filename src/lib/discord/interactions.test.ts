@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import {
-  formatCustomerInfoReply,
+  buildMemberCardEmbed,
+  parseDirectoryFooterMemberId,
   formatLinkReply,
   formatUnlinkReply,
   getInvokingUser,
@@ -85,71 +86,130 @@ describe('discord interaction replies', () => {
     expect(formatUnlinkReply({ status: 'invalid_license' }, key)).toMatch(/not recognised/)
   })
 
-  it('formats the customer info card with licences, customer-since and role state', () => {
-    const reply = formatCustomerInfoReply(
+  it('builds the member-card embed with plan pill, holder name, sites and role state', () => {
+    const embed = buildMemberCardEmbed(
       {
         licences: [
           {
             keySuffix: '1234',
             status: 'active',
             expiry: '2027-02-16T00:00:00.000Z',
+            planId: 'yearly',
             holderEmail: 'owner@example.com',
+            holderName: 'Ada Lovelace',
             usedSeats: 2,
             seatCap: 5,
             connectedAt: '2026-06-01T00:00:00.000Z',
-          },
-          {
-            keySuffix: '9999',
-            status: 'expired',
-            expiry: null,
-            holderEmail: null,
-            usedSeats: 1,
-            seatCap: 5,
-            connectedAt: null,
+            sites: [
+              {
+                label: 'shop.example.com',
+                url: 'https://shop.example.com',
+                lastSeenAt: '2026-07-01T00:00:00.000Z',
+                pluginVersion: '1.9.8',
+              },
+            ],
           },
         ],
         customerSince: '2019-03-05T12:00:00.000Z',
-        roleState: 'has_role',
       },
-      { id: 'u1', username: 'ada' }
+      { id: 'u1', username: 'ada' },
+      { roleState: 'has_role' }
     )
 
-    expect(reply).toContain('Customer info — @ada')
-    expect(reply).toContain('Customer since: 2019-03-05')
-    expect(reply).toContain('Pro role: held.')
-    expect(reply).toContain('`****-1234` — active, expires 2027-02-16 · owner@example.com · seats 2/5 · connected 2026-06-01')
-    expect(reply).toContain('`****-9999` — expired, lifetime · holder unknown · seats 1/5 · connection date unknown')
+    expect(embed.title).toBe('Customer info — @ada')
+    expect(embed.description).toContain('Customer since: 2019-03-05')
+    expect(embed.description).toContain('Pro role: held.')
+    expect(embed.color).toBe(0x5865f2)
+    expect(embed.fields[0].name).toBe('****-1234 · Pro Yearly')
+    expect(embed.fields[0].value).toContain('active, expires 2027-02-16')
+    expect(embed.fields[0].value).toContain('holder owner@example.com (Ada Lovelace)')
+    expect(embed.fields[0].value).toContain('seats 2/5 · connected 2026-06-01')
+    expect(embed.fields[0].value).toContain('[shop.example.com](https://shop.example.com) — seen 2026-07-01 · plugin 1.9.8')
+    expect(embed.footer).toBeUndefined()
   })
 
-  it('caps customer info cards to Discord content limits and reports omitted licences', () => {
-    const reply = formatCustomerInfoReply(
+  it('never labels a null expiry as lifetime unless the plan registry says so (#526)', () => {
+    const migratedExpiredYearly = {
+      keySuffix: '9999',
+      status: 'expired',
+      expiry: null,
+      planId: null,
+      holderEmail: null,
+      holderName: null,
+      usedSeats: 1,
+      seatCap: 5,
+      connectedAt: null,
+      sites: [],
+    }
+    const embed = buildMemberCardEmbed(
+      { licences: [migratedExpiredYearly], customerSince: null },
+      { id: 'u1', username: 'ada' }
+    )
+    expect(embed.fields[0].value).toContain('expired, no expiry on record')
+    expect(embed.fields[0].value).not.toContain('lifetime')
+    expect(embed.fields[0].value).toContain('sites: none activated yet')
+    expect(embed.color).toBe(0x80848e)
+
+    const lifetime = buildMemberCardEmbed(
+      { licences: [{ ...migratedExpiredYearly, status: 'active', planId: 'lifetime' as const }], customerSince: null },
+      { id: 'u1', username: 'ada' }
+    )
+    expect(lifetime.fields[0].name).toBe('****-9999 · Pro Lifetime')
+    expect(lifetime.fields[0].value).toContain('active, lifetime')
+    expect(lifetime.color).toBe(0xc9a227)
+  })
+
+  it('caps licence fields and reports the omitted count', () => {
+    const embed = buildMemberCardEmbed(
       {
         licences: Array.from({ length: 60 }, (_, index) => ({
           keySuffix: String(index).padStart(4, '0'),
           status: 'active',
           expiry: '2027-02-16T00:00:00.000Z',
+          planId: 'yearly' as const,
           holderEmail: `owner-${index}@example.com`,
+          holderName: null,
           usedSeats: 2,
           seatCap: 5,
           connectedAt: '2026-06-01T00:00:00.000Z',
+          sites: [],
         })),
         customerSince: '2019-03-05T12:00:00.000Z',
-        roleState: 'has_role',
       },
       { id: 'u1', username: 'ada' }
     )
 
-    expect(reply.length).toBeLessThanOrEqual(2000)
-    expect(reply).toMatch(/more licences omitted/)
+    expect(embed.fields).toHaveLength(9)
+    expect(embed.fields.at(-1)?.value).toBe('…and 52 more licences omitted.')
+    // Discord's 6,000-char embed ceiling.
+    const totalChars =
+      embed.title.length +
+      embed.description.length +
+      embed.fields.reduce((sum, field) => sum + field.name.length + field.value.length, 0)
+    expect(totalChars).toBeLessThanOrEqual(6000)
   })
 
-  it('formats the no-licences card with a mention fallback for the username', () => {
-    const reply = formatCustomerInfoReply(
-      { licences: [], customerSince: null, roleState: 'not_in_guild' },
-      { id: 'u2', username: null }
+  it('builds the no-licences card with a mention fallback for the username', () => {
+    const embed = buildMemberCardEmbed(
+      { licences: [], customerSince: null },
+      { id: 'u2', username: null },
+      { roleState: 'not_in_guild' }
     )
-    expect(reply).toContain('<@u2>')
-    expect(reply).toContain('No licenses have this Discord account as a connected member.')
-    expect(reply).toContain('Pro role: user not in server.')
+    expect(embed.title).toContain('<@u2>')
+    expect(embed.description).toContain('No licenses have this Discord account as a connected member.')
+    expect(embed.description).toContain('Pro role: user not in server.')
+  })
+
+  it('round-trips the directory footer marker', () => {
+    const embed = buildMemberCardEmbed(
+      { licences: [], customerSince: null },
+      { id: '621289187232186378', username: 'kilbot' },
+      { directoryFooter: true }
+    )
+    expect(embed.footer?.text).toBe('member:621289187232186378')
+    expect(parseDirectoryFooterMemberId(embed.footer?.text)).toBe('621289187232186378')
+    expect(parseDirectoryFooterMemberId('member:not-a-snowflake')).toBeNull()
+    expect(parseDirectoryFooterMemberId('unrelated footer')).toBeNull()
+    expect(parseDirectoryFooterMemberId(undefined)).toBeNull()
   })
 })

@@ -118,14 +118,26 @@ export const GUILD_ONLY_REPLY = 'This command only works inside the WCPOS Discor
 export const GENERIC_FAILURE_REPLY =
   'Something went wrong on our side. Please try again, or contact support@wcpos.com.'
 
+export interface DiscordLicenceSite {
+  /** domain → siteUrl → machine name, same precedence as the account UI. */
+  label: string
+  url: string | null
+  lastSeenAt: string | null
+  pluginVersion: string | null
+}
+
 export interface DiscordCustomerLicenceInfo {
   keySuffix: string
   status: string
   expiry: string | null
+  /** From the plan registry via policyId — never inferred from expiry (#526). */
+  planId: 'yearly' | 'lifetime' | null
   holderEmail: string | null
+  holderName: string | null
   usedSeats: number
   seatCap: number
   connectedAt: string | null
+  sites: DiscordLicenceSite[]
 }
 
 export interface DiscordCustomerInfo {
@@ -149,56 +161,134 @@ const ROLE_STATE_LABEL: Record<DiscordCustomerInfo['roleState'], string> = {
   unknown: 'unknown',
 }
 
-const DISCORD_MESSAGE_CONTENT_LIMIT = 2000
+const PLAN_LABEL: Record<'yearly' | 'lifetime', string> = {
+  yearly: 'Pro Yearly',
+  lifetime: 'Pro Lifetime',
+}
 
-export function formatCustomerInfoReply(
-  info: DiscordCustomerInfo,
-  target: { id: string; username: string | null }
-): string {
-  const header = `**Customer info — ${target.username ? `@${target.username}` : `<@${target.id}>`}**`
+// Accent colours per plan/state — matching the approved prototype (#519).
+const EMBED_COLOR = {
+  yearly: 0x5865f2,
+  lifetime: 0xc9a227,
+  inactive: 0x80848e,
+} as const
 
-  if (info.licences.length === 0) {
-    return [
-      header,
-      'No licenses have this Discord account as a connected member.',
-      `Pro role: ${ROLE_STATE_LABEL[info.roleState]}.`,
-    ].join('\n')
+// Discord embed hard limits we can realistically hit: 25 fields per embed and
+// 6,000 chars across the embed. Eight licence fields with capped site lines
+// stay comfortably inside both.
+const MAX_LICENCE_FIELDS = 8
+const MAX_SITE_LINES = 3
+
+export interface DiscordEmbedField {
+  name: string
+  value: string
+  inline?: boolean
+}
+
+export interface DiscordEmbed {
+  title: string
+  description: string
+  color: number
+  fields: DiscordEmbedField[]
+  footer?: { text: string }
+}
+
+function expiryLabel(licence: DiscordCustomerLicenceInfo): string {
+  if (licence.expiry) return `expires ${formatDate(licence.expiry)}`
+  // No-expiry only means lifetime when the plan registry says so — migrated
+  // expired-yearly licences were written with a null expiry (#526).
+  return licence.planId === 'lifetime' ? 'lifetime' : 'no expiry on record'
+}
+
+function siteLine(site: DiscordLicenceSite): string {
+  const label = site.url ? `[${site.label}](${site.url})` : site.label
+  const seen = site.lastSeenAt ? `seen ${formatDate(site.lastSeenAt)}` : 'never seen'
+  const plugin = site.pluginVersion ? ` · plugin ${site.pluginVersion}` : ''
+  return `${label} — ${seen}${plugin}`
+}
+
+function licenceField(licence: DiscordCustomerLicenceInfo): DiscordEmbedField {
+  const plan = licence.planId ? ` · ${PLAN_LABEL[licence.planId]}` : ''
+  const holder = licence.holderEmail
+    ? `holder ${licence.holderEmail}${licence.holderName ? ` (${licence.holderName})` : ''}`
+    : 'holder unknown'
+  const connected = licence.connectedAt
+    ? `connected ${formatDate(licence.connectedAt)}`
+    : 'connection date unknown'
+  const siteLines =
+    licence.sites.length === 0
+      ? ['sites: none activated yet']
+      : [
+          `sites: ${licence.sites.slice(0, MAX_SITE_LINES).map(siteLine).join(' · ')}`,
+          ...(licence.sites.length > MAX_SITE_LINES
+            ? [`…and ${licence.sites.length - MAX_SITE_LINES} more sites`]
+            : []),
+        ]
+
+  return {
+    name: `****-${licence.keySuffix}${plan}`,
+    value: [
+      `${licence.status}, ${expiryLabel(licence)}`,
+      holder,
+      `seats ${licence.usedSeats}/${licence.seatCap} · ${connected}`,
+      ...siteLines,
+    ].join('\n'),
   }
+}
 
-  const lines = info.licences.map((licence) => {
-    const expiry = licence.expiry ? `expires ${formatDate(licence.expiry)}` : 'lifetime'
-    const holder = licence.holderEmail ?? 'holder unknown'
-    const connected = licence.connectedAt
-      ? `connected ${formatDate(licence.connectedAt)}`
-      : 'connection date unknown'
-    return `• \`****-${licence.keySuffix}\` — ${licence.status}, ${expiry} · ${holder} · seats ${licence.usedSeats}/${licence.seatCap} · ${connected}`
-  })
+function embedColor(licences: DiscordCustomerLicenceInfo[]): number {
+  const active = licences.find((licence) => licence.status === 'active')
+  if (!active) return EMBED_COLOR.inactive
+  return active.planId === 'lifetime' ? EMBED_COLOR.lifetime : EMBED_COLOR.yearly
+}
 
-  const prefixLines = [
-    header,
+/**
+ * The member card as a Discord embed — one builder for both admin surfaces
+ * (#519/#522): the ephemeral Customer info reply (roleState shown, no footer)
+ * and the #member-directory card (footer carries the member id so the sync
+ * can match cards to members without any stored map — the channel is the
+ * database).
+ */
+export function buildMemberCardEmbed(
+  info: { licences: DiscordCustomerLicenceInfo[]; customerSince: string | null },
+  target: { id: string; username: string | null },
+  options: { roleState?: DiscordCustomerInfo['roleState']; directoryFooter?: boolean } = {}
+): DiscordEmbed {
+  const descriptionLines = [
     `Customer since: ${info.customerSince ? formatDate(info.customerSince) : 'unknown'}`,
-    `Pro role: ${ROLE_STATE_LABEL[info.roleState]}.`,
+    ...(options.roleState ? [`Pro role: ${ROLE_STATE_LABEL[options.roleState]}.`] : []),
   ]
-  const visibleLines: string[] = []
-
-  for (const line of lines) {
-    const remaining = lines.length - visibleLines.length - 1
-    const omittedLine = remaining > 0 ? `…and ${remaining} more licences omitted.` : null
-    const candidate = [
-      ...prefixLines,
-      ...visibleLines,
-      line,
-      ...(omittedLine ? [omittedLine] : []),
-    ].join('\n')
-
-    if (candidate.length > DISCORD_MESSAGE_CONTENT_LIMIT) break
-    visibleLines.push(line)
+  if (info.licences.length === 0) {
+    descriptionLines.unshift('No licenses have this Discord account as a connected member.')
   }
 
-  const omittedCount = lines.length - visibleLines.length
-  return [
-    ...prefixLines,
-    ...visibleLines,
-    ...(omittedCount > 0 ? [`…and ${omittedCount} more licences omitted.`] : []),
-  ].join('\n')
+  const fields = info.licences.slice(0, MAX_LICENCE_FIELDS).map(licenceField)
+  if (info.licences.length > MAX_LICENCE_FIELDS) {
+    fields.push({
+      name: 'More licences',
+      value: `…and ${info.licences.length - MAX_LICENCE_FIELDS} more licences omitted.`,
+    })
+  }
+
+  return {
+    title: `Customer info — ${target.username ? `@${target.username}` : `<@${target.id}>`}`,
+    description: descriptionLines.join('\n'),
+    color: embedColor(info.licences),
+    fields,
+    ...(options.directoryFooter ? { footer: { text: directoryFooterText(target.id) } } : {}),
+  }
+}
+
+// Footer marker matching cards to members in #member-directory. Parsing is the
+// inverse — both live here so they cannot drift apart.
+const DIRECTORY_FOOTER_PREFIX = 'member:'
+
+export function directoryFooterText(discordUserId: string): string {
+  return `${DIRECTORY_FOOTER_PREFIX}${discordUserId}`
+}
+
+export function parseDirectoryFooterMemberId(footerText: string | null | undefined): string | null {
+  if (!footerText?.startsWith(DIRECTORY_FOOTER_PREFIX)) return null
+  const id = footerText.slice(DIRECTORY_FOOTER_PREFIX.length)
+  return /^\d+$/.test(id) ? id : null
 }

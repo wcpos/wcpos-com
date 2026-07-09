@@ -8,6 +8,9 @@ export interface DiscordConfig {
   proRoleId: string
   adminApiToken: string
   publicKey?: string
+  /** The locked #member-directory channel (owner + bot only). Optional so the
+   *  directory feature ships dark until the channel exists (#522). */
+  directoryChannelId?: string
 }
 
 export function getDiscordConfig(): DiscordConfig {
@@ -34,7 +37,13 @@ export function getDiscordConfig(): DiscordConfig {
     proRoleId: env.DISCORD_PRO_ROLE_ID!,
     adminApiToken: env.MEDUSA_ADMIN_API_TOKEN!,
     publicKey: env.DISCORD_PUBLIC_KEY,
+    directoryChannelId: env.DISCORD_DIRECTORY_CHANNEL_ID,
   }
+}
+
+/** The directory rides the base Discord config plus its channel id. */
+export function isDiscordDirectoryConfigured(): boolean {
+  return isDiscordConfigured() && Boolean(env.DISCORD_DIRECTORY_CHANNEL_ID)
 }
 
 export function isDiscordConfigured(): boolean {

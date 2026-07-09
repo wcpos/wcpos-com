@@ -1,8 +1,17 @@
 import 'server-only'
 
 import { DiscordApiClient } from './client'
-import { getDiscordConfig } from './config'
-import { listAdminCustomerOrders, listAdminCustomers } from './medusa-admin'
+import { getDiscordConfig, isDiscordDirectoryConfigured } from './config'
+import { findAdminCustomerByEmail, listAdminCustomerOrders, listAdminCustomers } from './medusa-admin'
+import { assembleMemberCardFromFleet } from './customer-lookup'
+import {
+  parseDirectoryMessage,
+  syncMemberDirectory,
+  upsertDirectoryCardForMember,
+  type DiscordDirectoryDependencies,
+  type DirectorySyncSummary,
+} from './directory'
+import { licenseClient } from '@/services/core/external/license-client'
 import { getResolvedLicenseSnapshotFromOrders } from '@/lib/customer-licenses'
 import {
   getConnectedDiscordUserIds,
@@ -72,6 +81,47 @@ export function createDiscordRoleSyncDependencies(
     removeRole: (discordUserId) => client.removeRole(discordUserId),
     now: () => new Date(),
   }
+}
+
+function createDiscordDirectoryDependencies(): DiscordDirectoryDependencies {
+  const config = getDiscordConfig()
+  const channelId = config.directoryChannelId
+  if (!channelId) {
+    throw new Error('Discord member directory is not configured: DISCORD_DIRECTORY_CHANNEL_ID')
+  }
+  const client = new DiscordApiClient(config)
+
+  return {
+    listAllLicenses: licenseClient.listAllLicenses,
+    assembleCard: (discordUserId, allLicenses) =>
+      assembleMemberCardFromFleet(discordUserId, allLicenses, {
+        findCustomerByEmail: findAdminCustomerByEmail,
+        listCustomerOrders: listAdminCustomerOrders,
+        getLicenseMachines: licenseClient.getLicenseMachines,
+      }),
+    listDirectoryMessages: async () =>
+      (await client.listChannelMessages(channelId)).map(parseDirectoryMessage),
+    createDirectoryCard: (embed) => client.createChannelMessage(channelId, { embeds: [embed] }),
+    editDirectoryCard: (messageId, embed) =>
+      client.editChannelMessage(channelId, messageId, { embeds: [embed] }),
+    deleteDirectoryCard: (messageId) => client.deleteChannelMessage(channelId, messageId),
+  }
+}
+
+/**
+ * Event-path directory refresh after a claim/unlink/removal touched one
+ * member. A silent no-op until DISCORD_DIRECTORY_CHANNEL_ID is configured, so
+ * the feature ships dark until the locked channel exists (#522).
+ */
+export async function syncDiscordDirectoryForMember(discordUserId: string): Promise<void> {
+  if (!isDiscordDirectoryConfigured()) return
+  await upsertDirectoryCardForMember(discordUserId, createDiscordDirectoryDependencies())
+}
+
+/** Nightly full pass — rides the existing reconcile cron (#522). */
+export async function reconcileDiscordDirectory(): Promise<DirectorySyncSummary | null> {
+  if (!isDiscordDirectoryConfigured()) return null
+  return syncMemberDirectory(createDiscordDirectoryDependencies())
 }
 
 export function createDiscordReconcileDependencies(): DiscordReconcileDependencies {

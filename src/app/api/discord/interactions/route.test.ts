@@ -9,6 +9,7 @@ const {
   removeSelfMock,
   lookupMock,
   syncMock,
+  directorySyncMock,
   errorMock,
   warnMock,
 } = vi.hoisted(() => ({
@@ -22,6 +23,7 @@ const {
   removeSelfMock: vi.fn(),
   lookupMock: vi.fn(),
   syncMock: vi.fn(),
+  directorySyncMock: vi.fn(),
   errorMock: vi.fn(),
   warnMock: vi.fn(),
 }))
@@ -46,6 +48,7 @@ vi.mock('@/lib/discord/connected-member-service', () => ({
 vi.mock('@/lib/discord/sync', () => ({ syncDiscordProRoleForMember: syncMock }))
 vi.mock('@/lib/discord/default-sync', () => ({
   createDiscordRoleSyncDependencies: vi.fn(() => ({})),
+  syncDiscordDirectoryForMember: directorySyncMock,
 }))
 vi.mock('@/lib/discord/customer-lookup', () => ({ lookupDiscordCustomerInfo: lookupMock }))
 vi.mock('@/lib/discord/medusa-admin', () => ({
@@ -77,9 +80,13 @@ const fetchMock = vi.fn<(...args: unknown[]) => Promise<{ ok: boolean; text(): P
 )
 vi.stubGlobal('fetch', fetchMock)
 
-function editedContent(): string {
+function editedPayload(): { content?: string; embeds?: Array<{ title: string; description: string }> } {
   const init = fetchMock.mock.calls[0][1] as { body: string }
-  return (JSON.parse(init.body) as { content: string }).content
+  return JSON.parse(init.body) as ReturnType<typeof editedPayload>
+}
+
+function editedContent(): string {
+  return editedPayload().content ?? ''
 }
 
 function makeRequest(body: unknown): NextRequest {
@@ -258,7 +265,9 @@ describe('POST /api/discord/interactions', () => {
 
     await flushAfter()
     expect(lookupMock).toHaveBeenCalledWith('discord_9', expect.anything())
-    expect(editedContent()).toContain('@oceanwatcher')
+    const embed = editedPayload().embeds?.[0]
+    expect(embed?.title).toContain('@oceanwatcher')
+    expect(embed?.description).toContain('No licenses have this Discord account')
   })
 
   it('rejects signed commands from any guild other than the configured WCPOS guild', async () => {

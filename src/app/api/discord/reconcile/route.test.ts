@@ -19,6 +19,7 @@ vi.mock('@/utils/env', () => ({
 
 vi.mock('@/lib/discord/default-sync', () => ({
   createDiscordReconcileDependencies: () => mockCreateDependencies(),
+  reconcileDiscordDirectory: vi.fn(async () => null),
 }))
 
 vi.mock('@/lib/discord/sync', () => ({
@@ -69,7 +70,7 @@ describe('/api/discord/reconcile', () => {
     const response = await GET(makeRequest({ authorization: 'Bearer cron-secret' }))
 
     expect(response.status).toBe(200)
-    await expect(response.json()).resolves.toEqual({ ok: true, summary: mockSummary })
+    await expect(response.json()).resolves.toEqual({ ok: true, summary: mockSummary, directory: null })
     expect(mockCreateDependencies).toHaveBeenCalledTimes(1)
     expect(mockReconcile).toHaveBeenCalledWith(mockDeps)
   })
@@ -78,7 +79,7 @@ describe('/api/discord/reconcile', () => {
     const response = await POST(makeRequest({ 'x-cron-secret': 'cron-secret' }))
 
     expect(response.status).toBe(200)
-    await expect(response.json()).resolves.toEqual({ ok: true, summary: mockSummary })
+    await expect(response.json()).resolves.toEqual({ ok: true, summary: mockSummary, directory: null })
   })
 
   it('returns a stable failure code when reconciliation throws', async () => {
