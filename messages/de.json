@@ -966,10 +966,25 @@
       "githubDescription": "Wird für die Ein-Klick-Anmeldung verwendet.",
       "emailProvider": "E-Mail & Passwort",
       "emailDescription": "Du meldest dich mit deiner E-Mail-Adresse an.",
+      "passwordReady": "Du meldest dich mit deiner E-Mail-Adresse und deinem Passwort an.",
+      "passwordMissing": "Noch kein Passwort — lege eins fest, um dich auch per E-Mail anzumelden.",
+      "setPassword": "Passwort festlegen",
+      "changePassword": "Passwort ändern",
+      "passwordEmailSent": "Sieh in deinem Posteingang nach — wir haben dir einen Link zum Festlegen deines Passworts geschickt.",
+      "disconnect": "Trennen",
+      "disconnected": "{provider} getrennt.",
+      "disconnectTitle": "{provider} trennen?",
+      "disconnectBody": "Du kannst dich dann nicht mehr mit {provider} anmelden. Du kannst dich jederzeit wieder verbinden, indem du dich erneut mit {provider} anmeldest.",
+      "disconnectCancel": "Abbrechen",
       "apiErrors": {
         "read_only_inspection": "Du siehst dieses Konto im schreibgeschützten Modus.",
         "unauthorized": "Bitte melde dich erneut an, um dein Profil zu aktualisieren.",
-        "update_failed": "Profil konnte nicht aktualisiert werden"
+        "update_failed": "Profil konnte nicht aktualisiert werden",
+        "last_sign_in_method": "Das ist deine einzige Anmeldemöglichkeit. Lege zuerst ein Passwort fest.",
+        "email_identity_reserved": "Diese E-Mail-Adresse wird bereits von einem anderen Konto verwendet. Bitte kontaktiere den Support.",
+        "password_email_failed": "Die E-Mail konnte nicht gesendet werden. Bitte versuche es erneut.",
+        "disconnect_failed": "Trennen fehlgeschlagen. Bitte versuche es erneut.",
+        "rate_limited": "Zu viele Versuche — bitte versuche es in ein paar Minuten erneut."
       },
       "languageTitle": "Sprache",
       "languageHint": "Die Sprache für dein Konto, E-Mails und Belege. Beim Ändern wird die Seite neu geladen."

@@ -966,10 +966,25 @@
       "githubDescription": "用于一键登录。",
       "emailProvider": "邮箱和密码",
       "emailDescription": "你使用邮箱地址登录。",
+      "passwordReady": "使用邮箱和密码登录。",
+      "passwordMissing": "尚未设置密码 — 设置后也可以用邮箱登录。",
+      "setPassword": "设置密码",
+      "changePassword": "修改密码",
+      "passwordEmailSent": "请查收邮件 — 我们已发送设置密码的链接。",
+      "disconnect": "断开连接",
+      "disconnected": "已断开 {provider} 连接。",
+      "disconnectTitle": "断开 {provider} 连接？",
+      "disconnectBody": "断开后将无法使用 {provider} 登录。随时可以再次用 {provider} 登录以重新连接。",
+      "disconnectCancel": "取消",
       "apiErrors": {
         "read_only_inspection": "您正在以只读模式查看此账户。",
         "unauthorized": "请重新登录以更新您的个人资料。",
-        "update_failed": "更新个人资料失败"
+        "update_failed": "更新个人资料失败",
+        "last_sign_in_method": "这是您唯一的登录方式，请先设置密码。",
+        "email_identity_reserved": "该邮箱已被其他账户使用，请联系支持。",
+        "password_email_failed": "邮件发送失败，请重试。",
+        "disconnect_failed": "断开连接失败，请重试。",
+        "rate_limited": "尝试次数过多，请几分钟后再试。"
       },
       "languageTitle": "语言",
       "languageHint": "用于您的账户、电子邮件和收据的语言。更改后将重新加载页面。"

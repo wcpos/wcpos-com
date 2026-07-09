@@ -23,8 +23,8 @@ import {
 import { FormField } from '@/components/ui/form-field'
 import { Input } from '@/components/ui/input'
 import { Select } from '@/components/ui/select'
-import { Camera, ImagePlus, Mail, Trash2 } from 'lucide-react'
-import { GitHubMark, GoogleMark } from '@/components/auth/provider-marks'
+import { Camera, ImagePlus, Trash2 } from 'lucide-react'
+import { ConnectionsCard } from '@/components/account/connections-card'
 import { getConnectedAvatarUrlFromMetadata } from '@/lib/avatar'
 import { readAccountProfileMetadata } from '@/lib/customer-profile-metadata'
 import type { BillingDetails } from '@/lib/billing-profile'
@@ -48,6 +48,8 @@ interface ProfileEditFormProps {
   memberSince?: string
   connections?: {
     signIn: { provider: 'google' | 'github' | 'email'; email: string }
+    /** DB truth from the auth-methods endpoint; absent → read-only card. */
+    methods?: { providers: string[]; emailpassPending?: boolean } | null
   }
 }
 
@@ -567,44 +569,10 @@ export function ProfileEditForm({
         </Card>
 
         {connections && (
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg">{t('connectionsTitle')}</CardTitle>
-              <CardDescription>{t('connectionsHint')}</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-1">
-              <div className="flex items-center gap-4 py-3">
-                <span className="flex h-10 w-10 flex-none items-center justify-center rounded-md border">
-                  {connections.signIn.provider === 'google' ? (
-                    <GoogleMark className="h-5 w-5" />
-                  ) : connections.signIn.provider === 'github' ? (
-                    <GitHubMark className="h-5 w-5" />
-                  ) : (
-                    <Mail className="h-5 w-5 text-muted-foreground" />
-                  )}
-                </span>
-                <div className="min-w-0 flex-1">
-                  <p className="font-medium leading-none">
-                    {connections.signIn.provider === 'google'
-                      ? t('googleProvider')
-                      : connections.signIn.provider === 'github'
-                        ? t('githubProvider')
-                        : t('emailProvider')}
-                  </p>
-                  <p className="mt-1 break-all text-sm text-muted-foreground">
-                    {connections.signIn.provider === 'google'
-                      ? t('googleDescription')
-                      : connections.signIn.provider === 'github'
-                        ? t('githubDescription')
-                        : t('emailDescription')}
-                  </p>
-                </div>
-              </div>
-              <Badge variant="success" className="break-all">
-                {t('connectedAs', { account: connections.signIn.email })}
-              </Badge>
-            </CardContent>
-          </Card>
+          <ConnectionsCard
+            signIn={connections.signIn}
+            methods={connections.methods}
+          />
         )}
       </div>
 

@@ -966,10 +966,25 @@
       "githubDescription": "Used for one-click sign-in.",
       "emailProvider": "Email & password",
       "emailDescription": "You sign in with your email address.",
+      "passwordReady": "Sign in with your email address and password.",
+      "passwordMissing": "No password yet — set one to also sign in with your email.",
+      "setPassword": "Set a password",
+      "changePassword": "Change password",
+      "passwordEmailSent": "Check your inbox — we sent you a link to set your password.",
+      "disconnect": "Disconnect",
+      "disconnected": "{provider} disconnected.",
+      "disconnectTitle": "Disconnect {provider}?",
+      "disconnectBody": "You'll no longer be able to sign in with {provider}. You can reconnect anytime by signing in with {provider} again.",
+      "disconnectCancel": "Cancel",
       "apiErrors": {
         "read_only_inspection": "You are viewing this account in read-only mode.",
         "unauthorized": "Please sign in again to update your profile.",
-        "update_failed": "Failed to update profile"
+        "update_failed": "Failed to update profile",
+        "last_sign_in_method": "This is your only way to sign in. Set a password first.",
+        "email_identity_reserved": "This email is already used by another account. Please contact support.",
+        "password_email_failed": "We couldn't send the email. Please try again.",
+        "disconnect_failed": "Couldn't disconnect. Please try again.",
+        "rate_limited": "Too many attempts — please try again in a few minutes."
       },
       "languageTitle": "Language",
       "languageHint": "The language used across your account, emails, and receipts. Changing it reloads the page."

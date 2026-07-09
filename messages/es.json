@@ -966,10 +966,25 @@
       "githubDescription": "Se usa para iniciar sesión con un clic.",
       "emailProvider": "Correo electrónico y contraseña",
       "emailDescription": "Inicias sesión con tu dirección de correo electrónico.",
+      "passwordReady": "Inicia sesión con tu correo electrónico y tu contraseña.",
+      "passwordMissing": "Aún no tienes contraseña: crea una para iniciar sesión también con tu correo.",
+      "setPassword": "Crear contraseña",
+      "changePassword": "Cambiar contraseña",
+      "passwordEmailSent": "Revisa tu bandeja de entrada: te enviamos un enlace para establecer tu contraseña.",
+      "disconnect": "Desconectar",
+      "disconnected": "{provider} desconectado.",
+      "disconnectTitle": "¿Desconectar {provider}?",
+      "disconnectBody": "Ya no podrás iniciar sesión con {provider}. Puedes volver a conectarlo en cualquier momento iniciando sesión con {provider} de nuevo.",
+      "disconnectCancel": "Cancelar",
       "apiErrors": {
         "read_only_inspection": "Estás viendo esta cuenta en modo de solo lectura.",
         "unauthorized": "Inicia sesión de nuevo para actualizar tu perfil.",
-        "update_failed": "No se pudo actualizar el perfil"
+        "update_failed": "No se pudo actualizar el perfil",
+        "last_sign_in_method": "Es tu única forma de iniciar sesión. Primero crea una contraseña.",
+        "email_identity_reserved": "Este correo ya lo usa otra cuenta. Contacta con soporte.",
+        "password_email_failed": "No pudimos enviar el correo. Inténtalo de nuevo.",
+        "disconnect_failed": "No se pudo desconectar. Inténtalo de nuevo.",
+        "rate_limited": "Demasiados intentos; inténtalo de nuevo en unos minutos."
       },
       "languageTitle": "Idioma",
       "languageHint": "El idioma que se usa en tu cuenta, correos y recibos. Al cambiarlo se recarga la página."
