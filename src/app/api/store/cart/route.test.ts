@@ -282,6 +282,36 @@ describe('PATCH /api/store/cart', () => {
     expect(mockUpdateCustomer).not.toHaveBeenCalled()
   })
 
+  it('waits for the customer profile name backfill before returning success', async () => {
+    mockGetCustomer.mockResolvedValueOnce({
+      ...customer,
+      first_name: '',
+      last_name: '',
+    })
+    let resolveBackfill!: (value: unknown) => void
+    mockUpdateCustomer.mockReturnValueOnce(
+      new Promise((resolve) => {
+        resolveBackfill = resolve
+      })
+    )
+
+    let settled = false
+    const responsePromise = PATCH(
+      patchRequest({ cartId: 'cart_1', billing_address: billingAddress })
+    ).then((response) => {
+      settled = true
+      return response
+    })
+
+    await new Promise((resolve) => setTimeout(resolve, 0))
+    expect(settled).toBe(false)
+
+    resolveBackfill(customer)
+    const response = await responsePromise
+
+    expect(response.status).toBe(200)
+  })
+
   it('mirrors the billing address and tax number onto the customer address', async () => {
     await PATCH(
       patchRequest({

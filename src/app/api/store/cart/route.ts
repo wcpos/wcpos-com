@@ -13,7 +13,10 @@ import {
   type MedusaCustomer,
 } from '@/lib/medusa-auth'
 import { storeLogger } from '@/lib/logger'
-import { billingPatchFromCheckout } from '@/lib/billing-profile'
+import {
+  billingPatchFromCheckout,
+  type BillingAddressPatch,
+} from '@/lib/billing-profile'
 import { deliver } from '@/lib/sinks/deliver'
 import { assertViewOnly, ViewOnlyError } from '@/lib/impersonation'
 import type { CreateCartInput } from '@/types/medusa'
@@ -28,7 +31,7 @@ function nonEmptyString(value: unknown): string | undefined {
 
 async function backfillMissingCustomerNames(
   customer: MedusaCustomer,
-  billingPatch: ReturnType<typeof billingPatchFromCheckout>
+  billingPatch: BillingAddressPatch
 ): Promise<void> {
   const profilePatch: { first_name?: string; last_name?: string } = {}
 
@@ -59,12 +62,8 @@ async function backfillMissingCustomerNames(
  */
 async function syncBillingToCustomerAddress(
   customer: MedusaCustomer,
-  billingAddress: Record<string, unknown>,
-  taxNumber: string | undefined
+  billingPatch: BillingAddressPatch
 ): Promise<void> {
-  const billingPatch = billingPatchFromCheckout(billingAddress, taxNumber)
-  const nameBackfill = backfillMissingCustomerNames(customer, billingPatch)
-
   try {
     const updated = await upsertDefaultBillingAddress(
       customer,
@@ -78,8 +77,6 @@ async function syncBillingToCustomerAddress(
   } catch (error) {
     storeLogger.error`Failed to sync billing address to customer profile: ${error}`
   }
-
-  await nameBackfill
 }
 
 /**
@@ -240,10 +237,21 @@ export async function PATCH(request: NextRequest) {
     }
 
     if (isRecord(body.billing_address)) {
-      // Off the critical path: the response must not wait on profile sync.
-      deliver(
-        syncBillingToCustomerAddress(customer, body.billing_address, taxNumber)
+      const billingPatch = billingPatchFromCheckout(
+        body.billing_address,
+        taxNumber
       )
+      // The Medusa customer row is the profile name source of truth. Checkout
+      // collects the name later than account creation, so missing customer
+      // names must be written before this billing save is reported successful;
+      // otherwise a customer can land on Account > Profile and still see blank
+      // fields even though their order/billing address has names.
+      await backfillMissingCustomerNames(customer, billingPatch)
+
+      // The default billing address remains the source for receipt/address
+      // details and checkout prefill. Keep it off the critical payment path:
+      // failure here must not block checkout after the cart itself was saved.
+      deliver(syncBillingToCustomerAddress(customer, billingPatch))
     }
 
     return NextResponse.json({ cart })
