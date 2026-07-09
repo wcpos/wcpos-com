@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { fireEvent, screen, waitFor } from '@testing-library/react'
+import { fireEvent, screen, waitFor, within } from '@testing-library/react'
 import { renderWithIntl as render } from '@/test/intl'
 
 vi.mock('sonner', () => ({
@@ -15,6 +15,13 @@ vi.stubGlobal('fetch', mockFetch)
 const googleSignIn = {
   provider: 'google' as const,
   email: 'ada@gmail.com',
+}
+
+// The row buttons share the "Disconnect" name with the dialog's destructive
+// action, so always confirm through the open dialog rather than by position.
+async function clickConfirmDisconnect() {
+  const dialog = await screen.findByRole('dialog')
+  fireEvent.click(within(dialog).getByRole('button', { name: 'Disconnect' }))
 }
 
 describe('ConnectionsCard', () => {
@@ -125,10 +132,7 @@ describe('ConnectionsCard', () => {
     expect(mockFetch).not.toHaveBeenCalled()
     expect(await screen.findByText('Disconnect Google?')).toBeInTheDocument()
 
-    // The dialog's destructive action (the row button is hidden behind the
-    // overlay now); it is the last "Disconnect" button rendered.
-    const confirmButtons = screen.getAllByRole('button', { name: 'Disconnect' })
-    fireEvent.click(confirmButtons[confirmButtons.length - 1])
+    await clickConfirmDisconnect()
 
     await waitFor(() => {
       expect(mockFetch).toHaveBeenCalledWith('/api/account/connections/google', {
@@ -199,10 +203,7 @@ describe('ConnectionsCard', () => {
     )
 
     fireEvent.click(screen.getByRole('button', { name: 'Disconnect' }))
-    const confirmButtons = await screen.findAllByRole('button', {
-      name: 'Disconnect',
-    })
-    fireEvent.click(confirmButtons[confirmButtons.length - 1])
+    await clickConfirmDisconnect()
 
     // The open dialog marks the card behind it aria-hidden, so reach the
     // password button explicitly rather than through the accessible tree.
@@ -241,14 +242,14 @@ describe('ConnectionsCard', () => {
       />
     )
 
-    const disconnectButtons = screen.getAllByRole('button', {
+    // Rows render in OAUTH_PROVIDERS order, so Google is first.
+    const [googleDisconnect] = screen.getAllByRole('button', {
       name: 'Disconnect',
     })
-    fireEvent.click(disconnectButtons[0])
-    const confirmButtons = await screen.findAllByRole('button', {
-      name: 'Disconnect',
-    })
-    fireEvent.click(confirmButtons[confirmButtons.length - 1])
+    fireEvent.click(googleDisconnect)
+    // Pin which row was opened, so a row reorder fails loudly here.
+    expect(await screen.findByText('Disconnect Google?')).toBeInTheDocument()
+    await clickConfirmDisconnect()
 
     await waitFor(() => {
       expect(toast.error).toHaveBeenCalledWith(
