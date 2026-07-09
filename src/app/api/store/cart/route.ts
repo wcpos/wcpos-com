@@ -8,6 +8,7 @@ import {
 import {
   getAuthToken,
   getCustomer,
+  updateCustomer,
   upsertDefaultBillingAddress,
   type MedusaCustomer,
 } from '@/lib/medusa-auth'
@@ -19,6 +20,34 @@ import type { CreateCartInput } from '@/types/medusa'
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value)
+}
+
+function nonEmptyString(value: unknown): string | undefined {
+  return typeof value === 'string' && value.trim() ? value.trim() : undefined
+}
+
+async function backfillMissingCustomerNames(
+  customer: MedusaCustomer,
+  billingPatch: ReturnType<typeof billingPatchFromCheckout>
+): Promise<void> {
+  const profilePatch: { first_name?: string; last_name?: string } = {}
+
+  if (!nonEmptyString(customer.first_name) && billingPatch.first_name) {
+    profilePatch.first_name = billingPatch.first_name
+  }
+  if (!nonEmptyString(customer.last_name) && billingPatch.last_name) {
+    profilePatch.last_name = billingPatch.last_name
+  }
+  if (Object.keys(profilePatch).length === 0) return
+
+  try {
+    const updated = await updateCustomer(profilePatch)
+    if (!updated) {
+      storeLogger.error`Customer name backfill skipped: no session token for customer ${customer.id}`
+    }
+  } catch (error) {
+    storeLogger.error`Failed to backfill customer names from checkout billing: ${error}`
+  }
 }
 
 /**
@@ -33,10 +62,13 @@ async function syncBillingToCustomerAddress(
   billingAddress: Record<string, unknown>,
   taxNumber: string | undefined
 ): Promise<void> {
+  const billingPatch = billingPatchFromCheckout(billingAddress, taxNumber)
+  const nameBackfill = backfillMissingCustomerNames(customer, billingPatch)
+
   try {
     const updated = await upsertDefaultBillingAddress(
       customer,
-      billingPatchFromCheckout(billingAddress, taxNumber)
+      billingPatch
     )
     if (!updated) {
       // Null is a failed write (no session token), not a no-op — without
@@ -46,6 +78,8 @@ async function syncBillingToCustomerAddress(
   } catch (error) {
     storeLogger.error`Failed to sync billing address to customer profile: ${error}`
   }
+
+  await nameBackfill
 }
 
 /**

@@ -4,6 +4,7 @@ import { NextRequest } from 'next/server'
 const mockGetCustomer = vi.fn()
 const mockGetAuthToken = vi.fn()
 const mockUpsertBillingAddress = vi.fn()
+const mockUpdateCustomer = vi.fn()
 const mockCreateCart = vi.fn()
 const mockGetCart = vi.fn()
 const mockUpdateCart = vi.fn()
@@ -18,6 +19,7 @@ vi.mock('@/lib/medusa-auth', () => ({
   getAuthToken: (...args: unknown[]) => mockGetAuthToken(...args),
   upsertDefaultBillingAddress: (...args: unknown[]) =>
     mockUpsertBillingAddress(...args),
+  updateCustomer: (...args: unknown[]) => mockUpdateCustomer(...args),
 }))
 
 vi.mock('@/services/core/external/medusa-client', () => ({
@@ -247,6 +249,37 @@ describe('PATCH /api/store/cart', () => {
       customer,
       expect.objectContaining({ tax_number: null })
     )
+  })
+
+  it('backfills missing customer profile names from the billing address', async () => {
+    mockGetCustomer.mockResolvedValueOnce({
+      ...customer,
+      first_name: '',
+      last_name: undefined,
+    })
+
+    await PATCH(
+      patchRequest({ cartId: 'cart_1', billing_address: billingAddress })
+    )
+
+    expect(mockUpdateCustomer).toHaveBeenCalledWith({
+      first_name: 'Ada',
+      last_name: 'Lovelace',
+    })
+  })
+
+  it('does not overwrite existing customer profile names from billing', async () => {
+    mockGetCustomer.mockResolvedValueOnce({
+      ...customer,
+      first_name: 'Grace',
+      last_name: 'Hopper',
+    })
+
+    await PATCH(
+      patchRequest({ cartId: 'cart_1', billing_address: billingAddress })
+    )
+
+    expect(mockUpdateCustomer).not.toHaveBeenCalled()
   })
 
   it('mirrors the billing address and tax number onto the customer address', async () => {
