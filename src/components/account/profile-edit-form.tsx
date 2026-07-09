@@ -290,14 +290,39 @@ export function ProfileEditForm({
       nextProfile.phone !== profileBaseline.phone
 
     const billingBaseline = billingBaselineRef.current
-    const billingChanged =
-      snapshot.countryCode !== billingBaseline.countryCode ||
+    const billingContentChanged =
       snapshot.addressLine1.trim() !== billingBaseline.addressLine1 ||
       snapshot.addressLine2.trim() !== billingBaseline.addressLine2 ||
       snapshot.city.trim() !== billingBaseline.city ||
       snapshot.region.trim() !== billingBaseline.region ||
       snapshot.postalCode.trim() !== billingBaseline.postalCode ||
       snapshot.taxNumber.trim() !== billingBaseline.taxNumber
+    // A country change with no address content anywhere mirrors the server's
+    // rule (upsertDefaultBillingAddress): a bare country never creates an
+    // address record, so saving it would toast success while persisting
+    // nothing — and then re-send forever. The selection stays local until
+    // the user adds actual address content.
+    const billingHasAnyContent =
+      Boolean(
+        snapshot.addressLine1.trim() ||
+          snapshot.addressLine2.trim() ||
+          snapshot.city.trim() ||
+          snapshot.region.trim() ||
+          snapshot.postalCode.trim() ||
+          snapshot.taxNumber.trim()
+      ) ||
+      Boolean(
+        billingBaseline.addressLine1 ||
+          billingBaseline.addressLine2 ||
+          billingBaseline.city ||
+          billingBaseline.region ||
+          billingBaseline.postalCode ||
+          billingBaseline.taxNumber
+      )
+    const billingChanged =
+      billingContentChanged ||
+      (snapshot.countryCode !== billingBaseline.countryCode &&
+        billingHasAnyContent)
 
     const avatarBaseline = avatarBaselineRef.current
     const avatarChanged =
@@ -441,6 +466,17 @@ export function ProfileEditForm({
     requestSave()
   }
 
+  // Enter must save explicitly: with several text fields and no submit
+  // button, browsers suppress implicit form submission, so onSubmit alone
+  // never fires from the keyboard.
+  const handleFormKeyDown = (event: React.KeyboardEvent<HTMLFormElement>) => {
+    if (event.key !== 'Enter') return
+    if (event.target instanceof HTMLInputElement) {
+      event.preventDefault()
+      requestSave()
+    }
+  }
+
   return (
     <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,19rem)_1fr]">
       {/* Identity rail: who you are + account-level settings. Everything
@@ -572,7 +608,12 @@ export function ProfileEditForm({
         )}
       </div>
 
-      <form className="space-y-6" onSubmit={handleSubmit} onBlur={handleFormBlur}>
+      <form
+        className="space-y-6"
+        onSubmit={handleSubmit}
+        onBlur={handleFormBlur}
+        onKeyDown={handleFormKeyDown}
+      >
       <Card>
         <CardHeader>
           <CardTitle className="text-lg">{t('cardTitle')}</CardTitle>

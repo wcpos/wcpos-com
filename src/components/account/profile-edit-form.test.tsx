@@ -217,16 +217,35 @@ describe('ProfileEditForm', () => {
     expect(parsedBody).not.toHaveProperty('first_name')
   })
 
-  it('saves a country change immediately on selection', async () => {
+  it('does not save a bare country change when no address exists', () => {
+    // Mirrors the server rule: a country with no address content never
+    // creates an address record, so saving it would toast success while
+    // persisting nothing.
+    render(
+      <ProfileEditForm
+        customer={{ email: 'old@example.com', metadata: {} }}
+        billingDetails={emptyBillingDetails}
+      />
+    )
+
+    fireEvent.change(screen.getByLabelText('Country'), {
+      target: { value: 'AU' },
+    })
+
+    expect(mockFetch).not.toHaveBeenCalled()
+    expect(toast.success).not.toHaveBeenCalled()
+  })
+
+  it('saves a country change immediately when the address has content', async () => {
     mockFetch.mockResolvedValueOnce({
       ok: true,
       json: async () => ({
         customer: { email: 'old@example.com', metadata: {} },
         billingDetails: {
           countryCode: 'AU',
-          addressLine1: '',
+          addressLine1: '1 Existing St',
           addressLine2: '',
-          city: '',
+          city: 'Perth',
           region: '',
           postalCode: '',
           taxNumber: '',
@@ -237,7 +256,12 @@ describe('ProfileEditForm', () => {
     render(
       <ProfileEditForm
         customer={{ email: 'old@example.com', metadata: {} }}
-        billingDetails={emptyBillingDetails}
+        billingDetails={{
+          ...emptyBillingDetails,
+          countryCode: 'US',
+          addressLine1: '1 Existing St',
+          city: 'Perth',
+        }}
       />
     )
 
@@ -251,7 +275,51 @@ describe('ProfileEditForm', () => {
 
     const [, requestInit] = mockFetch.mock.calls[0]
     const parsedBody = JSON.parse((requestInit as RequestInit).body as string)
-    expect(parsedBody.billingAddress).toMatchObject({ countryCode: 'AU' })
+    expect(parsedBody.billingAddress).toMatchObject({
+      countryCode: 'AU',
+      addressLine1: '1 Existing St',
+    })
+  })
+
+  it('saves on Enter without waiting for blur', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        customer: {
+          email: 'old@example.com',
+          first_name: 'Entered',
+          last_name: 'Name',
+          phone: '',
+          metadata: {},
+        },
+        billingDetails: emptyBillingDetails,
+      }),
+    })
+
+    render(
+      <ProfileEditForm
+        customer={{
+          email: 'old@example.com',
+          first_name: 'Old',
+          last_name: 'Name',
+          phone: '',
+          metadata: {},
+        }}
+        billingDetails={emptyBillingDetails}
+      />
+    )
+
+    const firstName = screen.getByLabelText('First name')
+    fireEvent.change(firstName, { target: { value: 'Entered' } })
+    fireEvent.keyDown(firstName, { key: 'Enter' })
+
+    await waitFor(() => {
+      expect(mockFetch).toHaveBeenCalledTimes(1)
+    })
+
+    const [, requestInit] = mockFetch.mock.calls[0]
+    const parsedBody = JSON.parse((requestInit as RequestInit).body as string)
+    expect(parsedBody).toMatchObject({ first_name: 'Entered' })
   })
 
   it('localizes profile API error codes into an error toast', async () => {
