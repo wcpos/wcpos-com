@@ -9,6 +9,10 @@ const mockCreateCart = vi.fn()
 const mockGetCart = vi.fn()
 const mockUpdateCart = vi.fn()
 
+const DISTINCT_ID = '550e8400-e29b-41d4-a716-446655440000'
+const CLIENT_DISTINCT_ID = 'ea0c9eb4-95c8-4db7-a7e7-e723ad704bf1'
+const SESSION_ID = '01890f3e-8b3a-7cc2-98c4-dc0c0c0c0c0c'
+
 vi.mock('@/lib/impersonation', () => ({
   assertViewOnly: async () => {},
   ViewOnlyError: class ViewOnlyError extends Error {},
@@ -78,6 +82,177 @@ describe('POST /api/store/cart', () => {
       'jwt_session'
     )
     expect(json.cart.id).toBe('cart_1')
+  })
+
+  it('whitelists business metadata and builds analytics from the server identity', async () => {
+    mockGetCustomer.mockResolvedValueOnce({
+      id: 'cust_1',
+      email: 'customer@example.com',
+    })
+    mockCreateCart.mockResolvedValueOnce({ id: 'cart_1' })
+
+    const response = await POST(
+      new NextRequest('http://localhost:3000/api/store/cart', {
+        method: 'POST',
+        headers: {
+          cookie: `wcpos-analytics-consent=granted; wcpos-distinct-id=${DISTINCT_ID}`,
+        },
+        body: JSON.stringify({
+          metadata: {
+            locale: 'fr-fr',
+            experiment: 'pro_checkout_v1',
+            variant: 'value_copy',
+            arbitrary: 'discard me',
+            distinct_id: CLIENT_DISTINCT_ID,
+            wcpos_analytics: {
+              completion_owner: 'browser_owned',
+              distinct_id: CLIENT_DISTINCT_ID,
+            },
+          },
+          analytics: {
+            session_id: SESSION_ID,
+            distinct_id: CLIENT_DISTINCT_ID,
+            arbitrary: 'discard me too',
+          },
+        }),
+      })
+    )
+
+    expect(response.status).toBe(200)
+    expect(mockCreateCart).toHaveBeenCalledWith(
+      {
+        email: 'customer@example.com',
+        metadata: {
+          locale: 'fr-FR',
+          experiment: 'pro_checkout_v1',
+          variant: 'value_copy',
+          wcpos_analytics: {
+            completion_owner: 'medusa_v1',
+            distinct_id: DISTINCT_ID,
+            session_id: SESSION_ID,
+            locale: 'fr-FR',
+            experiment: 'pro_checkout_v1',
+            variant: 'value_copy',
+          },
+        },
+      },
+      'jwt_session'
+    )
+  })
+
+  it('drops invalid business metadata while still creating the cart', async () => {
+    mockGetCustomer.mockResolvedValueOnce({
+      id: 'cust_1',
+      email: 'customer@example.com',
+    })
+    mockCreateCart.mockResolvedValueOnce({ id: 'cart_1' })
+
+    const response = await POST(
+      new NextRequest('http://localhost:3000/api/store/cart', {
+        method: 'POST',
+        body: JSON.stringify({
+          metadata: {
+            locale: 'not-a-locale',
+            experiment: 'private_experiment',
+            variant: 'secret_variant',
+            arbitrary: true,
+          },
+        }),
+      })
+    )
+
+    expect(response.status).toBe(200)
+    expect(mockCreateCart).toHaveBeenCalledWith(
+      { email: 'customer@example.com' },
+      'jwt_session'
+    )
+  })
+
+  it.each([
+    {
+      name: 'denied consent',
+      cookie: `wcpos-analytics-consent=denied; wcpos-distinct-id=${DISTINCT_ID}`,
+      sessionId: SESSION_ID,
+    },
+    {
+      name: 'conflicting consent cookies',
+      cookie: `wcpos-analytics-consent=granted; wcpos-analytics-consent=denied; wcpos-distinct-id=${DISTINCT_ID}`,
+      sessionId: SESSION_ID,
+    },
+    {
+      name: 'missing distinct ID cookie',
+      cookie: 'wcpos-analytics-consent=granted',
+      sessionId: SESSION_ID,
+    },
+    {
+      name: 'non-v4 distinct ID cookie',
+      cookie:
+        'wcpos-analytics-consent=granted; wcpos-distinct-id=01890f3e-8b3a-7cc2-98c4-dc0c0c0c0c0c',
+      sessionId: SESSION_ID,
+    },
+    {
+      name: 'malformed session ID',
+      cookie: `wcpos-analytics-consent=granted; wcpos-distinct-id=${DISTINCT_ID}`,
+      sessionId: 'buyer@example.com',
+    },
+  ])('omits analytics for $name', async ({ cookie, sessionId }) => {
+    mockGetCustomer.mockResolvedValueOnce({
+      id: 'cust_1',
+      email: 'customer@example.com',
+    })
+    mockCreateCart.mockResolvedValueOnce({ id: 'cart_1' })
+
+    const response = await POST(
+      new NextRequest('http://localhost:3000/api/store/cart', {
+        method: 'POST',
+        headers: { cookie },
+        body: JSON.stringify({
+          metadata: {
+            locale: 'en',
+            experiment: 'pro_checkout_v1',
+            variant: 'control',
+          },
+          analytics: {
+            session_id: sessionId,
+            distinct_id: CLIENT_DISTINCT_ID,
+          },
+        }),
+      })
+    )
+
+    expect(response.status).toBe(200)
+    expect(mockCreateCart).toHaveBeenCalledWith(
+      {
+        email: 'customer@example.com',
+        metadata: {
+          locale: 'en',
+          experiment: 'pro_checkout_v1',
+          variant: 'control',
+        },
+      },
+      'jwt_session'
+    )
+  })
+
+  it('creates the cart when analytics context is absent', async () => {
+    mockGetCustomer.mockResolvedValueOnce({
+      id: 'cust_1',
+      email: 'customer@example.com',
+    })
+    mockCreateCart.mockResolvedValueOnce({ id: 'cart_1' })
+
+    const response = await POST(
+      new NextRequest('http://localhost:3000/api/store/cart', {
+        method: 'POST',
+        body: JSON.stringify({}),
+      })
+    )
+
+    expect(response.status).toBe(200)
+    expect(mockCreateCart).toHaveBeenCalledWith(
+      { email: 'customer@example.com' },
+      'jwt_session'
+    )
   })
 
   it('forwards the session token so Medusa links the cart to the customer', async () => {

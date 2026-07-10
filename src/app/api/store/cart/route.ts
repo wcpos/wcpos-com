@@ -20,6 +20,14 @@ import {
 import { deliver } from '@/lib/sinks/deliver'
 import { assertViewOnly, ViewOnlyError } from '@/lib/impersonation'
 import type { CreateCartInput } from '@/types/medusa'
+import { readAnalyticsConsentFromCookieHeader } from '@/lib/analytics/consent'
+import { ANALYTICS_DISTINCT_ID_COOKIE } from '@/lib/analytics/distinct-id'
+import {
+  buildCheckoutAttributionMetadata,
+  parseCheckoutExperiment,
+  parseCheckoutLocale,
+  parseCheckoutVariant,
+} from '@/lib/analytics/checkout-attribution'
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value)
@@ -114,7 +122,36 @@ export async function POST(request: NextRequest) {
         createCartInput.region_id = body.region_id
       }
       if (isRecord(body.metadata)) {
-        createCartInput.metadata = body.metadata
+        const metadata: Record<string, unknown> = {}
+        const locale = parseCheckoutLocale(body.metadata.locale)
+        const experiment = parseCheckoutExperiment(body.metadata.experiment)
+        const variant = parseCheckoutVariant(body.metadata.variant)
+
+        if (locale) metadata.locale = locale
+        if (experiment) metadata.experiment = experiment
+        if (variant) metadata.variant = variant
+
+        const consent = readAnalyticsConsentFromCookieHeader(
+          request.headers.get('cookie')
+        )
+        const analytics = isRecord(body.analytics) ? body.analytics : undefined
+        const attribution =
+          consent === 'granted'
+            ? buildCheckoutAttributionMetadata({
+                consentedDistinctId: request.cookies.get(
+                  ANALYTICS_DISTINCT_ID_COOKIE
+                )?.value,
+                sessionId: analytics?.session_id,
+                locale,
+                experiment,
+                variant,
+              })
+            : undefined
+
+        if (attribution) Object.assign(metadata, attribution)
+        if (Object.keys(metadata).length > 0) {
+          createCartInput.metadata = metadata
+        }
       }
     }
 

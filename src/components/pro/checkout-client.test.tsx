@@ -96,6 +96,11 @@ vi.mock('./checkout-form', () => ({
 
 const renderPayPalButton = vi.fn()
 const renderBTCPayButton = vi.fn()
+const mockGetPostHogSessionId = vi.hoisted(() => vi.fn())
+
+vi.mock('@/lib/analytics/posthog-browser', () => ({
+  getPostHogSessionId: () => mockGetPostHogSessionId(),
+}))
 
 vi.mock('./paypal-button', () => ({
   PayPalButton: (props: Record<string, unknown>) => {
@@ -279,6 +284,7 @@ async function completeBillingStep(cartAfterBilling = buildCheckoutCart()) {
 describe('CheckoutClient', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+    mockGetPostHogSessionId.mockReturnValue(undefined)
     sessionStorage.clear()
     window.history.pushState({}, '', '/pro/checkout?product=wcpos-pro-yearly')
   })
@@ -384,6 +390,38 @@ describe('CheckoutClient', () => {
             experiment: 'pro_checkout_v1',
             variant: 'control',
             locale: 'fr',
+          },
+        }),
+      })
+    )
+  })
+
+  it('includes the consented PostHog session when creating the cart', async () => {
+    mockGetPostHogSessionId.mockReturnValue(
+      '01890f3e-8b3a-7cc2-98c4-dc0c0c0c0c0c'
+    )
+    mockSuccessfulCheckoutInit()
+    renderSignedInFrench({ experimentVariant: 'value_copy' })
+
+    await waitFor(() => {
+      expect(mockFetch).toHaveBeenCalledWith(
+        '/api/store/cart',
+        expect.objectContaining({ method: 'POST' })
+      )
+    })
+    expect(mockFetch).toHaveBeenNthCalledWith(
+      1,
+      '/api/store/cart',
+      expect.objectContaining({
+        method: 'POST',
+        body: JSON.stringify({
+          metadata: {
+            experiment: 'pro_checkout_v1',
+            variant: 'value_copy',
+            locale: 'fr',
+          },
+          analytics: {
+            session_id: '01890f3e-8b3a-7cc2-98c4-dc0c0c0c0c0c',
           },
         }),
       })
