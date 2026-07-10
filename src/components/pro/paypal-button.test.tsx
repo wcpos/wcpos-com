@@ -86,6 +86,7 @@ function lastFailure() {
 
 beforeEach(() => {
   vi.clearAllMocks()
+  mockHandleClick.mockResolvedValue(undefined)
   mockPayPalState = {
     isHydrated: true,
     loadingStatus: 'resolved',
@@ -99,7 +100,7 @@ beforeEach(() => {
 })
 
 describe('PayPalButton', () => {
-  it('awaits one attempt callback before invoking the PayPal SDK click', async () => {
+  it('invokes the PayPal SDK synchronously, then awaits attribution before creating the order', async () => {
     let releaseAttempt!: () => void
     onAttempt.mockReturnValueOnce(
       new Promise<void>((resolve) => {
@@ -107,14 +108,17 @@ describe('PayPalButton', () => {
       })
     )
 
-    renderButton()
+    const props = renderButton()
     expect(onAttempt).not.toHaveBeenCalled()
     fireEvent.click(document.querySelector('paypal-button')!)
 
+    expect(mockHandleClick).toHaveBeenCalledTimes(1)
+    expect(onAttempt).not.toHaveBeenCalled()
+
+    const order = props.createOrder()
     expect(onAttempt).toHaveBeenCalledTimes(1)
-    expect(mockHandleClick).not.toHaveBeenCalled()
     releaseAttempt()
-    await waitFor(() => expect(mockHandleClick).toHaveBeenCalledTimes(1))
+    await expect(order).resolves.toEqual({ orderId: 'PAYPAL_ORDER_1' })
   })
 
   it('guards and disables synchronously so a double click starts PayPal once', async () => {
@@ -125,26 +129,45 @@ describe('PayPalButton', () => {
       })
     )
 
-    renderButton()
+    const props = renderButton()
     const button = document.querySelector('paypal-button')!
     fireEvent.click(button)
     fireEvent.click(button)
 
-    expect(onAttempt).toHaveBeenCalledTimes(1)
+    expect(mockHandleClick).toHaveBeenCalledTimes(1)
+    expect(onAttempt).not.toHaveBeenCalled()
     expect(button).toHaveAttribute('disabled')
-    expect(mockHandleClick).not.toHaveBeenCalled()
 
+    const order = props.createOrder()
     releaseAttempt()
-    await waitFor(() => expect(mockHandleClick).toHaveBeenCalledTimes(1))
+    await expect(order).resolves.toEqual({ orderId: 'PAYPAL_ORDER_1' })
   })
 
-  it('still invokes the PayPal SDK when the analytics attempt callback fails', async () => {
+  it('still creates the PayPal order when the analytics attempt callback fails', async () => {
     onAttempt.mockRejectedValueOnce(new Error('analytics unavailable'))
 
-    renderButton()
+    const props = renderButton()
     fireEvent.click(document.querySelector('paypal-button')!)
 
-    await waitFor(() => expect(mockHandleClick).toHaveBeenCalledTimes(1))
+    expect(mockHandleClick).toHaveBeenCalledTimes(1)
+    await expect(props.createOrder()).resolves.toEqual({
+      orderId: 'PAYPAL_ORDER_1',
+    })
+  })
+
+  it('re-enables PayPal after an asynchronous SDK start rejection', async () => {
+    mockHandleClick
+      .mockRejectedValueOnce(new Error('popup blocked'))
+      .mockResolvedValueOnce(undefined)
+
+    renderButton()
+    const button = document.querySelector('paypal-button')!
+    fireEvent.click(button)
+
+    await waitFor(() => expect(button).not.toHaveAttribute('disabled'))
+    fireEvent.click(button)
+
+    expect(mockHandleClick).toHaveBeenCalledTimes(2)
   })
 
   it('renders the v6 web component when the SDK session is ready', () => {

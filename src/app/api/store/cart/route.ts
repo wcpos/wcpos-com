@@ -124,6 +124,7 @@ export async function POST(request: NextRequest) {
       }
       const metadataInput = isRecord(body.metadata) ? body.metadata : undefined
       const metadata: Record<string, unknown> = {}
+      if (metadataInput?.renewal === true) metadata.renewal = true
       const locale = parseCheckoutLocale(metadataInput?.locale)
       const experiment = parseCheckoutExperiment(metadataInput?.experiment)
       const variant = parseCheckoutVariant(metadataInput?.variant)

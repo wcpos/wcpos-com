@@ -318,6 +318,28 @@ keeps the existing WCPOS completion event as a legacy-cart fallback.
 2. Add only the event properties; preserve navigation and styling.
 3. Run the focused test, implement, re-run, and commit.
 
+### Task 10a: Bring attended renewals under the same lifecycle contract
+
+**Files:**
+
+- Create a shared checkout payment-attempt analytics helper and tests through
+  its existing `PaymentStep` and renewal consumers.
+- Modify `src/components/account/renew-client.tsx` and test.
+- Modify cart metadata validation and tests to retain the boolean renewal
+  business marker and accept the bounded `license_renewal` context.
+
+1. Add failing renewal tests proving cart creation carries the consented browser
+   session, locale, renewal marker, plan, and bounded lifecycle context.
+2. Add failing tests proving Stripe renewal attempts refresh attribution before
+   provider confirmation and emit the same safe start/failure events as the Pro
+   checkout.
+3. Extract the existing refresh/start/failure seam from `PaymentStep`, reuse it
+   in `RenewClient`, and keep raw failure details out of event properties.
+4. Preserve `renewal: true` as server-validated business metadata so the cart
+   remains distinguishable while the `medusa_v1` envelope makes Medusa the
+   completion owner.
+5. Run renewal, cart-route, lifecycle, and completion tests before committing.
+
 ---
 
 ## Phase 4 — WCPOS validation and companion PR

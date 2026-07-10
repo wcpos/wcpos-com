@@ -3,7 +3,7 @@ import { parseCheckoutLocale } from './checkout-attribution'
 
 const PAYMENT_PROVIDERS = ['stripe', 'paypal', 'btcpay'] as const
 const CHECKOUT_PLANS = ['yearly', 'lifetime'] as const
-const CHECKOUT_EXPERIMENTS = ['pro_checkout_v1'] as const
+const CHECKOUT_EXPERIMENTS = ['pro_checkout_v1', 'license_renewal'] as const
 const CHECKOUT_VARIANTS = ['control', 'value_copy'] as const
 
 export type CheckoutPaymentProvider = (typeof PAYMENT_PROVIDERS)[number]

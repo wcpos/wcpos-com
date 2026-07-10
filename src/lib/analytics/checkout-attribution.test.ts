@@ -49,8 +49,9 @@ describe('checkout attribution parsing', () => {
     }
   )
 
-  it('accepts only the checkout experiment and its known variants', () => {
+  it('accepts only the purchase and renewal checkout contexts and known variants', () => {
     expect(parseCheckoutExperiment('pro_checkout_v1')).toBe('pro_checkout_v1')
+    expect(parseCheckoutExperiment('license_renewal')).toBe('license_renewal')
     expect(parseCheckoutExperiment('other_experiment')).toBeUndefined()
     expect(parseCheckoutVariant('control')).toBe('control')
     expect(parseCheckoutVariant('value_copy')).toBe('value_copy')

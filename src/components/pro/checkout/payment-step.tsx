@@ -12,50 +12,13 @@ import type { CheckoutFailure } from '../checkout-safety'
 import type { PayPalCheckoutConfig } from '@/lib/checkout-payment-config'
 import type { ProCheckoutVariant } from '@/services/core/analytics/posthog-service'
 import type { PlanId } from '@/lib/plans'
-import { trackClientEvent } from '@/lib/analytics/client-events'
-import { getPostHogSessionId } from '@/lib/analytics/posthog-browser'
+import type { CheckoutPaymentProvider } from '@/lib/analytics/checkout-payment-events'
 import {
-  buildCheckoutPaymentEventProperties,
-  type CheckoutPaymentProvider,
-} from '@/lib/analytics/checkout-payment-events'
+  beginCheckoutPaymentAttempt,
+  captureCheckoutPaymentFailure,
+} from '@/lib/analytics/checkout-payment-lifecycle'
 
 export type PaymentMethod = 'stripe' | 'paypal' | 'btcpay'
-
-const CHECKOUT_ATTRIBUTION_REFRESH_TIMEOUT_MS = 1000
-
-async function refreshCheckoutAttribution(
-  cartId: string,
-  sessionId: string | undefined
-): Promise<void> {
-  const controller = new AbortController()
-  let timeout: ReturnType<typeof setTimeout> | undefined
-  const timedOut = new Promise<void>((resolve) => {
-    timeout = setTimeout(() => {
-      controller.abort()
-      resolve()
-    }, CHECKOUT_ATTRIBUTION_REFRESH_TIMEOUT_MS)
-  })
-  const refresh = Promise.resolve()
-    .then(() =>
-      fetch('/api/store/cart/analytics-attribution', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          cartId,
-          ...(sessionId ? { session_id: sessionId } : {}),
-        }),
-        signal: controller.signal,
-      })
-    )
-    .then(() => undefined)
-    .catch(() => undefined)
-
-  try {
-    await Promise.race([refresh, timedOut])
-  } finally {
-    if (timeout !== undefined) clearTimeout(timeout)
-  }
-}
 
 /**
  * Payment step: wallet buttons on top (when a wallet is available), then a
@@ -192,6 +155,7 @@ export function PaymentStep({
   ).length
 
   const eventContext = {
+    cartId,
     plan,
     experiment,
     variant: experimentVariant,
@@ -199,31 +163,16 @@ export function PaymentStep({
   }
 
   const onProviderAttempt = (paymentProvider: CheckoutPaymentProvider) =>
-    async () => {
-      const sessionId = getPostHogSessionId()
-      await refreshCheckoutAttribution(cartId, sessionId)
-
-      trackClientEvent(
-        'checkout_payment_started',
-        buildCheckoutPaymentEventProperties({
-          paymentProvider,
-          ...eventContext,
-        })
-      )
-    }
+    () => beginCheckoutPaymentAttempt({ paymentProvider, ...eventContext })
 
   const onProviderFailure = (paymentProvider: CheckoutPaymentProvider) =>
     (failure: CheckoutFailure | null) => {
       onFailure(failure)
       if (!failure) return
 
-      trackClientEvent(
-        'checkout_payment_failed',
-        buildCheckoutPaymentEventProperties({
-          paymentProvider,
-          failureKind: failure.kind,
-          ...eventContext,
-        })
+      captureCheckoutPaymentFailure(
+        { paymentProvider, ...eventContext },
+        failure.kind
       )
     }
 

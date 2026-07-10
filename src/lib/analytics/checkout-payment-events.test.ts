@@ -50,4 +50,22 @@ describe('buildCheckoutPaymentEventProperties', () => {
       })
     ).toEqual({ payment_provider: 'unknown' })
   })
+
+  it('keeps attended renewal lifecycle events distinguishable', () => {
+    expect(
+      buildCheckoutPaymentEventProperties({
+        paymentProvider: 'stripe',
+        plan: 'yearly',
+        experiment: 'license_renewal',
+        variant: 'control',
+        locale: 'en',
+      })
+    ).toEqual({
+      payment_provider: 'stripe',
+      plan: 'yearly',
+      experiment: 'license_renewal',
+      variant: 'control',
+      locale: 'en',
+    })
+  })
 })

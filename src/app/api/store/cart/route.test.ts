@@ -140,6 +140,54 @@ describe('POST /api/store/cart', () => {
     )
   })
 
+  it('preserves the attended renewal marker and marks its completion for Medusa', async () => {
+    mockGetCustomer.mockResolvedValueOnce({
+      id: 'cust_1',
+      email: 'customer@example.com',
+    })
+    mockCreateCart.mockResolvedValueOnce({ id: 'cart_renewal' })
+
+    const response = await POST(
+      new NextRequest('http://localhost:3000/api/store/cart', {
+        method: 'POST',
+        headers: {
+          cookie: `wcpos-analytics-consent=granted; wcpos-distinct-id=${DISTINCT_ID}`,
+        },
+        body: JSON.stringify({
+          metadata: {
+            renewal: true,
+            locale: 'en',
+            experiment: 'license_renewal',
+            variant: 'control',
+          },
+          analytics: { session_id: SESSION_ID },
+        }),
+      })
+    )
+
+    expect(response.status).toBe(200)
+    expect(mockCreateCart).toHaveBeenCalledWith(
+      {
+        email: 'customer@example.com',
+        metadata: {
+          renewal: true,
+          locale: 'en',
+          experiment: 'license_renewal',
+          variant: 'control',
+          wcpos_analytics: {
+            completion_owner: 'medusa_v1',
+            distinct_id: DISTINCT_ID,
+            session_id: SESSION_ID,
+            locale: 'en',
+            experiment: 'license_renewal',
+            variant: 'control',
+          },
+        },
+      },
+      'jwt_session'
+    )
+  })
+
   it('drops invalid business metadata while still creating the cart', async () => {
     mockGetCustomer.mockResolvedValueOnce({
       id: 'cust_1',

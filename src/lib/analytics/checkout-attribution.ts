@@ -2,7 +2,7 @@ import { supportedCanonicalLocale } from '@/lib/locale-preferences'
 
 export const CHECKOUT_ATTRIBUTION_OWNER = 'medusa_v1'
 
-export type CheckoutExperiment = 'pro_checkout_v1'
+export type CheckoutExperiment = 'pro_checkout_v1' | 'license_renewal'
 export type CheckoutVariant = 'control' | 'value_copy'
 
 type CheckoutAttributionInput = {
@@ -63,7 +63,9 @@ export function parseCheckoutLocale(value: unknown): string | undefined {
 export function parseCheckoutExperiment(
   value: unknown
 ): CheckoutExperiment | undefined {
-  return value === 'pro_checkout_v1' ? value : undefined
+  return value === 'pro_checkout_v1' || value === 'license_renewal'
+    ? value
+    : undefined
 }
 
 export function parseCheckoutVariant(

@@ -84,6 +84,16 @@ export function PayPalButton({
         try {
           onFailure(null)
 
+          // The PayPal SDK itself must start synchronously from the customer's
+          // click so popup-capable browsers retain transient user activation.
+          // Its deferred createOrder callback is the safe point to await the
+          // consent/attribution refresh before any order is created.
+          try {
+            await onAttempt?.()
+          } catch {
+            // Analytics attribution is best-effort and must never block payment.
+          }
+
           if (paypalOrderId) {
             return { orderId: paypalOrderId }
           }
@@ -230,18 +240,15 @@ export function PayPalButton({
     )
   }
 
-  const handleAttempt = async () => {
+  const handleAttempt = () => {
     if (attemptInFlight.current) return
     attemptInFlight.current = true
     setIsAttempting(true)
 
     try {
-      await onAttempt?.()
-    } catch {
-      // Analytics attribution is best-effort and must never block payment.
-    }
-    try {
-      handleClick()
+      void handleClick().catch(() => {
+        releaseAttemptGuard()
+      })
     } catch {
       releaseAttemptGuard()
     }
