@@ -495,6 +495,7 @@ describe('CheckoutClient', () => {
     fireEvent.submit(screen.getByTestId('account-step-form'))
 
     await waitFor(() => {
+      expect(mockGetPostHogSessionId).toHaveBeenCalledTimes(1)
       expect(mockFetch).toHaveBeenNthCalledWith(
         1,
         '/api/auth/register',
@@ -504,6 +505,39 @@ describe('CheckoutClient', () => {
             email: 'new@example.com',
             password: 'hunter2hunter2',
             locale: 'fr',
+          }),
+        })
+      )
+    })
+  })
+
+  it('keeps inline registration in the current PostHog session when available', async () => {
+    mockGetPostHogSessionId.mockReturnValue(
+      '01890f3e-8b3a-7cc2-98c4-dc0c0c0c0c0c'
+    )
+    mockFetch.mockResolvedValueOnce({ ok: true, json: async () => ({}) })
+    mockSuccessfulCheckoutInit()
+
+    const { container } = renderSignedInFrench({ customerEmail: undefined })
+
+    fireEvent.change(container.querySelector('#checkout-email')!, {
+      target: { value: 'new@example.com' },
+    })
+    fireEvent.change(container.querySelector('#checkout-password')!, {
+      target: { value: 'hunter2hunter2' },
+    })
+    fireEvent.submit(screen.getByTestId('account-step-form'))
+
+    await waitFor(() => {
+      expect(mockFetch).toHaveBeenNthCalledWith(
+        1,
+        '/api/auth/register',
+        expect.objectContaining({
+          body: JSON.stringify({
+            email: 'new@example.com',
+            password: 'hunter2hunter2',
+            locale: 'fr',
+            sessionId: '01890f3e-8b3a-7cc2-98c4-dc0c0c0c0c0c',
           }),
         })
       )

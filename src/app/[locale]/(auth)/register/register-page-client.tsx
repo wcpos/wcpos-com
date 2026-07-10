@@ -11,6 +11,7 @@ import { Alert } from '@/components/ui/alert'
 import { navigateAfterAuthChange, sanitizeRedirectPath } from '@/lib/safe-redirect'
 import type { Locale } from '@/i18n/config'
 import { MIN_PASSWORD_LENGTH } from '@/lib/password-policy'
+import { getPostHogSessionId } from '@/lib/analytics/posthog-browser'
 import {
   Card,
   CardContent,
@@ -85,10 +86,18 @@ function RegisterPageInner() {
     setLoading(true)
 
     try {
+      const sessionId = getPostHogSessionId()
       const response = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password, firstName, lastName, locale }),
+        body: JSON.stringify({
+          email,
+          password,
+          firstName,
+          lastName,
+          locale,
+          ...(sessionId ? { sessionId } : {}),
+        }),
       })
 
       const data = await response.json()

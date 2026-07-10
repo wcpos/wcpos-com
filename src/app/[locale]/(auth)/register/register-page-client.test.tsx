@@ -9,6 +9,7 @@ import { RegisterPageClient } from './register-page-client'
 // signed-out.
 const mockAssign = vi.fn()
 const mockFetch = vi.fn()
+const mockGetPostHogSessionId = vi.hoisted(() => vi.fn())
 let mockSearchParams = new URLSearchParams()
 
 vi.stubGlobal('fetch', mockFetch)
@@ -16,6 +17,10 @@ vi.stubGlobal('location', { assign: mockAssign } as unknown as Location)
 
 vi.mock('next/navigation', () => ({
   useSearchParams: () => mockSearchParams,
+}))
+
+vi.mock('@/lib/analytics/posthog-browser', () => ({
+  getPostHogSessionId: () => mockGetPostHogSessionId(),
 }))
 
 vi.mock('@/i18n/navigation', () => ({
@@ -45,6 +50,7 @@ function renderRegister(locale = 'en') {
 describe('RegisterPageClient', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+    mockGetPostHogSessionId.mockReturnValue(undefined)
     mockSearchParams = new URLSearchParams()
   })
 
@@ -66,6 +72,7 @@ describe('RegisterPageClient', () => {
 
     // Locale-prefixed full navigation: the fr surface keeps the customer on fr.
     await waitFor(() => expect(mockAssign).toHaveBeenCalledWith('/fr/account'))
+    expect(mockGetPostHogSessionId).toHaveBeenCalledTimes(1)
     expect(mockFetch).toHaveBeenCalledWith(
       '/api/auth/register',
       expect.objectContaining({
@@ -76,6 +83,41 @@ describe('RegisterPageClient', () => {
           firstName: '',
           lastName: '',
           locale: 'fr',
+        }),
+      })
+    )
+  })
+
+  it('keeps registration in the current PostHog session when available', async () => {
+    mockGetPostHogSessionId.mockReturnValue(
+      '01890f3e-8b3a-7cc2-98c4-dc0c0c0c0c0c'
+    )
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ success: true, customer: { id: 'cus_1' } }),
+    })
+
+    renderRegister('fr')
+
+    fireEvent.change(screen.getByLabelText('Email'), {
+      target: { value: 'new@example.com' },
+    })
+    fireEvent.change(screen.getByLabelText('Password'), {
+      target: { value: 'password123' },
+    })
+    fireEvent.click(screen.getByRole('button', { name: 'Create account' }))
+
+    await waitFor(() => expect(mockAssign).toHaveBeenCalledWith('/fr/account'))
+    expect(mockFetch).toHaveBeenCalledWith(
+      '/api/auth/register',
+      expect.objectContaining({
+        body: JSON.stringify({
+          email: 'new@example.com',
+          password: 'password123',
+          firstName: '',
+          lastName: '',
+          locale: 'fr',
+          sessionId: '01890f3e-8b3a-7cc2-98c4-dc0c0c0c0c0c',
         }),
       })
     )

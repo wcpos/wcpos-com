@@ -10,7 +10,10 @@ import {
 import { createRateLimiter, clientIp } from '@/lib/rate-limit'
 import { trackServerEvent } from '@/services/core/analytics/posthog-service'
 import { ANALYTICS_DISTINCT_ID_COOKIE } from '@/lib/analytics/distinct-id'
-import { supportedCanonicalLocale } from '@/lib/locale-preferences'
+import {
+  parseCheckoutLocale,
+  parsePostHogSessionId,
+} from '@/lib/analytics/checkout-attribution'
 
 // Every accepted request can create a real Medusa customer account, so gate
 // this harder than sign-in — a legitimate user registers once. Fail-open.
@@ -24,11 +27,6 @@ type RegisterErrorCode =
 
 function errorResponse(errorCode: RegisterErrorCode, status: number, extra?: Record<string, string>) {
   return NextResponse.json({ errorCode, ...extra }, { status })
-}
-
-
-function registrationLocale(value: unknown): string | undefined {
-  return typeof value === 'string' ? supportedCanonicalLocale(value) : undefined
 }
 
 
@@ -56,12 +54,14 @@ export async function POST(request: Request) {
     firstName?: unknown
     lastName?: unknown
     locale?: unknown
+    sessionId?: unknown
   }
   const email = typeof body.email === 'string' ? body.email : ''
   const password = typeof body.password === 'string' ? body.password : ''
   const firstName = typeof body.firstName === 'string' ? body.firstName : undefined
   const lastName = typeof body.lastName === 'string' ? body.lastName : undefined
-  const locale = registrationLocale(body.locale)
+  const locale = parseCheckoutLocale(body.locale)
+  const sessionId = parsePostHogSessionId(body.sessionId)
 
   if (!email || !password) {
     return errorResponse('credentials_required', 400)
@@ -97,6 +97,8 @@ export async function POST(request: Request) {
         distinct_id: distinctId ?? customer.id,
         funnel_step: 'signup_completed',
         page: '/register',
+        ...(sessionId ? { $session_id: sessionId } : {}),
+        ...(locale ? { locale } : {}),
       }).catch((trackingError) => {
         authLogger.warn`Signup tracking failed: ${trackingError}`
       })

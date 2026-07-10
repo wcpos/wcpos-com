@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Link } from '@/i18n/navigation'
+import { getPostHogSessionId } from '@/lib/analytics/posthog-browser'
 
 /**
  * Inline account step: new customers create their account without leaving
@@ -41,13 +42,16 @@ export function AccountStep({ checkoutPath, onAuthenticated }: AccountStepProps)
 
     try {
       const isCreatingAccount = mode === 'register'
+      const sessionId = isCreatingAccount ? getPostHogSessionId() : undefined
       const endpoint =
         isCreatingAccount ? '/api/auth/register' : '/api/auth/login'
       const response = await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(
-          isCreatingAccount ? { email, password, locale } : { email, password }
+          isCreatingAccount
+            ? { email, password, locale, ...(sessionId ? { sessionId } : {}) }
+            : { email, password }
         ),
       })
 
