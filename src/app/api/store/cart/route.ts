@@ -27,6 +27,7 @@ import {
   parseCheckoutExperiment,
   parseCheckoutLocale,
   parseCheckoutVariant,
+  parsePostHogSessionId,
 } from '@/lib/analytics/checkout-attribution'
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -121,37 +122,37 @@ export async function POST(request: NextRequest) {
       if (typeof body.region_id === 'string') {
         createCartInput.region_id = body.region_id
       }
-      if (isRecord(body.metadata)) {
-        const metadata: Record<string, unknown> = {}
-        const locale = parseCheckoutLocale(body.metadata.locale)
-        const experiment = parseCheckoutExperiment(body.metadata.experiment)
-        const variant = parseCheckoutVariant(body.metadata.variant)
+      const metadataInput = isRecord(body.metadata) ? body.metadata : undefined
+      const metadata: Record<string, unknown> = {}
+      const locale = parseCheckoutLocale(metadataInput?.locale)
+      const experiment = parseCheckoutExperiment(metadataInput?.experiment)
+      const variant = parseCheckoutVariant(metadataInput?.variant)
 
-        if (locale) metadata.locale = locale
-        if (experiment) metadata.experiment = experiment
-        if (variant) metadata.variant = variant
+      if (locale) metadata.locale = locale
+      if (experiment) metadata.experiment = experiment
+      if (variant) metadata.variant = variant
 
-        const consent = readAnalyticsConsentFromCookieHeader(
-          request.headers.get('cookie')
-        )
-        const analytics = isRecord(body.analytics) ? body.analytics : undefined
-        const attribution =
-          consent === 'granted'
-            ? buildCheckoutAttributionMetadata({
-                consentedDistinctId: request.cookies.get(
-                  ANALYTICS_DISTINCT_ID_COOKIE
-                )?.value,
-                sessionId: analytics?.session_id,
-                locale,
-                experiment,
-                variant,
-              })
-            : undefined
+      const analytics = isRecord(body.analytics) ? body.analytics : undefined
+      const sessionId = parsePostHogSessionId(analytics?.session_id)
+      const consent = readAnalyticsConsentFromCookieHeader(
+        request.headers.get('cookie')
+      )
+      const attribution =
+        consent === 'granted' && sessionId
+          ? buildCheckoutAttributionMetadata({
+              consentedDistinctId: request.cookies.get(
+                ANALYTICS_DISTINCT_ID_COOKIE
+              )?.value,
+              sessionId,
+              locale,
+              experiment,
+              variant,
+            })
+          : undefined
 
-        if (attribution) Object.assign(metadata, attribution)
-        if (Object.keys(metadata).length > 0) {
-          createCartInput.metadata = metadata
-        }
+      if (attribution) Object.assign(metadata, attribution)
+      if (Object.keys(metadata).length > 0) {
+        createCartInput.metadata = metadata
       }
     }
 

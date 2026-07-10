@@ -195,6 +195,11 @@ describe('POST /api/store/cart', () => {
       cookie: `wcpos-analytics-consent=granted; wcpos-distinct-id=${DISTINCT_ID}`,
       sessionId: 'buyer@example.com',
     },
+    {
+      name: 'missing session ID',
+      cookie: `wcpos-analytics-consent=granted; wcpos-distinct-id=${DISTINCT_ID}`,
+      sessionId: undefined,
+    },
   ])('omits analytics for $name', async ({ cookie, sessionId }) => {
     mockGetCustomer.mockResolvedValueOnce({
       id: 'cust_1',
@@ -228,6 +233,45 @@ describe('POST /api/store/cart', () => {
           locale: 'en',
           experiment: 'pro_checkout_v1',
           variant: 'control',
+        },
+      },
+      'jwt_session'
+    )
+  })
+
+  it.each([
+    { name: 'metadata is absent', metadata: undefined },
+    { name: 'metadata is not an object', metadata: 'untrusted' },
+  ])('builds valid analytics when $name', async ({ metadata }) => {
+    mockGetCustomer.mockResolvedValueOnce({
+      id: 'cust_1',
+      email: 'customer@example.com',
+    })
+    mockCreateCart.mockResolvedValueOnce({ id: 'cart_1' })
+
+    const response = await POST(
+      new NextRequest('http://localhost:3000/api/store/cart', {
+        method: 'POST',
+        headers: {
+          cookie: `wcpos-analytics-consent=granted; wcpos-distinct-id=${DISTINCT_ID}`,
+        },
+        body: JSON.stringify({
+          ...(metadata === undefined ? {} : { metadata }),
+          analytics: { session_id: SESSION_ID },
+        }),
+      })
+    )
+
+    expect(response.status).toBe(200)
+    expect(mockCreateCart).toHaveBeenCalledWith(
+      {
+        email: 'customer@example.com',
+        metadata: {
+          wcpos_analytics: {
+            completion_owner: 'medusa_v1',
+            distinct_id: DISTINCT_ID,
+            session_id: SESSION_ID,
+          },
         },
       },
       'jwt_session'
