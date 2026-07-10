@@ -21,6 +21,42 @@ import {
 
 export type PaymentMethod = 'stripe' | 'paypal' | 'btcpay'
 
+const CHECKOUT_ATTRIBUTION_REFRESH_TIMEOUT_MS = 1000
+
+async function refreshCheckoutAttribution(
+  cartId: string,
+  sessionId: string | undefined
+): Promise<void> {
+  const controller = new AbortController()
+  let timeout: ReturnType<typeof setTimeout> | undefined
+  const timedOut = new Promise<void>((resolve) => {
+    timeout = setTimeout(() => {
+      controller.abort()
+      resolve()
+    }, CHECKOUT_ATTRIBUTION_REFRESH_TIMEOUT_MS)
+  })
+  const refresh = Promise.resolve()
+    .then(() =>
+      fetch('/api/store/cart/analytics-attribution', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          cartId,
+          ...(sessionId ? { session_id: sessionId } : {}),
+        }),
+        signal: controller.signal,
+      })
+    )
+    .then(() => undefined)
+    .catch(() => undefined)
+
+  try {
+    await Promise.race([refresh, timedOut])
+  } finally {
+    if (timeout !== undefined) clearTimeout(timeout)
+  }
+}
+
 /**
  * Payment step: wallet buttons on top (when a wallet is available), then a
  * radio accordion where Card is the default and PayPal / Bitcoin are
@@ -164,6 +200,9 @@ export function PaymentStep({
 
   const onProviderAttempt = (paymentProvider: CheckoutPaymentProvider) =>
     async () => {
+      const sessionId = getPostHogSessionId()
+      await refreshCheckoutAttribution(cartId, sessionId)
+
       trackClientEvent(
         'checkout_payment_started',
         buildCheckoutPaymentEventProperties({
@@ -171,20 +210,6 @@ export function PaymentStep({
           ...eventContext,
         })
       )
-
-      const sessionId = getPostHogSessionId()
-      try {
-        await fetch('/api/store/cart/analytics-attribution', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            cartId,
-            ...(sessionId ? { session_id: sessionId } : {}),
-          }),
-        })
-      } catch {
-        // Server attribution is analytics-only; payment always continues.
-      }
     }
 
   const onProviderFailure = (paymentProvider: CheckoutPaymentProvider) =>

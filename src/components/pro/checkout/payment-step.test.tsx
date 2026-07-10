@@ -1,10 +1,11 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { renderWithIntl as render } from '@/test/intl'
 
 const mockTrackClientEvent = vi.fn()
 const mockGetPostHogSessionId = vi.fn()
 const mockFetch = vi.fn()
+const mockProviderInvocation = vi.fn()
 
 vi.stubGlobal('fetch', mockFetch)
 
@@ -39,7 +40,14 @@ function AdapterControls({
 }) {
   return (
     <div>
-      <button type="button" onClick={() => void onAttempt()}>
+      <button
+        type="button"
+        onClick={() =>
+          void Promise.resolve(onAttempt()).then(() =>
+            mockProviderInvocation(name)
+          )
+        }
+      >
         Attempt {name}
       </button>
       <button
@@ -124,11 +132,26 @@ describe('PaymentStep checkout lifecycle analytics', () => {
     mockFetch.mockResolvedValue({ ok: true })
   })
 
-  it('captures one safe provider start and refreshes current attribution', async () => {
+  afterEach(() => {
+    vi.useRealTimers()
+  })
+
+  it('refreshes current attribution before capturing one safe provider start', async () => {
+    let releaseRefresh!: () => void
+    mockFetch.mockReturnValueOnce(
+      new Promise((resolve) => {
+        releaseRefresh = () => resolve({ ok: true })
+      })
+    )
+
     renderStep()
     fireEvent.click(screen.getByRole('button', { name: 'Attempt stripe' }))
 
     await waitFor(() => expect(mockFetch).toHaveBeenCalledTimes(1))
+    expect(mockTrackClientEvent).not.toHaveBeenCalled()
+    releaseRefresh()
+    await waitFor(() => expect(mockTrackClientEvent).toHaveBeenCalledTimes(1))
+    await waitFor(() => expect(mockProviderInvocation).toHaveBeenCalledWith('stripe'))
     expect(mockFetch).toHaveBeenCalledWith(
       '/api/store/cart/analytics-attribution',
       {
@@ -138,9 +161,9 @@ describe('PaymentStep checkout lifecycle analytics', () => {
           cartId: 'cart_private',
           session_id: '01890f3e-8b3a-7cc2-98c4-dc0c0c0c0c0c',
         }),
+        signal: expect.any(AbortSignal),
       }
     )
-    expect(mockTrackClientEvent).toHaveBeenCalledTimes(1)
     expect(mockTrackClientEvent).toHaveBeenCalledWith(
       'checkout_payment_started',
       {
@@ -150,6 +173,59 @@ describe('PaymentStep checkout lifecycle analytics', () => {
         variant: 'value_copy',
         locale: 'fr-FR',
       }
+    )
+    expect(mockTrackClientEvent.mock.invocationCallOrder[0]).toBeLessThan(
+      mockProviderInvocation.mock.invocationCallOrder[0]
+    )
+  })
+
+  it('aborts a never-settling refresh after 1000ms and then captures the start', async () => {
+    vi.useFakeTimers()
+    let signal: AbortSignal | undefined
+    mockFetch.mockImplementationOnce(
+      (_url: string, init?: { signal?: AbortSignal }) => {
+        signal = init?.signal
+        return new Promise(() => {})
+      }
+    )
+
+    renderStep()
+    fireEvent.click(screen.getByRole('button', { name: 'Attempt stripe' }))
+
+    expect(mockTrackClientEvent).not.toHaveBeenCalled()
+    expect(mockProviderInvocation).not.toHaveBeenCalled()
+    await vi.advanceTimersByTimeAsync(999)
+    expect(mockTrackClientEvent).not.toHaveBeenCalled()
+    expect(mockProviderInvocation).not.toHaveBeenCalled()
+    await vi.advanceTimersByTimeAsync(1)
+
+    expect(signal?.aborted).toBe(true)
+    expect(mockTrackClientEvent).toHaveBeenCalledTimes(1)
+    expect(mockProviderInvocation).toHaveBeenCalledWith('stripe')
+  })
+
+  it('normalizes a Stripe Express start to stripe', async () => {
+    renderStep()
+    fireEvent.click(screen.getByRole('button', { name: 'Attempt express' }))
+
+    await waitFor(() =>
+      expect(mockTrackClientEvent).toHaveBeenCalledWith(
+        'checkout_payment_started',
+        expect.objectContaining({ payment_provider: 'stripe' })
+      )
+    )
+  })
+
+  it('normalizes a Stripe Express failure to stripe', () => {
+    renderStep()
+    fireEvent.click(screen.getByRole('button', { name: 'Fail express' }))
+
+    expect(mockTrackClientEvent).toHaveBeenCalledWith(
+      'checkout_payment_failed',
+      expect.objectContaining({
+        payment_provider: 'stripe',
+        failure_kind: 'payment_failed',
+      })
     )
   })
 

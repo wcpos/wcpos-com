@@ -117,6 +117,27 @@ describe('PayPalButton', () => {
     await waitFor(() => expect(mockHandleClick).toHaveBeenCalledTimes(1))
   })
 
+  it('guards and disables synchronously so a double click starts PayPal once', async () => {
+    let releaseAttempt!: () => void
+    onAttempt.mockReturnValue(
+      new Promise<void>((resolve) => {
+        releaseAttempt = resolve
+      })
+    )
+
+    renderButton()
+    const button = document.querySelector('paypal-button')!
+    fireEvent.click(button)
+    fireEvent.click(button)
+
+    expect(onAttempt).toHaveBeenCalledTimes(1)
+    expect(button).toHaveAttribute('disabled')
+    expect(mockHandleClick).not.toHaveBeenCalled()
+
+    releaseAttempt()
+    await waitFor(() => expect(mockHandleClick).toHaveBeenCalledTimes(1))
+  })
+
   it('still invokes the PayPal SDK when the analytics attempt callback fails', async () => {
     onAttempt.mockRejectedValueOnce(new Error('analytics unavailable'))
 
