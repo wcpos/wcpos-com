@@ -1,0 +1,35 @@
+@keyframes aide-thinking-shimmer {
+  from {
+    background-position: 100% 50%;
+  }
+
+  to {
+    background-position: -100% 50%;
+  }
+}
+
+.thinkingText {
+  color: hsl(var(--muted-foreground));
+  background-image: linear-gradient(
+    100deg,
+    hsl(var(--muted-foreground)) 0%,
+    hsl(var(--muted-foreground)) 34%,
+    hsl(var(--wcpos-red-accent)) 46%,
+    hsl(var(--foreground)) 52%,
+    hsl(var(--muted-foreground)) 66%,
+    hsl(var(--muted-foreground)) 100%
+  );
+  background-size: 250% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: aide-thinking-shimmer 1.8s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .thinkingText {
+    background: none;
+    -webkit-text-fill-color: currentColor;
+    animation: none;
+  }
+}

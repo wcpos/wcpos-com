@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button'
 import { Markdown } from '@/components/ui/markdown'
 import { Section } from '@/components/ui/section'
 import { DiscordSection } from '@/components/support/discord-section'
+import styles from './support-chat.module.css'
 
 interface Message {
   role: 'user' | 'assistant'
@@ -204,7 +205,17 @@ export function SupportChat() {
             )
           )}
           {status === 'asking' && (
-            <p className="pl-11 text-sm text-muted-foreground">{t('thinking')}</p>
+            <div className="flex gap-3" role="status" aria-live="polite">
+              <div
+                aria-hidden="true"
+                className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-wcpos-red/10 text-xs font-medium text-wcpos-red-accent"
+              >
+                Ai
+              </div>
+              <p className={`self-center text-sm ${styles.thinkingText}`}>
+                {t('thinking')}
+              </p>
+            </div>
           )}
         </div>
       )}
