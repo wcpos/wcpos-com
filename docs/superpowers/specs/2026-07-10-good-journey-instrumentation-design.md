@@ -74,6 +74,14 @@ The browser captures `checkout_payment_started` immediately before invoking a
 provider. Properties are `payment_provider`, `plan`, `experiment`, `variant`,
 and `locale`.
 
+Before each real provider attempt, the browser also awaits a same-origin cart
+attribution refresh. The server re-reads the current consent and server cookie:
+granted consent replaces the cart envelope with the current session; withdrawn
+or missing consent removes it. This defines consent at payment initiation for
+the resulting transaction, including a later asynchronous BTCPay completion.
+The refresh is operationally best-effort and must never turn an analytics
+failure into a failed payment.
+
 The existing browser failure boundary captures `checkout_payment_failed` once
 per surfaced failure with `payment_provider` and the stable, customer-safe
 failure `kind`. It must not send the support reference, exception message,

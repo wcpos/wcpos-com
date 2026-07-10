@@ -263,6 +263,7 @@ keeps the existing WCPOS completion event as a legacy-cart fallback.
 - Modify: `src/components/pro/paypal-button.tsx` and test
 - Modify: `src/components/pro/btcpay-button.tsx` and test
 - Modify: `src/components/pro/checkout-client.tsx` and test
+- Create: `src/app/api/store/cart/analytics-attribution/route.ts` and test
 
 1. Write failing pure-helper tests for the exact safe property allowlist:
    `payment_provider`, `failure_kind`, `plan`, `experiment`, `variant`, and
@@ -278,7 +279,14 @@ keeps the existing WCPOS completion event as a legacy-cart fallback.
    duplicate suppression remains one event.
 4. Pass the canonical plan and locale from `CheckoutClient` into `PaymentStep`.
    Use existing plan-handle helpers; do not infer from display copy.
-5. Run all touched component/helper tests, implement minimally, and commit.
+5. Before every real provider attempt, await a same-origin attribution refresh
+   route. It authenticates and binds the cart to the caller, re-reads current
+   consent and the server distinct-ID cookie, then replaces the envelope for
+   granted consent or removes it for missing/withdrawn consent. Provider
+   invocation still proceeds if this analytics-only refresh fails. Add tests
+   for grant, withdrawal, ownership rejection, refresh-before-provider ordering,
+   and non-blocking failure behavior.
+6. Run all touched component/helper tests, implement minimally, and commit.
 
 ### Task 9: Capture successful Pro downloads
 
@@ -365,4 +373,3 @@ available. Query PostHog/ClickHouse and verify:
 5. no disallowed properties are present; and
 6. an operational failure still reaches Loki/Discord while its analytics event
    contains only provider + stable failure kind.
-
