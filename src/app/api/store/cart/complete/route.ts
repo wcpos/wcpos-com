@@ -16,6 +16,7 @@ import {
   resolveProOfferCartSelection,
 } from '@/lib/pro-offer-catalog'
 import { ORDER_PENDING_CODE } from '@/lib/checkout-failure-taxonomy'
+import { CHECKOUT_ATTRIBUTION_OWNER } from '@/lib/analytics/checkout-attribution'
 
 /**
  * POST /api/store/cart/complete - Complete cart and create order
@@ -84,6 +85,16 @@ export async function POST(request: NextRequest) {
       // distinct "Order pending" state. Routed through the shared adapter so the
       // { errorCode, code } contract has a single, tested home.
       return storeCartErrorResponse('order_pending', 409, { code: ORDER_PENDING_CODE })
+    }
+
+    const completionOwner = (
+      cart as typeof cart & {
+        metadata?: { wcpos_analytics?: { completion_owner?: unknown } }
+      }
+    ).metadata?.wcpos_analytics?.completion_owner
+
+    if (completionOwner === CHECKOUT_ATTRIBUTION_OWNER) {
+      return NextResponse.json(result)
     }
 
     try {

@@ -95,7 +95,7 @@ describe('POST /api/store/cart/complete', () => {
     expect(mockTrackServerEvent).not.toHaveBeenCalled()
   })
 
-  it('tracks checkout completion with server-validated variant', async () => {
+  it('keeps the complete checkout event for unmarked pre-deployment carts', async () => {
     mockCompleteCart.mockResolvedValueOnce({
       order: { id: 'order_1', total: 129, currency_code: 'usd' },
     })
@@ -132,6 +132,30 @@ describe('POST /api/store/cart/complete', () => {
     })
   })
 
+  it('leaves checkout completion tracking to Medusa for marked carts', async () => {
+    mockGetCart.mockResolvedValueOnce({
+      ...validCart,
+      metadata: {
+        wcpos_analytics: {
+          completion_owner: 'medusa_v1',
+        },
+      },
+    })
+    mockCompleteCart.mockResolvedValueOnce({
+      order: { id: 'order_1', total: 129, currency_code: 'usd' },
+    })
+
+    const response = await POST(
+      new NextRequest('http://localhost:3000/api/store/cart/complete', {
+        method: 'POST',
+        body: JSON.stringify({ cartId: 'cart_1' }),
+      })
+    )
+
+    expect(response.status).toBe(200)
+    expect(mockTrackServerEvent).not.toHaveBeenCalled()
+  })
+
   it('forwards the session token so Medusa links the order to the customer', async () => {
     mockGetAuthToken.mockResolvedValueOnce('jwt_complete')
     mockCompleteCart.mockResolvedValueOnce({
@@ -149,7 +173,7 @@ describe('POST /api/store/cart/complete', () => {
     expect(mockCompleteCart).toHaveBeenCalledWith('cart_1', 'jwt_complete')
   })
 
-  it('falls back to the unique customer.id when the distinct-id cookie is absent', async () => {
+  it('keeps the customer identity fallback for unmarked pre-deployment carts', async () => {
     // Regression: a shared placeholder here would merge unrelated purchases
     // into one PostHog person and corrupt per-customer attribution (#276,
     // mirrors the signup_completed fallback fixed in #267).
