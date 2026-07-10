@@ -94,6 +94,7 @@ export function SiteHeader() {
                     key={link.href}
                     href={link.href}
                     eventName={link.eventName}
+                    eventProperties={{ location: 'desktop_header' }}
                     className={navLinkClass(link.highlight)}
                   >
                     {link.label}
@@ -148,6 +149,7 @@ export function SiteHeader() {
                       key={link.href}
                       href={link.href}
                       eventName={link.eventName}
+                      eventProperties={{ location: 'mobile_menu' }}
                       className={`${navLinkClass(link.highlight)} text-sm font-medium`}
                     >
                       {link.label}
