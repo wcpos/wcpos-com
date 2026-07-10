@@ -21,9 +21,10 @@ type WindowWithPostHog = Window & {
 
 /** Read the current PostHog session without bypassing consent or throwing. */
 export function getPostHogSessionId(): string | undefined {
-  if (typeof window === 'undefined' || !isAnalyticsGranted()) return undefined
+  if (typeof window === 'undefined') return undefined
 
   try {
+    if (!isAnalyticsGranted()) return undefined
     const posthog = (window as WindowWithPostHog).posthog
     if (typeof posthog?.get_session_id !== 'function') return undefined
     return parsePostHogSessionId(posthog.get_session_id())

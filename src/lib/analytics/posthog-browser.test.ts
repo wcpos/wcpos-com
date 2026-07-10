@@ -341,4 +341,18 @@ describe('getPostHogSessionId', () => {
 
     expect(getPostHogSessionId()).toBeUndefined()
   })
+
+  it('contains consent-reader exceptions', async () => {
+    const { isAnalyticsGranted } = await import('./consent')
+    ;(isAnalyticsGranted as ReturnType<typeof vi.fn>).mockImplementation(() => {
+      throw new Error('consent unavailable')
+    })
+    ;(window as WindowWithPostHog).posthog = {
+      get_session_id: getSessionIdMock,
+    }
+    const { getPostHogSessionId } = await import('./posthog-browser')
+
+    expect(getPostHogSessionId()).toBeUndefined()
+    expect(getSessionIdMock).not.toHaveBeenCalled()
+  })
 })

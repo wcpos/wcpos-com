@@ -26,15 +26,16 @@ type CheckoutAttributionMetadata = {
 
 const MAX_CONTEXT_STRING_LENGTH = 256
 const UUID_PATTERN =
-  /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[47][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
 
-function parseUuid(value: unknown): string | undefined {
+function parseUuid(value: unknown, version: '4' | '7'): string | undefined {
   if (
     typeof value !== 'string' ||
     value.length === 0 ||
     value.length > MAX_CONTEXT_STRING_LENGTH ||
     /[\u0000-\u001f\u007f]/.test(value) ||
-    !UUID_PATTERN.test(value)
+    !UUID_PATTERN.test(value) ||
+    value[14] !== version
   ) {
     return undefined
   }
@@ -43,7 +44,7 @@ function parseUuid(value: unknown): string | undefined {
 }
 
 export function parsePostHogSessionId(value: unknown): string | undefined {
-  return parseUuid(value)
+  return parseUuid(value, '7')
 }
 
 export function parseCheckoutLocale(value: unknown): string | undefined {
@@ -83,7 +84,7 @@ export function buildCheckoutAttributionMetadata({
   experiment,
   variant,
 }: CheckoutAttributionInput): CheckoutAttributionMetadata | undefined {
-  const distinctId = parseUuid(consentedDistinctId)
+  const distinctId = parseUuid(consentedDistinctId, '4')
   if (!distinctId) return undefined
 
   const parsedSessionId = parsePostHogSessionId(sessionId)

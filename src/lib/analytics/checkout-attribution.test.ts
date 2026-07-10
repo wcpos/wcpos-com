@@ -30,6 +30,14 @@ describe('checkout attribution parsing', () => {
     expect(parsePostHogSessionId(value)).toBeUndefined()
   })
 
+  it.each([
+    '550e8400-e29b-41d4-a716-446655440000',
+    '550e8400-e29b-11d4-a716-446655440000',
+    '01890f3e-8b3a-7cc2-78c4-dc0c0c0c0c0c',
+  ])('rejects non-v7 or invalid-variant session UUID %s', (value) => {
+    expect(parsePostHogSessionId(value)).toBeUndefined()
+  })
+
   it('canonicalizes supported locales through the locale helper', () => {
     expect(parseCheckoutLocale('fr-fr')).toBe('fr-FR')
   })
@@ -80,6 +88,16 @@ describe('buildCheckoutAttributionMetadata', () => {
     'buyer@example.com',
     '550e8400-e29b-41d4-a716',
   ])('emits no envelope without a consented UUID distinct ID %j', (value) => {
+    expect(
+      buildCheckoutAttributionMetadata({ consentedDistinctId: value })
+    ).toBeUndefined()
+  })
+
+  it.each([
+    '01890f3e-8b3a-7cc2-98c4-dc0c0c0c0c0c',
+    '550e8400-e29b-11d4-a716-446655440000',
+    '550e8400-e29b-41d4-7716-446655440000',
+  ])('emits no envelope for non-v4 or invalid-variant distinct UUID %s', (value) => {
     expect(
       buildCheckoutAttributionMetadata({ consentedDistinctId: value })
     ).toBeUndefined()
