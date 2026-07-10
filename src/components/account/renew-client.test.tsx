@@ -150,15 +150,13 @@ describe('RenewClient', () => {
     expect(cartBody.region_id).toBe('reg_1')
     expect(cartBody).toMatchObject({
       metadata: {
-        renewal: true,
         locale: 'en',
         experiment: 'license_renewal',
         variant: 'control',
       },
-      analytics: {
-        session_id: '01890f3e-8b3a-7cc2-98c4-dc0c0c0c0c0c',
-      },
     })
+    expect(cartBody).not.toHaveProperty('analytics')
+    expect(cartBody.metadata).not.toHaveProperty('renewal')
     const itemBody = JSON.parse(mockFetch.mock.calls[1][1].body)
     expect(itemBody.product).toBe('wcpos-pro-yearly')
   })
@@ -169,7 +167,7 @@ describe('RenewClient', () => {
       .mockResolvedValueOnce(okJson({ cart: { id: 'cart_1' } }))
       .mockResolvedValueOnce(okJson({ cart: { id: 'cart_1' } }))
       .mockResolvedValueOnce(okJson({ clientSecret: 'cs_1' }))
-      .mockResolvedValueOnce(okJson({ cart: { id: 'cart_1' } }))
+      .mockResolvedValueOnce(okJson({ attributed: true }))
 
     render(<RenewClient {...props()} />)
     await waitFor(() => expect(screen.getByTestId('checkout-form')).toBeTruthy())

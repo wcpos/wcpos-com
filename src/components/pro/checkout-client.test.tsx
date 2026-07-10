@@ -405,7 +405,7 @@ describe('CheckoutClient', () => {
     )
   })
 
-  it('includes the consented PostHog session when creating the cart', async () => {
+  it('defers the consented PostHog session until a real payment attempt', async () => {
     mockGetPostHogSessionId.mockReturnValue(
       '01890f3e-8b3a-7cc2-98c4-dc0c0c0c0c0c'
     )
@@ -428,9 +428,6 @@ describe('CheckoutClient', () => {
             experiment: 'pro_checkout_v1',
             variant: 'value_copy',
             locale: 'fr',
-          },
-          analytics: {
-            session_id: '01890f3e-8b3a-7cc2-98c4-dc0c0c0c0c0c',
           },
         }),
       })
@@ -747,7 +744,10 @@ describe('CheckoutClient', () => {
     mockSuccessfulCheckoutInit()
     renderSignedIn()
     await completeBillingStep()
-    mockFetch.mockResolvedValueOnce({ ok: true })
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ attributed: true }),
+    })
 
     fireEvent.click(screen.getByTestId('mock-attempt-button'))
 

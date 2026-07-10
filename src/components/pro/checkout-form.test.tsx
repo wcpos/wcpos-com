@@ -20,6 +20,7 @@ vi.mock('./complete-cart', () => ({
 
 import { CheckoutForm } from './checkout-form'
 import { OrderPendingError } from './checkout-safety'
+import { CheckoutConsentWithdrawalBlockedError } from '@/lib/analytics/checkout-payment-lifecycle'
 
 const onSuccess = vi.fn()
 const onFailure = vi.fn()
@@ -103,6 +104,18 @@ describe('CheckoutForm', () => {
     submit()
 
     await waitFor(() => expect(mockConfirmPayment).toHaveBeenCalledTimes(1))
+  })
+
+  it('does not confirm payment when withdrawn consent cannot be cleared', async () => {
+    onAttempt.mockRejectedValueOnce(
+      new CheckoutConsentWithdrawalBlockedError()
+    )
+
+    renderForm()
+    submit()
+
+    await waitFor(() => expect(onFailure).toHaveBeenCalled())
+    expect(mockConfirmPayment).not.toHaveBeenCalled()
   })
 
   it('clears any previous failure when a new attempt starts', async () => {

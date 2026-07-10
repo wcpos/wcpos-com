@@ -156,6 +156,54 @@ describe('POST /api/store/cart/complete', () => {
     expect(mockTrackServerEvent).not.toHaveBeenCalled()
   })
 
+  it('does not route new protocol carts through the legacy completion fallback', async () => {
+    mockGetCart.mockResolvedValueOnce({
+      ...validCart,
+      metadata: { wcpos_analytics_protocol: 'attempt_v1' },
+    })
+    mockCompleteCart.mockResolvedValueOnce({
+      order: { id: 'order_1', total: 129, currency_code: 'usd' },
+    })
+
+    const response = await POST(
+      new NextRequest('http://localhost:3000/api/store/cart/complete', {
+        method: 'POST',
+        body: JSON.stringify({ cartId: 'cart_1' }),
+      })
+    )
+
+    expect(response.status).toBe(200)
+    expect(mockTrackServerEvent).not.toHaveBeenCalled()
+  })
+
+  it('keeps legacy renewal completions on their fixed control context', async () => {
+    mockResolveProCheckoutVariant.mockResolvedValueOnce('value_copy')
+    mockCompleteCart.mockResolvedValueOnce({
+      order: { id: 'order_renewal', total: 129, currency_code: 'usd' },
+    })
+
+    const response = await POST(
+      new NextRequest('http://localhost:3000/api/store/cart/complete', {
+        method: 'POST',
+        body: JSON.stringify({
+          cartId: 'cart_1',
+          experiment: 'license_renewal',
+          experimentVariant: 'control',
+        }),
+      })
+    )
+
+    expect(response.status).toBe(200)
+    expect(mockResolveProCheckoutVariant).not.toHaveBeenCalled()
+    expect(mockTrackServerEvent).toHaveBeenCalledWith(
+      'checkout_completed',
+      expect.objectContaining({
+        experiment: 'license_renewal',
+        variant: 'control',
+      })
+    )
+  })
+
   it('forwards the session token so Medusa links the order to the customer', async () => {
     mockGetAuthToken.mockResolvedValueOnce('jwt_complete')
     mockCompleteCart.mockResolvedValueOnce({

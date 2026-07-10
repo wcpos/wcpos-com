@@ -18,6 +18,7 @@ import {
 import { useCheckoutFailureMessages } from './use-checkout-failure-messages'
 import { checkoutSuccessReturnUrl } from './return-url'
 import type { ProCheckoutVariant } from '@/services/core/analytics/posthog-service'
+import { isCheckoutConsentWithdrawalBlocked } from '@/lib/analytics/checkout-payment-lifecycle'
 
 /**
  * Apple Pay / Google Pay / Link wallets via Stripe's Express Checkout
@@ -68,7 +69,8 @@ export function ExpressCheckoutRow({
     try {
       try {
         await onAttempt?.()
-      } catch {
+      } catch (error) {
+        if (isCheckoutConsentWithdrawalBlocked(error)) throw error
         // Analytics attribution is best-effort and must never block payment.
       }
 

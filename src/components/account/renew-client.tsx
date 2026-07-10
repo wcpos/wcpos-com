@@ -17,7 +17,6 @@ import {
 } from '@/components/pro/checkout-safety'
 import { clientLogger } from '@/lib/client-logger'
 import type { BillingAddress } from '@/components/pro/checkout/billing-step'
-import { getPostHogSessionId } from '@/lib/analytics/posthog-browser'
 import {
   beginCheckoutPaymentAttempt,
   captureCheckoutPaymentFailure,
@@ -93,21 +92,16 @@ export function RenewClient({
 
     async function prepare() {
       try {
-        const sessionId = getPostHogSessionId()
         const cartRes = await fetch('/api/store/cart', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             region_id: regionId,
             metadata: {
-              renewal: true,
               locale,
               experiment: RENEWAL_CHECKOUT_CONTEXT,
               variant: 'control',
             },
-            ...(sessionId
-              ? { analytics: { session_id: sessionId } }
-              : {}),
           }),
         })
         if (!cartRes.ok) throw new Error('cart')

@@ -20,6 +20,7 @@ import {
 } from './checkout-safety'
 import { useCheckoutFailureMessages } from './checkout/use-checkout-failure-messages'
 import type { ProCheckoutVariant } from '@/services/core/analytics/posthog-service'
+import { isCheckoutConsentWithdrawalBlocked } from '@/lib/analytics/checkout-payment-lifecycle'
 
 interface PayPalSessionCart {
   payment_collection?: {
@@ -90,7 +91,8 @@ export function PayPalButton({
           // consent/attribution refresh before any order is created.
           try {
             await onAttempt?.()
-          } catch {
+          } catch (error) {
+            if (isCheckoutConsentWithdrawalBlocked(error)) throw error
             // Analytics attribution is best-effort and must never block payment.
           }
 

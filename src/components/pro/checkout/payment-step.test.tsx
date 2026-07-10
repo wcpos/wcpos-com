@@ -17,6 +17,11 @@ vi.mock('@/lib/analytics/posthog-browser', () => ({
   getPostHogSessionId: () => mockGetPostHogSessionId(),
 }))
 
+vi.mock('@/lib/analytics/consent', () => ({
+  isAnalyticsGranted: () => true,
+  readAnalyticsConsent: () => 'granted',
+}))
+
 vi.mock('../stripe-provider', () => ({
   StripeProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 }))
@@ -129,7 +134,10 @@ describe('PaymentStep checkout lifecycle analytics', () => {
     mockGetPostHogSessionId.mockReturnValue(
       '01890f3e-8b3a-7cc2-98c4-dc0c0c0c0c0c'
     )
-    mockFetch.mockResolvedValue({ ok: true })
+    mockFetch.mockResolvedValue({
+      ok: true,
+      json: async () => ({ attributed: true }),
+    })
   })
 
   afterEach(() => {
@@ -140,7 +148,11 @@ describe('PaymentStep checkout lifecycle analytics', () => {
     let releaseRefresh!: () => void
     mockFetch.mockReturnValueOnce(
       new Promise((resolve) => {
-        releaseRefresh = () => resolve({ ok: true })
+        releaseRefresh = () =>
+          resolve({
+            ok: true,
+            json: async () => ({ attributed: true }),
+          })
       })
     )
 
@@ -179,7 +191,7 @@ describe('PaymentStep checkout lifecycle analytics', () => {
     )
   })
 
-  it('aborts a never-settling refresh after 1000ms and then captures the start', async () => {
+  it('aborts a never-settling refresh and proceeds without claiming a tracked start', async () => {
     vi.useFakeTimers()
     let signal: AbortSignal | undefined
     mockFetch.mockImplementationOnce(
@@ -200,7 +212,7 @@ describe('PaymentStep checkout lifecycle analytics', () => {
     await vi.advanceTimersByTimeAsync(1)
 
     expect(signal?.aborted).toBe(true)
-    expect(mockTrackClientEvent).toHaveBeenCalledTimes(1)
+    expect(mockTrackClientEvent).not.toHaveBeenCalled()
     expect(mockProviderInvocation).toHaveBeenCalledWith('stripe')
   })
 
@@ -272,16 +284,24 @@ describe('PaymentStep checkout lifecycle analytics', () => {
     expect(mockTrackClientEvent).not.toHaveBeenCalled()
   })
 
-  it('settles a failed attribution refresh so payment adapters can proceed', async () => {
+  it('settles a failed attribution refresh without claiming a tracked start', async () => {
     mockFetch.mockRejectedValue(new Error('route unavailable'))
 
     renderStep('btcpay')
     fireEvent.click(screen.getByRole('button', { name: 'Attempt btcpay' }))
 
     await waitFor(() => expect(mockFetch).toHaveBeenCalledTimes(1))
-    expect(mockTrackClientEvent).toHaveBeenCalledWith(
-      'checkout_payment_started',
-      expect.objectContaining({ payment_provider: 'btcpay' })
-    )
+    expect(mockTrackClientEvent).not.toHaveBeenCalled()
+    expect(mockProviderInvocation).toHaveBeenCalledWith('btcpay')
+  })
+
+  it('treats a non-OK refresh as unacknowledged while payment still proceeds', async () => {
+    mockFetch.mockResolvedValueOnce({ ok: false, status: 500 })
+
+    renderStep('stripe')
+    fireEvent.click(screen.getByRole('button', { name: 'Attempt stripe' }))
+
+    await waitFor(() => expect(mockProviderInvocation).toHaveBeenCalledWith('stripe'))
+    expect(mockTrackClientEvent).not.toHaveBeenCalled()
   })
 })

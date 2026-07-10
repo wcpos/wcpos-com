@@ -19,6 +19,7 @@ import {
 import { useCheckoutFailureMessages } from './checkout/use-checkout-failure-messages'
 import { checkoutSuccessReturnUrl } from './checkout/return-url'
 import type { ProCheckoutVariant } from '@/services/core/analytics/posthog-service'
+import { isCheckoutConsentWithdrawalBlocked } from '@/lib/analytics/checkout-payment-lifecycle'
 
 interface CheckoutFormProps {
   cartId: string
@@ -73,7 +74,8 @@ export function CheckoutForm({
     try {
       try {
         await onAttempt?.()
-      } catch {
+      } catch (error) {
+        if (isCheckoutConsentWithdrawalBlocked(error)) throw error
         // Analytics attribution is best-effort and must never block payment.
       }
 

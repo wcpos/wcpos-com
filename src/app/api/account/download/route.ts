@@ -10,7 +10,10 @@ import { downloadLogger } from '@/lib/logger'
 import { clientIp } from '@/lib/rate-limit'
 import { trackServerEvent } from '@/services/core/analytics/posthog-service'
 import { ANALYTICS_DISTINCT_ID_COOKIE } from '@/lib/analytics/distinct-id'
-import { parseCheckoutLocale } from '@/lib/analytics/checkout-attribution'
+import {
+  parseAnalyticsDistinctId,
+  parseCheckoutLocale,
+} from '@/lib/analytics/checkout-attribution'
 import { LOCALE_COOKIE } from '@/lib/account-locale'
 
 type DownloadErrorCode =
@@ -85,7 +88,9 @@ export async function GET(request: NextRequest) {
   // Audit trail: who downloaded what, when, from where. info → Loki only.
   downloadLogger.info`Download served. customer=${customer.id} version=${release.version} asset=${served.filename} ip=${ip} ua=${userAgent}`
 
-  const distinctId = request.cookies.get(ANALYTICS_DISTINCT_ID_COOKIE)?.value
+  const distinctId = parseAnalyticsDistinctId(
+    request.cookies.get(ANALYTICS_DISTINCT_ID_COOKIE)?.value
+  )
   if (distinctId) {
     const locale = parseCheckoutLocale(
       request.cookies.get(LOCALE_COOKIE)?.value

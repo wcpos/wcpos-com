@@ -46,13 +46,15 @@ service. After consent and PostHog initialization, it returns:
 }
 ```
 
-The registration client adds this context to its existing API request body. The
-checkout client includes it when creating the cart. The WCPOS server validates
-the values and writes the consented analytics identity, session, locale,
-experiment, variant, and `completion_owner: 'medusa_v1'` marker to namespaced
-cart metadata. Medusa already transfers cart metadata to the created order (the
-existing localized license flow relies on this behavior), so every completion
-path receives the same attribution.
+The registration client adds this context to its existing API request body.
+Cart creation persists validated business context plus the non-PII rollout
+marker `wcpos_analytics_protocol: 'attempt_v1'`; it deliberately does not mark
+the cart for analytics completion. Immediately before a real payment
+attempt, WCPOS re-reads consent and the server identity, then writes the current
+session, locale, experiment, variant, and `completion_owner: 'medusa_v1'` to
+namespaced cart metadata. Medusa transfers that metadata to the created order,
+so every completion path receives the same attempt-time attribution without a
+stale cart-creation grant.
 
 Missing or malformed context is ignored; it must never block registration or
 payment. API routes accept only bounded strings and validate locale against the
@@ -74,17 +76,26 @@ The browser captures `checkout_payment_started` immediately before invoking a
 provider. Properties are `payment_provider`, `plan`, `experiment`, `variant`,
 and `locale`. The attended account renewal checkout uses the same contract with
 `experiment: 'license_renewal'`, so recurring revenue is not left outside the
-provider/session funnel.
+provider/session funnel. This is bounded analytics context, not an authoritative
+renewal marker; fulfillment continues to derive renewal from the authenticated
+customer's existing licence.
 
 Before each real provider attempt, the browser also awaits a same-origin cart
 attribution refresh. The server re-reads the current consent and server cookie:
 granted consent replaces the cart envelope with the current session; withdrawn
 or missing consent removes it. This defines consent at payment initiation for
 the resulting transaction, including a later asynchronous BTCPay completion.
-The refresh is operationally best-effort and must never turn an analytics
-failure into a failed payment. PayPal must enter its SDK synchronously from the
-click to preserve transient popup activation; its deferred `createOrder`
-callback awaits the refresh before the provider order is created.
+The refresh is operationally best-effort. A timeout, network error, or non-OK
+response does not claim a tracked start and cannot create the initial completion
+marker; the provider still proceeds. The narrow exception is an explicit denial
+that is not positively acknowledged as cleared: payment is stopped rather than
+risk a late, previous, or in-flight request leaving stale consent on the cart.
+Consent is re-read after the refresh so cross-tab withdrawal during the request
+is honored; undecided/granted visitors still proceed through general analytics
+outages. PayPal must enter its SDK
+synchronously from the click to preserve transient popup activation; its
+deferred `createOrder` callback awaits the refresh before the provider order is
+created.
 
 The existing browser failure boundary captures `checkout_payment_failed` once
 per surfaced failure with `payment_provider` and the stable, customer-safe
@@ -105,9 +116,11 @@ deliveries idempotent in PostHog. If the order has no consented analytics
 distinct ID, it does not capture the event.
 
 Once the Medusa subscriber is deployed, the WCPOS cart-completion route emits
-`checkout_completed` only for legacy carts without the ownership marker. Newly
-marked carts are owned exclusively by the subscriber, preventing duplicates
-without dropping an in-flight pre-deployment checkout.
+`checkout_completed` only for legacy carts without the protocol marker. New
+protocol carts never enter that fallback: a successfully attributed attempt is
+owned exclusively by Medusa, while an unacknowledged attempt intentionally has
+no completion event. This prevents a late refresh from racing route-local and
+subscriber capture for the same order.
 
 Operational failure reporting remains unchanged and independent of analytics
 consent.

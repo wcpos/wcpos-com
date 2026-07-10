@@ -47,6 +47,7 @@ vi.mock('./complete-cart', () => ({
 
 import { PayPalButton } from './paypal-button'
 import { OrderPendingError } from './checkout-safety'
+import { CheckoutConsentWithdrawalBlockedError } from '@/lib/analytics/checkout-payment-lifecycle'
 
 const onSuccess = vi.fn()
 const onFailure = vi.fn()
@@ -153,6 +154,18 @@ describe('PayPalButton', () => {
     await expect(props.createOrder()).resolves.toEqual({
       orderId: 'PAYPAL_ORDER_1',
     })
+  })
+
+  it('does not create a PayPal order when withdrawn consent cannot be cleared', async () => {
+    onAttempt.mockRejectedValueOnce(
+      new CheckoutConsentWithdrawalBlockedError()
+    )
+
+    const props = renderButton(null)
+    await expect(props.createOrder()).rejects.toBeInstanceOf(
+      CheckoutConsentWithdrawalBlockedError
+    )
+    expect(mockCreatePaymentSession).not.toHaveBeenCalled()
   })
 
   it('re-enables PayPal after an asynchronous SDK start rejection', async () => {

@@ -16,7 +16,11 @@ import {
   resolveProOfferCartSelection,
 } from '@/lib/pro-offer-catalog'
 import { ORDER_PENDING_CODE } from '@/lib/checkout-failure-taxonomy'
-import { CHECKOUT_ATTRIBUTION_OWNER } from '@/lib/analytics/checkout-attribution'
+import {
+  CHECKOUT_ATTRIBUTION_OWNER,
+  CHECKOUT_ANALYTICS_PROTOCOL,
+  parseCheckoutExperiment,
+} from '@/lib/analytics/checkout-attribution'
 
 /**
  * POST /api/store/cart/complete - Complete cart and create order
@@ -89,11 +93,22 @@ export async function POST(request: NextRequest) {
 
     const completionOwner = (
       cart as typeof cart & {
-        metadata?: { wcpos_analytics?: { completion_owner?: unknown } }
+        metadata?: {
+          wcpos_analytics_protocol?: unknown
+          wcpos_analytics?: { completion_owner?: unknown }
+        }
       }
     ).metadata?.wcpos_analytics?.completion_owner
+    const analyticsProtocol = (
+      cart as typeof cart & {
+        metadata?: { wcpos_analytics_protocol?: unknown }
+      }
+    ).metadata?.wcpos_analytics_protocol
 
-    if (completionOwner === CHECKOUT_ATTRIBUTION_OWNER) {
+    if (
+      completionOwner === CHECKOUT_ATTRIBUTION_OWNER ||
+      analyticsProtocol === CHECKOUT_ANALYTICS_PROTOCOL
+    ) {
       return NextResponse.json(result)
     }
 
@@ -101,7 +116,9 @@ export async function POST(request: NextRequest) {
       const analyticsConfig = getAnalyticsConfig(process.env)
       const cookieStore = await cookies()
       const distinctId = cookieStore.get(ANALYTICS_DISTINCT_ID_COOKIE)?.value
-      const variant = distinctId
+      const completionExperiment =
+        parseCheckoutExperiment(experiment) ?? 'pro_checkout_v1'
+      const variant = distinctId && completionExperiment === 'pro_checkout_v1'
         ? await resolveProCheckoutVariant({
             distinctId,
             analyticsEnabled: analyticsConfig.enabled,
@@ -112,7 +129,7 @@ export async function POST(request: NextRequest) {
       // delivery with the request's waitUntil, so the Vercel freeze after
       // the response cannot drop the conversion event.
       void trackServerEvent('checkout_completed', {
-        experiment: typeof experiment === 'string' ? experiment : 'pro_checkout_v1',
+        experiment: completionExperiment,
         variant,
         // Prefer the landing-page anon id so it stitches onto the same person
         // as the shopper's visit; fall back to the unique customer.id (never a

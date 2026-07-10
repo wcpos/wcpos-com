@@ -30,7 +30,6 @@ import { Link } from '@/i18n/navigation'
 import type { CheckoutPaymentConfig } from '@/lib/checkout-payment-config'
 import { localizeKnownProductTitle } from '@/lib/product-title-display'
 import type { ProCheckoutVariant } from '@/services/core/analytics/posthog-service'
-import { getPostHogSessionId } from '@/lib/analytics/posthog-browser'
 import { getPlanByHandle } from '@/lib/plans'
 
 interface CartItem {
@@ -350,8 +349,6 @@ export function CheckoutClient({
 
     async function initializeCheckout() {
       try {
-        const sessionId = getPostHogSessionId()
-
         // Create cart
         const cartResponse = await fetch('/api/store/cart', {
           method: 'POST',
@@ -363,9 +360,6 @@ export function CheckoutClient({
               variant: experimentVariant,
               locale,
             },
-            ...(sessionId
-              ? { analytics: { session_id: sessionId } }
-              : {}),
           }),
         })
 

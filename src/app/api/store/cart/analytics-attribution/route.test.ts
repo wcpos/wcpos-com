@@ -81,6 +81,7 @@ describe('POST /api/store/cart/analytics-attribution', () => {
     )
 
     expect(response.status).toBe(200)
+    await expect(response.json()).resolves.toMatchObject({ attributed: true })
     expect(mockUpdateCart).toHaveBeenCalledWith(
       'cart_1',
       {
@@ -112,6 +113,7 @@ describe('POST /api/store/cart/analytics-attribution', () => {
     const response = await POST(request({ cookie: cookieHeader }))
 
     expect(response.status).toBe(200)
+    await expect(response.json()).resolves.toMatchObject({ attributed: false })
     expect(mockUpdateCart).toHaveBeenCalledWith(
       'cart_1',
       {

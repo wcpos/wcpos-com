@@ -89,7 +89,7 @@ export async function POST(request: NextRequest) {
       return storeCartErrorResponse('failed_update_cart', 500)
     }
 
-    return NextResponse.json({ cart })
+    return NextResponse.json({ cart, attributed: Boolean(attribution) })
   } catch (error) {
     storeLogger.error`Error refreshing cart analytics attribution: ${error}`
     return storeCartErrorResponse('internal', 500)

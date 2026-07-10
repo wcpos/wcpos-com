@@ -76,7 +76,10 @@ describe('POST /api/store/cart', () => {
     expect(mockCreateCart).toHaveBeenCalledWith(
       {
         region_id: 'reg_1',
-        metadata: { experiment: 'pro_checkout_v1' },
+        metadata: {
+          experiment: 'pro_checkout_v1',
+          wcpos_analytics_protocol: 'attempt_v1',
+        },
         email: 'customer@example.com',
       },
       'jwt_session'
@@ -84,7 +87,7 @@ describe('POST /api/store/cart', () => {
     expect(json.cart.id).toBe('cart_1')
   })
 
-  it('whitelists business metadata and builds analytics from the server identity', async () => {
+  it('whitelists business metadata but defers analytics ownership until payment', async () => {
     mockGetCustomer.mockResolvedValueOnce({
       id: 'cust_1',
       email: 'customer@example.com',
@@ -126,21 +129,14 @@ describe('POST /api/store/cart', () => {
           locale: 'fr-FR',
           experiment: 'pro_checkout_v1',
           variant: 'value_copy',
-          wcpos_analytics: {
-            completion_owner: 'medusa_v1',
-            distinct_id: DISTINCT_ID,
-            session_id: SESSION_ID,
-            locale: 'fr-FR',
-            experiment: 'pro_checkout_v1',
-            variant: 'value_copy',
-          },
+          wcpos_analytics_protocol: 'attempt_v1',
         },
       },
       'jwt_session'
     )
   })
 
-  it('preserves the attended renewal marker and marks its completion for Medusa', async () => {
+  it('drops the untrusted renewal marker and defers completion ownership until payment', async () => {
     mockGetCustomer.mockResolvedValueOnce({
       id: 'cust_1',
       email: 'customer@example.com',
@@ -170,18 +166,10 @@ describe('POST /api/store/cart', () => {
       {
         email: 'customer@example.com',
         metadata: {
-          renewal: true,
           locale: 'en',
           experiment: 'license_renewal',
           variant: 'control',
-          wcpos_analytics: {
-            completion_owner: 'medusa_v1',
-            distinct_id: DISTINCT_ID,
-            session_id: SESSION_ID,
-            locale: 'en',
-            experiment: 'license_renewal',
-            variant: 'control',
-          },
+          wcpos_analytics_protocol: 'attempt_v1',
         },
       },
       'jwt_session'
@@ -211,7 +199,10 @@ describe('POST /api/store/cart', () => {
 
     expect(response.status).toBe(200)
     expect(mockCreateCart).toHaveBeenCalledWith(
-      { email: 'customer@example.com' },
+      {
+        email: 'customer@example.com',
+        metadata: { wcpos_analytics_protocol: 'attempt_v1' },
+      },
       'jwt_session'
     )
   })
@@ -281,6 +272,7 @@ describe('POST /api/store/cart', () => {
           locale: 'en',
           experiment: 'pro_checkout_v1',
           variant: 'control',
+          wcpos_analytics_protocol: 'attempt_v1',
         },
       },
       'jwt_session'
@@ -290,7 +282,7 @@ describe('POST /api/store/cart', () => {
   it.each([
     { name: 'metadata is absent', metadata: undefined },
     { name: 'metadata is not an object', metadata: 'untrusted' },
-  ])('builds valid analytics when $name', async ({ metadata }) => {
+  ])('stamps the protocol without marking a payment attempt when $name', async ({ metadata }) => {
     mockGetCustomer.mockResolvedValueOnce({
       id: 'cust_1',
       email: 'customer@example.com',
@@ -314,13 +306,7 @@ describe('POST /api/store/cart', () => {
     expect(mockCreateCart).toHaveBeenCalledWith(
       {
         email: 'customer@example.com',
-        metadata: {
-          wcpos_analytics: {
-            completion_owner: 'medusa_v1',
-            distinct_id: DISTINCT_ID,
-            session_id: SESSION_ID,
-          },
-        },
+        metadata: { wcpos_analytics_protocol: 'attempt_v1' },
       },
       'jwt_session'
     )
@@ -342,7 +328,10 @@ describe('POST /api/store/cart', () => {
 
     expect(response.status).toBe(200)
     expect(mockCreateCart).toHaveBeenCalledWith(
-      { email: 'customer@example.com' },
+      {
+        email: 'customer@example.com',
+        metadata: { wcpos_analytics_protocol: 'attempt_v1' },
+      },
       'jwt_session'
     )
   })
@@ -363,7 +352,10 @@ describe('POST /api/store/cart', () => {
     )
 
     expect(mockCreateCart).toHaveBeenCalledWith(
-      { email: 'customer@example.com' },
+      {
+        email: 'customer@example.com',
+        metadata: { wcpos_analytics_protocol: 'attempt_v1' },
+      },
       'jwt_abc'
     )
   })
@@ -388,6 +380,7 @@ describe('POST /api/store/cart', () => {
     expect(mockCreateCart).toHaveBeenCalledWith(
       {
         email: 'customer@example.com',
+        metadata: { wcpos_analytics_protocol: 'attempt_v1' },
       },
       'jwt_session'
     )

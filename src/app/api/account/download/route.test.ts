@@ -349,6 +349,34 @@ describe('GET /api/account/download', () => {
     expect(mockTrackServerEvent).not.toHaveBeenCalled()
   })
 
+  it.each([
+    'buyer@example.com',
+    '01890f3e-8b3a-7cc2-98c4-dc0c0c0c0c0c',
+    'x'.repeat(257),
+  ])('skips capture for an invalid anonymous distinct ID %s', async (distinctId) => {
+    mockGetCustomer.mockResolvedValueOnce({ id: 'cust_1' })
+    mockVerifyDownloadToken.mockReturnValueOnce({
+      customerId: 'cust_1',
+      version: '1.9.0',
+      expiresAt: Date.now() + 60_000,
+    })
+    mockGetProPluginReleases.mockResolvedValueOnce([
+      makeRelease('1.9.0', '2026-01-15T00:00:00Z'),
+    ])
+    mockGetResolvedCustomerLicenses.mockResolvedValueOnce({
+      authenticated: true,
+      licenses: [ACTIVE_LICENCE],
+    })
+    mockFetchReleaseAsset.mockResolvedValueOnce(servedAsset())
+
+    const response = await GET(downloadRequest({
+      cookie: `wcpos-analytics-consent=granted; wcpos-distinct-id=${distinctId}; NEXT_LOCALE=fr`,
+    }))
+
+    expect(response.status).toBe(200)
+    expect(mockTrackServerEvent).not.toHaveBeenCalled()
+  })
+
   it('omits an unsupported locale instead of forwarding it', async () => {
     mockGetCustomer.mockResolvedValueOnce({ id: 'cust_1' })
     mockVerifyDownloadToken.mockReturnValueOnce({

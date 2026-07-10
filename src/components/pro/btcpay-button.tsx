@@ -15,6 +15,7 @@ import {
   openBtcpayModal,
 } from '@/lib/btcpay-modal'
 import { createPaymentFailure, type CheckoutFailure } from './checkout-safety'
+import { isCheckoutConsentWithdrawalBlocked } from '@/lib/analytics/checkout-payment-lifecycle'
 
 interface BTCPaySession {
   provider_id?: string
@@ -159,7 +160,17 @@ export function BTCPayButton({
 
     try {
       await onAttempt?.()
-    } catch {
+    } catch (error) {
+      if (isCheckoutConsentWithdrawalBlocked(error)) {
+        onFailure(
+          createPaymentFailure(tErrors('btcpayInitFailed'), {
+            source: 'checkout_consent_withdrawal',
+            details: { cartId },
+          })
+        )
+        setIsLoading(false)
+        return
+      }
       // Analytics attribution is best-effort and must never block payment.
     }
 

@@ -36,8 +36,8 @@ keeps the existing WCPOS completion event as a legacy-cart fallback.
   context validation and metadata contract.
 - Modify `src/lib/analytics/posthog-browser.ts` and test: safe browser session-ID
   read after consent/initialization.
-- Modify cart creation route/client and tests: whitelist business metadata,
-  inject consented attribution, and write the Medusa ownership marker.
+- Modify cart creation route/client and tests: whitelist business metadata and
+  defer consented attribution/Medusa ownership until a real payment attempt.
 - Modify registration clients/route and tests: carry `$session_id` and locale.
 - Modify payment-step/provider components and tests: one start and one safe
   failure event per surfaced attempt.
@@ -186,7 +186,7 @@ keeps the existing WCPOS completion event as a legacy-cart fallback.
    a dependency or read PostHog persistence cookies directly.
 5. Re-run focused tests and commit.
 
-### Task 5: Persist consented context on cart creation
+### Task 5: Validate cart context without granting completion ownership
 
 **Files:**
 
@@ -195,20 +195,19 @@ keeps the existing WCPOS completion event as a legacy-cart fallback.
 - Modify: `src/app/api/store/cart/route.ts`
 - Modify: `src/app/api/store/cart/route.test.ts`
 
-1. Write failing client tests showing cart creation sends `analytics.session_id`
-   from `getPostHogSessionId()` while preserving locale/experiment/variant.
+1. Write failing client tests showing cart creation preserves validated
+   locale/experiment/variant but defers the browser session to payment time.
 2. Write failing route tests showing:
    - client-supplied arbitrary metadata and distinct IDs are discarded;
    - locale/experiment/variant are validated and preserved for business use;
-   - explicit consent + server cookie adds `wcpos_analytics` with owner,
-     distinct ID, session ID, locale, experiment, and variant;
-   - denial, conflicting cookies, missing distinct ID, or malformed session ID
-     creates no analytics envelope;
+   - browser-supplied ownership, distinct IDs, and analytics context are
+     discarded at cart creation;
+   - valid checkout context adds only the server-owned, non-PII
+     `wcpos_analytics_protocol: 'attempt_v1'` rollout marker;
    - cart creation still succeeds when analytics context is absent.
 3. Run the two focused tests and confirm red.
-4. Use `readAnalyticsConsentFromCookieHeader` and the server request's distinct
-   ID cookie. Never trust a distinct ID from JSON. Replace the current broad
-   metadata forwarding with the explicit business/analytics whitelist.
+4. Replace broad metadata forwarding with an explicit business-context
+   whitelist. Never trust a distinct ID or completion owner from JSON.
 5. Re-run focused tests and commit.
 
 ### Task 6: Keep signup in the originating browser session
@@ -283,9 +282,14 @@ keeps the existing WCPOS completion event as a legacy-cart fallback.
    route. It authenticates and binds the cart to the caller, re-reads current
    consent and the server distinct-ID cookie, then replaces the envelope for
    granted consent or removes it for missing/withdrawn consent. Provider
-   invocation still proceeds if this analytics-only refresh fails. Add tests
-   for grant, withdrawal, ownership rejection, refresh-before-provider ordering,
-   and non-blocking failure behavior.
+   invocation still proceeds if this analytics-only refresh fails, but a failed
+   or non-OK refresh emits no tracked start and cannot create the initial Medusa
+   completion marker. Payment is blocked only when consent is explicitly denied
+   and the response does not positively acknowledge `attributed: false`;
+   consent is re-read after the refresh to cover cross-tab withdrawal during
+   the request. Add tests for grant, withdrawal, ownership rejection,
+   refresh-before-provider ordering, the withdrawal guard, and general
+   non-blocking failure behavior.
 6. Run all touched component/helper tests, implement minimally, and commit.
 
 ### Task 9: Capture successful Pro downloads
@@ -325,19 +329,20 @@ keeps the existing WCPOS completion event as a legacy-cart fallback.
 - Create a shared checkout payment-attempt analytics helper and tests through
   its existing `PaymentStep` and renewal consumers.
 - Modify `src/components/account/renew-client.tsx` and test.
-- Modify cart metadata validation and tests to retain the boolean renewal
-  business marker and accept the bounded `license_renewal` context.
+- Modify cart metadata validation and tests to accept the bounded
+  `license_renewal` analytics context without trusting a browser renewal marker.
 
-1. Add failing renewal tests proving cart creation carries the consented browser
-   session, locale, renewal marker, plan, and bounded lifecycle context.
+1. Add failing renewal tests proving cart creation carries locale and bounded
+   lifecycle context but no browser identity or renewal authority.
 2. Add failing tests proving Stripe renewal attempts refresh attribution before
    provider confirmation and emit the same safe start/failure events as the Pro
    checkout.
 3. Extract the existing refresh/start/failure seam from `PaymentStep`, reuse it
    in `RenewClient`, and keep raw failure details out of event properties.
-4. Preserve `renewal: true` as server-validated business metadata so the cart
-   remains distinguishable while the `medusa_v1` envelope makes Medusa the
-   completion owner.
+4. Do not persist the browser-supplied `renewal` marker: Medusa derives renewal
+   fulfillment from the authenticated customer and existing licence. Keep
+   `license_renewal` as bounded analytics context only, while the `medusa_v1`
+   envelope makes Medusa the completion-event owner.
 5. Run renewal, cart-route, lifecycle, and completion tests before committing.
 
 ---

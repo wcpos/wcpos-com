@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import {
   CHECKOUT_ATTRIBUTION_OWNER,
   buildCheckoutAttributionMetadata,
+  parseAnalyticsDistinctId,
   parseCheckoutExperiment,
   parseCheckoutLocale,
   parseCheckoutVariant,
@@ -12,6 +13,12 @@ const DISTINCT_ID = '550e8400-e29b-41d4-a716-446655440000'
 const SESSION_ID = '01890f3e-8b3a-7cc2-98c4-dc0c0c0c0c0c'
 
 describe('checkout attribution parsing', () => {
+  it('accepts only anonymous v4 distinct IDs', () => {
+    expect(parseAnalyticsDistinctId(DISTINCT_ID)).toBe(DISTINCT_ID)
+    expect(parseAnalyticsDistinctId('buyer@example.com')).toBeUndefined()
+    expect(parseAnalyticsDistinctId(SESSION_ID)).toBeUndefined()
+  })
+
   it('accepts a PostHog UUID session ID', () => {
     expect(parsePostHogSessionId(SESSION_ID)).toBe(SESSION_ID)
   })

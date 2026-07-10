@@ -1,6 +1,7 @@
 import { supportedCanonicalLocale } from '@/lib/locale-preferences'
 
 export const CHECKOUT_ATTRIBUTION_OWNER = 'medusa_v1'
+export const CHECKOUT_ANALYTICS_PROTOCOL = 'attempt_v1'
 
 export type CheckoutExperiment = 'pro_checkout_v1' | 'license_renewal'
 export type CheckoutVariant = 'control' | 'value_copy'
@@ -47,6 +48,11 @@ export function parsePostHogSessionId(value: unknown): string | undefined {
   return parseUuid(value, '7')
 }
 
+/** Validate the anonymous identity shared by browser and server events. */
+export function parseAnalyticsDistinctId(value: unknown): string | undefined {
+  return parseUuid(value, '4')
+}
+
 export function parseCheckoutLocale(value: unknown): string | undefined {
   if (
     typeof value !== 'string' ||
@@ -86,7 +92,7 @@ export function buildCheckoutAttributionMetadata({
   experiment,
   variant,
 }: CheckoutAttributionInput): CheckoutAttributionMetadata | undefined {
-  const distinctId = parseUuid(consentedDistinctId, '4')
+  const distinctId = parseAnalyticsDistinctId(consentedDistinctId)
   if (!distinctId) return undefined
 
   const parsedSessionId = parsePostHogSessionId(sessionId)
