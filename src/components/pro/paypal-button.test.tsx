@@ -1,5 +1,5 @@
 import { describe, expect, it, vi, beforeEach } from 'vitest'
-import { screen } from '@testing-library/react'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { renderWithIntl as render } from '@/test/intl'
 
 const capturePayPalSessionProps = vi.fn()
@@ -47,10 +47,12 @@ vi.mock('./complete-cart', () => ({
 
 import { PayPalButton } from './paypal-button'
 import { OrderPendingError } from './checkout-safety'
+import { CheckoutConsentWithdrawalBlockedError } from '@/lib/analytics/checkout-payment-lifecycle'
 
 const onSuccess = vi.fn()
 const onFailure = vi.fn()
 const onProcessingChange = vi.fn()
+const onAttempt = vi.fn()
 
 interface CapturedPayPalProps {
   createOrder: () => Promise<{ orderId: string }>
@@ -66,6 +68,7 @@ function buttonElement(paypalOrderId: string | null = 'PAYPAL_ORDER_1') {
       experiment="pro_checkout_v1"
       experimentVariant="control"
       paypalOrderId={paypalOrderId}
+      onAttempt={onAttempt}
       onSuccess={onSuccess}
       onFailure={onFailure}
       onProcessingChange={onProcessingChange}
@@ -84,6 +87,7 @@ function lastFailure() {
 
 beforeEach(() => {
   vi.clearAllMocks()
+  mockHandleClick.mockResolvedValue(undefined)
   mockPayPalState = {
     isHydrated: true,
     loadingStatus: 'resolved',
@@ -97,6 +101,88 @@ beforeEach(() => {
 })
 
 describe('PayPalButton', () => {
+  it('invokes the PayPal SDK synchronously, then awaits attribution before creating the order', async () => {
+    let releaseAttempt!: () => void
+    onAttempt.mockReturnValueOnce(
+      new Promise<void>((resolve) => {
+        releaseAttempt = resolve
+      })
+    )
+
+    const props = renderButton()
+    expect(onAttempt).not.toHaveBeenCalled()
+    fireEvent.click(document.querySelector('paypal-button')!)
+
+    expect(mockHandleClick).toHaveBeenCalledTimes(1)
+    expect(onAttempt).not.toHaveBeenCalled()
+
+    const order = props.createOrder()
+    expect(onAttempt).toHaveBeenCalledTimes(1)
+    releaseAttempt()
+    await expect(order).resolves.toEqual({ orderId: 'PAYPAL_ORDER_1' })
+  })
+
+  it('guards and disables synchronously so a double click starts PayPal once', async () => {
+    let releaseAttempt!: () => void
+    onAttempt.mockReturnValue(
+      new Promise<void>((resolve) => {
+        releaseAttempt = resolve
+      })
+    )
+
+    const props = renderButton()
+    const button = document.querySelector('paypal-button')!
+    fireEvent.click(button)
+    fireEvent.click(button)
+
+    expect(mockHandleClick).toHaveBeenCalledTimes(1)
+    expect(onAttempt).not.toHaveBeenCalled()
+    expect(button).toHaveAttribute('disabled')
+
+    const order = props.createOrder()
+    releaseAttempt()
+    await expect(order).resolves.toEqual({ orderId: 'PAYPAL_ORDER_1' })
+  })
+
+  it('still creates the PayPal order when the analytics attempt callback fails', async () => {
+    onAttempt.mockRejectedValueOnce(new Error('analytics unavailable'))
+
+    const props = renderButton()
+    fireEvent.click(document.querySelector('paypal-button')!)
+
+    expect(mockHandleClick).toHaveBeenCalledTimes(1)
+    await expect(props.createOrder()).resolves.toEqual({
+      orderId: 'PAYPAL_ORDER_1',
+    })
+  })
+
+  it('does not create a PayPal order when withdrawn consent cannot be cleared', async () => {
+    onAttempt.mockRejectedValueOnce(
+      new CheckoutConsentWithdrawalBlockedError()
+    )
+
+    const props = renderButton(null)
+    await expect(props.createOrder()).rejects.toBeInstanceOf(
+      CheckoutConsentWithdrawalBlockedError
+    )
+    expect(mockCreatePaymentSession).not.toHaveBeenCalled()
+  })
+
+  it('re-enables PayPal after an asynchronous SDK start rejection', async () => {
+    mockHandleClick
+      .mockRejectedValueOnce(new Error('popup blocked'))
+      .mockResolvedValueOnce(undefined)
+
+    renderButton()
+    const button = document.querySelector('paypal-button')!
+    fireEvent.click(button)
+
+    await waitFor(() => expect(button).not.toHaveAttribute('disabled'))
+    fireEvent.click(button)
+
+    expect(mockHandleClick).toHaveBeenCalledTimes(2)
+  })
+
   it('renders the v6 web component when the SDK session is ready', () => {
     renderButton()
 

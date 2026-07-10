@@ -30,6 +30,7 @@ import { Link } from '@/i18n/navigation'
 import type { CheckoutPaymentConfig } from '@/lib/checkout-payment-config'
 import { localizeKnownProductTitle } from '@/lib/product-title-display'
 import type { ProCheckoutVariant } from '@/services/core/analytics/posthog-service'
+import { getPlanByHandle } from '@/lib/plans'
 
 interface CartItem {
   id: string
@@ -268,6 +269,9 @@ export function CheckoutClient({
   const prerequisiteError = !selectedOfferHandle
     ? t('errors.noProductSelected')
     : null
+  const selectedPlan = selectedOfferHandle
+    ? getPlanByHandle(selectedOfferHandle)?.id
+    : undefined
 
   // A protective failure (payment may have been taken without an order)
   // survives reloads via sessionStorage. Restore it before initializing so
@@ -779,6 +783,8 @@ export function CheckoutClient({
                 }}
                 stripePublishableKey={payments.stripePublishableKey}
                 paypal={payments.paypal}
+                plan={selectedPlan}
+                locale={locale}
                 experiment={PRO_CHECKOUT_EXPERIMENT}
                 experimentVariant={experimentVariant}
                 amount={cart.total}

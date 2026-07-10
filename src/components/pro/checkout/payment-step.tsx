@@ -11,6 +11,12 @@ import { ExpressCheckoutRow } from './express-checkout'
 import type { CheckoutFailure } from '../checkout-safety'
 import type { PayPalCheckoutConfig } from '@/lib/checkout-payment-config'
 import type { ProCheckoutVariant } from '@/services/core/analytics/posthog-service'
+import type { PlanId } from '@/lib/plans'
+import type { CheckoutPaymentProvider } from '@/lib/analytics/checkout-payment-events'
+import {
+  beginCheckoutPaymentAttempt,
+  captureCheckoutPaymentFailure,
+} from '@/lib/analytics/checkout-payment-lifecycle'
 
 export type PaymentMethod = 'stripe' | 'paypal' | 'btcpay'
 
@@ -95,6 +101,8 @@ interface PaymentStepProps {
   /** Host-resolved public identifiers for the provider SDKs. */
   stripePublishableKey: string | null
   paypal: PayPalCheckoutConfig
+  plan?: PlanId
+  locale: string
   experiment: string
   experimentVariant: ProCheckoutVariant
   amount: number
@@ -131,6 +139,8 @@ export function PaymentStep({
   enabled,
   stripePublishableKey,
   paypal,
+  plan,
+  locale,
   experiment,
   experimentVariant,
   amount,
@@ -143,6 +153,28 @@ export function PaymentStep({
   const enabledCount = [enabled.stripe, enabled.paypal, enabled.btcpay].filter(
     Boolean
   ).length
+
+  const eventContext = {
+    cartId,
+    plan,
+    experiment,
+    variant: experimentVariant,
+    locale,
+  }
+
+  const onProviderAttempt = (paymentProvider: CheckoutPaymentProvider) =>
+    () => beginCheckoutPaymentAttempt({ paymentProvider, ...eventContext })
+
+  const onProviderFailure = (paymentProvider: CheckoutPaymentProvider) =>
+    (failure: CheckoutFailure | null) => {
+      onFailure(failure)
+      if (!failure) return
+
+      captureCheckoutPaymentFailure(
+        { paymentProvider, ...eventContext },
+        failure.kind
+      )
+    }
 
   if (enabledCount === 0) {
     return (
@@ -173,8 +205,9 @@ export function PaymentStep({
               currency={currency}
               experiment={experiment}
               experimentVariant={experimentVariant}
+              onAttempt={onProviderAttempt('stripe')}
               onSuccess={onSuccess}
-              onFailure={onFailure}
+              onFailure={onProviderFailure('stripe')}
               onProcessingChange={onProcessingChange}
             />
           )}
@@ -204,8 +237,9 @@ export function PaymentStep({
                 experiment={experiment}
                 experimentVariant={experimentVariant}
                 paypalOrderId={paypalOrderId}
+                onAttempt={onProviderAttempt('paypal')}
                 onSuccess={onSuccess}
-                onFailure={onFailure}
+                onFailure={onProviderFailure('paypal')}
                 onProcessingChange={onProcessingChange}
               />
             </PayPalProvider>
@@ -233,7 +267,8 @@ export function PaymentStep({
               <BTCPayButton
                 cartId={cartId}
                 checkoutLink={btcpayCheckoutLink}
-                onFailure={onFailure}
+                onAttempt={onProviderAttempt('btcpay')}
+                onFailure={onProviderFailure('btcpay')}
               />
             </div>
           )}
@@ -255,8 +290,9 @@ export function PaymentStep({
           cartId={cartId}
           experiment={experiment}
           experimentVariant={experimentVariant}
+          onAttempt={onProviderAttempt('stripe')}
           onSuccess={onSuccess}
-          onFailure={onFailure}
+          onFailure={onProviderFailure('stripe')}
           onProcessingChange={onProcessingChange}
         />
         {selector}

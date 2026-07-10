@@ -139,7 +139,7 @@ describe('SiteHeader', () => {
     expect(supportLink?.getAttribute('href')).toBe('/support')
   })
 
-  it('tracks Pro link clicks', async () => {
+  it('attributes desktop Pro link clicks to the desktop header', async () => {
     mockGetCustomer.mockResolvedValue(null)
     await act(async () => {
       render(<SiteHeader />)
@@ -151,9 +151,31 @@ describe('SiteHeader', () => {
 
     fireEvent.click(proLink!)
 
-    expect(mockTrackClientEvent).toHaveBeenCalledWith('click_pro_cta', undefined)
+    expect(mockTrackClientEvent).toHaveBeenCalledWith('click_pro_cta', {
+      location: 'desktop_header',
+    })
   })
 
+  it('attributes mobile Pro link clicks to the mobile menu', async () => {
+    mockGetCustomer.mockResolvedValue(null)
+    await act(async () => {
+      render(<SiteHeader />)
+    })
+
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Translated open menu' })
+    )
+
+    const proLinks = screen.getAllByText('Pro')
+    const proLink = proLinks[1].closest('a')
+    expect(proLink).toBeTruthy()
+
+    fireEvent.click(proLink!)
+
+    expect(mockTrackClientEvent).toHaveBeenCalledWith('click_pro_cta', {
+      location: 'mobile_menu',
+    })
+  })
 
   it('uses a translated accessible label for the mobile menu trigger', async () => {
     mockGetCustomer.mockResolvedValue(null)

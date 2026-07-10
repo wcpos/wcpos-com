@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { useTranslations } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 import { CalendarClock, Loader2 } from 'lucide-react'
 import { useRouter, Link } from '@/i18n/navigation'
 import { StripeProvider } from '@/components/pro/stripe-provider'
@@ -17,6 +17,13 @@ import {
 } from '@/components/pro/checkout-safety'
 import { clientLogger } from '@/lib/client-logger'
 import type { BillingAddress } from '@/components/pro/checkout/billing-step'
+import {
+  beginCheckoutPaymentAttempt,
+  captureCheckoutPaymentFailure,
+} from '@/lib/analytics/checkout-payment-lifecycle'
+import { getPlanByHandle } from '@/lib/plans'
+
+const RENEWAL_CHECKOUT_CONTEXT = 'license_renewal'
 
 /**
  * Attended one-click renewal (Phase 3b), approach A: a headless replay of the
@@ -64,6 +71,7 @@ export function RenewClient({
   stripePublishableKey,
 }: RenewClientProps) {
   const t = useTranslations('account.renew')
+  const locale = useLocale()
   const router = useRouter()
   const [phase, setPhase] = useState<Phase>('preparing')
   const [cart, setCart] = useState<PreparedCart | null>(null)
@@ -89,7 +97,11 @@ export function RenewClient({
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             region_id: regionId,
-            metadata: { renewal: true },
+            metadata: {
+              locale,
+              experiment: RENEWAL_CHECKOUT_CONTEXT,
+              variant: 'control',
+            },
           }),
         })
         if (!cartRes.ok) throw new Error('cart')
@@ -147,7 +159,7 @@ export function RenewClient({
     return () => {
       cancelled = true
     }
-  }, [regionId, offerHandle, billingAddress, taxNumber, blocksCheckout])
+  }, [regionId, offerHandle, billingAddress, taxNumber, blocksCheckout, locale])
 
   function handleSuccess() {
     // The order-completed subscriber renews the licence server-side; the
@@ -157,6 +169,19 @@ export function RenewClient({
 
   function handleFailure(nextFailure: CheckoutFailure | null) {
     setFailure(nextFailure)
+    if (nextFailure && cart?.id) {
+      captureCheckoutPaymentFailure(
+        {
+          cartId: cart.id,
+          paymentProvider: 'stripe',
+          plan: getPlanByHandle(offerHandle)?.id,
+          experiment: RENEWAL_CHECKOUT_CONTEXT,
+          variant: 'control',
+          locale,
+        },
+        nextFailure.kind
+      )
+    }
     if (
       nextFailure &&
       cart?.id &&
@@ -223,8 +248,18 @@ export function RenewClient({
             cartId={cart.id}
             amount={cart.total ?? amount}
             currency={cart.currency_code ?? currency}
-            experiment="license_renewal"
+            experiment={RENEWAL_CHECKOUT_CONTEXT}
             experimentVariant="control"
+            onAttempt={() =>
+              beginCheckoutPaymentAttempt({
+                cartId: cart.id,
+                paymentProvider: 'stripe',
+                plan: getPlanByHandle(offerHandle)?.id,
+                experiment: RENEWAL_CHECKOUT_CONTEXT,
+                variant: 'control',
+                locale,
+              })
+            }
             onSuccess={handleSuccess}
             onFailure={handleFailure}
           />

@@ -3,6 +3,7 @@ import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { renderWithIntl as render } from '@/test/intl'
 import type { BtcpayModalEvent } from '@/lib/btcpay-modal'
 import { BTCPayButton } from './btcpay-button'
+import { CheckoutConsentWithdrawalBlockedError } from '@/lib/analytics/checkout-payment-lifecycle'
 
 const mockFetch = vi.fn()
 vi.stubGlobal('fetch', mockFetch)
@@ -91,6 +92,79 @@ describe('BTCPayButton', () => {
 
   afterEach(() => {
     delete window.btcpay
+  })
+
+  it('awaits one attempt callback before starting a real BTCPay payment', async () => {
+    const onAttempt = vi.fn()
+    let releaseAttempt!: () => void
+    onAttempt.mockReturnValueOnce(
+      new Promise<void>((resolve) => {
+        releaseAttempt = resolve
+      })
+    )
+    mockFetch.mockResolvedValue(sessionResponse())
+    modalOpensAndCaptures()
+
+    render(
+      <BTCPayButton
+        cartId="cart_1"
+        onAttempt={onAttempt}
+        onFailure={() => {}}
+      />
+    )
+    expect(onAttempt).not.toHaveBeenCalled()
+    fireEvent.click(screen.getByRole('button', { name: 'Pay with Bitcoin' }))
+
+    expect(onAttempt).toHaveBeenCalledTimes(1)
+    expect(
+      mockFetch.mock.calls.some(([url]) =>
+        String(url).includes('/api/store/cart/payment-sessions')
+      )
+    ).toBe(false)
+    expect(mockOpenBtcpayModal).not.toHaveBeenCalled()
+    releaseAttempt()
+    await waitFor(() => expect(mockOpenBtcpayModal).toHaveBeenCalledTimes(1))
+  })
+
+  it('does not open an invoice when withdrawn consent cannot be cleared', async () => {
+    const onFailure = vi.fn()
+    const onAttempt = vi
+      .fn()
+      .mockRejectedValueOnce(new CheckoutConsentWithdrawalBlockedError())
+
+    render(
+      <BTCPayButton
+        cartId="cart_1"
+        onAttempt={onAttempt}
+        onFailure={onFailure}
+      />
+    )
+    fireEvent.click(screen.getByRole('button', { name: 'Pay with Bitcoin' }))
+
+    await waitFor(() => expect(onFailure).toHaveBeenCalledTimes(2))
+    expect(
+      mockFetch.mock.calls.some(([url]) =>
+        String(url).includes('/api/store/cart/payment-sessions')
+      )
+    ).toBe(false)
+    expect(mockOpenBtcpayModal).not.toHaveBeenCalled()
+  })
+
+  it('still starts BTCPay when the analytics attempt callback fails', async () => {
+    const onAttempt = vi.fn().mockRejectedValue(new Error('analytics unavailable'))
+    mockFetch.mockResolvedValue(sessionResponse())
+    modalOpensAndCaptures()
+
+    render(
+      <BTCPayButton
+        cartId="cart_1"
+        onAttempt={onAttempt}
+        onFailure={() => {}}
+      />
+    )
+    fireEvent.click(screen.getByRole('button', { name: 'Pay with Bitcoin' }))
+
+    await waitFor(() => expect(mockOpenBtcpayModal).toHaveBeenCalledTimes(1))
   })
 
   it('shows non-spinner loading state while preparing checkout', () => {

@@ -10,6 +10,7 @@ const mockDownloadInfo = vi.fn()
 const mockDownloadWarn = vi.fn()
 const mockDownloadError = vi.fn()
 const mockDownloadFatal = vi.fn()
+const mockTrackServerEvent = vi.fn()
 
 vi.mock('@/lib/medusa-auth', () => ({
   getCustomer: (...args: unknown[]) => mockGetCustomer(...args),
@@ -40,6 +41,10 @@ vi.mock('@/lib/logger', () => ({
     error: (...args: unknown[]) => mockDownloadError(...args),
     fatal: (...args: unknown[]) => mockDownloadFatal(...args),
   },
+}))
+
+vi.mock('@/services/core/analytics/posthog-service', () => ({
+  trackServerEvent: (...args: unknown[]) => mockTrackServerEvent(...args),
 }))
 
 const mockEnv = vi.hoisted(() => ({
@@ -76,8 +81,26 @@ function servedAsset() {
 
 const ACTIVE_LICENCE = { status: 'active', expiry: null }
 
-function downloadRequest() {
-  return new NextRequest('http://localhost/api/account/download?token=test')
+const DISTINCT_ID = '01890f3e-8b3a-4cc2-98c4-dc0c0c0c0c0c'
+
+function downloadRequest({
+  token = 'test',
+  cookie = `wcpos-analytics-consent=granted; wcpos-distinct-id=${DISTINCT_ID}; NEXT_LOCALE=fr`,
+  userAgent,
+}: {
+  token?: string | null
+  cookie?: string
+  userAgent?: string
+} = {}) {
+  const url = new URL('http://localhost/api/account/download')
+  if (token !== null) url.searchParams.set('token', token)
+
+  return new NextRequest(url, {
+    headers: {
+      ...(cookie ? { cookie } : {}),
+      ...(userAgent ? { 'user-agent': userAgent } : {}),
+    },
+  })
 }
 
 describe('GET /api/account/download', () => {
@@ -85,6 +108,7 @@ describe('GET /api/account/download', () => {
     vi.resetAllMocks()
     mockEnv.DOWNLOAD_TOKEN_SECRET = 'download-token-secret'
     mockEnv.KEYGEN_API_TOKEN = 'keygen-token-secret'
+    mockTrackServerEvent.mockResolvedValue(undefined)
   })
 
   it('returns 401 when unauthenticated', async () => {
@@ -93,6 +117,7 @@ describe('GET /api/account/download', () => {
     const response = await GET(downloadRequest())
 
     expect(response.status).toBe(401)
+    expect(mockTrackServerEvent).not.toHaveBeenCalled()
   })
 
   it('returns 500 and pages (fatal) when no signing secret is configured', async () => {
@@ -108,6 +133,7 @@ describe('GET /api/account/download', () => {
     expect(mockVerifyDownloadToken).not.toHaveBeenCalled()
     // Infra broken — fatal so Discord + email page on it.
     expect(mockDownloadFatal).toHaveBeenCalled()
+    expect(mockTrackServerEvent).not.toHaveBeenCalled()
   })
 
   it('returns 500 when DOWNLOAD_TOKEN_SECRET is missing even if KEYGEN_API_TOKEN is configured', async () => {
@@ -121,6 +147,17 @@ describe('GET /api/account/download', () => {
     expect(json.errorCode).toBe('download_token_secret_missing')
     expect(mockVerifyDownloadToken).not.toHaveBeenCalled()
     expect(mockDownloadFatal).toHaveBeenCalled()
+    expect(mockTrackServerEvent).not.toHaveBeenCalled()
+  })
+
+  it('returns 400 without capturing when the download token is missing', async () => {
+    mockGetCustomer.mockResolvedValueOnce({ id: 'cust_1' })
+
+    const response = await GET(downloadRequest({ token: null }))
+
+    expect(response.status).toBe(400)
+    await expect(response.json()).resolves.toEqual({ errorCode: 'missing_token' })
+    expect(mockTrackServerEvent).not.toHaveBeenCalled()
   })
 
   it('returns 403 and audits a token whose customerId does not match', async () => {
@@ -145,6 +182,7 @@ describe('GET /api/account/download', () => {
       'unknown',
     ])
     expect(mockGetProPluginReleases).not.toHaveBeenCalled()
+    expect(mockTrackServerEvent).not.toHaveBeenCalled()
   })
 
   it('returns 404 when the requested version does not exist', async () => {
@@ -178,6 +216,7 @@ describe('GET /api/account/download', () => {
       'unknown',
     ])
     expect(mockFetchReleaseAsset).not.toHaveBeenCalled()
+    expect(mockTrackServerEvent).not.toHaveBeenCalled()
   })
 
   it('returns 403 and audits when the release exists but is not entitled', async () => {
@@ -212,9 +251,10 @@ describe('GET /api/account/download', () => {
       'unknown',
     ])
     expect(mockFetchReleaseAsset).not.toHaveBeenCalled()
+    expect(mockTrackServerEvent).not.toHaveBeenCalled()
   })
 
-  it('streams and audits the release asset for an entitled signed token', async () => {
+  it('streams, audits, then captures the retrieved release with only safe properties', async () => {
     mockGetCustomer.mockResolvedValueOnce({ id: 'cust_1' })
     mockVerifyDownloadToken.mockReturnValueOnce({
       customerId: 'cust_1',
@@ -230,17 +270,139 @@ describe('GET /api/account/download', () => {
     })
     mockFetchReleaseAsset.mockResolvedValueOnce(servedAsset())
 
-    const response = await GET(downloadRequest())
+    const response = await GET(downloadRequest({
+      cookie: `wcpos-analytics-consent=granted; wcpos-distinct-id=${DISTINCT_ID}; NEXT_LOCALE=fr-fr`,
+      userAgent: 'private-browser-agent',
+    }))
 
     expect(response.status).toBe(200)
     expect(response.headers.get('content-type')).toContain('application/zip')
+    expect(response.headers.get('content-disposition')).toBe(
+      'attachment; filename="woocommerce-pos-pro-1.9.0.zip"'
+    )
     expect(response.headers.get('cache-control')).toBe('private, no-store')
+    await expect(response.text()).resolves.toBe('zip-binary')
     // Successful download is audited (who/what/when).
-    expect(mockDownloadInfo).toHaveBeenCalled()
+    expect(mockDownloadInfo.mock.calls[0]?.[0]).toEqual([
+      'Download served. customer=',
+      ' version=',
+      ' asset=',
+      ' ip=',
+      ' ua=',
+      '',
+    ])
+    expect(mockDownloadInfo.mock.calls[0]?.slice(1)).toEqual([
+      'cust_1',
+      '1.9.0',
+      'woocommerce-pos-pro-1.9.0.zip',
+      'unknown',
+      'private-browser-agent',
+    ])
     expect(mockVerifyDownloadToken).toHaveBeenCalledWith(
       'test',
       'download-token-secret'
     )
+    expect(mockTrackServerEvent).toHaveBeenCalledOnce()
+    expect(mockTrackServerEvent).toHaveBeenCalledWith('pro_downloaded', {
+      distinct_id: DISTINCT_ID,
+      version: '1.9.0',
+      channel: 'account',
+      locale: 'fr-FR',
+    })
+    expect(mockFetchReleaseAsset.mock.invocationCallOrder[0]).toBeLessThan(
+      mockTrackServerEvent.mock.invocationCallOrder[0]!
+    )
+
+    const properties = mockTrackServerEvent.mock.calls[0]?.[1]
+    expect(properties).not.toHaveProperty('ip')
+    expect(properties).not.toHaveProperty('user_agent')
+    expect(properties).not.toHaveProperty('filename')
+    expect(properties).not.toHaveProperty('token')
+    expect(properties).not.toHaveProperty('license')
+    expect(properties).not.toHaveProperty('customer_id')
+    expect(JSON.stringify(properties)).not.toContain('cust_1')
+    expect(JSON.stringify(properties)).not.toContain('private-browser-agent')
+    expect(JSON.stringify(properties)).not.toContain('woocommerce-pos-pro')
+  })
+
+  it('skips capture rather than falling back to the customer ID when the distinct-ID cookie is absent', async () => {
+    mockGetCustomer.mockResolvedValueOnce({ id: 'cust_1' })
+    mockVerifyDownloadToken.mockReturnValueOnce({
+      customerId: 'cust_1',
+      version: '1.9.0',
+      expiresAt: Date.now() + 60_000,
+    })
+    mockGetProPluginReleases.mockResolvedValueOnce([
+      makeRelease('1.9.0', '2026-01-15T00:00:00Z'),
+    ])
+    mockGetResolvedCustomerLicenses.mockResolvedValueOnce({
+      authenticated: true,
+      licenses: [ACTIVE_LICENCE],
+    })
+    mockFetchReleaseAsset.mockResolvedValueOnce(servedAsset())
+
+    const response = await GET(downloadRequest({
+      cookie: 'wcpos-analytics-consent=granted; NEXT_LOCALE=fr',
+    }))
+
+    expect(response.status).toBe(200)
+    expect(mockTrackServerEvent).not.toHaveBeenCalled()
+  })
+
+  it.each([
+    'buyer@example.com',
+    '01890f3e-8b3a-7cc2-98c4-dc0c0c0c0c0c',
+    'x'.repeat(257),
+  ])('skips capture for an invalid anonymous distinct ID %s', async (distinctId) => {
+    mockGetCustomer.mockResolvedValueOnce({ id: 'cust_1' })
+    mockVerifyDownloadToken.mockReturnValueOnce({
+      customerId: 'cust_1',
+      version: '1.9.0',
+      expiresAt: Date.now() + 60_000,
+    })
+    mockGetProPluginReleases.mockResolvedValueOnce([
+      makeRelease('1.9.0', '2026-01-15T00:00:00Z'),
+    ])
+    mockGetResolvedCustomerLicenses.mockResolvedValueOnce({
+      authenticated: true,
+      licenses: [ACTIVE_LICENCE],
+    })
+    mockFetchReleaseAsset.mockResolvedValueOnce(servedAsset())
+
+    const response = await GET(downloadRequest({
+      cookie: `wcpos-analytics-consent=granted; wcpos-distinct-id=${distinctId}; NEXT_LOCALE=fr`,
+    }))
+
+    expect(response.status).toBe(200)
+    expect(mockTrackServerEvent).not.toHaveBeenCalled()
+  })
+
+  it('omits an unsupported locale instead of forwarding it', async () => {
+    mockGetCustomer.mockResolvedValueOnce({ id: 'cust_1' })
+    mockVerifyDownloadToken.mockReturnValueOnce({
+      customerId: 'cust_1',
+      version: '1.9.0',
+      expiresAt: Date.now() + 60_000,
+    })
+    mockGetProPluginReleases.mockResolvedValueOnce([
+      makeRelease('1.9.0', '2026-01-15T00:00:00Z'),
+    ])
+    mockGetResolvedCustomerLicenses.mockResolvedValueOnce({
+      authenticated: true,
+      licenses: [ACTIVE_LICENCE],
+    })
+    mockFetchReleaseAsset.mockResolvedValueOnce(servedAsset())
+
+    const response = await GET(downloadRequest({
+      cookie: `wcpos-analytics-consent=granted; wcpos-distinct-id=${DISTINCT_ID}; NEXT_LOCALE=not-a-locale`,
+    }))
+
+    expect(response.status).toBe(200)
+    expect(mockTrackServerEvent).toHaveBeenCalledWith('pro_downloaded', {
+      distinct_id: DISTINCT_ID,
+      version: '1.9.0',
+      channel: 'account',
+    })
   })
 
   it('returns 502 and pages (error) when the asset cannot be fetched', async () => {
@@ -264,5 +426,6 @@ describe('GET /api/account/download', () => {
     expect(response.status).toBe(502)
     await expect(response.json()).resolves.toEqual({ errorCode: 'asset_unavailable' })
     expect(mockDownloadError).toHaveBeenCalled()
+    expect(mockTrackServerEvent).not.toHaveBeenCalled()
   })
 })

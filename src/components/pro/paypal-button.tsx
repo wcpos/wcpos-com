@@ -20,6 +20,7 @@ import {
 } from './checkout-safety'
 import { useCheckoutFailureMessages } from './checkout/use-checkout-failure-messages'
 import type { ProCheckoutVariant } from '@/services/core/analytics/posthog-service'
+import { isCheckoutConsentWithdrawalBlocked } from '@/lib/analytics/checkout-payment-lifecycle'
 
 interface PayPalSessionCart {
   payment_collection?: {
@@ -36,6 +37,7 @@ interface PayPalButtonProps {
   experiment: string
   experimentVariant: ProCheckoutVariant
   paypalOrderId?: string | null
+  onAttempt?: () => Promise<void> | void
   onSuccess: (orderId: string) => void
   /**
    * Reports payment failures to the parent (null clears a previous failure
@@ -50,6 +52,7 @@ export function PayPalButton({
   experiment,
   experimentVariant,
   paypalOrderId,
+  onAttempt,
   onSuccess,
   onFailure,
   onProcessingChange,
@@ -62,8 +65,14 @@ export function PayPalButton({
   // reference), so onError must skip that echo — otherwise the customer sees
   // a second message under a different reference for one failure.
   const createOrderFailureReported = useRef(false)
+  const attemptInFlight = useRef(false)
+  const [isAttempting, setIsAttempting] = useState(false)
   const [keepRetryAfterCreateOrderFailure, setKeepRetryAfterCreateOrderFailure] =
     useState(false)
+  const releaseAttemptGuard = () => {
+    attemptInFlight.current = false
+    setIsAttempting(false)
+  }
   const {
     isHydrated,
     loadingStatus: sdkLoadingStatus,
@@ -75,6 +84,17 @@ export function PayPalButton({
         createOrderFailureReported.current = false
         try {
           onFailure(null)
+
+          // The PayPal SDK itself must start synchronously from the customer's
+          // click so popup-capable browsers retain transient user activation.
+          // Its deferred createOrder callback is the safe point to await the
+          // consent/attribution refresh before any order is created.
+          try {
+            await onAttempt?.()
+          } catch (error) {
+            if (isCheckoutConsentWithdrawalBlocked(error)) throw error
+            // Analytics attribution is best-effort and must never block payment.
+          }
 
           if (paypalOrderId) {
             return { orderId: paypalOrderId }
@@ -101,6 +121,7 @@ export function PayPalButton({
           return { orderId: fallbackPayPalOrderId }
         } catch (err) {
           // No payment has happened yet — safe to retry.
+          releaseAttemptGuard()
           createOrderFailureReported.current = true
           setKeepRetryAfterCreateOrderFailure(true)
           onFailure(
@@ -115,6 +136,7 @@ export function PayPalButton({
       onApprove: async (data) => {
         const orderId = data?.orderId ?? paypalOrderId
         if (!orderId) {
+          releaseAttemptGuard()
           onFailure(
             createPaymentFailure(tErrors('paypalFailed'), {
               source: 'paypal_capture',
@@ -157,10 +179,12 @@ export function PayPalButton({
             onFailure(completion.failure)
           }
         } finally {
+          releaseAttemptGuard()
           onProcessingChange?.(false)
         }
       },
       onError: (err) => {
+        releaseAttemptGuard()
         // Skip the SDK's echo of a createOrder failure that was already
         // reported (single failure, single reference). The flag is consumed
         // here and also reset at the start of every createOrder attempt, so
@@ -181,6 +205,7 @@ export function PayPalButton({
         )
       },
       onCancel: () => {
+        releaseAttemptGuard()
         onFailure(
           createCancelledFailure(tErrors('paypalCancelled'), {
             source: 'paypal_cancel',
@@ -217,5 +242,25 @@ export function PayPalButton({
     )
   }
 
-  return <paypal-button type="checkout" onClick={handleClick} />
+  const handleAttempt = () => {
+    if (attemptInFlight.current) return
+    attemptInFlight.current = true
+    setIsAttempting(true)
+
+    try {
+      void handleClick().catch(() => {
+        releaseAttemptGuard()
+      })
+    } catch {
+      releaseAttemptGuard()
+    }
+  }
+
+  return (
+    <paypal-button
+      type="checkout"
+      disabled={isAttempting}
+      onClick={handleAttempt}
+    />
+  )
 }

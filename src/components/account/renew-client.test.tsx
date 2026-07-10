@@ -2,10 +2,15 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { screen, waitFor, fireEvent } from '@testing-library/react'
 import { renderWithIntl as render } from '@/test/intl'
 
-const { loggerError, push } = vi.hoisted(() => ({
+const { loggerError, push, trackClientEvent, getPostHogSessionId } = vi.hoisted(() => ({
   loggerError: vi.fn(),
   push: vi.fn(),
+  trackClientEvent: vi.fn(),
+  getPostHogSessionId: vi.fn(),
 }))
+
+vi.mock('@/lib/analytics/client-events', () => ({ trackClientEvent }))
+vi.mock('@/lib/analytics/posthog-browser', () => ({ getPostHogSessionId }))
 
 vi.mock('@/i18n/navigation', () => ({
   useRouter: () => ({ push }),
@@ -37,11 +42,13 @@ vi.mock('@/components/pro/checkout-form', () => ({
     currency,
     onSuccess,
     onFailure,
+    onAttempt,
   }: {
     amount: number
     currency: string
     onSuccess: (id: string) => void
     onFailure: (failure: unknown) => void
+    onAttempt: () => Promise<void> | void
   }) => (
     <>
       <div data-testid="checkout-total">
@@ -49,6 +56,9 @@ vi.mock('@/components/pro/checkout-form', () => ({
       </div>
       <button data-testid="checkout-form" onClick={() => onSuccess('order_1')}>
         Pay
+      </button>
+      <button data-testid="attempt-payment" onClick={() => void onAttempt()}>
+        Attempt
       </button>
       <button
         data-testid="fail-order-pending"
@@ -104,6 +114,9 @@ const mockFetch = vi.fn()
 
 beforeEach(() => {
   vi.clearAllMocks()
+  getPostHogSessionId.mockReturnValue(
+    '01890f3e-8b3a-7cc2-98c4-dc0c0c0c0c0c'
+  )
   window.sessionStorage.clear()
   vi.stubGlobal('fetch', mockFetch)
 })
@@ -135,8 +148,62 @@ describe('RenewClient', () => {
     // Cart is created with the resolved (USD) region and the yearly offer.
     const cartBody = JSON.parse(mockFetch.mock.calls[0][1].body)
     expect(cartBody.region_id).toBe('reg_1')
+    expect(cartBody).toMatchObject({
+      metadata: {
+        locale: 'en',
+        experiment: 'license_renewal',
+        variant: 'control',
+      },
+    })
+    expect(cartBody).not.toHaveProperty('analytics')
+    expect(cartBody.metadata).not.toHaveProperty('renewal')
     const itemBody = JSON.parse(mockFetch.mock.calls[1][1].body)
     expect(itemBody.product).toBe('wcpos-pro-yearly')
+  })
+
+  it('refreshes attribution and emits safe Stripe renewal lifecycle events', async () => {
+    mockFetch
+      .mockResolvedValueOnce(okJson({ cart: { id: 'cart_1' } }))
+      .mockResolvedValueOnce(okJson({ cart: { id: 'cart_1' } }))
+      .mockResolvedValueOnce(okJson({ cart: { id: 'cart_1' } }))
+      .mockResolvedValueOnce(okJson({ clientSecret: 'cs_1' }))
+      .mockResolvedValueOnce(okJson({ attributed: true }))
+
+    render(<RenewClient {...props()} />)
+    await waitFor(() => expect(screen.getByTestId('checkout-form')).toBeTruthy())
+
+    fireEvent.click(screen.getByTestId('attempt-payment'))
+    await waitFor(() =>
+      expect(trackClientEvent).toHaveBeenCalledWith(
+        'checkout_payment_started',
+        {
+          payment_provider: 'stripe',
+          plan: 'yearly',
+          experiment: 'license_renewal',
+          variant: 'control',
+          locale: 'en',
+        }
+      )
+    )
+    expect(mockFetch.mock.calls[4][0]).toBe(
+      '/api/store/cart/analytics-attribution'
+    )
+
+    fireEvent.click(screen.getByTestId('fail-order-pending'))
+    expect(trackClientEvent).toHaveBeenCalledWith(
+      'checkout_payment_failed',
+      {
+        payment_provider: 'stripe',
+        failure_kind: 'order_pending',
+        plan: 'yearly',
+        experiment: 'license_renewal',
+        variant: 'control',
+        locale: 'en',
+      }
+    )
+    expect(JSON.stringify(trackClientEvent.mock.calls)).not.toContain(
+      'WCPOS-TEST'
+    )
   })
 
   it('redirects to the licenses page on successful payment', async () => {

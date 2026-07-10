@@ -20,6 +20,12 @@ import {
 import { deliver } from '@/lib/sinks/deliver'
 import { assertViewOnly, ViewOnlyError } from '@/lib/impersonation'
 import type { CreateCartInput } from '@/types/medusa'
+import {
+  CHECKOUT_ANALYTICS_PROTOCOL,
+  parseCheckoutExperiment,
+  parseCheckoutLocale,
+  parseCheckoutVariant,
+} from '@/lib/analytics/checkout-attribution'
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value)
@@ -108,14 +114,27 @@ export async function POST(request: NextRequest) {
     const body = await request.json().catch(() => ({}))
     const createCartInput: CreateCartInput = {
       email: customer.email,
+      metadata: {
+        // Every cart created by this protocol-aware route is permanently
+        // distinguishable from pre-deployment carts, independent of optional
+        // browser context. Only truly legacy carts may use route-local capture.
+        wcpos_analytics_protocol: CHECKOUT_ANALYTICS_PROTOCOL,
+      },
     }
     if (isRecord(body)) {
       if (typeof body.region_id === 'string') {
         createCartInput.region_id = body.region_id
       }
-      if (isRecord(body.metadata)) {
-        createCartInput.metadata = body.metadata
-      }
+      const metadataInput = isRecord(body.metadata) ? body.metadata : undefined
+      const metadata = createCartInput.metadata as Record<string, unknown>
+      const locale = parseCheckoutLocale(metadataInput?.locale)
+      const experiment = parseCheckoutExperiment(metadataInput?.experiment)
+      const variant = parseCheckoutVariant(metadataInput?.variant)
+
+      if (locale) metadata.locale = locale
+      if (experiment) metadata.experiment = experiment
+      if (variant) metadata.variant = variant
+
     }
 
     const cart = await createCart(createCartInput, authToken)

@@ -18,6 +18,7 @@ import {
 import { useCheckoutFailureMessages } from './use-checkout-failure-messages'
 import { checkoutSuccessReturnUrl } from './return-url'
 import type { ProCheckoutVariant } from '@/services/core/analytics/posthog-service'
+import { isCheckoutConsentWithdrawalBlocked } from '@/lib/analytics/checkout-payment-lifecycle'
 
 /**
  * Apple Pay / Google Pay / Link wallets via Stripe's Express Checkout
@@ -32,6 +33,7 @@ interface ExpressCheckoutRowProps {
   cartId: string
   experiment: string
   experimentVariant: ProCheckoutVariant
+  onAttempt?: () => Promise<void> | void
   onSuccess: (orderId: string) => void
   onFailure: (failure: CheckoutFailure | null) => void
   /** Mirrors confirm-in-flight to the parent (locks billing Edit etc.). */
@@ -42,6 +44,7 @@ export function ExpressCheckoutRow({
   cartId,
   experiment,
   experimentVariant,
+  onAttempt,
   onSuccess,
   onFailure,
   onProcessingChange,
@@ -64,6 +67,13 @@ export function ExpressCheckoutRow({
     onFailure(null)
 
     try {
+      try {
+        await onAttempt?.()
+      } catch (error) {
+        if (isCheckoutConsentWithdrawalBlocked(error)) throw error
+        // Analytics attribution is best-effort and must never block payment.
+      }
+
       const { error: stripeError, paymentIntent } =
         await stripe.confirmPayment({
           elements,

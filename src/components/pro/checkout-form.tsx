@@ -19,6 +19,7 @@ import {
 import { useCheckoutFailureMessages } from './checkout/use-checkout-failure-messages'
 import { checkoutSuccessReturnUrl } from './checkout/return-url'
 import type { ProCheckoutVariant } from '@/services/core/analytics/posthog-service'
+import { isCheckoutConsentWithdrawalBlocked } from '@/lib/analytics/checkout-payment-lifecycle'
 
 interface CheckoutFormProps {
   cartId: string
@@ -26,6 +27,7 @@ interface CheckoutFormProps {
   currency: string
   experiment: string
   experimentVariant: ProCheckoutVariant
+  onAttempt?: () => Promise<void> | void
   onSuccess: (orderId: string) => void
   /**
    * Reports payment failures to the parent (null clears a previous failure
@@ -46,6 +48,7 @@ export function CheckoutForm({
   currency,
   experiment,
   experimentVariant,
+  onAttempt,
   onSuccess,
   onFailure,
   onProcessingChange,
@@ -69,6 +72,13 @@ export function CheckoutForm({
     onFailure(null)
 
     try {
+      try {
+        await onAttempt?.()
+      } catch (error) {
+        if (isCheckoutConsentWithdrawalBlocked(error)) throw error
+        // Analytics attribution is best-effort and must never block payment.
+      }
+
       // Confirm payment with Stripe
       const { error: stripeError, paymentIntent } = await stripe.confirmPayment({
         elements,

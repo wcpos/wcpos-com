@@ -49,15 +49,24 @@ vi.mock('./paypal-provider', () => ({
 vi.mock('./checkout/express-checkout', () => ({
   ExpressCheckoutRow: () => null,
 }))
+const mockTrackClientEvent = vi.hoisted(() => vi.fn())
+vi.mock('@/lib/analytics/client-events', () => ({
+  trackClientEvent: (...args: unknown[]) => mockTrackClientEvent(...args),
+}))
 vi.mock('./checkout-form', () => ({
   CheckoutForm: ({
+    onAttempt,
     onSuccess,
     onFailure,
   }: {
+    onAttempt: () => Promise<void> | void
     onSuccess: (id: string) => void
     onFailure: (failure: unknown) => void
   }) => (
     <div>
+      <button data-testid="mock-attempt-button" onClick={() => void onAttempt()}>
+        Attempt
+      </button>
       <button
         data-testid="mock-pay-button"
         onClick={() => onSuccess('order-abc-123')}
@@ -96,6 +105,11 @@ vi.mock('./checkout-form', () => ({
 
 const renderPayPalButton = vi.fn()
 const renderBTCPayButton = vi.fn()
+const mockGetPostHogSessionId = vi.hoisted(() => vi.fn())
+
+vi.mock('@/lib/analytics/posthog-browser', () => ({
+  getPostHogSessionId: () => mockGetPostHogSessionId(),
+}))
 
 vi.mock('./paypal-button', () => ({
   PayPalButton: (props: Record<string, unknown>) => {
@@ -279,6 +293,7 @@ async function completeBillingStep(cartAfterBilling = buildCheckoutCart()) {
 describe('CheckoutClient', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+    mockGetPostHogSessionId.mockReturnValue(undefined)
     sessionStorage.clear()
     window.history.pushState({}, '', '/pro/checkout?product=wcpos-pro-yearly')
   })
@@ -390,6 +405,35 @@ describe('CheckoutClient', () => {
     )
   })
 
+  it('defers the consented PostHog session until a real payment attempt', async () => {
+    mockGetPostHogSessionId.mockReturnValue(
+      '01890f3e-8b3a-7cc2-98c4-dc0c0c0c0c0c'
+    )
+    mockSuccessfulCheckoutInit()
+    renderSignedInFrench({ experimentVariant: 'value_copy' })
+
+    await waitFor(() => {
+      expect(mockFetch).toHaveBeenCalledWith(
+        '/api/store/cart',
+        expect.objectContaining({ method: 'POST' })
+      )
+    })
+    expect(mockFetch).toHaveBeenNthCalledWith(
+      1,
+      '/api/store/cart',
+      expect.objectContaining({
+        method: 'POST',
+        body: JSON.stringify({
+          metadata: {
+            experiment: 'pro_checkout_v1',
+            variant: 'value_copy',
+            locale: 'fr',
+          },
+        }),
+      })
+    )
+  })
+
   it('starts at the account step when signed out and creates the account inline', async () => {
     render(
       <CheckoutClient
@@ -457,6 +501,7 @@ describe('CheckoutClient', () => {
     fireEvent.submit(screen.getByTestId('account-step-form'))
 
     await waitFor(() => {
+      expect(mockGetPostHogSessionId).toHaveBeenCalledTimes(1)
       expect(mockFetch).toHaveBeenNthCalledWith(
         1,
         '/api/auth/register',
@@ -466,6 +511,39 @@ describe('CheckoutClient', () => {
             email: 'new@example.com',
             password: 'hunter2hunter2',
             locale: 'fr',
+          }),
+        })
+      )
+    })
+  })
+
+  it('keeps inline registration in the current PostHog session when available', async () => {
+    mockGetPostHogSessionId.mockReturnValue(
+      '01890f3e-8b3a-7cc2-98c4-dc0c0c0c0c0c'
+    )
+    mockFetch.mockResolvedValueOnce({ ok: true, json: async () => ({}) })
+    mockSuccessfulCheckoutInit()
+
+    const { container } = renderSignedInFrench({ customerEmail: undefined })
+
+    fireEvent.change(container.querySelector('#checkout-email')!, {
+      target: { value: 'new@example.com' },
+    })
+    fireEvent.change(container.querySelector('#checkout-password')!, {
+      target: { value: 'hunter2hunter2' },
+    })
+    fireEvent.submit(screen.getByTestId('account-step-form'))
+
+    await waitFor(() => {
+      expect(mockFetch).toHaveBeenNthCalledWith(
+        1,
+        '/api/auth/register',
+        expect.objectContaining({
+          body: JSON.stringify({
+            email: 'new@example.com',
+            password: 'hunter2hunter2',
+            locale: 'fr',
+            sessionId: '01890f3e-8b3a-7cc2-98c4-dc0c0c0c0c0c',
           }),
         })
       )
@@ -660,6 +738,25 @@ describe('CheckoutClient', () => {
       'false'
     )
     expect(screen.getByTestId('mock-pay-button')).toBeInTheDocument()
+  })
+
+  it('passes canonical plan and locale into checkout lifecycle events', async () => {
+    mockSuccessfulCheckoutInit()
+    renderSignedIn()
+    await completeBillingStep()
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ attributed: true }),
+    })
+
+    fireEvent.click(screen.getByTestId('mock-attempt-button'))
+
+    await waitFor(() =>
+      expect(mockTrackClientEvent).toHaveBeenCalledWith(
+        'checkout_payment_started',
+        expect.objectContaining({ plan: 'yearly', locale: 'en' })
+      )
+    )
   })
 
   it('renders the order summary from the cart', async () => {

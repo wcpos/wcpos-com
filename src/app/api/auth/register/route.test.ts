@@ -4,6 +4,8 @@ import { AccountExistsError } from '@/lib/api/errors'
 
 const mockRegister = vi.fn()
 const mockSetAuthToken = vi.fn()
+const DISTINCT_ID = '550e8400-e29b-41d4-a716-446655440000'
+const SESSION_ID = '01890f3e-8b3a-7cc2-98c4-dc0c0c0c0c0c'
 const { infoMock, errorMock, warnMock, consumeMock, trackServerEventMock, cookieGetMock } =
   vi.hoisted(() => ({
     infoMock: vi.fn(),
@@ -47,7 +49,7 @@ describe('POST /api/auth/register', () => {
     vi.clearAllMocks()
     consumeMock.mockResolvedValue({ success: true, remaining: 4 })
     trackServerEventMock.mockResolvedValue(undefined)
-    cookieGetMock.mockReturnValue({ value: 'anon_cookie_123' })
+    cookieGetMock.mockReturnValue({ value: DISTINCT_ID })
   })
 
   it('returns 429 when the rate limit is exceeded', async () => {
@@ -200,9 +202,73 @@ describe('POST /api/auth/register', () => {
       expect.objectContaining({
         method: 'email',
         customer_id: 'cus_42',
-        distinct_id: 'anon_cookie_123',
+        distinct_id: DISTINCT_ID,
       })
     )
+  })
+
+  it('adds a valid browser session and canonical locale to signup_completed', async () => {
+    mockRegister.mockResolvedValueOnce({
+      token: 'jwt',
+      customer: { id: 'cus_42' },
+    })
+
+    const response = await postRegister({
+      email: 'new@example.com',
+      password: 'password123',
+      locale: 'fr-fr',
+      sessionId: SESSION_ID,
+    })
+
+    expect(response.status).toBe(200)
+    expect(mockRegister).toHaveBeenCalledWith(
+      expect.objectContaining({ locale: 'fr-FR' })
+    )
+    expect(trackServerEventMock).toHaveBeenCalledWith(
+      'signup_completed',
+      expect.objectContaining({
+        distinct_id: DISTINCT_ID,
+        $session_id: SESSION_ID,
+        locale: 'fr-FR',
+      })
+    )
+  })
+
+  it('omits a malformed browser session without blocking registration', async () => {
+    mockRegister.mockResolvedValueOnce({
+      token: 'jwt',
+      customer: { id: 'cus_42' },
+    })
+
+    const response = await postRegister({
+      email: 'new@example.com',
+      password: 'password123',
+      locale: 'fr-fr',
+      sessionId: 'buyer@example.com',
+    })
+
+    expect(response.status).toBe(200)
+    const properties = trackServerEventMock.mock.calls[0]?.[1]
+    expect(properties).toEqual(expect.objectContaining({ locale: 'fr-FR' }))
+    expect(properties).not.toHaveProperty('$session_id')
+  })
+
+  it('omits an absent browser session without blocking registration', async () => {
+    mockRegister.mockResolvedValueOnce({
+      token: 'jwt',
+      customer: { id: 'cus_42' },
+    })
+
+    const response = await postRegister({
+      email: 'new@example.com',
+      password: 'password123',
+      locale: 'fr-fr',
+    })
+
+    expect(response.status).toBe(200)
+    const properties = trackServerEventMock.mock.calls[0]?.[1]
+    expect(properties).toEqual(expect.objectContaining({ locale: 'fr-FR' }))
+    expect(properties).not.toHaveProperty('$session_id')
   })
 
   it('falls back to customer.id (never a shared placeholder) when the distinct-id cookie is absent', async () => {
