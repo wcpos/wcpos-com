@@ -1,6 +1,7 @@
 'use client'
 
 import { isAnalyticsGranted } from './consent'
+import { parsePostHogSessionId } from './checkout-attribution'
 import {
   ANALYTICS_DISTINCT_ID_COOKIE,
   getDistinctIdCookieOptions,
@@ -14,6 +15,20 @@ type QueuedCapture = { name: string; properties?: Record<string, unknown> }
 type WindowWithPostHog = Window & {
   posthog?: {
     capture?: (name: string, properties?: Record<string, unknown>) => void
+    get_session_id?: () => unknown
+  }
+}
+
+/** Read the current PostHog session without bypassing consent or throwing. */
+export function getPostHogSessionId(): string | undefined {
+  if (typeof window === 'undefined' || !isAnalyticsGranted()) return undefined
+
+  try {
+    const posthog = (window as WindowWithPostHog).posthog
+    if (typeof posthog?.get_session_id !== 'function') return undefined
+    return parsePostHogSessionId(posthog.get_session_id())
+  } catch {
+    return undefined
   }
 }
 

@@ -2,8 +2,14 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 
 const initMock = vi.fn()
 const captureMock = vi.fn()
+const getSessionIdMock = vi.fn()
 vi.mock('posthog-js', () => ({
-  default: { init: initMock, capture: captureMock, __loaded: false },
+  default: {
+    init: initMock,
+    capture: captureMock,
+    get_session_id: getSessionIdMock,
+    __loaded: false,
+  },
 }))
 vi.mock('./consent', () => ({ isAnalyticsGranted: vi.fn() }))
 
@@ -14,6 +20,7 @@ describe('initPostHogBrowser', () => {
     vi.resetModules()
     initMock.mockReset()
     captureMock.mockReset()
+    getSessionIdMock.mockReset()
     delete (window as WindowWithPostHog).posthog
     // Each test controls the shared-identity cookie explicitly.
     if (typeof document !== 'undefined') {
@@ -144,6 +151,7 @@ describe('capturePostHogBrowser', () => {
     vi.resetModules()
     initMock.mockReset()
     captureMock.mockReset()
+    getSessionIdMock.mockReset()
     delete (window as WindowWithPostHog).posthog
   })
 
@@ -258,5 +266,79 @@ describe('capturePostHogBrowser', () => {
 
     expect(captureMock).toHaveBeenCalledTimes(50)
     expect(captureMock.mock.calls[0][0]).toBe('event_0')
+  })
+})
+
+describe('getPostHogSessionId', () => {
+  beforeEach(() => {
+    vi.resetModules()
+    getSessionIdMock.mockReset()
+    delete (window as WindowWithPostHog).posthog
+  })
+
+  it('returns the SDK session ID when analytics consent is granted', async () => {
+    const { isAnalyticsGranted } = await import('./consent')
+    ;(isAnalyticsGranted as ReturnType<typeof vi.fn>).mockReturnValue(true)
+    ;(window as WindowWithPostHog).posthog = {
+      get_session_id: getSessionIdMock.mockReturnValue(
+        '01890f3e-8b3a-7cc2-98c4-dc0c0c0c0c0c'
+      ),
+    }
+    const { getPostHogSessionId } = await import('./posthog-browser')
+
+    expect(getPostHogSessionId()).toBe(
+      '01890f3e-8b3a-7cc2-98c4-dc0c0c0c0c0c'
+    )
+  })
+
+  it('does not read the SDK without analytics consent', async () => {
+    const { isAnalyticsGranted } = await import('./consent')
+    ;(isAnalyticsGranted as ReturnType<typeof vi.fn>).mockReturnValue(false)
+    ;(window as WindowWithPostHog).posthog = {
+      get_session_id: getSessionIdMock,
+    }
+    const { getPostHogSessionId } = await import('./posthog-browser')
+
+    expect(getPostHogSessionId()).toBeUndefined()
+    expect(getSessionIdMock).not.toHaveBeenCalled()
+  })
+
+  it('returns undefined when the SDK session reader is missing', async () => {
+    const { isAnalyticsGranted } = await import('./consent')
+    ;(isAnalyticsGranted as ReturnType<typeof vi.fn>).mockReturnValue(true)
+    const { getPostHogSessionId } = await import('./posthog-browser')
+
+    expect(getPostHogSessionId()).toBeUndefined()
+  })
+
+  it.each([
+    undefined,
+    '',
+    'not-a-uuid',
+    'buyer@example.com',
+    'a'.repeat(257),
+    'session\u0000id',
+  ])('returns undefined for malformed SDK value %j', async (value) => {
+    const { isAnalyticsGranted } = await import('./consent')
+    ;(isAnalyticsGranted as ReturnType<typeof vi.fn>).mockReturnValue(true)
+    ;(window as WindowWithPostHog).posthog = {
+      get_session_id: getSessionIdMock.mockReturnValue(value),
+    }
+    const { getPostHogSessionId } = await import('./posthog-browser')
+
+    expect(getPostHogSessionId()).toBeUndefined()
+  })
+
+  it('contains SDK exceptions', async () => {
+    const { isAnalyticsGranted } = await import('./consent')
+    ;(isAnalyticsGranted as ReturnType<typeof vi.fn>).mockReturnValue(true)
+    ;(window as WindowWithPostHog).posthog = {
+      get_session_id: getSessionIdMock.mockImplementation(() => {
+        throw new Error('SDK unavailable')
+      }),
+    }
+    const { getPostHogSessionId } = await import('./posthog-browser')
+
+    expect(getPostHogSessionId()).toBeUndefined()
   })
 })
