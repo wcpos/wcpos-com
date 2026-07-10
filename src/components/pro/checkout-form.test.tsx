@@ -23,6 +23,7 @@ import { OrderPendingError } from './checkout-safety'
 
 const onSuccess = vi.fn()
 const onFailure = vi.fn()
+const onAttempt = vi.fn()
 
 function renderForm() {
   return render(
@@ -32,6 +33,7 @@ function renderForm() {
       currency="usd"
       experiment="pro_checkout_v1"
       experimentVariant="control"
+      onAttempt={onAttempt}
       onSuccess={onSuccess}
       onFailure={onFailure}
     />
@@ -47,6 +49,7 @@ function renderFormWithLocale(locale: string, messages: typeof frMessages) {
         currency="usd"
         experiment="pro_checkout_v1"
         experimentVariant="control"
+        onAttempt={onAttempt}
         onSuccess={onSuccess}
         onFailure={onFailure}
       />
@@ -69,6 +72,39 @@ beforeEach(() => {
 })
 
 describe('CheckoutForm', () => {
+  it('awaits one attempt callback before confirming a real card payment', async () => {
+    let releaseAttempt!: () => void
+    onAttempt.mockReturnValueOnce(
+      new Promise<void>((resolve) => {
+        releaseAttempt = resolve
+      })
+    )
+    mockConfirmPayment.mockResolvedValue({
+      error: { type: 'card_error', code: 'card_declined' },
+    })
+
+    renderForm()
+    expect(onAttempt).not.toHaveBeenCalled()
+    submit()
+
+    expect(onAttempt).toHaveBeenCalledTimes(1)
+    expect(mockConfirmPayment).not.toHaveBeenCalled()
+    releaseAttempt()
+    await waitFor(() => expect(mockConfirmPayment).toHaveBeenCalledTimes(1))
+  })
+
+  it('still confirms the card payment when the analytics attempt callback fails', async () => {
+    onAttempt.mockRejectedValueOnce(new Error('analytics unavailable'))
+    mockConfirmPayment.mockResolvedValue({
+      error: { type: 'card_error', code: 'card_declined' },
+    })
+
+    renderForm()
+    submit()
+
+    await waitFor(() => expect(mockConfirmPayment).toHaveBeenCalledTimes(1))
+  })
+
   it('clears any previous failure when a new attempt starts', async () => {
     mockConfirmPayment.mockResolvedValue({
       paymentIntent: { id: 'pi_1', status: 'succeeded' },

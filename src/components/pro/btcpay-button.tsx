@@ -34,6 +34,7 @@ interface BTCPayInvoiceRef {
 interface BTCPayButtonProps {
   cartId: string
   checkoutLink?: string | null
+  onAttempt?: () => Promise<void> | void
   /**
    * Reports payment failures to the parent (null clears a previous failure
    * when the customer retries). Failure messages are already customer-safe.
@@ -41,7 +42,12 @@ interface BTCPayButtonProps {
   onFailure: (failure: CheckoutFailure | null) => void
 }
 
-export function BTCPayButton({ cartId, checkoutLink, onFailure }: BTCPayButtonProps) {
+export function BTCPayButton({
+  cartId,
+  checkoutLink,
+  onAttempt,
+  onFailure,
+}: BTCPayButtonProps) {
   const t = useTranslations('pro.checkout.payment.btcpayButton')
   const tErrors = useTranslations('pro.checkout.errors')
   const router = useRouter()
@@ -150,6 +156,12 @@ export function BTCPayButton({ cartId, checkoutLink, onFailure }: BTCPayButtonPr
   const handleClick = async () => {
     setIsLoading(true)
     onFailure(null)
+
+    try {
+      await onAttempt?.()
+    } catch {
+      // Analytics attribution is best-effort and must never block payment.
+    }
 
     let invoice: BTCPayInvoiceRef
     try {

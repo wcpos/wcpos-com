@@ -11,6 +11,13 @@ import { ExpressCheckoutRow } from './express-checkout'
 import type { CheckoutFailure } from '../checkout-safety'
 import type { PayPalCheckoutConfig } from '@/lib/checkout-payment-config'
 import type { ProCheckoutVariant } from '@/services/core/analytics/posthog-service'
+import type { PlanId } from '@/lib/plans'
+import { trackClientEvent } from '@/lib/analytics/client-events'
+import { getPostHogSessionId } from '@/lib/analytics/posthog-browser'
+import {
+  buildCheckoutPaymentEventProperties,
+  type CheckoutPaymentProvider,
+} from '@/lib/analytics/checkout-payment-events'
 
 export type PaymentMethod = 'stripe' | 'paypal' | 'btcpay'
 
@@ -95,6 +102,8 @@ interface PaymentStepProps {
   /** Host-resolved public identifiers for the provider SDKs. */
   stripePublishableKey: string | null
   paypal: PayPalCheckoutConfig
+  plan?: PlanId
+  locale: string
   experiment: string
   experimentVariant: ProCheckoutVariant
   amount: number
@@ -131,6 +140,8 @@ export function PaymentStep({
   enabled,
   stripePublishableKey,
   paypal,
+  plan,
+  locale,
   experiment,
   experimentVariant,
   amount,
@@ -143,6 +154,53 @@ export function PaymentStep({
   const enabledCount = [enabled.stripe, enabled.paypal, enabled.btcpay].filter(
     Boolean
   ).length
+
+  const eventContext = {
+    plan,
+    experiment,
+    variant: experimentVariant,
+    locale,
+  }
+
+  const onProviderAttempt = (paymentProvider: CheckoutPaymentProvider) =>
+    async () => {
+      trackClientEvent(
+        'checkout_payment_started',
+        buildCheckoutPaymentEventProperties({
+          paymentProvider,
+          ...eventContext,
+        })
+      )
+
+      const sessionId = getPostHogSessionId()
+      try {
+        await fetch('/api/store/cart/analytics-attribution', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            cartId,
+            ...(sessionId ? { session_id: sessionId } : {}),
+          }),
+        })
+      } catch {
+        // Server attribution is analytics-only; payment always continues.
+      }
+    }
+
+  const onProviderFailure = (paymentProvider: CheckoutPaymentProvider) =>
+    (failure: CheckoutFailure | null) => {
+      onFailure(failure)
+      if (!failure) return
+
+      trackClientEvent(
+        'checkout_payment_failed',
+        buildCheckoutPaymentEventProperties({
+          paymentProvider,
+          failureKind: failure.kind,
+          ...eventContext,
+        })
+      )
+    }
 
   if (enabledCount === 0) {
     return (
@@ -173,8 +231,9 @@ export function PaymentStep({
               currency={currency}
               experiment={experiment}
               experimentVariant={experimentVariant}
+              onAttempt={onProviderAttempt('stripe')}
               onSuccess={onSuccess}
-              onFailure={onFailure}
+              onFailure={onProviderFailure('stripe')}
               onProcessingChange={onProcessingChange}
             />
           )}
@@ -204,8 +263,9 @@ export function PaymentStep({
                 experiment={experiment}
                 experimentVariant={experimentVariant}
                 paypalOrderId={paypalOrderId}
+                onAttempt={onProviderAttempt('paypal')}
                 onSuccess={onSuccess}
-                onFailure={onFailure}
+                onFailure={onProviderFailure('paypal')}
                 onProcessingChange={onProcessingChange}
               />
             </PayPalProvider>
@@ -233,7 +293,8 @@ export function PaymentStep({
               <BTCPayButton
                 cartId={cartId}
                 checkoutLink={btcpayCheckoutLink}
-                onFailure={onFailure}
+                onAttempt={onProviderAttempt('btcpay')}
+                onFailure={onProviderFailure('btcpay')}
               />
             </div>
           )}
@@ -255,8 +316,9 @@ export function PaymentStep({
           cartId={cartId}
           experiment={experiment}
           experimentVariant={experimentVariant}
+          onAttempt={onProviderAttempt('stripe')}
           onSuccess={onSuccess}
-          onFailure={onFailure}
+          onFailure={onProviderFailure('stripe')}
           onProcessingChange={onProcessingChange}
         />
         {selector}

@@ -49,15 +49,24 @@ vi.mock('./paypal-provider', () => ({
 vi.mock('./checkout/express-checkout', () => ({
   ExpressCheckoutRow: () => null,
 }))
+const mockTrackClientEvent = vi.hoisted(() => vi.fn())
+vi.mock('@/lib/analytics/client-events', () => ({
+  trackClientEvent: (...args: unknown[]) => mockTrackClientEvent(...args),
+}))
 vi.mock('./checkout-form', () => ({
   CheckoutForm: ({
+    onAttempt,
     onSuccess,
     onFailure,
   }: {
+    onAttempt: () => Promise<void> | void
     onSuccess: (id: string) => void
     onFailure: (failure: unknown) => void
   }) => (
     <div>
+      <button data-testid="mock-attempt-button" onClick={() => void onAttempt()}>
+        Attempt
+      </button>
       <button
         data-testid="mock-pay-button"
         onClick={() => onSuccess('order-abc-123')}
@@ -732,6 +741,22 @@ describe('CheckoutClient', () => {
       'false'
     )
     expect(screen.getByTestId('mock-pay-button')).toBeInTheDocument()
+  })
+
+  it('passes canonical plan and locale into checkout lifecycle events', async () => {
+    mockSuccessfulCheckoutInit()
+    renderSignedIn()
+    await completeBillingStep()
+    mockFetch.mockResolvedValueOnce({ ok: true })
+
+    fireEvent.click(screen.getByTestId('mock-attempt-button'))
+
+    await waitFor(() =>
+      expect(mockTrackClientEvent).toHaveBeenCalledWith(
+        'checkout_payment_started',
+        expect.objectContaining({ plan: 'yearly', locale: 'en' })
+      )
+    )
   })
 
   it('renders the order summary from the cart', async () => {

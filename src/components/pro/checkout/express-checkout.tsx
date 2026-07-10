@@ -32,6 +32,7 @@ interface ExpressCheckoutRowProps {
   cartId: string
   experiment: string
   experimentVariant: ProCheckoutVariant
+  onAttempt?: () => Promise<void> | void
   onSuccess: (orderId: string) => void
   onFailure: (failure: CheckoutFailure | null) => void
   /** Mirrors confirm-in-flight to the parent (locks billing Edit etc.). */
@@ -42,6 +43,7 @@ export function ExpressCheckoutRow({
   cartId,
   experiment,
   experimentVariant,
+  onAttempt,
   onSuccess,
   onFailure,
   onProcessingChange,
@@ -64,6 +66,12 @@ export function ExpressCheckoutRow({
     onFailure(null)
 
     try {
+      try {
+        await onAttempt?.()
+      } catch {
+        // Analytics attribution is best-effort and must never block payment.
+      }
+
       const { error: stripeError, paymentIntent } =
         await stripe.confirmPayment({
           elements,

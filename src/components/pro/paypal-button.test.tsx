@@ -1,5 +1,5 @@
 import { describe, expect, it, vi, beforeEach } from 'vitest'
-import { screen } from '@testing-library/react'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { renderWithIntl as render } from '@/test/intl'
 
 const capturePayPalSessionProps = vi.fn()
@@ -51,6 +51,7 @@ import { OrderPendingError } from './checkout-safety'
 const onSuccess = vi.fn()
 const onFailure = vi.fn()
 const onProcessingChange = vi.fn()
+const onAttempt = vi.fn()
 
 interface CapturedPayPalProps {
   createOrder: () => Promise<{ orderId: string }>
@@ -66,6 +67,7 @@ function buttonElement(paypalOrderId: string | null = 'PAYPAL_ORDER_1') {
       experiment="pro_checkout_v1"
       experimentVariant="control"
       paypalOrderId={paypalOrderId}
+      onAttempt={onAttempt}
       onSuccess={onSuccess}
       onFailure={onFailure}
       onProcessingChange={onProcessingChange}
@@ -97,6 +99,33 @@ beforeEach(() => {
 })
 
 describe('PayPalButton', () => {
+  it('awaits one attempt callback before invoking the PayPal SDK click', async () => {
+    let releaseAttempt!: () => void
+    onAttempt.mockReturnValueOnce(
+      new Promise<void>((resolve) => {
+        releaseAttempt = resolve
+      })
+    )
+
+    renderButton()
+    expect(onAttempt).not.toHaveBeenCalled()
+    fireEvent.click(document.querySelector('paypal-button')!)
+
+    expect(onAttempt).toHaveBeenCalledTimes(1)
+    expect(mockHandleClick).not.toHaveBeenCalled()
+    releaseAttempt()
+    await waitFor(() => expect(mockHandleClick).toHaveBeenCalledTimes(1))
+  })
+
+  it('still invokes the PayPal SDK when the analytics attempt callback fails', async () => {
+    onAttempt.mockRejectedValueOnce(new Error('analytics unavailable'))
+
+    renderButton()
+    fireEvent.click(document.querySelector('paypal-button')!)
+
+    await waitFor(() => expect(mockHandleClick).toHaveBeenCalledTimes(1))
+  })
+
   it('renders the v6 web component when the SDK session is ready', () => {
     renderButton()
 

@@ -36,6 +36,7 @@ interface PayPalButtonProps {
   experiment: string
   experimentVariant: ProCheckoutVariant
   paypalOrderId?: string | null
+  onAttempt?: () => Promise<void> | void
   onSuccess: (orderId: string) => void
   /**
    * Reports payment failures to the parent (null clears a previous failure
@@ -50,6 +51,7 @@ export function PayPalButton({
   experiment,
   experimentVariant,
   paypalOrderId,
+  onAttempt,
   onSuccess,
   onFailure,
   onProcessingChange,
@@ -217,5 +219,14 @@ export function PayPalButton({
     )
   }
 
-  return <paypal-button type="checkout" onClick={handleClick} />
+  const handleAttempt = async () => {
+    try {
+      await onAttempt?.()
+    } catch {
+      // Analytics attribution is best-effort and must never block payment.
+    }
+    handleClick()
+  }
+
+  return <paypal-button type="checkout" onClick={handleAttempt} />
 }
