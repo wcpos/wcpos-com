@@ -1033,7 +1033,12 @@
     "admin": {
       "title": "Klant inspecteren (alleen lezen)",
       "description": "Voer het e-mailadres van een klant in om het account precies zo te bekijken als de klant het ziet. Tijdens inspectie kun je geen gegevens wijzigen.",
-      "submit": "Bekijken als"
+      "submit": "Bekijken als",
+      "errors": {
+        "not_found": "Er is geen klant met dat e-mailadres gevonden.",
+        "rate_limited": "Te veel zoekopdrachten. Wacht een paar minuten en probeer het opnieuw.",
+        "forbidden": "Je beheerderssessie is niet meer geautoriseerd. Vernieuw de pagina en log opnieuw in."
+      }
     },
     "impersonation": {
       "viewing": "🔍 Je bekijkt <strong>{target}</strong> als <strong>alleen-lezen</strong> — je kunt dit account niet wijzigen.",

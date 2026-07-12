@@ -1033,7 +1033,12 @@
     "admin": {
       "title": "Inspeccionar un cliente (solo lectura)",
       "description": "Introduce el correo electrónico de un cliente para ver su cuenta exactamente como la ve. No puedes cambiar sus datos mientras la inspeccionas.",
-      "submit": "Ver como"
+      "submit": "Ver como",
+      "errors": {
+        "not_found": "No se encontró ningún cliente con ese correo electrónico.",
+        "rate_limited": "Demasiadas búsquedas. Espera unos minutos e inténtalo de nuevo.",
+        "forbidden": "Tu sesión de administrador ya no está autorizada. Actualiza la página y vuelve a iniciar sesión."
+      }
     },
     "impersonation": {
       "viewing": "🔍 Viendo <strong>{target}</strong> en modo de <strong>solo lectura</strong> — no puedes cambiar su cuenta.",

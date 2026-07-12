@@ -1033,7 +1033,12 @@
     "admin": {
       "title": "Ispeziona un cliente (sola lettura)",
       "description": "Inserisci l’email di un cliente per visualizzare il suo account esattamente come lo vede lui. Durante l’ispezione non puoi modificare i suoi dati.",
-      "submit": "Visualizza come"
+      "submit": "Visualizza come",
+      "errors": {
+        "not_found": "Non è stato trovato alcun cliente con questo indirizzo email.",
+        "rate_limited": "Troppe ricerche. Attendi qualche minuto e riprova.",
+        "forbidden": "La tua sessione di amministratore non è più autorizzata. Aggiorna la pagina ed effettua nuovamente l’accesso."
+      }
     },
     "impersonation": {
       "viewing": "🔍 Stai visualizzando <strong>{target}</strong> in modalità <strong>sola lettura</strong> — non puoi modificare il suo account.",

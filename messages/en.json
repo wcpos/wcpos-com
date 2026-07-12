@@ -1033,7 +1033,12 @@
     "admin": {
       "title": "Inspect a customer (read-only)",
       "description": "Enter a customer email to view their account exactly as they see it. You cannot change their data while inspecting.",
-      "submit": "View as"
+      "submit": "View as",
+      "errors": {
+        "not_found": "No customer was found with that email.",
+        "rate_limited": "Too many lookups. Wait a few minutes and try again.",
+        "forbidden": "Your owner session is no longer authorized. Refresh the page and sign in again."
+      }
     },
     "impersonation": {
       "viewing": "🔍 Viewing <strong>{target}</strong> as <strong>read-only</strong> — you cannot change their account.",
