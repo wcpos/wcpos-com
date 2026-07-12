@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { POST } from './route'
 import { AccountExistsError } from '@/lib/api/errors'
+import { verifyTurnstile } from '@/lib/support/turnstile'
 
 const mockRegister = vi.fn()
 const mockSetAuthToken = vi.fn()
@@ -27,6 +28,7 @@ vi.mock('@/lib/rate-limit', () => ({
   createRateLimiter: () => ({ consume: consumeMock }),
   clientIp: () => '203.0.113.7',
 }))
+vi.mock('@/lib/support/turnstile', () => ({ verifyTurnstile: vi.fn() }))
 vi.mock('next/headers', () => ({
   cookies: vi.fn(async () => ({ get: cookieGetMock })),
 }))
@@ -38,7 +40,10 @@ function postRegister(body: Record<string, unknown>) {
   return POST(
     new Request('http://localhost:3000/api/auth/register', {
       method: 'POST',
-      headers: { 'content-type': 'application/json' },
+      headers: {
+        'content-type': 'application/json',
+        host: 'wcpos.com',
+      },
       body: JSON.stringify(body),
     })
   )
@@ -47,13 +52,22 @@ function postRegister(body: Record<string, unknown>) {
 describe('POST /api/auth/register', () => {
   beforeEach(() => {
     vi.clearAllMocks()
-    consumeMock.mockResolvedValue({ success: true, remaining: 4 })
+    consumeMock.mockResolvedValue({
+      success: true,
+      remaining: 4,
+      status: 'allowed',
+    })
+    vi.mocked(verifyTurnstile).mockResolvedValue(true)
     trackServerEventMock.mockResolvedValue(undefined)
     cookieGetMock.mockReturnValue({ value: DISTINCT_ID })
   })
 
   it('returns 429 when the rate limit is exceeded', async () => {
-    consumeMock.mockResolvedValueOnce({ success: false, remaining: 0 })
+    consumeMock.mockResolvedValueOnce({
+      success: false,
+      remaining: 0,
+      status: 'limited',
+    })
 
     const response = await postRegister({
       email: 'new@example.com',
@@ -63,7 +77,84 @@ describe('POST /api/auth/register', () => {
 
     expect(response.status).toBe(429)
     expect(json.errorCode).toBe('rate_limited')
+    expect(verifyTurnstile).not.toHaveBeenCalled()
     expect(mockRegister).not.toHaveBeenCalled()
+  })
+
+  it('returns 503 when the rate limiter is unavailable on a deployed host', async () => {
+    consumeMock.mockResolvedValueOnce({
+      success: true,
+      remaining: Infinity,
+      status: 'unavailable',
+    })
+
+    const unavailableResponse = await postRegister({
+      email: 'new@example.com',
+      password: 'password123',
+      turnstileToken: 'valid-token',
+    })
+
+    expect(unavailableResponse.status).toBe(503)
+    expect(await unavailableResponse.json()).toEqual({
+      errorCode: 'rate_limit_unavailable',
+    })
+    expect(verifyTurnstile).not.toHaveBeenCalled()
+    expect(mockRegister).not.toHaveBeenCalled()
+  })
+
+  it('returns 403 when the Turnstile challenge is invalid', async () => {
+    vi.mocked(verifyTurnstile).mockResolvedValueOnce(false)
+
+    const invalidChallengeResponse = await postRegister({
+      email: 'new@example.com',
+      password: 'password123',
+      turnstileToken: 'bad-token',
+    })
+
+    expect(invalidChallengeResponse.status).toBe(403)
+    expect(await invalidChallengeResponse.json()).toEqual({
+      errorCode: 'bot_check_failed',
+    })
+    expect(verifyTurnstile).toHaveBeenCalledWith(
+      'bad-token',
+      'wcpos.com',
+      '203.0.113.7'
+    )
+    expect(mockRegister).not.toHaveBeenCalled()
+  })
+
+  it('does not call Medusa until Turnstile accepts the challenge', async () => {
+    let resolveVerification!: (verified: boolean) => void
+    vi.mocked(verifyTurnstile).mockImplementationOnce(
+      () =>
+        new Promise<boolean>((resolve) => {
+          resolveVerification = resolve
+        })
+    )
+    mockRegister.mockResolvedValueOnce({
+      token: 'jwt',
+      customer: { id: 'cus_1' },
+    })
+
+    const responsePromise = postRegister({
+      email: 'new@example.com',
+      password: 'password123',
+      turnstileToken: 'valid-token',
+    })
+
+    await vi.waitFor(() => expect(verifyTurnstile).toHaveBeenCalledTimes(1))
+    expect(mockRegister).not.toHaveBeenCalled()
+
+    resolveVerification(true)
+    const response = await responsePromise
+
+    expect(response.status).toBe(200)
+    expect(verifyTurnstile).toHaveBeenCalledWith(
+      'valid-token',
+      'wcpos.com',
+      '203.0.113.7'
+    )
+    expect(mockRegister).toHaveBeenCalledTimes(1)
   })
 
   it('maps AccountExistsError to a 409 with the ACCOUNT_EXISTS code', async () => {

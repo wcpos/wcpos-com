@@ -1099,6 +1099,8 @@
       "apiErrors": {
         "invalid_origin": "Vernieuw de pagina en probeer het opnieuw.",
         "rate_limited": "Te veel pogingen. Probeer het later opnieuw.",
+        "bot_check_failed": "De botcontrole is mislukt. Probeer het opnieuw.",
+        "rate_limit_unavailable": "Registreren is tijdelijk niet beschikbaar. Probeer het opnieuw.",
         "email_required": "E-mailadres is verplicht.",
         "credentials_required": "E-mailadres en wachtwoord zijn verplicht.",
         "reset_fields_required": "E-mailadres, token en wachtwoord zijn verplicht.",

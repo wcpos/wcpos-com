@@ -1099,6 +1099,8 @@
       "apiErrors": {
         "invalid_origin": "Veuillez actualiser la page puis réessayer.",
         "rate_limited": "Trop de tentatives. Veuillez réessayer plus tard.",
+        "bot_check_failed": "La vérification anti-robot a échoué. Veuillez réessayer.",
+        "rate_limit_unavailable": "L’inscription est temporairement indisponible. Veuillez réessayer.",
         "email_required": "L’e-mail est obligatoire.",
         "credentials_required": "L’e-mail et le mot de passe sont obligatoires.",
         "reset_fields_required": "L’e-mail, le jeton et le mot de passe sont obligatoires.",

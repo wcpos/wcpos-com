@@ -8,6 +8,8 @@ import {
   isPasswordTooShort,
 } from '@/lib/password-policy'
 import { createRateLimiter, clientIp } from '@/lib/rate-limit'
+import { isLoopbackHost } from '@/lib/request-host'
+import { verifyTurnstile } from '@/lib/support/turnstile'
 import { trackServerEvent } from '@/services/core/analytics/posthog-service'
 import { ANALYTICS_DISTINCT_ID_COOKIE } from '@/lib/analytics/distinct-id'
 import {
@@ -16,10 +18,12 @@ import {
 } from '@/lib/analytics/checkout-attribution'
 
 // Every accepted request can create a real Medusa customer account, so gate
-// this harder than sign-in — a legitimate user registers once. Fail-open.
+// this harder than sign-in — a legitimate user registers once.
 type RegisterErrorCode =
   | 'invalid_origin'
   | 'rate_limited'
+  | 'rate_limit_unavailable'
+  | 'bot_check_failed'
   | 'credentials_required'
   | 'password_too_short'
   | 'account_exists'
@@ -41,8 +45,15 @@ export async function POST(request: Request) {
     return errorResponse('invalid_origin', 403)
   }
 
-  const { success } = await limiter.consume(clientIp(request))
-  if (!success) {
+  const ip = clientIp(request)
+  const rate = await limiter.consume(ip)
+  if (
+    rate.status === 'unavailable' &&
+    !isLoopbackHost(request.headers.get('host'))
+  ) {
+    return errorResponse('rate_limit_unavailable', 503)
+  }
+  if (rate.status === 'limited') {
     return errorResponse('rate_limited', 429)
   }
 
@@ -55,6 +66,7 @@ export async function POST(request: Request) {
     lastName?: unknown
     locale?: unknown
     sessionId?: unknown
+    turnstileToken?: unknown
   }
   const email = typeof body.email === 'string' ? body.email : ''
   const password = typeof body.password === 'string' ? body.password : ''
@@ -62,6 +74,8 @@ export async function POST(request: Request) {
   const lastName = typeof body.lastName === 'string' ? body.lastName : undefined
   const locale = parseCheckoutLocale(body.locale)
   const sessionId = parsePostHogSessionId(body.sessionId)
+  const turnstileToken =
+    typeof body.turnstileToken === 'string' ? body.turnstileToken : ''
 
   if (!email || !password) {
     return errorResponse('credentials_required', 400)
@@ -69,6 +83,16 @@ export async function POST(request: Request) {
 
   if (isPasswordTooShort(password)) {
     return errorResponse('password_too_short', 400)
+  }
+
+  if (
+    !(await verifyTurnstile(
+      turnstileToken,
+      request.headers.get('host'),
+      ip
+    ))
+  ) {
+    return errorResponse('bot_check_failed', 403)
   }
 
   try {

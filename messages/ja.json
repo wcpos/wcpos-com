@@ -1099,6 +1099,8 @@
       "apiErrors": {
         "invalid_origin": "ページを更新して、もう一度お試しください。",
         "rate_limited": "試行回数が多すぎます。しばらくしてからもう一度お試しください。",
+        "bot_check_failed": "Botチェックに失敗しました。もう一度お試しください。",
+        "rate_limit_unavailable": "現在、アカウントを登録できません。しばらくしてからもう一度お試しください。",
         "email_required": "メールアドレスは必須です。",
         "credentials_required": "メールアドレスとパスワードは必須です。",
         "reset_fields_required": "メールアドレス、トークン、パスワードは必須です。",

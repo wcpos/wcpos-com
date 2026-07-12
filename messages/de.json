@@ -1099,6 +1099,8 @@
       "apiErrors": {
         "invalid_origin": "Bitte aktualisiere die Seite und versuche es erneut.",
         "rate_limited": "Zu viele Versuche. Bitte versuche es später erneut.",
+        "bot_check_failed": "Die Bot-Prüfung ist fehlgeschlagen. Bitte versuche es erneut.",
+        "rate_limit_unavailable": "Die Registrierung ist vorübergehend nicht verfügbar. Bitte versuche es erneut.",
         "email_required": "E-Mail ist erforderlich.",
         "credentials_required": "E-Mail und Passwort sind erforderlich.",
         "reset_fields_required": "E-Mail, Token und Passwort sind erforderlich.",

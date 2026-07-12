@@ -1099,6 +1099,8 @@
       "apiErrors": {
         "invalid_origin": "Please refresh the page and try again.",
         "rate_limited": "Too many attempts. Please try again later.",
+        "bot_check_failed": "Bot verification failed. Please try again.",
+        "rate_limit_unavailable": "Registration is temporarily unavailable. Please try again.",
         "email_required": "Email is required.",
         "credentials_required": "Email and password are required.",
         "reset_fields_required": "Email, token, and password are required.",

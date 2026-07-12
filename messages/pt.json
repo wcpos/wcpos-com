@@ -1099,6 +1099,8 @@
       "apiErrors": {
         "invalid_origin": "Atualize a página e tente novamente.",
         "rate_limited": "Demasiadas tentativas. Tente novamente mais tarde.",
+        "bot_check_failed": "A verificação anti-bot falhou. Tente novamente.",
+        "rate_limit_unavailable": "O registo está temporariamente indisponível. Tente novamente.",
         "email_required": "O e-mail é obrigatório.",
         "credentials_required": "O e-mail e a palavra-passe são obrigatórios.",
         "reset_fields_required": "O e-mail, o token e a palavra-passe são obrigatórios.",

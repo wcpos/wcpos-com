@@ -1099,6 +1099,8 @@
       "apiErrors": {
         "invalid_origin": "Actualiza la página e inténtalo de nuevo.",
         "rate_limited": "Demasiados intentos. Inténtalo de nuevo más tarde.",
+        "bot_check_failed": "La verificación antibot ha fallado. Inténtalo de nuevo.",
+        "rate_limit_unavailable": "El registro no está disponible temporalmente. Inténtalo de nuevo.",
         "email_required": "El correo electrónico es obligatorio.",
         "credentials_required": "El correo electrónico y la contraseña son obligatorios.",
         "reset_fields_required": "El correo electrónico, el token y la contraseña son obligatorios.",

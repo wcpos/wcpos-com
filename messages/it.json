@@ -1104,6 +1104,8 @@
         "invalid_reset_token": "Questo link per reimpostare la password non è valido o è scaduto. Richiedine uno nuovo.",
         "password_too_short": "La password deve contenere almeno {min} caratteri.",
         "rate_limited": "Troppi tentativi. Riprova più tardi.",
+        "bot_check_failed": "Il controllo anti-bot non è riuscito. Riprova.",
+        "rate_limit_unavailable": "La registrazione è temporaneamente non disponibile. Riprova.",
         "reset_fields_required": "Sono richiesti e-mail, token e password."
       }
     },
