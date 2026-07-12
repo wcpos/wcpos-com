@@ -1,6 +1,20 @@
 import { describe, it, expect, vi, afterEach } from 'vitest'
 import { definedEnvEntries } from './env'
 
+const REQUIRED_PRODUCTION_ENV = {
+  DOWNLOAD_TOKEN_SECRET: 'a-signing-secret',
+  UPSTASH_REDIS_REST_URL: 'https://redis.example.com',
+  UPSTASH_REDIS_REST_TOKEN: 'a-redis-token',
+  TURNSTILE_SECRET_KEY: 'a-turnstile-secret',
+} as const
+
+function stubRequiredProductionEnv() {
+  vi.stubEnv('VERCEL_ENV', 'production')
+  for (const [key, value] of Object.entries(REQUIRED_PRODUCTION_ENV)) {
+    vi.stubEnv(key, value)
+  }
+}
+
 describe('definedEnvEntries', () => {
   it('drops empty-string variables and keeps everything else', () => {
     expect(
@@ -62,31 +76,33 @@ describe('production deploy-critical secret guard', () => {
     vi.resetModules()
   })
 
-  it('fails the build when DOWNLOAD_TOKEN_SECRET is missing on a Vercel production deploy', async () => {
-    // 2026-07-05 incident: the secret was never provisioned, so every Pro
-    // download 500'd at request time. This turns it into a deploy failure.
-    vi.stubEnv('VERCEL_ENV', 'production')
-    vi.stubEnv('DOWNLOAD_TOKEN_SECRET', '') // '' is stripped to unset
-    vi.resetModules()
+  it.each(Object.keys(REQUIRED_PRODUCTION_ENV))(
+    'fails the build when %s is missing on a Vercel production deploy',
+    async (missingKey) => {
+      stubRequiredProductionEnv()
+      vi.stubEnv(missingKey, '') // '' is stripped to unset
+      vi.resetModules()
 
-    await expect(import('./env')).rejects.toThrow(
-      'Invalid environment variables',
-    )
-  })
+      await expect(import('./env')).rejects.toThrow(
+        'Invalid environment variables',
+      )
+    },
+  )
 
-  it('passes when DOWNLOAD_TOKEN_SECRET is present on a Vercel production deploy', async () => {
-    vi.stubEnv('VERCEL_ENV', 'production')
-    vi.stubEnv('DOWNLOAD_TOKEN_SECRET', 'a-signing-secret')
+  it('passes when all deploy-critical variables are present on a Vercel production deploy', async () => {
+    stubRequiredProductionEnv()
     vi.resetModules()
 
     await expect(import('./env')).resolves.toHaveProperty('env')
   })
 
-  it('does not require the secret on non-production deploys (preview/local)', async () => {
+  it('does not require deploy-critical variables on non-production deploys', async () => {
     // next build sets NODE_ENV=production locally but leaves VERCEL_ENV unset;
     // preview deploys set VERCEL_ENV=preview. Neither should be blocked.
     vi.stubEnv('VERCEL_ENV', 'preview')
-    vi.stubEnv('DOWNLOAD_TOKEN_SECRET', '')
+    for (const key of Object.keys(REQUIRED_PRODUCTION_ENV)) {
+      vi.stubEnv(key, '')
+    }
     vi.resetModules()
 
     await expect(import('./env')).resolves.toHaveProperty('env')
