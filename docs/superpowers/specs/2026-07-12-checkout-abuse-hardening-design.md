@@ -66,6 +66,11 @@ Registration and payment-session creation treat `limited` as HTTP 429 and
 callers may retain their documented behavior rather than inheriting a global
 policy change accidentally.
 
+The only exception is an exact loopback host (`localhost`, `127.0.0.1`, or
+`[::1]`), where local development and the production-mode Playwright server may
+run without external Redis. Unknown hosts, previews, and production never
+inherit this exception; `NODE_ENV` is not used as the bypass.
+
 Registration remains limited by normalized client IP. Payment-session creation
 uses two independent keys: client IP and authenticated customer ID. The route
 must pass both checks before asking Medusa/Stripe to allocate a session. Limits
@@ -101,6 +106,13 @@ setting the session cookie. A held customer receives a stable
 resolution also checks the flag so a pre-existing session cannot retain access.
 Held customers cannot create carts, payment sessions, complete carts, retrieve
 licences, or download licensed files through the account surface.
+
+Because the Medusa Store API is public and accepts customer bearer tokens
+directly, `wcpos-medusa` is the authoritative enforcement boundary. Optional
+customer authentication plus a strict hold check applies to sensitive customer,
+order, cart, and payment-collection route families while preserving anonymous
+catalog traffic. The `wcpos-com` checks provide early denial and customer-safe
+errors; they are defense in depth, not the only suspension mechanism.
 
 Owner impersonation is explicitly exempt from the access denial because it is
 read-only and authorizes using the real owner session. The impersonation banner
