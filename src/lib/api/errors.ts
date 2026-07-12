@@ -50,6 +50,19 @@ export class AccountExistsError extends ApiError {
 }
 
 /**
+ * The authenticated customer is temporarily prevented from account access.
+ *
+ * Maps to `403` + `errorCode: 'account_security_hold'`. The legacy uppercase
+ * code matches the authoritative Medusa middleware response.
+ */
+export class AccountSecurityHoldError extends ApiError {
+  constructor(message = 'Customer account is on security hold') {
+    super(403, message, 'ACCOUNT_SECURITY_HOLD', 'account_security_hold')
+    this.name = 'AccountSecurityHoldError'
+  }
+}
+
+/**
  * Email/password sign-in was rejected by Medusa (HTTP 401).
  *
  * Classified at the Medusa adapter seam in `login()` so the login route can

@@ -1,4 +1,5 @@
 import { env } from '@/utils/env'
+import { isLoopbackHost } from '@/lib/request-host'
 import { resolveStoreEnvironmentName } from '@/lib/store-environment-name'
 import { TEST_TURNSTILE_SECRET_KEY } from './turnstile-keys'
 
@@ -9,18 +10,6 @@ const SITEVERIFY = 'https://challenges.cloudflare.com/turnstile/v0/siteverify'
 // to 'dev' is an unrecognized host and must FAIL CLOSED: for payments an
 // unknown host falling back to 'dev' is the safe direction, but for a bot
 // check it would silently disable verification.
-const LOCAL_HOSTNAMES = new Set(['localhost', '127.0.0.1', '::1'])
-
-function isLocalHost(host: string | null | undefined): boolean {
-  const raw = (host ?? '').trim().toLowerCase()
-  // Host headers carry IPv6 literals in brackets ("[::1]:3000"); everything
-  // else is hostname[:port].
-  const hostname = raw.startsWith('[')
-    ? raw.slice(1, raw.indexOf(']'))
-    : raw.split(':')[0]
-  return LOCAL_HOSTNAMES.has(hostname)
-}
-
 /**
  * Verify a Cloudflare Turnstile token server-side, with the secret resolved
  * by request host — mirroring resolveTurnstileSiteKey on the client:
@@ -39,7 +28,7 @@ export async function verifyTurnstile(
   ip?: string
 ): Promise<boolean> {
   const environment = resolveStoreEnvironmentName(host)
-  if (environment === 'dev') return isLocalHost(host)
+  if (environment === 'dev') return isLoopbackHost(host)
 
   const secret =
     environment === 'live' ? env.TURNSTILE_SECRET_KEY : TEST_TURNSTILE_SECRET_KEY

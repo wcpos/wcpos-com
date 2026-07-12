@@ -529,6 +529,7 @@
         "oauthSuffix": "— regressará diretamente à finalização da compra.",
         "errors": {
           "passwordFailed": "Essa palavra-passe não funcionou. Se se registou com Google, GitHub ou Discord, use o link de início de sessão abaixo — ou redefina a palavra-passe na página de início de sessão.",
+          "accountSecurityHold": "Não é possível iniciar sessão neste momento. Contacte o suporte para obter ajuda com a sua conta.",
           "createFailed": "Não foi possível criar a sua conta. Tente novamente.",
           "signInFailed": "Falha ao iniciar sessão. Verifique a palavra-passe.",
           "generic": "Algo correu mal. Tente novamente."
@@ -1033,10 +1034,16 @@
     "admin": {
       "title": "Inspecionar um cliente (só de leitura)",
       "description": "Introduza o email de um cliente para ver a conta exatamente como ele a vê. Não pode alterar os dados durante a inspeção.",
-      "submit": "Ver como"
+      "submit": "Ver como",
+      "errors": {
+        "not_found": "Não foi encontrado nenhum cliente com esse email.",
+        "rate_limited": "Demasiadas pesquisas. Aguarde alguns minutos e tente novamente.",
+        "forbidden": "A sua sessão de administrador já não está autorizada. Atualize a página e inicie sessão novamente."
+      }
     },
     "impersonation": {
       "viewing": "🔍 A visualizar <strong>{target}</strong> em modo <strong>só de leitura</strong> — não pode alterar esta conta.",
+      "securityHold": "Bloqueio de segurança ativo",
       "exit": "Sair"
     },
     "orderStatus": {
@@ -1099,11 +1106,14 @@
       "apiErrors": {
         "invalid_origin": "Atualize a página e tente novamente.",
         "rate_limited": "Demasiadas tentativas. Tente novamente mais tarde.",
+        "bot_check_failed": "A verificação anti-bot falhou. Tente novamente.",
+        "rate_limit_unavailable": "O registo está temporariamente indisponível. Tente novamente.",
         "email_required": "O e-mail é obrigatório.",
         "credentials_required": "O e-mail e a palavra-passe são obrigatórios.",
         "reset_fields_required": "O e-mail, o token e a palavra-passe são obrigatórios.",
         "password_too_short": "A palavra-passe tem de ter pelo menos {min} caracteres.",
         "invalid_credentials": "E-mail ou palavra-passe inválidos.",
+        "account_security_hold": "Não é possível iniciar sessão neste momento. Contacte o suporte para obter ajuda com a sua conta.",
         "invalid_reset_token": "Este link de reposição da palavra-passe é inválido ou expirou. Peça um novo."
       }
     },
@@ -1119,6 +1129,7 @@
       "oauthDivider": "Ou continue com",
       "noAccount": "Ainda não tem uma conta?",
       "oauthErrors": {
+        "account_security_hold": "Não é possível iniciar sessão neste momento. Contacte o suporte para obter ajuda com a sua conta.",
         "oauth_failed": "O início de sessão OAuth falhou. Tente novamente ou use e-mail/palavra-passe.",
         "oauth_callback_failed": "O início de sessão OAuth falhou. Tente novamente ou use e-mail/palavra-passe.",
         "oauth_provider_error": "O fornecedor OAuth cancelou ou rejeitou o início de sessão. Tente novamente.",

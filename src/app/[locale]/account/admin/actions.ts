@@ -29,6 +29,8 @@ export type StartImpersonationResult =
   | { error: 'not_found' }
   | { error: 'rate_limited' }
 
+export type StartImpersonationState = StartImpersonationResult | null
+
 /**
  * Owner-only. Verifies the REAL session is an admin, rate-limits by IP (email
  * enumeration guard), looks up the target by email, then starts impersonation
@@ -60,4 +62,15 @@ export async function startImpersonationAction(input: {
   authLogger.info`Impersonation START: admin=${adminEmail} target_id=${target.id}`
   await startImpersonation(target.id)
   redirectToAccount(input.locale)
+}
+
+export async function startImpersonationFormAction(
+  locale: string,
+  _previousState: StartImpersonationState,
+  formData: FormData
+): Promise<StartImpersonationResult> {
+  return startImpersonationAction({
+    email: String(formData.get('email') ?? ''),
+    locale,
+  })
 }

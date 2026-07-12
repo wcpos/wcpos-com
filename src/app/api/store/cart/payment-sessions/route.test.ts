@@ -8,6 +8,40 @@ const mockCreatePaymentSession = vi.fn()
 const mockCreateCustomerSession = vi.fn()
 const mockGetCart = vi.fn()
 const mockGetProOfferCatalog = vi.fn()
+const REQUEST_IP = '203.0.113.7'
+
+const {
+  mockIpLimiterConsume,
+  mockCustomerLimiterConsume,
+  mockCreateRateLimiter,
+  rateLimiterOptions,
+} = vi.hoisted(() => {
+  const ipConsume = vi.fn()
+  const customerConsume = vi.fn()
+  const options: Array<{ prefix: string; limit: number; window: string }> = []
+  const createRateLimiter = vi.fn((config: {
+    prefix: string
+    limit: number
+    window: string
+  }) => {
+    options.push(config)
+    const { prefix } = config
+    if (prefix === 'checkout:payment-session:ip') {
+      return { consume: ipConsume }
+    }
+    if (prefix === 'checkout:payment-session:customer') {
+      return { consume: customerConsume }
+    }
+    throw new Error(`Unexpected rate-limit prefix: ${prefix}`)
+  })
+
+  return {
+    mockIpLimiterConsume: ipConsume,
+    mockCustomerLimiterConsume: customerConsume,
+    mockCreateRateLimiter: createRateLimiter,
+    rateLimiterOptions: options,
+  }
+})
 
 vi.mock('@/lib/impersonation', () => ({
   assertViewOnly: async () => {},
@@ -17,6 +51,15 @@ vi.mock('@/lib/impersonation', () => ({
 vi.mock('@/lib/medusa-auth', () => ({
   getCustomer: (...args: unknown[]) => mockGetCustomer(...args),
   getAuthToken: (...args: unknown[]) => mockGetAuthToken(...args),
+}))
+
+vi.mock('@/lib/rate-limit', () => ({
+  createRateLimiter: (options: {
+    prefix: string
+    limit: number
+    window: string
+  }) => mockCreateRateLimiter(options),
+  clientIp: () => REQUEST_IP,
 }))
 
 vi.mock('@/services/core/external/medusa-client', () => ({
@@ -54,12 +97,12 @@ const validCart = {
 // medusa client so Medusa attaches a persistent Stripe Customer to the intent.
 const AUTH_TOKEN = 'jwt_customer_token'
 
-function makeRequest(body: unknown) {
+function makeRequest(body: unknown, host = 'localhost:3000') {
   return new NextRequest(
     'http://localhost:3000/api/store/cart/payment-sessions',
     {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', host },
       body: JSON.stringify(body),
     }
   )
@@ -71,6 +114,16 @@ describe('POST /api/store/cart/payment-sessions', () => {
     mockGetCustomer.mockResolvedValue({ id: 'cust_1' })
     mockGetAuthToken.mockResolvedValue(AUTH_TOKEN)
     mockGetCart.mockResolvedValue(validCart)
+    mockIpLimiterConsume.mockResolvedValue({
+      success: true,
+      remaining: 19,
+      status: 'allowed',
+    })
+    mockCustomerLimiterConsume.mockResolvedValue({
+      success: true,
+      remaining: 7,
+      status: 'allowed',
+    })
     mockCreateCustomerSession.mockResolvedValue('cuss_secret_test')
     mockGetProOfferCatalog.mockResolvedValue({
       offers: [
@@ -78,6 +131,21 @@ describe('POST /api/store/cart/payment-sessions', () => {
         { planId: 'lifetime', handle: 'wcpos-pro-lifetime', variantId: 'variant_lifetime_current' },
       ],
     })
+  })
+
+  it('configures the exact IP and customer allocation limits', () => {
+    expect(rateLimiterOptions).toEqual([
+      {
+        prefix: 'checkout:payment-session:ip',
+        limit: 20,
+        window: '15 m',
+      },
+      {
+        prefix: 'checkout:payment-session:customer',
+        limit: 8,
+        window: '15 m',
+      },
+    ])
   })
 
   it('returns 401 when the customer is not authenticated', async () => {
@@ -89,6 +157,109 @@ describe('POST /api/store/cart/payment-sessions', () => {
     expect(response.status).toBe(401)
     expect(json.errorCode).toBe('authentication_required')
     expect(mockCreatePaymentCollection).not.toHaveBeenCalled()
+  })
+
+  it('returns 429 before allocation when the IP rate limit is exceeded', async () => {
+    mockIpLimiterConsume.mockResolvedValueOnce({
+      success: false,
+      remaining: 0,
+      status: 'limited',
+    })
+
+    const response = await POST(makeRequest({ cartId: 'cart_1' }))
+    const json = await response.json()
+
+    expect(response.status).toBe(429)
+    expect(json.errorCode).toBe('rate_limited')
+    expect(mockIpLimiterConsume).toHaveBeenCalledWith(REQUEST_IP)
+    expect(mockGetCart).not.toHaveBeenCalled()
+    expect(mockCreatePaymentCollection).not.toHaveBeenCalled()
+    expect(mockCreatePaymentSession).not.toHaveBeenCalled()
+  })
+
+  it('returns 429 before allocation when the customer rate limit is exceeded', async () => {
+    mockCustomerLimiterConsume.mockResolvedValueOnce({
+      success: false,
+      remaining: 0,
+      status: 'limited',
+    })
+
+    const response = await POST(makeRequest({ cartId: 'cart_1' }))
+    const json = await response.json()
+
+    expect(response.status).toBe(429)
+    expect(json.errorCode).toBe('rate_limited')
+    expect(mockIpLimiterConsume).toHaveBeenCalledWith(REQUEST_IP)
+    expect(mockCustomerLimiterConsume).toHaveBeenCalledWith('cust_1')
+    expect(mockGetCart).not.toHaveBeenCalled()
+    expect(mockCreatePaymentCollection).not.toHaveBeenCalled()
+    expect(mockCreatePaymentSession).not.toHaveBeenCalled()
+  })
+
+  it('returns 503 before allocation when the IP limiter is unavailable', async () => {
+    mockIpLimiterConsume.mockResolvedValueOnce({
+      success: true,
+      remaining: Infinity,
+      status: 'unavailable',
+    })
+
+    const response = await POST(
+      makeRequest({ cartId: 'cart_1' }, 'wcpos.com')
+    )
+    const json = await response.json()
+
+    expect(response.status).toBe(503)
+    expect(json.errorCode).toBe('rate_limit_unavailable')
+    expect(mockIpLimiterConsume).toHaveBeenCalledWith(REQUEST_IP)
+    expect(mockGetCart).not.toHaveBeenCalled()
+    expect(mockCreatePaymentCollection).not.toHaveBeenCalled()
+    expect(mockCreatePaymentSession).not.toHaveBeenCalled()
+  })
+
+  it('returns 503 before allocation when the customer limiter is unavailable', async () => {
+    mockCustomerLimiterConsume.mockResolvedValueOnce({
+      success: true,
+      remaining: Infinity,
+      status: 'unavailable',
+    })
+
+    const response = await POST(
+      makeRequest({ cartId: 'cart_1' }, 'wcpos.com')
+    )
+    const json = await response.json()
+
+    expect(response.status).toBe(503)
+    expect(json.errorCode).toBe('rate_limit_unavailable')
+    expect(mockIpLimiterConsume).toHaveBeenCalledWith(REQUEST_IP)
+    expect(mockCustomerLimiterConsume).toHaveBeenCalledWith('cust_1')
+    expect(mockGetCart).not.toHaveBeenCalled()
+    expect(mockCreatePaymentCollection).not.toHaveBeenCalled()
+    expect(mockCreatePaymentSession).not.toHaveBeenCalled()
+  })
+
+  it('allows unavailable limiters only on a strict loopback host', async () => {
+    mockIpLimiterConsume.mockResolvedValueOnce({
+      success: true,
+      remaining: Infinity,
+      status: 'unavailable',
+    })
+    mockCustomerLimiterConsume.mockResolvedValueOnce({
+      success: true,
+      remaining: Infinity,
+      status: 'unavailable',
+    })
+    mockCreatePaymentCollection.mockResolvedValueOnce({ id: 'paycol_1' })
+    mockCreatePaymentSession.mockResolvedValueOnce({
+      clientSecret: 'pi_secret',
+      paymentSessionId: 'payses_1',
+    })
+
+    const response = await POST(makeRequest({ cartId: 'cart_1' }))
+
+    expect(response.status).toBe(200)
+    expect(mockIpLimiterConsume).toHaveBeenCalledWith(REQUEST_IP)
+    expect(mockCustomerLimiterConsume).toHaveBeenCalledWith('cust_1')
+    expect(mockCreatePaymentSession).toHaveBeenCalledOnce()
   })
 
   it('returns 400 when cartId is missing', async () => {

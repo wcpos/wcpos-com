@@ -74,7 +74,9 @@ import {
   requestPasswordReset,
   resetPassword,
   getCustomer,
+  getCustomerForToken,
   getSessionCustomer,
+  assertCustomerAccess,
   getAuthToken,
   setAuthToken,
   clearAuthToken,
@@ -83,6 +85,7 @@ import {
 } from './medusa-auth'
 import {
   AccountExistsError,
+  AccountSecurityHoldError,
   InvalidCredentialsError,
   InvalidResetTokenError,
 } from '@/lib/api/errors'
@@ -438,7 +441,7 @@ describe('medusa-auth', () => {
       expect(customer).toBeNull()
     })
 
-    it('returns the TARGET customer via the admin API when impersonating', async () => {
+    it('returns a held TARGET customer via the admin API when impersonating', async () => {
       mockGetImpersonation.mockResolvedValue({
         adminEmail: 'p@k.com',
         targetId: 'cus_t',
@@ -446,6 +449,7 @@ describe('medusa-auth', () => {
       mockGetAdminCustomerById.mockResolvedValue({
         id: 'cus_t',
         email: 't@x.com',
+        metadata: { security_hold: { active: true } },
       })
 
       const customer = await getCustomer()
@@ -454,6 +458,96 @@ describe('medusa-auth', () => {
       expect(mockGetAdminCustomerById).toHaveBeenCalledWith('cus_t')
       // The session cookie path must NOT be consulted when inspecting.
       expect(mockFetch).not.toHaveBeenCalled()
+    })
+  })
+
+  describe('candidate-token customer access', () => {
+    const ordinaryCustomer = {
+      id: 'cus_candidate',
+      email: 'candidate@example.com',
+      has_account: true,
+      created_at: '2026-07-12T00:00:00.000Z',
+      updated_at: '2026-07-12T00:00:00.000Z',
+    }
+
+    it('resolves an ordinary customer from the explicit candidate token', async () => {
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ customer: ordinaryCustomer }),
+      })
+
+      await expect(assertCustomerAccess('candidate-jwt')).resolves.toEqual(
+        ordinaryCustomer
+      )
+      expect(mockFetch).toHaveBeenCalledWith(
+        'https://test-store-api.wcpos.com/store/customers/me',
+        expect.objectContaining({
+          headers: expect.objectContaining({
+            Authorization: 'Bearer candidate-jwt',
+            'x-publishable-api-key': 'pk_test_abc123',
+          }),
+        })
+      )
+    })
+
+    it('throws AccountSecurityHoldError for a held customer response', async () => {
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          customer: {
+            ...ordinaryCustomer,
+            metadata: { security_hold: { active: true } },
+          },
+        }),
+      })
+
+      const error = await assertCustomerAccess('held-jwt').catch(
+        (caught) => caught
+      )
+
+      expect(error).toBeInstanceOf(AccountSecurityHoldError)
+      expect(error).toMatchObject({
+        status: 403,
+        code: 'ACCOUNT_SECURITY_HOLD',
+        errorCode: 'account_security_hold',
+      })
+    })
+
+    it('maps the future Medusa 403 hold response to AccountSecurityHoldError', async () => {
+      mockFetch.mockResolvedValueOnce(
+        new Response(
+          JSON.stringify({
+            code: 'ACCOUNT_SECURITY_HOLD',
+            message: 'Customer account is on security hold',
+          }),
+          { status: 403, headers: { 'Content-Type': 'application/json' } }
+        )
+      )
+
+      await expect(assertCustomerAccess('held-jwt')).rejects.toBeInstanceOf(
+        AccountSecurityHoldError
+      )
+    })
+
+    it('does not treat malformed hold metadata as a hold', async () => {
+      const malformedCustomer = {
+        ...ordinaryCustomer,
+        metadata: { security_hold: true },
+      }
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ customer: malformedCustomer }),
+      })
+
+      await expect(assertCustomerAccess('candidate-jwt')).resolves.toEqual(
+        malformedCustomer
+      )
+    })
+
+    it('returns null from the nullable resolver when the token is rejected', async () => {
+      mockFetch.mockResolvedValueOnce({ ok: false, status: 401 })
+
+      await expect(getCustomerForToken('expired-jwt')).resolves.toBeNull()
     })
   })
 
@@ -641,5 +735,33 @@ describe('getSessionCustomer', () => {
 
     expect(customer).toBeNull()
     expect(mockFetch).not.toHaveBeenCalled()
+  })
+
+  it('returns null when an existing session belongs to a held customer', async () => {
+    mockCookieStore.get.mockReturnValue({ value: 'held_token' })
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        customer: {
+          id: 'cus_held',
+          email: 'held@example.com',
+          metadata: { security_hold: { active: true } },
+        },
+      }),
+    })
+
+    await expect(getSessionCustomer()).resolves.toBeNull()
+  })
+
+  it('returns null when Medusa authoritatively rejects a held session', async () => {
+    mockCookieStore.get.mockReturnValue({ value: 'held_token' })
+    mockFetch.mockResolvedValueOnce(
+      new Response(
+        JSON.stringify({ code: 'ACCOUNT_SECURITY_HOLD' }),
+        { status: 403, headers: { 'Content-Type': 'application/json' } }
+      )
+    )
+
+    await expect(getSessionCustomer()).resolves.toBeNull()
   })
 })

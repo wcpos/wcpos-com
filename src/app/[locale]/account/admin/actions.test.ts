@@ -6,6 +6,8 @@ const {
   startImpersonation,
   redirect,
   consume,
+  authInfo,
+  authWarn,
 } =
   vi.hoisted(() => ({
     getSessionCustomer: vi.fn(),
@@ -15,6 +17,8 @@ const {
       throw new Error('REDIRECT')
     }),
     consume: vi.fn(async () => ({ success: true, remaining: 9 })),
+    authInfo: vi.fn(),
+    authWarn: vi.fn(),
   }))
 
 vi.mock('@/lib/medusa-auth', () => ({ getSessionCustomer }))
@@ -27,17 +31,24 @@ vi.mock('@/lib/rate-limit', () => ({
   createRateLimiter: () => ({ consume }),
   clientIp: () => 'ip',
 }))
-vi.mock('@/lib/logger', () => ({ authLogger: { info: vi.fn(), warn: vi.fn() } }))
+vi.mock('@/lib/logger', () => ({
+  authLogger: { info: authInfo, warn: authWarn },
+}))
 vi.mock('@/i18n/navigation', () => ({ redirect }))
 vi.mock('next/headers', () => ({ headers: async () => ({ get: () => 'ip' }) }))
 
-import { startImpersonationAction } from './actions'
+import {
+  startImpersonationAction,
+  startImpersonationFormAction,
+} from './actions'
 
 beforeEach(() => {
   getSessionCustomer.mockReset()
   findAdminCustomerByEmail.mockReset()
   startImpersonation.mockReset()
   consume.mockReset()
+  authInfo.mockReset()
+  authWarn.mockReset()
   consume.mockResolvedValue({ success: true, remaining: 9 })
 })
 
@@ -77,5 +88,24 @@ describe('startImpersonationAction', () => {
     ).rejects.toThrow('REDIRECT')
     expect(startImpersonation).toHaveBeenCalledWith('cus_t')
     expect(redirect).toHaveBeenCalledWith({ href: '/account', locale: 'fr' })
+  })
+})
+
+describe('startImpersonationFormAction', () => {
+  it('adapts form data to private error-only action state', async () => {
+    getSessionCustomer.mockResolvedValue({ email: 'paul@kilbot.com' })
+    findAdminCustomerByEmail.mockResolvedValue(null)
+    const formData = new FormData()
+    formData.set('email', ' Private.Target@Example.com ')
+    const result = await startImpersonationFormAction('en', null, formData)
+
+    expect(findAdminCustomerByEmail).toHaveBeenCalledWith(
+      'private.target@example.com'
+    )
+    expect(result).toEqual({ error: 'not_found' })
+    expect(JSON.stringify(result)).not.toContain('private.target@example.com')
+    expect(authInfo.mock.calls.flat().join(' ')).not.toContain(
+      'private.target@example.com'
+    )
   })
 })

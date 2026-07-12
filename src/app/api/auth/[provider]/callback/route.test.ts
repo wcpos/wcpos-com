@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { NextRequest } from 'next/server'
+import { AccountSecurityHoldError } from '@/lib/api/errors'
 
 // Mock server-only
 vi.mock('server-only', () => ({}))
@@ -12,10 +13,16 @@ vi.mock('@/utils/env', () => ({
   },
 }))
 
+const { errorMock, infoMock } = vi.hoisted(() => ({
+  errorMock: vi.fn(),
+  infoMock: vi.fn(),
+}))
+
 // Mock logger
 vi.mock('@/lib/logger', () => ({
   authLogger: {
-    error: () => {},
+    error: errorMock,
+    info: infoMock,
   },
 }))
 
@@ -383,6 +390,27 @@ describe('OAuth callback route', () => {
     const location = new URL(response.headers.get('location')!)
     expect(location.pathname).toBe('/login')
     expect(location.searchParams.get('error')).toBe('oauth_email_unverified')
+  })
+
+  it('redirects a held customer to login with a stable error code', async () => {
+    mockEstablishOAuthSession.mockRejectedValueOnce(
+      new AccountSecurityHoldError()
+    )
+
+    const request = new NextRequest(
+      'https://wcpos.com/api/auth/google/callback?code=abc&state=xyz'
+    )
+
+    const response = await GET(request, {
+      params: Promise.resolve({ provider: 'google' }),
+    })
+
+    expect(response.status).toBe(303)
+    const location = new URL(response.headers.get('location')!)
+    expect(location.pathname).toBe('/login')
+    expect(location.searchParams.get('error')).toBe('account_security_hold')
+    expect(infoMock).toHaveBeenCalledTimes(1)
+    expect(errorMock).not.toHaveBeenCalled()
   })
 
   it('redirects OAuth failures back to the locale-prefixed login page', async () => {

@@ -1,12 +1,14 @@
 'use client'
 
-import { useState } from 'react'
+import { useRef, useState, useSyncExternalStore } from 'react'
 import { useLocale, useTranslations } from 'next-intl'
+import { Turnstile, type TurnstileInstance } from '@marsidev/react-turnstile'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Link } from '@/i18n/navigation'
 import { getPostHogSessionId } from '@/lib/analytics/posthog-browser'
+import { resolveTurnstileSiteKey } from '@/lib/support/turnstile-keys'
 
 /**
  * Inline account step: new customers create their account without leaving
@@ -25,14 +27,29 @@ interface AccountStepProps {
 
 type Mode = 'register' | 'signin'
 
+// The host is stable for the lifetime of the page.
+function subscribeNever() {
+  return () => {}
+}
+
 export function AccountStep({ checkoutPath, onAuthenticated }: AccountStepProps) {
   const locale = useLocale()
   const t = useTranslations('pro.checkout.account')
+  const tCommon = useTranslations('auth.common')
   const [mode, setMode] = useState<Mode>('register')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null)
+  const siteKey = useSyncExternalStore(
+    subscribeNever,
+    () => resolveTurnstileSiteKey(window.location.host),
+    () => undefined
+  )
+  const turnstileRef = useRef<TurnstileInstance | null>(null)
+  const verifying =
+    siteKey === undefined || (Boolean(siteKey) && !turnstileToken)
 
   async function submit(event: React.FormEvent) {
     event.preventDefault()
@@ -50,7 +67,13 @@ export function AccountStep({ checkoutPath, onAuthenticated }: AccountStepProps)
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(
           isCreatingAccount
-            ? { email, password, locale, ...(sessionId ? { sessionId } : {}) }
+            ? {
+                email,
+                password,
+                locale,
+                turnstileToken: turnstileToken ?? '',
+                ...(sessionId ? { sessionId } : {}),
+              }
             : { email, password }
         ),
       })
@@ -60,7 +83,12 @@ export function AccountStep({ checkoutPath, onAuthenticated }: AccountStepProps)
         return
       }
 
-      if (mode === 'register' && response.status === 409) {
+      if (isCreatingAccount) {
+        setTurnstileToken(null)
+        turnstileRef.current?.reset()
+      }
+
+      if (isCreatingAccount && response.status === 409) {
         // Account already exists — same form, sign-in semantics.
         setMode('signin')
         setError(null)
@@ -68,6 +96,13 @@ export function AccountStep({ checkoutPath, onAuthenticated }: AccountStepProps)
       }
 
       const body = await response.json().catch(() => ({}))
+      if (
+        mode === 'signin' &&
+        body.errorCode === 'account_security_hold'
+      ) {
+        setError(t('errors.accountSecurityHold'))
+        return
+      }
       if (mode === 'signin' && response.status === 401) {
         // The account exists but this password doesn't work — which is also
         // exactly what an OAuth-only account (Google/GitHub/Discord, no
@@ -77,9 +112,15 @@ export function AccountStep({ checkoutPath, onAuthenticated }: AccountStepProps)
         return
       }
       setError(
-        typeof body.error === 'string'
+        isCreatingAccount && body.errorCode === 'rate_limited'
+          ? tCommon('apiErrors.rate_limited')
+          : isCreatingAccount && body.errorCode === 'bot_check_failed'
+          ? tCommon('apiErrors.bot_check_failed')
+          : isCreatingAccount && body.errorCode === 'rate_limit_unavailable'
+            ? tCommon('apiErrors.rate_limit_unavailable')
+            : typeof body.error === 'string'
           ? body.error
-          : mode === 'register'
+          : isCreatingAccount
             ? t('errors.createFailed')
             : t('errors.signInFailed')
       )
@@ -146,7 +187,10 @@ export function AccountStep({ checkoutPath, onAuthenticated }: AccountStepProps)
         </p>
       )}
 
-      <Button type="submit" disabled={isSubmitting}>
+      <Button
+        type="submit"
+        disabled={isSubmitting || (mode === 'register' && verifying)}
+      >
         {isSubmitting
           ? t('submitting')
           : mode === 'register'
@@ -161,6 +205,17 @@ export function AccountStep({ checkoutPath, onAuthenticated }: AccountStepProps)
         </Link>{' '}
         {t('oauthSuffix')}
       </p>
+
+      {siteKey && (
+        <Turnstile
+          ref={turnstileRef}
+          siteKey={siteKey}
+          onSuccess={setTurnstileToken}
+          onError={() => setTurnstileToken(null)}
+          onExpire={() => setTurnstileToken(null)}
+          options={{ size: 'invisible' }}
+        />
+      )}
     </form>
   )
 }

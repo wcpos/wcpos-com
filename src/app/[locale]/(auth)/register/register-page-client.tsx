@@ -1,8 +1,9 @@
 'use client'
 
-import { Suspense, useState } from 'react'
+import { Suspense, useRef, useState, useSyncExternalStore } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { useLocale, useTranslations } from 'next-intl'
+import { Turnstile, type TurnstileInstance } from '@marsidev/react-turnstile'
 import { Link } from '@/i18n/navigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -12,6 +13,7 @@ import { navigateAfterAuthChange, sanitizeRedirectPath } from '@/lib/safe-redire
 import type { Locale } from '@/i18n/config'
 import { MIN_PASSWORD_LENGTH } from '@/lib/password-policy'
 import { getPostHogSessionId } from '@/lib/analytics/posthog-browser'
+import { resolveTurnstileSiteKey } from '@/lib/support/turnstile-keys'
 import {
   Card,
   CardContent,
@@ -25,6 +27,8 @@ import {
 type RegisterErrorCode =
   | 'invalid_origin'
   | 'rate_limited'
+  | 'rate_limit_unavailable'
+  | 'bot_check_failed'
   | 'credentials_required'
   | 'password_too_short'
   | 'account_exists'
@@ -34,11 +38,18 @@ function isRegisterErrorCode(value: unknown): value is RegisterErrorCode {
   return (
     value === 'invalid_origin' ||
     value === 'rate_limited' ||
+    value === 'rate_limit_unavailable' ||
+    value === 'bot_check_failed' ||
     value === 'credentials_required' ||
     value === 'password_too_short' ||
     value === 'account_exists' ||
     value === 'registration_failed'
   )
+}
+
+// The host is stable for the lifetime of the page.
+function subscribeNever() {
+  return () => {}
 }
 
 export function RegisterPageClient() {
@@ -62,6 +73,15 @@ function RegisterPageInner() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null)
+  const siteKey = useSyncExternalStore(
+    subscribeNever,
+    () => resolveTurnstileSiteKey(window.location.host),
+    () => undefined
+  )
+  const turnstileRef = useRef<TurnstileInstance | null>(null)
+  const verifying =
+    siteKey === undefined || (Boolean(siteKey) && !turnstileToken)
 
   const getRegisterErrorMessage = (errorCode: RegisterErrorCode) => {
     switch (errorCode) {
@@ -69,6 +89,10 @@ function RegisterPageInner() {
         return tCommon('apiErrors.invalid_origin')
       case 'rate_limited':
         return tCommon('apiErrors.rate_limited')
+      case 'rate_limit_unavailable':
+        return tCommon('apiErrors.rate_limit_unavailable')
+      case 'bot_check_failed':
+        return tCommon('apiErrors.bot_check_failed')
       case 'credentials_required':
         return tCommon('apiErrors.credentials_required')
       case 'password_too_short':
@@ -97,12 +121,14 @@ function RegisterPageInner() {
           lastName,
           locale,
           ...(sessionId ? { sessionId } : {}),
+          turnstileToken: turnstileToken ?? '',
         }),
       })
 
-      const data = await response.json()
-
       if (!response.ok) {
+        setTurnstileToken(null)
+        turnstileRef.current?.reset()
+        const data = await response.json().catch(() => ({}))
         setError(
           isRegisterErrorCode(data.errorCode)
             ? getRegisterErrorMessage(data.errorCode)
@@ -193,9 +219,24 @@ function RegisterPageInner() {
               </p>
             </div>
 
-            <Button type="submit" className="w-full" disabled={loading}>
+            <Button
+              type="submit"
+              className="w-full"
+              disabled={loading || verifying}
+            >
               {loading ? t('submitting') : t('submit')}
             </Button>
+
+            {siteKey && (
+              <Turnstile
+                ref={turnstileRef}
+                siteKey={siteKey}
+                onSuccess={setTurnstileToken}
+                onError={() => setTurnstileToken(null)}
+                onExpire={() => setTurnstileToken(null)}
+                options={{ size: 'invisible' }}
+              />
+            )}
           </form>
         </CardContent>
         <CardFooter className="justify-center">

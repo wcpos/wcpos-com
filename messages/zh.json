@@ -529,6 +529,7 @@
         "oauthSuffix": "— 您会直接回到结账。",
         "errors": {
           "passwordFailed": "该密码无效。如果您使用 Google、GitHub 或 Discord 注册，请使用下方登录链接 — 或在登录页重置密码。",
+          "accountSecurityHold": "目前无法登录。请联系支持团队以获取账户帮助。",
           "createFailed": "无法创建账户。请重试。",
           "signInFailed": "登录失败。请检查密码。",
           "generic": "出现问题。请重试。"
@@ -1033,10 +1034,16 @@
     "admin": {
       "title": "查看客户（只读）",
       "description": "输入客户电子邮件，即可按客户看到的方式查看其账户。查看期间您无法更改他们的数据。",
-      "submit": "以此身份查看"
+      "submit": "以此身份查看",
+      "errors": {
+        "not_found": "未找到使用该电子邮件地址的客户。",
+        "rate_limited": "查询次数过多。请等待几分钟后重试。",
+        "forbidden": "您的管理员会话已失去授权。请刷新页面并重新登录。"
+      }
     },
     "impersonation": {
       "viewing": "🔍 正在以<strong>只读</strong>方式查看 <strong>{target}</strong>——您无法更改其账户。",
+      "securityHold": "安全限制已启用",
       "exit": "退出"
     },
     "orderStatus": {
@@ -1099,11 +1106,14 @@
       "apiErrors": {
         "invalid_origin": "请刷新页面后重试。",
         "rate_limited": "尝试次数过多。请稍后再试。",
+        "bot_check_failed": "机器人验证失败。请重试。",
+        "rate_limit_unavailable": "注册服务暂时不可用。请重试。",
         "email_required": "请输入电子邮件。",
         "credentials_required": "请输入电子邮件和密码。",
         "reset_fields_required": "请输入电子邮件、令牌和密码。",
         "password_too_short": "密码至少需要 {min} 个字符。",
         "invalid_credentials": "电子邮件或密码无效。",
+        "account_security_hold": "目前无法登录。请联系支持团队以获取账户帮助。",
         "invalid_reset_token": "此密码重置链接无效或已过期。请重新申请一个新链接。"
       }
     },
@@ -1119,6 +1129,7 @@
       "oauthDivider": "或继续使用",
       "noAccount": "还没有账户？",
       "oauthErrors": {
+        "account_security_hold": "目前无法登录。请联系支持团队以获取账户帮助。",
         "oauth_failed": "OAuth 登录失败。请重试或使用电子邮件/密码。",
         "oauth_callback_failed": "OAuth 登录失败。请重试或使用电子邮件/密码。",
         "oauth_provider_error": "OAuth 登录失败。请重试或使用电子邮件/密码。",

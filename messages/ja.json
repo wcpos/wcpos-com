@@ -529,6 +529,7 @@
         "oauthSuffix": "— チェックアウトに戻ります。",
         "errors": {
           "passwordFailed": "パスワードが違います。Google、GitHub、Discord で登録した場合は下のサインインリンクを使用するか、サインインページでパスワードをリセットしてください。",
+          "accountSecurityHold": "現在ログインできません。アカウントについてサポートにお問い合わせください。",
           "createFailed": "アカウントを作成できませんでした。もう一度お試しください。",
           "signInFailed": "サインインに失敗しました。パスワードを確認してください。",
           "generic": "問題が発生しました。もう一度お試しください。"
@@ -1033,10 +1034,16 @@
     "admin": {
       "title": "顧客を確認（読み取り専用）",
       "description": "顧客のメールアドレスを入力すると、その顧客に表示されるのと同じアカウント画面を確認できます。確認中はデータを変更できません。",
-      "submit": "この顧客として表示"
+      "submit": "この顧客として表示",
+      "errors": {
+        "not_found": "そのメールアドレスに一致する顧客が見つかりませんでした。",
+        "rate_limited": "検索回数が多すぎます。数分待ってからもう一度お試しください。",
+        "forbidden": "管理者セッションは無効になりました。ページを再読み込みして、もう一度ログインしてください。"
+      }
     },
     "impersonation": {
       "viewing": "🔍 <strong>{target}</strong> を <strong>読み取り専用</strong> として表示中 — アカウントは変更できません。",
+      "securityHold": "セキュリティ保留中",
       "exit": "終了"
     },
     "orderStatus": {
@@ -1099,11 +1106,14 @@
       "apiErrors": {
         "invalid_origin": "ページを更新して、もう一度お試しください。",
         "rate_limited": "試行回数が多すぎます。しばらくしてからもう一度お試しください。",
+        "bot_check_failed": "Botチェックに失敗しました。もう一度お試しください。",
+        "rate_limit_unavailable": "現在、アカウントを登録できません。しばらくしてからもう一度お試しください。",
         "email_required": "メールアドレスは必須です。",
         "credentials_required": "メールアドレスとパスワードは必須です。",
         "reset_fields_required": "メールアドレス、トークン、パスワードは必須です。",
         "password_too_short": "パスワードは{min}文字以上で入力してください。",
         "invalid_credentials": "メールアドレスまたはパスワードが正しくありません。",
+        "account_security_hold": "現在ログインできません。アカウントについてサポートにお問い合わせください。",
         "invalid_reset_token": "このパスワードリセットリンクは無効、または有効期限が切れています。新しいリンクをリクエストしてください。"
       }
     },
@@ -1119,6 +1129,7 @@
       "oauthDivider": "または次で続行",
       "noAccount": "アカウントをお持ちではありませんか？",
       "oauthErrors": {
+        "account_security_hold": "現在ログインできません。アカウントについてサポートにお問い合わせください。",
         "oauth_failed": "OAuthログインに失敗しました。もう一度試すか、メール/パスワードを使用してください。",
         "oauth_callback_failed": "OAuthログインに失敗しました。もう一度試すか、メール/パスワードを使用してください。",
         "oauth_provider_error": "OAuthログインに失敗しました。もう一度試すか、メール/パスワードを使用してください。",

@@ -529,6 +529,7 @@
         "oauthSuffix": "— Sie kommen direkt zurück zur Kasse.",
         "errors": {
           "passwordFailed": "Dieses Passwort hat nicht funktioniert. Wenn Sie sich mit Google, GitHub oder Discord registriert haben, verwenden Sie unten den Anmeldelink — oder setzen Sie Ihr Passwort auf der Anmeldeseite zurück.",
+          "accountSecurityHold": "Wir können dich derzeit nicht anmelden. Bitte kontaktiere den Support, um Hilfe mit deinem Konto zu erhalten.",
           "createFailed": "Ihr Konto konnte nicht erstellt werden. Bitte versuchen Sie es erneut.",
           "signInFailed": "Anmeldung fehlgeschlagen. Bitte prüfen Sie Ihr Passwort.",
           "generic": "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut."
@@ -1033,10 +1034,16 @@
     "admin": {
       "title": "Kundenkonto prüfen (schreibgeschützt)",
       "description": "Gib die E-Mail-Adresse eines Kunden ein, um sein Konto genau so zu sehen, wie er es sieht. Während der Prüfung kannst du seine Daten nicht ändern.",
-      "submit": "Als Kunde ansehen"
+      "submit": "Als Kunde ansehen",
+      "errors": {
+        "not_found": "Es wurde kein Kunde mit dieser E-Mail-Adresse gefunden.",
+        "rate_limited": "Zu viele Suchanfragen. Warte einige Minuten und versuche es erneut.",
+        "forbidden": "Deine Administrator-Sitzung ist nicht mehr autorisiert. Aktualisiere die Seite und melde dich erneut an."
+      }
     },
     "impersonation": {
       "viewing": "🔍 Du siehst <strong>{target}</strong> <strong>schreibgeschützt</strong> — du kannst dieses Konto nicht ändern.",
+      "securityHold": "Sicherheitssperre aktiv",
       "exit": "Beenden"
     },
     "orderStatus": {
@@ -1099,11 +1106,14 @@
       "apiErrors": {
         "invalid_origin": "Bitte aktualisiere die Seite und versuche es erneut.",
         "rate_limited": "Zu viele Versuche. Bitte versuche es später erneut.",
+        "bot_check_failed": "Die Bot-Prüfung ist fehlgeschlagen. Bitte versuche es erneut.",
+        "rate_limit_unavailable": "Die Registrierung ist vorübergehend nicht verfügbar. Bitte versuche es erneut.",
         "email_required": "E-Mail ist erforderlich.",
         "credentials_required": "E-Mail und Passwort sind erforderlich.",
         "reset_fields_required": "E-Mail, Token und Passwort sind erforderlich.",
         "password_too_short": "Das Passwort muss mindestens {min} Zeichen lang sein.",
         "invalid_credentials": "Ungültige E-Mail-Adresse oder ungültiges Passwort.",
+        "account_security_hold": "Wir können dich derzeit nicht anmelden. Bitte kontaktiere den Support, um Hilfe mit deinem Konto zu erhalten.",
         "invalid_reset_token": "Dieser Link zum Zurücksetzen des Passworts ist ungültig oder abgelaufen. Bitte fordere einen neuen an."
       }
     },
@@ -1119,6 +1129,7 @@
       "oauthDivider": "Oder weiter mit",
       "noAccount": "Noch kein Konto?",
       "oauthErrors": {
+        "account_security_hold": "Wir können dich derzeit nicht anmelden. Bitte kontaktiere den Support, um Hilfe mit deinem Konto zu erhalten.",
         "oauth_failed": "OAuth-Anmeldung fehlgeschlagen. Bitte versuche es erneut oder nutze E-Mail/Passwort.",
         "oauth_callback_failed": "OAuth-Anmeldung fehlgeschlagen. Bitte versuche es erneut oder nutze E-Mail/Passwort.",
         "oauth_provider_error": "OAuth-Anmeldung fehlgeschlagen. Bitte versuche es erneut oder nutze E-Mail/Passwort.",

@@ -1,5 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { useImperativeHandle } from 'react'
+import type { Ref } from 'react'
 import { NextIntlClientProvider } from 'next-intl'
 import messages from '../../../../../messages/en.json'
 import { RegisterPageClient } from './register-page-client'
@@ -10,6 +12,12 @@ import { RegisterPageClient } from './register-page-client'
 const mockAssign = vi.fn()
 const mockFetch = vi.fn()
 const mockGetPostHogSessionId = vi.hoisted(() => vi.fn())
+const turnstileMock = vi.hoisted(() => ({
+  onSuccess: null as ((token: string) => void) | null,
+  onError: null as (() => void) | null,
+  onExpire: null as (() => void) | null,
+  reset: vi.fn(),
+}))
 let mockSearchParams = new URLSearchParams()
 
 vi.stubGlobal('fetch', mockFetch)
@@ -21,6 +29,30 @@ vi.mock('next/navigation', () => ({
 
 vi.mock('@/lib/analytics/posthog-browser', () => ({
   getPostHogSessionId: () => mockGetPostHogSessionId(),
+}))
+
+vi.mock('@/lib/support/turnstile-keys', () => ({
+  resolveTurnstileSiteKey: () => 'site-key',
+}))
+
+vi.mock('@marsidev/react-turnstile', () => ({
+  Turnstile: ({
+    onSuccess,
+    onError,
+    onExpire,
+    ref,
+  }: {
+    onSuccess: (token: string) => void
+    onError: () => void
+    onExpire: () => void
+    ref?: Ref<{ reset: () => void }>
+  }) => {
+    turnstileMock.onSuccess = onSuccess
+    turnstileMock.onError = onError
+    turnstileMock.onExpire = onExpire
+    useImperativeHandle(ref, () => ({ reset: turnstileMock.reset }))
+    return <div data-testid="turnstile" />
+  },
 }))
 
 vi.mock('@/i18n/navigation', () => ({
@@ -47,9 +79,26 @@ function renderRegister(locale = 'en') {
   )
 }
 
+function fillCredentials(email = 'new@example.com') {
+  fireEvent.change(screen.getByLabelText('Email'), {
+    target: { value: email },
+  })
+  fireEvent.change(screen.getByLabelText('Password'), {
+    target: { value: 'password123' },
+  })
+}
+
+function completeChallenge(token = 'valid-token') {
+  expect(turnstileMock.onSuccess).not.toBeNull()
+  act(() => turnstileMock.onSuccess?.(token))
+}
+
 describe('RegisterPageClient', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+    turnstileMock.onSuccess = null
+    turnstileMock.onError = null
+    turnstileMock.onExpire = null
     mockGetPostHogSessionId.mockReturnValue(undefined)
     mockSearchParams = new URLSearchParams()
   })
@@ -62,13 +111,12 @@ describe('RegisterPageClient', () => {
 
     renderRegister('fr')
 
-    fireEvent.change(screen.getByLabelText('Email'), {
-      target: { value: 'new@example.com' },
-    })
-    fireEvent.change(screen.getByLabelText('Password'), {
-      target: { value: 'password123' },
-    })
-    fireEvent.click(screen.getByRole('button', { name: 'Create account' }))
+    fillCredentials()
+    const submit = screen.getByRole('button', { name: 'Create account' })
+    expect(submit).toBeDisabled()
+    completeChallenge()
+    expect(submit).toBeEnabled()
+    fireEvent.click(submit)
 
     // Locale-prefixed full navigation: the fr surface keeps the customer on fr.
     await waitFor(() => expect(mockAssign).toHaveBeenCalledWith('/fr/account'))
@@ -83,6 +131,7 @@ describe('RegisterPageClient', () => {
           firstName: '',
           lastName: '',
           locale: 'fr',
+          turnstileToken: 'valid-token',
         }),
       })
     )
@@ -99,12 +148,8 @@ describe('RegisterPageClient', () => {
 
     renderRegister('fr')
 
-    fireEvent.change(screen.getByLabelText('Email'), {
-      target: { value: 'new@example.com' },
-    })
-    fireEvent.change(screen.getByLabelText('Password'), {
-      target: { value: 'password123' },
-    })
+    fillCredentials()
+    completeChallenge()
     fireEvent.click(screen.getByRole('button', { name: 'Create account' }))
 
     await waitFor(() => expect(mockAssign).toHaveBeenCalledWith('/fr/account'))
@@ -118,8 +163,71 @@ describe('RegisterPageClient', () => {
           lastName: '',
           locale: 'fr',
           sessionId: '01890f3e-8b3a-7cc2-98c4-dc0c0c0c0c0c',
+          turnstileToken: 'valid-token',
         }),
       })
     )
+  })
+
+  it('resets the challenge after a non-OK registration response', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: false,
+      status: 503,
+      json: async () => ({ errorCode: 'rate_limit_unavailable' }),
+    })
+
+    renderRegister()
+    fillCredentials()
+    completeChallenge('rejected-token')
+    fireEvent.click(screen.getByRole('button', { name: 'Create account' }))
+
+    await waitFor(() => expect(turnstileMock.reset).toHaveBeenCalledTimes(1))
+    expect(screen.getByRole('alert')).toHaveTextContent(
+      'Registration is temporarily unavailable. Please try again.'
+    )
+    expect(screen.getByRole('button', { name: 'Create account' })).toBeDisabled()
+    expect(mockFetch).toHaveBeenCalledWith(
+      '/api/auth/register',
+      expect.objectContaining({
+        body: expect.stringContaining('"turnstileToken":"rejected-token"'),
+      })
+    )
+  })
+
+  it('resets the challenge when a non-OK response has no JSON body', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: false,
+      status: 502,
+      json: vi
+        .fn()
+        .mockRejectedValue(new SyntaxError('Unexpected end of JSON input')),
+    })
+
+    renderRegister()
+    fillCredentials()
+    completeChallenge('rejected-token')
+    fireEvent.click(screen.getByRole('button', { name: 'Create account' }))
+
+    await waitFor(() => expect(turnstileMock.reset).toHaveBeenCalledTimes(1))
+    expect(screen.getByRole('alert')).toHaveTextContent('Registration failed')
+    expect(screen.getByRole('button', { name: 'Create account' })).toBeDisabled()
+  })
+
+  it('requires a fresh token after the challenge errors or expires', () => {
+    renderRegister()
+    fillCredentials()
+    const submit = screen.getByRole('button', { name: 'Create account' })
+
+    completeChallenge('first-token')
+    expect(submit).toBeEnabled()
+
+    act(() => turnstileMock.onError?.())
+    expect(submit).toBeDisabled()
+
+    completeChallenge('second-token')
+    expect(submit).toBeEnabled()
+
+    act(() => turnstileMock.onExpire?.())
+    expect(submit).toBeDisabled()
   })
 })

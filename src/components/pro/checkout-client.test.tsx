@@ -511,6 +511,7 @@ describe('CheckoutClient', () => {
             email: 'new@example.com',
             password: 'hunter2hunter2',
             locale: 'fr',
+            turnstileToken: '',
           }),
         })
       )
@@ -543,6 +544,7 @@ describe('CheckoutClient', () => {
             email: 'new@example.com',
             password: 'hunter2hunter2',
             locale: 'fr',
+            turnstileToken: '',
             sessionId: '01890f3e-8b3a-7cc2-98c4-dc0c0c0c0c0c',
           }),
         })

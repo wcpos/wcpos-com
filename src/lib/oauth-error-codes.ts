@@ -1,4 +1,5 @@
 export const OAUTH_ERROR_CODES = [
+  'account_security_hold',
   'oauth_failed',
   'oauth_callback_failed',
   'oauth_provider_error',

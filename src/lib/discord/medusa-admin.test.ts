@@ -48,15 +48,28 @@ describe('admin auth header', () => {
 })
 
 describe('findAdminCustomerByEmail', () => {
-  it('queries /admin/customers by email and returns the first match', async () => {
+  it('queries broadly by normalized email and accepts an exact mixed-case result', async () => {
     fetchMock.mockResolvedValueOnce(
-      ok({ customers: [{ id: 'cus_1', email: 'a@b.com' }] })
+      ok({
+        customers: [
+          {
+            id: 'cus_1',
+            email: 'CadenceChatfield@example.com',
+            has_account: true,
+          },
+        ],
+      })
     )
-    const customer = await findAdminCustomerByEmail('a@b.com')
+    const customer = await findAdminCustomerByEmail(
+      '  cadencechatfield@EXAMPLE.COM '
+    )
+
     expect(customer?.id).toBe('cus_1')
-    const url = fetchMock.mock.calls[0][0] as string
-    expect(url).toContain('/admin/customers?')
-    expect(url).toContain('a%40b.com')
+    const url = new URL(fetchMock.mock.calls[0][0] as string)
+    expect(url.pathname).toBe('/admin/customers')
+    expect(url.searchParams.get('q')).toBe('cadencechatfield@example.com')
+    expect(url.searchParams.has('email')).toBe(false)
+    expect(url.searchParams.get('limit')).toBe('100')
   })
 
   it('returns null when no customer matches', async () => {
@@ -68,7 +81,8 @@ describe('findAdminCustomerByEmail', () => {
     fetchMock.mockResolvedValueOnce(
       ok({
         customers: [
-          { id: 'guest', email: 'a@b.com', has_account: false },
+          { id: 'partial', email: 'prefix-a@b.com', has_account: true },
+          { id: 'guest', email: 'A@B.com', has_account: false },
           { id: 'registered', email: 'a@b.com', has_account: true },
         ],
       })
@@ -77,7 +91,24 @@ describe('findAdminCustomerByEmail', () => {
     const customer = await findAdminCustomerByEmail('a@b.com')
 
     expect(customer?.id).toBe('registered')
-    expect(fetchMock.mock.calls[0][0]).toContain('limit=2')
+  })
+
+  it('does not fall back to a partial q match', async () => {
+    fetchMock.mockResolvedValueOnce(
+      ok({
+        customers: [
+          {
+            id: 'partial',
+            email: 'cadencechatfield+old@example.com',
+            has_account: true,
+          },
+        ],
+      })
+    )
+
+    expect(
+      await findAdminCustomerByEmail('cadencechatfield@example.com')
+    ).toBeNull()
   })
 
   it('returns null and logs when the admin lookup fails', async () => {

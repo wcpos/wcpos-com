@@ -13,6 +13,20 @@ import {
   getProOfferCatalog,
   resolveProOfferCartSelection,
 } from '@/lib/pro-offer-catalog'
+import { clientIp, createRateLimiter } from '@/lib/rate-limit'
+import { isLoopbackHost } from '@/lib/request-host'
+
+const paymentSessionIpLimiter = createRateLimiter({
+  prefix: 'checkout:payment-session:ip',
+  limit: 20,
+  window: '15 m',
+})
+
+const paymentSessionCustomerLimiter = createRateLimiter({
+  prefix: 'checkout:payment-session:customer',
+  limit: 8,
+  window: '15 m',
+})
 
 function btcpaySessionData(
   providerId: string,
@@ -53,6 +67,23 @@ export async function POST(request: NextRequest) {
     const customer = await getCustomer()
     if (!customer) {
       return storeCartErrorResponse('authentication_required', 401)
+    }
+
+    const loopback = isLoopbackHost(request.headers.get('host'))
+    const ipRate = await paymentSessionIpLimiter.consume(clientIp(request))
+    if (ipRate.status === 'unavailable' && !loopback) {
+      return storeCartErrorResponse('rate_limit_unavailable', 503)
+    }
+    if (ipRate.status === 'limited') {
+      return storeCartErrorResponse('rate_limited', 429)
+    }
+
+    const customerRate = await paymentSessionCustomerLimiter.consume(customer.id)
+    if (customerRate.status === 'unavailable' && !loopback) {
+      return storeCartErrorResponse('rate_limit_unavailable', 503)
+    }
+    if (customerRate.status === 'limited') {
+      return storeCartErrorResponse('rate_limited', 429)
     }
 
     // getCustomer() above already validated this token against

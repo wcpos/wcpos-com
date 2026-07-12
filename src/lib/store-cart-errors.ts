@@ -3,6 +3,8 @@ import { NextResponse } from 'next/server'
 export type StoreCartErrorCode =
   | 'read_only_inspection'
   | 'authentication_required'
+  | 'rate_limited'
+  | 'rate_limit_unavailable'
   | 'invalid_request_body'
   | 'cart_id_required'
   | 'cart_not_found'

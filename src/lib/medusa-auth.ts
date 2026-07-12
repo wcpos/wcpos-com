@@ -10,6 +10,7 @@ import { authLogger } from '@/lib/logger'
 import { MEDUSA_TOKEN_COOKIE } from '@/lib/medusa-cookie'
 import {
   AccountExistsError,
+  AccountSecurityHoldError,
   InvalidCredentialsError,
   InvalidResetTokenError,
 } from '@/lib/api/errors'
@@ -22,6 +23,7 @@ import {
   type BillingAddressPatch,
   type MedusaCustomerAddress,
 } from '@/lib/billing-profile'
+import { isCustomerSecurityHeld } from '@/lib/customer-security-hold'
 
 // ============================================================================
 // Types
@@ -331,16 +333,61 @@ export async function logout(): Promise<void> {
 // ============================================================================
 
 /**
- * Get the current customer profile.
- * GET /store/customers/me
- * Returns null if no token or if the token is invalid.
+ * Resolve a customer from an explicit candidate token.
+ *
+ * Both the temporary metadata-based defense and the future authoritative
+ * Medusa 403 response normalize to AccountSecurityHoldError.
  */
-// Memoized per request with React `cache()`: the shared header, the account
-// layout gate, and each account page all call getCustomer in one render, so
-// without this they each issue an identical /store/customers/me fetch. cache()
-// dedupes them to a single request. It stays dynamic (reads cookies via
-// getAuthToken) — callers keep it inside Suspense, so PPR is unaffected; the
-// null-on-failure result is safe to memoize within a request.
+export async function getCustomerForToken(
+  token: string
+): Promise<MedusaCustomer | null> {
+  const response = await fetch(
+    `${await getMedusaBackendUrl()}/store/customers/me`,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+        'x-publishable-api-key': await getMedusaPublishableKey(),
+      },
+    }
+  )
+
+  if (!response.ok) {
+    if (response.status === 403) {
+      const body = await response.json().catch(() => null)
+      if (
+        body &&
+        typeof body === 'object' &&
+        (body as { code?: unknown }).code === 'ACCOUNT_SECURITY_HOLD'
+      ) {
+        throw new AccountSecurityHoldError()
+      }
+    }
+    return null
+  }
+
+  const data = await response.json()
+  const customer = data.customer as MedusaCustomer | undefined
+  if (!customer) return null
+  if (isCustomerSecurityHeld(customer.metadata)) {
+    throw new AccountSecurityHoldError()
+  }
+  return customer
+}
+
+/**
+ * Require an accessible customer for a newly issued candidate token.
+ */
+export async function assertCustomerAccess(
+  token: string
+): Promise<MedusaCustomer> {
+  const customer = await getCustomerForToken(token)
+  if (!customer) {
+    throw new Error('Authenticated customer could not be resolved')
+  }
+  return customer
+}
+
 /**
  * The REAL logged-in customer, resolved from the session cookie. This is the
  * acting identity — used for the admin gate, audit, and the "you are X" banner.
@@ -351,29 +398,20 @@ export async function getSessionCustomer(): Promise<MedusaCustomer | null> {
   if (!token) return null
 
   try {
-    const response = await fetch(
-      `${await getMedusaBackendUrl()}/store/customers/me`,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-          'x-publishable-api-key': await getMedusaPublishableKey(),
-        },
-      }
-    )
-    if (!response.ok) return null
-    const data = await response.json()
-    return data.customer
+    return await getCustomerForToken(token)
   } catch (error) {
+    if (error instanceof AccountSecurityHoldError) return null
     authLogger.error`Failed to get customer: ${error}`
     return null
   }
 }
 
-// Memoized per request. When inspecting (admin + account scope + cookie),
-// returns the TARGET customer via the admin API; otherwise the session
-// customer. Every account page/read flows through here, so the whole area
-// renders as the target.
+// Memoized per request with React `cache()`: the shared header, the account
+// layout gate, and each account page all call getCustomer in one render. When
+// inspecting (admin + account scope + cookie), it returns the TARGET customer
+// via the admin API; otherwise the session customer. It stays dynamic (reads
+// cookies via getAuthToken) and safely memoizes the null-on-failure result only
+// within the request.
 export const getCustomer = cache(
   async (): Promise<MedusaCustomer | null> => {
     const impersonation = await getImpersonation()

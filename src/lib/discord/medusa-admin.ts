@@ -139,22 +139,26 @@ interface AdminCustomerResponse {
 
 /**
  * Find a single customer by exact email via the admin API. Returns null when
- * there is no match. Uses the `email` filter so we never page all customers.
+ * there is no match. Medusa's `email` filter is case-sensitive, so query with
+ * `q` and discard every result that is not an exact normalized match.
  */
 export async function findAdminCustomerByEmail(
   email: string
 ): Promise<MedusaCustomer | null> {
+  const needle = email.trim().toLowerCase()
   const query = new URLSearchParams({
-    email: email.trim().toLowerCase(),
-    limit: '2',
+    q: needle,
+    limit: '100',
     fields: 'id,email,first_name,last_name,phone,has_account,metadata,created_at,updated_at',
   })
   try {
     const page = await medusaAdminFetch<AdminCustomersResponse>(
       `/admin/customers?${query.toString()}`
     )
-    const customers = page.customers ?? []
-    return customers.find((customer) => customer.has_account) ?? customers[0] ?? null
+    const exact = (page.customers ?? []).filter(
+      (customer) => customer.email.trim().toLowerCase() === needle
+    )
+    return exact.find((customer) => customer.has_account) ?? exact[0] ?? null
   } catch (error) {
     infraLogger.error`Failed to find admin customer by email: ${error}`
     return null
