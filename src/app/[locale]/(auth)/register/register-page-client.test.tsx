@@ -194,6 +194,25 @@ describe('RegisterPageClient', () => {
     )
   })
 
+  it('resets the challenge when a non-OK response has no JSON body', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: false,
+      status: 502,
+      json: vi
+        .fn()
+        .mockRejectedValue(new SyntaxError('Unexpected end of JSON input')),
+    })
+
+    renderRegister()
+    fillCredentials()
+    completeChallenge('rejected-token')
+    fireEvent.click(screen.getByRole('button', { name: 'Create account' }))
+
+    await waitFor(() => expect(turnstileMock.reset).toHaveBeenCalledTimes(1))
+    expect(screen.getByRole('alert')).toHaveTextContent('Registration failed')
+    expect(screen.getByRole('button', { name: 'Create account' })).toBeDisabled()
+  })
+
   it('requires a fresh token after the challenge errors or expires', () => {
     renderRegister()
     fillCredentials()

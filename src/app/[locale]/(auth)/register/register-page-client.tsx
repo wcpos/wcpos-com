@@ -125,11 +125,10 @@ function RegisterPageInner() {
         }),
       })
 
-      const data = await response.json()
-
       if (!response.ok) {
         setTurnstileToken(null)
         turnstileRef.current?.reset()
+        const data = await response.json().catch(() => ({}))
         setError(
           isRegisterErrorCode(data.errorCode)
             ? getRegisterErrorMessage(data.errorCode)
