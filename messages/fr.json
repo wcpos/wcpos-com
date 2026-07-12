@@ -529,6 +529,7 @@
         "oauthSuffix": "— vous reviendrez directement au paiement.",
         "errors": {
           "passwordFailed": "Ce mot de passe n’a pas fonctionné. Si vous vous êtes inscrit avec Google, GitHub ou Discord, utilisez le lien de connexion ci-dessous — ou réinitialisez votre mot de passe depuis la page de connexion.",
+          "accountSecurityHold": "Nous ne pouvons pas vous connecter pour le moment. Contactez le support pour obtenir de l’aide avec votre compte.",
           "createFailed": "Impossible de créer votre compte. Veuillez réessayer.",
           "signInFailed": "Connexion impossible. Vérifiez votre mot de passe.",
           "generic": "Une erreur est survenue. Veuillez réessayer."
@@ -1111,6 +1112,7 @@
         "reset_fields_required": "L’e-mail, le jeton et le mot de passe sont obligatoires.",
         "password_too_short": "Le mot de passe doit contenir au moins {min} caractères.",
         "invalid_credentials": "E-mail ou mot de passe invalide.",
+        "account_security_hold": "Nous ne pouvons pas vous connecter pour le moment. Contactez le support pour obtenir de l’aide avec votre compte.",
         "invalid_reset_token": "Ce lien de réinitialisation du mot de passe est invalide ou a expiré. Veuillez en demander un nouveau."
       }
     },
@@ -1126,6 +1128,7 @@
       "oauthDivider": "Ou continuer avec",
       "noAccount": "Vous n’avez pas de compte ?",
       "oauthErrors": {
+        "account_security_hold": "Nous ne pouvons pas vous connecter pour le moment. Contactez le support pour obtenir de l’aide avec votre compte.",
         "oauth_failed": "La connexion OAuth a échoué. Réessayez ou utilisez e-mail/mot de passe.",
         "oauth_callback_failed": "La connexion OAuth a échoué. Réessayez ou utilisez e-mail/mot de passe.",
         "oauth_provider_error": "La connexion OAuth a échoué. Réessayez ou utilisez e-mail/mot de passe.",

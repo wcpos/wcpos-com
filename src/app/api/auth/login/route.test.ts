@@ -1,8 +1,12 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { NextRequest } from 'next/server'
-import { InvalidCredentialsError } from '@/lib/api/errors'
+import {
+  AccountSecurityHoldError,
+  InvalidCredentialsError,
+} from '@/lib/api/errors'
 
 const mockLogin = vi.fn()
+const mockAssertCustomerAccess = vi.fn()
 const mockSetAuthToken = vi.fn()
 const {
   infoMock,
@@ -20,6 +24,8 @@ const {
 
 vi.mock('@/lib/medusa-auth', () => ({
   login: (...args: unknown[]) => mockLogin(...args),
+  assertCustomerAccess: (...args: unknown[]) =>
+    mockAssertCustomerAccess(...args),
   setAuthToken: (...args: unknown[]) => mockSetAuthToken(...args),
 }))
 vi.mock('@/lib/account-locale', () => ({
@@ -49,6 +55,7 @@ describe('POST /api/auth/login', () => {
     vi.clearAllMocks()
     consumeMock.mockResolvedValue({ success: true, remaining: 9 })
     savedCustomerLocaleMock.mockResolvedValue(null)
+    mockAssertCustomerAccess.mockResolvedValue({ id: 'cus_ordinary' })
   })
 
   it('returns 429 when the rate limit is exceeded', async () => {
@@ -141,6 +148,25 @@ describe('POST /api/auth/login', () => {
     expect(mockSetAuthToken).not.toHaveBeenCalled()
     // Wrong passwords are routine — they must never hit error level, which
     // fans out to Discord alerts.
+    expect(infoMock).toHaveBeenCalledTimes(1)
+    expect(errorMock).not.toHaveBeenCalled()
+  })
+
+  it('returns 403 without storing a token when the customer is held', async () => {
+    mockLogin.mockResolvedValueOnce('held-jwt')
+    mockAssertCustomerAccess.mockRejectedValueOnce(
+      new AccountSecurityHoldError()
+    )
+
+    const response = await POST(
+      makeRequest({ email: 'held@example.com', password: 'correct' })
+    )
+    const json = await response.json()
+
+    expect(response.status).toBe(403)
+    expect(json.errorCode).toBe('account_security_hold')
+    expect(mockAssertCustomerAccess).toHaveBeenCalledWith('held-jwt')
+    expect(mockSetAuthToken).not.toHaveBeenCalled()
     expect(infoMock).toHaveBeenCalledTimes(1)
     expect(errorMock).not.toHaveBeenCalled()
   })

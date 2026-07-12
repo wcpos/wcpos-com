@@ -96,6 +96,13 @@ export function AccountStep({ checkoutPath, onAuthenticated }: AccountStepProps)
       }
 
       const body = await response.json().catch(() => ({}))
+      if (
+        mode === 'signin' &&
+        body.errorCode === 'account_security_hold'
+      ) {
+        setError(t('errors.accountSecurityHold'))
+        return
+      }
       if (mode === 'signin' && response.status === 401) {
         // The account exists but this password doesn't work — which is also
         // exactly what an OAuth-only account (Google/GitHub/Discord, no

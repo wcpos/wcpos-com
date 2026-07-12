@@ -27,6 +27,7 @@ type LoginErrorCode =
   | 'rate_limited'
   | 'credentials_required'
   | 'invalid_credentials'
+  | 'account_security_hold'
   | 'login_failed'
 
 function isLoginErrorCode(value: unknown): value is LoginErrorCode {
@@ -35,6 +36,7 @@ function isLoginErrorCode(value: unknown): value is LoginErrorCode {
     value === 'rate_limited' ||
     value === 'credentials_required' ||
     value === 'invalid_credentials' ||
+    value === 'account_security_hold' ||
     value === 'login_failed'
   )
 }
@@ -78,6 +80,8 @@ function LoginPageInner() {
         return tCommon('apiErrors.credentials_required')
       case 'invalid_credentials':
         return tCommon('apiErrors.invalid_credentials')
+      case 'account_security_hold':
+        return tCommon('apiErrors.account_security_hold')
       case 'login_failed':
         return t('loginFailed')
     }

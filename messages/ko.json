@@ -529,6 +529,7 @@
         "oauthSuffix": "— 결제로 바로 돌아옵니다.",
         "errors": {
           "passwordFailed": "비밀번호가 맞지 않습니다. Google, GitHub 또는 Discord로 가입했다면 아래 로그인 링크를 사용하거나 로그인 페이지에서 비밀번호를 재설정하세요.",
+          "accountSecurityHold": "지금은 로그인할 수 없습니다. 계정 관련 도움이 필요하면 지원팀에 문의하세요.",
           "createFailed": "계정을 만들 수 없습니다. 다시 시도하세요.",
           "signInFailed": "로그인에 실패했습니다. 비밀번호를 확인하세요.",
           "generic": "문제가 발생했습니다. 다시 시도하세요."
@@ -1111,6 +1112,7 @@
         "reset_fields_required": "이메일, 토큰, 비밀번호가 필요합니다.",
         "password_too_short": "비밀번호는 최소 {min}자 이상이어야 합니다.",
         "invalid_credentials": "이메일 또는 비밀번호가 올바르지 않습니다.",
+        "account_security_hold": "지금은 로그인할 수 없습니다. 계정 관련 도움이 필요하면 지원팀에 문의하세요.",
         "invalid_reset_token": "이 비밀번호 재설정 링크가 잘못되었거나 만료되었습니다. 새 링크를 요청해 주세요."
       }
     },
@@ -1126,6 +1128,7 @@
       "oauthDivider": "또는 다음으로 계속",
       "noAccount": "계정이 없으신가요?",
       "oauthErrors": {
+        "account_security_hold": "지금은 로그인할 수 없습니다. 계정 관련 도움이 필요하면 지원팀에 문의하세요.",
         "oauth_failed": "OAuth 로그인이 실패했습니다. 다시 시도하거나 이메일/비밀번호를 사용하세요.",
         "oauth_callback_failed": "OAuth 로그인이 실패했습니다. 다시 시도하거나 이메일/비밀번호를 사용하세요.",
         "oauth_provider_error": "OAuth 로그인이 실패했습니다. 다시 시도하거나 이메일/비밀번호를 사용하세요.",

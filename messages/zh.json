@@ -529,6 +529,7 @@
         "oauthSuffix": "— 您会直接回到结账。",
         "errors": {
           "passwordFailed": "该密码无效。如果您使用 Google、GitHub 或 Discord 注册，请使用下方登录链接 — 或在登录页重置密码。",
+          "accountSecurityHold": "目前无法登录。请联系支持团队以获取账户帮助。",
           "createFailed": "无法创建账户。请重试。",
           "signInFailed": "登录失败。请检查密码。",
           "generic": "出现问题。请重试。"
@@ -1111,6 +1112,7 @@
         "reset_fields_required": "请输入电子邮件、令牌和密码。",
         "password_too_short": "密码至少需要 {min} 个字符。",
         "invalid_credentials": "电子邮件或密码无效。",
+        "account_security_hold": "目前无法登录。请联系支持团队以获取账户帮助。",
         "invalid_reset_token": "此密码重置链接无效或已过期。请重新申请一个新链接。"
       }
     },
@@ -1126,6 +1128,7 @@
       "oauthDivider": "或继续使用",
       "noAccount": "还没有账户？",
       "oauthErrors": {
+        "account_security_hold": "目前无法登录。请联系支持团队以获取账户帮助。",
         "oauth_failed": "OAuth 登录失败。请重试或使用电子邮件/密码。",
         "oauth_callback_failed": "OAuth 登录失败。请重试或使用电子邮件/密码。",
         "oauth_provider_error": "OAuth 登录失败。请重试或使用电子邮件/密码。",

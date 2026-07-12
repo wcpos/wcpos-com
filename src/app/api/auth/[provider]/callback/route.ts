@@ -17,6 +17,7 @@ import {
   savedCustomerLocale,
   setLocaleCookieOnResponse,
 } from '@/lib/account-locale'
+import { AccountSecurityHoldError } from '@/lib/api/errors'
 
 /** The redirect cookie is single-use: consume it on every outcome. */
 function clearRedirectCookie(response: NextResponse): NextResponse {
@@ -150,10 +151,17 @@ export async function GET(
       NextResponse.redirect(new URL(redirectTo, request.url))
     )
   } catch (error) {
-    const errorCode = error instanceof Error && isOAuthErrorCode(error.message)
-      ? error.message
-      : 'oauth_failed'
-    authLogger.error`OAuth callback failed: ${error}`
+    const held = error instanceof AccountSecurityHoldError
+    const errorCode = held
+      ? error.errorCode
+      : error instanceof Error && isOAuthErrorCode(error.message)
+        ? error.message
+        : 'oauth_failed'
+    if (held) {
+      authLogger.info`OAuth sign-in rejected: ${error.message}`
+    } else {
+      authLogger.error`OAuth callback failed: ${error}`
+    }
     const redirectTo = sanitizeRedirectPath(
       request.cookies.get(OAUTH_REDIRECT_COOKIE)?.value ??
         request.nextUrl.searchParams.get('redirect'),

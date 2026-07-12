@@ -529,6 +529,7 @@
         "oauthSuffix": "— volverás directamente a la compra.",
         "errors": {
           "passwordFailed": "Esa contraseña no funcionó. Si te registraste con Google, GitHub o Discord, usa el enlace de inicio de sesión de abajo — o restablece tu contraseña desde la página de inicio de sesión.",
+          "accountSecurityHold": "No podemos iniciar tu sesión en este momento. Ponte en contacto con soporte para obtener ayuda con tu cuenta.",
           "createFailed": "No se pudo crear tu cuenta. Inténtalo de nuevo.",
           "signInFailed": "No se pudo iniciar sesión. Comprueba tu contraseña.",
           "generic": "Algo salió mal. Inténtalo de nuevo."
@@ -1111,6 +1112,7 @@
         "reset_fields_required": "El correo electrónico, el token y la contraseña son obligatorios.",
         "password_too_short": "La contraseña debe tener al menos {min} caracteres.",
         "invalid_credentials": "Correo electrónico o contraseña no válidos.",
+        "account_security_hold": "No podemos iniciar tu sesión en este momento. Ponte en contacto con soporte para obtener ayuda con tu cuenta.",
         "invalid_reset_token": "Este enlace para restablecer la contraseña no es válido o ha caducado. Solicita uno nuevo."
       }
     },
@@ -1126,6 +1128,7 @@
       "oauthDivider": "O continúa con",
       "noAccount": "¿No tienes una cuenta?",
       "oauthErrors": {
+        "account_security_hold": "No podemos iniciar tu sesión en este momento. Ponte en contacto con soporte para obtener ayuda con tu cuenta.",
         "oauth_failed": "Error al iniciar sesión con OAuth. Inténtalo de nuevo o usa correo/contraseña.",
         "oauth_callback_failed": "Error al iniciar sesión con OAuth. Inténtalo de nuevo o usa correo/contraseña.",
         "oauth_provider_error": "Error al iniciar sesión con OAuth. Inténtalo de nuevo o usa correo/contraseña.",

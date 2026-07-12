@@ -1,6 +1,11 @@
 import { NextResponse } from 'next/server'
-import { login, resetPassword, setAuthToken } from '@/lib/medusa-auth'
-import { ApiError } from '@/lib/api/errors'
+import {
+  assertCustomerAccess,
+  login,
+  resetPassword,
+  setAuthToken,
+} from '@/lib/medusa-auth'
+import { AccountSecurityHoldError, ApiError } from '@/lib/api/errors'
 import { authLogger } from '@/lib/logger'
 import { isSameOriginRequest } from '@/lib/api/same-origin'
 import { createRateLimiter, clientIp } from '@/lib/rate-limit'
@@ -75,10 +80,15 @@ export async function POST(request: Request) {
   // signedIn: false and the client sends the user to /login instead.
   try {
     const sessionToken = await login(email, password)
+    await assertCustomerAccess(sessionToken)
     await setAuthToken(sessionToken)
     return NextResponse.json({ success: true, signedIn: true })
   } catch (error) {
-    authLogger.error`Post-reset sign-in failed: ${error}`
+    if (error instanceof AccountSecurityHoldError) {
+      authLogger.info`Post-reset sign-in rejected: ${error.message}`
+    } else {
+      authLogger.error`Post-reset sign-in failed: ${error}`
+    }
     return NextResponse.json({ success: true, signedIn: false })
   }
 }

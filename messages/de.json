@@ -529,6 +529,7 @@
         "oauthSuffix": "— Sie kommen direkt zurück zur Kasse.",
         "errors": {
           "passwordFailed": "Dieses Passwort hat nicht funktioniert. Wenn Sie sich mit Google, GitHub oder Discord registriert haben, verwenden Sie unten den Anmeldelink — oder setzen Sie Ihr Passwort auf der Anmeldeseite zurück.",
+          "accountSecurityHold": "Wir können dich derzeit nicht anmelden. Bitte kontaktiere den Support, um Hilfe mit deinem Konto zu erhalten.",
           "createFailed": "Ihr Konto konnte nicht erstellt werden. Bitte versuchen Sie es erneut.",
           "signInFailed": "Anmeldung fehlgeschlagen. Bitte prüfen Sie Ihr Passwort.",
           "generic": "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut."
@@ -1111,6 +1112,7 @@
         "reset_fields_required": "E-Mail, Token und Passwort sind erforderlich.",
         "password_too_short": "Das Passwort muss mindestens {min} Zeichen lang sein.",
         "invalid_credentials": "Ungültige E-Mail-Adresse oder ungültiges Passwort.",
+        "account_security_hold": "Wir können dich derzeit nicht anmelden. Bitte kontaktiere den Support, um Hilfe mit deinem Konto zu erhalten.",
         "invalid_reset_token": "Dieser Link zum Zurücksetzen des Passworts ist ungültig oder abgelaufen. Bitte fordere einen neuen an."
       }
     },
@@ -1126,6 +1128,7 @@
       "oauthDivider": "Oder weiter mit",
       "noAccount": "Noch kein Konto?",
       "oauthErrors": {
+        "account_security_hold": "Wir können dich derzeit nicht anmelden. Bitte kontaktiere den Support, um Hilfe mit deinem Konto zu erhalten.",
         "oauth_failed": "OAuth-Anmeldung fehlgeschlagen. Bitte versuche es erneut oder nutze E-Mail/Passwort.",
         "oauth_callback_failed": "OAuth-Anmeldung fehlgeschlagen. Bitte versuche es erneut oder nutze E-Mail/Passwort.",
         "oauth_provider_error": "OAuth-Anmeldung fehlgeschlagen. Bitte versuche es erneut oder nutze E-Mail/Passwort.",

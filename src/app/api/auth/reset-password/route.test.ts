@@ -1,9 +1,13 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { NextRequest } from 'next/server'
-import { InvalidResetTokenError } from '@/lib/api/errors'
+import {
+  AccountSecurityHoldError,
+  InvalidResetTokenError,
+} from '@/lib/api/errors'
 
 const mockResetPassword = vi.fn()
 const mockLogin = vi.fn()
+const mockAssertCustomerAccess = vi.fn()
 const mockSetAuthToken = vi.fn()
 const { infoMock, errorMock, consumeMock } = vi.hoisted(() => ({
   infoMock: vi.fn(),
@@ -14,6 +18,8 @@ const { infoMock, errorMock, consumeMock } = vi.hoisted(() => ({
 vi.mock('@/lib/medusa-auth', () => ({
   resetPassword: (...args: unknown[]) => mockResetPassword(...args),
   login: (...args: unknown[]) => mockLogin(...args),
+  assertCustomerAccess: (...args: unknown[]) =>
+    mockAssertCustomerAccess(...args),
   setAuthToken: (...args: unknown[]) => mockSetAuthToken(...args),
 }))
 vi.mock('@/lib/logger', () => ({
@@ -44,6 +50,7 @@ describe('POST /api/auth/reset-password', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     consumeMock.mockResolvedValue({ success: true, remaining: 9 })
+    mockAssertCustomerAccess.mockResolvedValue({ id: 'cus_ordinary' })
   })
 
   it.each([
@@ -118,6 +125,24 @@ describe('POST /api/auth/reset-password', () => {
     expect(json).toEqual({ success: true, signedIn: false })
     expect(mockSetAuthToken).not.toHaveBeenCalled()
     expect(errorMock).toHaveBeenCalledTimes(1)
+  })
+
+  it('changes the password but does not sign in a held customer', async () => {
+    mockResetPassword.mockResolvedValueOnce(undefined)
+    mockLogin.mockResolvedValueOnce('held-jwt')
+    mockAssertCustomerAccess.mockRejectedValueOnce(
+      new AccountSecurityHoldError()
+    )
+
+    const response = await POST(makeRequest(validBody))
+    const json = await response.json()
+
+    expect(response.status).toBe(200)
+    expect(json).toEqual({ success: true, signedIn: false })
+    expect(mockAssertCustomerAccess).toHaveBeenCalledWith('held-jwt')
+    expect(mockSetAuthToken).not.toHaveBeenCalled()
+    expect(infoMock).toHaveBeenCalledTimes(1)
+    expect(errorMock).not.toHaveBeenCalled()
   })
 
   it('returns 401 and logs at info for an expired/invalid token', async () => {

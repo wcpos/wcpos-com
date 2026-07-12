@@ -1,7 +1,14 @@
 import { NextResponse } from 'next/server'
-import { login, setAuthToken } from '@/lib/medusa-auth'
+import {
+  assertCustomerAccess,
+  login,
+  setAuthToken,
+} from '@/lib/medusa-auth'
 import { savedCustomerLocale, writeLocaleCookie } from '@/lib/account-locale'
-import { InvalidCredentialsError } from '@/lib/api/errors'
+import {
+  AccountSecurityHoldError,
+  InvalidCredentialsError,
+} from '@/lib/api/errors'
 import { authLogger } from '@/lib/logger'
 import { isSameOriginRequest } from '@/lib/api/same-origin'
 import { createRateLimiter, clientIp } from '@/lib/rate-limit'
@@ -13,6 +20,7 @@ type LoginErrorCode =
   | 'rate_limited'
   | 'credentials_required'
   | 'invalid_credentials'
+  | 'account_security_hold'
   | 'login_failed'
 
 function errorResponse(errorCode: LoginErrorCode, status: number) {
@@ -50,6 +58,7 @@ export async function POST(request: Request) {
 
   try {
     const token = await login(email, password)
+    await assertCustomerAccess(token)
     await setAuthToken(token)
 
     // Serve the account's saved language on the next request by seeding the
@@ -72,10 +81,16 @@ export async function POST(request: Request) {
     // Wrong email/password is routine user behaviour — keep it at info so it
     // never fans out to alerts. Anything else (Medusa down, 5xx, cookie
     // failure) is unexpected and logged at error.
-    if (error instanceof InvalidCredentialsError) {
+    if (
+      error instanceof InvalidCredentialsError ||
+      error instanceof AccountSecurityHoldError
+    ) {
       authLogger.info`Login rejected: ${message}`
     } else {
       authLogger.error`Login failed unexpectedly: ${error}`
+    }
+    if (error instanceof AccountSecurityHoldError) {
+      return errorResponse('account_security_hold', error.status)
     }
     return errorResponse(
       error instanceof InvalidCredentialsError

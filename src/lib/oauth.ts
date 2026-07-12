@@ -4,7 +4,11 @@ import {
   getMedusaBackendUrl,
   getMedusaPublishableKey,
 } from '@/lib/store-environment'
-import { parseMedusaError, setAuthToken } from '@/lib/medusa-auth'
+import {
+  assertCustomerAccess,
+  parseMedusaError,
+  setAuthToken,
+} from '@/lib/medusa-auth'
 
 // ============================================================================
 // OAuth sign-in
@@ -201,6 +205,7 @@ export async function establishOAuthSession(
     await linkOrCreateCustomer(initialToken, options.locale)
     token = await refreshToken(initialToken)
   }
+  await assertCustomerAccess(token)
   await setAuthToken(token)
 
   return { payload: decodeMedusaToken(token), linked }

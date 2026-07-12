@@ -529,6 +529,7 @@
         "oauthSuffix": "— you'll come straight back to checkout.",
         "errors": {
           "passwordFailed": "That password didn’t work. If you signed up with Google, GitHub or Discord, use the sign-in link below instead — or reset your password from the sign-in page.",
+          "accountSecurityHold": "We can’t sign you in right now. Please contact support for help with your account.",
           "createFailed": "Could not create your account. Please try again.",
           "signInFailed": "Sign in failed. Please check your password.",
           "generic": "Something went wrong. Please try again."
@@ -1111,6 +1112,7 @@
         "reset_fields_required": "Email, token, and password are required.",
         "password_too_short": "Password must be at least {min} characters.",
         "invalid_credentials": "Invalid email or password.",
+        "account_security_hold": "We can’t sign you in right now. Please contact support for help with your account.",
         "invalid_reset_token": "This password reset link is invalid or has expired. Please request a new one."
       }
     },
@@ -1126,6 +1128,7 @@
       "oauthDivider": "Or continue with",
       "noAccount": "Don’t have an account?",
       "oauthErrors": {
+        "account_security_hold": "We can’t sign you in right now. Please contact support for help with your account.",
         "oauth_failed": "OAuth sign-in failed. Please try again or use email/password.",
         "oauth_callback_failed": "OAuth sign-in failed. Please try again or use email/password.",
         "oauth_provider_error": "The OAuth provider cancelled or rejected sign-in. Please try again.",

@@ -529,6 +529,7 @@
         "oauthSuffix": "— je komt direct terug bij afrekenen.",
         "errors": {
           "passwordFailed": "Dat wachtwoord werkte niet. Als je je hebt aangemeld met Google, GitHub of Discord, gebruik dan de inloglink hieronder — of reset je wachtwoord via de inlogpagina.",
+          "accountSecurityHold": "We kunnen je momenteel niet aanmelden. Neem contact op met support voor hulp met je account.",
           "createFailed": "Je account kon niet worden gemaakt. Probeer het opnieuw.",
           "signInFailed": "Inloggen mislukt. Controleer je wachtwoord.",
           "generic": "Er is iets misgegaan. Probeer het opnieuw."
@@ -1111,6 +1112,7 @@
         "reset_fields_required": "E-mailadres, token en wachtwoord zijn verplicht.",
         "password_too_short": "Het wachtwoord moet minimaal {min} tekens bevatten.",
         "invalid_credentials": "Ongeldig e-mailadres of wachtwoord.",
+        "account_security_hold": "We kunnen je momenteel niet aanmelden. Neem contact op met support voor hulp met je account.",
         "invalid_reset_token": "Deze link voor het opnieuw instellen van het wachtwoord is ongeldig of verlopen. Vraag een nieuwe aan."
       }
     },
@@ -1126,6 +1128,7 @@
       "oauthDivider": "Of ga verder met",
       "noAccount": "Nog geen account?",
       "oauthErrors": {
+        "account_security_hold": "We kunnen je momenteel niet aanmelden. Neem contact op met support voor hulp met je account.",
         "oauth_failed": "OAuth-aanmelding mislukt. Probeer opnieuw of gebruik e-mail/wachtwoord.",
         "oauth_callback_failed": "OAuth-aanmelding mislukt. Probeer opnieuw of gebruik e-mail/wachtwoord.",
         "oauth_provider_error": "OAuth-aanmelding mislukt. Probeer opnieuw of gebruik e-mail/wachtwoord.",

@@ -529,6 +529,7 @@
         "oauthSuffix": "— tornerai direttamente al checkout.",
         "errors": {
           "passwordFailed": "La password non ha funzionato. Se ti sei registrato con Google, GitHub o Discord, usa il link di accesso qui sotto — oppure reimposta la password dalla pagina di accesso.",
+          "accountSecurityHold": "Al momento non possiamo effettuare l’accesso. Contatta il supporto per ricevere assistenza con il tuo account.",
           "createFailed": "Impossibile creare l’account. Riprova.",
           "signInFailed": "Accesso non riuscito. Controlla la password.",
           "generic": "Qualcosa è andato storto. Riprova."
@@ -1105,6 +1106,7 @@
         "credentials_required": "Sono richiesti e-mail e password.",
         "email_required": "L’e-mail è obbligatoria.",
         "invalid_credentials": "E-mail o password non valida.",
+        "account_security_hold": "Al momento non possiamo effettuare l’accesso. Contatta il supporto per ricevere assistenza con il tuo account.",
         "invalid_origin": "Aggiorna la pagina e riprova.",
         "invalid_reset_token": "Questo link per reimpostare la password non è valido o è scaduto. Richiedine uno nuovo.",
         "password_too_short": "La password deve contenere almeno {min} caratteri.",
@@ -1126,6 +1128,7 @@
       "oauthDivider": "Oppure continua con",
       "noAccount": "Non hai un account?",
       "oauthErrors": {
+        "account_security_hold": "Al momento non possiamo effettuare l’accesso. Contatta il supporto per ricevere assistenza con il tuo account.",
         "oauth_failed": "Accesso OAuth non riuscito. Riprova o usa email/password.",
         "oauth_callback_failed": "Accesso OAuth non riuscito. Riprova o usa email/password.",
         "oauth_provider_error": "Accesso OAuth non riuscito. Riprova o usa email/password.",

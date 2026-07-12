@@ -194,6 +194,36 @@ describe('AccountStep', () => {
     ).toBeDisabled()
   })
 
+  it('shows customer-safe support copy when inline sign-in is held', async () => {
+    fetchMock
+      .mockResolvedValueOnce({
+        ok: false,
+        status: 409,
+        json: async () => ({ errorCode: 'account_exists' }),
+      })
+      .mockResolvedValueOnce({
+        ok: false,
+        status: 403,
+        json: async () => ({ errorCode: 'account_security_hold' }),
+      })
+    const { onAuthenticated } = renderAccountStep()
+    fillCredentials('held@example.com')
+    completeChallenge('valid-token')
+
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Create account & continue' })
+    )
+    const signIn = await screen.findByRole('button', {
+      name: 'Sign in & continue',
+    })
+    fireEvent.click(signIn)
+
+    expect(await screen.findByRole('alert')).toHaveTextContent(
+      'We can’t sign you in right now. Please contact support for help with your account.'
+    )
+    expect(onAuthenticated).not.toHaveBeenCalled()
+  })
+
   it('requires a fresh registration token after widget errors and expiry', () => {
     renderAccountStep()
     fillCredentials()
