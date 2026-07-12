@@ -14,10 +14,18 @@ const {
   mockIpLimiterConsume,
   mockCustomerLimiterConsume,
   mockCreateRateLimiter,
+  rateLimiterOptions,
 } = vi.hoisted(() => {
   const ipConsume = vi.fn()
   const customerConsume = vi.fn()
-  const createRateLimiter = vi.fn(({ prefix }: { prefix: string }) => {
+  const options: Array<{ prefix: string; limit: number; window: string }> = []
+  const createRateLimiter = vi.fn((config: {
+    prefix: string
+    limit: number
+    window: string
+  }) => {
+    options.push(config)
+    const { prefix } = config
     if (prefix === 'checkout:payment-session:ip') {
       return { consume: ipConsume }
     }
@@ -31,6 +39,7 @@ const {
     mockIpLimiterConsume: ipConsume,
     mockCustomerLimiterConsume: customerConsume,
     mockCreateRateLimiter: createRateLimiter,
+    rateLimiterOptions: options,
   }
 })
 
@@ -45,8 +54,11 @@ vi.mock('@/lib/medusa-auth', () => ({
 }))
 
 vi.mock('@/lib/rate-limit', () => ({
-  createRateLimiter: (options: { prefix: string }) =>
-    mockCreateRateLimiter(options),
+  createRateLimiter: (options: {
+    prefix: string
+    limit: number
+    window: string
+  }) => mockCreateRateLimiter(options),
   clientIp: () => REQUEST_IP,
 }))
 
@@ -119,6 +131,21 @@ describe('POST /api/store/cart/payment-sessions', () => {
         { planId: 'lifetime', handle: 'wcpos-pro-lifetime', variantId: 'variant_lifetime_current' },
       ],
     })
+  })
+
+  it('configures the exact IP and customer allocation limits', () => {
+    expect(rateLimiterOptions).toEqual([
+      {
+        prefix: 'checkout:payment-session:ip',
+        limit: 20,
+        window: '15 m',
+      },
+      {
+        prefix: 'checkout:payment-session:customer',
+        limit: 8,
+        window: '15 m',
+      },
+    ])
   })
 
   it('returns 401 when the customer is not authenticated', async () => {
