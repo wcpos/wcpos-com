@@ -1043,6 +1043,7 @@
     },
     "impersonation": {
       "viewing": "🔍 A visualizar <strong>{target}</strong> em modo <strong>só de leitura</strong> — não pode alterar esta conta.",
+      "securityHold": "Bloqueio de segurança ativo",
       "exit": "Sair"
     },
     "orderStatus": {

@@ -123,6 +123,42 @@ describe('POST /api/auth/register', () => {
     expect(mockRegister).not.toHaveBeenCalled()
   })
 
+  it('returns 403 without registering when the Turnstile token is missing', async () => {
+    vi.mocked(verifyTurnstile).mockResolvedValueOnce(false)
+
+    const response = await postRegister({
+      email: 'new@example.com',
+      password: 'password123',
+    })
+
+    expect(response.status).toBe(403)
+    expect(await response.json()).toEqual({ errorCode: 'bot_check_failed' })
+    expect(verifyTurnstile).toHaveBeenCalledWith(
+      '',
+      'wcpos.com',
+      '203.0.113.7'
+    )
+    expect(mockRegister).not.toHaveBeenCalled()
+  })
+
+  it('returns 403 without registering when Turnstile verification is unavailable', async () => {
+    vi.mocked(verifyTurnstile).mockRejectedValueOnce(
+      new Error('Turnstile unavailable')
+    )
+
+    const responsePromise = postRegister({
+      email: 'new@example.com',
+      password: 'password123',
+      turnstileToken: 'unverifiable-token',
+    })
+
+    await expect(responsePromise).resolves.toBeInstanceOf(Response)
+    const response = await responsePromise
+    expect(response.status).toBe(403)
+    expect(await response.json()).toEqual({ errorCode: 'bot_check_failed' })
+    expect(mockRegister).not.toHaveBeenCalled()
+  })
+
   it('does not call Medusa until Turnstile accepts the challenge', async () => {
     let resolveVerification!: (verified: boolean) => void
     vi.mocked(verifyTurnstile).mockImplementationOnce(

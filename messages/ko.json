@@ -1043,6 +1043,7 @@
     },
     "impersonation": {
       "viewing": "🔍 <strong>{target}</strong> 계정을 <strong>읽기 전용</strong>으로 보고 있습니다 — 이 계정을 변경할 수 없습니다.",
+      "securityHold": "보안 제한 활성화",
       "exit": "나가기"
     },
     "orderStatus": {

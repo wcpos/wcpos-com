@@ -1043,6 +1043,7 @@
     },
     "impersonation": {
       "viewing": "🔍 正在以<strong>只读</strong>方式查看 <strong>{target}</strong>——您无法更改其账户。",
+      "securityHold": "安全限制已启用",
       "exit": "退出"
     },
     "orderStatus": {

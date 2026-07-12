@@ -112,7 +112,9 @@ export function AccountStep({ checkoutPath, onAuthenticated }: AccountStepProps)
         return
       }
       setError(
-        isCreatingAccount && body.errorCode === 'bot_check_failed'
+        isCreatingAccount && body.errorCode === 'rate_limited'
+          ? tCommon('apiErrors.rate_limited')
+          : isCreatingAccount && body.errorCode === 'bot_check_failed'
           ? tCommon('apiErrors.bot_check_failed')
           : isCreatingAccount && body.errorCode === 'rate_limit_unavailable'
             ? tCommon('apiErrors.rate_limit_unavailable')

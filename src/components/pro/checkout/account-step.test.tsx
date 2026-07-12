@@ -194,6 +194,26 @@ describe('AccountStep', () => {
     ).toBeDisabled()
   })
 
+  it('shows the localized retry message when inline registration is rate limited', async () => {
+    fetchMock.mockResolvedValueOnce({
+      ok: false,
+      status: 429,
+      json: async () => ({ errorCode: 'rate_limited' }),
+    })
+    renderAccountStep()
+    fillCredentials()
+    completeChallenge('rate-limited-token')
+
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Create account & continue' })
+    )
+
+    expect(await screen.findByRole('alert')).toHaveTextContent(
+      'Too many attempts. Please try again later.'
+    )
+    expect(turnstileMock.reset).toHaveBeenCalledTimes(1)
+  })
+
   it('shows customer-safe support copy when inline sign-in is held', async () => {
     fetchMock
       .mockResolvedValueOnce({

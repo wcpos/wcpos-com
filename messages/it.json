@@ -1043,6 +1043,7 @@
     },
     "impersonation": {
       "viewing": "🔍 Stai visualizzando <strong>{target}</strong> in modalità <strong>sola lettura</strong> — non puoi modificare il suo account.",
+      "securityHold": "Blocco di sicurezza attivo",
       "exit": "Esci"
     },
     "orderStatus": {

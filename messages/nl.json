@@ -1043,6 +1043,7 @@
     },
     "impersonation": {
       "viewing": "🔍 Je bekijkt <strong>{target}</strong> als <strong>alleen-lezen</strong> — je kunt dit account niet wijzigen.",
+      "securityHold": "Beveiligingsblokkering actief",
       "exit": "Afsluiten"
     },
     "orderStatus": {

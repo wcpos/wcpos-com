@@ -1043,6 +1043,7 @@
     },
     "impersonation": {
       "viewing": "🔍 Viewing <strong>{target}</strong> as <strong>read-only</strong> — you cannot change their account.",
+      "securityHold": "Security hold active",
       "exit": "Exit"
     },
     "orderStatus": {

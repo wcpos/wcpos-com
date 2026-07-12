@@ -1043,6 +1043,7 @@
     },
     "impersonation": {
       "viewing": "🔍 <strong>{target}</strong> を <strong>読み取り専用</strong> として表示中 — アカウントは変更できません。",
+      "securityHold": "セキュリティ保留中",
       "exit": "終了"
     },
     "orderStatus": {

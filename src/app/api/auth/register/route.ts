@@ -85,13 +85,12 @@ export async function POST(request: Request) {
     return errorResponse('password_too_short', 400)
   }
 
-  if (
-    !(await verifyTurnstile(
-      turnstileToken,
-      request.headers.get('host'),
-      ip
-    ))
-  ) {
+  const turnstileVerified = await verifyTurnstile(
+    turnstileToken,
+    request.headers.get('host'),
+    ip
+  ).catch(() => false)
+  if (!turnstileVerified) {
     return errorResponse('bot_check_failed', 403)
   }
 

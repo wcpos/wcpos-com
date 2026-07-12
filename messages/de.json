@@ -1043,6 +1043,7 @@
     },
     "impersonation": {
       "viewing": "🔍 Du siehst <strong>{target}</strong> <strong>schreibgeschützt</strong> — du kannst dieses Konto nicht ändern.",
+      "securityHold": "Sicherheitssperre aktiv",
       "exit": "Beenden"
     },
     "orderStatus": {

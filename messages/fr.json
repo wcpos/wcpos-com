@@ -1043,6 +1043,7 @@
     },
     "impersonation": {
       "viewing": "🔍 Consultation de <strong>{target}</strong> en <strong>lecture seule</strong> — vous ne pouvez pas modifier son compte.",
+      "securityHold": "Blocage de sécurité actif",
       "exit": "Quitter"
     },
     "orderStatus": {
