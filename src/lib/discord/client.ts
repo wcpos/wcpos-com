@@ -212,11 +212,10 @@ export class DiscordApiClient {
     let after: string | undefined
 
     do {
-      const url = new URL(`${DISCORD_API_BASE}/guilds/${this.config.guildId}/members`)
-      url.searchParams.set('limit', '1000')
-      if (after) url.searchParams.set('after', after)
+      const search = new URLSearchParams({ limit: '1000' })
+      if (after) search.set('after', after)
 
-      const response = await this.botFetch(url.pathname + url.search)
+      const response = await this.botFetch(`/guilds/${this.config.guildId}/members?${search}`)
       if (!response.ok) {
         throw new Error(`Discord member list failed: ${await parseDiscordError(response)}`)
       }
