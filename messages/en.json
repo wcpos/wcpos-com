@@ -511,10 +511,14 @@
       },
       "summary": {
         "quantity": "Qty: {quantity}",
+        "discount": "Discount",
         "total": "Total",
         "instantLicense": "Instant license delivery",
         "oneTimePayment": "One-time payment — never auto-renews",
         "securePayment": "Secure payment processing"
+      },
+      "promo": {
+        "invalid": "This discount link has expired or is no longer valid. The regular price is shown."
       },
       "account": {
         "emailLabel": "Email",

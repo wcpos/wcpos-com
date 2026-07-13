@@ -511,10 +511,14 @@
       },
       "summary": {
         "quantity": "数量：{quantity}",
+        "discount": "优惠",
         "total": "总计",
         "instantLicense": "许可证即时交付",
         "oneTimePayment": "一次性付款 — 永不自动续订",
         "securePayment": "安全支付处理"
+      },
+      "promo": {
+        "invalid": "此优惠链接已过期或不再有效。当前显示常规价格。"
       },
       "account": {
         "emailLabel": "电子邮箱",

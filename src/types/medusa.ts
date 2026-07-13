@@ -67,8 +67,12 @@ export interface MedusaCart {
   completed_at?: string | null
   items: MedusaCartItem[]
   subtotal: number
+  discount_total?: number
   tax_total: number
   total: number
+  promotions?: Array<{
+    code: string
+  }>
   payment_sessions?: MedusaPaymentSession[]
   /** Medusa v2: the cart's payment container (one per cart). */
   payment_collection?: {
@@ -83,6 +87,7 @@ export interface MedusaCartItem {
   description: string | null
   quantity: number
   unit_price: number
+  original_total?: number
   subtotal: number
   total: number
   variant_id: string

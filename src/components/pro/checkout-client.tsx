@@ -37,6 +37,7 @@ interface CartItem {
   title: string
   quantity: number
   unit_price: number
+  original_total?: number
   total?: number
 }
 
@@ -60,6 +61,7 @@ interface Cart {
   email?: string
   items: CartItem[]
   total: number
+  discount_total?: number
   currency_code: string
   payment_session?: PaymentSession
   payment_sessions?: PaymentSession[]
@@ -130,6 +132,8 @@ interface CheckoutClientProps {
   initialBillingAddress?: BillingAddress | null
   /** Saved profile tax registration (ABN/VAT/EIN…) to prefill. */
   initialTaxNumber?: string
+  /** Hidden promotion supplied by the checkout URL. */
+  promoCode?: string
   selectedOfferHandle?: string
   cartRegionId?: string
   /** Static summary shown before the cart exists. */
@@ -179,10 +183,25 @@ function resolveLineItemTotal(item: CartItem): number {
   return unitPrice * quantity
 }
 
+function resolveLineItemOriginalTotal(item: CartItem): number {
+  if (
+    typeof item.original_total === 'number' &&
+    Number.isFinite(item.original_total)
+  ) {
+    return item.original_total
+  }
+
+  const unitPrice = Number.isFinite(item.unit_price) ? item.unit_price : 0
+  const quantity = Number.isFinite(item.quantity) ? item.quantity : 0
+
+  return unitPrice * quantity
+}
+
 export function CheckoutClient({
   customerEmail,
   initialBillingAddress,
   initialTaxNumber,
+  promoCode,
   selectedOfferHandle,
   cartRegionId,
   offerSummary,
@@ -216,6 +235,9 @@ export function CheckoutClient({
   // profile prefill. null = never submitted.
   const [taxNumber, setTaxNumber] = useState<string | null>(null)
   const [cart, setCart] = useState<Cart | null>(null)
+  const [promoStatus, setPromoStatus] = useState<
+    'applied' | 'invalid' | null
+  >(null)
   const [clientSecret, setClientSecret] = useState<string | null>(null)
   const [customerSessionClientSecret, setCustomerSessionClientSecret] =
     useState<string | null>(null)
@@ -386,16 +408,41 @@ export function CheckoutClient({
 
         const { cart: cartWithItem } = await itemResponse.json()
 
+        let initializedCart = cartWithItem
+        if (promoCode) {
+          try {
+            const promoResponse = await fetch('/api/store/cart/promotions', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ cartId: newCart.id, code: promoCode }),
+            })
+            if (!promoResponse.ok) {
+              throw new Error('PROMOTION_APPLY_FAILED')
+            }
+
+            const promoResult = await promoResponse.json()
+            if (promoResult.applied === true && promoResult.cart) {
+              initializedCart = promoResult.cart
+              setPromoStatus('applied')
+            } else {
+              setPromoStatus('invalid')
+            }
+          } catch {
+            // A stale promotion link must never block a full-price checkout.
+            setPromoStatus('invalid')
+          }
+        }
+
         // Keep initialization limited to the cart. Creating a Medusa payment
         // session for Stripe immediately creates a Stripe PaymentIntent, so do
         // that only after billing is submitted and the payment step is about to
         // render.
         const initialPaymentCollectionId =
-          cartWithItem.payment_collection?.id ?? null
-        setCart(cartWithItem)
+          initializedCart.payment_collection?.id ?? null
+        setCart(initializedCart)
         setPaymentCollectionId(initialPaymentCollectionId)
         cartReadyRef.current?.resolve({
-          cart: cartWithItem,
+          cart: initializedCart,
           paymentCollectionId: initialPaymentCollectionId,
         })
       } catch (err) {
@@ -417,6 +464,7 @@ export function CheckoutClient({
     cartRegionId,
     experimentVariant,
     locale,
+    promoCode,
   ])
 
   // Select payment provider when method changes
@@ -658,6 +706,8 @@ export function CheckoutClient({
       style: 'currency',
       currency: currencyCode,
     }).format(amount)
+  const discountTotal = cart?.discount_total ?? 0
+  const hasDiscount = discountTotal > 0
 
   const paypalSession = cart
     ? resolvePaymentSession(cart, getProviderId('paypal'))
@@ -825,10 +875,22 @@ export function CheckoutClient({
                   </p>
                 </div>
                 <p className="font-medium">
-                  {formatCurrency(resolveLineItemTotal(item))}
+                  {formatCurrency(
+                    hasDiscount
+                      ? resolveLineItemOriginalTotal(item)
+                      : resolveLineItemTotal(item)
+                  )}
                 </p>
               </div>
             ))}
+            {hasDiscount && (
+              <div
+                className={`mt-3 flex justify-between ${toneText.positive}`}
+              >
+                <span>{t('summary.discount')}</span>
+                <span>{formatCurrency(-discountTotal)}</span>
+              </div>
+            )}
             <div className="mt-3 flex justify-between border-t pt-3 font-bold">
               <span>{t('summary.total')}</span>
               <span>
@@ -857,6 +919,11 @@ export function CheckoutClient({
             <div className="h-5 w-40 animate-pulse rounded bg-muted" />
             <div className="h-5 w-24 animate-pulse rounded bg-muted" />
           </div>
+        )}
+        {promoStatus === 'invalid' && (
+          <p className="mt-3 text-sm text-muted-foreground">
+            {t('promo.invalid')}
+          </p>
         )}
         <ul className="mt-4 space-y-1.5 text-sm text-muted-foreground">
           <li className="flex gap-2">

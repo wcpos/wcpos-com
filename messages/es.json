@@ -511,10 +511,14 @@
       },
       "summary": {
         "quantity": "Cant.: {quantity}",
+        "discount": "Descuento",
         "total": "Total a pagar",
         "instantLicense": "Entrega instantánea de la licencia",
         "oneTimePayment": "Pago único — nunca se renueva automáticamente",
         "securePayment": "Procesamiento de pago seguro"
+      },
+      "promo": {
+        "invalid": "Este enlace de descuento ha caducado o ya no es válido. Se muestra el precio normal."
       },
       "account": {
         "emailLabel": "Correo electrónico",

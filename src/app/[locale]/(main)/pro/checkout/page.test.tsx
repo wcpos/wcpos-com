@@ -142,4 +142,16 @@ describe('CheckoutContent', () => {
       mockCookies.mock.invocationCallOrder[0]
     )
   })
+
+  it('trims and caps the hidden promo query parameter', async () => {
+    const result = await CheckoutContent({
+      locale: 'en',
+      searchParamsPromise: Promise.resolve({
+        product: 'wcpos-pro-yearly',
+        promo: `  ${'x'.repeat(70)}  `,
+      }),
+    })
+
+    expect(result.props.promoCode).toBe('x'.repeat(64))
+  })
 })

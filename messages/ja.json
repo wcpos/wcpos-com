@@ -511,10 +511,14 @@
       },
       "summary": {
         "quantity": "数量: {quantity}",
+        "discount": "割引",
         "total": "合計",
         "instantLicense": "ライセンスを即時配信",
         "oneTimePayment": "一回払い — 自動更新なし",
         "securePayment": "安全な決済処理"
+      },
+      "promo": {
+        "invalid": "この割引リンクは期限切れか、現在は無効です。通常価格が表示されています。"
       },
       "account": {
         "emailLabel": "メール",

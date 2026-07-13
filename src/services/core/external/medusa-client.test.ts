@@ -44,6 +44,7 @@ import {
   createCart,
   getCart,
   addLineItem,
+  addCartPromotions,
   updateCart,
   createPaymentCollection,
   createPaymentSession,
@@ -436,6 +437,86 @@ describe('medusaClient', () => {
         expect(
           (init.headers as Record<string, string>).Authorization
         ).toBeUndefined()
+      })
+    })
+
+    describe('addCartPromotions', () => {
+      it('adds promotion codes with the customer JWT', async () => {
+        const discountedCart = {
+          ...mockCart,
+          discount_total: 29,
+          promotions: [{ code: 'PROMO10' }],
+        }
+        mockFetch.mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({ cart: discountedCart }),
+        })
+
+        const cart = await addCartPromotions(
+          'cart_123',
+          ['PROMO10'],
+          'jwt_abc'
+        )
+
+        expect(cart).toEqual(discountedCart)
+        expect(mockFetch).toHaveBeenCalledWith(
+          'https://test-store-api.wcpos.com/store/carts/cart_123/promotions',
+          expect.objectContaining({
+            method: 'POST',
+            body: JSON.stringify({ promo_codes: ['PROMO10'] }),
+            headers: expect.objectContaining({
+              Authorization: 'Bearer jwt_abc',
+              'x-publishable-api-key': 'pk_test_abc123',
+            }),
+          })
+        )
+      })
+
+      it('normalizes Medusa invalid-code 400 responses to the unchanged cart', async () => {
+        mockFetch
+          .mockResolvedValueOnce({
+            ok: false,
+            status: 400,
+            text: async () =>
+              JSON.stringify({
+                type: 'invalid_data',
+                message: 'The promotion code EXPIRED is invalid',
+              }),
+          })
+          .mockResolvedValueOnce({
+            ok: true,
+            json: async () => ({ cart: mockCart }),
+          })
+
+        const cart = await addCartPromotions(
+          'cart_123',
+          ['EXPIRED'],
+          'jwt_abc'
+        )
+
+        expect(cart).toEqual(mockCart)
+        expect(mockFetch).toHaveBeenNthCalledWith(
+          2,
+          'https://test-store-api.wcpos.com/store/carts/cart_123',
+          expect.any(Object)
+        )
+      })
+
+      it('returns null for real Medusa failures', async () => {
+        mockFetch.mockResolvedValueOnce({
+          ok: false,
+          status: 500,
+          text: async () => 'backend unavailable',
+        })
+
+        const cart = await addCartPromotions(
+          'cart_123',
+          ['PROMO10'],
+          'jwt_abc'
+        )
+
+        expect(cart).toBeNull()
+        expect(mockFetch).toHaveBeenCalledTimes(1)
       })
     })
 
