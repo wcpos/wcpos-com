@@ -1,8 +1,8 @@
 import 'server-only'
 
-import { DiscordApiClient } from './client'
+import { DiscordApiClient, DiscordRateLimitError } from './client'
 import { getDiscordConfig, isDiscordDirectoryConfigured } from './config'
-import { findAdminCustomerByEmail, listAdminCustomerOrders, listAdminCustomers } from './medusa-admin'
+import { findAdminCustomerByEmail, listAdminCustomerOrders } from './medusa-admin'
 import { assembleMemberCardFromFleet } from './customer-lookup'
 import {
   parseDirectoryMessage,
@@ -12,7 +12,6 @@ import {
   type DirectorySyncSummary,
 } from './directory'
 import { licenseClient } from '@/services/core/external/license-client'
-import { getResolvedLicenseSnapshotFromOrders } from '@/lib/customer-licenses'
 import {
   getConnectedDiscordUserIds,
   getLicensesForDiscordUser as getLicenseLifecyclesForDiscordUser,
@@ -23,50 +22,39 @@ import type {
   DiscordRoleSyncDependencies,
 } from './sync'
 import type { LicenseDetail } from '@/types/license'
+import { infraLogger } from '@/lib/logger'
 
-const ADMIN_ORDER_SCAN_CONCURRENCY = 5
+type DiscordLicenseFleet = Array<Omit<LicenseDetail, 'machines'>>
+const INITIAL_FLEET_TIMEOUT_MS = 90_000
+const REFRESH_FLEET_TIMEOUT_MS = 60_000
+const ORPHAN_CLEANUP_CUTOFF_MS = 100_000
 
-interface DiscordLicenseSnapshot {
-  licenses: LicenseDetail[]
-  complete: boolean
+export interface DiscordLicenseFleetSnapshot {
+  get(): Promise<DiscordLicenseFleet>
+  refresh(): Promise<DiscordLicenseFleet>
 }
 
-async function getAllResolvedLicensesForDiscordSync(): Promise<DiscordLicenseSnapshot> {
-  const customers = await listAdminCustomers()
-  const snapshots: DiscordLicenseSnapshot[] = []
-
-  for (let index = 0; index < customers.length; index += ADMIN_ORDER_SCAN_CONCURRENCY) {
-    const customerBatch = customers.slice(index, index + ADMIN_ORDER_SCAN_CONCURRENCY)
-    snapshots.push(...(await Promise.all(
-      customerBatch.map(async (customer) => {
-        const orders = await listAdminCustomerOrders(customer.id)
-        return getResolvedLicenseSnapshotFromOrders(orders)
-      })
-    )))
-  }
-
+export function createDiscordLicenseFleetSnapshot(): DiscordLicenseFleetSnapshot {
+  let snapshot: Promise<DiscordLicenseFleet> | null = null
+  const load = (timeoutMs: number) =>
+    licenseClient.listAllLicenses({ signal: AbortSignal.timeout(timeoutMs) })
   return {
-    licenses: snapshots.flatMap((snapshot) => snapshot.licenses),
-    complete: snapshots.every((snapshot) => snapshot.complete),
-  }
-}
-
-function createResolvedLicenseSnapshot(): () => Promise<DiscordLicenseSnapshot> {
-  let snapshot: Promise<DiscordLicenseSnapshot> | null = null
-  return () => {
-    snapshot ??= getAllResolvedLicensesForDiscordSync()
-    return snapshot
+    get: () => {
+      snapshot ??= load(INITIAL_FLEET_TIMEOUT_MS)
+      return snapshot
+    },
+    refresh: () => {
+      snapshot = load(REFRESH_FLEET_TIMEOUT_MS)
+      return snapshot
+    },
   }
 }
 
 function getLicensesForDiscordUserFromSnapshot(
   discordUserId: string,
-  snapshot: DiscordLicenseSnapshot
+  licenses: DiscordLicenseFleet
 ) {
-  const licenses = getLicenseLifecyclesForDiscordUser(discordUserId, snapshot.licenses)
-  return snapshot.complete
-    ? licenses
-    : [...licenses, { status: 'unknown' as const, expiry: null }]
+  return getLicenseLifecyclesForDiscordUser(discordUserId, licenses)
 }
 
 export function createDiscordRoleSyncDependencies(
@@ -83,7 +71,9 @@ export function createDiscordRoleSyncDependencies(
   }
 }
 
-function createDiscordDirectoryDependencies(): DiscordDirectoryDependencies {
+function createDiscordDirectoryDependencies(
+  listAllLicenses: () => Promise<DiscordLicenseFleet> = licenseClient.listAllLicenses
+): DiscordDirectoryDependencies {
   const config = getDiscordConfig()
   const channelId = config.directoryChannelId
   if (!channelId) {
@@ -92,7 +82,7 @@ function createDiscordDirectoryDependencies(): DiscordDirectoryDependencies {
   const client = new DiscordApiClient(config)
 
   return {
-    listAllLicenses: licenseClient.listAllLicenses,
+    listAllLicenses,
     assembleCard: (discordUserId, allLicenses) =>
       assembleMemberCardFromFleet(discordUserId, allLicenses, {
         findCustomerByEmail: findAdminCustomerByEmail,
@@ -120,29 +110,42 @@ export async function syncDiscordDirectoryForMember(discordUserId: string): Prom
 }
 
 /** Nightly full pass — rides the existing reconcile cron (#522). */
-export async function reconcileDiscordDirectory(): Promise<DirectorySyncSummary | null> {
+export async function reconcileDiscordDirectory(
+  listAllLicenses?: () => Promise<DiscordLicenseFleet>
+): Promise<DirectorySyncSummary | null> {
   if (!isDiscordDirectoryConfigured()) return null
-  return syncMemberDirectory(createDiscordDirectoryDependencies())
+  return syncMemberDirectory(createDiscordDirectoryDependencies(listAllLicenses))
 }
 
-export function createDiscordReconcileDependencies(): DiscordReconcileDependencies {
+export function createDiscordReconcileDependencies(
+  fleet: DiscordLicenseFleetSnapshot = createDiscordLicenseFleetSnapshot()
+): DiscordReconcileDependencies {
   const client = new DiscordApiClient(getDiscordConfig())
-  const getResolvedLicenses = createResolvedLicenseSnapshot()
+  const orphanCleanupCutoff = Date.now() + ORPHAN_CLEANUP_CUTOFF_MS
 
   return {
     getLicensesForDiscordUser: async (discordUserId) =>
       getLicensesForDiscordUserFromSnapshot(
         discordUserId,
-        await getResolvedLicenses()
+        await fleet.get()
       ),
     getMemberRoleState: (discordUserId) => client.getMemberRoleState(discordUserId),
     addRole: (discordUserId) => client.addRole(discordUserId),
     removeRole: (discordUserId) => client.removeRole(discordUserId),
     now: () => new Date(),
     listConnectedDiscordUserIds: async () =>
-      getConnectedDiscordUserIds((await getResolvedLicenses()).licenses),
-    canRemoveOrphanRoleHolders: async () =>
-      (await getResolvedLicenses()).complete,
+      getConnectedDiscordUserIds(await fleet.get()),
+    refreshConnectedDiscordUserIds: async () =>
+      getConnectedDiscordUserIds(await fleet.refresh()),
+    canRemoveOrphanRoleHolders: async () => {
+      await fleet.get()
+      return true
+    },
     listRoleHolderIds: () => client.listRoleHolderIds(),
+    canContinueOrphanCleanup: () => Date.now() < orphanCleanupCutoff,
+    isRateLimitError: (error) => error instanceof DiscordRateLimitError,
+    reportFailure: ({ discordUserId, operation, error }) => {
+      infraLogger.error`Discord reconciliation ${operation} failed for ${discordUserId ?? 'reconciliation phase'}: ${error}`
+    },
   }
 }

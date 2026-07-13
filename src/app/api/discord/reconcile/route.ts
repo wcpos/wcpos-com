@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { env } from '@/utils/env'
 import {
+  createDiscordLicenseFleetSnapshot,
   createDiscordReconcileDependencies,
   reconcileDiscordDirectory,
 } from '@/lib/discord/default-sync'
@@ -19,13 +20,15 @@ async function handle(request: NextRequest) {
     return NextResponse.json({ errorCode: 'unauthorized' }, { status: 401 })
   }
 
+  const fleet = createDiscordLicenseFleetSnapshot()
+
   // The directory full pass rides the same cron (#522). Null until
   // DISCORD_DIRECTORY_CHANNEL_ID is configured. Run both independent passes
   // concurrently so the fleet-wide role scan cannot consume the function's
   // entire time budget before the directory starts.
   const roleReconciliation = (async () => {
     try {
-      const summary = await reconcileDiscordProRoles(createDiscordReconcileDependencies())
+      const summary = await reconcileDiscordProRoles(createDiscordReconcileDependencies(fleet))
       infraLogger.info`Discord role reconciliation complete: ${JSON.stringify(summary)}`
       return { failed: false as const, summary }
     } catch (error) {
@@ -36,7 +39,7 @@ async function handle(request: NextRequest) {
 
   const directoryReconciliation = (async () => {
     try {
-      const directory = await reconcileDiscordDirectory()
+      const directory = await reconcileDiscordDirectory(fleet.get)
       if (directory) {
         infraLogger.info`Discord directory reconciliation complete: ${JSON.stringify(directory)}`
       }

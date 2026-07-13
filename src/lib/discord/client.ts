@@ -4,6 +4,22 @@ import type { DiscordConfig } from './config'
 import type { DiscordMemberRoleState } from './sync'
 
 const DISCORD_API_BASE = 'https://discord.com/api/v10'
+const MAX_RATE_LIMIT_RETRIES = 1
+const MAX_RATE_LIMIT_WAIT_MS = 5_000
+const DISCORD_REQUEST_TIMEOUT_MS = 10_000
+const ORPHAN_REMOVAL_AUDIT_REASON = encodeURIComponent(
+  'WCPOS reconciliation: no active connected licence'
+)
+
+export class DiscordRateLimitError extends Error {
+  readonly retryAfterMs: number | null
+
+  constructor(message: string, retryAfter: number | null) {
+    super(message)
+    this.name = 'DiscordRateLimitError'
+    this.retryAfterMs = retryAfter
+  }
+}
 
 export interface DiscordOAuthUser {
   id: string
@@ -43,6 +59,36 @@ async function parseDiscordError(response: Response): Promise<string> {
   } catch {
     return text
   }
+}
+
+async function retryAfterMs(response: Response): Promise<number | null> {
+  const header = response.headers.get('Retry-After')
+  if (header !== null) {
+    const seconds = Number(header)
+    if (Number.isFinite(seconds) && seconds >= 0) return seconds * 1_000
+  }
+
+  try {
+    const body = (await response.clone().json()) as { retry_after?: unknown }
+    const seconds = Number(body.retry_after)
+    return Number.isFinite(seconds) && seconds >= 0 ? seconds * 1_000 : null
+  } catch {
+    return null
+  }
+}
+
+function wait(milliseconds: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, milliseconds))
+}
+
+async function discordBotError(response: Response, operation: string): Promise<Error> {
+  if (response.status === 429) {
+    return new DiscordRateLimitError(
+      `${operation} rate limited: ${await parseDiscordError(response.clone())}`,
+      await retryAfterMs(response)
+    )
+  }
+  return new Error(`${operation} failed: ${await parseDiscordError(response)}`)
 }
 
 export class DiscordApiClient {
@@ -98,10 +144,22 @@ export class DiscordApiClient {
     headers.set('Authorization', `Bot ${this.config.botToken}`)
     headers.set('Content-Type', 'application/json')
 
-    return fetch(`${DISCORD_API_BASE}${path}`, {
-      ...init,
-      headers,
-    })
+    for (let attempt = 0; ; attempt += 1) {
+      const response = await fetch(`${DISCORD_API_BASE}${path}`, {
+        ...init,
+        headers,
+        signal: init.signal
+          ? AbortSignal.any([init.signal, AbortSignal.timeout(DISCORD_REQUEST_TIMEOUT_MS)])
+          : AbortSignal.timeout(DISCORD_REQUEST_TIMEOUT_MS),
+      })
+      if (response.status !== 429 || attempt >= MAX_RATE_LIMIT_RETRIES) {
+        return response
+      }
+
+      const delay = await retryAfterMs(response)
+      if (delay === null || delay > MAX_RATE_LIMIT_WAIT_MS) return response
+      await wait(delay)
+    }
   }
 
   async getMemberRoleState(discordUserId: string): Promise<DiscordMemberRoleState> {
@@ -111,7 +169,7 @@ export class DiscordApiClient {
 
     if (response.status === 404) return 'not_in_guild'
     if (!response.ok) {
-      throw new Error(`Discord member lookup failed: ${await parseDiscordError(response)}`)
+      throw await discordBotError(response, 'Discord member lookup')
     }
 
     const member = (await response.json()) as DiscordGuildMember
@@ -126,19 +184,22 @@ export class DiscordApiClient {
 
     if (response.status === 404) return
     if (!response.ok) {
-      throw new Error(`Discord role add failed: ${await parseDiscordError(response)}`)
+      throw await discordBotError(response, 'Discord role add')
     }
   }
 
   async removeRole(discordUserId: string): Promise<void> {
     const response = await this.botFetch(
       `/guilds/${this.config.guildId}/members/${discordUserId}/roles/${this.config.proRoleId}`,
-      { method: 'DELETE' }
+      {
+        method: 'DELETE',
+        headers: { 'X-Audit-Log-Reason': ORPHAN_REMOVAL_AUDIT_REASON },
+      }
     )
 
     if (response.status === 404) return
     if (!response.ok) {
-      throw new Error(`Discord role removal failed: ${await parseDiscordError(response)}`)
+      throw await discordBotError(response, 'Discord role removal')
     }
   }
 
@@ -212,13 +273,14 @@ export class DiscordApiClient {
     let after: string | undefined
 
     do {
-      const url = new URL(`${DISCORD_API_BASE}/guilds/${this.config.guildId}/members`)
-      url.searchParams.set('limit', '1000')
-      if (after) url.searchParams.set('after', after)
+      const search = new URLSearchParams({ limit: '1000' })
+      if (after) search.set('after', after)
 
-      const response = await this.botFetch(url.pathname + url.search)
+      const response = await this.botFetch(
+        `/guilds/${this.config.guildId}/members?${search}`
+      )
       if (!response.ok) {
-        throw new Error(`Discord member list failed: ${await parseDiscordError(response)}`)
+        throw await discordBotError(response, 'Discord member list')
       }
 
       const members = (await response.json()) as DiscordGuildMember[]

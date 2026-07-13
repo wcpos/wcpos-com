@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { DiscordApiClient } from './client'
+import { DiscordApiClient, DiscordRateLimitError } from './client'
 import type { DiscordConfig } from './config'
 
 const config: DiscordConfig = {
@@ -11,7 +11,7 @@ const config: DiscordConfig = {
   adminApiToken: 'admin-token',
 }
 
-describe('DiscordApiClient directory endpoints', () => {
+describe('DiscordApiClient bot endpoints', () => {
   const fetchMock = vi.fn()
 
   beforeEach(() => {
@@ -20,6 +20,7 @@ describe('DiscordApiClient directory endpoints', () => {
   })
 
   afterEach(() => {
+    vi.useRealTimers()
     vi.unstubAllGlobals()
     vi.clearAllMocks()
   })
@@ -31,5 +32,53 @@ describe('DiscordApiClient directory endpoints', () => {
       'https://discord.com/api/v10/channels/channel-123/messages?limit=100',
       expect.anything()
     )
+  })
+
+  it('lists guild members without duplicating the API base path', async () => {
+    await new DiscordApiClient(config).listRoleHolderIds()
+
+    expect(fetchMock).toHaveBeenCalledWith(
+      'https://discord.com/api/v10/guilds/guild-123/members?limit=1000',
+      expect.objectContaining({ signal: expect.any(AbortSignal) })
+    )
+  })
+
+  it('waits for Retry-After and retries a rate-limited role removal once', async () => {
+    vi.useFakeTimers()
+    fetchMock
+      .mockResolvedValueOnce(
+        new Response(JSON.stringify({ message: 'rate limited', retry_after: 0.25 }), {
+          status: 429,
+          headers: { 'Retry-After': '0.25' },
+        })
+      )
+      .mockResolvedValueOnce(new Response(null, { status: 204 }))
+
+    const removal = new DiscordApiClient(config).removeRole('member-123')
+    await vi.runAllTimersAsync()
+    await removal
+
+    expect(fetchMock).toHaveBeenCalledTimes(2)
+    const headers = new Headers(fetchMock.mock.calls[0]?.[1]?.headers)
+    expect(headers.get('X-Audit-Log-Reason')).toBe(
+      'WCPOS%20reconciliation%3A%20no%20active%20connected%20licence'
+    )
+  })
+
+  it('does not wait past the reconciliation rate-limit budget', async () => {
+    fetchMock.mockResolvedValueOnce(
+      new Response(JSON.stringify({ message: 'rate limited', retry_after: 30 }), {
+        status: 429,
+        headers: { 'Retry-After': '30' },
+      })
+    )
+
+    await expect(new DiscordApiClient(config).removeRole('member-123')).rejects.toEqual(
+      expect.objectContaining({
+        name: DiscordRateLimitError.name,
+        retryAfterMs: 30_000,
+      })
+    )
+    expect(fetchMock).toHaveBeenCalledTimes(1)
   })
 })

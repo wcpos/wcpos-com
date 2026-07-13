@@ -302,6 +302,20 @@ describe('licenseClient', () => {
         expect.objectContaining({ signal: expect.any(AbortSignal) })
       )
     })
+
+    it('distinguishes an overall reconciliation deadline from a page timeout', async () => {
+      const controller = new AbortController()
+      controller.abort()
+      mockFetch.mockRejectedValueOnce(new DOMException('The operation timed out.', 'TimeoutError'))
+
+      await expect(
+        licenseClient.listAllLicenses({ signal: controller.signal })
+      ).rejects.toMatchObject({
+        name: 'KeygenRequestError',
+        status: 408,
+        message: expect.stringContaining('reconciliation time budget'),
+      } satisfies Partial<KeygenRequestError>)
+    })
   })
 
   describe('getLicenseMachines', () => {
