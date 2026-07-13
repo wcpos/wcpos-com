@@ -40,10 +40,10 @@ async function handle(request: NextRequest) {
       if (directory) {
         infraLogger.info`Discord directory reconciliation complete: ${JSON.stringify(directory)}`
       }
-      return directory
+      return { failed: false as const, summary: directory }
     } catch (directoryError) {
       infraLogger.error`Discord directory reconciliation failed: ${directoryError}`
-      return { error: 'directory_reconciliation_failed' }
+      return { failed: true as const, summary: undefined }
     }
   })()
 

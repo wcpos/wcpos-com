@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { NextRequest } from 'next/server'
+import type { DirectorySyncSummary } from '@/lib/discord/directory'
 
 const { mockEnv, mockDeps, mockSummary } = vi.hoisted(() => ({
   mockEnv: { CRON_SECRET: undefined as string | undefined },
@@ -12,7 +13,7 @@ const mockReconcile = vi.fn(async (deps: unknown) => {
   void deps
   return mockSummary
 })
-const mockDirectoryReconcile = vi.fn(async () => null)
+const mockDirectoryReconcile = vi.fn(async (): Promise<DirectorySyncSummary | null> => null)
 
 vi.mock('@/utils/env', () => ({
   env: mockEnv,
@@ -72,7 +73,11 @@ describe('/api/discord/reconcile', () => {
     const response = await GET(makeRequest({ authorization: 'Bearer cron-secret' }))
 
     expect(response.status).toBe(200)
-    await expect(response.json()).resolves.toEqual({ ok: true, summary: mockSummary, directory: null })
+    await expect(response.json()).resolves.toEqual({
+      ok: true,
+      summary: mockSummary,
+      directory: { failed: false, summary: null },
+    })
     expect(mockCreateDependencies).toHaveBeenCalledTimes(1)
     expect(mockReconcile).toHaveBeenCalledWith(mockDeps)
   })
@@ -81,7 +86,38 @@ describe('/api/discord/reconcile', () => {
     const response = await POST(makeRequest({ 'x-cron-secret': 'cron-secret' }))
 
     expect(response.status).toBe(200)
-    await expect(response.json()).resolves.toEqual({ ok: true, summary: mockSummary, directory: null })
+    await expect(response.json()).resolves.toEqual({
+      ok: true,
+      summary: mockSummary,
+      directory: { failed: false, summary: null },
+    })
+  })
+
+  it('returns a normalized directory summary when directory reconciliation succeeds', async () => {
+    const directorySummary = { members: 1, created: 1, updated: 0, deleted: 0 }
+    mockDirectoryReconcile.mockResolvedValueOnce(directorySummary)
+
+    const response = await POST(makeRequest({ 'x-cron-secret': 'cron-secret' }))
+
+    expect(response.status).toBe(200)
+    await expect(response.json()).resolves.toEqual({
+      ok: true,
+      summary: mockSummary,
+      directory: { failed: false, summary: directorySummary },
+    })
+  })
+
+  it('returns a normalized directory result when directory reconciliation fails', async () => {
+    mockDirectoryReconcile.mockRejectedValueOnce(new Error('discord down'))
+
+    const response = await POST(makeRequest({ 'x-cron-secret': 'cron-secret' }))
+
+    expect(response.status).toBe(200)
+    await expect(response.json()).resolves.toEqual({
+      ok: true,
+      summary: mockSummary,
+      directory: { failed: true },
+    })
   })
 
   it('returns a stable failure code when reconciliation throws', async () => {
