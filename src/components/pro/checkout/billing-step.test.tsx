@@ -67,6 +67,20 @@ describe('BillingStep prefill', () => {
     expect(screen.getByLabelText(/VAT number/)).toBeInTheDocument()
   })
 
+  it('requires postal code only for countries whose address metadata requires it', () => {
+    render(<BillingStep onSubmit={vi.fn(async () => {})} />)
+
+    const country = screen.getByLabelText('Country')
+    const postal = screen.getByLabelText('Postal code')
+    expect(postal).toBeRequired()
+
+    fireEvent.change(country, { target: { value: 'cq' } })
+    expect(postal).not.toBeRequired()
+
+    fireEvent.change(country, { target: { value: 'gb' } })
+    expect(postal).toBeRequired()
+  })
+
   it('submits the trimmed tax number alongside the address', async () => {
     const onSubmit = vi.fn(async () => {})
     render(
@@ -160,7 +174,7 @@ describe('BillingStep prefill', () => {
           city: 'Sydney',
           province: 'Old NSW',
           postal_code: '2000',
-          country_code: 'au',
+          country_code: 'cq',
         }}
         onSubmit={onSubmit}
       />

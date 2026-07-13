@@ -1,5 +1,9 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { buildCountryOptions, isBillingCountry } from './billing-countries'
+import {
+  billingCountryRequiresPostalCode,
+  buildCountryOptions,
+  isBillingCountry,
+} from './billing-countries'
 
 describe('billing countries', () => {
   afterEach(() => {
@@ -43,4 +47,18 @@ describe('billing countries', () => {
     expect(isBillingCountry('eu')).toBe(false)
     expect(isBillingCountry('zz')).toBe(false)
   })
+
+  it.each(['US', 'ca', 'GB', 'AU', 'jp', 'DE', 'SG'])(
+    'requires a postal code for %s according to libaddressinput metadata',
+    (countryCode) => {
+      expect(billingCountryRequiresPostalCode(countryCode)).toBe(true)
+    }
+  )
+
+  it.each(['CQ', 'AE', 'QA', 'ZW'])(
+    'does not invent a postal requirement for %s',
+    (countryCode) => {
+      expect(billingCountryRequiresPostalCode(countryCode)).toBe(false)
+    }
+  )
 })

@@ -15,6 +15,12 @@ import {
 } from '@/lib/pro-offer-catalog'
 import { clientIp, createRateLimiter } from '@/lib/rate-limit'
 import { isLoopbackHost } from '@/lib/request-host'
+import { isCompleteBillingAddress } from '@/lib/billing-profile'
+import { PAYMENT_METHOD_PROVIDER_IDS } from '@/lib/checkout-payments'
+
+const ALLOWED_PAYMENT_SESSION_PROVIDER_IDS = new Set(
+  Object.values(PAYMENT_METHOD_PROVIDER_IDS)
+)
 
 const paymentSessionIpLimiter = createRateLimiter({
   prefix: 'checkout:payment-session:ip',
@@ -114,6 +120,10 @@ export async function POST(request: NextRequest) {
       return storeCartErrorResponse('cart_id_required', 400)
     }
 
+    if (!ALLOWED_PAYMENT_SESSION_PROVIDER_IDS.has(providerId)) {
+      return storeCartErrorResponse('payment_provider_not_allowed', 400)
+    }
+
     const currentCart = await getCart(cartId)
     if (!currentCart) {
       return storeCartErrorResponse('failed_fetch_cart', 500)
@@ -128,6 +138,10 @@ export async function POST(request: NextRequest) {
     const selection = resolveProOfferCartSelection(offers, currentCart)
     if (!selection) {
       return storeCartErrorResponse('current_pro_offer_cart_required', 400)
+    }
+
+    if (!isCompleteBillingAddress(currentCart.billing_address)) {
+      return storeCartErrorResponse('billing_address_required', 400)
     }
 
     // The cart is the source of truth for its payment collection: a

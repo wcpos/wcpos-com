@@ -2,6 +2,8 @@ import { describe, it, expect, vi, afterEach } from 'vitest'
 import { definedEnvEntries } from './env'
 
 const REQUIRED_PRODUCTION_ENV = {
+  CHECKOUT_GATEWAY_SECRET_LIVE: 'checkout-live-gateway-secret-at-least-32-chars',
+  CHECKOUT_GATEWAY_SECRET_TEST: 'checkout-test-gateway-secret-at-least-32-chars',
   CRON_SECRET: 'a-cron-secret',
   DOWNLOAD_TOKEN_SECRET: 'a-signing-secret',
   UPSTASH_REDIS_REST_URL: 'https://redis.example.com',
@@ -96,6 +98,18 @@ describe('production deploy-critical secret guard', () => {
 
     await expect(import('./env')).resolves.toHaveProperty('env')
   })
+
+  it.each(['CHECKOUT_GATEWAY_SECRET_LIVE', 'CHECKOUT_GATEWAY_SECRET_TEST'])(
+    'rejects %s when it is shorter than 32 characters',
+    async (key) => {
+      vi.stubEnv(key, 'too-short')
+      vi.resetModules()
+
+      await expect(import('./env')).rejects.toThrow(
+        'Invalid environment variables',
+      )
+    }
+  )
 
   it('does not require deploy-critical variables on non-production deploys', async () => {
     // next build sets NODE_ENV=production locally but leaves VERCEL_ENV unset;

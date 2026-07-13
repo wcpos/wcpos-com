@@ -1,4 +1,7 @@
-import { isBillingCountry } from './billing-countries'
+import {
+  billingCountryRequiresPostalCode,
+  isBillingCountry,
+} from './billing-countries'
 import type { BillingAddress } from '@/components/pro/checkout/billing-step'
 
 /**
@@ -64,6 +67,35 @@ export interface BillingAddressPatch {
 
 function asString(value: unknown): string {
   return typeof value === 'string' ? value : ''
+}
+
+/**
+ * Whether an address satisfies the checkout form's required-field contract.
+ * Postal code follows the shared country contract: required only where the
+ * selected country's address metadata requires one.
+ */
+export function isCompleteBillingAddress(value: unknown): boolean {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return false
+
+  const address = value as Record<string, unknown>
+  const requiredFields = ['first_name', 'last_name', 'address_1', 'city']
+  const hasRequiredFields = requiredFields.every((field) => {
+    const fieldValue = address[field]
+    return typeof fieldValue === 'string' && fieldValue.trim().length > 0
+  })
+  const countryCode = address.country_code
+  const normalizedCountryCode =
+    typeof countryCode === 'string' ? countryCode.trim() : ''
+  const postalCode = address.postal_code
+  const hasRequiredPostalCode =
+    !billingCountryRequiresPostalCode(normalizedCountryCode) ||
+    (typeof postalCode === 'string' && postalCode.trim().length > 0)
+
+  return (
+    hasRequiredFields &&
+    isBillingCountry(normalizedCountryCode) &&
+    hasRequiredPostalCode
+  )
 }
 
 /**
@@ -166,6 +198,37 @@ export function billingPrefillFromCustomer(
       : null
 
   return { address, taxNumber: details.taxNumber || undefined }
+}
+
+/**
+ * One-click renewal may only use an authoritative, complete default billing
+ * record. Unlike editable checkout prefill, this never synthesizes a country
+ * or accepts a partial address; customer names are the sole fallback.
+ */
+export function renewalBillingPrefillFromCustomer(
+  customer: PrefillCustomer
+): BillingPrefill {
+  const saved = pickDefaultBillingAddress(customer.addresses)
+  if (!saved) return { address: null, taxNumber: undefined }
+
+  const details = billingDetailsFromAddress(saved)
+  const address: BillingAddress = {
+    first_name:
+      asString(saved.first_name).trim() || asString(customer.first_name).trim(),
+    last_name:
+      asString(saved.last_name).trim() || asString(customer.last_name).trim(),
+    address_1: details.addressLine1,
+    address_2: details.addressLine2,
+    city: details.city,
+    province: details.region,
+    postal_code: details.postalCode,
+    country_code: details.countryCode.toLowerCase(),
+  }
+
+  return {
+    address: isCompleteBillingAddress(address) ? address : null,
+    taxNumber: details.taxNumber || undefined,
+  }
 }
 
 /**

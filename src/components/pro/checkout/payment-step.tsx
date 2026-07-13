@@ -17,6 +17,7 @@ import {
   beginCheckoutPaymentAttempt,
   captureCheckoutPaymentFailure,
 } from '@/lib/analytics/checkout-payment-lifecycle'
+import type { BillingAddress } from './billing-step'
 
 export type PaymentMethod = 'stripe' | 'paypal' | 'btcpay'
 
@@ -105,6 +106,8 @@ interface PaymentStepProps {
   locale: string
   experiment: string
   experimentVariant: ProCheckoutVariant
+  billingAddress: BillingAddress
+  customerEmail?: string | null
   amount: number
   currency: string
   onSuccess: (orderId: string) => void
@@ -143,6 +146,8 @@ export function PaymentStep({
   locale,
   experiment,
   experimentVariant,
+  billingAddress,
+  customerEmail,
   amount,
   currency,
   onSuccess,
@@ -205,6 +210,8 @@ export function PaymentStep({
               currency={currency}
               experiment={experiment}
               experimentVariant={experimentVariant}
+              billingAddress={billingAddress}
+              customerEmail={customerEmail}
               onAttempt={onProviderAttempt('stripe')}
               onSuccess={onSuccess}
               onFailure={onProviderFailure('stripe')}
@@ -290,6 +297,8 @@ export function PaymentStep({
           cartId={cartId}
           experiment={experiment}
           experimentVariant={experimentVariant}
+          billingAddress={billingAddress}
+          customerEmail={customerEmail}
           onAttempt={onProviderAttempt('stripe')}
           onSuccess={onSuccess}
           onFailure={onProviderFailure('stripe')}

@@ -6,7 +6,11 @@ import { Button } from '@/components/ui/button'
 import { FormField } from '@/components/ui/form-field'
 import { Input } from '@/components/ui/input'
 import { Select } from '@/components/ui/select'
-import { buildCountryOptions, taxIdLabelKey } from '@/lib/billing-countries'
+import {
+  billingCountryRequiresPostalCode,
+  buildCountryOptions,
+  taxIdLabelKey,
+} from '@/lib/billing-countries'
 
 /**
  * Billing address step — the minimum honest address block. The parent owns
@@ -185,6 +189,7 @@ export function BillingStep({
           <Input
             id="billing-postal"
             autoComplete="postal-code"
+            required={billingCountryRequiresPostalCode(countryCode)}
             value={postalCode}
             onChange={(event) => setPostalCode(event.target.value)}
           />

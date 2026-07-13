@@ -62,6 +62,23 @@ async function apiCheckout(
   })
   expect(lineItems.status()).toBe(200)
 
+  const billing = await request.patch('/api/store/cart', {
+    data: {
+      cartId: cart.id,
+      billing_address: {
+        first_name: 'Ada',
+        last_name: 'Lovelace',
+        address_1: '42 Wallaby Way',
+        address_2: 'Apt 7',
+        city: 'Sydney',
+        province: 'NSW',
+        postal_code: '2000',
+        country_code: 'au',
+      },
+    },
+  })
+  expect(billing.status()).toBe(200)
+
   const session = await request.post('/api/store/cart/payment-sessions', {
     data: { cartId: cart.id, provider_id: provider },
   })

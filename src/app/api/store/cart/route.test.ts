@@ -615,9 +615,20 @@ describe('PATCH /api/store/cart', () => {
     expect(response.status).toBe(200)
   })
 
-  it('does not touch the customer address when only non-address fields change', async () => {
-    await PATCH(patchRequest({ cartId: 'cart_1' }))
+  it.each([
+    ['missing', undefined],
+    ['incomplete', { ...billingAddress, city: '   ' }],
+    ['unsupported country', { ...billingAddress, country_code: 'xx' }],
+  ])('rejects a %s billing address', async (_name, address) => {
+    const response = await PATCH(
+      patchRequest({ cartId: 'cart_1', billing_address: address })
+    )
 
+    expect(response.status).toBe(400)
+    expect(await response.json()).toEqual({
+      errorCode: 'billing_address_required',
+    })
+    expect(mockUpdateCart).not.toHaveBeenCalled()
     expect(mockUpsertBillingAddress).not.toHaveBeenCalled()
   })
 })

@@ -57,6 +57,14 @@ const validCart = {
   // Ownership binding: the route only completes carts carrying the session
   // customer's email.
   email: 'customer@example.com',
+  billing_address: {
+    first_name: 'Ada',
+    last_name: 'Lovelace',
+    address_1: '42 Wallaby Way',
+    city: 'Sydney',
+    postal_code: '2000',
+    country_code: 'au',
+  },
   items: [{ variant_id: 'variant_yearly_current', quantity: 1 }],
 }
 
@@ -91,6 +99,27 @@ describe('POST /api/store/cart/complete', () => {
     )
 
     expect(response.status).toBe(401)
+    expect(mockCompleteCart).not.toHaveBeenCalled()
+    expect(mockTrackServerEvent).not.toHaveBeenCalled()
+  })
+
+  it('rejects a cart without a complete billing address before completion', async () => {
+    mockGetCart.mockResolvedValueOnce({
+      ...validCart,
+      billing_address: undefined,
+    })
+
+    const response = await POST(
+      new NextRequest('http://localhost:3000/api/store/cart/complete', {
+        method: 'POST',
+        body: JSON.stringify({ cartId: 'cart_1' }),
+      })
+    )
+
+    expect(response.status).toBe(400)
+    expect(await response.json()).toEqual({
+      errorCode: 'billing_address_required',
+    })
     expect(mockCompleteCart).not.toHaveBeenCalled()
     expect(mockTrackServerEvent).not.toHaveBeenCalled()
   })

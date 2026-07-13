@@ -55,6 +55,7 @@ interface RenewClientProps {
 type Phase = 'preparing' | 'ready' | 'error'
 type PreparedCart = {
   id: string
+  email?: string
   total?: number
   currency_code?: string
 }
@@ -250,6 +251,8 @@ export function RenewClient({
             currency={cart.currency_code ?? currency}
             experiment={RENEWAL_CHECKOUT_CONTEXT}
             experimentVariant="control"
+            billingAddress={billingAddress}
+            customerEmail={cart.email}
             onAttempt={() =>
               beginCheckoutPaymentAttempt({
                 cartId: cart.id,

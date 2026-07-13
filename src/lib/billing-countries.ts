@@ -128,3 +128,28 @@ const BILLING_COUNTRY_CODES = new Set(BILLING_COUNTRIES.map((c) => c.code))
 export function isBillingCountry(countryCode: string): boolean {
   return BILLING_COUNTRY_CODES.has(countryCode.toLowerCase())
 }
+
+/**
+ * Snapshot from Google libaddressinput's Address Data Service (2026-07-13):
+ * ISO countries whose `require` metadata contains `Z` (postal code).
+ * https://chromium-i18n.appspot.com/ssl-address/data/US
+ *
+ * An explicit required set is intentionally safer than requiring postal code
+ * worldwide: countries outside this list keep the field optional, rather than
+ * forcing customers to invent a fake value such as "N/A".
+ */
+const POSTAL_CODE_REQUIRED_COUNTRY_CODES = new Set([
+  'AS', 'AT', 'AU', 'AX', 'BE', 'BL', 'BR', 'CA', 'CH', 'CN', 'CZ', 'DE',
+  'DK', 'EE', 'ES', 'FI', 'FK', 'FM', 'FR', 'GB', 'GF', 'GG', 'GL', 'GP',
+  'GR', 'GS', 'GU', 'HU', 'IM', 'IN', 'IO', 'IT', 'JE', 'JP', 'KR', 'LI',
+  'LT', 'LU', 'LV', 'MF', 'MH', 'MP', 'MQ', 'MX', 'MY', 'NC', 'NL', 'NO',
+  'NZ', 'PF', 'PL', 'PM', 'PN', 'PR', 'PT', 'PW', 'RE', 'RO', 'RU', 'SE',
+  'SG', 'SH', 'SJ', 'SK', 'SM', 'TC', 'TR', 'TW', 'UA', 'US', 'VI', 'WF',
+  'YT', 'ZA',
+])
+
+export function billingCountryRequiresPostalCode(countryCode: string): boolean {
+  return POSTAL_CODE_REQUIRED_COUNTRY_CODES.has(
+    countryCode.trim().toUpperCase()
+  )
+}

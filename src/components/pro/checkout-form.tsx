@@ -20,6 +20,8 @@ import { useCheckoutFailureMessages } from './checkout/use-checkout-failure-mess
 import { checkoutSuccessReturnUrl } from './checkout/return-url'
 import type { ProCheckoutVariant } from '@/services/core/analytics/posthog-service'
 import { isCheckoutConsentWithdrawalBlocked } from '@/lib/analytics/checkout-payment-lifecycle'
+import type { BillingAddress } from './checkout/billing-step'
+import { stripeBillingDetailsFromCheckout } from '@/lib/stripe-billing-details'
 
 interface CheckoutFormProps {
   cartId: string
@@ -27,6 +29,8 @@ interface CheckoutFormProps {
   currency: string
   experiment: string
   experimentVariant: ProCheckoutVariant
+  billingAddress: BillingAddress
+  customerEmail?: string | null
   onAttempt?: () => Promise<void> | void
   onSuccess: (orderId: string) => void
   /**
@@ -48,6 +52,8 @@ export function CheckoutForm({
   currency,
   experiment,
   experimentVariant,
+  billingAddress,
+  customerEmail,
   onAttempt,
   onSuccess,
   onFailure,
@@ -59,6 +65,10 @@ export function CheckoutForm({
   const stripe = useStripe()
   const elements = useElements()
   const [isLoading, setIsLoading] = useState(false)
+  const billingDetails = stripeBillingDetailsFromCheckout(
+    billingAddress,
+    customerEmail
+  )
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -84,6 +94,9 @@ export function CheckoutForm({
         elements,
         confirmParams: {
           return_url: checkoutSuccessReturnUrl(window.location.origin, locale),
+          payment_method_data: {
+            billing_details: billingDetails,
+          },
         },
         redirect: 'if_required',
       })
@@ -178,7 +191,17 @@ export function CheckoutForm({
       {/* No wrapper box: the method row already frames this, and Stripe's
           Element is flattened (see stripe-provider appearance) so the fields
           read as part of the row rather than a box-within-a-box. */}
-      <PaymentElement />
+      <PaymentElement
+        options={{
+          fields: {
+            billingDetails: {
+              name: 'never',
+              email: billingDetails.email ? 'never' : 'auto',
+              address: 'never',
+            },
+          },
+        }}
+      />
 
       <Button
         type="submit"

@@ -5,11 +5,15 @@ import { renderWithIntl as render } from '@/test/intl'
 import frMessages from '../../../messages/fr.json'
 
 const mockConfirmPayment = vi.fn()
+const mockPaymentElement = vi.fn()
 
 vi.mock('@stripe/react-stripe-js', () => ({
   useStripe: () => ({ confirmPayment: mockConfirmPayment }),
   useElements: () => ({}),
-  PaymentElement: () => <div data-testid="payment-element" />,
+  PaymentElement: (props: unknown) => {
+    mockPaymentElement(props)
+    return <div data-testid="payment-element" />
+  },
 }))
 
 const mockCompleteCart = vi.fn()
@@ -25,6 +29,16 @@ import { CheckoutConsentWithdrawalBlockedError } from '@/lib/analytics/checkout-
 const onSuccess = vi.fn()
 const onFailure = vi.fn()
 const onAttempt = vi.fn()
+const billingAddress = {
+  first_name: ' Ada ',
+  last_name: ' Lovelace ',
+  address_1: ' 42 Wallaby Way ',
+  address_2: '   ',
+  city: ' Sydney ',
+  province: ' NSW ',
+  postal_code: ' 2000 ',
+  country_code: ' au ',
+}
 
 function renderForm() {
   return render(
@@ -34,6 +48,8 @@ function renderForm() {
       currency="usd"
       experiment="pro_checkout_v1"
       experimentVariant="control"
+      billingAddress={billingAddress}
+      customerEmail=" buyer@example.com "
       onAttempt={onAttempt}
       onSuccess={onSuccess}
       onFailure={onFailure}
@@ -50,6 +66,8 @@ function renderFormWithLocale(locale: string, messages: typeof frMessages) {
         currency="usd"
         experiment="pro_checkout_v1"
         experimentVariant="control"
+        billingAddress={billingAddress}
+        customerEmail=" buyer@example.com "
         onAttempt={onAttempt}
         onSuccess={onSuccess}
         onFailure={onFailure}
@@ -73,6 +91,38 @@ beforeEach(() => {
 })
 
 describe('CheckoutForm', () => {
+  it('supplies normalized billing details without recollecting those fields', async () => {
+    mockConfirmPayment.mockResolvedValue({
+      error: { type: 'card_error', code: 'card_declined' },
+    })
+
+    renderForm()
+    submit()
+
+    await waitFor(() => expect(mockConfirmPayment).toHaveBeenCalled())
+    expect(
+      mockConfirmPayment.mock.calls[0][0].confirmParams.payment_method_data
+        .billing_details
+    ).toEqual({
+      name: 'Ada Lovelace',
+      email: 'buyer@example.com',
+      address: {
+        line1: '42 Wallaby Way',
+        city: 'Sydney',
+        state: 'NSW',
+        postal_code: '2000',
+        country: 'AU',
+      },
+    })
+    expect(mockPaymentElement.mock.calls[0][0]).toEqual({
+      options: {
+        fields: {
+          billingDetails: { name: 'never', email: 'never', address: 'never' },
+        },
+      },
+    })
+  })
+
   it('awaits one attempt callback before confirming a real card payment', async () => {
     let releaseAttempt!: () => void
     onAttempt.mockReturnValueOnce(

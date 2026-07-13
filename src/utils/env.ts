@@ -17,6 +17,8 @@ const envSchema = z.object({
   // Medusa Store API
   MEDUSA_BACKEND_URL: z.string().default('https://store-api.wcpos.com'),
   MEDUSA_PUBLISHABLE_KEY: z.string().optional(),
+  CHECKOUT_GATEWAY_SECRET_LIVE: z.string().min(32).optional(),
+  CHECKOUT_GATEWAY_SECRET_TEST: z.string().min(32).optional(),
 
   // Stripe (client-side publishable key)
   NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: z.string().optional(),
@@ -119,9 +121,12 @@ const envSchema = z.object({
  * request-time fatal into a deploy-time failure. CRON_SECRET lets Vercel
  * authenticate scheduled requests (the reconcile route rejects every run
  * without it). The Redis credentials and Turnstile secret likewise keep
- * protected mutation controls available.
+ * protected mutation controls available. Both checkout gateway secrets keep
+ * the host-keyed live and test payment-session paths deployable and isolated.
  */
 const REQUIRED_ON_PRODUCTION = [
+  'CHECKOUT_GATEWAY_SECRET_LIVE',
+  'CHECKOUT_GATEWAY_SECRET_TEST',
   'CRON_SECRET',
   'DOWNLOAD_TOKEN_SECRET',
   'UPSTASH_REDIS_REST_URL',

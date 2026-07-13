@@ -3,34 +3,54 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 // Mock server-only (this module prevents client-side imports)
 vi.mock('server-only', () => ({}))
 
+const { mockEnv, mockStoreEnvironment, mockGetRequestStoreEnvironment } =
+  vi.hoisted(() => {
+    const storeEnvironment = {
+      name: 'test' as 'live' | 'test' | 'dev',
+      medusaBackendUrl: 'https://test-store-api.wcpos.com',
+      medusaPublishableKey: 'pk_test_abc123',
+      payments: {
+        stripePublishableKey: null,
+        paypal: null,
+        btcpayEnabled: true,
+      },
+    }
+    return {
+      mockEnv: {
+        MEDUSA_BACKEND_URL: 'https://test-store-api.wcpos.com',
+        MEDUSA_PUBLISHABLE_KEY: 'pk_test_123',
+        CHECKOUT_GATEWAY_SECRET_LIVE:
+          'checkout-live-gateway-secret-at-least-32-chars',
+        CHECKOUT_GATEWAY_SECRET_TEST:
+          'checkout-test-gateway-secret-at-least-32-chars',
+      } as {
+        MEDUSA_BACKEND_URL: string
+        MEDUSA_PUBLISHABLE_KEY: string
+        CHECKOUT_GATEWAY_SECRET_LIVE?: string
+        CHECKOUT_GATEWAY_SECRET_TEST?: string
+      },
+      mockStoreEnvironment: storeEnvironment,
+      mockGetRequestStoreEnvironment: vi.fn(async () => storeEnvironment),
+    }
+  })
+
 // Mock environment variables
 vi.mock('@/utils/env', () => ({
-  env: {
-    MEDUSA_BACKEND_URL: 'https://test-store-api.wcpos.com',
-    MEDUSA_PUBLISHABLE_KEY: 'pk_test_123',
-  },
+  env: mockEnv,
 }))
 
 // Mock the host-keyed store environment (replaces the old env-var mock):
 // unit tests always see the pinned test backend.
 vi.mock('@/lib/store-environment', () => {
-  const environment = {
-    name: 'test',
-    medusaBackendUrl: 'https://test-store-api.wcpos.com',
-    medusaPublishableKey: 'pk_test_abc123',
-    payments: {
-      stripePublishableKey: null,
-      paypal: null,
-      btcpayEnabled: true,
-    },
-  }
   return {
-    getRequestStoreEnvironment: vi.fn(async () => environment),
-    getLiveStoreEnvironment: vi.fn(() => environment),
-    getStoreEnvironmentByName: vi.fn(() => environment),
-    getMedusaBackendUrl: vi.fn(async () => environment.medusaBackendUrl),
+    getRequestStoreEnvironment: mockGetRequestStoreEnvironment,
+    getLiveStoreEnvironment: vi.fn(() => mockStoreEnvironment),
+    getStoreEnvironmentByName: vi.fn(() => mockStoreEnvironment),
+    getMedusaBackendUrl: vi.fn(
+      async () => mockStoreEnvironment.medusaBackendUrl
+    ),
     getMedusaPublishableKey: vi.fn(
-      async () => environment.medusaPublishableKey
+      async () => mockStoreEnvironment.medusaPublishableKey
     ),
   }
 })
@@ -119,6 +139,14 @@ const mockCart = {
 describe('medusaClient', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+    Object.assign(mockStoreEnvironment, {
+      name: 'test',
+      medusaBackendUrl: 'https://test-store-api.wcpos.com',
+    })
+    mockEnv.CHECKOUT_GATEWAY_SECRET_LIVE =
+      'checkout-live-gateway-secret-at-least-32-chars'
+    mockEnv.CHECKOUT_GATEWAY_SECRET_TEST =
+      'checkout-test-gateway-secret-at-least-32-chars'
   })
 
   describe('getProducts', () => {
@@ -755,30 +783,75 @@ describe('medusaClient', () => {
         expect(result?.clientSecret).toBeNull()
       })
 
-      it('forwards the customer JWT as Bearer auth when provided', async () => {
-        mockFetch.mockResolvedValueOnce({
-          ok: true,
-          json: async () => ({
-            payment_collection: {
-              id: 'pay_col_123',
-              payment_sessions: [
-                {
-                  id: 'payses_123',
-                  provider_id: 'pp_stripe_stripe',
-                  status: 'pending',
-                  data: { client_secret: 'pi_secret_123' },
-                },
-              ],
-            },
-          }),
-        })
+      it.each([
+        [
+          'live',
+          'https://live-store-api.example.com',
+          'checkout-live-gateway-secret-at-least-32-chars',
+        ],
+        [
+          'test',
+          'https://test-store-api.example.com',
+          'checkout-test-gateway-secret-at-least-32-chars',
+        ],
+        [
+          'dev',
+          'https://dev-store-api.example.com',
+          'checkout-test-gateway-secret-at-least-32-chars',
+        ],
+      ] as const)(
+        'couples the %s backend and gateway secret from one host resolution',
+        async (name, backendUrl, expectedSecret) => {
+          Object.assign(mockStoreEnvironment, {
+            name,
+            medusaBackendUrl: backendUrl,
+          })
+          mockFetch.mockResolvedValueOnce({
+            ok: true,
+            json: async () => ({
+              payment_collection: {
+                id: 'pay_col_123',
+                payment_sessions: [
+                  {
+                    id: 'payses_123',
+                    provider_id: 'pp_stripe_stripe',
+                    status: 'pending',
+                    data: { client_secret: 'pi_secret_123' },
+                  },
+                ],
+              },
+            }),
+          })
 
-        await createPaymentSession('pay_col_123', 'pp_stripe_stripe', 'jwt_abc')
+          await createPaymentSession(
+            'pay_col_123',
+            'pp_stripe_stripe',
+            'jwt_abc'
+          )
 
-        const [, init] = mockFetch.mock.calls[0]
-        expect((init.headers as Record<string, string>).Authorization).toBe(
-          'Bearer jwt_abc'
+          expect(mockGetRequestStoreEnvironment).toHaveBeenCalledTimes(1)
+          expect(mockFetch).toHaveBeenCalledWith(
+            `${backendUrl}/store/payment-collections/pay_col_123/payment-sessions`,
+            expect.objectContaining({
+              headers: expect.objectContaining({
+                Authorization: 'Bearer jwt_abc',
+                'x-wcpos-checkout-gateway': expectedSecret,
+              }),
+            })
+          )
+        }
+      )
+
+      it('fails closed without allocating a payment session when the gateway secret is absent', async () => {
+        mockEnv.CHECKOUT_GATEWAY_SECRET_TEST = undefined
+
+        const result = await createPaymentSession(
+          'pay_col_123',
+          'pp_stripe_stripe'
         )
+
+        expect(result).toBeNull()
+        expect(mockFetch).not.toHaveBeenCalled()
       })
 
       it('returns null on error', async () => {
