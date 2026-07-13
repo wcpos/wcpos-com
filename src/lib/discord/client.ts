@@ -153,11 +153,10 @@ export class DiscordApiClient {
     let before: string | undefined
 
     do {
-      const url = new URL(`${DISCORD_API_BASE}/channels/${channelId}/messages`)
-      url.searchParams.set('limit', '100')
-      if (before) url.searchParams.set('before', before)
+      const search = new URLSearchParams({ limit: '100' })
+      if (before) search.set('before', before)
 
-      const response = await this.botFetch(url.pathname + url.search)
+      const response = await this.botFetch(`/channels/${channelId}/messages?${search}`)
       if (!response.ok) {
         throw new Error(`Discord channel message list failed: ${await parseDiscordError(response)}`)
       }
