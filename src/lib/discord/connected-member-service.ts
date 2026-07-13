@@ -302,14 +302,16 @@ export async function unblockConnectedDiscordUserForHolder({
 
 export function getLicensesForDiscordUser(
   discordUserId: string,
-  licenses: LicenseDetail[]
+  licenses: Array<Omit<LicenseDetail, 'machines'>>
 ): LicenseLifecycle[] {
   return licenses
     .filter((license) => hasConnectedDiscordMember(license.metadata, discordUserId))
     .map((license) => ({ status: license.status, expiry: license.expiry }))
 }
 
-export function getConnectedDiscordUserIds(licenses: LicenseDetail[]): string[] {
+export function getConnectedDiscordUserIds(
+  licenses: Array<Omit<LicenseDetail, 'machines'>>
+): string[] {
   const ids = new Set<string>()
   for (const license of licenses) {
     for (const member of getConnectedDiscordAccess(license.metadata).members) {

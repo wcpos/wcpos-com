@@ -7,20 +7,29 @@ const { mockEnv, mockDeps, mockSummary } = vi.hoisted(() => ({
   mockSummary: { processed: 1, updated: 1, removed: 0 },
 }))
 
-const mockCreateDependencies = vi.fn(() => mockDeps)
+const mockCreateDependencies = vi.fn((fleet?: unknown) => {
+  void fleet
+  return mockDeps
+})
+const mockFleet = { get: vi.fn(), refresh: vi.fn() }
+const mockCreateFleet = vi.fn(() => mockFleet)
 const mockReconcile = vi.fn(async (deps: unknown) => {
   void deps
   return mockSummary
 })
-const mockDirectoryReconcile = vi.fn(async () => null)
+const mockDirectoryReconcile = vi.fn(async (listAllLicenses?: unknown) => {
+  void listAllLicenses
+  return null
+})
 
 vi.mock('@/utils/env', () => ({
   env: mockEnv,
 }))
 
 vi.mock('@/lib/discord/default-sync', () => ({
-  createDiscordReconcileDependencies: () => mockCreateDependencies(),
-  reconcileDiscordDirectory: () => mockDirectoryReconcile(),
+  createDiscordLicenseFleetSnapshot: () => mockCreateFleet(),
+  createDiscordReconcileDependencies: (fleet: unknown) => mockCreateDependencies(fleet),
+  reconcileDiscordDirectory: (listAllLicenses: unknown) => mockDirectoryReconcile(listAllLicenses),
 }))
 
 vi.mock('@/lib/discord/sync', () => ({
@@ -74,6 +83,8 @@ describe('/api/discord/reconcile', () => {
     expect(response.status).toBe(200)
     await expect(response.json()).resolves.toEqual({ ok: true, summary: mockSummary, directory: null })
     expect(mockCreateDependencies).toHaveBeenCalledTimes(1)
+    expect(mockCreateDependencies).toHaveBeenCalledWith(mockFleet)
+    expect(mockDirectoryReconcile).toHaveBeenCalledWith(mockFleet.get)
     expect(mockReconcile).toHaveBeenCalledWith(mockDeps)
   })
 

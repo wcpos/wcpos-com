@@ -84,7 +84,7 @@ function isAbortError(error: unknown): boolean {
     typeof error === 'object' &&
     error !== null &&
     'name' in error &&
-    error.name === 'AbortError'
+    (error.name === 'AbortError' || error.name === 'TimeoutError')
   )
 }
 
@@ -235,7 +235,9 @@ async function getLicense(licenseId: string): Promise<LicenseDetail> {
  * paging Keygen directly (~25 requests for the current fleet) is orders of
  * magnitude cheaper than resolving licences through admin customers → orders.
  */
-async function listAllLicenses(): Promise<Omit<LicenseDetail, 'machines'>[]> {
+async function listAllLicenses(
+  options: { signal?: AbortSignal } = {}
+): Promise<Omit<LicenseDetail, 'machines'>[]> {
   const PAGE_SIZE = 100
   // Backstop against a paging bug looping forever; 500 pages = 50k licences,
   // far beyond the current fleet.
@@ -254,10 +256,22 @@ async function listAllLicenses(): Promise<Omit<LicenseDetail, 'machines'>[]> {
     try {
       res = await fetch(
         `${BASE_URL}/v1/licenses?page[size]=${PAGE_SIZE}&page[cursor]=${encodeURIComponent(cursor)}`,
-        { method: 'GET', headers: authHeaders(), signal: controller.signal }
+        {
+          method: 'GET',
+          headers: authHeaders(),
+          signal: options.signal
+            ? AbortSignal.any([controller.signal, options.signal])
+            : controller.signal,
+        }
       )
     } catch (error) {
       if (isAbortError(error)) {
+        if (options.signal?.aborted) {
+          throw new KeygenRequestError(
+            `Keygen listAllLicenses exceeded its reconciliation time budget on page ${page}`,
+            408
+          )
+        }
         throw new KeygenRequestError(
           `Keygen listAllLicenses page ${page} timed out after ${LIST_ALL_LICENSES_PAGE_TIMEOUT_MS}ms`,
           408
