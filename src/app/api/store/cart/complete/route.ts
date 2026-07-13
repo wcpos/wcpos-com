@@ -21,6 +21,7 @@ import {
   CHECKOUT_ANALYTICS_PROTOCOL,
   parseCheckoutExperiment,
 } from '@/lib/analytics/checkout-attribution'
+import { isCompleteBillingAddress } from '@/lib/billing-profile'
 
 /**
  * POST /api/store/cart/complete - Complete cart and create order
@@ -68,6 +69,10 @@ export async function POST(request: NextRequest) {
     const selection = resolveProOfferCartSelection(offers, cart)
     if (!selection) {
       return storeCartErrorResponse('current_pro_offer_cart_required', 400)
+    }
+
+    if (!isCompleteBillingAddress(cart.billing_address)) {
+      return storeCartErrorResponse('billing_address_required', 400)
     }
 
     const result = await completeCart(cartId, authToken)

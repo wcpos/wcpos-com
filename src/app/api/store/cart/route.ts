@@ -15,6 +15,7 @@ import {
 import { storeLogger } from '@/lib/logger'
 import {
   billingPatchFromCheckout,
+  isCompleteBillingAddress,
   type BillingAddressPatch,
 } from '@/lib/billing-profile'
 import { deliver } from '@/lib/sinks/deliver'
@@ -222,6 +223,10 @@ export async function PATCH(request: NextRequest) {
     const existingCart = await getCart(cartId)
     if (!existingCart || existingCart.email !== customer.email) {
       return storeCartErrorResponse('cart_not_found', 404)
+    }
+
+    if (!isCompleteBillingAddress(body.billing_address)) {
+      return storeCartErrorResponse('billing_address_required', 400)
     }
 
     const updateData: Record<string, unknown> = {}

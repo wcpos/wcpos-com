@@ -5,7 +5,9 @@ import {
   billingPatchFromProfileForm,
   billingPatchHasAddressContent,
   billingPrefillFromCustomer,
+  isCompleteBillingAddress,
   pickDefaultBillingAddress,
+  renewalBillingPrefillFromCustomer,
   type MedusaCustomerAddress,
 } from './billing-profile'
 
@@ -22,6 +24,39 @@ const savedAddress: MedusaCustomerAddress = {
   is_default_billing: true,
   metadata: { tax_number: '51 824 753 556' },
 }
+
+describe('isCompleteBillingAddress', () => {
+  const completeAddress = {
+    first_name: ' Ada ', last_name: ' Lovelace ',
+    address_1: ' 42 Wallaby Way ', city: ' Sydney ',
+    postal_code: ' 2000 ',
+    country_code: ' AU ',
+  }
+
+  const cases: Array<[string, unknown, boolean]> = [
+    [
+      'complete without postal code in a no-postal market',
+      { ...completeAddress, postal_code: '', country_code: 'CQ' },
+      true,
+    ],
+    [
+      'missing postal code in a required market',
+      { ...completeAddress, postal_code: ' ' },
+      false,
+    ],
+    ...['first_name', 'last_name', 'address_1', 'city'].map(
+      (field): [string, unknown, boolean] =>
+        [`blank ${field}`, { ...completeAddress, [field]: ' ' }, false]
+    ),
+    ['missing', undefined, false],
+    ['malformed country', { ...completeAddress, country_code: 123 }, false],
+    ['unsupported country', { ...completeAddress, country_code: 'XX' }, false],
+  ]
+
+  it.each(cases)('%s', (_name, address, expected) => {
+    expect(isCompleteBillingAddress(address)).toBe(expected)
+  })
+})
 
 describe('pickDefaultBillingAddress', () => {
   it('prefers the default billing address over earlier entries', () => {
@@ -150,6 +185,64 @@ describe('billingPrefillFromCustomer', () => {
       ],
     })
     expect(prefill.address?.country_code).toBe('pl')
+  })
+})
+
+describe('renewalBillingPrefillFromCustomer', () => {
+  it('uses only the actual default billing record, with customer-name fallback', () => {
+    expect(
+      renewalBillingPrefillFromCustomer({
+        first_name: 'Grace',
+        last_name: 'Hopper',
+        addresses: [
+          { ...savedAddress, first_name: '   ', last_name: null },
+        ],
+      })
+    ).toEqual({
+      address: {
+        first_name: 'Grace',
+        last_name: 'Hopper',
+        address_1: '1 Example St',
+        address_2: 'Unit 4',
+        city: 'Perth',
+        province: 'WA',
+        postal_code: '6000',
+        country_code: 'au',
+      },
+      taxNumber: '51 824 753 556',
+    })
+  })
+
+  it.each([
+    ['missing address line', { address_1: null }],
+    ['missing city', { city: null }],
+    ['missing actual country', { country_code: null }],
+    ['unsupported actual country', { country_code: 'xx' }],
+    ['missing required postal code', { postal_code: null }],
+  ])('rejects a default billing record with %s', (_name, patch) => {
+    expect(
+      renewalBillingPrefillFromCustomer({
+        addresses: [{ ...savedAddress, ...patch }],
+      }).address
+    ).toBeNull()
+  })
+
+  it('does not use an unflagged address', () => {
+    expect(
+      renewalBillingPrefillFromCustomer({
+        addresses: [{ ...savedAddress, is_default_billing: false }],
+      }).address
+    ).toBeNull()
+  })
+
+  it('accepts an authoritative address without postal code for a no-postal market', () => {
+    expect(
+      renewalBillingPrefillFromCustomer({
+        addresses: [
+          { ...savedAddress, country_code: 'cq', postal_code: null },
+        ],
+      }).address
+    ).toEqual(expect.objectContaining({ country_code: 'cq', postal_code: '' }))
   })
 })
 

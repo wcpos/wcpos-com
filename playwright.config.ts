@@ -100,6 +100,12 @@ export default defineConfig({
             // Pin backend hosts to the origins the interceptor rewrites, in
             // case a local .env.local points elsewhere.
             MEDUSA_BACKEND_URL: 'https://store-api.wcpos.com',
+            // Synthetic credentials for the mocked E2E servers only. Real
+            // integration runs inherit matching ambient backend credentials.
+            CHECKOUT_GATEWAY_SECRET_LIVE:
+              'e2e-live-checkout-gateway-secret-00000000',
+            CHECKOUT_GATEWAY_SECRET_TEST:
+              'e2e-test-checkout-gateway-secret-00000000',
             KEYGEN_HOST: 'license.wcpos.com',
             // Authenticated Keygen ops (machine list + deactivation) require a
             // token, which prod now has. The mock backend ignores auth, but the

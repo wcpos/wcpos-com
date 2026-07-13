@@ -8,7 +8,7 @@ import { RenewClient } from '@/components/account/renew-client'
 import { PageHeader } from '@/components/ui/page-header'
 import { Skeleton } from '@/components/ui/skeleton'
 import { getCustomer } from '@/lib/medusa-auth'
-import { billingPrefillFromCustomer } from '@/lib/billing-profile'
+import { renewalBillingPrefillFromCustomer } from '@/lib/billing-profile'
 import { getRequestStoreEnvironment } from '@/lib/store-environment'
 import { getCartPaymentProviderContext } from '@/services/core/external/medusa-client'
 import { getResolvedCustomerLicenses } from '@/lib/customer-licenses'
@@ -30,7 +30,7 @@ export async function generateMetadata({
   }
 }
 
-async function RenewContent({ locale }: { locale: string }) {
+export async function RenewContent({ locale }: { locale: string }) {
   // Auth- and cart-sensitive: stop prerendering here so the shell is the
   // skeleton, and request cookies are available for the customer lookup.
   await connection()
@@ -60,7 +60,7 @@ async function RenewContent({ locale }: { locale: string }) {
 
   // One-click renewal needs billing on file. Without it, fall back to the full
   // checkout, which collects it.
-  const prefill = billingPrefillFromCustomer(customer)
+  const prefill = renewalBillingPrefillFromCustomer(customer)
   if (!prefill.address) {
     redirect({ href: `/pro/checkout?product=${YEARLY_PRO_HANDLE}`, locale })
     return null

@@ -7,6 +7,7 @@ import {
   useElements,
   useStripe,
 } from '@stripe/react-stripe-js'
+import type { StripeExpressCheckoutElementConfirmEvent } from '@stripe/stripe-js'
 import { completeCart } from '../complete-cart'
 import {
   completeProviderConfirmedCheckout,
@@ -19,6 +20,11 @@ import { useCheckoutFailureMessages } from './use-checkout-failure-messages'
 import { checkoutSuccessReturnUrl } from './return-url'
 import type { ProCheckoutVariant } from '@/services/core/analytics/posthog-service'
 import { isCheckoutConsentWithdrawalBlocked } from '@/lib/analytics/checkout-payment-lifecycle'
+import type { BillingAddress } from './billing-step'
+import {
+  stripeBillingDetailsFromCheckout,
+  stripeBillingDetailsWithWalletPrecedence,
+} from '@/lib/stripe-billing-details'
 
 /**
  * Apple Pay / Google Pay / Link wallets via Stripe's Express Checkout
@@ -33,6 +39,8 @@ interface ExpressCheckoutRowProps {
   cartId: string
   experiment: string
   experimentVariant: ProCheckoutVariant
+  billingAddress: BillingAddress
+  customerEmail?: string | null
   onAttempt?: () => Promise<void> | void
   onSuccess: (orderId: string) => void
   onFailure: (failure: CheckoutFailure | null) => void
@@ -44,6 +52,8 @@ export function ExpressCheckoutRow({
   cartId,
   experiment,
   experimentVariant,
+  billingAddress,
+  customerEmail,
   onAttempt,
   onSuccess,
   onFailure,
@@ -57,7 +67,9 @@ export function ExpressCheckoutRow({
   const [hasWallets, setHasWallets] = useState(false)
   const [isConfirming, setIsConfirming] = useState(false)
 
-  async function handleConfirm() {
+  async function handleConfirm(
+    event: StripeExpressCheckoutElementConfirmEvent
+  ) {
     if (!stripe || !elements) return
     // Same double-submit guard the card form has — a second wallet
     // confirmation while one is in flight could double-charge.
@@ -79,6 +91,15 @@ export function ExpressCheckoutRow({
           elements,
           confirmParams: {
             return_url: checkoutSuccessReturnUrl(window.location.origin, locale),
+            payment_method_data: {
+              billing_details: stripeBillingDetailsWithWalletPrecedence(
+                stripeBillingDetailsFromCheckout(
+                  billingAddress,
+                  customerEmail
+                ),
+                event.billingDetails
+              ),
+            },
           },
           redirect: 'if_required',
         })

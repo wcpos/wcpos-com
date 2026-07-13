@@ -90,6 +90,14 @@ import { POST } from './route'
 
 const validCart = {
   id: 'cart_1',
+  billing_address: {
+    first_name: 'Ada',
+    last_name: 'Lovelace',
+    address_1: '42 Wallaby Way',
+    city: 'Sydney',
+    postal_code: '2000',
+    country_code: 'au',
+  },
   items: [{ variant_id: 'variant_yearly_current', quantity: 1 }],
 }
 
@@ -157,6 +165,23 @@ describe('POST /api/store/cart/payment-sessions', () => {
     expect(response.status).toBe(401)
     expect(json.errorCode).toBe('authentication_required')
     expect(mockCreatePaymentCollection).not.toHaveBeenCalled()
+  })
+
+  it('rejects a cart without a complete billing address before allocation', async () => {
+    mockGetCart.mockResolvedValueOnce({
+      ...validCart,
+      billing_address: undefined,
+    })
+
+    const response = await POST(makeRequest({ cartId: 'cart_1' }))
+
+    expect(response.status).toBe(400)
+    expect(await response.json()).toEqual({
+      errorCode: 'billing_address_required',
+    })
+    expect(mockCreatePaymentCollection).not.toHaveBeenCalled()
+    expect(mockCreatePaymentSession).not.toHaveBeenCalled()
+    expect(mockCreateCustomerSession).not.toHaveBeenCalled()
   })
 
   it('returns 429 before allocation when the IP rate limit is exceeded', async () => {
@@ -333,7 +358,7 @@ describe('POST /api/store/cart/payment-sessions', () => {
 
   it('does not mint a CustomerSession for a lifetime cart', async () => {
     mockGetCart.mockResolvedValue({
-      id: 'cart_1',
+      ...validCart,
       items: [{ variant_id: 'variant_lifetime_current', quantity: 1 }],
     })
     mockCreatePaymentCollection.mockResolvedValueOnce({ id: 'paycol_1' })
@@ -454,6 +479,22 @@ describe('POST /api/store/cart/payment-sessions', () => {
     )
   })
 
+  it.each(['pp_system_default', 'pp_custom'])(
+    'rejects non-checkout provider %s before payment allocation',
+    async (providerId) => {
+      const response = await POST(
+        makeRequest({ cartId: 'cart_1', provider_id: providerId })
+      )
+
+      expect(response.status).toBe(400)
+      expect(await response.json()).toEqual({
+        errorCode: 'payment_provider_not_allowed',
+      })
+      expect(mockCreatePaymentCollection).not.toHaveBeenCalled()
+      expect(mockCreatePaymentSession).not.toHaveBeenCalled()
+    }
+  )
+
   it('reuses an existing payment collection when provided', async () => {
     mockCreatePaymentSession.mockResolvedValueOnce({
       clientSecret: 'pi_secret',
@@ -464,7 +505,7 @@ describe('POST /api/store/cart/payment-sessions', () => {
       makeRequest({
         cartId: 'cart_1',
         paymentCollectionId: 'paycol_existing',
-        provider_id: 'pp_custom',
+        provider_id: 'pp_paypal_paypal',
       })
     )
     const json = await response.json()
@@ -473,7 +514,7 @@ describe('POST /api/store/cart/payment-sessions', () => {
     expect(mockCreatePaymentCollection).not.toHaveBeenCalled()
     expect(mockCreatePaymentSession).toHaveBeenCalledWith(
       'paycol_existing',
-      'pp_custom',
+      'pp_paypal_paypal',
       AUTH_TOKEN
     )
     expect(json.paymentCollectionId).toBe('paycol_existing')

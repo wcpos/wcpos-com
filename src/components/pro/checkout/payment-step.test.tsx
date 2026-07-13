@@ -120,6 +120,17 @@ function renderStep(method: PaymentMethod = 'stripe') {
       locale="fr-fr"
       experiment="pro_checkout_v1"
       experimentVariant="value_copy"
+      billingAddress={{
+        first_name: 'Ada',
+        last_name: 'Lovelace',
+        address_1: '42 Wallaby Way',
+        address_2: '',
+        city: 'Sydney',
+        province: 'NSW',
+        postal_code: '2000',
+        country_code: 'au',
+      }}
+      customerEmail="buyer@example.com"
       amount={129}
       currency="usd"
       onSuccess={() => {}}

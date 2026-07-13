@@ -837,6 +837,8 @@ export function CheckoutClient({
                 locale={locale}
                 experiment={PRO_CHECKOUT_EXPERIMENT}
                 experimentVariant={experimentVariant}
+                billingAddress={billingAddress!}
+                customerEmail={email}
                 amount={cart.total}
                 currency={cart.currency_code}
                 onSuccess={handleSuccess}
