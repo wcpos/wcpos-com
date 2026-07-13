@@ -76,6 +76,9 @@ export async function CheckoutContent({
 
   const selectedVariantId = getSingleSearchParam(searchParams, 'variant')
   const selectedProduct = getSingleSearchParam(searchParams, 'product')
+  const promoCode = getSingleSearchParam(searchParams, 'promo')
+    ?.trim()
+    .slice(0, 64)
   const distinctId = cookieStore.get(ANALYTICS_DISTINCT_ID_COOKIE)?.value
   const analyticsConfig = getAnalyticsConfig(process.env)
   // Only offer payment methods the backend actually registers — config and
@@ -109,6 +112,7 @@ export async function CheckoutContent({
       customerEmail={customer?.email}
       initialBillingAddress={prefill.address}
       initialTaxNumber={prefill.taxNumber}
+      promoCode={promoCode || undefined}
       selectedOfferHandle={selectedOffer?.handle}
       offerSummary={
         selectedFullOffer

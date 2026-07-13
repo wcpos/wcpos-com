@@ -511,10 +511,14 @@
       },
       "summary": {
         "quantity": "Menge: {quantity}",
+        "discount": "Rabatt",
         "total": "Gesamt",
         "instantLicense": "Sofortige Lizenzzustellung",
         "oneTimePayment": "Einmalzahlung — keine automatische Verlängerung",
         "securePayment": "Sichere Zahlungsabwicklung"
+      },
+      "promo": {
+        "invalid": "Dieser Rabatt-Link ist abgelaufen oder nicht mehr gültig. Der reguläre Preis wird angezeigt."
       },
       "account": {
         "emailLabel": "E-Mail",

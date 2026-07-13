@@ -511,10 +511,14 @@
       },
       "summary": {
         "quantity": "Aantal: {quantity}",
+        "discount": "Korting",
         "total": "Totaal",
         "instantLicense": "Licentie direct geleverd",
         "oneTimePayment": "Eenmalige betaling — nooit automatische verlenging",
         "securePayment": "Veilige betalingsverwerking"
+      },
+      "promo": {
+        "invalid": "Deze kortingslink is verlopen of niet meer geldig. De normale prijs wordt getoond."
       },
       "account": {
         "emailLabel": "E-mail",

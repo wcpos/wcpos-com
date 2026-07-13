@@ -137,9 +137,12 @@ function buildCheckoutCart({
   title = 'WCPOS Pro Lifetime',
   unitPrice = 129,
   itemTotal = 129,
+  originalTotal,
   omitItemTotal = false,
   quantity = 1,
   cartTotal = 129,
+  discountTotal,
+  promotions,
   paymentSessions = [
     {
       provider_id: 'pp_stripe_stripe',
@@ -152,9 +155,12 @@ function buildCheckoutCart({
   title?: string
   unitPrice?: number
   itemTotal?: number
+  originalTotal?: number
   omitItemTotal?: boolean
   quantity?: number
   cartTotal?: number
+  discountTotal?: number
+  promotions?: Array<{ code: string }>
   paymentSessions?: Array<{
     provider_id: string
     data: Record<string, unknown>
@@ -173,10 +179,17 @@ function buildCheckoutCart({
         title,
         quantity,
         unit_price: unitPrice,
+        ...(originalTotal === undefined
+          ? {}
+          : { original_total: originalTotal }),
         ...(omitItemTotal ? {} : { total: itemTotal }),
       },
     ],
     total: cartTotal,
+    ...(discountTotal === undefined
+      ? {}
+      : { discount_total: discountTotal }),
+    ...(promotions === undefined ? {} : { promotions }),
     currency_code: 'usd',
     payment_collection: {
       id: 'pay-col-123',
@@ -348,6 +361,90 @@ describe('CheckoutClient', () => {
     expect(
       mockFetch.mock.calls.some(([url]) =>
         String(url).includes('/api/store/cart/payment-sessions')
+      )
+    ).toBe(false)
+  })
+
+  it('applies a hidden promo and renders the discount with the discounted total', async () => {
+    const discountedCart = buildCheckoutCart({
+      originalTotal: 129,
+      itemTotal: 100,
+      cartTotal: 100,
+      discountTotal: 29,
+      promotions: [{ code: 'PROMO10' }],
+    })
+    mockSuccessfulCheckoutInit()
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ cart: discountedCart, applied: true }),
+    })
+
+    renderSignedIn({ promoCode: 'PROMO10' })
+
+    await waitFor(() => {
+      expect(screen.getByText('Discount')).toBeInTheDocument()
+    })
+    expect(mockFetch).toHaveBeenNthCalledWith(
+      3,
+      '/api/store/cart/promotions',
+      expect.objectContaining({
+        method: 'POST',
+        body: JSON.stringify({ cartId: 'cart-123', code: 'PROMO10' }),
+      })
+    )
+    expect(screen.getByText('$129.00')).toBeInTheDocument()
+    expect(screen.getByText('-$29.00')).toBeInTheDocument()
+    expect(screen.getByText('$100.00')).toBeInTheDocument()
+  })
+
+  it('shows an invalid-promo notice and keeps checkout initialized at full price', async () => {
+    mockSuccessfulCheckoutInit()
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ cart: buildCheckoutCart(), applied: false }),
+    })
+
+    renderSignedIn({ promoCode: 'EXPIRED' })
+
+    await waitFor(() => {
+      expect(
+        screen.getByText(
+          'This discount link has expired or is no longer valid. The regular price is shown.'
+        )
+      ).toBeInTheDocument()
+    })
+    expect(screen.getAllByText('$129.00')).toHaveLength(2)
+    expect(screen.getByTestId('billing-step-form')).toBeInTheDocument()
+  })
+
+  it('continues checkout when the promo request fails', async () => {
+    mockSuccessfulCheckoutInit()
+    mockFetch.mockRejectedValueOnce(new Error('promotion service unavailable'))
+
+    renderSignedIn({ promoCode: 'PROMO10' })
+
+    await waitFor(() => {
+      expect(
+        screen.getByText(
+          'This discount link has expired or is no longer valid. The regular price is shown.'
+        )
+      ).toBeInTheDocument()
+    })
+    expect(screen.getAllByText('$129.00')).toHaveLength(2)
+    expect(screen.getByTestId('billing-step-form')).toBeInTheDocument()
+  })
+
+  it('does not request promotions when no promo code was provided', async () => {
+    mockSuccessfulCheckoutInit()
+    renderSignedIn()
+
+    await waitFor(() => {
+      expect(mockFetch).toHaveBeenCalledTimes(2)
+    })
+
+    expect(
+      mockFetch.mock.calls.some(
+        ([url]) => String(url) === '/api/store/cart/promotions'
       )
     ).toBe(false)
   })

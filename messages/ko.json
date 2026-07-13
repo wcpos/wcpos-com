@@ -511,10 +511,14 @@
       },
       "summary": {
         "quantity": "수량: {quantity}",
+        "discount": "할인",
         "total": "합계",
         "instantLicense": "라이선스 즉시 제공",
         "oneTimePayment": "일회성 결제 — 자동 갱신 없음",
         "securePayment": "안전한 결제 처리"
+      },
+      "promo": {
+        "invalid": "이 할인 링크는 만료되었거나 더 이상 유효하지 않습니다. 정상 가격이 표시됩니다."
       },
       "account": {
         "emailLabel": "이메일",

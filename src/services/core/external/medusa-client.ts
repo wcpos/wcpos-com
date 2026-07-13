@@ -23,6 +23,24 @@ import type {
  * Used to fetch products and manage cart/checkout for the /pro page.
  */
 
+class MedusaApiError extends Error {
+  constructor(
+    readonly status: number,
+    readonly responseBody: string
+  ) {
+    super(`Medusa API error: ${status}`)
+    this.name = 'MedusaApiError'
+  }
+}
+
+function isInvalidPromotionCodeError(error: unknown): boolean {
+  return (
+    error instanceof MedusaApiError &&
+    error.status === 400 &&
+    /promotion code .* is invalid/i.test(error.responseBody)
+  )
+}
+
 /**
  * Make a request to the Medusa Store API.
  *
@@ -67,7 +85,7 @@ async function medusaFetch<T>(
     // per-category rate limit.
     const body = await response.text().catch(() => '')
     storeLogger.error`Medusa API error ${response.status} on ${options.method ?? 'GET'} ${endpoint} [${environment.name}]: ${body.slice(0, 300)}`
-    throw new Error(`Medusa API error: ${response.status}`)
+    throw new MedusaApiError(response.status, body)
   }
 
   return response.json()
@@ -277,6 +295,39 @@ export async function addLineItem(
     return response.cart
   } catch (error) {
     storeLogger.error`Failed to add line item: ${error}`
+    return null
+  }
+}
+
+/**
+ * Add promotion codes to a cart.
+ *
+ * Medusa 2.17.2 returns an `invalid_data` 400 when a code does not exist, but
+ * returns 200 with the code unattached when an existing promotion is expired
+ * or exhausted. Normalize the 400 shape to the same unchanged-cart result so
+ * the route can determine `applied` from the returned cart in both cases.
+ */
+export async function addCartPromotions(
+  cartId: string,
+  promoCodes: string[],
+  authToken?: string | null
+): Promise<MedusaCart | null> {
+  try {
+    const response = await medusaFetch<MedusaCartResponse>(
+      `/store/carts/${cartId}/promotions`,
+      {
+        method: 'POST',
+        body: JSON.stringify({ promo_codes: promoCodes }),
+        headers: buildAuthHeaders(authToken),
+      }
+    )
+    return response.cart
+  } catch (error) {
+    if (isInvalidPromotionCodeError(error)) {
+      return getCart(cartId)
+    }
+
+    storeLogger.error`Failed to add cart promotions: ${error}`
     return null
   }
 }
