@@ -2,6 +2,7 @@ import { describe, it, expect, vi, afterEach } from 'vitest'
 import { definedEnvEntries } from './env'
 
 const REQUIRED_PRODUCTION_ENV = {
+  CRON_SECRET: 'a-cron-secret',
   DOWNLOAD_TOKEN_SECRET: 'a-signing-secret',
   UPSTASH_REDIS_REST_URL: 'https://redis.example.com',
   UPSTASH_REDIS_REST_TOKEN: 'a-redis-token',

@@ -19,29 +19,41 @@ async function handle(request: NextRequest) {
     return NextResponse.json({ errorCode: 'unauthorized' }, { status: 401 })
   }
 
-  try {
-    const summary = await reconcileDiscordProRoles(createDiscordReconcileDependencies())
-    infraLogger.info`Discord role reconciliation complete: ${JSON.stringify(summary)}`
-
-    // The directory full pass rides the same cron (#522). Null until
-    // DISCORD_DIRECTORY_CHANNEL_ID is configured; a directory failure must
-    // not mask a completed role reconcile, so it reports instead of throwing.
-    let directory = null
+  // The directory full pass rides the same cron (#522). Null until
+  // DISCORD_DIRECTORY_CHANNEL_ID is configured. Run both independent passes
+  // concurrently so the fleet-wide role scan cannot consume the function's
+  // entire time budget before the directory starts.
+  const roleReconciliation = (async () => {
     try {
-      directory = await reconcileDiscordDirectory()
+      const summary = await reconcileDiscordProRoles(createDiscordReconcileDependencies())
+      infraLogger.info`Discord role reconciliation complete: ${JSON.stringify(summary)}`
+      return { failed: false as const, summary }
+    } catch (error) {
+      infraLogger.error`Discord role reconciliation failed: ${error}`
+      return { failed: true as const, summary: undefined }
+    }
+  })()
+
+  const directoryReconciliation = (async () => {
+    try {
+      const directory = await reconcileDiscordDirectory()
       if (directory) {
         infraLogger.info`Discord directory reconciliation complete: ${JSON.stringify(directory)}`
       }
+      return directory
     } catch (directoryError) {
       infraLogger.error`Discord directory reconciliation failed: ${directoryError}`
-      directory = { error: 'directory_reconciliation_failed' }
+      return { error: 'directory_reconciliation_failed' }
     }
+  })()
 
-    return NextResponse.json({ ok: true, summary, directory })
-  } catch (error) {
-    infraLogger.error`Discord role reconciliation failed: ${error}`
+  const [role, directory] = await Promise.all([roleReconciliation, directoryReconciliation])
+
+  if (role.failed) {
     return NextResponse.json({ errorCode: 'reconciliation_failed' }, { status: 500 })
   }
+
+  return NextResponse.json({ ok: true, summary: role.summary, directory })
 }
 
 export async function GET(request: NextRequest) {

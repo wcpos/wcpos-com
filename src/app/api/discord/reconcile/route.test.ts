@@ -12,6 +12,7 @@ const mockReconcile = vi.fn(async (deps: unknown) => {
   void deps
   return mockSummary
 })
+const mockDirectoryReconcile = vi.fn(async () => null)
 
 vi.mock('@/utils/env', () => ({
   env: mockEnv,
@@ -19,7 +20,7 @@ vi.mock('@/utils/env', () => ({
 
 vi.mock('@/lib/discord/default-sync', () => ({
   createDiscordReconcileDependencies: () => mockCreateDependencies(),
-  reconcileDiscordDirectory: vi.fn(async () => null),
+  reconcileDiscordDirectory: () => mockDirectoryReconcile(),
 }))
 
 vi.mock('@/lib/discord/sync', () => ({
@@ -46,6 +47,7 @@ describe('/api/discord/reconcile', () => {
     vi.clearAllMocks()
     mockEnv.CRON_SECRET = 'cron-secret'
     mockReconcile.mockResolvedValue(mockSummary)
+    mockDirectoryReconcile.mockResolvedValue(null)
   })
 
   it('returns a stable unauthorized code when no cron secret is configured', async () => {
@@ -89,5 +91,30 @@ describe('/api/discord/reconcile', () => {
 
     expect(response.status).toBe(500)
     await expect(response.json()).resolves.toEqual({ errorCode: 'reconciliation_failed' })
+  })
+
+  it('still reconciles the directory when role reconciliation throws', async () => {
+    mockReconcile.mockRejectedValueOnce(new Error('medusa down'))
+
+    await POST(makeRequest({ 'x-cron-secret': 'cron-secret' }))
+
+    expect(mockDirectoryReconcile).toHaveBeenCalledOnce()
+  })
+
+  it('starts the directory pass before a slow role reconciliation finishes', async () => {
+    let resolveRoleReconcile!: (summary: typeof mockSummary) => void
+    mockReconcile.mockReturnValueOnce(
+      new Promise((resolve) => {
+        resolveRoleReconcile = resolve
+      })
+    )
+
+    const responsePromise = POST(makeRequest({ 'x-cron-secret': 'cron-secret' }))
+    await Promise.resolve()
+    const directoryStarted = mockDirectoryReconcile.mock.calls.length === 1
+    resolveRoleReconcile(mockSummary)
+    await responsePromise
+
+    expect(directoryStarted).toBe(true)
   })
 })

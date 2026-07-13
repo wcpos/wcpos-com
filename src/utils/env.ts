@@ -116,10 +116,13 @@ const envSchema = z.object({
  * DOWNLOAD_TOKEN_SECRET is the HMAC signing key for Pro-download tokens; without
  * it both /api/account/download(s) routes fail closed. On 2026-07-05 it was
  * never provisioned on Vercel → every Pro download 500'd. This turns that
- * request-time fatal into a deploy-time failure. The Redis credentials and
- * Turnstile secret likewise keep protected mutation controls available.
+ * request-time fatal into a deploy-time failure. CRON_SECRET lets Vercel
+ * authenticate scheduled requests (the reconcile route rejects every run
+ * without it). The Redis credentials and Turnstile secret likewise keep
+ * protected mutation controls available.
  */
 const REQUIRED_ON_PRODUCTION = [
+  'CRON_SECRET',
   'DOWNLOAD_TOKEN_SECRET',
   'UPSTASH_REDIS_REST_URL',
   'UPSTASH_REDIS_REST_TOKEN',
