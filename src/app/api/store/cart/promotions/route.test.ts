@@ -5,6 +5,25 @@ const mockGetCustomer = vi.fn()
 const mockGetAuthToken = vi.fn()
 const mockGetCart = vi.fn()
 const mockAddCartPromotions = vi.fn()
+const REQUEST_IP = '203.0.113.7'
+
+const { mockIpLimiterConsume, mockCustomerLimiterConsume } = vi.hoisted(() => ({
+  mockIpLimiterConsume: vi.fn(),
+  mockCustomerLimiterConsume: vi.fn(),
+}))
+
+vi.mock('@/lib/rate-limit', () => ({
+  createRateLimiter: (config: { prefix: string }) => {
+    if (config.prefix === 'checkout:promotions:ip') {
+      return { consume: mockIpLimiterConsume }
+    }
+    if (config.prefix === 'checkout:promotions:customer') {
+      return { consume: mockCustomerLimiterConsume }
+    }
+    throw new Error(`Unexpected rate-limit prefix: ${config.prefix}`)
+  },
+  clientIp: () => REQUEST_IP,
+}))
 
 vi.mock('@/lib/impersonation', () => ({
   assertViewOnly: async () => {},
@@ -29,10 +48,10 @@ vi.mock('@/lib/logger', () => ({
 
 import { POST } from './route'
 
-function makeRequest(body: unknown) {
+function makeRequest(body: unknown, host = 'localhost:3000') {
   return new NextRequest('http://localhost:3000/api/store/cart/promotions', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', host },
     body: JSON.stringify(body),
   })
 }
@@ -50,11 +69,21 @@ describe('POST /api/store/cart/promotions', () => {
     promotions: [],
   }
 
+  const allowed = { success: true, remaining: 5, status: 'allowed' as const }
+  const limited = { success: false, remaining: 0, status: 'limited' as const }
+  const unavailable = {
+    success: true,
+    remaining: Infinity,
+    status: 'unavailable' as const,
+  }
+
   beforeEach(() => {
     vi.clearAllMocks()
     mockGetCustomer.mockResolvedValue(customer)
     mockGetAuthToken.mockResolvedValue('jwt_session')
     mockGetCart.mockResolvedValue(existingCart)
+    mockIpLimiterConsume.mockResolvedValue(allowed)
+    mockCustomerLimiterConsume.mockResolvedValue(allowed)
   })
 
   it('returns 401 when the customer is not authenticated', async () => {
@@ -66,6 +95,53 @@ describe('POST /api/store/cart/promotions', () => {
 
     expect(response.status).toBe(401)
     expect(mockAddCartPromotions).not.toHaveBeenCalled()
+  })
+
+  it('returns 429 when the IP limiter blocks the request', async () => {
+    mockIpLimiterConsume.mockResolvedValueOnce(limited)
+
+    const response = await POST(
+      makeRequest({ cartId: 'cart_1', code: 'PROMO10' })
+    )
+
+    expect(response.status).toBe(429)
+    expect(mockIpLimiterConsume).toHaveBeenCalledWith(REQUEST_IP)
+    expect(mockAddCartPromotions).not.toHaveBeenCalled()
+  })
+
+  it('returns 429 when the customer limiter blocks the request', async () => {
+    mockCustomerLimiterConsume.mockResolvedValueOnce(limited)
+
+    const response = await POST(
+      makeRequest({ cartId: 'cart_1', code: 'PROMO10' })
+    )
+
+    expect(response.status).toBe(429)
+    expect(mockCustomerLimiterConsume).toHaveBeenCalledWith(customer.id)
+    expect(mockAddCartPromotions).not.toHaveBeenCalled()
+  })
+
+  it('fails closed with 503 when the rate limiter is unavailable', async () => {
+    mockIpLimiterConsume.mockResolvedValueOnce(unavailable)
+
+    const response = await POST(
+      makeRequest({ cartId: 'cart_1', code: 'PROMO10' }, 'wcpos.com')
+    )
+
+    expect(response.status).toBe(503)
+    expect(mockAddCartPromotions).not.toHaveBeenCalled()
+  })
+
+  it('bypasses limiter unavailability on loopback hosts', async () => {
+    mockIpLimiterConsume.mockResolvedValueOnce(unavailable)
+    mockCustomerLimiterConsume.mockResolvedValueOnce(unavailable)
+    mockAddCartPromotions.mockResolvedValueOnce(existingCart)
+
+    const response = await POST(
+      makeRequest({ cartId: 'cart_1', code: 'PROMO10' })
+    )
+
+    expect(response.status).toBe(200)
   })
 
   it('returns 404 when the cart belongs to another customer', async () => {

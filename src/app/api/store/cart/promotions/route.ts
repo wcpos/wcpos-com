@@ -7,6 +7,24 @@ import {
 import { getAuthToken, getCustomer } from '@/lib/medusa-auth'
 import { storeLogger } from '@/lib/logger'
 import { assertViewOnly, ViewOnlyError } from '@/lib/impersonation'
+import { clientIp, createRateLimiter } from '@/lib/rate-limit'
+import { isLoopbackHost } from '@/lib/request-host'
+
+// The applied/not-applied response is a code-validity oracle, so guessing must
+// be more expensive than the code space is large. Legitimate checkouts apply
+// one code per cart init; both limits stay far above that. Fail-closed (except
+// loopback): a 503 here degrades to a full-price checkout, never blocks it.
+const promotionIpLimiter = createRateLimiter({
+  prefix: 'checkout:promotions:ip',
+  limit: 20,
+  window: '15 m',
+})
+
+const promotionCustomerLimiter = createRateLimiter({
+  prefix: 'checkout:promotions:customer',
+  limit: 8,
+  window: '15 m',
+})
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value)
@@ -29,6 +47,23 @@ export async function POST(request: NextRequest) {
     const customer = await getCustomer()
     if (!customer) {
       return storeCartErrorResponse('authentication_required', 401)
+    }
+
+    const loopback = isLoopbackHost(request.headers.get('host'))
+    const ipRate = await promotionIpLimiter.consume(clientIp(request))
+    if (ipRate.status === 'unavailable' && !loopback) {
+      return storeCartErrorResponse('rate_limit_unavailable', 503)
+    }
+    if (ipRate.status === 'limited') {
+      return storeCartErrorResponse('rate_limited', 429)
+    }
+
+    const customerRate = await promotionCustomerLimiter.consume(customer.id)
+    if (customerRate.status === 'unavailable' && !loopback) {
+      return storeCartErrorResponse('rate_limit_unavailable', 503)
+    }
+    if (customerRate.status === 'limited') {
+      return storeCartErrorResponse('rate_limited', 429)
     }
 
     const authToken = await getAuthToken()
