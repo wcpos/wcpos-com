@@ -13,14 +13,14 @@ import { initPostHogBrowser } from '@/lib/analytics/posthog-browser'
 
 const emptySubscribe = () => () => {}
 
-/** Server snapshot sentinel: hides the banner during SSR/hydration. */
-const SSR_PENDING = 'ssr-pending' as const
-
 function useConsentDecision() {
-  return useSyncExternalStore<AnalyticsConsentStatus | null | typeof SSR_PENDING>(
+  return useSyncExternalStore<AnalyticsConsentStatus | null>(
     emptySubscribe,
-    () => readAnalyticsConsent(),
-    () => SSR_PENDING
+    readAnalyticsConsent,
+    // Render the undecided banner into the prerendered HTML response. A tiny
+    // head script sets a data attribute before first paint so returning
+    // visitors never see it flash while React hydrates.
+    () => null
   )
 }
 
@@ -58,6 +58,8 @@ export function ConsentBanner() {
     <div
       role="region"
       aria-label={t('label')}
+      data-consent-banner=""
+      data-testid="consent-banner"
       className="fixed inset-x-0 bottom-0 z-50 border-t bg-background p-4 shadow-lg"
     >
       <div className="mx-auto flex max-w-3xl flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between">

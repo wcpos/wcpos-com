@@ -193,3 +193,15 @@
     font-family: var(--font-sans);
   }
 }
+
+/* The consent markup is part of the prerendered HTML response so it can paint
+   without waiting for hydration. The head bootstrap classifies the cookie
+   before the body is parsed, preventing a flash for visitors who decided. */
+[data-consent-banner] {
+  display: block;
+}
+
+html[data-analytics-consent='granted'] [data-consent-banner],
+html[data-analytics-consent='denied'] [data-consent-banner] {
+  display: none;
+}

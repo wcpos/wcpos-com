@@ -1,6 +1,7 @@
 'use client'
 
 import { useCallback, useEffect, useRef, useState } from 'react'
+import dynamic from 'next/dynamic'
 import { useLocale, useTranslations } from 'next-intl'
 import { createPaymentSession } from './complete-cart'
 import { CheckoutErrorNotice, OrderPendingNotice } from './checkout-recovery'
@@ -20,7 +21,7 @@ import {
   billingAddressSummary,
   type BillingAddress,
 } from './checkout/billing-step'
-import { PaymentStep, type PaymentMethod } from './checkout/payment-step'
+import type { PaymentMethod } from './checkout/payment-step'
 import { PAYMENT_METHOD_PROVIDER_IDS } from '@/lib/checkout-payments'
 import { StepShell } from './checkout/step-shell'
 import { Button } from '@/components/ui/button'
@@ -31,6 +32,57 @@ import type { CheckoutPaymentConfig } from '@/lib/checkout-payment-config'
 import { localizeKnownProductTitle } from '@/lib/product-title-display'
 import type { ProCheckoutVariant } from '@/services/core/analytics/posthog-service'
 import { getPlanByHandle } from '@/lib/plans'
+
+export function PaymentStepLoading({
+  error,
+  retry,
+}: {
+  error?: Error | null
+  retry?: () => void
+}) {
+  const t = useTranslations('pro.checkout')
+  const tErrors = useTranslations('errors')
+
+  if (error) {
+    return (
+      <div className="space-y-3" role="alert">
+        <p className="text-sm text-destructive">
+          {t('errors.initializeFailed')}
+        </p>
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          onClick={() => (retry ? retry() : window.location.reload())}
+        >
+          {tErrors('tryAgain')}
+        </Button>
+      </div>
+    )
+  }
+
+  return (
+    <div
+      className="space-y-3"
+      data-testid="payment-step-loading"
+      aria-busy="true"
+    >
+      <div className="h-6 w-40 animate-pulse rounded bg-muted" />
+      <div className="h-24 w-full animate-pulse rounded bg-muted" />
+    </div>
+  )
+}
+
+const PaymentStep = dynamic(
+  () =>
+    import('./checkout/payment-step').then(
+      (paymentStepModule) => paymentStepModule.PaymentStep
+    ),
+  {
+    ssr: false,
+    loading: PaymentStepLoading,
+  }
+)
 
 interface CartItem {
   id: string

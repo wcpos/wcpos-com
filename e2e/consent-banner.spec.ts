@@ -31,6 +31,15 @@ function documentCookies(page: Page) {
 }
 
 test.describe('Consent banner', () => {
+  test('includes undecided consent in the initial HTML before hydration', async ({
+    request,
+  }) => {
+    const response = await request.get('/')
+
+    expect(response.ok()).toBe(true)
+    expect(await response.text()).toContain('data-testid="consent-banner"')
+  })
+
   test('shows the banner with a working privacy policy link when undecided', async ({
     page,
   }) => {
@@ -51,6 +60,24 @@ test.describe('Consent banner', () => {
     await expect(
       page.getByRole('heading', { name: 'Privacy Policy', level: 1 })
     ).toBeVisible()
+  })
+
+  test('shows undecided consent before hydration', async ({ page }) => {
+    await page.route('**/*', async (route) => {
+      if (route.request().resourceType() === 'script') {
+        await route.abort()
+        return
+      }
+      await route.continue()
+    })
+
+    await page.goto('/', { waitUntil: 'domcontentloaded' })
+
+    await expect(page.locator('[data-testid="consent-banner"]')).toBeVisible()
+    await expect(page.locator('html')).toHaveAttribute(
+      'data-analytics-consent',
+      'undecided'
+    )
   })
 
   test('accepting stores granted consent and dismisses the banner', async ({
@@ -113,5 +140,36 @@ test.describe('Consent banner', () => {
 
     await expect(page.getByRole('heading', { level: 1 }).first()).toBeVisible()
     await expect(banner(page)).toBeHidden()
+  })
+
+  test('hides stored consent before hydration', async ({
+    page,
+    context,
+    baseURL,
+  }) => {
+    await context.addCookies([
+      {
+        name: CONSENT_COOKIE,
+        value: 'granted',
+        url: baseURL ?? 'http://localhost:3000',
+      },
+    ])
+    await page.route('**/*', async (route) => {
+      if (route.request().resourceType() === 'script') {
+        await route.abort()
+        return
+      }
+      await route.continue()
+    })
+
+    await page.goto('/', { waitUntil: 'domcontentloaded' })
+
+    // The inline head bootstrap still runs, but hydration bundles are blocked.
+    // Returning visitors must not see a consent flash while those load.
+    await expect(page.locator('[data-testid="consent-banner"]')).toBeHidden()
+    await expect(page.locator('html')).toHaveAttribute(
+      'data-analytics-consent',
+      'granted'
+    )
   })
 })
