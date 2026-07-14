@@ -4,10 +4,12 @@ import { ClientSpeedInsights } from '@/components/client-speed-insights'
 import { NextIntlClientProvider } from 'next-intl'
 import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server'
 import { ThemeProvider } from 'next-themes'
+import { Suspense } from 'react'
 import { localeDirections, locales, type Locale } from '@/i18n/config'
 import { clientMessages } from '@/i18n/client-messages'
 import { ClientLoggingInit } from '@/components/client-logging-init'
 import { ConsentBanner } from '@/components/consent/consent-banner'
+import { ANALYTICS_CONSENT_BOOTSTRAP_SCRIPT } from '@/lib/analytics/consent'
 import { alternateOpenGraphLocales, openGraphLocale } from '@/lib/seo'
 
 const geistSans = Geist({
@@ -85,6 +87,16 @@ export default async function LocaleLayout({
 
   return (
     <html lang={localeKey} dir={localeDirections[localeKey]} suppressHydrationWarning>
+      <head>
+        {/* Classify consent before the banner markup is parsed. This keeps the
+            banner in the prerendered response without flashing it to visitors
+            who already decided while the client bundle hydrates. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: ANALYTICS_CONSENT_BOOTSTRAP_SCRIPT,
+          }}
+        />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
@@ -110,7 +122,9 @@ export default async function LocaleLayout({
         >
           <NextIntlClientProvider messages={clientMessages(messages)}>
             {children}
-            <ConsentBanner />
+            <Suspense fallback={null}>
+              <ConsentBanner />
+            </Suspense>
           </NextIntlClientProvider>
         </ThemeProvider>
         {/* Real-user Core Web Vitals (Vercel Speed Insights). Cookieless and

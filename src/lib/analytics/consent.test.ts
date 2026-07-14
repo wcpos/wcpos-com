@@ -1,8 +1,10 @@
-import { beforeEach, describe, expect, it } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { ANALYTICS_DISTINCT_ID_COOKIE } from './distinct-id'
 import {
+  ANALYTICS_CONSENT_BOOTSTRAP_SCRIPT,
   ANALYTICS_CONSENT_COOKIE,
   consentCookieDomain,
+  escapeUnsafeInlineScriptChars,
   getConsentCookieOptions,
   isAnalyticsGranted,
   mostRestrictiveConsent,
@@ -11,6 +13,18 @@ import {
   readAnalyticsConsentFromCookieHeader,
   writeAnalyticsConsent,
 } from './consent'
+
+function runConsentBootstrap(cookieHeader: string) {
+  const cookieRead = vi
+    .spyOn(document, 'cookie', 'get')
+    .mockReturnValue(cookieHeader)
+  delete document.documentElement.dataset.analyticsConsent
+
+  Function(ANALYTICS_CONSENT_BOOTSTRAP_SCRIPT)()
+
+  cookieRead.mockRestore()
+  return document.documentElement.dataset.analyticsConsent
+}
 
 function clearCookies() {
   for (const part of document.cookie.split('; ')) {
@@ -53,6 +67,41 @@ describe('mostRestrictiveConsent', () => {
     expect(mostRestrictiveConsent([undefined, null, '', 'yes'])).toBeNull()
     // A junk value must not mask a real grant.
     expect(mostRestrictiveConsent(['yes', 'granted'])).toBe('granted')
+  })
+})
+
+describe('ANALYTICS_CONSENT_BOOTSTRAP_SCRIPT', () => {
+  it('sanitizes script terminators and JavaScript line separators', () => {
+    expect(
+      escapeUnsafeInlineScriptChars(JSON.stringify('</script>\u2028\u2029'))
+    ).toBe('"\\u003C/script\\u003E\\u2028\\u2029"')
+  })
+
+  it('shows consent only when no valid decision exists', () => {
+    expect(runConsentBootstrap('other=1')).toBe('undecided')
+    expect(
+      runConsentBootstrap(`${ANALYTICS_CONSENT_COOKIE}=granted`)
+    ).toBe('granted')
+    expect(runConsentBootstrap(`${ANALYTICS_CONSENT_COOKIE}=denied`)).toBe(
+      'denied'
+    )
+  })
+
+  it('keeps denial precedence across duplicate and encoded cookie values', () => {
+    expect(
+      runConsentBootstrap(
+        `${ANALYTICS_CONSENT_COOKIE}=granted; ${ANALYTICS_CONSENT_COOKIE}=%64enied`
+      )
+    ).toBe('denied')
+  })
+
+  it('fails closed to undecided for malformed or unknown values', () => {
+    expect(runConsentBootstrap(`${ANALYTICS_CONSENT_COOKIE}=%E0%`)).toBe(
+      'undecided'
+    )
+    expect(runConsentBootstrap(`${ANALYTICS_CONSENT_COOKIE}=yes`)).toBe(
+      'undecided'
+    )
   })
 })
 

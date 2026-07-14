@@ -824,7 +824,7 @@ describe('CheckoutClient', () => {
     renderSignedIn()
     await completeBillingStep()
 
-    expect(screen.getByTestId('payment-method-stripe')).toHaveAttribute(
+    expect(await screen.findByTestId('payment-method-stripe')).toHaveAttribute(
       'aria-checked',
       'true'
     )
