@@ -4,6 +4,7 @@ import {
   ANALYTICS_CONSENT_BOOTSTRAP_SCRIPT,
   ANALYTICS_CONSENT_COOKIE,
   consentCookieDomain,
+  escapeUnsafeInlineScriptChars,
   getConsentCookieOptions,
   isAnalyticsGranted,
   mostRestrictiveConsent,
@@ -70,6 +71,12 @@ describe('mostRestrictiveConsent', () => {
 })
 
 describe('ANALYTICS_CONSENT_BOOTSTRAP_SCRIPT', () => {
+  it('sanitizes script terminators and JavaScript line separators', () => {
+    expect(
+      escapeUnsafeInlineScriptChars(JSON.stringify('</script>\u2028\u2029'))
+    ).toBe('"\\u003C/script\\u003E\\u2028\\u2029"')
+  })
+
   it('shows consent only when no valid decision exists', () => {
     expect(runConsentBootstrap('other=1')).toBe('undecided')
     expect(

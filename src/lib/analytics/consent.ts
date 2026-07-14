@@ -17,14 +17,21 @@ import { ANALYTICS_DISTINCT_ID_COOKIE } from './distinct-id'
  */
 export const ANALYTICS_CONSENT_COOKIE = 'wcpos-analytics-consent'
 
+/** Escapes characters that can break a JSON string out of an inline script. */
+export function escapeUnsafeInlineScriptChars(value: string): string {
+  return value.replace(/[<>\u2028\u2029]/g, (char) =>
+    `\\u${char.charCodeAt(0).toString(16).padStart(4, '0').toUpperCase()}`
+  )
+}
+
 /**
  * Classifies consent before the body is parsed so the prerendered banner can
  * be visible for undecided visitors without flashing for returning visitors.
  * Keep this beside the canonical consent parser: it mirrors the same
  * malformed-value handling and denial-wins duplicate-cookie policy.
  */
-export const ANALYTICS_CONSENT_BOOTSTRAP_SCRIPT = `(()=>{const n=${JSON.stringify(
-  ANALYTICS_CONSENT_COOKIE
+export const ANALYTICS_CONSENT_BOOTSTRAP_SCRIPT = `(()=>{const n=${escapeUnsafeInlineScriptChars(
+  JSON.stringify(ANALYTICS_CONSENT_COOKIE)
 )},p=n+'=',v=document.cookie.split('; ').filter(c=>c.startsWith(p)).map(c=>{try{return decodeURIComponent(c.slice(p.length))}catch{return''}});document.documentElement.dataset.analyticsConsent=v.includes('denied')?'denied':v.includes('granted')?'granted':'undecided'})()`
 
 export type AnalyticsConsentStatus = 'granted' | 'denied'
