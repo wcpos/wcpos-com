@@ -41,7 +41,13 @@ interface DiscordGuildMember {
 
 export interface DiscordChannelMessage {
   id: string
-  embeds?: Array<{ footer?: { text?: string } }>
+  embeds?: Array<{
+    title?: string
+    description?: string
+    color?: number
+    fields?: Array<{ name?: string; value?: string; inline?: boolean }>
+    footer?: { text?: string }
+  }>
 }
 
 export interface DiscordMessagePayload {
@@ -229,6 +235,18 @@ export class DiscordApiClient {
     } while (before)
 
     return messages
+  }
+
+  async getChannelMessage(
+    channelId: string,
+    messageId: string
+  ): Promise<DiscordChannelMessage | null> {
+    const response = await this.botFetch(`/channels/${channelId}/messages/${messageId}`)
+    if (response.status === 404) return null
+    if (!response.ok) {
+      throw new Error(`Discord channel message lookup failed: ${await parseDiscordError(response)}`)
+    }
+    return (await response.json()) as DiscordChannelMessage
   }
 
   async createChannelMessage(channelId: string, payload: DiscordMessagePayload): Promise<void> {
