@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
 import type { LicenseDetail } from '@/types/license'
 import { addConnectedDiscordMember } from './connected-members'
-import type { DiscordCustomerInfo } from './interactions'
+import { buildMemberCardEmbed, type DiscordCustomerInfo } from './interactions'
 import {
   listLinkedMembers,
   parseDirectoryMessage,
@@ -51,14 +51,18 @@ function dependencies(
 }
 
 describe('parseDirectoryMessage', () => {
-  it('reads the member id from the first embed footer and ignores anything else', () => {
+  it('reads the member id from the first embed footer and retains the embed', () => {
     expect(
       parseDirectoryMessage({ id: 'm1', embeds: [{ footer: { text: 'member:123' } }] })
-    ).toEqual({ id: 'm1', memberId: '123' })
+    ).toEqual({
+      id: 'm1',
+      memberId: '123',
+      embed: { footer: { text: 'member:123' } },
+    })
     expect(parseDirectoryMessage({ id: 'm2', embeds: [{ footer: { text: 'welcome!' } }] })).toEqual(
-      { id: 'm2', memberId: null }
+      { id: 'm2', memberId: null, embed: { footer: { text: 'welcome!' } } }
     )
-    expect(parseDirectoryMessage({ id: 'm3' })).toEqual({ id: 'm3', memberId: null })
+    expect(parseDirectoryMessage({ id: 'm3' })).toEqual({ id: 'm3', memberId: null, embed: null })
   })
 })
 
@@ -75,6 +79,27 @@ describe('listLinkedMembers', () => {
 })
 
 describe('syncMemberDirectory', () => {
+  it('does not edit an existing card when its rendered embed is unchanged', async () => {
+    const existingCard = {
+      id: 'msg_existing',
+      memberId: '111',
+      embed: buildMemberCardEmbed(
+        emptyCard,
+        { id: '111', username: 'ada' },
+        { directoryFooter: true }
+      ),
+    }
+    const deps = dependencies({
+      listAllLicenses: async () => [license({ metadata: connectedTo({}, '111') })],
+      listDirectoryMessages: async () => [existingCard],
+    })
+
+    const summary = await syncMemberDirectory(deps)
+
+    expect(deps.editDirectoryCard).not.toHaveBeenCalled()
+    expect(summary).toEqual({ members: 1, created: 0, updated: 0, deleted: 0 })
+  })
+
   it('creates missing cards, updates existing ones, deletes orphans, leaves non-cards alone', async () => {
     const deps = dependencies({
       listAllLicenses: async () => [
@@ -120,6 +145,26 @@ describe('syncMemberDirectory', () => {
 })
 
 describe('upsertDirectoryCardForMember', () => {
+  it('does not edit an existing card when its rendered embed is unchanged', async () => {
+    const existingCard = {
+      id: 'msg_1',
+      memberId: '111',
+      embed: buildMemberCardEmbed(
+        emptyCard,
+        { id: '111', username: 'ada' },
+        { directoryFooter: true }
+      ),
+    }
+    const deps = dependencies({
+      listAllLicenses: async () => [license({ metadata: connectedTo({}, '111') })],
+      listDirectoryMessages: async () => [existingCard],
+    })
+
+    await upsertDirectoryCardForMember('111', deps)
+
+    expect(deps.editDirectoryCard).not.toHaveBeenCalled()
+  })
+
   it('creates a card for a newly linked member', async () => {
     const deps = dependencies({
       listAllLicenses: async () => [license({ metadata: connectedTo({}, '111') })],

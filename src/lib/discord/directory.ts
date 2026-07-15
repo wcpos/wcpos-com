@@ -20,6 +20,16 @@ export interface DirectoryMessage {
   id: string
   /** Parsed from the card footer; null for any non-card message in the channel. */
   memberId: string | null
+  /** Existing embed content, used to avoid PATCHing unchanged old messages. */
+  embed?: DirectoryEmbedSnapshot | null
+}
+
+interface DirectoryEmbedSnapshot {
+  title?: string
+  description?: string
+  color?: number
+  fields?: Array<{ name?: string; value?: string; inline?: boolean }>
+  footer?: { text?: string }
 }
 
 export interface DiscordDirectoryDependencies {
@@ -36,10 +46,14 @@ export interface DiscordDirectoryDependencies {
 
 export function parseDirectoryMessage(message: {
   id: string
-  embeds?: Array<{ footer?: { text?: string } }>
+  embeds?: DirectoryEmbedSnapshot[]
 }): DirectoryMessage {
-  const footerText = message.embeds?.[0]?.footer?.text
-  return { id: message.id, memberId: parseDirectoryFooterMemberId(footerText) }
+  const embed = message.embeds?.[0] ?? null
+  return {
+    id: message.id,
+    memberId: parseDirectoryFooterMemberId(embed?.footer?.text),
+    embed,
+  }
 }
 
 interface LinkedMember {
@@ -80,6 +94,32 @@ async function buildCard(
   )
 }
 
+function directoryCardMatches(
+  existing: DirectoryEmbedSnapshot | null | undefined,
+  expected: DiscordEmbed
+): boolean {
+  if (
+    !existing ||
+    existing.title !== expected.title ||
+    existing.description !== expected.description ||
+    existing.color !== expected.color ||
+    existing.footer?.text !== expected.footer?.text
+  ) {
+    return false
+  }
+
+  const existingFields = existing.fields ?? []
+  if (existingFields.length !== expected.fields.length) return false
+  return existingFields.every((field, index) => {
+    const expectedField = expected.fields[index]
+    return (
+      field.name === expectedField.name &&
+      field.value === expectedField.value &&
+      (field.inline ?? false) === (expectedField.inline ?? false)
+    )
+  })
+}
+
 export interface DirectorySyncSummary {
   members: number
   created: number
@@ -112,7 +152,7 @@ export async function syncMemberDirectory(
 
   // First card per member wins; later duplicates (an event upsert racing a
   // sync can create one) are deleted here, so the nightly pass self-heals.
-  const messageByMemberId = new Map<string, string>()
+  const messageByMemberId = new Map<string, DirectoryMessage>()
   for (const message of messages) {
     if (!message.memberId) continue
     if (messageByMemberId.has(message.memberId)) {
@@ -120,24 +160,26 @@ export async function syncMemberDirectory(
       summary.deleted += 1
       continue
     }
-    messageByMemberId.set(message.memberId, message.id)
+    messageByMemberId.set(message.memberId, message)
   }
 
   for (const member of members) {
     const embed = await buildCard(member, licenses, dependencies)
-    const existingId = messageByMemberId.get(member.discordUserId)
-    if (existingId) {
-      await dependencies.editDirectoryCard(existingId, embed)
-      summary.updated += 1
+    const existing = messageByMemberId.get(member.discordUserId)
+    if (existing) {
+      if (!directoryCardMatches(existing.embed, embed)) {
+        await dependencies.editDirectoryCard(existing.id, embed)
+        summary.updated += 1
+      }
     } else {
       await dependencies.createDirectoryCard(embed)
       summary.created += 1
     }
   }
 
-  for (const [memberId, messageId] of messageByMemberId) {
+  for (const [memberId, message] of messageByMemberId) {
     if (!memberIds.has(memberId)) {
-      await dependencies.deleteDirectoryCard(messageId)
+      await dependencies.deleteDirectoryCard(message.id)
       summary.deleted += 1
     }
   }
@@ -160,24 +202,25 @@ export async function upsertDirectoryCardForMember(
   // A concurrent upsert racing this one (or a past race) can leave several
   // cards for the same member — treat the first as canonical and delete the
   // rest, so duplicates heal on the next event, not only overnight.
-  const [existingId, ...duplicateIds] = messages
+  const [existing, ...duplicates] = messages
     .filter((message) => message.memberId === discordUserId)
-    .map((message) => message.id)
-  for (const duplicateId of duplicateIds) {
-    await dependencies.deleteDirectoryCard(duplicateId)
+  for (const duplicate of duplicates) {
+    await dependencies.deleteDirectoryCard(duplicate.id)
   }
   const member = listLinkedMembers(licenses).find(
     (candidate) => candidate.discordUserId === discordUserId
   )
 
   if (!member) {
-    if (existingId) await dependencies.deleteDirectoryCard(existingId)
+    if (existing) await dependencies.deleteDirectoryCard(existing.id)
     return
   }
 
   const embed = await buildCard(member, licenses, dependencies)
-  if (existingId) {
-    await dependencies.editDirectoryCard(existingId, embed)
+  if (existing) {
+    if (!directoryCardMatches(existing.embed, embed)) {
+      await dependencies.editDirectoryCard(existing.id, embed)
+    }
   } else {
     await dependencies.createDirectoryCard(embed)
   }

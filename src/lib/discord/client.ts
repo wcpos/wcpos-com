@@ -41,7 +41,13 @@ interface DiscordGuildMember {
 
 export interface DiscordChannelMessage {
   id: string
-  embeds?: Array<{ footer?: { text?: string } }>
+  embeds?: Array<{
+    title?: string
+    description?: string
+    color?: number
+    fields?: Array<{ name?: string; value?: string; inline?: boolean }>
+    footer?: { text?: string }
+  }>
 }
 
 export interface DiscordMessagePayload {
