@@ -237,6 +237,18 @@ export class DiscordApiClient {
     return messages
   }
 
+  async getChannelMessage(
+    channelId: string,
+    messageId: string
+  ): Promise<DiscordChannelMessage | null> {
+    const response = await this.botFetch(`/channels/${channelId}/messages/${messageId}`)
+    if (response.status === 404) return null
+    if (!response.ok) {
+      throw new Error(`Discord channel message lookup failed: ${await parseDiscordError(response)}`)
+    }
+    return (await response.json()) as DiscordChannelMessage
+  }
+
   async createChannelMessage(channelId: string, payload: DiscordMessagePayload): Promise<void> {
     const response = await this.botFetch(`/channels/${channelId}/messages`, {
       method: 'POST',

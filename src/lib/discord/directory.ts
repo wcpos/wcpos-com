@@ -39,6 +39,8 @@ export interface DiscordDirectoryDependencies {
     allLicenses: Array<Omit<LicenseDetail, 'machines'>>
   ): Promise<Omit<DiscordCustomerInfo, 'roleState'>>
   listDirectoryMessages(): Promise<DirectoryMessage[]>
+  /** Fresh lookup before suppressing a PATCH; absent implementations fail safe and edit. */
+  getDirectoryMessage?(messageId: string): Promise<DirectoryMessage | null>
   createDirectoryCard(embed: DiscordEmbed): Promise<void>
   editDirectoryCard(messageId: string, embed: DiscordEmbed): Promise<void>
   deleteDirectoryCard(messageId: string): Promise<void>
@@ -167,7 +169,10 @@ export async function syncMemberDirectory(
     const embed = await buildCard(member, licenses, dependencies)
     const existing = messageByMemberId.get(member.discordUserId)
     if (existing) {
-      if (!directoryCardMatches(existing.embed, embed)) {
+      const current = directoryCardMatches(existing.embed, embed)
+        ? await dependencies.getDirectoryMessage?.(existing.id)
+        : existing
+      if (!directoryCardMatches(current?.embed, embed)) {
         await dependencies.editDirectoryCard(existing.id, embed)
         summary.updated += 1
       }

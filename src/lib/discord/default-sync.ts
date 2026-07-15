@@ -91,6 +91,10 @@ function createDiscordDirectoryDependencies(
       }),
     listDirectoryMessages: async () =>
       (await client.listChannelMessages(channelId)).map(parseDirectoryMessage),
+    getDirectoryMessage: async (messageId) => {
+      const message = await client.getChannelMessage(channelId, messageId)
+      return message ? parseDirectoryMessage(message) : null
+    },
     createDirectoryCard: (embed) =>
       client.createChannelMessage(channelId, { embeds: [embed], allowed_mentions: { parse: [] } }),
     editDirectoryCard: (messageId, embed) =>

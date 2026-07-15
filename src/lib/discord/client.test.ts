@@ -15,7 +15,7 @@ describe('DiscordApiClient bot endpoints', () => {
   const fetchMock = vi.fn()
 
   beforeEach(() => {
-    fetchMock.mockResolvedValue(new Response('[]', { status: 200 }))
+    fetchMock.mockImplementation(async () => new Response('[]', { status: 200 }))
     vi.stubGlobal('fetch', fetchMock)
   })
 
@@ -25,13 +25,15 @@ describe('DiscordApiClient bot endpoints', () => {
     vi.clearAllMocks()
   })
 
-  it('lists channel messages without duplicating the API base path', async () => {
-    await new DiscordApiClient(config).listChannelMessages('channel-123')
+  it('uses channel message endpoints without duplicating the API base path', async () => {
+    const client = new DiscordApiClient(config)
+    await client.listChannelMessages('channel-123')
+    await client.getChannelMessage('channel-123', 'message-123')
 
-    expect(fetchMock).toHaveBeenCalledWith(
+    expect(fetchMock.mock.calls.map(([url]) => url)).toEqual([
       'https://discord.com/api/v10/channels/channel-123/messages?limit=100',
-      expect.anything()
-    )
+      'https://discord.com/api/v10/channels/channel-123/messages/message-123',
+    ])
   })
 
   it('lists guild members without duplicating the API base path', async () => {

@@ -79,6 +79,25 @@ describe('listLinkedMembers', () => {
 })
 
 describe('syncMemberDirectory', () => {
+  it('refreshes the live card before skipping an unchanged list snapshot', async () => {
+    const expectedEmbed = buildMemberCardEmbed(emptyCard, { id: '111', username: 'ada' }, {
+      directoryFooter: true,
+    })
+    const existingCard = { id: 'msg_existing', memberId: '111', embed: expectedEmbed }
+    const deps = dependencies({
+      listAllLicenses: async () => [license({ metadata: connectedTo({}, '111') })],
+      listDirectoryMessages: async () => [existingCard],
+      getDirectoryMessage: async () => ({
+        ...existingCard,
+        embed: { ...expectedEmbed, title: 'Stale card' },
+      }),
+    })
+
+    await syncMemberDirectory(deps)
+
+    expect(deps.editDirectoryCard).toHaveBeenCalledWith('msg_existing', expectedEmbed)
+  })
+
   it('does not edit an existing card when its rendered embed is unchanged', async () => {
     const existingCard = {
       id: 'msg_existing',
@@ -92,6 +111,7 @@ describe('syncMemberDirectory', () => {
     const deps = dependencies({
       listAllLicenses: async () => [license({ metadata: connectedTo({}, '111') })],
       listDirectoryMessages: async () => [existingCard],
+      getDirectoryMessage: async () => existingCard,
     })
 
     const summary = await syncMemberDirectory(deps)
