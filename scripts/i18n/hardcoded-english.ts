@@ -1,5 +1,6 @@
 #!/usr/bin/env tsx
-import ts from 'typescript'
+import * as ts from 'typescript/unstable/ast'
+import { API } from 'typescript/unstable/sync'
 import { createHash } from 'node:crypto'
 import { existsSync, mkdirSync, readFileSync, readdirSync, statSync, writeFileSync } from 'node:fs'
 import path from 'node:path'
@@ -246,15 +247,8 @@ function category(filePath: string, text: string, attr: string | null): string {
   return attr ? 'attribute' : 'code/string'
 }
 
-function scanFile(filePath: string): Hit[] {
-  const source = readFileSync(filePath, 'utf8')
-  const sourceFile = ts.createSourceFile(
-    filePath,
-    source,
-    ts.ScriptTarget.Latest,
-    true,
-    filePath.endsWith('.tsx') ? ts.ScriptKind.TSX : ts.ScriptKind.TS
-  )
+function scanFile(sourceFile: ts.SourceFile): Hit[] {
+  const filePath = sourceFile.fileName
   const hits: Hit[] = []
 
   function add(node: ts.Node, raw: string, attr: string | null = null) {
@@ -283,11 +277,26 @@ function scanFile(filePath: string): Hit[] {
       add(node, node.head.text)
       for (const span of node.templateSpans) add(span.literal, span.literal.text)
     }
-    ts.forEachChild(node, visit)
+    node.forEachChild(visit)
   }
 
   visit(sourceFile)
   return hits
+}
+
+function scanFiles(files: string[]): Hit[] {
+  const api = new API({ cwd: root })
+  try {
+    const snapshot = api.updateSnapshot({ openFiles: files })
+    return files.flatMap((filePath) => {
+      const project = snapshot.getDefaultProjectForFile(filePath)
+      const sourceFile = project?.program.getSourceFile(filePath)
+      if (!sourceFile) throw new Error(`Unable to parse ${path.relative(root, filePath)}`)
+      return scanFile(sourceFile)
+    })
+  } finally {
+    api.close()
+  }
 }
 
 function signature(hit: Pick<Hit, 'file' | 'category' | 'attr' | 'text'>): string {
@@ -345,7 +354,7 @@ const files = scope.flatMap((item) => {
   const stat = statSync(absolute)
   return stat.isDirectory() ? walk(absolute) : [absolute]
 })
-const hits = files.flatMap(scanFile).sort((a, b) => a.file.localeCompare(b.file) || a.line - b.line)
+const hits = scanFiles(files).sort((a, b) => a.file.localeCompare(b.file) || a.line - b.line)
 const entries = summarize(hits)
 
 if (update) {
