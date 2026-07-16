@@ -118,8 +118,7 @@ jobs:
   #   gh secret set VERCEL_TOKEN --repo wcpos/wcpos-com
   #   gh variable set VERCEL_DEPLOYS --repo wcpos/wcpos-com --body enabled
   #
-  # GitHub withholds secrets from Dependabot-triggered runs. Skip those
-  # jobs, and guard the Vercel steps in case the token is otherwise empty.
+  # GitHub withholds secrets from Dependabot-triggered runs, so skip those jobs.
   # ============================================
   deploy-preview:
     name: Deploy Preview
@@ -135,8 +134,6 @@ jobs:
     environment:
       name: preview
       url: ${{ steps.deploy.outputs.url }}
-    env:
-      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
     steps:
       - name: Checkout
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
@@ -151,24 +148,21 @@ jobs:
           cache: 'pnpm'
 
       - name: Pull Vercel Environment
-        if: env.VERCEL_TOKEN != ''
         run: pnpm dlx vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: Build Project
-        if: env.VERCEL_TOKEN != ''
         run: pnpm dlx vercel build --token=${{ secrets.VERCEL_TOKEN }}
         env:
           GITHUB_PAT: ${{ secrets.GH_PAT }}
 
       - name: Deploy Preview
-        if: env.VERCEL_TOKEN != ''
         id: deploy
         run: |
           url=$(pnpm dlx vercel deploy --prebuilt --archive=tgz --token=${{ secrets.VERCEL_TOKEN }})
           echo "url=$url" >> $GITHUB_OUTPUT
 
       - name: Comment PR
-        if: ${{ env.VERCEL_TOKEN != '' && !github.event.pull_request.head.repo.fork }}
+        if: ${{ !github.event.pull_request.head.repo.fork }}
         continue-on-error: true
         uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
         with:
