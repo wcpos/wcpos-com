@@ -13,13 +13,12 @@ test.describe('Account deletion', () => {
     context,
     baseURL,
   }, testInfo) => {
-    // Suffix carries the project name: browser projects run in parallel
-    // against ONE mock server, and deletion kills the exact token used —
-    // a shared token would sign the other browsers out mid-test.
+    // Suffix carries the project name and retry: browser projects and attempts
+    // share ONE mock server, and deletion kills the exact token used.
     await signInAs(
       context,
       baseURL,
-      `e2e-none__account-delete-${testInfo.project.name}`
+      `e2e-none__account-delete-${testInfo.project.name}-${testInfo.retry}`
     )
 
     await page.goto('/account/profile')
