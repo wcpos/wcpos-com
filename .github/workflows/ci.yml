@@ -1,8 +1,6 @@
 name: CI/CD
 
 on:
-  # Manual trigger — used to kick a production deploy without a new commit
-  # (e.g. after rotating VERCEL_TOKEN).
   workflow_dispatch:
   push:
     branches: [main, staging]
@@ -30,9 +28,6 @@ env:
   VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
 jobs:
-  # ============================================
-  # Stage 1: Lint, Type Check, Unit Tests
-  # ============================================
   test:
     name: Test
     runs-on: ubuntu-latest
@@ -41,31 +36,22 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
-
       - name: Setup pnpm
         uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271 # v4
-
       - name: Setup Node.js
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: '22'
           cache: 'pnpm'
-
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-
       - name: Lint
         run: pnpm lint
-
       - name: Type check
         run: pnpm exec tsc --noEmit
-
       - name: Unit tests
         run: pnpm test:unit
 
-  # ============================================
-  # Stage 2: E2E Tests (runs after unit tests pass)
-  # ============================================
   e2e:
     name: E2E Tests
     runs-on: ubuntu-latest
@@ -76,29 +62,23 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
-
       - name: Setup pnpm
         uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271 # v4
-
       - name: Setup Node.js
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: '22'
           cache: 'pnpm'
-
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-
       - name: Install Playwright
         run: pnpm exec playwright install --with-deps chromium
-
       - name: Run E2E tests
         run: pnpm test:e2e --project=chromium
         env:
           CI: true
           GITHUB_PAT: ${{ secrets.GH_PAT }}
           MEDUSA_PUBLISHABLE_KEY: ${{ secrets.MEDUSA_PUBLISHABLE_KEY }}
-
       - name: Upload Playwright report
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         if: failure()
@@ -107,22 +87,11 @@ jobs:
           path: playwright-report/
           retention-days: 7
 
-  # ============================================
-  # Stage 3: Deploy Preview (PRs only)
-  #
-  # Vercel git deployments are disabled in vercel.json, so these CLI jobs
-  # are the ONLY deploy path for this repo. They are gated on the
-  # VERCEL_DEPLOYS repository variable so an expired VERCEL_TOKEN skips
-  # them instead of failing every run. To enable: rotate the token
-  # (Vercel dashboard -> Account Settings -> Tokens), then
-  #   gh secret set VERCEL_TOKEN --repo wcpos/wcpos-com
-  #   gh variable set VERCEL_DEPLOYS --repo wcpos/wcpos-com --body enabled
-  # ============================================
   deploy-preview:
     name: Deploy Preview
     runs-on: ubuntu-latest
     needs: [test, e2e]
-    if: github.event_name == 'pull_request' && vars.VERCEL_DEPLOYS == 'enabled' && github.actor != 'dependabot[bot]'
+    if: github.event_name == 'pull_request' && github.actor != 'dependabot[bot]' && vars.VERCEL_DEPLOYS == 'enabled'
     permissions:
       contents: read
       pull-requests: write
@@ -133,33 +102,27 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
-
       - name: Setup pnpm
         uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271 # v4
-
       - name: Setup Node.js
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: '22'
           cache: 'pnpm'
-
       - name: Pull Vercel Environment
         if: env.VERCEL_TOKEN != ''
         run: pnpm dlx vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
-
       - name: Build Project
         if: env.VERCEL_TOKEN != ''
         run: pnpm dlx vercel build --token=${{ secrets.VERCEL_TOKEN }}
         env:
           GITHUB_PAT: ${{ secrets.GH_PAT }}
-
       - name: Deploy Preview
         id: deploy
         if: env.VERCEL_TOKEN != ''
         run: |
           url=$(pnpm dlx vercel deploy --prebuilt --archive=tgz --token=${{ secrets.VERCEL_TOKEN }})
           echo "url=$url" >> $GITHUB_OUTPUT
-
       - name: Comment PR
         if: ${{ steps.deploy.outcome == 'success' && !github.event.pull_request.head.repo.fork }}
         continue-on-error: true
@@ -173,17 +136,6 @@ jobs:
               body: '🚀 Preview: ${{ steps.deploy.outputs.url }}'
             })
 
-  # ============================================
-  # NOTE: the former Deploy Staging job (staging branch -> beta.wcpos.com
-  # alias) was removed: the staging branch no longer exists, and pinning
-  # beta.wcpos.com via a one-off CLI alias left it serving a stale
-  # deployment. Re-point beta in the Vercel dashboard instead.
-
-  # ============================================
-  # Stage 4: Deploy Production (main branch only)
-  # Same VERCEL_DEPLOYS gate as preview — vercel.json disables git
-  # deployments, so this job is the only production deploy path.
-  # ============================================
   deploy-production:
     name: Deploy Production
     runs-on: ubuntu-latest
@@ -197,20 +149,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
-
       - name: Setup pnpm
         uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271 # v4
-
       - name: Setup Node.js
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: '22'
           cache: 'pnpm'
-
       - name: Pull Vercel Environment
         run: pnpm dlx vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
-
-      # Sensitive Vercel variables are intentionally unavailable to local
-      # prebuilds, so Production must build remotely inside Vercel.
       - name: Deploy Production
         run: pnpm dlx vercel deploy --prod --archive=tgz --token=${{ secrets.VERCEL_TOKEN }}
