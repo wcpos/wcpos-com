@@ -1008,6 +1008,7 @@
         "password_email_failed": "We couldn't send the email. Please try again.",
         "disconnect_failed": "Couldn't disconnect. Please try again.",
         "rate_limited": "Too many attempts — please try again in a few minutes.",
+        "confirmation_mismatch": "The email you typed doesn't match this account. Refresh the page and try again.",
         "account_deletion_failed": "We couldn't delete your account. Please try again or contact support."
       },
       "languageTitle": "Language",

@@ -70,8 +70,10 @@ describe('DeleteAccountCard', () => {
     fireEvent.click(confirmButton(dialog))
 
     await waitFor(() => {
-      expect(mockFetch).toHaveBeenCalledWith('/api/account', {
+      expect(mockFetch).toHaveBeenCalledWith('/api/account/delete', {
         method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: EMAIL }),
       })
       expect(mockNavigate).toHaveBeenCalledWith('/', 'en')
     })

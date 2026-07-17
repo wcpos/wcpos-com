@@ -1008,6 +1008,7 @@
         "password_email_failed": "邮件发送失败，请重试。",
         "disconnect_failed": "断开连接失败，请重试。",
         "rate_limited": "尝试次数过多，请几分钟后再试。",
+        "confirmation_mismatch": "您输入的邮箱与此账户不匹配。请刷新页面后重试。",
         "account_deletion_failed": "无法删除您的账户。请重试或联系支持团队。"
       },
       "languageTitle": "语言",

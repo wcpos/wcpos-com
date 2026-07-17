@@ -1008,6 +1008,7 @@
         "password_email_failed": "Impossibile inviare l'email. Riprova.",
         "disconnect_failed": "Impossibile disconnettere. Riprova.",
         "rate_limited": "Troppi tentativi: riprova tra qualche minuto.",
+        "confirmation_mismatch": "L'email digitata non corrisponde a questo account. Aggiorna la pagina e riprova.",
         "account_deletion_failed": "Non siamo riusciti a eliminare il tuo account. Riprova o contatta l'assistenza."
       },
       "languageTitle": "Lingua",

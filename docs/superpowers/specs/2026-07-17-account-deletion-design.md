@@ -47,12 +47,20 @@ Two repos, backend merges/deploys first:
    the email, delete addresses, soft-delete the customer. Retry-safe if a
    prior attempt died mid-way. Security-held customers are blocked by the
    existing customers-family middleware (they must contact support).
-2. **wcpos-com** — `DELETE /api/account` route: same-origin check → rate
-   limit (3/15 min/IP) → `assertViewOnly()` (an impersonating admin must
-   never delete) → `getCustomer()` → backend call via
-   `deleteCustomerAccount()` in `src/lib/medusa-auth.ts` → `logout()` only
-   on success (a failed delete leaves the session so the error is visible
-   and retryable). Errors are stable `errorCode`s, translated client-side.
+2. **wcpos-com** — `DELETE /api/account/delete` route: same-origin check →
+   rate limit (3/15 min/IP) → `assertViewOnly()` (an impersonating admin
+   must never delete) → `getCustomer()` → server-side confirmation check
+   (the typed email must match the freshly resolved customer, else 409
+   `confirmation_mismatch`) → backend call via `deleteCustomerAccount()` in
+   `src/lib/medusa-auth.ts` → `logout()` only on success (a failed delete
+   leaves the session so the error is visible and retryable). Errors are
+   stable `errorCode`s, translated client-side.
+
+   The path must stay under `/api/account/`: the middleware stamps the
+   account-request header only for that prefix, and `assertViewOnly()` is
+   inert without it (adversarial review caught the original `/api/account`
+   placement bypassing the impersonation guard; a middleware test now pins
+   the invariant).
 
 ## UI
 

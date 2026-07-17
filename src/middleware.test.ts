@@ -199,6 +199,21 @@ describe('middleware', () => {
       ).toBe('1')
     })
 
+    it('sets the account-request header on the account deletion route', () => {
+      // The deletion route relies on this header for assertViewOnly(): without
+      // it an impersonating admin's DELETE would resolve to (and delete) their
+      // OWN account. Found by adversarial review — keep this pinned.
+      const request = new NextRequest('https://wcpos.com/api/account/delete', {
+        method: 'DELETE',
+      })
+
+      const response = middleware(request)
+
+      expect(
+        response?.headers.get(`x-middleware-request-${ACCOUNT_REQUEST_HEADER}`)
+      ).toBe('1')
+    })
+
     it('sets the account-request header on store cart mutation API routes', () => {
       const request = new NextRequest('https://wcpos.com/api/store/cart/complete', {
         headers: { [ACCOUNT_REQUEST_HEADER]: 'spoofed' },

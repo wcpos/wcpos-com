@@ -1008,6 +1008,7 @@
         "password_email_failed": "Die E-Mail konnte nicht gesendet werden. Bitte versuche es erneut.",
         "disconnect_failed": "Trennen fehlgeschlagen. Bitte versuche es erneut.",
         "rate_limited": "Zu viele Versuche — bitte versuche es in ein paar Minuten erneut.",
+        "confirmation_mismatch": "Die eingegebene E-Mail-Adresse stimmt nicht mit diesem Konto überein. Lade die Seite neu und versuche es erneut.",
         "account_deletion_failed": "Dein Konto konnte nicht gelöscht werden. Bitte versuche es erneut oder kontaktiere den Support."
       },
       "languageTitle": "Sprache",

@@ -1008,6 +1008,7 @@
         "password_email_failed": "Impossible d'envoyer l'e-mail. Veuillez réessayer.",
         "disconnect_failed": "Impossible de déconnecter. Veuillez réessayer.",
         "rate_limited": "Trop de tentatives — réessayez dans quelques minutes.",
+        "confirmation_mismatch": "L'adresse e-mail saisie ne correspond pas à ce compte. Actualisez la page et réessayez.",
         "account_deletion_failed": "Impossible de supprimer votre compte. Veuillez réessayer ou contacter l'assistance."
       },
       "languageTitle": "Langue",

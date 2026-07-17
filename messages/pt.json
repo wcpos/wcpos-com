@@ -1008,6 +1008,7 @@
         "password_email_failed": "Não foi possível enviar o email. Tenta novamente.",
         "disconnect_failed": "Não foi possível desligar. Tenta novamente.",
         "rate_limited": "Demasiadas tentativas — tenta novamente dentro de alguns minutos.",
+        "confirmation_mismatch": "O email que escreveste não corresponde a esta conta. Atualiza a página e tenta novamente.",
         "account_deletion_failed": "Não foi possível eliminar a tua conta. Tenta novamente ou contacta o suporte."
       },
       "languageTitle": "Idioma",

@@ -50,14 +50,23 @@ export function DeleteAccountCard({ email }: { email: string }) {
     if (!confirmed || deleting) return
     setDeleting(true)
     try {
-      const response = await fetch('/api/account', { method: 'DELETE' })
+      // The typed email travels along so the server re-checks it against the
+      // CURRENT session identity — a stale page can never delete an account
+      // the user didn't confirm.
+      const response = await fetch('/api/account/delete', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: confirmText }),
+      })
       if (!response.ok) {
         const body = (await response.json().catch(() => null)) as {
           errorCode?: string
         } | null
         const code = body?.errorCode
         toast.error(
-          code === 'read_only_inspection' || code === 'rate_limited'
+          code === 'read_only_inspection' ||
+            code === 'rate_limited' ||
+            code === 'confirmation_mismatch'
             ? t(`apiErrors.${code}`)
             : t('apiErrors.account_deletion_failed')
         )

@@ -1008,6 +1008,7 @@
         "password_email_failed": "We konden de e-mail niet versturen. Probeer het opnieuw.",
         "disconnect_failed": "Ontkoppelen is niet gelukt. Probeer het opnieuw.",
         "rate_limited": "Te veel pogingen — probeer het over een paar minuten opnieuw.",
+        "confirmation_mismatch": "Het getypte e-mailadres komt niet overeen met dit account. Vernieuw de pagina en probeer het opnieuw.",
         "account_deletion_failed": "We konden je account niet verwijderen. Probeer het opnieuw of neem contact op met support."
       },
       "languageTitle": "Taal",

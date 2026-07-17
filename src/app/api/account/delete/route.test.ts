@@ -37,13 +37,21 @@ vi.mock('@/lib/rate-limit', () => ({
 import { ViewOnlyError } from '@/lib/impersonation'
 import { DELETE } from './route'
 
-function makeRequest() {
-  return new Request('http://localhost:3000/api/account', {
+function makeRequest(body?: unknown) {
+  return new Request('http://localhost:3000/api/account/delete', {
     method: 'DELETE',
+    ...(body !== undefined
+      ? {
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+        }
+      : {}),
   })
 }
 
-describe('DELETE /api/account', () => {
+const CONFIRM = { email: 'ada@example.com' }
+
+describe('DELETE /api/account/delete', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     sameOrigin.mockReturnValue(true)
@@ -100,8 +108,29 @@ describe('DELETE /api/account', () => {
     expect(mockDeleteCustomerAccount).not.toHaveBeenCalled()
   })
 
-  it('deletes the account, then clears the session', async () => {
+  it('rejects when the confirmed email does not match the session customer', async () => {
+    // A stale tab: the dialog showed (and the user confirmed) a different
+    // identity than the one the cookie now resolves to.
+    const response = await DELETE(makeRequest({ email: 'other@example.com' }))
+
+    expect(response.status).toBe(409)
+    expect(await response.json()).toEqual({
+      errorCode: 'confirmation_mismatch',
+    })
+    expect(mockDeleteCustomerAccount).not.toHaveBeenCalled()
+    expect(mockLogout).not.toHaveBeenCalled()
+  })
+
+  it('rejects a bodyless request', async () => {
     const response = await DELETE(makeRequest())
+
+    expect(response.status).toBe(409)
+    expect(mockDeleteCustomerAccount).not.toHaveBeenCalled()
+  })
+
+  it('deletes the account, then clears the session', async () => {
+    // Case/whitespace differences must not block a genuine confirmation.
+    const response = await DELETE(makeRequest({ email: ' ADA@example.com ' }))
 
     expect(response.status).toBe(200)
     expect(await response.json()).toEqual({ deleted: true })
@@ -112,7 +141,7 @@ describe('DELETE /api/account', () => {
   it('keeps the session when the backend delete fails, so a retry is possible', async () => {
     mockDeleteCustomerAccount.mockRejectedValue(new Error('backend down'))
 
-    const response = await DELETE(makeRequest())
+    const response = await DELETE(makeRequest(CONFIRM))
 
     expect(response.status).toBe(502)
     expect(await response.json()).toEqual({
