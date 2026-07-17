@@ -521,6 +521,40 @@ export async function upsertDefaultBillingAddress(
   return data.customer
 }
 
+/**
+ * Permanently delete the signed-in customer's account on the backend.
+ *
+ * Calls the custom `DELETE /store/customers/me/account` endpoint, which
+ * removes every auth identity (all providers), suppresses lifecycle email,
+ * and soft-deletes the customer while retaining order records. The caller is
+ * responsible for clearing the session cookie afterwards — the token is dead
+ * either way once this succeeds.
+ */
+export async function deleteCustomerAccount(): Promise<void> {
+  const token = await getAuthToken()
+  if (!token) {
+    throw new Error('No session token to delete the account with')
+  }
+
+  const response = await fetch(
+    `${await getMedusaBackendUrl()}/store/customers/me/account`,
+    {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+        'x-publishable-api-key': await getMedusaPublishableKey(),
+      },
+    }
+  )
+
+  if (!response.ok) {
+    throw new Error(
+      await parseMedusaError(response, 'Failed to delete account')
+    )
+  }
+}
+
 // OAuth sign-in (initiateOAuth / establishOAuthSession) lives in
 // `@/lib/oauth`, which imports the shared `setAuthToken` and `parseMedusaError`
 // from here. The link-then-refresh-then-persist ordering is owned by that

@@ -987,6 +987,18 @@
       "disconnectTitle": "Desligar {provider}?",
       "disconnectBody": "Deixarás de poder iniciar sessão com {provider}. Podes voltar a ligar em qualquer altura iniciando sessão novamente com {provider}.",
       "disconnectCancel": "Cancelar",
+      "deleteAccountTitle": "Eliminar conta",
+      "deleteAccountHint": "Elimina permanentemente a tua conta WCPOS — métodos de início de sessão, perfil e dados de faturação. As chaves de licença já emitidas continuam a funcionar, mas deixam de poder ser geridas ou renovadas a partir de uma conta. Os registos de encomendas são conservados conforme exigido para efeitos fiscais e contabilísticos.",
+      "deleteAccountButton": "Eliminar conta…",
+      "deleteAccountDialogTitle": "Eliminar a tua conta?",
+      "deleteAccountDialogBody": "Isto elimina permanentemente a tua conta e não pode ser anulado.",
+      "deleteAccountConsequenceSignIn": "Todos os teus métodos de início de sessão são removidos — a sessão é terminada em todo o lado e deixas de poder iniciar sessão.",
+      "deleteAccountConsequenceLicenses": "As chaves de licença já emitidas continuam a funcionar, mas deixam de poder ser geridas, renovadas ou recuperadas a partir desta conta.",
+      "deleteAccountConsequenceOrders": "Os registos de encomendas são conservados conforme exigido para efeitos fiscais e contabilísticos.",
+      "deleteAccountConfirmLabel": "Escreve {email} para confirmar",
+      "deleteAccountCancel": "Cancelar",
+      "deleteAccountConfirm": "Eliminar permanentemente",
+      "deleteAccountDeleting": "A eliminar…",
       "apiErrors": {
         "read_only_inspection": "Está a visualizar esta conta em modo só de leitura.",
         "unauthorized": "Inicie sessão novamente para atualizar o seu perfil.",
@@ -995,7 +1007,8 @@
         "email_identity_reserved": "Este email já é usado por outra conta. Contacta o suporte.",
         "password_email_failed": "Não foi possível enviar o email. Tenta novamente.",
         "disconnect_failed": "Não foi possível desligar. Tenta novamente.",
-        "rate_limited": "Demasiadas tentativas — tenta novamente dentro de alguns minutos."
+        "rate_limited": "Demasiadas tentativas — tenta novamente dentro de alguns minutos.",
+        "account_deletion_failed": "Não foi possível eliminar a tua conta. Tenta novamente ou contacta o suporte."
       },
       "languageTitle": "Idioma",
       "languageHint": "O idioma usado na sua conta, e-mails e recibos. Alterá-lo recarrega a página."

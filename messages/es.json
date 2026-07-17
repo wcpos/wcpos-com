@@ -987,6 +987,18 @@
       "disconnectTitle": "¿Desconectar {provider}?",
       "disconnectBody": "Ya no podrás iniciar sesión con {provider}. Puedes volver a conectarlo en cualquier momento iniciando sesión con {provider} de nuevo.",
       "disconnectCancel": "Cancelar",
+      "deleteAccountTitle": "Eliminar cuenta",
+      "deleteAccountHint": "Elimina permanentemente tu cuenta de WCPOS: métodos de inicio de sesión, perfil y datos de facturación. Las claves de licencia ya emitidas siguen funcionando, pero ya no se pueden gestionar ni renovar desde una cuenta. Los registros de pedidos se conservan según exigen las obligaciones fiscales y contables.",
+      "deleteAccountButton": "Eliminar cuenta…",
+      "deleteAccountDialogTitle": "¿Eliminar tu cuenta?",
+      "deleteAccountDialogBody": "Esto elimina tu cuenta de forma permanente y no se puede deshacer.",
+      "deleteAccountConsequenceSignIn": "Se eliminan todos tus métodos de inicio de sesión: se cierra tu sesión en todas partes y no puedes volver a iniciar sesión.",
+      "deleteAccountConsequenceLicenses": "Las claves de licencia ya emitidas siguen funcionando, pero ya no se pueden gestionar, renovar ni recuperar desde esta cuenta.",
+      "deleteAccountConsequenceOrders": "Los registros de pedidos se conservan según exigen las obligaciones fiscales y contables.",
+      "deleteAccountConfirmLabel": "Escribe {email} para confirmar",
+      "deleteAccountCancel": "Cancelar",
+      "deleteAccountConfirm": "Eliminar permanentemente",
+      "deleteAccountDeleting": "Eliminando…",
       "apiErrors": {
         "read_only_inspection": "Estás viendo esta cuenta en modo de solo lectura.",
         "unauthorized": "Inicia sesión de nuevo para actualizar tu perfil.",
@@ -995,7 +1007,8 @@
         "email_identity_reserved": "Este correo ya lo usa otra cuenta. Contacta con soporte.",
         "password_email_failed": "No pudimos enviar el correo. Inténtalo de nuevo.",
         "disconnect_failed": "No se pudo desconectar. Inténtalo de nuevo.",
-        "rate_limited": "Demasiados intentos; inténtalo de nuevo en unos minutos."
+        "rate_limited": "Demasiados intentos; inténtalo de nuevo en unos minutos.",
+        "account_deletion_failed": "No hemos podido eliminar tu cuenta. Inténtalo de nuevo o ponte en contacto con soporte."
       },
       "languageTitle": "Idioma",
       "languageHint": "El idioma que se usa en tu cuenta, correos y recibos. Al cambiarlo se recarga la página."

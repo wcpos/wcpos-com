@@ -987,6 +987,18 @@
       "disconnectTitle": "{provider} trennen?",
       "disconnectBody": "Du kannst dich dann nicht mehr mit {provider} anmelden. Du kannst dich jederzeit wieder verbinden, indem du dich erneut mit {provider} anmeldest.",
       "disconnectCancel": "Abbrechen",
+      "deleteAccountTitle": "Konto löschen",
+      "deleteAccountHint": "Lösche dein WCPOS-Konto dauerhaft — Anmeldemethoden, Profil und Rechnungsdaten. Bereits ausgestellte Lizenzschlüssel funktionieren weiterhin, können aber nicht mehr über ein Konto verwaltet oder verlängert werden. Bestellunterlagen werden gemäß steuerlichen und buchhalterischen Pflichten aufbewahrt.",
+      "deleteAccountButton": "Konto löschen…",
+      "deleteAccountDialogTitle": "Konto löschen?",
+      "deleteAccountDialogBody": "Dein Konto wird dauerhaft gelöscht. Das kann nicht rückgängig gemacht werden.",
+      "deleteAccountConsequenceSignIn": "Alle deine Anmeldemethoden werden entfernt — du wirst überall abgemeldet und kannst dich nicht mehr anmelden.",
+      "deleteAccountConsequenceLicenses": "Bereits ausgestellte Lizenzschlüssel funktionieren weiterhin, können aber nicht mehr über dieses Konto verwaltet, verlängert oder wiederhergestellt werden.",
+      "deleteAccountConsequenceOrders": "Bestellunterlagen werden gemäß steuerlichen und buchhalterischen Pflichten aufbewahrt.",
+      "deleteAccountConfirmLabel": "Gib zur Bestätigung {email} ein",
+      "deleteAccountCancel": "Abbrechen",
+      "deleteAccountConfirm": "Endgültig löschen",
+      "deleteAccountDeleting": "Wird gelöscht…",
       "apiErrors": {
         "read_only_inspection": "Du siehst dieses Konto im schreibgeschützten Modus.",
         "unauthorized": "Bitte melde dich erneut an, um dein Profil zu aktualisieren.",
@@ -995,7 +1007,8 @@
         "email_identity_reserved": "Diese E-Mail-Adresse wird bereits von einem anderen Konto verwendet. Bitte kontaktiere den Support.",
         "password_email_failed": "Die E-Mail konnte nicht gesendet werden. Bitte versuche es erneut.",
         "disconnect_failed": "Trennen fehlgeschlagen. Bitte versuche es erneut.",
-        "rate_limited": "Zu viele Versuche — bitte versuche es in ein paar Minuten erneut."
+        "rate_limited": "Zu viele Versuche — bitte versuche es in ein paar Minuten erneut.",
+        "account_deletion_failed": "Dein Konto konnte nicht gelöscht werden. Bitte versuche es erneut oder kontaktiere den Support."
       },
       "languageTitle": "Sprache",
       "languageHint": "Die Sprache für dein Konto, E-Mails und Belege. Beim Ändern wird die Seite neu geladen."

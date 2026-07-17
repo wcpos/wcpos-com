@@ -987,6 +987,18 @@
       "disconnectTitle": "{provider} 연결을 해제할까요?",
       "disconnectBody": "더 이상 {provider}(으)로 로그인할 수 없습니다. 언제든지 {provider}(으)로 다시 로그인하면 재연결됩니다.",
       "disconnectCancel": "취소",
+      "deleteAccountTitle": "계정 삭제",
+      "deleteAccountHint": "WCPOS 계정(로그인 방법, 프로필, 결제 정보)을 영구적으로 삭제합니다. 이미 발급된 라이선스 키는 계속 사용할 수 있지만 더 이상 계정에서 관리하거나 갱신할 수 없습니다. 주문 기록은 세무 및 회계 요건에 따라 보관됩니다.",
+      "deleteAccountButton": "계정 삭제…",
+      "deleteAccountDialogTitle": "계정을 삭제하시겠습니까?",
+      "deleteAccountDialogBody": "계정이 영구적으로 삭제되며 되돌릴 수 없습니다.",
+      "deleteAccountConsequenceSignIn": "모든 로그인 방법이 제거됩니다. 모든 기기에서 로그아웃되며 다시 로그인할 수 없습니다.",
+      "deleteAccountConsequenceLicenses": "이미 발급된 라이선스 키는 계속 사용할 수 있지만 이 계정에서 더 이상 관리, 갱신, 복구할 수 없습니다.",
+      "deleteAccountConsequenceOrders": "주문 기록은 세무 및 회계 요건에 따라 보관됩니다.",
+      "deleteAccountConfirmLabel": "확인을 위해 {email}을 입력하세요",
+      "deleteAccountCancel": "취소",
+      "deleteAccountConfirm": "영구 삭제",
+      "deleteAccountDeleting": "삭제 중…",
       "apiErrors": {
         "read_only_inspection": "이 계정을 읽기 전용 모드로 보고 있습니다.",
         "unauthorized": "프로필을 업데이트하려면 다시 로그인해 주세요.",
@@ -995,7 +1007,8 @@
         "email_identity_reserved": "이 이메일은 이미 다른 계정에서 사용 중입니다. 지원팀에 문의하세요.",
         "password_email_failed": "이메일을 보내지 못했습니다. 다시 시도해 주세요.",
         "disconnect_failed": "연결을 해제하지 못했습니다. 다시 시도해 주세요.",
-        "rate_limited": "시도가 너무 많습니다. 몇 분 후에 다시 시도해 주세요."
+        "rate_limited": "시도가 너무 많습니다. 몇 분 후에 다시 시도해 주세요.",
+        "account_deletion_failed": "계정을 삭제하지 못했습니다. 다시 시도하거나 지원팀에 문의하세요."
       },
       "languageTitle": "언어",
       "languageHint": "계정, 이메일, 영수증에 사용되는 언어입니다. 변경하면 페이지가 새로고침됩니다."

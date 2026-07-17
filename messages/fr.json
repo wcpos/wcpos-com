@@ -987,6 +987,18 @@
       "disconnectTitle": "Déconnecter {provider} ?",
       "disconnectBody": "Vous ne pourrez plus vous connecter avec {provider}. Vous pourrez le reconnecter à tout moment en vous connectant à nouveau avec {provider}.",
       "disconnectCancel": "Annuler",
+      "deleteAccountTitle": "Supprimer le compte",
+      "deleteAccountHint": "Supprimez définitivement votre compte WCPOS — méthodes de connexion, profil et coordonnées de facturation. Les clés de licence déjà émises continuent de fonctionner, mais ne peuvent plus être gérées ni renouvelées depuis un compte. Les enregistrements de commande sont conservés conformément aux obligations fiscales et comptables.",
+      "deleteAccountButton": "Supprimer le compte…",
+      "deleteAccountDialogTitle": "Supprimer votre compte ?",
+      "deleteAccountDialogBody": "Cette action supprime définitivement votre compte et est irréversible.",
+      "deleteAccountConsequenceSignIn": "Toutes vos méthodes de connexion sont supprimées — vous êtes déconnecté partout et ne pouvez plus vous connecter.",
+      "deleteAccountConsequenceLicenses": "Les clés de licence déjà émises continuent de fonctionner, mais ne peuvent plus être gérées, renouvelées ou récupérées depuis ce compte.",
+      "deleteAccountConsequenceOrders": "Les enregistrements de commande sont conservés conformément aux obligations fiscales et comptables.",
+      "deleteAccountConfirmLabel": "Saisissez {email} pour confirmer",
+      "deleteAccountCancel": "Annuler",
+      "deleteAccountConfirm": "Supprimer définitivement",
+      "deleteAccountDeleting": "Suppression…",
       "apiErrors": {
         "read_only_inspection": "Vous consultez ce compte en mode lecture seule.",
         "unauthorized": "Veuillez vous reconnecter pour mettre à jour votre profil.",
@@ -995,7 +1007,8 @@
         "email_identity_reserved": "Cet e-mail est déjà utilisé par un autre compte. Contactez le support.",
         "password_email_failed": "Impossible d'envoyer l'e-mail. Veuillez réessayer.",
         "disconnect_failed": "Impossible de déconnecter. Veuillez réessayer.",
-        "rate_limited": "Trop de tentatives — réessayez dans quelques minutes."
+        "rate_limited": "Trop de tentatives — réessayez dans quelques minutes.",
+        "account_deletion_failed": "Impossible de supprimer votre compte. Veuillez réessayer ou contacter l'assistance."
       },
       "languageTitle": "Langue",
       "languageHint": "La langue utilisée dans votre compte, vos e-mails et vos reçus. La modifier recharge la page."

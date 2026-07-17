@@ -119,6 +119,11 @@ const dynamicTokens = new Map() // token -> { persona, kind: 'registration' | 's
 const registeredCredentials = new Map() // email -> { password, persona }
 let registrationSequence = 0
 
+// Tokens whose account was self-deleted (DELETE /store/customers/me/account).
+// Keyed by the EXACT token string so a suffixed fixture persona dies only for
+// the spec that deleted it — other specs sharing the base persona are safe.
+const deletedAccountTokens = new Set()
+
 function fixtureTokenForEmail(email) {
   for (const [token, persona] of Object.entries(fixtures.personas)) {
     if (persona.customer?.email === email) return token
@@ -138,6 +143,7 @@ function bearerToken(req) {
 function personaForRequest(req) {
   const token = bearerToken(req)
   if (!token) return null
+  if (deletedAccountTokens.has(token)) return null
 
   const dynamic = dynamicTokens.get(token)
   if (dynamic) {
@@ -385,6 +391,19 @@ const server = createServer(async (req, res) => {
     const auth = personaForRequest(req)
     if (!auth) return sendJson(res, 401, { message: 'Unauthorized' })
     return sendJson(res, 200, { customer: auth.persona.customer })
+  }
+
+  // Self-service account deletion (custom wcpos-medusa endpoint). The token
+  // dies with the account — and for dynamic personas the stored credentials
+  // too — so subsequent persona reads 401 and re-login fails, mirroring the
+  // real backend deleting every auth identity.
+  if (pathname === '/store/customers/me/account' && method === 'DELETE') {
+    const auth = personaForRequest(req)
+    if (!auth) return sendJson(res, 401, { message: 'Unauthorized' })
+    deletedAccountTokens.add(bearerToken(req))
+    const email = auth.persona.customer?.email
+    if (email) registeredCredentials.delete(email)
+    return sendJson(res, 200, { deleted: true })
   }
 
   // Customer auth-method management (custom wcpos-medusa endpoints).

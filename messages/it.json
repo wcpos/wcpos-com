@@ -987,6 +987,18 @@
       "disconnectTitle": "Disconnettere {provider}?",
       "disconnectBody": "Non potrai più accedere con {provider}. Puoi ricollegarlo in qualsiasi momento accedendo di nuovo con {provider}.",
       "disconnectCancel": "Annulla",
+      "deleteAccountTitle": "Elimina account",
+      "deleteAccountHint": "Elimina definitivamente il tuo account WCPOS: metodi di accesso, profilo e dati di fatturazione. Le chiavi di licenza già emesse continuano a funzionare, ma non possono più essere gestite o rinnovate da un account. I registri degli ordini vengono conservati secondo gli obblighi fiscali e contabili.",
+      "deleteAccountButton": "Elimina account…",
+      "deleteAccountDialogTitle": "Eliminare il tuo account?",
+      "deleteAccountDialogBody": "Questa operazione elimina definitivamente il tuo account e non può essere annullata.",
+      "deleteAccountConsequenceSignIn": "Tutti i tuoi metodi di accesso vengono rimossi: verrai disconnesso ovunque e non potrai più accedere.",
+      "deleteAccountConsequenceLicenses": "Le chiavi di licenza già emesse continuano a funzionare, ma non possono più essere gestite, rinnovate o recuperate da questo account.",
+      "deleteAccountConsequenceOrders": "I registri degli ordini vengono conservati secondo gli obblighi fiscali e contabili.",
+      "deleteAccountConfirmLabel": "Digita {email} per confermare",
+      "deleteAccountCancel": "Annulla",
+      "deleteAccountConfirm": "Elimina definitivamente",
+      "deleteAccountDeleting": "Eliminazione…",
       "apiErrors": {
         "read_only_inspection": "Stai visualizzando questo account in modalità sola lettura.",
         "unauthorized": "Accedi di nuovo per aggiornare il profilo.",
@@ -995,7 +1007,8 @@
         "email_identity_reserved": "Questa email è già usata da un altro account. Contatta il supporto.",
         "password_email_failed": "Impossibile inviare l'email. Riprova.",
         "disconnect_failed": "Impossibile disconnettere. Riprova.",
-        "rate_limited": "Troppi tentativi: riprova tra qualche minuto."
+        "rate_limited": "Troppi tentativi: riprova tra qualche minuto.",
+        "account_deletion_failed": "Non siamo riusciti a eliminare il tuo account. Riprova o contatta l'assistenza."
       },
       "languageTitle": "Lingua",
       "languageHint": "La lingua usata nel tuo account, nelle email e nelle ricevute. Modificandola la pagina viene ricaricata."

@@ -987,6 +987,18 @@
       "disconnectTitle": "{provider}の連携を解除しますか？",
       "disconnectBody": "{provider}でのサインインはできなくなります。再度{provider}でサインインすれば、いつでも再連携できます。",
       "disconnectCancel": "キャンセル",
+      "deleteAccountTitle": "アカウントの削除",
+      "deleteAccountHint": "WCPOS アカウント(サインイン方法、プロフィール、請求先情報)を完全に削除します。発行済みのライセンスキーは引き続き使用できますが、アカウントから管理や更新はできなくなります。注文記録は税務・会計上の要件に従って保持されます。",
+      "deleteAccountButton": "アカウントを削除…",
+      "deleteAccountDialogTitle": "アカウントを削除しますか?",
+      "deleteAccountDialogBody": "アカウントは完全に削除され、元に戻すことはできません。",
+      "deleteAccountConsequenceSignIn": "すべてのサインイン方法が削除されます。すべての端末からサインアウトされ、ログインできなくなります。",
+      "deleteAccountConsequenceLicenses": "発行済みのライセンスキーは引き続き使用できますが、このアカウントから管理、更新、復元することはできなくなります。",
+      "deleteAccountConsequenceOrders": "注文記録は税務・会計上の要件に従って保持されます。",
+      "deleteAccountConfirmLabel": "確認のため {email} を入力してください",
+      "deleteAccountCancel": "キャンセル",
+      "deleteAccountConfirm": "完全に削除",
+      "deleteAccountDeleting": "削除中…",
       "apiErrors": {
         "read_only_inspection": "このアカウントは読み取り専用モードで表示しています。",
         "unauthorized": "プロフィールを更新するには、もう一度ログインしてください。",
@@ -995,7 +1007,8 @@
         "email_identity_reserved": "このメールアドレスは別のアカウントで使用されています。サポートにお問い合わせください。",
         "password_email_failed": "メールを送信できませんでした。もう一度お試しください。",
         "disconnect_failed": "連携を解除できませんでした。もう一度お試しください。",
-        "rate_limited": "試行回数が多すぎます。数分後にもう一度お試しください。"
+        "rate_limited": "試行回数が多すぎます。数分後にもう一度お試しください。",
+        "account_deletion_failed": "アカウントを削除できませんでした。もう一度お試しいただくか、サポートまでお問い合わせください。"
       },
       "languageTitle": "言語",
       "languageHint": "アカウント、メール、領収書で使用される言語です。変更するとページが再読み込みされます。"

@@ -987,6 +987,18 @@
       "disconnectTitle": "Disconnect {provider}?",
       "disconnectBody": "You'll no longer be able to sign in with {provider}. You can reconnect anytime by signing in with {provider} again.",
       "disconnectCancel": "Cancel",
+      "deleteAccountTitle": "Delete account",
+      "deleteAccountHint": "Permanently delete your WCPOS account — sign-in methods, profile, and billing details. Licence keys that were already issued keep working, but can no longer be managed or renewed from an account. Order records are kept as required for tax and accounting.",
+      "deleteAccountButton": "Delete account…",
+      "deleteAccountDialogTitle": "Delete your account?",
+      "deleteAccountDialogBody": "This permanently deletes your account and cannot be undone.",
+      "deleteAccountConsequenceSignIn": "All your sign-in methods are removed — you are signed out everywhere and can no longer log in.",
+      "deleteAccountConsequenceLicenses": "Licence keys already issued keep working, but can no longer be managed, renewed, or recovered from this account.",
+      "deleteAccountConsequenceOrders": "Order records are kept as required for tax and accounting.",
+      "deleteAccountConfirmLabel": "Type {email} to confirm",
+      "deleteAccountCancel": "Cancel",
+      "deleteAccountConfirm": "Permanently delete",
+      "deleteAccountDeleting": "Deleting…",
       "apiErrors": {
         "read_only_inspection": "You are viewing this account in read-only mode.",
         "unauthorized": "Please sign in again to update your profile.",
@@ -995,7 +1007,8 @@
         "email_identity_reserved": "This email is already used by another account. Please contact support.",
         "password_email_failed": "We couldn't send the email. Please try again.",
         "disconnect_failed": "Couldn't disconnect. Please try again.",
-        "rate_limited": "Too many attempts — please try again in a few minutes."
+        "rate_limited": "Too many attempts — please try again in a few minutes.",
+        "account_deletion_failed": "We couldn't delete your account. Please try again or contact support."
       },
       "languageTitle": "Language",
       "languageHint": "The language used across your account, emails, and receipts. Changing it reloads the page."
