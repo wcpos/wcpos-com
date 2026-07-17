@@ -66,7 +66,8 @@ export function DeleteAccountCard({ email }: { email: string }) {
         toast.error(
           code === 'read_only_inspection' ||
             code === 'rate_limited' ||
-            code === 'confirmation_mismatch'
+            code === 'confirmation_mismatch' ||
+            code === 'unauthorized'
             ? t(`apiErrors.${code}`)
             : t('apiErrors.account_deletion_failed')
         )

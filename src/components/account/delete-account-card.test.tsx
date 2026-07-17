@@ -123,4 +123,25 @@ describe('DeleteAccountCard', () => {
     })
     expect(mockNavigate).not.toHaveBeenCalled()
   })
+
+  it('tells the user to sign in again when the session has expired', async () => {
+    mockFetch.mockResolvedValue({
+      ok: false,
+      json: async () => ({ errorCode: 'unauthorized' }),
+    })
+    render(<DeleteAccountCard email={EMAIL} />)
+    const dialog = await openDialog()
+
+    fireEvent.change(within(dialog).getByRole('textbox'), {
+      target: { value: EMAIL },
+    })
+    fireEvent.click(confirmButton(dialog))
+
+    await waitFor(() => {
+      expect(toast.error).toHaveBeenCalledWith(
+        'Please sign in again to update your profile.'
+      )
+    })
+    expect(mockNavigate).not.toHaveBeenCalled()
+  })
 })
