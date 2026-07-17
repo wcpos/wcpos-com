@@ -987,6 +987,18 @@
       "disconnectTitle": "{provider} ontkoppelen?",
       "disconnectBody": "Je kunt dan niet meer inloggen met {provider}. Je kunt op elk moment opnieuw koppelen door weer met {provider} in te loggen.",
       "disconnectCancel": "Annuleren",
+      "deleteAccountTitle": "Account verwijderen",
+      "deleteAccountHint": "Verwijder je WCPOS-account permanent — aanmeldmethoden, profiel en factuurgegevens. Reeds uitgegeven licentiesleutels blijven werken, maar kunnen niet meer via een account worden beheerd of verlengd. Bestelgegevens worden bewaard zoals vereist voor belasting en boekhouding.",
+      "deleteAccountButton": "Account verwijderen…",
+      "deleteAccountDialogTitle": "Je account verwijderen?",
+      "deleteAccountDialogBody": "Hiermee wordt je account permanent verwijderd. Dit kan niet ongedaan worden gemaakt.",
+      "deleteAccountConsequenceSignIn": "Al je aanmeldmethoden worden verwijderd — je wordt overal afgemeld en kunt niet meer inloggen.",
+      "deleteAccountConsequenceLicenses": "Reeds uitgegeven licentiesleutels blijven werken, maar kunnen niet meer via dit account worden beheerd, verlengd of teruggevonden.",
+      "deleteAccountConsequenceOrders": "Bestelgegevens worden bewaard zoals vereist voor belasting en boekhouding.",
+      "deleteAccountConfirmLabel": "Typ {email} om te bevestigen",
+      "deleteAccountCancel": "Annuleren",
+      "deleteAccountConfirm": "Definitief verwijderen",
+      "deleteAccountDeleting": "Verwijderen…",
       "apiErrors": {
         "read_only_inspection": "Je bekijkt dit account in alleen-lezenmodus.",
         "unauthorized": "Log opnieuw in om je profiel bij te werken.",
@@ -995,7 +1007,9 @@
         "email_identity_reserved": "Dit e-mailadres wordt al door een ander account gebruikt. Neem contact op met support.",
         "password_email_failed": "We konden de e-mail niet versturen. Probeer het opnieuw.",
         "disconnect_failed": "Ontkoppelen is niet gelukt. Probeer het opnieuw.",
-        "rate_limited": "Te veel pogingen — probeer het over een paar minuten opnieuw."
+        "rate_limited": "Te veel pogingen — probeer het over een paar minuten opnieuw.",
+        "confirmation_mismatch": "Het getypte e-mailadres komt niet overeen met dit account. Vernieuw de pagina en probeer het opnieuw.",
+        "account_deletion_failed": "We konden je account niet verwijderen. Probeer het opnieuw of neem contact op met support."
       },
       "languageTitle": "Taal",
       "languageHint": "De taal voor je account, e-mails en bonnen. Bij wijziging wordt de pagina opnieuw geladen."

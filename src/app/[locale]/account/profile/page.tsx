@@ -11,6 +11,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { PageHeader } from '@/components/ui/page-header'
 import { Skeleton } from '@/components/ui/skeleton'
 import { ProfileEditForm } from '@/components/account/profile-edit-form'
+import { DeleteAccountCard } from '@/components/account/delete-account-card'
 import type { Metadata } from 'next'
 
 export async function generateMetadata({
@@ -54,30 +55,33 @@ async function ProfileContent({ locale }: { locale: string }) {
     getPrimarySignInProvider(customer.metadata) ?? 'email'
 
   return (
-    <ProfileEditForm
-      customer={{
-        email: customer.email,
-        first_name: customer.first_name,
-        last_name: customer.last_name,
-        phone: customer.phone,
-        metadata: projectProfileMetadataForClient(customer.metadata),
-      }}
-      billingDetails={billingDetailsFromCustomer(customer)}
-      memberSince={formatDateForLocale(customer.created_at, locale)}
-      connections={{
-        signIn: { provider: signInProvider, email: customer.email },
-        methods: authMethods
-          ? {
-              providers: authMethods.providers,
-              providerDetails: authMethods.providerDetails,
-              emailpassIdentifier: authMethods.emailpassIdentifier,
-              emailpassPending: authMethods.emailpassPending,
-              emailpassUpdatedAt: authMethods.emailpassUpdatedAt,
-              emailpassReserved: authMethods.emailpassReserved,
-            }
-          : null,
-      }}
-    />
+    <div className="space-y-6">
+      <ProfileEditForm
+        customer={{
+          email: customer.email,
+          first_name: customer.first_name,
+          last_name: customer.last_name,
+          phone: customer.phone,
+          metadata: projectProfileMetadataForClient(customer.metadata),
+        }}
+        billingDetails={billingDetailsFromCustomer(customer)}
+        memberSince={formatDateForLocale(customer.created_at, locale)}
+        connections={{
+          signIn: { provider: signInProvider, email: customer.email },
+          methods: authMethods
+            ? {
+                providers: authMethods.providers,
+                providerDetails: authMethods.providerDetails,
+                emailpassIdentifier: authMethods.emailpassIdentifier,
+                emailpassPending: authMethods.emailpassPending,
+                emailpassUpdatedAt: authMethods.emailpassUpdatedAt,
+                emailpassReserved: authMethods.emailpassReserved,
+              }
+            : null,
+        }}
+      />
+      <DeleteAccountCard email={customer.email} />
+    </div>
   )
 }
 

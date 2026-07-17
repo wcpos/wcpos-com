@@ -987,6 +987,18 @@
       "disconnectTitle": "断开 {provider} 连接？",
       "disconnectBody": "断开后将无法使用 {provider} 登录。随时可以再次用 {provider} 登录以重新连接。",
       "disconnectCancel": "取消",
+      "deleteAccountTitle": "删除账户",
+      "deleteAccountHint": "永久删除您的 WCPOS 账户(登录方式、个人资料和账单信息)。已签发的许可证密钥将继续有效,但无法再通过账户进行管理或续期。订单记录将按税务和会计要求保留。",
+      "deleteAccountButton": "删除账户…",
+      "deleteAccountDialogTitle": "删除您的账户?",
+      "deleteAccountDialogBody": "此操作将永久删除您的账户,且无法撤销。",
+      "deleteAccountConsequenceSignIn": "您的所有登录方式都将被移除——您将在所有设备上退出登录,并且无法再登录。",
+      "deleteAccountConsequenceLicenses": "已签发的许可证密钥将继续有效,但无法再通过此账户进行管理、续期或找回。",
+      "deleteAccountConsequenceOrders": "订单记录将按税务和会计要求保留。",
+      "deleteAccountConfirmLabel": "请输入 {email} 以确认",
+      "deleteAccountCancel": "取消",
+      "deleteAccountConfirm": "永久删除",
+      "deleteAccountDeleting": "正在删除…",
       "apiErrors": {
         "read_only_inspection": "您正在以只读模式查看此账户。",
         "unauthorized": "请重新登录以更新您的个人资料。",
@@ -995,7 +1007,9 @@
         "email_identity_reserved": "该邮箱已被其他账户使用，请联系支持。",
         "password_email_failed": "邮件发送失败，请重试。",
         "disconnect_failed": "断开连接失败，请重试。",
-        "rate_limited": "尝试次数过多，请几分钟后再试。"
+        "rate_limited": "尝试次数过多，请几分钟后再试。",
+        "confirmation_mismatch": "您输入的邮箱与此账户不匹配。请刷新页面后重试。",
+        "account_deletion_failed": "无法删除您的账户。请重试或联系支持团队。"
       },
       "languageTitle": "语言",
       "languageHint": "用于您的账户、电子邮件和收据的语言。更改后将重新加载页面。"
