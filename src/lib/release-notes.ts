@@ -1,9 +1,3 @@
-/**
- * GitHub release bodies are authored for the releases page, where the body
- * stands alone. On our site the version and date already appear in the
- * surrounding UI, so a leading "Changelog" / "What's new in 1.9.5" / bare
- * version heading is pure noise — strip it before rendering.
- */
 const GENERIC_HEADING =
   /^(?:changelog|release notes|what[’']?s new(?:\s+in\s+v?\d[\w.-]*)?)$/i
 
@@ -13,6 +7,18 @@ function stripEmoji(text: string): string {
   return text.replace(/[\p{Extended_Pictographic}️‍]/gu, '').trim()
 }
 
+/**
+ * Strip a redundant leading heading from a GitHub release body.
+ *
+ * Release bodies are authored for GitHub's releases page, where the body
+ * stands alone. On our site the version and date already appear in the
+ * surrounding UI, so a leading "Changelog" / "What's new in 1.9.5" / bare
+ * version heading is pure noise. Descriptive feature headlines are kept.
+ *
+ * @param body - Raw release body markdown.
+ * @param version - The release's tag/version; when given, only that
+ *   release's own version heading counts as redundant.
+ */
 export function cleanReleaseNotes(body: string, version?: string): string {
   const lines = body.split('\n')
   let start = 0
