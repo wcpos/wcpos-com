@@ -47,11 +47,16 @@ export function DesktopNav({ links }: { links: SiteNavLink[] }) {
   const navRef = useRef<HTMLElement | null>(null)
   const spotRef = useRef<HTMLSpanElement | null>(null)
   const itemRefs = useRef(new Map<string, HTMLAnchorElement>())
+  // Pointer hover and keyboard focus are separate channels: a blur must not
+  // clear pointer state (or the spotlight snaps home while the pointer is
+  // still inside the nav), and vice versa. Focus wins while both are set.
   const [hoveredHref, setHoveredHref] = useState<string | null>(null)
+  const [focusedHref, setFocusedHref] = useState<string | null>(null)
 
   const activeHref =
     links.find((link) => isActive(pathname, link))?.href ?? null
-  const spotHref = hoveredHref ?? activeHref
+  const interactedHref = focusedHref ?? hoveredHref
+  const spotHref = interactedHref ?? activeHref
 
   useEffect(() => {
     const spot = spotRef.current
@@ -99,7 +104,7 @@ export function DesktopNav({ links }: { links: SiteNavLink[] }) {
         className={cn(
           'pointer-events-none absolute top-0 h-full rounded-full opacity-0',
           'transition-[left,width,background-color] duration-200 ease-out motion-reduce:transition-none',
-          hoveredHref ? 'bg-muted' : 'bg-primary/10'
+          interactedHref ? 'bg-muted' : 'bg-primary/10'
         )}
       />
       {links.map((link) => {
@@ -108,8 +113,8 @@ export function DesktopNav({ links }: { links: SiteNavLink[] }) {
           'aria-current': active ? ('page' as const) : undefined,
           className: navItemClass(active, link.highlight),
           onPointerEnter: () => setHoveredHref(link.href),
-          onFocus: () => setHoveredHref(link.href),
-          onBlur: () => setHoveredHref(null),
+          onFocus: () => setFocusedHref(link.href),
+          onBlur: () => setFocusedHref(null),
           ref: (el: HTMLAnchorElement | null) => {
             if (el) itemRefs.current.set(link.href, el)
             else itemRefs.current.delete(link.href)

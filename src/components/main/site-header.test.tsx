@@ -299,6 +299,28 @@ describe('SiteHeader', () => {
     expect(docsLink?.getAttribute('aria-current')).toBeNull()
   })
 
+  it('keeps the pointer-hover spotlight when another link loses focus', async () => {
+    mockGetCustomer.mockResolvedValue(null)
+    await act(async () => {
+      render(<SiteHeader />)
+    })
+
+    const supportLink = screen.getAllByText('Support')[0].closest('a')!
+    const downloadsLink = screen.getAllByText('Downloads')[0].closest('a')!
+    const spot = supportLink
+      .closest('nav')!
+      .querySelector('span[aria-hidden="true"]')!
+
+    fireEvent.pointerEnter(supportLink)
+    expect(spot.className).toContain('bg-muted')
+
+    // A different link gaining and losing keyboard focus must not clear the
+    // pointer-hover state while the pointer is still inside the nav.
+    fireEvent.focus(downloadsLink)
+    fireEvent.blur(downloadsLink)
+    expect(spot.className).toContain('bg-muted')
+  })
+
   it('falls back to the translated sign-in label when getCustomer throws', async () => {
     mockGetCustomer.mockRejectedValue(new Error('cookie read failed'))
     await act(async () => {
