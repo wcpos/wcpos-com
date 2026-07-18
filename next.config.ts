@@ -120,6 +120,11 @@ const nextConfig: NextConfig = {
       { source: '/category/:slug*', destination: 'https://wcpos.com/', statusCode: 301 },
       { source: '/tag/:slug*', destination: 'https://wcpos.com/', statusCode: 301 },
       { source: '/author/:slug*', destination: 'https://wcpos.com/', statusCode: 301 },
+      // Legacy Pro plugin update icon. Old WP-Admin installs still request this
+      // pre-cutover media-library path; keep it pointing at the canonical asset
+      // so the plugin-update card renders an icon. New releases reference
+      // /images/wcpos-pro.png directly (see woocommerce-pos-pro Pro_Plugin_Updater).
+      { source: '/wp-content/uploads/2014/06/woopos-pro.png', destination: '/images/wcpos-pro.png', statusCode: 301 },
     ]
   },
   async headers() {
