@@ -19,6 +19,13 @@ describe('cleanReleaseNotes', () => {
     expect(cleanReleaseNotes('# 1.9.2\n- Fixes', 'v1.9.2')).toBe('- Fixes')
   })
 
+  it('strips redundant headings written with closing ATX hashes', () => {
+    expect(cleanReleaseNotes('## Changelog ##\n\n- Fixes', 'v1.9.9')).toBe(
+      '- Fixes'
+    )
+    expect(cleanReleaseNotes('# v1.9.2 #\n- Fixes', 'v1.9.2')).toBe('- Fixes')
+  })
+
   it('keeps a descriptive feature headline', () => {
     const body = '## Receipts can now show savings\n\nReceipt templates…'
     expect(cleanReleaseNotes(body, 'v1.9.7')).toBe(body)

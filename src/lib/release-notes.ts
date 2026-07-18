@@ -16,7 +16,7 @@ export function cleanReleaseNotes(body: string, version?: string): string {
   let start = 0
   while (start < lines.length && lines[start].trim() === '') start++
 
-  const heading = lines[start]?.trim().match(/^#{1,6}\s+(.*)$/)
+  const heading = lines[start]?.trim().match(/^#{1,6}\s+(.+?)(?:\s+#+)?$/)
   if (heading) {
     const text = stripEmoji(heading[1])
     const normalizedVersion = version?.replace(/^v/i, '')
