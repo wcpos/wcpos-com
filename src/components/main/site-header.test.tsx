@@ -41,7 +41,12 @@ vi.mock('next-intl', () => ({
   },
 }))
 
-// Mock i18n navigation Link as a simple anchor
+// Mock i18n navigation Link as a simple anchor; pathname is mutable per-test
+// so active-page detection can be exercised.
+const { navState } = vi.hoisted(() => ({
+  navState: { pathname: '/' },
+}))
+
 vi.mock('@/i18n/navigation', () => ({
   Link: ({
     children,
@@ -56,6 +61,7 @@ vi.mock('@/i18n/navigation', () => ({
       {children}
     </a>
   ),
+  usePathname: () => navState.pathname,
 }))
 
 import { getCustomer } from '@/lib/medusa-auth'
@@ -68,6 +74,7 @@ const mockTrackClientEvent = vi.mocked(trackClientEvent)
 describe('SiteHeader', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+    navState.pathname = '/'
   })
 
   it('renders the WCPOS logo link', async () => {
@@ -244,6 +251,52 @@ describe('SiteHeader', () => {
     fireEvent.click(signInLink!)
 
     expect(mockTrackClientEvent).toHaveBeenCalledWith('click_sign_in', undefined)
+  })
+
+  it('marks the current page with aria-current in desktop and mobile navs', async () => {
+    navState.pathname = '/downloads'
+    mockGetCustomer.mockResolvedValue(null)
+    await act(async () => {
+      render(<SiteHeader />)
+    })
+
+    // Sheet content mounts on open — trigger it so the mobile nav renders too.
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Translated open menu' })
+    )
+
+    const downloadsLinks = screen
+      .getAllByText('Downloads')
+      .map((el) => el.closest('a'))
+    expect(downloadsLinks.length).toBe(2) // desktop + mobile sheet
+    for (const link of downloadsLinks) {
+      expect(link?.getAttribute('aria-current')).toBe('page')
+    }
+
+    const supportLink = screen.getAllByText('Support')[0].closest('a')
+    expect(supportLink?.getAttribute('aria-current')).toBeNull()
+  })
+
+  it('treats sub-pages as active for their nav section', async () => {
+    navState.pathname = '/pro/checkout'
+    mockGetCustomer.mockResolvedValue(null)
+    await act(async () => {
+      render(<SiteHeader />)
+    })
+
+    const proLink = screen.getAllByText('Pro')[0].closest('a')
+    expect(proLink?.getAttribute('aria-current')).toBe('page')
+  })
+
+  it('never marks the external Documentation link as active', async () => {
+    navState.pathname = '/documentation'
+    mockGetCustomer.mockResolvedValue(null)
+    await act(async () => {
+      render(<SiteHeader />)
+    })
+
+    const docsLink = screen.getAllByText('Documentation')[0].closest('a')
+    expect(docsLink?.getAttribute('aria-current')).toBeNull()
   })
 
   it('falls back to the translated sign-in label when getCustomer throws', async () => {

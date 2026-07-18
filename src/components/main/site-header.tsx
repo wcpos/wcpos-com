@@ -17,6 +17,7 @@ import {
 } from '@/lib/customer-avatar'
 import { UserMenu } from '@/components/main/user-menu'
 import { WcposLogo } from '@/components/icons/wcpos-logo'
+import { DesktopNav, MobileNavLinks } from '@/components/main/site-nav'
 
 async function AuthButton({ signInLabel }: { signInLabel: string }) {
   let customer = null
@@ -49,13 +50,6 @@ function AuthButtonFallback() {
   return <div className="h-9 w-9" />
 }
 
-// The highlighted link (Pro) carries the brand red; everything else stays muted.
-function navLinkClass(highlight?: boolean) {
-  return highlight
-    ? 'text-primary transition-colors hover:text-primary/80'
-    : 'text-muted-foreground transition-colors hover:text-foreground'
-}
-
 export function SiteHeader() {
   const t = useTranslations('header')
   const tCommon = useTranslations('common')
@@ -78,39 +72,7 @@ export function SiteHeader() {
             <WcposLogo className="h-7 w-7" />
             WCPOS
           </Link>
-          <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
-            {navLinks.map((link) =>
-              link.external ? (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  className={navLinkClass(link.highlight)}
-                >
-                  {link.label}
-                </a>
-              ) : (
-                link.eventName ? (
-                  <TrackedLocaleLink
-                    key={link.href}
-                    href={link.href}
-                    eventName={link.eventName}
-                    eventProperties={{ location: 'desktop_header' }}
-                    className={navLinkClass(link.highlight)}
-                  >
-                    {link.label}
-                  </TrackedLocaleLink>
-                ) : (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className={navLinkClass(link.highlight)}
-                  >
-                    {link.label}
-                  </Link>
-                )
-              )
-            )}
-          </nav>
+          <DesktopNav links={navLinks} />
         </div>
 
         {/* Desktop Auth Button */}
@@ -133,39 +95,9 @@ export function SiteHeader() {
               <WcposLogo className="h-6 w-6" />
               WCPOS
             </SheetTitle>
-            <nav className="flex flex-col gap-4 mt-6">
-              {navLinks.map((link) =>
-                link.external ? (
-                  <a
-                    key={link.href}
-                    href={link.href}
-                    className={`${navLinkClass(link.highlight)} text-sm font-medium`}
-                  >
-                    {link.label}
-                  </a>
-                ) : (
-                  link.eventName ? (
-                    <TrackedLocaleLink
-                      key={link.href}
-                      href={link.href}
-                      eventName={link.eventName}
-                      eventProperties={{ location: 'mobile_menu' }}
-                      className={`${navLinkClass(link.highlight)} text-sm font-medium`}
-                    >
-                      {link.label}
-                    </TrackedLocaleLink>
-                  ) : (
-                    <Link
-                      key={link.href}
-                      href={link.href}
-                      className={`${navLinkClass(link.highlight)} text-sm font-medium`}
-                    >
-                      {link.label}
-                    </Link>
-                  )
-                )
-              )}
-              <div className="border-t pt-4 mt-2">
+            <nav className="flex flex-col gap-1 mt-6">
+              <MobileNavLinks links={navLinks} />
+              <div className="border-t pt-4 mt-3">
                 <Suspense fallback={<AuthButtonFallback />}>
                   <AuthButton signInLabel={tCommon('signIn')} />
                 </Suspense>
