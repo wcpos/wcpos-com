@@ -58,7 +58,10 @@ export function ReleaseHistory({
           }
         >
           <div className="pb-5 pl-1" lang={release.contentLocale}>
-            <Markdown content={release.body} className="text-sm" />
+            <Markdown
+              content={release.body}
+              className="text-sm [&_h1]:text-base [&_h2]:text-base"
+            />
           </div>
         </Collapsible>
       ))}

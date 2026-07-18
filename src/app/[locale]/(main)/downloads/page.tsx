@@ -25,6 +25,7 @@ import {
   type ReleaseEntry,
 } from '@/components/downloads/release-history'
 import { getReleases } from '@/services/core/external/github-client'
+import { cleanReleaseNotes } from '@/lib/release-notes'
 import {
   getProductVersions,
   versionFor,
@@ -97,7 +98,7 @@ async function getRecentReleases(
   }
 
   return published.map((release, index) => {
-    const body = release.body.trim()
+    const body = cleanReleaseNotes(release.body, release.tagName)
     return {
       version: release.tagName.replace(/^v/, ''),
       date: formatReleaseDate(release.publishedAt, locale),

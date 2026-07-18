@@ -1,6 +1,7 @@
 import 'server-only'
 
 import { githubClient } from '@/services/core/external/github-client'
+import { cleanReleaseNotes } from '@/lib/release-notes'
 
 const PRO_PLUGIN_REPO = 'woocommerce-pos-pro'
 
@@ -40,12 +41,14 @@ export async function getProPluginReleases(): Promise<ProPluginRelease[]> {
       const asset = getPrimaryZipAsset(release.assets)
       if (!asset) return []
 
+      const releaseNotes = cleanReleaseNotes(release.body || '', release.tagName)
+
       return [{
         version: normalizeReleaseVersion(release.tagName),
         tagName: release.tagName,
         name: release.name,
-        releaseNotes: release.body || '',
-        contentLocale: release.body?.trim() ? 'en' : undefined,
+        releaseNotes,
+        contentLocale: releaseNotes ? 'en' : undefined,
         publishedAt: release.publishedAt,
         assetName: asset.name,
         assetApiUrl: asset.url,
