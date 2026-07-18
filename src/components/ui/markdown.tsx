@@ -16,12 +16,16 @@ export function Markdown({ content, className }: MarkdownProps) {
     <div
       className={cn(
         'text-xs text-muted-foreground',
+        '[&>*+*]:mt-2 [&>*+h1]:mt-5 [&>*+h2]:mt-5 [&>*+h3]:mt-4',
         '[&_h1]:text-sm [&_h1]:font-semibold [&_h1]:text-foreground',
         '[&_h2]:text-sm [&_h2]:font-semibold [&_h2]:text-foreground',
         '[&_h3]:text-sm [&_h3]:font-semibold [&_h3]:text-foreground',
         '[&_p]:leading-relaxed',
         '[&_ul]:ml-4 [&_ul]:list-disc',
         '[&_ol]:ml-4 [&_ol]:list-decimal',
+        '[&_li+li]:mt-1',
+        '[&_strong]:font-semibold [&_strong]:text-foreground',
+        '[&_hr]:my-4 [&_hr]:border-border',
         '[&_code]:rounded [&_code]:bg-muted [&_code]:px-1 [&_code]:py-0.5',
         '[&_pre]:overflow-x-auto [&_pre]:rounded [&_pre]:bg-muted [&_pre]:p-2',
         '[&_a]:underline [&_a]:underline-offset-2',
