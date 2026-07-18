@@ -26,6 +26,16 @@ describe('cleanReleaseNotes', () => {
     expect(cleanReleaseNotes('# v1.9.2 #\n- Fixes', 'v1.9.2')).toBe('- Fixes')
   })
 
+  it('strips a bare version heading when no version is passed', () => {
+    expect(cleanReleaseNotes('# v1.9.2\n- Fixes')).toBe('- Fixes')
+    expect(cleanReleaseNotes('## 1.10\n- Fixes')).toBe('- Fixes')
+  })
+
+  it('keeps a different sub-version heading when a version is passed', () => {
+    const body = '## 1.9.8\n- Rolled-up changes'
+    expect(cleanReleaseNotes(body, 'v1.9.9')).toBe(body)
+  })
+
   it('keeps a descriptive feature headline', () => {
     const body = '## Receipts can now show savings\n\nReceipt templates…'
     expect(cleanReleaseNotes(body, 'v1.9.7')).toBe(body)
