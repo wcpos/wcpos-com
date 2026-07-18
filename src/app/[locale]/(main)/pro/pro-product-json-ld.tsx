@@ -1,5 +1,6 @@
 import { getTranslations } from 'next-intl/server'
 import { buildProOfferSchemaOffers } from '@/lib/pro-offer-catalog'
+import { localeUrl } from '@/lib/seo'
 import { getCachedProOfferCatalog } from './pro-offer-data'
 
 const PRO_MESSAGE_NAMESPACE = 'pro'
@@ -26,7 +27,7 @@ export async function ProProductJsonLd({ locale }: { locale: string }) {
           description: t('schema.description'),
           applicationCategory: 'BusinessApplication',
           operatingSystem: 'Windows, macOS, Linux, iOS, Android',
-          url: 'https://wcpos.com/pro',
+          url: localeUrl(locale, '/pro'),
           image: 'https://wcpos.com/images/wcpos-pro.png',
           offers: buildProOfferSchemaOffers(offers, (planId) =>
             t(`schema.offers.${planId}`)

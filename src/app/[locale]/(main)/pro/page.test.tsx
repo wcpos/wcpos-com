@@ -200,6 +200,7 @@ describe('ProProductJsonLd', () => {
     expect(data['@type']).toBe('SoftwareApplication')
     expect(data.name).toBe('Translated WCPOS Pro schema name')
     expect(data.description).toBe('Translated Pro schema description')
+    expect(data.url).toBe('https://wcpos.com/fr/pro')
     expect(data.image).toBe('https://wcpos.com/images/wcpos-pro.png')
     expect(Array.isArray(data.offers)).toBe(true)
   })
