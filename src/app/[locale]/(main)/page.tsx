@@ -72,6 +72,7 @@ export default async function Home({
               applicationCategory: 'BusinessApplication',
               operatingSystem: 'Windows, macOS, Linux, iOS, Android',
               url: 'https://wcpos.com',
+              image: 'https://wcpos.com/icon.png',
               offers: {
                 '@type': 'Offer',
                 price: '0',
