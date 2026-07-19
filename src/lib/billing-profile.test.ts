@@ -97,6 +97,12 @@ describe('billingPatchHasAddressContent', () => {
     ).toBe(false)
   })
 
+  it('is false for a company-only patch', () => {
+    expect(
+      billingPatchHasAddressContent({ company: 'Only Company' })
+    ).toBe(false)
+  })
+
   it('is true when any concrete address field or tax number is present', () => {
     expect(billingPatchHasAddressContent({ city: 'Perth' })).toBe(true)
     expect(billingPatchHasAddressContent({ tax_number: 'abn-1' })).toBe(true)

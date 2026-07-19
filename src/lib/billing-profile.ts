@@ -123,8 +123,7 @@ export function billingPatchHasAddressContent(
   patch: BillingAddressPatch
 ): boolean {
   return Boolean(
-    patch.company ||
-      patch.address_1 ||
+    patch.address_1 ||
       patch.address_2 ||
       patch.city ||
       patch.province ||
