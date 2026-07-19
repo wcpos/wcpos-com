@@ -548,7 +548,8 @@
           "city": "City",
           "province": "State / Province / Region",
           "postalCode": "Postal code",
-          "country": "Country"
+          "country": "Country",
+          "company": "Company"
         },
         "optional": "(optional)",
         "saving": "Saving…",
@@ -1012,7 +1013,8 @@
         "account_deletion_failed": "We couldn't delete your account. Please try again or contact support."
       },
       "languageTitle": "Language",
-      "languageHint": "The language used across your account, emails, and receipts. Changing it reloads the page."
+      "languageHint": "The language used across your account, emails, and receipts. Changing it reloads the page.",
+      "company": "Company"
     },
     "receiptPdf": {
       "title": "Receipt",

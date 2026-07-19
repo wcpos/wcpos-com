@@ -100,6 +100,7 @@ type FormSnapshot = {
   firstName: string
   lastName: string
   phone: string
+  company: string
   countryCode: string
   addressLine1: string
   addressLine2: string
@@ -204,6 +205,7 @@ export function ProfileEditForm({
     () => ({ ...billingDetails, countryCode: billingDetails.countryCode || 'US' }),
     [billingDetails]
   )
+  const [company, setCompany] = useState(savedBilling.company)
   const [countryCode, setCountryCode] = useState(savedBilling.countryCode)
   const [addressLine1, setAddressLine1] = useState(savedBilling.addressLine1)
   const [addressLine2, setAddressLine2] = useState(savedBilling.addressLine2)
@@ -260,6 +262,7 @@ export function ProfileEditForm({
       firstName,
       lastName,
       phone,
+      company,
       countryCode,
       addressLine1,
       addressLine2,
@@ -296,6 +299,7 @@ export function ProfileEditForm({
 
     const billingBaseline = billingBaselineRef.current
     const billingContentChanged =
+      snapshot.company.trim() !== billingBaseline.company ||
       snapshot.addressLine1.trim() !== billingBaseline.addressLine1 ||
       snapshot.addressLine2.trim() !== billingBaseline.addressLine2 ||
       snapshot.city.trim() !== billingBaseline.city ||
@@ -307,7 +311,7 @@ export function ProfileEditForm({
     // address record, so saving it would toast success while persisting
     // nothing — and then re-send forever. The selection stays local until
     // the user adds actual address content.
-    const billingHasAnyContent =
+    const billingHasAddressContent =
       Boolean(
         snapshot.addressLine1.trim() ||
           snapshot.addressLine2.trim() ||
@@ -325,9 +329,9 @@ export function ProfileEditForm({
           billingBaseline.taxNumber
       )
     const billingChanged =
-      billingContentChanged ||
-      (snapshot.countryCode !== billingBaseline.countryCode &&
-        billingHasAnyContent)
+      billingHasAddressContent &&
+      (billingContentChanged ||
+        snapshot.countryCode !== billingBaseline.countryCode)
 
     const avatarBaseline = avatarBaselineRef.current
     const avatarChanged =
@@ -366,6 +370,7 @@ export function ProfileEditForm({
           ...(billingChanged
             ? {
                 billingAddress: {
+                  company: snapshot.company || null,
                   countryCode: snapshot.countryCode,
                   addressLine1: snapshot.addressLine1,
                   addressLine2: snapshot.addressLine2 || null,
@@ -404,6 +409,7 @@ export function ProfileEditForm({
       }
       const updatedBilling = (data.billingDetails ?? {}) as Partial<BillingDetails>
       billingBaselineRef.current = {
+        company: updatedBilling.company ?? '',
         countryCode: updatedBilling.countryCode || 'US',
         addressLine1: updatedBilling.addressLine1 ?? '',
         addressLine2: updatedBilling.addressLine2 ?? '',
@@ -642,6 +648,15 @@ export function ProfileEditForm({
           <CardDescription>{t('billingDetailsHint')}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
+          <FormField label={t('company')} htmlFor="profile-company">
+            <Input
+              id="profile-company"
+              value={company}
+              onChange={(event) => setCompany(event.target.value)}
+              autoComplete="organization"
+            />
+          </FormField>
+
           <FormField label={t('country')} htmlFor="profile-country">
             <Select
               id="profile-country"

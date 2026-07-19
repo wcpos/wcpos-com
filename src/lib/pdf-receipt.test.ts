@@ -58,6 +58,7 @@ const baseReceipt: AccountOrderReceiptFact = {
   currencyCode: 'usd',
   createdAt: '2026-02-01T00:00:00Z',
   billingProfile: {
+    company: null,
     countryCode: null,
     addressLine1: null,
     addressLine2: null,
@@ -222,6 +223,39 @@ describe('buildReceiptPdf', () => {
     expect(stream).toContain(hex('123 Main St'))
     expect(stream).toContain(hex('Tax ID: 12-3456789'))
     expect(stream).toContain(hex('Paid'))
+  })
+
+  it('renders the purchase-time company before the person name and billing details', async () => {
+    const taxLine = TEST_COPY.taxId('DK12345678')
+    const stream = await pageStream(
+      await buildTestReceiptPdf({
+        ...baseReceipt,
+        customerEmail: 'ada@example.com',
+        customerName: 'Ada Lovelace',
+        billingProfile: {
+          ...baseReceipt.billingProfile,
+          company: 'Analytical Engines ApS',
+          countryCode: 'DK',
+          addressLine1: 'Vesterbrogade 1',
+          city: 'København V',
+          postalCode: '1620',
+          taxNumber: 'DK12345678',
+        },
+      })
+    )
+    const billedTo = [
+      'Analytical Engines ApS',
+      'Ada Lovelace',
+      'ada@example.com',
+      'Vesterbrogade 1',
+      '1620 København V',
+      'Denmark',
+      taxLine,
+    ]
+    const positions = billedTo.map((line) => stream.indexOf(hex(line)))
+
+    expect(positions.every((position) => position >= 0)).toBe(true)
+    expect(positions).toEqual([...positions].sort((a, b) => a - b))
   })
 
   it('formats billing address locality lines for postal-code-first countries', async () => {

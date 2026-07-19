@@ -197,8 +197,11 @@ export function CheckoutForm({
             billingDetails: {
               name: 'never',
               email: billingDetails.email ? 'never' : 'auto',
-              address: 'never',
+              address: 'if_required',
             },
+          },
+          defaultValues: {
+            billingDetails,
           },
         }}
       />

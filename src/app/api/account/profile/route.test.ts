@@ -73,6 +73,7 @@ describe('PATCH /api/account/profile', () => {
       addresses: [
         {
           id: 'caddr_1',
+          company: null,
           address_1: '1 Example St',
           city: 'Perth',
           country_code: 'au',
@@ -106,6 +107,7 @@ describe('PATCH /api/account/profile', () => {
     expect(mockUpsertBillingAddress).not.toHaveBeenCalled()
     expect(json.customer.email).toBe('user@example.com')
     expect(json.billingDetails).toEqual({
+      company: '',
       countryCode: 'AU',
       addressLine1: '1 Example St',
       addressLine2: '',
@@ -172,6 +174,7 @@ describe('PATCH /api/account/profile', () => {
       addresses: [
         {
           id: 'caddr_1',
+          company: 'Analytical Engines ApS',
           address_1: '123 Main St',
           city: 'Austin',
           province: 'TX',
@@ -189,6 +192,7 @@ describe('PATCH /api/account/profile', () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           billingAddress: {
+            company: 'Analytical Engines ApS',
             countryCode: 'US',
             addressLine1: '123 Main St',
             addressLine2: null,
@@ -204,6 +208,7 @@ describe('PATCH /api/account/profile', () => {
 
     expect(response.status).toBe(200)
     expect(mockUpsertBillingAddress).toHaveBeenCalledWith(currentCustomer, {
+      company: 'Analytical Engines ApS',
       country_code: 'us',
       address_1: '123 Main St',
       address_2: null,
@@ -215,6 +220,7 @@ describe('PATCH /api/account/profile', () => {
     // A billing-only PATCH has nothing customer-level to write.
     expect(mockUpdateCustomer).not.toHaveBeenCalled()
     expect(json.billingDetails).toEqual({
+      company: 'Analytical Engines ApS',
       countryCode: 'US',
       addressLine1: '123 Main St',
       addressLine2: '',
@@ -222,6 +228,29 @@ describe('PATCH /api/account/profile', () => {
       region: 'TX',
       postalCode: '78701',
       taxNumber: '12-3456789',
+    })
+  })
+
+  it('clears a submitted company on the default billing address', async () => {
+    const currentCustomer = { id: 'cust_1', addresses: [] }
+    mockGetCustomer.mockResolvedValueOnce(currentCustomer)
+    mockUpsertBillingAddress.mockResolvedValueOnce({
+      ...currentCustomer,
+      email: 'user@example.com',
+      addresses: [],
+    })
+
+    const response = await PATCH(
+      new NextRequest('http://localhost:3000/api/account/profile', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ billingAddress: { company: null } }),
+      })
+    )
+
+    expect(response.status).toBe(200)
+    expect(mockUpsertBillingAddress).toHaveBeenCalledWith(currentCustomer, {
+      company: null,
     })
   })
 

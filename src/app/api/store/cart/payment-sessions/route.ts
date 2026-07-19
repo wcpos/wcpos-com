@@ -17,6 +17,7 @@ import { clientIp, createRateLimiter } from '@/lib/rate-limit'
 import { isLoopbackHost } from '@/lib/request-host'
 import { isCompleteBillingAddress } from '@/lib/billing-profile'
 import { PAYMENT_METHOD_PROVIDER_IDS } from '@/lib/checkout-payments'
+import { btcpaySessionData } from '@/lib/btcpay-buyer-metadata'
 
 const ALLOWED_PAYMENT_SESSION_PROVIDER_IDS = new Set(
   Object.values(PAYMENT_METHOD_PROVIDER_IDS)
@@ -33,21 +34,6 @@ const paymentSessionCustomerLimiter = createRateLimiter({
   limit: 8,
   window: '15 m',
 })
-
-function btcpaySessionData(
-  providerId: string,
-  cart: unknown
-): Record<string, unknown> | undefined {
-  if (providerId !== 'pp_btcpay_btcpay' || !cart || typeof cart !== 'object') {
-    return undefined
-  }
-
-  const metadata = (cart as { metadata?: Record<string, unknown> }).metadata
-  const locale = metadata?.locale
-  return typeof locale === 'string' && locale.trim()
-    ? { locale: locale.trim() }
-    : undefined
-}
 
 /**
  * POST /api/store/cart/payment-sessions
@@ -170,7 +156,9 @@ export async function POST(request: NextRequest) {
     // Create session within the collection
     const sessionData = btcpaySessionData(providerId, currentCart)
     const session = sessionData
-      ? await createPaymentSession(collectionId, providerId, authToken, sessionData)
+      ? await createPaymentSession(collectionId, providerId, authToken, {
+          ...sessionData,
+        })
       : await createPaymentSession(collectionId, providerId, authToken)
     if (!session) {
       return storeCartErrorResponse('failed_create_payment_session', 500)

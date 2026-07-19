@@ -548,7 +548,8 @@
           "city": "Cidade",
           "province": "Estado / Província / Região",
           "postalCode": "Código postal",
-          "country": "País"
+          "country": "País",
+          "company": "Empresa"
         },
         "optional": "(opcional)",
         "saving": "A guardar…",
@@ -1012,7 +1013,8 @@
         "account_deletion_failed": "Não foi possível eliminar a tua conta. Tenta novamente ou contacta o suporte."
       },
       "languageTitle": "Idioma",
-      "languageHint": "O idioma usado na sua conta, e-mails e recibos. Alterá-lo recarrega a página."
+      "languageHint": "O idioma usado na sua conta, e-mails e recibos. Alterá-lo recarrega a página.",
+      "company": "Empresa"
     },
     "receiptPdf": {
       "title": "Recibo",

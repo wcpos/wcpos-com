@@ -717,6 +717,7 @@ describe('CheckoutClient', () => {
           billing_address: {
             first_name: 'Ada',
             last_name: 'Lovelace',
+            company: '',
             address_1: '42 Wallaby Way',
             city: 'Sydney',
             postal_code: '2000',

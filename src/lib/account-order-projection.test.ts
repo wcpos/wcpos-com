@@ -265,11 +265,25 @@ describe('projectAccountOrderDetail', () => {
 })
 
 describe('receipt projections', () => {
-  it('projects the default billing address for receipts', () => {
+  it('projects the purchase-time billing snapshot without mixing current customer data', () => {
+    const order = makeOrder({
+      billing_address: {
+        first_name: 'Ada',
+        last_name: 'Lovelace',
+        company: 'Analytical Engines ApS',
+        address_1: 'Vesterbrogade 1',
+        address_2: null,
+        city: 'København V',
+        province: null,
+        postal_code: '1620',
+        country_code: 'dk',
+      },
+      metadata: { taxNumber: 'DK12345678' },
+    })
+
     expect(
-      projectReceiptProfile({
+      projectReceiptProfile(order, {
         addresses: [
-          { id: 'caddr_0', city: 'Elsewhere' },
           {
             id: 'caddr_1',
             country_code: 'au',
@@ -284,9 +298,49 @@ describe('receipt projections', () => {
         ],
       })
     ).toEqual({
+      company: 'Analytical Engines ApS',
+      countryCode: 'DK',
+      addressLine1: 'Vesterbrogade 1',
+      addressLine2: null,
+      city: 'København V',
+      region: null,
+      postalCode: '1620',
+      taxNumber: 'DK12345678',
+    })
+
+    const profile = projectReceiptProfile(order)
+    expect(
+      projectAccountOrderReceipt(order, profile, {
+        first_name: 'Grace',
+        last_name: 'Hopper',
+      }).customerName
+    ).toBe('Ada Lovelace')
+  })
+
+  it('uses the current default billing address only when the snapshot is absent', () => {
+    expect(
+      projectReceiptProfile(makeOrder(), {
+        addresses: [
+          {
+            id: 'caddr_1',
+            first_name: 'Legacy',
+            last_name: 'Customer',
+            company: 'Legacy Co',
+            country_code: 'au',
+            address_1: '1 Market St',
+            city: 'Sydney',
+            province: 'NSW',
+            postal_code: '2000',
+            is_default_billing: true,
+            metadata: { tax_number: 'ABN 123' },
+          },
+        ],
+      })
+    ).toEqual({
+      company: 'Legacy Co',
       countryCode: 'AU',
       addressLine1: '1 Market St',
-      addressLine2: 'Suite 2',
+      addressLine2: null,
       city: 'Sydney',
       region: 'NSW',
       postalCode: '2000',
@@ -294,12 +348,37 @@ describe('receipt projections', () => {
     })
   })
 
-  it('projects all-null billing fields for a customer without addresses', () => {
-    expect(projectReceiptProfile(null)).toEqual({
+  it('preserves blank snapshot fields instead of filling them from the current customer', () => {
+    expect(
+      projectReceiptProfile(
+        makeOrder({
+          billing_address: {
+            first_name: 'Ada',
+            last_name: null,
+            company: ' ',
+            address_1: '',
+            city: 'København V',
+          },
+          metadata: {},
+        }),
+        {
+          addresses: [
+            {
+              id: 'caddr_1',
+              company: 'Current Co',
+              address_1: 'Current address',
+              is_default_billing: true,
+              metadata: { tax_number: 'CURRENT-TAX' },
+            },
+          ],
+        }
+      )
+    ).toEqual({
+      company: null,
       countryCode: null,
       addressLine1: null,
       addressLine2: null,
-      city: null,
+      city: 'København V',
       region: null,
       postalCode: null,
       taxNumber: null,
@@ -307,7 +386,7 @@ describe('receipt projections', () => {
   })
 
   it('projects receipt facts from an order and billing profile', () => {
-    const profile = projectReceiptProfile({
+    const profile = projectReceiptProfile(makeOrder(), {
       addresses: [{ id: 'caddr_1', city: 'Sydney', is_default_billing: true }],
     })
 
@@ -319,6 +398,7 @@ describe('receipt projections', () => {
       paymentStatus: 'captured',
       currencyCode: 'usd',
       billingProfile: {
+        company: null,
         countryCode: null,
         addressLine1: null,
         addressLine2: null,
@@ -344,7 +424,7 @@ describe('receipt projections', () => {
   })
 
   it('projects the billing name from the customer record', () => {
-    const profile = projectReceiptProfile(undefined)
+    const profile = projectReceiptProfile(makeOrder())
 
     expect(
       projectAccountOrderReceipt(makeOrder(), profile, {
@@ -359,7 +439,7 @@ describe('receipt projections', () => {
   })
 
   it('uses legacy WooCommerce metadata for receipt identity', () => {
-    const profile = projectReceiptProfile(undefined)
+    const profile = projectReceiptProfile(makeOrder())
 
     expect(
       projectAccountOrderReceipt(

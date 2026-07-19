@@ -15,6 +15,7 @@ const savedAddress: MedusaCustomerAddress = {
   id: 'caddr_1',
   first_name: 'Paul',
   last_name: 'K',
+  company: 'WCPOS Pty Ltd',
   address_1: '1 Example St',
   address_2: 'Unit 4',
   city: 'Perth',
@@ -56,6 +57,11 @@ describe('isCompleteBillingAddress', () => {
   it.each(cases)('%s', (_name, address, expected) => {
     expect(isCompleteBillingAddress(address)).toBe(expected)
   })
+
+  it('does not require company or accept company as a complete address', () => {
+    expect(isCompleteBillingAddress(completeAddress)).toBe(true)
+    expect(isCompleteBillingAddress({ company: 'Only Company' })).toBe(false)
+  })
 })
 
 describe('pickDefaultBillingAddress', () => {
@@ -91,6 +97,12 @@ describe('billingPatchHasAddressContent', () => {
     ).toBe(false)
   })
 
+  it('is false for a company-only patch', () => {
+    expect(
+      billingPatchHasAddressContent({ company: 'Only Company' })
+    ).toBe(false)
+  })
+
   it('is true when any concrete address field or tax number is present', () => {
     expect(billingPatchHasAddressContent({ city: 'Perth' })).toBe(true)
     expect(billingPatchHasAddressContent({ tax_number: 'abn-1' })).toBe(true)
@@ -98,8 +110,18 @@ describe('billingPatchHasAddressContent', () => {
 })
 
 describe('billingDetailsFromAddress', () => {
+  it('projects the saved company without normalizing it', () => {
+    expect(
+      billingDetailsFromAddress({
+        id: 'addr_1',
+        company: '  Analytical Engines ApS  ',
+      })
+    ).toMatchObject({ company: '  Analytical Engines ApS  ' })
+  })
+
   it('projects the saved address with an uppercase country', () => {
     expect(billingDetailsFromAddress(savedAddress)).toEqual({
+      company: 'WCPOS Pty Ltd',
       countryCode: 'AU',
       addressLine1: '1 Example St',
       addressLine2: 'Unit 4',
@@ -112,6 +134,7 @@ describe('billingDetailsFromAddress', () => {
 
   it('projects empty strings when there is no saved address', () => {
     expect(billingDetailsFromAddress(null)).toEqual({
+      company: '',
       countryCode: '',
       addressLine1: '',
       addressLine2: '',
@@ -131,6 +154,7 @@ describe('billingPrefillFromCustomer', () => {
       address: {
         first_name: 'Paul',
         last_name: 'K',
+        company: 'WCPOS Pty Ltd',
         address_1: '1 Example St',
         address_2: 'Unit 4',
         city: 'Perth',
@@ -202,6 +226,7 @@ describe('renewalBillingPrefillFromCustomer', () => {
       address: {
         first_name: 'Grace',
         last_name: 'Hopper',
+        company: 'WCPOS Pty Ltd',
         address_1: '1 Example St',
         address_2: 'Unit 4',
         city: 'Perth',
@@ -317,9 +342,30 @@ describe('billingPatchFromCheckout', () => {
     expect(patch.province).toBeUndefined()
     expect(patch.postal_code).toBeUndefined()
   })
+
+  it('normalizes a submitted company and clears a submitted blank company', () => {
+    expect(
+      billingPatchFromCheckout(
+        { company: '  Analytical Engines ApS  ' },
+        undefined
+      )
+    ).toMatchObject({ company: 'Analytical Engines ApS' })
+    expect(
+      billingPatchFromCheckout({ company: '   ' }, undefined)
+    ).toMatchObject({ company: null })
+  })
 })
 
 describe('billingPatchFromProfileForm', () => {
+  it('normalizes or clears a submitted company', () => {
+    expect(
+      billingPatchFromProfileForm({ company: '  WCPOS GmbH  ' })
+    ).toMatchObject({ company: 'WCPOS GmbH' })
+    expect(billingPatchFromProfileForm({ company: null })).toMatchObject({
+      company: null,
+    })
+  })
+
   it('normalizes the full form submission into an address patch', () => {
     expect(
       billingPatchFromProfileForm({

@@ -155,6 +155,26 @@ describe('admin order fields', () => {
     expect(url).toContain('currency_code')
     expect(url).toContain('email')
   })
+
+  it('requests billing address only for receipt/detail order fetches', async () => {
+    fetchMock.mockResolvedValueOnce(ok({ orders: [] }))
+    await listAdminCustomerOrders('cus_1')
+    const listFields = new URL(fetchMock.mock.calls[0][0] as string).searchParams.get(
+      'fields'
+    )
+
+    fetchMock.mockResolvedValueOnce(ok({ orders: [{ id: 'ord_1' }] }))
+    await getAdminCustomerOrderById('cus_1', 'ord_1')
+    const detailFields = new URL(
+      fetchMock.mock.calls[1][0] as string
+    ).searchParams.get('fields')
+
+    expect(listFields).toBe(
+      'id,display_id,created_at,updated_at,email,currency_code,total,subtotal,tax_total,status,payment_status,fulfillment_status,metadata,*items'
+    )
+    expect(listFields).not.toContain('*billing_address')
+    expect(detailFields).toBe(`${listFields},*billing_address`)
+  })
 })
 
 describe('getAdminCustomerOrderById', () => {

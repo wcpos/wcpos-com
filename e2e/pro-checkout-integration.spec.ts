@@ -1,6 +1,8 @@
 import { test, expect } from '@playwright/test'
 import { completeBillingStep } from './helpers/checkout'
 
+const externalBaseUrl = process.env.BASE_URL?.trim()
+
 test.describe('Checkout Integration @integration', {
   tag: '@integration',
 }, () => {
@@ -10,8 +12,8 @@ test.describe('Checkout Integration @integration', {
   const medusaApiKey = process.env.MEDUSA_API_KEY
 
   test.skip(
-    !process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
-    'Stripe test key not configured'
+    !externalBaseUrl && !process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
+    'Stripe test key is required when Playwright starts the app locally'
   )
 
   test.skip(
@@ -63,7 +65,16 @@ test.describe('Checkout Integration @integration', {
     })
 
     // Billing address step (shared helper — same fields as the mocked suite)
-    await completeBillingStep(page)
+    await completeBillingStep(page, {
+      firstName: 'Ada',
+      lastName: 'Lovelace',
+      company: 'Analytical Engines ApS',
+      addressLine1: 'Vesterbrogade 1',
+      city: 'København V',
+      postalCode: '1620',
+      countryCode: 'dk',
+      taxNumber: 'DK12345678',
+    })
 
     // Payment step: Card is the default selected method.
     await expect(page.getByTestId('payment-method-stripe')).toHaveAttribute(
@@ -102,7 +113,7 @@ test.describe('Checkout Integration @integration', {
     const medusaUrl = process.env.MEDUSA_BACKEND_URL || 'https://store-api-staging.wcpos.com'
 
     const orderResponse = await request.get(
-      `${medusaUrl}/admin/orders/${orderId}?fields=*fulfillments,*payment_collections.payments,metadata`,
+      `${medusaUrl}/admin/orders/${orderId}?fields=*fulfillments,*payment_collections.payments,metadata,*billing_address`,
       { headers: { Authorization: `Bearer ${medusaApiKey}` } }
     )
 
@@ -111,6 +122,20 @@ test.describe('Checkout Integration @integration', {
 
     // Verify payment was captured
     expect(order.payment_status).toBe('captured')
+
+    // Verify the purchase-time billing snapshot, including the intentionally
+    // blank region, rather than any later customer-profile state.
+    expect(order.billing_address).toMatchObject({
+      company: 'Analytical Engines ApS',
+      first_name: 'Ada',
+      last_name: 'Lovelace',
+      address_1: 'Vesterbrogade 1',
+      city: 'København V',
+      postal_code: '1620',
+      country_code: 'dk',
+    })
+    expect([null, '']).toContain(order.billing_address.province)
+    expect(order.metadata?.taxNumber).toBe('DK12345678')
 
     // Verify order was fulfilled (digital auto-fulfillment)
     expect(['fulfilled', 'delivered']).toContain(order.fulfillment_status)

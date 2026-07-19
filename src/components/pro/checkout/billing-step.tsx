@@ -20,6 +20,7 @@ import {
 export interface BillingAddress {
   first_name: string
   last_name: string
+  company?: string
   address_1: string
   address_2: string
   city: string
@@ -62,6 +63,7 @@ export function BillingStep({
   const tTaxLabel = useTranslations('account.profile.taxLabels')
   const [firstName, setFirstName] = useState(initialAddress?.first_name ?? '')
   const [lastName, setLastName] = useState(initialAddress?.last_name ?? '')
+  const [company, setCompany] = useState(initialAddress?.company ?? '')
   const [address1, setAddress1] = useState(initialAddress?.address_1 ?? '')
   const [address2, setAddress2] = useState(initialAddress?.address_2 ?? '')
   const [city, setCity] = useState(initialAddress?.city ?? '')
@@ -93,6 +95,7 @@ export function BillingStep({
       const address: BillingAddress = {
         first_name: firstName.trim(),
         last_name: lastName.trim(),
+        company: company.trim(),
         address_1: address1.trim(),
         city: city.trim(),
         postal_code: postalCode.trim(),
@@ -121,6 +124,25 @@ export function BillingStep({
 
   return (
     <form onSubmit={submit} className="space-y-4" data-testid="billing-step-form">
+      <FormField
+        label={
+          <>
+            {t('fields.company')}{' '}
+            <span className="text-muted-foreground font-normal">
+              {t('optional')}
+            </span>
+          </>
+        }
+        htmlFor="billing-company"
+      >
+        <Input
+          id="billing-company"
+          autoComplete="organization"
+          value={company}
+          onChange={(event) => setCompany(event.target.value)}
+        />
+      </FormField>
+
       <div className="grid grid-cols-2 gap-3">
         <FormField label={t('fields.firstName')} htmlFor="billing-first-name">
           <Input

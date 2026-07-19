@@ -548,7 +548,8 @@
           "city": "Stadt",
           "province": "Bundesland / Provinz / Region",
           "postalCode": "Postleitzahl",
-          "country": "Land"
+          "country": "Land",
+          "company": "Unternehmen"
         },
         "optional": "(freiwillig)",
         "saving": "Wird gespeichert…",
@@ -1012,7 +1013,8 @@
         "account_deletion_failed": "Dein Konto konnte nicht gelöscht werden. Bitte versuche es erneut oder kontaktiere den Support."
       },
       "languageTitle": "Sprache",
-      "languageHint": "Die Sprache für dein Konto, E-Mails und Belege. Beim Ändern wird die Seite neu geladen."
+      "languageHint": "Die Sprache für dein Konto, E-Mails und Belege. Beim Ändern wird die Seite neu geladen.",
+      "company": "Unternehmen"
     },
     "receiptPdf": {
       "title": "Beleg",

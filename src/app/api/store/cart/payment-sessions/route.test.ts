@@ -390,10 +390,29 @@ describe('POST /api/store/cart/payment-sessions', () => {
     expect(json.customerSessionClientSecret).toBeNull()
   })
 
-  it('passes the cart locale as BTCPay payment-session data', async () => {
+  it('passes allowlisted buyer metadata from the current cart to BTCPay', async () => {
+    mockGetCustomer.mockResolvedValue({
+      id: 'cust_1',
+      email: 'ada@example.com',
+    })
     mockGetCart.mockResolvedValue({
       ...validCart,
-      metadata: { locale: 'fr-FR' },
+      email: 'ada@example.com',
+      billing_address: {
+        first_name: ' Ada ',
+        last_name: ' Lovelace ',
+        company: 'Analytical Engines ApS',
+        address_1: ' Vesterbrogade 1 ',
+        address_2: '',
+        city: 'København V',
+        province: ' ',
+        postal_code: '1620',
+        country_code: 'dk',
+      },
+      metadata: {
+        locale: 'da',
+        taxNumber: 'DK123',
+      },
     })
     mockCreatePaymentCollection.mockResolvedValueOnce({ id: 'paycol_1' })
     mockCreatePaymentSession.mockResolvedValueOnce({
@@ -410,7 +429,14 @@ describe('POST /api/store/cart/payment-sessions', () => {
       'paycol_1',
       'pp_btcpay_btcpay',
       AUTH_TOKEN,
-      { locale: 'fr-FR' }
+      {
+        locale: 'da',
+        metadata: expect.objectContaining({
+          buyerName: 'Ada Lovelace',
+          buyerAddress1: 'Vesterbrogade 1',
+          buyerCountry: 'DK',
+        }),
+      }
     )
   })
 

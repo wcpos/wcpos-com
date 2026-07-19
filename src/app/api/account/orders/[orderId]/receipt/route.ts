@@ -221,7 +221,7 @@ export async function GET(
       return errorResponse('order_not_found', 404)
     }
 
-    const profile = projectReceiptProfile(customer)
+    const profile = projectReceiptProfile(order, customer)
     const receipt = projectAccountOrderReceipt(order, profile, customer)
     const locale = resolveLocale(
       request,
