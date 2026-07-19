@@ -311,10 +311,9 @@ export function ProfileEditForm({
     // address record, so saving it would toast success while persisting
     // nothing — and then re-send forever. The selection stays local until
     // the user adds actual address content.
-    const billingHasAnyContent =
+    const billingHasAddressContent =
       Boolean(
-        snapshot.company.trim() ||
-          snapshot.addressLine1.trim() ||
+        snapshot.addressLine1.trim() ||
           snapshot.addressLine2.trim() ||
           snapshot.city.trim() ||
           snapshot.region.trim() ||
@@ -322,8 +321,7 @@ export function ProfileEditForm({
           snapshot.taxNumber.trim()
       ) ||
       Boolean(
-        billingBaseline.company ||
-          billingBaseline.addressLine1 ||
+        billingBaseline.addressLine1 ||
           billingBaseline.addressLine2 ||
           billingBaseline.city ||
           billingBaseline.region ||
@@ -331,9 +329,9 @@ export function ProfileEditForm({
           billingBaseline.taxNumber
       )
     const billingChanged =
-      billingContentChanged ||
-      (snapshot.countryCode !== billingBaseline.countryCode &&
-        billingHasAnyContent)
+      billingHasAddressContent &&
+      (billingContentChanged ||
+        snapshot.countryCode !== billingBaseline.countryCode)
 
     const avatarBaseline = avatarBaselineRef.current
     const avatarChanged =

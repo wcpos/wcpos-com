@@ -304,6 +304,23 @@ describe('ProfileEditForm', () => {
     expect(toast.success).not.toHaveBeenCalled()
   })
 
+  it('does not save a company-only edit when no address exists', () => {
+    render(
+      <ProfileEditForm
+        customer={{ email: 'old@example.com', metadata: {} }}
+        billingDetails={emptyBillingDetails}
+      />
+    )
+
+    fireEvent.change(screen.getByLabelText('Company'), {
+      target: { value: 'Analytical Engines ApS' },
+    })
+    fireEvent.blur(screen.getByLabelText('Company'))
+
+    expect(mockFetch).not.toHaveBeenCalled()
+    expect(toast.success).not.toHaveBeenCalled()
+  })
+
   it('saves a country change immediately when the address has content', async () => {
     mockFetch.mockResolvedValueOnce({
       ok: true,
