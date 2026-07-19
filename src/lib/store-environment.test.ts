@@ -5,7 +5,22 @@ vi.mock('next/headers', () => ({
   headers: vi.fn(async () => new Headers()),
 }))
 
+const { mockGatewayEnv } = vi.hoisted(() => ({
+  mockGatewayEnv: {
+    CHECKOUT_GATEWAY_SECRET_LIVE:
+      'checkout-live-gateway-secret-at-least-32-chars',
+    CHECKOUT_GATEWAY_SECRET_TEST:
+      'checkout-test-gateway-secret-at-least-32-chars',
+  } as {
+    CHECKOUT_GATEWAY_SECRET_LIVE?: string
+    CHECKOUT_GATEWAY_SECRET_TEST?: string
+  },
+}))
+
+vi.mock('@/utils/env', () => ({ env: mockGatewayEnv }))
+
 import {
+  getCheckoutGatewaySecret,
   getStoreEnvironmentByName,
   resolveStoreEnvironmentName,
 } from './store-environment'
@@ -62,6 +77,31 @@ describe('store environments', () => {
     })
     expect(getStoreEnvironmentByName('test').payments.paypal).toBeNull()
     expect(getStoreEnvironmentByName('dev').payments.paypal).toBeNull()
+  })
+})
+
+describe('checkout gateway secret', () => {
+  it('selects the credential that matches the resolved backend environment', () => {
+    expect(getCheckoutGatewaySecret(getStoreEnvironmentByName('live'))).toBe(
+      'checkout-live-gateway-secret-at-least-32-chars'
+    )
+    expect(getCheckoutGatewaySecret(getStoreEnvironmentByName('test'))).toBe(
+      'checkout-test-gateway-secret-at-least-32-chars'
+    )
+    expect(getCheckoutGatewaySecret(getStoreEnvironmentByName('dev'))).toBe(
+      'checkout-test-gateway-secret-at-least-32-chars'
+    )
+  })
+
+  it('returns undefined when the matching credential is unset', () => {
+    mockGatewayEnv.CHECKOUT_GATEWAY_SECRET_TEST = undefined
+
+    expect(
+      getCheckoutGatewaySecret(getStoreEnvironmentByName('test'))
+    ).toBeUndefined()
+
+    mockGatewayEnv.CHECKOUT_GATEWAY_SECRET_TEST =
+      'checkout-test-gateway-secret-at-least-32-chars'
   })
 })
 

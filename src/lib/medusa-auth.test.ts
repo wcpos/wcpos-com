@@ -3,35 +3,53 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 // Mock server-only (this module prevents client-side imports)
 vi.mock('server-only', () => ({}))
 
+const { mockEnv, mockStoreEnvironment, mockGetRequestStoreEnvironment } =
+  vi.hoisted(() => {
+    const storeEnvironment = {
+      name: 'test' as const,
+      medusaBackendUrl: 'https://test-store-api.wcpos.com',
+      medusaPublishableKey: 'pk_test_abc123',
+      payments: {
+        stripePublishableKey: null,
+        paypal: null,
+        btcpayEnabled: true,
+      },
+    }
+    return {
+      mockEnv: {
+        CHECKOUT_GATEWAY_SECRET_TEST:
+          'checkout-test-gateway-secret-at-least-32-chars',
+      } as { CHECKOUT_GATEWAY_SECRET_TEST?: string },
+      mockStoreEnvironment: storeEnvironment,
+      mockGetRequestStoreEnvironment: vi.fn(async () => storeEnvironment),
+    }
+  })
+
 // Mock environment variables
 vi.mock('@/utils/env', () => ({
   env: {
     MEDUSA_BACKEND_URL: 'https://test-store-api.wcpos.com',
     MEDUSA_PUBLISHABLE_KEY: 'pk_test_abc123',
     NODE_ENV: 'test',
+    ...mockEnv,
   },
 }))
 
 // Mock the host-keyed store environment (replaces the old env-var mock):
 // unit tests always see the pinned test backend.
 vi.mock('@/lib/store-environment', () => {
-  const environment = {
-    name: 'test',
-    medusaBackendUrl: 'https://test-store-api.wcpos.com',
-    medusaPublishableKey: 'pk_test_abc123',
-    payments: {
-      stripePublishableKey: null,
-      paypal: null,
-      btcpayEnabled: true,
-    },
-  }
   return {
-    getRequestStoreEnvironment: vi.fn(async () => environment),
-    getLiveStoreEnvironment: vi.fn(() => environment),
-    getStoreEnvironmentByName: vi.fn(() => environment),
-    getMedusaBackendUrl: vi.fn(async () => environment.medusaBackendUrl),
+    getRequestStoreEnvironment: mockGetRequestStoreEnvironment,
+    getLiveStoreEnvironment: vi.fn(() => mockStoreEnvironment),
+    getStoreEnvironmentByName: vi.fn(() => mockStoreEnvironment),
+    getMedusaBackendUrl: vi.fn(
+      async () => mockStoreEnvironment.medusaBackendUrl
+    ),
     getMedusaPublishableKey: vi.fn(
-      async () => environment.medusaPublishableKey
+      async () => mockStoreEnvironment.medusaPublishableKey
+    ),
+    getCheckoutGatewaySecret: vi.fn(
+      () => mockEnv.CHECKOUT_GATEWAY_SECRET_TEST
     ),
   }
 })
@@ -96,6 +114,8 @@ import {
 describe('medusa-auth', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+    mockEnv.CHECKOUT_GATEWAY_SECRET_TEST =
+      'checkout-test-gateway-secret-at-least-32-chars'
     // Not impersonating by default: getCustomer falls through to the session
     // customer, so every getCustomer test below exercises the session path.
     mockGetImpersonation.mockResolvedValue(null)
@@ -117,6 +137,8 @@ describe('medusa-auth', () => {
           method: 'POST',
           headers: expect.objectContaining({
             'Content-Type': 'application/json',
+            'x-wcpos-checkout-gateway':
+              'checkout-test-gateway-secret-at-least-32-chars',
           }),
           body: JSON.stringify({
             email: 'user@example.com',
@@ -170,6 +192,8 @@ describe('medusa-auth', () => {
           method: 'POST',
           headers: expect.objectContaining({
             'Content-Type': 'application/json',
+            'x-wcpos-checkout-gateway':
+              'checkout-test-gateway-secret-at-least-32-chars',
           }),
           body: JSON.stringify({ identifier: 'user@example.com' }),
         })
@@ -206,6 +230,8 @@ describe('medusa-auth', () => {
           headers: expect.objectContaining({
             'Content-Type': 'application/json',
             Authorization: 'Bearer reset-jwt',
+            'x-wcpos-checkout-gateway':
+              'checkout-test-gateway-secret-at-least-32-chars',
           }),
           body: JSON.stringify({
             email: 'user@example.com',
@@ -300,6 +326,10 @@ describe('medusa-auth', () => {
         'https://test-store-api.wcpos.com/auth/customer/emailpass',
         expect.objectContaining({
           method: 'POST',
+          headers: expect.objectContaining({
+            'x-wcpos-checkout-gateway':
+              'checkout-test-gateway-secret-at-least-32-chars',
+          }),
           body: JSON.stringify({
             email: 'new@example.com',
             password: 'securepass',
@@ -313,6 +343,10 @@ describe('medusa-auth', () => {
         'https://test-store-api.wcpos.com/auth/customer/emailpass/register',
         expect.objectContaining({
           method: 'POST',
+          headers: expect.objectContaining({
+            'x-wcpos-checkout-gateway':
+              'checkout-test-gateway-secret-at-least-32-chars',
+          }),
           body: JSON.stringify({
             email: 'new@example.com',
             password: 'securepass',
@@ -329,6 +363,8 @@ describe('medusa-auth', () => {
           headers: expect.objectContaining({
             Authorization: 'Bearer new_user_token',
             'x-publishable-api-key': 'pk_test_abc123',
+            'x-wcpos-checkout-gateway':
+              'checkout-test-gateway-secret-at-least-32-chars',
           }),
           body: JSON.stringify({
             email: 'new@example.com',
@@ -338,6 +374,55 @@ describe('medusa-auth', () => {
           }),
         })
       )
+      expect(mockGetRequestStoreEnvironment).toHaveBeenCalledTimes(1)
+    })
+
+    it('omits the gateway header from every auth and registration request when unset', async () => {
+      mockEnv.CHECKOUT_GATEWAY_SECRET_TEST = undefined
+      mockFetch
+        .mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({ token: 'login_token' }),
+        })
+        .mockResolvedValueOnce({ ok: true })
+        .mockResolvedValueOnce({ ok: true })
+        .mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({ token: 'registration_token' }),
+        })
+        .mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({
+            customer: {
+              id: 'cust_123',
+              email: 'new@example.com',
+              has_account: true,
+              created_at: '2024-01-01T00:00:00Z',
+              updated_at: '2024-01-01T00:00:00Z',
+            },
+          }),
+        })
+        .mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({ token: 'session_token' }),
+        })
+
+      await login('user@example.com', 'password123')
+      await requestPasswordReset('user@example.com')
+      await resetPassword({
+        email: 'user@example.com',
+        token: 'reset-jwt',
+        password: 'new-secret',
+      })
+      await register({
+        email: 'new@example.com',
+        password: 'securepass',
+      })
+
+      expect(mockFetch).toHaveBeenCalledTimes(6)
+      for (const [, init] of mockFetch.mock.calls) {
+        expect(init.headers).not.toHaveProperty('x-wcpos-checkout-gateway')
+      }
     })
 
     it('throws AccountExistsError when the email is already registered', async () => {

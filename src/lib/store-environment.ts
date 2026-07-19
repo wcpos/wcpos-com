@@ -10,6 +10,7 @@ import type {
   PayPalCheckoutConfig,
   PayPalEnvironment,
 } from './checkout-payment-config'
+import { env } from '@/utils/env'
 
 export { resolveStoreEnvironmentName, type StoreEnvironmentName }
 
@@ -165,6 +166,19 @@ export async function getRequestStoreEnvironment(): Promise<StoreEnvironment> {
  */
 export function getLiveStoreEnvironment(): StoreEnvironment {
   return STORE_ENVIRONMENTS.live
+}
+
+/**
+ * Select the private gateway credential for an already-resolved environment.
+ * Accepting the environment keeps the credential and backend host on the same
+ * request-time decision without putting secrets in the public config map.
+ */
+export function getCheckoutGatewaySecret(
+  storeEnvironment: StoreEnvironment
+): string | undefined {
+  return storeEnvironment.name === 'live'
+    ? env.CHECKOUT_GATEWAY_SECRET_LIVE
+    : env.CHECKOUT_GATEWAY_SECRET_TEST
 }
 
 /** Request-scoped shorthand for the host-resolved Medusa base URL. */

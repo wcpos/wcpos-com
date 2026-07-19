@@ -3,8 +3,11 @@ import 'server-only'
 import { cache } from 'react'
 import { cookies } from 'next/headers'
 import {
+  getCheckoutGatewaySecret,
   getMedusaBackendUrl,
   getMedusaPublishableKey,
+  getRequestStoreEnvironment,
+  type StoreEnvironment,
 } from '@/lib/store-environment'
 import { authLogger } from '@/lib/logger'
 import { MEDUSA_TOKEN_COOKIE } from '@/lib/medusa-cookie'
@@ -91,6 +94,18 @@ const COOKIE_OPTIONS = {
   maxAge: 60 * 60 * 24, // 1 day
 }
 
+/**
+ * Trusted server calls share Vercel egress IPs, so the backend needs this
+ * credential to distinguish them from public traffic. Local development may
+ * omit the secret.
+ */
+function checkoutGatewayHeaders(
+  storeEnvironment: StoreEnvironment
+): Record<string, string> {
+  const secret = getCheckoutGatewaySecret(storeEnvironment)
+  return secret ? { 'x-wcpos-checkout-gateway': secret } : {}
+}
+
 // ============================================================================
 // Cookie helpers
 // ============================================================================
@@ -133,11 +148,23 @@ export async function login(
   email: string,
   password: string
 ): Promise<string> {
+  const storeEnvironment = await getRequestStoreEnvironment()
+  return loginWithStoreEnvironment(email, password, storeEnvironment)
+}
+
+async function loginWithStoreEnvironment(
+  email: string,
+  password: string,
+  storeEnvironment: StoreEnvironment
+): Promise<string> {
   const response = await fetch(
-    `${await getMedusaBackendUrl()}/auth/customer/emailpass`,
+    `${storeEnvironment.medusaBackendUrl}/auth/customer/emailpass`,
     {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        ...checkoutGatewayHeaders(storeEnvironment),
+      },
       body: JSON.stringify({ email, password }),
     }
   )
@@ -167,11 +194,15 @@ export async function login(
  * `/reset-password?token=...&email=...` on this site.
  */
 export async function requestPasswordReset(email: string): Promise<void> {
+  const storeEnvironment = await getRequestStoreEnvironment()
   const response = await fetch(
-    `${await getMedusaBackendUrl()}/auth/customer/emailpass/reset-password`,
+    `${storeEnvironment.medusaBackendUrl}/auth/customer/emailpass/reset-password`,
     {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        ...checkoutGatewayHeaders(storeEnvironment),
+      },
       body: JSON.stringify({ identifier: email }),
     }
   )
@@ -200,13 +231,15 @@ export async function resetPassword({
   token: string
   password: string
 }): Promise<void> {
+  const storeEnvironment = await getRequestStoreEnvironment()
   const response = await fetch(
-    `${await getMedusaBackendUrl()}/auth/customer/emailpass/update`,
+    `${storeEnvironment.medusaBackendUrl}/auth/customer/emailpass/update`,
     {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
+        ...checkoutGatewayHeaders(storeEnvironment),
       },
       body: JSON.stringify({ email, password }),
     }
@@ -248,12 +281,18 @@ export async function register({
   lastName?: string
   locale?: string
 }): Promise<{ token: string; customer: MedusaCustomer }> {
+  // Resolve once so every step uses the same backend and gateway credential.
+  const storeEnvironment = await getRequestStoreEnvironment()
+
   // Step 1: Register auth identity
   const authResponse = await fetch(
-    `${await getMedusaBackendUrl()}/auth/customer/emailpass/register`,
+    `${storeEnvironment.medusaBackendUrl}/auth/customer/emailpass/register`,
     {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        ...checkoutGatewayHeaders(storeEnvironment),
+      },
       body: JSON.stringify({ email, password }),
     }
   )
@@ -275,13 +314,14 @@ export async function register({
 
   // Step 2: Create customer record with the token
   const customerResponse = await fetch(
-    `${await getMedusaBackendUrl()}/store/customers`,
+    `${storeEnvironment.medusaBackendUrl}/store/customers`,
     {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
-        'x-publishable-api-key': await getMedusaPublishableKey(),
+        'x-publishable-api-key': storeEnvironment.medusaPublishableKey ?? '',
+        ...checkoutGatewayHeaders(storeEnvironment),
       },
       body: JSON.stringify({
         email,
@@ -309,7 +349,11 @@ export async function register({
   // this, /store/customers/me (and therefore every cart API) rejects the
   // brand-new session.
   try {
-    const sessionToken = await login(email, password)
+    const sessionToken = await loginWithStoreEnvironment(
+      email,
+      password,
+      storeEnvironment
+    )
     return { token: sessionToken, customer }
   } catch {
     // The account exists at this point (steps 1–2 succeeded) — a transient
