@@ -15,6 +15,17 @@ describe('tax label i18n contract', () => {
 })
 
 describe('BillingStep prefill', () => {
+  const completeAddress = {
+    first_name: 'Ada',
+    last_name: 'Lovelace',
+    address_1: '42 Wallaby Way',
+    address_2: '',
+    city: 'Sydney',
+    province: 'NSW',
+    postal_code: '2000',
+    country_code: 'au',
+  }
+
   it('lists worldwide country options', () => {
     render(<BillingStep onSubmit={vi.fn(async () => {})} />)
 
@@ -55,6 +66,56 @@ describe('BillingStep prefill', () => {
     expect(screen.getByLabelText('Country')).toHaveValue('au')
     // AU renders the field as ABN, prefilled from the profile.
     expect(screen.getByLabelText(/ABN/)).toHaveValue('51 824 753 556')
+  })
+
+  it('prefills an optional company from the initial address', () => {
+    render(
+      <BillingStep
+        initialAddress={{
+          ...completeAddress,
+          company: 'Analytical Engines ApS',
+        }}
+        onSubmit={vi.fn(async () => {})}
+      />
+    )
+
+    expect(screen.getByLabelText(/company/i)).not.toBeRequired()
+    expect(screen.getByLabelText(/company/i)).toHaveValue(
+      'Analytical Engines ApS'
+    )
+  })
+
+  it('submits a trimmed optional company', async () => {
+    const onSubmit = vi.fn(async () => {})
+    render(
+      <BillingStep initialAddress={completeAddress} onSubmit={onSubmit} />
+    )
+
+    fireEvent.change(screen.getByLabelText(/company/i), {
+      target: { value: '  Analytical Engines ApS  ' },
+    })
+    fireEvent.submit(screen.getByTestId('billing-step-form'))
+
+    await waitFor(() => expect(onSubmit).toHaveBeenCalledTimes(1))
+    expect(onSubmit).toHaveBeenCalledWith(
+      expect.objectContaining({ company: 'Analytical Engines ApS' }),
+      expect.any(Object)
+    )
+  })
+
+  it('submits a complete individual address with company blank', async () => {
+    const onSubmit = vi.fn(async () => {})
+    render(
+      <BillingStep initialAddress={completeAddress} onSubmit={onSubmit} />
+    )
+
+    fireEvent.submit(screen.getByTestId('billing-step-form'))
+
+    await waitFor(() => expect(onSubmit).toHaveBeenCalledTimes(1))
+    expect(onSubmit).toHaveBeenCalledWith(
+      expect.objectContaining({ company: '' }),
+      expect.any(Object)
+    )
   })
 
   it('relabels the tax field when the country changes', () => {
@@ -151,6 +212,7 @@ describe('BillingStep prefill', () => {
       {
         first_name: 'Ada',
         last_name: 'Lovelace',
+        company: '',
         address_1: '42 Wallaby Way',
         address_2: 'Apt 7',
         city: 'Sydney',

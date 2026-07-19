@@ -548,7 +548,8 @@
           "city": "城市",
           "province": "州 / 省 / 地区",
           "postalCode": "邮政编码",
-          "country": "国家/地区"
+          "country": "国家/地区",
+          "company": "公司名称"
         },
         "optional": "（可选）",
         "saving": "正在保存…",
@@ -1012,7 +1013,8 @@
         "account_deletion_failed": "无法删除您的账户。请重试或联系支持团队。"
       },
       "languageTitle": "语言",
-      "languageHint": "用于您的账户、电子邮件和收据的语言。更改后将重新加载页面。"
+      "languageHint": "用于您的账户、电子邮件和收据的语言。更改后将重新加载页面。",
+      "company": "公司名称"
     },
     "receiptPdf": {
       "title": "收据",

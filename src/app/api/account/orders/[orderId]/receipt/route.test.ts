@@ -2,6 +2,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import * as pdfReceipt from '@/lib/pdf-receipt'
+import * as orderProjection from '@/lib/account-order-projection'
 import { defaultLocale, locales } from '@/i18n/config'
 
 const mockGetOrderById = vi.fn()
@@ -92,6 +93,39 @@ describe('GET /api/account/orders/[orderId]/receipt', () => {
     expect(response.headers.get('content-disposition')).toContain(
       'receipt-1001.pdf'
     )
+  })
+
+  it('projects receipt billing from the order snapshot with the customer as legacy fallback', async () => {
+    const order = {
+      id: 'order_1',
+      status: 'completed',
+      display_id: 1001,
+      email: 'user@example.com',
+      currency_code: 'usd',
+      total: 129,
+      subtotal: 120,
+      tax_total: 9,
+      created_at: '2026-02-01T00:00:00Z',
+      updated_at: '2026-02-01T00:00:00Z',
+      items: [],
+      billing_address: { first_name: 'Ada', last_name: 'Lovelace' },
+    }
+    const customer = { id: 'cust_1', metadata: {}, addresses: [] }
+    mockGetOrderById.mockResolvedValueOnce(order)
+    mockGetCustomer.mockResolvedValueOnce(customer)
+    const profileSpy = vi.spyOn(orderProjection, 'projectReceiptProfile')
+
+    try {
+      const response = await GET(
+        new Request('http://localhost:3000/api/account/orders/order_1/receipt'),
+        { params: Promise.resolve({ orderId: 'order_1' }) }
+      )
+
+      expect(response.status).toBe(200)
+      expect(profileSpy).toHaveBeenCalledWith(order, customer)
+    } finally {
+      profileSpy.mockRestore()
+    }
   })
 
   it('localizes the PDF receipt download filename for international clients', async () => {

@@ -39,6 +39,7 @@ export const TAX_NUMBER_ADDRESS_METADATA_KEY = 'tax_number'
 /** What the profile form and receipts render. Country is uppercase ISO-2 for
  * the UI vocabulary (COUNTRY_PROFILES/receipts); Medusa stores it lowercase. */
 export interface BillingDetails {
+  company: string
   countryCode: string
   addressLine1: string
   addressLine2: string
@@ -56,6 +57,7 @@ export interface BillingDetails {
 export interface BillingAddressPatch {
   first_name?: string
   last_name?: string
+  company?: string | null
   country_code?: string
   address_1?: string | null
   address_2?: string | null
@@ -121,7 +123,8 @@ export function billingPatchHasAddressContent(
   patch: BillingAddressPatch
 ): boolean {
   return Boolean(
-    patch.address_1 ||
+    patch.company ||
+      patch.address_1 ||
       patch.address_2 ||
       patch.city ||
       patch.province ||
@@ -134,6 +137,7 @@ export function billingDetailsFromAddress(
   address: MedusaCustomerAddress | null | undefined
 ): BillingDetails {
   return {
+    company: asString(address?.company),
     countryCode: asString(address?.country_code).toUpperCase(),
     addressLine1: asString(address?.address_1),
     addressLine2: asString(address?.address_2),
@@ -180,6 +184,7 @@ export function billingPrefillFromCustomer(
 
   // An all-empty prefill would just override the form's defaults with blanks.
   const address =
+    details.company ||
     details.addressLine1 ||
     details.addressLine2 ||
     details.city ||
@@ -188,6 +193,7 @@ export function billingPrefillFromCustomer(
       ? {
           first_name: saved?.first_name || customer.first_name || '',
           last_name: saved?.last_name || customer.last_name || '',
+          company: details.company,
           address_1: details.addressLine1,
           address_2: details.addressLine2,
           city: details.city,
@@ -217,6 +223,7 @@ export function renewalBillingPrefillFromCustomer(
       asString(saved.first_name).trim() || asString(customer.first_name).trim(),
     last_name:
       asString(saved.last_name).trim() || asString(customer.last_name).trim(),
+    company: details.company,
     address_1: details.addressLine1,
     address_2: details.addressLine2,
     city: details.city,
@@ -258,6 +265,7 @@ export function billingPatchFromCheckout(
   return {
     first_name: trimmed(billingAddress.first_name),
     last_name: trimmed(billingAddress.last_name),
+    company: submittedTrimmedOrNull('company'),
     country_code: country ? country.toLowerCase() : undefined,
     address_1: trimmed(billingAddress.address_1),
     address_2: submittedTrimmedOrNull('address_2'),
@@ -291,6 +299,7 @@ export function billingPatchFromProfileForm(
 
   const country = submitted('countryCode')
   const patch: BillingAddressPatch = {
+    company: submitted('company'),
     country_code:
       typeof country === 'string' && isBillingCountry(country)
         ? country.toLowerCase()

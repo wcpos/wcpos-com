@@ -1044,6 +1044,7 @@ function collectReceiptText(
     copy.paymentStatus.canceled,
     formatDateForLocale(receipt.createdAt, locale),
     normalize(receipt.displayId) || '--',
+    normalize(receipt.billingProfile.company),
     normalize(receipt.customerName),
     normalize(receipt.customerEmail),
     ...billingAddressLines(receipt.billingProfile, locale),
@@ -1122,10 +1123,15 @@ export async function buildReceiptPdf(
   y -= 16
 
   const billingLines: Array<{ text: string; isName?: boolean }> = []
+  const company = normalize(receipt.billingProfile.company)
+  if (company) billingLines.push({ text: company, isName: true })
   const customerName = normalize(receipt.customerName)
   if (customerName) billingLines.push({ text: customerName, isName: true })
   const email = normalize(receipt.customerEmail)
-  billingLines.push({ text: email || copy.noEmailProvided, isName: !customerName })
+  billingLines.push({
+    text: email || copy.noEmailProvided,
+    isName: !company && !customerName,
+  })
 
   const addressLines = billingAddressLines(receipt.billingProfile, locale)
   const taxNumber = normalize(receipt.billingProfile.taxNumber)

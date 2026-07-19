@@ -77,6 +77,7 @@ export interface AccountOrderDetailFact {
 }
 
 export interface AccountOrderReceiptProfileFact {
+  company: string | null
   countryCode: string | null
   addressLine1: string | null
   addressLine2: string | null
@@ -113,8 +114,8 @@ export interface AccountOrderReceiptFact {
 }
 
 export interface ReceiptCustomerFact {
-  first_name?: string
-  last_name?: string
+  first_name?: string | null
+  last_name?: string | null
 }
 
 function money(amount: number, currencyCode: string): AccountOrderMoneyFact {
@@ -284,13 +285,27 @@ export function projectAccountOrderDetail(
 }
 
 export function projectReceiptProfile(
-  customer: { addresses?: MedusaCustomerAddress[] } | null | undefined
+  order: MedusaOrder,
+  legacyCustomer?: { addresses?: MedusaCustomerAddress[] } | null
 ): AccountOrderReceiptProfileFact {
-  // Billing details come from the default billing customer address — the
-  // same source the profile page edits (see billing-profile.ts).
-  const details = billingDetailsFromCustomer(customer ?? {})
+  if (order.billing_address) {
+    const address = order.billing_address
+    return {
+      company: stringOrNull(address.company),
+      countryCode: stringOrNull(address.country_code)?.toUpperCase() ?? null,
+      addressLine1: stringOrNull(address.address_1),
+      addressLine2: stringOrNull(address.address_2),
+      city: stringOrNull(address.city),
+      region: stringOrNull(address.province),
+      postalCode: stringOrNull(address.postal_code),
+      taxNumber: stringOrNull(order.metadata?.taxNumber),
+    }
+  }
+
+  const details = billingDetailsFromCustomer(legacyCustomer ?? {})
 
   return {
+    company: details.company || null,
     countryCode: details.countryCode || null,
     addressLine1: details.addressLine1 || null,
     addressLine2: details.addressLine2 || null,
@@ -321,7 +336,7 @@ export function projectAccountOrderReceipt(
     ...(legacyId ? { legacyDisplayId: legacyId } : {}),
     createdAt: legacyCreatedAt(order),
     customerEmail: order.email,
-    customerName: customerDisplayName(customer),
+    customerName: customerDisplayName(order.billing_address ?? customer),
     paymentStatus: order.payment_status ?? null,
     currencyCode: order.currency_code,
     billingProfile,

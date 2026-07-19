@@ -548,7 +548,8 @@
           "city": "市区町村",
           "province": "都道府県 / 州 / 地域",
           "postalCode": "郵便番号",
-          "country": "国"
+          "country": "国",
+          "company": "会社名"
         },
         "optional": "（任意）",
         "saving": "保存中…",
@@ -1012,7 +1013,8 @@
         "account_deletion_failed": "アカウントを削除できませんでした。もう一度お試しいただくか、サポートまでお問い合わせください。"
       },
       "languageTitle": "言語",
-      "languageHint": "アカウント、メール、領収書で使用される言語です。変更するとページが再読み込みされます。"
+      "languageHint": "アカウント、メール、領収書で使用される言語です。変更するとページが再読み込みされます。",
+      "company": "会社名"
     },
     "receiptPdf": {
       "title": "領収書",

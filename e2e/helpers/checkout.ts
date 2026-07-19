@@ -12,6 +12,30 @@ export const MOCK_BACKEND_URL = `http://127.0.0.1:${Number(
   process.env.E2E_MOCK_PORT || 4873
 )}`
 
+export interface CheckoutBillingFixture {
+  firstName: string
+  lastName: string
+  company?: string
+  addressLine1: string
+  addressLine2?: string
+  city: string
+  region?: string
+  postalCode: string
+  countryCode: string
+  taxNumber?: string
+}
+
+const DEFAULT_BILLING_FIXTURE: CheckoutBillingFixture = {
+  firstName: 'Ada',
+  lastName: 'Lovelace',
+  addressLine1: '42 Wallaby Way',
+  addressLine2: 'Apt 7',
+  city: 'Sydney',
+  region: 'NSW',
+  postalCode: '2000',
+  countryCode: 'au',
+}
+
 export async function signInAs(
   context: BrowserContext,
   baseURL: string | undefined,
@@ -69,11 +93,31 @@ async function selectLabeledOption(page: Page, label: string, value: string) {
   throw lastError
 }
 
-export async function completeBillingStep(page: Page) {
+async function fillOptionalField(
+  page: Page,
+  selector: string,
+  value: string | undefined
+) {
+  const field = page.locator(selector)
+  await expect(field).toBeVisible({ timeout: 5000 })
+  if (value === undefined) {
+    await field.clear({ timeout: 5000 })
+    await expect(field).toHaveValue('', { timeout: 5000 })
+    return
+  }
+
+  await field.fill(value, { timeout: 5000 })
+  await expect(field).toHaveValue(value, { timeout: 5000 })
+}
+
+export async function completeBillingStep(
+  page: Page,
+  fixture: CheckoutBillingFixture = DEFAULT_BILLING_FIXTURE
+) {
   await expect(page.getByTestId('billing-step-form')).toBeVisible({
     timeout: 15000,
   })
-  await fillBillingAddressFields(page)
+  await fillBillingAddressFields(page, fixture)
   await page.getByRole('button', { name: /continue to payment/i }).click()
   await expect(page.getByTestId('checkout-step-3')).toHaveAttribute(
     'data-step-state',
@@ -82,15 +126,20 @@ export async function completeBillingStep(page: Page) {
   )
 }
 
-export async function fillBillingAddressFields(page: Page) {
-  await fillLabeledField(page, 'First name', 'Ada')
-  await fillLabeledField(page, 'Last name', 'Lovelace')
-  await fillLabeledField(page, 'Address line 1', '42 Wallaby Way')
-  await fillLabeledField(page, 'Address line 2', 'Apt 7')
-  await fillLabeledField(page, 'City', 'Sydney')
-  await fillLabeledField(page, 'State / Province / Region', 'NSW')
-  await fillLabeledField(page, 'Postal code', '2000')
-  await selectLabeledOption(page, 'Country', 'au')
+export async function fillBillingAddressFields(
+  page: Page,
+  fixture: CheckoutBillingFixture = DEFAULT_BILLING_FIXTURE
+) {
+  await selectLabeledOption(page, 'Country', fixture.countryCode)
+  await fillOptionalField(page, '#billing-company', fixture.company)
+  await fillLabeledField(page, 'First name', fixture.firstName)
+  await fillLabeledField(page, 'Last name', fixture.lastName)
+  await fillLabeledField(page, 'Address line 1', fixture.addressLine1)
+  await fillOptionalField(page, '#billing-address-line-2', fixture.addressLine2)
+  await fillLabeledField(page, 'City', fixture.city)
+  await fillOptionalField(page, '#billing-province', fixture.region)
+  await fillLabeledField(page, 'Postal code', fixture.postalCode)
+  await fillOptionalField(page, '#billing-tax-number', fixture.taxNumber)
 }
 
 export async function completeAccountStep(

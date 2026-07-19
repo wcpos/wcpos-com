@@ -15,6 +15,7 @@ import { toast } from 'sonner'
 import { ProfileEditForm } from './profile-edit-form'
 
 const emptyBillingDetails = {
+  company: '',
   countryCode: '',
   addressLine1: '',
   addressLine2: '',
@@ -46,6 +47,7 @@ describe('ProfileEditForm', () => {
       <ProfileEditForm
         customer={{ email: 'dk@example.com', metadata: {} }}
         billingDetails={{
+          company: 'Analytical Engines ApS',
           countryCode: 'DK',
           addressLine1: 'Gl. Hovedvej 8',
           addressLine2: '',
@@ -60,6 +62,9 @@ describe('ProfileEditForm', () => {
     expect(
       (screen.getByLabelText('Country') as HTMLSelectElement).value
     ).toBe('DK')
+    expect(screen.getByLabelText('Company')).toHaveValue(
+      'Analytical Engines ApS'
+    )
     expect(
       (screen.getByLabelText('Address line 1') as HTMLInputElement).value
     ).toBe('Gl. Hovedvej 8')
@@ -80,6 +85,7 @@ describe('ProfileEditForm', () => {
           metadata: {},
         },
         billingDetails: {
+          company: '',
           countryCode: 'US',
           addressLine1: '',
           addressLine2: '',
@@ -177,6 +183,7 @@ describe('ProfileEditForm', () => {
       json: async () => ({
         customer: { email: 'old@example.com', metadata: {} },
         billingDetails: {
+          company: '',
           countryCode: 'US',
           addressLine1: '1 New St',
           addressLine2: '',
@@ -217,6 +224,67 @@ describe('ProfileEditForm', () => {
     expect(parsedBody).not.toHaveProperty('first_name')
   })
 
+  it('autosaves company with the complete billing payload and advances its response baseline', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        customer: { email: 'old@example.com', metadata: {} },
+        billingDetails: {
+          company: 'Analytical Engines ApS',
+          countryCode: 'US',
+          addressLine1: '1 Existing St',
+          addressLine2: 'Suite 2',
+          city: 'Boston',
+          region: 'MA',
+          postalCode: '02110',
+          taxNumber: '12-3456789',
+        },
+      }),
+    })
+
+    render(
+      <ProfileEditForm
+        customer={{ email: 'old@example.com', metadata: {} }}
+        billingDetails={{
+          company: '',
+          countryCode: 'US',
+          addressLine1: '1 Existing St',
+          addressLine2: 'Suite 2',
+          city: 'Boston',
+          region: 'MA',
+          postalCode: '02110',
+          taxNumber: '12-3456789',
+        }}
+      />
+    )
+
+    fireEvent.change(screen.getByLabelText('Company'), {
+      target: { value: 'Analytical Engines ApS' },
+    })
+    fireEvent.blur(screen.getByLabelText('Company'))
+
+    await waitFor(() => expect(mockFetch).toHaveBeenCalledTimes(1))
+    const [, requestInit] = mockFetch.mock.calls[0]
+    expect(JSON.parse((requestInit as RequestInit).body as string)).toMatchObject({
+      billingAddress: {
+        company: 'Analytical Engines ApS',
+        countryCode: expect.any(String),
+        addressLine1: expect.any(String),
+        addressLine2: expect.anything(),
+        city: expect.any(String),
+        region: expect.any(String),
+        postalCode: expect.any(String),
+        taxNumber: expect.anything(),
+      },
+    })
+
+    await waitFor(() => {
+      expect(toast.success).toHaveBeenCalledWith('Profile saved')
+    })
+    fireEvent.blur(screen.getByLabelText('Company'))
+    expect(mockFetch).toHaveBeenCalledTimes(1)
+  })
+
   it('does not save a bare country change when no address exists', () => {
     // Mirrors the server rule: a country with no address content never
     // creates an address record, so saving it would toast success while
@@ -242,6 +310,7 @@ describe('ProfileEditForm', () => {
       json: async () => ({
         customer: { email: 'old@example.com', metadata: {} },
         billingDetails: {
+          company: '',
           countryCode: 'AU',
           addressLine1: '1 Existing St',
           addressLine2: '',

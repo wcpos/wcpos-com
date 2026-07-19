@@ -548,7 +548,8 @@
           "city": "Plaats",
           "province": "Staat / Provincie / Regio",
           "postalCode": "Postcode",
-          "country": "Land"
+          "country": "Land",
+          "company": "Bedrijfsnaam"
         },
         "optional": "(optioneel)",
         "saving": "Opslaan…",
@@ -1012,7 +1013,8 @@
         "account_deletion_failed": "We konden je account niet verwijderen. Probeer het opnieuw of neem contact op met support."
       },
       "languageTitle": "Taal",
-      "languageHint": "De taal voor je account, e-mails en bonnen. Bij wijziging wordt de pagina opnieuw geladen."
+      "languageHint": "De taal voor je account, e-mails en bonnen. Bij wijziging wordt de pagina opnieuw geladen.",
+      "company": "Bedrijfsnaam"
     },
     "receiptPdf": {
       "title": "Bon",

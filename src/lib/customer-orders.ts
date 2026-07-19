@@ -26,6 +26,18 @@ export interface MedusaOrderItem {
   variant?: Record<string, unknown>
 }
 
+export interface MedusaOrderBillingAddress {
+  first_name?: string | null
+  last_name?: string | null
+  company?: string | null
+  address_1?: string | null
+  address_2?: string | null
+  city?: string | null
+  province?: string | null
+  postal_code?: string | null
+  country_code?: string | null
+}
+
 export interface MedusaOrder {
   id: string
   status: string
@@ -41,6 +53,7 @@ export interface MedusaOrder {
   updated_at: string
   items: MedusaOrderItem[]
   metadata?: Record<string, unknown>
+  billing_address?: MedusaOrderBillingAddress | null
 }
 
 // ============================================================================
@@ -50,6 +63,24 @@ export interface MedusaOrder {
 /** getAllOrders default window: 50 × 20 = up to 1000 orders before the cap. */
 const DEFAULT_BATCH_SIZE = 50
 const DEFAULT_MAX_BATCHES = 20
+
+const ORDER_DETAIL_FIELDS = [
+  'id',
+  'status',
+  'payment_status',
+  'fulfillment_status',
+  'display_id',
+  'email',
+  'currency_code',
+  'total',
+  'subtotal',
+  'tax_total',
+  'created_at',
+  'updated_at',
+  'metadata',
+  '*items',
+  '*billing_address',
+].join(',')
 
 /** Authenticated store headers (Bearer token + publishable key). */
 async function storeHeaders(token: string): Promise<HeadersInit> {
@@ -217,7 +248,11 @@ export async function getOrderById(
 
   const { orders } = await fetchOrders(
     token,
-    new URLSearchParams({ id: orderId, limit: '1' })
+    new URLSearchParams({
+      id: orderId,
+      limit: '1',
+      fields: ORDER_DETAIL_FIELDS,
+    })
   )
   const [order] = orders
   return order?.id === orderId ? order : null

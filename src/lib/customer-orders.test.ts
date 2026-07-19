@@ -220,19 +220,55 @@ describe('customer-orders', () => {
   })
 
   describe('getOrderById', () => {
-    it('fetches one order via the customer-scoped list endpoint, filtered by id', async () => {
+    it('fetches the complete order detail via the customer-scoped list endpoint', async () => {
       mockGetAuthToken.mockResolvedValue('valid_token')
+      const fixture = {
+        id: 'order_target',
+        display_id: 7,
+        items: [{ id: 'item_1', title: 'WCPOS Pro', quantity: 1 }],
+        total: 12900,
+        subtotal: 10000,
+        tax_total: 2900,
+      }
       mockFetch.mockResolvedValueOnce({
         ok: true,
-        json: async () => ({ orders: [{ id: 'order_target', display_id: 7 }], count: 1 }),
+        json: async () => ({ orders: [fixture], count: 1 }),
       })
 
       const order = await getOrderById('order_target')
 
-      expect(order).toEqual({ id: 'order_target', display_id: 7 })
+      expect(order).toMatchObject({
+        items: fixture.items,
+        total: 12900,
+        subtotal: 10000,
+        tax_total: 2900,
+      })
       expect(mockFetch).toHaveBeenCalledTimes(1)
-      expect(mockFetch).toHaveBeenCalledWith(
-        'https://test-store-api.wcpos.com/store/orders?id=order_target&limit=1',
+      const [calledUrl, init] = mockFetch.mock.calls[0] as [string, RequestInit]
+      const url = new URL(calledUrl)
+      expect(url.pathname).toBe('/store/orders')
+      expect(url.searchParams.get('id')).toBe('order_target')
+      expect(url.searchParams.get('limit')).toBe('1')
+      expect(url.searchParams.get('fields')).toBe(
+        [
+          'id',
+          'status',
+          'payment_status',
+          'fulfillment_status',
+          'display_id',
+          'email',
+          'currency_code',
+          'total',
+          'subtotal',
+          'tax_total',
+          'created_at',
+          'updated_at',
+          'metadata',
+          '*items',
+          '*billing_address',
+        ].join(',')
+      )
+      expect(init).toEqual(
         expect.objectContaining({
           headers: expect.objectContaining({
             Authorization: 'Bearer valid_token',

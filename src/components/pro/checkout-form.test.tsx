@@ -25,6 +25,7 @@ vi.mock('./complete-cart', () => ({
 import { CheckoutForm } from './checkout-form'
 import { OrderPendingError } from './checkout-safety'
 import { CheckoutConsentWithdrawalBlockedError } from '@/lib/analytics/checkout-payment-lifecycle'
+import type { BillingAddress } from './checkout/billing-step'
 
 const onSuccess = vi.fn()
 const onFailure = vi.fn()
@@ -91,6 +92,79 @@ beforeEach(() => {
 })
 
 describe('CheckoutForm', () => {
+  it('prefills Stripe billing details and omits a blank optional region', async () => {
+    const denmarkAddress: BillingAddress & { company: string } = {
+      first_name: 'Ada',
+      last_name: 'Lovelace',
+      company: 'Analytical Engines ApS',
+      address_1: 'Vesterbrogade 1',
+      address_2: '',
+      city: 'København V',
+      province: '',
+      postal_code: '1620',
+      country_code: 'dk',
+    }
+    mockConfirmPayment.mockResolvedValue({
+      error: { type: 'card_error', code: 'card_declined' },
+    })
+
+    render(
+      <CheckoutForm
+        cartId="cart_1"
+        amount={129}
+        currency="usd"
+        experiment="pro_checkout_v1"
+        experimentVariant="control"
+        billingAddress={denmarkAddress}
+        customerEmail="ada@example.com"
+        onAttempt={onAttempt}
+        onSuccess={onSuccess}
+        onFailure={onFailure}
+      />
+    )
+    submit()
+
+    await waitFor(() => expect(mockConfirmPayment).toHaveBeenCalled())
+
+    const paymentElementOptions = mockPaymentElement.mock.calls[0][0].options
+    expect(paymentElementOptions).toMatchObject({
+      fields: {
+        billingDetails: {
+          name: 'never',
+          email: 'never',
+          address: 'if_required',
+        },
+      },
+      defaultValues: {
+        billingDetails: {
+          name: 'Ada Lovelace',
+          email: 'ada@example.com',
+          address: {
+            line1: 'Vesterbrogade 1',
+            city: 'København V',
+            postal_code: '1620',
+            country: 'DK',
+          },
+        },
+      },
+    })
+    expect(mockConfirmPayment).toHaveBeenCalledWith(
+      expect.objectContaining({
+        confirmParams: expect.objectContaining({
+          payment_method_data: {
+            billing_details: expect.not.objectContaining({
+              company: expect.anything(),
+            }),
+          },
+        }),
+      })
+    )
+    expect(
+      mockConfirmPayment.mock.calls[0][0].confirmParams.payment_method_data
+        .billing_details.address
+    ).not.toHaveProperty('state')
+  })
+
   it('supplies normalized billing details without recollecting those fields', async () => {
     mockConfirmPayment.mockResolvedValue({
       error: { type: 'card_error', code: 'card_declined' },
@@ -117,7 +191,20 @@ describe('CheckoutForm', () => {
     expect(mockPaymentElement.mock.calls[0][0]).toEqual({
       options: {
         fields: {
-          billingDetails: { name: 'never', email: 'never', address: 'never' },
+          billingDetails: { name: 'never', email: 'never', address: 'if_required' },
+        },
+        defaultValues: {
+          billingDetails: {
+            name: 'Ada Lovelace',
+            email: 'buyer@example.com',
+            address: {
+              line1: '42 Wallaby Way',
+              city: 'Sydney',
+              state: 'NSW',
+              postal_code: '2000',
+              country: 'AU',
+            },
+          },
         },
       },
     })

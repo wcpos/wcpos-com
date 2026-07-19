@@ -22,6 +22,7 @@ interface AdminOrdersResponse {
 // (with their `metadata`); order `metadata` carries the license references.
 const ADMIN_ORDER_FIELDS =
   'id,display_id,created_at,updated_at,email,currency_code,total,subtotal,tax_total,status,payment_status,fulfillment_status,metadata,*items'
+const ADMIN_ORDER_RECEIPT_FIELDS = `${ADMIN_ORDER_FIELDS},*billing_address`
 
 function requireAdminToken(): string {
   if (!env.MEDUSA_ADMIN_API_TOKEN) {
@@ -118,7 +119,7 @@ export async function getAdminCustomerOrderById(
     limit: '1',
     customer_id: customerId,
     id: orderId,
-    fields: ADMIN_ORDER_FIELDS,
+    fields: ADMIN_ORDER_RECEIPT_FIELDS,
   })
 
   try {
