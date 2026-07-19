@@ -1679,7 +1679,7 @@
         "subtitle": "Ask anything about WCPOS — setup, licensing, hardware, syncing, printing. You'll get an instant answer drawn from our docs."
       },
       "examples": {
-        "e1": "Why is my licence inactive?",
+        "e1": "How many sites can I use my licence on?",
         "e2": "Which barcode scanners are supported?",
         "e3": "How do I sync products from WooCommerce?"
       },

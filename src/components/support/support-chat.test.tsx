@@ -104,14 +104,14 @@ describe('SupportChat', () => {
 
   it('submits the translated example prompt when an example is clicked', async () => {
     renderWithIntl(<SupportChat />)
-    const example = screen.getByRole('button', { name: 'Why is my licence inactive?' })
+    const example = screen.getByRole('button', { name: 'How many sites can I use my licence on?' })
 
     expect(example.className).toContain('inline-flex')
     fireEvent.click(example)
 
     await waitFor(() => expect(screen.getByText(/Open Settings/)).toBeInTheDocument())
     expect(fetch).toHaveBeenCalledWith('/api/support/ask', expect.objectContaining({
-      body: expect.stringContaining('Why is my licence inactive?'),
+      body: expect.stringContaining('How many sites can I use my licence on?'),
     }))
     expect(fetch).not.toHaveBeenCalledWith('/api/support/ask', expect.objectContaining({
       body: expect.stringContaining('"e1"'),
@@ -121,13 +121,13 @@ describe('SupportChat', () => {
   it('sends the localized example text rather than the internal example key', async () => {
     renderWithIntl(<SupportChat />, 'fr', frMessages)
 
-    fireEvent.click(screen.getByRole('button', { name: 'Pourquoi ma licence est-elle inactive ?' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Sur combien de sites puis-je utiliser ma licence ?' }))
 
     await waitFor(() => expect(screen.getByText(/Open Settings/)).toBeInTheDocument())
 
     const [, init] = vi.mocked(fetch).mock.calls[0]
     expect(JSON.parse(String(init?.body))).toMatchObject({
-      question: 'Pourquoi ma licence est-elle inactive ?',
+      question: 'Sur combien de sites puis-je utiliser ma licence ?',
       locale: 'fr',
     })
   })
