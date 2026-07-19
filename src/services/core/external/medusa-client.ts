@@ -1,11 +1,11 @@
 import 'server-only'
 
 import {
+  getCheckoutGatewaySecret,
   getRequestStoreEnvironment,
   type StoreEnvironment,
 } from '@/lib/store-environment'
 import { storeLogger } from '@/lib/logger'
-import { env } from '@/utils/env'
 import type {
   MedusaProduct,
   MedusaProductsResponse,
@@ -72,6 +72,11 @@ async function medusaFetch<T>(
   // Add publishable API key if available
   if (environment.medusaPublishableKey) {
     headers['x-publishable-api-key'] = environment.medusaPublishableKey
+  }
+
+  const gatewaySecret = getCheckoutGatewaySecret(environment)
+  if (gatewaySecret) {
+    headers['x-wcpos-checkout-gateway'] = gatewaySecret
   }
 
   const response = await fetch(url, {
@@ -440,10 +445,7 @@ export async function createPaymentSession(
     // Resolve once: the selected backend and its credential must come from the
     // same host decision. Secrets stay out of the public StoreEnvironment map.
     const storeEnv = await getRequestStoreEnvironment()
-    const gatewaySecret =
-      storeEnv.name === 'live'
-        ? env.CHECKOUT_GATEWAY_SECRET_LIVE
-        : env.CHECKOUT_GATEWAY_SECRET_TEST
+    const gatewaySecret = getCheckoutGatewaySecret(storeEnv)
     if (!gatewaySecret) {
       storeLogger.error`Payment session creation blocked: checkout gateway secret is not configured`
       return null
@@ -457,10 +459,7 @@ export async function createPaymentSession(
           provider_id: providerId,
           ...(data ? { data } : {}),
         }),
-        headers: {
-          ...buildAuthHeaders(authToken),
-          'x-wcpos-checkout-gateway': gatewaySecret,
-        },
+        headers: buildAuthHeaders(authToken),
       },
       storeEnv
     )

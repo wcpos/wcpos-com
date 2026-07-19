@@ -3,6 +3,7 @@ import 'server-only'
 import { getAuthToken } from '@/lib/medusa-auth'
 import { storeLogger } from '@/lib/logger'
 import {
+  getCheckoutGatewayHeaders,
   getMedusaBackendUrl,
   getMedusaPublishableKey,
 } from '@/lib/store-environment'
@@ -88,6 +89,7 @@ async function storeHeaders(token: string): Promise<HeadersInit> {
     'Content-Type': 'application/json',
     Authorization: `Bearer ${token}`,
     'x-publishable-api-key': await getMedusaPublishableKey(),
+    ...(await getCheckoutGatewayHeaders()),
   }
 }
 

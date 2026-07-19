@@ -1,6 +1,7 @@
 import 'server-only'
 
 import {
+  getCheckoutGatewayHeaders,
   getMedusaBackendUrl,
   getMedusaPublishableKey,
 } from '@/lib/store-environment'
@@ -74,6 +75,7 @@ async function completeOAuthCallback(
   const queryString = new URLSearchParams(params).toString()
   const response = await fetch(
     `${await getMedusaBackendUrl()}/auth/customer/${provider}/callback?${queryString}`,
+    { headers: await getCheckoutGatewayHeaders() }
   )
 
   if (!response.ok) {
@@ -99,6 +101,7 @@ async function linkOrCreateCustomer(token: string, locale?: string): Promise<voi
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
         'x-publishable-api-key': await getMedusaPublishableKey(),
+        ...(await getCheckoutGatewayHeaders()),
       },
       ...(locale ? { body: JSON.stringify({ locale }) } : {}),
     }
@@ -122,6 +125,7 @@ async function refreshToken(token: string): Promise<string> {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
+        ...(await getCheckoutGatewayHeaders()),
       },
     }
   )
@@ -151,7 +155,10 @@ export async function initiateOAuth(
     `${await getMedusaBackendUrl()}/auth/customer/${provider}`,
     {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        ...(await getCheckoutGatewayHeaders()),
+      },
       body: JSON.stringify({ callback_url: callbackUrl }),
     }
   )

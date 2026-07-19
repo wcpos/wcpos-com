@@ -11,6 +11,7 @@ vi.mock('@/lib/impersonation', () => ({ getImpersonation }))
 vi.mock('@/lib/store-environment', () => ({
   getMedusaBackendUrl: async () => 'https://medusa.test',
   getMedusaPublishableKey: async () => 'pk_test',
+  getCheckoutGatewayHeaders: async () => ({}),
 }))
 
 import { getCustomerAuthMethods } from './auth-methods'

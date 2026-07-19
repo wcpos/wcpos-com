@@ -33,6 +33,10 @@ vi.mock('@/lib/store-environment', () => {
     getMedusaPublishableKey: vi.fn(
       async () => environment.medusaPublishableKey
     ),
+    getCheckoutGatewaySecret: vi.fn(() => 'test-gateway-secret'),
+    getCheckoutGatewayHeaders: vi.fn(async () => ({
+      'x-wcpos-checkout-gateway': 'test-gateway-secret',
+    })),
   }
 })
 

@@ -52,6 +52,11 @@ vi.mock('@/lib/store-environment', () => {
     getMedusaPublishableKey: vi.fn(
       async () => mockStoreEnvironment.medusaPublishableKey
     ),
+    getCheckoutGatewaySecret: vi.fn((environment) =>
+      environment.name === 'live'
+        ? mockEnv.CHECKOUT_GATEWAY_SECRET_LIVE
+        : mockEnv.CHECKOUT_GATEWAY_SECRET_TEST
+    ),
   }
 })
 
@@ -374,8 +379,25 @@ describe('medusaClient', () => {
           'https://test-store-api.wcpos.com/store/carts',
           expect.objectContaining({
             method: 'POST',
+            headers: expect.objectContaining({
+              'x-wcpos-checkout-gateway':
+                'checkout-test-gateway-secret-at-least-32-chars',
+            }),
           })
         )
+      })
+
+      it('omits the gateway header when the test secret is unset', async () => {
+        mockEnv.CHECKOUT_GATEWAY_SECRET_TEST = undefined
+        mockFetch.mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({ cart: mockCart }),
+        })
+
+        await createCart({})
+
+        const [, init] = mockFetch.mock.calls[0]
+        expect(init.headers).not.toHaveProperty('x-wcpos-checkout-gateway')
       })
 
       it('forwards the customer JWT as Bearer auth so the cart is customer-linked', async () => {
