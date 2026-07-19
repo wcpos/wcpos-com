@@ -181,6 +181,25 @@ export function getCheckoutGatewaySecret(
     : env.CHECKOUT_GATEWAY_SECRET_TEST
 }
 
+/**
+ * Trusted server calls share Vercel egress IPs, so the backend needs this
+ * credential to distinguish them from public traffic (registration gate and
+ * per-IP rate-limit bypass). Local development may omit the secret.
+ */
+export function checkoutGatewayHeaders(
+  storeEnvironment: StoreEnvironment
+): Record<string, string> {
+  const secret = getCheckoutGatewaySecret(storeEnvironment)
+  return secret ? { 'x-wcpos-checkout-gateway': secret } : {}
+}
+
+/** Request-scoped shorthand mirroring getMedusaBackendUrl(). */
+export async function getCheckoutGatewayHeaders(): Promise<
+  Record<string, string>
+> {
+  return checkoutGatewayHeaders(await getRequestStoreEnvironment())
+}
+
 /** Request-scoped shorthand for the host-resolved Medusa base URL. */
 export async function getMedusaBackendUrl(): Promise<string> {
   return (await getRequestStoreEnvironment()).medusaBackendUrl

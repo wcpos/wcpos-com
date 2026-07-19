@@ -1,6 +1,7 @@
 import 'server-only'
 
 import {
+  getCheckoutGatewayHeaders,
   getMedusaBackendUrl,
   getMedusaPublishableKey,
 } from '@/lib/store-environment'
@@ -109,6 +110,7 @@ async function authMethodsFetch(
       headers: {
         Authorization: `Bearer ${token}`,
         'x-publishable-api-key': await getMedusaPublishableKey(),
+        ...(await getCheckoutGatewayHeaders()),
       },
       cache: 'no-store',
     }

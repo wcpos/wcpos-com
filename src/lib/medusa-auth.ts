@@ -3,7 +3,7 @@ import 'server-only'
 import { cache } from 'react'
 import { cookies } from 'next/headers'
 import {
-  getCheckoutGatewaySecret,
+  checkoutGatewayHeaders,
   getMedusaBackendUrl,
   getMedusaPublishableKey,
   getRequestStoreEnvironment,
@@ -92,18 +92,6 @@ const COOKIE_OPTIONS = {
   sameSite: 'lax' as const,
   path: '/',
   maxAge: 60 * 60 * 24, // 1 day
-}
-
-/**
- * Trusted server calls share Vercel egress IPs, so the backend needs this
- * credential to distinguish them from public traffic. Local development may
- * omit the secret.
- */
-function checkoutGatewayHeaders(
-  storeEnvironment: StoreEnvironment
-): Record<string, string> {
-  const secret = getCheckoutGatewaySecret(storeEnvironment)
-  return secret ? { 'x-wcpos-checkout-gateway': secret } : {}
 }
 
 // ============================================================================

@@ -51,6 +51,18 @@ vi.mock('@/lib/store-environment', () => {
     getCheckoutGatewaySecret: vi.fn(
       () => mockEnv.CHECKOUT_GATEWAY_SECRET_TEST
     ),
+    // Mirrors the real helper so header-presence tests keep exercising the
+    // secret-configured and secret-unset paths through mockEnv.
+    checkoutGatewayHeaders: vi.fn(() =>
+      mockEnv.CHECKOUT_GATEWAY_SECRET_TEST
+        ? { 'x-wcpos-checkout-gateway': mockEnv.CHECKOUT_GATEWAY_SECRET_TEST }
+        : {}
+    ),
+    getCheckoutGatewayHeaders: vi.fn(async () =>
+      mockEnv.CHECKOUT_GATEWAY_SECRET_TEST
+        ? { 'x-wcpos-checkout-gateway': mockEnv.CHECKOUT_GATEWAY_SECRET_TEST }
+        : {}
+    ),
   }
 })
 

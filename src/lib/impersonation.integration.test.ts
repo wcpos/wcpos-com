@@ -37,6 +37,7 @@ vi.mock('@/lib/medusa-auth', () => ({
 vi.mock('@/lib/store-environment', () => ({
   getMedusaBackendUrl: async () => 'https://medusa.test',
   getMedusaPublishableKey: async () => 'pk_test',
+  getCheckoutGatewayHeaders: async () => ({}),
 }))
 vi.mock('@/lib/discord/medusa-admin', () => ({
   getAdminCustomerById: async (id: string) => ({ id, email: 'target@x.com' }),
