@@ -170,10 +170,6 @@ export function RenewClient({
   // start concurrent session mutations — whichever resolves last would clobber
   // `cart`/`clientSecret` for a method that's no longer selected.
   const switchingRef = useRef(false)
-  // Latest method requested while a switch is in flight. The running switch
-  // drains it on completion so the visible selection always ends up with a
-  // real session (dropping it would leave e.g. Card selected with no secret).
-  const pendingMethodRef = useRef<PaymentMethod | null>(null)
 
   const plan = getPlanByHandle(offerHandle)?.id
 
@@ -281,65 +277,59 @@ export function RenewClient({
   const selectPaymentMethod = useCallback(
     async (method: PaymentMethod) => {
       if (!cart || !paymentCollectionId) return
-      // Synchronous guard — one session mutation at a time (see switchingRef).
-      // A concurrent request is not dropped: it queues in pendingMethodRef and
-      // the running loop drains it before finishing.
-      if (switchingRef.current) {
-        pendingMethodRef.current = method
-        return
-      }
+      // Synchronous guard — one session mutation at a time (switchingRef is set
+      // before the first await, so a second click made in the same render tick
+      // is dropped rather than racing this one).
+      if (switchingRef.current) return
       switchingRef.current = true
 
+      setIsProcessing(true)
+      setFailure(null)
+
       try {
-        // Process the requested method, then any newer selection made while a
-        // session was mutating — so the visible method always ends up with its
-        // own session (last click wins), never stranded on a stale one.
-        let current: PaymentMethod | null = method
-        while (current) {
-          setIsProcessing(true)
-          setFailure(null)
-          setClientSecret(null)
+        const result = await createPaymentSession<PaymentSessionResult>({
+          cartId: cart.id,
+          providerId: PAYMENT_METHOD_PROVIDER_IDS[method],
+          paymentCollectionId,
+          errorMessage: 'PAYMENT_METHOD_SELECT_FAILED',
+        })
 
-          try {
-            const result = await createPaymentSession<PaymentSessionResult>({
-              cartId: cart.id,
-              providerId: PAYMENT_METHOD_PROVIDER_IDS[current],
-              paymentCollectionId,
-              errorMessage: 'PAYMENT_METHOD_SELECT_FAILED',
-            })
-
-            // Card without a client secret is unpayable — surface it instead
-            // of leaving PaymentStep stuck on its preparing spinner (mirrors
-            // the initial-prime guard in prepare()).
-            if (current === 'stripe' && !result.clientSecret) {
-              throw new Error('session:client-secret')
-            }
-
-            if (result.cart) setCart(result.cart)
-            if (current === 'stripe') {
-              setClientSecret(result.clientSecret ?? null)
-              setCustomerSessionClientSecret(
-                result.customerSessionClientSecret ?? null
-              )
-            }
-          } catch (err) {
-            const failedMethod = current
-            setFailure(
-              createPaymentFailure(t('paymentNotConfigured'), {
-                source: 'payment_method_switch',
-                details: {
-                  cartId: cart.id,
-                  method: failedMethod,
-                  error: err instanceof Error ? err.message : err,
-                },
-              })
-            )
-          }
-
-          const next = pendingMethodRef.current
-          pendingMethodRef.current = null
-          current = next && next !== current ? next : null
+        // Card without a client secret is unpayable — surface it instead of
+        // leaving PaymentStep stuck on its preparing spinner (mirrors the
+        // initial-prime guard in prepare()).
+        if (method === 'stripe' && !result.clientSecret) {
+          throw new Error('session:client-secret')
         }
+
+        // Commit the selection only now that its session exists. Clearing
+        // clientSecret / paymentMethod up-front would strand the previously
+        // prepared (working) method on failure; on success the new method
+        // always has a usable session.
+        if (result.cart) setCart(result.cart)
+        if (method === 'stripe') {
+          setClientSecret(result.clientSecret ?? null)
+          setCustomerSessionClientSecret(
+            result.customerSessionClientSecret ?? null
+          )
+        } else {
+          // Leaving Card — its Stripe secret no longer applies.
+          setClientSecret(null)
+          setCustomerSessionClientSecret(null)
+        }
+        setPaymentMethod(method)
+      } catch (err) {
+        // Selection is untouched: the previously prepared method stays selected
+        // and payable, with the failure surfaced above it.
+        setFailure(
+          createPaymentFailure(t('paymentNotConfigured'), {
+            source: 'payment_method_switch',
+            details: {
+              cartId: cart.id,
+              method,
+              error: err instanceof Error ? err.message : err,
+            },
+          })
+        )
       } finally {
         switchingRef.current = false
         setIsProcessing(false)
@@ -350,10 +340,9 @@ export function RenewClient({
 
   const handlePaymentMethodChange = (method: PaymentMethod) => {
     if (method === paymentMethod) return
-    // Optimistic visible selection; selectPaymentMethod guarantees the chosen
-    // method ends up with a real session even if a prior switch is still
-    // in flight (it queues via pendingMethodRef).
-    setPaymentMethod(method)
+    // No optimistic selection: selectPaymentMethod commits paymentMethod only
+    // after the new session succeeds, so the visible method always has a
+    // usable session (a failed/in-flight switch never strands the form).
     void selectPaymentMethod(method)
   }
 
