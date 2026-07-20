@@ -388,15 +388,11 @@ describe('RenewClient', () => {
   })
 
   it('keeps the working method selected when a switch fails', async () => {
-    // Default response: covers the owner-report beacon/fetch AND the failure
-    // path's re-prime of the previous (Card) method — which must return a
-    // client secret so the Card form is restored server-side + locally.
-    mockFetch.mockResolvedValue(
-      okJson({
-        cart: { id: 'cart_1', payment_collection: { id: 'pc_1' } },
-        clientSecret: 'cs_1',
-      })
-    )
+    // The PayPal switch fails at the HTTP layer (ok:false → createPaymentSession
+    // throws), so the server was never mutated and the previous (Card) session
+    // is restored locally — no re-prime call. Default covers the owner-report
+    // beacon/fetch.
+    mockFetch.mockResolvedValue(okJson({}))
     mockFetch
       .mockResolvedValueOnce(okJson({ cart: { id: 'cart_1' } }))
       .mockResolvedValueOnce(okJson({ cart: { id: 'cart_1' } }))
@@ -446,10 +442,10 @@ describe('RenewClient', () => {
       'aria-checked',
       'false'
     )
-    // The previous (Card) session is re-primed server-side and reflected
-    // locally: the form renders again (not the preparing placeholder).
-    // Dropping the failure-path re-prime would leave clientSecret null →
-    // PaymentStep shows PreparingMethod and this checkout-form testid is gone.
+    // The previous (Card) session secret is restored: the form renders again
+    // (not the preparing placeholder). Dropping the failure-path restore would
+    // leave clientSecret null → PaymentStep shows PreparingMethod and this
+    // checkout-form testid would be gone.
     expect(scoped.getByTestId('checkout-form')).toBeTruthy()
   })
 

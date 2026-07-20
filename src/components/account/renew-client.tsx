@@ -284,6 +284,8 @@ export function RenewClient({
       switchingRef.current = true
       // Committed only on success, so this is still the current selection.
       const previousMethod = paymentMethod
+      const previousClientSecret = clientSecret
+      const previousCustomerSessionClientSecret = customerSessionClientSecret
 
       // Clearing clientSecret up-front unmounts the Stripe Elements surface —
       // including the express wallet — so a stale PaymentIntent can't be
@@ -293,6 +295,11 @@ export function RenewClient({
       setFailure(null)
       setClientSecret(null)
       setCustomerSessionClientSecret(null)
+
+      const restorePreviousLocalSecrets = () => {
+        setClientSecret(previousClientSecret)
+        setCustomerSessionClientSecret(previousCustomerSessionClientSecret)
+      }
 
       // Create (and select, server-side) a provider's session, then reflect it
       // locally. Throws for Card without a client secret — unpayable, same as
@@ -316,8 +323,29 @@ export function RenewClient({
         }
       }
 
+      // True once the switch's session request returns — i.e. the server may
+      // have made it the cart's active session, superseding the previous one.
+      let switchSessionCreated = false
+
       try {
-        await primeProvider(method)
+        const result = await createPaymentSession<PaymentSessionResult>({
+          cartId: cart.id,
+          providerId: PAYMENT_METHOD_PROVIDER_IDS[method],
+          paymentCollectionId,
+          errorMessage: 'PAYMENT_METHOD_SELECT_FAILED',
+        })
+        // The request returned, so the server created/selected this session.
+        switchSessionCreated = true
+        if (method === 'stripe' && !result.clientSecret) {
+          throw new Error('session:client-secret')
+        }
+        if (result.cart) setCart(result.cart)
+        if (method === 'stripe') {
+          setClientSecret(result.clientSecret ?? null)
+          setCustomerSessionClientSecret(
+            result.customerSessionClientSecret ?? null
+          )
+        }
         // Commit the selection only now that its session exists server-side.
         setPaymentMethod(method)
       } catch (err) {
@@ -331,23 +359,37 @@ export function RenewClient({
             },
           })
         )
-        // A failed switch may have already moved the cart's ACTIVE server-side
-        // session to the new provider. Re-prime the still-selected previous
-        // method so the server session matches what the UI shows and it stays
-        // payable — restoring local secrets alone would leave the two out of
-        // sync. Best-effort: if this also fails, the secret stays cleared and
-        // the failure alert stands.
-        try {
-          await primeProvider(previousMethod)
-        } catch {
-          // Could not re-establish the previous session — leave it cleared.
+        if (!switchSessionCreated) {
+          // The request never reached/mutated the server (network/HTTP error),
+          // so the previous session is still the cart's active one — restore
+          // its secret locally. No further network call, so an ongoing outage
+          // can't strand the previously payable method.
+          restorePreviousLocalSecrets()
+        } else {
+          // The new session WAS created server-side and may now be active, so a
+          // local-only restore would diverge from the server. Re-prime the
+          // still-selected previous method to reconcile; if that also fails,
+          // fall back to its local secret as a last resort (a total outage
+          // leaves nothing payable regardless — the failure alert stands).
+          try {
+            await primeProvider(previousMethod)
+          } catch {
+            restorePreviousLocalSecrets()
+          }
         }
       } finally {
         switchingRef.current = false
         setIsProcessing(false)
       }
     },
-    [cart, paymentCollectionId, paymentMethod, t]
+    [
+      cart,
+      paymentCollectionId,
+      paymentMethod,
+      clientSecret,
+      customerSessionClientSecret,
+      t,
+    ]
   )
 
   const handlePaymentMethodChange = (method: PaymentMethod) => {
