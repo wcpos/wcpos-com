@@ -283,8 +283,19 @@ export function RenewClient({
       if (switchingRef.current) return
       switchingRef.current = true
 
+      // Snapshot the working session. Clearing clientSecret up-front unmounts
+      // the Stripe Elements surface — including the express wallet — so a stale
+      // PaymentIntent can't be confirmed (Apple/Google Pay) while the cart is
+      // being moved to another provider. `paymentMethod` is NOT changed yet, so
+      // on failure we restore this snapshot and the previously prepared method
+      // stays selected and payable.
+      const previousClientSecret = clientSecret
+      const previousCustomerSessionClientSecret = customerSessionClientSecret
+
       setIsProcessing(true)
       setFailure(null)
+      setClientSecret(null)
+      setCustomerSessionClientSecret(null)
 
       try {
         const result = await createPaymentSession<PaymentSessionResult>({
@@ -301,25 +312,21 @@ export function RenewClient({
           throw new Error('session:client-secret')
         }
 
-        // Commit the selection only now that its session exists. Clearing
-        // clientSecret / paymentMethod up-front would strand the previously
-        // prepared (working) method on failure; on success the new method
-        // always has a usable session.
+        // Commit the selection only now that its session exists. Card carries a
+        // client secret; PayPal/Bitcoin intentionally leave it null.
         if (result.cart) setCart(result.cart)
         if (method === 'stripe') {
           setClientSecret(result.clientSecret ?? null)
           setCustomerSessionClientSecret(
             result.customerSessionClientSecret ?? null
           )
-        } else {
-          // Leaving Card — its Stripe secret no longer applies.
-          setClientSecret(null)
-          setCustomerSessionClientSecret(null)
         }
         setPaymentMethod(method)
       } catch (err) {
-        // Selection is untouched: the previously prepared method stays selected
-        // and payable, with the failure surfaced above it.
+        // Restore the previous method's session — it was never deselected, so
+        // it stays selected and payable with the failure surfaced above it.
+        setClientSecret(previousClientSecret)
+        setCustomerSessionClientSecret(previousCustomerSessionClientSecret)
         setFailure(
           createPaymentFailure(t('paymentNotConfigured'), {
             source: 'payment_method_switch',
@@ -335,7 +342,7 @@ export function RenewClient({
         setIsProcessing(false)
       }
     },
-    [cart, paymentCollectionId, t]
+    [cart, paymentCollectionId, clientSecret, customerSessionClientSecret, t]
   )
 
   const handlePaymentMethodChange = (method: PaymentMethod) => {
