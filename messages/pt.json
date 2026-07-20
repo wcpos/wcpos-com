@@ -1679,7 +1679,7 @@
         "subtitle": "Pergunte qualquer coisa sobre o WCPOS — configuração, licenciamento, hardware, sincronização, impressão. Receberá uma resposta imediata baseada na nossa documentação."
       },
       "examples": {
-        "e1": "Porque é que a minha licença está inativa?",
+        "e1": "Em quantos sites posso usar a minha licença?",
         "e2": "Que leitores de códigos de barras são suportados?",
         "e3": "Como sincronizo produtos do WooCommerce?"
       },
