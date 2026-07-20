@@ -1082,6 +1082,7 @@
     },
     "renew": {
       "summaryLabel": "Renewing your licence",
+      "secureNote": "Secure, encrypted payment",
       "extendsNote": "Extends your current licence by one year — no days are lost if you renew early.",
       "preparing": "Preparing your renewal…",
       "errorBody": "We couldn't start your renewal just now. You can renew from the full checkout instead.",

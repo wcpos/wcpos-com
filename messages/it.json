@@ -1082,6 +1082,7 @@
     },
     "renew": {
       "summaryLabel": "Rinnovo della licenza",
+      "secureNote": "Pagamento sicuro e crittografato",
       "extendsNote": "Estende la licenza attuale di un anno — non perdi alcun giorno se rinnovi in anticipo.",
       "preparing": "Preparazione del rinnovo…",
       "errorBody": "Non siamo riusciti ad avviare il rinnovo in questo momento. Puoi invece rinnovare dal checkout completo.",
