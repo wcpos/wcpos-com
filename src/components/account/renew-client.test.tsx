@@ -424,6 +424,9 @@ describe('RenewClient', () => {
       )
     )
 
+    // Card's form is live before the switch (its session secret is present).
+    expect(scoped.getByTestId('checkout-form')).toBeTruthy()
+
     fireEvent.click(scoped.getByTestId('payment-method-paypal'))
 
     // The failed switch surfaces an error and — crucially — commits nothing:
@@ -437,6 +440,11 @@ describe('RenewClient', () => {
       'aria-checked',
       'false'
     )
+    // The Card session secret is RESTORED, not left cleared: the form renders
+    // again (not the preparing placeholder). Dropping the restore on the
+    // failure path would leave clientSecret null → PaymentStep shows
+    // PreparingMethod and this checkout-form testid would be gone.
+    expect(scoped.getByTestId('checkout-form')).toBeTruthy()
   })
 
   it('blocks a second payment attempt after an order-pending failure', async () => {
