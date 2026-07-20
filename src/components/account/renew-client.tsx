@@ -10,7 +10,7 @@ import { Alert } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import { toneText } from '@/components/ui/status-tone'
 import {
-  clearCheckoutSafetyState,
+  clearCheckoutSafetyStateForCart,
   createPaymentFailure,
   isProtectiveCheckoutFailureKind,
   recordCheckoutFailure,
@@ -165,6 +165,11 @@ export function RenewClient({
   )
   const blocksCheckout = failure ? shouldBlockCheckout(failure) : false
   const startedRef = useRef(false)
+  // Synchronous mutex for method switching: `isProcessing` is React state and
+  // only gates the NEXT render, so two fast clicks can both pass its check and
+  // start concurrent session mutations — whichever resolves last would clobber
+  // `cart`/`clientSecret` for a method that's no longer selected.
+  const switchingRef = useRef(false)
 
   const plan = getPlanByHandle(offerHandle)?.id
 
@@ -272,7 +277,9 @@ export function RenewClient({
   const selectPaymentMethod = useCallback(
     async (method: PaymentMethod) => {
       if (!cart || !paymentCollectionId) return
-      if (isProcessing) return
+      // Synchronous guard — one session mutation at a time (see switchingRef).
+      if (switchingRef.current) return
+      switchingRef.current = true
 
       setIsProcessing(true)
       setFailure(null)
@@ -285,6 +292,13 @@ export function RenewClient({
           paymentCollectionId,
           errorMessage: 'PAYMENT_METHOD_SELECT_FAILED',
         })
+
+        // Card without a client secret is unpayable — surface it instead of
+        // leaving PaymentStep stuck on its preparing spinner (mirrors the
+        // initial-prime guard in prepare()).
+        if (method === 'stripe' && !result.clientSecret) {
+          throw new Error('session:client-secret')
+        }
 
         if (result.cart) setCart(result.cart)
         if (method === 'stripe') {
@@ -305,10 +319,11 @@ export function RenewClient({
           })
         )
       } finally {
+        switchingRef.current = false
         setIsProcessing(false)
       }
     },
-    [cart, paymentCollectionId, isProcessing, t]
+    [cart, paymentCollectionId, t]
   )
 
   const handlePaymentMethodChange = (method: PaymentMethod) => {
@@ -318,10 +333,13 @@ export function RenewClient({
   }
 
   function handleSuccess() {
-    // An order definitively exists — the do-not-pay-again guard can go. The
-    // order-completed subscriber renews the licence server-side; the licenses
-    // page shows the confirmation and new expiry once it lands.
-    clearCheckoutSafetyState()
+    // An order definitively exists — the do-not-pay-again guard for THIS cart
+    // can go. Scope it to the renewal cart: a session-wide clear would wipe an
+    // order_pending / payment_uncertain guard belonging to a concurrent
+    // checkout tab, re-enabling a second payment there. The order-completed
+    // subscriber renews the licence server-side; the licenses page shows the
+    // confirmation and new expiry once it lands.
+    if (cart?.id) clearCheckoutSafetyStateForCart(cart.id)
     router.push('/account/licenses?renewed=1')
   }
 
