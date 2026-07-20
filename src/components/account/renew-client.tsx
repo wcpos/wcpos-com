@@ -282,51 +282,45 @@ export function RenewClient({
       // is dropped rather than racing this one).
       if (switchingRef.current) return
       switchingRef.current = true
+      // Committed only on success, so this is still the current selection.
+      const previousMethod = paymentMethod
 
-      // Snapshot the working session. Clearing clientSecret up-front unmounts
-      // the Stripe Elements surface — including the express wallet — so a stale
-      // PaymentIntent can't be confirmed (Apple/Google Pay) while the cart is
-      // being moved to another provider. `paymentMethod` is NOT changed yet, so
-      // on failure we restore this snapshot and the previously prepared method
-      // stays selected and payable.
-      const previousClientSecret = clientSecret
-      const previousCustomerSessionClientSecret = customerSessionClientSecret
-
+      // Clearing clientSecret up-front unmounts the Stripe Elements surface —
+      // including the express wallet — so a stale PaymentIntent can't be
+      // confirmed (Apple/Google Pay) while the cart is moved to another
+      // provider.
       setIsProcessing(true)
       setFailure(null)
       setClientSecret(null)
       setCustomerSessionClientSecret(null)
 
-      try {
+      // Create (and select, server-side) a provider's session, then reflect it
+      // locally. Throws for Card without a client secret — unpayable, same as
+      // the initial-prime guard in prepare().
+      const primeProvider = async (target: PaymentMethod) => {
         const result = await createPaymentSession<PaymentSessionResult>({
           cartId: cart.id,
-          providerId: PAYMENT_METHOD_PROVIDER_IDS[method],
+          providerId: PAYMENT_METHOD_PROVIDER_IDS[target],
           paymentCollectionId,
           errorMessage: 'PAYMENT_METHOD_SELECT_FAILED',
         })
-
-        // Card without a client secret is unpayable — surface it instead of
-        // leaving PaymentStep stuck on its preparing spinner (mirrors the
-        // initial-prime guard in prepare()).
-        if (method === 'stripe' && !result.clientSecret) {
+        if (target === 'stripe' && !result.clientSecret) {
           throw new Error('session:client-secret')
         }
-
-        // Commit the selection only now that its session exists. Card carries a
-        // client secret; PayPal/Bitcoin intentionally leave it null.
         if (result.cart) setCart(result.cart)
-        if (method === 'stripe') {
+        if (target === 'stripe') {
           setClientSecret(result.clientSecret ?? null)
           setCustomerSessionClientSecret(
             result.customerSessionClientSecret ?? null
           )
         }
+      }
+
+      try {
+        await primeProvider(method)
+        // Commit the selection only now that its session exists server-side.
         setPaymentMethod(method)
       } catch (err) {
-        // Restore the previous method's session — it was never deselected, so
-        // it stays selected and payable with the failure surfaced above it.
-        setClientSecret(previousClientSecret)
-        setCustomerSessionClientSecret(previousCustomerSessionClientSecret)
         setFailure(
           createPaymentFailure(t('paymentNotConfigured'), {
             source: 'payment_method_switch',
@@ -337,12 +331,23 @@ export function RenewClient({
             },
           })
         )
+        // A failed switch may have already moved the cart's ACTIVE server-side
+        // session to the new provider. Re-prime the still-selected previous
+        // method so the server session matches what the UI shows and it stays
+        // payable — restoring local secrets alone would leave the two out of
+        // sync. Best-effort: if this also fails, the secret stays cleared and
+        // the failure alert stands.
+        try {
+          await primeProvider(previousMethod)
+        } catch {
+          // Could not re-establish the previous session — leave it cleared.
+        }
       } finally {
         switchingRef.current = false
         setIsProcessing(false)
       }
     },
-    [cart, paymentCollectionId, clientSecret, customerSessionClientSecret, t]
+    [cart, paymentCollectionId, paymentMethod, t]
   )
 
   const handlePaymentMethodChange = (method: PaymentMethod) => {
