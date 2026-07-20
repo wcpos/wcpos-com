@@ -1082,6 +1082,7 @@
     },
     "renew": {
       "summaryLabel": "Je licentie verlengen",
+      "secureNote": "Veilige, versleutelde betaling",
       "extendsNote": "Verlengt je huidige licentie met één jaar — er gaan geen dagen verloren als je vroeg verlengt.",
       "preparing": "Je verlenging voorbereiden…",
       "errorBody": "We konden je verlenging op dit moment niet starten. Je kunt in plaats daarvan verlengen via het volledige afrekenproces.",

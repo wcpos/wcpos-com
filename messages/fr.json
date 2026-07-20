@@ -1082,6 +1082,7 @@
     },
     "renew": {
       "summaryLabel": "Renouvellement de votre licence",
+      "secureNote": "Paiement sécurisé et chiffré",
       "extendsNote": "Prolonge votre licence actuelle d’un an — aucun jour n’est perdu si vous renouvelez en avance.",
       "preparing": "Préparation de votre renouvellement…",
       "errorBody": "Nous n’avons pas pu démarrer votre renouvellement pour le moment. Vous pouvez plutôt renouveler depuis le paiement complet.",

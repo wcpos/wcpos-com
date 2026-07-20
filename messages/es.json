@@ -1082,6 +1082,7 @@
     },
     "renew": {
       "summaryLabel": "Renovando tu licencia",
+      "secureNote": "Pago seguro y cifrado",
       "extendsNote": "Amplía tu licencia actual un año más — no pierdes ningún día si renuevas antes de tiempo.",
       "preparing": "Preparando tu renovación…",
       "errorBody": "No pudimos iniciar tu renovación en este momento. En su lugar, puedes renovar desde la compra completa.",

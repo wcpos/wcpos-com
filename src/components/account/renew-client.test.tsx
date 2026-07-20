@@ -11,6 +11,10 @@ const { loggerError, push, trackClientEvent, getPostHogSessionId } = vi.hoisted(
 
 vi.mock('@/lib/analytics/client-events', () => ({ trackClientEvent }))
 vi.mock('@/lib/analytics/posthog-browser', () => ({ getPostHogSessionId }))
+vi.mock('@/lib/analytics/consent', () => ({
+  isAnalyticsGranted: () => true,
+  readAnalyticsConsent: () => 'granted',
+}))
 
 vi.mock('@/i18n/navigation', () => ({
   useRouter: () => ({ push }),
@@ -29,11 +33,26 @@ vi.mock('@/i18n/navigation', () => ({
   ),
 }))
 
-// Stub the Stripe layers — we're testing the renewal orchestration, not Stripe.
+// Stub the provider layers reused from the storefront checkout — we're testing
+// the renewal orchestration, not Stripe/PayPal/BTCPay themselves. The real
+// PaymentStep still runs, so its method wiring and per-provider analytics are
+// exercised.
 vi.mock('@/components/pro/stripe-provider', () => ({
   StripeProvider: ({ children }: { children: React.ReactNode }) => (
     <div data-testid="stripe-provider">{children}</div>
   ),
+}))
+vi.mock('@/components/pro/paypal-provider', () => ({
+  PayPalProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+}))
+vi.mock('@/components/pro/paypal-button', () => ({
+  PayPalButton: () => <div data-testid="paypal-button" />,
+}))
+vi.mock('@/components/pro/btcpay-button', () => ({
+  BTCPayButton: () => <div data-testid="btcpay-button" />,
+}))
+vi.mock('@/components/pro/checkout/express-checkout', () => ({
+  ExpressCheckoutRow: () => null,
 }))
 
 vi.mock('@/components/pro/checkout-form', () => ({
@@ -101,7 +120,11 @@ function props(overrides = {}) {
     currency: 'usd',
     priceFormatted: '$129.00',
     productTitle: 'WCPOS Pro — Yearly',
-    stripePublishableKey: 'pk_test_x',
+    payments: {
+      stripePublishableKey: 'pk_test_x',
+      paypal: null,
+      btcpayEnabled: false,
+    },
     ...overrides,
   }
 }
@@ -159,6 +182,9 @@ describe('RenewClient', () => {
     expect(cartBody.metadata).not.toHaveProperty('renewal')
     const itemBody = JSON.parse(mockFetch.mock.calls[1][1].body)
     expect(itemBody.product).toBe('wcpos-pro-yearly')
+    // The default (Card) session is primed with the Stripe provider id.
+    const sessionBody = JSON.parse(mockFetch.mock.calls[3][1].body)
+    expect(sessionBody.provider_id).toBe('pp_stripe_stripe')
   })
 
   it('refreshes attribution and emits safe Stripe renewal lifecycle events', async () => {
@@ -293,6 +319,72 @@ describe('RenewClient', () => {
     await waitFor(() =>
       expect(screen.getByTestId('checkout-total').textContent).toBe('15480 usd')
     )
+  })
+
+  it('offers PayPal and Bitcoin rows when the deployment enables them', async () => {
+    mockFetch
+      .mockResolvedValueOnce(okJson({ cart: { id: 'cart_1' } }))
+      .mockResolvedValueOnce(okJson({ cart: { id: 'cart_1' } }))
+      .mockResolvedValueOnce(okJson({ cart: { id: 'cart_1' } }))
+      .mockResolvedValueOnce(okJson({ clientSecret: 'cs_1' }))
+
+    render(
+      <RenewClient
+        {...props({
+          payments: {
+            stripePublishableKey: 'pk_test_x',
+            paypal: { clientId: 'pp_client', environment: 'sandbox' },
+            btcpayEnabled: true,
+          },
+        })}
+      />
+    )
+
+    await waitFor(() =>
+      expect(screen.getByTestId('payment-method-paypal')).toBeTruthy()
+    )
+    expect(screen.getByTestId('payment-method-btcpay')).toBeTruthy()
+    expect(screen.getByTestId('payment-method-stripe')).toBeTruthy()
+  })
+
+  it('primes the PayPal session when Card is unavailable', async () => {
+    mockFetch
+      .mockResolvedValueOnce(okJson({ cart: { id: 'cart_1' } }))
+      .mockResolvedValueOnce(okJson({ cart: { id: 'cart_1' } }))
+      .mockResolvedValueOnce(okJson({ cart: { id: 'cart_1' } }))
+      .mockResolvedValueOnce(
+        okJson({
+          cart: {
+            id: 'cart_1',
+            payment_collection: {
+              id: 'pc_1',
+              payment_sessions: [
+                { provider_id: 'pp_paypal_paypal', data: { id: 'pp_order_1' } },
+              ],
+            },
+          },
+        })
+      )
+
+    render(
+      <RenewClient
+        {...props({
+          payments: {
+            stripePublishableKey: null,
+            paypal: { clientId: 'pp_client', environment: 'sandbox' },
+            btcpayEnabled: false,
+          },
+        })}
+      />
+    )
+
+    await waitFor(() =>
+      expect(screen.getByTestId('payment-method-paypal')).toBeTruthy()
+    )
+    // No Card row when Stripe is not configured; PayPal is primed by default.
+    expect(screen.queryByTestId('payment-method-stripe')).toBeNull()
+    const sessionBody = JSON.parse(mockFetch.mock.calls[3][1].body)
+    expect(sessionBody.provider_id).toBe('pp_paypal_paypal')
   })
 
   it('blocks a second payment attempt after an order-pending failure', async () => {

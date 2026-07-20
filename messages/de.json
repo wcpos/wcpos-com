@@ -1082,6 +1082,7 @@
     },
     "renew": {
       "summaryLabel": "Deine Lizenz verlängern",
+      "secureNote": "Sichere, verschlüsselte Zahlung",
       "extendsNote": "Verlängert deine aktuelle Lizenz um ein Jahr — bei früher Verlängerung gehen keine Tage verloren.",
       "preparing": "Deine Verlängerung wird vorbereitet…",
       "errorBody": "Wir konnten deine Verlängerung gerade nicht starten. Du kannst stattdessen über die vollständige Kasse verlängern.",

@@ -10,6 +10,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { getCustomer } from '@/lib/medusa-auth'
 import { renewalBillingPrefillFromCustomer } from '@/lib/billing-profile'
 import { getRequestStoreEnvironment } from '@/lib/store-environment'
+import { filterPaymentsByBackendProviders } from '@/lib/checkout-payments'
 import { getCartPaymentProviderContext } from '@/services/core/external/medusa-client'
 import { getResolvedCustomerLicenses } from '@/lib/customer-licenses'
 import { getProOfferCatalog } from '@/lib/pro-offer-catalog'
@@ -77,6 +78,13 @@ export async function RenewContent({ locale }: { locale: string }) {
     return null
   }
 
+  // Only offer payment methods the backend actually registers — config and
+  // backend drift independently (see checkout-payments.ts).
+  const payments = filterPaymentsByBackendProviders(
+    storeEnv.payments,
+    paymentContext.providerIds
+  )
+
   return (
     <RenewClient
       regionId={paymentContext.cartRegionId ?? undefined}
@@ -87,7 +95,7 @@ export async function RenewContent({ locale }: { locale: string }) {
       currency={yearly.price.currencyCode}
       priceFormatted={yearly.price.formatted}
       productTitle={yearly.title}
-      stripePublishableKey={storeEnv.payments.stripePublishableKey}
+      payments={payments}
     />
   )
 }

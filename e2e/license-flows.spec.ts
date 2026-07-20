@@ -169,20 +169,43 @@ test.describe('Existing license holder data accuracy', () => {
     await expect(card.getByRole('link', { name: /Downloads/ })).toBeVisible()
   })
 
-  test('renewal falls back to checkout when Stripe omits a client secret', async ({
+  test('renewal offers the same payment methods as checkout', async ({
     page,
     context,
     baseURL,
   }) => {
     await signInAs(context, baseURL, 'e2e-active')
-    await page.route('**/api/store/cart/payment-sessions', async (route) => {
+    await page.goto('/account/licenses/renew')
+
+    // The renewal page now hands off to the shared PaymentStep, so it offers
+    // whatever methods the deployment enables — Bitcoin is the only enabled
+    // method in the mocked build, so its row is pre-selected and ready to pay
+    // (previously renewal was Stripe-only and had no non-card option).
+    await expect(page.getByTestId('payment-method-btcpay')).toHaveAttribute(
+      'aria-checked',
+      'true',
+      { timeout: 15000 }
+    )
+    await expect(
+      page.getByRole('button', { name: /pay with bitcoin/i })
+    ).toBeVisible({ timeout: 15000 })
+    // The preparing placeholder resolves once the session is primed.
+    await expect(page.getByText('Preparing your renewal')).toHaveCount(0)
+  })
+
+  test('renewal falls back to checkout when the yearly offer is unavailable', async ({
+    page,
+    context,
+    baseURL,
+  }) => {
+    await signInAs(context, baseURL, 'e2e-active')
+    // No line item can be added → cart prep fails → the page offers the full
+    // checkout instead of stranding the customer on a dead renewal.
+    await page.route('**/api/store/cart/line-items', async (route) => {
       await route.fulfill({
-        status: 200,
+        status: 500,
         contentType: 'application/json',
-        body: JSON.stringify({
-          cart: { id: 'cart_e2e_missing_secret', total: 129, currency_code: 'usd' },
-          clientSecret: null,
-        }),
+        body: JSON.stringify({ error: 'line-item' }),
       })
     })
 
