@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { screen, waitFor, fireEvent } from '@testing-library/react'
+import { screen, waitFor, fireEvent, within } from '@testing-library/react'
 import { renderWithIntl as render } from '@/test/intl'
 
 const { loggerError, push, trackClientEvent, getPostHogSessionId } = vi.hoisted(() => ({
@@ -385,6 +385,68 @@ describe('RenewClient', () => {
     expect(screen.queryByTestId('payment-method-stripe')).toBeNull()
     const sessionBody = JSON.parse(mockFetch.mock.calls[3][1].body)
     expect(sessionBody.provider_id).toBe('pp_paypal_paypal')
+  })
+
+  it('keeps the working method selected when a switch fails', async () => {
+    // The PayPal switch fails at the HTTP layer (ok:false → createPaymentSession
+    // throws), so the server was never mutated and the previous (Card) session
+    // is restored locally — no re-prime call. Default covers the owner-report
+    // beacon/fetch.
+    mockFetch.mockResolvedValue(okJson({}))
+    mockFetch
+      .mockResolvedValueOnce(okJson({ cart: { id: 'cart_1' } }))
+      .mockResolvedValueOnce(okJson({ cart: { id: 'cart_1' } }))
+      .mockResolvedValueOnce(okJson({ cart: { id: 'cart_1' } }))
+      .mockResolvedValueOnce(
+        okJson({
+          cart: { id: 'cart_1', payment_collection: { id: 'pc_1' } },
+          paymentCollectionId: 'pc_1',
+          clientSecret: 'cs_1',
+        })
+      ) // prime Card
+      .mockResolvedValueOnce({ ok: false, json: async () => ({}) }) // switch → PayPal fails
+
+    const { container } = render(
+      <RenewClient
+        {...props({
+          payments: {
+            stripePublishableKey: 'pk_test_x',
+            paypal: { clientId: 'pp_client', environment: 'sandbox' },
+            btcpayEnabled: false,
+          },
+        })}
+      />
+    )
+    const scoped = within(container)
+
+    await waitFor(() =>
+      expect(scoped.getByTestId('payment-method-stripe')).toHaveAttribute(
+        'aria-checked',
+        'true'
+      )
+    )
+
+    // Card's form is live before the switch (its session secret is present).
+    expect(scoped.getByTestId('checkout-form')).toBeTruthy()
+
+    fireEvent.click(scoped.getByTestId('payment-method-paypal'))
+
+    // The failed switch surfaces an error and — crucially — commits nothing:
+    // Card stays selected and payable rather than stranding on PayPal.
+    await waitFor(() => expect(scoped.getByTestId('renew-failure')).toBeTruthy())
+    expect(scoped.getByTestId('payment-method-stripe')).toHaveAttribute(
+      'aria-checked',
+      'true'
+    )
+    expect(scoped.getByTestId('payment-method-paypal')).toHaveAttribute(
+      'aria-checked',
+      'false'
+    )
+    // The previous (Card) session secret is restored: the form renders again
+    // (not the preparing placeholder). Dropping the failure-path restore would
+    // leave clientSecret null → PaymentStep shows PreparingMethod and this
+    // checkout-form testid would be gone.
+    expect(scoped.getByTestId('checkout-form')).toBeTruthy()
   })
 
   it('blocks a second payment attempt after an order-pending failure', async () => {
