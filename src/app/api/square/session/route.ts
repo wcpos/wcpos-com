@@ -21,9 +21,12 @@ import { env } from '@/utils/env'
  */
 export async function POST(request: Request) {
   const secret = env.SQUARE_CONNECT_STATE_SECRET
-  const clientId = env.SQUARE_CONNECT_CLIENT_ID
+  const clientIds = {
+    production: env.SQUARE_CONNECT_CLIENT_ID,
+    sandbox: env.SQUARE_CONNECT_SANDBOX_CLIENT_ID,
+  }
 
-  if (!secret || !clientId) {
+  if (!secret || (!clientIds.production && !clientIds.sandbox)) {
     return NextResponse.json({ errorCode: 'square_connect_not_configured' }, { status: 503 })
   }
 
@@ -49,6 +52,11 @@ export async function POST(request: Request) {
 
   if (environment !== 'sandbox' && environment !== 'production') {
     return NextResponse.json({ errorCode: 'invalid_environment' }, { status: 400 })
+  }
+
+  const clientId = clientIds[environment]
+  if (!clientId) {
+    return NextResponse.json({ errorCode: 'square_connect_not_configured' }, { status: 503 })
   }
 
   const state = encodeState(
