@@ -20,6 +20,12 @@ const envSchema = z.object({
   CHECKOUT_GATEWAY_SECRET_LIVE: z.string().min(32).optional(),
   CHECKOUT_GATEWAY_SECRET_TEST: z.string().min(32).optional(),
 
+  // Square Terminal plugin connect relay. The client IDs are public — PKCE is
+  // what makes them safe to ship — and no Square application secret is held here.
+  SQUARE_CONNECT_CLIENT_ID: z.string().optional(),
+  SQUARE_CONNECT_SANDBOX_CLIENT_ID: z.string().optional(),
+  SQUARE_CONNECT_STATE_SECRET: z.string().min(32).optional(),
+
   // Stripe (client-side publishable key)
   NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: z.string().optional(),
 
