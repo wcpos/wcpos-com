@@ -81,11 +81,14 @@ describe('callback url acceptance', () => {
     ['https://shop.example/x#fragment', 'a fragment'],
     ['https://shop.example:8443/x', 'a non-standard port'],
     ['https://localhost/x', 'localhost'],
+    ['https://localhost./x', 'localhost with a trailing root dot'],
     ['https://shop.local/x', 'a .local name'],
+    ['https://shop.local./x', 'a .local name with a trailing root dot'],
     ['https://127.0.0.1/x', 'an IPv4 literal'],
     ['https://192.168.1.10/x', 'a private IPv4 literal'],
     ['https://[::1]/x', 'an IPv6 literal'],
     ['https://intranet/x', 'a bare hostname'],
+    ['https://intranet./x', 'a bare hostname with a trailing root dot'],
     ['not-a-url', 'a malformed URL'],
   ])('rejects %s (%s)', (candidate) => {
     expect(isAcceptableCallback(candidate)).toBe(false)

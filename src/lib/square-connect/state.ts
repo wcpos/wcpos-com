@@ -97,7 +97,7 @@ export function isAcceptableCallback(raw: string): boolean {
   if (url.hash !== '') return false
   if (url.port !== '' && url.port !== '443') return false
 
-  const host = url.hostname.toLowerCase()
+  const host = url.hostname.toLowerCase().replace(/\.$/, '')
 
   // Only public DNS names. An IP literal would let a caller point the redirect
   // at internal infrastructure.

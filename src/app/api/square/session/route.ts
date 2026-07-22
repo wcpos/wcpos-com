@@ -24,31 +24,31 @@ export async function POST(request: Request) {
   const clientId = env.SQUARE_CONNECT_CLIENT_ID
 
   if (!secret || !clientId) {
-    return NextResponse.json({ error: 'square_connect_not_configured' }, { status: 503 })
+    return NextResponse.json({ errorCode: 'square_connect_not_configured' }, { status: 503 })
   }
 
   let body: unknown
   try {
     body = await request.json()
   } catch {
-    return NextResponse.json({ error: 'invalid_body' }, { status: 400 })
+    return NextResponse.json({ errorCode: 'invalid_body' }, { status: 400 })
   }
 
   const { callback_url: callbackUrl, code_challenge: codeChallenge, environment } = (body ??
     {}) as Record<string, unknown>
 
   if (typeof callbackUrl !== 'string' || !isAcceptableCallback(callbackUrl)) {
-    return NextResponse.json({ error: 'invalid_callback_url' }, { status: 400 })
+    return NextResponse.json({ errorCode: 'invalid_callback_url' }, { status: 400 })
   }
 
   // Square requires S256; a short or absent challenge means the caller is not
   // running PKCE, and without it the code this flow returns would be bearer-usable.
   if (typeof codeChallenge !== 'string' || !/^[A-Za-z0-9\-._~]{43,128}$/.test(codeChallenge)) {
-    return NextResponse.json({ error: 'invalid_code_challenge' }, { status: 400 })
+    return NextResponse.json({ errorCode: 'invalid_code_challenge' }, { status: 400 })
   }
 
   if (environment !== 'sandbox' && environment !== 'production') {
-    return NextResponse.json({ error: 'invalid_environment' }, { status: 400 })
+    return NextResponse.json({ errorCode: 'invalid_environment' }, { status: 400 })
   }
 
   const state = encodeState(
@@ -58,7 +58,7 @@ export async function POST(request: Request) {
 
   const authorizeUrl = new URL(authorizeBaseUrl(environment))
   authorizeUrl.searchParams.set('client_id', clientId)
-  authorizeUrl.searchParams.set('scope', SQUARE_SCOPES.join('+'))
+  authorizeUrl.searchParams.set('scope', SQUARE_SCOPES.join(' '))
   authorizeUrl.searchParams.set('session', 'false')
   authorizeUrl.searchParams.set('state', state)
   authorizeUrl.searchParams.set('code_challenge', codeChallenge)

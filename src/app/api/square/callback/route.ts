@@ -16,7 +16,7 @@ import { env } from '@/utils/env'
 export async function GET(request: Request) {
   const secret = env.SQUARE_CONNECT_STATE_SECRET
   if (!secret) {
-    return NextResponse.json({ error: 'square_connect_not_configured' }, { status: 503 })
+    return NextResponse.json({ errorCode: 'square_connect_not_configured' }, { status: 503 })
   }
 
   const url = new URL(request.url)
@@ -29,7 +29,7 @@ export async function GET(request: Request) {
   // An unverifiable state gives us nowhere trustworthy to send the response, so
   // it terminates here rather than being forwarded anywhere.
   if (!decoded || !isAcceptableCallback(decoded.callbackUrl)) {
-    return NextResponse.json({ error: 'invalid_state' }, { status: 400 })
+    return NextResponse.json({ errorCode: 'invalid_state' }, { status: 400 })
   }
 
   const destination = new URL(decoded.callbackUrl)
