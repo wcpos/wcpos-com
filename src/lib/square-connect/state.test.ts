@@ -1,3 +1,4 @@
+import { createHmac } from 'node:crypto'
 import { describe, expect, it } from 'vitest'
 import { decodeState, encodeState, isAcceptableCallback } from './state'
 
@@ -63,8 +64,7 @@ describe('connect state', () => {
       JSON.stringify({ callbackUrl: 'https://shop.example/x', environment: 'staging', issuedAt: NOW }),
       'utf8'
     ).toString('base64url')
-    const encoded = encodeState(state(), SECRET)
-    const [, signature] = encoded.split('.')
+    const signature = createHmac('sha256', SECRET).update(payload).digest('base64url')
 
     expect(decodeState(`${payload}.${signature}`, SECRET, NOW)).toBeNull()
   })
