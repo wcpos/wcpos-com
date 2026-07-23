@@ -17,4 +17,14 @@ describe('nextConfig redirects', () => {
       statusCode: 302,
     })
   })
+
+  it('redirects the legacy 2025 Pro icon to the canonical asset', async () => {
+    const redirects = await nextConfig.redirects?.()
+
+    expect(redirects).toContainEqual({
+      source: '/wp-content/uploads/2025/07/wcpos-pro-icon.png',
+      destination: '/images/wcpos-pro.png',
+      statusCode: 301,
+    })
+  })
 })

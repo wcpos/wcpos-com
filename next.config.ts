@@ -125,6 +125,7 @@ const nextConfig: NextConfig = {
       // so the plugin-update card renders an icon. New releases reference
       // /images/wcpos-pro.png directly (see woocommerce-pos-pro Pro_Plugin_Updater).
       { source: '/wp-content/uploads/2014/06/woopos-pro.png', destination: '/images/wcpos-pro.png', statusCode: 301 },
+      { source: '/wp-content/uploads/2025/07/wcpos-pro-icon.png', destination: '/images/wcpos-pro.png', statusCode: 301 },
     ]
   },
   async headers() {
