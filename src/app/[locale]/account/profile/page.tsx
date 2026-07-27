@@ -15,6 +15,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { ProfileEditForm } from '@/components/account/profile-edit-form'
 import { DeleteAccountCard } from '@/components/account/delete-account-card'
 import type { Metadata } from 'next'
+import type { Locale } from '@/i18n/config'
 
 export async function generateMetadata({
   params,
@@ -29,7 +30,7 @@ export async function generateMetadata({
   }
 }
 
-async function ProfileContent({ locale }: { locale: string }) {
+async function ProfileContent({ locale }: { locale: Locale }) {
   // Independent requests: getCustomerAuthMethods() authenticates from the
   // session token itself rather than from `customer`, so awaiting them in
   // series would only double the round-trip latency.

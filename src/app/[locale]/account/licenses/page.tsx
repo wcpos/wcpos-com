@@ -13,6 +13,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { PageHeader } from '@/components/ui/page-header'
 import type { LicenseDetail } from '@/types/license'
 import type { Metadata } from 'next'
+import type { Locale } from '@/i18n/config'
 
 export async function generateMetadata({
   params,
@@ -69,7 +70,7 @@ function buildEntitledVersions(
   return map
 }
 
-async function LicensesContent({ locale }: { locale: string }) {
+async function LicensesContent({ locale }: { locale: Locale }) {
   // Read request data (cookies, via the customer lookup) before touching the
   // current time: under Cache Components a Server Component may only read the
   // clock once an uncached/request data source has been accessed. Mirrors the

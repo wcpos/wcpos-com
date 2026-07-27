@@ -8,6 +8,7 @@ import { SectionHeading } from '@/components/ui/section-heading'
 import { TextLink } from '@/components/ui/text-link'
 import { localeUrl, marketingMetadata } from '@/lib/seo'
 import type { Metadata } from 'next'
+import type { Locale } from '@/i18n/config'
 
 const COMPARE_NAMESPACE = 'compare'
 
@@ -31,7 +32,7 @@ function CompareHubJsonLd({
   name,
   itemName,
 }: {
-  locale: string
+  locale: Locale
   name: string
   itemName: string
 }) {

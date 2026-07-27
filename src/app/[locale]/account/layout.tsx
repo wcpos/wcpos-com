@@ -14,6 +14,7 @@ import { SiteFooter } from '@/components/main/site-footer'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Toaster } from '@/components/ui/sonner'
 import type { Metadata } from 'next'
+import type { Locale } from '@/i18n/config'
 import { clientMessages } from '@/i18n/client-messages'
 
 // Account pages are private — keep them out of search engines.
@@ -24,7 +25,7 @@ export const metadata: Metadata = {
 // Auth gate. Reads cookies (dynamic), so it lives inside <Suspense> to keep
 // the cacheComponents/PPR shell static. The shared SiteHeader/SiteFooter
 // give the account the same chrome as the rest of the site.
-async function AccountGate({ locale }: { locale: string }) {
+async function AccountGate({ locale }: { locale: Locale }) {
   const customer = await getCustomer()
   if (!customer) {
     // A null customer while impersonating means the target no longer resolves

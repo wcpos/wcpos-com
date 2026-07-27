@@ -15,6 +15,7 @@ import {
 } from '@/components/ui/table'
 import { localeUrl, marketingMetadata } from '@/lib/seo'
 import type { Metadata } from 'next'
+import type { Locale } from '@/i18n/config'
 
 const COMPARE_NAMESPACE = 'compare'
 
@@ -93,7 +94,7 @@ function OliverCompareJsonLd({
   locale,
   translate,
 }: {
-  locale: string
+  locale: Locale
   translate: Translate
 }) {
   return (
