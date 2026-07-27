@@ -207,10 +207,11 @@ export function ProfileEditForm({
     localeAbortRef.current = controller
     setPendingLocale(nextLocale)
     setIsLanguagePending(true)
-    const timeoutId = window.setTimeout(
-      () => controller.abort(),
-      LANGUAGE_UPDATE_TIMEOUT_MS
-    )
+    let timedOut = false
+    const timeoutId = window.setTimeout(() => {
+      timedOut = true
+      controller.abort()
+    }, LANGUAGE_UPDATE_TIMEOUT_MS)
 
     try {
       const response = await fetch('/api/account/locale', {
@@ -227,6 +228,7 @@ export function ProfileEditForm({
       if (requestId === localeRequestIdRef.current) {
         setPendingLocale(null)
         toast.error(t('updateError'))
+        if (timedOut) router.replace(pathname, { locale: nextLocale })
       }
     } finally {
       window.clearTimeout(timeoutId)

@@ -839,6 +839,9 @@ describe('ProfileEditForm', () => {
       await vi.advanceTimersByTimeAsync(10_000)
       expect(signal.aborted).toBe(true)
       expect(toast.error).toHaveBeenCalledWith('Failed to update profile')
+      expect(replaceMock).toHaveBeenCalledWith('/account/profile', {
+        locale: 'fr',
+      })
     } finally {
       vi.useRealTimers()
     }
