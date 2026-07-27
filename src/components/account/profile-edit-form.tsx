@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useLocale, useTranslations } from 'next-intl'
 import { toast } from 'sonner'
 import { useRouter, usePathname } from '@/i18n/navigation'
@@ -80,6 +80,7 @@ const PROFILE_ERROR_CODES = new Set<ProfileErrorCode>([
   'unauthorized',
   'update_failed',
 ])
+const LANGUAGE_UPDATE_TIMEOUT_MS = 10_000
 
 function isProfileErrorCode(value: unknown): value is ProfileErrorCode {
   return typeof value === 'string' && PROFILE_ERROR_CODES.has(value as ProfileErrorCode)
@@ -178,33 +179,71 @@ export function ProfileEditForm({
   const router = useRouter()
   const pathname = usePathname()
   const avatarDefaults = getAvatarDefaults(customer.metadata)
+  const [pendingLocale, setPendingLocale] = useState<Locale | null>(null)
+  const [isLanguagePending, setIsLanguagePending] = useState(false)
+  const localeRequestIdRef = useRef(0)
+  const localeAbortRef = useRef<AbortController | null>(null)
 
   // The selector shows the SAVED preference, falling back to the session
   // locale only when nothing is saved. Binding it to the session locale
   // misled staff viewing a profile in another language into thinking the
   // customer's saved language was the viewer's.
-  const selectedLocale = savedLocale ?? (locale as Locale)
+  const selectedLocale =
+    pendingLocale ?? savedLocale ?? (locale as Locale)
 
   // Changing the language persists the preference to the account, then
   // reloads the page in that locale. The write completes before the reload:
   // the reload refetches the customer, so navigating mid-write would race
   // the refetch and re-render the selector from the stale saved value.
-  // Failed writes still switch the visible language (`finally` navigates).
-  function handleLanguageChange(
+  async function handleLanguageChange(
     event: React.ChangeEvent<HTMLSelectElement>
   ) {
     const nextLocale = event.target.value as Locale
     if (nextLocale === selectedLocale && nextLocale === locale) return
-    void fetch('/api/account/locale', {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ locale: nextLocale }),
-    })
-      .catch(() => {})
-      .finally(() => {
-        router.replace(pathname, { locale: nextLocale })
+
+    const requestId = ++localeRequestIdRef.current
+    localeAbortRef.current?.abort()
+    const controller = new AbortController()
+    localeAbortRef.current = controller
+    setPendingLocale(nextLocale)
+    setIsLanguagePending(true)
+    const timeoutId = window.setTimeout(
+      () => controller.abort(),
+      LANGUAGE_UPDATE_TIMEOUT_MS
+    )
+
+    try {
+      const response = await fetch('/api/account/locale', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ locale: nextLocale }),
+        signal: controller.signal,
       })
+      if (!response.ok) throw new Error(t('updateError'))
+      if (requestId === localeRequestIdRef.current) {
+        router.replace(pathname, { locale: nextLocale })
+      }
+    } catch (error) {
+      if (requestId === localeRequestIdRef.current) {
+        setPendingLocale(null)
+        toast.error(error instanceof Error ? error.message : t('updateError'))
+      }
+    } finally {
+      window.clearTimeout(timeoutId)
+      if (requestId === localeRequestIdRef.current) {
+        localeAbortRef.current = null
+        setIsLanguagePending(false)
+      }
+    }
   }
+
+  useEffect(
+    () => () => {
+      localeRequestIdRef.current += 1
+      localeAbortRef.current?.abort()
+    },
+    []
+  )
   const countryOptions = useMemo(() => buildCountryOptions(locale), [locale])
 
   // Email is not editable: the profile API deliberately never forwards it to
@@ -583,6 +622,8 @@ export function ProfileEditForm({
           <CardContent>
             <Select
               aria-label={t('languageTitle')}
+              aria-busy={isLanguagePending}
+              disabled={isLanguagePending}
               value={selectedLocale}
               onChange={handleLanguageChange}
             >
