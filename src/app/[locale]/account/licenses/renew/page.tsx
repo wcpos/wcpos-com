@@ -1,4 +1,5 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server'
+import { resolveLocale } from '@/i18n/resolve-locale'
 import { connection } from 'next/server'
 import { Suspense } from 'react'
 import { redirect } from '@/i18n/navigation'
@@ -17,13 +18,14 @@ import { getProOfferCatalog } from '@/lib/pro-offer-catalog'
 import { getLicenseDisplayStatus } from '@/lib/license'
 import { getPlanByPolicyId, YEARLY_PRO_HANDLE } from '@/lib/plans'
 import type { Metadata } from 'next'
+import type { Locale } from '@/i18n/config'
 
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ locale: string }>
 }): Promise<Metadata> {
-  const { locale } = await params
+  const locale = resolveLocale((await params).locale)
   const t = await getTranslations({ locale, namespace: 'account.renew' })
   return {
     title: t('pageTitle'),
@@ -31,7 +33,7 @@ export async function generateMetadata({
   }
 }
 
-export async function RenewContent({ locale }: { locale: string }) {
+export async function RenewContent({ locale }: { locale: Locale }) {
   // Auth- and cart-sensitive: stop prerendering here so the shell is the
   // skeleton, and request cookies are available for the customer lookup.
   await connection()
@@ -105,7 +107,7 @@ export default async function RenewPage({
 }: {
   params: Promise<{ locale: string }>
 }) {
-  const { locale } = await params
+  const locale = resolveLocale((await params).locale)
   setRequestLocale(locale)
   const t = await getTranslations({ locale, namespace: 'account.renew' })
 

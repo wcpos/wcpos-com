@@ -6,6 +6,7 @@ import {
 } from '@testing-library/react'
 import { NextIntlClientProvider } from 'next-intl'
 import messages from '../../messages/en.json'
+import type { Locale } from '@/i18n/config'
 
 /**
  * Wraps components in the real next-intl provider, resolving the real
@@ -17,7 +18,7 @@ export function IntlWrapper({
   locale = 'en',
 }: {
   children: ReactNode
-  locale?: string
+  locale?: Locale
 }) {
   return (
     <NextIntlClientProvider
@@ -34,7 +35,7 @@ export function IntlWrapper({
 
 export function renderWithIntl(
   ui: ReactElement,
-  options?: Omit<RenderOptions, 'wrapper'> & { locale?: string }
+  options?: Omit<RenderOptions, 'wrapper'> & { locale?: Locale }
 ): RenderResult {
   const { locale = 'en', ...renderOptions } = options ?? {}
 

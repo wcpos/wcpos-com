@@ -3,6 +3,7 @@ import { render as rtlRender, screen, fireEvent, waitFor } from '@testing-librar
 import { NextIntlClientProvider } from 'next-intl'
 import { renderWithIntl as render } from '@/test/intl'
 import frMessages from '../../../messages/fr.json'
+import type { Locale } from '@/i18n/config'
 
 const mockConfirmPayment = vi.fn()
 const mockPaymentElement = vi.fn()
@@ -58,7 +59,7 @@ function renderForm() {
   )
 }
 
-function renderFormWithLocale(locale: string, messages: typeof frMessages) {
+function renderFormWithLocale(locale: Locale, messages: typeof frMessages) {
   return rtlRender(
     <NextIntlClientProvider locale={locale} messages={messages}>
       <CheckoutForm

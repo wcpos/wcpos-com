@@ -1,4 +1,5 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server'
+import { resolveLocale } from '@/i18n/resolve-locale'
 import { Link } from '@/i18n/navigation'
 import { CheckCircle, Download } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -9,7 +10,7 @@ export async function generateMetadata({
 }: {
   params: Promise<{ locale: string }>
 }) {
-  const { locale } = await params
+  const locale = resolveLocale((await params).locale)
   const t = await getTranslations({
     locale,
     namespace: 'pro.checkout.successPage.metadata',
@@ -28,7 +29,7 @@ export default async function CheckoutSuccessPage({
 }: {
   params: Promise<{ locale: string }>
 }) {
-  const { locale } = await params
+  const locale = resolveLocale((await params).locale)
   setRequestLocale(locale)
   const t = await getTranslations({ locale, namespace: 'pro.checkout.successPage' })
 

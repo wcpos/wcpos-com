@@ -1,4 +1,5 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server'
+import { resolveLocale } from '@/i18n/resolve-locale'
 import { Suspense } from 'react'
 import { getOrderById } from '@/lib/customer-orders'
 import { getResolvedLicensesFromOrders } from '@/lib/customer-licenses'
@@ -40,7 +41,7 @@ export async function generateMetadata({
 }: {
   params: Promise<{ locale: string; orderId: string }>
 }): Promise<Metadata> {
-  const { locale } = await params
+  const locale = resolveLocale((await params).locale)
   const t = await getTranslations({ locale, namespace: 'account.meta' })
   return {
     title: t('orderDetail.title'),
@@ -53,7 +54,8 @@ async function OrderDetailContent({
 }: {
   params: Promise<{ locale: string; orderId: string }>
 }) {
-  const { orderId, locale } = await params
+  const { orderId, locale: candidate } = await params
+  const locale = resolveLocale(candidate)
   const [t, tStatus, tOrderStatus, tProductTitles, order] = await Promise.all([
     getTranslations({ locale, namespace: 'account.orderDetail' }),
     getTranslations({ locale, namespace: 'account.licenseStatus' }),
@@ -285,7 +287,7 @@ export default async function OrderDetailPage({
 }: {
   params: Promise<{ locale: string; orderId: string }>
 }) {
-  const { locale } = await params
+  const locale = resolveLocale((await params).locale)
   setRequestLocale(locale)
   const t = await getTranslations({ locale, namespace: 'account.orderDetail' })
 

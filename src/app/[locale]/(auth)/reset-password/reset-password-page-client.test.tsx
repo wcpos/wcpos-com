@@ -3,6 +3,7 @@ import { fireEvent, render, waitFor } from '@testing-library/react'
 import { NextIntlClientProvider } from 'next-intl'
 import messages from '../../../../../messages/en.json'
 import { ResetPasswordPageClient } from './reset-password-page-client'
+import type { Locale } from '@/i18n/config'
 
 // A reset that signs the customer in changed the session cookie, so it must
 // leave via a full document navigation (navigateAfterAuthChange); the
@@ -39,7 +40,7 @@ vi.mock('@/i18n/navigation', () => ({
   useRouter: () => ({ push: mockPush }),
 }))
 
-function renderResetPassword(locale = 'en') {
+function renderResetPassword(locale: Locale = 'en') {
   return render(
     <NextIntlClientProvider locale={locale} messages={messages}>
       <ResetPasswordPageClient />
@@ -47,7 +48,7 @@ function renderResetPassword(locale = 'en') {
   )
 }
 
-async function submitNewPassword(locale?: string) {
+async function submitNewPassword(locale?: Locale) {
   const view = renderResetPassword(locale)
   fireEvent.change(view.getByLabelText('New password'), {
     target: { value: 'brand-new-password-1' },

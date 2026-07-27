@@ -1,4 +1,5 @@
 import { setRequestLocale } from 'next-intl/server'
+import { resolveLocale } from '@/i18n/resolve-locale'
 import { SiteHeader } from '@/components/main/site-header'
 import { SiteFooter } from '@/components/main/site-footer'
 
@@ -9,7 +10,7 @@ export default async function MainLayout({
   children: React.ReactNode
   params: Promise<{ locale: string }>
 }) {
-  const { locale } = await params
+  const locale = resolveLocale((await params).locale)
   setRequestLocale(locale)
 
   return (

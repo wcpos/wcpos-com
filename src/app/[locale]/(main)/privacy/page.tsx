@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { resolveLocale } from '@/i18n/resolve-locale'
 import type { Metadata } from 'next'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { Link } from '@/i18n/navigation'
@@ -25,7 +26,7 @@ export async function generateMetadata({
 }: {
   params: Promise<{ locale: string }>
 }): Promise<Metadata> {
-  const { locale } = await params
+  const locale = resolveLocale((await params).locale)
   const t = await getTranslations({ locale, namespace: 'legal.privacy.meta' })
   return marketingMetadata({
     locale,
@@ -40,7 +41,7 @@ export default async function PrivacyPage({
 }: {
   params: Promise<{ locale: string }>
 }) {
-  const { locale } = await params
+  const locale = resolveLocale((await params).locale)
   setRequestLocale(locale)
   const t = await getTranslations({ locale, namespace: 'legal.privacy' })
   const updatedDate = formatDateForLocale(LEGAL_UPDATED_AT, locale, {

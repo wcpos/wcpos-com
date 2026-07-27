@@ -3,6 +3,7 @@ import { fireEvent, render, screen } from '@testing-library/react'
 import { NextIntlClientProvider } from 'next-intl'
 import messages from '../../../../../messages/en.json'
 import { LoginPageClient } from './login-page-client'
+import type { Locale } from '@/i18n/config'
 
 // Sign-in deliberately performs a full document navigation (not router.push)
 // so the browser drops every client-side RSC cache rendered signed-out.
@@ -37,7 +38,7 @@ vi.mock('@/lib/analytics/client-events', () => ({
   trackClientEvent: vi.fn(),
 }))
 
-function renderLogin(locale = 'en') {
+function renderLogin(locale: Locale = 'en') {
   return render(
     <NextIntlClientProvider locale={locale} messages={messages}>
       <LoginPageClient />

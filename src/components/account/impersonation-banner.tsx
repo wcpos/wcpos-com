@@ -2,12 +2,13 @@ import { getImpersonation } from '@/lib/impersonation'
 import { getCustomer } from '@/lib/medusa-auth'
 import { isCustomerSecurityHeld } from '@/lib/customer-security-hold'
 import { getTranslations } from 'next-intl/server'
+import type { Locale } from '@/i18n/config'
 
 /**
  * Shown across the whole account area while inspecting. `getCustomer()` here is
  * the TARGET (impersonation is active), so its email is the inspected account.
  */
-export async function ImpersonationBanner({ locale }: { locale: string }) {
+export async function ImpersonationBanner({ locale }: { locale: Locale }) {
   const impersonation = await getImpersonation()
   if (!impersonation) return null
   const target = await getCustomer()

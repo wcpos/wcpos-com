@@ -13,7 +13,6 @@ import { DividedList, Row } from '@/components/ui/row'
 import { AccountNotice } from '@/components/account/account-notice'
 import { Key, Trash2, Copy, Check, ChevronDown } from 'lucide-react'
 import { Link } from '@/i18n/navigation'
-import type { Locale } from '@/i18n/config'
 import { formatDateForLocale } from '@/lib/date-format'
 import { cn } from '@/lib/utils'
 import {
@@ -296,7 +295,7 @@ export function LicensesClient({
       const res = await fetch('/api/account/licenses')
       if (!res.ok) {
         if (res.status === 401) {
-          navigateAfterAuthChange('/login', locale as Locale)
+          navigateAfterAuthChange('/login', locale)
           return
         }
         throw new Error(t('loadError'))
@@ -348,7 +347,7 @@ export function LicensesClient({
       )
       if (!res.ok) {
         if (res.status === 401) {
-          navigateAfterAuthChange('/login', locale as Locale)
+          navigateAfterAuthChange('/login', locale)
           return
         }
         throw new Error(await getLicenseActionErrorMessage(res, t('discordRemoveError')))
@@ -396,7 +395,7 @@ export function LicensesClient({
       )
       if (!res.ok) {
         if (res.status === 401) {
-          navigateAfterAuthChange('/login', locale as Locale)
+          navigateAfterAuthChange('/login', locale)
           return
         }
         throw new Error(await getLicenseActionErrorMessage(res, t('discordUnblockError')))
@@ -1138,7 +1137,7 @@ export function LicensesClient({
                           <input
                             type="hidden"
                             name="returnTo"
-                            value={localizeRedirectPath('/account/licenses', locale as Locale)}
+                            value={localizeRedirectPath('/account/licenses', locale)}
                           />
                           <Button
                             type="submit"

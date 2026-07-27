@@ -1,4 +1,5 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server'
+import { resolveLocale } from '@/i18n/resolve-locale'
 import { Suspense } from 'react'
 import { getCustomer } from '@/lib/medusa-auth'
 import { getCustomerAuthMethods } from '@/lib/auth-methods'
@@ -14,13 +15,14 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { ProfileEditForm } from '@/components/account/profile-edit-form'
 import { DeleteAccountCard } from '@/components/account/delete-account-card'
 import type { Metadata } from 'next'
+import type { Locale } from '@/i18n/config'
 
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ locale: string }>
 }): Promise<Metadata> {
-  const { locale } = await params
+  const locale = resolveLocale((await params).locale)
   const t = await getTranslations({ locale, namespace: 'account.meta' })
   return {
     title: t('profile.title'),
@@ -28,7 +30,7 @@ export async function generateMetadata({
   }
 }
 
-async function ProfileContent({ locale }: { locale: string }) {
+async function ProfileContent({ locale }: { locale: Locale }) {
   // Independent requests: getCustomerAuthMethods() authenticates from the
   // session token itself rather than from `customer`, so awaiting them in
   // series would only double the round-trip latency.
@@ -117,7 +119,7 @@ export default async function ProfilePage({
 }: {
   params: Promise<{ locale: string }>
 }) {
-  const { locale } = await params
+  const locale = resolveLocale((await params).locale)
   setRequestLocale(locale)
   const t = await getTranslations({ locale, namespace: 'account.profile' })
 

@@ -1,4 +1,5 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server'
+import { resolveLocale } from '@/i18n/resolve-locale'
 import { Suspense } from 'react'
 import { cookies } from 'next/headers'
 import { AlertCircle, Bitcoin, CreditCard, Download } from 'lucide-react'
@@ -24,6 +25,7 @@ import { Section } from '@/components/ui/section'
 import { SectionHeading } from '@/components/ui/section-heading'
 import { getCachedProOfferCatalog } from './pro-offer-data'
 import { ProProductJsonLd } from './pro-product-json-ld'
+import type { Locale } from '@/i18n/config'
 
 const PRO_MESSAGE_NAMESPACE = 'pro'
 
@@ -32,7 +34,7 @@ export async function generateMetadata({
 }: {
   params: Promise<{ locale: string }>
 }): Promise<Metadata> {
-  const { locale } = await params
+  const locale = resolveLocale((await params).locale)
   const t = await getTranslations({ locale, namespace: PRO_MESSAGE_NAMESPACE })
   return marketingMetadata({
     locale,
@@ -62,7 +64,7 @@ function BuyBoxSkeleton() {
  * The only dynamic region of the page: Medusa prices + the checkout
  * experiment from cookies. Everything else renders statically around it.
  */
-async function BuyBoxWithExperiment({ locale }: { locale: string }) {
+async function BuyBoxWithExperiment({ locale }: { locale: Locale }) {
   const cookieStore = await cookies()
   const distinctId = cookieStore.get(ANALYTICS_DISTINCT_ID_COOKIE)?.value
   const analyticsConfig = getAnalyticsConfig(process.env)
@@ -141,7 +143,7 @@ export default async function ProPage({
 }: {
   params: Promise<{ locale: string }>
 }) {
-  const { locale } = await params
+  const locale = resolveLocale((await params).locale)
   setRequestLocale(locale)
   const t = await getTranslations({ locale, namespace: PRO_MESSAGE_NAMESPACE })
 

@@ -3,6 +3,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import { useEffect } from 'react'
 import { NextIntlClientProvider } from 'next-intl'
 import frMessages from '../../../../messages/fr.json'
+import type { Locale } from '@/i18n/config'
 
 const mockConfirmPayment = vi.fn()
 const mockConfirmEvent = vi.fn()
@@ -50,7 +51,7 @@ const billingAddress = {
   country_code: ' au ',
 }
 
-function renderExpressCheckout(locale: string, messages: typeof frMessages) {
+function renderExpressCheckout(locale: Locale, messages: typeof frMessages) {
   return render(
     <NextIntlClientProvider locale={locale} messages={messages}>
       <ExpressCheckoutRow

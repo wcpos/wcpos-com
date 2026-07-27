@@ -55,6 +55,7 @@ vi.mock('next-intl/server', async () => {
 vi.mock('next-intl', async () => {
   const messages = (await import('../../../../../messages/en.json')).default
   return {
+    hasLocale: (locales: readonly string[], locale: string) => locales.includes(locale),
     NextIntlClientProvider: ({ children }: { children: React.ReactNode }) => (
       <>{children}</>
     ),

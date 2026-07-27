@@ -1,4 +1,5 @@
 import { redirect } from '@/i18n/navigation'
+import { resolveLocale } from '@/i18n/resolve-locale'
 
 // The account area no longer has an Overview landing page; Licences is the
 // home of the account. Bounce /account and its locale variants to
@@ -9,6 +10,6 @@ export default async function AccountPage({
 }: {
   params: Promise<{ locale: string }>
 }) {
-  const { locale } = await params
+  const locale = resolveLocale((await params).locale)
   redirect({ href: '/account/licenses', locale })
 }
