@@ -223,10 +223,10 @@ export function ProfileEditForm({
       if (requestId === localeRequestIdRef.current) {
         router.replace(pathname, { locale: nextLocale })
       }
-    } catch (error) {
+    } catch {
       if (requestId === localeRequestIdRef.current) {
         setPendingLocale(null)
-        toast.error(error instanceof Error ? error.message : t('updateError'))
+        toast.error(t('updateError'))
       }
     } finally {
       window.clearTimeout(timeoutId)

@@ -789,6 +789,26 @@ describe('ProfileEditForm', () => {
     expect(screen.getByLabelText('Language')).toHaveValue('en')
   })
 
+  it('uses the translated error for a rejected language write', async () => {
+    mockFetch.mockRejectedValueOnce(new TypeError('Failed to fetch'))
+
+    render(
+      <ProfileEditForm
+        customer={{ email: 'network@example.com', metadata: {} }}
+        billingDetails={emptyBillingDetails}
+      />
+    )
+
+    fireEvent.change(screen.getByLabelText('Language'), {
+      target: { value: 'fr' },
+    })
+
+    await waitFor(() => {
+      expect(toast.error).toHaveBeenCalledWith('Failed to update profile')
+    })
+    expect(replaceMock).not.toHaveBeenCalled()
+  })
+
   it('aborts a language write that exceeds the timeout', async () => {
     vi.useFakeTimers()
     try {
