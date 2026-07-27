@@ -2,8 +2,10 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { renderWithIntl as render } from '@/test/intl'
 
+const { replaceMock } = vi.hoisted(() => ({ replaceMock: vi.fn() }))
+
 vi.mock('@/i18n/navigation', () => ({
-  useRouter: () => ({ replace: vi.fn(), push: vi.fn() }),
+  useRouter: () => ({ replace: replaceMock, push: vi.fn() }),
   usePathname: () => '/account/profile',
 }))
 
@@ -651,6 +653,120 @@ describe('ProfileEditForm', () => {
     expect(screen.getByText('Email & password')).toBeInTheDocument()
     expect(screen.queryByText('Google')).not.toBeInTheDocument()
     expect(screen.queryByText('GitHub')).not.toBeInTheDocument()
+  })
+
+  it('shows the saved language preference, not the session locale', () => {
+    // Session locale is 'en' (renderWithIntl default); the saved preference
+    // must win — a staff member viewing in English has to see that the
+    // customer's language is Chinese.
+    render(
+      <ProfileEditForm
+        customer={{ email: 'zh@example.com', metadata: {} }}
+        billingDetails={emptyBillingDetails}
+        savedLocale="zh"
+      />
+    )
+
+    expect(
+      (screen.getByLabelText('Language') as HTMLSelectElement).value
+    ).toBe('zh')
+  })
+
+  it('falls back to the session locale when no preference is saved', () => {
+    render(
+      <ProfileEditForm
+        customer={{ email: 'new@example.com', metadata: {} }}
+        billingDetails={emptyBillingDetails}
+      />
+    )
+
+    expect(
+      (screen.getByLabelText('Language') as HTMLSelectElement).value
+    ).toBe('en')
+  })
+
+  it('persists a language change, then reloads in the new locale', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ locale: 'fr' }),
+    })
+
+    render(
+      <ProfileEditForm
+        customer={{ email: 'fr@example.com', metadata: {} }}
+        billingDetails={emptyBillingDetails}
+      />
+    )
+
+    fireEvent.change(screen.getByLabelText('Language'), {
+      target: { value: 'fr' },
+    })
+
+    await waitFor(() => {
+      expect(mockFetch).toHaveBeenCalledWith(
+        '/api/account/locale',
+        expect.objectContaining({
+          method: 'PATCH',
+          body: JSON.stringify({ locale: 'fr' }),
+        })
+      )
+    })
+    // The reload happens after the write so the refetched customer already
+    // carries the new preference.
+    await waitFor(() => {
+      expect(replaceMock).toHaveBeenCalledWith('/account/profile', {
+        locale: 'fr',
+      })
+    })
+  })
+
+  it('persists selecting the session language when a different preference is saved', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ locale: 'en' }),
+    })
+
+    render(
+      <ProfileEditForm
+        customer={{ email: 'zh@example.com', metadata: {} }}
+        billingDetails={emptyBillingDetails}
+        savedLocale="zh"
+      />
+    )
+
+    // Viewing in English with 'zh' saved: choosing English must write the
+    // new preference — the old guard (nextLocale === session locale) made
+    // this a silent no-op.
+    fireEvent.change(screen.getByLabelText('Language'), {
+      target: { value: 'en' },
+    })
+
+    await waitFor(() => {
+      expect(mockFetch).toHaveBeenCalledWith(
+        '/api/account/locale',
+        expect.objectContaining({
+          method: 'PATCH',
+          body: JSON.stringify({ locale: 'en' }),
+        })
+      )
+    })
+  })
+
+  it('does not save or reload when re-selecting the current language', () => {
+    render(
+      <ProfileEditForm
+        customer={{ email: 'en@example.com', metadata: {} }}
+        billingDetails={emptyBillingDetails}
+        savedLocale="en"
+      />
+    )
+
+    fireEvent.change(screen.getByLabelText('Language'), {
+      target: { value: 'en' },
+    })
+
+    expect(mockFetch).not.toHaveBeenCalled()
+    expect(replaceMock).not.toHaveBeenCalled()
   })
 
   it('renders the member-since footer when provided', () => {

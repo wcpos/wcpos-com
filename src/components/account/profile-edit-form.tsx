@@ -48,6 +48,10 @@ interface ProfileEditFormProps {
   /** Projected from the default billing customer address (the single source
    * of truth for billing details) by the server component. */
   billingDetails: BillingDetails
+  /** The customer's saved language preference (`customer.metadata.locale`),
+   * validated by the server component. May differ from the locale the page
+   * is being viewed in — e.g. staff inspecting a profile in English. */
+  savedLocale?: Locale
   memberSince?: string
   connections?: {
     signIn: ConnectionsCardProps['signIn']
@@ -165,6 +169,7 @@ function getAvatarDefaults(metadata: Record<string, unknown> | undefined): {
 export function ProfileEditForm({
   customer,
   billingDetails,
+  savedLocale,
   memberSince,
   connections,
 }: ProfileEditFormProps) {
@@ -174,21 +179,31 @@ export function ProfileEditForm({
   const pathname = usePathname()
   const avatarDefaults = getAvatarDefaults(customer.metadata)
 
-  // Changing the language persists the preference to the account and reloads
-  // the page in that locale. Mirrors the header LanguageSelector; the URL/cookie
-  // locale is the immediate source of truth so anonymous/failed writes still
-  // switch the visible language.
+  // The selector shows the SAVED preference, falling back to the session
+  // locale only when nothing is saved. Binding it to the session locale
+  // misled staff viewing a profile in another language into thinking the
+  // customer's saved language was the viewer's.
+  const selectedLocale = savedLocale ?? (locale as Locale)
+
+  // Changing the language persists the preference to the account, then
+  // reloads the page in that locale. The write completes before the reload:
+  // the reload refetches the customer, so navigating mid-write would race
+  // the refetch and re-render the selector from the stale saved value.
+  // Failed writes still switch the visible language (`finally` navigates).
   function handleLanguageChange(
     event: React.ChangeEvent<HTMLSelectElement>
   ) {
     const nextLocale = event.target.value as Locale
-    if (nextLocale === locale) return
+    if (nextLocale === selectedLocale && nextLocale === locale) return
     void fetch('/api/account/locale', {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ locale: nextLocale }),
-    }).catch(() => {})
-    router.replace(pathname, { locale: nextLocale })
+    })
+      .catch(() => {})
+      .finally(() => {
+        router.replace(pathname, { locale: nextLocale })
+      })
   }
   const countryOptions = useMemo(() => buildCountryOptions(locale), [locale])
 
@@ -568,7 +583,7 @@ export function ProfileEditForm({
           <CardContent>
             <Select
               aria-label={t('languageTitle')}
-              value={locale}
+              value={selectedLocale}
               onChange={handleLanguageChange}
             >
               {locales.map((loc) => (
