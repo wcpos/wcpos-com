@@ -5,6 +5,7 @@ import {
   startImpersonationFormAction,
   type StartImpersonationResult,
 } from './actions'
+import type { Locale } from '@/i18n/config'
 
 type ErrorCode = StartImpersonationResult['error']
 
@@ -14,7 +15,7 @@ export function AdminInspectForm({
   emailPlaceholder,
   errorMessages,
 }: {
-  locale: string
+  locale: Locale
   submitLabel: string
   emailPlaceholder: string
   errorMessages: Record<ErrorCode, string>

@@ -11,6 +11,7 @@ import { filterPaymentsByBackendProviders } from '@/lib/checkout-payments'
 import { getCartPaymentProviderContext } from '@/services/core/external/medusa-client'
 import { billingPrefillFromCustomer } from '@/lib/billing-profile'
 import type { ProCheckoutVariant } from '@/services/core/analytics/posthog-service'
+import type { Locale } from '@/i18n/config'
 import {
   getProOfferCatalog,
   resolveProOfferCheckoutSelection,
@@ -54,7 +55,7 @@ export async function CheckoutContent({
   locale,
   searchParamsPromise,
 }: {
-  locale: string
+  locale: Locale
   searchParamsPromise: Promise<Record<string, string | string[] | undefined>>
 }) {
   // Checkout is auth- and cart-sensitive. Stop prerendering at this Suspense

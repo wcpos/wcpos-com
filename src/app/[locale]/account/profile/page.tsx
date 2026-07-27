@@ -1,4 +1,5 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server'
+import { resolveLocale } from '@/i18n/resolve-locale'
 import { Suspense } from 'react'
 import { getCustomer } from '@/lib/medusa-auth'
 import { getCustomerAuthMethods } from '@/lib/auth-methods'
@@ -20,7 +21,7 @@ export async function generateMetadata({
 }: {
   params: Promise<{ locale: string }>
 }): Promise<Metadata> {
-  const { locale } = await params
+  const locale = resolveLocale((await params).locale)
   const t = await getTranslations({ locale, namespace: 'account.meta' })
   return {
     title: t('profile.title'),
@@ -117,7 +118,7 @@ export default async function ProfilePage({
 }: {
   params: Promise<{ locale: string }>
 }) {
-  const { locale } = await params
+  const locale = resolveLocale((await params).locale)
   setRequestLocale(locale)
   const t = await getTranslations({ locale, namespace: 'account.profile' })
 

@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { resolveLocale } from '@/i18n/resolve-locale'
 import { NextIntlClientProvider } from 'next-intl'
 import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server'
 import { Laptop, Smartphone, Globe, ArrowRight } from 'lucide-react'
@@ -39,7 +40,7 @@ export async function generateMetadata({
 }: {
   params: Promise<{ locale: string }>
 }): Promise<Metadata> {
-  const { locale } = await params
+  const locale = resolveLocale((await params).locale)
   const t = await getTranslations({ locale, namespace: 'downloads.meta' })
   return marketingMetadata({
     locale,
@@ -147,7 +148,7 @@ export default async function DownloadsPage({
 }: {
   params: Promise<{ locale: string }>
 }) {
-  const { locale } = await params
+  const locale = resolveLocale((await params).locale)
   setRequestLocale(locale)
 
   const [messages, pageT, platformT, releaseT, howItFitsT, versions] =

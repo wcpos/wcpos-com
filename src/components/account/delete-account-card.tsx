@@ -17,7 +17,6 @@ import {
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { navigateAfterAuthChange } from '@/lib/safe-redirect'
-import type { Locale } from '@/i18n/config'
 
 /**
  * Danger zone: permanently delete the account.
@@ -30,7 +29,7 @@ import type { Locale } from '@/i18n/config'
  */
 export function DeleteAccountCard({ email }: { email: string }) {
   const t = useTranslations('account.profile')
-  const locale = useLocale() as Locale
+  const locale = useLocale()
   const inputId = useId()
 
   const [open, setOpen] = useState(false)

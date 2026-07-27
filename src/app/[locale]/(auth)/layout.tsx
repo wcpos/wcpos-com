@@ -1,4 +1,5 @@
 import { NextIntlClientProvider } from 'next-intl'
+import { resolveLocale } from '@/i18n/resolve-locale'
 import { getMessages, setRequestLocale } from 'next-intl/server'
 import { SiteHeader } from '@/components/main/site-header'
 import { SiteFooter } from '@/components/main/site-footer'
@@ -11,7 +12,7 @@ export default async function AuthLayout({
   children: React.ReactNode
   params: Promise<{ locale: string }>
 }) {
-  const { locale } = await params
+  const locale = resolveLocale((await params).locale)
   setRequestLocale(locale)
   const messages = await getMessages()
 

@@ -1,11 +1,12 @@
 import type { Metadata, Viewport } from 'next'
+import { resolveLocale } from '@/i18n/resolve-locale'
 import { Geist, Geist_Mono } from 'next/font/google'
 import { ClientSpeedInsights } from '@/components/client-speed-insights'
 import { NextIntlClientProvider } from 'next-intl'
 import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server'
 import { ThemeProvider } from 'next-themes'
 import { Suspense } from 'react'
-import { localeDirections, locales, type Locale } from '@/i18n/config'
+import { localeDirections, locales } from '@/i18n/config'
 import { clientMessages } from '@/i18n/client-messages'
 import { ClientLoggingInit } from '@/components/client-logging-init'
 import { ConsentBanner } from '@/components/consent/consent-banner'
@@ -27,8 +28,7 @@ export async function generateMetadata({
 }: {
   params: Promise<{ locale: string }>
 }): Promise<Metadata> {
-  const { locale } = await params
-  const localeKey = locale as Locale
+  const localeKey = resolveLocale((await params).locale)
   const t = await getTranslations({ locale: localeKey, namespace: 'metadata' })
 
   return {
@@ -80,8 +80,7 @@ export default async function LocaleLayout({
   children: React.ReactNode
   params: Promise<{ locale: string }>
 }>) {
-  const { locale } = await params
-  const localeKey = locale as Locale
+  const localeKey = resolveLocale((await params).locale)
   setRequestLocale(localeKey)
   const messages = await getMessages()
 

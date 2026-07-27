@@ -2,10 +2,11 @@ import { getTranslations } from 'next-intl/server'
 import { buildProOfferSchemaOffers } from '@/lib/pro-offer-catalog'
 import { localeUrl } from '@/lib/seo'
 import { getCachedProOfferCatalog } from './pro-offer-data'
+import type { Locale } from '@/i18n/config'
 
 const PRO_MESSAGE_NAMESPACE = 'pro'
 
-export async function ProProductJsonLd({ locale }: { locale: string }) {
+export async function ProProductJsonLd({ locale }: { locale: Locale }) {
   // SEO metadata is prerendered into the shared static shell — always live.
   const [t, { offers }] = await Promise.all([
     getTranslations({ locale, namespace: PRO_MESSAGE_NAMESPACE }),

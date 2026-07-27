@@ -5,6 +5,7 @@ import type { Ref } from 'react'
 import { NextIntlClientProvider } from 'next-intl'
 import messages from '../../../../../messages/en.json'
 import { RegisterPageClient } from './register-page-client'
+import type { Locale } from '@/i18n/config'
 
 // Registration deliberately performs a full document navigation (not
 // router.push) so the browser drops every client-side RSC cache rendered
@@ -71,7 +72,7 @@ vi.mock('@/i18n/navigation', () => ({
   ),
 }))
 
-function renderRegister(locale = 'en') {
+function renderRegister(locale: Locale = 'en') {
   return render(
     <NextIntlClientProvider locale={locale} messages={messages}>
       <RegisterPageClient />

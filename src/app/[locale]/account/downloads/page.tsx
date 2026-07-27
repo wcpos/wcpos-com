@@ -1,4 +1,5 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server'
+import { resolveLocale } from '@/i18n/resolve-locale'
 import { Suspense } from 'react'
 import { redirectToLoginClearingSession } from '@/lib/login-redirect'
 import { DownloadsClient } from '@/components/account/downloads-client'
@@ -12,13 +13,14 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { PageHeader } from '@/components/ui/page-header'
 import type { LicenseDetail } from '@/types/license'
 import type { Metadata } from 'next'
+import type { Locale } from '@/i18n/config'
 
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ locale: string }>
 }): Promise<Metadata> {
-  const { locale } = await params
+  const locale = resolveLocale((await params).locale)
   const t = await getTranslations({ locale, namespace: 'account.meta' })
   return {
     title: t('downloads.title'),
@@ -91,7 +93,7 @@ async function DownloadsContent({
   locale,
   scopedLicenseId,
 }: {
-  locale: string
+  locale: Locale
   scopedLicenseId?: string
 }) {
   const { authenticated, licenses } = await getResolvedCustomerLicenses()
@@ -169,7 +171,7 @@ export default async function DownloadsPage({
   params: Promise<{ locale: string }>
   searchParams?: Promise<{ license?: string }>
 }) {
-  const { locale } = await params
+  const locale = resolveLocale((await params).locale)
   const resolvedSearchParams = searchParams ? await searchParams : {}
   setRequestLocale(locale)
   const t = await getTranslations({ locale, namespace: 'account.downloads' })

@@ -1,4 +1,5 @@
 import { notFound } from 'next/navigation'
+import { resolveLocale } from '@/i18n/resolve-locale'
 import { getTranslations } from 'next-intl/server'
 import { getSessionCustomer } from '@/lib/medusa-auth'
 import { isAdmin } from '@/lib/admin'
@@ -11,7 +12,7 @@ export default async function AdminInspectPage({
 }: {
   params: Promise<{ locale: string }>
 }) {
-  const { locale } = await params
+  const locale = resolveLocale((await params).locale)
   const t = await getTranslations({ locale, namespace: 'account.admin' })
   // Gate on the REAL session — never getCustomer (which could be a target).
   const session = await getSessionCustomer()

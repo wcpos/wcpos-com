@@ -1,3 +1,4 @@
+import { hasLocale } from 'next-intl'
 import { defaultLocale, locales, type Locale } from '@/i18n/config'
 
 export function languagePreferences(
@@ -30,8 +31,8 @@ export function supportedBaseLocale(
     try {
       const [canonical] = Intl.getCanonicalLocales(preference)
       const language = canonical?.split('-')[0]?.toLowerCase()
-      if (language && locales.includes(language as Locale)) {
-        return language as Locale
+      if (language && hasLocale(locales, language)) {
+        return language
       }
     } catch {
       // Ignore malformed language tags and continue through preferences.
@@ -54,7 +55,7 @@ export function supportedCanonicalLocale(
     try {
       const [canonical] = Intl.getCanonicalLocales(preference)
       const language = canonical?.split('-')[0]?.toLowerCase()
-      if (language && locales.includes(language as Locale)) {
+      if (language && hasLocale(locales, language)) {
         return canonical
       }
     } catch {

@@ -1,8 +1,10 @@
 import { Suspense } from 'react'
+import { resolveLocale } from '@/i18n/resolve-locale'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { Bitcoin } from 'lucide-react'
 import { redirect } from '@/i18n/navigation'
 import { BitcoinReturnStatus } from '@/components/pro/bitcoin-return-status'
+import type { Locale } from '@/i18n/config'
 
 /**
  * Return landing for BTCPay-hosted invoice pages. The payment provider
@@ -16,7 +18,7 @@ export async function generateMetadata({
 }: {
   params: Promise<{ locale: string }>
 }) {
-  const { locale } = await params
+  const locale = resolveLocale((await params).locale)
   const t = await getTranslations({
     locale,
     namespace: 'pro.checkout.processingPage.metadata',
@@ -34,7 +36,7 @@ async function ProcessingContent({
   locale,
   searchParamsPromise,
 }: {
-  locale: string
+  locale: Locale
   searchParamsPromise: Promise<{ cart?: string | string[] }>
 }) {
   const { cart } = await searchParamsPromise
@@ -54,7 +56,7 @@ export default async function ProcessingPage({
   params: Promise<{ locale: string }>
   searchParams: Promise<{ cart?: string | string[] }>
 }) {
-  const { locale } = await params
+  const locale = resolveLocale((await params).locale)
   setRequestLocale(locale)
   const t = await getTranslations({
     locale,

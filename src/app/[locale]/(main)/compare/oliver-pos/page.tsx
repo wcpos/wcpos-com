@@ -1,4 +1,5 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server'
+import { resolveLocale } from '@/i18n/resolve-locale'
 import { Check, Scale, X } from 'lucide-react'
 import { Card } from '@/components/ui/card'
 import { Section } from '@/components/ui/section'
@@ -76,7 +77,7 @@ export async function generateMetadata({
 }: {
   params: Promise<{ locale: string }>
 }): Promise<Metadata> {
-  const { locale } = await params
+  const locale = resolveLocale((await params).locale)
   const t = await getTranslations({ locale, namespace: COMPARE_NAMESPACE })
   return marketingMetadata({
     locale,
@@ -177,7 +178,7 @@ export default async function OliverComparePage({
 }: {
   params: Promise<{ locale: string }>
 }) {
-  const { locale } = await params
+  const locale = resolveLocale((await params).locale)
   setRequestLocale(locale)
   const t = await getTranslations({ locale, namespace: COMPARE_NAMESPACE })
   // next-intl's Translator is key-typed; JSON-LD and the key lists above

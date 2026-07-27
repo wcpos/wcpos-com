@@ -1,4 +1,5 @@
 import { NextIntlClientProvider } from 'next-intl'
+import { resolveLocale } from '@/i18n/resolve-locale'
 import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server'
 import { Suspense } from 'react'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -12,7 +13,7 @@ export async function generateMetadata({
 }: {
   params: Promise<{ locale: string }>
 }) {
-  const { locale } = await params
+  const locale = resolveLocale((await params).locale)
   const t = await getTranslations({
     locale,
     namespace: 'pro.checkout.page.metadata',
@@ -33,7 +34,7 @@ export default async function CheckoutPage({
   params: Promise<{ locale: string }>
   searchParams: Promise<Record<string, string | string[] | undefined>>
 }) {
-  const { locale } = await params
+  const locale = resolveLocale((await params).locale)
   setRequestLocale(locale)
   const [messages, t] = await Promise.all([
     getMessages(),

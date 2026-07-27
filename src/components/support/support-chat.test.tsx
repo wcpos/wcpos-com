@@ -6,6 +6,7 @@ import { NextIntlClientProvider } from 'next-intl'
 import type { ReactElement } from 'react'
 import messages from '../../../messages/en.json'
 import frMessages from '../../../messages/fr.json'
+import type { Locale } from '@/i18n/config'
 
 const { resetTurnstile } = vi.hoisted(() => ({ resetTurnstile: vi.fn() }))
 
@@ -39,7 +40,11 @@ vi.mock('@marsidev/react-turnstile', () => ({
 
 import { SupportChat } from './support-chat'
 
-function renderWithIntl(ui: ReactElement, locale = 'en', providerMessages = messages) {
+function renderWithIntl(
+  ui: ReactElement,
+  locale: Locale = 'en',
+  providerMessages = messages
+) {
   return render(
     <NextIntlClientProvider locale={locale} messages={providerMessages}>
       {ui}

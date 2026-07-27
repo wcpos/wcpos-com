@@ -10,7 +10,6 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Alert } from '@/components/ui/alert'
 import { navigateAfterAuthChange, sanitizeRedirectPath } from '@/lib/safe-redirect'
-import type { Locale } from '@/i18n/config'
 import { MIN_PASSWORD_LENGTH } from '@/lib/password-policy'
 import { getPostHogSessionId } from '@/lib/analytics/posthog-browser'
 import { resolveTurnstileSiteKey } from '@/lib/support/turnstile-keys'
@@ -140,7 +139,7 @@ function RegisterPageInner() {
 
       // Deliberately leaves `loading` true — see navigateAfterAuthChange for
       // why this must be a full document navigation.
-      navigateAfterAuthChange(redirectTo, locale as Locale)
+      navigateAfterAuthChange(redirectTo, locale)
     } catch {
       setError(tCommon('genericError'))
       setLoading(false)

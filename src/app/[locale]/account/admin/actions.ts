@@ -8,6 +8,7 @@ import { findAdminCustomerByEmail } from '@/lib/discord/medusa-admin'
 import { startImpersonation } from '@/lib/impersonation'
 import { createRateLimiter } from '@/lib/rate-limit'
 import { authLogger } from '@/lib/logger'
+import type { Locale } from '@/i18n/config'
 
 const limiter = createRateLimiter({
   prefix: 'impersonate-lookup',
@@ -15,7 +16,7 @@ const limiter = createRateLimiter({
   window: '10 m',
 })
 
-function redirectToAccount(locale: string): never {
+function redirectToAccount(locale: Locale): never {
   redirect({ href: '/account', locale })
   throw new Error('Redirect failed')
 }
@@ -39,7 +40,7 @@ export type StartImpersonationState = StartImpersonationResult | null
  */
 export async function startImpersonationAction(input: {
   email: string
-  locale: string
+  locale: Locale
 }): Promise<StartImpersonationResult> {
   const session = await getSessionCustomer()
   if (!session?.email || !isAdmin(session.email)) {
@@ -65,7 +66,7 @@ export async function startImpersonationAction(input: {
 }
 
 export async function startImpersonationFormAction(
-  locale: string,
+  locale: Locale,
   _previousState: StartImpersonationState,
   formData: FormData
 ): Promise<StartImpersonationResult> {

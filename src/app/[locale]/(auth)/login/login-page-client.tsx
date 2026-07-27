@@ -18,7 +18,6 @@ import {
 } from '@/components/ui/card'
 import { trackClientEvent } from '@/lib/analytics/client-events'
 import { navigateAfterAuthChange, sanitizeRedirectPath } from '@/lib/safe-redirect'
-import type { Locale } from '@/i18n/config'
 import { DiscordMark, GitHubMark, GoogleMark } from '@/components/auth/provider-marks'
 import { isOAuthErrorCode } from '@/lib/oauth-error-codes'
 
@@ -114,7 +113,7 @@ function LoginPageInner() {
       // Deliberately leaves `loading` true: the full document load takes a
       // beat, and re-enabling the button here would open a double-submit
       // window while the browser unloads.
-      navigateAfterAuthChange(redirectTo, locale as Locale)
+      navigateAfterAuthChange(redirectTo, locale)
     } catch {
       setError(tCommon('genericError'))
       setLoading(false)

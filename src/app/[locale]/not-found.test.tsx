@@ -36,6 +36,7 @@ const messages: Record<string, string> = {
 }
 
 vi.mock('next-intl', () => ({
+  hasLocale: (locales: readonly string[], locale: string) => locales.includes(locale),
   NextIntlClientProvider: ({ children }: { children: React.ReactNode }) => (
     <>{children}</>
   ),
