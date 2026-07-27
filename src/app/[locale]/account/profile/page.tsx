@@ -4,6 +4,7 @@ import { getCustomer } from '@/lib/medusa-auth'
 import { getCustomerAuthMethods } from '@/lib/auth-methods'
 import { getPrimarySignInProvider } from '@/lib/auth-providers/metadata'
 import { projectProfileMetadataForClient } from '@/lib/customer-profile-metadata'
+import { supportedBaseLocale } from '@/lib/locale-preferences'
 import { billingDetailsFromCustomer } from '@/lib/billing-profile'
 import { formatDateForLocale } from '@/lib/date-format'
 import { redirectToLoginClearingSession } from '@/lib/login-redirect'
@@ -54,6 +55,14 @@ async function ProfileContent({ locale }: { locale: string }) {
   const signInProvider =
     getPrimarySignInProvider(customer.metadata) ?? 'email'
 
+  // The language selector shows the saved preference, not the viewer's
+  // locale. Validated here rather than widening the client metadata
+  // projection, which stays avatar-only.
+  const savedLocale =
+    typeof customer.metadata?.locale === 'string'
+      ? supportedBaseLocale(customer.metadata.locale)
+      : undefined
+
   return (
     <div className="space-y-6">
       <ProfileEditForm
@@ -65,6 +74,7 @@ async function ProfileContent({ locale }: { locale: string }) {
           metadata: projectProfileMetadataForClient(customer.metadata),
         }}
         billingDetails={billingDetailsFromCustomer(customer)}
+        savedLocale={savedLocale}
         memberSince={formatDateForLocale(customer.created_at, locale)}
         connections={{
           signIn: { provider: signInProvider, email: customer.email },

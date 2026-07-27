@@ -1,9 +1,11 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { fireEvent, screen, waitFor } from '@testing-library/react'
+import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import { renderWithIntl as render } from '@/test/intl'
 
+const { replaceMock } = vi.hoisted(() => ({ replaceMock: vi.fn() }))
+
 vi.mock('@/i18n/navigation', () => ({
-  useRouter: () => ({ replace: vi.fn(), push: vi.fn() }),
+  useRouter: () => ({ replace: replaceMock, push: vi.fn() }),
   usePathname: () => '/account/profile',
 }))
 
@@ -27,6 +29,14 @@ const emptyBillingDetails = {
 
 const mockFetch = vi.fn()
 vi.stubGlobal('fetch', mockFetch)
+
+function deferredResponse() {
+  let resolve!: (response: { ok: boolean }) => void
+  const promise = new Promise<{ ok: boolean }>((resolvePromise) => {
+    resolve = resolvePromise
+  })
+  return { promise, resolve }
+}
 
 describe('ProfileEditForm', () => {
   const originalLocation = window.location
@@ -651,6 +661,260 @@ describe('ProfileEditForm', () => {
     expect(screen.getByText('Email & password')).toBeInTheDocument()
     expect(screen.queryByText('Google')).not.toBeInTheDocument()
     expect(screen.queryByText('GitHub')).not.toBeInTheDocument()
+  })
+
+  it('shows the saved language preference, not the session locale', () => {
+    // Session locale is 'en' (renderWithIntl default); the saved preference
+    // must win — a staff member viewing in English has to see that the
+    // customer's language is Chinese.
+    render(
+      <ProfileEditForm
+        customer={{ email: 'zh@example.com', metadata: {} }}
+        billingDetails={emptyBillingDetails}
+        savedLocale="zh"
+      />
+    )
+
+    expect(
+      (screen.getByLabelText('Language') as HTMLSelectElement).value
+    ).toBe('zh')
+  })
+
+  it('falls back to the session locale when no preference is saved', () => {
+    render(
+      <ProfileEditForm
+        customer={{ email: 'new@example.com', metadata: {} }}
+        billingDetails={emptyBillingDetails}
+      />
+    )
+
+    expect(
+      (screen.getByLabelText('Language') as HTMLSelectElement).value
+    ).toBe('en')
+  })
+
+  it('persists a language change, then reloads in the new locale', async () => {
+    const request = deferredResponse()
+    mockFetch.mockReturnValueOnce(request.promise)
+
+    render(
+      <ProfileEditForm
+        customer={{ email: 'fr@example.com', metadata: {} }}
+        billingDetails={emptyBillingDetails}
+      />
+    )
+
+    fireEvent.change(screen.getByLabelText('Language'), {
+      target: { value: 'fr' },
+    })
+
+    await waitFor(() => {
+      expect(mockFetch).toHaveBeenCalledWith(
+        '/api/account/locale',
+        expect.objectContaining({
+          method: 'PATCH',
+          body: JSON.stringify({ locale: 'fr' }),
+        })
+      )
+    })
+
+    const languageSelect = screen.getByLabelText('Language')
+    expect(languageSelect).toBeDisabled()
+    expect(languageSelect).toHaveValue('fr')
+    expect(replaceMock).not.toHaveBeenCalled()
+
+    request.resolve({ ok: true })
+
+    await waitFor(() => {
+      expect(replaceMock).toHaveBeenCalledWith('/account/profile', {
+        locale: 'fr',
+      })
+    })
+  })
+
+  it('only lets the latest language request navigate', async () => {
+    const firstRequest = deferredResponse()
+    const secondRequest = deferredResponse()
+    mockFetch
+      .mockReturnValueOnce(firstRequest.promise)
+      .mockReturnValueOnce(secondRequest.promise)
+
+    render(
+      <ProfileEditForm
+        customer={{ email: 'latest@example.com', metadata: {} }}
+        billingDetails={emptyBillingDetails}
+      />
+    )
+
+    const languageSelect = screen.getByLabelText('Language')
+    fireEvent.change(languageSelect, { target: { value: 'fr' } })
+    fireEvent.change(languageSelect, { target: { value: 'zh' } })
+
+    const firstSignal = (
+      mockFetch.mock.calls[0][1] as RequestInit
+    ).signal as AbortSignal
+    expect(firstSignal.aborted).toBe(true)
+
+    secondRequest.resolve({ ok: true })
+    await waitFor(() => {
+      expect(replaceMock).toHaveBeenCalledWith('/account/profile', {
+        locale: 'zh',
+      })
+    })
+
+    firstRequest.resolve({ ok: true })
+    await act(async () => {})
+    expect(replaceMock).toHaveBeenCalledTimes(1)
+  })
+
+  it('surfaces a failed language write without navigating', async () => {
+    mockFetch.mockResolvedValueOnce({ ok: false })
+
+    render(
+      <ProfileEditForm
+        customer={{ email: 'failure@example.com', metadata: {} }}
+        billingDetails={emptyBillingDetails}
+      />
+    )
+
+    fireEvent.change(screen.getByLabelText('Language'), {
+      target: { value: 'fr' },
+    })
+
+    await waitFor(() => {
+      expect(toast.error).toHaveBeenCalledWith('Failed to update profile')
+    })
+    expect(replaceMock).not.toHaveBeenCalled()
+    expect(screen.getByLabelText('Language')).toBeEnabled()
+    expect(screen.getByLabelText('Language')).toHaveValue('en')
+  })
+
+  it('uses the translated error for a rejected language write', async () => {
+    mockFetch.mockRejectedValueOnce(new TypeError('Failed to fetch'))
+
+    render(
+      <ProfileEditForm
+        customer={{ email: 'network@example.com', metadata: {} }}
+        billingDetails={emptyBillingDetails}
+      />
+    )
+
+    fireEvent.change(screen.getByLabelText('Language'), {
+      target: { value: 'fr' },
+    })
+
+    await waitFor(() => {
+      expect(toast.error).toHaveBeenCalledWith('Failed to update profile')
+    })
+    expect(replaceMock).not.toHaveBeenCalled()
+  })
+
+  it('aborts a language write that exceeds the timeout', async () => {
+    vi.useFakeTimers()
+    try {
+      mockFetch.mockImplementationOnce(
+        (_url: string, init: RequestInit) =>
+          new Promise((_resolve, reject) => {
+            init.signal?.addEventListener('abort', () => {
+              reject(new DOMException('Aborted', 'AbortError'))
+            })
+          })
+      )
+
+      render(
+        <ProfileEditForm
+          customer={{ email: 'timeout@example.com', metadata: {} }}
+          billingDetails={emptyBillingDetails}
+        />
+      )
+
+      fireEvent.change(screen.getByLabelText('Language'), {
+        target: { value: 'fr' },
+      })
+      const signal = (
+        mockFetch.mock.calls[0][1] as RequestInit
+      ).signal as AbortSignal
+
+      expect(signal.aborted).toBe(false)
+      await vi.advanceTimersByTimeAsync(10_000)
+      expect(signal.aborted).toBe(true)
+      expect(toast.error).toHaveBeenCalledWith('Failed to update profile')
+      expect(replaceMock).toHaveBeenCalledWith('/account/profile', {
+        locale: 'fr',
+      })
+    } finally {
+      vi.useRealTimers()
+    }
+  })
+
+  it('does not navigate when a language write settles after unmount', async () => {
+    const request = deferredResponse()
+    mockFetch.mockReturnValueOnce(request.promise)
+
+    const { unmount } = render(
+      <ProfileEditForm
+        customer={{ email: 'left@example.com', metadata: {} }}
+        billingDetails={emptyBillingDetails}
+      />
+    )
+
+    fireEvent.change(screen.getByLabelText('Language'), {
+      target: { value: 'fr' },
+    })
+    unmount()
+
+    request.resolve({ ok: true })
+    await act(async () => {})
+    expect(replaceMock).not.toHaveBeenCalled()
+  })
+
+  it('persists selecting the session language when a different preference is saved', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ locale: 'en' }),
+    })
+
+    render(
+      <ProfileEditForm
+        customer={{ email: 'zh@example.com', metadata: {} }}
+        billingDetails={emptyBillingDetails}
+        savedLocale="zh"
+      />
+    )
+
+    // Viewing in English with 'zh' saved: choosing English must write the
+    // new preference — the old guard (nextLocale === session locale) made
+    // this a silent no-op.
+    fireEvent.change(screen.getByLabelText('Language'), {
+      target: { value: 'en' },
+    })
+
+    await waitFor(() => {
+      expect(mockFetch).toHaveBeenCalledWith(
+        '/api/account/locale',
+        expect.objectContaining({
+          method: 'PATCH',
+          body: JSON.stringify({ locale: 'en' }),
+        })
+      )
+    })
+  })
+
+  it('does not save or reload when re-selecting the current language', () => {
+    render(
+      <ProfileEditForm
+        customer={{ email: 'en@example.com', metadata: {} }}
+        billingDetails={emptyBillingDetails}
+        savedLocale="en"
+      />
+    )
+
+    fireEvent.change(screen.getByLabelText('Language'), {
+      target: { value: 'en' },
+    })
+
+    expect(mockFetch).not.toHaveBeenCalled()
+    expect(replaceMock).not.toHaveBeenCalled()
   })
 
   it('renders the member-since footer when provided', () => {
