@@ -20,6 +20,11 @@ vi.mock('@/lib/analytics/posthog-browser', () => ({
   getPostHogSessionId: () => getPostHogSessionIdMock(),
 }))
 
+const trackClientEventMock = vi.hoisted(() => vi.fn())
+vi.mock('@/lib/analytics/client-events', () => ({
+  trackClientEvent: trackClientEventMock,
+}))
+
 vi.mock('@/lib/support/turnstile-keys', () => ({
   resolveTurnstileSiteKey: () => 'site-key',
 }))
@@ -380,6 +385,9 @@ describe('AccountStep', () => {
     expect(screen.getByRole('status')).toHaveTextContent(
       'The browser security check couldn’t finish'
     )
+    expect(trackClientEventMock).toHaveBeenCalledWith('turnstile_gate_failed', {
+      reason: 'timeout',
+    })
     expect(submit).toBeEnabled()
     fireEvent.click(submit)
 
@@ -413,5 +421,31 @@ describe('AccountStep', () => {
     expect(screen.getByRole('status')).toHaveTextContent(
       'The browser security check couldn’t finish'
     )
+  })
+
+  it('reports one analytics event per failure episode, plus the recovery', () => {
+    renderAccountStep()
+    fillCredentials()
+
+    // Turnstile auto-retries fire onError repeatedly — one episode, one event.
+    act(() => turnstileMock.onError?.())
+    act(() => turnstileMock.onError?.())
+    expect(trackClientEventMock).toHaveBeenCalledTimes(1)
+    expect(trackClientEventMock).toHaveBeenCalledWith('turnstile_gate_failed', {
+      reason: 'widget_error',
+    })
+
+    completeChallenge('late-token')
+    expect(trackClientEventMock).toHaveBeenCalledWith(
+      'turnstile_gate_recovered'
+    )
+
+    // A failure after a recovery is a new episode and reports again.
+    act(() => turnstileMock.onError?.())
+    expect(
+      trackClientEventMock.mock.calls.filter(
+        (call) => call[0] === 'turnstile_gate_failed'
+      )
+    ).toHaveLength(2)
   })
 })

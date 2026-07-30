@@ -175,7 +175,9 @@ describe('SupportChat', () => {
 
     expect(screen.getByText(/security check couldn’t finish/)).toBeInTheDocument()
     expect(example).toBeEnabled()
-    expect(trackClientEvent).toHaveBeenCalledWith('support_turnstile_error')
+    expect(trackClientEvent).toHaveBeenCalledWith('turnstile_gate_failed', {
+      reason: 'widget_error',
+    })
 
     // Submission goes through with an empty token — the server's fail-closed
     // check is the arbiter now, not a forever-disabled button.
@@ -199,7 +201,9 @@ describe('SupportChat', () => {
 
     expect(screen.getByText(/security check couldn’t finish/)).toBeInTheDocument()
     expect(example).toBeEnabled()
-    expect(trackClientEvent).toHaveBeenCalledWith('support_turnstile_error')
+    expect(trackClientEvent).toHaveBeenCalledWith('turnstile_gate_failed', {
+      reason: 'timeout',
+    })
   })
 
   it('re-enables the form when the browser is unsupported', () => {

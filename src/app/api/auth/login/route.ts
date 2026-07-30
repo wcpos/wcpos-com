@@ -35,11 +35,15 @@ const limiter = createRateLimiter({
 
 export async function POST(request: Request) {
   if (!isSameOriginRequest(request)) {
+    authLogger.info`Login rejected: cross-origin request`
     return errorResponse('invalid_origin', 403)
   }
 
-  const { success } = await limiter.consume(clientIp(request))
+  const ip = clientIp(request)
+  const { success } = await limiter.consume(ip)
   if (!success) {
+    // Sustained volume here is the credential-stuffing signature.
+    authLogger.info`Login rejected: rate limited. ip=${ip}`
     return errorResponse('rate_limited', 429)
   }
 

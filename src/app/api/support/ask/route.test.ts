@@ -1,9 +1,13 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 
-const { errorMock, warnMock } = vi.hoisted(() => ({ errorMock: vi.fn(), warnMock: vi.fn() }))
+const { infoMock, errorMock, warnMock } = vi.hoisted(() => ({
+  infoMock: vi.fn(),
+  errorMock: vi.fn(),
+  warnMock: vi.fn(),
+}))
 
 vi.mock('@/lib/logger', () => ({
-  apiLogger: { error: errorMock, warn: warnMock },
+  apiLogger: { info: infoMock, error: errorMock, warn: warnMock },
 }))
 vi.mock('@/lib/support/turnstile', () => ({ verifyTurnstile: vi.fn() }))
 vi.mock('@/lib/support/rate-limit', () => ({
@@ -44,6 +48,10 @@ describe('POST /api/support/ask', () => {
     const res = await POST(req({ question: 'hi', turnstileToken: 'bad' }))
     expect(res.status).toBe(403)
     expect(await res.json()).toEqual({ errorCode: 'bot_check_failed' })
+    // Logged with the token-presence fingerprint (empty token = broken
+    // widget or site key, the 2026-07-08 outage signature) at info.
+    expect(infoMock).toHaveBeenCalledWith(expect.anything(), true, null)
+    expect(errorMock).not.toHaveBeenCalled()
   })
 
   it('lets verifyTurnstile decide when the token is empty', async () => {
@@ -68,6 +76,9 @@ describe('POST /api/support/ask', () => {
     const res = await POST(req({ question: 'hi', turnstileToken: 't' }))
     expect(res.status).toBe(429)
     expect(await res.json()).toEqual({ errorCode: 'budget_exhausted' })
+    // Support is off for the rest of the day — warn, but not alert-level.
+    expect(warnMock).toHaveBeenCalledTimes(1)
+    expect(errorMock).not.toHaveBeenCalled()
   })
 
   it('200 with the answer on success', async () => {
