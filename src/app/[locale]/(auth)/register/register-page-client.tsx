@@ -1,18 +1,17 @@
 'use client'
 
-import { Suspense, useRef, useState, useSyncExternalStore } from 'react'
+import { Suspense, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { useLocale, useTranslations } from 'next-intl'
-import { Turnstile, type TurnstileInstance } from '@marsidev/react-turnstile'
 import { Link } from '@/i18n/navigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Alert } from '@/components/ui/alert'
+import { useTurnstileGate } from '@/components/auth/use-turnstile-gate'
 import { navigateAfterAuthChange, sanitizeRedirectPath } from '@/lib/safe-redirect'
 import { MIN_PASSWORD_LENGTH } from '@/lib/password-policy'
 import { getPostHogSessionId } from '@/lib/analytics/posthog-browser'
-import { resolveTurnstileSiteKey } from '@/lib/support/turnstile-keys'
 import {
   Card,
   CardContent,
@@ -46,11 +45,6 @@ function isRegisterErrorCode(value: unknown): value is RegisterErrorCode {
   )
 }
 
-// The host is stable for the lifetime of the page.
-function subscribeNever() {
-  return () => {}
-}
-
 export function RegisterPageClient() {
   return (
     <Suspense>
@@ -72,15 +66,7 @@ function RegisterPageInner() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
-  const [turnstileToken, setTurnstileToken] = useState<string | null>(null)
-  const siteKey = useSyncExternalStore(
-    subscribeNever,
-    () => resolveTurnstileSiteKey(window.location.host),
-    () => undefined
-  )
-  const turnstileRef = useRef<TurnstileInstance | null>(null)
-  const verifying =
-    siteKey === undefined || (Boolean(siteKey) && !turnstileToken)
+  const turnstile = useTurnstileGate()
 
   const getRegisterErrorMessage = (errorCode: RegisterErrorCode) => {
     switch (errorCode) {
@@ -120,13 +106,12 @@ function RegisterPageInner() {
           lastName,
           locale,
           ...(sessionId ? { sessionId } : {}),
-          turnstileToken: turnstileToken ?? '',
+          turnstileToken: turnstile.token ?? '',
         }),
       })
 
       if (!response.ok) {
-        setTurnstileToken(null)
-        turnstileRef.current?.reset()
+        turnstile.reset()
         const data = await response.json().catch(() => ({}))
         setError(
           isRegisterErrorCode(data.errorCode)
@@ -218,24 +203,21 @@ function RegisterPageInner() {
               </p>
             </div>
 
+            {turnstile.failed && (
+              <Alert tone="caution" role="status">
+                {tCommon('turnstileTrouble')}
+              </Alert>
+            )}
+
             <Button
               type="submit"
               className="w-full"
-              disabled={loading || verifying}
+              disabled={loading || turnstile.verifying}
             >
               {loading ? t('submitting') : t('submit')}
             </Button>
 
-            {siteKey && (
-              <Turnstile
-                ref={turnstileRef}
-                siteKey={siteKey}
-                onSuccess={setTurnstileToken}
-                onError={() => setTurnstileToken(null)}
-                onExpire={() => setTurnstileToken(null)}
-                options={{ size: 'invisible' }}
-              />
-            )}
+            {turnstile.widget}
           </form>
         </CardContent>
         <CardFooter className="justify-center">

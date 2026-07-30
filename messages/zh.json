@@ -1122,6 +1122,7 @@
       "emailPlaceholder": "you@example.com",
       "passwordHint": "至少 {min} 个字符",
       "genericError": "出了点问题。请重试。",
+      "turnstileTrouble": "浏览器安全验证未能完成——可能被广告拦截器、隐私扩展或网络过滤器拦截。您可以尝试继续，或改用 Google、GitHub 或 Discord 登录。",
       "signIn": "登录",
       "signUp": "注册",
       "apiErrors": {

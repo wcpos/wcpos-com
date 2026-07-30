@@ -1,14 +1,13 @@
 'use client'
 
-import { useRef, useState, useSyncExternalStore } from 'react'
+import { useState } from 'react'
 import { useLocale, useTranslations } from 'next-intl'
-import { Turnstile, type TurnstileInstance } from '@marsidev/react-turnstile'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Link } from '@/i18n/navigation'
+import { useTurnstileGate } from '@/components/auth/use-turnstile-gate'
 import { getPostHogSessionId } from '@/lib/analytics/posthog-browser'
-import { resolveTurnstileSiteKey } from '@/lib/support/turnstile-keys'
 
 /**
  * Inline account step: new customers create their account without leaving
@@ -27,11 +26,6 @@ interface AccountStepProps {
 
 type Mode = 'register' | 'signin'
 
-// The host is stable for the lifetime of the page.
-function subscribeNever() {
-  return () => {}
-}
-
 export function AccountStep({ checkoutPath, onAuthenticated }: AccountStepProps) {
   const locale = useLocale()
   const t = useTranslations('pro.checkout.account')
@@ -41,15 +35,7 @@ export function AccountStep({ checkoutPath, onAuthenticated }: AccountStepProps)
   const [password, setPassword] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [turnstileToken, setTurnstileToken] = useState<string | null>(null)
-  const siteKey = useSyncExternalStore(
-    subscribeNever,
-    () => resolveTurnstileSiteKey(window.location.host),
-    () => undefined
-  )
-  const turnstileRef = useRef<TurnstileInstance | null>(null)
-  const verifying =
-    siteKey === undefined || (Boolean(siteKey) && !turnstileToken)
+  const turnstile = useTurnstileGate()
 
   async function submit(event: React.FormEvent) {
     event.preventDefault()
@@ -71,7 +57,7 @@ export function AccountStep({ checkoutPath, onAuthenticated }: AccountStepProps)
                 email,
                 password,
                 locale,
-                turnstileToken: turnstileToken ?? '',
+                turnstileToken: turnstile.token ?? '',
                 ...(sessionId ? { sessionId } : {}),
               }
             : { email, password }
@@ -84,8 +70,7 @@ export function AccountStep({ checkoutPath, onAuthenticated }: AccountStepProps)
       }
 
       if (isCreatingAccount) {
-        setTurnstileToken(null)
-        turnstileRef.current?.reset()
+        turnstile.reset()
       }
 
       if (isCreatingAccount && response.status === 409) {
@@ -187,9 +172,15 @@ export function AccountStep({ checkoutPath, onAuthenticated }: AccountStepProps)
         </p>
       )}
 
+      {mode === 'register' && turnstile.failed && (
+        <p role="status" className="text-sm text-muted-foreground">
+          {tCommon('turnstileTrouble')}
+        </p>
+      )}
+
       <Button
         type="submit"
-        disabled={isSubmitting || (mode === 'register' && verifying)}
+        disabled={isSubmitting || (mode === 'register' && turnstile.verifying)}
       >
         {isSubmitting
           ? t('submitting')
@@ -206,16 +197,7 @@ export function AccountStep({ checkoutPath, onAuthenticated }: AccountStepProps)
         {t('oauthSuffix')}
       </p>
 
-      {siteKey && (
-        <Turnstile
-          ref={turnstileRef}
-          siteKey={siteKey}
-          onSuccess={setTurnstileToken}
-          onError={() => setTurnstileToken(null)}
-          onExpire={() => setTurnstileToken(null)}
-          options={{ size: 'invisible' }}
-        />
-      )}
+      {turnstile.widget}
     </form>
   )
 }

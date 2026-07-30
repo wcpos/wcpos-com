@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { useImperativeHandle } from 'react'
 import type { Ref } from 'react'
@@ -102,6 +102,10 @@ describe('RegisterPageClient', () => {
     turnstileMock.onExpire = null
     mockGetPostHogSessionId.mockReturnValue(undefined)
     mockSearchParams = new URLSearchParams()
+  })
+
+  afterEach(() => {
+    vi.useRealTimers()
   })
 
   it('passes the active locale to the registration API for email localization', async () => {
@@ -214,7 +218,7 @@ describe('RegisterPageClient', () => {
     expect(screen.getByRole('button', { name: 'Create account' })).toBeDisabled()
   })
 
-  it('requires a fresh token after the challenge errors or expires', () => {
+  it('unlocks submission with a hint when the challenge errors, and re-locks on expiry', () => {
     renderRegister()
     fillCredentials()
     const submit = screen.getByRole('button', { name: 'Create account' })
@@ -222,13 +226,48 @@ describe('RegisterPageClient', () => {
     completeChallenge('first-token')
     expect(submit).toBeEnabled()
 
+    // Widget failure must never dead-end the visitor: the button stays
+    // usable and the server's fail-closed check becomes the arbiter.
     act(() => turnstileMock.onError?.())
-    expect(submit).toBeDisabled()
+    expect(submit).toBeEnabled()
+    expect(screen.getByRole('status')).toHaveTextContent(
+      'The browser security check couldn’t finish'
+    )
 
     completeChallenge('second-token')
     expect(submit).toBeEnabled()
+    expect(screen.queryByRole('status')).not.toBeInTheDocument()
 
     act(() => turnstileMock.onExpire?.())
     expect(submit).toBeDisabled()
+  })
+
+  it('unlocks submission when the challenge never responds, and surfaces the server verdict', async () => {
+    vi.useFakeTimers()
+    mockFetch.mockResolvedValueOnce({
+      ok: false,
+      status: 403,
+      json: async () => ({ errorCode: 'bot_check_failed' }),
+    })
+    renderRegister()
+    fillCredentials()
+    const submit = screen.getByRole('button', { name: 'Create account' })
+    expect(submit).toBeDisabled()
+
+    // A blocked challenges.cloudflare.com script fires no callback at all.
+    act(() => vi.advanceTimersByTime(15_000))
+    vi.useRealTimers()
+
+    expect(screen.getByRole('status')).toHaveTextContent(
+      'The browser security check couldn’t finish'
+    )
+    expect(submit).toBeEnabled()
+    fireEvent.click(submit)
+
+    expect(await screen.findByRole('alert')).toHaveTextContent(
+      'Bot verification failed. Please try again.'
+    )
+    const body = JSON.parse(String(mockFetch.mock.calls[0]?.[1]?.body))
+    expect(body.turnstileToken).toBe('')
   })
 })

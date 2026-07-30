@@ -1122,6 +1122,7 @@
       "emailPlaceholder": "tu@example.com",
       "passwordHint": "Almeno {min} caratteri",
       "genericError": "Qualcosa è andato storto. Riprova.",
+      "turnstileTrouble": "Il controllo di sicurezza del browser non è riuscito a completarsi: potrebbe essere bloccato da un blocco pubblicità, un’estensione per la privacy o un filtro di rete. Puoi comunque provare a continuare, oppure accedere con Google, GitHub o Discord.",
       "signIn": "Accedi",
       "signUp": "Registrati",
       "apiErrors": {

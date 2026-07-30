@@ -1122,6 +1122,7 @@
       "emailPlaceholder": "tu@example.com",
       "passwordHint": "Al menos {min} caracteres",
       "genericError": "Algo salió mal. Inténtalo de nuevo.",
+      "turnstileTrouble": "La comprobación de seguridad del navegador no pudo completarse; puede que un bloqueador de anuncios, una extensión de privacidad o un filtro de red la esté bloqueando. Puedes intentar continuar de todos modos o iniciar sesión con Google, GitHub o Discord.",
       "signIn": "Iniciar sesión",
       "signUp": "Registrarse",
       "apiErrors": {
