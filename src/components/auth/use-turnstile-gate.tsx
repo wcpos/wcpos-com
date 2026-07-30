@@ -55,6 +55,15 @@ export function useTurnstileGate(enabled = true): TurnstileGate {
   )
   const turnstileRef = useRef<TurnstileInstance | null>(null)
 
+  useEffect(() => {
+    if (!enabled) return
+    return () => {
+      setToken(null)
+      setFailed(false)
+      setInteracting(false)
+    }
+  }, [enabled])
+
   // A blocked script fires no callback at all, so silence past the deadline
   // counts as failure — unless the visitor is mid-challenge.
   useEffect(() => {

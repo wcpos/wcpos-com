@@ -219,6 +219,47 @@ describe('AccountStep', () => {
     expect(secondBody.turnstileToken).toBe('fresh-token')
   })
 
+  it('clears a failed gate across sign-in before registration resumes', async () => {
+    fetchMock
+      .mockResolvedValueOnce({
+        ok: false,
+        status: 409,
+        json: async () => ({ errorCode: 'account_exists' }),
+      })
+      .mockResolvedValueOnce({ ok: true, status: 200 })
+    const { onAuthenticated } = renderAccountStep()
+    fillCredentials('existing@example.com')
+
+    act(() => turnstileMock.onError?.())
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Create account & continue' })
+    )
+
+    await screen.findByRole('button', { name: 'Sign in & continue' })
+    fireEvent.change(screen.getByLabelText('Email'), {
+      target: { value: 'different@example.com' },
+    })
+
+    const registerAgain = screen.getByRole('button', {
+      name: 'Create account & continue',
+    })
+    expect(registerAgain).toBeDisabled()
+    expect(screen.queryByRole('status')).not.toBeInTheDocument()
+    fireEvent.click(registerAgain)
+    expect(fetchMock).toHaveBeenCalledTimes(1)
+
+    completeChallenge('fresh-token')
+    fireEvent.click(registerAgain)
+
+    await waitFor(() =>
+      expect(onAuthenticated).toHaveBeenCalledWith('different@example.com')
+    )
+    const firstBody = JSON.parse(String(fetchMock.mock.calls[0]?.[1]?.body))
+    const secondBody = JSON.parse(String(fetchMock.mock.calls[1]?.[1]?.body))
+    expect(firstBody.turnstileToken).toBe('')
+    expect(secondBody.turnstileToken).toBe('fresh-token')
+  })
+
   it('resets the challenge after other non-OK registration responses', async () => {
     fetchMock.mockResolvedValueOnce({
       ok: false,
