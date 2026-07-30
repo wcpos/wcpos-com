@@ -1122,6 +1122,7 @@
       "emailPlaceholder": "du@example.com",
       "passwordHint": "Mindestens {min} Zeichen",
       "genericError": "Etwas ist schiefgelaufen. Bitte versuche es erneut.",
+      "turnstileTrouble": "Die Browser-Sicherheitsprüfung konnte nicht abgeschlossen werden – möglicherweise wird sie durch einen Werbeblocker, eine Datenschutz-Erweiterung oder einen Netzwerkfilter blockiert. Du kannst es trotzdem versuchen oder dich stattdessen mit Google, GitHub oder Discord anmelden.",
       "signIn": "Anmelden",
       "signUp": "Registrieren",
       "apiErrors": {

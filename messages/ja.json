@@ -1122,6 +1122,7 @@
       "emailPlaceholder": "you@example.com",
       "passwordHint": "{min}文字以上",
       "genericError": "問題が発生しました。もう一度お試しください。",
+      "turnstileTrouble": "ブラウザのセキュリティチェックを完了できませんでした。広告ブロッカー、プライバシー拡張機能、またはネットワークフィルターがブロックしている可能性があります。そのまま続行をお試しいただくか、Google、GitHub、Discord でのサインインをご利用ください。",
       "signIn": "ログイン",
       "signUp": "登録",
       "apiErrors": {

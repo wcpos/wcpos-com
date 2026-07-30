@@ -1122,6 +1122,7 @@
       "emailPlaceholder": "vous@example.com",
       "passwordHint": "Au moins {min} caractères",
       "genericError": "Une erreur est survenue. Veuillez réessayer.",
+      "turnstileTrouble": "La vérification de sécurité du navigateur n’a pas pu aboutir — un bloqueur de publicités, une extension de confidentialité ou un filtre réseau la bloque peut-être. Vous pouvez tout de même essayer de continuer, ou vous connecter avec Google, GitHub ou Discord.",
       "signIn": "Se connecter",
       "signUp": "S’inscrire",
       "apiErrors": {

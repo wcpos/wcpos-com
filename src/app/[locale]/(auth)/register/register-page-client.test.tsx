@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { useImperativeHandle } from 'react'
 import type { Ref } from 'react'
@@ -17,6 +17,9 @@ const turnstileMock = vi.hoisted(() => ({
   onSuccess: null as ((token: string) => void) | null,
   onError: null as (() => void) | null,
   onExpire: null as (() => void) | null,
+  onBeforeInteractive: null as (() => void) | null,
+  onAfterInteractive: null as (() => void) | null,
+  onTimeout: null as (() => void) | null,
   reset: vi.fn(),
 }))
 let mockSearchParams = new URLSearchParams()
@@ -41,16 +44,25 @@ vi.mock('@marsidev/react-turnstile', () => ({
     onSuccess,
     onError,
     onExpire,
+    onBeforeInteractive,
+    onAfterInteractive,
+    onTimeout,
     ref,
   }: {
     onSuccess: (token: string) => void
     onError: () => void
     onExpire: () => void
+    onBeforeInteractive: () => void
+    onAfterInteractive: () => void
+    onTimeout: () => void
     ref?: Ref<{ reset: () => void }>
   }) => {
     turnstileMock.onSuccess = onSuccess
     turnstileMock.onError = onError
     turnstileMock.onExpire = onExpire
+    turnstileMock.onBeforeInteractive = onBeforeInteractive
+    turnstileMock.onAfterInteractive = onAfterInteractive
+    turnstileMock.onTimeout = onTimeout
     useImperativeHandle(ref, () => ({ reset: turnstileMock.reset }))
     return <div data-testid="turnstile" />
   },
@@ -100,8 +112,15 @@ describe('RegisterPageClient', () => {
     turnstileMock.onSuccess = null
     turnstileMock.onError = null
     turnstileMock.onExpire = null
+    turnstileMock.onBeforeInteractive = null
+    turnstileMock.onAfterInteractive = null
+    turnstileMock.onTimeout = null
     mockGetPostHogSessionId.mockReturnValue(undefined)
     mockSearchParams = new URLSearchParams()
+  })
+
+  afterEach(() => {
+    vi.useRealTimers()
   })
 
   it('passes the active locale to the registration API for email localization', async () => {
@@ -214,7 +233,7 @@ describe('RegisterPageClient', () => {
     expect(screen.getByRole('button', { name: 'Create account' })).toBeDisabled()
   })
 
-  it('requires a fresh token after the challenge errors or expires', () => {
+  it('unlocks submission with a hint when the challenge errors, and re-locks on expiry', () => {
     renderRegister()
     fillCredentials()
     const submit = screen.getByRole('button', { name: 'Create account' })
@@ -222,13 +241,86 @@ describe('RegisterPageClient', () => {
     completeChallenge('first-token')
     expect(submit).toBeEnabled()
 
+    // Widget failure must never dead-end the visitor: the button stays
+    // usable and the server's fail-closed check becomes the arbiter.
     act(() => turnstileMock.onError?.())
-    expect(submit).toBeDisabled()
+    expect(submit).toBeEnabled()
+    expect(screen.getByRole('status')).toHaveTextContent(
+      'The browser security check couldn’t finish'
+    )
 
     completeChallenge('second-token')
     expect(submit).toBeEnabled()
+    expect(screen.queryByRole('status')).not.toBeInTheDocument()
 
     act(() => turnstileMock.onExpire?.())
     expect(submit).toBeDisabled()
+  })
+
+  it('unlocks submission when the challenge never responds, and surfaces the server verdict', async () => {
+    vi.useFakeTimers()
+    mockFetch.mockResolvedValueOnce({
+      ok: false,
+      status: 403,
+      json: async () => ({ errorCode: 'bot_check_failed' }),
+    })
+    renderRegister()
+    fillCredentials()
+    const submit = screen.getByRole('button', { name: 'Create account' })
+    expect(submit).toBeDisabled()
+
+    // A blocked challenges.cloudflare.com script fires no callback at all.
+    act(() => vi.advanceTimersByTime(15_000))
+    vi.useRealTimers()
+
+    expect(screen.getByRole('status')).toHaveTextContent(
+      'The browser security check couldn’t finish'
+    )
+    expect(submit).toBeEnabled()
+    fireEvent.click(submit)
+
+    expect(await screen.findByRole('alert')).toHaveTextContent(
+      'Bot verification failed. Please try again.'
+    )
+    const body = JSON.parse(String(mockFetch.mock.calls[0]?.[1]?.body))
+    expect(body.turnstileToken).toBe('')
+  })
+
+  it('re-arms the silence fallback when an interactive challenge times out unsolved', () => {
+    vi.useFakeTimers()
+    renderRegister()
+    fillCredentials()
+    const submit = screen.getByRole('button', { name: 'Create account' })
+
+    act(() => turnstileMock.onBeforeInteractive?.())
+    act(() => vi.advanceTimersByTime(60_000))
+    expect(submit).toBeDisabled()
+    expect(screen.queryByRole('status')).not.toBeInTheDocument()
+
+    act(() => turnstileMock.onTimeout?.())
+    act(() => vi.advanceTimersByTime(15_000))
+    expect(submit).toBeEnabled()
+    expect(screen.getByRole('status')).toHaveTextContent(
+      'The browser security check couldn’t finish'
+    )
+  })
+
+  it('re-arms the silence fallback when interactive mode ends without a token', () => {
+    vi.useFakeTimers()
+    renderRegister()
+    fillCredentials()
+    const submit = screen.getByRole('button', { name: 'Create account' })
+
+    act(() => turnstileMock.onBeforeInteractive?.())
+    act(() => vi.advanceTimersByTime(60_000))
+    expect(submit).toBeDisabled()
+    expect(screen.queryByRole('status')).not.toBeInTheDocument()
+
+    act(() => turnstileMock.onAfterInteractive?.())
+    act(() => vi.advanceTimersByTime(15_000))
+    expect(submit).toBeEnabled()
+    expect(screen.getByRole('status')).toHaveTextContent(
+      'The browser security check couldn’t finish'
+    )
   })
 })

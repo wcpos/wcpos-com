@@ -1122,6 +1122,7 @@
       "emailPlaceholder": "voce@example.com",
       "passwordHint": "Pelo menos {min} caracteres",
       "genericError": "Algo correu mal. Tente novamente.",
+      "turnstileTrouble": "A verificação de segurança do navegador não foi concluída — pode estar a ser bloqueada por um bloqueador de anúncios, uma extensão de privacidade ou um filtro de rede. Pode tentar continuar mesmo assim, ou iniciar sessão com Google, GitHub ou Discord.",
       "signIn": "Iniciar sessão",
       "signUp": "Registar",
       "apiErrors": {

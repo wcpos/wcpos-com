@@ -1122,6 +1122,7 @@
       "emailPlaceholder": "you@example.com",
       "passwordHint": "At least {min} characters",
       "genericError": "Something went wrong. Please try again.",
+      "turnstileTrouble": "The browser security check couldn’t finish — an ad blocker, privacy extension, or network filter may be blocking it. You can try to continue anyway, or sign in with Google, GitHub, or Discord instead.",
       "signIn": "Sign in",
       "signUp": "Sign up",
       "apiErrors": {

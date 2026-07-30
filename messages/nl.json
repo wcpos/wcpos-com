@@ -1122,6 +1122,7 @@
       "emailPlaceholder": "jij@example.com",
       "passwordHint": "Minimaal {min} tekens",
       "genericError": "Er is iets misgegaan. Probeer het opnieuw.",
+      "turnstileTrouble": "De beveiligingscontrole van de browser kon niet worden voltooid – mogelijk wordt deze geblokkeerd door een adblocker, privacy-extensie of netwerkfilter. Je kunt het alsnog proberen, of in plaats daarvan inloggen met Google, GitHub of Discord.",
       "signIn": "Inloggen",
       "signUp": "Registreren",
       "apiErrors": {
