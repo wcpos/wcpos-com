@@ -44,7 +44,7 @@ export interface TurnstileGate {
   widget: React.ReactNode
 }
 
-export function useTurnstileGate(): TurnstileGate {
+export function useTurnstileGate(enabled = true): TurnstileGate {
   const [token, setToken] = useState<string | null>(null)
   const [failed, setFailed] = useState(false)
   const [interacting, setInteracting] = useState(false)
@@ -58,15 +58,17 @@ export function useTurnstileGate(): TurnstileGate {
   // A blocked script fires no callback at all, so silence past the deadline
   // counts as failure — unless the visitor is mid-challenge.
   useEffect(() => {
-    if (!siteKey || token || failed || interacting) return
+    if (!enabled || !siteKey || token || failed || interacting) return
     const id = setTimeout(() => setFailed(true), TURNSTILE_TIMEOUT_MS)
     return () => clearTimeout(id)
-  }, [siteKey, token, failed, interacting])
+  }, [enabled, siteKey, token, failed, interacting])
 
   return {
     token,
     verifying:
-      !failed && (siteKey === undefined || (Boolean(siteKey) && !token)),
+      enabled &&
+      !failed &&
+      (siteKey === undefined || (Boolean(siteKey) && !token)),
     failed,
     reset: () => {
       // Deliberately leaves `failed` alone: clearing it would re-grey the
@@ -74,7 +76,7 @@ export function useTurnstileGate(): TurnstileGate {
       setToken(null)
       turnstileRef.current?.reset()
     },
-    widget: siteKey ? (
+    widget: enabled && siteKey ? (
       <Turnstile
         ref={turnstileRef}
         siteKey={siteKey}

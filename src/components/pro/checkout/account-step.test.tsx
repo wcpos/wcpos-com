@@ -142,7 +142,8 @@ describe('AccountStep', () => {
     )
   })
 
-  it('only renders Turnstile while registering', async () => {
+  it('only activates and renders Turnstile while registering', async () => {
+    vi.useFakeTimers()
     fetchMock.mockResolvedValueOnce({
       ok: false,
       status: 409,
@@ -153,17 +154,26 @@ describe('AccountStep', () => {
     completeChallenge('valid-token')
     expect(screen.getByTestId('turnstile')).toBeInTheDocument()
 
-    fireEvent.click(
-      screen.getByRole('button', { name: 'Create account & continue' })
-    )
+    await act(async () => {
+      fireEvent.click(
+        screen.getByRole('button', { name: 'Create account & continue' })
+      )
+    })
 
-    await screen.findByRole('button', { name: 'Sign in & continue' })
+    expect(
+      screen.getByRole('button', { name: 'Sign in & continue' })
+    ).toBeEnabled()
     expect(screen.queryByTestId('turnstile')).not.toBeInTheDocument()
+    act(() => vi.advanceTimersByTime(15_000))
 
     fireEvent.change(screen.getByLabelText('Email'), {
       target: { value: 'different@example.com' },
     })
     expect(screen.getByTestId('turnstile')).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: 'Create account & continue' })
+    ).toBeDisabled()
+    expect(screen.queryByRole('status')).not.toBeInTheDocument()
   })
 
   it('resets after a 409 and requires a fresh challenge when an edited email returns to registration', async () => {

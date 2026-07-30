@@ -35,7 +35,7 @@ export function AccountStep({ checkoutPath, onAuthenticated }: AccountStepProps)
   const [password, setPassword] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const turnstile = useTurnstileGate()
+  const turnstile = useTurnstileGate(mode === 'register')
 
   async function submit(event: React.FormEvent) {
     event.preventDefault()
@@ -197,7 +197,7 @@ export function AccountStep({ checkoutPath, onAuthenticated }: AccountStepProps)
         {t('oauthSuffix')}
       </p>
 
-      {mode === 'register' && turnstile.widget}
+      {turnstile.widget}
     </form>
   )
 }
