@@ -142,6 +142,40 @@ describe('AccountStep', () => {
     )
   })
 
+  it('only activates and renders Turnstile while registering', async () => {
+    vi.useFakeTimers()
+    fetchMock.mockResolvedValueOnce({
+      ok: false,
+      status: 409,
+      json: async () => ({ errorCode: 'account_exists' }),
+    })
+    renderAccountStep()
+    fillCredentials('existing@example.com')
+    completeChallenge('valid-token')
+    expect(screen.getByTestId('turnstile')).toBeInTheDocument()
+
+    await act(async () => {
+      fireEvent.click(
+        screen.getByRole('button', { name: 'Create account & continue' })
+      )
+    })
+
+    expect(
+      screen.getByRole('button', { name: 'Sign in & continue' })
+    ).toBeEnabled()
+    expect(screen.queryByTestId('turnstile')).not.toBeInTheDocument()
+    act(() => vi.advanceTimersByTime(15_000))
+
+    fireEvent.change(screen.getByLabelText('Email'), {
+      target: { value: 'different@example.com' },
+    })
+    expect(screen.getByTestId('turnstile')).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: 'Create account & continue' })
+    ).toBeDisabled()
+    expect(screen.queryByRole('status')).not.toBeInTheDocument()
+  })
+
   it('resets after a 409 and requires a fresh challenge when an edited email returns to registration', async () => {
     fetchMock
       .mockResolvedValueOnce({
@@ -182,6 +216,47 @@ describe('AccountStep', () => {
     const firstBody = JSON.parse(String(fetchMock.mock.calls[0]?.[1]?.body))
     const secondBody = JSON.parse(String(fetchMock.mock.calls[1]?.[1]?.body))
     expect(firstBody.turnstileToken).toBe('original-token')
+    expect(secondBody.turnstileToken).toBe('fresh-token')
+  })
+
+  it('clears a failed gate across sign-in before registration resumes', async () => {
+    fetchMock
+      .mockResolvedValueOnce({
+        ok: false,
+        status: 409,
+        json: async () => ({ errorCode: 'account_exists' }),
+      })
+      .mockResolvedValueOnce({ ok: true, status: 200 })
+    const { onAuthenticated } = renderAccountStep()
+    fillCredentials('existing@example.com')
+
+    act(() => turnstileMock.onError?.())
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Create account & continue' })
+    )
+
+    await screen.findByRole('button', { name: 'Sign in & continue' })
+    fireEvent.change(screen.getByLabelText('Email'), {
+      target: { value: 'different@example.com' },
+    })
+
+    const registerAgain = screen.getByRole('button', {
+      name: 'Create account & continue',
+    })
+    expect(registerAgain).toBeDisabled()
+    expect(screen.queryByRole('status')).not.toBeInTheDocument()
+    fireEvent.click(registerAgain)
+    expect(fetchMock).toHaveBeenCalledTimes(1)
+
+    completeChallenge('fresh-token')
+    fireEvent.click(registerAgain)
+
+    await waitFor(() =>
+      expect(onAuthenticated).toHaveBeenCalledWith('different@example.com')
+    )
+    const firstBody = JSON.parse(String(fetchMock.mock.calls[0]?.[1]?.body))
+    const secondBody = JSON.parse(String(fetchMock.mock.calls[1]?.[1]?.body))
+    expect(firstBody.turnstileToken).toBe('')
     expect(secondBody.turnstileToken).toBe('fresh-token')
   })
 

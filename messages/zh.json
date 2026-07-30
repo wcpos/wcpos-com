@@ -1698,6 +1698,7 @@
         "submit": "提问"
       },
       "discordLink": "在 Discord 提问 →",
+      "turnstileTrouble": "浏览器安全验证未能完成——可能被广告拦截器、隐私扩展或网络过滤器拦截。您仍然可以尝试提问。",
       "poweredBy": "由 Aide 回答 · 基于 WCPOS 文档和 wiki 训练"
     },
     "errors": {

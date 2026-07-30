@@ -1698,6 +1698,7 @@
         "submit": "Preguntar"
       },
       "discordLink": "Pregunta en Discord →",
+      "turnstileTrouble": "La comprobación de seguridad del navegador no pudo completarse; puede que un bloqueador de anuncios, una extensión de privacidad o un filtro de red la esté bloqueando. Aun así, puedes intentar hacer tu pregunta.",
       "poweredBy": "Respondido por Aide · entrenado con la documentación y wiki de WCPOS"
     },
     "errors": {

@@ -1698,6 +1698,7 @@
         "submit": "Demander"
       },
       "discordLink": "Demander sur Discord →",
+      "turnstileTrouble": "La vérification de sécurité du navigateur n’a pas pu aboutir — un bloqueur de publicités, une extension de confidentialité ou un filtre réseau la bloque peut-être. Vous pouvez tout de même essayer de poser votre question.",
       "poweredBy": "Répondu par Aide · entraîné sur la documentation et le wiki WCPOS"
     },
     "errors": {

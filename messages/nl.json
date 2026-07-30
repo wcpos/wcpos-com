@@ -1698,6 +1698,7 @@
         "submit": "Vraag stellen"
       },
       "discordLink": "Vraag het op Discord →",
+      "turnstileTrouble": "De beveiligingscontrole van de browser kon niet worden voltooid – mogelijk wordt deze geblokkeerd door een adblocker, privacy-extensie of netwerkfilter. Je kunt je vraag alsnog proberen te stellen.",
       "poweredBy": "Beantwoord door Aide · getraind op de WCPOS-documentatie en wiki"
     },
     "errors": {

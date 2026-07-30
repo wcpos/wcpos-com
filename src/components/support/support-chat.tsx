@@ -1,9 +1,8 @@
 'use client'
 
-import { useState, useRef, useEffect, useSyncExternalStore, type FormEvent } from 'react'
+import { useState, useRef, useEffect, type FormEvent } from 'react'
 import { useSearchParams } from 'next/navigation'
-import { Turnstile, type TurnstileInstance } from '@marsidev/react-turnstile'
-import { resolveTurnstileSiteKey } from '@/lib/support/turnstile-keys'
+import { useTurnstileGate } from '@/components/auth/use-turnstile-gate'
 import { trackClientEvent } from '@/lib/analytics/client-events'
 import { useLocale, useTranslations } from 'next-intl'
 import { Button } from '@/components/ui/button'
@@ -43,11 +42,6 @@ function isSupportErrorCode(value: unknown): value is SupportErrorCode {
   return typeof value === 'string' && SUPPORT_ERROR_CODES.has(value as SupportErrorCode)
 }
 
-// The host never changes within a page lifetime — subscribe to nothing.
-function subscribeNever() {
-  return () => {}
-}
-
 function useSessionId() {
   const ref = useRef<string>('')
   useEffect(() => {
@@ -71,17 +65,15 @@ export function SupportChat() {
   const [input, setInput] = useState('')
   const [status, setStatus] = useState<'idle' | 'asking'>('idle')
   const [error, setError] = useState<string | null>(null)
-  const [token, setToken] = useState<string | null>(null)
-  // undefined = host not resolved yet (server render); null = no widget (dev).
-  // The site key is a host-time fact resolved on the client because this
-  // page is statically prerendered — see turnstile-keys.ts.
-  const siteKey = useSyncExternalStore(
-    subscribeNever,
-    () => resolveTurnstileSiteKey(window.location.host),
-    () => undefined
-  )
+  const turnstile = useTurnstileGate()
   const sessionIdRef = useSessionId()
-  const turnstileRef = useRef<TurnstileInstance | null>(null)
+
+  // The gate flips to failed on widget error, unsupported browser, or
+  // timeout-with-no-callback (blocked script) alike — record them all; the
+  // event predates the gate and keeps its name.
+  useEffect(() => {
+    if (turnstile.failed) trackClientEvent('support_turnstile_error')
+  }, [turnstile.failed])
 
   async function ask(question: string) {
     if (!question.trim() || status === 'asking') return
@@ -97,7 +89,7 @@ export function SupportChat() {
           question,
           locale,
           sessionId: sessionIdRef.current || undefined,
-          turnstileToken: token ?? '',
+          turnstileToken: turnstile.token ?? '',
         }),
       })
       const data = await res.json()
@@ -106,8 +98,7 @@ export function SupportChat() {
         // ~5 min validity) — reset the widget so the next attempt carries a
         // fresh one instead of failing forever.
         if (data.errorCode === 'bot_check_failed') {
-          setToken(null)
-          turnstileRef.current?.reset()
+          turnstile.reset()
         }
         setError(
           isSupportErrorCode(data.errorCode)
@@ -121,8 +112,9 @@ export function SupportChat() {
         sessionStorage.setItem('wcpos-support-session', data.sessionId)
       }
       setMessages((m) => [...m, { role: 'assistant', content: data.answer }])
-      setToken(null)
-      turnstileRef.current?.reset()
+      // Tokens are single-use — re-run the widget so a follow-up question
+      // carries a fresh one.
+      turnstile.reset()
     } catch {
       setError(tErrors('network'))
     } finally {
@@ -142,12 +134,12 @@ export function SupportChat() {
     trackClientEvent('support_answer_feedback', { helpful, turn: idx })
   }
 
-  // When this host renders a Turnstile widget, hold submissions until the
-  // invisible widget has issued a token — otherwise the first eager click
-  // posts an empty token and gets a confusing 403 from the bot check. Before
-  // the host resolves (SSR + first client render) treat it as verifying so
-  // the markup is hydration-stable in every environment.
-  const verifying = siteKey === undefined || (Boolean(siteKey) && !token)
+  // When this host renders a Turnstile widget, hold submissions until it has
+  // issued a token — otherwise the first eager click posts an empty token and
+  // gets a confusing 403 from the bot check. If the gate fails (blocked
+  // script, unsupported browser, widget error), it stops verifying so the
+  // form re-enables and the server's fail-closed check becomes the arbiter.
+  const { verifying } = turnstile
   const started = messages.length > 0
 
   return (
@@ -249,6 +241,15 @@ export function SupportChat() {
         </p>
       )}
 
+      {turnstile.failed && (
+        <p className="mt-2 text-sm text-muted-foreground" role="status">
+          {t('turnstileTrouble')}{' '}
+          <a href="#discord" className="underline">
+            {t('discordLink')}
+          </a>
+        </p>
+      )}
+
       {!started && (
         <div className="mt-4 flex flex-wrap justify-center gap-2">
           {EXAMPLES.map((q) => (
@@ -271,26 +272,7 @@ export function SupportChat() {
         {t('poweredBy')}
       </p>
 
-      {siteKey && (
-        <Turnstile
-          ref={turnstileRef}
-          siteKey={siteKey}
-          onSuccess={setToken}
-          // Widget failure or token expiry must clear the stale token (the
-          // widget retries/refreshes itself) — a dead token would otherwise
-          // disable the form until a full page reload. A widget error also
-          // surfaces the network message: an ad-blocker or CSP that blocks
-          // challenges.cloudflare.com would otherwise disable the form with
-          // no explanation and no signal.
-          onError={() => {
-            setToken(null)
-            setError(tErrors('network'))
-            trackClientEvent('support_turnstile_error')
-          }}
-          onExpire={() => setToken(null)}
-          options={{ size: 'invisible' }}
-        />
-      )}
+      {turnstile.widget}
     </div>
   )
 }

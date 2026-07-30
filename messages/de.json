@@ -1698,6 +1698,7 @@
         "submit": "Fragen"
       },
       "discordLink": "In Discord fragen →",
+      "turnstileTrouble": "Die Browser-Sicherheitsprüfung konnte nicht abgeschlossen werden – möglicherweise wird sie durch einen Werbeblocker, eine Datenschutz-Erweiterung oder einen Netzwerkfilter blockiert. Du kannst deine Frage trotzdem stellen.",
       "poweredBy": "Beantwortet von Aide · trainiert mit den WCPOS-Dokumenten & dem Wiki"
     },
     "errors": {
