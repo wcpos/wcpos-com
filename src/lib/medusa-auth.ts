@@ -242,6 +242,25 @@ export async function resetPassword({
   }
 }
 
+async function cleanupUnlinkedIdentity(
+  token: string,
+  storeEnvironment: StoreEnvironment
+): Promise<void> {
+  try {
+    await fetch(
+      `${storeEnvironment.medusaBackendUrl}/store/auth/unlinked-identity`,
+      {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'x-publishable-api-key': storeEnvironment.medusaPublishableKey ?? '',
+          ...checkoutGatewayHeaders(storeEnvironment),
+        },
+      }
+    )
+  } catch {}
+}
+
 /**
  * Register a new customer (three-step process).
  * 1. POST /auth/customer/emailpass/register -> { token }
@@ -321,6 +340,7 @@ export async function register({
   )
 
   if (!customerResponse.ok) {
+    await cleanupUnlinkedIdentity(token, storeEnvironment)
     const message = await parseMedusaError(
       customerResponse,
       'Failed to create customer'
