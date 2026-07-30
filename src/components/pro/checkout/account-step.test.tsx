@@ -142,6 +142,30 @@ describe('AccountStep', () => {
     )
   })
 
+  it('only renders Turnstile while registering', async () => {
+    fetchMock.mockResolvedValueOnce({
+      ok: false,
+      status: 409,
+      json: async () => ({ errorCode: 'account_exists' }),
+    })
+    renderAccountStep()
+    fillCredentials('existing@example.com')
+    completeChallenge('valid-token')
+    expect(screen.getByTestId('turnstile')).toBeInTheDocument()
+
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Create account & continue' })
+    )
+
+    await screen.findByRole('button', { name: 'Sign in & continue' })
+    expect(screen.queryByTestId('turnstile')).not.toBeInTheDocument()
+
+    fireEvent.change(screen.getByLabelText('Email'), {
+      target: { value: 'different@example.com' },
+    })
+    expect(screen.getByTestId('turnstile')).toBeInTheDocument()
+  })
+
   it('resets after a 409 and requires a fresh challenge when an edited email returns to registration', async () => {
     fetchMock
       .mockResolvedValueOnce({

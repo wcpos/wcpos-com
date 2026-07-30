@@ -197,7 +197,7 @@ export function AccountStep({ checkoutPath, onAuthenticated }: AccountStepProps)
         {t('oauthSuffix')}
       </p>
 
-      {turnstile.widget}
+      {mode === 'register' && turnstile.widget}
     </form>
   )
 }
