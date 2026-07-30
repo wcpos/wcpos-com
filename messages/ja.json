@@ -1049,7 +1049,9 @@
         "partiallyRefunded": "一部返金済み",
         "canceled": "キャンセル済み",
         "unknown": "不明"
-      }
+      },
+      "refund": "返金",
+      "refundDate": "返金日"
     },
     "admin": {
       "title": "顧客を確認（読み取り専用）",

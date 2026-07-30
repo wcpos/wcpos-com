@@ -57,6 +57,71 @@ function makeLicense(overrides: Partial<LicenseDetail> = {}): LicenseDetail {
 }
 
 describe('projectAccountOrderListRow', () => {
+  it('projects a full refund ahead of a stale captured payment status', () => {
+    const order = makeOrder({
+      metadata: {
+        refunds: [{
+          id: 'ref_1',
+          amount: 129,
+          created_at: '2026-07-27T13:38:00Z',
+        }],
+      },
+    })
+
+    expect(projectAccountOrderListRow(order)).toMatchObject({
+      displayStatus: 'Refunded',
+      statusKey: 'refunded',
+    })
+    expect(projectAccountOrderDetail(order, [], 0)).toMatchObject({
+      displayStatus: 'Refunded',
+      statusKey: 'refunded',
+      refunds: [{
+        id: 'ref_1',
+        amount: 129,
+        createdAt: '2026-07-27T13:38:00.000Z',
+      }],
+    })
+    expect(projectAccountOrderReceipt(order, projectReceiptProfile(order)).refunds).toEqual([
+      {
+        id: 'ref_1',
+        amount: 129,
+        createdAt: '2026-07-27T13:38:00.000Z',
+      },
+    ])
+  })
+
+  it('projects a partial refund without hiding valid rows', () => {
+    expect(
+      projectAccountOrderListRow(
+        makeOrder({
+          metadata: {
+            refunds: [{
+              id: 'ref_1',
+              amount: 40,
+              created_at: '2026-07-27T13:38:00Z',
+            }],
+          },
+        })
+      ).statusKey
+    ).toBe('partiallyRefunded')
+  })
+
+  it('ignores malformed refund metadata', () => {
+    expect(
+      projectAccountOrderListRow(
+        makeOrder({
+          metadata: {
+            refunds: [
+              { id: '', amount: 129, created_at: '2026-07-27T13:38:00Z' },
+              { id: 'negative', amount: -1, created_at: '2026-07-27T13:38:00Z' },
+              { id: 'bad-date', amount: 10, created_at: 'not-a-date' },
+            ],
+          },
+        })
+      ).statusKey
+    ).toBe('paid')
+  })
+
   it('retains key data when duplicate references share an id', async () => {
     vi.resetModules()
     try {
@@ -265,6 +330,27 @@ describe('projectAccountOrderDetail', () => {
 })
 
 describe('receipt projections', () => {
+  it('derives refund-aware payment statuses ahead of a stale captured status', () => {
+    const receiptStatus = (amount: number) => {
+      const order = makeOrder({
+        metadata: {
+          refunds: [
+            {
+              id: 'ref_1',
+              amount,
+              created_at: '2026-07-27T13:38:00Z',
+            },
+          ],
+        },
+      })
+      return projectAccountOrderReceipt(order, projectReceiptProfile(order))
+        .paymentStatus
+    }
+
+    expect(receiptStatus(129)).toBe('refunded')
+    expect(receiptStatus(40)).toBe('partially_refunded')
+  })
+
   it('projects the purchase-time billing snapshot without mixing current customer data', () => {
     const order = makeOrder({
       billing_address: {
@@ -396,6 +482,7 @@ describe('receipt projections', () => {
       customerEmail: 'buyer@example.com',
       customerName: null,
       paymentStatus: 'captured',
+      refunds: [],
       currencyCode: 'usd',
       billingProfile: {
         company: null,

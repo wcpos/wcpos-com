@@ -751,7 +751,7 @@ export interface ReceiptPdfCopy {
   untitledItem: string
   subtotal: string
   tax: string
-  total: string
+  total: string; refund: string; refundDate: string
   noTaxAdded: string
   sellerIdentity: (sellerName: string, sellerAbn: string | null) => string
   gstNotice: (sellerName: string) => string
@@ -1032,6 +1032,8 @@ function collectReceiptText(
     copy.subtotal,
     copy.tax,
     copy.total,
+    copy.refund,
+    copy.refundDate,
     copy.noTaxAdded,
     copy.sellerIdentity(SELLER_NAME, SELLER_ABN || null),
     copy.gstNotice(SELLER_NAME),
@@ -1073,6 +1075,13 @@ function collectReceiptText(
     formatAmount(receipt.totals.total, receipt.currencyCode, locale)
   )
 
+  for (const refund of receipt.refunds) {
+    values.push(
+      formatAmount(-Math.abs(refund.amount), receipt.currencyCode, locale),
+      formatDateForLocale(refund.createdAt, locale)
+    )
+  }
+
   return values.filter(Boolean).join('\n')
 }
 
@@ -1090,7 +1099,7 @@ export async function buildReceiptPdf(
   pdf.setCreator(SELLER_NAME)
   pdf.setProducer(SELLER_NAME)
   pdf.setLanguage(pdfLanguageTag(locale))
-  const page = pdf.addPage([PAGE_WIDTH, PAGE_HEIGHT])
+  let page = pdf.addPage([PAGE_WIDTH, PAGE_HEIGHT])
   const regular = await pdf.embedFont(StandardFonts.Helvetica)
   const bold = await pdf.embedFont(StandardFonts.HelveticaBold)
   const fallbackText = collectReceiptText(receipt, copy, locale)
@@ -1276,6 +1285,18 @@ export async function buildReceiptPdf(
     font: bold,
     size: 12,
   }))
+  for (const refund of receipt.refunds) {
+    if (y - 30 - (taxAmount <= 0 ? 16 : 0) < MARGIN + 4 * 13 + 14) {
+      page = pdf.addPage([PAGE_WIDTH, PAGE_HEIGHT])
+      y = PAGE_HEIGHT - 78
+    }
+    y -= 16
+    drawLeft(page, copy.refund, totalsLabelX, y, style({ font: regular, size: 10, color: MUTED }))
+    drawRight(page, formatAmount(-Math.abs(refund.amount), receipt.currencyCode, locale), amountRight, y, style({ font: regular, size: 10 }))
+    y -= 14
+    drawLeft(page, copy.refundDate, totalsLabelX, y, style({ font: regular, size: 9, color: MUTED }))
+    drawRight(page, formatDateForLocale(refund.createdAt, locale), amountRight, y, style({ font: regular, size: 9, color: MUTED }))
+  }
   // Only reassure "no tax" when no Tax row was drawn — otherwise the receipt
   // would show a Tax line and a contradicting "no tax" note directly below it.
   if (taxAmount <= 0) {

@@ -10,6 +10,7 @@ import {
 } from './licenses'
 import { maskLicenseKey } from './order-display'
 import {
+  DEFAULT_ORDER_STATUS_LABELS,
   getOrderDisplayStatus,
   getOrderStatusLabelKey,
   type OrderStatusLabels,
@@ -22,6 +23,10 @@ import {
 export interface AccountOrderMoneyFact {
   amount: number
   currencyCode: string
+}
+
+export interface AccountOrderRefundFact {
+  id: string; amount: number; createdAt: string
 }
 
 export interface AccountOrderListRowFact {
@@ -54,6 +59,7 @@ export interface AccountOrderDetailFact {
   /** Semantic status register for the status pill; null → neutral. */
   statusKey: keyof OrderStatusLabels | null
   total: AccountOrderMoneyFact
+  refunds: AccountOrderRefundFact[]
   items: Array<{
     id: string
     title: string
@@ -99,6 +105,7 @@ export interface AccountOrderReceiptFact {
   /** Medusa payment_status (e.g. "captured"), or null when unavailable. */
   paymentStatus: string | null
   currencyCode: string
+  refunds: AccountOrderRefundFact[]
   billingProfile: AccountOrderReceiptProfileFact
   items: Array<{
     title: string
@@ -207,6 +214,27 @@ function projectItemTotal(
   }
 }
 
+function projectOrderRefunds(order: MedusaOrder): AccountOrderRefundFact[] {
+  const rows = Array.isArray(order.metadata?.refunds) ? order.metadata.refunds : []
+  return rows.flatMap((row) => {
+    if (!row || typeof row !== 'object') return []
+    const value = row as Record<string, unknown>
+    const date = new Date(typeof value.created_at === 'string' ? value.created_at : '')
+    if (typeof value.id !== 'string' || !value.id.trim() || typeof value.amount !== 'number' ||
+      !Number.isFinite(value.amount) || value.amount <= 0 || Number.isNaN(date.getTime())) return []
+    return [{ id: value.id.trim(), amount: value.amount, createdAt: date.toISOString() }]
+  })
+}
+
+function projectOrderStatus(order: MedusaOrder, refunds: AccountOrderRefundFact[], labels?: OrderStatusLabels): Pick<AccountOrderListRowFact, 'displayStatus' | 'statusKey'> {
+  const refundedAmount = refunds.reduce((sum, refund) => sum + refund.amount, 0)
+  if (refundedAmount >= order.total) return { displayStatus: (labels ?? DEFAULT_ORDER_STATUS_LABELS).refunded, statusKey: 'refunded' }
+  if (refundedAmount > 0) {
+    return { displayStatus: (labels ?? DEFAULT_ORDER_STATUS_LABELS).partiallyRefunded, statusKey: 'partiallyRefunded' }
+  }
+  return { displayStatus: getOrderDisplayStatus(order, labels), statusKey: getOrderStatusLabelKey(order) }
+}
+
 export function projectAccountOrderListRow(
   order: MedusaOrder,
   statusLabels?: OrderStatusLabels
@@ -222,6 +250,7 @@ export function projectAccountOrderListRow(
     }))
 
   const legacyId = legacyDisplayId(order)
+  const refunds = projectOrderRefunds(order)
 
   return {
     id: order.id,
@@ -229,8 +258,7 @@ export function projectAccountOrderListRow(
     ...(legacyId ? { legacyDisplayId: legacyId } : {}),
     createdAt: legacyCreatedAt(order),
     itemCount: order.items.length,
-    displayStatus: getOrderDisplayStatus(order, statusLabels),
-    statusKey: getOrderStatusLabelKey(order),
+    ...projectOrderStatus(order, refunds, statusLabels),
     total: money(order.total, order.currency_code),
     licenses,
   }
@@ -263,6 +291,7 @@ export function projectAccountOrderDetail(
     }))
 
   const legacyId = legacyDisplayId(order)
+  const refunds = projectOrderRefunds(order)
 
   return {
     id: order.id,
@@ -270,9 +299,9 @@ export function projectAccountOrderDetail(
     ...(legacyId ? { legacyDisplayId: legacyId } : {}),
     createdAt: legacyCreatedAt(order),
     email: order.email,
-    displayStatus: getOrderDisplayStatus(order, statusLabels),
-    statusKey: getOrderStatusLabelKey(order),
+    ...projectOrderStatus(order, refunds, statusLabels),
     total: money(order.total, order.currency_code),
+    refunds,
     items: order.items.map((item) => projectItemTotal(item, order.currency_code)),
     licenseEntitlements: resolvedLicenses.map((license) => ({
       id: license.id,
@@ -330,6 +359,8 @@ export function projectAccountOrderReceipt(
   customer?: ReceiptCustomerFact | null
 ): AccountOrderReceiptFact {
   const legacyId = legacyDisplayId(order)
+  const refunds = projectOrderRefunds(order)
+  const refundStatus = projectOrderStatus(order, refunds).statusKey
 
   return {
     displayId: order.display_id,
@@ -337,8 +368,9 @@ export function projectAccountOrderReceipt(
     createdAt: legacyCreatedAt(order),
     customerEmail: order.email,
     customerName: customerDisplayName(order.billing_address ?? customer),
-    paymentStatus: order.payment_status ?? null,
+    paymentStatus: refundStatus === 'refunded' ? 'refunded' : refundStatus === 'partiallyRefunded' ? 'partially_refunded' : order.payment_status ?? null,
     currencyCode: order.currency_code,
+    refunds,
     billingProfile,
     items: order.items.map((item) => ({
       title: item.title,

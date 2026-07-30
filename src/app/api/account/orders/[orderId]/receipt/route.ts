@@ -177,6 +177,8 @@ async function receiptPdfAssets(locale: Locale): Promise<ReceiptPdfAssets> {
     subtotal: t('subtotal'),
     tax: t('tax'),
     total: t('total'),
+    refund: t('refund'),
+    refundDate: t('refundDate'),
     noTaxAdded: t('noTaxAdded'),
     sellerIdentity: (sellerName, sellerAbn) =>
       sellerAbn

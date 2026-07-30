@@ -1049,7 +1049,9 @@
         "partiallyRefunded": "Partiellement remboursé",
         "canceled": "Annulé",
         "unknown": "Inconnu"
-      }
+      },
+      "refund": "Remboursement",
+      "refundDate": "Date du remboursement"
     },
     "admin": {
       "title": "Inspecter un client (lecture seule)",
