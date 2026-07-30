@@ -87,6 +87,10 @@ export function middleware(request: NextRequest) {
   const sanitizedHeaders = new Headers(request.headers)
   sanitizedHeaders.delete(ACCOUNT_REQUEST_HEADER)
 
+  if (['/xmlrpc.php', '/wp-login.php', '/security.txt', '/wp-admin/index.php'].includes(pathname)) {
+    return new NextResponse(null, { status: 404 })
+  }
+
   // Legacy WooCommerce API Manager licence calls from the deployed Pro plugin
   // fleet still target wcpos.com/?wc-api=am-software-api (activation, etc.).
   // Bridge them to the Keygen-backed compatibility shim. See
@@ -210,5 +214,11 @@ export const config = {
   // Web Analytics to /_vercel/insights/event. Both are extension-less, so the
   // dot rule does not catch them and next-intl would rewrite the beacons into
   // localized pages, losing the measurements.
-  matcher: ['/((?!_next/static|_next/image|_vercel(?:/|$)|.*\\..*).*)'],
+  matcher: [
+    '/((?!_next/static|_next/image|_vercel(?:/|$)|.*\\..*).*)',
+    '/xmlrpc.php',
+    '/wp-login.php',
+    '/security.txt',
+    '/wp-admin/index.php',
+  ],
 }

@@ -18,6 +18,17 @@ const ACCOUNT_REQUEST_HEADER = 'x-wcpos-account-request'
 import { config, middleware } from './middleware'
 
 describe('middleware', () => {
+  it.each(['/xmlrpc.php', '/wp-login.php', '/security.txt', '/wp-admin/index.php'])(
+    'returns 404 for scanner path %s without rendering',
+    (pathname) => {
+      intlRequests.length = 0
+      const response = middleware(new NextRequest(`https://wcpos.com${pathname}`))
+
+      expect(response.status).toBe(404)
+      expect(intlRequests).toHaveLength(0)
+    }
+  )
+
   it('redirects updates.wcpos.com page requests to the main domain', () => {
     const request = new NextRequest('https://updates.wcpos.com/download', {
       headers: {
@@ -381,6 +392,13 @@ describe('middleware', () => {
 describe('middleware matcher', () => {
   const runsOn = (pathname: string) =>
     config.matcher.some((pattern) => new RegExp(`^${pattern}$`).test(pathname))
+
+  it.each(['/xmlrpc.php', '/wp-login.php', '/security.txt', '/wp-admin/index.php'])(
+    'runs on scanner path %s',
+    (pathname) => {
+      expect(runsOn(pathname)).toBe(true)
+    }
+  )
 
   it('skips the Vercel collector routes served by the platform, not this app', () => {
     // Speed Insights and Web Analytics beacons are extension-less, so the
