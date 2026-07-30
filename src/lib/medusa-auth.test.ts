@@ -520,6 +520,38 @@ describe('medusa-auth', () => {
       expect(error.message).toBe('Customer with email already exists')
       expect(mockFetch).toHaveBeenCalledTimes(3)
     })
+
+    it('cleans up after customer creation rejects without replacing its error', async () => {
+      const networkError = new Error('Network failure')
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ token: 'new_user_token' }),
+      })
+      mockFetch.mockRejectedValueOnce(networkError)
+      mockFetch.mockResolvedValueOnce({ ok: true })
+
+      await expect(
+        register({
+          email: 'new@example.com',
+          password: 'securepass',
+        })
+      ).rejects.toBe(networkError)
+
+      expect(mockFetch).toHaveBeenCalledTimes(3)
+      expect(mockFetch).toHaveBeenNthCalledWith(
+        3,
+        'https://test-store-api.wcpos.com/store/auth/unlinked-identity',
+        {
+          method: 'DELETE',
+          headers: {
+            Authorization: 'Bearer new_user_token',
+            'x-publishable-api-key': 'pk_test_abc123',
+            'x-wcpos-checkout-gateway':
+              'checkout-test-gateway-secret-at-least-32-chars',
+          },
+        }
+      )
+    })
   })
 
   describe('getCustomer', () => {

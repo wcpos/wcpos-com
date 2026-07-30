@@ -320,24 +320,30 @@ export async function register({
   const { token } = await authResponse.json()
 
   // Step 2: Create customer record with the token
-  const customerResponse = await fetch(
-    `${storeEnvironment.medusaBackendUrl}/store/customers`,
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-        'x-publishable-api-key': storeEnvironment.medusaPublishableKey ?? '',
-        ...checkoutGatewayHeaders(storeEnvironment),
-      },
-      body: JSON.stringify({
-        email,
-        ...(firstName && { first_name: firstName }),
-        ...(lastName && { last_name: lastName }),
-        ...(locale && { metadata: { locale } }),
-      }),
-    }
-  )
+  let customerResponse: Response
+  try {
+    customerResponse = await fetch(
+      `${storeEnvironment.medusaBackendUrl}/store/customers`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+          'x-publishable-api-key': storeEnvironment.medusaPublishableKey ?? '',
+          ...checkoutGatewayHeaders(storeEnvironment),
+        },
+        body: JSON.stringify({
+          email,
+          ...(firstName && { first_name: firstName }),
+          ...(lastName && { last_name: lastName }),
+          ...(locale && { metadata: { locale } }),
+        }),
+      }
+    )
+  } catch (error) {
+    await cleanupUnlinkedIdentity(token, storeEnvironment)
+    throw error
+  }
 
   if (!customerResponse.ok) {
     await cleanupUnlinkedIdentity(token, storeEnvironment)
