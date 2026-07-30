@@ -219,16 +219,22 @@ function projectOrderRefunds(order: MedusaOrder): AccountOrderRefundFact[] {
   return rows.flatMap((row) => {
     if (!row || typeof row !== 'object') return []
     const value = row as Record<string, unknown>
-    const date = new Date(typeof value.created_at === 'string' ? value.created_at : '')
+    const createdAt = typeof value.created_at === 'string' ? value.created_at : ''
+    const date = new Date(createdAt)
+    const canonicalCreatedAt = createdAt.endsWith('Z') && !createdAt.includes('.')
+      ? `${createdAt.slice(0, -1)}.000Z`
+      : createdAt
     if (typeof value.id !== 'string' || !value.id.trim() || typeof value.amount !== 'number' ||
-      !Number.isFinite(value.amount) || value.amount <= 0 || Number.isNaN(date.getTime())) return []
+      !Number.isFinite(value.amount) || value.amount <= 0 || Number.isNaN(date.getTime()) ||
+      !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3})?Z$/.test(createdAt) ||
+      date.toISOString() !== canonicalCreatedAt) return []
     return [{ id: value.id.trim(), amount: value.amount, createdAt: date.toISOString() }]
   })
 }
 
 function projectOrderStatus(order: MedusaOrder, refunds: AccountOrderRefundFact[], labels?: OrderStatusLabels): Pick<AccountOrderListRowFact, 'displayStatus' | 'statusKey'> {
   const refundedAmount = refunds.reduce((sum, refund) => sum + refund.amount, 0)
-  if (refundedAmount >= order.total) return { displayStatus: (labels ?? DEFAULT_ORDER_STATUS_LABELS).refunded, statusKey: 'refunded' }
+  if (refunds.length > 0 && refundedAmount >= order.total) return { displayStatus: (labels ?? DEFAULT_ORDER_STATUS_LABELS).refunded, statusKey: 'refunded' }
   if (refundedAmount > 0) {
     return { displayStatus: (labels ?? DEFAULT_ORDER_STATUS_LABELS).partiallyRefunded, statusKey: 'partiallyRefunded' }
   }

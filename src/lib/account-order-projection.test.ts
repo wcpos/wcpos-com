@@ -106,6 +106,46 @@ describe('projectAccountOrderListRow', () => {
     ).toBe('partiallyRefunded')
   })
 
+  it('retains paid status for a zero-total order without refunds', () => {
+    const order = makeOrder({ total: 0, subtotal: 0, tax_total: 0 })
+
+    expect(projectAccountOrderListRow(order).statusKey).toBe('paid')
+    expect(projectAccountOrderDetail(order, [], 0)).toMatchObject({
+      statusKey: 'paid',
+      refunds: [],
+    })
+    expect(
+      projectAccountOrderReceipt(order, projectReceiptProfile(order))
+    ).toMatchObject({
+      paymentStatus: 'captured',
+      refunds: [],
+    })
+  })
+
+  it('ignores calendar-invalid refund timestamps', () => {
+    const order = makeOrder({
+      metadata: {
+        refunds: [{
+          id: 'ref_invalid_date',
+          amount: 129,
+          created_at: '2026-02-30T13:38:00Z',
+        }],
+      },
+    })
+
+    expect(projectAccountOrderListRow(order).statusKey).toBe('paid')
+    expect(projectAccountOrderDetail(order, [], 0)).toMatchObject({
+      statusKey: 'paid',
+      refunds: [],
+    })
+    expect(
+      projectAccountOrderReceipt(order, projectReceiptProfile(order))
+    ).toMatchObject({
+      paymentStatus: 'captured',
+      refunds: [],
+    })
+  })
+
   it('ignores malformed refund metadata', () => {
     expect(
       projectAccountOrderListRow(
