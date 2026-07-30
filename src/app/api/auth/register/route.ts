@@ -42,6 +42,7 @@ const limiter = createRateLimiter({
 
 export async function POST(request: Request) {
   if (!isSameOriginRequest(request)) {
+    authLogger.info`Registration rejected: cross-origin request`
     return errorResponse('invalid_origin', 403)
   }
 
@@ -51,9 +52,13 @@ export async function POST(request: Request) {
     rate.status === 'unavailable' &&
     !isLoopbackHost(request.headers.get('host'))
   ) {
+    // Registration is 503ing for everyone while the limiter store is down —
+    // error level so it fans out to alerts.
+    authLogger.error`Registration unavailable: rate limiter store unreachable`
     return errorResponse('rate_limit_unavailable', 503)
   }
   if (rate.status === 'limited') {
+    authLogger.info`Registration rejected: rate limited. ip=${ip}`
     return errorResponse('rate_limited', 429)
   }
 
@@ -91,6 +96,15 @@ export async function POST(request: Request) {
     ip
   ).catch(() => false)
   if (!turnstileVerified) {
+    // tokenPresent=false is the fingerprint that matters: it means the
+    // client-side gate fell back (widget blocked or failed — see
+    // useTurnstileGate), or the site key is broken for everyone (the
+    // 2026-07-08 outage baked an empty key and every visitor posted an empty
+    // token). A spike here is that outage's early warning. tokenPresent=true
+    // is Cloudflare rejecting a real token — routine bot traffic.
+    authLogger.info`Registration rejected: bot check failed. tokenPresent=${
+      turnstileToken !== ''
+    } host=${request.headers.get('host')}`
     return errorResponse('bot_check_failed', 403)
   }
 

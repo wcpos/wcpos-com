@@ -56,15 +56,26 @@ export async function POST(request: Request): Promise<NextResponse> {
   const envScope = resolveStoreEnvironmentName(host)
 
   if (!(await verifyTurnstile(turnstileToken, host, ip))) {
+    // tokenPresent=false means the widget never ran client-side (blocked or
+    // broken) or the site key is baked wrong for everyone — the 2026-07-08
+    // outage 403'd every support question and only customer reports caught
+    // it. A spike here is that outage's early warning.
+    apiLogger.info`Support ask rejected: bot check failed. tokenPresent=${
+      turnstileToken !== ''
+    } host=${host}`
     return errorResponse('bot_check_failed', 403)
   }
 
   const ipLimit = await consumeRateLimit(envScope, ip)
   if (!ipLimit.success) {
+    apiLogger.info`Support ask rejected: rate limited. ip=${ip}`
     return errorResponse('rate_limited', 429)
   }
   const budget = await consumeDailyBudget(envScope, utcDay())
   if (!budget.success) {
+    // The whole support box is off for the rest of the UTC day — worth
+    // noticing, but expected under attack, so warn rather than error.
+    apiLogger.warn`Support ask rejected: daily budget exhausted. scope=${envScope}`
     return errorResponse('budget_exhausted', 429)
   }
 

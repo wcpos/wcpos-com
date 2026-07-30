@@ -20,6 +20,11 @@ vi.mock('@/lib/analytics/posthog-browser', () => ({
   getPostHogSessionId: () => getPostHogSessionIdMock(),
 }))
 
+const trackClientEventMock = vi.hoisted(() => vi.fn())
+vi.mock('@/lib/analytics/client-events', () => ({
+  trackClientEvent: trackClientEventMock,
+}))
+
 vi.mock('@/lib/support/turnstile-keys', () => ({
   resolveTurnstileSiteKey: () => 'site-key',
 }))
@@ -380,6 +385,9 @@ describe('AccountStep', () => {
     expect(screen.getByRole('status')).toHaveTextContent(
       'The browser security check couldn’t finish'
     )
+    expect(trackClientEventMock).toHaveBeenCalledWith('turnstile_gate_failed', {
+      reason: 'timeout',
+    })
     expect(submit).toBeEnabled()
     fireEvent.click(submit)
 
@@ -412,6 +420,66 @@ describe('AccountStep', () => {
     expect(submit).toBeEnabled()
     expect(screen.getByRole('status')).toHaveTextContent(
       'The browser security check couldn’t finish'
+    )
+  })
+
+  it('reports one analytics event per failure episode, plus the recovery', () => {
+    renderAccountStep()
+    fillCredentials()
+
+    // Turnstile auto-retries fire onError repeatedly — one episode, one event.
+    act(() => turnstileMock.onError?.())
+    act(() => turnstileMock.onError?.())
+    expect(trackClientEventMock).toHaveBeenCalledTimes(1)
+    expect(trackClientEventMock).toHaveBeenCalledWith('turnstile_gate_failed', {
+      reason: 'widget_error',
+    })
+
+    completeChallenge('late-token')
+    expect(trackClientEventMock).toHaveBeenCalledWith(
+      'turnstile_gate_recovered'
+    )
+
+    // A failure after a recovery is a new episode and reports again.
+    act(() => turnstileMock.onError?.())
+    expect(
+      trackClientEventMock.mock.calls.filter(
+        (call) => call[0] === 'turnstile_gate_failed'
+      )
+    ).toHaveLength(2)
+  })
+
+  it('keeps the failure episode open across a rejected submit and its reset', async () => {
+    fetchMock.mockResolvedValueOnce({
+      ok: false,
+      status: 403,
+      json: async () => ({ errorCode: 'bot_check_failed' }),
+    })
+    renderAccountStep()
+    fillCredentials()
+
+    act(() => turnstileMock.onError?.())
+    expect(trackClientEventMock).toHaveBeenCalledTimes(1)
+
+    // Submitting with the failed gate gets the server's 403, which resets the
+    // widget. The hint is still on screen — the same episode, so a re-failure
+    // must not fire a second event (counts are per broken state, not per
+    // submit attempt).
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Create account & continue' })
+    )
+    await waitFor(() => expect(turnstileMock.reset).toHaveBeenCalledTimes(1))
+    act(() => turnstileMock.onError?.())
+    expect(
+      trackClientEventMock.mock.calls.filter(
+        (call) => call[0] === 'turnstile_gate_failed'
+      )
+    ).toHaveLength(1)
+
+    // A success after the reset is still a recovery from that episode.
+    completeChallenge('recovered-token')
+    expect(trackClientEventMock).toHaveBeenCalledWith(
+      'turnstile_gate_recovered'
     )
   })
 })

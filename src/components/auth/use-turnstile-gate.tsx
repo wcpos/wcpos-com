@@ -1,7 +1,14 @@
 'use client'
 
-import { useEffect, useRef, useState, useSyncExternalStore } from 'react'
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  useSyncExternalStore,
+} from 'react'
 import { Turnstile, type TurnstileInstance } from '@marsidev/react-turnstile'
+import { trackClientEvent } from '@/lib/analytics/client-events'
 import { resolveTurnstileSiteKey } from '@/lib/support/turnstile-keys'
 
 /**
@@ -55,12 +62,32 @@ export function useTurnstileGate(enabled = true): TurnstileGate {
   )
   const turnstileRef = useRef<TurnstileInstance | null>(null)
 
+  // One event per failure episode: onError re-fires on every auto-retry, so
+  // dedupe until a success closes the episode. Consent-gated PostHog will
+  // undercount here (ad-blockers that break Turnstile usually block analytics
+  // too) — the authoritative counter is the server's empty-token
+  // bot_check_failed log line; this event exists for session context.
+  const reportedRef = useRef(false)
+  const fail = useCallback(
+    (reason: 'widget_error' | 'unsupported' | 'timeout') => {
+      if (!reportedRef.current) {
+        reportedRef.current = true
+        trackClientEvent('turnstile_gate_failed', { reason })
+      }
+      setFailed(true)
+    },
+    []
+  )
+
   useEffect(() => {
     if (!enabled) return
     return () => {
       setToken(null)
       setFailed(false)
       setInteracting(false)
+      // Disabling closes any in-flight failure episode with the rest of the
+      // gate state, so a failure after re-enabling reports as a fresh one.
+      reportedRef.current = false
     }
   }, [enabled])
 
@@ -68,9 +95,9 @@ export function useTurnstileGate(enabled = true): TurnstileGate {
   // counts as failure — unless the visitor is mid-challenge.
   useEffect(() => {
     if (!enabled || !siteKey || token || failed || interacting) return
-    const id = setTimeout(() => setFailed(true), TURNSTILE_TIMEOUT_MS)
+    const id = setTimeout(() => fail('timeout'), TURNSTILE_TIMEOUT_MS)
     return () => clearTimeout(id)
-  }, [enabled, siteKey, token, failed, interacting])
+  }, [enabled, siteKey, token, failed, interacting, fail])
 
   return {
     token,
@@ -82,6 +109,10 @@ export function useTurnstileGate(enabled = true): TurnstileGate {
     reset: () => {
       // Deliberately leaves `failed` alone: clearing it would re-grey the
       // button for another full timeout. A later onSuccess clears it.
+      // The telemetry episode marker (reportedRef) survives reset() for the
+      // same reason — the hint is still on screen, so a re-failure is the
+      // same episode (one event per broken state, not per submit attempt),
+      // and a success is genuinely a recovery from it.
       setToken(null)
       turnstileRef.current?.reset()
     },
@@ -90,16 +121,23 @@ export function useTurnstileGate(enabled = true): TurnstileGate {
         ref={turnstileRef}
         siteKey={siteKey}
         onSuccess={(value) => {
+          // A success after a reported failure means the episode was
+          // transient (e.g. an auto-retry landed) — record the recovery so
+          // failure counts aren't read as permanently lost signups.
+          if (reportedRef.current) {
+            trackClientEvent('turnstile_gate_recovered')
+            reportedRef.current = false
+          }
           setToken(value)
           setFailed(false)
           setInteracting(false)
         }}
         onError={() => {
           setToken(null)
-          setFailed(true)
+          fail('widget_error')
         }}
         onExpire={() => setToken(null)}
-        onUnsupported={() => setFailed(true)}
+        onUnsupported={() => fail('unsupported')}
         onBeforeInteractive={() => setInteracting(true)}
         onAfterInteractive={() => setInteracting(false)}
         onTimeout={() => {

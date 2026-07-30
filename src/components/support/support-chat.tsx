@@ -68,12 +68,9 @@ export function SupportChat() {
   const turnstile = useTurnstileGate()
   const sessionIdRef = useSessionId()
 
-  // The gate flips to failed on widget error, unsupported browser, or
-  // timeout-with-no-callback (blocked script) alike — record them all; the
-  // event predates the gate and keeps its name.
-  useEffect(() => {
-    if (turnstile.failed) trackClientEvent('support_turnstile_error')
-  }, [turnstile.failed])
+  // Gate failures are recorded by useTurnstileGate itself
+  // (turnstile_gate_failed, with a reason) — this replaced the page-local
+  // support_turnstile_error event so all Turnstile surfaces count uniformly.
 
   async function ask(question: string) {
     if (!question.trim() || status === 'asking') return

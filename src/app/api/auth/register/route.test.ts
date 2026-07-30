@@ -79,6 +79,9 @@ describe('POST /api/auth/register', () => {
     expect(json.errorCode).toBe('rate_limited')
     expect(verifyTurnstile).not.toHaveBeenCalled()
     expect(mockRegister).not.toHaveBeenCalled()
+    // Routine throttling stays at info (error fans out to alerts).
+    expect(infoMock).toHaveBeenCalledTimes(1)
+    expect(errorMock).not.toHaveBeenCalled()
   })
 
   it('returns 503 when the rate limiter is unavailable on a deployed host', async () => {
@@ -100,6 +103,8 @@ describe('POST /api/auth/register', () => {
     })
     expect(verifyTurnstile).not.toHaveBeenCalled()
     expect(mockRegister).not.toHaveBeenCalled()
+    // Registration is down for everyone — error level so it alerts.
+    expect(errorMock).toHaveBeenCalledTimes(1)
   })
 
   it('returns 403 when the Turnstile challenge is invalid', async () => {
@@ -121,6 +126,8 @@ describe('POST /api/auth/register', () => {
       '203.0.113.7'
     )
     expect(mockRegister).not.toHaveBeenCalled()
+    // A rejected real token is routine bot traffic: logged tokenPresent=true.
+    expect(infoMock).toHaveBeenCalledWith(expect.anything(), true, 'wcpos.com')
   })
 
   it('returns 403 without registering when the Turnstile token is missing', async () => {
@@ -139,6 +146,9 @@ describe('POST /api/auth/register', () => {
       '203.0.113.7'
     )
     expect(mockRegister).not.toHaveBeenCalled()
+    // An empty token is the broken-widget/broken-site-key fingerprint —
+    // the log line must record tokenPresent=false so a spike is greppable.
+    expect(infoMock).toHaveBeenCalledWith(expect.anything(), false, 'wcpos.com')
   })
 
   it('returns 403 without registering when Turnstile verification is unavailable', async () => {
