@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next'
-import { resolveLocale } from '@/i18n/resolve-locale'
+import { resolveLayoutLocale } from '@/i18n/resolve-locale'
 import { Geist, Geist_Mono } from 'next/font/google'
 import { ClientSpeedInsights } from '@/components/client-speed-insights'
 import { NextIntlClientProvider } from 'next-intl'
@@ -28,7 +28,7 @@ export async function generateMetadata({
 }: {
   params: Promise<{ locale: string }>
 }): Promise<Metadata> {
-  const localeKey = resolveLocale((await params).locale)
+  const localeKey = resolveLayoutLocale((await params).locale)
   const t = await getTranslations({ locale: localeKey, namespace: 'metadata' })
 
   return {
@@ -80,7 +80,11 @@ export default async function LocaleLayout({
   children: React.ReactNode
   params: Promise<{ locale: string }>
 }>) {
-  const localeKey = resolveLocale((await params).locale)
+  // resolveLayoutLocale, not resolveLocale: this layout must never throw
+  // notFound() — see the doc comment on resolveLayoutLocale. Invalid locales
+  // render the default-locale shell and are 404ed by the group layouts/pages
+  // inside the [locale]/not-found.tsx boundary.
+  const localeKey = resolveLayoutLocale((await params).locale)
   setRequestLocale(localeKey)
   const messages = await getMessages()
 
