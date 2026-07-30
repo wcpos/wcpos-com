@@ -90,6 +90,7 @@ export function useTurnstileGate(): TurnstileGate {
         onExpire={() => setToken(null)}
         onUnsupported={() => setFailed(true)}
         onBeforeInteractive={() => setInteracting(true)}
+        onAfterInteractive={() => setInteracting(false)}
         onTimeout={() => {
           // An interactive challenge expired unsolved. The widget reloads
           // itself; re-arm the fallback timer so continued silence still
