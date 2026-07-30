@@ -109,6 +109,10 @@ export function useTurnstileGate(enabled = true): TurnstileGate {
     reset: () => {
       // Deliberately leaves `failed` alone: clearing it would re-grey the
       // button for another full timeout. A later onSuccess clears it.
+      // The telemetry episode marker (reportedRef) survives reset() for the
+      // same reason — the hint is still on screen, so a re-failure is the
+      // same episode (one event per broken state, not per submit attempt),
+      // and a success is genuinely a recovery from it.
       setToken(null)
       turnstileRef.current?.reset()
     },

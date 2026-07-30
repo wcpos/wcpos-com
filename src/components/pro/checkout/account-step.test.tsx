@@ -448,4 +448,38 @@ describe('AccountStep', () => {
       )
     ).toHaveLength(2)
   })
+
+  it('keeps the failure episode open across a rejected submit and its reset', async () => {
+    fetchMock.mockResolvedValueOnce({
+      ok: false,
+      status: 403,
+      json: async () => ({ errorCode: 'bot_check_failed' }),
+    })
+    renderAccountStep()
+    fillCredentials()
+
+    act(() => turnstileMock.onError?.())
+    expect(trackClientEventMock).toHaveBeenCalledTimes(1)
+
+    // Submitting with the failed gate gets the server's 403, which resets the
+    // widget. The hint is still on screen — the same episode, so a re-failure
+    // must not fire a second event (counts are per broken state, not per
+    // submit attempt).
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Create account & continue' })
+    )
+    await waitFor(() => expect(turnstileMock.reset).toHaveBeenCalledTimes(1))
+    act(() => turnstileMock.onError?.())
+    expect(
+      trackClientEventMock.mock.calls.filter(
+        (call) => call[0] === 'turnstile_gate_failed'
+      )
+    ).toHaveLength(1)
+
+    // A success after the reset is still a recovery from that episode.
+    completeChallenge('recovered-token')
+    expect(trackClientEventMock).toHaveBeenCalledWith(
+      'turnstile_gate_recovered'
+    )
+  })
 })
