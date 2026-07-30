@@ -17,9 +17,17 @@ function noLanguagePreferences() {
 }
 
 /**
- * Root 404 page. Rendered for requests that never enter the [locale]
- * segment — e.g. paths excluded from the middleware matcher (paths
- * containing a dot) or an invalid locale rejected by the locale layout.
+ * Root 404 boundary of last resort.
+ *
+ * In practice almost every 404 renders src/app/[locale]/not-found.tsx
+ * instead: the [locale]/[...rest] catch-all plus the group layouts/pages
+ * (via resolveLocale) reject unknown URLs inside the [locale] boundary —
+ * including middleware-excluded dotted paths like /nonexistent.xyz, which
+ * land in [locale] with an invalid locale and are 404ed by the group
+ * layouts. Do NOT route invalid locales here by throwing notFound() from
+ * the [locale] layout: with cacheComponents, a production layout-level
+ * notFound() escapes this boundary and 500s (see resolveLayoutLocale in
+ * src/i18n/resolve-locale.ts and e2e/not-found.spec.ts).
  *
  * The root layout does not render <html>/<body> (the [locale] layout
  * does), so this page must provide its own document shell. Inline styles
