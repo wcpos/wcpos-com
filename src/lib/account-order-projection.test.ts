@@ -147,19 +147,22 @@ describe('projectAccountOrderListRow', () => {
   })
 
   it('ignores malformed refund metadata', () => {
+    const order = makeOrder({
+      metadata: {
+        refunds: [
+          { id: '', amount: 129, created_at: '2026-07-27T13:38:00Z' },
+          { id: 'zero', amount: 0, created_at: '2026-07-27T13:38:00Z' },
+          { id: 'negative', amount: -1, created_at: '2026-07-27T13:38:00Z' },
+          { id: 'bad-date', amount: 10, created_at: 'not-a-date' },
+        ],
+      },
+    })
+
+    expect(projectAccountOrderListRow(order).statusKey).toBe('paid')
+    expect(projectAccountOrderDetail(order, [], 0).refunds).toEqual([])
     expect(
-      projectAccountOrderListRow(
-        makeOrder({
-          metadata: {
-            refunds: [
-              { id: '', amount: 129, created_at: '2026-07-27T13:38:00Z' },
-              { id: 'negative', amount: -1, created_at: '2026-07-27T13:38:00Z' },
-              { id: 'bad-date', amount: 10, created_at: 'not-a-date' },
-            ],
-          },
-        })
-      ).statusKey
-    ).toBe('paid')
+      projectAccountOrderReceipt(order, projectReceiptProfile(order)).refunds
+    ).toEqual([])
   })
 
   it('retains key data when duplicate references share an id', async () => {
