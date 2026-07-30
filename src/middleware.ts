@@ -87,7 +87,7 @@ export function middleware(request: NextRequest) {
   const sanitizedHeaders = new Headers(request.headers)
   sanitizedHeaders.delete(ACCOUNT_REQUEST_HEADER)
 
-  if (['/xmlrpc.php', '/wp-login.php', '/security.txt'].includes(pathname)) {
+  if (['/xmlrpc.php', '/wp-login.php', '/security.txt', '/wp-admin/index.php'].includes(pathname)) {
     return new NextResponse(null, { status: 404 })
   }
 
@@ -219,5 +219,6 @@ export const config = {
     '/xmlrpc.php',
     '/wp-login.php',
     '/security.txt',
+    '/wp-admin/index.php',
   ],
 }

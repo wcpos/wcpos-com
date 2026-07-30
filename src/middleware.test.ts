@@ -18,7 +18,7 @@ const ACCOUNT_REQUEST_HEADER = 'x-wcpos-account-request'
 import { config, middleware } from './middleware'
 
 describe('middleware', () => {
-  it.each(['/xmlrpc.php', '/wp-login.php', '/security.txt'])(
+  it.each(['/xmlrpc.php', '/wp-login.php', '/security.txt', '/wp-admin/index.php'])(
     'returns 404 for scanner path %s without rendering',
     (pathname) => {
       intlRequests.length = 0
@@ -393,7 +393,7 @@ describe('middleware matcher', () => {
   const runsOn = (pathname: string) =>
     config.matcher.some((pattern) => new RegExp(`^${pattern}$`).test(pathname))
 
-  it.each(['/xmlrpc.php', '/wp-login.php', '/security.txt'])(
+  it.each(['/xmlrpc.php', '/wp-login.php', '/security.txt', '/wp-admin/index.php'])(
     'runs on scanner path %s',
     (pathname) => {
       expect(runsOn(pathname)).toBe(true)
