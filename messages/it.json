@@ -1698,6 +1698,7 @@
         "submit": "Chiedi"
       },
       "discordLink": "Chiedi su Discord →",
+      "turnstileTrouble": "Il controllo di sicurezza del browser non è riuscito a completarsi: potrebbe essere bloccato da un blocco pubblicità, un’estensione per la privacy o un filtro di rete. Puoi comunque provare a fare la tua domanda.",
       "poweredBy": "Risposta da Aide · addestrata sulla documentazione e sul wiki di WCPOS"
     },
     "errors": {

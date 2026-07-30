@@ -5,8 +5,8 @@ import { Turnstile, type TurnstileInstance } from '@marsidev/react-turnstile'
 import { resolveTurnstileSiteKey } from '@/lib/support/turnstile-keys'
 
 /**
- * Shared Turnstile gating for the password-registration forms (the register
- * page and checkout's inline account step).
+ * Shared Turnstile gating for token-gated forms (the register page,
+ * checkout's inline account step, and the support chat).
  *
  * The widget renders `interaction-only` rather than `invisible`: when
  * Cloudflare decides a visitor must solve an interactive challenge (VPNs,
@@ -32,7 +32,7 @@ function subscribeNever() {
 }
 
 export interface TurnstileGate {
-  /** Latest token; send '' to the register API while null. */
+  /** Latest token; send '' to the protected API while null. */
   token: string | null
   /** The widget may still produce a token — keep submit disabled. */
   verifying: boolean

@@ -1698,6 +1698,7 @@
         "submit": "Ask"
       },
       "discordLink": "Ask in Discord →",
+      "turnstileTrouble": "The browser security check couldn’t finish — an ad blocker, privacy extension, or network filter may be blocking it. You can still try asking your question.",
       "poweredBy": "Answered by Aide · trained on the WCPOS docs & wiki"
     },
     "errors": {
