@@ -1049,7 +1049,9 @@
         "partiallyRefunded": "Gedeeltelijk terugbetaald",
         "canceled": "Geannuleerd",
         "unknown": "Onbekend"
-      }
+      },
+      "refund": "Terugbetaling",
+      "refundDate": "Terugbetalingsdatum"
     },
     "admin": {
       "title": "Klant inspecteren (alleen lezen)",

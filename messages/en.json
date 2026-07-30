@@ -1049,7 +1049,9 @@
         "partiallyRefunded": "Partially refunded",
         "canceled": "Canceled",
         "unknown": "Unknown"
-      }
+      },
+      "refund": "Refund",
+      "refundDate": "Refund date"
     },
     "admin": {
       "title": "Inspect a customer (read-only)",

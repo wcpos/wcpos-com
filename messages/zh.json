@@ -1049,7 +1049,9 @@
         "partiallyRefunded": "部分退款",
         "canceled": "已取消",
         "unknown": "未知"
-      }
+      },
+      "refund": "退款",
+      "refundDate": "退款日期"
     },
     "admin": {
       "title": "查看客户（只读）",

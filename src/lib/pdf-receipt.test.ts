@@ -25,6 +25,8 @@ const TEST_COPY: ReceiptPdfCopy = {
   subtotal: 'Subtotal',
   tax: 'Tax',
   total: 'Total',
+  refund: 'Refund',
+  refundDate: 'Refund date',
   noTaxAdded: 'No tax has been added to this order.',
   sellerIdentity: (sellerName, sellerAbn) =>
     sellerAbn ? `${sellerName} · ABN ${sellerAbn}` : sellerName,
@@ -72,6 +74,7 @@ const baseReceipt: AccountOrderReceiptFact = {
     tax: 0,
     total: 129,
   },
+  refunds: [],
   items: [
     {
       title: 'WCPOS Pro Yearly',
@@ -90,12 +93,57 @@ async function pageStream(pdf: Uint8Array): Promise<string> {
   return inflateSync(Buffer.from(streamMatch![1], 'latin1')).toString('latin1')
 }
 
+async function allPageStreams(pdf: Uint8Array): Promise<string> {
+  const raw = Buffer.from(pdf).toString('latin1')
+  return [...raw.matchAll(/stream\r?\n([\s\S]*?)\r?\nendstream/g)].flatMap((match) => {
+    try {
+      return [inflateSync(Buffer.from(match[1], 'latin1')).toString('latin1')]
+    } catch {
+      return []
+    }
+  }).join('\n')
+}
+
 /** drawText hex-encodes strings into the content stream. */
 function hex(text: string): string {
   return Buffer.from(text, 'latin1').toString('hex').toUpperCase()
 }
 
 describe('buildReceiptPdf', () => {
+  it('paginates refund rows without omitting any refund', async () => {
+    const refunds = Array.from({ length: 16 }, (_, index) => ({
+      id: `ref_${index + 1}`,
+      amount: index + 1,
+      createdAt: `2026-07-${String(index + 1).padStart(2, '0')}T13:38:00Z`,
+    }))
+    const pdf = await buildTestReceiptPdf({ ...baseReceipt, refunds })
+
+    expect((await PDFDocument.load(pdf)).getPageCount()).toBeGreaterThan(1)
+    const streams = await allPageStreams(pdf)
+    for (const refund of refunds) {
+      expect(streams).toContain(hex(`-$${refund.amount}.00`))
+    }
+  })
+
+  it('renders each refund amount and date while retaining the purchase total', async () => {
+    const stream = await pageStream(
+      await buildTestReceiptPdf({
+        ...baseReceipt,
+        refunds: [{
+          id: 'ref_1',
+          amount: 129,
+          createdAt: '2026-07-27T13:38:00Z',
+        }],
+      })
+    )
+
+    expect(stream).toContain(hex('Refund'))
+    expect(stream).toContain(hex('-$129.00'))
+    expect(stream).toContain(hex('Refund date'))
+    expect(stream).toContain(hex('July 27, 2026'))
+    expect(stream).toContain(hex('$129.00'))
+  })
+
   it('builds a PDF document', async () => {
     const pdf = await buildTestReceiptPdf(baseReceipt)
     const bytes = Buffer.from(pdf)

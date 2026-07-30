@@ -1049,7 +1049,9 @@
         "partiallyRefunded": "Teilweise erstattet",
         "canceled": "Storniert",
         "unknown": "Unbekannt"
-      }
+      },
+      "refund": "Erstattung",
+      "refundDate": "Erstattungsdatum"
     },
     "admin": {
       "title": "Kundenkonto prüfen (schreibgeschützt)",
