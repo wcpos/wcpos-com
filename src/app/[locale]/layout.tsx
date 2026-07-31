@@ -112,7 +112,13 @@ export default async function LocaleLayout({
               name: 'WCPOS',
               url: 'https://wcpos.com',
               logo: 'https://wcpos.com/icon.png',
-              sameAs: ['https://github.com/wcpos'],
+              // Entity disambiguation: at least six naming variants of the
+              // product circulate, plus an unrelated Automattic product using
+              // the old name (wcpos/wcpos-com#590).
+              sameAs: [
+                'https://github.com/wcpos',
+                'https://wordpress.org/plugins/woocommerce-pos/',
+              ],
             }),
           }}
         />
