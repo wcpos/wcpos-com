@@ -29,10 +29,12 @@ describe('robots', () => {
   // eligibility, and training bots gate brand presence in model corpora.
   it.each([
     'OAI-SearchBot',
+    'ChatGPT-User',
     'GPTBot',
     'PerplexityBot',
     'Claude-SearchBot',
     'Claude-User',
+    'ClaudeBot',
     'Google-Extended',
     'Bingbot',
   ])('grants %s the same access as the wildcard group', (bot) => {
