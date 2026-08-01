@@ -3,10 +3,11 @@ import robots from './robots'
 
 describe('robots', () => {
   const result = robots()
-  const rules = Array.isArray(result.rules) ? result.rules[0] : result.rules
-  const disallow = Array.isArray(rules?.disallow)
-    ? rules.disallow
-    : [rules?.disallow]
+  const ruleList = Array.isArray(result.rules) ? result.rules : [result.rules]
+  const wildcard = ruleList.find((r) => r.userAgent === '*')
+  const disallow = Array.isArray(wildcard?.disallow)
+    ? wildcard.disallow
+    : [wildcard?.disallow]
 
   it('disallows private and auth routes', () => {
     expect(disallow).toContain('/account')
@@ -22,5 +23,26 @@ describe('robots', () => {
 
   it('references the sitemap', () => {
     expect(result.sitemap).toBe('https://wcpos.com/sitemap.xml')
+  })
+
+  // AI answer engines must stay welcome: retrieval bots gate citation
+  // eligibility, and training bots gate brand presence in model corpora.
+  it.each([
+    'OAI-SearchBot',
+    'ChatGPT-User',
+    'GPTBot',
+    'PerplexityBot',
+    'Claude-SearchBot',
+    'Claude-User',
+    'ClaudeBot',
+    'Google-Extended',
+    'Bingbot',
+  ])('grants %s the same access as the wildcard group', (bot) => {
+    const rule = ruleList.find((r) => r.userAgent === bot)
+    expect(rule).toBeDefined()
+    expect(rule?.allow).toBe('/')
+    // A named group replaces `*` for that bot, so it must repeat the
+    // private-route disallows or the bot would crawl them.
+    expect(rule?.disallow).toEqual(disallow)
   })
 })
