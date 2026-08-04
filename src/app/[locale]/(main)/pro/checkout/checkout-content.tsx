@@ -125,6 +125,7 @@ export async function CheckoutContent({
                     ? t('offers.lifetime')
                     : t('offers.default'),
               priceFormatted: selectedFullOffer.price.formatted,
+              priceAmount: selectedFullOffer.price.amount,
             }
           : undefined
       }

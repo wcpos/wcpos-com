@@ -131,10 +131,13 @@ interface PaymentSessionResult {
 interface OfferSummary {
   title: string
   priceFormatted: string
+  priceAmount?: number
   currencyCode?: string
 }
 
 const PRO_CHECKOUT_EXPERIMENT = 'pro_checkout_v1'
+const LIFETIME_UPGRADE_PROMO_PREFIX = 'LT-UPG-'
+const LIFETIME_UPGRADE_DISCOUNT_USD = 129
 const CHECKOUT_SAFETY_RESET_PARAM = 'reset_checkout'
 const CHECKOUT_SAFETY_RESET_VALUE = 'order_pending'
 const CHECKOUT_SAFETY_RESET_REFERENCE_PARAM = 'checkout_ref'
@@ -760,6 +763,13 @@ export function CheckoutClient({
     }).format(amount)
   const discountTotal = cart?.discount_total ?? 0
   const hasDiscount = discountTotal > 0
+  const previewDiscount =
+    !cart &&
+    selectedPlan === 'lifetime' &&
+    promoCode?.startsWith(LIFETIME_UPGRADE_PROMO_PREFIX) &&
+    offerSummary?.priceAmount
+      ? Math.min(LIFETIME_UPGRADE_DISCOUNT_USD, offerSummary.priceAmount)
+      : 0
 
   const paypalSession = cart
     ? resolvePaymentSession(cart, getProviderId('paypal'))
@@ -957,11 +967,24 @@ export function CheckoutClient({
           </>
         ) : offerSummary ? (
           <>
-            <p className="font-medium">{offerSummary.title}</p>
+            <div className="flex justify-between">
+              <p className="font-medium">{offerSummary.title}</p>
+              {previewDiscount > 0 && (
+                <p className="font-medium">{offerSummary.priceFormatted}</p>
+              )}
+            </div>
+            {previewDiscount > 0 && (
+              <div className={`mt-3 flex justify-between ${toneText.positive}`}>
+                <span>{t('summary.discount')}</span>
+                <span>{formatCurrency(-previewDiscount)}</span>
+              </div>
+            )}
             <div className="mt-3 flex justify-between border-t pt-3 font-bold">
               <span>{t('summary.total')}</span>
               <span>
-                {offerSummary.priceFormatted}{' '}
+                {previewDiscount > 0 && offerSummary.priceAmount
+                  ? formatCurrency(offerSummary.priceAmount - previewDiscount)
+                  : offerSummary.priceFormatted}{' '}
                 <span className="text-sm font-normal text-muted-foreground">
                   {offerSummaryCurrencyCode}
                 </span>
