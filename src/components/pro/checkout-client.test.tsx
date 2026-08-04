@@ -897,6 +897,28 @@ describe('CheckoutClient', () => {
     expect(screen.getByText('USD')).toBeInTheDocument()
   })
 
+  it('previews a lifetime-upgrade discount before authentication', () => {
+    render(
+      <CheckoutClient
+        promoCode="LT-UPG-GS89LR"
+        selectedOfferHandle="wcpos-pro-lifetime"
+        offerSummary={{
+          title: 'WCPOS Pro — Lifetime',
+          priceFormatted: '$399.00',
+          priceAmount: 399,
+        }}
+        checkoutPath="/pro/checkout?product=wcpos-pro-lifetime&promo=LT-UPG-GS89LR"
+        experimentVariant="control"
+        payments={ALL_PAYMENTS}
+      />
+    )
+
+    expect(screen.getByText('Discount')).toBeInTheDocument()
+    expect(screen.getByText('-$129.00')).toBeInTheDocument()
+    expect(screen.getByText('$270.00')).toBeInTheDocument()
+    expect(mockFetch).not.toHaveBeenCalled()
+  })
+
   it('surfaces a cart-init failure with a back-to-pricing link', async () => {
     mockFetch.mockResolvedValueOnce({ ok: false, status: 500 })
     renderSignedIn()
