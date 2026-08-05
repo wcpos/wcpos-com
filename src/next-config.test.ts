@@ -8,12 +8,12 @@ describe('nextConfig redirects', () => {
 
     expect(redirects).toContainEqual({
       source: '/discord',
-      destination: 'https://discord.gg/MV3E9dSUD',
+      destination: 'https://discord.gg/GCEeEVpEvX',
       statusCode: 302,
     })
     expect(redirects).toContainEqual({
       source: `/:locale(${locales.join('|')})/discord`,
-      destination: 'https://discord.gg/MV3E9dSUD',
+      destination: 'https://discord.gg/GCEeEVpEvX',
       statusCode: 302,
     })
   })
