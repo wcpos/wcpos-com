@@ -3,7 +3,7 @@ import createNextIntlPlugin from "next-intl/plugin";
 import { locales } from "./src/i18n/config";
 
 const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
-const discordInviteUrl = "https://discord.gg/MV3E9dSUD";
+const discordInviteUrl = "https://discord.gg/GCEeEVpEvX";
 const localePattern = locales.join("|");
 
 // Report-Only CSP: reports violations to /api/csp-report without blocking
