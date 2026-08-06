@@ -114,6 +114,9 @@ export async function GET(
       if (key === 'redirect') return
       callbackParams[key] = value
     })
+    if (callbackParams.error) {
+      throw new Error('oauth_provider_error')
+    }
     const locale = localeFromPath(redirectTo)
 
     // establishOAuthSession owns the link-then-refresh-then-persist ordering
@@ -159,6 +162,8 @@ export async function GET(
         : 'oauth_failed'
     if (held) {
       authLogger.info`OAuth sign-in rejected: ${error.message}`
+    } else if (errorCode === 'oauth_provider_error') {
+      authLogger.info`OAuth sign-in rejected: ${errorCode}`
     } else {
       authLogger.error`OAuth callback failed: ${error}`
     }
