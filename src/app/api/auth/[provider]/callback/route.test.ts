@@ -392,6 +392,42 @@ describe('OAuth callback route', () => {
     expect(location.searchParams.get('error')).toBe('oauth_email_unverified')
   })
 
+  it('handles a provider-declined callback without sending it to Medusa', async () => {
+    const request = new NextRequest(
+      'https://wcpos.com/api/auth/google/callback?error=access_denied&state=xyz'
+    )
+
+    const response = await GET(request, {
+      params: Promise.resolve({ provider: 'google' }),
+    })
+
+    expect(mockEstablishOAuthSession).not.toHaveBeenCalled()
+    expect(response.status).toBe(303)
+    expect(new URL(response.headers.get('location')!).searchParams.get('error'))
+      .toBe('oauth_provider_error')
+    expect(errorMock).not.toHaveBeenCalled()
+    expect(infoMock).toHaveBeenCalledTimes(1)
+  })
+
+  it('logs provider errors from session establishment at error level', async () => {
+    mockEstablishOAuthSession.mockRejectedValueOnce(
+      new Error('oauth_provider_error')
+    )
+
+    const request = new NextRequest(
+      'https://wcpos.com/api/auth/google/callback?code=abc&state=xyz'
+    )
+
+    const response = await GET(request, {
+      params: Promise.resolve({ provider: 'google' }),
+    })
+
+    expect(new URL(response.headers.get('location')!).searchParams.get('error'))
+      .toBe('oauth_provider_error')
+    expect(errorMock).toHaveBeenCalledTimes(1)
+    expect(infoMock).not.toHaveBeenCalled()
+  })
+
   it('redirects a held customer to login with a stable error code', async () => {
     mockEstablishOAuthSession.mockRejectedValueOnce(
       new AccountSecurityHoldError()
