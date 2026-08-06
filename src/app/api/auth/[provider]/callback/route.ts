@@ -88,6 +88,8 @@ export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ provider: string }> }
 ) {
+  let providerErrorCallback = false
+
   try {
     const { provider } = await params
 
@@ -115,6 +117,7 @@ export async function GET(
       callbackParams[key] = value
     })
     if (callbackParams.error) {
+      providerErrorCallback = true
       throw new Error('oauth_provider_error')
     }
     const locale = localeFromPath(redirectTo)
@@ -162,7 +165,7 @@ export async function GET(
         : 'oauth_failed'
     if (held) {
       authLogger.info`OAuth sign-in rejected: ${error.message}`
-    } else if (errorCode === 'oauth_provider_error') {
+    } else if (providerErrorCallback) {
       authLogger.info`OAuth sign-in rejected: ${errorCode}`
     } else {
       authLogger.error`OAuth callback failed: ${error}`

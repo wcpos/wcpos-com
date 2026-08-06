@@ -409,6 +409,25 @@ describe('OAuth callback route', () => {
     expect(infoMock).toHaveBeenCalledTimes(1)
   })
 
+  it('logs provider errors from session establishment at error level', async () => {
+    mockEstablishOAuthSession.mockRejectedValueOnce(
+      new Error('oauth_provider_error')
+    )
+
+    const request = new NextRequest(
+      'https://wcpos.com/api/auth/google/callback?code=abc&state=xyz'
+    )
+
+    const response = await GET(request, {
+      params: Promise.resolve({ provider: 'google' }),
+    })
+
+    expect(new URL(response.headers.get('location')!).searchParams.get('error'))
+      .toBe('oauth_provider_error')
+    expect(errorMock).toHaveBeenCalledTimes(1)
+    expect(infoMock).not.toHaveBeenCalled()
+  })
+
   it('redirects a held customer to login with a stable error code', async () => {
     mockEstablishOAuthSession.mockRejectedValueOnce(
       new AccountSecurityHoldError()
