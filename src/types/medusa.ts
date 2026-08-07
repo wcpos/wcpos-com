@@ -69,6 +69,7 @@ export interface MedusaCart {
   items: MedusaCartItem[]
   subtotal: number
   discount_total?: number
+  discount_subtotal?: number
   tax_total: number
   total: number
   promotions?: Array<{
@@ -85,14 +86,14 @@ export interface MedusaCart {
 export interface MedusaCartItem {
   id: string
   title: string
-  description: string | null
+  product_description?: string
   quantity: number
   unit_price: number
   original_total?: number
   subtotal: number
   total: number
   variant_id: string
-  variant: MedusaProductVariant
+  variant_sku?: string
 }
 
 export interface MedusaPaymentSession {

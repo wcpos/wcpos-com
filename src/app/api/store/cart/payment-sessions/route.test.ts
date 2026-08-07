@@ -90,6 +90,9 @@ import { POST } from './route'
 
 const validCart = {
   id: 'cart_1',
+  tax_total: 0,
+  discount_total: 0,
+  discount_subtotal: 0,
   billing_address: {
     first_name: 'Ada',
     last_name: 'Lovelace',
@@ -98,7 +101,16 @@ const validCart = {
     postal_code: '2000',
     country_code: 'au',
   },
-  items: [{ variant_id: 'variant_yearly_current', quantity: 1 }],
+  items: [
+    {
+      title: 'WCPOS Pro Yearly',
+      product_description: 'Annual WCPOS Pro subscription',
+      variant_id: 'variant_yearly_current',
+      variant_sku: 'WCPOS-PRO-YEARLY',
+      unit_price: 129,
+      quantity: 1,
+    },
+  ],
 }
 
 // The route reads the session JWT via getAuthToken and forwards it to the
@@ -390,6 +402,45 @@ describe('POST /api/store/cart/payment-sessions', () => {
     expect(json.customerSessionClientSecret).toBeNull()
   })
 
+  it('passes cart line items and order breakdown to PayPal', async () => {
+    mockGetCart.mockResolvedValue({
+      ...validCart,
+      tax_total: 10,
+      discount_total: 7,
+      discount_subtotal: 5,
+    })
+    mockCreatePaymentCollection.mockResolvedValueOnce({ id: 'paycol_1' })
+    mockCreatePaymentSession.mockResolvedValueOnce({
+      clientSecret: null,
+      paymentSessionId: 'payses_paypal',
+    })
+
+    const response = await POST(
+      makeRequest({ cartId: 'cart_1', provider_id: 'pp_paypal_paypal' })
+    )
+
+    expect(response.status).toBe(200)
+    expect(mockCreatePaymentSession).toHaveBeenCalledWith(
+      'paycol_1',
+      'pp_paypal_paypal',
+      AUTH_TOKEN,
+      {
+        items: [
+          {
+            name: 'WCPOS Pro Yearly',
+            description: 'Annual WCPOS Pro subscription',
+            sku: 'WCPOS-PRO-YEARLY',
+            unitAmount: 129,
+            quantity: 1,
+          },
+        ],
+        itemTotal: 129,
+        taxTotal: 10,
+        discount: 5,
+      }
+    )
+  })
+
   it('passes allowlisted buyer metadata from the current cart to BTCPay', async () => {
     mockGetCustomer.mockResolvedValue({
       id: 'cust_1',
@@ -541,7 +592,19 @@ describe('POST /api/store/cart/payment-sessions', () => {
     expect(mockCreatePaymentSession).toHaveBeenCalledWith(
       'paycol_existing',
       'pp_paypal_paypal',
-      AUTH_TOKEN
+      AUTH_TOKEN,
+      {
+        items: [
+          {
+            name: 'WCPOS Pro Yearly',
+            description: 'Annual WCPOS Pro subscription',
+            sku: 'WCPOS-PRO-YEARLY',
+            unitAmount: 129,
+            quantity: 1,
+          },
+        ],
+        itemTotal: 129,
+      }
     )
     expect(json.paymentCollectionId).toBe('paycol_existing')
   })

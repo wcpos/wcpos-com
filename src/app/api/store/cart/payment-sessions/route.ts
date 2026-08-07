@@ -18,6 +18,29 @@ import { isLoopbackHost } from '@/lib/request-host'
 import { isCompleteBillingAddress } from '@/lib/billing-profile'
 import { PAYMENT_METHOD_PROVIDER_IDS } from '@/lib/checkout-payments'
 import { btcpaySessionData } from '@/lib/btcpay-buyer-metadata'
+import type { MedusaCart } from '@/types/medusa'
+
+function paypalSessionData(providerId: string, cart: MedusaCart) {
+  if (providerId !== PAYMENT_METHOD_PROVIDER_IDS.paypal) return undefined
+
+  const items = cart.items.map((item) => ({
+    name: item.title.slice(0, 127),
+    ...(item.product_description && { description: item.product_description.slice(0, 2048) }),
+    ...(item.variant_sku && { sku: item.variant_sku.slice(0, 127) }),
+    unitAmount: item.unit_price,
+    quantity: item.quantity,
+  }))
+
+  return {
+    items,
+    itemTotal: items.reduce(
+      (total, item) => total + item.unitAmount * item.quantity,
+      0
+    ),
+    ...(cart.tax_total > 0 && { taxTotal: cart.tax_total }),
+    ...(cart.discount_subtotal && { discount: cart.discount_subtotal }),
+  }
+}
 
 const ALLOWED_PAYMENT_SESSION_PROVIDER_IDS = new Set(
   Object.values(PAYMENT_METHOD_PROVIDER_IDS)
@@ -154,7 +177,9 @@ export async function POST(request: NextRequest) {
     }
 
     // Create session within the collection
-    const sessionData = btcpaySessionData(providerId, currentCart)
+    const sessionData =
+      paypalSessionData(providerId, currentCart) ??
+      btcpaySessionData(providerId, currentCart)
     const session = sessionData
       ? await createPaymentSession(collectionId, providerId, authToken, {
           ...sessionData,
