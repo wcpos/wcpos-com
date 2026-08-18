@@ -133,7 +133,7 @@ function renderStep(
   return result
 }
 
-function renderStepRaw(method: PaymentMethod = 'stripe') {
+function renderStepRaw(method: PaymentMethod = 'stripe', lockMethods = false) {
   return render(
     <PaymentStep
       cartId="cart_private"
@@ -144,6 +144,7 @@ function renderStepRaw(method: PaymentMethod = 'stripe') {
       method={method}
       onMethodChange={() => {}}
       isProcessing={false}
+      lockMethods={lockMethods}
       enabled={{ stripe: true, paypal: true, btcpay: true }}
       stripePublishableKey="pk_test"
       paypal={{ clientId: 'paypal-client', environment: 'sandbox' }}
@@ -218,6 +219,12 @@ describe('PaymentStep immediate-supply consent gate', () => {
     expect(
       screen.queryByRole('button', { name: 'Attempt stripe' })
     ).not.toBeInTheDocument()
+  })
+
+  it('locks consent while payment confirmation is in flight', () => {
+    renderStepRaw('stripe', true)
+
+    expect(screen.getByTestId('checkout-supply-consent')).toBeDisabled()
   })
 
   it('gates the wallet row too, not just the card form', () => {

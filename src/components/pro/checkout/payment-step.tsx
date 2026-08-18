@@ -135,9 +135,11 @@ interface PaymentStepProps {
  */
 function ConsentGate({
   checked,
+  disabled,
   onChange,
 }: {
   checked: boolean
+  disabled: boolean
   onChange: (checked: boolean) => void
 }) {
   const t = useTranslations('pro.checkout.payment.consent')
@@ -150,6 +152,7 @@ function ConsentGate({
           id={id}
           type="checkbox"
           checked={checked}
+          disabled={disabled}
           onChange={(event) => onChange(event.target.checked)}
           data-testid="checkout-supply-consent"
           className="mt-0.5 h-4 w-4 shrink-0 accent-[var(--primary)]"
@@ -356,7 +359,11 @@ export function PaymentStep({
   )
 
   const consentGate = (
-    <ConsentGate checked={hasConsented} onChange={setHasConsented} />
+    <ConsentGate
+      checked={hasConsented}
+      disabled={lockMethods}
+      onChange={setHasConsented}
+    />
   )
 
   // Wallets + card share one Stripe Elements instance (same client secret).
