@@ -441,7 +441,7 @@
         "subtitle": "Updates & Support für 1 Jahr",
         "badgeLabel": "Am beliebtesten",
         "priceSuffix": "/Jahr",
-        "ctaNote": "Einmalige Zahlung — keine automatische Verlängerung."
+        "ctaNote": "Einmalzahlung — verlängert sich nie automatisch, und Pro läuft danach weiter."
       },
       "lifetime": {
         "title": "Lebenslang",
@@ -466,6 +466,10 @@
       "yearlyVsLifetime": {
         "question": "Was ist der Unterschied zwischen Jährlich und Lebenslang?",
         "answer": "Die Jährlich-Lizenz ist eine einmalige Zahlung, die ein Jahr lang Updates und vorrangigen Support beinhaltet. Sie verlängert sich nicht automatisch. Die Lebenslang-Lizenz ist eine einmalige Zahlung, die Updates für immer beinhaltet."
+      },
+      "expiry": {
+        "question": "Was passiert, wenn meine Lizenz abläuft?",
+        "answer": "Es wird nichts abgeschaltet. Die Pro-Version, die du hast, läuft weiter — deine Kasse, deine Daten, jede Funktion. Es enden nur neue Updates und der Priority-Support, bis du dich für eine Verlängerung entscheidest. Das ist Absicht: Verlängerungen müssen mit Updates verdient werden, die ihr Geld wert sind — und deine Kasse kann so nie aus der Ferne abgeschaltet werden."
       },
       "siteLimits": {
         "question": "Auf wie vielen Websites kann ich meine Lizenz nutzen?",
@@ -1358,6 +1362,15 @@
           "n3": "die Ursache in deinem Hosting, deinem Theme oder einem anderen Plugin liegt und wir nicht bekommen, was wir zur Diagnose brauchen."
         },
         "note": "Das beschreibt, wann wir nach eigenem Ermessen entscheiden. Deine gesetzlichen Rechte bleiben davon unberührt — sie stehen unten und wir erfüllen sie vollständig."
+      },
+      "why": {
+        "title": "Warum das so ist",
+        "items": {
+          "p1": "Eine Pro-Lizenz kauft ein Jahr Updates und Priority-Support — nicht die Erlaubnis, die Software zu benutzen. Läuft sie ab, wird nichts abgeschaltet: deine Kasse, deine Daten und jede Pro-Funktion arbeiten weiter wie zuvor. Das ist Absicht. Eine Kasse, die sich aus der Ferne abschalten lässt, kann dich mitten im Verkauf im Stich lassen — so etwas will ich nicht bauen.",
+          "p2": "Das hat eine Kehrseite, die ich lieber offen ausspreche. Einmal installiert und aktiviert, läuft Pro weiter, ob die Lizenz dahinter noch gültig ist oder nicht. Eine Rückerstattung widerruft den Schlüssel und beendet damit Updates und Support, aber sie greift nicht in deine Website ein und holt sich nichts zurück. Dieser Teil beruht auf Vertrauen — und fast alle halten sich daran.",
+          "p3": "WCPOS wird von einer einzelnen Person entwickelt. Das kostenlose Plugin ist Open Source und bleibt es auch; Pro finanziert die Zeit, die in beides fließt. Eine Rückerstattung ist kein neutraler Reset: Die Zahlungsgebühren sind so oder so weg, ebenso die Stunden für Fragen vor dem Kauf und für die Einrichtung eines Shops.",
+          "p4": "Die Bitte ist deshalb einfach: Probier es vorher aus. Die kostenlose Version steht bereit, die Demo läuft mit dem aktuellen Pro-Stand, und ich beantworte Fragen vor dem Kauf ehrlich — auch wenn die Antwort Nein lautet. Tu das, und wenn Pro dann trotzdem nicht kann, was ich zugesagt habe, bekommst du dein Geld ohne Diskussion zurück. Was ich nicht tragen kann, sind Rückerstattungen an Leute, die ungeprüft gekauft haben."
+        }
       },
       "request": {
         "title": "So forderst du eine Rückerstattung an",

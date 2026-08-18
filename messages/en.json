@@ -441,7 +441,7 @@
         "subtitle": "Updates & support for 1 year",
         "badgeLabel": "Most Popular",
         "priceSuffix": "/yr",
-        "ctaNote": "One-time payment — never auto-renews."
+        "ctaNote": "One-time payment — never auto-renews, and Pro keeps working after it ends."
       },
       "lifetime": {
         "title": "Lifetime",
@@ -466,6 +466,10 @@
       "yearlyVsLifetime": {
         "question": "What's the difference between Yearly and Lifetime?",
         "answer": "The Yearly license is a one-time payment that includes updates and priority support for one year. It does not renew automatically. The Lifetime license is a one-time payment that includes updates forever."
+      },
+      "expiry": {
+        "question": "What happens when my license expires?",
+        "answer": "Nothing switches off. The Pro version you already have keeps working — your register, your data, every feature. What stops is new updates and priority support, until you choose to renew. That is deliberate: renewals have to be earned with updates worth paying for, and it means your point of sale can never be disabled remotely."
       },
       "siteLimits": {
         "question": "How many sites can I use my license on?",
@@ -1358,6 +1362,15 @@
           "n3": "The cause is in your hosting, your theme, or another plugin, and we aren’t given what we need to diagnose it."
         },
         "note": "This describes when we use our own discretion. It does not affect your legal rights, which are set out below and which we honour in full."
+      },
+      "why": {
+        "title": "Why it works this way",
+        "items": {
+          "p1": "A Pro license buys a year of updates and priority support — not permission to run the software. When it expires nothing switches off: your register, your data and every Pro feature keep working exactly as before. That is deliberate. A point of sale that can be disabled remotely is one that can fail you mid-trade, and I am not willing to build that.",
+          "p2": "There is a flip side, and I would rather say it plainly. Once Pro is installed and activated it keeps running whether or not the license behind it is current. Refunding a purchase revokes the key, which ends updates and support, but it does not reach into your site and take anything back. That part of the arrangement runs on good faith — and nearly everyone honours it.",
+          "p3": "WCPOS is built by one person. The free plugin is open source and always will be, and Pro is what pays for the time that goes into both. A refund is not a neutral reset: the card fees are spent either way, and so are the hours that went into pre-sale questions and helping set a store up.",
+          "p4": "So the ask is simple. Try it first — the free version is right there, the demo runs the current Pro build, and I answer pre-sale questions honestly, including when the answer is no. Do that, and if Pro still doesn’t do what I said it would, you get your money back without an argument. What I can’t carry is refunding people who bought without looking."
+        }
       },
       "request": {
         "title": "How to request a refund",

@@ -10,6 +10,7 @@ const LEGAL_UPDATED_AT = '2026-08-18T12:00:00Z'
 const PREVENTION_ITEMS = ['p1', 'p2', 'p3'] as const
 const REFUND_ITEMS = ['y1', 'y2', 'y3'] as const
 const NO_REFUND_ITEMS = ['n1', 'n2', 'n3'] as const
+const WHY_PARAGRAPHS = ['p1', 'p2', 'p3', 'p4'] as const
 
 function demoLink(chunks: ReactNode) {
   return <TextLink href="https://demo.wcpos.com/pos">{chunks}</TextLink>
@@ -106,6 +107,17 @@ export default async function RefundsPage({
             ))}
           </ul>
           <p className="mt-4 leading-7 text-muted-foreground">{t('no.note')}</p>
+        </section>
+
+        <section>
+          <h2 className="text-2xl font-semibold mb-4">{t('why.title')}</h2>
+          <div className="space-y-4">
+            {WHY_PARAGRAPHS.map((item) => (
+              <p key={item} className="leading-7 text-muted-foreground">
+                {t(`why.items.${item}`)}
+              </p>
+            ))}
+          </div>
         </section>
 
         <section>

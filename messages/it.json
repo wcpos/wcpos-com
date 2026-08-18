@@ -441,7 +441,7 @@
         "subtitle": "Aggiornamenti e supporto per 1 anno",
         "badgeLabel": "Più popolare",
         "priceSuffix": "/anno",
-        "ctaNote": "Pagamento unico — non si rinnova mai automaticamente."
+        "ctaNote": "Pagamento una tantum — non si rinnova mai da solo, e Pro continua a funzionare dopo."
       },
       "lifetime": {
         "title": "A vita",
@@ -466,6 +466,10 @@
       "yearlyVsLifetime": {
         "question": "Qual è la differenza tra Annuale e A vita?",
         "answer": "La licenza Annuale è un pagamento unico che include aggiornamenti e supporto prioritario per un anno. Non si rinnova automaticamente. La licenza A vita è un pagamento unico che include aggiornamenti per sempre."
+      },
+      "expiry": {
+        "question": "Cosa succede quando la licenza scade?",
+        "answer": "Non si spegne nulla. La versione Pro che hai continua a funzionare: la tua cassa, i tuoi dati, ogni funzione. Si fermano solo i nuovi aggiornamenti e il supporto prioritario, finché non scegli di rinnovare. È una scelta deliberata: i rinnovi vanno guadagnati con aggiornamenti che valgono il loro prezzo, e il tuo punto vendita non può mai essere disattivato da remoto."
       },
       "siteLimits": {
         "question": "Su quanti siti posso usare la mia licenza?",
@@ -1358,6 +1362,15 @@
           "n3": "la causa è nel tuo hosting, nel tuo tema o in un altro plugin e non ci viene dato ciò che serve per diagnosticarla."
         },
         "note": "Questo descrive quando usiamo la nostra discrezionalità. Non incide sui tuoi diritti di legge, indicati qui sotto e che rispettiamo per intero."
+      },
+      "why": {
+        "title": "Perché funziona così",
+        "items": {
+          "p1": "Una licenza Pro acquista un anno di aggiornamenti e supporto prioritario, non il permesso di usare il software. Quando scade non si spegne nulla: la tua cassa, i tuoi dati e tutte le funzioni Pro continuano a funzionare come prima. È una scelta deliberata. Un punto vendita che può essere disattivato da remoto è un punto vendita che può abbandonarti a metà di una vendita, e non voglio costruirlo.",
+          "p2": "C’è un rovescio della medaglia, e preferisco dirlo apertamente. Una volta installato e attivato, Pro continua a funzionare che la licenza dietro sia valida o no. Un rimborso revoca la chiave, e quindi termina aggiornamenti e supporto, ma non entra nel tuo sito a riprendersi nulla. Quella parte si regge sulla buona fede — e quasi tutti la rispettano.",
+          "p3": "WCPOS è sviluppato da una sola persona. Il plugin gratuito è open source e lo resterà; Pro è ciò che paga il tempo dedicato a entrambi. Un rimborso non è un ritorno al punto di partenza: le commissioni di pagamento se ne vanno comunque, e così le ore passate a rispondere alle domande prevendita e a configurare un negozio.",
+          "p4": "Quello che chiedo è semplice: provalo prima. La versione gratuita è lì, la demo gira con la build Pro attuale e rispondo con onestà alle domande prevendita, anche quando la risposta è no. Fallo e, se Pro comunque non fa quello che avevo detto, riavrai i tuoi soldi senza discussioni. Quello che non riesco a sostenere è rimborsare chi ha comprato senza guardare."
+        }
       },
       "request": {
         "title": "Come richiedere un rimborso",

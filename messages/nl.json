@@ -441,7 +441,7 @@
         "subtitle": "Updates en support voor 1 jaar",
         "badgeLabel": "Meest populair",
         "priceSuffix": "/jaar",
-        "ctaNote": "Eenmalige betaling — wordt nooit automatisch verlengd."
+        "ctaNote": "Eenmalige betaling — verlengt nooit automatisch, en Pro blijft daarna werken."
       },
       "lifetime": {
         "title": "Levenslang",
@@ -466,6 +466,10 @@
       "yearlyVsLifetime": {
         "question": "Wat is het verschil tussen Jaarlijks en Levenslang?",
         "answer": "De Jaarlijkse licentie is een eenmalige betaling met updates en priority support gedurende één jaar. Deze wordt niet automatisch verlengd. De Levenslange licentie is een eenmalige betaling met updates voor altijd."
+      },
+      "expiry": {
+        "question": "Wat gebeurt er als mijn licentie verloopt?",
+        "answer": "Er gaat niets uit. De Pro-versie die je hebt blijft werken — je kassa, je gegevens, elke functie. Wat stopt zijn nieuwe updates en priority support, totdat je zelf kiest te verlengen. Dat is bewust: verlengingen moeten worden verdiend met updates die hun geld waard zijn, en het betekent dat je kassa nooit op afstand uitgezet kan worden."
       },
       "siteLimits": {
         "question": "Op hoeveel sites kan ik mijn licentie gebruiken?",
@@ -1358,6 +1362,15 @@
           "n3": "de oorzaak in je hosting, je thema of een andere plugin ligt en wij niet krijgen wat we nodig hebben om het vast te stellen."
         },
         "note": "Dit beschrijft wanneer wij onze eigen afweging maken. Het raakt niet aan je wettelijke rechten; die staan hieronder en die respecteren we volledig."
+      },
+      "why": {
+        "title": "Waarom het zo werkt",
+        "items": {
+          "p1": "Een Pro-licentie koopt een jaar updates en priority support — niet het recht om de software te gebruiken. Loopt hij af, dan gaat er niets uit: je kassa, je gegevens en elke Pro-functie werken precies zoals daarvoor. Dat is bewust. Een kassa die op afstand uitgezet kan worden, is een kassa die je midden in een verkoop in de steek kan laten, en die wil ik niet bouwen.",
+          "p2": "Daar staat iets tegenover, en dat zeg ik liever ronduit. Eenmaal geïnstalleerd en geactiveerd blijft Pro werken, of de licentie erachter nu geldig is of niet. Een restitutie trekt de sleutel in, waarmee updates en support stoppen, maar ze grijpt niet in je site in om iets terug te halen. Dat deel draait op goed vertrouwen — en vrijwel iedereen houdt zich eraan.",
+          "p3": "WCPOS wordt door één persoon gebouwd. De gratis plugin is open source en blijft dat; Pro betaalt de tijd die in allebei gaat. Een restitutie is geen schone lei: de betaalkosten zijn hoe dan ook weg, en de uren voor vragen vooraf en het inrichten van een winkel ook.",
+          "p4": "Wat ik vraag is dus eenvoudig: probeer het eerst. De gratis versie staat klaar, de demo draait op de huidige Pro-build, en ik beantwoord vragen vooraf eerlijk, ook als het antwoord nee is. Doe dat, en als Pro daarna nog steeds niet doet wat ik heb gezegd, krijg je je geld terug zonder discussie. Wat ik niet kan dragen, zijn restituties aan mensen die zonder te kijken hebben gekocht."
+        }
       },
       "request": {
         "title": "Een restitutie aanvragen",

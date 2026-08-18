@@ -441,7 +441,7 @@
         "subtitle": "Mises à jour et support pendant 1 an",
         "badgeLabel": "Le plus populaire",
         "priceSuffix": "/an",
-        "ctaNote": "Paiement unique — jamais renouvelé automatiquement."
+        "ctaNote": "Paiement unique — jamais de renouvellement automatique, et Pro continue de fonctionner ensuite."
       },
       "lifetime": {
         "title": "À vie",
@@ -466,6 +466,10 @@
       "yearlyVsLifetime": {
         "question": "Quelle est la différence entre Annuel et À vie ?",
         "answer": "La licence Annuel est un paiement unique qui inclut les mises à jour et le support prioritaire pendant un an. Elle ne se renouvelle pas automatiquement. La licence À vie est un paiement unique qui inclut les mises à jour pour toujours."
+      },
+      "expiry": {
+        "question": "Que se passe-t-il à l’expiration de ma licence ?",
+        "answer": "Rien ne s’éteint. La version Pro que vous avez continue de fonctionner — votre caisse, vos données, toutes les fonctions. Ce qui s’arrête, ce sont les nouvelles mises à jour et le support prioritaire, jusqu’à ce que vous choisissiez de renouveler. C’est délibéré : chaque renouvellement doit être mérité par des mises à jour qui valent leur prix, et votre caisse ne peut jamais être désactivée à distance."
       },
       "siteLimits": {
         "question": "Sur combien de sites puis-je utiliser ma licence ?",
@@ -1358,6 +1362,15 @@
           "n3": "la cause se trouve dans votre hébergement, votre thème ou une autre extension, et nous n’obtenons pas ce qu’il faut pour la diagnostiquer."
         },
         "note": "Ceci décrit les cas où nous exerçons notre appréciation. Cela n’affecte pas vos droits légaux, exposés ci-dessous, que nous respectons intégralement."
+      },
+      "why": {
+        "title": "Pourquoi cela fonctionne ainsi",
+        "items": {
+          "p1": "Une licence Pro achète un an de mises à jour et de support prioritaire — pas le droit d’utiliser le logiciel. À son expiration, rien ne s’éteint : votre caisse, vos données et toutes les fonctions Pro continuent exactement comme avant. C’est délibéré. Une caisse qui peut être désactivée à distance est une caisse qui peut vous lâcher en pleine vente, et je ne veux pas construire cela.",
+          "p2": "Il y a une contrepartie, et je préfère la dire franchement. Une fois Pro installé et activé, il continue de fonctionner que la licence derrière soit à jour ou non. Un remboursement révoque la clé, ce qui met fin aux mises à jour et au support, mais il ne va pas reprendre quoi que ce soit sur votre site. Cette partie repose sur la bonne foi — et presque tout le monde la respecte.",
+          "p3": "WCPOS est développé par une seule personne. L’extension gratuite est open source et le restera ; Pro finance le temps consacré aux deux. Un remboursement n’est pas un retour à zéro : les frais de paiement sont perdus de toute façon, tout comme les heures passées à répondre aux questions avant-vente et à mettre une boutique en route.",
+          "p4": "Ce que je demande est donc simple : essayez d’abord. La version gratuite est là, la démo tourne avec la version Pro actuelle, et je réponds honnêtement aux questions avant-vente, y compris quand la réponse est non. Faites cela, et si Pro ne fait toujours pas ce que j’avais annoncé, vous êtes remboursé sans discussion. Ce que je ne peux pas porter, ce sont les remboursements de personnes qui ont acheté sans regarder."
+        }
       },
       "request": {
         "title": "Comment demander un remboursement",
