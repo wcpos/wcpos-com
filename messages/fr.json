@@ -1321,10 +1321,10 @@
       },
       "title": "Politique de remboursement",
       "lastUpdated": "Dernière mise à jour : {date}",
-      "intro": "WCPOS Pro est un logiciel téléchargeable. Dès l’achat, vous avez la clé de licence et les fichiers — il n’y a rien à rendre. Nous ne proposons donc pas de fenêtre de remboursement sans justification. Nous faisons quelque chose de plus utile : si WCPOS Pro ne fait pas ce que nous annonçons, nous le corrigeons ou nous vous remboursons.",
+      "intro": "WCPOS Pro est un logiciel téléchargeable. Dès l’achat, vous avez la clé de licence et les fichiers — il n’y a rien à rendre. Nous ne proposons donc pas de fenêtre de remboursement sans justification : la version gratuite est la version d’essai, et elle n’expire jamais. Nous faisons quelque chose de plus utile : si WCPOS Pro ne fait pas ce que nous annonçons, nous le corrigeons ou nous vous remboursons.",
       "prevention": {
         "title": "Le meilleur remboursement est celui dont vous n’avez jamais besoin",
-        "lead": "Tout ce qu’il vous faut pour juger WCPOS Pro avant de payer est gratuit et public. Servez-vous en — cela prend un après-midi, et c’est la façon honnête de savoir si cela convient à votre boutique.",
+        "lead": "La version gratuite est la version d’essai. La caisse complète — produits, commandes et clients illimités — fonctionne sur votre boutique aussi longtemps que vous le souhaitez, sans frais et sans rien à résilier. Tout ce qu’il vous faut d’autre pour juger Pro est également public. Servez-vous en avant de payer.",
         "items": {
           "p1": {
             "label": "Installez le plugin gratuit.",

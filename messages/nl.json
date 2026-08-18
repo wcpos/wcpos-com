@@ -1321,10 +1321,10 @@
       },
       "title": "Restitutiebeleid",
       "lastUpdated": "Laatst bijgewerkt: {date}",
-      "intro": "WCPOS Pro is software die je downloadt. Op het moment van kopen heb je de licentiesleutel en de bestanden — er valt niets terug te geven. Daarom hanteren we geen terugbetalingstermijn zonder vragen. We doen iets nuttigers: doet WCPOS Pro niet wat wij beloven, dan lossen we het op of betalen we je terug.",
+      "intro": "WCPOS Pro is software die je downloadt. Op het moment van kopen heb je de licentiesleutel en de bestanden — er valt niets terug te geven. Daarom hanteren we geen terugbetalingstermijn zonder vragen: de gratis versie is de proefversie, en die verloopt nooit. We doen iets nuttigers: doet WCPOS Pro niet wat wij beloven, dan lossen we het op of betalen we je terug.",
       "prevention": {
         "title": "De beste restitutie is die je nooit nodig hebt",
-        "lead": "Alles wat je nodig hebt om WCPOS Pro te beoordelen vóór je betaalt, is gratis en openbaar. Gebruik het — het kost een middag en het is de eerlijke manier om te ontdekken of dit bij jouw winkel past.",
+        "lead": "De gratis versie is de proefversie. De volledige kassa — onbeperkt producten, bestellingen en klanten — draait zolang je wilt op je winkel, kosteloos en zonder dat er iets op te zeggen valt. Al het andere dat je nodig hebt om Pro te beoordelen is ook openbaar. Gebruik het voordat je betaalt.",
         "items": {
           "p1": {
             "label": "Installeer de gratis plugin.",

@@ -1321,10 +1321,10 @@
       },
       "title": "Rückerstattungsrichtlinie",
       "lastUpdated": "Zuletzt aktualisiert: {date}",
-      "intro": "WCPOS Pro ist Software zum Herunterladen. Mit dem Kauf hast du den Lizenzschlüssel und die Dateien — es gibt nichts zurückzugeben. Deshalb gibt es bei uns kein Rückgabefenster ohne Angabe von Gründen. Stattdessen gilt etwas Nützlicheres: Tut WCPOS Pro nicht, was wir zusagen, bringen wir es in Ordnung oder erstatten dir den Kauf.",
+      "intro": "WCPOS Pro ist Software zum Herunterladen. Mit dem Kauf hast du den Lizenzschlüssel und die Dateien — es gibt nichts zurückzugeben. Deshalb gibt es bei uns kein Rückgabefenster ohne Angabe von Gründen: Die kostenlose Version ist die Testversion, und sie läuft nie ab. Stattdessen gilt etwas Nützlicheres: Tut WCPOS Pro nicht, was wir zusagen, bringen wir es in Ordnung oder erstatten dir den Kauf.",
       "prevention": {
         "title": "Die beste Rückerstattung ist die, die du nie brauchst",
-        "lead": "Alles, was du brauchst, um WCPOS Pro vor dem Kauf zu beurteilen, ist kostenlos und öffentlich. Bitte nutze es — es kostet einen Nachmittag und ist der ehrliche Weg herauszufinden, ob es zu deinem Shop passt.",
+        "lead": "Die kostenlose Version ist die Testversion. Die vollständige Kasse — unbegrenzt Produkte, Bestellungen und Kunden — läuft so lange in deinem Shop, wie du möchtest, kostenlos und ohne dass du etwas kündigen müsstest. Auch alles Weitere, was du zur Beurteilung von Pro brauchst, ist öffentlich. Bitte nutze es, bevor du zahlst.",
         "items": {
           "p1": {
             "label": "Installiere das kostenlose Plugin.",

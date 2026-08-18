@@ -1321,10 +1321,10 @@
       },
       "title": "Política de reembolsos",
       "lastUpdated": "Última actualización: {date}",
-      "intro": "WCPOS Pro es software descargable. En el momento en que compras ya tienes la clave de licencia y los archivos — no hay nada que devolver. Por eso no ofrecemos un plazo de devolución sin preguntas. Hacemos algo más útil: si WCPOS Pro no hace lo que decimos que hace, lo arreglamos o te devolvemos el dinero.",
+      "intro": "WCPOS Pro es software descargable. En el momento en que compras ya tienes la clave de licencia y los archivos — no hay nada que devolver. Por eso no ofrecemos un plazo de devolución sin preguntas: la versión gratuita es la versión de prueba, y nunca caduca. A cambio hacemos algo más útil: si WCPOS Pro no hace lo que decimos que hace, lo arreglamos o te devolvemos el dinero.",
       "prevention": {
         "title": "El mejor reembolso es el que nunca necesitas",
-        "lead": "Todo lo que necesitas para juzgar WCPOS Pro antes de pagar es gratuito y público. Úsalo — cuesta una tarde y es la forma honesta de saber si encaja con tu tienda.",
+        "lead": "La versión gratuita es la versión de prueba. El punto de venta completo — productos, pedidos y clientes ilimitados — funciona en tu tienda todo el tiempo que quieras, sin coste y sin nada que cancelar. Todo lo demás que necesitas para juzgar Pro también es público. Úsalo antes de pagar.",
         "items": {
           "p1": {
             "label": "Instala el plugin gratuito.",

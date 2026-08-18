@@ -1321,10 +1321,10 @@
       },
       "title": "Refund Policy",
       "lastUpdated": "Last updated: {date}",
-      "intro": "WCPOS Pro is downloadable software. The moment you buy, you have the license key and the files — there is nothing to hand back. So we don’t run a no-questions-asked money-back window. We do something more useful instead: if WCPOS Pro doesn’t do what we say it does, we will fix it or refund you.",
+      "intro": "WCPOS Pro is downloadable software. The moment you buy, you have the license key and the files — there is nothing to hand back. So we don’t run a no-questions-asked money-back window: the free version is the trial, and it never expires. What we offer instead is more useful — if WCPOS Pro doesn’t do what we say it does, we will fix it or refund you.",
       "prevention": {
         "title": "The best refund is the one you never need",
-        "lead": "Everything you need to judge WCPOS Pro before you pay is free and public. Please use it — it takes an afternoon, and it is the honest way to find out whether this fits your store.",
+        "lead": "The free version is the trial version. The full point of sale — unlimited products, orders and customers — runs on your store for as long as you like, at no cost and with nothing to cancel. Everything else you need to judge Pro is public too, so please use it before you pay.",
         "items": {
           "p1": {
             "label": "Install the free plugin.",
