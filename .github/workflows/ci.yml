@@ -89,8 +89,19 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            playwright-${{ runner.os }}-
+
+      # No --with-deps: GitHub's Ubuntu runners already carry Chrome's system
+      # libraries, and the apt-get it triggers hangs for minutes when the
+      # runner's azure apt mirror degrades (2026-08-18: 7m31s on this step).
       - name: Install Playwright
-        run: pnpm exec playwright install --with-deps chromium
+        run: pnpm exec playwright install chromium
 
       - name: Run E2E tests
         run: pnpm test:e2e --project=chromium
