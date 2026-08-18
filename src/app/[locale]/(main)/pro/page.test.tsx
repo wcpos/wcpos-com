@@ -44,8 +44,8 @@ vi.mock('next-intl/server', () => ({
       'faq.freePlugin.answer': 'Yes.',
       'faq.yearlyVsLifetime.question': 'Yearly or Lifetime?',
       'faq.yearlyVsLifetime.answer': 'Choose either.',
-      'faq.upgrade.question': 'Can I upgrade?',
-      'faq.upgrade.answer': 'Yes.',
+      'faq.expiry.question': 'What happens when it expires?',
+      'faq.expiry.answer': 'Nothing switches off.',
       'faq.siteLimits.question': 'Are there site limits?',
       'faq.siteLimits.answer': 'No per-register fees.',
       'faq.paymentMethods.question': 'Which payments?',
@@ -185,7 +185,14 @@ describe('ProPage', () => {
 
     expect(screen.getByText('Questions')).toBeInTheDocument()
     expect(screen.getByText('Do I need the free plugin?')).toBeInTheDocument()
-    expect(screen.getAllByText('Yes.')).toHaveLength(2)
+    expect(screen.getAllByText('Yes.')).toHaveLength(1)
+
+    // The reassurance a buyer needs at the point of purchase: an expired
+    // licence never disables the register.
+    expect(
+      screen.getByText('What happens when it expires?')
+    ).toBeInTheDocument()
+    expect(screen.getByText('Nothing switches off.')).toBeInTheDocument()
   })
 })
 

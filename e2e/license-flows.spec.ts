@@ -186,6 +186,7 @@ test.describe('Existing license holder data accuracy', () => {
       'true',
       { timeout: 15000 }
     )
+    await page.getByTestId('checkout-supply-consent').check()
     await expect(
       page.getByRole('button', { name: /pay with bitcoin/i })
     ).toBeVisible({ timeout: 15000 })

@@ -441,7 +441,7 @@
         "subtitle": "Updates & Support für 1 Jahr",
         "badgeLabel": "Am beliebtesten",
         "priceSuffix": "/Jahr",
-        "ctaNote": "Einmalige Zahlung — keine automatische Verlängerung."
+        "ctaNote": "Einmalzahlung — verlängert sich nie automatisch, und Pro läuft danach weiter."
       },
       "lifetime": {
         "title": "Lebenslang",
@@ -453,7 +453,7 @@
       "tryFreeLink": "Testen Sie zuerst die kostenlose Version",
       "tryFreeSuffix": " — upgraden Sie erst, wenn sie sich bewährt hat",
       "payments": "Karte, PayPal oder Bitcoin",
-      "proof": "5.000+ aktive Shops · Jährlich wird auf Lebenslang angerechnet",
+      "proof": "5.000+ aktive Shops",
       "unavailableTitle": "Preise vorübergehend nicht verfügbar",
       "unavailableDescription": "Die Preisinformationen sind derzeit nicht verfügbar. Bitte versuche es später erneut."
     },
@@ -467,9 +467,9 @@
         "question": "Was ist der Unterschied zwischen Jährlich und Lebenslang?",
         "answer": "Die Jährlich-Lizenz ist eine einmalige Zahlung, die ein Jahr lang Updates und vorrangigen Support beinhaltet. Sie verlängert sich nicht automatisch. Die Lebenslang-Lizenz ist eine einmalige Zahlung, die Updates für immer beinhaltet."
       },
-      "upgrade": {
-        "question": "Kann ich von Jährlich auf Lebenslang upgraden?",
-        "answer": "Ja! Kontaktiere unser Support-Team und wir rechnen die verbleibende Zeit deiner Jährlich-Lizenz auf eine Lebenslang-Lizenz an."
+      "expiry": {
+        "question": "Was passiert, wenn meine Lizenz abläuft?",
+        "answer": "Es wird nichts abgeschaltet. Die Pro-Version, die du hast, läuft weiter — deine Kasse, deine Daten, jede Funktion. Es enden nur neue Updates und der Priority-Support, bis du dich für eine Verlängerung entscheidest. Das ist Absicht: Verlängerungen müssen mit Updates verdient werden, die ihr Geld wert sind — und deine Kasse kann so nie aus der Ferne abgeschaltet werden."
       },
       "siteLimits": {
         "question": "Auf wie vielen Websites kann ich meine Lizenz nutzen?",
@@ -565,6 +565,10 @@
         "walletSeparator": "oder Zahlungsart auswählen",
         "noneConfigured": "Es sind keine Zahlungsarten konfiguriert. Bitte kontaktieren Sie den Support.",
         "ariaLabel": "Zahlungsart",
+        "consent": {
+          "label": "Liefere WCPOS Pro sofort. Mir ist bewusst, dass mein 14-tägiges Widerrufsrecht mit Beginn der Lieferung erlischt — siehe <policy>Rückerstattungsrichtlinie</policy>.",
+          "gate": "Setze oben das Häkchen, um zur Zahlung fortzufahren."
+        },
         "methods": {
           "card": {
             "title": "Karte",
@@ -1317,13 +1321,14 @@
     "refunds": {
       "meta": {
         "title": "Rückerstattungsrichtlinie",
-        "description": "Die Rückerstattungsrichtlinie für WCPOS Pro: wie du innerhalb von 14 Tagen nach dem Kauf eine Rückerstattung anforderst und wie Rückerstattungen ausgezahlt werden."
+        "description": "Die Rückerstattungsrichtlinie für WCPOS Pro: Wir erstatten, wenn Pro nicht das tut, was wir zusagen. Wann wir erstatten, wann nicht, und wie du fragst."
       },
       "title": "Rückerstattungsrichtlinie",
       "lastUpdated": "Zuletzt aktualisiert: {date}",
-      "intro": "Käufe von WCPOS Pro — Erstkauf oder Verlängerung, jährlich oder lebenslang — können innerhalb von 14 Tagen nach dem Kauf erstattet werden. Sende uns innerhalb dieses Zeitfensters eine E-Mail und wir erstatten dir den vollen Betrag. Du musst keinen Grund angeben.",
+      "intro": "WCPOS Pro ist Software zum Herunterladen. Mit dem Kauf hast du den Lizenzschlüssel und die Dateien — es gibt nichts zurückzugeben. Deshalb gibt es bei uns kein Rückgabefenster ohne Angabe von Gründen: Die kostenlose Version ist die Testversion, und sie läuft nie ab. Stattdessen gilt etwas Nützlicheres: Tut WCPOS Pro nicht, was wir zusagen, bringen wir es in Ordnung oder erstatten dir den Kauf.",
       "prevention": {
         "title": "Die beste Rückerstattung ist die, die du nie brauchst",
+        "lead": "Die kostenlose Version ist die Testversion. Die vollständige Kasse — unbegrenzt Produkte, Bestellungen und Kunden — läuft so lange in deinem Shop, wie du möchtest, kostenlos und ohne dass du etwas kündigen müsstest. Auch alles Weitere, was du zur Beurteilung von Pro brauchst, ist öffentlich. Bitte nutze es, bevor du zahlst.",
         "items": {
           "p1": {
             "label": "Installiere das kostenlose Plugin.",
@@ -1339,22 +1344,52 @@
           }
         }
       },
+      "yes": {
+        "title": "Wann wir erstatten",
+        "lead": "Schreib uns, und wir bringen es in Ordnung, wenn:",
+        "items": {
+          "y1": "WCPOS Pro etwas nicht tut, was diese Website, die Dokumentation oder unsere Antwort auf eine Frage vor dem Kauf zugesagt hat.",
+          "y2": "ein Fehler oder eine Inkompatibilität dich an der Nutzung einer Pro-Funktion hindert und wir das nicht in angemessener Zeit beheben können.",
+          "y3": "beim Kauf selbst etwas schiefgelaufen ist — doppelt abgebucht, falscher Betrag oder nie ein funktionierender Lizenzschlüssel angekommen."
+        }
+      },
+      "no": {
+        "title": "Wann nicht",
+        "lead": "Nicht erstattet wird allein deshalb, weil:",
+        "items": {
+          "n1": "du es dir anders überlegt hast oder gekauft hast, ohne zu prüfen, ob WCPOS Pro zu deinen Abläufen passt.",
+          "n2": "du eine Funktion möchtest, die wir nie zugesagt haben. Frag vor dem Kauf — wir antworten ehrlich, auch wenn die Antwort Nein lautet.",
+          "n3": "die Ursache in deinem Hosting, deinem Theme oder einem anderen Plugin liegt und wir nicht bekommen, was wir zur Diagnose brauchen."
+        },
+        "note": "Das beschreibt, wann wir nach eigenem Ermessen entscheiden. Deine gesetzlichen Rechte bleiben davon unberührt — sie stehen unten und wir erfüllen sie vollständig."
+      },
+      "why": {
+        "title": "Warum das so ist",
+        "items": {
+          "p1": "Eine Pro-Lizenz kauft ein Jahr Updates und Priority-Support — nicht die Erlaubnis, die Software zu benutzen. Läuft sie ab, wird nichts abgeschaltet: deine Kasse, deine Daten und jede Pro-Funktion arbeiten weiter wie zuvor. Das ist Absicht. Eine Kasse, die sich aus der Ferne abschalten lässt, kann dich mitten im Verkauf im Stich lassen — so etwas will ich nicht bauen.",
+          "p2": "Auch die Verlängerung ist eine Entscheidung, nie eine automatische Abbuchung. Es wird keine Karte hinterlegt, und ohne einen neuen Kauf von dir wird dir nichts berechnet. Das ist die fairste Regelung, die mir eingefallen ist, und sie gilt in beide Richtungen: Liefere ich keine Updates mehr, die ihr Geld wert sind, verlängerst du eben nicht — genau unter diesem Druck will ich stehen.",
+          "p3": "Das hat eine Kehrseite, die ich lieber offen ausspreche. Einmal installiert und aktiviert, läuft Pro weiter, ob die Lizenz dahinter noch gültig ist oder nicht. Eine Rückerstattung widerruft den Schlüssel und beendet damit Updates und Support, aber sie greift nicht in deine Website ein und holt sich nichts zurück. Dieser Teil beruht auf Vertrauen — und fast alle halten sich daran.",
+          "p4": "WCPOS wird von einer einzelnen Person entwickelt. Das kostenlose Plugin ist Open Source und bleibt es auch; Pro finanziert die Zeit, die in beides fließt. Eine Rückerstattung ist kein neutraler Reset: Die Zahlungsgebühren sind so oder so weg, ebenso die Stunden für Fragen vor dem Kauf und für die Einrichtung eines Shops.",
+          "p5": "Die Bitte ist deshalb einfach: Probier es vorher aus. Die kostenlose Version steht bereit, die Demo läuft mit dem aktuellen Pro-Stand, und ich beantworte Fragen vor dem Kauf ehrlich — auch wenn die Antwort Nein lautet. Tu das, und wenn Pro dann trotzdem nicht kann, was ich zugesagt habe, bekommst du dein Geld ohne Diskussion zurück. Was ich nicht tragen kann, sind Rückerstattungen an Leute, die ungeprüft gekauft haben."
+        }
+      },
       "request": {
         "title": "So forderst du eine Rückerstattung an",
-        "body": "Sende innerhalb von 14 Tagen nach dem Kauf eine E-Mail von der E-Mail-Adresse, die du für den Kauf verwendet hast, an <email>support@wcpos.com</email>. Wenn du uns den Grund nennst, hilft uns das bei der Verbesserung, ist aber für die Rückerstattung nicht erforderlich."
+        "body": "Schreib an <email>support@wcpos.com</email> von der Adresse, mit der du gekauft hast, und beschreibe, was WCPOS Pro nicht tut. Gib uns zuerst die Chance, es zu beheben — meistens steckt eine Einstellung oder ein Bug dahinter, den wir schnell lösen. Gelingt das nicht, erstatten wir dir den Kauf."
       },
       "payment": {
         "title": "Wie Rückerstattungen ausgezahlt werden",
-        "body": "Rückerstattungen gehen über Stripe oder PayPal an die ursprüngliche Zahlungsmethode zurück und erscheinen je nach Bank oder Kartenaussteller normalerweise innerhalb von 5–10 Werktagen auf deinem Kontoauszug. Erstattete Lizenzschlüssel werden widerrufen und funktionieren sofort nicht mehr."
+        "body": "Rückerstattungen gehen über Stripe oder PayPal an das ursprüngliche Zahlungsmittel zurück und erscheinen je nach Bank oder Kartenherausgeber typischerweise innerhalb von 5–10 Werktagen auf deinem Kontoauszug. Bitcoin-Zahlungen erstatten wir nach Absprache — schreib uns, und wir klären den Weg gemeinsam. Ein erstatteter Lizenzschlüssel wird widerrufen und funktioniert sofort nicht mehr."
       },
       "renewals": {
         "title": "Lizenzverlängerungen",
-        "body": "Jahreslizenzen verlängern sich nicht automatisch — wir belasten dich niemals erneut ohne einen neuen Kauf von dir. Dasselbe 14-tägige Rückerstattungsfenster gilt für Verlängerungskäufe."
+        "body": "Jahreslizenzen verlängern sich nie automatisch, es gibt also keine überraschende Abbuchung rückgängig zu machen — ohne einen neuen Kauf von dir können wir dir nichts berechnen. Wenn du dich für eine Verlängerung entscheidest, gilt diese Richtlinie dafür genauso wie für einen Erstkauf."
       },
       "rights": {
         "title": "Deine gesetzlichen Rechte",
-        "body": "Für Verbraucher in der EU, im EWR und im Vereinigten Königreich: Unser 14-tägiges Rückerstattungsfenster entspricht deinem gesetzlichen Widerrufsrecht für diese Art von Kauf, und die Ausübung funktioniert auf dieselbe Weise — sende uns innerhalb von 14 Tagen eine E-Mail.",
-        "defective": "Wenn WCPOS Pro mangelhaft ist oder nicht wie beschrieben funktioniert, gelten gesetzliche Rechtsbehelfe für fehlerhafte digitale Inhalte jederzeit, unabhängig vom 14-tägigen Fenster. Nichts in dieser Richtlinie beschränkt Rechte, die dir nach den Verbraucherschutzgesetzen deines Landes zustehen — wenn lokales Recht dir stärkere Rechte gibt, gelten diese Rechte."
+        "withdrawal": "Für Verbraucherinnen und Verbraucher in der EU, dem EWR und dem Vereinigten Königreich gilt bei Fernkäufen normalerweise ein 14-tägiges Widerrufsrecht. Sofort gelieferte digitale Inhalte sind die Ausnahme: An der Kasse bitten wir dich, der sofortigen Lieferung zuzustimmen und zu bestätigen, dass damit dein Widerrufsrecht erlischt. Genau dieses Häkchen beendet es. Wurdest du nie darum gebeten, besteht das Recht fort und wir erfüllen es.",
+        "conformity": "Dein Recht auf funktionierende Software ist davon unabhängig, und nichts auf dieser Seite kann es abbedingen. Ist WCPOS Pro mangelhaft oder entspricht es nicht unserer Beschreibung, hast du Anspruch auf Nacherfüllung — und auf Minderung oder Erstattung, wenn uns das nicht gelingt. In der EU und dem EWR gilt das mindestens zwei Jahre ab Kauf. Wo dir das Recht deines Landes stärkere Ansprüche gibt als diese Richtlinie, gelten diese Ansprüche.",
+        "business": "Du kaufst als Unternehmen und nicht als Verbraucher? Dann gelten die gesetzlichen Verbraucherrechte oben nicht für dich — alles andere auf dieser Seite schon."
       }
     },
     "terms": {
@@ -1658,7 +1693,7 @@
         },
         "v4": {
           "title": "Eine faire Lizenz",
-          "body": "Wenn eine Pro-Lizenz abläuft, funktioniert Pro weiter — du erhältst nur keine Updates mehr. Nichts, worauf du angewiesen bist, wird abgeschaltet."
+          "body": "Es wird keine Karte gespeichert und nie automatisch abgebucht. Verlängern ist eine Entscheidung, kein Automatismus — war ein Jahr an Updates das Geld nicht wert, zahlst du eben nicht erneut. Und eine abgelaufene Lizenz schaltet nie etwas ab."
         }
       }
     },
@@ -1889,7 +1924,7 @@
       "pricing": {
         "title": "Was kostet die Bezahlversion wirklich?",
         "oliver": "Oliver (jährliche Abrechnung): Starter $89 pro Jahr — 1 Filiale, 2 Stationen, 3 Mitarbeiter. Pro $289 pro Jahr — 2 Filialen, unbegrenzt Stationen, 15 Mitarbeiter. Enterprise $489 pro Jahr — unbegrenzt. Wiederkehrend, eine WooCommerce-Website pro Lizenz.",
-        "wcpos": "WCPOS Pro: $129 — eine Einmalzahlung für ein Jahr Updates und Priority-Support. Sie verlängert sich nie automatisch, und die Pro-Version funktioniert nach Ablauf des Jahres weiter — nichts wird abgeschaltet, niemals. Das ist Absicht: Verlängerungen müssen mit Updates verdient werden, die ihr Geld wert sind. Oder $399 einmalig für Lifetime. Jede Lizenz gilt für eine Domain plus eine Staging-Site, mit unbegrenzten Geräten und Kassierern. Jahreskäufer können für die Differenz von $270 auf Lifetime upgraden. 14 Tage Geld-zurück-Garantie.",
+        "wcpos": "WCPOS Pro: $129 — eine Einmalzahlung für ein Jahr Updates und Priority-Support. Sie verlängert sich nie automatisch, und die Pro-Version funktioniert nach Ablauf des Jahres weiter — nichts wird abgeschaltet, niemals. Das ist Absicht: Verlängerungen müssen mit Updates verdient werden, die ihr Geld wert sind. Oder $399 einmalig für Lifetime. Jede Lizenz gilt für eine Domain plus eine Staging-Site, mit unbegrenzten Geräten und Kassierern. Tut Pro nicht, was wir zusagen, erstatten wir den Kauf.",
         "math": "Bei einer einzelnen Filiale ist Olivers Starter im ersten Jahr günstiger ($89 gegenüber $129). Ab dem zweiten Jahr kippt die Rechnung: Oliver stellt jedes Jahr erneut in Rechnung, während eine WCPOS-Lifetime-Lizenz ab dem vierten Jahr $0 kostet — selbst gegenüber Olivers günstigstem Tarif — und insgesamt $399 gegenüber $1,467+ für drei Jahre Oliver Enterprise.",
         "proAdds": "Pro ergänzt: Multi-Store-Verwaltung, Kartenterminal-Integrationen, Gutscheine, Erstattungen über die POS-API, Bestellhistorie, Kundenverwaltung an der Kasse, filialspezifische Preise, Bestands- und Preisbearbeitung, Tagesabschlussberichte und das Erweiterungsverzeichnis.",
         "demoPrefix": "Probieren Sie vorab alles aus unter",

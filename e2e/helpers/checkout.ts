@@ -124,6 +124,7 @@ export async function completeBillingStep(
     'active',
     { timeout: 15000 }
   )
+  await page.getByTestId('checkout-supply-consent').check()
 }
 
 export async function fillBillingAddressFields(

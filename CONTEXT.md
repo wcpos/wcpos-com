@@ -82,10 +82,29 @@ _Avoid_: subscriber, follower, guest
 
 ### Commerce
 
-**Money-back guarantee**:
-A 14-day, any-reason refund window on every purchase, worldwide. A
-granted refund revokes the license.
-_Avoid_: trial, return window
+**Refund**:
+Money returned because WCPOS Pro did not do what it was advertised to do,
+or because the purchase itself went wrong (double charge, wrong amount, no
+working key). Not a change-of-mind window: there is no any-reason money-back
+period, and buyer's remorse is not a ground. A granted refund revokes the
+license. The policy customers read is `legal.refunds` in `messages/*.json`.
+_Avoid_: money-back guarantee, 14-day guarantee, trial, return window
+
+**Immediate-supply consent**:
+The buyer's checkout acknowledgement that WCPOS Pro is delivered at once and
+that accepting this ends their statutory 14-day withdrawal right (Consumer
+Rights Directive art. 16(1)(m)). Unticked by default, and no payment control
+renders until it is given. It is what makes declining change-of-mind refunds
+lawful for EU/EEA/UK consumers — without it those buyers keep the full 14-day
+right regardless of policy text.
+_Avoid_: terms acceptance, disclaimer
+
+**Conformity right**:
+The consumer's non-waivable right to software that matches its description
+and works (Digital Content Directive (EU) 2019/770), running at least two
+years from purchase, and surviving anything the refund policy says. Distinct
+from the withdrawal right, which consent does end.
+_Avoid_: warranty, guarantee
 
 **Customer**:
 The person who buys and holds licenses, authenticated via the Medusa

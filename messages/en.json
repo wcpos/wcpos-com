@@ -441,7 +441,7 @@
         "subtitle": "Updates & support for 1 year",
         "badgeLabel": "Most Popular",
         "priceSuffix": "/yr",
-        "ctaNote": "One-time payment — never auto-renews."
+        "ctaNote": "One-time payment — never auto-renews, and Pro keeps working after it ends."
       },
       "lifetime": {
         "title": "Lifetime",
@@ -453,7 +453,7 @@
       "tryFreeLink": "Try the free version first",
       "tryFreeSuffix": " — upgrade once you know it does the job",
       "payments": "Card, PayPal or Bitcoin",
-      "proof": "5,000+ active stores · Yearly credits toward Lifetime",
+      "proof": "5,000+ active stores",
       "unavailableTitle": "Pricing temporarily unavailable",
       "unavailableDescription": "Pricing information is currently unavailable. Please try again later."
     },
@@ -467,9 +467,9 @@
         "question": "What's the difference between Yearly and Lifetime?",
         "answer": "The Yearly license is a one-time payment that includes updates and priority support for one year. It does not renew automatically. The Lifetime license is a one-time payment that includes updates forever."
       },
-      "upgrade": {
-        "question": "Can I upgrade from Yearly to Lifetime?",
-        "answer": "Yes! Contact our support team and we'll credit the remaining time on your Yearly license towards a Lifetime license."
+      "expiry": {
+        "question": "What happens when my license expires?",
+        "answer": "Nothing switches off. The Pro version you already have keeps working — your register, your data, every feature. What stops is new updates and priority support, until you choose to renew. That is deliberate: renewals have to be earned with updates worth paying for, and it means your point of sale can never be disabled remotely."
       },
       "siteLimits": {
         "question": "How many sites can I use my license on?",
@@ -565,6 +565,10 @@
         "walletSeparator": "or choose how to pay",
         "noneConfigured": "No payment methods are configured. Please contact support.",
         "ariaLabel": "Payment method",
+        "consent": {
+          "label": "Deliver WCPOS Pro to me immediately. I understand that I lose my 14-day right of withdrawal once delivery begins — see the <policy>refund policy</policy>.",
+          "gate": "Tick the box above to continue to payment."
+        },
         "methods": {
           "card": {
             "title": "Card",
@@ -1317,13 +1321,14 @@
     "refunds": {
       "meta": {
         "title": "Refund Policy",
-        "description": "The WCPOS Pro refund policy: how to request a refund within 14 days of purchase, and how refunds are paid."
+        "description": "The WCPOS Pro refund policy: we refund when Pro doesn’t do what we say it does. When we refund, when we don’t, and how to ask."
       },
       "title": "Refund Policy",
       "lastUpdated": "Last updated: {date}",
-      "intro": "WCPOS Pro purchases — first purchase or renewal, yearly or lifetime — can be refunded within 14 days of purchase. Email us within that window and we refund you in full. You do not need to give a reason.",
+      "intro": "WCPOS Pro is downloadable software. The moment you buy, you have the license key and the files — there is nothing to hand back. So we don’t run a no-questions-asked money-back window: the free version is the trial, and it never expires. What we offer instead is more useful — if WCPOS Pro doesn’t do what we say it does, we will fix it or refund you.",
       "prevention": {
         "title": "The best refund is the one you never need",
+        "lead": "The free version is the trial version. The full point of sale — unlimited products, orders and customers — runs on your store for as long as you like, at no cost and with nothing to cancel. Everything else you need to judge Pro is public too, so please use it before you pay.",
         "items": {
           "p1": {
             "label": "Install the free plugin.",
@@ -1339,22 +1344,52 @@
           }
         }
       },
+      "yes": {
+        "title": "When we refund",
+        "lead": "Email us and we will put it right if:",
+        "items": {
+          "y1": "WCPOS Pro doesn’t do something this website, the documentation, or our answer to a pre-sale question said it does.",
+          "y2": "A bug or an incompatibility stops you using a Pro feature, and we can’t fix it within a reasonable time.",
+          "y3": "Something went wrong with the purchase itself — you were charged twice, charged the wrong amount, or never received a working license key."
+        }
+      },
+      "no": {
+        "title": "When we don’t",
+        "lead": "We don’t refund simply because:",
+        "items": {
+          "n1": "You changed your mind, or bought without checking whether WCPOS Pro suits the way your store runs.",
+          "n2": "You want a feature we never claimed to have. Ask before you buy — we answer honestly, including when the answer is no.",
+          "n3": "The cause is in your hosting, your theme, or another plugin, and we aren’t given what we need to diagnose it."
+        },
+        "note": "This describes when we use our own discretion. It does not affect your legal rights, which are set out below and which we honour in full."
+      },
+      "why": {
+        "title": "Why it works this way",
+        "items": {
+          "p1": "A Pro license buys a year of updates and priority support — not permission to run the software. When it expires nothing switches off: your register, your data and every Pro feature keep working exactly as before. That is deliberate. A point of sale that can be disabled remotely is one that can fail you mid-trade, and I am not willing to build that.",
+          "p2": "Renewing is a decision too, never an automatic charge. No card is kept on file, and nothing bills you again unless you choose to buy again. It is the fairest arrangement I could come up with, and it cuts both ways: if I stop shipping updates worth paying for, you simply don’t renew — which is exactly the pressure I want to be under.",
+          "p3": "There is a flip side, and I would rather say it plainly. Once Pro is installed and activated it keeps running whether or not the license behind it is current. Refunding a purchase revokes the key, which ends updates and support, but it does not reach into your site and take anything back. That part of the arrangement runs on good faith — and nearly everyone honours it.",
+          "p4": "WCPOS is built by one person. The free plugin is open source and always will be, and Pro is what pays for the time that goes into both. A refund is not a neutral reset: the card fees are spent either way, and so are the hours that went into pre-sale questions and helping set a store up.",
+          "p5": "So the ask is simple. Try it first — the free version is right there, the demo runs the current Pro build, and I answer pre-sale questions honestly, including when the answer is no. Do that, and if Pro still doesn’t do what I said it would, you get your money back without an argument. What I can’t carry is refunding people who bought without looking."
+        }
+      },
       "request": {
         "title": "How to request a refund",
-        "body": "Email <email>support@wcpos.com</email> from the email address you used for the purchase, within 14 days of buying. Telling us why helps us improve, but it is not required to get the refund."
+        "body": "Email <email>support@wcpos.com</email> from the address you bought with, and tell us what WCPOS Pro is not doing. Give us the chance to fix it first — most requests turn out to be a setting or a bug we can resolve quickly. If we can’t, we refund you."
       },
       "payment": {
         "title": "How refunds are paid",
-        "body": "Refunds go back to the original payment method via Stripe or PayPal and typically appear on your statement within 5–10 business days, depending on your bank or card issuer. Refunded license keys are revoked and stop working immediately."
+        "body": "Refunds go back to the original payment method via Stripe or PayPal, and typically appear on your statement within 5–10 business days depending on your bank or card issuer. Bitcoin payments are refunded by arrangement — email us and we will agree the method with you. A refunded license key is revoked and stops working immediately."
       },
       "renewals": {
         "title": "License renewals",
-        "body": "Yearly licenses do not renew automatically — we never charge you again without a new purchase from you. The same 14-day refund window applies to renewal purchases."
+        "body": "Yearly licenses never renew automatically, so there is no surprise charge to reverse — we cannot bill you again without you buying again. When you do choose to renew, this policy applies to that purchase exactly as it does to a first one."
       },
       "rights": {
         "title": "Your statutory rights",
-        "body": "For consumers in the EU, EEA and UK: our 14-day refund window matches your statutory right of withdrawal for this kind of purchase, and exercising either works the same way — email us within 14 days.",
-        "defective": "If WCPOS Pro is defective or does not work as described, statutory remedies for faulty digital content apply at any time, independent of the 14-day window. And nothing in this policy limits any rights you have under the consumer protection laws of your country — where local law gives you stronger rights, those rights apply."
+        "withdrawal": "For consumers in the EU, EEA and UK, distance purchases normally carry a 14-day right of withdrawal. Digital content delivered immediately is the exception: at checkout we ask you to agree to immediate delivery and to acknowledge that agreeing ends that 14-day right. Ticking that box is what ends it. If you were never asked to tick it, the right stands and we will honour it.",
+        "conformity": "Your right to working software is separate, and nothing on this page can sign it away. If WCPOS Pro is faulty or does not match how we described it, you are entitled to have it put right — and to a price reduction or a refund if we can’t. In the EU and EEA that lasts at least two years from purchase. Where the law of your country gives you stronger rights than this policy, those rights apply.",
+        "business": "Buying as a business rather than as a consumer? The statutory consumer rights above don’t apply to you — but everything else on this page does."
       }
     },
     "terms": {
@@ -1658,7 +1693,7 @@
         },
         "v4": {
           "title": "A fair licence",
-          "body": "If a Pro licence lapses, Pro keeps working — you just stop getting updates. Nothing you rely on gets switched off."
+          "body": "No card is stored, and nothing is ever charged automatically. Renewing is a decision, not a default — if a year of updates wasn’t worth paying for, you don’t pay again. And a lapsed licence never switches anything off."
         }
       }
     },
@@ -1889,7 +1924,7 @@
       "pricing": {
         "title": "What does paid actually cost?",
         "oliver": "Oliver (annual billing): Starter $89 per year — 1 outlet, 2 stations, 3 staff. Pro $289 per year — 2 outlets, unlimited stations, 15 staff. Enterprise $489 per year — unlimited. Recurring, one WooCommerce site per license.",
-        "wcpos": "WCPOS Pro: $129 — a one-time payment covering one year of updates and priority support. It never auto-renews, and the Pro version keeps working after the year ends — nothing switches off, ever. That is deliberate: renewals have to be earned with updates worth paying for. Or $399 lifetime. Each license covers a domain plus a staging site, with unlimited devices and cashiers. Yearly buyers can upgrade to lifetime for the $270 difference. 14-day money-back guarantee.",
+        "wcpos": "WCPOS Pro: $129 — a one-time payment covering one year of updates and priority support. It never auto-renews, and the Pro version keeps working after the year ends — nothing switches off, ever. That is deliberate: renewals have to be earned with updates worth paying for. Or $399 lifetime. Each license covers a domain plus a staging site, with unlimited devices and cashiers. If it doesn’t do what we say it does, we refund you.",
         "math": "At a single outlet Oliver's Starter is cheaper in year one ($89 vs $129). From year two onward the math flips: Oliver keeps billing every year, while a WCPOS lifetime license is $0 from year four even against Oliver's cheapest plan — and $399 total versus $1,467+ for three years of Oliver Enterprise.",
         "proAdds": "Pro adds: multi-store management, card-terminal integrations, coupons, refunds via the POS API, order history, customer management at the register, store-specific pricing, stock and price editing, end-of-day reports, and the extension directory.",
         "demoPrefix": "Try everything first at",

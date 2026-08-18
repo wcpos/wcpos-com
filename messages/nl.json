@@ -441,7 +441,7 @@
         "subtitle": "Updates en support voor 1 jaar",
         "badgeLabel": "Meest populair",
         "priceSuffix": "/jaar",
-        "ctaNote": "Eenmalige betaling — wordt nooit automatisch verlengd."
+        "ctaNote": "Eenmalige betaling — verlengt nooit automatisch, en Pro blijft daarna werken."
       },
       "lifetime": {
         "title": "Levenslang",
@@ -453,7 +453,7 @@
       "tryFreeLink": "Probeer eerst de gratis versie",
       "tryFreeSuffix": " — upgrade zodra je weet dat het bevalt",
       "payments": "Kaart, PayPal of Bitcoin",
-      "proof": "5.000+ actieve winkels · Jaarlijks wordt verrekend met Levenslang",
+      "proof": "5.000+ actieve winkels",
       "unavailableTitle": "Prijzen tijdelijk niet beschikbaar",
       "unavailableDescription": "Prijsinformatie is momenteel niet beschikbaar. Probeer het later opnieuw."
     },
@@ -467,9 +467,9 @@
         "question": "Wat is het verschil tussen Jaarlijks en Levenslang?",
         "answer": "De Jaarlijkse licentie is een eenmalige betaling met updates en priority support gedurende één jaar. Deze wordt niet automatisch verlengd. De Levenslange licentie is een eenmalige betaling met updates voor altijd."
       },
-      "upgrade": {
-        "question": "Kan ik upgraden van Jaarlijks naar Levenslang?",
-        "answer": "Ja! Neem contact op met ons supportteam en we verrekenen de resterende tijd van je Jaarlijkse licentie met een Levenslange licentie."
+      "expiry": {
+        "question": "Wat gebeurt er als mijn licentie verloopt?",
+        "answer": "Er gaat niets uit. De Pro-versie die je hebt blijft werken — je kassa, je gegevens, elke functie. Wat stopt zijn nieuwe updates en priority support, totdat je zelf kiest te verlengen. Dat is bewust: verlengingen moeten worden verdiend met updates die hun geld waard zijn, en het betekent dat je kassa nooit op afstand uitgezet kan worden."
       },
       "siteLimits": {
         "question": "Op hoeveel sites kan ik mijn licentie gebruiken?",
@@ -565,6 +565,10 @@
         "walletSeparator": "of kies hoe je wilt betalen",
         "noneConfigured": "Er zijn geen betaalmethoden geconfigureerd. Neem contact op met support.",
         "ariaLabel": "Betaalmethode",
+        "consent": {
+          "label": "Lever WCPOS Pro direct aan mij. Ik begrijp dat ik mijn herroepingsrecht van 14 dagen verlies zodra de levering begint — zie het <policy>restitutiebeleid</policy>.",
+          "gate": "Vink het vakje hierboven aan om verder te gaan naar betalen."
+        },
         "methods": {
           "card": {
             "title": "Kaart",
@@ -1317,13 +1321,14 @@
     "refunds": {
       "meta": {
         "title": "Restitutiebeleid",
-        "description": "Het restitutiebeleid van WCPOS Pro: hoe je binnen 14 dagen na aankoop een restitutie aanvraagt en hoe restituties worden uitbetaald."
+        "description": "Het restitutiebeleid van WCPOS Pro: we betalen terug als Pro niet doet wat wij beloven. Wanneer wel, wanneer niet, en hoe je het vraagt."
       },
       "title": "Restitutiebeleid",
       "lastUpdated": "Laatst bijgewerkt: {date}",
-      "intro": "Aankopen van WCPOS Pro — eerste aankoop of verlenging, jaarlijks of levenslang — kunnen binnen 14 dagen na aankoop worden terugbetaald. Mail ons binnen die periode en we betalen het volledige bedrag terug. Je hoeft geen reden op te geven.",
+      "intro": "WCPOS Pro is software die je downloadt. Op het moment van kopen heb je de licentiesleutel en de bestanden — er valt niets terug te geven. Daarom hanteren we geen terugbetalingstermijn zonder vragen: de gratis versie is de proefversie, en die verloopt nooit. We doen iets nuttigers: doet WCPOS Pro niet wat wij beloven, dan lossen we het op of betalen we je terug.",
       "prevention": {
         "title": "De beste restitutie is die je nooit nodig hebt",
+        "lead": "De gratis versie is de proefversie. De volledige kassa — onbeperkt producten, bestellingen en klanten — draait zolang je wilt op je winkel, kosteloos en zonder dat er iets op te zeggen valt. Al het andere dat je nodig hebt om Pro te beoordelen is ook openbaar. Gebruik het voordat je betaalt.",
         "items": {
           "p1": {
             "label": "Installeer de gratis plugin.",
@@ -1339,22 +1344,52 @@
           }
         }
       },
+      "yes": {
+        "title": "Wanneer we terugbetalen",
+        "lead": "Mail ons en we lossen het op als:",
+        "items": {
+          "y1": "WCPOS Pro iets niet doet wat deze website, de documentatie of ons antwoord op een vraag vooraf beloofde;",
+          "y2": "een bug of incompatibiliteit je een Pro-functie belet te gebruiken en wij dat niet binnen een redelijke termijn kunnen verhelpen;",
+          "y3": "er iets misging met de aankoop zelf — dubbel afgeschreven, verkeerd bedrag, of nooit een werkende licentiesleutel ontvangen."
+        }
+      },
+      "no": {
+        "title": "Wanneer niet",
+        "lead": "We betalen niet terug louter omdat:",
+        "items": {
+          "n1": "je van gedachten bent veranderd, of kocht zonder te controleren of WCPOS Pro past bij hoe jouw winkel werkt;",
+          "n2": "je een functie wilt die wij nooit hebben beloofd. Vraag het vóór je koopt — we antwoorden eerlijk, ook als het antwoord nee is;",
+          "n3": "de oorzaak in je hosting, je thema of een andere plugin ligt en wij niet krijgen wat we nodig hebben om het vast te stellen."
+        },
+        "note": "Dit beschrijft wanneer wij onze eigen afweging maken. Het raakt niet aan je wettelijke rechten; die staan hieronder en die respecteren we volledig."
+      },
+      "why": {
+        "title": "Waarom het zo werkt",
+        "items": {
+          "p1": "Een Pro-licentie koopt een jaar updates en priority support — niet het recht om de software te gebruiken. Loopt hij af, dan gaat er niets uit: je kassa, je gegevens en elke Pro-functie werken precies zoals daarvoor. Dat is bewust. Een kassa die op afstand uitgezet kan worden, is een kassa die je midden in een verkoop in de steek kan laten, en die wil ik niet bouwen.",
+          "p2": "Verlengen is ook een keuze, nooit een automatische afschrijving. Er wordt geen kaart bewaard, en er wordt je niets in rekening gebracht tenzij je opnieuw koopt. Het is de eerlijkste afspraak die ik kon bedenken, en hij werkt twee kanten op: lever ik geen updates meer die hun geld waard zijn, dan verleng je gewoon niet — en dat is precies de druk waar ik onder wil staan.",
+          "p3": "Daar staat iets tegenover, en dat zeg ik liever ronduit. Eenmaal geïnstalleerd en geactiveerd blijft Pro werken, of de licentie erachter nu geldig is of niet. Een restitutie trekt de sleutel in, waarmee updates en support stoppen, maar ze grijpt niet in je site in om iets terug te halen. Dat deel draait op goed vertrouwen — en vrijwel iedereen houdt zich eraan.",
+          "p4": "WCPOS wordt door één persoon gebouwd. De gratis plugin is open source en blijft dat; Pro betaalt de tijd die in allebei gaat. Een restitutie is geen schone lei: de betaalkosten zijn hoe dan ook weg, en de uren voor vragen vooraf en het inrichten van een winkel ook.",
+          "p5": "Wat ik vraag is dus eenvoudig: probeer het eerst. De gratis versie staat klaar, de demo draait op de huidige Pro-build, en ik beantwoord vragen vooraf eerlijk, ook als het antwoord nee is. Doe dat, en als Pro daarna nog steeds niet doet wat ik heb gezegd, krijg je je geld terug zonder discussie. Wat ik niet kan dragen, zijn restituties aan mensen die zonder te kijken hebben gekocht."
+        }
+      },
       "request": {
         "title": "Een restitutie aanvragen",
-        "body": "Mail <email>support@wcpos.com</email> vanaf het e-mailadres dat je voor de aankoop hebt gebruikt, binnen 14 dagen na aankoop. Als je vertelt waarom, helpt dat ons verbeteren, maar het is niet verplicht om de restitutie te krijgen."
+        "body": "Mail <email>support@wcpos.com</email> vanaf het adres waarmee je hebt gekocht en vertel ons wat WCPOS Pro niet doet. Geef ons eerst de kans het op te lossen — meestal blijkt het een instelling of een bug die we snel verhelpen. Lukt dat niet, dan betalen we je terug."
       },
       "payment": {
         "title": "Hoe restituties worden uitbetaald",
-        "body": "Restituties gaan via Stripe of PayPal terug naar de oorspronkelijke betaalmethode en verschijnen meestal binnen 5–10 werkdagen op je afschrift, afhankelijk van je bank of kaartuitgever. Terugbetaalde licentiesleutels worden ingetrokken en werken onmiddellijk niet meer."
+        "body": "Restituties gaan via Stripe of PayPal terug naar de oorspronkelijke betaalmethode en staan doorgaans binnen 5–10 werkdagen op je afschrift, afhankelijk van je bank of kaartuitgever. Betalingen in Bitcoin betalen we in overleg terug — mail ons en we spreken de methode samen af. Een terugbetaalde licentiesleutel wordt ingetrokken en werkt direct niet meer."
       },
       "renewals": {
         "title": "Licentieverlengingen",
-        "body": "Jaarlicenties worden niet automatisch verlengd — we brengen nooit opnieuw kosten in rekening zonder een nieuwe aankoop van jou. Dezelfde restitutietermijn van 14 dagen geldt voor verlengingsaankopen."
+        "body": "Jaarlicenties worden nooit automatisch verlengd, dus er is geen onverwachte afschrijving terug te draaien — we kunnen je niets in rekening brengen zonder dat je opnieuw koopt. Kies je wel voor verlenging, dan geldt dit beleid voor die aankoop precies zoals voor een eerste."
       },
       "rights": {
         "title": "Je wettelijke rechten",
-        "body": "Voor consumenten in de EU, EER en het VK: onze restitutietermijn van 14 dagen komt overeen met je wettelijke herroepingsrecht voor dit soort aankoop, en het uitoefenen van beide werkt op dezelfde manier — mail ons binnen 14 dagen.",
-        "defective": "Als WCPOS Pro gebrekkig is of niet werkt zoals beschreven, gelden wettelijke remedies voor ondeugdelijke digitale inhoud op elk moment, los van de termijn van 14 dagen. Niets in dit beleid beperkt bovendien rechten die je hebt onder de consumentenbeschermingswetten van je land — waar lokale wetgeving je sterkere rechten geeft, gelden die rechten."
+        "withdrawal": "Voor consumenten in de EU, EER en het VK geldt bij aankopen op afstand normaal een herroepingsrecht van 14 dagen. Direct geleverde digitale inhoud is de uitzondering: bij het afrekenen vragen we je in te stemmen met onmiddellijke levering en te bevestigen dat daarmee dat recht van 14 dagen vervalt. Het aanvinken van dat vakje laat het vervallen. Is het je nooit gevraagd, dan blijft het recht bestaan en respecteren we het.",
+        "conformity": "Je recht op werkende software staat daar los van, en niets op deze pagina kan dat wegnemen. Is WCPOS Pro gebrekkig of komt het niet overeen met hoe wij het beschreven, dan heb je recht op herstel — en op prijsvermindering of terugbetaling als ons dat niet lukt. In de EU en EER geldt dat minstens twee jaar vanaf de aankoop. Geeft de wet van jouw land je sterkere rechten dan dit beleid, dan gelden die rechten.",
+        "business": "Koop je als bedrijf en niet als consument? Dan gelden de wettelijke consumentenrechten hierboven niet voor jou — al het overige op deze pagina wel."
       }
     },
     "terms": {
@@ -1658,7 +1693,7 @@
         },
         "v4": {
           "title": "Een eerlijke licentie",
-          "body": "Als een Pro-licentie verloopt, blijft Pro werken — je ontvangt alleen geen updates meer. Niets waar je op vertrouwt wordt uitgeschakeld."
+          "body": "Er wordt geen kaart bewaard en nooit automatisch afgeschreven. Verlengen is een keuze, geen standaardinstelling — was een jaar updates het geld niet waard, dan betaal je niet opnieuw. En een verlopen licentie zet nooit iets uit."
         }
       }
     },
@@ -1889,7 +1924,7 @@
       "pricing": {
         "title": "Wat kost betaald nu echt?",
         "oliver": "Oliver (jaarlijkse facturering): Starter $89 per jaar — 1 vestiging, 2 kassastations, 3 medewerkers. Pro $289 per jaar — 2 vestigingen, onbeperkt kassastations, 15 medewerkers. Enterprise $489 per jaar — onbeperkt. Terugkerend, één WooCommerce-site per licentie.",
-        "wcpos": "WCPOS Pro: $129 — een eenmalige betaling voor een jaar updates en priority support. Het verlengt nooit automatisch, en de Pro-versie blijft werken als het jaar voorbij is — er gaat niets uit, nooit. Dat is bewust: verlengingen moeten worden verdiend met updates die hun geld waard zijn. Of $399 lifetime. Elke licentie dekt een domein plus een staging-site, met onbeperkte apparaten en kassamedewerkers. Jaarlicentiehouders kunnen upgraden naar lifetime door het verschil van $270 bij te betalen. 14 dagen geld-terug-garantie.",
+        "wcpos": "WCPOS Pro: $129 — een eenmalige betaling voor een jaar updates en priority support. Het verlengt nooit automatisch, en de Pro-versie blijft werken als het jaar voorbij is — er gaat niets uit, nooit. Dat is bewust: verlengingen moeten worden verdiend met updates die hun geld waard zijn. Of $399 lifetime. Elke licentie dekt een domein plus een staging-site, met onbeperkte apparaten en kassamedewerkers. Doet Pro niet wat wij beloven, dan krijg je je geld terug.",
         "math": "Bij één vestiging is de Starter van Oliver in het eerste jaar goedkoper ($89 tegenover $129). Vanaf het tweede jaar slaat de rekensom om: Oliver blijft elk jaar factureren, terwijl een levenslange WCPOS-licentie vanaf jaar vier $0 kost, zelfs vergeleken met het goedkoopste abonnement van Oliver — en $399 in totaal tegenover $1,467+ voor drie jaar Oliver Enterprise.",
         "proAdds": "Pro voegt toe: beheer van meerdere winkels, integraties met pinterminals, kortingsbonnen, terugbetalingen via de POS API, bestelgeschiedenis, klantbeheer aan de kassa, winkelspecifieke prijzen, voorraad- en prijsbewerking, dagafsluitingsrapporten en de extensiedirectory.",
         "demoPrefix": "Probeer alles eerst op",

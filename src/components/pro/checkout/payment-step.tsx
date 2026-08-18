@@ -1,7 +1,10 @@
 'use client'
 
+import { useId, useState, type ReactNode } from 'react'
 import { useTranslations } from 'next-intl'
 import { Bitcoin, CreditCard } from 'lucide-react'
+import { Link } from '@/i18n/navigation'
+import { TextLink } from '@/components/ui/text-link'
 import { StripeProvider } from '../stripe-provider'
 import { PayPalProvider } from '../paypal-provider'
 import { CheckoutForm } from '../checkout-form'
@@ -116,6 +119,70 @@ interface PaymentStepProps {
   onProcessingChange?: (processing: boolean) => void
 }
 
+/**
+ * Immediate-supply consent — the statutory gate, not a nicety.
+ *
+ * WCPOS Pro is digital content delivered the moment the order completes, so
+ * the 14-day right of withdrawal (Consumer Rights Directive art. 16(1)(m),
+ * as amended by (EU) 2019/2161) only falls away when the buyer has given
+ * prior express consent to that immediate supply AND acknowledged losing the
+ * right. Unticked by default and separate from any other agreement: a
+ * pre-ticked or bundled box does not count as express consent.
+ *
+ * No payment control is rendered until it is ticked — the consent has to
+ * precede supply, and not rendering is the only version of that we can't
+ * accidentally regress past.
+ */
+function ConsentGate({
+  checked,
+  disabled,
+  onChange,
+}: {
+  checked: boolean
+  disabled: boolean
+  onChange: (checked: boolean) => void
+}) {
+  const t = useTranslations('pro.checkout.payment.consent')
+  const id = useId()
+
+  return (
+    <div className="rounded-md border border-border bg-muted/30 p-4">
+      <div className="flex gap-3">
+        <input
+          id={id}
+          type="checkbox"
+          checked={checked}
+          disabled={disabled}
+          onChange={(event) => onChange(event.target.checked)}
+          data-testid="checkout-supply-consent"
+          className="mt-0.5 h-4 w-4 shrink-0 accent-[var(--primary)]"
+        />
+        <label htmlFor={id} className="text-sm leading-6 text-muted-foreground">
+          {t.rich('label', {
+            policy: (chunks: ReactNode) => (
+              <TextLink asChild>
+                <Link href="/refunds" target="_blank">
+                  {chunks}
+                </Link>
+              </TextLink>
+            ),
+          })}
+        </label>
+      </div>
+    </div>
+  )
+}
+
+/** Stands in for a provider's pay controls until consent is given. */
+function ConsentPending() {
+  const t = useTranslations('pro.checkout.payment.consent')
+  return (
+    <p className="text-sm text-muted-foreground" data-testid="consent-pending">
+      {t('gate')}
+    </p>
+  )
+}
+
 /** Placeholder shown while a session mutation is in flight — the previous
  * session's pay buttons/links must not be clickable against stale data. */
 function PreparingMethod() {
@@ -155,6 +222,7 @@ export function PaymentStep({
   onProcessingChange,
 }: PaymentStepProps) {
   const t = useTranslations('pro.checkout.payment')
+  const [hasConsented, setHasConsented] = useState(false)
   const enabledCount = [enabled.stripe, enabled.paypal, enabled.btcpay].filter(
     Boolean
   ).length
@@ -201,7 +269,9 @@ export function PaymentStep({
           hint={t('methods.card.hint')}
           testId="payment-method-stripe"
         >
-          {isProcessing || !clientSecret ? (
+          {!hasConsented ? (
+            <ConsentPending />
+          ) : isProcessing || !clientSecret ? (
             <PreparingMethod />
           ) : (
             <CheckoutForm
@@ -235,7 +305,9 @@ export function PaymentStep({
           hint={t('methods.paypal.hint')}
           testId="payment-method-paypal"
         >
-          {isProcessing ? (
+          {!hasConsented ? (
+            <ConsentPending />
+          ) : isProcessing ? (
             <PreparingMethod />
           ) : (
             <PayPalProvider config={paypal}>
@@ -264,7 +336,9 @@ export function PaymentStep({
           hint={t('methods.bitcoin.hint')}
           testId="payment-method-btcpay"
         >
-          {isProcessing ? (
+          {!hasConsented ? (
+            <ConsentPending />
+          ) : isProcessing ? (
             <PreparingMethod />
           ) : (
             <div className="space-y-3">
@@ -284,7 +358,17 @@ export function PaymentStep({
     </div>
   )
 
+  const consentGate = (
+    <ConsentGate
+      checked={hasConsented}
+      disabled={lockMethods}
+      onChange={setHasConsented}
+    />
+  )
+
   // Wallets + card share one Stripe Elements instance (same client secret).
+  // The wallet row is a one-tap charge, so it stays unmounted until consent
+  // is given rather than merely disabled.
   if (enabled.stripe && clientSecret) {
     return (
       <StripeProvider
@@ -293,21 +377,31 @@ export function PaymentStep({
         publishableKey={stripePublishableKey}
         notConfiguredMessage={t('noneConfigured')}
       >
-        <ExpressCheckoutRow
-          cartId={cartId}
-          experiment={experiment}
-          experimentVariant={experimentVariant}
-          billingAddress={billingAddress}
-          customerEmail={customerEmail}
-          onAttempt={onProviderAttempt('stripe')}
-          onSuccess={onSuccess}
-          onFailure={onProviderFailure('stripe')}
-          onProcessingChange={onProcessingChange}
-        />
-        {selector}
+        <div className="space-y-4">
+          {consentGate}
+          {hasConsented && (
+            <ExpressCheckoutRow
+              cartId={cartId}
+              experiment={experiment}
+              experimentVariant={experimentVariant}
+              billingAddress={billingAddress}
+              customerEmail={customerEmail}
+              onAttempt={onProviderAttempt('stripe')}
+              onSuccess={onSuccess}
+              onFailure={onProviderFailure('stripe')}
+              onProcessingChange={onProcessingChange}
+            />
+          )}
+          {selector}
+        </div>
       </StripeProvider>
     )
   }
 
-  return selector
+  return (
+    <div className="space-y-4">
+      {consentGate}
+      {selector}
+    </div>
+  )
 }

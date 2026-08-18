@@ -36,12 +36,14 @@ test.describe('404 handling for unknown URLs', () => {
   })
 
   test('unknown extension-less path under a valid locale returns the localized 404', async ({
-    request,
+    page,
   }) => {
-    const response = await request.get('/de/does-not-exist')
+    const response = await page.goto('/de/does-not-exist')
 
-    expect(response.status()).toBe(404)
-    expect(await response.text()).toContain('Seite nicht gefunden')
+    expect(response?.status()).toBe(404)
+    await expect(
+      page.getByRole('heading', { name: 'Seite nicht gefunden' })
+    ).toBeVisible()
   })
 
   test('invalid locale prefix without a dot returns 404', async ({

@@ -441,7 +441,7 @@
         "subtitle": "Actualizaciones y soporte durante 1 año",
         "badgeLabel": "Más popular",
         "priceSuffix": "/año",
-        "ctaNote": "Pago único — nunca se renueva automáticamente."
+        "ctaNote": "Pago único: nunca se renueva automáticamente, y Pro sigue funcionando después."
       },
       "lifetime": {
         "title": "De por vida",
@@ -453,7 +453,7 @@
       "tryFreeLink": "Prueba primero la versión gratuita",
       "tryFreeSuffix": " — actualiza cuando sepas que cumple",
       "payments": "Tarjeta, PayPal o Bitcoin",
-      "proof": "Más de 5.000 tiendas activas · El plan Anual se descuenta del De por vida",
+      "proof": "Más de 5.000 tiendas activas",
       "unavailableTitle": "Precios temporalmente no disponibles",
       "unavailableDescription": "La información de precios no está disponible en este momento. Inténtalo de nuevo más tarde."
     },
@@ -467,9 +467,9 @@
         "question": "¿Cuál es la diferencia entre Anual y De por vida?",
         "answer": "La licencia Anual es un pago único que incluye actualizaciones y soporte prioritario durante un año. No se renueva automáticamente. La licencia De por vida es un pago único que incluye actualizaciones para siempre."
       },
-      "upgrade": {
-        "question": "¿Puedo pasar de Anual a De por vida?",
-        "answer": "¡Sí! Contacta con nuestro equipo de soporte y descontaremos el tiempo restante de tu licencia Anual del precio de una licencia De por vida."
+      "expiry": {
+        "question": "¿Qué pasa cuando caduca mi licencia?",
+        "answer": "No se apaga nada. La versión Pro que ya tienes sigue funcionando: tu caja, tus datos, todas las funciones. Lo que se detiene son las actualizaciones nuevas y el soporte prioritario, hasta que decidas renovar. Es deliberado: cada renovación debe ganarse con actualizaciones que valgan lo que cuestan, y significa que tu punto de venta nunca puede desactivarse en remoto."
       },
       "siteLimits": {
         "question": "¿En cuántos sitios puedo usar mi licencia?",
@@ -565,6 +565,10 @@
         "walletSeparator": "o elige cómo pagar",
         "noneConfigured": "No hay métodos de pago configurados. Ponte en contacto con soporte.",
         "ariaLabel": "Método de pago",
+        "consent": {
+          "label": "Quiero recibir WCPOS Pro de inmediato. Entiendo que pierdo mi derecho de desistimiento de 14 días en cuanto comienza la entrega — consulta la <policy>política de reembolsos</policy>.",
+          "gate": "Marca la casilla de arriba para continuar con el pago."
+        },
         "methods": {
           "card": {
             "title": "Tarjeta",
@@ -1317,13 +1321,14 @@
     "refunds": {
       "meta": {
         "title": "Política de reembolsos",
-        "description": "La política de reembolsos de WCPOS Pro: cómo solicitar un reembolso dentro de los 14 días posteriores a la compra y cómo se pagan los reembolsos."
+        "description": "La política de reembolsos de WCPOS Pro: reembolsamos cuando Pro no hace lo que decimos que hace. Cuándo reembolsamos, cuándo no y cómo pedirlo."
       },
       "title": "Política de reembolsos",
       "lastUpdated": "Última actualización: {date}",
-      "intro": "Las compras de WCPOS Pro — primera compra o renovación, anual o de por vida — pueden reembolsarse dentro de los 14 días posteriores a la compra. Escríbenos dentro de ese plazo y te reembolsaremos el importe completo. No necesitas dar un motivo.",
+      "intro": "WCPOS Pro es software descargable. En el momento en que compras ya tienes la clave de licencia y los archivos — no hay nada que devolver. Por eso no ofrecemos un plazo de devolución sin preguntas: la versión gratuita es la versión de prueba, y nunca caduca. A cambio hacemos algo más útil: si WCPOS Pro no hace lo que decimos que hace, lo arreglamos o te devolvemos el dinero.",
       "prevention": {
         "title": "El mejor reembolso es el que nunca necesitas",
+        "lead": "La versión gratuita es la versión de prueba. El punto de venta completo — productos, pedidos y clientes ilimitados — funciona en tu tienda todo el tiempo que quieras, sin coste y sin nada que cancelar. Todo lo demás que necesitas para juzgar Pro también es público. Úsalo antes de pagar.",
         "items": {
           "p1": {
             "label": "Instala el plugin gratuito.",
@@ -1339,22 +1344,52 @@
           }
         }
       },
+      "yes": {
+        "title": "Cuándo reembolsamos",
+        "lead": "Escríbenos y lo resolveremos si:",
+        "items": {
+          "y1": "WCPOS Pro no hace algo que este sitio, la documentación o nuestra respuesta a una pregunta previa a la compra decía que hacía.",
+          "y2": "un fallo o una incompatibilidad te impide usar una función Pro y no podemos arreglarlo en un plazo razonable.",
+          "y3": "algo salió mal en la propia compra — te cobramos dos veces, te cobramos un importe incorrecto o nunca recibiste una clave de licencia funcional."
+        }
+      },
+      "no": {
+        "title": "Cuándo no",
+        "lead": "No reembolsamos solo porque:",
+        "items": {
+          "n1": "hayas cambiado de opinión o hayas comprado sin comprobar si WCPOS Pro se ajusta a cómo funciona tu tienda.",
+          "n2": "quieras una función que nunca dijimos tener. Pregunta antes de comprar — respondemos con honestidad, también cuando la respuesta es no.",
+          "n3": "la causa esté en tu alojamiento, tu tema u otro plugin y no se nos dé lo necesario para diagnosticarlo."
+        },
+        "note": "Esto describe cuándo aplicamos nuestro criterio. No afecta a tus derechos legales, que se recogen más abajo y que respetamos íntegramente."
+      },
+      "why": {
+        "title": "Por qué funciona así",
+        "items": {
+          "p1": "Una licencia Pro compra un año de actualizaciones y soporte prioritario, no el permiso para usar el software. Cuando caduca no se apaga nada: tu caja, tus datos y todas las funciones Pro siguen funcionando igual que antes. Es deliberado. Un punto de venta que puede desactivarse en remoto es un punto de venta que puede fallarte en mitad de una venta, y no estoy dispuesto a construir eso.",
+          "p2": "Renovar es también una decisión, nunca un cargo automático. No se guarda ninguna tarjeta y no se te vuelve a cobrar salvo que decidas comprar de nuevo. Es el acuerdo más justo que se me ocurrió, y funciona en ambas direcciones: si dejo de publicar actualizaciones que valgan lo que cuestan, simplemente no renuevas, y esa es exactamente la presión bajo la que quiero estar.",
+          "p3": "Hay una contrapartida, y prefiero decirla claramente. Una vez instalado y activado, Pro sigue funcionando esté o no vigente la licencia que hay detrás. Un reembolso revoca la clave, lo que termina las actualizaciones y el soporte, pero no entra en tu sitio a recuperar nada. Esa parte se sostiene sobre la buena fe, y casi todo el mundo la respeta.",
+          "p4": "WCPOS lo desarrolla una sola persona. El plugin gratuito es de código abierto y siempre lo será; Pro es lo que paga el tiempo que va a ambos. Un reembolso no es borrón y cuenta nueva: las comisiones de pago se pierden igualmente, y también las horas dedicadas a responder preguntas previas y a poner una tienda en marcha.",
+          "p5": "Por eso lo que pido es sencillo: pruébalo antes. La versión gratuita está ahí, la demo ejecuta la versión Pro actual y respondo con honestidad a las preguntas previas a la compra, también cuando la respuesta es no. Hazlo y, si aun así Pro no hace lo que dije que hacía, recuperas tu dinero sin discusión. Lo que no puedo sostener es reembolsar a quien compró sin mirar."
+        }
+      },
       "request": {
         "title": "Cómo solicitar un reembolso",
-        "body": "Escribe a <email>support@wcpos.com</email> desde la dirección de correo electrónico que usaste para la compra, dentro de los 14 días posteriores a la compra. Decirnos el motivo nos ayuda a mejorar, pero no es obligatorio para recibir el reembolso."
+        "body": "Escribe a <email>support@wcpos.com</email> desde la dirección con la que compraste y cuéntanos qué no está haciendo WCPOS Pro. Danos primero la oportunidad de arreglarlo — la mayoría de las solicitudes resultan ser un ajuste o un fallo que resolvemos rápido. Si no podemos, te devolvemos el dinero."
       },
       "payment": {
         "title": "Cómo se pagan los reembolsos",
-        "body": "Los reembolsos vuelven al método de pago original mediante Stripe o PayPal y suelen aparecer en tu extracto en un plazo de 5 a 10 días laborables, según tu banco o emisor de la tarjeta. Las claves de licencia reembolsadas se revocan y dejan de funcionar inmediatamente."
+        "body": "Los reembolsos vuelven al método de pago original a través de Stripe o PayPal y suelen aparecer en tu extracto en 5–10 días hábiles, según tu banco o emisor de la tarjeta. Los pagos en Bitcoin se reembolsan de mutuo acuerdo — escríbenos y acordamos el método contigo. Una clave de licencia reembolsada queda revocada y deja de funcionar de inmediato."
       },
       "renewals": {
         "title": "Renovaciones de licencia",
-        "body": "Las licencias anuales no se renuevan automáticamente: nunca volvemos a cobrarte sin una nueva compra por tu parte. El mismo plazo de reembolso de 14 días se aplica a las compras de renovación."
+        "body": "Las licencias anuales nunca se renuevan automáticamente, así que no hay ningún cargo inesperado que revertir — no podemos cobrarte de nuevo sin que vuelvas a comprar. Cuando decidas renovar, esta política se aplica a esa compra igual que a la primera."
       },
       "rights": {
         "title": "Tus derechos legales",
-        "body": "Para consumidores de la UE, el EEE y el Reino Unido: nuestro plazo de reembolso de 14 días coincide con tu derecho legal de desistimiento para este tipo de compra, y ejercer cualquiera de los dos funciona igual: escríbenos dentro de los 14 días.",
-        "defective": "Si WCPOS Pro es defectuoso o no funciona según lo descrito, los remedios legales por contenido digital defectuoso se aplican en cualquier momento, independientemente del plazo de 14 días. Y nada en esta política limita los derechos que tengas según las leyes de protección al consumidor de tu país; cuando la ley local te otorgue derechos más sólidos, se aplican esos derechos."
+        "withdrawal": "Para consumidores de la UE, el EEE y el Reino Unido, las compras a distancia suelen incluir un derecho de desistimiento de 14 días. El contenido digital entregado de inmediato es la excepción: en el pago te pedimos aceptar la entrega inmediata y reconocer que, al hacerlo, ese derecho de 14 días se extingue. Marcar esa casilla es lo que lo extingue. Si nunca se te pidió marcarla, el derecho sigue vigente y lo respetaremos.",
+        "conformity": "Tu derecho a un software que funcione es independiente, y nada en esta página puede anularlo. Si WCPOS Pro es defectuoso o no se corresponde con cómo lo describimos, tienes derecho a que se subsane — y a una reducción del precio o a un reembolso si no lo conseguimos. En la UE y el EEE eso dura al menos dos años desde la compra. Si la ley de tu país te otorga derechos más amplios que esta política, prevalecen esos derechos.",
+        "business": "¿Compras como empresa y no como consumidor? Entonces los derechos legales de consumo anteriores no se te aplican — pero todo lo demás de esta página sí."
       }
     },
     "terms": {
@@ -1658,7 +1693,7 @@
         },
         "v4": {
           "title": "Una licencia justa",
-          "body": "Si una licencia Pro caduca, Pro sigue funcionando; solo dejas de recibir actualizaciones. Nada de lo que necesitas se desactiva."
+          "body": "No se guarda ninguna tarjeta ni se cobra nada automáticamente. Renovar es una decisión, no algo por defecto: si un año de actualizaciones no valió lo que costó, no vuelves a pagar. Y una licencia caducada nunca apaga nada."
         }
       }
     },
@@ -1889,7 +1924,7 @@
       "pricing": {
         "title": "¿Cuánto cuesta realmente la versión de pago?",
         "oliver": "Oliver (facturación anual): Starter, $89 al año — 1 establecimiento, 2 puestos, 3 empleados. Pro, $289 al año — 2 establecimientos, puestos ilimitados, 15 empleados. Enterprise, $489 al año — ilimitado. Recurrente, un sitio WooCommerce por licencia.",
-        "wcpos": "WCPOS Pro: $129 — un pago único que cubre un año de actualizaciones y soporte prioritario. Nunca se renueva automáticamente, y la versión Pro sigue funcionando cuando termina el año — nada se apaga, nunca. Es deliberado: cada renovación debe ganarse con actualizaciones que valgan lo que cuestan. O $399 de por vida. Cada licencia cubre un dominio más un sitio de staging, con dispositivos y cajeros ilimitados. Quienes compran la anual pueden pasar a la vitalicia pagando la diferencia de $270. Garantía de devolución de 14 días.",
+        "wcpos": "WCPOS Pro: $129 — un pago único que cubre un año de actualizaciones y soporte prioritario. Nunca se renueva automáticamente, y la versión Pro sigue funcionando cuando termina el año — nada se apaga, nunca. Es deliberado: cada renovación debe ganarse con actualizaciones que valgan lo que cuestan. O $399 de por vida. Cada licencia cubre un dominio más un sitio de staging, con dispositivos y cajeros ilimitados. Si no hace lo que decimos que hace, te devolvemos el dinero.",
         "math": "Con un solo establecimiento, el Starter de Oliver es más barato el primer año ($89 frente a $129). A partir del segundo año la cuenta se invierte: Oliver sigue facturando cada año, mientras que una licencia de por vida de WCPOS cuesta $0 desde el cuarto año incluso frente al plan más barato de Oliver — y $399 en total frente a $1,467+ por tres años de Oliver Enterprise.",
         "proAdds": "Pro añade: gestión multitienda, integraciones con terminales de tarjeta, cupones, reembolsos mediante la API del TPV, historial de pedidos, gestión de clientes en la caja, precios por tienda, edición de stock y precios, informes de cierre de caja y el directorio de extensiones.",
         "demoPrefix": "Pruébelo todo primero en",

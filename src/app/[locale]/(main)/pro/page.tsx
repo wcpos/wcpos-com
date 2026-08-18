@@ -197,8 +197,8 @@ export default async function ProPage({
             answer={t('faq.yearlyVsLifetime.answer')}
           />
           <FaqItem
-            question={t('faq.upgrade.question')}
-            answer={t('faq.upgrade.answer')}
+            question={t('faq.expiry.question')}
+            answer={t('faq.expiry.answer')}
           />
           <FaqItem
             question={t('faq.siteLimits.question')}

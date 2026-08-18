@@ -22,6 +22,21 @@ vi.mock('@/lib/analytics/consent', () => ({
   readAnalyticsConsent: () => 'granted',
 }))
 
+vi.mock('@/i18n/navigation', () => ({
+  Link: ({
+    children,
+    href,
+    ...props
+  }: {
+    children: React.ReactNode
+    href: unknown
+  }) => (
+    <a href={typeof href === 'string' ? href : '#'} {...props}>
+      {children}
+    </a>
+  ),
+}))
+
 vi.mock('../stripe-provider', () => ({
   StripeProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 }))
@@ -102,7 +117,23 @@ import { PaymentStep, type PaymentMethod } from './payment-step'
 
 const onFailure = vi.fn()
 
-function renderStep(method: PaymentMethod = 'stripe') {
+/**
+ * Renders the step and, by default, gives the immediate-supply consent that
+ * every payment control now sits behind. Pass `{ consent: false }` to assert
+ * on the gate itself.
+ */
+function renderStep(
+  method: PaymentMethod = 'stripe',
+  { consent = true }: { consent?: boolean } = {}
+) {
+  const result = renderStepRaw(method)
+  if (consent) {
+    fireEvent.click(screen.getByTestId('checkout-supply-consent'))
+  }
+  return result
+}
+
+function renderStepRaw(method: PaymentMethod = 'stripe', lockMethods = false) {
   return render(
     <PaymentStep
       cartId="cart_private"
@@ -113,6 +144,7 @@ function renderStep(method: PaymentMethod = 'stripe') {
       method={method}
       onMethodChange={() => {}}
       isProcessing={false}
+      lockMethods={lockMethods}
       enabled={{ stripe: true, paypal: true, btcpay: true }}
       stripePublishableKey="pk_test"
       paypal={{ clientId: 'paypal-client', environment: 'sandbox' }}
@@ -138,6 +170,74 @@ function renderStep(method: PaymentMethod = 'stripe') {
     />
   )
 }
+
+describe('PaymentStep immediate-supply consent gate', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+  })
+
+  it('renders no payment control until consent is given', () => {
+    renderStepRaw('stripe')
+
+    // The method rows stay visible so the buyer can see what is on offer...
+    expect(screen.getByTestId('payment-method-stripe')).toBeInTheDocument()
+    expect(screen.getByTestId('payment-method-paypal')).toBeInTheDocument()
+    expect(screen.getByTestId('payment-method-btcpay')).toBeInTheDocument()
+
+    // ...but nothing that can start a charge is mounted.
+    expect(
+      screen.queryByRole('button', { name: 'Attempt stripe' })
+    ).not.toBeInTheDocument()
+    expect(
+      screen.queryByRole('button', { name: 'Attempt express' })
+    ).not.toBeInTheDocument()
+    expect(screen.getByTestId('consent-pending')).toBeInTheDocument()
+  })
+
+  it('mounts the pay controls once ticked', () => {
+    renderStepRaw('stripe')
+    fireEvent.click(screen.getByTestId('checkout-supply-consent'))
+
+    expect(
+      screen.getByRole('button', { name: 'Attempt stripe' })
+    ).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: 'Attempt express' })
+    ).toBeInTheDocument()
+  })
+
+  it('withdraws the pay controls again if the box is unticked', () => {
+    renderStepRaw('stripe')
+    const box = screen.getByTestId('checkout-supply-consent')
+
+    fireEvent.click(box)
+    expect(
+      screen.getByRole('button', { name: 'Attempt stripe' })
+    ).toBeInTheDocument()
+
+    fireEvent.click(box)
+    expect(
+      screen.queryByRole('button', { name: 'Attempt stripe' })
+    ).not.toBeInTheDocument()
+  })
+
+  it('locks consent while payment confirmation is in flight', () => {
+    renderStepRaw('stripe', true)
+
+    expect(screen.getByTestId('checkout-supply-consent')).toBeDisabled()
+  })
+
+  it('gates the wallet row too, not just the card form', () => {
+    renderStepRaw('btcpay')
+
+    expect(
+      screen.queryByRole('button', { name: 'Attempt express' })
+    ).not.toBeInTheDocument()
+    expect(
+      screen.queryByRole('button', { name: 'Attempt btcpay' })
+    ).not.toBeInTheDocument()
+  })
+})
 
 describe('PaymentStep checkout lifecycle analytics', () => {
   beforeEach(() => {
