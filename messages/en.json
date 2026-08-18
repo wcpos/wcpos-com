@@ -1367,9 +1367,10 @@
         "title": "Why it works this way",
         "items": {
           "p1": "A Pro license buys a year of updates and priority support — not permission to run the software. When it expires nothing switches off: your register, your data and every Pro feature keep working exactly as before. That is deliberate. A point of sale that can be disabled remotely is one that can fail you mid-trade, and I am not willing to build that.",
-          "p2": "There is a flip side, and I would rather say it plainly. Once Pro is installed and activated it keeps running whether or not the license behind it is current. Refunding a purchase revokes the key, which ends updates and support, but it does not reach into your site and take anything back. That part of the arrangement runs on good faith — and nearly everyone honours it.",
-          "p3": "WCPOS is built by one person. The free plugin is open source and always will be, and Pro is what pays for the time that goes into both. A refund is not a neutral reset: the card fees are spent either way, and so are the hours that went into pre-sale questions and helping set a store up.",
-          "p4": "So the ask is simple. Try it first — the free version is right there, the demo runs the current Pro build, and I answer pre-sale questions honestly, including when the answer is no. Do that, and if Pro still doesn’t do what I said it would, you get your money back without an argument. What I can’t carry is refunding people who bought without looking."
+          "p2": "Renewing is a decision too, never an automatic charge. No card is kept on file, and nothing bills you again unless you choose to buy again. It is the fairest arrangement I could come up with, and it cuts both ways: if I stop shipping updates worth paying for, you simply don’t renew — which is exactly the pressure I want to be under.",
+          "p3": "There is a flip side, and I would rather say it plainly. Once Pro is installed and activated it keeps running whether or not the license behind it is current. Refunding a purchase revokes the key, which ends updates and support, but it does not reach into your site and take anything back. That part of the arrangement runs on good faith — and nearly everyone honours it.",
+          "p4": "WCPOS is built by one person. The free plugin is open source and always will be, and Pro is what pays for the time that goes into both. A refund is not a neutral reset: the card fees are spent either way, and so are the hours that went into pre-sale questions and helping set a store up.",
+          "p5": "So the ask is simple. Try it first — the free version is right there, the demo runs the current Pro build, and I answer pre-sale questions honestly, including when the answer is no. Do that, and if Pro still doesn’t do what I said it would, you get your money back without an argument. What I can’t carry is refunding people who bought without looking."
         }
       },
       "request": {
@@ -1692,7 +1693,7 @@
         },
         "v4": {
           "title": "A fair licence",
-          "body": "If a Pro licence lapses, Pro keeps working — you just stop getting updates. Nothing you rely on gets switched off."
+          "body": "No card is stored, and nothing is ever charged automatically. Renewing is a decision, not a default — if a year of updates wasn’t worth paying for, you don’t pay again. And a lapsed licence never switches anything off."
         }
       }
     },

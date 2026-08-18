@@ -1367,9 +1367,10 @@
         "title": "Waarom het zo werkt",
         "items": {
           "p1": "Een Pro-licentie koopt een jaar updates en priority support — niet het recht om de software te gebruiken. Loopt hij af, dan gaat er niets uit: je kassa, je gegevens en elke Pro-functie werken precies zoals daarvoor. Dat is bewust. Een kassa die op afstand uitgezet kan worden, is een kassa die je midden in een verkoop in de steek kan laten, en die wil ik niet bouwen.",
-          "p2": "Daar staat iets tegenover, en dat zeg ik liever ronduit. Eenmaal geïnstalleerd en geactiveerd blijft Pro werken, of de licentie erachter nu geldig is of niet. Een restitutie trekt de sleutel in, waarmee updates en support stoppen, maar ze grijpt niet in je site in om iets terug te halen. Dat deel draait op goed vertrouwen — en vrijwel iedereen houdt zich eraan.",
-          "p3": "WCPOS wordt door één persoon gebouwd. De gratis plugin is open source en blijft dat; Pro betaalt de tijd die in allebei gaat. Een restitutie is geen schone lei: de betaalkosten zijn hoe dan ook weg, en de uren voor vragen vooraf en het inrichten van een winkel ook.",
-          "p4": "Wat ik vraag is dus eenvoudig: probeer het eerst. De gratis versie staat klaar, de demo draait op de huidige Pro-build, en ik beantwoord vragen vooraf eerlijk, ook als het antwoord nee is. Doe dat, en als Pro daarna nog steeds niet doet wat ik heb gezegd, krijg je je geld terug zonder discussie. Wat ik niet kan dragen, zijn restituties aan mensen die zonder te kijken hebben gekocht."
+          "p2": "Verlengen is ook een keuze, nooit een automatische afschrijving. Er wordt geen kaart bewaard, en er wordt je niets in rekening gebracht tenzij je opnieuw koopt. Het is de eerlijkste afspraak die ik kon bedenken, en hij werkt twee kanten op: lever ik geen updates meer die hun geld waard zijn, dan verleng je gewoon niet — en dat is precies de druk waar ik onder wil staan.",
+          "p3": "Daar staat iets tegenover, en dat zeg ik liever ronduit. Eenmaal geïnstalleerd en geactiveerd blijft Pro werken, of de licentie erachter nu geldig is of niet. Een restitutie trekt de sleutel in, waarmee updates en support stoppen, maar ze grijpt niet in je site in om iets terug te halen. Dat deel draait op goed vertrouwen — en vrijwel iedereen houdt zich eraan.",
+          "p4": "WCPOS wordt door één persoon gebouwd. De gratis plugin is open source en blijft dat; Pro betaalt de tijd die in allebei gaat. Een restitutie is geen schone lei: de betaalkosten zijn hoe dan ook weg, en de uren voor vragen vooraf en het inrichten van een winkel ook.",
+          "p5": "Wat ik vraag is dus eenvoudig: probeer het eerst. De gratis versie staat klaar, de demo draait op de huidige Pro-build, en ik beantwoord vragen vooraf eerlijk, ook als het antwoord nee is. Doe dat, en als Pro daarna nog steeds niet doet wat ik heb gezegd, krijg je je geld terug zonder discussie. Wat ik niet kan dragen, zijn restituties aan mensen die zonder te kijken hebben gekocht."
         }
       },
       "request": {
@@ -1692,7 +1693,7 @@
         },
         "v4": {
           "title": "Een eerlijke licentie",
-          "body": "Als een Pro-licentie verloopt, blijft Pro werken — je ontvangt alleen geen updates meer. Niets waar je op vertrouwt wordt uitgeschakeld."
+          "body": "Er wordt geen kaart bewaard en nooit automatisch afgeschreven. Verlengen is een keuze, geen standaardinstelling — was een jaar updates het geld niet waard, dan betaal je niet opnieuw. En een verlopen licentie zet nooit iets uit."
         }
       }
     },

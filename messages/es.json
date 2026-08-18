@@ -1367,9 +1367,10 @@
         "title": "Por qué funciona así",
         "items": {
           "p1": "Una licencia Pro compra un año de actualizaciones y soporte prioritario, no el permiso para usar el software. Cuando caduca no se apaga nada: tu caja, tus datos y todas las funciones Pro siguen funcionando igual que antes. Es deliberado. Un punto de venta que puede desactivarse en remoto es un punto de venta que puede fallarte en mitad de una venta, y no estoy dispuesto a construir eso.",
-          "p2": "Hay una contrapartida, y prefiero decirla claramente. Una vez instalado y activado, Pro sigue funcionando esté o no vigente la licencia que hay detrás. Un reembolso revoca la clave, lo que termina las actualizaciones y el soporte, pero no entra en tu sitio a recuperar nada. Esa parte se sostiene sobre la buena fe, y casi todo el mundo la respeta.",
-          "p3": "WCPOS lo desarrolla una sola persona. El plugin gratuito es de código abierto y siempre lo será; Pro es lo que paga el tiempo que va a ambos. Un reembolso no es borrón y cuenta nueva: las comisiones de pago se pierden igualmente, y también las horas dedicadas a responder preguntas previas y a poner una tienda en marcha.",
-          "p4": "Por eso lo que pido es sencillo: pruébalo antes. La versión gratuita está ahí, la demo ejecuta la versión Pro actual y respondo con honestidad a las preguntas previas a la compra, también cuando la respuesta es no. Hazlo y, si aun así Pro no hace lo que dije que hacía, recuperas tu dinero sin discusión. Lo que no puedo sostener es reembolsar a quien compró sin mirar."
+          "p2": "Renovar es también una decisión, nunca un cargo automático. No se guarda ninguna tarjeta y no se te vuelve a cobrar salvo que decidas comprar de nuevo. Es el acuerdo más justo que se me ocurrió, y funciona en ambas direcciones: si dejo de publicar actualizaciones que valgan lo que cuestan, simplemente no renuevas, y esa es exactamente la presión bajo la que quiero estar.",
+          "p3": "Hay una contrapartida, y prefiero decirla claramente. Una vez instalado y activado, Pro sigue funcionando esté o no vigente la licencia que hay detrás. Un reembolso revoca la clave, lo que termina las actualizaciones y el soporte, pero no entra en tu sitio a recuperar nada. Esa parte se sostiene sobre la buena fe, y casi todo el mundo la respeta.",
+          "p4": "WCPOS lo desarrolla una sola persona. El plugin gratuito es de código abierto y siempre lo será; Pro es lo que paga el tiempo que va a ambos. Un reembolso no es borrón y cuenta nueva: las comisiones de pago se pierden igualmente, y también las horas dedicadas a responder preguntas previas y a poner una tienda en marcha.",
+          "p5": "Por eso lo que pido es sencillo: pruébalo antes. La versión gratuita está ahí, la demo ejecuta la versión Pro actual y respondo con honestidad a las preguntas previas a la compra, también cuando la respuesta es no. Hazlo y, si aun así Pro no hace lo que dije que hacía, recuperas tu dinero sin discusión. Lo que no puedo sostener es reembolsar a quien compró sin mirar."
         }
       },
       "request": {
@@ -1692,7 +1693,7 @@
         },
         "v4": {
           "title": "Una licencia justa",
-          "body": "Si una licencia Pro caduca, Pro sigue funcionando; solo dejas de recibir actualizaciones. Nada de lo que necesitas se desactiva."
+          "body": "No se guarda ninguna tarjeta ni se cobra nada automáticamente. Renovar es una decisión, no algo por defecto: si un año de actualizaciones no valió lo que costó, no vuelves a pagar. Y una licencia caducada nunca apaga nada."
         }
       }
     },

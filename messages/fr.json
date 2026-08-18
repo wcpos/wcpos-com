@@ -1367,9 +1367,10 @@
         "title": "Pourquoi cela fonctionne ainsi",
         "items": {
           "p1": "Une licence Pro achète un an de mises à jour et de support prioritaire — pas le droit d’utiliser le logiciel. À son expiration, rien ne s’éteint : votre caisse, vos données et toutes les fonctions Pro continuent exactement comme avant. C’est délibéré. Une caisse qui peut être désactivée à distance est une caisse qui peut vous lâcher en pleine vente, et je ne veux pas construire cela.",
-          "p2": "Il y a une contrepartie, et je préfère la dire franchement. Une fois Pro installé et activé, il continue de fonctionner que la licence derrière soit à jour ou non. Un remboursement révoque la clé, ce qui met fin aux mises à jour et au support, mais il ne va pas reprendre quoi que ce soit sur votre site. Cette partie repose sur la bonne foi — et presque tout le monde la respecte.",
-          "p3": "WCPOS est développé par une seule personne. L’extension gratuite est open source et le restera ; Pro finance le temps consacré aux deux. Un remboursement n’est pas un retour à zéro : les frais de paiement sont perdus de toute façon, tout comme les heures passées à répondre aux questions avant-vente et à mettre une boutique en route.",
-          "p4": "Ce que je demande est donc simple : essayez d’abord. La version gratuite est là, la démo tourne avec la version Pro actuelle, et je réponds honnêtement aux questions avant-vente, y compris quand la réponse est non. Faites cela, et si Pro ne fait toujours pas ce que j’avais annoncé, vous êtes remboursé sans discussion. Ce que je ne peux pas porter, ce sont les remboursements de personnes qui ont acheté sans regarder."
+          "p2": "Le renouvellement est lui aussi une décision, jamais un prélèvement automatique. Aucune carte n’est conservée, et rien ne vous est facturé sans un nouvel achat de votre part. C’est l’arrangement le plus juste que j’aie trouvé, et il vaut dans les deux sens : si je cesse de livrer des mises à jour qui valent leur prix, vous ne renouvelez pas — et c’est exactement la pression sous laquelle je veux être.",
+          "p3": "Il y a une contrepartie, et je préfère la dire franchement. Une fois Pro installé et activé, il continue de fonctionner que la licence derrière soit à jour ou non. Un remboursement révoque la clé, ce qui met fin aux mises à jour et au support, mais il ne va pas reprendre quoi que ce soit sur votre site. Cette partie repose sur la bonne foi — et presque tout le monde la respecte.",
+          "p4": "WCPOS est développé par une seule personne. L’extension gratuite est open source et le restera ; Pro finance le temps consacré aux deux. Un remboursement n’est pas un retour à zéro : les frais de paiement sont perdus de toute façon, tout comme les heures passées à répondre aux questions avant-vente et à mettre une boutique en route.",
+          "p5": "Ce que je demande est donc simple : essayez d’abord. La version gratuite est là, la démo tourne avec la version Pro actuelle, et je réponds honnêtement aux questions avant-vente, y compris quand la réponse est non. Faites cela, et si Pro ne fait toujours pas ce que j’avais annoncé, vous êtes remboursé sans discussion. Ce que je ne peux pas porter, ce sont les remboursements de personnes qui ont acheté sans regarder."
         }
       },
       "request": {
@@ -1692,7 +1693,7 @@
         },
         "v4": {
           "title": "Une licence équitable",
-          "body": "Si une licence Pro expire, Pro continue de fonctionner — vous cessez simplement de recevoir les mises à jour. Rien de ce dont vous dépendez n’est coupé."
+          "body": "Aucune carte n’est conservée et rien n’est jamais prélevé automatiquement. Renouveler est une décision, pas un réglage par défaut : si une année de mises à jour n’a pas valu son prix, vous ne repayez pas. Et une licence expirée n’éteint jamais rien."
         }
       }
     },

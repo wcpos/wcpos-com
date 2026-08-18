@@ -1367,9 +1367,10 @@
         "title": "Warum das so ist",
         "items": {
           "p1": "Eine Pro-Lizenz kauft ein Jahr Updates und Priority-Support — nicht die Erlaubnis, die Software zu benutzen. Läuft sie ab, wird nichts abgeschaltet: deine Kasse, deine Daten und jede Pro-Funktion arbeiten weiter wie zuvor. Das ist Absicht. Eine Kasse, die sich aus der Ferne abschalten lässt, kann dich mitten im Verkauf im Stich lassen — so etwas will ich nicht bauen.",
-          "p2": "Das hat eine Kehrseite, die ich lieber offen ausspreche. Einmal installiert und aktiviert, läuft Pro weiter, ob die Lizenz dahinter noch gültig ist oder nicht. Eine Rückerstattung widerruft den Schlüssel und beendet damit Updates und Support, aber sie greift nicht in deine Website ein und holt sich nichts zurück. Dieser Teil beruht auf Vertrauen — und fast alle halten sich daran.",
-          "p3": "WCPOS wird von einer einzelnen Person entwickelt. Das kostenlose Plugin ist Open Source und bleibt es auch; Pro finanziert die Zeit, die in beides fließt. Eine Rückerstattung ist kein neutraler Reset: Die Zahlungsgebühren sind so oder so weg, ebenso die Stunden für Fragen vor dem Kauf und für die Einrichtung eines Shops.",
-          "p4": "Die Bitte ist deshalb einfach: Probier es vorher aus. Die kostenlose Version steht bereit, die Demo läuft mit dem aktuellen Pro-Stand, und ich beantworte Fragen vor dem Kauf ehrlich — auch wenn die Antwort Nein lautet. Tu das, und wenn Pro dann trotzdem nicht kann, was ich zugesagt habe, bekommst du dein Geld ohne Diskussion zurück. Was ich nicht tragen kann, sind Rückerstattungen an Leute, die ungeprüft gekauft haben."
+          "p2": "Auch die Verlängerung ist eine Entscheidung, nie eine automatische Abbuchung. Es wird keine Karte hinterlegt, und ohne einen neuen Kauf von dir wird dir nichts berechnet. Das ist die fairste Regelung, die mir eingefallen ist, und sie gilt in beide Richtungen: Liefere ich keine Updates mehr, die ihr Geld wert sind, verlängerst du eben nicht — genau unter diesem Druck will ich stehen.",
+          "p3": "Das hat eine Kehrseite, die ich lieber offen ausspreche. Einmal installiert und aktiviert, läuft Pro weiter, ob die Lizenz dahinter noch gültig ist oder nicht. Eine Rückerstattung widerruft den Schlüssel und beendet damit Updates und Support, aber sie greift nicht in deine Website ein und holt sich nichts zurück. Dieser Teil beruht auf Vertrauen — und fast alle halten sich daran.",
+          "p4": "WCPOS wird von einer einzelnen Person entwickelt. Das kostenlose Plugin ist Open Source und bleibt es auch; Pro finanziert die Zeit, die in beides fließt. Eine Rückerstattung ist kein neutraler Reset: Die Zahlungsgebühren sind so oder so weg, ebenso die Stunden für Fragen vor dem Kauf und für die Einrichtung eines Shops.",
+          "p5": "Die Bitte ist deshalb einfach: Probier es vorher aus. Die kostenlose Version steht bereit, die Demo läuft mit dem aktuellen Pro-Stand, und ich beantworte Fragen vor dem Kauf ehrlich — auch wenn die Antwort Nein lautet. Tu das, und wenn Pro dann trotzdem nicht kann, was ich zugesagt habe, bekommst du dein Geld ohne Diskussion zurück. Was ich nicht tragen kann, sind Rückerstattungen an Leute, die ungeprüft gekauft haben."
         }
       },
       "request": {
@@ -1692,7 +1693,7 @@
         },
         "v4": {
           "title": "Eine faire Lizenz",
-          "body": "Wenn eine Pro-Lizenz abläuft, funktioniert Pro weiter — du erhältst nur keine Updates mehr. Nichts, worauf du angewiesen bist, wird abgeschaltet."
+          "body": "Es wird keine Karte gespeichert und nie automatisch abgebucht. Verlängern ist eine Entscheidung, kein Automatismus — war ein Jahr an Updates das Geld nicht wert, zahlst du eben nicht erneut. Und eine abgelaufene Lizenz schaltet nie etwas ab."
         }
       }
     },

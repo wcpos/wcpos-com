@@ -10,7 +10,7 @@ const LEGAL_UPDATED_AT = '2026-08-18T12:00:00Z'
 const PREVENTION_ITEMS = ['p1', 'p2', 'p3'] as const
 const REFUND_ITEMS = ['y1', 'y2', 'y3'] as const
 const NO_REFUND_ITEMS = ['n1', 'n2', 'n3'] as const
-const WHY_PARAGRAPHS = ['p1', 'p2', 'p3', 'p4'] as const
+const WHY_PARAGRAPHS = ['p1', 'p2', 'p3', 'p4', 'p5'] as const
 
 function demoLink(chunks: ReactNode) {
   return <TextLink href="https://demo.wcpos.com/pos">{chunks}</TextLink>
