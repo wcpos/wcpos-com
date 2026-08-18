@@ -144,6 +144,19 @@ beforeEach(() => {
   vi.stubGlobal('fetch', mockFetch)
 })
 
+/**
+ * Renewals go through the same PaymentStep as a first purchase, so the pay
+ * controls only mount once immediate-supply consent is given. Wait for the
+ * prepared cart, tick the box, then wait for the form itself.
+ */
+async function reachPaymentForm(scope: { getByTestId: (id: string) => HTMLElement } = screen) {
+  await waitFor(() =>
+    expect(scope.getByTestId('checkout-supply-consent')).toBeTruthy()
+  )
+  fireEvent.click(scope.getByTestId('checkout-supply-consent'))
+  await waitFor(() => expect(scope.getByTestId('checkout-form')).toBeTruthy())
+}
+
 describe('RenewClient', () => {
   it('preps the cart via the existing routes, then renders the payment form', async () => {
     mockFetch
@@ -156,9 +169,7 @@ describe('RenewClient', () => {
 
     render(<RenewClient {...props()} />)
 
-    await waitFor(() =>
-      expect(screen.getByTestId('checkout-form')).toBeTruthy()
-    )
+    await reachPaymentForm()
 
     const calls = mockFetch.mock.calls.map((c) => [c[0], c[1]?.method])
     expect(calls).toEqual([
@@ -196,7 +207,7 @@ describe('RenewClient', () => {
       .mockResolvedValueOnce(okJson({ attributed: true }))
 
     render(<RenewClient {...props()} />)
-    await waitFor(() => expect(screen.getByTestId('checkout-form')).toBeTruthy())
+    await reachPaymentForm()
 
     fireEvent.click(screen.getByTestId('attempt-payment'))
     await waitFor(() =>
@@ -240,7 +251,7 @@ describe('RenewClient', () => {
       .mockResolvedValueOnce(okJson({ clientSecret: 'cs_1' }))
 
     render(<RenewClient {...props()} />)
-    await waitFor(() => expect(screen.getByTestId('checkout-form')).toBeTruthy())
+    await reachPaymentForm()
 
     fireEvent.click(screen.getByTestId('checkout-form'))
     expect(push).toHaveBeenCalledWith('/account/licenses?renewed=1')
@@ -315,6 +326,7 @@ describe('RenewClient', () => {
       )
 
     render(<RenewClient {...props({ amount: 129, currency: 'usd' })} />)
+    await reachPaymentForm()
 
     await waitFor(() =>
       expect(screen.getByTestId('checkout-total').textContent).toBe('15480 usd')
@@ -427,7 +439,7 @@ describe('RenewClient', () => {
     )
 
     // Card's form is live before the switch (its session secret is present).
-    expect(scoped.getByTestId('checkout-form')).toBeTruthy()
+    await reachPaymentForm(scoped)
 
     fireEvent.click(scoped.getByTestId('payment-method-paypal'))
 
@@ -457,7 +469,7 @@ describe('RenewClient', () => {
       .mockResolvedValueOnce(okJson({ clientSecret: 'cs_1' }))
 
     const { unmount } = render(<RenewClient {...props()} />)
-    await waitFor(() => expect(screen.getByTestId('checkout-form')).toBeTruthy())
+    await reachPaymentForm()
 
     fireEvent.click(screen.getByTestId('fail-order-pending'))
 

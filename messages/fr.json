@@ -453,7 +453,7 @@
       "tryFreeLink": "Essayez d'abord la version gratuite",
       "tryFreeSuffix": " — passez à Pro quand vous savez qu'elle fait le travail",
       "payments": "Carte, PayPal ou Bitcoin",
-      "proof": "Plus de 5 000 boutiques actives · L'Annuel est crédité vers l'À vie",
+      "proof": "Plus de 5 000 boutiques actives",
       "unavailableTitle": "Tarifs temporairement indisponibles",
       "unavailableDescription": "Les informations tarifaires sont actuellement indisponibles. Veuillez réessayer plus tard."
     },
@@ -466,10 +466,6 @@
       "yearlyVsLifetime": {
         "question": "Quelle est la différence entre Annuel et À vie ?",
         "answer": "La licence Annuel est un paiement unique qui inclut les mises à jour et le support prioritaire pendant un an. Elle ne se renouvelle pas automatiquement. La licence À vie est un paiement unique qui inclut les mises à jour pour toujours."
-      },
-      "upgrade": {
-        "question": "Puis-je passer d'Annuel à À vie ?",
-        "answer": "Oui ! Contactez notre équipe de support et nous créditerons le temps restant sur votre licence Annuel vers une licence À vie."
       },
       "siteLimits": {
         "question": "Sur combien de sites puis-je utiliser ma licence ?",
@@ -565,6 +561,10 @@
         "walletSeparator": "ou choisissez comment payer",
         "noneConfigured": "Aucun moyen de paiement n’est configuré. Veuillez contacter le support.",
         "ariaLabel": "Moyen de paiement",
+        "consent": {
+          "label": "Je souhaite recevoir WCPOS Pro immédiatement. Je comprends que je perds mon droit de rétractation de 14 jours dès que la fourniture commence — voir la <policy>politique de remboursement</policy>.",
+          "gate": "Cochez la case ci-dessus pour passer au paiement."
+        },
         "methods": {
           "card": {
             "title": "Carte",
@@ -1317,13 +1317,14 @@
     "refunds": {
       "meta": {
         "title": "Politique de remboursement",
-        "description": "La politique de remboursement de WCPOS Pro : comment demander un remboursement dans les 14 jours suivant l’achat, et comment les remboursements sont versés."
+        "description": "La politique de remboursement de WCPOS Pro : nous remboursons quand Pro ne fait pas ce que nous annonçons. Quand nous remboursons, quand nous ne remboursons pas, et comment demander."
       },
       "title": "Politique de remboursement",
       "lastUpdated": "Dernière mise à jour : {date}",
-      "intro": "Les achats de WCPOS Pro — premier achat ou renouvellement, annuel ou à vie — peuvent être remboursés dans les 14 jours suivant l’achat. Envoyez-nous un e-mail dans ce délai et nous vous remboursons intégralement. Vous n’avez pas besoin de donner de motif.",
+      "intro": "WCPOS Pro est un logiciel téléchargeable. Dès l’achat, vous avez la clé de licence et les fichiers — il n’y a rien à rendre. Nous ne proposons donc pas de fenêtre de remboursement sans justification. Nous faisons quelque chose de plus utile : si WCPOS Pro ne fait pas ce que nous annonçons, nous le corrigeons ou nous vous remboursons.",
       "prevention": {
         "title": "Le meilleur remboursement est celui dont vous n’avez jamais besoin",
+        "lead": "Tout ce qu’il vous faut pour juger WCPOS Pro avant de payer est gratuit et public. Servez-vous en — cela prend un après-midi, et c’est la façon honnête de savoir si cela convient à votre boutique.",
         "items": {
           "p1": {
             "label": "Installez le plugin gratuit.",
@@ -1339,22 +1340,42 @@
           }
         }
       },
+      "yes": {
+        "title": "Quand nous remboursons",
+        "lead": "Écrivez-nous et nous réglerons la situation si :",
+        "items": {
+          "y1": "WCPOS Pro ne fait pas quelque chose que ce site, la documentation ou notre réponse à une question avant-vente annonçait ;",
+          "y2": "un bug ou une incompatibilité vous empêche d’utiliser une fonction Pro et nous ne pouvons pas le corriger dans un délai raisonnable ;",
+          "y3": "l’achat lui-même s’est mal passé — double débit, montant erroné, ou aucune clé de licence fonctionnelle reçue."
+        }
+      },
+      "no": {
+        "title": "Quand nous ne remboursons pas",
+        "lead": "Nous ne remboursons pas au seul motif que :",
+        "items": {
+          "n1": "vous avez changé d’avis, ou acheté sans vérifier si WCPOS Pro correspond au fonctionnement de votre boutique ;",
+          "n2": "vous souhaitez une fonction que nous n’avons jamais annoncée. Demandez avant d’acheter — nous répondons honnêtement, y compris quand la réponse est non ;",
+          "n3": "la cause se trouve dans votre hébergement, votre thème ou une autre extension, et nous n’obtenons pas ce qu’il faut pour la diagnostiquer."
+        },
+        "note": "Ceci décrit les cas où nous exerçons notre appréciation. Cela n’affecte pas vos droits légaux, exposés ci-dessous, que nous respectons intégralement."
+      },
       "request": {
         "title": "Comment demander un remboursement",
-        "body": "Envoyez un e-mail à <email>support@wcpos.com</email> depuis l’adresse e-mail utilisée pour l’achat, dans les 14 jours suivant celui-ci. Nous dire pourquoi nous aide à nous améliorer, mais ce n’est pas nécessaire pour obtenir le remboursement."
+        "body": "Écrivez à <email>support@wcpos.com</email> depuis l’adresse utilisée pour l’achat, en nous disant ce que WCPOS Pro ne fait pas. Laissez-nous d’abord une chance de corriger — la plupart des demandes se révèlent être un réglage ou un bug que nous résolvons vite. Si nous n’y arrivons pas, nous vous remboursons."
       },
       "payment": {
         "title": "Comment les remboursements sont versés",
-        "body": "Les remboursements sont renvoyés vers le moyen de paiement d’origine via Stripe ou PayPal et apparaissent généralement sur votre relevé sous 5 à 10 jours ouvrés, selon votre banque ou l’émetteur de votre carte. Les clés de licence remboursées sont révoquées et cessent immédiatement de fonctionner."
+        "body": "Les remboursements retournent sur le moyen de paiement d’origine via Stripe ou PayPal et apparaissent généralement sur votre relevé sous 5 à 10 jours ouvrés, selon votre banque ou votre émetteur de carte. Les paiements en Bitcoin sont remboursés d’un commun accord — écrivez-nous et nous conviendrons de la méthode. Une clé de licence remboursée est révoquée et cesse de fonctionner immédiatement."
       },
       "renewals": {
         "title": "Renouvellements de licence",
-        "body": "Les licences annuelles ne se renouvellent pas automatiquement — nous ne vous débitons jamais à nouveau sans nouvel achat de votre part. La même fenêtre de remboursement de 14 jours s’applique aux achats de renouvellement."
+        "body": "Les licences annuelles ne se renouvellent jamais automatiquement : il n’y a donc aucun prélèvement surprise à annuler — nous ne pouvons pas vous facturer de nouveau sans un nouvel achat de votre part. Si vous choisissez de renouveler, cette politique s’applique à cet achat exactement comme au premier."
       },
       "rights": {
         "title": "Vos droits légaux",
-        "body": "Pour les consommateurs de l’UE, de l’EEE et du Royaume-Uni : notre fenêtre de remboursement de 14 jours correspond à votre droit légal de rétractation pour ce type d’achat, et l’exercice de l’un ou l’autre fonctionne de la même façon — envoyez-nous un e-mail dans les 14 jours.",
-        "defective": "Si WCPOS Pro est défectueux ou ne fonctionne pas comme décrit, les recours légaux applicables aux contenus numériques défectueux s’appliquent à tout moment, indépendamment de la fenêtre de 14 jours. Rien dans cette politique ne limite les droits dont vous bénéficiez en vertu des lois de protection des consommateurs de votre pays — lorsque la loi locale vous accorde des droits plus forts, ces droits s’appliquent."
+        "withdrawal": "Pour les consommateurs de l’UE, de l’EEE et du Royaume-Uni, les achats à distance ouvrent normalement un droit de rétractation de 14 jours. Le contenu numérique fourni immédiatement fait exception : lors du paiement, nous vous demandons d’accepter la fourniture immédiate et de reconnaître que cette acceptation met fin à ce droit de 14 jours. C’est cette case cochée qui y met fin. Si elle ne vous a jamais été présentée, le droit demeure et nous le respecterons.",
+        "conformity": "Votre droit à un logiciel qui fonctionne est distinct, et rien sur cette page ne peut y renoncer. Si WCPOS Pro est défectueux ou ne correspond pas à notre description, vous avez droit à sa mise en conformité — et à une réduction de prix ou à un remboursement si nous n’y parvenons pas. Dans l’UE et l’EEE, cela vaut au moins deux ans à compter de l’achat. Là où la loi de votre pays vous accorde des droits plus étendus que cette politique, ce sont ces droits qui s’appliquent.",
+        "business": "Vous achetez en tant qu’entreprise et non en tant que consommateur ? Les droits légaux des consommateurs ci-dessus ne s’appliquent pas à vous — mais tout le reste de cette page, si."
       }
     },
     "terms": {
@@ -1889,7 +1910,7 @@
       "pricing": {
         "title": "Combien coûte réellement la version payante ?",
         "oliver": "Oliver (facturation annuelle) : Starter $89 par an — 1 point de vente, 2 postes, 3 employés. Pro $289 par an — 2 points de vente, postes illimités, 15 employés. Enterprise $489 par an — illimité. Récurrent, un site WooCommerce par licence.",
-        "wcpos": "WCPOS Pro : $129 — un paiement unique couvrant un an de mises à jour et de support prioritaire. Il ne se renouvelle jamais automatiquement, et la version Pro continue de fonctionner après la fin de l'année — rien ne s'éteint, jamais. C'est délibéré : chaque renouvellement doit être mérité par des mises à jour qui valent leur prix. Ou $399 à vie. Chaque licence couvre un domaine plus un site de préproduction, avec appareils et caissiers illimités. Les acheteurs annuels peuvent passer à la licence à vie en payant la différence de $270. Garantie de remboursement de 14 jours.",
+        "wcpos": "WCPOS Pro : $129 — un paiement unique couvrant un an de mises à jour et de support prioritaire. Il ne se renouvelle jamais automatiquement, et la version Pro continue de fonctionner après la fin de l'année — rien ne s'éteint, jamais. C'est délibéré : chaque renouvellement doit être mérité par des mises à jour qui valent leur prix. Ou $399 à vie. Chaque licence couvre un domaine plus un site de préproduction, avec appareils et caissiers illimités. Si le logiciel ne fait pas ce que nous annonçons, nous vous remboursons.",
         "math": "Pour un seul point de vente, le Starter d'Oliver est moins cher la première année ($89 contre $129). À partir de la deuxième année, le calcul s'inverse : Oliver facture chaque année, tandis qu'une licence à vie WCPOS revient à $0 dès la quatrième année, même face à l'offre la moins chère d'Oliver — et $399 au total contre $1,467+ pour trois ans d'Oliver Enterprise.",
         "proAdds": "Pro ajoute : gestion multi-boutiques, intégrations de terminaux de carte, codes promo, remboursements via l'API du POS, historique des commandes, gestion des clients à la caisse, tarification par boutique, modification des stocks et des prix, rapports de fin de journée, et le répertoire d'extensions.",
         "demoPrefix": "Essayez d'abord le tout sur",

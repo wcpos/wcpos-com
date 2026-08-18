@@ -453,7 +453,7 @@
       "tryFreeLink": "Experimente primeiro a versão gratuita",
       "tryFreeSuffix": " — faça o upgrade quando souber que atende",
       "payments": "Cartão, PayPal ou Bitcoin",
-      "proof": "Mais de 5.000 lojas ativas · O Anual é creditado no Vitalício",
+      "proof": "Mais de 5.000 lojas ativas",
       "unavailableTitle": "Preços temporariamente indisponíveis",
       "unavailableDescription": "As informações de preços estão indisponíveis no momento. Tente novamente mais tarde."
     },
@@ -466,10 +466,6 @@
       "yearlyVsLifetime": {
         "question": "Qual é a diferença entre o Anual e o Vitalício?",
         "answer": "A licença Anual é um pagamento único que inclui atualizações e suporte prioritário durante um ano. Não renova automaticamente. A licença Vitalícia é um pagamento único que inclui atualizações para sempre."
-      },
-      "upgrade": {
-        "question": "Posso fazer upgrade do Anual para o Vitalício?",
-        "answer": "Sim! Contacte a nossa equipa de suporte e creditaremos o tempo restante da sua licença Anual numa licença Vitalícia."
       },
       "siteLimits": {
         "question": "Em quantos sites posso usar a minha licença?",
@@ -565,6 +561,10 @@
         "walletSeparator": "ou escolha como pagar",
         "noneConfigured": "Não há métodos de pagamento configurados. Contacte o suporte.",
         "ariaLabel": "Método de pagamento",
+        "consent": {
+          "label": "Quero receber o WCPOS Pro de imediato. Compreendo que perco o meu direito de livre resolução de 14 dias assim que a entrega começar — ver a <policy>política de reembolsos</policy>.",
+          "gate": "Assinale a caixa acima para continuar para o pagamento."
+        },
         "methods": {
           "card": {
             "title": "Cartão",
@@ -1317,13 +1317,14 @@
     "refunds": {
       "meta": {
         "title": "Política de Reembolsos",
-        "description": "A política de reembolso do WCPOS Pro: como pedir um reembolso no prazo de 14 dias após a compra e como os reembolsos são pagos."
+        "description": "A política de reembolsos do WCPOS Pro: reembolsamos quando o Pro não faz o que dizemos que faz. Quando reembolsamos, quando não, e como pedir."
       },
       "title": "Política de Reembolsos",
       "lastUpdated": "Última atualização: {date}",
-      "intro": "As compras do WCPOS Pro — primeira compra ou renovação, anual ou vitalícia — podem ser reembolsadas no prazo de 14 dias após a compra. Envie-nos um email dentro desse prazo e reembolsaremos o valor total. Não precisa de indicar um motivo.",
+      "intro": "O WCPOS Pro é software para descarregar. No momento em que compra, já tem a chave de licença e os ficheiros — não há nada para devolver. Por isso não temos um prazo de reembolso sem perguntas. Fazemos algo mais útil: se o WCPOS Pro não fizer o que dizemos que faz, corrigimos ou devolvemos o dinheiro.",
       "prevention": {
         "title": "O melhor reembolso é aquele de que nunca precisa",
+        "lead": "Tudo o que precisa para avaliar o WCPOS Pro antes de pagar é gratuito e público. Use-o — leva uma tarde e é a forma honesta de perceber se serve para a sua loja.",
         "items": {
           "p1": {
             "label": "Instale o plugin gratuito.",
@@ -1339,22 +1340,42 @@
           }
         }
       },
+      "yes": {
+        "title": "Quando reembolsamos",
+        "lead": "Escreva-nos e resolvemos a situação se:",
+        "items": {
+          "y1": "o WCPOS Pro não fizer algo que este site, a documentação ou a nossa resposta a uma pergunta pré-venda dizia que fazia;",
+          "y2": "um erro ou uma incompatibilidade o impedir de usar uma funcionalidade Pro e não conseguirmos corrigir num prazo razoável;",
+          "y3": "algo tiver corrido mal na própria compra — cobrança em duplicado, valor errado, ou nunca ter recebido uma chave de licença funcional."
+        }
+      },
+      "no": {
+        "title": "Quando não",
+        "lead": "Não reembolsamos apenas porque:",
+        "items": {
+          "n1": "mudou de ideias, ou comprou sem verificar se o WCPOS Pro se adequa ao modo como a sua loja funciona;",
+          "n2": "quer uma funcionalidade que nunca afirmámos ter. Pergunte antes de comprar — respondemos com honestidade, inclusive quando a resposta é não;",
+          "n3": "a causa está no seu alojamento, no seu tema ou noutro plugin e não nos é dado o que precisamos para diagnosticar."
+        },
+        "note": "Isto descreve quando aplicamos o nosso critério. Não afeta os seus direitos legais, indicados abaixo e que respeitamos integralmente."
+      },
       "request": {
         "title": "Como pedir um reembolso",
-        "body": "Envie um email para <email>support@wcpos.com</email> a partir do endereço de email que utilizou na compra, no prazo de 14 dias após comprar. Dizer-nos o motivo ajuda-nos a melhorar, mas não é necessário para obter o reembolso."
+        "body": "Escreva para <email>support@wcpos.com</email> a partir do endereço com que comprou e diga-nos o que o WCPOS Pro não está a fazer. Dê-nos primeiro a oportunidade de corrigir — a maioria dos pedidos revela-se uma definição ou um erro que resolvemos depressa. Se não conseguirmos, devolvemos o dinheiro."
       },
       "payment": {
         "title": "Como os reembolsos são pagos",
-        "body": "Os reembolsos regressam ao método de pagamento original através da Stripe ou do PayPal e aparecem normalmente no seu extrato em 5–10 dias úteis, dependendo do seu banco ou emissor do cartão. As chaves de licença reembolsadas são revogadas e deixam de funcionar imediatamente."
+        "body": "Os reembolsos regressam ao método de pagamento original via Stripe ou PayPal e costumam aparecer no seu extrato em 5–10 dias úteis, consoante o seu banco ou emissor do cartão. Os pagamentos em Bitcoin são reembolsados mediante acordo — escreva-nos e combinamos consigo o método. Uma chave de licença reembolsada é revogada e deixa de funcionar imediatamente."
       },
       "renewals": {
         "title": "Renovações de licenças",
-        "body": "As licenças anuais não renovam automaticamente — nunca voltamos a cobrar sem uma nova compra da sua parte. A mesma janela de reembolso de 14 dias aplica-se às compras de renovação."
+        "body": "As licenças anuais nunca se renovam automaticamente, por isso não há qualquer cobrança inesperada para reverter — não lhe podemos cobrar sem que compre de novo. Quando optar por renovar, esta política aplica-se a essa compra exatamente como se aplica a uma primeira."
       },
       "rights": {
         "title": "Os seus direitos legais",
-        "body": "Para consumidores na UE, EEE e Reino Unido: a nossa janela de reembolso de 14 dias corresponde ao seu direito legal de retratação para este tipo de compra, e exercer qualquer um deles funciona da mesma forma — envie-nos um email no prazo de 14 dias.",
-        "defective": "Se o WCPOS Pro tiver defeito ou não funcionar conforme descrito, aplicam-se a qualquer momento os meios legais para conteúdo digital defeituoso, independentemente da janela de 14 dias. E nada nesta política limita quaisquer direitos que tenha ao abrigo das leis de proteção do consumidor do seu país — quando a lei local lhe conceder direitos mais fortes, esses direitos aplicam-se."
+        "withdrawal": "Para consumidores na UE, no EEE e no Reino Unido, as compras à distância dão normalmente direito a 14 dias de livre resolução. O conteúdo digital fornecido de imediato é a exceção: no pagamento pedimos-lhe que concorde com a entrega imediata e reconheça que, ao fazê-lo, esse direito de 14 dias se extingue. É essa caixa assinalada que o extingue. Se nunca lhe foi pedido assinalá-la, o direito mantém-se e nós respeitá-lo-emos.",
+        "conformity": "O seu direito a software que funciona é independente, e nada nesta página o pode afastar. Se o WCPOS Pro tiver defeito ou não corresponder à forma como o descrevemos, tem direito a que seja reposto em conformidade — e a uma redução do preço ou a um reembolso se não o conseguirmos. Na UE e no EEE isso dura pelo menos dois anos a contar da compra. Onde a lei do seu país lhe conceder direitos mais fortes do que esta política, prevalecem esses direitos.",
+        "business": "Está a comprar como empresa e não como consumidor? Os direitos legais de consumidor acima não se aplicam — mas tudo o resto nesta página aplica-se."
       }
     },
     "terms": {
@@ -1889,7 +1910,7 @@
       "pricing": {
         "title": "Quanto custa realmente o plano pago?",
         "oliver": "Oliver (faturação anual): Starter $89 por ano — 1 ponto de venda, 2 postos, 3 funcionários. Pro $289 por ano — 2 pontos de venda, postos ilimitados, 15 funcionários. Enterprise $489 por ano — ilimitado. Recorrente, um site WooCommerce por licença.",
-        "wcpos": "WCPOS Pro: $129 — um pagamento único que cobre um ano de atualizações e suporte prioritário. Nunca se renova automaticamente, e a versão Pro continua a funcionar depois de o ano terminar — nada se desliga, nunca. É deliberado: as renovações têm de ser merecidas com atualizações que valham o que custam. Ou $399 vitalício. Cada licença cobre um domínio mais um site de staging, com dispositivos e operadores de caixa ilimitados. Quem compra a anual pode passar à vitalícia pagando a diferença de $270. Garantia de reembolso de 14 dias.",
+        "wcpos": "WCPOS Pro: $129 — um pagamento único que cobre um ano de atualizações e suporte prioritário. Nunca se renova automaticamente, e a versão Pro continua a funcionar depois de o ano terminar — nada se desliga, nunca. É deliberado: as renovações têm de ser merecidas com atualizações que valham o que custam. Ou $399 vitalício. Cada licença cobre um domínio mais um site de staging, com dispositivos e operadores de caixa ilimitados. Se não fizer o que dizemos que faz, devolvemos o dinheiro.",
         "math": "Com um único ponto de venda, o Starter da Oliver é mais barato no primeiro ano ($89 contra $129). A partir do segundo ano as contas invertem-se: a Oliver continua a faturar todos os anos, enquanto uma licença vitalícia do WCPOS custa $0 a partir do quarto ano, mesmo face ao plano mais barato da Oliver — e $399 no total contra $1,467+ por três anos de Oliver Enterprise.",
         "proAdds": "O Pro acrescenta: gestão de várias lojas, integrações com terminais de pagamento, cupões, reembolsos através da API do POS, histórico de encomendas, gestão de clientes na caixa, preços específicos por loja, edição de stock e preços, relatórios de fecho do dia e o diretório de extensões.",
         "demoPrefix": "Experimente tudo primeiro em",

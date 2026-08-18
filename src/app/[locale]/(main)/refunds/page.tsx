@@ -6,8 +6,10 @@ import { TextLink } from '@/components/ui/text-link'
 import { marketingMetadata } from '@/lib/seo'
 import { formatDateForLocale } from '@/lib/date-format'
 
-const LEGAL_UPDATED_AT = '2026-06-10T12:00:00Z'
+const LEGAL_UPDATED_AT = '2026-08-18T12:00:00Z'
 const PREVENTION_ITEMS = ['p1', 'p2', 'p3'] as const
+const REFUND_ITEMS = ['y1', 'y2', 'y3'] as const
+const NO_REFUND_ITEMS = ['n1', 'n2', 'n3'] as const
 
 function demoLink(chunks: ReactNode) {
   return <TextLink href="https://demo.wcpos.com/pos">{chunks}</TextLink>
@@ -66,6 +68,9 @@ export default async function RefundsPage({
 
         <section>
           <h2 className="text-2xl font-semibold mb-4">{t('prevention.title')}</h2>
+          <p className="leading-7 text-muted-foreground mb-4">
+            {t('prevention.lead')}
+          </p>
           <ul className="list-disc pl-6 space-y-3 leading-7 text-muted-foreground">
             {PREVENTION_ITEMS.map((item) => (
               <li key={item}>
@@ -80,6 +85,27 @@ export default async function RefundsPage({
               </li>
             ))}
           </ul>
+        </section>
+
+        <section>
+          <h2 className="text-2xl font-semibold mb-4">{t('yes.title')}</h2>
+          <p className="leading-7 text-muted-foreground mb-4">{t('yes.lead')}</p>
+          <ul className="list-disc pl-6 space-y-3 leading-7 text-muted-foreground">
+            {REFUND_ITEMS.map((item) => (
+              <li key={item}>{t(`yes.items.${item}`)}</li>
+            ))}
+          </ul>
+        </section>
+
+        <section>
+          <h2 className="text-2xl font-semibold mb-4">{t('no.title')}</h2>
+          <p className="leading-7 text-muted-foreground mb-4">{t('no.lead')}</p>
+          <ul className="list-disc pl-6 space-y-3 leading-7 text-muted-foreground">
+            {NO_REFUND_ITEMS.map((item) => (
+              <li key={item}>{t(`no.items.${item}`)}</li>
+            ))}
+          </ul>
+          <p className="mt-4 leading-7 text-muted-foreground">{t('no.note')}</p>
         </section>
 
         <section>
@@ -101,8 +127,13 @@ export default async function RefundsPage({
 
         <section>
           <h2 className="text-2xl font-semibold mb-4">{t('rights.title')}</h2>
-          <p className="leading-7 text-muted-foreground mb-4">{t('rights.body')}</p>
-          <p className="leading-7 text-muted-foreground">{t('rights.defective')}</p>
+          <p className="leading-7 text-muted-foreground mb-4">
+            {t('rights.withdrawal')}
+          </p>
+          <p className="leading-7 text-muted-foreground mb-4">
+            {t('rights.conformity')}
+          </p>
+          <p className="leading-7 text-muted-foreground">{t('rights.business')}</p>
         </section>
       </div>
     </main>
