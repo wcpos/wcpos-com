@@ -90,21 +90,21 @@ period, and buyer's remorse is not a ground. A granted refund revokes the
 license. The policy customers read is `legal.refunds` in `messages/*.json`.
 _Avoid_: money-back guarantee, 14-day guarantee, trial, return window
 
-**Immediate-supply consent**:
-The buyer's checkout acknowledgement that WCPOS Pro is delivered at once and
-that accepting this ends their statutory 14-day withdrawal right (Consumer
-Rights Directive art. 16(1)(m)). Unticked by default, and no payment control
-renders until it is given. It is what makes declining change-of-mind refunds
-lawful for EU/EEA/UK consumers — without it those buyers keep the full 14-day
-right regardless of policy text.
-_Avoid_: terms acceptance, disclaimer
+**Refund-conditions agreement**:
+The buyer's checkout tick agreeing to the refund terms: refunded if Pro does
+not work as advertised, and trying the free version first is their own job.
+Unticked by default, and no payment control renders until it is given. It is
+our own commercial term, deliberately NOT a statutory withdrawal waiver — an
+earlier design framed it under Consumer Rights Directive art. 16(1)(m) and
+that was dropped by owner decision. Do not reintroduce waiver language.
+_Avoid_: immediate-supply consent, withdrawal waiver, disclaimer
 
-**Conformity right**:
-The consumer's non-waivable right to software that matches its description
-and works (Digital Content Directive (EU) 2019/770), running at least two
-years from purchase, and surviving anything the refund policy says. Distinct
-from the withdrawal right, which consent does end.
-_Avoid_: warranty, guarantee
+**Local consumer law**:
+Whatever the buyer's own country gives them, which survives anything the
+refund policy says. The policy states this in one line and does not enumerate
+regimes. Support answers should never assert that a buyer has waived, lost, or
+signed away a statutory right.
+_Avoid_: conformity right, warranty, guarantee, waiver
 
 **Customer**:
 The person who buys and holds licenses, authenticated via the Medusa

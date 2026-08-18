@@ -566,7 +566,7 @@
         "noneConfigured": "Er zijn geen betaalmethoden geconfigureerd. Neem contact op met support.",
         "ariaLabel": "Betaalmethode",
         "consent": {
-          "label": "Lever WCPOS Pro direct aan mij. Ik begrijp dat ik mijn herroepingsrecht van 14 dagen verlies zodra de levering begint — zie het <policy>restitutiebeleid</policy>.",
+          "label": "Ik heb de gratis versie getest en ga akkoord met de <policy>restitutievoorwaarden</policy>.",
           "gate": "Vink het vakje hierboven aan om verder te gaan naar betalen."
         },
         "methods": {
@@ -1387,9 +1387,7 @@
       },
       "rights": {
         "title": "Je wettelijke rechten",
-        "withdrawal": "Voor consumenten in de EU, EER en het VK geldt bij aankopen op afstand normaal een herroepingsrecht van 14 dagen. Direct geleverde digitale inhoud is de uitzondering: bij het afrekenen vragen we je in te stemmen met onmiddellijke levering en te bevestigen dat daarmee dat recht van 14 dagen vervalt. Het aanvinken van dat vakje laat het vervallen. Is het je nooit gevraagd, dan blijft het recht bestaan en respecteren we het.",
-        "conformity": "Je recht op werkende software staat daar los van, en niets op deze pagina kan dat wegnemen. Is WCPOS Pro gebrekkig of komt het niet overeen met hoe wij het beschreven, dan heb je recht op herstel — en op prijsvermindering of terugbetaling als ons dat niet lukt. In de EU en EER geldt dat minstens twee jaar vanaf de aankoop. Geeft de wet van jouw land je sterkere rechten dan dit beleid, dan gelden die rechten.",
-        "business": "Koop je als bedrijf en niet als consument? Dan gelden de wettelijke consumentenrechten hierboven niet voor jou — al het overige op deze pagina wel."
+        "body": "Niets in dit beleid beperkt de rechten die je hebt op grond van het consumentenrecht van je eigen land. Is WCPOS Pro gebrekkig of komt het niet overeen met hoe wij het beschreven, dan heb je recht op herstel — of op terugbetaling als ons dat niet lukt. Geeft de wet van jouw land je sterkere rechten dan deze pagina, dan gelden die rechten."
       }
     },
     "terms": {

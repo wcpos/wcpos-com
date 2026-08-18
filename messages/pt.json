@@ -566,7 +566,7 @@
         "noneConfigured": "Não há métodos de pagamento configurados. Contacte o suporte.",
         "ariaLabel": "Método de pagamento",
         "consent": {
-          "label": "Quero receber o WCPOS Pro de imediato. Compreendo que perco o meu direito de livre resolução de 14 dias assim que a entrega começar — ver a <policy>política de reembolsos</policy>.",
+          "label": "Testei a versão gratuita e aceito as <policy>condições de reembolso</policy>.",
           "gate": "Assinale a caixa acima para continuar para o pagamento."
         },
         "methods": {
@@ -1387,9 +1387,7 @@
       },
       "rights": {
         "title": "Os seus direitos legais",
-        "withdrawal": "Para consumidores na UE, no EEE e no Reino Unido, as compras à distância dão normalmente direito a 14 dias de livre resolução. O conteúdo digital fornecido de imediato é a exceção: no pagamento pedimos-lhe que concorde com a entrega imediata e reconheça que, ao fazê-lo, esse direito de 14 dias se extingue. É essa caixa assinalada que o extingue. Se nunca lhe foi pedido assinalá-la, o direito mantém-se e nós respeitá-lo-emos.",
-        "conformity": "O seu direito a software que funciona é independente, e nada nesta página o pode afastar. Se o WCPOS Pro tiver defeito ou não corresponder à forma como o descrevemos, tem direito a que seja reposto em conformidade — e a uma redução do preço ou a um reembolso se não o conseguirmos. Na UE e no EEE isso dura pelo menos dois anos a contar da compra. Onde a lei do seu país lhe conceder direitos mais fortes do que esta política, prevalecem esses direitos.",
-        "business": "Está a comprar como empresa e não como consumidor? Os direitos legais de consumidor acima não se aplicam — mas tudo o resto nesta página aplica-se."
+        "body": "Nada nesta política limita os direitos que lhe assistem ao abrigo da lei do consumidor do seu país. Se o WCPOS Pro tiver defeito ou não corresponder à forma como o descrevemos, tem direito a que seja reposto em conformidade — ou a um reembolso se não o conseguirmos. Onde a lei do seu país lhe conceder direitos mais fortes do que esta página, prevalecem esses direitos."
       }
     },
     "terms": {

@@ -566,7 +566,7 @@
         "noneConfigured": "No payment methods are configured. Please contact support.",
         "ariaLabel": "Payment method",
         "consent": {
-          "label": "Deliver WCPOS Pro to me immediately. I understand that I lose my 14-day right of withdrawal once delivery begins — see the <policy>refund policy</policy>.",
+          "label": "I’ve tested the free version and agree to the <policy>refund conditions</policy>.",
           "gate": "Tick the box above to continue to payment."
         },
         "methods": {
@@ -1387,9 +1387,7 @@
       },
       "rights": {
         "title": "Your statutory rights",
-        "withdrawal": "For consumers in the EU, EEA and UK, distance purchases normally carry a 14-day right of withdrawal. Digital content delivered immediately is the exception: at checkout we ask you to agree to immediate delivery and to acknowledge that agreeing ends that 14-day right. Ticking that box is what ends it. If you were never asked to tick it, the right stands and we will honour it.",
-        "conformity": "Your right to working software is separate, and nothing on this page can sign it away. If WCPOS Pro is faulty or does not match how we described it, you are entitled to have it put right — and to a price reduction or a refund if we can’t. In the EU and EEA that lasts at least two years from purchase. Where the law of your country gives you stronger rights than this policy, those rights apply.",
-        "business": "Buying as a business rather than as a consumer? The statutory consumer rights above don’t apply to you — but everything else on this page does."
+        "body": "Nothing in this policy limits rights you have under the consumer law of your own country. If WCPOS Pro is faulty or does not match how we described it, you are entitled to have it put right — or to a refund if we can’t. Where your local law gives you stronger rights than this page, those rights apply."
       }
     },
     "terms": {

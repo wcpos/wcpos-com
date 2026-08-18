@@ -120,18 +120,17 @@ interface PaymentStepProps {
 }
 
 /**
- * Immediate-supply consent — the statutory gate, not a nicety.
+ * Refund-conditions agreement.
  *
- * WCPOS Pro is digital content delivered the moment the order completes, so
- * the 14-day right of withdrawal (Consumer Rights Directive art. 16(1)(m),
- * as amended by (EU) 2019/2161) only falls away when the buyer has given
- * prior express consent to that immediate supply AND acknowledged losing the
- * right. Unticked by default and separate from any other agreement: a
- * pre-ticked or bundled box does not count as express consent.
+ * The deal stated plainly before paying: refunded if Pro doesn't work as
+ * advertised, and trying the free version first is the buyer's job. Deliberate
+ * scope — this is our own commercial term, NOT a statutory withdrawal waiver.
+ * An earlier revision framed it as consent under art. 16(1)(m) CRD; that was
+ * dropped by owner decision, so nothing here should be re-worded to imply a
+ * cancellation right has been given up.
  *
- * No payment control is rendered until it is ticked — the consent has to
- * precede supply, and not rendering is the only version of that we can't
- * accidentally regress past.
+ * Unticked by default, and no payment control renders until it is ticked —
+ * an agreement nobody had to make is not worth collecting.
  */
 function ConsentGate({
   checked,

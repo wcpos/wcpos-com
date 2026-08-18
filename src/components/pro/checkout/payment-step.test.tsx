@@ -118,7 +118,7 @@ import { PaymentStep, type PaymentMethod } from './payment-step'
 const onFailure = vi.fn()
 
 /**
- * Renders the step and, by default, gives the immediate-supply consent that
+ * Renders the step and, by default, agrees to the refund conditions that
  * every payment control now sits behind. Pass `{ consent: false }` to assert
  * on the gate itself.
  */
@@ -171,7 +171,7 @@ function renderStepRaw(method: PaymentMethod = 'stripe', lockMethods = false) {
   )
 }
 
-describe('PaymentStep immediate-supply consent gate', () => {
+describe('PaymentStep refund-conditions gate', () => {
   beforeEach(() => {
     vi.clearAllMocks()
   })

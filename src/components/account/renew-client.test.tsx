@@ -146,7 +146,7 @@ beforeEach(() => {
 
 /**
  * Renewals go through the same PaymentStep as a first purchase, so the pay
- * controls only mount once immediate-supply consent is given. Wait for the
+ * controls only mount once the refund conditions are agreed. Wait for the
  * prepared cart, tick the box, then wait for the form itself.
  */
 async function reachPaymentForm(scope: { getByTestId: (id: string) => HTMLElement } = screen) {

@@ -305,7 +305,7 @@ async function completeBillingStep(cartAfterBilling = buildCheckoutCart()) {
   await giveSupplyConsent()
 }
 
-/** Tick the immediate-supply consent that every payment control sits behind. */
+/** Agree to the refund conditions that every payment control sits behind. */
 async function giveSupplyConsent() {
   await waitFor(() => {
     expect(screen.getByTestId('checkout-supply-consent')).toBeInTheDocument()
