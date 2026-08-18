@@ -566,7 +566,7 @@
         "noneConfigured": "설정된 결제 방법이 없습니다. 지원팀에 문의하세요.",
         "ariaLabel": "결제 방법",
         "consent": {
-          "label": "<policy>환불 조건</policy>에 동의합니다 — WCPOS Pro가 광고한 대로 작동하지 않으면 환불받습니다. 무료 버전을 먼저 시험해 보는 것은 제 책임입니다.",
+          "label": "무료 버전을 사용해 보았고 <policy>환불 조건</policy>에 동의합니다.",
           "gate": "위 상자를 체크하면 결제를 진행할 수 있습니다."
         },
         "methods": {

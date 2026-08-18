@@ -566,7 +566,7 @@
         "noneConfigured": "未配置付款方式。请联系支持团队。",
         "ariaLabel": "付款方式",
         "consent": {
-          "label": "我同意<policy>退款条件</policy>——如果 WCPOS Pro 未按所述正常工作，即可退款。事先用免费版测试是我自己的事。",
+          "label": "我已测试过免费版，并同意<policy>退款条件</policy>。",
           "gate": "勾选上方的选项即可继续付款。"
         },
         "methods": {

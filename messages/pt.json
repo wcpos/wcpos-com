@@ -566,7 +566,7 @@
         "noneConfigured": "Não há métodos de pagamento configurados. Contacte o suporte.",
         "ariaLabel": "Método de pagamento",
         "consent": {
-          "label": "Aceito as <policy>condições de reembolso</policy> — reembolso se o WCPOS Pro não funcionar como anunciado. Testar primeiro a versão gratuita é da minha responsabilidade.",
+          "label": "Testei a versão gratuita e aceito as <policy>condições de reembolso</policy>.",
           "gate": "Assinale a caixa acima para continuar para o pagamento."
         },
         "methods": {

@@ -566,7 +566,7 @@
         "noneConfigured": "Es sind keine Zahlungsarten konfiguriert. Bitte kontaktieren Sie den Support.",
         "ariaLabel": "Zahlungsart",
         "consent": {
-          "label": "Ich stimme den <policy>Rückerstattungsbedingungen</policy> zu — Erstattung, wenn WCPOS Pro nicht wie beschrieben funktioniert. Die kostenlose Version vorher zu testen, ist meine Sache.",
+          "label": "Ich habe die kostenlose Version getestet und stimme den <policy>Rückerstattungsbedingungen</policy> zu.",
           "gate": "Setze oben das Häkchen, um zur Zahlung fortzufahren."
         },
         "methods": {

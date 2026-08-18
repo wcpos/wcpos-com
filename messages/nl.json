@@ -566,7 +566,7 @@
         "noneConfigured": "Er zijn geen betaalmethoden geconfigureerd. Neem contact op met support.",
         "ariaLabel": "Betaalmethode",
         "consent": {
-          "label": "Ik ga akkoord met de <policy>restitutievoorwaarden</policy> — terugbetaling als WCPOS Pro niet werkt zoals aangeboden. Zelf eerst de gratis versie testen is aan mij.",
+          "label": "Ik heb de gratis versie getest en ga akkoord met de <policy>restitutievoorwaarden</policy>.",
           "gate": "Vink het vakje hierboven aan om verder te gaan naar betalen."
         },
         "methods": {
