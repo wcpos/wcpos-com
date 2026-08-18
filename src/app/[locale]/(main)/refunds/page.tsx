@@ -139,13 +139,7 @@ export default async function RefundsPage({
 
         <section>
           <h2 className="text-2xl font-semibold mb-4">{t('rights.title')}</h2>
-          <p className="leading-7 text-muted-foreground mb-4">
-            {t('rights.withdrawal')}
-          </p>
-          <p className="leading-7 text-muted-foreground mb-4">
-            {t('rights.conformity')}
-          </p>
-          <p className="leading-7 text-muted-foreground">{t('rights.business')}</p>
+          <p className="leading-7 text-muted-foreground">{t('rights.body')}</p>
         </section>
       </div>
     </main>

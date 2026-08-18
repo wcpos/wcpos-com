@@ -566,7 +566,7 @@
         "noneConfigured": "Es sind keine Zahlungsarten konfiguriert. Bitte kontaktieren Sie den Support.",
         "ariaLabel": "Zahlungsart",
         "consent": {
-          "label": "Liefere WCPOS Pro sofort. Mir ist bewusst, dass mein 14-tägiges Widerrufsrecht mit Beginn der Lieferung erlischt — siehe <policy>Rückerstattungsrichtlinie</policy>.",
+          "label": "Ich stimme den <policy>Rückerstattungsbedingungen</policy> zu — Erstattung, wenn WCPOS Pro nicht wie beschrieben funktioniert. Die kostenlose Version vorher zu testen, ist meine Sache.",
           "gate": "Setze oben das Häkchen, um zur Zahlung fortzufahren."
         },
         "methods": {
@@ -1387,9 +1387,7 @@
       },
       "rights": {
         "title": "Deine gesetzlichen Rechte",
-        "withdrawal": "Für Verbraucherinnen und Verbraucher in der EU, dem EWR und dem Vereinigten Königreich gilt bei Fernkäufen normalerweise ein 14-tägiges Widerrufsrecht. Sofort gelieferte digitale Inhalte sind die Ausnahme: An der Kasse bitten wir dich, der sofortigen Lieferung zuzustimmen und zu bestätigen, dass damit dein Widerrufsrecht erlischt. Genau dieses Häkchen beendet es. Wurdest du nie darum gebeten, besteht das Recht fort und wir erfüllen es.",
-        "conformity": "Dein Recht auf funktionierende Software ist davon unabhängig, und nichts auf dieser Seite kann es abbedingen. Ist WCPOS Pro mangelhaft oder entspricht es nicht unserer Beschreibung, hast du Anspruch auf Nacherfüllung — und auf Minderung oder Erstattung, wenn uns das nicht gelingt. In der EU und dem EWR gilt das mindestens zwei Jahre ab Kauf. Wo dir das Recht deines Landes stärkere Ansprüche gibt als diese Richtlinie, gelten diese Ansprüche.",
-        "business": "Du kaufst als Unternehmen und nicht als Verbraucher? Dann gelten die gesetzlichen Verbraucherrechte oben nicht für dich — alles andere auf dieser Seite schon."
+        "body": "Diese Richtlinie beschränkt keine Rechte, die dir nach dem Verbraucherrecht deines Landes zustehen. Ist WCPOS Pro mangelhaft oder entspricht es nicht unserer Beschreibung, hast du Anspruch auf Nacherfüllung — oder auf Erstattung, wenn uns das nicht gelingt. Wo dir das Recht deines Landes stärkere Ansprüche gibt als diese Seite, gelten diese Ansprüche."
       }
     },
     "terms": {

@@ -566,7 +566,7 @@
         "noneConfigured": "Aucun moyen de paiement n’est configuré. Veuillez contacter le support.",
         "ariaLabel": "Moyen de paiement",
         "consent": {
-          "label": "Je souhaite recevoir WCPOS Pro immédiatement. Je comprends que je perds mon droit de rétractation de 14 jours dès que la fourniture commence — voir la <policy>politique de remboursement</policy>.",
+          "label": "J’accepte les <policy>conditions de remboursement</policy> — remboursement si WCPOS Pro ne fonctionne pas comme annoncé. C’est à moi de tester d’abord la version gratuite.",
           "gate": "Cochez la case ci-dessus pour passer au paiement."
         },
         "methods": {
@@ -1387,9 +1387,7 @@
       },
       "rights": {
         "title": "Vos droits légaux",
-        "withdrawal": "Pour les consommateurs de l’UE, de l’EEE et du Royaume-Uni, les achats à distance ouvrent normalement un droit de rétractation de 14 jours. Le contenu numérique fourni immédiatement fait exception : lors du paiement, nous vous demandons d’accepter la fourniture immédiate et de reconnaître que cette acceptation met fin à ce droit de 14 jours. C’est cette case cochée qui y met fin. Si elle ne vous a jamais été présentée, le droit demeure et nous le respecterons.",
-        "conformity": "Votre droit à un logiciel qui fonctionne est distinct, et rien sur cette page ne peut y renoncer. Si WCPOS Pro est défectueux ou ne correspond pas à notre description, vous avez droit à sa mise en conformité — et à une réduction de prix ou à un remboursement si nous n’y parvenons pas. Dans l’UE et l’EEE, cela vaut au moins deux ans à compter de l’achat. Là où la loi de votre pays vous accorde des droits plus étendus que cette politique, ce sont ces droits qui s’appliquent.",
-        "business": "Vous achetez en tant qu’entreprise et non en tant que consommateur ? Les droits légaux des consommateurs ci-dessus ne s’appliquent pas à vous — mais tout le reste de cette page, si."
+        "body": "Rien dans cette politique ne limite les droits que vous tenez du droit de la consommation de votre pays. Si WCPOS Pro est défectueux ou ne correspond pas à notre description, vous avez droit à sa mise en conformité — ou à un remboursement si nous n’y parvenons pas. Là où la loi de votre pays vous accorde des droits plus étendus que cette page, ce sont ces droits qui s’appliquent."
       }
     },
     "terms": {

@@ -566,7 +566,7 @@
         "noneConfigured": "Nessun metodo di pagamento configurato. Contatta il supporto.",
         "ariaLabel": "Metodo di pagamento",
         "consent": {
-          "label": "Voglio ricevere WCPOS Pro immediatamente. Comprendo che perdo il mio diritto di recesso di 14 giorni non appena la fornitura ha inizio — vedi la <policy>politica di rimborso</policy>.",
+          "label": "Accetto le <policy>condizioni di rimborso</policy> — rimborso se WCPOS Pro non funziona come dichiarato. Provare prima la versione gratuita sta a me.",
           "gate": "Spunta la casella qui sopra per procedere al pagamento."
         },
         "methods": {
@@ -1387,9 +1387,7 @@
       },
       "rights": {
         "title": "I tuoi diritti di legge",
-        "withdrawal": "Per i consumatori di UE, SEE e Regno Unito, gli acquisti a distanza prevedono di norma un diritto di recesso di 14 giorni. Il contenuto digitale fornito immediatamente è l’eccezione: al pagamento ti chiediamo di acconsentire alla fornitura immediata e di riconoscere che così quel diritto di 14 giorni si estingue. È quella casella spuntata a estinguerlo. Se non ti è mai stata proposta, il diritto resta valido e lo rispetteremo.",
-        "conformity": "Il tuo diritto a un software funzionante è separato, e nulla in questa pagina può farvi rinunciare. Se WCPOS Pro è difettoso o non corrisponde a come lo abbiamo descritto, hai diritto a che venga reso conforme — e a una riduzione del prezzo o a un rimborso se non ci riusciamo. Nell’UE e nel SEE questo vale almeno due anni dall’acquisto. Dove la legge del tuo Paese ti riconosce diritti più ampi di questa politica, prevalgono quei diritti.",
-        "business": "Acquisti come azienda e non come consumatore? I diritti di legge dei consumatori sopra indicati non si applicano a te — ma tutto il resto di questa pagina sì."
+        "body": "Nulla in questa politica limita i diritti che ti spettano in base alla legge sui consumatori del tuo Paese. Se WCPOS Pro è difettoso o non corrisponde a come lo abbiamo descritto, hai diritto a che venga reso conforme — o a un rimborso se non ci riusciamo. Dove la legge del tuo Paese ti riconosce diritti più ampi di questa pagina, prevalgono quei diritti."
       }
     },
     "terms": {

@@ -566,7 +566,7 @@
         "noneConfigured": "No hay métodos de pago configurados. Ponte en contacto con soporte.",
         "ariaLabel": "Método de pago",
         "consent": {
-          "label": "Quiero recibir WCPOS Pro de inmediato. Entiendo que pierdo mi derecho de desistimiento de 14 días en cuanto comienza la entrega — consulta la <policy>política de reembolsos</policy>.",
+          "label": "Acepto las <policy>condiciones de reembolso</policy>: reembolso si WCPOS Pro no funciona como se anuncia. Probar antes la versión gratuita es cosa mía.",
           "gate": "Marca la casilla de arriba para continuar con el pago."
         },
         "methods": {
@@ -1387,9 +1387,7 @@
       },
       "rights": {
         "title": "Tus derechos legales",
-        "withdrawal": "Para consumidores de la UE, el EEE y el Reino Unido, las compras a distancia suelen incluir un derecho de desistimiento de 14 días. El contenido digital entregado de inmediato es la excepción: en el pago te pedimos aceptar la entrega inmediata y reconocer que, al hacerlo, ese derecho de 14 días se extingue. Marcar esa casilla es lo que lo extingue. Si nunca se te pidió marcarla, el derecho sigue vigente y lo respetaremos.",
-        "conformity": "Tu derecho a un software que funcione es independiente, y nada en esta página puede anularlo. Si WCPOS Pro es defectuoso o no se corresponde con cómo lo describimos, tienes derecho a que se subsane — y a una reducción del precio o a un reembolso si no lo conseguimos. En la UE y el EEE eso dura al menos dos años desde la compra. Si la ley de tu país te otorga derechos más amplios que esta política, prevalecen esos derechos.",
-        "business": "¿Compras como empresa y no como consumidor? Entonces los derechos legales de consumo anteriores no se te aplican — pero todo lo demás de esta página sí."
+        "body": "Nada en esta política limita los derechos que te correspondan según la ley de consumo de tu país. Si WCPOS Pro es defectuoso o no se corresponde con cómo lo describimos, tienes derecho a que se subsane, o a un reembolso si no lo conseguimos. Si la ley de tu país te otorga derechos más amplios que esta página, prevalecen esos derechos."
       }
     },
     "terms": {
