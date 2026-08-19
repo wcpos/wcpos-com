@@ -68,6 +68,11 @@ async function ProfileContent({ locale }: { locale: Locale }) {
   return (
     <div className="space-y-6">
       <ProfileEditForm
+        // Same identity key as LicensesClient on the licences page: revisited
+        // pages keep client state alive (back/forward), so an admin switching
+        // "view as" targets would otherwise see the previous customer's form
+        // state. A changed key forces a real remount.
+        key={customer.id}
         customer={{
           email: customer.email,
           first_name: customer.first_name,

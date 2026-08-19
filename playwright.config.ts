@@ -112,6 +112,10 @@ export default defineConfig({
             // value must be present so authHeaders() doesn't fail loud
             // (KeygenAuthNotConfiguredError) — mirroring production.
             KEYGEN_API_TOKEN: 'e2e-keygen-token',
+            // Admin "view as" lookups (/account/admin) go through the Medusa
+            // admin API; the mock ignores the value but it must be present so
+            // requireAdminToken() doesn't throw.
+            MEDUSA_ADMIN_API_TOKEN: 'e2e-medusa-admin-token',
             DOWNLOAD_TOKEN_SECRET: 'e2e-download-token-secret',
             // Plan registry (src/lib/plans.ts) — match the policy ids the mock
             // backend issues (e2e/mocks/fixtures.json `policies`) so the plan
