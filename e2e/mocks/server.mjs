@@ -32,6 +32,10 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 const fixtures = JSON.parse(readFileSync(join(__dirname, 'fixtures.json'), 'utf8'))
 
 const PORT = Number(process.env.E2E_MOCK_PORT || 4873)
+const MEDUSA_ADMIN_API_TOKEN = process.env.MEDUSA_ADMIN_API_TOKEN
+const MEDUSA_ADMIN_AUTHORIZATION = MEDUSA_ADMIN_API_TOKEN
+  ? `Basic ${Buffer.from(`${MEDUSA_ADMIN_API_TOKEN}:`).toString('base64')}`
+  : null
 
 // ---------------------------------------------------------------------------
 // License instances (clone-on-first-use, keyed by possibly-suffixed id)
@@ -532,6 +536,56 @@ const server = createServer(async (req, res) => {
       count: products.length,
       limit: products.length,
       offset: 0,
+    })
+  }
+
+  // ----- Medusa admin API (read-only "view as" impersonation) -----
+  //
+  // Serves the admin lookups behind /account/admin (findAdminCustomerByEmail,
+  // getAdminCustomerById, listAdminCustomerOrders). Real Medusa authenticates
+  // admin API keys via Basic auth, so the mock enforces the same header.
+
+  if (
+    pathname.startsWith('/admin/') &&
+    req.headers.authorization !== MEDUSA_ADMIN_AUTHORIZATION
+  ) {
+    return sendJson(res, 401, { message: 'Unauthorized' })
+  }
+
+  if (pathname === '/admin/customers' && method === 'GET') {
+    const q = (searchParams.get('q') ?? '').trim().toLowerCase()
+    const customers = Object.values(fixtures.personas)
+      .map((persona) => persona.customer)
+      .filter(Boolean)
+      .filter((customer) => !q || customer.email.toLowerCase().includes(q))
+    return sendJson(res, 200, { customers, count: customers.length })
+  }
+
+  const adminCustomerMatch = pathname.match(/^\/admin\/customers\/([^/]+)$/)
+  if (adminCustomerMatch && method === 'GET') {
+    const id = decodeURIComponent(adminCustomerMatch[1])
+    const persona = Object.values(fixtures.personas).find(
+      (entry) => entry.customer?.id === id
+    )
+    if (!persona) return sendJson(res, 404, { message: 'Customer not found' })
+    return sendJson(res, 200, { customer: persona.customer })
+  }
+
+  if (pathname === '/admin/orders' && method === 'GET') {
+    const customerId = searchParams.get('customer_id')
+    const persona = Object.values(fixtures.personas).find(
+      (entry) => entry.customer?.id === customerId
+    )
+    const limit = Number(searchParams.get('limit') ?? 50)
+    const offset = Number(searchParams.get('offset') ?? 0)
+    const idFilter = searchParams.get('id')
+    let orders = persona ? ordersForPersona(persona, null) : []
+    if (idFilter) orders = orders.filter((order) => order.id === idFilter)
+    return sendJson(res, 200, {
+      orders: orders.slice(offset, offset + limit),
+      count: orders.length,
+      limit,
+      offset,
     })
   }
 

@@ -4,6 +4,7 @@ import { Suspense } from 'react'
 import { redirectToLoginClearingSession } from '@/lib/login-redirect'
 import { LicensesClient } from '@/components/account/licenses-client'
 import { getResolvedCustomerLicenses } from '@/lib/customer-licenses'
+import { getCustomer } from '@/lib/medusa-auth'
 import { getImpersonation } from '@/lib/impersonation'
 import { getDiscordAccessByLicense } from '@/lib/discord/connected-member-service'
 import { getProPluginReleases } from '@/services/core/business/pro-downloads'
@@ -94,8 +95,16 @@ async function LicensesContent({ locale }: { locale: Locale }) {
   // assertViewOnly() can't fence it) — gate the CTA client-side instead.
   const viewOnly = (await getImpersonation()) !== null
 
+  // Key the client island by the rendered customer. Next keeps revisited pages
+  // alive (state preserved) for back/forward navigation, so without the key a
+  // history revisit under a DIFFERENT identity — admin "view as" switching
+  // targets — reuses the previous customer's useState(initialLicenses) and
+  // shows their licences. A changed key forces a real remount.
+  const customer = await getCustomer()
+
   return (
     <LicensesClient
+      key={customer?.id ?? 'anonymous'}
       initialLicenses={licenses}
       entitledVersions={entitledVersions}
       discordAccessByLicense={discordAccessByLicense}
