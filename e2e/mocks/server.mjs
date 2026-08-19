@@ -32,6 +32,10 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 const fixtures = JSON.parse(readFileSync(join(__dirname, 'fixtures.json'), 'utf8'))
 
 const PORT = Number(process.env.E2E_MOCK_PORT || 4873)
+const MEDUSA_ADMIN_API_TOKEN = process.env.MEDUSA_ADMIN_API_TOKEN
+const MEDUSA_ADMIN_AUTHORIZATION = MEDUSA_ADMIN_API_TOKEN
+  ? `Basic ${Buffer.from(`${MEDUSA_ADMIN_API_TOKEN}:`).toString('base64')}`
+  : null
 
 // ---------------------------------------------------------------------------
 // License instances (clone-on-first-use, keyed by possibly-suffixed id)
@@ -539,9 +543,14 @@ const server = createServer(async (req, res) => {
   //
   // Serves the admin lookups behind /account/admin (findAdminCustomerByEmail,
   // getAdminCustomerById, listAdminCustomerOrders). Real Medusa authenticates
-  // admin API keys via Basic auth; the mock ignores auth (parity with the
-  // Keygen mock) — the app already fails loud when MEDUSA_ADMIN_API_TOKEN is
-  // unset, which is what matters.
+  // admin API keys via Basic auth, so the mock enforces the same header.
+
+  if (
+    pathname.startsWith('/admin/') &&
+    req.headers.authorization !== MEDUSA_ADMIN_AUTHORIZATION
+  ) {
+    return sendJson(res, 401, { message: 'Unauthorized' })
+  }
 
   if (pathname === '/admin/customers' && method === 'GET') {
     const q = (searchParams.get('q') ?? '').trim().toLowerCase()

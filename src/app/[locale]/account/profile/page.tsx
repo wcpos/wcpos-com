@@ -97,7 +97,7 @@ async function ProfileContent({ locale }: { locale: Locale }) {
             : null,
         }}
       />
-      <DeleteAccountCard email={customer.email} />
+      <DeleteAccountCard key={customer.id} email={customer.email} />
     </div>
   )
 }

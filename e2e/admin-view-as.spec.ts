@@ -39,6 +39,16 @@ async function inspectCustomer(page: Page, email: string) {
 }
 
 test.describe('Admin view-as', () => {
+  test('mock admin routes reject invalid authorization', async ({ request }) => {
+    const mockPort = process.env.E2E_MOCK_PORT || '4873'
+    const response = await request.get(
+      `http://127.0.0.1:${mockPort}/admin/customers`,
+      { headers: { Authorization: 'Basic invalid' } }
+    )
+
+    expect(response.status()).toBe(401)
+  })
+
   test('inspecting a customer shows their licenses with the read-only banner', async ({
     page,
     context,
@@ -79,5 +89,38 @@ test.describe('Admin view-as', () => {
     await expect(page.getByText('expired@example.com')).toBeVisible()
     await expect(licenseCard(page, '****-****-5678')).toBeVisible()
     await expect(licenseCard(page, '****-****-1234')).not.toBeVisible()
+  })
+
+  test('switching customers clears preserved delete-account dialog state', async ({
+    page,
+    context,
+    baseURL,
+  }) => {
+    await signInAs(context, baseURL, 'e2e-admin')
+    await page.goto('/account/admin')
+
+    await inspectCustomer(page, 'active@example.com')
+    await page.getByRole('link', { name: 'Profile', exact: true }).click()
+    await expect(page).toHaveURL(/\/account\/profile/)
+
+    const dialog = page.getByRole('dialog')
+    await page.getByRole('button', { name: 'Delete account…' }).click()
+    await expect(dialog).toBeVisible()
+    await dialog.getByRole('textbox').fill('active@example.com')
+
+    await page.goBack()
+    await expect(page).toHaveURL(/\/account\/licenses/)
+    await page.goBack()
+    await expect(page).toHaveURL(/\/account\/admin/)
+
+    await inspectCustomer(page, 'expired@example.com')
+    await page.getByRole('link', { name: 'Profile', exact: true }).click()
+    await expect(page).toHaveURL(/\/account\/profile/)
+
+    await expect(page.getByText('expired@example.com')).toBeVisible()
+    await expect(dialog).not.toBeVisible()
+
+    await page.getByRole('button', { name: 'Delete account…' }).click()
+    await expect(dialog.getByRole('textbox')).toHaveValue('')
   })
 })
