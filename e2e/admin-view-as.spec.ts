@@ -117,7 +117,9 @@ test.describe('Admin view-as', () => {
     await page.getByRole('link', { name: 'Profile', exact: true }).click()
     await expect(page).toHaveURL(/\/account\/profile/)
 
-    await expect(page.getByText('expired@example.com')).toBeVisible()
+    await expect(
+      page.getByText('Connected as expired@example.com', { exact: true })
+    ).toBeVisible()
     await expect(dialog).not.toBeVisible()
 
     await page.getByRole('button', { name: 'Delete account…' }).click()
