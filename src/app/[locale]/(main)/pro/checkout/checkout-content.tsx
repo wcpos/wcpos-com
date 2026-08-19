@@ -110,6 +110,14 @@ export async function CheckoutContent({
 
   return (
     <CheckoutClient
+      // Key the client island by the rendered customer. Next keeps revisited
+      // pages alive (state preserved) for back/forward navigation, so without
+      // the key a history revisit under a DIFFERENT identity would reuse the
+      // previous customer's prop-seeded useState (email/step/billing fields).
+      // A changed key forces a real remount. Hardening today — auth changes
+      // cross a full page load and admin "view as" is scoped to /account —
+      // but it keeps this island safe if either of those ever changes.
+      key={customer?.id ?? 'anonymous'}
       customerEmail={customer?.email}
       initialBillingAddress={prefill.address}
       initialTaxNumber={prefill.taxNumber}
