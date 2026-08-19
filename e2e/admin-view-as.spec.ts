@@ -73,8 +73,9 @@ test.describe('Admin view-as', () => {
     await inspectCustomer(page, 'expired@example.com')
 
     // The banner and the license list must BOTH describe the new target.
-    // Regression: the licenses page used to keep serving the previous
-    // target's data from the client router cache.
+    // Regression: Next keeps revisited pages alive for back/forward
+    // navigation, so LicensesClient's prop-seeded useState survived the
+    // history revisit and kept showing the PREVIOUS target's licences.
     await expect(page.getByText('expired@example.com')).toBeVisible()
     await expect(licenseCard(page, '****-****-5678')).toBeVisible()
     await expect(licenseCard(page, '****-****-1234')).not.toBeVisible()
