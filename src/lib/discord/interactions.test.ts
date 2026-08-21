@@ -128,6 +128,58 @@ describe('discord interaction replies', () => {
     expect(embed.footer).toBeUndefined()
   })
 
+  it('omits activity dates from directory site lines while preserving never-seen state', () => {
+    const licence = {
+      keySuffix: '1234',
+      status: 'active',
+      expiry: null,
+      planId: 'lifetime' as const,
+      holderEmail: null,
+      holderName: null,
+      usedSeats: 1,
+      seatCap: 5,
+      connectedAt: null,
+      sites: [
+        {
+          label: 'active.example.com',
+          url: null,
+          lastSeenAt: '2026-07-01T00:00:00.000Z',
+          pluginVersion: '1.9.8',
+        },
+        {
+          label: 'new.example.com',
+          url: null,
+          lastSeenAt: null,
+          pluginVersion: '1.9.7',
+        },
+        {
+          label: 'active-no-version.example.com',
+          url: null,
+          lastSeenAt: '2026-07-02T00:00:00.000Z',
+          pluginVersion: null,
+        },
+      ],
+    }
+
+    const directoryEmbed = buildMemberCardEmbed(
+      { licences: [licence], customerSince: null },
+      { id: 'u1', username: 'ada' },
+      { omitSiteActivity: true }
+    )
+    const customerInfoEmbed = buildMemberCardEmbed(
+      { licences: [licence], customerSince: null },
+      { id: 'u1', username: 'ada' }
+    )
+
+    expect(directoryEmbed.fields[0].value).toContain(
+      'sites: active.example.com — plugin 1.9.8 · new.example.com — never seen · plugin 1.9.7 · active-no-version.example.com'
+    )
+    expect(directoryEmbed.fields[0].value).not.toContain('seen 2026-07-01')
+    expect(customerInfoEmbed.fields[0].value).toBe(
+      'active, lifetime\nholder unknown\nseats 1/5 · connection date unknown\nsites: active.example.com — seen 2026-07-01 · plugin 1.9.8 · new.example.com — never seen · plugin 1.9.7 · active-no-version.example.com — seen 2026-07-02'
+    )
+  })
+
   it('never labels a null expiry as lifetime unless the plan registry says so (#526)', () => {
     const migratedExpiredYearly = {
       keySuffix: '9999',

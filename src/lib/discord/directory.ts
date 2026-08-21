@@ -44,6 +44,12 @@ export interface DiscordDirectoryDependencies {
   createDirectoryCard(embed: DiscordEmbed): Promise<void>
   editDirectoryCard(messageId: string, embed: DiscordEmbed): Promise<void>
   deleteDirectoryCard(messageId: string): Promise<void>
+  reportFailure?(context: {
+    discordUserId?: string
+    messageId?: string
+    operation: 'build' | 'create' | 'edit' | 'delete'
+    error: unknown
+  }): void
 }
 
 export function parseDirectoryMessage(message: {
@@ -92,7 +98,7 @@ async function buildCard(
   return buildMemberCardEmbed(
     card,
     { id: member.discordUserId, username: member.username },
-    { directoryFooter: true }
+    { directoryFooter: true, omitSiteActivity: true }
   )
 }
 
@@ -127,6 +133,7 @@ export interface DirectorySyncSummary {
   created: number
   updated: number
   deleted: number
+  failed: number
 }
 
 /**
@@ -150,6 +157,28 @@ export async function syncMemberDirectory(
     created: 0,
     updated: 0,
     deleted: 0,
+    failed: 0,
+  }
+  const recordFailure = (
+    operation: 'build' | 'create' | 'edit' | 'delete',
+    error: unknown,
+    discordUserId?: string,
+    messageId?: string
+  ) => {
+    summary.failed += 1
+    try {
+      dependencies.reportFailure?.({ discordUserId, messageId, operation, error })
+    } catch {
+      // A broken reporter must not abort the pass it exists to observe.
+    }
+  }
+  const deleteCard = async (messageId: string, discordUserId: string) => {
+    try {
+      await dependencies.deleteDirectoryCard(messageId)
+      summary.deleted += 1
+    } catch (error) {
+      recordFailure('delete', error, discordUserId, messageId)
+    }
   }
 
   // First card per member wins; later duplicates (an event upsert racing a
@@ -158,34 +187,41 @@ export async function syncMemberDirectory(
   for (const message of messages) {
     if (!message.memberId) continue
     if (messageByMemberId.has(message.memberId)) {
-      await dependencies.deleteDirectoryCard(message.id)
-      summary.deleted += 1
+      await deleteCard(message.id, message.memberId)
       continue
     }
     messageByMemberId.set(message.memberId, message)
   }
 
   for (const member of members) {
-    const embed = await buildCard(member, licenses, dependencies)
-    const existing = messageByMemberId.get(member.discordUserId)
-    if (existing) {
-      const current = directoryCardMatches(existing.embed, embed)
-        ? await dependencies.getDirectoryMessage?.(existing.id)
-        : existing
-      if (!directoryCardMatches(current?.embed, embed)) {
-        await dependencies.editDirectoryCard(existing.id, embed)
-        summary.updated += 1
+    let operation: 'build' | 'create' | 'edit' = 'build'
+    let messageId: string | undefined
+    try {
+      const embed = await buildCard(member, licenses, dependencies)
+      const existing = messageByMemberId.get(member.discordUserId)
+      if (existing) {
+        operation = 'edit'
+        messageId = existing.id
+        const current = directoryCardMatches(existing.embed, embed)
+          ? await dependencies.getDirectoryMessage?.(existing.id)
+          : existing
+        if (!directoryCardMatches(current?.embed, embed)) {
+          await dependencies.editDirectoryCard(existing.id, embed)
+          summary.updated += 1
+        }
+      } else {
+        operation = 'create'
+        await dependencies.createDirectoryCard(embed)
+        summary.created += 1
       }
-    } else {
-      await dependencies.createDirectoryCard(embed)
-      summary.created += 1
+    } catch (error) {
+      recordFailure(operation, error, member.discordUserId, messageId)
     }
   }
 
   for (const [memberId, message] of messageByMemberId) {
     if (!memberIds.has(memberId)) {
-      await dependencies.deleteDirectoryCard(message.id)
-      summary.deleted += 1
+      await deleteCard(message.id, memberId)
     }
   }
 

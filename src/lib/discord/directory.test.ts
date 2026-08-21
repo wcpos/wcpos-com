@@ -82,6 +82,7 @@ describe('syncMemberDirectory', () => {
   it('refreshes the live card before skipping an unchanged list snapshot', async () => {
     const expectedEmbed = buildMemberCardEmbed(emptyCard, { id: '111', username: 'ada' }, {
       directoryFooter: true,
+      omitSiteActivity: true,
     })
     const existingCard = { id: 'msg_existing', memberId: '111', embed: expectedEmbed }
     const deps = dependencies({
@@ -105,7 +106,7 @@ describe('syncMemberDirectory', () => {
       embed: buildMemberCardEmbed(
         emptyCard,
         { id: '111', username: 'ada' },
-        { directoryFooter: true }
+        { directoryFooter: true, omitSiteActivity: true }
       ),
     }
     const deps = dependencies({
@@ -117,7 +118,7 @@ describe('syncMemberDirectory', () => {
     const summary = await syncMemberDirectory(deps)
 
     expect(deps.editDirectoryCard).not.toHaveBeenCalled()
-    expect(summary).toEqual({ members: 1, created: 0, updated: 0, deleted: 0 })
+    expect(summary).toEqual({ members: 1, created: 0, updated: 0, deleted: 0, failed: 0 })
   })
 
   it('creates missing cards, updates existing ones, deletes orphans, leaves non-cards alone', async () => {
@@ -135,7 +136,7 @@ describe('syncMemberDirectory', () => {
 
     const summary = await syncMemberDirectory(deps)
 
-    expect(summary).toEqual({ members: 2, created: 1, updated: 1, deleted: 1 })
+    expect(summary).toEqual({ members: 2, created: 1, updated: 1, deleted: 1, failed: 0 })
     expect(deps.editDirectoryCard).toHaveBeenCalledWith(
       'msg_existing',
       expect.objectContaining({ footer: { text: 'member:111' } })
@@ -160,7 +161,87 @@ describe('syncMemberDirectory', () => {
 
     expect(deps.deleteDirectoryCard).toHaveBeenCalledWith('msg_duplicate')
     expect(deps.editDirectoryCard).toHaveBeenCalledWith('msg_first', expect.anything())
-    expect(summary).toEqual({ members: 1, created: 0, updated: 1, deleted: 1 })
+    expect(summary).toEqual({ members: 1, created: 0, updated: 1, deleted: 1, failed: 0 })
+  })
+
+  it('continues after an edit failure and still processes later members and orphans', async () => {
+    const failure = new Error('Discord 30046')
+    const reportFailure = vi.fn()
+    const deps = dependencies({
+      listAllLicenses: async () => [
+        license({ id: 'a', metadata: connectedTo({}, '111') }),
+        license({ id: 'b', metadata: connectedTo({}, '222', 'bob') }),
+      ],
+      listDirectoryMessages: async () => [
+        { id: 'msg_existing', memberId: '111' },
+        { id: 'msg_orphan', memberId: '999' },
+      ],
+      editDirectoryCard: vi.fn(async () => {
+        throw failure
+      }),
+      reportFailure,
+    })
+
+    const summary = await syncMemberDirectory(deps)
+
+    expect(summary).toEqual({ members: 2, created: 1, updated: 0, deleted: 1, failed: 1 })
+    expect(deps.createDirectoryCard).toHaveBeenCalledWith(
+      expect.objectContaining({ footer: { text: 'member:222' } })
+    )
+    expect(deps.deleteDirectoryCard).toHaveBeenCalledWith('msg_orphan')
+    expect(reportFailure).toHaveBeenCalledWith({
+      discordUserId: '111',
+      messageId: 'msg_existing',
+      operation: 'edit',
+      error: failure,
+    })
+  })
+
+  it('contains a throwing failure reporter so later members and orphans still process', async () => {
+    const reportFailure = vi.fn(() => {
+      throw new Error('reporter exploded')
+    })
+    const deps = dependencies({
+      listAllLicenses: async () => [
+        license({ id: 'a', metadata: connectedTo({}, '111') }),
+        license({ id: 'b', metadata: connectedTo({}, '222', 'bob') }),
+      ],
+      listDirectoryMessages: async () => [
+        { id: 'msg_existing', memberId: '111' },
+        { id: 'msg_orphan', memberId: '999' },
+      ],
+      editDirectoryCard: vi.fn(async () => {
+        throw new Error('Discord 30046')
+      }),
+      reportFailure,
+    })
+
+    const summary = await syncMemberDirectory(deps)
+
+    expect(summary).toEqual({ members: 2, created: 1, updated: 0, deleted: 1, failed: 1 })
+    expect(deps.createDirectoryCard).toHaveBeenCalledWith(
+      expect.objectContaining({ footer: { text: 'member:222' } })
+    )
+    expect(deps.deleteDirectoryCard).toHaveBeenCalledWith('msg_orphan')
+    expect(reportFailure).toHaveBeenCalledTimes(1)
+  })
+
+  it('does not require a failure reporter to survive a failed edit', async () => {
+    const deps = dependencies({
+      listAllLicenses: async () => [license({ metadata: connectedTo({}, '111') })],
+      listDirectoryMessages: async () => [{ id: 'msg_existing', memberId: '111' }],
+      editDirectoryCard: vi.fn(async () => {
+        throw new Error('Discord 30046')
+      }),
+    })
+
+    await expect(syncMemberDirectory(deps)).resolves.toEqual({
+      members: 1,
+      created: 0,
+      updated: 0,
+      deleted: 0,
+      failed: 1,
+    })
   })
 })
 
@@ -172,7 +253,7 @@ describe('upsertDirectoryCardForMember', () => {
       embed: buildMemberCardEmbed(
         emptyCard,
         { id: '111', username: 'ada' },
-        { directoryFooter: true }
+        { directoryFooter: true, omitSiteActivity: true }
       ),
     }
     const deps = dependencies({
