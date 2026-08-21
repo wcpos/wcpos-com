@@ -10,6 +10,12 @@ const mocks = vi.hoisted(() => ({
   addRole: vi.fn(async () => undefined),
   removeRole: vi.fn(async () => undefined),
   listRoleHolderIds: vi.fn(async () => []),
+  listChannelMessages: vi.fn(
+    async (): Promise<Array<{ id: string; embeds?: Array<{ footer?: { text?: string } }> }>> => []
+  ),
+  deleteChannelMessage: vi.fn(async () => undefined),
+  directoryChannelId: undefined as string | undefined,
+  infraError: vi.fn(),
 }))
 
 vi.mock('./client', () => ({
@@ -19,6 +25,8 @@ vi.mock('./client', () => ({
       addRole: mocks.addRole,
       removeRole: mocks.removeRole,
       listRoleHolderIds: mocks.listRoleHolderIds,
+      listChannelMessages: mocks.listChannelMessages,
+      deleteChannelMessage: mocks.deleteChannelMessage,
     }
   }),
 }))
@@ -27,8 +35,19 @@ vi.mock('./client', () => ({
 // default-sync.ts imports has to appear here — a missing one resolves to
 // undefined and only explodes when the code under test calls it.
 vi.mock('./config', () => ({
-  getDiscordConfig: () => ({ clientId: 'client', clientSecret: 'secret', botToken: 'bot', guildId: 'guild', proRoleId: 'role' }),
+  getDiscordConfig: () => ({
+    clientId: 'client',
+    clientSecret: 'secret',
+    botToken: 'bot',
+    guildId: 'guild',
+    proRoleId: 'role',
+    directoryChannelId: mocks.directoryChannelId,
+  }),
   isDiscordDirectoryConfigured: mocks.isDiscordDirectoryConfigured,
+}))
+
+vi.mock('@/lib/logger', () => ({
+  infraLogger: { error: mocks.infraError },
 }))
 
 vi.mock('./medusa-admin', () => ({
@@ -140,7 +159,10 @@ describe('createDiscordReconcileDependencies', () => {
 })
 
 describe('directory sync gating', () => {
-  beforeEach(() => vi.clearAllMocks())
+  beforeEach(() => {
+    vi.clearAllMocks()
+    mocks.directoryChannelId = undefined
+  })
 
   it('is a silent no-op until DISCORD_DIRECTORY_CHANNEL_ID is configured', async () => {
     mocks.isDiscordDirectoryConfigured.mockReturnValue(false)
@@ -156,6 +178,31 @@ describe('directory sync gating', () => {
     // construction must reject rather than silently posting nowhere.
     await expect(syncDiscordDirectoryForMember('discord_1')).rejects.toThrow(
       /DISCORD_DIRECTORY_CHANNEL_ID/
+    )
+  })
+
+  it('logs per-card directory failures reported by the nightly sync', async () => {
+    const failure = new Error('Discord 30046')
+    mocks.isDiscordDirectoryConfigured.mockReturnValue(true)
+    mocks.directoryChannelId = 'directory'
+    mocks.listAllLicenses.mockResolvedValue([])
+    mocks.listChannelMessages.mockResolvedValue([
+      { id: 'msg_orphan', embeds: [{ footer: { text: 'member:999' } }] },
+    ])
+    mocks.deleteChannelMessage.mockRejectedValue(failure)
+
+    await expect(reconcileDiscordDirectory()).resolves.toEqual({
+      members: 0,
+      created: 0,
+      updated: 0,
+      deleted: 0,
+      failed: 1,
+    })
+    expect(mocks.infraError).toHaveBeenCalledWith(
+      expect.any(Array),
+      'delete',
+      '999',
+      failure
     )
   })
 })

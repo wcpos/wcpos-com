@@ -210,16 +210,24 @@ function escapeMarkdown(value: string): string {
   return value.replace(/([\\`*_~|[\]()<>])/g, '\\$1')
 }
 
-function siteLine(site: DiscordLicenceSite): string {
+function siteLine(site: DiscordLicenceSite, omitSiteActivity = false): string {
   // `)` would terminate the markdown link target early.
   const safeUrl = site.url?.replaceAll(')', '%29')
   const label = safeUrl ? `[${escapeMarkdown(site.label)}](${safeUrl})` : escapeMarkdown(site.label)
+  if (omitSiteActivity && site.lastSeenAt) {
+    return site.pluginVersion
+      ? `${label} — plugin ${escapeMarkdown(site.pluginVersion)}`
+      : label
+  }
   const seen = site.lastSeenAt ? `seen ${formatDate(site.lastSeenAt)}` : 'never seen'
   const plugin = site.pluginVersion ? ` · plugin ${escapeMarkdown(site.pluginVersion)}` : ''
   return `${label} — ${seen}${plugin}`
 }
 
-function licenceField(licence: DiscordCustomerLicenceInfo): DiscordEmbedField {
+function licenceField(
+  licence: DiscordCustomerLicenceInfo,
+  omitSiteActivity = false
+): DiscordEmbedField {
   const plan = licence.planId ? ` · ${PLAN_LABEL[licence.planId]}` : ''
   const holder = licence.holderEmail
     ? `holder ${escapeMarkdown(licence.holderEmail)}${licence.holderName ? ` (${escapeMarkdown(licence.holderName)})` : ''}`
@@ -231,7 +239,10 @@ function licenceField(licence: DiscordCustomerLicenceInfo): DiscordEmbedField {
     licence.sites.length === 0
       ? ['sites: none activated yet']
       : [
-          `sites: ${licence.sites.slice(0, MAX_SITE_LINES).map(siteLine).join(' · ')}`,
+          `sites: ${licence.sites
+            .slice(0, MAX_SITE_LINES)
+            .map((site) => siteLine(site, omitSiteActivity))
+            .join(' · ')}`,
           ...(licence.sites.length > MAX_SITE_LINES
             ? [`…and ${licence.sites.length - MAX_SITE_LINES} more sites`]
             : []),
@@ -267,7 +278,11 @@ function embedColor(licences: DiscordCustomerLicenceInfo[]): number {
 export function buildMemberCardEmbed(
   info: { licences: DiscordCustomerLicenceInfo[]; customerSince: string | null },
   target: { id: string; username: string | null },
-  options: { roleState?: DiscordCustomerInfo['roleState']; directoryFooter?: boolean } = {}
+  options: {
+    roleState?: DiscordCustomerInfo['roleState']
+    directoryFooter?: boolean
+    omitSiteActivity?: boolean
+  } = {}
 ): DiscordEmbed {
   const descriptionLines = [
     `Customer since: ${info.customerSince ? formatDate(info.customerSince) : 'unknown'}`,
@@ -291,7 +306,7 @@ export function buildMemberCardEmbed(
   const fields: DiscordEmbedField[] = []
   for (const licence of info.licences) {
     if (fields.length >= MAX_LICENCE_FIELDS) break
-    const field = licenceField(licence)
+    const field = licenceField(licence, options.omitSiteActivity)
     const cost = field.name.length + field.value.length
     if (cost > budget - OMITTED_FIELD_RESERVE) break
     budget -= cost
