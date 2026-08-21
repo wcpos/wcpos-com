@@ -166,7 +166,11 @@ export async function syncMemberDirectory(
     messageId?: string
   ) => {
     summary.failed += 1
-    dependencies.reportFailure?.({ discordUserId, messageId, operation, error })
+    try {
+      dependencies.reportFailure?.({ discordUserId, messageId, operation, error })
+    } catch {
+      // A broken reporter must not abort the pass it exists to observe.
+    }
   }
   const deleteCard = async (messageId: string, discordUserId: string) => {
     try {

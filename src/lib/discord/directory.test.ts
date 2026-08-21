@@ -197,6 +197,35 @@ describe('syncMemberDirectory', () => {
     })
   })
 
+  it('contains a throwing failure reporter so later members and orphans still process', async () => {
+    const reportFailure = vi.fn(() => {
+      throw new Error('reporter exploded')
+    })
+    const deps = dependencies({
+      listAllLicenses: async () => [
+        license({ id: 'a', metadata: connectedTo({}, '111') }),
+        license({ id: 'b', metadata: connectedTo({}, '222', 'bob') }),
+      ],
+      listDirectoryMessages: async () => [
+        { id: 'msg_existing', memberId: '111' },
+        { id: 'msg_orphan', memberId: '999' },
+      ],
+      editDirectoryCard: vi.fn(async () => {
+        throw new Error('Discord 30046')
+      }),
+      reportFailure,
+    })
+
+    const summary = await syncMemberDirectory(deps)
+
+    expect(summary).toEqual({ members: 2, created: 1, updated: 0, deleted: 1, failed: 1 })
+    expect(deps.createDirectoryCard).toHaveBeenCalledWith(
+      expect.objectContaining({ footer: { text: 'member:222' } })
+    )
+    expect(deps.deleteDirectoryCard).toHaveBeenCalledWith('msg_orphan')
+    expect(reportFailure).toHaveBeenCalledTimes(1)
+  })
+
   it('does not require a failure reporter to survive a failed edit', async () => {
     const deps = dependencies({
       listAllLicenses: async () => [license({ metadata: connectedTo({}, '111') })],
