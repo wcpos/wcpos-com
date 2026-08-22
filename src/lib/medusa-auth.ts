@@ -4,6 +4,7 @@ import { cache } from 'react'
 import { cookies } from 'next/headers'
 import {
   checkoutGatewayHeaders,
+  getCheckoutGatewayHeaders,
   getMedusaBackendUrl,
   getMedusaPublishableKey,
   getRequestStoreEnvironment,
@@ -657,6 +658,7 @@ export async function requestEmailChange(input: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
         'x-publishable-api-key': await getMedusaPublishableKey(),
+        ...(await getCheckoutGatewayHeaders()),
       },
       body: JSON.stringify(input),
     }
@@ -685,6 +687,7 @@ export async function confirmEmailChange(token: string): Promise<string> {
       headers: {
         'Content-Type': 'application/json',
         'x-publishable-api-key': await getMedusaPublishableKey(),
+        ...(await getCheckoutGatewayHeaders()),
       },
       body: JSON.stringify({ token }),
     }

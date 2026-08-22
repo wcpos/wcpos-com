@@ -47,7 +47,7 @@ export async function POST(request: Request) {
   }
 
   const rate = await limiter.consume(clientIp(request))
-  if (rate.status === 'limited') {
+  if (rate.status !== 'allowed') {
     return errorResponse('rate_limited', 429)
   }
 

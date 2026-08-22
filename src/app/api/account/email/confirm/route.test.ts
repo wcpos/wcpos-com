@@ -104,4 +104,13 @@ describe('POST /api/account/email/confirm', () => {
     expect(response.status).toBe(429)
     expect(confirmEmailChangeMock).not.toHaveBeenCalled()
   })
+
+  it('does not call the backend when the rate limiter is unavailable', async () => {
+    consumeMock.mockResolvedValue({ status: 'unavailable' })
+
+    const response = await post({ token: 'x' })
+
+    expect(response.status).toBe(429)
+    expect(confirmEmailChangeMock).not.toHaveBeenCalled()
+  })
 })

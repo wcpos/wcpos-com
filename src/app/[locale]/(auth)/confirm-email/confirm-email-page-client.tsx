@@ -31,6 +31,7 @@ type State =
 
 function ConfirmEmailInner() {
   const t = useTranslations('auth.confirmEmail')
+  const tErrors = useTranslations('auth.common.apiErrors')
   const locale = useLocale()
   const searchParams = useSearchParams()
   const token = searchParams.get('token') ?? ''
@@ -70,11 +71,13 @@ function ConfirmEmailInner() {
           setState({
             status: 'failed',
             message:
-              body.errorCode === 'expired_token'
-                ? t('errors.expired')
-                : body.errorCode === 'change_failed'
-                  ? t('errors.conflict')
-                  : t('errors.invalid'),
+              body.errorCode === 'rate_limited'
+                ? tErrors('rate_limited')
+                : body.errorCode === 'expired_token'
+                  ? t('errors.expired')
+                  : body.errorCode === 'change_failed'
+                    ? t('errors.conflict')
+                    : t('errors.invalid'),
           })
           return
         }
@@ -87,7 +90,7 @@ function ConfirmEmailInner() {
         setState({ status: 'failed', message: t('errors.generic') })
       }
     })()
-  }, [token, t])
+  }, [token, t, tErrors])
 
   if (state.status === 'working') {
     return (
