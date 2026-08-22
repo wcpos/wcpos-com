@@ -54,7 +54,7 @@ vi.mock('@/components/ui/page-header', () => ({ PageHeader: () => null }))
 import ProfilePage from './page'
 
 describe('ProfilePage', () => {
-  it('requires a password when auth-method discovery is unavailable', async () => {
+  it('does not require a password up front when auth-method discovery is unavailable', async () => {
     const page = (await ProfilePage({
       params: Promise.resolve({ locale: 'en' }),
     })) as ReactElement<{ children: React.ReactNode }>
@@ -69,6 +69,6 @@ describe('ProfilePage', () => {
     const profile = await renderContent(content.props)
     const cards = Children.toArray(profile.props.children)
 
-    expect(cards[1]).toMatchObject({ props: { hasPassword: true } })
+    expect(cards[1]).toMatchObject({ props: { hasPassword: false } })
   })
 })

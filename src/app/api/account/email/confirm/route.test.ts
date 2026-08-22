@@ -96,6 +96,22 @@ describe('POST /api/account/email/confirm', () => {
     expect(response.status).toBe(409)
   })
 
+  it.each([500, 502, 503])(
+    'preserves backend %s failures as server errors',
+    async (status) => {
+      confirmEmailChangeMock.mockRejectedValue(
+        new FakeRejected('change_failed', status)
+      )
+
+      const response = await post({ token: 'x' })
+
+      expect(response.status).toBe(500)
+      await expect(response.json()).resolves.toEqual({
+        errorCode: 'change_failed',
+      })
+    }
+  )
+
   it('still confirms when the limiter store is unreachable', async () => {
     // Opposite of the request route on purpose: the token is the security
     // control here, so failing closed would stop legitimate customers

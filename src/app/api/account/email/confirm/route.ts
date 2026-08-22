@@ -75,7 +75,10 @@ export async function POST(request: Request) {
     if (error instanceof EmailChangeRejected) {
       authLogger.info`Email change confirm rejected: ${error.errorCode}`
       const mapped = BACKEND_CODES[error.errorCode] ?? 'invalid_token'
-      return errorResponse(mapped, error.status === 409 ? 409 : 400)
+      return errorResponse(
+        mapped,
+        error.status === 409 ? 409 : error.status >= 500 ? 500 : 400
+      )
     }
     authLogger.error`Email change confirm failed unexpectedly: ${error}`
     return errorResponse('change_failed', 500)

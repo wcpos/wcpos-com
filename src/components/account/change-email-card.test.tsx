@@ -37,4 +37,42 @@ describe('ChangeEmailCard', () => {
       )
     ).toBeInTheDocument()
   })
+
+  it('reveals the password field when the backend requires one', async () => {
+    mockFetch
+      .mockResolvedValueOnce({
+        ok: false,
+        json: async () => ({ errorCode: 'password_required' }),
+      })
+      .mockResolvedValueOnce({ ok: true })
+    render(
+      <NextIntlClientProvider locale="pt" messages={messages}>
+        <ChangeEmailCard
+          currentEmail="old@example.com"
+          hasPassword={false}
+        />
+      </NextIntlClientProvider>
+    )
+
+    fireEvent.click(screen.getByTestId('change-email-open'))
+    fireEvent.change(screen.getByRole('textbox'), {
+      target: { value: 'novo@example.com' },
+    })
+    fireEvent.submit(screen.getByRole('textbox').closest('form')!)
+
+    const password = await screen.findByLabelText('Palavra-passe atual')
+    fireEvent.change(password, { target: { value: 'secret' } })
+    fireEvent.submit(password.closest('form')!)
+
+    await screen.findByText('Verifique a sua nova caixa de entrada')
+    expect(mockFetch).toHaveBeenLastCalledWith(
+      '/api/account/email',
+      expect.objectContaining({
+        body: JSON.stringify({
+          email: 'novo@example.com',
+          password: 'secret',
+        }),
+      })
+    )
+  })
 })

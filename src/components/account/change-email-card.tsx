@@ -35,9 +35,11 @@ export function ChangeEmailCard({
   const [open, setOpen] = useState(false)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [backendRequiresPassword, setBackendRequiresPassword] = useState(false)
   const [submitting, setSubmitting] = useState(false)
   const [sentTo, setSentTo] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const requiresPassword = hasPassword || backendRequiresPassword
 
   function errorMessage(code: unknown): string {
     switch (code) {
@@ -72,13 +74,16 @@ export function ChangeEmailCard({
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           email,
-          ...(hasPassword ? { password } : {}),
+          ...(requiresPassword ? { password } : {}),
         }),
       })
 
       if (!response.ok) {
         const body = (await response.json().catch(() => ({}))) as {
           errorCode?: unknown
+        }
+        if (body.errorCode === 'password_required') {
+          setBackendRequiresPassword(true)
         }
         setError(errorMessage(body.errorCode))
         return
@@ -148,7 +153,7 @@ export function ChangeEmailCard({
               />
             </div>
 
-            {hasPassword && (
+            {requiresPassword && (
               <div className="space-y-1.5">
                 <Label htmlFor={passwordId}>{t('passwordLabel')}</Label>
                 <Input
