@@ -676,7 +676,10 @@ export async function requestEmailChange(input: {
  */
 export async function confirmEmailChange(token: string): Promise<string> {
   const response = await fetch(
-    `${await getMedusaBackendUrl()}/store/customers/me/email-change/confirm`,
+    // NOT under /store/customers/me: everything there sits behind an
+    // authenticated matcher, and Medusa applies a parent matcher to its
+    // descendants — nested there, every confirmation link would 401.
+    `${await getMedusaBackendUrl()}/store/email-change/confirm`,
     {
       method: 'POST',
       headers: {
