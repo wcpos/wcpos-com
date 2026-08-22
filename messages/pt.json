@@ -1030,7 +1030,7 @@
         "sending": "A enviar…",
         "cancel": "Cancelar",
         "sentTitle": "Verifique a sua nova caixa de entrada",
-        "sentBody": "Enviámos uma ligação de confirmação para {email}. O seu endereço muda assim que a seguir.",
+        "sentBody": "Enviámos uma ligação de confirmação para {email}. O seu endereço muda assim que seguir a ligação.",
         "sentExpiry": "A ligação expira dentro de 1 hora. Ainda não mudou nada.",
         "sentToast": "Email de confirmação enviado",
         "errors": {

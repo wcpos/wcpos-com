@@ -16,6 +16,7 @@ import { isUndeliverableVerdict, verifyEmailDomain } from '@/lib/email-domain'
 type EmailChangeErrorCode =
   | 'invalid_origin'
   | 'rate_limited'
+  | 'rate_limit_unavailable'
   | 'read_only_inspection'
   | 'unauthorized'
   | 'email_required'
@@ -66,6 +67,13 @@ export async function POST(request: Request) {
   const rate = await limiter.consume(clientIp(request))
   if (rate.status === 'limited') {
     return errorResponse('rate_limited', 429)
+  }
+  if (rate.status !== 'allowed') {
+    // Fail closed, like registration. Every accepted request sends a real
+    // email to an address the caller chose; a limiter outage must not turn
+    // this into an open relay for confirmation mail.
+    authLogger.error`Email change unavailable: rate limiter store unreachable`
+    return errorResponse('rate_limit_unavailable', 503)
   }
 
   const body = (await request.json().catch(() => ({}))) as {

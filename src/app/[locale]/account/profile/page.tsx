@@ -105,10 +105,17 @@ async function ProfileContent({ locale }: { locale: Locale }) {
       <ChangeEmailCard
         key={`email-${customer.id}`}
         currentEmail={customer.email}
-        hasPassword={Boolean(
-          authMethods?.providers.includes('emailpass') &&
-            !authMethods.emailpassPending
-        )}
+        // An unavailable auth-methods lookup (null) must NOT read as "no
+        // password". Guessing passwordless hides the field the backend then
+        // demands, and the customer is stuck on password_required with no way
+        // to satisfy it. Unknown therefore means "ask for it".
+        hasPassword={
+          !authMethods ||
+          Boolean(
+            authMethods.providers.includes('emailpass') &&
+              !authMethods.emailpassPending
+          )
+        }
       />
 
       <DeleteAccountCard key={customer.id} email={customer.email} />

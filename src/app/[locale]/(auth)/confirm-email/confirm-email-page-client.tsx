@@ -50,8 +50,11 @@ function ConfirmEmailInner() {
     if (!token || submitted.current) return
     submitted.current = true
 
-    let cancelled = false
-
+    // Deliberately no cancellation flag. Under Strict Mode the first effect's
+    // cleanup would set it, and the remounted effect exits on the ref guard —
+    // so nothing would ever apply the response and the page would sit on
+    // "working" forever. The ref alone prevents the double submit that would
+    // spend this single-use token; a late setState is harmless.
     void (async () => {
       try {
         const response = await fetch('/api/account/email/confirm', {
@@ -63,8 +66,6 @@ function ConfirmEmailInner() {
           email?: unknown
           errorCode?: unknown
         }
-        if (cancelled) return
-
         if (!response.ok) {
           setState({
             status: 'failed',
@@ -83,15 +84,9 @@ function ConfirmEmailInner() {
           email: typeof body.email === 'string' ? body.email : '',
         })
       } catch {
-        if (!cancelled) {
-          setState({ status: 'failed', message: t('errors.generic') })
-        }
+        setState({ status: 'failed', message: t('errors.generic') })
       }
     })()
-
-    return () => {
-      cancelled = true
-    }
   }, [token, t])
 
   if (state.status === 'working') {

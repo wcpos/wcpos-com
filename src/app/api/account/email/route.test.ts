@@ -140,6 +140,21 @@ describe('POST /api/account/email', () => {
     })
   })
 
+  it('fails closed when the limiter store is unreachable', async () => {
+    // Every accepted request sends a real email to a caller-chosen address.
+    // A limiter outage must not turn this into an open relay for
+    // confirmation mail.
+    consumeMock.mockResolvedValue({ status: 'unavailable' })
+
+    const response = await post({ email: 'new@example.com' })
+
+    expect(response.status).toBe(503)
+    await expect(response.json()).resolves.toEqual({
+      errorCode: 'rate_limit_unavailable',
+    })
+    expect(requestEmailChangeMock).not.toHaveBeenCalled()
+  })
+
   it('rate limits', async () => {
     consumeMock.mockResolvedValue({ status: 'limited' })
 
