@@ -1140,6 +1140,7 @@
         "credentials_required": "请输入电子邮件和密码。",
         "reset_fields_required": "请输入电子邮件、令牌和密码。",
         "password_too_short": "密码至少需要 {min} 个字符。",
+        "email_undeliverable": "我们无法向该邮箱地址投递邮件。请检查是否有拼写错误。",
         "invalid_credentials": "电子邮件或密码无效。",
         "account_security_hold": "目前无法登录。请联系支持团队以获取账户帮助。",
         "invalid_reset_token": "此密码重置链接无效或已过期。请重新申请一个新链接。"

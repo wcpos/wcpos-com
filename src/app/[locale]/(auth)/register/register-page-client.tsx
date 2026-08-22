@@ -29,6 +29,7 @@ type RegisterErrorCode =
   | 'bot_check_failed'
   | 'credentials_required'
   | 'password_too_short'
+  | 'email_undeliverable'
   | 'account_exists'
   | 'registration_failed'
 
@@ -40,6 +41,7 @@ function isRegisterErrorCode(value: unknown): value is RegisterErrorCode {
     value === 'bot_check_failed' ||
     value === 'credentials_required' ||
     value === 'password_too_short' ||
+    value === 'email_undeliverable' ||
     value === 'account_exists' ||
     value === 'registration_failed'
   )
@@ -82,6 +84,8 @@ function RegisterPageInner() {
         return tCommon('apiErrors.credentials_required')
       case 'password_too_short':
         return tCommon('apiErrors.password_too_short', { min: MIN_PASSWORD_LENGTH })
+      case 'email_undeliverable':
+        return tCommon('apiErrors.email_undeliverable')
       case 'account_exists':
         return t('accountExists')
       case 'registration_failed':

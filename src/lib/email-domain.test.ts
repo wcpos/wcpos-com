@@ -1,0 +1,239 @@
+import { beforeEach, describe, expect, it, vi } from 'vitest'
+
+const resolveMx = vi.hoisted(() => vi.fn())
+const resolve4 = vi.hoisted(() => vi.fn())
+const resolve6 = vi.hoisted(() => vi.fn())
+
+vi.mock('node:dns/promises', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('node:dns/promises')>()
+  class MockResolver {
+    resolveMx = resolveMx
+    resolve4 = resolve4
+    resolve6 = resolve6
+  }
+  return { ...actual, default: { ...actual, Resolver: MockResolver }, Resolver: MockResolver }
+})
+
+import {
+  clearEmailDomainCache,
+  emailDomain,
+  isUndeliverableVerdict,
+  verifyEmailDomain,
+} from './email-domain'
+
+function dnsError(code: string): Error & { code: string } {
+  return Object.assign(new Error(code), { code })
+}
+
+beforeEach(() => {
+  vi.clearAllMocks()
+  clearEmailDomainCache()
+  resolve4.mockRejectedValue(dnsError('ENODATA'))
+  resolve6.mockRejectedValue(dnsError('ENODATA'))
+})
+
+describe('emailDomain', () => {
+  it('extracts the domain, lowercased and trimmed', () => {
+    expect(emailDomain('  Info@Layer3D.org.uk ')).toBe('layer3d.org.uk')
+  })
+
+  it('takes the last @ so plus-addressing and quotes do not confuse it', () => {
+    expect(emailDomain('a@b@example.com')).toBe('example.com')
+    expect(emailDomain('user+tag@example.com')).toBe('example.com')
+  })
+
+  it('rejects shapes that would make a DNS query meaningless', () => {
+    for (const bad of [
+      'no-at-sign',
+      '@example.com',
+      'user@',
+      'user@localhost',
+      'user@example',
+      'user@example.123',
+      'user@exa mple.com',
+      'user@.example.com',
+      'user@example..com',
+    ]) {
+      expect(emailDomain(bad)).toBeNull()
+    }
+  })
+})
+
+describe('verifyEmailDomain', () => {
+  it('accepts a domain with MX records', async () => {
+    resolveMx.mockResolvedValue([
+      { exchange: 'layer3d-org-uk.mail.protection.outlook.com', priority: 0 },
+    ])
+    await expect(verifyEmailDomain('info@layer3d.org.uk')).resolves.toBe(
+      'deliverable'
+    )
+  })
+
+  it('reports an unregistered domain as no_such_domain', async () => {
+    // The real incident: layed3d.org.uk is NXDOMAIN, so every email to it
+    // hard-bounced.
+    resolveMx.mockRejectedValue(dnsError('ENOTFOUND'))
+    await expect(verifyEmailDomain('info@layed3d.org.uk')).resolves.toBe(
+      'no_such_domain'
+    )
+  })
+
+  it('accepts a domain with no MX but an A record (implicit MX)', async () => {
+    resolveMx.mockRejectedValue(dnsError('ENODATA'))
+    resolve4.mockResolvedValue(['203.0.113.10'])
+    await expect(verifyEmailDomain('owner@smallshop.example')).resolves.toBe(
+      'deliverable'
+    )
+  })
+
+  it('accepts an IPv6-only domain', async () => {
+    resolveMx.mockRejectedValue(dnsError('ENODATA'))
+    resolve6.mockResolvedValue(['2001:db8::1'])
+    await expect(verifyEmailDomain('owner@v6.example')).resolves.toBe(
+      'deliverable'
+    )
+  })
+
+  it('treats an RFC 7505 null MX as undeliverable', async () => {
+    // `MX 0 .` is an explicit "this domain accepts no mail". A truthiness
+    // check on the exchange read it as deliverable — the exact opposite.
+    resolveMx.mockResolvedValue([{ exchange: '.', priority: 0 }])
+    await expect(verifyEmailDomain('someone@nomail.example')).resolves.toBe(
+      'no_mail_exchanger'
+    )
+  })
+
+  it('does not fall back to A records when a null MX is published', async () => {
+    // The null MX overrides any address record; a web server on the domain
+    // does not make it reachable by email.
+    resolveMx.mockResolvedValue([{ exchange: '.', priority: 0 }])
+    resolve4.mockResolvedValue(['203.0.113.10'])
+    await expect(verifyEmailDomain('someone@webonly.example')).resolves.toBe(
+      'no_mail_exchanger'
+    )
+    expect(resolve4).not.toHaveBeenCalled()
+  })
+
+  it('still accepts a real exchange alongside a null MX', async () => {
+    resolveMx.mockResolvedValue([
+      { exchange: '.', priority: 0 },
+      { exchange: 'mx.mixed.example', priority: 10 },
+    ])
+    await expect(verifyEmailDomain('someone@mixed.example')).resolves.toBe(
+      'deliverable'
+    )
+  })
+
+  it('fails soft on ENOTIMP rather than rejecting the address', async () => {
+    // ENOTIMP is the resolver refusing the query, not evidence of absence.
+    // Treating it as "no records" rejected deliverable addresses.
+    resolveMx.mockRejectedValue(dnsError('ENOTIMP'))
+    resolve4.mockRejectedValue(dnsError('ENOTIMP'))
+    resolve6.mockRejectedValue(dnsError('ENOTIMP'))
+    await expect(verifyEmailDomain('info@layer3d.org.uk')).resolves.toBe(
+      'unverified'
+    )
+  })
+
+  it('resolves internationalized domains instead of rejecting them', async () => {
+    resolveMx.mockResolvedValue([{ exchange: 'mx.example.рф', priority: 10 }])
+    await expect(verifyEmailDomain('info@пример.рф')).resolves.toBe(
+      'deliverable'
+    )
+    // The resolver only speaks punycode.
+    expect(resolveMx).toHaveBeenCalledWith('xn--e1afmkfd.xn--p1ai')
+  })
+
+  it('accepts an already-punycoded TLD', async () => {
+    resolveMx.mockResolvedValue([{ exchange: 'mx.example', priority: 10 }])
+    await expect(verifyEmailDomain('info@xn--e1afmkfd.xn--p1ai')).resolves.toBe(
+      'deliverable'
+    )
+  })
+
+  it('reports a registered domain that publishes no mail host', async () => {
+    resolveMx.mockRejectedValue(dnsError('ENODATA'))
+    await expect(verifyEmailDomain('someone@parked.example')).resolves.toBe(
+      'no_mail_exchanger'
+    )
+  })
+
+  it('treats an empty MX answer as no mail exchanger, not deliverable', async () => {
+    resolveMx.mockResolvedValue([])
+    await expect(verifyEmailDomain('someone@empty.example')).resolves.toBe(
+      'no_mail_exchanger'
+    )
+  })
+
+  it('fails soft on resolver failure so signup is never blocked by DNS', async () => {
+    for (const code of ['ETIMEOUT', 'SERVFAIL', 'ECONNREFUSED', 'EREFUSED']) {
+      clearEmailDomainCache()
+      resolveMx.mockRejectedValue(dnsError(code))
+      await expect(verifyEmailDomain('info@layer3d.org.uk')).resolves.toBe(
+        'unverified'
+      )
+    }
+  })
+
+  it('rejects a malformed address without attempting a lookup', async () => {
+    await expect(verifyEmailDomain('not-an-email')).resolves.toBe(
+      'no_such_domain'
+    )
+    expect(resolveMx).not.toHaveBeenCalled()
+  })
+
+  it('caches a definitive verdict', async () => {
+    resolveMx.mockResolvedValue([{ exchange: 'mx.example.com', priority: 10 }])
+    await verifyEmailDomain('a@example.com')
+    await verifyEmailDomain('b@example.com')
+    expect(resolveMx).toHaveBeenCalledTimes(1)
+  })
+
+  it('never caches a soft failure', async () => {
+    // A resolver blip must not lock in "unverified" for the whole TTL.
+    resolveMx.mockRejectedValue(dnsError('ETIMEOUT'))
+    await verifyEmailDomain('a@flaky.example')
+    resolveMx.mockResolvedValue([{ exchange: 'mx.flaky.example', priority: 1 }])
+    await expect(verifyEmailDomain('a@flaky.example')).resolves.toBe(
+      'deliverable'
+    )
+    expect(resolveMx).toHaveBeenCalledTimes(2)
+  })
+})
+
+describe('mocked e2e harness', () => {
+  it('skips the lookup entirely when E2E_MOCK_PORT is set', async () => {
+    // Guards the CI failure this caused: the suite registers @example.com,
+    // whose null MX makes it correctly undeliverable, and DNS cannot be
+    // intercepted the way the harness intercepts fetch.
+    const previous = process.env.E2E_MOCK_PORT
+    process.env.E2E_MOCK_PORT = '4873'
+    try {
+      resolveMx.mockRejectedValue(dnsError('ENOTFOUND'))
+      await expect(verifyEmailDomain('buyer@example.com')).resolves.toBe(
+        'unverified'
+      )
+      expect(resolveMx).not.toHaveBeenCalled()
+    } finally {
+      if (previous === undefined) delete process.env.E2E_MOCK_PORT
+      else process.env.E2E_MOCK_PORT = previous
+    }
+  })
+
+  it('performs the lookup when the harness variable is absent', async () => {
+    resolveMx.mockRejectedValue(dnsError('ENOTFOUND'))
+    await expect(verifyEmailDomain('buyer@example.com')).resolves.toBe(
+      'no_such_domain'
+    )
+    expect(resolveMx).toHaveBeenCalled()
+  })
+})
+
+describe('isUndeliverableVerdict', () => {
+  it('only treats the two authoritative negatives as grounds to reject', () => {
+    expect(isUndeliverableVerdict('no_such_domain')).toBe(true)
+    expect(isUndeliverableVerdict('no_mail_exchanger')).toBe(true)
+    expect(isUndeliverableVerdict('unverified')).toBe(false)
+    expect(isUndeliverableVerdict('deliverable')).toBe(false)
+  })
+})

@@ -7,15 +7,23 @@ const mockRegister = vi.fn()
 const mockSetAuthToken = vi.fn()
 const DISTINCT_ID = '550e8400-e29b-41d4-a716-446655440000'
 const SESSION_ID = '01890f3e-8b3a-7cc2-98c4-dc0c0c0c0c0c'
-const { infoMock, errorMock, warnMock, consumeMock, trackServerEventMock, cookieGetMock } =
-  vi.hoisted(() => ({
-    infoMock: vi.fn(),
-    errorMock: vi.fn(),
-    warnMock: vi.fn(),
-    consumeMock: vi.fn(),
-    trackServerEventMock: vi.fn(),
-    cookieGetMock: vi.fn(),
-  }))
+const {
+  infoMock,
+  errorMock,
+  warnMock,
+  consumeMock,
+  trackServerEventMock,
+  cookieGetMock,
+  verifyEmailDomainMock,
+} = vi.hoisted(() => ({
+  infoMock: vi.fn(),
+  errorMock: vi.fn(),
+  warnMock: vi.fn(),
+  consumeMock: vi.fn(),
+  trackServerEventMock: vi.fn(),
+  cookieGetMock: vi.fn(),
+  verifyEmailDomainMock: vi.fn(),
+}))
 
 vi.mock('@/lib/medusa-auth', () => ({
   register: (...args: unknown[]) => mockRegister(...args),
@@ -29,6 +37,10 @@ vi.mock('@/lib/rate-limit', () => ({
   clientIp: () => '203.0.113.7',
 }))
 vi.mock('@/lib/support/turnstile', () => ({ verifyTurnstile: vi.fn() }))
+vi.mock('@/lib/email-domain', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('@/lib/email-domain')>()),
+  verifyEmailDomain: verifyEmailDomainMock,
+}))
 vi.mock('next/headers', () => ({
   cookies: vi.fn(async () => ({ get: cookieGetMock })),
 }))
@@ -60,6 +72,57 @@ describe('POST /api/auth/register', () => {
     vi.mocked(verifyTurnstile).mockResolvedValue(true)
     trackServerEventMock.mockResolvedValue(undefined)
     cookieGetMock.mockReturnValue({ value: DISTINCT_ID })
+    verifyEmailDomainMock.mockResolvedValue('deliverable')
+  })
+
+  describe('undeliverable email domains', () => {
+    it.each(['no_such_domain', 'no_mail_exchanger'] as const)(
+      'rejects a %s verdict without creating an account',
+      async (verdict) => {
+        verifyEmailDomainMock.mockResolvedValue(verdict)
+
+        const response = await postRegister({
+          email: 'info@layed3d.org.uk',
+          password: 'longenoughpassword',
+        })
+
+        expect(response.status).toBe(400)
+        await expect(response.json()).resolves.toEqual({
+          errorCode: 'email_undeliverable',
+        })
+        expect(mockRegister).not.toHaveBeenCalled()
+      }
+    )
+
+    it('lets an unverified verdict through', async () => {
+      // Fail-soft is the whole policy: a resolver blip must never cost a sale.
+      verifyEmailDomainMock.mockResolvedValue('unverified')
+      mockRegister.mockResolvedValue({
+        token: 'tok',
+        customer: { id: 'cus_1' },
+      })
+
+      const response = await postRegister({
+        email: 'new@example.com',
+        password: 'longenoughpassword',
+      })
+
+      expect(response.status).toBe(200)
+      expect(mockRegister).toHaveBeenCalled()
+    })
+
+    it('does not look up DNS when the bot check already failed', async () => {
+      // Keeps the endpoint from being used as an anonymous DNS oracle.
+      vi.mocked(verifyTurnstile).mockResolvedValue(false)
+
+      const response = await postRegister({
+        email: 'new@example.com',
+        password: 'longenoughpassword',
+      })
+
+      expect(response.status).toBe(403)
+      expect(verifyEmailDomainMock).not.toHaveBeenCalled()
+    })
   })
 
   it('returns 429 when the rate limit is exceeded', async () => {

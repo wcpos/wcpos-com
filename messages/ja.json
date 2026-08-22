@@ -1140,6 +1140,7 @@
         "credentials_required": "メールアドレスとパスワードは必須です。",
         "reset_fields_required": "メールアドレス、トークン、パスワードは必須です。",
         "password_too_short": "パスワードは{min}文字以上で入力してください。",
+        "email_undeliverable": "このメールアドレスにはメールを配信できません。入力内容に誤りがないかご確認ください。",
         "invalid_credentials": "メールアドレスまたはパスワードが正しくありません。",
         "account_security_hold": "現在ログインできません。アカウントについてサポートにお問い合わせください。",
         "invalid_reset_token": "このパスワードリセットリンクは無効、または有効期限が切れています。新しいリンクをリクエストしてください。"

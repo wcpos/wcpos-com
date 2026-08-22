@@ -10,6 +10,7 @@ import {
 import { createRateLimiter, clientIp } from '@/lib/rate-limit'
 import { isLoopbackHost } from '@/lib/request-host'
 import { verifyTurnstile } from '@/lib/support/turnstile'
+import { isUndeliverableVerdict, verifyEmailDomain } from '@/lib/email-domain'
 import { trackServerEvent } from '@/services/core/analytics/posthog-service'
 import { ANALYTICS_DISTINCT_ID_COOKIE } from '@/lib/analytics/distinct-id'
 import {
@@ -26,6 +27,7 @@ type RegisterErrorCode =
   | 'bot_check_failed'
   | 'credentials_required'
   | 'password_too_short'
+  | 'email_undeliverable'
   | 'account_exists'
   | 'registration_failed'
 
@@ -106,6 +108,16 @@ export async function POST(request: Request) {
       turnstileToken !== ''
     } host=${request.headers.get('host')}`
     return errorResponse('bot_check_failed', 403)
+  }
+
+  // Catch a mistyped domain before it becomes an account nobody can reach.
+  // Deliberately after the bot check, so the endpoint cannot be used as an
+  // anonymous DNS oracle, and deliberately fail-soft: only an authoritative
+  // "this domain cannot receive mail" rejects. See lib/email-domain.
+  const domainVerdict = await verifyEmailDomain(email)
+  if (isUndeliverableVerdict(domainVerdict)) {
+    authLogger.info`Registration rejected: undeliverable email domain. verdict=${domainVerdict}`
+    return errorResponse('email_undeliverable', 400)
   }
 
   try {

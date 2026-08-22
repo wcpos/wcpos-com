@@ -308,6 +308,28 @@ describe('AccountStep', () => {
     expect(turnstileMock.reset).toHaveBeenCalledTimes(1)
   })
 
+  it('explains an undeliverable email address during checkout', async () => {
+    // Checkout is where the mistyped address that motivated this check was
+    // actually entered, so falling through to the generic "couldn't create
+    // your account" copy would leave the buyer retrying the same typo.
+    fetchMock.mockResolvedValueOnce({
+      ok: false,
+      status: 400,
+      json: async () => ({ errorCode: 'email_undeliverable' }),
+    })
+    renderAccountStep()
+    fillCredentials()
+    completeChallenge('undeliverable-token')
+
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Create account & continue' })
+    )
+
+    expect(await screen.findByRole('alert')).toHaveTextContent(
+      'We can’t deliver email to that address. Please check it for typos.'
+    )
+  })
+
   it('shows customer-safe support copy when inline sign-in is held', async () => {
     fetchMock
       .mockResolvedValueOnce({

@@ -1140,6 +1140,7 @@
         "credentials_required": "E-Mail und Passwort sind erforderlich.",
         "reset_fields_required": "E-Mail, Token und Passwort sind erforderlich.",
         "password_too_short": "Das Passwort muss mindestens {min} Zeichen lang sein.",
+        "email_undeliverable": "An diese Adresse können wir keine E-Mails zustellen. Bitte auf Tippfehler prüfen.",
         "invalid_credentials": "Ungültige E-Mail-Adresse oder ungültiges Passwort.",
         "account_security_hold": "Wir können dich derzeit nicht anmelden. Bitte kontaktiere den Support, um Hilfe mit deinem Konto zu erhalten.",
         "invalid_reset_token": "Dieser Link zum Zurücksetzen des Passworts ist ungültig oder abgelaufen. Bitte fordere einen neuen an."
