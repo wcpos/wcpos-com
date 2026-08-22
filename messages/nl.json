@@ -1140,6 +1140,7 @@
         "credentials_required": "E-mailadres en wachtwoord zijn verplicht.",
         "reset_fields_required": "E-mailadres, token en wachtwoord zijn verplicht.",
         "password_too_short": "Het wachtwoord moet minimaal {min} tekens bevatten.",
+        "email_undeliverable": "We kunnen geen e-mail bezorgen op dit adres. Controleer het op typefouten.",
         "invalid_credentials": "Ongeldig e-mailadres of wachtwoord.",
         "account_security_hold": "We kunnen je momenteel niet aanmelden. Neem contact op met support voor hulp met je account.",
         "invalid_reset_token": "Deze link voor het opnieuw instellen van het wachtwoord is ongeldig of verlopen. Vraag een nieuwe aan."

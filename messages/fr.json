@@ -1140,6 +1140,7 @@
         "credentials_required": "L’e-mail et le mot de passe sont obligatoires.",
         "reset_fields_required": "L’e-mail, le jeton et le mot de passe sont obligatoires.",
         "password_too_short": "Le mot de passe doit contenir au moins {min} caractères.",
+        "email_undeliverable": "Nous ne pouvons pas envoyer d’e-mails à cette adresse. Vérifiez qu’elle ne contient pas de faute de frappe.",
         "invalid_credentials": "E-mail ou mot de passe invalide.",
         "account_security_hold": "Nous ne pouvons pas vous connecter pour le moment. Contactez le support pour obtenir de l’aide avec votre compte.",
         "invalid_reset_token": "Ce lien de réinitialisation du mot de passe est invalide ou a expiré. Veuillez en demander un nouveau."

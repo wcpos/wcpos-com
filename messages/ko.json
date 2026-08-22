@@ -1140,6 +1140,7 @@
         "credentials_required": "이메일과 비밀번호가 필요합니다.",
         "reset_fields_required": "이메일, 토큰, 비밀번호가 필요합니다.",
         "password_too_short": "비밀번호는 최소 {min}자 이상이어야 합니다.",
+        "email_undeliverable": "이 이메일 주소로는 메일을 전달할 수 없습니다. 오타가 없는지 확인해 주세요.",
         "invalid_credentials": "이메일 또는 비밀번호가 올바르지 않습니다.",
         "account_security_hold": "지금은 로그인할 수 없습니다. 계정 관련 도움이 필요하면 지원팀에 문의하세요.",
         "invalid_reset_token": "이 비밀번호 재설정 링크가 잘못되었거나 만료되었습니다. 새 링크를 요청해 주세요."

@@ -1140,6 +1140,7 @@
         "credentials_required": "Email and password are required.",
         "reset_fields_required": "Email, token, and password are required.",
         "password_too_short": "Password must be at least {min} characters.",
+        "email_undeliverable": "We can’t deliver email to that address. Please check it for typos.",
         "invalid_credentials": "Invalid email or password.",
         "account_security_hold": "We can’t sign you in right now. Please contact support for help with your account.",
         "invalid_reset_token": "This password reset link is invalid or has expired. Please request a new one."

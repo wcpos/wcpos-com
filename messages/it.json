@@ -1139,6 +1139,7 @@
         "invalid_origin": "Aggiorna la pagina e riprova.",
         "invalid_reset_token": "Questo link per reimpostare la password non è valido o è scaduto. Richiedine uno nuovo.",
         "password_too_short": "La password deve contenere almeno {min} caratteri.",
+        "email_undeliverable": "Non riusciamo a consegnare email a questo indirizzo. Controlla che non ci siano errori di battitura.",
         "rate_limited": "Troppi tentativi. Riprova più tardi.",
         "bot_check_failed": "Il controllo anti-bot non è riuscito. Riprova.",
         "rate_limit_unavailable": "La registrazione è temporaneamente non disponibile. Riprova.",

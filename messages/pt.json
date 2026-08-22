@@ -1140,6 +1140,7 @@
         "credentials_required": "O e-mail e a palavra-passe são obrigatórios.",
         "reset_fields_required": "O e-mail, o token e a palavra-passe são obrigatórios.",
         "password_too_short": "A palavra-passe tem de ter pelo menos {min} caracteres.",
+        "email_undeliverable": "Não conseguimos entregar e-mails nesse endereço. Verifique se há erros de digitação.",
         "invalid_credentials": "E-mail ou palavra-passe inválidos.",
         "account_security_hold": "Não é possível iniciar sessão neste momento. Contacte o suporte para obter ajuda com a sua conta.",
         "invalid_reset_token": "Este link de reposição da palavra-passe é inválido ou expirou. Peça um novo."

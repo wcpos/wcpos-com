@@ -1140,6 +1140,7 @@
         "credentials_required": "El correo electrónico y la contraseña son obligatorios.",
         "reset_fields_required": "El correo electrónico, el token y la contraseña son obligatorios.",
         "password_too_short": "La contraseña debe tener al menos {min} caracteres.",
+        "email_undeliverable": "No podemos entregar correos a esa dirección. Compruébala por si hay errores.",
         "invalid_credentials": "Correo electrónico o contraseña no válidos.",
         "account_security_hold": "No podemos iniciar tu sesión en este momento. Ponte en contacto con soporte para obtener ayuda con tu cuenta.",
         "invalid_reset_token": "Este enlace para restablecer la contraseña no es válido o ha caducado. Solicita uno nuevo."
