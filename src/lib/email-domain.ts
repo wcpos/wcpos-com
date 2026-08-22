@@ -1,4 +1,5 @@
 import { Resolver } from 'node:dns/promises'
+import { domainToASCII } from 'node:url'
 
 /**
  * Does this email address's domain actually accept mail?
@@ -48,14 +49,23 @@ export function isUndeliverableVerdict(verdict: EmailDomainVerdict): boolean {
  * rather than attempting full RFC 5322 validation, which is a famous trap.
  */
 const DNS_LABEL = /^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/
+// Alphabetic, or an IDNA A-label such as `xn--p1ai`. Requiring pure letters
+// rejected every internationalized TLD outright — and did so BEFORE any DNS
+// query, turning a parser limitation into an authoritative rejection of a
+// perfectly deliverable address.
+const TLD = /^(?:[a-z]{2,}|xn--[a-z0-9-]{2,})$/
 
 export function emailDomain(email: string): string | null {
   const trimmed = email.trim().toLowerCase()
   const at = trimmed.lastIndexOf('@')
   if (at <= 0 || at === trimmed.length - 1) return null
 
-  const domain = trimmed.slice(at + 1)
   if (/\s/.test(trimmed)) return null
+
+  // Normalize Unicode domains to their A-label form; the resolver only speaks
+  // punycode. Returns '' for input it cannot encode.
+  const domain = domainToASCII(trimmed.slice(at + 1))
+  if (!domain) return null
 
   // Validate label by label. A single permissive pattern lets through shapes
   // like `.example.com` and `example..com`, which resolve to nothing but read
@@ -63,8 +73,7 @@ export function emailDomain(email: string): string | null {
   const labels = domain.split('.')
   if (labels.length < 2) return null
   if (!labels.every((label) => DNS_LABEL.test(label))) return null
-  // A public mail domain ends in an alphabetic TLD.
-  if (!/^[a-z]{2,}$/.test(labels[labels.length - 1])) return null
+  if (!TLD.test(labels[labels.length - 1])) return null
 
   return domain
 }
@@ -104,7 +113,11 @@ function isNotFound(error: unknown): boolean {
 
 function isNoRecords(error: unknown): boolean {
   const code = (error as { code?: string } | null)?.code
-  return code === 'ENODATA' || code === 'ENOTIMP'
+  // ENODATA only. ENOTIMP means the server does not implement the query — an
+  // operational failure, not evidence the record is absent. Treating it as
+  // "no records" let all three lookups fall through to no_mail_exchanger and
+  // reject a valid address, which is precisely what fail-soft forbids.
+  return code === 'ENODATA'
 }
 
 async function resolveVerdict(domain: string): Promise<EmailDomainVerdict> {
@@ -112,8 +125,18 @@ async function resolveVerdict(domain: string): Promise<EmailDomainVerdict> {
 
   try {
     const mx = await resolver.resolveMx(domain)
-    if (mx.length > 0 && mx.some((record) => record.exchange)) {
-      return 'deliverable'
+    if (mx.length > 0) {
+      // RFC 7505: a single `MX 0 .` is an explicit declaration that the domain
+      // accepts no mail. Node reports the root exchange as '.' (or ''), both
+      // of which read as "present" to a truthiness check — so this used to be
+      // classified deliverable, the exact opposite of what it means. It also
+      // must NOT fall through to the implicit-MX fallback below: the null MX
+      // overrides any address record.
+      const real = mx.filter(
+        (record) => record.exchange && record.exchange !== '.'
+      )
+      if (real.length > 0) return 'deliverable'
+      return 'no_mail_exchanger'
     }
   } catch (error) {
     if (isNotFound(error)) return 'no_such_domain'

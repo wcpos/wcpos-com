@@ -49,6 +49,7 @@ describe('emailDomain', () => {
       'user@',
       'user@localhost',
       'user@example',
+      'user@example.123',
       'user@exa mple.com',
       'user@.example.com',
       'user@example..com',
@@ -89,6 +90,63 @@ describe('verifyEmailDomain', () => {
     resolveMx.mockRejectedValue(dnsError('ENODATA'))
     resolve6.mockResolvedValue(['2001:db8::1'])
     await expect(verifyEmailDomain('owner@v6.example')).resolves.toBe(
+      'deliverable'
+    )
+  })
+
+  it('treats an RFC 7505 null MX as undeliverable', async () => {
+    // `MX 0 .` is an explicit "this domain accepts no mail". A truthiness
+    // check on the exchange read it as deliverable — the exact opposite.
+    resolveMx.mockResolvedValue([{ exchange: '.', priority: 0 }])
+    await expect(verifyEmailDomain('someone@nomail.example')).resolves.toBe(
+      'no_mail_exchanger'
+    )
+  })
+
+  it('does not fall back to A records when a null MX is published', async () => {
+    // The null MX overrides any address record; a web server on the domain
+    // does not make it reachable by email.
+    resolveMx.mockResolvedValue([{ exchange: '.', priority: 0 }])
+    resolve4.mockResolvedValue(['203.0.113.10'])
+    await expect(verifyEmailDomain('someone@webonly.example')).resolves.toBe(
+      'no_mail_exchanger'
+    )
+    expect(resolve4).not.toHaveBeenCalled()
+  })
+
+  it('still accepts a real exchange alongside a null MX', async () => {
+    resolveMx.mockResolvedValue([
+      { exchange: '.', priority: 0 },
+      { exchange: 'mx.mixed.example', priority: 10 },
+    ])
+    await expect(verifyEmailDomain('someone@mixed.example')).resolves.toBe(
+      'deliverable'
+    )
+  })
+
+  it('fails soft on ENOTIMP rather than rejecting the address', async () => {
+    // ENOTIMP is the resolver refusing the query, not evidence of absence.
+    // Treating it as "no records" rejected deliverable addresses.
+    resolveMx.mockRejectedValue(dnsError('ENOTIMP'))
+    resolve4.mockRejectedValue(dnsError('ENOTIMP'))
+    resolve6.mockRejectedValue(dnsError('ENOTIMP'))
+    await expect(verifyEmailDomain('info@layer3d.org.uk')).resolves.toBe(
+      'unverified'
+    )
+  })
+
+  it('resolves internationalized domains instead of rejecting them', async () => {
+    resolveMx.mockResolvedValue([{ exchange: 'mx.example.рф', priority: 10 }])
+    await expect(verifyEmailDomain('info@пример.рф')).resolves.toBe(
+      'deliverable'
+    )
+    // The resolver only speaks punycode.
+    expect(resolveMx).toHaveBeenCalledWith('xn--e1afmkfd.xn--p1ai')
+  })
+
+  it('accepts an already-punycoded TLD', async () => {
+    resolveMx.mockResolvedValue([{ exchange: 'mx.example', priority: 10 }])
+    await expect(verifyEmailDomain('info@xn--e1afmkfd.xn--p1ai')).resolves.toBe(
       'deliverable'
     )
   })
