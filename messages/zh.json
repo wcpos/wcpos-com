@@ -1018,7 +1018,30 @@
       },
       "languageTitle": "语言",
       "languageHint": "用于您的账户、电子邮件和收据的语言。更改后将重新加载页面。",
-      "company": "公司名称"
+      "company": "公司名称",
+      "changeEmail": {
+        "title": "邮箱地址",
+        "description": "您的账户当前使用 {email}。",
+        "cta": "更改邮箱地址",
+        "newEmailLabel": "新邮箱地址",
+        "passwordLabel": "当前密码",
+        "passwordHint": "确认密码可防止能够访问您已登录会话的人接管账户。",
+        "submit": "发送确认邮件",
+        "sending": "发送中…",
+        "cancel": "取消",
+        "sentTitle": "请查收新邮箱",
+        "sentBody": "我们已向 {email} 发送确认链接。点击链接后地址即会更改。",
+        "sentExpiry": "链接将在 1 小时后失效。目前尚未做任何更改。",
+        "sentToast": "确认邮件已发送",
+        "errors": {
+          "taken": "该地址已被其他账户使用。",
+          "same": "这已经是您当前的邮箱地址。",
+          "wrongPassword": "密码不正确。",
+          "passwordRequired": "请输入当前密码以继续。",
+          "readOnly": "这是账户的只读查看模式。",
+          "generic": "无法开始更改，请重试。"
+        }
+      }
     },
     "receiptPdf": {
       "title": "收据",
@@ -1097,6 +1120,11 @@
       "paymentNotConfigured": "未配置付款方式。请联系支持团队。",
       "pageTitle": "续订你的许可证",
       "backToLicences": "返回许可证"
+    },
+    "emailUndeliverable": {
+      "title": "我们无法向您投递邮件",
+      "body": "发送至 {email} 的邮件被退回，因此收据、许可证信息和密码重置邮件都无法送达。请更新您的地址以解决此问题。",
+      "cta": "更新邮箱地址"
     }
   },
   "metadata": {
@@ -1207,6 +1235,23 @@
       "linkExpired": "链接已过期？",
       "needFreshLink": "需要新的链接？",
       "requestNew": "请求新的重置链接"
+    },
+    "confirmEmail": {
+      "metaTitle": "确认您的邮箱地址",
+      "metaDescription": "确认您 WCPOS 账户的新邮箱地址。",
+      "working": "正在确认您的新邮箱地址…",
+      "doneTitle": "邮箱地址已更新",
+      "doneBody": "您的账户现已使用 {email}。今后请使用该地址登录。",
+      "continue": "前往个人资料",
+      "failedTitle": "无法确认该链接",
+      "backToProfile": "返回个人资料",
+      "errors": {
+        "missingToken": "此链接不完整。请重新打开确认邮件中的链接。",
+        "expired": "此链接已过期。请从个人资料重新申请更改。",
+        "invalid": "此链接已失效，可能已被使用。",
+        "conflict": "该地址已不可用。请从个人资料尝试其他地址。",
+        "generic": "出了点问题，请重试。"
+      }
     }
   },
   "legal": {

@@ -1018,7 +1018,30 @@
       },
       "languageTitle": "Language",
       "languageHint": "The language used across your account, emails, and receipts. Changing it reloads the page.",
-      "company": "Company"
+      "company": "Company",
+      "changeEmail": {
+        "title": "Email address",
+        "description": "Your account currently uses {email}.",
+        "cta": "Change email address",
+        "newEmailLabel": "New email address",
+        "passwordLabel": "Current password",
+        "passwordHint": "Confirming your password stops someone with access to your open session from taking over the account.",
+        "submit": "Send confirmation",
+        "sending": "Sending…",
+        "cancel": "Cancel",
+        "sentTitle": "Check your new inbox",
+        "sentBody": "We’ve sent a confirmation link to {email}. Your address changes once you follow it.",
+        "sentExpiry": "The link expires in 1 hour. Nothing has changed yet.",
+        "sentToast": "Confirmation email sent",
+        "errors": {
+          "taken": "That address is already used by another account.",
+          "same": "That’s already your email address.",
+          "wrongPassword": "That password isn’t right.",
+          "passwordRequired": "Enter your current password to continue.",
+          "readOnly": "This is a read-only inspection of the account.",
+          "generic": "We couldn’t start the change. Please try again."
+        }
+      }
     },
     "receiptPdf": {
       "title": "Receipt",
@@ -1097,6 +1120,11 @@
       "paymentNotConfigured": "No payment methods are configured. Please contact support.",
       "pageTitle": "Renew your licence",
       "backToLicences": "Back to licences"
+    },
+    "emailUndeliverable": {
+      "title": "We can’t deliver email to you",
+      "body": "Email to {email} is bouncing, so receipts, licence details and password resets aren’t reaching you. Update your address to fix it.",
+      "cta": "Update your email"
     }
   },
   "metadata": {
@@ -1207,6 +1235,23 @@
       "linkExpired": "Link expired?",
       "needFreshLink": "Need a fresh link?",
       "requestNew": "Request a new reset link"
+    },
+    "confirmEmail": {
+      "metaTitle": "Confirm your email address",
+      "metaDescription": "Confirm the new email address for your WCPOS account.",
+      "working": "Confirming your new email address…",
+      "doneTitle": "Email address updated",
+      "doneBody": "Your account now uses {email}. Sign in with that address from now on.",
+      "continue": "Go to your profile",
+      "failedTitle": "We couldn’t confirm that link",
+      "backToProfile": "Back to your profile",
+      "errors": {
+        "missingToken": "This link is incomplete. Open the link from your confirmation email again.",
+        "expired": "This link has expired. Request the change again from your profile.",
+        "invalid": "This link is no longer valid. It may already have been used.",
+        "conflict": "That address is no longer available. Try a different one from your profile.",
+        "generic": "Something went wrong. Please try again."
+      }
     }
   },
   "legal": {

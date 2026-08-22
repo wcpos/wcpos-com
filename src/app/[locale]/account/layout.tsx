@@ -8,6 +8,7 @@ import { getImpersonation } from '@/lib/impersonation'
 import { redirectToLoginClearingSession } from '@/lib/login-redirect'
 import { AccountSidebar } from '@/components/account/account-sidebar'
 import { AccountExpiryBanner } from '@/components/account/account-expiry-banner'
+import { EmailUndeliverableBanner } from '@/components/account/email-undeliverable-banner'
 import { ImpersonationBanner } from '@/components/account/impersonation-banner'
 import { SiteHeader } from '@/components/main/site-header'
 import { SiteFooter } from '@/components/main/site-footer'
@@ -120,6 +121,12 @@ export default async function AccountLayout({
           <main className="min-w-0 flex-1">
             {/* Account-wide expiry notice (Phase 5); dynamic (reads licences),
               so behind a boundary to keep the PPR shell static. */}
+            {/* Ahead of the expiry notice on purpose: being unreachable is
+              the more urgent of the two, and it is the reason a renewal
+              reminder would never arrive in the first place. */}
+            <Suspense fallback={null}>
+              <EmailUndeliverableBanner />
+            </Suspense>
             <Suspense fallback={null}>
               <AccountExpiryBanner />
             </Suspense>

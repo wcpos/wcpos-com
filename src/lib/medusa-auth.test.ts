@@ -112,6 +112,8 @@ import {
   clearAuthToken,
   updateCustomer,
   parseMedusaError,
+  requestEmailChange,
+  confirmEmailChange,
 } from './medusa-auth'
 import {
   AccountExistsError,
@@ -788,6 +790,44 @@ describe('medusa-auth', () => {
 
       expect(customer).toBeNull()
       expect(mockFetch).not.toHaveBeenCalled()
+    })
+  })
+
+  describe('email change adapters', () => {
+    it('forwards the gateway credential when requesting a change', async () => {
+      mockCookieStore.get.mockReturnValue({ value: 'valid_token' })
+      mockFetch.mockResolvedValueOnce({ ok: true })
+
+      await requestEmailChange({ email: 'new@example.com', password: 'secret' })
+
+      expect(mockFetch).toHaveBeenCalledWith(
+        'https://test-store-api.wcpos.com/store/customers/me/email-change',
+        expect.objectContaining({
+          headers: expect.objectContaining({
+            'x-wcpos-checkout-gateway':
+              'checkout-test-gateway-secret-at-least-32-chars',
+          }),
+        })
+      )
+    })
+
+    it('forwards the gateway credential when confirming a change', async () => {
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ email: 'new@example.com' }),
+      })
+
+      await confirmEmailChange('signed-token')
+
+      expect(mockFetch).toHaveBeenCalledWith(
+        'https://test-store-api.wcpos.com/store/email-change/confirm',
+        expect.objectContaining({
+          headers: expect.objectContaining({
+            'x-wcpos-checkout-gateway':
+              'checkout-test-gateway-secret-at-least-32-chars',
+          }),
+        })
+      )
     })
   })
 
