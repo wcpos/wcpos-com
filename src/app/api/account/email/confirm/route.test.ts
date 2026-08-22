@@ -96,6 +96,18 @@ describe('POST /api/account/email/confirm', () => {
     expect(response.status).toBe(409)
   })
 
+  it('still confirms when the limiter store is unreachable', async () => {
+    // Opposite of the request route on purpose: the token is the security
+    // control here, so failing closed would stop legitimate customers
+    // completing a change without protecting anything.
+    consumeMock.mockResolvedValue({ status: 'unavailable' })
+
+    const response = await post({ token: 'v1.a.b' })
+
+    expect(response.status).toBe(200)
+    expect(confirmEmailChangeMock).toHaveBeenCalled()
+  })
+
   it('rate limits', async () => {
     consumeMock.mockResolvedValue({ status: 'limited' })
 
@@ -105,12 +117,4 @@ describe('POST /api/account/email/confirm', () => {
     expect(confirmEmailChangeMock).not.toHaveBeenCalled()
   })
 
-  it('does not call the backend when the rate limiter is unavailable', async () => {
-    consumeMock.mockResolvedValue({ status: 'unavailable' })
-
-    const response = await post({ token: 'x' })
-
-    expect(response.status).toBe(429)
-    expect(confirmEmailChangeMock).not.toHaveBeenCalled()
-  })
 })

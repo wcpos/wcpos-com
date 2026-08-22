@@ -47,8 +47,18 @@ export async function POST(request: Request) {
   }
 
   const rate = await limiter.consume(clientIp(request))
-  if (rate.status !== 'allowed') {
+  if (rate.status === 'limited') {
     return errorResponse('rate_limited', 429)
+  }
+  if (rate.status !== 'allowed') {
+    // Deliberately fails OPEN, unlike the request route. There, an accepted
+    // request sends mail to a caller-chosen address, so an outage must not
+    // remove the gate. Here the security control is the HMAC token itself —
+    // without a valid one this endpoint does nothing but return 400, and the
+    // limiter is only anti-noise. Failing closed would turn a limiter blip
+    // into "nobody can complete an email change", stranding the very
+    // customers whose old address already bounces.
+    authLogger.warn`Email change confirm proceeding without rate limiting: limiter store unreachable`
   }
 
   const body = (await request.json().catch(() => ({}))) as { token?: unknown }
