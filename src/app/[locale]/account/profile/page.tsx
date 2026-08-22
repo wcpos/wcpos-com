@@ -13,6 +13,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { PageHeader } from '@/components/ui/page-header'
 import { Skeleton } from '@/components/ui/skeleton'
 import { ProfileEditForm } from '@/components/account/profile-edit-form'
+import { ChangeEmailCard } from '@/components/account/change-email-card'
 import { DeleteAccountCard } from '@/components/account/delete-account-card'
 import type { Metadata } from 'next'
 import type { Locale } from '@/i18n/config'
@@ -97,6 +98,19 @@ async function ProfileContent({ locale }: { locale: Locale }) {
             : null,
         }}
       />
+      {/* Keyed by customer.id like the delete card: this island seeds state
+          from props, and a prop-seeded useState survives a back/forward
+          revisit under Next's Activity bf-cache (PR #619/#620). Without the
+          key, a view-as switch would show the previous target's address. */}
+      <ChangeEmailCard
+        key={`email-${customer.id}`}
+        currentEmail={customer.email}
+        hasPassword={Boolean(
+          authMethods?.providers.includes('emailpass') &&
+            !authMethods.emailpassPending
+        )}
+      />
+
       <DeleteAccountCard key={customer.id} email={customer.email} />
     </div>
   )

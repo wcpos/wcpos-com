@@ -1018,7 +1018,30 @@
       },
       "languageTitle": "Idioma",
       "languageHint": "O idioma usado na sua conta, e-mails e recibos. Alterá-lo recarrega a página.",
-      "company": "Empresa"
+      "company": "Empresa",
+      "changeEmail": {
+        "title": "Endereço de email",
+        "description": "A sua conta usa atualmente {email}.",
+        "cta": "Alterar endereço de email",
+        "newEmailLabel": "Novo endereço de email",
+        "passwordLabel": "Palavra-passe atual",
+        "passwordHint": "Confirmar a palavra-passe impede que alguém com acesso à sua sessão aberta assuma o controlo da conta.",
+        "submit": "Enviar confirmação",
+        "sending": "A enviar…",
+        "cancel": "Cancelar",
+        "sentTitle": "Verifique a sua nova caixa de entrada",
+        "sentBody": "Enviámos uma ligação de confirmação para {email}. O seu endereço muda assim que a seguir.",
+        "sentExpiry": "A ligação expira dentro de 1 hora. Ainda não mudou nada.",
+        "sentToast": "Email de confirmação enviado",
+        "errors": {
+          "taken": "Esse endereço já é usado por outra conta.",
+          "same": "Esse já é o seu endereço de email.",
+          "wrongPassword": "Essa palavra-passe não está correta.",
+          "passwordRequired": "Introduza a sua palavra-passe atual para continuar.",
+          "readOnly": "Esta é uma consulta só de leitura da conta.",
+          "generic": "Não foi possível iniciar a alteração. Tente novamente."
+        }
+      }
     },
     "receiptPdf": {
       "title": "Recibo",
@@ -1207,6 +1230,23 @@
       "linkExpired": "Link expirado?",
       "needFreshLink": "Precisa de um novo link?",
       "requestNew": "Pedir novo link de reposição"
+    },
+    "confirmEmail": {
+      "metaTitle": "Confirme o seu endereço de email",
+      "metaDescription": "Confirme o novo endereço de email da sua conta WCPOS.",
+      "working": "A confirmar o seu novo endereço de email…",
+      "doneTitle": "Endereço de email atualizado",
+      "doneBody": "A sua conta usa agora {email}. A partir de agora inicie sessão com esse endereço.",
+      "continue": "Ir para o seu perfil",
+      "failedTitle": "Não foi possível confirmar esta ligação",
+      "backToProfile": "Voltar ao seu perfil",
+      "errors": {
+        "missingToken": "Esta ligação está incompleta. Abra novamente a ligação do email de confirmação.",
+        "expired": "Esta ligação expirou. Peça a alteração novamente a partir do seu perfil.",
+        "invalid": "Esta ligação já não é válida. Pode já ter sido utilizada.",
+        "conflict": "Esse endereço já não está disponível. Experimente outro a partir do seu perfil.",
+        "generic": "Algo correu mal. Tente novamente."
+      }
     }
   },
   "legal": {

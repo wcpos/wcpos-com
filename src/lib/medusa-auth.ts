@@ -613,6 +613,88 @@ export async function deleteCustomerAccount(): Promise<void> {
   }
 }
 
+/**
+ * Error carrying the backend's typed reason for refusing an email change, so
+ * the route can map it without re-sniffing message strings.
+ */
+export class EmailChangeRejected extends Error {
+  constructor(
+    readonly errorCode: string,
+    readonly status: number
+  ) {
+    super(errorCode)
+    this.name = 'EmailChangeRejected'
+  }
+}
+
+async function rejection(response: Response): Promise<EmailChangeRejected> {
+  const body = (await response.json().catch(() => ({}))) as {
+    errorCode?: unknown
+  }
+  const code =
+    typeof body.errorCode === 'string' ? body.errorCode : 'change_failed'
+  return new EmailChangeRejected(code, response.status)
+}
+
+/**
+ * Ask the backend to send a confirmation link to `email`. Nothing changes
+ * until that link is followed.
+ */
+export async function requestEmailChange(input: {
+  email: string
+  password?: string
+}): Promise<void> {
+  const token = await getAuthToken()
+  if (!token) {
+    throw new EmailChangeRejected('unauthorized', 401)
+  }
+
+  const response = await fetch(
+    `${await getMedusaBackendUrl()}/store/customers/me/email-change`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+        'x-publishable-api-key': await getMedusaPublishableKey(),
+      },
+      body: JSON.stringify(input),
+    }
+  )
+
+  if (!response.ok) {
+    throw await rejection(response)
+  }
+}
+
+/**
+ * Complete a change with the token from the confirmation email.
+ *
+ * Deliberately does NOT require a session: the link is routinely opened on a
+ * different device from the one that started the change, and the token is the
+ * authorisation.
+ */
+export async function confirmEmailChange(token: string): Promise<string> {
+  const response = await fetch(
+    `${await getMedusaBackendUrl()}/store/customers/me/email-change/confirm`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-publishable-api-key': await getMedusaPublishableKey(),
+      },
+      body: JSON.stringify({ token }),
+    }
+  )
+
+  if (!response.ok) {
+    throw await rejection(response)
+  }
+
+  const body = (await response.json()) as { email?: unknown }
+  return typeof body.email === 'string' ? body.email : ''
+}
+
 // OAuth sign-in (initiateOAuth / establishOAuthSession) lives in
 // `@/lib/oauth`, which imports the shared `setAuthToken` and `parseMedusaError`
 // from here. The link-then-refresh-then-persist ordering is owned by that

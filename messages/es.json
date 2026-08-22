@@ -1018,7 +1018,30 @@
       },
       "languageTitle": "Idioma",
       "languageHint": "El idioma que se usa en tu cuenta, correos y recibos. Al cambiarlo se recarga la página.",
-      "company": "Empresa"
+      "company": "Empresa",
+      "changeEmail": {
+        "title": "Dirección de correo",
+        "description": "Tu cuenta usa actualmente {email}.",
+        "cta": "Cambiar dirección de correo",
+        "newEmailLabel": "Nueva dirección de correo",
+        "passwordLabel": "Contraseña actual",
+        "passwordHint": "Confirmar tu contraseña evita que alguien con acceso a tu sesión abierta se apodere de la cuenta.",
+        "submit": "Enviar confirmación",
+        "sending": "Enviando…",
+        "cancel": "Cancelar",
+        "sentTitle": "Revisa tu nueva bandeja de entrada",
+        "sentBody": "Hemos enviado un enlace de confirmación a {email}. Tu dirección cambiará cuando lo sigas.",
+        "sentExpiry": "El enlace caduca en 1 hora. Todavía no ha cambiado nada.",
+        "sentToast": "Correo de confirmación enviado",
+        "errors": {
+          "taken": "Esa dirección ya la usa otra cuenta.",
+          "same": "Esa ya es tu dirección de correo.",
+          "wrongPassword": "Esa contraseña no es correcta.",
+          "passwordRequired": "Introduce tu contraseña actual para continuar.",
+          "readOnly": "Esta es una inspección de solo lectura de la cuenta.",
+          "generic": "No hemos podido iniciar el cambio. Inténtalo de nuevo."
+        }
+      }
     },
     "receiptPdf": {
       "title": "Recibo",
@@ -1207,6 +1230,23 @@
       "linkExpired": "¿El enlace caducó?",
       "needFreshLink": "¿Necesitas un enlace nuevo?",
       "requestNew": "Solicitar un nuevo enlace"
+    },
+    "confirmEmail": {
+      "metaTitle": "Confirma tu dirección de correo",
+      "metaDescription": "Confirma la nueva dirección de correo de tu cuenta de WCPOS.",
+      "working": "Confirmando tu nueva dirección de correo…",
+      "doneTitle": "Dirección de correo actualizada",
+      "doneBody": "Tu cuenta ahora usa {email}. A partir de ahora inicia sesión con esa dirección.",
+      "continue": "Ir a tu perfil",
+      "failedTitle": "No hemos podido confirmar ese enlace",
+      "backToProfile": "Volver a tu perfil",
+      "errors": {
+        "missingToken": "Este enlace está incompleto. Vuelve a abrir el enlace de tu correo de confirmación.",
+        "expired": "Este enlace ha caducado. Solicita el cambio de nuevo desde tu perfil.",
+        "invalid": "Este enlace ya no es válido. Puede que ya se haya usado.",
+        "conflict": "Esa dirección ya no está disponible. Prueba con otra desde tu perfil.",
+        "generic": "Algo ha salido mal. Inténtalo de nuevo."
+      }
     }
   },
   "legal": {

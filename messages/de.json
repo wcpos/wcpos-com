@@ -1018,7 +1018,30 @@
       },
       "languageTitle": "Sprache",
       "languageHint": "Die Sprache für dein Konto, E-Mails und Belege. Beim Ändern wird die Seite neu geladen.",
-      "company": "Unternehmen"
+      "company": "Unternehmen",
+      "changeEmail": {
+        "title": "E-Mail-Adresse",
+        "description": "Dein Konto verwendet derzeit {email}.",
+        "cta": "E-Mail-Adresse ändern",
+        "newEmailLabel": "Neue E-Mail-Adresse",
+        "passwordLabel": "Aktuelles Passwort",
+        "passwordHint": "Die Passwortbestätigung verhindert, dass jemand mit Zugriff auf deine offene Sitzung das Konto übernimmt.",
+        "submit": "Bestätigung senden",
+        "sending": "Wird gesendet…",
+        "cancel": "Abbrechen",
+        "sentTitle": "Sieh in deinem neuen Postfach nach",
+        "sentBody": "Wir haben einen Bestätigungslink an {email} gesendet. Deine Adresse ändert sich, sobald du ihm folgst.",
+        "sentExpiry": "Der Link läuft in 1 Stunde ab. Es hat sich noch nichts geändert.",
+        "sentToast": "Bestätigungs-E-Mail gesendet",
+        "errors": {
+          "taken": "Diese Adresse wird bereits von einem anderen Konto verwendet.",
+          "same": "Das ist bereits deine E-Mail-Adresse.",
+          "wrongPassword": "Dieses Passwort stimmt nicht.",
+          "passwordRequired": "Gib dein aktuelles Passwort ein, um fortzufahren.",
+          "readOnly": "Dies ist eine schreibgeschützte Ansicht des Kontos.",
+          "generic": "Die Änderung konnte nicht gestartet werden. Bitte versuche es erneut."
+        }
+      }
     },
     "receiptPdf": {
       "title": "Beleg",
@@ -1207,6 +1230,23 @@
       "linkExpired": "Link abgelaufen?",
       "needFreshLink": "Brauchst du einen neuen Link?",
       "requestNew": "Neuen Reset-Link anfordern"
+    },
+    "confirmEmail": {
+      "metaTitle": "Bestätige deine E-Mail-Adresse",
+      "metaDescription": "Bestätige die neue E-Mail-Adresse für dein WCPOS-Konto.",
+      "working": "Neue E-Mail-Adresse wird bestätigt…",
+      "doneTitle": "E-Mail-Adresse aktualisiert",
+      "doneBody": "Dein Konto verwendet jetzt {email}. Melde dich ab sofort mit dieser Adresse an.",
+      "continue": "Zu deinem Profil",
+      "failedTitle": "Wir konnten diesen Link nicht bestätigen",
+      "backToProfile": "Zurück zu deinem Profil",
+      "errors": {
+        "missingToken": "Dieser Link ist unvollständig. Öffne den Link aus deiner Bestätigungs-E-Mail erneut.",
+        "expired": "Dieser Link ist abgelaufen. Fordere die Änderung in deinem Profil erneut an.",
+        "invalid": "Dieser Link ist nicht mehr gültig. Möglicherweise wurde er bereits verwendet.",
+        "conflict": "Diese Adresse ist nicht mehr verfügbar. Versuche es in deinem Profil mit einer anderen.",
+        "generic": "Etwas ist schiefgelaufen. Bitte versuche es erneut."
+      }
     }
   },
   "legal": {

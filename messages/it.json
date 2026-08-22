@@ -1018,7 +1018,30 @@
       },
       "languageTitle": "Lingua",
       "languageHint": "La lingua usata nel tuo account, nelle email e nelle ricevute. Modificandola la pagina viene ricaricata.",
-      "company": "Azienda"
+      "company": "Azienda",
+      "changeEmail": {
+        "title": "Indirizzo email",
+        "description": "Il tuo account usa attualmente {email}.",
+        "cta": "Cambia indirizzo email",
+        "newEmailLabel": "Nuovo indirizzo email",
+        "passwordLabel": "Password attuale",
+        "passwordHint": "Confermare la password impedisce a chi ha accesso alla tua sessione aperta di impossessarsi dell’account.",
+        "submit": "Invia conferma",
+        "sending": "Invio…",
+        "cancel": "Annulla",
+        "sentTitle": "Controlla la tua nuova casella",
+        "sentBody": "Abbiamo inviato un link di conferma a {email}. Il tuo indirizzo cambierà quando lo seguirai.",
+        "sentExpiry": "Il link scade tra 1 ora. Non è ancora cambiato nulla.",
+        "sentToast": "Email di conferma inviata",
+        "errors": {
+          "taken": "Questo indirizzo è già usato da un altro account.",
+          "same": "Questo è già il tuo indirizzo email.",
+          "wrongPassword": "Questa password non è corretta.",
+          "passwordRequired": "Inserisci la tua password attuale per continuare.",
+          "readOnly": "Questa è una consultazione in sola lettura dell’account.",
+          "generic": "Non siamo riusciti ad avviare la modifica. Riprova."
+        }
+      }
     },
     "receiptPdf": {
       "title": "Ricevuta",
@@ -1207,6 +1230,23 @@
       "linkExpired": "Link scaduto?",
       "needFreshLink": "Serve un nuovo link?",
       "requestNew": "Richiedi un nuovo link"
+    },
+    "confirmEmail": {
+      "metaTitle": "Conferma il tuo indirizzo email",
+      "metaDescription": "Conferma il nuovo indirizzo email del tuo account WCPOS.",
+      "working": "Conferma del nuovo indirizzo email in corso…",
+      "doneTitle": "Indirizzo email aggiornato",
+      "doneBody": "Il tuo account ora usa {email}. D’ora in poi accedi con questo indirizzo.",
+      "continue": "Vai al tuo profilo",
+      "failedTitle": "Non siamo riusciti a confermare questo link",
+      "backToProfile": "Torna al tuo profilo",
+      "errors": {
+        "missingToken": "Questo link è incompleto. Riapri il link dalla tua email di conferma.",
+        "expired": "Questo link è scaduto. Richiedi di nuovo la modifica dal tuo profilo.",
+        "invalid": "Questo link non è più valido. Potrebbe essere già stato usato.",
+        "conflict": "Questo indirizzo non è più disponibile. Provane un altro dal tuo profilo.",
+        "generic": "Qualcosa è andato storto. Riprova."
+      }
     }
   },
   "legal": {

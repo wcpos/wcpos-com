@@ -1018,7 +1018,30 @@
       },
       "languageTitle": "Taal",
       "languageHint": "De taal voor je account, e-mails en bonnen. Bij wijziging wordt de pagina opnieuw geladen.",
-      "company": "Bedrijfsnaam"
+      "company": "Bedrijfsnaam",
+      "changeEmail": {
+        "title": "E-mailadres",
+        "description": "Je account gebruikt momenteel {email}.",
+        "cta": "E-mailadres wijzigen",
+        "newEmailLabel": "Nieuw e-mailadres",
+        "passwordLabel": "Huidig wachtwoord",
+        "passwordHint": "Je wachtwoord bevestigen voorkomt dat iemand met toegang tot je open sessie het account overneemt.",
+        "submit": "Bevestiging versturen",
+        "sending": "Versturen…",
+        "cancel": "Annuleren",
+        "sentTitle": "Controleer je nieuwe inbox",
+        "sentBody": "We hebben een bevestigingslink naar {email} gestuurd. Je adres verandert zodra je die volgt.",
+        "sentExpiry": "De link verloopt over 1 uur. Er is nog niets gewijzigd.",
+        "sentToast": "Bevestigingsmail verstuurd",
+        "errors": {
+          "taken": "Dat adres is al in gebruik bij een ander account.",
+          "same": "Dat is al je e-mailadres.",
+          "wrongPassword": "Dat wachtwoord klopt niet.",
+          "passwordRequired": "Voer je huidige wachtwoord in om door te gaan.",
+          "readOnly": "Dit is een alleen-lezen weergave van het account.",
+          "generic": "We konden de wijziging niet starten. Probeer het opnieuw."
+        }
+      }
     },
     "receiptPdf": {
       "title": "Bon",
@@ -1207,6 +1230,23 @@
       "linkExpired": "Link verlopen?",
       "needFreshLink": "Nieuwe link nodig?",
       "requestNew": "Nieuwe resetlink aanvragen"
+    },
+    "confirmEmail": {
+      "metaTitle": "Bevestig je e-mailadres",
+      "metaDescription": "Bevestig het nieuwe e-mailadres van je WCPOS-account.",
+      "working": "Je nieuwe e-mailadres wordt bevestigd…",
+      "doneTitle": "E-mailadres bijgewerkt",
+      "doneBody": "Je account gebruikt nu {email}. Log vanaf nu in met dat adres.",
+      "continue": "Naar je profiel",
+      "failedTitle": "We konden deze link niet bevestigen",
+      "backToProfile": "Terug naar je profiel",
+      "errors": {
+        "missingToken": "Deze link is onvolledig. Open de link uit je bevestigingsmail opnieuw.",
+        "expired": "Deze link is verlopen. Vraag de wijziging opnieuw aan via je profiel.",
+        "invalid": "Deze link is niet meer geldig. Mogelijk is hij al gebruikt.",
+        "conflict": "Dat adres is niet meer beschikbaar. Probeer een ander via je profiel.",
+        "generic": "Er is iets misgegaan. Probeer het opnieuw."
+      }
     }
   },
   "legal": {

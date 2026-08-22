@@ -1018,7 +1018,30 @@
       },
       "languageTitle": "Langue",
       "languageHint": "La langue utilisée dans votre compte, vos e-mails et vos reçus. La modifier recharge la page.",
-      "company": "Société"
+      "company": "Société",
+      "changeEmail": {
+        "title": "Adresse e-mail",
+        "description": "Votre compte utilise actuellement {email}.",
+        "cta": "Modifier l’adresse e-mail",
+        "newEmailLabel": "Nouvelle adresse e-mail",
+        "passwordLabel": "Mot de passe actuel",
+        "passwordHint": "Confirmer votre mot de passe empêche quelqu’un ayant accès à votre session ouverte de prendre le contrôle du compte.",
+        "submit": "Envoyer la confirmation",
+        "sending": "Envoi…",
+        "cancel": "Annuler",
+        "sentTitle": "Consultez votre nouvelle boîte de réception",
+        "sentBody": "Nous avons envoyé un lien de confirmation à {email}. Votre adresse changera dès que vous l’aurez suivi.",
+        "sentExpiry": "Le lien expire dans 1 heure. Rien n’a encore changé.",
+        "sentToast": "E-mail de confirmation envoyé",
+        "errors": {
+          "taken": "Cette adresse est déjà utilisée par un autre compte.",
+          "same": "C’est déjà votre adresse e-mail.",
+          "wrongPassword": "Ce mot de passe est incorrect.",
+          "passwordRequired": "Saisissez votre mot de passe actuel pour continuer.",
+          "readOnly": "Ceci est une consultation en lecture seule du compte.",
+          "generic": "Nous n’avons pas pu lancer le changement. Veuillez réessayer."
+        }
+      }
     },
     "receiptPdf": {
       "title": "Reçu",
@@ -1207,6 +1230,23 @@
       "linkExpired": "Lien expiré ?",
       "needFreshLink": "Besoin d’un nouveau lien ?",
       "requestNew": "Demander un nouveau lien"
+    },
+    "confirmEmail": {
+      "metaTitle": "Confirmez votre adresse e-mail",
+      "metaDescription": "Confirmez la nouvelle adresse e-mail de votre compte WCPOS.",
+      "working": "Confirmation de votre nouvelle adresse e-mail…",
+      "doneTitle": "Adresse e-mail mise à jour",
+      "doneBody": "Votre compte utilise désormais {email}. Connectez-vous avec cette adresse à partir de maintenant.",
+      "continue": "Aller à votre profil",
+      "failedTitle": "Nous n’avons pas pu confirmer ce lien",
+      "backToProfile": "Retour à votre profil",
+      "errors": {
+        "missingToken": "Ce lien est incomplet. Rouvrez le lien depuis votre e-mail de confirmation.",
+        "expired": "Ce lien a expiré. Redemandez le changement depuis votre profil.",
+        "invalid": "Ce lien n’est plus valide. Il a peut-être déjà été utilisé.",
+        "conflict": "Cette adresse n’est plus disponible. Essayez-en une autre depuis votre profil.",
+        "generic": "Une erreur est survenue. Veuillez réessayer."
+      }
     }
   },
   "legal": {
