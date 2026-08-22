@@ -168,11 +168,29 @@ async function resolveVerdict(domain: string): Promise<EmailDomainVerdict> {
 }
 
 /**
+ * The mocked e2e harness announces itself with E2E_MOCK_PORT (see
+ * playwright.config.ts). DNS is not interceptable the way the suite's fetch
+ * calls are, so a real lookup here would be both a live network dependency in
+ * CI and actively wrong: the fixtures register `@example.com`, which publishes
+ * an RFC 7505 null MX — IANA's way of stating it accepts no mail — and which
+ * this module therefore rejects, correctly. Integration runs
+ * (INCLUDE_INTEGRATION) do not set this and keep the real lookup.
+ */
+function isMockedE2eRun(): boolean {
+  return Boolean(process.env.E2E_MOCK_PORT)
+}
+
+/**
  * Resolve an address's domain. Never rejects.
  */
 export async function verifyEmailDomain(
   email: string
 ): Promise<EmailDomainVerdict> {
+  // 'unverified' rather than 'deliverable': the harness genuinely has not
+  // verified anything, and it is the verdict callers already treat as
+  // permission to proceed.
+  if (isMockedE2eRun()) return 'unverified'
+
   const domain = emailDomain(email)
   if (!domain) return 'no_such_domain'
 

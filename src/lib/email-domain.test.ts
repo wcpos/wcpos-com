@@ -201,6 +201,34 @@ describe('verifyEmailDomain', () => {
   })
 })
 
+describe('mocked e2e harness', () => {
+  it('skips the lookup entirely when E2E_MOCK_PORT is set', async () => {
+    // Guards the CI failure this caused: the suite registers @example.com,
+    // whose null MX makes it correctly undeliverable, and DNS cannot be
+    // intercepted the way the harness intercepts fetch.
+    const previous = process.env.E2E_MOCK_PORT
+    process.env.E2E_MOCK_PORT = '4873'
+    try {
+      resolveMx.mockRejectedValue(dnsError('ENOTFOUND'))
+      await expect(verifyEmailDomain('buyer@example.com')).resolves.toBe(
+        'unverified'
+      )
+      expect(resolveMx).not.toHaveBeenCalled()
+    } finally {
+      if (previous === undefined) delete process.env.E2E_MOCK_PORT
+      else process.env.E2E_MOCK_PORT = previous
+    }
+  })
+
+  it('performs the lookup when the harness variable is absent', async () => {
+    resolveMx.mockRejectedValue(dnsError('ENOTFOUND'))
+    await expect(verifyEmailDomain('buyer@example.com')).resolves.toBe(
+      'no_such_domain'
+    )
+    expect(resolveMx).toHaveBeenCalled()
+  })
+})
+
 describe('isUndeliverableVerdict', () => {
   it('only treats the two authoritative negatives as grounds to reject', () => {
     expect(isUndeliverableVerdict('no_such_domain')).toBe(true)
