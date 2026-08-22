@@ -1120,6 +1120,11 @@
       "paymentNotConfigured": "Nessun metodo di pagamento configurato. Contatta il supporto.",
       "pageTitle": "Rinnova la licenza",
       "backToLicences": "Torna alle licenze"
+    },
+    "emailUndeliverable": {
+      "title": "Non riusciamo a inviarti email",
+      "body": "Le email a {email} vengono respinte, quindi ricevute, dati della licenza e reimpostazioni della password non ti arrivano. Aggiorna il tuo indirizzo per risolvere.",
+      "cta": "Aggiorna la tua email"
     }
   },
   "metadata": {

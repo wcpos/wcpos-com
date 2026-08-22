@@ -1120,6 +1120,11 @@
       "paymentNotConfigured": "설정된 결제 방법이 없습니다. 지원팀에 문의하세요.",
       "pageTitle": "라이선스 갱신",
       "backToLicences": "라이선스로 돌아가기"
+    },
+    "emailUndeliverable": {
+      "title": "이메일을 전달할 수 없습니다",
+      "body": "{email}(으)로 보낸 메일이 반송되어 영수증, 라이선스 정보, 비밀번호 재설정 메일이 전달되지 않고 있습니다. 주소를 업데이트해 주세요.",
+      "cta": "이메일 업데이트"
     }
   },
   "metadata": {

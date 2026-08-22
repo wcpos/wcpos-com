@@ -1120,6 +1120,11 @@
       "paymentNotConfigured": "未配置付款方式。请联系支持团队。",
       "pageTitle": "续订你的许可证",
       "backToLicences": "返回许可证"
+    },
+    "emailUndeliverable": {
+      "title": "我们无法向您投递邮件",
+      "body": "发送至 {email} 的邮件被退回，因此收据、许可证信息和密码重置邮件都无法送达。请更新您的地址以解决此问题。",
+      "cta": "更新邮箱地址"
     }
   },
   "metadata": {

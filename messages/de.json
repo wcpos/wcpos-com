@@ -1120,6 +1120,11 @@
       "paymentNotConfigured": "Es sind keine Zahlungsarten konfiguriert. Bitte kontaktiere den Support.",
       "pageTitle": "Deine Lizenz verlängern",
       "backToLicences": "Zurück zu den Lizenzen"
+    },
+    "emailUndeliverable": {
+      "title": "Wir können dir keine E-Mails zustellen",
+      "body": "E-Mails an {email} kommen nicht an, daher erreichen dich weder Belege noch Lizenzdaten oder Passwort-Zurücksetzungen. Aktualisiere deine Adresse, um das zu beheben.",
+      "cta": "E-Mail-Adresse aktualisieren"
     }
   },
   "metadata": {

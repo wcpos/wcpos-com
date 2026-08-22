@@ -1120,6 +1120,11 @@
       "paymentNotConfigured": "Aucun moyen de paiement n’est configuré. Veuillez contacter le support.",
       "pageTitle": "Renouveler votre licence",
       "backToLicences": "Retour aux licences"
+    },
+    "emailUndeliverable": {
+      "title": "Nous ne pouvons pas vous envoyer d’e-mails",
+      "body": "Les e-mails envoyés à {email} sont rejetés : reçus, informations de licence et réinitialisations de mot de passe ne vous parviennent pas. Mettez votre adresse à jour pour corriger cela.",
+      "cta": "Mettre à jour votre e-mail"
     }
   },
   "metadata": {

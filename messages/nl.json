@@ -1120,6 +1120,11 @@
       "paymentNotConfigured": "Er zijn geen betaalmethoden geconfigureerd. Neem contact op met support.",
       "pageTitle": "Verleng je licentie",
       "backToLicences": "Terug naar licenties"
+    },
+    "emailUndeliverable": {
+      "title": "We kunnen je geen e-mail bezorgen",
+      "body": "E-mail naar {email} komt niet aan, dus bonnen, licentiegegevens en wachtwoordherstel bereiken je niet. Werk je adres bij om dit op te lossen.",
+      "cta": "E-mailadres bijwerken"
     }
   },
   "metadata": {
