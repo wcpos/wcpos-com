@@ -186,6 +186,10 @@ export function ChangeEmailCard({
                 onClick={() => {
                   setOpen(false)
                   setError(null)
+                  // Don't keep the credential in component state. Without
+                  // this, reopening the form repopulates the password field
+                  // and the value lives on for the rest of the session.
+                  setPassword('')
                 }}
                 disabled={submitting}
               >

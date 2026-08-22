@@ -75,4 +75,24 @@ describe('ChangeEmailCard', () => {
       })
     )
   })
+  it('does not keep the password in state after cancelling', async () => {
+    // A credential left in controlled state repopulates the field on reopen
+    // and lives on for the rest of the session.
+    render(
+      <NextIntlClientProvider locale="pt" messages={messages}>
+        <ChangeEmailCard currentEmail="old@example.com" hasPassword />
+      </NextIntlClientProvider>
+    )
+
+    fireEvent.click(screen.getByTestId('change-email-open'))
+    const password = () =>
+      document.querySelector<HTMLInputElement>('input[type="password"]')!
+    fireEvent.change(password(), { target: { value: 'hunter2' } })
+    expect(password().value).toBe('hunter2')
+
+    fireEvent.click(screen.getByRole('button', { name: messages.account.profile.changeEmail.cancel }))
+    fireEvent.click(screen.getByTestId('change-email-open'))
+
+    expect(password().value).toBe('')
+  })
 })
