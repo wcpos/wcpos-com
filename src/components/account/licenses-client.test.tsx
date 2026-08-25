@@ -3,7 +3,7 @@ import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { renderWithIntl as render } from '@/test/intl'
 import { LicensesClient } from './licenses-client'
 import type { CanonicalLicenseStatus } from '@/lib/license-status'
-import { DEFAULT_YEARLY_POLICY_ID } from '@/lib/plans'
+import { YEARLY_PRO_POLICY_ID } from '@/lib/plans'
 
 // Mock the locale-aware Link as a simple anchor
 vi.mock('@/i18n/navigation', () => ({
@@ -273,7 +273,7 @@ describe('LicensesClient', () => {
     render(
       <LicensesClient
         initialLicenses={[
-          makeLicense({ policyId: DEFAULT_YEARLY_POLICY_ID }),
+          makeLicense({ policyId: YEARLY_PRO_POLICY_ID }),
         ]}
       />
     )
@@ -287,7 +287,7 @@ describe('LicensesClient', () => {
         initialLicenses={[
           makeLicense({
             status: 'active',
-            policyId: DEFAULT_YEARLY_POLICY_ID,
+            policyId: YEARLY_PRO_POLICY_ID,
           }),
         ]}
       />
@@ -308,7 +308,7 @@ describe('LicensesClient', () => {
         initialLicenses={[
           makeLicense({
             status: 'active',
-            policyId: DEFAULT_YEARLY_POLICY_ID,
+            policyId: YEARLY_PRO_POLICY_ID,
           }),
         ]}
       />

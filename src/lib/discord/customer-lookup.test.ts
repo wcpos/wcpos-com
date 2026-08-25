@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from 'vitest'
 import type { LicenseDetail, LicenseMachine } from '@/types/license'
 import type { MedusaOrder } from '@/lib/customer-orders'
 import type { MedusaCustomer } from '@/lib/medusa-auth'
-import { DEFAULT_YEARLY_POLICY_ID } from '@/lib/plans'
+import { YEARLY_PRO_POLICY_ID } from '@/lib/plans'
 import { addConnectedDiscordMember } from './connected-members'
 import { lookupDiscordCustomerInfo, mapMachineToSite } from './customer-lookup'
 
@@ -63,7 +63,7 @@ describe('lookupDiscordCustomerInfo', () => {
     const info = await lookupDiscordCustomerInfo('discord_1', {
       listAllLicenses: async () => [
         license({
-          policyId: DEFAULT_YEARLY_POLICY_ID,
+          policyId: YEARLY_PRO_POLICY_ID,
           metadata: connectedTo({ email: 'owner@example.com' }, 'discord_1'),
         }),
         license({ id: 'lic_other', key: 'WCPOS-XXXX-9999' }),
