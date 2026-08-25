@@ -3,7 +3,7 @@
   "downloadTokenSecret": "e2e-download-token-secret",
   "policies": {
     "yearly": "261cb7e2-6e80-476e-98bd-fe7f406f258d",
-    "lifetime": "e2e-lifetime-policy-0000"
+    "lifetime": "1203b973-eb59-4965-9c19-12788212f827"
   },
   "personas": {
     "e2e-active": {
