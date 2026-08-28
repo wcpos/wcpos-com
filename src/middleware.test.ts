@@ -210,6 +210,18 @@ describe('middleware', () => {
       ).toBe('1')
     })
 
+    it('sets the account-request header on OAuth link initiation', () => {
+      const request = new NextRequest(
+        'https://wcpos.com/api/auth/google?intent=link'
+      )
+
+      const response = middleware(request)
+
+      expect(
+        response?.headers.get(`x-middleware-request-${ACCOUNT_REQUEST_HEADER}`)
+      ).toBe('1')
+    })
+
     it('sets the account-request header on the account deletion route', () => {
       // The deletion route relies on this header for assertViewOnly(): without
       // it an impersonating admin's DELETE would resolve to (and delete) their

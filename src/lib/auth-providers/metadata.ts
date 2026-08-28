@@ -14,9 +14,16 @@ export type SignInProvider = 'google' | 'github' | 'discord'
 // Stable display order; also the allow-list for both reads and writes.
 const KNOWN_PROVIDERS: SignInProvider[] = ['google', 'github', 'discord']
 
-// Providers shown in the profile's sign-in row. Discord is surfaced by its own
-// role-sync row, so it is intentionally excluded here.
-type DisplaySignInProvider = 'google' | 'github'
+type DisplaySignInProvider = SignInProvider
+
+/**
+ * Recorded as `last_sign_in_provider` when a customer connects their first
+ * OAuth provider from the profile without an OAuth sign-in on record: a live
+ * session (one-day cookie) with no recorded OAuth sign-in was opened with a
+ * password. Without it, the display fallback below would label the freshly
+ * connected provider "Most recent sign-in".
+ */
+export const PASSWORD_SIGN_IN_PROVIDER = 'emailpass'
 
 function isKnownProvider(value: unknown): value is SignInProvider {
   return (
@@ -25,7 +32,7 @@ function isKnownProvider(value: unknown): value is SignInProvider {
 }
 
 function isDisplayProvider(value: unknown): value is DisplaySignInProvider {
-  return value === 'google' || value === 'github'
+  return isKnownProvider(value)
 }
 
 const AVATAR_HOST_PROVIDERS: Array<[string, SignInProvider]> = [
@@ -109,15 +116,33 @@ export function recordSignInProvider(
 }
 
 /**
+ * Record a provider CONNECTED from the profile (not signed in with): add it
+ * to the linked set, and when no sign-in is on record yet, pin the most
+ * recent sign-in to the password so the new provider isn't credited with a
+ * sign-in that never happened.
+ */
+export function recordLinkedProvider(
+  metadata: Record<string, unknown> | null | undefined,
+  provider: string
+): Record<string, unknown> {
+  const next = addAuthProviderToMetadata(metadata, provider)
+  if (typeof next.last_sign_in_provider !== 'string') {
+    next.last_sign_in_provider = PASSWORD_SIGN_IN_PROVIDER
+  }
+  return next
+}
+
+/**
  * The provider to show in the profile sign-in row: the most recently used
- * Google/GitHub sign-in, else the first linked Google/GitHub, else null
- * (email/password, or only Discord — which has its own role-sync row).
+ * OAuth sign-in; null when the last sign-in is on record as the password;
+ * else (legacy, nothing recorded) the first linked OAuth provider; else null.
  */
 export function getPrimarySignInProvider(
   metadata: Record<string, unknown> | null | undefined
 ): DisplaySignInProvider | null {
   const last = metadata?.last_sign_in_provider
   if (isDisplayProvider(last)) return last
+  if (last === PASSWORD_SIGN_IN_PROVIDER) return null
 
   return getLinkedAuthProviders(metadata).find(isDisplayProvider) ?? null
 }

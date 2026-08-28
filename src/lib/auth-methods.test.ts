@@ -14,7 +14,11 @@ vi.mock('@/lib/store-environment', () => ({
   getCheckoutGatewayHeaders: async () => ({}),
 }))
 
-import { getCustomerAuthMethods } from './auth-methods'
+import {
+  AuthMethodError,
+  getCustomerAuthMethods,
+  linkCustomerAuthMethod,
+} from './auth-methods'
 
 const mockFetch = vi.fn()
 vi.stubGlobal('fetch', mockFetch)
@@ -110,5 +114,53 @@ describe('getCustomerAuthMethods', () => {
 
     mockFetch.mockRejectedValueOnce(new Error('network'))
     await expect(getCustomerAuthMethods()).resolves.toBeNull()
+  })
+})
+
+describe('linkCustomerAuthMethod', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+    getAuthToken.mockResolvedValue('session-jwt')
+  })
+
+  it('posts the new identity token with the current session bearer', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      status: 200,
+      json: async () => ({ linked: true, providers: ['google'] }),
+    })
+
+    await linkCustomerAuthMethod('google', 'new-identity-jwt')
+
+    expect(mockFetch).toHaveBeenCalledWith(
+      'https://medusa.test/store/customers/me/auth-methods/google/link',
+      expect.objectContaining({
+        method: 'POST',
+        headers: expect.objectContaining({
+          Authorization: 'Bearer session-jwt',
+          'Content-Type': 'application/json',
+        }),
+        body: JSON.stringify({ token: 'new-identity-jwt' }),
+      })
+    )
+  })
+
+  it('maps identity_linked_elsewhere to AuthMethodError', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: false,
+      status: 409,
+      json: async () => ({ message: 'identity_linked_elsewhere' }),
+    })
+
+    const error = await linkCustomerAuthMethod(
+      'google',
+      'new-identity-jwt'
+    ).catch((caught) => caught)
+
+    expect(error).toBeInstanceOf(AuthMethodError)
+    expect(error).toMatchObject({
+      code: 'identity_linked_elsewhere',
+      status: 409,
+    })
   })
 })

@@ -131,6 +131,8 @@ export function middleware(request: NextRequest) {
   if (pathname.startsWith('/api/')) {
     if (
       pathname.startsWith('/api/account/') ||
+      (pathname.startsWith('/api/auth/') &&
+        request.nextUrl.searchParams.get('intent') === 'link') ||
       pathname === '/api/store/cart' ||
       pathname.startsWith('/api/store/cart/')
     ) {

@@ -4,6 +4,7 @@ import {
   addAuthProviderToMetadata,
   recordSignInProvider,
   getPrimarySignInProvider,
+  recordLinkedProvider,
   removeAuthProviderFromMetadata,
 } from './metadata'
 
@@ -132,19 +133,51 @@ describe('getPrimarySignInProvider', () => {
     ).toBe('google')
   })
 
-  it('ignores a non-display recent provider (discord) and uses the linked set', () => {
+  it('returns Discord when it was the most recent sign-in provider', () => {
     expect(
       getPrimarySignInProvider({
         auth_providers: ['google', 'discord'],
         last_sign_in_provider: 'discord',
       })
-    ).toBe('google')
+    ).toBe('discord')
   })
 
-  it('returns null for email/password or discord-only (no display provider)', () => {
+  it('returns null for email/password and Discord for Discord-only', () => {
     expect(getPrimarySignInProvider({})).toBeNull()
     expect(
       getPrimarySignInProvider({ last_sign_in_provider: 'discord' })
+    ).toBe('discord')
+  })
+})
+
+describe('recordLinkedProvider', () => {
+  it('adds the provider and pins the password as the last sign-in when none is recorded', () => {
+    expect(recordLinkedProvider({}, 'google')).toEqual({
+      auth_providers: ['google'],
+      last_sign_in_provider: 'emailpass',
+    })
+  })
+
+  it('leaves a recorded OAuth sign-in alone', () => {
+    expect(
+      recordLinkedProvider(
+        { auth_providers: ['github'], last_sign_in_provider: 'github' },
+        'google'
+      )
+    ).toEqual({
+      auth_providers: ['github', 'google'],
+      last_sign_in_provider: 'github',
+    })
+  })
+})
+
+describe('getPrimarySignInProvider (password on record)', () => {
+  it('does not credit a connected provider with a password sign-in', () => {
+    expect(
+      getPrimarySignInProvider({
+        auth_providers: ['google'],
+        last_sign_in_provider: 'emailpass',
+      })
     ).toBeNull()
   })
 })

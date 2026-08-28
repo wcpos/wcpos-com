@@ -1,5 +1,24 @@
 import { NextResponse } from 'next/server'
 import { logout } from '@/lib/medusa-auth'
+import {
+  ALLOWED_PROVIDERS,
+  OAUTH_LINK_COOKIE_OPTIONS,
+  oauthLinkCookieName,
+} from '@/lib/oauth-providers'
+
+/**
+ * An unfinished "connect a provider" round-trip belongs to the customer who
+ * started it; it must not survive into whoever signs in next in this browser.
+ */
+function clearLinkIntents(response: NextResponse): NextResponse {
+  for (const provider of ALLOWED_PROVIDERS) {
+    response.cookies.set(oauthLinkCookieName(provider), '', {
+      ...OAUTH_LINK_COOKIE_OPTIONS,
+      maxAge: 0,
+    })
+  }
+  return response
+}
 
 /**
  * Only same-origin relative paths may be redirect targets — "//host" and
@@ -20,7 +39,7 @@ function safeRelativeTarget(value: string | null): string {
 export async function POST(request: Request) {
   await logout()
   const to = safeRelativeTarget(new URL(request.url).searchParams.get('to'))
-  return NextResponse.redirect(new URL(to, request.url), 303)
+  return clearLinkIntents(NextResponse.redirect(new URL(to, request.url), 303))
 }
 
 /**
@@ -36,5 +55,5 @@ export async function POST(request: Request) {
 export async function GET(request: Request) {
   await logout()
   const to = safeRelativeTarget(new URL(request.url).searchParams.get('to'))
-  return NextResponse.redirect(new URL(to, request.url), 303)
+  return clearLinkIntents(NextResponse.redirect(new URL(to, request.url), 303))
 }

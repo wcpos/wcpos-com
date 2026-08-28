@@ -604,7 +604,9 @@ describe('ProfileEditForm', () => {
     expect(screen.queryByText('Connections')).not.toBeInTheDocument()
   })
 
-  it('does not expose account-level Discord linking from the profile', () => {
+  // Without DB truth (`methods` absent: old backend / view-as) the card is
+  // the read-only single row — no Discord row and no Connect buttons.
+  it('renders the read-only sign-in row without connect controls when methods are unknown', () => {
     const assign = vi.fn()
     Object.defineProperty(window, 'location', {
       configurable: true,
@@ -627,7 +629,8 @@ describe('ProfileEditForm', () => {
     ).toBeInTheDocument()
 
     expect(screen.queryByText('Discord')).not.toBeInTheDocument()
-    expect(screen.queryByRole('button', { name: 'Connect Discord' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('link', { name: 'Connect Discord' })).not.toBeInTheDocument()
+    expect(screen.queryByText('Connect')).not.toBeInTheDocument()
   })
 
   it('labels the sign-in row by the actual provider (GitHub)', () => {

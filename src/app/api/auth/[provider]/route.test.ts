@@ -1,7 +1,12 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { NextRequest } from 'next/server'
 
-const mockInitiateOAuth = vi.fn()
+const { mockInitiateOAuth, mockGetSessionCustomer, mockGetImpersonation } =
+  vi.hoisted(() => ({
+    mockInitiateOAuth: vi.fn(),
+    mockGetSessionCustomer: vi.fn(),
+    mockGetImpersonation: vi.fn(),
+  }))
 
 vi.mock('@/lib/oauth', () => ({
   initiateOAuth: (...args: unknown[]) => mockInitiateOAuth(...args),
@@ -13,11 +18,131 @@ vi.mock('@/lib/logger', () => ({
   },
 }))
 
+vi.mock('@/lib/medusa-auth', () => ({
+  getSessionCustomer: (...args: unknown[]) => mockGetSessionCustomer(...args),
+}))
+
+vi.mock('@/lib/impersonation', () => ({
+  getImpersonation: (...args: unknown[]) => mockGetImpersonation(...args),
+}))
+
 import { GET } from './route'
 
 describe('GET /api/auth/[provider] (OAuth initiate)', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+    mockGetSessionCustomer.mockResolvedValue({ id: 'cus_1' })
+    mockGetImpersonation.mockResolvedValue(null)
+  })
+
+  it('sets the link intent cookie and still redirects to the provider for a session customer', async () => {
+    mockInitiateOAuth.mockResolvedValueOnce(
+      'https://accounts.google.com/oauth?state=st_123'
+    )
+
+    const response = await GET(
+      new NextRequest(
+        'https://wcpos.com/api/auth/google?intent=link&locale=fr&redirect=%2Faccount%2Fprofile'
+      ),
+      { params: Promise.resolve({ provider: 'google' }) }
+    )
+
+    expect(response.headers.get('location')).toBe(
+      'https://accounts.google.com/oauth?state=st_123'
+    )
+    // Bound to this round-trip: provider + the state the provider will echo.
+    expect(response.cookies.get('oauth_link_google')?.value).toBe(
+      'st_123:cus_1'
+    )
+    expect(response.cookies.get('oauth_link_google')?.maxAge).toBe(1800)
+    expect(response.cookies.get('oauth_redirect')?.value).toBe(
+      '/fr/account/profile'
+    )
+  })
+
+  it('drops an abandoned same-provider link intent when a plain sign-in starts', async () => {
+    mockInitiateOAuth.mockResolvedValueOnce(
+      'https://accounts.google.com/oauth?state=st_456'
+    )
+
+    const response = await GET(
+      new NextRequest(
+        'https://wcpos.com/api/auth/google?redirect=%2Faccount',
+        { headers: { cookie: 'oauth_link_google=st_123%3Acus_1' } }
+      ),
+      { params: Promise.resolve({ provider: 'google' }) }
+    )
+
+    expect(response.headers.get('location')).toBe(
+      'https://accounts.google.com/oauth?state=st_456'
+    )
+    expect(response.cookies.get('oauth_link_google')?.maxAge).toBe(0)
+  })
+
+  it('reports a failed Connect on the profile, not the login page', async () => {
+    mockInitiateOAuth.mockRejectedValueOnce(new Error('medusa down'))
+
+    const response = await GET(
+      new NextRequest(
+        'https://wcpos.com/api/auth/github?intent=link&locale=fr&redirect=%2Faccount%2Fprofile'
+      ),
+      { params: Promise.resolve({ provider: 'github' }) }
+    )
+
+    const location = new URL(response.headers.get('location')!)
+    expect(location.pathname).toBe('/fr/account/profile')
+    expect(location.searchParams.get('connect_error')).toBe('failed')
+    expect(location.searchParams.get('connect')).toBe('github')
+  })
+
+  it('refuses a link intent when the provider redirect carries no state', async () => {
+    mockInitiateOAuth.mockResolvedValueOnce('https://accounts.google.com/oauth')
+
+    const response = await GET(
+      new NextRequest(
+        'https://wcpos.com/api/auth/google?intent=link&locale=fr&redirect=%2Faccount%2Fprofile'
+      ),
+      { params: Promise.resolve({ provider: 'google' }) }
+    )
+
+    expect(response.headers.get('location')).toBe(
+      'https://wcpos.com/fr/account/profile'
+    )
+    expect(response.cookies.get('oauth_link_google')).toBeUndefined()
+  })
+
+  it('redirects a signed-out link attempt to the localized profile without setting a link cookie', async () => {
+    mockGetSessionCustomer.mockResolvedValueOnce(null)
+
+    const response = await GET(
+      new NextRequest(
+        'https://wcpos.com/api/auth/google?intent=link&locale=fr&redirect=%2Faccount%2Fprofile'
+      ),
+      { params: Promise.resolve({ provider: 'google' }) }
+    )
+
+    expect(response.headers.get('location')).toBe(
+      'https://wcpos.com/fr/account/profile'
+    )
+    expect(response.cookies.get('oauth_link_google')).toBeUndefined()
+    expect(mockInitiateOAuth).not.toHaveBeenCalled()
+  })
+
+  it('redirects an impersonated link attempt to the profile without setting a link cookie', async () => {
+    mockGetImpersonation.mockResolvedValueOnce({ targetId: 'cus_target' })
+
+    const response = await GET(
+      new NextRequest(
+        'https://wcpos.com/api/auth/github?intent=link&redirect=%2Faccount%2Fprofile'
+      ),
+      { params: Promise.resolve({ provider: 'github' }) }
+    )
+
+    expect(response.headers.get('location')).toBe(
+      'https://wcpos.com/account/profile'
+    )
+    expect(response.cookies.get('oauth_link_github')).toBeUndefined()
+    expect(mockInitiateOAuth).not.toHaveBeenCalled()
   })
 
   it('redirects to the provider authorization URL returned by Medusa', async () => {
