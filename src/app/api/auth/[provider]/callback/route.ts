@@ -4,7 +4,7 @@ import { establishOAuthSession, linkOAuthIdentity } from '@/lib/oauth'
 import { authLogger } from '@/lib/logger'
 import { getConnectedAvatarUrlFromUserMetadata } from '@/lib/avatar'
 import {
-  addAuthProviderToMetadata,
+  recordLinkedProvider,
   recordSignInProvider,
 } from '@/lib/auth-providers/metadata'
 import {
@@ -53,14 +53,18 @@ function profileRedirect(
   locale: string,
   provider: string,
   key: 'connect' | 'connect_error',
-  value: string
+  value: string,
+  options: { consumeLink?: boolean } = {}
 ): NextResponse {
   const path = locale === 'en' ? '/account/profile' : `/${locale}/account/profile`
   const url = new URL(path, request.url)
   url.searchParams.set(key, value)
   // Name the provider in the error toast too.
   if (key === 'connect_error') url.searchParams.set('connect', provider)
-  return clearRedirectCookie(NextResponse.redirect(url, 303), provider)
+  return clearRedirectCookie(
+    NextResponse.redirect(url, 303),
+    options.consumeLink === false ? null : provider
+  )
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -163,8 +167,13 @@ export async function GET(
       // session changed hands mid-flow. Signing either in (or linking it) is
       // exactly the substitution the binding exists to prevent.
       if (callbackParams.state !== link.state) {
+        // The cookie belongs to a NEWER round-trip for this provider (a
+        // second Connect click in another tab); this stale callback must not
+        // consume it, or the newer callback would land in plain sign-in.
         authLogger.info`OAuth link callback for ${provider} rejected: state mismatch`
-        return profileRedirect(request, locale, provider, 'connect_error', 'failed')
+        return profileRedirect(request, locale, provider, 'connect_error', 'failed', {
+          consumeLink: false,
+        })
       }
       const customer = await getSessionCustomer()
       if (!customer) {
@@ -188,7 +197,10 @@ export async function GET(
         await linkOAuthIdentity(provider, callbackParams)
         try {
           await updateCustomer({
-            metadata: addAuthProviderToMetadata(customer.metadata, provider),
+            metadata: recordLinkedProvider(
+              isRecord(customer.metadata) ? customer.metadata : {},
+              provider
+            ),
           })
         } catch (error) {
           authLogger.error`Failed to sync linked OAuth provider: ${error}`

@@ -60,6 +60,41 @@ describe('GET /api/auth/[provider] (OAuth initiate)', () => {
     )
   })
 
+  it('drops an abandoned same-provider link intent when a plain sign-in starts', async () => {
+    mockInitiateOAuth.mockResolvedValueOnce(
+      'https://accounts.google.com/oauth?state=st_456'
+    )
+
+    const response = await GET(
+      new NextRequest(
+        'https://wcpos.com/api/auth/google?redirect=%2Faccount',
+        { headers: { cookie: 'oauth_link_google=st_123%3Acus_1' } }
+      ),
+      { params: Promise.resolve({ provider: 'google' }) }
+    )
+
+    expect(response.headers.get('location')).toBe(
+      'https://accounts.google.com/oauth?state=st_456'
+    )
+    expect(response.cookies.get('oauth_link_google')?.maxAge).toBe(0)
+  })
+
+  it('reports a failed Connect on the profile, not the login page', async () => {
+    mockInitiateOAuth.mockRejectedValueOnce(new Error('medusa down'))
+
+    const response = await GET(
+      new NextRequest(
+        'https://wcpos.com/api/auth/github?intent=link&locale=fr&redirect=%2Faccount%2Fprofile'
+      ),
+      { params: Promise.resolve({ provider: 'github' }) }
+    )
+
+    const location = new URL(response.headers.get('location')!)
+    expect(location.pathname).toBe('/fr/account/profile')
+    expect(location.searchParams.get('connect_error')).toBe('failed')
+    expect(location.searchParams.get('connect')).toBe('github')
+  })
+
   it('refuses a link intent when the provider redirect carries no state', async () => {
     mockInitiateOAuth.mockResolvedValueOnce('https://accounts.google.com/oauth')
 

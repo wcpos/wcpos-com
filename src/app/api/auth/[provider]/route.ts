@@ -20,12 +20,31 @@ function requestLocale(request: NextRequest): Locale {
   return supportedBaseLocaleOrDefault(request.nextUrl.searchParams.get('locale'))
 }
 
+/** Where a failed "Connect <provider>" lands: back on the profile, named. */
+function profileErrorRedirect(
+  request: NextRequest,
+  locale: Locale,
+  provider: string
+): NextResponse {
+  const url = new URL(
+    localizeRedirectPath('/account/profile', locale),
+    request.url
+  )
+  url.searchParams.set('connect_error', 'failed')
+  url.searchParams.set('connect', provider)
+  return NextResponse.redirect(url)
+}
+
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ provider: string }> }
 ) {
+  // Hoisted so the catch can tell a failed Connect from a failed sign-in.
+  const linkIntent = request.nextUrl.searchParams.get('intent') === 'link'
+  let provider: string | null = null
+
   try {
-    const { provider } = await params
+    provider = (await params).provider
 
     if (!ALLOWED_PROVIDERS.includes(provider)) {
       return NextResponse.json(
@@ -44,7 +63,6 @@ export async function GET(
       request.nextUrl.searchParams.get('redirect')
     )
     const localizedRedirectTo = localizeRedirectPath(redirectTo, locale)
-    const linkIntent = request.nextUrl.searchParams.get('intent') === 'link'
 
     let linkCustomerId: string | null = null
     if (linkIntent) {
@@ -85,10 +103,23 @@ export async function GET(
         encodeOAuthLinkCookie(state, linkCustomerId),
         OAUTH_LINK_COOKIE_OPTIONS
       )
+    } else {
+      // A plain sign-in must never inherit an abandoned Connect for the same
+      // provider: its callback would be classified as a link, fail the state
+      // check, and refuse an otherwise valid sign-in.
+      response.cookies.set(oauthLinkCookieName(provider), '', {
+        ...OAUTH_LINK_COOKIE_OPTIONS,
+        maxAge: 0,
+      })
     }
     return response
   } catch (error) {
     authLogger.error`Failed to initiate OAuth: ${error}`
+    if (linkIntent && provider) {
+      // /login bounces a signed-in customer straight back to /account and
+      // drops the error — the profile is the only place the failure is seen.
+      return profileErrorRedirect(request, requestLocale(request), provider)
+    }
     const loginUrl = new URL(
       loginPathForLocale(requestLocale(request)),
       request.url

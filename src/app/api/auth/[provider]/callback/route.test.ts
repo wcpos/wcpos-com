@@ -119,7 +119,28 @@ describe('OAuth callback route', () => {
     expect(location.searchParams.get('connect_error')).toBe('failed')
     expect(mockLinkOAuthIdentity).not.toHaveBeenCalled()
     expect(mockEstablishOAuthSession).not.toHaveBeenCalled()
-    expect(response.cookies.get('oauth_link_google')?.maxAge).toBe(0)
+    // The cookie is a NEWER round-trip's binding (second Connect in another
+    // tab): this stale callback must leave it for that callback to consume.
+    expect(response.cookies.get('oauth_link_google')).toBeUndefined()
+    expect(response.cookies.get('oauth_redirect')?.maxAge).toBe(0)
+  })
+
+  it('pins the password as the most recent sign-in when linking a first provider', async () => {
+    mockGetSessionCustomer.mockResolvedValueOnce({ id: 'cust_1', metadata: {} })
+    const request = new NextRequest(
+      'https://wcpos.com/api/auth/google/callback?code=abc&state=xyz',
+      {
+        headers: {
+          cookie: 'oauth_link_google=xyz%3Acust_1; oauth_redirect=%2Faccount%2Fprofile',
+        },
+      }
+    )
+
+    await GET(request, { params: Promise.resolve({ provider: 'google' }) })
+
+    expect(mockUpdateCustomer).toHaveBeenCalledWith({
+      metadata: { auth_providers: ['google'], last_sign_in_provider: 'emailpass' },
+    })
   })
 
   it('refuses a link callback when the session changed hands mid-flow', async () => {
