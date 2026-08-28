@@ -29,6 +29,18 @@ describe('POST /api/auth/logout', () => {
     )
   })
 
+  it('drops any unfinished provider-link intent with the session', async () => {
+    const response = await POST(
+      new NextRequest('http://localhost:3000/api/auth/logout', {
+        method: 'POST',
+      })
+    )
+
+    for (const provider of ['google', 'github', 'discord']) {
+      expect(response.cookies.get(`oauth_link_${provider}`)?.maxAge).toBe(0)
+    }
+  })
+
   it('resolves the redirect against the request origin', async () => {
     const response = await POST(
       new NextRequest('https://beta.wcpos.com/api/auth/logout', {

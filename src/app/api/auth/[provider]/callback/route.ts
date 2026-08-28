@@ -9,9 +9,10 @@ import {
 } from '@/lib/auth-providers/metadata'
 import {
   ALLOWED_PROVIDERS,
-  OAUTH_LINK_COOKIE,
+  OAUTH_LINK_COOKIE_OPTIONS,
   OAUTH_REDIRECT_COOKIE,
   OAUTH_REDIRECT_COOKIE_OPTIONS,
+  oauthLinkCookieName,
   parseOAuthLinkCookie,
 } from '@/lib/oauth-providers'
 import { loginPathForLocale } from '@/lib/login-redirect'
@@ -25,34 +26,41 @@ import {
 import { AccountSecurityHoldError } from '@/lib/api/errors'
 import { AuthMethodError } from '@/lib/auth-methods'
 
-/** The redirect cookie is single-use: consume it on every outcome. */
-function clearRedirectCookie(response: NextResponse): NextResponse {
+/**
+ * Both round-trip cookies are single-use: consume them on every outcome.
+ * Only THIS provider's link cookie is cleared — a parallel flow for another
+ * provider keeps its own binding.
+ */
+function clearRedirectCookie(
+  response: NextResponse,
+  provider: string | null
+): NextResponse {
   response.cookies.set(OAUTH_REDIRECT_COOKIE, '', {
     ...OAUTH_REDIRECT_COOKIE_OPTIONS,
     maxAge: 0,
   })
-  response.cookies.set(OAUTH_LINK_COOKIE, '', {
-    ...OAUTH_REDIRECT_COOKIE_OPTIONS,
-    maxAge: 0,
-  })
+  if (provider) {
+    response.cookies.set(oauthLinkCookieName(provider), '', {
+      ...OAUTH_LINK_COOKIE_OPTIONS,
+      maxAge: 0,
+    })
+  }
   return response
 }
 
 function profileRedirect(
   request: NextRequest,
   locale: string,
+  provider: string,
   key: 'connect' | 'connect_error',
   value: string
 ): NextResponse {
   const path = locale === 'en' ? '/account/profile' : `/${locale}/account/profile`
   const url = new URL(path, request.url)
   url.searchParams.set(key, value)
-  if (key === 'connect_error') {
-    // Name the provider in the error toast too.
-    const link = parseOAuthLinkCookie(request.cookies.get(OAUTH_LINK_COOKIE)?.value)
-    if (link) url.searchParams.set('connect', link.provider)
-  }
-  return clearRedirectCookie(NextResponse.redirect(url, 303))
+  // Name the provider in the error toast too.
+  if (key === 'connect_error') url.searchParams.set('connect', provider)
+  return clearRedirectCookie(NextResponse.redirect(url, 303), provider)
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -116,9 +124,10 @@ export async function GET(
   { params }: { params: Promise<{ provider: string }> }
 ) {
   let providerErrorCallback = false
+  let provider: string | null = null
 
   try {
-    const { provider } = await params
+    provider = (await params).provider
 
     if (!ALLOWED_PROVIDERS.includes(provider)) {
       return NextResponse.json(
@@ -146,27 +155,33 @@ export async function GET(
     const locale = localeFromPath(redirectTo)
 
     const link = parseOAuthLinkCookie(
-      request.cookies.get(OAUTH_LINK_COOKIE)?.value
+      request.cookies.get(oauthLinkCookieName(provider))?.value
     )
-    if (link?.provider === provider) {
-      // A link intent NEVER falls through to sign-in: a mismatched state is a
-      // callback this browser did not start, and signing it in (or linking it)
-      // is exactly the substitution the binding exists to prevent.
+    if (link) {
+      // A link intent NEVER falls through to sign-in. A mismatched state is a
+      // callback this browser did not start; a different customer means the
+      // session changed hands mid-flow. Signing either in (or linking it) is
+      // exactly the substitution the binding exists to prevent.
       if (callbackParams.state !== link.state) {
         authLogger.info`OAuth link callback for ${provider} rejected: state mismatch`
-        return profileRedirect(request, locale, 'connect_error', 'failed')
+        return profileRedirect(request, locale, provider, 'connect_error', 'failed')
       }
       const customer = await getSessionCustomer()
       if (!customer) {
         return profileRedirect(
           request,
           locale,
+          provider,
           'connect_error',
           'session_expired'
         )
       }
+      if (customer.id !== link.customerId) {
+        authLogger.info`OAuth link callback for ${provider} rejected: customer changed mid-flow`
+        return profileRedirect(request, locale, provider, 'connect_error', 'failed')
+      }
       if (callbackParams.error) {
-        return profileRedirect(request, locale, 'connect_error', 'failed')
+        return profileRedirect(request, locale, provider, 'connect_error', 'failed')
       }
 
       try {
@@ -178,7 +193,7 @@ export async function GET(
         } catch (error) {
           authLogger.error`Failed to sync linked OAuth provider: ${error}`
         }
-        return profileRedirect(request, locale, 'connect', provider)
+        return profileRedirect(request, locale, provider, 'connect', provider)
       } catch (error) {
         const errorCode =
           error instanceof AuthMethodError &&
@@ -188,7 +203,7 @@ export async function GET(
             : error instanceof AccountSecurityHoldError
               ? 'account_security_hold'
               : 'failed'
-        return profileRedirect(request, locale, 'connect_error', errorCode)
+        return profileRedirect(request, locale, provider, 'connect_error', errorCode)
       }
     }
 
@@ -221,14 +236,16 @@ export async function GET(
       const response = clearRedirectCookie(
         NextResponse.redirect(
           new URL(rootFallbackHref(savedLocale, barePath), request.url)
-        )
+        ),
+        provider
       )
       setLocaleCookieOnResponse(response, savedLocale)
       return response
     }
 
     return clearRedirectCookie(
-      NextResponse.redirect(new URL(redirectTo, request.url))
+      NextResponse.redirect(new URL(redirectTo, request.url)),
+      provider
     )
   } catch (error) {
     const held = error instanceof AccountSecurityHoldError
@@ -254,6 +271,6 @@ export async function GET(
       request.url
     )
     loginUrl.searchParams.set('error', errorCode)
-    return clearRedirectCookie(NextResponse.redirect(loginUrl, 303))
+    return clearRedirectCookie(NextResponse.redirect(loginUrl, 303), provider)
   }
 }

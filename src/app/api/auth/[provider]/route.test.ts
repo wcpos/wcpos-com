@@ -51,7 +51,10 @@ describe('GET /api/auth/[provider] (OAuth initiate)', () => {
       'https://accounts.google.com/oauth?state=st_123'
     )
     // Bound to this round-trip: provider + the state the provider will echo.
-    expect(response.cookies.get('oauth_link')?.value).toBe('google:st_123')
+    expect(response.cookies.get('oauth_link_google')?.value).toBe(
+      'st_123:cus_1'
+    )
+    expect(response.cookies.get('oauth_link_google')?.maxAge).toBe(1800)
     expect(response.cookies.get('oauth_redirect')?.value).toBe(
       '/fr/account/profile'
     )
@@ -70,7 +73,7 @@ describe('GET /api/auth/[provider] (OAuth initiate)', () => {
     expect(response.headers.get('location')).toBe(
       'https://wcpos.com/fr/account/profile'
     )
-    expect(response.cookies.get('oauth_link')).toBeUndefined()
+    expect(response.cookies.get('oauth_link_google')).toBeUndefined()
   })
 
   it('redirects a signed-out link attempt to the localized profile without setting a link cookie', async () => {
@@ -86,7 +89,7 @@ describe('GET /api/auth/[provider] (OAuth initiate)', () => {
     expect(response.headers.get('location')).toBe(
       'https://wcpos.com/fr/account/profile'
     )
-    expect(response.cookies.get('oauth_link')).toBeUndefined()
+    expect(response.cookies.get('oauth_link_google')).toBeUndefined()
     expect(mockInitiateOAuth).not.toHaveBeenCalled()
   })
 
@@ -103,7 +106,7 @@ describe('GET /api/auth/[provider] (OAuth initiate)', () => {
     expect(response.headers.get('location')).toBe(
       'https://wcpos.com/account/profile'
     )
-    expect(response.cookies.get('oauth_link')).toBeUndefined()
+    expect(response.cookies.get('oauth_link_github')).toBeUndefined()
     expect(mockInitiateOAuth).not.toHaveBeenCalled()
   })
 

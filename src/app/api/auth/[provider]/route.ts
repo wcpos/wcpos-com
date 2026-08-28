@@ -3,10 +3,11 @@ import { initiateOAuth } from '@/lib/oauth'
 import { authLogger } from '@/lib/logger'
 import {
   ALLOWED_PROVIDERS,
-  OAUTH_LINK_COOKIE,
+  OAUTH_LINK_COOKIE_OPTIONS,
   OAUTH_REDIRECT_COOKIE,
   OAUTH_REDIRECT_COOKIE_OPTIONS,
   encodeOAuthLinkCookie,
+  oauthLinkCookieName,
 } from '@/lib/oauth-providers'
 import { getSessionCustomer } from '@/lib/medusa-auth'
 import { getImpersonation } from '@/lib/impersonation'
@@ -45,6 +46,7 @@ export async function GET(
     const localizedRedirectTo = localizeRedirectPath(redirectTo, locale)
     const linkIntent = request.nextUrl.searchParams.get('intent') === 'link'
 
+    let linkCustomerId: string | null = null
     if (linkIntent) {
       const [customer, impersonation] = await Promise.all([
         getSessionCustomer(),
@@ -55,6 +57,7 @@ export async function GET(
           new URL(localizeRedirectPath('/account/profile', locale), request.url)
         )
       }
+      linkCustomerId = customer.id
     }
 
     const location = await initiateOAuth(provider, callbackUrl.toString())
@@ -76,11 +79,11 @@ export async function GET(
       localizedRedirectTo,
       OAUTH_REDIRECT_COOKIE_OPTIONS
     )
-    if (linkIntent && state) {
+    if (linkCustomerId && state) {
       response.cookies.set(
-        OAUTH_LINK_COOKIE,
-        encodeOAuthLinkCookie(provider, state),
-        OAUTH_REDIRECT_COOKIE_OPTIONS
+        oauthLinkCookieName(provider),
+        encodeOAuthLinkCookie(state, linkCustomerId),
+        OAUTH_LINK_COOKIE_OPTIONS
       )
     }
     return response

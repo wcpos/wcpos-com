@@ -79,7 +79,7 @@ describe('OAuth callback route', () => {
       {
         headers: {
           cookie:
-            'oauth_link=google%3Axyz; oauth_redirect=%2Faccount%2Fprofile',
+            'oauth_link_google=xyz%3Acust_1; oauth_redirect=%2Faccount%2Fprofile',
         },
       }
     )
@@ -97,7 +97,7 @@ describe('OAuth callback route', () => {
       'https://wcpos.com/account/profile?connect=google'
     )
     expect(response.cookies.get('oauth_redirect')?.maxAge).toBe(0)
-    expect(response.cookies.get('oauth_link')?.maxAge).toBe(0)
+    expect(response.cookies.get('oauth_link_google')?.maxAge).toBe(0)
   })
 
   it('refuses a link callback whose state was not minted for this browser', async () => {
@@ -105,7 +105,7 @@ describe('OAuth callback route', () => {
       'https://wcpos.com/api/auth/google/callback?code=abc&state=forged',
       {
         headers: {
-          cookie: 'oauth_link=google%3Axyz; oauth_redirect=%2Faccount%2Fprofile',
+          cookie: 'oauth_link_google=xyz%3Acust_1; oauth_redirect=%2Faccount%2Fprofile',
         },
       }
     )
@@ -119,7 +119,53 @@ describe('OAuth callback route', () => {
     expect(location.searchParams.get('connect_error')).toBe('failed')
     expect(mockLinkOAuthIdentity).not.toHaveBeenCalled()
     expect(mockEstablishOAuthSession).not.toHaveBeenCalled()
-    expect(response.cookies.get('oauth_link')?.maxAge).toBe(0)
+    expect(response.cookies.get('oauth_link_google')?.maxAge).toBe(0)
+  })
+
+  it('refuses a link callback when the session changed hands mid-flow', async () => {
+    mockGetSessionCustomer.mockResolvedValueOnce({ id: 'cust_other', metadata: {} })
+    const request = new NextRequest(
+      'https://wcpos.com/api/auth/google/callback?code=abc&state=xyz',
+      {
+        headers: {
+          cookie: 'oauth_link_google=xyz%3Acust_1; oauth_redirect=%2Faccount%2Fprofile',
+        },
+      }
+    )
+
+    const response = await GET(request, {
+      params: Promise.resolve({ provider: 'google' }),
+    })
+
+    const location = new URL(response.headers.get('location')!)
+    expect(location.searchParams.get('connect_error')).toBe('failed')
+    expect(mockLinkOAuthIdentity).not.toHaveBeenCalled()
+    expect(mockEstablishOAuthSession).not.toHaveBeenCalled()
+  })
+
+  it('keeps a parallel link flow for another provider intact', async () => {
+    const request = new NextRequest(
+      'https://wcpos.com/api/auth/google/callback?code=abc&state=xyz',
+      {
+        headers: {
+          cookie:
+            'oauth_link_google=xyz%3Acust_1; oauth_link_github=gh%3Acust_1; oauth_redirect=%2Faccount%2Fprofile',
+        },
+      }
+    )
+
+    const response = await GET(request, {
+      params: Promise.resolve({ provider: 'google' }),
+    })
+
+    expect(mockLinkOAuthIdentity).toHaveBeenCalledWith('google', {
+      code: 'abc',
+      state: 'xyz',
+    })
+    expect(mockEstablishOAuthSession).not.toHaveBeenCalled()
+    expect(response.cookies.get('oauth_link_google')?.maxAge).toBe(0)
+    // The GitHub round-trip is still in flight in another tab: untouched.
+    expect(response.cookies.get('oauth_link_github')).toBeUndefined()
   })
 
   it('preserves a known link conflict code on the profile redirect', async () => {
@@ -131,7 +177,7 @@ describe('OAuth callback route', () => {
       {
         headers: {
           cookie:
-            'oauth_link=google%3Axyz; oauth_redirect=%2Faccount%2Fprofile',
+            'oauth_link_google=xyz%3Acust_1; oauth_redirect=%2Faccount%2Fprofile',
         },
       }
     )
@@ -153,7 +199,7 @@ describe('OAuth callback route', () => {
       {
         headers: {
           cookie:
-            'oauth_link=google%3Axyz; oauth_redirect=%2Faccount%2Fprofile',
+            'oauth_link_google=xyz%3Acust_1; oauth_redirect=%2Faccount%2Fprofile',
         },
       }
     )
