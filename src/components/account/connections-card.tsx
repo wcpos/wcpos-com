@@ -527,7 +527,10 @@ export function ConnectionsCard({ signIn, methods }: ConnectionsCardProps) {
                     </Badge>
                   )}
                 </p>
-                <p className="mt-0.5 break-all text-sm text-muted-foreground">
+                {/* break-words, not break-all: this line is prose (the
+                    email lives in a placeholder), so it must never split
+                    mid-word. */}
+                <p className="mt-0.5 break-words text-sm text-muted-foreground">
                   {hasPassword
                     ? passwordLastChanged
                       ? t('passwordLastChanged', { date: passwordLastChanged })
