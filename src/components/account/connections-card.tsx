@@ -141,10 +141,11 @@ export function ConnectionsCard({ signIn, methods }: ConnectionsCardProps) {
   const t = useTranslations('account.profile')
   const tLoginErrors = useTranslations('auth.login.oauthErrors')
   const locale = useLocale()
+  // Null outside the app router (unit tests render without one).
   const searchParams = useSearchParams()
   const [connectOutcome] = useState(() => ({
-    provider: searchParams.get('connect'),
-    error: searchParams.get('connect_error'),
+    provider: searchParams?.get('connect') ?? null,
+    error: searchParams?.get('connect_error') ?? null,
   }))
   const [state, setState] = useState<MethodsState | null>(
     methods
