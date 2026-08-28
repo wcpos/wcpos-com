@@ -1,13 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getSessionCustomer, updateCustomer } from '@/lib/medusa-auth'
-import { establishOAuthSession } from '@/lib/oauth'
+import { establishOAuthSession, linkOAuthIdentity } from '@/lib/oauth'
 import { authLogger } from '@/lib/logger'
 import { getConnectedAvatarUrlFromUserMetadata } from '@/lib/avatar'
-import { recordSignInProvider } from '@/lib/auth-providers/metadata'
+import {
+  addAuthProviderToMetadata,
+  recordSignInProvider,
+} from '@/lib/auth-providers/metadata'
 import {
   ALLOWED_PROVIDERS,
+  OAUTH_LINK_COOKIE,
   OAUTH_REDIRECT_COOKIE,
   OAUTH_REDIRECT_COOKIE_OPTIONS,
+  parseOAuthLinkCookie,
 } from '@/lib/oauth-providers'
 import { loginPathForLocale } from '@/lib/login-redirect'
 import { localeFromPath, sanitizeRedirectPath } from '@/lib/safe-redirect'
@@ -18,6 +23,7 @@ import {
   setLocaleCookieOnResponse,
 } from '@/lib/account-locale'
 import { AccountSecurityHoldError } from '@/lib/api/errors'
+import { AuthMethodError } from '@/lib/auth-methods'
 
 /** The redirect cookie is single-use: consume it on every outcome. */
 function clearRedirectCookie(response: NextResponse): NextResponse {
@@ -25,7 +31,28 @@ function clearRedirectCookie(response: NextResponse): NextResponse {
     ...OAUTH_REDIRECT_COOKIE_OPTIONS,
     maxAge: 0,
   })
+  response.cookies.set(OAUTH_LINK_COOKIE, '', {
+    ...OAUTH_REDIRECT_COOKIE_OPTIONS,
+    maxAge: 0,
+  })
   return response
+}
+
+function profileRedirect(
+  request: NextRequest,
+  locale: string,
+  key: 'connect' | 'connect_error',
+  value: string
+): NextResponse {
+  const path = locale === 'en' ? '/account/profile' : `/${locale}/account/profile`
+  const url = new URL(path, request.url)
+  url.searchParams.set(key, value)
+  if (key === 'connect_error') {
+    // Name the provider in the error toast too.
+    const link = parseOAuthLinkCookie(request.cookies.get(OAUTH_LINK_COOKIE)?.value)
+    if (link) url.searchParams.set('connect', link.provider)
+  }
+  return clearRedirectCookie(NextResponse.redirect(url, 303))
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -116,12 +143,59 @@ export async function GET(
       if (key === 'redirect') return
       callbackParams[key] = value
     })
+    const locale = localeFromPath(redirectTo)
+
+    const link = parseOAuthLinkCookie(
+      request.cookies.get(OAUTH_LINK_COOKIE)?.value
+    )
+    if (link?.provider === provider) {
+      // A link intent NEVER falls through to sign-in: a mismatched state is a
+      // callback this browser did not start, and signing it in (or linking it)
+      // is exactly the substitution the binding exists to prevent.
+      if (callbackParams.state !== link.state) {
+        authLogger.info`OAuth link callback for ${provider} rejected: state mismatch`
+        return profileRedirect(request, locale, 'connect_error', 'failed')
+      }
+      const customer = await getSessionCustomer()
+      if (!customer) {
+        return profileRedirect(
+          request,
+          locale,
+          'connect_error',
+          'session_expired'
+        )
+      }
+      if (callbackParams.error) {
+        return profileRedirect(request, locale, 'connect_error', 'failed')
+      }
+
+      try {
+        await linkOAuthIdentity(provider, callbackParams)
+        try {
+          await updateCustomer({
+            metadata: addAuthProviderToMetadata(customer.metadata, provider),
+          })
+        } catch (error) {
+          authLogger.error`Failed to sync linked OAuth provider: ${error}`
+        }
+        return profileRedirect(request, locale, 'connect', provider)
+      } catch (error) {
+        const errorCode =
+          error instanceof AuthMethodError &&
+          (error.code === 'identity_linked_elsewhere' ||
+            error.code === 'provider_already_connected')
+            ? error.code
+            : error instanceof AccountSecurityHoldError
+              ? 'account_security_hold'
+              : 'failed'
+        return profileRedirect(request, locale, 'connect_error', errorCode)
+      }
+    }
+
     if (callbackParams.error) {
       providerErrorCallback = true
       throw new Error('oauth_provider_error')
     }
-    const locale = localeFromPath(redirectTo)
-
     // establishOAuthSession owns the link-then-refresh-then-persist ordering
     // and writes the session cookie; the route only drives profile sync and
     // the redirect. Profile sync runs after the session exists (it reads the

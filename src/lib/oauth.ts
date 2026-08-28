@@ -10,6 +10,7 @@ import {
   parseMedusaError,
   setAuthToken,
 } from '@/lib/medusa-auth'
+import { linkCustomerAuthMethod } from '@/lib/auth-methods'
 
 // ============================================================================
 // OAuth sign-in
@@ -181,6 +182,15 @@ export interface OAuthSession {
 export interface OAuthSessionOptions {
   /** Storefront locale from the sign-in surface, used for newly-created customers. */
   locale?: string
+}
+
+/** Complete OAuth for a new identity and link it to the existing session. */
+export async function linkOAuthIdentity(
+  provider: string,
+  params: Record<string, string>
+): Promise<void> {
+  const token = await completeOAuthCallback(provider, params)
+  await linkCustomerAuthMethod(provider, token)
 }
 
 /**

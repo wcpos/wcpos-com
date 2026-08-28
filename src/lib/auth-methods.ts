@@ -7,6 +7,7 @@ import {
 } from '@/lib/store-environment'
 import { getAuthToken } from '@/lib/medusa-auth'
 import { getImpersonation } from '@/lib/impersonation'
+import { AccountSecurityHoldError } from '@/lib/api/errors'
 
 /**
  * Customer auth-method management against the Medusa
@@ -64,6 +65,8 @@ export type AuthMethodErrorCode =
   | 'provider_not_connected'
   | 'provider_not_disconnectable'
   | 'provider_not_creatable'
+  | 'identity_linked_elsewhere'
+  | 'provider_already_connected'
 
 export class AuthMethodError extends Error {
   constructor(
@@ -81,11 +84,17 @@ const KNOWN_ERROR_CODES = new Set<AuthMethodErrorCode>([
   'provider_not_connected',
   'provider_not_disconnectable',
   'provider_not_creatable',
+  'identity_linked_elsewhere',
+  'provider_already_connected',
 ])
 
 async function errorFrom(response: Response): Promise<AuthMethodError> {
   const body = (await response.json().catch(() => ({}))) as {
     message?: unknown
+    code?: unknown
+  }
+  if (response.status === 403 && body.code === 'ACCOUNT_SECURITY_HOLD') {
+    throw new AccountSecurityHoldError()
   }
   const message = typeof body.message === 'string' ? body.message : ''
   return new AuthMethodError(
@@ -98,7 +107,8 @@ async function errorFrom(response: Response): Promise<AuthMethodError> {
 
 async function authMethodsFetch(
   path: string,
-  method: 'GET' | 'POST' | 'DELETE'
+  method: 'GET' | 'POST' | 'DELETE',
+  body?: Record<string, unknown>
 ): Promise<Response | null> {
   const token = await getAuthToken()
   if (!token) return null
@@ -109,12 +119,29 @@ async function authMethodsFetch(
       method,
       headers: {
         Authorization: `Bearer ${token}`,
+        ...(body ? { 'Content-Type': 'application/json' } : {}),
         'x-publishable-api-key': await getMedusaPublishableKey(),
         ...(await getCheckoutGatewayHeaders()),
       },
+      ...(body ? { body: JSON.stringify(body) } : {}),
       cache: 'no-store',
     }
   )
+}
+
+/** Link a newly authenticated OAuth identity to the current session customer. */
+export async function linkCustomerAuthMethod(
+  provider: string,
+  token: string
+): Promise<AuthMethods> {
+  const response = await authMethodsFetch(
+    `/${encodeURIComponent(provider)}/link`,
+    'POST',
+    { token }
+  )
+  if (!response) throw new AuthMethodError('request_failed', 401)
+  if (!response.ok) throw await errorFrom(response)
+  return parseAuthMethods((await response.json()) as Record<string, unknown>)
 }
 
 function stringOrNull(value: unknown): string | null {

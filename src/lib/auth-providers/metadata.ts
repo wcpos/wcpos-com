@@ -14,9 +14,7 @@ export type SignInProvider = 'google' | 'github' | 'discord'
 // Stable display order; also the allow-list for both reads and writes.
 const KNOWN_PROVIDERS: SignInProvider[] = ['google', 'github', 'discord']
 
-// Providers shown in the profile's sign-in row. Discord is surfaced by its own
-// role-sync row, so it is intentionally excluded here.
-type DisplaySignInProvider = 'google' | 'github'
+type DisplaySignInProvider = SignInProvider
 
 function isKnownProvider(value: unknown): value is SignInProvider {
   return (
@@ -25,7 +23,7 @@ function isKnownProvider(value: unknown): value is SignInProvider {
 }
 
 function isDisplayProvider(value: unknown): value is DisplaySignInProvider {
-  return value === 'google' || value === 'github'
+  return isKnownProvider(value)
 }
 
 const AVATAR_HOST_PROVIDERS: Array<[string, SignInProvider]> = [
@@ -110,8 +108,7 @@ export function recordSignInProvider(
 
 /**
  * The provider to show in the profile sign-in row: the most recently used
- * Google/GitHub sign-in, else the first linked Google/GitHub, else null
- * (email/password, or only Discord — which has its own role-sync row).
+ * OAuth sign-in, else the first linked OAuth provider, else null.
  */
 export function getPrimarySignInProvider(
   metadata: Record<string, unknown> | null | undefined

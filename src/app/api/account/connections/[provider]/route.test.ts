@@ -64,13 +64,29 @@ describe('DELETE /api/account/connections/[provider]', () => {
     mockUpdateCustomer.mockResolvedValue({})
   })
 
-  it('rejects unknown providers (incl. discord — managed per-licence)', async () => {
-    for (const provider of ['discord', 'emailpass', 'facebook']) {
+  it('rejects unknown providers', async () => {
+    for (const provider of ['emailpass', 'facebook']) {
       const response = await callDelete(provider)
       expect(response.status).toBe(400)
       expect(await response.json()).toEqual({ errorCode: 'unknown_provider' })
     }
     expect(mockDisconnect).not.toHaveBeenCalled()
+  })
+
+  it('disconnects Discord as a sign-in identity', async () => {
+    mockDisconnect.mockResolvedValueOnce({
+      providers: ['emailpass'],
+      providerDetails: [],
+      emailpassIdentifier: 'ada@example.com',
+      emailpassPending: false,
+      emailpassUpdatedAt: null,
+      emailpassReserved: false,
+    })
+
+    const response = await callDelete('discord')
+
+    expect(response.status).toBe(200)
+    expect(mockDisconnect).toHaveBeenCalledWith('discord')
   })
 
   it('returns 403 read_only_inspection while impersonating', async () => {

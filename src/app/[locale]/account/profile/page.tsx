@@ -52,9 +52,8 @@ async function ProfileContent({ locale }: { locale: Locale }) {
   }
 
   // Show the real sign-in provider rather than assuming Google for everyone —
-  // the most recently used Google/GitHub sign-in (so multi-linked accounts
-  // attribute correctly), falling back to email/password. Discord access is
-  // managed per licence on the licences page.
+  // the most recently used OAuth sign-in (so multi-linked accounts attribute
+  // correctly), falling back to email/password.
   const signInProvider =
     getPrimarySignInProvider(customer.metadata) ?? 'email'
 

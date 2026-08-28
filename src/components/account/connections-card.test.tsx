@@ -2,6 +2,13 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { fireEvent, screen, waitFor, within } from '@testing-library/react'
 import { renderWithIntl as render } from '@/test/intl'
 
+const { searchParamsRef } = vi.hoisted(() => ({
+  searchParamsRef: { current: new URLSearchParams() },
+}))
+vi.mock('next/navigation', () => ({
+  useSearchParams: () => searchParamsRef.current,
+}))
+
 vi.mock('sonner', () => ({
   toast: { success: vi.fn(), error: vi.fn() },
 }))
@@ -27,6 +34,62 @@ async function clickConfirmDisconnect() {
 describe('ConnectionsCard', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+    searchParamsRef.current = new URLSearchParams()
+    window.history.replaceState(null, '', '/')
+  })
+
+  it('renders Connect links for every unconnected OAuth provider', () => {
+    render(
+      <ConnectionsCard
+        signIn={googleSignIn}
+        methods={{ providers: ['google'] }}
+      />
+    )
+
+    expect(screen.getByRole('link', { name: 'Connect GitHub' })).toHaveAttribute(
+      'href',
+      '/api/auth/github?intent=link&locale=en&redirect=%2Faccount%2Fprofile'
+    )
+    expect(screen.getByRole('link', { name: 'Connect Discord' })).toHaveAttribute(
+      'href',
+      '/api/auth/discord?intent=link&locale=en&redirect=%2Faccount%2Fprofile'
+    )
+  })
+
+  it('renders Discord as a connected sign-in provider', () => {
+    render(
+      <ConnectionsCard
+        signIn={{ provider: 'discord', email: 'ada@example.com' }}
+        methods={{ providers: ['discord', 'emailpass'] }}
+      />
+    )
+
+    expect(screen.getByText('Discord')).toBeInTheDocument()
+    expect(screen.getByText('Most recent sign-in')).toBeInTheDocument()
+  })
+
+  it('toasts a successful connection once and scrubs the outcome params', async () => {
+    searchParamsRef.current = new URLSearchParams(
+      'connect=github'
+    )
+    window.history.replaceState(
+      null,
+      '',
+      '/account/profile?connect=github&keep=1'
+    )
+
+    render(
+      <ConnectionsCard
+        signIn={googleSignIn}
+        methods={{ providers: ['google'] }}
+      />
+    )
+
+    await waitFor(() => {
+      expect(toast.success).toHaveBeenCalledWith('GitHub connected.')
+    })
+    expect(toast.error).not.toHaveBeenCalled()
+    expect(window.location.search).toBe('?keep=1')
   })
 
   it('degrades to the read-only single row without DB truth', () => {
@@ -245,7 +308,7 @@ describe('ConnectionsCard', () => {
     expect(screen.queryByText('Disconnect')).not.toBeInTheDocument()
   })
 
-  it('confirms before disconnecting, then removes the provider row', async () => {
+  it('confirms before disconnecting, then changes the provider row to Connect', async () => {
     mockFetch.mockResolvedValueOnce({
       ok: true,
       json: async () => ({ providers: ['emailpass'] }),
@@ -274,7 +337,9 @@ describe('ConnectionsCard', () => {
       expect(toast.success).toHaveBeenCalledWith('Google disconnected.')
     })
     await waitFor(() => {
-      expect(screen.queryByText('Google')).not.toBeInTheDocument()
+      expect(
+        screen.getByRole('link', { name: 'Connect Google' })
+      ).toBeInTheDocument()
     })
   })
 
@@ -391,7 +456,7 @@ describe('ConnectionsCard', () => {
     expect(screen.getByText('Google')).toBeInTheDocument()
   })
 
-  it('removes the row when the provider was already disconnected elsewhere', async () => {
+  it('changes the row to Connect when the provider was disconnected elsewhere', async () => {
     // Another tab/session got there first: the backend 404s, but the row is
     // stale — reflect reality instead of erroring over an impossible action.
     mockFetch.mockResolvedValueOnce({
@@ -410,7 +475,9 @@ describe('ConnectionsCard', () => {
     await clickConfirmDisconnect()
 
     await waitFor(() => {
-      expect(screen.queryByText('Google')).not.toBeInTheDocument()
+      expect(
+        screen.getByRole('link', { name: 'Connect Google' })
+      ).toBeInTheDocument()
     })
     expect(toast.success).toHaveBeenCalledWith('Google disconnected.')
     expect(toast.error).not.toHaveBeenCalled()
@@ -438,7 +505,7 @@ describe('ConnectionsCard', () => {
     expect(screen.queryByText('Most recent sign-in')).not.toBeInTheDocument()
   })
 
-  it('never renders a Discord row (managed per-licence)', () => {
+  it('renders the Discord sign-in row separately from per-licence access', () => {
     render(
       <ConnectionsCard
         signIn={googleSignIn}
@@ -446,6 +513,6 @@ describe('ConnectionsCard', () => {
       />
     )
 
-    expect(screen.queryByText('Discord')).not.toBeInTheDocument()
+    expect(screen.getByText('Discord')).toBeInTheDocument()
   })
 })

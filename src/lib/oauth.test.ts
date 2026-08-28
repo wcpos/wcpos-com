@@ -55,7 +55,11 @@ vi.mock('next/headers', () => ({
 const mockFetch = vi.fn()
 global.fetch = mockFetch
 
-import { establishOAuthSession, initiateOAuth } from './oauth'
+import {
+  establishOAuthSession,
+  initiateOAuth,
+  linkOAuthIdentity,
+} from './oauth'
 import { AccountSecurityHoldError } from '@/lib/api/errors'
 
 /**
@@ -283,6 +287,30 @@ describe('establishOAuthSession', () => {
     await expect(
       establishOAuthSession('google', { code: 'abc' })
     ).rejects.toBeInstanceOf(AccountSecurityHoldError)
+    expect(mockCookieStore.set).not.toHaveBeenCalled()
+  })
+})
+
+describe('linkOAuthIdentity', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+    mockFetch.mockReset()
+    mockCookieStore.get.mockReturnValue({ value: 'existing-session-jwt' })
+  })
+
+  it('links the callback identity without replacing the existing session token', async () => {
+    mockFetch
+      .mockResolvedValueOnce(okJson({ token: 'new-identity-jwt' }))
+      .mockResolvedValueOnce(okJson({ linked: true, providers: ['google'] }))
+
+    await linkOAuthIdentity('google', { code: 'abc', state: 'xyz' })
+
+    expect(String(mockFetch.mock.calls[0][0])).toContain(
+      '/auth/customer/google/callback?code=abc&state=xyz'
+    )
+    expect(String(mockFetch.mock.calls[1][0])).toContain(
+      '/store/customers/me/auth-methods/google/link'
+    )
     expect(mockCookieStore.set).not.toHaveBeenCalled()
   })
 })

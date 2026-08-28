@@ -132,20 +132,20 @@ describe('getPrimarySignInProvider', () => {
     ).toBe('google')
   })
 
-  it('ignores a non-display recent provider (discord) and uses the linked set', () => {
+  it('returns Discord when it was the most recent sign-in provider', () => {
     expect(
       getPrimarySignInProvider({
         auth_providers: ['google', 'discord'],
         last_sign_in_provider: 'discord',
       })
-    ).toBe('google')
+    ).toBe('discord')
   })
 
-  it('returns null for email/password or discord-only (no display provider)', () => {
+  it('returns null for email/password and Discord for Discord-only', () => {
     expect(getPrimarySignInProvider({})).toBeNull()
     expect(
       getPrimarySignInProvider({ last_sign_in_provider: 'discord' })
-    ).toBeNull()
+    ).toBe('discord')
   })
 })
 

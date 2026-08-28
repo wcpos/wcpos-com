@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { NextRequest } from 'next/server'
 import { AccountSecurityHoldError } from '@/lib/api/errors'
+import { AuthMethodError } from '@/lib/auth-methods'
 
 // Mock server-only
 vi.mock('server-only', () => ({}))
@@ -31,11 +32,13 @@ vi.mock('@/lib/logger', () => ({
 // responsibilities: provider validation, param forwarding, profile sync, and
 // the redirect. The ordering invariant is pinned in oauth.test.ts.
 const mockEstablishOAuthSession = vi.fn()
+const mockLinkOAuthIdentity = vi.fn()
 const mockGetSessionCustomer = vi.fn()
 const mockUpdateCustomer = vi.fn()
 
 vi.mock('@/lib/oauth', () => ({
   establishOAuthSession: (...args: unknown[]) => mockEstablishOAuthSession(...args),
+  linkOAuthIdentity: (...args: unknown[]) => mockLinkOAuthIdentity(...args),
 }))
 
 vi.mock('@/lib/medusa-auth', () => ({
@@ -67,6 +70,103 @@ describe('OAuth callback route', () => {
     vi.clearAllMocks()
     mockGetSessionCustomer.mockResolvedValue({ id: 'cust_1', metadata: {} })
     mockUpdateCustomer.mockResolvedValue(undefined)
+    mockLinkOAuthIdentity.mockResolvedValue(undefined)
+  })
+
+  it('links an identity without establishing a new session and clears both OAuth cookies', async () => {
+    const request = new NextRequest(
+      'https://wcpos.com/api/auth/google/callback?code=abc&state=xyz',
+      {
+        headers: {
+          cookie:
+            'oauth_link=google%3Axyz; oauth_redirect=%2Faccount%2Fprofile',
+        },
+      }
+    )
+
+    const response = await GET(request, {
+      params: Promise.resolve({ provider: 'google' }),
+    })
+
+    expect(mockLinkOAuthIdentity).toHaveBeenCalledWith('google', {
+      code: 'abc',
+      state: 'xyz',
+    })
+    expect(mockEstablishOAuthSession).not.toHaveBeenCalled()
+    expect(response.headers.get('location')).toBe(
+      'https://wcpos.com/account/profile?connect=google'
+    )
+    expect(response.cookies.get('oauth_redirect')?.maxAge).toBe(0)
+    expect(response.cookies.get('oauth_link')?.maxAge).toBe(0)
+  })
+
+  it('refuses a link callback whose state was not minted for this browser', async () => {
+    const request = new NextRequest(
+      'https://wcpos.com/api/auth/google/callback?code=abc&state=forged',
+      {
+        headers: {
+          cookie: 'oauth_link=google%3Axyz; oauth_redirect=%2Faccount%2Fprofile',
+        },
+      }
+    )
+
+    const response = await GET(request, {
+      params: Promise.resolve({ provider: 'google' }),
+    })
+
+    const location = new URL(response.headers.get('location')!)
+    expect(location.pathname).toBe('/account/profile')
+    expect(location.searchParams.get('connect_error')).toBe('failed')
+    expect(mockLinkOAuthIdentity).not.toHaveBeenCalled()
+    expect(mockEstablishOAuthSession).not.toHaveBeenCalled()
+    expect(response.cookies.get('oauth_link')?.maxAge).toBe(0)
+  })
+
+  it('preserves a known link conflict code on the profile redirect', async () => {
+    mockLinkOAuthIdentity.mockRejectedValueOnce(
+      new AuthMethodError('identity_linked_elsewhere', 409)
+    )
+    const request = new NextRequest(
+      'https://wcpos.com/api/auth/google/callback?code=abc&state=xyz',
+      {
+        headers: {
+          cookie:
+            'oauth_link=google%3Axyz; oauth_redirect=%2Faccount%2Fprofile',
+        },
+      }
+    )
+
+    const response = await GET(request, {
+      params: Promise.resolve({ provider: 'google' }),
+    })
+
+    expect(new URL(response.headers.get('location')!).searchParams.get(
+      'connect_error'
+    )).toBe('identity_linked_elsewhere')
+    expect(mockEstablishOAuthSession).not.toHaveBeenCalled()
+  })
+
+  it('redirects a link callback with no session customer as session_expired', async () => {
+    mockGetSessionCustomer.mockResolvedValueOnce(null)
+    const request = new NextRequest(
+      'https://wcpos.com/api/auth/google/callback?code=abc&state=xyz',
+      {
+        headers: {
+          cookie:
+            'oauth_link=google%3Axyz; oauth_redirect=%2Faccount%2Fprofile',
+        },
+      }
+    )
+
+    const response = await GET(request, {
+      params: Promise.resolve({ provider: 'google' }),
+    })
+
+    expect(new URL(response.headers.get('location')!).searchParams.get(
+      'connect_error'
+    )).toBe('session_expired')
+    expect(mockLinkOAuthIdentity).not.toHaveBeenCalled()
+    expect(mockEstablishOAuthSession).not.toHaveBeenCalled()
   })
 
   it('establishes a session and redirects to /account for a new OAuth user (Google)', async () => {

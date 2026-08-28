@@ -1,7 +1,8 @@
 'use client'
 
-import { useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useLocale, useTranslations } from 'next-intl'
+import { useSearchParams } from 'next/navigation'
 import { toast } from 'sonner'
 import { AlertTriangle, KeyRound, Mail } from 'lucide-react'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
@@ -22,7 +23,11 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import { GitHubMark, GoogleMark } from '@/components/auth/provider-marks'
+import {
+  DiscordMark,
+  GitHubMark,
+  GoogleMark,
+} from '@/components/auth/provider-marks'
 import { formatDateForLocale } from '@/lib/date-format'
 
 export interface ConnectionProviderDetail {
@@ -34,7 +39,10 @@ export interface ConnectionProviderDetail {
 }
 
 export interface ConnectionsCardProps {
-  signIn: { provider: 'google' | 'github' | 'email'; email: string }
+  signIn: {
+    provider: 'google' | 'github' | 'discord' | 'email'
+    email: string
+  }
   /**
    * DB truth from GET /store/customers/me/auth-methods (may include
    * 'emailpass'). Absent when the backend doesn't expose the endpoint yet —
@@ -53,11 +61,10 @@ export interface ConnectionsCardProps {
   } | null
 }
 
-type OAuthProvider = 'google' | 'github'
+type OAuthProvider = 'google' | 'github' | 'discord'
 
-// Discord is deliberately absent: it is managed per-licence (ADR-0007),
-// not as a profile connection.
-const OAUTH_PROVIDERS: OAuthProvider[] = ['google', 'github']
+// Discord here is the sign-in identity (ADR-0015); Pro community access stays per-licence (ADR-0007).
+const OAUTH_PROVIDERS: OAuthProvider[] = ['google', 'github', 'discord']
 
 type DisconnectErrorCode =
   | 'last_sign_in_method'
@@ -106,8 +113,10 @@ function ProviderAvatar({
         <AvatarFallback>
           {provider === 'google' ? (
             <GoogleMark className="h-5 w-5" />
-          ) : (
+          ) : provider === 'github' ? (
             <GitHubMark className="h-5 w-5" />
+          ) : (
+            <DiscordMark className="h-5 w-5" />
           )}
         </AvatarFallback>
       </Avatar>
@@ -117,8 +126,10 @@ function ProviderAvatar({
         <span className="absolute -bottom-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full border bg-background">
           {provider === 'google' ? (
             <GoogleMark className="h-2.5 w-2.5" />
-          ) : (
+          ) : provider === 'github' ? (
             <GitHubMark className="h-2.5 w-2.5" />
+          ) : (
+            <DiscordMark className="h-2.5 w-2.5" />
           )}
         </span>
       ) : null}
@@ -128,7 +139,13 @@ function ProviderAvatar({
 
 export function ConnectionsCard({ signIn, methods }: ConnectionsCardProps) {
   const t = useTranslations('account.profile')
+  const tLoginErrors = useTranslations('auth.login.oauthErrors')
   const locale = useLocale()
+  const searchParams = useSearchParams()
+  const [connectOutcome] = useState(() => ({
+    provider: searchParams.get('connect'),
+    error: searchParams.get('connect_error'),
+  }))
   const [state, setState] = useState<MethodsState | null>(
     methods
       ? {
@@ -152,8 +169,43 @@ export function ConnectionsCard({ signIn, methods }: ConnectionsCardProps) {
     null
   )
 
-  const providerName = (provider: OAuthProvider) =>
-    provider === 'google' ? t('googleProvider') : t('githubProvider')
+  const providerName = useCallback(
+    (provider: OAuthProvider) =>
+      provider === 'google'
+        ? t('googleProvider')
+        : provider === 'github'
+          ? t('githubProvider')
+          : t('discordProvider'),
+    [t]
+  )
+
+  useEffect(() => {
+    const provider = OAUTH_PROVIDERS.find(
+      (candidate) => candidate === connectOutcome.provider
+    )
+    if (connectOutcome.error) {
+      const name = provider ? providerName(provider) : ''
+      const message =
+        connectOutcome.error === 'identity_linked_elsewhere'
+          ? t('apiErrors.identity_linked_elsewhere', { provider: name })
+          : connectOutcome.error === 'provider_already_connected'
+            ? t('apiErrors.provider_already_connected', { provider: name })
+            : connectOutcome.error === 'session_expired'
+              ? t('apiErrors.connect_session_expired', { provider: name })
+              : connectOutcome.error === 'account_security_hold'
+                ? tLoginErrors('account_security_hold')
+                : t('apiErrors.connect_failed', { provider: name })
+      toast.error(message)
+    } else if (provider) {
+      toast.success(t('connected', { provider: providerName(provider) }))
+    }
+
+    if (!connectOutcome.provider && !connectOutcome.error) return
+    const url = new URL(window.location.href)
+    url.searchParams.delete('connect')
+    url.searchParams.delete('connect_error')
+    window.history.replaceState(null, '', url.toString())
+  }, [connectOutcome, providerName, t, tLoginErrors])
 
   const applyMethodsResponse = (data: {
     providers?: unknown
@@ -297,6 +349,8 @@ export function ConnectionsCard({ signIn, methods }: ConnectionsCardProps) {
                 <GoogleMark className="h-5 w-5" />
               ) : signIn.provider === 'github' ? (
                 <GitHubMark className="h-5 w-5" />
+              ) : signIn.provider === 'discord' ? (
+                <DiscordMark className="h-5 w-5" />
               ) : (
                 <Mail className="h-5 w-5 text-muted-foreground" />
               )}
@@ -307,6 +361,8 @@ export function ConnectionsCard({ signIn, methods }: ConnectionsCardProps) {
                   ? t('googleProvider')
                   : signIn.provider === 'github'
                     ? t('githubProvider')
+                    : signIn.provider === 'discord'
+                      ? t('discordProvider')
                     : t('emailProvider')}
               </p>
               <p className="mt-1 break-all text-sm text-muted-foreground">
@@ -322,9 +378,6 @@ export function ConnectionsCard({ signIn, methods }: ConnectionsCardProps) {
     )
   }
 
-  const connectedOAuth = OAUTH_PROVIDERS.filter((provider) =>
-    state.providers.includes(provider)
-  )
   const detailFor = (provider: string) =>
     state.providerDetails.find((detail) => detail.provider === provider)
   // A pending emailpass identity (reset link sent, not yet claimed) is not a
@@ -362,7 +415,54 @@ export function ConnectionsCard({ signIn, methods }: ConnectionsCardProps) {
       </CardHeader>
       <CardContent>
         <div className="divide-y">
-          {connectedOAuth.map((provider) => {
+          {OAUTH_PROVIDERS.map((provider) => {
+            if (!state.providers.includes(provider)) {
+              const name = providerName(provider)
+              const href = `/api/auth/${provider}?intent=link&locale=${encodeURIComponent(locale)}&redirect=${encodeURIComponent('/account/profile')}`
+              const disabled = disconnecting || sendingPasswordEmail
+              return (
+                <div key={provider} className="flex items-start gap-3 py-3">
+                  <span className="flex h-10 w-10 flex-none items-center justify-center rounded-full border bg-muted/50">
+                    {provider === 'google' ? (
+                      <GoogleMark className="h-5 w-5" />
+                    ) : provider === 'github' ? (
+                      <GitHubMark className="h-5 w-5" />
+                    ) : (
+                      <DiscordMark className="h-5 w-5" />
+                    )}
+                  </span>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm font-medium leading-tight">{name}</p>
+                    <p className="mt-0.5 text-sm text-muted-foreground">
+                      {t('notConnected')}
+                    </p>
+                    {provider === 'discord' ? (
+                      <p className="mt-0.5 text-xs text-muted-foreground/80">
+                        {t('discordSignInNote')}
+                      </p>
+                    ) : null}
+                  </div>
+                  <Button
+                    asChild
+                    variant="outline"
+                    size="sm"
+                    className="flex-none"
+                  >
+                    <a
+                      href={href}
+                      aria-label={t('connectAria', { provider: name })}
+                      aria-disabled={disabled}
+                      tabIndex={disabled ? -1 : undefined}
+                      onClick={(event) => {
+                        if (disabled) event.preventDefault()
+                      }}
+                    >
+                      {t('connect')}
+                    </a>
+                  </Button>
+                </div>
+              )
+            }
             const detail = detailFor(provider)
             // "Google · Paul Kilmurray" / "GitHub · @kilbot" — and the email
             // gets its own line so it can never wrap mid-address.

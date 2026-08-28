@@ -14,10 +14,10 @@ import { isSameOriginRequest } from '@/lib/api/same-origin'
  *
  * The Medusa backend owns the guards (never the last sign-in method); this
  * route additionally scrubs the provider from the customer's attribution
- * metadata so the profile stops displaying it. Only google/github are
- * managed here — Discord is per-licence (ADR-0007), not a profile connection.
+ * metadata so the profile stops displaying it. Discord here is the sign-in
+ * identity (ADR-0015); Pro community access stays per-licence (ADR-0007).
  */
-const DISCONNECTABLE = new Set(['google', 'github'])
+const DISCONNECTABLE = new Set(['google', 'github', 'discord'])
 
 type DisconnectErrorCode =
   | 'invalid_origin'
