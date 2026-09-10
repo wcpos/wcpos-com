@@ -368,25 +368,17 @@
       "phases": {
         "now": "Jetzt",
         "next": "Als Nächstes",
-        "shipped": "Ausgeliefert",
-        "later": "Später"
+        "shipped": "Ausgeliefert"
       },
-      "progress": "{completed} von {total} erledigt",
-      "progressDue": "{completed} von {total} erledigt · fällig am {date}",
-      "shipped": "ausgeliefert",
-      "shippedWithDate": "ausgeliefert · {date}",
       "externalContentNotice": "Details zu Roadmap-Einträgen stammen von GitHub und werden möglicherweise auf Englisch angezeigt."
     },
     "release": {
-      "whyTitle": "Warum dieses Release",
-      "notInTitle": "Nicht in diesem Release",
-      "epicsDone": "{completed} von {total} Funktionen fertig",
-      "epicsDoneLabel": "Funktionen fertig",
-      "inside": "In {version}",
-      "noPublicItems": "Noch keine öffentlichen Einträge",
-      "noDate": "Noch kein Termin",
-      "due": "Geplant für {date}",
-      "shippedOn": "Veröffentlicht im {date}"
+      "features": "{completed} von {total, plural, one {# Funktion} other {# Funktionen}}",
+      "due": "geplant für {date}",
+      "noDate": "noch kein Termin",
+      "shippedOn": "veröffentlicht · {date}",
+      "briefLink": "Vollständiger Release-Überblick",
+      "notesLink": "Versionshinweise"
     }
   },
   "pro": {

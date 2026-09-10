@@ -368,25 +368,17 @@
       "phases": {
         "now": "現在",
         "next": "次",
-        "shipped": "リリース済み",
-        "later": "将来"
+        "shipped": "リリース済み"
       },
-      "progress": "{total}件中{completed}件完了",
-      "progressDue": "{total}件中{completed}件完了 · 期限 {date}",
-      "shipped": "リリース済み",
-      "shippedWithDate": "リリース済み · {date}",
       "externalContentNotice": "ロードマップ項目の詳細はGitHubから取得されるため、英語で表示される場合があります。"
     },
     "release": {
-      "whyTitle": "このリリースの目的",
-      "notInTitle": "このリリースに含まれないもの",
-      "epicsDone": "{total} 件中 {completed} 件の機能が完了",
-      "epicsDoneLabel": "機能が完了",
-      "inside": "{version}の内容",
-      "noPublicItems": "公開項目はまだありません",
+      "features": "全{total, plural, one {#機能} other {#機能}}中{completed}機能",
+      "due": "予定日 {date}",
       "noDate": "日程未定",
-      "due": "予定：{date}",
-      "shippedOn": "リリース済み：{date}"
+      "shippedOn": "リリース済み · {date}",
+      "briefLink": "リリース概要の全文",
+      "notesLink": "リリースノート"
     }
   },
   "pro": {

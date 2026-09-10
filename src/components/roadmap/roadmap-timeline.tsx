@@ -8,18 +8,34 @@ import {
   useTransform,
   useMotionValueEvent,
 } from 'motion/react'
-import ReactMarkdown from 'react-markdown'
-import remarkGfm from 'remark-gfm'
 import type { RoadmapData, Epic, Release } from '@/types/roadmap'
 import { usePrefersReducedMotion } from '@/lib/use-prefers-reduced-motion'
 import { formatDateForLocale } from '@/lib/date-format'
 import styles from './timeline.module.css'
 
-// Release briefs come from GitHub; the train keeps the existing scroll-drawn rail.
+/**
+ * RoadmapTimeline — the "release train": one continuous vertical spine where
+ * time is the hierarchy. The active release sits on a pulsing red node,
+ * upcoming work rides below it, shipped releases fade out at the bottom.
+ * Releases and epics come straight from GitHub release issues (see
+ * services/core/external/github-roadmap.ts for the bucketing).
+ *
+ * Each phase group (Now / Next / Shipped) draws its own rail by scroll (ADR
+ * 0013: movement that means progress) — a tone-coloured fill grows down a
+ * muted track as the reader moves through the group and a glowing tip rides
+ * its end, igniting each release node as it passes. Same mechanism as the
+ * about-page StoryTimeline and downloads GetStartedSteps, kept per-group so
+ * the three phase colours (red / slate / emerald) stay distinct. Reduced
+ * motion renders a static, fully-drawn rail with solid nodes.
+ */
+
 const RELEASE_ISSUES_URL =
   'https://github.com/wcpos/roadmap/issues?q=is%3Aissue+label%3Arelease'
+// Shipped stops link directly to the plugin release notes.
+const RELEASE_NOTES_BASE =
+  'https://github.com/wcpos/woocommerce-pos/releases/tag/'
 
-type Tone = 'now' | 'next' | 'later' | 'shipped'
+type Tone = 'now' | 'next' | 'shipped'
 
 /**
  * Per-phase rail colours, shared by the scroll-drawn fill, the traveling tip,
@@ -34,11 +50,6 @@ const TONE: Record<Tone, { fill: string; ring: string; glow: string }> = {
     glow: 'hsl(var(--wcpos-red))',
   },
   next: {
-    fill: 'bg-slate-400 dark:bg-slate-500',
-    ring: 'border-slate-400 dark:border-slate-500',
-    glow: '#94a3b8',
-  },
-  later: {
     fill: 'bg-slate-400 dark:bg-slate-500',
     ring: 'border-slate-400 dark:border-slate-500',
     glow: '#94a3b8',
@@ -61,7 +72,6 @@ const TONE: Record<Tone, { fill: string; ring: string; glow: string }> = {
 const LABEL_TONE_LIT: Record<Tone, string> = {
   now: 'border border-transparent bg-wcpos-red text-white',
   next: 'border border-transparent bg-slate-500 text-white',
-  later: 'border border-transparent bg-slate-500 text-white',
   // emerald-700 (not -500) so white text on the solid fill clears WCAG AA 4.5:1
   // for the 11px label — same contrast discipline as --primary in globals.css.
   shipped: 'border border-transparent bg-emerald-700 text-white',
@@ -73,19 +83,7 @@ const LABEL_TONE_LIT: Record<Tone, string> = {
 const LABEL_TONE_IDLE: Record<Tone, string> = {
   ...LABEL_TONE_LIT,
   next: 'border border-slate-300 text-muted-foreground dark:border-slate-600',
-  later: 'border border-slate-300 text-muted-foreground dark:border-slate-600',
   shipped: 'border border-emerald-500/40 text-emerald-600 dark:text-emerald-400',
-}
-
-function fmtDue(dueOn: string | null, locale: string): string | null {
-  if (!dueOn) return null
-  // Format GitHub dates in UTC so a
-  // negative-offset server timezone can't shift them to the previous month.
-  return formatDateForLocale(dueOn, locale, {
-    month: 'short',
-    year: 'numeric',
-    timeZone: 'UTC',
-  })
 }
 
 function StatusGlyph({ status }: { status: Epic['state'] }) {
@@ -137,168 +135,39 @@ function StatusGlyph({ status }: { status: Epic['state'] }) {
   )
 }
 
-function GitHubMarkdown({ content }: { content: string }) {
+function FeatureRow({ epic, shipped }: { epic: Epic; shipped: boolean }) {
   return (
-    <div
-      lang="en"
-      className="break-words text-sm leading-relaxed text-muted-foreground [&>*+*]:mt-3 [&_a]:underline [&_ol]:list-decimal [&_ol]:pl-5 [&_ul]:list-disc [&_ul]:pl-5 [&_pre]:overflow-x-auto"
-    >
-      <ReactMarkdown remarkPlugins={[remarkGfm]} disallowedElements={['img']}>
-        {content}
-      </ReactMarkdown>
-    </div>
-  )
-}
-
-function EpicProgress({ progress }: { progress: Epic['progress'] }) {
-  if (!progress) return null
-  return (
-    <div className="mt-3 flex items-center gap-3">
-      <div className="h-1 flex-1 overflow-hidden rounded-full bg-muted">
-        <div
-          className="h-full bg-wcpos-red"
-          style={{ width: `${(progress.completed / progress.total) * 100}%` }}
-        />
-      </div>
-      <span className="font-mono text-xs tabular-nums text-muted-foreground">
-        {progress.completed}/{progress.total}
-      </span>
-    </div>
-  )
-}
-
-function EpicList({ epics, cards = false }: { epics: Epic[]; cards?: boolean }) {
-  const t = useTranslations('roadmap')
-  if (!epics.length) {
-    return <p className="mt-4 text-sm text-muted-foreground">{t('release.noPublicItems')}</p>
-  }
-  return (
-    <ul
-      className={cards ? 'mt-4 grid gap-4 md:grid-cols-2' : 'mt-4 divide-y divide-border/60'}
-    >
-      {epics.map((epic) => (
-        <li
-          key={epic.number}
-          className={cards ? 'rounded-lg border bg-background p-5' : 'flex items-start gap-3 py-4'}
-        >
-          {cards ? (
-            <span className="mb-3 inline-flex items-center gap-2 rounded-full border px-2 py-1 text-xs text-muted-foreground">
-              <StatusGlyph status={epic.state} />
-              {t(`status.${epic.state === 'in_progress' ? 'inProgress' : epic.state}`)}
-            </span>
-          ) : (
-            <StatusGlyph status={epic.state} />
-          )}
-          <div className="min-w-0 flex-1 space-y-2">
-            <a
-              href={epic.url}
-              lang="en"
-              className="break-words font-medium hover:text-wcpos-red-accent"
-            >
-              {epic.title}
-            </a>
-            <GitHubMarkdown content={epic.summary} />
-            <EpicProgress progress={epic.progress} />
-          </div>
-        </li>
-      ))}
-    </ul>
-  )
-}
-
-function ReleaseDate({
-  release,
-  shipped = false,
-}: {
-  release: Release
-  shipped?: boolean
-}) {
-  const t = useTranslations('roadmap.release')
-  const locale = useLocale()
-  const date = fmtDue(shipped ? release.shippedOn : release.dueOn, locale)
-  return (
-    <p className="mt-2 font-mono text-xs text-muted-foreground">
-      {date ? t(shipped ? 'shippedOn' : 'due', { date }) : t('noDate')}
-    </p>
-  )
-}
-
-function ReleaseBrief({
-  release,
-  hero = false,
-}: {
-  release: Release
-  hero?: boolean
-}) {
-  const t = useTranslations('roadmap.release')
-  return (
-    <>
-      {/* A brief section renders only when the release issue filled it in; an
-          empty heading would read as a gap in the brief rather than a choice. */}
-      <div
-        className={hero ? 'mt-8 grid gap-6 md:grid-cols-[1.6fr_1fr]' : 'mt-5 space-y-5'}
+    <li>
+      <a
+        href={epic.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="group flex items-start gap-3 py-2"
       >
-        {release.why && (
-          <div className="min-w-0 space-y-2">
-            <h3 className="font-semibold">{t('whyTitle')}</h3>
-            <GitHubMarkdown content={release.why} />
-          </div>
-        )}
-        {release.notInRelease && (
-          <div className="min-w-0 space-y-2">
-            <h3 className="font-semibold">{t('notInTitle')}</h3>
-            <GitHubMarkdown content={release.notInRelease} />
-          </div>
-        )}
-      </div>
-      {release.prose && (
-        <div className="mt-6"><GitHubMarkdown content={release.prose} /></div>
-      )}
-    </>
-  )
-}
-
-function ReleaseHero({ release }: { release: Release }) {
-  const t = useTranslations('roadmap')
-  const completed = release.epics.filter((epic) => epic.state === 'done').length
-  return (
-    <section className="mb-12 w-full rounded-b-xl border-t-2 border-wcpos-red bg-muted/30 p-6 sm:p-8">
-      <span
-        className={`inline-block rounded-full px-3 py-1 font-mono text-[11px] font-semibold uppercase tracking-[0.2em] ${LABEL_TONE_LIT.now}`}
-      >
-        {t('timeline.phases.now')}
-      </span>
-      <div className="mt-5 flex flex-wrap items-start justify-between gap-6">
-        <div className="min-w-0 flex-1">
-          <a href={release.url} className="font-mono text-wcpos-red-accent">
-            {release.version}
-          </a>
-          <h2
+        <StatusGlyph status={epic.state} />
+        <span className="min-w-0 flex-1">
+          <span
+            className="line-clamp-1 break-words font-medium group-hover:text-wcpos-red dark:group-hover:text-wcpos-red-accent"
             lang="en"
-            className="mt-2 break-words text-4xl font-semibold tracking-tight sm:text-5xl"
           >
-            {release.theme}
-          </h2>
-          <ReleaseDate release={release} />
-        </div>
-        {/* Progress is null with no public items (spec §3): show no fraction. */}
-        {release.epics.length > 0 && (
-          <div className="text-right">
-            <div className="font-mono text-5xl tabular-nums tracking-tighter">
-              {completed} / {release.epics.length}
-            </div>
-            <p className="mt-1 text-xs text-muted-foreground">
-              {t('release.epicsDoneLabel')}
-            </p>
-          </div>
+            {epic.title}
+          </span>
+          {!shipped && epic.pitch && (
+            <span
+              className="mt-0.5 line-clamp-1 text-sm text-muted-foreground"
+              lang="en"
+            >
+              {epic.pitch}
+            </span>
+          )}
+        </span>
+        {!shipped && epic.progress && (
+          <span className="mt-1 shrink-0 font-mono text-xs tabular-nums text-muted-foreground">
+            {epic.progress.completed}/{epic.progress.total}
+          </span>
         )}
-      </div>
-      <ReleaseBrief release={release} hero />
-      <h3 className="mt-8 text-xl font-semibold">
-        {t('release.inside', { version: release.version })}
-      </h3>
-      <EpicList epics={release.epics} cards />
-    </section>
+      </a>
+    </li>
   )
 }
 
@@ -366,27 +235,90 @@ function TimelineRelease({
   active: boolean
   nodeRef: (el: HTMLSpanElement | null) => void
 }) {
+  const locale = useLocale()
   const t = useTranslations('roadmap.release')
+  const shipped = tone === 'shipped'
   const completed = release.epics.filter((epic) => epic.state === 'done').length
+  const total = release.epics.length
+  const pct = total > 0 ? Math.round((completed / total) * 100) : 0
+  const date = formatDateForLocale(
+    (shipped ? release.shippedOn : release.dueOn) ?? '',
+    locale,
+    {
+      ...(!shipped ? { day: 'numeric' } as const : {}),
+      month: 'short',
+      year: 'numeric',
+      timeZone: 'UTC',
+    }
+  )
+  const progressText = shipped
+    ? t('shippedOn', { date })
+    : `${t('features', { completed, total })} · ${
+        release.dueOn ? t('due', { date }) : t('noDate')
+      }`
+
   return (
     <div className={tone === 'shipped' ? 'relative pb-14 opacity-60' : 'relative pb-14'}>
       <TimelineNode tone={tone} animate={animate} active={active} nodeRef={nodeRef} />
-      <h2
-        lang="en"
-        className="break-words text-2xl font-semibold tracking-tight sm:text-3xl"
+
+      {/* Ghost version behind the heading */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -top-10 right-0 select-none font-mono text-7xl font-bold tracking-tighter text-foreground/[0.05] sm:text-8xl"
       >
-        <a href={release.url} className="hover:text-wcpos-red-accent">
-          {release.version} — {release.theme}
-        </a>
-      </h2>
-      <ReleaseDate release={release} shipped={tone === 'shipped'} />
-      {release.epics.length > 0 && (
-        <p className="mt-2 text-sm text-muted-foreground">
-          {t('epicsDone', { completed, total: release.epics.length })}
+        {release.version}
+      </div>
+
+      <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+        <h3
+          className="break-words text-2xl font-semibold tracking-tight sm:text-3xl"
+          lang="en"
+        >
+          <a href={release.url} target="_blank" rel="noopener noreferrer">
+            <span className="font-mono text-sm text-wcpos-red-accent">
+              {release.version}
+            </span>{' '}
+            {release.theme}
+          </a>
+        </h3>
+        <span className="font-mono text-xs uppercase tracking-wider text-muted-foreground">
+          {progressText}
+        </span>
+      </div>
+
+      {tone !== 'shipped' && (
+        <div className="mt-3 h-1 w-full max-w-xs overflow-hidden rounded-full bg-muted">
+          <div
+            className="h-full rounded-full bg-wcpos-red transition-all"
+            style={{ width: `${pct}%` }}
+          />
+        </div>
+      )}
+
+      {release.pitch && (
+        <p className="mt-3 max-w-xl text-muted-foreground" lang="en">
+          {release.pitch}
         </p>
       )}
-      <ReleaseBrief release={release} />
-      <EpicList epics={release.epics} />
+
+      <p className="mt-2 text-sm text-muted-foreground">
+        <a
+          href={shipped ? `${RELEASE_NOTES_BASE}${release.version}` : release.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hover:text-wcpos-red-accent"
+        >
+          {t(shipped ? 'notesLink' : 'briefLink')} ↗
+        </a>
+      </p>
+
+      {release.epics.length > 0 && (
+        <ul className="mt-4 divide-y divide-border/60">
+          {release.epics.map((epic) => (
+            <FeatureRow key={epic.number} epic={epic} shipped={shipped} />
+          ))}
+        </ul>
+      )}
     </div>
   )
 }
@@ -410,7 +342,7 @@ function RailGroupInner({
   const reducedMotion = usePrefersReducedMotion()
 
   // Each node's fractional position down the section, measured so ignition
-  // coincides with the tip physically crossing it (milestone bodies vary in
+  // coincides with the tip physically crossing it (release bodies vary in
   // height, so index-based guesses drift).
   const [thresholds, setThresholds] = React.useState<number[] | null>(null)
   const [reached, setReached] = React.useState(0)
@@ -421,10 +353,6 @@ function RailGroupInner({
     target: sectionRef,
     offset: ['start 0.78', 'end 0.6'],
   })
-  const railFill =
-    tone === 'later'
-      ? `border-l-2 border-dotted ${TONE.later.ring}`
-      : TONE[tone].fill
   const tipTop = useTransform(scrollYProgress, (v) => `${v * 100}%`)
 
   const measure = React.useCallback(() => {
@@ -487,19 +415,17 @@ function RailGroupInner({
       {reducedMotion ? (
         <span
           aria-hidden
-          className={`absolute bottom-0 left-0 top-0 w-0.5 rounded ${railFill}`}
+          className={`absolute bottom-0 left-0 top-0 w-0.5 rounded ${TONE[tone].fill}`}
         />
       ) : (
         <>
           <span
             aria-hidden
-            className={`absolute bottom-0 left-0 top-0 w-0.5 rounded ${
-              tone === 'later' ? `${railFill} opacity-30` : 'bg-slate-200 dark:bg-slate-800'
-            }`}
+            className="absolute bottom-0 left-0 top-0 w-0.5 rounded bg-slate-200 dark:bg-slate-800"
           />
           <motion.span
             aria-hidden
-            className={`absolute bottom-0 left-0 top-0 w-0.5 origin-top rounded ${railFill}`}
+            className={`absolute bottom-0 left-0 top-0 w-0.5 origin-top rounded ${TONE[tone].fill}`}
             style={{ scaleY: scrollYProgress }}
           />
           <motion.span
@@ -577,10 +503,8 @@ export function BoardLinkChip() {
 
 export function RoadmapTimeline({ data }: { data: RoadmapData }) {
   const t = useTranslations('roadmap.timeline')
-  const hasOpenRelease =
-    data.now ||
-    data.next.length > 0 || data.later.length > 0
-  const hasContent = hasOpenRelease || data.shipped.length > 0
+  const hasContent =
+    data.now || data.next.length > 0 || data.later.length > 0 || data.shipped.length > 0
 
   if (!hasContent) {
     return (
@@ -595,14 +519,8 @@ export function RoadmapTimeline({ data }: { data: RoadmapData }) {
       <p className="text-center text-xs text-muted-foreground">
         {t('externalContentNotice')}
       </p>
-      {!hasOpenRelease && (
-        <p className="py-12 text-center text-muted-foreground">
-          {t('empty')}
-        </p>
-      )}
-      {data.now && <ReleaseHero release={data.now} />}
-      <RailGroup label={t('phases.next')} releases={data.next} tone="next" />
-      <RailGroup label={t('phases.later')} releases={data.later} tone="later" />
+      <RailGroup label={t('phases.now')} releases={data.now ? [data.now] : []} tone="now" />
+      <RailGroup label={t('phases.next')} releases={[...data.next, ...data.later]} tone="next" />
       <RailGroup label={t('phases.shipped')} releases={data.shipped} tone="shipped" />
     </div>
   )

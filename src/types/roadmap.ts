@@ -4,6 +4,7 @@ export interface Epic {
   number: number
   title: string
   summary: string
+  pitch: string
   state: EpicState
   progress?: { completed: number; total: number }
   url: string
@@ -16,6 +17,7 @@ export interface Release {
   theme: string
   dueOn: string | null
   why: string
+  pitch: string
   notInRelease: string
   prose: string
   url: string

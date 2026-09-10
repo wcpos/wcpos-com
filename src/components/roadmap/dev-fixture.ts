@@ -9,7 +9,7 @@ const epic = (
   completed: number,
   total: number
 ): Epic => ({
-  number, title, summary, state,
+  number, title, summary, pitch: summary, state,
   progress: { completed, total },
   url: `https://github.com/wcpos/roadmap/issues/${number}`,
 })
@@ -17,10 +17,11 @@ const release = (
   major: number,
   minor: number,
   theme: string,
-  dueOn: string | null
+  dueOn: string | null,
+  pitch: string
 ): Release => ({
   version: `v${major}.${minor}.0`,
-  major, minor, theme, dueOn,
+  major, minor, theme, dueOn, pitch,
   why: 'Make daily work at the counter simpler and more predictable.',
   notInRelease: '- Changes outside this release’s focus',
   prose: '',
@@ -32,14 +33,14 @@ const release = (
 
 export const ROADMAP_DEV_FIXTURE: RoadmapData = {
   now: {
-    ...release(1, 11, 'Checkout & payments', '2026-10-01'),
+    ...release(1, 11, 'Checkout & payments', '2026-10-01', 'Keep checkout moving with clear, flexible payments.'),
     why: 'Keep checkout moving, even when an order needs **more than one payment method**.\n\n- Make the remaining balance clear\n- Give cashiers a predictable path from cart to receipt',
     notInRelease: '- Fiscal compliance\n- Multi-store inventory',
     prose: 'These examples illustrate the public release brief; the live scope is maintained on GitHub.',
     epics: [
       epic(
         1, 'Split payments',
-        'Accept cash and card on the same order. Every payment stays visible, with the remaining balance shown before the next payment.',
+        'Accept cash and card on the same order.',
         'in_progress', 3, 8
       ),
       epic(
@@ -75,17 +76,17 @@ export const ROADMAP_DEV_FIXTURE: RoadmapData = {
     ],
   },
   next: [{
-    ...release(1, 12, 'Reports & daily close', '2026-11-01'),
+    ...release(1, 12, 'Reports & daily close', '2026-11-01', 'Close the day with confidence in your totals.'),
     epics: [epic(
         8, 'Daily close',
         'Review the day’s payments and reconcile the register before closing.',
         'planned', 0, 5
       )],
   }],
-  later: [release(2, 0, 'The next generation', null)],
+  later: [release(2, 0, 'The next generation', null, 'Build a simpler foundation for daily store operations.')],
   shipped: [
     {
-      ...release(1, 10, 'Offline & stock reliability', null),
+      ...release(1, 10, 'Offline & stock reliability', null, 'Keep selling when your connection drops.'),
       shippedOn: '2026-09-01T00:00:00Z',
       epics: [epic(
         9, 'Offline queue',
@@ -94,7 +95,7 @@ export const ROADMAP_DEV_FIXTURE: RoadmapData = {
       )],
     },
     {
-      ...release(1, 9, 'Receipts & refunds', null),
+      ...release(1, 9, 'Receipts & refunds', null, 'Make receipts and refunds easier at the counter.'),
       shippedOn: '2026-08-01T00:00:00Z',
       epics: [epic(
         10, 'Refunds',

@@ -365,28 +365,20 @@
     },
     "timeline": {
       "empty": "Nessun elemento della roadmap da mostrare per ora.",
-      "progress": "{completed} di {total} completati",
-      "progressDue": "{completed} di {total} completati · scadenza {date}",
-      "shipped": "rilasciato",
-      "shippedWithDate": "rilasciato · {date}",
       "phases": {
         "now": "Ora",
         "next": "Prossimo",
-        "shipped": "Rilasciati",
-        "later": "Più avanti"
+        "shipped": "Rilasciati"
       },
       "externalContentNotice": "I dettagli della roadmap provengono da GitHub e potrebbero essere visualizzati in inglese."
     },
     "release": {
-      "whyTitle": "Perché questa versione",
-      "notInTitle": "Non incluso in questa versione",
-      "epicsDone": "{completed} di {total} funzionalità completate",
-      "epicsDoneLabel": "funzionalità completate",
-      "inside": "In {version}",
-      "noPublicItems": "Ancora nessun elemento pubblico",
-      "noDate": "Data non ancora definita",
-      "due": "Previsto per {date}",
-      "shippedOn": "Pubblicato a {date}"
+      "features": "{completed} di {total, plural, one {# funzionalità} other {# funzionalità}}",
+      "due": "previsto per {date}",
+      "noDate": "data non ancora definita",
+      "shippedOn": "pubblicato · {date}",
+      "briefLink": "Panoramica completa della versione",
+      "notesLink": "Note di rilascio"
     }
   },
   "pro": {

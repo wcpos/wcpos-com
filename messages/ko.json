@@ -368,25 +368,17 @@
       "phases": {
         "now": "현재",
         "next": "다음",
-        "shipped": "출시 완료",
-        "later": "추후"
+        "shipped": "출시 완료"
       },
-      "progress": "{completed}/{total} 완료",
-      "progressDue": "{completed}/{total} 완료 · 마감 {date}",
-      "shipped": "출시됨",
-      "shippedWithDate": "출시됨 · {date}",
       "externalContentNotice": "로드맵 항목 세부 정보는 GitHub에서 가져오며 영어로 표시될 수 있습니다."
     },
     "release": {
-      "whyTitle": "이번 릴리스의 목표",
-      "notInTitle": "이번 릴리스에 포함되지 않는 항목",
-      "epicsDone": "{total}개 기능 중 {completed}개 완료",
-      "epicsDoneLabel": "기능 완료",
-      "inside": "{version}의 내용",
-      "noPublicItems": "아직 공개된 항목이 없습니다",
+      "features": "전체 {total, plural, one {#개 기능} other {#개 기능}} 중 {completed}개",
+      "due": "예정일 {date}",
       "noDate": "날짜 미정",
-      "due": "예정: {date}",
-      "shippedOn": "출시: {date}"
+      "shippedOn": "출시됨 · {date}",
+      "briefLink": "전체 릴리스 개요",
+      "notesLink": "릴리스 노트"
     }
   },
   "pro": {

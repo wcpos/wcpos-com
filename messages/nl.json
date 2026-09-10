@@ -368,25 +368,17 @@
       "phases": {
         "now": "Nu",
         "next": "Volgende",
-        "shipped": "Uitgebracht",
-        "later": "Op termijn"
+        "shipped": "Uitgebracht"
       },
-      "progress": "{completed} van {total} klaar",
-      "progressDue": "{completed} van {total} klaar · deadline {date}",
-      "shipped": "uitgebracht",
-      "shippedWithDate": "uitgebracht · {date}",
       "externalContentNotice": "Details van routekaartitems komen van GitHub en kunnen in het Engels worden weergegeven."
     },
     "release": {
-      "whyTitle": "Waarom deze release",
-      "notInTitle": "Niet in deze release",
-      "epicsDone": "{completed} van {total} functies klaar",
-      "epicsDoneLabel": "functies klaar",
-      "inside": "In {version}",
-      "noPublicItems": "Nog geen openbare items",
-      "noDate": "Nog geen datum",
-      "due": "Gepland voor {date}",
-      "shippedOn": "Uitgebracht in {date}"
+      "features": "{completed} van {total, plural, one {# functie} other {# functies}}",
+      "due": "gepland voor {date}",
+      "noDate": "nog geen datum",
+      "shippedOn": "uitgebracht · {date}",
+      "briefLink": "Volledig releaseoverzicht",
+      "notesLink": "Uitgaveopmerkingen"
     }
   },
   "pro": {

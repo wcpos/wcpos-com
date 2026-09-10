@@ -87,6 +87,18 @@ function section(body: string, heading: string): string {
   return lines.slice(start + 1, end === -1 ? undefined : end).join('\n').trim()
 }
 
+export function firstSentence(markdown: string): string {
+  const text = markdown
+    .replace(/^[ \t]*(?:[-*][ \t]+|#+[ \t]*)/gm, '')
+    .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')
+    .replace(/[*_`]/g, '')
+    .trim()
+  const end = /[.!?](?=\s|$)/.exec(text)
+  return end
+    ? text.slice(0, end.index + 1)
+    : (text.split('\n').find((line) => line.trim())?.trim() ?? '')
+}
+
 // A due date must be a real calendar day, not just the YYYY-MM-DD shape:
 // `2026-02-31` would otherwise be accepted and silently rendered as March.
 function isCalendarDate(value: string): boolean {
@@ -103,9 +115,13 @@ export function parseReleaseBody(body: unknown) {
   const date = section(brief, 'Due date')
   const dueOn = isCalendarDate(date) ? date : null
   if (date && !dueOn) infraLogger.warn('Skipping malformed roadmap due date')
+  const why = section(brief, 'Why this release')
   return {
     dueOn,
-    why: section(brief, 'Why this release'),
+    why,
+    // An explicit Pitch goes through the same one-sentence normaliser as the
+    // fallback, so markdown markers or a second sentence never reach the page.
+    pitch: firstSentence(section(brief, 'Pitch') || why),
     notInRelease: section(brief, 'Not in this release'),
     prose: divider === -1 ? '' : lines.slice(divider + 1).join('\n').trim(),
   }
@@ -154,6 +170,7 @@ function releaseEpics(value: unknown): Pick<Release, 'epics' | 'hiddenEpicCount'
       title: issue.title,
       url: issue.url,
       summary,
+      pitch: firstSentence(summary),
       state,
       ...(total > 0 ? { progress: { completed, total } } : {}),
     })
