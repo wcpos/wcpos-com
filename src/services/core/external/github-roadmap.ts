@@ -74,11 +74,16 @@ export function parseReleaseTitle(title: unknown) {
   return { version: `v${match[1]}.${match[2]}.0`, major, minor, theme: match[3] }
 }
 
+// A section runs to the next `### ` heading or to a line that is exactly
+// `---` — the contract's divider between the structured brief and free prose.
+// Without the divider rule an epic's Summary swallowed its whole body.
 function section(body: string, heading: string): string {
   const lines = body.split('\n')
   const start = lines.indexOf(`### ${heading}`)
   if (start === -1) return ''
-  const end = lines.findIndex((line, i) => i > start && line.startsWith('### '))
+  const end = lines.findIndex(
+    (line, i) => i > start && (line.startsWith('### ') || line === '---')
+  )
   return lines.slice(start + 1, end === -1 ? undefined : end).join('\n').trim()
 }
 
