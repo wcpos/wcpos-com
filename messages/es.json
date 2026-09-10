@@ -373,7 +373,7 @@
       "externalContentNotice": "Los detalles de la hoja de ruta provienen de GitHub y pueden mostrarse en inglés."
     },
     "release": {
-      "features": "{completed} de {total} funciones",
+      "features": "{completed} de {total, plural, one {# función} other {# funciones}}",
       "due": "previsto para {date}",
       "noDate": "aún sin fecha",
       "shippedOn": "publicado · {date}",

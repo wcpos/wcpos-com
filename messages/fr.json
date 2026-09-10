@@ -373,7 +373,7 @@
       "externalContentNotice": "Les détails de la feuille de route proviennent de GitHub et peuvent s’afficher en anglais."
     },
     "release": {
-      "features": "{completed} fonctionnalités sur {total}",
+      "features": "{completed} sur {total, plural, one {# fonctionnalité} other {# fonctionnalités}}",
       "due": "prévu le {date}",
       "noDate": "pas encore de date",
       "shippedOn": "publié · {date}",

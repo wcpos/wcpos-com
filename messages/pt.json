@@ -373,7 +373,7 @@
       "externalContentNotice": "Os detalhes dos itens do roteiro vêm do GitHub e podem ser apresentados em inglês."
     },
     "release": {
-      "features": "{completed} de {total} funcionalidades",
+      "features": "{completed} de {total, plural, one {# funcionalidade} other {# funcionalidades}}",
       "due": "previsto para {date}",
       "noDate": "ainda sem data",
       "shippedOn": "lançado · {date}",

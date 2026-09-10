@@ -373,7 +373,7 @@
       "externalContentNotice": "ロードマップ項目の詳細はGitHubから取得されるため、英語で表示される場合があります。"
     },
     "release": {
-      "features": "全{total}機能中{completed}機能",
+      "features": "全{total, plural, one {#機能} other {#機能}}中{completed}機能",
       "due": "予定日 {date}",
       "noDate": "日程未定",
       "shippedOn": "リリース済み · {date}",

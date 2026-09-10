@@ -97,6 +97,13 @@ describe('transformReleaseIssues', () => {
       body: '### Pitch\n  A focused release.  \n---\nNot the pitch.',
     }]).now?.pitch).toBe('A focused release.')
   })
+
+  it('normalises an explicit Pitch to one plain sentence', () => {
+    expect(transform([{
+      ...fixture('release-with-pitch'),
+      body: '### Pitch\n**Fast checkout.** More detail that must not show.\n\n### Why this release\nWhy text.',
+    }]).now?.pitch).toBe('Fast checkout.')
+  })
   it('falls back to the first Why sentence when Pitch is absent or empty', () => {
     const release = fixture('valid-release')
     expect(transform([release]).now?.pitch).toBe('Faster checkout for busy shops.')

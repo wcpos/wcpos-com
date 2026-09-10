@@ -373,7 +373,7 @@
       "externalContentNotice": "Roadmap item details come from GitHub and may be shown in English."
     },
     "release": {
-      "features": "{completed} of {total} features",
+      "features": "{completed} of {total, plural, one {# feature} other {# features}}",
       "due": "due {date}",
       "noDate": "no date yet",
       "shippedOn": "shipped · {date}",

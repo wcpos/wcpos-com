@@ -373,7 +373,7 @@
       "externalContentNotice": "Details van routekaartitems komen van GitHub en kunnen in het Engels worden weergegeven."
     },
     "release": {
-      "features": "{completed} van {total} functies",
+      "features": "{completed} van {total, plural, one {# functie} other {# functies}}",
       "due": "gepland voor {date}",
       "noDate": "nog geen datum",
       "shippedOn": "uitgebracht · {date}",

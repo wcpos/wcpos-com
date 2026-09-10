@@ -373,7 +373,7 @@
       "externalContentNotice": "I dettagli della roadmap provengono da GitHub e potrebbero essere visualizzati in inglese."
     },
     "release": {
-      "features": "{completed} di {total} funzionalità",
+      "features": "{completed} di {total, plural, one {# funzionalità} other {# funzionalità}}",
       "due": "previsto per {date}",
       "noDate": "data non ancora definita",
       "shippedOn": "pubblicato · {date}",

@@ -119,7 +119,9 @@ export function parseReleaseBody(body: unknown) {
   return {
     dueOn,
     why,
-    pitch: section(brief, 'Pitch') || firstSentence(why),
+    // An explicit Pitch goes through the same one-sentence normaliser as the
+    // fallback, so markdown markers or a second sentence never reach the page.
+    pitch: firstSentence(section(brief, 'Pitch') || why),
     notInRelease: section(brief, 'Not in this release'),
     prose: divider === -1 ? '' : lines.slice(divider + 1).join('\n').trim(),
   }
