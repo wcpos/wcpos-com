@@ -147,7 +147,10 @@ describe('fetchRoadmapData', () => {
 
     const result = await fetchRoadmapData()
     expect(result.now?.version).toBe('v1.11.0')
-    expect(warn.mock.calls.flat(2).join('')).toContain('exceeds the 100-epic limit')
+    // tagged-template logger: the strings array carries the fixed text, the values carry 100
+    const joined = warn.mock.calls.flat(2).join(' ')
+    expect(joined).toContain('exceeds the')
+    expect(joined).toContain('100')
   })
   it('returns empty and logs API and auth failures', async () => {
     graphql.mockRejectedValueOnce(new Error('API failure'))
