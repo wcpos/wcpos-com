@@ -58,8 +58,10 @@ function TimelineSkeleton() {
 
 export default async function RoadmapPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ locale: string }>
+  searchParams: Promise<{ variant?: string; fixture?: string }>
 }) {
   const locale = resolveLocale((await params).locale)
   setRequestLocale(locale)
@@ -71,7 +73,7 @@ export default async function RoadmapPage({
   return (
     <NextIntlClientProvider messages={clientMessages(messages, ['roadmap'])}>
       <main>
-        <div className="mx-auto w-full max-w-3xl px-4 py-16 sm:py-24">
+        <div className={`mx-auto w-full px-4 py-16 sm:py-24 ${process.env.NODE_ENV !== 'production' ? 'max-w-6xl' : 'max-w-3xl'}`}>
           <header className="mb-14">
             <Eyebrow size="sm" className="font-mono tracking-[0.25em]">
               {t('eyebrow')}
@@ -86,7 +88,7 @@ export default async function RoadmapPage({
           </header>
 
           <Suspense fallback={<TimelineSkeleton />}>
-            <RoadmapTimelineLoader />
+            {process.env.NODE_ENV !== 'production' ? <PrototypeBody searchParams={searchParams} /> : <RoadmapTimelineLoader />}
           </Suspense>
         </div>
       </main>
@@ -113,4 +115,20 @@ async function RoadmapTimelineLoader() {
   }
 
   return <RoadmapTimeline data={data} />
+}
+
+async function PrototypeBody({ searchParams }: { searchParams: Promise<{ variant?: string; fixture?: string }> }) {
+  if (process.env.NODE_ENV === 'production') return null
+  const query = await searchParams
+  const [{ FIXTURE }, { VariantA }, { VariantB }, { VariantC }, { PrototypeSwitcher }] = await Promise.all([
+    import('@/components/roadmap/prototype/fixture'),
+    import('@/components/roadmap/prototype/variant-a'),
+    import('@/components/roadmap/prototype/variant-b'),
+    import('@/components/roadmap/prototype/variant-c'),
+    import('@/components/roadmap/prototype/switcher'),
+  ])
+  const variant = query.variant === 'B' || query.variant === 'C' ? query.variant : 'A'
+  const releases = query.fixture === 'empty' ? FIXTURE.map(r => r.version === 'v1.12.0' ? { ...r, epics: r.epics.map(e => ({ ...e, summary: null })) } : r) : FIXTURE
+  const Variant = { A: VariantA, B: VariantB, C: VariantC }[variant]
+  return <><Variant releases={releases} /><PrototypeSwitcher current={variant} /></>
 }
