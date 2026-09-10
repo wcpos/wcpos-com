@@ -50,7 +50,11 @@ describe('release parsing', () => {
     expect(parseReleaseBody(fixture('dateless-release').body).dueOn).toBeNull()
     expect(warn).not.toHaveBeenCalled()
     expect(parseReleaseBody(fixture('malformed-date').body).dueOn).toBeNull()
-    expect(warn).toHaveBeenCalledTimes(1)
+    expect(parseReleaseBody('### Due date\n2026-02-31').dueOn).toBeNull()
+    expect(parseReleaseBody('### Due date\n2026-13-01').dueOn).toBeNull()
+    expect(parseReleaseBody('### Due date\n2028-02-29').dueOn).toBe('2028-02-29')
+    // one warning per malformed date: the fixture, 2026-02-31, 2026-13-01
+    expect(warn).toHaveBeenCalledTimes(3)
   })
   it('extracts the full Summary through the next heading, not a horizontal rule', () => {
     expect(parseSummary(fixture('epic-with-summary').body)).toBe('Accept **cash and card** on one order.\n\n- Keep every payment visible\n- Show the remaining balance')

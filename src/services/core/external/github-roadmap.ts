@@ -80,13 +80,21 @@ function section(body: string, heading: string): string {
   return lines.slice(start + 1, end === -1 ? undefined : end).join('\n').trim()
 }
 
+// A due date must be a real calendar day, not just the YYYY-MM-DD shape:
+// `2026-02-31` would otherwise be accepted and silently rendered as March.
+function isCalendarDate(value: string): boolean {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false
+  const parsed = new Date(`${value}T00:00:00Z`)
+  return !Number.isNaN(parsed.getTime()) && parsed.toISOString().slice(0, 10) === value
+}
+
 export function parseReleaseBody(body: unknown) {
   const lines =
     typeof body === 'string' ? body.replace(/\r\n/g, '\n').split('\n') : []
   const divider = lines.indexOf('---')
   const brief = lines.slice(0, divider === -1 ? undefined : divider).join('\n')
   const date = section(brief, 'Due date')
-  const dueOn = /^\d{4}-\d{2}-\d{2}$/.test(date) ? date : null
+  const dueOn = isCalendarDate(date) ? date : null
   if (date && !dueOn) infraLogger.warn('Skipping malformed roadmap due date')
   return {
     dueOn,
