@@ -56,14 +56,14 @@ describe('release parsing', () => {
   })
   it('extracts markdown sections and prose without truncation', () => {
     expect(parseReleaseBody(fixture('valid-release').body)).toEqual({
-      pitch: 'Faster checkout for busy shops.', dueOn: '2026-10-01', why: '**Faster checkout** for busy shops.\n\n- Split payments\n- Clear totals',
+      pitch: 'Faster checkout for busy shops.', dueOn: '2026-10-01', shippedOn: null, why: '**Faster checkout** for busy shops.\n\n- Split payments\n- Clear totals',
       notInRelease: '- Fiscal compliance', prose: 'Public context with [details](https://github.com/wcpos/roadmap).\n\n### More context\nKeep this prose heading.',
     })
     expect(parseReleaseBody('### Why this release\r\nKeep\r\n---\r\n### Due date\r\n2026-12-01').dueOn).toBeNull()
     expect(parseReleaseBody('### Why this release\nKeep\n--- \nStill brief').why).toContain('Still brief')
   })
   it('handles missing and malformed dates and sections', () => {
-    expect(parseReleaseBody(fixture('missing-section').body)).toEqual({ pitch: '', dueOn: '2026-11-01', why: '', notInRelease: '', prose: '' })
+    expect(parseReleaseBody(fixture('missing-section').body)).toEqual({ pitch: '', dueOn: '2026-11-01', shippedOn: null, why: '', notInRelease: '', prose: '' })
     expect(parseReleaseBody(fixture('dateless-release').body).dueOn).toBeNull()
     expect(warn).not.toHaveBeenCalled()
     expect(parseReleaseBody(fixture('malformed-date').body).dueOn).toBeNull()
@@ -103,6 +103,15 @@ describe('transformReleaseIssues', () => {
       ...fixture('release-with-pitch'),
       body: '### Pitch\n**Fast checkout.** More detail that must not show.\n\n### Why this release\nWhy text.',
     }]).now?.pitch).toBe('Fast checkout.')
+  })
+  it('prefers an explicit Shipped on date over closedAt, and ignores it while open', () => {
+    const release = fixture('valid-release')
+    const closed = { ...release, state: 'CLOSED', stateReason: 'COMPLETED', closedAt: '2026-09-10T17:00:00Z' }
+    expect(transform([closed]).shipped[0]?.shippedOn).toBe('2026-09-10T17:00:00Z')
+    expect(transform([{ ...closed, body: `### Shipped on\n2026-08-25\n${release.body}` }]).shipped[0]?.shippedOn).toBe('2026-08-25T00:00:00Z')
+    expect(transform([{ ...release, body: `### Shipped on\n2026-08-25\n${release.body}` }]).now?.shippedOn).toBeNull()
+    expect(parseReleaseBody('### Shipped on\n2026-02-31').shippedOn).toBeNull()
+    expect(warn).toHaveBeenCalledTimes(1)
   })
   it('falls back to the first Why sentence when Pitch is absent or empty', () => {
     const release = fixture('valid-release')

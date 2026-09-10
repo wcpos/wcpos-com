@@ -115,9 +115,15 @@ export function parseReleaseBody(body: unknown) {
   const date = section(brief, 'Due date')
   const dueOn = isCalendarDate(date) ? date : null
   if (date && !dueOn) infraLogger.warn('Skipping malformed roadmap due date')
+  // A backfilled release closed long after it shipped states its real ship
+  // date here; the transform otherwise falls back to the issue's closedAt.
+  const shipped = section(brief, 'Shipped on')
+  const shippedOn = isCalendarDate(shipped) ? `${shipped}T00:00:00Z` : null
+  if (shipped && !shippedOn) infraLogger.warn('Skipping malformed roadmap shipped date')
   const why = section(brief, 'Why this release')
   return {
     dueOn,
+    shippedOn,
     why,
     // An explicit Pitch goes through the same one-sentence normaliser as the
     // fallback, so markdown markers or a second sentence never reach the page.
@@ -193,14 +199,15 @@ export function transformReleaseIssues(data: unknown): RoadmapData {
         continue
       }
       if (issue.state === 'CLOSED' && issue.stateReason !== 'COMPLETED') continue
+      const parsed = parseReleaseBody(issue.body)
       const release: Release = {
         ...title,
-        ...parseReleaseBody(issue.body),
+        ...parsed,
         url: issue.url,
         ...releaseEpics(record(issue.subIssues).nodes),
         shippedOn:
-          issue.state === 'CLOSED' && typeof issue.closedAt === 'string'
-            ? issue.closedAt : null,
+          issue.state !== 'CLOSED' ? null
+            : parsed.shippedOn ?? (typeof issue.closedAt === 'string' ? issue.closedAt : null),
       }
       if (issue.state === 'CLOSED') shipped.push(release)
       else open.push(release)
