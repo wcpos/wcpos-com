@@ -99,11 +99,12 @@ async function RoadmapTimelineLoader() {
 
   // Local dev has no GitHub App credentials, so the fetch returns empty;
   // substitute a realistic fixture. Production always renders live data.
-  // The substitution is logged so an empty board can't silently masquerade
+  // The substitution is logged so an empty roadmap can't silently masquerade
   // as populated during local QA.
   const isEmpty =
-    data.active.length === 0 &&
-    data.upcoming.length === 0 &&
+    data.now === null &&
+    data.next.length === 0 &&
+    data.later.length === 0 &&
     data.shipped.length === 0
   if (isEmpty && process.env.NODE_ENV !== 'production') {
     console.warn(

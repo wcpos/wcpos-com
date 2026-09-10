@@ -1,75 +1,29 @@
 import 'server-only'
 
 import { getOctokit } from './github-auth'
-import { env } from '@/utils/env'
 import { infraLogger } from '@/lib/logger'
-import type { RoadmapData, RoadmapItem, RoadmapMilestone, RoadmapStatus, RoadmapItemType } from '@/types/roadmap'
+import type { Epic, EpicState, Release, RoadmapData } from '@/types/roadmap'
 
-const octokit = getOctokit()
+// Public release briefs live here, independently of the internal project board.
+const ROADMAP_OWNER = 'wcpos'
+const ROADMAP_REPO = 'roadmap'
+const RELEASE_LABEL = 'release'
+const MAX_SHIPPED_RELEASES = 2
+const MAX_EPICS_PER_RELEASE = 100
+const THEME_MAX_LENGTH = 60
 
-const GITHUB_ORG = 'wcpos'
-const ALLOWED_REPOS = ['woocommerce-pos', 'woocommerce-pos-pro', 'monorepo', 'electron', 'roadmap']
-const FEATURE_LABELS = ['enhancement', 'ui', 'epic']
-const BUG_LABELS = ['bug']
-const PUBLIC_LABELS = [...FEATURE_LABELS, ...BUG_LABELS]
-
-const STATUS_MAP: Record<string, RoadmapStatus | null> = {
-  'Triage': null,
-  'Backlog': null,
-  'Up Next': 'planned',
-  'In Progress': 'in_progress',
-  'Done': 'done',
-}
-
-const MAX_SHIPPED_MILESTONES = 2
-const DESCRIPTION_MAX_LENGTH = 150
-
-const PROJECT_ITEMS_QUERY = `
-  query($org: String!, $number: Int!, $cursor: String) {
-    organization(login: $org) {
-      projectV2(number: $number) {
-        items(first: 100, after: $cursor) {
-          pageInfo {
-            hasNextPage
-            endCursor
-          }
-          nodes {
-            fieldValueByName(name: "Status") {
-              ... on ProjectV2ItemFieldSingleSelectValue {
-                name
-              }
-            }
-            content {
-              __typename
-              ... on Issue {
-                id
-                title
-                bodyText
-                state
-                number
-                url
-                labels(first: 10) {
-                  nodes {
-                    name
-                  }
-                }
-                milestone {
-                  title
-                  description
-                  dueOn
-                  state
-                }
-                repository {
-                  name
-                }
-                parent {
-                  id
-                }
-                subIssuesSummary {
-                  total
-                  completed
-                }
-              }
+const RELEASE_ISSUES_QUERY = `
+  query($owner: String!, $repo: String!, $label: String!, $cursor: String) {
+    repository(owner: $owner, name: $repo) {
+      issues(labels: [$label], states: [OPEN, CLOSED], first: 50, after: $cursor) {
+        pageInfo { hasNextPage endCursor }
+        nodes {
+          number title url state stateReason closedAt body
+          subIssues(first: ${MAX_EPICS_PER_RELEASE}) {
+            pageInfo { hasNextPage }
+            nodes {
+              number title url body state stateReason
+              subIssuesSummary { total completed }
             }
           }
         }
@@ -78,152 +32,219 @@ const PROJECT_ITEMS_QUERY = `
   }
 `
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function transformProjectItems(data: any): RoadmapData {
-  const items = data?.organization?.projectV2?.items?.nodes ?? []
-  const milestoneMap = new Map<string, {
-    title: string
-    description: string | null
-    dueOn: string | null
-    state: 'open' | 'closed'
-    features: RoadmapItem[]
-    bugs: RoadmapItem[]
-    hasInProgress: boolean
-  }>()
+const emptyRoadmap = (): RoadmapData => ({
+  now: null, next: [], later: [], shipped: [],
+})
+const record = (value: unknown): Record<string, unknown> =>
+  value && typeof value === 'object' ? (value as Record<string, unknown>) : {}
 
-  for (const item of items) {
-    const content = item?.content
-    if (!content || content.__typename !== 'Issue') continue
+function nodes(value: unknown): unknown[] {
+  if (Array.isArray(value)) return value
+  infraLogger.warn('Skipping malformed roadmap nodes')
+  return []
+}
 
-    if (!content.milestone) continue
+interface Issue extends Record<string, unknown> {
+  number: number
+  title: string
+  url: string
+  body: string | null
+  state: 'OPEN' | 'CLOSED'
+}
 
-    const repoName = content.repository?.name
-    if (!repoName || !ALLOWED_REPOS.includes(repoName)) continue
+function isIssue(value: unknown): value is Issue {
+  const issue = record(value)
+  const valid =
+    Number.isSafeInteger(issue.number) &&
+    typeof issue.title === 'string' &&
+    typeof issue.url === 'string' &&
+    (issue.body === null || typeof issue.body === 'string') &&
+    (issue.state === 'OPEN' || issue.state === 'CLOSED')
+  if (!valid) infraLogger.warn('Skipping malformed roadmap issue')
+  return valid
+}
 
-    // Skip sub-issues — the parent epic represents them
-    if (content.parent) continue
+export function parseReleaseTitle(title: unknown) {
+  const match =
+    typeof title === 'string' ? /^v(\d+)\.(\d+)\.0 — (.+)$/.exec(title) : null
+  if (!match || match[3].length > THEME_MAX_LENGTH) return null
+  const major = Number(match[1])
+  const minor = Number(match[2])
+  if (!Number.isSafeInteger(major) || !Number.isSafeInteger(minor)) return null
+  return { version: `v${match[1]}.${match[2]}.0`, major, minor, theme: match[3] }
+}
 
-    const labels: string[] = (content.labels?.nodes ?? []).map((l: { name: string }) => l.name)
-    const hasPublicLabel = labels.some(l => PUBLIC_LABELS.includes(l))
-    if (!hasPublicLabel) continue
+function section(body: string, heading: string): string {
+  const lines = body.split('\n')
+  const start = lines.indexOf(`### ${heading}`)
+  if (start === -1) return ''
+  const end = lines.findIndex((line, i) => i > start && line.startsWith('### '))
+  return lines.slice(start + 1, end === -1 ? undefined : end).join('\n').trim()
+}
 
-    const statusName = item.fieldValueByName?.name ?? ''
-    const mappedStatus = STATUS_MAP[statusName]
-    if (!mappedStatus) continue
+// A due date must be a real calendar day, not just the YYYY-MM-DD shape:
+// `2026-02-31` would otherwise be accepted and silently rendered as March.
+function isCalendarDate(value: string): boolean {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false
+  const parsed = new Date(`${value}T00:00:00Z`)
+  return !Number.isNaN(parsed.getTime()) && parsed.toISOString().slice(0, 10) === value
+}
 
-    const isFeature = labels.some(l => FEATURE_LABELS.includes(l))
-    const type: RoadmapItemType = isFeature ? 'feature' : 'bug'
-
-    const bodyText = content.bodyText ?? ''
-    const description = bodyText.length > DESCRIPTION_MAX_LENGTH
-      ? bodyText.slice(0, DESCRIPTION_MAX_LENGTH) + '...'
-      : bodyText
-
-    const summary = content.subIssuesSummary
-    const subIssueProgress = summary?.total > 0
-      ? { total: summary.total, completed: summary.completed }
-      : undefined
-
-    const roadmapItem: RoadmapItem = {
-      id: content.id,
-      title: content.title,
-      description,
-      status: mappedStatus,
-      type,
-      url: content.url,
-      subIssueProgress,
-    }
-
-    const milestoneTitle = content.milestone.title
-    if (!milestoneMap.has(milestoneTitle)) {
-      milestoneMap.set(milestoneTitle, {
-        title: milestoneTitle,
-        description: content.milestone.description || null,
-        dueOn: content.milestone.dueOn || null,
-        state: content.milestone.state === 'CLOSED' ? 'closed' : 'open',
-        features: [],
-        bugs: [],
-        hasInProgress: false,
-      })
-    }
-
-    const milestone = milestoneMap.get(milestoneTitle)!
-    if (type === 'feature') {
-      milestone.features.push(roadmapItem)
-    } else {
-      milestone.bugs.push(roadmapItem)
-    }
-    if (mappedStatus === 'in_progress') {
-      milestone.hasInProgress = true
-    }
+export function parseReleaseBody(body: unknown) {
+  const lines =
+    typeof body === 'string' ? body.replace(/\r\n/g, '\n').split('\n') : []
+  const divider = lines.indexOf('---')
+  const brief = lines.slice(0, divider === -1 ? undefined : divider).join('\n')
+  const date = section(brief, 'Due date')
+  const dueOn = isCalendarDate(date) ? date : null
+  if (date && !dueOn) infraLogger.warn('Skipping malformed roadmap due date')
+  return {
+    dueOn,
+    why: section(brief, 'Why this release'),
+    notInRelease: section(brief, 'Not in this release'),
+    prose: divider === -1 ? '' : lines.slice(divider + 1).join('\n').trim(),
   }
+}
 
-  const active: RoadmapMilestone[] = []
-  const upcoming: RoadmapMilestone[] = []
-  const shipped: RoadmapMilestone[] = []
+export function parseSummary(body: unknown): string {
+  return section(typeof body === 'string' ? body.replace(/\r\n/g, '\n') : '', 'Summary')
+}
 
-  for (const m of milestoneMap.values()) {
-    const total = m.features.length + m.bugs.length
-    const completed = [...m.features, ...m.bugs].filter(i => i.status === 'done').length
+export function deriveEpicState(
+  issue: { state: string; stateReason?: unknown },
+  completed: number
+): EpicState | null {
+  if (issue.stateReason === 'COMPLETED') return 'done'
+  if (
+    issue.state === 'CLOSED' &&
+    (issue.stateReason === 'NOT_PLANNED' || issue.stateReason === 'DUPLICATE')
+  ) return null
+  return issue.state === 'OPEN' && completed > 0 ? 'in_progress' : 'planned'
+}
 
-    const milestone: RoadmapMilestone = {
-      title: m.title,
-      description: m.description,
-      dueOn: m.dueOn,
-      state: m.state,
-      features: m.features,
-      bugs: m.bugs,
-      progress: { total, completed },
+function releaseEpics(value: unknown): Pick<Release, 'epics' | 'hiddenEpicCount'> {
+  const epics: Epic[] = []
+  let hiddenEpicCount = 0
+  for (const issue of nodes(value)) {
+    if (!isIssue(issue)) continue
+    const counts = record(issue.subIssuesSummary)
+    const total = typeof counts.total === 'number' ? counts.total : 0
+    const completed = typeof counts.completed === 'number' ? counts.completed : 0
+    const state = deriveEpicState(issue, completed)
+    if (!state) continue
+    const summary = parseSummary(issue.body)
+    if (!summary) {
+      hiddenEpicCount++
+      continue
     }
-
-    if (m.state === 'closed') {
-      shipped.push(milestone)
-    } else if (m.hasInProgress) {
-      active.push(milestone)
-    } else {
-      upcoming.push(milestone)
+    if (
+      !Number.isSafeInteger(total) || !Number.isSafeInteger(completed) ||
+      total < 0 || completed < 0 || completed > total
+    ) {
+      infraLogger.warn('Skipping malformed roadmap epic progress')
+      continue
     }
+    epics.push({
+      number: issue.number,
+      title: issue.title,
+      url: issue.url,
+      summary,
+      state,
+      ...(total > 0 ? { progress: { completed, total } } : {}),
+    })
   }
+  const order: Record<EpicState, number> = { in_progress: 0, planned: 1, done: 2 }
+  epics.sort((a, b) => order[a.state] - order[b.state])
+  return { epics, hiddenEpicCount }
+}
 
-  shipped.sort((a, b) => b.title.localeCompare(a.title, undefined, { numeric: true }))
-  shipped.splice(MAX_SHIPPED_MILESTONES)
-
-  return { active, upcoming, shipped }
+export function transformReleaseIssues(data: unknown): RoadmapData {
+  try {
+    const issues = record(record(record(data).repository).issues)
+    const open: Release[] = []
+    const shipped: Release[] = []
+    for (const issue of nodes(issues.nodes)) {
+      if (!isIssue(issue)) continue
+      const title = parseReleaseTitle(issue.title)
+      if (!title) {
+        infraLogger.warn`Skipping roadmap release with invalid title: ${issue.number}`
+        continue
+      }
+      if (issue.state === 'CLOSED' && issue.stateReason !== 'COMPLETED') continue
+      const release: Release = {
+        ...title,
+        ...parseReleaseBody(issue.body),
+        url: issue.url,
+        ...releaseEpics(record(issue.subIssues).nodes),
+        shippedOn:
+          issue.state === 'CLOSED' && typeof issue.closedAt === 'string'
+            ? issue.closedAt : null,
+      }
+      if (issue.state === 'CLOSED') shipped.push(release)
+      else open.push(release)
+    }
+    const byVersion = (a: Release, b: Release) =>
+      a.major - b.major || a.minor - b.minor
+    open.sort(byVersion)
+    shipped.sort((a, b) => byVersion(b, a))
+    const now = open.shift() ?? null
+    return {
+      now,
+      next: open.filter((r) => r.dueOn),
+      later: open.filter((r) => !r.dueOn),
+      shipped: shipped.slice(0, MAX_SHIPPED_RELEASES),
+    }
+  } catch (error) {
+    infraLogger.error`Failed to transform roadmap data: ${error}`
+    return emptyRoadmap()
+  }
 }
 
 export async function fetchRoadmapData(): Promise<RoadmapData> {
-  const empty: RoadmapData = { active: [], upcoming: [], shipped: [] }
-
-  if (!env.GITHUB_PROJECT_NUMBER) {
-    infraLogger.warn`GITHUB_PROJECT_NUMBER not set, roadmap will be empty`
-    return empty
-  }
-
+  let result = emptyRoadmap()
   try {
+    const octokit = getOctokit()
     let cursor: string | null = null
-    let hasNextPage = true
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    let allNodes: any[] = []
-
-    while (hasNextPage) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const data: any = await octokit.graphql(PROJECT_ITEMS_QUERY, {
-        org: GITHUB_ORG,
-        number: env.GITHUB_PROJECT_NUMBER,
+    const allNodes: unknown[] = []
+    do {
+      const data: unknown = await octokit.graphql(RELEASE_ISSUES_QUERY, {
+        owner: ROADMAP_OWNER,
+        repo: ROADMAP_REPO,
+        label: RELEASE_LABEL,
         cursor,
         headers: { 'GraphQL-Features': 'sub_issues' },
       })
-      const items = data?.organization?.projectV2?.items
-      allNodes = allNodes.concat(items?.nodes ?? [])
-      hasNextPage = Boolean(items?.pageInfo?.hasNextPage)
-      cursor = items?.pageInfo?.endCursor ?? null
-    }
-
-    return transformProjectItems({
-      organization: { projectV2: { items: { nodes: allNodes } } },
-    })
+      const issues = record(record(record(data).repository).issues)
+      const pageInfo = record(issues.pageInfo)
+      if (!Array.isArray(issues.nodes) || typeof pageInfo.hasNextPage !== 'boolean') {
+        throw new Error('Malformed roadmap response')
+      }
+      // A release with more than MAX_EPICS_PER_RELEASE sub-issues is invalid
+      // by contract; render what fits and say so rather than blank the page.
+      for (const issue of issues.nodes) {
+        if (record(record(record(issue).subIssues).pageInfo).hasNextPage === true) {
+          infraLogger.warn`Roadmap release ${record(issue).number} exceeds the ${MAX_EPICS_PER_RELEASE}-epic limit; rendering the first ${MAX_EPICS_PER_RELEASE}`
+        }
+      }
+      allNodes.push(...issues.nodes)
+      if (!pageInfo.hasNextPage) break
+      if (
+        typeof pageInfo.endCursor !== 'string' ||
+        !pageInfo.endCursor || pageInfo.endCursor === cursor
+      ) {
+        throw new Error('Malformed roadmap pagination cursor')
+      }
+      cursor = pageInfo.endCursor
+    } while (cursor)
+    result = transformReleaseIssues({ repository: { issues: { nodes: allNodes } } })
   } catch (error) {
     infraLogger.error`Failed to fetch roadmap data: ${error}`
-    return empty
   }
+  if (
+    process.env.NODE_ENV === 'production' &&
+    !result.now && !result.next.length && !result.later.length && !result.shipped.length
+  ) {
+    infraLogger.error('Roadmap rendered empty')
+  }
+  return result
 }

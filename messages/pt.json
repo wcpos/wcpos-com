@@ -356,7 +356,7 @@
       "description": "Cada paragem rumo a um WCPOS mais rápido e preparado para funcionar offline — diretamente do nosso GitHub, com o trabalho mais recente primeiro."
     },
     "board": {
-      "link": "em direto do quadro do projeto WCPOS"
+      "link": "direto do GitHub"
     },
     "status": {
       "done": "Concluído",
@@ -368,7 +368,8 @@
       "phases": {
         "now": "Agora",
         "next": "A seguir",
-        "shipped": "Lançado"
+        "shipped": "Lançado",
+        "later": "Mais adiante"
       },
       "progress": "{completed} de {total} concluído(s)",
       "progressDue": "{completed} de {total} concluído(s) · previsto para {date}",
@@ -376,13 +377,16 @@
       "shippedWithDate": "lançado · {date}",
       "externalContentNotice": "Os detalhes dos itens do roteiro vêm do GitHub e podem ser apresentados em inglês."
     },
-    "bugs": {
-      "summary": "{count, plural, one {+ # correção de erro e melhorias} other {+ # correções de erros e melhorias}}",
-      "status": {
-        "done": "corrigido",
-        "in_progress": "em curso",
-        "planned": "planeado"
-      }
+    "release": {
+      "whyTitle": "Por que esta versão",
+      "notInTitle": "Fora desta versão",
+      "epicsDone": "{completed} de {total} funcionalidades concluídas",
+      "epicsDoneLabel": "funcionalidades concluídas",
+      "inside": "Em {version}",
+      "noPublicItems": "Ainda não há itens públicos",
+      "noDate": "Ainda sem data",
+      "due": "Previsto para {date}",
+      "shippedOn": "Lançado em {date}"
     }
   },
   "pro": {

@@ -356,7 +356,7 @@
       "description": "Cada parada en el camino hacia un WCPOS más rápido y preparado para trabajar sin conexión — directamente desde nuestro GitHub, con el trabajo más reciente primero."
     },
     "board": {
-      "link": "en directo desde el tablero del proyecto WCPOS"
+      "link": "en directo desde GitHub"
     },
     "status": {
       "done": "Hecho",
@@ -368,7 +368,8 @@
       "phases": {
         "now": "Ahora",
         "next": "Siguiente",
-        "shipped": "Publicado"
+        "shipped": "Publicado",
+        "later": "Más adelante"
       },
       "progress": "{completed} de {total} completados",
       "progressDue": "{completed} de {total} completados · vence el {date}",
@@ -376,13 +377,16 @@
       "shippedWithDate": "publicado · {date}",
       "externalContentNotice": "Los detalles de la hoja de ruta provienen de GitHub y pueden mostrarse en inglés."
     },
-    "bugs": {
-      "summary": "{count, plural, one {+ # corrección de error y mejoras} other {+ # correcciones de errores y mejoras}}",
-      "status": {
-        "done": "corregido",
-        "in_progress": "en progreso",
-        "planned": "planificado"
-      }
+    "release": {
+      "whyTitle": "Por qué esta versión",
+      "notInTitle": "Fuera de esta versión",
+      "epicsDone": "{completed} de {total} funciones listas",
+      "epicsDoneLabel": "funciones listas",
+      "inside": "En {version}",
+      "noPublicItems": "Aún no hay elementos públicos",
+      "noDate": "Aún sin fecha",
+      "due": "Previsto para {date}",
+      "shippedOn": "Publicado en {date}"
     }
   },
   "pro": {

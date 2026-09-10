@@ -356,7 +356,7 @@
       "description": "Jede Station auf dem Weg zu einem schnelleren, offline-sicheren WCPOS — direkt aus unserem GitHub, neueste Arbeit zuerst."
     },
     "board": {
-      "link": "live aus dem WCPOS-Projektboard"
+      "link": "live von GitHub"
     },
     "status": {
       "done": "Erledigt",
@@ -368,7 +368,8 @@
       "phases": {
         "now": "Jetzt",
         "next": "Als Nächstes",
-        "shipped": "Ausgeliefert"
+        "shipped": "Ausgeliefert",
+        "later": "Später"
       },
       "progress": "{completed} von {total} erledigt",
       "progressDue": "{completed} von {total} erledigt · fällig am {date}",
@@ -376,13 +377,16 @@
       "shippedWithDate": "ausgeliefert · {date}",
       "externalContentNotice": "Details zu Roadmap-Einträgen stammen von GitHub und werden möglicherweise auf Englisch angezeigt."
     },
-    "bugs": {
-      "summary": "{count, plural, one {+ # Fehlerbehebung & Verbesserung} other {+ # Fehlerbehebungen & Verbesserungen}}",
-      "status": {
-        "done": "behoben",
-        "in_progress": "in Arbeit",
-        "planned": "geplant"
-      }
+    "release": {
+      "whyTitle": "Warum dieses Release",
+      "notInTitle": "Nicht in diesem Release",
+      "epicsDone": "{completed} von {total} Funktionen fertig",
+      "epicsDoneLabel": "Funktionen fertig",
+      "inside": "In {version}",
+      "noPublicItems": "Noch keine öffentlichen Einträge",
+      "noDate": "Noch kein Termin",
+      "due": "Geplant für {date}",
+      "shippedOn": "Veröffentlicht im {date}"
     }
   },
   "pro": {

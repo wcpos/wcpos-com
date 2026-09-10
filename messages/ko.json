@@ -356,7 +356,7 @@
       "description": "더 빠르고 오프라인에 강한 WCPOS로 가는 모든 단계 — GitHub에서 가져온 최신 작업부터 표시합니다."
     },
     "board": {
-      "link": "WCPOS 프로젝트 보드에서 실시간으로 보기"
+      "link": "GitHub에서 실시간 제공"
     },
     "status": {
       "done": "완료",
@@ -368,7 +368,8 @@
       "phases": {
         "now": "현재",
         "next": "다음",
-        "shipped": "출시 완료"
+        "shipped": "출시 완료",
+        "later": "추후"
       },
       "progress": "{completed}/{total} 완료",
       "progressDue": "{completed}/{total} 완료 · 마감 {date}",
@@ -376,13 +377,16 @@
       "shippedWithDate": "출시됨 · {date}",
       "externalContentNotice": "로드맵 항목 세부 정보는 GitHub에서 가져오며 영어로 표시될 수 있습니다."
     },
-    "bugs": {
-      "summary": "{count, plural, one {+ 버그 수정 및 개선 #건} other {+ 버그 수정 및 개선 #건}}",
-      "status": {
-        "done": "수정됨",
-        "in_progress": "진행 중",
-        "planned": "예정됨"
-      }
+    "release": {
+      "whyTitle": "이번 릴리스의 목표",
+      "notInTitle": "이번 릴리스에 포함되지 않는 항목",
+      "epicsDone": "{total}개 기능 중 {completed}개 완료",
+      "epicsDoneLabel": "기능 완료",
+      "inside": "{version}의 내용",
+      "noPublicItems": "아직 공개된 항목이 없습니다",
+      "noDate": "날짜 미정",
+      "due": "예정: {date}",
+      "shippedOn": "출시: {date}"
     }
   },
   "pro": {

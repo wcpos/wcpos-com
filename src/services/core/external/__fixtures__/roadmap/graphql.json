@@ -1,0 +1,37 @@
+{
+  "repository": {
+    "issues": {
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": null
+      },
+      "nodes": [
+        {
+          "number": 11,
+          "title": "v1.11.0 \u2014 Checkout & payments",
+          "url": "https://github.com/wcpos/roadmap/issues/11",
+          "state": "OPEN",
+          "stateReason": null,
+          "body": "\n### Due date\n2026-10-01\n\n### Why this release\n**Faster checkout** for busy shops.\n\n- Split payments\n- Clear totals\n\n### Not in this release\n- Fiscal compliance\n\n---\nPublic context with [details](https://github.com/wcpos/roadmap).\n\n### More context\nKeep this prose heading.\n",
+          "closedAt": null,
+          "subIssues": {
+            "nodes": [
+              {
+                "number": 30,
+                "title": "Split payments",
+                "url": "https://github.com/wcpos/roadmap/issues/30",
+                "state": "OPEN",
+                "stateReason": null,
+                "body": "\n### Summary\nAccept **cash and card** on one order.\n\n- Keep every payment visible\n- Show the remaining balance\n\n### Implementation\nPrivate implementation detail.\n",
+                "subIssuesSummary": {
+                  "total": 4,
+                  "completed": 1
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

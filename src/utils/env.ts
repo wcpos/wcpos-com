@@ -11,7 +11,6 @@ const envSchema = z.object({
   GITHUB_INSTALLATION_ID: z.coerce.number().optional(),
 
   // GitHub Project (for roadmap page)
-  GITHUB_PROJECT_NUMBER: z.coerce.number().optional(),
   GITHUB_WEBHOOK_SECRET: z.string().optional(),
 
   // Medusa Store API

@@ -356,7 +356,7 @@
       "description": "Every stop on the way to a faster, offline-proof WCPOS — pulled straight from our GitHub, newest work first."
     },
     "board": {
-      "link": "live from the WCPOS project board"
+      "link": "live from GitHub"
     },
     "status": {
       "done": "Done",
@@ -368,7 +368,8 @@
       "phases": {
         "now": "Now",
         "next": "Next",
-        "shipped": "Shipped"
+        "shipped": "Shipped",
+        "later": "Later"
       },
       "progress": "{completed} of {total} done",
       "progressDue": "{completed} of {total} done · due {date}",
@@ -376,13 +377,16 @@
       "shippedWithDate": "shipped · {date}",
       "externalContentNotice": "Roadmap item details come from GitHub and may be shown in English."
     },
-    "bugs": {
-      "summary": "{count, plural, one {+ # bug fix & improvements} other {+ # bug fixes & improvements}}",
-      "status": {
-        "done": "fixed",
-        "in_progress": "in progress",
-        "planned": "planned"
-      }
+    "release": {
+      "whyTitle": "Why this release",
+      "notInTitle": "Not in this release",
+      "epicsDone": "{completed} of {total} features done",
+      "epicsDoneLabel": "features done",
+      "inside": "Inside {version}",
+      "noPublicItems": "No public items yet",
+      "noDate": "No date yet",
+      "due": "Due {date}",
+      "shippedOn": "Shipped {date}"
     }
   },
   "pro": {

@@ -1,32 +1,32 @@
-export type RoadmapStatus = 'planned' | 'in_progress' | 'done'
+export type EpicState = 'planned' | 'in_progress' | 'done'
 
-export type RoadmapItemType = 'feature' | 'bug'
-
-export interface RoadmapItem {
-  id: string
+export interface Epic {
+  number: number
   title: string
-  description: string
-  status: RoadmapStatus
-  type: RoadmapItemType
+  summary: string
+  state: EpicState
+  progress?: { completed: number; total: number }
   url: string
-  subIssueProgress?: { total: number; completed: number }
 }
 
-export interface RoadmapMilestone {
-  title: string
-  description: string | null
+export interface Release {
+  version: string
+  major: number
+  minor: number
+  theme: string
   dueOn: string | null
-  state: 'open' | 'closed'
-  features: RoadmapItem[]
-  bugs: RoadmapItem[]
-  progress: {
-    total: number
-    completed: number
-  }
+  why: string
+  notInRelease: string
+  prose: string
+  url: string
+  epics: Epic[]
+  hiddenEpicCount: number
+  shippedOn: string | null
 }
 
 export interface RoadmapData {
-  active: RoadmapMilestone[]
-  upcoming: RoadmapMilestone[]
-  shipped: RoadmapMilestone[]
+  now: Release | null
+  next: Release[]
+  later: Release[]
+  shipped: Release[]
 }
