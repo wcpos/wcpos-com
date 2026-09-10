@@ -572,9 +572,10 @@ export function BoardLinkChip() {
 
 export function RoadmapTimeline({ data }: { data: RoadmapData }) {
   const t = useTranslations('roadmap.timeline')
-  const hasContent =
+  const hasOpenRelease =
     data.now ||
-    data.next.length > 0 || data.later.length > 0 || data.shipped.length > 0
+    data.next.length > 0 || data.later.length > 0
+  const hasContent = hasOpenRelease || data.shipped.length > 0
 
   if (!hasContent) {
     return (
@@ -589,6 +590,11 @@ export function RoadmapTimeline({ data }: { data: RoadmapData }) {
       <p className="text-center text-xs text-muted-foreground">
         {t('externalContentNotice')}
       </p>
+      {!hasOpenRelease && (
+        <p className="py-12 text-center text-muted-foreground">
+          {t('empty')}
+        </p>
+      )}
       {data.now && <ReleaseHero release={data.now} />}
       <RailGroup label={t('phases.next')} releases={data.next} tone="next" />
       <RailGroup label={t('phases.later')} releases={data.later} tone="later" />

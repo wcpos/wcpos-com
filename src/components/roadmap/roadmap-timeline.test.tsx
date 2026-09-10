@@ -74,6 +74,14 @@ describe('RoadmapTimeline', () => {
     renderWithIntl(<RoadmapTimeline data={EMPTY} />)
     expect(screen.getByText(messages.roadmap.timeline.empty)).toBeInTheDocument()
   })
+  it('renders the empty copy alongside shipped history when no release is open', () => {
+    renderWithIntl(<RoadmapTimeline data={{
+      ...EMPTY,
+      shipped: [{ ...release, shippedOn: '2026-09-01' }],
+    }} />)
+    expect(screen.getByText(messages.roadmap.timeline.empty)).toBeInTheDocument()
+    expect(screen.getByText('Shipped')).toBeInTheDocument()
+  })
 })
 
 it('links the live GitHub chip to release issues', () => {

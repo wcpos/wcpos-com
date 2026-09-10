@@ -9,6 +9,7 @@ const ROADMAP_OWNER = 'wcpos'
 const ROADMAP_REPO = 'roadmap'
 const RELEASE_LABEL = 'release'
 const MAX_SHIPPED_RELEASES = 2
+const MAX_EPICS_PER_RELEASE = 100
 const THEME_MAX_LENGTH = 60
 
 const RELEASE_ISSUES_QUERY = `
@@ -18,7 +19,8 @@ const RELEASE_ISSUES_QUERY = `
         pageInfo { hasNextPage endCursor }
         nodes {
           number title url state stateReason closedAt body
-          subIssues(first: 100) {
+          subIssues(first: ${MAX_EPICS_PER_RELEASE}) {
+            pageInfo { hasNextPage }
             nodes {
               number title url body state stateReason
               subIssuesSummary { total completed }
@@ -216,6 +218,11 @@ export async function fetchRoadmapData(): Promise<RoadmapData> {
       const pageInfo = record(issues.pageInfo)
       if (!Array.isArray(issues.nodes) || typeof pageInfo.hasNextPage !== 'boolean') {
         throw new Error('Malformed roadmap response')
+      }
+      if (issues.nodes.some(issue =>
+        record(record(record(issue).subIssues).pageInfo).hasNextPage === true
+      )) {
+        throw new Error(`Roadmap release exceeds ${MAX_EPICS_PER_RELEASE}-epic limit`)
       }
       allNodes.push(...issues.nodes)
       if (!pageInfo.hasNextPage) break

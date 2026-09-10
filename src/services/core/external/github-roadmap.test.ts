@@ -128,6 +128,26 @@ describe('fetchRoadmapData', () => {
     expect(graphql).toHaveBeenCalledTimes(2)
     expect(graphql).toHaveBeenLastCalledWith(expect.any(String), expect.objectContaining({ cursor: 'cursor1' }))
   })
+  it('rejects releases beyond the supported epic limit', async () => {
+    const release = response.repository.issues.nodes[0]
+    graphql.mockResolvedValueOnce({
+      repository: {
+        issues: {
+          nodes: [{
+            ...release,
+            subIssues: {
+              ...release.subIssues,
+              pageInfo: { hasNextPage: true, endCursor: 'epic-cursor' },
+            },
+          }],
+          pageInfo: { hasNextPage: false, endCursor: null },
+        },
+      },
+    })
+
+    expect(await fetchRoadmapData()).toEqual(EMPTY)
+    expect(error).toHaveBeenCalled()
+  })
   it('returns empty and logs API and auth failures', async () => {
     graphql.mockRejectedValueOnce(new Error('API failure'))
     expect(await fetchRoadmapData()).toEqual(EMPTY)
