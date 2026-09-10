@@ -368,25 +368,17 @@
       "phases": {
         "now": "Maintenant",
         "next": "Ensuite",
-        "shipped": "Livré",
-        "later": "Plus tard"
+        "shipped": "Livré"
       },
-      "progress": "{completed} sur {total} terminé(s)",
-      "progressDue": "{completed} sur {total} terminé(s) · prévu le {date}",
-      "shipped": "livré",
-      "shippedWithDate": "livré · {date}",
       "externalContentNotice": "Les détails de la feuille de route proviennent de GitHub et peuvent s’afficher en anglais."
     },
     "release": {
-      "whyTitle": "Pourquoi cette version",
-      "notInTitle": "Hors du périmètre de cette version",
-      "epicsDone": "{completed} fonctionnalités terminées sur {total}",
-      "epicsDoneLabel": "fonctionnalités terminées",
-      "inside": "Dans {version}",
-      "noPublicItems": "Aucun élément public pour le moment",
-      "noDate": "Pas encore de date",
-      "due": "Prévu pour {date}",
-      "shippedOn": "Publié en {date}"
+      "features": "{completed} fonctionnalités sur {total}",
+      "due": "prévu le {date}",
+      "noDate": "pas encore de date",
+      "shippedOn": "publié · {date}",
+      "briefLink": "Présentation complète de la version",
+      "notesLink": "Notes de version"
     }
   },
   "pro": {

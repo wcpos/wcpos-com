@@ -9,7 +9,7 @@ const { graphql, getOctokit, warn, error } = vi.hoisted(() => ({
 vi.mock('./github-auth', () => ({ getOctokit }))
 vi.mock('@/lib/logger', () => ({ infraLogger: { warn, error } }))
 
-import { fetchRoadmapData, parseReleaseTitle, parseReleaseBody, parseSummary, transformReleaseIssues } from './github-roadmap'
+import { firstSentence, fetchRoadmapData, parseReleaseTitle, parseReleaseBody, parseSummary, transformReleaseIssues } from './github-roadmap'
 
 const EMPTY = { now: null, next: [], later: [], shipped: [] }
 function fixture(name: string) {
@@ -25,6 +25,23 @@ beforeEach(() => {
 })
 afterEach(() => vi.unstubAllEnvs())
 
+describe('firstSentence', () => {
+  it.each([
+    ['# **Fast** __checkout__ with *cash*, _card_ and `receipts` via [WCPOS](https://wcpos.com). More.', 'Fast checkout with cash, card and receipts via WCPOS.'],
+    ['- One feature! Another.', 'One feature!'],
+    ['* Ready? Yes.', 'Ready?'],
+    ['Version v1.11.0 works. Next sentence.', 'Version v1.11.0 works.'],
+    ['Done.', 'Done.'],
+    ['Ready?\nMore details.', 'Ready?'],
+    ['A sentence spanning\nlines. More.', 'A sentence spanning\nlines.'],
+    ['\n  First line  \nSecond line', 'First line'],
+    ['', ''],
+    ['  \n\t', ''],
+  ])('extracts a plain pitch from %j', (input, expected) => {
+    expect(firstSentence(input)).toBe(expected)
+  })
+})
+
 describe('release parsing', () => {
   it('parses the strict version and theme', () => {
     expect(parseReleaseTitle(fixture('valid-release').title)).toEqual({ version: 'v1.11.0', major: 1, minor: 11, theme: 'Checkout & payments' })
@@ -39,14 +56,14 @@ describe('release parsing', () => {
   })
   it('extracts markdown sections and prose without truncation', () => {
     expect(parseReleaseBody(fixture('valid-release').body)).toEqual({
-      dueOn: '2026-10-01', why: '**Faster checkout** for busy shops.\n\n- Split payments\n- Clear totals',
+      pitch: 'Faster checkout for busy shops.', dueOn: '2026-10-01', why: '**Faster checkout** for busy shops.\n\n- Split payments\n- Clear totals',
       notInRelease: '- Fiscal compliance', prose: 'Public context with [details](https://github.com/wcpos/roadmap).\n\n### More context\nKeep this prose heading.',
     })
     expect(parseReleaseBody('### Why this release\r\nKeep\r\n---\r\n### Due date\r\n2026-12-01').dueOn).toBeNull()
     expect(parseReleaseBody('### Why this release\nKeep\n--- \nStill brief').why).toContain('Still brief')
   })
   it('handles missing and malformed dates and sections', () => {
-    expect(parseReleaseBody(fixture('missing-section').body)).toEqual({ dueOn: '2026-11-01', why: '', notInRelease: '', prose: '' })
+    expect(parseReleaseBody(fixture('missing-section').body)).toEqual({ pitch: '', dueOn: '2026-11-01', why: '', notInRelease: '', prose: '' })
     expect(parseReleaseBody(fixture('dateless-release').body).dueOn).toBeNull()
     expect(warn).not.toHaveBeenCalled()
     expect(parseReleaseBody(fixture('malformed-date').body).dueOn).toBeNull()
@@ -72,6 +89,26 @@ describe('transformReleaseIssues', () => {
     const before = structuredClone(response)
     expect(transformReleaseIssues(response).now).toMatchObject({ version: 'v1.11.0', hiddenEpicCount: 0, epics: [{ state: 'in_progress', progress: { completed: 1, total: 4 } }] })
     expect(response).toEqual(before)
+  })
+  it('uses an explicit Pitch section, stopping at headings and dividers', () => {
+    expect(transform([fixture('release-with-pitch')]).now?.pitch).toBe('Keep every payment clear at checkout.')
+    expect(transform([{
+      ...fixture('valid-release'),
+      body: '### Pitch\n  A focused release.  \n---\nNot the pitch.',
+    }]).now?.pitch).toBe('A focused release.')
+  })
+  it('falls back to the first Why sentence when Pitch is absent or empty', () => {
+    const release = fixture('valid-release')
+    expect(transform([release]).now?.pitch).toBe('Faster checkout for busy shops.')
+    expect(transform([{ ...release, body: `### Pitch\n \n${release.body}` }]).now?.pitch).toBe('Faster checkout for busy shops.')
+  })
+  it('derives an epic pitch without replacing its full Summary', () => {
+    const epic = fixture('epic-with-summary')
+    const result = transform([{ ...fixture('valid-release'), subIssues: { nodes: [epic] } }])
+    expect(result.now?.epics[0]).toMatchObject({
+      pitch: 'Accept cash and card on one order.',
+      summary: 'Accept **cash and card** on one order.\n\n- Keep every payment visible\n- Show the remaining balance',
+    })
   })
   it('sorts versions numerically, chooses now, groups dated and dateless releases, excludes withdrawn and caps shipped', () => {
     const release = fixture('valid-release')
