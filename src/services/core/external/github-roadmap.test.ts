@@ -56,10 +56,13 @@ describe('release parsing', () => {
     // one warning per malformed date: the fixture, 2026-02-31, 2026-13-01
     expect(warn).toHaveBeenCalledTimes(3)
   })
-  it('extracts the full Summary through the next heading, not a horizontal rule', () => {
+  it('extracts the Summary up to the next heading or a --- divider', () => {
     expect(parseSummary(fixture('epic-with-summary').body)).toBe('Accept **cash and card** on one order.\n\n- Keep every payment visible\n- Show the remaining balance')
     expect(parseSummary(fixture('epic-without-summary').body)).toBe('')
-    expect(parseSummary('### Summary\nFirst\n---\nSecond\n### Other\nStop')).toBe('First\n---\nSecond')
+    // the contract's divider ends the section: an epic whose original,
+    // heading-less body follows a `---` must not leak into its public Summary
+    expect(parseSummary('### Summary\nFirst\n---\nSecond\n### Other\nStop')).toBe('First')
+    expect(parseSummary('### Summary\n\nTwo sentences for merchants.\n\n---\n\nLong engineering body with no headings.\nMore lines.')).toBe('Two sentences for merchants.')
     expect(parseSummary(null)).toBe('')
   })
 })
