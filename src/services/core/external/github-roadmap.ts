@@ -219,10 +219,12 @@ export async function fetchRoadmapData(): Promise<RoadmapData> {
       if (!Array.isArray(issues.nodes) || typeof pageInfo.hasNextPage !== 'boolean') {
         throw new Error('Malformed roadmap response')
       }
-      if (issues.nodes.some(issue =>
-        record(record(record(issue).subIssues).pageInfo).hasNextPage === true
-      )) {
-        throw new Error(`Roadmap release exceeds ${MAX_EPICS_PER_RELEASE}-epic limit`)
+      // A release with more than MAX_EPICS_PER_RELEASE sub-issues is invalid
+      // by contract; render what fits and say so rather than blank the page.
+      for (const issue of issues.nodes) {
+        if (record(record(record(issue).subIssues).pageInfo).hasNextPage === true) {
+          infraLogger.warn`Roadmap release ${record(issue).number} exceeds the ${MAX_EPICS_PER_RELEASE}-epic limit; rendering the first ${MAX_EPICS_PER_RELEASE}`
+        }
       }
       allNodes.push(...issues.nodes)
       if (!pageInfo.hasNextPage) break

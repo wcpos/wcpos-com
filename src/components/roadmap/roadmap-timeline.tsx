@@ -281,14 +281,17 @@ function ReleaseHero({ release }: { release: Release }) {
           </h2>
           <ReleaseDate release={release} />
         </div>
-        <div className="text-right">
-          <div className="font-mono text-5xl tabular-nums tracking-tighter">
-            {completed} / {release.epics.length}
+        {/* Progress is null with no public items (spec §3): show no fraction. */}
+        {release.epics.length > 0 && (
+          <div className="text-right">
+            <div className="font-mono text-5xl tabular-nums tracking-tighter">
+              {completed} / {release.epics.length}
+            </div>
+            <p className="mt-1 text-xs text-muted-foreground">
+              {t('release.epicsDoneLabel')}
+            </p>
           </div>
-          <p className="mt-1 text-xs text-muted-foreground">
-            {t('release.epicsDoneLabel')}
-          </p>
-        </div>
+        )}
       </div>
       <ReleaseBrief release={release} hero />
       <h3 className="mt-8 text-xl font-semibold">
@@ -377,9 +380,11 @@ function TimelineRelease({
         </a>
       </h2>
       <ReleaseDate release={release} shipped={tone === 'shipped'} />
-      <p className="mt-2 text-sm text-muted-foreground">
-        {t('epicsDone', { completed, total: release.epics.length })}
-      </p>
+      {release.epics.length > 0 && (
+        <p className="mt-2 text-sm text-muted-foreground">
+          {t('epicsDone', { completed, total: release.epics.length })}
+        </p>
+      )}
       <ReleaseBrief release={release} />
       <EpicList epics={release.epics} />
     </div>

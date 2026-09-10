@@ -128,7 +128,7 @@ describe('fetchRoadmapData', () => {
     expect(graphql).toHaveBeenCalledTimes(2)
     expect(graphql).toHaveBeenLastCalledWith(expect.any(String), expect.objectContaining({ cursor: 'cursor1' }))
   })
-  it('rejects releases beyond the supported epic limit', async () => {
+  it('renders the first 100 epics of an oversized release and warns', async () => {
     const release = response.repository.issues.nodes[0]
     graphql.mockResolvedValueOnce({
       repository: {
@@ -145,8 +145,9 @@ describe('fetchRoadmapData', () => {
       },
     })
 
-    expect(await fetchRoadmapData()).toEqual(EMPTY)
-    expect(error).toHaveBeenCalled()
+    const result = await fetchRoadmapData()
+    expect(result.now?.version).toBe('v1.11.0')
+    expect(warn.mock.calls.flat(2).join('')).toContain('exceeds the 100-epic limit')
   })
   it('returns empty and logs API and auth failures', async () => {
     graphql.mockRejectedValueOnce(new Error('API failure'))

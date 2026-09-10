@@ -49,7 +49,9 @@ describe('RoadmapTimeline', () => {
   it('renders no-public-items copy for empty hero and train releases', () => {
     renderWithIntl(<RoadmapTimeline data={{ ...EMPTY, now: { ...release, epics: [] }, next: [{ ...release, epics: [] }] }} />)
     expect(screen.getAllByText('No public items yet')).toHaveLength(2)
-    expect(screen.getByText('0 / 0')).toBeInTheDocument()
+    // progress is null with no public items: no fraction, no "0 of 0" line
+    expect(screen.queryByText('0 / 0')).toBeNull()
+    expect(screen.queryByText('0 of 0 features done')).toBeNull()
   })
   it('renders all fixture groups, UTC dates, language markers and the external-content notice', () => {
     renderWithIntl(<RoadmapTimeline data={ROADMAP_DEV_FIXTURE} />)
