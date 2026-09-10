@@ -356,7 +356,7 @@
       "description": "Ogni tappa verso un WCPOS più veloce e resistente all’offline — presa direttamente da GitHub, con i lavori più recenti per primi."
     },
     "board": {
-      "link": "in tempo reale dalla bacheca del progetto WCPOS"
+      "link": "in diretta da GitHub"
     },
     "status": {
       "planned": "Pianificato",
@@ -372,17 +372,21 @@
       "phases": {
         "now": "Ora",
         "next": "Prossimo",
-        "shipped": "Rilasciati"
+        "shipped": "Rilasciati",
+        "later": "Più avanti"
       },
       "externalContentNotice": "I dettagli della roadmap provengono da GitHub e potrebbero essere visualizzati in inglese."
     },
-    "bugs": {
-      "summary": "{count, plural, one {+ # correzione bug e miglioramento} other {+ # correzioni bug e miglioramenti}}",
-      "status": {
-        "planned": "pianificato",
-        "in_progress": "in corso",
-        "done": "risolto"
-      }
+    "release": {
+      "whyTitle": "Perché questa versione",
+      "notInTitle": "Non incluso in questa versione",
+      "epicsDone": "{completed} di {total} funzionalità completate",
+      "epicsDoneLabel": "funzionalità completate",
+      "inside": "In {version}",
+      "noPublicItems": "Ancora nessun elemento pubblico",
+      "noDate": "Data non ancora definita",
+      "due": "Previsto per {date}",
+      "shippedOn": "Pubblicato a {date}"
     }
   },
   "pro": {

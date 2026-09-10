@@ -1,521 +1,158 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { readFileSync } from 'node:fs'
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
+import response from './__fixtures__/roadmap/graphql.json'
 
 vi.mock('server-only', () => ({}))
-
-vi.mock('@/utils/env', () => ({
-  env: {
-    GITHUB_PROJECT_NUMBER: 1,
-  },
+const { graphql, getOctokit, warn, error } = vi.hoisted(() => ({
+  graphql: vi.fn(), getOctokit: vi.fn(), warn: vi.fn(), error: vi.fn(),
 }))
+vi.mock('./github-auth', () => ({ getOctokit }))
+vi.mock('@/lib/logger', () => ({ infraLogger: { warn, error } }))
 
-// Mock the shared Octokit factory
-const { mockGraphql } = vi.hoisted(() => ({ mockGraphql: vi.fn() }))
-vi.mock('./github-auth', () => ({
-  getOctokit: vi.fn(() => ({ graphql: mockGraphql })),
-}))
+import { fetchRoadmapData, parseReleaseTitle, parseReleaseBody, parseSummary, transformReleaseIssues } from './github-roadmap'
 
-import { fetchRoadmapData, transformProjectItems } from './github-roadmap'
-
-// Sample GraphQL response matching GitHub Projects V2 shape
-const mockProjectItems = {
-  organization: {
-    projectV2: {
-      items: {
-        pageInfo: { hasNextPage: false, endCursor: null },
-        nodes: [
-          {
-            fieldValueByName: { name: 'In Progress' },
-            content: {
-              __typename: 'Issue',
-              id: 'I_kwDOA1',
-              title: 'Add offline sync',
-              bodyText: 'Implement offline data synchronization for the POS app so it works without internet.',
-              state: 'OPEN',
-              number: 42,
-              url: 'https://github.com/wcpos/monorepo/issues/42',
-              labels: { nodes: [{ name: 'enhancement' }] },
-              milestone: {
-                title: 'v1.9.0',
-                description: 'Offline support & sync improvements',
-                dueOn: '2026-04-01T00:00:00Z',
-                state: 'OPEN',
-              },
-              repository: { name: 'monorepo' },
-              parent: null,
-              subIssuesSummary: { total: 0, completed: 0 },
-            },
-          },
-          {
-            fieldValueByName: { name: 'Up Next' },
-            content: {
-              __typename: 'Issue',
-              id: 'I_kwDOA2',
-              title: 'Fix barcode scanner crash',
-              bodyText: 'Scanner crashes when scanning certain QR codes with special characters.',
-              state: 'OPEN',
-              number: 43,
-              url: 'https://github.com/wcpos/monorepo/issues/43',
-              labels: { nodes: [{ name: 'bug' }] },
-              milestone: {
-                title: 'v1.9.0',
-                description: 'Offline support & sync improvements',
-                dueOn: '2026-04-01T00:00:00Z',
-                state: 'OPEN',
-              },
-              repository: { name: 'monorepo' },
-              parent: null,
-              subIssuesSummary: { total: 0, completed: 0 },
-            },
-          },
-          {
-            fieldValueByName: { name: 'Done' },
-            content: {
-              __typename: 'Issue',
-              id: 'I_kwDOB1',
-              title: 'Multi-currency support',
-              bodyText: 'Allow switching between currencies at the register.',
-              state: 'CLOSED',
-              number: 30,
-              url: 'https://github.com/wcpos/woocommerce-pos/issues/30',
-              labels: { nodes: [{ name: 'enhancement' }] },
-              milestone: {
-                title: 'v1.8.8',
-                description: null,
-                dueOn: null,
-                state: 'CLOSED',
-              },
-              repository: { name: 'woocommerce-pos' },
-              parent: null,
-              subIssuesSummary: { total: 0, completed: 0 },
-            },
-          },
-          {
-            fieldValueByName: { name: 'Done' },
-            content: {
-              __typename: 'Issue',
-              id: 'I_kwDOB2',
-              title: 'Fix receipt printing alignment',
-              bodyText: 'Receipt text was misaligned on certain thermal printers.',
-              state: 'CLOSED',
-              number: 31,
-              url: 'https://github.com/wcpos/woocommerce-pos/issues/31',
-              labels: { nodes: [{ name: 'bug' }] },
-              milestone: {
-                title: 'v1.8.8',
-                description: null,
-                dueOn: null,
-                state: 'CLOSED',
-              },
-              repository: { name: 'woocommerce-pos' },
-              parent: null,
-              subIssuesSummary: { total: 0, completed: 0 },
-            },
-          },
-          // Epic from roadmap repo — should appear as feature with subIssueProgress
-          {
-            fieldValueByName: { name: 'In Progress' },
-            content: {
-              __typename: 'Issue',
-              id: 'I_kwDOR1',
-              title: 'Prevent overselling at POS',
-              bodyText: 'Stock validation at both the app and server level.',
-              state: 'OPEN',
-              number: 1,
-              url: 'https://github.com/wcpos/roadmap/issues/1',
-              labels: { nodes: [{ name: 'epic' }, { name: 'enhancement' }] },
-              milestone: {
-                title: 'v1.9.0',
-                description: 'Offline support & sync improvements',
-                dueOn: '2026-04-01T00:00:00Z',
-                state: 'OPEN',
-              },
-              repository: { name: 'roadmap' },
-              parent: null,
-              subIssuesSummary: { total: 5, completed: 2 },
-            },
-          },
-          // Sub-issue of an epic — should be filtered out
-          {
-            fieldValueByName: { name: 'Up Next' },
-            content: {
-              __typename: 'Issue',
-              id: 'I_kwDOA6',
-              title: 'Server-side stock validation',
-              bodyText: 'Validate stock on order creation.',
-              state: 'OPEN',
-              number: 443,
-              url: 'https://github.com/wcpos/woocommerce-pos/issues/443',
-              labels: { nodes: [{ name: 'enhancement' }] },
-              milestone: {
-                title: 'v1.9.0',
-                description: 'Offline support & sync improvements',
-                dueOn: '2026-04-01T00:00:00Z',
-                state: 'OPEN',
-              },
-              repository: { name: 'woocommerce-pos' },
-              parent: { id: 'I_kwDOR1' },
-              subIssuesSummary: { total: 0, completed: 0 },
-            },
-          },
-          // Item from wrong repo — should be filtered out
-          {
-            fieldValueByName: { name: 'Up Next' },
-            content: {
-              __typename: 'Issue',
-              id: 'I_kwDOC1',
-              title: 'Update Medusa plugins',
-              bodyText: 'Upgrade to latest Medusa v2.',
-              state: 'OPEN',
-              number: 10,
-              url: 'https://github.com/wcpos/wcpos-medusa/issues/10',
-              labels: { nodes: [{ name: 'enhancement' }] },
-              milestone: null,
-              repository: { name: 'wcpos-medusa' },
-            },
-          },
-          // Item with non-public label — should be filtered out
-          {
-            fieldValueByName: { name: 'Up Next' },
-            content: {
-              __typename: 'Issue',
-              id: 'I_kwDOA3',
-              title: 'Update dependencies',
-              bodyText: 'Bump all deps.',
-              state: 'OPEN',
-              number: 50,
-              url: 'https://github.com/wcpos/monorepo/issues/50',
-              labels: { nodes: [{ name: 'dependencies' }] },
-              milestone: {
-                title: 'v1.9.0',
-                description: 'Offline support & sync improvements',
-                dueOn: '2026-04-01T00:00:00Z',
-                state: 'OPEN',
-              },
-              repository: { name: 'monorepo' },
-            },
-          },
-          // Item in Backlog status — should be filtered out
-          {
-            fieldValueByName: { name: 'Backlog' },
-            content: {
-              __typename: 'Issue',
-              id: 'I_kwDOA4',
-              title: 'Voice commands',
-              bodyText: 'Add voice command support.',
-              state: 'OPEN',
-              number: 99,
-              url: 'https://github.com/wcpos/monorepo/issues/99',
-              labels: { nodes: [{ name: 'enhancement' }] },
-              milestone: null,
-              repository: { name: 'monorepo' },
-            },
-          },
-          // Item without milestone — should be filtered out
-          {
-            fieldValueByName: { name: 'In Progress' },
-            content: {
-              __typename: 'Issue',
-              id: 'I_kwDOA5',
-              title: 'Random fix',
-              bodyText: 'Some quick fix.',
-              state: 'OPEN',
-              number: 55,
-              url: 'https://github.com/wcpos/monorepo/issues/55',
-              labels: { nodes: [{ name: 'bug' }] },
-              milestone: null,
-              repository: { name: 'monorepo' },
-            },
-          },
-          // DraftIssue — should be filtered out
-          {
-            fieldValueByName: { name: 'Up Next' },
-            content: {
-              __typename: 'DraftIssue',
-              title: 'Some draft idea',
-              body: 'Not a real issue yet.',
-            },
-          },
-        ],
-      },
-    },
-  },
+const EMPTY = { now: null, next: [], later: [], shipped: [] }
+function fixture(name: string) {
+  const text = readFileSync(`${process.cwd()}/src/services/core/external/__fixtures__/roadmap/${name}.md`, 'utf8')
+  const [title, ...body] = text.split('\n')
+  return { ...response.repository.issues.nodes[0], title: title.slice(2), body: body.join('\n'), subIssues: { nodes: [] } }
 }
+const transform = (nodes: unknown[]) => transformReleaseIssues({ repository: { issues: { nodes } } })
 
-describe('github-roadmap', () => {
-  beforeEach(() => {
-    vi.clearAllMocks()
+beforeEach(() => {
+  vi.resetAllMocks()
+  getOctokit.mockReturnValue({ graphql })
+})
+afterEach(() => vi.unstubAllEnvs())
+
+describe('release parsing', () => {
+  it('parses the strict version and theme', () => {
+    expect(parseReleaseTitle(fixture('valid-release').title)).toEqual({ version: 'v1.11.0', major: 1, minor: 11, theme: 'Checkout & payments' })
+    expect(parseReleaseTitle(`v1.2.0 — ${'a'.repeat(60)}`)).not.toBeNull()
+    for (const title of [fixture('malformed-title').title, `v1.2.0 — ${'a'.repeat(61)}`, 'v1.2.1 — Patch', 'v1.2.0—Theme', null]) {
+      expect(parseReleaseTitle(title)).toBeNull()
+    }
   })
-
-  describe('transformProjectItems', () => {
-    it('groups items by milestone into active, upcoming, and shipped', () => {
-      const result = transformProjectItems(mockProjectItems)
-
-      // v1.9.0 has an "In Progress" item → active
-      expect(result.active).toHaveLength(1)
-      expect(result.active[0].title).toBe('v1.9.0')
-
-      // No milestones that are only "Up Next" without "In Progress" → empty
-      expect(result.upcoming).toHaveLength(0)
-
-      // v1.8.8 is closed → shipped
-      expect(result.shipped).toHaveLength(1)
-      expect(result.shipped[0].title).toBe('v1.8.8')
+  it('warns once per invalid release title and skips it', () => {
+    expect(transform([fixture('malformed-title')])).toEqual(EMPTY)
+    expect(warn).toHaveBeenCalledTimes(1)
+  })
+  it('extracts markdown sections and prose without truncation', () => {
+    expect(parseReleaseBody(fixture('valid-release').body)).toEqual({
+      dueOn: '2026-10-01', why: '**Faster checkout** for busy shops.\n\n- Split payments\n- Clear totals',
+      notInRelease: '- Fiscal compliance', prose: 'Public context with [details](https://github.com/wcpos/roadmap).\n\n### More context\nKeep this prose heading.',
     })
+    expect(parseReleaseBody('### Why this release\r\nKeep\r\n---\r\n### Due date\r\n2026-12-01').dueOn).toBeNull()
+    expect(parseReleaseBody('### Why this release\nKeep\n--- \nStill brief').why).toContain('Still brief')
+  })
+  it('handles missing and malformed dates and sections', () => {
+    expect(parseReleaseBody(fixture('missing-section').body)).toEqual({ dueOn: '2026-11-01', why: '', notInRelease: '', prose: '' })
+    expect(parseReleaseBody(fixture('dateless-release').body).dueOn).toBeNull()
+    expect(warn).not.toHaveBeenCalled()
+    expect(parseReleaseBody(fixture('malformed-date').body).dueOn).toBeNull()
+    expect(warn).toHaveBeenCalledTimes(1)
+  })
+  it('extracts the full Summary through the next heading, not a horizontal rule', () => {
+    expect(parseSummary(fixture('epic-with-summary').body)).toBe('Accept **cash and card** on one order.\n\n- Keep every payment visible\n- Show the remaining balance')
+    expect(parseSummary(fixture('epic-without-summary').body)).toBe('')
+    expect(parseSummary('### Summary\nFirst\n---\nSecond\n### Other\nStop')).toBe('First\n---\nSecond')
+    expect(parseSummary(null)).toBe('')
+  })
+})
 
-    it('separates features and bugs within milestones', () => {
-      const result = transformProjectItems(mockProjectItems)
+describe('transformReleaseIssues', () => {
+  it('transforms the GraphQL fixture without mutating it', () => {
+    const before = structuredClone(response)
+    expect(transformReleaseIssues(response).now).toMatchObject({ version: 'v1.11.0', hiddenEpicCount: 0, epics: [{ state: 'in_progress', progress: { completed: 1, total: 4 } }] })
+    expect(response).toEqual(before)
+  })
+  it('sorts versions numerically, chooses now, groups dated and dateless releases, excludes withdrawn and caps shipped', () => {
+    const release = fixture('valid-release')
+    const shipped = [8, 10, 9].map(minor => ({ ...release, title: `v1.${minor}.0 — Shipped`, state: 'CLOSED', stateReason: 'COMPLETED', closedAt: '2026-09-01T00:00:00Z' }))
+    const result = transform([fixture('dateless-release'), fixture('missing-section'), ...shipped, release,
+      { ...fixture('withdrawn-release'), state: 'CLOSED', stateReason: 'NOT_PLANNED' },
+      { ...release, title: 'v0.1.0 — Closed', state: 'CLOSED', stateReason: null },
+      { ...release, title: 'v1.13.0 — Soon' }, { ...release, title: 'v3.0.0 — Future', body: '' },
+    ])
+    expect(result.now?.version).toBe('v1.11.0')
+    expect(result.next.map(r => r.version)).toEqual(['v1.12.0', 'v1.13.0'])
+    expect(result.later.map(r => r.version)).toEqual(['v2.0.0', 'v3.0.0'])
+    expect(result.shipped.map(r => r.version)).toEqual(['v1.10.0', 'v1.9.0'])
+    expect(result.shipped[0].shippedOn).toBe('2026-09-01T00:00:00Z')
+    expect(transform([fixture('dateless-release')]).now?.version).toBe('v2.0.0')
+  })
+  it('derives and stably orders epic states, omits zero progress and counts only missing summaries as hidden', () => {
+    const epic = { ...fixture('epic-with-summary'), subIssuesSummary: { total: 4, completed: 0 } }
+    const nodes = [
+      { ...epic, number: 1, state: 'CLOSED', stateReason: 'COMPLETED' },
+      { ...epic, number: 2, subIssuesSummary: { total: 0, completed: 0 } },
+      { ...epic, number: 3, subIssuesSummary: { total: 4, completed: 2 } },
+      { ...epic, number: 4 }, { ...epic, number: 5, subIssuesSummary: { total: 4, completed: 1 } },
+      fixture('epic-without-summary'), { ...epic, body: '' },
+      { ...fixture('duplicate-closed-epic'), state: 'CLOSED', stateReason: 'DUPLICATE' },
+      { ...epic, state: 'CLOSED', stateReason: 'NOT_PLANNED', body: '' },
+    ]
+    const release = transform([{ ...fixture('valid-release'), subIssues: { nodes } }]).now!
+    expect(release.epics.map(e => [e.number, e.state])).toEqual([[3, 'in_progress'], [5, 'in_progress'], [2, 'planned'], [4, 'planned'], [1, 'done']])
+    expect(release.epics[2].progress).toBeUndefined()
+    expect(release.hiddenEpicCount).toBe(2)
+  })
+  it('skips malformed issues and epics without losing valid neighbors', () => {
+    const release = fixture('valid-release')
+    const result = transform([null, 42, { ...release, body: {} }, { ...release, subIssues: { nodes: [null, { title: 4 }] } }, release])
+    expect(result.now?.version).toBe('v1.11.0')
+    expect(result.next).toHaveLength(1)
+    expect(warn).toHaveBeenCalled()
+  })
+  it.each([null, undefined, {}, { repository: { issues: { nodes: {} } } }])('returns empty for malformed input %j', data => {
+    expect(transformReleaseIssues(data)).toEqual(EMPTY)
+  })
+})
 
-      const active = result.active[0]
-      // 2 features: standalone + epic (sub-issue filtered out)
-      expect(active.features).toHaveLength(2)
-      expect(active.features[0].title).toBe('Add offline sync')
-      expect(active.features[1].title).toBe('Prevent overselling at POS')
-      expect(active.bugs).toHaveLength(1)
-      expect(active.bugs[0].title).toBe('Fix barcode scanner crash')
-    })
-
-    it('calculates progress correctly', () => {
-      const result = transformProjectItems(mockProjectItems)
-
-      // v1.9.0: 0 done out of 3 (2 standalone + 1 epic, sub-issue filtered)
-      expect(result.active[0].progress).toEqual({ total: 3, completed: 0 })
-
-      // v1.8.8: 2 done out of 2
-      expect(result.shipped[0].progress).toEqual({ total: 2, completed: 2 })
-    })
-
-    it('filters out items from non-app repos', () => {
-      const result = transformProjectItems(mockProjectItems)
-      const allItems = [
-        ...result.active.flatMap(m => [...m.features, ...m.bugs]),
-        ...result.shipped.flatMap(m => [...m.features, ...m.bugs]),
-      ]
-
-      expect(allItems.find(i => i.title === 'Update Medusa plugins')).toBeUndefined()
-    })
-
-    it('filters out items with non-public labels', () => {
-      const result = transformProjectItems(mockProjectItems)
-      const allItems = [
-        ...result.active.flatMap(m => [...m.features, ...m.bugs]),
-        ...result.shipped.flatMap(m => [...m.features, ...m.bugs]),
-      ]
-
-      expect(allItems.find(i => i.title === 'Update dependencies')).toBeUndefined()
-    })
-
-    it('filters out items in Backlog/Triage status', () => {
-      const result = transformProjectItems(mockProjectItems)
-      const allItems = [
-        ...result.active.flatMap(m => [...m.features, ...m.bugs]),
-        ...result.upcoming.flatMap(m => [...m.features, ...m.bugs]),
-        ...result.shipped.flatMap(m => [...m.features, ...m.bugs]),
-      ]
-
-      expect(allItems.find(i => i.title === 'Voice commands')).toBeUndefined()
-    })
-
-    it('filters out items without a milestone', () => {
-      const result = transformProjectItems(mockProjectItems)
-      const allItems = [
-        ...result.active.flatMap(m => [...m.features, ...m.bugs]),
-        ...result.shipped.flatMap(m => [...m.features, ...m.bugs]),
-      ]
-
-      expect(allItems.find(i => i.title === 'Random fix')).toBeUndefined()
-    })
-
-    it('filters out DraftIssues', () => {
-      const result = transformProjectItems(mockProjectItems)
-      const allItems = [
-        ...result.active.flatMap(m => [...m.features, ...m.bugs]),
-        ...result.shipped.flatMap(m => [...m.features, ...m.bugs]),
-      ]
-
-      expect(allItems.find(i => i.title === 'Some draft idea')).toBeUndefined()
-    })
-
-    it('includes epics from the roadmap repo as features', () => {
-      const result = transformProjectItems(mockProjectItems)
-      const epic = result.active[0].features.find(f => f.title === 'Prevent overselling at POS')
-      expect(epic).toBeDefined()
-      expect(epic!.type).toBe('feature')
-    })
-
-    it('filters out sub-issues that have a parent', () => {
-      const result = transformProjectItems(mockProjectItems)
-      const allItems = [
-        ...result.active.flatMap(m => [...m.features, ...m.bugs]),
-        ...result.upcoming.flatMap(m => [...m.features, ...m.bugs]),
-        ...result.shipped.flatMap(m => [...m.features, ...m.bugs]),
-      ]
-
-      expect(allItems.find(i => i.title === 'Server-side stock validation')).toBeUndefined()
-    })
-
-    it('includes subIssueProgress for epics with sub-issues', () => {
-      const result = transformProjectItems(mockProjectItems)
-      const epic = result.active[0].features.find(f => f.title === 'Prevent overselling at POS')
-      expect(epic!.subIssueProgress).toEqual({ total: 5, completed: 2 })
-    })
-
-    it('does not include subIssueProgress for standalone issues', () => {
-      const result = transformProjectItems(mockProjectItems)
-      const standalone = result.active[0].features.find(f => f.title === 'Add offline sync')
-      expect(standalone!.subIssueProgress).toBeUndefined()
-    })
-
-    it('truncates descriptions to 150 characters', () => {
-      const longItem = {
-        organization: {
-          projectV2: {
-            items: {
-              pageInfo: { hasNextPage: false, endCursor: null },
-              nodes: [{
-                fieldValueByName: { name: 'Up Next' },
-                content: {
-                  __typename: 'Issue',
-                  id: 'I_kwDOD1',
-                  title: 'Long description feature',
-                  bodyText: 'A'.repeat(300),
-                  state: 'OPEN',
-                  number: 100,
-                  url: 'https://github.com/wcpos/monorepo/issues/100',
-                  labels: { nodes: [{ name: 'enhancement' }] },
-                  milestone: { title: 'v2.0.0', description: null, dueOn: null, state: 'OPEN' },
-                  repository: { name: 'monorepo' },
-                },
-              }],
-            },
-          },
-        },
-      }
-
-      const result = transformProjectItems(longItem)
-      const feature = result.upcoming[0]?.features[0]
-      expect(feature?.description.length).toBeLessThanOrEqual(153) // 150 + '...'
-    })
-
-    it('returns empty data when no items match', () => {
-      const empty = {
-        organization: {
-          projectV2: {
-            items: {
-              pageInfo: { hasNextPage: false, endCursor: null },
-              nodes: [],
-            },
-          },
-        },
-      }
-
-      const result = transformProjectItems(empty)
-      expect(result.active).toHaveLength(0)
-      expect(result.upcoming).toHaveLength(0)
-      expect(result.shipped).toHaveLength(0)
-    })
-
-    it('limits shipped milestones to the 2 most recent', () => {
-      const manyShipped = {
-        organization: {
-          projectV2: {
-            items: {
-              pageInfo: { hasNextPage: false, endCursor: null },
-              nodes: ['v1.8.5', 'v1.8.6', 'v1.8.7', 'v1.8.8'].map((version, i) => ({
-                fieldValueByName: { name: 'Done' },
-                content: {
-                  __typename: 'Issue',
-                  id: `I_kwDOE${i}`,
-                  title: `Feature for ${version}`,
-                  bodyText: 'Done feature.',
-                  state: 'CLOSED',
-                  number: 200 + i,
-                  url: `https://github.com/wcpos/monorepo/issues/${200 + i}`,
-                  labels: { nodes: [{ name: 'enhancement' }] },
-                  milestone: { title: version, description: null, dueOn: null, state: 'CLOSED' },
-                  repository: { name: 'monorepo' },
-                },
-              })),
-            },
-          },
-        },
-      }
-
-      const result = transformProjectItems(manyShipped)
-      expect(result.shipped).toHaveLength(2)
-      expect(result.shipped[0].title).toBe('v1.8.8')
-      expect(result.shipped[1].title).toBe('v1.8.7')
+describe('fetchRoadmapData', () => {
+  it('uses the release query, constants and feature header', async () => {
+    graphql.mockResolvedValue(response)
+    expect((await fetchRoadmapData()).now?.version).toBe('v1.11.0')
+    expect(graphql).toHaveBeenCalledWith(expect.stringContaining('states: [OPEN, CLOSED]'), {
+      owner: 'wcpos', repo: 'roadmap', label: 'release', cursor: null, headers: { 'GraphQL-Features': 'sub_issues' },
     })
   })
-
-  describe('fetchRoadmapData', () => {
-    it('calls GitHub GraphQL API and returns transformed data', async () => {
-      mockGraphql.mockResolvedValueOnce(mockProjectItems)
-
-      const result = await fetchRoadmapData()
-
-      expect(mockGraphql).toHaveBeenCalledTimes(1)
-      expect(result.active).toHaveLength(1)
-      expect(result.shipped).toHaveLength(1)
-    })
-
-    it('passes sub_issues feature header to GraphQL', async () => {
-      mockGraphql.mockResolvedValueOnce(mockProjectItems)
-
-      await fetchRoadmapData()
-
-      expect(mockGraphql).toHaveBeenCalledWith(
-        expect.any(String),
-        expect.objectContaining({
-          headers: expect.objectContaining({
-            'GraphQL-Features': 'sub_issues',
-          }),
-        }),
-      )
-    })
-
-    it('paginates through multiple pages', async () => {
-      const page1 = {
-        organization: {
-          projectV2: {
-            items: {
-              pageInfo: { hasNextPage: true, endCursor: 'cursor1' },
-              nodes: [mockProjectItems.organization.projectV2.items.nodes[0]],
-            },
-          },
-        },
-      }
-      const page2 = {
-        organization: {
-          projectV2: {
-            items: {
-              pageInfo: { hasNextPage: false, endCursor: null },
-              nodes: [mockProjectItems.organization.projectV2.items.nodes[1]],
-            },
-          },
-        },
-      }
-
-      mockGraphql.mockResolvedValueOnce(page1).mockResolvedValueOnce(page2)
-
-      const result = await fetchRoadmapData()
-
-      expect(mockGraphql).toHaveBeenCalledTimes(2)
-      expect(mockGraphql).toHaveBeenNthCalledWith(1, expect.any(String), expect.objectContaining({ cursor: null }))
-      expect(mockGraphql).toHaveBeenNthCalledWith(2, expect.any(String), expect.objectContaining({ cursor: 'cursor1' }))
-      // Both items are in v1.9.0 active milestone
-      expect(result.active).toHaveLength(1)
-      expect(result.active[0].features).toHaveLength(1)
-      expect(result.active[0].bugs).toHaveLength(1)
-    })
-
-    it('returns empty data on API error', async () => {
-      mockGraphql.mockRejectedValueOnce(new Error('GraphQL error'))
-
-      const result = await fetchRoadmapData()
-
-      expect(result.active).toHaveLength(0)
-      expect(result.upcoming).toHaveLength(0)
-      expect(result.shipped).toHaveLength(0)
-    })
+  it('paginates issues', async () => {
+    graphql.mockResolvedValueOnce({ repository: { issues: { ...response.repository.issues, pageInfo: { hasNextPage: true, endCursor: 'cursor1' } } } })
+      .mockResolvedValueOnce({ repository: { issues: { nodes: [fixture('dateless-release')], pageInfo: { hasNextPage: false, endCursor: null } } } })
+    expect((await fetchRoadmapData()).later[0].version).toBe('v2.0.0')
+    expect(graphql).toHaveBeenCalledTimes(2)
+    expect(graphql).toHaveBeenLastCalledWith(expect.any(String), expect.objectContaining({ cursor: 'cursor1' }))
+  })
+  it('returns empty and logs API and auth failures', async () => {
+    graphql.mockRejectedValueOnce(new Error('API failure'))
+    expect(await fetchRoadmapData()).toEqual(EMPTY)
+    getOctokit.mockImplementationOnce(() => { throw new Error('Auth failure') })
+    expect(await fetchRoadmapData()).toEqual(EMPTY)
+    expect(error).toHaveBeenCalledTimes(2)
+  })
+  it('rejects a malformed page and discards partial data on failure', async () => {
+    graphql.mockResolvedValueOnce({ repository: { issues: { ...response.repository.issues, pageInfo: { hasNextPage: true, endCursor: 'cursor1' } } } }).mockResolvedValueOnce(null)
+    expect(await fetchRoadmapData()).toEqual(EMPTY)
+    expect(error).toHaveBeenCalled()
+  })
+  it('logs a production empty roadmap as an error, including failures', async () => {
+    vi.stubEnv('NODE_ENV', 'production')
+    graphql.mockResolvedValueOnce({ repository: { issues: { nodes: [], pageInfo: { hasNextPage: false, endCursor: null } } } })
+    expect(await fetchRoadmapData()).toEqual(EMPTY)
+    expect(error).toHaveBeenCalledWith('Roadmap rendered empty')
+    error.mockClear()
+    graphql.mockRejectedValueOnce(new Error('API failure'))
+    await fetchRoadmapData()
+    expect(error).toHaveBeenCalledWith('Roadmap rendered empty')
+  })
+  it('does not emit the empty alert in development or for populated production data', async () => {
+    vi.stubEnv('NODE_ENV', 'development')
+    graphql.mockResolvedValueOnce({ repository: { issues: { nodes: [], pageInfo: { hasNextPage: false, endCursor: null } } } })
+    await fetchRoadmapData()
+    vi.stubEnv('NODE_ENV', 'production')
+    graphql.mockResolvedValueOnce(response)
+    await fetchRoadmapData()
+    expect(error).not.toHaveBeenCalled()
   })
 })

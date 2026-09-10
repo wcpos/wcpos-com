@@ -356,7 +356,7 @@
       "description": "より高速でオフラインにも強いWCPOSへ向かう各ステップを、新しい作業から順にGitHubから直接表示します。"
     },
     "board": {
-      "link": "WCPOSプロジェクトボードからライブ取得"
+      "link": "GitHubからの最新情報"
     },
     "status": {
       "done": "完了",
@@ -368,7 +368,8 @@
       "phases": {
         "now": "現在",
         "next": "次",
-        "shipped": "リリース済み"
+        "shipped": "リリース済み",
+        "later": "将来"
       },
       "progress": "{total}件中{completed}件完了",
       "progressDue": "{total}件中{completed}件完了 · 期限 {date}",
@@ -376,13 +377,16 @@
       "shippedWithDate": "リリース済み · {date}",
       "externalContentNotice": "ロードマップ項目の詳細はGitHubから取得されるため、英語で表示される場合があります。"
     },
-    "bugs": {
-      "summary": "{count, plural, one {+ # 件のバグ修正と改善} other {+ # 件のバグ修正と改善}}",
-      "status": {
-        "done": "修正済み",
-        "in_progress": "進行中",
-        "planned": "予定"
-      }
+    "release": {
+      "whyTitle": "このリリースの目的",
+      "notInTitle": "このリリースに含まれないもの",
+      "epicsDone": "{total} 件中 {completed} 件の機能が完了",
+      "epicsDoneLabel": "機能が完了",
+      "inside": "{version}の内容",
+      "noPublicItems": "公開項目はまだありません",
+      "noDate": "日程未定",
+      "due": "予定：{date}",
+      "shippedOn": "リリース済み：{date}"
     }
   },
   "pro": {

@@ -356,7 +356,7 @@
       "description": "Elke halte op weg naar een sneller, offline-bestendig WCPOS — rechtstreeks uit onze GitHub gehaald, nieuwste werk eerst."
     },
     "board": {
-      "link": "live vanaf het WCPOS-projectbord"
+      "link": "live van GitHub"
     },
     "status": {
       "done": "Klaar",
@@ -368,7 +368,8 @@
       "phases": {
         "now": "Nu",
         "next": "Volgende",
-        "shipped": "Uitgebracht"
+        "shipped": "Uitgebracht",
+        "later": "Op termijn"
       },
       "progress": "{completed} van {total} klaar",
       "progressDue": "{completed} van {total} klaar · deadline {date}",
@@ -376,13 +377,16 @@
       "shippedWithDate": "uitgebracht · {date}",
       "externalContentNotice": "Details van routekaartitems komen van GitHub en kunnen in het Engels worden weergegeven."
     },
-    "bugs": {
-      "summary": "{count, plural, one {+ # bugfix en verbetering} other {+ # bugfixes en verbeteringen}}",
-      "status": {
-        "done": "opgelost",
-        "in_progress": "bezig",
-        "planned": "gepland"
-      }
+    "release": {
+      "whyTitle": "Waarom deze release",
+      "notInTitle": "Niet in deze release",
+      "epicsDone": "{completed} van {total} functies klaar",
+      "epicsDoneLabel": "functies klaar",
+      "inside": "In {version}",
+      "noPublicItems": "Nog geen openbare items",
+      "noDate": "Nog geen datum",
+      "due": "Gepland voor {date}",
+      "shippedOn": "Uitgebracht in {date}"
     }
   },
   "pro": {
