@@ -588,7 +588,10 @@ describe('LicensesClient', () => {
     // The prompt carries the claim CTA as its action — and it is the only
     // claim form on the card (the members-section row is suppressed).
     const notice = prompt.closest('div.rounded-md')
-    expect(notice?.querySelector('form[action="/api/discord/claim"]')).not.toBeNull()
+    expect(notice).not.toBeNull()
+    expect(
+      (notice as HTMLElement).querySelector('form[action="/api/discord/claim"]')
+    ).not.toBeNull()
     expect(container.querySelectorAll('form[action="/api/discord/claim"]')).toHaveLength(1)
     // The prompt sits ABOVE the facts row, not buried under the sites list.
     const facts = screen.getByText('Updates & priority support')
@@ -596,7 +599,40 @@ describe('LicensesClient', () => {
       prompt.compareDocumentPosition(facts) & Node.DOCUMENT_POSITION_FOLLOWING
     ).toBeTruthy()
     // The quieter members-section hint is for cards that already have a member.
-    expect(screen.queryByText(/Every account connected to this license/)).not.toBeInTheDocument()
+    expect(screen.queryByText(/connects with this license key/)).not.toBeInTheDocument()
+  })
+
+  it('shows the prompt on ONE card only: never once any licence has a Discord member', () => {
+    const { container } = render(
+      <LicensesClient
+        initialLicenses={[
+          makeLicense({ id: 'lic-1' }),
+          makeLicense({ id: 'lic-2', key: 'WXYZ-WXYZ-WXYZ-WXYZ' }),
+        ]}
+        discordAccessByLicense={{
+          'lic-1': {
+            licenseId: 'lic-1',
+            seatCap: 5,
+            usedSeats: 1,
+            members: [
+              { id: 'member-ada', discordUserId: 'discord-ada', handle: '@ada', avatarUrl: null, connectedAt: '2026-06-01T00:00:00.000Z' },
+            ],
+            blockedMembers: [],
+          },
+        }}
+      />
+    )
+    // Open the second (collapsed) card so its detail renders.
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Show details for license ending in WXYZ' })
+    )
+
+    // The account already has Discord access via lic-1, so lic-2 must not
+    // carry the loud prompt — only the quiet members-section Connect row.
+    expect(
+      screen.queryByText(/Priority support for this license is delivered/)
+    ).not.toBeInTheDocument()
+    expect(container.querySelectorAll('form[action="/api/discord/claim"]')).toHaveLength(2)
   })
 
   it('drops the top prompt once a member is connected and keeps Connect in the members section', () => {
@@ -620,7 +656,7 @@ describe('LicensesClient', () => {
     expect(
       screen.queryByText(/Priority support for this license is delivered/)
     ).not.toBeInTheDocument()
-    expect(screen.getByText(/Every account connected to this license/)).toBeInTheDocument()
+    expect(screen.getByText(/connects with this license key/)).toBeInTheDocument()
     expect(container.querySelectorAll('form[action="/api/discord/claim"]')).toHaveLength(1)
     expect(
       screen.getByRole('button', { name: 'Connect Discord for license ending in MNOP' })

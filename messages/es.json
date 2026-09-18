@@ -815,7 +815,7 @@
       "discordConnected": "Conectado el {date}",
       "discordRemove": "Eliminar",
       "discordRemoveAria": "Eliminar {handle}",
-      "discordConnectHint": "El soporte prioritario se ofrece en nuestro Discord. Cada cuenta conectada a esta licencia recibe el rol Pro y acceso a los canales de soporte Pro.",
+      "discordConnectHint": "El soporte prioritario se ofrece en nuestro Discord. Quien se conecte con esta clave de licencia recibe el rol Pro y acceso a los canales de soporte Pro.",
       "discordSupportPrompt": "El soporte prioritario de esta licencia se ofrece en nuestro Discord. Conecta tu cuenta de Discord para desbloquear los canales de soporte Pro.",
       "discordNoMembers": "Aún no hay ninguna cuenta de Discord conectada.",
       "discordRemoveError": "No se pudo eliminar el miembro de Discord. Inténtalo de nuevo.",

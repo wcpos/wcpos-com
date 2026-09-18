@@ -815,7 +815,7 @@
       "discordConnected": "Verbonden op {date}",
       "discordRemove": "Verwijderen",
       "discordRemoveAria": "{handle} verwijderen",
-      "discordConnectHint": "Prioriteitsondersteuning loopt via onze Discord. Elk account dat met deze licentie is verbonden, krijgt de Pro-rol en toegang tot de Pro-supportkanalen.",
+      "discordConnectHint": "Prioriteitsondersteuning loopt via onze Discord. Iedereen die met deze licentiesleutel verbindt, krijgt de Pro-rol en toegang tot de Pro-supportkanalen.",
       "discordSupportPrompt": "Prioriteitsondersteuning voor deze licentie loopt via onze Discord. Verbind je Discord-account om de Pro-supportkanalen te ontgrendelen.",
       "discordNoMembers": "Nog geen Discord-account verbonden.",
       "discordRemoveError": "Kan Discord-lid niet verwijderen. Probeer het opnieuw.",

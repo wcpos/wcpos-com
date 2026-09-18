@@ -815,7 +815,7 @@
       "discordConnected": "Verbunden {date}",
       "discordRemove": "Entfernen",
       "discordRemoveAria": "{handle} entfernen",
-      "discordConnectHint": "Der Priority-Support läuft über unseren Discord. Jedes mit dieser Lizenz verbundene Konto erhält die Pro-Rolle und Zugang zu den Pro-Support-Kanälen.",
+      "discordConnectHint": "Der Priority-Support läuft über unseren Discord. Wer sich mit diesem Lizenzschlüssel verbindet, erhält die Pro-Rolle und Zugang zu den Pro-Support-Kanälen.",
       "discordSupportPrompt": "Der Priority-Support für diese Lizenz läuft über unseren Discord. Verbinde dein Discord-Konto, um die Pro-Support-Kanäle freizuschalten.",
       "discordNoMembers": "Noch kein Discord-Konto verbunden.",
       "discordRemoveError": "Discord-Mitglied konnte nicht entfernt werden. Bitte versuche es erneut.",

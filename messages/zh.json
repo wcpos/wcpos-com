@@ -815,7 +815,7 @@
       "discordConnected": "连接于 {date}",
       "discordRemove": "移除",
       "discordRemoveAria": "移除 {handle}",
-      "discordConnectHint": "优先支持在我们的 Discord 中提供。连接到此许可证的每个账号都会获得 Pro 身份组和 Pro 支持频道的访问权限。",
+      "discordConnectHint": "优先支持在我们的 Discord 中提供。任何使用此许可证密钥连接的人都会获得 Pro 身份组和 Pro 支持频道的访问权限。",
       "discordSupportPrompt": "此许可证的优先支持在我们的 Discord 中提供。连接你的 Discord 账号即可解锁 Pro 支持频道。",
       "discordNoMembers": "暂无已连接的 Discord 账号。",
       "discordRemoveError": "移除 Discord 成员失败。请重试。",

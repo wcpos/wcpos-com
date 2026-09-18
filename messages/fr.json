@@ -815,7 +815,7 @@
       "discordConnected": "Connecté le {date}",
       "discordRemove": "Retirer",
       "discordRemoveAria": "Retirer {handle}",
-      "discordConnectHint": "Le support prioritaire est assuré sur notre Discord. Chaque compte connecté à cette licence reçoit le rôle Pro et l’accès aux canaux de support Pro.",
+      "discordConnectHint": "Le support prioritaire est assuré sur notre Discord. Toute personne qui se connecte avec cette clé de licence reçoit le rôle Pro et l’accès aux canaux de support Pro.",
       "discordSupportPrompt": "Le support prioritaire de cette licence est assuré sur notre Discord. Connectez votre compte Discord pour débloquer les canaux de support Pro.",
       "discordNoMembers": "Aucun compte Discord connecté pour le moment.",
       "discordRemoveError": "Échec du retrait du membre Discord. Veuillez réessayer.",

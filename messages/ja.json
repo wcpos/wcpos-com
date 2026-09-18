@@ -815,7 +815,7 @@
       "discordConnected": "{date} に連携",
       "discordRemove": "削除",
       "discordRemoveAria": "{handle} を削除",
-      "discordConnectHint": "優先サポートはDiscordで提供しています。このライセンスに連携したアカウントはProロールとProサポートチャンネルへのアクセスを取得できます。",
+      "discordConnectHint": "優先サポートはDiscordで提供しています。このライセンスキーで連携した人はProロールとProサポートチャンネルへのアクセスを取得できます。",
       "discordSupportPrompt": "このライセンスの優先サポートはDiscordで提供しています。Discordアカウントを連携すると、Proサポートチャンネルが利用できるようになります。",
       "discordNoMembers": "まだ連携済みのDiscordアカウントはありません。",
       "discordRemoveError": "Discordメンバーの削除に失敗しました。もう一度お試しください。",

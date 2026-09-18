@@ -476,6 +476,14 @@ export function LicensesClient({
   // Mirrors the account-level suppression on the overview page.
   const updateAccessLapsingSoon = getExpiringSoonExpiry(licenses, now) !== null
 
+  // The support prompt's promise ("unlock the Pro support channels") is
+  // account-level: once ANY licence has a Discord member, the holder is in.
+  // Suppress the prompt everywhere at that point rather than nagging on every
+  // other card — the quiet members-section row still offers seats there.
+  const anyDiscordConnected = Object.values(discordAccessByLicenseState).some(
+    (access) => access.members.length > 0
+  )
+
   return (
     <>
       {discordClaimStatus && (
@@ -552,14 +560,15 @@ export function LicensesClient({
           const discordMembers = discordAccess.members
           const hasFreeDiscordSeat =
             discordAccess.usedSeats < discordAccess.seatCap
-          // Priority support is delivered in Discord, so an active licence
-          // with nobody connected yet gets the prompt at the TOP of the card
-          // (claim CTA as its action) instead of only in the members section
-          // at the bottom, where it was easy to miss. Read-only inspection
-          // keeps the quiet bottom row: the claim flow is never offered there.
+          // Priority support is delivered in Discord, so while the holder has
+          // no Discord connected on ANY licence, an active card gets the
+          // prompt at the TOP (claim CTA as its action) instead of only in the
+          // members section at the bottom, where it was easy to miss.
+          // Read-only inspection keeps the quiet bottom row: the claim flow is
+          // never offered there.
           const promptDiscordConnect =
             displayStatus === 'active' &&
-            discordMembers.length === 0 &&
+            !anyDiscordConnected &&
             hasFreeDiscordSeat &&
             !viewOnly
           const keyRevealed = revealedKeys.has(license.id)
@@ -583,7 +592,12 @@ export function LicensesClient({
               />
               <Button
                 type="submit"
-                variant={promptDiscordConnect ? 'default' : 'outline'}
+                // Primary only in the top prompt, and only while the expiry
+                // notice's Renew is not already the card's primary action —
+                // one primary CTA per card, same rule as the Renew dedupe.
+                variant={
+                  promptDiscordConnect && !expiringSoon ? 'default' : 'outline'
+                }
                 size="sm"
                 aria-label={t('discordConnectCtaAria', { suffix: keySuffix })}
               >
