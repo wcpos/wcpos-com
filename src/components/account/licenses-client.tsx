@@ -139,6 +139,36 @@ function emptyDiscordAccess(licenseId: string): DiscordAccess {
   }
 }
 
+/**
+ * Which card (if any) carries the "connect Discord for priority support"
+ * prompt. The prompt's promise is account-level, so it appears on exactly ONE
+ * card — the first active licence with a free seat — and on none once any
+ * ACTIVE licence already has a member. Members on expired / suspended /
+ * revoked / unverifiable licences don't count: the Pro role is evaluated per
+ * active licence, so those members no longer hold it and the holder still
+ * needs to connect through a live licence. Shared by the initial open-set
+ * (so the prompt card opens by default even when it isn't first) and render.
+ */
+function findDiscordPromptLicenseId(
+  licenses: License[],
+  accessByLicense: Record<string, DiscordAccess>,
+  now: number
+): string | null {
+  const isActive = (license: License) =>
+    getLicenseDisplayStatus(license, now) === 'active'
+  const accessFor = (license: License) =>
+    accessByLicense[license.id] ?? emptyDiscordAccess(license.id)
+  const anyActiveConnected = licenses.some(
+    (license) => isActive(license) && accessFor(license).members.length > 0
+  )
+  if (anyActiveConnected) return null
+  const target = licenses.find((license) => {
+    const access = accessFor(license)
+    return isActive(license) && access.usedSeats < access.seatCap
+  })
+  return target?.id ?? null
+}
+
 function memberInitials(handle: string): string {
   const cleaned = handle.replace(/^@/, '').trim()
   if (!cleaned) return 'DC'
@@ -233,23 +263,29 @@ export function LicensesClient({
   // Captured once per mount so render stays pure for the React compiler.
   const [now] = useState(() => Date.now())
   // With several licences the page opens scannable: the first card starts
-  // expanded, and so does any card that needs attention (not plain-active, or
-  // expiring soon). The rest collapse to their key band until clicked.
+  // expanded, and so does any card that needs attention (not plain-active,
+  // expiring soon, or carrying the Discord support prompt). The rest collapse
+  // to their key band until clicked.
   // Uses the SAME `now` capture as the status presentation so the initial
   // open set and the rendered statuses can never disagree.
-  const [openLicenses, setOpenLicenses] = useState<Set<string>>(
-    () =>
-      new Set(
-        initialLicenses
-          .filter(
-            (license, index) =>
-              index === 0 ||
-              getLicenseDisplayStatus(license, now) !== 'active' ||
-              isLicenseExpiringSoon(license, now)
-          )
-          .map((license) => license.id)
-      )
-  )
+  const [openLicenses, setOpenLicenses] = useState<Set<string>>(() => {
+    const promptLicenseId = findDiscordPromptLicenseId(
+      initialLicenses,
+      discordAccessByLicense,
+      now
+    )
+    return new Set(
+      initialLicenses
+        .filter(
+          (license, index) =>
+            index === 0 ||
+            license.id === promptLicenseId ||
+            getLicenseDisplayStatus(license, now) !== 'active' ||
+            isLicenseExpiringSoon(license, now)
+        )
+        .map((license) => license.id)
+    )
+  })
 
   // Claim outcome handed back by the Discord OAuth callback redirect. Captured
   // once on mount, then scrubbed from the address bar so a reload (or a copied
@@ -476,6 +512,15 @@ export function LicensesClient({
   // Mirrors the account-level suppression on the overview page.
   const updateAccessLapsingSoon = getExpiringSoonExpiry(licenses, now) !== null
 
+  // The one card that carries the Discord support prompt (see the helper for
+  // the selection rule). Recomputed from live state so removing the last
+  // member, or a fresh claim, moves or clears the prompt without a reload.
+  const discordPromptLicenseId = findDiscordPromptLicenseId(
+    licenses,
+    discordAccessByLicenseState,
+    now
+  )
+
   return (
     <>
       {discordClaimStatus && (
@@ -550,12 +595,50 @@ export function LicensesClient({
           const discordAccess =
             discordAccessByLicenseState[license.id] ?? emptyDiscordAccess(license.id)
           const discordMembers = discordAccess.members
+          const hasFreeDiscordSeat =
+            discordAccess.usedSeats < discordAccess.seatCap
+          // Priority support is delivered in Discord, so while the holder has
+          // no Discord connected on any ACTIVE licence, one active card gets
+          // the prompt at the TOP (claim CTA as its action) instead of only in
+          // the members section at the bottom, where it was easy to miss.
+          // Read-only inspection keeps the quiet bottom row: the claim flow is
+          // never offered there.
+          const promptDiscordConnect =
+            license.id === discordPromptLicenseId && !viewOnly
           const keyRevealed = revealedKeys.has(license.id)
           const keyCopied = copiedKey === license.id
           // Last-4 of the key distinguishes each card's controls in the
           // accessible name — with multiple licences the buttons would
           // otherwise all announce the same label to screen readers.
           const keySuffix = license.key.slice(-4)
+          // A real form post: the 303 to Discord's authorize page (and the
+          // OAuth round-trip back) must run as a top-level navigation, which
+          // fetch() cannot do. Rendered in exactly ONE place per card — the
+          // top-of-card prompt while nobody is connected, the members section
+          // afterwards — so a card never shows two Connect buttons.
+          const connectDiscordForm = (
+            <form method="POST" action="/api/discord/claim">
+              <input type="hidden" name="licenseKey" value={license.key} />
+              <input
+                type="hidden"
+                name="returnTo"
+                value={localizeRedirectPath('/account/licenses', locale)}
+              />
+              <Button
+                type="submit"
+                // Primary only in the top prompt, and only while the expiry
+                // notice's Renew is not already the card's primary action —
+                // one primary CTA per card, same rule as the Renew dedupe.
+                variant={
+                  promptDiscordConnect && !expiringSoon ? 'default' : 'outline'
+                }
+                size="sm"
+                aria-label={t('discordConnectCtaAria', { suffix: keySuffix })}
+              >
+                {t('discordConnectCta')}
+              </Button>
+            </form>
+          )
           const isOpen = openLicenses.has(license.id)
           const detailId = `license-detail-${license.id}`
           const expiryMs = license.expiry ? Date.parse(license.expiry) : null
@@ -697,6 +780,12 @@ export function LicensesClient({
                     updateAccessLapsingSoon ? 'expiresSoonRenew' : 'expiresSoon',
                     { date: formatDateForLocale(license.expiry, locale) }
                   )}
+                </AccountNotice>
+              )}
+
+              {promptDiscordConnect && (
+                <AccountNotice variant="neutral" action={connectDiscordForm}>
+                  {t('discordSupportPrompt')}
                 </AccountNotice>
               )}
 
@@ -1112,44 +1201,26 @@ export function LicensesClient({
                     </DividedList>
                   </div>
                 )}
-                {displayStatus === 'active' && (
+                {/* While nobody is connected the prompt + CTA live at the top
+                    of the card instead (promptDiscordConnect), so this row
+                    only renders once a member exists or during read-only
+                    inspection. */}
+                {displayStatus === 'active' && !promptDiscordConnect && (
                   <div className="mt-3 flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
                     <p className="text-xs text-muted-foreground">
                       {t('discordConnectHint')}
                     </p>
-                    {viewOnly ? (
-                      /* Read-only inspection: don't offer the claim flow. The
-                         public /api/discord/claim route can't be fenced by
-                         assertViewOnly(), so hide the CTA and mirror the
-                         read-only messaging the account routes return. */
-                      discordAccess.usedSeats < discordAccess.seatCap && (
-                        <p className="text-xs text-muted-foreground">
-                          {t('apiErrors.read_only_inspection')}
-                        </p>
-                      )
-                    ) : (
-                      discordAccess.usedSeats < discordAccess.seatCap && (
-                        /* A real form post: the 303 to Discord's authorize page
-                           (and the OAuth round-trip back) must run as a
-                           top-level navigation, which fetch() cannot do. */
-                        <form method="POST" action="/api/discord/claim">
-                          <input type="hidden" name="licenseKey" value={license.key} />
-                          <input
-                            type="hidden"
-                            name="returnTo"
-                            value={localizeRedirectPath('/account/licenses', locale)}
-                          />
-                          <Button
-                            type="submit"
-                            variant="outline"
-                            size="sm"
-                            aria-label={t('discordConnectCtaAria', { suffix: keySuffix })}
-                          >
-                            {t('discordConnectCta')}
-                          </Button>
-                        </form>
-                      )
-                    )}
+                    {viewOnly
+                      ? /* Read-only inspection: don't offer the claim flow. The
+                           public /api/discord/claim route can't be fenced by
+                           assertViewOnly(), so hide the CTA and mirror the
+                           read-only messaging the account routes return. */
+                        hasFreeDiscordSeat && (
+                          <p className="text-xs text-muted-foreground">
+                            {t('apiErrors.read_only_inspection')}
+                          </p>
+                        )
+                      : hasFreeDiscordSeat && connectDiscordForm}
                   </div>
                 )}
               </div>
