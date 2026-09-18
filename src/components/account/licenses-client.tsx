@@ -139,6 +139,36 @@ function emptyDiscordAccess(licenseId: string): DiscordAccess {
   }
 }
 
+/**
+ * Which card (if any) carries the "connect Discord for priority support"
+ * prompt. The prompt's promise is account-level, so it appears on exactly ONE
+ * card — the first active licence with a free seat — and on none once any
+ * ACTIVE licence already has a member. Members on expired / suspended /
+ * revoked / unverifiable licences don't count: the Pro role is evaluated per
+ * active licence, so those members no longer hold it and the holder still
+ * needs to connect through a live licence. Shared by the initial open-set
+ * (so the prompt card opens by default even when it isn't first) and render.
+ */
+function findDiscordPromptLicenseId(
+  licenses: License[],
+  accessByLicense: Record<string, DiscordAccess>,
+  now: number
+): string | null {
+  const isActive = (license: License) =>
+    getLicenseDisplayStatus(license, now) === 'active'
+  const accessFor = (license: License) =>
+    accessByLicense[license.id] ?? emptyDiscordAccess(license.id)
+  const anyActiveConnected = licenses.some(
+    (license) => isActive(license) && accessFor(license).members.length > 0
+  )
+  if (anyActiveConnected) return null
+  const target = licenses.find((license) => {
+    const access = accessFor(license)
+    return isActive(license) && access.usedSeats < access.seatCap
+  })
+  return target?.id ?? null
+}
+
 function memberInitials(handle: string): string {
   const cleaned = handle.replace(/^@/, '').trim()
   if (!cleaned) return 'DC'
@@ -233,23 +263,29 @@ export function LicensesClient({
   // Captured once per mount so render stays pure for the React compiler.
   const [now] = useState(() => Date.now())
   // With several licences the page opens scannable: the first card starts
-  // expanded, and so does any card that needs attention (not plain-active, or
-  // expiring soon). The rest collapse to their key band until clicked.
+  // expanded, and so does any card that needs attention (not plain-active,
+  // expiring soon, or carrying the Discord support prompt). The rest collapse
+  // to their key band until clicked.
   // Uses the SAME `now` capture as the status presentation so the initial
   // open set and the rendered statuses can never disagree.
-  const [openLicenses, setOpenLicenses] = useState<Set<string>>(
-    () =>
-      new Set(
-        initialLicenses
-          .filter(
-            (license, index) =>
-              index === 0 ||
-              getLicenseDisplayStatus(license, now) !== 'active' ||
-              isLicenseExpiringSoon(license, now)
-          )
-          .map((license) => license.id)
-      )
-  )
+  const [openLicenses, setOpenLicenses] = useState<Set<string>>(() => {
+    const promptLicenseId = findDiscordPromptLicenseId(
+      initialLicenses,
+      discordAccessByLicense,
+      now
+    )
+    return new Set(
+      initialLicenses
+        .filter(
+          (license, index) =>
+            index === 0 ||
+            license.id === promptLicenseId ||
+            getLicenseDisplayStatus(license, now) !== 'active' ||
+            isLicenseExpiringSoon(license, now)
+        )
+        .map((license) => license.id)
+    )
+  })
 
   // Claim outcome handed back by the Discord OAuth callback redirect. Captured
   // once on mount, then scrubbed from the address bar so a reload (or a copied
@@ -476,12 +512,13 @@ export function LicensesClient({
   // Mirrors the account-level suppression on the overview page.
   const updateAccessLapsingSoon = getExpiringSoonExpiry(licenses, now) !== null
 
-  // The support prompt's promise ("unlock the Pro support channels") is
-  // account-level: once ANY licence has a Discord member, the holder is in.
-  // Suppress the prompt everywhere at that point rather than nagging on every
-  // other card — the quiet members-section row still offers seats there.
-  const anyDiscordConnected = Object.values(discordAccessByLicenseState).some(
-    (access) => access.members.length > 0
+  // The one card that carries the Discord support prompt (see the helper for
+  // the selection rule). Recomputed from live state so removing the last
+  // member, or a fresh claim, moves or clears the prompt without a reload.
+  const discordPromptLicenseId = findDiscordPromptLicenseId(
+    licenses,
+    discordAccessByLicenseState,
+    now
   )
 
   return (
@@ -561,16 +598,13 @@ export function LicensesClient({
           const hasFreeDiscordSeat =
             discordAccess.usedSeats < discordAccess.seatCap
           // Priority support is delivered in Discord, so while the holder has
-          // no Discord connected on ANY licence, an active card gets the
-          // prompt at the TOP (claim CTA as its action) instead of only in the
-          // members section at the bottom, where it was easy to miss.
+          // no Discord connected on any ACTIVE licence, one active card gets
+          // the prompt at the TOP (claim CTA as its action) instead of only in
+          // the members section at the bottom, where it was easy to miss.
           // Read-only inspection keeps the quiet bottom row: the claim flow is
           // never offered there.
           const promptDiscordConnect =
-            displayStatus === 'active' &&
-            !anyDiscordConnected &&
-            hasFreeDiscordSeat &&
-            !viewOnly
+            license.id === discordPromptLicenseId && !viewOnly
           const keyRevealed = revealedKeys.has(license.id)
           const keyCopied = copiedKey === license.id
           // Last-4 of the key distinguishes each card's controls in the

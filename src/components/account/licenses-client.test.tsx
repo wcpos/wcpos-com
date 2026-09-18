@@ -635,6 +635,58 @@ describe('LicensesClient', () => {
     expect(container.querySelectorAll('form[action="/api/discord/claim"]')).toHaveLength(2)
   })
 
+  it('puts the prompt on the FIRST eligible card only when several active licences have nobody connected', () => {
+    render(
+      <LicensesClient
+        initialLicenses={[
+          makeLicense({ id: 'lic-1' }),
+          makeLicense({ id: 'lic-2', key: 'WXYZ-WXYZ-WXYZ-WXYZ' }),
+        ]}
+      />
+    )
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Show details for license ending in WXYZ' })
+    )
+
+    const prompts = screen.getAllByText(/Priority support for this license is delivered/)
+    expect(prompts).toHaveLength(1)
+    // The prompt's Connect posts lic-1's key; lic-2 keeps the quiet row.
+    const promptForm = prompts[0].closest('div.rounded-md')?.querySelector('form')
+    expect(promptForm?.querySelector('input[name="licenseKey"]')).toHaveValue(
+      'ABCD-EFGH-IJKL-MNOP'
+    )
+    expect(screen.getAllByText(/connects with this license key/)).toHaveLength(1)
+  })
+
+  it('ignores members on an expired licence and prompts on the active one, opening its card', () => {
+    render(
+      <LicensesClient
+        initialLicenses={[
+          makeLicense({ id: 'lic-old', expiry: '2020-01-01T00:00:00Z' }),
+          makeLicense({ id: 'lic-2', key: 'WXYZ-WXYZ-WXYZ-WXYZ' }),
+        ]}
+        discordAccessByLicense={{
+          'lic-old': {
+            licenseId: 'lic-old',
+            seatCap: 5,
+            usedSeats: 1,
+            members: [
+              { id: 'member-ada', discordUserId: 'discord-ada', handle: '@ada', avatarUrl: null, connectedAt: '2026-06-01T00:00:00.000Z' },
+            ],
+            blockedMembers: [],
+          },
+        }}
+      />
+    )
+
+    // No click: the prompt card opens by default even though it is second.
+    const prompt = screen.getByText(/Priority support for this license is delivered/)
+    const form = prompt.closest('div.rounded-md')?.querySelector('form')
+    expect(form?.querySelector('input[name="licenseKey"]')).toHaveValue(
+      'WXYZ-WXYZ-WXYZ-WXYZ'
+    )
+  })
+
   it('drops the top prompt once a member is connected and keeps Connect in the members section', () => {
     const { container } = render(
       <LicensesClient
