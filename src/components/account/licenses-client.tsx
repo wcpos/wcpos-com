@@ -550,12 +550,47 @@ export function LicensesClient({
           const discordAccess =
             discordAccessByLicenseState[license.id] ?? emptyDiscordAccess(license.id)
           const discordMembers = discordAccess.members
+          const hasFreeDiscordSeat =
+            discordAccess.usedSeats < discordAccess.seatCap
+          // Priority support is delivered in Discord, so an active licence
+          // with nobody connected yet gets the prompt at the TOP of the card
+          // (claim CTA as its action) instead of only in the members section
+          // at the bottom, where it was easy to miss. Read-only inspection
+          // keeps the quiet bottom row: the claim flow is never offered there.
+          const promptDiscordConnect =
+            displayStatus === 'active' &&
+            discordMembers.length === 0 &&
+            hasFreeDiscordSeat &&
+            !viewOnly
           const keyRevealed = revealedKeys.has(license.id)
           const keyCopied = copiedKey === license.id
           // Last-4 of the key distinguishes each card's controls in the
           // accessible name — with multiple licences the buttons would
           // otherwise all announce the same label to screen readers.
           const keySuffix = license.key.slice(-4)
+          // A real form post: the 303 to Discord's authorize page (and the
+          // OAuth round-trip back) must run as a top-level navigation, which
+          // fetch() cannot do. Rendered in exactly ONE place per card — the
+          // top-of-card prompt while nobody is connected, the members section
+          // afterwards — so a card never shows two Connect buttons.
+          const connectDiscordForm = (
+            <form method="POST" action="/api/discord/claim">
+              <input type="hidden" name="licenseKey" value={license.key} />
+              <input
+                type="hidden"
+                name="returnTo"
+                value={localizeRedirectPath('/account/licenses', locale)}
+              />
+              <Button
+                type="submit"
+                variant={promptDiscordConnect ? 'default' : 'outline'}
+                size="sm"
+                aria-label={t('discordConnectCtaAria', { suffix: keySuffix })}
+              >
+                {t('discordConnectCta')}
+              </Button>
+            </form>
+          )
           const isOpen = openLicenses.has(license.id)
           const detailId = `license-detail-${license.id}`
           const expiryMs = license.expiry ? Date.parse(license.expiry) : null
@@ -697,6 +732,12 @@ export function LicensesClient({
                     updateAccessLapsingSoon ? 'expiresSoonRenew' : 'expiresSoon',
                     { date: formatDateForLocale(license.expiry, locale) }
                   )}
+                </AccountNotice>
+              )}
+
+              {promptDiscordConnect && (
+                <AccountNotice variant="neutral" action={connectDiscordForm}>
+                  {t('discordSupportPrompt')}
                 </AccountNotice>
               )}
 
@@ -1112,44 +1153,26 @@ export function LicensesClient({
                     </DividedList>
                   </div>
                 )}
-                {displayStatus === 'active' && (
+                {/* While nobody is connected the prompt + CTA live at the top
+                    of the card instead (promptDiscordConnect), so this row
+                    only renders once a member exists or during read-only
+                    inspection. */}
+                {displayStatus === 'active' && !promptDiscordConnect && (
                   <div className="mt-3 flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
                     <p className="text-xs text-muted-foreground">
                       {t('discordConnectHint')}
                     </p>
-                    {viewOnly ? (
-                      /* Read-only inspection: don't offer the claim flow. The
-                         public /api/discord/claim route can't be fenced by
-                         assertViewOnly(), so hide the CTA and mirror the
-                         read-only messaging the account routes return. */
-                      discordAccess.usedSeats < discordAccess.seatCap && (
-                        <p className="text-xs text-muted-foreground">
-                          {t('apiErrors.read_only_inspection')}
-                        </p>
-                      )
-                    ) : (
-                      discordAccess.usedSeats < discordAccess.seatCap && (
-                        /* A real form post: the 303 to Discord's authorize page
-                           (and the OAuth round-trip back) must run as a
-                           top-level navigation, which fetch() cannot do. */
-                        <form method="POST" action="/api/discord/claim">
-                          <input type="hidden" name="licenseKey" value={license.key} />
-                          <input
-                            type="hidden"
-                            name="returnTo"
-                            value={localizeRedirectPath('/account/licenses', locale)}
-                          />
-                          <Button
-                            type="submit"
-                            variant="outline"
-                            size="sm"
-                            aria-label={t('discordConnectCtaAria', { suffix: keySuffix })}
-                          >
-                            {t('discordConnectCta')}
-                          </Button>
-                        </form>
-                      )
-                    )}
+                    {viewOnly
+                      ? /* Read-only inspection: don't offer the claim flow. The
+                           public /api/discord/claim route can't be fenced by
+                           assertViewOnly(), so hide the CTA and mirror the
+                           read-only messaging the account routes return. */
+                        hasFreeDiscordSeat && (
+                          <p className="text-xs text-muted-foreground">
+                            {t('apiErrors.read_only_inspection')}
+                          </p>
+                        )
+                      : hasFreeDiscordSeat && connectDiscordForm}
                   </div>
                 )}
               </div>
