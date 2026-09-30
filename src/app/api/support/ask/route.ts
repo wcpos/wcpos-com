@@ -83,7 +83,7 @@ export async function POST(request: Request): Promise<NextResponse> {
   const controller = new AbortController()
   const timer = setTimeout(() => controller.abort(), GATEWAY_TIMEOUT_MS)
   try {
-    const { answer, model, answered, sources } = await askAide({
+    const { answer, model, answered, sources, answerId } = await askAide({
       question,
       locale,
       sessionId: resolvedSessionId,
@@ -96,7 +96,7 @@ export async function POST(request: Request): Promise<NextResponse> {
       return errorResponse('empty_answer', 502)
     }
     return NextResponse.json(
-      { answer, model, answered, sources, sessionId: resolvedSessionId },
+      { answer, model, answered, sources, sessionId: resolvedSessionId, answerId },
       { status: 200 }
     )
   } catch (err) {

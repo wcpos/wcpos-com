@@ -18,6 +18,36 @@ const ipLimiter = redis
   ? new Ratelimit({ redis, limiter: Ratelimit.slidingWindow(8, '10 m'), prefix: 'support:ip' })
   : null
 
+// Votes get their own window so rating an answer never spends one of the
+// visitor's questions. At most one vote per answer, so a little over twice the
+// question window leaves headroom for a shared office IP.
+const feedbackIpLimiter = redis
+  ? new Ratelimit({
+      redis,
+      limiter: Ratelimit.slidingWindow(20, '10 m'),
+      prefix: 'support:feedback:ip',
+    })
+  : null
+
+async function limitIp(
+  limiter: Ratelimit | null,
+  scope: string,
+  environment: StoreEnvironmentName,
+  ip: string
+): Promise<{ success: boolean; remaining: number }> {
+  if (!limiter) return { success: true, remaining: Infinity }
+  try {
+    const { success, remaining } = await limiter.limit(`${environment}:${ip}`)
+    return { success, remaining }
+  } catch (error) {
+    console.warn('support/rate-limit fail-open', {
+      scope,
+      error: error instanceof Error ? error.name : 'unknown',
+    })
+    return { success: true, remaining: Infinity }
+  }
+}
+
 /**
  * Per-IP sliding window, keyed per store environment so unchallenged test
  * traffic can never consume a live visitor's window.
@@ -26,17 +56,15 @@ export async function consumeRateLimit(
   environment: StoreEnvironmentName,
   ip: string
 ): Promise<{ success: boolean; remaining: number }> {
-  if (!ipLimiter) return { success: true, remaining: Infinity }
-  try {
-    const { success, remaining } = await ipLimiter.limit(`${environment}:${ip}`)
-    return { success, remaining }
-  } catch (error) {
-    console.warn('support/rate-limit fail-open', {
-      scope: 'ip',
-      error: error instanceof Error ? error.name : 'unknown',
-    })
-    return { success: true, remaining: Infinity }
-  }
+  return limitIp(ipLimiter, 'ip', environment, ip)
+}
+
+/** Per-IP sliding window for answer votes, same keying as consumeRateLimit. */
+export async function consumeFeedbackRateLimit(
+  environment: StoreEnvironmentName,
+  ip: string
+): Promise<{ success: boolean; remaining: number }> {
+  return limitIp(feedbackIpLimiter, 'feedback_ip', environment, ip)
 }
 
 /**

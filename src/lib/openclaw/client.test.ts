@@ -73,6 +73,21 @@ describe('askAide', () => {
     })
   })
 
+  it('returns the desk answer_id as answerId, and omits it when the desk sends none', async () => {
+    vi.stubGlobal('fetch', vi.fn()
+      .mockResolvedValueOnce(new Response(
+        JSON.stringify({ answered: true, answer: 'A.', sources: [], answer_id: 'a-1' }),
+        { status: 200 }
+      ))
+      .mockResolvedValueOnce(new Response(
+        JSON.stringify({ answered: true, answer: 'B.', sources: [] }),
+        { status: 200 }
+      )))
+
+    expect((await askAide({ question: 'x' })).answerId).toBe('a-1')
+    expect(await askAide({ question: 'y' })).not.toHaveProperty('answerId')
+  })
+
   it('returns the hand-off message when the answerer escalates (still HTTP 200)', async () => {
     vi.stubGlobal('fetch', vi.fn().mockResolvedValue(
       new Response(
