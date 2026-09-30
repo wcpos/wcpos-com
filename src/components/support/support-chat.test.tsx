@@ -58,6 +58,9 @@ vi.mock('@marsidev/react-turnstile', () => ({
 
 import { SupportChat } from './support-chat'
 
+const SESSION_ID = '5f1e2d3c-4b5a-4968-8776-655443322110'
+const ANSWER_ID = '0b9c2f4e-3d1a-4c5b-9e8f-7a6b5c4d3e2f'
+
 function renderWithIntl(
   ui: ReactElement,
   locale: Locale = 'en',
@@ -82,9 +85,14 @@ beforeEach(() => {
     vi
       .fn()
       .mockResolvedValueOnce(
-        new Response(JSON.stringify({ answer: 'Open Settings → Printing.', sessionId: 's1' }), {
-          status: 200,
-        })
+        new Response(
+          JSON.stringify({
+            answer: 'Open Settings → Printing.',
+            sessionId: SESSION_ID,
+            answerId: ANSWER_ID,
+          }),
+          { status: 200 }
+        )
       )
       .mockResolvedValueOnce(
         new Response(JSON.stringify({ answer: 'Check Hardware → Printers.', sessionId: 's1' }), {
@@ -114,6 +122,54 @@ describe('SupportChat', () => {
     await waitFor(() => expect(screen.getByText(/Check Hardware/)).toBeInTheDocument())
     expect(screen.getByText('How do I add another?')).toBeInTheDocument()
     expect(resetTurnstile).toHaveBeenCalled()
+  })
+
+  it('votes once per answer, locks both buttons and keeps the PostHog event', async () => {
+    renderWithIntl(<SupportChat />)
+    fireEvent.change(screen.getByRole('textbox'), { target: { value: 'How do I print?' } })
+    fireEvent.submit(screen.getByRole('textbox').closest('form')!)
+    await waitFor(() => expect(screen.getByText(/Open Settings/)).toBeInTheDocument())
+
+    const no = screen.getByRole('button', { name: 'No' })
+    const yes = screen.getByRole('button', { name: 'Yes' })
+    fireEvent.click(no)
+    fireEvent.click(no)
+    fireEvent.click(yes)
+
+    expect(no).toBeDisabled()
+    expect(yes).toBeDisabled()
+    expect(no).toHaveAttribute('aria-pressed', 'true')
+    expect(yes).toHaveAttribute('aria-pressed', 'false')
+
+    const feedbackCalls = vi
+      .mocked(fetch)
+      .mock.calls.filter(([url]) => url === '/api/support/feedback')
+    expect(feedbackCalls).toHaveLength(1)
+    expect(JSON.parse(String(feedbackCalls[0][1]?.body))).toEqual({
+      answerId: ANSWER_ID,
+      sessionId: SESSION_ID,
+      vote: 'down',
+      locale: 'en',
+    })
+    expect(trackClientEvent).toHaveBeenCalledTimes(1)
+    expect(trackClientEvent).toHaveBeenCalledWith('support_answer_feedback', {
+      helpful: false,
+      turn: 1,
+    })
+  })
+
+  it('shows no vote buttons on an answer without an answerId', async () => {
+    renderWithIntl(<SupportChat />)
+    fireEvent.change(screen.getByRole('textbox'), { target: { value: 'How do I print?' } })
+    fireEvent.submit(screen.getByRole('textbox').closest('form')!)
+    await waitFor(() => expect(screen.getByText(/Open Settings/)).toBeInTheDocument())
+    fireEvent.change(screen.getByRole('textbox'), { target: { value: 'And another?' } })
+    fireEvent.submit(screen.getByRole('textbox').closest('form')!)
+    await waitFor(() => expect(screen.getByText(/Check Hardware/)).toBeInTheDocument())
+
+    // Only the first answer carries an id, so only one pair of buttons.
+    expect(screen.getAllByRole('button', { name: 'Yes' })).toHaveLength(1)
+    expect(screen.getAllByRole('button', { name: 'No' })).toHaveLength(1)
   })
 
   it('sends the active locale with support questions', async () => {

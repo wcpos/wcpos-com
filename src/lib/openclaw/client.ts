@@ -24,6 +24,8 @@ interface AskAideResult {
   /** False when the answerer escalated to Discord; `answer` carries the hand-off message. */
   answered: boolean
   sources: string[]
+  /** Desk-issued id for this answer, used to vote on it; absent when the desk sends none. */
+  answerId?: string
 }
 
 /** Server-only. Calls the openclaw /support/answer endpoint (grounded support answerer). */
@@ -70,6 +72,7 @@ export async function askAide({
     answered?: boolean
     sources?: string[]
     model?: string
+    answer_id?: string
     error?: { code?: string; message?: string }
   }
 
@@ -86,5 +89,57 @@ export async function askAide({
     model: data.model,
     answered: data.answered === true,
     sources: Array.isArray(data.sources) ? data.sources.filter((s) => typeof s === 'string') : [],
+    ...(typeof data.answer_id === 'string' && data.answer_id ? { answerId: data.answer_id } : {}),
+  }
+}
+
+type FeedbackVote = 'up' | 'down'
+
+interface SendFeedbackParams {
+  answerId: string
+  sessionId: string
+  vote: FeedbackVote
+  locale?: string
+  signal?: AbortSignal
+}
+
+/**
+ * Server-only. Posts a vote to the openclaw /support/feedback endpoint.
+ * Resolves with the desk's HTTP status; throws OpenclawError only when the
+ * desk is not configured or cannot be reached.
+ */
+export async function sendFeedback({
+  answerId,
+  sessionId,
+  vote,
+  locale,
+  signal,
+}: SendFeedbackParams): Promise<number> {
+  if (!env.OPENCLAW_TOKEN) {
+    throw new OpenclawError('support assistant not configured', 503, 'not_configured')
+  }
+
+  try {
+    const response = await fetch(`${env.OPENCLAW_GATEWAY_URL}/support/feedback`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${env.OPENCLAW_TOKEN}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ answer_id: answerId, session_id: sessionId, vote, locale }),
+      signal,
+      cache: 'no-store',
+    })
+    // Only the status matters; cancel the unread body so the connection is
+    // released even if the desk stalls after sending headers.
+    await response.body?.cancel().catch(() => {})
+    return response.status
+  } catch (err) {
+    const aborted = err instanceof Error && err.name === 'AbortError'
+    throw new OpenclawError(
+      'support assistant unreachable',
+      503,
+      aborted ? 'timeout' : 'gateway_unreachable'
+    )
   }
 }

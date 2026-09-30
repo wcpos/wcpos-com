@@ -11,9 +11,14 @@ import { Section } from '@/components/ui/section'
 import { DiscordSection } from '@/components/support/discord-section'
 import styles from './support-chat.module.css'
 
+type Vote = 'up' | 'down'
+
 interface Message {
   role: 'user' | 'assistant'
   content: string
+  /** Desk-issued id; only answers that carry one can be voted on. */
+  answerId?: string
+  vote?: Vote
 }
 
 type SupportErrorCode =
@@ -108,7 +113,14 @@ export function SupportChat() {
         sessionIdRef.current = data.sessionId
         sessionStorage.setItem('wcpos-support-session', data.sessionId)
       }
-      setMessages((m) => [...m, { role: 'assistant', content: data.answer }])
+      setMessages((m) => [
+        ...m,
+        {
+          role: 'assistant',
+          content: data.answer,
+          answerId: typeof data.answerId === 'string' ? data.answerId : undefined,
+        },
+      ])
       // Tokens are single-use — re-run the widget so a follow-up question
       // carries a fresh one.
       turnstile.reset()
@@ -125,10 +137,28 @@ export function SupportChat() {
   }
 
   function feedback(helpful: boolean, idx: number) {
+    const message = messages[idx]
+    if (!message?.answerId || message.vote) return
+    const vote: Vote = helpful ? 'up' : 'down'
+    // Record the vote locally first so both buttons lock before the request
+    // goes out: one vote per answer, whatever the desk replies.
+    setMessages((m) => m.map((msg, i) => (i === idx ? { ...msg, vote } : msg)))
     // Recorder seam: consent-gated, reads window.posthog at capture time
     // (set by initPostHogBrowser), never throws — and keeps the posthog-js
     // SDK out of this route's pre-consent bundle.
     trackClientEvent('support_answer_feedback', { helpful, turn: idx })
+    // Best effort: a vote that fails to reach the desk is not worth
+    // interrupting the visitor over.
+    void fetch('/api/support/feedback', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        answerId: message.answerId,
+        sessionId: sessionIdRef.current,
+        vote,
+        locale,
+      }),
+    }).catch(() => {})
   }
 
   // When this host renders a Turnstile widget, hold submissions until it has
@@ -166,29 +196,39 @@ export function SupportChat() {
                 </div>
                 <div className="flex-1">
                   <Markdown content={m.content} className="text-sm text-foreground" />
-                  <div className="mt-2 flex items-center gap-2 text-muted-foreground">
-                    <span className="text-xs">{t('feedback.prompt')}</span>
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="sm"
-                      aria-label={t('feedback.yes')}
-                      onClick={() => feedback(true, i)}
-                      className="h-auto px-2 py-1 text-xs hover:bg-muted"
-                    >
-                      👍
-                    </Button>
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="sm"
-                      aria-label={t('feedback.no')}
-                      onClick={() => feedback(false, i)}
-                      className="h-auto px-2 py-1 text-xs hover:bg-muted"
-                    >
-                      👎
-                    </Button>
-                  </div>
+                  {m.answerId && (
+                    <div className="mt-2 flex items-center gap-2 text-muted-foreground">
+                      <span className="text-xs">{t('feedback.prompt')}</span>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        aria-label={t('feedback.yes')}
+                        aria-pressed={m.vote === 'up'}
+                        disabled={m.vote !== undefined}
+                        onClick={() => feedback(true, i)}
+                        className={`h-auto px-2 py-1 text-xs hover:bg-muted ${
+                          m.vote === 'up' ? 'bg-muted disabled:opacity-100' : ''
+                        }`}
+                      >
+                        👍
+                      </Button>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        aria-label={t('feedback.no')}
+                        aria-pressed={m.vote === 'down'}
+                        disabled={m.vote !== undefined}
+                        onClick={() => feedback(false, i)}
+                        className={`h-auto px-2 py-1 text-xs hover:bg-muted ${
+                          m.vote === 'down' ? 'bg-muted disabled:opacity-100' : ''
+                        }`}
+                      >
+                        👎
+                      </Button>
+                    </div>
+                  )}
                 </div>
               </div>
             )
