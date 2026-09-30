@@ -130,6 +130,9 @@ export async function sendFeedback({
       signal,
       cache: 'no-store',
     })
+    // Only the status matters; cancel the unread body so the connection is
+    // released even if the desk stalls after sending headers.
+    await response.body?.cancel().catch(() => {})
     return response.status
   } catch (err) {
     const aborted = err instanceof Error && err.name === 'AbortError'

@@ -97,10 +97,10 @@ describe('POST /api/support/ask', () => {
   it('returns the desk answerId, and leaves it out when there is none', async () => {
     vi.mocked(verifyTurnstile).mockResolvedValue(true)
     vi.mocked(askAide)
-      .mockResolvedValueOnce({ answer: 'Do X.', answered: true, sources: [], answerId: 'a-1' })
+      .mockResolvedValueOnce({ answer: 'Do X.', answered: true, sources: [], answerId: '3f2b8c1e-5d4a-4e6f-9b7c-2a1d0e9f8c7b' })
       .mockResolvedValueOnce({ answer: 'Do Y.', answered: true, sources: [] })
     const first = await POST(req({ question: 'How?', turnstileToken: 't' }))
-    expect(await first.json()).toMatchObject({ answerId: 'a-1' })
+    expect(await first.json()).toMatchObject({ answerId: '3f2b8c1e-5d4a-4e6f-9b7c-2a1d0e9f8c7b' })
     const second = await POST(req({ question: 'How?', turnstileToken: 't' }))
     expect(await second.json()).not.toHaveProperty('answerId')
   })

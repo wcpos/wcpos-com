@@ -7,7 +7,7 @@ vi.mock('@/utils/env', () => ({
   },
 }))
 
-import { askAide } from './client'
+import { askAide, sendFeedback } from './client'
 
 describe('askAide', () => {
   beforeEach(() => vi.restoreAllMocks())
@@ -76,7 +76,7 @@ describe('askAide', () => {
   it('returns the desk answer_id as answerId, and omits it when the desk sends none', async () => {
     vi.stubGlobal('fetch', vi.fn()
       .mockResolvedValueOnce(new Response(
-        JSON.stringify({ answered: true, answer: 'A.', sources: [], answer_id: 'a-1' }),
+        JSON.stringify({ answered: true, answer: 'A.', sources: [], answer_id: '3f2b8c1e-5d4a-4e6f-9b7c-2a1d0e9f8c7b' }),
         { status: 200 }
       ))
       .mockResolvedValueOnce(new Response(
@@ -84,7 +84,7 @@ describe('askAide', () => {
         { status: 200 }
       )))
 
-    expect((await askAide({ question: 'x' })).answerId).toBe('a-1')
+    expect((await askAide({ question: 'x' })).answerId).toBe('3f2b8c1e-5d4a-4e6f-9b7c-2a1d0e9f8c7b')
     expect(await askAide({ question: 'y' })).not.toHaveProperty('answerId')
   })
 
@@ -123,5 +123,28 @@ describe('askAide', () => {
   it('maps an aborted/failed fetch to a gateway_unreachable error', async () => {
     vi.stubGlobal('fetch', vi.fn().mockRejectedValue(Object.assign(new Error('aborted'), { name: 'AbortError' })))
     await expect(askAide({ question: 'x' })).rejects.toMatchObject({ code: 'timeout' })
+  })
+})
+
+describe('sendFeedback', () => {
+  afterEach(() => vi.unstubAllGlobals())
+
+  it('returns the desk status and cancels the unread response body', async () => {
+    const cancel = vi.fn()
+    // A body that never closes, like a desk that stalls after sending headers.
+    const body = new ReadableStream({ pull: () => new Promise(() => {}), cancel })
+    const fetchMock = vi.fn().mockResolvedValue(new Response(body, { status: 409 }))
+    vi.stubGlobal('fetch', fetchMock)
+
+    const status = await sendFeedback({
+      answerId: '3f2b8c1e-5d4a-4e6f-9b7c-2a1d0e9f8c7b',
+      sessionId: '9a8b7c6d-5e4f-4a3b-8c2d-1e0f9a8b7c6d',
+      vote: 'up',
+    })
+
+    expect(status).toBe(409)
+    expect(cancel).toHaveBeenCalledOnce()
+    const [url] = fetchMock.mock.calls[0]
+    expect(url).toBe('https://gw.test/support/feedback')
   })
 })
