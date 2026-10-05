@@ -163,6 +163,16 @@ describe('POST /api/support/ask', () => {
     expect(errorMock).not.toHaveBeenCalled()
   })
 
+  it('maps an unrecognised gateway 429 to gateway_busy', async () => {
+    vi.mocked(verifyTurnstile).mockResolvedValue(true)
+    vi.mocked(askAide).mockRejectedValue(new OpenclawError('x', 429, 'slow_down'))
+    const res = await POST(req({ question: 'How?', turnstileToken: 't' }))
+    expect(res.status).toBe(429)
+    expect(await res.json()).toEqual({ errorCode: 'gateway_busy' })
+    expect(warnMock).toHaveBeenCalledTimes(1)
+    expect(errorMock).not.toHaveBeenCalled()
+  })
+
   it('maps a desk question_too_long 400 to invalid_question', async () => {
     vi.mocked(verifyTurnstile).mockResolvedValue(true)
     vi.mocked(askAide).mockRejectedValue(new OpenclawError('too long', 400, 'question_too_long'))
@@ -186,6 +196,15 @@ describe('POST /api/support/ask', () => {
   it('maps timeout to 504 and logs at error', async () => {
     vi.mocked(verifyTurnstile).mockResolvedValue(true)
     vi.mocked(askAide).mockRejectedValue(new OpenclawError('timed out', 503, 'timeout'))
+    const res = await POST(req({ question: 'How?', turnstileToken: 't' }))
+    expect(res.status).toBe(504)
+    expect(await res.json()).toEqual({ errorCode: 'timeout' })
+    expect(errorMock).toHaveBeenCalledTimes(1)
+  })
+
+  it('maps an upstream 504 to timeout', async () => {
+    vi.mocked(verifyTurnstile).mockResolvedValue(true)
+    vi.mocked(askAide).mockRejectedValue(new OpenclawError('support assistant error', 504, 'runtime_error'))
     const res = await POST(req({ question: 'How?', turnstileToken: 't' }))
     expect(res.status).toBe(504)
     expect(await res.json()).toEqual({ errorCode: 'timeout' })

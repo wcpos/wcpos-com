@@ -104,16 +104,14 @@ export async function POST(request: Request): Promise<NextResponse> {
     const gatewayError = err instanceof OpenclawError ? err : null
     const status = gatewayError?.status ?? 'unknown'
     const code = gatewayError?.code ?? 'unknown'
-    // The gateway runs its own session/global caps — pass its 429 through
-    // (its message distinguishes the per-session cap from the global one)
-    // instead of masking it as an outage.
-    if (status === 429 && code === 'busy') {
-      apiLogger.warn`Support ask gateway busy. status=${status} code=${code} ip=${ip}`
-      return errorResponse('gateway_busy', 429)
-    }
-    if (status === 429) {
+    // Only rate_limited means the hourly cap; treat other gateway 429s as busy.
+    if (status === 429 && code === 'rate_limited') {
       apiLogger.warn`Support ask rate-limited by the gateway. status=${status} code=${code} ip=${ip}`
       return errorResponse('gateway_rate_limited', 429)
+    }
+    if (status === 429) {
+      apiLogger.warn`Support ask gateway busy. status=${status} code=${code} ip=${ip}`
+      return errorResponse('gateway_busy', 429)
     }
     if (status === 413 || (status === 400 && (code === 'missing_question' || code === 'question_too_long'))) {
       apiLogger.warn`Support ask invalid question. status=${status} code=${code} ip=${ip}`
@@ -121,7 +119,7 @@ export async function POST(request: Request): Promise<NextResponse> {
     }
     // A 401 means the site's token is wrong, not the visitor's credentials.
     apiLogger.error`Support ask failed. status=${status} code=${code} ip=${ip} error=${err}`
-    if (code === 'timeout') {
+    if (code === 'timeout' || status === 504) {
       return errorResponse('timeout', 504)
     }
     if (code === 'not_configured' || code === 'gateway_unreachable' || status === 401 || status === 503) {
