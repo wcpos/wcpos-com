@@ -3,6 +3,19 @@ import { locales, defaultLocale, type Locale } from '@/i18n/config'
 
 export const SITE_URL = 'https://wcpos.com'
 
+// PNGs are rendered by scripts/og-image/generate-page-cards.mjs.
+// Paths without an entry use the site card.
+export const DEFAULT_SOCIAL_CARD = '/opengraph-image.png'
+export const SOCIAL_CARDS: Record<string, string> = {
+  '/pro': '/og/pro.png',
+  '/downloads': '/og/downloads.png',
+  '/support': '/og/support.png',
+  '/roadmap': '/og/roadmap.png',
+  '/about-us': '/og/about-us.png',
+  '/compare': '/og/compare.png',
+  '/compare/oliver-pos': '/og/compare-oliver-pos.png',
+}
+
 const OPEN_GRAPH_LOCALES: Record<Locale, string> = {
   de: 'de_DE',
   en: 'en_US',
@@ -64,17 +77,28 @@ export function marketingMetadata({
   title,
   description,
 }: {
-  locale: string
+  locale: Locale
   path?: string
   title?: string
   description?: string
 }): Metadata {
+  const canonical = localeUrl(locale, path)
+  const image = SOCIAL_CARDS[path] ?? DEFAULT_SOCIAL_CARD
   return {
     ...(title ? { title } : {}),
     ...(description ? { description } : {}),
     alternates: {
-      canonical: localeUrl(locale, path),
+      canonical,
       languages: languageAlternates(path),
     },
+    openGraph: {
+      type: 'website',
+      siteName: 'WCPOS',
+      locale: openGraphLocale(locale),
+      alternateLocale: alternateOpenGraphLocales(locale),
+      url: canonical,
+      images: [image],
+    },
+    twitter: { card: 'summary_large_image', images: [image] },
   }
 }
