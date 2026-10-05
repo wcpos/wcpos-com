@@ -1,5 +1,5 @@
-import { readFileSync } from 'node:fs'
-import { basename } from 'node:path'
+import { existsSync, readFileSync } from 'node:fs'
+import { basename, join } from 'node:path'
 import { describe, it, expect } from 'vitest'
 import {
   alternateOpenGraphLocales,
@@ -83,6 +83,12 @@ describe('marketingMetadata', () => {
     )
     for (const card of Object.values(SOCIAL_CARDS)) {
       expect(generator).toContain(`slug: '${basename(card, '.png')}'`)
+    }
+  })
+
+  it('ships a PNG for every social card', () => {
+    for (const card of Object.values(SOCIAL_CARDS)) {
+      expect(existsSync(join(process.cwd(), 'public', card))).toBe(true)
     }
   })
 
