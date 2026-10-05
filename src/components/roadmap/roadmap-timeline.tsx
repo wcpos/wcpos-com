@@ -16,7 +16,7 @@ import styles from './timeline.module.css'
 /**
  * RoadmapTimeline — the "release train": one continuous vertical spine where
  * time is the hierarchy. The active release sits on a pulsing red node,
- * upcoming work rides below it, shipped releases fade out at the bottom.
+ * upcoming work rides below it, shipped releases sit muted at the bottom.
  * Releases and epics come straight from GitHub release issues (see
  * services/core/external/github-roadmap.ts for the bucketing).
  *
@@ -147,7 +147,7 @@ function FeatureRow({ epic, shipped }: { epic: Epic; shipped: boolean }) {
         <StatusGlyph status={epic.state} />
         <span className="min-w-0 flex-1">
           <span
-            className="line-clamp-1 break-words font-medium group-hover:text-wcpos-red dark:group-hover:text-wcpos-red-accent"
+            className={`line-clamp-1 break-words font-medium${shipped ? ' text-muted-foreground' : ''} group-hover:text-wcpos-red dark:group-hover:text-wcpos-red-accent`}
             lang="en"
           >
             {epic.title}
@@ -258,7 +258,7 @@ function TimelineRelease({
       }`
 
   return (
-    <div className={tone === 'shipped' ? 'relative pb-14 opacity-60' : 'relative pb-14'}>
+    <div className="relative pb-14">
       <TimelineNode tone={tone} animate={animate} active={active} nodeRef={nodeRef} />
 
       {/* Ghost version behind the heading */}
@@ -270,7 +270,7 @@ function TimelineRelease({
 
       <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
         <h2
-          className="break-words text-2xl font-semibold tracking-tight sm:text-3xl"
+          className={`break-words text-2xl font-semibold tracking-tight sm:text-3xl${shipped ? ' text-muted-foreground' : ''}`}
           lang="en"
         >
           <a href={release.url} target="_blank" rel="noopener noreferrer">
