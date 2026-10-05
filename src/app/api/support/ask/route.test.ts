@@ -25,6 +25,8 @@ import { verifyTurnstile } from '@/lib/support/turnstile'
 import { consumeDailyBudget, consumeRateLimit } from '@/lib/support/rate-limit'
 import { askAide, OpenclawError } from '@/lib/openclaw/client'
 
+const SESSION_ID = '3f2b8c4e-9d1a-4b6f-8e2c-7a5d0c1b9e34'
+
 function req(body: unknown) {
   return new Request('http://localhost/api/support/ask', {
     method: 'POST',
@@ -84,11 +86,11 @@ describe('POST /api/support/ask', () => {
   it('200 with the answer on success', async () => {
     vi.mocked(verifyTurnstile).mockResolvedValue(true)
     vi.mocked(askAide).mockResolvedValue({ answer: 'Do X.', model: 'sonnet', answered: true, sources: [] })
-    const res = await POST(req({ question: 'How?', turnstileToken: 't', sessionId: 's1' }))
+    const res = await POST(req({ question: 'How?', turnstileToken: 't', sessionId: SESSION_ID }))
     expect(res.status).toBe(200)
     expect(await res.json()).toMatchObject({
       answer: 'Do X.',
-      sessionId: 's1',
+      sessionId: SESSION_ID,
       answered: true,
       sources: [],
     })
@@ -108,12 +110,12 @@ describe('POST /api/support/ask', () => {
   it('passes the requested locale to Aide', async () => {
     vi.mocked(verifyTurnstile).mockResolvedValue(true)
     vi.mocked(askAide).mockResolvedValue({ answer: 'Faites X.', model: 'sonnet', answered: true, sources: [] })
-    const res = await POST(req({ question: 'Comment ?', turnstileToken: 't', sessionId: 's1', locale: 'fr' }))
+    const res = await POST(req({ question: 'Comment ?', turnstileToken: 't', sessionId: SESSION_ID, locale: 'fr' }))
 
     expect(res.status).toBe(200)
     expect(askAide).toHaveBeenCalledWith(expect.objectContaining({
       question: 'Comment ?',
-      sessionId: 's1',
+      sessionId: SESSION_ID,
       locale: 'fr',
     }))
   })
