@@ -98,12 +98,6 @@ export function SupportChat() {
       })
       const data = await res.json().catch(() => null)
       if (!res.ok) {
-        // A failed bot check usually means the token went stale (single-use,
-        // ~5 min validity) — reset the widget so the next attempt carries a
-        // fresh one instead of failing forever.
-        if (data?.errorCode === 'bot_check_failed') {
-          turnstile.reset()
-        }
         setError(
           isSupportErrorCode(data?.errorCode)
             ? tErrors(data.errorCode)
@@ -127,12 +121,13 @@ export function SupportChat() {
           answerId: typeof data.answerId === 'string' ? data.answerId : undefined,
         },
       ])
-      // Tokens are single-use — re-run the widget so a follow-up question
-      // carries a fresh one.
-      turnstile.reset()
     } catch {
       setError(tErrors('network'))
     } finally {
+      // Tokens are single-use; the server spends one whenever the bot check passes.
+      // Every attempt (answer, error or network failure) re-runs the widget so
+      // the next attempt carries a fresh token.
+      turnstile.reset()
       setStatus('idle')
     }
   }

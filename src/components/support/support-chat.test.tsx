@@ -137,6 +137,35 @@ describe('SupportChat', () => {
     }
   )
 
+  it.each([
+    [
+      '503 unavailable',
+      vi.fn().mockResolvedValueOnce(
+        new Response(JSON.stringify({ errorCode: 'unavailable' }), { status: 503 })
+      ),
+      messages.support.errors.unavailable,
+    ],
+    [
+      'malformed 200',
+      vi.fn().mockResolvedValueOnce(
+        new Response(JSON.stringify({ answer: '' }), { status: 200 })
+      ),
+      messages.support.errors.empty_answer,
+    ],
+    [
+      'network failure',
+      vi.fn().mockRejectedValueOnce(new TypeError('Failed to fetch')),
+      messages.support.errors.network,
+    ],
+  ])('resets the widget after a failed attempt: %s', async (_, fetchMock, errorText) => {
+    vi.stubGlobal('fetch', fetchMock)
+    renderWithIntl(<SupportChat />)
+    fireEvent.change(screen.getByRole('textbox'), { target: { value: 'How?' } })
+    fireEvent.submit(screen.getByRole('textbox').closest('form')!)
+    expect(await screen.findByText(errorText)).toBeInTheDocument()
+    expect(resetTurnstile).toHaveBeenCalledTimes(1)
+  })
+
   it('suppresses assistant images and opens links in a new tab', async () => {
     vi.stubGlobal('fetch', vi.fn().mockResolvedValueOnce(
       new Response(JSON.stringify({
