@@ -1807,7 +1807,9 @@
     },
     "discord": {
       "title": "Praat je liever met een mens?",
-      "subtitle": "Sluit je aan bij winkeleigenaren en het team in onze live Discord-community."
+      "subtitle": "Sluit je aan bij winkeleigenaren en het team in onze live Discord-community.",
+      "open": "Chat openen",
+      "notice": "De chat wordt pas vanuit Discord (via WidgetBot) geladen wanneer je hem opent."
     }
   },
   "compare": {

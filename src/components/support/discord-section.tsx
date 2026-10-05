@@ -2,6 +2,9 @@
 
 import dynamic from 'next/dynamic'
 import { useTranslations } from 'next-intl'
+import { useState } from 'react'
+import { DiscordIcon } from '@/components/icons/discord'
+import { Button } from '@/components/ui/button'
 import { Section } from '@/components/ui/section'
 import { Skeleton } from '@/components/ui/skeleton'
 
@@ -15,6 +18,7 @@ const DiscordWidget = dynamic(
 
 export function DiscordSection() {
   const t = useTranslations('support.discord')
+  const [open, setOpen] = useState(false)
 
   return (
     <Section id="discord" spacing="default">
@@ -25,7 +29,15 @@ export function DiscordSection() {
         </p>
       </div>
       <div className="mx-auto h-[600px] max-w-3xl overflow-hidden rounded-md border">
-        <DiscordWidget />
+        {open ? (
+          <DiscordWidget />
+        ) : (
+          <div className="flex h-full flex-col items-center justify-center gap-4 p-6 text-center">
+            <DiscordIcon aria-hidden="true" className="size-12 text-[#5865F2]" />
+            <Button type="button" onClick={() => setOpen(true)}>{t('open')}</Button>
+            <p className="max-w-sm text-sm text-muted-foreground">{t('notice')}</p>
+          </div>
+        )}
       </div>
     </Section>
   )

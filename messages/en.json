@@ -1807,7 +1807,9 @@
     },
     "discord": {
       "title": "Prefer to talk to a human?",
-      "subtitle": "Join store owners and the team in our live Discord community."
+      "subtitle": "Join store owners and the team in our live Discord community.",
+      "open": "Open chat",
+      "notice": "The chat loads from Discord (via WidgetBot) only when you open it."
     }
   },
   "compare": {

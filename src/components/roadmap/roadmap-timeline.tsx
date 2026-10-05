@@ -83,7 +83,7 @@ const LABEL_TONE_LIT: Record<Tone, string> = {
 const LABEL_TONE_IDLE: Record<Tone, string> = {
   ...LABEL_TONE_LIT,
   next: 'border border-slate-300 text-muted-foreground dark:border-slate-600',
-  shipped: 'border border-emerald-500/40 text-emerald-600 dark:text-emerald-400',
+  shipped: 'border border-emerald-500/40 text-emerald-700 dark:text-emerald-400',
 }
 
 function StatusGlyph({ status }: { status: Epic['state'] }) {
@@ -264,13 +264,12 @@ function TimelineRelease({
       {/* Ghost version behind the heading */}
       <div
         aria-hidden
-        className="pointer-events-none absolute -top-10 right-0 select-none font-mono text-7xl font-bold tracking-tighter text-foreground/[0.05] sm:text-8xl"
-      >
-        {release.version}
-      </div>
+        data-version={release.version}
+        className="pointer-events-none absolute -top-10 right-0 select-none font-mono text-7xl font-bold tracking-tighter text-foreground/[0.05] sm:text-8xl before:content-[attr(data-version)]"
+      />
 
       <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-        <h3
+        <h2
           className="break-words text-2xl font-semibold tracking-tight sm:text-3xl"
           lang="en"
         >
@@ -280,7 +279,7 @@ function TimelineRelease({
             </span>{' '}
             {release.theme}
           </a>
-        </h3>
+        </h2>
         <span className="font-mono text-xs uppercase tracking-wider text-muted-foreground">
           {progressText}
         </span>

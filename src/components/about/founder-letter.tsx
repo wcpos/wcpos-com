@@ -80,7 +80,7 @@ function FounderLetterContent({
           </figcaption>
         </figure>
 
-        <p className="mb-5 text-xs uppercase tracking-wide text-slate-400">
+        <p className="mb-5 text-xs uppercase tracking-wide text-slate-600 dark:text-slate-400">
           {t('eyebrow')}
         </p>
         <p className="mb-4 text-xl font-semibold text-slate-900 dark:text-slate-100">

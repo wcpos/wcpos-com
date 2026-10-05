@@ -29,7 +29,7 @@ function renderWithIntl(ui: ReactElement) {
 describe('RoadmapTimeline', () => {
   it('renders the active release as a compact stop with a linked headline and feature progress', () => {
     const { container } = renderWithIntl(<RoadmapTimeline data={{ ...EMPTY, now: release }} />)
-    const heading = screen.getByRole('heading', { level: 3, name: 'v1.11.0 Checkout & payments' })
+    const heading = screen.getByRole('heading', { level: 2, name: 'v1.11.0 Checkout & payments' })
     expect(heading).toHaveClass('text-2xl', 'sm:text-3xl')
     expect(heading).toHaveAttribute('lang', 'en')
     const link = within(heading).getByRole('link')
@@ -46,7 +46,14 @@ describe('RoadmapTimeline', () => {
     expect(screen.queryByText('Fiscal compliance')).toBeNull()
     expect(screen.queryByText('Public context')).toBeNull()
     expect(screen.queryByText(release.epics[0].summary.trim())).toBeNull()
-    expect(screen.getAllByText(release.version).find(el => el.getAttribute('aria-hidden') === 'true')).toBeDefined()
+    expect(container.querySelector('[data-version="v1.11.0"]')).toHaveAttribute('aria-hidden', 'true')
+  })
+  it('keeps the ghost version out of the text tree', () => {
+    const { container } = renderWithIntl(<RoadmapTimeline data={{ ...EMPTY, now: release }} />)
+    const ghost = container.querySelector('[data-version="v1.11.0"]')
+    expect(ghost).toBeInTheDocument()
+    expect(ghost).toHaveAttribute('aria-hidden', 'true')
+    expect(ghost!.textContent).toBe('')
   })
   it('links compact feature rows with one-line titles and pitches and optional counts', () => {
     renderWithIntl(<RoadmapTimeline data={{ ...EMPTY, now: {

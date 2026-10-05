@@ -1807,7 +1807,9 @@
     },
     "discord": {
       "title": "Möchtest du lieber mit einem Menschen sprechen?",
-      "subtitle": "Tritt Ladenbesitzern und dem Team in unserer Live-Discord-Community bei."
+      "subtitle": "Tritt Ladenbesitzern und dem Team in unserer Live-Discord-Community bei.",
+      "open": "Chat öffnen",
+      "notice": "Der Chat wird erst beim Öffnen von Discord (über WidgetBot) geladen."
     }
   },
   "compare": {
