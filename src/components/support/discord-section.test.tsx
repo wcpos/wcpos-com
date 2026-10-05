@@ -18,6 +18,7 @@ describe('DiscordSection', () => {
     renderWithIntl(<DiscordSection />)
     expect(screen.queryByTestId('discord-widget')).toBeNull()
     expect(screen.getByRole('button', { name: 'Open chat' })).toBeInTheDocument()
+    expect(screen.getByRole('region', { name: 'Prefer to talk to a human?' })).toBeInTheDocument()
     expect(screen.getByText('The chat loads from Discord (via WidgetBot) only when you open it.')).toBeInTheDocument()
   })
 
@@ -25,6 +26,7 @@ describe('DiscordSection', () => {
     renderWithIntl(<DiscordSection />)
     fireEvent.click(screen.getByRole('button', { name: 'Open chat' }))
     expect(await screen.findByTestId('discord-widget')).toBeInTheDocument()
+    expect(screen.getByRole('region', { name: 'Prefer to talk to a human?' })).toHaveFocus()
     expect(screen.queryByRole('button', { name: 'Open chat' })).toBeNull()
   })
 })

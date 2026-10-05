@@ -2,7 +2,7 @@
 
 import dynamic from 'next/dynamic'
 import { useTranslations } from 'next-intl'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { DiscordIcon } from '@/components/icons/discord'
 import { Button } from '@/components/ui/button'
 import { Section } from '@/components/ui/section'
@@ -19,16 +19,19 @@ const DiscordWidget = dynamic(
 export function DiscordSection() {
   const t = useTranslations('support.discord')
   const [open, setOpen] = useState(false)
+  const boxRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => { if (open) boxRef.current?.focus() }, [open])
 
   return (
     <Section id="discord" spacing="default">
       <div className="mx-auto mb-6 max-w-2xl text-center">
-        <h2 className="mb-2 text-2xl font-bold text-foreground">{t('title')}</h2>
+        <h2 id="discord-chat-title" className="mb-2 text-2xl font-bold text-foreground">{t('title')}</h2>
         <p className="text-muted-foreground">
           {t('subtitle')}
         </p>
       </div>
-      <div className="mx-auto h-[600px] max-w-3xl overflow-hidden rounded-md border">
+      <div ref={boxRef} role="region" aria-labelledby="discord-chat-title" tabIndex={-1} className="mx-auto h-[600px] max-w-3xl overflow-hidden rounded-md border focus:outline-none">
         {open ? (
           <DiscordWidget />
         ) : (
