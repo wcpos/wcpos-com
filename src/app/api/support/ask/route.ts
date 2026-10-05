@@ -21,6 +21,7 @@ type SupportErrorCode =
   | 'rate_limited'
   | 'budget_exhausted'
   | 'empty_answer'
+  | 'gateway_busy'
   | 'gateway_rate_limited'
   | 'timeout'
   | 'unavailable'
@@ -32,7 +33,7 @@ function errorResponse(errorCode: SupportErrorCode, status: number): NextRespons
 const bodySchema = z.object({
   question: z.string().trim().min(1).max(1000),
   locale: z.enum(locales).optional(),
-  sessionId: z.string().min(1).optional(),
+  sessionId: z.uuid().optional().catch(undefined),
   turnstileToken: z.string().optional().default(''),
 })
 
@@ -101,16 +102,32 @@ export async function POST(request: Request): Promise<NextResponse> {
     )
   } catch (err) {
     const gatewayError = err instanceof OpenclawError ? err : null
+    const status = gatewayError?.status ?? 'unknown'
+    const code = gatewayError?.code ?? 'unknown'
     // The gateway runs its own session/global caps — pass its 429 through
     // (its message distinguishes the per-session cap from the global one)
     // instead of masking it as an outage.
-    if (gatewayError?.status === 429) {
-      apiLogger.warn`Support ask rate-limited by the gateway. ip=${ip}`
+    if (status === 429 && code === 'busy') {
+      apiLogger.warn`Support ask gateway busy. status=${status} code=${code} ip=${ip}`
+      return errorResponse('gateway_busy', 429)
+    }
+    if (status === 429) {
+      apiLogger.warn`Support ask rate-limited by the gateway. status=${status} code=${code} ip=${ip}`
       return errorResponse('gateway_rate_limited', 429)
     }
-    const code = gatewayError?.code ?? 'unknown'
-    apiLogger.error`Support ask failed. code=${code} ip=${ip} error=${err}`
-    return errorResponse(code === 'timeout' ? 'timeout' : 'unavailable', 503)
+    if (status === 413 || (status === 400 && (code === 'missing_question' || code === 'question_too_long'))) {
+      apiLogger.warn`Support ask invalid question. status=${status} code=${code} ip=${ip}`
+      return errorResponse('invalid_question', 400)
+    }
+    // A 401 means the site's token is wrong, not the visitor's credentials.
+    apiLogger.error`Support ask failed. status=${status} code=${code} ip=${ip} error=${err}`
+    if (code === 'timeout') {
+      return errorResponse('timeout', 504)
+    }
+    if (code === 'not_configured' || code === 'gateway_unreachable' || status === 401 || status === 503) {
+      return errorResponse('unavailable', 503)
+    }
+    return errorResponse('unavailable', 502)
   } finally {
     clearTimeout(timer)
   }

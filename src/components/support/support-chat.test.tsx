@@ -107,6 +107,74 @@ afterEach(() => {
 })
 
 describe('SupportChat', () => {
+  it('shows the busy message for a gateway_busy 429', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValueOnce(
+      new Response(JSON.stringify({ errorCode: 'gateway_busy' }), { status: 429 })
+    ))
+    renderWithIntl(<SupportChat />)
+    fireEvent.change(screen.getByRole('textbox'), { target: { value: 'How?' } })
+    fireEvent.submit(screen.getByRole('textbox').closest('form')!)
+    expect(await screen.findByText(messages.support.errors.gateway_busy)).toBeInTheDocument()
+  })
+
+  it('shows the timeout message for a non-JSON 504 response', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValueOnce(
+      new Response('<html>Gateway Timeout</html>', { status: 504 })
+    ))
+    renderWithIntl(<SupportChat />)
+    fireEvent.change(screen.getByRole('textbox'), { target: { value: 'How?' } })
+    fireEvent.submit(screen.getByRole('textbox').closest('form')!)
+    expect(await screen.findByText(messages.support.errors.timeout)).toBeInTheDocument()
+  })
+
+  it.each(['<html>Unavailable</html>', '{"errorCode":"unexpected"}'])(
+    'shows unavailable for an unrecognized error body: %s', async (body) => {
+      vi.stubGlobal('fetch', vi.fn().mockResolvedValueOnce(new Response(body, { status: 503 })))
+      renderWithIntl(<SupportChat />)
+      fireEvent.change(screen.getByRole('textbox'), { target: { value: 'How?' } })
+      fireEvent.submit(screen.getByRole('textbox').closest('form')!)
+      expect(await screen.findByText(messages.support.errors.unavailable)).toBeInTheDocument()
+    }
+  )
+
+  it('suppresses assistant images and opens links in a new tab', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValueOnce(
+      new Response(JSON.stringify({
+        answer: 'See ![x](https://evil.example/p.png) [docs](https://docs.wcpos.com/)',
+      }), { status: 200 })
+    ))
+    const { container } = renderWithIntl(<SupportChat />)
+    fireEvent.change(screen.getByRole('textbox'), { target: { value: 'How?' } })
+    fireEvent.submit(screen.getByRole('textbox').closest('form')!)
+    expect(await screen.findByRole('link', { name: 'docs' })).toHaveAttribute('target', '_blank')
+    expect(container.querySelector('img')).toBeNull()
+  })
+
+  it.each([null, {}, { answer: 1 }, { answer: '' }, { answer: '   ' }])(
+    'shows empty_answer without appending a malformed success: %j', async (body) => {
+      vi.stubGlobal('fetch', vi.fn().mockResolvedValueOnce(
+        new Response(JSON.stringify(body), { status: 200 })
+      ))
+      renderWithIntl(<SupportChat />)
+      fireEvent.change(screen.getByRole('textbox'), { target: { value: 'How?' } })
+      fireEvent.submit(screen.getByRole('textbox').closest('form')!)
+      expect(await screen.findByText(messages.support.errors.empty_answer)).toBeInTheDocument()
+      expect(screen.queryByRole('button', { name: 'Yes' })).not.toBeInTheDocument()
+    }
+  )
+
+  it.each([42, {}, ''])('does not store an invalid returned sessionId: %j', async (sessionId) => {
+    sessionStorage.setItem('wcpos-support-session', SESSION_ID)
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValueOnce(
+      new Response(JSON.stringify({ answer: 'Do X.', sessionId }), { status: 200 })
+    ))
+    renderWithIntl(<SupportChat />)
+    fireEvent.change(screen.getByRole('textbox'), { target: { value: 'How?' } })
+    fireEvent.submit(screen.getByRole('textbox').closest('form')!)
+    expect(await screen.findByText('Do X.')).toBeInTheDocument()
+    expect(sessionStorage.getItem('wcpos-support-session')).toBe(SESSION_ID)
+  })
+
   it('submits a question and renders the answer', async () => {
     renderWithIntl(<SupportChat />)
     fireEvent.change(screen.getByRole('textbox'), { target: { value: 'How do I print?' } })

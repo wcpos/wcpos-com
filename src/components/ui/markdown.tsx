@@ -1,13 +1,20 @@
-import ReactMarkdown from 'react-markdown'
+import ReactMarkdown, { type Components } from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { cn } from '@/lib/utils'
 
 interface MarkdownProps {
   content: string
   className?: string
+  /** Untrusted model output: links open in a new tab with rel=noopener nofollow; images are not rendered. */
+  untrusted?: boolean
 }
 
-export function Markdown({ content, className }: MarkdownProps) {
+const untrustedComponents: Components = {
+  a: ({ node: _node, ...props }) => <a {...props} target="_blank" rel="noopener nofollow" />,
+  img: () => null,
+}
+
+export function Markdown({ content, className, untrusted }: MarkdownProps) {
   if (!content.trim()) {
     return null
   }
@@ -32,7 +39,7 @@ export function Markdown({ content, className }: MarkdownProps) {
         className
       )}
     >
-      <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>
+      <ReactMarkdown remarkPlugins={[remarkGfm]} components={untrusted ? untrustedComponents : undefined}>{content}</ReactMarkdown>
     </div>
   )
 }
