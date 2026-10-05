@@ -22,7 +22,9 @@ import styles from './story.module.css'
 export const COUNTER_CARD_SRC = '/images/story/counter-photo-card.webp'
 export const COUNTER_CARD_SRCSET =
   '/images/story/counter-photo-card-480.webp 480w, /images/story/counter-photo-card-680.webp 680w, /images/story/counter-photo-card-960.webp 960w, /images/story/counter-photo-card.webp 1280w'
-export const COUNTER_CARD_SIZES = '(min-width: 704px) 672px, calc(100vw - 2rem)'
+// max-w-2xl: 672px from md; sm container minus px-4: 608px; below sm: viewport minus px-4.
+export const COUNTER_CARD_SIZES =
+  '(min-width: 768px) 672px, (min-width: 640px) 608px, calc(100vw - 2rem)'
 
 /**
  * The scroll story without the scroll: four stacked dark sections with the

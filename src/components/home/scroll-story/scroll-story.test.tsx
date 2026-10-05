@@ -251,7 +251,7 @@ describe('ScrollStory', () => {
       staticCard.getAttribute('sizes')
     )
     expect(staticCard.getAttribute('sizes')).toBe(
-      '(min-width: 704px) 672px, calc(100vw - 2rem)'
+      '(min-width: 768px) 672px, (min-width: 640px) 608px, calc(100vw - 2rem)'
     )
     const candidates = staticCard.getAttribute('srcset')!.split(',').map(
       (candidate) => candidate.trim().split(' ')
