@@ -27,6 +27,8 @@ describe('DiscordSection', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Open chat' }))
     expect(await screen.findByTestId('discord-widget')).toBeInTheDocument()
     expect(screen.getByRole('region', { name: 'Prefer to talk to a human?' })).toHaveFocus()
+    expect(screen.getByRole('region', { name: 'Prefer to talk to a human?' })).toHaveClass('focus-visible:ring-2')
+    expect(screen.getByRole('region', { name: 'Prefer to talk to a human?' })).not.toHaveClass('focus:outline-none')
     expect(screen.queryByRole('button', { name: 'Open chat' })).toBeNull()
   })
 })

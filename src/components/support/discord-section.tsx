@@ -31,7 +31,7 @@ export function DiscordSection() {
           {t('subtitle')}
         </p>
       </div>
-      <div ref={boxRef} role="region" aria-labelledby="discord-chat-title" tabIndex={-1} className="mx-auto h-[600px] max-w-3xl overflow-hidden rounded-md border focus:outline-none">
+      <div ref={boxRef} role="region" aria-labelledby="discord-chat-title" tabIndex={-1} className="mx-auto h-[600px] max-w-3xl overflow-hidden rounded-md border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
         {open ? (
           <DiscordWidget />
         ) : (
