@@ -31,8 +31,12 @@ describe('DiscordSection', () => {
   })
   afterEach(() => vi.unstubAllGlobals())
 
-  it('does not mount the widget before its box nears the viewport', () => {
+  it('does not mount the widget before its box nears the viewport', async () => {
     renderWithIntl(<DiscordSection />)
+    // DiscordWidget is next/dynamic: give its import time to resolve, so an eager mount would show.
+    await act(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 50))
+    })
     expect(screen.queryByTestId('discord-widget')).toBeNull()
     expect(screen.queryByRole('button')).toBeNull()
     const region = screen.getByRole('region', { name: 'Prefer to talk to a human?' })
