@@ -21,7 +21,6 @@ export function DiscordSection() {
 
   // WidgetBot's ~2.8 MB embed mounts near the viewport; the box stays 600px so nothing shifts.
   useEffect(() => {
-    if (typeof IntersectionObserver === 'undefined') { setInView(true); return }
     const io = new IntersectionObserver(([entry]) => { if (entry?.isIntersecting) { setInView(true); io.disconnect() } }, { rootMargin: '200px 0px' })
     if (boxRef.current) io.observe(boxRef.current)
     return () => io.disconnect()

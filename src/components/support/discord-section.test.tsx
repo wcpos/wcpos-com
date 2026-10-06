@@ -48,10 +48,4 @@ describe('DiscordSection', () => {
     expect(await screen.findByTestId('discord-widget')).toBeInTheDocument()
     expect(disconnect).toHaveBeenCalled()
   })
-
-  it('mounts the widget straight away where IntersectionObserver is missing', async () => {
-    vi.stubGlobal('IntersectionObserver', undefined)
-    renderWithIntl(<DiscordSection />)
-    expect(await screen.findByTestId('discord-widget')).toBeInTheDocument()
-  })
 })
