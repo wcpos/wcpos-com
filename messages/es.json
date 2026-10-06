@@ -1834,7 +1834,12 @@
         "description": "WordPress nativo frente a SaaS en la nube: propiedad de los datos, límites reales del plan gratuito, pago único frente a suscripciones, y dónde Oliver es realmente mejor.",
         "cta": "Leer la comparativa"
       },
-      "moreSoon": "Hay más comparativas en camino, incluidas Square para WooCommerce y el TPV oficial de WooCommerce."
+      "woocommerceCard": {
+        "title": "WCPOS vs el TPV oficial de WooCommerce",
+        "description": "Gratis e integrado en la aplicación móvil de WooCommerce frente a multiplataforma y diseñado para funcionar sin conexión: dispositivos, países, pagos, precios y dónde el TPV de WooCommerce es realmente mejor.",
+        "cta": "Leer la comparativa"
+      },
+      "moreSoon": "Hay más comparativas en camino, incluida Square para WooCommerce."
     },
     "oliver": {
       "metadata": {
@@ -2064,6 +2069,159 @@
       },
       "footer": {
         "factsVerified": "Datos verificados el 8 de julio de 2026 contra oliverpos.com/pricing, wordpress.org/plugins/woocommerce-pos/, wordpress.org/plugins/oliver-pos/ y wcpos.com.",
+        "corrections": "¿Detecta un error? Escriba a support@wcpos.com — corregimos rápido y dejamos constancia de cada cambio."
+      }
+    },
+    "woocommerce": {
+      "metadata": {
+        "title": "WCPOS vs el TPV oficial de WooCommerce (2026): una comparativa honesta",
+        "description": "Comparativa de WCPOS y el TPV de la propia aplicación móvil de WooCommerce, elaborada por el creador de WCPOS — dispositivos, países, funcionamiento sin conexión, pagos, precios y cuándo el TPV de WooCommerce es la mejor opción."
+      },
+      "hero": {
+        "title": "WCPOS vs el TPV oficial de WooCommerce",
+        "subtitle": "WooCommerce ahora incluye su propio punto de venta en su aplicación móvil. Esto es lo que hace, lo que no hace y cuándo es la mejor opción."
+      },
+      "shortAnswer": {
+        "title": "La respuesta corta",
+        "wcpos": "WCPOS funciona en cualquier navegador moderno, como aplicación de escritorio para Windows y macOS y como aplicación para iOS y Android (beta), con cualquier pasarela de pago de WooCommerce. Está diseñado para funcionar primero sin conexión, su versión gratuita no tiene topes de productos, pedidos ni clientes, y Pro añade gestión multitienda e integraciones con terminales de tarjeta mediante un pago único que nunca desactiva las funciones.",
+        "woocommerce": "El TPV oficial de WooCommerce está dentro de la aplicación móvil de WooCommerce (“WooCommerce: Store & POS”). El software de TPV es gratuito, lo desarrolla el propio WooCommerce y acepta efectivo, además de tarjetas mediante WooPayments o Stripe con un lector de tarjetas Bluetooth. Está diseñado para tabletas, está disponible para tiendas de diez países, no vende suscripciones ni productos descargables, no tiene modo sin conexión y todavía no admite varias ubicaciones."
+      },
+      "glance": {
+        "title": "De un vistazo",
+        "caption": "Datos del TPV de WooCommerce verificados el 2026-10-06 en woocommerce.com; datos de WCPOS procedentes de wcpos.com/pro.",
+        "colWcpos": "WCPOS",
+        "colWoocommerce": "TPV de WooCommerce (oficial)",
+        "rows": {
+          "where": {
+            "label": "Dónde funciona",
+            "wcpos": "Plugin de WordPress con caja en cualquier navegador moderno, más aplicaciones de escritorio y móviles",
+            "woocommerce": "Dentro de la aplicación móvil de WooCommerce («WooCommerce: Store & POS»)"
+          },
+          "devices": {
+            "label": "Dispositivos",
+            "wcpos": "Web, aplicaciones de escritorio (Windows y macOS), aplicaciones para iOS y Android (beta); dispositivos y cajeros ilimitados",
+            "woocommerce": "Diseñado para tabletas — iPad y tabletas Android"
+          },
+          "countries": {
+            "label": "Países",
+            "wcpos": "Sin restricciones por país",
+            "woocommerce": "10 países: Australia, Canadá, Finlandia, Irlanda, Luxemburgo, Países Bajos, Nueva Zelanda, Singapur, Reino Unido, Estados Unidos — y la tienda debe utilizar la moneda de ese país"
+          },
+          "price": {
+            "label": "Precio",
+            "wcpos": "Plugin gratuito sin topes; Pro cuesta $129 por un año de actualizaciones o $399 de por vida — pagos únicos, sin renovación automática",
+            "woocommerce": "Software de TPV gratuito; los lectores de tarjetas cuestan $5.00 / £5.00 por lector activo al mes"
+          },
+          "cardPayments": {
+            "label": "Pagos con tarjeta",
+            "wcpos": "Integraciones de terminales Pro: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Vipps MobilePay",
+            "woocommerce": "WooPayments o Stripe, con un lector de tarjetas Bluetooth"
+          },
+          "gateways": {
+            "label": "Pasarelas de pago",
+            "wcpos": "Cualquier pasarela de pago de WooCommerce",
+            "woocommerce": "Efectivo, además de WooPayments o Stripe para tarjetas"
+          },
+          "fees": {
+            "label": "Comisiones por tarjeta",
+            "wcpos": "Sin comisiones de WCPOS — se aplican las tarifas de su procesador de pagos",
+            "woocommerce": "Tarifa presencial de WooPayments — en Estados Unidos, 2.70% + $0.10 (en línea: 2.90% + $0.30)"
+          },
+          "offline": {
+            "label": "Sin conexión",
+            "wcpos": "Diseñado para funcionar primero sin conexión: consulte productos y prepare carritos sin conexión; el cobro requiere conectividad",
+            "woocommerce": "Sin modo sin conexión — requiere una conexión activa a internet"
+          },
+          "multiLocation": {
+            "label": "Varias tiendas / ubicaciones",
+            "wcpos": "Sí (Pro): direcciones, tipos impositivos, plantillas de recibos, precios y usuarios autorizados por tienda",
+            "woocommerce": "Todavía no — WooCommerce la incluye entre las funciones que aún están por lanzarse"
+          },
+          "barcode": {
+            "label": "Escaneo de códigos de barras",
+            "wcpos": "Sí",
+            "woocommerce": "Sí"
+          }
+        }
+      },
+      "devices": {
+        "title": "¿Dónde puede usarlo?",
+        "woocommerce": "El TPV de WooCommerce es un modo de la aplicación móvil de WooCommerce. WooCommerce lo describe como diseñado para tabletas — iPad y tabletas Android — y está disponible para tiendas de diez países: Australia, Canadá, Finlandia, Irlanda, Luxemburgo, los Países Bajos, Nueva Zelanda, Singapur, el Reino Unido y Estados Unidos, siempre que las tiendas utilicen la moneda de su país.",
+        "wcpos": "WCPOS funciona en cualquier navegador moderno, como aplicación de escritorio para Windows y macOS y como aplicación para iOS y Android (beta), con dispositivos y cajeros ilimitados por licencia. Use el ordenador que ya tiene en el mostrador, una tableta o ambos."
+      },
+      "payments": {
+        "title": "¿Cómo funcionan los pagos con tarjeta?",
+        "woocommerce": "El TPV de WooCommerce acepta efectivo y tarjetas mediante WooPayments o Stripe con un lector de tarjetas Bluetooth conectado a la tableta. Con WooPayments, los pagos presenciales con tarjeta cuestan menos que los realizados en línea: en Estados Unidos, 2.70% + $0.10 frente a 2.90% + $0.30 en línea. Un lector de tarjetas cuesta $5.00 / £5.00 por lector activo al mes.",
+        "wcpos": "WCPOS procesa los pagos a través del checkout de WooCommerce, así que cualquier pasarela de pago compatible con WooCommerce puede funcionar en la caja. Pro añade integraciones con terminales de tarjeta para Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal y Vipps MobilePay, instalables con un clic desde el catálogo de extensiones. WCPOS no admite Tap to Pay ni pagos presenciales con WooPayments."
+      },
+      "pricing": {
+        "title": "¿Cuánto cuesta?",
+        "woocommerce": "El software de TPV de WooCommerce es gratuito y está incluido en la aplicación móvil de WooCommerce. Si usa un lector de tarjetas, hay una tarifa de $5.00 / £5.00 por lector activo al mes, y a los pagos con tarjeta se les aplica la tarifa presencial de su proveedor de pagos.",
+        "wcpos": "WCPOS es gratuito, sin topes de productos, pedidos, clientes ni ventas en efectivo. Pro cuesta $129 — un pago único que cubre un año de actualizaciones y soporte prioritario — o $399 de por vida. Nunca se renueva automáticamente, y Pro sigue funcionando cuando termina el año: nada se apaga, nunca. WCPOS no cobra comisiones por transacción; usted paga las tarifas de su procesador de pagos.",
+        "proAdds": "Pro añade: gestión multitienda, integraciones con terminales de tarjeta, cupones, reembolsos mediante la API del TPV, historial de pedidos, gestión de clientes en la caja, precios por tienda, edición de stock y precios, informes de cierre de caja y el directorio de extensiones.",
+        "demoPrefix": "Pruébelo todo primero en",
+        "demoLinkLabel": "demo.wcpos.com/pos",
+        "demoSuffix": "(acceso demo / demo)."
+      },
+      "limits": {
+        "title": "Lo que el TPV de WooCommerce (todavía) no hace",
+        "intro": "Según lo verificado el 2026-10-06, el TPV de WooCommerce tiene estas limitaciones:",
+        "tablets": "Diseñado para tabletas: iPad y tabletas Android.",
+        "countries": "Solo tiendas en diez países: Australia, Canadá, Finlandia, Irlanda, Luxemburgo, los Países Bajos, Nueva Zelanda, Singapur, el Reino Unido y Estados Unidos, siempre que las tiendas utilicen la moneda de su país.",
+        "products": "No admite suscripciones ni productos descargables.",
+        "offline": "Sin modo sin conexión: requiere una conexión activa a internet.",
+        "multiLocation": "Todavía no admite varias ubicaciones.",
+        "gateways": "Los pagos con tarjeta requieren WooPayments o Stripe.",
+        "outro": "WooCommerce sigue añadiendo funciones de TPV al núcleo de WooCommerce, así que cabe esperar que esta lista se acorte — la volvemos a comprobar cada trimestre."
+      },
+      "woocommerceBetter": {
+        "title": "Dónde el TPV de WooCommerce es realmente mejor",
+        "intro": "Una comparativa honesta reconoce las ventajas de ambos:",
+        "price": "Su software de TPV es gratuito, sin necesidad de licencia — WCPOS Pro cuesta $129 o más.",
+        "official": "Lo desarrolla el propio WooCommerce, dentro de la aplicación móvil de WooCommerce que quizá ya use para gestionar su tienda.",
+        "wooPayments": "Pagos presenciales nativos con WooPayments, a una tarifa inferior a la de WooPayments en línea (en Estados Unidos, 2.70% + $0.10 frente a 2.90% + $0.30). WCPOS no tiene integración con WooPayments para pagos presenciales.",
+        "outro": "Si su tienda está en uno de sus diez países y utiliza la moneda de ese país, vende desde una tableta, acepta tarjetas mediante WooPayments o Stripe y no necesita un modo sin conexión, varias ubicaciones ni vender suscripciones y productos descargables en la caja, el TPV de WooCommerce es software gratuito y puede ser todo lo que necesite."
+      },
+      "choose": {
+        "title": "¿Cuál debería elegir?",
+        "wcpos": {
+          "title": "Elija WCPOS si:",
+          "body": "Su tienda está fuera de los diez países que admite el TPV de WooCommerce o no utiliza la moneda de su país, quiere una caja en un navegador web o en aplicaciones de escritorio para Windows y macOS, quiere navegar por los productos y preparar carritos sin conexión, gestiona más de una tienda, usa una pasarela de pago distinta de WooPayments o Stripe, o quiere terminales de tarjeta de SumUp, PayPal, Square, Mollie o Vipps MobilePay."
+        },
+        "woocommerce": {
+          "title": "Elija el TPV de WooCommerce si:",
+          "body": "Su tienda está en uno de sus diez países y utiliza la moneda de ese país, vende desde un iPad o una tableta Android, acepta tarjetas mediante WooPayments o Stripe y no necesita un modo sin conexión, varias ubicaciones ni otras pasarelas de pago."
+        }
+      },
+      "faq": {
+        "title": "Preguntas frecuentes",
+        "free": {
+          "question": "¿Es gratuito el TPV oficial de WooCommerce?",
+          "answer": "Sí, el software de TPV es gratuito y está incluido en la aplicación móvil de WooCommerce. Si usa un lector de tarjetas, hay una tarifa de $5.00 / £5.00 por lector activo al mes, y a los pagos con tarjeta se les aplica la tarifa presencial de su proveedor de pagos. El plugin gratuito de WCPOS también es gratuito, sin topes, y funciona con cualquier pasarela de pago de WooCommerce."
+        },
+        "countries": {
+          "question": "¿En qué países funciona el TPV de WooCommerce?",
+          "answer": "A fecha de 2026-10-06, tiendas en diez países: Australia, Canadá, Finlandia, Irlanda, Luxemburgo, los Países Bajos, Nueva Zelanda, Singapur, el Reino Unido y Estados Unidos. La tienda también debe utilizar la moneda de ese país. WCPOS no tiene restricciones por país."
+        },
+        "offline": {
+          "question": "¿Funciona sin conexión el TPV de WooCommerce?",
+          "answer": "No. WooCommerce dice que su TPV necesita una conexión activa a internet para sincronizar productos, crear pedidos y procesar pagos. WCPOS está diseñado para funcionar primero sin conexión: los productos, clientes y carritos se almacenan localmente, de modo que puede navegar por el catálogo y preparar ventas sin conexión, y todo se sincroniza cuando esta vuelve. Completar el cobro y validar cupones requieren conectividad con el servidor."
+        },
+        "devices": {
+          "question": "¿En qué dispositivos funciona el TPV de WooCommerce?",
+          "answer": "WooCommerce describe su TPV como diseñado para tabletas — iPad y tabletas Android — dentro de la aplicación móvil de WooCommerce. WCPOS funciona en cualquier navegador moderno, como aplicación de escritorio para Windows y macOS y como aplicación para iOS y Android (beta)."
+        },
+        "tapToPay": {
+          "question": "¿Admite WCPOS Tap to Pay?",
+          "answer": "No. WCPOS no admite Tap to Pay ni pagos presenciales con WooPayments. Los pagos con tarjeta en la caja de WCPOS pasan por sus integraciones con terminales — Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal y Vipps MobilePay — o por una pasarela de pago de WooCommerce que funcione en el checkout."
+        },
+        "expiry": {
+          "question": "¿Qué ocurre cuando caduca una licencia de WCPOS Pro?",
+          "answer": "No se desactiva nada. La versión Pro que tiene sigue funcionando todo el tiempo que quiera — su caja, sus datos, todas las funciones. Simplemente deja de recibir nuevas actualizaciones y soporte prioritario hasta que decida renovar. Es deliberado: obliga a que las renovaciones se ganen con actualizaciones que merezcan la pena, y garantiza que su punto de venta nunca podrá desactivarse de forma remota."
+        }
+      },
+      "footer": {
+        "factsDated": "Datos sobre el TPV de WooCommerce verificados el 2026-10-06 con las propias páginas de WooCommerce (su documentación del TPV, su página del TPV y la página de comisiones de WooPayments); los datos de WCPOS proceden de wcpos.com. Los volvemos a comprobar cada trimestre.",
         "corrections": "¿Detecta un error? Escriba a support@wcpos.com — corregimos rápido y dejamos constancia de cada cambio."
       }
     }

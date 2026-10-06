@@ -1834,7 +1834,12 @@
         "description": "WordPress-native tegenover cloud-SaaS: eigendom van je data, echte limieten van gratis abonnementen, eenmalige prijzen tegenover abonnementen, en waar Oliver echt beter is.",
         "cta": "Lees de vergelijking"
       },
-      "moreSoon": "Er komen meer vergelijkingen aan, waaronder Square voor WooCommerce en de officiële POS van WooCommerce."
+      "woocommerceCard": {
+        "title": "WCPOS vs de officiële POS van WooCommerce",
+        "description": "Gratis en ingebouwd in de mobiele WooCommerce-app tegenover platformonafhankelijk en offline-first: apparaten, landen, betalingen, prijzen en waar de POS van WooCommerce echt beter is.",
+        "cta": "Lees de vergelijking"
+      },
+      "moreSoon": "Er komen meer vergelijkingen aan, waaronder Square voor WooCommerce."
     },
     "oliver": {
       "metadata": {
@@ -2064,6 +2069,159 @@
       },
       "footer": {
         "factsVerified": "Feiten geverifieerd op 8 juli 2026 aan de hand van oliverpos.com/pricing, wordpress.org/plugins/woocommerce-pos/, wordpress.org/plugins/oliver-pos/ en wcpos.com.",
+        "corrections": "Een fout gezien? Mail naar support@wcpos.com — we corrigeren snel en leggen elke wijziging vast."
+      }
+    },
+    "woocommerce": {
+      "metadata": {
+        "title": "WCPOS vs de officiële POS van WooCommerce (2026): een eerlijke vergelijking",
+        "description": "WCPOS en de POS in de eigen mobiele app van WooCommerce vergeleken door de maker van WCPOS — apparaten, landen, offline gebruik, betalingen, prijzen en wanneer de POS van WooCommerce de betere keuze is."
+      },
+      "hero": {
+        "title": "WCPOS vs de officiële POS van WooCommerce",
+        "subtitle": "WooCommerce biedt nu een eigen kassa in zijn mobiele app. Dit is wat die wel en niet kan, en wanneer het de betere keuze is."
+      },
+      "shortAnswer": {
+        "title": "Het korte antwoord",
+        "wcpos": "WCPOS werkt in elke moderne browser, als desktopapps voor Windows en macOS en als iOS- en Android-apps (bèta), met elke WooCommerce-betaalgateway. Het is offline-first, de gratis versie heeft geen limieten op producten, bestellingen of klanten en Pro voegt beheer van meerdere winkels en integraties met pinterminals toe voor een eenmalige betaling, zonder dat functies ooit worden uitgeschakeld.",
+        "woocommerce": "De officiële POS van WooCommerce zit in de mobiele WooCommerce-app (“WooCommerce: Store & POS”). De POS-software is gratis, gemaakt door WooCommerce zelf en accepteert contant geld en kaarten via WooPayments of Stripe met een Bluetooth-kaartlezer. Hij is ontworpen voor tablets, is beschikbaar voor winkels in tien landen, verkoopt geen abonnementen of downloadbare producten, heeft geen offline modus en ondersteunt nog geen meerdere locaties."
+      },
+      "glance": {
+        "title": "In één oogopslag",
+        "caption": "Feiten over de WooCommerce POS geverifieerd op 2026-10-06 op woocommerce.com; WCPOS-feiten van wcpos.com/pro.",
+        "colWcpos": "WCPOS",
+        "colWoocommerce": "WooCommerce POS (officieel)",
+        "rows": {
+          "where": {
+            "label": "Waar het werkt",
+            "wcpos": "WordPress-plugin met een kassa in elke moderne browser, plus desktop- en mobiele apps",
+            "woocommerce": "In de mobiele WooCommerce-app (“WooCommerce: Store & POS”)"
+          },
+          "devices": {
+            "label": "Apparaten",
+            "wcpos": "Web, desktopapps (Windows en macOS), iOS- en Android-apps (bèta); onbeperkt apparaten en kassamedewerkers",
+            "woocommerce": "Ontworpen voor tablets — iPad en Android-tablets"
+          },
+          "countries": {
+            "label": "Landen",
+            "wcpos": "Geen landenbeperking",
+            "woocommerce": "10 landen: Australië, Canada, Finland, Ierland, Luxemburg, Nederland, Nieuw-Zeeland, Singapore, Verenigd Koninkrijk, Verenigde Staten — en de winkel moet de valuta van dat land gebruiken"
+          },
+          "price": {
+            "label": "Prijs",
+            "wcpos": "Gratis plugin zonder limieten; Pro kost $129 voor één jaar updates of $399 levenslang — eenmalige betalingen, geen automatische verlenging",
+            "woocommerce": "Gratis POS-software; kaartlezers kosten $5.00 / £5.00 per actieve lezer per maand"
+          },
+          "cardPayments": {
+            "label": "Kaartbetalingen",
+            "wcpos": "Pro-terminalintegraties: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Vipps MobilePay",
+            "woocommerce": "WooPayments of Stripe, met een Bluetooth-kaartlezer"
+          },
+          "gateways": {
+            "label": "Betaalgateways",
+            "wcpos": "Elke WooCommerce-betaalgateway",
+            "woocommerce": "Contant geld, plus WooPayments of Stripe voor kaarten"
+          },
+          "fees": {
+            "label": "Kaartkosten",
+            "wcpos": "Geen kosten van WCPOS — de tarieven van je betaalverwerker gelden",
+            "woocommerce": "WooPayments-tarief voor betalingen ter plaatse — in de Verenigde Staten 2.70% + $0.10 (online: 2.90% + $0.30)"
+          },
+          "offline": {
+            "label": "Offline",
+            "wcpos": "Offline-first: producten bekijken en winkelwagens samenstellen zonder verbinding; afrekenen vereist verbinding",
+            "woocommerce": "Geen offline modus — vereist een actieve internetverbinding"
+          },
+          "multiLocation": {
+            "label": "Meerdere winkels / locaties",
+            "wcpos": "Ja (Pro): adressen, belastingtarieven, bonnenjablonen, prijzen en bevoegde gebruikers per winkel",
+            "woocommerce": "Nog niet — WooCommerce noemt het als een functie die nog moet worden uitgerold"
+          },
+          "barcode": {
+            "label": "Barcodes scannen",
+            "wcpos": "Ja",
+            "woocommerce": "Ja"
+          }
+        }
+      },
+      "devices": {
+        "title": "Waar kun je het gebruiken?",
+        "woocommerce": "De POS van WooCommerce is een modus van de mobiele WooCommerce-app. WooCommerce beschrijft hem als ontworpen voor tablets — iPad en Android-tablets — en hij is beschikbaar voor winkels in tien landen: Australië, Canada, Finland, Ierland, Luxemburg, Nederland, Nieuw-Zeeland, Singapore, het Verenigd Koninkrijk en de Verenigde Staten, mits die winkels de valuta van hun eigen land gebruiken.",
+        "wcpos": "WCPOS werkt in elke moderne browser, als desktopapps voor Windows en macOS en als iOS- en Android-apps (bèta), met onbeperkt apparaten en kassamedewerkers per licentie. Gebruik de computer die je al aan de toonbank hebt, een tablet of allebei."
+      },
+      "payments": {
+        "title": "Hoe werken kaartbetalingen?",
+        "woocommerce": "De POS van WooCommerce accepteert contant geld en kaarten via WooPayments of Stripe met een Bluetooth-kaartlezer die met de tablet is verbonden. Met WooPayments kosten kaartbetalingen ter plaatse minder dan online: in de Verenigde Staten 2.70% + $0.10 tegenover 2.90% + $0.30 online. Een kaartlezer kost $5.00 / £5.00 per actieve lezer per maand.",
+        "wcpos": "WCPOS verwerkt betalingen via de eigen checkout van WooCommerce, zodat elke WooCommerce-compatibele betaalgateway aan de kassa kan werken. Pro voegt integraties met pinterminals toe voor Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal en Vipps MobilePay, met één klik te installeren vanuit de extensiecatalogus. WCPOS ondersteunt geen Tap to Pay of WooPayments-betalingen ter plaatse."
+      },
+      "pricing": {
+        "title": "Wat kost het?",
+        "woocommerce": "De POS-software van WooCommerce is gratis en inbegrepen bij de mobiele WooCommerce-app. Als je een kaartlezer gebruikt, betaal je $5.00 / £5.00 per actieve lezer per maand en voor kaartbetalingen geldt het tarief van je betaalprovider voor betalingen ter plaatse.",
+        "wcpos": "WCPOS is gratis, zonder limieten op producten, bestellingen, klanten of contante verkopen. Pro kost $129 — een eenmalige betaling voor één jaar updates en prioriteitsondersteuning — of $399 levenslang. Het wordt nooit automatisch verlengd en Pro blijft na dat jaar werken: er wordt nooit iets uitgeschakeld. WCPOS rekent geen transactiekosten; je betaalt de tarieven van je eigen betaalverwerker.",
+        "proAdds": "Pro voegt toe: beheer van meerdere winkels, integraties met pinterminals, kortingsbonnen, terugbetalingen via de POS API, bestelgeschiedenis, klantbeheer aan de kassa, winkelspecifieke prijzen, voorraad- en prijsbewerking, dagafsluitingsrapporten en de extensiedirectory.",
+        "demoPrefix": "Probeer alles eerst op",
+        "demoLinkLabel": "demo.wcpos.com/pos",
+        "demoSuffix": "(inloggen demo / demo)."
+      },
+      "limits": {
+        "title": "Wat de POS van WooCommerce (nog) niet kan",
+        "intro": "Zoals geverifieerd op 2026-10-06, heeft de POS van WooCommerce deze beperkingen:",
+        "tablets": "Ontworpen voor tablets: iPad en Android-tablets.",
+        "countries": "Alleen winkels in tien landen: Australië, Canada, Finland, Ierland, Luxemburg, Nederland, Nieuw-Zeeland, Singapore, het Verenigd Koninkrijk en de Verenigde Staten, mits die winkels de valuta van hun eigen land gebruiken.",
+        "products": "Geen abonnementen of downloadbare producten.",
+        "offline": "Geen offline modus: een actieve internetverbinding is nodig.",
+        "multiLocation": "Nog geen ondersteuning voor meerdere locaties.",
+        "gateways": "Voor kaartbetalingen zijn WooPayments of Stripe nodig.",
+        "outro": "WooCommerce blijft POS-functies toevoegen aan WooCommerce zelf, dus deze lijst zal waarschijnlijk korter worden — we controleren hem elk kwartaal opnieuw."
+      },
+      "woocommerceBetter": {
+        "title": "Waar de POS van WooCommerce echt beter is",
+        "intro": "Een eerlijke vergelijking bekijkt beide kanten:",
+        "price": "De POS-software is gratis, zonder enige licentie — WCPOS Pro kost $129 of meer.",
+        "official": "Hij is gemaakt door WooCommerce zelf, in de mobiele WooCommerce-app die je misschien al gebruikt om je winkel te beheren.",
+        "wooPayments": "Ingebouwde WooPayments-betalingen ter plaatse tegen een lager tarief dan WooPayments online (in de Verenigde Staten 2.70% + $0.10 tegenover 2.90% + $0.30). WCPOS heeft geen WooPayments-integratie voor betalingen ter plaatse.",
+        "outro": "Als je winkel in een van zijn tien landen ligt en de valuta van dat land gebruikt, je vanaf een tablet verkoopt, kaarten via WooPayments of Stripe accepteert en geen offline modus, meerdere locaties of abonnementen en downloadbare producten aan de kassa nodig hebt, is de POS van WooCommerce gratis software en misschien alles wat je nodig hebt."
+      },
+      "choose": {
+        "title": "Welke moet je kiezen?",
+        "wcpos": {
+          "title": "Kies WCPOS als:",
+          "body": "Je winkel buiten de tien landen ligt die de POS van WooCommerce ondersteunt of niet de valuta van het eigen land gebruikt, je een kassa in een webbrowser of in desktopapps voor Windows en macOS wilt, offline door producten wilt bladeren en winkelwagens wilt samenstellen, meer dan één winkel runt, een andere betaalgateway dan WooPayments of Stripe gebruikt of pinterminals van SumUp, PayPal, Square, Mollie of Vipps MobilePay wilt."
+        },
+        "woocommerce": {
+          "title": "Kies de POS van WooCommerce als:",
+          "body": "Je winkel in een van zijn tien landen ligt en de valuta van dat land gebruikt, je vanaf een iPad of Android-tablet verkoopt, kaarten via WooPayments of Stripe accepteert en geen offline modus, meerdere locaties of andere betaalgateways nodig hebt."
+        }
+      },
+      "faq": {
+        "title": "Veelgestelde vragen",
+        "free": {
+          "question": "Is de officiële POS van WooCommerce gratis?",
+          "answer": "Ja, de POS-software is gratis en inbegrepen bij de mobiele WooCommerce-app. Als je een kaartlezer gebruikt, betaal je $5.00 / £5.00 per actieve lezer per maand en voor kaartbetalingen geldt het tarief van je betaalprovider voor betalingen ter plaatse. De gratis plugin van WCPOS is ook gratis, zonder limieten, en werkt met elke WooCommerce-betaalgateway."
+        },
+        "countries": {
+          "question": "Welke landen ondersteunt de POS van WooCommerce?",
+          "answer": "Per 2026-10-06 winkels in tien landen: Australië, Canada, Finland, Ierland, Luxemburg, Nederland, Nieuw-Zeeland, Singapore, het Verenigd Koninkrijk en de Verenigde Staten. De winkel moet ook de valuta van dat land gebruiken. WCPOS heeft geen landenbeperking."
+        },
+        "offline": {
+          "question": "Werkt de POS van WooCommerce offline?",
+          "answer": "Nee. WooCommerce zegt dat zijn POS een actieve internetverbinding nodig heeft om producten te synchroniseren, bestellingen aan te maken en betalingen te verwerken. WCPOS is offline-first: producten, klanten en winkelwagens worden lokaal opgeslagen, dus je kunt zonder verbinding door de catalogus bladeren en verkopen samenstellen, en alles synchroniseert zodra de verbinding terug is. Het afrekenen voltooien en kortingsbonnen valideren vereisen een serververbinding."
+        },
+        "devices": {
+          "question": "Op welke apparaten werkt de POS van WooCommerce?",
+          "answer": "WooCommerce beschrijft zijn POS als ontworpen voor tablets — iPad en Android-tablets — in de mobiele WooCommerce-app. WCPOS werkt in elke moderne browser, als desktopapps voor Windows en macOS en als iOS- en Android-apps (bèta)."
+        },
+        "tapToPay": {
+          "question": "Ondersteunt WCPOS Tap to Pay?",
+          "answer": "Nee. WCPOS ondersteunt geen Tap to Pay of WooPayments-betalingen ter plaatse. Kaartbetalingen aan de WCPOS-kassa lopen via de terminalintegraties — Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal en Vipps MobilePay — of via een WooCommerce-betaalgateway die bij het afrekenen werkt."
+        },
+        "expiry": {
+          "question": "Wat gebeurt er wanneer een WCPOS Pro-licentie verloopt?",
+          "answer": "Er wordt niets uitgeschakeld. De Pro-versie die je hebt blijft werken zolang je wilt — je kassa, je data, elke functie. Je ontvangt alleen geen nieuwe updates en prioriteitsondersteuning meer totdat je besluit te verlengen. Dat is een bewuste keuze: het betekent dat verlengingen verdiend moeten worden met updates die het geld waard zijn, en het garandeert dat je kassa nooit op afstand kan worden uitgeschakeld."
+        }
+      },
+      "footer": {
+        "factsDated": "Feiten over de POS van WooCommerce geverifieerd op 2026-10-06 aan de hand van WooCommerce's eigen pagina's (de POS-documentatie, de POS-pagina en de WooPayments-kostenpagina); WCPOS-feiten komen van wcpos.com. We controleren ze elk kwartaal opnieuw.",
         "corrections": "Een fout gezien? Mail naar support@wcpos.com — we corrigeren snel en leggen elke wijziging vast."
       }
     }

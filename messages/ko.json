@@ -1834,7 +1834,12 @@
         "description": "WordPress 네이티브 대 클라우드 SaaS: 데이터 소유권, 무료 플랜의 실제 제한, 일회성 결제와 구독의 차이, 그리고 Oliver가 진짜로 더 나은 부분.",
         "cta": "비교 읽기"
       },
-      "moreSoon": "Square for WooCommerce와 WooCommerce 공식 POS를 포함해 더 많은 비교가 준비 중입니다."
+      "woocommerceCard": {
+        "title": "WCPOS vs WooCommerce 공식 POS",
+        "description": "WooCommerce 모바일 앱에 내장된 무료 POS와 여러 플랫폼에서 작동하는 오프라인 우선 POS: 기기, 국가, 결제, 가격, 그리고 WooCommerce POS가 실제로 더 나은 부분을 비교합니다.",
+        "cta": "비교 읽기"
+      },
+      "moreSoon": "Square for WooCommerce를 포함해 더 많은 비교가 준비 중입니다."
     },
     "oliver": {
       "metadata": {
@@ -2064,6 +2069,159 @@
       },
       "footer": {
         "factsVerified": "사실 확인: 2026년 7월 8일, oliverpos.com/pricing, wordpress.org/plugins/woocommerce-pos/, wordpress.org/plugins/oliver-pos/, wcpos.com 기준.",
+        "corrections": "오류를 발견하셨나요? support@wcpos.com으로 알려 주세요. 빠르게 수정하고 모든 변경을 기록합니다."
+      }
+    },
+    "woocommerce": {
+      "metadata": {
+        "title": "WCPOS vs WooCommerce 공식 POS(2026): 솔직한 비교",
+        "description": "WCPOS 제작자가 WCPOS와 WooCommerce 자체 모바일 앱의 POS를 비교합니다 — 기기, 국가, 오프라인 지원, 결제, 가격, 그리고 WooCommerce POS가 더 나은 선택인 경우까지."
+      },
+      "hero": {
+        "title": "WCPOS vs WooCommerce 공식 POS",
+        "subtitle": "WooCommerce는 이제 모바일 앱에서 자체 POS를 제공합니다. 무엇을 할 수 있고 무엇을 할 수 없는지, 언제 더 나은 선택인지 살펴봅니다."
+      },
+      "shortAnswer": {
+        "title": "간단한 결론",
+        "wcpos": "WCPOS는 모든 최신 브라우저, Windows와 macOS 데스크톱 앱, iOS와 Android 앱(베타)에서 작동하며 모든 WooCommerce 결제 게이트웨이를 사용할 수 있습니다. 오프라인 우선으로 설계되었고 무료 버전에는 제품, 주문, 고객 수에 제한이 없습니다. Pro는 일회성 결제로 다중 매장 관리와 카드 단말기 연동을 추가하며, 만료 후에도 기능이 꺼지지 않습니다.",
+        "woocommerce": "WooCommerce 공식 POS는 WooCommerce 모바일 앱(“WooCommerce: Store & POS”)에 들어 있습니다. POS 소프트웨어는 무료이며 WooCommerce가 직접 만들었고, 현금과 함께 Bluetooth 카드 리더기를 사용한 WooPayments 또는 Stripe 카드 결제를 받습니다. 태블릿용으로 설계되었으며 10개국의 매장에서 이용할 수 있습니다. 구독 상품이나 다운로드 상품을 판매하지 못하고 오프라인 모드가 없으며 다중 위치는 아직 지원하지 않습니다."
+      },
+      "glance": {
+        "title": "한눈에 보기",
+        "caption": "WooCommerce POS 정보는 2026-10-06에 woocommerce.com에서 확인했으며, WCPOS 정보는 wcpos.com/pro 기준입니다.",
+        "colWcpos": "WCPOS",
+        "colWoocommerce": "WooCommerce POS(공식)",
+        "rows": {
+          "where": {
+            "label": "작동 환경",
+            "wcpos": "모든 최신 브라우저에서 계산대를 사용할 수 있는 WordPress 플러그인과 데스크톱·모바일 앱",
+            "woocommerce": "WooCommerce 모바일 앱(“WooCommerce: Store & POS”) 내부"
+          },
+          "devices": {
+            "label": "기기",
+            "wcpos": "웹, 데스크톱 앱(Windows와 macOS), iOS와 Android 앱(베타); 기기와 계산원 무제한",
+            "woocommerce": "태블릿용으로 설계 — iPad와 Android 태블릿"
+          },
+          "countries": {
+            "label": "국가",
+            "wcpos": "국가 제한 없음",
+            "woocommerce": "10개국: 호주, 캐나다, 핀란드, 아일랜드, 룩셈부르크, 네덜란드, 뉴질랜드, 싱가포르, 영국, 미국 — 매장은 해당 국가의 통화를 사용해야 합니다"
+          },
+          "price": {
+            "label": "가격",
+            "wcpos": "제한 없는 무료 플러그인; Pro는 1년 업데이트 포함 $129 또는 평생 $399 — 일회성 결제, 자동 갱신 없음",
+            "woocommerce": "무료 POS 소프트웨어; 카드 리더기는 사용 중인 리더기 한 대당 월 $5.00 / £5.00"
+          },
+          "cardPayments": {
+            "label": "카드 결제",
+            "wcpos": "Pro 단말기 연동: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Vipps MobilePay",
+            "woocommerce": "WooPayments 또는 Stripe, Bluetooth 카드 리더기 사용"
+          },
+          "gateways": {
+            "label": "결제 게이트웨이",
+            "wcpos": "모든 WooCommerce 결제 게이트웨이",
+            "woocommerce": "현금, 카드 결제는 WooPayments 또는 Stripe"
+          },
+          "fees": {
+            "label": "카드 수수료",
+            "wcpos": "WCPOS 수수료 없음 — 이용하는 결제 처리 업체의 요금 적용",
+            "woocommerce": "WooPayments 대면 결제 요율 — 미국에서 2.70% + $0.10 (온라인: 2.90% + $0.30)"
+          },
+          "offline": {
+            "label": "오프라인",
+            "wcpos": "오프라인 우선: 오프라인에서 제품을 탐색하고 장바구니를 준비할 수 있음; 결제 완료에는 연결 필요",
+            "woocommerce": "오프라인 모드 없음 — 활성 인터넷 연결 필요"
+          },
+          "multiLocation": {
+            "label": "다중 매장 / 위치",
+            "wcpos": "예(Pro): 매장별 주소, 세율, 영수증 템플릿, 가격, 권한이 있는 사용자",
+            "woocommerce": "아직 지원하지 않음 — WooCommerce는 향후 출시할 기능 중 하나로 제시합니다"
+          },
+          "barcode": {
+            "label": "바코드 스캔",
+            "wcpos": "예",
+            "woocommerce": "예"
+          }
+        }
+      },
+      "devices": {
+        "title": "어디에서 사용할 수 있나요?",
+        "woocommerce": "WooCommerce POS는 WooCommerce 모바일 앱의 한 모드입니다. WooCommerce는 이를 iPad와 Android 태블릿용으로 설계되었다고 설명하며, 호주, 캐나다, 핀란드, 아일랜드, 룩셈부르크, 네덜란드, 뉴질랜드, 싱가포르, 영국, 미국의 10개국에서 해당 국가의 통화를 사용하는 매장에서 이용할 수 있습니다.",
+        "wcpos": "WCPOS는 모든 최신 브라우저, Windows와 macOS 데스크톱 앱, iOS와 Android 앱(베타)에서 작동하며 라이선스당 기기와 계산원 수에 제한이 없습니다. 이미 계산대에 있는 컴퓨터나 태블릿, 또는 둘 다 사용하세요."
+      },
+      "payments": {
+        "title": "카드 결제는 어떻게 작동하나요?",
+        "woocommerce": "WooCommerce POS는 현금을 받으며, 태블릿에 연결된 Bluetooth 카드 리더기로 WooPayments 또는 Stripe를 통한 카드 결제도 받습니다. WooPayments의 대면 카드 결제 요율은 온라인보다 낮습니다. 미국에서는 대면 2.70% + $0.10, 온라인 2.90% + $0.30입니다. 카드 리더기 비용은 사용 중인 리더기 한 대당 월 $5.00 / £5.00입니다.",
+        "wcpos": "WCPOS는 WooCommerce 자체 체크아웃을 통해 결제하므로 WooCommerce와 호환되는 모든 결제 게이트웨이를 계산대에서 사용할 수 있습니다. Pro는 Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Vipps MobilePay 카드 단말기 연동을 추가하며, 확장 카탈로그에서 클릭 한 번으로 설치할 수 있습니다. WCPOS는 Tap to Pay나 WooPayments 대면 결제를 지원하지 않습니다."
+      },
+      "pricing": {
+        "title": "비용은 얼마인가요?",
+        "woocommerce": "WooCommerce POS 소프트웨어는 무료이며 WooCommerce 모바일 앱에 포함되어 있습니다. 카드 리더기를 사용하는 경우 사용 중인 리더기 한 대당 월 $5.00 / £5.00의 요금이 부과되며, 카드 결제에는 이용하는 결제 제공업체의 대면 결제 요율이 적용됩니다.",
+        "wcpos": "WCPOS는 무료이며 제품, 주문, 고객, 현금 판매에 제한이 없습니다. Pro는 $129 일회성 결제로 1년간 업데이트와 우선 지원을 제공하거나, 평생 버전을 $399에 구매할 수 있습니다. 자동 갱신은 없으며 1년이 지나도 Pro는 계속 작동합니다. 어떤 기능도 꺼지지 않습니다. WCPOS는 거래 수수료를 부과하지 않으며 이용하는 결제 처리 업체의 요금만 지불합니다.",
+        "proAdds": "Pro 추가 기능: 다중 매장 관리, 카드 단말기 연동, 쿠폰, POS API를 통한 환불, 주문 내역, 계산대 고객 관리, 매장별 가격, 재고·가격 편집, 마감 보고서, 확장 디렉터리.",
+        "demoPrefix": "먼저",
+        "demoLinkLabel": "demo.wcpos.com/pos",
+        "demoSuffix": "에서 모든 기능을 체험해 보세요(로그인 demo / demo)."
+      },
+      "limits": {
+        "title": "WooCommerce POS가 (아직) 하지 못하는 것",
+        "intro": "2026-10-06에 확인한 WooCommerce POS의 제한 사항은 다음과 같습니다:",
+        "tablets": "태블릿용으로 설계: iPad와 Android 태블릿.",
+        "countries": "다음 10개국의 매장만: 호주, 캐나다, 핀란드, 아일랜드, 룩셈부르크, 네덜란드, 뉴질랜드, 싱가포르, 영국, 미국. 매장은 해당 국가의 통화를 사용해야 합니다.",
+        "products": "구독 상품이나 다운로드 상품은 판매할 수 없음.",
+        "offline": "오프라인 모드 없음: 활성 인터넷 연결이 필요합니다.",
+        "multiLocation": "다중 위치는 아직 지원하지 않습니다.",
+        "gateways": "카드 결제에는 WooPayments 또는 Stripe가 필요합니다.",
+        "outro": "WooCommerce는 WooCommerce 코어에 POS 기능을 계속 추가하고 있으므로 이 목록은 줄어들 것으로 예상됩니다 — 분기마다 다시 확인합니다."
+      },
+      "woocommerceBetter": {
+        "title": "WooCommerce POS가 실제로 더 나은 부분",
+        "intro": "솔직한 비교에서는 양쪽의 장점을 모두 살펴봐야 합니다:",
+        "price": "POS 소프트웨어는 라이선스 비용 없이 무료입니다 — WCPOS Pro는 $129 이상입니다.",
+        "official": "WooCommerce가 직접 만들었으며 이미 매장 운영에 사용 중일 수 있는 WooCommerce 모바일 앱에 들어 있습니다.",
+        "wooPayments": "WooPayments의 기본 대면 결제를 지원하며 WooPayments 온라인 결제보다 요율이 낮습니다(미국에서는 대면 2.70% + $0.10, 온라인 2.90% + $0.30). WCPOS에는 WooPayments 대면 결제 연동이 없습니다.",
+        "outro": "매장이 지원 대상 10개국 중 하나에 있고 해당 국가의 통화를 사용하며 태블릿으로 판매하며 WooPayments 또는 Stripe로 카드를 받고 오프라인 모드, 다중 위치 또는 계산대에서 구독 상품과 다운로드 상품 판매가 필요 없다면 WooCommerce POS는 무료 소프트웨어이며 그것만으로 충분할 수 있습니다."
+      },
+      "choose": {
+        "title": "무엇을 선택해야 할까요?",
+        "wcpos": {
+          "title": "이런 경우 WCPOS를 선택하세요:",
+          "body": "매장이 WooCommerce POS가 지원하는 10개국 밖에 있거나 자국 통화를 사용하지 않거나, 웹 브라우저 또는 Windows와 macOS 데스크톱 앱에서 계산대를 사용하고 싶거나, 오프라인에서 상품을 탐색하고 장바구니를 작성하고 싶거나, 매장을 둘 이상 운영하거나, WooPayments 또는 Stripe 이외의 결제 게이트웨이를 사용하거나, SumUp, PayPal, Square, Mollie, Vipps MobilePay의 카드 단말기를 원한다면."
+        },
+        "woocommerce": {
+          "title": "이런 경우 WooCommerce POS를 선택하세요:",
+          "body": "매장이 지원 대상 10개국 중 하나에 있고 해당 국가의 통화를 사용하며 iPad 또는 Android 태블릿으로 판매하며 WooPayments 또는 Stripe로 카드를 받고 오프라인 모드, 다중 위치 또는 다른 결제 게이트웨이가 필요 없다면."
+        }
+      },
+      "faq": {
+        "title": "자주 묻는 질문",
+        "free": {
+          "question": "WooCommerce 공식 POS는 무료인가요?",
+          "answer": "네, POS 소프트웨어는 무료이며 WooCommerce 모바일 앱에 포함되어 있습니다. 카드 리더기를 사용하는 경우 사용 중인 리더기 한 대당 월 $5.00 / £5.00의 요금이 부과되며, 카드 결제에는 이용하는 결제 제공업체의 대면 결제 요율이 적용됩니다. WCPOS의 무료 플러그인도 제한 없이 무료이며 모든 WooCommerce 결제 게이트웨이에서 작동합니다."
+        },
+        "countries": {
+          "question": "WooCommerce POS는 어느 국가를 지원하나요?",
+          "answer": "2026-10-06 기준, 호주, 캐나다, 핀란드, 아일랜드, 룩셈부르크, 네덜란드, 뉴질랜드, 싱가포르, 영국, 미국의 10개국 매장에서 이용할 수 있습니다. 매장은 해당 국가의 통화도 사용해야 합니다. WCPOS에는 국가 제한이 없습니다."
+        },
+        "offline": {
+          "question": "WooCommerce POS는 오프라인에서 작동하나요?",
+          "answer": "아니요. WooCommerce에 따르면 POS는 제품 동기화, 주문 생성, 결제 처리에 활성 인터넷 연결이 필요합니다. WCPOS는 오프라인 우선입니다. 제품, 고객, 장바구니가 로컬에 저장되므로 연결 없이도 카탈로그를 탐색하고 판매를 준비할 수 있으며, 연결이 복구되면 모두 동기화됩니다. 결제 완료와 쿠폰 검증에는 서버 연결이 필요합니다."
+        },
+        "devices": {
+          "question": "WooCommerce POS는 어떤 기기에서 작동하나요?",
+          "answer": "WooCommerce는 모바일 앱 안의 POS가 iPad와 Android 태블릿용으로 설계되었다고 설명합니다. WCPOS는 모든 최신 브라우저, Windows와 macOS 데스크톱 앱, iOS와 Android 앱(베타)에서 작동합니다."
+        },
+        "tapToPay": {
+          "question": "WCPOS는 Tap to Pay를 지원하나요?",
+          "answer": "아니요. WCPOS는 Tap to Pay나 WooPayments 대면 결제를 지원하지 않습니다. WCPOS 계산대의 카드 결제는 Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Vipps MobilePay 단말기 연동이나 체크아웃에서 작동하는 WooCommerce 결제 게이트웨이를 통해 처리됩니다."
+        },
+        "expiry": {
+          "question": "WCPOS Pro 라이선스가 만료되면 어떻게 되나요?",
+          "answer": "아무것도 꺼지지 않습니다. 지금 쓰시는 Pro 버전은 원하는 만큼 계속 작동합니다. 계산대도, 데이터도, 모든 기능도 그대로입니다. 갱신을 선택하기 전까지 새 업데이트와 우선 지원만 중단됩니다. 이는 의도된 설계입니다. 갱신은 돈 낼 가치가 있는 업데이트로 얻어내야 하고, 여러분의 POS가 원격으로 비활성화되는 일은 결코 없다는 보장이기도 합니다."
+        }
+      },
+      "footer": {
+        "factsDated": "WooCommerce POS에 관한 정보는 2026-10-06에 WooCommerce 자체 페이지(POS 문서, POS 페이지, WooPayments 수수료 페이지)에서 확인했습니다. WCPOS 정보는 wcpos.com에서 가져왔습니다. 분기마다 다시 확인합니다.",
         "corrections": "오류를 발견하셨나요? support@wcpos.com으로 알려 주세요. 빠르게 수정하고 모든 변경을 기록합니다."
       }
     }

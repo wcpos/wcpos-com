@@ -181,6 +181,8 @@ const globallyLanguageNeutralOrEnglishOnlyKeys = new Set([
   'compare.oliver.glance.rows.openSource.label',
   'compare.oliver.glance.rows.wporg.label',
   'compare.oliver.pricing.demoLinkLabel',
+  'compare.woocommerce.glance.colWcpos',
+  'compare.woocommerce.pricing.demoLinkLabel',
   'downloads.hero.versionMeta',
   'downloads.page.steps.plugin.requirements',
   'downloads.page.steps.plugin.wordpressOrgCta',
