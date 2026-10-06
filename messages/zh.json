@@ -1833,7 +1833,12 @@
         "description": "WordPress 原生对决云端 SaaS：数据所有权、免费版的真实限制、一次性买断与订阅制的差别，以及 Oliver 真正更胜一筹的地方。",
         "cta": "阅读对比"
       },
-      "moreSoon": "更多对比即将上线，包括 Square for WooCommerce 和 WooCommerce 官方 POS。"
+      "woocommerceCard": {
+        "title": "WCPOS vs WooCommerce 官方 POS",
+        "description": "免费且内置于 WooCommerce 移动应用，对比跨平台、离线优先的收银系统：设备、国家、支付、价格，以及 WooCommerce POS 真正更胜一筹的地方。",
+        "cta": "阅读对比"
+      },
+      "moreSoon": "更多对比即将上线，包括 Square for WooCommerce。"
     },
     "oliver": {
       "metadata": {
@@ -2063,6 +2068,177 @@
       },
       "footer": {
         "factsVerified": "事实核验于 2026 年 7 月 8 日，依据 oliverpos.com/pricing、wordpress.org/plugins/woocommerce-pos/、wordpress.org/plugins/oliver-pos/ 和 wcpos.com。",
+        "corrections": "发现错误？发邮件到 support@wcpos.com——我们会尽快更正并记录每次修改。"
+      }
+    },
+    "woocommerce": {
+      "metadata": {
+        "title": "WCPOS vs WooCommerce 官方 POS（2026）：诚实对比",
+        "description": "由 WCPOS 开发者对比 WCPOS 与 WooCommerce 自家移动应用中的 POS——涵盖设备、国家、离线支持、支付、价格，以及何时 WooCommerce POS 是更好的选择。"
+      },
+      "hero": {
+        "title": "WCPOS vs WooCommerce 官方 POS",
+        "subtitle": "WooCommerce 现在在移动应用中提供自己的销售点系统。这里说明它能做什么、不能做什么，以及何时它是更好的选择。"
+      },
+      "shortAnswer": {
+        "title": "简短结论",
+        "wcpos": "WCPOS 可在任何现代浏览器、Windows 和 macOS 桌面应用以及 iOS 和 Android 应用（测试版）中运行，支持任何 WooCommerce 支付网关。它采用离线优先设计，免费版不限制商品、订单或客户数量；Pro 版通过一次性付款提供多店铺管理和刷卡终端集成，到期后功能也永不关闭。",
+        "woocommerce": "WooCommerce 官方 POS 位于 WooCommerce 移动应用（“WooCommerce: Store & POS”）中。它由 WooCommerce 自己开发，免费使用，通过 WooPayments 接受银行卡支付——包括 iPhone 和 Android 上的 Tap to Pay，无需购买读卡器。但它只能在美国和英国的平板设备上运行，只能销售简单商品和可变商品，不支持离线模式、多地点或自定义支付网关。"
+      },
+      "glance": {
+        "title": "一览对比",
+        "caption": "WooCommerce POS 信息截至 2026 年 4 月；WCPOS 信息来自 wcpos.com/pro。",
+        "colWcpos": "WCPOS",
+        "colWoocommerce": "WooCommerce POS（官方）",
+        "rows": {
+          "where": {
+            "label": "运行方式",
+            "wcpos": "WordPress 插件，可在任何现代浏览器中使用收银台，另有桌面和移动应用",
+            "woocommerce": "在 WooCommerce 移动应用（“WooCommerce: Store & POS”）中"
+          },
+          "devices": {
+            "label": "设备",
+            "wcpos": "网页、桌面应用（Windows 和 macOS）、iOS 和 Android 应用（测试版）；设备和收银员数量不限",
+            "woocommerce": "仅限平板——iPad 和 Android 平板"
+          },
+          "countries": {
+            "label": "国家",
+            "wcpos": "无国家限制",
+            "woocommerce": "仅限美国和英国"
+          },
+          "price": {
+            "label": "价格",
+            "wcpos": "免费插件不设上限；Pro 版含一年更新为 $129，终身版为 $399——一次性付款，不自动续费",
+            "woocommerce": "免费"
+          },
+          "cardPayments": {
+            "label": "银行卡支付",
+            "wcpos": "Pro 版终端集成：Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Vipps MobilePay",
+            "woocommerce": "WooPayments，可使用读卡器或 iPhone 和 Android 上的 Tap to Pay"
+          },
+          "gateways": {
+            "label": "支付网关",
+            "wcpos": "任何 WooCommerce 支付网关",
+            "woocommerce": "现金和 WooPayments；无自定义支付网关"
+          },
+          "fees": {
+            "label": "银行卡手续费",
+            "wcpos": "WCPOS 不收取手续费——适用你所选支付处理商的费率",
+            "woocommerce": "WooPayments 线下银行卡费率：2.6% + $0.10"
+          },
+          "tapToPay": {
+            "label": "Tap to Pay（无需读卡器）",
+            "wcpos": "不支持",
+            "woocommerce": "支持——iPhone 和 Android"
+          },
+          "offline": {
+            "label": "离线",
+            "wcpos": "离线优先：离线浏览商品、组建购物车；结账需要网络连接",
+            "woocommerce": "无离线模式"
+          },
+          "multiLocation": {
+            "label": "多店铺 / 多地点",
+            "wcpos": "支持（Pro）：每家店铺独立的地址、税率、收据模板、定价和授权用户",
+            "woocommerce": "不支持"
+          },
+          "barcode": {
+            "label": "条码扫描",
+            "wcpos": "支持",
+            "woocommerce": "支持"
+          },
+          "reporting": {
+            "label": "报表",
+            "wcpos": "日终报告（Pro）",
+            "woocommerce": "无高级报表"
+          },
+          "display": {
+            "label": "顾客显示屏",
+            "wcpos": "不支持",
+            "woocommerce": "不支持"
+          }
+        }
+      },
+      "devices": {
+        "title": "在哪里可以使用？",
+        "woocommerce": "WooCommerce POS 是 WooCommerce 移动应用的一种模式。它仅能在 iPad 和 Android 平板上运行——不能在手机、台式电脑或浏览器中使用——而且仅向美国和英国的店铺开放。",
+        "wcpos": "WCPOS 可在任何现代浏览器、Windows 和 macOS 桌面应用以及 iOS 和 Android 应用（测试版）中运行，每个许可证的设备和收银员数量不限。用你柜台上已有的电脑、平板，或者两者一起使用。"
+      },
+      "payments": {
+        "title": "银行卡支付如何运作？",
+        "woocommerce": "WooCommerce POS 接受现金，也通过 WooPayments 接受银行卡——可用 WooPayments 读卡器，或 iPhone 和 Android 上的 Tap to Pay，后者让顾客将卡直接贴近设备，无需购买读卡器。WooPayments 线下银行卡费率为 2.6% + $0.10，低于其线上费率。不支持其他支付网关。",
+        "wcpos": "WCPOS 通过 WooCommerce 自身的结账流程收款，因此任何兼容 WooCommerce 的支付网关都可以在收银台使用。Pro 版新增 Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal 和 Vipps MobilePay 的刷卡终端集成，可从扩展目录一键安装。WCPOS 不支持 Tap to Pay 或 WooPayments 线下支付。"
+      },
+      "pricing": {
+        "title": "费用是多少？",
+        "woocommerce": "WooCommerce POS 免费：没有许可证费用，也没有订阅费。WooCommerce 从银行卡处理获得收入——线下银行卡支付通过 WooPayments 按其线下费率处理。",
+        "wcpos": "WCPOS 免费使用，不限制商品、订单、客户或现金销售。Pro 版 $129——一次性付款，包含一年更新和优先支持——或 $399 终身版。它不会自动续费，一年后 Pro 版仍可继续使用：永远不会关闭任何功能。WCPOS 不收取交易手续费；你只需支付自己所选支付处理商的费率。",
+        "proAdds": "Pro 版新增：多店铺管理、刷卡终端集成、优惠券、通过 POS API 退款、订单历史、收银台客户管理、按店铺定价、库存和价格编辑、日终报告，以及扩展目录。",
+        "demoPrefix": "先到",
+        "demoLinkLabel": "demo.wcpos.com/pos",
+        "demoSuffix": "试用全部功能（登录 demo / demo）。"
+      },
+      "limits": {
+        "title": "WooCommerce POS（目前）做不到什么",
+        "intro": "截至 2026 年 4 月，WooCommerce POS 有意保持有限的功能范围：",
+        "tablets": "仅限平板：iPad 和 Android 平板。",
+        "countries": "仅限美国和英国的店铺。",
+        "products": "仅限简单商品和可变商品。",
+        "offline": "无离线模式。",
+        "multiLocation": "不支持多地点。",
+        "gateways": "不支持自定义支付网关——银行卡支付通过 WooPayments 处理。",
+        "display": "无顾客显示屏。",
+        "reporting": "无高级报表。",
+        "outro": "WooCommerce 一直在向 WooCommerce 核心添加 POS 功能，因此预计这份清单会缩短——我们每季度重新核实。"
+      },
+      "woocommerceBetter": {
+        "title": "WooCommerce POS 真正更胜一筹的地方",
+        "intro": "诚实的对比要兼顾双方的优点：",
+        "price": "它免费，无需任何许可证——WCPOS Pro 至少要 $129。",
+        "official": "它由 WooCommerce 自己开发，就在你可能已经用来管理店铺的 WooCommerce 移动应用中。",
+        "tapToPay": "iPhone 和 Android 上的 Tap to Pay——无需读卡器就能接受银行卡。WCPOS 不支持 Tap to Pay。",
+        "wooPayments": "原生 WooPayments 线下支付，线下银行卡费率（2.6% + $0.10）低于 WooPayments 的线上费率。WCPOS 没有 WooPayments 线下支付集成。",
+        "outro": "如果你在美国或英国用平板销售，通过 WooPayments 接受银行卡，只卖简单商品和可变商品，也不需要离线销售或多地点，免费的 WooCommerce POS 可能就够用了。"
+      },
+      "choose": {
+        "title": "你该选哪一个？",
+        "wcpos": {
+          "title": "选择 WCPOS，如果：",
+          "body": "你在美国和英国以外销售、想从台式电脑或浏览器销售、需要离线优先的销售方式、经营多家店铺、使用 WooPayments 之外的支付网关，或者想用 Stripe、SumUp、PayPal、Square、Mollie 或 Vipps MobilePay 的刷卡终端。"
+        },
+        "woocommerce": {
+          "title": "选择 WooCommerce POS，如果：",
+          "body": "你在美国或英国用 iPad 或 Android 平板销售，通过 WooPayments 接受银行卡——特别是使用 Tap to Pay——并且不需要离线销售、多地点或其他支付网关。"
+        }
+      },
+      "faq": {
+        "title": "常见问题",
+        "free": {
+          "question": "WooCommerce 官方 POS 免费吗？",
+          "answer": "是的。POS 是免费 WooCommerce 移动应用的一部分，银行卡支付通过 WooPayments 按 2.6% + $0.10 的线下费率处理。WCPOS 的免费插件也免费、不设上限，并支持任何 WooCommerce 支付网关。"
+        },
+        "countries": {
+          "question": "WooCommerce POS 支持哪些国家？",
+          "answer": "截至 2026 年 4 月，仅支持美国和英国。WCPOS 没有国家限制。"
+        },
+        "offline": {
+          "question": "WooCommerce POS 支持离线使用吗？",
+          "answer": "不支持——截至 2026 年 4 月，它没有离线模式。WCPOS 是离线优先的：商品、客户和购物车都存储在本地，因此没有网络也能浏览目录、组建订单，网络恢复后一切自动同步。完成结账和验证优惠券需要连接服务器。"
+        },
+        "devices": {
+          "question": "可以在手机或台式电脑上使用 WooCommerce POS 吗？",
+          "answer": "不可以——它仅在 iPad 和 Android 平板上运行。WCPOS 可在任何现代浏览器、Windows 和 macOS 桌面应用以及 iOS 和 Android 应用（测试版）中运行。"
+        },
+        "tapToPay": {
+          "question": "WCPOS 支持 Tap to Pay 吗？",
+          "answer": "不支持。WCPOS 不支持 Tap to Pay 或 WooPayments 线下支付。WCPOS 收银台的银行卡支付通过 Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal 和 Vipps MobilePay 的终端集成，或通过可在结账时使用的 WooCommerce 支付网关处理。如果必须使用 Tap to Pay，WooCommerce POS 则支持。"
+        },
+        "expiry": {
+          "question": "WCPOS Pro 许可证到期后会发生什么？",
+          "answer": "什么都不会被关掉。你手上的 Pro 版本想用多久就用多久——你的收银台、你的数据、每一项功能都在。到期后你只是不再收到新更新和优先支持，直到你决定续期。这是有意为之：续费必须靠值得付费的更新来赢得，同时也保证你的销售点永远不会被远程停用。"
+        }
+      },
+      "footer": {
+        "factsDated": "有关 WooCommerce POS 的事实反映其截至 2026 年 4 月的情况；WCPOS 的事实来自 wcpos.com。我们每季度重新核实。",
         "corrections": "发现错误？发邮件到 support@wcpos.com——我们会尽快更正并记录每次修改。"
       }
     }
