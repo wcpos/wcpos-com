@@ -25,6 +25,8 @@ import { verifyTurnstile } from '@/lib/support/turnstile'
 import { consumeDailyBudget, consumeRateLimit } from '@/lib/support/rate-limit'
 import { askAide, OpenclawError } from '@/lib/openclaw/client'
 
+const SESSION_ID = '3f2b8c4e-9d1a-4b6f-8e2c-7a5d0c1b9e34'
+
 function req(body: unknown) {
   return new Request('http://localhost/api/support/ask', {
     method: 'POST',
@@ -84,11 +86,11 @@ describe('POST /api/support/ask', () => {
   it('200 with the answer on success', async () => {
     vi.mocked(verifyTurnstile).mockResolvedValue(true)
     vi.mocked(askAide).mockResolvedValue({ answer: 'Do X.', model: 'sonnet', answered: true, sources: [] })
-    const res = await POST(req({ question: 'How?', turnstileToken: 't', sessionId: 's1' }))
+    const res = await POST(req({ question: 'How?', turnstileToken: 't', sessionId: SESSION_ID }))
     expect(res.status).toBe(200)
     expect(await res.json()).toMatchObject({
       answer: 'Do X.',
-      sessionId: 's1',
+      sessionId: SESSION_ID,
       answered: true,
       sources: [],
     })
@@ -108,12 +110,12 @@ describe('POST /api/support/ask', () => {
   it('passes the requested locale to Aide', async () => {
     vi.mocked(verifyTurnstile).mockResolvedValue(true)
     vi.mocked(askAide).mockResolvedValue({ answer: 'Faites X.', model: 'sonnet', answered: true, sources: [] })
-    const res = await POST(req({ question: 'Comment ?', turnstileToken: 't', sessionId: 's1', locale: 'fr' }))
+    const res = await POST(req({ question: 'Comment ?', turnstileToken: 't', sessionId: SESSION_ID, locale: 'fr' }))
 
     expect(res.status).toBe(200)
     expect(askAide).toHaveBeenCalledWith(expect.objectContaining({
       question: 'Comment ?',
-      sessionId: 's1',
+      sessionId: SESSION_ID,
       locale: 'fr',
     }))
   })
@@ -139,14 +141,113 @@ describe('POST /api/support/ask', () => {
     expect(errorMock).not.toHaveBeenCalled()
   })
 
-  it('maps an OpenclawError to a friendly 503 and logs at error', async () => {
+  it('maps a runtime OpenclawError to a friendly 502 and logs at error', async () => {
     vi.mocked(verifyTurnstile).mockResolvedValue(true)
     vi.mocked(askAide).mockRejectedValue(new OpenclawError('boom', 502, 'runtime_error'))
     const res = await POST(req({ question: 'How?', turnstileToken: 't' }))
-    expect(res.status).toBe(503)
+    expect(res.status).toBe(502)
     expect(await res.json()).toEqual({ errorCode: 'unavailable' })
     // Gateway failures go through the logging seam (not console.error) so
     // they reach Loki/Discord like every other route failure.
     expect(errorMock).toHaveBeenCalledTimes(1)
+  })
+
+  it('passes busy 429 through as gateway_busy, logged at warn not error', async () => {
+    vi.mocked(verifyTurnstile).mockResolvedValue(true)
+    vi.mocked(askAide).mockRejectedValue(new OpenclawError('busy', 429, 'busy'))
+    const res = await POST(req({ question: 'How?', turnstileToken: 't' }))
+    expect(res.status).toBe(429)
+    expect(await res.json()).toEqual({ errorCode: 'gateway_busy' })
+    expect(warnMock).toHaveBeenCalledTimes(1)
+    expect(warnMock).toHaveBeenCalledWith(expect.anything(), 429, 'busy', 'unknown')
+    expect(errorMock).not.toHaveBeenCalled()
+  })
+
+  it('maps an unrecognised gateway 429 to gateway_busy', async () => {
+    vi.mocked(verifyTurnstile).mockResolvedValue(true)
+    vi.mocked(askAide).mockRejectedValue(new OpenclawError('x', 429, 'slow_down'))
+    const res = await POST(req({ question: 'How?', turnstileToken: 't' }))
+    expect(res.status).toBe(429)
+    expect(await res.json()).toEqual({ errorCode: 'gateway_busy' })
+    expect(warnMock).toHaveBeenCalledTimes(1)
+    expect(errorMock).not.toHaveBeenCalled()
+  })
+
+  it('maps a desk question_too_long 400 to invalid_question', async () => {
+    vi.mocked(verifyTurnstile).mockResolvedValue(true)
+    vi.mocked(askAide).mockRejectedValue(new OpenclawError('too long', 400, 'question_too_long'))
+    const res = await POST(req({ question: 'How?', turnstileToken: 't' }))
+    expect(res.status).toBe(400)
+    expect(await res.json()).toEqual({ errorCode: 'invalid_question' })
+    expect(warnMock).toHaveBeenCalledTimes(1)
+    expect(errorMock).not.toHaveBeenCalled()
+  })
+
+  it('maps payload_too_large 413 to invalid_question 400', async () => {
+    vi.mocked(verifyTurnstile).mockResolvedValue(true)
+    vi.mocked(askAide).mockRejectedValue(new OpenclawError('too large', 413, 'payload_too_large'))
+    const res = await POST(req({ question: 'How?', turnstileToken: 't' }))
+    expect(res.status).toBe(400)
+    expect(await res.json()).toEqual({ errorCode: 'invalid_question' })
+    expect(warnMock).toHaveBeenCalledTimes(1)
+    expect(errorMock).not.toHaveBeenCalled()
+  })
+
+  it('maps timeout to 504 and logs at error', async () => {
+    vi.mocked(verifyTurnstile).mockResolvedValue(true)
+    vi.mocked(askAide).mockRejectedValue(new OpenclawError('timed out', 503, 'timeout'))
+    const res = await POST(req({ question: 'How?', turnstileToken: 't' }))
+    expect(res.status).toBe(504)
+    expect(await res.json()).toEqual({ errorCode: 'timeout' })
+    expect(errorMock).toHaveBeenCalledTimes(1)
+  })
+
+  it('maps an upstream 504 to timeout', async () => {
+    vi.mocked(verifyTurnstile).mockResolvedValue(true)
+    vi.mocked(askAide).mockRejectedValue(new OpenclawError('support assistant error', 504, 'runtime_error'))
+    const res = await POST(req({ question: 'How?', turnstileToken: 't' }))
+    expect(res.status).toBe(504)
+    expect(await res.json()).toEqual({ errorCode: 'timeout' })
+    expect(errorMock).toHaveBeenCalledTimes(1)
+  })
+
+  it('maps unauthorized 401 to unavailable 503 and logs at error', async () => {
+    vi.mocked(verifyTurnstile).mockResolvedValue(true)
+    vi.mocked(askAide).mockRejectedValue(new OpenclawError('unauthorized', 401, 'unauthorized'))
+    const res = await POST(req({ question: 'How?', turnstileToken: 't' }))
+    expect(res.status).toBe(503)
+    expect(await res.json()).toEqual({ errorCode: 'unavailable' })
+    expect(errorMock).toHaveBeenCalledTimes(1)
+    expect(errorMock).toHaveBeenCalledWith(expect.anything(), 401, 'unauthorized', 'unknown', expect.any(OpenclawError))
+  })
+
+  it('maps gateway_unreachable to unavailable 503', async () => {
+    vi.mocked(verifyTurnstile).mockResolvedValue(true)
+    vi.mocked(askAide).mockRejectedValue(new OpenclawError('unreachable', 503, 'gateway_unreachable'))
+    const res = await POST(req({ question: 'How?', turnstileToken: 't' }))
+    expect(res.status).toBe(503)
+    expect(await res.json()).toEqual({ errorCode: 'unavailable' })
+    expect(errorMock).toHaveBeenCalledTimes(1)
+  })
+
+  it('maps an unexpected error to unavailable 502 with unknown status and code', async () => {
+    vi.mocked(verifyTurnstile).mockResolvedValue(true)
+    vi.mocked(askAide).mockRejectedValue(new Error('x'))
+    const res = await POST(req({ question: 'How?', turnstileToken: 't' }))
+    expect(res.status).toBe(502)
+    expect(await res.json()).toEqual({ errorCode: 'unavailable' })
+    expect(errorMock).toHaveBeenCalledTimes(1)
+    expect(errorMock).toHaveBeenCalledWith(expect.anything(), 'unknown', 'unknown', 'unknown', expect.any(Error))
+  })
+
+  it('replaces a malformed sessionId with a fresh UUID', async () => {
+    vi.mocked(verifyTurnstile).mockResolvedValue(true)
+    vi.mocked(askAide).mockResolvedValue({ answer: 'Do X.', answered: true, sources: [] })
+    const res = await POST(req({ question: 'How?', turnstileToken: 't', sessionId: 'not-a-uuid' }))
+    expect(res.status).toBe(200)
+    expect(askAide).toHaveBeenCalledWith(expect.objectContaining({
+      sessionId: expect.stringMatching(/^[0-9a-f-]{36}$/),
+    }))
+    expect(vi.mocked(askAide).mock.calls[0][0].sessionId).not.toBe('not-a-uuid')
   })
 })

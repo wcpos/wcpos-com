@@ -27,6 +27,7 @@ type SupportErrorCode =
   | 'rate_limited'
   | 'budget_exhausted'
   | 'empty_answer'
+  | 'gateway_busy'
   | 'gateway_rate_limited'
   | 'timeout'
   | 'unavailable'
@@ -38,6 +39,7 @@ const SUPPORT_ERROR_CODES = new Set<SupportErrorCode>([
   'rate_limited',
   'budget_exhausted',
   'empty_answer',
+  'gateway_busy',
   'gateway_rate_limited',
   'timeout',
   'unavailable',
@@ -94,22 +96,20 @@ export function SupportChat() {
           turnstileToken: turnstile.token ?? '',
         }),
       })
-      const data = await res.json()
+      const data = await res.json().catch(() => null)
       if (!res.ok) {
-        // A failed bot check usually means the token went stale (single-use,
-        // ~5 min validity) — reset the widget so the next attempt carries a
-        // fresh one instead of failing forever.
-        if (data.errorCode === 'bot_check_failed') {
-          turnstile.reset()
-        }
         setError(
-          isSupportErrorCode(data.errorCode)
+          isSupportErrorCode(data?.errorCode)
             ? tErrors(data.errorCode)
-            : tErrors('unknown')
+            : tErrors(res.status === 504 ? 'timeout' : 'unavailable')
         )
         return
       }
-      if (data.sessionId) {
+      if (typeof data?.answer !== 'string' || data.answer.trim() === '') {
+        setError(tErrors('empty_answer'))
+        return
+      }
+      if (typeof data.sessionId === 'string' && data.sessionId !== '') {
         sessionIdRef.current = data.sessionId
         sessionStorage.setItem('wcpos-support-session', data.sessionId)
       }
@@ -121,12 +121,13 @@ export function SupportChat() {
           answerId: typeof data.answerId === 'string' ? data.answerId : undefined,
         },
       ])
-      // Tokens are single-use — re-run the widget so a follow-up question
-      // carries a fresh one.
-      turnstile.reset()
     } catch {
       setError(tErrors('network'))
     } finally {
+      // Tokens are single-use; the server spends one whenever the bot check passes.
+      // Every attempt (answer, error or network failure) re-runs the widget so
+      // the next attempt carries a fresh token.
+      turnstile.reset()
       setStatus('idle')
     }
   }
@@ -195,7 +196,7 @@ export function SupportChat() {
                   Ai
                 </div>
                 <div className="flex-1">
-                  <Markdown content={m.content} className="text-sm text-foreground" />
+                  <Markdown content={m.content} untrusted className="text-sm text-foreground" />
                   {m.answerId && (
                     <div className="mt-2 flex items-center gap-2 text-muted-foreground">
                       <span className="text-xs">{t('feedback.prompt')}</span>
