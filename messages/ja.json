@@ -2197,17 +2197,17 @@
         "official": "WooCommerce自身が開発しており、すでに店舗運営に利用しているかもしれないWooCommerceモバイルアプリ内で使えます。",
         "tapToPay": "iPhoneとAndroidのTap to Payなら、カードリーダーなしでカードを受け付けられます。WCPOSはTap to Payをサポートしません。",
         "wooPayments": "WooPaymentsのネイティブな対面決済に対応し、対面カード決済手数料（2.6% + $0.10）はWooPaymentsのオンライン手数料より低額です。WCPOSにはWooPaymentsの対面決済連携はありません。",
-        "outro": "米国または英国でタブレットから販売し、WooPaymentsでカードを受け付け、シンプル商品とバリエーション商品だけを販売し、オフライン販売や複数拠点が不要なら、無料のWooCommerceのPOSだけで十分かもしれません。"
+        "outro": "米国または英国でタブレットから販売し、WooPaymentsでカードを受け付け、シンプル商品とバリエーション商品だけを販売し、オフラインモードや複数拠点が不要なら、無料のWooCommerceのPOSだけで十分かもしれません。"
       },
       "choose": {
         "title": "どちらを選ぶべきか？",
         "wcpos": {
           "title": "WCPOSを選ぶべき場合：",
-          "body": "米国と英国以外で販売する、デスクトップコンピューターやブラウザから販売したい、オフラインファーストの販売が必要、複数の店舗を運営する、WooPayments以外の決済ゲートウェイを使う、またはStripe、SumUp、PayPal、Square、Mollie、Vipps MobilePayのカード端末を使いたい場合。"
+          "body": "米国と英国以外で販売する、デスクトップコンピューターやブラウザから販売したい、オフラインで商品を閲覧してカートを作成したい、複数の店舗を運営する、WooPayments以外の決済ゲートウェイを使う、またはStripe、SumUp、PayPal、Square、Mollie、Vipps MobilePayのカード端末を使いたい場合。"
         },
         "woocommerce": {
           "title": "WooCommerceのPOSを選ぶべき場合：",
-          "body": "米国または英国でiPadかAndroidタブレットから販売し、WooPaymentsでカードを受け付け、特にTap to Payを使いたい場合で、オフライン販売、複数拠点、他の決済ゲートウェイが不要な場合。"
+          "body": "米国または英国でiPadかAndroidタブレットから販売し、WooPaymentsでカードを受け付け、特にTap to Payを使いたい場合で、オフラインモード、複数拠点、他の決済ゲートウェイが不要な場合。"
         }
       },
       "faq": {

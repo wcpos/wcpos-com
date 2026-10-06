@@ -2197,17 +2197,17 @@
         "official": "Hij is gemaakt door WooCommerce zelf, in de mobiele WooCommerce-app die je misschien al gebruikt om je winkel te beheren.",
         "tapToPay": "Tap to Pay op iPhone en Android — accepteer kaarten zonder kaartlezer. WCPOS ondersteunt Tap to Pay niet.",
         "wooPayments": "Ingebouwde WooPayments-betalingen ter plaatse tegen een kaarttarief (2.6% + $0.10) dat lager is dan het onlinetarief van WooPayments. WCPOS heeft geen WooPayments-integratie voor betalingen ter plaatse.",
-        "outro": "Als je in de VS of het VK vanaf een tablet verkoopt, kaarten via WooPayments accepteert, alleen eenvoudige en variabele producten verkoopt en geen offline verkoop of meerdere locaties nodig hebt, is de POS van WooCommerce gratis en misschien alles wat je nodig hebt."
+        "outro": "Als je in de VS of het VK vanaf een tablet verkoopt, kaarten via WooPayments accepteert, alleen eenvoudige en variabele producten verkoopt en geen offlinemodus of meerdere locaties nodig hebt, is de POS van WooCommerce gratis en misschien alles wat je nodig hebt."
       },
       "choose": {
         "title": "Welke moet je kiezen?",
         "wcpos": {
           "title": "Kies WCPOS als:",
-          "body": "Je buiten de VS en het VK verkoopt, vanaf een desktopcomputer of browser wilt verkopen, offline-first wilt verkopen, meer dan één winkel runt, een andere betaalgateway dan WooPayments gebruikt of pinterminals van Stripe, SumUp, PayPal, Square, Mollie of Vipps MobilePay wilt."
+          "body": "Je buiten de VS en het VK verkoopt, vanaf een desktopcomputer of browser wilt verkopen, offline door producten wilt bladeren en winkelwagens wilt samenstellen, meer dan één winkel runt, een andere betaalgateway dan WooPayments gebruikt of pinterminals van Stripe, SumUp, PayPal, Square, Mollie of Vipps MobilePay wilt."
         },
         "woocommerce": {
           "title": "Kies de POS van WooCommerce als:",
-          "body": "Je in de VS of het VK vanaf een iPad of Android-tablet verkoopt, kaarten via WooPayments accepteert — vooral met Tap to Pay — en geen offline verkoop, meerdere locaties of andere betaalgateways nodig hebt."
+          "body": "Je in de VS of het VK vanaf een iPad of Android-tablet verkoopt, kaarten via WooPayments accepteert — vooral met Tap to Pay — en geen offlinemodus, meerdere locaties of andere betaalgateways nodig hebt."
         }
       },
       "faq": {

@@ -2197,17 +2197,17 @@
         "official": "它由 WooCommerce 自己开发，就在你可能已经用来管理店铺的 WooCommerce 移动应用中。",
         "tapToPay": "iPhone 和 Android 上的 Tap to Pay——无需读卡器就能接受银行卡。WCPOS 不支持 Tap to Pay。",
         "wooPayments": "原生 WooPayments 线下支付，线下银行卡费率（2.6% + $0.10）低于 WooPayments 的线上费率。WCPOS 没有 WooPayments 线下支付集成。",
-        "outro": "如果你在美国或英国用平板销售，通过 WooPayments 接受银行卡，只卖简单商品和可变商品，也不需要离线销售或多地点，免费的 WooCommerce POS 可能就够用了。"
+        "outro": "如果你在美国或英国用平板销售，通过 WooPayments 接受银行卡，只卖简单商品和可变商品，也不需要离线模式或多地点，免费的 WooCommerce POS 可能就够用了。"
       },
       "choose": {
         "title": "你该选哪一个？",
         "wcpos": {
           "title": "选择 WCPOS，如果：",
-          "body": "你在美国和英国以外销售、想从台式电脑或浏览器销售、需要离线优先的销售方式、经营多家店铺、使用 WooPayments 之外的支付网关，或者想用 Stripe、SumUp、PayPal、Square、Mollie 或 Vipps MobilePay 的刷卡终端。"
+          "body": "你在美国和英国以外销售、想从台式电脑或浏览器销售、需要离线浏览商品和创建购物车、经营多家店铺、使用 WooPayments 之外的支付网关，或者想用 Stripe、SumUp、PayPal、Square、Mollie 或 Vipps MobilePay 的刷卡终端。"
         },
         "woocommerce": {
           "title": "选择 WooCommerce POS，如果：",
-          "body": "你在美国或英国用 iPad 或 Android 平板销售，通过 WooPayments 接受银行卡——特别是使用 Tap to Pay——并且不需要离线销售、多地点或其他支付网关。"
+          "body": "你在美国或英国用 iPad 或 Android 平板销售，通过 WooPayments 接受银行卡——特别是使用 Tap to Pay——并且不需要离线模式、多地点或其他支付网关。"
         }
       },
       "faq": {

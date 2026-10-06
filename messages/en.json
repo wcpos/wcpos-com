@@ -2197,17 +2197,17 @@
         "official": "It is built by WooCommerce itself, inside the WooCommerce mobile app you may already use to run your store.",
         "tapToPay": "Tap to Pay on iPhone and Android — take cards with no reader hardware at all. WCPOS doesn't support Tap to Pay.",
         "wooPayments": "Native WooPayments in-person payments, at a card-present rate (2.6% + $0.10) lower than WooPayments' online rate. WCPOS has no WooPayments in-person integration.",
-        "outro": "If you sell in the US or UK from a tablet, take cards through WooPayments, sell only simple and variable products, and don't need offline selling or multiple locations, WooCommerce's POS is free and may be all you need."
+        "outro": "If you sell in the US or UK from a tablet, take cards through WooPayments, sell only simple and variable products, and don't need an offline mode or multiple locations, WooCommerce's POS is free and may be all you need."
       },
       "choose": {
         "title": "Which should you choose?",
         "wcpos": {
           "title": "Choose WCPOS if:",
-          "body": "You sell outside the US and UK, want to sell from a desktop computer or a browser, need offline-first selling, run more than one store, use a payment gateway other than WooPayments, or want card terminals from Stripe, SumUp, PayPal, Square, Mollie, or Vipps MobilePay."
+          "body": "You sell outside the US and UK, want to sell from a desktop computer or a browser, want to browse products and build carts offline, run more than one store, use a payment gateway other than WooPayments, or want card terminals from Stripe, SumUp, PayPal, Square, Mollie, or Vipps MobilePay."
         },
         "woocommerce": {
           "title": "Choose WooCommerce's POS if:",
-          "body": "You sell in the US or UK from an iPad or Android tablet, take cards through WooPayments — especially with Tap to Pay — and don't need offline selling, multiple locations, or other payment gateways."
+          "body": "You sell in the US or UK from an iPad or Android tablet, take cards through WooPayments — especially with Tap to Pay — and don't need an offline mode, multiple locations, or other payment gateways."
         }
       },
       "faq": {

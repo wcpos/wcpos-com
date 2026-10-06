@@ -2197,17 +2197,17 @@
         "official": "WooCommerce가 직접 만들었으며 이미 매장 운영에 사용 중일 수 있는 WooCommerce 모바일 앱에 들어 있습니다.",
         "tapToPay": "iPhone과 Android의 Tap to Pay로 리더기 없이 카드를 받을 수 있습니다. WCPOS는 Tap to Pay를 지원하지 않습니다.",
         "wooPayments": "WooPayments의 기본 대면 결제를 지원하며, 대면 카드 결제 요율(2.6% + $0.10)은 WooPayments의 온라인 요율보다 낮습니다. WCPOS에는 WooPayments 대면 결제 연동이 없습니다.",
-        "outro": "미국이나 영국에서 태블릿으로 판매하고, WooPayments로 카드를 받고, 단순 상품과 옵션 상품만 판매하며, 오프라인 판매나 다중 위치가 필요 없다면 무료 WooCommerce POS만으로 충분할 수 있습니다."
+        "outro": "미국이나 영국에서 태블릿으로 판매하고, WooPayments로 카드를 받고, 단순 상품과 옵션 상품만 판매하며, 오프라인 모드나 다중 위치가 필요 없다면 무료 WooCommerce POS만으로 충분할 수 있습니다."
       },
       "choose": {
         "title": "무엇을 선택해야 할까요?",
         "wcpos": {
           "title": "이런 경우 WCPOS를 선택하세요:",
-          "body": "미국과 영국 이외 지역에서 판매하거나, 데스크톱 컴퓨터나 브라우저에서 판매하고 싶거나, 오프라인 우선 판매가 필요하거나, 매장을 둘 이상 운영하거나, WooPayments 이외의 결제 게이트웨이를 사용하거나, Stripe, SumUp, PayPal, Square, Mollie, Vipps MobilePay의 카드 단말기를 원한다면."
+          "body": "미국과 영국 이외 지역에서 판매하거나, 데스크톱 컴퓨터나 브라우저에서 판매하고 싶거나, 오프라인에서 상품을 탐색하고 장바구니를 작성하고 싶거나, 매장을 둘 이상 운영하거나, WooPayments 이외의 결제 게이트웨이를 사용하거나, Stripe, SumUp, PayPal, Square, Mollie, Vipps MobilePay의 카드 단말기를 원한다면."
         },
         "woocommerce": {
           "title": "이런 경우 WooCommerce POS를 선택하세요:",
-          "body": "미국이나 영국에서 iPad 또는 Android 태블릿으로 판매하고 WooPayments로 카드를 받으며 — 특히 Tap to Pay를 사용하고 — 오프라인 판매, 다중 위치 또는 다른 결제 게이트웨이가 필요 없다면."
+          "body": "미국이나 영국에서 iPad 또는 Android 태블릿으로 판매하고 WooPayments로 카드를 받으며 — 특히 Tap to Pay를 사용하고 — 오프라인 모드, 다중 위치 또는 다른 결제 게이트웨이가 필요 없다면."
         }
       },
       "faq": {

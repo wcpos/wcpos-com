@@ -2197,17 +2197,17 @@
         "official": "È realizzato da WooCommerce stesso, nell'app mobile WooCommerce che forse usate già per gestire il vostro negozio.",
         "tapToPay": "Tap to Pay su iPhone e Android — accettate carte senza alcun lettore. WCPOS non supporta Tap to Pay.",
         "wooPayments": "Pagamenti WooPayments nativi in presenza, a una tariffa per carte in presenza (2.6% + $0.10) inferiore alla tariffa online di WooPayments. WCPOS non ha un'integrazione WooPayments per i pagamenti in presenza.",
-        "outro": "Se vendete negli Stati Uniti o nel Regno Unito da un tablet, accettate carte tramite WooPayments, vendete solo prodotti semplici e variabili e non avete bisogno di vendere offline o di gestire più sedi, il POS di WooCommerce è gratuito e potrebbe essere tutto ciò che vi serve."
+        "outro": "Se vendete negli Stati Uniti o nel Regno Unito da un tablet, accettate carte tramite WooPayments, vendete solo prodotti semplici e variabili e non avete bisogno di una modalità offline o di gestire più sedi, il POS di WooCommerce è gratuito e potrebbe essere tutto ciò che vi serve."
       },
       "choose": {
         "title": "Quale scegliere?",
         "wcpos": {
           "title": "Scegliete WCPOS se:",
-          "body": "Vendete fuori dagli Stati Uniti e dal Regno Unito, volete vendere da un computer desktop o da un browser, avete bisogno di vendere offline, gestite più di un negozio, usate un gateway di pagamento diverso da WooPayments o volete terminali di pagamento di Stripe, SumUp, PayPal, Square, Mollie o Vipps MobilePay."
+          "body": "Vendete fuori dagli Stati Uniti e dal Regno Unito, volete vendere da un computer desktop o da un browser, volete consultare i prodotti e creare carrelli offline, gestite più di un negozio, usate un gateway di pagamento diverso da WooPayments o volete terminali di pagamento di Stripe, SumUp, PayPal, Square, Mollie o Vipps MobilePay."
         },
         "woocommerce": {
           "title": "Scegliete il POS di WooCommerce se:",
-          "body": "Vendete negli Stati Uniti o nel Regno Unito da un iPad o tablet Android, accettate carte tramite WooPayments — soprattutto con Tap to Pay — e non avete bisogno di vendere offline, di gestire più sedi o di altri gateway di pagamento."
+          "body": "Vendete negli Stati Uniti o nel Regno Unito da un iPad o tablet Android, accettate carte tramite WooPayments — soprattutto con Tap to Pay — e non avete bisogno di una modalità offline, di gestire più sedi o di altri gateway di pagamento."
         }
       },
       "faq": {

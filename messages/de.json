@@ -2197,17 +2197,17 @@
         "official": "Es stammt von WooCommerce selbst und befindet sich in der mobilen WooCommerce-App, die Sie womöglich bereits für Ihren Shop nutzen.",
         "tapToPay": "Tap to Pay auf iPhone und Android — Karten annehmen, ganz ohne Lesegerät. WCPOS unterstützt Tap to Pay nicht.",
         "wooPayments": "Native WooPayments-Zahlungen vor Ort, mit einem Tarif für Kartenzahlungen vor Ort (2.6% + $0.10), der unter dem Online-Tarif von WooPayments liegt. WCPOS bietet keine WooPayments-Integration für Zahlungen vor Ort.",
-        "outro": "Wenn Sie in den USA oder Großbritannien von einem Tablet aus verkaufen, Karten über WooPayments annehmen, nur einfache und variable Produkte verkaufen und weder Offline-Verkäufe noch mehrere Standorte benötigen, ist das POS von WooCommerce kostenlos und könnte alles sein, was Sie brauchen."
+        "outro": "Wenn Sie in den USA oder Großbritannien von einem Tablet aus verkaufen, Karten über WooPayments annehmen, nur einfache und variable Produkte verkaufen und weder einen Offline-Modus noch mehrere Standorte benötigen, ist das POS von WooCommerce kostenlos und könnte alles sein, was Sie brauchen."
       },
       "choose": {
         "title": "Welches System sollten Sie wählen?",
         "wcpos": {
           "title": "Wählen Sie WCPOS, wenn:",
-          "body": "Sie außerhalb der USA und Großbritanniens verkaufen, von einem Desktop-Computer oder Browser aus verkaufen möchten, Offline-Verkäufe benötigen, mehr als einen Shop betreiben, ein anderes Zahlungsgateway als WooPayments verwenden oder Kartenterminals von Stripe, SumUp, PayPal, Square, Mollie oder Vipps MobilePay möchten."
+          "body": "Sie außerhalb der USA und Großbritanniens verkaufen, von einem Desktop-Computer oder Browser aus verkaufen möchten, offline Produkte durchstöbern und Warenkörbe zusammenstellen möchten, mehr als einen Shop betreiben, ein anderes Zahlungsgateway als WooPayments verwenden oder Kartenterminals von Stripe, SumUp, PayPal, Square, Mollie oder Vipps MobilePay möchten."
         },
         "woocommerce": {
           "title": "Wählen Sie das POS von WooCommerce, wenn:",
-          "body": "Sie in den USA oder Großbritannien von einem iPad oder Android-Tablet aus verkaufen, Karten über WooPayments annehmen — besonders mit Tap to Pay — und weder Offline-Verkäufe noch mehrere Standorte oder andere Zahlungsgateways benötigen."
+          "body": "Sie in den USA oder Großbritannien von einem iPad oder Android-Tablet aus verkaufen, Karten über WooPayments annehmen — besonders mit Tap to Pay — und weder einen Offline-Modus noch mehrere Standorte oder andere Zahlungsgateways benötigen."
         }
       },
       "faq": {
