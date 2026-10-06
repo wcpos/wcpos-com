@@ -68,7 +68,7 @@ export function TrustSection() {
       <p className="mt-8 text-center text-sm">
         <Link
           href="/about-us"
-          className="font-medium text-wcpos-red underline-offset-4 hover:underline"
+          className="font-medium text-wcpos-red-accent underline-offset-4 hover:underline"
         >
           {t('story')}
         </Link>
