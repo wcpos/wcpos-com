@@ -30,7 +30,12 @@ import {
   DeviceTerminal,
 } from './devices'
 import { K, ACT_BOUNDS, type Track } from './keyframes'
-import { StoryStatic } from './story-static'
+import {
+  COUNTER_CARD_SIZES,
+  COUNTER_CARD_SRC,
+  COUNTER_CARD_SRCSET,
+  StoryStatic,
+} from './story-static'
 import styles from './story.module.css'
 
 function useTrack(
@@ -386,10 +391,8 @@ function PinnedStoryScroller() {
           className={cn('absolute inset-0', styles.woodCounterLight)}
           style={{ opacity: bgWarmOpacity, scale: bgWarmScale }}
         >
-          {/* media-split sources: mobile (where this pinned variant is
-              display:none) falls through to the small card file, which the
-              static variant reuses from cache — desktop never downloads the
-              card, mobile never downloads the 2K master */}
+          {/* desktop sources are media-gated; the mobile fallback shares the
+              same srcset and sizes as the static card for one download */}
           <picture>
             <source
               media="(min-width: 768px)"
@@ -402,7 +405,9 @@ function PinnedStoryScroller() {
               type="image/webp"
             />
             <img
-              src="/images/story/counter-photo-card.webp"
+              src={COUNTER_CARD_SRC}
+              srcSet={COUNTER_CARD_SRCSET}
+              sizes={COUNTER_CARD_SIZES}
               alt=""
               fetchPriority="high"
               className="absolute inset-0 h-full w-full object-cover"

@@ -1,4 +1,5 @@
-import { readFileSync } from 'node:fs'
+import { existsSync, readFileSync } from 'node:fs'
+import path from 'node:path'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { act, cleanup, render, screen, within } from '@testing-library/react'
 import { NextIntlClientProvider } from 'next-intl'
@@ -222,8 +223,8 @@ describe('ScrollStory', () => {
     // The pinned (desktop) and static (mobile) variants are both in the DOM,
     // CSS-switched — so image gating must happen at the markup level:
     // desktop sources carry a min-width media query, and the pinned img's
-    // mobile fallback src must be the SAME url as the static card (one
-    // shared fetch; the static card is lazy so desktop never loads it).
+    // mobile fallback uses the same srcset and sizes as the static card
+    // (one shared fetch; the static card is lazy so desktop never loads it).
     stubMatchMedia({ reducedMotion: false })
     renderWithIntl(<ScrollStory />)
 
@@ -243,6 +244,24 @@ describe('ScrollStory', () => {
     expect(pinnedFallback?.getAttribute('src')).toBe(
       staticCard.getAttribute('src')
     )
+    expect(pinnedFallback?.getAttribute('srcset')).toBe(
+      staticCard.getAttribute('srcset')
+    )
+    expect(pinnedFallback?.getAttribute('sizes')).toBe(
+      staticCard.getAttribute('sizes')
+    )
+    expect(staticCard.getAttribute('sizes')).toBe(
+      '(min-width: 768px) 672px, (min-width: 640px) 608px, calc(100vw - 2rem)'
+    )
+    const candidates = staticCard.getAttribute('srcset')!.split(',').map(
+      (candidate) => candidate.trim().split(' ')
+    )
+    expect(candidates.map(([, width]) => width)).toEqual([
+      '480w', '680w', '960w', '1280w',
+    ])
+    for (const [url] of candidates) {
+      expect(existsSync(path.join(process.cwd(), 'public', url))).toBe(true)
+    }
     expect(staticCard.getAttribute('loading')).toBe('lazy')
   })
 

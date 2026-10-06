@@ -18,6 +18,14 @@ import {
 } from './devices'
 import styles from './story.module.css'
 
+// Both images use the same srcset and sizes to share one mobile download.
+export const COUNTER_CARD_SRC = '/images/story/counter-photo-card.webp'
+export const COUNTER_CARD_SRCSET =
+  '/images/story/counter-photo-card-480.webp 480w, /images/story/counter-photo-card-680.webp 680w, /images/story/counter-photo-card-960.webp 960w, /images/story/counter-photo-card.webp 1280w'
+// max-w-2xl: 672px from md; sm container minus px-4: 608px; below sm: viewport minus px-4.
+export const COUNTER_CARD_SIZES =
+  '(min-width: 768px) 672px, (min-width: 640px) 608px, calc(100vw - 2rem)'
+
 /**
  * The scroll story without the scroll: four stacked dark sections with the
  * same copy and device tableaus. Serves small viewports (the fixed-size
@@ -58,15 +66,16 @@ export function StoryStatic() {
               primary landmark (the pinned copy is display:none there) */}
           <CopyAct1 headingLevel={1} tone="onLight" />
         </div>
-        {/* the counter photo, cropped to the hardware cluster. lazy so the
-            desktop render of this hidden variant never downloads it. webp
-            only, deliberately: the pinned variant's mobile fallback src is
-            the SAME url, so on mobile this is one shared download — an avif
-            source here would fork the formats and double-fetch the card */}
+        {/* the counter photo is lazy for desktop; same srcset and sizes as the
+            pinned fallback give mobile one shared download. webp only,
+            deliberately: an avif source here would fork the formats and
+            double-fetch the card */}
         <div className="mx-auto mt-10 max-w-2xl">
           <picture>
             <img
-              src="/images/story/counter-photo-card.webp"
+              src={COUNTER_CARD_SRC}
+              srcSet={COUNTER_CARD_SRCSET}
+              sizes={COUNTER_CARD_SIZES}
               alt={t('static.alt')}
               width={1280}
               height={722}
