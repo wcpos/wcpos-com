@@ -14,6 +14,7 @@ export const SOCIAL_CARDS: Record<string, string> = {
   '/about-us': '/og/about-us.png',
   '/compare': '/og/compare.png',
   '/compare/oliver-pos': '/og/compare-oliver-pos.png',
+  '/compare/woocommerce-pos': '/og/compare-woocommerce-pos.png',
 }
 
 const OPEN_GRAPH_LOCALES: Record<Locale, string> = {
