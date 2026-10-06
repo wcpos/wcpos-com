@@ -15,6 +15,7 @@ const COMPARISONS = [
   { key: 'oliverCard', href: '/compare/oliver-pos' },
   { key: 'woocommerceCard', href: '/compare/woocommerce-pos' },
   { key: 'squareCard', href: '/compare/square' },
+  { key: 'jovvieCard', href: '/compare/jovvie' },
 ] as const
 
 export async function generateMetadata({

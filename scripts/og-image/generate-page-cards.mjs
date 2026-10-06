@@ -48,6 +48,11 @@ const cards = [
     title: 'WCPOS vs Square for WooCommerce',
     line: 'Orders, syncing, locations, payments and offline support, compared.',
   },
+  {
+    slug: 'compare-jovvie',
+    title: 'WCPOS vs Jovvie',
+    line: 'Pricing, transaction fees, apps and card payments, compared.',
+  },
 ]
 
 const outputDirectory = new URL('../../public/og/', import.meta.url)
