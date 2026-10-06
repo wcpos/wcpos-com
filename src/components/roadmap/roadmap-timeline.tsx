@@ -16,7 +16,7 @@ import styles from './timeline.module.css'
 /**
  * RoadmapTimeline — the "release train": one continuous vertical spine where
  * time is the hierarchy. The active release sits on a pulsing red node,
- * upcoming work rides below it, shipped releases fade out at the bottom.
+ * upcoming work rides below it, shipped releases sit muted at the bottom.
  * Releases and epics come straight from GitHub release issues (see
  * services/core/external/github-roadmap.ts for the bucketing).
  *
@@ -83,7 +83,7 @@ const LABEL_TONE_LIT: Record<Tone, string> = {
 const LABEL_TONE_IDLE: Record<Tone, string> = {
   ...LABEL_TONE_LIT,
   next: 'border border-slate-300 text-muted-foreground dark:border-slate-600',
-  shipped: 'border border-emerald-500/40 text-emerald-600 dark:text-emerald-400',
+  shipped: 'border border-emerald-500/40 text-emerald-700 dark:text-emerald-400',
 }
 
 function StatusGlyph({ status }: { status: Epic['state'] }) {
@@ -147,7 +147,7 @@ function FeatureRow({ epic, shipped }: { epic: Epic; shipped: boolean }) {
         <StatusGlyph status={epic.state} />
         <span className="min-w-0 flex-1">
           <span
-            className="line-clamp-1 break-words font-medium group-hover:text-wcpos-red dark:group-hover:text-wcpos-red-accent"
+            className={`line-clamp-1 break-words font-medium${shipped ? ' text-muted-foreground' : ''} group-hover:text-wcpos-red dark:group-hover:text-wcpos-red-accent`}
             lang="en"
           >
             {epic.title}
@@ -258,20 +258,19 @@ function TimelineRelease({
       }`
 
   return (
-    <div className={tone === 'shipped' ? 'relative pb-14 opacity-60' : 'relative pb-14'}>
+    <div className="relative pb-14">
       <TimelineNode tone={tone} animate={animate} active={active} nodeRef={nodeRef} />
 
       {/* Ghost version behind the heading */}
       <div
         aria-hidden
-        className="pointer-events-none absolute -top-10 right-0 select-none font-mono text-7xl font-bold tracking-tighter text-foreground/[0.05] sm:text-8xl"
-      >
-        {release.version}
-      </div>
+        data-version={release.version}
+        className="pointer-events-none absolute -top-10 right-0 select-none font-mono text-7xl font-bold tracking-tighter text-foreground/[0.05] sm:text-8xl before:content-[attr(data-version)]"
+      />
 
       <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-        <h3
-          className="break-words text-2xl font-semibold tracking-tight sm:text-3xl"
+        <h2
+          className={`break-words text-2xl font-semibold tracking-tight sm:text-3xl${shipped ? ' text-muted-foreground' : ''}`}
           lang="en"
         >
           <a href={release.url} target="_blank" rel="noopener noreferrer">
@@ -280,7 +279,7 @@ function TimelineRelease({
             </span>{' '}
             {release.theme}
           </a>
-        </h3>
+        </h2>
         <span className="font-mono text-xs uppercase tracking-wider text-muted-foreground">
           {progressText}
         </span>
