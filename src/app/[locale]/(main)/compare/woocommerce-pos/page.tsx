@@ -142,15 +142,17 @@ function ComparisonTable({
       {caption && <TableCaption>{caption}</TableCaption>}
       <TableHeader>
         <TableRow>
-          <TableHead>{''}</TableHead>
-          <TableHead>{wcposHeader}</TableHead>
-          <TableHead>{woocommerceHeader}</TableHead>
+          <td />
+          <TableHead scope="col">{wcposHeader}</TableHead>
+          <TableHead scope="col">{woocommerceHeader}</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
         {rows.map((row) => (
           <TableRow key={row.label}>
-            <TableCell className="font-medium">{row.label}</TableCell>
+            <th scope="row" className="p-2 text-left align-middle font-medium">
+              {row.label}
+            </th>
             <TableCell>{row.wcpos}</TableCell>
             <TableCell>{row.woocommerce}</TableCell>
           </TableRow>
