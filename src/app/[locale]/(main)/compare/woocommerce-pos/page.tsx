@@ -32,12 +32,9 @@ const GLANCE_ROW_KEYS = [
   'cardPayments',
   'gateways',
   'fees',
-  'tapToPay',
   'offline',
   'multiLocation',
   'barcode',
-  'reporting',
-  'display',
 ] as const
 
 const LIMIT_KEYS = [
@@ -47,14 +44,11 @@ const LIMIT_KEYS = [
   'offline',
   'multiLocation',
   'gateways',
-  'display',
-  'reporting',
 ] as const
 
 const WOOCOMMERCE_BETTER_KEYS = [
   'price',
   'official',
-  'tapToPay',
   'wooPayments',
 ] as const
 

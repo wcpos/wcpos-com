@@ -14,8 +14,8 @@ vi.mock('next-intl/server', () => ({
       'woocommerce.shortAnswer.wcpos': 'Translated short answer for WCPOS',
       'woocommerce.faq.free.question': 'Translated free question',
       'woocommerce.faq.free.answer': 'Translated free answer',
-      'woocommerce.glance.rows.tapToPay.woocommerce':
-        'Translated WooCommerce Tap to Pay cell',
+      'woocommerce.glance.rows.countries.woocommerce':
+        'Translated WooCommerce countries cell',
       'woocommerce.limits.offline': 'Translated WooCommerce offline limit',
     }
     return messages[key] ?? key
@@ -39,14 +39,26 @@ describe('WoocommerceComparePage', () => {
       screen.getByText('Translated short answer for WCPOS')
     ).toBeInTheDocument()
     expect(
-      screen.getByText('Translated WooCommerce Tap to Pay cell')
+      screen.getByText('Translated WooCommerce countries cell')
     ).toBeInTheDocument()
     expect(
       screen.getByText('Translated WooCommerce offline limit')
     ).toBeInTheDocument()
     expect(screen.getAllByRole('table')).toHaveLength(1)
-    // 13 glance rows + 1 header row.
-    expect(screen.getAllByRole('row')).toHaveLength(14)
+    // 10 glance rows + 1 header row.
+    expect(screen.getAllByRole('row')).toHaveLength(11)
+    expect(
+      screen.queryByText('woocommerce.glance.rows.tapToPay.label')
+    ).toBeNull()
+    expect(
+      screen.queryByText('woocommerce.glance.rows.reporting.label')
+    ).toBeNull()
+    expect(
+      screen.queryByText('woocommerce.glance.rows.display.label')
+    ).toBeNull()
+    expect(screen.queryByText('woocommerce.limits.display')).toBeNull()
+    expect(screen.queryByText('woocommerce.limits.reporting')).toBeNull()
+    expect(screen.queryByText('woocommerce.woocommerceBetter.tapToPay')).toBeNull()
   })
 
   it('emits FAQPage and BreadcrumbList JSON-LD', async () => {
