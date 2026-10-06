@@ -49,6 +49,7 @@ const SQUARE_BETTER_KEYS = [
   'free',
   'tapToPay',
   'offline',
+  'hardware',
 ] as const
 
 const FAQ_KEYS = [

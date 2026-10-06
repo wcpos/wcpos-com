@@ -59,6 +59,9 @@ describe('SquareComparePage', () => {
     expect(
       screen.getByText('Translated Square location limit')
     ).toBeInTheDocument()
+    expect(
+      screen.getByText('square.squareBetter.hardware')
+    ).toBeInTheDocument()
     expect(screen.getAllByRole('table')).toHaveLength(1)
     // 9 glance rows + 1 header row.
     expect(screen.getAllByRole('row')).toHaveLength(10)

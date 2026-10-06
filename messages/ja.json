@@ -2242,7 +2242,7 @@
       "shortAnswer": {
         "title": "結論を先に",
         "wcpos": "WCPOSはWooCommerce自体に組み込まれたレジです。WooCommerceの商品と在庫を使って販売し、すべての販売がWooCommerceの注文になるため、同期するものはありません。あらゆるモダンブラウザ、WindowsとmacOSのデスクトップアプリ、iOSとAndroidのアプリ（ベータ版）で動作し、任意のWooCommerce決済ゲートウェイを利用できます。無料版には商品・注文・顧客数の上限がなく、ProはSquare Terminalを含むカード端末連携と複数店舗管理を買い切り価格で追加します。後から機能が停止することはありません。",
-        "square": "Square for WooCommerceは、iOSとAndroidデバイス上のSquare Point of SaleアプリとWooCommerce店舗という二つのシステムをつなぎ、拡張機能が商品と在庫のデータを両者間で同期します。Squareには無料プラン、iPhoneとAndroidでのTap to Pay、オフラインでのカード決済があります。ただし、SquareのPOSで作成された注文はWooCommerceに同期されません。対面販売による在庫変更がWooCommerceに反映されるのは次回の予定された確認時（既定の間隔は1時間）であり、拡張機能が一度に連携するSquareの拠点は一つだけです。"
+        "square": "Square for WooCommerceは、iOSとAndroidデバイス上のSquare Point of Saleアプリ、またはSquare独自のハードウェアであるSquare Registerに内蔵されたSquare Point of SaleとWooCommerce店舗という二つのシステムをつなぎ、拡張機能が商品と在庫のデータを両者間で同期します。Squareには無料プラン、iPhoneとAndroidでのTap to Pay、オフラインでのカード決済があります。ただし、SquareのPOSで作成された注文はWooCommerceに同期されません。対面販売による在庫変更がWooCommerceに反映されるのは次回の予定された確認時（既定の間隔は1時間）であり、拡張機能が一度に連携するSquareの拠点は一つだけです。"
       },
       "glance": {
         "title": "ひと目でわかる比較",
@@ -2263,7 +2263,7 @@
           "devices": {
             "label": "デバイス",
             "wcpos": "Web、デスクトップアプリ（WindowsとmacOS）、iOSとAndroidのアプリ（ベータ版）。デバイスとレジ係は無制限",
-            "square": "iOSとAndroidデバイス上のSquare Point of Saleアプリ"
+            "square": "iOSとAndroidデバイス上のSquare Point of Saleアプリ、およびSquare Point of Saleを内蔵したSquare独自のハードウェアであるSquare Register"
           },
           "countries": {
             "label": "国",
@@ -2334,7 +2334,8 @@
         "free": "SquareのPOSには無料プランSquare Free（拠点ごとに$0/month）があります。WCPOS Proは$129以上です。",
         "tapToPay": "iPhoneとAndroidでのTap to Pay：顧客はカードをお使いのスマートフォンにかざして支払えます。WCPOSはTap to Payをサポートしません。",
         "offline": "オフラインでのカード決済：SquareのPOSはインターネットがなくてもカード決済を受け付け続けます。ただし72時間以内に再接続して決済をアップロードする必要があり、期限切れ、拒否、または異議申し立てのあった決済は利用者の責任です。WCPOSではオフラインで商品を閲覧しカートを作成できますが、会計の完了には接続が必要です。",
-        "outro": "iOSまたはAndroidデバイスを使い、一つの拠点で対面販売し、Square経由で決済を受け付け、対面販売をWooCommerceの注文として記録する必要がない場合は、SquareのPOSと拡張機能だけで十分かもしれません。"
+        "hardware": "Square独自のハードウェア：Square RegisterにはSquare Point of Saleが内蔵されているため、レジとそのソフトウェアは同じ会社が提供しています。WCPOSはハードウェアを販売しておらず、すでにお持ちのコンピューター、タブレット、スマートフォンで動作します。",
+        "outro": "iOSまたはAndroidデバイス、もしくはSquare Registerを使い、一つの拠点で対面販売し、Square経由で決済を受け付け、対面販売をWooCommerceの注文として記録する必要がない場合は、SquareのPOSと拡張機能だけで十分かもしれません。"
       },
       "choose": {
         "title": "どちらを選ぶべきか？",
@@ -2344,7 +2345,7 @@
         },
         "square": {
           "title": "Square for WooCommerceを選ぶべき場合：",
-          "body": "Squareが対応する8か国のいずれかでiOSまたはAndroidデバイスから対面販売し、Tap to Payやオフラインでのカード決済を利用したい、一つの拠点で販売し、対面販売をWooCommerceの注文として表示する必要がない場合。"
+          "body": "Squareが対応する8か国のいずれかでiOSまたはAndroidデバイス、もしくはSquare Registerから対面販売し、Tap to Payやオフラインでのカード決済を利用したい、一つの拠点で販売し、対面販売をWooCommerceの注文として表示する必要がない場合。"
         }
       },
       "faq": {

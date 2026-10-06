@@ -2242,7 +2242,7 @@
       "shortAnswer": {
         "title": "The short answer",
         "wcpos": "WCPOS is a register built on WooCommerce itself: it sells from your WooCommerce products and stock, and every sale is a WooCommerce order, so there is nothing to sync. It runs in any modern browser, as desktop apps for Windows and macOS, and as iOS and Android apps (beta), with any WooCommerce payment gateway. Its free version has no caps on products, orders, or customers, and Pro adds multi-store management and card-terminal integrations, Square Terminal among them, for a one-time payment that never switches off.",
-        "square": "Square for WooCommerce joins two systems: Square's Point of Sale app on iOS and Android devices, and your WooCommerce store, with the extension syncing product and inventory data between them. Square has a free plan, Tap to Pay on iPhone and Android, and offline card payments. But orders placed in Square's POS are not synced to WooCommerce: stock changes from in-person sales reach WooCommerce at the next scheduled check (the default interval is one hour), and the extension links one Square location at a time."
+        "square": "Square for WooCommerce joins two systems: Square's Point of Sale, as an app on iOS and Android devices or built into Square Register, Square's own hardware, and your WooCommerce store, with the extension syncing product and inventory data between them. Square has a free plan, Tap to Pay on iPhone and Android, and offline card payments. But orders placed in Square's POS are not synced to WooCommerce: stock changes from in-person sales reach WooCommerce at the next scheduled check (the default interval is one hour), and the extension links one Square location at a time."
       },
       "glance": {
         "title": "At a glance",
@@ -2263,7 +2263,7 @@
           "devices": {
             "label": "Devices",
             "wcpos": "Web, desktop apps (Windows and macOS), iOS and Android apps (beta); unlimited devices and cashiers",
-            "square": "Square Point of Sale app on iOS and Android devices"
+            "square": "Square Point of Sale app on iOS and Android devices, and Square Register, Square's own hardware with Square Point of Sale built in"
           },
           "countries": {
             "label": "Countries",
@@ -2334,7 +2334,8 @@
         "free": "Square's POS has a free plan, Square Free ($0/month per location). WCPOS Pro costs $129 or more.",
         "tapToPay": "Tap to Pay on iPhone and on Android: a customer can hold their card to your phone. WCPOS does not support Tap to Pay.",
         "offline": "Offline card payments: Square's POS keeps taking cards without internet, as long as you reconnect and upload them within 72 hours, and you are responsible for any that expire, are declined, or are disputed. WCPOS lets you browse products and build carts offline, but checkout needs connectivity.",
-        "outro": "If you sell in person from iOS or Android devices at one location, take payments through Square, and don't need your in-person sales to be WooCommerce orders, Square's POS with the extension may be all you need."
+        "hardware": "Square's own hardware: Square Register comes with Square Point of Sale built in, so the register and its software come from one company. WCPOS sells no hardware; it runs on the computers, tablets and phones you already have.",
+        "outro": "If you sell in person from iOS or Android devices or Square Register at one location, take payments through Square, and don't need your in-person sales to be WooCommerce orders, Square's POS with the extension may be all you need."
       },
       "choose": {
         "title": "Which should you choose?",
@@ -2344,7 +2345,7 @@
         },
         "square": {
           "title": "Choose Square for WooCommerce if:",
-          "body": "You sell in person from iOS or Android devices in one of Square's eight countries, want Tap to Pay or offline card payments, sell from one location, and don't need your in-person sales to appear as WooCommerce orders."
+          "body": "You sell in person from iOS or Android devices or Square Register in one of Square's eight countries, want Tap to Pay or offline card payments, sell from one location, and don't need your in-person sales to appear as WooCommerce orders."
         }
       },
       "faq": {

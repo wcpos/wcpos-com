@@ -2242,7 +2242,7 @@
       "shortAnswer": {
         "title": "A resposta curta",
         "wcpos": "O WCPOS é uma caixa integrada no próprio WooCommerce: vende a partir dos seus produtos e stock WooCommerce e cada venda é uma encomenda WooCommerce, pelo que não há nada a sincronizar. Funciona em qualquer navegador moderno, como aplicações de computador para Windows e macOS e como aplicações iOS e Android (beta), com qualquer gateway de pagamento WooCommerce. A versão gratuita não tem limites de produtos, encomendas ou clientes, e o Pro acrescenta gestão de várias lojas e integrações com terminais de pagamento, incluindo Square Terminal, mediante um pagamento único após o qual nada se desativa.",
-        "square": "O Square for WooCommerce liga dois sistemas: a aplicação Square Point of Sale em dispositivos iOS e Android e a sua loja WooCommerce, com a extensão a sincronizar dados de produtos e stock entre ambos. O Square tem um plano gratuito, Tap to Pay no iPhone e Android e pagamentos com cartão offline. Mas as encomendas efetuadas no POS do Square não são sincronizadas com o WooCommerce: as alterações de stock de vendas presenciais chegam ao WooCommerce na próxima verificação agendada (o intervalo predefinido é de uma hora), e a extensão liga uma localização Square de cada vez."
+        "square": "O Square for WooCommerce liga dois sistemas: a aplicação Square Point of Sale em dispositivos iOS e Android ou integrada no Square Register, o hardware próprio do Square, e a sua loja WooCommerce, com a extensão a sincronizar dados de produtos e stock entre ambos. O Square tem um plano gratuito, Tap to Pay no iPhone e Android e pagamentos com cartão offline. Mas as encomendas efetuadas no POS do Square não são sincronizadas com o WooCommerce: as alterações de stock de vendas presenciais chegam ao WooCommerce na próxima verificação agendada (o intervalo predefinido é de uma hora), e a extensão liga uma localização Square de cada vez."
       },
       "glance": {
         "title": "Num relance",
@@ -2263,7 +2263,7 @@
           "devices": {
             "label": "Dispositivos",
             "wcpos": "Web, aplicações de computador (Windows e macOS), aplicações iOS e Android (beta); dispositivos e operadores de caixa ilimitados",
-            "square": "Aplicação Square Point of Sale em dispositivos iOS e Android"
+            "square": "Aplicação Square Point of Sale em dispositivos iOS e Android, e Square Register, o hardware próprio do Square com Square Point of Sale integrado"
           },
           "countries": {
             "label": "Países",
@@ -2334,7 +2334,8 @@
         "free": "O POS do Square tem um plano gratuito, Square Free ($0/month por localização). O WCPOS Pro custa $129 ou mais.",
         "tapToPay": "Tap to Pay no iPhone e Android: um cliente pode aproximar o cartão do seu telemóvel. O WCPOS não suporta Tap to Pay.",
         "offline": "Pagamentos com cartão offline: o POS do Square continua a aceitar cartões sem Internet, desde que volte a ligar-se e carregue os pagamentos no prazo de 72 horas; é responsável pelos que expiram, são recusados ou contestados. O WCPOS permite-lhe consultar produtos e montar carrinhos offline, mas concluir o pagamento exige ligação.",
-        "outro": "Se vende presencialmente a partir de dispositivos iOS ou Android numa localização, recebe pagamentos através do Square e não precisa que as suas vendas presenciais sejam encomendas WooCommerce, o POS do Square com a extensão pode ser suficiente."
+        "hardware": "Hardware próprio do Square: o Square Register vem com o Square Point of Sale integrado, pelo que a caixa registadora e o seu software vêm da mesma empresa. O WCPOS não vende hardware; funciona nos computadores, tablets e telemóveis que já tem.",
+        "outro": "Se vende presencialmente a partir de dispositivos iOS ou Android ou Square Register numa localização, recebe pagamentos através do Square e não precisa que as suas vendas presenciais sejam encomendas WooCommerce, o POS do Square com a extensão pode ser suficiente."
       },
       "choose": {
         "title": "Qual deve escolher?",
@@ -2344,7 +2345,7 @@
         },
         "square": {
           "title": "Escolha o Square for WooCommerce se:",
-          "body": "Vende presencialmente a partir de dispositivos iOS ou Android num dos oito países do Square, quer Tap to Pay ou pagamentos com cartão offline, vende numa só localização e não precisa que as suas vendas presenciais apareçam como encomendas WooCommerce."
+          "body": "Vende presencialmente a partir de dispositivos iOS ou Android ou Square Register num dos oito países do Square, quer Tap to Pay ou pagamentos com cartão offline, vende numa só localização e não precisa que as suas vendas presenciais apareçam como encomendas WooCommerce."
         }
       },
       "faq": {

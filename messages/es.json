@@ -2242,7 +2242,7 @@
       "shortAnswer": {
         "title": "La respuesta corta",
         "wcpos": "WCPOS es una caja integrada en el propio WooCommerce: vende a partir de sus productos y existencias de WooCommerce, y cada venta es un pedido de WooCommerce, así que no hay nada que sincronizar. Funciona en cualquier navegador moderno, como aplicación de escritorio para Windows y macOS y como aplicación para iOS y Android (beta), con cualquier pasarela de pago de WooCommerce. Su versión gratuita no tiene topes de productos, pedidos ni clientes, y Pro añade la gestión de varias tiendas e integraciones con terminales de tarjeta, entre ellas Square Terminal, por un pago único tras el que nada deja de funcionar.",
-        "square": "Square for WooCommerce une dos sistemas: la aplicación Square Point of Sale en dispositivos iOS y Android y su tienda WooCommerce; la extensión sincroniza los datos de productos e inventario entre ambos. Square tiene un plan gratuito, Tap to Pay en iPhone y Android, y admite pagos con tarjeta sin conexión. Pero los pedidos realizados en el TPV de Square no se sincronizan con WooCommerce: los cambios de existencias derivados de las ventas presenciales llegan a WooCommerce en la siguiente comprobación programada (el intervalo predeterminado es de una hora), y la extensión vincula una ubicación de Square a la vez."
+        "square": "Square for WooCommerce une dos sistemas: la aplicación Square Point of Sale en dispositivos iOS y Android o integrada en Square Register, el hardware propio de Square, y su tienda WooCommerce; la extensión sincroniza los datos de productos e inventario entre ambos. Square tiene un plan gratuito, Tap to Pay en iPhone y Android, y admite pagos con tarjeta sin conexión. Pero los pedidos realizados en el TPV de Square no se sincronizan con WooCommerce: los cambios de existencias derivados de las ventas presenciales llegan a WooCommerce en la siguiente comprobación programada (el intervalo predeterminado es de una hora), y la extensión vincula una ubicación de Square a la vez."
       },
       "glance": {
         "title": "De un vistazo",
@@ -2263,7 +2263,7 @@
           "devices": {
             "label": "Dispositivos",
             "wcpos": "Web, aplicaciones de escritorio (Windows y macOS), aplicaciones para iOS y Android (beta); dispositivos y cajeros ilimitados",
-            "square": "Aplicación Square Point of Sale en dispositivos iOS y Android"
+            "square": "Aplicación Square Point of Sale en dispositivos iOS y Android, y Square Register, el hardware propio de Square con Square Point of Sale incorporado"
           },
           "countries": {
             "label": "Países",
@@ -2334,7 +2334,8 @@
         "free": "El TPV de Square tiene un plan gratuito, Square Free ($0/month por ubicación). WCPOS Pro cuesta $129 o más.",
         "tapToPay": "Tap to Pay en iPhone y Android: un cliente puede acercar su tarjeta a su teléfono. WCPOS no admite Tap to Pay.",
         "offline": "Pagos con tarjeta sin conexión: el TPV de Square sigue aceptando tarjetas sin internet, siempre que vuelva a conectarse y cargue los pagos en un plazo de 72 horas, y usted responde de los pagos que caducan, son rechazados o impugnados. WCPOS le permite consultar productos y preparar carritos sin conexión, pero para completar el cobro se necesita conectividad.",
-        "outro": "Si vende en persona desde dispositivos iOS o Android en una ubicación, cobra mediante Square y no necesita que sus ventas presenciales sean pedidos de WooCommerce, el TPV de Square con la extensión puede ser todo lo que necesita."
+        "hardware": "Hardware propio de Square: Square Register viene con Square Point of Sale incorporado, por lo que la caja registradora y su software proceden de la misma empresa. WCPOS no vende hardware; funciona en los ordenadores, tabletas y teléfonos que ya tiene.",
+        "outro": "Si vende en persona desde dispositivos iOS o Android o Square Register en una ubicación, cobra mediante Square y no necesita que sus ventas presenciales sean pedidos de WooCommerce, el TPV de Square con la extensión puede ser todo lo que necesita."
       },
       "choose": {
         "title": "¿Cuál debería elegir?",
@@ -2344,7 +2345,7 @@
         },
         "square": {
           "title": "Elija Square for WooCommerce si:",
-          "body": "Vende en persona desde dispositivos iOS o Android en uno de los ocho países de Square, quiere Tap to Pay o pagos con tarjeta sin conexión, vende desde una sola ubicación y no necesita que sus ventas presenciales aparezcan como pedidos de WooCommerce."
+          "body": "Vende en persona desde dispositivos iOS o Android o Square Register en uno de los ocho países de Square, quiere Tap to Pay o pagos con tarjeta sin conexión, vende desde una sola ubicación y no necesita que sus ventas presenciales aparezcan como pedidos de WooCommerce."
         }
       },
       "faq": {

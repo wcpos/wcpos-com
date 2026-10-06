@@ -2242,7 +2242,7 @@
       "shortAnswer": {
         "title": "Het korte antwoord",
         "wcpos": "WCPOS is een kassa die op WooCommerce zelf is gebouwd: je verkoopt vanuit je WooCommerce-producten en -voorraad, en elke verkoop is een WooCommerce-bestelling, dus er valt niets te synchroniseren. Het werkt in elke moderne browser, als desktopapps voor Windows en macOS en als iOS- en Android-apps (bèta), met elke WooCommerce-betaalgateway. De gratis versie heeft geen limieten op producten, bestellingen of klanten en Pro voegt beheer van meerdere winkels en integraties met pinterminals, waaronder Square Terminal, toe voor een eenmalige betaling waarna niets wordt uitgeschakeld.",
-        "square": "Square for WooCommerce verbindt twee systemen: de Square Point of Sale-app op iOS- en Android-apparaten en je WooCommerce-winkel. De extensie synchroniseert product- en voorraadgegevens tussen beide. Square heeft een gratis abonnement, Tap to Pay op iPhone en Android en offline kaartbetalingen. Maar bestellingen die in de POS van Square zijn geplaatst, worden niet met WooCommerce gesynchroniseerd: voorraadwijzigingen door fysieke verkopen bereiken WooCommerce bij de volgende geplande controle (het standaardinterval is één uur) en de extensie koppelt telkens één Square-locatie."
+        "square": "Square for WooCommerce verbindt twee systemen: Square Point of Sale als app op iOS- en Android-apparaten of ingebouwd in Square Register, de eigen hardware van Square, en je WooCommerce-winkel. De extensie synchroniseert product- en voorraadgegevens tussen beide. Square heeft een gratis abonnement, Tap to Pay op iPhone en Android en offline kaartbetalingen. Maar bestellingen die in de POS van Square zijn geplaatst, worden niet met WooCommerce gesynchroniseerd: voorraadwijzigingen door fysieke verkopen bereiken WooCommerce bij de volgende geplande controle (het standaardinterval is één uur) en de extensie koppelt telkens één Square-locatie."
       },
       "glance": {
         "title": "In één oogopslag",
@@ -2263,7 +2263,7 @@
           "devices": {
             "label": "Apparaten",
             "wcpos": "Web, desktopapps (Windows en macOS), iOS- en Android-apps (bèta); onbeperkt apparaten en kassamedewerkers",
-            "square": "Square Point of Sale-app op iOS- en Android-apparaten"
+            "square": "Square Point of Sale-app op iOS- en Android-apparaten en Square Register, de eigen hardware van Square met ingebouwde Square Point of Sale"
           },
           "countries": {
             "label": "Landen",
@@ -2334,7 +2334,8 @@
         "free": "De POS van Square heeft een gratis abonnement, Square Free ($0/month per locatie). WCPOS Pro kost $129 of meer.",
         "tapToPay": "Tap to Pay op iPhone en Android: een klant kan zijn kaart tegen je telefoon houden. WCPOS ondersteunt Tap to Pay niet.",
         "offline": "Offline kaartbetalingen: de POS van Square blijft kaarten accepteren zonder internet, zolang je binnen 72 uur opnieuw verbinding maakt en de betalingen uploadt. Je bent verantwoordelijk voor betalingen die verlopen, worden geweigerd of betwist. Met WCPOS kun je offline door producten bladeren en winkelwagens samenstellen, maar afrekenen vereist verbinding.",
-        "outro": "Als je fysiek verkoopt via iOS- of Android-apparaten op één locatie, betalingen via Square aanneemt en niet nodig hebt dat je fysieke verkopen WooCommerce-bestellingen worden, kan de POS van Square met de extensie voldoende zijn."
+        "hardware": "Eigen hardware van Square: Square Register heeft Square Point of Sale ingebouwd, zodat de kassa en de software van hetzelfde bedrijf komen. WCPOS verkoopt geen hardware; het werkt op de computers, tablets en telefoons die je al hebt.",
+        "outro": "Als je fysiek verkoopt via iOS- of Android-apparaten of Square Register op één locatie, betalingen via Square aanneemt en niet nodig hebt dat je fysieke verkopen WooCommerce-bestellingen worden, kan de POS van Square met de extensie voldoende zijn."
       },
       "choose": {
         "title": "Welke moet je kiezen?",
@@ -2344,7 +2345,7 @@
         },
         "square": {
           "title": "Kies Square for WooCommerce als:",
-          "body": "Je fysiek verkoopt via iOS- of Android-apparaten in een van de acht landen van Square, Tap to Pay of offline kaartbetalingen wilt, vanaf één locatie verkoopt en niet nodig hebt dat je fysieke verkopen als WooCommerce-bestellingen verschijnen."
+          "body": "Je fysiek verkoopt via iOS- of Android-apparaten of Square Register in een van de acht landen van Square, Tap to Pay of offline kaartbetalingen wilt, vanaf één locatie verkoopt en niet nodig hebt dat je fysieke verkopen als WooCommerce-bestellingen verschijnen."
         }
       },
       "faq": {

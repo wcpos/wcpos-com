@@ -2242,7 +2242,7 @@
       "shortAnswer": {
         "title": "简短结论",
         "wcpos": "WCPOS 是直接构建在 WooCommerce 上的收银台：它使用你的 WooCommerce 商品和库存销售，每笔销售都是 WooCommerce 订单，因此无需同步。它可在任何现代浏览器、Windows 和 macOS 桌面应用，以及 iOS 和 Android 应用（测试版）中运行，并支持任何 WooCommerce 支付网关。免费版不限制商品、订单或客户数量；Pro 版通过一次性付款提供多店铺管理和刷卡终端集成，其中包括 Square Terminal，付款后功能不会被停用。",
-        "square": "Square for WooCommerce 将两个系统连接起来：iOS 和 Android 设备上的 Square Point of Sale 应用与你的 WooCommerce 店铺，扩展在两者之间同步商品和库存数据。Square 提供免费方案、iPhone 和 Android 上的 Tap to Pay，以及离线刷卡支付。但在 Square 的 POS 中创建的订单不会同步到 WooCommerce：线下销售引起的库存变化会在下一次计划检查时到达 WooCommerce（默认间隔为一小时），该扩展一次只关联一个 Square 地点。"
+        "square": "Square for WooCommerce 将两个系统连接起来：iOS 和 Android 设备上的 Square Point of Sale 应用或内置于 Square 自有硬件 Square Register 中的 Square Point of Sale 与你的 WooCommerce 店铺，扩展在两者之间同步商品和库存数据。Square 提供免费方案、iPhone 和 Android 上的 Tap to Pay，以及离线刷卡支付。但在 Square 的 POS 中创建的订单不会同步到 WooCommerce：线下销售引起的库存变化会在下一次计划检查时到达 WooCommerce（默认间隔为一小时），该扩展一次只关联一个 Square 地点。"
       },
       "glance": {
         "title": "一览对比",
@@ -2263,7 +2263,7 @@
           "devices": {
             "label": "设备",
             "wcpos": "网页、桌面应用（Windows 和 macOS）、iOS 和 Android 应用（测试版）；设备和收银员数量不限",
-            "square": "iOS 和 Android 设备上的 Square Point of Sale 应用"
+            "square": "iOS 和 Android 设备上的 Square Point of Sale 应用，以及内置 Square Point of Sale 的 Square 自有硬件 Square Register"
           },
           "countries": {
             "label": "国家",
@@ -2334,7 +2334,8 @@
         "free": "Square 的 POS 有免费方案 Square Free（每个地点 $0/month）。WCPOS Pro 至少需要 $129。",
         "tapToPay": "iPhone 和 Android 上的 Tap to Pay：顾客可将银行卡贴近你的手机。WCPOS 不支持 Tap to Pay。",
         "offline": "离线刷卡支付：Square 的 POS 在没有互联网时仍可接受银行卡付款，前提是你在 72 小时内重新连接并上传付款；过期、被拒绝或发生争议的付款由你负责。WCPOS 允许你离线浏览商品和组建购物车，但完成结账需要网络连接。",
-        "outro": "如果你在一个地点使用 iOS 或 Android 设备进行线下销售，通过 Square 收款，且不需要将线下销售记录为 WooCommerce 订单，那么 Square 的 POS 加上该扩展可能就足够了。"
+        "hardware": "Square 自有硬件：Square Register 内置 Square Point of Sale，因此收银机和软件来自同一家公司。WCPOS 不销售硬件；它可在你已有的电脑、平板电脑和手机上运行。",
+        "outro": "如果你在一个地点使用 iOS 或 Android 设备或 Square Register 进行线下销售，通过 Square 收款，且不需要将线下销售记录为 WooCommerce 订单，那么 Square 的 POS 加上该扩展可能就足够了。"
       },
       "choose": {
         "title": "你该选哪一个？",
@@ -2344,7 +2345,7 @@
         },
         "square": {
           "title": "选择 Square for WooCommerce，如果：",
-          "body": "你在 Square 支持的 8 个国家之一使用 iOS 或 Android 设备进行线下销售，想使用 Tap to Pay 或离线刷卡支付，只在一个地点销售，且不需要将线下销售显示为 WooCommerce 订单。"
+          "body": "你在 Square 支持的 8 个国家之一使用 iOS 或 Android 设备或 Square Register 进行线下销售，想使用 Tap to Pay 或离线刷卡支付，只在一个地点销售，且不需要将线下销售显示为 WooCommerce 订单。"
         }
       },
       "faq": {
