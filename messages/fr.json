@@ -1807,9 +1807,7 @@
     },
     "discord": {
       "title": "Vous préférez parler à un humain ?",
-      "subtitle": "Rejoignez des propriétaires de boutiques et l’équipe dans notre communauté Discord en direct.",
-      "open": "Ouvrir le chat",
-      "notice": "Le chat se charge depuis Discord (via WidgetBot) uniquement lorsque vous l'ouvrez."
+      "subtitle": "Rejoignez des propriétaires de boutiques et l’équipe dans notre communauté Discord en direct."
     }
   },
   "compare": {

@@ -3,8 +3,6 @@
 import dynamic from 'next/dynamic'
 import { useTranslations } from 'next-intl'
 import { useEffect, useRef, useState } from 'react'
-import { DiscordIcon } from '@/components/icons/discord'
-import { Button } from '@/components/ui/button'
 import { Section } from '@/components/ui/section'
 import { Skeleton } from '@/components/ui/skeleton'
 
@@ -18,10 +16,16 @@ const DiscordWidget = dynamic(
 
 export function DiscordSection() {
   const t = useTranslations('support.discord')
-  const [open, setOpen] = useState(false)
+  const [inView, setInView] = useState(false)
   const boxRef = useRef<HTMLDivElement>(null)
 
-  useEffect(() => { if (open) boxRef.current?.focus() }, [open])
+  // WidgetBot's ~2.8 MB embed mounts near the viewport; the box stays 600px so nothing shifts.
+  useEffect(() => {
+    if (typeof IntersectionObserver === 'undefined') { setInView(true); return }
+    const io = new IntersectionObserver(([entry]) => { if (entry?.isIntersecting) { setInView(true); io.disconnect() } }, { rootMargin: '200px 0px' })
+    if (boxRef.current) io.observe(boxRef.current)
+    return () => io.disconnect()
+  }, [])
 
   return (
     <Section id="discord" spacing="default">
@@ -31,16 +35,8 @@ export function DiscordSection() {
           {t('subtitle')}
         </p>
       </div>
-      <div ref={boxRef} role="region" aria-labelledby="discord-chat-title" tabIndex={-1} className="mx-auto h-[600px] max-w-3xl overflow-hidden rounded-md border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
-        {open ? (
-          <DiscordWidget />
-        ) : (
-          <div className="flex h-full flex-col items-center justify-center gap-4 p-6 text-center">
-            <DiscordIcon aria-hidden="true" className="size-12 text-[#5865F2]" />
-            <Button type="button" onClick={() => setOpen(true)}>{t('open')}</Button>
-            <p className="max-w-sm text-sm text-muted-foreground">{t('notice')}</p>
-          </div>
-        )}
+      <div ref={boxRef} role="region" aria-labelledby="discord-chat-title" className="mx-auto h-[600px] max-w-3xl overflow-hidden rounded-md border">
+        {inView ? <DiscordWidget /> : <Skeleton className="h-full w-full" />}
       </div>
     </Section>
   )

@@ -1807,9 +1807,7 @@
     },
     "discord": {
       "title": "¿Prefieres hablar con una persona?",
-      "subtitle": "Únete a propietarios de tiendas y al equipo en nuestra comunidad de Discord en vivo.",
-      "open": "Abrir chat",
-      "notice": "El chat se carga desde Discord (a través de WidgetBot) solo cuando lo abres."
+      "subtitle": "Únete a propietarios de tiendas y al equipo en nuestra comunidad de Discord en vivo."
     }
   },
   "compare": {

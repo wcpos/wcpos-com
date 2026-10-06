@@ -1807,9 +1807,7 @@
     },
     "discord": {
       "title": "Preferisci parlare con una persona?",
-      "subtitle": "Unisciti ai proprietari di negozi e al team nella nostra community Discord live.",
-      "open": "Apri la chat",
-      "notice": "La chat viene caricata da Discord (tramite WidgetBot) solo quando la apri."
+      "subtitle": "Unisciti ai proprietari di negozi e al team nella nostra community Discord live."
     }
   },
   "compare": {

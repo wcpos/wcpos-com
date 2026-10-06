@@ -1,5 +1,5 @@
-import { describe, it, expect, vi } from 'vitest'
-import { fireEvent, render, screen } from '@testing-library/react'
+import { afterEach, beforeEach, describe, it, expect, vi } from 'vitest'
+import { act, render, screen } from '@testing-library/react'
 import { NextIntlClientProvider } from 'next-intl'
 import type { ReactElement } from 'react'
 import { DiscordSection } from './discord-section'
@@ -14,21 +14,44 @@ function renderWithIntl(ui: ReactElement) {
 }
 
 describe('DiscordSection', () => {
-  it('shows an Open chat button and does not mount the widget before a click', () => {
+  let onIntersect: (entries: { isIntersecting: boolean }[]) => void
+  let rootMargin: string | undefined
+  const observe = vi.fn()
+  const disconnect = vi.fn()
+  beforeEach(() => {
+    vi.clearAllMocks()
+    vi.stubGlobal('IntersectionObserver', class {
+      constructor(callback: typeof onIntersect, options: IntersectionObserverInit) {
+        onIntersect = callback
+        rootMargin = options.rootMargin
+      }
+      observe = observe
+      disconnect = disconnect
+    })
+  })
+  afterEach(() => vi.unstubAllGlobals())
+
+  it('does not mount the widget before its box nears the viewport', () => {
     renderWithIntl(<DiscordSection />)
     expect(screen.queryByTestId('discord-widget')).toBeNull()
-    expect(screen.getByRole('button', { name: 'Open chat' })).toBeInTheDocument()
-    expect(screen.getByRole('region', { name: 'Prefer to talk to a human?' })).toBeInTheDocument()
-    expect(screen.getByText('The chat loads from Discord (via WidgetBot) only when you open it.')).toBeInTheDocument()
+    expect(screen.queryByRole('button')).toBeNull()
+    const region = screen.getByRole('region', { name: 'Prefer to talk to a human?' })
+    expect(region).toBeInTheDocument()
+    expect(region).toHaveClass('h-[600px]')
+    expect(observe).toHaveBeenCalledWith(region)
+    expect(rootMargin).toBe('200px 0px')
   })
 
-  it('mounts the Discord widget after Open chat is clicked', async () => {
+  it('mounts the widget when the box scrolls into view, without a click', async () => {
     renderWithIntl(<DiscordSection />)
-    fireEvent.click(screen.getByRole('button', { name: 'Open chat' }))
+    act(() => onIntersect([{ isIntersecting: true }]))
     expect(await screen.findByTestId('discord-widget')).toBeInTheDocument()
-    expect(screen.getByRole('region', { name: 'Prefer to talk to a human?' })).toHaveFocus()
-    expect(screen.getByRole('region', { name: 'Prefer to talk to a human?' })).toHaveClass('focus-visible:ring-2')
-    expect(screen.getByRole('region', { name: 'Prefer to talk to a human?' })).not.toHaveClass('focus:outline-none')
-    expect(screen.queryByRole('button', { name: 'Open chat' })).toBeNull()
+    expect(disconnect).toHaveBeenCalled()
+  })
+
+  it('mounts the widget straight away where IntersectionObserver is missing', async () => {
+    vi.stubGlobal('IntersectionObserver', undefined)
+    renderWithIntl(<DiscordSection />)
+    expect(await screen.findByTestId('discord-widget')).toBeInTheDocument()
   })
 })
