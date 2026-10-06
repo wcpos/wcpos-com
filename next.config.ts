@@ -97,13 +97,13 @@ const nextConfig: NextConfig = {
       { source: '/refund-policy', destination: '/refunds', statusCode: 301 },
       { source: '/contact', destination: '/support', statusCode: 301 },
       { source: '/about', destination: 'https://wcpos.com/', statusCode: 301 },
-      // Old docs pages that exist at the same path on docs.wcpos.com
-      { source: '/docs/cart', destination: 'https://docs.wcpos.com/cart', statusCode: 301 },
+      // Old docs pages: send each to its current docs.wcpos.com URL in one hop
+      { source: '/docs/cart', destination: 'https://docs.wcpos.com/pos/cart', statusCode: 301 },
       { source: '/docs/coupons', destination: 'https://docs.wcpos.com/coupons', statusCode: 301 },
       { source: '/docs/customers', destination: 'https://docs.wcpos.com/customers', statusCode: 301 },
       { source: '/docs/orders', destination: 'https://docs.wcpos.com/orders', statusCode: 301 },
       { source: '/docs/products', destination: 'https://docs.wcpos.com/products', statusCode: 301 },
-      { source: '/docs/products/barcode-scanning', destination: 'https://docs.wcpos.com/products/barcode-scanning', statusCode: 301 },
+      { source: '/docs/products/barcode-scanning', destination: 'https://docs.wcpos.com/pos/product-panel/barcode-scanning', statusCode: 301 },
       { source: '/docs/products/pos-only-products', destination: 'https://docs.wcpos.com/products/pos-only-products', statusCode: 301 },
       { source: '/docs/receipts', destination: 'https://docs.wcpos.com/receipts', statusCode: 301 },
       { source: '/docs/reports', destination: 'https://docs.wcpos.com/reports', statusCode: 301 },

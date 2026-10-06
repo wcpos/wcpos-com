@@ -18,6 +18,30 @@ describe('nextConfig redirects', () => {
     })
   })
 
+  it('sends legacy docs pages that moved straight to their final docs URL', async () => {
+    const redirects = await nextConfig.redirects?.()
+    expect(redirects).toContainEqual({
+      source: '/docs/cart',
+      destination: 'https://docs.wcpos.com/pos/cart',
+      statusCode: 301,
+    })
+    expect(redirects).toContainEqual({
+      source: '/docs/products/barcode-scanning',
+      destination: 'https://docs.wcpos.com/pos/product-panel/barcode-scanning',
+      statusCode: 301,
+    })
+    expect(redirects).not.toContainEqual({
+      source: '/docs/cart',
+      destination: 'https://docs.wcpos.com/cart',
+      statusCode: 301,
+    })
+    expect(redirects).not.toContainEqual({
+      source: '/docs/products/barcode-scanning',
+      destination: 'https://docs.wcpos.com/products/barcode-scanning',
+      statusCode: 301,
+    })
+  })
+
   it('redirects the legacy 2025 Pro icon to the canonical asset', async () => {
     const redirects = await nextConfig.redirects?.()
 
