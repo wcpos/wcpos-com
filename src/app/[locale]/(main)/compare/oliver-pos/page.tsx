@@ -156,15 +156,21 @@ function ComparisonTable({
       {caption && <TableCaption>{caption}</TableCaption>}
       <TableHeader>
         <TableRow>
-          <TableHead>{featureHeader ?? ''}</TableHead>
-          <TableHead>{wcposHeader}</TableHead>
-          <TableHead>{oliverHeader}</TableHead>
+          {featureHeader === undefined ? (
+            <td />
+          ) : (
+            <TableHead scope="col">{featureHeader}</TableHead>
+          )}
+          <TableHead scope="col">{wcposHeader}</TableHead>
+          <TableHead scope="col">{oliverHeader}</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
         {rows.map((row) => (
           <TableRow key={row.label}>
-            <TableCell className="font-medium">{row.label}</TableCell>
+            <th scope="row" className="p-2 text-left align-middle font-medium">
+              {row.label}
+            </th>
             <TableCell>{row.wcpos}</TableCell>
             <TableCell>{row.oliver}</TableCell>
           </TableRow>

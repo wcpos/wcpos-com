@@ -23,6 +23,19 @@ vi.mock('next-intl/server', () => ({
 const params = Promise.resolve({ locale: 'en' })
 
 describe('OliverComparePage', () => {
+  it('associates every comparison cell with headers', async () => {
+    render(await OliverComparePage({ params }))
+    for (const table of screen.getAllByRole('table')) {
+      for (const row of table.querySelectorAll('tbody tr')) {
+        expect(row.firstElementChild?.matches('th[scope="row"]')).toBe(true)
+      }
+      for (const header of table.querySelectorAll('thead th')) {
+        expect(header).toHaveAttribute('scope', 'col')
+        expect(header.textContent?.trim()).not.toBe('')
+      }
+    }
+  })
+
   it('renders the hero, answer-first block, and comparison tables', async () => {
     render(await OliverComparePage({ params }))
 

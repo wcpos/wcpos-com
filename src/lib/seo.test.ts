@@ -1,3 +1,5 @@
+import { existsSync, readFileSync } from 'node:fs'
+import { basename, join } from 'node:path'
 import { describe, it, expect } from 'vitest'
 import {
   alternateOpenGraphLocales,
@@ -6,6 +8,7 @@ import {
   marketingMetadata,
   openGraphLocale,
   SITE_URL,
+  SOCIAL_CARDS,
 } from './seo'
 import { locales } from '@/i18n/config'
 
@@ -43,6 +46,52 @@ describe('languageAlternates', () => {
 })
 
 describe('marketingMetadata', () => {
+  it('sets og:url to the canonical URL', () => {
+    const metadata = marketingMetadata({ locale: 'fr', path: '/pro' })
+    expect(metadata.openGraph?.url).toBe(metadata.alternates?.canonical)
+    expect(metadata.openGraph?.url).toBe('https://wcpos.com/fr/pro')
+  })
+
+  it('uses the page social card when one exists', () => {
+    const metadata = marketingMetadata({ locale: 'en', path: '/roadmap' })
+    expect(metadata.openGraph?.images).toEqual(['/og/roadmap.png'])
+    expect(metadata.twitter?.images).toEqual(['/og/roadmap.png'])
+  })
+
+  it('falls back to the site card', () => {
+    const metadata = marketingMetadata({ locale: 'en', path: '/privacy' })
+    expect(metadata.openGraph?.images).toEqual(['/opengraph-image.png'])
+    expect(metadata.twitter?.images).toEqual(['/opengraph-image.png'])
+  })
+
+  it('keeps the site-wide OpenGraph fields', () => {
+    const metadata = marketingMetadata({ locale: 'fr', path: '/pro' })
+    expect(metadata.openGraph).toMatchObject({
+      type: 'website',
+      siteName: 'WCPOS',
+      locale: 'fr_FR',
+    })
+    expect(metadata.openGraph?.alternateLocale).toHaveLength(9)
+    expect(metadata.openGraph?.alternateLocale).not.toContain('fr_FR')
+    expect(metadata.twitter).toMatchObject({ card: 'summary_large_image' })
+  })
+
+  it('has a generator entry for every social card', () => {
+    const generator = readFileSync(
+      'scripts/og-image/generate-page-cards.mjs',
+      'utf8'
+    )
+    for (const card of Object.values(SOCIAL_CARDS)) {
+      expect(generator).toContain(`slug: '${basename(card, '.png')}'`)
+    }
+  })
+
+  it('ships a PNG for every social card', () => {
+    for (const card of Object.values(SOCIAL_CARDS)) {
+      expect(existsSync(join(process.cwd(), 'public', card))).toBe(true)
+    }
+  })
+
   it('builds canonical for the requested locale', () => {
     const metadata = marketingMetadata({ locale: 'fr', path: '/pro' })
     expect(metadata.alternates?.canonical).toBe('https://wcpos.com/fr/pro')
