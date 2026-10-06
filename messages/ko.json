@@ -1839,7 +1839,12 @@
         "description": "WooCommerce 모바일 앱에 내장된 무료 POS와 여러 플랫폼에서 작동하는 오프라인 우선 POS: 기기, 국가, 결제, 가격, 그리고 WooCommerce POS가 실제로 더 나은 부분을 비교합니다.",
         "cta": "비교 읽기"
       },
-      "moreSoon": "Square for WooCommerce를 포함해 더 많은 비교가 준비 중입니다."
+      "squareCard": {
+        "title": "WCPOS vs Square for WooCommerce",
+        "description": "Square의 POS와 동기화 확장 프로그램을 WooCommerce 자체에 구축된 계산대와 비교합니다. 대면 판매의 기록 위치, 동기화, 위치, 오프라인 결제, 카드 수수료, Square가 실제로 더 나은 부분을 살펴봅니다.",
+        "cta": "비교 읽기"
+      },
+      "moreSoon": "더 많은 비교가 준비 중입니다."
     },
     "oliver": {
       "metadata": {
@@ -2222,6 +2227,155 @@
       },
       "footer": {
         "factsDated": "WooCommerce POS에 관한 정보는 2026-10-06에 WooCommerce 자체 페이지(POS 문서, POS 페이지, WooPayments 수수료 페이지)에서 확인했습니다. WCPOS 정보는 wcpos.com에서 가져왔습니다. 분기마다 다시 확인합니다.",
+        "corrections": "오류를 발견하셨나요? support@wcpos.com으로 알려 주세요. 빠르게 수정하고 모든 변경을 기록합니다."
+      }
+    },
+    "square": {
+      "metadata": {
+        "title": "WCPOS vs Square for WooCommerce (2026): 솔직한 비교",
+        "description": "WCPOS 제작자가 WCPOS와 Square for WooCommerce 확장 프로그램을 함께 사용하는 Square POS를 비교합니다. 대면 판매의 기록 위치, 동기화, 위치, 오프라인 결제, 카드 수수료, Square가 더 적합한 경우를 살펴봅니다."
+      },
+      "hero": {
+        "title": "WCPOS vs Square for WooCommerce",
+        "subtitle": "많은 WooCommerce 매장이 Square의 POS 앱으로 대면 판매를 하고 Square for WooCommerce 확장 프로그램으로 데이터를 맞춥니다. WooCommerce 자체에 구축된 계산대와 어떻게 다른지, Square가 더 나은 선택인 경우는 언제인지 살펴봅니다."
+      },
+      "shortAnswer": {
+        "title": "간단한 결론",
+        "wcpos": "WCPOS는 WooCommerce 자체에 구축된 계산대입니다. WooCommerce 상품과 재고를 사용해 판매하고 모든 판매가 WooCommerce 주문이 되므로 동기화할 것이 없습니다. 모든 최신 브라우저와 Windows 및 macOS 데스크톱 앱, iOS 및 Android 앱(베타)에서 작동하며 모든 WooCommerce 결제 게이트웨이를 사용할 수 있습니다. 무료 버전에는 상품, 주문, 고객 수의 제한이 없으며, Pro는 Square Terminal을 포함한 카드 단말기 연동과 다중 매장 관리를 일회성 결제로 추가합니다. 이후 기능이 꺼지지 않습니다.",
+        "square": "Square for WooCommerce는 iOS 및 Android 기기의 Square Point of Sale 앱과 WooCommerce 매장이라는 두 시스템을 연결하며, 확장 프로그램은 둘 사이의 상품 및 재고 데이터를 동기화합니다. Square에는 무료 요금제, iPhone과 Android의 Tap to Pay, 오프라인 카드 결제가 있습니다. 하지만 Square의 POS에서 생성한 주문은 WooCommerce에 동기화되지 않습니다. 대면 판매로 인한 재고 변경은 다음 예정된 확인 때 WooCommerce에 반영되고(기본 간격은 1시간), 확장 프로그램은 한 번에 Square 위치 한 곳만 연결합니다."
+      },
+      "glance": {
+        "title": "한눈에 보기",
+        "caption": "Square 관련 사실은 2026-10-06에 squareup.com 및 Square for WooCommerce 확장 프로그램의 WooCommerce 문서에서 확인했으며, WCPOS 관련 사실은 wcpos.com과 docs.wcpos.com을 참조했습니다.",
+        "colWcpos": "WCPOS",
+        "colSquare": "Square POS + Square for WooCommerce",
+        "rows": {
+          "orders": {
+            "label": "대면 판매",
+            "wcpos": "모든 판매가 WooCommerce 주문",
+            "square": "Square의 POS에서 생성한 주문은 WooCommerce에 동기화되지 않음"
+          },
+          "catalog": {
+            "label": "상품 및 재고",
+            "wcpos": "WooCommerce 상품과 재고에서 판매하며 동기화할 것이 없음",
+            "square": "Square와 WooCommerce 간 상품 및 재고 데이터 동기화; 기본 동기화 간격 1시간"
+          },
+          "devices": {
+            "label": "기기",
+            "wcpos": "웹, 데스크톱 앱(Windows와 macOS), iOS와 Android 앱(베타); 기기와 계산원 무제한",
+            "square": "iOS 및 Android 기기의 Square Point of Sale 앱"
+          },
+          "countries": {
+            "label": "국가",
+            "wcpos": "국가 제한 없음",
+            "square": "8개국: 미국, 캐나다, 호주, 일본, 영국, 아일랜드, 프랑스, 스페인 — WooCommerce는 Square 계정과 동일한 통화를 사용해야 함"
+          },
+          "price": {
+            "label": "가격",
+            "wcpos": "제한 없는 무료 플러그인; Pro는 1년 업데이트 포함 $129 또는 평생 $399 — 일회성 결제, 자동 갱신 없음",
+            "square": "Square Free 요금제: 위치당 $0/month"
+          },
+          "cardPayments": {
+            "label": "카드 결제",
+            "wcpos": "Pro 단말기 연동: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Vipps MobilePay",
+            "square": "iPhone과 Android의 Tap to Pay를 포함한 Square 결제"
+          },
+          "fees": {
+            "label": "카드 수수료",
+            "wcpos": "WCPOS 수수료 없음 — 이용하는 결제 처리 업체의 요금 적용",
+            "square": "미국의 Square Free에서 탭, 삽입 또는 긁기 결제: 2.6% + 15¢"
+          },
+          "offline": {
+            "label": "오프라인",
+            "wcpos": "오프라인에서 상품을 탐색하고 장바구니를 만들 수 있음; 결제 완료에는 연결 필요",
+            "square": "오프라인 카드 결제는 72시간 이내에 업로드해야 함; 만료, 거절 또는 분쟁이 발생한 결제는 판매자 책임"
+          },
+          "multiLocation": {
+            "label": "다중 매장 / 위치",
+            "wcpos": "예(Pro): 매장별 주소, 세율, 영수증 템플릿, 가격, 권한이 있는 사용자",
+            "square": "확장 프로그램은 한 번에 Square 위치 한 곳만 연결"
+          }
+        }
+      },
+      "setup": {
+        "title": "한 시스템인가요, 두 시스템인가요?",
+        "square": "Square를 사용하면 대면 판매는 Square Point of Sale 앱에서, 온라인 판매는 WooCommerce에서 이루어집니다. Square for WooCommerce 확장 프로그램은 두 시스템 간 상품 및 재고 데이터를 동기화하지만, 이 확장 프로그램에 관한 WooCommerce의 FAQ에 따르면 판매 주문 데이터는 동기화되지 않습니다. Square의 POS에서 생성한 주문은 WooCommerce에 동기화되지 않습니다. 대면 판매로 인한 재고 변경은 즉시가 아니라 다음 예정된 확인 때 WooCommerce에 반영됩니다.",
+        "wcpos": "WCPOS는 WooCommerce 자체에 계산대를 추가합니다. WooCommerce 상품, 가격, 재고를 사용해 판매하며 모든 판매가 WooCommerce 주문으로 온라인 주문과 함께 표시됩니다. 따로 맞춰야 할 두 번째 상품 카탈로그는 없습니다."
+      },
+      "payments": {
+        "title": "카드 결제는 어떻게 작동하나요?",
+        "square": "Square의 POS는 iPhone과 Android의 Tap to Pay를 포함해 Square를 통한 카드 결제를 받습니다. 미국의 Square Free 요금제에서 대면 카드 결제(탭, 삽입 또는 긁기) 비용은 2.6% + 15¢입니다. Square에 따르면 Square 앱의 카드 결제는 미국, 캐나다, 호주, 일본, 영국, 아일랜드 공화국, 프랑스, 스페인에서 이용할 수 있으며, 확장 프로그램을 사용하려면 WooCommerce 통화가 Square 계정 통화와 일치해야 합니다.",
+        "wcpos": "WCPOS는 WooCommerce 자체 체크아웃을 통해 결제하므로 WooCommerce와 호환되는 모든 결제 게이트웨이를 계산대에서 사용할 수 있습니다. Pro는 Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Vipps MobilePay 카드 단말기 연동을 추가하며, 확장 카탈로그에서 클릭 한 번으로 설치할 수 있습니다. WCPOS는 Tap to Pay를 지원하지 않습니다.",
+        "both": "Square Terminal을 이미 사용 중이신가요? WCPOS Pro의 Square Terminal 게이트웨이는 WCPOS 계산대에서 해당 단말기로 WooCommerce 주문 결제를 직접 받고 결과를 주문에 기록합니다. 공식 Square for WooCommerce 플러그인을 사용한다면 환경과 위치 ID가 미리 입력됩니다. Square POS나 다른 연동에 로그인한 Terminal은 먼저 로그아웃해야 합니다."
+      },
+      "pricing": {
+        "title": "비용은 얼마인가요?",
+        "square": "Square의 POS에는 위치당 $0/month인 무료 요금제 Square Free가 있습니다. 미국의 Square Free에서 대면 카드 결제(탭, 삽입 또는 긁기) 비용은 2.6% + 15¢입니다.",
+        "wcpos": "WCPOS는 무료이며 제품, 주문, 고객, 현금 판매에 제한이 없습니다. Pro는 $129 일회성 결제로 1년간 업데이트와 우선 지원을 제공하거나, 평생 버전을 $399에 구매할 수 있습니다. 자동 갱신은 없으며 1년이 지나도 Pro는 계속 작동합니다. 어떤 기능도 꺼지지 않습니다. WCPOS는 거래 수수료를 부과하지 않으며 이용하는 결제 처리 업체의 요금만 지불합니다.",
+        "proAdds": "Pro 추가 기능: 다중 매장 관리, 카드 단말기 연동, 쿠폰, POS API를 통한 환불, 주문 내역, 계산대 고객 관리, 매장별 가격, 재고·가격 편집, 마감 보고서, 확장 디렉터리.",
+        "demoPrefix": "먼저",
+        "demoLinkLabel": "demo.wcpos.com/pos",
+        "demoSuffix": "에서 모든 기능을 체험해 보세요(로그인 demo / demo)."
+      },
+      "limits": {
+        "title": "Square for WooCommerce가 하지 못하는 것",
+        "intro": "2026-10-06에 확인한 Square for WooCommerce 확장 프로그램의 WooCommerce 문서에는 다음 제한 사항이 명시되어 있습니다:",
+        "orders": "Square의 POS에서 생성한 주문은 WooCommerce에 동기화되지 않으며, 상품 및 재고 데이터만 동기화됩니다.",
+        "delay": "대면 판매로 인한 재고 변경은 즉시가 아니라 다음 예정된 확인 때 WooCommerce에 반영됩니다. 기본 동기화 간격은 1시간입니다.",
+        "location": "한 번에 Square 위치 한 곳만 연결할 수 있습니다.",
+        "countries": "Square는 미국, 캐나다, 호주, 일본, 영국, 프랑스, 스페인, 아일랜드에서 이용할 수 있으며 WooCommerce 통화는 Square 계정 통화와 일치해야 합니다.",
+        "sku": "모든 상품에는 SKU가 있어야 합니다.",
+        "variations": "Square에서 WooCommerce로 상품을 동기화할 때 상품당 최대 250개 옵션과 6개 속성을 허용합니다.",
+        "outro": "이 목록은 분기마다 다시 확인합니다."
+      },
+      "squareBetter": {
+        "title": "Square가 실제로 더 나은 점",
+        "intro": "솔직한 비교에서는 양쪽의 장점을 모두 살펴봐야 합니다:",
+        "free": "Square의 POS에는 무료 요금제 Square Free(위치당 $0/month)가 있습니다. WCPOS Pro는 $129 이상입니다.",
+        "tapToPay": "iPhone과 Android의 Tap to Pay: 고객이 여러분의 휴대전화에 카드를 대면 됩니다. WCPOS는 Tap to Pay를 지원하지 않습니다.",
+        "offline": "오프라인 카드 결제: Square의 POS는 인터넷이 없어도 카드를 계속 받습니다. 72시간 이내에 다시 연결해 결제를 업로드해야 하며 만료, 거절 또는 분쟁이 발생한 결제는 여러분의 책임입니다. WCPOS에서는 오프라인으로 상품을 탐색하고 장바구니를 만들 수 있지만 결제 완료에는 연결이 필요합니다.",
+        "outro": "iOS 또는 Android 기기로 한 곳에서 대면 판매하고 Square로 결제를 받으며 대면 판매를 WooCommerce 주문으로 기록할 필요가 없다면, Square의 POS와 확장 프로그램으로 충분할 수 있습니다."
+      },
+      "choose": {
+        "title": "무엇을 선택해야 할까요?",
+        "wcpos": {
+          "title": "이런 경우 WCPOS를 선택하세요:",
+          "body": "온라인과 대면의 모든 판매가 동기화할 필요 없는 단일 카탈로그의 WooCommerce 주문이 되기를 원하거나, 매장을 둘 이상 운영하거나, Square의 8개국 밖에서 판매하거나, 웹 브라우저나 Windows 및 macOS 데스크톱 앱에서 계산대를 사용하고 싶거나, Square 이외의 결제 게이트웨이 또는 카드 단말기를 사용하고 싶다면."
+        },
+        "square": {
+          "title": "이런 경우 Square for WooCommerce를 선택하세요:",
+          "body": "Square의 8개국 중 한 곳에서 iOS 또는 Android 기기로 대면 판매하고, Tap to Pay나 오프라인 카드 결제를 원하며, 한 위치에서 판매하고, 대면 판매가 WooCommerce 주문으로 표시될 필요가 없다면."
+        }
+      },
+      "faq": {
+        "title": "자주 묻는 질문",
+        "orders": {
+          "question": "Square POS 판매가 WooCommerce 주문으로 표시되나요?",
+          "answer": "아니요. Square for WooCommerce 확장 프로그램에 관한 WooCommerce FAQ에 따르면 상품 및 재고 데이터는 동기화되지만 판매 주문 데이터는 동기화되지 않습니다. Square의 POS에서 생성한 주문은 WooCommerce에 동기화되지 않습니다. 대면 판매로 인한 재고 변경은 다음 예정된 확인 때 WooCommerce에 반영됩니다. WCPOS에서 이루어지는 모든 판매는 WooCommerce 주문입니다."
+        },
+        "free": {
+          "question": "Square POS는 무료인가요?",
+          "answer": "Square에는 위치당 $0/month인 무료 요금제 Square Free가 있으며, 카드 결제에는 Square 처리 수수료가 부과됩니다. 미국의 Square Free에서 탭, 삽입 또는 긁기 결제에는 2.6% + 15¢가 부과됩니다. WCPOS의 무료 플러그인도 수량 제한 없이 무료이며 모든 WooCommerce 결제 게이트웨이와 함께 작동합니다."
+        },
+        "terminal": {
+          "question": "WCPOS에서 Square Terminal을 사용할 수 있나요?",
+          "answer": "예, WCPOS Pro에서 가능합니다. Square Terminal 게이트웨이는 WCPOS에서 직접 Square Terminal 하드웨어로 WooCommerce 주문 결제를 받고 결과를 주문에 기록합니다. 공식 Square for WooCommerce 플러그인을 이미 사용하고 있다면 해당 환경과 위치 ID가 미리 입력됩니다. Square POS 또는 다른 연동에 로그인한 Terminal은 먼저 로그아웃해야 합니다."
+        },
+        "offline": {
+          "question": "Square POS는 오프라인에서 작동하나요?",
+          "answer": "Square의 POS는 오프라인에서 카드 결제를 받을 수 있습니다. 오프라인 세션을 시작한 뒤 72시간 이내에 다시 연결해 결제를 업로드해야 하며, 오프라인에서 받은 결제가 만료되거나 거절되거나 분쟁이 발생하면 그에 대한 책임은 여러분에게 있습니다. EBT/SNAP, Afterpay, Cash App Pay, Square Gift Cards, iPhone 및 Android의 Tap to Pay, 수동으로 입력한 카드 번호는 오프라인에서 사용할 수 없습니다. WCPOS는 상품, 고객, 장바구니를 로컬에 저장하므로 연결 없이 카탈로그를 탐색하고 판매를 준비할 수 있지만 결제 완료에는 서버 연결이 필요합니다."
+        },
+        "locations": {
+          "question": "Square for WooCommerce는 위치를 둘 이상 동기화할 수 있나요?",
+          "answer": "아니요. WooCommerce 문서에 따르면 한 번에 한 위치만 연결할 수 있습니다. Square 위치가 여러 곳이면 선택한 위치와 연결된 상품 및 재고만 동기화됩니다. WCPOS Pro는 매장별 주소, 세율, 영수증 템플릿, 가격, 권한 있는 사용자를 설정해 여러 매장을 관리합니다."
+        },
+        "expiry": {
+          "question": "WCPOS Pro 라이선스가 만료되면 어떻게 되나요?",
+          "answer": "아무것도 꺼지지 않습니다. 지금 쓰시는 Pro 버전은 원하는 만큼 계속 작동합니다. 계산대도, 데이터도, 모든 기능도 그대로입니다. 갱신을 선택하기 전까지 새 업데이트와 우선 지원만 중단됩니다. 이는 의도된 설계입니다. 갱신은 돈 낼 가치가 있는 업데이트로 얻어내야 하고, 여러분의 POS가 원격으로 비활성화되는 일은 결코 없다는 보장이기도 합니다."
+        }
+      },
+      "footer": {
+        "factsDated": "Square 관련 사실은 2026-10-06에 Square 자체 페이지(수수료 페이지, 가격 발표, 오프라인 결제, Tap to Pay, 기기 및 국제 서비스 제공에 관한 도움말)와 Square for WooCommerce 확장 프로그램의 WooCommerce 문서에서 확인했습니다. WCPOS 관련 사실은 wcpos.com과 docs.wcpos.com을 참조했습니다. 분기마다 다시 확인합니다.",
         "corrections": "오류를 발견하셨나요? support@wcpos.com으로 알려 주세요. 빠르게 수정하고 모든 변경을 기록합니다."
       }
     }

@@ -1839,7 +1839,12 @@
         "description": "WooCommerceのモバイルアプリに組み込まれた無料のPOSと、複数のプラットフォームに対応したオフラインファーストのPOS。デバイス、国、決済、価格、そしてWooCommerceのPOSが本当に優れている点を比較します。",
         "cta": "比較を読む"
       },
-      "moreSoon": "Square for WooCommerceなど、さらに多くの比較を準備中です。"
+      "squareCard": {
+        "title": "WCPOS vs Square for WooCommerce",
+        "description": "SquareのPOSと同期用拡張機能を、WooCommerceに直接組み込まれたレジと比較します。対面販売の記録先、同期、拠点、オフライン決済、カード手数料、Squareが本当に優れている点を取り上げます。",
+        "cta": "比較を読む"
+      },
+      "moreSoon": "さらに多くの比較を準備中です。"
     },
     "oliver": {
       "metadata": {
@@ -2222,6 +2227,155 @@
       },
       "footer": {
         "factsDated": "WooCommerceのPOSに関する情報は2026-10-06にWooCommerce自身のページ（POSのドキュメント、POSのページ、WooPaymentsの手数料ページ）で確認済みです。WCPOSの情報はwcpos.comに基づきます。四半期ごとに再確認します。",
+        "corrections": "誤りを見つけましたか？ support@wcpos.com までご連絡ください。迅速に修正し、すべての変更を記録します。"
+      }
+    },
+    "square": {
+      "metadata": {
+        "title": "WCPOS vs Square for WooCommerce（2026）：率直な比較",
+        "description": "WCPOSの開発者が、WCPOSとSquare POSにSquare for WooCommerce拡張機能を組み合わせた場合を比較します。対面販売の記録先、同期、拠点、オフライン決済、カード手数料、Squareの方が適している場合を取り上げます。"
+      },
+      "hero": {
+        "title": "WCPOS vs Square for WooCommerce",
+        "subtitle": "多くのWooCommerce店舗はSquareのPOSアプリで対面販売を行い、Square for WooCommerce拡張機能で店舗とデータを同期しています。WooCommerce自体に組み込まれたレジとの違いと、Squareの方が適している場合を説明します。"
+      },
+      "shortAnswer": {
+        "title": "結論を先に",
+        "wcpos": "WCPOSはWooCommerce自体に組み込まれたレジです。WooCommerceの商品と在庫を使って販売し、すべての販売がWooCommerceの注文になるため、同期するものはありません。あらゆるモダンブラウザ、WindowsとmacOSのデスクトップアプリ、iOSとAndroidのアプリ（ベータ版）で動作し、任意のWooCommerce決済ゲートウェイを利用できます。無料版には商品・注文・顧客数の上限がなく、ProはSquare Terminalを含むカード端末連携と複数店舗管理を買い切り価格で追加します。後から機能が停止することはありません。",
+        "square": "Square for WooCommerceは、iOSとAndroidデバイス上のSquare Point of SaleアプリとWooCommerce店舗という二つのシステムをつなぎ、拡張機能が商品と在庫のデータを両者間で同期します。Squareには無料プラン、iPhoneとAndroidでのTap to Pay、オフラインでのカード決済があります。ただし、SquareのPOSで作成された注文はWooCommerceに同期されません。対面販売による在庫変更がWooCommerceに反映されるのは次回の予定された確認時（既定の間隔は1時間）であり、拡張機能が一度に連携するSquareの拠点は一つだけです。"
+      },
+      "glance": {
+        "title": "ひと目でわかる比較",
+        "caption": "Squareに関する事実は2026-10-06にsquareup.comおよびSquare for WooCommerce拡張機能に関するWooCommerceのドキュメントで確認。WCPOSに関する事実はwcpos.comとdocs.wcpos.comに基づきます。",
+        "colWcpos": "WCPOS",
+        "colSquare": "Square POS + Square for WooCommerce",
+        "rows": {
+          "orders": {
+            "label": "対面販売",
+            "wcpos": "すべての販売がWooCommerceの注文になる",
+            "square": "SquareのPOSで作成された注文はWooCommerceに同期されない"
+          },
+          "catalog": {
+            "label": "商品と在庫",
+            "wcpos": "WooCommerceの商品と在庫から販売し、同期は不要",
+            "square": "商品と在庫のデータをSquareとWooCommerce間で同期。既定の同期間隔は1時間"
+          },
+          "devices": {
+            "label": "デバイス",
+            "wcpos": "Web、デスクトップアプリ（WindowsとmacOS）、iOSとAndroidのアプリ（ベータ版）。デバイスとレジ係は無制限",
+            "square": "iOSとAndroidデバイス上のSquare Point of Saleアプリ"
+          },
+          "countries": {
+            "label": "国",
+            "wcpos": "国による制限なし",
+            "square": "8か国：米国、カナダ、オーストラリア、日本、英国、アイルランド、フランス、スペイン — WooCommerceの通貨はSquareアカウントの通貨と同じである必要があります"
+          },
+          "price": {
+            "label": "価格",
+            "wcpos": "無料プラグインに上限なし。Proは1年間のアップデート付きで$129、または生涯版が$399 — 買い切りで自動更新なし",
+            "square": "Square Freeプラン：拠点ごとに$0/month"
+          },
+          "cardPayments": {
+            "label": "カード決済",
+            "wcpos": "Proの端末連携：Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Vipps MobilePay",
+            "square": "iPhoneとAndroidでのTap to Payを含むSquare決済"
+          },
+          "fees": {
+            "label": "カード手数料",
+            "wcpos": "WCPOSからの手数料なし — 利用する決済プロセッサーの料金が適用",
+            "square": "米国のSquare Freeでは、タッチ、差し込み、スワイプによる決済：2.6% + 15¢"
+          },
+          "offline": {
+            "label": "オフライン",
+            "wcpos": "オフラインで商品を閲覧しカートを作成可能。会計の完了には接続が必要",
+            "square": "オフラインでのカード決済は72時間以内にアップロード。期限切れ、拒否、または異議申し立てのあった決済は販売者の責任"
+          },
+          "multiLocation": {
+            "label": "複数店舗・拠点",
+            "wcpos": "はい（Pro）：店舗ごとの住所、税率、レシートテンプレート、価格、権限を付与されたユーザー",
+            "square": "拡張機能が一度に連携するSquareの拠点は一つだけ"
+          }
+        }
+      },
+      "setup": {
+        "title": "一つのシステムか、二つか？",
+        "square": "Squareでは、対面販売はSquare Point of Saleアプリで、オンライン販売はWooCommerceで行います。Square for WooCommerce拡張機能は両者間で商品と在庫のデータを同期しますが、WooCommerce自身の拡張機能FAQによると販売注文のデータは同期されません。SquareのPOSで作成された注文はWooCommerceに同期されません。対面販売による在庫変更は、すぐにではなく、次回の予定された確認時にWooCommerceに反映されます。",
+        "wcpos": "WCPOSはWooCommerce自体にレジを追加します。WooCommerceの商品、価格、在庫を使って販売し、すべての販売がWooCommerceの注文としてオンライン注文と一緒に表示されます。同期して維持する必要のある二つ目のカタログはありません。"
+      },
+      "payments": {
+        "title": "カード決済はどのように機能しますか？",
+        "square": "SquareのPOSは、iPhoneとAndroidでのTap to Payを含め、Square経由でカード決済を受け付けます。米国のSquare Freeプランでは、対面でのカード決済（タッチ、差し込み、スワイプ）の手数料は2.6% + 15¢です。Squareによると、Squareアプリでのカード決済受付は米国、カナダ、オーストラリア、日本、英国、アイルランド共和国、フランス、スペインで利用できます。また、拡張機能を利用するにはWooCommerceの通貨をSquareアカウントの通貨と一致させる必要があります。",
+        "wcpos": "WCPOSはWooCommerce自身のチェックアウトを通じて決済するため、WooCommerce対応のあらゆる決済ゲートウェイをレジで利用できます。ProはStripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Vipps MobilePay向けのカード端末連携を追加し、拡張機能カタログからワンクリックでインストールできます。WCPOSはTap to Payをサポートしません。",
+        "both": "すでにSquare Terminalをお持ちですか？WCPOS ProのSquare TerminalゲートウェイはWCPOSのレジから直接、その端末でWooCommerce注文の決済を受け付け、結果を注文に書き戻します。公式のSquare for WooCommerceプラグインを利用している場合、その環境と拠点IDがあらかじめ入力されます。Square POSまたは別の連携にサインインしているTerminalは、先にそこからサインアウトする必要があります。"
+      },
+      "pricing": {
+        "title": "料金はいくらですか？",
+        "square": "SquareのPOSには、拠点ごとに$0/monthの無料プランSquare Freeがあります。米国のSquare Freeでは、対面でのカード決済（タッチ、差し込み、スワイプ）の手数料は2.6% + 15¢です。",
+        "wcpos": "WCPOSは無料で、商品、注文、顧客、現金販売に上限はありません。Proは$129の買い切りで1年間のアップデートと優先サポートが付き、生涯版は$399です。自動更新はなく、1年が過ぎてもProは動き続け、何も停止しません。WCPOSは取引手数料を請求しません。支払うのはご利用の決済プロセッサーの料金だけです。",
+        "proAdds": "Proの追加機能：複数店舗管理、カード端末連携、クーポン、POS API経由の返金、注文履歴、レジでの顧客管理、店舗別価格、在庫と価格の編集、営業終了レポート、拡張機能ディレクトリ。",
+        "demoPrefix": "まずは",
+        "demoLinkLabel": "demo.wcpos.com/pos",
+        "demoSuffix": "ですべてお試しください（ログイン demo / demo）。"
+      },
+      "limits": {
+        "title": "Square for WooCommerceでできないこと",
+        "intro": "2026-10-06に確認したSquare for WooCommerce拡張機能のWooCommerceドキュメントには、次の制限が記載されています：",
+        "orders": "SquareのPOSで作成された注文はWooCommerceに同期されず、商品と在庫のデータだけが同期されます。",
+        "delay": "対面販売による在庫変更は、すぐにではなく、次回の予定された確認時にWooCommerceに反映されます。既定の同期間隔は1時間です。",
+        "location": "一度に連携できるSquareの拠点は一つだけです。",
+        "countries": "Squareは米国、カナダ、オーストラリア、日本、英国、フランス、スペイン、アイルランドで利用でき、WooCommerceの通貨はSquareアカウントの通貨と一致する必要があります。",
+        "sku": "すべての商品にSKUが必要です。",
+        "variations": "SquareからWooCommerceへ商品を同期する場合、商品ごとに最大250バリエーション、6属性までです。",
+        "outro": "この一覧は四半期ごとに再確認します。"
+      },
+      "squareBetter": {
+        "title": "Squareが本当に優れている点",
+        "intro": "正直な比較では両方の長所を示します：",
+        "free": "SquareのPOSには無料プランSquare Free（拠点ごとに$0/month）があります。WCPOS Proは$129以上です。",
+        "tapToPay": "iPhoneとAndroidでのTap to Pay：顧客はカードをお使いのスマートフォンにかざして支払えます。WCPOSはTap to Payをサポートしません。",
+        "offline": "オフラインでのカード決済：SquareのPOSはインターネットがなくてもカード決済を受け付け続けます。ただし72時間以内に再接続して決済をアップロードする必要があり、期限切れ、拒否、または異議申し立てのあった決済は利用者の責任です。WCPOSではオフラインで商品を閲覧しカートを作成できますが、会計の完了には接続が必要です。",
+        "outro": "iOSまたはAndroidデバイスを使い、一つの拠点で対面販売し、Square経由で決済を受け付け、対面販売をWooCommerceの注文として記録する必要がない場合は、SquareのPOSと拡張機能だけで十分かもしれません。"
+      },
+      "choose": {
+        "title": "どちらを選ぶべきか？",
+        "wcpos": {
+          "title": "WCPOSを選ぶべき場合：",
+          "body": "オンラインと対面のすべての販売を一つのカタログからのWooCommerce注文にして同期を不要にしたい、複数の店舗を運営する、Squareが対応する8か国以外で販売する、WebブラウザまたはWindowsとmacOSのデスクトップアプリでレジを使いたい、あるいはSquare以外の決済ゲートウェイやカード端末を使いたい場合。"
+        },
+        "square": {
+          "title": "Square for WooCommerceを選ぶべき場合：",
+          "body": "Squareが対応する8か国のいずれかでiOSまたはAndroidデバイスから対面販売し、Tap to Payやオフラインでのカード決済を利用したい、一つの拠点で販売し、対面販売をWooCommerceの注文として表示する必要がない場合。"
+        }
+      },
+      "faq": {
+        "title": "よくある質問",
+        "orders": {
+          "question": "Square POSの販売はWooCommerceの注文として表示されますか？",
+          "answer": "いいえ。Square for WooCommerce拡張機能に関するWooCommerceのFAQによると、商品と在庫のデータは同期されますが、販売注文のデータは同期されません。SquareのPOSで作成された注文はWooCommerceに同期されません。対面販売による在庫変更は次回の予定された確認時にWooCommerceに反映されます。WCPOSで行うすべての販売はWooCommerceの注文です。"
+        },
+        "free": {
+          "question": "Square POSは無料ですか？",
+          "answer": "Squareには拠点ごとに$0/monthの無料プランSquare Freeがあり、カード決済にはSquareの処理手数料がかかります。米国のSquare Freeでは、タッチ、差し込み、スワイプによる決済に2.6% + 15¢がかかります。WCPOSの無料プラグインも上限なく無料で、あらゆるWooCommerce決済ゲートウェイと連携します。"
+        },
+        "terminal": {
+          "question": "WCPOSでSquare Terminalを使えますか？",
+          "answer": "はい、WCPOS Proで利用できます。そのSquare TerminalゲートウェイはWCPOSから直接Square Terminal端末でWooCommerce注文の決済を受け付け、結果を注文に書き戻します。公式のSquare for WooCommerceプラグインをすでに利用している場合、その環境と拠点IDがあらかじめ入力されます。Square POSまたは別の連携にサインインしているTerminalは、先にそこからサインアウトする必要があります。"
+        },
+        "offline": {
+          "question": "Square POSはオフラインで使えますか？",
+          "answer": "SquareのPOSはオフラインでカード決済を受け付けられます。オフラインセッション開始から72時間以内に再接続して決済をアップロードする必要があり、オフラインで受け付けた決済が期限切れ、拒否、または異議申し立てとなった場合は利用者の責任です。EBT/SNAP、Afterpay、Cash App Pay、Square Gift Cards、iPhoneとAndroidでのTap to Pay、手入力したカード番号はオフラインでは利用できません。WCPOSは商品、顧客、カートをローカルに保存するため、接続なしでカタログを閲覧し販売を準備できますが、会計の完了にはサーバーへの接続が必要です。"
+        },
+        "locations": {
+          "question": "Square for WooCommerceで複数の拠点を同期できますか？",
+          "answer": "いいえ。WooCommerceのドキュメントによると、一度に連携できる拠点は一つだけです。Squareに複数の拠点がある場合、選択した拠点に紐づく商品と在庫だけが同期されます。WCPOS Proは、店舗ごとの住所、税率、レシートテンプレート、価格、権限を付与されたユーザーを設定して複数店舗を管理できます。"
+        },
+        "expiry": {
+          "question": "WCPOS Proのライセンスが期限切れになるとどうなりますか？",
+          "answer": "何も止まりません。手元のPro版は望む限り動き続けます。レジも、データも、すべての機能もそのままです。更新を選ぶまで、新しいアップデートと優先サポートが止まるだけです。これは意図的な設計です。更新料は支払う価値のあるアップデートによって勝ち取られるべきものですし、あなたのPOSが遠隔で無効化されることは決してないという保証にもなります。"
+        }
+      },
+      "footer": {
+        "factsDated": "Squareに関する事実は2026-10-06にSquare自身のページ（手数料ページ、料金変更の発表、オフライン決済、Tap to Pay、デバイス、国際的な提供状況に関するヘルプ記事）およびSquare for WooCommerce拡張機能のWooCommerceドキュメントで確認しました。WCPOSに関する事実はwcpos.comとdocs.wcpos.comに基づきます。四半期ごとに再確認します。",
         "corrections": "誤りを見つけましたか？ support@wcpos.com までご連絡ください。迅速に修正し、すべての変更を記録します。"
       }
     }
