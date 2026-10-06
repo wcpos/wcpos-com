@@ -1839,7 +1839,12 @@
         "description": "Gratuito e integrato nell'app mobile di WooCommerce contro multipiattaforma e offline-first: dispositivi, Paesi, pagamenti, prezzi e dove il POS di WooCommerce è davvero migliore.",
         "cta": "Leggi il confronto"
       },
-      "moreSoon": "Altri confronti sono in arrivo, tra cui Square per WooCommerce."
+      "squareCard": {
+        "title": "WCPOS vs Square for WooCommerce",
+        "description": "Il POS di Square con un'estensione di sincronizzazione contro una cassa basata su WooCommerce: dove vengono registrate le vendite di persona, sincronizzazione, sedi, pagamenti offline, commissioni sulle carte e dove Square è davvero migliore.",
+        "cta": "Leggi il confronto"
+      },
+      "moreSoon": "Altri confronti sono in arrivo."
     },
     "oliver": {
       "metadata": {
@@ -2222,6 +2227,156 @@
       },
       "footer": {
         "factsDated": "Dati sul POS di WooCommerce verificati il 2026-10-06 sulle pagine di WooCommerce stesso (la documentazione POS, la pagina POS e la pagina delle commissioni WooPayments); i dati su WCPOS provengono da wcpos.com. Li verifichiamo di nuovo ogni trimestre.",
+        "corrections": "Avete trovato un errore? Scrivete a support@wcpos.com — correggiamo rapidamente e registriamo ogni modifica."
+      }
+    },
+    "square": {
+      "metadata": {
+        "title": "WCPOS vs Square for WooCommerce (2026): un confronto onesto",
+        "description": "WCPOS e Square POS con l'estensione Square for WooCommerce a confronto, a cura del creatore di WCPOS: dove vengono registrate le vendite di persona, sincronizzazione, sedi, pagamenti con carta offline, commissioni sulle carte e quando Square è la scelta migliore."
+      },
+      "hero": {
+        "title": "WCPOS vs Square for WooCommerce",
+        "subtitle": "Molti negozi WooCommerce vendono di persona con l'app POS di Square e la tengono sincronizzata tramite l'estensione Square for WooCommerce. Ecco come si confronta con una cassa basata direttamente su WooCommerce e quando Square è la scelta migliore."
+      },
+      "shortAnswer": {
+        "title": "La risposta in breve",
+        "wcpos": "WCPOS è una cassa basata direttamente su WooCommerce: vende dai vostri prodotti e dalle vostre scorte WooCommerce e ogni vendita è un ordine WooCommerce, quindi non c'è nulla da sincronizzare. Funziona in qualsiasi browser moderno, come app desktop per Windows e macOS e come app iOS e Android (beta), con qualsiasi gateway di pagamento WooCommerce. La versione gratuita non pone limiti a prodotti, ordini o clienti e Pro aggiunge gestione multi-negozio e integrazioni con i terminali di pagamento, tra cui Square Terminal, con un pagamento una tantum dopo il quale nulla si disattiva.",
+        "square": "Square for WooCommerce collega due sistemi: l'app Square Point of Sale sui dispositivi iOS e Android o integrata in Square Register, l'hardware di Square, e il vostro negozio WooCommerce, con l'estensione che sincronizza i dati di prodotti e scorte tra i due. Square offre un piano gratuito, Tap to Pay su iPhone e Android e pagamenti con carta offline. Ma gli ordini effettuati nel POS di Square non vengono sincronizzati con WooCommerce: le variazioni delle scorte dovute alle vendite di persona arrivano in WooCommerce al successivo controllo programmato (l'intervallo predefinito è un'ora) e l'estensione collega una sede Square alla volta."
+      },
+      "glance": {
+        "title": "In sintesi",
+        "caption": "Dati su Square verificati il 2026-10-06 su squareup.com e nella documentazione WooCommerce relativa all'estensione Square for WooCommerce; dati su WCPOS da wcpos.com e docs.wcpos.com.",
+        "colWcpos": "WCPOS",
+        "colSquare": "Square POS + Square for WooCommerce",
+        "rows": {
+          "orders": {
+            "label": "Vendite di persona",
+            "wcpos": "Ogni vendita è un ordine WooCommerce",
+            "square": "Gli ordini effettuati nel POS di Square non vengono sincronizzati con WooCommerce"
+          },
+          "catalog": {
+            "label": "Prodotti e scorte",
+            "wcpos": "Vende dai vostri prodotti e dalle vostre scorte WooCommerce; nulla da sincronizzare",
+            "square": "Dati di prodotti e scorte sincronizzati tra Square e WooCommerce; intervallo predefinito di un'ora"
+          },
+          "devices": {
+            "label": "Dispositivi",
+            "wcpos": "Web, app desktop (Windows e macOS), app iOS e Android (beta); dispositivi e cassieri illimitati",
+            "square": "App Square Point of Sale su dispositivi iOS e Android, e Square Register, l'hardware di Square con Square Point of Sale integrato"
+          },
+          "countries": {
+            "label": "Paesi",
+            "wcpos": "Nessuna restrizione geografica",
+            "square": "8 Paesi: Stati Uniti, Canada, Australia, Giappone, Regno Unito, Irlanda, Francia, Spagna — e WooCommerce deve usare la stessa valuta dell'account Square"
+          },
+          "price": {
+            "label": "Prezzo",
+            "wcpos": "Plugin gratuito senza limiti; Pro costa $129 per un anno di aggiornamenti o $399 a vita — pagamenti una tantum, senza rinnovo automatico",
+            "square": "Piano Square Free: $0/month per sede"
+          },
+          "cardPayments": {
+            "label": "Pagamenti con carta",
+            "wcpos": "Integrazioni con terminali Pro: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Vipps MobilePay",
+            "square": "Pagamenti Square, incluso Tap to Pay su iPhone e Android"
+          },
+          "fees": {
+            "label": "Commissioni sulle carte",
+            "wcpos": "Nessuna commissione di WCPOS — si applicano le tariffe del vostro processore di pagamento",
+            "square": "Negli Stati Uniti con Square Free, pagamento contactless, con inserimento o con strisciata della carta: 2.6% + 15¢"
+          },
+          "offline": {
+            "label": "Offline",
+            "wcpos": "Consultare i prodotti e creare carrelli offline; per completare il pagamento serve una connessione",
+            "square": "Pagamenti con carta offline, caricati entro 72 ore; il venditore è responsabile di quelli che scadono, vengono rifiutati o contestati"
+          },
+          "multiLocation": {
+            "label": "Più negozi / sedi",
+            "wcpos": "Sì (Pro): indirizzi, aliquote fiscali, modelli di ricevuta, prezzi e utenti autorizzati per negozio",
+            "square": "L'estensione collega una sede Square alla volta"
+          }
+        }
+      },
+      "setup": {
+        "title": "Uno o due sistemi?",
+        "square": "Con Square, le vendite di persona avvengono nell'app Square Point of Sale e quelle online in WooCommerce. L'estensione Square for WooCommerce sincronizza tra i due i dati di prodotti e scorte, ma le FAQ di WooCommerce sull'estensione precisano che i dati degli ordini di vendita non si sincronizzano: gli ordini effettuati nel POS di Square non vengono sincronizzati con WooCommerce. Le variazioni delle scorte dovute alle vendite di persona compaiono in WooCommerce al successivo controllo programmato, non istantaneamente.",
+        "wcpos": "WCPOS aggiunge una cassa a WooCommerce stesso. Vende dai vostri prodotti, prezzi e scorte WooCommerce e ogni vendita che effettua è un ordine WooCommerce, elencato accanto ai vostri ordini online. Non c'è un secondo catalogo da tenere sincronizzato."
+      },
+      "payments": {
+        "title": "Come funzionano i pagamenti con carta?",
+        "square": "Il POS di Square accetta carte tramite Square, incluso Tap to Pay su iPhone e Android. Negli Stati Uniti, con il piano Square Free, un pagamento con carta di persona (contactless, con inserimento o con strisciata) costa 2.6% + 15¢. Secondo Square, l'accettazione di pagamenti con carta tramite l'app Square è disponibile negli Stati Uniti, in Canada, Australia, Giappone, Regno Unito, Repubblica d'Irlanda, Francia e Spagna; l'estensione richiede che la valuta WooCommerce corrisponda a quella del vostro account Square.",
+        "wcpos": "WCPOS gestisce i pagamenti tramite il checkout di WooCommerce, perciò qualsiasi gateway di pagamento compatibile con WooCommerce può funzionare alla cassa. Pro aggiunge integrazioni con terminali di pagamento per Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal e Vipps MobilePay, installabili con un clic dal catalogo delle estensioni. WCPOS non supporta Tap to Pay.",
+        "both": "Avete già un Square Terminal? Il gateway Square Terminal di WCPOS Pro riscuote su di esso i pagamenti degli ordini WooCommerce direttamente dalla cassa WCPOS e registra il risultato nell'ordine. Se usate il plugin ufficiale Square for WooCommerce, il relativo ambiente e l'ID della sede vengono precompilati. Un Terminal connesso a Square POS o a un'altra integrazione deve prima disconnettersi."
+      },
+      "pricing": {
+        "title": "Quanto costa?",
+        "square": "Il POS di Square ha un piano gratuito, Square Free, a $0/month per sede. Negli Stati Uniti con Square Free, i pagamenti con carta di persona (contactless, con inserimento o con strisciata) costano 2.6% + 15¢.",
+        "wcpos": "WCPOS è gratuito, senza limiti a prodotti, ordini, clienti o vendite in contanti. Pro costa $129 — un pagamento una tantum che copre un anno di aggiornamenti e supporto prioritario — oppure $399 a vita. Non si rinnova mai automaticamente e Pro continua a funzionare alla fine dell'anno: non si spegne nulla, mai. WCPOS non applica commissioni sulle transazioni; pagate le tariffe del vostro processore di pagamento.",
+        "proAdds": "Pro aggiunge: gestione multi-negozio, integrazioni con i terminali di pagamento, coupon, rimborsi tramite l'API del POS, storico degli ordini, gestione dei clienti in cassa, prezzi specifici per negozio, modifica di scorte e prezzi, report di fine giornata e la directory delle estensioni.",
+        "demoPrefix": "Provate tutto prima su",
+        "demoLinkLabel": "demo.wcpos.com/pos",
+        "demoSuffix": "(accesso demo / demo)."
+      },
+      "limits": {
+        "title": "Cosa non fa Square for WooCommerce",
+        "intro": "Come verificato il 2026-10-06, la documentazione WooCommerce relativa all'estensione Square for WooCommerce indica questi limiti:",
+        "orders": "Gli ordini effettuati nel POS di Square non vengono sincronizzati con WooCommerce; si sincronizzano solo i dati di prodotti e scorte.",
+        "delay": "Le variazioni delle scorte dovute alle vendite di persona compaiono in WooCommerce al successivo controllo programmato, non istantaneamente. L'intervallo di sincronizzazione predefinito è un'ora.",
+        "location": "Si può collegare una sola sede Square alla volta.",
+        "countries": "Square è disponibile negli Stati Uniti, in Canada, Australia, Giappone, Regno Unito, Francia, Spagna e Irlanda, e la vostra valuta WooCommerce deve corrispondere a quella del vostro account Square.",
+        "sku": "Ogni prodotto deve avere uno SKU.",
+        "variations": "La sincronizzazione dei prodotti da Square a WooCommerce consente al massimo 250 varianti e 6 attributi per prodotto.",
+        "outro": "Ricontrolliamo questo elenco ogni trimestre."
+      },
+      "squareBetter": {
+        "title": "Dove Square è davvero migliore",
+        "intro": "Un confronto onesto considera entrambi i lati:",
+        "free": "Il POS di Square offre un piano gratuito, Square Free ($0/month per sede). WCPOS Pro costa $129 o più.",
+        "tapToPay": "Tap to Pay su iPhone e Android: un cliente può avvicinare la carta al vostro telefono. WCPOS non supporta Tap to Pay.",
+        "offline": "Pagamenti con carta offline: il POS di Square continua ad accettare carte senza Internet, purché vi riconnettiate e carichiate i pagamenti entro 72 ore; siete responsabili di quelli che scadono, vengono rifiutati o contestati. WCPOS vi permette di consultare i prodotti e creare carrelli offline, ma per completare il pagamento serve una connessione.",
+        "hardware": "L'hardware di Square: Square Register include Square Point of Sale, quindi il registratore di cassa e il suo software provengono dalla stessa azienda. WCPOS non vende hardware; funziona sui computer, tablet e telefoni che avete già.",
+        "outro": "Se vendete di persona da dispositivi iOS o Android o Square Register in una sola sede, accettate pagamenti tramite Square e non avete bisogno che le vendite di persona diventino ordini WooCommerce, il POS di Square con l'estensione potrebbe essere sufficiente."
+      },
+      "choose": {
+        "title": "Quale scegliere?",
+        "wcpos": {
+          "title": "Scegliete WCPOS se:",
+          "body": "Volete che ogni vendita, online e di persona, sia un ordine WooCommerce proveniente da un unico catalogo senza nulla da sincronizzare, gestite più di un negozio, vendete fuori dagli otto Paesi di Square, volete una cassa in un browser web o nelle app desktop per Windows e macOS oppure volete usare un gateway di pagamento o un terminale di pagamento diverso da Square."
+        },
+        "square": {
+          "title": "Scegliete Square for WooCommerce se:",
+          "body": "Vendete di persona da dispositivi iOS o Android o Square Register in uno degli otto Paesi di Square, volete Tap to Pay o pagamenti con carta offline, vendete da una sola sede e non avete bisogno che le vendite di persona compaiano come ordini WooCommerce."
+        }
+      },
+      "faq": {
+        "title": "Domande frequenti",
+        "orders": {
+          "question": "Le vendite di Square POS compaiono come ordini WooCommerce?",
+          "answer": "No. Le FAQ di WooCommerce sull'estensione Square for WooCommerce indicano che i dati di prodotti e scorte si sincronizzano, ma i dati degli ordini di vendita no: gli ordini effettuati nel POS di Square non vengono sincronizzati con WooCommerce. Le variazioni delle scorte dovute alle vendite di persona compaiono in WooCommerce al successivo controllo programmato. Ogni vendita effettuata in WCPOS è un ordine WooCommerce."
+        },
+        "free": {
+          "question": "Square POS è gratuito?",
+          "answer": "Square ha un piano gratuito, Square Free, a $0/month per sede, e ai pagamenti con carta si applicano le commissioni di elaborazione di Square: negli Stati Uniti con Square Free, 2.6% + 15¢ per pagamenti contactless, con inserimento o con strisciata. Anche il plugin gratuito di WCPOS è gratuito, senza limiti, e funziona con qualsiasi gateway di pagamento WooCommerce."
+        },
+        "terminal": {
+          "question": "Posso usare Square Terminal con WCPOS?",
+          "answer": "Sì, con WCPOS Pro. Il suo gateway Square Terminal incassa i pagamenti degli ordini WooCommerce sull'hardware Square Terminal direttamente da WCPOS e registra il risultato nell'ordine. Se usate già il plugin ufficiale Square for WooCommerce, il relativo ambiente e l'ID della sede vengono precompilati. Un Terminal connesso a Square POS o a un'altra integrazione deve prima disconnettersi."
+        },
+        "offline": {
+          "question": "Square POS funziona offline?",
+          "answer": "Il POS di Square può accettare pagamenti con carta offline. Dovete riconnettervi e caricarli entro 72 ore dall'inizio della sessione offline e siete responsabili di qualsiasi pagamento offline scaduto, rifiutato o contestato. EBT/SNAP, Afterpay, Cash App Pay, Square Gift Cards, Tap to Pay su iPhone e Android e i numeri di carta inseriti manualmente non sono disponibili offline. WCPOS memorizza localmente prodotti, clienti e carrelli, quindi potete consultare il catalogo e preparare vendite senza connessione; per completare il pagamento serve una connessione al server."
+        },
+        "locations": {
+          "question": "Square for WooCommerce può sincronizzare più di una sede?",
+          "answer": "No. La documentazione di WooCommerce indica che si può collegare una sola sede alla volta; con più sedi Square, si sincronizzano solo i prodotti e le scorte associati alla sede selezionata. WCPOS Pro gestisce più negozi, con indirizzi, aliquote fiscali, modelli di ricevuta, prezzi e utenti autorizzati per ciascun negozio."
+        },
+        "expiry": {
+          "question": "Cosa succede quando una licenza WCPOS Pro scade?",
+          "answer": "Non si spegne nulla. La versione Pro che avete continua a funzionare per tutto il tempo che volete — la cassa, i dati, ogni funzionalità. Smettete solo di ricevere nuovi aggiornamenti e supporto prioritario finché non decidete di rinnovare. È una scelta deliberata: significa che i rinnovi devono essere guadagnati con aggiornamenti che valgano la spesa, e garantisce che il vostro punto cassa non possa mai essere disattivato da remoto."
+        }
+      },
+      "footer": {
+        "factsDated": "Dati su Square verificati il 2026-10-06 sulle pagine di Square (pagina delle commissioni, annuncio sui prezzi e articoli di assistenza relativi a pagamenti offline, Tap to Pay, dispositivi e disponibilità internazionale) e nella documentazione WooCommerce relativa all'estensione Square for WooCommerce; dati su WCPOS da wcpos.com e docs.wcpos.com. Li ricontrolliamo ogni trimestre.",
         "corrections": "Avete trovato un errore? Scrivete a support@wcpos.com — correggiamo rapidamente e registriamo ogni modifica."
       }
     }

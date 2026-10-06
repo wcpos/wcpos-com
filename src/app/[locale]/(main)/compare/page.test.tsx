@@ -18,6 +18,9 @@ vi.mock('next-intl/server', () => ({
       'hub.woocommerceCard.description':
         'Translated WooCommerce card description',
       'hub.woocommerceCard.cta': 'Translated WooCommerce card CTA',
+      'hub.squareCard.title': 'Translated Square card title',
+      'hub.squareCard.description': 'Translated Square card description',
+      'hub.squareCard.cta': 'Translated Square card CTA',
       'hub.moreSoon': 'Translated more soon',
       'disclosure.title': 'Translated disclosure title',
       'disclosure.body': 'Translated disclosure body',
@@ -42,7 +45,7 @@ vi.mock('@/i18n/navigation', () => ({
 const params = Promise.resolve({ locale: 'en' })
 
 describe('ComparePage', () => {
-  it('renders the hero, disclosure, and both comparison links', async () => {
+  it('renders the hero, disclosure, and all comparison links', async () => {
     render(await ComparePage({ params }))
 
     expect(
@@ -58,15 +61,18 @@ describe('ComparePage', () => {
     expect(
       screen.getByRole('link', { name: /Translated WooCommerce card CTA/ })
     ).toHaveAttribute('href', '/compare/woocommerce-pos')
+    expect(
+      screen.getByRole('link', { name: /Translated Square card CTA/ })
+    ).toHaveAttribute('href', '/compare/square')
   })
 
-  it('emits ItemList JSON-LD naming both comparisons', async () => {
+  it('emits ItemList JSON-LD naming all comparisons', async () => {
     const { container } = render(await ComparePage({ params }))
     const script = container.querySelector('script[type="application/ld+json"]')
     expect(script).not.toBeNull()
     const jsonLd = JSON.parse(script!.innerHTML)
     expect(jsonLd['@type']).toBe('ItemList')
-    expect(jsonLd.itemListElement).toHaveLength(2)
+    expect(jsonLd.itemListElement).toHaveLength(3)
     expect(jsonLd.itemListElement[0].url).toBe(
       'https://wcpos.com/compare/oliver-pos'
     )
@@ -74,6 +80,10 @@ describe('ComparePage', () => {
       'https://wcpos.com/compare/woocommerce-pos'
     )
     expect(jsonLd.itemListElement[1].position).toBe(2)
+    expect(jsonLd.itemListElement[2].url).toBe(
+      'https://wcpos.com/compare/square'
+    )
+    expect(jsonLd.itemListElement[2].position).toBe(3)
   })
 
   it('builds metadata from translated strings', async () => {

@@ -43,6 +43,11 @@ const cards = [
     title: "WCPOS vs WooCommerce's Official POS",
     line: 'Countries, devices, card payments, pricing and offline support, compared.',
   },
+  {
+    slug: 'compare-square',
+    title: 'WCPOS vs Square for WooCommerce',
+    line: 'Orders, syncing, locations, payments and offline support, compared.',
+  },
 ]
 
 const outputDirectory = new URL('../../public/og/', import.meta.url)
