@@ -8,9 +8,13 @@ import { SectionHeading } from '@/components/ui/section-heading'
 import { TextLink } from '@/components/ui/text-link'
 import { localeUrl, marketingMetadata } from '@/lib/seo'
 import type { Metadata } from 'next'
-import type { Locale } from '@/i18n/config'
 
 const COMPARE_NAMESPACE = 'compare'
+
+const COMPARISONS = [
+  { key: 'oliverCard', href: '/compare/oliver-pos' },
+  { key: 'woocommerceCard', href: '/compare/woocommerce-pos' },
+] as const
 
 export async function generateMetadata({
   params,
@@ -28,13 +32,11 @@ export async function generateMetadata({
 }
 
 function CompareHubJsonLd({
-  locale,
   name,
-  itemName,
+  items,
 }: {
-  locale: Locale
   name: string
-  itemName: string
+  items: { name: string; url: string }[]
 }) {
   return (
     <script
@@ -44,14 +46,12 @@ function CompareHubJsonLd({
           '@context': 'https://schema.org',
           '@type': 'ItemList',
           name,
-          itemListElement: [
-            {
-              '@type': 'ListItem',
-              position: 1,
-              name: itemName,
-              url: localeUrl(locale, '/compare/oliver-pos'),
-            },
-          ],
+          itemListElement: items.map(({ name, url }, index) => ({
+            '@type': 'ListItem',
+            position: index + 1,
+            name,
+            url,
+          })),
         }),
       }}
     />
@@ -70,9 +70,11 @@ export default async function ComparePage({
   return (
     <main>
       <CompareHubJsonLd
-        locale={locale}
         name={t('hub.metadata.title')}
-        itemName={t('hub.oliverCard.title')}
+        items={COMPARISONS.map(({ key, href }) => ({
+          name: t(`hub.${key}.title`),
+          url: localeUrl(locale, href),
+        }))}
       />
 
       <Section tone="default" spacing="hero">
@@ -96,23 +98,25 @@ export default async function ComparePage({
 
       <Section tone="muted" spacing="default" containerClassName="max-w-3xl">
         <div className="space-y-6">
-          <Card elevated className="p-6">
-            <h2 className="mb-2 text-xl font-semibold">
-              {t('hub.oliverCard.title')}
-            </h2>
-            <p className="mb-4 text-muted-foreground">
-              {t('hub.oliverCard.description')}
-            </p>
-            <TextLink asChild>
-              <Link
-                href="/compare/oliver-pos"
-                className="inline-flex items-center gap-1 font-medium"
-              >
-                {t('hub.oliverCard.cta')}
-                <ArrowRight className="h-4 w-4" aria-hidden />
-              </Link>
-            </TextLink>
-          </Card>
+          {COMPARISONS.map(({ key, href }) => (
+            <Card key={key} elevated className="p-6">
+              <h2 className="mb-2 text-xl font-semibold">
+                {t(`hub.${key}.title`)}
+              </h2>
+              <p className="mb-4 text-muted-foreground">
+                {t(`hub.${key}.description`)}
+              </p>
+              <TextLink asChild>
+                <Link
+                  href={href}
+                  className="inline-flex items-center gap-1 font-medium"
+                >
+                  {t(`hub.${key}.cta`)}
+                  <ArrowRight className="h-4 w-4" aria-hidden />
+                </Link>
+              </TextLink>
+            </Card>
+          ))}
           <p className="text-sm text-muted-foreground">{t('hub.moreSoon')}</p>
         </div>
       </Section>

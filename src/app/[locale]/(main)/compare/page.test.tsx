@@ -14,6 +14,10 @@ vi.mock('next-intl/server', () => ({
       'hub.oliverCard.title': 'Translated Oliver card title',
       'hub.oliverCard.description': 'Translated Oliver card description',
       'hub.oliverCard.cta': 'Translated Oliver card CTA',
+      'hub.woocommerceCard.title': 'Translated WooCommerce card title',
+      'hub.woocommerceCard.description':
+        'Translated WooCommerce card description',
+      'hub.woocommerceCard.cta': 'Translated WooCommerce card CTA',
       'hub.moreSoon': 'Translated more soon',
       'disclosure.title': 'Translated disclosure title',
       'disclosure.body': 'Translated disclosure body',
@@ -38,7 +42,7 @@ vi.mock('@/i18n/navigation', () => ({
 const params = Promise.resolve({ locale: 'en' })
 
 describe('ComparePage', () => {
-  it('renders the hero, disclosure, and the Oliver comparison link', async () => {
+  it('renders the hero, disclosure, and both comparison links', async () => {
     render(await ComparePage({ params }))
 
     expect(
@@ -51,17 +55,25 @@ describe('ComparePage', () => {
     expect(
       screen.getByRole('link', { name: /Translated Oliver card CTA/ })
     ).toHaveAttribute('href', '/compare/oliver-pos')
+    expect(
+      screen.getByRole('link', { name: /Translated WooCommerce card CTA/ })
+    ).toHaveAttribute('href', '/compare/woocommerce-pos')
   })
 
-  it('emits ItemList JSON-LD naming the Oliver comparison', async () => {
+  it('emits ItemList JSON-LD naming both comparisons', async () => {
     const { container } = render(await ComparePage({ params }))
     const script = container.querySelector('script[type="application/ld+json"]')
     expect(script).not.toBeNull()
     const jsonLd = JSON.parse(script!.innerHTML)
     expect(jsonLd['@type']).toBe('ItemList')
+    expect(jsonLd.itemListElement).toHaveLength(2)
     expect(jsonLd.itemListElement[0].url).toBe(
       'https://wcpos.com/compare/oliver-pos'
     )
+    expect(jsonLd.itemListElement[1].url).toBe(
+      'https://wcpos.com/compare/woocommerce-pos'
+    )
+    expect(jsonLd.itemListElement[1].position).toBe(2)
   })
 
   it('builds metadata from translated strings', async () => {
