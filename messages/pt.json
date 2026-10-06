@@ -2083,11 +2083,11 @@
       "shortAnswer": {
         "title": "A resposta curta",
         "wcpos": "O WCPOS funciona em qualquer navegador moderno, como aplicações de computador para Windows e macOS e como aplicações iOS e Android (beta), com qualquer gateway de pagamento do WooCommerce. É offline-first, a versão gratuita não tem limites de produtos, encomendas ou clientes, e o Pro acrescenta gestão de várias lojas e integrações com terminais de pagamento mediante um pagamento único, sem nunca desativar as funcionalidades.",
-        "woocommerce": "O POS oficial do WooCommerce está na aplicação móvel do WooCommerce («WooCommerce: Store & POS»). É gratuito, criado pelo próprio WooCommerce e aceita pagamentos com cartão através do WooPayments — incluindo Tap to Pay no iPhone e Android, sem ter de comprar um leitor de cartões. Mas funciona apenas em tablets, apenas nos EUA e no Reino Unido, vende apenas produtos simples e variáveis e não tem modo offline, suporte para várias localizações nem gateways de pagamento personalizados."
+        "woocommerce": "O POS oficial do WooCommerce está na aplicação móvel do WooCommerce (“WooCommerce: Store & POS”). O software POS é gratuito, criado pelo próprio WooCommerce e aceita dinheiro, além de cartões através do WooPayments ou Stripe com um leitor de cartões Bluetooth. Foi concebido para tablets, está disponível para lojas em dez países, não vende subscrições nem produtos descarregáveis, não tem modo offline e ainda não suporta várias localizações."
       },
       "glance": {
         "title": "Num relance",
-        "caption": "Factos sobre o POS do WooCommerce em abril de 2026; factos sobre o WCPOS de wcpos.com/pro.",
+        "caption": "Factos sobre o POS do WooCommerce verificados em 2026-10-06 em woocommerce.com; factos sobre o WCPOS de wcpos.com/pro.",
         "colWcpos": "WCPOS",
         "colWoocommerce": "POS do WooCommerce (oficial)",
         "rows": {
@@ -2099,78 +2099,63 @@
           "devices": {
             "label": "Dispositivos",
             "wcpos": "Web, aplicações de computador (Windows e macOS), aplicações iOS e Android (beta); dispositivos e operadores de caixa ilimitados",
-            "woocommerce": "Apenas tablets — iPad e tablets Android"
+            "woocommerce": "Concebido para tablets — iPad e tablets Android"
           },
           "countries": {
             "label": "Países",
             "wcpos": "Sem restrições por país",
-            "woocommerce": "Apenas EUA e Reino Unido"
+            "woocommerce": "10 países: Austrália, Canadá, Finlândia, Irlanda, Luxemburgo, Países Baixos, Nova Zelândia, Singapura, Reino Unido, Estados Unidos"
           },
           "price": {
             "label": "Preço",
             "wcpos": "Plugin gratuito sem limites; o Pro custa $129 por um ano de atualizações ou $399 vitalício — pagamentos únicos, sem renovação automática",
-            "woocommerce": "Gratuito"
+            "woocommerce": "Software POS gratuito; os leitores de cartões custam $5.00 / £5.00 por leitor ativo por mês"
           },
           "cardPayments": {
             "label": "Pagamentos com cartão",
             "wcpos": "Integrações de terminais Pro: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Vipps MobilePay",
-            "woocommerce": "WooPayments, com leitor de cartões ou Tap to Pay no iPhone e Android"
+            "woocommerce": "WooPayments ou Stripe, com um leitor de cartões Bluetooth"
           },
           "gateways": {
             "label": "Gateways de pagamento",
             "wcpos": "Qualquer gateway de pagamento do WooCommerce",
-            "woocommerce": "Dinheiro e WooPayments; sem gateways de pagamento personalizados"
+            "woocommerce": "Dinheiro, além de WooPayments ou Stripe para cartões"
           },
           "fees": {
             "label": "Taxas de cartão",
             "wcpos": "Sem taxas cobradas pelo WCPOS — aplicam-se as tarifas do seu processador de pagamentos",
-            "woocommerce": "Tarifa presencial do WooPayments para cartões: 2.6% + $0.10"
-          },
-          "tapToPay": {
-            "label": "Tap to Pay (sem leitor de cartões)",
-            "wcpos": "Não",
-            "woocommerce": "Sim — iPhone e Android"
+            "woocommerce": "Tarifa presencial do WooPayments — nos Estados Unidos, 2.70% + $0.10 (online: 2.90% + $0.30)"
           },
           "offline": {
             "label": "Offline",
             "wcpos": "Offline-first: consulte produtos e prepare carrinhos sem ligação; concluir a venda exige ligação",
-            "woocommerce": "Sem modo offline"
+            "woocommerce": "Sem modo offline — requer uma ligação ativa à Internet"
           },
           "multiLocation": {
             "label": "Várias lojas / localizações",
             "wcpos": "Sim (Pro): moradas, taxas de imposto, modelos de recibo, preços e utilizadores autorizados por loja",
-            "woocommerce": "Não suportado"
+            "woocommerce": "Ainda não — o WooCommerce inclui-o entre as funcionalidades que ainda estão por lançar"
           },
           "barcode": {
             "label": "Leitura de códigos de barras",
             "wcpos": "Sim",
             "woocommerce": "Sim"
-          },
-          "reporting": {
-            "label": "Relatórios",
-            "wcpos": "Relatórios de fecho do dia (Pro)",
-            "woocommerce": "Sem relatórios avançados"
-          },
-          "display": {
-            "label": "Ecrã virado para o cliente",
-            "wcpos": "Não",
-            "woocommerce": "Não"
           }
         }
       },
       "devices": {
         "title": "Onde pode utilizá-lo?",
-        "woocommerce": "O POS do WooCommerce é um modo da aplicação móvel do WooCommerce. Funciona apenas em iPad e tablets Android — não em telemóveis, nem em computadores, nem num navegador — e só está disponível para lojas nos EUA e no Reino Unido.",
+        "woocommerce": "O POS do WooCommerce é um modo da aplicação móvel do WooCommerce. O WooCommerce descreve-o como concebido para tablets — iPad e tablets Android — e está disponível para lojas em dez países: Austrália, Canadá, Finlândia, Irlanda, Luxemburgo, Países Baixos, Nova Zelândia, Singapura, Reino Unido e Estados Unidos.",
         "wcpos": "O WCPOS funciona em qualquer navegador moderno, como aplicações de computador para Windows e macOS e como aplicações iOS e Android (beta), com dispositivos e operadores de caixa ilimitados por licença. Utilize o computador que já tem ao balcão, um tablet ou ambos."
       },
       "payments": {
         "title": "Como funcionam os pagamentos com cartão?",
-        "woocommerce": "O POS do WooCommerce aceita dinheiro e cartões através do WooPayments — com um leitor de cartões WooPayments ou com Tap to Pay no iPhone e Android, em que o cliente aproxima o cartão do próprio dispositivo e não é preciso comprar um leitor. A tarifa presencial do WooPayments para cartões é de 2.6% + $0.10, inferior à sua tarifa online. Não são suportados outros gateways de pagamento.",
+        "woocommerce": "O POS do WooCommerce aceita dinheiro e cartões através do WooPayments ou Stripe com um leitor de cartões Bluetooth ligado ao tablet. Com o WooPayments, os pagamentos presenciais com cartão custam menos do que os online: nos Estados Unidos, 2.70% + $0.10 contra 2.90% + $0.30 online. Um leitor de cartões custa $5.00 / £5.00 por leitor ativo por mês.",
         "wcpos": "O WCPOS processa pagamentos através do checkout do próprio WooCommerce, pelo que qualquer gateway de pagamento compatível com WooCommerce pode funcionar na caixa. O Pro acrescenta integrações com terminais de pagamento para Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal e Vipps MobilePay, instaláveis com um clique a partir do catálogo de extensões. O WCPOS não suporta Tap to Pay nem pagamentos presenciais WooPayments."
       },
       "pricing": {
         "title": "Quanto custa?",
-        "woocommerce": "O POS do WooCommerce é gratuito: sem licença e sem subscrição. O WooCommerce recebe pelo processamento de cartões — os pagamentos presenciais com cartão passam pelo WooPayments à sua tarifa presencial.",
+        "woocommerce": "O software POS do WooCommerce é gratuito e está incluído na aplicação móvel do WooCommerce. Se utilizar um leitor de cartões, existe uma taxa de $5.00 / £5.00 por leitor ativo por mês, e aos pagamentos com cartão aplica-se a tarifa presencial do seu prestador de pagamentos.",
         "wcpos": "O WCPOS é gratuito, sem limites de produtos, encomendas, clientes ou vendas a dinheiro. O Pro custa $129 — um pagamento único que cobre um ano de atualizações e suporte prioritário — ou $399 vitalício. Nunca se renova automaticamente e o Pro continua a funcionar depois do fim do ano: nada se desliga, nunca. O WCPOS não cobra taxas de transação; paga as tarifas do seu processador de pagamentos.",
         "proAdds": "O Pro acrescenta: gestão de várias lojas, integrações com terminais de pagamento, cupões, reembolsos através da API do POS, histórico de encomendas, gestão de clientes na caixa, preços específicos por loja, edição de stock e preços, relatórios de fecho do dia e o diretório de extensões.",
         "demoPrefix": "Experimente tudo primeiro em",
@@ -2179,58 +2164,55 @@
       },
       "limits": {
         "title": "O que o POS do WooCommerce (ainda) não faz",
-        "intro": "Em abril de 2026, o POS do WooCommerce é deliberadamente limitado:",
-        "tablets": "Apenas tablets: iPad e tablets Android.",
-        "countries": "Apenas lojas nos EUA e no Reino Unido.",
-        "products": "Apenas produtos simples e variáveis.",
-        "offline": "Sem modo offline.",
-        "multiLocation": "Sem suporte para várias localizações.",
-        "gateways": "Sem gateways de pagamento personalizados — os pagamentos com cartão passam pelo WooPayments.",
-        "display": "Sem ecrã virado para o cliente.",
-        "reporting": "Sem relatórios avançados.",
-        "outro": "O WooCommerce tem acrescentado funcionalidades POS de forma constante ao núcleo do WooCommerce, por isso é de esperar que esta lista diminua — voltamos a verificá-la todos os trimestres."
+        "intro": "Conforme verificado em 2026-10-06, o POS do WooCommerce tem estas limitações:",
+        "tablets": "Concebido para tablets: iPad e tablets Android.",
+        "countries": "Apenas lojas em dez países: Austrália, Canadá, Finlândia, Irlanda, Luxemburgo, Países Baixos, Nova Zelândia, Singapura, Reino Unido e Estados Unidos.",
+        "products": "Sem subscrições nem produtos descarregáveis.",
+        "offline": "Sem modo offline: requer uma ligação ativa à Internet.",
+        "multiLocation": "Ainda não suporta várias localizações.",
+        "gateways": "Os pagamentos com cartão requerem WooPayments ou Stripe.",
+        "outro": "O WooCommerce continua a acrescentar funcionalidades POS ao núcleo do WooCommerce, por isso é de esperar que esta lista diminua — voltamos a verificá-la todos os trimestres."
       },
       "woocommerceBetter": {
         "title": "Onde o POS do WooCommerce é genuinamente melhor",
         "intro": "Uma comparação honesta considera os dois lados:",
-        "price": "É gratuito, sem qualquer licença — o WCPOS Pro custa $129 ou mais.",
+        "price": "O seu software POS é gratuito, sem qualquer licença — o WCPOS Pro custa $129 ou mais.",
         "official": "É criado pelo próprio WooCommerce, dentro da aplicação móvel do WooCommerce que talvez já utilize para gerir a sua loja.",
-        "tapToPay": "Tap to Pay no iPhone e Android — aceite cartões sem qualquer leitor. O WCPOS não suporta Tap to Pay.",
-        "wooPayments": "Pagamentos presenciais nativos WooPayments, a uma tarifa presencial para cartões (2.6% + $0.10) inferior à tarifa online do WooPayments. O WCPOS não tem integração WooPayments para pagamentos presenciais.",
-        "outro": "Se vende nos EUA ou no Reino Unido a partir de um tablet, aceita cartões através do WooPayments, vende apenas produtos simples e variáveis e não precisa de um modo offline nem de várias localizações, o POS do WooCommerce é gratuito e pode ser tudo o que precisa."
+        "wooPayments": "Pagamentos presenciais nativos WooPayments, a uma tarifa inferior à do WooPayments online (nos Estados Unidos, 2.70% + $0.10 contra 2.90% + $0.30). O WCPOS não tem integração WooPayments para pagamentos presenciais.",
+        "outro": "Se a sua loja está num dos seus dez países, vende a partir de um tablet, aceita cartões através do WooPayments ou Stripe e não precisa de um modo offline, de várias localizações nem de vender subscrições e produtos descarregáveis na caixa, o POS do WooCommerce é software gratuito e pode ser tudo o que precisa."
       },
       "choose": {
         "title": "Qual deve escolher?",
         "wcpos": {
           "title": "Escolha o WCPOS se:",
-          "body": "Vende fora dos EUA e do Reino Unido, quer vender a partir de um computador ou navegador, quer consultar produtos e montar carrinhos offline, gere mais de uma loja, usa um gateway de pagamento diferente do WooPayments ou quer terminais de pagamento da Stripe, SumUp, PayPal, Square, Mollie ou Vipps MobilePay."
+          "body": "A sua loja está fora dos dez países suportados pelo POS do WooCommerce, quer uma caixa num navegador Web ou em aplicações de computador para Windows e macOS, quer consultar produtos e montar carrinhos offline, gere mais de uma loja, usa um gateway de pagamento diferente do WooPayments ou Stripe, ou quer terminais de pagamento da SumUp, PayPal, Square, Mollie ou Vipps MobilePay."
         },
         "woocommerce": {
           "title": "Escolha o POS do WooCommerce se:",
-          "body": "Vende nos EUA ou no Reino Unido a partir de um iPad ou tablet Android, aceita cartões através do WooPayments — especialmente com Tap to Pay — e não precisa de um modo offline, de várias localizações nem de outros gateways de pagamento."
+          "body": "A sua loja está num dos seus dez países, vende a partir de um iPad ou tablet Android, aceita cartões através do WooPayments ou Stripe e não precisa de um modo offline, de várias localizações nem de outros gateways de pagamento."
         }
       },
       "faq": {
         "title": "Perguntas frequentes",
         "free": {
           "question": "O POS oficial do WooCommerce é gratuito?",
-          "answer": "Sim. O POS faz parte da aplicação móvel gratuita do WooCommerce e os pagamentos com cartão passam pelo WooPayments à sua tarifa presencial de 2.6% + $0.10. O plugin gratuito do WCPOS também é gratuito, sem limites, e funciona com qualquer gateway de pagamento do WooCommerce."
+          "answer": "Sim, o software POS é gratuito e está incluído na aplicação móvel do WooCommerce. Se utilizar um leitor de cartões, existe uma taxa de $5.00 / £5.00 por leitor ativo por mês, e aos pagamentos com cartão aplica-se a tarifa presencial do seu prestador de pagamentos. O plugin gratuito do WCPOS também é gratuito, sem limites, e funciona com qualquer gateway de pagamento do WooCommerce."
         },
         "countries": {
           "question": "Que países são suportados pelo POS do WooCommerce?",
-          "answer": "Em abril de 2026, apenas os EUA e o Reino Unido. O WCPOS não tem restrições por país."
+          "answer": "Em 2026-10-06, lojas em dez países: Austrália, Canadá, Finlândia, Irlanda, Luxemburgo, Países Baixos, Nova Zelândia, Singapura, Reino Unido e Estados Unidos. O WCPOS não tem restrições por país."
         },
         "offline": {
           "question": "O POS do WooCommerce funciona offline?",
-          "answer": "Não — em abril de 2026 não tem modo offline. O WCPOS é offline-first: produtos, clientes e carrinhos são guardados localmente, pelo que pode consultar o catálogo e preparar vendas sem ligação, e tudo se sincroniza quando esta regressa. Concluir a venda e validar cupões exigem ligação ao servidor."
+          "answer": "Não. O WooCommerce diz que o seu POS precisa de uma ligação ativa à Internet para sincronizar produtos, criar encomendas e processar pagamentos. O WCPOS é offline-first: produtos, clientes e carrinhos são guardados localmente, pelo que pode consultar o catálogo e preparar vendas sem ligação, e tudo se sincroniza quando esta regressa. Concluir a venda e validar cupões exigem ligação ao servidor."
         },
         "devices": {
-          "question": "Posso usar o POS do WooCommerce num telemóvel ou computador?",
-          "answer": "Não — funciona apenas em iPad e tablets Android. O WCPOS funciona em qualquer navegador moderno, como aplicações de computador para Windows e macOS e como aplicações iOS e Android (beta)."
+          "question": "Em que dispositivos funciona o POS do WooCommerce?",
+          "answer": "O WooCommerce descreve o seu POS como concebido para tablets — iPad e tablets Android — dentro da aplicação móvel do WooCommerce. O WCPOS funciona em qualquer navegador moderno, como aplicações de computador para Windows e macOS e como aplicações iOS e Android (beta)."
         },
         "tapToPay": {
           "question": "O WCPOS suporta Tap to Pay?",
-          "answer": "Não. O WCPOS não suporta Tap to Pay nem pagamentos presenciais WooPayments. Os pagamentos com cartão na caixa WCPOS passam pelas suas integrações com terminais — Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal e Vipps MobilePay — ou por um gateway de pagamento WooCommerce que funcione no checkout. Se Tap to Pay for indispensável, o POS do WooCommerce oferece-o."
+          "answer": "Não. O WCPOS não suporta Tap to Pay nem pagamentos presenciais WooPayments. Os pagamentos com cartão na caixa WCPOS passam pelas suas integrações com terminais — Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal e Vipps MobilePay — ou por um gateway de pagamento WooCommerce que funcione no checkout."
         },
         "expiry": {
           "question": "O que acontece quando uma licença WCPOS Pro expira?",
@@ -2238,7 +2220,7 @@
         }
       },
       "footer": {
-        "factsDated": "Os factos sobre o POS do WooCommerce refletem o seu estado em abril de 2026; os factos sobre o WCPOS vêm de wcpos.com. Voltamos a verificá-los todos os trimestres.",
+        "factsDated": "Factos sobre o POS do WooCommerce verificados em 2026-10-06 nas páginas do próprio WooCommerce (a documentação do POS, a página do POS e a página de taxas do WooPayments); os factos sobre o WCPOS vêm de wcpos.com. Voltamos a verificá-los todos os trimestres.",
         "corrections": "Encontrou um erro? Envie um email para support@wcpos.com — corrigimos depressa e registamos todas as alterações."
       }
     }

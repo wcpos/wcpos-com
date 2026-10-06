@@ -2083,11 +2083,11 @@
       "shortAnswer": {
         "title": "結論を先に",
         "wcpos": "WCPOSはあらゆるモダンブラウザ、WindowsとmacOSのデスクトップアプリ、iOSとAndroidのアプリ（ベータ版）で動作し、任意のWooCommerce決済ゲートウェイを利用できます。オフラインファーストで、無料版には商品・注文・顧客数の上限がありません。Proは買い切り価格で複数店舗管理とカード端末連携を追加し、期限が切れても機能は停止しません。",
-        "woocommerce": "WooCommerce公式POSはWooCommerceのモバイルアプリ（「WooCommerce: Store & POS」）内にあります。WooCommerce自身が開発した無料のPOSで、WooPaymentsを通じてカード決済を受け付けます。iPhoneとAndroidのTap to Payにも対応し、カードリーダーを買う必要がありません。ただし、利用できるのは米国と英国の店舗のタブレットのみで、販売できるのはシンプル商品とバリエーション商品のみです。オフラインモード、複数拠点対応、カスタム決済ゲートウェイはありません。"
+        "woocommerce": "WooCommerce公式POSはWooCommerceのモバイルアプリ（“WooCommerce: Store & POS”）内にあります。POSソフトウェアは無料で、WooCommerce自身が開発し、現金のほか、Bluetoothカードリーダーを使ってWooPaymentsまたはStripe経由のカード決済を受け付けます。タブレット向けに設計され、10か国の店舗で利用できます。サブスクリプション商品やダウンロード商品は販売できず、オフラインモードはなく、複数拠点にはまだ対応していません。"
       },
       "glance": {
         "title": "ひと目でわかる比較",
-        "caption": "WooCommerce POSの情報は2026年4月時点、WCPOSの情報はwcpos.com/proに基づきます。",
+        "caption": "WooCommerce POSの情報は2026-10-06にwoocommerce.comで確認済みです。WCPOSの情報はwcpos.com/proに基づきます。",
         "colWcpos": "WCPOS",
         "colWoocommerce": "WooCommerce POS（公式）",
         "rows": {
@@ -2099,78 +2099,63 @@
           "devices": {
             "label": "デバイス",
             "wcpos": "Web、デスクトップアプリ（WindowsとmacOS）、iOSとAndroidのアプリ（ベータ版）。デバイスとレジ係は無制限",
-            "woocommerce": "タブレットのみ — iPadとAndroidタブレット"
+            "woocommerce": "タブレット向けに設計 — iPadとAndroidタブレット"
           },
           "countries": {
             "label": "国",
             "wcpos": "国による制限なし",
-            "woocommerce": "米国と英国のみ"
+            "woocommerce": "10か国：オーストラリア、カナダ、フィンランド、アイルランド、ルクセンブルク、オランダ、ニュージーランド、シンガポール、英国、米国"
           },
           "price": {
             "label": "価格",
             "wcpos": "無料プラグインに上限なし。Proは1年間のアップデート付きで$129、または生涯版が$399 — 買い切りで自動更新なし",
-            "woocommerce": "無料"
+            "woocommerce": "POSソフトウェアは無料。カードリーダーは稼働中のリーダー1台につき月額$5.00 / £5.00"
           },
           "cardPayments": {
             "label": "カード決済",
             "wcpos": "Proの端末連携：Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Vipps MobilePay",
-            "woocommerce": "WooPayments、カードリーダーまたはiPhoneとAndroidのTap to Payに対応"
+            "woocommerce": "WooPaymentsまたはStripe、Bluetoothカードリーダーを使用"
           },
           "gateways": {
             "label": "決済ゲートウェイ",
             "wcpos": "任意のWooCommerce決済ゲートウェイ",
-            "woocommerce": "現金とWooPayments。カスタム決済ゲートウェイには非対応"
+            "woocommerce": "現金のほか、カード決済にはWooPaymentsまたはStripe"
           },
           "fees": {
             "label": "カード手数料",
             "wcpos": "WCPOSからの手数料なし — 利用する決済プロセッサーの料金が適用",
-            "woocommerce": "WooPaymentsの対面カード決済手数料：2.6% + $0.10"
-          },
-          "tapToPay": {
-            "label": "Tap to Pay（カードリーダー不要）",
-            "wcpos": "いいえ",
-            "woocommerce": "はい — iPhoneとAndroid"
+            "woocommerce": "WooPaymentsの対面決済手数料 — 米国では2.70% + $0.10（オンライン：2.90% + $0.30）"
           },
           "offline": {
             "label": "オフライン",
             "wcpos": "オフラインファースト：オフラインで商品を閲覧しカートを作成可能。会計には接続が必要",
-            "woocommerce": "オフラインモードなし"
+            "woocommerce": "オフラインモードなし — 有効なインターネット接続が必要"
           },
           "multiLocation": {
             "label": "複数店舗・拠点",
             "wcpos": "はい（Pro）：店舗ごとの住所、税率、レシートテンプレート、価格、権限を付与されたユーザー",
-            "woocommerce": "非対応"
+            "woocommerce": "まだ対応していません — WooCommerceは今後提供する機能の一つに挙げています"
           },
           "barcode": {
             "label": "バーコードスキャン",
             "wcpos": "はい",
             "woocommerce": "はい"
-          },
-          "reporting": {
-            "label": "レポート",
-            "wcpos": "営業終了レポート（Pro）",
-            "woocommerce": "高度なレポートなし"
-          },
-          "display": {
-            "label": "顧客向けディスプレイ",
-            "wcpos": "いいえ",
-            "woocommerce": "いいえ"
           }
         }
       },
       "devices": {
         "title": "どこで使えますか？",
-        "woocommerce": "WooCommerceのPOSはWooCommerceモバイルアプリの一つのモードです。iPadとAndroidタブレットでのみ動作し、スマートフォン、デスクトップコンピューター、ブラウザでは使えません。また、利用できるのは米国と英国の店舗のみです。",
+        "woocommerce": "WooCommerceのPOSはWooCommerceモバイルアプリの一つのモードです。WooCommerceはiPadとAndroidタブレット向けに設計されたものと説明しており、オーストラリア、カナダ、フィンランド、アイルランド、ルクセンブルク、オランダ、ニュージーランド、シンガポール、英国、米国の10か国の店舗で利用できます。",
         "wcpos": "WCPOSはあらゆるモダンブラウザ、WindowsとmacOSのデスクトップアプリ、iOSとAndroidのアプリ（ベータ版）で動作し、ライセンスあたりのデバイス数とレジ係数に制限はありません。すでにカウンターにあるコンピューター、タブレット、または両方を使えます。"
       },
       "payments": {
         "title": "カード決済はどのように機能しますか？",
-        "woocommerce": "WooCommerceのPOSは現金のほか、WooPaymentsを通じてカードを受け付けます。WooPaymentsのカードリーダー、またはiPhoneとAndroidのTap to Payを使い、後者では顧客がデバイス本体にカードをかざすため、リーダーを買う必要がありません。WooPaymentsの対面カード決済手数料は2.6% + $0.10で、オンライン決済の手数料より低く設定されています。他の決済ゲートウェイはサポートされません。",
+        "woocommerce": "WooCommerceのPOSは現金のほか、タブレットに接続したBluetoothカードリーダーを使い、WooPaymentsまたはStripe経由でカードを受け付けます。WooPaymentsの対面カード決済手数料はオンラインより低く、米国では対面が2.70% + $0.10、オンラインが2.90% + $0.30です。カードリーダーの費用は稼働中のリーダー1台につき月額$5.00 / £5.00です。",
         "wcpos": "WCPOSはWooCommerce自身のチェックアウトを通じて決済するため、WooCommerce対応のあらゆる決済ゲートウェイをレジで利用できます。ProはStripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Vipps MobilePay向けのカード端末連携を追加し、拡張機能カタログからワンクリックでインストールできます。WCPOSはTap to PayもWooPaymentsの対面決済もサポートしません。"
       },
       "pricing": {
         "title": "料金はいくらですか？",
-        "woocommerce": "WooCommerceのPOSは無料で、ライセンス料もサブスクリプション料金もありません。WooCommerceはカード決済の処理から収益を得ます。対面カード決済はWooPaymentsを通じ、その対面決済手数料で処理されます。",
+        "woocommerce": "WooCommerceのPOSソフトウェアは無料で、WooCommerceモバイルアプリに含まれています。カードリーダーを使用する場合、稼働中のリーダー1台につき月額$5.00 / £5.00の料金がかかり、カード決済には利用する決済事業者の対面決済手数料が適用されます。",
         "wcpos": "WCPOSは無料で、商品、注文、顧客、現金販売に上限はありません。Proは$129の買い切りで1年間のアップデートと優先サポートが付き、生涯版は$399です。自動更新はなく、1年が過ぎてもProは動き続け、何も停止しません。WCPOSは取引手数料を請求しません。支払うのはご利用の決済プロセッサーの料金だけです。",
         "proAdds": "Proの追加機能：複数店舗管理、カード端末連携、クーポン、POS API経由の返金、注文履歴、レジでの顧客管理、店舗別価格、在庫と価格の編集、営業終了レポート、拡張機能ディレクトリ。",
         "demoPrefix": "まずは",
@@ -2179,58 +2164,55 @@
       },
       "limits": {
         "title": "WooCommerceのPOSに（まだ）できないこと",
-        "intro": "2026年4月時点で、WooCommerceのPOSは意図的に機能を絞っています：",
-        "tablets": "タブレットのみ：iPadとAndroidタブレット。",
-        "countries": "米国と英国の店舗のみ。",
-        "products": "シンプル商品とバリエーション商品のみ。",
-        "offline": "オフラインモードなし。",
-        "multiLocation": "複数拠点には非対応。",
-        "gateways": "カスタム決済ゲートウェイには非対応 — カード決済はWooPayments経由。",
-        "display": "顧客向けディスプレイなし。",
-        "reporting": "高度なレポートなし。",
-        "outro": "WooCommerceはWooCommerce本体にPOS機能を着実に追加しているため、このリストは短くなるはずです。四半期ごとに再確認します。"
+        "intro": "2026-10-06に確認したWooCommerceのPOSの制限は次のとおりです：",
+        "tablets": "タブレット向けに設計：iPadとAndroidタブレット。",
+        "countries": "店舗は次の10か国のみ：オーストラリア、カナダ、フィンランド、アイルランド、ルクセンブルク、オランダ、ニュージーランド、シンガポール、英国、米国。",
+        "products": "サブスクリプション商品やダウンロード商品には非対応。",
+        "offline": "オフラインモードなし：有効なインターネット接続が必要です。",
+        "multiLocation": "複数拠点にはまだ対応していません。",
+        "gateways": "カード決済にはWooPaymentsまたはStripeが必要です。",
+        "outro": "WooCommerceはWooCommerce本体にPOS機能を追加し続けているため、このリストは短くなると予想されます。四半期ごとに再確認します。"
       },
       "woocommerceBetter": {
         "title": "WooCommerceのPOSが本当に優れている点",
         "intro": "正直な比較では両方の長所を示します：",
-        "price": "ライセンス料なしで無料です — WCPOS Proは$129以上かかります。",
+        "price": "POSソフトウェアはライセンス料なしで無料です — WCPOS Proは$129以上かかります。",
         "official": "WooCommerce自身が開発しており、すでに店舗運営に利用しているかもしれないWooCommerceモバイルアプリ内で使えます。",
-        "tapToPay": "iPhoneとAndroidのTap to Payなら、カードリーダーなしでカードを受け付けられます。WCPOSはTap to Payをサポートしません。",
-        "wooPayments": "WooPaymentsのネイティブな対面決済に対応し、対面カード決済手数料（2.6% + $0.10）はWooPaymentsのオンライン手数料より低額です。WCPOSにはWooPaymentsの対面決済連携はありません。",
-        "outro": "米国または英国でタブレットから販売し、WooPaymentsでカードを受け付け、シンプル商品とバリエーション商品だけを販売し、オフラインモードや複数拠点が不要なら、無料のWooCommerceのPOSだけで十分かもしれません。"
+        "wooPayments": "WooPaymentsのネイティブな対面決済に対応し、手数料はWooPaymentsのオンライン決済より低額です（米国では対面が2.70% + $0.10、オンラインが2.90% + $0.30）。WCPOSにはWooPaymentsの対面決済連携はありません。",
+        "outro": "店舗が対応する10か国のいずれかにあり、タブレットから販売してWooPaymentsまたはStripeでカードを受け付け、オフラインモード、複数拠点、レジでのサブスクリプション商品やダウンロード商品の販売が不要なら、WooCommerceのPOSは無料のソフトウェアであり、それだけで十分かもしれません。"
       },
       "choose": {
         "title": "どちらを選ぶべきか？",
         "wcpos": {
           "title": "WCPOSを選ぶべき場合：",
-          "body": "米国と英国以外で販売する、デスクトップコンピューターやブラウザから販売したい、オフラインで商品を閲覧してカートを作成したい、複数の店舗を運営する、WooPayments以外の決済ゲートウェイを使う、またはStripe、SumUp、PayPal、Square、Mollie、Vipps MobilePayのカード端末を使いたい場合。"
+          "body": "店舗がWooCommerceのPOSに対応する10か国以外にある、WebブラウザやWindowsとmacOSのデスクトップアプリでレジを使いたい、オフラインで商品を閲覧してカートを作成したい、複数の店舗を運営する、WooPaymentsまたはStripe以外の決済ゲートウェイを使う、またはSumUp、PayPal、Square、Mollie、Vipps MobilePayのカード端末を使いたい場合。"
         },
         "woocommerce": {
           "title": "WooCommerceのPOSを選ぶべき場合：",
-          "body": "米国または英国でiPadかAndroidタブレットから販売し、WooPaymentsでカードを受け付け、特にTap to Payを使いたい場合で、オフラインモード、複数拠点、他の決済ゲートウェイが不要な場合。"
+          "body": "店舗が対応する10か国のいずれかにあり、iPadまたはAndroidタブレットから販売し、WooPaymentsまたはStripeでカードを受け付け、オフラインモード、複数拠点、他の決済ゲートウェイが不要な場合。"
         }
       },
       "faq": {
         "title": "よくある質問",
         "free": {
           "question": "WooCommerce公式POSは無料ですか？",
-          "answer": "はい。POSは無料のWooCommerceモバイルアプリの一部で、カード決済はWooPaymentsの対面カード決済手数料2.6% + $0.10で処理されます。WCPOSの無料プラグインも上限なく無料で、任意のWooCommerce決済ゲートウェイと連携します。"
+          "answer": "はい、POSソフトウェアは無料で、WooCommerceモバイルアプリに含まれています。カードリーダーを使用する場合、稼働中のリーダー1台につき月額$5.00 / £5.00の料金がかかり、カード決済には利用する決済事業者の対面決済手数料が適用されます。WCPOSの無料プラグインも上限なく無料で、任意のWooCommerce決済ゲートウェイと連携します。"
         },
         "countries": {
           "question": "WooCommerceのPOSはどの国に対応していますか？",
-          "answer": "2026年4月時点では米国と英国のみです。WCPOSに国の制限はありません。"
+          "answer": "2026-10-06時点で、オーストラリア、カナダ、フィンランド、アイルランド、ルクセンブルク、オランダ、ニュージーランド、シンガポール、英国、米国の10か国の店舗で利用できます。WCPOSに国の制限はありません。"
         },
         "offline": {
           "question": "WooCommerceのPOSはオフラインで動作しますか？",
-          "answer": "いいえ。2026年4月時点ではオフラインモードがありません。WCPOSはオフラインファーストです。商品・顧客・カートはローカルに保存されるため、接続がなくてもカタログを閲覧して販売を組み立てられ、接続が戻るとすべて同期されます。会計の完了とクーポンの検証にはサーバー接続が必要です。"
+          "answer": "いいえ。WooCommerceによると、そのPOSには商品の同期、注文の作成、決済の処理のために有効なインターネット接続が必要です。WCPOSはオフラインファーストです。商品・顧客・カートはローカルに保存されるため、接続がなくてもカタログを閲覧して販売を組み立てられ、接続が戻るとすべて同期されます。会計の完了とクーポンの検証にはサーバー接続が必要です。"
         },
         "devices": {
-          "question": "WooCommerceのPOSをスマートフォンやデスクトップコンピューターで使えますか？",
-          "answer": "いいえ。iPadとAndroidタブレットでのみ動作します。WCPOSはあらゆるモダンブラウザ、WindowsとmacOSのデスクトップアプリ、iOSとAndroidのアプリ（ベータ版）で動作します。"
+          "question": "WooCommerceのPOSはどのデバイスで動作しますか？",
+          "answer": "WooCommerceは、そのPOSをWooCommerceモバイルアプリ内で使うiPadとAndroidタブレット向けに設計されたものと説明しています。WCPOSはあらゆるモダンブラウザ、WindowsとmacOSのデスクトップアプリ、iOSとAndroidのアプリ（ベータ版）で動作します。"
         },
         "tapToPay": {
           "question": "WCPOSはTap to Payに対応していますか？",
-          "answer": "いいえ。WCPOSはTap to PayもWooPaymentsの対面決済もサポートしません。WCPOSのレジでのカード決済は、Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Vipps MobilePayの端末連携、またはチェックアウトで使えるWooCommerce決済ゲートウェイを通じて行います。Tap to Payが必須なら、WooCommerceのPOSは対応しています。"
+          "answer": "いいえ。WCPOSはTap to PayもWooPaymentsの対面決済もサポートしません。WCPOSのレジでのカード決済は、Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Vipps MobilePayの端末連携、またはチェックアウトで使えるWooCommerce決済ゲートウェイを通じて行います。"
         },
         "expiry": {
           "question": "WCPOS Proのライセンスが期限切れになるとどうなりますか？",
@@ -2238,7 +2220,7 @@
         }
       },
       "footer": {
-        "factsDated": "WooCommerceのPOSに関する情報は2026年4月時点のものです。WCPOSの情報はwcpos.comに基づきます。四半期ごとに再確認します。",
+        "factsDated": "WooCommerceのPOSに関する情報は2026-10-06にWooCommerce自身のページ（POSのドキュメント、POSのページ、WooPaymentsの手数料ページ）で確認済みです。WCPOSの情報はwcpos.comに基づきます。四半期ごとに再確認します。",
         "corrections": "誤りを見つけましたか？ support@wcpos.com までご連絡ください。迅速に修正し、すべての変更を記録します。"
       }
     }
