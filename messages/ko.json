@@ -2104,7 +2104,7 @@
           "countries": {
             "label": "국가",
             "wcpos": "국가 제한 없음",
-            "woocommerce": "10개국: 호주, 캐나다, 핀란드, 아일랜드, 룩셈부르크, 네덜란드, 뉴질랜드, 싱가포르, 영국, 미국"
+            "woocommerce": "10개국: 호주, 캐나다, 핀란드, 아일랜드, 룩셈부르크, 네덜란드, 뉴질랜드, 싱가포르, 영국, 미국 — 매장은 해당 국가의 통화를 사용해야 합니다"
           },
           "price": {
             "label": "가격",
@@ -2145,7 +2145,7 @@
       },
       "devices": {
         "title": "어디에서 사용할 수 있나요?",
-        "woocommerce": "WooCommerce POS는 WooCommerce 모바일 앱의 한 모드입니다. WooCommerce는 이를 iPad와 Android 태블릿용으로 설계되었다고 설명하며, 호주, 캐나다, 핀란드, 아일랜드, 룩셈부르크, 네덜란드, 뉴질랜드, 싱가포르, 영국, 미국의 10개국 매장에서 이용할 수 있습니다.",
+        "woocommerce": "WooCommerce POS는 WooCommerce 모바일 앱의 한 모드입니다. WooCommerce는 이를 iPad와 Android 태블릿용으로 설계되었다고 설명하며, 호주, 캐나다, 핀란드, 아일랜드, 룩셈부르크, 네덜란드, 뉴질랜드, 싱가포르, 영국, 미국의 10개국에서 해당 국가의 통화를 사용하는 매장에서 이용할 수 있습니다.",
         "wcpos": "WCPOS는 모든 최신 브라우저, Windows와 macOS 데스크톱 앱, iOS와 Android 앱(베타)에서 작동하며 라이선스당 기기와 계산원 수에 제한이 없습니다. 이미 계산대에 있는 컴퓨터나 태블릿, 또는 둘 다 사용하세요."
       },
       "payments": {
@@ -2166,7 +2166,7 @@
         "title": "WooCommerce POS가 (아직) 하지 못하는 것",
         "intro": "2026-10-06에 확인한 WooCommerce POS의 제한 사항은 다음과 같습니다:",
         "tablets": "태블릿용으로 설계: iPad와 Android 태블릿.",
-        "countries": "다음 10개국의 매장만: 호주, 캐나다, 핀란드, 아일랜드, 룩셈부르크, 네덜란드, 뉴질랜드, 싱가포르, 영국, 미국.",
+        "countries": "다음 10개국의 매장만: 호주, 캐나다, 핀란드, 아일랜드, 룩셈부르크, 네덜란드, 뉴질랜드, 싱가포르, 영국, 미국. 매장은 해당 국가의 통화를 사용해야 합니다.",
         "products": "구독 상품이나 다운로드 상품은 판매할 수 없음.",
         "offline": "오프라인 모드 없음: 활성 인터넷 연결이 필요합니다.",
         "multiLocation": "다중 위치는 아직 지원하지 않습니다.",
@@ -2179,17 +2179,17 @@
         "price": "POS 소프트웨어는 라이선스 비용 없이 무료입니다 — WCPOS Pro는 $129 이상입니다.",
         "official": "WooCommerce가 직접 만들었으며 이미 매장 운영에 사용 중일 수 있는 WooCommerce 모바일 앱에 들어 있습니다.",
         "wooPayments": "WooPayments의 기본 대면 결제를 지원하며 WooPayments 온라인 결제보다 요율이 낮습니다(미국에서는 대면 2.70% + $0.10, 온라인 2.90% + $0.30). WCPOS에는 WooPayments 대면 결제 연동이 없습니다.",
-        "outro": "매장이 지원 대상 10개국 중 하나에 있고 태블릿으로 판매하며 WooPayments 또는 Stripe로 카드를 받고 오프라인 모드, 다중 위치 또는 계산대에서 구독 상품과 다운로드 상품 판매가 필요 없다면 WooCommerce POS는 무료 소프트웨어이며 그것만으로 충분할 수 있습니다."
+        "outro": "매장이 지원 대상 10개국 중 하나에 있고 해당 국가의 통화를 사용하며 태블릿으로 판매하며 WooPayments 또는 Stripe로 카드를 받고 오프라인 모드, 다중 위치 또는 계산대에서 구독 상품과 다운로드 상품 판매가 필요 없다면 WooCommerce POS는 무료 소프트웨어이며 그것만으로 충분할 수 있습니다."
       },
       "choose": {
         "title": "무엇을 선택해야 할까요?",
         "wcpos": {
           "title": "이런 경우 WCPOS를 선택하세요:",
-          "body": "매장이 WooCommerce POS가 지원하는 10개국 밖에 있거나, 웹 브라우저 또는 Windows와 macOS 데스크톱 앱에서 계산대를 사용하고 싶거나, 오프라인에서 상품을 탐색하고 장바구니를 작성하고 싶거나, 매장을 둘 이상 운영하거나, WooPayments 또는 Stripe 이외의 결제 게이트웨이를 사용하거나, SumUp, PayPal, Square, Mollie, Vipps MobilePay의 카드 단말기를 원한다면."
+          "body": "매장이 WooCommerce POS가 지원하는 10개국 밖에 있거나 자국 통화를 사용하지 않거나, 웹 브라우저 또는 Windows와 macOS 데스크톱 앱에서 계산대를 사용하고 싶거나, 오프라인에서 상품을 탐색하고 장바구니를 작성하고 싶거나, 매장을 둘 이상 운영하거나, WooPayments 또는 Stripe 이외의 결제 게이트웨이를 사용하거나, SumUp, PayPal, Square, Mollie, Vipps MobilePay의 카드 단말기를 원한다면."
         },
         "woocommerce": {
           "title": "이런 경우 WooCommerce POS를 선택하세요:",
-          "body": "매장이 지원 대상 10개국 중 하나에 있고 iPad 또는 Android 태블릿으로 판매하며 WooPayments 또는 Stripe로 카드를 받고 오프라인 모드, 다중 위치 또는 다른 결제 게이트웨이가 필요 없다면."
+          "body": "매장이 지원 대상 10개국 중 하나에 있고 해당 국가의 통화를 사용하며 iPad 또는 Android 태블릿으로 판매하며 WooPayments 또는 Stripe로 카드를 받고 오프라인 모드, 다중 위치 또는 다른 결제 게이트웨이가 필요 없다면."
         }
       },
       "faq": {
@@ -2200,7 +2200,7 @@
         },
         "countries": {
           "question": "WooCommerce POS는 어느 국가를 지원하나요?",
-          "answer": "2026-10-06 기준, 호주, 캐나다, 핀란드, 아일랜드, 룩셈부르크, 네덜란드, 뉴질랜드, 싱가포르, 영국, 미국의 10개국 매장에서 이용할 수 있습니다. WCPOS에는 국가 제한이 없습니다."
+          "answer": "2026-10-06 기준, 호주, 캐나다, 핀란드, 아일랜드, 룩셈부르크, 네덜란드, 뉴질랜드, 싱가포르, 영국, 미국의 10개국 매장에서 이용할 수 있습니다. 매장은 해당 국가의 통화도 사용해야 합니다. WCPOS에는 국가 제한이 없습니다."
         },
         "offline": {
           "question": "WooCommerce POS는 오프라인에서 작동하나요?",

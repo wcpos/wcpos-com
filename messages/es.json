@@ -2104,7 +2104,7 @@
           "countries": {
             "label": "Países",
             "wcpos": "Sin restricciones por país",
-            "woocommerce": "10 países: Australia, Canadá, Finlandia, Irlanda, Luxemburgo, Países Bajos, Nueva Zelanda, Singapur, Reino Unido, Estados Unidos"
+            "woocommerce": "10 países: Australia, Canadá, Finlandia, Irlanda, Luxemburgo, Países Bajos, Nueva Zelanda, Singapur, Reino Unido, Estados Unidos — y la tienda debe utilizar la moneda de ese país"
           },
           "price": {
             "label": "Precio",
@@ -2145,7 +2145,7 @@
       },
       "devices": {
         "title": "¿Dónde puede usarlo?",
-        "woocommerce": "El TPV de WooCommerce es un modo de la aplicación móvil de WooCommerce. WooCommerce lo describe como diseñado para tabletas — iPad y tabletas Android — y está disponible para tiendas de diez países: Australia, Canadá, Finlandia, Irlanda, Luxemburgo, los Países Bajos, Nueva Zelanda, Singapur, el Reino Unido y Estados Unidos.",
+        "woocommerce": "El TPV de WooCommerce es un modo de la aplicación móvil de WooCommerce. WooCommerce lo describe como diseñado para tabletas — iPad y tabletas Android — y está disponible para tiendas de diez países: Australia, Canadá, Finlandia, Irlanda, Luxemburgo, los Países Bajos, Nueva Zelanda, Singapur, el Reino Unido y Estados Unidos, siempre que las tiendas utilicen la moneda de su país.",
         "wcpos": "WCPOS funciona en cualquier navegador moderno, como aplicación de escritorio para Windows y macOS y como aplicación para iOS y Android (beta), con dispositivos y cajeros ilimitados por licencia. Use el ordenador que ya tiene en el mostrador, una tableta o ambos."
       },
       "payments": {
@@ -2166,7 +2166,7 @@
         "title": "Lo que el TPV de WooCommerce (todavía) no hace",
         "intro": "Según lo verificado el 2026-10-06, el TPV de WooCommerce tiene estas limitaciones:",
         "tablets": "Diseñado para tabletas: iPad y tabletas Android.",
-        "countries": "Solo tiendas en diez países: Australia, Canadá, Finlandia, Irlanda, Luxemburgo, los Países Bajos, Nueva Zelanda, Singapur, el Reino Unido y Estados Unidos.",
+        "countries": "Solo tiendas en diez países: Australia, Canadá, Finlandia, Irlanda, Luxemburgo, los Países Bajos, Nueva Zelanda, Singapur, el Reino Unido y Estados Unidos, siempre que las tiendas utilicen la moneda de su país.",
         "products": "No admite suscripciones ni productos descargables.",
         "offline": "Sin modo sin conexión: requiere una conexión activa a internet.",
         "multiLocation": "Todavía no admite varias ubicaciones.",
@@ -2179,17 +2179,17 @@
         "price": "Su software de TPV es gratuito, sin necesidad de licencia — WCPOS Pro cuesta $129 o más.",
         "official": "Lo desarrolla el propio WooCommerce, dentro de la aplicación móvil de WooCommerce que quizá ya use para gestionar su tienda.",
         "wooPayments": "Pagos presenciales nativos con WooPayments, a una tarifa inferior a la de WooPayments en línea (en Estados Unidos, 2.70% + $0.10 frente a 2.90% + $0.30). WCPOS no tiene integración con WooPayments para pagos presenciales.",
-        "outro": "Si su tienda está en uno de sus diez países, vende desde una tableta, acepta tarjetas mediante WooPayments o Stripe y no necesita un modo sin conexión, varias ubicaciones ni vender suscripciones y productos descargables en la caja, el TPV de WooCommerce es software gratuito y puede ser todo lo que necesite."
+        "outro": "Si su tienda está en uno de sus diez países y utiliza la moneda de ese país, vende desde una tableta, acepta tarjetas mediante WooPayments o Stripe y no necesita un modo sin conexión, varias ubicaciones ni vender suscripciones y productos descargables en la caja, el TPV de WooCommerce es software gratuito y puede ser todo lo que necesite."
       },
       "choose": {
         "title": "¿Cuál debería elegir?",
         "wcpos": {
           "title": "Elija WCPOS si:",
-          "body": "Su tienda está fuera de los diez países que admite el TPV de WooCommerce, quiere una caja en un navegador web o en aplicaciones de escritorio para Windows y macOS, quiere navegar por los productos y preparar carritos sin conexión, gestiona más de una tienda, usa una pasarela de pago distinta de WooPayments o Stripe, o quiere terminales de tarjeta de SumUp, PayPal, Square, Mollie o Vipps MobilePay."
+          "body": "Su tienda está fuera de los diez países que admite el TPV de WooCommerce o no utiliza la moneda de su país, quiere una caja en un navegador web o en aplicaciones de escritorio para Windows y macOS, quiere navegar por los productos y preparar carritos sin conexión, gestiona más de una tienda, usa una pasarela de pago distinta de WooPayments o Stripe, o quiere terminales de tarjeta de SumUp, PayPal, Square, Mollie o Vipps MobilePay."
         },
         "woocommerce": {
           "title": "Elija el TPV de WooCommerce si:",
-          "body": "Su tienda está en uno de sus diez países, vende desde un iPad o una tableta Android, acepta tarjetas mediante WooPayments o Stripe y no necesita un modo sin conexión, varias ubicaciones ni otras pasarelas de pago."
+          "body": "Su tienda está en uno de sus diez países y utiliza la moneda de ese país, vende desde un iPad o una tableta Android, acepta tarjetas mediante WooPayments o Stripe y no necesita un modo sin conexión, varias ubicaciones ni otras pasarelas de pago."
         }
       },
       "faq": {
@@ -2200,7 +2200,7 @@
         },
         "countries": {
           "question": "¿En qué países funciona el TPV de WooCommerce?",
-          "answer": "A fecha de 2026-10-06, tiendas en diez países: Australia, Canadá, Finlandia, Irlanda, Luxemburgo, los Países Bajos, Nueva Zelanda, Singapur, el Reino Unido y Estados Unidos. WCPOS no tiene restricciones por país."
+          "answer": "A fecha de 2026-10-06, tiendas en diez países: Australia, Canadá, Finlandia, Irlanda, Luxemburgo, los Países Bajos, Nueva Zelanda, Singapur, el Reino Unido y Estados Unidos. La tienda también debe utilizar la moneda de ese país. WCPOS no tiene restricciones por país."
         },
         "offline": {
           "question": "¿Funciona sin conexión el TPV de WooCommerce?",

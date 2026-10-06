@@ -2104,7 +2104,7 @@
           "countries": {
             "label": "国家",
             "wcpos": "无国家限制",
-            "woocommerce": "10 个国家：澳大利亚、加拿大、芬兰、爱尔兰、卢森堡、荷兰、新西兰、新加坡、英国、美国"
+            "woocommerce": "10 个国家：澳大利亚、加拿大、芬兰、爱尔兰、卢森堡、荷兰、新西兰、新加坡、英国、美国——且店铺必须使用所在国家的货币"
           },
           "price": {
             "label": "价格",
@@ -2145,7 +2145,7 @@
       },
       "devices": {
         "title": "在哪里可以使用？",
-        "woocommerce": "WooCommerce POS 是 WooCommerce 移动应用的一种模式。WooCommerce 称其专为平板设计——iPad 和 Android 平板——面向 10 个国家的店铺开放：澳大利亚、加拿大、芬兰、爱尔兰、卢森堡、荷兰、新西兰、新加坡、英国和美国。",
+        "woocommerce": "WooCommerce POS 是 WooCommerce 移动应用的一种模式。WooCommerce 称其专为平板设计——iPad 和 Android 平板——面向 10 个国家的店铺开放：澳大利亚、加拿大、芬兰、爱尔兰、卢森堡、荷兰、新西兰、新加坡、英国和美国，且店铺必须使用所在国家的货币。",
         "wcpos": "WCPOS 可在任何现代浏览器、Windows 和 macOS 桌面应用以及 iOS 和 Android 应用（测试版）中运行，每个许可证的设备和收银员数量不限。用你柜台上已有的电脑、平板，或者两者一起使用。"
       },
       "payments": {
@@ -2166,7 +2166,7 @@
         "title": "WooCommerce POS（目前）做不到什么",
         "intro": "截至 2026-10-06 经核实，WooCommerce POS 有以下限制：",
         "tablets": "专为平板设计：iPad 和 Android 平板。",
-        "countries": "仅面向以下 10 个国家的店铺：澳大利亚、加拿大、芬兰、爱尔兰、卢森堡、荷兰、新西兰、新加坡、英国和美国。",
+        "countries": "仅面向以下 10 个国家的店铺：澳大利亚、加拿大、芬兰、爱尔兰、卢森堡、荷兰、新西兰、新加坡、英国和美国，且店铺必须使用所在国家的货币。",
         "products": "不销售订阅商品或可下载商品。",
         "offline": "无离线模式：需要有效的互联网连接。",
         "multiLocation": "目前尚不支持多地点。",
@@ -2179,17 +2179,17 @@
         "price": "它的 POS 软件免费，无需任何许可证——WCPOS Pro 至少要 $129。",
         "official": "它由 WooCommerce 自己开发，就在你可能已经用来管理店铺的 WooCommerce 移动应用中。",
         "wooPayments": "原生 WooPayments 线下支付，费率低于 WooPayments 线上支付（美国线下为 2.70% + $0.10，线上为 2.90% + $0.30）。WCPOS 没有 WooPayments 线下支付集成。",
-        "outro": "如果你的店铺位于其支持的 10 个国家之一，使用平板销售，通过 WooPayments 或 Stripe 接受银行卡，并且不需要离线模式、多地点或在收银台销售订阅商品和可下载商品，WooCommerce POS 是免费软件，可能就足够了。"
+        "outro": "如果你的店铺位于其支持的 10 个国家之一并使用该国货币，使用平板销售，通过 WooPayments 或 Stripe 接受银行卡，并且不需要离线模式、多地点或在收银台销售订阅商品和可下载商品，WooCommerce POS 是免费软件，可能就足够了。"
       },
       "choose": {
         "title": "你该选哪一个？",
         "wcpos": {
           "title": "选择 WCPOS，如果：",
-          "body": "你的店铺不在 WooCommerce POS 支持的 10 个国家内，想在网页浏览器或 Windows 和 macOS 桌面应用中使用收银台，想离线浏览商品和创建购物车，经营多家店铺，使用 WooPayments 或 Stripe 以外的支付网关，或者想用 SumUp、PayPal、Square、Mollie 或 Vipps MobilePay 的刷卡终端。"
+          "body": "你的店铺不在 WooCommerce POS 支持的 10 个国家内或未使用所在国家的货币，想在网页浏览器或 Windows 和 macOS 桌面应用中使用收银台，想离线浏览商品和创建购物车，经营多家店铺，使用 WooPayments 或 Stripe 以外的支付网关，或者想用 SumUp、PayPal、Square、Mollie 或 Vipps MobilePay 的刷卡终端。"
         },
         "woocommerce": {
           "title": "选择 WooCommerce POS，如果：",
-          "body": "你的店铺位于其支持的 10 个国家之一，使用 iPad 或 Android 平板销售，通过 WooPayments 或 Stripe 接受银行卡，并且不需要离线模式、多地点或其他支付网关。"
+          "body": "你的店铺位于其支持的 10 个国家之一并使用该国货币，使用 iPad 或 Android 平板销售，通过 WooPayments 或 Stripe 接受银行卡，并且不需要离线模式、多地点或其他支付网关。"
         }
       },
       "faq": {
@@ -2200,7 +2200,7 @@
         },
         "countries": {
           "question": "WooCommerce POS 支持哪些国家？",
-          "answer": "截至 2026-10-06，面向以下 10 个国家的店铺：澳大利亚、加拿大、芬兰、爱尔兰、卢森堡、荷兰、新西兰、新加坡、英国和美国。WCPOS 没有国家限制。"
+          "answer": "截至 2026-10-06，面向以下 10 个国家的店铺：澳大利亚、加拿大、芬兰、爱尔兰、卢森堡、荷兰、新西兰、新加坡、英国和美国。店铺还必须使用所在国家的货币。WCPOS 没有国家限制。"
         },
         "offline": {
           "question": "WooCommerce POS 支持离线使用吗？",

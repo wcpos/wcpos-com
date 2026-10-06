@@ -2104,7 +2104,7 @@
           "countries": {
             "label": "Landen",
             "wcpos": "Geen landenbeperking",
-            "woocommerce": "10 landen: Australië, Canada, Finland, Ierland, Luxemburg, Nederland, Nieuw-Zeeland, Singapore, Verenigd Koninkrijk, Verenigde Staten"
+            "woocommerce": "10 landen: Australië, Canada, Finland, Ierland, Luxemburg, Nederland, Nieuw-Zeeland, Singapore, Verenigd Koninkrijk, Verenigde Staten — en de winkel moet de valuta van dat land gebruiken"
           },
           "price": {
             "label": "Prijs",
@@ -2145,7 +2145,7 @@
       },
       "devices": {
         "title": "Waar kun je het gebruiken?",
-        "woocommerce": "De POS van WooCommerce is een modus van de mobiele WooCommerce-app. WooCommerce beschrijft hem als ontworpen voor tablets — iPad en Android-tablets — en hij is beschikbaar voor winkels in tien landen: Australië, Canada, Finland, Ierland, Luxemburg, Nederland, Nieuw-Zeeland, Singapore, het Verenigd Koninkrijk en de Verenigde Staten.",
+        "woocommerce": "De POS van WooCommerce is een modus van de mobiele WooCommerce-app. WooCommerce beschrijft hem als ontworpen voor tablets — iPad en Android-tablets — en hij is beschikbaar voor winkels in tien landen: Australië, Canada, Finland, Ierland, Luxemburg, Nederland, Nieuw-Zeeland, Singapore, het Verenigd Koninkrijk en de Verenigde Staten, mits die winkels de valuta van hun eigen land gebruiken.",
         "wcpos": "WCPOS werkt in elke moderne browser, als desktopapps voor Windows en macOS en als iOS- en Android-apps (bèta), met onbeperkt apparaten en kassamedewerkers per licentie. Gebruik de computer die je al aan de toonbank hebt, een tablet of allebei."
       },
       "payments": {
@@ -2166,7 +2166,7 @@
         "title": "Wat de POS van WooCommerce (nog) niet kan",
         "intro": "Zoals geverifieerd op 2026-10-06, heeft de POS van WooCommerce deze beperkingen:",
         "tablets": "Ontworpen voor tablets: iPad en Android-tablets.",
-        "countries": "Alleen winkels in tien landen: Australië, Canada, Finland, Ierland, Luxemburg, Nederland, Nieuw-Zeeland, Singapore, het Verenigd Koninkrijk en de Verenigde Staten.",
+        "countries": "Alleen winkels in tien landen: Australië, Canada, Finland, Ierland, Luxemburg, Nederland, Nieuw-Zeeland, Singapore, het Verenigd Koninkrijk en de Verenigde Staten, mits die winkels de valuta van hun eigen land gebruiken.",
         "products": "Geen abonnementen of downloadbare producten.",
         "offline": "Geen offline modus: een actieve internetverbinding is nodig.",
         "multiLocation": "Nog geen ondersteuning voor meerdere locaties.",
@@ -2179,17 +2179,17 @@
         "price": "De POS-software is gratis, zonder enige licentie — WCPOS Pro kost $129 of meer.",
         "official": "Hij is gemaakt door WooCommerce zelf, in de mobiele WooCommerce-app die je misschien al gebruikt om je winkel te beheren.",
         "wooPayments": "Ingebouwde WooPayments-betalingen ter plaatse tegen een lager tarief dan WooPayments online (in de Verenigde Staten 2.70% + $0.10 tegenover 2.90% + $0.30). WCPOS heeft geen WooPayments-integratie voor betalingen ter plaatse.",
-        "outro": "Als je winkel in een van zijn tien landen ligt, je vanaf een tablet verkoopt, kaarten via WooPayments of Stripe accepteert en geen offline modus, meerdere locaties of abonnementen en downloadbare producten aan de kassa nodig hebt, is de POS van WooCommerce gratis software en misschien alles wat je nodig hebt."
+        "outro": "Als je winkel in een van zijn tien landen ligt en de valuta van dat land gebruikt, je vanaf een tablet verkoopt, kaarten via WooPayments of Stripe accepteert en geen offline modus, meerdere locaties of abonnementen en downloadbare producten aan de kassa nodig hebt, is de POS van WooCommerce gratis software en misschien alles wat je nodig hebt."
       },
       "choose": {
         "title": "Welke moet je kiezen?",
         "wcpos": {
           "title": "Kies WCPOS als:",
-          "body": "Je winkel buiten de tien landen ligt die de POS van WooCommerce ondersteunt, je een kassa in een webbrowser of in desktopapps voor Windows en macOS wilt, offline door producten wilt bladeren en winkelwagens wilt samenstellen, meer dan één winkel runt, een andere betaalgateway dan WooPayments of Stripe gebruikt of pinterminals van SumUp, PayPal, Square, Mollie of Vipps MobilePay wilt."
+          "body": "Je winkel buiten de tien landen ligt die de POS van WooCommerce ondersteunt of niet de valuta van het eigen land gebruikt, je een kassa in een webbrowser of in desktopapps voor Windows en macOS wilt, offline door producten wilt bladeren en winkelwagens wilt samenstellen, meer dan één winkel runt, een andere betaalgateway dan WooPayments of Stripe gebruikt of pinterminals van SumUp, PayPal, Square, Mollie of Vipps MobilePay wilt."
         },
         "woocommerce": {
           "title": "Kies de POS van WooCommerce als:",
-          "body": "Je winkel in een van zijn tien landen ligt, je vanaf een iPad of Android-tablet verkoopt, kaarten via WooPayments of Stripe accepteert en geen offline modus, meerdere locaties of andere betaalgateways nodig hebt."
+          "body": "Je winkel in een van zijn tien landen ligt en de valuta van dat land gebruikt, je vanaf een iPad of Android-tablet verkoopt, kaarten via WooPayments of Stripe accepteert en geen offline modus, meerdere locaties of andere betaalgateways nodig hebt."
         }
       },
       "faq": {
@@ -2200,7 +2200,7 @@
         },
         "countries": {
           "question": "Welke landen ondersteunt de POS van WooCommerce?",
-          "answer": "Per 2026-10-06 winkels in tien landen: Australië, Canada, Finland, Ierland, Luxemburg, Nederland, Nieuw-Zeeland, Singapore, het Verenigd Koninkrijk en de Verenigde Staten. WCPOS heeft geen landenbeperking."
+          "answer": "Per 2026-10-06 winkels in tien landen: Australië, Canada, Finland, Ierland, Luxemburg, Nederland, Nieuw-Zeeland, Singapore, het Verenigd Koninkrijk en de Verenigde Staten. De winkel moet ook de valuta van dat land gebruiken. WCPOS heeft geen landenbeperking."
         },
         "offline": {
           "question": "Werkt de POS van WooCommerce offline?",

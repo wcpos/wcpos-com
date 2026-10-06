@@ -2104,7 +2104,7 @@
           "countries": {
             "label": "Countries",
             "wcpos": "No country restriction",
-            "woocommerce": "10 countries: Australia, Canada, Finland, Ireland, Luxembourg, Netherlands, New Zealand, Singapore, UK, US"
+            "woocommerce": "10 countries: Australia, Canada, Finland, Ireland, Luxembourg, Netherlands, New Zealand, Singapore, UK, US — and the store must use that country's currency"
           },
           "price": {
             "label": "Price",
@@ -2145,7 +2145,7 @@
       },
       "devices": {
         "title": "Where can you use it?",
-        "woocommerce": "WooCommerce's POS is a mode of the WooCommerce mobile app. WooCommerce describes it as designed for tablets — iPad and Android tablets — and it is available to stores in ten countries: Australia, Canada, Finland, Ireland, Luxembourg, the Netherlands, New Zealand, Singapore, the UK and the US.",
+        "woocommerce": "WooCommerce's POS is a mode of the WooCommerce mobile app. WooCommerce describes it as designed for tablets — iPad and Android tablets — and it is available to stores in ten countries (Australia, Canada, Finland, Ireland, Luxembourg, the Netherlands, New Zealand, Singapore, the UK and the US) that use their country's own currency.",
         "wcpos": "WCPOS runs in any modern browser, as desktop apps for Windows and macOS, and as iOS and Android apps (beta), with unlimited devices and cashiers per license. Use the counter computer you already have, a tablet, or both."
       },
       "payments": {
@@ -2166,7 +2166,7 @@
         "title": "What WooCommerce's POS doesn't do (yet)",
         "intro": "As verified on 2026-10-06, WooCommerce's POS has these limits:",
         "tablets": "Designed for tablets: iPad and Android tablets.",
-        "countries": "Stores in ten countries only: Australia, Canada, Finland, Ireland, Luxembourg, the Netherlands, New Zealand, Singapore, the UK and the US.",
+        "countries": "Stores in ten countries only: Australia, Canada, Finland, Ireland, Luxembourg, the Netherlands, New Zealand, Singapore, the UK and the US, using that country's own currency.",
         "products": "No subscriptions or downloadable products.",
         "offline": "No offline mode: it needs an active internet connection.",
         "multiLocation": "No multi-location support yet.",
@@ -2179,17 +2179,17 @@
         "price": "Its POS software is free, with no license at all — WCPOS Pro costs $129 or more.",
         "official": "It is built by WooCommerce itself, inside the WooCommerce mobile app you may already use to run your store.",
         "wooPayments": "Native WooPayments in-person payments, at a lower rate than WooPayments online (in the US, 2.70% + $0.10 against 2.90% + $0.30). WCPOS has no WooPayments in-person integration.",
-        "outro": "If your store is in one of its ten countries, you sell from a tablet, take cards through WooPayments or Stripe, and don't need an offline mode, multiple locations, or subscriptions and downloadable products at the register, WooCommerce's POS is free software and may be all you need."
+        "outro": "If your store is in one of its ten countries and uses that country's currency, you sell from a tablet, take cards through WooPayments or Stripe, and don't need an offline mode, multiple locations, or subscriptions and downloadable products at the register, WooCommerce's POS is free software and may be all you need."
       },
       "choose": {
         "title": "Which should you choose?",
         "wcpos": {
           "title": "Choose WCPOS if:",
-          "body": "Your store is outside the ten countries WooCommerce's POS supports, you want a register in a web browser or in desktop apps for Windows and macOS, want to browse products and build carts offline, run more than one store, use a payment gateway other than WooPayments or Stripe, or want card terminals from SumUp, PayPal, Square, Mollie, or Vipps MobilePay."
+          "body": "Your store is outside the ten countries WooCommerce's POS supports or doesn't use its country's own currency, you want a register in a web browser or in desktop apps for Windows and macOS, want to browse products and build carts offline, run more than one store, use a payment gateway other than WooPayments or Stripe, or want card terminals from SumUp, PayPal, Square, Mollie, or Vipps MobilePay."
         },
         "woocommerce": {
           "title": "Choose WooCommerce's POS if:",
-          "body": "Your store is in one of its ten countries, you sell from an iPad or Android tablet, take cards through WooPayments or Stripe, and don't need an offline mode, multiple locations, or other payment gateways."
+          "body": "Your store is in one of its ten countries and uses that country's currency, you sell from an iPad or Android tablet, take cards through WooPayments or Stripe, and don't need an offline mode, multiple locations, or other payment gateways."
         }
       },
       "faq": {
@@ -2200,7 +2200,7 @@
         },
         "countries": {
           "question": "Which countries does WooCommerce's POS support?",
-          "answer": "As of 2026-10-06, stores in ten countries: Australia, Canada, Finland, Ireland, Luxembourg, the Netherlands, New Zealand, Singapore, the UK and the US. WCPOS has no country restriction."
+          "answer": "As of 2026-10-06, stores in ten countries: Australia, Canada, Finland, Ireland, Luxembourg, the Netherlands, New Zealand, Singapore, the UK and the US. The store must also use that country's own currency. WCPOS has no country restriction."
         },
         "offline": {
           "question": "Does WooCommerce's POS work offline?",

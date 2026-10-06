@@ -2104,7 +2104,7 @@
           "countries": {
             "label": "Länder",
             "wcpos": "Keine Länderbeschränkung",
-            "woocommerce": "10 Länder: Australien, Kanada, Finnland, Irland, Luxemburg, Niederlande, Neuseeland, Singapur, Vereinigtes Königreich, Vereinigte Staaten"
+            "woocommerce": "10 Länder: Australien, Kanada, Finnland, Irland, Luxemburg, Niederlande, Neuseeland, Singapur, Vereinigtes Königreich, Vereinigte Staaten — und der Shop muss die Währung dieses Landes verwenden"
           },
           "price": {
             "label": "Preis",
@@ -2145,7 +2145,7 @@
       },
       "devices": {
         "title": "Wo können Sie es verwenden?",
-        "woocommerce": "Das POS von WooCommerce ist ein Modus der mobilen WooCommerce-App. WooCommerce beschreibt es als für Tablets konzipiert — iPad und Android-Tablets — und es steht Shops in zehn Ländern zur Verfügung: Australien, Kanada, Finnland, Irland, Luxemburg, die Niederlande, Neuseeland, Singapur, das Vereinigte Königreich und die Vereinigten Staaten.",
+        "woocommerce": "Das POS von WooCommerce ist ein Modus der mobilen WooCommerce-App. WooCommerce beschreibt es als für Tablets konzipiert — iPad und Android-Tablets — und es steht Shops in zehn Ländern zur Verfügung: Australien, Kanada, Finnland, Irland, Luxemburg, die Niederlande, Neuseeland, Singapur, das Vereinigte Königreich und die Vereinigten Staaten, sofern die Shops die Währung ihres jeweiligen Landes verwenden.",
         "wcpos": "WCPOS läuft in jedem modernen Browser, als Desktop-App für Windows und macOS und als iOS- und Android-App (Beta), mit unbegrenzt Geräten und Kassierern pro Lizenz. Verwenden Sie den vorhandenen Kassencomputer, ein Tablet oder beides."
       },
       "payments": {
@@ -2166,7 +2166,7 @@
         "title": "Was das POS von WooCommerce (noch) nicht kann",
         "intro": "Wie am 2026-10-06 überprüft, hat das POS von WooCommerce folgende Einschränkungen:",
         "tablets": "Für Tablets konzipiert: iPad und Android-Tablets.",
-        "countries": "Nur Shops in zehn Ländern: Australien, Kanada, Finnland, Irland, Luxemburg, den Niederlanden, Neuseeland, Singapur, dem Vereinigten Königreich und den Vereinigten Staaten.",
+        "countries": "Nur Shops in zehn Ländern: Australien, Kanada, Finnland, Irland, Luxemburg, den Niederlanden, Neuseeland, Singapur, dem Vereinigten Königreich und den Vereinigten Staaten, sofern die Shops die Währung ihres jeweiligen Landes verwenden.",
         "products": "Keine Abonnements oder herunterladbaren Produkte.",
         "offline": "Kein Offline-Modus: Eine aktive Internetverbindung ist erforderlich.",
         "multiLocation": "Noch keine Unterstützung für mehrere Standorte.",
@@ -2179,17 +2179,17 @@
         "price": "Die POS-Software ist kostenlos, ganz ohne Lizenz — WCPOS Pro kostet $129 oder mehr.",
         "official": "Es stammt von WooCommerce selbst und befindet sich in der mobilen WooCommerce-App, die Sie womöglich bereits für Ihren Shop nutzen.",
         "wooPayments": "Native WooPayments-Zahlungen vor Ort zu einem niedrigeren Tarif als bei WooPayments online (in den USA 2.70% + $0.10 gegenüber 2.90% + $0.30). WCPOS bietet keine WooPayments-Integration für Zahlungen vor Ort.",
-        "outro": "Wenn Ihr Shop in einem der zehn Länder liegt, Sie mit einem Tablet verkaufen, Karten über WooPayments oder Stripe annehmen und weder einen Offline-Modus noch mehrere Standorte oder Abonnements und herunterladbare Produkte an der Kasse benötigen, ist das POS von WooCommerce kostenlose Software und könnte alles sein, was Sie brauchen."
+        "outro": "Wenn Ihr Shop in einem der zehn Länder liegt und die Währung dieses Landes verwendet, Sie mit einem Tablet verkaufen, Karten über WooPayments oder Stripe annehmen und weder einen Offline-Modus noch mehrere Standorte oder Abonnements und herunterladbare Produkte an der Kasse benötigen, ist das POS von WooCommerce kostenlose Software und könnte alles sein, was Sie brauchen."
       },
       "choose": {
         "title": "Welches System sollten Sie wählen?",
         "wcpos": {
           "title": "Wählen Sie WCPOS, wenn:",
-          "body": "Ihr Shop außerhalb der zehn Länder liegt, die das POS von WooCommerce unterstützt, Sie eine Kasse in einem Webbrowser oder in Desktop-Apps für Windows und macOS möchten, offline Produkte durchstöbern und Warenkörbe zusammenstellen möchten, mehr als einen Shop betreiben, ein anderes Zahlungsgateway als WooPayments oder Stripe verwenden oder Kartenterminals von SumUp, PayPal, Square, Mollie oder Vipps MobilePay möchten."
+          "body": "Ihr Shop außerhalb der zehn Länder liegt, die das POS von WooCommerce unterstützt, oder nicht die Währung seines Landes verwendet, Sie eine Kasse in einem Webbrowser oder in Desktop-Apps für Windows und macOS möchten, offline Produkte durchstöbern und Warenkörbe zusammenstellen möchten, mehr als einen Shop betreiben, ein anderes Zahlungsgateway als WooPayments oder Stripe verwenden oder Kartenterminals von SumUp, PayPal, Square, Mollie oder Vipps MobilePay möchten."
         },
         "woocommerce": {
           "title": "Wählen Sie das POS von WooCommerce, wenn:",
-          "body": "Ihr Shop in einem der zehn Länder liegt, Sie mit einem iPad oder Android-Tablet verkaufen, Karten über WooPayments oder Stripe annehmen und weder einen Offline-Modus noch mehrere Standorte oder andere Zahlungsgateways benötigen."
+          "body": "Ihr Shop in einem der zehn Länder liegt und die Währung dieses Landes verwendet, Sie mit einem iPad oder Android-Tablet verkaufen, Karten über WooPayments oder Stripe annehmen und weder einen Offline-Modus noch mehrere Standorte oder andere Zahlungsgateways benötigen."
         }
       },
       "faq": {
@@ -2200,7 +2200,7 @@
         },
         "countries": {
           "question": "Welche Länder unterstützt das POS von WooCommerce?",
-          "answer": "Mit Stand 2026-10-06 Shops in zehn Ländern: Australien, Kanada, Finnland, Irland, Luxemburg, den Niederlanden, Neuseeland, Singapur, dem Vereinigten Königreich und den Vereinigten Staaten. Für WCPOS gibt es keine Länderbeschränkung."
+          "answer": "Mit Stand 2026-10-06 Shops in zehn Ländern: Australien, Kanada, Finnland, Irland, Luxemburg, den Niederlanden, Neuseeland, Singapur, dem Vereinigten Königreich und den Vereinigten Staaten. Der Shop muss außerdem die Währung dieses Landes verwenden. Für WCPOS gibt es keine Länderbeschränkung."
         },
         "offline": {
           "question": "Funktioniert das POS von WooCommerce offline?",
