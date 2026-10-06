@@ -1844,6 +1844,11 @@
         "description": "Square 的 POS 加同步扩展，对比构建在 WooCommerce 上的收银台：线下销售记录在哪里、同步、地点、离线支付、刷卡费率，以及 Square 真正更胜一筹的地方。",
         "cta": "阅读对比"
       },
+      "jovvieCard": {
+        "title": "WCPOS vs Jovvie",
+        "description": "两款 WooCommerce POS 插件对比：一次性付款与按月付费且每笔交易收取手续费的方案、应用、银行卡支付、评分，以及 Jovvie 真正更胜一筹的方面。",
+        "cta": "阅读对比"
+      },
       "moreSoon": "更多对比即将上线。"
     },
     "oliver": {
@@ -2377,6 +2382,119 @@
       },
       "footer": {
         "factsDated": "Square 相关事实于 2026-10-06 根据 Square 自己的页面（费率页面、价格公告，以及关于离线支付、Tap to Pay、设备和国际可用性的帮助文章）和 WooCommerce 的 Square for WooCommerce 扩展文档核实；WCPOS 相关事实来自 wcpos.com 和 docs.wcpos.com。我们每季度重新核实。",
+        "corrections": "发现错误？发邮件到 support@wcpos.com——我们会尽快更正并记录每次修改。"
+      }
+    },
+    "jovvie": {
+      "metadata": {
+        "title": "WCPOS vs Jovvie（2026）：客观对比",
+        "description": "WCPOS 与 Jovvie 是两款 WooCommerce 销售点插件，由 WCPOS 开发者对比：价格、每笔交易手续费、应用、银行卡支付、评分，以及何时 Jovvie 是更合适的选择。"
+      },
+      "hero": {
+        "title": "WCPOS vs Jovvie",
+        "subtitle": "WCPOS 和 BizSwoop 的 Jovvie 都能为你的 WooCommerce 商店添加销售点功能。最大的区别是付款方式：一次性付款，或按月付费并为每笔交易支付手续费。这里对比两者，并说明何时 Jovvie 是更合适的选择。"
+      },
+      "shortAnswer": {
+        "title": "简短结论",
+        "wcpos": "WCPOS 是一款免费、开源的 WooCommerce 销售点插件，不限制商品、订单或客户数量。它可在任何现代浏览器中运行，也提供 Windows 和 macOS 桌面应用以及 iOS 和 Android 应用（测试版），并支持任何 WooCommerce 支付网关。WCPOS 不收取交易手续费。Pro 版以一次性付款提供多店铺管理和刷卡终端集成——含一年更新的版本为 $129，终身版为 $399——一年后仍可继续使用。",
+        "jovvie": "BizSwoop 的 Jovvie 是一款上架于官方 WooCommerce Marketplace 的 WooCommerce 销售点插件。截至 2026 年 7 月，其方案从免费到每月 $29 不等，BizSwoop 在订阅费之外还对每笔交易收取 0.5% 至 2.5% 的平台费。它通过 Stripe Terminal 接受银行卡支付——BizSwoop 是 Stripe Terminal 的合作伙伴——当时没有原生应用。在 WordPress.org 上，它约有 200 次活跃安装，评分为 4.5 星。"
+      },
+      "glance": {
+        "title": "一览对比",
+        "caption": "Jovvie 信息截至 2026-07-09，来自我们自己的竞品研究，此后未重新核实；WCPOS 信息来自 wcpos.com、docs.wcpos.com 和 WordPress.org。",
+        "colWcpos": "WCPOS",
+        "colJovvie": "Jovvie",
+        "rows": {
+          "price": {
+            "label": "价格",
+            "wcpos": "免费插件不设上限；Pro 版含一年更新为 $129，终身版为 $399——一次性付款，不自动续费",
+            "jovvie": "方案从免费到每月 $29"
+          },
+          "fees": {
+            "label": "交易手续费",
+            "wcpos": "WCPOS 不收取手续费——适用你所选支付处理商的费率",
+            "jovvie": "订阅费之外，每笔交易收取 0.5% 至 2.5% 的平台费"
+          },
+          "cardPayments": {
+            "label": "银行卡支付",
+            "wcpos": "Pro 版终端集成：Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Vipps MobilePay",
+            "jovvie": "Stripe Terminal（BizSwoop 是 Stripe Terminal 的合作伙伴），支持 Stripe M2 等读卡器"
+          },
+          "apps": {
+            "label": "应用",
+            "wcpos": "网页、桌面应用（Windows 和 macOS）、iOS 和 Android 应用（测试版）",
+            "jovvie": "没有原生应用"
+          },
+          "offline": {
+            "label": "离线",
+            "wcpos": "离线浏览商品和组建购物车；完成结账需要网络连接",
+            "jovvie": "我们的研究未能确认——请向 BizSwoop 咨询"
+          },
+          "availability": {
+            "label": "获取渠道",
+            "wcpos": "WordPress.org（免费插件）和 wcpos.com（Pro 版）",
+            "jovvie": "WordPress.org 和官方 WooCommerce Marketplace"
+          },
+          "wporg": {
+            "label": "WordPress.org",
+            "wcpos": "5,000+ 活跃安装，3.7 星（81 条评价）",
+            "jovvie": "约 200 次活跃安装，4.5 星"
+          }
+        }
+      },
+      "pricing": {
+        "title": "费用是多少？",
+        "jovvie": "截至 2026 年 7 月，Jovvie 的方案从免费到每月 $29 不等，BizSwoop 在订阅费之外还对每笔交易收取 0.5% 至 2.5% 的平台费。",
+        "wcpos": "WCPOS 免费使用，不限制商品、订单、客户或现金销售。Pro 版 $129——一次性付款，包含一年更新和优先支持——或 $399 终身版。它不会自动续费，一年后 Pro 版仍可继续使用：永远不会关闭任何功能。WCPOS 不收取交易手续费；你只需支付自己所选支付处理商的费率。",
+        "math": "按比例收取的费用会随销售额增长。若费率为 0.5% 至 2.5%，每 $10,000 应付该费用的销售额会产生 $50 至 $250 的平台费，尚未计入订阅费和你所选银行卡支付处理商的费率。无论销售额多少，WCPOS Pro 的费用都是 $129 或 $399。",
+        "proAdds": "Pro 版新增：多店铺管理、刷卡终端集成、优惠券、通过 POS API 退款、订单历史、收银台客户管理、按店铺定价、库存和价格编辑、日终报告，以及扩展目录。",
+        "demoPrefix": "先到",
+        "demoLinkLabel": "demo.wcpos.com/pos",
+        "demoSuffix": "试用全部功能（登录 demo / demo）。"
+      },
+      "jovvieBetter": {
+        "title": "Jovvie 真正更胜一筹的方面",
+        "intro": "诚实的对比要兼顾双方的优点：",
+        "rating": "WordPress.org 评分更高：截至 2026 年 7 月，Jovvie 为 4.5 星，WCPOS 为 3.7 星。",
+        "marketplace": "在官方 WooCommerce Marketplace 上架。WCPOS 通过 WordPress.org 和 wcpos.com 分发。",
+        "outro": "如果你更喜欢按月付费而非一次性付款，通过 Stripe Terminal 接受银行卡支付，而且销售额使每笔交易手续费保持在较低水平，Jovvie 可能已足够满足你的需求。"
+      },
+      "choose": {
+        "title": "你该选哪一个？",
+        "wcpos": {
+          "title": "选择 WCPOS，如果：",
+          "body": "你想避免销售点系统收取交易手续费、选择不会停用的一次性付款方案、使用 Windows 和 macOS 桌面应用或 iOS 和 Android 应用、使用开源代码，或者从 Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal 和 Vipps MobilePay 中选择刷卡终端。"
+        },
+        "jovvie": {
+          "title": "选择 Jovvie，如果：",
+          "body": "你更喜欢按月付费而非一次性付款，通过 Stripe Terminal 接受银行卡支付，想要一款上架于官方 WooCommerce Marketplace 的插件，而且销售额使每笔交易 0.5% 至 2.5% 的手续费保持在可承受范围内。"
+        }
+      },
+      "faq": {
+        "title": "常见问题",
+        "fees": {
+          "question": "Jovvie 会收取交易手续费吗？",
+          "answer": "截至 2026 年 7 月，会：BizSwoop 在 Jovvie 从免费到每月 $29 的订阅方案之外，还对每笔交易收取 0.5% 至 2.5% 的平台费。请查看 Jovvie 自己的价格页面了解当前费率。WCPOS 不收取交易手续费；你只需支付自己所选支付处理商的费率。"
+        },
+        "offline": {
+          "question": "Jovvie 可以离线使用吗？",
+          "answer": "我们的研究未能确认 Jovvie 在没有网络连接时是否能运行，因此在依赖此功能前请咨询 BizSwoop。WCPOS 在本地存储商品、客户和购物车，因此你可以在没有网络连接时浏览商品目录并准备销售；完成结账需要连接服务器。"
+        },
+        "stripe": {
+          "question": "WCPOS 可以使用 Stripe 读卡器吗？",
+          "answer": "可以，使用 WCPOS Pro。其刷卡终端集成包括 Stripe Terminal，以及 SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal 和 Vipps MobilePay。"
+        },
+        "apps": {
+          "question": "Jovvie 有原生应用吗？",
+          "answer": "截至 2026 年 7 月，Jovvie 没有原生应用。WCPOS 可以在任何现代浏览器中运行，也提供 Windows 和 macOS 桌面应用及 iOS 和 Android 应用（测试版）。"
+        },
+        "expiry": {
+          "question": "WCPOS Pro 许可证到期后会发生什么？",
+          "answer": "什么都不会被关掉。你手上的 Pro 版本想用多久就用多久——你的收银台、你的数据、每一项功能都在。到期后你只是不再收到新更新和优先支持，直到你决定续期。这是有意为之：续费必须靠值得付费的更新来赢得，同时也保证你的销售点永远不会被远程停用。"
+        }
+      },
+      "footer": {
+        "factsDated": "有关 Jovvie 的信息截至 2026-07-09，来自我们自己的竞品研究，此后未重新核实；决定前请到 jovvie.com 查看当前价格。WCPOS 信息来自 wcpos.com、docs.wcpos.com 和 WordPress.org。我们每季度重新核实。",
         "corrections": "发现错误？发邮件到 support@wcpos.com——我们会尽快更正并记录每次修改。"
       }
     }

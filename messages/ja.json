@@ -1844,6 +1844,11 @@
         "description": "SquareのPOSと同期用拡張機能を、WooCommerceに直接組み込まれたレジと比較します。対面販売の記録先、同期、拠点、オフライン決済、カード手数料、Squareが本当に優れている点を取り上げます。",
         "cta": "比較を読む"
       },
+      "jovvieCard": {
+        "title": "WCPOS vs Jovvie",
+        "description": "WooCommerce向けPOSプラグイン2つを比較：買い切りと取引ごとの手数料がかかる月額プラン、アプリ、カード決済、評価、Jovvieが実際に優れている点。",
+        "cta": "比較を読む"
+      },
       "moreSoon": "さらに多くの比較を準備中です。"
     },
     "oliver": {
@@ -2377,6 +2382,119 @@
       },
       "footer": {
         "factsDated": "Squareに関する事実は2026-10-06にSquare自身のページ（手数料ページ、料金変更の発表、オフライン決済、Tap to Pay、デバイス、国際的な提供状況に関するヘルプ記事）およびSquare for WooCommerce拡張機能のWooCommerceドキュメントで確認しました。WCPOSに関する事実はwcpos.comとdocs.wcpos.comに基づきます。四半期ごとに再確認します。",
+        "corrections": "誤りを見つけましたか？ support@wcpos.com までご連絡ください。迅速に修正し、すべての変更を記録します。"
+      }
+    },
+    "jovvie": {
+      "metadata": {
+        "title": "WCPOS vs Jovvie（2026年）：率直な比較",
+        "description": "WooCommerce向けの2つのPOSプラグイン、WCPOSとJovvieをWCPOSの開発元が比較。料金、取引ごとの手数料、アプリ、カード決済、評価、Jovvieがより適している場合を取り上げます。"
+      },
+      "hero": {
+        "title": "WCPOS vs Jovvie",
+        "subtitle": "WCPOSとBizSwoopのJovvieは、どちらもWooCommerceストアにPOSを追加します。最大の違いは支払い方法です。買い切りか、月額プランに加えて取引ごとの手数料を払うか。両者の違いと、Jovvieがより適している場合を比較します。"
+      },
+      "shortAnswer": {
+        "title": "結論を先に",
+        "wcpos": "WCPOSはWooCommerce向けの無料のオープンソースPOSプラグインで、商品、注文、顧客の数に上限はありません。最新のブラウザ、WindowsとmacOS向けデスクトップアプリ、iOSとAndroid向けアプリ（ベータ版）で動作し、どのWooCommerce決済ゲートウェイも利用できます。WCPOSは取引手数料を請求しません。Proでは複数店舗の管理とカード端末との連携が買い切りで追加されます。1年間のアップデート付きで$129、生涯版は$399で、1年後も動作し続けます。",
+        "jovvie": "BizSwoopのJovvieは、公式WooCommerce Marketplaceに掲載されているWooCommerce向けPOSプラグインです。2026年7月時点では、プランは無料から月額$29で、BizSwoopはサブスクリプション料金に加え、取引ごとに0.5%から2.5%のプラットフォーム手数料を請求していました。カード決済にはStripe Terminalを使用し、BizSwoopはStripe Terminalのパートナーです。また、ネイティブアプリはありませんでした。WordPress.orgではアクティブなインストールが約200件、評価は4.5つ星でした。"
+      },
+      "glance": {
+        "title": "ひと目でわかる比較",
+        "caption": "Jovvieの情報は2026-07-09時点の独自の競合調査に基づき、それ以降は再確認していません。WCPOSの情報はwcpos.com、docs.wcpos.com、WordPress.orgに基づきます。",
+        "colWcpos": "WCPOS",
+        "colJovvie": "Jovvie",
+        "rows": {
+          "price": {
+            "label": "価格",
+            "wcpos": "無料プラグインに上限なし。Proは1年間のアップデート付きで$129、または生涯版が$399 — 買い切りで自動更新なし",
+            "jovvie": "無料から月額$29までのプラン"
+          },
+          "fees": {
+            "label": "取引手数料",
+            "wcpos": "WCPOSからの手数料なし — 利用する決済プロセッサーの料金が適用",
+            "jovvie": "サブスクリプション料金に加え、取引ごとに0.5%から2.5%のプラットフォーム手数料"
+          },
+          "cardPayments": {
+            "label": "カード決済",
+            "wcpos": "Proの端末連携：Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Vipps MobilePay",
+            "jovvie": "Stripe Terminal（BizSwoopはStripe Terminalのパートナー）。Stripe M2などのリーダーに対応"
+          },
+          "apps": {
+            "label": "アプリ",
+            "wcpos": "Web、デスクトップアプリ（WindowsとmacOS）、iOSとAndroidアプリ（ベータ）",
+            "jovvie": "ネイティブアプリなし"
+          },
+          "offline": {
+            "label": "オフライン",
+            "wcpos": "オフラインで商品を閲覧しカートを作成可能。会計の完了には接続が必要",
+            "jovvie": "調査では確認できず — BizSwoopにお問い合わせください"
+          },
+          "availability": {
+            "label": "入手先",
+            "wcpos": "WordPress.org（無料プラグイン）とwcpos.com（Pro）",
+            "jovvie": "WordPress.orgと公式WooCommerce Marketplace"
+          },
+          "wporg": {
+            "label": "WordPress.org",
+            "wcpos": "アクティブインストール5,000+、3.7つ星（レビュー81件）",
+            "jovvie": "アクティブなインストール約200件、4.5つ星"
+          }
+        }
+      },
+      "pricing": {
+        "title": "料金はいくらですか？",
+        "jovvie": "2026年7月時点では、Jovvieのプランは無料から月額$29で、BizSwoopはサブスクリプション料金に加え、取引ごとに0.5%から2.5%のプラットフォーム手数料を請求していました。",
+        "wcpos": "WCPOSは無料で、商品、注文、顧客、現金販売に上限はありません。Proは$129の買い切りで1年間のアップデートと優先サポートが付き、生涯版は$399です。自動更新はなく、1年が過ぎてもProは動き続け、何も停止しません。WCPOSは取引手数料を請求しません。支払うのはご利用の決済プロセッサーの料金だけです。",
+        "math": "割合で決まる手数料は売上に応じて増えます。0.5%から2.5%の場合、手数料の対象となる売上$10,000ごとに、プラットフォーム手数料は$50から$250かかります。これにはサブスクリプション料金やカード決済プロセッサーの料金は含まれません。WCPOS Proは売上額に関係なく$129または$399です。",
+        "proAdds": "Proの追加機能：複数店舗管理、カード端末連携、クーポン、POS API経由の返金、注文履歴、レジでの顧客管理、店舗別価格、在庫と価格の編集、営業終了レポート、拡張機能ディレクトリ。",
+        "demoPrefix": "まずは",
+        "demoLinkLabel": "demo.wcpos.com/pos",
+        "demoSuffix": "ですべてお試しください（ログイン demo / demo）。"
+      },
+      "jovvieBetter": {
+        "title": "Jovvieが実際に優れている点",
+        "intro": "正直な比較では両方の長所を示します：",
+        "rating": "WordPress.orgでの評価が高いこと。2026年7月時点でJovvieは4.5つ星、WCPOSは3.7つ星です。",
+        "marketplace": "公式WooCommerce Marketplaceに掲載されていること。WCPOSはWordPress.orgとwcpos.comで配布されています。",
+        "outro": "買い切りより月額プランを好み、Stripe Terminalでカードを受け付け、取引ごとの手数料が少額に収まる売上規模なら、Jovvieだけで十分かもしれません。"
+      },
+      "choose": {
+        "title": "どちらを選ぶべきか？",
+        "wcpos": {
+          "title": "WCPOSを選ぶべき場合：",
+          "body": "POSからの取引手数料をなくしたい、機能が停止しない買い切りを選びたい、WindowsとmacOS向けデスクトップアプリやiOSとAndroid向けアプリを使いたい、オープンソースのコードが必要、またはStripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Vipps MobilePayからカード端末を選びたい場合。"
+        },
+        "jovvie": {
+          "title": "Jovvieを選ぶなら：",
+          "body": "買い切りより月額プランを好み、Stripe Terminalでカードを受け付け、公式WooCommerce Marketplaceに掲載されたプラグインを求め、売上規模から0.5%から2.5%の取引ごとの手数料を無理なく支払える場合。"
+        }
+      },
+      "faq": {
+        "title": "よくある質問",
+        "fees": {
+          "question": "Jovvieには取引手数料がありますか？",
+          "answer": "2026年7月時点では、あります。BizSwoopは、無料から月額$29までのJovvieのサブスクリプション料金に加え、取引ごとに0.5%から2.5%のプラットフォーム手数料を請求していました。現在の料金はJovvieの料金ページでご確認ください。WCPOSは取引手数料を請求せず、ご利用の決済プロセッサーの料金だけを支払います。"
+        },
+        "offline": {
+          "question": "Jovvieはオフラインで動作しますか？",
+          "answer": "調査では、Jovvieがインターネット接続なしで動作するか確認できていません。必要な場合は、利用前にBizSwoopへお問い合わせください。WCPOSは商品、顧客、カートをローカルに保存するため、接続なしでカタログを閲覧し販売を準備できますが、会計の完了にはサーバーへの接続が必要です。"
+        },
+        "stripe": {
+          "question": "WCPOSでStripeのカードリーダーを使えますか？",
+          "answer": "はい、WCPOS Proで利用できます。カード端末との連携にはStripe Terminalのほか、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Vipps MobilePayが含まれます。"
+        },
+        "apps": {
+          "question": "Jovvieにネイティブアプリはありますか？",
+          "answer": "2026年7月時点で、Jovvieにはネイティブアプリがありませんでした。WCPOSは最新のブラウザ、WindowsとmacOS向けデスクトップアプリ、iOSとAndroid向けアプリ（ベータ版）で動作します。"
+        },
+        "expiry": {
+          "question": "WCPOS Proのライセンスが期限切れになるとどうなりますか？",
+          "answer": "何も止まりません。手元のPro版は望む限り動き続けます。レジも、データも、すべての機能もそのままです。更新を選ぶまで、新しいアップデートと優先サポートが止まるだけです。これは意図的な設計です。更新料は支払う価値のあるアップデートによって勝ち取られるべきものですし、あなたのPOSが遠隔で無効化されることは決してないという保証にもなります。"
+        }
+      },
+      "footer": {
+        "factsDated": "Jovvieに関する情報は2026-07-09時点の独自の競合調査に基づき、それ以降は再確認していません。判断する前にjovvie.comで現在の価格をご確認ください。WCPOSに関する情報はwcpos.com、docs.wcpos.com、WordPress.orgに基づきます。四半期ごとに再確認します。",
         "corrections": "誤りを見つけましたか？ support@wcpos.com までご連絡ください。迅速に修正し、すべての変更を記録します。"
       }
     }

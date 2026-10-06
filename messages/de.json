@@ -1844,6 +1844,11 @@
         "description": "Das POS von Square plus Synchronisierungs-Erweiterung versus eine Kasse, die auf WooCommerce aufbaut: wo Verkäufe vor Ort erfasst werden, Synchronisierung, Standorte, Offline-Zahlungen, Kartengebühren und wo Square wirklich besser ist.",
         "cta": "Zum Vergleich"
       },
+      "jovvieCard": {
+        "title": "WCPOS vs Jovvie",
+        "description": "Zwei WooCommerce-POS-Plugins: eine Einmalzahlung versus Monatspläne mit einer Gebühr pro Transaktion, Apps, Kartenzahlungen, Bewertungen und wo Jovvie wirklich besser ist.",
+        "cta": "Zum Vergleich"
+      },
       "moreSoon": "Weitere Vergleiche folgen."
     },
     "oliver": {
@@ -2377,6 +2382,119 @@
       },
       "footer": {
         "factsDated": "Fakten zu Square am 2026-10-06 anhand Square-eigener Seiten überprüft (Gebührenseite, Preisankündigung und Hilfeartikel zu Offline-Zahlungen, Tap to Pay, Geräten und internationaler Verfügbarkeit) sowie anhand der WooCommerce-Dokumentation zur Erweiterung Square for WooCommerce; WCPOS-Fakten stammen von wcpos.com und docs.wcpos.com. Wir prüfen sie jedes Quartal erneut.",
+        "corrections": "Einen Fehler entdeckt? Schreiben Sie an support@wcpos.com — wir korrigieren schnell und protokollieren jede Änderung."
+      }
+    },
+    "jovvie": {
+      "metadata": {
+        "title": "WCPOS vs. Jovvie (2026): Ein ehrlicher Vergleich",
+        "description": "WCPOS und Jovvie, zwei POS-Plugins für WooCommerce, im Vergleich vom Entwickler von WCPOS — Preise, Gebühren pro Transaktion, Apps, Kartenzahlungen, Bewertungen und wann Jovvie die bessere Wahl ist."
+      },
+      "hero": {
+        "title": "WCPOS vs Jovvie",
+        "subtitle": "WCPOS und Jovvie von BizSwoop ergänzen Ihren WooCommerce-Shop beide um eine Kasse. Der größte Unterschied ist die Bezahlung: eine Einmalzahlung oder Monatspläne plus eine Gebühr für jede Transaktion. Hier sehen Sie, wie sie sich vergleichen und wann Jovvie die bessere Wahl ist."
+      },
+      "shortAnswer": {
+        "title": "Die kurze Antwort",
+        "wcpos": "WCPOS ist ein kostenloses Open-Source-POS-Plugin für WooCommerce ohne Obergrenzen für Produkte, Bestellungen oder Kunden. Es läuft in jedem modernen Browser, als Desktop-App für Windows und macOS und als iOS- und Android-App (Beta) mit jedem WooCommerce-Zahlungsgateway. WCPOS erhebt keine Transaktionsgebühren. Pro ergänzt die Verwaltung mehrerer Shops und Kartenterminal-Integrationen für eine Einmalzahlung — $129 für ein Jahr Updates oder $399 für Lifetime — und funktioniert auch nach Ablauf des Jahres weiter.",
+        "jovvie": "Jovvie von BizSwoop ist ein POS-Plugin für WooCommerce, das im offiziellen WooCommerce Marketplace gelistet ist. Stand Juli 2026 reichten die Pläne von kostenlos bis $29 pro Monat, und BizSwoop erhob zusätzlich zum Abonnement eine Plattformgebühr von 0.5% bis 2.5% pro Transaktion. Kartenzahlungen laufen über Stripe Terminal — BizSwoop ist Partner von Stripe Terminal — und es gab keine nativen Apps. Auf WordPress.org hatte es etwa 200 aktive Installationen und eine Bewertung von 4.5 Sternen."
+      },
+      "glance": {
+        "title": "Auf einen Blick",
+        "caption": "Jovvie-Fakten Stand 2026-07-09 aus unserer eigenen Mitbewerberrecherche, seither nicht erneut überprüft; WCPOS-Fakten von wcpos.com, docs.wcpos.com und WordPress.org.",
+        "colWcpos": "WCPOS",
+        "colJovvie": "Jovvie",
+        "rows": {
+          "price": {
+            "label": "Preis",
+            "wcpos": "Kostenloses Plugin ohne Obergrenzen; Pro kostet $129 für ein Jahr Updates oder $399 für Lifetime — Einmalzahlungen, keine automatische Verlängerung",
+            "jovvie": "Pläne von kostenlos bis $29 pro Monat"
+          },
+          "fees": {
+            "label": "Transaktionsgebühren",
+            "wcpos": "Keine von WCPOS — es gelten die Tarife Ihres Zahlungsdienstleisters",
+            "jovvie": "Eine Plattformgebühr von 0.5% bis 2.5% pro Transaktion, zusätzlich zum Abonnement"
+          },
+          "cardPayments": {
+            "label": "Kartenzahlungen",
+            "wcpos": "Pro-Terminal-Integrationen: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Vipps MobilePay",
+            "jovvie": "Stripe Terminal (BizSwoop ist Partner von Stripe Terminal), mit Lesegeräten wie dem Stripe M2"
+          },
+          "apps": {
+            "label": "Apps",
+            "wcpos": "Web, Desktop-Apps (Windows und macOS), iOS- und Android-Apps (Beta)",
+            "jovvie": "Keine nativen Apps"
+          },
+          "offline": {
+            "label": "Offline",
+            "wcpos": "Produkte ohne Internetverbindung durchsuchen und Warenkörbe zusammenstellen; der Abschluss des Kaufs benötigt eine Verbindung",
+            "jovvie": "In unserer Recherche nicht geklärt — fragen Sie BizSwoop"
+          },
+          "availability": {
+            "label": "Bezugsquellen",
+            "wcpos": "WordPress.org (kostenloses Plugin) und wcpos.com (Pro)",
+            "jovvie": "WordPress.org und der offizielle WooCommerce Marketplace"
+          },
+          "wporg": {
+            "label": "WordPress.org",
+            "wcpos": "5.000+ aktive Installationen, 3,7 Sterne (81 Bewertungen)",
+            "jovvie": "Etwa 200 aktive Installationen, 4.5 Sterne"
+          }
+        }
+      },
+      "pricing": {
+        "title": "Was kostet es?",
+        "jovvie": "Stand Juli 2026 reichten die Pläne von Jovvie von kostenlos bis $29 pro Monat, und BizSwoop erhob zusätzlich zum Abonnement eine Plattformgebühr von 0.5% bis 2.5% pro Transaktion.",
+        "wcpos": "WCPOS ist kostenlos, ohne Obergrenzen für Produkte, Bestellungen, Kunden oder Barverkäufe. Pro kostet $129 — eine Einmalzahlung für ein Jahr Updates und Priority-Support — oder $399 für Lifetime. Es verlängert sich nie automatisch, und Pro funktioniert nach Ablauf des Jahres weiter: Nichts wird abgeschaltet, niemals. WCPOS erhebt keine Transaktionsgebühren; Sie zahlen die Tarife Ihres Zahlungsdienstleisters.",
+        "math": "Eine prozentuale Gebühr wächst mit Ihren Verkäufen. Bei 0.5% bis 2.5% kosten jeweils $10,000 Umsatz, auf den die Gebühr anfällt, $50 bis $250 an Plattformgebühren, noch vor dem Abonnement und den Tarifen Ihres Karten-Zahlungsdienstleisters. WCPOS Pro kostet unabhängig vom Umsatz dieselben $129 oder $399.",
+        "proAdds": "Pro ergänzt: Multi-Store-Verwaltung, Kartenterminal-Integrationen, Gutscheine, Erstattungen über die POS-API, Bestellhistorie, Kundenverwaltung an der Kasse, filialspezifische Preise, Bestands- und Preisbearbeitung, Tagesabschlussberichte und das Erweiterungsverzeichnis.",
+        "demoPrefix": "Probieren Sie vorab alles aus unter",
+        "demoLinkLabel": "demo.wcpos.com/pos",
+        "demoSuffix": "(Login demo / demo)."
+      },
+      "jovvieBetter": {
+        "title": "Wo Jovvie wirklich besser ist",
+        "intro": "Ein ehrlicher Vergleich zeigt beide Seiten:",
+        "rating": "Eine höhere Bewertung auf WordPress.org: 4.5 Sterne Stand Juli 2026 gegenüber 3.7 für WCPOS.",
+        "marketplace": "Ein Eintrag im offiziellen WooCommerce Marketplace. WCPOS wird über WordPress.org und wcpos.com vertrieben.",
+        "outro": "Wenn Sie einen Monatsplan einer Einmalzahlung vorziehen, Kartenzahlungen über Stripe Terminal abwickeln und Ihr Verkaufsvolumen die Gebühr pro Transaktion gering hält, könnte Jovvie alles sein, was Sie brauchen."
+      },
+      "choose": {
+        "title": "Welches System sollten Sie wählen?",
+        "wcpos": {
+          "title": "Wählen Sie WCPOS, wenn:",
+          "body": "Sie möchten keine Transaktionsgebühren von Ihrer Kasse, eine Einmalzahlung ohne Abschaltung, Desktop-Apps für Windows und macOS oder iOS- und Android-Apps, Open-Source-Code oder eine Auswahl an Kartenterminals: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal und Vipps MobilePay."
+        },
+        "jovvie": {
+          "title": "Wählen Sie Jovvie, wenn:",
+          "body": "Sie einen Monatsplan einer Einmalzahlung vorziehen, Kartenzahlungen über Stripe Terminal abwickeln, ein Plugin im offiziellen WooCommerce Marketplace möchten und Ihr Verkaufsvolumen eine Gebühr von 0.5% bis 2.5% pro Transaktion erschwinglich hält."
+        }
+      },
+      "faq": {
+        "title": "Häufig gestellte Fragen",
+        "fees": {
+          "question": "Erhebt Jovvie Transaktionsgebühren?",
+          "answer": "Stand Juli 2026 ja: BizSwoop erhob zusätzlich zum Abonnement von Jovvie, dessen Pläne von kostenlos bis $29 pro Monat reichten, eine Plattformgebühr von 0.5% bis 2.5% pro Transaktion. Prüfen Sie die aktuellen Tarife auf der Preisseite von Jovvie. WCPOS erhebt keine Transaktionsgebühren; Sie zahlen nur die Tarife Ihres Zahlungsdienstleisters."
+        },
+        "offline": {
+          "question": "Funktioniert Jovvie ohne Internetverbindung?",
+          "answer": "Unsere Recherche hat nicht geklärt, ob Jovvie ohne Internetverbindung funktioniert; fragen Sie daher BizSwoop, bevor Sie sich darauf verlassen. WCPOS speichert Produkte, Kunden und Warenkörbe lokal, sodass Sie ohne Verbindung den Katalog durchsuchen und Verkäufe vorbereiten können; für den Abschluss des Kaufs ist eine Serververbindung erforderlich."
+        },
+        "stripe": {
+          "question": "Kann ich ein Stripe-Kartenlesegerät mit WCPOS verwenden?",
+          "answer": "Ja, mit WCPOS Pro. Zu den Kartenterminal-Integrationen gehören Stripe Terminal sowie SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal und Vipps MobilePay."
+        },
+        "apps": {
+          "question": "Hat Jovvie native Apps?",
+          "answer": "Stand Juli 2026 hatte Jovvie keine nativen Apps. WCPOS läuft in jedem modernen Browser, als Desktop-App für Windows und macOS und als iOS- und Android-App (Beta)."
+        },
+        "expiry": {
+          "question": "Was passiert, wenn eine WCPOS-Pro-Lizenz abläuft?",
+          "answer": "Nichts schaltet sich ab. Die Pro-Version, die Sie haben, funktioniert weiter, solange Sie möchten — Ihre Kasse, Ihre Daten, jede Funktion. Sie erhalten lediglich keine neuen Updates und keinen vorrangigen Support mehr, bis Sie sich für eine Verlängerung entscheiden. Das ist Absicht: Verlängerungen müssen so mit Updates verdient werden, die den Preis wert sind — und es garantiert, dass Ihre Kasse niemals aus der Ferne abgeschaltet werden kann."
+        }
+      },
+      "footer": {
+        "factsDated": "Die Fakten zu Jovvie stammen vom 2026-07-09 aus unserer eigenen Mitbewerberrecherche und wurden seither nicht erneut überprüft; prüfen Sie vor Ihrer Entscheidung die aktuellen Preise auf jovvie.com. Die Fakten zu WCPOS stammen von wcpos.com, docs.wcpos.com und WordPress.org. Wir überprüfen sie jedes Quartal erneut.",
         "corrections": "Einen Fehler entdeckt? Schreiben Sie an support@wcpos.com — wir korrigieren schnell und protokollieren jede Änderung."
       }
     }
