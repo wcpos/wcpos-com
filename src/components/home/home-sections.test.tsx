@@ -216,6 +216,13 @@ describe('TrustSection', () => {
       'href',
       '/about-us'
     )
+    // Small text: the accent token clears WCAG AA on white and on dark slate-950.
+    expect(screen.getByRole('link', { name: 'Translated story link' })).toHaveClass(
+      'text-wcpos-red-accent'
+    )
+    expect(screen.getByRole('link', { name: 'Translated story link' })).not.toHaveClass(
+      'text-wcpos-red'
+    )
   })
 })
 
