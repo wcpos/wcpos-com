@@ -32,7 +32,9 @@ describe('WoocommerceComparePage', () => {
       for (const row of table.querySelectorAll('tbody tr')) {
         expect(row.firstElementChild?.matches('th[scope="row"]')).toBe(true)
       }
-      for (const header of table.querySelectorAll('thead th')) {
+      const headers = table.querySelectorAll('thead th')
+      expect(headers).toHaveLength(2)
+      for (const header of headers) {
         expect(header).toHaveAttribute('scope', 'col')
         expect(header.textContent?.trim()).not.toBe('')
       }
