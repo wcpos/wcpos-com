@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { GET as getIndex } from '@/app/llms.txt/route'
 import { marketingRoutes } from '@/app/sitemap'
 import { EXTENSIONS } from '@/lib/extensions-catalog'
@@ -36,6 +36,13 @@ describe('GET /llms-full.txt', () => {
     expect(body).toContain(`- [${EXTENSIONS[0].name}](${EXTENSIONS[0].docsUrl})`)
   })
 
+  it('keeps rich-text inner text from the real copy', async () => {
+    expect(en.legal.terms.licenses.items.l1.startsWith('<strong>Yearly license.</strong> A one-time payment')).toBe(true)
+    const body = await GET().text()
+
+    expect(body).toContain('- Yearly license. A one-time payment that includes Pro features')
+  })
+
   it('renders comparison table rows with column labels', async () => {
     const body = await GET().text()
     const { glance, freeTier } = en.compare.oliver
@@ -64,5 +71,57 @@ describe('GET /llms-full.txt', () => {
 
     expect(pro).toBeDefined()
     expect(pro).not.toMatch(/\$\d/)
+  })
+})
+
+describe('GET /llms-full.txt sanitization', () => {
+  beforeEach(() => {
+    vi.resetModules()
+    const nested = '<scr<script>ipt>alert(1)</script>'
+    const plain = '<script>alert(1)</script>'
+    const unclosed = 'a <script b'
+    vi.doMock('@/lib/llms-pages', () => ({
+      llmsPages: [{ path: '/probe', url: 'https://wcpos.com/probe', title: 'Probe', description: 'Probe page', content: ['probe'] }],
+    }))
+    vi.doMock('../../../messages/en.json', () => ({ default: { ...en, probe: { nested, plain, unclosed } } }))
+  })
+
+  afterEach(() => {
+    vi.doUnmock('@/lib/llms-pages')
+    vi.doUnmock('../../../messages/en.json')
+    vi.resetModules()
+  })
+
+  it('removes a nested <scr<script>ipt> tag', async () => {
+    const { GET } = await import('./route')
+    const body = await GET().text()
+
+    expect(body.split('\n')).toContain('scriptalert(1)')
+    expect(body).not.toMatch(/<script/i)
+  })
+
+  it('removes a plain <script> tag', async () => {
+    const { GET } = await import('./route')
+    const body = await GET().text()
+
+    expect(body.split('\n')).toContain('alert(1)')
+    expect(body).not.toMatch(/<script/i)
+  })
+
+  it('removes an unclosed <script', async () => {
+    const { GET } = await import('./route')
+    const body = await GET().text()
+
+    expect(body).toContain('a script b')
+    expect(body).not.toMatch(/<script/i)
+  })
+
+  it('leaves no angle bracket from message copy', async () => {
+    const { GET } = await import('./route')
+    const body = await GET().text()
+    const probe = body.split('## [Probe](https://wcpos.com/probe)')[1]
+    const copy = probe.split('\n').filter((line) => line !== '> Probe page').join('\n')
+
+    expect(copy).not.toMatch(/[<>]/)
   })
 })

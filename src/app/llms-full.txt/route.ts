@@ -6,7 +6,7 @@ const skippedKeys = /^(meta|metadata|eyebrow|cta|actions|badge|diagram|visuals)$
 const headingKeys = ['title', 'heading', 'headline', 'question', 'claim']
 
 function clean(text: string): string {
-  const cleaned = text.replace(/<\/?[a-zA-Z]+>/g, '')
+  const cleaned = text.replace(/<\/?[a-zA-Z]+>|[<>]/g, '')
   return /\{[a-zA-Z]/.test(cleaned) ? '' : cleaned
 }
 
