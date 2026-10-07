@@ -6,8 +6,8 @@ describe('sitemap', () => {
   const entries = sitemap()
 
   it('contains every marketing route for every locale', () => {
-    // 17 marketing routes x 10 locales
-    expect(entries).toHaveLength(17 * locales.length)
+    // 18 marketing routes x 10 locales
+    expect(entries).toHaveLength(18 * locales.length)
     const urls = entries.map((entry) => entry.url)
     expect(urls).toContain('https://wcpos.com')
     expect(urls).toContain('https://wcpos.com/downloads')
@@ -25,6 +25,8 @@ describe('sitemap', () => {
     expect(urls).toContain('https://wcpos.com/de/compare/jovvie')
     expect(urls).toContain('https://wcpos.com/compare/vitepos')
     expect(urls).toContain('https://wcpos.com/de/compare/vitepos')
+    expect(urls).toContain('https://wcpos.com/compare/yith-pos')
+    expect(urls).toContain('https://wcpos.com/de/compare/yith-pos')
     expect(urls).toContain('https://wcpos.com/about-us')
     expect(urls).toContain('https://wcpos.com/support')
     expect(urls).toContain('https://wcpos.com/fr/roadmap')

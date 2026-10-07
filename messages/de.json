@@ -1882,6 +1882,11 @@
         "description": "Zwei WooCommerce-POS-Plugins mit kostenlosen Versionen: Preise, Offline-Bestellungen, Restaurantmodi, Apps, Kartenterminals und wo Vitepos wirklich besser ist.",
         "cta": "Zum Vergleich"
       },
+      "yithCard": {
+        "title": "WCPOS vs YITH Point of Sale",
+        "description": "WCPOS und YITHs Kassen-Plugin für WooCommerce: Lizenzen, Kartenterminals, Apps, Offline-Nutzung, Filialen und Kassen und was YITH Point of Sale gut macht.",
+        "cta": "Zum Vergleich"
+      },
       "moreSoon": "Weitere Vergleiche folgen."
     },
     "oliver": {
@@ -2671,6 +2676,151 @@
       },
       "footer": {
         "factsDated": "Die Fakten zu Vitepos wurden am 2026-10-07 von vitepos.com und dessen WordPress.org-Eintrag abgerufen (siehe Quellen); prüfen Sie vor Ihrer Entscheidung die aktuellen Preise auf vitepos.com. Die Fakten zu WCPOS stammen von wcpos.com, docs.wcpos.com und WordPress.org. Wir überprüfen sie jedes Quartal erneut.",
+        "corrections": "Einen Fehler entdeckt? Schreiben Sie an support@wcpos.com — wir korrigieren schnell und protokollieren jede Änderung."
+      }
+    },
+    "yith": {
+      "metadata": {
+        "title": "WCPOS vs. YITH Point of Sale (2026): Ein ehrlicher Vergleich",
+        "description": "WCPOS und YITH Point of Sale for WooCommerce im Vergleich, verfasst vom Entwickler von WCPOS — Lizenzen, Kartenterminals, Apps, Offline-Nutzung, Filialen und Kassen und wann YITH Point of Sale die bessere Wahl ist."
+      },
+      "hero": {
+        "title": "WCPOS vs YITH Point of Sale",
+        "subtitle": "WCPOS und YITH Point of Sale for WooCommerce ergänzen Ihren WooCommerce-Shop beide um eine Kasse. YITH Point of Sale verwaltet Filialen, Kassen und Bargeldbestände der Kassen im Browser; WCPOS hat eine kostenlose Version, Desktop- und Mobil-Apps sowie Kartenterminal-Integrationen und lässt Sie Produkte durchsuchen und Warenkörbe offline zusammenstellen. Hier sehen Sie, wie sie sich vergleichen und wann YITH Point of Sale die bessere Wahl ist."
+      },
+      "shortAnswer": {
+        "title": "Die kurze Antwort",
+        "wcpos": "WCPOS ist ein kostenloses Open-Source-POS-Plugin für WooCommerce ohne Obergrenzen für Produkte, Bestellungen oder Kunden. Es läuft in jedem modernen Browser, als Desktop-App für Windows und macOS und als iOS- und Android-App (Beta) mit jedem WooCommerce-Zahlungsgateway. WCPOS erhebt keine Transaktionsgebühren. Pro ergänzt die Verwaltung mehrerer Shops und Kartenterminal-Integrationen für eine Einmalzahlung — $129 für ein Jahr Updates oder $399 für Lifetime — und funktioniert auch nach Ablauf des Jahres weiter.",
+        "yith": "YITH Point of Sale for WooCommerce von YITH ist ein kostenpflichtiges POS-Plugin für WooCommerce, das als jährlich automatisch verlängerte Lizenz verkauft wird; die Produktseite erwähnt keine kostenlose Version. Es läuft in einem Webbrowser, bietet unbegrenzt viele Filialen und Kassen mit getrennten Lagerbeständen pro Filiale und unterstützt aufgeteilte Zahlungen. Es hat keinen Offline-Modus und lässt sich mit keinem Kartenterminal verbinden: Laut YITH-Dokumentation wird jede Zahlung manuell verarbeitet. Am 2026-10-07 gab die Produktseite an, dass 4.667 Kunden es nutzen, mit einer Bewertung von 4,23 von 5 aus 71 Kundenbewertungen; das Änderungsprotokoll führte Version 3.27.0 auf, veröffentlicht am 2026-09-30."
+      },
+      "glance": {
+        "title": "Auf einen Blick",
+        "caption": "Fakten zu YITH Point of Sale am 2026-10-07 von yithemes.com und docs.yithemes.com abgerufen (siehe Quellen unten); WCPOS-Fakten von wcpos.com, docs.wcpos.com und WordPress.org.",
+        "colWcpos": "WCPOS",
+        "colYith": "YITH Point of Sale",
+        "rows": {
+          "price": {
+            "label": "Preis",
+            "wcpos": "Kostenloses Plugin ohne Obergrenzen; Pro kostet $129 für ein Jahr Updates oder $399 für Lifetime — Einmalzahlungen, keine automatische Verlängerung",
+            "yith": "Kostenpflichtiges Plugin, ohne kostenlose Version auf der Produktseite; eine jährlich automatisch verlängerte Lizenz mit einem Jahr Updates und Support (prüfen Sie den aktuellen Preis auf yithemes.com)"
+          },
+          "expiry": {
+            "label": "Wenn Sie nicht mehr zahlen",
+            "wcpos": "Eine abgelaufene Pro-Lizenz funktioniert für immer weiter — Sie behalten Ihre Kasse, Ihre Daten und jede Funktion; nur Updates und vorrangiger Support pausieren",
+            "yith": "Updates und Support enden, wenn die Lizenz abläuft; YITHs Bedingungen sagen nicht, ob das Plugin weiter funktioniert"
+          },
+          "cardPayments": {
+            "label": "Kartenzahlungen",
+            "wcpos": "Pro-Terminal-Integrationen: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Vipps MobilePay",
+            "yith": "Keine Verbindung zu Kartenterminals; Zahlungen werden manuell verarbeitet, mit den Zahlungsmethoden Cash und Chip and Pin"
+          },
+          "apps": {
+            "label": "Apps",
+            "wcpos": "Web, Desktop-Apps (Windows und macOS), iOS- und Android-Apps (Beta)",
+            "yith": "Läuft in einem Webbrowser; Sie können es auf dem Startbildschirm eines Smartphones oder Tablets speichern"
+          },
+          "offline": {
+            "label": "Offline",
+            "wcpos": "Produkte ohne Internetverbindung durchsuchen und Warenkörbe zusammenstellen; der Abschluss des Kaufs benötigt eine Verbindung",
+            "yith": "Kein Offline-Modus laut Produktseite"
+          },
+          "barcode": {
+            "label": "Barcode-Scanning",
+            "wcpos": "Ja",
+            "yith": "Ja, mit einem Barcodescanner; laut FAQ können mit der iPad-Kamera keine Barcodes gescannt werden"
+          },
+          "receipts": {
+            "label": "Belegdruck (inkl. Thermodruck)",
+            "wcpos": "Ja",
+            "yith": "Druckt auf jedem an Ihren Computer angeschlossenen Drucker oder speichert ein PDF, laut Dokumentation"
+          },
+          "stores": {
+            "label": "Filialen und Kassen",
+            "wcpos": "Verwaltung mehrerer Filialen in Pro; unbegrenzt viele Geräte und Kassierer",
+            "yith": "Unbegrenzt viele Filialen und Kassen, mit getrennten Lagerbeständen pro Filiale"
+          },
+          "ratings": {
+            "label": "Nutzer und Bewertungen",
+            "wcpos": "WordPress.org: 5.000+ aktive Installationen, 3,7 Sterne (81 Bewertungen)",
+            "yith": "yithemes.com: 4.667 Kunden, 4,23 von 5 aus 71 Kundenbewertungen"
+          }
+        }
+      },
+      "pricing": {
+        "title": "Was kostet es?",
+        "yith": "YITH verkauft YITH Point of Sale for WooCommerce als Lizenz mit einem Jahr Updates und Support sowie einer 30-tägigen Geld-zurück-Garantie. Laut YITHs Bedingungen verlängern sich die Lizenzen jedes Jahr automatisch; nach Ablauf einer Lizenz erhalten Sie keine Updates und keinen Support mehr für das Produkt. Wir konnten den Preis auf der Produktseite am 2026-10-07 nicht lesen; prüfen Sie den aktuellen Preis auf yithemes.com.",
+        "wcpos": "WCPOS ist kostenlos, ohne Obergrenzen für Produkte, Bestellungen, Kunden oder Barverkäufe. Pro kostet $129 — eine Einmalzahlung für ein Jahr Updates und Priority-Support — oder $399 für Lifetime. Es verlängert sich nie automatisch, und Pro funktioniert nach Ablauf des Jahres weiter: Nichts wird abgeschaltet, niemals. WCPOS erhebt keine Transaktionsgebühren; Sie zahlen die Tarife Ihres Zahlungsdienstleisters.",
+        "compare": "Da wir den aktuellen Preis von YITH nicht bestätigen konnten, vergleicht diese Seite keine Listenpreise. Die Lizenzbedingungen unterscheiden sich: Eine YITH-Lizenz verlängert sich jedes Jahr automatisch, während WCPOS Pro eine Einmalzahlung ist und nach Ablauf des Update-Jahres weiter funktioniert.",
+        "proAdds": "Pro ergänzt: Multi-Store-Verwaltung, Kartenterminal-Integrationen, Gutscheine, Erstattungen über die POS-API, Bestellhistorie, Kundenverwaltung an der Kasse, filialspezifische Preise, Bestands- und Preisbearbeitung, Tagesabschlussberichte und das Erweiterungsverzeichnis.",
+        "demoPrefix": "Probieren Sie vorab alles aus unter",
+        "demoLinkLabel": "demo.wcpos.com/pos",
+        "demoSuffix": "(Login demo / demo)."
+      },
+      "yithBetter": {
+        "title": "Was YITH Point of Sale gut macht",
+        "intro": "Ein ehrlicher Vergleich zeigt beide Seiten:",
+        "stores": "Filialen, Kassen und Lagerbestand — unbegrenzt viele Filialen und unbegrenzt viele Kassen pro Filiale; die Multi-Stock-Funktion legt für jede Filiale eigene Lagerbestände fest.",
+        "cash": "Kassenbestand — beim Öffnen einer Kasse Bargeldbestand erfassen, während einer Sitzung Bargeld mit Angabe eines Grundes hinzufügen oder entnehmen und mit einer Zusammenfassung von Bestellungen, Verkäufen nach Zahlungsmethode, Steuern und Bargeld sowie einem optionalen CSV-Abschlussbericht schließen.",
+        "roles": "Filialrollen — jede Filiale hat Manager mit vollem Zugriff auf ihre Kassen und Kassierer, deren Zugriff eingeschränkt sein kann.",
+        "split": "Aufgeteilte Zahlungen — ein Kunde kann eine Bestellung mit mehr als einer Zahlungsmethode bezahlen.",
+        "barcodes": "YITH Barcodes — es integriert sich mit YITHs eigenem Barcode-Plugin, falls Ihr Shop es bereits nutzt.",
+        "outro": "Wenn Sie bereits YITH-Plugins nutzen, aus mehreren Filialen mit getrennten Lagerbeständen verkaufen und Kartenzahlungen über ein Terminal annehmen, das nicht mit Ihrer Kasse verbunden ist, könnte YITH Point of Sale die bessere Wahl sein."
+      },
+      "choose": {
+        "title": "Welches System sollten Sie wählen?",
+        "wcpos": {
+          "title": "Wählen Sie WCPOS, wenn:",
+          "body": "Sie möchten eine kostenlose Version, Kartenterminal-Integrationen (Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal und Vipps MobilePay), Desktop-Apps für Windows und macOS oder iOS- und Android-Apps, Produkte offline durchsuchen und Warenkörbe zusammenstellen oder eine Einmalzahlung, die nach dem Update-Jahr weiter funktioniert."
+        },
+        "yith": {
+          "title": "Wählen Sie YITH Point of Sale, wenn:",
+          "body": "Sie bereits YITH-Plugins wie YITH Barcodes nutzen, unbegrenzt viele Filialen und Kassen mit getrennten Lagerbeständen pro Filiale und die Erfassung des Bargeldbestands für jede Kassensitzung möchten und bereit sind, Kartenzahlungen über ein Terminal anzunehmen, das nicht mit Ihrer Kasse verbunden ist."
+        }
+      },
+      "faq": {
+        "title": "Häufig gestellte Fragen",
+        "price": {
+          "question": "Wie viel kostet YITH Point of Sale?",
+          "answer": "YITH verkauft es als jährlich automatisch verlängerte Lizenz mit einem Jahr Updates und Support sowie einer 30-tägigen Geld-zurück-Garantie. Wir konnten den Preis auf der Produktseite am 2026-10-07 nicht lesen; prüfen Sie daher den aktuellen Preis auf yithemes.com. Die Produktseite erwähnt keine kostenlose Version. WCPOS ist kostenlos, und WCPOS Pro kostet einmalig $129 für ein Jahr Updates oder $399 lebenslang."
+        },
+        "offline": {
+          "question": "Funktioniert YITH Point of Sale offline?",
+          "answer": "Nein. Die FAQ auf der Produktseite sagen, dass das Plugin keine Offline-Funktion bietet, Sie es aber auf einem lokalen Server einrichten können. WCPOS speichert Produkte, Kunden und Warenkörbe lokal, sodass Sie ohne Verbindung den Katalog durchsuchen und Verkäufe vorbereiten können; für den Abschluss des Kaufs ist eine Serververbindung erforderlich."
+        },
+        "terminals": {
+          "question": "Kann ich ein Kartenterminal mit YITH Point of Sale verbinden?",
+          "answer": "Nein. Laut YITH-Dokumentation kann kein POS-Kartenterminal mit dem Plugin verbunden werden, sodass jede Zahlung manuell verarbeitet wird; es fügt die Zahlungsmethoden Cash und Chip and Pin hinzu, um Zahlungen zu erfassen. WCPOS Pro gehören Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal und Vipps MobilePay."
+        },
+        "apps": {
+          "question": "Hat YITH Point of Sale native Apps?",
+          "answer": "YITHs Dokumentation beschreibt, wie die Kasse im Browser geöffnet und auf dem Startbildschirm eines Smartphones oder Tablets gespeichert wird, und erwähnt keine native App. Laut YITH wurde es auf Tablets mit 10 bis 12 Zoll wie iPads und Android-Tablets getestet. WCPOS läuft in jedem modernen Browser, als Desktop-App für Windows und macOS und als iOS- und Android-App (Beta)."
+        },
+        "licence": {
+          "question": "Was passiert, wenn eine YITH-Lizenz abläuft?",
+          "answer": "Laut YITHs Bedingungen verlängern sich die Lizenzen jedes Jahr automatisch; nach Ablauf einer Lizenz erhalten Sie keine Updates und keinen Support mehr für das Produkt. Sie sagen nicht, ob das Plugin danach weiter funktioniert."
+        },
+        "expiry": {
+          "question": "Was passiert, wenn eine WCPOS-Pro-Lizenz abläuft?",
+          "answer": "Nichts schaltet sich ab. Die Pro-Version, die Sie haben, funktioniert weiter, solange Sie möchten — Ihre Kasse, Ihre Daten, jede Funktion. Sie erhalten lediglich keine neuen Updates und keinen vorrangigen Support mehr, bis Sie sich für eine Verlängerung entscheiden. Das ist Absicht: Verlängerungen müssen so mit Updates verdient werden, die den Preis wert sind — und es garantiert, dass Ihre Kasse niemals aus der Ferne abgeschaltet werden kann."
+        }
+      },
+      "sources": {
+        "title": "Quellen",
+        "intro": "Alle Fakten zu YITH Point of Sale auf dieser Seite stammen von YITHs eigenen Seiten, abgerufen am 2026-10-07:",
+        "items": {
+          "product": "Lizenz mit einem Jahr Updates und Support, 30-tägige Geld-zurück-Garantie, aufgeteilte Zahlungen, Tablets, Barcode-Scannen, kein Offline-Modus, unbegrenzt viele Filialen und Kassen, Multi-Stock, Kunden und Bewertung",
+          "faqs": "Keine Kartenterminal-Verbindung, manuelle Zahlungen, Belegdruck",
+          "paymentMethods": "Zahlungsmethoden Cash und Chip and Pin",
+          "mobile": "Kasse im Browser, auf dem Startbildschirm eines Smartphones oder Tablets gespeichert",
+          "employees": "Filialmanager und Kassierer",
+          "manageCash": "Bargeldbestand, Bargeld während einer Sitzung hinzufügen und entnehmen",
+          "closeRegister": "Zusammenfassung beim Kassenabschluss und CSV-Abschlussbericht",
+          "changelog": "Version 3.27.0, veröffentlicht am 2026-09-30",
+          "terms": "Jährlich automatisch verlängerte Lizenzen; nach Ablauf einer Lizenz keine Updates und kein Support"
+        }
+      },
+      "footer": {
+        "factsDated": "Die Fakten zu YITH Point of Sale wurden am 2026-10-07 von yithemes.com und docs.yithemes.com abgerufen (siehe Quellen); prüfen Sie vor Ihrer Entscheidung den aktuellen Preis auf yithemes.com. Die Fakten zu WCPOS stammen von wcpos.com, docs.wcpos.com und WordPress.org. Wir überprüfen sie jedes Quartal erneut.",
         "corrections": "Einen Fehler entdeckt? Schreiben Sie an support@wcpos.com — wir korrigieren schnell und protokollieren jede Änderung."
       }
     }
