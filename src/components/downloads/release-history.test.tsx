@@ -11,6 +11,31 @@ const baseCopy = {
 }
 
 describe('ReleaseHistory', () => {
+  it('renders no row headings unless a heading level is given', () => {
+    const releases: ReleaseEntry[] = [
+      { version: '1.9.6', date: 'June 17, 2026', body: '- Fixed checkout bug' },
+    ]
+    const { unmount } = render(
+      <ReleaseHistory releases={releases} copy={baseCopy} locale="en" />,
+    )
+
+    expect(screen.queryAllByRole('heading')).toHaveLength(0)
+    unmount()
+
+    render(
+      <ReleaseHistory
+        releases={releases}
+        copy={baseCopy}
+        locale="en"
+        headingLevel={3}
+      />,
+    )
+
+    const headings = screen.getAllByRole('heading', { level: 3 })
+    expect(headings).toHaveLength(1)
+    expect(headings[0].textContent).toMatch(/^1\.9\.6/)
+  })
+
   it('marks GitHub-authored release notes with their source language and a notice on non-English pages', () => {
     const releases: ReleaseEntry[] = [
       {

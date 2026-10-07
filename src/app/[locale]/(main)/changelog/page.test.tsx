@@ -92,6 +92,38 @@ describe('ChangelogPage', () => {
     expect(screen.getByText('Note for 1.8.12')).toBeInTheDocument()
   })
 
+  it('renders each release entry as an h2 under the page h1', async () => {
+    vi.mocked(getReleases).mockResolvedValue([
+      ...published,
+      {
+        ...published[0],
+        tagName: 'v9.9.9-draft',
+        publishedAt: '2026-02-01T12:00:00Z',
+        draft: true,
+      },
+      {
+        ...published[0],
+        tagName: 'v9.9.9-beta.1',
+        publishedAt: '2026-02-02T12:00:00Z',
+        prerelease: true,
+      },
+    ])
+
+    render(await ChangelogPage({ params: Promise.resolve({ locale: 'en' }) }))
+
+    expect(screen.getAllByRole('heading', { level: 1 })).toHaveLength(1)
+    const headings = screen.getAllByRole('heading', { level: 2 })
+    expect(headings).toHaveLength(10)
+    const versions = [
+      '1.8.12', '1.8.11', '1.8.10', '1.8.9', '1.8.8',
+      '1.8.7', '1.8.6', '1.8.5', '1.8.4', '1.8.3',
+    ]
+    headings.forEach((heading, index) => {
+      expect(heading.textContent?.startsWith(versions[index])).toBe(true)
+      expect(heading.closest('summary')).not.toBeNull()
+    })
+  })
+
   it('renders the heading without version rows when no releases are returned', async () => {
     vi.mocked(getReleases).mockResolvedValue([])
 
