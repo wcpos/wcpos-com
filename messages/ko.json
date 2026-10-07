@@ -34,6 +34,7 @@
     "downloadHeading": "다운로드",
     "pro": "WCPOS Pro",
     "roadmap": "로드맵",
+    "changelog": "변경 기록",
     "demo": "라이브 데모",
     "discord": "Discord",
     "github": "GitHub",
@@ -353,7 +354,8 @@
     "page": {
       "eyebrow": "로드맵",
       "title": "릴리스 일정",
-      "description": "더 빠르고 오프라인에 강한 WCPOS로 가는 모든 단계 — GitHub에서 가져온 최신 작업부터 표시합니다."
+      "description": "더 빠르고 오프라인에 강한 WCPOS로 가는 모든 단계 — GitHub에서 가져온 최신 작업부터 표시합니다.",
+      "changelogLink": "변경 기록에서 게시된 버전 보기"
     },
     "board": {
       "link": "GitHub에서 실시간 제공"
@@ -379,6 +381,16 @@
       "shippedOn": "출시됨 · {date}",
       "briefLink": "전체 릴리스 개요",
       "notesLink": "릴리스 노트"
+    }
+  },
+  "changelog": {
+    "meta": {
+      "title": "변경 기록",
+      "description": "GitHub에서 가져온 WCPOS 플러그인의 최신 게시 버전에 대한 릴리스 노트."
+    },
+    "page": {
+      "title": "변경 기록",
+      "description": "WCPOS 플러그인의 최신 게시 릴리스와 GitHub에서 가져온 릴리스 노트."
     }
   },
   "pro": {

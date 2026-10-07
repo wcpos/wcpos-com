@@ -15,6 +15,8 @@ import type { RoadmapData } from '@/types/roadmap'
 import type { Metadata } from 'next'
 import { marketingMetadata } from '@/lib/seo'
 import { clientMessages } from '@/i18n/client-messages'
+import { Link } from '@/i18n/navigation'
+import { TextLink } from '@/components/ui/text-link'
 
 export async function generateMetadata({
   params,
@@ -83,6 +85,11 @@ export default async function RoadmapPage({
               {t('description')}
             </p>
             <BoardLinkChip />
+            <p className="mt-4 text-sm">
+              <TextLink asChild>
+                <Link href="/changelog">{t('changelogLink')}</Link>
+              </TextLink>
+            </p>
           </header>
 
           <Suspense fallback={<TimelineSkeleton />}>

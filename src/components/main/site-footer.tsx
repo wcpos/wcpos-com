@@ -44,6 +44,7 @@ export function SiteFooter() {
     { label: t('downloads'), href: '/downloads' },
     { label: t('pro'), href: '/pro' },
     { label: t('roadmap'), href: '/roadmap' },
+    { label: t('changelog'), href: '/changelog' },
     { label: t('demo'), href: DEMO_URL, external: true },
   ]
 

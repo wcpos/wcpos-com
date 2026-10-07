@@ -34,6 +34,7 @@
     "downloadHeading": "ダウンロード",
     "pro": "WCPOS Pro",
     "roadmap": "ロードマップ",
+    "changelog": "変更履歴",
     "demo": "ライブデモ",
     "discord": "Discord",
     "github": "GitHub",
@@ -353,7 +354,8 @@
     "page": {
       "eyebrow": "ロードマップ",
       "title": "リリースの流れ",
-      "description": "より高速でオフラインにも強いWCPOSへ向かう各ステップを、新しい作業から順にGitHubから直接表示します。"
+      "description": "より高速でオフラインにも強いWCPOSへ向かう各ステップを、新しい作業から順にGitHubから直接表示します。",
+      "changelogLink": "変更履歴で公開済みのバージョンを見る"
     },
     "board": {
       "link": "GitHubからの最新情報"
@@ -379,6 +381,16 @@
       "shippedOn": "リリース済み · {date}",
       "briefLink": "リリース概要の全文",
       "notesLink": "リリースノート"
+    }
+  },
+  "changelog": {
+    "meta": {
+      "title": "変更履歴",
+      "description": "GitHubから取得したWCPOSプラグインの最新の公開済みバージョンのリリースノート。"
+    },
+    "page": {
+      "title": "変更履歴",
+      "description": "WCPOSプラグインの最新の公開済みリリースと、GitHubから取得したリリースノート。"
     }
   },
   "pro": {
