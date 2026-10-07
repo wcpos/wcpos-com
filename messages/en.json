@@ -1836,7 +1836,8 @@
     },
     "discord": {
       "title": "Prefer to talk to a human?",
-      "subtitle": "Join store owners and the team in our live Discord community."
+      "subtitle": "Join store owners and the team in our live Discord community.",
+      "embedTitle": "Discord chat"
     }
   },
   "compare": {
@@ -1885,6 +1886,11 @@
       "yithCard": {
         "title": "WCPOS vs YITH Point of Sale",
         "description": "WCPOS and YITH's point of sale plugin for WooCommerce: licensing, card terminals, apps, offline use, stores and registers, and what YITH Point of Sale does well.",
+        "cta": "Read the comparison"
+      },
+      "foosalesCard": {
+        "title": "WCPOS vs FooSales",
+        "description": "A one-time Pro license or a yearly subscription per store: pricing, what happens when you stop paying, Tap to Pay, offline orders, apps, and where FooSales is genuinely better.",
         "cta": "Read the comparison"
       },
       "moreSoon": "More comparisons are on the way."
@@ -2821,6 +2827,152 @@
       },
       "footer": {
         "factsDated": "Facts about YITH Point of Sale were read from yithemes.com and docs.yithemes.com on 2026-10-07 (see Sources); check yithemes.com for the current price before you decide. WCPOS facts are from wcpos.com, docs.wcpos.com and WordPress.org. We re-verify every quarter.",
+        "corrections": "Spot an error? Email support@wcpos.com — we correct fast and log every change."
+      }
+    },
+    "foosales": {
+      "metadata": {
+        "title": "WCPOS vs FooSales (2026): An Honest Comparison",
+        "description": "WCPOS and FooSales, two point of sale systems for WooCommerce, compared by the maker of WCPOS — pricing, what happens when you stop paying, Tap to Pay, offline orders, apps, card terminals, and when FooSales is the better choice."
+      },
+      "hero": {
+        "title": "WCPOS vs FooSales",
+        "subtitle": "WCPOS and FooSales both add a point of sale to your WooCommerce store. FooSales is a yearly subscription per store, with iPad, iPhone and Android apps, an offline order mode, and Tap to Pay on its Plus plan; WCPOS is a free plugin with one-time Pro licenses, desktop apps, and a wider choice of card terminals. Here is how they compare, and when FooSales is the better choice."
+      },
+      "shortAnswer": {
+        "title": "The short answer",
+        "wcpos": "WCPOS is a free, open-source point of sale plugin for WooCommerce, with no caps on products, orders, or customers. It runs in any modern browser, as desktop apps for Windows and macOS, and as iOS and Android apps (beta), with any WooCommerce payment gateway. WCPOS charges no transaction fees. Pro adds multi-store management and card-terminal integrations for a one-time payment — $129 for a year of updates or $399 lifetime — and keeps working after the year ends.",
+        "foosales": "FooSales is a point of sale for WooCommerce sold as a yearly subscription for each website. On 2026-10-07, foosales.com listed two plans after a 7-day free trial: Core at US$19 a month and Plus at US$38 a month, both billed annually per store, with Plus adding Square and Stripe payments. It has iPad, iPhone and Android apps and a web app. FooSales says its apps keep working offline and sync orders when the connection returns, and on the Plus plan it supports Tap to Pay on iPhone and Android. Its help centre says plans include 3 users and 3 devices, and that cancelling a plan ends access to the FooSales POS and apps. On the US App Store, its app had 3.6 stars from 8 ratings."
+      },
+      "glance": {
+        "title": "At a glance",
+        "caption": "FooSales facts read on 2026-10-07 from foosales.com, help.foosales.com and its App Store listing (see Sources below); WCPOS facts from wcpos.com, docs.wcpos.com and WordPress.org.",
+        "colWcpos": "WCPOS",
+        "colFoosales": "FooSales",
+        "rows": {
+          "price": {
+            "label": "Price",
+            "wcpos": "Free plugin with no caps; Pro is $129 for one year of updates or $399 lifetime — one-time payments, no auto-renewal",
+            "foosales": "No free plan; Core is US$19 a month and Plus US$38 a month, billed annually per store, after a 7-day free trial (foosales.com, 2026-10-07)"
+          },
+          "stopPaying": {
+            "label": "If you stop paying",
+            "wcpos": "An expired Pro license keeps working forever — you keep your register, your data, and every feature; only updates and priority support pause",
+            "foosales": "Its help centre says cancelling a plan ends access to the FooSales web POS and apps"
+          },
+          "cardPayments": {
+            "label": "Card payments",
+            "wcpos": "Pro terminal integrations: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Vipps MobilePay",
+            "foosales": "Plus plan: Square Terminal, Square Readers (tablet apps) and Stripe Terminal readers"
+          },
+          "tapToPay": {
+            "label": "Tap to Pay",
+            "wcpos": "No",
+            "foosales": "On iPhone and Android, through Stripe or Square (Plus plan)"
+          },
+          "apps": {
+            "label": "Apps",
+            "wcpos": "Web, desktop apps (Windows and macOS), iOS and Android apps (beta)",
+            "foosales": "iPad, iPhone and Android apps, and a web app for modern browsers"
+          },
+          "offline": {
+            "label": "Offline",
+            "wcpos": "Browse products and build carts offline; checkout needs connectivity",
+            "foosales": "Says its apps keep working offline and sync new orders, cancellations and refunds on reconnect; customers can't be created or edited offline"
+          },
+          "devices": {
+            "label": "Users and devices",
+            "wcpos": "Unlimited devices and cashiers",
+            "foosales": "3 users and 3 devices per plan, according to its help centre; more with User and Device Add-ons, sold separately"
+          },
+          "stores": {
+            "label": "Multiple stores / locations",
+            "wcpos": "Yes (Pro): per-store addresses, tax rates, receipt templates, pricing, and authorized users",
+            "foosales": "One plan per website; store and stock location management are listed on its roadmap as TBC"
+          },
+          "ratings": {
+            "label": "Ratings",
+            "wcpos": "WordPress.org: 5,000+ active installs, 3.7 stars (81 reviews)",
+            "foosales": "Apple App Store (US): 3.6 out of 5 from 8 ratings"
+          }
+        }
+      },
+      "pricing": {
+        "title": "What does it cost?",
+        "foosales": "On 2026-10-07, foosales.com listed two plans, both billed annually per store: Core at US$19 a month, and Plus at US$38 a month, which adds Square payments, Stripe payments, WooCommerce Product Add-ons and FooEvents integration. Both include updates and email support. No monthly option and no free plan were listed; a 7-day free trial, with no credit card required, includes every Plus feature. Each website or subdomain needs its own plan, and extra users and devices are sold as add-ons. Check foosales.com/pricing for current prices.",
+        "wcpos": "WCPOS is free, with no caps on products, orders, customers, or cash sales. Pro is $129 — a one-time payment covering one year of updates and priority support — or $399 lifetime. It never auto-renews, and Pro keeps working after the year ends: nothing switches off, ever. WCPOS charges no transaction fees; you pay your payment processor's own rates.",
+        "compare": "Billed annually, FooSales Core works out to US$228 a year per store, and Plus, which has the Square and Stripe integrations, to US$456. WCPOS Pro, with its card-terminal integrations, is a one-time $129 for a year of updates or $399 lifetime. FooSales's help centre says cancelling a plan ends access to its POS and apps; an expired WCPOS Pro license keeps working.",
+        "proAdds": "Pro adds: multi-store management, card-terminal integrations, coupons, refunds via the POS API, order history, customer management at the register, store-specific pricing, stock and price editing, end-of-day reports, and the extension directory.",
+        "demoPrefix": "Try everything first at",
+        "demoLinkLabel": "demo.wcpos.com/pos",
+        "demoSuffix": "(login demo / demo)."
+      },
+      "foosalesBetter": {
+        "title": "Where FooSales is genuinely better",
+        "intro": "An honest comparison cuts both ways:",
+        "tapToPay": "Tap to Pay on iPhone and Android — with FooSales Plus, a customer can hold their card to your phone, through Stripe or Square. WCPOS does not support Tap to Pay.",
+        "offline": "Offline orders — FooSales says its apps keep recording new orders, cancellations and refunds without an internet connection and sync them to WooCommerce when the connection returns. WCPOS lets you browse products and build carts offline, but checkout needs a connection.",
+        "outro": "If you want Tap to Pay on a phone or an offline order mode, and a yearly subscription for each store suits you, FooSales may be the better fit."
+      },
+      "choose": {
+        "title": "Which should you choose?",
+        "wcpos": {
+          "title": "Choose WCPOS if:",
+          "body": "You want a free plugin with no caps, one-time Pro pricing that keeps working if you stop paying, unlimited devices and cashiers, multi-store management, desktop apps for Windows and macOS, or a SumUp, PayPal Reader (Zettle) or Mollie terminal, which FooSales's roadmap lists as integration requests."
+        },
+        "foosales": {
+          "title": "Choose FooSales if:",
+          "body": "You want Tap to Pay on iPhone or Android, an offline order mode, Square Readers on a tablet, or FooEvents integration, and a yearly subscription for each store suits you."
+        }
+      },
+      "faq": {
+        "title": "Frequently asked questions",
+        "price": {
+          "question": "How much does FooSales cost?",
+          "answer": "On 2026-10-07, foosales.com listed FooSales Core at US$19 a month and FooSales Plus at US$38 a month, both billed annually per store, after a 7-day free trial that needs no credit card. No free plan was listed. Check foosales.com/pricing for current prices. WCPOS is free, and WCPOS Pro is a one-time $129 for a year of updates or $399 lifetime."
+        },
+        "cancel": {
+          "question": "What happens if you stop paying for FooSales?",
+          "answer": "FooSales's help centre says that cancelling a plan cancels access to the POS: once the cancellation has been processed, you can no longer use the FooSales web POS or its apps. After the 7-day trial, you need a plan to keep using the apps. With WCPOS, an expired Pro license keeps working: you keep your register, your data, and every feature, and only updates and priority support pause."
+        },
+        "offline": {
+          "question": "Does FooSales work offline?",
+          "answer": "FooSales says it does: its apps switch to offline mode when the connection drops, most of the POS keeps working, and new orders, cancelled orders and refunds are stored on the device and synced to WooCommerce when you are back online. Its help centre says customers can't be created or modified offline and stock values can't be changed, and its payments page says WooCommerce coupons need an internet connection. WCPOS stores products, customers, and carts locally, so you can browse the catalog and build sales without a connection; completing checkout requires server connectivity."
+        },
+        "terminals": {
+          "question": "Which card terminals do FooSales and WCPOS support?",
+          "answer": "On its Plus plan, FooSales integrates Square Terminal on all its apps, Square Readers on its tablet apps, and Stripe Terminal readers, and supports Tap to Pay on iPhone and Android through Stripe or Square. Other card readers can be used outside FooSales, with the sale recorded at checkout as a card payment. WCPOS Pro's card-terminal integrations include Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, and Vipps MobilePay. WCPOS does not support Tap to Pay."
+        },
+        "apps": {
+          "question": "Does FooSales have native apps?",
+          "answer": "Yes. FooSales has apps for iPad and iPhone (iOS 16.4 or later) and for Android (Android 10 or later), and a web app that runs in modern browsers such as Chrome, Safari, Firefox and Edge. Its App Store listing says the iOS app also runs on a Mac with an Apple M1 chip or later. WCPOS runs in any modern browser, as desktop apps for Windows and macOS, and as iOS and Android apps (beta)."
+        },
+        "expiry": {
+          "question": "What happens when a WCPOS Pro license expires?",
+          "answer": "Nothing switches off. The Pro version you have keeps working for as long as you want — your register, your data, every feature. You stop receiving new updates and priority support until you choose to renew. This is deliberate: it means renewals have to be earned with updates worth paying for, and it guarantees your point of sale can never be remotely disabled."
+        }
+      },
+      "sources": {
+        "title": "Sources",
+        "intro": "Every FooSales fact on this page comes from FooSales's own pages and its App Store listing, read on 2026-10-07:",
+        "items": {
+          "pricing": "Plans and prices, annual billing per store, free trial, one plan per website, updates and email support",
+          "helpPricing": "3 users and 3 devices per plan, what happens after the trial",
+          "userAddon": "User Add-on, sold separately",
+          "deviceAddon": "Device Add-on, sold separately",
+          "cancel": "What cancelling a plan does to access",
+          "cardReaders": "Square Terminal, Square Reader and Stripe Terminal integrations, other card readers",
+          "payments": "Tap to Pay on iPhone and Android, coupons need an internet connection",
+          "platform": "iPad, Android tablet and web apps",
+          "requirements": "iOS, Android and web browser requirements",
+          "offlineFeature": "Offline mode and sync on reconnect",
+          "offlineHelp": "What works offline and what does not",
+          "roadmap": "Store and stock location management, and SumUp, Zettle and Mollie integrations, listed as TBC",
+          "appStore": "iOS app, Mac with Apple M1 chip or later, App Store rating"
+        }
+      },
+      "footer": {
+        "factsDated": "Facts about FooSales were read from foosales.com, help.foosales.com and its App Store listing on 2026-10-07 (see Sources); check foosales.com for current prices before you decide. WCPOS facts are from wcpos.com, docs.wcpos.com and WordPress.org. We re-verify every quarter.",
         "corrections": "Spot an error? Email support@wcpos.com — we correct fast and log every change."
       }
     }

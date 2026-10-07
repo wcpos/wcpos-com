@@ -58,6 +58,16 @@ describe('marketingMetadata', () => {
     expect(metadata.twitter?.images).toEqual(['/og/roadmap.png'])
   })
 
+  it('uses the extensions and changelog social cards in every locale', () => {
+    for (const path of ['/extensions', '/changelog']) {
+      for (const locale of ['en', 'fr'] as const) {
+        const metadata = marketingMetadata({ locale, path })
+        expect(metadata.openGraph?.images).toEqual([`/og${path}.png`])
+        expect(metadata.twitter?.images).toEqual([`/og${path}.png`])
+      }
+    }
+  })
+
   it('falls back to the site card', () => {
     const metadata = marketingMetadata({ locale: 'en', path: '/privacy' })
     expect(metadata.openGraph?.images).toEqual(['/opengraph-image.png'])

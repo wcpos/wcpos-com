@@ -1836,7 +1836,8 @@
     },
     "discord": {
       "title": "Praat je liever met een mens?",
-      "subtitle": "Sluit je aan bij winkeleigenaren en het team in onze live Discord-community."
+      "subtitle": "Sluit je aan bij winkeleigenaren en het team in onze live Discord-community.",
+      "embedTitle": "Discord-chat"
     }
   },
   "compare": {
@@ -1885,6 +1886,11 @@
       "yithCard": {
         "title": "WCPOS vs YITH Point of Sale",
         "description": "WCPOS en de kassa-plugin van YITH voor WooCommerce: licenties, betaalterminals, apps, offline gebruik, winkels en kassa’s, en wat YITH Point of Sale goed doet.",
+        "cta": "Lees de vergelijking"
+      },
+      "foosalesCard": {
+        "title": "WCPOS vs FooSales",
+        "description": "Een eenmalig betaalde Pro-licentie of een jaarabonnement per winkel: prijzen, wat er gebeurt als je stopt met betalen, Tap to Pay, offline bestellingen, apps en waar FooSales echt beter is.",
         "cta": "Lees de vergelijking"
       },
       "moreSoon": "Er komen meer vergelijkingen aan."
@@ -2821,6 +2827,152 @@
       },
       "footer": {
         "factsDated": "De feiten over YITH Point of Sale zijn op 2026-10-07 geraadpleegd op yithemes.com en docs.yithemes.com (zie Bronnen); kijk op yithemes.com voor de actuele prijs voordat je beslist. De feiten over WCPOS komen van wcpos.com, docs.wcpos.com en WordPress.org. We verifiëren ze elk kwartaal opnieuw.",
+        "corrections": "Een fout gezien? Mail naar support@wcpos.com — we corrigeren snel en leggen elke wijziging vast."
+      }
+    },
+    "foosales": {
+      "metadata": {
+        "title": "WCPOS vs FooSales (2026): een eerlijke vergelijking",
+        "description": "WCPOS en FooSales, twee kassasystemen voor WooCommerce, vergeleken door de maker van WCPOS — prijzen, wat er gebeurt als je stopt met betalen, Tap to Pay, offline bestellingen, apps, betaalterminals en wanneer FooSales de betere keuze is."
+      },
+      "hero": {
+        "title": "WCPOS vs FooSales",
+        "subtitle": "WCPOS en FooSales voegen allebei een kassa toe aan je WooCommerce-winkel. FooSales is een jaarabonnement per winkel, met apps voor iPad, iPhone en Android, een modus voor offline bestellingen en Tap to Pay in het Plus-abonnement; WCPOS is een gratis plugin met eenmalig betaalde Pro-licenties, desktopapps en een ruimere keuze aan betaalterminals. Zo vergelijken ze en dit is wanneer FooSales de betere keuze is."
+      },
+      "shortAnswer": {
+        "title": "Het korte antwoord",
+        "wcpos": "WCPOS is een gratis, open-source kassaplugin voor WooCommerce, zonder limieten op producten, bestellingen of klanten. Hij werkt in elke moderne browser, als desktopapp voor Windows en macOS en als app voor iOS en Android (bèta), met elke WooCommerce-betaalgateway. WCPOS rekent geen transactiekosten. Pro voegt beheer van meerdere winkels en integraties met betaalterminals toe voor een eenmalige betaling — $129 voor één jaar updates of $399 levenslang — en blijft na dat jaar werken.",
+        "foosales": "FooSales is een kassasysteem voor WooCommerce dat als jaarabonnement voor elke website wordt verkocht. Op 2026-10-07 vermeldde foosales.com na een gratis proefperiode van 7 dagen twee abonnementen: Core voor US$19 per maand en Plus voor US$38 per maand, allebei jaarlijks per winkel gefactureerd, waarbij Plus betalingen via Square en Stripe toevoegt. Het heeft apps voor iPad, iPhone en Android en een webapp. FooSales zegt dat zijn apps offline blijven werken en bestellingen synchroniseren zodra de verbinding terugkeert, en dat het Plus-abonnement Tap to Pay op iPhone en Android ondersteunt. Volgens het helpcentrum omvatten de abonnementen 3 gebruikers en 3 apparaten en vervalt de toegang tot de FooSales-POS en -apps bij opzegging van een abonnement. In de Amerikaanse App Store had de app 3.6 sterren uit 8 beoordelingen."
+      },
+      "glance": {
+        "title": "In één oogopslag",
+        "caption": "Feiten over FooSales op 2026-10-07 geraadpleegd op foosales.com, help.foosales.com en de App Store-vermelding (zie Bronnen hieronder); feiten over WCPOS van wcpos.com, docs.wcpos.com en WordPress.org.",
+        "colWcpos": "WCPOS",
+        "colFoosales": "FooSales",
+        "rows": {
+          "price": {
+            "label": "Prijs",
+            "wcpos": "Gratis plugin zonder limieten; Pro kost $129 voor één jaar updates of $399 levenslang — eenmalige betalingen, geen automatische verlenging",
+            "foosales": "Geen gratis abonnement; Core kost US$19 per maand en Plus US$38 per maand, jaarlijks per winkel gefactureerd, na een gratis proefperiode van 7 dagen (foosales.com, 2026-10-07)"
+          },
+          "stopPaying": {
+            "label": "Als je stopt met betalen",
+            "wcpos": "Een verlopen Pro-licentie blijft voor altijd werken — je behoudt je kassa, je data en elke functie; alleen updates en prioriteitsondersteuning pauzeren",
+            "foosales": "Volgens het helpcentrum vervalt bij opzegging van een abonnement de toegang tot de FooSales-web-POS en -apps"
+          },
+          "cardPayments": {
+            "label": "Kaartbetalingen",
+            "wcpos": "Pro-terminalintegraties: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Vipps MobilePay",
+            "foosales": "Plus-abonnement: Square Terminal, Square Readers (tabletapps) en Stripe Terminal-lezers"
+          },
+          "tapToPay": {
+            "label": "Tap to Pay",
+            "wcpos": "Nee",
+            "foosales": "Op iPhone en Android, via Stripe of Square (Plus-abonnement)"
+          },
+          "apps": {
+            "label": "Apps",
+            "wcpos": "Web, desktop-apps (Windows en macOS), iOS- en Android-apps (bèta)",
+            "foosales": "Apps voor iPad, iPhone en Android, en een webapp voor moderne browsers"
+          },
+          "offline": {
+            "label": "Offline",
+            "wcpos": "Offline door producten bladeren en winkelwagens samenstellen; afrekenen vereist verbinding",
+            "foosales": "Zegt dat zijn apps offline blijven werken en nieuwe bestellingen, annuleringen en terugbetalingen bij opnieuw verbinden synchroniseren; klanten kunnen offline niet worden aangemaakt of bewerkt"
+          },
+          "devices": {
+            "label": "Gebruikers en apparaten",
+            "wcpos": "Onbeperkt apparaten en kassamedewerkers",
+            "foosales": "3 gebruikers en 3 apparaten per abonnement, volgens het helpcentrum; meer via afzonderlijk verkochte User and Device Add-ons"
+          },
+          "stores": {
+            "label": "Meerdere winkels / locaties",
+            "wcpos": "Ja (Pro): adressen, belastingtarieven, bonnenjablonen, prijzen en bevoegde gebruikers per winkel",
+            "foosales": "Eén abonnement per website; beheer van winkels en voorraadlocaties staat op de roadmap vermeld als TBC"
+          },
+          "ratings": {
+            "label": "Beoordelingen",
+            "wcpos": "WordPress.org: 5,000+ actieve installaties, 3.7 sterren (81 recensies)",
+            "foosales": "Apple App Store (VS): 3.6 van 5 uit 8 beoordelingen"
+          }
+        }
+      },
+      "pricing": {
+        "title": "Wat kost het?",
+        "foosales": "Op 2026-10-07 vermeldde foosales.com twee abonnementen, allebei jaarlijks per winkel gefactureerd: Core voor US$19 per maand en Plus voor US$38 per maand, dat Square-betalingen, Stripe-betalingen en integraties met WooCommerce Product Add-ons en FooEvents toevoegt. Beide omvatten updates en e-mailondersteuning. Er werden geen maandelijkse betaaloptie en geen gratis abonnement vermeld; een gratis proefperiode van 7 dagen, zonder vereiste creditcard, omvat alle Plus-functies. Elke website of elk subdomein heeft een eigen abonnement nodig en extra gebruikers en apparaten worden als add-ons verkocht. Kijk op foosales.com/pricing voor actuele prijzen.",
+        "wcpos": "WCPOS is gratis, zonder limieten op producten, bestellingen, klanten of contante verkopen. Pro kost $129 — een eenmalige betaling voor één jaar updates en prioriteitsondersteuning — of $399 levenslang. Het wordt nooit automatisch verlengd en Pro blijft na dat jaar werken: er wordt nooit iets uitgeschakeld. WCPOS rekent geen transactiekosten; je betaalt de tarieven van je eigen betaalverwerker.",
+        "compare": "Bij jaarlijkse facturering komt FooSales Core uit op US$228 per jaar per winkel en Plus, met de Square- en Stripe-integraties, op US$456. WCPOS Pro, met zijn betaalterminalintegraties, kost eenmalig $129 voor een jaar updates of $399 levenslang. Volgens het helpcentrum van FooSales vervalt bij opzegging van een abonnement de toegang tot de POS en de apps; een verlopen WCPOS Pro-licentie blijft werken.",
+        "proAdds": "Pro voegt toe: beheer van meerdere winkels, integraties met pinterminals, kortingsbonnen, terugbetalingen via de POS API, bestelgeschiedenis, klantbeheer aan de kassa, winkelspecifieke prijzen, voorraad- en prijsbewerking, dagafsluitingsrapporten en de extensiedirectory.",
+        "demoPrefix": "Probeer alles eerst op",
+        "demoLinkLabel": "demo.wcpos.com/pos",
+        "demoSuffix": "(inloggen demo / demo)."
+      },
+      "foosalesBetter": {
+        "title": "Waar FooSales echt beter is",
+        "intro": "Een eerlijke vergelijking snijdt aan twee kanten:",
+        "tapToPay": "Tap to Pay op iPhone en Android — met FooSales Plus kan een klant zijn kaart via Stripe of Square tegen je telefoon houden. WCPOS ondersteunt Tap to Pay niet.",
+        "offline": "Offline bestellingen — FooSales zegt dat zijn apps zonder internetverbinding nieuwe bestellingen, annuleringen en terugbetalingen blijven registreren en die met WooCommerce synchroniseren zodra de verbinding terugkeert. Met WCPOS kun je offline door producten bladeren en winkelwagens samenstellen, maar afrekenen vereist een verbinding.",
+        "outro": "Als je Tap to Pay op een telefoon of een modus voor offline bestellingen wilt en een jaarabonnement per winkel bij je past, is FooSales misschien de betere keuze."
+      },
+      "choose": {
+        "title": "Welke moet je kiezen?",
+        "wcpos": {
+          "title": "Kies WCPOS als:",
+          "body": "Je een gratis plugin zonder limieten wilt, eenmalig voor Pro wilt betalen terwijl het blijft werken als je stopt met betalen, onbeperkt apparaten en kassamedewerkers, beheer van meerdere winkels, desktopapps voor Windows en macOS of een terminal van SumUp, PayPal Reader (Zettle) of Mollie wilt, die op de roadmap van FooSales als integratieverzoeken staan."
+        },
+        "foosales": {
+          "title": "Kies FooSales als:",
+          "body": "Je Tap to Pay op iPhone of Android, een modus voor offline bestellingen, Square Readers op een tablet of FooEvents-integratie wilt, en een jaarabonnement per winkel bij je past."
+        }
+      },
+      "faq": {
+        "title": "Veelgestelde vragen",
+        "price": {
+          "question": "Wat kost FooSales?",
+          "answer": "Op 2026-10-07 vermeldde foosales.com FooSales Core voor US$19 per maand en FooSales Plus voor US$38 per maand, allebei jaarlijks per winkel gefactureerd, na een gratis proefperiode van 7 dagen waarvoor geen creditcard nodig is. Er werd geen gratis abonnement vermeld. Kijk op foosales.com/pricing voor actuele prijzen. WCPOS is gratis en WCPOS Pro kost eenmalig $129 voor een jaar updates of $399 levenslang."
+        },
+        "cancel": {
+          "question": "Wat gebeurt er als je stopt met betalen voor FooSales?",
+          "answer": "Volgens het helpcentrum van FooSales beëindigt het opzeggen van een abonnement de toegang tot de POS: zodra de opzegging is verwerkt, kun je de FooSales-web-POS en de apps niet meer gebruiken. Na de proefperiode van 7 dagen heb je een abonnement nodig om de apps te blijven gebruiken. Bij WCPOS blijft een verlopen Pro-licentie werken: je behoudt je kassa, je data en elke functie, en alleen updates en prioriteitsondersteuning pauzeren."
+        },
+        "offline": {
+          "question": "Werkt FooSales offline?",
+          "answer": "FooSales zegt van wel: zijn apps schakelen bij wegvallen van de verbinding over naar de offlinemodus, het grootste deel van de POS blijft werken en nieuwe bestellingen, geannuleerde bestellingen en terugbetalingen worden op het apparaat opgeslagen en met WooCommerce gesynchroniseerd zodra je weer online bent. Volgens het helpcentrum kunnen klanten offline niet worden aangemaakt of gewijzigd en kunnen voorraadwaarden niet worden aangepast; volgens de betaalpagina hebben WooCommerce-kortingsbonnen een internetverbinding nodig. WCPOS slaat producten, klanten en winkelwagens lokaal op, zodat je zonder verbinding door de catalogus kunt bladeren en verkopen kunt voorbereiden; voor het voltooien van het afrekenen is een serververbinding nodig."
+        },
+        "terminals": {
+          "question": "Welke betaalterminals ondersteunen FooSales en WCPOS?",
+          "answer": "Met het Plus-abonnement integreert FooSales Square Terminal in al zijn apps, Square Readers in de tabletapps en Stripe Terminal-lezers, en ondersteunt Tap to Pay op iPhone en Android via Stripe of Square. Andere kaartlezers kunnen buiten FooSales worden gebruikt, waarbij de verkoop bij het afrekenen als kaartbetaling wordt geregistreerd. De betaalterminalintegraties van WCPOS Pro omvatten Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal en Vipps MobilePay. WCPOS ondersteunt Tap to Pay niet."
+        },
+        "apps": {
+          "question": "Heeft FooSales native apps?",
+          "answer": "Ja. FooSales heeft apps voor iPad en iPhone (iOS 16.4 of nieuwer) en voor Android (Android 10 of nieuwer), en een webapp die in moderne browsers zoals Chrome, Safari, Firefox en Edge werkt. De App Store-vermelding zegt dat de iOS-app ook werkt op een Mac met een Apple M1-chip of nieuwer. WCPOS werkt in elke moderne browser, als desktopapps voor Windows en macOS en als iOS- en Android-apps (bèta)."
+        },
+        "expiry": {
+          "question": "Wat gebeurt er wanneer een WCPOS Pro-licentie verloopt?",
+          "answer": "Er wordt niets uitgeschakeld. De Pro-versie die je hebt blijft werken zolang je wilt — je kassa, je data, elke functie. Je ontvangt alleen geen nieuwe updates en prioriteitsondersteuning meer totdat je besluit te verlengen. Dat is een bewuste keuze: het betekent dat verlengingen verdiend moeten worden met updates die het geld waard zijn, en het garandeert dat je kassa nooit op afstand kan worden uitgeschakeld."
+        }
+      },
+      "sources": {
+        "title": "Bronnen",
+        "intro": "Elk feit over FooSales op deze pagina komt van de eigen pagina's van FooSales en de App Store-vermelding, geraadpleegd op 2026-10-07:",
+        "items": {
+          "pricing": "Abonnementen en prijzen, jaarlijkse facturering per winkel, gratis proefperiode, één abonnement per website, updates en e-mailondersteuning",
+          "helpPricing": "3 gebruikers en 3 apparaten per abonnement, wat er na de proefperiode gebeurt",
+          "userAddon": "User Add-on, afzonderlijk verkocht",
+          "deviceAddon": "Device Add-on, afzonderlijk verkocht",
+          "cancel": "Wat opzegging van een abonnement betekent voor de toegang",
+          "cardReaders": "Integraties met Square Terminal, Square Reader en Stripe Terminal, andere kaartlezers",
+          "payments": "Tap to Pay op iPhone en Android, kortingsbonnen vereisen een internetverbinding",
+          "platform": "Apps voor iPad, Android-tablets en web",
+          "requirements": "Vereisten voor iOS, Android en webbrowsers",
+          "offlineFeature": "Offlinemodus en synchronisatie bij opnieuw verbinden",
+          "offlineHelp": "Wat offline werkt en wat niet",
+          "roadmap": "Beheer van winkels en voorraadlocaties en integraties met SumUp, Zettle en Mollie, vermeld als TBC",
+          "appStore": "iOS-app, Mac met Apple M1-chip of nieuwer, App Store-beoordeling"
+        }
+      },
+      "footer": {
+        "factsDated": "De feiten over FooSales zijn op 2026-10-07 geraadpleegd op foosales.com, help.foosales.com en de App Store-vermelding (zie Bronnen); kijk op foosales.com voor actuele prijzen voordat je beslist. De gegevens over WCPOS komen van wcpos.com, docs.wcpos.com en WordPress.org. We controleren ze elk kwartaal opnieuw.",
         "corrections": "Een fout gezien? Mail naar support@wcpos.com — we corrigeren snel en leggen elke wijziging vast."
       }
     }

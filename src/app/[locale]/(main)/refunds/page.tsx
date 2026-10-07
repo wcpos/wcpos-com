@@ -5,8 +5,8 @@ import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { TextLink } from '@/components/ui/text-link'
 import { marketingMetadata } from '@/lib/seo'
 import { formatDateForLocale } from '@/lib/date-format'
+import { REFUNDS_UPDATED_AT } from '@/lib/legal-dates'
 
-const LEGAL_UPDATED_AT = '2026-08-18T12:00:00Z'
 const PREVENTION_ITEMS = ['p1', 'p2', 'p3'] as const
 const REFUND_ITEMS = ['y1', 'y2', 'y3'] as const
 const NO_REFUND_ITEMS = ['n1', 'n2', 'n3'] as const
@@ -47,7 +47,7 @@ export default async function RefundsPage({
   const locale = resolveLocale((await params).locale)
   setRequestLocale(locale)
   const t = await getTranslations({ locale, namespace: 'legal.refunds' })
-  const updatedDate = formatDateForLocale(LEGAL_UPDATED_AT, locale, {
+  const updatedDate = formatDateForLocale(REFUNDS_UPDATED_AT, locale, {
     year: 'numeric',
     month: 'short',
     day: 'numeric',
@@ -56,7 +56,7 @@ export default async function RefundsPage({
   return (
     <main className="max-w-3xl mx-auto px-4 py-16">
       <div className="mb-12">
-        <h1 className="text-4xl font-bold mb-3">{t('title')}</h1>
+        <h1 className="text-4xl font-bold mb-3 break-words hyphens-auto">{t('title')}</h1>
         <p className="text-sm text-muted-foreground">
           {t('lastUpdated', { date: updatedDate })}
         </p>

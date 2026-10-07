@@ -91,7 +91,7 @@ export function ProBuyBox({
                 setSelected(option.planId)
                 radioRefs.current[index]?.focus()
               }}
-              className={`w-full flex items-center gap-3 rounded-lg border p-4 text-left transition-colors ${
+              className={`w-full flex flex-wrap items-center gap-3 rounded-lg border p-4 text-left transition-colors sm:flex-nowrap ${
                 isSelected
                   ? 'border-primary ring-1 ring-primary bg-primary/5'
                   : 'border-border hover:border-muted-foreground/40'
@@ -105,8 +105,8 @@ export function ProBuyBox({
                     : 'border-muted-foreground/40'
                 }`}
               />
-              <span className="flex-1 min-w-0">
-                <span className="flex items-center gap-2">
+              <span className="min-w-[8rem] flex-1 sm:min-w-0">
+                <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
                   <span className="font-semibold">{option.title}</span>
                   {option.badgeLabel && <Badge>{option.badgeLabel}</Badge>}
                 </span>
@@ -114,11 +114,14 @@ export function ProBuyBox({
                   {option.subtitle}
                 </span>
               </span>
-              <span className="text-right shrink-0">
+              <span className="ml-auto text-right shrink-0">
                 <span className="text-xl font-bold">{option.priceText}</span>
-                <span className="ml-1 text-sm font-medium text-muted-foreground">
-                  {option.currencyCode}
-                </span>
+                {/* Some locales' Intl output already contains the ISO code (e.g. it: "129 USD"). */}
+                {!option.priceText.includes(option.currencyCode) && (
+                  <span className="ml-1 text-sm font-medium text-muted-foreground">
+                    {option.currencyCode}
+                  </span>
+                )}
                 <span className="ml-1 text-sm text-muted-foreground">
                   {option.priceSuffix}
                 </span>
