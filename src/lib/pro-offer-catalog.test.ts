@@ -1,4 +1,11 @@
 import { describe, expect, it, vi } from 'vitest'
+import { createTranslator } from 'next-intl'
+import enMessages from '../../messages/en.json'
+import itMessages from '../../messages/it.json'
+import frMessages from '../../messages/fr.json'
+import zhMessages from '../../messages/zh.json'
+import ptMessages from '../../messages/pt.json'
+import deMessages from '../../messages/de.json'
 import type { MedusaProduct } from '@/types/medusa'
 import { getProducts } from '@/services/core/external/medusa-client'
 import {
@@ -63,6 +70,7 @@ describe('buildProOfferCatalog', () => {
         currencyCode: 'usd',
         formatted: '$129.00',
         compact: '$129',
+        compactNarrow: '$129',
         schemaPrice: '129',
       },
       checkoutPath:
@@ -274,6 +282,45 @@ describe('resolveProOfferCartSelection', () => {
         items: [{ variant_id: 'variant_old_yearly', quantity: 1 }],
       })
     ).toBeNull()
+  })
+})
+
+describe('home price summary across locales', () => {
+  it.each([
+    ['en', enMessages],
+    ['it', itMessages],
+    ['fr', frMessages],
+    ['zh', zhMessages],
+    ['pt', ptMessages],
+    ['de', deMessages],
+  ] as const)('shows the currency code once in %s', (locale, messages) => {
+    const offers = buildProOfferCatalog(
+      [
+        product('wcpos-pro-yearly', 129, 'variant_yearly'),
+        product('wcpos-pro-lifetime', 399, 'variant_lifetime'),
+      ],
+      'usd',
+      locale
+    )
+    const t = createTranslator({ locale, messages, namespace: 'home.pricing' })
+    const summary = formatHomeProPriceSummary(offers, (values) =>
+      t('priceSummary', values)
+    )
+
+    expect(summary?.split('USD').length).toBe(2)
+    expect(summary?.split('$').length).toBe(3)
+    expect(summary).not.toContain('US$')
+    expect(summary).not.toContain('$US')
+    expect(summary).toContain('129')
+    expect(summary).toContain('399')
+    if (locale === 'en') {
+      expect(summary).toBe('$129/year or $399 lifetime (USD). No per-register fees.')
+    }
+    if (locale === 'it') {
+      expect(summary).toBe(
+        '129\u00a0$/anno o 399\u00a0$ a vita (USD). Nessun costo per registratore.'
+      )
+    }
   })
 })
 
