@@ -16,6 +16,7 @@ vi.mock('next-intl', () => ({
           downloadHeading: 'Download',
           downloads: 'Downloads',
           pro: 'WCPOS Pro',
+          compare: 'Compare',
           roadmap: 'Roadmap',
           changelog: 'Changelog',
           demo: 'Live Demo',
@@ -115,6 +116,12 @@ describe('SiteFooter', () => {
     const downloads = screen.getByText('Downloads').closest('a')
     expect(downloads?.getAttribute('href')).toBe('/downloads')
     expect(downloads?.getAttribute('target')).toBeNull()
+  })
+
+  it('links Compare at the /compare index', () => {
+    render(<SiteFooter />)
+    expect(hrefOf('Compare')).toBe('/compare')
+    expect(screen.getByRole('link', { name: 'Compare' })).not.toHaveAttribute('target')
   })
 
   it('links to the changelog without opening a new tab', () => {
