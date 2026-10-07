@@ -1849,6 +1849,11 @@
         "description": "两款 WooCommerce POS 插件对比：一次性付款与按月付费且每笔交易收取手续费的方案、应用、银行卡支付、评分，以及 Jovvie 真正更胜一筹的方面。",
         "cta": "阅读对比"
       },
+      "viteposCard": {
+        "title": "WCPOS vs Vitepos",
+        "description": "两款提供免费版的 WooCommerce POS 插件对比：价格、离线订单、餐厅模式、应用、刷卡终端，以及 Vitepos 真正更胜一筹的方面。",
+        "cta": "阅读对比"
+      },
       "moreSoon": "更多对比即将上线。"
     },
     "oliver": {
@@ -2495,6 +2500,149 @@
       },
       "footer": {
         "factsDated": "有关 Jovvie 的信息截至 2026-07-09，来自我们自己的竞品研究，此后未重新核实；决定前请到 jovvie.com 查看当前价格。WCPOS 信息来自 wcpos.com、docs.wcpos.com 和 WordPress.org。我们每季度重新核实。",
+        "corrections": "发现错误？发邮件到 support@wcpos.com——我们会尽快更正并记录每次修改。"
+      }
+    },
+    "vitepos": {
+      "metadata": {
+        "title": "WCPOS vs Vitepos（2026）：客观对比",
+        "description": "WCPOS 与 Vitepos 是两款 WooCommerce 销售点插件，由 WCPOS 开发者对比：价格、离线订单、餐厅模式、应用、刷卡终端，以及何时 Vitepos 是更合适的选择。"
+      },
+      "hero": {
+        "title": "WCPOS vs Vitepos",
+        "subtitle": "WCPOS 和 Appsbd 的 Vitepos 都能为你的 WooCommerce 商店添加销售点功能，并且两者都在 WordPress.org 提供免费版。Vitepos 提供餐厅模式、顾客显示屏和离线订单模式；WCPOS 提供桌面及移动应用，以及更多刷卡终端选择。这里对比两者，并说明何时 Vitepos 是更合适的选择。"
+      },
+      "shortAnswer": {
+        "title": "简短结论",
+        "wcpos": "WCPOS 是一款免费、开源的 WooCommerce 销售点插件，不限制商品、订单或客户数量。它可在任何现代浏览器中运行，也提供 Windows 和 macOS 桌面应用以及 iOS 和 Android 应用（测试版），并支持任何 WooCommerce 支付网关。WCPOS 不收取交易手续费。Pro 版以一次性付款提供多店铺管理和刷卡终端集成——含一年更新的版本为 $129，终身版为 $399——一年后仍可继续使用。",
+        "vitepos": "Appsbd 的 Vitepos 是一款 WooCommerce 销售点插件，在 WordPress.org 提供免费版 Vitepos Lite。2026-10-07，vitepos.com 列出的 Vitepos Pro 单站点年度方案起价为 $79，单站点终身许可证为 $299。Vitepos 表示它能在离线时继续处理订单，并在恢复连接后同步订单，还提供带有服务员、厨房和餐桌管理功能的杂货店与餐厅模式。它在网页浏览器中运行——Vitepos 自己的博客称其没有专门的移动应用——并通过 Stripe Terminal 和 Wallee 接受终端付款。在 WordPress.org 上，它有 1,000+ 活跃安装，54 条评价给出 4.7 星评分。"
+      },
+      "glance": {
+        "title": "一览对比",
+        "caption": "Vitepos 信息于 2026-10-07 从 vitepos.com 及其 WordPress.org 列表页面查阅（见下方“来源”）；WCPOS 信息来自 wcpos.com、docs.wcpos.com 和 WordPress.org。",
+        "colWcpos": "WCPOS",
+        "colVitepos": "Vitepos",
+        "rows": {
+          "price": {
+            "label": "价格",
+            "wcpos": "免费插件不设上限；Pro 版含一年更新为 $129，终身版为 $399——一次性付款，不自动续费",
+            "vitepos": "免费的 Lite 插件；Pro 的单站点年度方案起价 $79，或单站点终身许可证 $299（vitepos.com, 2026-10-07）"
+          },
+          "cardPayments": {
+            "label": "银行卡支付",
+            "wcpos": "Pro 版终端集成：Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Vipps MobilePay",
+            "vitepos": "通过 Stripe Terminal 和 Wallee 接受终端付款"
+          },
+          "apps": {
+            "label": "应用",
+            "wcpos": "网页、桌面应用（Windows 和 macOS）、iOS 和 Android 应用（测试版）",
+            "vitepos": "在网页浏览器中运行；Vitepos 自己的博客称其没有专门的移动应用"
+          },
+          "offline": {
+            "label": "离线",
+            "wcpos": "离线浏览商品和组建购物车；完成结账需要网络连接",
+            "vitepos": "表示离线时会继续处理订单，并在重新连接后同步；其 WordPress.org 列表页面将离线订单标为 Pro"
+          },
+          "restaurant": {
+            "label": "餐厅模式",
+            "wcpos": "无",
+            "vitepos": "带有服务员、厨房和餐桌管理功能的杂货店与餐厅模式"
+          },
+          "display": {
+            "label": "顾客显示屏",
+            "wcpos": "无",
+            "vitepos": "有"
+          },
+          "kiosk": {
+            "label": "自助终端 / 自助结账",
+            "wcpos": "无",
+            "vitepos": "单独出售的自助 Kiosk App 附加组件"
+          },
+          "outlets": {
+            "label": "商店和收银台",
+            "wcpos": "Pro 支持多店管理；设备和收银员数量不限",
+            "vitepos": "根据其 WordPress.org 列表页面，门店和柜台数量不限"
+          },
+          "wporg": {
+            "label": "WordPress.org",
+            "wcpos": "5,000+ 活跃安装，3.7 星（81 条评价）",
+            "vitepos": "1,000+ 活跃安装，4.7 星（54 条评价）"
+          }
+        }
+      },
+      "pricing": {
+        "title": "费用是多少？",
+        "vitepos": "2026-10-07，vitepos.com 列出的 Vitepos Lite 为免费，Vitepos Pro 单站点年度方案为 $79，五站点年度方案为 $149。终身许可证单站点为 $299，五站点为 $499，每种都含一年高级支持。请前往 vitepos.com/pricing 查看当前价格。",
+        "wcpos": "WCPOS 免费使用，不限制商品、订单、客户或现金销售。Pro 版 $129——一次性付款，包含一年更新和优先支持——或 $399 终身版。它不会自动续费，一年后 Pro 版仍可继续使用：永远不会关闭任何功能。WCPOS 不收取交易手续费；你只需支付自己所选支付处理商的费率。",
+        "compare": "按标价计算，Vitepos Pro 比 WCPOS Pro 便宜：一年为 $79 对 $129，终身许可证为 $299 对 $399。决定前请比较两个 Pro 版本分别包含什么。",
+        "proAdds": "Pro 版新增：多店铺管理、刷卡终端集成、优惠券、通过 POS API 退款、订单历史、收银台客户管理、按店铺定价、库存和价格编辑、日终报告，以及扩展目录。",
+        "demoPrefix": "先到",
+        "demoLinkLabel": "demo.wcpos.com/pos",
+        "demoSuffix": "试用全部功能（登录 demo / demo）。"
+      },
+      "viteposBetter": {
+        "title": "Vitepos 真正更胜一筹的方面",
+        "intro": "诚实的对比要兼顾双方的优点：",
+        "restaurant": "餐厅模式——Vitepos 提供带有服务员面板、厨房面板和餐桌管理功能的杂货店与餐厅模式；WCPOS 没有餐厅模式。",
+        "offline": "离线订单——Vitepos 表示它能在没有网络连接时继续处理订单，并在恢复连接后同步。WCPOS 允许你离线浏览商品并组建购物车，但完成结账需要网络连接。",
+        "display": "顾客显示屏——Vitepos 有，WCPOS 没有。",
+        "kiosk": "自助终端——Vitepos 将 Kiosk App 作为附加组件出售；WCPOS 没有自助终端模式。",
+        "price": "标价更低——Vitepos Pro 单站点年度方案的起价为 $79，WCPOS Pro 为 $129。",
+        "rating": "WordPress.org 评分更高——54 条评价给出 4.7 星，而 WCPOS 为 3.7 星。",
+        "outro": "如果你经营餐厅或咖啡馆、需要顾客显示屏或自助终端，或希望有离线订单模式，Vitepos 可能是更合适的选择。"
+      },
+      "choose": {
+        "title": "你该选哪一个？",
+        "wcpos": {
+          "title": "选择 WCPOS，如果：",
+          "body": "你想使用 Windows 和 macOS 桌面应用或 iOS 和 Android 应用，或使用 Stripe Terminal 以外的刷卡终端：WCPOS Pro 还支持 SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal 和 Vipps MobilePay。"
+        },
+        "vitepos": {
+          "title": "选择 Vitepos，如果：",
+          "body": "你经营餐厅或咖啡馆，想管理服务员、厨房和餐桌，需要顾客显示屏或自助终端，想要离线订单模式，通过 Stripe Terminal 或 Wallee 接受银行卡付款，或希望标价更低。"
+        }
+      },
+      "faq": {
+        "title": "常见问题",
+        "price": {
+          "question": "Vitepos 的价格是多少？",
+          "answer": "Vitepos Lite 在 WordPress.org 免费提供。2026-10-07，vitepos.com 列出的 Vitepos Pro 单站点年度方案为 $79，五站点年度方案为 $149，终身许可证单站点为 $299，五站点为 $499。请前往 vitepos.com/pricing 查看当前价格。WCPOS 免费，WCPOS Pro 一年更新的一次性价格为 $129，终身版为 $399。"
+        },
+        "offline": {
+          "question": "Vitepos 能离线运行吗？",
+          "answer": "Vitepos 表示可以：其页面称它会在本地存储数据，没有网络连接时继续处理订单，并在恢复连接后同步到 WooCommerce。其 WordPress.org 列表页面将离线订单标为 Pro 功能。WCPOS 在本地存储商品、客户和购物车，因此你可以在没有网络连接时浏览商品目录并准备销售；完成结账需要连接服务器。"
+        },
+        "restaurant": {
+          "question": "WCPOS 有餐厅模式吗？",
+          "answer": "没有。WCPOS 没有餐厅模式、厨房面板或餐桌管理。Vitepos 提供带有服务员和厨房面板以及餐桌管理功能的杂货店与餐厅模式，因此更适合餐厅或咖啡馆。"
+        },
+        "apps": {
+          "question": "Vitepos 有原生应用吗？",
+          "answer": "Vitepos 在手机、平板电脑和桌面设备的网页浏览器中运行，其自己的博客称它没有专门的移动应用；你可以从浏览器添加快捷方式。WCPOS 可以在任何现代浏览器中运行，也提供 Windows 和 macOS 桌面应用及 iOS 和 Android 应用（测试版）。"
+        },
+        "terminals": {
+          "question": "Vitepos 和 WCPOS 支持哪些刷卡终端？",
+          "answer": "Vitepos 的页面列出了 Stripe Terminal 和 Wallee 的终端付款方式。WCPOS Pro 的刷卡终端集成包括 Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal 和 Vipps MobilePay。"
+        },
+        "expiry": {
+          "question": "WCPOS Pro 许可证到期后会发生什么？",
+          "answer": "什么都不会被关掉。你手上的 Pro 版本想用多久就用多久——你的收银台、你的数据、每一项功能都在。到期后你只是不再收到新更新和优先支持，直到你决定续期。这是有意为之：续费必须靠值得付费的更新来赢得，同时也保证你的销售点永远不会被远程停用。"
+        }
+      },
+      "sources": {
+        "title": "来源",
+        "intro": "本页关于 Vitepos 的所有信息均来自 Vitepos 自己的页面，查阅日期为 2026-10-07：",
+        "items": {
+          "pricing": "方案和价格",
+          "home": "开发者（Appsbd）、Stripe 和 Wallee 的终端付款、离线订单处理",
+          "features": "餐厅模式、服务员和厨房面板、餐桌管理、顾客显示屏、Kiosk App、Stripe Terminal 和 Wallee、本地数据存储",
+          "kiosk": "单独出售的 Kiosk App 附加组件",
+          "blog": "在网页浏览器中运行、没有专门的移动应用、浏览器快捷方式、同步到 WooCommerce 的离线交易、WordPress.org 上的 Vitepos Lite",
+          "wporg": "免费版、活跃安装、评分和评价、不限数量的门店和柜台、标为 Pro 的离线订单"
+        }
+      },
+      "footer": {
+        "factsDated": "关于 Vitepos 的信息于 2026-10-07 从 vitepos.com 及其 WordPress.org 列表页面查阅（见“来源”）；决定前请在 vitepos.com 查看当前价格。WCPOS 信息来自 wcpos.com、docs.wcpos.com 和 WordPress.org。我们每季度重新核实。",
         "corrections": "发现错误？发邮件到 support@wcpos.com——我们会尽快更正并记录每次修改。"
       }
     }

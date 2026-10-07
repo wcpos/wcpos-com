@@ -1849,6 +1849,11 @@
         "description": "WooCommerce POS 플러그인 두 가지 비교: 일회성 결제와 거래당 수수료가 붙는 월간 요금제, 앱, 카드 결제, 평점, Jovvie가 실제로 더 나은 점.",
         "cta": "비교 읽기"
       },
+      "viteposCard": {
+        "title": "WCPOS vs Vitepos",
+        "description": "무료 버전이 있는 WooCommerce POS 플러그인 두 가지 비교: 가격, 오프라인 주문, 레스토랑 모드, 앱, 카드 단말기, Vitepos가 실제로 더 나은 점.",
+        "cta": "비교 읽기"
+      },
       "moreSoon": "더 많은 비교가 준비 중입니다."
     },
     "oliver": {
@@ -2495,6 +2500,149 @@
       },
       "footer": {
         "factsDated": "Jovvie 관련 정보는 2026-07-09 기준 자체 경쟁사 조사 결과이며 이후 재확인하지 않았습니다. 결정하기 전에 jovvie.com에서 현재 가격을 확인하세요. WCPOS 관련 정보는 wcpos.com, docs.wcpos.com 및 WordPress.org를 출처로 합니다. 분기마다 다시 확인합니다.",
+        "corrections": "오류를 발견하셨나요? support@wcpos.com으로 알려 주세요. 빠르게 수정하고 모든 변경을 기록합니다."
+      }
+    },
+    "vitepos": {
+      "metadata": {
+        "title": "WCPOS vs Vitepos(2026): 솔직한 비교",
+        "description": "WooCommerce용 POS 플러그인 두 가지인 WCPOS와 Vitepos를 WCPOS 제작자가 비교합니다. 가격, 오프라인 주문, 레스토랑 모드, 앱, 카드 단말기, Vitepos가 더 나은 선택인 경우를 다룹니다."
+      },
+      "hero": {
+        "title": "WCPOS vs Vitepos",
+        "subtitle": "WCPOS와 Appsbd의 Vitepos는 모두 WooCommerce 스토어에 POS를 추가하며, 둘 다 WordPress.org에 무료 버전이 있습니다. Vitepos에는 레스토랑 모드, 고객용 디스플레이, 오프라인 주문 모드가 있고 WCPOS에는 데스크톱 및 모바일 앱과 더 다양한 카드 단말기 선택지가 있습니다. 두 제품의 차이와 Vitepos가 더 나은 선택인 경우를 비교합니다."
+      },
+      "shortAnswer": {
+        "title": "간단한 결론",
+        "wcpos": "WCPOS는 WooCommerce용 무료 오픈 소스 POS 플러그인으로 제품, 주문, 고객 수에 제한이 없습니다. 최신 브라우저, Windows 및 macOS용 데스크톱 앱, iOS 및 Android용 앱(베타)에서 모든 WooCommerce 결제 게이트웨이와 함께 작동합니다. WCPOS는 거래 수수료를 부과하지 않습니다. Pro는 일회성 결제로 여러 매장 관리와 카드 단말기 연동을 추가합니다. 업데이트 1년 제공에 $129 또는 평생 버전 $399이며, 1년이 지나도 계속 작동합니다.",
+        "vitepos": "Appsbd의 Vitepos는 WordPress.org에 무료 버전인 Vitepos Lite가 있는 WooCommerce POS 플러그인입니다. 2026-10-07에 vitepos.com에는 Vitepos Pro의 1개 사이트용 연간 요금제가 $79부터, 1개 사이트용 평생 라이선스가 $299로 표시되어 있었습니다. Vitepos는 오프라인에서도 주문 처리를 계속하고 연결이 돌아오면 동기화한다고 설명하며, 서빙 직원·주방·테이블 관리 기능이 있는 식료품점 및 레스토랑 모드를 제공합니다. 웹 브라우저에서 실행되며 — Vitepos 자체 블로그에 따르면 전용 모바일 앱은 없습니다 — Stripe Terminal과 Wallee를 통한 단말기 결제를 받습니다. WordPress.org에서는 활성 설치 1,000+, 리뷰 54개의 평점이 4.7점이었습니다."
+      },
+      "glance": {
+        "title": "한눈에 보기",
+        "caption": "Vitepos 정보는 2026-10-07에 vitepos.com과 WordPress.org 등록 페이지에서 확인했습니다(아래 출처 참조). WCPOS 정보는 wcpos.com, docs.wcpos.com, WordPress.org를 출처로 합니다.",
+        "colWcpos": "WCPOS",
+        "colVitepos": "Vitepos",
+        "rows": {
+          "price": {
+            "label": "가격",
+            "wcpos": "제한 없는 무료 플러그인; Pro는 1년 업데이트 포함 $129 또는 평생 $399 — 일회성 결제, 자동 갱신 없음",
+            "vitepos": "무료 Lite 플러그인; Pro는 1개 사이트용 연간 요금제 $79부터 또는 1개 사이트용 평생 라이선스 $299(vitepos.com, 2026-10-07)"
+          },
+          "cardPayments": {
+            "label": "카드 결제",
+            "wcpos": "Pro 단말기 연동: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Vipps MobilePay",
+            "vitepos": "Stripe Terminal 및 Wallee 단말기 결제"
+          },
+          "apps": {
+            "label": "앱",
+            "wcpos": "웹, 데스크톱 앱(Windows·macOS), iOS·Android 앱(베타)",
+            "vitepos": "웹 브라우저에서 실행; Vitepos 자체 블로그에 따르면 전용 모바일 앱은 없음"
+          },
+          "offline": {
+            "label": "오프라인",
+            "wcpos": "오프라인에서 상품을 탐색하고 장바구니를 만들 수 있음; 결제 완료에는 연결 필요",
+            "vitepos": "오프라인에서도 주문 처리를 계속하고 재연결 시 동기화한다고 설명; WordPress.org 등록 페이지에서는 오프라인 주문을 Pro로 표시"
+          },
+          "restaurant": {
+            "label": "레스토랑 모드",
+            "wcpos": "없음",
+            "vitepos": "서빙 직원·주방·테이블 관리 기능이 있는 식료품점 및 레스토랑 모드"
+          },
+          "display": {
+            "label": "고객용 디스플레이",
+            "wcpos": "없음",
+            "vitepos": "있음"
+          },
+          "kiosk": {
+            "label": "키오스크 / 셀프 계산",
+            "wcpos": "없음",
+            "vitepos": "별도 애드온으로 판매되는 셀프서비스 Kiosk App"
+          },
+          "outlets": {
+            "label": "매장과 계산대",
+            "wcpos": "Pro에서 여러 매장 관리; 기기와 계산원 수 무제한",
+            "vitepos": "WordPress.org 등록 페이지에 따르면 매장과 카운터 수 무제한"
+          },
+          "wporg": {
+            "label": "WordPress.org",
+            "wcpos": "활성 설치 5,000+, 별점 3.7(리뷰 81개)",
+            "vitepos": "활성 설치 1,000+, 별점 4.7(리뷰 54개)"
+          }
+        }
+      },
+      "pricing": {
+        "title": "비용은 얼마인가요?",
+        "vitepos": "2026-10-07에 vitepos.com에는 Vitepos Lite가 무료, Vitepos Pro의 1개 사이트용 연간 요금제가 $79, 5개 사이트용 연간 요금제가 $149로 표시되어 있었습니다. 평생 라이선스는 1개 사이트용 $299 또는 5개 사이트용 $499였고, 각각 1년의 프리미엄 지원이 포함되었습니다. 현재 가격은 vitepos.com/pricing에서 확인하세요.",
+        "wcpos": "WCPOS는 무료이며 제품, 주문, 고객, 현금 판매에 제한이 없습니다. Pro는 $129 일회성 결제로 1년간 업데이트와 우선 지원을 제공하거나, 평생 버전을 $399에 구매할 수 있습니다. 자동 갱신은 없으며 1년이 지나도 Pro는 계속 작동합니다. 어떤 기능도 꺼지지 않습니다. WCPOS는 거래 수수료를 부과하지 않으며 이용하는 결제 처리 업체의 요금만 지불합니다.",
+        "compare": "정가 기준 Vitepos Pro는 WCPOS Pro보다 저렴합니다. 1년은 $79 대 $129, 평생 라이선스는 $299 대 $399입니다. 결정하기 전에 각 Pro 버전에 포함된 내용을 비교하세요.",
+        "proAdds": "Pro 추가 기능: 다중 매장 관리, 카드 단말기 연동, 쿠폰, POS API를 통한 환불, 주문 내역, 계산대 고객 관리, 매장별 가격, 재고·가격 편집, 마감 보고서, 확장 디렉터리.",
+        "demoPrefix": "먼저",
+        "demoLinkLabel": "demo.wcpos.com/pos",
+        "demoSuffix": "에서 모든 기능을 체험해 보세요(로그인 demo / demo)."
+      },
+      "viteposBetter": {
+        "title": "Vitepos가 실제로 더 나은 점",
+        "intro": "솔직한 비교에서는 양쪽의 장점을 모두 살펴봐야 합니다:",
+        "restaurant": "레스토랑 모드 — Vitepos에는 서빙 직원용 패널, 주방 패널, 테이블 관리 기능을 갖춘 식료품점 및 레스토랑 모드가 있습니다. WCPOS에는 레스토랑 모드가 없습니다.",
+        "offline": "오프라인 주문 — Vitepos는 인터넷 연결이 없어도 주문 처리를 계속하고 연결이 돌아오면 동기화한다고 설명합니다. WCPOS는 오프라인에서 상품을 탐색하고 장바구니를 만들 수 있지만 결제 완료에는 연결이 필요합니다.",
+        "display": "고객용 디스플레이 — Vitepos에는 있고 WCPOS에는 없습니다.",
+        "kiosk": "셀프서비스 키오스크 — Vitepos는 Kiosk App을 애드온으로 판매합니다. WCPOS에는 키오스크 모드가 없습니다.",
+        "price": "더 낮은 정가 — Vitepos Pro의 1개 사이트용 연간 요금제는 $79부터이고 WCPOS Pro는 $129입니다.",
+        "rating": "WordPress.org에서 더 높은 평점 — 리뷰 54개 기준 별점 4.7, WCPOS는 3.7입니다.",
+        "outro": "레스토랑이나 카페를 운영하고 고객용 디스플레이나 셀프서비스 키오스크가 필요하거나 오프라인 주문 모드를 원한다면 Vitepos가 더 나은 선택일 수 있습니다."
+      },
+      "choose": {
+        "title": "무엇을 선택해야 할까요?",
+        "wcpos": {
+          "title": "이런 경우 WCPOS를 선택하세요:",
+          "body": "Windows 및 macOS용 데스크톱 앱이나 iOS 및 Android용 앱을 원하거나 Stripe Terminal 이외의 카드 단말기를 원한다면: WCPOS Pro는 SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Vipps MobilePay도 연동합니다."
+        },
+        "vitepos": {
+          "title": "이런 경우 Vitepos를 선택하세요:",
+          "body": "레스토랑이나 카페를 운영하며 서빙 직원·주방·테이블 관리를 원하거나, 고객용 디스플레이나 셀프서비스 키오스크가 필요하거나, 오프라인 주문 모드를 원하거나, Stripe Terminal 또는 Wallee로 카드 결제를 받거나, 더 낮은 정가를 원하는 경우."
+        }
+      },
+      "faq": {
+        "title": "자주 묻는 질문",
+        "price": {
+          "question": "Vitepos의 가격은 얼마인가요?",
+          "answer": "Vitepos Lite는 WordPress.org에서 무료입니다. 2026-10-07에 vitepos.com에는 Vitepos Pro의 1개 사이트용 연간 요금제가 $79 또는 5개 사이트용 연간 요금제가 $149, 평생 라이선스가 1개 사이트용 $299 또는 5개 사이트용 $499로 표시되어 있었습니다. 현재 가격은 vitepos.com/pricing에서 확인하세요. WCPOS는 무료이며 WCPOS Pro는 1년 업데이트에 일회성 $129 또는 평생 $399입니다."
+        },
+        "offline": {
+          "question": "Vitepos는 오프라인에서 작동하나요?",
+          "answer": "Vitepos는 가능하다고 설명합니다. 해당 제품의 페이지에 따르면 데이터를 로컬에 저장하고 인터넷 연결 없이 주문 처리를 계속하며, 연결이 돌아오면 WooCommerce에 동기화합니다. WordPress.org 등록 페이지에서는 오프라인 주문을 Pro 기능으로 표시합니다. WCPOS는 상품, 고객, 장바구니를 로컬에 저장하므로 연결 없이 카탈로그를 탐색하고 판매를 준비할 수 있지만 결제 완료에는 서버 연결이 필요합니다."
+        },
+        "restaurant": {
+          "question": "WCPOS에 레스토랑 모드가 있나요?",
+          "answer": "아니요. WCPOS에는 레스토랑 모드, 주방 패널, 테이블 관리 기능이 없습니다. Vitepos에는 서빙 직원 및 주방 패널과 테이블 관리 기능을 갖춘 식료품점 및 레스토랑 모드가 있으므로 레스토랑이나 카페에는 더 나은 선택입니다."
+        },
+        "apps": {
+          "question": "Vitepos에 네이티브 앱이 있나요?",
+          "answer": "Vitepos는 휴대전화, 태블릿, 데스크톱의 웹 브라우저에서 실행되며, 자체 블로그에 따르면 전용 모바일 앱은 없습니다. 브라우저에서 바로가기를 추가할 수 있습니다. WCPOS는 최신 브라우저, Windows 및 macOS용 데스크톱 앱, iOS 및 Android용 앱(베타)에서 작동합니다."
+        },
+        "terminals": {
+          "question": "Vitepos와 WCPOS는 어떤 카드 단말기를 지원하나요?",
+          "answer": "Vitepos의 페이지에는 Stripe Terminal 및 Wallee 단말기 결제가 명시되어 있습니다. WCPOS Pro의 카드 단말기 연동에는 Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Vipps MobilePay가 포함됩니다."
+        },
+        "expiry": {
+          "question": "WCPOS Pro 라이선스가 만료되면 어떻게 되나요?",
+          "answer": "아무것도 꺼지지 않습니다. 지금 쓰시는 Pro 버전은 원하는 만큼 계속 작동합니다. 계산대도, 데이터도, 모든 기능도 그대로입니다. 갱신을 선택하기 전까지 새 업데이트와 우선 지원만 중단됩니다. 이는 의도된 설계입니다. 갱신은 돈 낼 가치가 있는 업데이트로 얻어내야 하고, 여러분의 POS가 원격으로 비활성화되는 일은 결코 없다는 보장이기도 합니다."
+        }
+      },
+      "sources": {
+        "title": "출처",
+        "intro": "이 페이지의 Vitepos 관련 사실은 모두 2026-10-07에 확인한 Vitepos 자체 페이지에서 가져왔습니다:",
+        "items": {
+          "pricing": "요금제와 가격",
+          "home": "제작자(Appsbd), Stripe 및 Wallee 단말기 결제, 오프라인 주문 처리",
+          "features": "레스토랑 모드, 서빙 직원 및 주방 패널, 테이블 관리, 고객용 디스플레이, Kiosk App, Stripe Terminal 및 Wallee, 로컬 데이터 저장",
+          "kiosk": "별도로 판매되는 Kiosk App 애드온",
+          "blog": "웹 브라우저에서 실행, 전용 모바일 앱 없음, 브라우저 바로가기, WooCommerce에 동기화되는 오프라인 거래, WordPress.org의 Vitepos Lite",
+          "wporg": "무료 버전, 활성 설치, 평점 및 리뷰, 무제한 매장과 카운터, Pro로 표시된 오프라인 주문"
+        }
+      },
+      "footer": {
+        "factsDated": "Vitepos 정보는 2026-10-07에 vitepos.com과 WordPress.org 등록 페이지에서 확인했습니다(출처 참조). 결정하기 전에 현재 가격은 vitepos.com에서 확인하세요. WCPOS 정보는 wcpos.com, docs.wcpos.com, WordPress.org를 출처로 합니다. 분기마다 다시 확인합니다.",
         "corrections": "오류를 발견하셨나요? support@wcpos.com으로 알려 주세요. 빠르게 수정하고 모든 변경을 기록합니다."
       }
     }
