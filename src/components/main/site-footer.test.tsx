@@ -16,8 +16,11 @@ vi.mock('next-intl', () => ({
           downloadHeading: 'Download',
           downloads: 'Downloads',
           pro: 'WCPOS Pro',
+          compare: 'Compare',
           roadmap: 'Roadmap',
+          changelog: 'Changelog',
           demo: 'Live Demo',
+          extensions: 'Extensions',
           discord: 'Discord',
           github: 'GitHub',
           wordpressOrg: 'WordPress.org',
@@ -116,6 +119,19 @@ describe('SiteFooter', () => {
     expect(downloads?.getAttribute('target')).toBeNull()
   })
 
+  it('links Compare at the /compare index', () => {
+    render(<SiteFooter />)
+    expect(hrefOf('Compare')).toBe('/compare')
+    expect(screen.getByRole('link', { name: 'Compare' })).not.toHaveAttribute('target')
+  })
+
+  it('links to the changelog without opening a new tab', () => {
+    render(<SiteFooter />)
+    const changelog = screen.getByRole('link', { name: 'Changelog' })
+    expect(changelog).toHaveAttribute('href', '/changelog')
+    expect(changelog).not.toHaveAttribute('target')
+  })
+
   it('opens external links in a new tab with a safe rel', () => {
     render(<SiteFooter />)
     const discord = screen.getByText('Discord').closest('a')
@@ -169,5 +185,12 @@ describe('SiteFooter', () => {
     for (const label of ['Privacy', 'Terms', 'Refunds', 'About']) {
       expect(screen.getByText(label)).toBeInTheDocument()
     }
+  })
+
+  it('links to Extensions in the same tab', () => {
+    render(<SiteFooter />)
+    const extensions = screen.getByRole('link', { name: 'Extensions' })
+    expect(extensions).toHaveAttribute('href', '/extensions')
+    expect(extensions).not.toHaveAttribute('target')
   })
 })

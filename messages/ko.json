@@ -33,8 +33,11 @@
     "companyHeading": "회사",
     "downloadHeading": "다운로드",
     "pro": "WCPOS Pro",
+    "compare": "비교",
     "roadmap": "로드맵",
+    "changelog": "변경 기록",
     "demo": "라이브 데모",
+    "extensions": "확장 기능",
     "discord": "Discord",
     "github": "GitHub",
     "wordpressOrg": "WordPress.org",
@@ -353,7 +356,8 @@
     "page": {
       "eyebrow": "로드맵",
       "title": "릴리스 일정",
-      "description": "더 빠르고 오프라인에 강한 WCPOS로 가는 모든 단계 — GitHub에서 가져온 최신 작업부터 표시합니다."
+      "description": "더 빠르고 오프라인에 강한 WCPOS로 가는 모든 단계 — GitHub에서 가져온 최신 작업부터 표시합니다.",
+      "changelogLink": "변경 기록에서 게시된 버전 보기"
     },
     "board": {
       "link": "GitHub에서 실시간 제공"
@@ -379,6 +383,16 @@
       "shippedOn": "출시됨 · {date}",
       "briefLink": "전체 릴리스 개요",
       "notesLink": "릴리스 노트"
+    }
+  },
+  "changelog": {
+    "meta": {
+      "title": "변경 기록",
+      "description": "GitHub에서 가져온 WCPOS 플러그인의 최신 게시 버전에 대한 릴리스 노트."
+    },
+    "page": {
+      "title": "변경 기록",
+      "description": "WCPOS 플러그인의 최신 게시 릴리스와 GitHub에서 가져온 릴리스 노트."
     }
   },
   "pro": {
@@ -1659,6 +1673,20 @@
       "plugin": "무료",
       "externalContentNotice": "릴리스 노트는 GitHub에서 가져오며 영어로 표시될 수 있습니다."
     }
+  },
+  "extensions": {
+    "metadata": {
+      "title": "확장 기능",
+      "description": "WCPOS에서 사용할 수 있는 확장 기능과 각 기능의 문서 링크입니다."
+    },
+    "hero": {
+      "title": "확장 기능",
+      "subtitle": "WCPOS에서 사용할 수 있는 확장 기능과 각 기능의 문서 링크입니다."
+    },
+    "proTag": "Pro",
+    "docsLink": "{name} 문서",
+    "englishNotice": "확장 기능의 이름과 설명은 확장 기능 카탈로그에서 가져오며 영어로 표시됩니다.",
+    "allDocsLink": "문서에서 모든 확장 기능 보기"
   },
   "about": {
     "meta": {

@@ -33,8 +33,11 @@
     "companyHeading": "Bedrijf",
     "downloadHeading": "Downloaden",
     "pro": "WCPOS Pro",
+    "compare": "Vergelijken",
     "roadmap": "Routekaart",
+    "changelog": "Wijzigingslogboek",
     "demo": "Live demo",
+    "extensions": "Extensies",
     "discord": "Discord",
     "github": "GitHub",
     "wordpressOrg": "WordPress.org",
@@ -353,7 +356,8 @@
     "page": {
       "eyebrow": "Routekaart",
       "title": "De releasetrein",
-      "description": "Elke halte op weg naar een sneller, offline-bestendig WCPOS — rechtstreeks uit onze GitHub gehaald, nieuwste werk eerst."
+      "description": "Elke halte op weg naar een sneller, offline-bestendig WCPOS — rechtstreeks uit onze GitHub gehaald, nieuwste werk eerst.",
+      "changelogLink": "Bekijk gepubliceerde versies in het wijzigingslogboek"
     },
     "board": {
       "link": "live van GitHub"
@@ -379,6 +383,16 @@
       "shippedOn": "uitgebracht · {date}",
       "briefLink": "Volledig releaseoverzicht",
       "notesLink": "Uitgaveopmerkingen"
+    }
+  },
+  "changelog": {
+    "meta": {
+      "title": "Wijzigingslogboek",
+      "description": "Release-opmerkingen voor de nieuwste gepubliceerde versies van de WCPOS-plugin, afkomstig van GitHub."
+    },
+    "page": {
+      "title": "Wijzigingslogboek",
+      "description": "De nieuwste gepubliceerde versies van de WCPOS-plugin, met hun release-opmerkingen van GitHub."
     }
   },
   "pro": {
@@ -1659,6 +1673,20 @@
       "plugin": "Gratis",
       "externalContentNotice": "Release-opmerkingen komen van GitHub en kunnen in het Engels worden weergegeven."
     }
+  },
+  "extensions": {
+    "metadata": {
+      "title": "Extensies",
+      "description": "De beschikbare extensies voor WCPOS, elk met een link naar de documentatie."
+    },
+    "hero": {
+      "title": "Extensies",
+      "subtitle": "De beschikbare extensies voor WCPOS, elk met een link naar de documentatie."
+    },
+    "proTag": "Pro",
+    "docsLink": "Documentatie voor {name}",
+    "englishNotice": "De namen en beschrijvingen van de extensies komen uit de extensiecatalogus en worden in het Engels weergegeven.",
+    "allDocsLink": "Alle extensies in de documentatie"
   },
   "about": {
     "meta": {

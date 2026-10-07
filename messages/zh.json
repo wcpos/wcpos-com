@@ -33,8 +33,11 @@
     "companyHeading": "公司",
     "downloadHeading": "下载",
     "pro": "WCPOS Pro",
+    "compare": "比较",
     "roadmap": "路线图",
+    "changelog": "更新日志",
     "demo": "在线演示",
+    "extensions": "扩展",
     "discord": "Discord",
     "github": "GitHub",
     "wordpressOrg": "WordPress.org",
@@ -353,7 +356,8 @@
     "page": {
       "eyebrow": "路线图",
       "title": "发布列车",
-      "description": "通往更快速、更可靠离线能力的 WCPOS 的每一站——直接来自我们的 GitHub，最新工作排在最前。"
+      "description": "通往更快速、更可靠离线能力的 WCPOS 的每一站——直接来自我们的 GitHub，最新工作排在最前。",
+      "changelogLink": "在更新日志中查看已发布的版本"
     },
     "board": {
       "link": "实时来自 GitHub"
@@ -379,6 +383,16 @@
       "shippedOn": "已发布 · {date}",
       "briefLink": "完整发布概览",
       "notesLink": "发布说明"
+    }
+  },
+  "changelog": {
+    "meta": {
+      "title": "更新日志",
+      "description": "WCPOS 插件最新已发布版本的发布说明，来自 GitHub。"
+    },
+    "page": {
+      "title": "更新日志",
+      "description": "WCPOS 插件最新已发布的版本及其来自 GitHub 的发布说明。"
     }
   },
   "pro": {
@@ -1659,6 +1673,20 @@
       "plugin": "免费",
       "externalContentNotice": "发布说明来自 GitHub，可能会以英文显示。"
     }
+  },
+  "extensions": {
+    "metadata": {
+      "title": "扩展",
+      "description": "WCPOS 可用的扩展，每个扩展均附有其文档链接。"
+    },
+    "hero": {
+      "title": "扩展",
+      "subtitle": "WCPOS 可用的扩展，每个扩展均附有其文档链接。"
+    },
+    "proTag": "Pro",
+    "docsLink": "{name} 文档",
+    "englishNotice": "扩展名称和描述来自扩展目录，以英语显示。",
+    "allDocsLink": "文档中的所有扩展"
   },
   "about": {
     "meta": {
