@@ -1854,6 +1854,11 @@
         "description": "两款提供免费版的 WooCommerce POS 插件对比：价格、离线订单、餐厅模式、应用、刷卡终端，以及 Vitepos 真正更胜一筹的方面。",
         "cta": "阅读对比"
       },
+      "foosalesCard": {
+        "title": "WCPOS vs FooSales",
+        "description": "一次性付费的 Pro 许可证与按店铺收取的年度订阅对比：价格、停止付费后的情况、Tap to Pay、离线订单、应用，以及 FooSales 真正更胜一筹的方面。",
+        "cta": "阅读对比"
+      },
       "moreSoon": "更多对比即将上线。"
     },
     "oliver": {
@@ -2643,6 +2648,152 @@
       },
       "footer": {
         "factsDated": "关于 Vitepos 的信息于 2026-10-07 从 vitepos.com 及其 WordPress.org 列表页面查阅（见“来源”）；决定前请在 vitepos.com 查看当前价格。WCPOS 信息来自 wcpos.com、docs.wcpos.com 和 WordPress.org。我们每季度重新核实。",
+        "corrections": "发现错误？发邮件到 support@wcpos.com——我们会尽快更正并记录每次修改。"
+      }
+    },
+    "foosales": {
+      "metadata": {
+        "title": "WCPOS vs FooSales（2026）：诚实的对比",
+        "description": "WCPOS 的开发者对比两款 WooCommerce 销售点系统 WCPOS 和 FooSales——涵盖价格、停止付费后的情况、Tap to Pay、离线订单、应用、刷卡终端，以及 FooSales 何时是更好的选择。"
+      },
+      "hero": {
+        "title": "WCPOS vs FooSales",
+        "subtitle": "WCPOS 和 FooSales 都为你的 WooCommerce 店铺添加销售点功能。FooSales 按店铺收取年度订阅费用，提供 iPad、iPhone 和 Android 应用、离线订单模式，以及 Plus 方案中的 Tap to Pay；WCPOS 是一款免费插件，提供一次性付费的 Pro 许可证、桌面应用和更多刷卡终端选择。下面比较两者，并说明 FooSales 何时是更好的选择。"
+      },
+      "shortAnswer": {
+        "title": "简短结论",
+        "wcpos": "WCPOS 是一款免费、开源的 WooCommerce 销售点插件，不限制商品、订单或客户数量。它可在任何现代浏览器中运行，也提供 Windows 和 macOS 桌面应用以及 iOS 和 Android 应用（测试版），并支持任何 WooCommerce 支付网关。WCPOS 不收取交易手续费。Pro 版以一次性付款提供多店铺管理和刷卡终端集成——含一年更新的版本为 $129，终身版为 $399——一年后仍可继续使用。",
+        "foosales": "FooSales 是一款 WooCommerce 销售点系统，按网站收取年度订阅费用。2026-10-07，foosales.com 列出了 7 天免费试用后的两个方案：Core 每月 US$19、Plus 每月 US$38，均按店铺每年结算，Plus 增加 Square 和 Stripe 付款功能。它提供 iPad、iPhone 和 Android 应用以及网页应用。FooSales 表示其应用在离线时仍可继续运行，并在恢复连接后同步订单；Plus 方案还支持在 iPhone 和 Android 上使用 Tap to Pay。其帮助中心称，每个方案包含 3 名用户和 3 台设备，取消方案后将无法访问 FooSales POS 和应用。在美国 App Store，其应用从 8 条评分中获得 3.6 星。"
+      },
+      "glance": {
+        "title": "一览对比",
+        "caption": "FooSales 信息于 2026-10-07 从 foosales.com、help.foosales.com 和其 App Store 列表页面查阅（见下方“来源”）；WCPOS 信息来自 wcpos.com、docs.wcpos.com 和 WordPress.org。",
+        "colWcpos": "WCPOS",
+        "colFoosales": "FooSales",
+        "rows": {
+          "price": {
+            "label": "价格",
+            "wcpos": "免费插件不设上限；Pro 版含一年更新为 $129，终身版为 $399——一次性付款，不自动续费",
+            "foosales": "无免费方案；7 天免费试用后 Core 每月 US$19，Plus 每月 US$38，均按店铺每年结算（foosales.com，2026-10-07）"
+          },
+          "stopPaying": {
+            "label": "如果你停止付费",
+            "wcpos": "过期的 Pro 许可证会永远继续工作——收银台、数据和每一项功能都保留；只有更新和优先支持暂停",
+            "foosales": "其帮助中心称，取消方案后将无法访问 FooSales 网页 POS 和应用"
+          },
+          "cardPayments": {
+            "label": "银行卡支付",
+            "wcpos": "Pro 版终端集成：Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Vipps MobilePay",
+            "foosales": "Plus 方案：Square Terminal、Square Readers（平板应用）和 Stripe Terminal 读卡器"
+          },
+          "tapToPay": {
+            "label": "Tap to Pay",
+            "wcpos": "无",
+            "foosales": "在 iPhone 和 Android 上通过 Stripe 或 Square 使用（Plus 方案）"
+          },
+          "apps": {
+            "label": "应用",
+            "wcpos": "网页、桌面应用（Windows 和 macOS）、iOS 和 Android 应用（测试版）",
+            "foosales": "iPad、iPhone 和 Android 应用，以及适用于现代浏览器的网页应用"
+          },
+          "offline": {
+            "label": "离线",
+            "wcpos": "离线浏览商品和组建购物车；完成结账需要网络连接",
+            "foosales": "称其应用离线时仍可继续运行，并在恢复连接后同步新订单、取消的订单和退款；离线时无法创建或编辑客户"
+          },
+          "devices": {
+            "label": "用户和设备",
+            "wcpos": "设备和收银员不限量",
+            "foosales": "据其帮助中心称，每个方案包含 3 名用户和 3 台设备；通过单独出售的 User and Device Add-ons 可增加数量"
+          },
+          "stores": {
+            "label": "多店铺 / 多地点",
+            "wcpos": "支持（Pro）：每家店铺独立的地址、税率、收据模板、定价和授权用户",
+            "foosales": "每个网站需要一个方案；店铺及库存地点管理在其路线图上标为 TBC"
+          },
+          "ratings": {
+            "label": "评分",
+            "wcpos": "WordPress.org：5,000+ 次活跃安装，3.7 星（81 条评价）",
+            "foosales": "Apple App Store（美国）：8 条评分，满分 5 分得 3.6 分"
+          }
+        }
+      },
+      "pricing": {
+        "title": "费用是多少？",
+        "foosales": "2026-10-07，foosales.com 列出了两个均按店铺每年结算的方案：Core 每月 US$19，Plus 每月 US$38，后者增加 Square 付款、Stripe 付款及 WooCommerce Product Add-ons 和 FooEvents 集成。两者均包含更新和电子邮件支持。页面未列出按月付款选项或免费方案；无需信用卡的 7 天免费试用包含 Plus 的全部功能。每个网站或子域名都需要单独的方案，额外用户和设备作为附加组件出售。请前往 foosales.com/pricing 查看当前价格。",
+        "wcpos": "WCPOS 免费使用，不限制商品、订单、客户或现金销售。Pro 版 $129——一次性付款，包含一年更新和优先支持——或 $399 终身版。它不会自动续费，一年后 Pro 版仍可继续使用：永远不会关闭任何功能。WCPOS 不收取交易手续费；你只需支付自己所选支付处理商的费率。",
+        "compare": "按年结算，FooSales Core 每家店铺每年折合 US$228，包含 Square 和 Stripe 集成的 Plus 为 US$456。带刷卡终端集成的 WCPOS Pro 一年更新版一次性付款 $129，终身版为 $399。FooSales 的帮助中心称，取消方案后将无法访问其 POS 和应用；过期的 WCPOS Pro 许可证仍可继续使用。",
+        "proAdds": "Pro 版新增：多店铺管理、刷卡终端集成、优惠券、通过 POS API 退款、订单历史、收银台客户管理、按店铺定价、库存和价格编辑、日终报告，以及扩展目录。",
+        "demoPrefix": "先到",
+        "demoLinkLabel": "demo.wcpos.com/pos",
+        "demoSuffix": "试用全部功能（登录 demo / demo）。"
+      },
+      "foosalesBetter": {
+        "title": "FooSales 真正更胜一筹的方面",
+        "intro": "诚实的对比应当双向成立：",
+        "tapToPay": "iPhone 和 Android 上的 Tap to Pay——使用 FooSales Plus 时，顾客可通过 Stripe 或 Square 将卡靠近你的手机。WCPOS 不支持 Tap to Pay。",
+        "offline": "离线订单——FooSales 表示其应用在没有网络连接时仍会记录新订单、取消的订单和退款，并在恢复连接后同步到 WooCommerce。WCPOS 允许你离线浏览商品并组建购物车，但完成结账需要网络连接。",
+        "outro": "如果你需要在手机上使用 Tap to Pay 或离线订单模式，而且按店铺收取的年度订阅适合你，FooSales 可能是更好的选择。"
+      },
+      "choose": {
+        "title": "你该选哪一个？",
+        "wcpos": {
+          "title": "选择 WCPOS，如果：",
+          "body": "你想要不设上限的免费插件、停止付费后仍可继续使用的一次性付费 Pro、无限量设备和收银员、多店铺管理、Windows 和 macOS 桌面应用，或 FooSales 路线图列为集成请求的 SumUp、PayPal Reader (Zettle) 或 Mollie 终端。"
+        },
+        "foosales": {
+          "title": "选择 FooSales，如果：",
+          "body": "你想要在 iPhone 或 Android 上使用 Tap to Pay、离线订单模式、平板上的 Square Readers 或 FooEvents 集成，而且按店铺收取的年度订阅适合你。"
+        }
+      },
+      "faq": {
+        "title": "常见问题",
+        "price": {
+          "question": "FooSales 的费用是多少？",
+          "answer": "2026-10-07，foosales.com 列出的 FooSales Core 为每月 US$19，FooSales Plus 为每月 US$38，均按店铺每年结算，且提供无需信用卡的 7 天免费试用。页面未列出免费方案。请前往 foosales.com/pricing 查看当前价格。WCPOS 免费，WCPOS Pro 一年更新的一次性价格为 $129，终身版为 $399。"
+        },
+        "cancel": {
+          "question": "如果停止为 FooSales 付费会怎样？",
+          "answer": "FooSales 的帮助中心称，取消方案会取消 POS 访问权限：取消处理完毕后，你将无法再使用 FooSales 网页 POS 或应用。7 天试用结束后，要继续使用应用就需要购买方案。使用 WCPOS 时，Pro 许可证到期后仍可继续使用：收银台、数据和所有功能都保留，只有更新和优先支持暂停。"
+        },
+        "offline": {
+          "question": "FooSales 可以离线使用吗？",
+          "answer": "FooSales 表示可以：连接中断时，其应用会切换至离线模式，POS 的大部分功能仍可运行，新订单、取消的订单和退款会保存在设备上，并在重新联网后同步至 WooCommerce。其帮助中心称离线时无法创建或修改客户，也无法更改库存数值；其支付页面称 WooCommerce 优惠券需要网络连接。WCPOS 在本地存储商品、客户和购物车，因此你可以在没有网络连接时浏览商品目录并准备销售；完成结账需要连接服务器。"
+        },
+        "terminals": {
+          "question": "FooSales 和 WCPOS 支持哪些刷卡终端？",
+          "answer": "在 Plus 方案中，FooSales 在所有应用中集成 Square Terminal，在平板应用中集成 Square Readers，还集成 Stripe Terminal 读卡器，并通过 Stripe 或 Square 支持在 iPhone 和 Android 上使用 Tap to Pay。其他读卡器可在 FooSales 之外使用，销售可在结账时记录为银行卡付款。WCPOS Pro 的刷卡终端集成包括 Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal 和 Vipps MobilePay。WCPOS 不支持 Tap to Pay。"
+        },
+        "apps": {
+          "question": "FooSales 有原生应用吗？",
+          "answer": "有。FooSales 提供 iPad 和 iPhone 应用（iOS 16.4 或更高版本）、Android 应用（Android 10 或更高版本），以及在 Chrome、Safari、Firefox 和 Edge 等现代浏览器中运行的网页应用。其 App Store 列表页面称，iOS 应用也能在配备 Apple M1 或更新芯片的 Mac 上运行。WCPOS 可在任何现代浏览器、Windows 和 macOS 桌面应用以及 iOS 和 Android 应用（测试版）中运行。"
+        },
+        "expiry": {
+          "question": "WCPOS Pro 许可证到期后会发生什么？",
+          "answer": "什么都不会被关掉。你手上的 Pro 版本想用多久就用多久——你的收银台、你的数据、每一项功能都在。到期后你只是不再收到新更新和优先支持，直到你决定续期。这是有意为之：续费必须靠值得付费的更新来赢得，同时也保证你的销售点永远不会被远程停用。"
+        }
+      },
+      "sources": {
+        "title": "来源",
+        "intro": "本页有关 FooSales 的每项信息均来自 FooSales 自身的页面及其 App Store 列表页面，查阅日期为 2026-10-07：",
+        "items": {
+          "pricing": "方案和价格、按店铺每年结算、免费试用、每个网站一个方案、更新和电子邮件支持",
+          "helpPricing": "每个方案含 3 名用户和 3 台设备、试用结束后的情况",
+          "userAddon": "User Add-on，单独出售",
+          "deviceAddon": "Device Add-on，单独出售",
+          "cancel": "取消方案对访问权限的影响",
+          "cardReaders": "Square Terminal、Square Reader 和 Stripe Terminal 集成，以及其他读卡器",
+          "payments": "iPhone 和 Android 上的 Tap to Pay、优惠券需要网络连接",
+          "platform": "iPad、Android 平板和网页应用",
+          "requirements": "iOS、Android 和网页浏览器要求",
+          "offlineFeature": "离线模式及恢复连接后的同步",
+          "offlineHelp": "离线时可用和不可用的功能",
+          "roadmap": "店铺和库存地点管理，以及 SumUp、Zettle、Mollie 集成，在路线图上标为 TBC",
+          "appStore": "iOS 应用、配备 Apple M1 或更新芯片的 Mac、App Store 评分"
+        }
+      },
+      "footer": {
+        "factsDated": "关于 FooSales 的信息于 2026-10-07 从 foosales.com、help.foosales.com 及其 App Store 列表页面查阅（见“来源”）；决定前请在 foosales.com 查看当前价格。WCPOS 信息来自 wcpos.com、docs.wcpos.com 和 WordPress.org。我们每季度重新核实。",
         "corrections": "发现错误？发邮件到 support@wcpos.com——我们会尽快更正并记录每次修改。"
       }
     }
