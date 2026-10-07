@@ -35,6 +35,7 @@
     "pro": "WCPOS Pro",
     "compare": "Compare",
     "roadmap": "Roadmap",
+    "changelog": "Changelog",
     "demo": "Live Demo",
     "discord": "Discord",
     "github": "GitHub",
@@ -354,7 +355,8 @@
     "page": {
       "eyebrow": "Roadmap",
       "title": "The release train",
-      "description": "Every stop on the way to a faster, offline-proof WCPOS — pulled straight from our GitHub, newest work first."
+      "description": "Every stop on the way to a faster, offline-proof WCPOS — pulled straight from our GitHub, newest work first.",
+      "changelogLink": "See released versions in the changelog"
     },
     "board": {
       "link": "live from GitHub"
@@ -380,6 +382,16 @@
       "shippedOn": "shipped · {date}",
       "briefLink": "Full release brief",
       "notesLink": "Release notes"
+    }
+  },
+  "changelog": {
+    "meta": {
+      "title": "Changelog",
+      "description": "Release notes for the latest published versions of the WCPOS plugin, from GitHub."
+    },
+    "page": {
+      "title": "Changelog",
+      "description": "The latest published releases of the WCPOS plugin, with their release notes from GitHub."
     }
   },
   "pro": {

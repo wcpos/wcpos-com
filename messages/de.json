@@ -35,6 +35,7 @@
     "pro": "WCPOS Pro",
     "compare": "Vergleichen",
     "roadmap": "Produktplanung",
+    "changelog": "Änderungsprotokoll",
     "demo": "Live-Demo",
     "discord": "Discord",
     "github": "GitHub",
@@ -354,7 +355,8 @@
     "page": {
       "eyebrow": "Produktplanung",
       "title": "Der Veröffentlichungsfahrplan",
-      "description": "Jede Station auf dem Weg zu einem schnelleren, offline-sicheren WCPOS — direkt aus unserem GitHub, neueste Arbeit zuerst."
+      "description": "Jede Station auf dem Weg zu einem schnelleren, offline-sicheren WCPOS — direkt aus unserem GitHub, neueste Arbeit zuerst.",
+      "changelogLink": "Veröffentlichte Versionen im Änderungsprotokoll ansehen"
     },
     "board": {
       "link": "live von GitHub"
@@ -380,6 +382,16 @@
       "shippedOn": "veröffentlicht · {date}",
       "briefLink": "Vollständiger Release-Überblick",
       "notesLink": "Versionshinweise"
+    }
+  },
+  "changelog": {
+    "meta": {
+      "title": "Änderungsprotokoll",
+      "description": "Versionshinweise zu den neuesten veröffentlichten Versionen des WCPOS-Plugins von GitHub."
+    },
+    "page": {
+      "title": "Änderungsprotokoll",
+      "description": "Die neuesten veröffentlichten Versionen des WCPOS-Plugins mit ihren Versionshinweisen von GitHub."
     }
   },
   "pro": {

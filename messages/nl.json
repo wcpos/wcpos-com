@@ -35,6 +35,7 @@
     "pro": "WCPOS Pro",
     "compare": "Vergelijken",
     "roadmap": "Routekaart",
+    "changelog": "Wijzigingslogboek",
     "demo": "Live demo",
     "discord": "Discord",
     "github": "GitHub",
@@ -354,7 +355,8 @@
     "page": {
       "eyebrow": "Routekaart",
       "title": "De releasetrein",
-      "description": "Elke halte op weg naar een sneller, offline-bestendig WCPOS — rechtstreeks uit onze GitHub gehaald, nieuwste werk eerst."
+      "description": "Elke halte op weg naar een sneller, offline-bestendig WCPOS — rechtstreeks uit onze GitHub gehaald, nieuwste werk eerst.",
+      "changelogLink": "Bekijk gepubliceerde versies in het wijzigingslogboek"
     },
     "board": {
       "link": "live van GitHub"
@@ -380,6 +382,16 @@
       "shippedOn": "uitgebracht · {date}",
       "briefLink": "Volledig releaseoverzicht",
       "notesLink": "Uitgaveopmerkingen"
+    }
+  },
+  "changelog": {
+    "meta": {
+      "title": "Wijzigingslogboek",
+      "description": "Release-opmerkingen voor de nieuwste gepubliceerde versies van de WCPOS-plugin, afkomstig van GitHub."
+    },
+    "page": {
+      "title": "Wijzigingslogboek",
+      "description": "De nieuwste gepubliceerde versies van de WCPOS-plugin, met hun release-opmerkingen van GitHub."
     }
   },
   "pro": {

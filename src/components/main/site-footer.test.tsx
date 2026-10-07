@@ -18,6 +18,7 @@ vi.mock('next-intl', () => ({
           pro: 'WCPOS Pro',
           compare: 'Compare',
           roadmap: 'Roadmap',
+          changelog: 'Changelog',
           demo: 'Live Demo',
           discord: 'Discord',
           github: 'GitHub',
@@ -121,6 +122,13 @@ describe('SiteFooter', () => {
     render(<SiteFooter />)
     expect(hrefOf('Compare')).toBe('/compare')
     expect(screen.getByRole('link', { name: 'Compare' })).not.toHaveAttribute('target')
+  })
+
+  it('links to the changelog without opening a new tab', () => {
+    render(<SiteFooter />)
+    const changelog = screen.getByRole('link', { name: 'Changelog' })
+    expect(changelog).toHaveAttribute('href', '/changelog')
+    expect(changelog).not.toHaveAttribute('target')
   })
 
   it('opens external links in a new tab with a safe rel', () => {

@@ -35,6 +35,7 @@
     "pro": "WCPOS Pro",
     "compare": "Comparar",
     "roadmap": "Hoja de ruta",
+    "changelog": "Registro de cambios",
     "demo": "Demo en vivo",
     "discord": "Discord",
     "github": "GitHub",
@@ -354,7 +355,8 @@
     "page": {
       "eyebrow": "Hoja de ruta",
       "title": "El tren de versiones",
-      "description": "Cada parada en el camino hacia un WCPOS más rápido y preparado para trabajar sin conexión — directamente desde nuestro GitHub, con el trabajo más reciente primero."
+      "description": "Cada parada en el camino hacia un WCPOS más rápido y preparado para trabajar sin conexión — directamente desde nuestro GitHub, con el trabajo más reciente primero.",
+      "changelogLink": "Ver las versiones publicadas en el registro de cambios"
     },
     "board": {
       "link": "en directo desde GitHub"
@@ -380,6 +382,16 @@
       "shippedOn": "publicado · {date}",
       "briefLink": "Resumen completo de la versión",
       "notesLink": "Notas de la versión"
+    }
+  },
+  "changelog": {
+    "meta": {
+      "title": "Registro de cambios",
+      "description": "Notas de la versión de las últimas versiones publicadas del plugin WCPOS, de GitHub."
+    },
+    "page": {
+      "title": "Registro de cambios",
+      "description": "Las últimas versiones publicadas del plugin WCPOS, con sus notas de la versión de GitHub."
     }
   },
   "pro": {
