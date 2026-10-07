@@ -1,0 +1,114 @@
+{
+  "source": {
+    "repo": "wcpos/extensions",
+    "path": "catalog.json",
+    "commit": "11aedefc8409c5c84347c22f4f2d8083946b8e43"
+  },
+  "extensions": [
+    {
+      "slug": "email-invoice-gateway",
+      "name": "Email Invoice Gateway",
+      "description": "Send an invoice email to the customer with a link to pay for the order.",
+      "category": "payments",
+      "requires_pro": true
+    },
+    {
+      "slug": "mercadopago-terminal-for-woocommerce",
+      "name": "Mercado Pago Terminal for WooCommerce",
+      "description": "Take card payments on a Mercado Pago Point Smart (1 or 2) terminal from WooCommerce and WooCommerce POS.",
+      "category": "payments",
+      "requires_pro": true
+    },
+    {
+      "slug": "mollie-terminal-for-woocommerce",
+      "name": "Mollie Terminal for WooCommerce",
+      "description": "Adds Mollie Terminal support to WooCommerce for in-person payments.",
+      "category": "payments",
+      "requires_pro": true
+    },
+    {
+      "slug": "payarc-terminal-for-woocommerce",
+      "name": "PayArc Terminal for WooCommerce",
+      "description": "Adds PayArc Terminal support to WooCommerce for in-person payments.",
+      "category": "payments",
+      "requires_pro": true
+    },
+    {
+      "slug": "paypal-reader-for-woocommerce",
+      "name": "PayPal Reader for WooCommerce",
+      "description": "Adds PayPal Reader support to WooCommerce for in-person payments.",
+      "category": "payments",
+      "requires_pro": true
+    },
+    {
+      "slug": "square-terminal-for-woocommerce",
+      "name": "Square Terminal for WooCommerce",
+      "description": "Adds Square Terminal support to WooCommerce for in-person payments.",
+      "category": "payments",
+      "requires_pro": true
+    },
+    {
+      "slug": "stripe-terminal-for-woocommerce",
+      "name": "Stripe Terminal for WooCommerce",
+      "description": "Adds Stripe Terminal support to WooCommerce for in-person payments.",
+      "category": "payments",
+      "requires_pro": true
+    },
+    {
+      "slug": "sumup-terminal-for-woocommerce",
+      "name": "SumUp Terminal for WooCommerce",
+      "description": "Adds SumUp Terminal support to WooCommerce for in-person payments.",
+      "category": "payments",
+      "requires_pro": true
+    },
+    {
+      "slug": "wcpos-atum",
+      "name": "WCPOS ATUM Integration",
+      "description": "ATUM Multi-Inventory integration for WCPOS, linking inventory locations to POS stores.",
+      "category": "inventory",
+      "requires_pro": true
+    },
+    {
+      "slug": "wcpos-polylang",
+      "name": "WCPOS Polylang",
+      "description": "Filter WCPOS products by Polylang language and prevent duplicate translated products in POS sync.",
+      "category": "catalog",
+      "requires_pro": false
+    },
+    {
+      "slug": "wcpos-storeapps-smart-coupons",
+      "name": "WCPOS StoreApps Smart Coupons",
+      "description": "StoreApps Smart Coupons store credit compatibility for WCPOS receipts, order notes, and balance deductions.",
+      "category": "coupons",
+      "requires_pro": true
+    },
+    {
+      "slug": "wcpos-vipps",
+      "name": "WCPOS Vipps MobilePay",
+      "description": "Adds Vipps and MobilePay payment support to WooCommerce POS via QR code or push notification.",
+      "category": "payments",
+      "requires_pro": true
+    },
+    {
+      "slug": "wcpos-wp-multilang",
+      "name": "WCPOS WP Multilang",
+      "description": "Filter WCPOS products by WP Multilang language and prevent duplicate translated products in POS sync.",
+      "category": "catalog",
+      "requires_pro": false
+    },
+    {
+      "slug": "wcpos-wpml",
+      "name": "WCPOS WPML",
+      "description": "Filter WCPOS products by WPML language and prevent duplicate translated products in POS sync.",
+      "category": "catalog",
+      "requires_pro": false
+    },
+    {
+      "slug": "windcave-terminal-for-woocommerce",
+      "name": "Windcave Terminal for WooCommerce",
+      "description": "Take in-person card payments on a Windcave terminal using HIT from the WooCommerce POS order-pay page.",
+      "category": "payments",
+      "requires_pro": true
+    }
+  ]
+}

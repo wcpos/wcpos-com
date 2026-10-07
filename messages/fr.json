@@ -33,8 +33,11 @@
     "companyHeading": "Entreprise",
     "downloadHeading": "Télécharger",
     "pro": "WCPOS Pro",
+    "compare": "Comparer",
     "roadmap": "Feuille de route",
+    "changelog": "Journal des modifications",
     "demo": "Démo en direct",
+    "extensions": "Extensions",
     "discord": "Discord",
     "github": "GitHub",
     "wordpressOrg": "WordPress.org",
@@ -353,7 +356,8 @@
     "page": {
       "eyebrow": "Feuille de route",
       "title": "Le train des versions",
-      "description": "Chaque étape vers un WCPOS plus rapide et prêt pour le hors ligne — directement depuis notre GitHub, les travaux les plus récents en premier."
+      "description": "Chaque étape vers un WCPOS plus rapide et prêt pour le hors ligne — directement depuis notre GitHub, les travaux les plus récents en premier.",
+      "changelogLink": "Voir les versions publiées dans le journal des modifications"
     },
     "board": {
       "link": "en direct de GitHub"
@@ -379,6 +383,16 @@
       "shippedOn": "publié · {date}",
       "briefLink": "Présentation complète de la version",
       "notesLink": "Notes de version"
+    }
+  },
+  "changelog": {
+    "meta": {
+      "title": "Journal des modifications",
+      "description": "Notes de version des dernières versions publiées du plugin WCPOS, provenant de GitHub."
+    },
+    "page": {
+      "title": "Journal des modifications",
+      "description": "Les dernières versions publiées du plugin WCPOS, avec leurs notes de version provenant de GitHub."
     }
   },
   "pro": {
@@ -1659,6 +1673,20 @@
       "plugin": "Gratuit",
       "externalContentNotice": "Les notes de version proviennent de GitHub et peuvent s’afficher en anglais."
     }
+  },
+  "extensions": {
+    "metadata": {
+      "title": "Extensions",
+      "description": "Les extensions disponibles pour WCPOS, chacune avec un lien vers sa documentation."
+    },
+    "hero": {
+      "title": "Extensions",
+      "subtitle": "Les extensions disponibles pour WCPOS, chacune avec un lien vers sa documentation."
+    },
+    "proTag": "Pro",
+    "docsLink": "Documentation de {name}",
+    "englishNotice": "Les noms et descriptions des extensions proviennent du catalogue des extensions et sont affichés en anglais.",
+    "allDocsLink": "Toutes les extensions dans la documentation"
   },
   "about": {
     "meta": {

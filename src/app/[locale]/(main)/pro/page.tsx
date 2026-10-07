@@ -146,6 +146,7 @@ export default async function ProPage({
   const locale = resolveLocale((await params).locale)
   setRequestLocale(locale)
   const t = await getTranslations({ locale, namespace: PRO_MESSAGE_NAMESPACE })
+  const compareT = await getTranslations({ locale, namespace: 'compare' })
 
   const features = PRO_FEATURE_KEYS.map(({ key, Icon }) => ({
     Icon,
@@ -209,6 +210,11 @@ export default async function ProPage({
             answer={t('faq.paymentMethods.answer')}
           />
         </div>
+        <p className="mx-auto mt-10 max-w-3xl text-center">
+          <TextLink asChild>
+            <Link href="/compare">{compareT('hub.hero.title')}</Link>
+          </TextLink>
+        </p>
       </Section>
     </main>
   )
