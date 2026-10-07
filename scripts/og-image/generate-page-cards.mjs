@@ -63,6 +63,16 @@ const cards = [
     title: 'WCPOS vs YITH Point of Sale',
     line: 'Licensing, card terminals, apps and offline use, compared.',
   },
+  {
+    slug: 'extensions',
+    title: 'Extensions',
+    line: 'The extensions available for WCPOS, each with a link to its documentation.',
+  },
+  {
+    slug: 'changelog',
+    title: 'Changelog',
+    line: 'Release notes for the latest published versions of the WCPOS plugin, from GitHub.',
+  },
 ]
 
 const outputDirectory = new URL('../../public/og/', import.meta.url)
