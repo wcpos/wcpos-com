@@ -56,7 +56,7 @@ export default async function RefundsPage({
   return (
     <main className="max-w-3xl mx-auto px-4 py-16">
       <div className="mb-12">
-        <h1 className="text-4xl font-bold mb-3">{t('title')}</h1>
+        <h1 className="text-4xl font-bold mb-3 break-words hyphens-auto">{t('title')}</h1>
         <p className="text-sm text-muted-foreground">
           {t('lastUpdated', { date: updatedDate })}
         </p>

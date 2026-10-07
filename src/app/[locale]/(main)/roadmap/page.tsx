@@ -78,7 +78,7 @@ export default async function RoadmapPage({
             <Eyebrow size="sm" className="font-mono tracking-[0.25em]">
               {t('eyebrow')}
             </Eyebrow>
-            <h1 className="mt-3 text-4xl font-bold tracking-tight sm:text-5xl">
+            <h1 className="mt-3 text-4xl font-bold tracking-tight break-words hyphens-auto sm:text-5xl">
               {t('title')}
             </h1>
             <p className="mt-4 max-w-xl text-lg text-muted-foreground">
