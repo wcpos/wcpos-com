@@ -1836,7 +1836,8 @@
     },
     "discord": {
       "title": "사람과 직접 이야기하고 싶으신가요?",
-      "subtitle": "매장 운영자와 팀이 함께하는 실시간 Discord 커뮤니티에 참여하세요."
+      "subtitle": "매장 운영자와 팀이 함께하는 실시간 Discord 커뮤니티에 참여하세요.",
+      "embedTitle": "Discord 채팅"
     }
   },
   "compare": {

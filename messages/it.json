@@ -1836,7 +1836,8 @@
     },
     "discord": {
       "title": "Preferisci parlare con una persona?",
-      "subtitle": "Unisciti ai proprietari di negozi e al team nella nostra community Discord live."
+      "subtitle": "Unisciti ai proprietari di negozi e al team nella nostra community Discord live.",
+      "embedTitle": "Chat Discord"
     }
   },
   "compare": {

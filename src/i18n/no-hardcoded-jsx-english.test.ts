@@ -46,10 +46,6 @@ const allowed = new Set([
   'src/components/main/site-header.tsx|text|WCPOS',
   'src/components/pro/checkout/account-step.tsx|attribute|you@yourstore.com',
   'src/components/pro/checkout/payment-step.tsx|text|PayPal',
-  // Was the @widgetbot/react-embed iframe title (English in every locale);
-  // kept as-is when the widget became a plain iframe. Translate it with a
-  // support.discord message key, then drop this entry.
-  'src/components/support/discord-widget.tsx|attribute|Discord chat embed',
 ])
 
 function walk(dir: string, out: string[] = []): string[] {

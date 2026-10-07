@@ -1836,7 +1836,8 @@
     },
     "discord": {
       "title": "Praat je liever met een mens?",
-      "subtitle": "Sluit je aan bij winkeleigenaren en het team in onze live Discord-community."
+      "subtitle": "Sluit je aan bij winkeleigenaren en het team in onze live Discord-community.",
+      "embedTitle": "Discord-chat"
     }
   },
   "compare": {

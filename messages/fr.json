@@ -1836,7 +1836,8 @@
     },
     "discord": {
       "title": "Vous préférez parler à un humain ?",
-      "subtitle": "Rejoignez des propriétaires de boutiques et l’équipe dans notre communauté Discord en direct."
+      "subtitle": "Rejoignez des propriétaires de boutiques et l’équipe dans notre communauté Discord en direct.",
+      "embedTitle": "Chat Discord"
     }
   },
   "compare": {
