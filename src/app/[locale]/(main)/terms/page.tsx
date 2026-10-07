@@ -6,8 +6,8 @@ import { Link } from '@/i18n/navigation'
 import { TextLink } from '@/components/ui/text-link'
 import { marketingMetadata } from '@/lib/seo'
 import { formatDateForLocale } from '@/lib/date-format'
+import { TERMS_UPDATED_AT } from '@/lib/legal-dates'
 
-const LEGAL_UPDATED_AT = '2026-06-10T12:00:00Z'
 const ACCOUNT_ITEMS = ['a1', 'a2', 'a3'] as const
 const LICENSE_ITEMS = ['l1', 'l2', 'l3', 'l4', 'l5'] as const
 const ACCEPTABLE_USE_ITEMS = ['u1', 'u2', 'u3', 'u4'] as const
@@ -39,7 +39,7 @@ export default async function TermsPage({
   const locale = resolveLocale((await params).locale)
   setRequestLocale(locale)
   const t = await getTranslations({ locale, namespace: 'legal.terms' })
-  const updatedDate = formatDateForLocale(LEGAL_UPDATED_AT, locale, {
+  const updatedDate = formatDateForLocale(TERMS_UPDATED_AT, locale, {
     year: 'numeric',
     month: 'short',
     day: 'numeric',
