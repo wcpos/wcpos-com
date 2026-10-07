@@ -6,8 +6,8 @@ import { Link } from '@/i18n/navigation'
 import { TextLink } from '@/components/ui/text-link'
 import { marketingMetadata } from '@/lib/seo'
 import { formatDateForLocale } from '@/lib/date-format'
+import { PRIVACY_UPDATED_AT } from '@/lib/legal-dates'
 
-const LEGAL_UPDATED_AT = '2026-06-10T12:00:00Z'
 const COLLECT_ITEMS = ['c1', 'c2', 'c3', 'c4', 'c5', 'c6', 'c7'] as const
 const COOKIE_ITEMS = ['k1', 'k2', 'k3', 'k4', 'k5'] as const
 const PROCESSOR_ITEMS = ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7'] as const
@@ -44,7 +44,7 @@ export default async function PrivacyPage({
   const locale = resolveLocale((await params).locale)
   setRequestLocale(locale)
   const t = await getTranslations({ locale, namespace: 'legal.privacy' })
-  const updatedDate = formatDateForLocale(LEGAL_UPDATED_AT, locale, {
+  const updatedDate = formatDateForLocale(PRIVACY_UPDATED_AT, locale, {
     year: 'numeric',
     month: 'short',
     day: 'numeric',
