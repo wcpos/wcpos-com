@@ -1145,6 +1145,8 @@ const frenchIdenticalCopyAllowlist = new Set([
   'footer.github',
   'footer.pro',
   'footer.wordpressOrg',
+  // « Extensions » is the correct French word (footer product column).
+  'footer.extensions',
 ])
 
 describe('messages key parity', () => {
