@@ -1844,6 +1844,11 @@
         "description": "El TPV de Square más una extensión de sincronización frente a una caja integrada en WooCommerce: dónde se registran las ventas presenciales, la sincronización, las ubicaciones, los pagos sin conexión, las comisiones por tarjeta y dónde Square es realmente mejor.",
         "cta": "Leer la comparativa"
       },
+      "jovvieCard": {
+        "title": "WCPOS vs Jovvie",
+        "description": "Dos plugins de POS para WooCommerce: un pago único frente a planes mensuales con una comisión por transacción, aplicaciones, pagos con tarjeta, valoraciones y dónde Jovvie es realmente mejor.",
+        "cta": "Leer la comparativa"
+      },
       "moreSoon": "Hay más comparativas en camino."
     },
     "oliver": {
@@ -2377,6 +2382,119 @@
       },
       "footer": {
         "factsDated": "Datos de Square comprobados el 2026-10-06 en las propias páginas de Square (su página de comisiones, su anuncio de precios y sus artículos de ayuda sobre pagos sin conexión, Tap to Pay, dispositivos y disponibilidad internacional) y en la documentación de WooCommerce sobre la extensión Square for WooCommerce; los datos de WCPOS proceden de wcpos.com y docs.wcpos.com. Volvemos a comprobarlos cada trimestre.",
+        "corrections": "¿Detecta un error? Escriba a support@wcpos.com — corregimos rápido y dejamos constancia de cada cambio."
+      }
+    },
+    "jovvie": {
+      "metadata": {
+        "title": "WCPOS vs Jovvie (2026): una comparativa honesta",
+        "description": "WCPOS y Jovvie, dos plugins de punto de venta para WooCommerce, comparados por el creador de WCPOS: precios, comisiones por transacción, aplicaciones, pagos con tarjeta, valoraciones y cuándo Jovvie es la mejor opción."
+      },
+      "hero": {
+        "title": "WCPOS vs Jovvie",
+        "subtitle": "WCPOS y Jovvie, de BizSwoop, añaden un punto de venta a su tienda WooCommerce. La mayor diferencia es cómo se paga: un pago único o planes mensuales más una comisión por cada transacción. Aquí los comparamos y explicamos cuándo Jovvie es la mejor opción."
+      },
+      "shortAnswer": {
+        "title": "La respuesta corta",
+        "wcpos": "WCPOS es un plugin de punto de venta gratuito y de código abierto para WooCommerce, sin topes de productos, pedidos ni clientes. Funciona en cualquier navegador moderno, como aplicación de escritorio para Windows y macOS y como aplicación para iOS y Android (beta), con cualquier pasarela de pago de WooCommerce. WCPOS no cobra comisiones por transacción. Pro añade gestión de varias tiendas e integraciones con terminales de tarjeta por un pago único — $129 por un año de actualizaciones o $399 de por vida — y sigue funcionando cuando termina el año.",
+        "jovvie": "Jovvie, de BizSwoop, es un plugin de punto de venta para WooCommerce incluido en el WooCommerce Marketplace oficial. A julio de 2026, sus planes iban de gratuito a $29 al mes, y BizSwoop cobraba una comisión de plataforma del 0.5% al 2.5% por transacción, además de la suscripción. Acepta pagos con tarjeta a través de Stripe Terminal — BizSwoop es socio de Stripe Terminal — y no tenía aplicaciones nativas. En WordPress.org tenía unas 200 instalaciones activas y una valoración de 4.5 estrellas."
+      },
+      "glance": {
+        "title": "De un vistazo",
+        "caption": "Datos de Jovvie a fecha de 2026-07-09, de nuestra propia investigación sobre la competencia, sin volver a comprobar desde entonces; datos de WCPOS de wcpos.com, docs.wcpos.com y WordPress.org.",
+        "colWcpos": "WCPOS",
+        "colJovvie": "Jovvie",
+        "rows": {
+          "price": {
+            "label": "Precio",
+            "wcpos": "Plugin gratuito sin topes; Pro cuesta $129 por un año de actualizaciones o $399 de por vida — pagos únicos, sin renovación automática",
+            "jovvie": "Planes desde gratuito hasta $29 al mes"
+          },
+          "fees": {
+            "label": "Comisiones por transacción",
+            "wcpos": "Ninguna de WCPOS — se aplican las tarifas de su procesador de pagos",
+            "jovvie": "Una comisión de plataforma del 0.5% al 2.5% por transacción, además de la suscripción"
+          },
+          "cardPayments": {
+            "label": "Pagos con tarjeta",
+            "wcpos": "Integraciones de terminales Pro: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Vipps MobilePay",
+            "jovvie": "Stripe Terminal (BizSwoop es socio de Stripe Terminal), con lectores como el Stripe M2"
+          },
+          "apps": {
+            "label": "Aplicaciones",
+            "wcpos": "Web, aplicaciones de escritorio (Windows y macOS), aplicaciones para iOS y Android (beta)",
+            "jovvie": "Sin aplicaciones nativas"
+          },
+          "offline": {
+            "label": "Sin conexión",
+            "wcpos": "Consultar productos y preparar carritos sin conexión; para completar el cobro se necesita conectividad",
+            "jovvie": "No se ha determinado en nuestra investigación — consulte a BizSwoop"
+          },
+          "availability": {
+            "label": "Dónde conseguirlo",
+            "wcpos": "WordPress.org (plugin gratuito) y wcpos.com (Pro)",
+            "jovvie": "WordPress.org y el WooCommerce Marketplace oficial"
+          },
+          "wporg": {
+            "label": "WordPress.org",
+            "wcpos": "Más de 5.000 instalaciones activas, 3,7 estrellas (81 reseñas)",
+            "jovvie": "Unas 200 instalaciones activas, 4.5 estrellas"
+          }
+        }
+      },
+      "pricing": {
+        "title": "¿Cuánto cuesta?",
+        "jovvie": "A julio de 2026, los planes de Jovvie iban de gratuito a $29 al mes, y BizSwoop cobraba una comisión de plataforma del 0.5% al 2.5% por transacción, además de la suscripción.",
+        "wcpos": "WCPOS es gratuito, sin topes de productos, pedidos, clientes ni ventas en efectivo. Pro cuesta $129 — un pago único que cubre un año de actualizaciones y soporte prioritario — o $399 de por vida. Nunca se renueva automáticamente, y Pro sigue funcionando cuando termina el año: nada se apaga, nunca. WCPOS no cobra comisiones por transacción; usted paga las tarifas de su procesador de pagos.",
+        "math": "Una comisión porcentual crece con sus ventas. Con un 0.5% a un 2.5%, cada $10,000 de ventas sujetas a la comisión suponen entre $50 y $250 en comisiones de plataforma, antes de la suscripción y las tarifas de su procesador de tarjetas. WCPOS Pro cuesta los mismos $129 o $399 venda cuanto venda.",
+        "proAdds": "Pro añade: gestión multitienda, integraciones con terminales de tarjeta, cupones, reembolsos mediante la API del TPV, historial de pedidos, gestión de clientes en la caja, precios por tienda, edición de stock y precios, informes de cierre de caja y el directorio de extensiones.",
+        "demoPrefix": "Pruébelo todo primero en",
+        "demoLinkLabel": "demo.wcpos.com/pos",
+        "demoSuffix": "(acceso demo / demo)."
+      },
+      "jovvieBetter": {
+        "title": "Dónde Jovvie es realmente mejor",
+        "intro": "Una comparativa honesta reconoce las ventajas de ambos:",
+        "rating": "Una valoración más alta en WordPress.org: 4.5 estrellas a julio de 2026, frente a 3.7 de WCPOS.",
+        "marketplace": "Una ficha en el WooCommerce Marketplace oficial. WCPOS se distribuye a través de WordPress.org y wcpos.com.",
+        "outro": "Si prefiere un plan mensual a un pago único, acepta tarjetas a través de Stripe Terminal y su volumen de ventas mantiene baja la comisión por transacción, puede que Jovvie sea todo lo que necesita."
+      },
+      "choose": {
+        "title": "¿Cuál debería elegir?",
+        "wcpos": {
+          "title": "Elija WCPOS si:",
+          "body": "Quiere evitar las comisiones por transacción de su punto de venta, un pago único que nunca se desactiva, aplicaciones de escritorio para Windows y macOS o aplicaciones para iOS y Android, código abierto o elegir entre terminales de tarjeta: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal y Vipps MobilePay."
+        },
+        "jovvie": {
+          "title": "Elija Jovvie si:",
+          "body": "Prefiere un plan mensual a un pago único, acepta tarjetas a través de Stripe Terminal, quiere un plugin incluido en el WooCommerce Marketplace oficial y su volumen de ventas mantiene asequible una comisión por transacción del 0.5% al 2.5%."
+        }
+      },
+      "faq": {
+        "title": "Preguntas frecuentes",
+        "fees": {
+          "question": "¿Cobra Jovvie comisiones por transacción?",
+          "answer": "A julio de 2026, sí: BizSwoop cobraba una comisión de plataforma del 0.5% al 2.5% por transacción además de la suscripción de Jovvie, cuyos planes iban de gratuito a $29 al mes. Consulte la página de precios de Jovvie para conocer las tarifas actuales. WCPOS no cobra comisiones por transacción; usted solo paga las tarifas de su procesador de pagos."
+        },
+        "offline": {
+          "question": "¿Funciona Jovvie sin conexión?",
+          "answer": "Nuestra investigación no ha determinado si Jovvie funciona sin conexión a internet, así que consulte a BizSwoop antes de depender de ello. WCPOS almacena productos, clientes y carritos localmente, por lo que puede consultar el catálogo y preparar ventas sin conexión; para completar el cobro se necesita conexión con el servidor."
+        },
+        "stripe": {
+          "question": "¿Puedo usar un lector de tarjetas Stripe con WCPOS?",
+          "answer": "Sí, con WCPOS Pro. Sus integraciones con terminales de tarjeta incluyen Stripe Terminal, además de SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal y Vipps MobilePay."
+        },
+        "apps": {
+          "question": "¿Tiene Jovvie aplicaciones nativas?",
+          "answer": "A julio de 2026, Jovvie no tenía aplicaciones nativas. WCPOS funciona en cualquier navegador moderno, como aplicación de escritorio para Windows y macOS y como aplicación para iOS y Android (beta)."
+        },
+        "expiry": {
+          "question": "¿Qué ocurre cuando caduca una licencia de WCPOS Pro?",
+          "answer": "No se desactiva nada. La versión Pro que tiene sigue funcionando todo el tiempo que quiera — su caja, sus datos, todas las funciones. Simplemente deja de recibir nuevas actualizaciones y soporte prioritario hasta que decida renovar. Es deliberado: obliga a que las renovaciones se ganen con actualizaciones que merezcan la pena, y garantiza que su punto de venta nunca podrá desactivarse de forma remota."
+        }
+      },
+      "footer": {
+        "factsDated": "Los datos sobre Jovvie proceden de nuestra propia investigación sobre la competencia a fecha de 2026-07-09 y no se han vuelto a comprobar desde entonces; consulte jovvie.com para conocer los precios actuales antes de decidir. Los datos sobre WCPOS proceden de wcpos.com, docs.wcpos.com y WordPress.org. Los volvemos a verificar cada trimestre.",
         "corrections": "¿Detecta un error? Escriba a support@wcpos.com — corregimos rápido y dejamos constancia de cada cambio."
       }
     }

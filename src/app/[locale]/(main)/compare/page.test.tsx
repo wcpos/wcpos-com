@@ -21,6 +21,9 @@ vi.mock('next-intl/server', () => ({
       'hub.squareCard.title': 'Translated Square card title',
       'hub.squareCard.description': 'Translated Square card description',
       'hub.squareCard.cta': 'Translated Square card CTA',
+      'hub.jovvieCard.title': 'Translated Jovvie card title',
+      'hub.jovvieCard.description': 'Translated Jovvie card description',
+      'hub.jovvieCard.cta': 'Translated Jovvie card CTA',
       'hub.moreSoon': 'Translated more soon',
       'disclosure.title': 'Translated disclosure title',
       'disclosure.body': 'Translated disclosure body',
@@ -64,6 +67,9 @@ describe('ComparePage', () => {
     expect(
       screen.getByRole('link', { name: /Translated Square card CTA/ })
     ).toHaveAttribute('href', '/compare/square')
+    expect(
+      screen.getByRole('link', { name: /Translated Jovvie card CTA/ })
+    ).toHaveAttribute('href', '/compare/jovvie')
   })
 
   it('emits ItemList JSON-LD naming all comparisons', async () => {
@@ -72,7 +78,7 @@ describe('ComparePage', () => {
     expect(script).not.toBeNull()
     const jsonLd = JSON.parse(script!.innerHTML)
     expect(jsonLd['@type']).toBe('ItemList')
-    expect(jsonLd.itemListElement).toHaveLength(3)
+    expect(jsonLd.itemListElement).toHaveLength(4)
     expect(jsonLd.itemListElement[0].url).toBe(
       'https://wcpos.com/compare/oliver-pos'
     )
@@ -84,6 +90,10 @@ describe('ComparePage', () => {
       'https://wcpos.com/compare/square'
     )
     expect(jsonLd.itemListElement[2].position).toBe(3)
+    expect(jsonLd.itemListElement[3].url).toBe(
+      'https://wcpos.com/compare/jovvie'
+    )
+    expect(jsonLd.itemListElement[3].position).toBe(4)
   })
 
   it('builds metadata from translated strings', async () => {

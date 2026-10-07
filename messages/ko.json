@@ -1844,6 +1844,11 @@
         "description": "Square의 POS와 동기화 확장 프로그램을 WooCommerce 자체에 구축된 계산대와 비교합니다. 대면 판매의 기록 위치, 동기화, 위치, 오프라인 결제, 카드 수수료, Square가 실제로 더 나은 부분을 살펴봅니다.",
         "cta": "비교 읽기"
       },
+      "jovvieCard": {
+        "title": "WCPOS vs Jovvie",
+        "description": "WooCommerce POS 플러그인 두 가지 비교: 일회성 결제와 거래당 수수료가 붙는 월간 요금제, 앱, 카드 결제, 평점, Jovvie가 실제로 더 나은 점.",
+        "cta": "비교 읽기"
+      },
       "moreSoon": "더 많은 비교가 준비 중입니다."
     },
     "oliver": {
@@ -2377,6 +2382,119 @@
       },
       "footer": {
         "factsDated": "Square 관련 사실은 2026-10-06에 Square 자체 페이지(수수료 페이지, 가격 발표, 오프라인 결제, Tap to Pay, 기기 및 국제 서비스 제공에 관한 도움말)와 Square for WooCommerce 확장 프로그램의 WooCommerce 문서에서 확인했습니다. WCPOS 관련 사실은 wcpos.com과 docs.wcpos.com을 참조했습니다. 분기마다 다시 확인합니다.",
+        "corrections": "오류를 발견하셨나요? support@wcpos.com으로 알려 주세요. 빠르게 수정하고 모든 변경을 기록합니다."
+      }
+    },
+    "jovvie": {
+      "metadata": {
+        "title": "WCPOS vs Jovvie(2026): 솔직한 비교",
+        "description": "WooCommerce용 POS 플러그인 두 가지인 WCPOS와 Jovvie를 WCPOS 제작자가 비교합니다. 가격, 거래당 수수료, 앱, 카드 결제, 평점, Jovvie가 더 나은 선택인 경우를 다룹니다."
+      },
+      "hero": {
+        "title": "WCPOS vs Jovvie",
+        "subtitle": "WCPOS와 BizSwoop의 Jovvie는 모두 WooCommerce 스토어에 POS를 추가합니다. 가장 큰 차이는 결제 방식입니다. 일회성 결제인가, 거래마다 수수료가 붙는 월간 요금제인가. 두 제품의 차이와 Jovvie가 더 나은 선택인 경우를 비교합니다."
+      },
+      "shortAnswer": {
+        "title": "간단한 결론",
+        "wcpos": "WCPOS는 WooCommerce용 무료 오픈 소스 POS 플러그인으로 제품, 주문, 고객 수에 제한이 없습니다. 최신 브라우저, Windows 및 macOS용 데스크톱 앱, iOS 및 Android용 앱(베타)에서 모든 WooCommerce 결제 게이트웨이와 함께 작동합니다. WCPOS는 거래 수수료를 부과하지 않습니다. Pro는 일회성 결제로 여러 매장 관리와 카드 단말기 연동을 추가합니다. 업데이트 1년 제공에 $129 또는 평생 버전 $399이며, 1년이 지나도 계속 작동합니다.",
+        "jovvie": "BizSwoop의 Jovvie는 공식 WooCommerce Marketplace에 등록된 WooCommerce용 POS 플러그인입니다. 2026년 7월 기준 요금제는 무료부터 월 $29까지였으며, BizSwoop는 구독료에 더해 거래당 0.5%~2.5%의 플랫폼 수수료를 부과했습니다. Stripe Terminal을 통해 카드 결제를 받으며, BizSwoop는 Stripe Terminal 파트너입니다. 당시 네이티브 앱은 없었습니다. WordPress.org에서는 활성 설치 약 200건, 평점 4.5점이었습니다."
+      },
+      "glance": {
+        "title": "한눈에 보기",
+        "caption": "Jovvie 정보는 2026-07-09 기준 자체 경쟁사 조사 결과이며, 이후 재확인하지 않았습니다. WCPOS 정보는 wcpos.com, docs.wcpos.com 및 WordPress.org를 출처로 합니다.",
+        "colWcpos": "WCPOS",
+        "colJovvie": "Jovvie",
+        "rows": {
+          "price": {
+            "label": "가격",
+            "wcpos": "제한 없는 무료 플러그인; Pro는 1년 업데이트 포함 $129 또는 평생 $399 — 일회성 결제, 자동 갱신 없음",
+            "jovvie": "무료부터 월 $29까지의 요금제"
+          },
+          "fees": {
+            "label": "거래 수수료",
+            "wcpos": "WCPOS 수수료 없음 — 이용하는 결제 처리 업체의 요금 적용",
+            "jovvie": "구독료에 더해 거래당 0.5%~2.5%의 플랫폼 수수료"
+          },
+          "cardPayments": {
+            "label": "카드 결제",
+            "wcpos": "Pro 단말기 연동: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Vipps MobilePay",
+            "jovvie": "Stripe Terminal(BizSwoop는 Stripe Terminal 파트너), Stripe M2 등의 리더 사용"
+          },
+          "apps": {
+            "label": "앱",
+            "wcpos": "웹, 데스크톱 앱(Windows·macOS), iOS·Android 앱(베타)",
+            "jovvie": "네이티브 앱 없음"
+          },
+          "offline": {
+            "label": "오프라인",
+            "wcpos": "오프라인에서 상품을 탐색하고 장바구니를 만들 수 있음; 결제 완료에는 연결 필요",
+            "jovvie": "자체 조사에서 확인되지 않음 — BizSwoop에 문의하세요"
+          },
+          "availability": {
+            "label": "이용 가능한 곳",
+            "wcpos": "WordPress.org(무료 플러그인) 및 wcpos.com(Pro)",
+            "jovvie": "WordPress.org 및 공식 WooCommerce Marketplace"
+          },
+          "wporg": {
+            "label": "WordPress.org",
+            "wcpos": "활성 설치 5,000+, 별점 3.7(리뷰 81개)",
+            "jovvie": "활성 설치 약 200건, 평점 4.5점"
+          }
+        }
+      },
+      "pricing": {
+        "title": "비용은 얼마인가요?",
+        "jovvie": "2026년 7월 기준 Jovvie 요금제는 무료부터 월 $29까지였으며, BizSwoop는 구독료에 더해 거래당 0.5%~2.5%의 플랫폼 수수료를 부과했습니다.",
+        "wcpos": "WCPOS는 무료이며 제품, 주문, 고객, 현금 판매에 제한이 없습니다. Pro는 $129 일회성 결제로 1년간 업데이트와 우선 지원을 제공하거나, 평생 버전을 $399에 구매할 수 있습니다. 자동 갱신은 없으며 1년이 지나도 Pro는 계속 작동합니다. 어떤 기능도 꺼지지 않습니다. WCPOS는 거래 수수료를 부과하지 않으며 이용하는 결제 처리 업체의 요금만 지불합니다.",
+        "math": "비율로 부과되는 수수료는 매출이 늘면 함께 늘어납니다. 0.5%~2.5%라면 수수료가 적용되는 매출 $10,000마다 플랫폼 수수료가 $50~$250 발생하며, 구독료와 카드 결제 처리 업체의 요금은 별도입니다. WCPOS Pro는 판매액에 관계없이 동일한 $129 또는 $399입니다.",
+        "proAdds": "Pro 추가 기능: 다중 매장 관리, 카드 단말기 연동, 쿠폰, POS API를 통한 환불, 주문 내역, 계산대 고객 관리, 매장별 가격, 재고·가격 편집, 마감 보고서, 확장 디렉터리.",
+        "demoPrefix": "먼저",
+        "demoLinkLabel": "demo.wcpos.com/pos",
+        "demoSuffix": "에서 모든 기능을 체험해 보세요(로그인 demo / demo)."
+      },
+      "jovvieBetter": {
+        "title": "Jovvie가 실제로 더 나은 점",
+        "intro": "솔직한 비교에서는 양쪽의 장점을 모두 살펴봐야 합니다:",
+        "rating": "WordPress.org 평점이 더 높습니다. 2026년 7월 기준 Jovvie는 4.5점, WCPOS는 3.7점입니다.",
+        "marketplace": "공식 WooCommerce Marketplace에 등록되어 있습니다. WCPOS는 WordPress.org와 wcpos.com에서 배포됩니다.",
+        "outro": "일회성 결제보다 월간 요금제를 선호하고 Stripe Terminal로 카드를 받으며 거래당 수수료가 소액에 머무는 매출 규모라면 Jovvie만으로 충분할 수 있습니다."
+      },
+      "choose": {
+        "title": "무엇을 선택해야 할까요?",
+        "wcpos": {
+          "title": "이런 경우 WCPOS를 선택하세요:",
+          "body": "POS의 거래 수수료가 없기를 원하거나, 기능이 꺼지지 않는 일회성 결제, Windows 및 macOS용 데스크톱 앱 또는 iOS 및 Android용 앱, 오픈 소스 코드, 또는 Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Vipps MobilePay 중에서 카드 단말기를 선택하고 싶은 경우."
+        },
+        "jovvie": {
+          "title": "Jovvie를 선택하세요:",
+          "body": "일회성 결제보다 월간 요금제를 선호하고, Stripe Terminal로 카드를 받고, 공식 WooCommerce Marketplace에 등록된 플러그인을 원하며, 매출 규모상 거래당 0.5%~2.5%의 수수료를 감당할 수 있는 경우."
+        }
+      },
+      "faq": {
+        "title": "자주 묻는 질문",
+        "fees": {
+          "question": "Jovvie는 거래 수수료를 부과하나요?",
+          "answer": "2026년 7월 기준, 그렇습니다. BizSwoop는 무료부터 월 $29까지인 Jovvie 구독료에 더해 거래당 0.5%~2.5%의 플랫폼 수수료를 부과했습니다. 현재 요금은 Jovvie의 가격 페이지에서 확인하세요. WCPOS는 거래 수수료를 부과하지 않으며 이용하는 결제 처리 업체의 요금만 지불합니다."
+        },
+        "offline": {
+          "question": "Jovvie는 오프라인에서 작동하나요?",
+          "answer": "자체 조사에서는 Jovvie가 인터넷 연결 없이 작동하는지 확인하지 못했으므로 이에 의존하기 전에 BizSwoop에 문의하세요. WCPOS는 상품, 고객, 장바구니를 로컬에 저장하므로 연결 없이 카탈로그를 탐색하고 판매를 준비할 수 있지만 결제 완료에는 서버 연결이 필요합니다."
+        },
+        "stripe": {
+          "question": "WCPOS에서 Stripe 카드 리더를 사용할 수 있나요?",
+          "answer": "네, WCPOS Pro에서 사용할 수 있습니다. 카드 단말기 연동에는 Stripe Terminal 외에 SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Vipps MobilePay가 포함됩니다."
+        },
+        "apps": {
+          "question": "Jovvie에 네이티브 앱이 있나요?",
+          "answer": "2026년 7월 기준 Jovvie에는 네이티브 앱이 없었습니다. WCPOS는 최신 브라우저, Windows 및 macOS용 데스크톱 앱, iOS 및 Android용 앱(베타)에서 작동합니다."
+        },
+        "expiry": {
+          "question": "WCPOS Pro 라이선스가 만료되면 어떻게 되나요?",
+          "answer": "아무것도 꺼지지 않습니다. 지금 쓰시는 Pro 버전은 원하는 만큼 계속 작동합니다. 계산대도, 데이터도, 모든 기능도 그대로입니다. 갱신을 선택하기 전까지 새 업데이트와 우선 지원만 중단됩니다. 이는 의도된 설계입니다. 갱신은 돈 낼 가치가 있는 업데이트로 얻어내야 하고, 여러분의 POS가 원격으로 비활성화되는 일은 결코 없다는 보장이기도 합니다."
+        }
+      },
+      "footer": {
+        "factsDated": "Jovvie 관련 정보는 2026-07-09 기준 자체 경쟁사 조사 결과이며 이후 재확인하지 않았습니다. 결정하기 전에 jovvie.com에서 현재 가격을 확인하세요. WCPOS 관련 정보는 wcpos.com, docs.wcpos.com 및 WordPress.org를 출처로 합니다. 분기마다 다시 확인합니다.",
         "corrections": "오류를 발견하셨나요? support@wcpos.com으로 알려 주세요. 빠르게 수정하고 모든 변경을 기록합니다."
       }
     }
