@@ -1854,6 +1854,11 @@
         "description": "两款提供免费版的 WooCommerce POS 插件对比：价格、离线订单、餐厅模式、应用、刷卡终端，以及 Vitepos 真正更胜一筹的方面。",
         "cta": "阅读对比"
       },
+      "yithCard": {
+        "title": "WCPOS vs YITH Point of Sale",
+        "description": "WCPOS 与 YITH 的 WooCommerce 销售点插件：许可证、刷卡终端、应用、离线使用、商店与收银台，以及 YITH Point of Sale 做得好的方面。",
+        "cta": "阅读对比"
+      },
       "moreSoon": "更多对比即将上线。"
     },
     "oliver": {
@@ -2643,6 +2648,151 @@
       },
       "footer": {
         "factsDated": "关于 Vitepos 的信息于 2026-10-07 从 vitepos.com 及其 WordPress.org 列表页面查阅（见“来源”）；决定前请在 vitepos.com 查看当前价格。WCPOS 信息来自 wcpos.com、docs.wcpos.com 和 WordPress.org。我们每季度重新核实。",
+        "corrections": "发现错误？发邮件到 support@wcpos.com——我们会尽快更正并记录每次修改。"
+      }
+    },
+    "yith": {
+      "metadata": {
+        "title": "WCPOS vs YITH Point of Sale（2026）：客观对比",
+        "description": "由 WCPOS 开发者对比 WCPOS 与 YITH Point of Sale for WooCommerce：许可证、刷卡终端、应用、离线使用、商店与收银台，以及何时 YITH Point of Sale 是更合适的选择。"
+      },
+      "hero": {
+        "title": "WCPOS vs YITH Point of Sale",
+        "subtitle": "WCPOS 和 YITH Point of Sale for WooCommerce 都能为你的 WooCommerce 商店添加销售点功能。YITH Point of Sale 在浏览器中管理商店、收银台和收银台现金；WCPOS 提供免费版、桌面和移动应用以及刷卡终端集成，并允许你离线浏览商品和构建购物车。这里对比两者，并说明何时 YITH Point of Sale 是更合适的选择。"
+      },
+      "shortAnswer": {
+        "title": "简短结论",
+        "wcpos": "WCPOS 是一款免费、开源的 WooCommerce 销售点插件，不限制商品、订单或客户数量。它可在任何现代浏览器中运行，也提供 Windows 和 macOS 桌面应用以及 iOS 和 Android 应用（测试版），并支持任何 WooCommerce 支付网关。WCPOS 不收取交易手续费。Pro 版以一次性付款提供多店铺管理和刷卡终端集成——含一年更新的版本为 $129，终身版为 $399——一年后仍可继续使用。",
+        "yith": "YITH 的 YITH Point of Sale for WooCommerce 是一款 WooCommerce 付费销售点插件，以每年自动续订的年度许可证形式销售；其产品页面未提及免费版。它在网页浏览器中运行，可设置无限数量的商店和收银台，各商店库存独立，并支持拆分付款。它没有离线模式，也无法连接任何刷卡终端：根据 YITH 的文档，每笔付款都需手动处理。2026-10-07，其产品页面称有 4,667 位客户在使用，71 条客户评分给出的评分为 5 分制中的 4.23 分，其更新日志列出的版本为 3.27.0，发布于 2026-09-30。"
+      },
+      "glance": {
+        "title": "一览对比",
+        "caption": "YITH Point of Sale 信息于 2026-10-07 从 yithemes.com 和 docs.yithemes.com 查阅（见下方“来源”）；WCPOS 信息来自 wcpos.com、docs.wcpos.com 和 WordPress.org。",
+        "colWcpos": "WCPOS",
+        "colYith": "YITH Point of Sale",
+        "rows": {
+          "price": {
+            "label": "价格",
+            "wcpos": "免费插件不设上限；Pro 版含一年更新为 $129，终身版为 $399——一次性付款，不自动续费",
+            "yith": "付费插件，产品页面未提及免费版；年度许可证包含一年更新和支持，每年自动续订（当前价格请查看 yithemes.com）"
+          },
+          "expiry": {
+            "label": "如果你停止付费",
+            "wcpos": "过期的 Pro 许可证会永远继续工作——收银台、数据和每一项功能都保留；只有更新和优先支持暂停",
+            "yith": "许可证到期后更新和支持停止；YITH 的条款未说明插件是否继续运行"
+          },
+          "cardPayments": {
+            "label": "银行卡支付",
+            "wcpos": "Pro 版终端集成：Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Vipps MobilePay",
+            "yith": "无法连接刷卡终端；付款需手动处理，提供 Cash 和 Chip and Pin 付款方式"
+          },
+          "apps": {
+            "label": "应用",
+            "wcpos": "网页、桌面应用（Windows 和 macOS）、iOS 和 Android 应用（测试版）",
+            "yith": "在网页浏览器中运行；可以保存到手机或平板电脑的主屏幕"
+          },
+          "offline": {
+            "label": "离线",
+            "wcpos": "离线浏览商品和组建购物车；完成结账需要网络连接",
+            "yith": "根据其产品页面，没有离线模式"
+          },
+          "barcode": {
+            "label": "条码扫描",
+            "wcpos": "支持",
+            "yith": "可以，使用条码扫描器；其常见问题说明 iPad 相机无法扫描条码"
+          },
+          "receipts": {
+            "label": "小票打印（含热敏打印）",
+            "wcpos": "支持",
+            "yith": "根据其文档，可通过连接到电脑的任何打印机打印，或保存为 PDF"
+          },
+          "stores": {
+            "label": "商店和收银台",
+            "wcpos": "Pro 支持多店管理；设备和收银员数量不限",
+            "yith": "商店和收银台数量不限，各商店库存独立"
+          },
+          "ratings": {
+            "label": "用户与评分",
+            "wcpos": "WordPress.org: 5,000+ 活跃安装，3.7 星（81 条评价）",
+            "yith": "yithemes.com：4,667 位客户，71 条客户评分给出 5 分制中的 4.23 分"
+          }
+        }
+      },
+      "pricing": {
+        "title": "费用是多少？",
+        "yith": "YITH 将 YITH Point of Sale for WooCommerce 作为许可证销售，包含一年更新和支持，以及 30 天退款保证。根据 YITH 的条款，其许可证每年自动续订；许可证到期后，你将不再获得该产品的更新或支持。我们在 2026-10-07 无法读取其产品页面上的价格；当前价格请查看 yithemes.com。",
+        "wcpos": "WCPOS 免费使用，不限制商品、订单、客户或现金销售。Pro 版 $129——一次性付款，包含一年更新和优先支持——或 $399 终身版。它不会自动续费，一年后 Pro 版仍可继续使用：永远不会关闭任何功能。WCPOS 不收取交易手续费；你只需支付自己所选支付处理商的费率。",
+        "compare": "由于我们无法确认 YITH 的当前价格，本页面不比较标价。许可证条款有所不同：YITH 许可证每年自动续订，而 WCPOS Pro 是一次性付款，一年更新期结束后仍继续运行。",
+        "proAdds": "Pro 版新增：多店铺管理、刷卡终端集成、优惠券、通过 POS API 退款、订单历史、收银台客户管理、按店铺定价、库存和价格编辑、日终报告，以及扩展目录。",
+        "demoPrefix": "先到",
+        "demoLinkLabel": "demo.wcpos.com/pos",
+        "demoSuffix": "试用全部功能（登录 demo / demo）。"
+      },
+      "yithBetter": {
+        "title": "YITH Point of Sale 做得好的方面",
+        "intro": "诚实的对比要兼顾双方的优点：",
+        "stores": "商店、收银台和库存——商店数量不限，每家商店的收银台数量也不限；其 Multi-Stock 功能可为各商店设置独立库存数量。",
+        "cash": "收银台现金——开启收银台时记录手头现金，在一次收银期间注明原因后添加或取出现金，关闭时获得订单、按付款方式分类的销售额、税费和现金汇总，并可选择生成 CSV 结账报告。",
+        "roles": "商店角色——每家商店都有可完全访问其收银台的经理，以及可被限制访问权限的收银员。",
+        "split": "拆分付款——客户可以使用多种付款方式支付同一订单。",
+        "barcodes": "YITH Barcodes——如果你的商店已经使用 YITH 自己的条码插件，它可以与之集成。",
+        "outro": "如果你已经使用 YITH 插件、在多家商店销售且各商店库存独立，并在未连接销售点系统的终端上接受刷卡付款，YITH Point of Sale 可能是更合适的选择。"
+      },
+      "choose": {
+        "title": "你该选哪一个？",
+        "wcpos": {
+          "title": "选择 WCPOS，如果：",
+          "body": "你想要免费版、刷卡终端集成（Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal 和 Vipps MobilePay）、Windows 和 macOS 桌面应用或 iOS 和 Android 应用、离线浏览商品和构建购物车，或希望一次性付款后在一年更新期结束时仍能继续使用。"
+        },
+        "yith": {
+          "title": "以下情况选择 YITH Point of Sale：",
+          "body": "你已经使用 YITH Barcodes 等 YITH 插件，希望商店和收银台数量不限、各商店库存独立，并在每次收银期间跟踪现金，且愿意在未连接销售点系统的终端上接受刷卡付款。"
+        }
+      },
+      "faq": {
+        "title": "常见问题",
+        "price": {
+          "question": "YITH Point of Sale 多少钱？",
+          "answer": "YITH 将其作为年度许可证销售，包含一年更新和支持，每年自动续订，并提供 30 天退款保证。我们在 2026-10-07 无法读取其产品页面上的价格，因此当前价格请查看 yithemes.com。其产品页面未提及免费版。WCPOS 免费，WCPOS Pro 一年更新的一次性价格为 $129，终身版为 $399。"
+        },
+        "offline": {
+          "question": "YITH Point of Sale 可以离线运行吗？",
+          "answer": "不可以。其产品页面的常见问题称该插件没有离线功能，不过你可以将其设置在本地服务器上。WCPOS 在本地存储商品、客户和购物车，因此你可以在没有网络连接时浏览商品目录并准备销售；完成结账需要连接服务器。"
+        },
+        "terminals": {
+          "question": "可以将刷卡终端连接到 YITH Point of Sale 吗？",
+          "answer": "不可以。根据 YITH 的文档，POS 刷卡终端无法连接到该插件，因此每笔付款都需手动处理；它添加了 Cash 和 Chip and Pin 付款方式来记录付款。WCPOS Pro 的刷卡终端集成包括 Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal 和 Vipps MobilePay。"
+        },
+        "apps": {
+          "question": "YITH Point of Sale 有原生应用吗？",
+          "answer": "YITH 的文档介绍了如何在浏览器中打开销售点并将其保存到手机或平板电脑的主屏幕，未提及原生应用。YITH 表示已在 iPads 和 Android 平板电脑等 10 至 12 英寸的平板电脑上测试。WCPOS 可以在任何现代浏览器中运行，也提供 Windows 和 macOS 桌面应用及 iOS 和 Android 应用（测试版）。"
+        },
+        "licence": {
+          "question": "YITH 许可证到期后会怎样？",
+          "answer": "根据 YITH 的条款，其许可证每年自动续订，许可证到期后你将不再获得该产品的更新或支持。条款未说明此后插件是否继续运行。"
+        },
+        "expiry": {
+          "question": "WCPOS Pro 许可证到期后会发生什么？",
+          "answer": "什么都不会被关掉。你手上的 Pro 版本想用多久就用多久——你的收银台、你的数据、每一项功能都在。到期后你只是不再收到新更新和优先支持，直到你决定续期。这是有意为之：续费必须靠值得付费的更新来赢得，同时也保证你的销售点永远不会被远程停用。"
+        }
+      },
+      "sources": {
+        "title": "来源",
+        "intro": "本页面关于 YITH Point of Sale 的所有事实均来自 YITH 自己的页面，查阅于 2026-10-07：",
+        "items": {
+          "product": "包含一年更新和支持的许可证、30 天退款保证、拆分付款、平板电脑、条码扫描、无离线模式、无限数量的商店和收银台、Multi-Stock、客户数及评分",
+          "faqs": "无法连接刷卡终端、手动付款、收据打印",
+          "paymentMethods": "Cash 和 Chip and Pin 付款方式",
+          "mobile": "浏览器中的销售点，可保存到手机或平板电脑主屏幕",
+          "employees": "商店经理和收银员",
+          "manageCash": "手头现金、收银期间添加和取出现金",
+          "closeRegister": "收银台关闭汇总和 CSV 结账报告",
+          "changelog": "版本 3.27.0，发布于 2026-09-30",
+          "terms": "每年自动续订的年度许可证；许可证到期后不再提供更新或支持"
+        }
+      },
+      "footer": {
+        "factsDated": "关于 YITH Point of Sale 的信息于 2026-10-07 从 yithemes.com 和 docs.yithemes.com 查阅（见“来源”）；决定前请在 yithemes.com 查看当前价格。WCPOS 信息来自 wcpos.com、docs.wcpos.com 和 WordPress.org。我们每季度重新核实。",
         "corrections": "发现错误？发邮件到 support@wcpos.com——我们会尽快更正并记录每次修改。"
       }
     }

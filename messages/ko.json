@@ -1854,6 +1854,11 @@
         "description": "무료 버전이 있는 WooCommerce POS 플러그인 두 가지 비교: 가격, 오프라인 주문, 레스토랑 모드, 앱, 카드 단말기, Vitepos가 실제로 더 나은 점.",
         "cta": "비교 읽기"
       },
+      "yithCard": {
+        "title": "WCPOS vs YITH Point of Sale",
+        "description": "WCPOS와 YITH의 WooCommerce용 POS 플러그인: 라이선스, 카드 단말기, 앱, 오프라인 사용, 스토어와 계산대, YITH Point of Sale의 장점.",
+        "cta": "비교 읽기"
+      },
       "moreSoon": "더 많은 비교가 준비 중입니다."
     },
     "oliver": {
@@ -2643,6 +2648,151 @@
       },
       "footer": {
         "factsDated": "Vitepos 정보는 2026-10-07에 vitepos.com과 WordPress.org 등록 페이지에서 확인했습니다(출처 참조). 결정하기 전에 현재 가격은 vitepos.com에서 확인하세요. WCPOS 정보는 wcpos.com, docs.wcpos.com, WordPress.org를 출처로 합니다. 분기마다 다시 확인합니다.",
+        "corrections": "오류를 발견하셨나요? support@wcpos.com으로 알려 주세요. 빠르게 수정하고 모든 변경을 기록합니다."
+      }
+    },
+    "yith": {
+      "metadata": {
+        "title": "WCPOS vs YITH Point of Sale(2026): 솔직한 비교",
+        "description": "WCPOS 제작자가 WCPOS와 YITH Point of Sale for WooCommerce를 비교합니다. 라이선스, 카드 단말기, 앱, 오프라인 사용, 스토어와 계산대, YITH Point of Sale이 더 나은 선택인 경우를 다룹니다."
+      },
+      "hero": {
+        "title": "WCPOS vs YITH Point of Sale",
+        "subtitle": "WCPOS와 YITH Point of Sale for WooCommerce는 모두 WooCommerce 스토어에 POS를 추가합니다. YITH Point of Sale은 브라우저에서 스토어, 계산대, 계산대의 현금을 관리합니다. WCPOS에는 무료 버전, 데스크톱 및 모바일 앱, 카드 단말기 연동이 있으며 오프라인에서 상품을 탐색하고 장바구니를 구성할 수 있습니다. 두 제품의 차이와 YITH Point of Sale이 더 나은 선택인 경우를 비교합니다."
+      },
+      "shortAnswer": {
+        "title": "간단한 결론",
+        "wcpos": "WCPOS는 WooCommerce용 무료 오픈 소스 POS 플러그인으로 제품, 주문, 고객 수에 제한이 없습니다. 최신 브라우저, Windows 및 macOS용 데스크톱 앱, iOS 및 Android용 앱(베타)에서 모든 WooCommerce 결제 게이트웨이와 함께 작동합니다. WCPOS는 거래 수수료를 부과하지 않습니다. Pro는 일회성 결제로 여러 매장 관리와 카드 단말기 연동을 추가합니다. 업데이트 1년 제공에 $129 또는 평생 버전 $399이며, 1년이 지나도 계속 작동합니다.",
+        "yith": "YITH의 YITH Point of Sale for WooCommerce는 WooCommerce용 유료 POS 플러그인으로, 매년 자동 갱신되는 연간 라이선스로 판매됩니다. 제품 페이지에는 무료 버전이 언급되어 있지 않습니다. 웹 브라우저에서 실행되며 스토어별로 재고를 분리하면서 스토어와 계산대를 무제한으로 둘 수 있고 분할 결제를 지원합니다. 오프라인 모드가 없고 카드 단말기에도 연결되지 않습니다. YITH 문서에 따르면 모든 결제는 수동으로 처리됩니다. 2026-10-07에 제품 페이지에는 고객 4,667명이 사용하고 고객 평가 71개에서 5점 만점에 4.23점이라고 표시되어 있었으며, 변경 로그에는 2026-09-30에 출시된 버전 3.27.0이 기재되어 있었습니다."
+      },
+      "glance": {
+        "title": "한눈에 보기",
+        "caption": "YITH Point of Sale 정보는 2026-10-07에 yithemes.com과 docs.yithemes.com에서 확인했습니다(아래 출처 참조). WCPOS 정보는 wcpos.com, docs.wcpos.com, WordPress.org를 출처로 합니다.",
+        "colWcpos": "WCPOS",
+        "colYith": "YITH Point of Sale",
+        "rows": {
+          "price": {
+            "label": "가격",
+            "wcpos": "제한 없는 무료 플러그인; Pro는 1년 업데이트 포함 $129 또는 평생 $399 — 일회성 결제, 자동 갱신 없음",
+            "yith": "유료 플러그인으로 제품 페이지에 무료 버전이 언급되지 않음. 1년간 업데이트와 지원이 제공되며 매년 자동 갱신되는 라이선스(현재 가격은 yithemes.com에서 확인)"
+          },
+          "expiry": {
+            "label": "결제를 중단하면",
+            "wcpos": "만료된 Pro 라이선스는 영원히 계속 작동합니다. 계산대, 데이터, 모든 기능이 그대로 유지되고 업데이트와 우선 지원만 중단됩니다",
+            "yith": "라이선스가 만료되면 업데이트와 지원이 중단됨. YITH 약관에는 플러그인이 계속 작동하는지 명시되어 있지 않음"
+          },
+          "cardPayments": {
+            "label": "카드 결제",
+            "wcpos": "Pro 단말기 연동: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Vipps MobilePay",
+            "yith": "카드 단말기 연결 없음. 결제는 Cash 및 Chip and Pin 결제 수단을 사용해 수동으로 처리"
+          },
+          "apps": {
+            "label": "앱",
+            "wcpos": "웹, 데스크톱 앱(Windows·macOS), iOS·Android 앱(베타)",
+            "yith": "웹 브라우저에서 실행되며 휴대전화나 태블릿 홈 화면에 저장할 수 있음"
+          },
+          "offline": {
+            "label": "오프라인",
+            "wcpos": "오프라인에서 상품을 탐색하고 장바구니를 만들 수 있음; 결제 완료에는 연결 필요",
+            "yith": "제품 페이지에 따르면 오프라인 모드가 없음"
+          },
+          "barcode": {
+            "label": "바코드 스캔",
+            "wcpos": "예",
+            "yith": "예, 바코드 스캐너 사용. FAQ에 따르면 iPad 카메라로는 바코드를 스캔할 수 없음"
+          },
+          "receipts": {
+            "label": "영수증 인쇄(감열식 포함)",
+            "wcpos": "지원",
+            "yith": "문서에 따르면 컴퓨터에 연결된 모든 프린터로 인쇄하거나 PDF로 저장"
+          },
+          "stores": {
+            "label": "매장과 계산대",
+            "wcpos": "Pro에서 여러 매장 관리; 기기와 계산원 수 무제한",
+            "yith": "스토어와 계산대 무제한, 스토어별 별도 재고"
+          },
+          "ratings": {
+            "label": "사용자 및 평점",
+            "wcpos": "WordPress.org: 활성 설치 5,000+, 별점 3.7(리뷰 81개)",
+            "yith": "yithemes.com: 고객 4,667명, 고객 평가 71개에서 5점 만점에 4.23점"
+          }
+        }
+      },
+      "pricing": {
+        "title": "비용은 얼마인가요?",
+        "yith": "YITH는 YITH Point of Sale for WooCommerce를 1년간 업데이트와 지원, 30일 환불 보장이 포함된 라이선스로 판매합니다. YITH 약관에 따르면 라이선스는 매년 자동 갱신되며 라이선스가 만료되면 제품 업데이트나 지원을 더 이상 받지 못합니다. 2026-10-07에 제품 페이지의 가격을 읽을 수 없었습니다. 현재 가격은 yithemes.com에서 확인하세요.",
+        "wcpos": "WCPOS는 무료이며 제품, 주문, 고객, 현금 판매에 제한이 없습니다. Pro는 $129 일회성 결제로 1년간 업데이트와 우선 지원을 제공하거나, 평생 버전을 $399에 구매할 수 있습니다. 자동 갱신은 없으며 1년이 지나도 Pro는 계속 작동합니다. 어떤 기능도 꺼지지 않습니다. WCPOS는 거래 수수료를 부과하지 않으며 이용하는 결제 처리 업체의 요금만 지불합니다.",
+        "compare": "YITH의 현재 가격을 확인할 수 없었으므로 이 페이지에서는 정가를 비교하지 않습니다. 라이선스 조건은 다릅니다. YITH 라이선스는 매년 자동 갱신되지만 WCPOS Pro는 일회성 결제로, 1년 업데이트 기간이 끝나도 계속 작동합니다.",
+        "proAdds": "Pro 추가 기능: 다중 매장 관리, 카드 단말기 연동, 쿠폰, POS API를 통한 환불, 주문 내역, 계산대 고객 관리, 매장별 가격, 재고·가격 편집, 마감 보고서, 확장 디렉터리.",
+        "demoPrefix": "먼저",
+        "demoLinkLabel": "demo.wcpos.com/pos",
+        "demoSuffix": "에서 모든 기능을 체험해 보세요(로그인 demo / demo)."
+      },
+      "yithBetter": {
+        "title": "YITH Point of Sale의 장점",
+        "intro": "솔직한 비교에서는 양쪽의 장점을 모두 살펴봐야 합니다:",
+        "stores": "스토어, 계산대, 재고 — 스토어 수와 스토어별 계산대 수에 제한이 없고 Multi-Stock 기능으로 스토어마다 별도의 재고 수량을 설정합니다.",
+        "cash": "계산대 현금 — 계산대를 열 때 보유 현금을 입력하고, 세션 중에는 이유를 기록하며 현금을 추가하거나 인출하고, 주문, 결제 수단별 매출, 세금, 현금의 요약과 선택 사항인 CSV 마감 보고서로 마감할 수 있습니다.",
+        "roles": "스토어 역할 — 각 스토어에는 해당 계산대에 대한 전체 접근 권한을 가진 관리자와 제한된 접근 권한을 가질 수 있는 계산원이 있습니다.",
+        "split": "분할 결제 — 고객은 하나의 주문을 둘 이상의 결제 수단으로 결제할 수 있습니다.",
+        "barcodes": "YITH Barcodes — 스토어에서 이미 사용 중이라면 YITH 자체 바코드 플러그인과 연동됩니다.",
+        "outro": "이미 YITH 플러그인을 사용하고, 스토어별 재고를 분리해 여러 스토어에서 판매하며, POS에 연결되지 않은 단말기로 카드 결제를 받는다면 YITH Point of Sale이 더 적합할 수 있습니다."
+      },
+      "choose": {
+        "title": "무엇을 선택해야 할까요?",
+        "wcpos": {
+          "title": "이런 경우 WCPOS를 선택하세요:",
+          "body": "무료 버전, 카드 단말기 연동(Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Vipps MobilePay), Windows 및 macOS용 데스크톱 앱이나 iOS 및 Android용 앱을 원하거나, 오프라인에서 상품을 탐색하고 장바구니를 구성하고 싶거나, 1년 업데이트 기간 이후에도 계속 작동하는 일회성 결제를 원할 경우."
+        },
+        "yith": {
+          "title": "YITH Point of Sale을 선택할 경우:",
+          "body": "이미 YITH Barcodes 같은 YITH 플러그인을 사용하고, 스토어별 별도 재고와 세션마다 현금을 추적하는 무제한 스토어 및 계산대를 원하며, POS에 연결되지 않은 단말기로 카드 결제를 받는 데 동의할 경우."
+        }
+      },
+      "faq": {
+        "title": "자주 묻는 질문",
+        "price": {
+          "question": "YITH Point of Sale 가격은 얼마인가요?",
+          "answer": "YITH는 1년간 업데이트와 지원이 포함되고 매년 자동 갱신되는 연간 라이선스로 판매하며 30일 환불 보장도 제공합니다. 2026-10-07에 제품 페이지의 가격을 읽을 수 없었으므로 현재 가격은 yithemes.com에서 확인하세요. 제품 페이지에는 무료 버전이 언급되어 있지 않습니다. WCPOS는 무료이며 WCPOS Pro는 1년 업데이트에 일회성 $129 또는 평생 $399입니다."
+        },
+        "offline": {
+          "question": "YITH Point of Sale은 오프라인에서 작동하나요?",
+          "answer": "아니요. 제품 페이지의 FAQ에 따르면 플러그인에는 오프라인 기능이 없지만 로컬 서버에 설정할 수는 있습니다. WCPOS는 상품, 고객, 장바구니를 로컬에 저장하므로 연결 없이 카탈로그를 탐색하고 판매를 준비할 수 있지만 결제 완료에는 서버 연결이 필요합니다."
+        },
+        "terminals": {
+          "question": "YITH Point of Sale에 카드 단말기를 연결할 수 있나요?",
+          "answer": "아니요. YITH 문서에 따르면 POS 카드 리더 단말기를 플러그인에 연결할 수 없으므로 모든 결제는 수동으로 처리됩니다. 결제 기록을 위한 Cash 및 Chip and Pin 결제 수단이 추가됩니다. WCPOS Pro의 카드 단말기 연동에는 Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Vipps MobilePay가 포함됩니다."
+        },
+        "apps": {
+          "question": "YITH Point of Sale에 네이티브 앱이 있나요?",
+          "answer": "YITH 문서에는 브라우저에서 POS를 열고 휴대전화나 태블릿 홈 화면에 저장하는 방법이 설명되어 있으며 네이티브 앱은 언급되지 않습니다. YITH는 iPads 및 Android 태블릿과 같은 10~12인치 태블릿에서 테스트했다고 밝힙니다. WCPOS는 최신 브라우저, Windows 및 macOS용 데스크톱 앱, iOS 및 Android용 앱(베타)에서 작동합니다."
+        },
+        "licence": {
+          "question": "YITH 라이선스가 만료되면 어떻게 되나요?",
+          "answer": "YITH 약관에 따르면 라이선스는 매년 자동 갱신되며, 라이선스가 만료되면 제품 업데이트나 지원을 더 이상 받지 못합니다. 그 이후에도 플러그인이 계속 작동하는지는 명시되어 있지 않습니다."
+        },
+        "expiry": {
+          "question": "WCPOS Pro 라이선스가 만료되면 어떻게 되나요?",
+          "answer": "아무것도 꺼지지 않습니다. 지금 쓰시는 Pro 버전은 원하는 만큼 계속 작동합니다. 계산대도, 데이터도, 모든 기능도 그대로입니다. 갱신을 선택하기 전까지 새 업데이트와 우선 지원만 중단됩니다. 이는 의도된 설계입니다. 갱신은 돈 낼 가치가 있는 업데이트로 얻어내야 하고, 여러분의 POS가 원격으로 비활성화되는 일은 결코 없다는 보장이기도 합니다."
+        }
+      },
+      "sources": {
+        "title": "출처",
+        "intro": "이 페이지의 YITH Point of Sale 관련 사실은 모두 2026-10-07에 확인한 YITH 자체 페이지에서 가져왔습니다:",
+        "items": {
+          "product": "1년간 업데이트와 지원이 포함된 라이선스, 30일 환불 보장, 분할 결제, 태블릿, 바코드 스캔, 오프라인 모드 없음, 무제한 스토어와 계산대, Multi-Stock, 고객 수와 평점",
+          "faqs": "카드 단말기 연결 없음, 수동 결제, 영수증 인쇄",
+          "paymentMethods": "Cash 및 Chip and Pin 결제 수단",
+          "mobile": "브라우저의 POS, 휴대전화나 태블릿 홈 화면에 저장",
+          "employees": "스토어 관리자와 계산원",
+          "manageCash": "보유 현금, 세션 중 현금 추가 및 인출",
+          "closeRegister": "계산대 마감 요약 및 CSV 마감 보고서",
+          "changelog": "버전 3.27.0, 2026-09-30 출시",
+          "terms": "매년 자동 갱신되는 연간 라이선스. 라이선스 만료 후 업데이트와 지원 없음"
+        }
+      },
+      "footer": {
+        "factsDated": "YITH Point of Sale 정보는 2026-10-07에 yithemes.com과 docs.yithemes.com에서 확인했습니다(출처 참조). 결정하기 전에 현재 가격은 yithemes.com에서 확인하세요. WCPOS 정보는 wcpos.com, docs.wcpos.com, WordPress.org를 출처로 합니다. 분기마다 다시 확인합니다.",
         "corrections": "오류를 발견하셨나요? support@wcpos.com으로 알려 주세요. 빠르게 수정하고 모든 변경을 기록합니다."
       }
     }

@@ -1854,6 +1854,11 @@
         "description": "Twee WooCommerce-POS-plugins met gratis versies: prijzen, offline bestellingen, restaurantmodi, apps, betaalterminals en waar Vitepos echt beter is.",
         "cta": "Lees de vergelijking"
       },
+      "yithCard": {
+        "title": "WCPOS vs YITH Point of Sale",
+        "description": "WCPOS en de kassa-plugin van YITH voor WooCommerce: licenties, betaalterminals, apps, offline gebruik, winkels en kassa’s, en wat YITH Point of Sale goed doet.",
+        "cta": "Lees de vergelijking"
+      },
       "moreSoon": "Er komen meer vergelijkingen aan."
     },
     "oliver": {
@@ -2643,6 +2648,151 @@
       },
       "footer": {
         "factsDated": "De feiten over Vitepos zijn op 2026-10-07 geraadpleegd op vitepos.com en de WordPress.org-vermelding (zie Bronnen); kijk op vitepos.com voor actuele prijzen voordat je beslist. De feiten over WCPOS komen van wcpos.com, docs.wcpos.com en WordPress.org. We verifiëren ze elk kwartaal opnieuw.",
+        "corrections": "Een fout gezien? Mail naar support@wcpos.com — we corrigeren snel en leggen elke wijziging vast."
+      }
+    },
+    "yith": {
+      "metadata": {
+        "title": "WCPOS vs YITH Point of Sale (2026): een eerlijke vergelijking",
+        "description": "WCPOS en YITH Point of Sale for WooCommerce vergeleken door de maker van WCPOS — licenties, betaalterminals, apps, offline gebruik, winkels en kassa’s, en wanneer YITH Point of Sale de betere keuze is."
+      },
+      "hero": {
+        "title": "WCPOS vs YITH Point of Sale",
+        "subtitle": "WCPOS en YITH Point of Sale for WooCommerce voegen allebei een kassa toe aan je WooCommerce-winkel. YITH Point of Sale beheert winkels, kassa’s en kassageld in de browser; WCPOS heeft een gratis versie, desktop- en mobiele apps en betaalterminalintegraties, en laat je offline producten bekijken en winkelwagens samenstellen. Hier lees je hoe ze zich verhouden en wanneer YITH Point of Sale de betere keuze is."
+      },
+      "shortAnswer": {
+        "title": "Het korte antwoord",
+        "wcpos": "WCPOS is een gratis, open-source kassaplugin voor WooCommerce, zonder limieten op producten, bestellingen of klanten. Hij werkt in elke moderne browser, als desktopapp voor Windows en macOS en als app voor iOS en Android (bèta), met elke WooCommerce-betaalgateway. WCPOS rekent geen transactiekosten. Pro voegt beheer van meerdere winkels en integraties met betaalterminals toe voor een eenmalige betaling — $129 voor één jaar updates of $399 levenslang — en blijft na dat jaar werken.",
+        "yith": "YITH Point of Sale for WooCommerce van YITH is een betaalde kassa-plugin voor WooCommerce, verkocht als een jaarlicentie die automatisch wordt verlengd; de productpagina vermeldt geen gratis versie. Het draait in een webbrowser, heeft onbeperkt winkels en kassa’s met afzonderlijke voorraden per winkel en ondersteunt gesplitste betalingen. Het heeft geen offlinemodus en kan niet worden verbonden met een betaalterminal: volgens de documentatie van YITH wordt elke betaling handmatig verwerkt. Op 2026-10-07 vermeldde de productpagina dat 4,667 klanten het gebruiken, met een score van 4.23 uit 5 op basis van 71 klantbeoordelingen, en de changelog vermeldde versie 3.27.0, uitgebracht op 2026-09-30."
+      },
+      "glance": {
+        "title": "In één oogopslag",
+        "caption": "YITH Point of Sale-feiten geraadpleegd op 2026-10-07 op yithemes.com en docs.yithemes.com (zie Bronnen hieronder); WCPOS-feiten van wcpos.com, docs.wcpos.com en WordPress.org.",
+        "colWcpos": "WCPOS",
+        "colYith": "YITH Point of Sale",
+        "rows": {
+          "price": {
+            "label": "Prijs",
+            "wcpos": "Gratis plugin zonder limieten; Pro kost $129 voor één jaar updates of $399 levenslang — eenmalige betalingen, geen automatische verlenging",
+            "yith": "Betaalde plugin, zonder gratis versie op de productpagina; een jaarlicentie met een jaar updates en ondersteuning die automatisch wordt verlengd (kijk op yithemes.com voor de actuele prijs)"
+          },
+          "expiry": {
+            "label": "Als je stopt met betalen",
+            "wcpos": "Een verlopen Pro-licentie blijft voor altijd werken — je behoudt je kassa, je data en elke functie; alleen updates en prioriteitsondersteuning pauzeren",
+            "yith": "Updates en ondersteuning stoppen wanneer de licentie verloopt; de voorwaarden van YITH zeggen niet of de plugin blijft werken"
+          },
+          "cardPayments": {
+            "label": "Kaartbetalingen",
+            "wcpos": "Pro-terminalintegraties: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Vipps MobilePay",
+            "yith": "Geen verbinding met een betaalterminal; betalingen worden handmatig verwerkt, met de betaalmethoden Cash en Chip and Pin"
+          },
+          "apps": {
+            "label": "Apps",
+            "wcpos": "Web, desktop-apps (Windows en macOS), iOS- en Android-apps (bèta)",
+            "yith": "Draait in een webbrowser; je kunt het op het startscherm van een telefoon of tablet opslaan"
+          },
+          "offline": {
+            "label": "Offline",
+            "wcpos": "Offline door producten bladeren en winkelwagens samenstellen; afrekenen vereist verbinding",
+            "yith": "Geen offlinemodus, volgens de productpagina"
+          },
+          "barcode": {
+            "label": "Barcodes scannen",
+            "wcpos": "Ja",
+            "yith": "Ja, met een barcodescanner; volgens de FAQ kan de camera van de iPad geen barcodes scannen"
+          },
+          "receipts": {
+            "label": "Bonnen printen (incl. thermisch)",
+            "wcpos": "Ja",
+            "yith": "Drukt af op elke printer die op je computer is aangesloten of slaat een PDF op, volgens de documentatie"
+          },
+          "stores": {
+            "label": "Winkels en kassa’s",
+            "wcpos": "Beheer van meerdere winkels in Pro; onbeperkt apparaten en kassiers",
+            "yith": "Onbeperkt winkels en kassa’s, met afzonderlijke voorraden per winkel"
+          },
+          "ratings": {
+            "label": "Gebruikers en beoordelingen",
+            "wcpos": "WordPress.org: 5,000+ actieve installaties, 3.7 sterren (81 beoordelingen)",
+            "yith": "yithemes.com: 4,667 klanten, 4.23 uit 5 op basis van 71 klantbeoordelingen"
+          }
+        }
+      },
+      "pricing": {
+        "title": "Wat kost het?",
+        "yith": "YITH verkoopt YITH Point of Sale for WooCommerce als een licentie met een jaar updates en ondersteuning en een geld-terug-garantie van 30 dagen. Volgens de voorwaarden van YITH worden de licenties elk jaar automatisch verlengd en ontvang je na het verlopen van een licentie geen updates of ondersteuning meer voor het product. We konden de prijs op de productpagina op 2026-10-07 niet lezen; kijk op yithemes.com voor de actuele prijs.",
+        "wcpos": "WCPOS is gratis, zonder limieten op producten, bestellingen, klanten of contante verkopen. Pro kost $129 — een eenmalige betaling voor één jaar updates en prioriteitsondersteuning — of $399 levenslang. Het wordt nooit automatisch verlengd en Pro blijft na dat jaar werken: er wordt nooit iets uitgeschakeld. WCPOS rekent geen transactiekosten; je betaalt de tarieven van je eigen betaalverwerker.",
+        "compare": "Omdat we de huidige prijs van YITH niet konden bevestigen, vergelijkt deze pagina geen lijstprijzen. De licentievoorwaarden verschillen: een YITH-licentie wordt elk jaar automatisch verlengd, terwijl WCPOS Pro een eenmalige betaling is en blijft werken na afloop van het jaar met updates.",
+        "proAdds": "Pro voegt toe: beheer van meerdere winkels, integraties met pinterminals, kortingsbonnen, terugbetalingen via de POS API, bestelgeschiedenis, klantbeheer aan de kassa, winkelspecifieke prijzen, voorraad- en prijsbewerking, dagafsluitingsrapporten en de extensiedirectory.",
+        "demoPrefix": "Probeer alles eerst op",
+        "demoLinkLabel": "demo.wcpos.com/pos",
+        "demoSuffix": "(inloggen demo / demo)."
+      },
+      "yithBetter": {
+        "title": "Wat YITH Point of Sale goed doet",
+        "intro": "Een eerlijke vergelijking bekijkt beide kanten:",
+        "stores": "Winkels, kassa’s en voorraad — onbeperkt winkels en onbeperkt kassa’s per winkel; de functie Multi-Stock stelt afzonderlijke voorraadaantallen per winkel in.",
+        "cash": "Kassageld — voer het aanwezige contante geld in wanneer je een kassa opent, voeg tijdens een sessie contant geld toe of haal het eruit met vermelding van een reden, en sluit af met een overzicht van bestellingen, verkopen per betaalmethode, belastingen en contant geld, plus een optioneel CSV-afsluitrapport.",
+        "roles": "Winkelrollen — elke winkel heeft managers met volledige toegang tot de kassa’s en kassiers die beperkte toegang kunnen hebben.",
+        "split": "Gesplitste betalingen — een klant kan één bestelling met meer dan één betaalmethode betalen.",
+        "barcodes": "YITH Barcodes — het integreert met de eigen barcode-plugin van YITH als je winkel die al gebruikt.",
+        "outro": "Als je al YITH-plugins gebruikt, vanuit meerdere winkels met afzonderlijke voorraden verkoopt en kaartbetalingen aanneemt op een terminal die niet met je kassa is verbonden, kan YITH Point of Sale de betere keuze zijn."
+      },
+      "choose": {
+        "title": "Welke moet je kiezen?",
+        "wcpos": {
+          "title": "Kies WCPOS als:",
+          "body": "Je wilt een gratis versie, betaalterminalintegraties (Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal en Vipps MobilePay), desktopapps voor Windows en macOS of apps voor iOS en Android, offline producten bekijken en winkelwagens samenstellen, of een eenmalige betaling die na het jaar met updates blijft werken."
+        },
+        "yith": {
+          "title": "Kies YITH Point of Sale als:",
+          "body": "Je al YITH-plugins zoals YITH Barcodes gebruikt, onbeperkt winkels en kassa’s wilt met afzonderlijke voorraden per winkel en contant geld wilt bijhouden tijdens elke kassasessie, en het goed vindt om kaartbetalingen aan te nemen op een terminal die niet met je kassa is verbonden."
+        }
+      },
+      "faq": {
+        "title": "Veelgestelde vragen",
+        "price": {
+          "question": "Wat kost YITH Point of Sale?",
+          "answer": "YITH verkoopt het als een jaarlicentie met een jaar updates en ondersteuning, die automatisch wordt verlengd, en een geld-terug-garantie van 30 dagen. We konden de prijs op de productpagina op 2026-10-07 niet lezen, dus kijk op yithemes.com voor de actuele prijs. De productpagina vermeldt geen gratis versie. WCPOS is gratis en WCPOS Pro kost eenmalig $129 voor een jaar updates of $399 levenslang."
+        },
+        "offline": {
+          "question": "Werkt YITH Point of Sale offline?",
+          "answer": "Nee. Volgens de FAQ op de productpagina heeft de plugin geen offlinefunctie, hoewel je hem op een lokale server kunt instellen. WCPOS slaat producten, klanten en winkelwagens lokaal op, zodat je zonder verbinding door de catalogus kunt bladeren en verkopen kunt voorbereiden; voor het voltooien van het afrekenen is een serververbinding nodig."
+        },
+        "terminals": {
+          "question": "Kan ik een betaalterminal met YITH Point of Sale verbinden?",
+          "answer": "Nee. Volgens de documentatie van YITH kan er geen POS-kaartlezerterminal met de plugin worden verbonden, zodat elke betaling handmatig wordt verwerkt; de betaalmethoden Cash en Chip and Pin worden toegevoegd om betalingen vast te leggen. WCPOS Pro omvatten Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal en Vipps MobilePay."
+        },
+        "apps": {
+          "question": "Heeft YITH Point of Sale native apps?",
+          "answer": "De documentatie van YITH beschrijft hoe je de kassa in een browser opent en op het startscherm van een telefoon of tablet opslaat, en vermeldt geen native app. Volgens YITH is het getest op tablets van 10 tot 12 inch, zoals iPads en Android-tablets. WCPOS werkt in elke moderne browser, als desktopapp voor Windows en macOS en als app voor iOS en Android (bèta)."
+        },
+        "licence": {
+          "question": "Wat gebeurt er wanneer een YITH-licentie verloopt?",
+          "answer": "Volgens de voorwaarden van YITH worden de licenties elk jaar automatisch verlengd en ontvang je na het verlopen van een licentie geen updates of ondersteuning meer voor het product. Ze zeggen niet of de plugin daarna blijft werken."
+        },
+        "expiry": {
+          "question": "Wat gebeurt er wanneer een WCPOS Pro-licentie verloopt?",
+          "answer": "Er wordt niets uitgeschakeld. De Pro-versie die je hebt blijft werken zolang je wilt — je kassa, je data, elke functie. Je ontvangt alleen geen nieuwe updates en prioriteitsondersteuning meer totdat je besluit te verlengen. Dat is een bewuste keuze: het betekent dat verlengingen verdiend moeten worden met updates die het geld waard zijn, en het garandeert dat je kassa nooit op afstand kan worden uitgeschakeld."
+        }
+      },
+      "sources": {
+        "title": "Bronnen",
+        "intro": "Alle feiten over YITH Point of Sale op deze pagina komen van de eigen pagina’s van YITH, geraadpleegd op 2026-10-07:",
+        "items": {
+          "product": "Licentie met een jaar updates en ondersteuning, geld-terug-garantie van 30 dagen, gesplitste betalingen, tablets, barcodes scannen, geen offlinemodus, onbeperkt winkels en kassa’s, Multi-Stock, klanten en beoordeling",
+          "faqs": "Geen verbinding met een betaalterminal, handmatige betalingen, bonnen afdrukken",
+          "paymentMethods": "Betaalmethoden Cash en Chip and Pin",
+          "mobile": "Kassa in de browser, opgeslagen op het startscherm van een telefoon of tablet",
+          "employees": "Winkelmanagers en kassiers",
+          "manageCash": "Aanwezig contant geld, contant geld toevoegen en eruit halen tijdens een sessie",
+          "closeRegister": "Overzicht van de kassafsluiting en CSV-afsluitrapport",
+          "changelog": "Versie 3.27.0, uitgebracht op 2026-09-30",
+          "terms": "Jaarlicenties die automatisch worden verlengd; geen updates of ondersteuning na het verlopen van een licentie"
+        }
+      },
+      "footer": {
+        "factsDated": "De feiten over YITH Point of Sale zijn op 2026-10-07 geraadpleegd op yithemes.com en docs.yithemes.com (zie Bronnen); kijk op yithemes.com voor de actuele prijs voordat je beslist. De feiten over WCPOS komen van wcpos.com, docs.wcpos.com en WordPress.org. We verifiëren ze elk kwartaal opnieuw.",
         "corrections": "Een fout gezien? Mail naar support@wcpos.com — we corrigeren snel en leggen elke wijziging vast."
       }
     }
