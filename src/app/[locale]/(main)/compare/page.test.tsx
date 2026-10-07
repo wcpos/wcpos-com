@@ -24,6 +24,9 @@ vi.mock('next-intl/server', () => ({
       'hub.jovvieCard.title': 'Translated Jovvie card title',
       'hub.jovvieCard.description': 'Translated Jovvie card description',
       'hub.jovvieCard.cta': 'Translated Jovvie card CTA',
+      'hub.viteposCard.title': 'Translated Vitepos card title',
+      'hub.viteposCard.description': 'Translated Vitepos card description',
+      'hub.viteposCard.cta': 'Translated Vitepos card CTA',
       'hub.moreSoon': 'Translated more soon',
       'disclosure.title': 'Translated disclosure title',
       'disclosure.body': 'Translated disclosure body',
@@ -70,6 +73,9 @@ describe('ComparePage', () => {
     expect(
       screen.getByRole('link', { name: /Translated Jovvie card CTA/ })
     ).toHaveAttribute('href', '/compare/jovvie')
+    expect(
+      screen.getByRole('link', { name: /Translated Vitepos card CTA/ })
+    ).toHaveAttribute('href', '/compare/vitepos')
   })
 
   it('emits ItemList JSON-LD naming all comparisons', async () => {
@@ -78,7 +84,7 @@ describe('ComparePage', () => {
     expect(script).not.toBeNull()
     const jsonLd = JSON.parse(script!.innerHTML)
     expect(jsonLd['@type']).toBe('ItemList')
-    expect(jsonLd.itemListElement).toHaveLength(4)
+    expect(jsonLd.itemListElement).toHaveLength(5)
     expect(jsonLd.itemListElement[0].url).toBe(
       'https://wcpos.com/compare/oliver-pos'
     )
@@ -94,6 +100,10 @@ describe('ComparePage', () => {
       'https://wcpos.com/compare/jovvie'
     )
     expect(jsonLd.itemListElement[3].position).toBe(4)
+    expect(jsonLd.itemListElement[4].url).toBe(
+      'https://wcpos.com/compare/vitepos'
+    )
+    expect(jsonLd.itemListElement[4].position).toBe(5)
   })
 
   it('builds metadata from translated strings', async () => {

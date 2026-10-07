@@ -1849,6 +1849,11 @@
         "description": "Zwei WooCommerce-POS-Plugins: eine Einmalzahlung versus Monatspläne mit einer Gebühr pro Transaktion, Apps, Kartenzahlungen, Bewertungen und wo Jovvie wirklich besser ist.",
         "cta": "Zum Vergleich"
       },
+      "viteposCard": {
+        "title": "WCPOS vs Vitepos",
+        "description": "Zwei WooCommerce-POS-Plugins mit kostenlosen Versionen: Preise, Offline-Bestellungen, Restaurantmodi, Apps, Kartenterminals und wo Vitepos wirklich besser ist.",
+        "cta": "Zum Vergleich"
+      },
       "moreSoon": "Weitere Vergleiche folgen."
     },
     "oliver": {
@@ -2495,6 +2500,149 @@
       },
       "footer": {
         "factsDated": "Die Fakten zu Jovvie stammen vom 2026-07-09 aus unserer eigenen Mitbewerberrecherche und wurden seither nicht erneut überprüft; prüfen Sie vor Ihrer Entscheidung die aktuellen Preise auf jovvie.com. Die Fakten zu WCPOS stammen von wcpos.com, docs.wcpos.com und WordPress.org. Wir überprüfen sie jedes Quartal erneut.",
+        "corrections": "Einen Fehler entdeckt? Schreiben Sie an support@wcpos.com — wir korrigieren schnell und protokollieren jede Änderung."
+      }
+    },
+    "vitepos": {
+      "metadata": {
+        "title": "WCPOS vs. Vitepos (2026): Ein ehrlicher Vergleich",
+        "description": "WCPOS und Vitepos, zwei POS-Plugins für WooCommerce, im Vergleich vom Entwickler von WCPOS — Preise, Offline-Bestellungen, Restaurantmodi, Apps, Kartenterminals und wann Vitepos die bessere Wahl ist."
+      },
+      "hero": {
+        "title": "WCPOS vs Vitepos",
+        "subtitle": "WCPOS und Vitepos von Appsbd ergänzen Ihren WooCommerce-Shop beide um eine Kasse, und beide haben eine kostenlose Version auf WordPress.org. Vitepos bietet Restaurantmodi, ein Kundendisplay und einen Modus für Offline-Bestellungen; WCPOS bietet Desktop- und Mobil-Apps sowie eine größere Auswahl an Kartenterminals. Hier sehen Sie, wie sie sich vergleichen und wann Vitepos die bessere Wahl ist."
+      },
+      "shortAnswer": {
+        "title": "Die kurze Antwort",
+        "wcpos": "WCPOS ist ein kostenloses Open-Source-POS-Plugin für WooCommerce ohne Obergrenzen für Produkte, Bestellungen oder Kunden. Es läuft in jedem modernen Browser, als Desktop-App für Windows und macOS und als iOS- und Android-App (Beta) mit jedem WooCommerce-Zahlungsgateway. WCPOS erhebt keine Transaktionsgebühren. Pro ergänzt die Verwaltung mehrerer Shops und Kartenterminal-Integrationen für eine Einmalzahlung — $129 für ein Jahr Updates oder $399 für Lifetime — und funktioniert auch nach Ablauf des Jahres weiter.",
+        "vitepos": "Vitepos von Appsbd ist ein POS-Plugin für WooCommerce mit einer kostenlosen Version, Vitepos Lite, auf WordPress.org. Am 2026-10-07 führte vitepos.com Vitepos Pro ab $79 für einen jährlichen Plan für eine Website und eine lebenslange Lizenz für eine Website für $299 auf. Vitepos gibt an, Bestellungen ohne Internetverbindung weiter zu verarbeiten und sie zu synchronisieren, sobald die Verbindung zurückkehrt; außerdem bietet es Lebensmittelgeschäft- und Restaurantmodi mit Kellner-, Küchen- und Tischverwaltung. Es läuft in einem Webbrowser — laut dem eigenen Blog von Vitepos gibt es keine eigene mobile App — und nimmt Terminalzahlungen über Stripe Terminal und Wallee an. Auf WordPress.org hatte es 1.000+ aktive Installationen und eine Bewertung von 4.7 Sternen aus 54 Bewertungen."
+      },
+      "glance": {
+        "title": "Auf einen Blick",
+        "caption": "Vitepos-Fakten am 2026-10-07 von vitepos.com und dessen WordPress.org-Eintrag abgerufen (siehe Quellen unten); WCPOS-Fakten von wcpos.com, docs.wcpos.com und WordPress.org.",
+        "colWcpos": "WCPOS",
+        "colVitepos": "Vitepos",
+        "rows": {
+          "price": {
+            "label": "Preis",
+            "wcpos": "Kostenloses Plugin ohne Obergrenzen; Pro kostet $129 für ein Jahr Updates oder $399 für Lifetime — Einmalzahlungen, keine automatische Verlängerung",
+            "vitepos": "Kostenloses Lite-Plugin; Pro ab $79 für einen jährlichen Plan für eine Website oder $299 für eine lebenslange Lizenz für eine Website (vitepos.com, 2026-10-07)"
+          },
+          "cardPayments": {
+            "label": "Kartenzahlungen",
+            "wcpos": "Pro-Terminal-Integrationen: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Vipps MobilePay",
+            "vitepos": "Terminalzahlungen über Stripe Terminal und Wallee"
+          },
+          "apps": {
+            "label": "Apps",
+            "wcpos": "Web, Desktop-Apps (Windows und macOS), iOS- und Android-Apps (Beta)",
+            "vitepos": "Läuft in einem Webbrowser; laut dem eigenen Blog von Vitepos gibt es keine eigene mobile App"
+          },
+          "offline": {
+            "label": "Offline",
+            "wcpos": "Produkte ohne Internetverbindung durchsuchen und Warenkörbe zusammenstellen; der Abschluss des Kaufs benötigt eine Verbindung",
+            "vitepos": "Gibt an, Bestellungen offline weiter zu verarbeiten und sie bei erneuter Verbindung zu synchronisieren; im WordPress.org-Eintrag sind Offline-Bestellungen als Pro gekennzeichnet"
+          },
+          "restaurant": {
+            "label": "Restaurantmodi",
+            "wcpos": "Nein",
+            "vitepos": "Lebensmittelgeschäft- und Restaurantmodi mit Kellner-, Küchen- und Tischverwaltung"
+          },
+          "display": {
+            "label": "Kundendisplay",
+            "wcpos": "Nein",
+            "vitepos": "Ja"
+          },
+          "kiosk": {
+            "label": "Kiosk / Self-Checkout",
+            "wcpos": "Nein",
+            "vitepos": "Eine Kiosk App für Selbstbedienung, separat als Add-on verkauft"
+          },
+          "outlets": {
+            "label": "Filialen und Kassen",
+            "wcpos": "Verwaltung mehrerer Filialen in Pro; unbegrenzt viele Geräte und Kassierer",
+            "vitepos": "Unbegrenzt viele Verkaufsstellen und Kassen, laut seinem WordPress.org-Eintrag"
+          },
+          "wporg": {
+            "label": "WordPress.org",
+            "wcpos": "5.000+ aktive Installationen, 3,7 Sterne (81 Bewertungen)",
+            "vitepos": "1.000+ aktive Installationen, 4.7 Sterne (54 Bewertungen)"
+          }
+        }
+      },
+      "pricing": {
+        "title": "Was kostet es?",
+        "vitepos": "Am 2026-10-07 führte vitepos.com Vitepos Lite als kostenlos und Vitepos Pro für $79 mit einem jährlichen Plan für eine Website oder $149 mit einem jährlichen Plan für fünf Websites auf. Lebenslange Lizenzen kosteten $299 für eine Website oder $499 für fünf Websites, jeweils mit einem Jahr Premium-Support. Prüfen Sie die aktuellen Preise auf vitepos.com/pricing.",
+        "wcpos": "WCPOS ist kostenlos, ohne Obergrenzen für Produkte, Bestellungen, Kunden oder Barverkäufe. Pro kostet $129 — eine Einmalzahlung für ein Jahr Updates und Priority-Support — oder $399 für Lifetime. Es verlängert sich nie automatisch, und Pro funktioniert nach Ablauf des Jahres weiter: Nichts wird abgeschaltet, niemals. WCPOS erhebt keine Transaktionsgebühren; Sie zahlen die Tarife Ihres Zahlungsdienstleisters.",
+        "compare": "Nach Listenpreis kostet Vitepos Pro weniger als WCPOS Pro: $79 gegenüber $129 für ein Jahr und $299 gegenüber $399 für eine lebenslange Lizenz. Vergleichen Sie vor Ihrer Entscheidung, was die jeweiligen Pro-Versionen enthalten.",
+        "proAdds": "Pro ergänzt: Multi-Store-Verwaltung, Kartenterminal-Integrationen, Gutscheine, Erstattungen über die POS-API, Bestellhistorie, Kundenverwaltung an der Kasse, filialspezifische Preise, Bestands- und Preisbearbeitung, Tagesabschlussberichte und das Erweiterungsverzeichnis.",
+        "demoPrefix": "Probieren Sie vorab alles aus unter",
+        "demoLinkLabel": "demo.wcpos.com/pos",
+        "demoSuffix": "(Login demo / demo)."
+      },
+      "viteposBetter": {
+        "title": "Wo Vitepos wirklich besser ist",
+        "intro": "Ein ehrlicher Vergleich zeigt beide Seiten:",
+        "restaurant": "Restaurantmodi — Vitepos bietet Lebensmittelgeschäft- und Restaurantmodi mit Kellner- und Küchenpanel sowie Tischverwaltung; WCPOS hat keinen Restaurantmodus.",
+        "offline": "Offline-Bestellungen — Vitepos gibt an, Bestellungen ohne Internetverbindung weiter zu verarbeiten und sie zu synchronisieren, sobald die Verbindung zurückkehrt. Mit WCPOS können Sie Produkte offline durchsuchen und Warenkörbe zusammenstellen, aber für den Abschluss des Kaufs ist eine Verbindung nötig.",
+        "display": "Kundendisplay — Vitepos hat eines; WCPOS nicht.",
+        "kiosk": "Selbstbedienungskiosk — Vitepos verkauft eine Kiosk App als Add-on; WCPOS hat keinen Kiosk-Modus.",
+        "price": "Ein niedrigerer Listenpreis — Vitepos Pro beginnt bei $79 für einen jährlichen Plan für eine Website, gegenüber $129 für WCPOS Pro.",
+        "rating": "Eine höhere Bewertung auf WordPress.org — 4.7 Sterne aus 54 Bewertungen gegenüber 3.7 für WCPOS.",
+        "outro": "Wenn Sie ein Restaurant oder Café betreiben, ein Kundendisplay oder einen Selbstbedienungskiosk benötigen oder einen Modus für Offline-Bestellungen möchten, könnte Vitepos die bessere Wahl sein."
+      },
+      "choose": {
+        "title": "Welches System sollten Sie wählen?",
+        "wcpos": {
+          "title": "Wählen Sie WCPOS, wenn:",
+          "body": "Sie möchten Desktop-Apps für Windows und macOS oder iOS- und Android-Apps oder ein anderes Kartenterminal als Stripe Terminal: WCPOS Pro integriert außerdem SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal und Vipps MobilePay."
+        },
+        "vitepos": {
+          "title": "Wählen Sie Vitepos, wenn:",
+          "body": "Sie ein Restaurant oder Café betreiben und Kellner-, Küchen- und Tischverwaltung möchten, ein Kundendisplay oder einen Selbstbedienungskiosk benötigen, einen Modus für Offline-Bestellungen möchten, Kartenzahlungen über Stripe Terminal oder Wallee annehmen oder den niedrigeren Listenpreis möchten."
+        }
+      },
+      "faq": {
+        "title": "Häufig gestellte Fragen",
+        "price": {
+          "question": "Wie viel kostet Vitepos?",
+          "answer": "Vitepos Lite ist auf WordPress.org kostenlos. Am 2026-10-07 führte vitepos.com Vitepos Pro für $79 mit einem jährlichen Plan für eine Website oder $149 für fünf Websites sowie lebenslange Lizenzen für $299 für eine Website oder $499 für fünf Websites auf. Prüfen Sie die aktuellen Preise auf vitepos.com/pricing. WCPOS ist kostenlos, und WCPOS Pro kostet einmalig $129 für ein Jahr Updates oder $399 lebenslang."
+        },
+        "offline": {
+          "question": "Funktioniert Vitepos offline?",
+          "answer": "Vitepos gibt an, dass es funktioniert: Laut seinen Seiten speichert es Daten lokal, verarbeitet Bestellungen ohne Internetverbindung weiter und synchronisiert sie mit WooCommerce, sobald die Verbindung zurückkehrt. In seinem WordPress.org-Eintrag sind Offline-Bestellungen als Pro-Funktion gekennzeichnet. WCPOS speichert Produkte, Kunden und Warenkörbe lokal, sodass Sie ohne Verbindung den Katalog durchsuchen und Verkäufe vorbereiten können; für den Abschluss des Kaufs ist eine Serververbindung erforderlich."
+        },
+        "restaurant": {
+          "question": "Hat WCPOS einen Restaurantmodus?",
+          "answer": "Nein. WCPOS hat keinen Restaurantmodus, kein Küchenpanel und keine Tischverwaltung. Vitepos bietet Lebensmittelgeschäft- und Restaurantmodi mit Kellner- und Küchenpanels sowie Tischverwaltung und ist daher für ein Restaurant oder Café die bessere Wahl."
+        },
+        "apps": {
+          "question": "Hat Vitepos native Apps?",
+          "answer": "Vitepos läuft in einem Webbrowser auf Smartphones, Tablets und Desktop-Geräten; laut seinem eigenen Blog gibt es keine eigene mobile App, aber Sie können über den Browser eine Verknüpfung hinzufügen. WCPOS läuft in jedem modernen Browser, als Desktop-App für Windows und macOS und als iOS- und Android-App (Beta)."
+        },
+        "terminals": {
+          "question": "Welche Kartenterminals unterstützen Vitepos und WCPOS?",
+          "answer": "Die Seiten von Vitepos nennen Terminalzahlungen über Stripe Terminal und Wallee. Zu den Kartenterminal-Integrationen von WCPOS Pro gehören Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal und Vipps MobilePay."
+        },
+        "expiry": {
+          "question": "Was passiert, wenn eine WCPOS-Pro-Lizenz abläuft?",
+          "answer": "Nichts schaltet sich ab. Die Pro-Version, die Sie haben, funktioniert weiter, solange Sie möchten — Ihre Kasse, Ihre Daten, jede Funktion. Sie erhalten lediglich keine neuen Updates und keinen vorrangigen Support mehr, bis Sie sich für eine Verlängerung entscheiden. Das ist Absicht: Verlängerungen müssen so mit Updates verdient werden, die den Preis wert sind — und es garantiert, dass Ihre Kasse niemals aus der Ferne abgeschaltet werden kann."
+        }
+      },
+      "sources": {
+        "title": "Quellen",
+        "intro": "Alle Vitepos-Fakten auf dieser Seite stammen von den eigenen Seiten von Vitepos, abgerufen am 2026-10-07:",
+        "items": {
+          "pricing": "Pläne und Preise",
+          "home": "Entwickler (Appsbd), Terminalzahlungen über Stripe und Wallee, Verarbeitung von Offline-Bestellungen",
+          "features": "Restaurantmodi, Kellner- und Küchenpanels, Tischverwaltung, Kundendisplay, Kiosk App, Stripe Terminal und Wallee, lokale Datenspeicherung",
+          "kiosk": "Kiosk App als Add-on, separat verkauft",
+          "blog": "Läuft in einem Webbrowser, keine eigene mobile App, Browser-Verknüpfung, mit WooCommerce synchronisierte Offline-Transaktionen, Vitepos Lite auf WordPress.org",
+          "wporg": "Kostenlose Version, aktive Installationen, Bewertung und Rezensionen, unbegrenzt viele Verkaufsstellen und Kassen, Offline-Bestellungen als Pro gekennzeichnet"
+        }
+      },
+      "footer": {
+        "factsDated": "Die Fakten zu Vitepos wurden am 2026-10-07 von vitepos.com und dessen WordPress.org-Eintrag abgerufen (siehe Quellen); prüfen Sie vor Ihrer Entscheidung die aktuellen Preise auf vitepos.com. Die Fakten zu WCPOS stammen von wcpos.com, docs.wcpos.com und WordPress.org. Wir überprüfen sie jedes Quartal erneut.",
         "corrections": "Einen Fehler entdeckt? Schreiben Sie an support@wcpos.com — wir korrigieren schnell und protokollieren jede Änderung."
       }
     }
