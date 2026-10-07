@@ -21,6 +21,7 @@ export const marketingRoutes = [
   { path: '/compare/jovvie', changeFrequency: 'weekly', priority: 0.7 },
   { path: '/compare/vitepos', changeFrequency: 'weekly', priority: 0.7 },
   { path: '/compare/yith-pos', changeFrequency: 'weekly', priority: 0.7 },
+  { path: '/compare/foosales', changeFrequency: 'weekly', priority: 0.7 },
   { path: '/about-us', changeFrequency: 'monthly', priority: 0.5 },
   { path: '/roadmap', changeFrequency: 'monthly', priority: 0.5 },
   { path: '/changelog', changeFrequency: 'weekly', priority: 0.5 },

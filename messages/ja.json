@@ -1888,6 +1888,11 @@
         "description": "WCPOSとYITHのWooCommerce向けPOSプラグイン：ライセンス、カード端末、アプリ、オフライン利用、店舗とレジ、YITH Point of Saleの優れた点。",
         "cta": "比較を読む"
       },
+      "foosalesCard": {
+        "title": "WCPOS vs FooSales",
+        "description": "買い切りのProライセンスと店舗ごとの年間サブスクリプションを比較：料金、支払いをやめた場合、Tap to Pay、オフライン注文、アプリ、FooSalesが実際に優れている点。",
+        "cta": "比較を読む"
+      },
       "moreSoon": "さらに多くの比較を準備中です。"
     },
     "oliver": {
@@ -2822,6 +2827,152 @@
       },
       "footer": {
         "factsDated": "YITH Point of Saleの情報は2026-10-07にyithemes.comとdocs.yithemes.comで確認しました（「出典」を参照）。決める前に現在の価格をyithemes.comでご確認ください。WCPOSの情報はwcpos.com、docs.wcpos.com、WordPress.orgによります。四半期ごとに再確認しています。",
+        "corrections": "誤りを見つけましたか？ support@wcpos.com までご連絡ください。迅速に修正し、すべての変更を記録します。"
+      }
+    },
+    "foosales": {
+      "metadata": {
+        "title": "WCPOS vs FooSales（2026年）：誠実な比較",
+        "description": "WooCommerce向けの2つのPOSシステム、WCPOSとFooSalesをWCPOSの開発者が比較します。料金、支払いをやめた場合、Tap to Pay、オフライン注文、アプリ、カード端末、FooSalesがより適している場合を取り上げます。"
+      },
+      "hero": {
+        "title": "WCPOS vs FooSales",
+        "subtitle": "WCPOSもFooSalesもWooCommerceストアにPOSを追加します。FooSalesは店舗ごとの年間サブスクリプションで、iPad、iPhone、Android向けアプリ、オフライン注文モード、PlusプランでのTap to Payを提供します。一方、WCPOSは買い切りのProライセンスがある無料プラグインで、デスクトップアプリとより幅広いカード端末の選択肢を備えています。両者を比較し、FooSalesがより適している場合を紹介します。"
+      },
+      "shortAnswer": {
+        "title": "結論を先に",
+        "wcpos": "WCPOSはWooCommerce向けの無料のオープンソースPOSプラグインで、商品、注文、顧客の数に上限はありません。最新のブラウザ、WindowsとmacOS向けデスクトップアプリ、iOSとAndroid向けアプリ（ベータ版）で動作し、どのWooCommerce決済ゲートウェイも利用できます。WCPOSは取引手数料を請求しません。Proでは複数店舗の管理とカード端末との連携が買い切りで追加されます。1年間のアップデート付きで$129、生涯版は$399で、1年後も動作し続けます。",
+        "foosales": "FooSalesはWooCommerce向けのPOSで、ウェブサイトごとの年間サブスクリプションとして販売されています。2026-10-07時点で、foosales.comには7日間の無料トライアル後のプランとして、店舗ごとに年払いのCoreが月額US$19、Plusが月額US$38と掲載され、PlusにはSquareとStripeの決済が追加されていました。iPad、iPhone、Android向けアプリとWebアプリがあります。FooSalesは、アプリがオフラインでも動作を続け、接続が戻ると注文を同期すると説明し、PlusプランではiPhoneとAndroidでTap to Payに対応するとしています。ヘルプセンターによると、プランには3人のユーザーと3台のデバイスが含まれ、プランを解約するとFooSalesのPOSとアプリへのアクセスが終了します。米国のApp Storeでは、アプリは8件の評価で3.6つ星でした。"
+      },
+      "glance": {
+        "title": "ひと目でわかる比較",
+        "caption": "FooSalesの情報は2026-10-07にfoosales.com、help.foosales.com、App Storeの掲載ページで確認しました（下記の「出典」を参照）。WCPOSの情報はwcpos.com、docs.wcpos.com、WordPress.orgによります。",
+        "colWcpos": "WCPOS",
+        "colFoosales": "FooSales",
+        "rows": {
+          "price": {
+            "label": "価格",
+            "wcpos": "無料プラグインに上限なし。Proは1年間のアップデート付きで$129、または生涯版が$399 — 買い切りで自動更新なし",
+            "foosales": "無料プランなし。7日間の無料トライアル後、Coreは月額US$19、Plusは月額US$38で、店舗ごとに年払い（foosales.com、2026-10-07）"
+          },
+          "stopPaying": {
+            "label": "支払いをやめた場合",
+            "wcpos": "期限切れのProライセンスは永久に動き続けます。レジもデータもすべての機能もそのまま — 停止するのはアップデートと優先サポートだけです",
+            "foosales": "ヘルプセンターによると、プランを解約するとFooSalesのWeb POSとアプリへのアクセスが終了します"
+          },
+          "cardPayments": {
+            "label": "カード決済",
+            "wcpos": "Proの端末連携：Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Vipps MobilePay",
+            "foosales": "Plusプラン：Square Terminal、Square Readers（タブレットアプリ）、Stripe Terminalのリーダー"
+          },
+          "tapToPay": {
+            "label": "Tap to Pay",
+            "wcpos": "なし",
+            "foosales": "iPhoneとAndroidでStripeまたはSquareを通じて利用可能（Plusプラン）"
+          },
+          "apps": {
+            "label": "アプリ",
+            "wcpos": "Web、デスクトップアプリ（WindowsとmacOS）、iOSとAndroidアプリ（ベータ）",
+            "foosales": "iPad、iPhone、Android向けアプリと、最新のブラウザ向けWebアプリ"
+          },
+          "offline": {
+            "label": "オフライン",
+            "wcpos": "オフラインで商品を閲覧しカートを作成可能。会計の完了には接続が必要",
+            "foosales": "アプリはオフラインでも動作を続け、再接続時に新規注文、キャンセル、返金を同期すると説明。オフラインで顧客を作成・編集することはできません"
+          },
+          "devices": {
+            "label": "ユーザーとデバイス",
+            "wcpos": "デバイス・レジ係は無制限",
+            "foosales": "ヘルプセンターによると1プランにつき3人のユーザーと3台のデバイス。別売りのUser and Device Add-onsで追加可能"
+          },
+          "stores": {
+            "label": "複数店舗・拠点",
+            "wcpos": "はい（Pro）：店舗ごとの住所、税率、レシートテンプレート、価格、権限を付与されたユーザー",
+            "foosales": "ウェブサイトごとに1プラン。店舗と在庫拠点の管理はロードマップにTBCとして掲載されています"
+          },
+          "ratings": {
+            "label": "評価",
+            "wcpos": "WordPress.org：5,000+件のアクティブインストール、3.7つ星（81件のレビュー）",
+            "foosales": "Apple App Store（米国）：8件の評価で5点中3.6点"
+          }
+        }
+      },
+      "pricing": {
+        "title": "料金はいくらですか？",
+        "foosales": "2026-10-07時点で、foosales.comには店舗ごとに年払いの2つのプランが掲載されていました。Coreは月額US$19、Plusは月額US$38で、PlusにはSquare決済、Stripe決済、WooCommerce Product Add-onsとFooEventsの連携が追加されます。どちらにもアップデートとメールサポートが含まれます。月払いの選択肢と無料プランは掲載されていませんでした。クレジットカード不要の7日間の無料トライアルでは、Plusの全機能を試せます。ウェブサイトまたはサブドメインごとに独自のプランが必要で、追加のユーザーとデバイスはアドオンとして販売されています。現在の価格はfoosales.com/pricingでご確認ください。",
+        "wcpos": "WCPOSは無料で、商品、注文、顧客、現金販売に上限はありません。Proは$129の買い切りで1年間のアップデートと優先サポートが付き、生涯版は$399です。自動更新はなく、1年が過ぎてもProは動き続け、何も停止しません。WCPOSは取引手数料を請求しません。支払うのはご利用の決済プロセッサーの料金だけです。",
+        "compare": "年払いで計算すると、FooSales Coreは店舗あたり年間US$228、SquareとStripeの連携があるPlusはUS$456です。カード端末連携のあるWCPOS Proは、1年間のアップデート付きが$129、生涯版が$399の買い切りです。FooSalesのヘルプセンターによると、プランを解約するとPOSとアプリへのアクセスが終了します。一方、期限切れのWCPOS Proライセンスは動作し続けます。",
+        "proAdds": "Proの追加機能：複数店舗管理、カード端末連携、クーポン、POS API経由の返金、注文履歴、レジでの顧客管理、店舗別価格、在庫と価格の編集、営業終了レポート、拡張機能ディレクトリ。",
+        "demoPrefix": "まずは",
+        "demoLinkLabel": "demo.wcpos.com/pos",
+        "demoSuffix": "ですべてお試しください（ログイン demo / demo）。"
+      },
+      "foosalesBetter": {
+        "title": "FooSalesが実際に優れている点",
+        "intro": "誠実な比較は双方向であるべきです。",
+        "tapToPay": "iPhoneとAndroidでのTap to Pay — FooSales Plusでは、StripeまたはSquareを通じて、お客様がカードをスマートフォンにかざせます。WCPOSはTap to Payをサポートしません。",
+        "offline": "オフライン注文 — FooSalesは、インターネット接続がなくてもアプリが新規注文、キャンセル、返金を記録し続け、接続が戻るとWooCommerceに同期すると説明しています。WCPOSではオフラインで商品を閲覧してカートを作成できますが、会計の完了には接続が必要です。",
+        "outro": "スマートフォンでのTap to Payやオフライン注文モードが必要で、店舗ごとの年間サブスクリプションが合っているなら、FooSalesのほうが適しているかもしれません。"
+      },
+      "choose": {
+        "title": "どちらを選ぶべきか？",
+        "wcpos": {
+          "title": "WCPOSを選ぶべき場合：",
+          "body": "上限のない無料プラグイン、支払いをやめても動作し続ける買い切りのPro、無制限のデバイスとレジ係、複数店舗管理、WindowsとmacOSのデスクトップアプリ、またはFooSalesのロードマップで連携要望として掲載されているSumUp、PayPal Reader (Zettle)、Mollieの端末を求める場合。"
+        },
+        "foosales": {
+          "title": "FooSalesを選ぶべき場合：",
+          "body": "iPhoneまたはAndroidでのTap to Pay、オフライン注文モード、タブレットでのSquare Readers、FooEvents連携を求め、店舗ごとの年間サブスクリプションが合っている場合。"
+        }
+      },
+      "faq": {
+        "title": "よくある質問",
+        "price": {
+          "question": "FooSalesの料金はいくらですか？",
+          "answer": "2026-10-07時点で、foosales.comにはFooSales Coreが月額US$19、FooSales Plusが月額US$38と掲載されていました。どちらも店舗ごとに年払いで、クレジットカード不要の7日間の無料トライアルの後に適用されます。無料プランは掲載されていませんでした。現在の価格はfoosales.com/pricingでご確認ください。WCPOSは無料で、WCPOS Proは1年分のアップデートが買い切りで$129、ライフタイム版が$399です。"
+        },
+        "cancel": {
+          "question": "FooSalesへの支払いをやめるとどうなりますか？",
+          "answer": "FooSalesのヘルプセンターによると、プランを解約するとPOSへのアクセスが終了し、解約処理後はFooSalesのWeb POSもアプリも使用できません。7日間のトライアル後もアプリを使い続けるにはプランが必要です。WCPOSでは、Proライセンスが期限切れになっても動作し続けます。レジ、データ、すべての機能を維持でき、停止するのはアップデートと優先サポートだけです。"
+        },
+        "offline": {
+          "question": "FooSalesはオフラインで動作しますか？",
+          "answer": "FooSalesは動作すると説明しています。接続が切れるとアプリはオフラインモードに切り替わり、POSの大部分は動作を続け、新規注文、キャンセルされた注文、返金はデバイスに保存され、オンラインに戻るとWooCommerceに同期されます。ヘルプセンターによるとオフラインでは顧客の作成・変更や在庫数の変更はできず、決済ページによるとWooCommerceのクーポンにはインターネット接続が必要です。WCPOSは商品、顧客、カートをローカルに保存するため、接続なしでカタログを閲覧し販売を準備できますが、会計の完了にはサーバーへの接続が必要です。"
+        },
+        "terminals": {
+          "question": "FooSalesとWCPOSはどのカード端末に対応していますか？",
+          "answer": "Plusプランでは、FooSalesはすべてのアプリでSquare Terminal、タブレットアプリでSquare Readers、さらにStripe Terminalのリーダーと連携し、StripeまたはSquareを通じてiPhoneとAndroidでのTap to Payにも対応します。その他のカードリーダーはFooSalesの外部で使用でき、会計時にカード決済として売上を記録できます。WCPOS Proのカード端末連携にはStripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Vipps MobilePayが含まれます。WCPOSはTap to Payをサポートしません。"
+        },
+        "apps": {
+          "question": "FooSalesにはネイティブアプリがありますか？",
+          "answer": "はい。FooSalesにはiPadとiPhone向け（iOS 16.4以降）およびAndroid向け（Android 10以降）のアプリと、Chrome、Safari、Firefox、Edgeなどの最新ブラウザで動作するWebアプリがあります。App Storeの掲載ページによると、iOSアプリはApple M1以降のチップを搭載したMacでも動作します。WCPOSはあらゆるモダンブラウザ、WindowsとmacOSのデスクトップアプリ、iOSとAndroidのアプリ（ベータ版）で動作します。"
+        },
+        "expiry": {
+          "question": "WCPOS Proのライセンスが期限切れになるとどうなりますか？",
+          "answer": "何も止まりません。手元のPro版は望む限り動き続けます。レジも、データも、すべての機能もそのままです。更新を選ぶまで、新しいアップデートと優先サポートが止まるだけです。これは意図的な設計です。更新料は支払う価値のあるアップデートによって勝ち取られるべきものですし、あなたのPOSが遠隔で無効化されることは決してないという保証にもなります。"
+        }
+      },
+      "sources": {
+        "title": "出典",
+        "intro": "このページのFooSalesに関する情報はすべて、2026-10-07に確認したFooSales自身のページとApp Storeの掲載ページに基づきます。",
+        "items": {
+          "pricing": "プランと料金、店舗ごとの年払い、無料トライアル、ウェブサイトごとに1プラン、アップデートとメールサポート",
+          "helpPricing": "1プランにつき3人のユーザーと3台のデバイス、トライアル終了後の扱い",
+          "userAddon": "User Add-on、別売り",
+          "deviceAddon": "Device Add-on、別売り",
+          "cancel": "プラン解約によるアクセスへの影響",
+          "cardReaders": "Square Terminal、Square Reader、Stripe Terminalの連携、その他のカードリーダー",
+          "payments": "iPhoneとAndroidでのTap to Pay、クーポンにはインターネット接続が必要",
+          "platform": "iPad、Androidタブレット、Webのアプリ",
+          "requirements": "iOS、Android、Webブラウザの要件",
+          "offlineFeature": "オフラインモードと再接続時の同期",
+          "offlineHelp": "オフラインで利用できる機能とできない機能",
+          "roadmap": "店舗と在庫拠点の管理、SumUp、Zettle、Mollie連携、TBCとして掲載",
+          "appStore": "iOSアプリ、Apple M1以降のチップを搭載したMac、App Storeの評価"
+        }
+      },
+      "footer": {
+        "factsDated": "FooSalesの情報は2026-10-07にfoosales.com、help.foosales.com、App Storeの掲載ページで確認しました（「出典」を参照）。決める前にfoosales.comで現在の価格をご確認ください。WCPOSに関する情報はwcpos.com、docs.wcpos.com、WordPress.orgに基づきます。四半期ごとに再確認します。",
         "corrections": "誤りを見つけましたか？ support@wcpos.com までご連絡ください。迅速に修正し、すべての変更を記録します。"
       }
     }

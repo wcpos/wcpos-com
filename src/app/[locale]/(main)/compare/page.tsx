@@ -18,6 +18,7 @@ const COMPARISONS = [
   { key: 'jovvieCard', href: '/compare/jovvie' },
   { key: 'viteposCard', href: '/compare/vitepos' },
   { key: 'yithCard', href: '/compare/yith-pos' },
+  { key: 'foosalesCard', href: '/compare/foosales' },
 ] as const
 
 export async function generateMetadata({

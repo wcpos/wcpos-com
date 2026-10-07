@@ -1888,6 +1888,11 @@
         "description": "WCPOS와 YITH의 WooCommerce용 POS 플러그인: 라이선스, 카드 단말기, 앱, 오프라인 사용, 스토어와 계산대, YITH Point of Sale의 장점.",
         "cta": "비교 읽기"
       },
+      "foosalesCard": {
+        "title": "WCPOS vs FooSales",
+        "description": "일회성 Pro 라이선스와 매장별 연간 구독 비교: 가격, 결제를 중단하면 어떻게 되는지, Tap to Pay, 오프라인 주문, 앱, FooSales가 실제로 더 나은 점.",
+        "cta": "비교 읽기"
+      },
       "moreSoon": "더 많은 비교가 준비 중입니다."
     },
     "oliver": {
@@ -2822,6 +2827,152 @@
       },
       "footer": {
         "factsDated": "YITH Point of Sale 정보는 2026-10-07에 yithemes.com과 docs.yithemes.com에서 확인했습니다(출처 참조). 결정하기 전에 현재 가격은 yithemes.com에서 확인하세요. WCPOS 정보는 wcpos.com, docs.wcpos.com, WordPress.org를 출처로 합니다. 분기마다 다시 확인합니다.",
+        "corrections": "오류를 발견하셨나요? support@wcpos.com으로 알려 주세요. 빠르게 수정하고 모든 변경을 기록합니다."
+      }
+    },
+    "foosales": {
+      "metadata": {
+        "title": "WCPOS vs FooSales(2026): 정직한 비교",
+        "description": "WooCommerce용 POS 시스템 두 가지인 WCPOS와 FooSales를 WCPOS 제작자가 비교합니다. 가격, 결제를 중단하면 어떻게 되는지, Tap to Pay, 오프라인 주문, 앱, 카드 단말기, FooSales가 더 나은 선택인 경우를 살펴봅니다."
+      },
+      "hero": {
+        "title": "WCPOS vs FooSales",
+        "subtitle": "WCPOS와 FooSales는 모두 WooCommerce 매장에 POS를 추가합니다. FooSales는 매장별 연간 구독으로 iPad, iPhone, Android 앱과 오프라인 주문 모드, Plus 요금제의 Tap to Pay를 제공합니다. WCPOS는 일회성 Pro 라이선스가 있는 무료 플러그인으로, 데스크톱 앱과 더 다양한 카드 단말기 선택지를 제공합니다. 둘을 비교하고 FooSales가 더 나은 선택인 경우를 살펴봅니다."
+      },
+      "shortAnswer": {
+        "title": "간단한 결론",
+        "wcpos": "WCPOS는 WooCommerce용 무료 오픈 소스 POS 플러그인으로 제품, 주문, 고객 수에 제한이 없습니다. 최신 브라우저, Windows 및 macOS용 데스크톱 앱, iOS 및 Android용 앱(베타)에서 모든 WooCommerce 결제 게이트웨이와 함께 작동합니다. WCPOS는 거래 수수료를 부과하지 않습니다. Pro는 일회성 결제로 여러 매장 관리와 카드 단말기 연동을 추가합니다. 업데이트 1년 제공에 $129 또는 평생 버전 $399이며, 1년이 지나도 계속 작동합니다.",
+        "foosales": "FooSales는 웹사이트별 연간 구독으로 판매되는 WooCommerce용 POS입니다. 2026-10-07에 foosales.com에는 7일 무료 체험 후 이용하는 두 요금제, 월 US$19의 Core와 월 US$38의 Plus가 매장별 연간 청구 방식으로 표시되어 있었고, Plus에는 Square와 Stripe 결제가 추가되었습니다. iPad, iPhone, Android 앱과 웹 앱이 있습니다. FooSales는 앱이 오프라인에서도 계속 작동하고 연결이 돌아오면 주문을 동기화하며, Plus 요금제에서 iPhone과 Android의 Tap to Pay를 지원한다고 설명합니다. 도움말 센터에 따르면 요금제에는 사용자 3명과 기기 3대가 포함되며 요금제를 취소하면 FooSales POS와 앱에 대한 접근이 종료됩니다. 미국 App Store에서 해당 앱은 8개 평가에서 별점 3.6점을 받았습니다."
+      },
+      "glance": {
+        "title": "한눈에 보기",
+        "caption": "FooSales 정보는 2026-10-07에 foosales.com, help.foosales.com 및 App Store 등록 페이지에서 확인했습니다(아래 출처 참조). WCPOS 정보는 wcpos.com, docs.wcpos.com 및 WordPress.org에서 가져왔습니다.",
+        "colWcpos": "WCPOS",
+        "colFoosales": "FooSales",
+        "rows": {
+          "price": {
+            "label": "가격",
+            "wcpos": "제한 없는 무료 플러그인; Pro는 1년 업데이트 포함 $129 또는 평생 $399 — 일회성 결제, 자동 갱신 없음",
+            "foosales": "무료 요금제 없음; 7일 무료 체험 후 Core는 월 US$19, Plus는 월 US$38이며 매장별로 연간 청구(foosales.com, 2026-10-07)"
+          },
+          "stopPaying": {
+            "label": "결제를 중단하면",
+            "wcpos": "만료된 Pro 라이선스는 영원히 계속 작동합니다. 계산대, 데이터, 모든 기능이 그대로 유지되고 업데이트와 우선 지원만 중단됩니다",
+            "foosales": "도움말 센터에 따르면 요금제를 취소하면 FooSales 웹 POS와 앱에 대한 접근이 종료됩니다"
+          },
+          "cardPayments": {
+            "label": "카드 결제",
+            "wcpos": "Pro 단말기 연동: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Vipps MobilePay",
+            "foosales": "Plus 요금제: Square Terminal, Square Readers(태블릿 앱), Stripe Terminal 리더기"
+          },
+          "tapToPay": {
+            "label": "Tap to Pay",
+            "wcpos": "없음",
+            "foosales": "iPhone과 Android에서 Stripe 또는 Square를 통해 이용(Plus 요금제)"
+          },
+          "apps": {
+            "label": "앱",
+            "wcpos": "웹, 데스크톱 앱(Windows·macOS), iOS·Android 앱(베타)",
+            "foosales": "iPad, iPhone, Android 앱과 최신 브라우저용 웹 앱"
+          },
+          "offline": {
+            "label": "오프라인",
+            "wcpos": "오프라인에서 상품을 탐색하고 장바구니를 만들 수 있음; 결제 완료에는 연결 필요",
+            "foosales": "앱이 오프라인에서도 계속 작동하고 재연결 시 새 주문, 취소, 환불을 동기화한다고 설명함; 오프라인에서는 고객을 생성하거나 수정할 수 없음"
+          },
+          "devices": {
+            "label": "사용자와 기기",
+            "wcpos": "기기와 계산원 무제한",
+            "foosales": "도움말 센터에 따르면 요금제당 사용자 3명과 기기 3대; 별도 판매되는 User and Device Add-ons로 추가 가능"
+          },
+          "stores": {
+            "label": "다중 매장 / 위치",
+            "wcpos": "예(Pro): 매장별 주소, 세율, 영수증 템플릿, 가격, 권한이 있는 사용자",
+            "foosales": "웹사이트당 요금제 하나; 매장 및 재고 위치 관리는 로드맵에 TBC로 기재됨"
+          },
+          "ratings": {
+            "label": "평점",
+            "wcpos": "WordPress.org: 5,000+ 활성 설치, 별점 3.7점(81개 리뷰)",
+            "foosales": "Apple App Store(미국): 8개 평가에서 5점 만점에 3.6점"
+          }
+        }
+      },
+      "pricing": {
+        "title": "비용은 얼마인가요?",
+        "foosales": "2026-10-07에 foosales.com에는 매장별로 연간 청구되는 두 요금제가 표시되어 있었습니다. Core는 월 US$19, Plus는 월 US$38이며 Plus에는 Square 결제, Stripe 결제, WooCommerce Product Add-ons와 FooEvents 연동이 추가됩니다. 둘 다 업데이트와 이메일 지원이 포함됩니다. 월별 결제 옵션과 무료 요금제는 기재되어 있지 않았습니다. 신용카드가 필요 없는 7일 무료 체험에는 Plus의 모든 기능이 포함됩니다. 웹사이트 또는 하위 도메인마다 별도 요금제가 필요하며 추가 사용자와 기기는 애드온으로 판매됩니다. 현재 가격은 foosales.com/pricing에서 확인하세요.",
+        "wcpos": "WCPOS는 무료이며 제품, 주문, 고객, 현금 판매에 제한이 없습니다. Pro는 $129 일회성 결제로 1년간 업데이트와 우선 지원을 제공하거나, 평생 버전을 $399에 구매할 수 있습니다. 자동 갱신은 없으며 1년이 지나도 Pro는 계속 작동합니다. 어떤 기능도 꺼지지 않습니다. WCPOS는 거래 수수료를 부과하지 않으며 이용하는 결제 처리 업체의 요금만 지불합니다.",
+        "compare": "연간 청구 기준으로 FooSales Core는 매장당 연 US$228, Square와 Stripe 연동이 있는 Plus는 US$456입니다. 카드 단말기 연동이 있는 WCPOS Pro는 업데이트 1년 제공에 $129 또는 평생 $399의 일회성 결제입니다. FooSales 도움말 센터에 따르면 요금제를 취소하면 POS와 앱에 대한 접근이 종료되지만 만료된 WCPOS Pro 라이선스는 계속 작동합니다.",
+        "proAdds": "Pro 추가 기능: 다중 매장 관리, 카드 단말기 연동, 쿠폰, POS API를 통한 환불, 주문 내역, 계산대 고객 관리, 매장별 가격, 재고·가격 편집, 마감 보고서, 확장 디렉터리.",
+        "demoPrefix": "먼저",
+        "demoLinkLabel": "demo.wcpos.com/pos",
+        "demoSuffix": "에서 모든 기능을 체험해 보세요(로그인 demo / demo)."
+      },
+      "foosalesBetter": {
+        "title": "FooSales가 실제로 더 나은 점",
+        "intro": "정직한 비교라면 양쪽 모두를 봐야 합니다.",
+        "tapToPay": "iPhone과 Android의 Tap to Pay — FooSales Plus에서는 고객이 Stripe 또는 Square를 통해 휴대전화에 카드를 갖다 댈 수 있습니다. WCPOS는 Tap to Pay를 지원하지 않습니다.",
+        "offline": "오프라인 주문 — FooSales는 인터넷 연결 없이도 앱이 새 주문, 취소, 환불을 계속 기록하고 연결이 돌아오면 WooCommerce에 동기화한다고 설명합니다. WCPOS는 오프라인에서 상품을 탐색하고 장바구니를 만들 수 있지만 결제 완료에는 연결이 필요합니다.",
+        "outro": "휴대전화에서 Tap to Pay 또는 오프라인 주문 모드를 원하고 매장별 연간 구독이 적합하다면 FooSales가 더 나은 선택일 수 있습니다."
+      },
+      "choose": {
+        "title": "무엇을 선택해야 할까요?",
+        "wcpos": {
+          "title": "이런 경우 WCPOS를 선택하세요:",
+          "body": "제한 없는 무료 플러그인, 결제를 중단해도 계속 작동하는 일회성 Pro 요금, 무제한 기기와 계산원, 다중 매장 관리, Windows와 macOS 데스크톱 앱, 또는 FooSales가 로드맵에 연동 요청으로 기재한 SumUp, PayPal Reader (Zettle), Mollie 단말기를 원한다면 적합합니다."
+        },
+        "foosales": {
+          "title": "이런 경우 FooSales를 선택하세요:",
+          "body": "iPhone 또는 Android의 Tap to Pay, 오프라인 주문 모드, 태블릿의 Square Readers, FooEvents 연동을 원하고 매장별 연간 구독이 적합하다면 선택하세요."
+        }
+      },
+      "faq": {
+        "title": "자주 묻는 질문",
+        "price": {
+          "question": "FooSales의 비용은 얼마인가요?",
+          "answer": "2026-10-07에 foosales.com에는 FooSales Core가 월 US$19, FooSales Plus가 월 US$38로 표시되어 있었고 둘 다 매장별로 연간 청구되며 신용카드가 필요 없는 7일 무료 체험 후 이용할 수 있었습니다. 무료 요금제는 기재되어 있지 않았습니다. 현재 가격은 foosales.com/pricing에서 확인하세요. WCPOS는 무료이며 WCPOS Pro는 1년 업데이트에 일회성 $129 또는 평생 $399입니다."
+        },
+        "cancel": {
+          "question": "FooSales 결제를 중단하면 어떻게 되나요?",
+          "answer": "FooSales 도움말 센터에 따르면 요금제를 취소하면 POS 접근이 취소됩니다. 취소 처리가 완료되면 FooSales 웹 POS나 앱을 더 이상 사용할 수 없습니다. 7일 체험 후에도 앱을 계속 사용하려면 요금제가 필요합니다. WCPOS는 Pro 라이선스가 만료되어도 계속 작동합니다. 계산대, 데이터, 모든 기능이 그대로 유지되고 업데이트와 우선 지원만 중단됩니다."
+        },
+        "offline": {
+          "question": "FooSales는 오프라인에서 작동하나요?",
+          "answer": "FooSales는 그렇다고 설명합니다. 연결이 끊기면 앱이 오프라인 모드로 전환되고 POS의 대부분은 계속 작동하며 새 주문, 취소된 주문, 환불은 기기에 저장되었다가 다시 온라인이 되면 WooCommerce와 동기화됩니다. 도움말 센터에 따르면 오프라인에서는 고객을 생성하거나 수정할 수 없고 재고 수량도 변경할 수 없으며, 결제 페이지에 따르면 WooCommerce 쿠폰에는 인터넷 연결이 필요합니다. WCPOS는 상품, 고객, 장바구니를 로컬에 저장하므로 연결 없이 카탈로그를 탐색하고 판매를 준비할 수 있지만 결제 완료에는 서버 연결이 필요합니다."
+        },
+        "terminals": {
+          "question": "FooSales와 WCPOS는 어떤 카드 단말기를 지원하나요?",
+          "answer": "Plus 요금제에서 FooSales는 모든 앱에 Square Terminal, 태블릿 앱에 Square Readers 및 Stripe Terminal 리더기를 연동하고, Stripe 또는 Square를 통해 iPhone과 Android의 Tap to Pay를 지원합니다. 다른 카드 리더기는 FooSales 외부에서 사용하고 계산 시 판매를 카드 결제로 기록할 수 있습니다. WCPOS Pro의 카드 단말기 연동에는 Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Vipps MobilePay가 포함됩니다. WCPOS는 Tap to Pay를 지원하지 않습니다."
+        },
+        "apps": {
+          "question": "FooSales에 네이티브 앱이 있나요?",
+          "answer": "네. FooSales에는 iPad와 iPhone용(iOS 16.4 이상), Android용(Android 10 이상) 앱과 Chrome, Safari, Firefox, Edge 같은 최신 브라우저에서 작동하는 웹 앱이 있습니다. App Store 등록 페이지에 따르면 iOS 앱은 Apple M1 이상 칩이 탑재된 Mac에서도 작동합니다. WCPOS는 모든 최신 브라우저, Windows와 macOS 데스크톱 앱, iOS와 Android 앱(베타)에서 작동합니다."
+        },
+        "expiry": {
+          "question": "WCPOS Pro 라이선스가 만료되면 어떻게 되나요?",
+          "answer": "아무것도 꺼지지 않습니다. 지금 쓰시는 Pro 버전은 원하는 만큼 계속 작동합니다. 계산대도, 데이터도, 모든 기능도 그대로입니다. 갱신을 선택하기 전까지 새 업데이트와 우선 지원만 중단됩니다. 이는 의도된 설계입니다. 갱신은 돈 낼 가치가 있는 업데이트로 얻어내야 하고, 여러분의 POS가 원격으로 비활성화되는 일은 결코 없다는 보장이기도 합니다."
+        }
+      },
+      "sources": {
+        "title": "출처",
+        "intro": "이 페이지의 모든 FooSales 정보는 2026-10-07에 확인한 FooSales 자체 페이지와 App Store 등록 페이지를 출처로 합니다:",
+        "items": {
+          "pricing": "요금제와 가격, 매장별 연간 청구, 무료 체험, 웹사이트당 요금제 하나, 업데이트와 이메일 지원",
+          "helpPricing": "요금제당 사용자 3명과 기기 3대, 체험 기간 이후의 처리",
+          "userAddon": "User Add-on, 별도 판매",
+          "deviceAddon": "Device Add-on, 별도 판매",
+          "cancel": "요금제 취소가 접근에 미치는 영향",
+          "cardReaders": "Square Terminal, Square Reader, Stripe Terminal 연동 및 기타 카드 리더기",
+          "payments": "iPhone과 Android의 Tap to Pay, 쿠폰 사용에 인터넷 연결 필요",
+          "platform": "iPad, Android 태블릿, 웹 앱",
+          "requirements": "iOS, Android, 웹 브라우저 요구 사항",
+          "offlineFeature": "오프라인 모드와 재연결 시 동기화",
+          "offlineHelp": "오프라인에서 되는 것과 안 되는 것",
+          "roadmap": "매장 및 재고 위치 관리와 SumUp, Zettle, Mollie 연동, TBC로 기재",
+          "appStore": "iOS 앱, Apple M1 이상 칩이 탑재된 Mac, App Store 평점"
+        }
+      },
+      "footer": {
+        "factsDated": "FooSales 정보는 2026-10-07에 foosales.com, help.foosales.com 및 App Store 등록 페이지에서 확인했습니다(출처 참조). 결정하기 전에 foosales.com에서 현재 가격을 확인하세요. WCPOS 관련 정보는 wcpos.com, docs.wcpos.com 및 WordPress.org를 출처로 합니다. 분기마다 다시 확인합니다.",
         "corrections": "오류를 발견하셨나요? support@wcpos.com으로 알려 주세요. 빠르게 수정하고 모든 변경을 기록합니다."
       }
     }

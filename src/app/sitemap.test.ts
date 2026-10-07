@@ -56,7 +56,7 @@ describe('sitemap', () => {
 
   it('contains every marketing route for every locale', () => {
     // 18 marketing routes x 10 locales
-    expect(entries).toHaveLength(18 * locales.length)
+    expect(entries).toHaveLength(19 * locales.length)
     const urls = entries.map((entry) => entry.url)
     expect(urls).toContain('https://wcpos.com')
     expect(urls).toContain('https://wcpos.com/downloads')
@@ -76,6 +76,8 @@ describe('sitemap', () => {
     expect(urls).toContain('https://wcpos.com/de/compare/vitepos')
     expect(urls).toContain('https://wcpos.com/compare/yith-pos')
     expect(urls).toContain('https://wcpos.com/de/compare/yith-pos')
+    expect(urls).toContain('https://wcpos.com/compare/foosales')
+    expect(urls).toContain('https://wcpos.com/de/compare/foosales')
     expect(urls).toContain('https://wcpos.com/about-us')
     expect(urls).toContain('https://wcpos.com/support')
     expect(urls).toContain('https://wcpos.com/fr/roadmap')
@@ -140,7 +142,7 @@ describe('sitemap', () => {
     }
     vi.mocked(getReleases).mockResolvedValueOnce([])
     const result = await sitemap()
-    expect(result).toHaveLength(18 * locales.length)
+    expect(result).toHaveLength(19 * locales.length)
     for (const entry of result.filter((entry) => /\/(changelog|downloads)$/.test(entry.url))) {
       expect(entry).not.toHaveProperty('lastModified')
     }

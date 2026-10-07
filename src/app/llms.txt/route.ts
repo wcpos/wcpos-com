@@ -17,6 +17,7 @@ const pageMessageKeys: Record<
   '/compare/jovvie': { title: 'compare.jovvie.metadata.title', description: 'compare.jovvie.metadata.description' },
   '/compare/vitepos': { title: 'compare.vitepos.metadata.title', description: 'compare.vitepos.metadata.description' },
   '/compare/yith-pos': { title: 'compare.yith.metadata.title', description: 'compare.yith.metadata.description' },
+  '/compare/foosales': { title: 'compare.foosales.metadata.title', description: 'compare.foosales.metadata.description' },
   '/about-us': { title: 'about.meta.title', description: 'about.meta.description' },
   '/roadmap': { title: 'roadmap.meta.title', description: 'roadmap.meta.description' },
   '/changelog': { title: 'changelog.meta.title', description: 'changelog.meta.description' },

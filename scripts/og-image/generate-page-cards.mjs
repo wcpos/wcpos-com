@@ -73,6 +73,11 @@ const cards = [
     title: 'Changelog',
     line: 'Release notes for the latest published versions of the WCPOS plugin, from GitHub.',
   },
+  {
+    slug: 'compare-foosales',
+    title: 'WCPOS vs FooSales',
+    line: 'Pricing, Tap to Pay, offline orders and apps, compared.',
+  },
 ]
 
 const outputDirectory = new URL('../../public/og/', import.meta.url)
