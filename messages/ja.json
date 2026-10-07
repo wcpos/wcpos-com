@@ -1836,7 +1836,8 @@
     },
     "discord": {
       "title": "人と直接話したいですか？",
-      "subtitle": "店舗オーナーとチームが参加するライブDiscordコミュニティに参加してください。"
+      "subtitle": "店舗オーナーとチームが参加するライブDiscordコミュニティに参加してください。",
+      "embedTitle": "Discordチャット"
     }
   },
   "compare": {

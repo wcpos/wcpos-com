@@ -1836,7 +1836,8 @@
     },
     "discord": {
       "title": "Möchtest du lieber mit einem Menschen sprechen?",
-      "subtitle": "Tritt Ladenbesitzern und dem Team in unserer Live-Discord-Community bei."
+      "subtitle": "Tritt Ladenbesitzern und dem Team in unserer Live-Discord-Community bei.",
+      "embedTitle": "Discord-Chat"
     }
   },
   "compare": {
