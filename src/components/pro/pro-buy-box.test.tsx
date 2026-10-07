@@ -81,6 +81,27 @@ function renderBuyBox(overrides: Partial<Parameters<typeof ProBuyBox>[0]> = {}) 
 }
 
 describe('ProBuyBox', () => {
+  it('prints each currency code once for English and Italian prices', () => {
+    const { unmount } = renderBuyBox({
+      options: [
+        { ...options[0], priceText: '$129', currencyCode: 'USD', priceSuffix: '/yr' },
+      ],
+    })
+    const englishText = screen.getByRole('radio', { name: /Yearly/ }).textContent ?? ''
+    expect(englishText).toContain('$129')
+    expect(englishText.split('USD').length - 1).toBe(1)
+
+    unmount()
+    renderBuyBox({
+      options: [
+        { ...options[0], priceText: '129 USD', currencyCode: 'USD', priceSuffix: '/anno' },
+      ],
+    })
+    const italianText = screen.getByRole('radio', { name: /Yearly/ }).textContent ?? ''
+    expect(italianText).toContain('129 USD')
+    expect(italianText.split('USD').length - 1).toBe(1)
+  })
+
   it('selects the first option by default and links its checkout href', () => {
     renderBuyBox()
 
