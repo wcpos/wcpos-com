@@ -1,18 +1,16 @@
 'use client'
 
-import WidgetBot from '@widgetbot/react-embed'
+// The channel embed needs no API client query string.
+const WIDGETBOT_SRC = 'https://emerald.widgetbot.io/channels/711884517081612298/1093100746372829254/'
 
 export function DiscordWidget() {
   return (
-    <WidgetBot
-      server="711884517081612298"
-      channel="1093100746372829254"
-      shard="https://emerald.widgetbot.io"
-      style={{
-        flex: 1,
-        width: '100%',
-        height: '100%',
-      }}
+    <iframe
+      src={WIDGETBOT_SRC}
+      title="Discord chat embed"
+      allow="clipboard-write; fullscreen"
+      loading="lazy"
+      className="block h-full w-full border-0 bg-[#36393e]"
     />
   )
 }
