@@ -1659,7 +1659,7 @@
     "releaseHistory": {
       "eyebrow": "Histórico de lançamentos",
       "title": "Novidades",
-      "subtitle": "Alterações recentes — todas as aplicações partilham a mesma linha de versões.",
+      "subtitle": "Versões recentes do plugin. As versões para computador têm numeração própria.",
       "latest": "Mais recente",
       "fullHistory": "Histórico completo no GitHub —",
       "desktop": "Computador",

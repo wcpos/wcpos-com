@@ -1659,7 +1659,7 @@
     "releaseHistory": {
       "eyebrow": "Historial de versiones",
       "title": "Novedades",
-      "subtitle": "Cambios recientes — cada aplicación comparte una misma línea de versión.",
+      "subtitle": "Versiones recientes del plugin. Las compilaciones de escritorio tienen su propia numeración.",
       "latest": "Última versión",
       "fullHistory": "Historial completo en GitHub —",
       "desktop": "Escritorio",

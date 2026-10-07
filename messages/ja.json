@@ -1659,7 +1659,7 @@
     "releaseHistory": {
       "eyebrow": "リリース履歴",
       "title": "新機能",
-      "subtitle": "最近の変更 — すべてのアプリが1つのバージョン系列を共有します。",
+      "subtitle": "最近のプラグインのリリース。デスクトップ版には別のバージョン番号が付きます。",
       "latest": "最新",
       "fullHistory": "GitHubで全履歴を見る —",
       "desktop": "デスクトップ",

@@ -1659,7 +1659,7 @@
     "releaseHistory": {
       "eyebrow": "Versionsverlauf",
       "title": "Was ist neu",
-      "subtitle": "Aktuelle Änderungen — jede App teilt dieselbe Versionslinie.",
+      "subtitle": "Aktuelle Plugin-Releases. Desktop-Builds haben eigene Versionsnummern.",
       "latest": "Neueste Version",
       "fullHistory": "Vollständiger Verlauf auf GitHub —",
       "desktop": "Desktop",
