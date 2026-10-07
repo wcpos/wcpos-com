@@ -53,6 +53,11 @@ const cards = [
     title: 'WCPOS vs Jovvie',
     line: 'Pricing, transaction fees, apps and card payments, compared.',
   },
+  {
+    slug: 'compare-vitepos',
+    title: 'WCPOS vs Vitepos',
+    line: 'Pricing, offline orders, restaurant modes and apps, compared.',
+  },
 ]
 
 const outputDirectory = new URL('../../public/og/', import.meta.url)
