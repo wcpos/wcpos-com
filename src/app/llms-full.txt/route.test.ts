@@ -44,6 +44,13 @@ describe('GET /llms-full.txt', () => {
     expect(body).toContain(`- ${freeTier.rows.devices.label}: ${glance.colWcpos}: ${freeTier.rows.devices.wcpos}`)
   })
 
+  it('joins a punctuated row label with a space', async () => {
+    const body = await GET().text()
+
+    expect(body).toContain(`- ${en.legal.privacy.collect.items.c2.label} ${en.legal.privacy.collect.items.c2.body}`)
+    expect(body).not.toMatch(/^- [^\n[]*[.?!:]: /m)
+  })
+
   it('leaves no ICU arguments or rich-text tags', async () => {
     const body = await GET().text()
 

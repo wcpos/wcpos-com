@@ -37,7 +37,8 @@ function render(value: unknown, key: string, level: number, columns: Record<stri
         const column = columns[`col${key[0].toUpperCase()}${key.slice(1)}`]
         return column ? `${column}: ${entry}` : entry
       })
-    return [`- ${label[1]}: ${values.join('; ')}`]
+    const separator = /[.:?!]$/.test(String(label[1])) ? ' ' : ': '
+    return [`- ${label[1]}${separator}${values.join('; ')}`]
   }
   if (!heading && /^(items|features|examples|chips)$/.test(key) && entries.every(([, entry]) => typeof entry === 'string')) {
     return entries.map(([, entry]) => `- ${entry}`)
