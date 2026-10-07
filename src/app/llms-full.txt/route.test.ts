@@ -96,7 +96,7 @@ describe('GET /llms-full.txt sanitization', () => {
     const { GET } = await import('./route')
     const body = await GET().text()
 
-    expect(body.split('\n')).toContain('scriptalert(1)')
+    expect(body.split('\n')).toContain('alert(1)')
     expect(body).not.toMatch(/<script/i)
   })
 
