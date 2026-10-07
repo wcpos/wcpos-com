@@ -44,6 +44,9 @@ const pageMessageKeys: Record<
   '/compare/yith-pos': { title: 'compare.yith.metadata.title', description: 'compare.yith.metadata.description',
     content: ['compare.yith', 'compare.disclosure'],
   },
+  '/compare/foosales': { title: 'compare.foosales.metadata.title', description: 'compare.foosales.metadata.description',
+    content: ['compare.foosales', 'compare.disclosure'],
+  },
   '/about-us': { title: 'about.meta.title', description: 'about.meta.description',
     content: [
       'about.hero.title', 'about.hero.subtitle', 'about.founder.intro', 'about.founder.p1',
