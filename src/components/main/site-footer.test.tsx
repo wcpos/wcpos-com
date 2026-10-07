@@ -18,6 +18,7 @@ vi.mock('next-intl', () => ({
           pro: 'WCPOS Pro',
           roadmap: 'Roadmap',
           demo: 'Live Demo',
+          extensions: 'Extensions',
           discord: 'Discord',
           github: 'GitHub',
           wordpressOrg: 'WordPress.org',
@@ -169,5 +170,12 @@ describe('SiteFooter', () => {
     for (const label of ['Privacy', 'Terms', 'Refunds', 'About']) {
       expect(screen.getByText(label)).toBeInTheDocument()
     }
+  })
+
+  it('links to Extensions in the same tab', () => {
+    render(<SiteFooter />)
+    const extensions = screen.getByRole('link', { name: 'Extensions' })
+    expect(extensions).toHaveAttribute('href', '/extensions')
+    expect(extensions).not.toHaveAttribute('target')
   })
 })

@@ -35,6 +35,7 @@
     "pro": "WCPOS Pro",
     "roadmap": "Feuille de route",
     "demo": "Démo en direct",
+    "extensions": "Extensions",
     "discord": "Discord",
     "github": "GitHub",
     "wordpressOrg": "WordPress.org",
@@ -1659,6 +1660,20 @@
       "plugin": "Gratuit",
       "externalContentNotice": "Les notes de version proviennent de GitHub et peuvent s’afficher en anglais."
     }
+  },
+  "extensions": {
+    "metadata": {
+      "title": "Extensions WCPOS",
+      "description": "Les extensions disponibles pour WCPOS, chacune avec un lien vers sa documentation."
+    },
+    "hero": {
+      "title": "Extensions",
+      "subtitle": "Les extensions disponibles pour WCPOS, chacune avec un lien vers sa documentation."
+    },
+    "proTag": "Pro",
+    "docsLink": "Documentation de {name}",
+    "englishNotice": "Les noms et descriptions des extensions proviennent du catalogue des extensions et sont affichés en anglais.",
+    "allDocsLink": "Toutes les extensions dans la documentation"
   },
   "about": {
     "meta": {

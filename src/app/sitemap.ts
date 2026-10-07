@@ -10,6 +10,7 @@ const marketingRoutes = [
   { path: '/', changeFrequency: 'weekly', priority: 1 },
   { path: '/downloads', changeFrequency: 'weekly', priority: 0.9 },
   { path: '/pro', changeFrequency: 'weekly', priority: 0.8 },
+  { path: '/extensions', changeFrequency: 'monthly', priority: 0.6 },
   { path: '/compare', changeFrequency: 'weekly', priority: 0.7 },
   { path: '/compare/oliver-pos', changeFrequency: 'weekly', priority: 0.7 },
   { path: '/compare/woocommerce-pos', changeFrequency: 'weekly', priority: 0.7 },

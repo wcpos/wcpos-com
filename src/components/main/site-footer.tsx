@@ -45,6 +45,7 @@ export function SiteFooter() {
     { label: t('pro'), href: '/pro' },
     { label: t('roadmap'), href: '/roadmap' },
     { label: t('demo'), href: DEMO_URL, external: true },
+    { label: t('extensions'), href: '/extensions' },
   ]
 
   const communityLinks: FooterLink[] = [
