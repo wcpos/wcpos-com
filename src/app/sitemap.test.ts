@@ -28,6 +28,8 @@ describe('sitemap', () => {
     expect(urls).toContain('https://wcpos.com/about-us')
     expect(urls).toContain('https://wcpos.com/support')
     expect(urls).toContain('https://wcpos.com/fr/roadmap')
+    expect(urls).toContain('https://wcpos.com/changelog')
+    expect(urls).toContain('https://wcpos.com/fr/changelog')
     expect(urls).toContain('https://wcpos.com/privacy')
     expect(urls).toContain('https://wcpos.com/terms')
     expect(urls).toContain('https://wcpos.com/de/refunds')

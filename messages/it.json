@@ -33,7 +33,9 @@
     "companyHeading": "Azienda",
     "downloadHeading": "Scarica",
     "pro": "WCPOS Pro",
+    "compare": "Confronta",
     "roadmap": "Piano di sviluppo",
+    "changelog": "Registro delle modifiche",
     "demo": "Demo dal vivo",
     "extensions": "Estensioni",
     "discord": "Discord",
@@ -354,7 +356,8 @@
     "page": {
       "eyebrow": "Piano di sviluppo",
       "title": "Il treno dei rilasci",
-      "description": "Ogni tappa verso un WCPOS più veloce e resistente all’offline — presa direttamente da GitHub, con i lavori più recenti per primi."
+      "description": "Ogni tappa verso un WCPOS più veloce e resistente all’offline — presa direttamente da GitHub, con i lavori più recenti per primi.",
+      "changelogLink": "Vedi le versioni pubblicate nel registro delle modifiche"
     },
     "board": {
       "link": "in diretta da GitHub"
@@ -380,6 +383,16 @@
       "shippedOn": "pubblicato · {date}",
       "briefLink": "Panoramica completa della versione",
       "notesLink": "Note di rilascio"
+    }
+  },
+  "changelog": {
+    "meta": {
+      "title": "Registro delle modifiche",
+      "description": "Note di rilascio delle ultime versioni pubblicate del plugin WCPOS, da GitHub."
+    },
+    "page": {
+      "title": "Registro delle modifiche",
+      "description": "Le ultime versioni pubblicate del plugin WCPOS, con le relative note di rilascio da GitHub."
     }
   },
   "pro": {

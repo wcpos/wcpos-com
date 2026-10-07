@@ -43,7 +43,9 @@ export function SiteFooter() {
   const productLinks: FooterLink[] = [
     { label: t('downloads'), href: '/downloads' },
     { label: t('pro'), href: '/pro' },
+    { label: t('compare'), href: '/compare' },
     { label: t('roadmap'), href: '/roadmap' },
+    { label: t('changelog'), href: '/changelog' },
     { label: t('demo'), href: DEMO_URL, external: true },
     { label: t('extensions'), href: '/extensions' },
   ]

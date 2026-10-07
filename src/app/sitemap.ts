@@ -19,6 +19,7 @@ const marketingRoutes = [
   { path: '/compare/vitepos', changeFrequency: 'weekly', priority: 0.7 },
   { path: '/about-us', changeFrequency: 'monthly', priority: 0.5 },
   { path: '/roadmap', changeFrequency: 'monthly', priority: 0.5 },
+  { path: '/changelog', changeFrequency: 'weekly', priority: 0.5 },
   { path: '/support', changeFrequency: 'monthly', priority: 0.5 },
   { path: '/privacy', changeFrequency: 'yearly', priority: 0.3 },
   { path: '/terms', changeFrequency: 'yearly', priority: 0.3 },
