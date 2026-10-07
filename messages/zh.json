@@ -1659,7 +1659,7 @@
     "releaseHistory": {
       "eyebrow": "发布历史",
       "title": "最新变化",
-      "subtitle": "近期变更——每个应用共享同一版本线。",
+      "subtitle": "近期插件发布。桌面版另行编号。",
       "latest": "最新",
       "fullHistory": "GitHub 上的完整历史 —",
       "desktop": "桌面版",

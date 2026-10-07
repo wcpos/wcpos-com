@@ -1659,7 +1659,7 @@
     "releaseHistory": {
       "eyebrow": "릴리스 기록",
       "title": "새로운 기능",
-      "subtitle": "최근 변경 사항 — 모든 앱은 하나의 버전 라인을 공유합니다.",
+      "subtitle": "최근 플러그인 릴리스입니다. 데스크톱 빌드는 버전 번호가 별도로 매겨집니다.",
       "latest": "최신",
       "fullHistory": "GitHub의 전체 기록 —",
       "desktop": "데스크톱",

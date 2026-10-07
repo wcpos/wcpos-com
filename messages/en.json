@@ -1659,7 +1659,7 @@
     "releaseHistory": {
       "eyebrow": "Release history",
       "title": "What’s new",
-      "subtitle": "Recent changes — every app shares one version line.",
+      "subtitle": "Recent plugin releases. Desktop builds are numbered separately.",
       "latest": "Latest",
       "fullHistory": "Full history on GitHub —",
       "desktop": "Desktop",

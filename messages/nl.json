@@ -1659,7 +1659,7 @@
     "releaseHistory": {
       "eyebrow": "Releasegeschiedenis",
       "title": "Wat is nieuw",
-      "subtitle": "Recente wijzigingen — elke app deelt één versielijn.",
+      "subtitle": "Recente pluginreleases. Desktopbuilds hebben een eigen versienummering.",
       "latest": "Nieuwste",
       "fullHistory": "Volledige geschiedenis op GitHub —",
       "desktop": "Desktop",
