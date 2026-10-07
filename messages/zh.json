@@ -37,6 +37,7 @@
     "roadmap": "路线图",
     "changelog": "更新日志",
     "demo": "在线演示",
+    "extensions": "扩展",
     "discord": "Discord",
     "github": "GitHub",
     "wordpressOrg": "WordPress.org",
@@ -1672,6 +1673,20 @@
       "plugin": "免费",
       "externalContentNotice": "发布说明来自 GitHub，可能会以英文显示。"
     }
+  },
+  "extensions": {
+    "metadata": {
+      "title": "扩展",
+      "description": "WCPOS 可用的扩展，每个扩展均附有其文档链接。"
+    },
+    "hero": {
+      "title": "扩展",
+      "subtitle": "WCPOS 可用的扩展，每个扩展均附有其文档链接。"
+    },
+    "proTag": "Pro",
+    "docsLink": "{name} 文档",
+    "englishNotice": "扩展名称和描述来自扩展目录，以英语显示。",
+    "allDocsLink": "文档中的所有扩展"
   },
   "about": {
     "meta": {

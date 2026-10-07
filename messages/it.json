@@ -37,6 +37,7 @@
     "roadmap": "Piano di sviluppo",
     "changelog": "Registro delle modifiche",
     "demo": "Demo dal vivo",
+    "extensions": "Estensioni",
     "discord": "Discord",
     "github": "GitHub",
     "wordpressOrg": "WordPress.org",
@@ -1672,6 +1673,20 @@
       "plugin": "Gratis",
       "externalContentNotice": "Le note di rilascio provengono da GitHub e potrebbero essere visualizzate in inglese."
     }
+  },
+  "extensions": {
+    "metadata": {
+      "title": "Estensioni",
+      "description": "Le estensioni disponibili per WCPOS, ciascuna con un link alla propria documentazione."
+    },
+    "hero": {
+      "title": "Estensioni",
+      "subtitle": "Le estensioni disponibili per WCPOS, ciascuna con un link alla propria documentazione."
+    },
+    "proTag": "Pro",
+    "docsLink": "Documentazione di {name}",
+    "englishNotice": "I nomi e le descrizioni delle estensioni provengono dal catalogo delle estensioni e sono mostrati in inglese.",
+    "allDocsLink": "Tutte le estensioni nella documentazione"
   },
   "about": {
     "meta": {
