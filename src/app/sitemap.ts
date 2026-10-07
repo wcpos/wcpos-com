@@ -6,7 +6,7 @@ import { languageAlternates, localeUrl } from '@/lib/seo'
  * Public marketing routes only. Account, auth, checkout, and API routes
  * are intentionally excluded (private and/or noindexed).
  */
-const marketingRoutes = [
+export const marketingRoutes = [
   { path: '/', changeFrequency: 'weekly', priority: 1 },
   { path: '/downloads', changeFrequency: 'weekly', priority: 0.9 },
   { path: '/pro', changeFrequency: 'weekly', priority: 0.8 },
