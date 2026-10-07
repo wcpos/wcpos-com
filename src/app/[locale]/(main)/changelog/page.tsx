@@ -71,6 +71,7 @@ export default async function ChangelogPage({
         <ReleaseHistory
           releases={published}
           locale={locale}
+          headingLevel={2}
           copy={{
             latest: releaseT('latest'),
             fullHistory: releaseT('fullHistory'),

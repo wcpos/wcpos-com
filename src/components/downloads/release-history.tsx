@@ -17,9 +17,12 @@ export function ReleaseHistory({
   releases,
   copy,
   locale,
+  headingLevel,
 }: {
   releases: ReleaseEntry[]
   locale: string
+  /** Renders each release's summary row as this heading level for the host page's outline; omitting it keeps the plain row. */
+  headingLevel?: 2 | 3
   copy: {
     latest: string
     fullHistory: string
@@ -28,6 +31,7 @@ export function ReleaseHistory({
     externalContentNotice: string
   }
 }) {
+  const SummaryTag = headingLevel === 2 ? 'h2' : headingLevel === 3 ? 'h3' : 'span'
   const hasExternalEnglishContent =
     locale.split('-')[0]?.toLowerCase() !== 'en' &&
     releases.some((release) => release.contentLocale === 'en')
@@ -46,7 +50,7 @@ export function ReleaseHistory({
           className="border-b"
           summaryClassName="py-4"
           summary={
-            <span className="flex items-center gap-3">
+            <SummaryTag className="flex items-center gap-3">
               <span className="font-mono text-base font-medium">
                 {release.version}
               </span>
@@ -54,7 +58,7 @@ export function ReleaseHistory({
               <span className="text-sm text-muted-foreground">
                 {release.date}
               </span>
-            </span>
+            </SummaryTag>
           }
         >
           <div className="pb-5 pl-1" lang={release.contentLocale}>

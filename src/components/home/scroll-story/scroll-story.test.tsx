@@ -223,7 +223,7 @@ describe('ScrollStory', () => {
     // The pinned (desktop) and static (mobile) variants are both in the DOM,
     // CSS-switched — so image gating must happen at the markup level:
     // desktop sources carry a min-width media query, and the pinned img's
-    // mobile fallback uses the same srcset and sizes as the static card
+    // mobile fallback shares the static card's srcset and, below md, sizes
     // (one shared fetch; the static card is lazy so desktop never loads it).
     stubMatchMedia({ reducedMotion: false })
     renderWithIntl(<ScrollStory />)
@@ -248,11 +248,16 @@ describe('ScrollStory', () => {
       staticCard.getAttribute('srcset')
     )
     expect(pinnedFallback?.getAttribute('sizes')).toBe(
-      staticCard.getAttribute('sizes')
+      '(min-width: 768px) 100vw, (min-width: 640px) 608px, calc(100vw - 2rem)'
     )
     expect(staticCard.getAttribute('sizes')).toBe(
       '(min-width: 768px) 672px, (min-width: 640px) 608px, calc(100vw - 2rem)'
     )
+    const pinnedSizes = pinnedFallback!.getAttribute('sizes')!.split(', ')
+    const staticSizes = staticCard.getAttribute('sizes')!.split(', ')
+    expect(pinnedSizes.slice(1)).toEqual(staticSizes.slice(1))
+    expect(pinnedSizes[0].startsWith('(min-width: 768px) ')).toBe(true)
+    expect(staticSizes[0].startsWith('(min-width: 768px) ')).toBe(true)
     const candidates = staticCard.getAttribute('srcset')!.split(',').map(
       (candidate) => candidate.trim().split(' ')
     )
