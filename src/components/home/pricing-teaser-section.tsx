@@ -132,7 +132,7 @@ function PricingTeaserSectionContent({
 
       {/* CTA */}
       <div className="text-center">
-        <Button asChild variant="brand" size="xl">
+        <Button asChild variant="brand" size="xl" className="whitespace-normal sm:whitespace-nowrap">
           <TrackedLocaleLink
             href="/pro"
             eventName="click_pro_cta"

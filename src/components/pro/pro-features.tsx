@@ -41,7 +41,7 @@ export function ProFeatureList({
   features: ProFeature[]
 }) {
   return (
-    <div>
+    <div className="min-w-0">
       <SectionHeading align="left" title={heading} subtitle={subtitle} />
       <div className="mt-10 space-y-7">
         {features.map(({ Icon, title, description }) => (
@@ -49,7 +49,7 @@ export function ProFeatureList({
             <IconTile tone="brand" size="lg">
               <Icon />
             </IconTile>
-            <div>
+            <div className="min-w-0">
               <h3 className="font-semibold">{title}</h3>
               <p className="mt-1 text-sm text-muted-foreground max-w-md">
                 {description}

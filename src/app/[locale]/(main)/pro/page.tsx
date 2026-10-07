@@ -171,13 +171,13 @@ export default async function ProPage({
 
       {/* Features render statically; only the buy box waits on Medusa */}
       <Section tone="default" spacing="compact">
-        <div className="mx-auto grid max-w-5xl items-start gap-10 lg:grid-cols-[1.5fr_1fr]">
+        <div className="mx-auto grid max-w-5xl grid-cols-1 items-start gap-10 lg:grid-cols-[1.5fr_1fr]">
           <ProFeatureList
             heading={t('features.title')}
             subtitle={t('features.subtitle')}
             features={features}
           />
-          <div className="lg:sticky lg:top-24">
+          <div className="min-w-0 lg:sticky lg:top-24">
             <Suspense fallback={<BuyBoxSkeleton />}>
               <BuyBoxWithExperiment locale={locale} />
             </Suspense>

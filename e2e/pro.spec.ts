@@ -36,6 +36,25 @@ test.describe('Pro Page', () => {
   })
 
   test.describe('Product Display', () => {
+    test('buy box prints the currency code once in every locale', async ({ page }) => {
+      const paths = [
+        '/pro', '/fr/pro', '/de/pro', '/es/pro', '/ja/pro',
+        '/zh/pro', '/pt/pro', '/it/pro', '/nl/pro', '/ko/pro',
+      ]
+
+      for (const [index, path] of paths.entries()) {
+        await page.goto(path)
+        if (index === 0) await skipIfPricingUnavailable(page)
+
+        const buyBox = page.locator('[data-testid="pro-buy-box"]')
+        await expect(buyBox).toBeVisible()
+        for (const radio of await buyBox.getByRole('radio').all()) {
+          const text = await radio.textContent()
+          expect((text ?? '').split('USD').length - 1).toBe(1)
+        }
+      }
+    })
+
     test('displays the buy box', async ({ page }) => {
       await skipIfPricingUnavailable(page)
       const buyBox = page.locator('[data-testid="pro-buy-box"]')

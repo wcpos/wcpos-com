@@ -76,6 +76,8 @@ export interface ProOfferPrice {
   currencyCode: string
   formatted: string
   compact: string
+  /** Compact price with the narrow currency symbol, for copy that names the currency code separately. */
+  compactNarrow: string
   schemaPrice: string
 }
 
@@ -125,7 +127,8 @@ export interface ProOfferCartInput {
 function compactPrice(
   amount: number,
   currencyCode: string,
-  locale: string
+  locale: string,
+  currencyDisplay?: Intl.NumberFormatOptions['currencyDisplay']
 ): string {
   return formatPrice(
     amount,
@@ -135,8 +138,9 @@ function compactPrice(
       ? {
           minimumFractionDigits: 0,
           maximumFractionDigits: 0,
+          ...(currencyDisplay ? { currencyDisplay } : {}),
         }
-      : undefined
+      : currencyDisplay ? { currencyDisplay } : undefined
   )
 }
 
@@ -188,6 +192,7 @@ export function buildProOfferCatalog(
           currencyCode,
           formatted: formatPrice(amount, currencyCode, locale),
           compact: compactPrice(amount, currencyCode, locale),
+          compactNarrow: compactPrice(amount, currencyCode, locale, 'narrowSymbol'),
           schemaPrice: schemaPrice(amount),
         },
         checkoutPath: `/pro/checkout?${checkoutParams.toString()}`,
@@ -329,9 +334,10 @@ export function formatHomeProPriceSummary(
   if (!yearly || !lifetime) return null
 
   const currency = yearly.price.currencyCode.toUpperCase()
+  // The home message appends ({currency}), so the amounts carry only the symbol.
   return t({
-    yearly: yearly.price.compact,
-    lifetime: lifetime.price.compact,
+    yearly: yearly.price.compactNarrow,
+    lifetime: lifetime.price.compactNarrow,
     currency,
   })
 }

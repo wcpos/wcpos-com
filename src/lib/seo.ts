@@ -18,6 +18,9 @@ export const SOCIAL_CARDS: Record<string, string> = {
   '/compare/square': '/og/compare-square.png',
   '/compare/jovvie': '/og/compare-jovvie.png',
   '/compare/vitepos': '/og/compare-vitepos.png',
+  '/compare/yith-pos': '/og/compare-yith-pos.png',
+  '/extensions': '/og/extensions.png',
+  '/changelog': '/og/changelog.png',
   '/compare/foosales': '/og/compare-foosales.png',
 }
 

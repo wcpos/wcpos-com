@@ -1659,7 +1659,7 @@
     "releaseHistory": {
       "eyebrow": "リリース履歴",
       "title": "新機能",
-      "subtitle": "最近の変更 — すべてのアプリが1つのバージョン系列を共有します。",
+      "subtitle": "最近のプラグインのリリース。デスクトップ版には別のバージョン番号が付きます。",
       "latest": "最新",
       "fullHistory": "GitHubで全履歴を見る —",
       "desktop": "デスクトップ",
@@ -1836,7 +1836,8 @@
     },
     "discord": {
       "title": "人と直接話したいですか？",
-      "subtitle": "店舗オーナーとチームが参加するライブDiscordコミュニティに参加してください。"
+      "subtitle": "店舗オーナーとチームが参加するライブDiscordコミュニティに参加してください。",
+      "embedTitle": "Discordチャット"
     }
   },
   "compare": {
@@ -1880,6 +1881,11 @@
       "viteposCard": {
         "title": "WCPOS vs Vitepos",
         "description": "無料版があるWooCommerce向けPOSプラグイン2つを比較：料金、オフライン注文、レストランモード、アプリ、カード端末、Viteposが実際に優れている点。",
+        "cta": "比較を読む"
+      },
+      "yithCard": {
+        "title": "WCPOS vs YITH Point of Sale",
+        "description": "WCPOSとYITHのWooCommerce向けPOSプラグイン：ライセンス、カード端末、アプリ、オフライン利用、店舗とレジ、YITH Point of Saleの優れた点。",
         "cta": "比較を読む"
       },
       "foosalesCard": {
@@ -2676,6 +2682,151 @@
       },
       "footer": {
         "factsDated": "Viteposの情報は2026-10-07にvitepos.comとWordPress.orgの掲載ページで確認しました（「出典」を参照）。決める前に現在の価格をvitepos.comでご確認ください。WCPOSの情報はwcpos.com、docs.wcpos.com、WordPress.orgによります。四半期ごとに再確認しています。",
+        "corrections": "誤りを見つけましたか？ support@wcpos.com までご連絡ください。迅速に修正し、すべての変更を記録します。"
+      }
+    },
+    "yith": {
+      "metadata": {
+        "title": "WCPOS vs YITH Point of Sale（2026年）：率直な比較",
+        "description": "WCPOSの開発者によるWCPOSとYITH Point of Sale for WooCommerceの比較。ライセンス、カード端末、アプリ、オフライン利用、店舗とレジ、YITH Point of Saleがより適している場合を扱います。"
+      },
+      "hero": {
+        "title": "WCPOS vs YITH Point of Sale",
+        "subtitle": "WCPOSとYITH Point of Sale for WooCommerceは、どちらもWooCommerceストアにPOSを追加します。YITH Point of Saleはブラウザで店舗、レジ、レジ内の現金を管理します。WCPOSには無料版、デスクトップ・モバイルアプリ、カード端末連携があり、オフラインで商品を閲覧してカートを作成できます。両者の違いと、YITH Point of Saleがより適している場合を比較します。"
+      },
+      "shortAnswer": {
+        "title": "結論を先に",
+        "wcpos": "WCPOSはWooCommerce向けの無料のオープンソースPOSプラグインで、商品、注文、顧客の数に上限はありません。最新のブラウザ、WindowsとmacOS向けデスクトップアプリ、iOSとAndroid向けアプリ（ベータ版）で動作し、どのWooCommerce決済ゲートウェイも利用できます。WCPOSは取引手数料を請求しません。Proでは複数店舗の管理とカード端末との連携が買い切りで追加されます。1年間のアップデート付きで$129、生涯版は$399で、1年後も動作し続けます。",
+        "yith": "YITHのYITH Point of Sale for WooCommerceは、WooCommerce向けの有料POSプラグインで、毎年自動更新される年間ライセンスとして販売されています。製品ページには無料版の記載がありません。Webブラウザで動作し、店舗ごとに在庫を分けて、店舗とレジを無制限に設けられ、分割払いに対応します。オフラインモードはなく、カード端末にも接続できません。YITHのドキュメントによると、すべての支払いは手動で処理されます。2026-10-07時点の製品ページには利用顧客4,667人、顧客評価71件による5点満点中4.23の評価と記載され、変更履歴には2026-09-30リリースのバージョン3.27.0が掲載されていました。"
+      },
+      "glance": {
+        "title": "ひと目でわかる比較",
+        "caption": "YITH Point of Saleの情報は2026-10-07にyithemes.comとdocs.yithemes.comで確認（下記「出典」を参照）。WCPOSの情報はwcpos.com、docs.wcpos.com、WordPress.orgによります。",
+        "colWcpos": "WCPOS",
+        "colYith": "YITH Point of Sale",
+        "rows": {
+          "price": {
+            "label": "価格",
+            "wcpos": "無料プラグインに上限なし。Proは1年間のアップデート付きで$129、または生涯版が$399 — 買い切りで自動更新なし",
+            "yith": "有料プラグインで、製品ページに無料版の記載なし。1年分のアップデートとサポートを含み、毎年自動更新されるライセンス（現在の価格はyithemes.comで確認してください）"
+          },
+          "expiry": {
+            "label": "支払いをやめた場合",
+            "wcpos": "期限切れのProライセンスは永久に動き続けます。レジもデータもすべての機能もそのまま — 停止するのはアップデートと優先サポートだけです",
+            "yith": "ライセンスの期限が切れるとアップデートとサポートは終了。YITHの規約には、プラグインが引き続き動作するか記載されていません"
+          },
+          "cardPayments": {
+            "label": "カード決済",
+            "wcpos": "Proの端末連携：Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Vipps MobilePay",
+            "yith": "カード端末への接続なし。支払いは手動で処理し、CashとChip and Pinの支払い方法を利用"
+          },
+          "apps": {
+            "label": "アプリ",
+            "wcpos": "Web、デスクトップアプリ（WindowsとmacOS）、iOSとAndroidアプリ（ベータ）",
+            "yith": "Webブラウザで動作。スマートフォンやタブレットのホーム画面に保存可能"
+          },
+          "offline": {
+            "label": "オフライン",
+            "wcpos": "オフラインで商品を閲覧しカートを作成可能。会計の完了には接続が必要",
+            "yith": "製品ページによると、オフラインモードはありません"
+          },
+          "barcode": {
+            "label": "バーコードスキャン",
+            "wcpos": "はい",
+            "yith": "はい。バーコードスキャナーを使用。FAQによると、iPadのカメラではバーコードをスキャンできません"
+          },
+          "receipts": {
+            "label": "レシート印刷（感熱式を含む）",
+            "wcpos": "はい",
+            "yith": "ドキュメントによると、コンピューターに接続した任意のプリンターで印刷するか、PDFとして保存できます"
+          },
+          "stores": {
+            "label": "店舗とレジ",
+            "wcpos": "Proで複数店舗を管理。端末とレジ担当者は無制限",
+            "yith": "店舗とレジは無制限で、店舗ごとに在庫を分けられます"
+          },
+          "ratings": {
+            "label": "ユーザーと評価",
+            "wcpos": "WordPress.org: アクティブインストール5,000+、3.7つ星（レビュー81件）",
+            "yith": "yithemes.com：顧客4,667人、顧客評価71件による5点満点中4.23"
+          }
+        }
+      },
+      "pricing": {
+        "title": "料金はいくらですか？",
+        "yith": "YITHはYITH Point of Sale for WooCommerceを、1年分のアップデートとサポート、30日間の返金保証を含むライセンスとして販売しています。YITHの規約によると、ライセンスは毎年自動更新され、期限が切れると製品のアップデートやサポートを受けられなくなります。2026-10-07に製品ページの価格を読み取れませんでした。現在の価格はyithemes.comでご確認ください。",
+        "wcpos": "WCPOSは無料で、商品、注文、顧客、現金販売に上限はありません。Proは$129の買い切りで1年間のアップデートと優先サポートが付き、生涯版は$399です。自動更新はなく、1年が過ぎてもProは動き続け、何も停止しません。WCPOSは取引手数料を請求しません。支払うのはご利用の決済プロセッサーの料金だけです。",
+        "compare": "YITHの現在の価格を確認できなかったため、このページでは定価を比較していません。ライセンス条件は異なります。YITHのライセンスは毎年自動更新されますが、WCPOS Proは買い切りで、1年分のアップデート期間が終わっても動作し続けます。",
+        "proAdds": "Proの追加機能：複数店舗管理、カード端末連携、クーポン、POS API経由の返金、注文履歴、レジでの顧客管理、店舗別価格、在庫と価格の編集、営業終了レポート、拡張機能ディレクトリ。",
+        "demoPrefix": "まずは",
+        "demoLinkLabel": "demo.wcpos.com/pos",
+        "demoSuffix": "ですべてお試しください（ログイン demo / demo）。"
+      },
+      "yithBetter": {
+        "title": "YITH Point of Saleの優れている点",
+        "intro": "正直な比較では両方の長所を示します：",
+        "stores": "店舗、レジ、在庫 — 店舗数と各店舗のレジ数に制限がなく、Multi-Stock機能で店舗ごとに在庫数を分けられます。",
+        "cash": "レジ内の現金 — レジを開く際に手元の現金を登録し、セッション中に理由を添えて現金を追加・取り出せます。閉じる際には注文、支払い方法別の売上、税金、現金の概要と、任意でCSVの締めレポートを出せます。",
+        "roles": "店舗の役割 — 各店舗には、その店舗のレジへ全面的にアクセスできるマネージャーと、アクセスを制限できるレジ担当者がいます。",
+        "split": "分割払い — 顧客は1件の注文を複数の支払い方法で支払えます。",
+        "barcodes": "YITH Barcodes — ストアですでに利用している場合、YITH自身のバーコードプラグインと連携します。",
+        "outro": "すでにYITHのプラグインを使い、店舗ごとに在庫を分けて複数の店舗で販売し、POSに接続していない端末でカード決済を受け付けるなら、YITH Point of Saleのほうが適しているかもしれません。"
+      },
+      "choose": {
+        "title": "どちらを選ぶべきか？",
+        "wcpos": {
+          "title": "WCPOSを選ぶべき場合：",
+          "body": "無料版、カード端末連携（Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Vipps MobilePay）、WindowsとmacOS向けデスクトップアプリやiOSとAndroid向けアプリを使いたい、オフラインで商品を閲覧してカートを作成したい、または1年分のアップデート期間が終わっても動作し続ける買い切りを選びたい場合。"
+        },
+        "yith": {
+          "title": "YITH Point of Saleを選ぶ場合：",
+          "body": "すでにYITH BarcodesなどのYITHプラグインを使い、店舗ごとに在庫を分けて店舗とレジを無制限に設け、レジの各セッションで現金を追跡したい場合で、POSに接続していない端末でカード決済を受け付けてもよい場合。"
+        }
+      },
+      "faq": {
+        "title": "よくある質問",
+        "price": {
+          "question": "YITH Point of Saleの価格はいくらですか？",
+          "answer": "YITHは、1年分のアップデートとサポートを含み、毎年自動更新される年間ライセンスとして、30日間の返金保証付きで販売しています。2026-10-07に製品ページの価格を読み取れなかったため、現在の価格はyithemes.comでご確認ください。製品ページには無料版の記載がありません。WCPOSは無料で、WCPOS Proは1年分のアップデートが買い切りで$129、ライフタイム版が$399です。"
+        },
+        "offline": {
+          "question": "YITH Point of Saleはオフラインで動作しますか？",
+          "answer": "いいえ。製品ページのFAQによると、プラグインにオフライン機能はありませんが、ローカルサーバーには設定できます。WCPOSは商品、顧客、カートをローカルに保存するため、接続なしでカタログを閲覧し販売を準備できますが、会計の完了にはサーバーへの接続が必要です。"
+        },
+        "terminals": {
+          "question": "YITH Point of Saleにカード端末を接続できますか？",
+          "answer": "いいえ。YITHのドキュメントによると、POSのカードリーダー端末はプラグインに接続できないため、すべての支払いは手動で処理されます。支払いの記録用にCashとChip and Pinの支払い方法が追加されます。WCPOS Proのカード端末連携にはStripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Vipps MobilePayが含まれます。"
+        },
+        "apps": {
+          "question": "YITH Point of Saleにネイティブアプリはありますか？",
+          "answer": "YITHのドキュメントには、ブラウザでPOSを開き、スマートフォンやタブレットのホーム画面に保存する方法が説明されていますが、ネイティブアプリへの言及はありません。YITHによると、iPadsやAndroidタブレットなどの10～12インチのタブレットでテストされています。WCPOSは最新のブラウザ、WindowsとmacOS向けデスクトップアプリ、iOSとAndroid向けアプリ（ベータ版）で動作します。"
+        },
+        "licence": {
+          "question": "YITHのライセンスが切れるとどうなりますか？",
+          "answer": "YITHの規約によると、ライセンスは毎年自動更新され、期限が切れると製品のアップデートやサポートを受けられなくなります。その後プラグインが動作し続けるかどうかは記載されていません。"
+        },
+        "expiry": {
+          "question": "WCPOS Proのライセンスが期限切れになるとどうなりますか？",
+          "answer": "何も止まりません。手元のPro版は望む限り動き続けます。レジも、データも、すべての機能もそのままです。更新を選ぶまで、新しいアップデートと優先サポートが止まるだけです。これは意図的な設計です。更新料は支払う価値のあるアップデートによって勝ち取られるべきものですし、あなたのPOSが遠隔で無効化されることは決してないという保証にもなります。"
+        }
+      },
+      "sources": {
+        "title": "出典",
+        "intro": "このページのYITH Point of Saleに関する事実はすべて、2026-10-07に確認したYITH自身のページに基づいています：",
+        "items": {
+          "product": "1年分のアップデートとサポートを含むライセンス、30日間の返金保証、分割払い、タブレット、バーコードスキャン、オフラインモードなし、無制限の店舗とレジ、Multi-Stock、顧客数と評価",
+          "faqs": "カード端末への接続なし、手動での支払い処理、レシート印刷",
+          "paymentMethods": "CashとChip and Pinの支払い方法",
+          "mobile": "ブラウザ上のPOS、スマートフォンやタブレットのホーム画面への保存",
+          "employees": "店舗マネージャーとレジ担当者",
+          "manageCash": "手元の現金、セッション中の現金の追加と取り出し",
+          "closeRegister": "レジの締めの概要とCSVの締めレポート",
+          "changelog": "バージョン3.27.0、2026-09-30リリース",
+          "terms": "毎年自動更新される年間ライセンス。期限切れ後はアップデートとサポートなし"
+        }
+      },
+      "footer": {
+        "factsDated": "YITH Point of Saleの情報は2026-10-07にyithemes.comとdocs.yithemes.comで確認しました（「出典」を参照）。決める前に現在の価格をyithemes.comでご確認ください。WCPOSの情報はwcpos.com、docs.wcpos.com、WordPress.orgによります。四半期ごとに再確認しています。",
         "corrections": "誤りを見つけましたか？ support@wcpos.com までご連絡ください。迅速に修正し、すべての変更を記録します。"
       }
     },

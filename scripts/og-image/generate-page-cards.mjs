@@ -59,6 +59,21 @@ const cards = [
     line: 'Pricing, offline orders, restaurant modes and apps, compared.',
   },
   {
+    slug: 'compare-yith-pos',
+    title: 'WCPOS vs YITH Point of Sale',
+    line: 'Licensing, card terminals, apps and offline use, compared.',
+  },
+  {
+    slug: 'extensions',
+    title: 'Extensions',
+    line: 'The extensions available for WCPOS, each with a link to its documentation.',
+  },
+  {
+    slug: 'changelog',
+    title: 'Changelog',
+    line: 'Release notes for the latest published versions of the WCPOS plugin, from GitHub.',
+  },
+  {
     slug: 'compare-foosales',
     title: 'WCPOS vs FooSales',
     line: 'Pricing, Tap to Pay, offline orders and apps, compared.',

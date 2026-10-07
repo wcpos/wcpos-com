@@ -52,6 +52,7 @@ describe('GET /llms.txt', () => {
 
     expect(body).toContain(`: ${en.pro.metadata.description}`)
     expect(body).toContain(`: ${en.legal.terms.meta.description}`)
+    expect(body).toContain(`: ${en.compare.yith.metadata.description}`)
     expect(body).toContain(`: ${en.compare.foosales.metadata.description}`)
   })
 })
