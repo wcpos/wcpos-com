@@ -39,11 +39,18 @@ describe('GET /llms.txt', () => {
     const allowedUrls = [
       ...marketingRoutes.map((route) => localeUrl('en', route.path)),
       'https://docs.wcpos.com',
+      'https://wcpos.com/llms-full.txt',
     ]
 
     for (const match of body.matchAll(/\]\(([^)]+)\)/g)) {
       expect(allowedUrls).toContain(match[1])
     }
+  })
+
+  it('links to /llms-full.txt', async () => {
+    const body = await GET().text()
+
+    expect(body).toContain('- [llms-full.txt](https://wcpos.com/llms-full.txt)')
   })
 
   it('uses each page meta description', async () => {
