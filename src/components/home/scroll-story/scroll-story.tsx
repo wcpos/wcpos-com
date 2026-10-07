@@ -31,12 +31,16 @@ import {
 } from './devices'
 import { K, ACT_BOUNDS, type Track } from './keyframes'
 import {
-  COUNTER_CARD_SIZES,
   COUNTER_CARD_SRC,
   COUNTER_CARD_SRCSET,
   StoryStatic,
 } from './story-static'
 import styles from './story.module.css'
+
+// The pinned photo is full-bleed from md up; below md it resolves exactly
+// like COUNTER_CARD_SIZES so the hidden fallback shares the card's download.
+const COUNTER_PHOTO_SIZES =
+  '(min-width: 768px) 100vw, (min-width: 640px) 608px, calc(100vw - 2rem)'
 
 function useTrack(
   progress: MotionValue<number>,
@@ -392,7 +396,7 @@ function PinnedStoryScroller() {
           style={{ opacity: bgWarmOpacity, scale: bgWarmScale }}
         >
           {/* desktop sources are media-gated; the mobile fallback shares the
-              same srcset and sizes as the static card for one download */}
+              static card's srcset and, below md, its sizes for one download */}
           <picture>
             <source
               media="(min-width: 768px)"
@@ -407,7 +411,7 @@ function PinnedStoryScroller() {
             <img
               src={COUNTER_CARD_SRC}
               srcSet={COUNTER_CARD_SRCSET}
-              sizes={COUNTER_CARD_SIZES}
+              sizes={COUNTER_PHOTO_SIZES}
               alt=""
               fetchPriority="high"
               className="absolute inset-0 h-full w-full object-cover"
