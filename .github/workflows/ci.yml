@@ -214,7 +214,7 @@ jobs:
         if: env.VERCEL_TOKEN != ''
         run: |
           url=$(pnpm dlx vercel@62.0.0 deploy --archive=tgz --token=${{ secrets.VERCEL_TOKEN }})
-          echo "url=$url" >> "$GITHUB_OUTPUT"
+          echo "url=$url" >> $GITHUB_OUTPUT
 
       - name: Comment PR
         if: steps.deploy.outcome == 'success' && !github.event.pull_request.head.repo.fork
