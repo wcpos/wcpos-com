@@ -483,7 +483,7 @@
       },
       "siteLimits": {
         "question": "How many sites can I use my license on?",
-        "answer": "Each license can be activated on multiple sites. Check your account dashboard for activation limits."
+        "answer": "Each license can be activated on 2 sites, intended for one live site and one development site. You can see and deactivate your sites in your account dashboard."
       },
       "paymentMethods": {
         "question": "What payment methods do you accept?",
