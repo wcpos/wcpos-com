@@ -70,7 +70,7 @@ jobs:
     name: E2E Tests
     runs-on: ubuntu-latest
     needs: test
-    timeout-minutes: 15
+    timeout-minutes: 20
     permissions:
       contents: read
     steps:
@@ -109,6 +109,36 @@ jobs:
           CI: true
           GITHUB_PAT: ${{ secrets.GH_PAT }}
           MEDUSA_PUBLISHABLE_KEY: ${{ secrets.MEDUSA_PUBLISHABLE_KEY }}
+
+      # Crawl the built site and fail on any broken internal link (marketing backlog item 87).
+      - name: Start the built site
+        env:
+          CI: true
+          GITHUB_PAT: ${{ secrets.GH_PAT }}
+          MEDUSA_PUBLISHABLE_KEY: ${{ secrets.MEDUSA_PUBLISHABLE_KEY }}
+          NODE_OPTIONS: --require ${{ github.workspace }}/e2e/mocks/fetch-intercept.cjs
+          E2E_MOCK_PORT: '4873'
+          MEDUSA_BACKEND_URL: 'https://store-api.wcpos.com'
+          CHECKOUT_GATEWAY_SECRET_LIVE: 'e2e-live-checkout-gateway-secret-00000000'
+          CHECKOUT_GATEWAY_SECRET_TEST: 'e2e-test-checkout-gateway-secret-00000000'
+          KEYGEN_HOST: 'license.wcpos.com'
+          KEYGEN_API_TOKEN: 'e2e-keygen-token'
+          MEDUSA_ADMIN_API_TOKEN: 'e2e-medusa-admin-token'
+          DOWNLOAD_TOKEN_SECRET: 'e2e-download-token-secret'
+        run: |
+          node e2e/mocks/server.mjs > /tmp/mock-server.log 2>&1 &
+          pnpm start --port 3000 > /tmp/next-start.log 2>&1 &
+          for _ in $(seq 1 60); do
+            if curl -sf -o /dev/null http://localhost:3000/; then
+              exit 0
+            fi
+            sleep 1
+          done
+          cat /tmp/mock-server.log /tmp/next-start.log
+          exit 1
+
+      - name: Check internal links
+        run: pnpm links:check
 
       - name: Upload Playwright report
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
