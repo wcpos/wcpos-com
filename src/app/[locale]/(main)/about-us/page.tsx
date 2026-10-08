@@ -50,6 +50,7 @@ export default async function AboutPage({
         <StoryTimeline />
         <ValuesSection />
         <AboutCta />
+        {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
         <a href="/no-such-page-item87">dead link (item 87 CI proof)</a>
       </main>
     </NextIntlClientProvider>
