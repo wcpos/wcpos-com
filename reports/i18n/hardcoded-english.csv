@@ -880,6 +880,7 @@ file,line,col,category,attr,text
 "src/lib/openclaw/client.ts","140","7","code/string","","support assistant unreachable"
 "src/lib/order-status.ts","13","19","code/string","","Action required"
 "src/lib/order-status.ts","17","22","code/string","","Partially refunded"
+"src/lib/pro-offer-catalog.ts","35","16","code/string","","Default"
 "src/lib/pro-offer-catalog.ts","62","5","code/string","","WCPOS Pro Yearly"
 "src/lib/pro-offer-catalog.ts","68","5","code/string","","WCPOS Pro Lifetime"
 "src/lib/pro-offer-catalog.ts","198","23","code/string","","/pro/checkout?"

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "generatedBy": "scripts/i18n/hardcoded-english.ts --update",
-  "updatedAt": "2026-10-08T16:12:19.743Z",
+  "updatedAt": "2026-10-08T17:39:52.848Z",
   "scope": [
     "src/app",
     "src/components",
@@ -5767,6 +5767,14 @@
       "category": "code/string",
       "attr": null,
       "text": "/pro/checkout?",
+      "count": 1
+    },
+    {
+      "id": "093081ad655aa29e",
+      "file": "src/lib/pro-offer-catalog.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "Default",
       "count": 1
     },
     {
