@@ -60,6 +60,9 @@ jobs:
       - name: Type check
         run: pnpm exec tsc --noEmit
 
+      - name: Hard-coded English check
+        run: pnpm i18n:hardcoded
+
       - name: Unit tests
         run: pnpm test:unit
 
