@@ -177,7 +177,7 @@ function walk(dir: string, out: string[] = []): string[] {
   return out
 }
 
-function looksCodeOrConfig(value: string): boolean {
+export function looksCodeOrConfig(value: string): boolean {
   const text = value.trim()
   if (!text) return true
   if (/^https?:\/\//.test(text) || /^mailto:/.test(text) || /^#/.test(text)) return true
@@ -192,9 +192,11 @@ function looksCodeOrConfig(value: string): boolean {
   return false
 }
 
-function candidate(value: string): string | null {
+export function candidate(value: string, uiText = false): string | null {
   const text = value.replace(/\s+/g, ' ').trim()
   if (text.length < 3) return null
+  // A capitalised single word in UI text is a label, not code.
+  if (uiText && /^[A-Z][a-z]{2,}$/.test(text)) return text
   if (looksCodeOrConfig(text)) return null
   const lower = text.toLowerCase()
   if (!/[A-Za-z]/.test(text)) return null
@@ -257,8 +259,8 @@ function scanFile(filePath: string): Hit[] {
   )
   const hits: Hit[] = []
 
-  function add(node: ts.Node, raw: string, attr: string | null = null) {
-    const text = candidate(raw)
+  function add(node: ts.Node, raw: string, attr: string | null = null, uiText = false) {
+    const text = candidate(raw, uiText)
     if (!text) return
     hits.push({
       file: path.relative(root, filePath),
@@ -271,14 +273,19 @@ function scanFile(filePath: string): Hit[] {
 
   function visit(node: ts.Node) {
     if (ts.isJsxText(node)) {
-      add(node, node.getText(sourceFile))
+      add(node, node.getText(sourceFile), null, true)
     } else if (ts.isStringLiteral(node) || ts.isNoSubstitutionTemplateLiteral(node)) {
       if (isImportExportLiteral(node)) return
       if (isTranslationKeyLiteral(node)) return
       const attr = propName(node)
       if (attr === '__property_key__' || attr === '__property_access__') return
       if (attr && skipAttr.has(attr) && !interestingAttr.has(attr)) return
-      add(node, node.text, attr)
+      const parent = node.parent
+      const uiText = (attr !== null && interestingAttr.has(attr)) ||
+        (ts.isPropertyAssignment(parent) && parent.initializer === node &&
+          (ts.isIdentifier(parent.name) || ts.isStringLiteral(parent.name)) &&
+          interestingAttr.has(parent.name.text))
+      add(node, node.text, attr, uiText)
     } else if (ts.isTemplateExpression(node)) {
       add(node, node.head.text)
       for (const span of node.templateSpans) add(span.literal, span.literal.text)
@@ -339,60 +346,65 @@ function writeCsv(hits: Hit[]) {
   writeFileSync(reportPath, `${rows.join('\n')}\n`)
 }
 
-const files = scope.flatMap((item) => {
-  const absolute = path.join(root, item)
-  if (!existsSync(absolute)) return []
-  const stat = statSync(absolute)
-  return stat.isDirectory() ? walk(absolute) : [absolute]
-})
-const hits = files.flatMap(scanFile).sort((a, b) => a.file.localeCompare(b.file) || a.line - b.line)
-const entries = summarize(hits)
+function main(): void {
+  const files = scope.flatMap((item) => {
+    const absolute = path.join(root, item)
+    if (!existsSync(absolute)) return []
+    const stat = statSync(absolute)
+    return stat.isDirectory() ? walk(absolute) : [absolute]
+  })
+  const hits = files.flatMap(scanFile).sort((a, b) => a.file.localeCompare(b.file) || a.line - b.line)
+  const entries = summarize(hits)
 
-if (update) {
-  const allowlist: Allowlist = {
-    version: 1,
-    generatedBy: 'scripts/i18n/hardcoded-english.ts --update',
-    updatedAt: new Date().toISOString(),
-    scope,
-    entries,
+  if (update) {
+    const allowlist: Allowlist = {
+      version: 1,
+      generatedBy: 'scripts/i18n/hardcoded-english.ts --update',
+      updatedAt: new Date().toISOString(),
+      scope,
+      entries,
+    }
+    writeFileSync(allowlistPath, `${JSON.stringify(allowlist, null, 2)}\n`)
+    writeCsv(hits)
+    console.log(`Updated ${path.relative(root, allowlistPath)} with ${entries.length} signatures (${hits.length} hits).`)
+    console.log(`Wrote ${path.relative(root, reportPath)}.`)
+    process.exit(0)
   }
-  writeFileSync(allowlistPath, `${JSON.stringify(allowlist, null, 2)}\n`)
-  writeCsv(hits)
-  console.log(`Updated ${path.relative(root, allowlistPath)} with ${entries.length} signatures (${hits.length} hits).`)
-  console.log(`Wrote ${path.relative(root, reportPath)}.`)
-  process.exit(0)
+
+  const allowlist = readAllowlist()
+  const allowed = new Map(allowlist.entries.map((entry) => [signature(entry), entry]))
+  const current = new Map(entries.map((entry) => [signature(entry), entry]))
+  const newEntries = entries.filter((entry) => !allowed.has(signature(entry)))
+  const increasedEntries = entries.filter((entry) => {
+    const existing = allowed.get(signature(entry))
+    return existing && entry.count > existing.count
+  })
+  const removedEntries = allowlist.entries.filter((entry) => !current.has(signature(entry)))
+
+  if (json) {
+    console.log(JSON.stringify({ hits, entries, newEntries, increasedEntries, removedEntries }, null, 2))
+  } else if (csv) {
+    writeCsv(hits)
+    console.log(`Wrote ${path.relative(root, reportPath)}.`)
+  } else {
+    console.log(
+      `Hard-coded English scan: ${hits.length} hits across ${entries.length} signatures. ` +
+        `${newEntries.length} new, ${increasedEntries.length} increased, ${removedEntries.length} removed.`
+    )
+  }
+
+  if (newEntries.length || increasedEntries.length) {
+    console.error('\nNew hard-coded English candidates detected. Move them to messages or update the allowlist only for intentional debt.')
+    for (const entry of [...newEntries, ...increasedEntries].slice(0, 25)) {
+      const previous = allowed.get(signature(entry))?.count ?? 0
+      console.error(`- ${entry.file} [${entry.category}] count ${previous} -> ${entry.count}: ${entry.text}`)
+    }
+    if (newEntries.length + increasedEntries.length > 25) {
+      console.error(`...and ${newEntries.length + increasedEntries.length - 25} more.`)
+    }
+    process.exit(1)
+  }
 }
 
-const allowlist = readAllowlist()
-const allowed = new Map(allowlist.entries.map((entry) => [signature(entry), entry]))
-const current = new Map(entries.map((entry) => [signature(entry), entry]))
-const newEntries = entries.filter((entry) => !allowed.has(signature(entry)))
-const increasedEntries = entries.filter((entry) => {
-  const existing = allowed.get(signature(entry))
-  return existing && entry.count > existing.count
-})
-const removedEntries = allowlist.entries.filter((entry) => !current.has(signature(entry)))
-
-if (json) {
-  console.log(JSON.stringify({ hits, entries, newEntries, increasedEntries, removedEntries }, null, 2))
-} else if (csv) {
-  writeCsv(hits)
-  console.log(`Wrote ${path.relative(root, reportPath)}.`)
-} else {
-  console.log(
-    `Hard-coded English scan: ${hits.length} hits across ${entries.length} signatures. ` +
-      `${newEntries.length} new, ${increasedEntries.length} increased, ${removedEntries.length} removed.`
-  )
-}
-
-if (newEntries.length || increasedEntries.length) {
-  console.error('\nNew hard-coded English candidates detected. Move them to messages or update the allowlist only for intentional debt.')
-  for (const entry of [...newEntries, ...increasedEntries].slice(0, 25)) {
-    const previous = allowed.get(signature(entry))?.count ?? 0
-    console.error(`- ${entry.file} [${entry.category}] count ${previous} -> ${entry.count}: ${entry.text}`)
-  }
-  if (newEntries.length + increasedEntries.length > 25) {
-    console.error(`...and ${newEntries.length + increasedEntries.length - 25} more.`)
-  }
-  process.exit(1)
-}
+// Run the scan only when the script is executed (tsx), not when tests import it.
+if (path.basename(process.argv[1] ?? '') === 'hardcoded-english.ts') main()
