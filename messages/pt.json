@@ -483,7 +483,7 @@
       },
       "siteLimits": {
         "question": "Em quantos sites posso usar a minha licença?",
-        "answer": "Cada licença pode ser ativada em vários sites. Consulte o painel da sua conta para ver os limites de ativação."
+        "answer": "Cada licença pode ser ativada em 2 sites, destinados a um site em produção e a um site de desenvolvimento. Pode ver e desativar os seus sites no painel da sua conta."
       },
       "paymentMethods": {
         "question": "Que métodos de pagamento aceitam?",

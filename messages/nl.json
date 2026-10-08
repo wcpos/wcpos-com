@@ -483,7 +483,7 @@
       },
       "siteLimits": {
         "question": "Op hoeveel sites kan ik mijn licentie gebruiken?",
-        "answer": "Elke licentie kan op meerdere sites worden geactiveerd. Bekijk je accountdashboard voor de activeringslimieten."
+        "answer": "Elke licentie kan op 2 sites worden geactiveerd, bedoeld voor één live site en één ontwikkelsite. Je kunt je sites bekijken en deactiveren in je accountdashboard."
       },
       "paymentMethods": {
         "question": "Welke betaalmethoden accepteren jullie?",

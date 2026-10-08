@@ -483,7 +483,7 @@
       },
       "siteLimits": {
         "question": "Su quanti siti posso usare la mia licenza?",
-        "answer": "Ogni licenza può essere attivata su più siti. Controlla la dashboard del tuo account per i limiti di attivazione."
+        "answer": "Ogni licenza può essere attivata su 2 siti, destinati a un sito in produzione e un sito di sviluppo. Puoi vedere e disattivare i tuoi siti nella dashboard del tuo account."
       },
       "paymentMethods": {
         "question": "Quali metodi di pagamento accettate?",
