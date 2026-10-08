@@ -50,6 +50,7 @@ export default async function AboutPage({
         <StoryTimeline />
         <ValuesSection />
         <AboutCta />
+        <a href="/no-such-page-item87">dead link (item 87 CI proof)</a>
       </main>
     </NextIntlClientProvider>
   )
