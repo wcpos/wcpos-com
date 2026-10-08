@@ -34,7 +34,6 @@ export default async function SupportPage({
   return (
     <NextIntlClientProvider messages={clientMessages(messages, ['support'])}>
       <main>
-        <p>Hello there</p>
         <Suspense fallback={<SupportDefaultContent />}>
           <SupportPageContent />
         </Suspense>
