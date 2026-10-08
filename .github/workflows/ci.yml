@@ -137,8 +137,14 @@ jobs:
           cat /tmp/mock-server.log /tmp/next-start.log
           exit 1
 
+      # Seed the crawl from / and every built sitemap.xml <loc> (marketing backlog item 92).
+      - name: List link-check seeds
+        run: |
+          curl -sf -o /tmp/sitemap.xml http://localhost:3000/sitemap.xml
+          node scripts/link-check-seeds.mjs /tmp/sitemap.xml > /tmp/link-seeds.txt
+
       - name: Check internal links
-        run: pnpm links:check
+        run: xargs pnpm links:check --check-fragments < /tmp/link-seeds.txt
 
       - name: Upload Playwright report
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
