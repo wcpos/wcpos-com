@@ -23,7 +23,8 @@ on:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  # Never cancel a run on main: it may hold an in-flight deploy-production.
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 env:
   VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
@@ -41,6 +42,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      # actionlint 1.7.12, pinned by version and sha256 (marketing item 105).
+      - name: Lint workflows
+        run: |
+          curl -sSfL -o /tmp/actionlint.tgz https://github.com/rhysd/actionlint/releases/download/v1.7.12/actionlint_1.7.12_linux_amd64.tar.gz
+          echo "8aca8db96f1b94770f1b0d72b6dddcb1ebb8123cb3712530b08cc387b349a3d8  /tmp/actionlint.tgz" | sha256sum -c -
+          tar -xzf /tmp/actionlint.tgz -C /tmp actionlint
+          /tmp/actionlint
 
       - name: Setup pnpm
         uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v4
@@ -196,7 +205,7 @@ jobs:
 
       - name: Pull Vercel Environment
         if: env.VERCEL_TOKEN != ''
-        run: pnpm dlx vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+        run: pnpm dlx vercel@62.0.0 pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
 
       # Sensitive Vercel variables are intentionally unavailable to local
       # prebuilds, so Preview must build remotely inside Vercel.
@@ -204,8 +213,8 @@ jobs:
         id: deploy
         if: env.VERCEL_TOKEN != ''
         run: |
-          url=$(pnpm dlx vercel deploy --archive=tgz --token=${{ secrets.VERCEL_TOKEN }})
-          echo "url=$url" >> $GITHUB_OUTPUT
+          url=$(pnpm dlx vercel@62.0.0 deploy --archive=tgz --token=${{ secrets.VERCEL_TOKEN }})
+          echo "url=$url" >> "$GITHUB_OUTPUT"
 
       - name: Comment PR
         if: steps.deploy.outcome == 'success' && !github.event.pull_request.head.repo.fork
@@ -236,6 +245,10 @@ jobs:
     runs-on: ubuntu-latest
     needs: [test, e2e]
     if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main' && vars.VERCEL_DEPLOYS == 'enabled'
+    # A running production deploy is never cancelled; the next one queues.
+    concurrency:
+      group: deploy-production
+      cancel-in-progress: false
     permissions:
       contents: read
     environment:
@@ -255,9 +268,9 @@ jobs:
           cache: 'pnpm'
 
       - name: Pull Vercel Environment
-        run: pnpm dlx vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+        run: pnpm dlx vercel@62.0.0 pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
 
       # Sensitive Vercel variables are intentionally unavailable to local
       # prebuilds, so Production must build remotely inside Vercel.
       - name: Deploy Production
-        run: pnpm dlx vercel deploy --prod --archive=tgz --token=${{ secrets.VERCEL_TOKEN }}
+        run: pnpm dlx vercel@62.0.0 deploy --prod --archive=tgz --token=${{ secrets.VERCEL_TOKEN }}
