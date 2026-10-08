@@ -1,7 +1,7 @@
 {
   "version": 1,
   "generatedBy": "scripts/i18n/hardcoded-english.ts --update",
-  "updatedAt": "2026-07-08T23:23:23.769Z",
+  "updatedAt": "2026-10-08T16:12:19.743Z",
   "scope": [
     "src/app",
     "src/components",
@@ -9,6 +9,22 @@
     "src/services"
   ],
   "entries": [
+    {
+      "id": "174f2e5c186e3174",
+      "file": "src/app/[locale]/(auth)/confirm-email/confirm-email-page-client.tsx",
+      "category": "route/page",
+      "attr": null,
+      "text": "done",
+      "count": 2
+    },
+    {
+      "id": "e1b7c6adce87dcf4",
+      "file": "src/app/[locale]/(auth)/confirm-email/confirm-email-page-client.tsx",
+      "category": "route/page",
+      "attr": null,
+      "text": "use client",
+      "count": 1
+    },
     {
       "id": "9c22c6fc3a96fd20",
       "file": "src/app/[locale]/(auth)/forgot-password/forgot-password-page-client.tsx",
@@ -130,6 +146,110 @@
       "count": 1
     },
     {
+      "id": "b4ddd55bf5975485",
+      "file": "src/app/[locale]/(main)/compare/foosales/page.tsx",
+      "category": "route/page",
+      "attr": null,
+      "text": "cancel",
+      "count": 2
+    },
+    {
+      "id": "1826a235bb1d5b96",
+      "file": "src/app/[locale]/(main)/compare/foosales/page.tsx",
+      "category": "route/page",
+      "attr": null,
+      "text": "price",
+      "count": 2
+    },
+    {
+      "id": "5c1ae97d6a4acb41",
+      "file": "src/app/[locale]/(main)/compare/foosales/page.tsx",
+      "category": "route/page",
+      "attr": null,
+      "text": "roadmap",
+      "count": 1
+    },
+    {
+      "id": "6c07413507777d8c",
+      "file": "src/app/[locale]/(main)/compare/jovvie/page.tsx",
+      "category": "route/page",
+      "attr": null,
+      "text": "price",
+      "count": 1
+    },
+    {
+      "id": "fabe90797281258a",
+      "file": "src/app/[locale]/(main)/compare/square/page.tsx",
+      "category": "route/page",
+      "attr": null,
+      "text": "free",
+      "count": 2
+    },
+    {
+      "id": "0486c2ccb5da496a",
+      "file": "src/app/[locale]/(main)/compare/square/page.tsx",
+      "category": "route/page",
+      "attr": null,
+      "text": "orders",
+      "count": 3
+    },
+    {
+      "id": "2d9486bdb7a9879f",
+      "file": "src/app/[locale]/(main)/compare/square/page.tsx",
+      "category": "route/page",
+      "attr": null,
+      "text": "price",
+      "count": 1
+    },
+    {
+      "id": "99448e842945d4c8",
+      "file": "src/app/[locale]/(main)/compare/vitepos/page.tsx",
+      "category": "route/page",
+      "attr": null,
+      "text": "price",
+      "count": 3
+    },
+    {
+      "id": "d2bffa29d0f002b0",
+      "file": "src/app/[locale]/(main)/compare/woocommerce-pos/page.tsx",
+      "category": "route/page",
+      "attr": null,
+      "text": "free",
+      "count": 1
+    },
+    {
+      "id": "304d51e7b47038dd",
+      "file": "src/app/[locale]/(main)/compare/woocommerce-pos/page.tsx",
+      "category": "route/page",
+      "attr": null,
+      "text": "price",
+      "count": 2
+    },
+    {
+      "id": "2b2912ff27ea5060",
+      "file": "src/app/[locale]/(main)/compare/yith-pos/page.tsx",
+      "category": "route/page",
+      "attr": null,
+      "text": "cash",
+      "count": 1
+    },
+    {
+      "id": "a3feb242279f12ef",
+      "file": "src/app/[locale]/(main)/compare/yith-pos/page.tsx",
+      "category": "route/page",
+      "attr": null,
+      "text": "price",
+      "count": 2
+    },
+    {
+      "id": "3624ee5086970d27",
+      "file": "src/app/[locale]/(main)/compare/yith-pos/page.tsx",
+      "category": "route/page",
+      "attr": null,
+      "text": "terms",
+      "count": 1
+    },
+    {
       "id": "c347dacd7923867c",
       "file": "src/app/[locale]/(main)/downloads/page.tsx",
       "category": "route/page",
@@ -146,8 +266,8 @@
       "count": 1
     },
     {
-      "id": "fcaa9ce3b62acc24",
-      "file": "src/app/[locale]/(main)/pro/checkout/page.tsx",
+      "id": "0f13d62453e10723",
+      "file": "src/app/[locale]/(main)/pro/checkout/checkout-content.tsx",
       "category": "route/page",
       "attr": null,
       "text": "/pro/checkout?",
@@ -162,11 +282,27 @@
       "count": 1
     },
     {
-      "id": "591fe1ab35a29ac5",
-      "file": "src/app/[locale]/(main)/pro/page.tsx",
+      "id": "c895cf61ef4f8166",
+      "file": "src/app/[locale]/(main)/pro/pro-offer-data.ts",
       "category": "route/page",
       "attr": null,
       "text": "use cache",
+      "count": 1
+    },
+    {
+      "id": "82148cdbeaada3b1",
+      "file": "src/app/[locale]/(main)/pro/pro-product-json-ld.tsx",
+      "category": "route/page",
+      "attr": null,
+      "text": "pro",
+      "count": 1
+    },
+    {
+      "id": "1d726c58bcd4ebd4",
+      "file": "src/app/[locale]/(main)/pro/pro-product-json-ld.tsx",
+      "category": "route/page",
+      "attr": null,
+      "text": "Windows, macOS, Linux, iOS, Android",
       "count": 1
     },
     {
@@ -183,7 +319,7 @@
       "category": "route/page",
       "attr": null,
       "text": "roadmap",
-      "count": 2
+      "count": 3
     },
     {
       "id": "2688b87e9ad513f6",
@@ -194,11 +330,27 @@
       "count": 1
     },
     {
+      "id": "e522b210decdcbe2",
+      "file": "src/app/[locale]/(main)/support/page.tsx",
+      "category": "route/page",
+      "attr": null,
+      "text": "support",
+      "count": 1
+    },
+    {
       "id": "0982ee29d9e52efb",
       "file": "src/app/[locale]/account/admin/actions.ts",
       "category": "admin",
       "attr": null,
       "text": "10 m",
+      "count": 1
+    },
+    {
+      "id": "b1d65a13e45431a6",
+      "file": "src/app/[locale]/account/admin/actions.ts",
+      "category": "admin",
+      "attr": null,
+      "text": "email",
       "count": 1
     },
     {
@@ -242,19 +394,19 @@
       "count": 1
     },
     {
-      "id": "061c94be6f3b2e7b",
-      "file": "src/app/[locale]/account/admin/page.tsx",
+      "id": "991c3b2bf37c54bf",
+      "file": "src/app/[locale]/account/admin/admin-inspect-form.tsx",
       "category": "admin",
       "attr": null,
-      "text": "email",
+      "text": "error",
       "count": 1
     },
     {
-      "id": "e47324ab77d76816",
-      "file": "src/app/[locale]/account/admin/page.tsx",
+      "id": "424889ab25e34cdd",
+      "file": "src/app/[locale]/account/admin/admin-inspect-form.tsx",
       "category": "admin",
       "attr": null,
-      "text": "use server",
+      "text": "use client",
       "count": 1
     },
     {
@@ -287,6 +439,14 @@
       "category": "route/page",
       "attr": null,
       "text": "/api/account/impersonate/exit?locale=",
+      "count": 1
+    },
+    {
+      "id": "cebabae359115423",
+      "file": "src/app/[locale]/account/layout.tsx",
+      "category": "route/page",
+      "attr": null,
+      "text": "account",
       "count": 1
     },
     {
@@ -338,6 +498,22 @@
       "count": 1
     },
     {
+      "id": "a94f8f19c3123b43",
+      "file": "src/app/[locale]/layout.tsx",
+      "category": "route/page",
+      "attr": null,
+      "text": "(prefers-color-scheme: dark)",
+      "count": 1
+    },
+    {
+      "id": "b29f1cf763d8a279",
+      "file": "src/app/[locale]/layout.tsx",
+      "category": "route/page",
+      "attr": null,
+      "text": "(prefers-color-scheme: light)",
+      "count": 1
+    },
+    {
       "id": "d294909f220e8b54",
       "file": "src/app/[locale]/layout.tsx",
       "category": "route/page",
@@ -362,12 +538,76 @@
       "count": 1
     },
     {
+      "id": "3c8dc3d918a74846",
+      "file": "src/app/api/account/connections/[provider]/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "but metadata scrub failed:",
+      "count": 1
+    },
+    {
+      "id": "682da3012f1d020d",
+      "file": "src/app/api/account/connections/[provider]/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "discord",
+      "count": 1
+    },
+    {
+      "id": "04f241c86c036d1f",
+      "file": "src/app/api/account/connections/[provider]/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "github",
+      "count": 1
+    },
+    {
+      "id": "2e86a8224a7a2654",
+      "file": "src/app/api/account/connections/[provider]/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "google",
+      "count": 1
+    },
+    {
+      "id": "034ebfb2af88ac46",
+      "file": "src/app/api/account/connections/[provider]/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "Provider disconnect failed (DELETE /api/account/connections/",
+      "count": 1
+    },
+    {
+      "id": "3eaf2f71e759cf07",
+      "file": "src/app/api/account/delete/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "15 m",
+      "count": 1
+    },
+    {
+      "id": "13974087191a203a",
+      "file": "src/app/api/account/delete/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "Account deleted (DELETE /api/account/delete) for customer",
+      "count": 1
+    },
+    {
+      "id": "b479dc5112d2d5ca",
+      "file": "src/app/api/account/delete/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "Account deletion failed (DELETE /api/account/delete) for customer",
+      "count": 1
+    },
+    {
       "id": "01c63c8a1c1ffe7c",
       "file": "src/app/api/account/download/route.ts",
       "category": "route/page",
       "attr": null,
       "text": "account",
-      "count": 1
+      "count": 2
     },
     {
       "id": "181b101cfe27d5d5",
@@ -530,6 +770,86 @@
       "count": 1
     },
     {
+      "id": "6d84863edc41f186",
+      "file": "src/app/api/account/email/confirm/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "15 m",
+      "count": 1
+    },
+    {
+      "id": "6cbe5619bd67f35d",
+      "file": "src/app/api/account/email/confirm/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "Email change confirm failed unexpectedly:",
+      "count": 1
+    },
+    {
+      "id": "448513fa71f4330b",
+      "file": "src/app/api/account/email/confirm/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "Email change confirm proceeding without rate limiting: limiter store unreachable",
+      "count": 1
+    },
+    {
+      "id": "daa65fa93af2a545",
+      "file": "src/app/api/account/email/confirm/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "Email change confirm rejected:",
+      "count": 1
+    },
+    {
+      "id": "a1c716b5a86756ef",
+      "file": "src/app/api/account/email/confirm/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "Email change confirmed",
+      "count": 1
+    },
+    {
+      "id": "2dd88ebe5730597a",
+      "file": "src/app/api/account/email/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "15 m",
+      "count": 1
+    },
+    {
+      "id": "72e06462b441baa3",
+      "file": "src/app/api/account/email/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "Email change failed unexpectedly:",
+      "count": 1
+    },
+    {
+      "id": "1964e337c4918e46",
+      "file": "src/app/api/account/email/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "Email change rejected by backend:",
+      "count": 1
+    },
+    {
+      "id": "6549eaae9ab0f8e9",
+      "file": "src/app/api/account/email/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "Email change rejected: undeliverable domain. verdict=",
+      "count": 1
+    },
+    {
+      "id": "4a8699defa939abd",
+      "file": "src/app/api/account/email/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "Email change unavailable: rate limiter store unreachable",
+      "count": 1
+    },
+    {
       "id": "efb9c4093e209961",
       "file": "src/app/api/account/impersonate/exit/route.ts",
       "category": "route/page",
@@ -543,6 +863,14 @@
       "category": "route/page",
       "attr": null,
       "text": "Discord member unblock unavailable:",
+      "count": 1
+    },
+    {
+      "id": "805cea3557e88683",
+      "file": "src/app/api/account/licenses/[licenseId]/discord/members/[memberId]/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "Discord directory sync after member removal failed:",
       "count": 1
     },
     {
@@ -618,6 +946,22 @@
       "count": 1
     },
     {
+      "id": "93912c2efb835165",
+      "file": "src/app/api/account/password/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "15 m",
+      "count": 1
+    },
+    {
+      "id": "9c3ffbb708b0d42e",
+      "file": "src/app/api/account/password/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "Password setup email failed (POST /api/account/password):",
+      "count": 1
+    },
+    {
       "id": "1c4ed01176d59785",
       "file": "src/app/api/account/profile/route.ts",
       "category": "route/page",
@@ -642,6 +986,14 @@
       "count": 1
     },
     {
+      "id": "7070663180fef74d",
+      "file": "src/app/api/auth/[provider]/callback/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "Failed to sync linked OAuth provider:",
+      "count": 1
+    },
+    {
       "id": "c14224be73fbead9",
       "file": "src/app/api/auth/[provider]/callback/route.ts",
       "category": "route/page",
@@ -655,6 +1007,38 @@
       "category": "route/page",
       "attr": null,
       "text": "OAuth callback failed:",
+      "count": 1
+    },
+    {
+      "id": "dd26b7178e7b070d",
+      "file": "src/app/api/auth/[provider]/callback/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "OAuth link callback for",
+      "count": 2
+    },
+    {
+      "id": "b7ba6ef737a81085",
+      "file": "src/app/api/auth/[provider]/callback/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "OAuth sign-in rejected:",
+      "count": 2
+    },
+    {
+      "id": "e3950393253b186a",
+      "file": "src/app/api/auth/[provider]/callback/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "rejected: customer changed mid-flow",
+      "count": 1
+    },
+    {
+      "id": "e7d28d9108bdacd9",
+      "file": "src/app/api/auth/[provider]/callback/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "rejected: state mismatch",
       "count": 1
     },
     {
@@ -674,6 +1058,22 @@
       "count": 1
     },
     {
+      "id": "73f70bbb4e03d048",
+      "file": "src/app/api/auth/[provider]/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "OAuth link initiate for",
+      "count": 1
+    },
+    {
+      "id": "9af5b38a989b3d16",
+      "file": "src/app/api/auth/[provider]/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "returned no state",
+      "count": 1
+    },
+    {
       "id": "1cd79ef18762b6e6",
       "file": "src/app/api/auth/forgot-password/route.ts",
       "category": "route/page",
@@ -687,6 +1087,22 @@
       "category": "route/page",
       "attr": null,
       "text": "Password reset request failed unexpectedly:",
+      "count": 1
+    },
+    {
+      "id": "823db2e84be84850",
+      "file": "src/app/api/auth/forgot-password/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "Password reset request rejected: cross-origin request",
+      "count": 1
+    },
+    {
+      "id": "0bba33a455a00209",
+      "file": "src/app/api/auth/forgot-password/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "Password reset request rejected: rate limited. ip=",
       "count": 1
     },
     {
@@ -730,6 +1146,22 @@
       "count": 1
     },
     {
+      "id": "8c65474b89688273",
+      "file": "src/app/api/auth/login/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "Login rejected: cross-origin request",
+      "count": 1
+    },
+    {
+      "id": "b975b8aae2176b13",
+      "file": "src/app/api/auth/login/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "Login rejected: rate limited. ip=",
+      "count": 1
+    },
+    {
       "id": "d337edb80fcd48ec",
       "file": "src/app/api/auth/register/route.ts",
       "category": "route/page",
@@ -759,6 +1191,46 @@
       "category": "route/page",
       "attr": null,
       "text": "Registration rejected:",
+      "count": 1
+    },
+    {
+      "id": "4ce011bb09929a06",
+      "file": "src/app/api/auth/register/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "Registration rejected: bot check failed. tokenPresent=",
+      "count": 1
+    },
+    {
+      "id": "1a056899301dc41f",
+      "file": "src/app/api/auth/register/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "Registration rejected: cross-origin request",
+      "count": 1
+    },
+    {
+      "id": "7c68469abe1cf9e4",
+      "file": "src/app/api/auth/register/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "Registration rejected: rate limited. ip=",
+      "count": 1
+    },
+    {
+      "id": "d46aaeea94c634d2",
+      "file": "src/app/api/auth/register/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "Registration rejected: undeliverable email domain. verdict=",
+      "count": 1
+    },
+    {
+      "id": "686d1a3744a6e095",
+      "file": "src/app/api/auth/register/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "Registration unavailable: rate limiter store unreachable",
       "count": 1
     },
     {
@@ -794,11 +1266,35 @@
       "count": 1
     },
     {
+      "id": "7eebcda1a71c27b2",
+      "file": "src/app/api/auth/reset-password/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "Password reset rejected: cross-origin request",
+      "count": 1
+    },
+    {
+      "id": "796aad7e499e65f3",
+      "file": "src/app/api/auth/reset-password/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "Password reset rejected: rate limited. ip=",
+      "count": 1
+    },
+    {
       "id": "20b2975da2f8e8b4",
       "file": "src/app/api/auth/reset-password/route.ts",
       "category": "route/page",
       "attr": null,
       "text": "Post-reset sign-in failed:",
+      "count": 1
+    },
+    {
+      "id": "9c04cbb3f213274b",
+      "file": "src/app/api/auth/reset-password/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "Post-reset sign-in rejected:",
       "count": 1
     },
     {
@@ -866,11 +1362,27 @@
       "count": 1
     },
     {
+      "id": "e34a0a9fc075b738",
+      "file": "src/app/api/desktop-releases/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "public, s-maxage=300, stale-while-revalidate=3600",
+      "count": 1
+    },
+    {
       "id": "e4c5d14547529427",
       "file": "src/app/api/discord/callback/route.ts",
       "category": "route/page",
       "attr": null,
       "text": "discord",
+      "count": 1
+    },
+    {
+      "id": "654bce76fbb00d05",
+      "file": "src/app/api/discord/callback/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "Discord directory sync after member claim failed:",
       "count": 1
     },
     {
@@ -922,6 +1434,14 @@
       "count": 1
     },
     {
+      "id": "0c2070fdda0e76ad",
+      "file": "src/app/api/discord/interactions/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "/link claim",
+      "count": 1
+    },
+    {
       "id": "324f8435319113f1",
       "file": "src/app/api/discord/interactions/route.ts",
       "category": "route/page",
@@ -959,6 +1479,14 @@
       "category": "route/page",
       "attr": null,
       "text": "Discord Customer info command failed:",
+      "count": 1
+    },
+    {
+      "id": "f01d65c4f9a6bb31",
+      "file": "src/app/api/discord/interactions/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "Discord directory sync after",
       "count": 1
     },
     {
@@ -1018,6 +1546,22 @@
       "count": 1
     },
     {
+      "id": "2ac5759756875515",
+      "file": "src/app/api/discord/reconcile/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "Discord directory reconciliation complete:",
+      "count": 1
+    },
+    {
+      "id": "8eef4242987e0827",
+      "file": "src/app/api/discord/reconcile/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "Discord directory reconciliation failed:",
+      "count": 1
+    },
+    {
       "id": "cedebb42ab6c00a5",
       "file": "src/app/api/discord/reconcile/route.ts",
       "category": "route/page",
@@ -1042,6 +1586,14 @@
       "count": 1
     },
     {
+      "id": "9ba0e2944a2c9eae",
+      "file": "src/app/api/electron/[platform]/[version]/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "public, s-maxage=300, stale-while-revalidate=3600",
+      "count": 1
+    },
+    {
       "id": "945ba4c7f8d9bf48",
       "file": "src/app/api/electron/[platform]/[version]/route.ts",
       "category": "route/page",
@@ -1063,6 +1615,14 @@
       "category": "route/page",
       "attr": null,
       "text": "Electron download redirect failed:",
+      "count": 1
+    },
+    {
+      "id": "abc78948849cc259",
+      "file": "src/app/api/electron/download/[platform]/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "public, s-maxage=300",
       "count": 1
     },
     {
@@ -1194,6 +1754,22 @@
       "count": 1
     },
     {
+      "id": "7bfff5f87cb4497a",
+      "file": "src/app/api/square/callback/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "error",
+      "count": 2
+    },
+    {
+      "id": "42ebd34e55600842",
+      "file": "src/app/api/store/cart/analytics-attribution/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "Error refreshing cart analytics attribution:",
+      "count": 1
+    },
+    {
       "id": "6e6ea0c3419f54da",
       "file": "src/app/api/store/cart/complete/route.ts",
       "category": "route/page",
@@ -1226,11 +1802,43 @@
       "count": 1
     },
     {
+      "id": "4bd761a827d50c9c",
+      "file": "src/app/api/store/cart/payment-sessions/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "15 m",
+      "count": 2
+    },
+    {
       "id": "a71bebbccccc52bf",
       "file": "src/app/api/store/cart/payment-sessions/route.ts",
       "category": "route/page",
       "attr": null,
       "text": "Error with payment sessions:",
+      "count": 1
+    },
+    {
+      "id": "12e6e393f10467ef",
+      "file": "src/app/api/store/cart/payment-status/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "Error checking cart payment status:",
+      "count": 1
+    },
+    {
+      "id": "f63a38ac08a5f2c0",
+      "file": "src/app/api/store/cart/payment-status/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "expired",
+      "count": 2
+    },
+    {
+      "id": "8aa45fcfb13a1cfb",
+      "file": "src/app/api/store/cart/payment-status/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "Expired",
       "count": 1
     },
     {
@@ -1242,11 +1850,35 @@
       "count": 1
     },
     {
+      "id": "184a8379f5535313",
+      "file": "src/app/api/store/cart/promotions/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "15 m",
+      "count": 2
+    },
+    {
+      "id": "9698839a726d7ecd",
+      "file": "src/app/api/store/cart/promotions/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "Error applying cart promotion:",
+      "count": 1
+    },
+    {
       "id": "b6534b0abd7a0a24",
       "file": "src/app/api/store/cart/route.ts",
       "category": "route/page",
       "attr": null,
       "text": "Billing address sync skipped: no session token for customer",
+      "count": 1
+    },
+    {
+      "id": "dae105132f372b7c",
+      "file": "src/app/api/store/cart/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "Customer name backfill skipped: no session token for customer",
       "count": 1
     },
     {
@@ -1274,6 +1906,14 @@
       "count": 1
     },
     {
+      "id": "7778fffd95e0918e",
+      "file": "src/app/api/store/cart/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "Failed to backfill customer names from checkout billing:",
+      "count": 1
+    },
+    {
       "id": "9476a4918a77db65",
       "file": "src/app/api/store/cart/route.ts",
       "category": "route/page",
@@ -1290,11 +1930,19 @@
       "count": 1
     },
     {
-      "id": "49eef0e7227b8175",
+      "id": "8580f442bb6ad1a0",
       "file": "src/app/api/support/ask/route.ts",
       "category": "route/page",
       "attr": null,
-      "text": "Support ask failed. code=",
+      "text": "Support ask failed. status=",
+      "count": 1
+    },
+    {
+      "id": "3fe6c32fe2168d3d",
+      "file": "src/app/api/support/ask/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "Support ask gateway busy. status=",
       "count": 1
     },
     {
@@ -1306,11 +1954,67 @@
       "count": 1
     },
     {
-      "id": "6f45d5facb817093",
+      "id": "bc4330fb7b247454",
       "file": "src/app/api/support/ask/route.ts",
       "category": "route/page",
       "attr": null,
-      "text": "Support ask rate-limited by the gateway. ip=",
+      "text": "Support ask invalid question. status=",
+      "count": 1
+    },
+    {
+      "id": "6c4933c1ad164cc0",
+      "file": "src/app/api/support/ask/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "Support ask rate-limited by the gateway. status=",
+      "count": 1
+    },
+    {
+      "id": "b83becd545bd1aed",
+      "file": "src/app/api/support/ask/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "Support ask rejected: bot check failed. tokenPresent=",
+      "count": 1
+    },
+    {
+      "id": "171d0765c95e6fe1",
+      "file": "src/app/api/support/ask/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "Support ask rejected: daily budget exhausted. scope=",
+      "count": 1
+    },
+    {
+      "id": "783f18e91619644c",
+      "file": "src/app/api/support/ask/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "Support ask rejected: rate limited. ip=",
+      "count": 1
+    },
+    {
+      "id": "b34a4ff1712b28a9",
+      "file": "src/app/api/support/feedback/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "Support feedback failed. code=",
+      "count": 1
+    },
+    {
+      "id": "c4f5afab558a6782",
+      "file": "src/app/api/support/feedback/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "Support feedback refused by the gateway. status=",
+      "count": 1
+    },
+    {
+      "id": "49e36605be1aef4b",
+      "file": "src/app/api/support/feedback/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "Support feedback rejected: rate limited. ip=",
       "count": 1
     },
     {
@@ -1362,6 +2066,46 @@
       "count": 1
     },
     {
+      "id": "c0b591379fc7d2c1",
+      "file": "src/app/llms-full.txt/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "Missing message key:",
+      "count": 1
+    },
+    {
+      "id": "dba1a43dcc5d5a62",
+      "file": "src/app/llms-full.txt/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "text/plain; charset=utf-8",
+      "count": 1
+    },
+    {
+      "id": "25068478d79a4e29",
+      "file": "src/app/llms.txt/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "- [docs.wcpos.com](https://docs.wcpos.com)",
+      "count": 1
+    },
+    {
+      "id": "097e214f51fa4d4c",
+      "file": "src/app/llms.txt/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "- [llms-full.txt](",
+      "count": 1
+    },
+    {
+      "id": "5744d81327538fee",
+      "file": "src/app/llms.txt/route.ts",
+      "category": "route/page",
+      "attr": null,
+      "text": "text/plain; charset=utf-8",
+      "count": 1
+    },
+    {
       "id": "5250641a3a00e5b1",
       "file": "src/app/not-found.tsx",
       "category": "route/page",
@@ -1407,6 +2151,14 @@
       "category": "route/page",
       "attr": null,
       "text": "/*/pro/checkout",
+      "count": 1
+    },
+    {
+      "id": "999fc0e2e3304b39",
+      "file": "src/components/about/founder-letter.tsx",
+      "category": "component",
+      "attr": "sizes",
+      "text": "(min-width: 768px) 218px, 180px",
       "count": 1
     },
     {
@@ -1562,6 +2314,78 @@
       "count": 1
     },
     {
+      "id": "ba70756b86562801",
+      "file": "src/components/account/change-email-card.tsx",
+      "category": "component",
+      "attr": null,
+      "text": "use client",
+      "count": 1
+    },
+    {
+      "id": "611601bc8236456c",
+      "file": "src/components/account/connections-card.tsx",
+      "category": "component",
+      "attr": null,
+      "text": "?intent=link&locale=",
+      "count": 1
+    },
+    {
+      "id": "3fdb17e5ba109ec8",
+      "file": "src/components/account/connections-card.tsx",
+      "category": "component",
+      "attr": null,
+      "text": "discord",
+      "count": 6
+    },
+    {
+      "id": "e84a1d5fe81ab332",
+      "file": "src/components/account/connections-card.tsx",
+      "category": "component",
+      "attr": null,
+      "text": "email",
+      "count": 2
+    },
+    {
+      "id": "599a1057c87657eb",
+      "file": "src/components/account/connections-card.tsx",
+      "category": "component",
+      "attr": null,
+      "text": "github",
+      "count": 10
+    },
+    {
+      "id": "978c6b817298a66d",
+      "file": "src/components/account/connections-card.tsx",
+      "category": "component",
+      "attr": null,
+      "text": "google",
+      "count": 9
+    },
+    {
+      "id": "d6e0045e7147c888",
+      "file": "src/components/account/connections-card.tsx",
+      "category": "component",
+      "attr": null,
+      "text": "use client",
+      "count": 1
+    },
+    {
+      "id": "3808ab8477394a0b",
+      "file": "src/components/account/delete-account-card.tsx",
+      "category": "component",
+      "attr": null,
+      "text": "use client",
+      "count": 1
+    },
+    {
+      "id": "37162b4c316309f4",
+      "file": "src/components/account/downloads-client.tsx",
+      "category": "component",
+      "attr": null,
+      "text": "bg-muted-foreground/40 ring-[3px] ring-muted",
+      "count": 1
+    },
+    {
       "id": "d9e942edac60f058",
       "file": "src/components/account/downloads-client.tsx",
       "category": "component",
@@ -1599,7 +2423,23 @@
       "category": "component",
       "attr": null,
       "text": "active",
-      "count": 6
+      "count": 10
+    },
+    {
+      "id": "6990e65b7062ed86",
+      "file": "src/components/account/licenses-client.tsx",
+      "category": "component",
+      "attr": null,
+      "text": "bg-gradient-to-br from-[#d63a2d] to-[#a91f14] shadow-[0_2px_8px_rgba(169,31,20,0.45)]",
+      "count": 1
+    },
+    {
+      "id": "5c78319e6973e170",
+      "file": "src/components/account/licenses-client.tsx",
+      "category": "component",
+      "attr": null,
+      "text": "bg-muted-foreground/40 ring-[3px] ring-muted",
+      "count": 1
     },
     {
       "id": "b99fe590e12fe44b",
@@ -1623,7 +2463,23 @@
       "category": "component",
       "attr": null,
       "text": "expired",
-      "count": 5
+      "count": 7
+    },
+    {
+      "id": "ed2e313927e8f917",
+      "file": "src/components/account/licenses-client.tsx",
+      "category": "component",
+      "attr": null,
+      "text": "grid h-9 w-9 shrink-0 place-items-center rounded-lg text-white transition-transform group-hover:scale-105",
+      "count": 1
+    },
+    {
+      "id": "b56aee52cd636cbd",
+      "file": "src/components/account/licenses-client.tsx",
+      "category": "component",
+      "attr": null,
+      "text": "relative inline-flex items-center gap-1.5 text-xs font-semibold",
+      "count": 1
     },
     {
       "id": "fd2d76d49976b71e",
@@ -1634,28 +2490,12 @@
       "count": 1
     },
     {
-      "id": "c24981173f2e4245",
-      "file": "src/components/account/profile-edit-form.tsx",
+      "id": "7763a23ca24379a8",
+      "file": "src/components/account/licenses-client.tsx",
       "category": "component",
       "attr": null,
-      "text": "email",
+      "text": "WCPOS Pro",
       "count": 1
-    },
-    {
-      "id": "8bf42c907df2b3d7",
-      "file": "src/components/account/profile-edit-form.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "github",
-      "count": 4
-    },
-    {
-      "id": "4eb4feaf57e3d896",
-      "file": "src/components/account/profile-edit-form.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "google",
-      "count": 4
     },
     {
       "id": "158459892aa33b98",
@@ -1714,6 +2554,14 @@
       "count": 3
     },
     {
+      "id": "aaba8b552c9df417",
+      "file": "src/components/account/renew-client.tsx",
+      "category": "component",
+      "attr": null,
+      "text": "paypal",
+      "count": 1
+    },
+    {
       "id": "aadb126aea5515d5",
       "file": "src/components/account/renew-client.tsx",
       "category": "component",
@@ -1724,6 +2572,14 @@
     {
       "id": "4c2bb54fd526d43d",
       "file": "src/components/account/renew-client.tsx",
+      "category": "component",
+      "attr": null,
+      "text": "use client",
+      "count": 1
+    },
+    {
+      "id": "cc584ba847fbec6f",
+      "file": "src/components/account/undeliverable-banner-client.tsx",
       "category": "component",
       "attr": null,
       "text": "use client",
@@ -1746,8 +2602,24 @@
       "count": 1
     },
     {
+      "id": "7ca526d03c05e9ea",
+      "file": "src/components/auth/use-turnstile-gate.tsx",
+      "category": "component",
+      "attr": null,
+      "text": "use client",
+      "count": 1
+    },
+    {
       "id": "2329b3f09848bcbf",
       "file": "src/components/client-logging-init.tsx",
+      "category": "component",
+      "attr": null,
+      "text": "use client",
+      "count": 1
+    },
+    {
+      "id": "2e633f28785b87b3",
+      "file": "src/components/client-speed-insights.tsx",
       "category": "component",
       "attr": null,
       "text": "use client",
@@ -1871,38 +2743,6 @@
       "category": "component",
       "attr": null,
       "text": "use client",
-      "count": 1
-    },
-    {
-      "id": "58dfd17aea997d0b",
-      "file": "src/components/home/benefits-section.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "flex w-full aspect-video items-center justify-center rounded-md border border-slate-200 bg-white p-6 dark:border-slate-700 dark:bg-slate-900",
-      "count": 1
-    },
-    {
-      "id": "f2ba32cad0ffdd07",
-      "file": "src/components/home/benefits-section.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "rounded bg-white p-1.5 text-center dark:bg-slate-900",
-      "count": 1
-    },
-    {
-      "id": "1f800a252e5d2c31",
-      "file": "src/components/home/benefits-section.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "text-[10px] font-medium",
-      "count": 1
-    },
-    {
-      "id": "da4a7e09687f9508",
-      "file": "src/components/home/benefits-section.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "text-[9px] font-medium",
       "count": 1
     },
     {
@@ -2242,6 +3082,14 @@
       "count": 2
     },
     {
+      "id": "d8da59564e5ac0bb",
+      "file": "src/components/home/scroll-story/scroll-story.tsx",
+      "category": "component",
+      "attr": null,
+      "text": "(min-width: 768px) 100vw, (min-width: 640px) 608px, calc(100vw - 2rem)",
+      "count": 1
+    },
+    {
       "id": "f40ad135db56a0d9",
       "file": "src/components/home/scroll-story/scroll-story.tsx",
       "category": "component",
@@ -2346,6 +3194,22 @@
       "count": 1
     },
     {
+      "id": "ed41cab4dde4479a",
+      "file": "src/components/home/scroll-story/story-static.tsx",
+      "category": "component",
+      "attr": null,
+      "text": "(min-width: 768px) 672px, (min-width: 640px) 608px, calc(100vw - 2rem)",
+      "count": 1
+    },
+    {
+      "id": "22c81ab39c4c2b0f",
+      "file": "src/components/home/scroll-story/story-static.tsx",
+      "category": "component",
+      "attr": null,
+      "text": "/images/story/counter-photo-card-480.webp 480w, /images/story/counter-photo-card-680.webp 680w, /images/story/counter-photo-card-960.webp 960w, /images/story/counter-photo-card.webp 1280w",
+      "count": 1
+    },
+    {
       "id": "9ecd9c433def5191",
       "file": "src/components/home/scroll-story/story-static.tsx",
       "category": "component",
@@ -2364,6 +3228,46 @@
     {
       "id": "17544dae34a0ea44",
       "file": "src/components/main/language-selector.tsx",
+      "category": "component",
+      "attr": null,
+      "text": "use client",
+      "count": 1
+    },
+    {
+      "id": "62cb2a586fc78326",
+      "file": "src/components/main/site-nav.tsx",
+      "category": "component",
+      "attr": null,
+      "text": "-mx-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
+      "count": 1
+    },
+    {
+      "id": "dc597ddcd1b3eef9",
+      "file": "src/components/main/site-nav.tsx",
+      "category": "component",
+      "attr": null,
+      "text": "bg-primary/10 text-wcpos-red-accent",
+      "count": 1
+    },
+    {
+      "id": "ce370f03e070bc62",
+      "file": "src/components/main/site-nav.tsx",
+      "category": "component",
+      "attr": null,
+      "text": "relative rounded-full px-3 py-1.5 transition-colors",
+      "count": 1
+    },
+    {
+      "id": "fa10d6dce6d7c5b8",
+      "file": "src/components/main/site-nav.tsx",
+      "category": "component",
+      "attr": null,
+      "text": "transition-[left,width,background-color] duration-200 ease-out motion-reduce:transition-none",
+      "count": 1
+    },
+    {
+      "id": "159e18dd01d909ec",
+      "file": "src/components/main/site-nav.tsx",
       "category": "component",
       "attr": null,
       "text": "use client",
@@ -2392,6 +3296,62 @@
       "attr": null,
       "text": "use client",
       "count": 1
+    },
+    {
+      "id": "b9d1e9db65f2bca5",
+      "file": "src/components/pro/bitcoin-return-status.tsx",
+      "category": "component",
+      "attr": null,
+      "text": "/api/store/cart/payment-status?cartId=",
+      "count": 1
+    },
+    {
+      "id": "8a0626c7525eedf2",
+      "file": "src/components/pro/bitcoin-return-status.tsx",
+      "category": "component",
+      "attr": null,
+      "text": "/processing?cart=",
+      "count": 1
+    },
+    {
+      "id": "d6754266ce0788f5",
+      "file": "src/components/pro/bitcoin-return-status.tsx",
+      "category": "component",
+      "attr": null,
+      "text": "error",
+      "count": 2
+    },
+    {
+      "id": "cd8b08ff0d639c3a",
+      "file": "src/components/pro/bitcoin-return-status.tsx",
+      "category": "component",
+      "attr": null,
+      "text": "expired",
+      "count": 3
+    },
+    {
+      "id": "a4739502d6b0d845",
+      "file": "src/components/pro/bitcoin-return-status.tsx",
+      "category": "component",
+      "attr": null,
+      "text": "use client",
+      "count": 1
+    },
+    {
+      "id": "6ad291d01ba4ec61",
+      "file": "src/components/pro/btcpay-button.tsx",
+      "category": "component",
+      "attr": null,
+      "text": "/api/store/cart/payment-status?cartId=",
+      "count": 1
+    },
+    {
+      "id": "eb6a0825318919b6",
+      "file": "src/components/pro/btcpay-button.tsx",
+      "category": "component",
+      "attr": null,
+      "text": "status",
+      "count": 2
     },
     {
       "id": "cdc9732cf15ebcfa",
@@ -2519,7 +3479,7 @@
       "category": "component",
       "attr": null,
       "text": "register",
-      "count": 10
+      "count": 11
     },
     {
       "id": "8530f0b226d2d8be",
@@ -2559,7 +3519,7 @@
       "category": "component",
       "attr": null,
       "text": "paypal",
-      "count": 3
+      "count": 5
     },
     {
       "id": "9693223f31c8dd68",
@@ -2730,22 +3690,6 @@
       "count": 1
     },
     {
-      "id": "3c8e0172926bbc71",
-      "file": "src/components/roadmap/bug-fix-list.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "status",
-      "count": 1
-    },
-    {
-      "id": "9a46913442c17853",
-      "file": "src/components/roadmap/bug-fix-list.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "use client",
-      "count": 1
-    },
-    {
       "id": "7f920c1d0a04adc5",
       "file": "src/components/roadmap/roadmap-timeline.tsx",
       "category": "component",
@@ -2810,11 +3754,11 @@
       "count": 1
     },
     {
-      "id": "bda663ac4e75ae9b",
+      "id": "be56f8c6820a438a",
       "file": "src/components/roadmap/roadmap-timeline.tsx",
       "category": "component",
       "attr": null,
-      "text": "border border-emerald-500/40 text-emerald-600 dark:text-emerald-400",
+      "text": "border border-emerald-500/40 text-emerald-700 dark:text-emerald-400",
       "count": 1
     },
     {
@@ -2855,7 +3799,7 @@
       "category": "component",
       "attr": null,
       "text": "done",
-      "count": 1
+      "count": 2
     },
     {
       "id": "c94c46d8b69bd1f2",
@@ -2866,19 +3810,11 @@
       "count": 1
     },
     {
-      "id": "424bec51751e4e6f",
+      "id": "3394f993a9079d2d",
       "file": "src/components/roadmap/roadmap-timeline.tsx",
       "category": "component",
       "attr": null,
-      "text": "relative pb-14",
-      "count": 1
-    },
-    {
-      "id": "aeb746e835999dc0",
-      "file": "src/components/roadmap/roadmap-timeline.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "relative pb-14 opacity-60",
+      "text": "group-hover:text-wcpos-red dark:group-hover:text-wcpos-red-accent",
       "count": 1
     },
     {
@@ -2887,7 +3823,7 @@
       "category": "component",
       "attr": null,
       "text": "shipped",
-      "count": 4
+      "count": 3
     },
     {
       "id": "f7be611cd20383d2",
@@ -2906,14 +3842,6 @@
       "count": 1
     },
     {
-      "id": "ccbfbc7d0485bc0c",
-      "file": "src/components/roadmap/roadmap-timeline.tsx",
-      "category": "component",
-      "attr": null,
-      "text": "status",
-      "count": 1
-    },
-    {
       "id": "6fd6025bc91ba68c",
       "file": "src/components/roadmap/roadmap-timeline.tsx",
       "category": "component",
@@ -2922,11 +3850,27 @@
       "count": 1
     },
     {
+      "id": "90ff97cd46c3f8da",
+      "file": "src/components/support/discord-section.tsx",
+      "category": "component",
+      "attr": null,
+      "text": "200px 0px",
+      "count": 1
+    },
+    {
       "id": "a448f38e1b78f01b",
       "file": "src/components/support/discord-section.tsx",
       "category": "component",
       "attr": null,
       "text": "use client",
+      "count": 1
+    },
+    {
+      "id": "ce07bce0332cd8bb",
+      "file": "src/components/support/discord-widget.tsx",
+      "category": "component",
+      "attr": "allow",
+      "text": "clipboard-write; fullscreen",
       "count": 1
     },
     {
@@ -2999,6 +3943,22 @@
       "category": "component",
       "attr": null,
       "text": "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+      "count": 1
+    },
+    {
+      "id": "36bc46ff5e325b60",
+      "file": "src/components/ui/button.tsx",
+      "category": "component",
+      "attr": null,
+      "text": "text-destructive/90 hover:bg-destructive/10 hover:text-destructive",
+      "count": 1
+    },
+    {
+      "id": "be22672b58b02229",
+      "file": "src/components/ui/button.tsx",
+      "category": "component",
+      "attr": null,
+      "text": "use client",
       "count": 1
     },
     {
@@ -3234,6 +4194,22 @@
       "count": 1
     },
     {
+      "id": "08ced71b44abb578",
+      "file": "src/components/ui/markdown.tsx",
+      "category": "component",
+      "attr": null,
+      "text": "[&_hr]:my-4 [&_hr]:border-border",
+      "count": 1
+    },
+    {
+      "id": "3ebb7faee3c1c777",
+      "file": "src/components/ui/markdown.tsx",
+      "category": "component",
+      "attr": null,
+      "text": "[&_li+li]:mt-1",
+      "count": 1
+    },
+    {
       "id": "a4aa8d34c4751e55",
       "file": "src/components/ui/markdown.tsx",
       "category": "component",
@@ -3258,11 +4234,27 @@
       "count": 1
     },
     {
+      "id": "29dd0136151faf71",
+      "file": "src/components/ui/markdown.tsx",
+      "category": "component",
+      "attr": null,
+      "text": "[&_strong]:font-semibold [&_strong]:text-foreground",
+      "count": 1
+    },
+    {
       "id": "8813591f7efc556e",
       "file": "src/components/ui/markdown.tsx",
       "category": "component",
       "attr": null,
       "text": "[&_ul]:ml-4 [&_ul]:list-disc",
+      "count": 1
+    },
+    {
+      "id": "af38dccd40711213",
+      "file": "src/components/ui/markdown.tsx",
+      "category": "component",
+      "attr": null,
+      "text": "[&>*+*]:mt-2 [&>*+h1]:mt-5 [&>*+h2]:mt-5 [&>*+h3]:mt-4",
       "count": 1
     },
     {
@@ -3394,6 +4386,22 @@
       "count": 1
     },
     {
+      "id": "4e6877195ec5884b",
+      "file": "src/components/ui/sonner.tsx",
+      "category": "component",
+      "attr": null,
+      "text": "group toast group-[.toaster]:shadow-md",
+      "count": 1
+    },
+    {
+      "id": "39826c71c7b680f8",
+      "file": "src/components/ui/sonner.tsx",
+      "category": "component",
+      "attr": null,
+      "text": "use client",
+      "count": 1
+    },
+    {
       "id": "b9049610da67b859",
       "file": "src/components/ui/table.tsx",
       "category": "component",
@@ -3442,27 +4450,43 @@
       "count": 1
     },
     {
-      "id": "e2c3f8d514663c98",
-      "file": "src/components/ui/tabs.tsx",
+      "id": "6679e09a63c38854",
+      "file": "src/components/ui/text-link.tsx",
       "category": "component",
       "attr": null,
-      "text": "inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-xs",
+      "text": "noopener noreferrer",
       "count": 1
     },
     {
-      "id": "0463af2d6094ff98",
-      "file": "src/components/ui/tabs.tsx",
+      "id": "ab90107b4018a73b",
+      "file": "src/components/ui/text-link.tsx",
       "category": "component",
       "attr": null,
       "text": "use client",
       "count": 1
     },
     {
-      "id": "6679e09a63c38854",
-      "file": "src/components/ui/text-link.tsx",
-      "category": "component",
+      "id": "8c89444ff5d675a5",
+      "file": "src/lib/analytics/checkout-payment-events.ts",
+      "category": "code/string",
       "attr": null,
-      "text": "noopener noreferrer",
+      "text": "paypal",
+      "count": 1
+    },
+    {
+      "id": "9ff52a0ac09eb6d0",
+      "file": "src/lib/analytics/checkout-payment-lifecycle.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "use client",
+      "count": 1
+    },
+    {
+      "id": "fb4234d1a5c6c2b3",
+      "file": "src/lib/analytics/consent.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": ",p=n+'=',v=document.cookie.split('; ').filter(c=>c.startsWith(p)).map(c=>{try{return decodeURIComponent(c.slice(p.length))}catch{return''}});document.documentElement.dataset.analyticsConsent=v.includes('denied')?'denied':v.includes('granted')?'granted':'undecided'})()",
       "count": 1
     },
     {
@@ -3503,6 +4527,14 @@
       "category": "code/string",
       "attr": null,
       "text": "; Secure",
+      "count": 1
+    },
+    {
+      "id": "76b00eb9f932c4c9",
+      "file": "src/lib/analytics/consent.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "(()=>{const n=",
       "count": 1
     },
     {
@@ -3562,6 +4594,14 @@
       "count": 1
     },
     {
+      "id": "7a2104a1f386a85a",
+      "file": "src/lib/api/errors.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "Customer account is on security hold",
+      "count": 1
+    },
+    {
       "id": "d1e7768213eb2666",
       "file": "src/lib/api/errors.ts",
       "category": "error/status",
@@ -3591,7 +4631,7 @@
       "category": "code/string",
       "attr": null,
       "text": "github",
-      "count": 5
+      "count": 3
     },
     {
       "id": "6322acd1fbe16682",
@@ -3599,7 +4639,7 @@
       "category": "code/string",
       "attr": null,
       "text": "google",
-      "count": 5
+      "count": 3
     },
     {
       "id": "316971045c260a58",
@@ -3623,7 +4663,31 @@
       "category": "code/string",
       "attr": null,
       "text": "city",
+      "count": 2
+    },
+    {
+      "id": "3c284f2bdfb590c9",
+      "file": "src/lib/billing-profile.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "company",
+      "count": 2
+    },
+    {
+      "id": "2c44fcfd5c74c5eb",
+      "file": "src/lib/btcpay-modal.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "expired",
       "count": 1
+    },
+    {
+      "id": "a3b86de167ee4ee8",
+      "file": "src/lib/btcpay-modal.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "status",
+      "count": 3
     },
     {
       "id": "9295d6ac9f615271",
@@ -3631,7 +4695,7 @@
       "category": "error/status",
       "attr": null,
       "text": "error",
-      "count": 3
+      "count": 2
     },
     {
       "id": "084ea8fc8187896f",
@@ -3746,6 +4810,14 @@
       "count": 1
     },
     {
+      "id": "02827a099d9e99ba",
+      "file": "src/lib/customer-orders.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "email",
+      "count": 1
+    },
+    {
       "id": "2f389d31e87ee79d",
       "file": "src/lib/customer-orders.ts",
       "category": "error/status",
@@ -3786,19 +4858,99 @@
       "count": 1
     },
     {
-      "id": "4f42fe89b33a8e8d",
-      "file": "src/lib/discord/client.ts",
-      "category": "error/status",
+      "id": "a9589e17c5aa40f5",
+      "file": "src/lib/customer-orders.ts",
+      "category": "code/string",
       "attr": null,
-      "text": "Discord member list failed:",
+      "text": "status",
       "count": 1
     },
     {
-      "id": "1a3185d395dba2ea",
+      "id": "b9cd3b6eb5a12864",
+      "file": "src/lib/customer-orders.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "subtotal",
+      "count": 1
+    },
+    {
+      "id": "7212e44e1398fa64",
+      "file": "src/lib/customer-orders.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "total",
+      "count": 1
+    },
+    {
+      "id": "993867d4056c1a57",
+      "file": "src/lib/discord/client.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "/members?",
+      "count": 1
+    },
+    {
+      "id": "c5c3061e2a48d774",
+      "file": "src/lib/discord/client.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "/messages?",
+      "count": 1
+    },
+    {
+      "id": "a6f44d1c8f2d6246",
       "file": "src/lib/discord/client.ts",
       "category": "error/status",
       "attr": null,
-      "text": "Discord member lookup failed:",
+      "text": "Discord channel message create failed:",
+      "count": 1
+    },
+    {
+      "id": "e76c28c7b7ee600f",
+      "file": "src/lib/discord/client.ts",
+      "category": "error/status",
+      "attr": null,
+      "text": "Discord channel message delete failed:",
+      "count": 1
+    },
+    {
+      "id": "19e517716ae79008",
+      "file": "src/lib/discord/client.ts",
+      "category": "error/status",
+      "attr": null,
+      "text": "Discord channel message edit failed:",
+      "count": 1
+    },
+    {
+      "id": "2ba2dfd608b504bd",
+      "file": "src/lib/discord/client.ts",
+      "category": "error/status",
+      "attr": null,
+      "text": "Discord channel message list failed:",
+      "count": 1
+    },
+    {
+      "id": "3cdaa0c8dcab994b",
+      "file": "src/lib/discord/client.ts",
+      "category": "error/status",
+      "attr": null,
+      "text": "Discord channel message lookup failed:",
+      "count": 1
+    },
+    {
+      "id": "7f5a1720c6d7886f",
+      "file": "src/lib/discord/client.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "Discord member list",
+      "count": 1
+    },
+    {
+      "id": "bf8eedb9dc12186b",
+      "file": "src/lib/discord/client.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "Discord member lookup",
       "count": 1
     },
     {
@@ -3810,19 +4962,19 @@
       "count": 1
     },
     {
-      "id": "a095e6f6164ce261",
+      "id": "11584842ebbe8575",
       "file": "src/lib/discord/client.ts",
-      "category": "error/status",
+      "category": "code/string",
       "attr": null,
-      "text": "Discord role add failed:",
+      "text": "Discord role add",
       "count": 1
     },
     {
-      "id": "3e916d5e0f9c66d6",
+      "id": "dcdcefd4699e9413",
       "file": "src/lib/discord/client.ts",
-      "category": "error/status",
+      "category": "code/string",
       "attr": null,
-      "text": "Discord role removal failed:",
+      "text": "Discord role removal",
       "count": 1
     },
     {
@@ -3831,6 +4983,22 @@
       "category": "error/status",
       "attr": null,
       "text": "Discord user lookup failed:",
+      "count": 1
+    },
+    {
+      "id": "1ce0c57ae6455676",
+      "file": "src/lib/discord/client.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "rate limited:",
+      "count": 1
+    },
+    {
+      "id": "989eb6bf3fb3c530",
+      "file": "src/lib/discord/client.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "WCPOS reconciliation: no active connected licence",
       "count": 1
     },
     {
@@ -3858,6 +5026,54 @@
       "count": 1
     },
     {
+      "id": "a4bf3cd89b8db353",
+      "file": "src/lib/discord/default-sync.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "Discord directory",
+      "count": 1
+    },
+    {
+      "id": "e39872d810db227b",
+      "file": "src/lib/discord/default-sync.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "Discord member directory is not configured: DISCORD_DIRECTORY_CHANNEL_ID",
+      "count": 1
+    },
+    {
+      "id": "84a55f501764064b",
+      "file": "src/lib/discord/default-sync.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "Discord reconciliation",
+      "count": 1
+    },
+    {
+      "id": "7aa478d8d7544a69",
+      "file": "src/lib/discord/default-sync.ts",
+      "category": "error/status",
+      "attr": null,
+      "text": "failed for",
+      "count": 2
+    },
+    {
+      "id": "74cd4a24e4334f2f",
+      "file": "src/lib/discord/default-sync.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "reconciliation phase",
+      "count": 1
+    },
+    {
+      "id": "2cb221a5f726e639",
+      "file": "src/lib/discord/interactions.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "— plugin",
+      "count": 1
+    },
+    {
       "id": "7c7d3d8f08e9334b",
       "file": "src/lib/discord/interactions.ts",
       "category": "code/string",
@@ -3882,19 +5098,11 @@
       "count": 2
     },
     {
-      "id": "4f7a1a1163e3e515",
+      "id": "c0228171f387e074",
       "file": "src/lib/discord/interactions.ts",
       "category": "code/string",
       "attr": null,
-      "text": "· seats",
-      "count": 1
-    },
-    {
-      "id": "06fd7bb9e8c6e00c",
-      "file": "src/lib/discord/interactions.ts",
-      "category": "code/string",
-      "attr": null,
-      "text": "**Customer info —",
+      "text": "· plugin",
       "count": 1
     },
     {
@@ -3946,6 +5154,14 @@
       "count": 1
     },
     {
+      "id": "cf19dad91c4c4ed3",
+      "file": "src/lib/discord/interactions.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "active",
+      "count": 1
+    },
+    {
       "id": "fe569118ef841a1a",
       "file": "src/lib/discord/interactions.ts",
       "category": "code/string",
@@ -3959,6 +5175,14 @@
       "category": "code/string",
       "attr": null,
       "text": "Customer info",
+      "count": 1
+    },
+    {
+      "id": "e087f0caeeb1563f",
+      "file": "src/lib/discord/interactions.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "Customer info —",
       "count": 1
     },
     {
@@ -3994,12 +5218,44 @@
       "count": 1
     },
     {
+      "id": "e71a7552a9046fc1",
+      "file": "src/lib/discord/interactions.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "More licences",
+      "count": 1
+    },
+    {
       "id": "c62b1acd66b85336",
       "file": "src/lib/discord/interactions.ts",
       "category": "code/string",
       "attr": null,
       "text": "more licences omitted.",
-      "count": 2
+      "count": 1
+    },
+    {
+      "id": "d36db047ca3597a9",
+      "file": "src/lib/discord/interactions.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "more sites",
+      "count": 1
+    },
+    {
+      "id": "edf1c1c55619843f",
+      "file": "src/lib/discord/interactions.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "never seen",
+      "count": 1
+    },
+    {
+      "id": "8755f26ac4e522d6",
+      "file": "src/lib/discord/interactions.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "no expiry on record",
+      "count": 1
     },
     {
       "id": "0186278335a40aa2",
@@ -4018,12 +5274,36 @@
       "count": 1
     },
     {
+      "id": "c43e39af21216181",
+      "file": "src/lib/discord/interactions.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "Pro Lifetime",
+      "count": 1
+    },
+    {
       "id": "523bea6bc0455e4c",
       "file": "src/lib/discord/interactions.ts",
       "category": "code/string",
       "attr": null,
       "text": "Pro role:",
-      "count": 2
+      "count": 1
+    },
+    {
+      "id": "d46ee9bea60fb747",
+      "file": "src/lib/discord/interactions.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "Pro Yearly",
+      "count": 1
+    },
+    {
+      "id": "71b1ac19e2f5e2f3",
+      "file": "src/lib/discord/interactions.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "sites: none activated yet",
+      "count": 1
     },
     {
       "id": "8f8b3f6d9b070225",
@@ -4162,6 +5442,14 @@
       "count": 1
     },
     {
+      "id": "2325ce64896fbb11",
+      "file": "src/lib/discord/sync.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "Connected-member snapshot is incomplete",
+      "count": 1
+    },
+    {
       "id": "655f51296708f2f8",
       "file": "src/lib/impersonation.ts",
       "category": "code/string",
@@ -4250,6 +5538,14 @@
       "count": 1
     },
     {
+      "id": "6f8735ad70579da1",
+      "file": "src/lib/llms-pages.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "Expected a string for message key:",
+      "count": 1
+    },
+    {
       "id": "b88ef92eb1334bd2",
       "file": "src/lib/logger.ts",
       "category": "code/string",
@@ -4266,11 +5562,27 @@
       "count": 1
     },
     {
+      "id": "8823cc71b4815ec7",
+      "file": "src/lib/medusa-auth.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "Authenticated customer could not be resolved",
+      "count": 1
+    },
+    {
       "id": "3b34981e7526b2d3",
       "file": "src/lib/medusa-auth.ts",
       "category": "error/status",
       "attr": null,
       "text": "Failed to create customer",
+      "count": 1
+    },
+    {
+      "id": "8cc40ace0fbb8f7f",
+      "file": "src/lib/medusa-auth.ts",
+      "category": "error/status",
+      "attr": null,
+      "text": "Failed to delete account",
       "count": 1
     },
     {
@@ -4319,6 +5631,14 @@
       "category": "error/status",
       "attr": null,
       "text": "Login failed",
+      "count": 1
+    },
+    {
+      "id": "bd8b5da8c85717af",
+      "file": "src/lib/medusa-auth.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "No session token to delete the account with",
       "count": 1
     },
     {
@@ -4415,7 +5735,7 @@
       "category": "code/string",
       "attr": null,
       "text": "support assistant not configured",
-      "count": 1
+      "count": 2
     },
     {
       "id": "d37ff3031bd5924b",
@@ -4423,7 +5743,7 @@
       "category": "code/string",
       "attr": null,
       "text": "support assistant unreachable",
-      "count": 1
+      "count": 2
     },
     {
       "id": "92d28eb2f15c7f98",
@@ -4450,67 +5770,11 @@
       "count": 1
     },
     {
-      "id": "e1603a3a5d952686",
-      "file": "src/lib/pro-offer-catalog.ts",
-      "category": "code/string",
-      "attr": null,
-      "text": "Custom payment gateways",
-      "count": 1
-    },
-    {
-      "id": "e2b43c7fedc1aa4a",
-      "file": "src/lib/pro-offer-catalog.ts",
-      "category": "code/string",
-      "attr": null,
-      "text": "Customer management",
-      "count": 1
-    },
-    {
-      "id": "cc785e2e91084978",
-      "file": "src/lib/pro-offer-catalog.ts",
-      "category": "code/string",
-      "attr": null,
-      "text": "End-of-day reports",
-      "count": 1
-    },
-    {
-      "id": "731b9795016bc0e4",
-      "file": "src/lib/pro-offer-catalog.ts",
-      "category": "code/string",
-      "attr": null,
-      "text": "Order history & management",
-      "count": 1
-    },
-    {
-      "id": "c2300bb7b52afd46",
-      "file": "src/lib/pro-offer-catalog.ts",
-      "category": "code/string",
-      "attr": null,
-      "text": "Payment terminal integration",
-      "count": 1
-    },
-    {
-      "id": "bd1d3b70fa1d2878",
-      "file": "src/lib/pro-offer-catalog.ts",
-      "category": "code/string",
-      "attr": null,
-      "text": "Priority support",
-      "count": 1
-    },
-    {
       "id": "4f0aaa3a062dc335",
       "file": "src/lib/pro-offer-catalog.ts",
       "category": "error/status",
       "attr": null,
       "text": "Pro offer catalog missing plans from Medusa, serving committed fallback prices:",
-      "count": 1
-    },
-    {
-      "id": "80b242f9375d7451",
-      "file": "src/lib/pro-offer-catalog.ts",
-      "category": "code/string",
-      "attr": null,
-      "text": "Stock & price editing in POS",
       "count": 1
     },
     {
@@ -4527,6 +5791,334 @@
       "category": "code/string",
       "attr": null,
       "text": "WCPOS Pro Yearly",
+      "count": 1
+    },
+    {
+      "id": "3e4f7eca3c014fad",
+      "file": "src/lib/root-fallback-i18n.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "A página que procura não existe ou pode ter sido movida.",
+      "count": 1
+    },
+    {
+      "id": "eeaf8fe8ec256416",
+      "file": "src/lib/root-fallback-i18n.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "Algo correu mal.",
+      "count": 1
+    },
+    {
+      "id": "84ef7cae83f8947f",
+      "file": "src/lib/root-fallback-i18n.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "Algo salió mal.",
+      "count": 1
+    },
+    {
+      "id": "d6a3283cbf05df52",
+      "file": "src/lib/root-fallback-i18n.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "Aller à l’accueil",
+      "count": 1
+    },
+    {
+      "id": "2b92b2cbd55ed956",
+      "file": "src/lib/root-fallback-i18n.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "De fout is gemeld. Je kunt het opnieuw proberen of later terugkomen.",
+      "count": 1
+    },
+    {
+      "id": "8ed34561365fce31",
+      "file": "src/lib/root-fallback-i18n.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "De pagina die je zoekt bestaat niet of is mogelijk verplaatst.",
+      "count": 1
+    },
+    {
+      "id": "cfa01eb1028b16b1",
+      "file": "src/lib/root-fallback-i18n.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "Der Fehler wurde gemeldet. Du kannst es erneut versuchen oder später wiederkommen.",
+      "count": 1
+    },
+    {
+      "id": "14f4ddfa02a40424",
+      "file": "src/lib/root-fallback-i18n.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "Die gesuchte Seite existiert nicht oder wurde verschoben.",
+      "count": 1
+    },
+    {
+      "id": "b051e0a55033f0b3",
+      "file": "src/lib/root-fallback-i18n.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "Er is iets misgegaan.",
+      "count": 1
+    },
+    {
+      "id": "c489065963f6b812",
+      "file": "src/lib/root-fallback-i18n.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "Erneut versuchen",
+      "count": 1
+    },
+    {
+      "id": "1f95cec6878046c1",
+      "file": "src/lib/root-fallback-i18n.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "Etwas ist schiefgelaufen.",
+      "count": 1
+    },
+    {
+      "id": "f7edee56cb2960d5",
+      "file": "src/lib/root-fallback-i18n.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "Ga naar de startpagina",
+      "count": 1
+    },
+    {
+      "id": "a62bc7c3e674faf2",
+      "file": "src/lib/root-fallback-i18n.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "Go to homepage",
+      "count": 1
+    },
+    {
+      "id": "f569913742497b2e",
+      "file": "src/lib/root-fallback-i18n.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "Intentar de nuevo",
+      "count": 1
+    },
+    {
+      "id": "a4c8ad066afd2073",
+      "file": "src/lib/root-fallback-i18n.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "Ir a la página de inicio",
+      "count": 1
+    },
+    {
+      "id": "597dc691e3f01761",
+      "file": "src/lib/root-fallback-i18n.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "Ir para a página inicial",
+      "count": 1
+    },
+    {
+      "id": "0ce89f461cf40b53",
+      "file": "src/lib/root-fallback-i18n.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "L’erreur a été signalée. Vous pouvez réessayer ou revenir plus tard.",
+      "count": 1
+    },
+    {
+      "id": "48a375e6f57ee1fb",
+      "file": "src/lib/root-fallback-i18n.ts",
+      "category": "error/status",
+      "attr": null,
+      "text": "L’errore è stato segnalato. Puoi riprovare o tornare più tardi.",
+      "count": 1
+    },
+    {
+      "id": "e07218d0125a46b1",
+      "file": "src/lib/root-fallback-i18n.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "La page que vous recherchez n’existe pas ou a peut-être été déplacée.",
+      "count": 1
+    },
+    {
+      "id": "806d5d6f38d31373",
+      "file": "src/lib/root-fallback-i18n.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "La pagina che cerchi non esiste o potrebbe essere stata spostata.",
+      "count": 1
+    },
+    {
+      "id": "ccc4934777048029",
+      "file": "src/lib/root-fallback-i18n.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "La página que buscas no existe o puede haberse movido.",
+      "count": 1
+    },
+    {
+      "id": "59cfd85b737d841a",
+      "file": "src/lib/root-fallback-i18n.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "O erro foi comunicado. Pode tentar novamente ou voltar mais tarde.",
+      "count": 1
+    },
+    {
+      "id": "d9790826b50800ef",
+      "file": "src/lib/root-fallback-i18n.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "Opnieuw proberen",
+      "count": 1
+    },
+    {
+      "id": "50ce52512e74afa1",
+      "file": "src/lib/root-fallback-i18n.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "Page introuvable",
+      "count": 1
+    },
+    {
+      "id": "40d0a0b29d65329e",
+      "file": "src/lib/root-fallback-i18n.ts",
+      "category": "error/status",
+      "attr": null,
+      "text": "Page not found",
+      "count": 1
+    },
+    {
+      "id": "f2cbd7bd7dc09263",
+      "file": "src/lib/root-fallback-i18n.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "Página não encontrada",
+      "count": 1
+    },
+    {
+      "id": "61d45e85d33acb2e",
+      "file": "src/lib/root-fallback-i18n.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "Pagina niet gevonden",
+      "count": 1
+    },
+    {
+      "id": "2d7aef35a7399f13",
+      "file": "src/lib/root-fallback-i18n.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "Página no encontrada",
+      "count": 1
+    },
+    {
+      "id": "b2fa094f57834660",
+      "file": "src/lib/root-fallback-i18n.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "Pagina non trovata",
+      "count": 1
+    },
+    {
+      "id": "2b81852ef40145f7",
+      "file": "src/lib/root-fallback-i18n.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "Qualcosa è andato storto.",
+      "count": 1
+    },
+    {
+      "id": "b3e494bf3bfc4ab5",
+      "file": "src/lib/root-fallback-i18n.ts",
+      "category": "error/status",
+      "attr": null,
+      "text": "Se ha informado del error. Puedes intentarlo de nuevo o volver más tarde.",
+      "count": 1
+    },
+    {
+      "id": "8e06e08c04ba621d",
+      "file": "src/lib/root-fallback-i18n.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "Seite nicht gefunden",
+      "count": 1
+    },
+    {
+      "id": "3234fa424ce72fd1",
+      "file": "src/lib/root-fallback-i18n.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "Something went wrong.",
+      "count": 1
+    },
+    {
+      "id": "35f84863d57ed3a7",
+      "file": "src/lib/root-fallback-i18n.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "Support",
+      "count": 1
+    },
+    {
+      "id": "8135490ae28f1c87",
+      "file": "src/lib/root-fallback-i18n.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "Tentar novamente",
+      "count": 1
+    },
+    {
+      "id": "0ae6fc216b371a2d",
+      "file": "src/lib/root-fallback-i18n.ts",
+      "category": "error/status",
+      "attr": null,
+      "text": "The error has been reported. You can try again, or come back later.",
+      "count": 1
+    },
+    {
+      "id": "9c7629342c4d12ee",
+      "file": "src/lib/root-fallback-i18n.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "The page you are looking for does not exist or may have moved.",
+      "count": 1
+    },
+    {
+      "id": "b0e1c7fa9688231f",
+      "file": "src/lib/root-fallback-i18n.ts",
+      "category": "error/status",
+      "attr": null,
+      "text": "Try again",
+      "count": 1
+    },
+    {
+      "id": "0314f8d1f971aa68",
+      "file": "src/lib/root-fallback-i18n.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "Une erreur est survenue.",
+      "count": 1
+    },
+    {
+      "id": "7c9b138068a9f8ad",
+      "file": "src/lib/root-fallback-i18n.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "Vai alla home",
+      "count": 1
+    },
+    {
+      "id": "dcbda87ead21fbeb",
+      "file": "src/lib/root-fallback-i18n.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "Zur Startseite",
       "count": 1
     },
     {
@@ -4615,7 +6207,7 @@
       "category": "code/string",
       "attr": null,
       "text": "10 m",
-      "count": 1
+      "count": 2
     },
     {
       "id": "f22164e90c23fa8a",
@@ -4751,7 +6343,23 @@
       "category": "code/string",
       "attr": null,
       "text": "use cache",
-      "count": 2
+      "count": 3
+    },
+    {
+      "id": "b420924fd402a168",
+      "file": "src/services/core/external/github-roadmap.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "-epic limit; rendering the first",
+      "count": 1
+    },
+    {
+      "id": "7f3bfce95f02a5c4",
+      "file": "src/services/core/external/github-roadmap.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": ") { pageInfo { hasNextPage } nodes { number title url body state stateReason subIssuesSummary { total completed } } } } } } }",
+      "count": 1
     },
     {
       "id": "89c042f0a1fbad9f",
@@ -4759,7 +6367,23 @@
       "category": "code/string",
       "attr": null,
       "text": "done",
-      "count": 2
+      "count": 1
+    },
+    {
+      "id": "476ff08f2e91ec0b",
+      "file": "src/services/core/external/github-roadmap.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "Due date",
+      "count": 1
+    },
+    {
+      "id": "0edccb3dbe4bbeb7",
+      "file": "src/services/core/external/github-roadmap.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "exceeds the",
+      "count": 1
     },
     {
       "id": "c56f53c789d018b9",
@@ -4770,11 +6394,35 @@
       "count": 1
     },
     {
-      "id": "ce9869def943ff6b",
+      "id": "8dd56e107d3d449c",
+      "file": "src/services/core/external/github-roadmap.ts",
+      "category": "error/status",
+      "attr": null,
+      "text": "Failed to transform roadmap data:",
+      "count": 1
+    },
+    {
+      "id": "f67892467027e9c1",
       "file": "src/services/core/external/github-roadmap.ts",
       "category": "code/string",
       "attr": null,
-      "text": "GITHUB_PROJECT_NUMBER not set, roadmap will be empty",
+      "text": "Malformed roadmap pagination cursor",
+      "count": 1
+    },
+    {
+      "id": "21042afa168db10b",
+      "file": "src/services/core/external/github-roadmap.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "Malformed roadmap response",
+      "count": 1
+    },
+    {
+      "id": "296515b1c8a2067a",
+      "file": "src/services/core/external/github-roadmap.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "Not in this release",
       "count": 1
     },
     {
@@ -4786,11 +6434,11 @@
       "count": 1
     },
     {
-      "id": "e93bcfee8fdcc411",
+      "id": "6d86c36128439b91",
       "file": "src/services/core/external/github-roadmap.ts",
       "category": "code/string",
       "attr": null,
-      "text": "query($org: String!, $number: Int!, $cursor: String) { organization(login: $org) { projectV2(number: $number) { items(first: 100, after: $cursor) { pageInfo { hasNextPage endCursor } nodes { fieldValueByName(name: \"Status\") { ... on ProjectV2ItemFieldSingleSelectValue { name } } content { __typename ... on Issue { id title bodyText state number url labels(first: 10) { nodes { name } } milestone { title description dueOn state } repository { name } parent { id } subIssuesSummary { total completed } } } } } } } }",
+      "text": "query($owner: String!, $repo: String!, $label: String!, $cursor: String) { repository(owner: $owner, name: $repo) { issues(labels: [$label], states: [OPEN, CLOSED], first: 50, after: $cursor) { pageInfo { hasNextPage endCursor } nodes { number title url state stateReason closedAt body subIssues(first:",
       "count": 1
     },
     {
@@ -4799,6 +6447,86 @@
       "category": "code/string",
       "attr": null,
       "text": "roadmap",
+      "count": 1
+    },
+    {
+      "id": "ff5d828d545231c7",
+      "file": "src/services/core/external/github-roadmap.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "Roadmap release",
+      "count": 1
+    },
+    {
+      "id": "4f53422d1396a604",
+      "file": "src/services/core/external/github-roadmap.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "Roadmap rendered empty",
+      "count": 1
+    },
+    {
+      "id": "4a46b0d23b064178",
+      "file": "src/services/core/external/github-roadmap.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "Shipped on",
+      "count": 1
+    },
+    {
+      "id": "0715269aaa4defdd",
+      "file": "src/services/core/external/github-roadmap.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "Skipping malformed roadmap due date",
+      "count": 1
+    },
+    {
+      "id": "f85851c6202abb5b",
+      "file": "src/services/core/external/github-roadmap.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "Skipping malformed roadmap epic progress",
+      "count": 1
+    },
+    {
+      "id": "829f3b773234e7d7",
+      "file": "src/services/core/external/github-roadmap.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "Skipping malformed roadmap issue",
+      "count": 1
+    },
+    {
+      "id": "ac5fe18ad8d04e79",
+      "file": "src/services/core/external/github-roadmap.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "Skipping malformed roadmap nodes",
+      "count": 1
+    },
+    {
+      "id": "929078069e1227f0",
+      "file": "src/services/core/external/github-roadmap.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "Skipping malformed roadmap shipped date",
+      "count": 1
+    },
+    {
+      "id": "c4d2af8375546c81",
+      "file": "src/services/core/external/github-roadmap.ts",
+      "category": "error/status",
+      "attr": null,
+      "text": "Skipping roadmap release with invalid title:",
+      "count": 1
+    },
+    {
+      "id": "6ea6f6f62e318f41",
+      "file": "src/services/core/external/github-roadmap.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "Why this release",
       "count": 1
     },
     {
@@ -4890,6 +6618,14 @@
       "count": 1
     },
     {
+      "id": "7b6dbd209d24be05",
+      "file": "src/services/core/external/license-client.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "Keygen listAllLicenses exceeded its reconciliation time budget on page",
+      "count": 1
+    },
+    {
       "id": "636fcc74083d5204",
       "file": "src/services/core/external/license-client.ts",
       "category": "error/status",
@@ -4978,27 +6714,11 @@
       "count": 5
     },
     {
-      "id": "9ba4910fca8add19",
-      "file": "src/services/core/external/medusa-client.ts",
-      "category": "code/string",
-      "attr": null,
-      "text": "?fields=*variants.prices",
-      "count": 1
-    },
-    {
       "id": "fb72a5ba00edb1db",
       "file": "src/services/core/external/medusa-client.ts",
       "category": "code/string",
       "attr": null,
       "text": "/store/products?fields=*variants.prices",
-      "count": 2
-    },
-    {
-      "id": "edf70df0c514e04a",
-      "file": "src/services/core/external/medusa-client.ts",
-      "category": "code/string",
-      "attr": null,
-      "text": "/store/products?handle=",
       "count": 1
     },
     {
@@ -5010,11 +6730,11 @@
       "count": 1
     },
     {
-      "id": "29e71c91017403c3",
+      "id": "46ee7aeb1662026c",
       "file": "src/services/core/external/medusa-client.ts",
-      "category": "code/string",
+      "category": "error/status",
       "attr": null,
-      "text": "&fields=*variants.prices",
+      "text": "Failed to add cart promotions:",
       "count": 1
     },
     {
@@ -5074,14 +6794,6 @@
       "count": 1
     },
     {
-      "id": "7354f3b74aee933b",
-      "file": "src/services/core/external/medusa-client.ts",
-      "category": "error/status",
-      "attr": null,
-      "text": "Failed to fetch product",
-      "count": 2
-    },
-    {
       "id": "8fd7402fab3dd368",
       "file": "src/services/core/external/medusa-client.ts",
       "category": "error/status",
@@ -5095,22 +6807,6 @@
       "category": "error/status",
       "attr": null,
       "text": "Failed to fetch region payment providers:",
-      "count": 1
-    },
-    {
-      "id": "1f63bd2be9f69f36",
-      "file": "src/services/core/external/medusa-client.ts",
-      "category": "error/status",
-      "attr": null,
-      "text": "Failed to fetch regions:",
-      "count": 1
-    },
-    {
-      "id": "cdd71aa22ace391e",
-      "file": "src/services/core/external/medusa-client.ts",
-      "category": "error/status",
-      "attr": null,
-      "text": "Failed to fetch WCPOS Pro products:",
       "count": 1
     },
     {
@@ -5151,6 +6847,14 @@
       "category": "code/string",
       "attr": null,
       "text": "No enabled payment providers reported by /store/regions; skipping method filtering",
+      "count": 1
+    },
+    {
+      "id": "6dba7e020307d790",
+      "file": "src/services/core/external/medusa-client.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "Payment session creation blocked: checkout gateway secret is not configured",
       "count": 1
     },
     {
