@@ -81,6 +81,7 @@
     "eslint": "^10.11.0",
     "eslint-config-next": "16.3.6",
     "jsdom": "^29.1.1",
+    "linkinator": "8.1.0",
     "tailwindcss": "^4.3.3",
     "tsx": "^4.23.15",
     "typescript": "^6.0.3",
