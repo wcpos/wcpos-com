@@ -44,7 +44,6 @@ function dependencies(
     assembleCard: vi.fn(async () => emptyCard),
     listDirectoryMessages: async () => [],
     createDirectoryCard: vi.fn(async () => {}),
-    editDirectoryCard: vi.fn(async () => {}),
     deleteDirectoryCard: vi.fn(async () => {}),
     ...overrides,
   }
@@ -96,10 +95,12 @@ describe('syncMemberDirectory', () => {
 
     await syncMemberDirectory(deps)
 
-    expect(deps.editDirectoryCard).toHaveBeenCalledWith('msg_existing', expectedEmbed)
+    expect(deps.createDirectoryCard).toHaveBeenCalledWith(expectedEmbed)
+    expect(deps.createDirectoryCard).toHaveBeenCalledBefore(vi.mocked(deps.deleteDirectoryCard))
+    expect(deps.deleteDirectoryCard).toHaveBeenCalledWith('msg_existing')
   })
 
-  it('does not edit an existing card when its rendered embed is unchanged', async () => {
+  it('does not replace an existing card when its rendered embed is unchanged', async () => {
     const existingCard = {
       id: 'msg_existing',
       memberId: '111',
@@ -117,7 +118,8 @@ describe('syncMemberDirectory', () => {
 
     const summary = await syncMemberDirectory(deps)
 
-    expect(deps.editDirectoryCard).not.toHaveBeenCalled()
+    expect(deps.createDirectoryCard).not.toHaveBeenCalled()
+    expect(deps.deleteDirectoryCard).not.toHaveBeenCalled()
     expect(summary).toEqual({ members: 1, created: 0, updated: 0, deleted: 0, failed: 0 })
   })
 
@@ -137,15 +139,16 @@ describe('syncMemberDirectory', () => {
     const summary = await syncMemberDirectory(deps)
 
     expect(summary).toEqual({ members: 2, created: 1, updated: 1, deleted: 1, failed: 0 })
-    expect(deps.editDirectoryCard).toHaveBeenCalledWith(
-      'msg_existing',
+    expect(deps.createDirectoryCard).toHaveBeenCalledWith(
       expect.objectContaining({ footer: { text: 'member:111' } })
     )
+    expect(deps.createDirectoryCard).toHaveBeenCalledBefore(vi.mocked(deps.deleteDirectoryCard))
+    expect(deps.deleteDirectoryCard).toHaveBeenCalledWith('msg_existing')
     expect(deps.createDirectoryCard).toHaveBeenCalledWith(
       expect.objectContaining({ footer: { text: 'member:222' } })
     )
     expect(deps.deleteDirectoryCard).toHaveBeenCalledWith('msg_orphan')
-    expect(deps.deleteDirectoryCard).toHaveBeenCalledTimes(1)
+    expect(deps.deleteDirectoryCard).toHaveBeenCalledTimes(2)
   })
 
   it('deletes duplicate cards for the same member, keeping the first', async () => {
@@ -160,42 +163,50 @@ describe('syncMemberDirectory', () => {
     const summary = await syncMemberDirectory(deps)
 
     expect(deps.deleteDirectoryCard).toHaveBeenCalledWith('msg_duplicate')
-    expect(deps.editDirectoryCard).toHaveBeenCalledWith('msg_first', expect.anything())
+    expect(deps.createDirectoryCard).toHaveBeenCalledWith(
+      expect.objectContaining({ footer: { text: 'member:111' } })
+    )
+    expect(deps.deleteDirectoryCard).toHaveBeenCalledWith('msg_first')
     expect(summary).toEqual({ members: 1, created: 0, updated: 1, deleted: 1, failed: 0 })
   })
 
-  it('continues after an edit failure and still processes later members and orphans', async () => {
-    const failure = new Error('Discord 30046')
-    const reportFailure = vi.fn()
-    const deps = dependencies({
-      listAllLicenses: async () => [
-        license({ id: 'a', metadata: connectedTo({}, '111') }),
-        license({ id: 'b', metadata: connectedTo({}, '222', 'bob') }),
-      ],
-      listDirectoryMessages: async () => [
-        { id: 'msg_existing', memberId: '111' },
-        { id: 'msg_orphan', memberId: '999' },
-      ],
-      editDirectoryCard: vi.fn(async () => {
-        throw failure
-      }),
-      reportFailure,
-    })
+  it.each(['create', 'delete'] as const)(
+    'continues after a replacement %s failure and still processes later members and orphans',
+    async (operation) => {
+      const failure = new Error('Discord unavailable')
+      const reportFailure = vi.fn()
+      const deps = dependencies({
+        listAllLicenses: async () => [
+          license({ id: 'a', metadata: connectedTo({}, '111') }),
+          license({ id: 'b', metadata: connectedTo({}, '222', 'bob') }),
+        ],
+        listDirectoryMessages: async () => [
+          { id: 'msg_existing', memberId: '111' },
+          { id: 'msg_orphan', memberId: '999' },
+        ],
+        [operation === 'create' ? 'createDirectoryCard' : 'deleteDirectoryCard']:
+          vi.fn().mockRejectedValueOnce(failure).mockResolvedValue(undefined),
+        reportFailure,
+      })
 
-    const summary = await syncMemberDirectory(deps)
+      const summary = await syncMemberDirectory(deps)
 
-    expect(summary).toEqual({ members: 2, created: 1, updated: 0, deleted: 1, failed: 1 })
-    expect(deps.createDirectoryCard).toHaveBeenCalledWith(
-      expect.objectContaining({ footer: { text: 'member:222' } })
-    )
-    expect(deps.deleteDirectoryCard).toHaveBeenCalledWith('msg_orphan')
-    expect(reportFailure).toHaveBeenCalledWith({
-      discordUserId: '111',
-      messageId: 'msg_existing',
-      operation: 'edit',
-      error: failure,
-    })
-  })
+      expect(summary).toEqual({ members: 2, created: 1, updated: 0, deleted: 1, failed: 1 })
+      expect(deps.createDirectoryCard).toHaveBeenCalledWith(
+        expect.objectContaining({ footer: { text: 'member:222' } })
+      )
+      expect(deps.deleteDirectoryCard).toHaveBeenCalledWith('msg_orphan')
+      if (operation === 'create') {
+        expect(deps.deleteDirectoryCard).not.toHaveBeenCalledWith('msg_existing')
+      }
+      expect(reportFailure).toHaveBeenCalledWith({
+        discordUserId: '111',
+        messageId: 'msg_existing',
+        operation: 'replace',
+        error: failure,
+      })
+    }
+  )
 
   it('contains a throwing failure reporter so later members and orphans still process', async () => {
     const reportFailure = vi.fn(() => {
@@ -210,9 +221,9 @@ describe('syncMemberDirectory', () => {
         { id: 'msg_existing', memberId: '111' },
         { id: 'msg_orphan', memberId: '999' },
       ],
-      editDirectoryCard: vi.fn(async () => {
-        throw new Error('Discord 30046')
-      }),
+      createDirectoryCard: vi.fn()
+        .mockRejectedValueOnce(new Error('Discord unavailable'))
+        .mockResolvedValue(undefined),
       reportFailure,
     })
 
@@ -226,13 +237,13 @@ describe('syncMemberDirectory', () => {
     expect(reportFailure).toHaveBeenCalledTimes(1)
   })
 
-  it('does not require a failure reporter to survive a failed edit', async () => {
+  it('does not require a failure reporter to survive a failed replacement', async () => {
     const deps = dependencies({
       listAllLicenses: async () => [license({ metadata: connectedTo({}, '111') })],
       listDirectoryMessages: async () => [{ id: 'msg_existing', memberId: '111' }],
-      editDirectoryCard: vi.fn(async () => {
-        throw new Error('Discord 30046')
-      }),
+      createDirectoryCard: vi.fn()
+        .mockRejectedValueOnce(new Error('Discord unavailable'))
+        .mockResolvedValue(undefined),
     })
 
     await expect(syncMemberDirectory(deps)).resolves.toEqual({
@@ -246,7 +257,7 @@ describe('syncMemberDirectory', () => {
 })
 
 describe('upsertDirectoryCardForMember', () => {
-  it('does not edit an existing card when its rendered embed is unchanged', async () => {
+  it('does not replace an existing card when its rendered embed is unchanged', async () => {
     const existingCard = {
       id: 'msg_1',
       memberId: '111',
@@ -263,7 +274,8 @@ describe('upsertDirectoryCardForMember', () => {
 
     await upsertDirectoryCardForMember('111', deps)
 
-    expect(deps.editDirectoryCard).not.toHaveBeenCalled()
+    expect(deps.createDirectoryCard).not.toHaveBeenCalled()
+    expect(deps.deleteDirectoryCard).not.toHaveBeenCalled()
   })
 
   it('creates a card for a newly linked member', async () => {
@@ -272,10 +284,10 @@ describe('upsertDirectoryCardForMember', () => {
     })
     await upsertDirectoryCardForMember('111', deps)
     expect(deps.createDirectoryCard).toHaveBeenCalledOnce()
-    expect(deps.editDirectoryCard).not.toHaveBeenCalled()
+    expect(deps.deleteDirectoryCard).not.toHaveBeenCalled()
   })
 
-  it('deletes duplicate cards at event time, editing the first', async () => {
+  it('deletes duplicate cards at event time, replacing the first', async () => {
     const deps = dependencies({
       listAllLicenses: async () => [license({ metadata: connectedTo({}, '111') })],
       listDirectoryMessages: async () => [
@@ -287,18 +299,27 @@ describe('upsertDirectoryCardForMember', () => {
     await upsertDirectoryCardForMember('111', deps)
     expect(deps.deleteDirectoryCard).toHaveBeenCalledWith('msg_dup_a')
     expect(deps.deleteDirectoryCard).toHaveBeenCalledWith('msg_dup_b')
-    expect(deps.editDirectoryCard).toHaveBeenCalledWith('msg_first', expect.anything())
-    expect(deps.createDirectoryCard).not.toHaveBeenCalled()
+    expect(deps.createDirectoryCard).toHaveBeenCalledWith(
+      expect.objectContaining({ footer: { text: 'member:111' } })
+    )
+    expect(deps.deleteDirectoryCard).toHaveBeenCalledWith('msg_first')
+    expect(deps.createDirectoryCard).toHaveBeenCalledOnce()
   })
 
-  it('edits the existing card in place', async () => {
+  it('creates the replacement card before deleting the existing card', async () => {
     const deps = dependencies({
       listAllLicenses: async () => [license({ metadata: connectedTo({}, '111') })],
       listDirectoryMessages: async () => [{ id: 'msg_1', memberId: '111' }],
     })
     await upsertDirectoryCardForMember('111', deps)
-    expect(deps.editDirectoryCard).toHaveBeenCalledWith('msg_1', expect.anything())
-    expect(deps.createDirectoryCard).not.toHaveBeenCalled()
+    expect(deps.createDirectoryCard).toHaveBeenCalledWith(
+      buildMemberCardEmbed(emptyCard, { id: '111', username: 'ada' }, {
+        directoryFooter: true,
+        omitSiteActivity: true,
+      })
+    )
+    expect(deps.createDirectoryCard).toHaveBeenCalledBefore(vi.mocked(deps.deleteDirectoryCard))
+    expect(deps.deleteDirectoryCard).toHaveBeenCalledWith('msg_1')
   })
 
   it('deletes the card when no licence links the member any more', async () => {

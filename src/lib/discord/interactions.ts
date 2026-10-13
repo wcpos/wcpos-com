@@ -214,10 +214,8 @@ function siteLine(site: DiscordLicenceSite, omitSiteActivity = false): string {
   // `)` would terminate the markdown link target early.
   const safeUrl = site.url?.replaceAll(')', '%29')
   const label = safeUrl ? `[${escapeMarkdown(site.label)}](${safeUrl})` : escapeMarkdown(site.label)
-  if (omitSiteActivity && site.lastSeenAt) {
-    return site.pluginVersion
-      ? `${label} — plugin ${escapeMarkdown(site.pluginVersion)}`
-      : label
+  if (omitSiteActivity) {
+    return site.lastSeenAt === null ? `${label} — never seen` : label
   }
   const seen = site.lastSeenAt ? `seen ${formatDate(site.lastSeenAt)}` : 'never seen'
   const plugin = site.pluginVersion ? ` · plugin ${escapeMarkdown(site.pluginVersion)}` : ''
@@ -281,6 +279,10 @@ export function buildMemberCardEmbed(
   options: {
     roleState?: DiscordCustomerInfo['roleState']
     directoryFooter?: boolean
+    /**
+     * Directory cards hold only slow-changing facts because Discord caps edits
+     * to old messages (30046). "Never seen" stays: it changes at most once per site.
+     */
     omitSiteActivity?: boolean
   } = {}
 ): DiscordEmbed {

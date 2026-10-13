@@ -97,8 +97,6 @@ function createDiscordDirectoryDependencies(
     },
     createDirectoryCard: (embed) =>
       client.createChannelMessage(channelId, { embeds: [embed], allowed_mentions: { parse: [] } }),
-    editDirectoryCard: (messageId, embed) =>
-      client.editChannelMessage(channelId, messageId, { embeds: [embed], allowed_mentions: { parse: [] } }),
     deleteDirectoryCard: (messageId) => client.deleteChannelMessage(channelId, messageId),
     reportFailure: ({ discordUserId, messageId, operation, error }) => {
       infraLogger.error`Discord directory ${operation} failed for ${discordUserId ?? messageId ?? 'unknown'}: ${error}`

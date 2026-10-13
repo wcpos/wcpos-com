@@ -20,7 +20,7 @@ export interface DirectoryMessage {
   id: string
   /** Parsed from the card footer; null for any non-card message in the channel. */
   memberId: string | null
-  /** Existing embed content, used to avoid PATCHing unchanged old messages. */
+  /** Existing embed content, used to avoid replacing unchanged cards. */
   embed?: DirectoryEmbedSnapshot | null
 }
 
@@ -39,15 +39,14 @@ export interface DiscordDirectoryDependencies {
     allLicenses: Array<Omit<LicenseDetail, 'machines'>>
   ): Promise<Omit<DiscordCustomerInfo, 'roleState'>>
   listDirectoryMessages(): Promise<DirectoryMessage[]>
-  /** Fresh lookup before suppressing a PATCH; absent implementations fail safe and edit. */
+  /** Fresh lookup before skipping a replacement; absent implementations replace. */
   getDirectoryMessage?(messageId: string): Promise<DirectoryMessage | null>
   createDirectoryCard(embed: DiscordEmbed): Promise<void>
-  editDirectoryCard(messageId: string, embed: DiscordEmbed): Promise<void>
   deleteDirectoryCard(messageId: string): Promise<void>
   reportFailure?(context: {
     discordUserId?: string
     messageId?: string
-    operation: 'build' | 'create' | 'edit' | 'delete'
+    operation: 'build' | 'create' | 'replace' | 'delete'
     error: unknown
   }): void
 }
@@ -160,7 +159,7 @@ export async function syncMemberDirectory(
     failed: 0,
   }
   const recordFailure = (
-    operation: 'build' | 'create' | 'edit' | 'delete',
+    operation: 'build' | 'create' | 'replace' | 'delete',
     error: unknown,
     discordUserId?: string,
     messageId?: string
@@ -194,19 +193,23 @@ export async function syncMemberDirectory(
   }
 
   for (const member of members) {
-    let operation: 'build' | 'create' | 'edit' = 'build'
+    let operation: 'build' | 'create' | 'replace' = 'build'
     let messageId: string | undefined
     try {
       const embed = await buildCard(member, licenses, dependencies)
       const existing = messageByMemberId.get(member.discordUserId)
       if (existing) {
-        operation = 'edit'
+        operation = 'replace'
         messageId = existing.id
         const current = directoryCardMatches(existing.embed, embed)
           ? await dependencies.getDirectoryMessage?.(existing.id)
           : existing
         if (!directoryCardMatches(current?.embed, embed)) {
-          await dependencies.editDirectoryCard(existing.id, embed)
+          // Replace, not edit: Discord caps edits to old messages (30046).
+          // Create first so the member keeps a card; first-card-wins dedupe
+          // removes any leftover duplicate on the next pass.
+          await dependencies.createDirectoryCard(embed)
+          await dependencies.deleteDirectoryCard(existing.id)
           summary.updated += 1
         }
       } else {
@@ -260,7 +263,9 @@ export async function upsertDirectoryCardForMember(
   const embed = await buildCard(member, licenses, dependencies)
   if (existing) {
     if (!directoryCardMatches(existing.embed, embed)) {
-      await dependencies.editDirectoryCard(existing.id, embed)
+      // Same create-before-delete replacement as the full pass (30046).
+      await dependencies.createDirectoryCard(embed)
+      await dependencies.deleteDirectoryCard(existing.id)
     }
   } else {
     await dependencies.createDirectoryCard(embed)

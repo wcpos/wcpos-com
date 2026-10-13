@@ -259,23 +259,6 @@ export class DiscordApiClient {
     }
   }
 
-  async editChannelMessage(
-    channelId: string,
-    messageId: string,
-    payload: DiscordMessagePayload
-  ): Promise<void> {
-    const response = await this.botFetch(`/channels/${channelId}/messages/${messageId}`, {
-      method: 'PATCH',
-      body: JSON.stringify(payload),
-    })
-    // A hand-deleted card between list and edit is not an error — the next
-    // sync recreates it.
-    if (response.status === 404) return
-    if (!response.ok) {
-      throw new Error(`Discord channel message edit failed: ${await parseDiscordError(response)}`)
-    }
-  }
-
   async deleteChannelMessage(channelId: string, messageId: string): Promise<void> {
     const response = await this.botFetch(`/channels/${channelId}/messages/${messageId}`, {
       method: 'DELETE',
