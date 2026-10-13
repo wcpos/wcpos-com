@@ -128,7 +128,7 @@ describe('discord interaction replies', () => {
     expect(embed.footer).toBeUndefined()
   })
 
-  it('omits activity dates from directory site lines while preserving never-seen state', () => {
+  it('omits activity dates and plugin versions from directory cards, keeping never-seen state', () => {
     const licence = {
       keySuffix: '1234',
       status: 'active',
@@ -172,9 +172,10 @@ describe('discord interaction replies', () => {
     )
 
     expect(directoryEmbed.fields[0].value).toContain(
-      'sites: active.example.com — plugin 1.9.8 · new.example.com — never seen · plugin 1.9.7 · active-no-version.example.com'
+      'sites: active.example.com · new.example.com — never seen · active-no-version.example.com'
     )
     expect(directoryEmbed.fields[0].value).not.toContain('seen 2026-07-01')
+    expect(JSON.stringify(directoryEmbed)).not.toMatch(/plugin|1\.9\.[78]/)
     expect(customerInfoEmbed.fields[0].value).toBe(
       'active, lifetime\nholder unknown\nseats 1/5 · connection date unknown\nsites: active.example.com — seen 2026-07-01 · plugin 1.9.8 · new.example.com — never seen · plugin 1.9.7 · active-no-version.example.com — seen 2026-07-02'
     )
