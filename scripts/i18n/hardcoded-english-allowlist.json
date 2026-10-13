@@ -1,7 +1,7 @@
 {
   "version": 1,
   "generatedBy": "scripts/i18n/hardcoded-english.ts --update",
-  "updatedAt": "2026-10-08T17:39:52.848Z",
+  "updatedAt": "2026-10-13T10:32:28.582Z",
   "scope": [
     "src/app",
     "src/components",
@@ -4914,14 +4914,6 @@
       "count": 1
     },
     {
-      "id": "19e517716ae79008",
-      "file": "src/lib/discord/client.ts",
-      "category": "error/status",
-      "attr": null,
-      "text": "Discord channel message edit failed:",
-      "count": 1
-    },
-    {
       "id": "2ba2dfd608b504bd",
       "file": "src/lib/discord/client.ts",
       "category": "error/status",
@@ -5066,11 +5058,11 @@
       "count": 1
     },
     {
-      "id": "2cb221a5f726e639",
+      "id": "4f89be6ab6c76c98",
       "file": "src/lib/discord/interactions.ts",
       "category": "code/string",
       "attr": null,
-      "text": "— plugin",
+      "text": "— never seen",
       "count": 1
     },
     {
