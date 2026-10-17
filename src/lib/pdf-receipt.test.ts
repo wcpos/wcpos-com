@@ -85,17 +85,20 @@ const baseReceipt: AccountOrderReceiptFact = {
   ],
 }
 
+// pdf-lib frames streams as `stream\n…\nendstream`. A `\r?` before `endstream`
+// would eat a data byte when the compressed stream ends in 0x0D (it did on
+// 2026-10-17, because the stream carries the generation date).
 /** Decoded text-drawing stream of the PDF's single page. */
 async function pageStream(pdf: Uint8Array): Promise<string> {
   const raw = Buffer.from(pdf).toString('latin1')
-  const streamMatch = raw.match(/stream\r?\n([\s\S]*?)\r?\nendstream/)
+  const streamMatch = raw.match(/stream\n([\s\S]*?)\nendstream/)
   expect(streamMatch?.[1]).toBeTruthy()
   return inflateSync(Buffer.from(streamMatch![1], 'latin1')).toString('latin1')
 }
 
 async function allPageStreams(pdf: Uint8Array): Promise<string> {
   const raw = Buffer.from(pdf).toString('latin1')
-  return [...raw.matchAll(/stream\r?\n([\s\S]*?)\r?\nendstream/g)].flatMap((match) => {
+  return [...raw.matchAll(/stream\n([\s\S]*?)\nendstream/g)].flatMap((match) => {
     try {
       return [inflateSync(Buffer.from(match[1], 'latin1')).toString('latin1')]
     } catch {
@@ -371,6 +374,24 @@ describe('buildReceiptPdf', () => {
     // Full title is trimmed; a leading portion still renders.
     expect(stream).not.toContain(hex(longTitle))
     expect(stream).toContain(hex('WCPOS Pro Yearly'))
+  })
+
+  it('decodes the page stream when the compressed stream ends in a carriage return', async () => {
+    vi.useFakeTimers({ toFake: ['Date'] })
+    vi.setSystemTime(new Date('2026-10-17T04:00:00Z'))
+
+    try {
+      const longTitle =
+        'WCPOS Pro Yearly Subscription With An Extremely Long Product Name That Would Overflow The Column'
+      const pdf = await buildTestReceiptPdf({
+        ...baseReceipt,
+        items: [{ title: longTitle, quantity: 1, unitPrice: 129, total: 129 }],
+      })
+
+      expect(await pageStream(pdf)).toContain(hex('WCPOS Pro Yearly'))
+    } finally {
+      vi.useRealTimers()
+    }
   })
 
   it('truncates long billed-to lines so they cannot overprint the details column', async () => {
