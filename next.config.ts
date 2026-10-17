@@ -138,6 +138,16 @@ const nextConfig: NextConfig = {
   },
 
 
+  // The receipt PDF reads its CJK font subsets from node_modules at runtime
+  // (src/lib/pdf-receipt.ts), picking files by each package's unicode.json,
+  // so nothing imports them and the tracer cannot see them. Ship every subset
+  // with the receipt route; brackets are escaped because keys are picomatch.
+  outputFileTracingIncludes: {
+    '/api/account/orders/\\[orderId\\]/receipt': [
+      './node_modules/@fontsource-variable/noto-sans-{sc,tc,jp,kr}/files/*-wght-normal.woff2',
+    ],
+  },
+
   // AVIF first for next/image (WebP fallback is implicit). Only local
   // /public images are optimized today, so no remotePatterns.
   images: {
