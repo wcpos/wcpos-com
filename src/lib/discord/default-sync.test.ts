@@ -11,11 +11,17 @@ const mocks = vi.hoisted(() => ({
   removeRole: vi.fn(async () => undefined),
   listRoleHolderIds: vi.fn(async () => []),
   listChannelMessages: vi.fn(
-    async (): Promise<Array<{ id: string; embeds?: Array<{ footer?: { text?: string } }> }>> => []
+    async (): Promise<
+      Array<{ id: string; embeds?: Array<{ title?: string; footer?: { text?: string } }> }>
+    > => []
   ),
   deleteChannelMessage: vi.fn(async () => undefined),
+  editChannelMessage: vi.fn(async () => undefined),
+  getChannelMessage: vi.fn(async () => null),
+  getLicenseMachines: vi.fn(async () => []),
   directoryChannelId: undefined as string | undefined,
   infraError: vi.fn(),
+  infraInfo: vi.fn(),
 }))
 
 vi.mock('./client', () => ({
@@ -27,6 +33,8 @@ vi.mock('./client', () => ({
       listRoleHolderIds: mocks.listRoleHolderIds,
       listChannelMessages: mocks.listChannelMessages,
       deleteChannelMessage: mocks.deleteChannelMessage,
+      editChannelMessage: mocks.editChannelMessage,
+      getChannelMessage: mocks.getChannelMessage,
     }
   }),
 }))
@@ -47,7 +55,7 @@ vi.mock('./config', () => ({
 }))
 
 vi.mock('@/lib/logger', () => ({
-  infraLogger: { error: mocks.infraError },
+  infraLogger: { error: mocks.infraError, info: mocks.infraInfo },
 }))
 
 vi.mock('./medusa-admin', () => ({
@@ -58,6 +66,7 @@ vi.mock('./medusa-admin', () => ({
 vi.mock('@/services/core/external/license-client', () => ({
   licenseClient: {
     listAllLicenses: mocks.listAllLicenses,
+    getLicenseMachines: mocks.getLicenseMachines,
   },
 }))
 
@@ -203,6 +212,39 @@ describe('directory sync gating', () => {
       'delete',
       '999',
       failure
+    )
+  })
+
+  it('logs directory edits with the member id and differing parts', async () => {
+    mocks.isDiscordDirectoryConfigured.mockReturnValue(true)
+    mocks.directoryChannelId = 'directory'
+    mocks.listAllLicenses.mockResolvedValue([
+      license({
+        discordAccess: {
+          seatCap: 5,
+          blockedDiscordUserIds: [],
+          members: [{ id: 'member_1', discordUserId: '111', connectedAt: '2026-01-01T00:00:00.000Z' }],
+        },
+      }),
+    ])
+    mocks.listChannelMessages.mockResolvedValue([
+      { id: 'msg_111', embeds: [{ title: 'Stale card', footer: { text: 'member:111' } }] },
+    ])
+
+    await expect(reconcileDiscordDirectory()).resolves.toEqual(
+      expect.objectContaining({ updated: 1, created: 0, failed: 0 })
+    )
+    expect(mocks.editChannelMessage).toHaveBeenCalledWith(
+      'directory',
+      'msg_111',
+      expect.objectContaining({ embeds: [expect.any(Object)] })
+    )
+    expect(mocks.infraInfo).toHaveBeenCalledWith(
+      expect.any(Array),
+      'edit',
+      '111',
+      'msg_111',
+      expect.stringContaining('title')
     )
   })
 })

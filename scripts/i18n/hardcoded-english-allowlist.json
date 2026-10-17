@@ -1,7 +1,7 @@
 {
   "version": 1,
   "generatedBy": "scripts/i18n/hardcoded-english.ts --update",
-  "updatedAt": "2026-10-13T10:32:28.582Z",
+  "updatedAt": "2026-10-17T03:16:30.657Z",
   "scope": [
     "src/app",
     "src/components",
@@ -4914,6 +4914,14 @@
       "count": 1
     },
     {
+      "id": "19e517716ae79008",
+      "file": "src/lib/discord/client.ts",
+      "category": "error/status",
+      "attr": null,
+      "text": "Discord channel message edit failed:",
+      "count": 1
+    },
+    {
       "id": "2ba2dfd608b504bd",
       "file": "src/lib/discord/client.ts",
       "category": "error/status",
@@ -5023,7 +5031,7 @@
       "category": "code/string",
       "attr": null,
       "text": "Discord directory",
-      "count": 1
+      "count": 2
     },
     {
       "id": "e39872d810db227b",
@@ -5055,6 +5063,54 @@
       "category": "code/string",
       "attr": null,
       "text": "reconciliation phase",
+      "count": 1
+    },
+    {
+      "id": "cd080210a4fa84f1",
+      "file": "src/lib/discord/directory.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": ": added",
+      "count": 1
+    },
+    {
+      "id": "a637401dc15a3408",
+      "file": "src/lib/discord/directory.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": ": inline",
+      "count": 1
+    },
+    {
+      "id": "1040b1388e9a38f2",
+      "file": "src/lib/discord/directory.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": ": name",
+      "count": 1
+    },
+    {
+      "id": "384cc25a6844d26b",
+      "file": "src/lib/discord/directory.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": ": removed",
+      "count": 1
+    },
+    {
+      "id": "84eb5f7de2f32a66",
+      "file": "src/lib/discord/directory.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "card",
+      "count": 1
+    },
+    {
+      "id": "ad0964eae0bc6fa4",
+      "file": "src/lib/discord/directory.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "status",
       "count": 1
     },
     {

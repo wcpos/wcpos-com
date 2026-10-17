@@ -4,7 +4,11 @@ import type { MedusaOrder } from '@/lib/customer-orders'
 import type { MedusaCustomer } from '@/lib/medusa-auth'
 import { YEARLY_PRO_POLICY_ID } from '@/lib/plans'
 import { addConnectedDiscordMember } from './connected-members'
-import { lookupDiscordCustomerInfo, mapMachineToSite } from './customer-lookup'
+import {
+  assembleMemberCardFromFleet,
+  lookupDiscordCustomerInfo,
+  mapMachineToSite,
+} from './customer-lookup'
 
 function license(overrides: Partial<LicenseDetail> = {}): LicenseDetail {
   return {
@@ -204,6 +208,45 @@ describe('lookupDiscordCustomerInfo', () => {
     expect(info.licences).toHaveLength(2)
     expect(findCustomerByEmail).toHaveBeenCalledTimes(2)
     expect(maxActiveLookups).toBe(2)
+  })
+})
+
+describe('assembleMemberCardFromFleet', () => {
+  it('reports which enrichment calls failed for the directory', async () => {
+    const fleet = [license({ metadata: connectedTo({ email: 'owner@example.com' }, 'discord_1') })]
+    const medusaDown = new Error('medusa down')
+    const keygenDown = new Error('keygen down')
+
+    const failed = await assembleMemberCardFromFleet('discord_1', fleet, {
+      findCustomerByEmail: vi.fn(async () => {
+        throw medusaDown
+      }),
+      listCustomerOrders: vi.fn(),
+      getLicenseMachines: vi.fn(async () => {
+        throw keygenDown
+      }),
+    })
+    expect(failed.enrichmentFailures).toHaveLength(2)
+    expect(failed.enrichmentFailures).toEqual(
+      expect.arrayContaining([
+        { source: 'medusa', error: medusaDown },
+        { source: 'keygen', error: keygenDown },
+      ])
+    )
+
+    const complete = await assembleMemberCardFromFleet('discord_1', fleet, {
+      findCustomerByEmail: vi.fn(async () => customer),
+      listCustomerOrders: vi.fn(async () => [order('2021-05-01T00:00:00.000Z')]),
+      getLicenseMachines: noMachines,
+    })
+    expect(complete.enrichmentFailures).toEqual([])
+
+    const noCustomer = await assembleMemberCardFromFleet('discord_1', fleet, {
+      findCustomerByEmail: vi.fn(async () => null),
+      listCustomerOrders: vi.fn(),
+      getLicenseMachines: noMachines,
+    })
+    expect(noCustomer.enrichmentFailures).toEqual([])
   })
 })
 
