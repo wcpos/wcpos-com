@@ -24,6 +24,16 @@ export interface DiscordCustomerLookupDependencies {
   ): Promise<'has_role' | 'missing_role' | 'not_in_guild'>
 }
 
+export interface DiscordCardEnrichmentFailure {
+  source: 'medusa' | 'keygen'
+  error: unknown
+}
+
+export type DiscordMemberCard = Omit<DiscordCustomerInfo, 'roleState'> & {
+  /** Enrichment calls that failed while building this card; empty when complete. */
+  enrichmentFailures: DiscordCardEnrichmentFailure[]
+}
+
 function holderEmail(license: Omit<LicenseDetail, 'machines'>): string | null {
   const email = license.metadata?.email
   return typeof email === 'string' && email.length > 0 ? email : null
@@ -96,7 +106,7 @@ export async function assembleMemberCardFromFleet(
   discordUserId: string,
   allLicenses: Array<Omit<LicenseDetail, 'machines'>>,
   dependencies: Omit<DiscordCustomerLookupDependencies, 'listAllLicenses' | 'getMemberRoleState'>
-): Promise<Omit<DiscordCustomerInfo, 'roleState'>> {
+): Promise<DiscordMemberCard> {
   const matched: Array<{
     license: Omit<LicenseDetail, 'machines'>
     connectedAt: string | null
@@ -113,7 +123,9 @@ export async function assembleMemberCardFromFleet(
   }
 
   // Best-effort enrichment: a Medusa or Keygen hiccup should not sink the
-  // lookup — the licence facts are already useful on their own.
+  // lookup — the licence facts are already useful on their own. Failures are
+  // still recorded so the directory can keep a card rather than weaken it.
+  const enrichmentFailures: DiscordCardEnrichmentFailure[] = []
   const holderProfiles = new Map<string, { name: string | null; orderDates: Array<string | null> }>()
   await Promise.all(
     Array.from(holderEmails).map(async (email) => {
@@ -125,8 +137,9 @@ export async function assembleMemberCardFromFleet(
           name: customerDisplayName(customer),
           orderDates: orders.map((order) => order.created_at ?? null),
         })
-      } catch {
+      } catch (error) {
         // swallow — enrichment only
+        enrichmentFailures.push({ source: 'medusa', error })
       }
     })
   )
@@ -138,8 +151,9 @@ export async function assembleMemberCardFromFleet(
       let sites: DiscordLicenceSite[] = []
       try {
         sites = (await dependencies.getLicenseMachines(license.id)).map(mapMachineToSite)
-      } catch {
+      } catch (error) {
         // swallow — the card renders without site facts
+        enrichmentFailures.push({ source: 'keygen', error })
       }
       return {
         keySuffix: license.key.slice(-4),
@@ -162,6 +176,7 @@ export async function assembleMemberCardFromFleet(
     customerSince:
       earliestDate(orderDates) ??
       earliestDate(matched.map(({ license }) => license.createdAt ?? null)),
+    enrichmentFailures,
   }
 }
 
@@ -185,6 +200,10 @@ export async function lookupDiscordCustomerInfo(
       .catch(() => 'unknown' as const),
   ])
 
-  const card = await assembleMemberCardFromFleet(discordUserId, allLicenses, dependencies)
-  return { ...card, roleState }
+  const { licences, customerSince } = await assembleMemberCardFromFleet(
+    discordUserId,
+    allLicenses,
+    dependencies
+  )
+  return { licences, customerSince, roleState }
 }

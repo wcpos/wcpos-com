@@ -36,6 +36,33 @@ describe('DiscordApiClient bot endpoints', () => {
     ])
   })
 
+  it('edits a channel message with PATCH and ignores a 404', async () => {
+    const client = new DiscordApiClient(config)
+    const payload = { embeds: [{ title: 'card' }], allowed_mentions: { parse: [] } }
+    fetchMock.mockResolvedValueOnce(new Response(null, { status: 200 }))
+
+    await client.editChannelMessage('channel-123', 'message-123', payload)
+
+    expect(fetchMock).toHaveBeenCalledWith(
+      'https://discord.com/api/v10/channels/channel-123/messages/message-123',
+      expect.objectContaining({ method: 'PATCH', body: JSON.stringify(payload) })
+    )
+
+    fetchMock.mockResolvedValueOnce(
+      new Response(JSON.stringify({ message: 'Unknown Message' }), { status: 404 })
+    )
+    await expect(
+      client.editChannelMessage('channel-123', 'message-123', payload)
+    ).resolves.toBeUndefined()
+
+    fetchMock.mockResolvedValueOnce(
+      new Response(JSON.stringify({ message: 'Missing Access' }), { status: 403 })
+    )
+    await expect(client.editChannelMessage('channel-123', 'message-123', payload)).rejects.toThrow(
+      'Discord channel message edit failed: Missing Access'
+    )
+  })
+
   it('lists guild members without duplicating the API base path', async () => {
     await new DiscordApiClient(config).listRoleHolderIds()
 

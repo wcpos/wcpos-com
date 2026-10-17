@@ -97,9 +97,17 @@ function createDiscordDirectoryDependencies(
     },
     createDirectoryCard: (embed) =>
       client.createChannelMessage(channelId, { embeds: [embed], allowed_mentions: { parse: [] } }),
+    editDirectoryCard: (messageId, embed) =>
+      client.editChannelMessage(channelId, messageId, {
+        embeds: [embed],
+        allowed_mentions: { parse: [] },
+      }),
     deleteDirectoryCard: (messageId) => client.deleteChannelMessage(channelId, messageId),
-    reportFailure: ({ discordUserId, messageId, operation, error }) => {
-      infraLogger.error`Discord directory ${operation} failed for ${discordUserId ?? messageId ?? 'unknown'}: ${error}`
+    reportFailure: ({ discordUserId, messageId, operation, source, error }) => {
+      infraLogger.error`Discord directory ${source ? `${operation} (${source})` : operation} failed for ${discordUserId ?? messageId ?? 'unknown'}: ${error}`
+    },
+    reportChange: ({ discordUserId, messageId, operation, fields }) => {
+      infraLogger.info`Discord directory ${operation} for ${discordUserId} (${messageId ?? 'new'}): ${fields.join(', ') || '-'}`
     },
   }
 }
