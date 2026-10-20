@@ -113,7 +113,7 @@ describe('FoosalesComparePage', () => {
       'https://apps.apple.com/us/app/foosales-for-woocommerce/id1251207715',
     ])
     for (const link of sourceLinks) {
-      expect(link).toHaveAttribute('rel', 'nofollow')
+      expect(link).toHaveAttribute('rel', 'nofollow noreferrer')
       const href = link.getAttribute('href')!
       expect(['www.foosales.com', 'help.foosales.com', 'apps.apple.com']).toContain(new URL(href).host)
     }

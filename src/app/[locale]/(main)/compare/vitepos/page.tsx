@@ -299,7 +299,7 @@ export default async function ViteposComparePage({
           {SOURCES.map(({ key, url }) => (
             <li key={key}>
               {t(`vitepos.sources.items.${key}`)}:{' '}
-              <a href={url} rel="nofollow" className="break-all font-medium text-foreground underline underline-offset-4">
+              <a href={url} rel="nofollow noreferrer" className="break-all font-medium text-foreground underline underline-offset-4">
                 {url}
               </a>
             </li>
