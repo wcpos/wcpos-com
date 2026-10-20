@@ -109,7 +109,7 @@ describe('YithComparePage', () => {
       'https://yithemes.com/terms-and-conditions/',
     ])
     for (const link of sourceLinks) {
-      expect(link).toHaveAttribute('rel', 'nofollow')
+      expect(link).toHaveAttribute('rel', 'nofollow noreferrer')
       const href = link.getAttribute('href')!
       expect(['yithemes.com', 'docs.yithemes.com']).toContain(new URL(href).host)
     }

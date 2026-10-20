@@ -106,7 +106,7 @@ describe('ViteposComparePage', () => {
       'https://wordpress.org/plugins/vitepos-lite/',
     ])
     for (const link of sourceLinks) {
-      expect(link).toHaveAttribute('rel', 'nofollow')
+      expect(link).toHaveAttribute('rel', 'nofollow noreferrer')
       const href = link.getAttribute('href')!
       expect(['vitepos.com', 'wordpress.org']).toContain(new URL(href).host)
     }
