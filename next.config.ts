@@ -1,9 +1,9 @@
 import type { NextConfig } from "next";
 import createNextIntlPlugin from "next-intl/plugin";
 import { locales } from "./src/i18n/config";
+import { DISCORD_INVITE_URL } from "./src/lib/discord-invite";
 
 const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
-const discordInviteUrl = "https://discord.gg/GCEeEVpEvX";
 const localePattern = locales.join("|");
 
 // Report-Only CSP: reports violations to /api/csp-report without blocking
@@ -80,8 +80,8 @@ const nextConfig: NextConfig = {
       // Includes locale-prefixed variants generated from the shared next-intl
       // locale list. 302 (temporary) rather than 301 so browsers don't permanently
       // cache the invite if it's ever rotated/revoked.
-      { source: '/discord', destination: discordInviteUrl, statusCode: 302 },
-      { source: `/:locale(${localePattern})/discord`, destination: discordInviteUrl, statusCode: 302 },
+      { source: '/discord', destination: DISCORD_INVITE_URL, statusCode: 302 },
+      { source: `/:locale(${localePattern})/discord`, destination: DISCORD_INVITE_URL, statusCode: 302 },
       // High-value pages
       { source: '/pricing', destination: '/pro', statusCode: 301 },
       { source: '/shop', destination: '/pro', statusCode: 301 },

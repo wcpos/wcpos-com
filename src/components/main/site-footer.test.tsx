@@ -105,7 +105,8 @@ describe('SiteFooter', () => {
 
   it('points the community links at the right destinations', () => {
     render(<SiteFooter />)
-    expect(hrefOf('Discord')).toBe('https://discord.gg/MV3E9dSUD')
+    expect(hrefOf('Discord')).toBe('https://discord.gg/GCEeEVpEvX')
+    expect(document.querySelector('a[href*="MV3E9dSUD"]')).toBeNull()
     expect(hrefOf('GitHub')).toBe('https://github.com/wcpos')
     expect(hrefOf('WordPress.org')).toBe(
       'https://wordpress.org/plugins/woocommerce-pos/'
@@ -174,7 +175,7 @@ describe('SiteFooter', () => {
     ).toBe('https://github.com/wcpos')
     expect(
       screen.getByLabelText('Join the WCPOS Discord').getAttribute('href')
-    ).toBe('https://discord.gg/MV3E9dSUD')
+    ).toBe('https://discord.gg/GCEeEVpEvX')
     expect(
       screen.getByLabelText('WCPOS on WordPress.org').getAttribute('href')
     ).toBe('https://wordpress.org/plugins/woocommerce-pos/')
