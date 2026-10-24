@@ -7,8 +7,8 @@ import { GithubMark } from '@/components/icons/github-mark'
 import { DiscordIcon } from '@/components/icons/discord'
 import { WordPressIcon } from '@/components/icons/wordpress'
 import { PLATFORMS, type PlatformKey } from '@/components/downloads/platforms'
+import { DISCORD_INVITE_URL } from '@/lib/discord-invite'
 
-const DISCORD_URL = 'https://discord.gg/MV3E9dSUD'
 const GITHUB_URL = 'https://github.com/wcpos'
 const WORDPRESS_PLUGIN_URL = 'https://wordpress.org/plugins/woocommerce-pos/'
 const WORDPRESS_FORUM_URL =
@@ -51,7 +51,7 @@ export function SiteFooter() {
   ]
 
   const communityLinks: FooterLink[] = [
-    { label: t('discord'), href: DISCORD_URL, external: true },
+    { label: t('discord'), href: DISCORD_INVITE_URL, external: true },
     { label: t('github'), href: GITHUB_URL, external: true },
     { label: t('wordpressOrg'), href: WORDPRESS_PLUGIN_URL, external: true },
   ]
@@ -71,7 +71,7 @@ export function SiteFooter() {
 
   const socialLinks = [
     { label: t('socialGithubAria'), href: GITHUB_URL, Icon: GithubMark },
-    { label: t('socialDiscordAria'), href: DISCORD_URL, Icon: DiscordIcon },
+    { label: t('socialDiscordAria'), href: DISCORD_INVITE_URL, Icon: DiscordIcon },
     {
       label: t('socialWordpressAria'),
       href: WORDPRESS_PLUGIN_URL,
