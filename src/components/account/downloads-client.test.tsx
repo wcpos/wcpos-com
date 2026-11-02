@@ -102,7 +102,7 @@ describe('DownloadsClient', () => {
     mockFetch.mockReset()
   })
 
-  it('shows a separate beta card after history, with notes and the existing download flow', async () => {
+  it('shows a separate beta card between the latest build and history, with notes and the existing download flow', async () => {
     const beta = makeRelease({ version: '2.0.0-beta.1', name: 'Beta release', releaseNotes: 'Beta notes', publishedAt: '2026-11-02' })
     mockFetch.mockResolvedValueOnce({ ok: false, json: async () => ({ errorCode: 'rate_limited' }) })
     render(<DownloadsClient initialReleases={[makeRelease()]} prereleases={[beta]} access={makeAccess()} />)
@@ -110,7 +110,7 @@ describe('DownloadsClient', () => {
     expect(within(card).getByText('Beta')).toBeInTheDocument()
     expect(within(card).getByText(/does not carry over unsent sales/)).toBeInTheDocument()
     expect(within(card).getByRole('link')).toHaveAttribute('href', 'https://docs.wcpos.com/getting-started/testing-the-beta')
-    expect(screen.getAllByRole('heading', { level: 3 }).map((h) => h.textContent)).toEqual(['WCPOS Pro 1.9.0', 'Version history', 'WCPOS Pro 2.0 beta'])
+    expect(screen.getAllByRole('heading', { level: 3 }).map((h) => h.textContent)).toEqual(['WCPOS Pro 1.9.0', 'WCPOS Pro 2.0 beta', 'Version history'])
     expect(screen.getAllByTestId('release-row')).toHaveLength(1)
     fireEvent.click(within(card).getByRole('button', { name: 'Release notes' }))
     expect(within(await screen.findByRole('dialog')).getByText('Beta notes')).toBeInTheDocument()
