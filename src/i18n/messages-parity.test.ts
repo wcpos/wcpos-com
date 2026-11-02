@@ -166,6 +166,9 @@ const globallyLanguageNeutralOrEnglishOnlyKeys = new Set([
   'about.founder.signature.name',
   'about.timeline.dates.range',
   // Brand/technical labels — kept verbatim across locales by design.
+  // "Beta" and the product name "WCPOS Pro 2.0 beta" read the same in de, es, it and pt.
+  'account.downloads.beta.badge',
+  'account.downloads.beta.heading',
   'account.licenses.instanceId',
   'account.licenses.pluginVersionLabel',
   'account.licenses.wpVersionLabel',
@@ -255,6 +258,9 @@ const auditedItalianNamespacePrefixes = [
   'legal.',
 ]
 const italianIdenticalCopyAllowlist = new Set([
+  // 'Beta' and the product name 'WCPOS Pro 2.0 beta' read the same here.
+  'account.downloads.beta.badge',
+  'account.downloads.beta.heading',
   'account.licenses.instanceId',
   'account.licenses.pluginVersionLabel',
   'account.licenses.wpVersionLabel',
@@ -577,6 +583,9 @@ const auditedPortugueseNamespacePrefixes = [
   'home.subtitle',
 ]
 const portugueseIdenticalCopyAllowlist = new Set([
+  // 'Beta' and the product name 'WCPOS Pro 2.0 beta' read the same here.
+  'account.downloads.beta.badge',
+  'account.downloads.beta.heading',
   // 'Sites'/'Downloads' are the standard Portuguese terms (account facts row).
   'account.licenses.factSites',
   'account.licenses.factDownloads',
@@ -869,6 +878,9 @@ const auditedGermanNamespacePrefixes = [
   'home.ecosystem.',
 ]
 const germanIdenticalCopyAllowlist = new Set([
+  // 'Beta' and the product name 'WCPOS Pro 2.0 beta' read the same here.
+  'account.downloads.beta.badge',
+  'account.downloads.beta.heading',
   // 'Downloads' is the standard German term (account facts row).
   'account.licenses.factDownloads',
   'account.licenses.instanceId',
@@ -959,6 +971,9 @@ const germanIdenticalCopyAllowlist = new Set([
   'home.pricing.pro.title',
 ])
 const spanishIdenticalCopyAllowlist = new Set([
+  // 'Beta' and the product name 'WCPOS Pro 2.0 beta' read the same here.
+  'account.downloads.beta.badge',
+  'account.downloads.beta.heading',
   'account.licenses.instanceId',
   'account.licenses.pluginVersionLabel',
   'account.licenses.wpVersionLabel',
