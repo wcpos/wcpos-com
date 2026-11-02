@@ -2,6 +2,7 @@ import 'server-only'
 
 import {
   isReleaseAllowedForLicenses,
+  hasActiveLicense,
   type LicenseLifecycle,
 } from '@/lib/license'
 
@@ -13,6 +14,7 @@ import {
 export interface ReleaseEntitlementFields {
   version: string
   publishedAt: string
+  prerelease?: boolean
 }
 
 /**
@@ -33,6 +35,17 @@ const UNKNOWN_LICENCE: LicenseLifecycle = { status: 'unknown', expiry: null }
 
 function scopeLicences(scope: EntitlementScope): LicenseLifecycle[] {
   return scope.kind === 'licence' ? [scope.licence] : scope.licences
+}
+
+// Betas require a currently active licence, never historical expiry entitlement.
+function isReleaseEntitled(
+  release: ReleaseEntitlementFields,
+  licences: LicenseLifecycle[],
+  nowMs: number
+): boolean {
+  return release.prerelease
+    ? hasActiveLicense(licences, nowMs)
+    : isReleaseAllowedForLicenses(release, licences, nowMs)
 }
 
 // Equivalent to pro-downloads' normalizeReleaseVersion; inlined to keep this
@@ -66,7 +79,7 @@ export function resolveEntitledReleases<T extends ReleaseEntitlementFields>(
   const licences = scopeLicences(scope)
   return releases.map((release) => ({
     ...release,
-    allowed: isReleaseAllowedForLicenses(release, licences, nowMs),
+    allowed: isReleaseEntitled(release, licences, nowMs),
   }))
 }
 
@@ -86,7 +99,7 @@ export function selectEntitledRelease<T extends ReleaseEntitlementFields>(
 
   if (version === 'latest') {
     const release = releases.find((candidate) =>
-      isReleaseAllowedForLicenses(candidate, licences, nowMs)
+      !candidate.prerelease && isReleaseEntitled(candidate, licences, nowMs)
     )
     return release
       ? { ok: true, release }
@@ -96,7 +109,7 @@ export function selectEntitledRelease<T extends ReleaseEntitlementFields>(
   const normalized = normalizeVersion(version)
   const match = releases.find((candidate) => candidate.version === normalized)
   if (!match) return { ok: false, reason: 'not_found' }
-  if (!isReleaseAllowedForLicenses(match, licences, nowMs)) {
+  if (!isReleaseEntitled(match, licences, nowMs)) {
     return { ok: false, reason: 'not_entitled' }
   }
   return { ok: true, release: match }

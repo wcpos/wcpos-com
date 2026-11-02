@@ -4,6 +4,7 @@ import { NextRequest } from 'next/server'
 const mockGetCustomer = vi.fn()
 const mockGetResolvedCustomerLicenses = vi.fn()
 const mockGetProPluginReleases = vi.fn()
+const mockGetProPluginPrereleases = vi.fn()
 const mockCreateDownloadToken = vi.fn()
 const mockDownloadInfo = vi.fn()
 const mockDownloadWarn = vi.fn()
@@ -26,6 +27,7 @@ vi.mock('@/lib/customer-licenses', () => ({
 }))
 
 vi.mock('@/services/core/business/pro-downloads', () => ({
+  getProPluginPrereleases: () => mockGetProPluginPrereleases(),
   getProPluginReleases: (...args: unknown[]) =>
     mockGetProPluginReleases(...args),
 }))
@@ -82,10 +84,29 @@ function tokenRequest(version: string) {
 
 describe('POST /api/account/downloads/token', () => {
   beforeEach(() => {
-    vi.clearAllMocks()
+    vi.resetAllMocks()
+    mockGetProPluginPrereleases.mockResolvedValue([])
     mockEnv.DOWNLOAD_TOKEN_SECRET = 'download-token-secret'
     mockEnv.KEYGEN_API_TOKEN = 'keygen-token-secret'
     mockConsume.mockResolvedValue({ success: true, remaining: 29 })
+  })
+
+
+  it.each(['active', 'expired', 'unknown'])('authorizes beta downloads for %s licences', async (status) => {
+    const beta = { ...makeRelease('2.0.0-beta.1', '2024-01-01'), prerelease: true }
+    mockGetCustomer.mockResolvedValueOnce({ id: 'cust_1' })
+    mockGetProPluginReleases.mockResolvedValueOnce([])
+    mockGetProPluginPrereleases.mockResolvedValueOnce([beta])
+    mockGetResolvedCustomerLicenses.mockResolvedValueOnce({
+      authenticated: true, licenses: [{ status, expiry: status === 'active' ? null : '2025-01-01' }],
+    })
+    mockCreateDownloadToken.mockReturnValueOnce('beta-token')
+    const response = await POST(tokenRequest(beta.version))
+    expect(response.status).toBe(status === 'active' ? 200 : 403)
+    if (status === 'active') {
+      expect(mockCreateDownloadToken).toHaveBeenCalledWith(expect.objectContaining({ version: beta.version }), 'download-token-secret')
+      expect((await response.json()).downloadUrl).toContain('beta-token')
+    } else expect(mockCreateDownloadToken).not.toHaveBeenCalled()
   })
 
   it('returns 401 when unauthenticated', async () => {

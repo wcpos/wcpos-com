@@ -886,6 +886,14 @@
       "bandSites": "{count, plural, =0 {nog geen sites} other {# van {max} sites}}"
     },
     "downloads": {
+      "beta": {
+        "badge": "Bèta",
+        "heading": "WCPOS Pro 2.0 bèta",
+        "warning": "Om te testen op een stagingwinkel of een winkel waarvan je de werking kunt onderbreken. De bèta wordt nooit als automatische update aangeboden: je installeert en werkt deze handmatig bij. Synchroniseer elke kassa voordat je upgradet — 2.0 maakt een nieuwe lokale database aan en neemt niet-verzonden verkopen niet over.",
+        "guide": "Lees: De WCPOS 2.0-bèta testen",
+        "requiresActive": "Vereist een actieve licentie.",
+        "download": "Bèta downloaden"
+      },
       "heading": "Downloads",
       "subheading": "Elke release. Wat je kunt installeren, hangt af van je licentie.",
       "expiredBanner": "Je licentie is verlopen op {date}. Je kunt nog steeds versies downloaden die vóór die datum zijn uitgebracht.",

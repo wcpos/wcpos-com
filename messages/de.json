@@ -886,6 +886,14 @@
       "bandSites": "{count, plural, =0 {noch keine Websites} other {# von {max} Websites}}"
     },
     "downloads": {
+      "beta": {
+        "badge": "Beta",
+        "heading": "WCPOS Pro 2.0 Beta",
+        "warning": "Zum Testen in einem Staging-Shop oder einem Shop, dessen Betrieb du unterbrechen kannst. Die Beta wird nie als automatisches Update angeboten: Du installierst sie manuell und aktualisierst sie manuell. Synchronisiere vor dem Upgrade jede Kasse — 2.0 legt eine neue lokale Datenbank an und übernimmt keine noch nicht übertragenen Verkäufe.",
+        "guide": "Lesen: Die WCPOS 2.0 Beta testen",
+        "requiresActive": "Erfordert eine aktive Lizenz.",
+        "download": "Beta herunterladen"
+      },
       "heading": "Downloads für WCPOS Pro",
       "subheading": "Alle Versionen. Was Sie installieren können, hängt von Ihrer Lizenz ab.",
       "expiredBanner": "Deine Lizenz ist am {date} abgelaufen. Du kannst weiterhin Versionen herunterladen, die davor veröffentlicht wurden.",

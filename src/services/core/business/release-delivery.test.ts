@@ -116,3 +116,27 @@ describe('selectEntitledRelease', () => {
     ).toEqual({ ok: true, release: RELEASES[0] })
   })
 })
+
+describe('prerelease entitlement', () => {
+  const beta = { ...RELEASES[2], version: '2.0.0-beta.1', prerelease: true }
+  it.each([
+    ['active', null, true],
+    ['expired', '2025-01-01', false],
+    ['active', '2025-01-01', false],
+    ['unknown', '2025-01-01', false],
+    ['suspended', null, false],
+    ['revoked', null, false],
+  ] as const)('%s licence with expiry %s: beta allowed=%s', (status, expiry, allowed) => {
+    const scope = { kind: 'licence' as const, licence: { status, expiry } }
+    expect(resolveEntitledReleases([beta], scope, NOW)[0].allowed).toBe(allowed)
+    expect(selectEntitledRelease([beta], beta.version, scope, NOW).ok).toBe(allowed)
+    if (status === 'expired') {
+      expect(resolveEntitledReleases(RELEASES, scope, NOW)[2].allowed).toBe(true)
+    }
+  })
+  it('grants nothing without a licence and never selects a beta as latest', () => {
+    expect(resolveEntitledReleases([beta], { kind: 'account', licences: [] }, NOW)[0].allowed).toBe(false)
+    expect(selectEntitledRelease([beta, ...RELEASES], 'latest', ACTIVE_SCOPE, NOW)).toEqual({ ok: true, release: RELEASES[0] })
+    expect(selectEntitledRelease([beta], 'latest', ACTIVE_SCOPE, NOW).ok).toBe(false)
+  })
+})

@@ -3,7 +3,10 @@ import { env } from '@/utils/env'
 import { getCustomer } from '@/lib/medusa-auth'
 import { getResolvedCustomerLicenses } from '@/lib/customer-licenses'
 import { createDownloadToken } from '@/lib/download-token'
-import { getProPluginReleases } from '@/services/core/business/pro-downloads'
+import {
+  getProPluginReleases,
+  getProPluginPrereleases,
+} from '@/services/core/business/pro-downloads'
 import { selectEntitledRelease } from '@/services/core/business/release-delivery'
 import { downloadLogger } from '@/lib/logger'
 import { createRateLimiter, clientIp } from '@/lib/rate-limit'
@@ -57,9 +60,12 @@ export async function POST(request: NextRequest) {
     const body = await request.json().catch(() => ({}))
     const version = typeof body.version === 'string' ? body.version : 'latest'
 
-    const releases = await getProPluginReleases()
+    const [releases, prereleases] = await Promise.all([
+      getProPluginReleases(),
+      getProPluginPrereleases(),
+    ])
     const { licenses } = await getResolvedCustomerLicenses()
-    const selection = selectEntitledRelease(releases, version, {
+    const selection = selectEntitledRelease([...releases, ...prereleases], version, {
       kind: 'account',
       licences: licenses,
     })

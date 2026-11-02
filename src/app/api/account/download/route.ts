@@ -3,7 +3,10 @@ import { env } from '@/utils/env'
 import { getCustomer } from '@/lib/medusa-auth'
 import { getResolvedCustomerLicenses } from '@/lib/customer-licenses'
 import { verifyDownloadToken } from '@/lib/download-token'
-import { getProPluginReleases } from '@/services/core/business/pro-downloads'
+import {
+  getProPluginReleases,
+  getProPluginPrereleases,
+} from '@/services/core/business/pro-downloads'
 import { selectEntitledRelease } from '@/services/core/business/release-delivery'
 import { fetchReleaseAsset } from '@/services/core/external/github-asset'
 import { downloadLogger } from '@/lib/logger'
@@ -58,12 +61,15 @@ export async function GET(request: NextRequest) {
     return errorResponse('invalid_token', 403)
   }
 
-  const releases = await getProPluginReleases()
+  const [releases, prereleases] = await Promise.all([
+    getProPluginReleases(),
+    getProPluginPrereleases(),
+  ])
   const { licenses } = await getResolvedCustomerLicenses()
   // Account-wide authorization is a deliberate union (ADR-0006): the token
   // proves the customer asked for this version; the union decides whether any
   // licence they hold entitles it.
-  const selection = selectEntitledRelease(releases, payload.version, {
+  const selection = selectEntitledRelease([...releases, ...prereleases], payload.version, {
     kind: 'account',
     licences: licenses,
   })
