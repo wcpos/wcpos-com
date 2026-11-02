@@ -5,6 +5,7 @@ const mockGetCustomer = vi.fn()
 const mockGetResolvedCustomerLicenses = vi.fn()
 const mockVerifyDownloadToken = vi.fn()
 const mockGetProPluginReleases = vi.fn()
+const mockGetProPluginPrereleases = vi.fn()
 const mockFetchReleaseAsset = vi.fn()
 const mockDownloadInfo = vi.fn()
 const mockDownloadWarn = vi.fn()
@@ -26,6 +27,7 @@ vi.mock('@/lib/download-token', () => ({
 }))
 
 vi.mock('@/services/core/business/pro-downloads', () => ({
+  getProPluginPrereleases: () => mockGetProPluginPrereleases(),
   getProPluginReleases: (...args: unknown[]) =>
     mockGetProPluginReleases(...args),
 }))
@@ -106,9 +108,29 @@ function downloadRequest({
 describe('GET /api/account/download', () => {
   beforeEach(() => {
     vi.resetAllMocks()
+    mockGetProPluginPrereleases.mockResolvedValue([])
     mockEnv.DOWNLOAD_TOKEN_SECRET = 'download-token-secret'
     mockEnv.KEYGEN_API_TOKEN = 'keygen-token-secret'
     mockTrackServerEvent.mockResolvedValue(undefined)
+  })
+
+
+  it.each(['active', 'expired', 'unknown'])('authorizes beta downloads for %s licences', async (status) => {
+    const beta = { ...makeRelease('2.0.0-beta.1', '2024-01-01'), prerelease: true }
+    mockGetCustomer.mockResolvedValueOnce({ id: 'cust_1' })
+    mockGetProPluginReleases.mockResolvedValueOnce([])
+    mockGetProPluginPrereleases.mockResolvedValueOnce([beta])
+    mockGetResolvedCustomerLicenses.mockResolvedValueOnce({
+      authenticated: true, licenses: [{ status, expiry: status === 'active' ? null : '2025-01-01' }],
+    })
+    mockVerifyDownloadToken.mockReturnValueOnce({ customerId: 'cust_1', version: beta.version })
+    mockFetchReleaseAsset.mockResolvedValueOnce(servedAsset())
+    const response = await GET(downloadRequest())
+    expect(response.status).toBe(status === 'active' ? 200 : 403)
+    if (status === 'active') {
+      expect(mockFetchReleaseAsset).toHaveBeenCalledWith(beta)
+      expect(await response.text()).toBe('zip-binary')
+    } else expect(mockFetchReleaseAsset).not.toHaveBeenCalled()
   })
 
   it('returns 401 when unauthenticated', async () => {

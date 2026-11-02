@@ -59,6 +59,7 @@ export interface DownloadAccess {
 
 interface DownloadsClientProps {
   initialReleases: DownloadRelease[]
+  prereleases?: DownloadRelease[]
   access: DownloadAccess
   /**
    * Already-translated plan label ("Yearly"/"Lifetime") of the licence backing
@@ -100,6 +101,7 @@ function isMajorRelease(version: string): boolean {
 
 export function DownloadsClient({
   initialReleases,
+  prereleases = [],
   access,
   entitlingPlanLabel = null,
 }: DownloadsClientProps) {
@@ -107,6 +109,7 @@ export function DownloadsClient({
   const t = useTranslations('account.downloads')
   const tCommon = useTranslations('common')
   const releases = initialReleases
+  const entitledPrereleases = prereleases.filter((release) => release.allowed)
   const [currentPage, setCurrentPage] = useState(1)
   const [downloadingVersion, setDownloadingVersion] = useState<string | null>(
     null
@@ -120,7 +123,7 @@ export function DownloadsClient({
   const latestVersion = latestRelease?.version
   const hasExternalEnglishContent =
     locale.split('-')[0]?.toLowerCase() !== 'en' &&
-    releases.some((release) => release.contentLocale === 'en')
+    [...releases, ...entitledPrereleases].some((release) => release.contentLocale === 'en')
   const totalPages = Math.max(1, Math.ceil(releases.length / RELEASES_PER_PAGE))
   // Derive the clamped page instead of syncing state in an effect.
   const safePage = Math.min(currentPage, totalPages)
@@ -504,6 +507,64 @@ export function DownloadsClient({
           )}
         </CardContent>
       </Card>
+
+      {entitledPrereleases.length > 0 && (
+        <Card role="region" aria-labelledby="beta-heading">
+          <CardHeader>
+            <div>
+              <Badge variant="muted-tint">{t('beta.badge')}</Badge>
+            </div>
+            <CardTitle id="beta-heading" className="text-lg">
+              {t('beta.heading')}
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <p className="text-sm text-muted-foreground">{t('beta.warning')}</p>
+            <a
+              href="https://docs.wcpos.com/getting-started/testing-the-beta"
+              className="inline-block text-sm underline underline-offset-4"
+            >
+              {t('beta.guide')}
+            </a>
+            <p className="text-xs text-muted-foreground">{t('beta.requiresActive')}</p>
+            <DividedList>
+              {entitledPrereleases.map((release) => (
+                <Row key={release.version} className="items-start gap-3">
+                  <div className="min-w-0 flex-1 basis-60">
+                    <p className="font-medium">v{release.version}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {formatDateForLocale(release.publishedAt, locale)}
+                    </p>
+                  </div>
+                  <div className="flex shrink-0 flex-wrap items-center gap-2">
+                    {hasNotes(release) && (
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        onClick={() => setNotesRelease(release)}
+                      >
+                        <FileText className="mr-2 h-4 w-4" />
+                        {t('releaseNotes')}
+                      </Button>
+                    )}
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      disabled={downloadingVersion === release.version}
+                      onClick={() => startDownload(release.version)}
+                    >
+                      <Download className="mr-2 h-4 w-4" />
+                      {downloadingVersion === release.version
+                        ? t('preparing')
+                        : t('beta.download')}
+                    </Button>
+                  </div>
+                </Row>
+              ))}
+            </DividedList>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Release-notes modal. Long changelogs scroll inside a bounded region
           so the dialog itself never exceeds the viewport. */}

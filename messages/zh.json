@@ -886,6 +886,14 @@
       "bandSites": "{count, plural, =0 {暂无站点} other {{max} 个站点中 #}}"
     },
     "downloads": {
+      "beta": {
+        "badge": "测试版",
+        "heading": "WCPOS Pro 2.0 测试版",
+        "warning": "用于在预发布环境的店铺或可以接受暂时中断运营的店铺中进行测试。测试版绝不会作为自动更新提供：安装和更新都需要手动进行。升级前请同步所有收银机——2.0 会创建新的本地数据库，不会迁移尚未发送的销售记录。",
+        "guide": "阅读：测试 WCPOS 2.0 测试版",
+        "requiresActive": "需要有效的许可证。",
+        "download": "下载测试版"
+      },
       "heading": "下载",
       "subheading": "所有版本。您可以安装的版本取决于您的许可证。",
       "expiredBanner": "你的许可证已于 {date} 过期。你仍可以下载此日期之前发布的版本。",

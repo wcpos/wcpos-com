@@ -8,6 +8,7 @@ const PRO_PLUGIN_REPO = 'woocommerce-pos-pro'
 export interface ProPluginRelease {
   version: string
   tagName: string
+  prerelease: boolean
   name: string
   releaseNotes: string
   /** GitHub release notes are authored in English. */
@@ -33,10 +34,20 @@ function getPrimaryZipAsset(
 }
 
 export async function getProPluginReleases(): Promise<ProPluginRelease[]> {
+  return getProPluginReleasesByChannel(false)
+}
+
+export async function getProPluginPrereleases(): Promise<ProPluginRelease[]> {
+  return getProPluginReleasesByChannel(true)
+}
+
+async function getProPluginReleasesByChannel(
+  prerelease: boolean
+): Promise<ProPluginRelease[]> {
   const releases = await githubClient.getReleases(PRO_PLUGIN_REPO)
 
   return releases
-    .filter((release) => !release.draft && !release.prerelease)
+    .filter((release) => !release.draft && release.prerelease === prerelease)
     .flatMap((release) => {
       const asset = getPrimaryZipAsset(release.assets)
       if (!asset) return []
@@ -46,6 +57,7 @@ export async function getProPluginReleases(): Promise<ProPluginRelease[]> {
       return [{
         version: normalizeReleaseVersion(release.tagName),
         tagName: release.tagName,
+        prerelease,
         name: release.name,
         releaseNotes,
         contentLocale: releaseNotes ? 'en' : undefined,

@@ -886,6 +886,14 @@
       "bandSites": "{count, plural, =0 {nessun sito} other {# di {max} siti}}"
     },
     "downloads": {
+      "beta": {
+        "badge": "Beta",
+        "heading": "WCPOS Pro 2.0 beta",
+        "warning": "Da provare su un negozio di staging o su un negozio di cui puoi permetterti di interrompere il funzionamento. La beta non viene mai proposta come aggiornamento automatico: la installi e la aggiorni manualmente. Sincronizza tutte le casse prima di aggiornare — la versione 2.0 crea un nuovo database locale e non trasferisce le vendite non ancora inviate.",
+        "guide": "Leggi: Testare la beta di WCPOS 2.0",
+        "requiresActive": "Richiede una licenza attiva.",
+        "download": "Scarica la beta"
+      },
       "heading": "Download",
       "subheading": "Tutte le versioni. Ciò che puoi installare dipende dalla tua licenza.",
       "expiredBanner": "La tua licenza è scaduta il {date}. Puoi comunque scaricare le versioni rilasciate prima di quella data.",
