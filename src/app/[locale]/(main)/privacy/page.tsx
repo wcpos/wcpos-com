@@ -12,6 +12,7 @@ const COLLECT_ITEMS = ['c1', 'c2', 'c3', 'c4', 'c5', 'c6', 'c7'] as const
 const COOKIE_ITEMS = ['k1', 'k2', 'k3', 'k4', 'k5'] as const
 const PROCESSOR_ITEMS = ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7'] as const
 const RETENTION_ITEMS = ['r1', 'r2', 'r3', 'r4'] as const
+const TELEMETRY_ITEMS = ['t1', 't2', 't3', 't4', 't5', 't6'] as const
 
 function emailLink(chunks: ReactNode) {
   return <TextLink href="mailto:support@wcpos.com">{chunks}</TextLink>
@@ -114,6 +115,32 @@ export default async function PrivacyPage({
               <li key={item}>{t(`retention.items.${item}`)}</li>
             ))}
           </ul>
+        </section>
+
+        <section id="plugin-telemetry" className="scroll-mt-20">
+          <h2 className="text-2xl font-semibold mb-4">{t('telemetry.title')}</h2>
+          <p className="leading-7 text-muted-foreground mb-4">
+            {t('telemetry.intro')}
+          </p>
+          <ul className="list-disc pl-6 space-y-3 leading-7 text-muted-foreground">
+            {TELEMETRY_ITEMS.map((item) => (
+              <li key={item}>
+                <span className="font-medium text-foreground">
+                  {t(`telemetry.items.${item}.label`)}
+                </span>{' '}
+                {t(`telemetry.items.${item}.body`)}
+              </li>
+            ))}
+          </ul>
+          <p className="leading-7 text-muted-foreground mt-4">
+            {t('telemetry.exclusions')}
+          </p>
+          <p className="leading-7 text-muted-foreground mt-3">
+            {t('telemetry.destinations')}
+          </p>
+          <p className="leading-7 text-muted-foreground mt-3">
+            {t('telemetry.optOut')}
+          </p>
         </section>
 
         <section>

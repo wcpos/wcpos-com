@@ -1379,6 +1379,39 @@
           "r4": "Les journaux serveur et les rapports d’erreur sont conservés pendant une fenêtre opérationnelle limitée, puis supprimés."
         }
       },
+      "telemetry": {
+        "title": "Télémétrie du plugin WCPOS",
+        "intro": "Cette section concerne le plugin WCPOS installé sur votre propre site, et non wcpos.com. Si vous l’autorisez, le plugin nous envoie les données ci-dessous afin que nous puissions corriger les bugs et décider de ce que nous développerons ensuite.",
+        "items": {
+          "t1": {
+            "label": "Identifiants aléatoires.",
+            "body": "Un identifiant aléatoire pour votre site et pour chaque utilisateur, créé par le plugin afin que nous puissions regrouper les événements, ainsi que le rôle WordPress de l’utilisateur. Ces identifiants ne sont pas créés à partir de noms, d’adresses e-mail ni de l’adresse de votre site."
+          },
+          "t2": {
+            "label": "Votre configuration.",
+            "body": "Vos versions de WCPOS, WordPress, WooCommerce, PHP et MySQL, ainsi que des informations comme le pays, la devise, la langue et le fuseau horaire de votre boutique."
+          },
+          "t3": {
+            "label": "La taille de votre boutique.",
+            "body": "Le nombre de produits, de commandes et d’utilisateurs POS dont vous disposez, et depuis combien de temps WCPOS est installé."
+          },
+          "t4": {
+            "label": "Passerelles de paiement et extensions.",
+            "body": "Les passerelles de paiement et les extensions WCPOS qui sont actives."
+          },
+          "t5": {
+            "label": "Votre utilisation de WCPOS.",
+            "body": "Les écrans WCPOS que vous ouvrez et les fonctionnalités et réglages que vous utilisez, y compris si une licence Pro est active."
+          },
+          "t6": {
+            "label": "Rapports d’erreur.",
+            "body": "Lorsque quelque chose se casse dans l’application ou dans le plugin sur votre serveur, l’erreur et les versions concernées."
+          }
+        },
+        "exclusions": "La télémétrie n’inclut ni les données clients, ni le contenu des commandes, ni les prix, ni l’adresse de votre site, ni votre adresse IP.",
+        "destinations": "Les données d’utilisation sont envoyées à notre propre serveur PostHog et à notre serveur de mises à jour. Les rapports d’erreur sont envoyés à Sentry.",
+        "optOut": "Vous pouvez modifier votre choix à tout moment dans POS → Réglages → Général → Confidentialité."
+      },
       "rights": {
         "title": "Vos droits",
         "body": "Si vous vous trouvez dans l’UE/EEE ou au Royaume-Uni, vous disposez de droits au titre du RGPD, notamment le droit d’accéder à vos données personnelles, de les corriger, de les supprimer et de les exporter, ainsi que de vous opposer à certains traitements ou d’en demander la limitation. Nous accordons les mêmes droits à tous les utilisateurs, quel que soit leur lieu de résidence.",
