@@ -1379,6 +1379,39 @@
           "r4": "Server logs and error reports are kept for a limited operational window and then deleted."
         }
       },
+      "telemetry": {
+        "title": "WCPOS plugin telemetry",
+        "intro": "This section is about the WCPOS plugin on your own site, not wcpos.com. If you allow it, the plugin sends us the data below so we can fix bugs and decide what to build next.",
+        "items": {
+          "t1": {
+            "label": "Random IDs.",
+            "body": "A random ID for your site and for each user, created by the plugin so we can group events, plus the user's WordPress role. These IDs are not made from names, email addresses, or your site address."
+          },
+          "t2": {
+            "label": "Your setup.",
+            "body": "Your WCPOS, WordPress, WooCommerce, PHP, and MySQL versions, plus details such as your store's country, currency, language, and time zone."
+          },
+          "t3": {
+            "label": "Your store size.",
+            "body": "How many products, orders, and POS users you have, and how long WCPOS has been installed."
+          },
+          "t4": {
+            "label": "Payment gateways and extensions.",
+            "body": "Which payment gateways and WCPOS extensions are active."
+          },
+          "t5": {
+            "label": "How you use WCPOS.",
+            "body": "Which WCPOS screens you open and which features and settings you use, including whether a Pro license is active."
+          },
+          "t6": {
+            "label": "Error reports.",
+            "body": "When something breaks in the app or in the plugin on your server, the error and the versions involved."
+          }
+        },
+        "exclusions": "Telemetry does not include customer data, order contents, prices, your site address, or your IP address.",
+        "destinations": "Usage data goes to our own PostHog server and our updates server. Error reports go to Sentry.",
+        "optOut": "You can change your choice at any time in POS → Settings → General → Privacy."
+      },
       "rights": {
         "title": "Your rights",
         "body": "If you are in the EU/EEA or UK, you have rights under the GDPR, including the right to access, correct, delete, and export your personal data, and to object to or restrict certain processing. We extend the same rights to all users regardless of location.",

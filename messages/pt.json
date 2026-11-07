@@ -1379,6 +1379,39 @@
           "r4": "Os registos do servidor e relatórios de erro são mantidos durante uma janela operacional limitada e depois eliminados."
         }
       },
+      "telemetry": {
+        "title": "Telemetria do plugin WCPOS",
+        "intro": "Esta secção diz respeito ao plugin WCPOS no seu próprio site, não ao wcpos.com. Se o permitir, o plugin envia-nos os dados abaixo para que possamos corrigir erros e decidir o que desenvolver a seguir.",
+        "items": {
+          "t1": {
+            "label": "IDs aleatórios.",
+            "body": "Um ID aleatório para o seu site e para cada utilizador, criado pelo plugin para que possamos agrupar eventos, além da função do utilizador no WordPress. Estes IDs não são criados a partir de nomes, endereços de email nem do endereço do seu site."
+          },
+          "t2": {
+            "label": "A sua configuração.",
+            "body": "As suas versões do WCPOS, WordPress, WooCommerce, PHP e MySQL, além de detalhes como o país, a moeda, o idioma e o fuso horário da sua loja."
+          },
+          "t3": {
+            "label": "A dimensão da sua loja.",
+            "body": "Quantos produtos, encomendas e utilizadores do POS tem, e há quanto tempo o WCPOS está instalado."
+          },
+          "t4": {
+            "label": "Gateways de pagamento e extensões.",
+            "body": "Que gateways de pagamento e extensões do WCPOS estão ativos."
+          },
+          "t5": {
+            "label": "Como utiliza o WCPOS.",
+            "body": "Que ecrãs do WCPOS abre e que funcionalidades e definições utiliza, incluindo se está ativa uma licença Pro."
+          },
+          "t6": {
+            "label": "Relatórios de erro.",
+            "body": "Quando algo falha na aplicação ou no plugin no seu servidor, o erro e as versões envolvidas."
+          }
+        },
+        "exclusions": "A telemetria não inclui dados de clientes, conteúdo de encomendas, preços, o endereço do seu site nem o seu endereço IP.",
+        "destinations": "Os dados de utilização vão para o nosso próprio servidor PostHog e para o nosso servidor de atualizações. Os relatórios de erro vão para a Sentry.",
+        "optOut": "Pode alterar a sua escolha em qualquer momento em POS → Definições → Geral → Privacidade."
+      },
       "rights": {
         "title": "Os seus direitos",
         "body": "Se estiver na UE/EEE ou no Reino Unido, tem direitos ao abrigo do RGPD, incluindo o direito de aceder, corrigir, eliminar e exportar os seus dados pessoais, e de se opor ou restringir determinados tratamentos. Estendemos os mesmos direitos a todos os utilizadores, independentemente da localização.",

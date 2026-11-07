@@ -1379,6 +1379,39 @@
           "r4": "Log del server e segnalazioni di errore vengono conservati per una finestra operativa limitata e poi eliminati."
         }
       },
+      "telemetry": {
+        "title": "Telemetria del plugin WCPOS",
+        "intro": "Questa sezione riguarda il plugin WCPOS sul tuo sito, non wcpos.com. Se lo consenti, il plugin ci invia i dati indicati di seguito, così possiamo correggere i bug e decidere cosa sviluppare in seguito.",
+        "items": {
+          "t1": {
+            "label": "ID casuali.",
+            "body": "Un ID casuale per il tuo sito e per ogni utente, creato dal plugin per permetterci di raggruppare gli eventi, oltre al ruolo WordPress dell’utente. Questi ID non sono ricavati da nomi, indirizzi email o dall’indirizzo del tuo sito."
+          },
+          "t2": {
+            "label": "La tua configurazione.",
+            "body": "Le tue versioni di WCPOS, WordPress, WooCommerce, PHP e MySQL, oltre a dettagli come paese, valuta, lingua e fuso orario del tuo negozio."
+          },
+          "t3": {
+            "label": "Le dimensioni del tuo negozio.",
+            "body": "Quanti prodotti, ordini e utenti POS hai e da quanto tempo WCPOS è installato."
+          },
+          "t4": {
+            "label": "Gateway di pagamento ed estensioni.",
+            "body": "Quali gateway di pagamento ed estensioni WCPOS sono attivi."
+          },
+          "t5": {
+            "label": "Come usi WCPOS.",
+            "body": "Quali schermate di WCPOS apri e quali funzionalità e impostazioni usi, incluso se è attiva una licenza Pro."
+          },
+          "t6": {
+            "label": "Segnalazioni di errore.",
+            "body": "Quando qualcosa si rompe nell’applicazione o nel plugin sul tuo server, l’errore e le versioni coinvolte."
+          }
+        },
+        "exclusions": "La telemetria non include dati dei clienti, contenuti degli ordini, prezzi, l’indirizzo del tuo sito né il tuo indirizzo IP.",
+        "destinations": "I dati di utilizzo vanno al nostro server PostHog e al nostro server degli aggiornamenti. Le segnalazioni di errore vanno a Sentry.",
+        "optOut": "Puoi cambiare la tua scelta in qualsiasi momento in POS → Impostazioni → Generali → Privacy."
+      },
       "rights": {
         "title": "I tuoi diritti",
         "body": "Se ti trovi nell’UE/SEE o nel Regno Unito, hai diritti ai sensi del GDPR, inclusi il diritto di accedere, correggere, eliminare ed esportare i tuoi dati personali e di opporti a determinati trattamenti o limitarli. Estendiamo gli stessi diritti a tutti gli utenti, indipendentemente dalla posizione.",
