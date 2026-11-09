@@ -1389,7 +1389,7 @@
           },
           "t2": {
             "label": "A sua configuração.",
-            "body": "As suas versões do WCPOS, WordPress, WooCommerce, PHP e MySQL, além de detalhes como o país, a moeda, o idioma e o fuso horário da sua loja."
+            "body": "O nome de domínio do seu site e o seu domínio de administração do WordPress (como example.com, sem qualquer caminho de página), as suas versões do WCPOS, WordPress, WooCommerce, PHP e MySQL, além de detalhes como o país, a moeda, o idioma e o fuso horário da sua loja."
           },
           "t3": {
             "label": "A dimensão da sua loja.",
@@ -1408,7 +1408,7 @@
             "body": "Quando algo falha na aplicação ou no plugin no seu servidor, o erro e as versões envolvidas."
           }
         },
-        "exclusions": "A telemetria não inclui dados de clientes, conteúdo de encomendas, preços, o endereço do seu site nem o seu endereço IP.",
+        "exclusions": "A telemetria não inclui dados de clientes, conteúdo de encomendas, preços nem o seu endereço IP.",
         "destinations": "Os dados de utilização vão para o nosso próprio servidor PostHog e para o nosso servidor de atualizações. Os relatórios de erro vão para a Sentry.",
         "optOut": "Pode alterar a sua escolha em qualquer momento em POS → Definições → Geral → Privacidade."
       },

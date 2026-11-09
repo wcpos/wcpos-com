@@ -1389,7 +1389,7 @@
           },
           "t2": {
             "label": "Your setup.",
-            "body": "Your WCPOS, WordPress, WooCommerce, PHP, and MySQL versions, plus details such as your store's country, currency, language, and time zone."
+            "body": "Your site's domain name and its WordPress admin domain (such as example.com, without any page path), your WCPOS, WordPress, WooCommerce, PHP, and MySQL versions, and details such as your store's country, currency, language, and time zone."
           },
           "t3": {
             "label": "Your store size.",
@@ -1408,7 +1408,7 @@
             "body": "When something breaks in the app or in the plugin on your server, the error and the versions involved."
           }
         },
-        "exclusions": "Telemetry does not include customer data, order contents, prices, your site address, or your IP address.",
+        "exclusions": "Telemetry does not include customer data, order contents, prices, or your IP address.",
         "destinations": "Usage data goes to our own PostHog server and our updates server. Error reports go to Sentry.",
         "optOut": "You can change your choice at any time in POS → Settings → General → Privacy."
       },
