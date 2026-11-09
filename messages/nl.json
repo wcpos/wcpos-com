@@ -1379,6 +1379,39 @@
           "r4": "Serverlogs en foutrapporten worden gedurende een beperkte operationele periode bewaard en daarna verwijderd."
         }
       },
+      "telemetry": {
+        "title": "Telemetrie van de WCPOS-plugin",
+        "intro": "Dit gedeelte gaat over de WCPOS-plugin op je eigen site, niet over wcpos.com. Als je dat toestaat, stuurt de plugin ons de onderstaande gegevens, zodat we bugs kunnen oplossen en kunnen bepalen wat we hierna bouwen.",
+        "items": {
+          "t1": {
+            "label": "Willekeurige ID’s.",
+            "body": "Een willekeurige ID voor je site en voor elke gebruiker, aangemaakt door de plugin zodat we gebeurtenissen kunnen groeperen, plus de WordPress-rol van de gebruiker. Deze ID’s worden niet gemaakt op basis van namen, e-mailadressen of het adres van je site."
+          },
+          "t2": {
+            "label": "Je configuratie.",
+            "body": "De domeinnaam van je site en het WordPress-beheerdomein ervan (zoals example.com, zonder paginapad), je versies van WCPOS, WordPress, WooCommerce, PHP en MySQL, plus gegevens zoals het land, de valuta, de taal en de tijdzone van je winkel."
+          },
+          "t3": {
+            "label": "De omvang van je winkel.",
+            "body": "Hoeveel producten, bestellingen en POS-gebruikers je hebt en hoe lang WCPOS al geïnstalleerd is."
+          },
+          "t4": {
+            "label": "Betaalgateways en extensies.",
+            "body": "Welke betaalgateways en WCPOS-extensies actief zijn."
+          },
+          "t5": {
+            "label": "Hoe je WCPOS gebruikt.",
+            "body": "Welke WCPOS-schermen je opent en welke functies en instellingen je gebruikt, inclusief of er een Pro-licentie actief is."
+          },
+          "t6": {
+            "label": "Foutrapporten.",
+            "body": "Als er iets stukgaat in de applicatie of in de plugin op je server, de fout en de betrokken versies."
+          }
+        },
+        "exclusions": "Telemetrie bevat geen klantgegevens, geen inhoud van bestellingen en geen prijzen.",
+        "destinations": "Gebruiksgegevens gaan naar onze eigen PostHog-server en naar onze updateserver. Foutrapporten gaan naar Sentry.",
+        "optOut": "Je kunt je keuze op elk moment wijzigen via POS → Instellingen → Algemeen → Privacy."
+      },
       "rights": {
         "title": "Je rechten",
         "body": "Als je in de EU/EER of het VK bent, heb je rechten onder de AVG, waaronder het recht op inzage, correctie, verwijdering en export van je persoonsgegevens, en het recht bezwaar te maken tegen bepaalde verwerkingen of die te beperken. We bieden dezelfde rechten aan alle gebruikers, ongeacht locatie.",
