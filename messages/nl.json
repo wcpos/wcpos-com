@@ -1408,7 +1408,7 @@
             "body": "Als er iets stukgaat in de applicatie of in de plugin op je server, de fout en de betrokken versies."
           }
         },
-        "exclusions": "Telemetrie bevat geen klantgegevens, geen inhoud van bestellingen, geen prijzen en niet je IP-adres.",
+        "exclusions": "Telemetrie bevat geen klantgegevens, geen inhoud van bestellingen en geen prijzen.",
         "destinations": "Gebruiksgegevens gaan naar onze eigen PostHog-server en naar onze updateserver. Foutrapporten gaan naar Sentry.",
         "optOut": "Je kunt je keuze op elk moment wijzigen via POS → Instellingen → Algemeen → Privacy."
       },

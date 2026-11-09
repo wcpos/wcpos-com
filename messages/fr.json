@@ -1408,7 +1408,7 @@
             "body": "Lorsque quelque chose se casse dans l’application ou dans le plugin sur votre serveur, l’erreur et les versions concernées."
           }
         },
-        "exclusions": "La télémétrie n’inclut ni les données clients, ni le contenu des commandes, ni les prix, ni votre adresse IP.",
+        "exclusions": "La télémétrie n’inclut ni les données clients, ni le contenu des commandes, ni les prix.",
         "destinations": "Les données d’utilisation sont envoyées à notre propre serveur PostHog et à notre serveur de mises à jour. Les rapports d’erreur sont envoyés à Sentry.",
         "optOut": "Vous pouvez modifier votre choix à tout moment dans POS → Réglages → Général → Confidentialité."
       },

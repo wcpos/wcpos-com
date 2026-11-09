@@ -1408,7 +1408,7 @@
             "body": "When something breaks in the app or in the plugin on your server, the error and the versions involved."
           }
         },
-        "exclusions": "Telemetry does not include customer data, order contents, prices, or your IP address.",
+        "exclusions": "Telemetry does not include customer data, order contents, or prices.",
         "destinations": "Usage data goes to our own PostHog server and our updates server. Error reports go to Sentry.",
         "optOut": "You can change your choice at any time in POS → Settings → General → Privacy."
       },

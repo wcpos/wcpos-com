@@ -1408,7 +1408,7 @@
             "body": "Quando qualcosa si rompe nell’applicazione o nel plugin sul tuo server, l’errore e le versioni coinvolte."
           }
         },
-        "exclusions": "La telemetria non include dati dei clienti, contenuti degli ordini, prezzi né il tuo indirizzo IP.",
+        "exclusions": "La telemetria non include dati dei clienti, contenuti degli ordini né prezzi.",
         "destinations": "I dati di utilizzo vanno al nostro server PostHog e al nostro server degli aggiornamenti. Le segnalazioni di errore vanno a Sentry.",
         "optOut": "Puoi cambiare la tua scelta in qualsiasi momento in POS → Impostazioni → Generali → Privacy."
       },

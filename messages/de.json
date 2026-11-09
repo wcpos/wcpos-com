@@ -1408,7 +1408,7 @@
             "body": "Wenn in der Anwendung oder im Plugin auf deinem Server etwas kaputtgeht, der Fehler und die betroffenen Versionen."
           }
         },
-        "exclusions": "Telemetriedaten enthalten keine Kundendaten, keine Bestellinhalte, keine Preise und nicht deine IP-Adresse.",
+        "exclusions": "Telemetriedaten enthalten keine Kundendaten, keine Bestellinhalte und keine Preise.",
         "destinations": "Nutzungsdaten gehen an unseren eigenen PostHog-Server und an unseren Update-Server. Fehlerberichte gehen an Sentry.",
         "optOut": "Du kannst deine Entscheidung jederzeit unter POS → Einstellungen → Allgemein → Datenschutz ändern."
       },
