@@ -67,7 +67,6 @@ const CLAIM_KEYS = [
 
 const OLIVER_BETTER_KEYS = [
   'kiosk',
-  'display',
   'hardware',
   'subscriptions',
   'rating',
