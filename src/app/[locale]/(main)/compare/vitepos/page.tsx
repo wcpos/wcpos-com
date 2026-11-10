@@ -36,7 +36,7 @@ const GLANCE_ROW_KEYS = [
   'wporg',
 ] as const
 
-const VITEPOS_BETTER_KEYS = ['restaurant', 'offline', 'display', 'kiosk', 'price', 'rating'] as const
+const VITEPOS_BETTER_KEYS = ['restaurant', 'offline', 'kiosk', 'price', 'rating'] as const
 
 const FAQ_KEYS = ['price', 'offline', 'restaurant', 'apps', 'terminals', 'expiry'] as const
 

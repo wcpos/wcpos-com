@@ -1983,7 +1983,7 @@
           },
           "fees": {
             "label": "거래 수수료",
-            "wcpos": "없음 — 모든 WooCommerce 결제 게이트웨이 사용 가능",
+            "wcpos": "없음 — 이용하는 결제 처리 업체의 요금만 지불",
             "oliver": "없음 — 결제 프로세서 제한 없음"
           },
           "terminals": {
@@ -1993,12 +1993,12 @@
           },
           "platforms": {
             "label": "플랫폼",
-            "wcpos": "웹, 데스크톱 앱(Windows·macOS), iOS·Android 앱(베타)",
+            "wcpos": "웹, 데스크톱 앱(Windows·macOS·Linux), iOS·Android 앱(베타)",
             "oliver": "웹 계산대, iOS·Android 앱, 하드웨어 허브"
           },
           "offline": {
             "label": "오프라인",
-            "wcpos": "오프라인 우선: 오프라인에서 상품 탐색과 장바구니 작성 가능, 결제 완료에는 연결 필요",
+            "wcpos": "오프라인 우선: 오프라인에서 상품을 탐색하고 장바구니를 만들고 현금 판매를 할 수 있음; 연결된 카드 리더기와 온라인 게이트웨이에는 연결 필요",
             "oliver": "오프라인 거래를 대기열에 저장했다가 재연결 시 동기화한다고 주장"
           },
           "kiosk": {
@@ -2008,7 +2008,7 @@
           },
           "display": {
             "label": "고객용 디스플레이",
-            "wcpos": "없음",
+            "wcpos": "Pro에서 지원: 모든 브라우저에서 열고 코드로 계산대와 페어링",
             "oliver": "있음"
           },
           "openSource": {
@@ -2056,11 +2056,11 @@
           },
           "devices": {
             "label": "계산대 / 기기 / 직원",
-            "wcpos": "기기와 계산원 무제한",
+            "wcpos": "기기와 계산원 무제한; 무료 버전은 계산대 1대, Pro는 추가 계산대 지원",
             "oliver": "매장 1, 스테이션 1, 직원 1명"
           },
           "offline": {
-            "label": "오프라인 탐색과 장바구니",
+            "label": "오프라인 현금 판매",
             "wcpos": "지원",
             "oliver": "지원(주장)"
           },
@@ -2071,14 +2071,14 @@
           }
         },
         "outro1": "월 50건이면 하루 2건도 안 되는 판매량입니다. Oliver의 무료 플랜은 만료일 없는 체험판에 불과합니다.",
-        "outro2": "WCPOS 무료 플러그인은 실제 매장을 기한 없이 운영할 수 있습니다: 전체 카탈로그, 무제한 고객 및 현금 판매, 감열 영수증 인쇄, 오프라인 우선 탐색을 모든 플랫폼에서 지원합니다."
+        "outro2": "WCPOS 무료 플러그인은 실제 매장을 기한 없이 운영할 수 있습니다: 전체 카탈로그, 무제한 고객 및 현금 판매, 감열 영수증 인쇄, 시작 시 준비 현금과 마감 시 현금 집계를 지원하는 계산대, 분할 결제, 오늘 내역을 보여 주는 보고서 화면, 오프라인에서도 계속되는 현금 판매를 모든 플랫폼에서 지원합니다."
       },
       "pricing": {
         "title": "유료 버전은 실제로 얼마나 드나요?",
         "oliver": "Oliver(연간 청구): Starter 연 $89 — 매장 1, 스테이션 2, 직원 3명. Pro 연 $289 — 매장 2, 스테이션 무제한, 직원 15명. Enterprise 연 $489 — 모두 무제한. 반복 결제이며 라이선스당 WooCommerce 사이트 1개입니다.",
         "wcpos": "WCPOS Pro: $129 — 1년간의 업데이트와 우선 지원을 포함하는 일회성 결제입니다. 자동 갱신은 절대 없으며, 1년이 지나도 Pro 버전은 계속 작동합니다 — 아무것도 꺼지지 않습니다, 결코. 이는 의도적인 설계입니다: 갱신은 값어치를 하는 업데이트로 얻어내야 하기 때문입니다. 또는 $399 평생 라이선스를 선택할 수 있습니다. 각 라이선스는 도메인 하나와 스테이징 사이트 하나를 포함하며, 기기와 계산원 수는 무제한입니다. 광고한 대로 작동하지 않으면 환불해 드립니다.",
         "math": "매장이 하나라면 첫해에는 Oliver Starter가 더 저렴합니다($89 대 $129). 하지만 2년 차부터는 계산이 뒤집힙니다. Oliver는 해마다 청구가 이어지는 반면, WCPOS 평생 라이선스는 Oliver의 가장 저렴한 플랜과 비교해도 4년 차부터 $0입니다. Oliver Enterprise 3년이면 $1,467+인데 WCPOS는 총 $399입니다.",
-        "proAdds": "Pro 추가 기능: 다중 매장 관리, 카드 단말기 연동, 쿠폰, POS API를 통한 환불, 주문 내역, 계산대 고객 관리, 매장별 가격, 재고·가격 편집, 마감 보고서, 확장 디렉터리.",
+        "proAdds": "Pro 추가 기능: 다중 매장 관리, 추가 계산대, 카드 단말기 연동, 계산대에서 매장의 다른 WooCommerce 결제 게이트웨이 사용, 고객용 디스플레이, 쿠폰 화면, 계산대에서 환불, 주문 내역, 계산대 고객 관리, 매장별 가격, 재고·가격 편집, 이전 날짜 및 모든 계산대와 매장의 보고서, 확장 디렉터리.",
         "demoPrefix": "먼저",
         "demoLinkLabel": "demo.wcpos.com/pos",
         "demoSuffix": "에서 모든 기능을 체험해 보세요(로그인 demo / demo)."
@@ -2087,7 +2087,6 @@
         "title": "Oliver가 진짜로 더 나은 부분",
         "intro": "정직한 비교라면 양쪽 모두를 봐야 합니다.",
         "kiosk": "키오스크 / 셀프 계산 모드 — Oliver에는 있고 WCPOS에는 없습니다.",
-        "display": "고객용 디스플레이 — Oliver에는 있고 WCPOS에는 없습니다.",
         "hardware": "전용 하드웨어 — Oliver는 턴키 방식의 카운터 구성을 위한 전용 계산대 허브를 판매합니다.",
         "subscriptions": "WooCommerce Subscriptions 지원 — Oliver는 계산대에서 구독 상품 판매를 지원하지만 WCPOS는 지원하지 않습니다.",
         "rating": "더 높은 WordPress.org 평점 — WCPOS의 3.7점 대비 4.3점(다만 두 제품 모두 최근 리뷰를 꼭 읽어 보세요 — 아래 참조).",
@@ -2102,10 +2101,10 @@
       },
       "claims": {
         "title": "Oliver 비교 페이지의 잘못된 주장",
-        "intro": "Oliver는 자체적으로 Oliver 대 WCPOS 비교 페이지를 운영합니다. 키오스크 모드, 하드웨어, 고객용 디스플레이처럼 타당한 주장도 있지만, 몇 가지는 그렇지 않습니다.",
+        "intro": "Oliver는 자체적으로 Oliver 대 WCPOS 비교 페이지를 운영합니다. 키오스크 모드와 하드웨어처럼 타당한 주장도 있지만, 몇 가지는 그렇지 않습니다.",
         "apps": {
           "claim": "브라우저 전용, 앱은 개발 중",
-          "response": "WCPOS는 현재 Windows와 macOS용 데스크톱 앱을 제공하고 있으며, iOS와 Android 앱도 베타로 사용할 수 있습니다. 모든 앱의 최신 버전은 updates.wcpos.com에 게시됩니다."
+          "response": "WCPOS는 현재 Windows, macOS와 Linux용 데스크톱 앱을 제공하고 있으며, iOS와 Android 앱도 베타로 사용할 수 있습니다. 모든 앱의 최신 버전은 updates.wcpos.com에 게시됩니다."
         },
         "multiOutlet": {
           "claim": "다중 매장: 기본 미지원",
@@ -2113,7 +2112,7 @@
         },
         "payments": {
           "claim": "통합 결제: 제한적",
-          "response": "WCPOS Pro는 Stripe Terminal, SumUp, PayPal Reader(Zettle), Square Terminal, Mollie Terminal, Vipps MobilePay를 연동하며 확장 카탈로그에서 원클릭으로 설치할 수 있습니다. 게다가 결제가 WooCommerce 자체 결제 시스템을 통해 이루어지므로 WooCommerce 호환 게이트웨이라면 무엇이든 사용할 수 있습니다."
+          "response": "WCPOS Pro는 Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Vipps MobilePay를 연동하며 확장 카탈로그에서 원클릭으로 설치할 수 있고, 계산대에서 매장의 다른 WooCommerce 결제 게이트웨이를 활성화합니다. 무료 버전은 현금 결제를 받고 별도 단말기에서 받은 카드 결제를 기록하며, 한 주문을 여러 결제로 나누어 처리할 수 있습니다."
         },
         "hobbyShops": {
           "claim": "취미 매장에 적합",
@@ -2128,18 +2127,18 @@
         "title": "무엇을 선택해야 할까요?",
         "wcpos": {
           "title": "이런 경우 WCPOS를 선택하세요:",
-          "body": "데이터를 내 서버에 두고 싶고, 실제 매장을 운영할 수 있는 무료 버전을 원하고, 구독 대신 일회성 결제를 선호하고, 무제한 기기와 계산원이 필요하고, 오픈 소스를 원하거나, 결제 프로세서를 자유롭게 고르고 싶다면 — 모든 WooCommerce 게이트웨이를 쓸 수 있습니다."
+          "body": "데이터를 내 서버에 두고 싶고, 실제 매장을 운영할 수 있는 무료 버전을 원하고, 구독 대신 일회성 결제를 선호하고, 무제한 기기와 계산원이 필요하고, 오픈 소스를 원하거나, 결제 프로세서를 자유롭게 고르고 싶다면 — Pro로 매장 자체의 WooCommerce 게이트웨이를 쓸 수 있습니다."
         },
         "oliver": {
           "title": "이런 경우 Oliver POS를 선택하세요:",
-          "body": "키오스크나 셀프 계산, 고객용 디스플레이, 업체가 공급하는 계산대 하드웨어, 또는 계산대에서의 WooCommerce Subscriptions 판매가 필요하고, 클라우드 의존과 사이트별 반복 과금이 괜찮다면."
+          "body": "키오스크나 셀프 계산, 업체가 공급하는 계산대 하드웨어, 또는 계산대에서의 WooCommerce Subscriptions 판매가 필요하고, 클라우드 의존과 사이트별 반복 과금이 괜찮다면."
         }
       },
       "faq": {
         "title": "자주 묻는 질문",
         "offline": {
           "question": "WCPOS는 오프라인에서 작동하나요?",
-          "answer": "WCPOS는 오프라인 우선입니다. 제품, 고객, 장바구니가 로컬에 저장되므로 연결 없이도 카탈로그를 탐색하고 판매를 준비할 수 있으며, 연결이 복구되면 모두 동기화됩니다. 결제 완료와 쿠폰 검증에는 서버 연결이 필요합니다. Oliver는 오프라인 거래를 대기열에 저장했다가 재연결 시 동기화한다고 주장합니다."
+          "answer": "WCPOS는 오프라인 우선입니다. 제품, 고객, 장바구니가 로컬에 저장되므로 연결 없이도 카탈로그를 탐색하고 장바구니를 만들고 현금 결제를 받을 수 있으며, 연결이 복구되면 모두 동기화됩니다. 연결된 카드 리더기, 온라인 결제 게이트웨이, 쿠폰 검증에는 연결이 필요합니다. Oliver는 오프라인 거래를 대기열에 저장했다가 재연결 시 동기화한다고 주장합니다."
         },
         "fees": {
           "question": "두 POS 중 거래 수수료를 받는 쪽이 있나요?",
@@ -2163,7 +2162,7 @@
         }
       },
       "footer": {
-        "factsVerified": "사실 확인: 2026년 7월 8일, oliverpos.com/pricing, wordpress.org/plugins/woocommerce-pos/, wordpress.org/plugins/oliver-pos/, wcpos.com 기준.",
+        "factsVerified": "사실 확인: 2026년 7월 8일, oliverpos.com/pricing, wordpress.org/plugins/woocommerce-pos/, wordpress.org/plugins/oliver-pos/, wcpos.com 기준. WCPOS 정보는 2026-11-09에 출시된 WCPOS 2.0 기준이며, 앱과 플러그인 모두 버전 2.0이어야 합니다.",
         "corrections": "오류를 발견하셨나요? support@wcpos.com으로 알려 주세요. 빠르게 수정하고 모든 변경을 기록합니다."
       }
     },
@@ -2178,7 +2177,7 @@
       },
       "shortAnswer": {
         "title": "간단한 결론",
-        "wcpos": "WCPOS는 모든 최신 브라우저, Windows와 macOS 데스크톱 앱, iOS와 Android 앱(베타)에서 작동하며 모든 WooCommerce 결제 게이트웨이를 사용할 수 있습니다. 오프라인 우선으로 설계되었고 무료 버전에는 제품, 주문, 고객 수에 제한이 없습니다. Pro는 일회성 결제로 다중 매장 관리와 카드 단말기 연동을 추가하며, 만료 후에도 기능이 꺼지지 않습니다.",
+        "wcpos": "WCPOS는 모든 최신 브라우저, Windows, macOS와 Linux 데스크톱 앱, iOS와 Android 앱(베타)에서 작동합니다. 오프라인 우선으로 설계되었고 무료 버전에는 제품, 주문, 고객 수에 제한이 없습니다. Pro는 일회성 결제로 다중 매장 관리, 카드 단말기 연동, 매장의 다른 WooCommerce 결제 게이트웨이를 추가하며, 만료 후에도 기능이 꺼지지 않습니다.",
         "woocommerce": "WooCommerce 공식 POS는 WooCommerce 모바일 앱(“WooCommerce: Store & POS”)에 들어 있습니다. POS 소프트웨어는 무료이며 WooCommerce가 직접 만들었고, 현금과 함께 Bluetooth 카드 리더기를 사용한 WooPayments 또는 Stripe 카드 결제를 받습니다. 태블릿용으로 설계되었으며 10개국의 매장에서 이용할 수 있습니다. 구독 상품이나 다운로드 상품을 판매하지 못하고 오프라인 모드가 없으며 다중 위치는 아직 지원하지 않습니다."
       },
       "glance": {
@@ -2194,7 +2193,7 @@
           },
           "devices": {
             "label": "기기",
-            "wcpos": "웹, 데스크톱 앱(Windows와 macOS), iOS와 Android 앱(베타); 기기와 계산원 무제한",
+            "wcpos": "웹, 데스크톱 앱(Windows, macOS와 Linux), iOS와 Android 앱(베타); 기기와 계산원 무제한",
             "woocommerce": "태블릿용으로 설계 — iPad와 Android 태블릿"
           },
           "countries": {
@@ -2214,7 +2213,7 @@
           },
           "gateways": {
             "label": "결제 게이트웨이",
-            "wcpos": "모든 WooCommerce 결제 게이트웨이",
+            "wcpos": "무료 버전은 현금 및 별도 단말기에서의 카드 결제; Pro는 매장의 다른 WooCommerce 결제 게이트웨이 지원",
             "woocommerce": "현금, 카드 결제는 WooPayments 또는 Stripe"
           },
           "fees": {
@@ -2224,7 +2223,7 @@
           },
           "offline": {
             "label": "오프라인",
-            "wcpos": "오프라인 우선: 오프라인에서 제품을 탐색하고 장바구니를 준비할 수 있음; 결제 완료에는 연결 필요",
+            "wcpos": "오프라인 우선: 오프라인에서 상품을 탐색하고 장바구니를 만들고 현금 판매를 할 수 있음; 연결된 카드 리더기와 온라인 게이트웨이에는 연결 필요",
             "woocommerce": "오프라인 모드 없음 — 활성 인터넷 연결 필요"
           },
           "multiLocation": {
@@ -2242,18 +2241,18 @@
       "devices": {
         "title": "어디에서 사용할 수 있나요?",
         "woocommerce": "WooCommerce POS는 WooCommerce 모바일 앱의 한 모드입니다. WooCommerce는 이를 iPad와 Android 태블릿용으로 설계되었다고 설명하며, 호주, 캐나다, 핀란드, 아일랜드, 룩셈부르크, 네덜란드, 뉴질랜드, 싱가포르, 영국, 미국의 10개국에서 해당 국가의 통화를 사용하는 매장에서 이용할 수 있습니다.",
-        "wcpos": "WCPOS는 모든 최신 브라우저, Windows와 macOS 데스크톱 앱, iOS와 Android 앱(베타)에서 작동하며 라이선스당 기기와 계산원 수에 제한이 없습니다. 이미 계산대에 있는 컴퓨터나 태블릿, 또는 둘 다 사용하세요."
+        "wcpos": "WCPOS는 모든 최신 브라우저, Windows, macOS와 Linux 데스크톱 앱, iOS와 Android 앱(베타)에서 작동하며 라이선스당 기기와 계산원 수에 제한이 없습니다. 이미 계산대에 있는 컴퓨터나 태블릿, 또는 둘 다 사용하세요."
       },
       "payments": {
         "title": "카드 결제는 어떻게 작동하나요?",
         "woocommerce": "WooCommerce POS는 현금을 받으며, 태블릿에 연결된 Bluetooth 카드 리더기로 WooPayments 또는 Stripe를 통한 카드 결제도 받습니다. WooPayments의 대면 카드 결제 요율은 온라인보다 낮습니다. 미국에서는 대면 2.70% + $0.10, 온라인 2.90% + $0.30입니다. 카드 리더기 비용은 사용 중인 리더기 한 대당 월 $5.00 / £5.00입니다.",
-        "wcpos": "WCPOS는 WooCommerce 자체 체크아웃을 통해 결제하므로 WooCommerce와 호환되는 모든 결제 게이트웨이를 계산대에서 사용할 수 있습니다. Pro는 Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Vipps MobilePay 카드 단말기 연동을 추가하며, 확장 카탈로그에서 클릭 한 번으로 설치할 수 있습니다. WCPOS는 Tap to Pay나 WooPayments 대면 결제를 지원하지 않습니다."
+        "wcpos": "WCPOS 2.0에는 자체 체크아웃이 있습니다. 장바구니 옆 결제 패널에서 현금 결제를 받고, 별도 단말기에서 받은 카드 결제를 기록하며, 한 주문을 여러 결제로 나누어 처리할 수 있습니다. Pro를 사용하면 계산대에서 매장의 다른 WooCommerce 결제 게이트웨이를 활성화하고, Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Vipps MobilePay 카드 단말기 연동을 추가할 수 있으며, 확장 카탈로그에서 클릭 한 번으로 설치할 수 있습니다. iPhone과 Android의 Tap to Pay는 아직 WCPOS에 없으며, 향후 앱 업데이트로 제공됩니다. WCPOS는 WooPayments 대면 결제를 지원하지 않습니다."
       },
       "pricing": {
         "title": "비용은 얼마인가요?",
         "woocommerce": "WooCommerce POS 소프트웨어는 무료이며 WooCommerce 모바일 앱에 포함되어 있습니다. 카드 리더기를 사용하는 경우 사용 중인 리더기 한 대당 월 $5.00 / £5.00의 요금이 부과되며, 카드 결제에는 이용하는 결제 제공업체의 대면 결제 요율이 적용됩니다.",
-        "wcpos": "WCPOS는 무료이며 제품, 주문, 고객, 현금 판매에 제한이 없습니다. Pro는 $129 일회성 결제로 1년간 업데이트와 우선 지원을 제공하거나, 평생 버전을 $399에 구매할 수 있습니다. 자동 갱신은 없으며 1년이 지나도 Pro는 계속 작동합니다. 어떤 기능도 꺼지지 않습니다. WCPOS는 거래 수수료를 부과하지 않으며 이용하는 결제 처리 업체의 요금만 지불합니다.",
-        "proAdds": "Pro 추가 기능: 다중 매장 관리, 카드 단말기 연동, 쿠폰, POS API를 통한 환불, 주문 내역, 계산대 고객 관리, 매장별 가격, 재고·가격 편집, 마감 보고서, 확장 디렉터리.",
+        "wcpos": "WCPOS는 무료이며 제품, 주문, 고객, 현금 판매에 제한이 없습니다. 2.0부터 무료 버전에는 시작 시 준비 현금, 현금 입출금, 마감 시 현금 집계 및 번호가 부여된 마감을 지원하는 계산대 1대, 분할 결제, 해당 계산대의 오늘 내역을 보여 주는 보고서 화면도 포함됩니다. Pro는 $129 일회성 결제로 1년간 업데이트와 우선 지원을 제공하거나, 평생 버전을 $399에 구매할 수 있습니다. 자동 갱신은 없으며 1년이 지나도 Pro는 계속 작동합니다. 어떤 기능도 꺼지지 않습니다. WCPOS는 거래 수수료를 부과하지 않으며 이용하는 결제 처리 업체의 요금만 지불합니다.",
+        "proAdds": "Pro 추가 기능: 다중 매장 관리, 추가 계산대, 카드 단말기 연동, 계산대에서 매장의 다른 WooCommerce 결제 게이트웨이 사용, 고객용 디스플레이, 쿠폰 화면, 계산대에서 환불, 주문 내역, 계산대 고객 관리, 매장별 가격, 재고·가격 편집, 이전 날짜 및 모든 계산대와 매장의 보고서, 확장 디렉터리.",
         "demoPrefix": "먼저",
         "demoLinkLabel": "demo.wcpos.com/pos",
         "demoSuffix": "에서 모든 기능을 체험해 보세요(로그인 demo / demo)."
@@ -2281,7 +2280,7 @@
         "title": "무엇을 선택해야 할까요?",
         "wcpos": {
           "title": "이런 경우 WCPOS를 선택하세요:",
-          "body": "매장이 WooCommerce POS가 지원하는 10개국 밖에 있거나 자국 통화를 사용하지 않거나, 웹 브라우저 또는 Windows와 macOS 데스크톱 앱에서 계산대를 사용하고 싶거나, 오프라인에서 상품을 탐색하고 장바구니를 작성하고 싶거나, 매장을 둘 이상 운영하거나, WooPayments 또는 Stripe 이외의 결제 게이트웨이를 사용하거나, SumUp, PayPal, Square, Mollie, Vipps MobilePay의 카드 단말기를 원한다면."
+          "body": "매장이 WooCommerce POS가 지원하는 10개국 밖에 있거나 자국 통화를 사용하지 않거나, 웹 브라우저 또는 Windows, macOS와 Linux 데스크톱 앱에서 계산대를 사용하고 싶거나, 오프라인에서도 현금 판매를 계속하고 싶거나, 매장을 둘 이상 운영하거나, WooPayments 또는 Stripe 이외의 결제 게이트웨이를 사용하거나, SumUp, PayPal, Square, Mollie, Vipps MobilePay의 카드 단말기를 원한다면."
         },
         "woocommerce": {
           "title": "이런 경우 WooCommerce POS를 선택하세요:",
@@ -2292,7 +2291,7 @@
         "title": "자주 묻는 질문",
         "free": {
           "question": "WooCommerce 공식 POS는 무료인가요?",
-          "answer": "네, POS 소프트웨어는 무료이며 WooCommerce 모바일 앱에 포함되어 있습니다. 카드 리더기를 사용하는 경우 사용 중인 리더기 한 대당 월 $5.00 / £5.00의 요금이 부과되며, 카드 결제에는 이용하는 결제 제공업체의 대면 결제 요율이 적용됩니다. WCPOS의 무료 플러그인도 제한 없이 무료이며 모든 WooCommerce 결제 게이트웨이에서 작동합니다."
+          "answer": "네, POS 소프트웨어는 무료이며 WooCommerce 모바일 앱에 포함되어 있습니다. 카드 리더기를 사용하는 경우 사용 중인 리더기 한 대당 월 $5.00 / £5.00의 요금이 부과되며, 카드 결제에는 이용하는 결제 제공업체의 대면 결제 요율이 적용됩니다. WCPOS의 무료 플러그인도 제한 없이 무료이며, 현금 결제를 받고 별도 단말기에서 받은 카드 결제를 기록합니다. Pro는 매장의 다른 WooCommerce 결제 게이트웨이를 활성화합니다."
         },
         "countries": {
           "question": "WooCommerce POS는 어느 국가를 지원하나요?",
@@ -2300,15 +2299,15 @@
         },
         "offline": {
           "question": "WooCommerce POS는 오프라인에서 작동하나요?",
-          "answer": "아니요. WooCommerce에 따르면 POS는 제품 동기화, 주문 생성, 결제 처리에 활성 인터넷 연결이 필요합니다. WCPOS는 오프라인 우선입니다. 제품, 고객, 장바구니가 로컬에 저장되므로 연결 없이도 카탈로그를 탐색하고 판매를 준비할 수 있으며, 연결이 복구되면 모두 동기화됩니다. 결제 완료와 쿠폰 검증에는 서버 연결이 필요합니다."
+          "answer": "아니요. WooCommerce에 따르면 POS는 제품 동기화, 주문 생성, 결제 처리에 활성 인터넷 연결이 필요합니다. WCPOS는 오프라인 우선입니다. 제품, 고객, 장바구니가 로컬에 저장되므로 연결 없이도 카탈로그를 탐색하고 장바구니를 만들고 현금 결제를 받을 수 있으며, 연결이 복구되면 모두 동기화됩니다. 연결된 카드 리더기, 온라인 결제 게이트웨이, 쿠폰 검증에는 연결이 필요합니다."
         },
         "devices": {
           "question": "WooCommerce POS는 어떤 기기에서 작동하나요?",
-          "answer": "WooCommerce는 모바일 앱 안의 POS가 iPad와 Android 태블릿용으로 설계되었다고 설명합니다. WCPOS는 모든 최신 브라우저, Windows와 macOS 데스크톱 앱, iOS와 Android 앱(베타)에서 작동합니다."
+          "answer": "WooCommerce는 모바일 앱 안의 POS가 iPad와 Android 태블릿용으로 설계되었다고 설명합니다. WCPOS는 모든 최신 브라우저, Windows, macOS와 Linux 데스크톱 앱, iOS와 Android 앱(베타)에서 작동합니다."
         },
         "tapToPay": {
           "question": "WCPOS는 Tap to Pay를 지원하나요?",
-          "answer": "아니요. WCPOS는 Tap to Pay나 WooPayments 대면 결제를 지원하지 않습니다. WCPOS 계산대의 카드 결제는 Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Vipps MobilePay 단말기 연동이나 체크아웃에서 작동하는 WooCommerce 결제 게이트웨이를 통해 처리됩니다."
+          "answer": "아직 지원하지 않습니다. iPhone과 Android의 Tap to Pay는 향후 WCPOS 앱 업데이트로 제공되며, WCPOS는 WooPayments 대면 결제를 지원하지 않습니다. WCPOS 계산대의 카드 결제는 Pro 단말기 연동 — Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Vipps MobilePay — 또는 Pro로 활성화한 WooCommerce 결제 게이트웨이를 통해 처리하거나, 별도 카드 단말기에서 받은 뒤 카드 결제로 기록합니다."
         },
         "expiry": {
           "question": "WCPOS Pro 라이선스가 만료되면 어떻게 되나요?",
@@ -2316,7 +2315,7 @@
         }
       },
       "footer": {
-        "factsDated": "WooCommerce POS에 관한 정보는 2026-10-06에 WooCommerce 자체 페이지(POS 문서, POS 페이지, WooPayments 수수료 페이지)에서 확인했습니다. WCPOS 정보는 wcpos.com에서 가져왔습니다. 분기마다 다시 확인합니다.",
+        "factsDated": "WooCommerce POS에 관한 정보는 2026-10-06에 WooCommerce 자체 페이지(POS 문서, POS 페이지, WooPayments 수수료 페이지)에서 확인했습니다. WCPOS 정보는 wcpos.com에서 가져왔습니다. WCPOS 정보는 2026-11-09에 출시된 WCPOS 2.0 기준이며, 앱과 플러그인 모두 버전 2.0이어야 합니다. 분기마다 다시 확인합니다.",
         "corrections": "오류를 발견하셨나요? support@wcpos.com으로 알려 주세요. 빠르게 수정하고 모든 변경을 기록합니다."
       }
     },
@@ -2331,7 +2330,7 @@
       },
       "shortAnswer": {
         "title": "간단한 결론",
-        "wcpos": "WCPOS는 WooCommerce 자체에 구축된 계산대입니다. WooCommerce 상품과 재고를 사용해 판매하고 모든 판매가 WooCommerce 주문이 되므로 동기화할 것이 없습니다. 모든 최신 브라우저와 Windows 및 macOS 데스크톱 앱, iOS 및 Android 앱(베타)에서 작동하며 모든 WooCommerce 결제 게이트웨이를 사용할 수 있습니다. 무료 버전에는 상품, 주문, 고객 수의 제한이 없으며, Pro는 Square Terminal을 포함한 카드 단말기 연동과 다중 매장 관리를 일회성 결제로 추가합니다. 이후 기능이 꺼지지 않습니다.",
+        "wcpos": "WCPOS는 WooCommerce 자체에 구축된 계산대입니다. WooCommerce 상품과 재고를 사용해 판매하고 모든 판매가 WooCommerce 주문이 되므로 동기화할 것이 없습니다. 모든 최신 브라우저와 Windows, macOS 및 Linux 데스크톱 앱, iOS 및 Android 앱(베타)에서 작동합니다. 무료 버전에는 상품, 주문, 고객 수의 제한이 없으며, Pro는 다중 매장 관리, 매장의 다른 WooCommerce 결제 게이트웨이, Square Terminal을 포함한 카드 단말기 연동을 일회성 결제로 추가합니다. 이후 기능이 꺼지지 않습니다.",
         "square": "Square for WooCommerce는 iOS 및 Android 기기의 Square Point of Sale 앱 또는 Square 자체 하드웨어인 Square Register에 내장된 Square Point of Sale과 WooCommerce 매장이라는 두 시스템을 연결하며, 확장 프로그램은 둘 사이의 상품 및 재고 데이터를 동기화합니다. Square에는 무료 요금제, iPhone과 Android의 Tap to Pay, 오프라인 카드 결제가 있습니다. 하지만 Square의 POS에서 생성한 주문은 WooCommerce에 동기화되지 않습니다. 대면 판매로 인한 재고 변경은 다음 예정된 확인 때 WooCommerce에 반영되고(기본 간격은 1시간), 확장 프로그램은 한 번에 Square 위치 한 곳만 연결합니다."
       },
       "glance": {
@@ -2352,7 +2351,7 @@
           },
           "devices": {
             "label": "기기",
-            "wcpos": "웹, 데스크톱 앱(Windows와 macOS), iOS와 Android 앱(베타); 기기와 계산원 무제한",
+            "wcpos": "웹, 데스크톱 앱(Windows, macOS와 Linux), iOS와 Android 앱(베타); 기기와 계산원 무제한",
             "square": "iOS 및 Android 기기의 Square Point of Sale 앱과 Square Point of Sale이 내장된 Square 자체 하드웨어인 Square Register"
           },
           "countries": {
@@ -2377,7 +2376,7 @@
           },
           "offline": {
             "label": "오프라인",
-            "wcpos": "오프라인에서 상품을 탐색하고 장바구니를 만들 수 있음; 결제 완료에는 연결 필요",
+            "wcpos": "오프라인에서 상품을 탐색하고 장바구니를 만들고 현금 판매를 할 수 있음; 연결된 카드 리더기와 온라인 게이트웨이에는 연결 필요",
             "square": "오프라인 카드 결제는 72시간 이내에 업로드해야 함; 만료, 거절 또는 분쟁이 발생한 결제는 판매자 책임"
           },
           "multiLocation": {
@@ -2395,14 +2394,14 @@
       "payments": {
         "title": "카드 결제는 어떻게 작동하나요?",
         "square": "Square의 POS는 iPhone과 Android의 Tap to Pay를 포함해 Square를 통한 카드 결제를 받습니다. 미국의 Square Free 요금제에서 대면 카드 결제(탭, 삽입 또는 긁기) 비용은 2.6% + 15¢입니다. Square에 따르면 Square 앱의 카드 결제는 미국, 캐나다, 호주, 일본, 영국, 아일랜드 공화국, 프랑스, 스페인에서 이용할 수 있으며, 확장 프로그램을 사용하려면 WooCommerce 통화가 Square 계정 통화와 일치해야 합니다.",
-        "wcpos": "WCPOS는 WooCommerce 자체 체크아웃을 통해 결제하므로 WooCommerce와 호환되는 모든 결제 게이트웨이를 계산대에서 사용할 수 있습니다. Pro는 Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Vipps MobilePay 카드 단말기 연동을 추가하며, 확장 카탈로그에서 클릭 한 번으로 설치할 수 있습니다. WCPOS는 Tap to Pay를 지원하지 않습니다.",
+        "wcpos": "WCPOS 2.0에는 자체 체크아웃이 있습니다. 장바구니 옆 결제 패널에서 현금 결제를 받고, 별도 단말기에서 받은 카드 결제를 기록하며, 한 주문을 여러 결제로 나누어 처리할 수 있습니다. Pro를 사용하면 계산대에서 매장의 다른 WooCommerce 결제 게이트웨이를 활성화하고, Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Vipps MobilePay 카드 단말기 연동을 추가할 수 있으며, 확장 카탈로그에서 클릭 한 번으로 설치할 수 있습니다. iPhone과 Android의 Tap to Pay는 아직 WCPOS에 없으며, 향후 앱 업데이트로 제공됩니다.",
         "both": "Square Terminal을 이미 사용 중이신가요? WCPOS Pro의 Square Terminal 게이트웨이는 WCPOS 계산대에서 해당 단말기로 WooCommerce 주문 결제를 직접 받고 결과를 주문에 기록합니다. 공식 Square for WooCommerce 플러그인을 사용한다면 환경과 위치 ID가 미리 입력됩니다. Square POS나 다른 연동에 로그인한 Terminal은 먼저 로그아웃해야 합니다."
       },
       "pricing": {
         "title": "비용은 얼마인가요?",
         "square": "Square의 POS에는 위치당 $0/month인 무료 요금제 Square Free가 있습니다. 미국의 Square Free에서 대면 카드 결제(탭, 삽입 또는 긁기) 비용은 2.6% + 15¢입니다.",
-        "wcpos": "WCPOS는 무료이며 제품, 주문, 고객, 현금 판매에 제한이 없습니다. Pro는 $129 일회성 결제로 1년간 업데이트와 우선 지원을 제공하거나, 평생 버전을 $399에 구매할 수 있습니다. 자동 갱신은 없으며 1년이 지나도 Pro는 계속 작동합니다. 어떤 기능도 꺼지지 않습니다. WCPOS는 거래 수수료를 부과하지 않으며 이용하는 결제 처리 업체의 요금만 지불합니다.",
-        "proAdds": "Pro 추가 기능: 다중 매장 관리, 카드 단말기 연동, 쿠폰, POS API를 통한 환불, 주문 내역, 계산대 고객 관리, 매장별 가격, 재고·가격 편집, 마감 보고서, 확장 디렉터리.",
+        "wcpos": "WCPOS는 무료이며 제품, 주문, 고객, 현금 판매에 제한이 없습니다. 2.0부터 무료 버전에는 시작 시 준비 현금, 현금 입출금, 마감 시 현금 집계 및 번호가 부여된 마감을 지원하는 계산대 1대, 분할 결제, 해당 계산대의 오늘 내역을 보여 주는 보고서 화면도 포함됩니다. Pro는 $129 일회성 결제로 1년간 업데이트와 우선 지원을 제공하거나, 평생 버전을 $399에 구매할 수 있습니다. 자동 갱신은 없으며 1년이 지나도 Pro는 계속 작동합니다. 어떤 기능도 꺼지지 않습니다. WCPOS는 거래 수수료를 부과하지 않으며 이용하는 결제 처리 업체의 요금만 지불합니다.",
+        "proAdds": "Pro 추가 기능: 다중 매장 관리, 추가 계산대, 카드 단말기 연동, 계산대에서 매장의 다른 WooCommerce 결제 게이트웨이 사용, 고객용 디스플레이, 쿠폰 화면, 계산대에서 환불, 주문 내역, 계산대 고객 관리, 매장별 가격, 재고·가격 편집, 이전 날짜 및 모든 계산대와 매장의 보고서, 확장 디렉터리.",
         "demoPrefix": "먼저",
         "demoLinkLabel": "demo.wcpos.com/pos",
         "demoSuffix": "에서 모든 기능을 체험해 보세요(로그인 demo / demo)."
@@ -2422,8 +2421,8 @@
         "title": "Square가 실제로 더 나은 점",
         "intro": "솔직한 비교에서는 양쪽의 장점을 모두 살펴봐야 합니다:",
         "free": "Square의 POS에는 무료 요금제 Square Free(위치당 $0/month)가 있습니다. WCPOS Pro는 $129 이상입니다.",
-        "tapToPay": "iPhone과 Android의 Tap to Pay: 고객이 여러분의 휴대전화에 카드를 대면 됩니다. WCPOS는 Tap to Pay를 지원하지 않습니다.",
-        "offline": "오프라인 카드 결제: Square의 POS는 인터넷이 없어도 카드를 계속 받습니다. 72시간 이내에 다시 연결해 결제를 업로드해야 하며 만료, 거절 또는 분쟁이 발생한 결제는 여러분의 책임입니다. WCPOS에서는 오프라인으로 상품을 탐색하고 장바구니를 만들 수 있지만 결제 완료에는 연결이 필요합니다.",
+        "tapToPay": "iPhone과 Android의 Tap to Pay: 고객이 여러분의 휴대전화에 카드를 대면 됩니다. WCPOS에는 아직 Tap to Pay가 없으며, 향후 앱 업데이트로 제공됩니다.",
+        "offline": "오프라인 카드 결제: Square의 POS는 인터넷이 없어도 카드를 계속 받습니다. 72시간 이내에 다시 연결해 결제를 업로드해야 하며 만료, 거절 또는 분쟁이 발생한 결제는 여러분의 책임입니다. WCPOS는 오프라인에서도 현금 판매를 계속할 수 있지만, 연결된 카드 리더기에는 연결이 필요합니다.",
         "hardware": "Square 자체 하드웨어: Square Register에는 Square Point of Sale이 내장되어 있어 계산대와 그 소프트웨어를 같은 회사에서 제공합니다. WCPOS는 하드웨어를 판매하지 않으며 이미 보유한 컴퓨터, 태블릿, 휴대전화에서 실행됩니다.",
         "outro": "iOS 또는 Android 기기나 Square Register로 한 곳에서 대면 판매하고 Square로 결제를 받으며 대면 판매를 WooCommerce 주문으로 기록할 필요가 없다면, Square의 POS와 확장 프로그램으로 충분할 수 있습니다."
       },
@@ -2431,7 +2430,7 @@
         "title": "무엇을 선택해야 할까요?",
         "wcpos": {
           "title": "이런 경우 WCPOS를 선택하세요:",
-          "body": "온라인과 대면의 모든 판매가 동기화할 필요 없는 단일 카탈로그의 WooCommerce 주문이 되기를 원하거나, 매장을 둘 이상 운영하거나, Square의 8개국 밖에서 판매하거나, 웹 브라우저나 Windows 및 macOS 데스크톱 앱에서 계산대를 사용하고 싶거나, Square 이외의 결제 게이트웨이 또는 카드 단말기를 사용하고 싶다면."
+          "body": "온라인과 대면의 모든 판매가 동기화할 필요 없는 단일 카탈로그의 WooCommerce 주문이 되기를 원하거나, 매장을 둘 이상 운영하거나, Square의 8개국 밖에서 판매하거나, 웹 브라우저나 Windows, macOS 및 Linux 데스크톱 앱에서 계산대를 사용하고 싶거나, Square 이외의 결제 게이트웨이 또는 카드 단말기를 사용하고 싶다면."
         },
         "square": {
           "title": "이런 경우 Square for WooCommerce를 선택하세요:",
@@ -2446,7 +2445,7 @@
         },
         "free": {
           "question": "Square POS는 무료인가요?",
-          "answer": "Square에는 위치당 $0/month인 무료 요금제 Square Free가 있으며, 카드 결제에는 Square 처리 수수료가 부과됩니다. 미국의 Square Free에서 탭, 삽입 또는 긁기 결제에는 2.6% + 15¢가 부과됩니다. WCPOS의 무료 플러그인도 수량 제한 없이 무료이며 모든 WooCommerce 결제 게이트웨이와 함께 작동합니다."
+          "answer": "Square에는 위치당 $0/month인 무료 요금제 Square Free가 있으며, 카드 결제에는 Square 처리 수수료가 부과됩니다. 미국의 Square Free에서 탭, 삽입 또는 긁기 결제에는 2.6% + 15¢가 부과됩니다. WCPOS의 무료 플러그인도 수량 제한 없이 무료이며, 현금 결제를 받고 별도 단말기에서 받은 카드 결제를 기록합니다. Pro는 매장의 다른 WooCommerce 결제 게이트웨이를 활성화합니다."
         },
         "terminal": {
           "question": "WCPOS에서 Square Terminal을 사용할 수 있나요?",
@@ -2454,7 +2453,7 @@
         },
         "offline": {
           "question": "Square POS는 오프라인에서 작동하나요?",
-          "answer": "Square의 POS는 오프라인에서 카드 결제를 받을 수 있습니다. 오프라인 세션을 시작한 뒤 72시간 이내에 다시 연결해 결제를 업로드해야 하며, 오프라인에서 받은 결제가 만료되거나 거절되거나 분쟁이 발생하면 그에 대한 책임은 여러분에게 있습니다. EBT/SNAP, Afterpay, Cash App Pay, Square Gift Cards, iPhone 및 Android의 Tap to Pay, 수동으로 입력한 카드 번호는 오프라인에서 사용할 수 없습니다. WCPOS는 상품, 고객, 장바구니를 로컬에 저장하므로 연결 없이 카탈로그를 탐색하고 판매를 준비할 수 있지만 결제 완료에는 서버 연결이 필요합니다."
+          "answer": "Square의 POS는 오프라인에서 카드 결제를 받을 수 있습니다. 오프라인 세션을 시작한 뒤 72시간 이내에 다시 연결해 결제를 업로드해야 하며, 오프라인에서 받은 결제가 만료되거나 거절되거나 분쟁이 발생하면 그에 대한 책임은 여러분에게 있습니다. EBT/SNAP, Afterpay, Cash App Pay, Square Gift Cards, iPhone 및 Android의 Tap to Pay, 수동으로 입력한 카드 번호는 오프라인에서 사용할 수 없습니다. WCPOS는 상품, 고객, 장바구니를 로컬에 저장하므로 연결 없이 카탈로그를 탐색하고 장바구니를 만들고 현금 결제를 받을 수 있으며, 이러한 판매는 연결이 복구되면 동기화됩니다. 연결된 카드 리더기와 온라인 결제 게이트웨이에는 연결이 필요합니다."
         },
         "locations": {
           "question": "Square for WooCommerce는 위치를 둘 이상 동기화할 수 있나요?",
@@ -2466,7 +2465,7 @@
         }
       },
       "footer": {
-        "factsDated": "Square 관련 사실은 2026-10-06에 Square 자체 페이지(수수료 페이지, 가격 발표, 오프라인 결제, Tap to Pay, 기기 및 국제 서비스 제공에 관한 도움말)와 Square for WooCommerce 확장 프로그램의 WooCommerce 문서에서 확인했습니다. WCPOS 관련 사실은 wcpos.com과 docs.wcpos.com을 참조했습니다. 분기마다 다시 확인합니다.",
+        "factsDated": "Square 관련 사실은 2026-10-06에 Square 자체 페이지(수수료 페이지, 가격 발표, 오프라인 결제, Tap to Pay, 기기 및 국제 서비스 제공에 관한 도움말)와 Square for WooCommerce 확장 프로그램의 WooCommerce 문서에서 확인했습니다. WCPOS 관련 사실은 wcpos.com과 docs.wcpos.com을 참조했습니다. WCPOS 정보는 2026-11-09에 출시된 WCPOS 2.0 기준이며, 앱과 플러그인 모두 버전 2.0이어야 합니다. 분기마다 다시 확인합니다.",
         "corrections": "오류를 발견하셨나요? support@wcpos.com으로 알려 주세요. 빠르게 수정하고 모든 변경을 기록합니다."
       }
     },
@@ -2481,7 +2480,7 @@
       },
       "shortAnswer": {
         "title": "간단한 결론",
-        "wcpos": "WCPOS는 WooCommerce용 무료 오픈 소스 POS 플러그인으로 제품, 주문, 고객 수에 제한이 없습니다. 최신 브라우저, Windows 및 macOS용 데스크톱 앱, iOS 및 Android용 앱(베타)에서 모든 WooCommerce 결제 게이트웨이와 함께 작동합니다. WCPOS는 거래 수수료를 부과하지 않습니다. Pro는 일회성 결제로 여러 매장 관리와 카드 단말기 연동을 추가합니다. 업데이트 1년 제공에 $129 또는 평생 버전 $399이며, 1년이 지나도 계속 작동합니다.",
+        "wcpos": "WCPOS는 WooCommerce용 무료 오픈 소스 POS 플러그인으로 제품, 주문, 고객 수에 제한이 없습니다. 최신 브라우저, Windows, macOS 및 Linux용 데스크톱 앱, iOS 및 Android용 앱(베타)에서 작동합니다. WCPOS는 거래 수수료를 부과하지 않습니다. Pro는 일회성 결제로 여러 매장 관리, 카드 단말기 연동, 매장의 다른 WooCommerce 결제 게이트웨이를 추가합니다. 업데이트 1년 제공에 $129 또는 평생 버전 $399이며, 1년이 지나도 계속 작동합니다.",
         "jovvie": "BizSwoop의 Jovvie는 공식 WooCommerce Marketplace에 등록된 WooCommerce용 POS 플러그인입니다. 2026년 7월 기준 요금제는 무료부터 월 $29까지였으며, BizSwoop는 구독료에 더해 거래당 0.5%~2.5%의 플랫폼 수수료를 부과했습니다. Stripe Terminal을 통해 카드 결제를 받으며, BizSwoop는 Stripe Terminal 파트너입니다. 당시 네이티브 앱은 없었습니다. WordPress.org에서는 활성 설치 약 200건, 평점 4.5점이었습니다."
       },
       "glance": {
@@ -2507,12 +2506,12 @@
           },
           "apps": {
             "label": "앱",
-            "wcpos": "웹, 데스크톱 앱(Windows·macOS), iOS·Android 앱(베타)",
+            "wcpos": "웹, 데스크톱 앱(Windows·macOS·Linux), iOS·Android 앱(베타)",
             "jovvie": "네이티브 앱 없음"
           },
           "offline": {
             "label": "오프라인",
-            "wcpos": "오프라인에서 상품을 탐색하고 장바구니를 만들 수 있음; 결제 완료에는 연결 필요",
+            "wcpos": "오프라인에서 상품을 탐색하고 장바구니를 만들고 현금 판매를 할 수 있음; 연결된 카드 리더기와 온라인 게이트웨이에는 연결 필요",
             "jovvie": "자체 조사에서 확인되지 않음 — BizSwoop에 문의하세요"
           },
           "availability": {
@@ -2530,9 +2529,9 @@
       "pricing": {
         "title": "비용은 얼마인가요?",
         "jovvie": "2026년 7월 기준 Jovvie 요금제는 무료부터 월 $29까지였으며, BizSwoop는 구독료에 더해 거래당 0.5%~2.5%의 플랫폼 수수료를 부과했습니다.",
-        "wcpos": "WCPOS는 무료이며 제품, 주문, 고객, 현금 판매에 제한이 없습니다. Pro는 $129 일회성 결제로 1년간 업데이트와 우선 지원을 제공하거나, 평생 버전을 $399에 구매할 수 있습니다. 자동 갱신은 없으며 1년이 지나도 Pro는 계속 작동합니다. 어떤 기능도 꺼지지 않습니다. WCPOS는 거래 수수료를 부과하지 않으며 이용하는 결제 처리 업체의 요금만 지불합니다.",
+        "wcpos": "WCPOS는 무료이며 제품, 주문, 고객, 현금 판매에 제한이 없습니다. 2.0부터 무료 버전에는 시작 시 준비 현금, 현금 입출금, 마감 시 현금 집계 및 번호가 부여된 마감을 지원하는 계산대 1대, 분할 결제, 해당 계산대의 오늘 내역을 보여 주는 보고서 화면도 포함됩니다. Pro는 $129 일회성 결제로 1년간 업데이트와 우선 지원을 제공하거나, 평생 버전을 $399에 구매할 수 있습니다. 자동 갱신은 없으며 1년이 지나도 Pro는 계속 작동합니다. 어떤 기능도 꺼지지 않습니다. WCPOS는 거래 수수료를 부과하지 않으며 이용하는 결제 처리 업체의 요금만 지불합니다.",
         "math": "비율로 부과되는 수수료는 매출이 늘면 함께 늘어납니다. 0.5%~2.5%라면 수수료가 적용되는 매출 $10,000마다 플랫폼 수수료가 $50~$250 발생하며, 구독료와 카드 결제 처리 업체의 요금은 별도입니다. WCPOS Pro는 판매액에 관계없이 동일한 $129 또는 $399입니다.",
-        "proAdds": "Pro 추가 기능: 다중 매장 관리, 카드 단말기 연동, 쿠폰, POS API를 통한 환불, 주문 내역, 계산대 고객 관리, 매장별 가격, 재고·가격 편집, 마감 보고서, 확장 디렉터리.",
+        "proAdds": "Pro 추가 기능: 다중 매장 관리, 추가 계산대, 카드 단말기 연동, 계산대에서 매장의 다른 WooCommerce 결제 게이트웨이 사용, 고객용 디스플레이, 쿠폰 화면, 계산대에서 환불, 주문 내역, 계산대 고객 관리, 매장별 가격, 재고·가격 편집, 이전 날짜 및 모든 계산대와 매장의 보고서, 확장 디렉터리.",
         "demoPrefix": "먼저",
         "demoLinkLabel": "demo.wcpos.com/pos",
         "demoSuffix": "에서 모든 기능을 체험해 보세요(로그인 demo / demo)."
@@ -2548,7 +2547,7 @@
         "title": "무엇을 선택해야 할까요?",
         "wcpos": {
           "title": "이런 경우 WCPOS를 선택하세요:",
-          "body": "POS의 거래 수수료가 없기를 원하거나, 기능이 꺼지지 않는 일회성 결제, Windows 및 macOS용 데스크톱 앱 또는 iOS 및 Android용 앱, 오픈 소스 코드, 또는 Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Vipps MobilePay 중에서 카드 단말기를 선택하고 싶은 경우."
+          "body": "POS의 거래 수수료가 없기를 원하거나, 기능이 꺼지지 않는 일회성 결제, Windows, macOS 및 Linux용 데스크톱 앱 또는 iOS 및 Android용 앱, 오픈 소스 코드, 또는 Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Vipps MobilePay 중에서 카드 단말기를 선택하고 싶은 경우."
         },
         "jovvie": {
           "title": "Jovvie를 선택하세요:",
@@ -2563,7 +2562,7 @@
         },
         "offline": {
           "question": "Jovvie는 오프라인에서 작동하나요?",
-          "answer": "자체 조사에서는 Jovvie가 인터넷 연결 없이 작동하는지 확인하지 못했으므로 이에 의존하기 전에 BizSwoop에 문의하세요. WCPOS는 상품, 고객, 장바구니를 로컬에 저장하므로 연결 없이 카탈로그를 탐색하고 판매를 준비할 수 있지만 결제 완료에는 서버 연결이 필요합니다."
+          "answer": "자체 조사에서는 Jovvie가 인터넷 연결 없이 작동하는지 확인하지 못했으므로 이에 의존하기 전에 BizSwoop에 문의하세요. WCPOS는 상품, 고객, 장바구니를 로컬에 저장하므로 연결 없이 카탈로그를 탐색하고 장바구니를 만들고 현금 결제를 받을 수 있으며, 이러한 판매는 연결이 복구되면 동기화됩니다. 연결된 카드 리더기와 온라인 결제 게이트웨이에는 연결이 필요합니다."
         },
         "stripe": {
           "question": "WCPOS에서 Stripe 카드 리더를 사용할 수 있나요?",
@@ -2571,7 +2570,7 @@
         },
         "apps": {
           "question": "Jovvie에 네이티브 앱이 있나요?",
-          "answer": "2026년 7월 기준 Jovvie에는 네이티브 앱이 없었습니다. WCPOS는 최신 브라우저, Windows 및 macOS용 데스크톱 앱, iOS 및 Android용 앱(베타)에서 작동합니다."
+          "answer": "2026년 7월 기준 Jovvie에는 네이티브 앱이 없었습니다. WCPOS는 최신 브라우저, Windows, macOS 및 Linux용 데스크톱 앱, iOS 및 Android용 앱(베타)에서 작동합니다."
         },
         "expiry": {
           "question": "WCPOS Pro 라이선스가 만료되면 어떻게 되나요?",
@@ -2579,7 +2578,7 @@
         }
       },
       "footer": {
-        "factsDated": "Jovvie 관련 정보는 2026-07-09 기준 자체 경쟁사 조사 결과이며 이후 재확인하지 않았습니다. 결정하기 전에 jovvie.com에서 현재 가격을 확인하세요. WCPOS 관련 정보는 wcpos.com, docs.wcpos.com 및 WordPress.org를 출처로 합니다. 분기마다 다시 확인합니다.",
+        "factsDated": "Jovvie 관련 정보는 2026-07-09 기준 자체 경쟁사 조사 결과이며 이후 재확인하지 않았습니다. 결정하기 전에 jovvie.com에서 현재 가격을 확인하세요. WCPOS 관련 정보는 wcpos.com, docs.wcpos.com 및 WordPress.org를 출처로 합니다. WCPOS 정보는 2026-11-09에 출시된 WCPOS 2.0 기준이며, 앱과 플러그인 모두 버전 2.0이어야 합니다. 분기마다 다시 확인합니다.",
         "corrections": "오류를 발견하셨나요? support@wcpos.com으로 알려 주세요. 빠르게 수정하고 모든 변경을 기록합니다."
       }
     },
@@ -2590,11 +2589,11 @@
       },
       "hero": {
         "title": "WCPOS vs Vitepos",
-        "subtitle": "WCPOS와 Appsbd의 Vitepos는 모두 WooCommerce 스토어에 POS를 추가하며, 둘 다 WordPress.org에 무료 버전이 있습니다. Vitepos에는 레스토랑 모드, 고객용 디스플레이, 오프라인 주문 모드가 있고 WCPOS에는 데스크톱 및 모바일 앱과 더 다양한 카드 단말기 선택지가 있습니다. 두 제품의 차이와 Vitepos가 더 나은 선택인 경우를 비교합니다."
+        "subtitle": "WCPOS와 Appsbd의 Vitepos는 모두 WooCommerce 스토어에 POS를 추가하며, 둘 다 WordPress.org에 무료 버전이 있습니다. Vitepos에는 레스토랑 모드, 셀프서비스 키오스크, 오프라인 주문 모드가 있고 WCPOS에는 데스크톱 및 모바일 앱과 더 다양한 카드 단말기 선택지가 있습니다. 두 제품의 차이와 Vitepos가 더 나은 선택인 경우를 비교합니다."
       },
       "shortAnswer": {
         "title": "간단한 결론",
-        "wcpos": "WCPOS는 WooCommerce용 무료 오픈 소스 POS 플러그인으로 제품, 주문, 고객 수에 제한이 없습니다. 최신 브라우저, Windows 및 macOS용 데스크톱 앱, iOS 및 Android용 앱(베타)에서 모든 WooCommerce 결제 게이트웨이와 함께 작동합니다. WCPOS는 거래 수수료를 부과하지 않습니다. Pro는 일회성 결제로 여러 매장 관리와 카드 단말기 연동을 추가합니다. 업데이트 1년 제공에 $129 또는 평생 버전 $399이며, 1년이 지나도 계속 작동합니다.",
+        "wcpos": "WCPOS는 WooCommerce용 무료 오픈 소스 POS 플러그인으로 제품, 주문, 고객 수에 제한이 없습니다. 최신 브라우저, Windows, macOS 및 Linux용 데스크톱 앱, iOS 및 Android용 앱(베타)에서 작동합니다. WCPOS는 거래 수수료를 부과하지 않습니다. Pro는 일회성 결제로 여러 매장 관리, 카드 단말기 연동, 매장의 다른 WooCommerce 결제 게이트웨이를 추가합니다. 업데이트 1년 제공에 $129 또는 평생 버전 $399이며, 1년이 지나도 계속 작동합니다.",
         "vitepos": "Appsbd의 Vitepos는 WordPress.org에 무료 버전인 Vitepos Lite가 있는 WooCommerce POS 플러그인입니다. 2026-10-07에 vitepos.com에는 Vitepos Pro의 1개 사이트용 연간 요금제가 $79부터, 1개 사이트용 평생 라이선스가 $299로 표시되어 있었습니다. Vitepos는 오프라인에서도 주문 처리를 계속하고 연결이 돌아오면 동기화한다고 설명하며, 서빙 직원·주방·테이블 관리 기능이 있는 식료품점 및 레스토랑 모드를 제공합니다. 웹 브라우저에서 실행되며 — Vitepos 자체 블로그에 따르면 전용 모바일 앱은 없습니다 — Stripe Terminal과 Wallee를 통한 단말기 결제를 받습니다. WordPress.org에서는 활성 설치 1,000+, 리뷰 54개의 평점이 4.7점이었습니다."
       },
       "glance": {
@@ -2615,12 +2614,12 @@
           },
           "apps": {
             "label": "앱",
-            "wcpos": "웹, 데스크톱 앱(Windows·macOS), iOS·Android 앱(베타)",
+            "wcpos": "웹, 데스크톱 앱(Windows·macOS·Linux), iOS·Android 앱(베타)",
             "vitepos": "웹 브라우저에서 실행; Vitepos 자체 블로그에 따르면 전용 모바일 앱은 없음"
           },
           "offline": {
             "label": "오프라인",
-            "wcpos": "오프라인에서 상품을 탐색하고 장바구니를 만들 수 있음; 결제 완료에는 연결 필요",
+            "wcpos": "오프라인에서 상품을 탐색하고 장바구니를 만들고 현금 판매를 할 수 있음; 연결된 카드 리더기와 온라인 게이트웨이에는 연결 필요",
             "vitepos": "오프라인에서도 주문 처리를 계속하고 재연결 시 동기화한다고 설명; WordPress.org 등록 페이지에서는 오프라인 주문을 Pro로 표시"
           },
           "restaurant": {
@@ -2630,7 +2629,7 @@
           },
           "display": {
             "label": "고객용 디스플레이",
-            "wcpos": "없음",
+            "wcpos": "Pro에서 지원: 모든 브라우저에서 열고 코드로 계산대와 페어링",
             "vitepos": "있음"
           },
           "kiosk": {
@@ -2640,7 +2639,7 @@
           },
           "outlets": {
             "label": "매장과 계산대",
-            "wcpos": "Pro에서 여러 매장 관리; 기기와 계산원 수 무제한",
+            "wcpos": "무료 버전은 계산대 1대; Pro는 추가 계산대와 다중 매장 관리; 기기와 계산원 수 무제한",
             "vitepos": "WordPress.org 등록 페이지에 따르면 매장과 카운터 수 무제한"
           },
           "wporg": {
@@ -2653,9 +2652,9 @@
       "pricing": {
         "title": "비용은 얼마인가요?",
         "vitepos": "2026-10-07에 vitepos.com에는 Vitepos Lite가 무료, Vitepos Pro의 1개 사이트용 연간 요금제가 $79, 5개 사이트용 연간 요금제가 $149로 표시되어 있었습니다. 평생 라이선스는 1개 사이트용 $299 또는 5개 사이트용 $499였고, 각각 1년의 프리미엄 지원이 포함되었습니다. 현재 가격은 vitepos.com/pricing에서 확인하세요.",
-        "wcpos": "WCPOS는 무료이며 제품, 주문, 고객, 현금 판매에 제한이 없습니다. Pro는 $129 일회성 결제로 1년간 업데이트와 우선 지원을 제공하거나, 평생 버전을 $399에 구매할 수 있습니다. 자동 갱신은 없으며 1년이 지나도 Pro는 계속 작동합니다. 어떤 기능도 꺼지지 않습니다. WCPOS는 거래 수수료를 부과하지 않으며 이용하는 결제 처리 업체의 요금만 지불합니다.",
+        "wcpos": "WCPOS는 무료이며 제품, 주문, 고객, 현금 판매에 제한이 없습니다. 2.0부터 무료 버전에는 시작 시 준비 현금, 현금 입출금, 마감 시 현금 집계 및 번호가 부여된 마감을 지원하는 계산대 1대, 분할 결제, 해당 계산대의 오늘 내역을 보여 주는 보고서 화면도 포함됩니다. Pro는 $129 일회성 결제로 1년간 업데이트와 우선 지원을 제공하거나, 평생 버전을 $399에 구매할 수 있습니다. 자동 갱신은 없으며 1년이 지나도 Pro는 계속 작동합니다. 어떤 기능도 꺼지지 않습니다. WCPOS는 거래 수수료를 부과하지 않으며 이용하는 결제 처리 업체의 요금만 지불합니다.",
         "compare": "정가 기준 Vitepos Pro는 WCPOS Pro보다 저렴합니다. 1년은 $79 대 $129, 평생 라이선스는 $299 대 $399입니다. 결정하기 전에 각 Pro 버전에 포함된 내용을 비교하세요.",
-        "proAdds": "Pro 추가 기능: 다중 매장 관리, 카드 단말기 연동, 쿠폰, POS API를 통한 환불, 주문 내역, 계산대 고객 관리, 매장별 가격, 재고·가격 편집, 마감 보고서, 확장 디렉터리.",
+        "proAdds": "Pro 추가 기능: 다중 매장 관리, 추가 계산대, 카드 단말기 연동, 계산대에서 매장의 다른 WooCommerce 결제 게이트웨이 사용, 고객용 디스플레이, 쿠폰 화면, 계산대에서 환불, 주문 내역, 계산대 고객 관리, 매장별 가격, 재고·가격 편집, 이전 날짜 및 모든 계산대와 매장의 보고서, 확장 디렉터리.",
         "demoPrefix": "먼저",
         "demoLinkLabel": "demo.wcpos.com/pos",
         "demoSuffix": "에서 모든 기능을 체험해 보세요(로그인 demo / demo)."
@@ -2664,22 +2663,21 @@
         "title": "Vitepos가 실제로 더 나은 점",
         "intro": "솔직한 비교에서는 양쪽의 장점을 모두 살펴봐야 합니다:",
         "restaurant": "레스토랑 모드 — Vitepos에는 서빙 직원용 패널, 주방 패널, 테이블 관리 기능을 갖춘 식료품점 및 레스토랑 모드가 있습니다. WCPOS에는 레스토랑 모드가 없습니다.",
-        "offline": "오프라인 주문 — Vitepos는 인터넷 연결이 없어도 주문 처리를 계속하고 연결이 돌아오면 동기화한다고 설명합니다. WCPOS는 오프라인에서 상품을 탐색하고 장바구니를 만들 수 있지만 결제 완료에는 연결이 필요합니다.",
-        "display": "고객용 디스플레이 — Vitepos에는 있고 WCPOS에는 없습니다.",
+        "offline": "오프라인 주문 — Vitepos는 인터넷 연결이 없어도 주문 처리를 계속하고 연결이 돌아오면 동기화한다고 설명합니다. WCPOS는 오프라인에서도 현금 판매를 계속할 수 있지만, 연결된 카드 리더기와 온라인 게이트웨이에는 연결이 필요합니다.",
         "kiosk": "셀프서비스 키오스크 — Vitepos는 Kiosk App을 애드온으로 판매합니다. WCPOS에는 키오스크 모드가 없습니다.",
         "price": "더 낮은 정가 — Vitepos Pro의 1개 사이트용 연간 요금제는 $79부터이고 WCPOS Pro는 $129입니다.",
         "rating": "WordPress.org에서 더 높은 평점 — 리뷰 54개 기준 별점 4.7, WCPOS는 3.7입니다.",
-        "outro": "레스토랑이나 카페를 운영하고 고객용 디스플레이나 셀프서비스 키오스크가 필요하거나 오프라인 주문 모드를 원한다면 Vitepos가 더 나은 선택일 수 있습니다."
+        "outro": "레스토랑이나 카페를 운영하거나 셀프서비스 키오스크가 필요하거나 오프라인 주문 모드를 원한다면 Vitepos가 더 나은 선택일 수 있습니다."
       },
       "choose": {
         "title": "무엇을 선택해야 할까요?",
         "wcpos": {
           "title": "이런 경우 WCPOS를 선택하세요:",
-          "body": "Windows 및 macOS용 데스크톱 앱이나 iOS 및 Android용 앱을 원하거나 Stripe Terminal 이외의 카드 단말기를 원한다면: WCPOS Pro는 SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Vipps MobilePay도 연동합니다."
+          "body": "Windows, macOS 및 Linux용 데스크톱 앱이나 iOS 및 Android용 앱을 원하거나 Stripe Terminal 이외의 카드 단말기를 원한다면: WCPOS Pro는 SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Vipps MobilePay도 연동합니다."
         },
         "vitepos": {
           "title": "이런 경우 Vitepos를 선택하세요:",
-          "body": "레스토랑이나 카페를 운영하며 서빙 직원·주방·테이블 관리를 원하거나, 고객용 디스플레이나 셀프서비스 키오스크가 필요하거나, 오프라인 주문 모드를 원하거나, Stripe Terminal 또는 Wallee로 카드 결제를 받거나, 더 낮은 정가를 원하는 경우."
+          "body": "레스토랑이나 카페를 운영하며 서빙 직원·주방·테이블 관리를 원하거나, 셀프서비스 키오스크가 필요하거나, 오프라인 주문 모드를 원하거나, Stripe Terminal 또는 Wallee로 카드 결제를 받거나, 더 낮은 정가를 원하는 경우."
         }
       },
       "faq": {
@@ -2690,7 +2688,7 @@
         },
         "offline": {
           "question": "Vitepos는 오프라인에서 작동하나요?",
-          "answer": "Vitepos는 가능하다고 설명합니다. 해당 제품의 페이지에 따르면 데이터를 로컬에 저장하고 인터넷 연결 없이 주문 처리를 계속하며, 연결이 돌아오면 WooCommerce에 동기화합니다. WordPress.org 등록 페이지에서는 오프라인 주문을 Pro 기능으로 표시합니다. WCPOS는 상품, 고객, 장바구니를 로컬에 저장하므로 연결 없이 카탈로그를 탐색하고 판매를 준비할 수 있지만 결제 완료에는 서버 연결이 필요합니다."
+          "answer": "Vitepos는 가능하다고 설명합니다. 해당 제품의 페이지에 따르면 데이터를 로컬에 저장하고 인터넷 연결 없이 주문 처리를 계속하며, 연결이 돌아오면 WooCommerce에 동기화합니다. WordPress.org 등록 페이지에서는 오프라인 주문을 Pro 기능으로 표시합니다. WCPOS는 상품, 고객, 장바구니를 로컬에 저장하므로 연결 없이 카탈로그를 탐색하고 장바구니를 만들고 현금 결제를 받을 수 있으며, 이러한 판매는 연결이 복구되면 동기화됩니다. 연결된 카드 리더기와 온라인 결제 게이트웨이에는 연결이 필요합니다."
         },
         "restaurant": {
           "question": "WCPOS에 레스토랑 모드가 있나요?",
@@ -2698,7 +2696,7 @@
         },
         "apps": {
           "question": "Vitepos에 네이티브 앱이 있나요?",
-          "answer": "Vitepos는 휴대전화, 태블릿, 데스크톱의 웹 브라우저에서 실행되며, 자체 블로그에 따르면 전용 모바일 앱은 없습니다. 브라우저에서 바로가기를 추가할 수 있습니다. WCPOS는 최신 브라우저, Windows 및 macOS용 데스크톱 앱, iOS 및 Android용 앱(베타)에서 작동합니다."
+          "answer": "Vitepos는 휴대전화, 태블릿, 데스크톱의 웹 브라우저에서 실행되며, 자체 블로그에 따르면 전용 모바일 앱은 없습니다. 브라우저에서 바로가기를 추가할 수 있습니다. WCPOS는 최신 브라우저, Windows, macOS 및 Linux용 데스크톱 앱, iOS 및 Android용 앱(베타)에서 작동합니다."
         },
         "terminals": {
           "question": "Vitepos와 WCPOS는 어떤 카드 단말기를 지원하나요?",
@@ -2722,7 +2720,7 @@
         }
       },
       "footer": {
-        "factsDated": "Vitepos 정보는 2026-10-07에 vitepos.com과 WordPress.org 등록 페이지에서 확인했습니다(출처 참조). 결정하기 전에 현재 가격은 vitepos.com에서 확인하세요. WCPOS 정보는 wcpos.com, docs.wcpos.com, WordPress.org를 출처로 합니다. 분기마다 다시 확인합니다.",
+        "factsDated": "Vitepos 정보는 2026-10-07에 vitepos.com과 WordPress.org 등록 페이지에서 확인했습니다(출처 참조). 결정하기 전에 현재 가격은 vitepos.com에서 확인하세요. WCPOS 정보는 wcpos.com, docs.wcpos.com, WordPress.org를 출처로 합니다. WCPOS 정보는 2026-11-09에 출시된 WCPOS 2.0 기준이며, 앱과 플러그인 모두 버전 2.0이어야 합니다. 분기마다 다시 확인합니다.",
         "corrections": "오류를 발견하셨나요? support@wcpos.com으로 알려 주세요. 빠르게 수정하고 모든 변경을 기록합니다."
       }
     },
@@ -2733,11 +2731,11 @@
       },
       "hero": {
         "title": "WCPOS vs YITH Point of Sale",
-        "subtitle": "WCPOS와 YITH Point of Sale for WooCommerce는 모두 WooCommerce 스토어에 POS를 추가합니다. YITH Point of Sale은 브라우저에서 스토어, 계산대, 계산대의 현금을 관리합니다. WCPOS에는 무료 버전, 데스크톱 및 모바일 앱, 카드 단말기 연동이 있으며 오프라인에서 상품을 탐색하고 장바구니를 구성할 수 있습니다. 두 제품의 차이와 YITH Point of Sale이 더 나은 선택인 경우를 비교합니다."
+        "subtitle": "WCPOS와 YITH Point of Sale for WooCommerce는 모두 WooCommerce 스토어에 POS를 추가합니다. YITH Point of Sale은 브라우저에서 스토어, 계산대, 계산대의 현금을 관리합니다. WCPOS에는 자체 계산대, 현금 집계 및 분할 결제를 갖춘 무료 버전, 데스크톱 및 모바일 앱, 카드 단말기 연동이 있으며 오프라인에서도 현금 판매를 계속할 수 있습니다. 두 제품의 차이와 YITH Point of Sale이 더 나은 선택인 경우를 비교합니다."
       },
       "shortAnswer": {
         "title": "간단한 결론",
-        "wcpos": "WCPOS는 WooCommerce용 무료 오픈 소스 POS 플러그인으로 제품, 주문, 고객 수에 제한이 없습니다. 최신 브라우저, Windows 및 macOS용 데스크톱 앱, iOS 및 Android용 앱(베타)에서 모든 WooCommerce 결제 게이트웨이와 함께 작동합니다. WCPOS는 거래 수수료를 부과하지 않습니다. Pro는 일회성 결제로 여러 매장 관리와 카드 단말기 연동을 추가합니다. 업데이트 1년 제공에 $129 또는 평생 버전 $399이며, 1년이 지나도 계속 작동합니다.",
+        "wcpos": "WCPOS는 WooCommerce용 무료 오픈 소스 POS 플러그인으로 제품, 주문, 고객 수에 제한이 없습니다. 최신 브라우저, Windows, macOS 및 Linux용 데스크톱 앱, iOS 및 Android용 앱(베타)에서 작동합니다. WCPOS는 거래 수수료를 부과하지 않습니다. 2.0부터 무료 버전에는 시작 시 준비 현금, 현금 입출금, 마감 시 현금 집계 및 번호가 부여된 마감을 지원하는 계산대와 분할 결제가 포함됩니다. Pro는 일회성 결제로 여러 매장 관리, 추가 계산대, 카드 단말기 연동, 매장의 다른 WooCommerce 결제 게이트웨이를 추가합니다. 업데이트 1년 제공에 $129 또는 평생 버전 $399이며, 1년이 지나도 계속 작동합니다.",
         "yith": "YITH의 YITH Point of Sale for WooCommerce는 WooCommerce용 유료 POS 플러그인으로, 매년 자동 갱신되는 연간 라이선스로 판매됩니다. 제품 페이지에는 무료 버전이 언급되어 있지 않습니다. 웹 브라우저에서 실행되며 스토어별로 재고를 분리하면서 스토어와 계산대를 무제한으로 둘 수 있고 분할 결제를 지원합니다. 오프라인 모드가 없고 카드 단말기에도 연결되지 않습니다. YITH 문서에 따르면 모든 결제는 수동으로 처리됩니다. 2026-10-07에 제품 페이지에는 고객 4,667명이 사용하고 고객 평가 71개에서 5점 만점에 4.23점이라고 표시되어 있었으며, 변경 로그에는 2026-09-30에 출시된 버전 3.27.0이 기재되어 있었습니다."
       },
       "glance": {
@@ -2763,12 +2761,12 @@
           },
           "apps": {
             "label": "앱",
-            "wcpos": "웹, 데스크톱 앱(Windows·macOS), iOS·Android 앱(베타)",
+            "wcpos": "웹, 데스크톱 앱(Windows·macOS·Linux), iOS·Android 앱(베타)",
             "yith": "웹 브라우저에서 실행되며 휴대전화나 태블릿 홈 화면에 저장할 수 있음"
           },
           "offline": {
             "label": "오프라인",
-            "wcpos": "오프라인에서 상품을 탐색하고 장바구니를 만들 수 있음; 결제 완료에는 연결 필요",
+            "wcpos": "오프라인에서 상품을 탐색하고 장바구니를 만들고 현금 판매를 할 수 있음; 연결된 카드 리더기와 온라인 게이트웨이에는 연결 필요",
             "yith": "제품 페이지에 따르면 오프라인 모드가 없음"
           },
           "barcode": {
@@ -2783,7 +2781,7 @@
           },
           "stores": {
             "label": "매장과 계산대",
-            "wcpos": "Pro에서 여러 매장 관리; 기기와 계산원 수 무제한",
+            "wcpos": "무료 버전은 계산대 1대; Pro는 추가 계산대와 다중 매장 관리; 기기와 계산원 수 무제한",
             "yith": "스토어와 계산대 무제한, 스토어별 별도 재고"
           },
           "ratings": {
@@ -2796,9 +2794,9 @@
       "pricing": {
         "title": "비용은 얼마인가요?",
         "yith": "YITH는 YITH Point of Sale for WooCommerce를 1년간 업데이트와 지원, 30일 환불 보장이 포함된 라이선스로 판매합니다. YITH 약관에 따르면 라이선스는 매년 자동 갱신되며 라이선스가 만료되면 제품 업데이트나 지원을 더 이상 받지 못합니다. 2026-10-07에 제품 페이지의 가격을 읽을 수 없었습니다. 현재 가격은 yithemes.com에서 확인하세요.",
-        "wcpos": "WCPOS는 무료이며 제품, 주문, 고객, 현금 판매에 제한이 없습니다. Pro는 $129 일회성 결제로 1년간 업데이트와 우선 지원을 제공하거나, 평생 버전을 $399에 구매할 수 있습니다. 자동 갱신은 없으며 1년이 지나도 Pro는 계속 작동합니다. 어떤 기능도 꺼지지 않습니다. WCPOS는 거래 수수료를 부과하지 않으며 이용하는 결제 처리 업체의 요금만 지불합니다.",
+        "wcpos": "WCPOS는 무료이며 제품, 주문, 고객, 현금 판매에 제한이 없습니다. 2.0부터 무료 버전에는 시작 시 준비 현금, 현금 입출금, 마감 시 현금 집계 및 번호가 부여된 마감을 지원하는 계산대 1대, 분할 결제, 해당 계산대의 오늘 내역을 보여 주는 보고서 화면도 포함됩니다. Pro는 $129 일회성 결제로 1년간 업데이트와 우선 지원을 제공하거나, 평생 버전을 $399에 구매할 수 있습니다. 자동 갱신은 없으며 1년이 지나도 Pro는 계속 작동합니다. 어떤 기능도 꺼지지 않습니다. WCPOS는 거래 수수료를 부과하지 않으며 이용하는 결제 처리 업체의 요금만 지불합니다.",
         "compare": "YITH의 현재 가격을 확인할 수 없었으므로 이 페이지에서는 정가를 비교하지 않습니다. 라이선스 조건은 다릅니다. YITH 라이선스는 매년 자동 갱신되지만 WCPOS Pro는 일회성 결제로, 1년 업데이트 기간이 끝나도 계속 작동합니다.",
-        "proAdds": "Pro 추가 기능: 다중 매장 관리, 카드 단말기 연동, 쿠폰, POS API를 통한 환불, 주문 내역, 계산대 고객 관리, 매장별 가격, 재고·가격 편집, 마감 보고서, 확장 디렉터리.",
+        "proAdds": "Pro 추가 기능: 다중 매장 관리, 추가 계산대, 카드 단말기 연동, 계산대에서 매장의 다른 WooCommerce 결제 게이트웨이 사용, 고객용 디스플레이, 쿠폰 화면, 계산대에서 환불, 주문 내역, 계산대 고객 관리, 매장별 가격, 재고·가격 편집, 이전 날짜 및 모든 계산대와 매장의 보고서, 확장 디렉터리.",
         "demoPrefix": "먼저",
         "demoLinkLabel": "demo.wcpos.com/pos",
         "demoSuffix": "에서 모든 기능을 체험해 보세요(로그인 demo / demo)."
@@ -2817,11 +2815,11 @@
         "title": "무엇을 선택해야 할까요?",
         "wcpos": {
           "title": "이런 경우 WCPOS를 선택하세요:",
-          "body": "무료 버전, 카드 단말기 연동(Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Vipps MobilePay), Windows 및 macOS용 데스크톱 앱이나 iOS 및 Android용 앱을 원하거나, 오프라인에서 상품을 탐색하고 장바구니를 구성하고 싶거나, 1년 업데이트 기간 이후에도 계속 작동하는 일회성 결제를 원할 경우."
+          "body": "계산대, 현금 집계 및 분할 결제를 갖춘 무료 버전, 카드 단말기 연동(Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Vipps MobilePay), Windows, macOS 및 Linux용 데스크톱 앱이나 iOS 및 Android용 앱을 원하거나, 오프라인에서도 현금 판매를 계속하고 싶거나, 1년 업데이트 기간 이후에도 계속 작동하는 일회성 결제를 원할 경우."
         },
         "yith": {
           "title": "YITH Point of Sale을 선택할 경우:",
-          "body": "이미 YITH Barcodes 같은 YITH 플러그인을 사용하고, 스토어별 별도 재고와 세션마다 현금을 추적하는 무제한 스토어 및 계산대를 원하며, POS에 연결되지 않은 단말기로 카드 결제를 받는 데 동의할 경우."
+          "body": "이미 YITH Barcodes 같은 YITH 플러그인을 사용하고, 스토어별 별도 재고를 갖춘 무제한 스토어 및 계산대를 원하며, POS에 연결되지 않은 단말기로 카드 결제를 받는 데 동의할 경우."
         }
       },
       "faq": {
@@ -2832,7 +2830,7 @@
         },
         "offline": {
           "question": "YITH Point of Sale은 오프라인에서 작동하나요?",
-          "answer": "아니요. 제품 페이지의 FAQ에 따르면 플러그인에는 오프라인 기능이 없지만 로컬 서버에 설정할 수는 있습니다. WCPOS는 상품, 고객, 장바구니를 로컬에 저장하므로 연결 없이 카탈로그를 탐색하고 판매를 준비할 수 있지만 결제 완료에는 서버 연결이 필요합니다."
+          "answer": "아니요. 제품 페이지의 FAQ에 따르면 플러그인에는 오프라인 기능이 없지만 로컬 서버에 설정할 수는 있습니다. WCPOS는 상품, 고객, 장바구니를 로컬에 저장하므로 연결 없이 카탈로그를 탐색하고 장바구니를 만들고 현금 결제를 받을 수 있으며, 이러한 판매는 연결이 복구되면 동기화됩니다. 연결된 카드 리더기와 온라인 결제 게이트웨이에는 연결이 필요합니다."
         },
         "terminals": {
           "question": "YITH Point of Sale에 카드 단말기를 연결할 수 있나요?",
@@ -2840,7 +2838,7 @@
         },
         "apps": {
           "question": "YITH Point of Sale에 네이티브 앱이 있나요?",
-          "answer": "YITH 문서에는 브라우저에서 POS를 열고 휴대전화나 태블릿 홈 화면에 저장하는 방법이 설명되어 있으며 네이티브 앱은 언급되지 않습니다. YITH는 iPads 및 Android 태블릿과 같은 10~12인치 태블릿에서 테스트했다고 밝힙니다. WCPOS는 최신 브라우저, Windows 및 macOS용 데스크톱 앱, iOS 및 Android용 앱(베타)에서 작동합니다."
+          "answer": "YITH 문서에는 브라우저에서 POS를 열고 휴대전화나 태블릿 홈 화면에 저장하는 방법이 설명되어 있으며 네이티브 앱은 언급되지 않습니다. YITH는 iPads 및 Android 태블릿과 같은 10~12인치 태블릿에서 테스트했다고 밝힙니다. WCPOS는 최신 브라우저, Windows, macOS 및 Linux용 데스크톱 앱, iOS 및 Android용 앱(베타)에서 작동합니다."
         },
         "licence": {
           "question": "YITH 라이선스가 만료되면 어떻게 되나요?",
@@ -2867,7 +2865,7 @@
         }
       },
       "footer": {
-        "factsDated": "YITH Point of Sale 정보는 2026-10-07에 yithemes.com과 docs.yithemes.com에서 확인했습니다(출처 참조). 결정하기 전에 현재 가격은 yithemes.com에서 확인하세요. WCPOS 정보는 wcpos.com, docs.wcpos.com, WordPress.org를 출처로 합니다. 분기마다 다시 확인합니다.",
+        "factsDated": "YITH Point of Sale 정보는 2026-10-07에 yithemes.com과 docs.yithemes.com에서 확인했습니다(출처 참조). 결정하기 전에 현재 가격은 yithemes.com에서 확인하세요. WCPOS 정보는 wcpos.com, docs.wcpos.com, WordPress.org를 출처로 합니다. WCPOS 정보는 2026-11-09에 출시된 WCPOS 2.0 기준이며, 앱과 플러그인 모두 버전 2.0이어야 합니다. 분기마다 다시 확인합니다.",
         "corrections": "오류를 발견하셨나요? support@wcpos.com으로 알려 주세요. 빠르게 수정하고 모든 변경을 기록합니다."
       }
     },
@@ -2882,7 +2880,7 @@
       },
       "shortAnswer": {
         "title": "간단한 결론",
-        "wcpos": "WCPOS는 WooCommerce용 무료 오픈 소스 POS 플러그인으로 제품, 주문, 고객 수에 제한이 없습니다. 최신 브라우저, Windows 및 macOS용 데스크톱 앱, iOS 및 Android용 앱(베타)에서 모든 WooCommerce 결제 게이트웨이와 함께 작동합니다. WCPOS는 거래 수수료를 부과하지 않습니다. Pro는 일회성 결제로 여러 매장 관리와 카드 단말기 연동을 추가합니다. 업데이트 1년 제공에 $129 또는 평생 버전 $399이며, 1년이 지나도 계속 작동합니다.",
+        "wcpos": "WCPOS는 WooCommerce용 무료 오픈 소스 POS 플러그인으로 제품, 주문, 고객 수에 제한이 없습니다. 최신 브라우저, Windows, macOS 및 Linux용 데스크톱 앱, iOS 및 Android용 앱(베타)에서 작동합니다. WCPOS는 거래 수수료를 부과하지 않습니다. Pro는 일회성 결제로 여러 매장 관리, 카드 단말기 연동, 매장의 다른 WooCommerce 결제 게이트웨이를 추가합니다. 업데이트 1년 제공에 $129 또는 평생 버전 $399이며, 1년이 지나도 계속 작동합니다.",
         "foosales": "FooSales는 웹사이트별 연간 구독으로 판매되는 WooCommerce용 POS입니다. 2026-10-07에 foosales.com에는 7일 무료 체험 후 이용하는 두 요금제, 월 US$19의 Core와 월 US$38의 Plus가 매장별 연간 청구 방식으로 표시되어 있었고, Plus에는 Square와 Stripe 결제가 추가되었습니다. iPad, iPhone, Android 앱과 웹 앱이 있습니다. FooSales는 앱이 오프라인에서도 계속 작동하고 연결이 돌아오면 주문을 동기화하며, Plus 요금제에서 iPhone과 Android의 Tap to Pay를 지원한다고 설명합니다. 도움말 센터에 따르면 요금제에는 사용자 3명과 기기 3대가 포함되며 요금제를 취소하면 FooSales POS와 앱에 대한 접근이 종료됩니다. 미국 App Store에서 해당 앱은 8개 평가에서 별점 3.6점을 받았습니다."
       },
       "glance": {
@@ -2908,17 +2906,17 @@
           },
           "tapToPay": {
             "label": "Tap to Pay",
-            "wcpos": "없음",
+            "wcpos": "아직 없음: 향후 앱 업데이트로 제공",
             "foosales": "iPhone과 Android에서 Stripe 또는 Square를 통해 이용(Plus 요금제)"
           },
           "apps": {
             "label": "앱",
-            "wcpos": "웹, 데스크톱 앱(Windows·macOS), iOS·Android 앱(베타)",
+            "wcpos": "웹, 데스크톱 앱(Windows·macOS·Linux), iOS·Android 앱(베타)",
             "foosales": "iPad, iPhone, Android 앱과 최신 브라우저용 웹 앱"
           },
           "offline": {
             "label": "오프라인",
-            "wcpos": "오프라인에서 상품을 탐색하고 장바구니를 만들 수 있음; 결제 완료에는 연결 필요",
+            "wcpos": "오프라인에서 상품을 탐색하고 장바구니를 만들고 현금 판매를 할 수 있음; 연결된 카드 리더기와 온라인 게이트웨이에는 연결 필요",
             "foosales": "앱이 오프라인에서도 계속 작동하고 재연결 시 새 주문, 취소, 환불을 동기화한다고 설명함; 오프라인에서는 고객을 생성하거나 수정할 수 없음"
           },
           "devices": {
@@ -2941,9 +2939,9 @@
       "pricing": {
         "title": "비용은 얼마인가요?",
         "foosales": "2026-10-07에 foosales.com에는 매장별로 연간 청구되는 두 요금제가 표시되어 있었습니다. Core는 월 US$19, Plus는 월 US$38이며 Plus에는 Square 결제, Stripe 결제, WooCommerce Product Add-ons와 FooEvents 연동이 추가됩니다. 둘 다 업데이트와 이메일 지원이 포함됩니다. 월별 결제 옵션과 무료 요금제는 기재되어 있지 않았습니다. 신용카드가 필요 없는 7일 무료 체험에는 Plus의 모든 기능이 포함됩니다. 웹사이트 또는 하위 도메인마다 별도 요금제가 필요하며 추가 사용자와 기기는 애드온으로 판매됩니다. 현재 가격은 foosales.com/pricing에서 확인하세요.",
-        "wcpos": "WCPOS는 무료이며 제품, 주문, 고객, 현금 판매에 제한이 없습니다. Pro는 $129 일회성 결제로 1년간 업데이트와 우선 지원을 제공하거나, 평생 버전을 $399에 구매할 수 있습니다. 자동 갱신은 없으며 1년이 지나도 Pro는 계속 작동합니다. 어떤 기능도 꺼지지 않습니다. WCPOS는 거래 수수료를 부과하지 않으며 이용하는 결제 처리 업체의 요금만 지불합니다.",
+        "wcpos": "WCPOS는 무료이며 제품, 주문, 고객, 현금 판매에 제한이 없습니다. 2.0부터 무료 버전에는 시작 시 준비 현금, 현금 입출금, 마감 시 현금 집계 및 번호가 부여된 마감을 지원하는 계산대 1대, 분할 결제, 해당 계산대의 오늘 내역을 보여 주는 보고서 화면도 포함됩니다. Pro는 $129 일회성 결제로 1년간 업데이트와 우선 지원을 제공하거나, 평생 버전을 $399에 구매할 수 있습니다. 자동 갱신은 없으며 1년이 지나도 Pro는 계속 작동합니다. 어떤 기능도 꺼지지 않습니다. WCPOS는 거래 수수료를 부과하지 않으며 이용하는 결제 처리 업체의 요금만 지불합니다.",
         "compare": "연간 청구 기준으로 FooSales Core는 매장당 연 US$228, Square와 Stripe 연동이 있는 Plus는 US$456입니다. 카드 단말기 연동이 있는 WCPOS Pro는 업데이트 1년 제공에 $129 또는 평생 $399의 일회성 결제입니다. FooSales 도움말 센터에 따르면 요금제를 취소하면 POS와 앱에 대한 접근이 종료되지만 만료된 WCPOS Pro 라이선스는 계속 작동합니다.",
-        "proAdds": "Pro 추가 기능: 다중 매장 관리, 카드 단말기 연동, 쿠폰, POS API를 통한 환불, 주문 내역, 계산대 고객 관리, 매장별 가격, 재고·가격 편집, 마감 보고서, 확장 디렉터리.",
+        "proAdds": "Pro 추가 기능: 다중 매장 관리, 추가 계산대, 카드 단말기 연동, 계산대에서 매장의 다른 WooCommerce 결제 게이트웨이 사용, 고객용 디스플레이, 쿠폰 화면, 계산대에서 환불, 주문 내역, 계산대 고객 관리, 매장별 가격, 재고·가격 편집, 이전 날짜 및 모든 계산대와 매장의 보고서, 확장 디렉터리.",
         "demoPrefix": "먼저",
         "demoLinkLabel": "demo.wcpos.com/pos",
         "demoSuffix": "에서 모든 기능을 체험해 보세요(로그인 demo / demo)."
@@ -2951,15 +2949,15 @@
       "foosalesBetter": {
         "title": "FooSales가 실제로 더 나은 점",
         "intro": "정직한 비교라면 양쪽 모두를 봐야 합니다.",
-        "tapToPay": "iPhone과 Android의 Tap to Pay — FooSales Plus에서는 고객이 Stripe 또는 Square를 통해 휴대전화에 카드를 갖다 댈 수 있습니다. WCPOS는 Tap to Pay를 지원하지 않습니다.",
-        "offline": "오프라인 주문 — FooSales는 인터넷 연결 없이도 앱이 새 주문, 취소, 환불을 계속 기록하고 연결이 돌아오면 WooCommerce에 동기화한다고 설명합니다. WCPOS는 오프라인에서 상품을 탐색하고 장바구니를 만들 수 있지만 결제 완료에는 연결이 필요합니다.",
+        "tapToPay": "iPhone과 Android의 Tap to Pay — FooSales Plus에서는 고객이 Stripe 또는 Square를 통해 휴대전화에 카드를 갖다 댈 수 있습니다. WCPOS에는 아직 Tap to Pay가 없으며, 향후 앱 업데이트로 제공됩니다.",
+        "offline": "오프라인 주문 — FooSales는 인터넷 연결 없이도 앱이 새 주문, 취소, 환불을 계속 기록하고 연결이 돌아오면 WooCommerce에 동기화한다고 설명합니다. WCPOS는 오프라인에서도 현금 판매를 계속할 수 있지만, 연결된 카드 리더기와 온라인 게이트웨이에는 연결이 필요합니다.",
         "outro": "휴대전화에서 Tap to Pay 또는 오프라인 주문 모드를 원하고 매장별 연간 구독이 적합하다면 FooSales가 더 나은 선택일 수 있습니다."
       },
       "choose": {
         "title": "무엇을 선택해야 할까요?",
         "wcpos": {
           "title": "이런 경우 WCPOS를 선택하세요:",
-          "body": "제한 없는 무료 플러그인, 결제를 중단해도 계속 작동하는 일회성 Pro 요금, 무제한 기기와 계산원, 다중 매장 관리, Windows와 macOS 데스크톱 앱, 또는 FooSales가 로드맵에 연동 요청으로 기재한 SumUp, PayPal Reader (Zettle), Mollie 단말기를 원한다면 적합합니다."
+          "body": "제한 없는 무료 플러그인, 결제를 중단해도 계속 작동하는 일회성 Pro 요금, 무제한 기기와 계산원, 다중 매장 관리, Windows, macOS와 Linux 데스크톱 앱, 또는 FooSales가 로드맵에 연동 요청으로 기재한 SumUp, PayPal Reader (Zettle), Mollie 단말기를 원한다면 적합합니다."
         },
         "foosales": {
           "title": "이런 경우 FooSales를 선택하세요:",
@@ -2978,15 +2976,15 @@
         },
         "offline": {
           "question": "FooSales는 오프라인에서 작동하나요?",
-          "answer": "FooSales는 그렇다고 설명합니다. 연결이 끊기면 앱이 오프라인 모드로 전환되고 POS의 대부분은 계속 작동하며 새 주문, 취소된 주문, 환불은 기기에 저장되었다가 다시 온라인이 되면 WooCommerce와 동기화됩니다. 도움말 센터에 따르면 오프라인에서는 고객을 생성하거나 수정할 수 없고 재고 수량도 변경할 수 없으며, 결제 페이지에 따르면 WooCommerce 쿠폰에는 인터넷 연결이 필요합니다. WCPOS는 상품, 고객, 장바구니를 로컬에 저장하므로 연결 없이 카탈로그를 탐색하고 판매를 준비할 수 있지만 결제 완료에는 서버 연결이 필요합니다."
+          "answer": "FooSales는 그렇다고 설명합니다. 연결이 끊기면 앱이 오프라인 모드로 전환되고 POS의 대부분은 계속 작동하며 새 주문, 취소된 주문, 환불은 기기에 저장되었다가 다시 온라인이 되면 WooCommerce와 동기화됩니다. 도움말 센터에 따르면 오프라인에서는 고객을 생성하거나 수정할 수 없고 재고 수량도 변경할 수 없으며, 결제 페이지에 따르면 WooCommerce 쿠폰에는 인터넷 연결이 필요합니다. WCPOS는 상품, 고객, 장바구니를 로컬에 저장하므로 연결 없이 카탈로그를 탐색하고 장바구니를 만들고 현금 결제를 받을 수 있으며, 이러한 판매는 연결이 복구되면 동기화됩니다. 연결된 카드 리더기와 온라인 결제 게이트웨이에는 연결이 필요합니다."
         },
         "terminals": {
           "question": "FooSales와 WCPOS는 어떤 카드 단말기를 지원하나요?",
-          "answer": "Plus 요금제에서 FooSales는 모든 앱에 Square Terminal, 태블릿 앱에 Square Readers 및 Stripe Terminal 리더기를 연동하고, Stripe 또는 Square를 통해 iPhone과 Android의 Tap to Pay를 지원합니다. 다른 카드 리더기는 FooSales 외부에서 사용하고 계산 시 판매를 카드 결제로 기록할 수 있습니다. WCPOS Pro의 카드 단말기 연동에는 Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Vipps MobilePay가 포함됩니다. WCPOS는 Tap to Pay를 지원하지 않습니다."
+          "answer": "Plus 요금제에서 FooSales는 모든 앱에 Square Terminal을, 태블릿 앱에 Square Readers를 연동하며, Stripe Terminal 리더기도 연동하고, Stripe 또는 Square를 통해 iPhone과 Android의 Tap to Pay를 지원합니다. 다른 카드 리더기는 FooSales 외부에서 사용하고 계산 시 판매를 카드 결제로 기록할 수 있습니다. WCPOS Pro의 카드 단말기 연동에는 Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Vipps MobilePay가 포함됩니다. WCPOS에는 아직 Tap to Pay가 없으며, 향후 앱 업데이트로 제공됩니다."
         },
         "apps": {
           "question": "FooSales에 네이티브 앱이 있나요?",
-          "answer": "네. FooSales에는 iPad와 iPhone용(iOS 16.4 이상), Android용(Android 10 이상) 앱과 Chrome, Safari, Firefox, Edge 같은 최신 브라우저에서 작동하는 웹 앱이 있습니다. App Store 등록 페이지에 따르면 iOS 앱은 Apple M1 이상 칩이 탑재된 Mac에서도 작동합니다. WCPOS는 모든 최신 브라우저, Windows와 macOS 데스크톱 앱, iOS와 Android 앱(베타)에서 작동합니다."
+          "answer": "네. FooSales에는 iPad와 iPhone용(iOS 16.4 이상), Android용(Android 10 이상) 앱과 Chrome, Safari, Firefox, Edge 같은 최신 브라우저에서 작동하는 웹 앱이 있습니다. App Store 등록 페이지에 따르면 iOS 앱은 Apple M1 이상 칩이 탑재된 Mac에서도 작동합니다. WCPOS는 모든 최신 브라우저, Windows, macOS와 Linux 데스크톱 앱, iOS와 Android 앱(베타)에서 작동합니다."
         },
         "expiry": {
           "question": "WCPOS Pro 라이선스가 만료되면 어떻게 되나요?",
@@ -3013,7 +3011,7 @@
         }
       },
       "footer": {
-        "factsDated": "FooSales 정보는 2026-10-07에 foosales.com, help.foosales.com 및 App Store 등록 페이지에서 확인했습니다(출처 참조). 결정하기 전에 foosales.com에서 현재 가격을 확인하세요. WCPOS 관련 정보는 wcpos.com, docs.wcpos.com 및 WordPress.org를 출처로 합니다. 분기마다 다시 확인합니다.",
+        "factsDated": "FooSales 정보는 2026-10-07에 foosales.com, help.foosales.com 및 App Store 등록 페이지에서 확인했습니다(출처 참조). 결정하기 전에 foosales.com에서 현재 가격을 확인하세요. WCPOS 관련 정보는 wcpos.com, docs.wcpos.com 및 WordPress.org를 출처로 합니다. WCPOS 정보는 2026-11-09에 출시된 WCPOS 2.0 기준이며, 앱과 플러그인 모두 버전 2.0이어야 합니다. 분기마다 다시 확인합니다.",
         "corrections": "오류를 발견하셨나요? support@wcpos.com으로 알려 주세요. 빠르게 수정하고 모든 변경을 기록합니다."
       }
     }
