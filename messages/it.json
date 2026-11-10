@@ -1983,7 +1983,7 @@
           },
           "fees": {
             "label": "Commissioni sulle transazioni",
-            "wcpos": "Nessuna — usate qualsiasi gateway di pagamento WooCommerce",
+            "wcpos": "Nessuna — pagate solo le tariffe del vostro processore di pagamento",
             "oliver": "Nessuna — indipendente dal processore di pagamento"
           },
           "terminals": {
@@ -1993,12 +1993,12 @@
           },
           "platforms": {
             "label": "Piattaforme",
-            "wcpos": "Web, app desktop (Windows e macOS), app iOS e Android (beta)",
+            "wcpos": "Web, app desktop (Windows, macOS e Linux), app iOS e Android (beta)",
             "oliver": "Cassa web, app iOS e Android, hub hardware"
           },
           "offline": {
             "label": "Offline",
-            "wcpos": "Offline-first: consultazione prodotti e creazione carrelli offline; il pagamento richiede la connessione",
+            "wcpos": "Offline-first: consultazione prodotti, creazione carrelli e vendite in contanti offline; i lettori di carte collegati e i gateway online richiedono una connessione",
             "oliver": "Dichiara transazioni offline in coda, sincronizzate alla riconnessione"
           },
           "kiosk": {
@@ -2008,7 +2008,7 @@
           },
           "display": {
             "label": "Display rivolto al cliente",
-            "wcpos": "No",
+            "wcpos": "Sì, con Pro: apritelo in qualsiasi browser e abbinatelo a una cassa con un codice",
             "oliver": "Sì"
           },
           "openSource": {
@@ -2056,11 +2056,11 @@
           },
           "devices": {
             "label": "Casse / dispositivi / personale",
-            "wcpos": "Dispositivi e cassieri illimitati",
+            "wcpos": "Dispositivi e cassieri illimitati; una cassa nella versione gratuita, più casse con Pro",
             "oliver": "1 punto vendita, 1 postazione, 1 membro del personale"
           },
           "offline": {
-            "label": "Consultazione e carrelli offline",
+            "label": "Vendite in contanti offline",
             "wcpos": "Sì",
             "oliver": "Sì (dichiarato)"
           },
@@ -2071,14 +2071,14 @@
           }
         },
         "outro1": "Cinquanta transazioni al mese sono meno di due vendite al giorno — il piano gratuito di Oliver è una prova senza data di scadenza.",
-        "outro2": "Il plugin gratuito di WCPOS fa funzionare un negozio vero a tempo indeterminato: catalogo completo, clienti e vendite in contanti illimitati, stampa termica degli scontrini, navigazione offline-first, su ogni piattaforma."
+        "outro2": "Il plugin gratuito di WCPOS fa funzionare un negozio vero a tempo indeterminato: catalogo completo, clienti e vendite in contanti illimitati, stampa termica degli scontrini, una cassa con un fondo cassa iniziale e un conteggio alla chiusura, pagamenti suddivisi, la schermata Report per la giornata di oggi e vendite in contanti che continuano offline, su ogni piattaforma."
       },
       "pricing": {
         "title": "Quanto costa davvero la versione a pagamento?",
         "oliver": "Oliver (fatturazione annuale): Starter $89 all'anno — 1 punto vendita, 2 postazioni, 3 membri del personale. Pro $289 all'anno — 2 punti vendita, postazioni illimitate, 15 membri del personale. Enterprise $489 all'anno — illimitato. Ricorrente, un sito WooCommerce per licenza.",
         "wcpos": "WCPOS Pro: $129 — un pagamento una tantum che copre un anno di aggiornamenti e supporto prioritario. Non si rinnova mai automaticamente, e la versione Pro continua a funzionare anche dopo la fine dell'anno — niente si spegne, mai. È una scelta deliberata: i rinnovi vanno guadagnati con aggiornamenti che valgono il loro prezzo. Oppure $399 a vita. Ogni licenza copre un dominio più un sito di staging, con dispositivi e cassieri illimitati. Se non fa quello che diciamo, ti rimborsiamo.",
         "math": "Con un singolo punto vendita lo Starter di Oliver costa meno il primo anno ($89 contro $129). Dal secondo anno in poi il calcolo si ribalta: Oliver continua a fatturare ogni anno, mentre una licenza a vita di WCPOS costa $0 dal quarto anno anche rispetto al piano più economico di Oliver — e $399 in totale contro $1,467+ per tre anni di Oliver Enterprise.",
-        "proAdds": "Pro aggiunge: gestione multi-negozio, integrazioni con i terminali di pagamento, coupon, rimborsi tramite l'API del POS, storico degli ordini, gestione dei clienti in cassa, prezzi specifici per negozio, modifica di scorte e prezzi, report di fine giornata e la directory delle estensioni.",
+        "proAdds": "Pro aggiunge: gestione multi-negozio, più casse, integrazioni con i terminali di pagamento, gli altri gateway di pagamento WooCommerce del vostro negozio in cassa, un display rivolto al cliente, la schermata Coupon, rimborsi in cassa, storico degli ordini, gestione dei clienti in cassa, prezzi specifici per negozio, modifica di scorte e prezzi, report per i giorni precedenti e per ogni cassa e negozio e la directory delle estensioni.",
         "demoPrefix": "Provate tutto prima su",
         "demoLinkLabel": "demo.wcpos.com/pos",
         "demoSuffix": "(accesso demo / demo)."
@@ -2101,10 +2101,10 @@
       },
       "claims": {
         "title": "Cosa sbaglia la pagina di confronto di Oliver",
-        "intro": "Oliver pubblica le proprie pagine Oliver contro WCPOS. Alcune affermazioni sono corrette — modalità chiosco, hardware, display per il cliente. Diverse altre no:",
+        "intro": "Oliver pubblica le proprie pagine Oliver contro WCPOS. Alcune affermazioni sono corrette — modalità chiosco e hardware. Diverse altre no:",
         "apps": {
           "claim": "Solo browser; app in sviluppo",
-          "response": "WCPOS distribuisce già oggi app desktop per Windows e macOS, e le app iOS e Android sono disponibili in beta; le versioni correnti di tutte sono pubblicate su updates.wcpos.com."
+          "response": "WCPOS distribuisce già oggi app desktop per Windows, macOS e Linux, e le app iOS e Android sono disponibili in beta; le versioni correnti di tutte sono pubblicate su updates.wcpos.com."
         },
         "multiOutlet": {
           "claim": "Multi-negozio: non supportato nativamente",
@@ -2112,7 +2112,7 @@
         },
         "payments": {
           "claim": "Pagamenti integrati: limitati",
-          "response": "WCPOS Pro integra Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal e Vipps MobilePay, installabili con un clic dal catalogo estensioni — e poiché il pagamento passa attraverso il sistema di pagamento di WooCommerce stesso, qualsiasi gateway compatibile con WooCommerce può funzionare."
+          "response": "WCPOS Pro integra Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal e Vipps MobilePay, installabili con un clic dal catalogo estensioni, e attiva gli altri gateway di pagamento WooCommerce del vostro negozio in cassa. La versione gratuita accetta contanti e registra i pagamenti con carta effettuati su un terminale separato, e può suddividere un ordine in più pagamenti."
         },
         "hobbyShops": {
           "claim": "Ideale per negozi amatoriali",
@@ -2127,18 +2127,18 @@
         "title": "Quale scegliere?",
         "wcpos": {
           "title": "Scegliete WCPOS se:",
-          "body": "Volete i vostri dati sul vostro server, un piano gratuito che fa funzionare un negozio vero, un prezzo una tantum invece di un abbonamento, dispositivi e cassieri illimitati, l'open source o la libertà di scegliere il processore di pagamento — qualsiasi gateway WooCommerce."
+          "body": "Volete i vostri dati sul vostro server, un piano gratuito che fa funzionare un negozio vero, un prezzo una tantum invece di un abbonamento, dispositivi e cassieri illimitati, l'open source o la libertà di scegliere il processore di pagamento — i gateway WooCommerce del vostro negozio, con Pro."
         },
         "oliver": {
           "title": "Scegliete Oliver POS se:",
-          "body": "Volete un chiosco o una cassa self-service, un display rivolto al cliente, hardware di cassa fornito dal produttore o WooCommerce Subscriptions in cassa — e accettate la dipendenza dal cloud e una licenza ricorrente per sito."
+          "body": "Volete un chiosco o una cassa self-service, hardware di cassa fornito dal produttore o WooCommerce Subscriptions in cassa — e accettate la dipendenza dal cloud e una licenza ricorrente per sito."
         }
       },
       "faq": {
         "title": "Domande frequenti",
         "offline": {
           "question": "WCPOS funziona offline?",
-          "answer": "WCPOS è offline-first: prodotti, clienti e carrelli sono memorizzati in locale, quindi potete consultare il catalogo e preparare vendite senza connessione, e tutto si sincronizza quando torna. Completare il pagamento e convalidare i coupon richiede la connessione al server. Oliver dichiara di mettere in coda le transazioni offline e sincronizzarle alla riconnessione."
+          "answer": "WCPOS è offline-first: prodotti, clienti e carrelli sono memorizzati in locale, quindi potete consultare il catalogo, creare carrelli e accettare pagamenti in contanti senza connessione, e tutto si sincronizza quando torna. I lettori di carte collegati, i gateway di pagamento online e la convalida dei coupon richiedono una connessione. Oliver dichiara di mettere in coda le transazioni offline e sincronizzarle alla riconnessione."
         },
         "fees": {
           "question": "Uno dei due POS applica commissioni sulle transazioni?",
@@ -2162,7 +2162,7 @@
         }
       },
       "footer": {
-        "factsVerified": "Dati verificati l'8 luglio 2026 su oliverpos.com/pricing, wordpress.org/plugins/woocommerce-pos/, wordpress.org/plugins/oliver-pos/ e wcpos.com.",
+        "factsVerified": "Dati verificati in data July 8, 2026 su oliverpos.com/pricing, wordpress.org/plugins/woocommerce-pos/, wordpress.org/plugins/oliver-pos/ e wcpos.com. I dati su WCPOS si riferiscono a WCPOS 2.0, rilasciato il 2026-11-09, che richiede sia l'app sia il plugin alla versione 2.0.",
         "corrections": "Avete trovato un errore? Scrivete a support@wcpos.com — correggiamo rapidamente e registriamo ogni modifica."
       }
     },
@@ -2177,7 +2177,7 @@
       },
       "shortAnswer": {
         "title": "La risposta in breve",
-        "wcpos": "WCPOS funziona in qualsiasi browser moderno, come app desktop per Windows e macOS e come app iOS e Android (beta), con qualsiasi gateway di pagamento WooCommerce. È offline-first, la versione gratuita non pone limiti a prodotti, ordini o clienti e Pro aggiunge la gestione multi-negozio e le integrazioni con i terminali di pagamento con un pagamento una tantum, senza mai disattivare le funzionalità.",
+        "wcpos": "WCPOS funziona in qualsiasi browser moderno, come app desktop per Windows, macOS e Linux e come app iOS e Android (beta). È offline-first, la versione gratuita non pone limiti a prodotti, ordini o clienti e Pro aggiunge la gestione multi-negozio, le integrazioni con i terminali di pagamento e gli altri gateway di pagamento WooCommerce del vostro negozio con un pagamento una tantum, senza mai disattivare le funzionalità.",
         "woocommerce": "Il POS ufficiale di WooCommerce si trova nell'app mobile WooCommerce (“WooCommerce: Store & POS”). Il software POS è gratuito, realizzato da WooCommerce stesso e accetta contanti e carte tramite WooPayments o Stripe con un lettore di carte Bluetooth. È progettato per i tablet, è disponibile per i negozi in dieci Paesi, non vende abbonamenti né prodotti scaricabili, non ha una modalità offline e non supporta ancora più sedi."
       },
       "glance": {
@@ -2193,7 +2193,7 @@
           },
           "devices": {
             "label": "Dispositivi",
-            "wcpos": "Web, app desktop (Windows e macOS), app iOS e Android (beta); dispositivi e cassieri illimitati",
+            "wcpos": "Web, app desktop (Windows, macOS e Linux), app iOS e Android (beta); dispositivi e cassieri illimitati",
             "woocommerce": "Progettato per i tablet — iPad e tablet Android"
           },
           "countries": {
@@ -2213,7 +2213,7 @@
           },
           "gateways": {
             "label": "Gateway di pagamento",
-            "wcpos": "Qualsiasi gateway di pagamento WooCommerce",
+            "wcpos": "Contanti e carte su un terminale separato nella versione gratuita; gli altri gateway di pagamento WooCommerce del vostro negozio con Pro",
             "woocommerce": "Contanti, più WooPayments o Stripe per le carte"
           },
           "fees": {
@@ -2223,7 +2223,7 @@
           },
           "offline": {
             "label": "Offline",
-            "wcpos": "Offline-first: consultate i prodotti e preparate carrelli offline; per completare il pagamento serve la connessione",
+            "wcpos": "Offline-first: consultate i prodotti, preparate carrelli ed effettuate vendite in contanti offline; i lettori di carte collegati e i gateway online richiedono una connessione",
             "woocommerce": "Nessuna modalità offline — richiede una connessione Internet attiva"
           },
           "multiLocation": {
@@ -2241,18 +2241,18 @@
       "devices": {
         "title": "Dove potete usarlo?",
         "woocommerce": "Il POS di WooCommerce è una modalità dell'app mobile WooCommerce. WooCommerce lo descrive come progettato per i tablet — iPad e tablet Android — ed è disponibile per i negozi in dieci Paesi: Australia, Canada, Finlandia, Irlanda, Lussemburgo, Paesi Bassi, Nuova Zelanda, Singapore, Regno Unito e Stati Uniti, purché i negozi usino la valuta del proprio Paese.",
-        "wcpos": "WCPOS funziona in qualsiasi browser moderno, come app desktop per Windows e macOS e come app iOS e Android (beta), con dispositivi e cassieri illimitati per licenza. Usate il computer che avete già al banco, un tablet o entrambi."
+        "wcpos": "WCPOS funziona in qualsiasi browser moderno, come app desktop per Windows, macOS e Linux e come app iOS e Android (beta), con dispositivi e cassieri illimitati per licenza. Usate il computer che avete già al banco, un tablet o entrambi."
       },
       "payments": {
         "title": "Come funzionano i pagamenti con carta?",
         "woocommerce": "Il POS di WooCommerce accetta contanti e carte tramite WooPayments o Stripe con un lettore di carte Bluetooth collegato al tablet. Con WooPayments, i pagamenti con carta in presenza costano meno di quelli online: negli Stati Uniti, 2.70% + $0.10 contro 2.90% + $0.30 online. Un lettore di carte costa $5.00 / £5.00 per lettore attivo al mese.",
-        "wcpos": "WCPOS gestisce i pagamenti tramite il checkout di WooCommerce, quindi qualsiasi gateway di pagamento compatibile con WooCommerce può funzionare alla cassa. Pro aggiunge integrazioni con i terminali di pagamento per Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal e Vipps MobilePay, installabili con un clic dal catalogo delle estensioni. WCPOS non supporta Tap to Pay né i pagamenti WooPayments in presenza."
+        "wcpos": "WCPOS 2.0 ha un proprio checkout: un pannello di pagamento accanto al carrello accetta contanti, registra i pagamenti con carta effettuati su un terminale separato e può suddividere un ordine in più pagamenti. Con Pro, potete attivare gli altri gateway di pagamento WooCommerce del vostro negozio in cassa e aggiungere integrazioni con i terminali di pagamento per Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal e Vipps MobilePay, installabili con un clic dal catalogo delle estensioni. Tap to Pay su iPhone e Android non è ancora disponibile in WCPOS; arriverà con un aggiornamento dell'app. WCPOS non supporta i pagamenti WooPayments in presenza."
       },
       "pricing": {
         "title": "Quanto costa?",
         "woocommerce": "Il software POS di WooCommerce è gratuito e incluso nell'app mobile WooCommerce. Se usate un lettore di carte, è prevista una tariffa di $5.00 / £5.00 per lettore attivo al mese e ai pagamenti con carta si applica la tariffa in presenza del vostro fornitore di servizi di pagamento.",
-        "wcpos": "WCPOS è gratuito, senza limiti a prodotti, ordini, clienti o vendite in contanti. Pro costa $129 — un pagamento una tantum che copre un anno di aggiornamenti e supporto prioritario — oppure $399 a vita. Non si rinnova mai automaticamente e Pro continua a funzionare alla fine dell'anno: non si spegne nulla, mai. WCPOS non applica commissioni sulle transazioni; pagate le tariffe del vostro processore di pagamento.",
-        "proAdds": "Pro aggiunge: gestione multi-negozio, integrazioni con i terminali di pagamento, coupon, rimborsi tramite l'API del POS, storico degli ordini, gestione dei clienti in cassa, prezzi specifici per negozio, modifica di scorte e prezzi, report di fine giornata e la directory delle estensioni.",
+        "wcpos": "WCPOS è gratuito, senza limiti a prodotti, ordini, clienti o vendite in contanti. Dalla versione 2.0, la versione gratuita include anche una cassa con un fondo cassa iniziale, entrate e uscite di contanti, un conteggio alla chiusura e chiusure numerate, pagamenti suddivisi e la schermata Report per la giornata di oggi su quella cassa. Pro costa $129 — un pagamento una tantum che copre un anno di aggiornamenti e supporto prioritario — oppure $399 a vita. Non si rinnova mai automaticamente e Pro continua a funzionare alla fine dell'anno: non si spegne nulla, mai. WCPOS non applica commissioni sulle transazioni; pagate le tariffe del vostro processore di pagamento.",
+        "proAdds": "Pro aggiunge: gestione multi-negozio, più casse, integrazioni con i terminali di pagamento, gli altri gateway di pagamento WooCommerce del vostro negozio in cassa, un display rivolto al cliente, la schermata Coupon, rimborsi in cassa, storico degli ordini, gestione dei clienti in cassa, prezzi specifici per negozio, modifica di scorte e prezzi, report per i giorni precedenti e per ogni cassa e negozio e la directory delle estensioni.",
         "demoPrefix": "Provate tutto prima su",
         "demoLinkLabel": "demo.wcpos.com/pos",
         "demoSuffix": "(accesso demo / demo)."
@@ -2280,7 +2280,7 @@
         "title": "Quale scegliere?",
         "wcpos": {
           "title": "Scegliete WCPOS se:",
-          "body": "Il vostro negozio si trova fuori dai dieci Paesi supportati dal POS di WooCommerce o non usa la valuta del proprio Paese, volete una cassa in un browser web o nelle app desktop per Windows e macOS, volete consultare i prodotti e creare carrelli offline, gestite più di un negozio, usate un gateway di pagamento diverso da WooPayments o Stripe oppure volete terminali di pagamento di SumUp, PayPal, Square, Mollie o Vipps MobilePay."
+          "body": "Il vostro negozio si trova fuori dai dieci Paesi supportati dal POS di WooCommerce o non usa la valuta del proprio Paese, volete una cassa in un browser web o nelle app desktop per Windows, macOS e Linux, volete continuare a effettuare vendite in contanti offline, gestite più di un negozio, usate un gateway di pagamento diverso da WooPayments o Stripe oppure volete terminali di pagamento di SumUp, PayPal, Square, Mollie o Vipps MobilePay."
         },
         "woocommerce": {
           "title": "Scegliete il POS di WooCommerce se:",
@@ -2291,7 +2291,7 @@
         "title": "Domande frequenti",
         "free": {
           "question": "Il POS ufficiale di WooCommerce è gratuito?",
-          "answer": "Sì, il software POS è gratuito e incluso nell'app mobile WooCommerce. Se usate un lettore di carte, è prevista una tariffa di $5.00 / £5.00 per lettore attivo al mese e ai pagamenti con carta si applica la tariffa in presenza del vostro fornitore di servizi di pagamento. Anche il plugin gratuito di WCPOS è gratuito, senza limiti, e funziona con qualsiasi gateway di pagamento WooCommerce."
+          "answer": "Sì, il software POS è gratuito e incluso nell'app mobile WooCommerce. Se usate un lettore di carte, è prevista una tariffa di $5.00 / £5.00 per lettore attivo al mese e ai pagamenti con carta si applica la tariffa in presenza del vostro fornitore di servizi di pagamento. Anche il plugin gratuito di WCPOS è gratuito, senza limiti; accetta contanti e registra i pagamenti con carta effettuati su un terminale separato, e Pro attiva gli altri gateway di pagamento WooCommerce del vostro negozio."
         },
         "countries": {
           "question": "Quali Paesi supporta il POS di WooCommerce?",
@@ -2299,15 +2299,15 @@
         },
         "offline": {
           "question": "Il POS di WooCommerce funziona offline?",
-          "answer": "No. WooCommerce afferma che il suo POS richiede una connessione Internet attiva per sincronizzare i prodotti, creare ordini ed elaborare pagamenti. WCPOS è offline-first: prodotti, clienti e carrelli sono memorizzati in locale, quindi potete consultare il catalogo e preparare vendite senza connessione, e tutto si sincronizza quando torna. Completare il pagamento e convalidare i coupon richiede la connessione al server."
+          "answer": "No. WooCommerce afferma che il suo POS richiede una connessione Internet attiva per sincronizzare i prodotti, creare ordini ed elaborare pagamenti. WCPOS è offline-first: prodotti, clienti e carrelli sono memorizzati in locale, quindi potete consultare il catalogo, creare carrelli e accettare pagamenti in contanti senza connessione, e tutto si sincronizza quando torna. I lettori di carte collegati, i gateway di pagamento online e la convalida dei coupon richiedono una connessione."
         },
         "devices": {
           "question": "Su quali dispositivi funziona il POS di WooCommerce?",
-          "answer": "WooCommerce descrive il suo POS come progettato per i tablet — iPad e tablet Android — all'interno dell'app mobile WooCommerce. WCPOS funziona in qualsiasi browser moderno, come app desktop per Windows e macOS e come app iOS e Android (beta)."
+          "answer": "WooCommerce descrive il suo POS come progettato per i tablet — iPad e tablet Android — all'interno dell'app mobile WooCommerce. WCPOS funziona in qualsiasi browser moderno, come app desktop per Windows, macOS e Linux e come app iOS e Android (beta)."
         },
         "tapToPay": {
           "question": "WCPOS supporta Tap to Pay?",
-          "answer": "No. WCPOS non supporta Tap to Pay né i pagamenti WooPayments in presenza. I pagamenti con carta alla cassa WCPOS passano dalle sue integrazioni con terminali — Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal e Vipps MobilePay — o da un gateway di pagamento WooCommerce che funziona al checkout."
+          "answer": "Non ancora. Tap to Pay su iPhone e Android arriverà con un aggiornamento dell'app WCPOS e WCPOS non supporta i pagamenti WooPayments in presenza. I pagamenti con carta alla cassa WCPOS passano dalle sue integrazioni Pro con terminali — Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal e Vipps MobilePay — da un gateway di pagamento WooCommerce attivato con Pro oppure da un terminale di pagamento separato, registrati come pagamenti con carta."
         },
         "expiry": {
           "question": "Cosa succede quando una licenza WCPOS Pro scade?",
@@ -2315,7 +2315,7 @@
         }
       },
       "footer": {
-        "factsDated": "Dati sul POS di WooCommerce verificati il 2026-10-06 sulle pagine di WooCommerce stesso (la documentazione POS, la pagina POS e la pagina delle commissioni WooPayments); i dati su WCPOS provengono da wcpos.com. Li verifichiamo di nuovo ogni trimestre.",
+        "factsDated": "Dati sul POS di WooCommerce verificati il 2026-10-06 sulle pagine di WooCommerce stesso (la documentazione POS, la pagina POS e la pagina delle commissioni WooPayments); i dati su WCPOS provengono da wcpos.com e si riferiscono a WCPOS 2.0, rilasciato il 2026-11-09, che richiede sia l'app sia il plugin alla versione 2.0. Li verifichiamo di nuovo ogni trimestre.",
         "corrections": "Avete trovato un errore? Scrivete a support@wcpos.com — correggiamo rapidamente e registriamo ogni modifica."
       }
     },
@@ -2330,7 +2330,7 @@
       },
       "shortAnswer": {
         "title": "La risposta in breve",
-        "wcpos": "WCPOS è una cassa basata direttamente su WooCommerce: vende dai vostri prodotti e dalle vostre scorte WooCommerce e ogni vendita è un ordine WooCommerce, quindi non c'è nulla da sincronizzare. Funziona in qualsiasi browser moderno, come app desktop per Windows e macOS e come app iOS e Android (beta), con qualsiasi gateway di pagamento WooCommerce. La versione gratuita non pone limiti a prodotti, ordini o clienti e Pro aggiunge gestione multi-negozio e integrazioni con i terminali di pagamento, tra cui Square Terminal, con un pagamento una tantum dopo il quale nulla si disattiva.",
+        "wcpos": "WCPOS è una cassa basata direttamente su WooCommerce: vende dai vostri prodotti e dalle vostre scorte WooCommerce e ogni vendita è un ordine WooCommerce, quindi non c'è nulla da sincronizzare. Funziona in qualsiasi browser moderno, come app desktop per Windows, macOS e Linux e come app iOS e Android (beta). La versione gratuita non pone limiti a prodotti, ordini o clienti e Pro aggiunge gestione multi-negozio, gli altri gateway di pagamento WooCommerce del vostro negozio e integrazioni con i terminali di pagamento, tra cui Square Terminal, con un pagamento una tantum dopo il quale nulla si disattiva.",
         "square": "Square for WooCommerce collega due sistemi: l'app Square Point of Sale sui dispositivi iOS e Android o integrata in Square Register, l'hardware di Square, e il vostro negozio WooCommerce, con l'estensione che sincronizza i dati di prodotti e scorte tra i due. Square offre un piano gratuito, Tap to Pay su iPhone e Android e pagamenti con carta offline. Ma gli ordini effettuati nel POS di Square non vengono sincronizzati con WooCommerce: le variazioni delle scorte dovute alle vendite di persona arrivano in WooCommerce al successivo controllo programmato (l'intervallo predefinito è un'ora) e l'estensione collega una sede Square alla volta."
       },
       "glance": {
@@ -2351,7 +2351,7 @@
           },
           "devices": {
             "label": "Dispositivi",
-            "wcpos": "Web, app desktop (Windows e macOS), app iOS e Android (beta); dispositivi e cassieri illimitati",
+            "wcpos": "Web, app desktop (Windows, macOS e Linux), app iOS e Android (beta); dispositivi e cassieri illimitati",
             "square": "App Square Point of Sale su dispositivi iOS e Android, e Square Register, l'hardware di Square con Square Point of Sale integrato"
           },
           "countries": {
@@ -2376,7 +2376,7 @@
           },
           "offline": {
             "label": "Offline",
-            "wcpos": "Consultare i prodotti e creare carrelli offline; per completare il pagamento serve una connessione",
+            "wcpos": "Consultare i prodotti, creare carrelli ed effettuare vendite in contanti offline; i lettori di carte collegati e i gateway online richiedono una connessione",
             "square": "Pagamenti con carta offline, caricati entro 72 ore; il venditore è responsabile di quelli che scadono, vengono rifiutati o contestati"
           },
           "multiLocation": {
@@ -2394,14 +2394,14 @@
       "payments": {
         "title": "Come funzionano i pagamenti con carta?",
         "square": "Il POS di Square accetta carte tramite Square, incluso Tap to Pay su iPhone e Android. Negli Stati Uniti, con il piano Square Free, un pagamento con carta di persona (contactless, con inserimento o con strisciata) costa 2.6% + 15¢. Secondo Square, l'accettazione di pagamenti con carta tramite l'app Square è disponibile negli Stati Uniti, in Canada, Australia, Giappone, Regno Unito, Repubblica d'Irlanda, Francia e Spagna; l'estensione richiede che la valuta WooCommerce corrisponda a quella del vostro account Square.",
-        "wcpos": "WCPOS gestisce i pagamenti tramite il checkout di WooCommerce, perciò qualsiasi gateway di pagamento compatibile con WooCommerce può funzionare alla cassa. Pro aggiunge integrazioni con terminali di pagamento per Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal e Vipps MobilePay, installabili con un clic dal catalogo delle estensioni. WCPOS non supporta Tap to Pay.",
+        "wcpos": "WCPOS 2.0 ha un proprio checkout: un pannello di pagamento accanto al carrello accetta contanti, registra i pagamenti con carta effettuati su un terminale separato e può suddividere un ordine in più pagamenti. Con Pro, potete attivare gli altri gateway di pagamento WooCommerce del vostro negozio in cassa e aggiungere integrazioni con i terminali di pagamento per Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal e Vipps MobilePay, installabili con un clic dal catalogo delle estensioni. Tap to Pay su iPhone e Android non è ancora disponibile in WCPOS; arriverà con un aggiornamento dell'app.",
         "both": "Avete già un Square Terminal? Il gateway Square Terminal di WCPOS Pro riscuote su di esso i pagamenti degli ordini WooCommerce direttamente dalla cassa WCPOS e registra il risultato nell'ordine. Se usate il plugin ufficiale Square for WooCommerce, il relativo ambiente e l'ID della sede vengono precompilati. Un Terminal connesso a Square POS o a un'altra integrazione deve prima disconnettersi."
       },
       "pricing": {
         "title": "Quanto costa?",
         "square": "Il POS di Square ha un piano gratuito, Square Free, a $0/month per sede. Negli Stati Uniti con Square Free, i pagamenti con carta di persona (contactless, con inserimento o con strisciata) costano 2.6% + 15¢.",
-        "wcpos": "WCPOS è gratuito, senza limiti a prodotti, ordini, clienti o vendite in contanti. Pro costa $129 — un pagamento una tantum che copre un anno di aggiornamenti e supporto prioritario — oppure $399 a vita. Non si rinnova mai automaticamente e Pro continua a funzionare alla fine dell'anno: non si spegne nulla, mai. WCPOS non applica commissioni sulle transazioni; pagate le tariffe del vostro processore di pagamento.",
-        "proAdds": "Pro aggiunge: gestione multi-negozio, integrazioni con i terminali di pagamento, coupon, rimborsi tramite l'API del POS, storico degli ordini, gestione dei clienti in cassa, prezzi specifici per negozio, modifica di scorte e prezzi, report di fine giornata e la directory delle estensioni.",
+        "wcpos": "WCPOS è gratuito, senza limiti a prodotti, ordini, clienti o vendite in contanti. Dalla versione 2.0, la versione gratuita include anche una cassa con un fondo cassa iniziale, entrate e uscite di contanti, un conteggio alla chiusura e chiusure numerate, pagamenti suddivisi e la schermata Report per la giornata di oggi su quella cassa. Pro costa $129 — un pagamento una tantum che copre un anno di aggiornamenti e supporto prioritario — oppure $399 a vita. Non si rinnova mai automaticamente e Pro continua a funzionare alla fine dell'anno: non si spegne nulla, mai. WCPOS non applica commissioni sulle transazioni; pagate le tariffe del vostro processore di pagamento.",
+        "proAdds": "Pro aggiunge: gestione multi-negozio, più casse, integrazioni con i terminali di pagamento, gli altri gateway di pagamento WooCommerce del vostro negozio in cassa, un display rivolto al cliente, la schermata Coupon, rimborsi in cassa, storico degli ordini, gestione dei clienti in cassa, prezzi specifici per negozio, modifica di scorte e prezzi, report per i giorni precedenti e per ogni cassa e negozio e la directory delle estensioni.",
         "demoPrefix": "Provate tutto prima su",
         "demoLinkLabel": "demo.wcpos.com/pos",
         "demoSuffix": "(accesso demo / demo)."
@@ -2421,8 +2421,8 @@
         "title": "Dove Square è davvero migliore",
         "intro": "Un confronto onesto considera entrambi i lati:",
         "free": "Il POS di Square offre un piano gratuito, Square Free ($0/month per sede). WCPOS Pro costa $129 o più.",
-        "tapToPay": "Tap to Pay su iPhone e Android: un cliente può avvicinare la carta al vostro telefono. WCPOS non supporta Tap to Pay.",
-        "offline": "Pagamenti con carta offline: il POS di Square continua ad accettare carte senza Internet, purché vi riconnettiate e carichiate i pagamenti entro 72 ore; siete responsabili di quelli che scadono, vengono rifiutati o contestati. WCPOS vi permette di consultare i prodotti e creare carrelli offline, ma per completare il pagamento serve una connessione.",
+        "tapToPay": "Tap to Pay su iPhone e Android: un cliente può avvicinare la carta al vostro telefono. WCPOS non dispone ancora di Tap to Pay; arriverà con un aggiornamento dell'app.",
+        "offline": "Pagamenti con carta offline: il POS di Square continua ad accettare carte senza Internet, purché vi riconnettiate e carichiate i pagamenti entro 72 ore; siete responsabili di quelli che scadono, vengono rifiutati o contestati. WCPOS continua a effettuare vendite in contanti offline, ma i lettori di carte collegati richiedono una connessione.",
         "hardware": "L'hardware di Square: Square Register include Square Point of Sale, quindi il registratore di cassa e il suo software provengono dalla stessa azienda. WCPOS non vende hardware; funziona sui computer, tablet e telefoni che avete già.",
         "outro": "Se vendete di persona da dispositivi iOS o Android o Square Register in una sola sede, accettate pagamenti tramite Square e non avete bisogno che le vendite di persona diventino ordini WooCommerce, il POS di Square con l'estensione potrebbe essere sufficiente."
       },
@@ -2430,7 +2430,7 @@
         "title": "Quale scegliere?",
         "wcpos": {
           "title": "Scegliete WCPOS se:",
-          "body": "Volete che ogni vendita, online e di persona, sia un ordine WooCommerce proveniente da un unico catalogo senza nulla da sincronizzare, gestite più di un negozio, vendete fuori dagli otto Paesi di Square, volete una cassa in un browser web o nelle app desktop per Windows e macOS oppure volete usare un gateway di pagamento o un terminale di pagamento diverso da Square."
+          "body": "Volete che ogni vendita, online e di persona, sia un ordine WooCommerce proveniente da un unico catalogo senza nulla da sincronizzare, gestite più di un negozio, vendete fuori dagli otto Paesi di Square, volete una cassa in un browser web o nelle app desktop per Windows, macOS e Linux oppure volete usare un gateway di pagamento o un terminale di pagamento diverso da Square."
         },
         "square": {
           "title": "Scegliete Square for WooCommerce se:",
@@ -2445,7 +2445,7 @@
         },
         "free": {
           "question": "Square POS è gratuito?",
-          "answer": "Square ha un piano gratuito, Square Free, a $0/month per sede, e ai pagamenti con carta si applicano le commissioni di elaborazione di Square: negli Stati Uniti con Square Free, 2.6% + 15¢ per pagamenti contactless, con inserimento o con strisciata. Anche il plugin gratuito di WCPOS è gratuito, senza limiti, e funziona con qualsiasi gateway di pagamento WooCommerce."
+          "answer": "Square ha un piano gratuito, Square Free, a $0/month per sede, e ai pagamenti con carta si applicano le commissioni di elaborazione di Square: negli Stati Uniti con Square Free, 2.6% + 15¢ per pagamenti contactless, con inserimento o con strisciata. Anche il plugin gratuito di WCPOS è gratuito, senza limiti; accetta contanti e registra i pagamenti con carta effettuati su un terminale separato, e Pro attiva gli altri gateway di pagamento WooCommerce del vostro negozio."
         },
         "terminal": {
           "question": "Posso usare Square Terminal con WCPOS?",
@@ -2453,7 +2453,7 @@
         },
         "offline": {
           "question": "Square POS funziona offline?",
-          "answer": "Il POS di Square può accettare pagamenti con carta offline. Dovete riconnettervi e caricarli entro 72 ore dall'inizio della sessione offline e siete responsabili di qualsiasi pagamento offline scaduto, rifiutato o contestato. EBT/SNAP, Afterpay, Cash App Pay, Square Gift Cards, Tap to Pay su iPhone e Android e i numeri di carta inseriti manualmente non sono disponibili offline. WCPOS memorizza localmente prodotti, clienti e carrelli, quindi potete consultare il catalogo e preparare vendite senza connessione; per completare il pagamento serve una connessione al server."
+          "answer": "Il POS di Square può accettare pagamenti con carta offline. Dovete riconnettervi e caricarli entro 72 ore dall'inizio della sessione offline e siete responsabili di qualsiasi pagamento offline scaduto, rifiutato o contestato. EBT/SNAP, Afterpay, Cash App Pay, Square Gift Cards, Tap to Pay su iPhone e Android e i numeri di carta inseriti manualmente non sono disponibili offline. WCPOS memorizza localmente prodotti, clienti e carrelli, quindi potete consultare il catalogo, creare carrelli e accettare pagamenti in contanti senza connessione; queste vendite si sincronizzano al ritorno della connessione. I lettori di carte collegati e i gateway di pagamento online richiedono una connessione."
         },
         "locations": {
           "question": "Square for WooCommerce può sincronizzare più di una sede?",
@@ -2465,7 +2465,7 @@
         }
       },
       "footer": {
-        "factsDated": "Dati su Square verificati il 2026-10-06 sulle pagine di Square (pagina delle commissioni, annuncio sui prezzi e articoli di assistenza relativi a pagamenti offline, Tap to Pay, dispositivi e disponibilità internazionale) e nella documentazione WooCommerce relativa all'estensione Square for WooCommerce; dati su WCPOS da wcpos.com e docs.wcpos.com. Li ricontrolliamo ogni trimestre.",
+        "factsDated": "Dati su Square verificati il 2026-10-06 sulle pagine di Square (pagina delle commissioni, annuncio sui prezzi e articoli di assistenza relativi a pagamenti offline, Tap to Pay, dispositivi e disponibilità internazionale) e nella documentazione WooCommerce relativa all'estensione Square for WooCommerce; dati su WCPOS da wcpos.com e docs.wcpos.com, riferiti a WCPOS 2.0, rilasciato il 2026-11-09, che richiede sia l'app sia il plugin alla versione 2.0. Li ricontrolliamo ogni trimestre.",
         "corrections": "Avete trovato un errore? Scrivete a support@wcpos.com — correggiamo rapidamente e registriamo ogni modifica."
       }
     },
@@ -2480,7 +2480,7 @@
       },
       "shortAnswer": {
         "title": "La risposta in breve",
-        "wcpos": "WCPOS è un plugin POS gratuito e open source per WooCommerce, senza limiti a prodotti, ordini o clienti. Funziona in qualsiasi browser moderno, come app desktop per Windows e macOS e come app per iOS e Android (beta), con qualsiasi gateway di pagamento WooCommerce. WCPOS non applica commissioni sulle transazioni. Pro aggiunge la gestione di più negozi e le integrazioni con terminali di pagamento con un pagamento una tantum — $129 per un anno di aggiornamenti o $399 a vita — e continua a funzionare alla fine dell’anno.",
+        "wcpos": "WCPOS è un plugin POS gratuito e open source per WooCommerce, senza limiti a prodotti, ordini o clienti. Funziona in qualsiasi browser moderno, come app desktop per Windows, macOS e Linux e come app per iOS e Android (beta). WCPOS non applica commissioni sulle transazioni. Pro aggiunge la gestione di più negozi, le integrazioni con terminali di pagamento e gli altri gateway di pagamento WooCommerce del vostro negozio con un pagamento una tantum — $129 per un anno di aggiornamenti o $399 a vita — e continua a funzionare alla fine dell’anno.",
         "jovvie": "Jovvie, di BizSwoop, è un plugin POS per WooCommerce presente nel WooCommerce Marketplace ufficiale. A luglio 2026, i suoi piani andavano da gratuito a $29 al mese e BizSwoop applicava una commissione di piattaforma dallo 0.5% al 2.5% per transazione oltre all’abbonamento. Accetta pagamenti con carta tramite Stripe Terminal — BizSwoop è partner di Stripe Terminal — e non aveva app native. Su WordPress.org contava circa 200 installazioni attive e una valutazione di 4.5 stelle."
       },
       "glance": {
@@ -2506,12 +2506,12 @@
           },
           "apps": {
             "label": "App",
-            "wcpos": "Web, app desktop (Windows e macOS), app iOS e Android (beta)",
+            "wcpos": "Web, app desktop (Windows, macOS e Linux), app iOS e Android (beta)",
             "jovvie": "Nessuna app nativa"
           },
           "offline": {
             "label": "Offline",
-            "wcpos": "Consultare i prodotti e creare carrelli offline; per completare il pagamento serve una connessione",
+            "wcpos": "Consultare i prodotti, creare carrelli ed effettuare vendite in contanti offline; i lettori di carte collegati e i gateway online richiedono una connessione",
             "jovvie": "Non accertato dalla nostra ricerca — chiedete a BizSwoop"
           },
           "availability": {
@@ -2529,9 +2529,9 @@
       "pricing": {
         "title": "Quanto costa?",
         "jovvie": "A luglio 2026, i piani di Jovvie andavano da gratuito a $29 al mese e BizSwoop applicava una commissione di piattaforma dallo 0.5% al 2.5% per transazione oltre all’abbonamento.",
-        "wcpos": "WCPOS è gratuito, senza limiti a prodotti, ordini, clienti o vendite in contanti. Pro costa $129 — un pagamento una tantum che copre un anno di aggiornamenti e supporto prioritario — oppure $399 a vita. Non si rinnova mai automaticamente e Pro continua a funzionare alla fine dell'anno: non si spegne nulla, mai. WCPOS non applica commissioni sulle transazioni; pagate le tariffe del vostro processore di pagamento.",
+        "wcpos": "WCPOS è gratuito, senza limiti a prodotti, ordini, clienti o vendite in contanti. Dalla versione 2.0, la versione gratuita include anche una cassa con un fondo cassa iniziale, entrate e uscite di contanti, un conteggio alla chiusura e chiusure numerate, pagamenti suddivisi e la schermata Report per la giornata di oggi su quella cassa. Pro costa $129 — un pagamento una tantum che copre un anno di aggiornamenti e supporto prioritario — oppure $399 a vita. Non si rinnova mai automaticamente e Pro continua a funzionare alla fine dell'anno: non si spegne nulla, mai. WCPOS non applica commissioni sulle transazioni; pagate le tariffe del vostro processore di pagamento.",
         "math": "Una commissione percentuale cresce con le vendite. Allo 0.5%-2.5%, ogni $10,000 di vendite soggette alla commissione costano da $50 a $250 in commissioni di piattaforma, prima dell’abbonamento e delle tariffe del vostro processore di carte. WCPOS Pro costa sempre gli stessi $129 o $399, a prescindere da quanto vendete.",
-        "proAdds": "Pro aggiunge: gestione multi-negozio, integrazioni con i terminali di pagamento, coupon, rimborsi tramite l'API del POS, storico degli ordini, gestione dei clienti in cassa, prezzi specifici per negozio, modifica di scorte e prezzi, report di fine giornata e la directory delle estensioni.",
+        "proAdds": "Pro aggiunge: gestione multi-negozio, più casse, integrazioni con i terminali di pagamento, gli altri gateway di pagamento WooCommerce del vostro negozio in cassa, un display rivolto al cliente, la schermata Coupon, rimborsi in cassa, storico degli ordini, gestione dei clienti in cassa, prezzi specifici per negozio, modifica di scorte e prezzi, report per i giorni precedenti e per ogni cassa e negozio e la directory delle estensioni.",
         "demoPrefix": "Provate tutto prima su",
         "demoLinkLabel": "demo.wcpos.com/pos",
         "demoSuffix": "(accesso demo / demo)."
@@ -2547,7 +2547,7 @@
         "title": "Quale scegliere?",
         "wcpos": {
           "title": "Scegliete WCPOS se:",
-          "body": "Volete evitare le commissioni sulle transazioni del vostro punto vendita, un pagamento una tantum senza disattivazioni, app desktop per Windows e macOS o app per iOS e Android, codice open source oppure una scelta di terminali di pagamento: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal e Vipps MobilePay."
+          "body": "Volete evitare le commissioni sulle transazioni del vostro punto vendita, un pagamento una tantum senza disattivazioni, app desktop per Windows, macOS e Linux o app per iOS e Android, codice open source oppure una scelta di terminali di pagamento: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal e Vipps MobilePay."
         },
         "jovvie": {
           "title": "Scegliete Jovvie se:",
@@ -2562,7 +2562,7 @@
         },
         "offline": {
           "question": "Jovvie funziona offline?",
-          "answer": "La nostra ricerca non ha accertato se Jovvie funziona senza connessione Internet, quindi chiedete a BizSwoop prima di farci affidamento. WCPOS memorizza localmente prodotti, clienti e carrelli, quindi potete consultare il catalogo e preparare vendite senza connessione; per completare il pagamento serve una connessione al server."
+          "answer": "La nostra ricerca non ha accertato se Jovvie funziona senza connessione Internet, quindi chiedete a BizSwoop prima di farci affidamento. WCPOS memorizza localmente prodotti, clienti e carrelli, quindi potete consultare il catalogo, creare carrelli e accettare pagamenti in contanti senza connessione; queste vendite si sincronizzano al ritorno della connessione. I lettori di carte collegati e i gateway di pagamento online richiedono una connessione."
         },
         "stripe": {
           "question": "Posso usare un lettore di carte Stripe con WCPOS?",
@@ -2570,7 +2570,7 @@
         },
         "apps": {
           "question": "Jovvie ha app native?",
-          "answer": "A luglio 2026, Jovvie non aveva app native. WCPOS funziona in qualsiasi browser moderno, come app desktop per Windows e macOS e come app per iOS e Android (beta)."
+          "answer": "Alla data di July 2026, Jovvie non aveva app native. WCPOS funziona in qualsiasi browser moderno, come app desktop per Windows, macOS e Linux e come app per iOS e Android (beta)."
         },
         "expiry": {
           "question": "Cosa succede quando una licenza WCPOS Pro scade?",
@@ -2578,7 +2578,7 @@
         }
       },
       "footer": {
-        "factsDated": "I dati su Jovvie risalgono al 2026-07-09, provengono dalla nostra ricerca sui concorrenti e non sono stati ricontrollati da allora; consultate jovvie.com per i prezzi attuali prima di decidere. I dati su WCPOS provengono da wcpos.com, docs.wcpos.com e WordPress.org. Li verifichiamo di nuovo ogni trimestre.",
+        "factsDated": "I dati su Jovvie risalgono al 2026-07-09, provengono dalla nostra ricerca sui concorrenti e non sono stati ricontrollati da allora; consultate jovvie.com per i prezzi attuali prima di decidere. I dati su WCPOS provengono da wcpos.com, docs.wcpos.com e WordPress.org e si riferiscono a WCPOS 2.0, rilasciato il 2026-11-09, che richiede sia l'app sia il plugin alla versione 2.0. Li verifichiamo di nuovo ogni trimestre.",
         "corrections": "Avete trovato un errore? Scrivete a support@wcpos.com — correggiamo rapidamente e registriamo ogni modifica."
       }
     },
@@ -2589,11 +2589,11 @@
       },
       "hero": {
         "title": "WCPOS vs Vitepos",
-        "subtitle": "WCPOS e Vitepos, di Appsbd, aggiungono entrambi un punto vendita al vostro negozio WooCommerce ed entrambi hanno una versione gratuita su WordPress.org. Vitepos offre modalità ristorante, un display rivolto al cliente e una modalità per gli ordini offline; WCPOS offre app desktop e mobili e una scelta più ampia di terminali di pagamento. Ecco il confronto e quando Vitepos è la scelta migliore."
+        "subtitle": "WCPOS e Vitepos, di Appsbd, aggiungono entrambi un punto vendita al vostro negozio WooCommerce ed entrambi hanno una versione gratuita su WordPress.org. Vitepos offre modalità ristorante, un chiosco self-service e una modalità per gli ordini offline; WCPOS offre app desktop e mobili e una scelta più ampia di terminali di pagamento. Ecco il confronto e quando Vitepos è la scelta migliore."
       },
       "shortAnswer": {
         "title": "La risposta in breve",
-        "wcpos": "WCPOS è un plugin POS gratuito e open source per WooCommerce, senza limiti a prodotti, ordini o clienti. Funziona in qualsiasi browser moderno, come app desktop per Windows e macOS e come app per iOS e Android (beta), con qualsiasi gateway di pagamento WooCommerce. WCPOS non applica commissioni sulle transazioni. Pro aggiunge la gestione di più negozi e le integrazioni con terminali di pagamento con un pagamento una tantum — $129 per un anno di aggiornamenti o $399 a vita — e continua a funzionare alla fine dell’anno.",
+        "wcpos": "WCPOS è un plugin POS gratuito e open source per WooCommerce, senza limiti a prodotti, ordini o clienti. Funziona in qualsiasi browser moderno, come app desktop per Windows, macOS e Linux e come app per iOS e Android (beta). WCPOS non applica commissioni sulle transazioni. Pro aggiunge la gestione di più negozi, le integrazioni con terminali di pagamento e gli altri gateway di pagamento WooCommerce del vostro negozio con un pagamento una tantum — $129 per un anno di aggiornamenti o $399 a vita — e continua a funzionare alla fine dell’anno.",
         "vitepos": "Vitepos, di Appsbd, è un plugin per il punto vendita di WooCommerce con una versione gratuita, Vitepos Lite, su WordPress.org. Il 2026-10-07, vitepos.com riportava Vitepos Pro a partire da $79 per un piano annuale per un sito e una licenza a vita per un sito a $299. Vitepos afferma di continuare a elaborare gli ordini offline e di sincronizzarli al ritorno della connessione, e dispone di modalità per alimentari e ristoranti con gestione di camerieri, cucina e tavoli. Funziona in un browser web — il blog di Vitepos stesso dice che non ha un’app mobile dedicata — e accetta pagamenti tramite terminali Stripe Terminal e Wallee. Su WordPress.org aveva 1,000+ installazioni attive e una valutazione di 4.7 stelle basata su 54 recensioni."
       },
       "glance": {
@@ -2614,12 +2614,12 @@
           },
           "apps": {
             "label": "App",
-            "wcpos": "Web, app desktop (Windows e macOS), app iOS e Android (beta)",
+            "wcpos": "Web, app desktop (Windows, macOS e Linux), app iOS e Android (beta)",
             "vitepos": "Funziona in un browser web; il blog di Vitepos stesso dice che non ha un’app mobile dedicata"
           },
           "offline": {
             "label": "Offline",
-            "wcpos": "Consultare i prodotti e creare carrelli offline; per completare il pagamento serve una connessione",
+            "wcpos": "Consultare i prodotti, creare carrelli ed effettuare vendite in contanti offline; i lettori di carte collegati e i gateway online richiedono una connessione",
             "vitepos": "Afferma di continuare a elaborare gli ordini offline e di sincronizzarli al ritorno della connessione; la sua scheda WordPress.org indica gli ordini offline come Pro"
           },
           "restaurant": {
@@ -2629,7 +2629,7 @@
           },
           "display": {
             "label": "Display rivolto al cliente",
-            "wcpos": "No",
+            "wcpos": "Sì, con Pro: apritelo in qualsiasi browser e abbinatelo a una cassa con un codice",
             "vitepos": "Sì"
           },
           "kiosk": {
@@ -2639,7 +2639,7 @@
           },
           "outlets": {
             "label": "Negozi e casse",
-            "wcpos": "Gestione di più negozi in Pro; dispositivi e cassieri illimitati",
+            "wcpos": "Una cassa nella versione gratuita; più casse e gestione di più negozi in Pro; dispositivi e cassieri illimitati",
             "vitepos": "Punti vendita e banchi illimitati, secondo la sua scheda WordPress.org"
           },
           "wporg": {
@@ -2652,9 +2652,9 @@
       "pricing": {
         "title": "Quanto costa?",
         "vitepos": "Il 2026-10-07, vitepos.com riportava Vitepos Lite come gratuito e Vitepos Pro a $79 per un piano annuale per un sito o $149 per un piano annuale per cinque siti. Le licenze a vita costavano $299 per un sito o $499 per cinque siti, ciascuna con un anno di supporto premium. Consultate vitepos.com/pricing per i prezzi attuali.",
-        "wcpos": "WCPOS è gratuito, senza limiti a prodotti, ordini, clienti o vendite in contanti. Pro costa $129 — un pagamento una tantum che copre un anno di aggiornamenti e supporto prioritario — oppure $399 a vita. Non si rinnova mai automaticamente e Pro continua a funzionare alla fine dell'anno: non si spegne nulla, mai. WCPOS non applica commissioni sulle transazioni; pagate le tariffe del vostro processore di pagamento.",
+        "wcpos": "WCPOS è gratuito, senza limiti a prodotti, ordini, clienti o vendite in contanti. Dalla versione 2.0, la versione gratuita include anche una cassa con un fondo cassa iniziale, entrate e uscite di contanti, un conteggio alla chiusura e chiusure numerate, pagamenti suddivisi e la schermata Report per la giornata di oggi su quella cassa. Pro costa $129 — un pagamento una tantum che copre un anno di aggiornamenti e supporto prioritario — oppure $399 a vita. Non si rinnova mai automaticamente e Pro continua a funzionare alla fine dell'anno: non si spegne nulla, mai. WCPOS non applica commissioni sulle transazioni; pagate le tariffe del vostro processore di pagamento.",
         "compare": "Al prezzo di listino, Vitepos Pro costa meno di WCPOS Pro: $79 contro $129 per un anno e $299 contro $399 per una licenza a vita. Confrontate cosa include ciascuna versione Pro prima di decidere.",
-        "proAdds": "Pro aggiunge: gestione multi-negozio, integrazioni con i terminali di pagamento, coupon, rimborsi tramite l'API del POS, storico degli ordini, gestione dei clienti in cassa, prezzi specifici per negozio, modifica di scorte e prezzi, report di fine giornata e la directory delle estensioni.",
+        "proAdds": "Pro aggiunge: gestione multi-negozio, più casse, integrazioni con i terminali di pagamento, gli altri gateway di pagamento WooCommerce del vostro negozio in cassa, un display rivolto al cliente, la schermata Coupon, rimborsi in cassa, storico degli ordini, gestione dei clienti in cassa, prezzi specifici per negozio, modifica di scorte e prezzi, report per i giorni precedenti e per ogni cassa e negozio e la directory delle estensioni.",
         "demoPrefix": "Provate tutto prima su",
         "demoLinkLabel": "demo.wcpos.com/pos",
         "demoSuffix": "(accesso demo / demo)."
@@ -2663,21 +2663,21 @@
         "title": "Dove Vitepos è davvero migliore",
         "intro": "Un confronto onesto considera entrambi i lati:",
         "restaurant": "Modalità ristorante — Vitepos dispone di modalità per alimentari e ristoranti, con un pannello per i camerieri, un pannello per la cucina e la gestione dei tavoli; WCPOS non ha una modalità ristorante.",
-        "offline": "Ordini offline — Vitepos afferma di continuare a elaborare gli ordini senza connessione Internet e di sincronizzarli al ritorno della connessione. WCPOS permette di consultare i prodotti e creare carrelli offline, ma per completare il pagamento serve una connessione.",
+        "offline": "Ordini offline — Vitepos afferma di continuare a elaborare gli ordini senza connessione Internet e di sincronizzarli al ritorno della connessione. WCPOS continua a effettuare vendite in contanti offline, ma i lettori di carte collegati e i gateway online richiedono una connessione.",
         "kiosk": "Chiosco self-service — Vitepos vende una Kiosk App come componente aggiuntivo; WCPOS non ha una modalità chiosco.",
         "price": "Un prezzo di listino più basso — Vitepos Pro parte da $79 per un piano annuale per un sito, contro $129 per WCPOS Pro.",
         "rating": "Una valutazione più alta su WordPress.org — 4.7 stelle da 54 recensioni, contro 3.7 per WCPOS.",
-        "outro": "Se gestite un ristorante o un bar, avete bisogno di un display rivolto al cliente o di un chiosco self-service, oppure volete una modalità per gli ordini offline, Vitepos potrebbe essere la scelta migliore."
+        "outro": "Se gestite un ristorante o un bar, avete bisogno di un chiosco self-service, oppure volete una modalità per gli ordini offline, Vitepos potrebbe essere la scelta migliore."
       },
       "choose": {
         "title": "Quale scegliere?",
         "wcpos": {
           "title": "Scegliete WCPOS se:",
-          "body": "Volete app desktop per Windows e macOS o app per iOS e Android, oppure un terminale di pagamento diverso da Stripe Terminal: WCPOS Pro integra anche SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal e Vipps MobilePay."
+          "body": "Volete app desktop per Windows, macOS e Linux o app per iOS e Android, oppure un terminale di pagamento diverso da Stripe Terminal: WCPOS Pro integra anche SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal e Vipps MobilePay."
         },
         "vitepos": {
           "title": "Scegliete Vitepos se:",
-          "body": "Gestite un ristorante o un bar e volete gestire camerieri, cucina e tavoli, avete bisogno di un display rivolto al cliente o di un chiosco self-service, volete una modalità per gli ordini offline, accettate carte tramite Stripe Terminal o Wallee, oppure volete il prezzo di listino più basso."
+          "body": "Gestite un ristorante o un bar e volete gestire camerieri, cucina e tavoli, avete bisogno di un chiosco self-service, volete una modalità per gli ordini offline, accettate carte tramite Stripe Terminal o Wallee, oppure volete il prezzo di listino più basso."
         }
       },
       "faq": {
@@ -2688,7 +2688,7 @@
         },
         "offline": {
           "question": "Vitepos funziona offline?",
-          "answer": "Vitepos afferma di sì: le sue pagine dicono che memorizza i dati localmente, continua a elaborare gli ordini senza connessione Internet e li sincronizza con WooCommerce al ritorno della connessione. La sua scheda WordPress.org indica gli ordini offline come funzionalità Pro. WCPOS memorizza localmente prodotti, clienti e carrelli, quindi potete consultare il catalogo e preparare vendite senza connessione; per completare il pagamento serve una connessione al server."
+          "answer": "Vitepos afferma di sì: le sue pagine dicono che memorizza i dati localmente, continua a elaborare gli ordini senza connessione Internet e li sincronizza con WooCommerce al ritorno della connessione. La sua scheda WordPress.org indica gli ordini offline come funzionalità Pro. WCPOS memorizza localmente prodotti, clienti e carrelli, quindi potete consultare il catalogo, creare carrelli e accettare pagamenti in contanti senza connessione; queste vendite si sincronizzano al ritorno della connessione. I lettori di carte collegati e i gateway di pagamento online richiedono una connessione."
         },
         "restaurant": {
           "question": "WCPOS ha una modalità ristorante?",
@@ -2696,7 +2696,7 @@
         },
         "apps": {
           "question": "Vitepos ha app native?",
-          "answer": "Vitepos funziona in un browser web su telefoni, tablet e computer, e il suo blog dice che non ha un’app mobile dedicata; potete aggiungere una scorciatoia dal browser. WCPOS funziona in qualsiasi browser moderno, come app desktop per Windows e macOS e come app per iOS e Android (beta)."
+          "answer": "Vitepos funziona in un browser web su telefoni, tablet e computer, e il suo blog dice che non ha un’app mobile dedicata; potete aggiungere una scorciatoia dal browser. WCPOS funziona in qualsiasi browser moderno, come app desktop per Windows, macOS e Linux e come app per iOS e Android (beta)."
         },
         "terminals": {
           "question": "Quali terminali di pagamento supportano Vitepos e WCPOS?",
@@ -2720,7 +2720,7 @@
         }
       },
       "footer": {
-        "factsDated": "I dati su Vitepos sono stati consultati su vitepos.com e nella sua scheda WordPress.org il 2026-10-07 (vedere le fonti); controllate vitepos.com per i prezzi attuali prima di decidere. I dati su WCPOS provengono da wcpos.com, docs.wcpos.com e WordPress.org. Li verifichiamo di nuovo ogni trimestre.",
+        "factsDated": "I dati su Vitepos sono stati consultati su vitepos.com e nella sua scheda WordPress.org il 2026-10-07 (vedere le fonti); controllate vitepos.com per i prezzi attuali prima di decidere. I dati su WCPOS provengono da wcpos.com, docs.wcpos.com e WordPress.org e si riferiscono a WCPOS 2.0, rilasciato il 2026-11-09, che richiede sia l'app sia il plugin alla versione 2.0. Li verifichiamo di nuovo ogni trimestre.",
         "corrections": "Avete trovato un errore? Scrivete a support@wcpos.com — correggiamo rapidamente e registriamo ogni modifica."
       }
     },
@@ -2731,11 +2731,11 @@
       },
       "hero": {
         "title": "WCPOS vs YITH Point of Sale",
-        "subtitle": "WCPOS e YITH Point of Sale for WooCommerce aggiungono entrambi un punto vendita al vostro negozio WooCommerce. YITH Point of Sale gestisce negozi, casse e contante in cassa nel browser; WCPOS ha una versione gratuita, app desktop e mobili e integrazioni con terminali di pagamento, e permette di consultare i prodotti e preparare carrelli offline. Ecco come si confrontano e quando YITH Point of Sale è la scelta migliore."
+        "subtitle": "WCPOS e YITH Point of Sale for WooCommerce aggiungono entrambi un punto vendita al vostro negozio WooCommerce. YITH Point of Sale gestisce negozi, casse e contante in cassa nel browser; WCPOS ha una versione gratuita con una propria cassa, conteggi dei contanti e pagamenti suddivisi, app desktop e mobili e integrazioni con terminali di pagamento, e continua a effettuare vendite in contanti offline. Ecco come si confrontano e quando YITH Point of Sale è la scelta migliore."
       },
       "shortAnswer": {
         "title": "La risposta in breve",
-        "wcpos": "WCPOS è un plugin POS gratuito e open source per WooCommerce, senza limiti a prodotti, ordini o clienti. Funziona in qualsiasi browser moderno, come app desktop per Windows e macOS e come app per iOS e Android (beta), con qualsiasi gateway di pagamento WooCommerce. WCPOS non applica commissioni sulle transazioni. Pro aggiunge la gestione di più negozi e le integrazioni con terminali di pagamento con un pagamento una tantum — $129 per un anno di aggiornamenti o $399 a vita — e continua a funzionare alla fine dell’anno.",
+        "wcpos": "WCPOS è un plugin POS gratuito e open source per WooCommerce, senza limiti a prodotti, ordini o clienti. Funziona in qualsiasi browser moderno, come app desktop per Windows, macOS e Linux e come app per iOS e Android (beta). WCPOS non applica commissioni sulle transazioni. Dalla versione 2.0, la versione gratuita include una cassa con un fondo cassa iniziale, entrate e uscite di contanti, un conteggio alla chiusura e chiusure numerate, oltre ai pagamenti suddivisi. Pro aggiunge la gestione di più negozi, più casse, le integrazioni con terminali di pagamento e gli altri gateway di pagamento WooCommerce del vostro negozio con un pagamento una tantum — $129 per un anno di aggiornamenti o $399 a vita — e continua a funzionare alla fine dell’anno.",
         "yith": "YITH Point of Sale for WooCommerce, di YITH, è un plugin per il punto vendita a pagamento per WooCommerce, venduto con una licenza annuale che si rinnova automaticamente; la sua pagina prodotto non menziona una versione gratuita. Funziona in un browser web, offre negozi e casse illimitati con giacenze separate per ogni negozio e supporta i pagamenti suddivisi. Non ha una modalità offline e non si collega ad alcun terminale di pagamento: secondo la documentazione di YITH, ogni pagamento viene elaborato manualmente. Il 2026-10-07 la sua pagina prodotto indicava 4,667 clienti che lo utilizzano, con una valutazione di 4.23 su 5 basata su 71 valutazioni dei clienti, e il registro delle modifiche riportava la versione 3.27.0, rilasciata il 2026-09-30."
       },
       "glance": {
@@ -2761,12 +2761,12 @@
           },
           "apps": {
             "label": "App",
-            "wcpos": "Web, app desktop (Windows e macOS), app iOS e Android (beta)",
+            "wcpos": "Web, app desktop (Windows, macOS e Linux), app iOS e Android (beta)",
             "yith": "Funziona in un browser web; potete salvarlo sulla schermata iniziale di un telefono o tablet"
           },
           "offline": {
             "label": "Offline",
-            "wcpos": "Consultare i prodotti e creare carrelli offline; per completare il pagamento serve una connessione",
+            "wcpos": "Consultare i prodotti, creare carrelli ed effettuare vendite in contanti offline; i lettori di carte collegati e i gateway online richiedono una connessione",
             "yith": "Nessuna modalità offline, secondo la sua pagina prodotto"
           },
           "barcode": {
@@ -2781,7 +2781,7 @@
           },
           "stores": {
             "label": "Negozi e casse",
-            "wcpos": "Gestione di più negozi in Pro; dispositivi e cassieri illimitati",
+            "wcpos": "Una cassa nella versione gratuita; più casse e gestione di più negozi in Pro; dispositivi e cassieri illimitati",
             "yith": "Negozi e casse illimitati, con giacenze separate per ogni negozio"
           },
           "ratings": {
@@ -2794,9 +2794,9 @@
       "pricing": {
         "title": "Quanto costa?",
         "yith": "YITH vende YITH Point of Sale for WooCommerce come licenza con un anno di aggiornamenti e supporto e una garanzia di rimborso di 30 giorni. Secondo le condizioni di YITH, le sue licenze si rinnovano automaticamente ogni anno e, alla scadenza di una licenza, non ricevete più aggiornamenti o supporto per il prodotto. Non siamo riusciti a leggere il prezzo sulla sua pagina prodotto il 2026-10-07; controllate il prezzo attuale su yithemes.com.",
-        "wcpos": "WCPOS è gratuito, senza limiti a prodotti, ordini, clienti o vendite in contanti. Pro costa $129 — un pagamento una tantum che copre un anno di aggiornamenti e supporto prioritario — oppure $399 a vita. Non si rinnova mai automaticamente e Pro continua a funzionare alla fine dell'anno: non si spegne nulla, mai. WCPOS non applica commissioni sulle transazioni; pagate le tariffe del vostro processore di pagamento.",
+        "wcpos": "WCPOS è gratuito, senza limiti a prodotti, ordini, clienti o vendite in contanti. Dalla versione 2.0, la versione gratuita include anche una cassa con un fondo cassa iniziale, entrate e uscite di contanti, un conteggio alla chiusura e chiusure numerate, pagamenti suddivisi e la schermata Report per la giornata di oggi su quella cassa. Pro costa $129 — un pagamento una tantum che copre un anno di aggiornamenti e supporto prioritario — oppure $399 a vita. Non si rinnova mai automaticamente e Pro continua a funzionare alla fine dell'anno: non si spegne nulla, mai. WCPOS non applica commissioni sulle transazioni; pagate le tariffe del vostro processore di pagamento.",
         "compare": "Poiché non siamo riusciti a confermare il prezzo attuale di YITH, questa pagina non confronta i prezzi di listino. Le condizioni delle licenze differiscono: una licenza YITH si rinnova automaticamente ogni anno, mentre WCPOS Pro si acquista con un pagamento una tantum e continua a funzionare dopo la fine dell’anno di aggiornamenti.",
-        "proAdds": "Pro aggiunge: gestione multi-negozio, integrazioni con i terminali di pagamento, coupon, rimborsi tramite l'API del POS, storico degli ordini, gestione dei clienti in cassa, prezzi specifici per negozio, modifica di scorte e prezzi, report di fine giornata e la directory delle estensioni.",
+        "proAdds": "Pro aggiunge: gestione multi-negozio, più casse, integrazioni con i terminali di pagamento, gli altri gateway di pagamento WooCommerce del vostro negozio in cassa, un display rivolto al cliente, la schermata Coupon, rimborsi in cassa, storico degli ordini, gestione dei clienti in cassa, prezzi specifici per negozio, modifica di scorte e prezzi, report per i giorni precedenti e per ogni cassa e negozio e la directory delle estensioni.",
         "demoPrefix": "Provate tutto prima su",
         "demoLinkLabel": "demo.wcpos.com/pos",
         "demoSuffix": "(accesso demo / demo)."
@@ -2815,11 +2815,11 @@
         "title": "Quale scegliere?",
         "wcpos": {
           "title": "Scegliete WCPOS se:",
-          "body": "Volete una versione gratuita, integrazioni con terminali di pagamento (Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal e Vipps MobilePay), app desktop per Windows e macOS o app per iOS e Android, consultare prodotti e preparare carrelli offline oppure un pagamento una tantum che continua a funzionare dopo l’anno di aggiornamenti."
+          "body": "Volete una versione gratuita con una cassa, conteggi dei contanti e pagamenti suddivisi, integrazioni con terminali di pagamento (Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal e Vipps MobilePay), app desktop per Windows, macOS e Linux o app per iOS e Android, vendite in contanti che continuano offline oppure un pagamento una tantum che continua a funzionare dopo l’anno di aggiornamenti."
         },
         "yith": {
           "title": "Scegliete YITH Point of Sale se:",
-          "body": "Usate già plugin YITH come YITH Barcodes, volete negozi e casse illimitati con giacenze separate per ogni negozio e il tracciamento del contante per ogni sessione di cassa, e siete disposti ad accettare pagamenti con carta su un terminale non collegato al vostro punto vendita."
+          "body": "Usate già plugin YITH come YITH Barcodes, volete negozi e casse illimitati con giacenze separate per ogni negozio, e siete disposti ad accettare pagamenti con carta su un terminale non collegato al vostro punto vendita."
         }
       },
       "faq": {
@@ -2830,7 +2830,7 @@
         },
         "offline": {
           "question": "YITH Point of Sale funziona offline?",
-          "answer": "No. Le FAQ della sua pagina prodotto indicano che il plugin non include una funzione offline, anche se potete configurarlo su un server locale. WCPOS memorizza localmente prodotti, clienti e carrelli, quindi potete consultare il catalogo e preparare vendite senza connessione; per completare il pagamento serve una connessione al server."
+          "answer": "No. Le FAQ della sua pagina prodotto indicano che il plugin non include una funzione offline, anche se potete configurarlo su un server locale. WCPOS memorizza localmente prodotti, clienti e carrelli, quindi potete consultare il catalogo, creare carrelli e accettare pagamenti in contanti senza connessione; queste vendite si sincronizzano al ritorno della connessione. I lettori di carte collegati e i gateway di pagamento online richiedono una connessione."
         },
         "terminals": {
           "question": "Posso collegare un terminale di pagamento a YITH Point of Sale?",
@@ -2838,7 +2838,7 @@
         },
         "apps": {
           "question": "YITH Point of Sale ha app native?",
-          "answer": "La documentazione di YITH descrive come aprire il punto vendita in un browser e salvarlo sulla schermata iniziale di un telefono o tablet, e non menziona alcuna app nativa. YITH afferma che è stato testato su tablet da 10 a 12 pollici come iPads e tablet Android. WCPOS funziona in qualsiasi browser moderno, come app desktop per Windows e macOS e come app per iOS e Android (beta)."
+          "answer": "La documentazione di YITH descrive come aprire il punto vendita in un browser e salvarlo sulla schermata iniziale di un telefono o tablet, e non menziona alcuna app nativa. YITH afferma che è stato testato su tablet da 10 a 12 pollici come iPads e tablet Android. WCPOS funziona in qualsiasi browser moderno, come app desktop per Windows, macOS e Linux e come app per iOS e Android (beta)."
         },
         "licence": {
           "question": "Cosa succede quando scade una licenza YITH?",
@@ -2865,7 +2865,7 @@
         }
       },
       "footer": {
-        "factsDated": "I dati su YITH Point of Sale sono stati consultati su yithemes.com e docs.yithemes.com il 2026-10-07 (vedere Fonti); controllate il prezzo attuale su yithemes.com prima di decidere. I dati su WCPOS provengono da wcpos.com, docs.wcpos.com e WordPress.org. Li verifichiamo nuovamente ogni trimestre.",
+        "factsDated": "I dati su YITH Point of Sale sono stati consultati su yithemes.com e docs.yithemes.com il 2026-10-07 (vedere Fonti); controllate il prezzo attuale su yithemes.com prima di decidere. I dati su WCPOS provengono da wcpos.com, docs.wcpos.com e WordPress.org e si riferiscono a WCPOS 2.0, rilasciato il 2026-11-09, che richiede sia l'app sia il plugin alla versione 2.0. Li verifichiamo nuovamente ogni trimestre.",
         "corrections": "Avete trovato un errore? Scrivete a support@wcpos.com — correggiamo rapidamente e registriamo ogni modifica."
       }
     },
@@ -2880,7 +2880,7 @@
       },
       "shortAnswer": {
         "title": "La risposta in breve",
-        "wcpos": "WCPOS è un plugin POS gratuito e open source per WooCommerce, senza limiti a prodotti, ordini o clienti. Funziona in qualsiasi browser moderno, come app desktop per Windows e macOS e come app per iOS e Android (beta), con qualsiasi gateway di pagamento WooCommerce. WCPOS non applica commissioni sulle transazioni. Pro aggiunge la gestione di più negozi e le integrazioni con terminali di pagamento con un pagamento una tantum — $129 per un anno di aggiornamenti o $399 a vita — e continua a funzionare alla fine dell’anno.",
+        "wcpos": "WCPOS è un plugin POS gratuito e open source per WooCommerce, senza limiti a prodotti, ordini o clienti. Funziona in qualsiasi browser moderno, come app desktop per Windows, macOS e Linux e come app per iOS e Android (beta). WCPOS non applica commissioni sulle transazioni. Pro aggiunge la gestione di più negozi, le integrazioni con terminali di pagamento e gli altri gateway di pagamento WooCommerce del vostro negozio con un pagamento una tantum — $129 per un anno di aggiornamenti o $399 a vita — e continua a funzionare alla fine dell’anno.",
         "foosales": "FooSales è un punto cassa per WooCommerce venduto come abbonamento annuale per ciascun sito web. Il 2026-10-07, foosales.com riportava due piani dopo una prova gratuita di 7 giorni: Core a US$19 al mese e Plus a US$38 al mese, entrambi fatturati annualmente per negozio, con Plus che aggiunge i pagamenti Square e Stripe. Offre app per iPad, iPhone e Android e una web app. FooSales afferma che le sue app continuano a funzionare offline e sincronizzano gli ordini al ritorno della connessione, e che nel piano Plus supporta Tap to Pay su iPhone e Android. Il suo centro assistenza indica che i piani includono 3 utenti e 3 dispositivi e che annullare un piano interrompe l'accesso al POS e alle app di FooSales. Sull'App Store statunitense, la sua app aveva 3.6 stelle da 8 valutazioni."
       },
       "glance": {
@@ -2906,17 +2906,17 @@
           },
           "tapToPay": {
             "label": "Tap to Pay",
-            "wcpos": "No",
+            "wcpos": "Non ancora: arriverà con un aggiornamento dell'app",
             "foosales": "Su iPhone e Android, tramite Stripe o Square (piano Plus)"
           },
           "apps": {
             "label": "App",
-            "wcpos": "Web, app desktop (Windows e macOS), app iOS e Android (beta)",
+            "wcpos": "Web, app desktop (Windows, macOS e Linux), app iOS e Android (beta)",
             "foosales": "App per iPad, iPhone e Android e una web app per browser moderni"
           },
           "offline": {
             "label": "Offline",
-            "wcpos": "Consultare i prodotti e creare carrelli offline; per completare il pagamento serve una connessione",
+            "wcpos": "Consultare i prodotti, creare carrelli ed effettuare vendite in contanti offline; i lettori di carte collegati e i gateway online richiedono una connessione",
             "foosales": "Afferma che le sue app continuano a funzionare offline e sincronizzano nuovi ordini, cancellazioni e rimborsi alla riconnessione; non è possibile creare o modificare clienti offline"
           },
           "devices": {
@@ -2939,9 +2939,9 @@
       "pricing": {
         "title": "Quanto costa?",
         "foosales": "Il 2026-10-07, foosales.com riportava due piani, entrambi fatturati annualmente per negozio: Core a US$19 al mese e Plus a US$38 al mese, che aggiunge i pagamenti Square e Stripe e le integrazioni WooCommerce Product Add-ons e FooEvents. Entrambi includono aggiornamenti e supporto via email. Non erano riportati un'opzione mensile né un piano gratuito; una prova gratuita di 7 giorni, senza carta di credito richiesta, include tutte le funzionalità di Plus. Ogni sito web o sottodominio richiede un piano proprio e gli utenti e i dispositivi aggiuntivi sono venduti come componenti aggiuntivi. Consultate foosales.com/pricing per i prezzi attuali.",
-        "wcpos": "WCPOS è gratuito, senza limiti a prodotti, ordini, clienti o vendite in contanti. Pro costa $129 — un pagamento una tantum che copre un anno di aggiornamenti e supporto prioritario — oppure $399 a vita. Non si rinnova mai automaticamente e Pro continua a funzionare alla fine dell'anno: non si spegne nulla, mai. WCPOS non applica commissioni sulle transazioni; pagate le tariffe del vostro processore di pagamento.",
+        "wcpos": "WCPOS è gratuito, senza limiti a prodotti, ordini, clienti o vendite in contanti. Dalla versione 2.0, la versione gratuita include anche una cassa con un fondo cassa iniziale, entrate e uscite di contanti, un conteggio alla chiusura e chiusure numerate, pagamenti suddivisi e la schermata Report per la giornata di oggi su quella cassa. Pro costa $129 — un pagamento una tantum che copre un anno di aggiornamenti e supporto prioritario — oppure $399 a vita. Non si rinnova mai automaticamente e Pro continua a funzionare alla fine dell'anno: non si spegne nulla, mai. WCPOS non applica commissioni sulle transazioni; pagate le tariffe del vostro processore di pagamento.",
         "compare": "Con fatturazione annuale, FooSales Core equivale a US$228 all'anno per negozio e Plus, con le integrazioni Square e Stripe, a US$456. WCPOS Pro, con le sue integrazioni con terminali di pagamento, costa $129 una tantum per un anno di aggiornamenti o $399 a vita. Il centro assistenza di FooSales indica che annullare un piano interrompe l'accesso al POS e alle app; una licenza WCPOS Pro scaduta continua a funzionare.",
-        "proAdds": "Pro aggiunge: gestione multi-negozio, integrazioni con i terminali di pagamento, coupon, rimborsi tramite l'API del POS, storico degli ordini, gestione dei clienti in cassa, prezzi specifici per negozio, modifica di scorte e prezzi, report di fine giornata e la directory delle estensioni.",
+        "proAdds": "Pro aggiunge: gestione multi-negozio, più casse, integrazioni con i terminali di pagamento, gli altri gateway di pagamento WooCommerce del vostro negozio in cassa, un display rivolto al cliente, la schermata Coupon, rimborsi in cassa, storico degli ordini, gestione dei clienti in cassa, prezzi specifici per negozio, modifica di scorte e prezzi, report per i giorni precedenti e per ogni cassa e negozio e la directory delle estensioni.",
         "demoPrefix": "Provate tutto prima su",
         "demoLinkLabel": "demo.wcpos.com/pos",
         "demoSuffix": "(accesso demo / demo)."
@@ -2949,15 +2949,15 @@
       "foosalesBetter": {
         "title": "Dove FooSales è davvero migliore",
         "intro": "Un confronto onesto vale in entrambe le direzioni:",
-        "tapToPay": "Tap to Pay su iPhone e Android — con FooSales Plus, un cliente può avvicinare la carta al vostro telefono tramite Stripe o Square. WCPOS non supporta Tap to Pay.",
-        "offline": "Ordini offline — FooSales afferma che le sue app continuano a registrare nuovi ordini, cancellazioni e rimborsi senza connessione Internet e li sincronizzano con WooCommerce al ritorno della connessione. WCPOS permette di consultare i prodotti e creare carrelli offline, ma per completare il pagamento serve una connessione.",
+        "tapToPay": "Tap to Pay su iPhone e Android — con FooSales Plus, un cliente può avvicinare la carta al vostro telefono tramite Stripe o Square. WCPOS non dispone ancora di Tap to Pay; arriverà con un aggiornamento dell'app.",
+        "offline": "Ordini offline — FooSales afferma che le sue app continuano a registrare nuovi ordini, cancellazioni e rimborsi senza connessione Internet e li sincronizzano con WooCommerce al ritorno della connessione. WCPOS continua a effettuare vendite in contanti offline, ma i lettori di carte collegati e i gateway online richiedono una connessione.",
         "outro": "Se volete Tap to Pay su un telefono o una modalità per gli ordini offline e un abbonamento annuale per ogni negozio fa al caso vostro, FooSales potrebbe essere la scelta migliore."
       },
       "choose": {
         "title": "Quale scegliere?",
         "wcpos": {
           "title": "Scegliete WCPOS se:",
-          "body": "Volete un plugin gratuito senza limiti, prezzi Pro una tantum con funzionamento continuo anche se smettete di pagare, dispositivi e cassieri illimitati, gestione di più negozi, app desktop per Windows e macOS o un terminale SumUp, PayPal Reader (Zettle) o Mollie, che la roadmap di FooSales elenca come richieste di integrazione."
+          "body": "Volete un plugin gratuito senza limiti, prezzi Pro una tantum con funzionamento continuo anche se smettete di pagare, dispositivi e cassieri illimitati, gestione di più negozi, app desktop per Windows, macOS e Linux o un terminale SumUp, PayPal Reader (Zettle) o Mollie, che la roadmap di FooSales elenca come richieste di integrazione."
         },
         "foosales": {
           "title": "Scegliete FooSales se:",
@@ -2976,15 +2976,15 @@
         },
         "offline": {
           "question": "FooSales funziona offline?",
-          "answer": "FooSales afferma di sì: le sue app passano alla modalità offline quando cade la connessione, gran parte del POS continua a funzionare, e nuovi ordini, ordini cancellati e rimborsi vengono memorizzati sul dispositivo e sincronizzati con WooCommerce quando tornate online. Il suo centro assistenza indica che i clienti non possono essere creati o modificati offline e i valori delle scorte non possono essere cambiati; la sua pagina sui pagamenti indica che i coupon WooCommerce richiedono una connessione Internet. WCPOS memorizza localmente prodotti, clienti e carrelli, quindi potete consultare il catalogo e preparare vendite senza connessione; per completare il pagamento serve una connessione al server."
+          "answer": "FooSales afferma di sì: le sue app passano alla modalità offline quando cade la connessione, gran parte del POS continua a funzionare, e nuovi ordini, ordini cancellati e rimborsi vengono memorizzati sul dispositivo e sincronizzati con WooCommerce quando tornate online. Il suo centro assistenza indica che i clienti non possono essere creati o modificati offline e i valori delle scorte non possono essere cambiati; la sua pagina sui pagamenti indica che i coupon WooCommerce richiedono una connessione Internet. WCPOS memorizza localmente prodotti, clienti e carrelli, quindi potete consultare il catalogo, creare carrelli e accettare pagamenti in contanti senza connessione; queste vendite si sincronizzano al ritorno della connessione. I lettori di carte collegati e i gateway di pagamento online richiedono una connessione."
         },
         "terminals": {
           "question": "Quali terminali di pagamento supportano FooSales e WCPOS?",
-          "answer": "Nel piano Plus, FooSales integra Square Terminal in tutte le sue app, Square Readers nelle app per tablet e lettori Stripe Terminal, e supporta Tap to Pay su iPhone e Android tramite Stripe o Square. Altri lettori di carte possono essere usati al di fuori di FooSales, registrando la vendita al checkout come pagamento con carta. Le integrazioni con i terminali di pagamento di WCPOS Pro includono Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal e Vipps MobilePay. WCPOS non supporta Tap to Pay."
+          "answer": "Nel piano Plus, FooSales integra Square Terminal in tutte le sue app, Square Readers nelle app per tablet e lettori Stripe Terminal, e supporta Tap to Pay su iPhone e Android tramite Stripe o Square. Altri lettori di carte possono essere usati al di fuori di FooSales, registrando la vendita al checkout come pagamento con carta. Le integrazioni con i terminali di pagamento di WCPOS Pro includono Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal e Vipps MobilePay. Tap to Pay non è ancora disponibile in WCPOS; arriverà con un aggiornamento dell'app."
         },
         "apps": {
           "question": "FooSales dispone di app native?",
-          "answer": "Sì. FooSales ha app per iPad e iPhone (iOS 16.4 o versioni successive) e per Android (Android 10 o versioni successive), e una web app che funziona nei browser moderni come Chrome, Safari, Firefox ed Edge. La sua scheda App Store indica che l'app iOS funziona anche su un Mac con chip Apple M1 o successivo. WCPOS funziona in qualsiasi browser moderno, come app desktop per Windows e macOS e come app iOS e Android (beta)."
+          "answer": "Sì. FooSales ha app per iPad e iPhone (iOS 16.4 o versioni successive) e per Android (Android 10 o versioni successive), e una web app che funziona nei browser moderni come Chrome, Safari, Firefox ed Edge. La sua scheda App Store indica che l'app iOS funziona anche su un Mac con chip Apple M1 o successivo. WCPOS funziona in qualsiasi browser moderno, come app desktop per Windows, macOS e Linux e come app iOS e Android (beta)."
         },
         "expiry": {
           "question": "Cosa succede quando una licenza WCPOS Pro scade?",
@@ -3011,7 +3011,7 @@
         }
       },
       "footer": {
-        "factsDated": "I dati su FooSales sono stati consultati su foosales.com, help.foosales.com e nella sua scheda App Store il 2026-10-07 (vedere le fonti); controllate foosales.com per i prezzi attuali prima di decidere. I dati su WCPOS provengono da wcpos.com, docs.wcpos.com e WordPress.org. Li verifichiamo di nuovo ogni trimestre.",
+        "factsDated": "I dati su FooSales sono stati consultati su foosales.com, help.foosales.com e nella sua scheda App Store il 2026-10-07 (vedere le fonti); controllate foosales.com per i prezzi attuali prima di decidere. I dati su WCPOS provengono da wcpos.com, docs.wcpos.com e WordPress.org e si riferiscono a WCPOS 2.0, rilasciato il 2026-11-09, che richiede sia l'app sia il plugin alla versione 2.0. Li verifichiamo di nuovo ogni trimestre.",
         "corrections": "Avete trovato un errore? Scrivete a support@wcpos.com — correggiamo rapidamente e registriamo ogni modifica."
       }
     }
