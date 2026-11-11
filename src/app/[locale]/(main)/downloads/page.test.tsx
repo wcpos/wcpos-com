@@ -54,6 +54,8 @@ vi.mock('next-intl/server', async () => {
 
 vi.mock('next-intl', async () => {
   const messages = (await import('../../../../../messages/en.json')).default
+  const { Fragment } = await import('react')
+  type RichValue = string | ((chunks: React.ReactNode) => React.ReactNode)
   return {
     hasLocale: (locales: readonly string[], locale: string) => locales.includes(locale),
     NextIntlClientProvider: ({ children }: { children: React.ReactNode }) => (
@@ -67,7 +69,21 @@ vi.mock('next-intl', async () => {
         }
         return message
       }
-      t.rich = (key: string) => readMessage(messages, namespace, key)
+      t.rich = (key: string, values?: Record<string, RichValue>) => {
+        let message = readMessage(messages, namespace, key)
+        for (const [name, value] of Object.entries(values ?? {})) {
+          if (typeof value === 'string') message = message.replace(`{${name}}`, value)
+        }
+        return message.split(/(<\w+>.*?<\/\w+>)/).map((part, index) => {
+          const tag = /^<(\w+)>(.*)<\/\1>$/.exec(part)
+          const render = tag && values?.[tag[1]]
+          return (
+            <Fragment key={index}>
+              {tag && typeof render === 'function' ? render(tag[2]) : part}
+            </Fragment>
+          )
+        })
+      }
       return t
     },
   }
@@ -149,5 +165,23 @@ describe('DownloadsPage', () => {
       screen.getByText(/Cash drawer support/).closest('[lang="en"]'),
     ).not.toBeNull()
     expect(container.querySelector('[lang="fr"]')).toBeNull()
+  })
+
+  it('links macOS 12 users to the 1.11.12 desktop build', async () => {
+    const { default: DownloadsPage } = await import(
+      '@/app/[locale]/(main)/downloads/page'
+    )
+
+    render(await DownloadsPage({ params: Promise.resolve({ locale: 'en' }) }))
+
+    expect(screen.getByText(/On macOS 12 Monterey\?/)).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Apple Silicon' })).toHaveAttribute(
+      'href',
+      'https://updates.wcpos.com/v1/electron/download/darwin-arm64/v1.11.12',
+    )
+    expect(screen.getByRole('link', { name: 'Intel' })).toHaveAttribute(
+      'href',
+      'https://updates.wcpos.com/v1/electron/download/darwin-x64/v1.11.12',
+    )
   })
 })
