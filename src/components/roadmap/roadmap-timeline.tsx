@@ -245,7 +245,7 @@ function TimelineRelease({
     (shipped ? release.shippedOn : release.dueOn) ?? '',
     locale,
     {
-      ...(!shipped ? { day: 'numeric' } as const : {}),
+      day: 'numeric',
       month: 'short',
       year: 'numeric',
       timeZone: 'UTC',
