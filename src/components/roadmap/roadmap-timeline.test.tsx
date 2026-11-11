@@ -84,7 +84,7 @@ describe('RoadmapTimeline', () => {
   })
   it('renders shipped history with release notes and title-only feature rows, without an empty notice', () => {
     const { container } = renderWithIntl(<RoadmapTimeline data={{ ...EMPTY, shipped: [{ ...release, shippedOn: '2026-09-01T00:00:00Z' }] }} />)
-    expect(screen.getByText('shipped · Sep 2026')).toBeInTheDocument()
+    expect(screen.getByText('shipped · Sep 1, 2026')).toBeInTheDocument()
     expect(screen.getByRole('link', { name: 'Release notes ↗' })).toHaveAttribute('href', 'https://github.com/wcpos/woocommerce-pos/releases/tag/v1.11.0')
     expect(screen.queryByRole('link', { name: 'Full release brief ↗' })).toBeNull()
     expect(screen.getByText('Feature 1').closest('a')).toHaveAttribute('href', release.epics[0].url)
@@ -93,6 +93,10 @@ describe('RoadmapTimeline', () => {
     expect(container.querySelector('[style*="width:"]')).toBeNull()
     expect(container.querySelector('.opacity-60')).toBeNull()
     expect(screen.queryByText(messages.roadmap.timeline.empty)).toBeNull()
+  })
+  it('shows the UTC day for a shipped release, including a closedAt timestamp late in the UTC day', () => {
+    renderWithIntl(<RoadmapTimeline data={{ ...EMPTY, shipped: [{ ...release, shippedOn: '2026-11-09T22:11:40Z' }] }} />)
+    expect(screen.getByText('shipped · Nov 9, 2026')).toBeInTheDocument()
   })
   it('mutes shipped releases with colour instead of opacity', () => {
     const { container } = renderWithIntl(<RoadmapTimeline data={{ ...EMPTY, shipped: [{ ...release, shippedOn: '2026-09-01T00:00:00Z' }] }} />)
