@@ -36,6 +36,17 @@ export const PLATFORMS: Record<PlatformKey, Platform> = {
 }
 
 /**
+ * The last desktop build that runs on macOS 12 Monterey. WCPOS 2.0 is built on
+ * Electron 45, which needs macOS 13, so Monterey users are sent to 1.11.12 (not
+ * the "latest" release, so it is linked by tag). 1.x apps need the 1.11 plugin.
+ */
+export const MACOS12_DESKTOP = {
+  version: '1.11.12',
+  arm: ELECTRON('darwin-arm64/v1.11.12'),
+  intel: ELECTRON('darwin-x64/v1.11.12'),
+} as const
+
+/**
  * The tile a detected platform maps to — the two mac builds share one macOS
  * tile because browsers can't reliably tell Apple Silicon from Intel.
  */

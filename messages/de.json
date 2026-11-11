@@ -1620,6 +1620,7 @@
       "versionMeta": "Version {version} · {platform}",
       "detected": "Erkannt",
       "intelMac": "Auf einem Intel-Mac? <intel>Intel-Build herunterladen</intel>",
+      "macos12": "Noch auf macOS 12 Monterey? WCPOS 2.0 benötigt macOS 13 oder neuer. Version {version} läuft weiterhin auf macOS 12 mit dem 1.11-Plugin: <arm>Apple Silicon</arm> · <intel>Intel</intel>",
       "pluginNotice": "Jede App verbindet sich mit dem <plugin>kostenlosen WordPress-Plugin</plugin> — installiere es zuerst."
     },
     "howItFits": {

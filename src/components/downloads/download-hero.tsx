@@ -11,6 +11,7 @@ import { Eyebrow } from '@/components/ui/eyebrow'
 import { TextLink } from '@/components/ui/text-link'
 import { trackClientEvent } from '@/lib/analytics/client-events'
 import {
+  MACOS12_DESKTOP,
   PLATFORMS,
   tileFor,
   resolvePlatform,
@@ -109,13 +110,26 @@ export function DownloadsHero({
             </a>
           </Button>
           {selected === 'mac-arm' && (
-            <p className="mt-3 text-xs text-muted-foreground">
-              {t.rich('intelMac', {
-                intel: (chunks) => (
-                  <TextLink href={PLATFORMS['mac-intel'].href}>{chunks}</TextLink>
-                ),
-              })}
-            </p>
+            <>
+              <p className="mt-3 text-xs text-muted-foreground">
+                {t.rich('intelMac', {
+                  intel: (chunks) => (
+                    <TextLink href={PLATFORMS['mac-intel'].href}>{chunks}</TextLink>
+                  ),
+                })}
+              </p>
+              <p className="mt-1 text-xs text-muted-foreground">
+                {t.rich('macos12', {
+                  version: MACOS12_DESKTOP.version,
+                  arm: (chunks) => (
+                    <TextLink href={MACOS12_DESKTOP.arm}>{chunks}</TextLink>
+                  ),
+                  intel: (chunks) => (
+                    <TextLink href={MACOS12_DESKTOP.intel}>{chunks}</TextLink>
+                  ),
+                })}
+              </p>
+            </>
           )}
         </Card>
 

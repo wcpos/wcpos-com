@@ -1620,6 +1620,7 @@
       "versionMeta": "版本 {version} · {platform}",
       "detected": "已检测到",
       "intelMac": "使用 Intel Mac？<intel>获取 Intel 版本</intel>",
+      "macos12": "使用 macOS 12 Monterey？WCPOS 2.0 需要 macOS 13 或更高版本。{version} 版本仍可在 macOS 12 上配合 1.11 插件使用：<arm>Apple Silicon</arm> · <intel>Intel</intel>",
       "pluginNotice": "每个应用都连接到<plugin>免费的 WordPress 插件</plugin>——请先安装它。"
     },
     "howItFits": {

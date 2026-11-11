@@ -1620,6 +1620,7 @@
       "versionMeta": "バージョン {version} · {platform}",
       "detected": "検出済み",
       "intelMac": "Intel Macをお使いですか？ <intel>Intel版を入手</intel>",
+      "macos12": "macOS 12 Montereyをお使いですか？ WCPOS 2.0にはmacOS 13以降が必要です。バージョン{version}は1.11プラグインと組み合わせてmacOS 12で引き続き使えます：<arm>Apple Silicon</arm> · <intel>Intel</intel>",
       "pluginNotice": "すべてのアプリは<plugin>無料のWordPressプラグイン</plugin>に接続します — まずインストールしてください。"
     },
     "howItFits": {
