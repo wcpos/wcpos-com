@@ -2006,7 +2006,7 @@
           },
           "offline": {
             "label": "Offline",
-            "wcpos": "Offline-first: offline door producten bladeren, winkelwagens samenstellen en contante verkopen afhandelen; aangesloten kaartlezers en online gateways hebben een verbinding nodig",
+            "wcpos": "Offline-first: offline door producten bladeren, winkelwagens samenstellen en contante verkopen of verkopen via een aparte betaalterminal afhandelen; aangesloten kaartlezers en online gateways hebben een verbinding nodig",
             "oliver": "Claimt offline transacties in een wachtrij, gesynchroniseerd bij herverbinding"
           },
           "kiosk": {
@@ -2146,7 +2146,7 @@
         "title": "Veelgestelde vragen",
         "offline": {
           "question": "Werkt WCPOS offline?",
-          "answer": "WCPOS is offline-first: producten, klanten en winkelwagens worden lokaal opgeslagen, dus je kunt zonder verbinding door de catalogus bladeren, winkelwagens samenstellen en contante betalingen accepteren, en alles synchroniseert zodra de verbinding terug is. Aangesloten kaartlezers, online betaalgateways en het valideren van kortingsbonnen hebben een verbinding nodig. Oliver claimt dat offline transacties in een wachtrij komen en bij herverbinding synchroniseren."
+          "answer": "WCPOS is offline-first: producten, klanten en winkelwagens worden lokaal opgeslagen, dus je kunt zonder verbinding door de catalogus bladeren, winkelwagens samenstellen en contante verkopen of verkopen via een aparte betaalterminal afronden, en alles synchroniseert zodra de verbinding terug is. Aangesloten kaartlezers, online betaalgateways en het valideren van kortingsbonnen hebben een verbinding nodig. Oliver claimt dat offline transacties in een wachtrij komen en bij herverbinding synchroniseren."
         },
         "fees": {
           "question": "Rekent een van beide kassasystemen transactiekosten?",
@@ -2231,7 +2231,7 @@
           },
           "offline": {
             "label": "Offline",
-            "wcpos": "Offline-first: producten bekijken, winkelwagens samenstellen en contante verkopen afhandelen zonder verbinding; aangesloten kaartlezers en online gateways hebben een verbinding nodig",
+            "wcpos": "Offline-first: producten bekijken, winkelwagens samenstellen en contante verkopen of verkopen via een aparte betaalterminal afhandelen zonder verbinding; aangesloten kaartlezers en online gateways hebben een verbinding nodig",
             "woocommerce": "Geen offline modus — vereist een actieve internetverbinding"
           },
           "multiLocation": {
@@ -2307,7 +2307,7 @@
         },
         "offline": {
           "question": "Werkt de POS van WooCommerce offline?",
-          "answer": "Nee. WooCommerce zegt dat zijn POS een actieve internetverbinding nodig heeft om producten te synchroniseren, bestellingen aan te maken en betalingen te verwerken. WCPOS is offline-first: producten, klanten en winkelwagens worden lokaal opgeslagen, dus je kunt zonder verbinding door de catalogus bladeren, winkelwagens samenstellen en contante betalingen accepteren, en alles synchroniseert zodra de verbinding terug is. Aangesloten kaartlezers, online betaalgateways en het valideren van kortingsbonnen hebben een verbinding nodig."
+          "answer": "Nee. WooCommerce zegt dat zijn POS een actieve internetverbinding nodig heeft om producten te synchroniseren, bestellingen aan te maken en betalingen te verwerken. WCPOS is offline-first: producten, klanten en winkelwagens worden lokaal opgeslagen, dus je kunt zonder verbinding door de catalogus bladeren, winkelwagens samenstellen en contante verkopen of verkopen via een aparte betaalterminal afronden, en alles synchroniseert zodra de verbinding terug is. Aangesloten kaartlezers, online betaalgateways en het valideren van kortingsbonnen hebben een verbinding nodig."
         },
         "devices": {
           "question": "Op welke apparaten werkt de POS van WooCommerce?",
@@ -2384,7 +2384,7 @@
           },
           "offline": {
             "label": "Offline",
-            "wcpos": "Offline door producten bladeren, winkelwagens samenstellen en contante verkopen afhandelen; aangesloten kaartlezers en online gateways hebben een verbinding nodig",
+            "wcpos": "Offline door producten bladeren, winkelwagens samenstellen en contante verkopen of verkopen via een aparte betaalterminal afhandelen; aangesloten kaartlezers en online gateways hebben een verbinding nodig",
             "square": "Offline kaartbetalingen, binnen 72 uur geüpload; de verkoper is verantwoordelijk voor betalingen die verlopen, worden geweigerd of betwist"
           },
           "multiLocation": {
@@ -2461,7 +2461,7 @@
         },
         "offline": {
           "question": "Werkt Square POS offline?",
-          "answer": "De POS van Square kan offline kaartbetalingen aannemen. Je moet binnen 72 uur na het begin van de offline sessie opnieuw verbinding maken en ze uploaden; je bent verantwoordelijk voor alle offline aangenomen betalingen die verlopen, worden geweigerd of betwist. EBT/SNAP, Afterpay, Cash App Pay, Square Gift Cards, Tap to Pay op iPhone en Android en handmatig ingevoerde kaartnummers zijn offline niet beschikbaar. WCPOS slaat producten, klanten en winkelwagens lokaal op, zodat je zonder verbinding door de catalogus kunt bladeren, winkelwagens kunt samenstellen en contante betalingen kunt accepteren; die verkopen synchroniseren zodra de verbinding terugkeert. Aangesloten kaartlezers en online betaalgateways hebben een verbinding nodig."
+          "answer": "De POS van Square kan offline kaartbetalingen aannemen. Je moet binnen 72 uur na het begin van de offline sessie opnieuw verbinding maken en ze uploaden; je bent verantwoordelijk voor alle offline aangenomen betalingen die verlopen, worden geweigerd of betwist. EBT/SNAP, Afterpay, Cash App Pay, Square Gift Cards, Tap to Pay op iPhone en Android en handmatig ingevoerde kaartnummers zijn offline niet beschikbaar. WCPOS slaat producten, klanten en winkelwagens lokaal op, zodat je zonder verbinding door de catalogus kunt bladeren, winkelwagens kunt samenstellen en contante verkopen of verkopen via een aparte betaalterminal kunt afronden; die verkopen synchroniseren zodra de verbinding terugkeert. Aangesloten kaartlezers en online betaalgateways hebben een verbinding nodig."
         },
         "locations": {
           "question": "Kan Square for WooCommerce meer dan één locatie synchroniseren?",
@@ -2519,7 +2519,7 @@
           },
           "offline": {
             "label": "Offline",
-            "wcpos": "Offline door producten bladeren, winkelwagens samenstellen en contante verkopen afhandelen; aangesloten kaartlezers en online gateways hebben een verbinding nodig",
+            "wcpos": "Offline door producten bladeren, winkelwagens samenstellen en contante verkopen of verkopen via een aparte betaalterminal afhandelen; aangesloten kaartlezers en online gateways hebben een verbinding nodig",
             "jovvie": "Niet vastgesteld in ons onderzoek — vraag het BizSwoop"
           },
           "availability": {
@@ -2570,7 +2570,7 @@
         },
         "offline": {
           "question": "Werkt Jovvie offline?",
-          "answer": "Ons onderzoek heeft niet vastgesteld of Jovvie zonder internetverbinding werkt, dus vraag het BizSwoop voordat je daarop vertrouwt. WCPOS slaat producten, klanten en winkelwagens lokaal op, zodat je zonder verbinding door de catalogus kunt bladeren, winkelwagens kunt samenstellen en contante betalingen kunt accepteren; die verkopen synchroniseren zodra de verbinding terugkeert. Aangesloten kaartlezers en online betaalgateways hebben een verbinding nodig."
+          "answer": "Ons onderzoek heeft niet vastgesteld of Jovvie zonder internetverbinding werkt, dus vraag het BizSwoop voordat je daarop vertrouwt. WCPOS slaat producten, klanten en winkelwagens lokaal op, zodat je zonder verbinding door de catalogus kunt bladeren, winkelwagens kunt samenstellen en contante verkopen of verkopen via een aparte betaalterminal kunt afronden; die verkopen synchroniseren zodra de verbinding terugkeert. Aangesloten kaartlezers en online betaalgateways hebben een verbinding nodig."
         },
         "stripe": {
           "question": "Kan ik een Stripe-kaartlezer gebruiken met WCPOS?",
@@ -2627,7 +2627,7 @@
           },
           "offline": {
             "label": "Offline",
-            "wcpos": "Offline door producten bladeren, winkelwagens samenstellen en contante verkopen afhandelen; aangesloten kaartlezers en online gateways hebben een verbinding nodig",
+            "wcpos": "Offline door producten bladeren, winkelwagens samenstellen en contante verkopen of verkopen via een aparte betaalterminal afhandelen; aangesloten kaartlezers en online gateways hebben een verbinding nodig",
             "vitepos": "Zegt offline bestellingen te blijven verwerken en ze bij opnieuw verbinden te synchroniseren; de WordPress.org-vermelding markeert offline bestellingen als Pro"
           },
           "restaurant": {
@@ -2696,7 +2696,7 @@
         },
         "offline": {
           "question": "Werkt Vitepos offline?",
-          "answer": "Vitepos zegt van wel: volgens de eigen pagina’s slaat het gegevens lokaal op, blijft het bestellingen zonder internetverbinding verwerken en synchroniseert het ze met WooCommerce zodra de verbinding terugkeert. De WordPress.org-vermelding markeert offline bestellingen als Pro-functie. WCPOS slaat producten, klanten en winkelwagens lokaal op, zodat je zonder verbinding door de catalogus kunt bladeren, winkelwagens kunt samenstellen en contante betalingen kunt accepteren; die verkopen synchroniseren zodra de verbinding terugkeert. Aangesloten kaartlezers en online betaalgateways hebben een verbinding nodig."
+          "answer": "Vitepos zegt van wel: volgens de eigen pagina’s slaat het gegevens lokaal op, blijft het bestellingen zonder internetverbinding verwerken en synchroniseert het ze met WooCommerce zodra de verbinding terugkeert. De WordPress.org-vermelding markeert offline bestellingen als Pro-functie. WCPOS slaat producten, klanten en winkelwagens lokaal op, zodat je zonder verbinding door de catalogus kunt bladeren, winkelwagens kunt samenstellen en contante verkopen of verkopen via een aparte betaalterminal kunt afronden; die verkopen synchroniseren zodra de verbinding terugkeert. Aangesloten kaartlezers en online betaalgateways hebben een verbinding nodig."
         },
         "restaurant": {
           "question": "Heeft WCPOS een restaurantmodus?",
@@ -2774,7 +2774,7 @@
           },
           "offline": {
             "label": "Offline",
-            "wcpos": "Offline door producten bladeren, winkelwagens samenstellen en contante verkopen afhandelen; aangesloten kaartlezers en online gateways hebben een verbinding nodig",
+            "wcpos": "Offline door producten bladeren, winkelwagens samenstellen en contante verkopen of verkopen via een aparte betaalterminal afhandelen; aangesloten kaartlezers en online gateways hebben een verbinding nodig",
             "yith": "Geen offlinemodus, volgens de productpagina"
           },
           "barcode": {
@@ -2838,7 +2838,7 @@
         },
         "offline": {
           "question": "Werkt YITH Point of Sale offline?",
-          "answer": "Nee. Volgens de FAQ op de productpagina heeft de plugin geen offlinefunctie, hoewel je hem op een lokale server kunt instellen. WCPOS slaat producten, klanten en winkelwagens lokaal op, zodat je zonder verbinding door de catalogus kunt bladeren, winkelwagens kunt samenstellen en contante betalingen kunt accepteren; die verkopen synchroniseren zodra de verbinding terugkeert. Aangesloten kaartlezers en online betaalgateways hebben een verbinding nodig."
+          "answer": "Nee. Volgens de FAQ op de productpagina heeft de plugin geen offlinefunctie, hoewel je hem op een lokale server kunt instellen. WCPOS slaat producten, klanten en winkelwagens lokaal op, zodat je zonder verbinding door de catalogus kunt bladeren, winkelwagens kunt samenstellen en contante verkopen of verkopen via een aparte betaalterminal kunt afronden; die verkopen synchroniseren zodra de verbinding terugkeert. Aangesloten kaartlezers en online betaalgateways hebben een verbinding nodig."
         },
         "terminals": {
           "question": "Kan ik een betaalterminal met YITH Point of Sale verbinden?",
@@ -2924,7 +2924,7 @@
           },
           "offline": {
             "label": "Offline",
-            "wcpos": "Offline door producten bladeren, winkelwagens samenstellen en contante verkopen afhandelen; aangesloten kaartlezers en online gateways hebben een verbinding nodig",
+            "wcpos": "Offline door producten bladeren, winkelwagens samenstellen en contante verkopen of verkopen via een aparte betaalterminal afhandelen; aangesloten kaartlezers en online gateways hebben een verbinding nodig",
             "foosales": "Zegt dat zijn apps offline blijven werken en nieuwe bestellingen, annuleringen en terugbetalingen bij opnieuw verbinden synchroniseren; klanten kunnen offline niet worden aangemaakt of bewerkt"
           },
           "devices": {
@@ -2984,7 +2984,7 @@
         },
         "offline": {
           "question": "Werkt FooSales offline?",
-          "answer": "FooSales zegt van wel: zijn apps schakelen bij wegvallen van de verbinding over naar de offlinemodus, het grootste deel van de POS blijft werken en nieuwe bestellingen, geannuleerde bestellingen en terugbetalingen worden op het apparaat opgeslagen en met WooCommerce gesynchroniseerd zodra je weer online bent. Volgens het helpcentrum kunnen klanten offline niet worden aangemaakt of gewijzigd en kunnen voorraadwaarden niet worden aangepast; volgens de betaalpagina hebben WooCommerce-kortingsbonnen een internetverbinding nodig. WCPOS slaat producten, klanten en winkelwagens lokaal op, zodat je zonder verbinding door de catalogus kunt bladeren, winkelwagens kunt samenstellen en contante betalingen kunt accepteren; die verkopen synchroniseren zodra de verbinding terugkeert. Aangesloten kaartlezers en online betaalgateways hebben een verbinding nodig."
+          "answer": "FooSales zegt van wel: zijn apps schakelen bij wegvallen van de verbinding over naar de offlinemodus, het grootste deel van de POS blijft werken en nieuwe bestellingen, geannuleerde bestellingen en terugbetalingen worden op het apparaat opgeslagen en met WooCommerce gesynchroniseerd zodra je weer online bent. Volgens het helpcentrum kunnen klanten offline niet worden aangemaakt of gewijzigd en kunnen voorraadwaarden niet worden aangepast; volgens de betaalpagina hebben WooCommerce-kortingsbonnen een internetverbinding nodig. WCPOS slaat producten, klanten en winkelwagens lokaal op, zodat je zonder verbinding door de catalogus kunt bladeren, winkelwagens kunt samenstellen en contante verkopen of verkopen via een aparte betaalterminal kunt afronden; die verkopen synchroniseren zodra de verbinding terugkeert. Aangesloten kaartlezers en online betaalgateways hebben een verbinding nodig."
         },
         "terminals": {
           "question": "Welke betaalterminals ondersteunen FooSales en WCPOS?",

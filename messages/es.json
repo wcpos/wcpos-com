@@ -2006,7 +2006,7 @@
           },
           "offline": {
             "label": "Sin conexión",
-            "wcpos": "Offline primero: navegue por los productos, prepare carritos y realice ventas en efectivo sin conexión; los lectores de tarjetas conectados y las pasarelas en línea necesitan conexión",
+            "wcpos": "Offline primero: navegue por los productos, prepare carritos y realice ventas en efectivo o en un terminal de pago independiente sin conexión; los lectores de tarjetas conectados y las pasarelas en línea necesitan conexión",
             "oliver": "Afirma poner en cola las transacciones sin conexión y sincronizarlas al reconectar"
           },
           "kiosk": {
@@ -2146,7 +2146,7 @@
         "title": "Preguntas frecuentes",
         "offline": {
           "question": "¿Funciona WCPOS sin conexión?",
-          "answer": "WCPOS está diseñado offline primero: los productos, clientes y carritos se almacenan localmente, de modo que puede navegar por el catálogo, preparar carritos y aceptar pagos en efectivo sin conexión, y todo se sincroniza cuando esta vuelve. Los lectores de tarjetas conectados, las pasarelas de pago en línea y la validación de cupones necesitan conexión. Oliver afirma poner en cola las transacciones sin conexión y sincronizarlas al reconectar."
+          "answer": "WCPOS está diseñado offline primero: los productos, clientes y carritos se almacenan localmente, de modo que puede navegar por el catálogo, preparar carritos y completar ventas en efectivo o en un terminal de pago independiente sin conexión, y todo se sincroniza cuando esta vuelve. Los lectores de tarjetas conectados, las pasarelas de pago en línea y la validación de cupones necesitan conexión. Oliver afirma poner en cola las transacciones sin conexión y sincronizarlas al reconectar."
         },
         "fees": {
           "question": "¿Alguno de los dos TPV cobra comisiones por transacción?",
@@ -2231,7 +2231,7 @@
           },
           "offline": {
             "label": "Sin conexión",
-            "wcpos": "Diseñado para funcionar primero sin conexión: consulte productos, prepare carritos y realice ventas en efectivo sin conexión; los lectores de tarjetas conectados y las pasarelas en línea necesitan conexión",
+            "wcpos": "Diseñado para funcionar primero sin conexión: consulte productos, prepare carritos y realice ventas en efectivo o en un terminal de pago independiente sin conexión; los lectores de tarjetas conectados y las pasarelas en línea necesitan conexión",
             "woocommerce": "Sin modo sin conexión — requiere una conexión activa a internet"
           },
           "multiLocation": {
@@ -2307,7 +2307,7 @@
         },
         "offline": {
           "question": "¿Funciona sin conexión el TPV de WooCommerce?",
-          "answer": "No. WooCommerce dice que su TPV necesita una conexión activa a internet para sincronizar productos, crear pedidos y procesar pagos. WCPOS está diseñado para funcionar primero sin conexión: los productos, clientes y carritos se almacenan localmente, de modo que puede navegar por el catálogo, preparar carritos y aceptar pagos en efectivo sin conexión, y todo se sincroniza cuando esta vuelve. Los lectores de tarjetas conectados, las pasarelas de pago en línea y la validación de cupones necesitan conexión."
+          "answer": "No. WooCommerce dice que su TPV necesita una conexión activa a internet para sincronizar productos, crear pedidos y procesar pagos. WCPOS está diseñado para funcionar primero sin conexión: los productos, clientes y carritos se almacenan localmente, de modo que puede navegar por el catálogo, preparar carritos y completar ventas en efectivo o en un terminal de pago independiente sin conexión, y todo se sincroniza cuando esta vuelve. Los lectores de tarjetas conectados, las pasarelas de pago en línea y la validación de cupones necesitan conexión."
         },
         "devices": {
           "question": "¿En qué dispositivos funciona el TPV de WooCommerce?",
@@ -2384,7 +2384,7 @@
           },
           "offline": {
             "label": "Sin conexión",
-            "wcpos": "Consultar productos, preparar carritos y realizar ventas en efectivo sin conexión; los lectores de tarjetas conectados y las pasarelas en línea necesitan conexión",
+            "wcpos": "Consultar productos, preparar carritos y realizar ventas en efectivo o en un terminal de pago independiente sin conexión; los lectores de tarjetas conectados y las pasarelas en línea necesitan conexión",
             "square": "Pagos con tarjeta sin conexión, que deben cargarse en un plazo de 72 horas; el vendedor responde de los que caducan, son rechazados o impugnados"
           },
           "multiLocation": {
@@ -2461,7 +2461,7 @@
         },
         "offline": {
           "question": "¿Funciona Square POS sin conexión?",
-          "answer": "El TPV de Square puede aceptar pagos con tarjeta sin conexión. Debe volver a conectarse y cargarlos en las 72 horas siguientes al inicio de la sesión sin conexión, y responde de cualquier pago realizado sin conexión que caduque, sea rechazado o impugnado. EBT/SNAP, Afterpay, Cash App Pay, Square Gift Cards, Tap to Pay en iPhone y Android y los números de tarjeta introducidos manualmente no están disponibles sin conexión. WCPOS guarda productos, clientes y carritos localmente, por lo que puede consultar el catálogo, preparar carritos y aceptar pagos en efectivo sin conexión; esas ventas se sincronizan cuando vuelve la conexión. Los lectores de tarjetas conectados y las pasarelas de pago en línea necesitan conexión."
+          "answer": "El TPV de Square puede aceptar pagos con tarjeta sin conexión. Debe volver a conectarse y cargarlos en las 72 horas siguientes al inicio de la sesión sin conexión, y responde de cualquier pago realizado sin conexión que caduque, sea rechazado o impugnado. EBT/SNAP, Afterpay, Cash App Pay, Square Gift Cards, Tap to Pay en iPhone y Android y los números de tarjeta introducidos manualmente no están disponibles sin conexión. WCPOS guarda productos, clientes y carritos localmente, por lo que puede consultar el catálogo, preparar carritos y completar ventas en efectivo o en un terminal de pago independiente sin conexión; esas ventas se sincronizan cuando vuelve la conexión. Los lectores de tarjetas conectados y las pasarelas de pago en línea necesitan conexión."
         },
         "locations": {
           "question": "¿Puede Square for WooCommerce sincronizar más de una ubicación?",
@@ -2519,7 +2519,7 @@
           },
           "offline": {
             "label": "Sin conexión",
-            "wcpos": "Consultar productos, preparar carritos y realizar ventas en efectivo sin conexión; los lectores de tarjetas conectados y las pasarelas en línea necesitan conexión",
+            "wcpos": "Consultar productos, preparar carritos y realizar ventas en efectivo o en un terminal de pago independiente sin conexión; los lectores de tarjetas conectados y las pasarelas en línea necesitan conexión",
             "jovvie": "No se ha determinado en nuestra investigación — consulte a BizSwoop"
           },
           "availability": {
@@ -2570,7 +2570,7 @@
         },
         "offline": {
           "question": "¿Funciona Jovvie sin conexión?",
-          "answer": "Nuestra investigación no ha determinado si Jovvie funciona sin conexión a internet, así que consulte a BizSwoop antes de depender de ello. WCPOS almacena productos, clientes y carritos localmente, por lo que puede consultar el catálogo, preparar carritos y aceptar pagos en efectivo sin conexión; esas ventas se sincronizan cuando vuelve la conexión. Los lectores de tarjetas conectados y las pasarelas de pago en línea necesitan conexión."
+          "answer": "Nuestra investigación no ha determinado si Jovvie funciona sin conexión a internet, así que consulte a BizSwoop antes de depender de ello. WCPOS almacena productos, clientes y carritos localmente, por lo que puede consultar el catálogo, preparar carritos y completar ventas en efectivo o en un terminal de pago independiente sin conexión; esas ventas se sincronizan cuando vuelve la conexión. Los lectores de tarjetas conectados y las pasarelas de pago en línea necesitan conexión."
         },
         "stripe": {
           "question": "¿Puedo usar un lector de tarjetas Stripe con WCPOS?",
@@ -2627,7 +2627,7 @@
           },
           "offline": {
             "label": "Sin conexión",
-            "wcpos": "Consultar productos, preparar carritos y realizar ventas en efectivo sin conexión; los lectores de tarjetas conectados y las pasarelas en línea necesitan conexión",
+            "wcpos": "Consultar productos, preparar carritos y realizar ventas en efectivo o en un terminal de pago independiente sin conexión; los lectores de tarjetas conectados y las pasarelas en línea necesitan conexión",
             "vitepos": "Afirma que sigue procesando pedidos sin conexión y los sincroniza al reconectarse; su ficha de WordPress.org marca los pedidos sin conexión como Pro"
           },
           "restaurant": {
@@ -2696,7 +2696,7 @@
         },
         "offline": {
           "question": "¿Funciona Vitepos sin conexión?",
-          "answer": "Vitepos afirma que sí: sus páginas dicen que almacena datos localmente, sigue procesando pedidos sin conexión a Internet y los sincroniza con WooCommerce cuando vuelve la conexión. Su ficha de WordPress.org marca los pedidos sin conexión como una función Pro. WCPOS almacena productos, clientes y carritos localmente, por lo que puede consultar el catálogo, preparar carritos y aceptar pagos en efectivo sin conexión; esas ventas se sincronizan cuando vuelve la conexión. Los lectores de tarjetas conectados y las pasarelas de pago en línea necesitan conexión."
+          "answer": "Vitepos afirma que sí: sus páginas dicen que almacena datos localmente, sigue procesando pedidos sin conexión a Internet y los sincroniza con WooCommerce cuando vuelve la conexión. Su ficha de WordPress.org marca los pedidos sin conexión como una función Pro. WCPOS almacena productos, clientes y carritos localmente, por lo que puede consultar el catálogo, preparar carritos y completar ventas en efectivo o en un terminal de pago independiente sin conexión; esas ventas se sincronizan cuando vuelve la conexión. Los lectores de tarjetas conectados y las pasarelas de pago en línea necesitan conexión."
         },
         "restaurant": {
           "question": "¿Tiene WCPOS un modo para restaurantes?",
@@ -2774,7 +2774,7 @@
           },
           "offline": {
             "label": "Sin conexión",
-            "wcpos": "Consultar productos, preparar carritos y realizar ventas en efectivo sin conexión; los lectores de tarjetas conectados y las pasarelas en línea necesitan conexión",
+            "wcpos": "Consultar productos, preparar carritos y realizar ventas en efectivo o en un terminal de pago independiente sin conexión; los lectores de tarjetas conectados y las pasarelas en línea necesitan conexión",
             "yith": "Sin modo sin conexión, según su página de producto"
           },
           "barcode": {
@@ -2838,7 +2838,7 @@
         },
         "offline": {
           "question": "¿Funciona YITH Point of Sale sin conexión?",
-          "answer": "No. Las preguntas frecuentes de su página de producto indican que el plugin no incluye una función sin conexión, aunque puede configurarlo en un servidor local. WCPOS almacena productos, clientes y carritos localmente, por lo que puede consultar el catálogo, preparar carritos y aceptar pagos en efectivo sin conexión; esas ventas se sincronizan cuando vuelve la conexión. Los lectores de tarjetas conectados y las pasarelas de pago en línea necesitan conexión."
+          "answer": "No. Las preguntas frecuentes de su página de producto indican que el plugin no incluye una función sin conexión, aunque puede configurarlo en un servidor local. WCPOS almacena productos, clientes y carritos localmente, por lo que puede consultar el catálogo, preparar carritos y completar ventas en efectivo o en un terminal de pago independiente sin conexión; esas ventas se sincronizan cuando vuelve la conexión. Los lectores de tarjetas conectados y las pasarelas de pago en línea necesitan conexión."
         },
         "terminals": {
           "question": "¿Puedo conectar un terminal de tarjeta a YITH Point of Sale?",
@@ -2924,7 +2924,7 @@
           },
           "offline": {
             "label": "Sin conexión",
-            "wcpos": "Consultar productos, preparar carritos y realizar ventas en efectivo sin conexión; los lectores de tarjetas conectados y las pasarelas en línea necesitan conexión",
+            "wcpos": "Consultar productos, preparar carritos y realizar ventas en efectivo o en un terminal de pago independiente sin conexión; los lectores de tarjetas conectados y las pasarelas en línea necesitan conexión",
             "foosales": "Afirma que sus aplicaciones siguen funcionando sin conexión y sincronizan pedidos nuevos, cancelaciones y reembolsos al reconectarse; no se pueden crear ni modificar clientes sin conexión"
           },
           "devices": {
@@ -2984,7 +2984,7 @@
         },
         "offline": {
           "question": "¿Funciona FooSales sin conexión?",
-          "answer": "FooSales afirma que sí: sus aplicaciones pasan al modo sin conexión cuando se pierde la conexión, la mayor parte del TPV sigue funcionando, y los pedidos nuevos, pedidos cancelados y reembolsos se guardan en el dispositivo y se sincronizan con WooCommerce al volver a estar en línea. Su centro de ayuda indica que no se pueden crear ni modificar clientes sin conexión ni cambiar los valores de stock, y su página de pagos indica que los cupones de WooCommerce necesitan conexión a Internet. WCPOS guarda productos, clientes y carritos localmente, por lo que puede consultar el catálogo, preparar carritos y aceptar pagos en efectivo sin conexión; esas ventas se sincronizan cuando vuelve la conexión. Los lectores de tarjetas conectados y las pasarelas de pago en línea necesitan conexión."
+          "answer": "FooSales afirma que sí: sus aplicaciones pasan al modo sin conexión cuando se pierde la conexión, la mayor parte del TPV sigue funcionando, y los pedidos nuevos, pedidos cancelados y reembolsos se guardan en el dispositivo y se sincronizan con WooCommerce al volver a estar en línea. Su centro de ayuda indica que no se pueden crear ni modificar clientes sin conexión ni cambiar los valores de stock, y su página de pagos indica que los cupones de WooCommerce necesitan conexión a Internet. WCPOS guarda productos, clientes y carritos localmente, por lo que puede consultar el catálogo, preparar carritos y completar ventas en efectivo o en un terminal de pago independiente sin conexión; esas ventas se sincronizan cuando vuelve la conexión. Los lectores de tarjetas conectados y las pasarelas de pago en línea necesitan conexión."
         },
         "terminals": {
           "question": "¿Qué terminales de tarjeta admiten FooSales y WCPOS?",

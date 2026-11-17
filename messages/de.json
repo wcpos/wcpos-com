@@ -2006,7 +2006,7 @@
           },
           "offline": {
             "label": "Offline",
-            "wcpos": "Offline-first: Produkte durchstöbern, Warenkörbe zusammenstellen und Barverkäufe offline abwickeln; angebundene Kartenleser und Online-Zahlungsgateways benötigen eine Verbindung",
+            "wcpos": "Offline-first: Produkte durchstöbern, Warenkörbe zusammenstellen und Barverkäufe oder Verkäufe über ein separates Zahlungsterminal offline abwickeln; angebundene Kartenleser und Online-Zahlungsgateways benötigen eine Verbindung",
             "oliver": "Wirbt mit offline zwischengespeicherten Transaktionen, die bei erneuter Verbindung synchronisiert werden"
           },
           "kiosk": {
@@ -2146,7 +2146,7 @@
         "title": "Häufig gestellte Fragen",
         "offline": {
           "question": "Funktioniert WCPOS offline?",
-          "answer": "WCPOS ist offline-first: Produkte, Kunden und Warenkörbe werden lokal gespeichert, Sie können also ohne Verbindung im Katalog stöbern, Warenkörbe zusammenstellen und Barzahlungen annehmen, und alles synchronisiert sich, sobald sie zurückkehrt. Angebundene Kartenleser, Online-Zahlungsgateways und die Gutscheinprüfung benötigen eine Verbindung. Oliver wirbt mit Offline-Warteschlangen für Transaktionen samt Synchronisierung bei erneuter Verbindung."
+          "answer": "WCPOS ist offline-first: Produkte, Kunden und Warenkörbe werden lokal gespeichert, Sie können also ohne Verbindung im Katalog stöbern, Warenkörbe zusammenstellen und Barverkäufe oder Verkäufe über ein separates Zahlungsterminal abschließen, und alles synchronisiert sich, sobald sie zurückkehrt. Angebundene Kartenleser, Online-Zahlungsgateways und die Gutscheinprüfung benötigen eine Verbindung. Oliver wirbt mit Offline-Warteschlangen für Transaktionen samt Synchronisierung bei erneuter Verbindung."
         },
         "fees": {
           "question": "Erhebt eines der beiden Systeme Transaktionsgebühren?",
@@ -2231,7 +2231,7 @@
           },
           "offline": {
             "label": "Offline",
-            "wcpos": "Offline-first: Produkte durchsuchen, Warenkörbe zusammenstellen und Barverkäufe offline abwickeln; angebundene Kartenleser und Online-Zahlungsgateways benötigen eine Verbindung",
+            "wcpos": "Offline-first: Produkte durchsuchen, Warenkörbe zusammenstellen und Barverkäufe oder Verkäufe über ein separates Zahlungsterminal offline abwickeln; angebundene Kartenleser und Online-Zahlungsgateways benötigen eine Verbindung",
             "woocommerce": "Kein Offline-Modus — eine aktive Internetverbindung ist erforderlich"
           },
           "multiLocation": {
@@ -2307,7 +2307,7 @@
         },
         "offline": {
           "question": "Funktioniert das POS von WooCommerce offline?",
-          "answer": "Nein. WooCommerce sagt, dass sein POS eine aktive Internetverbindung benötigt, um Produkte zu synchronisieren, Bestellungen zu erstellen und Zahlungen zu verarbeiten. WCPOS ist offline-first: Produkte, Kunden und Warenkörbe werden lokal gespeichert, Sie können also ohne Verbindung im Katalog stöbern, Warenkörbe zusammenstellen und Barzahlungen annehmen, und alles synchronisiert sich, sobald sie zurückkehrt. Angebundene Kartenleser, Online-Zahlungsgateways und die Gutscheinprüfung benötigen eine Verbindung."
+          "answer": "Nein. WooCommerce sagt, dass sein POS eine aktive Internetverbindung benötigt, um Produkte zu synchronisieren, Bestellungen zu erstellen und Zahlungen zu verarbeiten. WCPOS ist offline-first: Produkte, Kunden und Warenkörbe werden lokal gespeichert, Sie können also ohne Verbindung im Katalog stöbern, Warenkörbe zusammenstellen und Barverkäufe oder Verkäufe über ein separates Zahlungsterminal abschließen, und alles synchronisiert sich, sobald sie zurückkehrt. Angebundene Kartenleser, Online-Zahlungsgateways und die Gutscheinprüfung benötigen eine Verbindung."
         },
         "devices": {
           "question": "Auf welchen Geräten läuft das POS von WooCommerce?",
@@ -2384,7 +2384,7 @@
           },
           "offline": {
             "label": "Offline",
-            "wcpos": "Produkte ohne Internetverbindung durchsuchen, Warenkörbe zusammenstellen und Barverkäufe abwickeln; angebundene Kartenleser und Online-Zahlungsgateways benötigen eine Verbindung",
+            "wcpos": "Produkte ohne Internetverbindung durchsuchen, Warenkörbe zusammenstellen und Barverkäufe oder Verkäufe über ein separates Zahlungsterminal abwickeln; angebundene Kartenleser und Online-Zahlungsgateways benötigen eine Verbindung",
             "square": "Kartenzahlungen ohne Internetverbindung, innerhalb von 72 Stunden hochgeladen; der Verkäufer trägt die Verantwortung für Zahlungen, die ablaufen, abgelehnt oder angefochten werden"
           },
           "multiLocation": {
@@ -2461,7 +2461,7 @@
         },
         "offline": {
           "question": "Funktioniert Square POS ohne Internetverbindung?",
-          "answer": "Das POS von Square kann Kartenzahlungen ohne Internetverbindung annehmen. Sie müssen sich innerhalb von 72 Stunden nach Beginn der Offline-Sitzung erneut verbinden und die Zahlungen hochladen; Sie sind für alle offline angenommenen Zahlungen verantwortlich, die ablaufen, abgelehnt oder angefochten werden. EBT/SNAP, Afterpay, Cash App Pay, Square Gift Cards, Tap to Pay auf iPhone und Android sowie manuell eingegebene Kartennummern sind offline nicht verfügbar. WCPOS speichert Produkte, Kunden und Warenkörbe lokal, sodass Sie ohne Verbindung den Katalog durchsuchen, Warenkörbe zusammenstellen und Barzahlungen annehmen können; diese Verkäufe werden synchronisiert, sobald die Verbindung zurückkehrt. Angebundene Kartenleser und Online-Zahlungsgateways benötigen eine Verbindung."
+          "answer": "Das POS von Square kann Kartenzahlungen ohne Internetverbindung annehmen. Sie müssen sich innerhalb von 72 Stunden nach Beginn der Offline-Sitzung erneut verbinden und die Zahlungen hochladen; Sie sind für alle offline angenommenen Zahlungen verantwortlich, die ablaufen, abgelehnt oder angefochten werden. EBT/SNAP, Afterpay, Cash App Pay, Square Gift Cards, Tap to Pay auf iPhone und Android sowie manuell eingegebene Kartennummern sind offline nicht verfügbar. WCPOS speichert Produkte, Kunden und Warenkörbe lokal, sodass Sie ohne Verbindung den Katalog durchsuchen, Warenkörbe zusammenstellen und Barverkäufe oder Verkäufe über ein separates Zahlungsterminal abschließen können; diese Verkäufe werden synchronisiert, sobald die Verbindung zurückkehrt. Angebundene Kartenleser und Online-Zahlungsgateways benötigen eine Verbindung."
         },
         "locations": {
           "question": "Kann Square for WooCommerce mehr als einen Standort synchronisieren?",
@@ -2519,7 +2519,7 @@
           },
           "offline": {
             "label": "Offline",
-            "wcpos": "Produkte ohne Internetverbindung durchsuchen, Warenkörbe zusammenstellen und Barverkäufe abwickeln; angebundene Kartenleser und Online-Zahlungsgateways benötigen eine Verbindung",
+            "wcpos": "Produkte ohne Internetverbindung durchsuchen, Warenkörbe zusammenstellen und Barverkäufe oder Verkäufe über ein separates Zahlungsterminal abwickeln; angebundene Kartenleser und Online-Zahlungsgateways benötigen eine Verbindung",
             "jovvie": "In unserer Recherche nicht geklärt — fragen Sie BizSwoop"
           },
           "availability": {
@@ -2570,7 +2570,7 @@
         },
         "offline": {
           "question": "Funktioniert Jovvie ohne Internetverbindung?",
-          "answer": "Unsere Recherche hat nicht geklärt, ob Jovvie ohne Internetverbindung funktioniert; fragen Sie daher BizSwoop, bevor Sie sich darauf verlassen. WCPOS speichert Produkte, Kunden und Warenkörbe lokal, sodass Sie ohne Verbindung den Katalog durchsuchen, Warenkörbe zusammenstellen und Barzahlungen annehmen können; diese Verkäufe werden synchronisiert, sobald die Verbindung zurückkehrt. Angebundene Kartenleser und Online-Zahlungsgateways benötigen eine Verbindung."
+          "answer": "Unsere Recherche hat nicht geklärt, ob Jovvie ohne Internetverbindung funktioniert; fragen Sie daher BizSwoop, bevor Sie sich darauf verlassen. WCPOS speichert Produkte, Kunden und Warenkörbe lokal, sodass Sie ohne Verbindung den Katalog durchsuchen, Warenkörbe zusammenstellen und Barverkäufe oder Verkäufe über ein separates Zahlungsterminal abschließen können; diese Verkäufe werden synchronisiert, sobald die Verbindung zurückkehrt. Angebundene Kartenleser und Online-Zahlungsgateways benötigen eine Verbindung."
         },
         "stripe": {
           "question": "Kann ich ein Stripe-Kartenlesegerät mit WCPOS verwenden?",
@@ -2627,7 +2627,7 @@
           },
           "offline": {
             "label": "Offline",
-            "wcpos": "Produkte ohne Internetverbindung durchsuchen, Warenkörbe zusammenstellen und Barverkäufe abwickeln; angebundene Kartenleser und Online-Zahlungsgateways benötigen eine Verbindung",
+            "wcpos": "Produkte ohne Internetverbindung durchsuchen, Warenkörbe zusammenstellen und Barverkäufe oder Verkäufe über ein separates Zahlungsterminal abwickeln; angebundene Kartenleser und Online-Zahlungsgateways benötigen eine Verbindung",
             "vitepos": "Gibt an, Bestellungen offline weiter zu verarbeiten und sie bei erneuter Verbindung zu synchronisieren; im WordPress.org-Eintrag sind Offline-Bestellungen als Pro gekennzeichnet"
           },
           "restaurant": {
@@ -2696,7 +2696,7 @@
         },
         "offline": {
           "question": "Funktioniert Vitepos offline?",
-          "answer": "Vitepos gibt an, dass es funktioniert: Laut seinen Seiten speichert es Daten lokal, verarbeitet Bestellungen ohne Internetverbindung weiter und synchronisiert sie mit WooCommerce, sobald die Verbindung zurückkehrt. In seinem WordPress.org-Eintrag sind Offline-Bestellungen als Pro-Funktion gekennzeichnet. WCPOS speichert Produkte, Kunden und Warenkörbe lokal, sodass Sie ohne Verbindung den Katalog durchsuchen, Warenkörbe zusammenstellen und Barzahlungen annehmen können; diese Verkäufe werden synchronisiert, sobald die Verbindung zurückkehrt. Angebundene Kartenleser und Online-Zahlungsgateways benötigen eine Verbindung."
+          "answer": "Vitepos gibt an, dass es funktioniert: Laut seinen Seiten speichert es Daten lokal, verarbeitet Bestellungen ohne Internetverbindung weiter und synchronisiert sie mit WooCommerce, sobald die Verbindung zurückkehrt. In seinem WordPress.org-Eintrag sind Offline-Bestellungen als Pro-Funktion gekennzeichnet. WCPOS speichert Produkte, Kunden und Warenkörbe lokal, sodass Sie ohne Verbindung den Katalog durchsuchen, Warenkörbe zusammenstellen und Barverkäufe oder Verkäufe über ein separates Zahlungsterminal abschließen können; diese Verkäufe werden synchronisiert, sobald die Verbindung zurückkehrt. Angebundene Kartenleser und Online-Zahlungsgateways benötigen eine Verbindung."
         },
         "restaurant": {
           "question": "Hat WCPOS einen Restaurantmodus?",
@@ -2774,7 +2774,7 @@
           },
           "offline": {
             "label": "Offline",
-            "wcpos": "Produkte ohne Internetverbindung durchsuchen, Warenkörbe zusammenstellen und Barverkäufe abwickeln; angebundene Kartenleser und Online-Zahlungsgateways benötigen eine Verbindung",
+            "wcpos": "Produkte ohne Internetverbindung durchsuchen, Warenkörbe zusammenstellen und Barverkäufe oder Verkäufe über ein separates Zahlungsterminal abwickeln; angebundene Kartenleser und Online-Zahlungsgateways benötigen eine Verbindung",
             "yith": "Kein Offline-Modus laut Produktseite"
           },
           "barcode": {
@@ -2838,7 +2838,7 @@
         },
         "offline": {
           "question": "Funktioniert YITH Point of Sale offline?",
-          "answer": "Nein. Die FAQ auf der Produktseite sagen, dass das Plugin keine Offline-Funktion bietet, Sie es aber auf einem lokalen Server einrichten können. WCPOS speichert Produkte, Kunden und Warenkörbe lokal, sodass Sie ohne Verbindung den Katalog durchsuchen, Warenkörbe zusammenstellen und Barzahlungen annehmen können; diese Verkäufe werden synchronisiert, sobald die Verbindung zurückkehrt. Angebundene Kartenleser und Online-Zahlungsgateways benötigen eine Verbindung."
+          "answer": "Nein. Die FAQ auf der Produktseite sagen, dass das Plugin keine Offline-Funktion bietet, Sie es aber auf einem lokalen Server einrichten können. WCPOS speichert Produkte, Kunden und Warenkörbe lokal, sodass Sie ohne Verbindung den Katalog durchsuchen, Warenkörbe zusammenstellen und Barverkäufe oder Verkäufe über ein separates Zahlungsterminal abschließen können; diese Verkäufe werden synchronisiert, sobald die Verbindung zurückkehrt. Angebundene Kartenleser und Online-Zahlungsgateways benötigen eine Verbindung."
         },
         "terminals": {
           "question": "Kann ich ein Kartenterminal mit YITH Point of Sale verbinden?",
@@ -2924,7 +2924,7 @@
           },
           "offline": {
             "label": "Offline",
-            "wcpos": "Produkte ohne Internetverbindung durchsuchen, Warenkörbe zusammenstellen und Barverkäufe abwickeln; angebundene Kartenleser und Online-Zahlungsgateways benötigen eine Verbindung",
+            "wcpos": "Produkte ohne Internetverbindung durchsuchen, Warenkörbe zusammenstellen und Barverkäufe oder Verkäufe über ein separates Zahlungsterminal abwickeln; angebundene Kartenleser und Online-Zahlungsgateways benötigen eine Verbindung",
             "foosales": "Gibt an, dass seine Apps offline weiter funktionieren und neue Bestellungen, Stornierungen und Erstattungen bei erneuter Verbindung synchronisieren; Kunden können offline nicht erstellt oder bearbeitet werden"
           },
           "devices": {
@@ -2984,7 +2984,7 @@
         },
         "offline": {
           "question": "Funktioniert FooSales offline?",
-          "answer": "FooSales gibt an, dass es funktioniert: Seine Apps wechseln bei Verbindungsverlust in den Offline-Modus, der Großteil des POS funktioniert weiter, und neue Bestellungen, stornierte Bestellungen und Erstattungen werden auf dem Gerät gespeichert und bei erneuter Verbindung mit WooCommerce synchronisiert. Laut seinem Hilfe-Center können Kunden offline weder erstellt noch bearbeitet und Bestandswerte nicht geändert werden; laut seiner Zahlungsseite benötigen WooCommerce-Gutscheine eine Internetverbindung. WCPOS speichert Produkte, Kunden und Warenkörbe lokal, sodass Sie ohne Verbindung den Katalog durchsuchen, Warenkörbe zusammenstellen und Barzahlungen annehmen können; diese Verkäufe werden synchronisiert, sobald die Verbindung zurückkehrt. Angebundene Kartenleser und Online-Zahlungsgateways benötigen eine Verbindung."
+          "answer": "FooSales gibt an, dass es funktioniert: Seine Apps wechseln bei Verbindungsverlust in den Offline-Modus, der Großteil des POS funktioniert weiter, und neue Bestellungen, stornierte Bestellungen und Erstattungen werden auf dem Gerät gespeichert und bei erneuter Verbindung mit WooCommerce synchronisiert. Laut seinem Hilfe-Center können Kunden offline weder erstellt noch bearbeitet und Bestandswerte nicht geändert werden; laut seiner Zahlungsseite benötigen WooCommerce-Gutscheine eine Internetverbindung. WCPOS speichert Produkte, Kunden und Warenkörbe lokal, sodass Sie ohne Verbindung den Katalog durchsuchen, Warenkörbe zusammenstellen und Barverkäufe oder Verkäufe über ein separates Zahlungsterminal abschließen können; diese Verkäufe werden synchronisiert, sobald die Verbindung zurückkehrt. Angebundene Kartenleser und Online-Zahlungsgateways benötigen eine Verbindung."
         },
         "terminals": {
           "question": "Welche Kartenterminals unterstützen FooSales und WCPOS?",
