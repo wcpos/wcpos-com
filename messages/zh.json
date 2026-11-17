@@ -1725,11 +1725,11 @@
   },
   "extensions": {
     "metadata": {
-      "title": "扩展",
-      "description": "WCPOS 可用的扩展，每个扩展均附有其文档链接。"
+      "title": "WooCommerce 销售点系统扩展与支付终端",
+      "description": "WooCommerce 销售点系统 WCPOS 的扩展：Stripe、Square、SumUp、PayPal、Mollie 和 Windcave 支付终端，以及 WPML、Polylang 和 ATUM。"
     },
     "hero": {
-      "title": "扩展",
+      "title": "WooCommerce 销售点系统扩展",
       "subtitle": "WCPOS 可用的扩展，每个扩展均附有其文档链接。"
     },
     "proTag": "Pro",
