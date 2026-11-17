@@ -330,4 +330,36 @@ describe('SiteHeader', () => {
     const signInLinks = screen.getAllByText('Translated sign in')
     expect(signInLinks.length).toBeGreaterThan(0)
   })
+
+  it('does not paint the highlighted Pro link red when it is not the current page', async () => {
+    navState.pathname = '/support'
+    mockGetCustomer.mockResolvedValue(null)
+    await act(async () => {
+      render(<SiteHeader />)
+    })
+
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Translated open menu' })
+    )
+
+    const proLinks = screen.getAllByText('Pro').map((el) => el.closest('a'))
+    expect(proLinks.length).toBeGreaterThanOrEqual(2)
+    for (const link of proLinks) {
+      expect(link).toBeTruthy()
+      expect(link!.classList.contains('text-primary')).toBe(false)
+      expect(link!.classList.contains('text-wcpos-red-accent')).toBe(false)
+      expect(link!.hasAttribute('aria-current')).toBe(false)
+    }
+  })
+
+  it('still marks Pro red when it is the current page', async () => {
+    navState.pathname = '/pro'
+    mockGetCustomer.mockResolvedValue(null)
+    await act(async () => {
+      render(<SiteHeader />)
+    })
+
+    const proLink = screen.getAllByText('Pro')[0].closest('a')
+    expect(proLink?.classList.contains('text-wcpos-red-accent')).toBe(true)
+  })
 })
