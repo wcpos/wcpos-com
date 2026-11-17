@@ -67,12 +67,15 @@ export default async function ExtensionsPage({
           {EXTENSIONS.map(({ slug, name, description, requiresPro, docsUrl }) => (
             <li key={slug}>
               <Card elevated className="flex h-full flex-col p-6">
-                <div className="flex items-center">
-                  <h2 lang="en" className="text-lg font-semibold">
+                <div>
+                  <h2
+                    lang="en"
+                    className="inline align-middle text-lg font-semibold"
+                  >
                     {name}
                   </h2>
                   {requiresPro && (
-                    <Badge variant="brand-tint" className="ml-2">
+                    <Badge variant="brand-tint" className="ml-2 align-middle">
                       {t('proTag')}
                     </Badge>
                   )}

@@ -30,6 +30,23 @@ describe('FeatureCard', () => {
     expect(screen.getByText('Pro')).toBeInTheDocument()
   })
 
+  it('keeps the badge inline inside the heading', () => {
+    render(
+      <FeatureCard
+        icon={Search}
+        title="Checkout"
+        badge={<Badge variant="pro">Pro</Badge>}
+      >
+        Payments.
+      </FeatureCard>,
+    )
+    const heading = screen.getByRole('heading')
+    const badge = screen.getByTestId('feature-card-badge')
+    expect(heading).not.toHaveClass('flex')
+    expect(heading).toContainElement(badge)
+    expect(badge).toHaveClass('inline-block')
+  })
+
   it('can render as a list item for grid <ul>s', () => {
     render(
       <ul>
