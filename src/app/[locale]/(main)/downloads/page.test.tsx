@@ -184,4 +184,23 @@ describe('DownloadsPage', () => {
       'https://updates.wcpos.com/v1/electron/download/darwin-x64/v1.11.12',
     )
   })
+
+  it('emits SoftwareApplication JSON-LD with a /downloads downloadUrl', async () => {
+    const { default: DownloadsPage } = await import(
+      '@/app/[locale]/(main)/downloads/page'
+    )
+
+    const { container } = render(
+      await DownloadsPage({ params: Promise.resolve({ locale: 'en' }) }),
+    )
+
+    const app = Array.from(
+      container.querySelectorAll('script[type="application/ld+json"]'),
+    )
+      .map((script) => JSON.parse(script.textContent ?? '{}'))
+      .find((data) => data['@type'] === 'SoftwareApplication')
+
+    expect(app.offers.price).toBe('0')
+    expect(app.downloadUrl).toMatch(/\/downloads$/)
+  })
 })
