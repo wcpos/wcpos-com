@@ -24,14 +24,15 @@ function isActive(pathname: string, link: SiteNavLink) {
 // No weight change between states — the active page reads by colour alone
 // (wcpos-red-accent stays ≥4.5:1 on the bg-primary/10 tint in both themes,
 // where plain --primary does not), and constant weight means link widths
-// never shift.
+// never shift. A highlighted link is brighter than the others but never red,
+// so only the current page reads as red.
 function navItemClass(active: boolean, highlight?: boolean) {
   return cn(
     'relative rounded-full px-3 py-1.5 transition-colors',
     active
       ? 'text-wcpos-red-accent'
       : highlight
-        ? 'text-primary'
+        ? 'text-foreground'
         : 'text-muted-foreground hover:text-foreground'
   )
 }
@@ -164,7 +165,7 @@ export function MobileNavLinks({ links }: { links: SiteNavLink[] }) {
           active
             ? 'bg-primary/10 text-wcpos-red-accent'
             : link.highlight
-              ? 'text-primary hover:bg-muted'
+              ? 'text-foreground hover:bg-muted'
               : 'text-muted-foreground hover:bg-muted hover:text-foreground'
         )
         const ariaCurrent = active ? ('page' as const) : undefined
