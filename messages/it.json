@@ -171,7 +171,7 @@
         },
         "f2": {
           "title": "Checkout fluido",
-          "description": "Aggiungi articoli, applica sconti e scegli il metodo di pagamento. Supporta Stripe Terminal, SumUp, contanti e gateway personalizzati."
+          "description": "Aggiungi articoli, applica sconti, accetta contanti o pagamenti con carta sul tuo terminale di pagamento e suddividi un pagamento. Pro collega lettori di carte come Stripe Terminal e SumUp."
         },
         "f3": {
           "title": "Profili cliente",

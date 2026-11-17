@@ -30,7 +30,7 @@ const features: Feature[] = [
   {
     icon: ShoppingCart,
     id: 'f2',
-    pro: true,
+    pro: false,
   },
   {
     icon: Users,

@@ -171,7 +171,7 @@
         },
         "f2": {
           "title": "Fluxo de checkout fluido",
-          "description": "Adicione itens, aplique descontos e escolha o método de pagamento. Suporta Stripe Terminal, SumUp, dinheiro e gateways personalizados."
+          "description": "Adicione itens, aplique descontos, aceite dinheiro ou pagamentos com cartão no seu próprio terminal de pagamento e divida um pagamento. Pro liga leitores de cartões como Stripe Terminal e SumUp."
         },
         "f3": {
           "title": "Perfis de clientes",

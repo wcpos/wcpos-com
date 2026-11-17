@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { render, screen } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 import { NextIntlClientProvider } from 'next-intl'
 import type { ReactElement } from 'react'
 import messages from '../../../messages/en.json'
@@ -157,7 +157,17 @@ describe('FeaturesSection', () => {
   it('marks Pro features with a badge', () => {
     renderWithIntl(<FeaturesSection />)
 
-    expect(screen.getAllByText('Pro')).toHaveLength(5)
+    expect(screen.getAllByText('Pro')).toHaveLength(4)
+  })
+
+  it('leaves checkout unbadged while stock and price editing stays Pro', () => {
+    renderWithIntl(<FeaturesSection />)
+
+    const checkout = screen.getByText('Smooth checkout flow').closest('li')!
+    const stock = screen.getByText('Edit stock & prices on the fly').closest('li')!
+
+    expect(within(checkout).queryByText('Pro')).not.toBeInTheDocument()
+    expect(within(stock).getByText('Pro')).toBeInTheDocument()
   })
 })
 

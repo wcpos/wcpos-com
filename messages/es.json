@@ -171,7 +171,7 @@
         },
         "f2": {
           "title": "Flujo de cobro fluido",
-          "description": "Añade artículos, aplica descuentos y elige el método de pago. Compatible con Stripe Terminal, SumUp, efectivo y pasarelas personalizadas."
+          "description": "Añade artículos, aplica descuentos, acepta efectivo o pagos con tarjeta en tu propio terminal de pago y divide un pago. Pro conecta lectores de tarjetas como Stripe Terminal y SumUp."
         },
         "f3": {
           "title": "Perfiles de clientes",
