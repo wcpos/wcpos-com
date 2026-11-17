@@ -14,6 +14,7 @@ import {
 import { TrustSection } from '@/components/home/trust-section'
 import { CtaSection } from '@/components/home/cta-section'
 import { marketingMetadata } from '@/lib/seo'
+import { wcposSoftwareApplication } from '@/lib/software-application-json-ld'
 import { clientMessages } from '@/i18n/client-messages'
 
 export async function generateMetadata({
@@ -66,20 +67,7 @@ export default async function Home({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              '@context': 'https://schema.org',
-              '@type': 'SoftwareApplication',
-              name: 'WCPOS',
-              applicationCategory: 'BusinessApplication',
-              operatingSystem: 'Windows, macOS, Linux, iOS, Android',
-              url: 'https://wcpos.com',
-              image: 'https://wcpos.com/icon.png',
-              offers: {
-                '@type': 'Offer',
-                price: '0',
-                priceCurrency: 'USD',
-              },
-            }),
+            __html: JSON.stringify(wcposSoftwareApplication()),
           }}
         />
       </main>

@@ -12,7 +12,8 @@ import { TextLink } from '@/components/ui/text-link'
 import { Link } from '@/i18n/navigation'
 import { TrackedLocaleLink } from '@/components/analytics/tracked-locale-link'
 import { TrackedExternalLink } from '@/components/analytics/tracked-external-link'
-import { marketingMetadata } from '@/lib/seo'
+import { localeUrl, marketingMetadata } from '@/lib/seo'
+import { wcposSoftwareApplication } from '@/lib/software-application-json-ld'
 import { formatDateForLocale } from '@/lib/date-format'
 import { DownloadsHero } from '@/components/downloads/download-hero'
 import { PLATFORMS, type PlatformKey } from '@/components/downloads/platforms'
@@ -173,6 +174,12 @@ export default async function DownloadsPage({
       ])}
     >
       <main>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(wcposSoftwareApplication({ downloadUrl: localeUrl(locale, '/downloads') })),
+          }}
+        />
         <DownloadsHero desktopVersion={desktopVersion} />
         <HowItFits
           copy={{
