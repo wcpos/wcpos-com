@@ -23,6 +23,10 @@ vi.mock('next-intl/server', () => ({
   setRequestLocale: vi.fn(),
 }))
 
+vi.mock('@/components/home/cta-section', () => ({
+  CtaSection: () => <div data-testid="cta-section" />,
+}))
+
 const params = Promise.resolve({ locale: 'en' })
 
 describe('WoocommerceComparePage', () => {
@@ -97,5 +101,14 @@ describe('WoocommerceComparePage', () => {
     expect(metadata.description).toBe(
       'Translated WooCommerce metadata description'
     )
+  })
+
+  it('closes with the call-to-action band before the facts footer', async () => {
+    render(await WoocommerceComparePage({ params }))
+    const faq = screen.getByRole('heading', { name: 'woocommerce.faq.title' })
+    const cta = screen.getByTestId('cta-section')
+    const footer = screen.getByText('woocommerce.footer.corrections')
+    expect(faq.compareDocumentPosition(cta) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+    expect(cta.compareDocumentPosition(footer) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
   })
 })

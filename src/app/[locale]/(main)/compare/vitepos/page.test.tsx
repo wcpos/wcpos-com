@@ -22,6 +22,10 @@ vi.mock('next-intl/server', () => ({
   setRequestLocale: vi.fn(),
 }))
 
+vi.mock('@/components/home/cta-section', () => ({
+  CtaSection: () => <div data-testid="cta-section" />,
+}))
+
 const params = Promise.resolve({ locale: 'en' })
 
 describe('ViteposComparePage', () => {
@@ -110,5 +114,14 @@ describe('ViteposComparePage', () => {
       const href = link.getAttribute('href')!
       expect(['vitepos.com', 'wordpress.org']).toContain(new URL(href).host)
     }
+  })
+
+  it('closes with the call-to-action band before the facts footer', async () => {
+    render(await ViteposComparePage({ params }))
+    const faq = screen.getByRole('heading', { name: 'vitepos.faq.title' })
+    const cta = screen.getByTestId('cta-section')
+    const footer = screen.getByText('vitepos.footer.corrections')
+    expect(faq.compareDocumentPosition(cta) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+    expect(cta.compareDocumentPosition(footer) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
   })
 })

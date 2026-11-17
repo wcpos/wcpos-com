@@ -4,6 +4,7 @@ import { Check, Scale } from 'lucide-react'
 import { Card } from '@/components/ui/card'
 import { Section } from '@/components/ui/section'
 import { SectionHeading } from '@/components/ui/section-heading'
+import { CtaSection } from '@/components/home/cta-section'
 import {
   Table,
   TableBody,
@@ -319,6 +320,8 @@ export default async function FoosalesComparePage({
           ))}
         </ul>
       </Section>
+
+      <CtaSection />
 
       <Section tone="default" spacing="compact" containerClassName="max-w-3xl">
         <p className="text-sm text-muted-foreground">

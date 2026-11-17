@@ -23,6 +23,10 @@ vi.mock('next-intl/server', () => ({
   setRequestLocale: vi.fn(),
 }))
 
+vi.mock('@/components/home/cta-section', () => ({
+  CtaSection: () => <div data-testid="cta-section" />,
+}))
+
 const params = Promise.resolve({ locale: 'en' })
 
 describe('SquareComparePage', () => {
@@ -97,5 +101,14 @@ describe('SquareComparePage', () => {
     expect(metadata.description).toBe(
       'Translated Square metadata description'
     )
+  })
+
+  it('closes with the call-to-action band before the facts footer', async () => {
+    render(await SquareComparePage({ params }))
+    const faq = screen.getByRole('heading', { name: 'square.faq.title' })
+    const cta = screen.getByTestId('cta-section')
+    const footer = screen.getByText('square.footer.corrections')
+    expect(faq.compareDocumentPosition(cta) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+    expect(cta.compareDocumentPosition(footer) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
   })
 })
