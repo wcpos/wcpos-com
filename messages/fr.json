@@ -259,6 +259,10 @@
     "story": {
       "a1": {
         "k": "Point de vente pour WooCommerce",
+        "v2": {
+          "label": "Nouveau dans 2.0",
+          "text": "Ouvrez et clôturez votre caisse, fractionnez les paiements et consultez les ventes du jour — gratuitement."
+        },
         "h": "Votre boutique WooCommerce, au comptoir.",
         "b": "WCPOS transforme la tablette en caisse — même catalogue, même stock, mêmes prix, même hors ligne.",
         "c1": "Essayer la démo en direct",

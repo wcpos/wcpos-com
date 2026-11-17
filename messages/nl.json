@@ -259,6 +259,10 @@
     "story": {
       "a1": {
         "k": "Kassasysteem voor WooCommerce",
+        "v2": {
+          "label": "Nieuw in 2.0",
+          "text": "Open en sluit je kassa, splits betalingen en bekijk de verkopen van vandaag — gratis."
+        },
         "h": "Je WooCommerce-winkel, aan de toonbank.",
         "b": "WCPOS verandert de tablet in je kassa — dezelfde catalogus, dezelfde voorraad, dezelfde prijzen, zelfs offline.",
         "c1": "Live demo proberen",
