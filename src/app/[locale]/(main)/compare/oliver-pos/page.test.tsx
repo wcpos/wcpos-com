@@ -27,6 +27,12 @@ vi.mock('@/components/home/cta-section', () => ({
 const params = Promise.resolve({ locale: 'en' })
 
 describe('OliverComparePage', () => {
+  it('tightens the padding under the hero', async () => {
+    render(await OliverComparePage({ params }))
+    const h1 = screen.getByRole('heading', { level: 1 })
+    expect(h1.closest('section')).toHaveClass('pb-6')
+  })
+
   it('associates every comparison cell with headers', async () => {
     render(await OliverComparePage({ params }))
     for (const table of screen.getAllByRole('table')) {
