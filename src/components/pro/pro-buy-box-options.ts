@@ -64,7 +64,8 @@ export function buildProBuyBoxOptions(
     subtitle: t(`buyBox.${offer.planId}.subtitle`),
     badgeLabel:
       offer.planId === 'yearly' ? t('buyBox.yearly.badgeLabel') : null,
-    priceText: offer.price.compact,
+    // Narrow symbol ("$") + the ISO code the buy box appends reads "$129 USD" in every locale; default display would double it ("US$ 129 USD").
+    priceText: offer.price.compactNarrow,
     currencyCode: offer.price.currencyCode.toUpperCase(),
     priceSuffix: t(`buyBox.${offer.planId}.priceSuffix`),
     ctaNote:

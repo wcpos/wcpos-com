@@ -116,7 +116,7 @@ export function ProBuyBox({
               </span>
               <span className="ml-auto text-right shrink-0">
                 <span className="text-xl font-bold">{option.priceText}</span>
-                {/* Some locales' Intl output already contains the ISO code (e.g. it: "129 USD"). */}
+                {/* priceText uses the narrow symbol, so the ISO code is appended once; the guard stays as a safety net. */}
                 {!option.priceText.includes(option.currencyCode) && (
                   <span className="ml-1 text-sm font-medium text-muted-foreground">
                     {option.currencyCode}
