@@ -1643,8 +1643,8 @@
           "body": "Cobra una venta en el escritorio, reembólsala en tu teléfono: un único conjunto de productos, pedidos y clientes, actualizado en tiempo real."
         },
         "offline": {
-          "title": "Primero sin conexión, para que la caja nunca se detenga",
-          "body": "Cada dispositivo sigue funcionando sin conexión y se vuelve a sincronizar en cuanto vuelve a estar online."
+          "title": "Sigue cobrando ventas cuando se cae la conexión",
+          "body": "Explora productos, crea carritos y completa ventas en efectivo o en un terminal de pago independiente sin conexión; se sincronizan en cuanto vuelves a estar online. Los lectores de tarjetas conectados y las pasarelas de pago online necesitan conexión."
         }
       },
       "syncLabel": "Qué se mantiene sincronizado",

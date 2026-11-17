@@ -1643,8 +1643,8 @@
           "body": "Registra una vendita sul desktop, rimborsala dal telefono — un unico set di prodotti, ordini e clienti, aggiornato in tempo reale."
         },
         "offline": {
-          "title": "Offline-first, così la cassa non si ferma mai",
-          "body": "Ogni dispositivo continua a funzionare senza connessione e si risincronizza appena torna online."
+          "title": "Continua a registrare vendite quando la connessione cade",
+          "body": "Sfoglia i prodotti, crea carrelli e completa vendite in contanti o su un terminale di pagamento separato senza connessione; si sincronizzano appena torni online. I lettori di carte collegati e i gateway di pagamento online richiedono una connessione."
         }
       },
       "syncLabel": "Cosa resta sincronizzato",

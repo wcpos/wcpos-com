@@ -1643,8 +1643,8 @@
           "body": "Ring up a sale on the desktop, refund it on your phone — one set of products, orders and customers, updating in real time."
         },
         "offline": {
-          "title": "Offline-first, so the till never stops",
-          "body": "Each device keeps working without a connection and re-syncs the moment it’s back online."
+          "title": "Keep ringing up sales when the connection drops",
+          "body": "Browse products, build carts and complete cash sales or sales on a separate card terminal without a connection; they sync the moment you’re back online. Connected card readers and online gateways need a connection."
         }
       },
       "syncLabel": "What stays in sync",
