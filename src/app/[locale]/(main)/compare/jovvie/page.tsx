@@ -161,7 +161,7 @@ export default async function JovvieComparePage({
     <main>
       <JovvieCompareJsonLd locale={locale} translate={translate} />
 
-      <Section tone="default" spacing="hero">
+      <Section tone="default" spacing="hero" className="pb-6 md:pb-10 lg:pb-12">
         <SectionHeading
           as="h1"
           size="hero"

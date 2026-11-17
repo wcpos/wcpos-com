@@ -26,6 +26,12 @@ vi.mock('next-intl/server', () => ({
 const params = Promise.resolve({ locale: 'en' })
 
 describe('SquareComparePage', () => {
+  it('tightens the padding under the hero', async () => {
+    render(await SquareComparePage({ params }))
+    const h1 = screen.getByRole('heading', { level: 1 })
+    expect(h1.closest('section')).toHaveClass('pb-6')
+  })
+
   it('associates every comparison cell with headers', async () => {
     render(await SquareComparePage({ params }))
     for (const table of screen.getAllByRole('table')) {
