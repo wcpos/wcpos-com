@@ -55,7 +55,7 @@
     "title": "WCPOS",
     "subtitle": "A fast point of sale for WooCommerce",
     "meta": {
-      "description": "Free, open-source point of sale for WooCommerce. Sell offline, split payments, and open and close your register — all free in WCPOS 2.0. Desktop, web and mobile apps."
+      "description": "Free, open-source point of sale for WooCommerce. Sell offline, split payments, and open and close your register — all free in WCPOS 2.0. Web and desktop apps; iOS and Android apps in beta."
     },
     "problem": {
       "title": "Running a WooCommerce store and a physical shop shouldn't mean double the work",
@@ -285,7 +285,8 @@
           "p2": "Windows",
           "p3": "macOS",
           "p4": "iOS",
-          "p5": "Android"
+          "p5": "Android",
+          "beta": "Beta"
         }
       },
       "a3": {

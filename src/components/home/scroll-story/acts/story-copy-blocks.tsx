@@ -145,6 +145,9 @@ export function CopyAct1({
   )
 }
 
+// the 2.0 phone apps are in public beta; /downloads labels them the same way
+const BETA_PLATFORMS: ReadonlySet<string> = new Set(['p4', 'p5'])
+
 export function CopyAct2({ tone = 'onDark' }: { tone?: CopyTone }) {
   const t = toneStyles[tone]
   const copy = useTranslations('home.story')
@@ -164,6 +167,12 @@ export function CopyAct2({ tone = 'onDark' }: { tone?: CopyTone }) {
             className={cn('rounded-full border px-3 py-1 text-[11px] font-semibold', t.chip)}
           >
             {copy(`a2.platforms.${platform}`)}
+            {BETA_PLATFORMS.has(platform) && (
+              <>
+                {' '}
+                <span className="font-normal opacity-75">{copy('a2.platforms.beta')}</span>
+              </>
+            )}
           </span>
         ))}
       </div>
