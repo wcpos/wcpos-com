@@ -186,8 +186,8 @@
           "description": "Corrigez un mauvais prix pendant que vous servez un client. Ajustez le stock sans quitter la caisse."
         },
         "f6": {
-          "title": "Rapports de fin de journée",
-          "description": "Générez des rapports de ventes pour chaque service ou journée. Faites la caisse rapidement et suivez les performances."
+          "title": "Rapports sur plusieurs jours, caisses et boutiques",
+          "description": "Consultez les ventes des jours précédents et sur des plages de dates, pour chaque caisse et chaque boutique."
         }
       }
     },
@@ -204,7 +204,10 @@
           "f4": "Mode hors ligne",
           "f5": "Impression de reçus",
           "f6": "Multi-devise",
-          "f7": "Produits illimités"
+          "f7": "Produits illimités",
+          "f8": "Ouverture et clôture de caisse",
+          "f9": "Paiements fractionnés",
+          "f10": "Rapport des ventes du jour"
         }
       },
       "pro": {
@@ -215,7 +218,7 @@
           "p2": "Modification du stock et des prix dans la caisse",
           "p3": "Historique et gestion des commandes",
           "p4": "Gestion des clients",
-          "p5": "Rapports de fin de journée",
+          "p5": "Rapports sur plusieurs jours, caisses et boutiques",
           "p6": "Passerelles de paiement personnalisées",
           "p7": "Assistance prioritaire"
         }
@@ -402,15 +405,15 @@
   "pro": {
     "metadata": {
       "title": "Fonctionnalités et tarifs Pro – Point de vente pour WooCommerce",
-      "description": "Améliorez WCPOS avec Pro : paiements par terminal, modification du stock et des prix, gestion des commandes et des clients, rapports de fin de journée et assistance prioritaire."
+      "description": "Améliorez WCPOS avec Pro : paiements par terminal, modification du stock et des prix, gestion des commandes et des clients, rapports complets et assistance prioritaire."
     },
     "hero": {
       "title": "WCPOS Pro",
-      "subtitle": "Tout ce que contient le POS gratuit, plus les terminaux de paiement, la gestion de la boutique depuis la caisse, les rapports de fin de journée et l’assistance prioritaire."
+      "subtitle": "Tout ce que contient le POS gratuit, plus les terminaux de paiement, la gestion de la boutique depuis la caisse, les rapports complets et l’assistance prioritaire."
     },
     "schema": {
       "name": "WCPOS Pro",
-      "description": "Extension de point de vente premium pour WooCommerce. Ajoute l’intégration des terminaux de paiement, la modification du stock et des prix, la gestion des commandes et des clients, les rapports de fin de journée, les passerelles de paiement personnalisées et l’assistance prioritaire.",
+      "description": "Extension de point de vente premium pour WooCommerce. Ajoute l’intégration des terminaux de paiement, la modification du stock et des prix, la gestion des commandes et des clients, les rapports complets, les passerelles de paiement personnalisées et l’assistance prioritaire.",
       "offers": {
         "yearly": "Licence annuelle",
         "lifetime": "Licence à vie"
@@ -436,8 +439,8 @@
         "description": "Ajoutez et modifiez les coordonnées des clients au point de vente, synchronisées avec WooCommerce."
       },
       "reports": {
-        "title": "Rapports de fin de journée",
-        "description": "Clôturez la caisse avec des récapitulatifs de fin de journée des ventes, des paiements et des recettes."
+        "title": "Rapports sur plusieurs jours, caisses et boutiques",
+        "description": "Consultez les ventes des jours précédents et sur des plages de dates, pour chaque caisse et chaque boutique."
       },
       "gateways": {
         "title": "Passerelles de paiement personnalisées",
@@ -1696,7 +1699,7 @@
           "title": "Besoin de plus ? Passez à Pro",
           "body": "Un plugin sous licence qui ajoute les paiements par terminal, les remboursements et le contrôle du stock sur la même base.",
           "cardTitle": "Débloquez toute la caisse",
-          "cardBody": "Paiements, remboursements, stock et prix, gestion des commandes, rapports de fin de journée, multi-boutique et assistance prioritaire sur Discord.",
+          "cardBody": "Paiements, remboursements, stock et prix, gestion des commandes, rapports complets, multi-boutique et assistance prioritaire sur Discord.",
           "plansCta": "Voir les offres Pro",
           "signInCta": "Connectez-vous pour télécharger"
         }

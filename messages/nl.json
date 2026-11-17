@@ -186,8 +186,8 @@
           "description": "Corrigeer een verkeerde prijs terwijl je een klant helpt. Pas voorraad aan zonder het kassasysteem te verlaten."
         },
         "f6": {
-          "title": "Einde-dagrapporten",
-          "description": "Genereer verkooprapporten voor elke dienst of dag. Kas snel op en volg prestaties."
+          "title": "Rapporten over dagen, kassa's en winkels",
+          "description": "Bekijk de verkopen voor eerdere dagen en datumbereiken, voor elke kassa en elke winkel."
         }
       }
     },
@@ -204,7 +204,10 @@
           "f4": "Offline modus",
           "f5": "Bonnen printen",
           "f6": "Meerdere valuta",
-          "f7": "Onbeperkte producten"
+          "f7": "Onbeperkte producten",
+          "f8": "Kassa openen en sluiten",
+          "f9": "Gesplitste betalingen",
+          "f10": "Verkooprapport van vandaag"
         }
       },
       "pro": {
@@ -215,7 +218,7 @@
           "p2": "Voorraad en prijzen bewerken in het kassasysteem",
           "p3": "Bestelgeschiedenis en beheer",
           "p4": "Klantbeheer",
-          "p5": "Einde-dagrapporten",
+          "p5": "Rapporten over dagen, kassa's en winkels",
           "p6": "Aangepaste betaalgateways",
           "p7": "Prioriteitssupport"
         }
@@ -402,15 +405,15 @@
   "pro": {
     "metadata": {
       "title": "Pro-functies & prijzen – Kassasysteem voor WooCommerce",
-      "description": "Breid WCPOS uit met Pro: terminalbetalingen, voorraad- en prijsbewerking, order- en klantbeheer, einde-dagrapporten en prioriteitssupport."
+      "description": "Breid WCPOS uit met Pro: terminalbetalingen, voorraad- en prijsbewerking, order- en klantbeheer, volledige rapporten en prioriteitssupport."
     },
     "hero": {
       "title": "WCPOS Pro",
-      "subtitle": "Alles uit de gratis POS, plus betaalterminals, winkelbeheer aan de kassa, einde-dagrapporten en prioriteitssupport."
+      "subtitle": "Alles uit de gratis POS, plus betaalterminals, winkelbeheer aan de kassa, volledige rapporten en prioriteitssupport."
     },
     "schema": {
       "name": "WCPOS Pro",
-      "description": "Premium point-of-sale-plugin voor WooCommerce. Voegt betaalterminalintegratie, voorraad- en prijsbewerking, order- en klantbeheer, einde-dagrapporten, aangepaste betaalgateways en prioriteitssupport toe.",
+      "description": "Premium point-of-sale-plugin voor WooCommerce. Voegt betaalterminalintegratie, voorraad- en prijsbewerking, order- en klantbeheer, volledige rapporten, aangepaste betaalgateways en prioriteitssupport toe.",
       "offers": {
         "yearly": "Jaarlicentie",
         "lifetime": "Levenslange licentie"
@@ -436,8 +439,8 @@
         "description": "Voeg klantgegevens toe en bewerk ze op de kassa, gesynchroniseerd met WooCommerce."
       },
       "reports": {
-        "title": "Dagafsluitingsrapporten",
-        "description": "Sluit de kassa af met dagoverzichten van verkopen, betalingen en opbrengsten."
+        "title": "Rapporten over dagen, kassa's en winkels",
+        "description": "Bekijk de verkopen voor eerdere dagen en datumbereiken, voor elke kassa en elke winkel."
       },
       "gateways": {
         "title": "Aangepaste betaalgateways",
@@ -1696,7 +1699,7 @@
           "title": "Meer nodig? Kies Pro",
           "body": "Een gelicentieerde plugin die terminalbetalingen, terugbetalingen en voorraadbeheer toevoegt op dezelfde basis.",
           "cardTitle": "Ontgrendel de volledige kassa",
-          "cardBody": "Betalingen, terugbetalingen, voorraad en prijzen, orderbeheer, dagafsluitingsrapporten, meerdere winkels en prioritaire Discord-support.",
+          "cardBody": "Betalingen, terugbetalingen, voorraad en prijzen, orderbeheer, volledige rapporten, meerdere winkels en prioritaire Discord-support.",
           "plansCta": "Bekijk Pro-abonnementen",
           "signInCta": "Log in om te downloaden"
         }

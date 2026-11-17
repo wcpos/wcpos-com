@@ -186,8 +186,8 @@
           "description": "Korrigiere einen falschen Preis, während du einen Kunden bedienst. Passe Lagerbestände an, ohne den POS zu verlassen."
         },
         "f6": {
-          "title": "Tagesabschlussberichte",
-          "description": "Erstelle Verkaufsberichte für jede Schicht oder jeden Tag. Kassenabschluss schnell erledigen und Leistung verfolgen."
+          "title": "Berichte für verschiedene Tage, Kassen & Geschäfte",
+          "description": "Sieh Verkäufe für frühere Tage und Datumsbereiche, für jede Kasse und jedes Geschäft."
         }
       }
     },
@@ -204,7 +204,10 @@
           "f4": "Offline-Modus",
           "f5": "Bondruck",
           "f6": "Mehrere Währungen",
-          "f7": "Unbegrenzte Produkte"
+          "f7": "Unbegrenzte Produkte",
+          "f8": "Kasse öffnen & schließen",
+          "f9": "Aufgeteilte Zahlungen",
+          "f10": "Heutiger Verkaufsbericht"
         }
       },
       "pro": {
@@ -215,7 +218,7 @@
           "p2": "Lager- und Preisbearbeitung im POS",
           "p3": "Bestellverlauf & Verwaltung",
           "p4": "Kundenverwaltung",
-          "p5": "Tagesabschlussberichte",
+          "p5": "Berichte für verschiedene Tage, Kassen & Geschäfte",
           "p6": "Eigene Zahlungsgateways",
           "p7": "Priorisierter Support"
         }
@@ -402,15 +405,15 @@
   "pro": {
     "metadata": {
       "title": "Pro-Funktionen & Preise – Kassensystem für WooCommerce",
-      "description": "Erweitere WCPOS mit Pro: Terminalzahlungen, Lager- und Preisbearbeitung, Bestell- und Kundenverwaltung, Tagesabschlussberichte und Prioritätssupport."
+      "description": "Erweitere WCPOS mit Pro: Terminalzahlungen, Lager- und Preisbearbeitung, Bestell- und Kundenverwaltung, vollständige Berichte und Prioritätssupport."
     },
     "hero": {
       "title": "WCPOS Pro",
-      "subtitle": "Alles aus dem kostenlosen POS, plus Zahlungsterminals, Ladenverwaltung an der Kasse, Tagesabschlussberichte und Prioritätssupport."
+      "subtitle": "Alles aus dem kostenlosen POS, plus Zahlungsterminals, Ladenverwaltung an der Kasse, vollständige Berichte und Prioritätssupport."
     },
     "schema": {
       "name": "WCPOS Pro",
-      "description": "Premium-Point-of-Sale-Plugin für WooCommerce. Ergänzt Zahlungsterminal-Integration, Lager- und Preisbearbeitung, Bestell- und Kundenverwaltung, Tagesabschlussberichte, eigene Zahlungsarten und Prioritätssupport.",
+      "description": "Premium-Point-of-Sale-Plugin für WooCommerce. Ergänzt Zahlungsterminal-Integration, Lager- und Preisbearbeitung, Bestell- und Kundenverwaltung, vollständige Berichte, eigene Zahlungsarten und Prioritätssupport.",
       "offers": {
         "yearly": "Jahreslizenz",
         "lifetime": "Lebenslange Lizenz"
@@ -436,8 +439,8 @@
         "description": "Füge Kundendaten direkt an der Kasse hinzu und bearbeite sie, synchronisiert mit WooCommerce."
       },
       "reports": {
-        "title": "Tagesabschlussberichte",
-        "description": "Schließe die Kasse mit Tagesabschlüssen zu Umsätzen, Zahlungen und Einnahmen."
+        "title": "Berichte für verschiedene Tage, Kassen & Geschäfte",
+        "description": "Sieh Verkäufe für frühere Tage und Datumsbereiche, für jede Kasse und jedes Geschäft."
       },
       "gateways": {
         "title": "Individuelle Zahlungs-Gateways",
@@ -1696,7 +1699,7 @@
           "title": "Möchtest du mehr? Wechsle zu Pro",
           "body": "Ein lizenziertes Plugin, das auf derselben Grundlage Terminalzahlungen, Erstattungen und Bestandskontrolle ergänzt.",
           "cardTitle": "Die vollständige Kasse freischalten",
-          "cardBody": "Zahlungen, Erstattungen, Bestand & Preise, Bestellverwaltung, Tagesabschlussberichte, Multi-Store und vorrangiger Discord-Support.",
+          "cardBody": "Zahlungen, Erstattungen, Bestand & Preise, Bestellverwaltung, vollständige Berichte, Multi-Store und vorrangiger Discord-Support.",
           "plansCta": "Pro-Tarife ansehen",
           "signInCta": "Anmelden zum Herunterladen"
         }

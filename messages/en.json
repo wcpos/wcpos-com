@@ -186,8 +186,8 @@
           "description": "Fix a wrong price while serving a customer. Adjust stock without leaving the POS."
         },
         "f6": {
-          "title": "End-of-day reports",
-          "description": "Generate sales reports for each shift or day. Cash up quickly, track performance."
+          "title": "Reports across days, registers & stores",
+          "description": "See sales for earlier days and date ranges, for every register and every store."
         }
       }
     },
@@ -204,7 +204,10 @@
           "f4": "Offline mode",
           "f5": "Receipt printing",
           "f6": "Multi-currency",
-          "f7": "Unlimited products"
+          "f7": "Unlimited products",
+          "f8": "Open & close the register",
+          "f9": "Split payments",
+          "f10": "Today's sales report"
         }
       },
       "pro": {
@@ -215,7 +218,7 @@
           "p2": "Stock & price editing in POS",
           "p3": "Order history & management",
           "p4": "Customer management",
-          "p5": "End-of-day reports",
+          "p5": "Reports across days, registers & stores",
           "p6": "Custom payment gateways",
           "p7": "Priority support"
         }
@@ -402,15 +405,15 @@
   "pro": {
     "metadata": {
       "title": "Pro Features & Pricing for WooCommerce POS",
-      "description": "Upgrade WCPOS with Pro: terminal payments, stock and price editing, order and customer management, end-of-day reports, and priority support."
+      "description": "Upgrade WCPOS with Pro: terminal payments, stock and price editing, order and customer management, full reports, and priority support."
     },
     "hero": {
       "title": "WCPOS Pro",
-      "subtitle": "Everything in the free POS, plus payment terminals, store management at the register, end-of-day reports, and priority support."
+      "subtitle": "Everything in the free POS, plus payment terminals, store management at the register, full reports, and priority support."
     },
     "schema": {
       "name": "WCPOS Pro",
-      "description": "Premium Point of Sale plugin for WooCommerce. Adds payment terminal integration, stock and price editing, order and customer management, end-of-day reports, custom payment gateways, and priority support.",
+      "description": "Premium Point of Sale plugin for WooCommerce. Adds payment terminal integration, stock and price editing, order and customer management, full reports, custom payment gateways, and priority support.",
       "offers": {
         "yearly": "Yearly License",
         "lifetime": "Lifetime License"
@@ -436,8 +439,8 @@
         "description": "Add and edit customer details at the point of sale, kept in sync with WooCommerce."
       },
       "reports": {
-        "title": "End-of-Day Reports",
-        "description": "Close the register with end-of-day summaries of sales, payments, and takings."
+        "title": "Reports Across Days, Registers & Stores",
+        "description": "See sales for earlier days and date ranges, for every register and every store."
       },
       "gateways": {
         "title": "Custom Payment Gateways",
@@ -1696,7 +1699,7 @@
           "title": "Want more? Go Pro",
           "body": "A licensed plugin that adds terminal payments, refunds and stock control on the same foundation.",
           "cardTitle": "Unlock the full till",
-          "cardBody": "Payments, refunds, stock & pricing, order management, end-of-day reports, multi-store and priority Discord support.",
+          "cardBody": "Payments, refunds, stock & pricing, order management, full reports, multi-store and priority Discord support.",
           "plansCta": "View Pro plans",
           "signInCta": "Sign in to download"
         }

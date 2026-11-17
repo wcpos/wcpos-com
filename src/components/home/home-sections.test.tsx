@@ -151,7 +151,7 @@ describe('FeaturesSection', () => {
     expect(
       screen.getByText('Edit stock & prices on the fly')
     ).toBeInTheDocument()
-    expect(screen.getByText('End-of-day reports')).toBeInTheDocument()
+    expect(screen.getByText('Reports across days, registers & stores')).toBeInTheDocument()
   })
 
   it('marks Pro features with a badge', () => {

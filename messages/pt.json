@@ -186,8 +186,8 @@
           "description": "Corrija um preço errado enquanto atende um cliente. Ajuste o stock sem sair do POS."
         },
         "f6": {
-          "title": "Relatórios de fim de dia",
-          "description": "Gere relatórios de vendas para cada turno ou dia. Feche a caixa rapidamente e acompanhe o desempenho."
+          "title": "Relatórios de vários dias, caixas e lojas",
+          "description": "Veja as vendas de dias anteriores e intervalos de datas, para cada caixa e cada loja."
         }
       }
     },
@@ -204,7 +204,10 @@
           "f4": "Modo offline",
           "f5": "Impressão de recibos",
           "f6": "Multimoeda",
-          "f7": "Produtos ilimitados"
+          "f7": "Produtos ilimitados",
+          "f8": "Abertura e fecho de caixa",
+          "f9": "Pagamentos divididos",
+          "f10": "Relatório de vendas de hoje"
         }
       },
       "pro": {
@@ -215,7 +218,7 @@
           "p2": "Edição de stock e preços no POS",
           "p3": "Histórico e gestão de encomendas",
           "p4": "Gestão de clientes",
-          "p5": "Relatórios de fim de dia",
+          "p5": "Relatórios de vários dias, caixas e lojas",
           "p6": "Gateways de pagamento personalizados",
           "p7": "Suporte prioritário"
         }
@@ -402,15 +405,15 @@
   "pro": {
     "metadata": {
       "title": "Funcionalidades e preços do Pro – Ponto de venda para WooCommerce",
-      "description": "Melhore o WCPOS com Pro: pagamentos no terminal, edição de stock e preços, gestão de encomendas e clientes, relatórios de fecho do dia e suporte prioritário."
+      "description": "Melhore o WCPOS com Pro: pagamentos no terminal, edição de stock e preços, gestão de encomendas e clientes, relatórios completos e suporte prioritário."
     },
     "hero": {
       "title": "WCPOS Pro",
-      "subtitle": "Tudo o que existe no POS gratuito, mais terminais de pagamento, gestão da loja na caixa, relatórios de fecho do dia e suporte prioritário."
+      "subtitle": "Tudo o que existe no POS gratuito, mais terminais de pagamento, gestão da loja na caixa, relatórios completos e suporte prioritário."
     },
     "schema": {
       "name": "WCPOS Pro",
-      "description": "Plugin premium de ponto de venda para WooCommerce. Adiciona integração com terminais de pagamento, edição de stock e preços, gestão de encomendas e clientes, relatórios de fecho do dia, gateways de pagamento personalizados e suporte prioritário.",
+      "description": "Plugin premium de ponto de venda para WooCommerce. Adiciona integração com terminais de pagamento, edição de stock e preços, gestão de encomendas e clientes, relatórios completos, gateways de pagamento personalizados e suporte prioritário.",
       "offers": {
         "yearly": "Licença anual",
         "lifetime": "Licença vitalícia"
@@ -436,8 +439,8 @@
         "description": "Adicione e edite os detalhes dos clientes no ponto de venda, mantidos sincronizados com o WooCommerce."
       },
       "reports": {
-        "title": "Relatórios de Fecho do Dia",
-        "description": "Feche a caixa com resumos de fecho do dia de vendas, pagamentos e receitas."
+        "title": "Relatórios de Vários Dias, Caixas e Lojas",
+        "description": "Veja as vendas de dias anteriores e intervalos de datas, para cada caixa e cada loja."
       },
       "gateways": {
         "title": "Gateways de Pagamento Personalizados",
@@ -1696,7 +1699,7 @@
           "title": "Quer mais? Passe para Pro",
           "body": "Um plugin licenciado que adiciona pagamentos em terminal, reembolsos e controlo de stock sobre a mesma base.",
           "cardTitle": "Desbloqueie a caixa completa",
-          "cardBody": "Pagamentos, reembolsos, stock e preços, gestão de encomendas, relatórios de fim de dia, várias lojas e suporte prioritário no Discord.",
+          "cardBody": "Pagamentos, reembolsos, stock e preços, gestão de encomendas, relatórios completos, várias lojas e suporte prioritário no Discord.",
           "plansCta": "Ver planos Pro",
           "signInCta": "Iniciar sessão para transferir"
         }
