@@ -70,6 +70,25 @@ export function CopyAct1({
   const copy = useTranslations('home.story')
   return (
     <>
+      <p
+        className={cn(
+          'mx-auto mb-4 max-w-xl text-sm',
+          tone === 'onLight'
+            ? cn('font-medium text-[#2a1e10]', letterpress)
+            : toneStyles.onDark.body
+        )}
+      >
+        <span
+          className={cn(
+            'font-bold',
+            tone === 'onLight' ? 'text-wcpos-red' : 'text-red-400'
+          )}
+        >
+          {copy('a1.v2.label')}
+        </span>
+        <span aria-hidden="true"> · </span>
+        {copy('a1.v2.text')}
+      </p>
       <Kicker tone={tone} className={tone === 'onLight' ? letterpress : undefined}>
         {copy('a1.k')}
       </Kicker>

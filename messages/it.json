@@ -259,6 +259,10 @@
     "story": {
       "a1": {
         "k": "Punto vendita per WooCommerce",
+        "v2": {
+          "label": "Novità in 2.0",
+          "text": "Apri e chiudi la cassa, suddividi i pagamenti e consulta le vendite di oggi — gratis."
+        },
         "h": "Il tuo negozio WooCommerce, al banco.",
         "b": "WCPOS trasforma il tablet nel tuo registratore — stesso catalogo, stesso stock, stessi prezzi, anche offline.",
         "c1": "Prova la demo live",

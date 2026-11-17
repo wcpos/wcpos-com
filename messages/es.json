@@ -259,6 +259,10 @@
     "story": {
       "a1": {
         "k": "Punto de venta para WooCommerce",
+        "v2": {
+          "label": "Novedad en 2.0",
+          "text": "Abre y cierra tu caja, divide pagos y consulta las ventas de hoy — gratis."
+        },
         "h": "Tu tienda WooCommerce, en el mostrador.",
         "b": "WCPOS convierte la tableta en tu caja: el mismo catálogo, el mismo stock, los mismos precios, incluso sin conexión.",
         "c1": "Probar demo en vivo",

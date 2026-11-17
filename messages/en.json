@@ -259,6 +259,10 @@
     "story": {
       "a1": {
         "k": "Point of Sale for WooCommerce",
+        "v2": {
+          "label": "New in 2.0",
+          "text": "Open and close your register, split payments and see today's sales — free."
+        },
         "h": "Your WooCommerce store, at the counter.",
         "b": "WCPOS turns the tablet into your register — same catalog, same stock, same prices, even offline.",
         "c1": "Try Live Demo",

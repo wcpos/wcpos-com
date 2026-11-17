@@ -259,6 +259,10 @@
     "story": {
       "a1": {
         "k": "Ponto de venda para WooCommerce",
+        "v2": {
+          "label": "Novidade na 2.0",
+          "text": "Abra e feche a sua caixa, divida pagamentos e veja as vendas de hoje — grátis."
+        },
         "h": "A sua loja WooCommerce no balcão.",
         "b": "O WCPOS transforma o tablet na sua caixa — o mesmo catálogo, o mesmo stock, os mesmos preços, mesmo offline.",
         "c1": "Experimentar demonstração",
