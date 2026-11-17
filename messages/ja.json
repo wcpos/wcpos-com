@@ -55,7 +55,7 @@
     "title": "WCPOS",
     "subtitle": "WooCommerce向けの高速POS",
     "meta": {
-      "description": "WooCommerce向けの無料オープンソースPOS。オフライン販売、分割払い、レジの開始と締めがWCPOS 2.0ですべて無料。ウェブ、デスクトップ向けアプリ。iOS、Android向けアプリはBeta版。"
+      "description": "WooCommerce向けの無料オープンソースPOS。オフライン販売、分割払い、レジの開始と締めが2.0で無料。ウェブ、デスクトップ向けアプリ。iOS、Android向けアプリはBeta版。"
     },
     "problem": {
       "title": "WooCommerceストアと実店舗の運営が二重作業になるべきではありません",
@@ -1575,7 +1575,7 @@
   "downloads": {
     "meta": {
       "title": "WooCommerce用POSをダウンロード – Mac・Windows・Linux・Web",
-      "description": "WCPOSをダウンロード — 無料プラグインに加えて、デスクトップ、iOS、Android、ウェブアプリを入手できます。最新バージョンと最近のリリースノートを確認してください。"
+      "description": "WCPOSをダウンロード — 無料のWordPressプラグイン、ウェブアプリ、Mac・Windows・Linux向けデスクトップアプリ。iOS、Android向けアプリはBeta版です。"
     },
     "platforms": {
       "mac-arm": {

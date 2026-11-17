@@ -55,7 +55,7 @@
     "title": "WCPOS",
     "subtitle": "面向 WooCommerce 的快速销售点系统",
     "meta": {
-      "description": "面向 WooCommerce 的免费开源销售点系统。离线销售、拆分付款、开台和关台——在 WCPOS 2.0 中全部免费。提供网页和桌面应用；iOS 和 Android 应用为 Beta 版。"
+      "description": "面向 WooCommerce 的免费开源销售点系统。离线销售、拆分付款、开台和关台，在 2.0 中免费。提供网页和桌面应用；iOS 和 Android 应用为 Beta 版。"
     },
     "problem": {
       "title": "同时经营 WooCommerce 商店和实体店，不应该意味着双倍工作",
@@ -1575,7 +1575,7 @@
   "downloads": {
     "meta": {
       "title": "下载 WooCommerce 销售点系统 – Mac、Windows、Linux 和网页版",
-      "description": "下载 WCPOS——免费插件，以及桌面、iOS、Android 和网页应用。查看最新版本和近期发布说明。"
+      "description": "下载 WCPOS：免费的 WordPress 插件、网页应用，以及适用于 Mac、Windows 和 Linux 的桌面应用。iOS 和 Android 应用为 Beta 版。另附发布说明。"
     },
     "platforms": {
       "mac-arm": {

@@ -55,7 +55,7 @@
     "title": "WCPOS",
     "subtitle": "A fast point of sale for WooCommerce",
     "meta": {
-      "description": "Free, open-source point of sale for WooCommerce. Sell offline, split payments, and open and close your register — all free in WCPOS 2.0. Web and desktop apps; iOS and Android apps in beta."
+      "description": "Free, open-source WooCommerce POS. Sell offline, split payments, open and close the register, free in 2.0. Web and desktop apps; iOS and Android in beta."
     },
     "problem": {
       "title": "Running a WooCommerce store and a physical shop shouldn't mean double the work",
@@ -1575,7 +1575,7 @@
   "downloads": {
     "meta": {
       "title": "Download WooCommerce POS for Mac, Windows, Linux & Web",
-      "description": "Download WCPOS — the free plugin plus the desktop, iOS, Android and web apps. See the latest version and recent release notes."
+      "description": "Download WCPOS: the free WordPress plugin, the web app, and desktop apps for Mac, Windows and Linux. iOS and Android apps are in beta. Plus release notes."
     },
     "platforms": {
       "mac-arm": {

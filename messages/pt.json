@@ -55,7 +55,7 @@
     "title": "WCPOS",
     "subtitle": "Um ponto de venda rápido para WooCommerce",
     "meta": {
-      "description": "Ponto de venda gratuito e de código aberto para WooCommerce. Venda offline, divida pagamentos, abra e feche a sua caixa — tudo grátis no WCPOS 2.0. Aplicações para web e computador; aplicações para iOS e Android em beta."
+      "description": "Ponto de venda gratuito para WooCommerce. Venda offline, divida pagamentos, abra e feche a sua caixa. Apps web e para computador; iOS e Android em beta."
     },
     "problem": {
       "title": "Gerir uma loja WooCommerce e uma loja física não deve significar trabalho a dobrar",
@@ -1575,7 +1575,7 @@
   "downloads": {
     "meta": {
       "title": "Transferir o ponto de venda para WooCommerce – Mac, Windows, Linux e Web",
-      "description": "Transfira o WCPOS — o plugin gratuito, além das aplicações para computador, iOS, Android e web. Veja a versão mais recente e as notas de lançamento recentes."
+      "description": "Transfira o WCPOS: o plugin gratuito do WordPress, a aplicação web e aplicações de computador para Mac, Windows e Linux. Aplicações iOS e Android em beta."
     },
     "platforms": {
       "mac-arm": {
