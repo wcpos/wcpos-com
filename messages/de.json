@@ -55,7 +55,7 @@
     "title": "WCPOS",
     "subtitle": "Ein schneller Point of Sale für WooCommerce",
     "meta": {
-      "description": "Kostenloses Open-Source-Kassensystem für WooCommerce. Verkaufe offline, teile Zahlungen auf, öffne und schließe deine Kasse – alles kostenlos in WCPOS 2.0. Apps für Web und Desktop; iOS- und Android-Apps in der Beta."
+      "description": "Kostenloses Kassensystem für WooCommerce. Verkaufe offline, teile Zahlungen auf, öffne und schließe die Kasse. Web- und Desktop-Apps; iOS und Android in Beta."
     },
     "problem": {
       "title": "Ein WooCommerce-Shop und ein Ladengeschäft sollten nicht doppelte Arbeit bedeuten",
@@ -1575,7 +1575,7 @@
   "downloads": {
     "meta": {
       "title": "WooCommerce-Kassensystem herunterladen – Mac, Windows, Linux & Web",
-      "description": "Lade WCPOS herunter — das kostenlose Plugin plus die Desktop-, iOS-, Android- und Web-Apps. Sieh dir die neueste Version und aktuelle Versionshinweise an."
+      "description": "Lade WCPOS herunter: das kostenlose WordPress-Plugin, die Web-App und Desktop-Apps für Mac, Windows und Linux. iOS- und Android-Apps sind in der Beta."
     },
     "platforms": {
       "mac-arm": {

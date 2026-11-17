@@ -55,7 +55,7 @@
     "title": "WCPOS",
     "subtitle": "Een snel kassasysteem voor WooCommerce",
     "meta": {
-      "description": "Gratis, open-source kassasysteem voor WooCommerce. Verkoop offline, splits betalingen, open en sluit je kassa — allemaal gratis in WCPOS 2.0. Apps voor web en desktop; iOS- en Android-apps in bèta."
+      "description": "Gratis, open-source WooCommerce-kassa. Verkoop offline, splits betalingen, open en sluit de kassa, gratis in 2.0. Web- en desktopapps; iOS en Android in bèta."
     },
     "problem": {
       "title": "Een WooCommerce-winkel en een fysieke winkel beheren zou geen dubbel werk moeten betekenen",
@@ -1575,7 +1575,7 @@
   "downloads": {
     "meta": {
       "title": "Kassasysteem voor WooCommerce downloaden – Mac, Windows, Linux & web",
-      "description": "Download WCPOS — de gratis plugin plus de desktop-, iOS-, Android- en webapps. Bekijk de nieuwste versie en recente release-opmerkingen."
+      "description": "Download WCPOS: de gratis WordPress-plugin, de webapp en desktopapps voor Mac, Windows en Linux. iOS- en Android-apps zijn in bèta. Plus release-opmerkingen."
     },
     "platforms": {
       "mac-arm": {
