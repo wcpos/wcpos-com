@@ -196,7 +196,7 @@
       "fallback": "Veja os preços completos das opções Pro atuais. Sem taxas por caixa.",
       "free": {
         "title": "Gratuito",
-        "description": "Gratuito para sempre. Sem taxas de transação. Sem limites.",
+        "description": "Gratuito para sempre. Uma caixa, sem taxas de transação, sem limites de produtos ou pedidos.",
         "features": {
           "f1": "Sincronização WooCommerce",
           "f2": "Pesquisa e grelha de produtos",
@@ -478,7 +478,7 @@
       "title": "Perguntas Frequentes",
       "freePlugin": {
         "question": "O plugin gratuito é limitado?",
-        "answer": "Não. O plugin WCPOS gratuito é software GPL com todas as funcionalidades de ponto de venda — produtos, pedidos e clientes ilimitados, e sem taxas por transação. O Pro adiciona as ferramentas avançadas listadas acima."
+        "answer": "O plugin WCPOS gratuito é software GPL sem limites de produtos, pedidos ou clientes e sem taxas por transação; funciona com uma caixa, e mais caixas e as ferramentas listadas acima exigem o Pro."
       },
       "yearlyVsLifetime": {
         "question": "Qual é a diferença entre o Anual e o Vitalício?",

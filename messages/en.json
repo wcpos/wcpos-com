@@ -196,7 +196,7 @@
       "fallback": "See full pricing for current Pro options. No per-register fees.",
       "free": {
         "title": "Free",
-        "description": "Free forever. No transaction fees. No limits.",
+        "description": "Free forever. One register, no transaction fees, no caps on products or orders.",
         "features": {
           "f1": "WooCommerce sync",
           "f2": "Product search & grid",
@@ -478,7 +478,7 @@
       "title": "Frequently Asked Questions",
       "freePlugin": {
         "question": "Is the free plugin limited?",
-        "answer": "No. The free WCPOS plugin is GPL software with full point of sale features — unlimited products, orders, and customers, and no transaction fees. Pro adds the advanced tools listed above."
+        "answer": "The free WCPOS plugin is GPL software with no caps on products, orders or customers and no transaction fees; it runs one register, and more registers and the tools listed above need Pro."
       },
       "yearlyVsLifetime": {
         "question": "What's the difference between Yearly and Lifetime?",
