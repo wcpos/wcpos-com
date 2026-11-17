@@ -177,7 +177,10 @@ export default async function ProPage({
             subtitle={t('features.subtitle')}
             features={features}
           />
-          <div className="min-w-0 lg:sticky lg:top-24">
+          <div
+            className="min-w-0 order-first lg:order-none lg:sticky lg:top-24"
+            data-testid="pro-buy-box-column"
+          >
             <Suspense fallback={<BuyBoxSkeleton />}>
               <BuyBoxWithExperiment locale={locale} />
             </Suspense>
