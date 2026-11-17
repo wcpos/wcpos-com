@@ -92,6 +92,15 @@ describe('PricingTeaserSection', () => {
     ).toBeInTheDocument()
   })
 
+  it('lists the free register, split payment and report features in the fallback', () => {
+    renderWithIntl(<PricingTeaserSectionFallback />)
+
+    expect(screen.getByText('Open & close the register')).toBeInTheDocument()
+    expect(screen.getByText('Split payments')).toBeInTheDocument()
+    expect(screen.getByText("Today's sales report")).toBeInTheDocument()
+    expect(screen.queryByText('End-of-day reports')).not.toBeInTheDocument()
+  })
+
   it('links the CTA to the Pro page', async () => {
     renderWithIntl(await PricingTeaserSection())
 
@@ -121,6 +130,6 @@ describe('PricingTeaserSection', () => {
     expect(
       screen.getByText('Payment terminal integration')
     ).toBeInTheDocument()
-    expect(screen.getByText('End-of-day reports')).toBeInTheDocument()
+    expect(screen.getByText('Reports across days, registers & stores')).toBeInTheDocument()
   })
 })

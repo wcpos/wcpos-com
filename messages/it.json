@@ -186,8 +186,8 @@
           "description": "Correggi un prezzo errato mentre servi un cliente. Aggiorna lo stock senza uscire dal POS."
         },
         "f6": {
-          "title": "Report di fine giornata",
-          "description": "Genera report di vendita per ogni turno o giornata. Chiudi la cassa rapidamente e monitora le prestazioni."
+          "title": "Report su più giorni, casse e negozi",
+          "description": "Consulta le vendite di giorni precedenti e intervalli di date, per ogni cassa e ogni negozio."
         }
       }
     },
@@ -204,7 +204,10 @@
           "f4": "Modalità offline",
           "f5": "Stampa ricevute",
           "f6": "Multi-valuta",
-          "f7": "Prodotti illimitati"
+          "f7": "Prodotti illimitati",
+          "f8": "Apri e chiudi la cassa",
+          "f9": "Pagamenti suddivisi",
+          "f10": "Report delle vendite di oggi"
         }
       },
       "pro": {
@@ -215,7 +218,7 @@
           "p2": "Modifica stock e prezzi nel POS",
           "p3": "Cronologia e gestione ordini",
           "p4": "Gestione clienti",
-          "p5": "Report di fine giornata",
+          "p5": "Report su più giorni, casse e negozi",
           "p6": "Gateway di pagamento personalizzati",
           "p7": "Supporto prioritario"
         }
@@ -402,15 +405,15 @@
   "pro": {
     "metadata": {
       "title": "Funzionalità e prezzi Pro – Punto vendita per WooCommerce",
-      "description": "Potenzia WCPOS con Pro: pagamenti tramite terminale, modifica di stock e prezzi, gestione di ordini e clienti, report di fine giornata e supporto prioritario."
+      "description": "Potenzia WCPOS con Pro: pagamenti tramite terminale, modifica di stock e prezzi, gestione di ordini e clienti, report completi e supporto prioritario."
     },
     "hero": {
       "title": "WCPOS Pro",
-      "subtitle": "Tutto ciò che offre il POS gratuito, più terminali di pagamento, gestione del negozio dalla cassa, report di fine giornata e supporto prioritario."
+      "subtitle": "Tutto ciò che offre il POS gratuito, più terminali di pagamento, gestione del negozio dalla cassa, report completi e supporto prioritario."
     },
     "schema": {
       "name": "WCPOS Pro",
-      "description": "Plugin premium per punto vendita per WooCommerce. Aggiunge integrazione con terminali di pagamento, modifica di stock e prezzi, gestione di ordini e clienti, report di fine giornata, gateway di pagamento personalizzati e supporto prioritario.",
+      "description": "Plugin premium per punto vendita per WooCommerce. Aggiunge integrazione con terminali di pagamento, modifica di stock e prezzi, gestione di ordini e clienti, report completi, gateway di pagamento personalizzati e supporto prioritario.",
       "offers": {
         "yearly": "Licenza annuale",
         "lifetime": "Licenza a vita"
@@ -436,8 +439,8 @@
         "description": "Aggiungi e modifica i dati dei clienti al punto vendita, mantenendoli sincronizzati con WooCommerce."
       },
       "reports": {
-        "title": "Report di fine giornata",
-        "description": "Chiudi la cassa con riepiloghi di fine giornata di vendite, pagamenti e incassi."
+        "title": "Report su più giorni, casse e negozi",
+        "description": "Consulta le vendite di giorni precedenti e intervalli di date, per ogni cassa e ogni negozio."
       },
       "gateways": {
         "title": "Gateway di pagamento personalizzati",
@@ -1696,7 +1699,7 @@
           "title": "Vuoi di più? Passa a Pro",
           "body": "Un plugin con licenza che aggiunge pagamenti con terminale, rimborsi e controllo dello stock sulla stessa base.",
           "cardTitle": "Sblocca la cassa completa",
-          "cardBody": "Pagamenti, rimborsi, stock e prezzi, gestione ordini, report di fine giornata, multi-store e supporto Discord prioritario.",
+          "cardBody": "Pagamenti, rimborsi, stock e prezzi, gestione ordini, report completi, multi-store e supporto Discord prioritario.",
           "plansCta": "Vedi i piani Pro",
           "signInCta": "Accedi per scaricare"
         }
