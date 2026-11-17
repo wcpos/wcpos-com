@@ -2006,7 +2006,7 @@
           },
           "offline": {
             "label": "Offline",
-            "wcpos": "Offline-first: consultar produtos, montar carrinhos e realizar vendas em dinheiro offline; os leitores de cartão ligados ao POS e os gateways online precisam de ligação",
+            "wcpos": "Offline-first: consultar produtos, montar carrinhos e realizar vendas em dinheiro ou num terminal de pagamento separado offline; os leitores de cartão ligados ao POS e os gateways online precisam de ligação",
             "oliver": "Afirma colocar transações offline em fila, sincronizadas ao restabelecer a ligação"
           },
           "kiosk": {
@@ -2146,7 +2146,7 @@
         "title": "Perguntas frequentes",
         "offline": {
           "question": "O WCPOS funciona offline?",
-          "answer": "O WCPOS é offline-first: produtos, clientes e carrinhos são guardados localmente, pelo que pode consultar o catálogo, montar carrinhos e aceitar pagamentos em dinheiro sem ligação, e tudo se sincroniza quando esta regressa. Os leitores de cartão ligados ao POS, os gateways de pagamento online e a validação de cupões precisam de ligação. O Oliver afirma colocar as transações offline em fila e sincronizá-las ao restabelecer a ligação."
+          "answer": "O WCPOS é offline-first: produtos, clientes e carrinhos são guardados localmente, pelo que pode consultar o catálogo, montar carrinhos e concluir vendas em dinheiro ou num terminal de pagamento separado sem ligação, e tudo se sincroniza quando esta regressa. Os leitores de cartão ligados ao POS, os gateways de pagamento online e a validação de cupões precisam de ligação. O Oliver afirma colocar as transações offline em fila e sincronizá-las ao restabelecer a ligação."
         },
         "fees": {
           "question": "Algum dos dois POS cobra comissões por transação?",
@@ -2231,7 +2231,7 @@
           },
           "offline": {
             "label": "Offline",
-            "wcpos": "Offline-first: consulte produtos, prepare carrinhos e realize vendas em dinheiro sem ligação; os leitores de cartão ligados ao POS e os gateways online precisam de ligação",
+            "wcpos": "Offline-first: consulte produtos, prepare carrinhos e realize vendas em dinheiro ou num terminal de pagamento separado sem ligação; os leitores de cartão ligados ao POS e os gateways online precisam de ligação",
             "woocommerce": "Sem modo offline — requer uma ligação ativa à Internet"
           },
           "multiLocation": {
@@ -2307,7 +2307,7 @@
         },
         "offline": {
           "question": "O POS do WooCommerce funciona offline?",
-          "answer": "Não. O WooCommerce diz que o seu POS precisa de uma ligação ativa à Internet para sincronizar produtos, criar encomendas e processar pagamentos. O WCPOS é offline-first: produtos, clientes e carrinhos são guardados localmente, pelo que pode consultar o catálogo, montar carrinhos e aceitar pagamentos em dinheiro sem ligação, e tudo se sincroniza quando esta regressa. Os leitores de cartão ligados ao POS, os gateways de pagamento online e a validação de cupões precisam de ligação."
+          "answer": "Não. O WooCommerce diz que o seu POS precisa de uma ligação ativa à Internet para sincronizar produtos, criar encomendas e processar pagamentos. O WCPOS é offline-first: produtos, clientes e carrinhos são guardados localmente, pelo que pode consultar o catálogo, montar carrinhos e concluir vendas em dinheiro ou num terminal de pagamento separado sem ligação, e tudo se sincroniza quando esta regressa. Os leitores de cartão ligados ao POS, os gateways de pagamento online e a validação de cupões precisam de ligação."
         },
         "devices": {
           "question": "Em que dispositivos funciona o POS do WooCommerce?",
@@ -2384,7 +2384,7 @@
           },
           "offline": {
             "label": "Offline",
-            "wcpos": "Consultar produtos, montar carrinhos e realizar vendas em dinheiro offline; os leitores de cartão ligados ao POS e os gateways online precisam de ligação",
+            "wcpos": "Consultar produtos, montar carrinhos e realizar vendas em dinheiro ou num terminal de pagamento separado offline; os leitores de cartão ligados ao POS e os gateways online precisam de ligação",
             "square": "Pagamentos com cartão offline, carregados no prazo de 72 horas; o vendedor é responsável pelos que expiram, são recusados ou contestados"
           },
           "multiLocation": {
@@ -2461,7 +2461,7 @@
         },
         "offline": {
           "question": "O Square POS funciona offline?",
-          "answer": "O POS do Square pode aceitar pagamentos com cartão offline. Tem de voltar a ligar-se e carregá-los no prazo de 72 horas após o início da sessão offline e é responsável por quaisquer pagamentos aceites offline que expirem, sejam recusados ou contestados. EBT/SNAP, Afterpay, Cash App Pay, Square Gift Cards, Tap to Pay no iPhone e Android e números de cartão introduzidos manualmente não estão disponíveis offline. O WCPOS guarda produtos, clientes e carrinhos localmente, pelo que pode consultar o catálogo, montar carrinhos e aceitar pagamentos em dinheiro sem ligação; essas vendas são sincronizadas quando a ligação regressa. Os leitores de cartão ligados ao POS e os gateways de pagamento online precisam de ligação."
+          "answer": "O POS do Square pode aceitar pagamentos com cartão offline. Tem de voltar a ligar-se e carregá-los no prazo de 72 horas após o início da sessão offline e é responsável por quaisquer pagamentos aceites offline que expirem, sejam recusados ou contestados. EBT/SNAP, Afterpay, Cash App Pay, Square Gift Cards, Tap to Pay no iPhone e Android e números de cartão introduzidos manualmente não estão disponíveis offline. O WCPOS guarda produtos, clientes e carrinhos localmente, pelo que pode consultar o catálogo, montar carrinhos e concluir vendas em dinheiro ou num terminal de pagamento separado sem ligação; essas vendas são sincronizadas quando a ligação regressa. Os leitores de cartão ligados ao POS e os gateways de pagamento online precisam de ligação."
         },
         "locations": {
           "question": "O Square for WooCommerce consegue sincronizar mais de uma localização?",
@@ -2519,7 +2519,7 @@
           },
           "offline": {
             "label": "Offline",
-            "wcpos": "Consultar produtos, montar carrinhos e realizar vendas em dinheiro offline; os leitores de cartão ligados ao POS e os gateways online precisam de ligação",
+            "wcpos": "Consultar produtos, montar carrinhos e realizar vendas em dinheiro ou num terminal de pagamento separado offline; os leitores de cartão ligados ao POS e os gateways online precisam de ligação",
             "jovvie": "Não estabelecido na nossa pesquisa — pergunte à BizSwoop"
           },
           "availability": {
@@ -2570,7 +2570,7 @@
         },
         "offline": {
           "question": "O Jovvie funciona offline?",
-          "answer": "A nossa pesquisa não estabeleceu se o Jovvie funciona sem ligação à Internet, por isso pergunte à BizSwoop antes de depender disso. O WCPOS guarda produtos, clientes e carrinhos localmente, pelo que pode consultar o catálogo, montar carrinhos e aceitar pagamentos em dinheiro sem ligação; essas vendas são sincronizadas quando a ligação regressa. Os leitores de cartão ligados ao POS e os gateways de pagamento online precisam de ligação."
+          "answer": "A nossa pesquisa não estabeleceu se o Jovvie funciona sem ligação à Internet, por isso pergunte à BizSwoop antes de depender disso. O WCPOS guarda produtos, clientes e carrinhos localmente, pelo que pode consultar o catálogo, montar carrinhos e concluir vendas em dinheiro ou num terminal de pagamento separado sem ligação; essas vendas são sincronizadas quando a ligação regressa. Os leitores de cartão ligados ao POS e os gateways de pagamento online precisam de ligação."
         },
         "stripe": {
           "question": "Posso usar um leitor de cartões Stripe com o WCPOS?",
@@ -2627,7 +2627,7 @@
           },
           "offline": {
             "label": "Offline",
-            "wcpos": "Consultar produtos, montar carrinhos e realizar vendas em dinheiro offline; os leitores de cartão ligados ao POS e os gateways online precisam de ligação",
+            "wcpos": "Consultar produtos, montar carrinhos e realizar vendas em dinheiro ou num terminal de pagamento separado offline; os leitores de cartão ligados ao POS e os gateways online precisam de ligação",
             "vitepos": "Afirma que continua a processar encomendas offline e as sincroniza ao restabelecer a ligação; a sua página no WordPress.org assinala as encomendas offline como Pro"
           },
           "restaurant": {
@@ -2696,7 +2696,7 @@
         },
         "offline": {
           "question": "O Vitepos funciona offline?",
-          "answer": "O Vitepos afirma que sim: as suas páginas dizem que armazena dados localmente, continua a processar encomendas sem ligação à Internet e as sincroniza com o WooCommerce quando a ligação regressa. A sua página no WordPress.org assinala as encomendas offline como uma funcionalidade Pro. WCPOS guarda produtos, clientes e carrinhos localmente, pelo que pode consultar o catálogo, montar carrinhos e aceitar pagamentos em dinheiro sem ligação; essas vendas são sincronizadas quando a ligação regressa. Os leitores de cartão ligados ao POS e os gateways de pagamento online precisam de ligação."
+          "answer": "O Vitepos afirma que sim: as suas páginas dizem que armazena dados localmente, continua a processar encomendas sem ligação à Internet e as sincroniza com o WooCommerce quando a ligação regressa. A sua página no WordPress.org assinala as encomendas offline como uma funcionalidade Pro. WCPOS guarda produtos, clientes e carrinhos localmente, pelo que pode consultar o catálogo, montar carrinhos e concluir vendas em dinheiro ou num terminal de pagamento separado sem ligação; essas vendas são sincronizadas quando a ligação regressa. Os leitores de cartão ligados ao POS e os gateways de pagamento online precisam de ligação."
         },
         "restaurant": {
           "question": "O WCPOS tem modo de restaurante?",
@@ -2774,7 +2774,7 @@
           },
           "offline": {
             "label": "Offline",
-            "wcpos": "Consultar produtos, montar carrinhos e realizar vendas em dinheiro offline; os leitores de cartão ligados ao POS e os gateways online precisam de ligação",
+            "wcpos": "Consultar produtos, montar carrinhos e realizar vendas em dinheiro ou num terminal de pagamento separado offline; os leitores de cartão ligados ao POS e os gateways online precisam de ligação",
             "yith": "Sem modo offline, segundo a sua página de produto"
           },
           "barcode": {
@@ -2838,7 +2838,7 @@
         },
         "offline": {
           "question": "O YITH Point of Sale funciona offline?",
-          "answer": "Não. As perguntas frequentes na sua página de produto dizem que o plugin não inclui uma funcionalidade offline, embora possa configurá-lo num servidor local. WCPOS guarda produtos, clientes e carrinhos localmente, pelo que pode consultar o catálogo, montar carrinhos e aceitar pagamentos em dinheiro sem ligação; essas vendas são sincronizadas quando a ligação regressa. Os leitores de cartão ligados ao POS e os gateways de pagamento online precisam de ligação."
+          "answer": "Não. As perguntas frequentes na sua página de produto dizem que o plugin não inclui uma funcionalidade offline, embora possa configurá-lo num servidor local. WCPOS guarda produtos, clientes e carrinhos localmente, pelo que pode consultar o catálogo, montar carrinhos e concluir vendas em dinheiro ou num terminal de pagamento separado sem ligação; essas vendas são sincronizadas quando a ligação regressa. Os leitores de cartão ligados ao POS e os gateways de pagamento online precisam de ligação."
         },
         "terminals": {
           "question": "Posso ligar um terminal de cartão ao YITH Point of Sale?",
@@ -2924,7 +2924,7 @@
           },
           "offline": {
             "label": "Offline",
-            "wcpos": "Consultar produtos, montar carrinhos e realizar vendas em dinheiro offline; os leitores de cartão ligados ao POS e os gateways online precisam de ligação",
+            "wcpos": "Consultar produtos, montar carrinhos e realizar vendas em dinheiro ou num terminal de pagamento separado offline; os leitores de cartão ligados ao POS e os gateways online precisam de ligação",
             "foosales": "Afirma que as suas aplicações continuam a funcionar offline e sincronizam novas encomendas, cancelamentos e reembolsos quando a ligação regressa; não é possível criar ou editar clientes offline"
           },
           "devices": {
@@ -2984,7 +2984,7 @@
         },
         "offline": {
           "question": "O FooSales funciona offline?",
-          "answer": "O FooSales afirma que sim: as suas aplicações mudam para o modo offline quando a ligação falha, a maior parte do POS continua a funcionar, e novas encomendas, encomendas canceladas e reembolsos ficam guardados no dispositivo e são sincronizados com o WooCommerce quando regressa a ligação. O seu centro de ajuda diz que os clientes não podem ser criados nem alterados offline e que os valores de stock não podem ser modificados; a sua página de pagamentos diz que os cupões WooCommerce exigem ligação à Internet. O WCPOS guarda produtos, clientes e carrinhos localmente, pelo que pode consultar o catálogo, montar carrinhos e aceitar pagamentos em dinheiro sem ligação; essas vendas são sincronizadas quando a ligação regressa. Os leitores de cartão ligados ao POS e os gateways de pagamento online precisam de ligação."
+          "answer": "O FooSales afirma que sim: as suas aplicações mudam para o modo offline quando a ligação falha, a maior parte do POS continua a funcionar, e novas encomendas, encomendas canceladas e reembolsos ficam guardados no dispositivo e são sincronizados com o WooCommerce quando regressa a ligação. O seu centro de ajuda diz que os clientes não podem ser criados nem alterados offline e que os valores de stock não podem ser modificados; a sua página de pagamentos diz que os cupões WooCommerce exigem ligação à Internet. O WCPOS guarda produtos, clientes e carrinhos localmente, pelo que pode consultar o catálogo, montar carrinhos e concluir vendas em dinheiro ou num terminal de pagamento separado sem ligação; essas vendas são sincronizadas quando a ligação regressa. Os leitores de cartão ligados ao POS e os gateways de pagamento online precisam de ligação."
         },
         "terminals": {
           "question": "Que terminais de cartão suportam o FooSales e o WCPOS?",

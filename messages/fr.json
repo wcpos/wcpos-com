@@ -2006,7 +2006,7 @@
           },
           "offline": {
             "label": "Hors ligne",
-            "wcpos": "Hors ligne d'abord : parcourez les produits, composez des paniers et réalisez des ventes en espèces sans connexion ; les lecteurs de carte connectés et les passerelles en ligne nécessitent une connexion",
+            "wcpos": "Hors ligne d'abord : parcourez les produits, composez des paniers et réalisez des ventes en espèces ou sur un terminal de paiement séparé sans connexion ; les lecteurs de carte connectés et les passerelles en ligne nécessitent une connexion",
             "oliver": "Annonce des transactions hors ligne mises en file d'attente, synchronisées à la reconnexion"
           },
           "kiosk": {
@@ -2146,7 +2146,7 @@
         "title": "Questions fréquentes",
         "offline": {
           "question": "WCPOS fonctionne-t-il hors ligne ?",
-          "answer": "WCPOS est conçu hors ligne d'abord : produits, clients et paniers sont stockés localement, vous pouvez donc parcourir le catalogue, composer des paniers et accepter des paiements en espèces sans connexion, et tout se synchronise à son retour. Les lecteurs de carte connectés, les passerelles de paiement en ligne et la validation des codes promo nécessitent une connexion. Oliver annonce une mise en file d'attente des transactions hors ligne avec synchronisation à la reconnexion."
+          "answer": "WCPOS est conçu hors ligne d'abord : produits, clients et paniers sont stockés localement, vous pouvez donc parcourir le catalogue, composer des paniers et finaliser des ventes en espèces ou sur un terminal de paiement séparé sans connexion, et tout se synchronise à son retour. Les lecteurs de carte connectés, les passerelles de paiement en ligne et la validation des codes promo nécessitent une connexion. Oliver annonce une mise en file d'attente des transactions hors ligne avec synchronisation à la reconnexion."
         },
         "fees": {
           "question": "L'un des deux POS facture-t-il des frais de transaction ?",
@@ -2231,7 +2231,7 @@
           },
           "offline": {
             "label": "Hors ligne",
-            "wcpos": "Conçu hors ligne d'abord : parcourir les produits, préparer des paniers et réaliser des ventes en espèces hors ligne ; les lecteurs de carte connectés et les passerelles en ligne nécessitent une connexion",
+            "wcpos": "Conçu hors ligne d'abord : parcourir les produits, préparer des paniers et réaliser des ventes en espèces ou sur un terminal de paiement séparé hors ligne ; les lecteurs de carte connectés et les passerelles en ligne nécessitent une connexion",
             "woocommerce": "Aucun mode hors ligne — nécessite une connexion Internet active"
           },
           "multiLocation": {
@@ -2307,7 +2307,7 @@
         },
         "offline": {
           "question": "Le POS de WooCommerce fonctionne-t-il hors ligne ?",
-          "answer": "Non. WooCommerce indique que son POS a besoin d'une connexion Internet active pour synchroniser les produits, créer des commandes et traiter les paiements. WCPOS est conçu hors ligne d'abord : produits, clients et paniers sont stockés localement, vous pouvez donc parcourir le catalogue, composer des paniers et accepter des paiements en espèces sans connexion, et tout se synchronise à son retour. Les lecteurs de carte connectés, les passerelles de paiement en ligne et la validation des codes promo nécessitent une connexion."
+          "answer": "Non. WooCommerce indique que son POS a besoin d'une connexion Internet active pour synchroniser les produits, créer des commandes et traiter les paiements. WCPOS est conçu hors ligne d'abord : produits, clients et paniers sont stockés localement, vous pouvez donc parcourir le catalogue, composer des paniers et finaliser des ventes en espèces ou sur un terminal de paiement séparé sans connexion, et tout se synchronise à son retour. Les lecteurs de carte connectés, les passerelles de paiement en ligne et la validation des codes promo nécessitent une connexion."
         },
         "devices": {
           "question": "Sur quels appareils le POS de WooCommerce fonctionne-t-il ?",
@@ -2384,7 +2384,7 @@
           },
           "offline": {
             "label": "Hors ligne",
-            "wcpos": "Parcourir les produits, composer des paniers et réaliser des ventes en espèces hors ligne ; les lecteurs de carte connectés et les passerelles en ligne nécessitent une connexion",
+            "wcpos": "Parcourir les produits, composer des paniers et réaliser des ventes en espèces ou sur un terminal de paiement séparé hors ligne ; les lecteurs de carte connectés et les passerelles en ligne nécessitent une connexion",
             "square": "Paiements par carte hors ligne, à transmettre dans les 72 heures ; le vendeur est responsable de ceux qui expirent, sont refusés ou contestés"
           },
           "multiLocation": {
@@ -2461,7 +2461,7 @@
         },
         "offline": {
           "question": "Square POS fonctionne-t-il hors ligne ?",
-          "answer": "Le POS de Square peut accepter des paiements par carte hors ligne. Vous devez vous reconnecter et les transmettre dans les 72 heures suivant le début de la session hors ligne ; vous êtes responsable de tous les paiements acceptés hors ligne qui expirent, sont refusés ou contestés. EBT/SNAP, Afterpay, Cash App Pay, Square Gift Cards, Tap to Pay sur iPhone et Android et les numéros de carte saisis manuellement ne sont pas disponibles hors ligne. WCPOS stocke localement produits, clients et paniers, afin que vous puissiez parcourir le catalogue, composer des paniers et accepter des paiements en espèces sans connexion ; ces ventes se synchronisent au retour de la connexion. Les lecteurs de carte connectés et les passerelles de paiement en ligne nécessitent une connexion."
+          "answer": "Le POS de Square peut accepter des paiements par carte hors ligne. Vous devez vous reconnecter et les transmettre dans les 72 heures suivant le début de la session hors ligne ; vous êtes responsable de tous les paiements acceptés hors ligne qui expirent, sont refusés ou contestés. EBT/SNAP, Afterpay, Cash App Pay, Square Gift Cards, Tap to Pay sur iPhone et Android et les numéros de carte saisis manuellement ne sont pas disponibles hors ligne. WCPOS stocke localement produits, clients et paniers, afin que vous puissiez parcourir le catalogue, composer des paniers et finaliser des ventes en espèces ou sur un terminal de paiement séparé sans connexion ; ces ventes se synchronisent au retour de la connexion. Les lecteurs de carte connectés et les passerelles de paiement en ligne nécessitent une connexion."
         },
         "locations": {
           "question": "Square for WooCommerce peut-il synchroniser plusieurs établissements ?",
@@ -2519,7 +2519,7 @@
           },
           "offline": {
             "label": "Hors ligne",
-            "wcpos": "Parcourir les produits, composer des paniers et réaliser des ventes en espèces hors ligne ; les lecteurs de carte connectés et les passerelles en ligne nécessitent une connexion",
+            "wcpos": "Parcourir les produits, composer des paniers et réaliser des ventes en espèces ou sur un terminal de paiement séparé hors ligne ; les lecteurs de carte connectés et les passerelles en ligne nécessitent une connexion",
             "jovvie": "Non établi par nos recherches — demandez à BizSwoop"
           },
           "availability": {
@@ -2570,7 +2570,7 @@
         },
         "offline": {
           "question": "Jovvie fonctionne-t-il hors ligne ?",
-          "answer": "Nos recherches n’ont pas établi si Jovvie fonctionne sans connexion Internet ; demandez donc à BizSwoop avant de compter dessus. WCPOS stocke localement produits, clients et paniers, afin que vous puissiez parcourir le catalogue, composer des paniers et accepter des paiements en espèces sans connexion ; ces ventes se synchronisent au retour de la connexion. Les lecteurs de carte connectés et les passerelles de paiement en ligne nécessitent une connexion."
+          "answer": "Nos recherches n’ont pas établi si Jovvie fonctionne sans connexion Internet ; demandez donc à BizSwoop avant de compter dessus. WCPOS stocke localement produits, clients et paniers, afin que vous puissiez parcourir le catalogue, composer des paniers et finaliser des ventes en espèces ou sur un terminal de paiement séparé sans connexion ; ces ventes se synchronisent au retour de la connexion. Les lecteurs de carte connectés et les passerelles de paiement en ligne nécessitent une connexion."
         },
         "stripe": {
           "question": "Puis-je utiliser un lecteur de carte Stripe avec WCPOS ?",
@@ -2627,7 +2627,7 @@
           },
           "offline": {
             "label": "Hors ligne",
-            "wcpos": "Parcourir les produits, composer des paniers et réaliser des ventes en espèces hors ligne ; les lecteurs de carte connectés et les passerelles en ligne nécessitent une connexion",
+            "wcpos": "Parcourir les produits, composer des paniers et réaliser des ventes en espèces ou sur un terminal de paiement séparé hors ligne ; les lecteurs de carte connectés et les passerelles en ligne nécessitent une connexion",
             "vitepos": "Indique continuer à traiter les commandes hors ligne et les synchroniser au retour de la connexion ; sa fiche WordPress.org indique que les commandes hors ligne sont réservées à Pro"
           },
           "restaurant": {
@@ -2696,7 +2696,7 @@
         },
         "offline": {
           "question": "Vitepos fonctionne-t-il hors ligne ?",
-          "answer": "Vitepos indique que oui : selon ses pages, il stocke les données localement, continue à traiter les commandes sans connexion Internet et les synchronise avec WooCommerce au retour de la connexion. Sa fiche WordPress.org indique que les commandes hors ligne sont une fonctionnalité Pro. WCPOS stocke localement produits, clients et paniers, afin que vous puissiez parcourir le catalogue, composer des paniers et accepter des paiements en espèces sans connexion ; ces ventes se synchronisent au retour de la connexion. Les lecteurs de carte connectés et les passerelles de paiement en ligne nécessitent une connexion."
+          "answer": "Vitepos indique que oui : selon ses pages, il stocke les données localement, continue à traiter les commandes sans connexion Internet et les synchronise avec WooCommerce au retour de la connexion. Sa fiche WordPress.org indique que les commandes hors ligne sont une fonctionnalité Pro. WCPOS stocke localement produits, clients et paniers, afin que vous puissiez parcourir le catalogue, composer des paniers et finaliser des ventes en espèces ou sur un terminal de paiement séparé sans connexion ; ces ventes se synchronisent au retour de la connexion. Les lecteurs de carte connectés et les passerelles de paiement en ligne nécessitent une connexion."
         },
         "restaurant": {
           "question": "WCPOS dispose-t-il d’un mode restaurant ?",
@@ -2774,7 +2774,7 @@
           },
           "offline": {
             "label": "Hors ligne",
-            "wcpos": "Parcourir les produits, composer des paniers et réaliser des ventes en espèces hors ligne ; les lecteurs de carte connectés et les passerelles en ligne nécessitent une connexion",
+            "wcpos": "Parcourir les produits, composer des paniers et réaliser des ventes en espèces ou sur un terminal de paiement séparé hors ligne ; les lecteurs de carte connectés et les passerelles en ligne nécessitent une connexion",
             "yith": "Pas de mode hors ligne, selon sa page produit"
           },
           "barcode": {
@@ -2838,7 +2838,7 @@
         },
         "offline": {
           "question": "YITH Point of Sale fonctionne-t-il hors ligne ?",
-          "answer": "Non. La FAQ de sa page produit indique que l’extension ne comprend pas de fonction hors ligne, même si vous pouvez l’installer sur un serveur local. WCPOS stocke localement produits, clients et paniers, afin que vous puissiez parcourir le catalogue, composer des paniers et accepter des paiements en espèces sans connexion ; ces ventes se synchronisent au retour de la connexion. Les lecteurs de carte connectés et les passerelles de paiement en ligne nécessitent une connexion."
+          "answer": "Non. La FAQ de sa page produit indique que l’extension ne comprend pas de fonction hors ligne, même si vous pouvez l’installer sur un serveur local. WCPOS stocke localement produits, clients et paniers, afin que vous puissiez parcourir le catalogue, composer des paniers et finaliser des ventes en espèces ou sur un terminal de paiement séparé sans connexion ; ces ventes se synchronisent au retour de la connexion. Les lecteurs de carte connectés et les passerelles de paiement en ligne nécessitent une connexion."
         },
         "terminals": {
           "question": "Puis-je connecter un terminal de carte à YITH Point of Sale ?",
@@ -2924,7 +2924,7 @@
           },
           "offline": {
             "label": "Hors ligne",
-            "wcpos": "Parcourir les produits, composer des paniers et réaliser des ventes en espèces hors ligne ; les lecteurs de carte connectés et les passerelles en ligne nécessitent une connexion",
+            "wcpos": "Parcourir les produits, composer des paniers et réaliser des ventes en espèces ou sur un terminal de paiement séparé hors ligne ; les lecteurs de carte connectés et les passerelles en ligne nécessitent une connexion",
             "foosales": "Indique que ses applications continuent de fonctionner hors ligne et synchronisent nouvelles commandes, annulations et remboursements au retour de la connexion ; impossible de créer ou modifier des clients hors ligne"
           },
           "devices": {
@@ -2984,7 +2984,7 @@
         },
         "offline": {
           "question": "FooSales fonctionne-t-il hors ligne ?",
-          "answer": "FooSales indique que oui : ses applications passent en mode hors ligne quand la connexion est perdue, la majeure partie du POS continue de fonctionner, et les nouvelles commandes, commandes annulées et remboursements sont stockés sur l'appareil puis synchronisés avec WooCommerce au retour de la connexion. Son centre d'aide indique qu'il est impossible de créer ou modifier des clients hors ligne ou de changer les valeurs de stock, et sa page sur les paiements indique que les codes promo WooCommerce nécessitent une connexion Internet. WCPOS stocke localement produits, clients et paniers, afin que vous puissiez parcourir le catalogue, composer des paniers et accepter des paiements en espèces sans connexion ; ces ventes se synchronisent au retour de la connexion. Les lecteurs de carte connectés et les passerelles de paiement en ligne nécessitent une connexion."
+          "answer": "FooSales indique que oui : ses applications passent en mode hors ligne quand la connexion est perdue, la majeure partie du POS continue de fonctionner, et les nouvelles commandes, commandes annulées et remboursements sont stockés sur l'appareil puis synchronisés avec WooCommerce au retour de la connexion. Son centre d'aide indique qu'il est impossible de créer ou modifier des clients hors ligne ou de changer les valeurs de stock, et sa page sur les paiements indique que les codes promo WooCommerce nécessitent une connexion Internet. WCPOS stocke localement produits, clients et paniers, afin que vous puissiez parcourir le catalogue, composer des paniers et finaliser des ventes en espèces ou sur un terminal de paiement séparé sans connexion ; ces ventes se synchronisent au retour de la connexion. Les lecteurs de carte connectés et les passerelles de paiement en ligne nécessitent une connexion."
         },
         "terminals": {
           "question": "Quels terminaux de carte FooSales et WCPOS prennent-ils en charge ?",

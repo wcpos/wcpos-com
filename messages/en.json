@@ -2006,7 +2006,7 @@
           },
           "offline": {
             "label": "Offline",
-            "wcpos": "Offline-first: browse products, build carts and take cash sales offline; connected card readers and online gateways need a connection",
+            "wcpos": "Offline-first: browse products, build carts and complete cash sales or sales on a separate card terminal offline; connected card readers and online gateways need a connection",
             "oliver": "Claims queued offline transactions, synced on reconnect"
           },
           "kiosk": {
@@ -2146,7 +2146,7 @@
         "title": "Frequently asked questions",
         "offline": {
           "question": "Does WCPOS work offline?",
-          "answer": "WCPOS is offline-first: products, customers, and carts are stored locally, so you can browse the catalog, build carts and take cash payments without a connection, and everything syncs when it returns. Connected card readers, online payment gateways and coupon validation need a connection. Oliver claims offline transaction queueing with sync on reconnect."
+          "answer": "WCPOS is offline-first: products, customers, and carts are stored locally, so you can browse the catalog, build carts and complete cash sales or sales on a separate card terminal without a connection, and everything syncs when it returns. Connected card readers, online payment gateways and coupon validation need a connection. Oliver claims offline transaction queueing with sync on reconnect."
         },
         "fees": {
           "question": "Does either POS charge transaction fees?",
@@ -2231,7 +2231,7 @@
           },
           "offline": {
             "label": "Offline",
-            "wcpos": "Offline-first: browse products, build carts and take cash sales offline; connected card readers and online gateways need a connection",
+            "wcpos": "Offline-first: browse products, build carts and complete cash sales or sales on a separate card terminal offline; connected card readers and online gateways need a connection",
             "woocommerce": "No offline mode — needs an active internet connection"
           },
           "multiLocation": {
@@ -2307,7 +2307,7 @@
         },
         "offline": {
           "question": "Does WooCommerce's POS work offline?",
-          "answer": "No. WooCommerce says its POS needs an active internet connection to sync products, create orders and process payments. WCPOS is offline-first: products, customers, and carts are stored locally, so you can browse the catalog, build carts and take cash payments without a connection, and everything syncs when it returns. Connected card readers, online payment gateways and coupon validation need a connection."
+          "answer": "No. WooCommerce says its POS needs an active internet connection to sync products, create orders and process payments. WCPOS is offline-first: products, customers, and carts are stored locally, so you can browse the catalog, build carts and complete cash sales or sales on a separate card terminal without a connection, and everything syncs when it returns. Connected card readers, online payment gateways and coupon validation need a connection."
         },
         "devices": {
           "question": "What devices does WooCommerce's POS run on?",
@@ -2384,7 +2384,7 @@
           },
           "offline": {
             "label": "Offline",
-            "wcpos": "Browse products, build carts and take cash sales offline; connected card readers and online gateways need a connection",
+            "wcpos": "Browse products, build carts and complete cash sales or sales on a separate card terminal offline; connected card readers and online gateways need a connection",
             "square": "Offline card payments, uploaded within 72 hours; the seller is responsible for any that expire, are declined, or are disputed"
           },
           "multiLocation": {
@@ -2461,7 +2461,7 @@
         },
         "offline": {
           "question": "Does Square POS work offline?",
-          "answer": "Square's POS can take card payments offline. You must reconnect and upload them within 72 hours of the start of the offline session, and you are responsible for any expired, declined, or disputed payments taken offline. EBT/SNAP, Afterpay, Cash App Pay, Square Gift Cards, Tap to Pay on iPhone and Android, and manually entered card numbers are not available offline. WCPOS stores products, customers, and carts locally, so you can browse the catalog, build carts and take cash payments without a connection; those sales sync when it returns. Connected card readers and online payment gateways need a connection."
+          "answer": "Square's POS can take card payments offline. You must reconnect and upload them within 72 hours of the start of the offline session, and you are responsible for any expired, declined, or disputed payments taken offline. EBT/SNAP, Afterpay, Cash App Pay, Square Gift Cards, Tap to Pay on iPhone and Android, and manually entered card numbers are not available offline. WCPOS stores products, customers, and carts locally, so you can browse the catalog, build carts and complete cash sales or sales on a separate card terminal without a connection; those sales sync when it returns. Connected card readers and online payment gateways need a connection."
         },
         "locations": {
           "question": "Can Square for WooCommerce sync more than one location?",
@@ -2519,7 +2519,7 @@
           },
           "offline": {
             "label": "Offline",
-            "wcpos": "Browse products, build carts and take cash sales offline; connected card readers and online gateways need a connection",
+            "wcpos": "Browse products, build carts and complete cash sales or sales on a separate card terminal offline; connected card readers and online gateways need a connection",
             "jovvie": "Not established in our research — ask BizSwoop"
           },
           "availability": {
@@ -2570,7 +2570,7 @@
         },
         "offline": {
           "question": "Does Jovvie work offline?",
-          "answer": "Our research has not established whether Jovvie works without an internet connection, so ask BizSwoop before you rely on it. WCPOS stores products, customers, and carts locally, so you can browse the catalog, build carts and take cash payments without a connection; those sales sync when it returns. Connected card readers and online payment gateways need a connection."
+          "answer": "Our research has not established whether Jovvie works without an internet connection, so ask BizSwoop before you rely on it. WCPOS stores products, customers, and carts locally, so you can browse the catalog, build carts and complete cash sales or sales on a separate card terminal without a connection; those sales sync when it returns. Connected card readers and online payment gateways need a connection."
         },
         "stripe": {
           "question": "Can I use a Stripe card reader with WCPOS?",
@@ -2627,7 +2627,7 @@
           },
           "offline": {
             "label": "Offline",
-            "wcpos": "Browse products, build carts and take cash sales offline; connected card readers and online gateways need a connection",
+            "wcpos": "Browse products, build carts and complete cash sales or sales on a separate card terminal offline; connected card readers and online gateways need a connection",
             "vitepos": "Says it keeps processing orders offline and syncs them on reconnect; its WordPress.org listing marks offline orders as Pro"
           },
           "restaurant": {
@@ -2696,7 +2696,7 @@
         },
         "offline": {
           "question": "Does Vitepos work offline?",
-          "answer": "Vitepos says it does: its pages say it stores data locally, keeps processing orders without an internet connection, and syncs them to WooCommerce when the connection returns. Its WordPress.org listing marks offline orders as a Pro feature. WCPOS stores products, customers, and carts locally, so you can browse the catalog, build carts and take cash payments without a connection; those sales sync when it returns. Connected card readers and online payment gateways need a connection."
+          "answer": "Vitepos says it does: its pages say it stores data locally, keeps processing orders without an internet connection, and syncs them to WooCommerce when the connection returns. Its WordPress.org listing marks offline orders as a Pro feature. WCPOS stores products, customers, and carts locally, so you can browse the catalog, build carts and complete cash sales or sales on a separate card terminal without a connection; those sales sync when it returns. Connected card readers and online payment gateways need a connection."
         },
         "restaurant": {
           "question": "Does WCPOS have a restaurant mode?",
@@ -2774,7 +2774,7 @@
           },
           "offline": {
             "label": "Offline",
-            "wcpos": "Browse products, build carts and take cash sales offline; connected card readers and online gateways need a connection",
+            "wcpos": "Browse products, build carts and complete cash sales or sales on a separate card terminal offline; connected card readers and online gateways need a connection",
             "yith": "No offline mode, according to its product page"
           },
           "barcode": {
@@ -2838,7 +2838,7 @@
         },
         "offline": {
           "question": "Does YITH Point of Sale work offline?",
-          "answer": "No. The FAQ on its product page says the plugin does not include an offline feature, though you can set it up on a local server. WCPOS stores products, customers, and carts locally, so you can browse the catalog, build carts and take cash payments without a connection; those sales sync when it returns. Connected card readers and online payment gateways need a connection."
+          "answer": "No. The FAQ on its product page says the plugin does not include an offline feature, though you can set it up on a local server. WCPOS stores products, customers, and carts locally, so you can browse the catalog, build carts and complete cash sales or sales on a separate card terminal without a connection; those sales sync when it returns. Connected card readers and online payment gateways need a connection."
         },
         "terminals": {
           "question": "Can I connect a card terminal to YITH Point of Sale?",
@@ -2924,7 +2924,7 @@
           },
           "offline": {
             "label": "Offline",
-            "wcpos": "Browse products, build carts and take cash sales offline; connected card readers and online gateways need a connection",
+            "wcpos": "Browse products, build carts and complete cash sales or sales on a separate card terminal offline; connected card readers and online gateways need a connection",
             "foosales": "Says its apps keep working offline and sync new orders, cancellations and refunds on reconnect; customers can't be created or edited offline"
           },
           "devices": {
@@ -2984,7 +2984,7 @@
         },
         "offline": {
           "question": "Does FooSales work offline?",
-          "answer": "FooSales says it does: its apps switch to offline mode when the connection drops, most of the POS keeps working, and new orders, cancelled orders and refunds are stored on the device and synced to WooCommerce when you are back online. Its help centre says customers can't be created or modified offline and stock values can't be changed, and its payments page says WooCommerce coupons need an internet connection. WCPOS stores products, customers, and carts locally, so you can browse the catalog, build carts and take cash payments without a connection; those sales sync when it returns. Connected card readers and online payment gateways need a connection."
+          "answer": "FooSales says it does: its apps switch to offline mode when the connection drops, most of the POS keeps working, and new orders, cancelled orders and refunds are stored on the device and synced to WooCommerce when you are back online. Its help centre says customers can't be created or modified offline and stock values can't be changed, and its payments page says WooCommerce coupons need an internet connection. WCPOS stores products, customers, and carts locally, so you can browse the catalog, build carts and complete cash sales or sales on a separate card terminal without a connection; those sales sync when it returns. Connected card readers and online payment gateways need a connection."
         },
         "terminals": {
           "question": "Which card terminals do FooSales and WCPOS support?",
