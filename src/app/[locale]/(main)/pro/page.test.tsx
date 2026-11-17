@@ -195,6 +195,11 @@ describe('ProPage', () => {
     // The buy box is the only suspended region (Suspense is mocked to
     // render its fallback), so the skeleton stands in for it here.
     expect(screen.getByTestId('pro-buy-box-skeleton')).toBeInTheDocument()
+    const buyBoxColumn = screen.getByTestId('pro-buy-box-column')
+    expect(buyBoxColumn).toHaveClass('order-first', 'lg:order-none')
+    expect(buyBoxColumn).toContainElement(
+      screen.getByTestId('pro-buy-box-skeleton')
+    )
 
     expect(screen.getByText('Questions')).toBeInTheDocument()
     expect(screen.getByText('Do I need the free plugin?')).toBeInTheDocument()
