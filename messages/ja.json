@@ -55,7 +55,7 @@
     "title": "WCPOS",
     "subtitle": "WooCommerce向けの高速POS",
     "meta": {
-      "description": "WooCommerce向けPOS。商品を同期し、オフラインでも販売し、iOS、Android、デスクトップ向けネイティブアプリで実機ハードウェアに接続できます。"
+      "description": "WooCommerce向けの無料オープンソースPOS。オフライン販売、分割払い、レジの開始と締めがWCPOS 2.0ですべて無料。デスクトップ、ウェブ、モバイル向けアプリ。"
     },
     "problem": {
       "title": "WooCommerceストアと実店舗の運営が二重作業になるべきではありません",
