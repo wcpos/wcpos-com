@@ -1725,11 +1725,11 @@
   },
   "extensions": {
     "metadata": {
-      "title": "Extensões",
-      "description": "As extensões disponíveis para WCPOS, cada uma com uma ligação para a respetiva documentação."
+      "title": "WooCommerce POS: extensões e terminais de pagamento",
+      "description": "Extensões WCPOS, ponto de venda WooCommerce: terminais de pagamento Stripe, Square, SumUp, PayPal, Mollie e Windcave, mais WPML, Polylang e ATUM."
     },
     "hero": {
-      "title": "Extensões",
+      "title": "Extensões para WooCommerce POS",
       "subtitle": "As extensões disponíveis para WCPOS, cada uma com uma ligação para a respetiva documentação."
     },
     "proTag": "Pro",

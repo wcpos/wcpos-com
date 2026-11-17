@@ -1725,11 +1725,11 @@
   },
   "extensions": {
     "metadata": {
-      "title": "拡張機能",
-      "description": "WCPOSで利用できる拡張機能と、それぞれのドキュメントへのリンクです。"
+      "title": "WooCommerce用POSの拡張機能と決済端末",
+      "description": "WooCommerce用POS「WCPOS」の拡張機能：Stripe、Square、SumUp、PayPal、Mollie、Windcaveの決済端末に加え、WPML、Polylang、ATUM。"
     },
     "hero": {
-      "title": "拡張機能",
+      "title": "WooCommerce用POSの拡張機能",
       "subtitle": "WCPOSで利用できる拡張機能と、それぞれのドキュメントへのリンクです。"
     },
     "proTag": "Pro",

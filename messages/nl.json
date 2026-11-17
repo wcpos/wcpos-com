@@ -1725,11 +1725,11 @@
   },
   "extensions": {
     "metadata": {
-      "title": "Extensies",
-      "description": "De beschikbare extensies voor WCPOS, elk met een link naar de documentatie."
+      "title": "WooCommerce POS: extensies & betaalterminals",
+      "description": "Extensies voor WCPOS, het WooCommerce-kassasysteem: betaalterminals van Stripe, Square, SumUp, PayPal, Mollie en Windcave, plus WPML, Polylang en ATUM."
     },
     "hero": {
-      "title": "Extensies",
+      "title": "Extensies voor WooCommerce POS",
       "subtitle": "De beschikbare extensies voor WCPOS, elk met een link naar de documentatie."
     },
     "proTag": "Pro",
