@@ -47,9 +47,16 @@ function FeatureCard({
       ) : (
         <Icon aria-hidden="true" className="mb-4 h-8 w-8 text-wcpos-red" />
       )}
-      <h3 className="mb-1.5 flex items-center gap-2 text-base font-semibold text-slate-800 dark:text-slate-100">
+      <h3 className="mb-1.5 text-base font-semibold text-slate-800 dark:text-slate-100">
         {title}
-        {badge}
+        {badge && (
+          <span
+            className="ml-2 inline-block align-middle"
+            data-testid="feature-card-badge"
+          >
+            {badge}
+          </span>
+        )}
       </h3>
       <p className="text-sm leading-relaxed text-slate-600 dark:text-slate-400">
         {children}
