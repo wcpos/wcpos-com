@@ -55,7 +55,7 @@
     "title": "WCPOS",
     "subtitle": "WooCommerce를 위한 빠른 POS",
     "meta": {
-      "description": "WooCommerce용 POS. 제품을 동기화하고, 오프라인으로 판매하며, iOS, Android 및 데스크톱용 native 앱으로 실제 하드웨어를 연결하세요."
+      "description": "WooCommerce용 무료 오픈 소스 POS. 오프라인 판매, 분할 결제, 계산대 개시와 마감까지 WCPOS 2.0에서 모두 무료입니다. 데스크톱, 웹, 모바일 앱을 제공합니다."
     },
     "problem": {
       "title": "WooCommerce 스토어와 오프라인 매장 운영이 두 배의 일이 되어서는 안 됩니다",
