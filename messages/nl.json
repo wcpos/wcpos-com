@@ -1643,8 +1643,8 @@
           "body": "Sla een verkoop aan op de desktop, verwerk een terugbetaling op je telefoon — één set producten, bestellingen en klanten, realtime bijgewerkt."
         },
         "offline": {
-          "title": "Offline-first, zodat de kassa nooit stopt",
-          "body": "Elk apparaat blijft werken zonder verbinding en synchroniseert opnieuw zodra het weer online is."
+          "title": "Blijf verkopen aanslaan als de verbinding wegvalt",
+          "body": "Blader door producten, stel winkelwagens samen en rond contante verkopen of verkopen via een aparte betaalterminal af zonder verbinding; ze synchroniseren zodra je weer online bent. Gekoppelde kaartlezers en online betaalgateways hebben een verbinding nodig."
         }
       },
       "syncLabel": "Wat synchroon blijft",

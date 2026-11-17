@@ -1643,8 +1643,8 @@
           "body": "Registe uma venda no computador, faça o reembolso no telemóvel — um único conjunto de produtos, encomendas e clientes, atualizado em tempo real."
         },
         "offline": {
-          "title": "Offline em primeiro lugar, para que a caixa nunca pare",
-          "body": "Cada dispositivo continua a funcionar sem ligação e volta a sincronizar assim que regressa à internet."
+          "title": "Continue a registar vendas quando a ligação cai",
+          "body": "Navegue pelos produtos, crie carrinhos e conclua vendas em dinheiro ou num terminal de pagamento separado sem ligação; sincronizam assim que voltar a estar online. Os leitores de cartões ligados e os gateways de pagamento online precisam de ligação."
         }
       },
       "syncLabel": "O que se mantém sincronizado",

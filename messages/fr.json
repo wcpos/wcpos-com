@@ -1643,8 +1643,8 @@
           "body": "Encaissez une vente sur l’ordinateur, remboursez-la sur votre téléphone — un seul jeu de produits, commandes et clients, mis à jour en temps réel."
         },
         "offline": {
-          "title": "Pensé pour le hors ligne, pour que la caisse ne s’arrête jamais",
-          "body": "Chaque appareil continue de fonctionner sans connexion et se resynchronise dès qu’il revient en ligne."
+          "title": "Continuez d’encaisser quand la connexion tombe",
+          "body": "Parcourez les produits, constituez des paniers et finalisez les ventes en espèces ou sur un terminal de paiement séparé sans connexion ; elles se synchronisent dès que vous êtes de nouveau en ligne. Les lecteurs de cartes connectés et les passerelles de paiement en ligne nécessitent une connexion."
         }
       },
       "syncLabel": "Ce qui reste synchronisé",

@@ -1643,8 +1643,8 @@
           "body": "Kassiere einen Verkauf am Desktop, erstatte ihn auf deinem Telefon — ein gemeinsamer Bestand an Produkten, Bestellungen und Kunden, der in Echtzeit aktualisiert wird."
         },
         "offline": {
-          "title": "Offline-first, damit die Kasse nie stehen bleibt",
-          "body": "Jedes Gerät arbeitet auch ohne Verbindung weiter und synchronisiert sich wieder, sobald es online ist."
+          "title": "Verkäufe weiter kassieren, wenn die Verbindung abbricht",
+          "body": "Durchsuche Produkte, stelle Warenkörbe zusammen und schließe Barverkäufe oder Verkäufe über ein separates Zahlungsterminal ohne Verbindung ab; sie werden synchronisiert, sobald du wieder online bist. Verbundene Kartenlesegeräte und Online-Zahlungsgateways benötigen eine Verbindung."
         }
       },
       "syncLabel": "Was synchron bleibt",
