@@ -1947,7 +1947,7 @@
     "oliver": {
       "metadata": {
         "title": "WCPOS vs Oliver POS（2026）：一份诚实的对比",
-        "description": "由 WCPOS 的开发者对 WCPOS 和 Oliver POS 进行对比——架构、免费版限制、定价、刷卡终端、离线支持、评分，以及什么时候 Oliver 是更好的选择。每个事实都注明来源和日期。"
+        "description": "什么时候 Oliver POS 是更好的选择，什么时候 WCPOS 更好：免费版限制、定价、刷卡终端和离线支持。由 WCPOS 的开发者进行对比。"
       },
       "hero": {
         "title": "WCPOS vs Oliver POS",
@@ -2177,7 +2177,7 @@
     "woocommerce": {
       "metadata": {
         "title": "WCPOS vs WooCommerce 官方 POS（2026）：诚实对比",
-        "description": "由 WCPOS 开发者对比 WCPOS 与 WooCommerce 自家移动应用中的 POS——涵盖设备、国家、离线支持、支付、价格，以及何时 WooCommerce POS 是更好的选择。"
+        "description": "何时 WooCommerce 自家的 POS 是更好的选择，何时 WCPOS 更好：设备、国家、离线支持、支付和价格。由 WCPOS 开发者对比。"
       },
       "hero": {
         "title": "WCPOS vs WooCommerce 官方 POS",
@@ -2330,7 +2330,7 @@
     "square": {
       "metadata": {
         "title": "WCPOS vs Square for WooCommerce（2026）：客观对比",
-        "description": "由 WCPOS 开发者比较 WCPOS 与使用 Square for WooCommerce 扩展的 Square POS，涵盖线下销售记录在哪里、同步、地点、离线支付、刷卡费率，以及 Square 何时是更好的选择。"
+        "description": "何时 Square for WooCommerce 是更好的选择，何时 WCPOS 更好：销售记录在哪里、同步、地点和费用。由 WCPOS 开发者比较。"
       },
       "hero": {
         "title": "WCPOS vs Square for WooCommerce",
@@ -2480,7 +2480,7 @@
     "jovvie": {
       "metadata": {
         "title": "WCPOS vs Jovvie（2026）：客观对比",
-        "description": "WCPOS 与 Jovvie 是两款 WooCommerce 销售点插件，由 WCPOS 开发者对比：价格、每笔交易手续费、应用、银行卡支付、评分，以及何时 Jovvie 是更合适的选择。"
+        "description": "何时 Jovvie 是更合适的选择，何时 WCPOS 更合适：价格、每笔交易手续费、应用和银行卡支付。由 WCPOS 开发者对比。"
       },
       "hero": {
         "title": "WCPOS vs Jovvie",
@@ -2593,7 +2593,7 @@
     "vitepos": {
       "metadata": {
         "title": "WCPOS vs Vitepos（2026）：客观对比",
-        "description": "WCPOS 与 Vitepos 是两款 WooCommerce 销售点插件，由 WCPOS 开发者对比：价格、离线订单、餐厅模式、应用、刷卡终端，以及何时 Vitepos 是更合适的选择。"
+        "description": "何时 Vitepos 是更合适的选择，何时 WCPOS 更合适：价格、离线订单、餐厅模式、应用和刷卡终端。由 WCPOS 开发者对比。"
       },
       "hero": {
         "title": "WCPOS vs Vitepos",
@@ -2735,7 +2735,7 @@
     "yith": {
       "metadata": {
         "title": "WCPOS vs YITH Point of Sale（2026）：客观对比",
-        "description": "由 WCPOS 开发者对比 WCPOS 与 YITH Point of Sale for WooCommerce：许可证、刷卡终端、应用、离线使用、商店与收银台，以及何时 YITH Point of Sale 是更合适的选择。"
+        "description": "何时 YITH Point of Sale 是更合适的选择，何时 WCPOS 更合适：许可证、刷卡终端、应用、离线使用和收银台。由 WCPOS 开发者对比。"
       },
       "hero": {
         "title": "WCPOS vs YITH Point of Sale",
@@ -2880,7 +2880,7 @@
     "foosales": {
       "metadata": {
         "title": "WCPOS vs FooSales（2026）：诚实的对比",
-        "description": "WCPOS 的开发者对比两款 WooCommerce 销售点系统 WCPOS 和 FooSales——涵盖价格、停止付费后的情况、Tap to Pay、离线订单、应用、刷卡终端，以及 FooSales 何时是更好的选择。"
+        "description": "何时 FooSales 是更好的选择，何时 WCPOS 更好：价格、停止付费后的情况、离线订单和应用。由 WCPOS 开发者对比。"
       },
       "hero": {
         "title": "WCPOS vs FooSales",

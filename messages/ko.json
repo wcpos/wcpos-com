@@ -1947,7 +1947,7 @@
     "oliver": {
       "metadata": {
         "title": "WCPOS vs Oliver POS (2026): 정직한 비교",
-        "description": "WCPOS 개발자가 직접 비교한 WCPOS와 Oliver POS — 아키텍처, 무료 플랜 제한, 가격, 카드 단말기, 오프라인 지원, 평점, 그리고 Oliver가 더 나은 선택인 경우. 모든 사실에 출처와 날짜를 명시했습니다."
+        "description": "Oliver POS가 더 나은 선택인 경우와 WCPOS가 더 나은 경우: 무료 플랜 제한, 가격, 카드 단말기, 오프라인 지원. WCPOS 개발자가 직접 비교했습니다."
       },
       "hero": {
         "title": "WCPOS vs Oliver POS",
@@ -2177,7 +2177,7 @@
     "woocommerce": {
       "metadata": {
         "title": "WCPOS vs WooCommerce 공식 POS(2026): 솔직한 비교",
-        "description": "WCPOS 제작자가 WCPOS와 WooCommerce 자체 모바일 앱의 POS를 비교합니다 — 기기, 국가, 오프라인 지원, 결제, 가격, 그리고 WooCommerce POS가 더 나은 선택인 경우까지."
+        "description": "WooCommerce 자체 POS가 더 나은 선택인 경우와 WCPOS가 더 나은 경우: 기기, 국가, 오프라인 지원, 결제, 가격. WCPOS 제작자가 비교했습니다."
       },
       "hero": {
         "title": "WCPOS vs WooCommerce 공식 POS",
@@ -2330,7 +2330,7 @@
     "square": {
       "metadata": {
         "title": "WCPOS vs Square for WooCommerce (2026): 솔직한 비교",
-        "description": "WCPOS 제작자가 WCPOS와 Square for WooCommerce 확장 프로그램을 함께 사용하는 Square POS를 비교합니다. 대면 판매의 기록 위치, 동기화, 위치, 오프라인 결제, 카드 수수료, Square가 더 적합한 경우를 살펴봅니다."
+        "description": "Square for WooCommerce가 더 나은 선택인 경우와 WCPOS가 더 나은 경우: 판매 기록 위치, 동기화, 위치, 수수료. WCPOS 제작자가 비교했습니다."
       },
       "hero": {
         "title": "WCPOS vs Square for WooCommerce",
@@ -2480,7 +2480,7 @@
     "jovvie": {
       "metadata": {
         "title": "WCPOS vs Jovvie(2026): 솔직한 비교",
-        "description": "WooCommerce용 POS 플러그인 두 가지인 WCPOS와 Jovvie를 WCPOS 제작자가 비교합니다. 가격, 거래당 수수료, 앱, 카드 결제, 평점, Jovvie가 더 나은 선택인 경우를 다룹니다."
+        "description": "Jovvie가 더 나은 선택인 경우와 WCPOS가 더 나은 경우: 가격, 거래당 수수료, 앱, 카드 결제. WCPOS 제작자가 비교했습니다."
       },
       "hero": {
         "title": "WCPOS vs Jovvie",
@@ -2593,7 +2593,7 @@
     "vitepos": {
       "metadata": {
         "title": "WCPOS vs Vitepos(2026): 솔직한 비교",
-        "description": "WooCommerce용 POS 플러그인 두 가지인 WCPOS와 Vitepos를 WCPOS 제작자가 비교합니다. 가격, 오프라인 주문, 레스토랑 모드, 앱, 카드 단말기, Vitepos가 더 나은 선택인 경우를 다룹니다."
+        "description": "Vitepos가 더 나은 선택인 경우와 WCPOS가 더 나은 경우: 가격, 오프라인 주문, 레스토랑 모드, 앱, 카드 단말기. WCPOS 제작자가 비교했습니다."
       },
       "hero": {
         "title": "WCPOS vs Vitepos",
@@ -2735,7 +2735,7 @@
     "yith": {
       "metadata": {
         "title": "WCPOS vs YITH Point of Sale(2026): 솔직한 비교",
-        "description": "WCPOS 제작자가 WCPOS와 YITH Point of Sale for WooCommerce를 비교합니다. 라이선스, 카드 단말기, 앱, 오프라인 사용, 스토어와 계산대, YITH Point of Sale이 더 나은 선택인 경우를 다룹니다."
+        "description": "YITH Point of Sale이 더 나은 선택인 경우와 WCPOS가 더 나은 경우: 라이선스, 카드 단말기, 앱, 오프라인 사용, 계산대. WCPOS 제작자가 비교했습니다."
       },
       "hero": {
         "title": "WCPOS vs YITH Point of Sale",
@@ -2880,7 +2880,7 @@
     "foosales": {
       "metadata": {
         "title": "WCPOS vs FooSales(2026): 정직한 비교",
-        "description": "WooCommerce용 POS 시스템 두 가지인 WCPOS와 FooSales를 WCPOS 제작자가 비교합니다. 가격, 결제를 중단하면 어떻게 되는지, Tap to Pay, 오프라인 주문, 앱, 카드 단말기, FooSales가 더 나은 선택인 경우를 살펴봅니다."
+        "description": "FooSales가 더 나은 선택인 경우와 WCPOS가 더 나은 경우: 가격, 결제를 중단하면 어떻게 되는지, 오프라인 주문, 앱. WCPOS 제작자가 비교했습니다."
       },
       "hero": {
         "title": "WCPOS vs FooSales",
