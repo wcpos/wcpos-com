@@ -1,7 +1,8 @@
 # Screenshots are judge inputs. Only the headline fold shots that a round
-# file shows (home, pro, de-pro) are committed; the rest stay local.
+# file shows (home, pro, de-pro, downloads) are committed; the rest stay local.
 *-full.jpg
 */shots/*.jpg
 !*/shots/home-*-fold.jpg
 !*/shots/pro-*-fold.jpg
 !*/shots/de-pro-*-fold.jpg
+!*/shots/downloads-*-fold.jpg
