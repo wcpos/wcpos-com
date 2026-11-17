@@ -32,10 +32,12 @@ function product(
   }
 }
 
-const offers = buildProOfferCatalog([
+const fixtureProducts = [
   product('wcpos-pro-yearly', 129, 'variant_yearly'),
   product('wcpos-pro-lifetime', 399, 'variant_lifetime'),
-])
+]
+
+const offers = buildProOfferCatalog(fixtureProducts)
 
 // Echo translator: returns the key (with interpolations appended) so
 // assertions can verify which message key and values were requested.
@@ -102,6 +104,28 @@ describe('buildProBuyBoxOptions', () => {
       buildProBuyBoxOptions(lifetimeOnly, 'control', t)[0].ctaNote
     ).toBe('buyBox.lifetime.ctaNoteSimple')
   })
+
+  it.each(['en', 'de', 'nl', 'fr', 'es', 'it', 'pt', 'ja', 'ko', 'zh'])(
+    'names the currency once in every locale (%s)',
+    (locale) => {
+      const localeOffers = buildProOfferCatalog(fixtureProducts, 'usd', locale)
+      for (const option of buildProBuyBoxOptions(localeOffers, 'control', t)) {
+        // Compose the text exactly as the buy box renders it.
+        const shown =
+          option.priceText +
+          (option.priceText.includes(option.currencyCode)
+            ? ''
+            : ` ${option.currencyCode}`)
+        const amount = fixtureProducts.find(
+          (fixture) => fixture.handle === option.eventProperties.product
+        )!.variants[0].prices[0].amount
+
+        expect(shown.match(/USD/g), `${locale}: ${shown}`).toHaveLength(1)
+        expect(shown, `${locale}: ${shown}`).not.toMatch(/US\$|\$US/)
+        expect(shown, `${locale}: ${shown}`).toContain(String(amount))
+      }
+    }
+  )
 
   it('bakes the experiment into both the checkout href and the analytics payload', () => {
     const options = buildProBuyBoxOptions(offers, 'value_copy', t)
