@@ -4,6 +4,7 @@ import {
   CreditCard,
   PencilRuler,
   Plug,
+  Store,
   Users,
   type LucideIcon,
 } from 'lucide-react'
@@ -17,6 +18,7 @@ import { SectionHeading } from '@/components/ui/section-heading'
  * statically while the buy box suspends.
  */
 export const PRO_FEATURE_KEYS = [
+  { key: 'stores', Icon: Store },
   { key: 'terminal', Icon: CreditCard },
   { key: 'stockPrice', Icon: PencilRuler },
   { key: 'orders', Icon: ClipboardList },

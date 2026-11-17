@@ -26,6 +26,7 @@ const freeFeatures = [
   'f10',
 ] as const
 const proFeatures = [
+  'p8',
   'p1',
   'p2',
   'p3',

@@ -1,5 +1,5 @@
 import { describe, expect, it, vi, beforeEach } from 'vitest'
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, render, screen, within } from '@testing-library/react'
 import { NextIntlClientProvider } from 'next-intl'
 import type { ReactElement } from 'react'
 import messages from '../../../messages/en.json'
@@ -131,5 +131,13 @@ describe('PricingTeaserSection', () => {
       screen.getByText('Payment terminal integration')
     ).toBeInTheDocument()
     expect(screen.getByText('Reports across days, registers & stores')).toBeInTheDocument()
+  })
+
+  it('leads the Pro list with more registers and multiple stores', async () => {
+    renderWithIntl(await PricingTeaserSection())
+
+    const proColumn = screen.getByRole('heading', { name: 'Pro' }).parentElement!
+    const proItems = within(proColumn).getAllByRole('listitem')
+    expect(proItems[0]).toHaveTextContent('More registers & multiple stores')
   })
 })

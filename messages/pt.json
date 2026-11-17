@@ -214,6 +214,7 @@
         "title": "Pro",
         "intro": "Tudo o que existe no Gratuito, mais:",
         "features": {
+          "p8": "Mais caixas e várias lojas",
           "p1": "Integração com terminal de pagamento",
           "p2": "Edição de stock e preços no POS",
           "p3": "Histórico e gestão de encomendas",
@@ -423,6 +424,10 @@
     "features": {
       "title": "O que está incluído no Pro?",
       "subtitle": "Tudo o que há na versão gratuita, além das ferramentas para gerir toda a sua loja a partir da caixa — e suporte prioritário quando precisar de ajuda.",
+      "stores": {
+        "title": "Mais Caixas e Várias Lojas",
+        "description": "Adicione caixas além da gratuita e gira várias lojas, cada uma com a sua própria morada, taxas de imposto, modelo de recibo, preços e utilizadores autorizados."
+      },
       "terminal": {
         "title": "Integração de Terminal de Pagamento",
         "description": "Ligue leitores de cartões e terminais de pagamento para pagamentos presenciais rápidos e precisos."

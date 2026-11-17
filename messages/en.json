@@ -214,6 +214,7 @@
         "title": "Pro",
         "intro": "Everything in Free, plus:",
         "features": {
+          "p8": "More registers & multiple stores",
           "p1": "Payment terminal integration",
           "p2": "Stock & price editing in POS",
           "p3": "Order history & management",
@@ -423,6 +424,10 @@
     "features": {
       "title": "What's included in Pro?",
       "subtitle": "Everything in Free, plus the tools to run your whole store from the register — and priority support when you need a hand.",
+      "stores": {
+        "title": "More Registers & Multiple Stores",
+        "description": "Add registers beyond the free one, and run several stores, each with its own address, tax rates, receipt template, pricing and authorized users."
+      },
       "terminal": {
         "title": "Payment Terminal Integration",
         "description": "Connect card readers and payment terminals for fast, accurate in-person payments."
