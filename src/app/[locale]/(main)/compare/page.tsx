@@ -82,7 +82,7 @@ export default async function ComparePage({
         }))}
       />
 
-      <Section tone="default" spacing="hero">
+      <Section tone="default" spacing="hero" className="pb-6 md:pb-10 lg:pb-12">
         <SectionHeading
           as="h1"
           size="hero"
@@ -91,7 +91,12 @@ export default async function ComparePage({
         />
       </Section>
 
-      <Section tone="default" spacing="compact" containerClassName="max-w-3xl">
+      <Section
+        tone="default"
+        spacing="compact"
+        className="pt-0 pb-10 md:pt-0 md:pb-16"
+        containerClassName="max-w-3xl"
+      >
         <Card className="border-l-4 border-l-primary p-6">
           <h2 className="mb-2 flex items-center gap-2 text-lg font-semibold">
             <Scale className="h-5 w-5 shrink-0" aria-hidden />
