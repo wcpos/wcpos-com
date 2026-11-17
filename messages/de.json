@@ -1947,7 +1947,7 @@
     "oliver": {
       "metadata": {
         "title": "WCPOS vs. Oliver POS (2026): Ein ehrlicher Vergleich",
-        "description": "WCPOS und Oliver POS im Vergleich, verfasst vom Entwickler von WCPOS — Architektur, Limits der Gratis-Tarife, Preise, Terminals, Offline-Betrieb, Bewertungen und wann Oliver die bessere Wahl ist. Jeder Fakt belegt und datiert."
+        "description": "Wann Oliver POS die bessere Wahl ist und wann WCPOS: Limits der Gratis-Tarife, Preise, Terminals und Offline-Betrieb. Verglichen vom Entwickler von WCPOS."
       },
       "hero": {
         "title": "WCPOS vs. Oliver POS",
@@ -2177,7 +2177,7 @@
     "woocommerce": {
       "metadata": {
         "title": "WCPOS vs. das offizielle POS von WooCommerce (2026): Ein ehrlicher Vergleich",
-        "description": "WCPOS und das POS in der eigenen mobilen App von WooCommerce im Vergleich, verfasst vom Entwickler von WCPOS — Geräte, Länder, Offline-Betrieb, Zahlungen, Preise und wann das POS von WooCommerce die bessere Wahl ist."
+        "description": "Wann das eigene POS von WooCommerce die bessere Wahl ist und wann WCPOS: Geräte, Länder, Offline-Betrieb und Preise. Verglichen vom Entwickler von WCPOS."
       },
       "hero": {
         "title": "WCPOS vs. das offizielle POS von WooCommerce",
@@ -2330,7 +2330,7 @@
     "square": {
       "metadata": {
         "title": "WCPOS vs. Square for WooCommerce (2026): Ein ehrlicher Vergleich",
-        "description": "WCPOS und Square POS mit der Erweiterung Square for WooCommerce im Vergleich, verfasst vom Entwickler von WCPOS — wo Verkäufe vor Ort erfasst werden, Synchronisierung, Standorte, Offline-Zahlungen, Kartengebühren und wann Square die bessere Wahl ist."
+        "description": "Wann Square for WooCommerce die bessere Wahl ist und wann WCPOS: wo Verkäufe erfasst werden, Standorte und Gebühren. Verglichen vom Entwickler von WCPOS."
       },
       "hero": {
         "title": "WCPOS vs. Square for WooCommerce",
@@ -2480,7 +2480,7 @@
     "jovvie": {
       "metadata": {
         "title": "WCPOS vs. Jovvie (2026): Ein ehrlicher Vergleich",
-        "description": "WCPOS und Jovvie, zwei POS-Plugins für WooCommerce, im Vergleich vom Entwickler von WCPOS — Preise, Gebühren pro Transaktion, Apps, Kartenzahlungen, Bewertungen und wann Jovvie die bessere Wahl ist."
+        "description": "Wann Jovvie die bessere Wahl ist und wann WCPOS: Preise, Gebühren pro Transaktion, Apps und Kartenzahlungen. Verglichen vom Entwickler von WCPOS."
       },
       "hero": {
         "title": "WCPOS vs Jovvie",
@@ -2593,7 +2593,7 @@
     "vitepos": {
       "metadata": {
         "title": "WCPOS vs. Vitepos (2026): Ein ehrlicher Vergleich",
-        "description": "WCPOS und Vitepos, zwei POS-Plugins für WooCommerce, im Vergleich vom Entwickler von WCPOS — Preise, Offline-Bestellungen, Restaurantmodi, Apps, Kartenterminals und wann Vitepos die bessere Wahl ist."
+        "description": "Wann Vitepos die bessere Wahl ist und wann WCPOS: Preise, Offline-Bestellungen, Restaurantmodi, Apps und Kartenterminals. Verglichen vom Entwickler von WCPOS."
       },
       "hero": {
         "title": "WCPOS vs Vitepos",
@@ -2735,7 +2735,7 @@
     "yith": {
       "metadata": {
         "title": "WCPOS vs. YITH Point of Sale (2026): Ein ehrlicher Vergleich",
-        "description": "WCPOS und YITH Point of Sale for WooCommerce im Vergleich, verfasst vom Entwickler von WCPOS — Lizenzen, Kartenterminals, Apps, Offline-Nutzung, Filialen und Kassen und wann YITH Point of Sale die bessere Wahl ist."
+        "description": "Wann YITH Point of Sale die bessere Wahl ist und wann WCPOS: Lizenzen, Kartenterminals, Apps, Offline-Nutzung und Kassen. Verglichen vom Entwickler von WCPOS."
       },
       "hero": {
         "title": "WCPOS vs YITH Point of Sale",
@@ -2880,7 +2880,7 @@
     "foosales": {
       "metadata": {
         "title": "WCPOS vs FooSales (2026): Ein ehrlicher Vergleich",
-        "description": "WCPOS und FooSales, zwei Kassensysteme für WooCommerce, im Vergleich vom Entwickler von WCPOS — Preise, was passiert, wenn Sie nicht mehr zahlen, Tap to Pay, Offline-Bestellungen, Apps, Kartenterminals und wann FooSales die bessere Wahl ist."
+        "description": "Wann FooSales die bessere Wahl ist und wann WCPOS: Preise, Apps und was passiert, wenn Sie nicht mehr zahlen. Verglichen vom Entwickler von WCPOS."
       },
       "hero": {
         "title": "WCPOS vs FooSales",
