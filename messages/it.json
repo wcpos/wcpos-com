@@ -55,7 +55,7 @@
     "title": "WCPOS",
     "subtitle": "Un punto vendita veloce per WooCommerce",
     "meta": {
-      "description": "Punto vendita gratuito e open source per WooCommerce. Vendi offline, suddividi i pagamenti, apri e chiudi la cassa — tutto gratis in WCPOS 2.0. App per desktop, web e mobile."
+      "description": "Punto vendita gratuito e open source per WooCommerce. Vendi offline, suddividi i pagamenti, apri e chiudi la cassa — tutto gratis in WCPOS 2.0. App per web e desktop; app per iOS e Android in beta."
     },
     "problem": {
       "title": "Gestire un negozio WooCommerce e un negozio fisico non dovrebbe significare doppio lavoro",
@@ -285,7 +285,8 @@
           "p2": "Windows",
           "p3": "macOS",
           "p4": "iOS",
-          "p5": "Android"
+          "p5": "Android",
+          "beta": "Beta"
         }
       },
       "a3": {
