@@ -109,13 +109,15 @@ vi.mock('@/components/ui/section', () => ({
     tone = 'default',
     spacing = 'default',
     bare = false,
+    className,
   }: {
     children: React.ReactNode
     tone?: string
     spacing?: string
     bare?: boolean
+    className?: string
   }) => (
-    <section data-section-tone={tone} data-section-spacing={spacing}>
+    <section data-section-tone={tone} data-section-spacing={spacing} data-section-class={className}>
       {bare ? children : <div data-container-width="default">{children}</div>}
     </section>
   ),
@@ -182,6 +184,8 @@ describe('ProPage', () => {
     expect(
       sections.map((section) => section.getAttribute('data-section-spacing'))
     ).toEqual(['hero', 'compact', 'default'])
+    expect(sections[0]).toHaveAttribute('data-section-class', 'pb-8 md:pb-10 lg:pb-10')
+    expect(sections[1]).toHaveAttribute('data-section-class', 'pt-8 md:pt-10')
 
     // Feature list renders statically (exactly once, next to the buy box).
     expect(screen.getByText('Pro features')).toBeInTheDocument()

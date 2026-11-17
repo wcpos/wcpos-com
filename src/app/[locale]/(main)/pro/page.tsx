@@ -160,7 +160,7 @@ export default async function ProPage({
         <ProProductJsonLd locale={locale} />
       </Suspense>
 
-      <Section tone="default" spacing="hero">
+      <Section tone="default" spacing="hero" className="pb-8 md:pb-10 lg:pb-10">
         <SectionHeading
           as="h1"
           size="hero"
@@ -170,7 +170,7 @@ export default async function ProPage({
       </Section>
 
       {/* Features render statically; only the buy box waits on Medusa */}
-      <Section tone="default" spacing="compact">
+      <Section tone="default" spacing="compact" className="pt-8 md:pt-10">
         <div className="mx-auto grid max-w-5xl grid-cols-1 items-start gap-10 lg:grid-cols-[1.5fr_1fr]">
           <ProFeatureList
             heading={t('features.title')}
