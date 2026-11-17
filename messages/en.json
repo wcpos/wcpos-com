@@ -171,7 +171,7 @@
         },
         "f2": {
           "title": "Smooth checkout flow",
-          "description": "Add items, apply discounts, choose payment method. Supports Stripe Terminal, SumUp, cash, and custom gateways."
+          "description": "Add items, apply discounts, take cash or card on your own terminal, and split a payment. Pro connects card readers like Stripe Terminal and SumUp."
         },
         "f3": {
           "title": "Customer profiles",

@@ -171,7 +171,7 @@
         },
         "f2": {
           "title": "Soepele checkout-flow",
-          "description": "Voeg artikelen toe, pas kortingen toe en kies een betaalmethode. Ondersteunt Stripe Terminal, SumUp, contant geld en aangepaste gateways."
+          "description": "Voeg artikelen toe, pas kortingen toe, accepteer contant geld of kaartbetalingen via je eigen betaalterminal en splits een betaling. Pro koppelt kaartlezers zoals Stripe Terminal en SumUp."
         },
         "f3": {
           "title": "Klantprofielen",

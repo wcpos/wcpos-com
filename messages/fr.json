@@ -171,7 +171,7 @@
         },
         "f2": {
           "title": "Flux de paiement fluide",
-          "description": "Ajoutez des articles, appliquez des remises, choisissez le mode de paiement. Compatible avec Stripe Terminal, SumUp, espèces et passerelles personnalisées."
+          "description": "Ajoutez des articles, appliquez des remises, acceptez les espèces ou les paiements par carte sur votre propre terminal de paiement et fractionnez un paiement. Pro connecte des lecteurs de cartes comme Stripe Terminal et SumUp."
         },
         "f3": {
           "title": "Profils clients",
