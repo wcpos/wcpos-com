@@ -22,6 +22,10 @@ vi.mock('next-intl/server', () => ({
   setRequestLocale: vi.fn(),
 }))
 
+vi.mock('@/components/home/cta-section', () => ({
+  CtaSection: () => <div data-testid="cta-section" />,
+}))
+
 const params = Promise.resolve({ locale: 'en' })
 
 describe('JovvieComparePage', () => {
@@ -84,5 +88,14 @@ describe('JovvieComparePage', () => {
     expect(metadata.description).toBe(
       'Translated Jovvie metadata description'
     )
+  })
+
+  it('closes with the call-to-action band before the facts footer', async () => {
+    render(await JovvieComparePage({ params }))
+    const faq = screen.getByRole('heading', { name: 'jovvie.faq.title' })
+    const cta = screen.getByTestId('cta-section')
+    const footer = screen.getByText('jovvie.footer.corrections')
+    expect(faq.compareDocumentPosition(cta) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+    expect(cta.compareDocumentPosition(footer) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
   })
 })

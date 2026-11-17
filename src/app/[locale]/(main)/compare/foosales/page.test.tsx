@@ -22,6 +22,10 @@ vi.mock('next-intl/server', () => ({
   setRequestLocale: vi.fn(),
 }))
 
+vi.mock('@/components/home/cta-section', () => ({
+  CtaSection: () => <div data-testid="cta-section" />,
+}))
+
 const params = Promise.resolve({ locale: 'en' })
 
 describe('FoosalesComparePage', () => {
@@ -117,5 +121,14 @@ describe('FoosalesComparePage', () => {
       const href = link.getAttribute('href')!
       expect(['www.foosales.com', 'help.foosales.com', 'apps.apple.com']).toContain(new URL(href).host)
     }
+  })
+
+  it('closes with the call-to-action band before the facts footer', async () => {
+    render(await FoosalesComparePage({ params }))
+    const faq = screen.getByRole('heading', { name: 'foosales.faq.title' })
+    const cta = screen.getByTestId('cta-section')
+    const footer = screen.getByText('foosales.footer.corrections')
+    expect(faq.compareDocumentPosition(cta) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+    expect(cta.compareDocumentPosition(footer) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
   })
 })

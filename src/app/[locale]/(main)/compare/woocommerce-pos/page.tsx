@@ -4,6 +4,7 @@ import { Check, Scale, X } from 'lucide-react'
 import { Card } from '@/components/ui/card'
 import { Section } from '@/components/ui/section'
 import { SectionHeading } from '@/components/ui/section-heading'
+import { CtaSection } from '@/components/home/cta-section'
 import {
   Table,
   TableBody,
@@ -335,6 +336,8 @@ export default async function WoocommerceComparePage({
           ))}
         </div>
       </Section>
+
+      <CtaSection />
 
       <Section tone="muted" spacing="compact" containerClassName="max-w-3xl">
         <p className="text-sm text-muted-foreground">
