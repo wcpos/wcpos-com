@@ -196,7 +196,7 @@
       "fallback": "Sieh dir die vollständigen Preise für aktuelle Pro-Optionen an. Keine Gebühren pro Kasse.",
       "free": {
         "title": "Kostenlos",
-        "description": "Dauerhaft kostenlos. Keine Transaktionsgebühren. Keine Limits.",
+        "description": "Dauerhaft kostenlos. Eine Kasse, keine Transaktionsgebühren, keine Obergrenzen für Produkte oder Bestellungen.",
         "features": {
           "f1": "WooCommerce-Synchronisierung",
           "f2": "Produktsuche & Raster",
@@ -479,7 +479,7 @@
       "title": "Häufig gestellte Fragen",
       "freePlugin": {
         "question": "Ist das kostenlose Plugin eingeschränkt?",
-        "answer": "Nein. Das kostenlose WCPOS-Plugin ist GPL-Software mit vollem Funktionsumfang einer Kasse — unbegrenzte Produkte, Bestellungen und Kunden, ohne Transaktionsgebühren. Pro ergänzt die oben aufgeführten erweiterten Werkzeuge."
+        "answer": "Das kostenlose WCPOS-Plugin ist GPL-Software ohne Obergrenzen für Produkte, Bestellungen oder Kunden und ohne Transaktionsgebühren; es betreibt eine Kasse, und für weitere Kassen und die oben aufgeführten Werkzeuge braucht es Pro."
       },
       "yearlyVsLifetime": {
         "question": "Was ist der Unterschied zwischen Jährlich und Lebenslang?",

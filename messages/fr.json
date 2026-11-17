@@ -196,7 +196,7 @@
       "fallback": "Consultez les tarifs complets pour les options Pro actuelles. Aucun frais par caisse.",
       "free": {
         "title": "Gratuit",
-        "description": "Gratuit pour toujours. Aucun frais de transaction. Aucune limite.",
+        "description": "Gratuit pour toujours. Une caisse, sans frais de transaction, sans plafond de produits ni de commandes.",
         "features": {
           "f1": "Synchronisation WooCommerce",
           "f2": "Recherche et grille de produits",
@@ -479,7 +479,7 @@
       "title": "Foire aux questions",
       "freePlugin": {
         "question": "L'extension gratuite est-elle limitée ?",
-        "answer": "Non. L'extension gratuite WCPOS est un logiciel GPL doté de toutes les fonctionnalités de point de vente — produits, commandes et clients illimités, et aucuns frais de transaction. Pro ajoute les outils avancés listés ci-dessus."
+        "answer": "L'extension gratuite WCPOS est un logiciel GPL sans plafond de produits, de commandes ou de clients et sans frais de transaction ; elle fait fonctionner une caisse, et davantage de caisses ainsi que les outils listés ci-dessus nécessitent Pro."
       },
       "yearlyVsLifetime": {
         "question": "Quelle est la différence entre Annuel et À vie ?",

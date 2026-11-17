@@ -196,7 +196,7 @@
       "fallback": "Consulta il listino completo per le opzioni Pro attuali. Nessun costo per registratore.",
       "free": {
         "title": "Gratis",
-        "description": "Gratis per sempre. Nessuna commissione sulle transazioni. Nessun limite.",
+        "description": "Gratis per sempre. Una cassa, nessuna commissione sulle transazioni, nessun limite su prodotti o ordini.",
         "features": {
           "f1": "Sincronizzazione WooCommerce",
           "f2": "Ricerca prodotti e griglia",
@@ -479,7 +479,7 @@
       "title": "Domande frequenti",
       "freePlugin": {
         "question": "La versione gratuita del plugin è limitata?",
-        "answer": "No. Il plugin gratuito WCPOS è software GPL con funzionalità complete di punto vendita — prodotti, ordini e clienti illimitati e nessuna commissione sulle transazioni. Pro aggiunge gli strumenti avanzati elencati sopra."
+        "answer": "Il plugin gratuito WCPOS è software GPL senza limiti su prodotti, ordini o clienti e senza commissioni sulle transazioni; gestisce una cassa, e per più casse e gli strumenti elencati sopra serve Pro."
       },
       "yearlyVsLifetime": {
         "question": "Qual è la differenza tra Annuale e A vita?",

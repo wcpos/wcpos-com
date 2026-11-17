@@ -196,7 +196,7 @@
       "fallback": "Consulta los precios completos para las opciones Pro actuales. Sin tarifas por caja.",
       "free": {
         "title": "Gratis",
-        "description": "Gratis para siempre. Sin comisiones por transacción. Sin límites.",
+        "description": "Gratis para siempre. Una caja, sin comisiones por transacción, sin topes de productos ni pedidos.",
         "features": {
           "f1": "Sincronización con WooCommerce",
           "f2": "Búsqueda y cuadrícula de productos",
@@ -479,7 +479,7 @@
       "title": "Preguntas frecuentes",
       "freePlugin": {
         "question": "¿Está limitado el plugin gratuito?",
-        "answer": "No. El plugin gratuito de WCPOS es software GPL con funciones completas de punto de venta: productos, pedidos y clientes ilimitados, y sin comisiones por transacción. Pro añade las herramientas avanzadas indicadas arriba."
+        "answer": "El plugin gratuito de WCPOS es software GPL sin topes de productos, pedidos ni clientes y sin comisiones por transacción; funciona con una caja, y para más cajas y las herramientas indicadas arriba se necesita Pro."
       },
       "yearlyVsLifetime": {
         "question": "¿Cuál es la diferencia entre Anual y De por vida?",

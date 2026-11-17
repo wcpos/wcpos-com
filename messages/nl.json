@@ -196,7 +196,7 @@
       "fallback": "Bekijk de volledige prijzen voor de huidige Pro-opties. Geen kosten per kassa.",
       "free": {
         "title": "Gratis",
-        "description": "Voor altijd gratis. Geen transactiekosten. Geen limieten.",
+        "description": "Voor altijd gratis. Eén kassa, geen transactiekosten, geen limieten op producten of bestellingen.",
         "features": {
           "f1": "WooCommerce-synchronisatie",
           "f2": "Productzoekfunctie en raster",
@@ -479,7 +479,7 @@
       "title": "Veelgestelde vragen",
       "freePlugin": {
         "question": "Is de gratis plugin beperkt?",
-        "answer": "Nee. De gratis WCPOS-plugin is GPL-software met volledige kassafuncties — onbeperkt producten, bestellingen en klanten, en geen transactiekosten. Pro voegt de hierboven genoemde geavanceerde tools toe."
+        "answer": "De gratis WCPOS-plugin is GPL-software zonder limieten op producten, bestellingen of klanten en zonder transactiekosten; hij draait één kassa, en voor meer kassa’s en de hierboven genoemde tools is Pro nodig."
       },
       "yearlyVsLifetime": {
         "question": "Wat is het verschil tussen Jaarlijks en Levenslang?",
