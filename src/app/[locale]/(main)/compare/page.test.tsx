@@ -90,6 +90,17 @@ describe('ComparePage', () => {
     ).toHaveAttribute('href', '/compare/foosales')
   })
 
+  it('tightens the gap between the hero and the disclosure card', async () => {
+    render(await ComparePage({ params }))
+
+    const h1 = screen.getByRole('heading', { level: 1 })
+    expect(h1.closest('section')).toHaveClass('pb-6')
+    const disclosure = screen.getByRole('heading', {
+      name: 'Translated disclosure title',
+    })
+    expect(disclosure.closest('section')).toHaveClass('pt-0')
+  })
+
   it('emits ItemList JSON-LD naming all comparisons', async () => {
     const { container } = render(await ComparePage({ params }))
     const script = container.querySelector('script[type="application/ld+json"]')
