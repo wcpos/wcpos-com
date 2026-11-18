@@ -1981,7 +1981,7 @@
       },
       "shortAnswer": {
         "title": "Het korte antwoord",
-        "wcpos": "WCPOS draait binnen je WordPress-site — je verkoopdata verlaat je winkel nooit, de gratis versie is echt onbeperkt (producten, klanten, contante verkopen — nergens een limiet op), en betaalde licenties zijn eenmalige betalingen die blijven werken, ook nadat ze zijn verlopen. Je kassa kan nooit worden uitgeschakeld.",
+        "wcpos": "WCPOS draait binnen je WordPress-site — je verkoopdata verlaat je winkel nooit, de gratis versie heeft geen limieten op producten, klanten of bestellingen en biedt één kassa (meer met Pro), en betaalde licenties zijn eenmalige betalingen die blijven werken, ook nadat ze zijn verlopen. Je kassa kan nooit worden uitgeschakeld.",
         "oliver": "Oliver POS synchroniseert je winkel met zijn cloudplatform — je krijgt een verzorgde kassa-app, kioskmodus en een hardware-ecosysteem, maar je bent afhankelijk van de servers van Oliver, en het gratis abonnement stopt bij 20 producten en 50 transacties per maand."
       },
       "glance": {
@@ -2192,7 +2192,7 @@
         },
         "trial": {
           "question": "Kan ik beide gratis proberen?",
-          "answer": "Ja. De gratis plugin van WCPOS is onbeperkt, en de volledige Pro-ervaring vind je op demo.wcpos.com/pos. Het gratis abonnement van Oliver (20 producten en 50 transacties per maand) werkt als proefversie."
+          "answer": "Ja. De gratis plugin van WCPOS heeft geen limieten op producten, klanten of bestellingen en biedt één kassa, en de volledige Pro-ervaring vind je op demo.wcpos.com/pos. Het gratis abonnement van Oliver (20 producten en 50 transacties per maand) werkt als proefversie."
         }
       },
       "footer": {

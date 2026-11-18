@@ -1981,7 +1981,7 @@
       },
       "shortAnswer": {
         "title": "A resposta curta",
-        "wcpos": "O WCPOS funciona dentro do seu site WordPress — os dados de vendas nunca saem da sua loja, a versão gratuita é verdadeiramente ilimitada (produtos, clientes, vendas em dinheiro — sem limites em nada), e as licenças pagas são pagamentos únicos que continuam a funcionar mesmo depois de expirarem. O seu ponto de venda nunca pode ser desligado.",
+        "wcpos": "O WCPOS funciona dentro do seu site WordPress — os dados de vendas nunca saem da sua loja, a versão gratuita não tem limites de produtos, clientes ou pedidos e oferece uma caixa (mais com Pro), e as licenças pagas são pagamentos únicos que continuam a funcionar mesmo depois de expirarem. O seu ponto de venda nunca pode ser desligado.",
         "oliver": "O Oliver POS sincroniza a sua loja com a plataforma na nuvem dele — recebe uma aplicação de caixa bem acabada, modo quiosque e um ecossistema de hardware, mas fica dependente dos servidores da Oliver, e o plano gratuito limita-se a 20 produtos e 50 transações por mês."
       },
       "glance": {
@@ -2192,7 +2192,7 @@
         },
         "trial": {
           "question": "Posso experimentar os dois gratuitamente?",
-          "answer": "Sim. O plugin gratuito do WCPOS é ilimitado, e a experiência Pro completa está em demo.wcpos.com/pos. O plano gratuito da Oliver (20 produtos e 50 transações por mês) serve como período de teste."
+          "answer": "Sim. O plugin gratuito do WCPOS não tem limites de produtos, clientes ou pedidos e oferece uma caixa, e a experiência Pro completa está em demo.wcpos.com/pos. O plano gratuito da Oliver (20 produtos e 50 transações por mês) serve como período de teste."
         }
       },
       "footer": {
