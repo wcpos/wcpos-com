@@ -117,9 +117,10 @@ export default async function ExtensionsPage({
                       <TextLink asChild>
                         <a
                           href={docsUrl}
-                          className="mt-4 inline-flex items-center gap-1 font-medium"
+                          aria-label={t('docsLink', { name })}
+                          className="mt-4 inline-flex items-center gap-1 whitespace-nowrap font-medium"
                         >
-                          {t('docsLink', { name })}
+                          {t('docsLinkShort')}
                           <ArrowRight className="h-4 w-4" aria-hidden />
                         </a>
                       </TextLink>

@@ -1752,6 +1752,7 @@
     },
     "proTag": "Pro",
     "docsLink": "{name} 문서",
+    "docsLinkShort": "문서",
     "englishNotice": "확장 기능의 이름과 설명은 확장 기능 카탈로그에서 가져오며 영어로 표시됩니다.",
     "allDocsLink": "문서에서 모든 확장 기능 보기"
   },

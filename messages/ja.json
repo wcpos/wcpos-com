@@ -1752,6 +1752,7 @@
     },
     "proTag": "Pro",
     "docsLink": "{name}のドキュメント",
+    "docsLinkShort": "ドキュメント",
     "englishNotice": "拡張機能の名前と説明は拡張機能カタログに基づき、英語で表示されます。",
     "allDocsLink": "ドキュメントですべての拡張機能を見る"
   },

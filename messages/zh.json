@@ -1752,6 +1752,7 @@
     },
     "proTag": "Pro",
     "docsLink": "{name} 文档",
+    "docsLinkShort": "文档",
     "englishNotice": "扩展名称和描述来自扩展目录，以英语显示。",
     "allDocsLink": "文档中的所有扩展"
   },

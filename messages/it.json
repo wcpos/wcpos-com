@@ -1752,6 +1752,7 @@
     },
     "proTag": "Pro",
     "docsLink": "Documentazione di {name}",
+    "docsLinkShort": "Documentazione",
     "englishNotice": "I nomi e le descrizioni delle estensioni provengono dal catalogo delle estensioni e sono mostrati in inglese.",
     "allDocsLink": "Tutte le estensioni nella documentazione"
   },
