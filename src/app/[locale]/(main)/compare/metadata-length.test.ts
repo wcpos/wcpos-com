@@ -73,3 +73,12 @@ describe('/compare detail page titles', () => {
     }
   )
 })
+
+describe('/compare disclosure attribution', () => {
+  it.each(LOCALES)('$locale names WCPOS and no handle', ({ messages }) => {
+    const body = messages.compare.disclosure.body
+    expect(body).not.toMatch(/kilbot/i)
+    expect(body).toContain('WCPOS')
+    expect(body).toContain('WooCommerce POS')
+  })
+})
