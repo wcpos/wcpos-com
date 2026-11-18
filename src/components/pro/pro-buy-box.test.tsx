@@ -208,6 +208,14 @@ describe('ProBuyBox', () => {
     })
   })
 
+  it('renders the title as a level-2 heading', () => {
+    renderBuyBox()
+
+    const heading = screen.getByRole('heading', { level: 2, name: 'Get Pro' })
+    expect(heading).toBeInTheDocument()
+    expect(screen.getByTestId('pro-buy-box')).toContainElement(heading)
+  })
+
   it('puts each price on its own full-width row below sm', () => {
     renderBuyBox()
 
