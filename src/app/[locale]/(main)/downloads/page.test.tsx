@@ -208,6 +208,35 @@ describe('DownloadsPage', () => {
     expect(app.downloadUrl).toMatch(/\/downloads$/)
     expect(app.url).toBe('https://wcpos.com')
     expect(app.description).toBe(enMessages.downloads.meta.description)
+    expect(app.softwareVersion).toBe('1.2.3')
+    expect(app.softwareRequirements).toBeTruthy()
+  })
+
+  it('leaves softwareVersion out of the JSON-LD when there is no free version', async () => {
+    const { versionFor } = await import('@/services/core/external/versions-client')
+    vi.mocked(versionFor).mockImplementation((_versions, label) =>
+      label === 'free' ? null : '1.2.3',
+    )
+    try {
+      const { default: DownloadsPage } = await import(
+        '@/app/[locale]/(main)/downloads/page'
+      )
+
+      const { container } = render(
+        await DownloadsPage({ params: Promise.resolve({ locale: 'en' }) }),
+      )
+
+      const app = Array.from(
+        container.querySelectorAll('script[type="application/ld+json"]'),
+      )
+        .map((script) => JSON.parse(script.textContent ?? '{}'))
+        .find((data) => data['@type'] === 'SoftwareApplication')
+
+      expect(app).not.toHaveProperty('softwareVersion')
+      expect(app.softwareRequirements).toBeTruthy()
+    } finally {
+      vi.mocked(versionFor).mockImplementation(() => '1.2.3')
+    }
   })
 
   it('points the SoftwareApplication JSON-LD at the locale on /de', async () => {

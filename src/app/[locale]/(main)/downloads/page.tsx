@@ -182,6 +182,7 @@ export default async function DownloadsPage({
               url: localeUrl(locale, '/'),
               description: metaT('description'),
               downloadUrl: localeUrl(locale, '/downloads'),
+              ...(freeVersion ? { softwareVersion: freeVersion } : {}),
             })),
           }}
         />
