@@ -5,7 +5,7 @@ import OliverComparePage, { generateMetadata } from './page'
 // The page reads ~100 keys; the test asserts structure, so identity-with-
 // overrides keeps the mock small (matching the pattern in pro/page.test.tsx).
 vi.mock('next-intl/server', () => ({
-  getTranslations: vi.fn(async () => (key: string) => {
+  getTranslations: vi.fn(async () => Object.assign((key: string) => {
     const messages: Record<string, string> = {
       'oliver.metadata.title': 'Translated Oliver metadata title',
       'oliver.metadata.description': 'Translated Oliver metadata description',
@@ -16,9 +16,11 @@ vi.mock('next-intl/server', () => ({
       'oliver.glance.rows.freePlan.oliver': 'Translated Oliver free plan cell',
     }
     return messages[key] ?? key
-  }),
+  }, { rich: (key: string) => key })),
   setRequestLocale: vi.fn(),
 }))
+
+vi.mock('@/i18n/navigation', () => ({ Link: 'a' }))
 
 vi.mock('@/components/home/cta-section', () => ({
   CtaSection: () => <div data-testid="cta-section" />,
