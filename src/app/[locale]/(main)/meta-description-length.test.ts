@@ -31,6 +31,8 @@ const KEYS = {
     m.downloads.meta.description as unknown,
   'pro.metadata.description': (m: Messages) =>
     m.pro.metadata.description as unknown,
+  'support.meta.description': (m: Messages) =>
+    m.support.meta.description as unknown,
 } as const
 
 const CASES = LOCALES.flatMap(({ locale, messages, limit }) =>
@@ -73,6 +75,22 @@ describe('home and /downloads meta descriptions', () => {
       const title = messages.support.meta.title
       expect(title).toContain('WooCommerce')
       expect([...title].length).toBeLessThanOrEqual(52)
+    }
+  )
+
+  it.each(LOCALES)(
+    '$locale support.meta.description names WooCommerce',
+    ({ messages }) => {
+      expect(messages.support.meta.description).toContain('WooCommerce')
+    }
+  )
+
+  it.each(LOCALES)(
+    '$locale support.chat.hero.title names WooCommerce in 50 characters',
+    ({ messages }) => {
+      const title = messages.support.chat.hero.title
+      expect(title).toContain('WooCommerce')
+      expect([...title].length).toBeLessThanOrEqual(50)
     }
   )
 

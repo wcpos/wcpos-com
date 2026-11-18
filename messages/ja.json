@@ -1858,11 +1858,11 @@
   "support": {
     "meta": {
       "title": "ヘルプとサポート – WooCommerce用POS",
-      "description": "WCPOSについて何でも質問すると、ドキュメントに基づいた即時回答を受け取れます。Discordでコミュニティと話すこともできます。"
+      "description": "WooCommerce POSのヘルプ：WCPOSの設定、ライセンス、スキャナー、プリンター、同期について質問すると、ドキュメントから即座に回答が得られます。Discordでも質問できます。"
     },
     "chat": {
       "hero": {
-        "title": "どのようにお手伝いできますか？",
+        "title": "WooCommerce POSのヘルプとサポート",
         "subtitle": "WCPOSについて何でも質問してください — セットアップ、ライセンス、ハードウェア、同期、印刷など。ドキュメントに基づいた回答をすぐに表示します。"
       },
       "examples": {

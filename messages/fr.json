@@ -1858,11 +1858,11 @@
   "support": {
     "meta": {
       "title": "Aide et assistance – Point de vente pour WooCommerce",
-      "description": "Posez vos questions sur WCPOS et obtenez une réponse instantanée tirée de notre documentation, ou discutez avec la communauté sur Discord."
+      "description": "Aide WooCommerce POS : configuration de WCPOS, licences, scanners, imprimantes ou synchro. Réponse immédiate de nos docs, ou posez la question sur Discord."
     },
     "chat": {
       "hero": {
-        "title": "Comment pouvons-nous vous aider ?",
+        "title": "Aide et assistance pour WooCommerce POS",
         "subtitle": "Posez n’importe quelle question sur WCPOS — configuration, licences, matériel, synchronisation, impression. Vous recevrez une réponse instantanée issue de notre documentation."
       },
       "examples": {

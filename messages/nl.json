@@ -1858,11 +1858,11 @@
   "support": {
     "meta": {
       "title": "Hulp & ondersteuning – Kassasysteem voor WooCommerce",
-      "description": "Vraag alles over WCPOS en krijg direct antwoord uit onze documentatie, of chat met de community op Discord."
+      "description": "Hulp bij WooCommerce POS: vraag over WCPOS-installatie, licenties, scanners, printers of synchronisatie en krijg direct antwoord uit onze docs, of op Discord."
     },
     "chat": {
       "hero": {
-        "title": "Waarmee kunnen we helpen?",
+        "title": "Hulp en ondersteuning voor WooCommerce POS",
         "subtitle": "Vraag alles over WCPOS — installatie, licenties, hardware, synchronisatie, afdrukken. Je krijgt direct een antwoord op basis van onze documentatie."
       },
       "examples": {

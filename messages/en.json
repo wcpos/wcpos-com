@@ -1858,11 +1858,11 @@
   "support": {
     "meta": {
       "title": "WooCommerce POS Help & Support",
-      "description": "Ask anything about WCPOS and get an instant answer from our docs, or chat with the community on Discord."
+      "description": "WooCommerce POS help: ask about WCPOS setup, licensing, scanners, printers or syncing and get an instant answer from our docs, or ask on Discord."
     },
     "chat": {
       "hero": {
-        "title": "How can we help?",
+        "title": "WooCommerce POS help & support",
         "subtitle": "Ask anything about WCPOS — setup, licensing, hardware, syncing, printing. You'll get an instant answer drawn from our docs."
       },
       "examples": {

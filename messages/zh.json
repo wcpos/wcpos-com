@@ -1858,11 +1858,11 @@
   "support": {
     "meta": {
       "title": "帮助与支持 – WooCommerce 销售点系统",
-      "description": "关于 WCPOS 的任何问题都可以提问，并从我们的文档中获得即时答案，或在 Discord 上与社区交流。"
+      "description": "WooCommerce POS 帮助：询问 WCPOS 的设置、授权、扫描器、打印机或同步问题，从我们的文档中获得即时答案，或在 Discord 上提问。"
     },
     "chat": {
       "hero": {
-        "title": "我们能帮您什么？",
+        "title": "WooCommerce POS 帮助与支持",
         "subtitle": "询问关于 WCPOS 的任何问题——设置、授权、硬件、同步、打印。您会从我们的文档中获得即时答案。"
       },
       "examples": {
