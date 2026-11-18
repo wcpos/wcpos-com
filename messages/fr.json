@@ -1711,9 +1711,9 @@
         },
         "pro": {
           "title": "Besoin de plus ? Passez à Pro",
-          "body": "Un plugin sous licence qui ajoute les paiements par terminal, les remboursements et le contrôle du stock sur la même base.",
-          "cardTitle": "Débloquez toute la caisse",
-          "cardBody": "Paiements par terminal, remboursements, stock et prix, gestion des commandes, rapports complets, multi-boutique et assistance prioritaire sur Discord.",
+          "body": "Un plugin sous licence qui ajoute davantage de caisses et plusieurs boutiques, les paiements par terminal, les remboursements et le contrôle du stock sur la même base.",
+          "cardTitle": "Débloquez davantage de caisses",
+          "cardBody": "Davantage de caisses et plusieurs boutiques, paiements par terminal, remboursements, stock et prix, gestion des commandes, rapports complets et assistance prioritaire sur Discord.",
           "plansCta": "Voir les offres Pro",
           "signInCta": "Connectez-vous pour télécharger"
         }

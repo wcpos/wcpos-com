@@ -1711,9 +1711,9 @@
         },
         "pro": {
           "title": "Möchtest du mehr? Wechsle zu Pro",
-          "body": "Ein lizenziertes Plugin, das auf derselben Grundlage Terminalzahlungen, Erstattungen und Bestandskontrolle ergänzt.",
-          "cardTitle": "Die vollständige Kasse freischalten",
-          "cardBody": "Terminalzahlungen, Erstattungen, Bestand & Preise, Bestellverwaltung, vollständige Berichte, Multi-Store und vorrangiger Discord-Support.",
+          "body": "Ein lizenziertes Plugin, das auf derselben Grundlage weitere Kassen und mehrere Filialen, Terminalzahlungen, Erstattungen und Bestandskontrolle ergänzt.",
+          "cardTitle": "Weitere Kassen freischalten",
+          "cardBody": "Weitere Kassen & mehrere Filialen, Terminalzahlungen, Erstattungen, Bestand & Preise, Bestellverwaltung, vollständige Berichte und vorrangiger Discord-Support.",
           "plansCta": "Pro-Tarife ansehen",
           "signInCta": "Anmelden zum Herunterladen"
         }
