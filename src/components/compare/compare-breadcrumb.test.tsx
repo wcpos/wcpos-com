@@ -52,6 +52,8 @@ describe('CompareBreadcrumb', () => {
     )
 
     const nav = screen.getByRole('navigation', { name: 'Breadcrumb' })
+    expect(nav).toHaveClass('justify-center', 'max-sm:justify-start')
+    expect(nav.querySelector('ol')).toHaveClass('justify-center', 'max-sm:justify-start')
     const items = nav.querySelectorAll('li')
     expect(items[1]).toHaveClass('max-sm:hidden')
     expect(items[2]).toHaveAttribute('aria-current', 'page')
