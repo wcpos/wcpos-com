@@ -2356,7 +2356,7 @@
       },
       "shortAnswer": {
         "title": "La risposta in breve",
-        "wcpos": "WCPOS è una cassa basata direttamente su WooCommerce: vende dai vostri prodotti e dalle vostre scorte WooCommerce e ogni vendita è un ordine WooCommerce, quindi non c'è nulla da sincronizzare. Funziona in qualsiasi browser moderno, come app desktop per Windows, macOS e Linux e come app iOS e Android (beta). La versione gratuita non pone limiti a prodotti, ordini o clienti e Pro aggiunge gestione multi-negozio, gli altri gateway di pagamento WooCommerce del vostro negozio e integrazioni con i terminali di pagamento, tra cui Square Terminal, con un pagamento una tantum dopo il quale nulla si disattiva.",
+        "wcpos": "WCPOS è una cassa basata direttamente su WooCommerce: vende dai vostri prodotti e dalle vostre scorte WooCommerce e ogni vendita è un ordine WooCommerce, quindi non c'è un secondo catalogo da mantenere sincronizzato. Funziona in qualsiasi browser moderno, come app desktop per Windows, macOS e Linux e come app iOS e Android (beta). La versione gratuita non pone limiti a prodotti, ordini o clienti e Pro aggiunge gestione multi-negozio, gli altri gateway di pagamento WooCommerce del vostro negozio e integrazioni con i terminali di pagamento, tra cui Square Terminal, con un pagamento una tantum dopo il quale nulla si disattiva.",
         "square": "Square for WooCommerce collega due sistemi: l'app Square Point of Sale sui dispositivi iOS e Android o integrata in Square Register, l'hardware di Square, e il vostro negozio WooCommerce, con l'estensione che sincronizza i dati di prodotti e scorte tra i due. Square offre un piano gratuito, Tap to Pay su iPhone e Android e pagamenti con carta offline. Ma gli ordini effettuati nel POS di Square non vengono sincronizzati con WooCommerce: le variazioni delle scorte dovute alle vendite di persona arrivano in WooCommerce al successivo controllo programmato (l'intervallo predefinito è un'ora) e l'estensione collega una sede Square alla volta."
       },
       "glance": {
@@ -2372,7 +2372,7 @@
           },
           "catalog": {
             "label": "Prodotti e scorte",
-            "wcpos": "Vende dai vostri prodotti e dalle vostre scorte WooCommerce; nulla da sincronizzare",
+            "wcpos": "Vende dai vostri prodotti e dalle vostre scorte WooCommerce; nessun secondo catalogo da sincronizzare",
             "square": "Dati di prodotti e scorte sincronizzati tra Square e WooCommerce; intervallo predefinito di un'ora"
           },
           "devices": {
@@ -2456,7 +2456,7 @@
         "title": "Quale scegliere?",
         "wcpos": {
           "title": "Scegliete WCPOS se:",
-          "body": "Volete che ogni vendita, online e di persona, sia un ordine WooCommerce proveniente da un unico catalogo senza nulla da sincronizzare, gestite più di un negozio, vendete fuori dagli otto Paesi di Square, volete una cassa in un browser web o nelle app desktop per Windows, macOS e Linux oppure volete usare un gateway di pagamento o un terminale di pagamento diverso da Square."
+          "body": "Volete che ogni vendita, online e di persona, sia un ordine WooCommerce proveniente da un unico catalogo, senza un secondo catalogo da mantenere sincronizzato, gestite più di un negozio, vendete fuori dagli otto Paesi di Square, volete una cassa in un browser web o nelle app desktop per Windows, macOS e Linux oppure volete usare un gateway di pagamento o un terminale di pagamento diverso da Square."
         },
         "square": {
           "title": "Scegliete Square for WooCommerce se:",

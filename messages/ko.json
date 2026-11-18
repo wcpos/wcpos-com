@@ -2356,7 +2356,7 @@
       },
       "shortAnswer": {
         "title": "간단한 결론",
-        "wcpos": "WCPOS는 WooCommerce 자체에 구축된 계산대입니다. WooCommerce 상품과 재고를 사용해 판매하고 모든 판매가 WooCommerce 주문이 되므로 동기화할 것이 없습니다. 모든 최신 브라우저와 Windows, macOS 및 Linux 데스크톱 앱, iOS 및 Android 앱(베타)에서 작동합니다. 무료 버전에는 상품, 주문, 고객 수의 제한이 없으며, Pro는 다중 매장 관리, 매장의 다른 WooCommerce 결제 게이트웨이, Square Terminal을 포함한 카드 단말기 연동을 일회성 결제로 추가합니다. 이후 기능이 꺼지지 않습니다.",
+        "wcpos": "WCPOS는 WooCommerce 자체에 구축된 계산대입니다. WooCommerce 상품과 재고를 사용해 판매하고 모든 판매가 WooCommerce 주문이 되므로 동기화를 유지해야 할 두 번째 카탈로그가 없습니다. 모든 최신 브라우저와 Windows, macOS 및 Linux 데스크톱 앱, iOS 및 Android 앱(베타)에서 작동합니다. 무료 버전에는 상품, 주문, 고객 수의 제한이 없으며, Pro는 다중 매장 관리, 매장의 다른 WooCommerce 결제 게이트웨이, Square Terminal을 포함한 카드 단말기 연동을 일회성 결제로 추가합니다. 이후 기능이 꺼지지 않습니다.",
         "square": "Square for WooCommerce는 iOS 및 Android 기기의 Square Point of Sale 앱 또는 Square 자체 하드웨어인 Square Register에 내장된 Square Point of Sale과 WooCommerce 매장이라는 두 시스템을 연결하며, 확장 프로그램은 둘 사이의 상품 및 재고 데이터를 동기화합니다. Square에는 무료 요금제, iPhone과 Android의 Tap to Pay, 오프라인 카드 결제가 있습니다. 하지만 Square의 POS에서 생성한 주문은 WooCommerce에 동기화되지 않습니다. 대면 판매로 인한 재고 변경은 다음 예정된 확인 때 WooCommerce에 반영되고(기본 간격은 1시간), 확장 프로그램은 한 번에 Square 위치 한 곳만 연결합니다."
       },
       "glance": {
@@ -2372,7 +2372,7 @@
           },
           "catalog": {
             "label": "상품 및 재고",
-            "wcpos": "WooCommerce 상품과 재고에서 판매하며 동기화할 것이 없음",
+            "wcpos": "WooCommerce 상품과 재고에서 판매하며 동기화할 두 번째 카탈로그가 없음",
             "square": "Square와 WooCommerce 간 상품 및 재고 데이터 동기화; 기본 동기화 간격 1시간"
           },
           "devices": {
@@ -2456,7 +2456,7 @@
         "title": "무엇을 선택해야 할까요?",
         "wcpos": {
           "title": "이런 경우 WCPOS를 선택하세요:",
-          "body": "온라인과 대면의 모든 판매가 동기화할 필요 없는 단일 카탈로그의 WooCommerce 주문이 되기를 원하거나, 매장을 둘 이상 운영하거나, Square의 8개국 밖에서 판매하거나, 웹 브라우저나 Windows, macOS 및 Linux 데스크톱 앱에서 계산대를 사용하고 싶거나, Square 이외의 결제 게이트웨이 또는 카드 단말기를 사용하고 싶다면."
+          "body": "온라인과 대면의 모든 판매가 동기화를 유지해야 할 두 번째 카탈로그 없이 단일 카탈로그의 WooCommerce 주문이 되기를 원하거나, 매장을 둘 이상 운영하거나, Square의 8개국 밖에서 판매하거나, 웹 브라우저나 Windows, macOS 및 Linux 데스크톱 앱에서 계산대를 사용하고 싶거나, Square 이외의 결제 게이트웨이 또는 카드 단말기를 사용하고 싶다면."
         },
         "square": {
           "title": "이런 경우 Square for WooCommerce를 선택하세요:",

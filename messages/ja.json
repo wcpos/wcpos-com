@@ -2356,7 +2356,7 @@
       },
       "shortAnswer": {
         "title": "結論を先に",
-        "wcpos": "WCPOSはWooCommerce自体に組み込まれたレジです。WooCommerceの商品と在庫を使って販売し、すべての販売がWooCommerceの注文になるため、同期するものはありません。あらゆるモダンブラウザ、Windows、macOS、Linuxのデスクトップアプリ、iOSとAndroidのアプリ（ベータ版）で動作します。無料版には商品・注文・顧客数の上限がなく、Proは複数店舗管理、店舗のその他のWooCommerce決済ゲートウェイの利用、Square Terminalを含むカード端末連携を買い切り価格で追加します。後から機能が停止することはありません。",
+        "wcpos": "WCPOSはWooCommerce自体に組み込まれたレジです。WooCommerceの商品と在庫を使って販売し、すべての販売がWooCommerceの注文になるため、同期を保つ必要がある2つ目のカタログはありません。あらゆるモダンブラウザ、Windows、macOS、Linuxのデスクトップアプリ、iOSとAndroidのアプリ（ベータ版）で動作します。無料版には商品・注文・顧客数の上限がなく、Proは複数店舗管理、店舗のその他のWooCommerce決済ゲートウェイの利用、Square Terminalを含むカード端末連携を買い切り価格で追加します。後から機能が停止することはありません。",
         "square": "Square for WooCommerceは、iOSとAndroidデバイス上のSquare Point of Saleアプリ、またはSquare独自のハードウェアであるSquare Registerに内蔵されたSquare Point of SaleとWooCommerce店舗という二つのシステムをつなぎ、拡張機能が商品と在庫のデータを両者間で同期します。Squareには無料プラン、iPhoneとAndroidでのTap to Pay、オフラインでのカード決済があります。ただし、SquareのPOSで作成された注文はWooCommerceに同期されません。対面販売による在庫変更がWooCommerceに反映されるのは次回の予定された確認時（既定の間隔は1時間）であり、拡張機能が一度に連携するSquareの拠点は一つだけです。"
       },
       "glance": {
@@ -2372,7 +2372,7 @@
           },
           "catalog": {
             "label": "商品と在庫",
-            "wcpos": "WooCommerceの商品と在庫から販売し、同期は不要",
+            "wcpos": "WooCommerceの商品と在庫から販売し、同期が必要な2つ目のカタログはなし",
             "square": "商品と在庫のデータをSquareとWooCommerce間で同期。既定の同期間隔は1時間"
           },
           "devices": {
@@ -2456,7 +2456,7 @@
         "title": "どちらを選ぶべきか？",
         "wcpos": {
           "title": "WCPOSを選ぶべき場合：",
-          "body": "オンラインと対面のすべての販売を一つのカタログからのWooCommerce注文にして同期を不要にしたい、複数の店舗を運営する、Squareが対応する8か国以外で販売する、WebブラウザまたはWindows、macOS、Linuxのデスクトップアプリでレジを使いたい、あるいはSquare以外の決済ゲートウェイやカード端末を使いたい場合。"
+          "body": "オンラインと対面のすべての販売を一つのカタログからのWooCommerce注文にし、同期を保つ必要がある2つ目のカタログをなくしたい、複数の店舗を運営する、Squareが対応する8か国以外で販売する、WebブラウザまたはWindows、macOS、Linuxのデスクトップアプリでレジを使いたい、あるいはSquare以外の決済ゲートウェイやカード端末を使いたい場合。"
         },
         "square": {
           "title": "Square for WooCommerceを選ぶべき場合：",

@@ -2356,7 +2356,7 @@
       },
       "shortAnswer": {
         "title": "Het korte antwoord",
-        "wcpos": "WCPOS is een kassa die op WooCommerce zelf is gebouwd: je verkoopt vanuit je WooCommerce-producten en -voorraad, en elke verkoop is een WooCommerce-bestelling, dus er valt niets te synchroniseren. Het werkt in elke moderne browser, als desktopapps voor Windows, macOS en Linux en als iOS- en Android-apps (bèta). De gratis versie heeft geen limieten op producten, bestellingen of klanten en Pro voegt beheer van meerdere winkels, de andere WooCommerce-betaalgateways van je winkel en integraties met pinterminals, waaronder Square Terminal, toe voor een eenmalige betaling waarna niets wordt uitgeschakeld.",
+        "wcpos": "WCPOS is een kassa die op WooCommerce zelf is gebouwd: je verkoopt vanuit je WooCommerce-producten en -voorraad, en elke verkoop is een WooCommerce-bestelling, dus er is geen tweede catalogus om synchroon te houden. Het werkt in elke moderne browser, als desktopapps voor Windows, macOS en Linux en als iOS- en Android-apps (bèta). De gratis versie heeft geen limieten op producten, bestellingen of klanten en Pro voegt beheer van meerdere winkels, de andere WooCommerce-betaalgateways van je winkel en integraties met pinterminals, waaronder Square Terminal, toe voor een eenmalige betaling waarna niets wordt uitgeschakeld.",
         "square": "Square for WooCommerce verbindt twee systemen: Square Point of Sale als app op iOS- en Android-apparaten of ingebouwd in Square Register, de eigen hardware van Square, en je WooCommerce-winkel. De extensie synchroniseert product- en voorraadgegevens tussen beide. Square heeft een gratis abonnement, Tap to Pay op iPhone en Android en offline kaartbetalingen. Maar bestellingen die in de POS van Square zijn geplaatst, worden niet met WooCommerce gesynchroniseerd: voorraadwijzigingen door fysieke verkopen bereiken WooCommerce bij de volgende geplande controle (het standaardinterval is één uur) en de extensie koppelt telkens één Square-locatie."
       },
       "glance": {
@@ -2372,7 +2372,7 @@
           },
           "catalog": {
             "label": "Producten en voorraad",
-            "wcpos": "Verkoopt vanuit je WooCommerce-producten en -voorraad; niets te synchroniseren",
+            "wcpos": "Verkoopt vanuit je WooCommerce-producten en -voorraad; geen tweede catalogus om te synchroniseren",
             "square": "Product- en voorraadgegevens worden tussen Square en WooCommerce gesynchroniseerd; standaardinterval één uur"
           },
           "devices": {
@@ -2456,7 +2456,7 @@
         "title": "Welke moet je kiezen?",
         "wcpos": {
           "title": "Kies WCPOS als:",
-          "body": "Je wilt dat elke verkoop, online en fysiek, een WooCommerce-bestelling uit één catalogus zonder synchronisatie is, runt meer dan één winkel, verkoopt buiten de acht landen van Square, wilt een kassa in een webbrowser of in desktopapps voor Windows, macOS en Linux of wilt een andere betaalgateway of pinterminal dan Square gebruiken."
+          "body": "Je wilt dat elke verkoop, online en fysiek, een WooCommerce-bestelling uit één catalogus, zonder tweede catalogus om synchroon te houden, is, runt meer dan één winkel, verkoopt buiten de acht landen van Square, wilt een kassa in een webbrowser of in desktopapps voor Windows, macOS en Linux of wilt een andere betaalgateway of pinterminal dan Square gebruiken."
         },
         "square": {
           "title": "Kies Square for WooCommerce als:",

@@ -2356,7 +2356,7 @@
       },
       "shortAnswer": {
         "title": "The short answer",
-        "wcpos": "WCPOS is a register built on WooCommerce itself: it sells from your WooCommerce products and stock, and every sale is a WooCommerce order, so there is nothing to sync. It runs in any modern browser, as desktop apps for Windows, macOS and Linux, and as iOS and Android apps (beta). Its free version has no caps on products, orders, or customers, and Pro adds multi-store management, your store's other WooCommerce payment gateways and card-terminal integrations, Square Terminal among them, for a one-time payment that never switches off.",
+        "wcpos": "WCPOS is a register built on WooCommerce itself: it sells from your WooCommerce products and stock, and every sale is a WooCommerce order, so there is no second catalog to keep in sync. It runs in any modern browser, as desktop apps for Windows, macOS and Linux, and as iOS and Android apps (beta). Its free version has no caps on products, orders, or customers, and Pro adds multi-store management, your store's other WooCommerce payment gateways and card-terminal integrations, Square Terminal among them, for a one-time payment that never switches off.",
         "square": "Square for WooCommerce joins two systems: Square's Point of Sale, as an app on iOS and Android devices or built into Square Register, Square's own hardware, and your WooCommerce store, with the extension syncing product and inventory data between them. Square has a free plan, Tap to Pay on iPhone and Android, and offline card payments. But orders placed in Square's POS are not synced to WooCommerce: stock changes from in-person sales reach WooCommerce at the next scheduled check (the default interval is one hour), and the extension links one Square location at a time."
       },
       "glance": {
@@ -2372,7 +2372,7 @@
           },
           "catalog": {
             "label": "Products and stock",
-            "wcpos": "Sells from your WooCommerce products and stock; nothing to sync",
+            "wcpos": "Sells from your WooCommerce products and stock; no second catalog to sync",
             "square": "Product and inventory data synced between Square and WooCommerce; default sync interval one hour"
           },
           "devices": {
@@ -2456,7 +2456,7 @@
         "title": "Which should you choose?",
         "wcpos": {
           "title": "Choose WCPOS if:",
-          "body": "You want every sale, online and in person, to be a WooCommerce order sold from one catalog with nothing to sync, run more than one store, sell outside Square's eight countries, want a register in a web browser or in desktop apps for Windows, macOS and Linux, or want to use a payment gateway or card terminal other than Square."
+          "body": "You want every sale, online and in person, to be a WooCommerce order sold from one catalog, with no second catalog to keep in sync, run more than one store, sell outside Square's eight countries, want a register in a web browser or in desktop apps for Windows, macOS and Linux, or want to use a payment gateway or card terminal other than Square."
         },
         "square": {
           "title": "Choose Square for WooCommerce if:",
