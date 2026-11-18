@@ -18,11 +18,14 @@ export function ReleaseHistory({
   copy,
   locale,
   headingLevel,
+  openFeatureRelease,
 }: {
   releases: ReleaseEntry[]
   locale: string
   /** Renders each release's summary row as this heading level for the host page's outline; omitting it keeps the plain row. */
   headingLevel?: 2 | 3
+  /** Opens the newest x.y.0 release instead of the first row; falls back to the first row when none is listed. */
+  openFeatureRelease?: boolean
   copy: {
     latest: string
     fullHistory: string
@@ -35,6 +38,10 @@ export function ReleaseHistory({
   const hasExternalEnglishContent =
     locale.split('-')[0]?.toLowerCase() !== 'en' &&
     releases.some((release) => release.contentLocale === 'en')
+  const featureIndex = openFeatureRelease
+    ? releases.findIndex((release) => /^\d+\.\d+\.0$/.test(release.version))
+    : -1
+  const openIndex = featureIndex === -1 ? 0 : featureIndex
 
   return (
     <div className="mx-auto max-w-2xl">
@@ -46,7 +53,7 @@ export function ReleaseHistory({
       {releases.map((release, index) => (
         <Collapsible
           key={release.version}
-          defaultOpen={index === 0}
+          defaultOpen={index === openIndex}
           className="border-b"
           summaryClassName="py-4"
           summary={
