@@ -1,0 +1,140 @@
+WCPOS
+Downloads
+Pro
+Documentation
+Support
+Roadmap
+Sign In
+Extensions for WooCommerce POS
+
+Add card terminals, payment gateways, stock and coupon integrations, and multilingual catalogs to WCPOS. Each one links to its documentation.
+
+Card terminals and payments
+Mercado Pago Terminal for WooCommercePro
+
+Take card payments on a Mercado Pago Point Smart (1 or 2) terminal from WooCommerce and WooCommerce POS.
+
+Mercado Pago Terminal for WooCommerce documentation
+Mollie Terminal for WooCommercePro
+
+Adds Mollie Terminal support to WooCommerce for in-person payments.
+
+Mollie Terminal for WooCommerce documentation
+PayArc Terminal for WooCommercePro
+
+Adds PayArc Terminal support to WooCommerce for in-person payments.
+
+PayArc Terminal for WooCommerce documentation
+PayPal Reader for WooCommercePro
+
+Adds PayPal Reader support to WooCommerce for in-person payments.
+
+PayPal Reader for WooCommerce documentation
+Square Terminal for WooCommercePro
+
+Adds Square Terminal support to WooCommerce for in-person payments.
+
+Square Terminal for WooCommerce documentation
+Stripe Terminal for WooCommercePro
+
+Adds Stripe Terminal support to WooCommerce for in-person payments.
+
+Stripe Terminal for WooCommerce documentation
+SumUp Terminal for WooCommercePro
+
+Adds SumUp Terminal support to WooCommerce for in-person payments.
+
+SumUp Terminal for WooCommerce documentation
+Windcave Terminal for WooCommercePro
+
+Take in-person card payments on a Windcave terminal using HIT from the WooCommerce POS order-pay page.
+
+Windcave Terminal for WooCommerce documentation
+Email Invoice GatewayPro
+
+Send an invoice email to the customer with a link to pay for the order.
+
+Email Invoice Gateway documentation
+WCPOS Vipps MobilePayPro
+
+Adds Vipps and MobilePay payment support to WooCommerce POS via QR code or push notification.
+
+WCPOS Vipps MobilePay documentation
+Stock and coupons
+WCPOS ATUM IntegrationPro
+
+ATUM Multi-Inventory integration for WCPOS, linking inventory locations to POS stores.
+
+WCPOS ATUM Integration documentation
+WCPOS StoreApps Smart CouponsPro
+
+StoreApps Smart Coupons store credit compatibility for WCPOS receipts, order notes, and balance deductions.
+
+WCPOS StoreApps Smart Coupons documentation
+Multilingual stores
+WCPOS Polylang
+
+Filter WCPOS products by Polylang language and prevent duplicate translated products in POS sync.
+
+WCPOS Polylang documentation
+WCPOS WP Multilang
+
+Filter WCPOS products by WP Multilang language and prevent duplicate translated products in POS sync.
+
+WCPOS WP Multilang documentation
+WCPOS WPML
+
+Filter WCPOS products by WPML language and prevent duplicate translated products in POS sync.
+
+WCPOS WPML documentation
+
+Extension names and descriptions come from the extensions catalog and are shown in English.
+
+All extensions in the documentation
+PRODUCT
+Downloads
+WCPOS Pro
+Compare
+Roadmap
+Changelog
+Live Demo↗
+Extensions
+COMMUNITY
+Discord↗
+GitHub↗
+WordPress.org↗
+SUPPORT
+Documentation
+Support
+Status↗
+WordPress Forum↗
+COMPANY
+About
+Privacy
+Terms
+Refunds
+DOWNLOAD
+WordPress Plugin↗
+WCPOS for macOS↗
+WCPOS for Windows↗
+WCPOS for Linux↗
+WCPOS for iOS & iPad↗
+WCPOS for Android↗
+
+© 2026 WCPOS
+
+English
+Français
+Deutsch
+Español
+日本語
+中文
+Português
+Italiano
+Nederlands
+한국어
+
+We use an anonymous analytics cookie to understand how the site is used. No ads, no third-party tracking. Privacy policy
+
+Decline
+Accept
