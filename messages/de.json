@@ -172,7 +172,7 @@
         },
         "f2": {
           "title": "Reibungsloser Checkout",
-          "description": "Füge Artikel hinzu, wende Rabatte an, nimm Bargeld oder Kartenzahlungen über dein eigenes Zahlungsterminal an und teile eine Zahlung auf. Pro verbindet Kartenlesegeräte wie Stripe Terminal und SumUp."
+          "description": "Füge Artikel hinzu, wende Rabatte an, nimm Bargeld oder Kartenzahlungen über dein eigenes Zahlungsterminal an und teile eine Zahlung auf. Pro verbindet <link>Kartenlesegeräte</link> wie Stripe Terminal und SumUp."
         },
         "f3": {
           "title": "Kundenprofile",

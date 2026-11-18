@@ -172,7 +172,7 @@
         },
         "f2": {
           "title": "流畅的结账流程",
-          "description": "添加商品、应用折扣、接受现金或使用自己的支付终端收取卡款，并拆分付款。Pro 可连接 Stripe Terminal 和 SumUp 等读卡器。"
+          "description": "添加商品、应用折扣、接受现金或使用自己的支付终端收取卡款，并拆分付款。Pro 可连接 Stripe Terminal 和 SumUp 等<link>读卡器</link>。"
         },
         "f3": {
           "title": "客户资料",

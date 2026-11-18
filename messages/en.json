@@ -172,7 +172,7 @@
         },
         "f2": {
           "title": "Smooth checkout flow",
-          "description": "Add items, apply discounts, take cash or card on your own terminal, and split a payment. Pro connects card readers like Stripe Terminal and SumUp."
+          "description": "Add items, apply discounts, take cash or card on your own terminal, and split a payment. Pro connects <link>card readers</link> like Stripe Terminal and SumUp."
         },
         "f3": {
           "title": "Customer profiles",

@@ -172,7 +172,7 @@
         },
         "f2": {
           "title": "Fluxo de checkout fluido",
-          "description": "Adicione itens, aplique descontos, aceite dinheiro ou pagamentos com cartão no seu próprio terminal de pagamento e divida um pagamento. Pro liga leitores de cartões como Stripe Terminal e SumUp."
+          "description": "Adicione itens, aplique descontos, aceite dinheiro ou pagamentos com cartão no seu próprio terminal de pagamento e divida um pagamento. Pro liga <link>leitores de cartões</link> como Stripe Terminal e SumUp."
         },
         "f3": {
           "title": "Perfis de clientes",

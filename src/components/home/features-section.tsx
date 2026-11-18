@@ -8,10 +8,12 @@ import {
   Users,
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
+import { Link } from '@/i18n/navigation'
 import { Badge } from '@/components/ui/badge'
 import { FeatureCard } from '@/components/ui/feature-card'
 import { Section } from '@/components/ui/section'
 import { SectionHeading } from '@/components/ui/section-heading'
+import { TextLink } from '@/components/ui/text-link'
 
 type FeatureId = 'f1' | 'f2' | 'f3' | 'f4' | 'f5' | 'f6'
 
@@ -73,7 +75,15 @@ export function FeaturesSection() {
             title={t(`items.${feature.id}.title`)}
             badge={feature.pro && <Badge variant="pro">Pro</Badge>}
           >
-            {t(`items.${feature.id}.description`)}
+            {feature.id === 'f2'
+              ? t.rich('items.f2.description', {
+                  link: (chunks) => (
+                    <TextLink asChild>
+                      <Link href="/extensions">{chunks}</Link>
+                    </TextLink>
+                  ),
+                })
+              : t(`items.${feature.id}.description`)}
           </FeatureCard>
         ))}
       </ul>
