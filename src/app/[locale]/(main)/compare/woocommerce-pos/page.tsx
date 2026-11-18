@@ -152,6 +152,7 @@ export default async function WoocommerceComparePage({
         <SectionHeading
           as="h1"
           size="hero"
+          className="max-sm:text-left"
           title={t('woocommerce.hero.title')}
           subtitle={t('woocommerce.hero.subtitle')}
         />

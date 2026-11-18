@@ -157,6 +157,7 @@ export default async function FoosalesComparePage({
         <SectionHeading
           as="h1"
           size="hero"
+          className="max-sm:text-left"
           title={t('foosales.hero.title')}
           subtitle={t('foosales.hero.subtitle')}
         />

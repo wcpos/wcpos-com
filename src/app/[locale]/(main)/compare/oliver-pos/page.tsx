@@ -169,6 +169,7 @@ export default async function OliverComparePage({
         <SectionHeading
           as="h1"
           size="hero"
+          className="max-sm:text-left"
           title={t('oliver.hero.title')}
           subtitle={t('oliver.hero.subtitle')}
         />

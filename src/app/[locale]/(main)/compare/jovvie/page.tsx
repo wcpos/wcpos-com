@@ -129,6 +129,7 @@ export default async function JovvieComparePage({
         <SectionHeading
           as="h1"
           size="hero"
+          className="max-sm:text-left"
           title={t('jovvie.hero.title')}
           subtitle={t('jovvie.hero.subtitle')}
         />
