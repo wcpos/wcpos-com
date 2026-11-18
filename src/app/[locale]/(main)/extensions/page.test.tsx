@@ -17,6 +17,7 @@ vi.mock('next-intl/server', () => ({
         proTag: 'Pro',
         englishNotice: 'Translated English content notice',
         allDocsLink: 'Translated all extensions documentation',
+        docsLinkShort: 'Translated docs',
       }
       return key === 'docsLink' ? `Docs for ${values.name}` : messages[key] ?? key
     }
@@ -139,6 +140,16 @@ describe('ExtensionsPage', () => {
           'href', docsUrl
         )
       })
+    })
+  })
+
+  it('shows a short documentation link and keeps the extension name in its accessible name', async () => {
+    render(await ExtensionsPage({ params }))
+    EXTENSIONS.forEach(({ name, docsUrl }) => {
+      const link = screen.getByRole('link', { name: `Docs for ${name}` })
+      expect(link).toHaveAttribute('href', docsUrl)
+      expect(link.textContent).toBe('Translated docs')
+      expect(link.className).toContain('whitespace-nowrap')
     })
   })
 
