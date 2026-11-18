@@ -11,14 +11,15 @@ import type { Metadata } from 'next'
 
 const COMPARE_NAMESPACE = 'compare'
 
+// Order follows the hub lead, which names Square, FooSales and Oliver first.
 const COMPARISONS = [
+  { key: 'squareCard', href: '/compare/square' },
+  { key: 'foosalesCard', href: '/compare/foosales' },
   { key: 'oliverCard', href: '/compare/oliver-pos' },
   { key: 'woocommerceCard', href: '/compare/woocommerce-pos' },
-  { key: 'squareCard', href: '/compare/square' },
   { key: 'jovvieCard', href: '/compare/jovvie' },
   { key: 'viteposCard', href: '/compare/vitepos' },
   { key: 'yithCard', href: '/compare/yith-pos' },
-  { key: 'foosalesCard', href: '/compare/foosales' },
 ] as const
 
 export async function generateMetadata({

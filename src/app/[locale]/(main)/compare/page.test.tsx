@@ -67,16 +67,16 @@ vi.mock('@/i18n/navigation', () => ({
 const params = Promise.resolve({ locale: 'en' })
 
 const CARDS = [
+  { title: 'Translated Square card title', href: '/compare/square' },
+  { title: 'Translated FooSales card title', href: '/compare/foosales' },
   { title: 'Translated Oliver card title', href: '/compare/oliver-pos' },
   {
     title: 'Translated WooCommerce card title',
     href: '/compare/woocommerce-pos',
   },
-  { title: 'Translated Square card title', href: '/compare/square' },
   { title: 'Translated Jovvie card title', href: '/compare/jovvie' },
   { title: 'Translated Vitepos card title', href: '/compare/vitepos' },
   { title: 'Translated YITH card title', href: '/compare/yith-pos' },
-  { title: 'Translated FooSales card title', href: '/compare/foosales' },
 ]
 
 describe('ComparePage', () => {
@@ -99,6 +99,20 @@ describe('ComparePage', () => {
     expect(screen.queryAllByRole('link', { name: /card CTA/ })).toHaveLength(0)
   })
 
+  it('lists the cards in the order the hub lead names them', async () => {
+    render(await ComparePage({ params }))
+
+    const cardLinks = screen
+      .getAllByRole('heading', { level: 2 })
+      .map((heading) => heading.querySelector('a')?.getAttribute('href'))
+      .filter(Boolean)
+    expect(cardLinks.slice(0, 2)).toEqual([
+      '/compare/square',
+      '/compare/foosales',
+    ])
+    expect(cardLinks).toEqual(CARDS.map(({ href }) => href))
+  })
+
   it('links each card title to its comparison', async () => {
     render(await ComparePage({ params }))
 
@@ -119,7 +133,7 @@ describe('ComparePage', () => {
     const headings = screen
       .getAllByRole('heading')
       .map((heading) => heading.textContent)
-    const lastCard = headings.indexOf('Translated FooSales card title')
+    const lastCard = headings.indexOf('Translated YITH card title')
     const disclosure = headings.indexOf('Translated disclosure title')
     const method = headings.indexOf('Translated method title')
     expect(lastCard).toBeGreaterThan(-1)
@@ -135,30 +149,30 @@ describe('ComparePage', () => {
     expect(jsonLd['@type']).toBe('ItemList')
     expect(jsonLd.itemListElement).toHaveLength(7)
     expect(jsonLd.itemListElement[0].url).toBe(
-      'https://wcpos.com/compare/oliver-pos'
+      'https://wcpos.com/compare/square'
     )
     expect(jsonLd.itemListElement[1].url).toBe(
-      'https://wcpos.com/compare/woocommerce-pos'
+      'https://wcpos.com/compare/foosales'
     )
     expect(jsonLd.itemListElement[1].position).toBe(2)
     expect(jsonLd.itemListElement[2].url).toBe(
-      'https://wcpos.com/compare/square'
+      'https://wcpos.com/compare/oliver-pos'
     )
     expect(jsonLd.itemListElement[2].position).toBe(3)
     expect(jsonLd.itemListElement[3].url).toBe(
-      'https://wcpos.com/compare/jovvie'
+      'https://wcpos.com/compare/woocommerce-pos'
     )
     expect(jsonLd.itemListElement[3].position).toBe(4)
     expect(jsonLd.itemListElement[4].url).toBe(
-      'https://wcpos.com/compare/vitepos'
+      'https://wcpos.com/compare/jovvie'
     )
     expect(jsonLd.itemListElement[4].position).toBe(5)
     expect(jsonLd.itemListElement[5].url).toBe(
-      'https://wcpos.com/compare/yith-pos'
+      'https://wcpos.com/compare/vitepos'
     )
     expect(jsonLd.itemListElement[5].position).toBe(6)
     expect(jsonLd.itemListElement[6].url).toBe(
-      'https://wcpos.com/compare/foosales'
+      'https://wcpos.com/compare/yith-pos'
     )
     expect(jsonLd.itemListElement[6].position).toBe(7)
   })
