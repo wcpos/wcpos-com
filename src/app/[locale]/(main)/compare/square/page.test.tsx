@@ -117,4 +117,13 @@ describe('SquareComparePage', () => {
     expect(faq.compareDocumentPosition(cta) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
     expect(cta.compareDocumentPosition(footer) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
   })
+
+  it('puts the short answer before the disclosure and the disclosure before the glance table', async () => {
+    render(await SquareComparePage({ params }))
+    const answer = screen.getByRole('heading', { name: 'square.shortAnswer.title' })
+    const disclosure = screen.getByRole('heading', { name: 'disclosure.title' })
+    const glance = screen.getByRole('heading', { name: 'square.glance.title' })
+    expect(answer.compareDocumentPosition(disclosure) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+    expect(disclosure.compareDocumentPosition(glance) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+  })
 })
