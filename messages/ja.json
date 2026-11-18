@@ -1915,7 +1915,7 @@
       },
       "hero": {
         "title": "WooCommerce向けPOSシステムを比較",
-        "subtitle": "ウェブ上のWooCommerce POS比較記事は、自社を1位に据えるベンダーか、報酬額で順位を決めるアフィリエイトが書いたものばかりです。このページは違います。確かにベンダーが公開していますが、すべての事実に出典と日付を付けて検証可能にし、競合の方が適している場合はそう明言します。"
+        "subtitle": "WCPOSの開発元が執筆した、Square、FooSales、Oliver POSなどWooCommerce向けPOSの選択肢との出典・日付付きの比較です。"
       },
       "method": {
         "title": "この比較の作り方",
