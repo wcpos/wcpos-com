@@ -73,7 +73,7 @@ export async function generateMetadata({
   return marketingMetadata({
     locale,
     path: '/compare/foosales',
-    title: t('foosales.metadata.title'),
+    title: { absolute: t('foosales.metadata.title') },
     description: t('foosales.metadata.description'),
   })
 }

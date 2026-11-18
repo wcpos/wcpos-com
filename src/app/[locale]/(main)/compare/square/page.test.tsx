@@ -136,7 +136,7 @@ describe('SquareComparePage', () => {
 
   it('builds metadata from translated strings', async () => {
     const metadata = await generateMetadata({ params })
-    expect(metadata.title).toBe('Translated Square metadata title')
+    expect(metadata.title).toEqual({ absolute: 'Translated Square metadata title' })
     expect(metadata.description).toBe(
       'Translated Square metadata description'
     )

@@ -63,7 +63,7 @@ export async function generateMetadata({
   return marketingMetadata({
     locale,
     path: '/compare/yith-pos',
-    title: t('yith.metadata.title'),
+    title: { absolute: t('yith.metadata.title') },
     description: t('yith.metadata.description'),
   })
 }

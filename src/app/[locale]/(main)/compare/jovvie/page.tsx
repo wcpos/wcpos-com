@@ -45,7 +45,7 @@ export async function generateMetadata({
   return marketingMetadata({
     locale,
     path: '/compare/jovvie',
-    title: t('jovvie.metadata.title'),
+    title: { absolute: t('jovvie.metadata.title') },
     description: t('jovvie.metadata.description'),
   })
 }

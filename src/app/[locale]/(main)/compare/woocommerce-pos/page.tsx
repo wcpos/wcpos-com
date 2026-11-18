@@ -68,7 +68,7 @@ export async function generateMetadata({
   return marketingMetadata({
     locale,
     path: '/compare/woocommerce-pos',
-    title: t('woocommerce.metadata.title'),
+    title: { absolute: t('woocommerce.metadata.title') },
     description: t('woocommerce.metadata.description'),
   })
 }

@@ -60,7 +60,7 @@ export async function generateMetadata({
   return marketingMetadata({
     locale,
     path: '/compare/vitepos',
-    title: t('vitepos.metadata.title'),
+    title: { absolute: t('vitepos.metadata.title') },
     description: t('vitepos.metadata.description'),
   })
 }

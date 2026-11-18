@@ -119,6 +119,14 @@ describe('marketingMetadata', () => {
     expect(metadata.alternates?.canonical).toBe('https://wcpos.com/support')
   })
 
+  it('passes an absolute title through', () => {
+    const metadata = marketingMetadata({
+      locale: 'en',
+      title: { absolute: 'X' },
+    })
+    expect(metadata.title).toEqual({ absolute: 'X' })
+  })
+
   it('omits title/description when not provided', () => {
     const metadata = marketingMetadata({ locale: 'en', path: '/' })
     expect(metadata).not.toHaveProperty('title')
