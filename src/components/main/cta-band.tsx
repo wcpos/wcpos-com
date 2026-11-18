@@ -19,10 +19,12 @@ export function CtaBand({
   title,
   subtitle,
   actions,
+  link,
 }: {
   title: string
   subtitle: string
   actions: CtaBandAction[]
+  link?: { label: string; href: string }
 }) {
   return (
     <Section tone="dark" spacing="default" containerClassName="text-center">
@@ -43,6 +45,16 @@ export function CtaBand({
           </Button>
         ))}
       </div>
+      {link && (
+        <p className="mt-6 text-sm">
+          <Link
+            href={link.href}
+            className="font-medium text-slate-300 underline underline-offset-4 hover:text-white focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring rounded-sm"
+          >
+            {link.label}
+          </Link>
+        </p>
+      )}
     </Section>
   )
 }
