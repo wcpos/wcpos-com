@@ -270,6 +270,12 @@ export function SupportChat() {
         </Button>
       </form>
 
+      {verifying && (
+        <p role="status" className="mt-2 text-center text-xs text-muted-foreground">
+          {t('form.verifying')}
+        </p>
+      )}
+
       {error && (
         <p className="mt-2 text-sm text-destructive">
           {error}{' '}

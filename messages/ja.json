@@ -1879,7 +1879,8 @@
       "thinking": "Aideが考え中です…",
       "form": {
         "label": "サポートに質問する",
-        "placeholder": "例：レシートプリンターを接続するには？",
+        "placeholder": "例：レシートプリンター接続",
+        "verifying": "セキュリティを確認しています…",
         "followUpPlaceholder": "追加の質問を入力…",
         "submit": "質問する"
       },

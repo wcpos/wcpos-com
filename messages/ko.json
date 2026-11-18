@@ -1879,7 +1879,8 @@
       "thinking": "Aide가 생각 중입니다…",
       "form": {
         "label": "지원 질문하기",
-        "placeholder": "예: 영수증 프린터는 어떻게 연결하나요?",
+        "placeholder": "예: 영수증 프린터 연결",
+        "verifying": "보안 확인 중…",
         "followUpPlaceholder": "추가 질문하기…",
         "submit": "질문하기"
       },

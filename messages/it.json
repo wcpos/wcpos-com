@@ -1879,7 +1879,8 @@
       "thinking": "Aide sta pensando…",
       "form": {
         "label": "Fai una domanda al supporto",
-        "placeholder": "es. Come collego una stampante per ricevute?",
+        "placeholder": "es. stampante per ricevute",
+        "verifying": "Controllo di sicurezza in corso…",
         "followUpPlaceholder": "Fai un'altra domanda…",
         "submit": "Chiedi"
       },

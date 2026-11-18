@@ -1880,6 +1880,7 @@
       "form": {
         "label": "提出支持问题",
         "placeholder": "例如：如何连接收据打印机？",
+        "verifying": "正在进行安全检查…",
         "followUpPlaceholder": "继续追问…",
         "submit": "提问"
       },

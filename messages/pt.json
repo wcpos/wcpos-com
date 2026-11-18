@@ -1879,7 +1879,8 @@
       "thinking": "Aide está a pensar…",
       "form": {
         "label": "Faça uma pergunta de suporte",
-        "placeholder": "ex.: Como ligo uma impressora de recibos?",
+        "placeholder": "ex.: impressora de recibos",
+        "verifying": "Verificação de segurança em curso…",
         "followUpPlaceholder": "Faça uma pergunta de seguimento…",
         "submit": "Perguntar"
       },
