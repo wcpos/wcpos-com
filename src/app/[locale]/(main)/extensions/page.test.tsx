@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
 import { render, screen, within } from '@testing-library/react'
 import { EXTENSIONS } from '@/lib/extensions-catalog'
-import ExtensionsPage, { EXTENSION_GROUPS, generateMetadata } from './page'
+import ExtensionsPage, { EXTENSION_GROUPS, PAYMENTS_LAST, generateMetadata } from './page'
 
 vi.mock('next-intl/server', () => ({
   getTranslations: vi.fn(
@@ -102,9 +102,10 @@ const EXPECTED = [
   },
 ]
 
-// Indexes into EXPECTED (catalog order), listed in page order.
+// Indexes into EXPECTED (catalog order), listed in page order: catalog order,
+// with the non-terminal payment gateways moved to the end of their group.
 const EXPECTED_GROUPS = [
-  { heading: 'Translated payments heading', entries: [0, 1, 2, 3, 4, 5, 6, 7, 11, 14] },
+  { heading: 'Translated payments heading', entries: [1, 2, 3, 4, 5, 6, 7, 14, 0, 11] },
   { heading: 'Translated stock and coupons heading', entries: [8, 10] },
   { heading: 'Translated multilingual heading', entries: [9, 12, 13] },
 ]
@@ -122,7 +123,7 @@ describe('ExtensionsPage', () => {
     ).toBeInTheDocument()
   })
 
-  it('renders all 15 catalog entries with their documentation, each group in catalog order', async () => {
+  it('renders all 15 catalog entries with their documentation, in catalog order except payments gateways after the terminals', async () => {
     render(await ExtensionsPage({ params }))
     const lists = screen.getAllByRole('list')
     expect(lists.flatMap((list) => within(list).getAllByRole('listitem'))).toHaveLength(15)
@@ -151,9 +152,22 @@ describe('ExtensionsPage', () => {
     ).getAllByRole('heading', { level: 3 })
     const catalogPayments = EXTENSIONS.filter(({ category }) => category === 'payments')
     expect(catalogPayments).toHaveLength(10)
+    const isLast = ({ slug }: { slug: string }) => PAYMENTS_LAST.some((s) => s === slug)
     expect(payments.map((heading) => heading.textContent)).toEqual(
-      catalogPayments.map(({ name }) => name)
+      [
+        ...catalogPayments.filter((e) => !isLast(e)),
+        ...catalogPayments.filter(isLast),
+      ].map(({ name }) => name)
     )
+  })
+
+  it('opens the payments group with a card terminal and ends it with the two other gateways', async () => {
+    render(await ExtensionsPage({ params }))
+    const names = within(
+      screen.getByRole('region', { name: 'Translated payments heading' })
+    ).getAllByRole('heading', { level: 3 }).map((heading) => heading.textContent)
+    expect(names[0]).toContain('Terminal')
+    expect(names.slice(-2)).toEqual(['Email Invoice Gateway', 'WCPOS Vipps MobilePay'])
   })
 
   it('maps every catalog category to exactly one group', () => {
