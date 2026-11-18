@@ -440,7 +440,7 @@
       },
       "orders": {
         "title": "Bestelbeheer",
-        "description": "Blader door de bestelgeschiedenis, open eerdere bestellingen en beheer ze zonder de kassa te verlaten."
+        "description": "Blader door de bestelgeschiedenis, open eerdere bestellingen, betaal ze terug en beheer ze zonder de kassa te verlaten."
       },
       "customers": {
         "title": "Klantbeheer",

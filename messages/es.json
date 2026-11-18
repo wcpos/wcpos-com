@@ -440,7 +440,7 @@
       },
       "orders": {
         "title": "Gestión de pedidos",
-        "description": "Consulta el historial de pedidos, abre pedidos anteriores y gestiónalos sin salir de la caja registradora."
+        "description": "Consulta el historial de pedidos, abre pedidos anteriores, reembólsalos y gestiónalos sin salir de la caja registradora."
       },
       "customers": {
         "title": "Gestión de clientes",
