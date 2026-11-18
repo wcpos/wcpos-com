@@ -105,11 +105,11 @@ describe('SquareComparePage', () => {
     ).toBeNull()
   })
 
-  it('emits FAQPage and BreadcrumbList JSON-LD', async () => {
+  it('emits FAQPage, BreadcrumbList and WebPage JSON-LD', async () => {
     const { container } = render(await SquareComparePage({ params }))
     const script = container.querySelector('script[type="application/ld+json"]')
     expect(script).not.toBeNull()
-    const [faq, breadcrumbs] = JSON.parse(script!.innerHTML)
+    const [faq, breadcrumbs, webPage] = JSON.parse(script!.innerHTML)
     expect(faq['@type']).toBe('FAQPage')
     expect(faq.mainEntity).toHaveLength(6)
     expect(faq.mainEntity[0].name).toBe('Translated orders question')
@@ -118,6 +118,9 @@ describe('SquareComparePage', () => {
     expect(breadcrumbs.itemListElement[1].item).toBe(
       'https://wcpos.com/compare/square'
     )
+    expect(webPage['@type']).toBe('WebPage')
+    expect(webPage.dateModified).toBe('2026-10-06')
+    expect(webPage.url).toMatch(/\/compare\/square$/)
   })
 
   it('renders the Pro-adds paragraph through t.rich so its tags become links', async () => {

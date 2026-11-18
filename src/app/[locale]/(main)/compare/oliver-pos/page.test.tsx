@@ -69,11 +69,11 @@ describe('OliverComparePage', () => {
     expect(screen.getAllByRole('row')).toHaveLength(20)
   })
 
-  it('emits FAQPage and BreadcrumbList JSON-LD', async () => {
+  it('emits FAQPage, BreadcrumbList and WebPage JSON-LD', async () => {
     const { container } = render(await OliverComparePage({ params }))
     const script = container.querySelector('script[type="application/ld+json"]')
     expect(script).not.toBeNull()
-    const [faq, breadcrumbs] = JSON.parse(script!.innerHTML)
+    const [faq, breadcrumbs, webPage] = JSON.parse(script!.innerHTML)
     expect(faq['@type']).toBe('FAQPage')
     expect(faq.mainEntity).toHaveLength(6)
     expect(faq.mainEntity[0].name).toBe('Translated offline question')
@@ -84,6 +84,9 @@ describe('OliverComparePage', () => {
     expect(breadcrumbs.itemListElement[1].item).toBe(
       'https://wcpos.com/compare/oliver-pos'
     )
+    expect(webPage['@type']).toBe('WebPage')
+    expect(webPage.dateModified).toBe('2026-07-08')
+    expect(webPage.url).toMatch(/\/compare\/oliver-pos$/)
   })
 
   it('builds metadata from translated strings', async () => {
