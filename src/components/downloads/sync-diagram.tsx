@@ -61,6 +61,7 @@ function homeAt(angleDeg: number) {
 }
 
 const pct = (v: number) => `${(v / SIZE) * 100}%`
+const cq = (v: number) => `${(v / SIZE) * 100}cqw`
 
 function DeviceSphere({
   node,
@@ -81,7 +82,7 @@ function DeviceSphere({
             ? 'scale-110 bg-wcpos-red text-white'
             : 'bg-slate-800 text-slate-100 dark:bg-slate-100 dark:text-slate-800'
         }`}
-        style={{ width: node.size, height: node.size }}
+        style={{ width: cq(node.size), height: cq(node.size) }}
       >
         <Icon
           size={Math.round(node.size * 0.36)}
@@ -113,18 +114,21 @@ function StoreHub({
         transition={{ duration: 3.2, repeat: Infinity, ease: 'easeInOut' }}
       >
         <div
-          className="flex h-[112px] w-[112px] flex-col items-center justify-center rounded-full bg-wcpos-red text-center"
+          data-testid="store-hub"
+          className="flex flex-col items-center justify-center rounded-full bg-wcpos-red text-center"
           style={{
+            width: cq(112),
+            height: cq(112),
             backgroundImage:
               'radial-gradient(circle at 32% 26%, rgba(255,255,255,0.3), rgba(255,255,255,0) 48%), radial-gradient(circle at 70% 82%, rgba(0,0,0,0.2), rgba(0,0,0,0) 58%)',
             boxShadow: '0 20px 36px -16px rgba(160,40,30,0.55)',
           }}
         >
-          <span className="text-[13px] font-semibold text-white">
+          <span className="text-[11px] font-semibold text-white sm:text-[13px]">
             {labels.store}
           </span>
-          <span className="text-[10.5px] text-white/90">{labels.platform}</span>
-          <span className="text-[9px] text-white/70">{labels.plugin}</span>
+          <span className="text-[9px] text-white/90 sm:text-[10.5px]">{labels.platform}</span>
+          <span className="text-[8px] text-white/70 sm:text-[9px]">{labels.plugin}</span>
         </div>
       </motion.div>
     </div>
@@ -239,7 +243,7 @@ export function SyncDiagram({
       ref={container}
       role="img"
       aria-label={labels.ariaLabel}
-      className="relative aspect-square w-full max-w-[440px]"
+      className="relative aspect-square w-full max-w-[440px] [container-type:inline-size]"
       onPointerMove={reduced ? undefined : onPointerMove}
       onPointerLeave={
         reduced

@@ -30,7 +30,7 @@ export function HowItFits({ copy }: { copy: HowItFitsCopy }) {
     <Section tone="muted" spacing="default">
       <Container>
         <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
-          <div className="flex justify-center">
+          <div className="order-last flex justify-center lg:order-first">
             <SyncDiagram labels={copy.diagram} />
           </div>
 
