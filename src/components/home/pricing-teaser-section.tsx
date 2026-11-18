@@ -2,9 +2,11 @@ import { useTranslations } from 'next-intl'
 import { getLocale } from 'next-intl/server'
 import { Check } from 'lucide-react'
 import { TrackedLocaleLink } from '@/components/analytics/tracked-locale-link'
+import { Link } from '@/i18n/navigation'
 import { Button } from '@/components/ui/button'
 import { Section } from '@/components/ui/section'
 import { SectionHeading } from '@/components/ui/section-heading'
+import { TextLink } from '@/components/ui/text-link'
 import {
   applyProOfferCatalogCachePolicy,
   formatHomeProPriceSummary,
@@ -145,6 +147,15 @@ function PricingTeaserSectionContent({
             {t('cta')}
           </TrackedLocaleLink>
         </Button>
+        <p className="mt-4 text-sm text-muted-foreground">
+          {t.rich('compareLine', {
+            link: (chunks) => (
+              <TextLink asChild>
+                <Link href="/compare">{chunks}</Link>
+              </TextLink>
+            ),
+          })}
+        </p>
       </div>
     </Section>
   )

@@ -226,6 +226,7 @@
         }
       },
       "cta": "See Full Pricing & Features",
+      "compareLine": "Weighing up Square or FooSales? <link>See how WCPOS compares</link>",
       "priceSummary": "{yearly}/year or {lifetime} lifetime ({currency}). No per-register fees."
     },
     "ecosystem": {

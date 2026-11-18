@@ -226,6 +226,7 @@
         }
       },
       "cta": "料金と機能をすべて見る",
+      "compareLine": "SquareやFooSalesを検討中ですか？<link>WCPOSとの比較を見る</link>",
       "priceSummary": "{yearly}/年、または {lifetime} 買い切り（{currency}）。レジごとの追加料金はありません。"
     },
     "ecosystem": {
