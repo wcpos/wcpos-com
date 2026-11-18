@@ -226,7 +226,7 @@
         }
       },
       "cta": "Alle Preise & Funktionen ansehen",
-      "compareLine": "Ziehst du Square oder FooSales in Betracht? <link>Sieh dir an, wie WCPOS im Vergleich abschneidet</link>",
+      "compareLine": "Ziehst du <square>Square</square> oder <foosales>FooSales</foosales> in Betracht? <link>Sieh dir an, wie WCPOS im Vergleich abschneidet</link>",
       "priceSummary": "{yearly}/Jahr oder {lifetime} lebenslang ({currency}). Keine Gebühren pro Kasse."
     },
     "ecosystem": {

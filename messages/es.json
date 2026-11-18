@@ -226,7 +226,7 @@
         }
       },
       "cta": "Ver precios y funciones completos",
-      "compareLine": "¿Estás valorando Square o FooSales? <link>Mira cómo se compara WCPOS</link>",
+      "compareLine": "¿Estás valorando <square>Square</square> o <foosales>FooSales</foosales>? <link>Mira cómo se compara WCPOS</link>",
       "priceSummary": "{yearly}/año o {lifetime} de por vida ({currency}). Sin tarifas por caja."
     },
     "ecosystem": {

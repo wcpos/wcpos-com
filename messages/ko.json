@@ -226,7 +226,7 @@
         }
       },
       "cta": "전체 가격 및 기능 보기",
-      "compareLine": "Square나 FooSales를 고려 중이신가요? <link>WCPOS와 비교해 보기</link>",
+      "compareLine": "<square>Square</square>나 <foosales>FooSales</foosales>를 고려 중이신가요? <link>WCPOS와 비교해 보기</link>",
       "priceSummary": "{yearly}/년 또는 {lifetime} 평생 ({currency}). 계산대별 추가 요금 없음."
     },
     "ecosystem": {

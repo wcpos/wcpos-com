@@ -226,7 +226,7 @@
         }
       },
       "cta": "查看完整价格和功能",
-      "compareLine": "正在考虑 Square 或 FooSales？<link>看看 WCPOS 与它们的对比</link>",
+      "compareLine": "正在考虑 <square>Square</square> 或 <foosales>FooSales</foosales>？<link>看看 WCPOS 与它们的对比</link>",
       "priceSummary": "{yearly}/年或一次性 {lifetime} 终身（{currency}）。没有按收银机收费。"
     },
     "ecosystem": {
