@@ -5,15 +5,7 @@ import { Card } from '@/components/ui/card'
 import { Section } from '@/components/ui/section'
 import { SectionHeading } from '@/components/ui/section-heading'
 import { CtaSection } from '@/components/home/cta-section'
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table'
+import { GlanceTable } from '@/components/compare/glance-table'
 import { localeUrl, marketingMetadata } from '@/lib/seo'
 import type { Metadata } from 'next'
 import type { Locale } from '@/i18n/config'
@@ -122,42 +114,6 @@ function YithCompareJsonLd({
   )
 }
 
-function ComparisonTable({
-  wcposHeader,
-  yithHeader,
-  rows,
-  caption,
-}: {
-  wcposHeader: string
-  yithHeader: string
-  rows: { label: string; wcpos: string; yith: string }[]
-  caption?: string
-}) {
-  return (
-    <Table>
-      {caption && <TableCaption>{caption}</TableCaption>}
-      <TableHeader>
-        <TableRow>
-          <td />
-          <TableHead scope="col">{wcposHeader}</TableHead>
-          <TableHead scope="col">{yithHeader}</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {rows.map((row) => (
-          <TableRow key={row.label}>
-            <th scope="row" className="p-2 text-left align-middle font-medium">
-              {row.label}
-            </th>
-            <TableCell>{row.wcpos}</TableCell>
-            <TableCell>{row.yith}</TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
-  )
-}
-
 export default async function YithComparePage({
   params,
 }: {
@@ -173,7 +129,7 @@ export default async function YithComparePage({
   const glanceRows = GLANCE_ROW_KEYS.map((key) => ({
     label: t(`yith.glance.rows.${key}.label`),
     wcpos: t(`yith.glance.rows.${key}.wcpos`),
-    yith: t(`yith.glance.rows.${key}.yith`),
+    other: t(`yith.glance.rows.${key}.yith`),
   }))
 
   return (
@@ -211,9 +167,9 @@ export default async function YithComparePage({
       <Section tone="muted" spacing="compact" containerClassName="max-w-5xl">
         <SectionHeading align="left" title={t('yith.glance.title')} />
         <div className="mt-6">
-          <ComparisonTable
+          <GlanceTable
             wcposHeader={t('yith.glance.colWcpos')}
-            yithHeader={t('yith.glance.colYith')}
+            otherHeader={t('yith.glance.colYith')}
             rows={glanceRows}
             caption={t('yith.glance.caption')}
           />

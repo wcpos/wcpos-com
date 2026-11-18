@@ -5,15 +5,7 @@ import { Card } from '@/components/ui/card'
 import { Section } from '@/components/ui/section'
 import { SectionHeading } from '@/components/ui/section-heading'
 import { CtaSection } from '@/components/home/cta-section'
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table'
+import { GlanceTable } from '@/components/compare/glance-table'
 import { localeUrl, marketingMetadata } from '@/lib/seo'
 import type { Metadata } from 'next'
 import type { Locale } from '@/i18n/config'
@@ -119,42 +111,6 @@ function ViteposCompareJsonLd({
   )
 }
 
-function ComparisonTable({
-  wcposHeader,
-  viteposHeader,
-  rows,
-  caption,
-}: {
-  wcposHeader: string
-  viteposHeader: string
-  rows: { label: string; wcpos: string; vitepos: string }[]
-  caption?: string
-}) {
-  return (
-    <Table>
-      {caption && <TableCaption>{caption}</TableCaption>}
-      <TableHeader>
-        <TableRow>
-          <td />
-          <TableHead scope="col">{wcposHeader}</TableHead>
-          <TableHead scope="col">{viteposHeader}</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {rows.map((row) => (
-          <TableRow key={row.label}>
-            <th scope="row" className="p-2 text-left align-middle font-medium">
-              {row.label}
-            </th>
-            <TableCell>{row.wcpos}</TableCell>
-            <TableCell>{row.vitepos}</TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
-  )
-}
-
 export default async function ViteposComparePage({
   params,
 }: {
@@ -170,7 +126,7 @@ export default async function ViteposComparePage({
   const glanceRows = GLANCE_ROW_KEYS.map((key) => ({
     label: t(`vitepos.glance.rows.${key}.label`),
     wcpos: t(`vitepos.glance.rows.${key}.wcpos`),
-    vitepos: t(`vitepos.glance.rows.${key}.vitepos`),
+    other: t(`vitepos.glance.rows.${key}.vitepos`),
   }))
 
   return (
@@ -208,9 +164,9 @@ export default async function ViteposComparePage({
       <Section tone="muted" spacing="compact" containerClassName="max-w-5xl">
         <SectionHeading align="left" title={t('vitepos.glance.title')} />
         <div className="mt-6">
-          <ComparisonTable
+          <GlanceTable
             wcposHeader={t('vitepos.glance.colWcpos')}
-            viteposHeader={t('vitepos.glance.colVitepos')}
+            otherHeader={t('vitepos.glance.colVitepos')}
             rows={glanceRows}
             caption={t('vitepos.glance.caption')}
           />

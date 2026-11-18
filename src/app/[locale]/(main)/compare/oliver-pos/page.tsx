@@ -5,15 +5,7 @@ import { Card } from '@/components/ui/card'
 import { Section } from '@/components/ui/section'
 import { SectionHeading } from '@/components/ui/section-heading'
 import { CtaSection } from '@/components/home/cta-section'
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table'
+import { GlanceTable } from '@/components/compare/glance-table'
 import { localeUrl, marketingMetadata } from '@/lib/seo'
 import type { Metadata } from 'next'
 import type { Locale } from '@/i18n/config'
@@ -138,48 +130,6 @@ function OliverCompareJsonLd({
   )
 }
 
-function ComparisonTable({
-  featureHeader,
-  wcposHeader,
-  oliverHeader,
-  rows,
-  caption,
-}: {
-  featureHeader?: string
-  wcposHeader: string
-  oliverHeader: string
-  rows: { label: string; wcpos: string; oliver: string }[]
-  caption?: string
-}) {
-  return (
-    <Table>
-      {caption && <TableCaption>{caption}</TableCaption>}
-      <TableHeader>
-        <TableRow>
-          {featureHeader === undefined ? (
-            <td />
-          ) : (
-            <TableHead scope="col">{featureHeader}</TableHead>
-          )}
-          <TableHead scope="col">{wcposHeader}</TableHead>
-          <TableHead scope="col">{oliverHeader}</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {rows.map((row) => (
-          <TableRow key={row.label}>
-            <th scope="row" className="p-2 text-left align-middle font-medium">
-              {row.label}
-            </th>
-            <TableCell>{row.wcpos}</TableCell>
-            <TableCell>{row.oliver}</TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
-  )
-}
-
 export default async function OliverComparePage({
   params,
 }: {
@@ -195,13 +145,13 @@ export default async function OliverComparePage({
   const glanceRows = GLANCE_ROW_KEYS.map((key) => ({
     label: t(`oliver.glance.rows.${key}.label`),
     wcpos: t(`oliver.glance.rows.${key}.wcpos`),
-    oliver: t(`oliver.glance.rows.${key}.oliver`),
+    other: t(`oliver.glance.rows.${key}.oliver`),
   }))
 
   const freeTierRows = FREE_TIER_ROW_KEYS.map((key) => ({
     label: t(`oliver.freeTier.rows.${key}.label`),
     wcpos: t(`oliver.freeTier.rows.${key}.wcpos`),
-    oliver: t(`oliver.freeTier.rows.${key}.oliver`),
+    other: t(`oliver.freeTier.rows.${key}.oliver`),
   }))
 
   return (
@@ -239,9 +189,9 @@ export default async function OliverComparePage({
       <Section tone="muted" spacing="compact" containerClassName="max-w-5xl">
         <SectionHeading align="left" title={t('oliver.glance.title')} />
         <div className="mt-6">
-          <ComparisonTable
+          <GlanceTable
             wcposHeader={t('oliver.glance.colWcpos')}
-            oliverHeader={t('oliver.glance.colOliver')}
+            otherHeader={t('oliver.glance.colOliver')}
             rows={glanceRows}
             caption={t('oliver.glance.caption')}
           />
@@ -273,10 +223,10 @@ export default async function OliverComparePage({
         <SectionHeading align="left" title={t('oliver.freeTier.title')} />
         <p className="mt-4 text-muted-foreground">{t('oliver.freeTier.intro')}</p>
         <div className="mt-6">
-          <ComparisonTable
+          <GlanceTable
             featureHeader={t('oliver.freeTier.colFeature')}
             wcposHeader={t('oliver.glance.colWcpos')}
-            oliverHeader={t('oliver.glance.colOliver')}
+            otherHeader={t('oliver.glance.colOliver')}
             rows={freeTierRows}
           />
         </div>
