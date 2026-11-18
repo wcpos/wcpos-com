@@ -2227,7 +2227,7 @@
           },
           "devices": {
             "label": "设备",
-            "wcpos": "网页、桌面应用（Windows、macOS 和 Linux）、iOS 和 Android 应用（测试版）；设备和收银员数量不限",
+            "wcpos": "网页、桌面应用（Windows、macOS 和 Linux）、iOS 和 Android 应用（测试版）；设备和收银员数量不限，免费版提供一个收银台，Pro 版提供更多收银台",
             "woocommerce": "专为平板设计——iPad 和 Android 平板"
           },
           "countries": {
@@ -2385,7 +2385,7 @@
           },
           "devices": {
             "label": "设备",
-            "wcpos": "网页、桌面应用（Windows、macOS 和 Linux）、iOS 和 Android 应用（测试版）；设备和收银员数量不限",
+            "wcpos": "网页、桌面应用（Windows、macOS 和 Linux）、iOS 和 Android 应用（测试版）；设备和收银员数量不限，免费版提供一个收银台，Pro 版提供更多收银台",
             "square": "iOS 和 Android 设备上的 Square Point of Sale 应用，以及内置 Square Point of Sale 的 Square 自有硬件 Square Register"
           },
           "countries": {
@@ -2975,7 +2975,7 @@
           },
           "devices": {
             "label": "用户和设备",
-            "wcpos": "设备和收银员不限量",
+            "wcpos": "设备和收银员不限量；免费版提供一个收银台，Pro 版提供更多收银台",
             "foosales": "据其帮助中心称，每个方案包含 3 名用户和 3 台设备；通过单独出售的 User and Device Add-ons 可增加数量"
           },
           "stores": {

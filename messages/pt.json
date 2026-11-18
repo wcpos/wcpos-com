@@ -2227,7 +2227,7 @@
           },
           "devices": {
             "label": "Dispositivos",
-            "wcpos": "Web, aplicações de computador (Windows, macOS e Linux), aplicações iOS e Android (beta); dispositivos e operadores de caixa ilimitados",
+            "wcpos": "Web, aplicações de computador (Windows, macOS e Linux), aplicações iOS e Android (beta); dispositivos e operadores de caixa ilimitados, uma caixa na versão gratuita, mais com Pro",
             "woocommerce": "Concebido para tablets — iPad e tablets Android"
           },
           "countries": {
@@ -2385,7 +2385,7 @@
           },
           "devices": {
             "label": "Dispositivos",
-            "wcpos": "Web, aplicações de computador (Windows, macOS e Linux), aplicações iOS e Android (beta); dispositivos e operadores de caixa ilimitados",
+            "wcpos": "Web, aplicações de computador (Windows, macOS e Linux), aplicações iOS e Android (beta); dispositivos e operadores de caixa ilimitados, uma caixa na versão gratuita, mais com Pro",
             "square": "Aplicação Square Point of Sale em dispositivos iOS e Android, e Square Register, o hardware próprio do Square com Square Point of Sale integrado"
           },
           "countries": {
@@ -2975,7 +2975,7 @@
           },
           "devices": {
             "label": "Utilizadores e dispositivos",
-            "wcpos": "Dispositivos e operadores de caixa ilimitados",
+            "wcpos": "Dispositivos e operadores de caixa ilimitados; uma caixa na versão gratuita, mais com Pro",
             "foosales": "3 utilizadores e 3 dispositivos por plano, segundo o seu centro de ajuda; mais com User and Device Add-ons, vendidos separadamente"
           },
           "stores": {

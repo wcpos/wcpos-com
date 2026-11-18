@@ -2227,7 +2227,7 @@
           },
           "devices": {
             "label": "기기",
-            "wcpos": "웹, 데스크톱 앱(Windows, macOS와 Linux), iOS와 Android 앱(베타); 기기와 계산원 무제한",
+            "wcpos": "웹, 데스크톱 앱(Windows, macOS와 Linux), iOS와 Android 앱(베타); 기기와 계산원 무제한, 무료 버전은 계산대 1대, Pro는 추가 계산대 지원",
             "woocommerce": "태블릿용으로 설계 — iPad와 Android 태블릿"
           },
           "countries": {
@@ -2385,7 +2385,7 @@
           },
           "devices": {
             "label": "기기",
-            "wcpos": "웹, 데스크톱 앱(Windows, macOS와 Linux), iOS와 Android 앱(베타); 기기와 계산원 무제한",
+            "wcpos": "웹, 데스크톱 앱(Windows, macOS와 Linux), iOS와 Android 앱(베타); 기기와 계산원 무제한, 무료 버전은 계산대 1대, Pro는 추가 계산대 지원",
             "square": "iOS 및 Android 기기의 Square Point of Sale 앱과 Square Point of Sale이 내장된 Square 자체 하드웨어인 Square Register"
           },
           "countries": {
@@ -2975,7 +2975,7 @@
           },
           "devices": {
             "label": "사용자와 기기",
-            "wcpos": "기기와 계산원 무제한",
+            "wcpos": "기기와 계산원 무제한; 무료 버전은 계산대 1대, Pro는 추가 계산대 지원",
             "foosales": "도움말 센터에 따르면 요금제당 사용자 3명과 기기 3대; 별도 판매되는 User and Device Add-ons로 추가 가능"
           },
           "stores": {

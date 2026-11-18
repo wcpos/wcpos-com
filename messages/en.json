@@ -2227,7 +2227,7 @@
           },
           "devices": {
             "label": "Devices",
-            "wcpos": "Web, desktop apps (Windows, macOS and Linux), iOS and Android apps (beta); unlimited devices and cashiers",
+            "wcpos": "Web, desktop apps (Windows, macOS and Linux), iOS and Android apps (beta); unlimited devices and cashiers, one register in the free version, more with Pro",
             "woocommerce": "Designed for tablets — iPad and Android tablets"
           },
           "countries": {
@@ -2385,7 +2385,7 @@
           },
           "devices": {
             "label": "Devices",
-            "wcpos": "Web, desktop apps (Windows, macOS and Linux), iOS and Android apps (beta); unlimited devices and cashiers",
+            "wcpos": "Web, desktop apps (Windows, macOS and Linux), iOS and Android apps (beta); unlimited devices and cashiers, one register in the free version, more with Pro",
             "square": "Square Point of Sale app on iOS and Android devices, and Square Register, Square's own hardware with Square Point of Sale built in"
           },
           "countries": {
@@ -2975,7 +2975,7 @@
           },
           "devices": {
             "label": "Users and devices",
-            "wcpos": "Unlimited devices and cashiers",
+            "wcpos": "Unlimited devices and cashiers; one register in the free version, more with Pro",
             "foosales": "3 users and 3 devices per plan, according to its help centre; more with User and Device Add-ons, sold separately"
           },
           "stores": {

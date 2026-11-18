@@ -2227,7 +2227,7 @@
           },
           "devices": {
             "label": "デバイス",
-            "wcpos": "Web、デスクトップアプリ（Windows、macOS、Linux）、iOSとAndroidのアプリ（ベータ版）。デバイスとレジ係は無制限",
+            "wcpos": "Web、デスクトップアプリ（Windows、macOS、Linux）、iOSとAndroidのアプリ（ベータ版）。デバイスとレジ係は無制限、無料版ではレジ1台、Proではさらに追加可能",
             "woocommerce": "タブレット向けに設計 — iPadとAndroidタブレット"
           },
           "countries": {
@@ -2385,7 +2385,7 @@
           },
           "devices": {
             "label": "デバイス",
-            "wcpos": "Web、デスクトップアプリ（Windows、macOS、Linux）、iOSとAndroidのアプリ（ベータ版）。デバイスとレジ係は無制限",
+            "wcpos": "Web、デスクトップアプリ（Windows、macOS、Linux）、iOSとAndroidのアプリ（ベータ版）。デバイスとレジ係は無制限、無料版ではレジ1台、Proではさらに追加可能",
             "square": "iOSとAndroidデバイス上のSquare Point of Saleアプリ、およびSquare Point of Saleを内蔵したSquare独自のハードウェアであるSquare Register"
           },
           "countries": {
@@ -2975,7 +2975,7 @@
           },
           "devices": {
             "label": "ユーザーとデバイス",
-            "wcpos": "デバイス・レジ係は無制限",
+            "wcpos": "デバイス・レジ係は無制限。無料版ではレジ1台、Proではさらに追加可能",
             "foosales": "ヘルプセンターによると1プランにつき3人のユーザーと3台のデバイス。別売りのUser and Device Add-onsで追加可能"
           },
           "stores": {
