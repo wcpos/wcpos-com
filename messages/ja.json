@@ -1696,8 +1696,8 @@
           "title": "無料プラグインをインストール",
           "body": "すべてが接続する土台です。ダッシュボードで「プラグイン → 新規追加」を開き、「WCPOS」を検索してください。",
           "badge": "無料 · GPL",
-          "requirements": "WordPress 5.6+ · WooCommerce 5.3+ · PHP 7.4+",
-          "requirementsWithVersion": "最新 {version} · WordPress 5.6+ · WooCommerce 5.3+ · PHP 7.4+",
+          "requirements": "WordPress 5.6+ · WooCommerce 9.0+ · PHP 7.4+",
+          "requirementsWithVersion": "最新 {version} · WordPress 5.6+ · WooCommerce 9.0+ · PHP 7.4+",
           "cardTitle": "WCPOS",
           "wordpressOrgCta": "WordPress.org"
         },
