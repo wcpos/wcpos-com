@@ -295,7 +295,7 @@
       "a3": {
         "k": "Trae tu propio hardware",
         "h": "Funciona con el equipo que ya tienes.",
-        "b": "Terminales de tarjeta, impresoras térmicas de recibos, lectores de códigos de barras: WCPOS no te encierra en hardware propietario. Conecta lo que ya tienes en el mostrador."
+        "b": "Impresoras de recibos y lectores de códigos de barras: conecta lo que ya tienes en el mostrador. Acepta pagos con tarjeta en tu propio terminal de pago y WCPOS los registra; Pro conecta Stripe Terminal, SumUp y más."
       },
       "a4": {
         "k": "Tu tienda, tus datos",

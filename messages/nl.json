@@ -295,7 +295,7 @@
       "a3": {
         "k": "Gebruik je eigen hardware",
         "h": "Werkt met de apparatuur die je al hebt.",
-        "b": "Kaartterminals, thermische bonprinters, barcodescanners — WCPOS sluit je niet op in propriëtaire hardware. Sluit aan wat al op je toonbank staat."
+        "b": "Bonprinters en barcodescanners: sluit aan wat al op je toonbank staat. Accepteer kaarten via je eigen betaalterminal en WCPOS registreert ze; Pro koppelt Stripe Terminal, SumUp en meer."
       },
       "a4": {
         "k": "Jouw winkel, jouw gegevens",

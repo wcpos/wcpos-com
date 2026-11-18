@@ -295,7 +295,7 @@
       "a3": {
         "k": "Bring your own hardware",
         "h": "Works with the equipment you already have.",
-        "b": "Card terminals, thermal receipt printers, barcode scanners — WCPOS doesn’t lock you into proprietary hardware. Plug in what’s already on your counter."
+        "b": "Receipt printers and barcode scanners: plug in what’s already on your counter. Take cards on your own terminal and WCPOS records them; Pro connects Stripe Terminal, SumUp and more."
       },
       "a4": {
         "k": "Your store, your data",

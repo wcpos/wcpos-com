@@ -295,7 +295,7 @@
       "a3": {
         "k": "Bring deine eigene Hardware mit",
         "h": "Funktioniert mit der Ausstattung, die du bereits hast.",
-        "b": "Kartenterminals, Thermo-Bondrucker, Barcodescanner — WCPOS sperrt dich nicht in proprietäre Hardware ein. Schließe an, was schon auf deiner Theke steht."
+        "b": "Bondrucker und Barcodescanner: Schließe an, was schon auf deiner Theke steht. Nimm Karten über dein eigenes Zahlungsterminal an, WCPOS erfasst sie; Pro verbindet Stripe Terminal, SumUp und mehr."
       },
       "a4": {
         "k": "Dein Shop, deine Daten",
