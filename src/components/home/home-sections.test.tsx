@@ -138,20 +138,24 @@ describe('UseCasesSection', () => {
   })
 })
 
+const escapeRegExp = (value: string) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+
 describe('FeaturesSection', () => {
   it('renders all six feature cards', () => {
     renderWithIntl(<FeaturesSection />)
 
     expect(screen.getByText('Fast product search')).toBeInTheDocument()
     expect(screen.getByText('Smooth checkout flow')).toBeInTheDocument()
-    expect(screen.getByText('Customer profiles')).toBeInTheDocument()
-    expect(
-      screen.getByText('Order history & management')
-    ).toBeInTheDocument()
-    expect(
-      screen.getByText('Edit stock & prices on the fly')
-    ).toBeInTheDocument()
-    expect(screen.getByText('Reports across days, registers & stores')).toBeInTheDocument()
+    for (const title of [
+      'Customer profiles',
+      'Order history & management',
+      'Edit stock & prices on the fly',
+      'Reports across days, registers & stores',
+    ]) {
+      expect(
+        screen.getByRole('heading', { level: 3, name: new RegExp(`^${escapeRegExp(title)}`) })
+      ).toBeInTheDocument()
+    }
   })
 
   it('marks Pro features with a badge', () => {
@@ -164,7 +168,9 @@ describe('FeaturesSection', () => {
     renderWithIntl(<FeaturesSection />)
 
     const checkout = screen.getByText('Smooth checkout flow').closest('li')!
-    const stock = screen.getByText('Edit stock & prices on the fly').closest('li')!
+    const stock = screen
+      .getByRole('heading', { level: 3, name: /^Edit stock & prices on the fly/ })
+      .closest('li')!
 
     expect(within(checkout).queryByText('Pro')).not.toBeInTheDocument()
     expect(within(stock).getByText('Pro')).toBeInTheDocument()

@@ -22,6 +22,12 @@ export interface FeatureCardProps
   children: React.ReactNode
 }
 
+/** Splits a title at its last run of whitespace; null for a one-word title. */
+function splitLastWord(title: string): [head: string, last: string] | null {
+  const parts = title.trim().split(/\s+(?=\S+$)/)
+  return parts.length === 2 ? [parts[0], parts[1]] : null
+}
+
 function FeatureCard({
   icon: Icon,
   title,
@@ -32,6 +38,12 @@ function FeatureCard({
   children,
   ...props
 }: FeatureCardProps) {
+  const split = badge && typeof title === 'string' ? splitLastWord(title) : null
+  const badgeNode = badge && (
+    <span className="ml-2 inline-block align-middle" data-testid="feature-card-badge">
+      {badge}
+    </span>
+  )
   return (
     <Tag
       className={cn(
@@ -48,14 +60,19 @@ function FeatureCard({
         <Icon aria-hidden="true" className="mb-4 h-8 w-8 text-wcpos-red" />
       )}
       <h3 className="mb-1.5 text-base font-semibold text-slate-800 dark:text-slate-100">
-        {title}
-        {badge && (
-          <span
-            className="ml-2 inline-block align-middle"
-            data-testid="feature-card-badge"
-          >
-            {badge}
-          </span>
+        {split ? (
+          <>
+            {split[0]}{' '}
+            <span className="whitespace-nowrap">
+              {split[1]}
+              {badgeNode}
+            </span>
+          </>
+        ) : (
+          <>
+            {title}
+            {badgeNode}
+          </>
         )}
       </h3>
       <p className="text-sm leading-relaxed text-slate-600 dark:text-slate-400">

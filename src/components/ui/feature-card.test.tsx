@@ -47,6 +47,37 @@ describe('FeatureCard', () => {
     expect(badge).toHaveClass('inline-block')
   })
 
+  it('keeps the badge on the same line as the last word of a long title', () => {
+    const title = 'Reports across days, registers & stores'
+    render(
+      <FeatureCard icon={Search} title={title} badge={<Badge variant="pro">Pro</Badge>}>
+        Body.
+      </FeatureCard>,
+    )
+    const nowrap = screen.getByTestId('feature-card-badge').parentElement
+    expect(nowrap).toHaveClass('whitespace-nowrap')
+    expect(nowrap).toHaveTextContent(/^storesPro$/)
+    expect(screen.getByRole('heading', { name: new RegExp(title) })).toBeInTheDocument()
+  })
+
+  it('adds no nowrap wrapper for a one-word title', () => {
+    const { container } = render(
+      <FeatureCard icon={Search} title="Checkout" badge={<Badge variant="pro">Pro</Badge>}>
+        Body.
+      </FeatureCard>,
+    )
+    expect(container.querySelector('.whitespace-nowrap')).toBeNull()
+  })
+
+  it('adds no nowrap wrapper without a badge', () => {
+    const { container } = render(
+      <FeatureCard icon={Search} title="Reports across days, registers & stores">
+        Body.
+      </FeatureCard>,
+    )
+    expect(container.querySelector('.whitespace-nowrap')).toBeNull()
+  })
+
   it('can render as a list item for grid <ul>s', () => {
     render(
       <ul>
