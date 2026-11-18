@@ -53,3 +53,23 @@ describe('/compare detail page meta descriptions', () => {
     }
   )
 })
+
+const TITLE_CASES = LOCALES.flatMap(({ locale, messages }) =>
+  PAGES.map((page) => ({
+    locale,
+    page,
+    title: messages.compare[page].metadata.title as unknown,
+  }))
+)
+
+describe('/compare detail page titles', () => {
+  it.each(TITLE_CASES)(
+    '$locale/$page ends at the year and fits in 60 characters',
+    ({ title }) => {
+      expect(typeof title).toBe('string')
+      const text = title as string
+      expect(text).toMatch(/(\(2026\)|（2026）|（2026年）)$/)
+      expect(text.length + ' | WCPOS'.length).toBeLessThanOrEqual(60)
+    }
+  )
+})

@@ -1967,7 +1967,7 @@
     },
     "oliver": {
       "metadata": {
-        "title": "WCPOS vs Oliver POS（2026年）：誠実な比較",
+        "title": "WCPOS vs Oliver POS（2026年）",
         "description": "Oliver POSを選ぶべき場面と、WCPOSを選ぶべき場面：無料プランの制限、料金、決済端末、オフライン対応。WCPOSの開発元による比較です。"
       },
       "hero": {
@@ -2197,7 +2197,7 @@
     },
     "woocommerce": {
       "metadata": {
-        "title": "WCPOS vs WooCommerce公式POS（2026年）：正直な比較",
+        "title": "WCPOS vs WooCommerce公式POS（2026年）",
         "description": "WooCommerce自身のPOSがより良い選択となる場合と、WCPOSがそうなる場合：デバイス、国、オフライン対応、決済、価格。WCPOSの開発者による比較です。"
       },
       "hero": {
@@ -2350,7 +2350,7 @@
     },
     "square": {
       "metadata": {
-        "title": "WCPOS vs Square for WooCommerce（2026）：率直な比較",
+        "title": "WCPOS vs Square for WooCommerce（2026）",
         "description": "Square for WooCommerceが適している場合と、WCPOSが適している場合：販売の記録先、同期、拠点、手数料。WCPOSの開発者による比較です。"
       },
       "hero": {
@@ -2500,7 +2500,7 @@
     },
     "jovvie": {
       "metadata": {
-        "title": "WCPOS vs Jovvie（2026年）：率直な比較",
+        "title": "WCPOS vs Jovvie（2026年）",
         "description": "Jovvieがより適している場合と、WCPOSがより適している場合：料金、取引ごとの手数料、アプリ、カード決済。WCPOSの開発元による比較です。"
       },
       "hero": {
@@ -2613,7 +2613,7 @@
     },
     "vitepos": {
       "metadata": {
-        "title": "WCPOS vs Vitepos（2026年）：率直な比較",
+        "title": "WCPOS vs Vitepos（2026年）",
         "description": "Viteposがより適している場合と、WCPOSがより適している場合：料金、オフライン注文、レストランモード、アプリ、カード端末。WCPOSの開発元による比較です。"
       },
       "hero": {
@@ -2755,7 +2755,7 @@
     },
     "yith": {
       "metadata": {
-        "title": "WCPOS vs YITH Point of Sale（2026年）：率直な比較",
+        "title": "WCPOS vs YITH Point of Sale（2026年）",
         "description": "YITH Point of Saleがより適している場合と、WCPOSがより適している場合：ライセンス、カード端末、アプリ、オフライン、レジ。WCPOSの開発者による比較です。"
       },
       "hero": {
@@ -2900,7 +2900,7 @@
     },
     "foosales": {
       "metadata": {
-        "title": "WCPOS vs FooSales（2026年）：誠実な比較",
+        "title": "WCPOS vs FooSales（2026年）",
         "description": "FooSalesがより適している場合と、WCPOSがより適している場合：料金、支払いをやめた場合、オフライン注文、アプリ。WCPOSの開発者による比較です。"
       },
       "hero": {
