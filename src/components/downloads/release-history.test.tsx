@@ -10,7 +10,63 @@ const baseCopy = {
   externalContentNotice: 'Release notes come from GitHub and may be shown in English.',
 }
 
+function openVersions(container: HTMLElement) {
+  return Array.from(container.querySelectorAll('details'))
+    .filter((details) => details.hasAttribute('open'))
+    .map((details) => details.querySelector('.font-mono')?.textContent)
+}
+
+function release(version: string, latest = false): ReleaseEntry {
+  return { version, date: 'June 17, 2026', body: `- Notes for ${version}`, latest }
+}
+
 describe('ReleaseHistory', () => {
+  it('opens the newest x.y.0 release with openFeatureRelease, keeping the Latest badge on the first row', () => {
+    const releases = [
+      release('2.0.4', true),
+      release('2.0.3'),
+      release('2.0.0'),
+      release('1.9.6'),
+    ]
+    const { container } = render(
+      <ReleaseHistory
+        releases={releases}
+        copy={baseCopy}
+        locale="en"
+        openFeatureRelease
+      />,
+    )
+
+    expect(openVersions(container)).toEqual(['2.0.0'])
+    const badgeRow = screen.getByText('Latest').closest('summary')
+    expect(badgeRow).toHaveTextContent('2.0.4')
+  })
+
+  it('opens the first row with openFeatureRelease when no x.y.0 release is listed', () => {
+    const { container } = render(
+      <ReleaseHistory
+        releases={[release('2.0.4', true), release('2.0.3')]}
+        copy={baseCopy}
+        locale="en"
+        openFeatureRelease
+      />,
+    )
+
+    expect(openVersions(container)).toEqual(['2.0.4'])
+  })
+
+  it('opens the first row without openFeatureRelease', () => {
+    const { container } = render(
+      <ReleaseHistory
+        releases={[release('2.0.4', true), release('2.0.0')]}
+        copy={baseCopy}
+        locale="en"
+      />,
+    )
+
+    expect(openVersions(container)).toEqual(['2.0.4'])
+  })
+
   it('renders no row headings unless a heading level is given', () => {
     const releases: ReleaseEntry[] = [
       { version: '1.9.6', date: 'June 17, 2026', body: '- Fixed checkout bug' },
