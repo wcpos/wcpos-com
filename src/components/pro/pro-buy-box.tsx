@@ -114,7 +114,7 @@ export function ProBuyBox({
                   {option.subtitle}
                 </span>
               </span>
-              <span className="ml-auto text-right shrink-0">
+              <span className="basis-full pl-7 text-left sm:basis-auto sm:ml-auto sm:pl-0 sm:text-right shrink-0">
                 <span className="text-xl font-bold">{option.priceText}</span>
                 {/* priceText uses the narrow symbol, so the ISO code is appended once; the guard stays as a safety net. */}
                 {!option.priceText.includes(option.currencyCode) && (
