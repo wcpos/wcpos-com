@@ -175,6 +175,17 @@ describe('FeaturesSection', () => {
     expect(within(checkout).queryByText('Pro')).not.toBeInTheDocument()
     expect(within(stock).getByText('Pro')).toBeInTheDocument()
   })
+
+  it('links the checkout card readers to /extensions', () => {
+    renderWithIntl(<FeaturesSection />)
+
+    const checkout = screen.getByText('Smooth checkout flow').closest('li')!
+
+    expect(within(checkout).getByRole('link', { name: 'card readers' })).toHaveAttribute(
+      'href',
+      '/extensions'
+    )
+  })
 })
 
 describe('TrustSection', () => {
