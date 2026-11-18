@@ -1915,7 +1915,7 @@
       },
       "hero": {
         "title": "对比 WooCommerce POS 系统",
-        "subtitle": "网上每一篇 WooCommerce POS 排行榜，不是厂商把自己排在第一，就是联盟客按佣金高低排序。这一篇不一样：确实由厂商发布，但每一个事实都注明来源和日期、可供核查，而且当竞争对手更适合你时，我们会直说。"
+        "subtitle": "由 WCPOS 开发者撰写的对比，涵盖 Square、FooSales、Oliver POS 等 WooCommerce POS 方案，均注明来源和日期。"
       },
       "method": {
         "title": "这些对比是如何做出来的",

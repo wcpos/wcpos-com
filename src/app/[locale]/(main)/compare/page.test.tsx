@@ -1,6 +1,16 @@
 import { describe, expect, it, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import ComparePage, { generateMetadata } from './page'
+import de from '../../../../../messages/de.json'
+import en from '../../../../../messages/en.json'
+import es from '../../../../../messages/es.json'
+import fr from '../../../../../messages/fr.json'
+import it_ from '../../../../../messages/it.json'
+import ja from '../../../../../messages/ja.json'
+import ko from '../../../../../messages/ko.json'
+import nl from '../../../../../messages/nl.json'
+import pt from '../../../../../messages/pt.json'
+import zh from '../../../../../messages/zh.json'
 
 vi.mock('next-intl/server', () => ({
   getTranslations: vi.fn(async () => (key: string) => {
@@ -90,15 +100,18 @@ describe('ComparePage', () => {
     ).toHaveAttribute('href', '/compare/foosales')
   })
 
-  it('tightens the gap between the hero and the disclosure card', async () => {
+  it('puts the comparison cards before the disclosure card', async () => {
     render(await ComparePage({ params }))
 
-    const h1 = screen.getByRole('heading', { level: 1 })
-    expect(h1.closest('section')).toHaveClass('pb-6')
-    const disclosure = screen.getByRole('heading', {
-      name: 'Translated disclosure title',
-    })
-    expect(disclosure.closest('section')).toHaveClass('pt-0')
+    const headings = screen
+      .getAllByRole('heading')
+      .map((heading) => heading.textContent)
+    const lastCard = headings.indexOf('Translated FooSales card title')
+    const disclosure = headings.indexOf('Translated disclosure title')
+    const method = headings.indexOf('Translated method title')
+    expect(lastCard).toBeGreaterThan(-1)
+    expect(disclosure).toBeGreaterThan(lastCard)
+    expect(method).toBeGreaterThan(disclosure)
   })
 
   it('emits ItemList JSON-LD naming all comparisons', async () => {
@@ -142,4 +155,19 @@ describe('ComparePage', () => {
     expect(metadata.title).toBe('Translated compare metadata title')
     expect(metadata.description).toBe('Translated compare metadata description')
   })
+})
+
+const LOCALE_MESSAGES = { en, de, nl, fr, es, it: it_, pt, ja, ko, zh }
+
+describe('compare.hub.hero.subtitle', () => {
+  it.each(Object.entries(LOCALE_MESSAGES))(
+    '%s names the comparisons in at most 160 code points',
+    (_locale, messages) => {
+      const subtitle = messages.compare.hub.hero.subtitle
+      expect(subtitle).toContain('Square')
+      expect(subtitle).toContain('FooSales')
+      expect(subtitle).toContain('WCPOS')
+      expect([...subtitle].length).toBeLessThanOrEqual(160)
+    }
+  )
 })

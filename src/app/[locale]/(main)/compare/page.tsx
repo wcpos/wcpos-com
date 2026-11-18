@@ -91,21 +91,6 @@ export default async function ComparePage({
         />
       </Section>
 
-      <Section
-        tone="default"
-        spacing="compact"
-        className="pt-0 pb-10 md:pt-0 md:pb-16"
-        containerClassName="max-w-3xl"
-      >
-        <Card className="border-l-4 border-l-primary p-6">
-          <h2 className="mb-2 flex items-center gap-2 text-lg font-semibold">
-            <Scale className="h-5 w-5 shrink-0" aria-hidden />
-            {t('disclosure.title')}
-          </h2>
-          <p className="text-muted-foreground">{t('disclosure.body')}</p>
-        </Card>
-      </Section>
-
       <Section tone="muted" spacing="default" containerClassName="max-w-3xl">
         <div className="space-y-6">
           {COMPARISONS.map(({ key, href }) => (
@@ -129,6 +114,16 @@ export default async function ComparePage({
           ))}
           <p className="text-sm text-muted-foreground">{t('hub.moreSoon')}</p>
         </div>
+      </Section>
+
+      <Section tone="default" spacing="compact" containerClassName="max-w-3xl">
+        <Card className="border-l-4 border-l-primary p-6">
+          <h2 className="mb-2 flex items-center gap-2 text-lg font-semibold">
+            <Scale className="h-5 w-5 shrink-0" aria-hidden />
+            {t('disclosure.title')}
+          </h2>
+          <p className="text-muted-foreground">{t('disclosure.body')}</p>
+        </Card>
       </Section>
 
       <Section tone="default" spacing="compact" containerClassName="max-w-3xl">
