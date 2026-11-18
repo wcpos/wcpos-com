@@ -13,7 +13,7 @@ import {
 } from '@/components/home/pricing-teaser-section'
 import { TrustSection } from '@/components/home/trust-section'
 import { CtaSection } from '@/components/home/cta-section'
-import { marketingMetadata } from '@/lib/seo'
+import { localeUrl, marketingMetadata } from '@/lib/seo'
 import { wcposSoftwareApplication } from '@/lib/software-application-json-ld'
 import { clientMessages } from '@/i18n/client-messages'
 
@@ -39,6 +39,7 @@ export default async function Home({
   const locale = resolveLocale((await params).locale)
   setRequestLocale(locale)
   const messages = await getMessages()
+  const metaT = await getTranslations({ locale, namespace: 'home.meta' })
 
   // The act-1 wood-counter texture is a CSS-module background image, so the
   // browser only discovers it after the stylesheet loads and the section is
@@ -67,7 +68,10 @@ export default async function Home({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify(wcposSoftwareApplication()),
+            __html: JSON.stringify(wcposSoftwareApplication({
+              url: localeUrl(locale, '/'),
+              description: metaT('description'),
+            })),
           }}
         />
       </main>

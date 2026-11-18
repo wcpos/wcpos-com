@@ -152,9 +152,10 @@ export default async function DownloadsPage({
   const locale = resolveLocale((await params).locale)
   setRequestLocale(locale)
 
-  const [messages, pageT, platformT, releaseT, howItFitsT, versions] =
+  const [messages, metaT, pageT, platformT, releaseT, howItFitsT, versions] =
     await Promise.all([
       getMessages(),
+      getTranslations({ locale, namespace: 'downloads.meta' }),
       getTranslations({ locale, namespace: 'downloads.page' }),
       getTranslations({ locale, namespace: 'downloads.platforms' }),
       getTranslations({ locale, namespace: 'downloads.releaseHistory' }),
@@ -177,7 +178,11 @@ export default async function DownloadsPage({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify(wcposSoftwareApplication({ downloadUrl: localeUrl(locale, '/downloads') })),
+            __html: JSON.stringify(wcposSoftwareApplication({
+              url: localeUrl(locale, '/'),
+              description: metaT('description'),
+              downloadUrl: localeUrl(locale, '/downloads'),
+            })),
           }}
         />
         <DownloadsHero desktopVersion={desktopVersion} />
