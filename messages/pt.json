@@ -226,6 +226,7 @@
         }
       },
       "cta": "Ver preços e funcionalidades completos",
+      "compareLine": "Está a ponderar Square ou FooSales? <link>Veja como o WCPOS se compara</link>",
       "priceSummary": "{yearly}/ano ou {lifetime} vitalício ({currency}). Sem taxas por caixa."
     },
     "ecosystem": {

@@ -110,6 +110,17 @@ describe('PricingTeaserSection', () => {
     expect(cta).toHaveAttribute('href', '/pro')
   })
 
+  it('links the comparison line to /compare under the Pro CTA', () => {
+    renderWithIntl(<PricingTeaserSectionFallback />)
+
+    expect(
+      screen.getByRole('link', { name: 'See how WCPOS compares' })
+    ).toHaveAttribute('href', '/compare')
+    expect(
+      screen.getByRole('link', { name: 'See Full Pricing & Features' })
+    ).toHaveAttribute('href', '/pro')
+  })
+
   it('tracks the CTA click', async () => {
     renderWithIntl(await PricingTeaserSection())
 

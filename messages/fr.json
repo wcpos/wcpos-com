@@ -226,6 +226,7 @@
         }
       },
       "cta": "Voir tous les tarifs et fonctionnalités",
+      "compareLine": "Vous envisagez Square ou FooSales ? <link>Découvrez comment WCPOS se compare</link>",
       "priceSummary": "{yearly}/an ou {lifetime} à vie ({currency}). Aucun frais par caisse."
     },
     "ecosystem": {

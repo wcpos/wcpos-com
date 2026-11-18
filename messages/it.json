@@ -226,6 +226,7 @@
         }
       },
       "cta": "Vedi prezzi e funzionalità complete",
+      "compareLine": "Stai valutando Square o FooSales? <link>Scopri come si confronta WCPOS</link>",
       "priceSummary": "{yearly}/anno o {lifetime} a vita ({currency}). Nessun costo per registratore."
     },
     "ecosystem": {
