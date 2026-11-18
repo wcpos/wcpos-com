@@ -79,6 +79,13 @@ describe('HowItFits', () => {
     ).toBeNull()
   })
 
+  it('puts the heading before the diagram on narrow screens', () => {
+    render(<HowItFits copy={TEST_COPY} />)
+
+    const wrapper = screen.getByRole('img').parentElement
+    expect(wrapper).toHaveClass('order-last', 'lg:order-first')
+  })
+
   it('highlights device spheres when keyboard focus reaches them', () => {
     render(<HowItFits copy={TEST_COPY} />)
 
