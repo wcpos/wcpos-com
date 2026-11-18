@@ -1879,7 +1879,8 @@
       "thinking": "Aide denkt nach…",
       "form": {
         "label": "Supportfrage stellen",
-        "placeholder": "z. B. Wie verbinde ich einen Bondrucker?",
+        "placeholder": "z. B. Bondrucker einrichten",
+        "verifying": "Kurze Sicherheitsprüfung läuft…",
         "followUpPlaceholder": "Eine Nachfrage stellen…",
         "submit": "Fragen"
       },

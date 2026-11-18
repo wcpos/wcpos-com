@@ -1879,7 +1879,8 @@
       "thinking": "Aide denkt na…",
       "form": {
         "label": "Stel een supportvraag",
-        "placeholder": "bijv. Hoe verbind ik een bonprinter?",
+        "placeholder": "bijv. bonprinter instellen",
+        "verifying": "Even een korte veiligheidscontrole…",
         "followUpPlaceholder": "Stel een vervolgvraag…",
         "submit": "Vraag stellen"
       },

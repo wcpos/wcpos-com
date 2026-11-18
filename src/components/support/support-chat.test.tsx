@@ -1,3 +1,5 @@
+import fs from 'node:fs'
+import path from 'node:path'
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { act, render, screen, fireEvent, waitFor } from '@testing-library/react'
 import { useEffect, useImperativeHandle } from 'react'
@@ -6,7 +8,7 @@ import { NextIntlClientProvider } from 'next-intl'
 import type { ReactElement } from 'react'
 import messages from '../../../messages/en.json'
 import frMessages from '../../../messages/fr.json'
-import type { Locale } from '@/i18n/config'
+import { locales, type Locale } from '@/i18n/config'
 
 const { resetTurnstile } = vi.hoisted(() => ({ resetTurnstile: vi.fn() }))
 const { trackClientEvent } = vi.hoisted(() => ({ trackClientEvent: vi.fn() }))
@@ -338,6 +340,44 @@ describe('SupportChat', () => {
     await waitFor(() => expect(screen.getByText(/Open Settings/)).toBeInTheDocument())
     const [, init] = vi.mocked(fetch).mock.calls[0]
     expect(JSON.parse(String(init?.body))).toMatchObject({ turnstileToken: '' })
+  })
+
+  it('shows a status line while the security check verifies, and drops it once verified', () => {
+    turnstileMock.auto = false
+    renderWithIntl(<SupportChat />)
+
+    expect(screen.getByRole('status')).toHaveTextContent('Running a quick security check…')
+
+    act(() => turnstileMock.onSuccess?.('t'))
+
+    expect(screen.queryByText('Running a quick security check…')).not.toBeInTheDocument()
+  })
+
+  it('shows no verifying status line once the widget has issued a token', () => {
+    renderWithIntl(<SupportChat />)
+
+    expect(screen.queryByText('Running a quick security check…')).not.toBeInTheDocument()
+  })
+
+  it('keeps every locale placeholder short enough for a phone', () => {
+    // CJK and Hangul characters render about twice as wide as Latin ones.
+    const width = (text: string) =>
+      [...text].reduce((sum, ch) => {
+        const c = ch.codePointAt(0)!
+        const wide =
+          (c >= 0x1100 && c <= 0x11ff) ||
+          (c >= 0x2e80 && c <= 0x9fff) ||
+          (c >= 0xac00 && c <= 0xd7af) ||
+          (c >= 0xff00 && c <= 0xffef)
+        return sum + (wide ? 2 : 1)
+      }, 0)
+    for (const locale of locales) {
+      const file = path.resolve(process.cwd(), 'messages', `${locale}.json`)
+      const placeholder: string = JSON.parse(fs.readFileSync(file, 'utf8')).support.chat.form
+        .placeholder
+      // 30 keeps the placeholder inside the input on a 390 px phone.
+      expect(width(placeholder), `${locale}: ${placeholder}`).toBeLessThanOrEqual(30)
+    }
   })
 
   it('re-enables the form when the widget stays silent past the timeout', () => {

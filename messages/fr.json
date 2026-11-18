@@ -1879,7 +1879,8 @@
       "thinking": "Aide réfléchit…",
       "form": {
         "label": "Poser une question d’assistance",
-        "placeholder": "p. ex. Comment connecter une imprimante de reçus ?",
+        "placeholder": "p. ex. imprimante de reçus",
+        "verifying": "Vérification de sécurité en cours…",
         "followUpPlaceholder": "Posez une question complémentaire…",
         "submit": "Demander"
       },

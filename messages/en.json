@@ -1879,7 +1879,8 @@
       "thinking": "Aide is thinking…",
       "form": {
         "label": "Ask a support question",
-        "placeholder": "e.g. How do I connect a receipt printer?",
+        "placeholder": "e.g. Set up a receipt printer",
+        "verifying": "Running a quick security check…",
         "followUpPlaceholder": "Ask a follow-up…",
         "submit": "Ask"
       },
