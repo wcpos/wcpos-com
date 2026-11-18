@@ -1915,6 +1915,7 @@
   },
   "compare": {
     "breadcrumbLabel": "パンくずリスト",
+    "more": { "title": "その他の比較" },
     "disclosure": {
       "title": "この比較の運営者について",
       "body": "このページはWooCommerce POSの開発元であるWCPOSが公開しています。当然ながら私たちは当事者です。だからこそ、すべての数字に出典と取得日を明記し、競合他社自身の料金ページへ直接リンクし、競合の方が適している場合ははっきりそう述べます。どうぞすべてご自身で確認してください。"
@@ -2495,6 +2496,26 @@
         "expiry": {
           "question": "WCPOS Proのライセンスが期限切れになるとどうなりますか？",
           "answer": "何も止まりません。手元のPro版は望む限り動き続けます。レジも、データも、すべての機能もそのままです。更新を選ぶまで、新しいアップデートと優先サポートが止まるだけです。これは意図的な設計です。更新料は支払う価値のあるアップデートによって勝ち取られるべきものですし、あなたのPOSが遠隔で無効化されることは決してないという保証にもなります。"
+        }
+      },
+      "sources": {
+        "title": "出典",
+        "intro": "このページのSquareに関する情報はすべて、2026-10-06に確認し、2026-11-18に再確認したSquare自身のページとSquare for WooCommerce拡張機能のWooCommerceドキュメントに基づきます。",
+        "items": {
+          "pricingAnnouncement": "拠点ごとに月額$0のSquare Free",
+          "pricing": "Squareのプランと、Square Freeのカード決済手数料率",
+          "fees": "対面でのカード決済手数料：タッチ、差し込み、スワイプ",
+          "offline": "オフライン決済：72時間以内のアップロード、責任の所在、オフラインで利用できない機能",
+          "tapToPayIphone": "iPhoneでのTap to Pay",
+          "tapToPayAndroid": "Square Point of SaleによるAndroidでのTap to Pay",
+          "posApp": "iOSとAndroidデバイス上のSquare Point of Sale",
+          "register": "Square Point of Saleを内蔵したSquare Register",
+          "countries": "Squareがカード決済を受け付ける8か国",
+          "wooFaq": "SquareのPOSで作成された注文はWooCommerceに同期されず、商品と在庫のデータは同期される",
+          "wooSetup": "一度に連携できるSquareの拠点は一つだけ",
+          "wooPayments": "対応国と通貨の一致",
+          "wooVariations": "バリエーション商品：最大250バリエーション、6属性",
+          "wooSyncInterval": "既定の商品同期間隔は1時間"
         }
       },
       "footer": {

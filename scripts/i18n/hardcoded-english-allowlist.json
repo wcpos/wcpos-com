@@ -1,7 +1,7 @@
 {
   "version": 1,
   "generatedBy": "scripts/i18n/hardcoded-english.ts --update",
-  "updatedAt": "2026-11-18T15:52:06.703Z",
+  "updatedAt": "2026-11-18T17:51:38.274Z",
   "scope": [
     "src/app",
     "src/components",
@@ -199,6 +199,14 @@
       "category": "route/page",
       "attr": null,
       "text": "price",
+      "count": 1
+    },
+    {
+      "id": "6be8cc072bd388c9",
+      "file": "src/app/[locale]/(main)/compare/square/page.tsx",
+      "category": "route/page",
+      "attr": null,
+      "text": "register",
       "count": 1
     },
     {
