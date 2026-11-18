@@ -66,6 +66,19 @@ vi.mock('@/i18n/navigation', () => ({
 
 const params = Promise.resolve({ locale: 'en' })
 
+const CARDS = [
+  { title: 'Translated Oliver card title', href: '/compare/oliver-pos' },
+  {
+    title: 'Translated WooCommerce card title',
+    href: '/compare/woocommerce-pos',
+  },
+  { title: 'Translated Square card title', href: '/compare/square' },
+  { title: 'Translated Jovvie card title', href: '/compare/jovvie' },
+  { title: 'Translated Vitepos card title', href: '/compare/vitepos' },
+  { title: 'Translated YITH card title', href: '/compare/yith-pos' },
+  { title: 'Translated FooSales card title', href: '/compare/foosales' },
+]
+
 describe('ComparePage', () => {
   it('renders the hero, disclosure, and all comparison links', async () => {
     render(await ComparePage({ params }))
@@ -77,27 +90,27 @@ describe('ComparePage', () => {
       })
     ).toBeInTheDocument()
     expect(screen.getByText('Translated disclosure body')).toBeInTheDocument()
-    expect(
-      screen.getByRole('link', { name: /Translated Oliver card CTA/ })
-    ).toHaveAttribute('href', '/compare/oliver-pos')
-    expect(
-      screen.getByRole('link', { name: /Translated WooCommerce card CTA/ })
-    ).toHaveAttribute('href', '/compare/woocommerce-pos')
-    expect(
-      screen.getByRole('link', { name: /Translated Square card CTA/ })
-    ).toHaveAttribute('href', '/compare/square')
-    expect(
-      screen.getByRole('link', { name: /Translated Jovvie card CTA/ })
-    ).toHaveAttribute('href', '/compare/jovvie')
-    expect(
-      screen.getByRole('link', { name: /Translated Vitepos card CTA/ })
-    ).toHaveAttribute('href', '/compare/vitepos')
-    expect(
-      screen.getByRole('link', { name: /Translated YITH card CTA/ })
-    ).toHaveAttribute('href', '/compare/yith-pos')
-    expect(
-      screen.getByRole('link', { name: /Translated FooSales card CTA/ })
-    ).toHaveAttribute('href', '/compare/foosales')
+    for (const { title, href } of CARDS) {
+      expect(screen.getByRole('link', { name: title })).toHaveAttribute(
+        'href',
+        href
+      )
+    }
+    expect(screen.queryAllByRole('link', { name: /card CTA/ })).toHaveLength(0)
+  })
+
+  it('links each card title to its comparison', async () => {
+    render(await ComparePage({ params }))
+
+    for (const { title, href } of CARDS) {
+      const heading = screen.getByRole('heading', { level: 2, name: title })
+      expect(heading.querySelector(`a[href="${href}"]`)).not.toBeNull()
+    }
+    const cta = screen
+      .getByText('Translated Square card CTA')
+      .closest('[aria-hidden="true"]')
+    expect(cta).not.toBeNull()
+    expect(cta).toHaveAttribute('tabindex', '-1')
   })
 
   it('puts the comparison cards before the disclosure card', async () => {

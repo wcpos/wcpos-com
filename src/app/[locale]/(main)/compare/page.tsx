@@ -96,7 +96,12 @@ export default async function ComparePage({
           {COMPARISONS.map(({ key, href }) => (
             <Card key={key} elevated className="p-6">
               <h2 className="mb-2 text-xl font-semibold">
-                {t(`hub.${key}.title`)}
+                <Link
+                  href={href}
+                  className="hover:underline underline-offset-4"
+                >
+                  {t(`hub.${key}.title`)}
+                </Link>
               </h2>
               <p className="mb-4 text-muted-foreground">
                 {t(`hub.${key}.description`)}
@@ -105,6 +110,8 @@ export default async function ComparePage({
                 <Link
                   href={href}
                   className="inline-flex items-center gap-1 font-medium"
+                  tabIndex={-1}
+                  aria-hidden="true"
                 >
                   {t(`hub.${key}.cta`)}
                   <ArrowRight className="h-4 w-4" aria-hidden />
