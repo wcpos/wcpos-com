@@ -411,7 +411,7 @@
       "description": "WooCommerce向けWCPOS Pro：レジの追加と複数店舗、端末決済、在庫と価格の編集、注文と顧客の管理、詳細レポートを利用できます。"
     },
     "hero": {
-      "title": "WCPOS Pro",
+      "title": "WCPOS Pro – WooCommerce用POS",
       "subtitle": "無料POSのすべてに加えて、決済端末、レジでの店舗管理、詳細レポート、優先サポートを利用できます。"
     },
     "schema": {
