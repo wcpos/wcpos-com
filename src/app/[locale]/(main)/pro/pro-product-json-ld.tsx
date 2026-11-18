@@ -6,6 +6,15 @@ import type { Locale } from '@/i18n/config'
 
 const PRO_MESSAGE_NAMESPACE = 'pro'
 
+// Must match the order of the FAQ items on the /pro page (page.tsx).
+const PRO_FAQ_KEYS = [
+  'freePlugin',
+  'yearlyVsLifetime',
+  'expiry',
+  'siteLimits',
+  'paymentMethods',
+] as const
+
 export async function ProProductJsonLd({ locale }: { locale: Locale }) {
   // SEO metadata is prerendered into the shared static shell — always live.
   const [t, { offers }] = await Promise.all([
@@ -13,7 +22,17 @@ export async function ProProductJsonLd({ locale }: { locale: Locale }) {
     getCachedProOfferCatalog('live', locale),
   ])
 
-  return (
+  const faqPage = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: PRO_FAQ_KEYS.map((key) => ({
+      '@type': 'Question',
+      name: t(`faq.${key}.question`),
+      acceptedAnswer: { '@type': 'Answer', text: t(`faq.${key}.answer`) },
+    })),
+  }
+
+  const softwareApplicationScript = (
     <script
       type="application/ld+json"
       dangerouslySetInnerHTML={{
@@ -36,5 +55,15 @@ export async function ProProductJsonLd({ locale }: { locale: Locale }) {
         }),
       }}
     />
+  )
+
+  return (
+    <>
+      {softwareApplicationScript}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqPage) }}
+      />
+    </>
   )
 }
