@@ -1,6 +1,6 @@
 import { beforeAll, describe, it, expect, vi } from 'vitest'
 import type { MetadataRoute } from 'next'
-import sitemap from './sitemap'
+import sitemap, { marketingRoutes } from './sitemap'
 import { locales } from '@/i18n/config'
 import { PRIVACY_UPDATED_AT, TERMS_UPDATED_AT, REFUNDS_UPDATED_AT } from '@/lib/legal-dates'
 import { getReleases } from '@/services/core/external/github-client'
@@ -130,9 +130,22 @@ describe('sitemap', () => {
       ['https://wcpos.com/changelog', '2026-09-30T08:00:00Z'],
       ['https://wcpos.com/fr/changelog', '2026-09-30T08:00:00Z'],
       ['https://wcpos.com/downloads', '2026-09-30T08:00:00Z'],
-      ['https://wcpos.com/compare/oliver-pos', '2026-10-05'],
+      ['https://wcpos.com/compare/oliver-pos', '2026-11-18'],
+      ['https://wcpos.com/de/compare/foosales', '2026-11-18'],
     ]) {
       expect(entries.find((entry) => entry.url === url)?.lastModified).toBe(date)
+    }
+  })
+
+  it('gives every content route a lastmod except /roadmap', () => {
+    const paths = new Set<string>(marketingRoutes.map((route) => route.path))
+    for (const entry of entries) {
+      const [, first = '', ...rest] = new URL(entry.url).pathname.split('/')
+      const segments = (locales as readonly string[]).includes(first) ? rest : [first, ...rest]
+      const path = `/${segments.join('/')}`
+      if (paths.has(path) && path !== '/roadmap') {
+        expect(entry.lastModified, entry.url).toBeDefined()
+      }
     }
   })
 
