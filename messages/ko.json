@@ -1734,6 +1734,7 @@
         "v190": "- New receipt template gallery; thermal printing (58/80mm)\n- Customer Tax IDs; Pro coupons & refunds at the POS"
       },
       "plugin": "무료",
+      "showAllNotes": "{version} 릴리스 노트 모두 보기",
       "externalContentNotice": "릴리스 노트는 GitHub에서 가져오며 영어로 표시될 수 있습니다."
     }
   },
