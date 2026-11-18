@@ -6,6 +6,7 @@ import { Section } from '@/components/ui/section'
 import { SectionHeading } from '@/components/ui/section-heading'
 import { CtaSection } from '@/components/home/cta-section'
 import { GlanceTable } from '@/components/compare/glance-table'
+import { proAddsLinks } from '@/components/compare/pro-adds-links'
 import { localeUrl, marketingMetadata } from '@/lib/seo'
 import type { Metadata } from 'next'
 import type { Locale } from '@/i18n/config'
@@ -179,7 +180,7 @@ export default async function ViteposComparePage({
           <p>{t('vitepos.pricing.vitepos')}</p>
           <p>{t('vitepos.pricing.wcpos')}</p>
           <p>{t('vitepos.pricing.compare')}</p>
-          <p>{t('vitepos.pricing.proAdds')}</p>
+          <p>{t.rich('vitepos.pricing.proAdds', proAddsLinks)}</p>
           <p>
             {t('vitepos.pricing.demoPrefix')}{' '}
             <a

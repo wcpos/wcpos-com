@@ -5,7 +5,7 @@ import ViteposComparePage, { generateMetadata } from './page'
 // The page reads ~100 keys; the test asserts structure, so identity-with-
 // overrides keeps the mock small (matching the pattern in pro/page.test.tsx).
 vi.mock('next-intl/server', () => ({
-  getTranslations: vi.fn(async () => (key: string) => {
+  getTranslations: vi.fn(async () => Object.assign((key: string) => {
     const messages: Record<string, string> = {
       'vitepos.metadata.title': 'Translated Vitepos metadata title',
       'vitepos.metadata.description':
@@ -18,9 +18,11 @@ vi.mock('next-intl/server', () => ({
         'Translated Vitepos offline cell',
     }
     return messages[key] ?? key
-  }),
+  }, { rich: (key: string) => key })),
   setRequestLocale: vi.fn(),
 }))
+
+vi.mock('@/i18n/navigation', () => ({ Link: 'a' }))
 
 vi.mock('@/components/home/cta-section', () => ({
   CtaSection: () => <div data-testid="cta-section" />,

@@ -5,7 +5,7 @@ import SquareComparePage, { generateMetadata } from './page'
 // The page reads ~100 keys; the test asserts structure, so identity-with-
 // overrides keeps the mock small (matching the pattern in pro/page.test.tsx).
 vi.mock('next-intl/server', () => ({
-  getTranslations: vi.fn(async () => (key: string) => {
+  getTranslations: vi.fn(async () => Object.assign((key: string) => {
     const messages: Record<string, string> = {
       'square.metadata.title': 'Translated Square metadata title',
       'square.metadata.description':
@@ -19,9 +19,11 @@ vi.mock('next-intl/server', () => ({
       'square.limits.location': 'Translated Square location limit',
     }
     return messages[key] ?? key
-  }),
+  }, { rich: (key: string) => `rich:${key}` })),
   setRequestLocale: vi.fn(),
 }))
+
+vi.mock('@/i18n/navigation', () => ({ Link: 'a' }))
 
 vi.mock('@/components/home/cta-section', () => ({
   CtaSection: () => <div data-testid="cta-section" />,
@@ -99,6 +101,12 @@ describe('SquareComparePage', () => {
     expect(breadcrumbs.itemListElement[1].item).toBe(
       'https://wcpos.com/compare/square'
     )
+  })
+
+  it('renders the Pro-adds paragraph through t.rich so its tags become links', async () => {
+    render(await SquareComparePage({ params }))
+    expect(screen.getByText('rich:square.pricing.proAdds').tagName).toBe('P')
+    expect(screen.queryByText('square.pricing.proAdds')).toBeNull()
   })
 
   it('builds metadata from translated strings', async () => {

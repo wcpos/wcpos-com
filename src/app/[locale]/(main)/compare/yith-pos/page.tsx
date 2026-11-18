@@ -6,6 +6,7 @@ import { Section } from '@/components/ui/section'
 import { SectionHeading } from '@/components/ui/section-heading'
 import { CtaSection } from '@/components/home/cta-section'
 import { GlanceTable } from '@/components/compare/glance-table'
+import { proAddsLinks } from '@/components/compare/pro-adds-links'
 import { localeUrl, marketingMetadata } from '@/lib/seo'
 import type { Metadata } from 'next'
 import type { Locale } from '@/i18n/config'
@@ -182,7 +183,7 @@ export default async function YithComparePage({
           <p>{t('yith.pricing.yith')}</p>
           <p>{t('yith.pricing.wcpos')}</p>
           <p>{t('yith.pricing.compare')}</p>
-          <p>{t('yith.pricing.proAdds')}</p>
+          <p>{t.rich('yith.pricing.proAdds', proAddsLinks)}</p>
           <p>
             {t('yith.pricing.demoPrefix')}{' '}
             <a

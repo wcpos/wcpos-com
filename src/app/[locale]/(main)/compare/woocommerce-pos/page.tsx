@@ -6,6 +6,7 @@ import { Section } from '@/components/ui/section'
 import { SectionHeading } from '@/components/ui/section-heading'
 import { CtaSection } from '@/components/home/cta-section'
 import { GlanceTable } from '@/components/compare/glance-table'
+import { proAddsLinks } from '@/components/compare/pro-adds-links'
 import { localeUrl, marketingMetadata } from '@/lib/seo'
 import type { Metadata } from 'next'
 import type { Locale } from '@/i18n/config'
@@ -202,7 +203,7 @@ export default async function WoocommerceComparePage({
         <div className="mt-4 space-y-4 text-muted-foreground">
           <p>{t('woocommerce.pricing.woocommerce')}</p>
           <p>{t('woocommerce.pricing.wcpos')}</p>
-          <p>{t('woocommerce.pricing.proAdds')}</p>
+          <p>{t.rich('woocommerce.pricing.proAdds', proAddsLinks)}</p>
           <p>
             {t('woocommerce.pricing.demoPrefix')}{' '}
             <a

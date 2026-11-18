@@ -6,6 +6,7 @@ import { Section } from '@/components/ui/section'
 import { SectionHeading } from '@/components/ui/section-heading'
 import { CtaSection } from '@/components/home/cta-section'
 import { GlanceTable } from '@/components/compare/glance-table'
+import { proAddsLinks } from '@/components/compare/pro-adds-links'
 import { localeUrl, marketingMetadata } from '@/lib/seo'
 import type { Metadata } from 'next'
 import type { Locale } from '@/i18n/config'
@@ -242,7 +243,7 @@ export default async function OliverComparePage({
           <p>{t('oliver.pricing.oliver')}</p>
           <p>{t('oliver.pricing.wcpos')}</p>
           <p>{t('oliver.pricing.math')}</p>
-          <p>{t('oliver.pricing.proAdds')}</p>
+          <p>{t.rich('oliver.pricing.proAdds', proAddsLinks)}</p>
           <p>
             {t('oliver.pricing.demoPrefix')}{' '}
             <a
