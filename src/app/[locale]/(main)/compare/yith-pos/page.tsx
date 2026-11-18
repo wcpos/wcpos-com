@@ -9,6 +9,7 @@ import { GlanceTable } from '@/components/compare/glance-table'
 import { proAddsLinks } from '@/components/compare/pro-adds-links'
 import { CompareBreadcrumb } from '@/components/compare/compare-breadcrumb'
 import { localeUrl, marketingMetadata } from '@/lib/seo'
+import { comparePageJsonLd } from '@/lib/compare-page-json-ld'
 import type { Metadata } from 'next'
 import type { Locale } from '@/i18n/config'
 
@@ -110,6 +111,12 @@ function YithCompareJsonLd({
               },
             ],
           },
+          comparePageJsonLd({
+            slug: 'yith-pos',
+            locale,
+            name: translate('yith.metadata.title'),
+            description: translate('yith.metadata.description'),
+          }),
         ]),
       }}
     />

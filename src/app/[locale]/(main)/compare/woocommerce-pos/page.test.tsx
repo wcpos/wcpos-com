@@ -88,11 +88,11 @@ describe('WoocommerceComparePage', () => {
     expect(screen.queryByText('woocommerce.woocommerceBetter.tapToPay')).toBeNull()
   })
 
-  it('emits FAQPage and BreadcrumbList JSON-LD', async () => {
+  it('emits FAQPage, BreadcrumbList and WebPage JSON-LD', async () => {
     const { container } = render(await WoocommerceComparePage({ params }))
     const script = container.querySelector('script[type="application/ld+json"]')
     expect(script).not.toBeNull()
-    const [faq, breadcrumbs] = JSON.parse(script!.innerHTML)
+    const [faq, breadcrumbs, webPage] = JSON.parse(script!.innerHTML)
     expect(faq['@type']).toBe('FAQPage')
     expect(faq.mainEntity).toHaveLength(6)
     expect(faq.mainEntity[0].name).toBe('Translated free question')
@@ -101,6 +101,9 @@ describe('WoocommerceComparePage', () => {
     expect(breadcrumbs.itemListElement[1].item).toBe(
       'https://wcpos.com/compare/woocommerce-pos'
     )
+    expect(webPage['@type']).toBe('WebPage')
+    expect(webPage.dateModified).toBe('2026-10-06')
+    expect(webPage.url).toMatch(/\/compare\/woocommerce-pos$/)
   })
 
   it('builds metadata from translated strings', async () => {
