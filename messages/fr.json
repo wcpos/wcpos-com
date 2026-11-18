@@ -2357,7 +2357,7 @@
       },
       "shortAnswer": {
         "title": "La réponse en bref",
-        "wcpos": "WCPOS est une caisse intégrée à WooCommerce même : elle vend à partir de vos produits et stocks WooCommerce, et chaque vente est une commande WooCommerce, donc rien à synchroniser. Elle fonctionne dans tout navigateur moderne, sous forme d'applications de bureau pour Windows, macOS et Linux et d'applications iOS et Android (bêta). Sa version gratuite n'impose aucune limite de produits, de commandes ou de clients, et Pro ajoute la gestion de plusieurs boutiques, les autres passerelles de paiement WooCommerce de votre boutique et les intégrations de terminaux de carte, dont Square Terminal, pour un paiement unique après lequel rien ne se désactive.",
+        "wcpos": "WCPOS est une caisse intégrée à WooCommerce même : elle vend à partir de vos produits et stocks WooCommerce, et chaque vente est une commande WooCommerce, donc aucun second catalogue à synchroniser. Elle fonctionne dans tout navigateur moderne, sous forme d'applications de bureau pour Windows, macOS et Linux et d'applications iOS et Android (bêta). Sa version gratuite n'impose aucune limite de produits, de commandes ou de clients, et Pro ajoute la gestion de plusieurs boutiques, les autres passerelles de paiement WooCommerce de votre boutique et les intégrations de terminaux de carte, dont Square Terminal, pour un paiement unique après lequel rien ne se désactive.",
         "square": "Square for WooCommerce relie deux systèmes : Square Point of Sale sous forme d'application sur les appareils iOS et Android ou intégré à Square Register, le matériel propre à Square, et votre boutique WooCommerce, l'extension synchronisant les données de produits et de stocks entre les deux. Square propose une formule gratuite, Tap to Pay sur iPhone et Android, et les paiements par carte hors ligne. Mais les commandes passées dans le POS de Square ne sont pas synchronisées avec WooCommerce : les changements de stock dus aux ventes en personne arrivent dans WooCommerce lors de la prochaine vérification programmée (l'intervalle par défaut est d'une heure), et l'extension relie un seul établissement Square à la fois."
       },
       "glance": {
@@ -2373,7 +2373,7 @@
           },
           "catalog": {
             "label": "Produits et stocks",
-            "wcpos": "Vend à partir de vos produits et stocks WooCommerce ; rien à synchroniser",
+            "wcpos": "Vend à partir de vos produits et stocks WooCommerce ; aucun second catalogue à synchroniser",
             "square": "Données de produits et de stocks synchronisées entre Square et WooCommerce ; intervalle par défaut d'une heure"
           },
           "devices": {
@@ -2457,7 +2457,7 @@
         "title": "Lequel choisir ?",
         "wcpos": {
           "title": "Choisissez WCPOS si :",
-          "body": "Vous voulez que chaque vente, en ligne ou en personne, soit une commande WooCommerce issue d'un seul catalogue sans rien à synchroniser, gérez plus d'une boutique, vendez hors des huit pays de Square, souhaitez une caisse dans un navigateur Web ou dans des applications de bureau pour Windows, macOS et Linux, ou voulez utiliser une passerelle de paiement ou un terminal de carte autre que Square."
+          "body": "Vous voulez que chaque vente, en ligne ou en personne, soit une commande WooCommerce issue d'un seul catalogue, sans second catalogue à synchroniser, gérez plus d'une boutique, vendez hors des huit pays de Square, souhaitez une caisse dans un navigateur Web ou dans des applications de bureau pour Windows, macOS et Linux, ou voulez utiliser une passerelle de paiement ou un terminal de carte autre que Square."
         },
         "square": {
           "title": "Choisissez Square for WooCommerce si :",

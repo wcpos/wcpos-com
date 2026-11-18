@@ -2357,7 +2357,7 @@
       },
       "shortAnswer": {
         "title": "简短结论",
-        "wcpos": "WCPOS 是直接构建在 WooCommerce 上的收银台：它使用你的 WooCommerce 商品和库存销售，每笔销售都是 WooCommerce 订单，因此无需同步。它可在任何现代浏览器、Windows、macOS 和 Linux 桌面应用，以及 iOS 和 Android 应用（测试版）中运行。免费版不限制商品、订单或客户数量；Pro 版通过一次性付款提供多店铺管理、你店铺的其他 WooCommerce 支付网关和刷卡终端集成，其中包括 Square Terminal，付款后功能不会被停用。",
+        "wcpos": "WCPOS 是直接构建在 WooCommerce 上的收银台：它使用你的 WooCommerce 商品和库存销售，每笔销售都是 WooCommerce 订单，因此没有需要保持同步的第二个商品目录。它可在任何现代浏览器、Windows、macOS 和 Linux 桌面应用，以及 iOS 和 Android 应用（测试版）中运行。免费版不限制商品、订单或客户数量；Pro 版通过一次性付款提供多店铺管理、你店铺的其他 WooCommerce 支付网关和刷卡终端集成，其中包括 Square Terminal，付款后功能不会被停用。",
         "square": "Square for WooCommerce 将两个系统连接起来：iOS 和 Android 设备上的 Square Point of Sale 应用或内置于 Square 自有硬件 Square Register 中的 Square Point of Sale 与你的 WooCommerce 店铺，扩展在两者之间同步商品和库存数据。Square 提供免费方案、iPhone 和 Android 上的 Tap to Pay，以及离线刷卡支付。但在 Square 的 POS 中创建的订单不会同步到 WooCommerce：线下销售引起的库存变化会在下一次计划检查时到达 WooCommerce（默认间隔为一小时），该扩展一次只关联一个 Square 地点。"
       },
       "glance": {
@@ -2373,7 +2373,7 @@
           },
           "catalog": {
             "label": "商品和库存",
-            "wcpos": "使用你的 WooCommerce 商品和库存销售；无需同步",
+            "wcpos": "使用你的 WooCommerce 商品和库存销售；没有需要同步的第二个商品目录",
             "square": "Square 和 WooCommerce 之间同步商品和库存数据；默认同步间隔为一小时"
           },
           "devices": {
@@ -2457,7 +2457,7 @@
         "title": "你该选哪一个？",
         "wcpos": {
           "title": "选择 WCPOS，如果：",
-          "body": "你希望线上和线下每笔销售都从一个商品目录生成 WooCommerce 订单，无需同步；经营多家店铺；在 Square 支持的 8 个国家以外销售；想在网页浏览器或 Windows、macOS 和 Linux 桌面应用中使用收银台；或想使用 Square 以外的支付网关或刷卡终端。"
+          "body": "你希望线上和线下每笔销售都从一个商品目录生成 WooCommerce 订单，没有需要保持同步的第二个商品目录；经营多家店铺；在 Square 支持的 8 个国家以外销售；想在网页浏览器或 Windows、macOS 和 Linux 桌面应用中使用收银台；或想使用 Square 以外的支付网关或刷卡终端。"
         },
         "square": {
           "title": "选择 Square for WooCommerce，如果：",

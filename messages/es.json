@@ -2357,7 +2357,7 @@
       },
       "shortAnswer": {
         "title": "La respuesta corta",
-        "wcpos": "WCPOS es una caja integrada en el propio WooCommerce: vende a partir de sus productos y existencias de WooCommerce, y cada venta es un pedido de WooCommerce, así que no hay nada que sincronizar. Funciona en cualquier navegador moderno, como aplicación de escritorio para Windows, macOS y Linux y como aplicación para iOS y Android (beta). Su versión gratuita no tiene topes de productos, pedidos ni clientes, y Pro añade la gestión de varias tiendas, las demás pasarelas de pago de WooCommerce de su tienda e integraciones con terminales de tarjeta, entre ellas Square Terminal, por un pago único tras el que nada deja de funcionar.",
+        "wcpos": "WCPOS es una caja integrada en el propio WooCommerce: vende a partir de sus productos y existencias de WooCommerce, y cada venta es un pedido de WooCommerce, así que no hay un segundo catálogo que mantener sincronizado. Funciona en cualquier navegador moderno, como aplicación de escritorio para Windows, macOS y Linux y como aplicación para iOS y Android (beta). Su versión gratuita no tiene topes de productos, pedidos ni clientes, y Pro añade la gestión de varias tiendas, las demás pasarelas de pago de WooCommerce de su tienda e integraciones con terminales de tarjeta, entre ellas Square Terminal, por un pago único tras el que nada deja de funcionar.",
         "square": "Square for WooCommerce une dos sistemas: la aplicación Square Point of Sale en dispositivos iOS y Android o integrada en Square Register, el hardware propio de Square, y su tienda WooCommerce; la extensión sincroniza los datos de productos e inventario entre ambos. Square tiene un plan gratuito, Tap to Pay en iPhone y Android, y admite pagos con tarjeta sin conexión. Pero los pedidos realizados en el TPV de Square no se sincronizan con WooCommerce: los cambios de existencias derivados de las ventas presenciales llegan a WooCommerce en la siguiente comprobación programada (el intervalo predeterminado es de una hora), y la extensión vincula una ubicación de Square a la vez."
       },
       "glance": {
@@ -2373,7 +2373,7 @@
           },
           "catalog": {
             "label": "Productos y existencias",
-            "wcpos": "Vende a partir de sus productos y existencias de WooCommerce; nada que sincronizar",
+            "wcpos": "Vende a partir de sus productos y existencias de WooCommerce; ningún segundo catálogo que sincronizar",
             "square": "Datos de productos e inventario sincronizados entre Square y WooCommerce; intervalo predeterminado de una hora"
           },
           "devices": {
@@ -2457,7 +2457,7 @@
         "title": "¿Cuál debería elegir?",
         "wcpos": {
           "title": "Elija WCPOS si:",
-          "body": "Quiere que cada venta, en línea o presencial, sea un pedido de WooCommerce procedente de un único catálogo sin nada que sincronizar, gestiona más de una tienda, vende fuera de los ocho países de Square, quiere una caja en un navegador web o en aplicaciones de escritorio para Windows, macOS y Linux, o quiere utilizar una pasarela de pago o un terminal de tarjeta distinto de Square."
+          "body": "Quiere que cada venta, en línea o presencial, sea un pedido de WooCommerce procedente de un único catálogo, sin un segundo catálogo que mantener sincronizado, gestiona más de una tienda, vende fuera de los ocho países de Square, quiere una caja en un navegador web o en aplicaciones de escritorio para Windows, macOS y Linux, o quiere utilizar una pasarela de pago o un terminal de tarjeta distinto de Square."
         },
         "square": {
           "title": "Elija Square for WooCommerce si:",
