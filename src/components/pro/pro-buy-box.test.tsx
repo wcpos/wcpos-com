@@ -207,4 +207,18 @@ describe('ProBuyBox', () => {
       plan: 'lifetime',
     })
   })
+
+  it('puts each price on its own full-width row below sm', () => {
+    renderBuyBox()
+
+    const radios = screen.getAllByRole('radio')
+    expect(radios).toHaveLength(options.length)
+    for (const option of options) {
+      const priceWrapper = screen
+        .getByText(option.priceText)
+        .closest('.basis-full, .ml-auto')
+      expect(priceWrapper).not.toBeNull()
+      expect(priceWrapper).toHaveClass('basis-full', 'sm:basis-auto')
+    }
+  })
 })
