@@ -434,6 +434,10 @@
         "description": "Acceptez les paiements par carte en personne sur Stripe Terminal, Square Terminal, SumUp, Mollie, PayPal Reader et plus encore.",
         "link": "Voir toutes les extensions de terminal"
       },
+      "display": {
+        "title": "Écran côté client",
+        "description": "Placez un écran face à votre client : ouvrez-le dans n'importe quel navigateur et associez-le à une caisse avec un code."
+      },
       "stockPrice": {
         "title": "Modification du stock et des prix",
         "description": "Mettez à jour les niveaux de stock, les prix et les détails des produits directement depuis le POS — sans passer par l'administration WordPress."

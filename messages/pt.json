@@ -434,6 +434,10 @@
         "description": "Aceite pagamentos presenciais com cartão em Stripe Terminal, Square Terminal, SumUp, Mollie, PayPal Reader e muito mais.",
         "link": "Ver todas as extensões de terminal"
       },
+      "display": {
+        "title": "Ecrã virado para o cliente",
+        "description": "Coloque um ecrã à frente do cliente: abra-o em qualquer navegador e associe-o a uma caixa com um código."
+      },
       "stockPrice": {
         "title": "Edição de Stock e Preços",
         "description": "Atualize níveis de stock, preços e detalhes de produtos diretamente no POS — sem precisar de aceder à administração do WordPress."

@@ -434,6 +434,10 @@
         "description": "Acepta cobros presenciales con tarjeta en Stripe Terminal, Square Terminal, SumUp, Mollie, PayPal Reader y más.",
         "link": "Ver todas las extensiones de terminal"
       },
+      "display": {
+        "title": "Pantalla orientada al cliente",
+        "description": "Pon una pantalla frente a tu cliente: ábrela en cualquier navegador y vincúlala a una caja con un código."
+      },
       "stockPrice": {
         "title": "Edición de stock y precios",
         "description": "Actualiza niveles de stock, precios y detalles de productos directamente desde el POS, sin pasar por el panel de WordPress."

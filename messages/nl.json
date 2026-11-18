@@ -434,6 +434,10 @@
         "description": "Neem kaartbetalingen ter plaatse aan met Stripe Terminal, Square Terminal, SumUp, Mollie, PayPal Reader en meer.",
         "link": "Bekijk alle terminalextensies"
       },
+      "display": {
+        "title": "Klantendisplay",
+        "description": "Zet een scherm voor je klant: open het in elke browser en koppel het met een code aan een kassa."
+      },
       "stockPrice": {
         "title": "Voorraad en prijzen bewerken",
         "description": "Werk voorraadniveaus, prijzen en productgegevens rechtstreeks vanuit de POS bij — zonder naar het WordPress-beheer te gaan."

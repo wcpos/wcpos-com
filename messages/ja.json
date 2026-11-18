@@ -434,6 +434,10 @@
         "description": "Stripe Terminal、Square Terminal、SumUp、Mollie、PayPal Readerなどで、対面でのカード決済を受け付けられます。",
         "link": "決済端末の拡張機能をすべて見る"
       },
+      "display": {
+        "title": "顧客向けディスプレイ",
+        "description": "お客様の前に画面を置けます。任意のブラウザで開き、コードでレジとペアリングできます。"
+      },
       "stockPrice": {
         "title": "在庫と価格の編集",
         "description": "在庫数、価格、商品詳細をPOSから直接更新できます。WordPress管理画面を開く必要はありません。"

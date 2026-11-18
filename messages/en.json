@@ -434,6 +434,10 @@
         "description": "Take in-person card payments on Stripe Terminal, Square Terminal, SumUp, Mollie, PayPal Reader and more.",
         "link": "See all terminal extensions"
       },
+      "display": {
+        "title": "Customer-facing display",
+        "description": "Put a screen in front of your customer: open the display in any browser and pair it to a till with a code."
+      },
       "stockPrice": {
         "title": "Stock & Price Editing",
         "description": "Update stock levels, prices, and product details right from the POS — no trip to the WordPress admin."

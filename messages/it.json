@@ -434,6 +434,10 @@
         "description": "Accetta pagamenti con carta in presenza su Stripe Terminal, Square Terminal, SumUp, Mollie, PayPal Reader e altri.",
         "link": "Vedi tutte le estensioni per terminali"
       },
+      "display": {
+        "title": "Display rivolto al cliente",
+        "description": "Metti uno schermo davanti al cliente: aprilo in qualsiasi browser e abbinalo a una cassa con un codice."
+      },
       "stockPrice": {
         "title": "Modifica di giacenze e prezzi",
         "description": "Aggiorna giacenze, prezzi e dettagli dei prodotti direttamente dal POS — senza passare dall'amministrazione di WordPress."
