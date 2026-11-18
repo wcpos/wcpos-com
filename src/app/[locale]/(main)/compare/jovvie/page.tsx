@@ -8,6 +8,7 @@ import { CtaSection } from '@/components/home/cta-section'
 import { GlanceTable } from '@/components/compare/glance-table'
 import { proAddsLinks } from '@/components/compare/pro-adds-links'
 import { CompareBreadcrumb } from '@/components/compare/compare-breadcrumb'
+import { MoreComparisons } from '@/components/compare/more-comparisons'
 import { localeUrl, marketingMetadata } from '@/lib/seo'
 import { comparePageJsonLd } from '@/lib/compare-page-json-ld'
 import type { Metadata } from 'next'
@@ -249,6 +250,7 @@ export default async function JovvieComparePage({
         </div>
       </Section>
 
+      <MoreComparisons current="/compare/jovvie" />
       <CtaSection />
 
       <Section tone="default" spacing="compact" containerClassName="max-w-3xl">

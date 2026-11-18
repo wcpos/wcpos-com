@@ -1914,6 +1914,7 @@
   },
   "compare": {
     "breadcrumbLabel": "Ruta de navegación",
+    "more": { "title": "Más comparativas" },
     "disclosure": {
       "title": "Quién está detrás de esta comparativa",
       "body": "Esta página la publica WCPOS, los creadores de WooCommerce POS. Obviamente tenemos intereses en juego — por eso cada cifra está documentada y fechada, enlazamos a las propias páginas de precios de la competencia y decimos con claridad cuándo un competidor es la mejor opción. Compruébelo todo."

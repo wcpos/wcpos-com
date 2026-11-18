@@ -31,6 +31,11 @@ vi.mock('@/components/home/cta-section', () => ({
   CtaSection: () => <div data-testid="cta-section" />,
 }))
 
+// MoreComparisons is an async server component; it has its own test.
+vi.mock('@/components/compare/more-comparisons', () => ({
+  MoreComparisons: () => null,
+}))
+
 // compare.square shortAnswer.wcpos, glance.rows.catalog.wcpos and
 // choose.wcpos.body as they read before "nothing to sync" was dropped.
 const NOTHING_TO_SYNC_VALUES: Record<string, [string, string, string]> = {
