@@ -1923,7 +1923,7 @@
     "hub": {
       "metadata": {
         "title": "WooCommerce POS 系统对比",
-        "description": "对 WooCommerce 销售点系统进行诚实、有据可查的对比——架构、免费版的真实限制、定价、离线支持，以及各自适合的场景。"
+        "description": "将 WCPOS 与 Square、FooSales、Oliver POS、WooCommerce 官方 POS 等进行对比：定价、免费版的限制、离线支持，以及各自适合的场景。"
       },
       "hero": {
         "title": "对比 WooCommerce POS 系统",
