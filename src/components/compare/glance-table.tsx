@@ -17,12 +17,13 @@ export interface GlanceTableRow {
 /**
  * The "at a glance" comparison table shared by the /compare/* vendor pages.
  *
- * Phone layout: below `sm` the table, header and body become blocks and each
- * row becomes a two-column grid, so a row's label spans the full width above
- * its two answers instead of squeezing three ~110px columns. The empty corner
- * cell (or the feature header) is hidden there. From `sm` up every `max-sm:`
- * class is inert and the table renders as a normal three-column table. The DOM
- * stays a real <table> with scoped headers either way.
+ * Phone layout: below `sm` the table becomes a flex column, the header and
+ * body become blocks, and each row becomes a two-column grid, so a row's label
+ * spans the full width above its two answers instead of squeezing three ~110px
+ * columns. The empty corner cell (or the feature header) is hidden there, and
+ * the caption moves last, full width, below the body. From `sm` up every
+ * `max-sm:` class is inert and the table renders as a normal three-column
+ * table. The DOM stays a real <table> with scoped headers either way.
  */
 export function GlanceTable({
   wcposHeader,
@@ -38,8 +39,12 @@ export function GlanceTable({
   caption?: string
 }) {
   return (
-    <Table className="max-sm:block">
-      {caption && <TableCaption>{caption}</TableCaption>}
+    <Table className="max-sm:flex max-sm:flex-col">
+      {caption && (
+        <TableCaption className="max-sm:order-last max-sm:mt-4 max-sm:w-full">
+          {caption}
+        </TableCaption>
+      )}
       <TableHeader className="max-sm:block">
         <TableRow className="max-sm:grid max-sm:grid-cols-2">
           {featureHeader === undefined ? (

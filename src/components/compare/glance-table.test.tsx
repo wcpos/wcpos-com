@@ -83,5 +83,6 @@ describe('GlanceTable', () => {
 
     expect(screen.getByRole('table', { name: 'At a glance' })).toBeInTheDocument()
     expect(screen.getByText('At a glance').tagName).toBe('CAPTION')
+    expect(screen.getByText('At a glance')).toHaveClass('max-sm:order-last')
   })
 })
