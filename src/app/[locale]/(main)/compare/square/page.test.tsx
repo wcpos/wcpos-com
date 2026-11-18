@@ -177,7 +177,7 @@ describe('SquareComparePage', () => {
     const rows = heading.closest('section')!.querySelectorAll('li')
     expect(rows).toHaveLength(14)
     for (const row of rows) {
-      const match = row.textContent!.match(/^square\.sources\.items\.(\w+):/)
+      const match = row.textContent!.match(/^square\.sources\.items\.(\w+)/)
       expect(match).not.toBeNull()
       expect(items).toHaveProperty(match![1])
     }

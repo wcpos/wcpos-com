@@ -9,6 +9,7 @@ import { GlanceTable } from '@/components/compare/glance-table'
 import { proAddsLinks } from '@/components/compare/pro-adds-links'
 import { CompareBreadcrumb } from '@/components/compare/compare-breadcrumb'
 import { MoreComparisons } from '@/components/compare/more-comparisons'
+import { SourceList } from '@/components/compare/source-list'
 import { localeUrl, marketingMetadata } from '@/lib/seo'
 import { comparePageJsonLd } from '@/lib/compare-page-json-ld'
 import type { Metadata } from 'next'
@@ -334,16 +335,7 @@ export default async function SquareComparePage({
       <Section tone="default" spacing="compact" containerClassName="max-w-3xl">
         <SectionHeading align="left" title={t('square.sources.title')} />
         <p className="mt-4 text-muted-foreground">{t('square.sources.intro')}</p>
-        <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
-          {SOURCES.map(({ key, url }) => (
-            <li key={key}>
-              {t(`square.sources.items.${key}`)}:{' '}
-              <a href={url} rel="nofollow noreferrer" className="break-all font-medium text-foreground underline underline-offset-4">
-                {url}
-              </a>
-            </li>
-          ))}
-        </ul>
+        <SourceList items={SOURCES.map(({ key, url }) => ({ key, url, label: t(`square.sources.items.${key}`) }))} />
       </Section>
 
       <MoreComparisons current="/compare/square" />
