@@ -133,7 +133,7 @@ describe('DownloadsPage', () => {
     expect(
       screen.getByRole('heading', { level: 1, name: 'Download WooCommerce POS' }),
     ).toBeInTheDocument()
-    expect(screen.getByText('One till, every device.')).toBeInTheDocument()
+    expect(screen.getByText('One register, every device.')).toBeInTheDocument()
   })
 
   it('sources plugin card labels from translations', async () => {
@@ -239,6 +239,49 @@ describe('DownloadsPage', () => {
         const line = readMessage(messages, 'downloads.page.steps.plugin', key)
         expect(line, `${locale} ${key}`).toContain('WooCommerce 9.0+')
         expect(line, `${locale} ${key}`).not.toContain('WooCommerce 5.3')
+      }
+    }
+  })
+
+  it('names more registers and stores in the Pro step in every locale', () => {
+    // steps.pro.body at round-22 base 62ac921; guards against an untranslated locale.
+    const OLD_PRO_BODY: Record<string, string> = {
+      en: 'A licensed plugin that adds terminal payments, refunds and stock control on the same foundation.',
+      de: 'Ein lizenziertes Plugin, das auf derselben Grundlage Terminalzahlungen, Erstattungen und Bestandskontrolle ergänzt.',
+      es: 'Un plugin con licencia que añade pagos con terminal, reembolsos y control de stock sobre la misma base.',
+      fr: 'Un plugin sous licence qui ajoute les paiements par terminal, les remboursements et le contrôle du stock sur la même base.',
+      it: 'Un plugin con licenza che aggiunge pagamenti con terminale, rimborsi e controllo dello stock sulla stessa base.',
+      ja: '同じ土台に端末決済、返金、在庫管理を追加するライセンス付きプラグインです。',
+      ko: '터미널 결제, 환불, 재고 관리를 같은 기반 위에 추가하는 라이선스 플러그인입니다.',
+      nl: 'Een gelicentieerde plugin die terminalbetalingen, terugbetalingen en voorraadbeheer toevoegt op dezelfde basis.',
+      pt: 'Um plugin licenciado que adiciona pagamentos em terminal, reembolsos e controlo de stock sobre a mesma base.',
+      zh: '一个授权插件，在同一基础上添加终端付款、退款和库存控制。',
+    }
+    const readLocale = (locale: string) =>
+      JSON.parse(readFileSync(join(process.cwd(), 'messages', `${locale}.json`), 'utf8'))
+    const en = readLocale('en')
+    const enProCardBody = readMessage(en, 'downloads.page.steps.pro', 'cardBody')
+    expect(readMessage(en, 'downloads.page.steps.pro', 'body')).toContain('registers')
+    expect(enProCardBody).toContain('registers')
+    const enProCardTitle = readMessage(en, 'downloads.page.steps.pro', 'cardTitle')
+    expect(enProCardTitle).toContain('more registers')
+    expect(enProCardTitle).not.toMatch(/\bevery\b|\ball\b|unlimited/i)
+    for (const key of [
+      'hero.tagline',
+      'howItFits.title',
+      'page.steps.pro.body',
+      'page.steps.pro.cardTitle',
+      'page.steps.pro.cardBody',
+    ]) {
+      expect(readMessage(en, 'downloads', key), `en ${key}`).not.toMatch(/\btill\b/i)
+    }
+    for (const locale of Object.keys(OLD_PRO_BODY)) {
+      const messages = readLocale(locale)
+      const body = readMessage(messages, 'downloads.page.steps.pro', 'body')
+      expect(body, `${locale} body`).not.toBe(OLD_PRO_BODY[locale])
+      if (locale !== 'en') {
+        expect(readMessage(messages, 'downloads.page.steps.pro', 'cardBody'), `${locale} cardBody`)
+          .not.toBe(enProCardBody)
       }
     }
   })

@@ -95,7 +95,7 @@ describe('HowItFits', () => {
     ).toBeInTheDocument()
     expect(screen.getByText('Translated setup title')).toBeInTheDocument()
     expect(
-      screen.queryByText('One store at the centre. Every till in sync.')
+      screen.queryByText('One store at the centre. Every register in sync.')
     ).toBeNull()
   })
 

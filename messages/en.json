@@ -1636,7 +1636,7 @@
     "hero": {
       "eyebrow": "Downloads",
       "title": "Download WooCommerce POS",
-      "tagline": "One till, every device.",
+      "tagline": "One register, every device.",
       "platformChooserLabel": "Choose your platform",
       "versionMeta": "Version {version} · {platform}",
       "detected": "Detected",
@@ -1646,7 +1646,7 @@
     },
     "howItFits": {
       "eyebrow": "How it fits together",
-      "title": "One store at the centre. Every till in sync.",
+      "title": "One store at the centre. Every register in sync.",
       "points": {
         "setup": {
           "title": "One plugin is the only setup",
@@ -1711,9 +1711,9 @@
         },
         "pro": {
           "title": "Want more? Go Pro",
-          "body": "A licensed plugin that adds terminal payments, refunds and stock control on the same foundation.",
-          "cardTitle": "Unlock the full till",
-          "cardBody": "Terminal payments, refunds, stock & pricing, order management, full reports, multi-store and priority Discord support.",
+          "body": "A licensed plugin that adds more registers and stores, terminal payments, refunds and stock control on the same foundation.",
+          "cardTitle": "Unlock more registers",
+          "cardBody": "More registers & stores, terminal payments, refunds, stock & pricing, order management, full reports and priority Discord support.",
           "plansCta": "View Pro plans",
           "signInCta": "Sign in to download"
         }

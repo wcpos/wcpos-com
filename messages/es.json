@@ -1711,9 +1711,9 @@
         },
         "pro": {
           "title": "¿Quieres más? Pásate a Pro",
-          "body": "Un plugin con licencia que añade pagos con terminal, reembolsos y control de stock sobre la misma base.",
-          "cardTitle": "Desbloquea la caja completa",
-          "cardBody": "Pagos con terminal, reembolsos, stock y precios, gestión de pedidos, informes completos, multitienda y soporte prioritario en Discord.",
+          "body": "Un plugin con licencia que añade más cajas y varias tiendas, pagos con terminal, reembolsos y control de stock sobre la misma base.",
+          "cardTitle": "Desbloquea más cajas",
+          "cardBody": "Más cajas y varias tiendas, pagos con terminal, reembolsos, stock y precios, gestión de pedidos, informes completos y soporte prioritario en Discord.",
           "plansCta": "Ver planes Pro",
           "signInCta": "Inicia sesión para descargar"
         }
