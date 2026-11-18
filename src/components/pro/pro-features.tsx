@@ -10,6 +10,8 @@ import {
 } from 'lucide-react'
 import { IconTile } from '@/components/ui/icon-tile'
 import { SectionHeading } from '@/components/ui/section-heading'
+import { TextLink } from '@/components/ui/text-link'
+import { Link } from '@/i18n/navigation'
 
 /**
  * The Pro feature list — appears exactly once on /pro, beside the buy box.
@@ -31,6 +33,7 @@ export interface ProFeature {
   Icon: LucideIcon
   title: string
   description: string
+  link?: { label: string; href: string }
 }
 
 export function ProFeatureList({
@@ -46,7 +49,7 @@ export function ProFeatureList({
     <div className="min-w-0">
       <SectionHeading align="left" title={heading} subtitle={subtitle} />
       <div className="mt-10 space-y-7">
-        {features.map(({ Icon, title, description }) => (
+        {features.map(({ Icon, title, description, link }) => (
           <div key={title} className="flex gap-4">
             <IconTile tone="brand" size="lg">
               <Icon />
@@ -56,6 +59,13 @@ export function ProFeatureList({
               <p className="mt-1 text-sm text-muted-foreground max-w-md">
                 {description}
               </p>
+              {link && (
+                <p className="mt-2 text-sm">
+                  <TextLink asChild arrow={false}>
+                    <Link href={link.href}>{link.label}</Link>
+                  </TextLink>
+                </p>
+              )}
             </div>
           </div>
         ))}

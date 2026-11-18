@@ -431,7 +431,8 @@
       },
       "terminal": {
         "title": "決済端末との連携",
-        "description": "カードリーダーや決済端末を接続して、対面での支払いを素早く正確に処理できます。"
+        "description": "Stripe Terminal、Square Terminal、SumUp、Mollie、PayPal Readerなどで、対面でのカード決済を受け付けられます。",
+        "link": "決済端末の拡張機能をすべて見る"
       },
       "stockPrice": {
         "title": "在庫と価格の編集",

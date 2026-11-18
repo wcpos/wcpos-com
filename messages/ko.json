@@ -431,7 +431,8 @@
       },
       "terminal": {
         "title": "결제 단말기 연동",
-        "description": "카드 리더기와 결제 단말기를 연결해 빠르고 정확한 대면 결제를 처리하세요."
+        "description": "Stripe Terminal, Square Terminal, SumUp, Mollie, PayPal Reader 등으로 대면 카드 결제를 받으세요.",
+        "link": "모든 결제 단말기 확장 기능 보기"
       },
       "stockPrice": {
         "title": "재고 및 가격 편집",

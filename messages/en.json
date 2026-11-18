@@ -431,7 +431,8 @@
       },
       "terminal": {
         "title": "Payment Terminal Integration",
-        "description": "Connect card readers and payment terminals for fast, accurate in-person payments."
+        "description": "Take in-person card payments on Stripe Terminal, Square Terminal, SumUp, Mollie, PayPal Reader and more.",
+        "link": "See all terminal extensions"
       },
       "stockPrice": {
         "title": "Stock & Price Editing",

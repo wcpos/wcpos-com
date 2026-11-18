@@ -431,7 +431,8 @@
       },
       "terminal": {
         "title": "Integratie met betaalterminals",
-        "description": "Koppel kaartlezers en betaalterminals voor snelle, nauwkeurige betalingen ter plaatse."
+        "description": "Neem kaartbetalingen ter plaatse aan met Stripe Terminal, Square Terminal, SumUp, Mollie, PayPal Reader en meer.",
+        "link": "Bekijk alle terminalextensies"
       },
       "stockPrice": {
         "title": "Voorraad en prijzen bewerken",

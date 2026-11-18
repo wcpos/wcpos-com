@@ -431,7 +431,8 @@
       },
       "terminal": {
         "title": "Zahlungsterminal-Integration",
-        "description": "Verbinde Kartenlesegeräte und Zahlungsterminals für schnelle, präzise Zahlungen vor Ort."
+        "description": "Nimm Kartenzahlungen vor Ort mit Stripe Terminal, Square Terminal, SumUp, Mollie, PayPal Reader und mehr entgegen.",
+        "link": "Alle Terminal-Erweiterungen ansehen"
       },
       "stockPrice": {
         "title": "Bestands- & Preisbearbeitung",
