@@ -1,3 +1,5 @@
+import fs from 'node:fs'
+import path from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { HowItFits } from './how-it-fits'
@@ -42,6 +44,24 @@ const TEST_COPY = {
     },
   },
 } as const
+
+const OLD_SYNC_BODIES: Record<string, string> = {
+  en: 'Ring up a sale on the desktop, refund it on your phone — one set of products, orders and customers, updating in real time.',
+  de: 'Kassiere einen Verkauf am Desktop, erstatte ihn auf deinem Telefon — ein gemeinsamer Bestand an Produkten, Bestellungen und Kunden, der in Echtzeit aktualisiert wird.',
+  nl: 'Sla een verkoop aan op de desktop, verwerk een terugbetaling op je telefoon — één set producten, bestellingen en klanten, realtime bijgewerkt.',
+  fr: 'Encaissez une vente sur l’ordinateur, remboursez-la sur votre téléphone — un seul jeu de produits, commandes et clients, mis à jour en temps réel.',
+  es: 'Cobra una venta en el escritorio, reembólsala en tu teléfono: un único conjunto de productos, pedidos y clientes, actualizado en tiempo real.',
+  it: 'Registra una vendita sul desktop, rimborsala dal telefono — un unico set di prodotti, ordini e clienti, aggiornato in tempo reale.',
+  pt: 'Registe uma venda no computador, faça o reembolso no telemóvel — um único conjunto de produtos, encomendas e clientes, atualizado em tempo real.',
+  ja: 'デスクトップで販売し、スマートフォンで返金 — 商品、注文、顧客は1つのセットで、リアルタイムに更新されます。',
+  ko: '데스크톱에서 판매를 처리하고 휴대폰에서 환불하세요 — 제품, 주문, 고객이 하나의 세트로 실시간 업데이트됩니다.',
+  zh: '在桌面端完成销售，在手机上退款——同一套商品、订单和客户数据，实时更新。',
+}
+
+function readSyncBody(locale: string): string {
+  const file = path.resolve(process.cwd(), 'messages', `${locale}.json`)
+  return JSON.parse(fs.readFileSync(file, 'utf8')).downloads.howItFits.points.sync.body
+}
 
 // @ts-expect-error HowItFits must receive locale-specific copy from its page.
 const missingCopyElement = <HowItFits />
@@ -101,5 +121,12 @@ describe('HowItFits', () => {
     fireEvent.blur(desktopWrapper)
 
     expect(desktopSphere).not.toHaveClass('bg-wcpos-red')
+  })
+
+  it('keeps the free sync example free of Pro features', () => {
+    for (const [locale, oldBody] of Object.entries(OLD_SYNC_BODIES)) {
+      expect(readSyncBody(locale), locale).not.toBe(oldBody)
+    }
+    expect(readSyncBody('en')).not.toMatch(/refund/i)
   })
 })

@@ -1653,7 +1653,7 @@
         },
         "sync": {
           "title": "Every app reads and writes the same store",
-          "body": "Ring up a sale on the desktop, refund it on your phone — one set of products, orders and customers, updating in real time."
+          "body": "Ring up a sale on the desktop and your phone shows the new stock level — one set of products, orders and customers, updating in real time."
         },
         "offline": {
           "title": "Keep ringing up sales when the connection drops",

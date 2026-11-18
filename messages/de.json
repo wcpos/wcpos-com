@@ -1653,7 +1653,7 @@
         },
         "sync": {
           "title": "Jede App liest und schreibt im selben Shop",
-          "body": "Kassiere einen Verkauf am Desktop, erstatte ihn auf deinem Telefon — ein gemeinsamer Bestand an Produkten, Bestellungen und Kunden, der in Echtzeit aktualisiert wird."
+          "body": "Kassiere einen Verkauf am Desktop, und dein Telefon zeigt den neuen Lagerbestand — ein gemeinsamer Bestand an Produkten, Bestellungen und Kunden, der in Echtzeit aktualisiert wird."
         },
         "offline": {
           "title": "Verkäufe weiter kassieren, wenn die Verbindung abbricht",
