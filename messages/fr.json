@@ -1745,6 +1745,7 @@
       "title": "Extensions pour WooCommerce POS",
       "subtitle": "Ajoutez à WCPOS des terminaux de carte, des passerelles de paiement, des intégrations de stock et de codes promo, et des catalogues multilingues. Chaque extension renvoie à sa documentation."
     },
+    "proNote": "Les extensions marquées Pro nécessitent <link>WCPOS Pro</link>.",
     "groups": {
       "payments": "Terminaux de carte et paiements",
       "stockCoupons": "Stock et codes promo",

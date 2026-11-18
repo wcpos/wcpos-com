@@ -1,11 +1,14 @@
+import fs from 'node:fs'
+import path from 'node:path'
+import type { ReactNode } from 'react'
 import { describe, expect, it, vi } from 'vitest'
 import { render, screen, within } from '@testing-library/react'
 import { EXTENSIONS } from '@/lib/extensions-catalog'
 import ExtensionsPage, { EXTENSION_GROUPS, PAYMENTS_LAST, generateMetadata } from './page'
 
 vi.mock('next-intl/server', () => ({
-  getTranslations: vi.fn(
-    async () => (key: string, values: Record<string, string>) => {
+  getTranslations: vi.fn(async () => Object.assign(
+    (key: string, values: Record<string, string>) => {
       const messages: Record<string, string> = {
         'metadata.title': 'Translated extensions metadata title',
         'metadata.description': 'Translated extensions metadata description',
@@ -20,9 +23,19 @@ vi.mock('next-intl/server', () => ({
         docsLinkShort: 'Translated docs',
       }
       return key === 'docsLink' ? `Docs for ${values.name}` : messages[key] ?? key
-    }
-  ),
+    },
+    {
+      rich: (key: string, tags: { link: (chunks: ReactNode) => ReactNode }) =>
+        key === 'proNote' ? <>Pro note {tags.link('WCPOS Pro')}.</> : key,
+    },
+  )),
   setRequestLocale: vi.fn(),
+}))
+
+vi.mock('@/i18n/navigation', () => ({
+  Link: ({ children, href }: { children: ReactNode; href: string }) => (
+    <a href={href}>{children}</a>
+  ),
 }))
 
 const EXPECTED = [
@@ -198,6 +211,22 @@ describe('ExtensionsPage', () => {
       expect(item).not.toBeNull()
       expect(within(item!).queryByText('Pro')).not.toBeInTheDocument()
     })
+  })
+
+  it('explains the Pro badge with a link to /pro', async () => {
+    render(await ExtensionsPage({ params }))
+    const hero = screen.getByRole('heading', { level: 1 }).closest('section')
+    expect(hero).not.toBeNull()
+    expect(within(hero!).getByRole('link', { name: 'WCPOS Pro' })).toHaveAttribute('href', '/pro')
+  })
+
+  it('has extensions.proNote with a <link> tag in every locale', () => {
+    for (const locale of ['en', 'de', 'nl', 'fr', 'es', 'it', 'pt', 'ja', 'ko', 'zh']) {
+      const file = path.resolve(process.cwd(), 'messages', `${locale}.json`)
+      const note = JSON.parse(fs.readFileSync(file, 'utf8')).extensions?.proNote
+      expect(note, locale).toContain('<link>')
+      expect(note, locale).toContain('</link>')
+    }
   })
 
   it('emits an ItemList with all 15 extensions', async () => {

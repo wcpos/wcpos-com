@@ -1745,6 +1745,7 @@
       "title": "Extensies voor WooCommerce POS",
       "subtitle": "Voeg kaartterminals, betaalgateways, integraties voor voorraad en kortingsbonnen en meertalige catalogi toe aan WCPOS. Elke extensie linkt naar de documentatie."
     },
+    "proNote": "Extensies met het label Pro vereisen <link>WCPOS Pro</link>.",
     "groups": {
       "payments": "Kaartterminals en betalingen",
       "stockCoupons": "Voorraad en kortingsbonnen",
