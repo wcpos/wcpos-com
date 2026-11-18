@@ -7,20 +7,10 @@ import { Section } from '@/components/ui/section'
 import { SectionHeading } from '@/components/ui/section-heading'
 import { TextLink } from '@/components/ui/text-link'
 import { localeUrl, marketingMetadata } from '@/lib/seo'
+import { COMPARISONS } from '@/lib/compare-pages'
 import type { Metadata } from 'next'
 
 const COMPARE_NAMESPACE = 'compare'
-
-// Order follows the hub lead, which names Square, FooSales and Oliver first.
-const COMPARISONS = [
-  { key: 'squareCard', href: '/compare/square' },
-  { key: 'foosalesCard', href: '/compare/foosales' },
-  { key: 'oliverCard', href: '/compare/oliver-pos' },
-  { key: 'woocommerceCard', href: '/compare/woocommerce-pos' },
-  { key: 'jovvieCard', href: '/compare/jovvie' },
-  { key: 'viteposCard', href: '/compare/vitepos' },
-  { key: 'yithCard', href: '/compare/yith-pos' },
-] as const
 
 export async function generateMetadata({
   params,

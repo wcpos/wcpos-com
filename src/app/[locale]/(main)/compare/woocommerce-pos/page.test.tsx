@@ -29,6 +29,11 @@ vi.mock('@/components/home/cta-section', () => ({
   CtaSection: () => <div data-testid="cta-section" />,
 }))
 
+// MoreComparisons is an async server component; it has its own test.
+vi.mock('@/components/compare/more-comparisons', () => ({
+  MoreComparisons: () => null,
+}))
+
 const params = Promise.resolve({ locale: 'en' })
 
 describe('WoocommerceComparePage', () => {
