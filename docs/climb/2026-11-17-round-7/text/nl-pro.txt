@@ -1,0 +1,130 @@
+WCPOS
+Downloaden
+Pro
+Documentatie
+Ondersteuning
+Routekaart
+Aanmelden
+WCPOS Pro
+
+Alles uit de gratis POS, plus betaalterminals, winkelbeheer aan de kassa, volledige rapporten en prioriteitssupport.
+
+Wat zit er in Pro?
+
+Alles uit Free, plus de tools om je hele winkel vanaf de kassa te runnen — en priority support wanneer je hulp nodig hebt.
+
+Integratie met betaalterminals
+
+Koppel kaartlezers en betaalterminals voor snelle, nauwkeurige betalingen ter plaatse.
+
+Voorraad en prijzen bewerken
+
+Werk voorraadniveaus, prijzen en productgegevens rechtstreeks vanuit de POS bij — zonder naar het WordPress-beheer te gaan.
+
+Bestelbeheer
+
+Blader door de bestelgeschiedenis, open eerdere bestellingen en beheer ze zonder de kassa te verlaten.
+
+Klantbeheer
+
+Voeg klantgegevens toe en bewerk ze op de kassa, gesynchroniseerd met WooCommerce.
+
+Rapporten over dagen, kassa's en winkels
+
+Bekijk de verkopen voor eerdere dagen en datumbereiken, voor elke kassa en elke winkel.
+
+Aangepaste betaalgateways
+
+Ontvang betalingen via elke WooCommerce-compatibele gateway, niet alleen de ingebouwde opties.
+
+Koop Pro
+
+Eén licentie, alle functies. Kies alleen hoe lang je updates wilt.
+
+Jaarlijks
+Meest populair
+Updates en support voor 1 jaar
+$ 129USD/jaar
+Levenslang
+Altijd updates
+$ 399USDeenmalig
+Aan de slag
+
+Eenmalige betaling — verlengt nooit automatisch, en Pro blijft daarna werken.
+
+Probeer eerst de gratis versie — upgrade zodra je weet dat het bevalt
+
+Kaart, PayPal of Bitcoin
+
+5.000+ actieve winkels
+
+Veelgestelde vragen
+Is de gratis plugin beperkt?
+
+De gratis WCPOS-plugin is GPL-software zonder limieten op producten, bestellingen of klanten en zonder transactiekosten; hij draait één kassa, en voor meer kassa’s en de hierboven genoemde tools is Pro nodig.
+
+Wat is het verschil tussen Jaarlijks en Levenslang?
+
+De Jaarlijkse licentie is een eenmalige betaling met updates en priority support gedurende één jaar. Deze wordt niet automatisch verlengd. De Levenslange licentie is een eenmalige betaling met updates voor altijd.
+
+Wat gebeurt er als mijn licentie verloopt?
+
+Er gaat niets uit. De Pro-versie die je hebt blijft werken — je kassa, je gegevens, elke functie. Wat stopt zijn nieuwe updates en priority support, totdat je zelf kiest te verlengen. Dat is bewust: verlengingen moeten worden verdiend met updates die hun geld waard zijn, en het betekent dat je kassa nooit op afstand uitgezet kan worden.
+
+Op hoeveel sites kan ik mijn licentie gebruiken?
+
+Elke licentie kan op 2 sites worden geactiveerd, bedoeld voor één live site en één ontwikkelsite. Je kunt je sites bekijken en deactiveren in je accountdashboard.
+
+Welke betaalmethoden accepteren jullie?
+
+We accepteren creditcards (Visa, Mastercard, Amex), PayPal en Bitcoin.
+
+Vergelijk WooCommerce POS-systemen
+
+PRODUCTEN
+Downloaden
+WCPOS Pro
+Vergelijken
+Routekaart
+Wijzigingslogboek
+Live demo↗
+Extensies
+GEMEENSCHAP
+Discord↗
+GitHub↗
+WordPress.org↗
+ONDERSTEUNING
+Documentatie
+Ondersteuning
+Status↗
+WordPress-forum↗
+BEDRIJF
+Over ons
+Privacybeleid
+Voorwaarden
+Terugbetalingen
+DOWNLOADEN
+WordPress-plug-in↗
+WCPOS voor macOS↗
+WCPOS voor Windows↗
+WCPOS voor Linux↗
+WCPOS voor iOS & iPad↗
+WCPOS voor Android↗
+
+© 2026 WCPOS
+
+English
+Français
+Deutsch
+Español
+日本語
+中文
+Português
+Italiano
+Nederlands
+한국어
+
+We gebruiken een anonieme analysecookie om te begrijpen hoe de site wordt gebruikt. Geen advertenties, geen tracking door derden. Privacybeleid
+
+Weigeren
+Accepteren
