@@ -17,6 +17,10 @@ export const EXTENSION_GROUPS = [
   { key: 'multilingual', categories: ['catalog'] },
 ] as const
 
+// Gateways that are not card terminals; listed after the terminals.
+export const PAYMENTS_LAST = ['email-invoice-gateway', 'wcpos-vipps'] as const
+const isLast = (slug: string) => PAYMENTS_LAST.some((s) => s === slug)
+
 export async function generateMetadata({
   params,
 }: {
@@ -71,9 +75,13 @@ export default async function ExtensionsPage({
 
       <Section tone="muted" spacing="default">
         {EXTENSION_GROUPS.map(({ key, categories }, groupIndex) => {
-          const items = EXTENSIONS.filter((e) =>
+          const inGroup = EXTENSIONS.filter((e) =>
             categories.some((c) => c === e.category),
           )
+          const items = [
+            ...inGroup.filter((e) => !isLast(e.slug)),
+            ...inGroup.filter((e) => isLast(e.slug)),
+          ]
           return (
             <section
               key={key}
