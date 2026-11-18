@@ -1,8 +1,23 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { act } from '@testing-library/react'
+import { act, render } from '@testing-library/react'
 import { renderToString } from 'react-dom/server'
 import { hydrateRoot, type Root } from 'react-dom/client'
 import { SyncDiagram, type SyncDiagramLabels } from './sync-diagram'
+
+// Capture the frame callback so tests can drive frames by hand.
+const frame = vi.hoisted(() => ({
+  callback: null as ((t: number, dt: number) => void) | null,
+}))
+
+vi.mock('motion/react', async () => {
+  const actual = await vi.importActual<typeof import('motion/react')>('motion/react')
+  return {
+    ...actual,
+    useAnimationFrame: (cb: (t: number, dt: number) => void) => {
+      frame.callback = cb
+    },
+  }
+})
 
 /**
  * Regression: the device wrappers' interactive props (tabIndex, hover
@@ -148,5 +163,48 @@ describe('SyncDiagram hydration', () => {
     expect(
       container.querySelector('[data-testid="device-wrapper-desktop"]'),
     ).toHaveAttribute('tabindex', '0')
+  })
+})
+
+describe('SyncDiagram off-screen animation', () => {
+  class FakeIntersectionObserver {
+    static last: FakeIntersectionObserver | undefined
+    disconnect = vi.fn()
+    observe = vi.fn()
+    unobserve = vi.fn()
+    constructor(readonly callback: (entries: { isIntersecting: boolean }[]) => void) {
+      FakeIntersectionObserver.last = this
+    }
+    report(isIntersecting: boolean) {
+      this.callback([{ isIntersecting }])
+    }
+  }
+
+  afterEach(() => {
+    vi.unstubAllGlobals()
+    frame.callback = null
+    FakeIntersectionObserver.last = undefined
+  })
+
+  it('skips frame work while off-screen and resumes in view', () => {
+    stubMatchMedia(false)
+    vi.stubGlobal('IntersectionObserver', FakeIntersectionObserver)
+
+    const { getByTestId, unmount } = render(<SyncDiagram labels={EN_LABELS} />)
+    const wrapper = getByTestId('device-wrapper-desktop')
+    const serverLeft = wrapper.style.left
+    const observer = FakeIntersectionObserver.last!
+    expect(observer.observe).toHaveBeenCalled()
+
+    act(() => observer.report(false))
+    act(() => frame.callback!(1000, 16))
+    expect(wrapper.style.left).toBe(serverLeft)
+
+    act(() => observer.report(true))
+    act(() => frame.callback!(2000, 16))
+    expect(wrapper.style.left).not.toBe(serverLeft)
+
+    unmount()
+    expect(observer.disconnect).toHaveBeenCalled()
   })
 })

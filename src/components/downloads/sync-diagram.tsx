@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Laptop, Smartphone, Globe, type LucideIcon } from 'lucide-react'
 import { motion, useAnimationFrame } from 'motion/react'
 import { usePrefersReducedMotion } from '@/lib/use-prefers-reduced-motion'
@@ -152,6 +152,21 @@ export function SyncDiagram({
   const pullOffsets = useRef(DEVICES.map(() => ({ x: 0, y: 0 })))
   const [hovered, setHovered] = useState<number | null>(null)
   const hoveredRef = useRef<number | null>(null)
+  // Off-screen, the frame loop skips all DOM work (a ref, so no re-render).
+  const visible = useRef(true)
+
+  useEffect(() => {
+    const el = container.current
+    if (!el || typeof IntersectionObserver === 'undefined') return
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        visible.current = entry.isIntersecting
+      },
+      { rootMargin: '100px' },
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
 
   const setHover = (i: number | null) => {
     hoveredRef.current = i
@@ -168,7 +183,7 @@ export function SyncDiagram({
   }
 
   useAnimationFrame((t, dt) => {
-    if (reduced) return
+    if (reduced || !visible.current) return
 
     const driftAngle = t * DRIFT_DEG_PER_MS
     const points = DEVICES.map((node, i) => {
