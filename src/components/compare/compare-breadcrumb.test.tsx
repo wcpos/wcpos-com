@@ -46,6 +46,25 @@ describe('CompareBreadcrumb', () => {
     expect(last).toHaveTextContent('WCPOS vs FooSales')
   })
 
+  it('shows only a back link below sm', () => {
+    render(
+      <CompareBreadcrumb label="Breadcrumb" hubLabel="Compare" current="WCPOS vs FooSales" />
+    )
+
+    const nav = screen.getByRole('navigation', { name: 'Breadcrumb' })
+    const items = nav.querySelectorAll('li')
+    expect(items[1]).toHaveClass('max-sm:hidden')
+    expect(items[2]).toHaveAttribute('aria-current', 'page')
+    expect(items[2]).toHaveClass('max-sm:hidden')
+
+    const link = within(nav).getByRole('link', { name: 'Compare' })
+    const icon = link.querySelector('svg')
+    expect(icon).not.toBeNull()
+    expect(icon).toHaveClass('sm:hidden')
+    expect(icon).toHaveAttribute('aria-hidden', 'true')
+    expect(link).toHaveAccessibleName('Compare')
+  })
+
   it('renders the breadcrumb on every comparison page', () => {
     for (const [dir, key] of Object.entries(PAGES)) {
       const source = readFileSync(
