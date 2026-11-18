@@ -72,4 +72,44 @@ describe('CtaBand', () => {
       screen.getByRole('link', { name: 'Primary' }).className,
     ).toContain('bg-wcpos-red')
   })
+
+  it('renders the optional text link after the last action button', () => {
+    render(
+      <CtaBand
+        title="T"
+        subtitle="S"
+        actions={[
+          { label: 'Try Demo', href: 'https://demo.wcpos.com/pos' },
+          { label: 'Download', href: '/downloads', variant: 'inverse' },
+        ]}
+        link={{ label: 'Compare WooCommerce POS systems', href: '/compare' }}
+      />,
+    )
+    const link = screen.getByRole('link', {
+      name: 'Compare WooCommerce POS systems',
+    })
+    expect(link).toHaveAttribute('href', '/compare')
+    const links = screen.getAllByRole('link')
+    expect(links).toHaveLength(3)
+    expect(links[2]).toBe(link)
+    expect(
+      screen
+        .getByRole('link', { name: 'Download' })
+        .compareDocumentPosition(link) & Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy()
+  })
+
+  it('renders only the action links when no link is given', () => {
+    render(
+      <CtaBand
+        title="T"
+        subtitle="S"
+        actions={[
+          { label: 'Try Demo', href: 'https://demo.wcpos.com/pos' },
+          { label: 'Download', href: '/downloads' },
+        ]}
+      />,
+    )
+    expect(screen.getAllByRole('link')).toHaveLength(2)
+  })
 })

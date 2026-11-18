@@ -12,6 +12,7 @@ export function CtaSection() {
         { label: t('liveDemo'), href: 'https://demo.wcpos.com/pos' },
         { label: t('download'), href: '/downloads', variant: 'inverse' },
       ]}
+      link={{ label: t('compare'), href: '/compare' }}
     />
   )
 }
