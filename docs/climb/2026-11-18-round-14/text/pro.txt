@@ -1,0 +1,140 @@
+WCPOS
+Downloads
+Pro
+Documentation
+Support
+Roadmap
+Sign In
+WCPOS Pro for WooCommerce POS
+
+Everything in the free POS, plus payment terminals, store management at the register, full reports, and priority support.
+
+What's included in Pro?
+
+Everything in Free, plus the tools to run your whole store from the register — and priority support when you need a hand.
+
+More Registers & Multiple Stores
+
+Add registers beyond the free one, and run several stores, each with its own address, tax rates, receipt template, pricing and authorized users.
+
+Payment Terminal Integration
+
+Take in-person card payments on Stripe Terminal, Square Terminal, SumUp, Mollie, PayPal Reader and more.
+
+See all terminal extensions
+
+Customer-facing display
+
+Put a screen in front of your customer: open the display in any browser and pair it to a till with a code.
+
+Stock & Price Editing
+
+Update stock levels, prices, and product details right from the POS — no trip to the WordPress admin.
+
+Order Management
+
+Browse order history, open past orders, refund them and manage them without leaving the register.
+
+Customer Management
+
+Add and edit customer details at the point of sale, kept in sync with WooCommerce.
+
+Reports Across Days, Registers & Stores
+
+See sales for earlier days and date ranges, for every register and every store.
+
+Custom Payment Gateways
+
+Take payments with any WooCommerce-compatible gateway, not just the built-in options.
+
+Get Pro
+
+One license, all features. Just pick how long you want updates.
+
+Yearly
+Most Popular
+Updates & support for 1 year
+$129USD/yr
+Lifetime
+Updates forever
+$399USDonce
+Get Started
+
+One-time payment — never auto-renews, and Pro keeps working after it ends.
+
+Try the free version first — upgrade once you know it does the job
+
+Card, PayPal or Bitcoin
+
+5,000+ active stores
+
+Frequently Asked Questions
+Is the free plugin limited?
+
+The free WCPOS plugin is GPL software with no caps on products, orders or customers and no transaction fees; it runs one register, and more registers and the tools listed above need Pro.
+
+What's the difference between Yearly and Lifetime?
+
+The Yearly license is a one-time payment that includes updates and priority support for one year. It does not renew automatically. The Lifetime license is a one-time payment that includes updates forever.
+
+What happens when my license expires?
+
+Nothing switches off. The Pro version you already have keeps working — your register, your data, every feature. What stops is new updates and priority support, until you choose to renew. That is deliberate: renewals have to be earned with updates worth paying for, and it means your point of sale can never be disabled remotely.
+
+How many sites can I use my license on?
+
+Each license can be activated on 2 sites, intended for one live site and one development site. You can see and deactivate your sites in your account dashboard.
+
+What payment methods do you accept?
+
+We accept credit cards (Visa, Mastercard, Amex), PayPal, and Bitcoin.
+
+Compare WooCommerce POS systems
+
+PRODUCT
+Downloads
+WCPOS Pro
+Compare
+Roadmap
+Changelog
+Live Demo↗
+Extensions
+COMMUNITY
+Discord↗
+GitHub↗
+WordPress.org↗
+SUPPORT
+Documentation
+Support
+Status↗
+WordPress Forum↗
+COMPANY
+About
+Privacy
+Terms
+Refunds
+DOWNLOAD
+WordPress Plugin↗
+WCPOS for macOS↗
+WCPOS for Windows↗
+WCPOS for Linux↗
+WCPOS for iOS & iPad↗
+WCPOS for Android↗
+
+© 2026 WCPOS
+
+English
+Français
+Deutsch
+Español
+日本語
+中文
+Português
+Italiano
+Nederlands
+한국어
+
+We use an anonymous analytics cookie to understand how the site is used. No ads, no third-party tracking. Privacy policy
+
+Decline
+Accept
