@@ -1630,7 +1630,8 @@
     },
     "hero": {
       "eyebrow": "ダウンロード",
-      "title": "1つのレジを、すべてのデバイスで。",
+      "title": "WooCommerce用POSをダウンロード",
+      "tagline": "1つのレジを、すべてのデバイスで。",
       "platformChooserLabel": "プラットフォームを選択",
       "versionMeta": "バージョン {version} · {platform}",
       "detected": "検出済み",

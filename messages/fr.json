@@ -1630,7 +1630,8 @@
     },
     "hero": {
       "eyebrow": "Téléchargements",
-      "title": "Une caisse, tous vos appareils.",
+      "title": "Télécharger le point de vente WooCommerce",
+      "tagline": "Une caisse, tous vos appareils.",
       "platformChooserLabel": "Choisissez votre plateforme",
       "versionMeta": "Version {version} · {platform}",
       "detected": "Détecté",

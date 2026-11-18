@@ -65,6 +65,7 @@ export function DownloadsHero({
         <h1 className="mt-4 text-4xl font-bold leading-tight tracking-tight md:text-5xl">
           {t('title')}
         </h1>
+        <p className="mt-4 text-lg text-muted-foreground">{t('tagline')}</p>
 
         <div
           role="group"

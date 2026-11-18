@@ -1630,7 +1630,8 @@
     },
     "hero": {
       "eyebrow": "Transferências",
-      "title": "Uma caixa, todos os dispositivos.",
+      "title": "Transferir o ponto de venda para WooCommerce",
+      "tagline": "Uma caixa, todos os dispositivos.",
       "platformChooserLabel": "Escolha a sua plataforma",
       "versionMeta": "Versão {version} · {platform}",
       "detected": "Detetado",

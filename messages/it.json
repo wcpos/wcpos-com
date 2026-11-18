@@ -1630,7 +1630,8 @@
     },
     "hero": {
       "eyebrow": "Download",
-      "title": "Una cassa, ogni dispositivo.",
+      "title": "Scarica il punto vendita per WooCommerce",
+      "tagline": "Una cassa, ogni dispositivo.",
       "platformChooserLabel": "Scegli la piattaforma",
       "versionMeta": "Versione {version} · {platform}",
       "detected": "Rilevata",

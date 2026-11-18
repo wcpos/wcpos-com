@@ -1630,7 +1630,8 @@
     },
     "hero": {
       "eyebrow": "Downloads",
-      "title": "Eine Kasse, jedes Gerät.",
+      "title": "WooCommerce-Kassensystem herunterladen",
+      "tagline": "Eine Kasse, jedes Gerät.",
       "platformChooserLabel": "Plattform auswählen",
       "versionMeta": "Version {version} · {platform}",
       "detected": "Erkannt",

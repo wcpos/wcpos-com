@@ -1630,7 +1630,8 @@
     },
     "hero": {
       "eyebrow": "Descargas",
-      "title": "Una caja, todos los dispositivos.",
+      "title": "Descargar el punto de venta para WooCommerce",
+      "tagline": "Una caja, todos los dispositivos.",
       "platformChooserLabel": "Elige tu plataforma",
       "versionMeta": "Versión {version} · {platform}",
       "detected": "Detectado",

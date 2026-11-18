@@ -128,8 +128,9 @@ describe('DownloadsPage', () => {
     render(await DownloadsPage({ params: Promise.resolve({ locale: 'en' }) }))
 
     expect(
-      screen.getByRole('heading', { level: 1, name: 'One till, every device.' }),
+      screen.getByRole('heading', { level: 1, name: 'Download WooCommerce POS' }),
     ).toBeInTheDocument()
+    expect(screen.getByText('One till, every device.')).toBeInTheDocument()
   })
 
   it('sources plugin card labels from translations', async () => {
