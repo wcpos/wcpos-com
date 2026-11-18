@@ -440,7 +440,7 @@
       },
       "orders": {
         "title": "Order Management",
-        "description": "Browse order history, open past orders, and manage them without leaving the register."
+        "description": "Browse order history, open past orders, refund them and manage them without leaving the register."
       },
       "customers": {
         "title": "Customer Management",

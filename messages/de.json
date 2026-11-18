@@ -440,7 +440,7 @@
       },
       "orders": {
         "title": "Bestellverwaltung",
-        "description": "Durchsuche den Bestellverlauf, öffne frühere Bestellungen und verwalte sie, ohne die Kasse zu verlassen."
+        "description": "Durchsuche den Bestellverlauf, öffne frühere Bestellungen, erstatte sie und verwalte sie, ohne die Kasse zu verlassen."
       },
       "customers": {
         "title": "Kundenverwaltung",

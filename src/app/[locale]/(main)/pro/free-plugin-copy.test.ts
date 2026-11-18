@@ -48,6 +48,10 @@ describe('free plugin copy', () => {
     expect(en.home.pricing.free.description).not.toContain('No limits')
   })
 
+  it('names refunds on the Order Management card', () => {
+    expect(en.pro.features.orders.description).toMatch(/\brefund/i)
+  })
+
   it.each(locales)('%s FAQ answer does not open with a denial', (locale) => {
     expect(messages[locale].pro.faq.freePlugin.answer.startsWith(oldLeadingNegation[locale])).toBe(
       false

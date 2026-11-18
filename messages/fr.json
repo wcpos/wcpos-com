@@ -440,7 +440,7 @@
       },
       "orders": {
         "title": "Gestion des commandes",
-        "description": "Parcourez l'historique des commandes, ouvrez les commandes passées et gérez-les sans quitter la caisse."
+        "description": "Parcourez l'historique des commandes, ouvrez les commandes passées, remboursez-les et gérez-les sans quitter la caisse."
       },
       "customers": {
         "title": "Gestion des clients",
