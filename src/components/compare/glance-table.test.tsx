@@ -23,11 +23,30 @@ describe('GlanceTable', () => {
       expect(rowHeader).toHaveAttribute('scope', 'row')
       const tr = rowHeader.closest('tr')!
       const cells = within(tr).getAllByRole('cell')
-      expect(cells.map((cell) => cell.textContent)).toEqual([
+      // The answer is the cell's text minus its aria-hidden phone label.
+      expect(cells.map((cell) => cell.lastChild?.textContent)).toEqual([
         row.wcpos,
         row.other,
       ])
     }
+  })
+
+  it('labels each answer with its product below sm', () => {
+    const { container } = render(
+      <GlanceTable wcposHeader="WCPOS" otherHeader="Other" rows={rows} />
+    )
+
+    for (const row of rows) {
+      const tr = screen.getByRole('rowheader', { name: row.label }).closest('tr')!
+      const cells = within(tr).getAllByRole('cell')
+      cells.forEach((cell, i) => {
+        const label = cell.querySelector('[aria-hidden="true"]')
+        expect(label?.textContent).toBe(i === 0 ? 'WCPOS' : 'Other')
+        expect(label).toHaveClass('sm:hidden')
+      })
+    }
+    expect(screen.getAllByRole('columnheader')).toHaveLength(2)
+    expect(container.querySelector('thead tr')).toHaveClass('max-sm:sr-only')
   })
 
   it('stacks each row label above its answers below sm', () => {

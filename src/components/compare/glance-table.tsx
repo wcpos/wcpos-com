@@ -21,7 +21,9 @@ export interface GlanceTableRow {
  * body become blocks, and each row becomes a two-column grid, so a row's label
  * spans the full width above its two answers instead of squeezing three ~110px
  * columns. The empty corner cell (or the feature header) is hidden there, and
- * the caption moves last, full width, below the body. From `sm` up every
+ * the caption moves last, full width, below the body. The header row is
+ * `sr-only` there (assistive tech still reads it); instead each answer gets an
+ * `aria-hidden` product-name label above it. From `sm` up every
  * `max-sm:` class is inert and the table renders as a normal three-column
  * table. The DOM stays a real <table> with scoped headers either way.
  */
@@ -46,7 +48,7 @@ export function GlanceTable({
         </TableCaption>
       )}
       <TableHeader className="max-sm:block">
-        <TableRow className="max-sm:grid max-sm:grid-cols-2">
+        <TableRow className="max-sm:sr-only max-sm:grid max-sm:grid-cols-2">
           {featureHeader === undefined ? (
             <td className="max-sm:hidden" />
           ) : (
@@ -67,8 +69,18 @@ export function GlanceTable({
             >
               {row.label}
             </th>
-            <TableCell>{row.wcpos}</TableCell>
-            <TableCell>{row.other}</TableCell>
+            <TableCell>
+              <span aria-hidden="true" className="mb-1 block text-xs font-medium text-muted-foreground sm:hidden">
+                {wcposHeader}
+              </span>
+              {row.wcpos}
+            </TableCell>
+            <TableCell>
+              <span aria-hidden="true" className="mb-1 block text-xs font-medium text-muted-foreground sm:hidden">
+                {otherHeader}
+              </span>
+              {row.other}
+            </TableCell>
           </TableRow>
         ))}
       </TableBody>
