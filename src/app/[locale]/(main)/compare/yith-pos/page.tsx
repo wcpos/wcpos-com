@@ -147,6 +147,7 @@ export default async function YithComparePage({
         <SectionHeading
           as="h1"
           size="hero"
+          className="max-sm:text-left"
           title={t('yith.hero.title')}
           subtitle={t('yith.hero.subtitle')}
         />

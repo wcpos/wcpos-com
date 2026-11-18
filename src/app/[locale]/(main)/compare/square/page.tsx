@@ -152,6 +152,7 @@ export default async function SquareComparePage({
         <SectionHeading
           as="h1"
           size="hero"
+          className="max-sm:text-left"
           title={t('square.hero.title')}
           subtitle={t('square.hero.subtitle')}
         />

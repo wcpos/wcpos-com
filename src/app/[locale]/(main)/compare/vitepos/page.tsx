@@ -144,6 +144,7 @@ export default async function ViteposComparePage({
         <SectionHeading
           as="h1"
           size="hero"
+          className="max-sm:text-left"
           title={t('vitepos.hero.title')}
           subtitle={t('vitepos.hero.subtitle')}
         />
