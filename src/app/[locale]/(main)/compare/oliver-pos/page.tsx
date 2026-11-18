@@ -217,16 +217,6 @@ export default async function OliverComparePage({
         />
       </Section>
 
-      <Section tone="default" spacing="none" containerClassName="max-w-3xl">
-        <Card className="border-l-4 border-l-primary p-6">
-          <h2 className="mb-2 flex items-center gap-2 text-lg font-semibold">
-            <Scale className="h-5 w-5 shrink-0" aria-hidden />
-            {t('disclosure.title')}
-          </h2>
-          <p className="text-muted-foreground">{t('disclosure.body')}</p>
-        </Card>
-      </Section>
-
       {/* Answer-first block: the passage AI engines lift for the head query */}
       <Section tone="default" spacing="compact" containerClassName="max-w-3xl">
         <SectionHeading align="left" title={t('oliver.shortAnswer.title')} />
@@ -234,6 +224,16 @@ export default async function OliverComparePage({
         <p className="mt-3 text-muted-foreground">
           {t('oliver.shortAnswer.oliver')}
         </p>
+      </Section>
+
+      <Section tone="default" spacing="none" className="pb-10 md:pb-12" containerClassName="max-w-3xl">
+        <Card className="border-l-4 border-l-primary p-6">
+          <h2 className="mb-2 flex items-center gap-2 text-lg font-semibold">
+            <Scale className="h-5 w-5 shrink-0" aria-hidden />
+            {t('disclosure.title')}
+          </h2>
+          <p className="text-muted-foreground">{t('disclosure.body')}</p>
+        </Card>
       </Section>
 
       <Section tone="muted" spacing="compact" containerClassName="max-w-5xl">
