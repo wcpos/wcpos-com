@@ -5,8 +5,8 @@ import { TextLink } from '@/components/ui/text-link'
 // Visible counterpart of the BreadcrumbList JSON-LD on each /compare/* page.
 export function CompareBreadcrumb({ label, hubLabel, current }: { label: string; hubLabel: string; current: string }) {
   return (
-    <nav aria-label={label} className="mb-6 flex justify-center text-sm text-muted-foreground">
-      <ol className="flex flex-wrap items-center justify-center gap-x-1.5 gap-y-1">
+    <nav aria-label={label} className="mb-6 flex justify-center max-sm:justify-start text-sm text-muted-foreground">
+      <ol className="flex flex-wrap items-center justify-center max-sm:justify-start gap-x-1.5 gap-y-1">
         <li>
           <TextLink asChild>
             <Link href="/compare" className="inline-flex items-center gap-1">
