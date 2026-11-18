@@ -1738,7 +1738,12 @@
     },
     "hero": {
       "title": "WooCommerce用POSの拡張機能",
-      "subtitle": "WCPOSで利用できる拡張機能と、それぞれのドキュメントへのリンクです。"
+      "subtitle": "WCPOSにカード端末、決済ゲートウェイ、在庫・クーポン連携、多言語カタログを追加できます。各拡張機能はそれぞれのドキュメントにリンクしています。"
+    },
+    "groups": {
+      "payments": "カード端末と決済",
+      "stockCoupons": "在庫とクーポン",
+      "multilingual": "多言語ストア"
     },
     "proTag": "Pro",
     "docsLink": "{name}のドキュメント",

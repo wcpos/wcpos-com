@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
 import { render, screen, within } from '@testing-library/react'
-import ExtensionsPage, { generateMetadata } from './page'
+import { EXTENSIONS } from '@/lib/extensions-catalog'
+import ExtensionsPage, { EXTENSION_GROUPS, generateMetadata } from './page'
 
 vi.mock('next-intl/server', () => ({
   getTranslations: vi.fn(
@@ -10,6 +11,9 @@ vi.mock('next-intl/server', () => ({
         'metadata.description': 'Translated extensions metadata description',
         'hero.title': 'Translated extensions hero title',
         'hero.subtitle': 'Translated extensions hero subtitle',
+        'groups.payments': 'Translated payments heading',
+        'groups.stockCoupons': 'Translated stock and coupons heading',
+        'groups.multilingual': 'Translated multilingual heading',
         proTag: 'Pro',
         englishNotice: 'Translated English content notice',
         allDocsLink: 'Translated all extensions documentation',
@@ -98,6 +102,13 @@ const EXPECTED = [
   },
 ]
 
+// Indexes into EXPECTED (catalog order), listed in page order.
+const EXPECTED_GROUPS = [
+  { heading: 'Translated payments heading', entries: [0, 1, 2, 3, 4, 5, 6, 7, 11, 14] },
+  { heading: 'Translated stock and coupons heading', entries: [8, 10] },
+  { heading: 'Translated multilingual heading', entries: [9, 12, 13] },
+]
+
 const params = Promise.resolve({ locale: 'en' })
 
 describe('ExtensionsPage', () => {
@@ -111,27 +122,56 @@ describe('ExtensionsPage', () => {
     ).toBeInTheDocument()
   })
 
-  it('renders all 15 catalog entries with their documentation in catalog order', async () => {
+  it('renders all 15 catalog entries with their documentation, each group in catalog order', async () => {
     render(await ExtensionsPage({ params }))
-    const items = within(screen.getByRole('list')).getAllByRole('listitem')
-    expect(items).toHaveLength(15)
-    EXPECTED.forEach(({ name, docsUrl }, index) => {
-      const card = within(items[index])
-      expect(card.getByRole('heading', { level: 2, name })).toBeInTheDocument()
-      expect(card.getByRole('link', { name: `Docs for ${name}` })).toHaveAttribute(
-        'href', docsUrl
-      )
+    const lists = screen.getAllByRole('list')
+    expect(lists.flatMap((list) => within(list).getAllByRole('listitem'))).toHaveLength(15)
+    EXPECTED_GROUPS.forEach(({ heading, entries }) => {
+      const group = within(screen.getByRole('region', { name: heading }))
+      const items = within(group.getByRole('list')).getAllByRole('listitem')
+      expect(items).toHaveLength(entries.length)
+      entries.forEach((entry, index) => {
+        const { name, docsUrl } = EXPECTED[entry]
+        const card = within(items[index])
+        expect(card.getByRole('heading', { level: 3, name })).toBeInTheDocument()
+        expect(card.getByRole('link', { name: `Docs for ${name}` })).toHaveAttribute(
+          'href', docsUrl
+        )
+      })
     })
+  })
+
+  it('shows three group headings in order, with the 10 payments entries under the first', async () => {
+    render(await ExtensionsPage({ params }))
+    expect(
+      screen.getAllByRole('heading', { level: 2 }).map((heading) => heading.textContent)
+    ).toEqual(EXPECTED_GROUPS.map(({ heading }) => heading))
+    const payments = within(
+      screen.getByRole('region', { name: 'Translated payments heading' })
+    ).getAllByRole('heading', { level: 3 })
+    const catalogPayments = EXTENSIONS.filter(({ category }) => category === 'payments')
+    expect(catalogPayments).toHaveLength(10)
+    expect(payments.map((heading) => heading.textContent)).toEqual(
+      catalogPayments.map(({ name }) => name)
+    )
+  })
+
+  it('maps every catalog category to exactly one group', () => {
+    for (const { category } of EXTENSIONS) {
+      const groups = EXTENSION_GROUPS.filter(({ categories }) =>
+        categories.some((groupCategory) => groupCategory === category)
+      )
+      expect(groups, `category "${category}"`).toHaveLength(1)
+    }
   })
 
   it('shows 12 Pro badges and none on extensions that do not require Pro', async () => {
     render(await ExtensionsPage({ params }))
     expect(screen.getAllByText('Pro')).toHaveLength(12)
-    const items = within(screen.getByRole('list')).getAllByRole('listitem')
-    EXPECTED.forEach(({ pro }, index) => {
-      if (!pro) {
-        expect(within(items[index]).queryByText('Pro')).not.toBeInTheDocument()
-      }
+    EXPECTED.filter(({ pro }) => !pro).forEach(({ name }) => {
+      const item = screen.getByRole('heading', { level: 3, name }).closest('li')
+      expect(item).not.toBeNull()
+      expect(within(item!).queryByText('Pro')).not.toBeInTheDocument()
     })
   })
 

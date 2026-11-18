@@ -1738,7 +1738,12 @@
     },
     "hero": {
       "title": "WooCommerce용 POS 확장 기능",
-      "subtitle": "WCPOS에서 사용할 수 있는 확장 기능과 각 기능의 문서 링크입니다."
+      "subtitle": "WCPOS에 카드 단말기, 결제 게이트웨이, 재고 및 쿠폰 연동, 다국어 카탈로그를 추가하세요. 각 확장 기능은 해당 문서로 연결됩니다."
+    },
+    "groups": {
+      "payments": "카드 단말기 및 결제",
+      "stockCoupons": "재고 및 쿠폰",
+      "multilingual": "다국어 스토어"
     },
     "proTag": "Pro",
     "docsLink": "{name} 문서",
