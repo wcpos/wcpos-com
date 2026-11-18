@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { ArrowRight } from 'lucide-react'
+import { Link } from '@/i18n/navigation'
 import { resolveLocale } from '@/i18n/resolve-locale'
 import { Badge } from '@/components/ui/badge'
 import { Card } from '@/components/ui/card'
@@ -71,6 +72,15 @@ export default async function ExtensionsPage({
           title={t('hero.title')}
           subtitle={t('hero.subtitle')}
         />
+        <p className="mx-auto mt-4 max-w-2xl text-center text-muted-foreground">
+          {t.rich('proNote', {
+            link: (chunks) => (
+              <TextLink asChild>
+                <Link href="/pro">{chunks}</Link>
+              </TextLink>
+            ),
+          })}
+        </p>
       </Section>
 
       <Section tone="muted" spacing="default">
