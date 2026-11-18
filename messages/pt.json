@@ -295,7 +295,7 @@
       "a3": {
         "k": "Use o seu próprio hardware",
         "h": "Funciona com o equipamento que já tem.",
-        "b": "Terminais de cartão, impressoras térmicas de recibos, leitores de códigos de barras — o WCPOS não o prende a hardware proprietário. Ligue o que já tem no balcão."
+        "b": "Impressoras de recibos e leitores de códigos de barras: ligue o que já tem no balcão. Aceite cartões no seu próprio terminal de pagamento e o WCPOS regista-os; Pro liga Stripe Terminal, SumUp e outros."
       },
       "a4": {
         "k": "A sua loja, os seus dados",

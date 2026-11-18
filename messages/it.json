@@ -295,7 +295,7 @@
       "a3": {
         "k": "Usa il tuo hardware",
         "h": "Funziona con l’attrezzatura che hai già.",
-        "b": "Terminali carte, stampanti termiche per ricevute, lettori di codici a barre — WCPOS non ti vincola a hardware proprietario. Collega ciò che è già sul tuo banco."
+        "b": "Stampanti per ricevute e lettori di codici a barre: collega ciò che è già sul tuo banco. Accetta carte sul tuo terminale di pagamento e WCPOS le registra; Pro collega Stripe Terminal, SumUp e altri."
       },
       "a4": {
         "k": "Il tuo negozio, i tuoi dati",

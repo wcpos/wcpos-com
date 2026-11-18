@@ -10,10 +10,35 @@ import { CloudSync } from './acts/cloud-sync'
 import { StoryStatic } from './story-static'
 import { ScrollStory } from './scroll-story'
 import messages from '../../../../messages/en.json'
+import de from '../../../../messages/de.json'
+import nl from '../../../../messages/nl.json'
+import fr from '../../../../messages/fr.json'
+import es from '../../../../messages/es.json'
+import it_ from '../../../../messages/it.json'
+import pt from '../../../../messages/pt.json'
+import ja from '../../../../messages/ja.json'
+import ko from '../../../../messages/ko.json'
+import zh from '../../../../messages/zh.json'
 
 type ProgressHandler = (value: number) => void
 
 const story = messages.home.story
+
+const localeMessages = { en: messages, de, nl, fr, es, it: it_, pt, ja, ko, zh }
+
+// Act 3 used to promise any card terminal; connected readers are Pro and named brands.
+const OLD_A3_B: Record<keyof typeof localeMessages, string> = {
+  en: 'Card terminals, thermal receipt printers, barcode scanners — WCPOS doesn’t lock you into proprietary hardware. Plug in what’s already on your counter.',
+  de: 'Kartenterminals, Thermo-Bondrucker, Barcodescanner — WCPOS sperrt dich nicht in proprietäre Hardware ein. Schließe an, was schon auf deiner Theke steht.',
+  nl: 'Kaartterminals, thermische bonprinters, barcodescanners — WCPOS sluit je niet op in propriëtaire hardware. Sluit aan wat al op je toonbank staat.',
+  fr: 'Terminaux de carte, imprimantes thermiques de reçus, lecteurs de codes-barres — WCPOS ne vous enferme pas dans du matériel propriétaire. Branchez ce qui est déjà sur votre comptoir.',
+  es: 'Terminales de tarjeta, impresoras térmicas de recibos, lectores de códigos de barras: WCPOS no te encierra en hardware propietario. Conecta lo que ya tienes en el mostrador.',
+  it: 'Terminali carte, stampanti termiche per ricevute, lettori di codici a barre — WCPOS non ti vincola a hardware proprietario. Collega ciò che è già sul tuo banco.',
+  pt: 'Terminais de cartão, impressoras térmicas de recibos, leitores de códigos de barras — o WCPOS não o prende a hardware proprietário. Ligue o que já tem no balcão.',
+  ja: 'カード端末、感熱レシートプリンター、バーコードスキャナーなど。WCPOSは専用ハードウェアに縛りません。カウンターにある機器をそのまま接続できます。',
+  ko: '카드 단말기, 감열 영수증 프린터, 바코드 스캐너 — WCPOS는 독점 하드웨어에 묶어 두지 않습니다. 이미 카운터에 있는 장비를 연결하세요.',
+  zh: '刷卡终端、热敏收据打印机、条码扫描器——WCPOS 不会把你锁定在专有硬件中。接入柜台上已有的设备即可。',
+}
 
 function renderWithIntl(
   ui: ReactElement,
@@ -147,6 +172,17 @@ describe('CloudSync', () => {
     expect(screen.getByText('translated offline')).toBeInTheDocument()
     expect(screen.queryByText('works offline')).not.toBeInTheDocument()
   })
+})
+
+describe('act 3 hardware copy', () => {
+  it.each(Object.keys(localeMessages) as (keyof typeof localeMessages)[])(
+    'names the Pro card readers in %s',
+    (locale) => {
+      const body = localeMessages[locale].home.story.a3.b
+      for (const name of ['Stripe Terminal', 'SumUp', 'Pro']) expect(body).toContain(name)
+      expect(body).not.toBe(OLD_A3_B[locale])
+    }
+  )
 })
 
 describe('StoryStatic', () => {

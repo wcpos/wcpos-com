@@ -295,7 +295,7 @@
       "a3": {
         "k": "Apportez votre propre matériel",
         "h": "Fonctionne avec l’équipement que vous possédez déjà.",
-        "b": "Terminaux de carte, imprimantes thermiques de reçus, lecteurs de codes-barres — WCPOS ne vous enferme pas dans du matériel propriétaire. Branchez ce qui est déjà sur votre comptoir."
+        "b": "Imprimantes de reçus et lecteurs de codes-barres : branchez ce qui est déjà sur votre comptoir. Acceptez les cartes sur votre propre terminal de paiement et WCPOS les enregistre ; Pro connecte Stripe Terminal, SumUp et d’autres."
       },
       "a4": {
         "k": "Votre boutique, vos données",
