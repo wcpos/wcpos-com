@@ -214,6 +214,7 @@
         "title": "Pro",
         "intro": "Tout ce qui est inclus dans Gratuit, plus :",
         "features": {
+          "p8": "Davantage de caisses et plusieurs boutiques",
           "p1": "Intégration des terminaux de paiement",
           "p2": "Modification du stock et des prix dans la caisse",
           "p3": "Historique et gestion des commandes",
@@ -423,6 +424,10 @@
     "features": {
       "title": "Que comprend Pro ?",
       "subtitle": "Tout ce qu'offre la version gratuite, plus les outils pour gérer toute votre boutique depuis la caisse — et un support prioritaire quand vous avez besoin d'aide.",
+      "stores": {
+        "title": "Davantage de caisses et plusieurs boutiques",
+        "description": "Ajoutez des caisses en plus de la caisse gratuite et gérez plusieurs boutiques, chacune avec sa propre adresse, ses taux de taxe, son modèle de ticket, sa tarification et ses utilisateurs autorisés."
+      },
       "terminal": {
         "title": "Intégration de terminal de paiement",
         "description": "Connectez des lecteurs de cartes et des terminaux de paiement pour des paiements en personne rapides et précis."

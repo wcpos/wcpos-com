@@ -214,6 +214,7 @@
         "title": "Pro",
         "intro": "Alles in Gratis, plus:",
         "features": {
+          "p8": "Meer kassa's en meerdere winkels",
           "p1": "Integratie met betaalterminals",
           "p2": "Voorraad en prijzen bewerken in het kassasysteem",
           "p3": "Bestelgeschiedenis en beheer",
@@ -423,6 +424,10 @@
     "features": {
       "title": "Wat zit er in Pro?",
       "subtitle": "Alles uit Free, plus de tools om je hele winkel vanaf de kassa te runnen — en priority support wanneer je hulp nodig hebt.",
+      "stores": {
+        "title": "Meer kassa's en meerdere winkels",
+        "description": "Voeg naast de gratis kassa meer kassa's toe en beheer meerdere winkels, elk met een eigen adres, eigen btw-tarieven, een eigen bonsjabloon, eigen prijzen en eigen geautoriseerde gebruikers."
+      },
       "terminal": {
         "title": "Integratie met betaalterminals",
         "description": "Koppel kaartlezers en betaalterminals voor snelle, nauwkeurige betalingen ter plaatse."

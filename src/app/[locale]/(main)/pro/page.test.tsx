@@ -26,6 +26,8 @@ vi.mock('next-intl/server', () => ({
       'schema.description': 'Translated Pro schema description',
       'features.title': 'Pro features',
       'features.subtitle': 'Everything Pro adds to the register.',
+      'features.stores.title': 'More registers and stores',
+      'features.stores.description': 'Add registers and run several stores.',
       'features.terminal.title': 'Payment terminals',
       'features.terminal.description': 'Take card payments.',
       'features.stockPrice.title': 'Stock and price edits',
@@ -191,6 +193,13 @@ describe('ProPage', () => {
     expect(screen.getByText('Pro features')).toBeInTheDocument()
     expect(screen.getByText('Payment terminals')).toBeInTheDocument()
     expect(screen.getByText('Stock and price edits')).toBeInTheDocument()
+    // More registers and stores is the main reason to upgrade, so it leads.
+    expect(
+      screen.getByText('Add registers and run several stores.')
+    ).toBeInTheDocument()
+    expect(screen.getAllByRole('heading', { level: 3 })[0]).toHaveTextContent(
+      'More registers and stores'
+    )
 
     // The buy box is the only suspended region (Suspense is mocked to
     // render its fallback), so the skeleton stands in for it here.

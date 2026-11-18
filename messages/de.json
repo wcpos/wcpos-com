@@ -214,6 +214,7 @@
         "title": "Pro",
         "intro": "Alles aus Kostenlos, plus:",
         "features": {
+          "p8": "Weitere Kassen & mehrere Filialen",
           "p1": "Integration von Zahlungsterminals",
           "p2": "Lager- und Preisbearbeitung im POS",
           "p3": "Bestellverlauf & Verwaltung",
@@ -423,6 +424,10 @@
     "features": {
       "title": "Was ist in Pro enthalten?",
       "subtitle": "Alles aus der Gratis-Version, plus die Werkzeuge, um deinen gesamten Shop direkt von der Kasse aus zu führen — und vorrangiger Support, wenn du Hilfe brauchst.",
+      "stores": {
+        "title": "Weitere Kassen & mehrere Filialen",
+        "description": "Füge zur kostenlosen Kasse weitere Kassen hinzu und führe mehrere Filialen, jede mit eigener Adresse, eigenen Steuersätzen, eigener Belegvorlage, eigenen Preisen und eigenen autorisierten Benutzern."
+      },
       "terminal": {
         "title": "Zahlungsterminal-Integration",
         "description": "Verbinde Kartenlesegeräte und Zahlungsterminals für schnelle, präzise Zahlungen vor Ort."

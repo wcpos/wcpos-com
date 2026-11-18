@@ -214,6 +214,7 @@
         "title": "Pro",
         "intro": "Tutto ciò che è incluso in Gratis, più:",
         "features": {
+          "p8": "Più casse e più negozi",
           "p1": "Integrazione con terminali di pagamento",
           "p2": "Modifica stock e prezzi nel POS",
           "p3": "Cronologia e gestione ordini",
@@ -423,6 +424,10 @@
     "features": {
       "title": "Cosa include Pro?",
       "subtitle": "Tutto ciò che c'è nella versione Free, più gli strumenti per gestire l'intero negozio dalla cassa — e supporto prioritario quando ti serve una mano.",
+      "stores": {
+        "title": "Più casse e più negozi",
+        "description": "Aggiungi casse oltre a quella gratuita e gestisci più negozi, ciascuno con indirizzo, aliquote fiscali, modello di scontrino, prezzi e utenti autorizzati propri."
+      },
       "terminal": {
         "title": "Integrazione dei terminali di pagamento",
         "description": "Collega lettori di carte e terminali di pagamento per pagamenti in presenza rapidi e precisi."
