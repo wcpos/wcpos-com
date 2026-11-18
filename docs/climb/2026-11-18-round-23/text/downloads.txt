@@ -1,0 +1,210 @@
+WCPOS
+Downloads
+Pro
+Documentation
+Support
+Roadmap
+Sign In
+
+DOWNLOADS
+
+Download WooCommerce POS
+
+One register, every device.
+
+macOS
+Windows
+Linux
+iOS & iPad
+Android
+Web
+macOS
+Detected
+
+Version 2.0.4 · Apple Silicon · .dmg
+
+Every app connects to the free WordPress plugin — install it first.
+
+Download for macOS
+
+On an Intel Mac? Get the Intel build
+
+On macOS 12 Monterey? WCPOS 2.0 needs macOS 13 or later. Version 1.11.12 still runs on macOS 12 with the 1.11 plugin: Apple Silicon · Intel
+
+Desktop
+iOS & iPad
+Android
+Web
+Your store
+WooCommerce
++ WCPOS plugin
+
+HOW IT FITS TOGETHER
+
+One store at the centre. Every register in sync.
+One plugin is the only setup
+The free plugin adds a secure REST API to your WooCommerce store. That’s the whole install — nothing to host or configure per device.
+Every app reads and writes the same store
+Ring up a sale on the desktop and your phone shows the new stock level — one set of products, orders and customers, updating in real time.
+Keep ringing up sales when the connection drops
+Browse products, build carts and complete cash sales or sales on a separate card terminal without a connection; they sync the moment you’re back online. Connected card readers and online gateways need a connection.
+
+What stays in sync
+
+Products & prices
+Stock levels
+Orders
+Customers
+Tax & receipts
+
+GET STARTED
+
+Three steps to your first sale
+
+It takes about two minutes, start to finish.
+
+1
+Install the free plugin
+
+The foundation everything connects to. In your dashboard: Plugins → Add New, then search “WCPOS”.
+
+WCPOSFree · GPL
+
+Latest 2.0.4 · WordPress 5.6+ · WooCommerce 9.0+ · PHP 7.4+
+
+WordPress.org
+.zip
+2
+Pick your device
+
+All free, all in sync. Grab the one we detected up top, or any of these.
+
+Desktop app
+
+macOS (Apple Silicon)·
+macOS (Intel)·
+Windows·
+Linux
+
+iOS & iPadBeta
+
+Join the TestFlight beta
+
+AndroidBeta
+
+Join on Google Play
+
+Web
+
+Open the live demo
+3
+Want more? Go Pro
+
+A licensed plugin that adds more registers and stores, terminal payments, refunds and stock control on the same foundation.
+
+Unlock more registers
+
+More registers & stores, terminal payments, refunds, stock & pricing, order management, full reports and priority Discord support.
+
+View Pro plans
+Sign in to download
+
+RELEASE HISTORY
+
+What’s new
+
+Recent plugin releases. Desktop builds are numbered separately.
+
+2.0.4
+Latest
+Nov 17, 2026
+2.0.3
+Nov 14, 2026
+2.0.2
+Nov 12, 2026
+2.0.1
+Nov 10, 2026
+2.0.0
+Nov 9, 2026
+
+WCPOS 2.0 is a major update: an entirely new interface and many new features, and cashiers will need time to get used to it. Update when you have time to learn the new interface, not during a busy shift. What's new: https://docs.wcpos.com/getting-started/whats-new
+
+Sync every till before upgrading: 2.0 starts a new local database and does not carry over unsent 1.11 sales. Rolling back to 1.11 also starts from an empty local database, so sync before you roll back too. The app and the plugin must both be on 2.0; a 1.11 app asks for an update when it meets a 2.0 plugin. WCPOS 2.0 needs WooCommerce 9.0 or later.
+
+WCPOS 2.0 gives the POS its own checkout: cash, split payments and card readers handled at the register itself, with a cash drawer that opens and closes with each shift. Every screen is redrawn, and the till keeps taking cash when the connection drops.
+
+A checkout that belongs to the POS. Checkout opens in a tender pane beside the cart instead of sending every sale through WooCommerce's order-pay page. Cash is taken at the till, so it lands in the register's count; card and the other manual gateways keep the Legacy tab.
+Split payments. Take one order in several payments, for example part cash and part card, each recorded as it is taken.
+Card readers connected straight to the POS (Pro). Stripe Terminal and SumUp readers pair with the till over Bluetooth; Tap to Pay on iPhone and Android follows in an app update.
+Registers and cash drawer sessions. Opening float, cash in and out, a count at close and the difference against what was expected; set up in POS > Settings > General > Register. Free includes one register; more registers need Pro.
+Closures are saved, numbered documents you can reprint, recount and export as CSV from POS Settings.
+Cash sales keep going when the connection drops.
+A new Reports screen with a comparison period, a chart and cards for orders, products, taxes, refunds, payments, categories and cashiers.
+A customer-facing display (Pro). Open the display page on any device's browser and pair it to a till with a code.
+A redesigned POS with a Scale setting for compact, regular or spacious layouts, and a Fonts setting under Settings > Theme.
+POS Only products are hidden from your online shop. Marking a product POS Only sets its catalog visibility to Hidden; existing POS Only products are updated once at upgrade.
+The POS loads from cdn.wcpos.com, with jsDelivr as the fallback. The bundle is signed and checked before it runs.
+The template gallery has Receipts, Reports, Closures, Display and Email tabs, and receipt fonts download on demand.
+The cashier who opened a session cannot approve its own variance, and the Access screen can restore the default capabilities.
+The experimental magnetic card reader is removed. Card terminal extensions (Stripe, SumUp and the others) need WCPOS Pro from 2.0.
+Developers: sync protocol 3; every plugin hook is now named wcpos_* (the woocommerce_pos_* names still fire as deprecated aliases); the 1.x compatibility shims are removed; translations pinned to 2026.11.14; the vendored SQLite worker matches web-bundle v2.0.17.
+
+Since beta 3, for testers on the 2.0 beta:
+
+A sale, refund or payment change saved while a register is closing is never lost from the books. It lands in the closure or in a correction to it; before, one that arrived mid-close could land in neither.
+Large register sessions no longer run out of memory. A session with thousands of sales could fail its X-report and expected figures on PHP's memory limit; the session's orders are now read one at a time.
+The order-pay page shows the order's own currency symbol on the Cash and Card fields and formats amounts with the POS store's money format.
+Refund receipts add up (Pro). When part of a refund is not tied to a payment, the remainder now prints as cash, so the receipt total matches the amount refunded.
+Beta 3's notes said translations were pinned to 2026.11.12; beta 3 shipped pinned to 2026.11.13.
+1.11.10
+Nov 7, 2026
+
+Full history on GitHub — Free · Desktop
+
+PRODUCT
+Downloads
+WCPOS Pro
+Compare
+Roadmap
+Changelog
+Live Demo↗
+Extensions
+COMMUNITY
+Discord↗
+GitHub↗
+WordPress.org↗
+SUPPORT
+Documentation
+Support
+Status↗
+WordPress Forum↗
+COMPANY
+About
+Privacy
+Terms
+Refunds
+DOWNLOAD
+WordPress Plugin↗
+WCPOS for macOS↗
+WCPOS for Windows↗
+WCPOS for Linux↗
+WCPOS for iOS & iPad↗
+WCPOS for Android↗
+
+© 2026 WCPOS
+
+English
+Français
+Deutsch
+Español
+日本語
+中文
+Português
+Italiano
+Nederlands
+한국어
+
+We use an anonymous analytics cookie to understand how the site is used. No ads, no third-party tracking. Privacy policy
+
+Decline
+Accept
