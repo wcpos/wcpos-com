@@ -1739,7 +1739,12 @@
     },
     "hero": {
       "title": "Extensions for WooCommerce POS",
-      "subtitle": "The extensions available for WCPOS, each with a link to its documentation."
+      "subtitle": "Add card terminals, payment gateways, stock and coupon integrations, and multilingual catalogs to WCPOS. Each one links to its documentation."
+    },
+    "groups": {
+      "payments": "Card terminals and payments",
+      "stockCoupons": "Stock and coupons",
+      "multilingual": "Multilingual stores"
     },
     "proTag": "Pro",
     "docsLink": "{name} documentation",

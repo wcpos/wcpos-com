@@ -1739,7 +1739,12 @@
     },
     "hero": {
       "title": "Erweiterungen für WooCommerce POS",
-      "subtitle": "Die verfügbaren Erweiterungen für WCPOS, jeweils mit einem Link zur Dokumentation."
+      "subtitle": "Erweitere WCPOS um Kartenterminals, Zahlungsgateways, Integrationen für Lagerbestand und Gutscheine sowie mehrsprachige Kataloge. Jede Erweiterung verlinkt auf ihre Dokumentation."
+    },
+    "groups": {
+      "payments": "Kartenterminals und Zahlungen",
+      "stockCoupons": "Lagerbestand und Gutscheine",
+      "multilingual": "Mehrsprachige Shops"
     },
     "proTag": "Pro",
     "docsLink": "Dokumentation zu {name}",

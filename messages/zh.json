@@ -1739,7 +1739,12 @@
     },
     "hero": {
       "title": "WooCommerce 销售点系统扩展",
-      "subtitle": "WCPOS 可用的扩展，每个扩展均附有其文档链接。"
+      "subtitle": "为 WCPOS 添加刷卡终端、支付网关、库存与优惠券集成以及多语言目录。每个扩展均附有其文档链接。"
+    },
+    "groups": {
+      "payments": "刷卡终端与支付",
+      "stockCoupons": "库存与优惠券",
+      "multilingual": "多语言商店"
     },
     "proTag": "Pro",
     "docsLink": "{name} 文档",

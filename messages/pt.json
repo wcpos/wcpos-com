@@ -1739,7 +1739,12 @@
     },
     "hero": {
       "title": "Extensões para WooCommerce POS",
-      "subtitle": "As extensões disponíveis para WCPOS, cada uma com uma ligação para a respetiva documentação."
+      "subtitle": "Adicione ao WCPOS terminais de cartão, gateways de pagamento, integrações de stock e cupões e catálogos multilingues. Cada extensão tem uma ligação para a respetiva documentação."
+    },
+    "groups": {
+      "payments": "Terminais de cartão e pagamentos",
+      "stockCoupons": "Stock e cupões",
+      "multilingual": "Lojas multilingues"
     },
     "proTag": "Pro",
     "docsLink": "Documentação de {name}",
