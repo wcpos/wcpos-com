@@ -41,8 +41,9 @@ function Collapsible({
         )}
       >
         {summary}
+        {/* Own-details selector, not group-open: a nested closed disclosure must not rotate with an open ancestor. */}
         <ChevronDown
-          className="size-4 shrink-0 text-muted-foreground transition-transform group-open:rotate-180"
+          className="size-4 shrink-0 text-muted-foreground transition-transform [[open]>summary>&]:rotate-180"
           aria-hidden="true"
         />
       </summary>

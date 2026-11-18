@@ -1734,6 +1734,7 @@
         "v190": "- New receipt template gallery; thermal printing (58/80mm)\n- Customer Tax IDs; Pro coupons & refunds at the POS"
       },
       "plugin": "Gratis",
+      "showAllNotes": "Alle release-opmerkingen van {version} tonen",
       "externalContentNotice": "Release-opmerkingen komen van GitHub en kunnen in het Engels worden weergegeven."
     }
   },

@@ -358,12 +358,15 @@ export default async function DownloadsPage({
           releases={releases}
           locale={locale}
           openFeatureRelease
+          clampLongNotes
           copy={{
             latest: releaseT('latest'),
             fullHistory: releaseT('fullHistory'),
             plugin: releaseT('plugin'),
             desktop: releaseT('desktop'),
             externalContentNotice: releaseT('externalContentNotice'),
+            // Keep {version} literal; ReleaseHistory fills it per release.
+            showAllNotes: releaseT('showAllNotes', { version: '{version}' }),
           }}
         />
       </Section>

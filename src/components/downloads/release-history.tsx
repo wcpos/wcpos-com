@@ -13,12 +13,57 @@ export interface ReleaseEntry {
   latest?: boolean
 }
 
+/**
+ * Long notes (at least NOTES_CLAMP_MIN_CHARS) show their first
+ * NOTES_PREVIEW_BLOCKS blank-line-separated blocks; the rest sit behind a
+ * closed disclosure.
+ */
+export const NOTES_PREVIEW_BLOCKS = 3
+export const NOTES_CLAMP_MIN_CHARS = 1500
+
+export function splitReleaseNotes(body: string): { preview: string; rest: string | null } {
+  const blocks = body.replace(/\r\n/g, '\n').split(/\n[ \t]*\n/)
+  if (body.length < NOTES_CLAMP_MIN_CHARS || blocks.length <= NOTES_PREVIEW_BLOCKS) {
+    return { preview: body, rest: null }
+  }
+  return {
+    preview: blocks.slice(0, NOTES_PREVIEW_BLOCKS).join('\n\n'),
+    rest: blocks.slice(NOTES_PREVIEW_BLOCKS).join('\n\n'),
+  }
+}
+
+function ReleaseNotes(props: { body: string; clamp?: boolean; showAll: string; locale: string }) {
+  const { preview, rest } = props.clamp
+    ? splitReleaseNotes(props.body)
+    : { preview: props.body, rest: null }
+  return (
+    <>
+      <Markdown
+        content={preview}
+        className="text-sm [&_h1]:text-base [&_h2]:text-base [&_code]:break-words [&_a]:break-words"
+      />
+      {rest !== null && (
+        <Collapsible
+          summaryClassName="py-2 text-sm font-medium text-wcpos-red-accent"
+          summary={<span lang={props.locale}>{props.showAll}</span>}
+        >
+          <Markdown
+            content={rest}
+            className="text-sm [&_h1]:text-base [&_h2]:text-base [&_code]:break-words [&_a]:break-words"
+          />
+        </Collapsible>
+      )}
+    </>
+  )
+}
+
 export function ReleaseHistory({
   releases,
   copy,
   locale,
   headingLevel,
   openFeatureRelease,
+  clampLongNotes,
 }: {
   releases: ReleaseEntry[]
   locale: string
@@ -26,12 +71,16 @@ export function ReleaseHistory({
   headingLevel?: 2 | 3
   /** Opens the newest x.y.0 release instead of the first row; falls back to the first row when none is listed. */
   openFeatureRelease?: boolean
+  /** Shows only the start of long notes, with the rest behind a closed "show all" disclosure; omitting it renders every note in full. */
+  clampLongNotes?: boolean
   copy: {
     latest: string
     fullHistory: string
     plugin: string
     desktop: string
     externalContentNotice: string
+    /** Template for the disclosure summary; `{version}` is replaced with the release version. */
+    showAllNotes?: string
   }
 }) {
   const SummaryTag = headingLevel === 2 ? 'h2' : headingLevel === 3 ? 'h3' : 'span'
@@ -69,9 +118,11 @@ export function ReleaseHistory({
           }
         >
           <div className="pb-5 pl-1" lang={release.contentLocale}>
-            <Markdown
-              content={release.body}
-              className="text-sm [&_h1]:text-base [&_h2]:text-base"
+            <ReleaseNotes
+              body={release.body}
+              clamp={clampLongNotes}
+              showAll={(copy.showAllNotes ?? '').replace('{version}', release.version)}
+              locale={locale}
             />
           </div>
         </Collapsible>

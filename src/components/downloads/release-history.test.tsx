@@ -1,6 +1,12 @@
+import fs from 'node:fs'
+import path from 'node:path'
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
-import { ReleaseHistory, type ReleaseEntry } from './release-history'
+import {
+  ReleaseHistory,
+  splitReleaseNotes,
+  type ReleaseEntry,
+} from './release-history'
 
 const baseCopy = {
   latest: 'Latest',
@@ -152,5 +158,75 @@ describe('ReleaseHistory', () => {
     expect(
       screen.queryByText('Release notes come from GitHub and may be shown in English.'),
     ).not.toBeInTheDocument()
+  })
+})
+
+const LOCALES = ['en', 'de', 'nl', 'fr', 'es', 'pt', 'it', 'ja', 'ko', 'zh']
+
+function block(n: number) {
+  return `Block ${n} ${'lorem ipsum dolor sit amet '.repeat(12)}`.trim()
+}
+
+const longBlocks = [1, 2, 3, 4, 5, 6].map(block)
+const longBody = longBlocks.join('\r\n\r\n')
+
+describe('splitReleaseNotes', () => {
+  it('keeps the first three blocks of a long body and puts the rest aside', () => {
+    expect(longBody.length).toBeGreaterThan(1500)
+    const { preview, rest } = splitReleaseNotes(longBody)
+
+    expect(preview.split('\n\n')).toEqual(longBlocks.slice(0, 3))
+    expect(rest?.split('\n\n')).toEqual(longBlocks.slice(3))
+  })
+
+  it('returns no rest for a short body or a long body of three blocks', () => {
+    const shortBody = [1, 2, 3, 4, 5].map((n) => `Block ${n}`).join('\n\n')
+    expect(splitReleaseNotes(shortBody)).toEqual({ preview: shortBody, rest: null })
+
+    const threeBlocks = ['a', 'b', 'c'].map((c) => c.repeat(600)).join('\n\n')
+    expect(splitReleaseNotes(threeBlocks)).toEqual({ preview: threeBlocks, rest: null })
+  })
+})
+
+describe('ReleaseHistory long notes', () => {
+  const copy = { ...baseCopy, showAllNotes: 'Show all {version} release notes' }
+  const releases: ReleaseEntry[] = [
+    { version: '2.0.0', date: 'June 17, 2026', body: longBody, latest: true },
+  ]
+
+  it('puts the rest of long notes in a closed nested disclosure with clampLongNotes', () => {
+    render(
+      <ReleaseHistory releases={releases} copy={copy} locale="en" clampLongNotes />,
+    )
+
+    const nested = screen.getByText(/^Block 4 /).closest('details')
+    expect(nested).not.toBeNull()
+    expect(nested).not.toHaveAttribute('open')
+    expect(nested?.querySelector('summary')).toHaveTextContent(
+      'Show all 2.0.0 release notes',
+    )
+    expect(nested).not.toContainElement(screen.getByText(/^Block 1 /))
+  })
+
+  it('renders every block with no nested disclosure without clampLongNotes', () => {
+    const { container } = render(
+      <ReleaseHistory releases={releases} copy={copy} locale="en" />,
+    )
+
+    expect(container.querySelectorAll('details details')).toHaveLength(0)
+    for (const n of [1, 2, 3, 4, 5, 6]) {
+      expect(screen.getByText(new RegExp(`^Block ${n} `))).toBeInTheDocument()
+    }
+  })
+
+  it('has a showAllNotes template with {version} in every locale', () => {
+    for (const locale of LOCALES) {
+      const messages = JSON.parse(
+        fs.readFileSync(path.resolve(process.cwd(), `messages/${locale}.json`), 'utf8'),
+      )
+      expect(messages.downloads.releaseHistory.showAllNotes, locale).toContain(
+        '{version}',
+      )
+    }
   })
 })

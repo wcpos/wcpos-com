@@ -28,4 +28,19 @@ describe('Collapsible', () => {
       (container.querySelector('details') as HTMLDetailsElement).open,
     ).toBe(true)
   })
+
+  it('rotates a nested chevron only with its own disclosure', () => {
+    const { container } = render(
+      <Collapsible summary="outer" defaultOpen>
+        <Collapsible summary="inner">inner body</Collapsible>
+      </Collapsible>,
+    )
+    const [outer, inner] = Array.from(container.querySelectorAll('details'))
+    expect(outer).toHaveAttribute('open')
+    expect(inner).not.toHaveAttribute('open')
+    const chevron = inner.querySelector(':scope > summary > svg') as SVGElement
+    const classes = Array.from(chevron.classList)
+    expect(classes).toContain('[[open]>summary>&]:rotate-180')
+    expect(classes.some((c) => c.startsWith('group-open:'))).toBe(false)
+  })
 })
