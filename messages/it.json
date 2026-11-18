@@ -1881,6 +1881,7 @@
         "label": "Fai una domanda al supporto",
         "placeholder": "es. stampante per ricevute",
         "verifying": "Controllo di sicurezza in corso…",
+        "interactive": "Spunta la casella qui sotto per fare la tua domanda.",
         "followUpPlaceholder": "Fai un'altra domanda…",
         "submit": "Chiedi"
       },

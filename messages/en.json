@@ -1881,6 +1881,7 @@
         "label": "Ask a support question",
         "placeholder": "e.g. Set up a receipt printer",
         "verifying": "Running a quick security check…",
+        "interactive": "Tick the box below to ask your question.",
         "followUpPlaceholder": "Ask a follow-up…",
         "submit": "Ask"
       },

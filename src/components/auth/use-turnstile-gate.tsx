@@ -45,6 +45,8 @@ export interface TurnstileGate {
   verifying: boolean
   /** The check failed or timed out — show a hint and let submit through. */
   failed: boolean
+  /** Cloudflare is showing its interactive challenge; the visitor must tick it. */
+  interacting: boolean
   /** Drop the token and re-run the widget after a rejected submit. */
   reset: () => void
   /** Render inside the form, near the submit button. */
@@ -106,6 +108,7 @@ export function useTurnstileGate(enabled = true): TurnstileGate {
       !failed &&
       (siteKey === undefined || (Boolean(siteKey) && !token)),
     failed,
+    interacting: enabled && interacting,
     reset: () => {
       // Deliberately leaves `failed` alone: clearing it would re-grey the
       // button for another full timeout. A later onSuccess clears it.

@@ -1881,6 +1881,7 @@
         "label": "지원 질문하기",
         "placeholder": "예: 영수증 프린터 연결",
         "verifying": "보안 확인 중…",
+        "interactive": "질문하려면 아래 상자를 체크하세요.",
         "followUpPlaceholder": "추가 질문하기…",
         "submit": "질문하기"
       },

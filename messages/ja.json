@@ -1881,6 +1881,7 @@
         "label": "サポートに質問する",
         "placeholder": "例：レシートプリンター接続",
         "verifying": "セキュリティを確認しています…",
+        "interactive": "質問するには、下のボックスにチェックを入れてください。",
         "followUpPlaceholder": "追加の質問を入力…",
         "submit": "質問する"
       },

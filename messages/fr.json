@@ -1881,6 +1881,7 @@
         "label": "Poser une question d’assistance",
         "placeholder": "p. ex. imprimante de reçus",
         "verifying": "Vérification de sécurité en cours…",
+        "interactive": "Cochez la case ci-dessous pour poser votre question.",
         "followUpPlaceholder": "Posez une question complémentaire…",
         "submit": "Demander"
       },
