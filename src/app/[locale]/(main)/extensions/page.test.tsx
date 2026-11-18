@@ -213,6 +213,19 @@ describe('ExtensionsPage', () => {
     })
   })
 
+  it('keeps each Pro badge in a flex row beside its title so it never wraps alone', async () => {
+    render(await ExtensionsPage({ params }))
+    EXPECTED.filter(({ pro }) => pro).forEach(({ name }) => {
+      const heading = screen.getByRole('heading', { level: 3, name })
+      const badge = within(heading.closest('li')!).getByText('Pro')
+      expect(badge.parentElement).toBe(heading.parentElement)
+      expect(heading.parentElement!.classList).toContain('flex')
+      expect(badge.classList).toContain('shrink-0')
+      expect(badge.classList).not.toContain('ml-2')
+      expect(heading.classList).not.toContain('inline')
+    })
+  })
+
   it('explains the Pro badge with a link to /pro', async () => {
     render(await ExtensionsPage({ params }))
     const hero = screen.getByRole('heading', { level: 1 }).closest('section')
