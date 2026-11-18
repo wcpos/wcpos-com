@@ -106,7 +106,7 @@ describe('FoosalesComparePage', () => {
     ).toBeInTheDocument()
     const sourceLinks = screen.getAllByRole('link').filter((link) => {
       const href = link.getAttribute('href') ?? ''
-      return ['www.foosales.com', 'help.foosales.com', 'apps.apple.com'].includes(new URL(href).host)
+      return ['www.foosales.com', 'help.foosales.com', 'apps.apple.com'].includes(new URL(href, 'https://wcpos.com').host)
     })
     expect(sourceLinks).toHaveLength(13)
     expect(sourceLinks.map((link) => link.getAttribute('href'))).toEqual([

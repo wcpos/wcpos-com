@@ -7,6 +7,7 @@ import { SectionHeading } from '@/components/ui/section-heading'
 import { CtaSection } from '@/components/home/cta-section'
 import { GlanceTable } from '@/components/compare/glance-table'
 import { proAddsLinks } from '@/components/compare/pro-adds-links'
+import { CompareBreadcrumb } from '@/components/compare/compare-breadcrumb'
 import { localeUrl, marketingMetadata } from '@/lib/seo'
 import type { Metadata } from 'next'
 import type { Locale } from '@/i18n/config'
@@ -120,6 +121,11 @@ export default async function JovvieComparePage({
       <JovvieCompareJsonLd locale={locale} translate={translate} />
 
       <Section tone="default" spacing="hero" className="pb-6 md:pb-10 lg:pb-12">
+        <CompareBreadcrumb
+          label={t('breadcrumbLabel')}
+          hubLabel={t('hub.hero.title')}
+          current={t('jovvie.hero.title')}
+        />
         <SectionHeading
           as="h1"
           size="hero"

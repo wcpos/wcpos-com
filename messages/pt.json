@@ -1909,6 +1909,7 @@
     }
   },
   "compare": {
+    "breadcrumbLabel": "Trilho de navegação",
     "disclosure": {
       "title": "Quem publica esta comparação",
       "body": "Esta página é publicada por kilbot, o criador do WCPOS. Temos, obviamente, interesse no resultado — por isso todos os números têm fonte e data, ligamos às páginas de preços dos próprios concorrentes e dizemos claramente quando um concorrente é a melhor escolha. Verifique tudo."

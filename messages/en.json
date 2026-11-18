@@ -1909,6 +1909,7 @@
     }
   },
   "compare": {
+    "breadcrumbLabel": "Breadcrumb",
     "disclosure": {
       "title": "Who runs this comparison",
       "body": "This page is published by kilbot, the maker of WCPOS. We obviously have a horse in this race — so every number is sourced and dated, we link to competitors' own pricing pages, and we tell you plainly when a competitor is the better choice. Check everything."
