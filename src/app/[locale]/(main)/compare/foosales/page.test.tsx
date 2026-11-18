@@ -100,7 +100,7 @@ describe('FoosalesComparePage', () => {
 
   it('builds metadata from translated strings', async () => {
     const metadata = await generateMetadata({ params })
-    expect(metadata.title).toBe('Translated FooSales metadata title')
+    expect(metadata.title).toEqual({ absolute: 'Translated FooSales metadata title' })
     expect(metadata.description).toBe(
       'Translated FooSales metadata description'
     )

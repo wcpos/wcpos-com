@@ -87,7 +87,7 @@ export function marketingMetadata({
 }: {
   locale: Locale
   path?: string
-  title?: string
+  title?: string | { absolute: string }
   description?: string
 }): Metadata {
   const canonical = localeUrl(locale, path)

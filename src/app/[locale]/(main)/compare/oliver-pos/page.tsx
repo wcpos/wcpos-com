@@ -79,7 +79,7 @@ export async function generateMetadata({
   return marketingMetadata({
     locale,
     path: '/compare/oliver-pos',
-    title: t('oliver.metadata.title'),
+    title: { absolute: t('oliver.metadata.title') },
     description: t('oliver.metadata.description'),
   })
 }

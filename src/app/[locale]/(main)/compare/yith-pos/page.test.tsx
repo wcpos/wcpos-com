@@ -100,7 +100,7 @@ describe('YithComparePage', () => {
 
   it('builds metadata from translated strings', async () => {
     const metadata = await generateMetadata({ params })
-    expect(metadata.title).toBe('Translated YITH metadata title')
+    expect(metadata.title).toEqual({ absolute: 'Translated YITH metadata title' })
     expect(metadata.description).toBe(
       'Translated YITH metadata description'
     )

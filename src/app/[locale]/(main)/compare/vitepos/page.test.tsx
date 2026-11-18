@@ -100,7 +100,7 @@ describe('ViteposComparePage', () => {
 
   it('builds metadata from translated strings', async () => {
     const metadata = await generateMetadata({ params })
-    expect(metadata.title).toBe('Translated Vitepos metadata title')
+    expect(metadata.title).toEqual({ absolute: 'Translated Vitepos metadata title' })
     expect(metadata.description).toBe(
       'Translated Vitepos metadata description'
     )

@@ -100,7 +100,7 @@ describe('JovvieComparePage', () => {
 
   it('builds metadata from translated strings', async () => {
     const metadata = await generateMetadata({ params })
-    expect(metadata.title).toBe('Translated Jovvie metadata title')
+    expect(metadata.title).toEqual({ absolute: 'Translated Jovvie metadata title' })
     expect(metadata.description).toBe(
       'Translated Jovvie metadata description'
     )
