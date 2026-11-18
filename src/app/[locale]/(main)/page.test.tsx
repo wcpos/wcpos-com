@@ -1,4 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
+import { render } from '@testing-library/react'
 
 vi.mock('next-intl/server', () => ({
   getTranslations: vi.fn(async () => (key: string) => {
@@ -8,7 +9,13 @@ vi.mock('next-intl/server', () => ({
 
     return messages[key] ?? key
   }),
+  getMessages: vi.fn(async () => ({})),
   setRequestLocale: vi.fn(),
+}))
+
+vi.mock('next-intl', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('next-intl')>()),
+  NextIntlClientProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 }))
 
 vi.mock('@/components/home/scroll-story', () => ({
@@ -36,7 +43,7 @@ vi.mock('@/components/home/cta-section', () => ({
   CtaSection: () => null,
 }))
 
-import { generateMetadata } from './page'
+import Home, { generateMetadata } from './page'
 
 describe('Home page metadata', () => {
   it('uses translated copy with canonical and hreflang alternates', async () => {
@@ -51,5 +58,22 @@ describe('Home page metadata', () => {
       fr: 'https://wcpos.com/fr',
       'x-default': 'https://wcpos.com',
     })
+  })
+})
+
+describe('Home page SoftwareApplication JSON-LD', () => {
+  it('uses the locale url and the home meta description', async () => {
+    const { container } = render(
+      await Home({ params: Promise.resolve({ locale: 'de' }) }),
+    )
+
+    const app = Array.from(
+      container.querySelectorAll('script[type="application/ld+json"]'),
+    )
+      .map((script) => JSON.parse(script.textContent ?? '{}'))
+      .find((data) => data['@type'] === 'SoftwareApplication')
+
+    expect(app.url).toBe('https://wcpos.com/de')
+    expect(app.description).toBe('Translated homepage metadata description')
   })
 })

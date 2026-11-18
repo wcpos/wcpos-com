@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
+import enMessages from '../../../../../messages/en.json'
 
 function readMessage(messages: Record<string, unknown>, namespace: string, key: string) {
   return `${namespace}.${key}`
@@ -203,5 +204,26 @@ describe('DownloadsPage', () => {
 
     expect(app.offers.price).toBe('0')
     expect(app.downloadUrl).toMatch(/\/downloads$/)
+    expect(app.url).toBe('https://wcpos.com')
+    expect(app.description).toBe(enMessages.downloads.meta.description)
+  })
+
+  it('points the SoftwareApplication JSON-LD at the locale on /de', async () => {
+    const { default: DownloadsPage } = await import(
+      '@/app/[locale]/(main)/downloads/page'
+    )
+
+    const { container } = render(
+      await DownloadsPage({ params: Promise.resolve({ locale: 'de' }) }),
+    )
+
+    const app = Array.from(
+      container.querySelectorAll('script[type="application/ld+json"]'),
+    )
+      .map((script) => JSON.parse(script.textContent ?? '{}'))
+      .find((data) => data['@type'] === 'SoftwareApplication')
+
+    expect(app.url).toBe('https://wcpos.com/de')
+    expect(app.downloadUrl).toBe('https://wcpos.com/de/downloads')
   })
 })
