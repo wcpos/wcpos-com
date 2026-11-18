@@ -2227,7 +2227,7 @@
           },
           "devices": {
             "label": "Apparaten",
-            "wcpos": "Web, desktopapps (Windows, macOS en Linux), iOS- en Android-apps (bèta); onbeperkt apparaten en kassamedewerkers",
+            "wcpos": "Web, desktopapps (Windows, macOS en Linux), iOS- en Android-apps (bèta); onbeperkt apparaten en kassamedewerkers, één kassa in de gratis versie, meer met Pro",
             "woocommerce": "Ontworpen voor tablets — iPad en Android-tablets"
           },
           "countries": {
@@ -2385,7 +2385,7 @@
           },
           "devices": {
             "label": "Apparaten",
-            "wcpos": "Web, desktopapps (Windows, macOS en Linux), iOS- en Android-apps (bèta); onbeperkt apparaten en kassamedewerkers",
+            "wcpos": "Web, desktopapps (Windows, macOS en Linux), iOS- en Android-apps (bèta); onbeperkt apparaten en kassamedewerkers, één kassa in de gratis versie, meer met Pro",
             "square": "Square Point of Sale-app op iOS- en Android-apparaten en Square Register, de eigen hardware van Square met ingebouwde Square Point of Sale"
           },
           "countries": {
@@ -2975,7 +2975,7 @@
           },
           "devices": {
             "label": "Gebruikers en apparaten",
-            "wcpos": "Onbeperkt apparaten en kassamedewerkers",
+            "wcpos": "Onbeperkt apparaten en kassamedewerkers; één kassa in de gratis versie, meer met Pro",
             "foosales": "3 gebruikers en 3 apparaten per abonnement, volgens het helpcentrum; meer via afzonderlijk verkochte User and Device Add-ons"
           },
           "stores": {

@@ -2227,7 +2227,7 @@
           },
           "devices": {
             "label": "Appareils",
-            "wcpos": "Web, applications de bureau (Windows, macOS et Linux), applications iOS et Android (bêta) ; appareils et caissiers illimités",
+            "wcpos": "Web, applications de bureau (Windows, macOS et Linux), applications iOS et Android (bêta) ; appareils et caissiers illimités, une caisse dans la version gratuite, davantage avec Pro",
             "woocommerce": "Conçu pour les tablettes — iPad et tablettes Android"
           },
           "countries": {
@@ -2385,7 +2385,7 @@
           },
           "devices": {
             "label": "Appareils",
-            "wcpos": "Web, applications de bureau (Windows, macOS et Linux), applications iOS et Android (bêta) ; appareils et caissiers illimités",
+            "wcpos": "Web, applications de bureau (Windows, macOS et Linux), applications iOS et Android (bêta) ; appareils et caissiers illimités, une caisse dans la version gratuite, davantage avec Pro",
             "square": "Application Square Point of Sale sur les appareils iOS et Android, et Square Register, le matériel propre à Square avec Square Point of Sale intégré"
           },
           "countries": {
@@ -2975,7 +2975,7 @@
           },
           "devices": {
             "label": "Utilisateurs et appareils",
-            "wcpos": "Appareils et caissiers illimités",
+            "wcpos": "Appareils et caissiers illimités ; une caisse dans la version gratuite, davantage avec Pro",
             "foosales": "3 utilisateurs et 3 appareils par forfait, selon son centre d'aide ; davantage avec les User and Device Add-ons, vendus séparément"
           },
           "stores": {
