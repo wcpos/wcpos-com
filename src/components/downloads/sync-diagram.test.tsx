@@ -78,6 +78,20 @@ describe('SyncDiagram translations', () => {
   })
 })
 
+describe('SyncDiagram sizing', () => {
+  it('sizes the hub and spheres relative to the diagram', () => {
+    const host = document.createElement('div')
+    host.innerHTML = renderToString(<SyncDiagram labels={EN_LABELS} />)
+    const get = (id: string) =>
+      host.querySelector<HTMLElement>(`[data-testid="${id}"]`)!
+
+    expect(get('store-hub').style.width).toBe(`${(112 / 440) * 100}cqw`)
+    expect(get('device-sphere-desktop').style.width).toBe(`${(66 / 440) * 100}cqw`)
+    expect(get('device-sphere-ios').style.width).toBe(`${(58 / 440) * 100}cqw`)
+    expect(host.querySelector('[role="img"]')).toHaveClass('[container-type:inline-size]')
+  })
+})
+
 describe('SyncDiagram hydration', () => {
   let root: Root | undefined
   let host: HTMLDivElement | undefined
