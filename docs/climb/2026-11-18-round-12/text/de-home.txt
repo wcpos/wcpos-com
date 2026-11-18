@@ -1,0 +1,278 @@
+WCPOS
+Herunterladen
+Pro
+Dokumentation
+Hilfe
+Produktplanung
+Anmelden
+POS — US-Geschäft
+K1
+Produkte suchen
+Auf Lager ✕
+Empfohlen
+Im Angebot
+Kategorie
+Stofftasche
+29 $
+Varianten
+Kerze
+24 $
+Tasse
+18 $
+Seifenstück
+9 $
+Varianten
+Notizbuch
+14 $
+Geschirrtuch
+16 $
+Steuer basiert auf: Basisadresse des Shops
+Zeige 16 von 18
+Kunde:
+Gast ✕
+Kerze
+24 $
+2× Tasse
+36 $
+Seifenstück
+9 $
+Zwischensumme
+69,00 $
+69 $ berechnen
+POS — US-Geschäft
+K2
+Produkte suchen
+Auf Lager ✕
+Empfohlen
+Im Angebot
+Kategorie
+Stofftasche
+29 $
+Varianten
+Kerze
+24 $
+Tasse
+18 $
+Seifenstück
+9 $
+Varianten
+Notizbuch
+14 $
+Geschirrtuch
+16 $
+Steuer basiert auf: Basisadresse des Shops
+Zeige 16 von 18
+Kunde:
+Gast ✕
+Kerze
+24 $
+2× Tasse
+36 $
+Seifenstück
+9 $
+Zwischensumme
+69,00 $
+69 $ berechnen
+POS
+Produkte suchen
+Auf Lager ✕
+Empfohlen
+Stofftasche
+29 $
+Kerze
+24 $
+Tasse
+18 $
+Seifenstück
+9 $
+69 $ berechnen
+Produkte
+3
+Warenkorb
+69,00 $
+ZUM BEZAHLEN TIPPEN
+1.204 Produkte ● synchronisiert
+Bestellungen → Woo ●
+funktioniert offline ●
+
+Neu in 2.0 · Öffne und schließe deine Kasse, teile Zahlungen auf und sieh die heutigen Verkäufe – kostenlos.
+
+POINT OF SALE FÜR WOOCOMMERCE
+
+Dein WooCommerce-Shop an der Ladentheke.
+
+WCPOS macht dein Tablet zur Kasse — derselbe Katalog, derselbe Bestand, dieselben Preise, sogar offline.
+
+Live-Demo testen
+Kostenlos herunterladen
+5.000+ aktive Geschäfte
+Kostenlos & Open Source
+Seit 2014
+
+JEDER BILDSCHIRM, DEN DU BESITZT
+
+Ein POS. Web, Desktop, iOS & Android.
+
+Nutze die Kasse auf dem Tablet an der Theke, das Telefon auf der Verkaufsfläche oder den Laptop im Büro — derselbe Shop, dieselben Daten.
+
+Web
+Windows
+macOS
+iOS Beta
+Android Beta
+
+BRING DEINE EIGENE HARDWARE MIT
+
+Funktioniert mit der Ausstattung, die du bereits hast.
+
+Kartenterminals, Thermo-Bondrucker, Barcodescanner — WCPOS sperrt dich nicht in proprietäre Hardware ein. Schließe an, was schon auf deiner Theke steht.
+
+DEIN SHOP, DEINE DATEN
+
+Mit WooCommerce synchronisiert. Gehört dir, sogar offline.
+
+Jeder Verkauf landet in deinem WooCommerce-Shop — die Daten gehören dir, ohne Mittelsmann. Internet weg? Verkaufe weiter; WCPOS synchronisiert, sobald du wieder online bist.
+
+SCROLLEN ↓
+Für alle Arten von Geschäften gemacht
+Einzelhandelsgeschäft
+“Ich habe viel recherchiert, als ich ein POS für meine bestehende WC-Website suchte, und hätte dieses fast übersehen, weil es kostenlos war. Aber ich bin froh, dass ich es ausprobiert habe. Es macht alles, was man braucht, ohne Abos oder einen Anteil am Umsatz zu verlangen.”
+— nckllnpssy, Bewertung auf wordpress.org
+Marktverkäuferin
+“Ich bin Keramikerin in Annecy und verkaufe über meinen WooCommerce-Shop und auf Märkten. Ich nutze WCPOS seit über einem Jahr und habe vor ein paar Monaten die lebenslange Pro-Lizenz gekauft — das hat sich meiner Meinung nach gelohnt. Paul antwortet auf Discord schnell, sogar am Wochenende.”
+— adeline, Bewertung auf wordpress.org (aus dem Französischen übersetzt)
+Desktop & Offline
+“Ein großartiges POS für deinen WooCommerce-Shop. Es hat eine Desktop-Version, was es für Orte mit schwacher Internetverbindung besser macht. Ich glaube, es kommen noch mehr tolle Funktionen.”
+— rodriguekgl, Bewertung auf wordpress.org
+Gebaut für die Anforderungen des stationären Einzelhandels
+Schnelle Produktsuche
+
+Finde Produkte sofort per Suche, Filtern und Kategorien. Unterstützung für Barcodescanner inklusive.
+
+Reibungsloser Checkout
+
+Füge Artikel hinzu, wende Rabatte an, nimm Bargeld oder Kartenzahlungen über dein eigenes Zahlungsterminal an und teile eine Zahlung auf. Pro verbindet Kartenlesegeräte wie Stripe Terminal und SumUp.
+
+KundenprofilePro
+
+Kundendaten direkt im POS hinzufügen und bearbeiten. Stammkunden erkennen und besseren Service bieten.
+
+Bestellverlauf & VerwaltungPro
+
+Vergangene Bestellungen ansehen, Retouren bearbeiten und Bestellstatus prüfen, ohne in WP Admin zu wechseln.
+
+Lagerbestand & Preise spontan bearbeitenPro
+
+Korrigiere einen falschen Preis, während du einen Kunden bedienst. Passe Lagerbestände an, ohne den POS zu verlassen.
+
+Berichte für verschiedene Tage, Kassen & GeschäftePro
+
+Sieh Verkäufe für frühere Tage und Datumsbereiche, für jede Kasse und jedes Geschäft.
+
+Kostenlos starten. Upgraden, wenn du mehr brauchst.
+Kostenlos
+
+Dauerhaft kostenlos. Eine Kasse, keine Transaktionsgebühren, keine Obergrenzen für Produkte oder Bestellungen.
+
+WooCommerce-Synchronisierung
+Produktsuche & Raster
+Einfacher Checkout
+Offline-Modus
+Bondruck
+Mehrere Währungen
+Unbegrenzte Produkte
+Kasse öffnen & schließen
+Aufgeteilte Zahlungen
+Heutiger Verkaufsbericht
+Pro
+
+129 $/Jahr oder 399 $ lebenslang (USD). Keine Gebühren pro Kasse.
+
+Alles aus Kostenlos, plus:
+
+Weitere Kassen & mehrere Filialen
+Integration von Zahlungsterminals
+Lager- und Preisbearbeitung im POS
+Bestellverlauf & Verwaltung
+Kundenverwaltung
+Berichte für verschiedene Tage, Kassen & Geschäfte
+Eigene Zahlungsgateways
+Priorisierter Support
+Alle Preise & Funktionen ansehen
+
+5,000+
+
+Aktive Installationen
+
+2014
+
+In Entwicklung seit
+
+GPL-lizenziert
+— WCPOS auf GitHub
+
+25+
+
+Unterstützte Sprachen
+
+“Geradlinig, funktional und einfach zu bedienen. 10/10.”
+— Ward, Bewertung auf wordpress.org
+
+Unsere Geschichte lesen →
+
+Bereit, mit WooCommerce im Laden zu verkaufen?
+
+Probiere die Live-Demo aus oder lade das kostenlose Plugin herunter, um loszulegen.
+
+Live-Demo testen
+Kostenlos herunterladen
+
+WooCommerce-Kassensysteme im Vergleich
+
+PRODUKT
+Herunterladen
+WCPOS Pro
+Vergleichen
+Produktplanung
+Änderungsprotokoll
+Live-Demo↗
+Erweiterungen
+GEMEINSCHAFT
+Discord↗
+GitHub↗
+WordPress.org↗
+HILFE
+Dokumentation
+Hilfe erhalten
+Status↗
+WordPress-Forum↗
+UNTERNEHMEN
+Über uns
+Datenschutz
+AGB
+Rückerstattungen
+HERUNTERLADEN
+WordPress-Plugin↗
+WCPOS für macOS↗
+WCPOS für Windows↗
+WCPOS für Linux↗
+WCPOS für iOS & iPad↗
+WCPOS für Android↗
+
+© 2026 WCPOS
+
+English
+Français
+Deutsch
+Español
+日本語
+中文
+Português
+Italiano
+Nederlands
+한국어
+
+Wir verwenden ein anonymes Analyse-Cookie, um zu verstehen, wie die Website genutzt wird. Keine Werbung, kein Tracking durch Dritte. Datenschutzerklärung
+
+Ablehnen
+Akzeptieren
