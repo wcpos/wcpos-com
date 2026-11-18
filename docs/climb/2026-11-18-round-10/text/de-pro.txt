@@ -1,0 +1,136 @@
+WCPOS
+Herunterladen
+Pro
+Dokumentation
+Hilfe
+Produktplanung
+Anmelden
+WCPOS Pro
+
+Alles aus dem kostenlosen POS, plus Zahlungsterminals, Ladenverwaltung an der Kasse, vollständige Berichte und Prioritätssupport.
+
+Was ist in Pro enthalten?
+
+Alles aus der Gratis-Version, plus die Werkzeuge, um deinen gesamten Shop direkt von der Kasse aus zu führen — und vorrangiger Support, wenn du Hilfe brauchst.
+
+Weitere Kassen & mehrere Filialen
+
+Füge zur kostenlosen Kasse weitere Kassen hinzu und führe mehrere Filialen, jede mit eigener Adresse, eigenen Steuersätzen, eigener Belegvorlage, eigenen Preisen und eigenen autorisierten Benutzern.
+
+Zahlungsterminal-Integration
+
+Nimm Kartenzahlungen vor Ort mit Stripe Terminal, Square Terminal, SumUp, Mollie, PayPal Reader und mehr entgegen.
+
+Alle Terminal-Erweiterungen ansehen
+
+Bestands- & Preisbearbeitung
+
+Aktualisiere Lagerbestände, Preise und Produktdetails direkt an der Kasse — ohne den Umweg über den WordPress-Adminbereich.
+
+Bestellverwaltung
+
+Durchsuche den Bestellverlauf, öffne frühere Bestellungen und verwalte sie, ohne die Kasse zu verlassen.
+
+Kundenverwaltung
+
+Füge Kundendaten direkt an der Kasse hinzu und bearbeite sie, synchronisiert mit WooCommerce.
+
+Berichte für verschiedene Tage, Kassen & Geschäfte
+
+Sieh Verkäufe für frühere Tage und Datumsbereiche, für jede Kasse und jedes Geschäft.
+
+Individuelle Zahlungs-Gateways
+
+Nimm Zahlungen mit jedem WooCommerce-kompatiblen Gateway entgegen, nicht nur mit den integrierten Optionen.
+
+Hol dir Pro
+
+Eine Lizenz, alle Funktionen. Wähle nur, wie lange du Updates möchtest.
+
+Jährlich
+Am beliebtesten
+Updates & Support für 1 Jahr
+129 $USD/Jahr
+Lebenslang
+Updates für immer
+399 $USDeinmalig
+Loslegen
+
+Einmalzahlung — verlängert sich nie automatisch, und Pro läuft danach weiter.
+
+Testen Sie zuerst die kostenlose Version — upgraden Sie erst, wenn sie sich bewährt hat
+
+Karte, PayPal oder Bitcoin
+
+5.000+ aktive Shops
+
+Häufig gestellte Fragen
+Ist das kostenlose Plugin eingeschränkt?
+
+Das kostenlose WCPOS-Plugin ist GPL-Software ohne Obergrenzen für Produkte, Bestellungen oder Kunden und ohne Transaktionsgebühren; es betreibt eine Kasse, und für weitere Kassen und die oben aufgeführten Werkzeuge braucht es Pro.
+
+Was ist der Unterschied zwischen Jährlich und Lebenslang?
+
+Die Jährlich-Lizenz ist eine einmalige Zahlung, die ein Jahr lang Updates und vorrangigen Support beinhaltet. Sie verlängert sich nicht automatisch. Die Lebenslang-Lizenz ist eine einmalige Zahlung, die Updates für immer beinhaltet.
+
+Was passiert, wenn meine Lizenz abläuft?
+
+Es wird nichts abgeschaltet. Die Pro-Version, die du hast, läuft weiter — deine Kasse, deine Daten, jede Funktion. Es enden nur neue Updates und der Priority-Support, bis du dich für eine Verlängerung entscheidest. Das ist Absicht: Verlängerungen müssen mit Updates verdient werden, die ihr Geld wert sind — und deine Kasse kann so nie aus der Ferne abgeschaltet werden.
+
+Auf wie vielen Websites kann ich meine Lizenz nutzen?
+
+Jede Lizenz kann auf 2 Websites aktiviert werden, vorgesehen für eine Live-Website und eine Entwicklungs-Website. Du kannst deine Websites in deinem Konto-Dashboard ansehen und deaktivieren.
+
+Welche Zahlungsmethoden akzeptiert ihr?
+
+Wir akzeptieren Kreditkarten (Visa, Mastercard, Amex), PayPal und Bitcoin.
+
+WooCommerce-Kassensysteme im Vergleich
+
+PRODUKT
+Herunterladen
+WCPOS Pro
+Vergleichen
+Produktplanung
+Änderungsprotokoll
+Live-Demo↗
+Erweiterungen
+GEMEINSCHAFT
+Discord↗
+GitHub↗
+WordPress.org↗
+HILFE
+Dokumentation
+Hilfe erhalten
+Status↗
+WordPress-Forum↗
+UNTERNEHMEN
+Über uns
+Datenschutz
+AGB
+Rückerstattungen
+HERUNTERLADEN
+WordPress-Plugin↗
+WCPOS für macOS↗
+WCPOS für Windows↗
+WCPOS für Linux↗
+WCPOS für iOS & iPad↗
+WCPOS für Android↗
+
+© 2026 WCPOS
+
+English
+Français
+Deutsch
+Español
+日本語
+中文
+Português
+Italiano
+Nederlands
+한국어
+
+Wir verwenden ein anonymes Analyse-Cookie, um zu verstehen, wie die Website genutzt wird. Keine Werbung, kein Tracking durch Dritte. Datenschutzerklärung
+
+Ablehnen
+Akzeptieren
