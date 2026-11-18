@@ -66,7 +66,7 @@ export function ProBuyBox({
 
   return (
     <Card elevated data-testid="pro-buy-box" className="p-6">
-      <p className="text-lg font-semibold mb-1">{heading}</p>
+      <h2 className="text-lg font-semibold mb-1">{heading}</h2>
       <p className="text-sm text-muted-foreground mb-5">{subheading}</p>
 
       <div
