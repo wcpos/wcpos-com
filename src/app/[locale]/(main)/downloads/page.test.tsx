@@ -1,5 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
+import { readFileSync } from 'node:fs'
+import { join } from 'node:path'
 import enMessages from '../../../../../messages/en.json'
 
 function readMessage(messages: Record<string, unknown>, namespace: string, key: string) {
@@ -225,5 +227,19 @@ describe('DownloadsPage', () => {
 
     expect(app.url).toBe('https://wcpos.com/de')
     expect(app.downloadUrl).toBe('https://wcpos.com/de/downloads')
+  })
+
+  it('states WooCommerce 9.0+ in the plugin requirements in every locale', () => {
+    const locales = ['en', 'de', 'es', 'fr', 'it', 'ja', 'ko', 'nl', 'pt', 'zh']
+    for (const locale of locales) {
+      const messages = JSON.parse(
+        readFileSync(join(process.cwd(), 'messages', `${locale}.json`), 'utf8'),
+      )
+      for (const key of ['requirements', 'requirementsWithVersion']) {
+        const line = readMessage(messages, 'downloads.page.steps.plugin', key)
+        expect(line, `${locale} ${key}`).toContain('WooCommerce 9.0+')
+        expect(line, `${locale} ${key}`).not.toContain('WooCommerce 5.3')
+      }
+    }
   })
 })

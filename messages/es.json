@@ -1696,8 +1696,8 @@
           "title": "Instala el plugin gratuito",
           "body": "La base a la que se conecta todo. En tu escritorio: Plugins → Añadir nuevo, luego busca “WCPOS”.",
           "badge": "Gratis · GPL",
-          "requirements": "WordPress 5.6+ · WooCommerce 5.3+ · PHP 7.4+",
-          "requirementsWithVersion": "Última {version} · WordPress 5.6+ · WooCommerce 5.3+ · PHP 7.4+",
+          "requirements": "WordPress 5.6+ · WooCommerce 9.0+ · PHP 7.4+",
+          "requirementsWithVersion": "Última {version} · WordPress 5.6+ · WooCommerce 9.0+ · PHP 7.4+",
           "cardTitle": "WCPOS",
           "wordpressOrgCta": "WordPress.org"
         },
