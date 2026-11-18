@@ -133,6 +133,17 @@ describe('PricingTeaserSection', () => {
     expect(screen.getByText('Reports across days, registers & stores')).toBeInTheDocument()
   })
 
+  it('says Free checkout takes cash or card on your own terminal', async () => {
+    renderWithIntl(await PricingTeaserSection())
+
+    const freeColumn = screen.getByRole('heading', { name: 'Free' }).parentElement!
+    const freeList = within(freeColumn).getByRole('list')
+    expect(
+      within(freeList).getByText('Cash or card on your own terminal')
+    ).toBeInTheDocument()
+    expect(within(freeList).queryByText('Basic checkout')).not.toBeInTheDocument()
+  })
+
   it('leads the Pro list with more registers and multiple stores', async () => {
     renderWithIntl(await PricingTeaserSection())
 
