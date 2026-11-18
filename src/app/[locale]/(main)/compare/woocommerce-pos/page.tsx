@@ -5,15 +5,7 @@ import { Card } from '@/components/ui/card'
 import { Section } from '@/components/ui/section'
 import { SectionHeading } from '@/components/ui/section-heading'
 import { CtaSection } from '@/components/home/cta-section'
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table'
+import { GlanceTable } from '@/components/compare/glance-table'
 import { localeUrl, marketingMetadata } from '@/lib/seo'
 import type { Metadata } from 'next'
 import type { Locale } from '@/i18n/config'
@@ -127,42 +119,6 @@ function WoocommerceCompareJsonLd({
   )
 }
 
-function ComparisonTable({
-  wcposHeader,
-  woocommerceHeader,
-  rows,
-  caption,
-}: {
-  wcposHeader: string
-  woocommerceHeader: string
-  rows: { label: string; wcpos: string; woocommerce: string }[]
-  caption?: string
-}) {
-  return (
-    <Table>
-      {caption && <TableCaption>{caption}</TableCaption>}
-      <TableHeader>
-        <TableRow>
-          <td />
-          <TableHead scope="col">{wcposHeader}</TableHead>
-          <TableHead scope="col">{woocommerceHeader}</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {rows.map((row) => (
-          <TableRow key={row.label}>
-            <th scope="row" className="p-2 text-left align-middle font-medium">
-              {row.label}
-            </th>
-            <TableCell>{row.wcpos}</TableCell>
-            <TableCell>{row.woocommerce}</TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
-  )
-}
-
 export default async function WoocommerceComparePage({
   params,
 }: {
@@ -178,7 +134,7 @@ export default async function WoocommerceComparePage({
   const glanceRows = GLANCE_ROW_KEYS.map((key) => ({
     label: t(`woocommerce.glance.rows.${key}.label`),
     wcpos: t(`woocommerce.glance.rows.${key}.wcpos`),
-    woocommerce: t(`woocommerce.glance.rows.${key}.woocommerce`),
+    other: t(`woocommerce.glance.rows.${key}.woocommerce`),
   }))
 
   return (
@@ -216,9 +172,9 @@ export default async function WoocommerceComparePage({
       <Section tone="muted" spacing="compact" containerClassName="max-w-5xl">
         <SectionHeading align="left" title={t('woocommerce.glance.title')} />
         <div className="mt-6">
-          <ComparisonTable
+          <GlanceTable
             wcposHeader={t('woocommerce.glance.colWcpos')}
-            woocommerceHeader={t('woocommerce.glance.colWoocommerce')}
+            otherHeader={t('woocommerce.glance.colWoocommerce')}
             rows={glanceRows}
             caption={t('woocommerce.glance.caption')}
           />

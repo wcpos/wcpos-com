@@ -5,15 +5,7 @@ import { Card } from '@/components/ui/card'
 import { Section } from '@/components/ui/section'
 import { SectionHeading } from '@/components/ui/section-heading'
 import { CtaSection } from '@/components/home/cta-section'
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table'
+import { GlanceTable } from '@/components/compare/glance-table'
 import { localeUrl, marketingMetadata } from '@/lib/seo'
 import type { Metadata } from 'next'
 import type { Locale } from '@/i18n/config'
@@ -132,42 +124,6 @@ function FoosalesCompareJsonLd({
   )
 }
 
-function ComparisonTable({
-  wcposHeader,
-  foosalesHeader,
-  rows,
-  caption,
-}: {
-  wcposHeader: string
-  foosalesHeader: string
-  rows: { label: string; wcpos: string; foosales: string }[]
-  caption?: string
-}) {
-  return (
-    <Table>
-      {caption && <TableCaption>{caption}</TableCaption>}
-      <TableHeader>
-        <TableRow>
-          <td />
-          <TableHead scope="col">{wcposHeader}</TableHead>
-          <TableHead scope="col">{foosalesHeader}</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {rows.map((row) => (
-          <TableRow key={row.label}>
-            <th scope="row" className="p-2 text-left align-middle font-medium">
-              {row.label}
-            </th>
-            <TableCell>{row.wcpos}</TableCell>
-            <TableCell>{row.foosales}</TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
-  )
-}
-
 export default async function FoosalesComparePage({
   params,
 }: {
@@ -183,7 +139,7 @@ export default async function FoosalesComparePage({
   const glanceRows = GLANCE_ROW_KEYS.map((key) => ({
     label: t(`foosales.glance.rows.${key}.label`),
     wcpos: t(`foosales.glance.rows.${key}.wcpos`),
-    foosales: t(`foosales.glance.rows.${key}.foosales`),
+    other: t(`foosales.glance.rows.${key}.foosales`),
   }))
 
   return (
@@ -221,9 +177,9 @@ export default async function FoosalesComparePage({
       <Section tone="muted" spacing="compact" containerClassName="max-w-5xl">
         <SectionHeading align="left" title={t('foosales.glance.title')} />
         <div className="mt-6">
-          <ComparisonTable
+          <GlanceTable
             wcposHeader={t('foosales.glance.colWcpos')}
-            foosalesHeader={t('foosales.glance.colFoosales')}
+            otherHeader={t('foosales.glance.colFoosales')}
             rows={glanceRows}
             caption={t('foosales.glance.caption')}
           />

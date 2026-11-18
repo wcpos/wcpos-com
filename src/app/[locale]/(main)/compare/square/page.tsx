@@ -5,15 +5,7 @@ import { Card } from '@/components/ui/card'
 import { Section } from '@/components/ui/section'
 import { SectionHeading } from '@/components/ui/section-heading'
 import { CtaSection } from '@/components/home/cta-section'
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table'
+import { GlanceTable } from '@/components/compare/glance-table'
 import { localeUrl, marketingMetadata } from '@/lib/seo'
 import type { Metadata } from 'next'
 import type { Locale } from '@/i18n/config'
@@ -127,42 +119,6 @@ function SquareCompareJsonLd({
   )
 }
 
-function ComparisonTable({
-  wcposHeader,
-  squareHeader,
-  rows,
-  caption,
-}: {
-  wcposHeader: string
-  squareHeader: string
-  rows: { label: string; wcpos: string; square: string }[]
-  caption?: string
-}) {
-  return (
-    <Table>
-      {caption && <TableCaption>{caption}</TableCaption>}
-      <TableHeader>
-        <TableRow>
-          <td />
-          <TableHead scope="col">{wcposHeader}</TableHead>
-          <TableHead scope="col">{squareHeader}</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {rows.map((row) => (
-          <TableRow key={row.label}>
-            <th scope="row" className="p-2 text-left align-middle font-medium">
-              {row.label}
-            </th>
-            <TableCell>{row.wcpos}</TableCell>
-            <TableCell>{row.square}</TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
-  )
-}
-
 export default async function SquareComparePage({
   params,
 }: {
@@ -178,7 +134,7 @@ export default async function SquareComparePage({
   const glanceRows = GLANCE_ROW_KEYS.map((key) => ({
     label: t(`square.glance.rows.${key}.label`),
     wcpos: t(`square.glance.rows.${key}.wcpos`),
-    square: t(`square.glance.rows.${key}.square`),
+    other: t(`square.glance.rows.${key}.square`),
   }))
 
   return (
@@ -216,9 +172,9 @@ export default async function SquareComparePage({
       <Section tone="muted" spacing="compact" containerClassName="max-w-5xl">
         <SectionHeading align="left" title={t('square.glance.title')} />
         <div className="mt-6">
-          <ComparisonTable
+          <GlanceTable
             wcposHeader={t('square.glance.colWcpos')}
-            squareHeader={t('square.glance.colSquare')}
+            otherHeader={t('square.glance.colSquare')}
             rows={glanceRows}
             caption={t('square.glance.caption')}
           />
