@@ -2496,6 +2496,26 @@
           "answer": "Rien ne se désactive. La version Pro que vous possédez continue de fonctionner aussi longtemps que vous le souhaitez — votre caisse, vos données, chaque fonctionnalité. Vous cessez simplement de recevoir les nouvelles mises à jour et le support prioritaire, jusqu'à ce que vous choisissiez de renouveler. C'est délibéré : les renouvellements doivent ainsi se mériter par des mises à jour qui valent la dépense, et cela garantit que votre point de vente ne pourra jamais être désactivé à distance."
         }
       },
+      "sources": {
+        "title": "Sources",
+        "intro": "Chaque fait sur Square présenté sur cette page provient des propres pages de Square et de la documentation de WooCommerce sur l'extension Square for WooCommerce, consultées le 2026-10-06 et vérifiées à nouveau le 2026-11-18 :",
+        "items": {
+          "pricingAnnouncement": "Square Free à $0 par mois et par établissement",
+          "pricing": "Formules Square et taux appliqué aux cartes avec Square Free",
+          "fees": "Frais des paiements par carte en personne : sans contact, par insertion ou par glissement",
+          "offline": "Paiements hors ligne : la transmission sous 72 heures, qui est responsable et ce qui n'est pas disponible hors ligne",
+          "tapToPayIphone": "Tap to Pay sur iPhone",
+          "tapToPayAndroid": "Tap to Pay sur Android avec Square Point of Sale",
+          "posApp": "Square Point of Sale sur les appareils iOS et Android",
+          "register": "Square Register, avec Square Point of Sale intégré",
+          "countries": "Les huit pays où Square accepte les paiements par carte",
+          "wooFaq": "Les commandes passées dans le POS de Square ne sont pas synchronisées avec WooCommerce ; les données de produits et de stocks le sont",
+          "wooSetup": "Un seul établissement Square relié à la fois",
+          "wooPayments": "Pays pris en charge et correspondance des devises",
+          "wooVariations": "Produits variables : au maximum 250 variations et 6 attributs",
+          "wooSyncInterval": "Intervalle de synchronisation des produits d'une heure par défaut"
+        }
+      },
       "footer": {
         "factsDated": "Faits concernant Square vérifiés le 2026-10-06 à partir des propres pages de Square (sa page des frais, son annonce de tarifs et ses articles d'aide sur les paiements hors ligne, Tap to Pay, les appareils et la disponibilité internationale) ainsi que de la documentation de WooCommerce sur l'extension Square for WooCommerce ; les faits concernant WCPOS sont tirés de wcpos.com et docs.wcpos.com et portent sur WCPOS 2.0, publié le 2026-11-09, qui nécessite que l'application et le plugin soient tous deux en version 2.0. Nous les revérifions chaque trimestre.",
         "corrections": "Vous repérez une erreur ? Écrivez à support@wcpos.com — nous corrigeons vite et consignons chaque modification."

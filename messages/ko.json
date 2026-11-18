@@ -2496,6 +2496,26 @@
           "answer": "아무것도 꺼지지 않습니다. 지금 쓰시는 Pro 버전은 원하는 만큼 계속 작동합니다. 계산대도, 데이터도, 모든 기능도 그대로입니다. 갱신을 선택하기 전까지 새 업데이트와 우선 지원만 중단됩니다. 이는 의도된 설계입니다. 갱신은 돈 낼 가치가 있는 업데이트로 얻어내야 하고, 여러분의 POS가 원격으로 비활성화되는 일은 결코 없다는 보장이기도 합니다."
         }
       },
+      "sources": {
+        "title": "출처",
+        "intro": "이 페이지의 모든 Square 정보는 2026-10-06에 확인하고 2026-11-18에 다시 확인한 Square 자체 페이지와 Square for WooCommerce 확장 프로그램의 WooCommerce 문서를 출처로 합니다:",
+        "items": {
+          "pricingAnnouncement": "위치당 월 $0인 Square Free",
+          "pricing": "Square 요금제와 Square Free의 카드 수수료율",
+          "fees": "대면 카드 결제 수수료: 탭, 삽입 또는 긁기",
+          "offline": "오프라인 결제: 72시간 이내 업로드, 책임 주체, 오프라인에서 사용할 수 없는 기능",
+          "tapToPayIphone": "iPhone의 Tap to Pay",
+          "tapToPayAndroid": "Square Point of Sale을 사용하는 Android의 Tap to Pay",
+          "posApp": "iOS 및 Android 기기의 Square Point of Sale",
+          "register": "Square Point of Sale이 내장된 Square Register",
+          "countries": "Square가 카드 결제를 받는 8개국",
+          "wooFaq": "Square의 POS에서 생성한 주문은 WooCommerce에 동기화되지 않으며, 상품 및 재고 데이터는 동기화됨",
+          "wooSetup": "한 번에 Square 위치 한 곳만 연결",
+          "wooPayments": "지원 국가와 통화 일치",
+          "wooVariations": "옵션 상품: 최대 250개 옵션과 6개 속성",
+          "wooSyncInterval": "기본 상품 동기화 간격 1시간"
+        }
+      },
       "footer": {
         "factsDated": "Square 관련 사실은 2026-10-06에 Square 자체 페이지(수수료 페이지, 가격 발표, 오프라인 결제, Tap to Pay, 기기 및 국제 서비스 제공에 관한 도움말)와 Square for WooCommerce 확장 프로그램의 WooCommerce 문서에서 확인했습니다. WCPOS 관련 사실은 wcpos.com과 docs.wcpos.com을 참조했습니다. WCPOS 정보는 2026-11-09에 출시된 WCPOS 2.0 기준이며, 앱과 플러그인 모두 버전 2.0이어야 합니다. 분기마다 다시 확인합니다.",
         "corrections": "오류를 발견하셨나요? support@wcpos.com으로 알려 주세요. 빠르게 수정하고 모든 변경을 기록합니다."

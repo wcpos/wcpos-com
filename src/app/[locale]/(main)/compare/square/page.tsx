@@ -57,6 +57,27 @@ const FAQ_KEYS = [
   'expiry',
 ] as const
 
+/**
+ * The Square and WooCommerce pages every Square fact on this page was read
+ * from, checked again on 2026-11-18. The URLs are not translated.
+ */
+const SOURCES = [
+  { key: 'pricingAnnouncement', url: 'https://squareup.com/us/en/press/unified-pricing-and-packaging' },
+  { key: 'pricing', url: 'https://squareup.com/us/en/point-of-sale/software/pricing' },
+  { key: 'fees', url: 'https://squareup.com/us/en/payments/our-fees' },
+  { key: 'offline', url: 'https://squareup.com/help/us/en/article/7777-process-card-payments-with-offline-mode' },
+  { key: 'tapToPayIphone', url: 'https://squareup.com/help/us/en/article/7786-get-started-with-tap-to-pay-on-iphone' },
+  { key: 'tapToPayAndroid', url: 'https://squareup.com/help/us/en/article/7960-get-started-with-tap-to-pay-on-android' },
+  { key: 'posApp', url: 'https://squareup.com/help/us/en/article/8458-use-modes-with-square-point-of-sale' },
+  { key: 'register', url: 'https://squareup.com/us/en/hardware/register/specs' },
+  { key: 'countries', url: 'https://squareup.com/help/us/en/article/5085-accepted-cards' },
+  { key: 'wooFaq', url: 'https://woocommerce.com/document/woocommerce-square/faq/' },
+  { key: 'wooSetup', url: 'https://woocommerce.com/document/woocommerce-square/setup-and-configuration-of-the-woocommerce-square/' },
+  { key: 'wooPayments', url: 'https://woocommerce.com/document/woocommerce-square/payment-settings/' },
+  { key: 'wooVariations', url: 'https://woocommerce.com/document/woocommerce-square/sync-settings/sync-product-data-from-square-to-woocommerce/' },
+  { key: 'wooSyncInterval', url: 'https://woocommerce.com/document/woocommerce-square/customizing-woocommerce-square-extension/' },
+] as const
+
 export async function generateMetadata({
   params,
 }: {
@@ -307,6 +328,21 @@ export default async function SquareComparePage({
             </div>
           ))}
         </div>
+      </Section>
+
+      <Section tone="default" spacing="compact" containerClassName="max-w-3xl">
+        <SectionHeading align="left" title={t('square.sources.title')} />
+        <p className="mt-4 text-muted-foreground">{t('square.sources.intro')}</p>
+        <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
+          {SOURCES.map(({ key, url }) => (
+            <li key={key}>
+              {t(`square.sources.items.${key}`)}:{' '}
+              <a href={url} rel="nofollow noreferrer" className="break-all font-medium text-foreground underline underline-offset-4">
+                {url}
+              </a>
+            </li>
+          ))}
+        </ul>
       </Section>
 
       <CtaSection />

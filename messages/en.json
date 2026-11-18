@@ -2496,6 +2496,26 @@
           "answer": "Nothing switches off. The Pro version you have keeps working for as long as you want — your register, your data, every feature. You stop receiving new updates and priority support until you choose to renew. This is deliberate: it means renewals have to be earned with updates worth paying for, and it guarantees your point of sale can never be remotely disabled."
         }
       },
+      "sources": {
+        "title": "Sources",
+        "intro": "Every Square fact on this page comes from Square's own pages and WooCommerce's documentation for the Square for WooCommerce extension, read on 2026-10-06 and checked again on 2026-11-18:",
+        "items": {
+          "pricingAnnouncement": "Square Free at $0 a month per location",
+          "pricing": "Square plans, and the card rate on Square Free",
+          "fees": "In-person card fees: tap, dip, or swipe",
+          "offline": "Offline payments: the 72-hour upload, who is responsible, and what is not available offline",
+          "tapToPayIphone": "Tap to Pay on iPhone",
+          "tapToPayAndroid": "Tap to Pay on Android with Square Point of Sale",
+          "posApp": "Square Point of Sale on iOS and Android devices",
+          "register": "Square Register, with Square Point of Sale built in",
+          "countries": "The eight countries where Square accepts card payments",
+          "wooFaq": "Orders placed in Square's POS are not synced to WooCommerce; product and inventory data sync",
+          "wooSetup": "One Square location linked at a time",
+          "wooPayments": "Supported countries, and currency matching",
+          "wooVariations": "Variable products: at most 250 variations and 6 attributes",
+          "wooSyncInterval": "Default product sync interval of one hour"
+        }
+      },
       "footer": {
         "factsDated": "Facts about Square verified 2026-10-06 against Square's own pages (its fees page, its pricing announcement, and its help articles on offline payments, Tap to Pay, devices, and international availability) and WooCommerce's documentation for the Square for WooCommerce extension; WCPOS facts are from wcpos.com and docs.wcpos.com and are for WCPOS 2.0, released 2026-11-09, which needs the app and the plugin both on version 2.0. We re-verify every quarter.",
         "corrections": "Spot an error? Email support@wcpos.com — we correct fast and log every change."

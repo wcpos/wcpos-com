@@ -2496,6 +2496,26 @@
           "answer": "什么都不会被关掉。你手上的 Pro 版本想用多久就用多久——你的收银台、你的数据、每一项功能都在。到期后你只是不再收到新更新和优先支持，直到你决定续期。这是有意为之：续费必须靠值得付费的更新来赢得，同时也保证你的销售点永远不会被远程停用。"
         }
       },
+      "sources": {
+        "title": "来源",
+        "intro": "本页有关 Square 的每项信息均来自 Square 自己的页面以及 WooCommerce 的 Square for WooCommerce 扩展文档，查阅日期为 2026-10-06，并于 2026-11-18 再次核实：",
+        "items": {
+          "pricingAnnouncement": "Square Free：每个地点每月 $0",
+          "pricing": "Square 方案，以及 Square Free 的刷卡费率",
+          "fees": "线下刷卡费用：轻触、插卡或刷卡",
+          "offline": "离线支付：72 小时内上传、责任归属，以及离线时不可用的功能",
+          "tapToPayIphone": "iPhone 上的 Tap to Pay",
+          "tapToPayAndroid": "通过 Square Point of Sale 在 Android 上使用 Tap to Pay",
+          "posApp": "iOS 和 Android 设备上的 Square Point of Sale",
+          "register": "内置 Square Point of Sale 的 Square Register",
+          "countries": "Square 接受刷卡支付的 8 个国家",
+          "wooFaq": "在 Square 的 POS 中创建的订单不会同步到 WooCommerce；商品和库存数据会同步",
+          "wooSetup": "一次只能关联一个 Square 地点",
+          "wooPayments": "支持的国家及货币匹配",
+          "wooVariations": "可变商品：最多 250 个变体和 6 个属性",
+          "wooSyncInterval": "默认商品同步间隔为一小时"
+        }
+      },
       "footer": {
         "factsDated": "Square 相关事实于 2026-10-06 根据 Square 自己的页面（费率页面、价格公告，以及关于离线支付、Tap to Pay、设备和国际可用性的帮助文章）和 WooCommerce 的 Square for WooCommerce 扩展文档核实；WCPOS 相关事实来自 wcpos.com 和 docs.wcpos.com。WCPOS 信息适用于 2026-11-09 发布的 WCPOS 2.0，应用和插件均需为 2.0 版本。我们每季度重新核实。",
         "corrections": "发现错误？发邮件到 support@wcpos.com——我们会尽快更正并记录每次修改。"
