@@ -34,6 +34,19 @@ function getPluginLink() {
 }
 
 describe('DownloadsHero', () => {
+  it('renders the tagline after the level-1 heading', () => {
+    render(<DownloadsHero desktopVersion="2.0.0" />)
+    const heading = screen.getByRole('heading', {
+      level: 1,
+      name: 'downloads.hero.title',
+    })
+    const tagline = screen.getByText('downloads.hero.tagline')
+    expect(
+      heading.compareDocumentPosition(tagline) &
+        Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy()
+  })
+
   it('renders the plugin notice link exactly once', () => {
     render(<DownloadsHero desktopVersion="2.0.0" />)
     expect(

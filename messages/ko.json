@@ -1630,7 +1630,8 @@
     },
     "hero": {
       "eyebrow": "다운로드",
-      "title": "하나의 계산대, 모든 기기에서.",
+      "title": "WooCommerce용 POS 다운로드",
+      "tagline": "하나의 계산대, 모든 기기에서.",
       "platformChooserLabel": "플랫폼 선택",
       "versionMeta": "버전 {version} · {platform}",
       "detected": "감지됨",

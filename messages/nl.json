@@ -1630,7 +1630,8 @@
     },
     "hero": {
       "eyebrow": "Downloads",
-      "title": "Eén kassa, elk apparaat.",
+      "title": "Kassasysteem voor WooCommerce downloaden",
+      "tagline": "Eén kassa, elk apparaat.",
       "platformChooserLabel": "Kies je platform",
       "versionMeta": "Versie {version} · {platform}",
       "detected": "Gedetecteerd",

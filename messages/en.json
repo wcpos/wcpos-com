@@ -1630,7 +1630,8 @@
     },
     "hero": {
       "eyebrow": "Downloads",
-      "title": "One till, every device.",
+      "title": "Download WooCommerce POS",
+      "tagline": "One till, every device.",
       "platformChooserLabel": "Choose your platform",
       "versionMeta": "Version {version} · {platform}",
       "detected": "Detected",

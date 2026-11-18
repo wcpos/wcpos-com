@@ -1630,7 +1630,8 @@
     },
     "hero": {
       "eyebrow": "下载",
-      "title": "一个收银台，适配所有设备。",
+      "title": "下载 WooCommerce 销售点系统",
+      "tagline": "一个收银台，适配所有设备。",
       "platformChooserLabel": "选择您的平台",
       "versionMeta": "版本 {version} · {platform}",
       "detected": "已检测到",
