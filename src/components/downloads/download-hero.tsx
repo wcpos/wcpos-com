@@ -103,7 +103,25 @@ export function DownloadsHero({
             {isDetected && <Badge variant="brand-tint">{t('detected')}</Badge>}
           </div>
           <p className="mt-1 text-sm text-muted-foreground">{meta}</p>
-          <Button asChild variant="brand" size="xl" className="mt-6 w-full">
+          <p className="mt-4 text-sm text-muted-foreground">
+            {t.rich('pluginNotice', {
+              plugin: (chunks) => (
+                <TextLink
+                  href="https://wordpress.org/plugins/woocommerce-pos/"
+                  onClick={() =>
+                    trackClientEvent('download_clicked', {
+                      plugin: 'free',
+                      source: 'wordpress_org',
+                      page: '/downloads',
+                    })
+                  }
+                >
+                  {chunks}
+                </TextLink>
+              ),
+            })}
+          </p>
+          <Button asChild variant="brand" size="xl" className="mt-4 w-full">
             <a href={info.href}>
               <PrimaryIcon aria-hidden="true" />
               {platformT(`${selected}.action`)}
@@ -147,25 +165,6 @@ export function DownloadsHero({
             ))}
           </ul>
         </noscript>
-
-        <p className="mt-6 text-sm text-muted-foreground">
-          {t.rich('pluginNotice', {
-            plugin: (chunks) => (
-              <TextLink
-                href="https://wordpress.org/plugins/woocommerce-pos/"
-                onClick={() =>
-                  trackClientEvent('download_clicked', {
-                    plugin: 'free',
-                    source: 'wordpress_org',
-                    page: '/downloads',
-                  })
-                }
-              >
-                {chunks}
-              </TextLink>
-            ),
-          })}
-        </p>
       </div>
     </Section>
   )
