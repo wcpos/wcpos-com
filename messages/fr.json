@@ -431,7 +431,8 @@
       },
       "terminal": {
         "title": "Intégration de terminal de paiement",
-        "description": "Connectez des lecteurs de cartes et des terminaux de paiement pour des paiements en personne rapides et précis."
+        "description": "Acceptez les paiements par carte en personne sur Stripe Terminal, Square Terminal, SumUp, Mollie, PayPal Reader et plus encore.",
+        "link": "Voir toutes les extensions de terminal"
       },
       "stockPrice": {
         "title": "Modification du stock et des prix",

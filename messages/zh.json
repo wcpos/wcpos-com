@@ -431,7 +431,8 @@
       },
       "terminal": {
         "title": "支付终端集成",
-        "description": "连接读卡器和支付终端，实现快速、准确的当面收款。"
+        "description": "通过 Stripe Terminal、Square Terminal、SumUp、Mollie、PayPal Reader 等接受当面刷卡收款。",
+        "link": "查看全部终端扩展"
       },
       "stockPrice": {
         "title": "库存与价格编辑",

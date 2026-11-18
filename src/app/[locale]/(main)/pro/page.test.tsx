@@ -30,6 +30,7 @@ vi.mock('next-intl/server', () => ({
       'features.stores.description': 'Add registers and run several stores.',
       'features.terminal.title': 'Payment terminals',
       'features.terminal.description': 'Take card payments.',
+      'features.terminal.link': 'See all terminal extensions',
       'features.stockPrice.title': 'Stock and price edits',
       'features.stockPrice.description': 'Edit stock and prices.',
       'features.orders.title': 'Orders',
@@ -166,6 +167,20 @@ describe('ProPage', () => {
     expect(
       screen.getByRole('link', { name: 'Compare WooCommerce POS systems' })
     ).toHaveAttribute('href', '/compare')
+  })
+
+  it('links the terminal feature, and only it, to /extensions', async () => {
+    render(await ProPage({ params: Promise.resolve({ locale: 'en' }) }))
+
+    const links = screen.getAllByRole('link', {
+      name: 'See all terminal extensions',
+    })
+    expect(links).toHaveLength(1)
+    expect(links[0]).toHaveAttribute('href', '/extensions')
+    const terminalBlock = screen
+      .getByRole('heading', { level: 3, name: 'Payment terminals' })
+      .closest('div')
+    expect(terminalBlock).toContainElement(links[0])
   })
 
   it('renders hero and features statically with only the buy box suspending', async () => {

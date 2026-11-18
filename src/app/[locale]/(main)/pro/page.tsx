@@ -152,6 +152,9 @@ export default async function ProPage({
     Icon,
     title: t(`features.${key}.title`),
     description: t(`features.${key}.description`),
+    ...(key === 'terminal' && {
+      link: { label: t('features.terminal.link'), href: '/extensions' },
+    }),
   }))
 
   return (

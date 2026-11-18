@@ -431,7 +431,8 @@
       },
       "terminal": {
         "title": "Integração de Terminal de Pagamento",
-        "description": "Ligue leitores de cartões e terminais de pagamento para pagamentos presenciais rápidos e precisos."
+        "description": "Aceite pagamentos presenciais com cartão em Stripe Terminal, Square Terminal, SumUp, Mollie, PayPal Reader e muito mais.",
+        "link": "Ver todas as extensões de terminal"
       },
       "stockPrice": {
         "title": "Edição de Stock e Preços",
