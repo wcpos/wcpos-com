@@ -1881,6 +1881,7 @@
         "label": "Stel een supportvraag",
         "placeholder": "bijv. bonprinter instellen",
         "verifying": "Even een korte veiligheidscontrole…",
+        "interactive": "Vink het vakje hieronder aan om je vraag te stellen.",
         "followUpPlaceholder": "Stel een vervolgvraag…",
         "submit": "Vraag stellen"
       },

@@ -272,7 +272,7 @@ export function SupportChat() {
 
       {verifying && (
         <p role="status" className="mt-2 text-center text-xs text-muted-foreground">
-          {t('form.verifying')}
+          {t(turnstile.interacting ? 'form.interactive' : 'form.verifying')}
         </p>
       )}
 

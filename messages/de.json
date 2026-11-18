@@ -1881,6 +1881,7 @@
         "label": "Supportfrage stellen",
         "placeholder": "z. B. Bondrucker einrichten",
         "verifying": "Kurze Sicherheitsprüfung läuft…",
+        "interactive": "Setze unten das Häkchen, um deine Frage zu stellen.",
         "followUpPlaceholder": "Eine Nachfrage stellen…",
         "submit": "Fragen"
       },

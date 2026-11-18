@@ -19,7 +19,25 @@ const turnstileMock = vi.hoisted(() => ({
   onSuccess: null as ((t: string) => void) | null,
   onError: null as (() => void) | null,
   onUnsupported: null as (() => void) | null,
+  onBeforeInteractive: null as (() => void) | null,
+  onAfterInteractive: null as (() => void) | null,
 }))
+
+// CJK and Hangul characters render about twice as wide as Latin ones.
+const width = (text: string) =>
+  [...text].reduce((sum, ch) => {
+    const c = ch.codePointAt(0)!
+    const wide =
+      (c >= 0x1100 && c <= 0x11ff) ||
+      (c >= 0x2e80 && c <= 0x9fff) ||
+      (c >= 0xac00 && c <= 0xd7af) ||
+      (c >= 0xff00 && c <= 0xffef)
+    return sum + (wide ? 2 : 1)
+  }, 0)
+
+const readFormMessages = (locale: Locale) =>
+  JSON.parse(fs.readFileSync(path.resolve(process.cwd(), 'messages', `${locale}.json`), 'utf8'))
+    .support.chat.form
 
 // Pin a widget for every test host: the hook resolves its site key from
 // window.location (jsdom = localhost = no widget otherwise); host mapping
@@ -35,16 +53,22 @@ vi.mock('@marsidev/react-turnstile', () => ({
     onSuccess,
     onError,
     onUnsupported,
+    onBeforeInteractive,
+    onAfterInteractive,
     ref,
   }: {
     onSuccess: (t: string) => void
     onError: () => void
     onUnsupported: () => void
+    onBeforeInteractive: () => void
+    onAfterInteractive: () => void
     ref?: Ref<{ reset: () => void }>
   }) => {
     turnstileMock.onSuccess = onSuccess
     turnstileMock.onError = onError
     turnstileMock.onUnsupported = onUnsupported
+    turnstileMock.onBeforeInteractive = onBeforeInteractive
+    turnstileMock.onAfterInteractive = onAfterInteractive
     useEffect(() => {
       if (turnstileMock.auto) onSuccess('test-token-1')
     }, [onSuccess])
@@ -82,6 +106,8 @@ beforeEach(() => {
   turnstileMock.onSuccess = null
   turnstileMock.onError = null
   turnstileMock.onUnsupported = null
+  turnstileMock.onBeforeInteractive = null
+  turnstileMock.onAfterInteractive = null
   vi.stubGlobal(
     'fetch',
     vi
@@ -359,22 +385,34 @@ describe('SupportChat', () => {
     expect(screen.queryByText('Running a quick security check…')).not.toBeInTheDocument()
   })
 
-  it('keeps every locale placeholder short enough for a phone', () => {
-    // CJK and Hangul characters render about twice as wide as Latin ones.
-    const width = (text: string) =>
-      [...text].reduce((sum, ch) => {
-        const c = ch.codePointAt(0)!
-        const wide =
-          (c >= 0x1100 && c <= 0x11ff) ||
-          (c >= 0x2e80 && c <= 0x9fff) ||
-          (c >= 0xac00 && c <= 0xd7af) ||
-          (c >= 0xff00 && c <= 0xffef)
-        return sum + (wide ? 2 : 1)
-      }, 0)
+  it('asks the visitor to tick the box during an interactive challenge', () => {
+    const { verifying, interactive } = messages.support.chat.form
+    turnstileMock.auto = false
+    renderWithIntl(<SupportChat />)
+    expect(screen.getByRole('status')).toHaveTextContent(verifying)
+
+    act(() => turnstileMock.onBeforeInteractive?.())
+    expect(screen.getByRole('status')).toHaveTextContent(interactive)
+    expect(screen.queryByText(verifying)).not.toBeInTheDocument()
+
+    act(() => turnstileMock.onAfterInteractive?.())
+    expect(screen.getByRole('status')).toHaveTextContent(verifying)
+
+    act(() => turnstileMock.onSuccess?.('t'))
+    expect(screen.queryByRole('status')).not.toBeInTheDocument()
+  })
+
+  it('keeps every locale interactive-challenge hint to one short line', () => {
     for (const locale of locales) {
-      const file = path.resolve(process.cwd(), 'messages', `${locale}.json`)
-      const placeholder: string = JSON.parse(fs.readFileSync(file, 'utf8')).support.chat.form
-        .placeholder
+      const interactive: string = readFormMessages(locale).interactive
+      expect(interactive, locale).toBeTruthy()
+      expect(width(interactive), `${locale}: ${interactive}`).toBeLessThanOrEqual(60)
+    }
+  })
+
+  it('keeps every locale placeholder short enough for a phone', () => {
+    for (const locale of locales) {
+      const placeholder: string = readFormMessages(locale).placeholder
       // 30 keeps the placeholder inside the input on a 390 px phone.
       expect(width(placeholder), `${locale}: ${placeholder}`).toBeLessThanOrEqual(30)
     }

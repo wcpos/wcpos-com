@@ -1881,6 +1881,7 @@
         "label": "Haz una pregunta de soporte",
         "placeholder": "p. ej., impresora de recibos",
         "verifying": "Comprobación de seguridad en curso…",
+        "interactive": "Marca la casilla de abajo para hacer tu pregunta.",
         "followUpPlaceholder": "Haz una pregunta de seguimiento…",
         "submit": "Preguntar"
       },
