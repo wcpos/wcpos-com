@@ -29,6 +29,8 @@ const KEYS = {
   'home.meta.description': (m: Messages) => m.home.meta.description as unknown,
   'downloads.meta.description': (m: Messages) =>
     m.downloads.meta.description as unknown,
+  'pro.metadata.description': (m: Messages) =>
+    m.pro.metadata.description as unknown,
 } as const
 
 const CASES = LOCALES.flatMap(({ locale, messages, limit }) =>
@@ -58,8 +60,18 @@ describe('home and /downloads meta descriptions', () => {
     }
   )
 
-  it.each(Object.keys(KEYS))('en %s says beta', (key) => {
-    const description = KEYS[key as keyof typeof KEYS](en) as string
+  it.each(LOCALES)(
+    '$locale pro.metadata.description names WooCommerce',
+    ({ messages }) => {
+      expect(messages.pro.metadata.description).toContain('WooCommerce')
+    }
+  )
+
+  it.each([
+    'home.meta.description',
+    'downloads.meta.description',
+  ] as const)('en %s says beta', (key) => {
+    const description = KEYS[key](en) as string
     expect(description).toContain('beta')
   })
 })
