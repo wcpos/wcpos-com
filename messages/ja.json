@@ -2497,6 +2497,26 @@
           "answer": "何も止まりません。手元のPro版は望む限り動き続けます。レジも、データも、すべての機能もそのままです。更新を選ぶまで、新しいアップデートと優先サポートが止まるだけです。これは意図的な設計です。更新料は支払う価値のあるアップデートによって勝ち取られるべきものですし、あなたのPOSが遠隔で無効化されることは決してないという保証にもなります。"
         }
       },
+      "sources": {
+        "title": "出典",
+        "intro": "このページのSquareに関する情報はすべて、2026-10-06に確認し、2026-11-18に再確認したSquare自身のページとSquare for WooCommerce拡張機能のWooCommerceドキュメントに基づきます。",
+        "items": {
+          "pricingAnnouncement": "拠点ごとに月額$0のSquare Free",
+          "pricing": "Squareのプランと、Square Freeのカード決済手数料率",
+          "fees": "対面でのカード決済手数料：タッチ、差し込み、スワイプ",
+          "offline": "オフライン決済：72時間以内のアップロード、責任の所在、オフラインで利用できない機能",
+          "tapToPayIphone": "iPhoneでのTap to Pay",
+          "tapToPayAndroid": "Square Point of SaleによるAndroidでのTap to Pay",
+          "posApp": "iOSとAndroidデバイス上のSquare Point of Sale",
+          "register": "Square Point of Saleを内蔵したSquare Register",
+          "countries": "Squareがカード決済を受け付ける8か国",
+          "wooFaq": "SquareのPOSで作成された注文はWooCommerceに同期されず、商品と在庫のデータは同期される",
+          "wooSetup": "一度に連携できるSquareの拠点は一つだけ",
+          "wooPayments": "対応国と通貨の一致",
+          "wooVariations": "バリエーション商品：最大250バリエーション、6属性",
+          "wooSyncInterval": "既定の商品同期間隔は1時間"
+        }
+      },
       "footer": {
         "factsDated": "Squareに関する事実は2026-10-06にSquare自身のページ（手数料ページ、料金変更の発表、オフライン決済、Tap to Pay、デバイス、国際的な提供状況に関するヘルプ記事）およびSquare for WooCommerce拡張機能のWooCommerceドキュメントで確認しました。WCPOSに関する事実はwcpos.comとdocs.wcpos.comに基づき、2026-11-09にリリースされたWCPOS 2.0についてのものです。アプリとプラグインの両方がバージョン2.0である必要があります。四半期ごとに再確認します。",
         "corrections": "誤りを見つけましたか？ support@wcpos.com までご連絡ください。迅速に修正し、すべての変更を記録します。"

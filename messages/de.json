@@ -2497,6 +2497,26 @@
           "answer": "Nichts schaltet sich ab. Die Pro-Version, die Sie haben, funktioniert weiter, solange Sie möchten — Ihre Kasse, Ihre Daten, jede Funktion. Sie erhalten lediglich keine neuen Updates und keinen vorrangigen Support mehr, bis Sie sich für eine Verlängerung entscheiden. Das ist Absicht: Verlängerungen müssen so mit Updates verdient werden, die den Preis wert sind — und es garantiert, dass Ihre Kasse niemals aus der Ferne abgeschaltet werden kann."
         }
       },
+      "sources": {
+        "title": "Quellen",
+        "intro": "Alle Square-Fakten auf dieser Seite stammen von Square-eigenen Seiten und aus der WooCommerce-Dokumentation zur Erweiterung Square for WooCommerce, abgerufen am 2026-10-06 und erneut geprüft am 2026-11-18:",
+        "items": {
+          "pricingAnnouncement": "Square Free für $0 pro Monat und Standort",
+          "pricing": "Square-Tarife und der Kartensatz bei Square Free",
+          "fees": "Gebühren für Kartenzahlungen vor Ort: kontaktlos, per Chip oder durch Durchziehen",
+          "offline": "Zahlungen ohne Internetverbindung: das Hochladen innerhalb von 72 Stunden, wer die Verantwortung trägt und was ohne Internetverbindung nicht verfügbar ist",
+          "tapToPayIphone": "Tap to Pay auf iPhone",
+          "tapToPayAndroid": "Tap to Pay auf Android mit Square Point of Sale",
+          "posApp": "Square Point of Sale auf iOS- und Android-Geräten",
+          "register": "Square Register mit eingebautem Square Point of Sale",
+          "countries": "Die acht Länder, in denen Square Kartenzahlungen akzeptiert",
+          "wooFaq": "Bestellungen aus dem POS von Square werden nicht mit WooCommerce synchronisiert; Produkt- und Bestandsdaten schon",
+          "wooSetup": "Es kann jeweils nur ein Square-Standort verknüpft werden",
+          "wooPayments": "Unterstützte Länder und übereinstimmende Währung",
+          "wooVariations": "Variable Produkte: höchstens 250 Varianten und 6 Attribute",
+          "wooSyncInterval": "Standardintervall für die Produktsynchronisierung von einer Stunde"
+        }
+      },
       "footer": {
         "factsDated": "Fakten zu Square am 2026-10-06 anhand Square-eigener Seiten überprüft (Gebührenseite, Preisankündigung und Hilfeartikel zu Offline-Zahlungen, Tap to Pay, Geräten und internationaler Verfügbarkeit) sowie anhand der WooCommerce-Dokumentation zur Erweiterung Square for WooCommerce; WCPOS-Fakten stammen von wcpos.com und docs.wcpos.com und beziehen sich auf WCPOS 2.0, veröffentlicht am 2026-11-09, wofür sowohl die App als auch das Plugin auf Version 2.0 sein müssen. Wir prüfen sie jedes Quartal erneut.",
         "corrections": "Einen Fehler entdeckt? Schreiben Sie an support@wcpos.com — wir korrigieren schnell und protokollieren jede Änderung."

@@ -2497,6 +2497,26 @@
           "answer": "Er wordt niets uitgeschakeld. De Pro-versie die je hebt blijft werken zolang je wilt — je kassa, je data, elke functie. Je ontvangt alleen geen nieuwe updates en prioriteitsondersteuning meer totdat je besluit te verlengen. Dat is een bewuste keuze: het betekent dat verlengingen verdiend moeten worden met updates die het geld waard zijn, en het garandeert dat je kassa nooit op afstand kan worden uitgeschakeld."
         }
       },
+      "sources": {
+        "title": "Bronnen",
+        "intro": "Elk feit over Square op deze pagina komt van de eigen pagina's van Square en de WooCommerce-documentatie voor de extensie Square for WooCommerce, geraadpleegd op 2026-10-06 en opnieuw gecontroleerd op 2026-11-18:",
+        "items": {
+          "pricingAnnouncement": "Square Free voor $0 per maand per locatie",
+          "pricing": "Abonnementen van Square en het kaarttarief bij Square Free",
+          "fees": "Kosten voor fysieke kaartbetalingen: contactloos, insteken of doorhalen",
+          "offline": "Offline betalingen: het uploaden binnen 72 uur, wie verantwoordelijk is en wat offline niet beschikbaar is",
+          "tapToPayIphone": "Tap to Pay op iPhone",
+          "tapToPayAndroid": "Tap to Pay op Android met Square Point of Sale",
+          "posApp": "Square Point of Sale op iOS- en Android-apparaten",
+          "register": "Square Register, met ingebouwde Square Point of Sale",
+          "countries": "De acht landen waar Square kaartbetalingen accepteert",
+          "wooFaq": "Bestellingen die in de POS van Square zijn geplaatst, worden niet met WooCommerce gesynchroniseerd; product- en voorraadgegevens wel",
+          "wooSetup": "Telkens maar één Square-locatie gekoppeld",
+          "wooPayments": "Ondersteunde landen en overeenkomende valuta",
+          "wooVariations": "Variabele producten: maximaal 250 variaties en 6 kenmerken",
+          "wooSyncInterval": "Standaardinterval van één uur voor productsynchronisatie"
+        }
+      },
       "footer": {
         "factsDated": "Feiten over Square op 2026-10-06 gecontroleerd aan de hand van de eigen pagina's van Square (de kostenpagina, de prijsaankondiging en helpartikelen over offline betalingen, Tap to Pay, apparaten en internationale beschikbaarheid) en de WooCommerce-documentatie voor de extensie Square for WooCommerce; WCPOS-feiten komen van wcpos.com en docs.wcpos.com en hebben betrekking op WCPOS 2.0, uitgebracht op 2026-11-09, waarvoor zowel de app als de plugin op versie 2.0 moeten staan. We controleren ze elk kwartaal opnieuw.",
         "corrections": "Een fout gezien? Mail naar support@wcpos.com — we corrigeren snel en leggen elke wijziging vast."

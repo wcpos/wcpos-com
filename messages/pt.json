@@ -2497,6 +2497,26 @@
           "answer": "Nada se desliga. A versão Pro que tem continua a funcionar enquanto quiser — a caixa, os dados, todas as funcionalidades. Apenas deixa de receber novas atualizações e suporte prioritário até decidir renovar. Isto é deliberado: significa que as renovações têm de ser merecidas com atualizações que valham o preço, e garante que o seu ponto de venda nunca pode ser desativado remotamente."
         }
       },
+      "sources": {
+        "title": "Fontes",
+        "intro": "Todos os factos sobre o Square nesta página vêm das próprias páginas do Square e da documentação do WooCommerce para a extensão Square for WooCommerce, consultadas em 2026-10-06 e verificadas novamente em 2026-11-18:",
+        "items": {
+          "pricingAnnouncement": "Square Free por $0 por mês por localização",
+          "pricing": "Planos do Square e a taxa de cartão no Square Free",
+          "fees": "Taxas de pagamentos com cartão presenciais: aproximação, inserção ou passagem",
+          "offline": "Pagamentos offline: o carregamento no prazo de 72 horas, quem é responsável e o que não está disponível offline",
+          "tapToPayIphone": "Tap to Pay no iPhone",
+          "tapToPayAndroid": "Tap to Pay no Android com Square Point of Sale",
+          "posApp": "Square Point of Sale em dispositivos iOS e Android",
+          "register": "Square Register, com Square Point of Sale integrado",
+          "countries": "Os oito países onde o Square aceita pagamentos com cartão",
+          "wooFaq": "As encomendas efetuadas no POS do Square não são sincronizadas com o WooCommerce; os dados de produtos e stock são",
+          "wooSetup": "Só uma localização Square ligada de cada vez",
+          "wooPayments": "Países suportados e correspondência de moeda",
+          "wooVariations": "Produtos variáveis: no máximo 250 variações e 6 atributos",
+          "wooSyncInterval": "Intervalo predefinido de sincronização de produtos de uma hora"
+        }
+      },
       "footer": {
         "factsDated": "Dados do Square verificados em 2026-10-06 nas páginas do próprio Square (a página de taxas, o anúncio de preços e os artigos de ajuda sobre pagamentos offline, Tap to Pay, dispositivos e disponibilidade internacional) e na documentação do WooCommerce para a extensão Square for WooCommerce; os dados do WCPOS vêm de wcpos.com e docs.wcpos.com, e referem-se ao WCPOS 2.0, lançado em 2026-11-09, que requer tanto a aplicação como o plugin na versão 2.0. Voltamos a verificá-los a cada trimestre.",
         "corrections": "Encontrou um erro? Envie um email para support@wcpos.com — corrigimos depressa e registamos todas as alterações."

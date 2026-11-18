@@ -142,13 +142,63 @@ describe('SquareComparePage', () => {
     )
   })
 
-  it('closes with the call-to-action band before the facts footer', async () => {
+  it('closes with the sources, then the call-to-action band, then the facts footer', async () => {
     render(await SquareComparePage({ params }))
     const faq = screen.getByRole('heading', { name: 'square.faq.title' })
+    const sources = screen.getByRole('heading', { name: 'square.sources.title' })
     const cta = screen.getByTestId('cta-section')
     const footer = screen.getByText('square.footer.corrections')
-    expect(faq.compareDocumentPosition(cta) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+    expect(faq.compareDocumentPosition(sources) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+    expect(sources.compareDocumentPosition(cta) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
     expect(cta.compareDocumentPosition(footer) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+  })
+
+  it('lists 14 nofollow sources on Square and WooCommerce hosts', async () => {
+    render(await SquareComparePage({ params }))
+    const heading = screen.getByRole('heading', { name: 'square.sources.title' })
+    const list = heading.closest('section')!.querySelector('ul')!
+    const links = list.querySelectorAll('a')
+    expect(links).toHaveLength(14)
+    for (const link of links) {
+      expect(
+        link.getAttribute('href')!.startsWith('https://squareup.com/') ||
+          link.getAttribute('href')!.startsWith('https://woocommerce.com/document/woocommerce-square/')
+      ).toBe(true)
+      expect(link.getAttribute('rel')).toContain('nofollow')
+    }
+  })
+
+  it('labels every source with a key from the en messages', async () => {
+    render(await SquareComparePage({ params }))
+    const file = path.resolve(process.cwd(), 'messages', 'en.json')
+    const items = JSON.parse(fs.readFileSync(file, 'utf8')).compare.square.sources.items
+    expect(Object.keys(items)).toHaveLength(14)
+    const heading = screen.getByRole('heading', { name: 'square.sources.title' })
+    const rows = heading.closest('section')!.querySelectorAll('li')
+    expect(rows).toHaveLength(14)
+    for (const row of rows) {
+      const match = row.textContent!.match(/^square\.sources\.items\.(\w+):/)
+      expect(match).not.toBeNull()
+      expect(items).toHaveProperty(match![1])
+    }
+  })
+
+  it('gives every locale the same sources keys and both dates in the intro', () => {
+    const read = (locale: string) =>
+      JSON.parse(
+        fs.readFileSync(path.resolve(process.cwd(), 'messages', `${locale}.json`), 'utf8')
+      ).compare.square.sources
+    const en = read('en')
+    const itemKeys = Object.keys(en.items).sort()
+    expect(itemKeys).toHaveLength(14)
+    for (const locale of Object.keys(NOTHING_TO_SYNC_VALUES)) {
+      const sources = read(locale)
+      expect(Object.keys(sources).sort()).toEqual(['intro', 'items', 'title'])
+      expect(Object.keys(sources.items).sort()).toEqual(itemKeys)
+      expect(sources.title).toBeTruthy()
+      expect(sources.intro).toContain('2026-10-06')
+      expect(sources.intro).toContain('2026-11-18')
+    }
   })
 
   it('puts the short answer before the disclosure and the disclosure before the glance table', async () => {
