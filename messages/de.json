@@ -1981,7 +1981,7 @@
       },
       "shortAnswer": {
         "title": "Die kurze Antwort",
-        "wcpos": "WCPOS läuft innerhalb Ihrer WordPress-Website — Ihre Verkaufsdaten verlassen Ihren Shop nie, die Gratis-Version ist wirklich unbegrenzt (Produkte, Kunden, Barverkäufe — keinerlei Obergrenzen), und bezahlte Lizenzen sind Einmalzahlungen, die auch nach Ablauf weiter funktionieren. Ihre Kasse kann niemals abgeschaltet werden.",
+        "wcpos": "WCPOS läuft innerhalb Ihrer WordPress-Website — Ihre Verkaufsdaten verlassen Ihren Shop nie, die Gratis-Version hat keine Obergrenzen für Produkte, Kunden oder Bestellungen und bietet eine Kasse (weitere mit Pro), und bezahlte Lizenzen sind Einmalzahlungen, die auch nach Ablauf weiter funktionieren. Ihre Kasse kann niemals abgeschaltet werden.",
         "oliver": "Oliver POS synchronisiert Ihren Shop mit seiner Cloud-Plattform — Sie bekommen eine ausgefeilte Kassen-App, einen Kiosk-Modus und ein Hardware-Ökosystem, sind aber von Olivers Servern abhängig, und der Gratis-Tarif endet bei 20 Produkten und 50 Transaktionen pro Monat."
       },
       "glance": {
@@ -2192,7 +2192,7 @@
         },
         "trial": {
           "question": "Kann ich beide kostenlos testen?",
-          "answer": "Ja. Das kostenlose WCPOS-Plugin ist unbegrenzt, und das volle Pro-Erlebnis gibt es unter demo.wcpos.com/pos. Olivers Gratis-Tarif (20 Produkte und 50 Transaktionen pro Monat) taugt als Testphase."
+          "answer": "Ja. Das kostenlose WCPOS-Plugin hat keine Obergrenzen für Produkte, Kunden oder Bestellungen und bietet eine Kasse, und das volle Pro-Erlebnis gibt es unter demo.wcpos.com/pos. Olivers Gratis-Tarif (20 Produkte und 50 Transaktionen pro Monat) taugt als Testphase."
         }
       },
       "footer": {

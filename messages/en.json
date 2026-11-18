@@ -1981,7 +1981,7 @@
       },
       "shortAnswer": {
         "title": "The short answer",
-        "wcpos": "WCPOS runs inside your WordPress site — your sales data never leaves your store, the free version is truly unlimited (products, customers, cash sales — no caps on anything), and paid licenses are one-time payments that keep working even after they expire. Your point of sale can never be switched off.",
+        "wcpos": "WCPOS runs inside your WordPress site — your sales data never leaves your store, the free version has no caps on products, customers or orders and runs one register (more with Pro), and paid licenses are one-time payments that keep working even after they expire. Your point of sale can never be switched off.",
         "oliver": "Oliver POS syncs your store to its cloud platform — you get a polished register app, kiosk mode, and a hardware ecosystem, but you depend on Oliver's servers, and its free plan caps out at 20 products and 50 transactions per month."
       },
       "glance": {
@@ -2192,7 +2192,7 @@
         },
         "trial": {
           "question": "Can I try both for free?",
-          "answer": "Yes. WCPOS's free plugin is unlimited, and the full Pro experience is at demo.wcpos.com/pos. Oliver's free plan (20 products and 50 transactions per month) works as a trial."
+          "answer": "Yes. WCPOS's free plugin has no caps on products, customers or orders and runs one register, and the full Pro experience is at demo.wcpos.com/pos. Oliver's free plan (20 products and 50 transactions per month) works as a trial."
         }
       },
       "footer": {
