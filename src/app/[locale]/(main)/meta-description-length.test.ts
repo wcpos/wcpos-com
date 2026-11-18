@@ -85,6 +85,16 @@ describe('home and /downloads meta descriptions', () => {
     }
   )
 
+  it.each(LOCALES)(
+    '$locale pro.hero.title names WooCommerce in 50 characters',
+    ({ messages }) => {
+      const title = messages.pro.hero.title
+      expect(title.startsWith('WCPOS Pro')).toBe(true)
+      expect(title).toContain('WooCommerce')
+      expect([...title].length).toBeLessThanOrEqual(50)
+    }
+  )
+
   it.each([
     'home.meta.description',
     'downloads.meta.description',
