@@ -1908,6 +1908,7 @@
     }
   },
   "compare": {
+    "breadcrumbLabel": "Percorso di navigazione",
     "disclosure": {
       "title": "Chi pubblica questo confronto",
       "body": "Questa pagina è pubblicata da kilbot, il creatore di WCPOS. Abbiamo ovviamente un interesse in gioco — per questo ogni dato è documentato e datato, rimandiamo alle pagine dei prezzi dei concorrenti e diciamo chiaramente quando un concorrente è la scelta migliore. Verificate tutto."

@@ -1908,6 +1908,7 @@
     }
   },
   "compare": {
+    "breadcrumbLabel": "Fil d'Ariane",
     "disclosure": {
       "title": "Qui est derrière ce comparatif",
       "body": "Cette page est publiée par kilbot, le créateur de WCPOS. Nous avons évidemment un intérêt dans l'affaire — c'est pourquoi chaque chiffre est sourcé et daté, nous renvoyons vers les pages de tarifs des concurrents eux-mêmes, et nous disons clairement quand un concurrent est le meilleur choix. Vérifiez tout."
