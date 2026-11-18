@@ -1653,7 +1653,7 @@
         },
         "sync": {
           "title": "Todas as aplicações leem e escrevem na mesma loja",
-          "body": "Registe uma venda no computador, faça o reembolso no telemóvel — um único conjunto de produtos, encomendas e clientes, atualizado em tempo real."
+          "body": "Registe uma venda no computador e o telemóvel mostra o novo nível de stock — um único conjunto de produtos, encomendas e clientes, atualizado em tempo real."
         },
         "offline": {
           "title": "Continue a registar vendas quando a ligação cai",

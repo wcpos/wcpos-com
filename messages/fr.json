@@ -1653,7 +1653,7 @@
         },
         "sync": {
           "title": "Chaque application lit et écrit dans la même boutique",
-          "body": "Encaissez une vente sur l’ordinateur, remboursez-la sur votre téléphone — un seul jeu de produits, commandes et clients, mis à jour en temps réel."
+          "body": "Encaissez une vente sur l’ordinateur et votre téléphone affiche le nouveau niveau de stock — un seul jeu de produits, commandes et clients, mis à jour en temps réel."
         },
         "offline": {
           "title": "Continuez d’encaisser quand la connexion tombe",

@@ -1653,7 +1653,7 @@
         },
         "sync": {
           "title": "Cada aplicación lee y escribe en la misma tienda",
-          "body": "Cobra una venta en el escritorio, reembólsala en tu teléfono: un único conjunto de productos, pedidos y clientes, actualizado en tiempo real."
+          "body": "Cobra una venta en el escritorio y tu teléfono muestra el nuevo nivel de stock: un único conjunto de productos, pedidos y clientes, actualizado en tiempo real."
         },
         "offline": {
           "title": "Sigue cobrando ventas cuando se cae la conexión",
