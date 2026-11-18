@@ -434,6 +434,10 @@
         "description": "通过 Stripe Terminal、Square Terminal、SumUp、Mollie、PayPal Reader 等接受当面刷卡收款。",
         "link": "查看全部终端扩展"
       },
+      "display": {
+        "title": "顾客显示屏",
+        "description": "在顾客面前放一块屏幕：在任何浏览器中打开，用代码与收银台配对。"
+      },
       "stockPrice": {
         "title": "库存与价格编辑",
         "description": "直接在 POS 上更新库存、价格和商品详情——无需前往 WordPress 后台。"

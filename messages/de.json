@@ -434,6 +434,10 @@
         "description": "Nimm Kartenzahlungen vor Ort mit Stripe Terminal, Square Terminal, SumUp, Mollie, PayPal Reader und mehr entgegen.",
         "link": "Alle Terminal-Erweiterungen ansehen"
       },
+      "display": {
+        "title": "Kundendisplay",
+        "description": "Stell einen Bildschirm vor deine Kundschaft: Öffne das Display in einem beliebigen Browser und kopple es mit einem Code mit einer Kasse."
+      },
       "stockPrice": {
         "title": "Bestands- & Preisbearbeitung",
         "description": "Aktualisiere Lagerbestände, Preise und Produktdetails direkt an der Kasse — ohne den Umweg über den WordPress-Adminbereich."

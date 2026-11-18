@@ -434,6 +434,10 @@
         "description": "Stripe Terminal, Square Terminal, SumUp, Mollie, PayPal Reader 등으로 대면 카드 결제를 받으세요.",
         "link": "모든 결제 단말기 확장 기능 보기"
       },
+      "display": {
+        "title": "고객용 디스플레이",
+        "description": "고객 앞에 화면을 두세요. 모든 브라우저에서 열고 코드로 계산대와 페어링하세요."
+      },
       "stockPrice": {
         "title": "재고 및 가격 편집",
         "description": "POS에서 바로 재고 수량, 가격, 상품 정보를 업데이트하세요 — WordPress 관리자 페이지로 이동할 필요가 없습니다."

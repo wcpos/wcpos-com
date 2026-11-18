@@ -1,4 +1,5 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
+import { PRO_FEATURE_KEYS } from '@/components/pro/pro-features'
 import de from '../../../../../messages/de.json'
 import en from '../../../../../messages/en.json'
 import es from '../../../../../messages/es.json'
@@ -9,6 +10,9 @@ import ko from '../../../../../messages/ko.json'
 import nl from '../../../../../messages/nl.json'
 import pt from '../../../../../messages/pt.json'
 import zh from '../../../../../messages/zh.json'
+
+// pro-features imports the locale-aware Link; this file only reads the key list.
+vi.mock('@/i18n/navigation', () => ({ Link: () => null }))
 
 const messages = { en, de, nl, fr, es, it: it_, pt, ja, ko, zh }
 
@@ -60,5 +64,22 @@ describe('free plugin copy', () => {
 
   it.each(locales)('%s pricing card no longer claims no limits', (locale) => {
     expect(messages[locale].home.pricing.free.description).not.toBe(oldPricingDescription[locale])
+  })
+
+  it('lists the customer-facing display card right after the terminal card', () => {
+    const keys = PRO_FEATURE_KEYS.map(({ key }) => key) as string[]
+    expect(keys).toContain('display')
+    expect(keys.indexOf('display')).toBe(keys.indexOf('terminal') + 1)
+  })
+
+  it.each(locales)('%s display card reuses the /compare display label', (locale) => {
+    const { display } = messages[locale].pro.features
+    expect(display.title).toBe(messages[locale].compare.oliver.glance.rows.display.label)
+    expect(display.description.trim()).not.toBe('')
+  })
+
+  it('says in English how the display opens and pairs', () => {
+    expect(en.pro.features.display.description).toMatch(/any browser/)
+    expect(en.pro.features.display.description).toMatch(/code/)
   })
 })

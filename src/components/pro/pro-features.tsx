@@ -2,6 +2,7 @@ import {
   BarChart3,
   ClipboardList,
   CreditCard,
+  MonitorSmartphone,
   PencilRuler,
   Plug,
   Store,
@@ -22,6 +23,7 @@ import { Link } from '@/i18n/navigation'
 export const PRO_FEATURE_KEYS = [
   { key: 'stores', Icon: Store },
   { key: 'terminal', Icon: CreditCard },
+  { key: 'display', Icon: MonitorSmartphone },
   { key: 'stockPrice', Icon: PencilRuler },
   { key: 'orders', Icon: ClipboardList },
   { key: 'customers', Icon: Users },
