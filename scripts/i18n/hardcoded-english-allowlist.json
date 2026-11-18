@@ -1,7 +1,7 @@
 {
   "version": 1,
   "generatedBy": "scripts/i18n/hardcoded-english.ts --update",
-  "updatedAt": "2026-11-17T19:44:12.899Z",
+  "updatedAt": "2026-11-18T15:52:06.703Z",
   "scope": [
     "src/app",
     "src/components",
@@ -6250,11 +6250,19 @@
       "count": 2
     },
     {
-      "id": "499215a2dbda983a",
+      "id": "7aeab350b5d2fd2e",
       "file": "src/lib/software-application-json-ld.ts",
       "category": "code/string",
       "attr": null,
-      "text": "Windows, macOS, Linux, iOS, Android",
+      "text": "Windows, macOS, Linux, iOS, Android, Web",
+      "count": 1
+    },
+    {
+      "id": "01a4797b96edee01",
+      "file": "src/lib/software-application-json-ld.ts",
+      "category": "code/string",
+      "attr": null,
+      "text": "WordPress 5.6+, WooCommerce 9.0+, PHP 7.4+",
       "count": 1
     },
     {
