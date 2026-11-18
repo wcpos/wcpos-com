@@ -149,6 +149,16 @@ function PricingTeaserSectionContent({
         </Button>
         <p className="mt-4 text-sm text-muted-foreground">
           {t.rich('compareLine', {
+            square: (chunks) => (
+              <TextLink asChild>
+                <Link href="/compare/square">{chunks}</Link>
+              </TextLink>
+            ),
+            foosales: (chunks) => (
+              <TextLink asChild>
+                <Link href="/compare/foosales">{chunks}</Link>
+              </TextLink>
+            ),
             link: (chunks) => (
               <TextLink asChild>
                 <Link href="/compare">{chunks}</Link>

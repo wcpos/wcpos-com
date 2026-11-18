@@ -3,6 +3,15 @@ import { fireEvent, render, screen, within } from '@testing-library/react'
 import { NextIntlClientProvider } from 'next-intl'
 import type { ReactElement } from 'react'
 import messages from '../../../messages/en.json'
+import de from '../../../messages/de.json'
+import es from '../../../messages/es.json'
+import fr from '../../../messages/fr.json'
+import it_ from '../../../messages/it.json'
+import ja from '../../../messages/ja.json'
+import ko from '../../../messages/ko.json'
+import nl from '../../../messages/nl.json'
+import pt from '../../../messages/pt.json'
+import zh from '../../../messages/zh.json'
 
 vi.mock('@/lib/analytics/client-events', () => ({
   trackClientEvent: vi.fn(),
@@ -119,6 +128,28 @@ describe('PricingTeaserSection', () => {
     expect(
       screen.getByRole('link', { name: 'See Full Pricing & Features' })
     ).toHaveAttribute('href', '/pro')
+  })
+
+  it('links Square and FooSales in the comparison line to their pages', () => {
+    renderWithIntl(<PricingTeaserSectionFallback />)
+
+    expect(screen.getByRole('link', { name: 'Square' })).toHaveAttribute(
+      'href',
+      '/compare/square'
+    )
+    expect(screen.getByRole('link', { name: 'FooSales' })).toHaveAttribute(
+      'href',
+      '/compare/foosales'
+    )
+  })
+
+  it.each(
+    Object.entries({ en: messages, de, es, fr, it: it_, ja, ko, nl, pt, zh })
+  )('%s compareLine tags Square, FooSales and one link', (_, locale) => {
+    const line = locale.home.pricing.compareLine
+    expect(line).toContain('<square>Square</square>')
+    expect(line).toContain('<foosales>FooSales</foosales>')
+    expect(line.match(/<link>[^<]+<\/link>/g)).toHaveLength(1)
   })
 
   it('tracks the CTA click', async () => {

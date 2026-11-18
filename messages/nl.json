@@ -226,7 +226,7 @@
         }
       },
       "cta": "Bekijk alle prijzen en functies",
-      "compareLine": "Overweeg je Square of FooSales? <link>Bekijk hoe WCPOS zich verhoudt</link>",
+      "compareLine": "Overweeg je <square>Square</square> of <foosales>FooSales</foosales>? <link>Bekijk hoe WCPOS zich verhoudt</link>",
       "priceSummary": "{yearly}/jaar of {lifetime} levenslang ({currency}). Geen kosten per kassa."
     },
     "ecosystem": {
