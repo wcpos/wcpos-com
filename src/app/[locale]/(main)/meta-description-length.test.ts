@@ -67,6 +67,15 @@ describe('home and /downloads meta descriptions', () => {
     }
   )
 
+  it.each(LOCALES)(
+    '$locale support.meta.title names WooCommerce in 52 characters',
+    ({ messages }) => {
+      const title = messages.support.meta.title
+      expect(title).toContain('WooCommerce')
+      expect([...title].length).toBeLessThanOrEqual(52)
+    }
+  )
+
   it.each([
     'home.meta.description',
     'downloads.meta.description',
