@@ -274,7 +274,7 @@
         "c1": "Live demo proberen",
         "c2": "Gratis downloaden",
         "badges": {
-          "b1": "5.000+ actieve winkels",
+          "b1": "5.000+ actieve installaties",
           "b2": "Gratis en open source",
           "b3": "Sinds 2014"
         }
@@ -484,7 +484,7 @@
       "demoLink": "Bekijk Pro in de live demo",
       "demoSuffix": " — inloggen met demo / demo",
       "payments": "Kaart, PayPal of Bitcoin",
-      "proof": "5.000+ actieve winkels",
+      "proof": "5.000+ actieve installaties op WordPress.org",
       "unavailableTitle": "Prijzen tijdelijk niet beschikbaar",
       "unavailableDescription": "Prijsinformatie is momenteel niet beschikbaar. Probeer het later opnieuw."
     },
@@ -2162,7 +2162,7 @@
         },
         "hobbyShops": {
           "claim": "Het meest geschikt voor hobbywinkels",
-          "response": "Volgens WordPress.org draaien 5,000+ actieve winkels op WCPOS — ruim zes keer het aantal actieve installaties van Oliver — met meer dan 400,000 downloads sinds 2014."
+          "response": "WCPOS heeft 5,000+ actieve installaties op WordPress.org — ruim zes keer zoveel als Oliver — met meer dan 400,000 downloads sinds 2014."
         },
         "singleDev": {
           "claim": "Project van één ontwikkelaar; updates wanneer de beheerder tijd heeft",

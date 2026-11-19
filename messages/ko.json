@@ -274,7 +274,7 @@
         "c1": "라이브 데모 사용해 보기",
         "c2": "무료 다운로드",
         "badges": {
-          "b1": "활성 매장 5,000개 이상",
+          "b1": "활성 설치 5,000건 이상",
           "b2": "무료 및 오픈소스",
           "b3": "2014년부터"
         }
@@ -484,7 +484,7 @@
       "demoLink": "라이브 데모에서 Pro 확인하기",
       "demoSuffix": " (로그인 demo / demo)",
       "payments": "카드, PayPal 또는 Bitcoin",
-      "proof": "5,000개 이상의 활성 매장",
+      "proof": "WordPress.org 기준 활성 설치 5,000건 이상",
       "unavailableTitle": "가격 정보를 일시적으로 사용할 수 없습니다",
       "unavailableDescription": "현재 가격 정보를 사용할 수 없습니다. 나중에 다시 시도해 주세요."
     },
@@ -2162,7 +2162,7 @@
         },
         "hobbyShops": {
           "claim": "취미 매장에 적합",
-          "response": "WordPress.org 기준으로 5,000+개의 활성 매장이 WCPOS를 사용하고 있습니다. Oliver 활성 설치 수의 6배가 넘으며, 2014년 이후 다운로드는 400,000회를 넘습니다."
+          "response": "WCPOS는 WordPress.org 기준 활성 설치 5,000+건으로 Oliver의 6배가 넘으며, 2014년 이후 다운로드는 400,000회를 넘습니다."
         },
         "singleDev": {
           "claim": "1인 개발 프로젝트, 업데이트는 관리자가 시간 날 때",
