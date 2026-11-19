@@ -1914,6 +1914,14 @@
       "subtitle": "매장 운영자와 팀이 함께하는 실시간 Discord 커뮤니티에 참여하세요.",
       "open": "Discord 열기",
       "embedTitle": "Discord 채팅"
+    },
+    "guides": {
+      "title": "먼저 이 가이드를 확인하세요",
+      "installation": "WooCommerce 스토어에 WCPOS 설치",
+      "proLicense": "Pro 라이선스 활성화",
+      "barcodeScanners": "바코드 스캐너 설정",
+      "receiptPrinters": "영수증 프린터 설정",
+      "productSync": "상품 동기화 작동 방식"
     }
   },
   "compare": {

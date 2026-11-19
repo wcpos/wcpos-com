@@ -1914,6 +1914,14 @@
       "subtitle": "店舗オーナーとチームが参加するライブDiscordコミュニティに参加してください。",
       "open": "Discordを開く",
       "embedTitle": "Discordチャット"
+    },
+    "guides": {
+      "title": "まずはこちらのガイドから",
+      "installation": "WooCommerceストアにWCPOSをインストール",
+      "proLicense": "Proライセンスを有効化",
+      "barcodeScanners": "バーコードスキャナーを設定",
+      "receiptPrinters": "レシートプリンターを設定",
+      "productSync": "商品同期のしくみ"
     }
   },
   "compare": {

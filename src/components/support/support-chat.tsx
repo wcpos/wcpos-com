@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button'
 import { Markdown } from '@/components/ui/markdown'
 import { Section } from '@/components/ui/section'
 import { DiscordSection } from '@/components/support/discord-section'
+import { SupportGuides } from '@/components/support/support-guides'
 import styles from './support-chat.module.css'
 
 type Vote = 'up' | 'down'
@@ -327,6 +328,7 @@ export function SupportDefaultContent() {
       <Section spacing="none" className="pt-10 pb-10 sm:py-20 md:py-24 lg:py-28">
         <SupportChat />
       </Section>
+      <SupportGuides />
       <DiscordSection />
     </>
   )

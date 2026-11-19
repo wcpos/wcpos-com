@@ -1914,6 +1914,14 @@
       "subtitle": "Rejoignez des propriétaires de boutiques et l’équipe dans notre communauté Discord en direct.",
       "open": "Ouvrir Discord",
       "embedTitle": "Chat Discord"
+    },
+    "guides": {
+      "title": "Commencez par ces guides",
+      "installation": "Installer WCPOS sur votre boutique WooCommerce",
+      "proLicense": "Activer votre licence Pro",
+      "barcodeScanners": "Configurer un lecteur de codes-barres",
+      "receiptPrinters": "Configurer une imprimante de tickets",
+      "productSync": "Comment fonctionne la synchronisation des produits"
     }
   },
   "compare": {

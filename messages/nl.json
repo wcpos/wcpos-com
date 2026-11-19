@@ -1914,6 +1914,14 @@
       "subtitle": "Sluit je aan bij winkeleigenaren en het team in onze live Discord-community.",
       "open": "Discord openen",
       "embedTitle": "Discord-chat"
+    },
+    "guides": {
+      "title": "Begin met deze handleidingen",
+      "installation": "WCPOS installeren in je WooCommerce-winkel",
+      "proLicense": "Je Pro-licentie activeren",
+      "barcodeScanners": "Een barcodescanner instellen",
+      "receiptPrinters": "Een bonprinter instellen",
+      "productSync": "Zo werkt productsynchronisatie"
     }
   },
   "compare": {

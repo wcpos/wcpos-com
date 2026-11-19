@@ -1914,6 +1914,14 @@
       "subtitle": "加入店主和团队所在的实时 Discord 社区。",
       "open": "打开 Discord",
       "embedTitle": "Discord 聊天"
+    },
+    "guides": {
+      "title": "从这些指南开始",
+      "installation": "在 WooCommerce 商店中安装 WCPOS",
+      "proLicense": "激活 Pro 许可证",
+      "barcodeScanners": "设置条码扫描器",
+      "receiptPrinters": "设置小票打印机",
+      "productSync": "商品同步的工作原理"
     }
   },
   "compare": {
