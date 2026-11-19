@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { render, screen } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import enMessages from '../../../../../messages/en.json'
@@ -187,6 +187,26 @@ describe('DownloadsPage', () => {
       'href',
       'https://updates.wcpos.com/v1/electron/download/darwin-x64/v1.11.12',
     )
+  })
+
+  it('links the Web card to the setup guide before the live demo', async () => {
+    const { default: DownloadsPage } = await import(
+      '@/app/[locale]/(main)/downloads/page'
+    )
+
+    render(await DownloadsPage({ params: Promise.resolve({ locale: 'en' }) }))
+
+    const demo = screen.getByRole('link', { name: 'Open the live demo' })
+    const setup = within(demo.parentElement!).getByRole('link', {
+      name: 'Set up on your store',
+    })
+    expect(setup).toHaveAttribute(
+      'href',
+      'https://docs.wcpos.com/getting-started/installation',
+    )
+    expect(
+      setup.compareDocumentPosition(demo) & Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy()
   })
 
   it('emits SoftwareApplication JSON-LD with a /downloads downloadUrl', async () => {

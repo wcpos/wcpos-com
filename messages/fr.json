@@ -1708,6 +1708,7 @@
           "desktopTitle": "Application de bureau",
           "iosCta": "Rejoindre la bêta TestFlight",
           "androidCta": "Rejoindre sur Google Play",
+          "webSetupCta": "Installer sur votre boutique",
           "webCta": "Ouvrir la démo en direct"
         },
         "pro": {

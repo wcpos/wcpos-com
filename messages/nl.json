@@ -1708,6 +1708,7 @@
           "desktopTitle": "Desktop-app",
           "iosCta": "Doe mee met de TestFlight-bèta",
           "androidCta": "Doe mee op Google Play",
+          "webSetupCta": "Instellen in je eigen winkel",
           "webCta": "Open de live demo"
         },
         "pro": {

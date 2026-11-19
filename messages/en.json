@@ -1708,6 +1708,7 @@
           "desktopTitle": "Desktop app",
           "iosCta": "Join the TestFlight beta",
           "androidCta": "Join on Google Play",
+          "webSetupCta": "Set up on your store",
           "webCta": "Open the live demo"
         },
         "pro": {

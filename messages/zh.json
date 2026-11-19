@@ -1708,6 +1708,7 @@
           "desktopTitle": "桌面应用",
           "iosCta": "加入 TestFlight 测试版",
           "androidCta": "在 Google Play 加入测试",
+          "webSetupCta": "在你的商店中设置",
           "webCta": "打开在线演示"
         },
         "pro": {

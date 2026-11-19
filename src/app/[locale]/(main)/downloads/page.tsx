@@ -37,6 +37,9 @@ import enMessages from '../../../../../messages/en.json'
 import { clientMessages } from '@/i18n/client-messages'
 import { DOWNLOADS_CLIENT_MESSAGES } from '@/components/downloads/client-messages'
 
+// Docs guide for installing the free plugin, which serves the web register from the store.
+const WEB_SETUP_GUIDE_URL = 'https://docs.wcpos.com/getting-started/installation'
+
 export async function generateMetadata({
   params,
 }: {
@@ -309,7 +312,11 @@ export default async function DownloadsPage({
                   <TextLink href={PLATFORMS.android.href}>{pageT('steps.device.androidCta')}</TextLink>
                 </DeviceCard>
                 <DeviceCard icon={Globe} title={platformT('web.name')} betaLabel={pageT('beta')}>
-                  <TextLink href={PLATFORMS.web.href}>{pageT('steps.device.webCta')}</TextLink>
+                  <div className="flex flex-wrap gap-x-1 gap-y-1">
+                    <TextLink href={WEB_SETUP_GUIDE_URL}>{pageT('steps.device.webSetupCta')}</TextLink>
+                    <span className="px-1 text-muted-foreground">·</span>
+                    <TextLink href={PLATFORMS.web.href}>{pageT('steps.device.webCta')}</TextLink>
+                  </div>
                 </DeviceCard>
               </div>
             </GetStartedStep>
