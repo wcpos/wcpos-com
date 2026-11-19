@@ -114,6 +114,26 @@ describe('DownloadsHero', () => {
     ).toBeTruthy()
   })
 
+  it('uses tighter hero padding on phone and the old hero padding from sm up', () => {
+    render(<DownloadsHero desktopVersion="2.0.0" />)
+    const section = screen
+      .getByRole('heading', { level: 1, name: 'downloads.hero.title' })
+      .closest('section')
+    expect(section).not.toBeNull()
+    const classes = section!.classList
+    for (const cls of ['pt-10', 'pb-10', 'sm:py-20', 'md:py-24', 'lg:py-28']) {
+      expect(classes).toContain(cls)
+    }
+    expect(classes).not.toContain('py-20')
+  })
+
+  it('hides the eyebrow on phone', () => {
+    render(<DownloadsHero desktopVersion="2.0.0" />)
+    expect(screen.getByText('downloads.hero.eyebrow')).toHaveClass(
+      'max-sm:hidden',
+    )
+  })
+
   it.each(Object.entries(LOCALES))(
     '%s: plugin notice is plain text and the button label exists',
     (_locale, messages) => {

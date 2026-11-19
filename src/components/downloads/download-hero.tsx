@@ -58,12 +58,12 @@ export function DownloadsHero({
   return (
     <Section
       tone="none"
-      spacing="hero"
-      className="border-b bg-gradient-to-b from-muted/40 to-background"
+      spacing="none"
+      className="pt-10 pb-10 sm:py-20 md:py-24 lg:py-28 border-b bg-gradient-to-b from-muted/40 to-background"
     >
       <div className="mx-auto max-w-3xl text-center">
-        <Eyebrow>{t('eyebrow')}</Eyebrow>
-        <h1 className="mt-4 text-4xl font-bold leading-tight tracking-tight md:text-5xl">
+        <Eyebrow className="max-sm:hidden">{t('eyebrow')}</Eyebrow>
+        <h1 className="mt-4 max-sm:mt-0 text-4xl font-bold leading-tight tracking-tight md:text-5xl">
           {t('title')}
         </h1>
         <p className="mt-4 text-lg text-muted-foreground">{t('tagline')}</p>
@@ -71,7 +71,7 @@ export function DownloadsHero({
         <div
           role="group"
           aria-label={t('platformChooserLabel')}
-          className="mt-10 flex flex-wrap justify-center gap-2"
+          className="mt-6 sm:mt-10 flex flex-wrap justify-center gap-2"
         >
           {TILES.map((key) => {
             const TileIcon = PLATFORMS[key].icon
@@ -96,7 +96,7 @@ export function DownloadsHero({
           })}
         </div>
 
-        <Card aria-live="polite" className="mx-auto mt-6 max-w-xl p-8">
+        <Card aria-live="polite" className="mx-auto mt-6 max-w-xl p-6 sm:p-8">
           <div className="flex flex-wrap items-center justify-center gap-3">
             <Icon className="h-6 w-6 text-muted-foreground" aria-hidden="true" />
             <span className="text-lg font-semibold tracking-tight">
