@@ -2255,7 +2255,7 @@
           },
           "cardPayments": {
             "label": "カード決済",
-            "wcpos": "Proの端末連携：Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcave；QRコードまたはプッシュ通知のVipps MobilePay",
+            "wcpos": "無料：現金販売と、お手持ちの単体型決済端末で受け付けたカード払いを注文に記録します。Proの端末連携：Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcave；QRコードまたはプッシュ通知のVipps MobilePay",
             "woocommerce": "WooPaymentsまたはStripe、Bluetoothカードリーダーを使用"
           },
           "gateways": {
@@ -2414,7 +2414,7 @@
           },
           "cardPayments": {
             "label": "カード決済",
-            "wcpos": "Proの端末連携：Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcave；QRコードまたはプッシュ通知のVipps MobilePay",
+            "wcpos": "無料：現金販売と、お手持ちの単体型決済端末で受け付けたカード払いを注文に記録します。Proの端末連携：Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcave；QRコードまたはプッシュ通知のVipps MobilePay",
             "square": "iPhoneとAndroidでのTap to Payを含むSquare決済"
           },
           "fees": {
@@ -2569,7 +2569,7 @@
           },
           "cardPayments": {
             "label": "カード決済",
-            "wcpos": "Proの端末連携：Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcave；QRコードまたはプッシュ通知のVipps MobilePay",
+            "wcpos": "無料：現金販売と、お手持ちの単体型決済端末で受け付けたカード払いを注文に記録します。Proの端末連携：Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcave；QRコードまたはプッシュ通知のVipps MobilePay",
             "jovvie": "Stripe Terminal（BizSwoopはStripe Terminalのパートナー）。Stripe M2などのリーダーに対応"
           },
           "apps": {
@@ -2677,7 +2677,7 @@
           },
           "cardPayments": {
             "label": "カード決済",
-            "wcpos": "Proの端末連携：Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcave；QRコードまたはプッシュ通知のVipps MobilePay",
+            "wcpos": "無料：現金販売と、お手持ちの単体型決済端末で受け付けたカード払いを注文に記録します。Proの端末連携：Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcave；QRコードまたはプッシュ通知のVipps MobilePay",
             "vitepos": "Stripe TerminalとWalleeによる端末決済"
           },
           "apps": {
@@ -2824,7 +2824,7 @@
           },
           "cardPayments": {
             "label": "カード決済",
-            "wcpos": "Proの端末連携：Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcave；QRコードまたはプッシュ通知のVipps MobilePay",
+            "wcpos": "無料：現金販売と、お手持ちの単体型決済端末で受け付けたカード払いを注文に記録します。Proの端末連携：Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcave；QRコードまたはプッシュ通知のVipps MobilePay",
             "yith": "カード端末への接続なし。支払いは手動で処理し、CashとChip and Pinの支払い方法を利用"
           },
           "apps": {
@@ -2969,7 +2969,7 @@
           },
           "cardPayments": {
             "label": "カード決済",
-            "wcpos": "Proの端末連携：Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcave；QRコードまたはプッシュ通知のVipps MobilePay",
+            "wcpos": "無料：現金販売と、お手持ちの単体型決済端末で受け付けたカード払いを注文に記録します。Proの端末連携：Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcave；QRコードまたはプッシュ通知のVipps MobilePay",
             "foosales": "Plusプラン：Square Terminal、Square Readers（タブレットアプリ）、Stripe Terminalのリーダー"
           },
           "tapToPay": {

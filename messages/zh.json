@@ -2255,7 +2255,7 @@
           },
           "cardPayments": {
             "label": "银行卡支付",
-            "wcpos": "Pro 版终端集成：Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcave；通过二维码或推送通知收款的 Vipps MobilePay",
+            "wcpos": "免费：现金销售，以及在你自己的独立支付终端上收取的卡款，均记录在订单上。Pro 版终端集成：Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcave；通过二维码或推送通知收款的 Vipps MobilePay",
             "woocommerce": "WooPayments 或 Stripe，配合 Bluetooth 读卡器"
           },
           "gateways": {
@@ -2414,7 +2414,7 @@
           },
           "cardPayments": {
             "label": "银行卡支付",
-            "wcpos": "Pro 版终端集成：Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcave；通过二维码或推送通知收款的 Vipps MobilePay",
+            "wcpos": "免费：现金销售，以及在你自己的独立支付终端上收取的卡款，均记录在订单上。Pro 版终端集成：Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcave；通过二维码或推送通知收款的 Vipps MobilePay",
             "square": "Square 支付，包括 iPhone 和 Android 上的 Tap to Pay"
           },
           "fees": {
@@ -2569,7 +2569,7 @@
           },
           "cardPayments": {
             "label": "银行卡支付",
-            "wcpos": "Pro 版终端集成：Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcave；通过二维码或推送通知收款的 Vipps MobilePay",
+            "wcpos": "免费：现金销售，以及在你自己的独立支付终端上收取的卡款，均记录在订单上。Pro 版终端集成：Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcave；通过二维码或推送通知收款的 Vipps MobilePay",
             "jovvie": "Stripe Terminal（BizSwoop 是 Stripe Terminal 的合作伙伴），支持 Stripe M2 等读卡器"
           },
           "apps": {
@@ -2677,7 +2677,7 @@
           },
           "cardPayments": {
             "label": "银行卡支付",
-            "wcpos": "Pro 版终端集成：Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcave；通过二维码或推送通知收款的 Vipps MobilePay",
+            "wcpos": "免费：现金销售，以及在你自己的独立支付终端上收取的卡款，均记录在订单上。Pro 版终端集成：Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcave；通过二维码或推送通知收款的 Vipps MobilePay",
             "vitepos": "通过 Stripe Terminal 和 Wallee 接受终端付款"
           },
           "apps": {
@@ -2824,7 +2824,7 @@
           },
           "cardPayments": {
             "label": "银行卡支付",
-            "wcpos": "Pro 版终端集成：Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcave；通过二维码或推送通知收款的 Vipps MobilePay",
+            "wcpos": "免费：现金销售，以及在你自己的独立支付终端上收取的卡款，均记录在订单上。Pro 版终端集成：Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcave；通过二维码或推送通知收款的 Vipps MobilePay",
             "yith": "无法连接刷卡终端；付款需手动处理，提供 Cash 和 Chip and Pin 付款方式"
           },
           "apps": {
@@ -2969,7 +2969,7 @@
           },
           "cardPayments": {
             "label": "银行卡支付",
-            "wcpos": "Pro 版终端集成：Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcave；通过二维码或推送通知收款的 Vipps MobilePay",
+            "wcpos": "免费：现金销售，以及在你自己的独立支付终端上收取的卡款，均记录在订单上。Pro 版终端集成：Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcave；通过二维码或推送通知收款的 Vipps MobilePay",
             "foosales": "Plus 方案：Square Terminal、Square Readers（平板应用）和 Stripe Terminal 读卡器"
           },
           "tapToPay": {

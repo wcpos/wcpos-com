@@ -2255,7 +2255,7 @@
           },
           "cardPayments": {
             "label": "카드 결제",
-            "wcpos": "Pro 단말기 연동: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc, Windcave; QR 코드 또는 푸시 알림 방식의 Vipps MobilePay",
+            "wcpos": "무료: 현금 판매와 보유한 단독형 결제 단말기로 받은 카드 결제를 주문에 기록합니다. Pro 단말기 연동: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc, Windcave; QR 코드 또는 푸시 알림 방식의 Vipps MobilePay",
             "woocommerce": "WooPayments 또는 Stripe, Bluetooth 카드 리더기 사용"
           },
           "gateways": {
@@ -2414,7 +2414,7 @@
           },
           "cardPayments": {
             "label": "카드 결제",
-            "wcpos": "Pro 단말기 연동: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc, Windcave; QR 코드 또는 푸시 알림 방식의 Vipps MobilePay",
+            "wcpos": "무료: 현금 판매와 보유한 단독형 결제 단말기로 받은 카드 결제를 주문에 기록합니다. Pro 단말기 연동: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc, Windcave; QR 코드 또는 푸시 알림 방식의 Vipps MobilePay",
             "square": "iPhone과 Android의 Tap to Pay를 포함한 Square 결제"
           },
           "fees": {
@@ -2569,7 +2569,7 @@
           },
           "cardPayments": {
             "label": "카드 결제",
-            "wcpos": "Pro 단말기 연동: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc, Windcave; QR 코드 또는 푸시 알림 방식의 Vipps MobilePay",
+            "wcpos": "무료: 현금 판매와 보유한 단독형 결제 단말기로 받은 카드 결제를 주문에 기록합니다. Pro 단말기 연동: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc, Windcave; QR 코드 또는 푸시 알림 방식의 Vipps MobilePay",
             "jovvie": "Stripe Terminal(BizSwoop는 Stripe Terminal 파트너), Stripe M2 등의 리더 사용"
           },
           "apps": {
@@ -2677,7 +2677,7 @@
           },
           "cardPayments": {
             "label": "카드 결제",
-            "wcpos": "Pro 단말기 연동: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc, Windcave; QR 코드 또는 푸시 알림 방식의 Vipps MobilePay",
+            "wcpos": "무료: 현금 판매와 보유한 단독형 결제 단말기로 받은 카드 결제를 주문에 기록합니다. Pro 단말기 연동: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc, Windcave; QR 코드 또는 푸시 알림 방식의 Vipps MobilePay",
             "vitepos": "Stripe Terminal 및 Wallee 단말기 결제"
           },
           "apps": {
@@ -2824,7 +2824,7 @@
           },
           "cardPayments": {
             "label": "카드 결제",
-            "wcpos": "Pro 단말기 연동: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc, Windcave; QR 코드 또는 푸시 알림 방식의 Vipps MobilePay",
+            "wcpos": "무료: 현금 판매와 보유한 단독형 결제 단말기로 받은 카드 결제를 주문에 기록합니다. Pro 단말기 연동: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc, Windcave; QR 코드 또는 푸시 알림 방식의 Vipps MobilePay",
             "yith": "카드 단말기 연결 없음. 결제는 Cash 및 Chip and Pin 결제 수단을 사용해 수동으로 처리"
           },
           "apps": {
@@ -2969,7 +2969,7 @@
           },
           "cardPayments": {
             "label": "카드 결제",
-            "wcpos": "Pro 단말기 연동: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc, Windcave; QR 코드 또는 푸시 알림 방식의 Vipps MobilePay",
+            "wcpos": "무료: 현금 판매와 보유한 단독형 결제 단말기로 받은 카드 결제를 주문에 기록합니다. Pro 단말기 연동: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc, Windcave; QR 코드 또는 푸시 알림 방식의 Vipps MobilePay",
             "foosales": "Plus 요금제: Square Terminal, Square Readers(태블릿 앱), Stripe Terminal 리더기"
           },
           "tapToPay": {
