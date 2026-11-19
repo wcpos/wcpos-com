@@ -13,7 +13,7 @@ import {
 } from '@/components/home/pricing-teaser-section'
 import { TrustSection } from '@/components/home/trust-section'
 import { CtaSection } from '@/components/home/cta-section'
-import { localeUrl, marketingMetadata } from '@/lib/seo'
+import { SITE_URL, localeUrl, marketingMetadata } from '@/lib/seo'
 import { wcposSoftwareApplication } from '@/lib/software-application-json-ld'
 import { clientMessages } from '@/i18n/client-messages'
 
@@ -72,6 +72,19 @@ export default async function Home({
               url: localeUrl(locale, '/'),
               description: metaT('description'),
             })),
+          }}
+        />
+        {/* No alternateName: the front desk holds the naming variants. */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'WebSite',
+              name: 'WCPOS',
+              url: `${SITE_URL}/`,
+              inLanguage: locale,
+            }),
           }}
         />
       </main>
