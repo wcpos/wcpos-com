@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import {
+  WCPOS_OPERATING_SYSTEM,
   WCPOS_SOFTWARE_REQUIREMENTS,
   wcposSoftwareApplication,
 } from './software-application-json-ld'
@@ -25,6 +26,7 @@ describe('wcposSoftwareApplication', () => {
   it('lists the web app and the plugin requirements', () => {
     const app = wcposSoftwareApplication()
     expect(app.operatingSystem).toMatch(/, Web$/)
+    expect(app.operatingSystem).toBe(WCPOS_OPERATING_SYSTEM)
     expect(app.softwareRequirements).toBe(WCPOS_SOFTWARE_REQUIREMENTS)
   })
 
