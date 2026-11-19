@@ -1,0 +1,154 @@
+WCPOS
+Downloads
+Pro
+Documentation
+Support
+Roadmap
+Sign In
+Extensions for WooCommerce POS
+
+Add card terminals, payment gateways, stock and coupon integrations, and multilingual catalogs to WCPOS. Each one links to its documentation.
+
+Extensions marked Pro need WCPOS Pro.
+
+Card terminals and payments
+Stripe Terminal for WooCommerce
+Pro
+
+Adds Stripe Terminal support to WooCommerce for in-person payments.
+
+Documentation
+Square Terminal for WooCommerce
+Pro
+
+Adds Square Terminal support to WooCommerce for in-person payments.
+
+Documentation
+Mercado Pago Terminal for WooCommerce
+Pro
+
+Take card payments on a Mercado Pago Point Smart (1 or 2) terminal from WooCommerce and WooCommerce POS.
+
+Documentation
+Mollie Terminal for WooCommerce
+Pro
+
+Adds Mollie Terminal support to WooCommerce for in-person payments.
+
+Documentation
+PayArc Terminal for WooCommerce
+Pro
+
+Adds PayArc Terminal support to WooCommerce for in-person payments.
+
+Documentation
+PayPal Reader for WooCommerce
+Pro
+
+Adds PayPal Reader support to WooCommerce for in-person payments.
+
+Documentation
+SumUp Terminal for WooCommerce
+Pro
+
+Adds SumUp Terminal support to WooCommerce for in-person payments.
+
+Documentation
+Windcave Terminal for WooCommerce
+Pro
+
+Take in-person card payments on a Windcave terminal using HIT from the WooCommerce POS order-pay page.
+
+Documentation
+Email Invoice Gateway
+Pro
+
+Send an invoice email to the customer with a link to pay for the order.
+
+Documentation
+WCPOS Vipps MobilePay
+Pro
+
+Adds Vipps and MobilePay payment support to WooCommerce POS via QR code or push notification.
+
+Documentation
+Stock and coupons
+WCPOS ATUM Integration
+Pro
+
+ATUM Multi-Inventory integration for WCPOS, linking inventory locations to POS stores.
+
+Documentation
+WCPOS StoreApps Smart Coupons
+Pro
+
+StoreApps Smart Coupons store credit compatibility for WCPOS receipts, order notes, and balance deductions.
+
+Documentation
+Multilingual stores
+WCPOS Polylang
+
+Filter WCPOS products by Polylang language and prevent duplicate translated products in POS sync.
+
+Documentation
+WCPOS WP Multilang
+
+Filter WCPOS products by WP Multilang language and prevent duplicate translated products in POS sync.
+
+Documentation
+WCPOS WPML
+
+Filter WCPOS products by WPML language and prevent duplicate translated products in POS sync.
+
+Documentation
+
+Extension names and descriptions come from the extensions catalog and are shown in English.
+
+All extensions in the documentation
+PRODUCT
+Downloads
+WCPOS Pro
+Compare
+Roadmap
+Changelog
+Live Demo↗
+Extensions
+COMMUNITY
+Discord↗
+GitHub↗
+WordPress.org↗
+SUPPORT
+Documentation
+Support
+Status↗
+WordPress Forum↗
+COMPANY
+About
+Privacy
+Terms
+Refunds
+DOWNLOAD
+WordPress Plugin↗
+WCPOS for macOS↗
+WCPOS for Windows↗
+WCPOS for Linux↗
+WCPOS for iOS & iPad↗
+WCPOS for Android↗
+
+© 2026 WCPOS
+
+English
+Français
+Deutsch
+Español
+日本語
+中文
+Português
+Italiano
+Nederlands
+한국어
+
+We use an anonymous analytics cookie to understand how the site is used. No ads, no third-party tracking. Privacy policy
+
+Decline
+Accept
