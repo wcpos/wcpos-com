@@ -200,9 +200,13 @@ describe('ProPage', () => {
     ).toEqual(['default', 'default', 'muted'])
     expect(
       sections.map((section) => section.getAttribute('data-section-spacing'))
-    ).toEqual(['hero', 'compact', 'default'])
-    expect(sections[0]).toHaveAttribute('data-section-class', 'pb-8 md:pb-10 lg:pb-10')
-    expect(sections[1]).toHaveAttribute('data-section-class', 'pt-8 md:pt-10')
+    ).toEqual(['none', 'compact', 'default'])
+    // Phone padding is tight; from sm up the hero matches the `hero` spacing.
+    expect(sections[0]).toHaveAttribute(
+      'data-section-class',
+      'pt-10 pb-6 sm:pt-20 sm:pb-8 md:pt-24 md:pb-10 lg:pt-28 lg:pb-10'
+    )
+    expect(sections[1]).toHaveAttribute('data-section-class', 'pt-4 sm:pt-8 md:pt-10')
 
     // Feature list renders statically (exactly once, next to the buy box).
     expect(screen.getByText('Pro features')).toBeInTheDocument()
