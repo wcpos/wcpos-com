@@ -3,6 +3,7 @@ import { resolveLocale } from '@/i18n/resolve-locale'
 import { Check, Scale, X } from 'lucide-react'
 import { Card } from '@/components/ui/card'
 import { Section } from '@/components/ui/section'
+import { COMPARE_HERO_SECTION_CLASS, COMPARE_SHORT_ANSWER_SECTION_CLASS } from '@/components/compare/compare-layout'
 import { SectionHeading } from '@/components/ui/section-heading'
 import { CtaSection } from '@/components/home/cta-section'
 import { GlanceTable } from '@/components/compare/glance-table'
@@ -173,7 +174,7 @@ export default async function SquareComparePage({
     <main>
       <SquareCompareJsonLd locale={locale} translate={translate} />
 
-      <Section tone="default" spacing="hero" className="pb-6 md:pb-10 lg:pb-12">
+      <Section tone="default" spacing="none" className={COMPARE_HERO_SECTION_CLASS}>
         <CompareBreadcrumb
           label={t('breadcrumbLabel')}
           hubLabel={t('hub.hero.title')}
@@ -189,7 +190,7 @@ export default async function SquareComparePage({
       </Section>
 
       {/* Answer-first block: the passage AI engines lift for the head query */}
-      <Section tone="default" spacing="compact" containerClassName="max-w-3xl">
+      <Section tone="default" spacing="none" className={COMPARE_SHORT_ANSWER_SECTION_CLASS} containerClassName="max-w-3xl">
         <SectionHeading align="left" title={t('square.shortAnswer.title')} />
         <p className="mt-4 font-medium">{t('square.shortAnswer.wcpos')}</p>
         <p className="mt-3 text-muted-foreground">
