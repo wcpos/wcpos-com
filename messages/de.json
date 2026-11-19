@@ -417,7 +417,7 @@
     },
     "schema": {
       "name": "WCPOS Pro",
-      "description": "Premium-Point-of-Sale-Plugin für WooCommerce. Ergänzt Zahlungsterminal-Integration, Lager- und Preisbearbeitung, Bestell- und Kundenverwaltung, vollständige Berichte, eigene Zahlungsarten und Prioritätssupport.",
+      "description": "WCPOS Pro für WooCommerce ergänzt weitere Kassen und Filialen, Terminalzahlungen, ein Kundendisplay, Lager- und Preisbearbeitung, Bestell- und Kundenverwaltung, vollständige Berichte, eigene Zahlungsarten und Prioritätssupport.",
       "offers": {
         "yearly": "Jahreslizenz",
         "lifetime": "Lebenslange Lizenz"
