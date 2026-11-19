@@ -274,7 +274,7 @@
         "c1": "Prova la demo live",
         "c2": "Scarica gratis",
         "badges": {
-          "b1": "Oltre 5.000 negozi attivi",
+          "b1": "Oltre 5.000 installazioni attive",
           "b2": "Gratuito e open source",
           "b3": "Dal 2014"
         }
@@ -485,7 +485,7 @@
       "demoLink": "Guarda Pro nella demo dal vivo",
       "demoSuffix": " — accesso: demo / demo",
       "payments": "Carta, PayPal o Bitcoin",
-      "proof": "Oltre 5.000 negozi attivi",
+      "proof": "Oltre 5.000 installazioni attive su WordPress.org",
       "unavailableTitle": "Prezzi temporaneamente non disponibili",
       "unavailableDescription": "Le informazioni sui prezzi non sono al momento disponibili. Riprova più tardi."
     },
@@ -2163,7 +2163,7 @@
         },
         "hobbyShops": {
           "claim": "Ideale per negozi amatoriali",
-          "response": "Secondo WordPress.org, 5,000+ negozi attivi usano WCPOS — più di sei volte le installazioni attive di Oliver — con oltre 400,000 download dal 2014."
+          "response": "WCPOS ha 5,000+ installazioni attive su WordPress.org — più di sei volte quelle di Oliver — con oltre 400,000 download dal 2014."
         },
         "singleDev": {
           "claim": "Progetto di un singolo sviluppatore; aggiornamenti quando il manutentore ha tempo",

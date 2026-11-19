@@ -274,7 +274,7 @@
         "c1": "试用在线演示",
         "c2": "免费下载",
         "badges": {
-          "b1": "5,000+ 活跃商店",
+          "b1": "5,000+ 活跃安装",
           "b2": "免费且开源",
           "b3": "始于 2014 年"
         }
@@ -485,7 +485,7 @@
       "demoLink": "在在线演示中体验 Pro",
       "demoSuffix": "（登录 demo / demo）",
       "payments": "银行卡、PayPal 或 Bitcoin",
-      "proof": "5,000+ 活跃商店",
+      "proof": "WordPress.org 上 5,000+ 活跃安装",
       "unavailableTitle": "价格信息暂时不可用",
       "unavailableDescription": "价格信息当前不可用。请稍后再试。"
     },
@@ -2163,7 +2163,7 @@
         },
         "hobbyShops": {
           "claim": "最适合业余小店",
-          "response": "据 WordPress.org 统计，有 5,000+ 家活跃商店在运行 WCPOS——是 Oliver 活跃安装量的六倍多——自 2014 年以来下载量超过 400,000 次。"
+          "response": "据 WordPress.org 统计，WCPOS 有 5,000+ 活跃安装——是 Oliver 的六倍多——自 2014 年以来下载量超过 400,000 次。"
         },
         "singleDev": {
           "claim": "单人开发项目；维护者有空才更新",
