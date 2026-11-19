@@ -123,15 +123,15 @@ export function DownloadsHero({
               {pageT('steps.plugin.title')}
             </a>
           </Button>
+          <p className="mt-3 text-xs text-muted-foreground" data-testid="upgrade-note">
+            {t('upgradeNote')}
+          </p>
           <Button asChild variant="brand" size="xl" className="mt-3 w-full">
             <a href={info.href}>
               <PrimaryIcon aria-hidden="true" />
               {platformT(`${selected}.action`)}
             </a>
           </Button>
-          <p className="mt-3 text-xs text-muted-foreground" data-testid="upgrade-note">
-            {t('upgradeNote')}
-          </p>
           {selected === 'mac-arm' && (
             <>
               <p className="mt-3 text-xs text-muted-foreground">
