@@ -32,6 +32,8 @@ const toneStyles = {
 const letterpress = '[text-shadow:1px_1px_0_rgba(255,252,245,0.45)]'
 const demoHref = 'https://demo.wcpos.com/pos'
 const downloadHref = 'https://wordpress.org/plugins/woocommerce-pos/'
+// phone: both CTAs stack at one shared width; from sm they size to content
+const ctaWidth = 'w-full max-w-xs sm:w-auto sm:max-w-none'
 
 function Kicker({
   children,
@@ -94,7 +96,7 @@ export function CopyAct1({
       </Kicker>
       <Heading
         className={cn(
-          'mb-4 text-4xl font-bold leading-[1.05] tracking-tight md:text-5xl',
+          'mb-4 text-balance text-4xl font-bold leading-[1.05] tracking-tight md:text-5xl',
           tone === 'onLight' ? cn('text-[#3b2a17]', letterpress) : t.heading
         )}
       >
@@ -113,8 +115,8 @@ export function CopyAct1({
       >
         {copy('a1.b')}
       </p>
-      <div className="flex flex-wrap items-center justify-center gap-3">
-        <Button asChild variant="brand-on-dark" size="xl">
+      <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
+        <Button asChild variant="brand-on-dark" size="xl" className={ctaWidth}>
           <a href={demoHref}>{copy('a1.c1')}</a>
         </Button>
         {/* brand-outline is white-on-dark; flip to neutral outline on light */}
@@ -122,6 +124,7 @@ export function CopyAct1({
           asChild
           variant={tone === 'onLight' ? 'outline' : 'brand-outline'}
           size="xl"
+          className={ctaWidth}
         >
           <a href={downloadHref}>{copy('a1.c2')}</a>
         </Button>
