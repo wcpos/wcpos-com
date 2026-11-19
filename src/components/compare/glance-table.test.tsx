@@ -49,6 +49,27 @@ describe('GlanceTable', () => {
     expect(container.querySelector('thead tr')).toHaveClass('max-sm:sr-only')
   })
 
+  it('uses the short header for the phone label when one is given', () => {
+    render(
+      <GlanceTable
+        wcposHeader="WCPOS"
+        otherHeader="Long Product Name"
+        otherShortHeader="Short"
+        rows={rows}
+      />
+    )
+
+    expect(
+      screen.getByRole('columnheader', { name: 'Long Product Name' })
+    ).toBeInTheDocument()
+    for (const row of rows) {
+      const tr = screen.getByRole('rowheader', { name: row.label }).closest('tr')!
+      const other = within(tr).getAllByRole('cell')[1]
+      expect(other.querySelector('[aria-hidden="true"]')?.textContent).toBe('Short')
+      expect(other.lastChild?.textContent).toBe(row.other)
+    }
+  })
+
   it('stacks each row label above its answers below sm', () => {
     render(<GlanceTable wcposHeader="WCPOS" otherHeader="Other" rows={rows} />)
 

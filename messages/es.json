@@ -2385,6 +2385,7 @@
         "caption": "Datos de Square comprobados el 2026-10-06 y comprobados de nuevo el 2026-11-18 en squareup.com y en la documentación de WooCommerce sobre la extensión Square for WooCommerce; datos de WCPOS de wcpos.com y docs.wcpos.com.",
         "colWcpos": "WCPOS",
         "colSquare": "Square POS + Square for WooCommerce",
+        "colSquareShort": "Square",
         "rows": {
           "orders": {
             "label": "Ventas presenciales",

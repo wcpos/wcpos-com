@@ -216,6 +216,7 @@ export default async function SquareComparePage({
           <GlanceTable
             wcposHeader={t('square.glance.colWcpos')}
             otherHeader={t('square.glance.colSquare')}
+            otherShortHeader={t('square.glance.colSquareShort')}
             rows={glanceRows}
             caption={t('square.glance.caption')}
           />
