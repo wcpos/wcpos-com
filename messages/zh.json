@@ -417,7 +417,7 @@
     },
     "schema": {
       "name": "WCPOS Pro",
-      "description": "适用于 WooCommerce 的高级销售点插件。增加支付终端集成、库存和价格编辑、订单和客户管理、完整报告、自定义支付网关以及优先支持。",
+      "description": "WCPOS Pro 为 WooCommerce 增加更多收银台与多店铺、终端支付、顾客显示屏、库存和价格编辑、订单和客户管理、完整报告、自定义支付网关以及优先支持。",
       "offers": {
         "yearly": "年度许可证",
         "lifetime": "终身许可证"
