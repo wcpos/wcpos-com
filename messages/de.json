@@ -456,7 +456,7 @@
       },
       "gateways": {
         "title": "Individuelle Zahlungs-Gateways",
-        "description": "Nimm Zahlungen mit jedem WooCommerce-kompatiblen Gateway entgegen, nicht nur mit den integrierten Optionen."
+        "description": "Aktiviere die anderen WooCommerce-Zahlungsgateways deines Shops an der Kasse, nicht nur die integrierten Optionen."
       }
     },
     "buyBox": {

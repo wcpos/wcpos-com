@@ -456,7 +456,7 @@
       },
       "gateways": {
         "title": "カスタム決済ゲートウェイ",
-        "description": "組み込みのオプションだけでなく、WooCommerce対応の任意のゲートウェイで支払いを受け付けられます。"
+        "description": "組み込みのオプションだけでなく、店舗のその他のWooCommerce決済ゲートウェイをレジで有効にできます。"
       }
     },
     "buyBox": {

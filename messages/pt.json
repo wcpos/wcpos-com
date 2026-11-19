@@ -456,7 +456,7 @@
       },
       "gateways": {
         "title": "Gateways de Pagamento Personalizados",
-        "description": "Aceite pagamentos com qualquer gateway compatível com o WooCommerce, não apenas as opções incorporadas."
+        "description": "Ative os outros gateways de pagamento WooCommerce da sua loja na caixa, não apenas as opções incorporadas."
       }
     },
     "buyBox": {
