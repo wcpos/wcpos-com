@@ -15,7 +15,7 @@ const HEROES = [
   {
     name: '/extensions',
     file: 'src/app/[locale]/(main)/extensions/page.tsx',
-    classes: ['pt-10', 'sm:py-20', 'md:py-24', 'lg:py-28'],
+    classes: ['pt-10', 'sm:pt-20', 'md:pt-24', 'lg:pt-28'],
   },
   {
     name: '/support',
@@ -45,5 +45,28 @@ describe('hero phone padding', () => {
     for (const cls of classes) {
       expect(tokens).toContain(cls)
     }
+  })
+
+  const EXTENSIONS_FILE = 'src/app/[locale]/(main)/extensions/page.tsx'
+
+  it('/extensions hero bottom padding is tighter than its top from sm up', () => {
+    const source = readFileSync(resolve(ROOT, EXTENSIONS_FILE), 'utf8')
+    const tag = heroSectionTag(source)
+    expect(tag).toBeDefined()
+    const className = tag?.match(/className="([^"]*)"/)?.[1] ?? ''
+    const tokens = className.split(/\s+/)
+    for (const cls of ['sm:pb-12', 'md:pb-12', 'lg:pb-14']) {
+      expect(tokens).toContain(cls)
+    }
+    expect(tokens.filter((t) => /^(sm|md|lg):py-/.test(t))).toEqual([])
+  })
+
+  it('/extensions list section starts closer to the hero from md up', () => {
+    const source = readFileSync(resolve(ROOT, EXTENSIONS_FILE), 'utf8')
+    const tags = source.match(/<Section\b[^>]*>/g) ?? []
+    const tag = tags.find((t) => t.includes('tone="muted"'))
+    expect(tag).toBeDefined()
+    const className = tag?.match(/className="([^"]*)"/)?.[1] ?? ''
+    expect(className.split(/\s+/)).toContain('md:pt-16')
   })
 })
