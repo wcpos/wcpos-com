@@ -21,6 +21,9 @@ export const EXTENSION_GROUPS = [
 // Gateways that are not card terminals; listed after the terminals.
 export const PAYMENTS_LAST = ['email-invoice-gateway', 'wcpos-vipps'] as const
 const isLast = (slug: string) => PAYMENTS_LAST.some((s) => s === slug)
+// Terminals most stores ask for first, in this order; the rest keep catalog order.
+export const PAYMENTS_FIRST = ['stripe-terminal-for-woocommerce', 'square-terminal-for-woocommerce'] as const
+const isFirst = (slug: string) => PAYMENTS_FIRST.some((s) => s === slug)
 
 export async function generateMetadata({
   params,
@@ -89,7 +92,8 @@ export default async function ExtensionsPage({
             categories.some((c) => c === e.category),
           )
           const items = [
-            ...inGroup.filter((e) => !isLast(e.slug)),
+            ...PAYMENTS_FIRST.flatMap((s) => inGroup.filter((e) => e.slug === s)),
+            ...inGroup.filter((e) => !isFirst(e.slug) && !isLast(e.slug)),
             ...inGroup.filter((e) => isLast(e.slug)),
           ]
           return (
