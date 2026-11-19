@@ -482,6 +482,8 @@
       },
       "tryFreeLink": "Try the free version first",
       "tryFreeSuffix": " — upgrade once you know it does the job",
+      "demoLink": "See Pro in the live demo",
+      "demoSuffix": " — log in with demo / demo",
       "payments": "Card, PayPal or Bitcoin",
       "proof": "5,000+ active stores",
       "unavailableTitle": "Pricing temporarily unavailable",

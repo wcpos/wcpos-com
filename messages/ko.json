@@ -482,6 +482,8 @@
       },
       "tryFreeLink": "먼저 무료 버전을 사용해 보세요",
       "tryFreeSuffix": " — 충분하다고 확인되면 업그레이드하세요",
+      "demoLink": "라이브 데모에서 Pro 확인하기",
+      "demoSuffix": " (로그인 demo / demo)",
       "payments": "카드, PayPal 또는 Bitcoin",
       "proof": "5,000개 이상의 활성 매장",
       "unavailableTitle": "가격 정보를 일시적으로 사용할 수 없습니다",
