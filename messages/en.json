@@ -1947,37 +1947,37 @@
       },
       "oliverCard": {
         "title": "WCPOS vs Oliver POS",
-        "description": "WordPress-native versus cloud SaaS: data ownership, real free-tier limits, one-time pricing versus subscriptions, and where Oliver is genuinely better.",
+        "description": "Oliver syncs your store to its cloud, and its free plan caps out at 20 products; WCPOS runs inside your WordPress site with no caps, and Pro is a one-time payment.",
         "cta": "Read the comparison"
       },
       "woocommerceCard": {
         "title": "WCPOS vs WooCommerce's official POS",
-        "description": "Free and built into WooCommerce's mobile app, versus cross-platform and offline-first: devices, countries, payments, pricing, and where WooCommerce's POS is genuinely better.",
+        "description": "WooCommerce's own POS is free inside its mobile app, built for tablets in ten countries, with no offline mode; WCPOS runs in any browser and as desktop and mobile apps, and keeps taking cash sales offline.",
         "cta": "Read the comparison"
       },
       "squareCard": {
         "title": "WCPOS vs Square for WooCommerce",
-        "description": "Square's POS plus a sync extension, versus a register built on WooCommerce: where in-person sales are recorded, syncing, locations, offline payments, card fees, and where Square is genuinely better.",
+        "description": "Sales made in Square's POS don't become WooCommerce orders, and their stock changes sync on a schedule (hourly by default); every WCPOS sale is a WooCommerce order.",
         "cta": "Read the comparison"
       },
       "jovvieCard": {
         "title": "WCPOS vs Jovvie",
-        "description": "Two WooCommerce POS plugins: a one-time payment versus monthly plans with a per-transaction fee, apps, card payments, ratings, and where Jovvie is genuinely better.",
+        "description": "Jovvie charges a platform fee on each sale on top of its monthly plans; WCPOS charges no transaction fees, and Pro is a one-time payment.",
         "cta": "Read the comparison"
       },
       "viteposCard": {
         "title": "WCPOS vs Vitepos",
-        "description": "Two WooCommerce POS plugins with free versions: pricing, offline orders, restaurant modes, apps, card terminals, and where Vitepos is genuinely better.",
+        "description": "Both have a free version; Vitepos adds restaurant and grocery modes, and WCPOS adds desktop apps for Windows, macOS and Linux and iOS and Android apps (beta).",
         "cta": "Read the comparison"
       },
       "yithCard": {
         "title": "WCPOS vs YITH Point of Sale",
-        "description": "WCPOS and YITH's point of sale plugin for WooCommerce: licensing, card terminals, apps, offline use, stores and registers, and what YITH Point of Sale does well.",
+        "description": "YITH Point of Sale is a yearly licence with separate stock per store, but no offline mode and no card terminals; WCPOS is free, and Pro adds card terminals for a one-time payment.",
         "cta": "Read the comparison"
       },
       "foosalesCard": {
         "title": "WCPOS vs FooSales",
-        "description": "A one-time Pro license or a yearly subscription per store: pricing, what happens when you stop paying, Tap to Pay, offline orders, apps, and where FooSales is genuinely better.",
+        "description": "FooSales is a yearly subscription per store, and cancelling ends access to its POS; WCPOS is free, and Pro's one-time payment keeps working after the year ends.",
         "cta": "Read the comparison"
       },
       "moreSoon": "More comparisons are on the way."

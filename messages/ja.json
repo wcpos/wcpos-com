@@ -1947,37 +1947,37 @@
       },
       "oliverCard": {
         "title": "WCPOS vs Oliver POS",
-        "description": "WordPressネイティブかクラウドSaaSか：データの所有権、無料プランの実際の制限、買い切り価格とサブスクリプションの違い、そしてOliverが本当に優れている点。",
+        "description": "Oliverはストアをクラウドに同期し、無料プランは商品20点まで。WCPOSはWordPressサイトの内部で上限なく動作し、Proは買い切りです。",
         "cta": "比較を読む"
       },
       "woocommerceCard": {
         "title": "WCPOS vs WooCommerce公式POS",
-        "description": "WooCommerceのモバイルアプリに組み込まれた無料のPOSと、複数のプラットフォームに対応したオフラインファーストのPOS。デバイス、国、決済、価格、そしてWooCommerceのPOSが本当に優れている点を比較します。",
+        "description": "WooCommerce公式POSはモバイルアプリ内で無料、10か国のタブレット向けでオフラインモードなし。WCPOSはブラウザ、デスクトップ、モバイルアプリで動作し、現金販売はオフラインでも可能です。",
         "cta": "比較を読む"
       },
       "squareCard": {
         "title": "WCPOS vs Square for WooCommerce",
-        "description": "SquareのPOSと同期用拡張機能を、WooCommerceに直接組み込まれたレジと比較します。対面販売の記録先、同期、拠点、オフライン決済、カード手数料、Squareが本当に優れている点を取り上げます。",
+        "description": "SquareのPOSの注文はWooCommerceに同期されず、在庫変更は予定された確認時（既定は1時間ごと）に反映。WCPOSではすべての販売がWooCommerceの注文になります。",
         "cta": "比較を読む"
       },
       "jovvieCard": {
         "title": "WCPOS vs Jovvie",
-        "description": "WooCommerce向けPOSプラグイン2つを比較：買い切りと取引ごとの手数料がかかる月額プラン、アプリ、カード決済、評価、Jovvieが実際に優れている点。",
+        "description": "Jovvieは月額プランに加え、取引ごとにプラットフォーム手数料を請求します。WCPOSは取引手数料を請求せず、Proは買い切りです。",
         "cta": "比較を読む"
       },
       "viteposCard": {
         "title": "WCPOS vs Vitepos",
-        "description": "無料版があるWooCommerce向けPOSプラグイン2つを比較：料金、オフライン注文、レストランモード、アプリ、カード端末、Viteposが実際に優れている点。",
+        "description": "どちらも無料版あり。Viteposは食料品店・レストランモード、WCPOSはWindows、macOS、Linux向けデスクトップアプリとiOS、Android向けアプリ（ベータ版）を備えます。",
         "cta": "比較を読む"
       },
       "yithCard": {
         "title": "WCPOS vs YITH Point of Sale",
-        "description": "WCPOSとYITHのWooCommerce向けPOSプラグイン：ライセンス、カード端末、アプリ、オフライン利用、店舗とレジ、YITH Point of Saleの優れた点。",
+        "description": "YITH Point of Saleは年間ライセンスで店舗ごとに在庫を分けられますが、オフラインモードはなく、カード端末にも接続できません。WCPOSは無料で、Proは買い切りでカード端末連携を追加します。",
         "cta": "比較を読む"
       },
       "foosalesCard": {
         "title": "WCPOS vs FooSales",
-        "description": "買い切りのProライセンスと店舗ごとの年間サブスクリプションを比較：料金、支払いをやめた場合、Tap to Pay、オフライン注文、アプリ、FooSalesが実際に優れている点。",
+        "description": "FooSalesは店舗ごとの年間サブスクリプションで、解約するとPOSへのアクセスが終了します。WCPOSは無料で、Proは買い切りのため1年後も動作し続けます。",
         "cta": "比較を読む"
       },
       "moreSoon": "さらに多くの比較を準備中です。"
