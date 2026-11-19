@@ -408,7 +408,7 @@
   },
   "pro": {
     "metadata": {
-      "title": "Funzionalità e prezzi Pro – Punto vendita per WooCommerce",
+      "title": "Funzionalità e prezzi Pro – Cassa per WooCommerce",
       "description": "WCPOS Pro per WooCommerce: più casse e più negozi, pagamenti tramite terminale, modifica di stock e prezzi, gestione di ordini e clienti e report completi."
     },
     "hero": {
@@ -1586,7 +1586,7 @@
   },
   "downloads": {
     "meta": {
-      "title": "Scarica il punto vendita per WooCommerce – Mac, Windows, Linux e Web",
+      "title": "Scarica la cassa per WooCommerce: Mac, Windows e Web",
       "description": "Scarica WCPOS: il plugin WordPress gratuito, l’app web e le app desktop per Mac, Windows e Linux. Le app iOS e Android sono in beta. Più le note di rilascio."
     },
     "platforms": {

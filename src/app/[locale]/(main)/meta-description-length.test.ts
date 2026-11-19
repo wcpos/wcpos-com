@@ -125,6 +125,27 @@ describe('home and /downloads meta descriptions', () => {
     }
   )
 
+  const TITLE_CASES = LOCALES.flatMap(({ locale, messages }) => [
+    { locale, key: 'downloads.meta.title', title: messages.downloads.meta.title },
+    { locale, key: 'pro.metadata.title', title: messages.pro.metadata.title },
+  ])
+
+  it.each(TITLE_CASES)(
+    '$locale $key renders in 60 characters with the brand and names WooCommerce',
+    ({ title }) => {
+      expect([...`${title} | WCPOS`].length).toBeLessThanOrEqual(60)
+      expect(title).toContain('WooCommerce')
+    }
+  )
+
+  it.each(LOCALES)(
+    '$locale downloads.meta.title names Mac and Windows',
+    ({ messages }) => {
+      expect(messages.downloads.meta.title).toContain('Mac')
+      expect(messages.downloads.meta.title).toContain('Windows')
+    }
+  )
+
   it.each([
     'home.meta.description',
     'downloads.meta.description',

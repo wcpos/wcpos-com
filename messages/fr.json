@@ -408,7 +408,7 @@
   },
   "pro": {
     "metadata": {
-      "title": "Fonctionnalités et tarifs Pro – Point de vente pour WooCommerce",
+      "title": "Fonctionnalités et tarifs Pro – Caisse WooCommerce",
       "description": "WCPOS Pro pour WooCommerce : davantage de caisses et plusieurs boutiques, paiements par terminal, modification du stock, des prix, des commandes et des clients."
     },
     "hero": {
@@ -1586,7 +1586,7 @@
   },
   "downloads": {
     "meta": {
-      "title": "Télécharger le point de vente WooCommerce – Mac, Windows, Linux et Web",
+      "title": "Télécharger WooCommerce POS – Mac, Windows et Web",
       "description": "Téléchargez WCPOS : le plugin WordPress gratuit, l’app web et les apps de bureau pour Mac, Windows et Linux. Les apps iOS et Android sont en bêta."
     },
     "platforms": {
