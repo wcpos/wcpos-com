@@ -31,6 +31,10 @@ vi.mock('@/components/compare/more-comparisons', () => ({
   MoreComparisons: () => null,
 }))
 
+vi.mock('@/components/compare/choose-actions', () => ({
+  CompareChooseActions: () => null,
+}))
+
 const params = Promise.resolve({ locale: 'en' })
 
 describe('OliverComparePage', () => {
