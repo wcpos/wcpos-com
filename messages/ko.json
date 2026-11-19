@@ -2385,6 +2385,7 @@
         "caption": "Square 관련 사실은 2026-10-06에 squareup.com 및 Square for WooCommerce 확장 프로그램의 WooCommerce 문서에서 확인하고 2026-11-18에 다시 확인했으며, WCPOS 관련 사실은 wcpos.com과 docs.wcpos.com을 참조했습니다.",
         "colWcpos": "WCPOS",
         "colSquare": "Square POS + Square for WooCommerce",
+        "colSquareShort": "Square",
         "rows": {
           "orders": {
             "label": "대면 판매",

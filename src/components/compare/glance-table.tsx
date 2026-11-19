@@ -25,17 +25,21 @@ export interface GlanceTableRow {
  * `sr-only` there (assistive tech still reads it); instead each answer gets an
  * `aria-hidden` product-name label above it. From `sm` up every
  * `max-sm:` class is inert and the table renders as a normal three-column
- * table. The DOM stays a real <table> with scoped headers either way.
+ * table. The DOM stays a real <table> with scoped headers either way. A page
+ * may pass `otherShortHeader` for the phone label when the product name is
+ * long; the column header keeps the full name.
  */
 export function GlanceTable({
   wcposHeader,
   otherHeader,
+  otherShortHeader,
   featureHeader,
   rows,
   caption,
 }: {
   wcposHeader: string
   otherHeader: string
+  otherShortHeader?: string
   featureHeader?: string
   rows: GlanceTableRow[]
   caption?: string
@@ -77,7 +81,7 @@ export function GlanceTable({
             </TableCell>
             <TableCell>
               <span aria-hidden="true" className="mb-1 block text-xs font-medium text-muted-foreground sm:hidden">
-                {otherHeader}
+                {otherShortHeader ?? otherHeader}
               </span>
               {row.other}
             </TableCell>
