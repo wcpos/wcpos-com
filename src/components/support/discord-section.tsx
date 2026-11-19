@@ -3,8 +3,10 @@
 import dynamic from 'next/dynamic'
 import { useTranslations } from 'next-intl'
 import { useEffect, useRef, useState } from 'react'
+import { Button } from '@/components/ui/button'
 import { Section } from '@/components/ui/section'
 import { Skeleton } from '@/components/ui/skeleton'
+import { DISCORD_INVITE_URL } from '@/lib/discord-invite'
 
 const DiscordWidget = dynamic(
   () => import('@/components/support/discord-widget').then((m) => m.DiscordWidget),
@@ -33,6 +35,11 @@ export function DiscordSection() {
         <p className="text-muted-foreground">
           {t('subtitle')}
         </p>
+        <Button asChild variant="outline" className="mt-4">
+          <a href={DISCORD_INVITE_URL} target="_blank" rel="noopener noreferrer">
+            {t('open')}
+          </a>
+        </Button>
       </div>
       <div ref={boxRef} role="region" aria-labelledby="discord-chat-title" className="mx-auto h-[600px] max-w-3xl overflow-hidden rounded-md border">
         {inView ? <DiscordWidget /> : <Skeleton className="h-full w-full" />}
