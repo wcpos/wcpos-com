@@ -44,7 +44,7 @@ export function ProFeatureList({
   features,
 }: {
   heading: string
-  subtitle: string
+  subtitle?: string
   features: ProFeature[]
 }) {
   return (

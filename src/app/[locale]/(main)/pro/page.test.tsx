@@ -25,7 +25,6 @@ vi.mock('next-intl/server', () => ({
       'schema.name': 'Translated WCPOS Pro schema name',
       'schema.description': 'Translated Pro schema description',
       'features.title': 'Pro features',
-      'features.subtitle': 'Everything Pro adds to the register.',
       'features.stores.title': 'More registers and stores',
       'features.stores.description': 'Add registers and run several stores.',
       'features.terminal.title': 'Payment terminals',
