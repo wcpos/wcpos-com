@@ -1,0 +1,772 @@
+{
+  "home-desktop": {
+    "url": "https://wcpos.com/",
+    "status": 200,
+    "loadMs": 1620,
+    "title": "WCPOS - Point of Sale for WooCommerce",
+    "description": "Free, open-source WooCommerce POS. Sell offline, split payments, open and close the register, free in 2.0. Web and desktop apps; iOS and Android in beta.",
+    "canonical": "https://wcpos.com/",
+    "hreflang": 11,
+    "ogImage": "https://wcpos.com/opengraph-image.png",
+    "robots": null,
+    "h1": [
+      "Your WooCommerce store, at the counter.",
+      "Your WooCommerce store, at the counter."
+    ],
+    "h2": [
+      "One POS. Web, desktop, iOS & Android.",
+      "Works with the equipment you already have.",
+      "Synced with WooCommerce. Yours, even offline.",
+      "One POS. Web, desktop, iOS & Android.",
+      "Works with the equipment you already have.",
+      "Synced with WooCommerce. Yours, even offline.",
+      "What store owners say",
+      "Built for the demands of physical retail",
+      "Start free. Upgrade when you need more.",
+      "Ready to sell in-store with WooCommerce?"
+    ],
+    "jsonld": [
+      "Organization",
+      "SoftwareApplication",
+      "WebSite"
+    ],
+    "internalLinks": 15,
+    "imgsNoAlt": 0,
+    "scrollWidth": 1440,
+    "innerWidth": 1440,
+    "overflow": [
+      "span.WsUjrG_counterLife2",
+      "span.WsUjrG_counterLife3",
+      "div.absolute -inset-x-[10%] -inset-y-[20%] WsUjrG_ribbonWrap",
+      "div.absolute right-[-6%] top-[6%] h-[75%] w-[60%] rounded-full W",
+      "div.-ml-[210px] -mt-[132px]"
+    ],
+    "foldText": "WCPOS\nDownloads\nPro\nDocumentation\nSupport\nRoadmap\nSign In\nPOS — US Store\nR1\nSearch Products\nIn Stock ✕\nFeatured\nOn Sale\nCategory\nTote Bag\n$29\nVariants\nCandle\n$24\nMug\n$18\nSoap Bar\n$9\nVariants\nNotebook\n$14\nTea Towel\n$16\nTax based on: Shop base address\nShowing 16 of 18\nCustomer:\nGuest ✕\nCandle\n$24\n2× Mug\n$36\nSoap Bar\n$9\nSubtotal\n$69.00\nCharge $69\nPOS — US Store\nR2\nSearch Products\nIn Stock ✕\nFeatured\nOn Sale\nCategory\nTote Bag\n$29\nVariants\nCandle\n$24\nMug\n$18\nSoap Bar\n$9\nVariants\nNotebook\n$14\nTea Towel\n$16\nTax based on: Shop base address\nShowing 16 of 18\nCustomer:\nGuest ✕\nCandle\n$24\n2× Mug\n$36\nSoap "
+  },
+  "home-phone": {
+    "url": "https://wcpos.com/",
+    "status": 200,
+    "loadMs": 771,
+    "title": "WCPOS - Point of Sale for WooCommerce",
+    "description": "Free, open-source WooCommerce POS. Sell offline, split payments, open and close the register, free in 2.0. Web and desktop apps; iOS and Android in beta.",
+    "canonical": "https://wcpos.com/",
+    "hreflang": 11,
+    "ogImage": "https://wcpos.com/opengraph-image.png",
+    "robots": null,
+    "h1": [
+      "Your WooCommerce store, at the counter.",
+      "Your WooCommerce store, at the counter."
+    ],
+    "h2": [
+      "One POS. Web, desktop, iOS & Android.",
+      "Works with the equipment you already have.",
+      "Synced with WooCommerce. Yours, even offline.",
+      "One POS. Web, desktop, iOS & Android.",
+      "Works with the equipment you already have.",
+      "Synced with WooCommerce. Yours, even offline.",
+      "What store owners say",
+      "Built for the demands of physical retail",
+      "Start free. Upgrade when you need more.",
+      "Ready to sell in-store with WooCommerce?"
+    ],
+    "jsonld": [
+      "Organization",
+      "SoftwareApplication",
+      "WebSite"
+    ],
+    "internalLinks": 15,
+    "imgsNoAlt": 0,
+    "scrollWidth": 390,
+    "innerWidth": 390,
+    "overflow": [
+      "div.flex origin-center scale-[0.55] items-center justify-center ",
+      "div.w-[340px]",
+      "div.h-[250px] rounded-t-xl p-2.5 pb-1 WsUjrG_laptopLid",
+      "div.h-full w-full overflow-hidden rounded-lg",
+      "svg.[object SVGAnimatedString]"
+    ],
+    "foldText": "WCPOS\nOpen menu\n\nNew in 2.0 · Open and close your register, split payments and see today's sales — free.\n\nPOINT OF SALE FOR WOOCOMMERCE\n\nYour WooCommerce store, at the counter.\n\nWCPOS turns your tablet, phone or computer into a register — same catalog, same stock, same prices, even offline.\n\nTry Live Demo\nDownload Free\n5,000+ Active Stores\nFree & Open Source\nSince 2014\n\nEVERY SCREEN YOU OWN\n\nOne POS. Web, desktop, iOS & Android.\n\nRun the register on the tablet at the counter, the phone on the shop floor, or the laptop in the back office — same store, same data.\n\nWeb\nWindows\nmacOS\niOS Beta\nAndr"
+  },
+  "pro-desktop": {
+    "url": "https://wcpos.com/pro",
+    "status": 200,
+    "loadMs": 1137,
+    "title": "Pro Features & Pricing for WooCommerce POS | WCPOS",
+    "description": "WCPOS Pro for WooCommerce: more registers and multiple stores, terminal payments, stock and price editing, order and customer management, and full reports.",
+    "canonical": "https://wcpos.com/pro",
+    "hreflang": 11,
+    "ogImage": "https://wcpos.com/og/pro.png",
+    "robots": null,
+    "h1": [
+      "WCPOS Pro for WooCommerce POS"
+    ],
+    "h2": [
+      "What's included in Pro?",
+      "Get Pro",
+      "Frequently asked questions"
+    ],
+    "jsonld": [
+      "Organization",
+      "SoftwareApplication",
+      "FAQPage"
+    ],
+    "internalLinks": 14,
+    "imgsNoAlt": 0,
+    "scrollWidth": 1440,
+    "innerWidth": 1440,
+    "overflow": [],
+    "foldText": "WCPOS\nDownloads\nPro\nDocumentation\nSupport\nRoadmap\nSign In\nWCPOS Pro for WooCommerce POS\n\nEverything in the free POS, plus payment terminals, store management at the register, full reports, and priority support.\n\nWhat's included in Pro?\n\nEverything in Free, plus the tools to run your whole store from the register — and priority support when you need a hand.\n\nMore registers & multiple stores\n\nAdd registers beyond the free one, and run several stores, each with its own address, tax rates, receipt template, pricing and authorized users.\n\nPayment terminal integration\n\nTake in-person card payments o"
+  },
+  "pro-phone": {
+    "url": "https://wcpos.com/pro",
+    "status": 200,
+    "loadMs": 985,
+    "title": "Pro Features & Pricing for WooCommerce POS | WCPOS",
+    "description": "WCPOS Pro for WooCommerce: more registers and multiple stores, terminal payments, stock and price editing, order and customer management, and full reports.",
+    "canonical": "https://wcpos.com/pro",
+    "hreflang": 11,
+    "ogImage": "https://wcpos.com/og/pro.png",
+    "robots": null,
+    "h1": [
+      "WCPOS Pro for WooCommerce POS"
+    ],
+    "h2": [
+      "What's included in Pro?",
+      "Get Pro",
+      "Frequently asked questions"
+    ],
+    "jsonld": [
+      "Organization",
+      "SoftwareApplication",
+      "FAQPage"
+    ],
+    "internalLinks": 14,
+    "imgsNoAlt": 0,
+    "scrollWidth": 390,
+    "innerWidth": 390,
+    "overflow": [],
+    "foldText": "WCPOS\nOpen menu\nWCPOS Pro for WooCommerce POS\n\nEverything in the free POS, plus payment terminals, store management at the register, full reports, and priority support.\n\nWhat's included in Pro?\n\nEverything in Free, plus the tools to run your whole store from the register — and priority support when you need a hand.\n\nMore registers & multiple stores\n\nAdd registers beyond the free one, and run several stores, each with its own address, tax rates, receipt template, pricing and authorized users.\n\nPayment terminal integration\n\nTake in-person card payments on Stripe Terminal, Square Terminal, SumUp,"
+  },
+  "compare-desktop": {
+    "url": "https://wcpos.com/compare",
+    "status": 200,
+    "loadMs": 1652,
+    "title": "Compare WooCommerce POS: Square, FooSales & More | WCPOS",
+    "description": "Compare WCPOS with Square, FooSales, Oliver POS, WooCommerce’s official POS and more: pricing, free-tier limits, offline use and when to choose each.",
+    "canonical": "https://wcpos.com/compare",
+    "hreflang": 11,
+    "ogImage": "https://wcpos.com/og/compare.png",
+    "robots": null,
+    "h1": [
+      "Compare WooCommerce POS systems"
+    ],
+    "h2": [
+      "WCPOS vs Square for WooCommerce",
+      "WCPOS vs FooSales",
+      "WCPOS vs Oliver POS",
+      "WCPOS vs WooCommerce's official POS",
+      "WCPOS vs Jovvie",
+      "WCPOS vs Vitepos",
+      "WCPOS vs YITH Point of Sale",
+      "Who runs this comparison",
+      "How these comparisons work",
+      "Ready to sell in-store with WooCommerce?"
+    ],
+    "jsonld": [
+      "Organization",
+      "ItemList"
+    ],
+    "internalLinks": 20,
+    "imgsNoAlt": 0,
+    "scrollWidth": 1440,
+    "innerWidth": 1440,
+    "overflow": [],
+    "foldText": "WCPOS\nDownloads\nPro\nDocumentation\nSupport\nRoadmap\nSign In\nCompare WooCommerce POS systems\n\nSourced, dated comparisons with Square, FooSales, Oliver POS and other WooCommerce POS options, written by the maker of WCPOS.\n\nWCPOS vs Square for WooCommerce\n\nSquare's POS plus a sync extension, versus a register built on WooCommerce: where in-person sales are recorded, syncing, locations, offline payments, card fees, and where Square is genuinely better.\n\nRead the comparison\nWCPOS vs FooSales\n\nA one-time Pro license or a yearly subscription per store: pricing, what happens when you stop paying, Tap to"
+  },
+  "compare-phone": {
+    "url": "https://wcpos.com/compare",
+    "status": 200,
+    "loadMs": 935,
+    "title": "Compare WooCommerce POS: Square, FooSales & More | WCPOS",
+    "description": "Compare WCPOS with Square, FooSales, Oliver POS, WooCommerce’s official POS and more: pricing, free-tier limits, offline use and when to choose each.",
+    "canonical": "https://wcpos.com/compare",
+    "hreflang": 11,
+    "ogImage": "https://wcpos.com/og/compare.png",
+    "robots": null,
+    "h1": [
+      "Compare WooCommerce POS systems"
+    ],
+    "h2": [
+      "WCPOS vs Square for WooCommerce",
+      "WCPOS vs FooSales",
+      "WCPOS vs Oliver POS",
+      "WCPOS vs WooCommerce's official POS",
+      "WCPOS vs Jovvie",
+      "WCPOS vs Vitepos",
+      "WCPOS vs YITH Point of Sale",
+      "Who runs this comparison",
+      "How these comparisons work",
+      "Ready to sell in-store with WooCommerce?"
+    ],
+    "jsonld": [
+      "Organization",
+      "ItemList"
+    ],
+    "internalLinks": 20,
+    "imgsNoAlt": 0,
+    "scrollWidth": 390,
+    "innerWidth": 390,
+    "overflow": [],
+    "foldText": "WCPOS\nOpen menu\nCompare WooCommerce POS systems\n\nSourced, dated comparisons with Square, FooSales, Oliver POS and other WooCommerce POS options, written by the maker of WCPOS.\n\nWCPOS vs Square for WooCommerce\n\nSquare's POS plus a sync extension, versus a register built on WooCommerce: where in-person sales are recorded, syncing, locations, offline payments, card fees, and where Square is genuinely better.\n\nRead the comparison\nWCPOS vs FooSales\n\nA one-time Pro license or a yearly subscription per store: pricing, what happens when you stop paying, Tap to Pay, offline orders, apps, and where FooS"
+  },
+  "compare-square-desktop": {
+    "url": "https://wcpos.com/compare/square",
+    "status": 200,
+    "loadMs": 1131,
+    "title": "WCPOS vs Square for WooCommerce (2026)",
+    "description": "When Square for WooCommerce is the better choice, and when WCPOS is: where sales are recorded, syncing, locations and fees. Compared by the maker of WCPOS.",
+    "canonical": "https://wcpos.com/compare/square",
+    "hreflang": 11,
+    "ogImage": "https://wcpos.com/og/compare-square.png",
+    "robots": null,
+    "h1": [
+      "WCPOS vs Square for WooCommerce"
+    ],
+    "h2": [
+      "The short answer",
+      "Who runs this comparison",
+      "At a glance",
+      "One system or two?",
+      "How do card payments work?",
+      "What does it cost?",
+      "What Square for WooCommerce doesn't do",
+      "Where Square is genuinely better",
+      "Which should you choose?",
+      "Frequently asked questions",
+      "Sources",
+      "More comparisons",
+      "Ready to sell in-store with WooCommerce?"
+    ],
+    "jsonld": [
+      "Organization",
+      "FAQPage",
+      "BreadcrumbList",
+      "WebPage"
+    ],
+    "internalLinks": 19,
+    "imgsNoAlt": 0,
+    "scrollWidth": 1440,
+    "innerWidth": 1440,
+    "overflow": [],
+    "foldText": "WCPOS\nDownloads\nPro\nDocumentation\nSupport\nRoadmap\nSign In\nCompare WooCommerce POS systems\nWCPOS vs Square for WooCommerce\nWCPOS vs Square for WooCommerce\n\nMany WooCommerce stores sell in person with Square's POS app and keep it in step with the Square for WooCommerce extension. Here is how that compares with a register built on WooCommerce itself, and when Square is the better choice.\n\nThe short answer\n\nWCPOS is a register built on WooCommerce itself: it sells from your WooCommerce products and stock, and every sale is a WooCommerce order, so there is no second catalog to keep in sync. It runs"
+  },
+  "compare-square-phone": {
+    "url": "https://wcpos.com/compare/square",
+    "status": 200,
+    "loadMs": 1100,
+    "title": "WCPOS vs Square for WooCommerce (2026)",
+    "description": "When Square for WooCommerce is the better choice, and when WCPOS is: where sales are recorded, syncing, locations and fees. Compared by the maker of WCPOS.",
+    "canonical": "https://wcpos.com/compare/square",
+    "hreflang": 11,
+    "ogImage": "https://wcpos.com/og/compare-square.png",
+    "robots": null,
+    "h1": [
+      "WCPOS vs Square for WooCommerce"
+    ],
+    "h2": [
+      "The short answer",
+      "Who runs this comparison",
+      "At a glance",
+      "One system or two?",
+      "How do card payments work?",
+      "What does it cost?",
+      "What Square for WooCommerce doesn't do",
+      "Where Square is genuinely better",
+      "Which should you choose?",
+      "Frequently asked questions",
+      "Sources",
+      "More comparisons",
+      "Ready to sell in-store with WooCommerce?"
+    ],
+    "jsonld": [
+      "Organization",
+      "FAQPage",
+      "BreadcrumbList",
+      "WebPage"
+    ],
+    "internalLinks": 19,
+    "imgsNoAlt": 0,
+    "scrollWidth": 390,
+    "innerWidth": 390,
+    "overflow": [],
+    "foldText": "WCPOS\nOpen menu\nCompare WooCommerce POS systems\nWCPOS vs Square for WooCommerce\n\nMany WooCommerce stores sell in person with Square's POS app and keep it in step with the Square for WooCommerce extension. Here is how that compares with a register built on WooCommerce itself, and when Square is the better choice.\n\nThe short answer\n\nWCPOS is a register built on WooCommerce itself: it sells from your WooCommerce products and stock, and every sale is a WooCommerce order, so there is no second catalog to keep in sync. It runs in any modern browser, as desktop apps for Windows, macOS and Linux, and "
+  },
+  "downloads-desktop": {
+    "url": "https://wcpos.com/downloads",
+    "status": 200,
+    "loadMs": 971,
+    "title": "Download WooCommerce POS: Mac, Windows, Linux & Web | WCPOS",
+    "description": "Download WCPOS: the free WordPress plugin, the web app, and desktop apps for Mac, Windows and Linux. iOS and Android apps are in beta. Plus release notes.",
+    "canonical": "https://wcpos.com/downloads",
+    "hreflang": 11,
+    "ogImage": "https://wcpos.com/og/downloads.png",
+    "robots": null,
+    "h1": [
+      "Download WooCommerce POS"
+    ],
+    "h2": [
+      "One store at the centre. Every register in sync.",
+      "Three steps to your first sale",
+      "What’s new"
+    ],
+    "jsonld": [
+      "Organization",
+      "SoftwareApplication"
+    ],
+    "internalLinks": 14,
+    "imgsNoAlt": 0,
+    "scrollWidth": 1440,
+    "innerWidth": 1440,
+    "overflow": [],
+    "foldText": "WCPOS\nDownloads\nPro\nDocumentation\nSupport\nRoadmap\nSign In\n\nDOWNLOADS\n\nDownload WooCommerce POS\n\nOne register, every device.\n\nmacOS\nWindows\nLinux\niOS & iPad\nAndroid\nWeb\nmacOS\nDetected\n\nVersion 2.0.4 · Apple Silicon · .dmg\n\nEvery app connects to the free WordPress plugin — install it first.\n\nInstall the free plugin\nDownload for macOS\n\nUpgrading from 1.11? Sync every register first: 2.0 starts a new local database and does not carry over unsent sales.\n\nOn an Intel Mac? Get the Intel build\n\nOn macOS 12 Monterey? WCPOS 2.0 needs macOS 13 or later. Version 1.11.12 still runs on macOS 12 with the 1.1"
+  },
+  "downloads-phone": {
+    "url": "https://wcpos.com/downloads",
+    "status": 200,
+    "loadMs": 1035,
+    "title": "Download WooCommerce POS: Mac, Windows, Linux & Web | WCPOS",
+    "description": "Download WCPOS: the free WordPress plugin, the web app, and desktop apps for Mac, Windows and Linux. iOS and Android apps are in beta. Plus release notes.",
+    "canonical": "https://wcpos.com/downloads",
+    "hreflang": 11,
+    "ogImage": "https://wcpos.com/og/downloads.png",
+    "robots": null,
+    "h1": [
+      "Download WooCommerce POS"
+    ],
+    "h2": [
+      "One store at the centre. Every register in sync.",
+      "Three steps to your first sale",
+      "What’s new"
+    ],
+    "jsonld": [
+      "Organization",
+      "SoftwareApplication"
+    ],
+    "internalLinks": 14,
+    "imgsNoAlt": 0,
+    "scrollWidth": 390,
+    "innerWidth": 390,
+    "overflow": [],
+    "foldText": "WCPOS\nOpen menu\nDownload WooCommerce POS\n\nOne register, every device.\n\nmacOS\nWindows\nLinux\niOS & iPad\nAndroid\nWeb\nmacOS\nDetected\n\nVersion 2.0.4 · Apple Silicon · .dmg\n\nEvery app connects to the free WordPress plugin — install it first.\n\nInstall the free plugin\nDownload for macOS\n\nUpgrading from 1.11? Sync every register first: 2.0 starts a new local database and does not carry over unsent sales.\n\nOn an Intel Mac? Get the Intel build\n\nOn macOS 12 Monterey? WCPOS 2.0 needs macOS 13 or later. Version 1.11.12 still runs on macOS 12 with the 1.11 plugin: Apple Silicon · Intel\n\nDesktop\niOS & iPad\nAn"
+  },
+  "extensions-desktop": {
+    "url": "https://wcpos.com/extensions",
+    "status": 200,
+    "loadMs": 1427,
+    "title": "WooCommerce POS Extensions & Card Terminals | WCPOS",
+    "description": "WooCommerce POS extensions: card terminals with WCPOS Pro, from Stripe, Square, SumUp, PayPal, Mollie, Windcave and more, plus WPML, Polylang and ATUM.",
+    "canonical": "https://wcpos.com/extensions",
+    "hreflang": 11,
+    "ogImage": "https://wcpos.com/og/extensions.png",
+    "robots": null,
+    "h1": [
+      "Extensions for WooCommerce POS"
+    ],
+    "h2": [
+      "Card terminals and payments",
+      "Stock and coupons",
+      "Multilingual stores",
+      "Ready to sell in-store with WooCommerce?"
+    ],
+    "jsonld": [
+      "Organization",
+      "ItemList"
+    ],
+    "internalLinks": 13,
+    "imgsNoAlt": 0,
+    "scrollWidth": 1440,
+    "innerWidth": 1440,
+    "overflow": [],
+    "foldText": "WCPOS\nDownloads\nPro\nDocumentation\nSupport\nRoadmap\nSign In\nExtensions for WooCommerce POS\n\nAdd card terminals, payment gateways, stock and coupon integrations, and multilingual catalogs to WCPOS. Each one links to its documentation.\n\nExtensions marked Pro need WCPOS Pro.\n\nCard terminals and payments\nStripe Terminal for WooCommerce\nPro\n\nAdds Stripe Terminal support to WooCommerce for in-person payments.\n\nDocumentation\nSquare Terminal for WooCommerce\nPro\n\nAdds Square Terminal support to WooCommerce for in-person payments.\n\nDocumentation\nMercado Pago Terminal for WooCommerce\nPro\n\nTake card payment"
+  },
+  "extensions-phone": {
+    "url": "https://wcpos.com/extensions",
+    "status": 200,
+    "loadMs": 954,
+    "title": "WooCommerce POS Extensions & Card Terminals | WCPOS",
+    "description": "WooCommerce POS extensions: card terminals with WCPOS Pro, from Stripe, Square, SumUp, PayPal, Mollie, Windcave and more, plus WPML, Polylang and ATUM.",
+    "canonical": "https://wcpos.com/extensions",
+    "hreflang": 11,
+    "ogImage": "https://wcpos.com/og/extensions.png",
+    "robots": null,
+    "h1": [
+      "Extensions for WooCommerce POS"
+    ],
+    "h2": [
+      "Card terminals and payments",
+      "Stock and coupons",
+      "Multilingual stores",
+      "Ready to sell in-store with WooCommerce?"
+    ],
+    "jsonld": [
+      "Organization",
+      "ItemList"
+    ],
+    "internalLinks": 13,
+    "imgsNoAlt": 0,
+    "scrollWidth": 390,
+    "innerWidth": 390,
+    "overflow": [],
+    "foldText": "WCPOS\nOpen menu\nExtensions for WooCommerce POS\n\nAdd card terminals, payment gateways, stock and coupon integrations, and multilingual catalogs to WCPOS. Each one links to its documentation.\n\nExtensions marked Pro need WCPOS Pro.\n\nCard terminals and payments\nStripe Terminal for WooCommerce\nPro\n\nAdds Stripe Terminal support to WooCommerce for in-person payments.\n\nDocumentation\nSquare Terminal for WooCommerce\nPro\n\nAdds Square Terminal support to WooCommerce for in-person payments.\n\nDocumentation\nMercado Pago Terminal for WooCommerce\nPro\n\nTake card payments on a Mercado Pago Point Smart (1 or 2) t"
+  },
+  "support-desktop": {
+    "url": "https://wcpos.com/support",
+    "status": 200,
+    "loadMs": 5944,
+    "title": "WooCommerce POS Help & Support | WCPOS",
+    "description": "WooCommerce POS help: ask about WCPOS setup, licensing, scanners, printers or syncing and get an instant answer from our docs, or ask on Discord.",
+    "canonical": "https://wcpos.com/support",
+    "hreflang": 11,
+    "ogImage": "https://wcpos.com/og/support.png",
+    "robots": null,
+    "h1": [
+      "WooCommerce POS help & support"
+    ],
+    "h2": [
+      "Start with these guides",
+      "Prefer to talk to a human?"
+    ],
+    "jsonld": [
+      "Organization"
+    ],
+    "internalLinks": 13,
+    "imgsNoAlt": 0,
+    "scrollWidth": 1440,
+    "innerWidth": 1440,
+    "overflow": [],
+    "foldText": "WCPOS\nDownloads\nPro\nDocumentation\nSupport\nRoadmap\nSign In\nWooCommerce POS help & support\n\nAsk anything about WCPOS — setup, licensing, hardware, syncing, printing. You'll get an instant answer drawn from our docs.\n\nAsk\n\nTick the box below to ask your question.\n\nHow many sites can I use my licence on?\nWhich barcode scanners are supported?\nHow do I sync products from WooCommerce?\n\nAnswered by Aide · trained on the WCPOS docs & wiki\n\nStart with these guides\nInstall WCPOS on your WooCommerce store\nActivate your Pro licence\nSet up a barcode scanner\nSet up a receipt printer\nHow product sync works\nPr"
+  },
+  "support-phone": {
+    "url": "https://wcpos.com/support",
+    "status": 200,
+    "loadMs": 2230,
+    "title": "WooCommerce POS Help & Support | WCPOS",
+    "description": "WooCommerce POS help: ask about WCPOS setup, licensing, scanners, printers or syncing and get an instant answer from our docs, or ask on Discord.",
+    "canonical": "https://wcpos.com/support",
+    "hreflang": 11,
+    "ogImage": "https://wcpos.com/og/support.png",
+    "robots": null,
+    "h1": [
+      "WooCommerce POS help & support"
+    ],
+    "h2": [
+      "Start with these guides",
+      "Prefer to talk to a human?"
+    ],
+    "jsonld": [
+      "Organization"
+    ],
+    "internalLinks": 13,
+    "imgsNoAlt": 0,
+    "scrollWidth": 390,
+    "innerWidth": 390,
+    "overflow": [],
+    "foldText": "WCPOS\nOpen menu\nWooCommerce POS help & support\n\nAsk anything about WCPOS — setup, licensing, hardware, syncing, printing. You'll get an instant answer drawn from our docs.\n\nAsk\n\nTick the box below to ask your question.\n\nHow many sites can I use my licence on?\nWhich barcode scanners are supported?\nHow do I sync products from WooCommerce?\n\nAnswered by Aide · trained on the WCPOS docs & wiki\n\nStart with these guides\nInstall WCPOS on your WooCommerce store\nActivate your Pro licence\nSet up a barcode scanner\nSet up a receipt printer\nHow product sync works\nPrefer to talk to a human?\n\nJoin store owner"
+  },
+  "nl-home-desktop": {
+    "url": "https://wcpos.com/nl",
+    "status": 200,
+    "loadMs": 1071,
+    "title": "WCPOS - Kassasysteem voor WooCommerce",
+    "description": "Gratis, open-source WooCommerce-kassa. Verkoop offline, splits betalingen, open en sluit de kassa, gratis in 2.0. Web- en desktopapps; iOS en Android in bèta.",
+    "canonical": "https://wcpos.com/nl",
+    "hreflang": 11,
+    "ogImage": "https://wcpos.com/opengraph-image.png",
+    "robots": null,
+    "h1": [
+      "Je WooCommerce-winkel, aan de toonbank.",
+      "Je WooCommerce-winkel, aan de toonbank."
+    ],
+    "h2": [
+      "Eén kassasysteem. Web, desktop, iOS en Android.",
+      "Werkt met de apparatuur die je al hebt.",
+      "Gesynchroniseerd met WooCommerce. Van jou, ook offline.",
+      "Eén kassasysteem. Web, desktop, iOS en Android.",
+      "Werkt met de apparatuur die je al hebt.",
+      "Gesynchroniseerd met WooCommerce. Van jou, ook offline.",
+      "Wat winkeliers zeggen",
+      "Gebouwd voor de eisen van fysieke retail",
+      "Begin gratis. Upgrade wanneer je meer nodig hebt.",
+      "Klaar om in de winkel te verkopen met WooCommerce?"
+    ],
+    "jsonld": [
+      "Organization",
+      "SoftwareApplication",
+      "WebSite"
+    ],
+    "internalLinks": 15,
+    "imgsNoAlt": 0,
+    "scrollWidth": 1440,
+    "innerWidth": 1440,
+    "overflow": [
+      "span.WsUjrG_counterLife2",
+      "span.WsUjrG_counterLife3",
+      "div.absolute -inset-x-[10%] -inset-y-[20%] WsUjrG_ribbonWrap",
+      "div.absolute right-[-6%] top-[6%] h-[75%] w-[60%] rounded-full W",
+      "div.-ml-[210px] -mt-[132px]"
+    ],
+    "foldText": "WCPOS\nDownloaden\nPro\nDocumentatie\nOndersteuning\nRoutekaart\nAanmelden\nPOS — Amerikaanse winkel\nR1\nProducten zoeken\nOp voorraad ✕\nUitgelicht\nIn de aanbieding\nCategorie\nDraagtas\nUS$ 29\nVarianten\nKaars\nUS$ 24\nMok\nUS$ 18\nZeepblok\nUS$ 9\nVarianten\nNotitieboek\nUS$ 14\nTheedoek\nUS$ 16\nBelasting gebaseerd op: winkelbasisadres\nToont 16 van 18\nKlant:\nGast ✕\nKaars\nUS$ 24\n2× Mok\nUS$ 36\nZeepblok\nUS$ 9\nSubtotaal\nUS$ 69,00\nUS$ 69 afrekenen\nPOS — Amerikaanse winkel\nR2\nProducten zoeken\nOp voorraad ✕\nUitgelicht\nIn de aanbieding\nCategorie\nDraagtas\nUS$ 29\nVarianten\nKaars\nUS$ 24\nMok\nUS$ 18\nZeepblok\nUS$ 9\nVarianten\nNo"
+  },
+  "nl-home-phone": {
+    "url": "https://wcpos.com/nl",
+    "status": 200,
+    "loadMs": 769,
+    "title": "WCPOS - Kassasysteem voor WooCommerce",
+    "description": "Gratis, open-source WooCommerce-kassa. Verkoop offline, splits betalingen, open en sluit de kassa, gratis in 2.0. Web- en desktopapps; iOS en Android in bèta.",
+    "canonical": "https://wcpos.com/nl",
+    "hreflang": 11,
+    "ogImage": "https://wcpos.com/opengraph-image.png",
+    "robots": null,
+    "h1": [
+      "Je WooCommerce-winkel, aan de toonbank.",
+      "Je WooCommerce-winkel, aan de toonbank."
+    ],
+    "h2": [
+      "Eén kassasysteem. Web, desktop, iOS en Android.",
+      "Werkt met de apparatuur die je al hebt.",
+      "Gesynchroniseerd met WooCommerce. Van jou, ook offline.",
+      "Eén kassasysteem. Web, desktop, iOS en Android.",
+      "Werkt met de apparatuur die je al hebt.",
+      "Gesynchroniseerd met WooCommerce. Van jou, ook offline.",
+      "Wat winkeliers zeggen",
+      "Gebouwd voor de eisen van fysieke retail",
+      "Begin gratis. Upgrade wanneer je meer nodig hebt.",
+      "Klaar om in de winkel te verkopen met WooCommerce?"
+    ],
+    "jsonld": [
+      "Organization",
+      "SoftwareApplication",
+      "WebSite"
+    ],
+    "internalLinks": 15,
+    "imgsNoAlt": 0,
+    "scrollWidth": 390,
+    "innerWidth": 390,
+    "overflow": [
+      "div.flex origin-center scale-[0.55] items-center justify-center ",
+      "div.w-[340px]",
+      "div.h-[250px] rounded-t-xl p-2.5 pb-1 WsUjrG_laptopLid",
+      "div.h-full w-full overflow-hidden rounded-lg",
+      "svg.[object SVGAnimatedString]"
+    ],
+    "foldText": "WCPOS\nMenu openen\n\nNieuw in 2.0 · Open en sluit je kassa, splits betalingen en bekijk de verkopen van vandaag — gratis.\n\nKASSASYSTEEM VOOR WOOCOMMERCE\n\nJe WooCommerce-winkel, aan de toonbank.\n\nWCPOS verandert je tablet, telefoon of computer in een kassa — dezelfde catalogus, dezelfde voorraad, dezelfde prijzen, zelfs offline.\n\nLive demo proberen\nGratis downloaden\n5.000+ actieve winkels\nGratis en open source\nSinds 2014\n\nELK SCHERM DAT JE HEBT\n\nEén kassasysteem. Web, desktop, iOS en Android.\n\nGebruik de kassa op de tablet aan de toonbank, de telefoon op de winkelvloer of de laptop in het kantoor"
+  },
+  "nl-pro-desktop": {
+    "url": "https://wcpos.com/nl/pro",
+    "status": 200,
+    "loadMs": 1642,
+    "title": "Pro-functies & prijzen – Kassa voor WooCommerce | WCPOS",
+    "description": "WCPOS Pro voor WooCommerce: meer kassa's en meerdere winkels, terminalbetalingen, voorraad- en prijsbewerking, order- en klantbeheer en volledige rapporten.",
+    "canonical": "https://wcpos.com/nl/pro",
+    "hreflang": 11,
+    "ogImage": "https://wcpos.com/og/pro.png",
+    "robots": null,
+    "h1": [
+      "WCPOS Pro – Kassasysteem voor WooCommerce"
+    ],
+    "h2": [
+      "Wat zit er in Pro?",
+      "Koop Pro",
+      "Veelgestelde vragen"
+    ],
+    "jsonld": [
+      "Organization",
+      "SoftwareApplication",
+      "FAQPage"
+    ],
+    "internalLinks": 14,
+    "imgsNoAlt": 0,
+    "scrollWidth": 1440,
+    "innerWidth": 1440,
+    "overflow": [],
+    "foldText": "WCPOS\nDownloaden\nPro\nDocumentatie\nOndersteuning\nRoutekaart\nAanmelden\nWCPOS Pro – Kassasysteem voor WooCommerce\n\nAlles uit de gratis POS, plus betaalterminals, winkelbeheer aan de kassa, volledige rapporten en prioriteitssupport.\n\nWat zit er in Pro?\n\nAlles uit de gratis versie, plus de tools om je hele winkel vanaf de kassa te runnen — en prioriteitssupport wanneer je hulp nodig hebt.\n\nMeer kassa's en meerdere winkels\n\nVoeg naast de gratis kassa meer kassa's toe en beheer meerdere winkels, elk met een eigen adres, eigen btw-tarieven, een eigen bonsjabloon, eigen prijzen en eigen geautoriseerde "
+  },
+  "nl-pro-phone": {
+    "url": "https://wcpos.com/nl/pro",
+    "status": 200,
+    "loadMs": 1124,
+    "title": "Pro-functies & prijzen – Kassa voor WooCommerce | WCPOS",
+    "description": "WCPOS Pro voor WooCommerce: meer kassa's en meerdere winkels, terminalbetalingen, voorraad- en prijsbewerking, order- en klantbeheer en volledige rapporten.",
+    "canonical": "https://wcpos.com/nl/pro",
+    "hreflang": 11,
+    "ogImage": "https://wcpos.com/og/pro.png",
+    "robots": null,
+    "h1": [
+      "WCPOS Pro – Kassasysteem voor WooCommerce"
+    ],
+    "h2": [
+      "Wat zit er in Pro?",
+      "Koop Pro",
+      "Veelgestelde vragen"
+    ],
+    "jsonld": [
+      "Organization",
+      "SoftwareApplication",
+      "FAQPage"
+    ],
+    "internalLinks": 14,
+    "imgsNoAlt": 0,
+    "scrollWidth": 390,
+    "innerWidth": 390,
+    "overflow": [],
+    "foldText": "WCPOS\nMenu openen\nWCPOS Pro – Kassasysteem voor WooCommerce\n\nAlles uit de gratis POS, plus betaalterminals, winkelbeheer aan de kassa, volledige rapporten en prioriteitssupport.\n\nWat zit er in Pro?\n\nAlles uit de gratis versie, plus de tools om je hele winkel vanaf de kassa te runnen — en prioriteitssupport wanneer je hulp nodig hebt.\n\nMeer kassa's en meerdere winkels\n\nVoeg naast de gratis kassa meer kassa's toe en beheer meerdere winkels, elk met een eigen adres, eigen btw-tarieven, een eigen bonsjabloon, eigen prijzen en eigen geautoriseerde gebruikers.\n\nIntegratie met betaalterminals\n\nNeem k"
+  },
+  "de-home-desktop": {
+    "url": "https://wcpos.com/de",
+    "status": 200,
+    "loadMs": 1372,
+    "title": "WCPOS - Kassensystem für WooCommerce",
+    "description": "Kostenlose Open-Source-WooCommerce-Kasse. Verkaufe offline, teile Zahlungen auf, öffne und schließe die Kasse, gratis in 2.0. Web/Desktop; iOS/Android in Beta.",
+    "canonical": "https://wcpos.com/de",
+    "hreflang": 11,
+    "ogImage": "https://wcpos.com/opengraph-image.png",
+    "robots": null,
+    "h1": [
+      "Dein WooCommerce-Shop an der Ladentheke.",
+      "Dein WooCommerce-Shop an der Ladentheke."
+    ],
+    "h2": [
+      "Ein POS. Web, Desktop, iOS & Android.",
+      "Funktioniert mit der Ausstattung, die du bereits hast.",
+      "Mit WooCommerce synchronisiert. Gehört dir, sogar offline.",
+      "Ein POS. Web, Desktop, iOS & Android.",
+      "Funktioniert mit der Ausstattung, die du bereits hast.",
+      "Mit WooCommerce synchronisiert. Gehört dir, sogar offline.",
+      "Das sagen Shop-Betreiber",
+      "Gebaut für die Anforderungen des stationären Einzelhandels",
+      "Kostenlos starten. Upgraden, wenn du mehr brauchst.",
+      "Bereit, mit WooCommerce im Laden zu verkaufen?"
+    ],
+    "jsonld": [
+      "Organization",
+      "SoftwareApplication",
+      "WebSite"
+    ],
+    "internalLinks": 15,
+    "imgsNoAlt": 0,
+    "scrollWidth": 1440,
+    "innerWidth": 1440,
+    "overflow": [
+      "span.WsUjrG_counterLife2",
+      "span.WsUjrG_counterLife3",
+      "div.absolute -inset-x-[10%] -inset-y-[20%] WsUjrG_ribbonWrap",
+      "div.absolute right-[-6%] top-[6%] h-[75%] w-[60%] rounded-full W",
+      "div.-ml-[210px] -mt-[132px]"
+    ],
+    "foldText": "WCPOS\nHerunterladen\nPro\nDokumentation\nHilfe\nProduktplanung\nAnmelden\nPOS — US-Geschäft\nK1\nProdukte suchen\nAuf Lager ✕\nEmpfohlen\nIm Angebot\nKategorie\nStofftasche\n29 $\nVarianten\nKerze\n24 $\nTasse\n18 $\nSeifenstück\n9 $\nVarianten\nNotizbuch\n14 $\nGeschirrtuch\n16 $\nSteuer basiert auf: Basisadresse des Shops\nZeige 16 von 18\nKunde:\nGast ✕\nKerze\n24 $\n2× Tasse\n36 $\nSeifenstück\n9 $\nZwischensumme\n69,00 $\n69 $ berechnen\nPOS — US-Geschäft\nK2\nProdukte suchen\nAuf Lager ✕\nEmpfohlen\nIm Angebot\nKategorie\nStofftasche\n29 $\nVarianten\nKerze\n24 $\nTasse\n18 $\nSeifenstück\n9 $\nVarianten\nNotizbuch\n14 $\nGeschirrtuch\n16 $\nSteue"
+  },
+  "de-home-phone": {
+    "url": "https://wcpos.com/de",
+    "status": 200,
+    "loadMs": 719,
+    "title": "WCPOS - Kassensystem für WooCommerce",
+    "description": "Kostenlose Open-Source-WooCommerce-Kasse. Verkaufe offline, teile Zahlungen auf, öffne und schließe die Kasse, gratis in 2.0. Web/Desktop; iOS/Android in Beta.",
+    "canonical": "https://wcpos.com/de",
+    "hreflang": 11,
+    "ogImage": "https://wcpos.com/opengraph-image.png",
+    "robots": null,
+    "h1": [
+      "Dein WooCommerce-Shop an der Ladentheke.",
+      "Dein WooCommerce-Shop an der Ladentheke."
+    ],
+    "h2": [
+      "Ein POS. Web, Desktop, iOS & Android.",
+      "Funktioniert mit der Ausstattung, die du bereits hast.",
+      "Mit WooCommerce synchronisiert. Gehört dir, sogar offline.",
+      "Ein POS. Web, Desktop, iOS & Android.",
+      "Funktioniert mit der Ausstattung, die du bereits hast.",
+      "Mit WooCommerce synchronisiert. Gehört dir, sogar offline.",
+      "Das sagen Shop-Betreiber",
+      "Gebaut für die Anforderungen des stationären Einzelhandels",
+      "Kostenlos starten. Upgraden, wenn du mehr brauchst.",
+      "Bereit, mit WooCommerce im Laden zu verkaufen?"
+    ],
+    "jsonld": [
+      "Organization",
+      "SoftwareApplication",
+      "WebSite"
+    ],
+    "internalLinks": 15,
+    "imgsNoAlt": 0,
+    "scrollWidth": 390,
+    "innerWidth": 390,
+    "overflow": [
+      "div.flex origin-center scale-[0.55] items-center justify-center ",
+      "div.w-[340px]",
+      "div.h-[250px] rounded-t-xl p-2.5 pb-1 WsUjrG_laptopLid",
+      "div.h-full w-full overflow-hidden rounded-lg",
+      "svg.[object SVGAnimatedString]"
+    ],
+    "foldText": "WCPOS\nMenü öffnen\n\nNeu in 2.0 · Öffne und schließe deine Kasse, teile Zahlungen auf und sieh die heutigen Verkäufe – kostenlos.\n\nPOINT OF SALE FÜR WOOCOMMERCE\n\nDein WooCommerce-Shop an der Ladentheke.\n\nWCPOS macht dein Tablet, dein Telefon oder deinen Computer zur Kasse — derselbe Katalog, derselbe Bestand, dieselben Preise, sogar offline.\n\nLive-Demo testen\nKostenlos herunterladen\n5.000+ aktive Geschäfte\nKostenlos & Open Source\nSeit 2014\n\nJEDER BILDSCHIRM, DEN DU BESITZT\n\nEin POS. Web, Desktop, iOS & Android.\n\nNutze die Kasse auf dem Tablet an der Theke, das Telefon auf der Verkaufsfläche oder"
+  },
+  "de-pro-desktop": {
+    "url": "https://wcpos.com/de/pro",
+    "status": 200,
+    "loadMs": 2192,
+    "title": "Pro-Funktionen & Preise – Kasse für WooCommerce | WCPOS",
+    "description": "WCPOS Pro für WooCommerce: weitere Kassen und Filialen, Terminalzahlungen, Lager- und Preisbearbeitung, Bestell- und Kundenverwaltung, vollständige Berichte.",
+    "canonical": "https://wcpos.com/de/pro",
+    "hreflang": 11,
+    "ogImage": "https://wcpos.com/og/pro.png",
+    "robots": null,
+    "h1": [
+      "WCPOS Pro – Kassensystem für WooCommerce"
+    ],
+    "h2": [
+      "Was ist in Pro enthalten?",
+      "Hol dir Pro",
+      "Häufig gestellte Fragen"
+    ],
+    "jsonld": [
+      "Organization",
+      "SoftwareApplication",
+      "FAQPage"
+    ],
+    "internalLinks": 14,
+    "imgsNoAlt": 0,
+    "scrollWidth": 1440,
+    "innerWidth": 1440,
+    "overflow": [],
+    "foldText": "WCPOS\nHerunterladen\nPro\nDokumentation\nHilfe\nProduktplanung\nAnmelden\nWCPOS Pro – Kassensystem für WooCommerce\n\nAlles aus dem kostenlosen POS, plus Zahlungsterminals, Ladenverwaltung an der Kasse, vollständige Berichte und Prioritätssupport.\n\nWas ist in Pro enthalten?\n\nAlles aus der Gratis-Version, plus die Werkzeuge, um deinen gesamten Shop direkt von der Kasse aus zu führen — und vorrangiger Support, wenn du Hilfe brauchst.\n\nWeitere Kassen & mehrere Filialen\n\nFüge zur kostenlosen Kasse weitere Kassen hinzu und führe mehrere Filialen, jede mit eigener Adresse, eigenen Steuersätzen, eigener Bele"
+  },
+  "de-pro-phone": {
+    "url": "https://wcpos.com/de/pro",
+    "status": 200,
+    "loadMs": 1648,
+    "title": "Pro-Funktionen & Preise – Kasse für WooCommerce | WCPOS",
+    "description": "WCPOS Pro für WooCommerce: weitere Kassen und Filialen, Terminalzahlungen, Lager- und Preisbearbeitung, Bestell- und Kundenverwaltung, vollständige Berichte.",
+    "canonical": "https://wcpos.com/de/pro",
+    "hreflang": 11,
+    "ogImage": "https://wcpos.com/og/pro.png",
+    "robots": null,
+    "h1": [
+      "WCPOS Pro – Kassensystem für WooCommerce"
+    ],
+    "h2": [
+      "Was ist in Pro enthalten?",
+      "Hol dir Pro",
+      "Häufig gestellte Fragen"
+    ],
+    "jsonld": [
+      "Organization",
+      "SoftwareApplication",
+      "FAQPage"
+    ],
+    "internalLinks": 14,
+    "imgsNoAlt": 0,
+    "scrollWidth": 390,
+    "innerWidth": 390,
+    "overflow": [],
+    "foldText": "WCPOS\nMenü öffnen\nWCPOS Pro – Kassensystem für WooCommerce\n\nAlles aus dem kostenlosen POS, plus Zahlungsterminals, Ladenverwaltung an der Kasse, vollständige Berichte und Prioritätssupport.\n\nWas ist in Pro enthalten?\n\nAlles aus der Gratis-Version, plus die Werkzeuge, um deinen gesamten Shop direkt von der Kasse aus zu führen — und vorrangiger Support, wenn du Hilfe brauchst.\n\nWeitere Kassen & mehrere Filialen\n\nFüge zur kostenlosen Kasse weitere Kassen hinzu und führe mehrere Filialen, jede mit eigener Adresse, eigenen Steuersätzen, eigener Belegvorlage, eigenen Preisen und eigenen autorisierte"
+  }
+}
