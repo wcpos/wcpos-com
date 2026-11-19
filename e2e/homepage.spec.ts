@@ -45,7 +45,7 @@ test.describe('Homepage', () => {
 
   test('renders the marketing sections', async ({ page }) => {
     await expect(
-      page.getByRole('heading', { name: 'Works for stores of all kinds' })
+      page.getByRole('heading', { name: 'What store owners say' })
     ).toBeVisible()
     await expect(
       page.getByRole('heading', {
