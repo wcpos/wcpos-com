@@ -270,7 +270,7 @@
           "text": "Apri e chiudi la cassa, suddividi i pagamenti e consulta le vendite di oggi — gratis."
         },
         "h": "Il tuo negozio WooCommerce, al banco.",
-        "b": "WCPOS trasforma il tablet nel tuo registratore — stesso catalogo, stesso stock, stessi prezzi, anche offline.",
+        "b": "WCPOS trasforma il tuo tablet, telefono o computer in un registratore — stesso catalogo, stesso stock, stessi prezzi, anche offline.",
         "c1": "Prova la demo live",
         "c2": "Scarica gratis",
         "badges": {
@@ -2469,7 +2469,7 @@
         "intro": "Un confronto onesto considera entrambi i lati:",
         "free": "Il POS di Square offre un piano gratuito, Square Free ($0/month per sede). WCPOS Pro costa $129 o più.",
         "tapToPay": "Tap to Pay su iPhone e Android: un cliente può avvicinare la carta al vostro telefono. WCPOS non dispone ancora di Tap to Pay; arriverà con un aggiornamento dell'app.",
-        "offline": "Pagamenti con carta offline: il POS di Square continua ad accettare carte senza Internet, purché vi riconnettiate e carichiate i pagamenti entro 72 ore; siete responsabili di quelli che scadono, vengono rifiutati o contestati. WCPOS continua a effettuare vendite in contanti offline, ma i lettori di carte collegati richiedono una connessione.",
+        "offline": "Pagamenti con carta offline: il POS di Square continua ad accettare carte senza Internet, purché vi riconnettiate e carichiate i pagamenti entro 72 ore; siete responsabili di quelli che scadono, vengono rifiutati o contestati. WCPOS continua a effettuare vendite in contanti offline e registra le vendite con carta incassate sul vostro terminale di pagamento autonomo; i lettori di carte collegati e i gateway online richiedono una connessione.",
         "hardware": "L'hardware di Square: Square Register include Square Point of Sale, quindi il registratore di cassa e il suo software provengono dalla stessa azienda. WCPOS non vende hardware; funziona sui computer, tablet e telefoni che avete già.",
         "outro": "Se vendete di persona da dispositivi iOS o Android o Square Register in una sola sede, accettate pagamenti tramite Square e non avete bisogno che le vendite di persona diventino ordini WooCommerce, il POS di Square con l'estensione potrebbe essere sufficiente."
       },
@@ -2730,7 +2730,7 @@
         "title": "Dove Vitepos è davvero migliore",
         "intro": "Un confronto onesto considera entrambi i lati:",
         "restaurant": "Modalità ristorante — Vitepos dispone di modalità per alimentari e ristoranti, con un pannello per i camerieri, un pannello per la cucina e la gestione dei tavoli; WCPOS non ha una modalità ristorante.",
-        "offline": "Ordini offline — Vitepos afferma di continuare a elaborare gli ordini senza connessione Internet e di sincronizzarli al ritorno della connessione. WCPOS continua a effettuare vendite in contanti offline, ma i lettori di carte collegati e i gateway online richiedono una connessione.",
+        "offline": "Ordini offline — Vitepos afferma di continuare a elaborare gli ordini senza connessione Internet e di sincronizzarli al ritorno della connessione. WCPOS continua a effettuare vendite in contanti offline e registra le vendite con carta incassate sul vostro terminale di pagamento autonomo; i lettori di carte collegati e i gateway online richiedono una connessione.",
         "kiosk": "Chiosco self-service — Vitepos vende una Kiosk App come componente aggiuntivo; WCPOS non ha una modalità chiosco.",
         "price": "Un prezzo di listino più basso — Vitepos Pro parte da $79 per un piano annuale per un sito, contro $129 per WCPOS Pro.",
         "rating": "Una valutazione più alta su WordPress.org — 4.7 stelle da 54 recensioni, contro 3.7 per WCPOS.",
@@ -3017,7 +3017,7 @@
         "title": "Dove FooSales è davvero migliore",
         "intro": "Un confronto onesto vale in entrambe le direzioni:",
         "tapToPay": "Tap to Pay su iPhone e Android — con FooSales Plus, un cliente può avvicinare la carta al vostro telefono tramite Stripe o Square. WCPOS non dispone ancora di Tap to Pay; arriverà con un aggiornamento dell'app.",
-        "offline": "Ordini offline — FooSales afferma che le sue app continuano a registrare nuovi ordini, cancellazioni e rimborsi senza connessione Internet e li sincronizzano con WooCommerce al ritorno della connessione. WCPOS continua a effettuare vendite in contanti offline, ma i lettori di carte collegati e i gateway online richiedono una connessione.",
+        "offline": "Ordini offline — FooSales afferma che le sue app continuano a registrare nuovi ordini, cancellazioni e rimborsi senza connessione Internet e li sincronizzano con WooCommerce al ritorno della connessione. WCPOS continua a effettuare vendite in contanti offline e registra le vendite con carta incassate sul vostro terminale di pagamento autonomo; i lettori di carte collegati e i gateway online richiedono una connessione.",
         "outro": "Se volete Tap to Pay su un telefono o una modalità per gli ordini offline e un abbonamento annuale per ogni negozio fa al caso vostro, FooSales potrebbe essere la scelta migliore."
       },
       "choose": {

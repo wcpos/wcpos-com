@@ -270,7 +270,7 @@
           "text": "Open and close your register, split payments and see today's sales — free."
         },
         "h": "Your WooCommerce store, at the counter.",
-        "b": "WCPOS turns the tablet into your register — same catalog, same stock, same prices, even offline.",
+        "b": "WCPOS turns your tablet, phone or computer into a register — same catalog, same stock, same prices, even offline.",
         "c1": "Try Live Demo",
         "c2": "Download Free",
         "badges": {
@@ -2469,7 +2469,7 @@
         "intro": "An honest comparison cuts both ways:",
         "free": "Square's POS has a free plan, Square Free ($0/month per location). WCPOS Pro costs $129 or more.",
         "tapToPay": "Tap to Pay on iPhone and on Android: a customer can hold their card to your phone. WCPOS doesn't have Tap to Pay yet; it follows in an app update.",
-        "offline": "Offline card payments: Square's POS keeps taking cards without internet, as long as you reconnect and upload them within 72 hours, and you are responsible for any that expire, are declined, or are disputed. WCPOS keeps taking cash sales offline, but connected card readers need a connection.",
+        "offline": "Offline card payments: Square's POS keeps taking cards without internet, as long as you reconnect and upload them within 72 hours, and you are responsible for any that expire, are declined, or are disputed. WCPOS keeps taking cash sales offline, and records card sales taken on your own standalone terminal; connected readers and online gateways need a connection.",
         "hardware": "Square's own hardware: Square Register comes with Square Point of Sale built in, so the register and its software come from one company. WCPOS sells no hardware; it runs on the computers, tablets and phones you already have.",
         "outro": "If you sell in person from iOS or Android devices or Square Register at one location, take payments through Square, and don't need your in-person sales to be WooCommerce orders, Square's POS with the extension may be all you need."
       },
@@ -2730,7 +2730,7 @@
         "title": "Where Vitepos is genuinely better",
         "intro": "An honest comparison cuts both ways:",
         "restaurant": "Restaurant modes — Vitepos has grocery and restaurant modes, with a waiter panel, a kitchen panel and table management; WCPOS has no restaurant mode.",
-        "offline": "Offline orders — Vitepos says it keeps processing orders without an internet connection and syncs them when the connection returns. WCPOS keeps taking cash sales offline, but connected card readers and online gateways need a connection.",
+        "offline": "Offline orders — Vitepos says it keeps processing orders without an internet connection and syncs them when the connection returns. WCPOS keeps taking cash sales offline, and records card sales taken on your own standalone terminal; connected readers and online gateways need a connection.",
         "kiosk": "Self-service kiosk — Vitepos sells a Kiosk App add-on; WCPOS has no kiosk mode.",
         "price": "A lower list price — Vitepos Pro starts at $79 for a yearly one-site plan, against $129 for WCPOS Pro.",
         "rating": "A higher WordPress.org rating — 4.7 stars from 54 reviews, against 3.7 for WCPOS.",
@@ -3017,7 +3017,7 @@
         "title": "Where FooSales is genuinely better",
         "intro": "An honest comparison cuts both ways:",
         "tapToPay": "Tap to Pay on iPhone and Android — with FooSales Plus, a customer can hold their card to your phone, through Stripe or Square. WCPOS doesn't have Tap to Pay yet; it follows in an app update.",
-        "offline": "Offline orders — FooSales says its apps keep recording new orders, cancellations and refunds without an internet connection and sync them to WooCommerce when the connection returns. WCPOS keeps taking cash sales offline, but connected card readers and online gateways need a connection.",
+        "offline": "Offline orders — FooSales says its apps keep recording new orders, cancellations and refunds without an internet connection and sync them to WooCommerce when the connection returns. WCPOS keeps taking cash sales offline, and records card sales taken on your own standalone terminal; connected readers and online gateways need a connection.",
         "outro": "If you want Tap to Pay on a phone or an offline order mode, and a yearly subscription for each store suits you, FooSales may be the better fit."
       },
       "choose": {

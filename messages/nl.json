@@ -270,7 +270,7 @@
           "text": "Open en sluit je kassa, splits betalingen en bekijk de verkopen van vandaag — gratis."
         },
         "h": "Je WooCommerce-winkel, aan de toonbank.",
-        "b": "WCPOS verandert de tablet in je kassa — dezelfde catalogus, dezelfde voorraad, dezelfde prijzen, zelfs offline.",
+        "b": "WCPOS verandert je tablet, telefoon of computer in een kassa — dezelfde catalogus, dezelfde voorraad, dezelfde prijzen, zelfs offline.",
         "c1": "Live demo proberen",
         "c2": "Gratis downloaden",
         "badges": {
@@ -2469,7 +2469,7 @@
         "intro": "Een eerlijke vergelijking bekijkt beide kanten:",
         "free": "De POS van Square heeft een gratis abonnement, Square Free ($0/month per locatie). WCPOS Pro kost $129 of meer.",
         "tapToPay": "Tap to Pay op iPhone en Android: een klant kan zijn kaart tegen je telefoon houden. WCPOS heeft nog geen Tap to Pay; het volgt in een app-update.",
-        "offline": "Offline kaartbetalingen: de POS van Square blijft kaarten accepteren zonder internet, zolang je binnen 72 uur opnieuw verbinding maakt en de betalingen uploadt. Je bent verantwoordelijk voor betalingen die verlopen, worden geweigerd of betwist. WCPOS blijft offline contante verkopen afhandelen, maar aangesloten kaartlezers hebben een verbinding nodig.",
+        "offline": "Offline kaartbetalingen: de POS van Square blijft kaarten accepteren zonder internet, zolang je binnen 72 uur opnieuw verbinding maakt en de betalingen uploadt. Je bent verantwoordelijk voor betalingen die verlopen, worden geweigerd of betwist. WCPOS blijft offline contante verkopen afhandelen en registreert kaartverkopen via je eigen losse betaalterminal; aangesloten kaartlezers en online gateways hebben een verbinding nodig.",
         "hardware": "Eigen hardware van Square: Square Register heeft Square Point of Sale ingebouwd, zodat de kassa en de software van hetzelfde bedrijf komen. WCPOS verkoopt geen hardware; het werkt op de computers, tablets en telefoons die je al hebt.",
         "outro": "Als je fysiek verkoopt via iOS- of Android-apparaten of Square Register op één locatie, betalingen via Square aanneemt en niet nodig hebt dat je fysieke verkopen WooCommerce-bestellingen worden, kan de POS van Square met de extensie voldoende zijn."
       },
@@ -2730,7 +2730,7 @@
         "title": "Waar Vitepos echt beter is",
         "intro": "Een eerlijke vergelijking bekijkt beide kanten:",
         "restaurant": "Restaurantmodi — Vitepos heeft modi voor supermarkten en restaurants, met een bedieningspaneel, een keukenpaneel en tafelbeheer; WCPOS heeft geen restaurantmodus.",
-        "offline": "Offline bestellingen — Vitepos zegt bestellingen zonder internetverbinding te blijven verwerken en ze te synchroniseren zodra de verbinding terugkeert. WCPOS blijft offline contante verkopen afhandelen, maar aangesloten kaartlezers en online gateways hebben een verbinding nodig.",
+        "offline": "Offline bestellingen — Vitepos zegt bestellingen zonder internetverbinding te blijven verwerken en ze te synchroniseren zodra de verbinding terugkeert. WCPOS blijft offline contante verkopen afhandelen en registreert kaartverkopen via je eigen losse betaalterminal; aangesloten kaartlezers en online gateways hebben een verbinding nodig.",
         "kiosk": "Zelfbedieningskiosk — Vitepos verkoopt een Kiosk App als add-on; WCPOS heeft geen kioskmodus.",
         "price": "Een lagere catalogusprijs — Vitepos Pro begint bij $79 voor een jaarabonnement voor één site, tegenover $129 voor WCPOS Pro.",
         "rating": "Een hogere beoordeling op WordPress.org — 4.7 sterren uit 54 beoordelingen, tegenover 3.7 voor WCPOS.",
@@ -3017,7 +3017,7 @@
         "title": "Waar FooSales echt beter is",
         "intro": "Een eerlijke vergelijking snijdt aan twee kanten:",
         "tapToPay": "Tap to Pay op iPhone en Android — met FooSales Plus kan een klant zijn kaart via Stripe of Square tegen je telefoon houden. WCPOS heeft nog geen Tap to Pay; het volgt in een app-update.",
-        "offline": "Offline bestellingen — FooSales zegt dat zijn apps zonder internetverbinding nieuwe bestellingen, annuleringen en terugbetalingen blijven registreren en die met WooCommerce synchroniseren zodra de verbinding terugkeert. WCPOS blijft offline contante verkopen afhandelen, maar aangesloten kaartlezers en online gateways hebben een verbinding nodig.",
+        "offline": "Offline bestellingen — FooSales zegt dat zijn apps zonder internetverbinding nieuwe bestellingen, annuleringen en terugbetalingen blijven registreren en die met WooCommerce synchroniseren zodra de verbinding terugkeert. WCPOS blijft offline contante verkopen afhandelen en registreert kaartverkopen via je eigen losse betaalterminal; aangesloten kaartlezers en online gateways hebben een verbinding nodig.",
         "outro": "Als je Tap to Pay op een telefoon of een modus voor offline bestellingen wilt en een jaarabonnement per winkel bij je past, is FooSales misschien de betere keuze."
       },
       "choose": {
