@@ -6,19 +6,10 @@ vi.mock('@/lib/analytics/client-events', () => ({
 }))
 
 vi.mock('next-intl', () => {
-  type RichValue = string | ((chunks: React.ReactNode) => React.ReactNode)
   return {
     useTranslations: (namespace: string) => {
       const t = (key: string) => `${namespace}.${key}`
-      t.rich = (key: string, values?: Record<string, RichValue>) => {
-        if (key !== 'pluginNotice') return `${namespace}.${key}`
-        const plugin = values?.plugin
-        return [
-          'Every app connects to ',
-          typeof plugin === 'function' ? plugin('the mocked free plugin') : null,
-          ' — install it first.',
-        ]
-      }
+      t.rich = (key: string) => `${namespace}.${key}`
       return t
     },
   }
@@ -26,11 +17,25 @@ vi.mock('next-intl', () => {
 
 import { trackClientEvent } from '@/lib/analytics/client-events'
 import { DownloadsHero } from './download-hero'
+import de from '../../../messages/de.json'
+import en from '../../../messages/en.json'
+import es from '../../../messages/es.json'
+import fr from '../../../messages/fr.json'
+import it_ from '../../../messages/it.json'
+import ja from '../../../messages/ja.json'
+import ko from '../../../messages/ko.json'
+import nl from '../../../messages/nl.json'
+import pt from '../../../messages/pt.json'
+import zh from '../../../messages/zh.json'
+
+const LOCALES = { en, de, nl, fr, es, it: it_, pt, ja, ko, zh }
+const PLUGIN_URL = 'https://wordpress.org/plugins/woocommerce-pos/'
+const PLUGIN_BUTTON = 'downloads.page.steps.plugin.title'
 
 const mockTrackClientEvent = vi.mocked(trackClientEvent)
 
 function getPluginLink() {
-  return screen.getByRole('link', { name: 'the mocked free plugin' })
+  return screen.getByRole('link', { name: PLUGIN_BUTTON })
 }
 
 describe('DownloadsHero', () => {
@@ -47,14 +52,16 @@ describe('DownloadsHero', () => {
     ).toBeTruthy()
   })
 
-  it('renders the plugin notice link exactly once', () => {
+  it('links to the plugin exactly once, from the plugin button', () => {
     render(<DownloadsHero desktopVersion="2.0.0" />)
-    expect(
-      screen.getAllByRole('link', { name: 'the mocked free plugin' }),
-    ).toHaveLength(1)
+    const pluginLinks = screen
+      .getAllByRole('link')
+      .filter((link) => link.getAttribute('href') === PLUGIN_URL)
+    expect(pluginLinks).toHaveLength(1)
+    expect(pluginLinks[0]).toBe(getPluginLink())
   })
 
-  it('puts the plugin notice inside the card, above the primary download link', () => {
+  it('puts the plugin button inside the card, above the primary download link', () => {
     render(<DownloadsHero desktopVersion="2.0.0" />)
     const pluginLink = getPluginLink()
     const primaryLink = screen.getByRole('link', {
@@ -69,7 +76,7 @@ describe('DownloadsHero', () => {
     ).toBeTruthy()
   })
 
-  it('tracks a click on the plugin link', () => {
+  it('tracks a click on the plugin button', () => {
     render(<DownloadsHero desktopVersion="2.0.0" />)
     fireEvent.click(getPluginLink())
     expect(mockTrackClientEvent).toHaveBeenCalledWith('download_clicked', {
@@ -78,4 +85,14 @@ describe('DownloadsHero', () => {
       page: '/downloads',
     })
   })
+
+  it.each(Object.entries(LOCALES))(
+    '%s: plugin notice is plain text and the button label exists',
+    (_locale, messages) => {
+      expect(messages.downloads.hero.pluginNotice).not.toMatch(/<\/?plugin>/)
+      const label = messages.downloads.page.steps.plugin.title
+      expect(typeof label).toBe('string')
+      expect(label.trim()).not.toBe('')
+    },
+  )
 })
