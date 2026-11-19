@@ -1642,7 +1642,8 @@
       "detected": "Détecté",
       "intelMac": "Sur un Mac Intel ? <intel>Téléchargez la version Intel</intel>",
       "macos12": "Sous macOS 12 Monterey ? WCPOS 2.0 nécessite macOS 13 ou une version ultérieure. La version {version} fonctionne toujours sous macOS 12 avec l’extension 1.11 : <arm>Apple Silicon</arm> · <intel>Intel</intel>",
-      "pluginNotice": "Chaque application se connecte au plugin WordPress gratuit — installez-le d’abord."
+      "pluginNotice": "Chaque application se connecte au plugin WordPress gratuit — installez-le d’abord.",
+      "upgradeNote": "Mise à niveau depuis la 1.11 ? Synchronisez d’abord toutes les caisses : la version 2.0 crée une nouvelle base de données locale et ne reprend pas les ventes non envoyées."
     },
     "howItFits": {
       "eyebrow": "Comment tout s’assemble",

@@ -86,6 +86,34 @@ describe('DownloadsHero', () => {
     })
   })
 
+  it('shows the en upgrade note for the default platform and for web', () => {
+    expect(en.downloads.hero.upgradeNote).toBe(
+      'Upgrading from 1.11? Sync every register first: 2.0 starts a new local database and does not carry over unsent sales.',
+    )
+    render(<DownloadsHero desktopVersion="2.0.0" />)
+    expect(screen.getByTestId('upgrade-note')).toHaveTextContent(
+      'downloads.hero.upgradeNote',
+    )
+    fireEvent.click(
+      screen.getByRole('button', { name: 'downloads.platforms.web.name' }),
+    )
+    screen.getByRole('link', { name: 'downloads.platforms.web.action' })
+    expect(screen.getByTestId('upgrade-note')).toHaveTextContent(
+      'downloads.hero.upgradeNote',
+    )
+  })
+
+  it('puts the upgrade note after the platform download button', () => {
+    render(<DownloadsHero desktopVersion="2.0.0" />)
+    const primaryLink = screen.getByRole('link', {
+      name: /^downloads\.platforms\.[\w-]+\.action$/,
+    })
+    expect(
+      primaryLink.compareDocumentPosition(screen.getByTestId('upgrade-note')) &
+        Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy()
+  })
+
   it.each(Object.entries(LOCALES))(
     '%s: plugin notice is plain text and the button label exists',
     (_locale, messages) => {

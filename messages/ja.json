@@ -1642,7 +1642,8 @@
       "detected": "検出済み",
       "intelMac": "Intel Macをお使いですか？ <intel>Intel版を入手</intel>",
       "macos12": "macOS 12 Montereyをお使いですか？ WCPOS 2.0にはmacOS 13以降が必要です。バージョン{version}は1.11プラグインと組み合わせてmacOS 12で引き続き使えます：<arm>Apple Silicon</arm> · <intel>Intel</intel>",
-      "pluginNotice": "すべてのアプリは無料のWordPressプラグインに接続します — まずインストールしてください。"
+      "pluginNotice": "すべてのアプリは無料のWordPressプラグインに接続します — まずインストールしてください。",
+      "upgradeNote": "1.11からアップグレードしますか？ 先にすべてのレジを同期してください：2.0は新しいローカルデータベースを作成し、未送信の売上は引き継ぎません。"
     },
     "howItFits": {
       "eyebrow": "全体の仕組み",
