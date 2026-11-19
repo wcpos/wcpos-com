@@ -2255,7 +2255,7 @@
           },
           "cardPayments": {
             "label": "Card payments",
-            "wcpos": "Pro terminal integrations: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc, Windcave; Vipps MobilePay by QR code or push",
+            "wcpos": "Free: cash, and card sales taken on your own standalone terminal, recorded on the order. Pro terminal integrations: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc, Windcave; Vipps MobilePay by QR code or push",
             "woocommerce": "WooPayments or Stripe, with a Bluetooth card reader"
           },
           "gateways": {
@@ -2413,7 +2413,7 @@
           },
           "cardPayments": {
             "label": "Card payments",
-            "wcpos": "Pro terminal integrations: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc, Windcave; Vipps MobilePay by QR code or push",
+            "wcpos": "Free: cash, and card sales taken on your own standalone terminal, recorded on the order. Pro terminal integrations: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc, Windcave; Vipps MobilePay by QR code or push",
             "square": "Square payments, including Tap to Pay on iPhone and Android"
           },
           "fees": {
@@ -2568,7 +2568,7 @@
           },
           "cardPayments": {
             "label": "Card payments",
-            "wcpos": "Pro terminal integrations: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc, Windcave; Vipps MobilePay by QR code or push",
+            "wcpos": "Free: cash, and card sales taken on your own standalone terminal, recorded on the order. Pro terminal integrations: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc, Windcave; Vipps MobilePay by QR code or push",
             "jovvie": "Stripe Terminal (BizSwoop is a Stripe Terminal partner), with readers such as the Stripe M2"
           },
           "apps": {
@@ -2676,7 +2676,7 @@
           },
           "cardPayments": {
             "label": "Card payments",
-            "wcpos": "Pro terminal integrations: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc, Windcave; Vipps MobilePay by QR code or push",
+            "wcpos": "Free: cash, and card sales taken on your own standalone terminal, recorded on the order. Pro terminal integrations: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc, Windcave; Vipps MobilePay by QR code or push",
             "vitepos": "Stripe Terminal and Wallee terminal payments"
           },
           "apps": {
@@ -2823,7 +2823,7 @@
           },
           "cardPayments": {
             "label": "Card payments",
-            "wcpos": "Pro terminal integrations: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc, Windcave; Vipps MobilePay by QR code or push",
+            "wcpos": "Free: cash, and card sales taken on your own standalone terminal, recorded on the order. Pro terminal integrations: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc, Windcave; Vipps MobilePay by QR code or push",
             "yith": "No card terminal connection; payments are processed manually, with Cash and Chip and Pin payment methods"
           },
           "apps": {
@@ -2968,7 +2968,7 @@
           },
           "cardPayments": {
             "label": "Card payments",
-            "wcpos": "Pro terminal integrations: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc, Windcave; Vipps MobilePay by QR code or push",
+            "wcpos": "Free: cash, and card sales taken on your own standalone terminal, recorded on the order. Pro terminal integrations: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc, Windcave; Vipps MobilePay by QR code or push",
             "foosales": "Plus plan: Square Terminal, Square Readers (tablet apps) and Stripe Terminal readers"
           },
           "tapToPay": {
