@@ -2035,7 +2035,7 @@
           },
           "terminals": {
             "label": "刷卡终端",
-            "wcpos": "Stripe Terminal、SumUp、PayPal Reader（Zettle）、Square Terminal、Mollie Terminal、Vipps MobilePay（Pro 版，通过扩展目录安装）",
+            "wcpos": "Stripe Terminal、SumUp、PayPal Reader（Zettle）、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcave；通过二维码或推送通知收款的 Vipps MobilePay（Pro 版，通过扩展目录安装）",
             "oliver": "Stripe、Square、Adyen、Nets；Oliver Pay；自有硬件主机"
           },
           "platforms": {
@@ -2255,7 +2255,7 @@
           },
           "cardPayments": {
             "label": "银行卡支付",
-            "wcpos": "Pro 版终端集成：Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Vipps MobilePay",
+            "wcpos": "Pro 版终端集成：Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcave；通过二维码或推送通知收款的 Vipps MobilePay",
             "woocommerce": "WooPayments 或 Stripe，配合 Bluetooth 读卡器"
           },
           "gateways": {
@@ -2413,7 +2413,7 @@
           },
           "cardPayments": {
             "label": "银行卡支付",
-            "wcpos": "Pro 版终端集成：Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Vipps MobilePay",
+            "wcpos": "Pro 版终端集成：Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcave；通过二维码或推送通知收款的 Vipps MobilePay",
             "square": "Square 支付，包括 iPhone 和 Android 上的 Tap to Pay"
           },
           "fees": {
@@ -2568,7 +2568,7 @@
           },
           "cardPayments": {
             "label": "银行卡支付",
-            "wcpos": "Pro 版终端集成：Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Vipps MobilePay",
+            "wcpos": "Pro 版终端集成：Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcave；通过二维码或推送通知收款的 Vipps MobilePay",
             "jovvie": "Stripe Terminal（BizSwoop 是 Stripe Terminal 的合作伙伴），支持 Stripe M2 等读卡器"
           },
           "apps": {
@@ -2676,7 +2676,7 @@
           },
           "cardPayments": {
             "label": "银行卡支付",
-            "wcpos": "Pro 版终端集成：Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Vipps MobilePay",
+            "wcpos": "Pro 版终端集成：Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcave；通过二维码或推送通知收款的 Vipps MobilePay",
             "vitepos": "通过 Stripe Terminal 和 Wallee 接受终端付款"
           },
           "apps": {
@@ -2823,7 +2823,7 @@
           },
           "cardPayments": {
             "label": "银行卡支付",
-            "wcpos": "Pro 版终端集成：Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Vipps MobilePay",
+            "wcpos": "Pro 版终端集成：Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcave；通过二维码或推送通知收款的 Vipps MobilePay",
             "yith": "无法连接刷卡终端；付款需手动处理，提供 Cash 和 Chip and Pin 付款方式"
           },
           "apps": {
@@ -2968,7 +2968,7 @@
           },
           "cardPayments": {
             "label": "银行卡支付",
-            "wcpos": "Pro 版终端集成：Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Vipps MobilePay",
+            "wcpos": "Pro 版终端集成：Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcave；通过二维码或推送通知收款的 Vipps MobilePay",
             "foosales": "Plus 方案：Square Terminal、Square Readers（平板应用）和 Stripe Terminal 读卡器"
           },
           "tapToPay": {

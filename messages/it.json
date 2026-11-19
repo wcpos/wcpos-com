@@ -2035,7 +2035,7 @@
           },
           "terminals": {
             "label": "Terminali di pagamento",
-            "wcpos": "Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Vipps MobilePay (Pro, tramite il catalogo estensioni)",
+            "wcpos": "Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc, Windcave; Vipps MobilePay tramite codice QR o notifica push (Pro, tramite il catalogo estensioni)",
             "oliver": "Stripe, Square, Adyen, Nets; Oliver Pay; hub hardware proprio"
           },
           "platforms": {
@@ -2255,7 +2255,7 @@
           },
           "cardPayments": {
             "label": "Pagamenti con carta",
-            "wcpos": "Integrazioni con terminali Pro: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Vipps MobilePay",
+            "wcpos": "Integrazioni con terminali Pro: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc, Windcave; Vipps MobilePay tramite codice QR o notifica push",
             "woocommerce": "WooPayments o Stripe, con un lettore di carte Bluetooth"
           },
           "gateways": {
@@ -2413,7 +2413,7 @@
           },
           "cardPayments": {
             "label": "Pagamenti con carta",
-            "wcpos": "Integrazioni con terminali Pro: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Vipps MobilePay",
+            "wcpos": "Integrazioni con terminali Pro: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc, Windcave; Vipps MobilePay tramite codice QR o notifica push",
             "square": "Pagamenti Square, incluso Tap to Pay su iPhone e Android"
           },
           "fees": {
@@ -2568,7 +2568,7 @@
           },
           "cardPayments": {
             "label": "Pagamenti con carta",
-            "wcpos": "Integrazioni con terminali Pro: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Vipps MobilePay",
+            "wcpos": "Integrazioni con terminali Pro: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc, Windcave; Vipps MobilePay tramite codice QR o notifica push",
             "jovvie": "Stripe Terminal (BizSwoop è partner di Stripe Terminal), con lettori come lo Stripe M2"
           },
           "apps": {
@@ -2676,7 +2676,7 @@
           },
           "cardPayments": {
             "label": "Pagamenti con carta",
-            "wcpos": "Integrazioni con terminali Pro: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Vipps MobilePay",
+            "wcpos": "Integrazioni con terminali Pro: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc, Windcave; Vipps MobilePay tramite codice QR o notifica push",
             "vitepos": "Pagamenti tramite terminali Stripe Terminal e Wallee"
           },
           "apps": {
@@ -2823,7 +2823,7 @@
           },
           "cardPayments": {
             "label": "Pagamenti con carta",
-            "wcpos": "Integrazioni con terminali Pro: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Vipps MobilePay",
+            "wcpos": "Integrazioni con terminali Pro: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc, Windcave; Vipps MobilePay tramite codice QR o notifica push",
             "yith": "Nessuna connessione a un terminale di pagamento; i pagamenti vengono elaborati manualmente, con i metodi di pagamento Cash e Chip and Pin"
           },
           "apps": {
@@ -2968,7 +2968,7 @@
           },
           "cardPayments": {
             "label": "Pagamenti con carta",
-            "wcpos": "Integrazioni con terminali Pro: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Vipps MobilePay",
+            "wcpos": "Integrazioni con terminali Pro: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc, Windcave; Vipps MobilePay tramite codice QR o notifica push",
             "foosales": "Piano Plus: Square Terminal, Square Readers (app per tablet) e lettori Stripe Terminal"
           },
           "tapToPay": {

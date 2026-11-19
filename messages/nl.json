@@ -2035,7 +2035,7 @@
           },
           "terminals": {
             "label": "Pinterminals",
-            "wcpos": "Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Vipps MobilePay (Pro, via de extensiecatalogus)",
+            "wcpos": "Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc, Windcave; Vipps MobilePay via QR-code of push (Pro, via de extensiecatalogus)",
             "oliver": "Stripe, Square, Adyen, Nets; Oliver Pay; eigen hardwarehub"
           },
           "platforms": {
@@ -2255,7 +2255,7 @@
           },
           "cardPayments": {
             "label": "Kaartbetalingen",
-            "wcpos": "Pro-terminalintegraties: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Vipps MobilePay",
+            "wcpos": "Pro-terminalintegraties: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc, Windcave; Vipps MobilePay via QR-code of push",
             "woocommerce": "WooPayments of Stripe, met een Bluetooth-kaartlezer"
           },
           "gateways": {
@@ -2413,7 +2413,7 @@
           },
           "cardPayments": {
             "label": "Kaartbetalingen",
-            "wcpos": "Pro-terminalintegraties: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Vipps MobilePay",
+            "wcpos": "Pro-terminalintegraties: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc, Windcave; Vipps MobilePay via QR-code of push",
             "square": "Square-betalingen, waaronder Tap to Pay op iPhone en Android"
           },
           "fees": {
@@ -2568,7 +2568,7 @@
           },
           "cardPayments": {
             "label": "Kaartbetalingen",
-            "wcpos": "Pro-terminalintegraties: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Vipps MobilePay",
+            "wcpos": "Pro-terminalintegraties: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc, Windcave; Vipps MobilePay via QR-code of push",
             "jovvie": "Stripe Terminal (BizSwoop is partner van Stripe Terminal), met lezers zoals de Stripe M2"
           },
           "apps": {
@@ -2676,7 +2676,7 @@
           },
           "cardPayments": {
             "label": "Kaartbetalingen",
-            "wcpos": "Pro-terminalintegraties: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Vipps MobilePay",
+            "wcpos": "Pro-terminalintegraties: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc, Windcave; Vipps MobilePay via QR-code of push",
             "vitepos": "Terminalbetalingen via Stripe Terminal en Wallee"
           },
           "apps": {
@@ -2823,7 +2823,7 @@
           },
           "cardPayments": {
             "label": "Kaartbetalingen",
-            "wcpos": "Pro-terminalintegraties: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Vipps MobilePay",
+            "wcpos": "Pro-terminalintegraties: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc, Windcave; Vipps MobilePay via QR-code of push",
             "yith": "Geen verbinding met een betaalterminal; betalingen worden handmatig verwerkt, met de betaalmethoden Cash en Chip and Pin"
           },
           "apps": {
@@ -2968,7 +2968,7 @@
           },
           "cardPayments": {
             "label": "Kaartbetalingen",
-            "wcpos": "Pro-terminalintegraties: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Vipps MobilePay",
+            "wcpos": "Pro-terminalintegraties: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc, Windcave; Vipps MobilePay via QR-code of push",
             "foosales": "Plus-abonnement: Square Terminal, Square Readers (tabletapps) en Stripe Terminal-lezers"
           },
           "tapToPay": {
