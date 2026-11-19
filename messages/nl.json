@@ -456,7 +456,7 @@
       },
       "gateways": {
         "title": "Aangepaste betaalgateways",
-        "description": "Ontvang betalingen via elke WooCommerce-compatibele gateway, niet alleen de ingebouwde opties."
+        "description": "Schakel de andere WooCommerce-betaalgateways van je winkel in aan de kassa, niet alleen de ingebouwde opties."
       }
     },
     "buyBox": {

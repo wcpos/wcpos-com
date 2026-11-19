@@ -456,7 +456,7 @@
       },
       "gateways": {
         "title": "맞춤 결제 게이트웨이",
-        "description": "기본 옵션뿐만 아니라 WooCommerce와 호환되는 모든 게이트웨이로 결제를 받으세요."
+        "description": "기본 옵션뿐만 아니라 매장의 다른 WooCommerce 결제 게이트웨이도 계산대에서 활성화하세요."
       }
     },
     "buyBox": {

@@ -456,7 +456,7 @@
       },
       "gateways": {
         "title": "Custom payment gateways",
-        "description": "Take payments with any WooCommerce-compatible gateway, not just the built-in options."
+        "description": "Turn on your store's other WooCommerce payment gateways at the register, not just the built-in options."
       }
     },
     "buyBox": {

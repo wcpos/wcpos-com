@@ -456,7 +456,7 @@
       },
       "gateways": {
         "title": "Pasarelas de pago personalizadas",
-        "description": "Acepta pagos con cualquier pasarela compatible con WooCommerce, no solo las opciones integradas."
+        "description": "Activa las demás pasarelas de pago de WooCommerce de tu tienda en la caja, no solo las opciones integradas."
       }
     },
     "buyBox": {

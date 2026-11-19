@@ -456,7 +456,7 @@
       },
       "gateways": {
         "title": "自定义支付网关",
-        "description": "使用任何兼容 WooCommerce 的支付网关收款，不限于内置选项。"
+        "description": "在收银台启用店铺的其他 WooCommerce 支付网关，不限于内置选项。"
       }
     },
     "buyBox": {
