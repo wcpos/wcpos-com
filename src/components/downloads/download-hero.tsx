@@ -129,6 +129,9 @@ export function DownloadsHero({
               {platformT(`${selected}.action`)}
             </a>
           </Button>
+          <p className="mt-3 text-xs text-muted-foreground" data-testid="upgrade-note">
+            {t('upgradeNote')}
+          </p>
           {selected === 'mac-arm' && (
             <>
               <p className="mt-3 text-xs text-muted-foreground">

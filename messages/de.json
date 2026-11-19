@@ -1642,7 +1642,8 @@
       "detected": "Erkannt",
       "intelMac": "Auf einem Intel-Mac? <intel>Intel-Build herunterladen</intel>",
       "macos12": "Noch auf macOS 12 Monterey? WCPOS 2.0 benötigt macOS 13 oder neuer. Version {version} läuft weiterhin auf macOS 12 mit dem 1.11-Plugin: <arm>Apple Silicon</arm> · <intel>Intel</intel>",
-      "pluginNotice": "Jede App verbindet sich mit dem kostenlosen WordPress-Plugin — installiere es zuerst."
+      "pluginNotice": "Jede App verbindet sich mit dem kostenlosen WordPress-Plugin — installiere es zuerst.",
+      "upgradeNote": "Upgrade von 1.11? Synchronisiere zuerst jede Kasse: 2.0 legt eine neue lokale Datenbank an und übernimmt keine noch nicht übertragenen Verkäufe."
     },
     "howItFits": {
       "eyebrow": "So passt alles zusammen",
