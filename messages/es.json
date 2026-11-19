@@ -1708,6 +1708,7 @@
           "desktopTitle": "Aplicación de escritorio",
           "iosCta": "Unirse a la beta de TestFlight",
           "androidCta": "Unirse en Google Play",
+          "webSetupCta": "Configurar en tu tienda",
           "webCta": "Abrir la demo en vivo"
         },
         "pro": {

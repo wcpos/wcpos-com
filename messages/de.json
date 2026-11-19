@@ -1708,6 +1708,7 @@
           "desktopTitle": "Desktop-App",
           "iosCta": "Der TestFlight-Beta beitreten",
           "androidCta": "Bei Google Play beitreten",
+          "webSetupCta": "Im eigenen Shop einrichten",
           "webCta": "Live-Demo öffnen"
         },
         "pro": {

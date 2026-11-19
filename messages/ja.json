@@ -1708,6 +1708,7 @@
           "desktopTitle": "デスクトップアプリ",
           "iosCta": "TestFlightベータに参加",
           "androidCta": "Google Playで参加",
+          "webSetupCta": "自分のストアで設定",
           "webCta": "ライブデモを開く"
         },
         "pro": {
