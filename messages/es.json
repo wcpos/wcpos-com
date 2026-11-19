@@ -408,7 +408,7 @@
   },
   "pro": {
     "metadata": {
-      "title": "Funciones y precios de Pro – Punto de venta para WooCommerce",
+      "title": "Funciones y precios de Pro – TPV para WooCommerce",
       "description": "WCPOS Pro para WooCommerce: más cajas y varias tiendas, pagos en terminal, edición de stock y precios, gestión de pedidos y clientes, e informes completos."
     },
     "hero": {
@@ -1586,7 +1586,7 @@
   },
   "downloads": {
     "meta": {
-      "title": "Descargar el punto de venta para WooCommerce – Mac, Windows, Linux y web",
+      "title": "Descargar TPV para WooCommerce – Mac, Windows y web",
       "description": "Descarga WCPOS: el plugin gratuito de WordPress, la app web y apps de escritorio para Mac, Windows y Linux. Las apps de iOS y Android están en beta."
     },
     "platforms": {

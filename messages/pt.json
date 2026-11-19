@@ -408,7 +408,7 @@
   },
   "pro": {
     "metadata": {
-      "title": "Funcionalidades e preços do Pro – Ponto de venda para WooCommerce",
+      "title": "Funcionalidades e preços Pro – POS para WooCommerce",
       "description": "WCPOS Pro para WooCommerce: mais caixas e várias lojas, pagamentos no terminal, edição de stock e preços, gestão de encomendas e clientes."
     },
     "hero": {
@@ -1586,7 +1586,7 @@
   },
   "downloads": {
     "meta": {
-      "title": "Transferir o ponto de venda para WooCommerce – Mac, Windows, Linux e Web",
+      "title": "Transferir POS para WooCommerce – Mac, Windows e Web",
       "description": "Transfira o WCPOS: o plugin gratuito do WordPress, a aplicação web e aplicações de computador para Mac, Windows e Linux. Aplicações iOS e Android em beta."
     },
     "platforms": {
