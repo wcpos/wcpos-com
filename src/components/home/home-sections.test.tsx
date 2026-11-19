@@ -211,6 +211,24 @@ describe('TrustSection', () => {
     expect(screen.getByText('Languages Supported')).toBeInTheDocument()
   })
 
+  it('formats the installs count for the locale', () => {
+    const { unmount } = render(
+      <NextIntlClientProvider locale="de" messages={messages}>
+        <TrustSection />
+      </NextIntlClientProvider>
+    )
+    expect(screen.getByText('5.000+')).toBeInTheDocument()
+    expect(screen.queryByText('5,000+')).not.toBeInTheDocument()
+    unmount()
+
+    render(
+      <NextIntlClientProvider locale="en" messages={messages}>
+        <TrustSection />
+      </NextIntlClientProvider>
+    )
+    expect(screen.getByText('5,000+')).toBeInTheDocument()
+  })
+
   it('links the open source stat to GitHub', () => {
     renderWithIntl(<TrustSection />)
 
