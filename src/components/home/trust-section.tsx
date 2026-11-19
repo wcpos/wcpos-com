@@ -1,15 +1,17 @@
-import { useTranslations } from 'next-intl'
+import { useFormatter, useTranslations } from 'next-intl'
 import { GithubIcon } from '@/components/icons/github'
 import { Link } from '@/i18n/navigation'
 import { Section } from '@/components/ui/section'
 
-const stats = [
-  { value: '5,000+', labelKey: 'activeInstallations' },
-  { value: '2014', labelKey: 'inDevelopmentSince' },
-] as const
+const ACTIVE_INSTALLS = 5000 // wordpress.org active installs, shown as "5,000+"
 
 export function TrustSection() {
   const t = useTranslations('home.trust')
+  const format = useFormatter()
+  const stats = [
+    { value: `${format.number(ACTIVE_INSTALLS)}+`, labelKey: 'activeInstallations' },
+    { value: '2014', labelKey: 'inDevelopmentSince' },
+  ] as const
 
   return (
     <Section tone="default" spacing="compact">
