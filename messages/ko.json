@@ -55,7 +55,7 @@
     "title": "WCPOS",
     "subtitle": "WooCommerce를 위한 빠른 POS",
     "meta": {
-      "description": "WooCommerce용 무료 오픈 소스 POS. 오프라인 판매, 분할 결제, 계산대 개시와 마감까지 2.0에서 무료. 웹, 데스크톱 앱 제공. iOS, Android 앱은 베타."
+      "description": "태블릿, 휴대폰 또는 컴퓨터에서 쓰는 WooCommerce용 무료 오픈 소스 POS. 현금 판매는 오프라인에서도 가능. 분할 결제, 계산대 개시와 마감까지 2.0에서 무료."
     },
     "problem": {
       "title": "WooCommerce 스토어와 오프라인 매장 운영이 두 배의 일이 되어서는 안 됩니다",
