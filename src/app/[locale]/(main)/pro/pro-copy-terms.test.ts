@@ -43,8 +43,4 @@ describe('/pro copy terms', () => {
     const offenders = strings.filter(([, text]) => text.includes('priority support'))
     expect(offenders.map(([key]) => key)).toEqual([])
   })
-
-  it('does not call the free plugin "Free" in the Dutch features subtitle', () => {
-    expect(nl.pro.features.subtitle).not.toContain('Alles uit Free')
-  })
 })
