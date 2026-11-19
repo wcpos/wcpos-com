@@ -1947,37 +1947,37 @@
       },
       "oliverCard": {
         "title": "WCPOS vs Oliver POS",
-        "description": "WordPress natif contre SaaS cloud : propriété des données, limites réelles de l'offre gratuite, paiement unique contre abonnement, et là où Oliver est réellement meilleur.",
+        "description": "Oliver synchronise votre boutique vers son cloud, et son offre gratuite plafonne à 20 produits ; WCPOS fonctionne au sein de votre site WordPress sans plafond, et Pro est un paiement unique.",
         "cta": "Lire le comparatif"
       },
       "woocommerceCard": {
         "title": "WCPOS vs le POS officiel de WooCommerce",
-        "description": "Gratuit et intégré à l'application mobile WooCommerce, contre multiplateforme et conçu pour fonctionner hors ligne d'abord : appareils, pays, paiements, tarifs et là où le POS de WooCommerce est réellement meilleur.",
+        "description": "Le POS de WooCommerce est gratuit dans son application mobile, pour tablettes, dans dix pays, sans mode hors ligne ; WCPOS fonctionne dans tout navigateur et sur bureau, iOS et Android, et vend en espèces hors ligne.",
         "cta": "Lire le comparatif"
       },
       "squareCard": {
         "title": "WCPOS vs Square for WooCommerce",
-        "description": "Le POS de Square et une extension de synchronisation, face à une caisse intégrée à WooCommerce : où sont enregistrées les ventes en personne, la synchronisation, les établissements, les paiements hors ligne, les frais de carte et là où Square est réellement meilleur.",
+        "description": "Les commandes du POS de Square ne sont pas synchronisées avec WooCommerce, et le stock n’y est mis à jour qu’à la vérification programmée (toutes les heures par défaut) ; chaque vente WCPOS est une commande WooCommerce.",
         "cta": "Lire le comparatif"
       },
       "jovvieCard": {
         "title": "WCPOS vs Jovvie",
-        "description": "Deux extensions de caisse pour WooCommerce : un paiement unique face à des forfaits mensuels avec des frais par transaction, les applications, les paiements par carte, les notes et les domaines où Jovvie est réellement meilleur.",
+        "description": "Jovvie prélève des frais de plateforme par transaction en plus de ses forfaits mensuels ; WCPOS ne prélève aucuns frais de transaction, et Pro est un paiement unique.",
         "cta": "Lire le comparatif"
       },
       "viteposCard": {
         "title": "WCPOS vs Vitepos",
-        "description": "Deux extensions de caisse pour WooCommerce avec des versions gratuites : tarifs, commandes hors ligne, modes restaurant, applications, terminaux de carte et domaines où Vitepos est réellement meilleur.",
+        "description": "Les deux ont une version gratuite ; Vitepos ajoute des modes épicerie et restaurant, WCPOS des applications de bureau pour Windows, macOS et Linux et des applications iOS et Android (bêta).",
         "cta": "Lire le comparatif"
       },
       "yithCard": {
         "title": "WCPOS vs YITH Point of Sale",
-        "description": "WCPOS et l’extension de caisse de YITH pour WooCommerce : licences, terminaux de carte, applications, utilisation hors ligne, boutiques et caisses, et ce que YITH Point of Sale fait bien.",
+        "description": "YITH Point of Sale est une licence annuelle avec des stocks distincts par boutique, mais sans mode hors ligne ni terminal de carte ; WCPOS est gratuit, et Pro ajoute les terminaux de carte pour un paiement unique.",
         "cta": "Lire le comparatif"
       },
       "foosalesCard": {
         "title": "WCPOS vs FooSales",
-        "description": "Une licence Pro à paiement unique ou un abonnement annuel par boutique : tarifs, ce qui se passe quand vous cessez de payer, Tap to Pay, commandes hors ligne, applications, et domaines où FooSales est réellement meilleur.",
+        "description": "FooSales est un abonnement annuel par boutique, et la résiliation met fin à l’accès à son POS ; WCPOS est gratuit, et Pro, pour un paiement unique, continue de fonctionner après la fin de l’année.",
         "cta": "Lire le comparatif"
       },
       "moreSoon": "D'autres comparatifs arrivent."

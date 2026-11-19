@@ -1947,37 +1947,37 @@
       },
       "oliverCard": {
         "title": "WCPOS vs Oliver POS",
-        "description": "WordPress 原生对决云端 SaaS：数据所有权、免费版的真实限制、一次性买断与订阅制的差别，以及 Oliver 真正更胜一筹的地方。",
+        "description": "Oliver 将你的商店同步到它的云端，免费套餐上限为 20 个商品；WCPOS 在你的 WordPress 站点内部运行、不设上限，Pro 版为一次性付款。",
         "cta": "阅读对比"
       },
       "woocommerceCard": {
         "title": "WCPOS vs WooCommerce 官方 POS",
-        "description": "免费且内置于 WooCommerce 移动应用，对比跨平台、离线优先的收银系统：设备、国家、支付、价格，以及 WooCommerce POS 真正更胜一筹的地方。",
+        "description": "WooCommerce 官方 POS 在其移动应用内免费，专为 10 个国家的平板设计，没有离线模式；WCPOS 可在浏览器、桌面和移动应用中运行，现金销售可离线进行。",
         "cta": "阅读对比"
       },
       "squareCard": {
         "title": "WCPOS vs Square for WooCommerce",
-        "description": "Square 的 POS 加同步扩展，对比构建在 WooCommerce 上的收银台：线下销售记录在哪里、同步、地点、离线支付、刷卡费率，以及 Square 真正更胜一筹的地方。",
+        "description": "在 Square 的 POS 中创建的订单不会同步到 WooCommerce，库存变化在计划检查时到达（默认每小时一次）；WCPOS 的每笔销售都是 WooCommerce 订单。",
         "cta": "阅读对比"
       },
       "jovvieCard": {
         "title": "WCPOS vs Jovvie",
-        "description": "两款 WooCommerce POS 插件对比：一次性付款与按月付费且每笔交易收取手续费的方案、应用、银行卡支付、评分，以及 Jovvie 真正更胜一筹的方面。",
+        "description": "Jovvie 在月付方案之外还对每笔交易收取平台费；WCPOS 不收取交易手续费，Pro 版为一次性付款。",
         "cta": "阅读对比"
       },
       "viteposCard": {
         "title": "WCPOS vs Vitepos",
-        "description": "两款提供免费版的 WooCommerce POS 插件对比：价格、离线订单、餐厅模式、应用、刷卡终端，以及 Vitepos 真正更胜一筹的方面。",
+        "description": "两者都有免费版；Vitepos 提供杂货店与餐厅模式，WCPOS 提供 Windows、macOS 和 Linux 桌面应用以及 iOS 和 Android 应用（测试版）。",
         "cta": "阅读对比"
       },
       "yithCard": {
         "title": "WCPOS vs YITH Point of Sale",
-        "description": "WCPOS 与 YITH 的 WooCommerce 销售点插件：许可证、刷卡终端、应用、离线使用、商店与收银台，以及 YITH Point of Sale 做得好的方面。",
+        "description": "YITH Point of Sale 以年度许可证销售，各商店库存独立，但没有离线模式，也无法连接刷卡终端；WCPOS 免费，Pro 版以一次性付款提供刷卡终端集成。",
         "cta": "阅读对比"
       },
       "foosalesCard": {
         "title": "WCPOS vs FooSales",
-        "description": "一次性付费的 Pro 许可证与按店铺收取的年度订阅对比：价格、停止付费后的情况、Tap to Pay、离线订单、应用，以及 FooSales 真正更胜一筹的方面。",
+        "description": "FooSales 按店铺收取年度订阅，取消后将无法访问其 POS；WCPOS 免费，Pro 版一次性付款，一年后仍可继续使用。",
         "cta": "阅读对比"
       },
       "moreSoon": "更多对比即将上线。"

@@ -1947,37 +1947,37 @@
       },
       "oliverCard": {
         "title": "WCPOS vs Oliver POS",
-        "description": "WordPress 네이티브 대 클라우드 SaaS: 데이터 소유권, 무료 플랜의 실제 제한, 일회성 결제와 구독의 차이, 그리고 Oliver가 진짜로 더 나은 부분.",
+        "description": "Oliver는 스토어를 클라우드에 동기화하며 무료 플랜은 제품 20개가 상한입니다. WCPOS는 WordPress 사이트 내부에서 제한 없이 실행되고 Pro는 일회성 결제입니다.",
         "cta": "비교 읽기"
       },
       "woocommerceCard": {
         "title": "WCPOS vs WooCommerce 공식 POS",
-        "description": "WooCommerce 모바일 앱에 내장된 무료 POS와 여러 플랫폼에서 작동하는 오프라인 우선 POS: 기기, 국가, 결제, 가격, 그리고 WooCommerce POS가 실제로 더 나은 부분을 비교합니다.",
+        "description": "WooCommerce 공식 POS는 모바일 앱에서 무료이고 10개국 태블릿용이며 오프라인 모드가 없습니다. WCPOS는 브라우저, 데스크톱, 모바일 앱에서 작동하며 현금 판매는 오프라인에서도 가능합니다.",
         "cta": "비교 읽기"
       },
       "squareCard": {
         "title": "WCPOS vs Square for WooCommerce",
-        "description": "Square의 POS와 동기화 확장 프로그램을 WooCommerce 자체에 구축된 계산대와 비교합니다. 대면 판매의 기록 위치, 동기화, 위치, 오프라인 결제, 카드 수수료, Square가 실제로 더 나은 부분을 살펴봅니다.",
+        "description": "Square POS의 주문은 WooCommerce에 동기화되지 않고 재고 변경은 예정된 확인 때(기본 1시간) 반영됩니다. WCPOS는 모든 판매가 WooCommerce 주문입니다.",
         "cta": "비교 읽기"
       },
       "jovvieCard": {
         "title": "WCPOS vs Jovvie",
-        "description": "WooCommerce POS 플러그인 두 가지 비교: 일회성 결제와 거래당 수수료가 붙는 월간 요금제, 앱, 카드 결제, 평점, Jovvie가 실제로 더 나은 점.",
+        "description": "Jovvie는 월간 요금제에 더해 거래당 플랫폼 수수료를 부과합니다. WCPOS는 거래 수수료를 부과하지 않으며 Pro는 일회성 결제입니다.",
         "cta": "비교 읽기"
       },
       "viteposCard": {
         "title": "WCPOS vs Vitepos",
-        "description": "무료 버전이 있는 WooCommerce POS 플러그인 두 가지 비교: 가격, 오프라인 주문, 레스토랑 모드, 앱, 카드 단말기, Vitepos가 실제로 더 나은 점.",
+        "description": "둘 다 무료 버전이 있습니다. Vitepos는 식료품점 및 레스토랑 모드를, WCPOS는 Windows, macOS, Linux 데스크톱 앱과 iOS, Android 앱(베타)을 더합니다.",
         "cta": "비교 읽기"
       },
       "yithCard": {
         "title": "WCPOS vs YITH Point of Sale",
-        "description": "WCPOS와 YITH의 WooCommerce용 POS 플러그인: 라이선스, 카드 단말기, 앱, 오프라인 사용, 스토어와 계산대, YITH Point of Sale의 장점.",
+        "description": "YITH Point of Sale은 연간 라이선스로 스토어별 재고를 분리하지만 오프라인 모드가 없고 카드 단말기에도 연결되지 않습니다. WCPOS는 무료이며 Pro는 일회성 결제로 카드 단말기 연동을 추가합니다.",
         "cta": "비교 읽기"
       },
       "foosalesCard": {
         "title": "WCPOS vs FooSales",
-        "description": "일회성 Pro 라이선스와 매장별 연간 구독 비교: 가격, 결제를 중단하면 어떻게 되는지, Tap to Pay, 오프라인 주문, 앱, FooSales가 실제로 더 나은 점.",
+        "description": "FooSales는 매장별 연간 구독이며 취소하면 POS 접근이 종료됩니다. WCPOS는 무료이며 Pro는 일회성 결제 후 1년이 지나도 계속 작동합니다.",
         "cta": "비교 읽기"
       },
       "moreSoon": "더 많은 비교가 준비 중입니다."
