@@ -136,6 +136,20 @@ describe('UseCasesSection', () => {
       'https://wordpress.org/support/topic/great-pos-for-your-woocommerce-store/'
     )
   })
+
+  it('keeps the icon band short on phone and full height from md up', () => {
+    const { container } = renderWithIntl(<UseCasesSection />)
+
+    const bands = container.querySelectorAll('li > div[aria-hidden="true"]')
+    expect(bands).toHaveLength(3)
+    for (const band of bands) {
+      const classes = band.className.split(/\s+/)
+      expect(classes).toEqual(expect.arrayContaining(['h-14', 'md:h-28']))
+      expect(classes).not.toContain('h-28')
+      const icon = band.querySelector('svg')!
+      expect(icon).toHaveClass('h-7', 'md:h-10')
+    }
+  })
 })
 
 const escapeRegExp = (value: string) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
