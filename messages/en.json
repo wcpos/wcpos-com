@@ -437,7 +437,7 @@
       },
       "display": {
         "title": "Customer-facing display",
-        "description": "Put a screen in front of your customer: open the display in any browser and pair it to a till with a code."
+        "description": "Put a screen in front of your customer: open the display in any browser and pair it to a register with a code."
       },
       "stockPrice": {
         "title": "Stock & Price Editing",
@@ -911,7 +911,7 @@
       "beta": {
         "badge": "Beta",
         "heading": "WCPOS Pro 2.0 beta",
-        "warning": "For testing on a staging store or a store you can afford to interrupt. The beta is never offered as an automatic update: you install it by hand, and you update it by hand. Sync every till before you upgrade — 2.0 starts a new local database and does not carry over unsent sales.",
+        "warning": "For testing on a staging store or a store you can afford to interrupt. The beta is never offered as an automatic update: you install it by hand, and you update it by hand. Sync every register before you upgrade — 2.0 starts a new local database and does not carry over unsent sales.",
         "guide": "Read: Testing the WCPOS 2.0 beta",
         "requiresActive": "Requires an active licence.",
         "download": "Download beta"
