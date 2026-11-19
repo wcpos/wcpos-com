@@ -55,7 +55,7 @@
     "title": "WCPOS",
     "subtitle": "Un punto de venta rápido para WooCommerce",
     "meta": {
-      "description": "Punto de venta gratuito para WooCommerce. Vende sin conexión, divide pagos, abre y cierra la caja, gratis en 2.0. Apps web y escritorio; iOS y Android en beta."
+      "description": "TPV gratis y de código abierto para WooCommerce. Vende sin conexión, divide pagos, abre y cierra la caja, gratis en 2.0. Web y escritorio; iOS/Android en beta."
     },
     "problem": {
       "title": "Gestionar una tienda WooCommerce y una tienda física no debería duplicar el trabajo",
