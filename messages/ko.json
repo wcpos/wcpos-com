@@ -2369,7 +2369,7 @@
       },
       "glance": {
         "title": "한눈에 보기",
-        "caption": "Square 관련 사실은 2026-10-06에 squareup.com 및 Square for WooCommerce 확장 프로그램의 WooCommerce 문서에서 확인했으며, WCPOS 관련 사실은 wcpos.com과 docs.wcpos.com을 참조했습니다.",
+        "caption": "Square 관련 사실은 2026-10-06에 squareup.com 및 Square for WooCommerce 확장 프로그램의 WooCommerce 문서에서 확인하고 2026-11-18에 다시 확인했으며, WCPOS 관련 사실은 wcpos.com과 docs.wcpos.com을 참조했습니다.",
         "colWcpos": "WCPOS",
         "colSquare": "Square POS + Square for WooCommerce",
         "rows": {
@@ -2519,7 +2519,7 @@
         }
       },
       "footer": {
-        "factsDated": "Square 관련 사실은 2026-10-06에 Square 자체 페이지(수수료 페이지, 가격 발표, 오프라인 결제, Tap to Pay, 기기 및 국제 서비스 제공에 관한 도움말)와 Square for WooCommerce 확장 프로그램의 WooCommerce 문서에서 확인했습니다. WCPOS 관련 사실은 wcpos.com과 docs.wcpos.com을 참조했습니다. WCPOS 정보는 2026-11-09에 출시된 WCPOS 2.0 기준이며, 앱과 플러그인 모두 버전 2.0이어야 합니다. 분기마다 다시 확인합니다.",
+        "factsDated": "Square 관련 사실은 2026-10-06에 Square 자체 페이지(수수료 페이지, 가격 발표, 오프라인 결제, Tap to Pay, 기기 및 국제 서비스 제공에 관한 도움말)와 Square for WooCommerce 확장 프로그램의 WooCommerce 문서에서 확인하고 2026-11-18에 다시 확인했습니다. WCPOS 관련 사실은 wcpos.com과 docs.wcpos.com을 참조했습니다. WCPOS 정보는 2026-11-09에 출시된 WCPOS 2.0 기준이며, 앱과 플러그인 모두 버전 2.0이어야 합니다. 분기마다 다시 확인합니다.",
         "corrections": "오류를 발견하셨나요? support@wcpos.com으로 알려 주세요. 빠르게 수정하고 모든 변경을 기록합니다."
       }
     },

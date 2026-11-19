@@ -2369,7 +2369,7 @@
       },
       "glance": {
         "title": "In één oogopslag",
-        "caption": "Feiten over Square op 2026-10-06 gecontroleerd op squareup.com en in de WooCommerce-documentatie voor de extensie Square for WooCommerce; WCPOS-feiten van wcpos.com en docs.wcpos.com.",
+        "caption": "Feiten over Square op 2026-10-06 gecontroleerd en op 2026-11-18 opnieuw gecontroleerd op squareup.com en in de WooCommerce-documentatie voor de extensie Square for WooCommerce; WCPOS-feiten van wcpos.com en docs.wcpos.com.",
         "colWcpos": "WCPOS",
         "colSquare": "Square POS + Square for WooCommerce",
         "rows": {
@@ -2519,7 +2519,7 @@
         }
       },
       "footer": {
-        "factsDated": "Feiten over Square op 2026-10-06 gecontroleerd aan de hand van de eigen pagina's van Square (de kostenpagina, de prijsaankondiging en helpartikelen over offline betalingen, Tap to Pay, apparaten en internationale beschikbaarheid) en de WooCommerce-documentatie voor de extensie Square for WooCommerce; WCPOS-feiten komen van wcpos.com en docs.wcpos.com en hebben betrekking op WCPOS 2.0, uitgebracht op 2026-11-09, waarvoor zowel de app als de plugin op versie 2.0 moeten staan. We controleren ze elk kwartaal opnieuw.",
+        "factsDated": "Feiten over Square op 2026-10-06 gecontroleerd en op 2026-11-18 opnieuw gecontroleerd aan de hand van de eigen pagina's van Square (de kostenpagina, de prijsaankondiging en helpartikelen over offline betalingen, Tap to Pay, apparaten en internationale beschikbaarheid) en de WooCommerce-documentatie voor de extensie Square for WooCommerce; WCPOS-feiten komen van wcpos.com en docs.wcpos.com en hebben betrekking op WCPOS 2.0, uitgebracht op 2026-11-09, waarvoor zowel de app als de plugin op versie 2.0 moeten staan. We controleren ze elk kwartaal opnieuw.",
         "corrections": "Een fout gezien? Mail naar support@wcpos.com — we corrigeren snel en leggen elke wijziging vast."
       }
     },

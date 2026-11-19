@@ -124,7 +124,7 @@ describe('SquareComparePage', () => {
       'https://wcpos.com/compare/square'
     )
     expect(webPage['@type']).toBe('WebPage')
-    expect(webPage.dateModified).toBe('2026-10-06')
+    expect(webPage.dateModified).toBe('2026-11-18')
     expect(webPage.url).toMatch(/\/compare\/square$/)
   })
 
