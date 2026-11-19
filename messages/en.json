@@ -427,11 +427,11 @@
       "title": "What's included in Pro?",
       "subtitle": "Everything in Free, plus the tools to run your whole store from the register — and priority support when you need a hand.",
       "stores": {
-        "title": "More Registers & Multiple Stores",
+        "title": "More registers & multiple stores",
         "description": "Add registers beyond the free one, and run several stores, each with its own address, tax rates, receipt template, pricing and authorized users."
       },
       "terminal": {
-        "title": "Payment Terminal Integration",
+        "title": "Payment terminal integration",
         "description": "Take in-person card payments on Stripe Terminal, Square Terminal, SumUp, Mollie, PayPal Reader and more.",
         "link": "See all terminal extensions"
       },
@@ -440,23 +440,23 @@
         "description": "Put a screen in front of your customer: open the display in any browser and pair it to a register with a code."
       },
       "stockPrice": {
-        "title": "Stock & Price Editing",
+        "title": "Stock & price editing",
         "description": "Update stock levels, prices, and product details right from the POS — no trip to the WordPress admin."
       },
       "orders": {
-        "title": "Order Management",
+        "title": "Order management",
         "description": "Browse order history, open past orders, refund them and manage them without leaving the register."
       },
       "customers": {
-        "title": "Customer Management",
+        "title": "Customer management",
         "description": "Add and edit customer details at the point of sale, kept in sync with WooCommerce."
       },
       "reports": {
-        "title": "Reports Across Days, Registers & Stores",
+        "title": "Reports across days, registers & stores",
         "description": "See sales for earlier days and date ranges, for every register and every store."
       },
       "gateways": {
-        "title": "Custom Payment Gateways",
+        "title": "Custom payment gateways",
         "description": "Take payments with any WooCommerce-compatible gateway, not just the built-in options."
       }
     },
@@ -490,7 +490,7 @@
       "unavailableDescription": "Pricing information is currently unavailable. Please try again later."
     },
     "faq": {
-      "title": "Frequently Asked Questions",
+      "title": "Frequently asked questions",
       "freePlugin": {
         "question": "Is the free plugin limited?",
         "answer": "The free WCPOS plugin is GPL software with no caps on products, orders or customers and no transaction fees; it runs one register, and more registers and the tools listed above need Pro."
