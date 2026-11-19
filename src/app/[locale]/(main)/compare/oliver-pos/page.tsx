@@ -192,6 +192,7 @@ export default async function OliverComparePage({
         <p className="mt-3 text-muted-foreground">
           {t('oliver.shortAnswer.oliver')}
         </p>
+        <CompareChooseActions />
       </Section>
 
       <Section tone="default" spacing="none" className="pb-10 md:pb-12" containerClassName="max-w-3xl">

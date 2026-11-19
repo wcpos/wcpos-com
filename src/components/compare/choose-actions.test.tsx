@@ -52,9 +52,9 @@ const SLUGS = [
 ] as const
 
 describe('/compare/* choose section actions', () => {
-  it.each(SLUGS)('%s puts the actions in the WCPOS card only', (slug) => {
+  it.each(SLUGS)('%s keeps the actions in the WCPOS card and the short answer', (slug) => {
     const source = readFileSync(resolve(COMPARE_DIR, slug, 'page.tsx'), 'utf8')
-    expect(source.match(/<CompareChooseActions \/>/g) ?? []).toHaveLength(1)
+    expect(source.match(/<CompareChooseActions \/>/g) ?? []).toHaveLength(2)
     expect(source).toMatch(
       /\{key === 'wcpos' && <CompareChooseActions \/>\}/
     )

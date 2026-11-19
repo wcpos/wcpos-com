@@ -171,6 +171,7 @@ export default async function YithComparePage({
         <p className="mt-3 text-muted-foreground">
           {t('yith.shortAnswer.yith')}
         </p>
+        <CompareChooseActions />
       </Section>
 
       <Section tone="default" spacing="none" className="pb-10 md:pb-12" containerClassName="max-w-3xl">
