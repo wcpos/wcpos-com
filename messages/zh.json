@@ -2369,7 +2369,7 @@
       },
       "glance": {
         "title": "一览对比",
-        "caption": "Square 相关事实于 2026-10-06 在 squareup.com 和 WooCommerce 的 Square for WooCommerce 扩展文档中核实；WCPOS 相关事实来自 wcpos.com 和 docs.wcpos.com。",
+        "caption": "Square 相关事实于 2026-10-06 在 squareup.com 和 WooCommerce 的 Square for WooCommerce 扩展文档中核实，并于 2026-11-18 再次核实；WCPOS 相关事实来自 wcpos.com 和 docs.wcpos.com。",
         "colWcpos": "WCPOS",
         "colSquare": "Square POS + Square for WooCommerce",
         "rows": {
@@ -2519,7 +2519,7 @@
         }
       },
       "footer": {
-        "factsDated": "Square 相关事实于 2026-10-06 根据 Square 自己的页面（费率页面、价格公告，以及关于离线支付、Tap to Pay、设备和国际可用性的帮助文章）和 WooCommerce 的 Square for WooCommerce 扩展文档核实；WCPOS 相关事实来自 wcpos.com 和 docs.wcpos.com。WCPOS 信息适用于 2026-11-09 发布的 WCPOS 2.0，应用和插件均需为 2.0 版本。我们每季度重新核实。",
+        "factsDated": "Square 相关事实于 2026-10-06 根据 Square 自己的页面（费率页面、价格公告，以及关于离线支付、Tap to Pay、设备和国际可用性的帮助文章）和 WooCommerce 的 Square for WooCommerce 扩展文档核实，并于 2026-11-18 再次核实；WCPOS 相关事实来自 wcpos.com 和 docs.wcpos.com。WCPOS 信息适用于 2026-11-09 发布的 WCPOS 2.0，应用和插件均需为 2.0 版本。我们每季度重新核实。",
         "corrections": "发现错误？发邮件到 support@wcpos.com——我们会尽快更正并记录每次修改。"
       }
     },

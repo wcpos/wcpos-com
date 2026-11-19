@@ -2369,7 +2369,7 @@
       },
       "glance": {
         "title": "De un vistazo",
-        "caption": "Datos de Square comprobados el 2026-10-06 en squareup.com y en la documentación de WooCommerce sobre la extensión Square for WooCommerce; datos de WCPOS de wcpos.com y docs.wcpos.com.",
+        "caption": "Datos de Square comprobados el 2026-10-06 y comprobados de nuevo el 2026-11-18 en squareup.com y en la documentación de WooCommerce sobre la extensión Square for WooCommerce; datos de WCPOS de wcpos.com y docs.wcpos.com.",
         "colWcpos": "WCPOS",
         "colSquare": "Square POS + Square for WooCommerce",
         "rows": {
@@ -2519,7 +2519,7 @@
         }
       },
       "footer": {
-        "factsDated": "Datos de Square comprobados el 2026-10-06 en las propias páginas de Square (su página de comisiones, su anuncio de precios y sus artículos de ayuda sobre pagos sin conexión, Tap to Pay, dispositivos y disponibilidad internacional) y en la documentación de WooCommerce sobre la extensión Square for WooCommerce; los datos de WCPOS proceden de wcpos.com y docs.wcpos.com y corresponden a WCPOS 2.0, publicado el 2026-11-09, que requiere que tanto la aplicación como el plugin estén en la versión 2.0. Volvemos a comprobarlos cada trimestre.",
+        "factsDated": "Datos de Square comprobados el 2026-10-06 y comprobados de nuevo el 2026-11-18 en las propias páginas de Square (su página de comisiones, su anuncio de precios y sus artículos de ayuda sobre pagos sin conexión, Tap to Pay, dispositivos y disponibilidad internacional) y en la documentación de WooCommerce sobre la extensión Square for WooCommerce; los datos de WCPOS proceden de wcpos.com y docs.wcpos.com y corresponden a WCPOS 2.0, publicado el 2026-11-09, que requiere que tanto la aplicación como el plugin estén en la versión 2.0. Volvemos a comprobarlos cada trimestre.",
         "corrections": "¿Detecta un error? Escriba a support@wcpos.com — corregimos rápido y dejamos constancia de cada cambio."
       }
     },

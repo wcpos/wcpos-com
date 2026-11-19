@@ -10,6 +10,7 @@ import { GlanceTable } from '@/components/compare/glance-table'
 import { proAddsLinks } from '@/components/compare/pro-adds-links'
 import { CompareBreadcrumb } from '@/components/compare/compare-breadcrumb'
 import { MoreComparisons } from '@/components/compare/more-comparisons'
+import { CompareChooseActions } from '@/components/compare/choose-actions'
 import { localeUrl, marketingMetadata } from '@/lib/seo'
 import { comparePageJsonLd } from '@/lib/compare-page-json-ld'
 import type { Metadata } from 'next'
@@ -338,6 +339,7 @@ export default async function OliverComparePage({
               <p className="text-muted-foreground">
                 {t(`oliver.choose.${key}.body`)}
               </p>
+              {key === 'wcpos' && <CompareChooseActions />}
             </Card>
           ))}
         </div>

@@ -2369,7 +2369,7 @@
       },
       "glance": {
         "title": "Num relance",
-        "caption": "Dados do Square verificados em 2026-10-06 no squareup.com e na documentação do WooCommerce para a extensão Square for WooCommerce; dados do WCPOS de wcpos.com e docs.wcpos.com.",
+        "caption": "Dados do Square verificados em 2026-10-06 e verificados novamente em 2026-11-18 no squareup.com e na documentação do WooCommerce para a extensão Square for WooCommerce; dados do WCPOS de wcpos.com e docs.wcpos.com.",
         "colWcpos": "WCPOS",
         "colSquare": "Square POS + Square for WooCommerce",
         "rows": {
@@ -2519,7 +2519,7 @@
         }
       },
       "footer": {
-        "factsDated": "Dados do Square verificados em 2026-10-06 nas páginas do próprio Square (a página de taxas, o anúncio de preços e os artigos de ajuda sobre pagamentos offline, Tap to Pay, dispositivos e disponibilidade internacional) e na documentação do WooCommerce para a extensão Square for WooCommerce; os dados do WCPOS vêm de wcpos.com e docs.wcpos.com, e referem-se ao WCPOS 2.0, lançado em 2026-11-09, que requer tanto a aplicação como o plugin na versão 2.0. Voltamos a verificá-los a cada trimestre.",
+        "factsDated": "Dados do Square verificados em 2026-10-06 e verificados novamente em 2026-11-18 nas páginas do próprio Square (a página de taxas, o anúncio de preços e os artigos de ajuda sobre pagamentos offline, Tap to Pay, dispositivos e disponibilidade internacional) e na documentação do WooCommerce para a extensão Square for WooCommerce; os dados do WCPOS vêm de wcpos.com e docs.wcpos.com, e referem-se ao WCPOS 2.0, lançado em 2026-11-09, que requer tanto a aplicação como o plugin na versão 2.0. Voltamos a verificá-los a cada trimestre.",
         "corrections": "Encontrou um erro? Envie um email para support@wcpos.com — corrigimos depressa e registamos todas as alterações."
       }
     },

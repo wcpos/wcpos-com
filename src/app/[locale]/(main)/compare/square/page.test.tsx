@@ -36,6 +36,10 @@ vi.mock('@/components/compare/more-comparisons', () => ({
   MoreComparisons: () => null,
 }))
 
+vi.mock('@/components/compare/choose-actions', () => ({
+  CompareChooseActions: () => null,
+}))
+
 // compare.square shortAnswer.wcpos, glance.rows.catalog.wcpos and
 // choose.wcpos.body as they read before "nothing to sync" was dropped.
 const NOTHING_TO_SYNC_VALUES: Record<string, [string, string, string]> = {
@@ -124,7 +128,7 @@ describe('SquareComparePage', () => {
       'https://wcpos.com/compare/square'
     )
     expect(webPage['@type']).toBe('WebPage')
-    expect(webPage.dateModified).toBe('2026-10-06')
+    expect(webPage.dateModified).toBe('2026-11-18')
     expect(webPage.url).toMatch(/\/compare\/square$/)
   })
 

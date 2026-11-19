@@ -10,6 +10,7 @@ import { GlanceTable } from '@/components/compare/glance-table'
 import { proAddsLinks } from '@/components/compare/pro-adds-links'
 import { CompareBreadcrumb } from '@/components/compare/compare-breadcrumb'
 import { MoreComparisons } from '@/components/compare/more-comparisons'
+import { CompareChooseActions } from '@/components/compare/choose-actions'
 import { SourceList } from '@/components/compare/source-list'
 import { localeUrl, marketingMetadata } from '@/lib/seo'
 import { comparePageJsonLd } from '@/lib/compare-page-json-ld'
@@ -246,6 +247,7 @@ export default async function ViteposComparePage({
               <p className="text-muted-foreground">
                 {t(`vitepos.choose.${key}.body`)}
               </p>
+              {key === 'wcpos' && <CompareChooseActions />}
             </Card>
           ))}
         </div>
