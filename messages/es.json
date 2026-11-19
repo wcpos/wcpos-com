@@ -1911,6 +1911,7 @@
     "discord": {
       "title": "¿Prefieres hablar con una persona?",
       "subtitle": "Únete a propietarios de tiendas y al equipo en nuestra comunidad de Discord en vivo.",
+      "open": "Abrir Discord",
       "embedTitle": "Chat de Discord"
     }
   },
