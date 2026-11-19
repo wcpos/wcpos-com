@@ -324,7 +324,7 @@ export function SupportChat() {
 export function SupportDefaultContent() {
   return (
     <>
-      <Section spacing="hero">
+      <Section spacing="none" className="pt-10 pb-10 sm:py-20 md:py-24 lg:py-28">
         <SupportChat />
       </Section>
       <DiscordSection />

@@ -68,7 +68,7 @@ export default async function ExtensionsPage({
         }}
       />
 
-      <Section tone="default" spacing="hero">
+      <Section tone="default" spacing="none" className="pt-10 pb-6 sm:py-20 md:py-24 lg:py-28">
         <SectionHeading
           as="h1"
           size="hero"

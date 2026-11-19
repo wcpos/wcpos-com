@@ -73,7 +73,7 @@ export default async function ComparePage({
         }))}
       />
 
-      <Section tone="default" spacing="hero" className="pb-6 md:pb-10 lg:pb-12">
+      <Section tone="default" spacing="none" className="pt-10 pb-6 sm:pt-20 md:pt-24 md:pb-10 lg:pt-28 lg:pb-12">
         <SectionHeading
           as="h1"
           size="hero"
