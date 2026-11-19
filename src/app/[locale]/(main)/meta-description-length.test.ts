@@ -153,4 +153,9 @@ describe('home and /downloads meta descriptions', () => {
     const description = KEYS[key](en) as string
     expect(description).toContain('beta')
   })
+
+  it('es and it home.meta.description say open source', () => {
+    expect(es.home.meta.description).toContain('código abierto')
+    expect(it_.home.meta.description).toContain('open source')
+  })
 })
