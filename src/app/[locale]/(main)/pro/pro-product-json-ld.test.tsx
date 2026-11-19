@@ -16,6 +16,7 @@ vi.mock('@/lib/pro-offer-catalog', () => ({
   buildProOfferSchemaOffers: vi.fn(() => []),
 }))
 
+import { wcposSoftwareApplication } from '@/lib/software-application-json-ld'
 import { ProProductJsonLd } from './pro-product-json-ld'
 
 const FAQ_KEYS_IN_PAGE_ORDER = [
@@ -41,6 +42,11 @@ describe('ProProductJsonLd', () => {
     expect(Array.isArray(softwareApplication)).toBe(false)
     expect(softwareApplication['@type']).toBe('SoftwareApplication')
     expect(softwareApplication.url).toBe('https://wcpos.com/pro')
+    expect(softwareApplication.operatingSystem).toBe(
+      wcposSoftwareApplication().operatingSystem
+    )
+    expect(softwareApplication.operatingSystem).toMatch(/, Web$/)
+    expect(softwareApplication).not.toHaveProperty('softwareRequirements')
 
     expect(faqPage['@context']).toBe('https://schema.org')
     expect(faqPage['@type']).toBe('FAQPage')

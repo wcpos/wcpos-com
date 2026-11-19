@@ -1,6 +1,7 @@
 import { getTranslations } from 'next-intl/server'
 import { buildProOfferSchemaOffers } from '@/lib/pro-offer-catalog'
 import { localeUrl } from '@/lib/seo'
+import { WCPOS_OPERATING_SYSTEM } from '@/lib/software-application-json-ld'
 import { getCachedProOfferCatalog } from './pro-offer-data'
 import type { Locale } from '@/i18n/config'
 
@@ -46,7 +47,7 @@ export async function ProProductJsonLd({ locale }: { locale: Locale }) {
           name: t('schema.name'),
           description: t('schema.description'),
           applicationCategory: 'BusinessApplication',
-          operatingSystem: 'Windows, macOS, Linux, iOS, Android',
+          operatingSystem: WCPOS_OPERATING_SYSTEM,
           url: localeUrl(locale, '/pro'),
           image: 'https://wcpos.com/images/wcpos-pro.png',
           offers: buildProOfferSchemaOffers(offers, (planId) =>

@@ -4,6 +4,9 @@
  */
 export const WCPOS_SOFTWARE_REQUIREMENTS = 'WordPress 5.6+, WooCommerce 9.0+, PHP 7.4+'
 
+/** Shared by the home, /downloads and /pro SoftwareApplication markup. */
+export const WCPOS_OPERATING_SYSTEM = 'Windows, macOS, Linux, iOS, Android, Web'
+
 /** The WCPOS SoftwareApplication JSON-LD object, shared by the home and /downloads pages. */
 export function wcposSoftwareApplication(extra: Record<string, unknown> = {}) {
   return {
@@ -11,7 +14,7 @@ export function wcposSoftwareApplication(extra: Record<string, unknown> = {}) {
     '@type': 'SoftwareApplication',
     name: 'WCPOS',
     applicationCategory: 'BusinessApplication',
-    operatingSystem: 'Windows, macOS, Linux, iOS, Android, Web',
+    operatingSystem: WCPOS_OPERATING_SYSTEM,
     url: 'https://wcpos.com',
     image: 'https://wcpos.com/icon.png',
     offers: {
