@@ -55,7 +55,7 @@
     "title": "WCPOS",
     "subtitle": "Ein schneller Point of Sale für WooCommerce",
     "meta": {
-      "description": "Kostenloses Kassensystem für WooCommerce. Verkaufe offline, teile Zahlungen auf, öffne und schließe die Kasse. Web- und Desktop-Apps; iOS und Android in Beta."
+      "description": "Kostenlose Open-Source-Kasse für WooCommerce. Verkaufe offline, teile Zahlungen auf, öffne und schließe die Kasse, gratis in 2.0. Web, Desktop; iOS/Android in Beta."
     },
     "problem": {
       "title": "Ein WooCommerce-Shop und ein Ladengeschäft sollten nicht doppelte Arbeit bedeuten",
