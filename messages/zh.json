@@ -270,7 +270,7 @@
           "text": "免费开台和关台、拆分付款，并查看今日销售。"
         },
         "h": "你的 WooCommerce 商店，就在柜台上。",
-        "b": "WCPOS 将平板变成你的收银机——同一个商品目录、同样的库存、同样的价格，即使离线也能使用。",
+        "b": "WCPOS 将你的平板、手机或电脑变成收银机——同一个商品目录、同样的库存、同样的价格，即使离线也能使用。",
         "c1": "试用在线演示",
         "c2": "免费下载",
         "badges": {
@@ -2469,7 +2469,7 @@
         "intro": "诚实的对比要兼顾双方的优点：",
         "free": "Square 的 POS 有免费方案 Square Free（每个地点 $0/month）。WCPOS Pro 至少需要 $129。",
         "tapToPay": "iPhone 和 Android 上的 Tap to Pay：顾客可将银行卡贴近你的手机。WCPOS 目前还没有 Tap to Pay，将在后续应用更新中提供。",
-        "offline": "离线刷卡支付：Square 的 POS 在没有互联网时仍可接受银行卡付款，前提是你在 72 小时内重新连接并上传付款；过期、被拒绝或发生争议的付款由你负责。WCPOS 在离线时仍可继续现金销售，但连接的读卡器需要网络连接。",
+        "offline": "离线刷卡支付：Square 的 POS 在没有互联网时仍可接受银行卡付款，前提是你在 72 小时内重新连接并上传付款；过期、被拒绝或发生争议的付款由你负责。WCPOS 在离线时仍可继续现金销售，并记录在你自己的独立支付终端上收取的卡款；连接的读卡器和在线网关需要网络连接。",
         "hardware": "Square 自有硬件：Square Register 内置 Square Point of Sale，因此收银机和软件来自同一家公司。WCPOS 不销售硬件；它可在你已有的电脑、平板电脑和手机上运行。",
         "outro": "如果你在一个地点使用 iOS 或 Android 设备或 Square Register 进行线下销售，通过 Square 收款，且不需要将线下销售记录为 WooCommerce 订单，那么 Square 的 POS 加上该扩展可能就足够了。"
       },
@@ -2730,7 +2730,7 @@
         "title": "Vitepos 真正更胜一筹的方面",
         "intro": "诚实的对比要兼顾双方的优点：",
         "restaurant": "餐厅模式——Vitepos 提供带有服务员面板、厨房面板和餐桌管理功能的杂货店与餐厅模式；WCPOS 没有餐厅模式。",
-        "offline": "离线订单——Vitepos 表示它能在没有网络连接时继续处理订单，并在恢复连接后同步。WCPOS 在离线时仍可继续现金销售，但连接的读卡器和在线网关需要网络连接。",
+        "offline": "离线订单——Vitepos 表示它能在没有网络连接时继续处理订单，并在恢复连接后同步。WCPOS 在离线时仍可继续现金销售，并记录在你自己的独立支付终端上收取的卡款；连接的读卡器和在线网关需要网络连接。",
         "kiosk": "自助终端——Vitepos 将 Kiosk App 作为附加组件出售；WCPOS 没有自助终端模式。",
         "price": "标价更低——Vitepos Pro 单站点年度方案的起价为 $79，WCPOS Pro 为 $129。",
         "rating": "WordPress.org 评分更高——54 条评价给出 4.7 星，而 WCPOS 为 3.7 星。",
@@ -3017,7 +3017,7 @@
         "title": "FooSales 真正更胜一筹的方面",
         "intro": "诚实的对比应当双向成立：",
         "tapToPay": "iPhone 和 Android 上的 Tap to Pay——使用 FooSales Plus 时，顾客可通过 Stripe 或 Square 将卡靠近你的手机。WCPOS 目前还没有 Tap to Pay，将在后续应用更新中提供。",
-        "offline": "离线订单——FooSales 表示其应用在没有网络连接时仍会记录新订单、取消的订单和退款，并在恢复连接后同步到 WooCommerce。WCPOS 在离线时仍可继续现金销售，但连接的读卡器和在线网关需要网络连接。",
+        "offline": "离线订单——FooSales 表示其应用在没有网络连接时仍会记录新订单、取消的订单和退款，并在恢复连接后同步到 WooCommerce。WCPOS 在离线时仍可继续现金销售，并记录在你自己的独立支付终端上收取的卡款；连接的读卡器和在线网关需要网络连接。",
         "outro": "如果你需要在手机上使用 Tap to Pay 或离线订单模式，而且按店铺收取的年度订阅适合你，FooSales 可能是更好的选择。"
       },
       "choose": {
