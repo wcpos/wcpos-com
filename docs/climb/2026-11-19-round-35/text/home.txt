@@ -1,0 +1,280 @@
+WCPOS
+Downloads
+Pro
+Documentation
+Support
+Roadmap
+Sign In
+POS — US Store
+R1
+Search Products
+In Stock ✕
+Featured
+On Sale
+Category
+Tote Bag
+$29
+Variants
+Candle
+$24
+Mug
+$18
+Soap Bar
+$9
+Variants
+Notebook
+$14
+Tea Towel
+$16
+Tax based on: Shop base address
+Showing 16 of 18
+Customer:
+Guest ✕
+Candle
+$24
+2× Mug
+$36
+Soap Bar
+$9
+Subtotal
+$69.00
+Charge $69
+POS — US Store
+R2
+Search Products
+In Stock ✕
+Featured
+On Sale
+Category
+Tote Bag
+$29
+Variants
+Candle
+$24
+Mug
+$18
+Soap Bar
+$9
+Variants
+Notebook
+$14
+Tea Towel
+$16
+Tax based on: Shop base address
+Showing 16 of 18
+Customer:
+Guest ✕
+Candle
+$24
+2× Mug
+$36
+Soap Bar
+$9
+Subtotal
+$69.00
+Charge $69
+POS
+Search Products
+In Stock ✕
+Featured
+Tote Bag
+$29
+Candle
+$24
+Mug
+$18
+Soap Bar
+$9
+Charge $69
+Products
+3
+Cart
+$69.00
+TAP TO PAY
+1,204 products ● synced
+orders → Woo ●
+works offline ●
+
+New in 2.0 · Open and close your register, split payments and see today's sales — free.
+
+POINT OF SALE FOR WOOCOMMERCE
+
+Your WooCommerce store, at the counter.
+
+WCPOS turns the tablet into your register — same catalog, same stock, same prices, even offline.
+
+Try Live Demo
+Download Free
+5,000+ Active Stores
+Free & Open Source
+Since 2014
+
+EVERY SCREEN YOU OWN
+
+One POS. Web, desktop, iOS & Android.
+
+Run the register on the tablet at the counter, the phone on the shop floor, or the laptop in the back office — same store, same data.
+
+Web
+Windows
+macOS
+iOS Beta
+Android Beta
+
+BRING YOUR OWN HARDWARE
+
+Works with the equipment you already have.
+
+Receipt printers and barcode scanners: plug in what’s already on your counter. Take cards on your own terminal and WCPOS records them; Pro connects Stripe Terminal, SumUp and more.
+
+YOUR STORE, YOUR DATA
+
+Synced with WooCommerce. Yours, even offline.
+
+Every sale lands in your WooCommerce store — you own the data, no middleman. Internet drops? Keep selling; WCPOS syncs when you’re back online.
+
+SCROLL ↓
+What store owners say
+Retail Store
+“I did a lot of research when looking for a POS for my existing WC site, and nearly overlooked this one because it was free. But I’m glad I tried it. It does everything you want without asking for subscriptions or a percentage of your sales.”
+— nckllnpssy, wordpress.org review
+Market Vendor
+“I’m a ceramicist in Annecy and I sell through my WooCommerce shop and at markets. I’ve been using WCPOS for over a year and bought the lifetime Pro license a few months ago — worth it, I think. Paul is responsive on Discord, even on weekends.”
+— adeline, wordpress.org review (translated from French)
+Desktop & Offline
+“Great POS for your WooCommerce store, it has the desktop version which makes it better for places with weak internet connectivity. I believe there are more great features coming up.”
+— rodriguekgl, wordpress.org review
+Built for the demands of physical retail
+Fast product search
+
+Find products instantly with search, filters, and category browsing. Barcode scanner support.
+
+Smooth checkout flow
+
+Add items, apply discounts, take cash or card on your own terminal, and split a payment. Pro connects card readers like Stripe Terminal and SumUp.
+
+Customer profilesPro
+
+Add and edit customer info directly in the POS. Track regulars, offer better service.
+
+Order history & managementPro
+
+View past orders, process returns, check order status without switching to WP Admin.
+
+Edit stock & prices on the flyPro
+
+Fix a wrong price while serving a customer. Adjust stock without leaving the POS.
+
+Reports across days, registers & storesPro
+
+See sales for earlier days and date ranges, for every register and every store.
+
+Start free. Upgrade when you need more.
+Free
+
+Free forever. One register, no transaction fees, no caps on products or orders.
+
+WooCommerce sync
+Product search & grid
+Cash or card on your own terminal
+Offline mode
+Receipt printing
+Multi-currency
+Unlimited products
+Open & close the register
+Split payments
+Today's sales report
+Pro
+
+$129/year or $399 lifetime (USD). No per-register fees.
+
+Everything in Free, plus:
+
+More registers & multiple stores
+Payment terminal integration
+Stock & price editing in POS
+Order history & management
+Customer management
+Reports across days, registers & stores
+Custom payment gateways
+Priority support
+See Full Pricing & Features
+
+Weighing up Square or FooSales? See how WCPOS compares
+
+5,000+
+
+Active Installations
+
+2014
+
+In Development Since
+
+GPL Licensed
+— WCPOS on GitHub
+
+25+
+
+Languages Supported
+
+“Straightforward, functional and simple to use. 10/10.”
+— Ward, wordpress.org review
+
+Read our story →
+
+Ready to sell in-store with WooCommerce?
+
+Try the live demo or download the free plugin to get started.
+
+Try Live Demo
+Download Free
+
+Compare WooCommerce POS systems
+
+PRODUCT
+Downloads
+WCPOS Pro
+Compare
+Roadmap
+Changelog
+Live Demo↗
+Extensions
+COMMUNITY
+Discord↗
+GitHub↗
+WordPress.org↗
+SUPPORT
+Documentation
+Support
+Status↗
+WordPress Forum↗
+COMPANY
+About
+Privacy
+Terms
+Refunds
+DOWNLOAD
+WordPress Plugin↗
+WCPOS for macOS↗
+WCPOS for Windows↗
+WCPOS for Linux↗
+WCPOS for iOS & iPad↗
+WCPOS for Android↗
+
+© 2026 WCPOS
+
+English
+Français
+Deutsch
+Español
+日本語
+中文
+Português
+Italiano
+Nederlands
+한국어
+
+We use an anonymous analytics cookie to understand how the site is used. No ads, no third-party tracking. Privacy policy
+
+Decline
+Accept
