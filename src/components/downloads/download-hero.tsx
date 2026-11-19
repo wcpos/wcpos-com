@@ -2,7 +2,7 @@
 
 import { useState, useSyncExternalStore } from 'react'
 import { useTranslations } from 'next-intl'
-import { Download, ArrowRight } from 'lucide-react'
+import { Download, ArrowRight, Plug } from 'lucide-react'
 import { Section } from '@/components/ui/section'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -29,6 +29,7 @@ export function DownloadsHero({
 }) {
   const t = useTranslations('downloads.hero')
   const platformT = useTranslations('downloads.platforms')
+  const pageT = useTranslations('downloads.page')
   const detected = useSyncExternalStore<PlatformKey>(
     subscribePlatform,
     () =>
@@ -105,24 +106,24 @@ export function DownloadsHero({
           </div>
           <p className="mt-1 text-sm text-muted-foreground">{meta}</p>
           <p className="mt-4 text-sm text-muted-foreground">
-            {t.rich('pluginNotice', {
-              plugin: (chunks) => (
-                <TextLink
-                  href="https://wordpress.org/plugins/woocommerce-pos/"
-                  onClick={() =>
-                    trackClientEvent('download_clicked', {
-                      plugin: 'free',
-                      source: 'wordpress_org',
-                      page: '/downloads',
-                    })
-                  }
-                >
-                  {chunks}
-                </TextLink>
-              ),
-            })}
+            {t('pluginNotice')}
           </p>
-          <Button asChild variant="brand" size="xl" className="mt-4 w-full">
+          <Button asChild variant="outline" size="lg" className="mt-4 w-full">
+            <a
+              href="https://wordpress.org/plugins/woocommerce-pos/"
+              onClick={() =>
+                trackClientEvent('download_clicked', {
+                  plugin: 'free',
+                  source: 'wordpress_org',
+                  page: '/downloads',
+                })
+              }
+            >
+              <Plug aria-hidden="true" />
+              {pageT('steps.plugin.title')}
+            </a>
+          </Button>
+          <Button asChild variant="brand" size="xl" className="mt-3 w-full">
             <a href={info.href}>
               <PrimaryIcon aria-hidden="true" />
               {platformT(`${selected}.action`)}
