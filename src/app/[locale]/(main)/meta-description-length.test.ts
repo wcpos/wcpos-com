@@ -35,6 +35,8 @@ const KEYS = {
     m.support.meta.description as unknown,
   'compare.hub.metadata.description': (m: Messages) =>
     m.compare.hub.metadata.description as unknown,
+  'extensions.metadata.description': (m: Messages) =>
+    m.extensions.metadata.description as unknown,
 } as const
 
 const CASES = LOCALES.flatMap(({ locale, messages, limit }) =>
@@ -78,6 +80,13 @@ describe('home and /downloads meta descriptions', () => {
       expect(description).toContain('Square')
       expect(description).toContain('FooSales')
       expect(description).toContain('Oliver POS')
+    }
+  )
+
+  it.each(LOCALES)(
+    '$locale extensions description names WCPOS Pro',
+    ({ messages }) => {
+      expect(messages.extensions.metadata.description).toContain('WCPOS Pro')
     }
   )
 

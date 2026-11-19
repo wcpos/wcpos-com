@@ -1745,7 +1745,7 @@
   "extensions": {
     "metadata": {
       "title": "WooCommerce용 POS 확장 기능 및 결제 단말기",
-      "description": "WooCommerce용 POS인 WCPOS의 확장 기능: Stripe, Square, SumUp, PayPal, Mollie, Windcave 결제 단말기와 WPML, Polylang, ATUM."
+      "description": "WooCommerce용 POS 확장: WCPOS Pro용 Stripe·Square·SumUp·PayPal·Mollie·Windcave 등 단말기, WPML·Polylang·ATUM"
     },
     "hero": {
       "title": "WooCommerce용 POS 확장 기능",
