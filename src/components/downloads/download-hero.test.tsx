@@ -103,13 +103,18 @@ describe('DownloadsHero', () => {
     )
   })
 
-  it('puts the upgrade note after the platform download button', () => {
+  it('puts the upgrade note before the platform download button', () => {
     render(<DownloadsHero desktopVersion="2.0.0" />)
     const primaryLink = screen.getByRole('link', {
       name: /^downloads\.platforms\.[\w-]+\.action$/,
     })
+    const note = screen.getByTestId('upgrade-note')
     expect(
-      primaryLink.compareDocumentPosition(screen.getByTestId('upgrade-note')) &
+      primaryLink.compareDocumentPosition(note) &
+        Node.DOCUMENT_POSITION_PRECEDING,
+    ).toBeTruthy()
+    expect(
+      getPluginLink().compareDocumentPosition(note) &
         Node.DOCUMENT_POSITION_FOLLOWING,
     ).toBeTruthy()
   })
