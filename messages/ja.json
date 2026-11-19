@@ -482,6 +482,8 @@
       },
       "tryFreeLink": "まずは無料版をお試しください",
       "tryFreeSuffix": "——役立つと確認できたらアップグレード",
+      "demoLink": "ライブデモでProを確認",
+      "demoSuffix": "（ログイン demo / demo）",
       "payments": "カード、PayPal、Bitcoin",
       "proof": "5,000以上のアクティブストア",
       "unavailableTitle": "価格情報を一時的に取得できません",

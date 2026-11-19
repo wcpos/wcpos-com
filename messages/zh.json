@@ -482,6 +482,8 @@
       },
       "tryFreeLink": "先试用免费版",
       "tryFreeSuffix": "——确认好用后再升级",
+      "demoLink": "在在线演示中体验 Pro",
+      "demoSuffix": "（登录 demo / demo）",
       "payments": "银行卡、PayPal 或 Bitcoin",
       "proof": "5,000+ 活跃商店",
       "unavailableTitle": "价格信息暂时不可用",

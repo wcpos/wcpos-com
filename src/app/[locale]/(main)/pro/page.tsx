@@ -2,9 +2,10 @@ import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { resolveLocale } from '@/i18n/resolve-locale'
 import { Suspense } from 'react'
 import { cookies } from 'next/headers'
-import { AlertCircle, Bitcoin, CreditCard, Download } from 'lucide-react'
+import { AlertCircle } from 'lucide-react'
 import { Link } from '@/i18n/navigation'
 import { ProBuyBox } from '@/components/pro/pro-buy-box'
+import { ProBuyBoxFooter } from '@/components/pro/pro-buy-box-footer'
 import { buildProBuyBoxOptions } from '@/components/pro/pro-buy-box-options'
 import {
   PRO_FEATURE_KEYS,
@@ -109,31 +110,7 @@ async function BuyBoxWithExperiment({ locale }: { locale: Locale }) {
       heading={t('buyBox.heading')}
       subheading={t('buyBox.subheading')}
       termAriaLabel={t('buyBox.termAriaLabel')}
-      footer={
-        <>
-          <div className="mt-5 space-y-2 border-t pt-4 text-sm text-muted-foreground">
-            <p className="flex items-center gap-2">
-              <Download className="h-4 w-4 shrink-0" aria-hidden />
-              <span>
-                <TextLink asChild>
-                  <Link href="/downloads">{t('buyBox.tryFreeLink')}</Link>
-                </TextLink>
-                {t('buyBox.tryFreeSuffix')}
-              </span>
-            </p>
-            <p className="flex items-center gap-2">
-              <CreditCard className="h-4 w-4 shrink-0" aria-hidden />
-              <span className="flex items-center gap-1">
-                {t('buyBox.payments')}
-                <Bitcoin className="h-4 w-4" aria-hidden />
-              </span>
-            </p>
-          </div>
-          <p className="mt-4 text-center text-xs text-muted-foreground">
-            {t('buyBox.proof')}
-          </p>
-        </>
-      }
+      footer={<ProBuyBoxFooter t={translate} />}
     />
   )
 }
