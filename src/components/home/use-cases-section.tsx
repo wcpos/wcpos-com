@@ -61,9 +61,9 @@ export function UseCasesSection() {
             >
               <div
                 aria-hidden="true"
-                className={`flex h-28 items-center justify-center ${uc.bandClasses}`}
+                className={`h-14 flex items-center justify-center md:h-28 ${uc.bandClasses}`}
               >
-                <uc.icon className={`h-10 w-10 ${uc.iconClasses}`} />
+                <uc.icon className={`h-7 w-7 md:h-10 md:w-10 ${uc.iconClasses}`} />
               </div>
 
               <div className="p-6">
