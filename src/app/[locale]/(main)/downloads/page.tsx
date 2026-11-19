@@ -35,6 +35,7 @@ import {
 } from '@/services/core/external/versions-client'
 import enMessages from '../../../../../messages/en.json'
 import { clientMessages } from '@/i18n/client-messages'
+import { DOWNLOADS_CLIENT_MESSAGES } from '@/components/downloads/client-messages'
 
 export async function generateMetadata({
   params,
@@ -169,10 +170,7 @@ export default async function DownloadsPage({
 
   return (
     <NextIntlClientProvider
-      messages={clientMessages(messages, [
-        'downloads.hero',
-        'downloads.platforms',
-      ])}
+      messages={clientMessages(messages, DOWNLOADS_CLIENT_MESSAGES)}
     >
       <main>
         <script
