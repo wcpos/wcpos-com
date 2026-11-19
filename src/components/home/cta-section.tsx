@@ -1,7 +1,7 @@
 import { useTranslations } from 'next-intl'
 import { CtaBand } from '@/components/main/cta-band'
 
-export function CtaSection() {
+export function CtaSection({ showCompareLink = true }: { showCompareLink?: boolean }) {
   const t = useTranslations('home.cta')
 
   return (
@@ -12,7 +12,7 @@ export function CtaSection() {
         { label: t('liveDemo'), href: 'https://demo.wcpos.com/pos' },
         { label: t('download'), href: '/downloads', variant: 'inverse' },
       ]}
-      link={{ label: t('compare'), href: '/compare' }}
+      link={showCompareLink ? { label: t('compare'), href: '/compare' } : undefined}
     />
   )
 }

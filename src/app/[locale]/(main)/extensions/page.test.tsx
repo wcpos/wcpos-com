@@ -32,6 +32,12 @@ vi.mock('next-intl/server', () => ({
   setRequestLocale: vi.fn(),
 }))
 
+// CtaSection reads home.cta through useTranslations.
+vi.mock('next-intl', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('next-intl')>()),
+  useTranslations: () => (key: string) => `Translated CTA ${key}`,
+}))
+
 vi.mock('@/i18n/navigation', () => ({
   Link: ({ children, href }: { children: ReactNode; href: string }) => (
     <a href={href}>{children}</a>
@@ -171,7 +177,7 @@ describe('ExtensionsPage', () => {
     render(await ExtensionsPage({ params }))
     expect(
       screen.getAllByRole('heading', { level: 2 }).map((heading) => heading.textContent)
-    ).toEqual(EXPECTED_GROUPS.map(({ heading }) => heading))
+    ).toEqual([...EXPECTED_GROUPS.map(({ heading }) => heading), 'Translated CTA title'])
     const payments = within(
       screen.getByRole('region', { name: 'Translated payments heading' })
     ).getAllByRole('heading', { level: 3 })
@@ -206,6 +212,18 @@ describe('ExtensionsPage', () => {
       'Stripe Terminal for WooCommerce',
       'Square Terminal for WooCommerce',
     ])
+  })
+
+  it('ends with the demo and download band after the last catalog card', async () => {
+    const { container } = render(await ExtensionsPage({ params }))
+
+    const cards = screen.getAllByRole('listitem')
+    const lastCard = cards[cards.length - 1]
+    for (const href of ['https://demo.wcpos.com/pos', '/downloads']) {
+      const link = container.querySelector(`a[href="${href}"]`)
+      expect(link, href).not.toBeNull()
+      expect(lastCard.compareDocumentPosition(link!) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+    }
   })
 
   it('maps every catalog category to exactly one group', () => {

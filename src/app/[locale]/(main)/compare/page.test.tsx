@@ -52,6 +52,12 @@ vi.mock('next-intl/server', () => ({
   setRequestLocale: vi.fn(),
 }))
 
+// CtaSection reads home.cta through useTranslations.
+vi.mock('next-intl', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('next-intl')>()),
+  useTranslations: () => (key: string) => `Translated CTA ${key}`,
+}))
+
 vi.mock('@/i18n/navigation', () => ({
   Link: ({
     children,
@@ -139,6 +145,18 @@ describe('ComparePage', () => {
     expect(lastCard).toBeGreaterThan(-1)
     expect(disclosure).toBeGreaterThan(lastCard)
     expect(method).toBeGreaterThan(disclosure)
+  })
+
+  it('ends with the demo and download band, without a link to itself', async () => {
+    const { container } = render(await ComparePage({ params }))
+
+    const method = screen.getByRole('heading', { name: 'Translated method title' })
+    for (const href of ['https://demo.wcpos.com/pos', '/downloads']) {
+      const link = container.querySelector(`a[href="${href}"]`)
+      expect(link, href).not.toBeNull()
+      expect(method.compareDocumentPosition(link!) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+    }
+    expect(container.querySelector('a[href="/compare"]')).toBeNull()
   })
 
   it('emits ItemList JSON-LD naming all comparisons', async () => {

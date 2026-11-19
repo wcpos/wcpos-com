@@ -264,6 +264,17 @@ describe('CtaSection', () => {
     expect(
       screen.getByRole('link', { name: 'Download Free' })
     ).toHaveAttribute('href', '/downloads')
+    expect(
+      screen.getByRole('link', { name: 'Compare WooCommerce POS systems' })
+    ).toHaveAttribute('href', '/compare')
+  })
+
+  it('drops the /compare link when showCompareLink is false', () => {
+    const { container } = renderWithIntl(<CtaSection showCompareLink={false} />)
+
+    expect(container.querySelector('a[href="https://demo.wcpos.com/pos"]')).not.toBeNull()
+    expect(container.querySelector('a[href="/downloads"]')).not.toBeNull()
+    expect(container.querySelector('a[href="/compare"]')).toBeNull()
   })
 
   it('renders translated CTA copy from messages', () => {

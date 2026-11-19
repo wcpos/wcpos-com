@@ -2,6 +2,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { resolveLocale } from '@/i18n/resolve-locale'
 import { ArrowRight, Scale } from 'lucide-react'
 import { Link } from '@/i18n/navigation'
+import { CtaSection } from '@/components/home/cta-section'
 import { Card } from '@/components/ui/card'
 import { Section } from '@/components/ui/section'
 import { SectionHeading } from '@/components/ui/section-heading'
@@ -131,6 +132,8 @@ export default async function ComparePage({
           subtitle={t('hub.method.body')}
         />
       </Section>
+
+      <CtaSection showCompareLink={false} />
     </main>
   )
 }

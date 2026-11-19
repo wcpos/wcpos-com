@@ -3,6 +3,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { ArrowRight } from 'lucide-react'
 import { Link } from '@/i18n/navigation'
 import { resolveLocale } from '@/i18n/resolve-locale'
+import { CtaSection } from '@/components/home/cta-section'
 import { Badge } from '@/components/ui/badge'
 import { Card } from '@/components/ui/card'
 import { Section } from '@/components/ui/section'
@@ -150,6 +151,8 @@ export default async function ExtensionsPage({
           <a href={EXTENSIONS_DOCS_URL}>{t('allDocsLink')}</a>
         </TextLink>
       </Section>
+
+      <CtaSection />
     </main>
   )
 }
