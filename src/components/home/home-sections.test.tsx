@@ -86,6 +86,17 @@ describe('UseCasesSection', () => {
     }
   })
 
+  it('titles the review cards as store owners’ reviews', () => {
+    renderWithIntl(<UseCasesSection />)
+
+    expect(
+      screen.getByRole('heading', { level: 2, name: 'What store owners say' })
+    ).toBeInTheDocument()
+    expect(
+      screen.queryByText('Works for stores of all kinds')
+    ).not.toBeInTheDocument()
+  })
+
   it('renders translated use-case copy from messages', () => {
     render(
       <NextIntlClientProvider

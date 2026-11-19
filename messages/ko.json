@@ -94,7 +94,7 @@
       "story": "우리 이야기 읽기 →"
     },
     "useCases": {
-      "title": "모든 종류의 매장에 적합",
+      "title": "스토어 운영자들의 후기",
       "reviewSuffix": "wordpress.org 리뷰",
       "cards": {
         "retail": {
