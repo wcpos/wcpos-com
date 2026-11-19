@@ -82,6 +82,16 @@ describe('home and /downloads meta descriptions', () => {
   )
 
   it.each(LOCALES)(
+    '$locale compare.hub.metadata.title names Square and FooSales in 53 characters',
+    ({ messages }) => {
+      const title = messages.compare.hub.metadata.title
+      expect(title).toContain('Square')
+      expect(title).toContain('FooSales')
+      expect(title.length).toBeLessThanOrEqual(53)
+    }
+  )
+
+  it.each(LOCALES)(
     '$locale support.meta.title names WooCommerce in 52 characters',
     ({ messages }) => {
       const title = messages.support.meta.title
