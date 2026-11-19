@@ -6,10 +6,7 @@ import { DownloadsClient } from '@/components/account/downloads-client'
 import { getResolvedCustomerLicenses } from '@/lib/customer-licenses'
 import { isLicenseActive, summarizeDownloadAccess } from '@/lib/license'
 import { getPlanByPolicyId } from '@/lib/plans'
-import {
-  getProPluginReleases,
-  getProPluginPrereleases,
-} from '@/services/core/business/pro-downloads'
+import { getProPluginReleases } from '@/services/core/business/pro-downloads'
 import { resolveEntitledReleases } from '@/services/core/business/release-delivery'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -112,10 +109,7 @@ async function DownloadsContent({
   // back to pooling every licence (ADR-0006). Only an absent scope sees all.
   const downloadLicenses = scopedLicenseId ? scopedLicenses : licenses
   const nowMs = new Date().getTime()
-  const [releases, prereleases] = await Promise.all([
-    getProPluginReleases(),
-    getProPluginPrereleases(),
-  ])
+  const releases = await getProPluginReleases()
   const scope = { kind: 'account' as const, licences: downloadLicenses }
   const mappedReleases = resolveEntitledReleases(
     releases,
@@ -129,21 +123,6 @@ async function DownloadsContent({
     publishedAt: release.publishedAt,
     allowed: release.allowed,
   }))
-
-  const mappedPrereleases = resolveEntitledReleases(
-    prereleases,
-    scope,
-    nowMs
-  )
-    .filter((release) => release.allowed)
-    .map((release) => ({
-      version: release.version,
-      name: release.name,
-      releaseNotes: release.releaseNotes,
-      contentLocale: release.contentLocale,
-      publishedAt: release.publishedAt,
-      allowed: release.allowed,
-    }))
 
   // One-pass access diagnosis so the UI can explain WHY a release is
   // unavailable (expired vs. suspended vs. unverifiable vs. no license).
@@ -172,7 +151,6 @@ async function DownloadsContent({
   return (
     <DownloadsClient
       initialReleases={mappedReleases}
-      prereleases={mappedPrereleases}
       entitlingPlanLabel={entitlingPlanLabel}
       access={{
         hasActiveLicense,

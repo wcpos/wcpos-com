@@ -22,16 +22,15 @@ vi.mock('@/services/core/business/pro-downloads', () => ({
   getProPluginReleases: async () => [
     { version: '1.9.0', publishedAt: '2024-01-01', prerelease: false },
   ],
-  getProPluginPrereleases: async () => [
-    { version: '2.0.0-beta.1', publishedAt: '2024-01-01', prerelease: true },
-  ],
 }))
 
 describe('account downloads licence scope', () => {
+  // 'expired' stays allowed: 1.9.0 was published (2024-01-01) inside that
+  // licence's term (expires 2025-01-01), so the historical grant holds.
   it.each([
-    [undefined, true], ['active', true], ['expired', false],
+    [undefined, true], ['active', true], ['expired', true],
     ['unknown', false], ['foreign-id', false],
-  ])('keeps beta entitlement scoped to %s', async (license, allowed) => {
+  ])('scopes release entitlement to %s', async (license, allowed) => {
     const page = await DownloadsPage({
       params: Promise.resolve({ locale: 'en' }),
       searchParams: Promise.resolve({ license }),
@@ -39,9 +38,14 @@ describe('account downloads licence scope', () => {
     // Resolve the async content inside Suspense, then inspect the client props.
     const content = page.props.children[1].props.children
     const client = await content.type(content.props)
-    expect(client.props.prereleases.map((r: { version: string }) => r.version))
-      .toEqual(allowed ? ['2.0.0-beta.1'] : [])
-    expect(client.props.initialReleases.map((r: { version: string }) => r.version))
-      .toEqual(['1.9.0'])
+    expect(
+      client.props.initialReleases.map(
+        (r: { version: string; allowed: boolean }) => ({
+          version: r.version,
+          allowed: r.allowed,
+        })
+      )
+    ).toEqual([{ version: '1.9.0', allowed }])
+    expect(client.props.prereleases).toBeUndefined()
   })
 })
