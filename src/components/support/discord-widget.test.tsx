@@ -1,5 +1,5 @@
 import { afterEach, describe, it, expect, vi } from 'vitest'
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import React from 'react'
 import { NextIntlClientProvider } from 'next-intl'
 import messages from '../../../messages/en.json'
@@ -42,5 +42,14 @@ describe('DiscordWidget', () => {
     expect(
       spy.mock.calls.flat().map(String).some((arg) => arg.includes('Maximum update depth'))
     ).toBe(false)
+  })
+
+  it('keeps the skeleton over the iframe until the embed loads', () => {
+    render(widgetWithMessages())
+    expect(screen.getByTestId('discord-widget-skeleton')).toBeInTheDocument()
+
+    fireEvent.load(screen.getByTitle('Discord chat'))
+
+    expect(screen.queryByTestId('discord-widget-skeleton')).not.toBeInTheDocument()
   })
 })
