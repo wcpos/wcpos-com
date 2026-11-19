@@ -1,4 +1,7 @@
+import { readFileSync } from 'node:fs'
+import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
+import { locales } from '@/i18n/config'
 import enMessages from '../../messages/en.json'
 import {
   COMPARE_FACTS_VERIFIED,
@@ -41,7 +44,7 @@ describe('comparePageJsonLd', () => {
       name: 'Name',
       description: 'Description',
       inLanguage: 'de',
-      dateModified: '2026-10-06',
+      dateModified: '2026-11-18',
       publisher: {
         '@type': 'Organization',
         name: 'WCPOS',
@@ -56,6 +59,22 @@ describe('comparePageJsonLd', () => {
       const footer = FOOTERS[slug as CompareSlug]
       const long = longDate.format(new Date(`${date}T00:00:00Z`))
       expect(footer.includes(date) || footer.includes(long)).toBe(true)
+    }
+  )
+
+  it.each(locales)(
+    'gives both square dates in the %s caption and footer',
+    (locale) => {
+      const square = JSON.parse(
+        readFileSync(join(process.cwd(), 'messages', `${locale}.json`), 'utf8')
+      ).compare.square as {
+        glance: { caption: string }
+        footer: { factsDated: string }
+      }
+      for (const text of [square.glance.caption, square.footer.factsDated]) {
+        expect(text).toContain('2026-10-06')
+        expect(text).toContain('2026-11-18')
+      }
     }
   )
 })

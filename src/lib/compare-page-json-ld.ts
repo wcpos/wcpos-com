@@ -2,14 +2,15 @@ import { localeUrl } from '@/lib/seo'
 import type { Locale } from '@/i18n/config'
 
 /**
- * The date each /compare/* page's facts were verified, as the page already
- * shows it in its footer and caption. compare-page-json-ld.test.ts checks
- * every value against the English footer copy, so the two can't drift.
+ * The latest date each /compare/* page's facts were verified or checked
+ * again, as the page already shows it in its footer and caption.
+ * compare-page-json-ld.test.ts checks every value against the English footer
+ * copy, so the two can't drift.
  */
 export const COMPARE_FACTS_VERIFIED = {
   'oliver-pos': '2026-07-08',
   'woocommerce-pos': '2026-10-06',
-  square: '2026-10-06',
+  square: '2026-11-18',
   jovvie: '2026-07-09',
   vitepos: '2026-10-07',
   'yith-pos': '2026-10-07',

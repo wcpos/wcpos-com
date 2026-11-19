@@ -2369,7 +2369,7 @@
       },
       "glance": {
         "title": "ひと目でわかる比較",
-        "caption": "Squareに関する事実は2026-10-06にsquareup.comおよびSquare for WooCommerce拡張機能に関するWooCommerceのドキュメントで確認。WCPOSに関する事実はwcpos.comとdocs.wcpos.comに基づきます。",
+        "caption": "Squareに関する事実は2026-10-06にsquareup.comおよびSquare for WooCommerce拡張機能に関するWooCommerceのドキュメントで確認し、2026-11-18に再確認。WCPOSに関する事実はwcpos.comとdocs.wcpos.comに基づきます。",
         "colWcpos": "WCPOS",
         "colSquare": "Square POS + Square for WooCommerce",
         "rows": {
@@ -2519,7 +2519,7 @@
         }
       },
       "footer": {
-        "factsDated": "Squareに関する事実は2026-10-06にSquare自身のページ（手数料ページ、料金変更の発表、オフライン決済、Tap to Pay、デバイス、国際的な提供状況に関するヘルプ記事）およびSquare for WooCommerce拡張機能のWooCommerceドキュメントで確認しました。WCPOSに関する事実はwcpos.comとdocs.wcpos.comに基づき、2026-11-09にリリースされたWCPOS 2.0についてのものです。アプリとプラグインの両方がバージョン2.0である必要があります。四半期ごとに再確認します。",
+        "factsDated": "Squareに関する事実は2026-10-06にSquare自身のページ（手数料ページ、料金変更の発表、オフライン決済、Tap to Pay、デバイス、国際的な提供状況に関するヘルプ記事）およびSquare for WooCommerce拡張機能のWooCommerceドキュメントで確認し、2026-11-18に再確認しました。WCPOSに関する事実はwcpos.comとdocs.wcpos.comに基づき、2026-11-09にリリースされたWCPOS 2.0についてのものです。アプリとプラグインの両方がバージョン2.0である必要があります。四半期ごとに再確認します。",
         "corrections": "誤りを見つけましたか？ support@wcpos.com までご連絡ください。迅速に修正し、すべての変更を記録します。"
       }
     },
