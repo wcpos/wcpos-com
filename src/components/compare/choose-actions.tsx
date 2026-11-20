@@ -7,7 +7,7 @@ export function CompareChooseActions() {
   const t = useTranslations('home.cta')
 
   return (
-    <div className="mt-5 flex flex-col gap-3 sm:flex-row">
+    <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
       <Button asChild size="lg">
         <a href="https://demo.wcpos.com/pos">{t('liveDemo')}</a>
       </Button>
