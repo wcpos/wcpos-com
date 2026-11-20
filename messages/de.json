@@ -361,12 +361,12 @@
   },
   "roadmap": {
     "meta": {
-      "title": "Produktplanung",
-      "description": "Sieh, was wir als Nächstes für WCPOS entwickeln — kommende Funktionen, Meilensteine und Fortschritt der Veröffentlichungen."
+      "title": "WooCommerce-Kassensystem: Roadmap und Ausblick",
+      "description": "Was als Nächstes für WCPOS kommt, das kostenlose Kassen-Plugin für WooCommerce: laufende und geplante Arbeiten, direkt von GitHub."
     },
     "page": {
-      "eyebrow": "Produktplanung",
-      "title": "Der Veröffentlichungsfahrplan",
+      "eyebrow": "Der Veröffentlichungsfahrplan",
+      "title": "Roadmap des WooCommerce-Kassensystems",
       "description": "Jede Station auf dem Weg zu einem schnelleren, offline-sicheren WCPOS — direkt aus unserem GitHub, neueste Arbeit zuerst.",
       "changelogLink": "Veröffentlichte Versionen im Änderungsprotokoll ansehen"
     },
