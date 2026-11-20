@@ -398,12 +398,12 @@
   },
   "changelog": {
     "meta": {
-      "title": "変更履歴",
-      "description": "GitHubから取得したWCPOSプラグインの最新の公開済みバージョンのリリースノート。"
+      "title": "WooCommerce用POSの変更履歴とリリースノート",
+      "description": "WooCommerce向けの無料POSプラグイン、WCPOSの最新の公開済みバージョンのリリースノートをGitHubから直接お届けします。"
     },
     "page": {
-      "title": "変更履歴",
-      "description": "WCPOSプラグインの最新の公開済みリリースと、GitHubから取得したリリースノート。"
+      "title": "WooCommerce用POSの変更履歴",
+      "description": "無料のWooCommerce用POSプラグイン、WCPOSの最新の公開済みリリースと、GitHubから取得したリリースノート。"
     }
   },
   "pro": {

@@ -398,12 +398,12 @@
   },
   "changelog": {
     "meta": {
-      "title": "변경 기록",
-      "description": "GitHub에서 가져온 WCPOS 플러그인의 최신 게시 버전에 대한 릴리스 노트."
+      "title": "WooCommerce용 POS 변경 기록 및 릴리스 노트",
+      "description": "WooCommerce용 무료 POS 플러그인인 WCPOS의 최신 게시 버전에 대한 릴리스 노트를 GitHub에서 바로 제공합니다."
     },
     "page": {
-      "title": "변경 기록",
-      "description": "WCPOS 플러그인의 최신 게시 릴리스와 GitHub에서 가져온 릴리스 노트."
+      "title": "WooCommerce용 POS 변경 기록",
+      "description": "무료 WooCommerce용 POS 플러그인 WCPOS의 최신 게시 릴리스와 GitHub에서 가져온 릴리스 노트."
     }
   },
   "pro": {

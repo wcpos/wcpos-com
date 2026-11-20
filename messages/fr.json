@@ -398,12 +398,12 @@
   },
   "changelog": {
     "meta": {
-      "title": "Journal des modifications",
-      "description": "Notes de version des dernières versions publiées du plugin WCPOS, provenant de GitHub."
+      "title": "Point de vente WooCommerce : journal des modifications",
+      "description": "Notes de version des dernières versions publiées de WCPOS, le plugin de point de vente gratuit pour WooCommerce, directement depuis GitHub."
     },
     "page": {
-      "title": "Journal des modifications",
-      "description": "Les dernières versions publiées du plugin WCPOS, avec leurs notes de version provenant de GitHub."
+      "title": "Journal des modifications du point de vente WooCommerce",
+      "description": "Les dernières versions publiées de WCPOS, le plugin gratuit de point de vente WooCommerce, avec leurs notes de version provenant de GitHub."
     }
   },
   "pro": {
