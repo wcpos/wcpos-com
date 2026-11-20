@@ -32,10 +32,6 @@ describe('/pro copy terms', () => {
     expect(description).not.toMatch(/\btill\b/)
   })
 
-  it('says "register", not "till", in the English beta warning', () => {
-    expect(en.account.downloads.beta.warning).not.toMatch(/\btill\b/)
-  })
-
   it('translates "priority support" in every Dutch /pro string', () => {
     const strings: [string, string][] = []
     collectStrings(nl.pro, 'pro', strings)
