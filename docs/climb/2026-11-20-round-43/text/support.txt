@@ -1,0 +1,79 @@
+WCPOS
+Downloads
+Pro
+Documentation
+Support
+Roadmap
+Sign In
+WooCommerce POS help & support
+
+Ask anything about WCPOS — setup, licensing, hardware, syncing, printing. You'll get an instant answer drawn from our docs.
+
+Ask
+
+Tick the box below to ask your question.
+
+How many sites can I use my licence on?
+Which barcode scanners are supported?
+How do I sync products from WooCommerce?
+
+Answered by Aide · trained on the WCPOS docs & wiki
+
+Start with these guides
+Install WCPOS on your WooCommerce store
+Activate your Pro licence
+Set up a barcode scanner
+Set up a receipt printer
+How product sync works
+Prefer to talk to a human?
+
+Join store owners and the team in our live Discord community.
+
+Open Discord
+PRODUCT
+Downloads
+WCPOS Pro
+Compare
+Roadmap
+Changelog
+Live Demo↗
+Extensions
+COMMUNITY
+Discord↗
+GitHub↗
+WordPress.org↗
+SUPPORT
+Documentation
+Support
+Status↗
+WordPress Forum↗
+COMPANY
+About
+Privacy
+Terms
+Refunds
+DOWNLOAD
+WordPress Plugin↗
+WCPOS for macOS↗
+WCPOS for Windows↗
+WCPOS for Linux↗
+WCPOS for iOS & iPad↗
+WCPOS for Android↗
+
+© 2026 WCPOS
+
+English
+Français
+Deutsch
+Español
+日本語
+中文
+Português
+Italiano
+Nederlands
+한국어
+
+We use an anonymous analytics cookie to understand how the site is used. No ads, no third-party tracking. Privacy policy
+
+Decline
+Accept
