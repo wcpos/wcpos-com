@@ -2368,7 +2368,7 @@
     "square": {
       "metadata": {
         "title": "WCPOS vs Square for WooCommerce（2026）",
-        "description": "何时 Square for WooCommerce 是更好的选择，何时 WCPOS 更好：销售记录在哪里、同步、地点和费用。由 WCPOS 开发者比较。"
+        "description": "Square for WooCommerce 同步商品和库存，但不同步 Square POS 中的订单。WCPOS 的每笔销售都是 WooCommerce 订单。由 WCPOS 开发者比较。"
       },
       "hero": {
         "title": "WCPOS vs Square for WooCommerce",

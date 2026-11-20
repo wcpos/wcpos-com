@@ -2368,7 +2368,7 @@
     "square": {
       "metadata": {
         "title": "WCPOS vs Square for WooCommerce (2026)",
-        "description": "Quando o Square for WooCommerce é a melhor escolha e quando é o WCPOS: onde se registam as vendas, localizações e taxas. Comparados pelo criador do WCPOS."
+        "description": "Square for WooCommerce sincroniza produtos e stock, não as encomendas do POS do Square. Cada venda no WCPOS é uma encomenda WooCommerce. Pelo criador do WCPOS."
       },
       "hero": {
         "title": "WCPOS vs Square for WooCommerce",
