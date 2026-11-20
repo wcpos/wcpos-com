@@ -209,6 +209,50 @@ describe('DownloadsPage', () => {
     ).toBeTruthy()
   })
 
+  it('stacks step 2 device links on phone with separators only from sm up', async () => {
+    const { default: DownloadsPage } = await import(
+      '@/app/[locale]/(main)/downloads/page'
+    )
+
+    render(await DownloadsPage({ params: Promise.resolve({ locale: 'en' }) }))
+
+    const step = screen
+      .getByRole('heading', { level: 3, name: 'Pick your device' })
+      .closest('li')!
+    const desktopNames = [
+      'macOS (Apple Silicon)',
+      'macOS (Intel)',
+      'Windows',
+      'Linux',
+    ]
+    const desktopRow = within(step)
+      .getByRole('link', { name: desktopNames[0] })
+      .closest('span')!.parentElement!
+    const webRow = within(step).getByRole('link', {
+      name: 'Open the live demo',
+    }).parentElement!
+
+    for (const row of [desktopRow, webRow]) {
+      expect(row).toHaveClass('flex-col', 'sm:flex-row', 'sm:flex-wrap')
+      expect(row).not.toHaveClass('flex-wrap')
+    }
+    expect(
+      within(desktopRow).getAllByRole('link').map((link) => link.textContent),
+    ).toEqual(desktopNames)
+    expect(
+      within(webRow).getAllByRole('link').map((link) => link.textContent),
+    ).toEqual(['Set up on your store', 'Open the live demo'])
+
+    const separators = Array.from(step.querySelectorAll('span')).filter(
+      (span) => span.textContent === '·',
+    )
+    expect(separators).toHaveLength(desktopNames.length) // three desktop + one web
+    for (const separator of separators) {
+      expect(separator).toHaveClass('hidden', 'sm:inline')
+      expect(separator).toHaveAttribute('aria-hidden', 'true')
+    }
+  })
+
   it('emits SoftwareApplication JSON-LD with a /downloads downloadUrl', async () => {
     const { default: DownloadsPage } = await import(
       '@/app/[locale]/(main)/downloads/page'

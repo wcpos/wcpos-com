@@ -296,11 +296,11 @@ export default async function DownloadsPage({
               </p>
               <div className="mt-4 grid gap-3 sm:grid-cols-2">
                 <DeviceCard icon={Laptop} title={pageT('steps.device.desktopTitle')} betaLabel={pageT('beta')}>
-                  <div className="flex flex-wrap gap-x-1 gap-y-1">
+                  <div className="flex flex-col gap-1 sm:flex-row sm:flex-wrap sm:gap-x-1 sm:gap-y-1">
                     {desktopLinks.map((key, index) => (
                       <span key={PLATFORMS[key].href}>
                         <TextLink href={PLATFORMS[key].href}>{platformT(`${key}.listLabel`)}</TextLink>
-                        {index < desktopLinks.length - 1 && <span className="px-1 text-muted-foreground">·</span>}
+                        {index < desktopLinks.length - 1 && <span aria-hidden="true" className="hidden px-1 text-muted-foreground sm:inline">·</span>}
                       </span>
                     ))}
                   </div>
@@ -312,9 +312,9 @@ export default async function DownloadsPage({
                   <TextLink href={PLATFORMS.android.href}>{pageT('steps.device.androidCta')}</TextLink>
                 </DeviceCard>
                 <DeviceCard icon={Globe} title={platformT('web.name')} betaLabel={pageT('beta')}>
-                  <div className="flex flex-wrap gap-x-1 gap-y-1">
+                  <div className="flex flex-col gap-1 sm:flex-row sm:flex-wrap sm:gap-x-1 sm:gap-y-1">
                     <TextLink href={WEB_SETUP_GUIDE_URL}>{pageT('steps.device.webSetupCta')}</TextLink>
-                    <span className="px-1 text-muted-foreground">·</span>
+                    <span aria-hidden="true" className="hidden px-1 text-muted-foreground sm:inline">·</span>
                     <TextLink href={PLATFORMS.web.href}>{pageT('steps.device.webCta')}</TextLink>
                   </div>
                 </DeviceCard>
