@@ -46,7 +46,7 @@ const PLUGIN_REPO = 'woocommerce-pos'
  */
 const CONTENT_UPDATED_AT: Partial<Record<MarketingPath, string>> = {
   '/': '2026-11-19',
-  '/pro': '2026-11-19',
+  '/pro': '2026-11-20',
   '/extensions': '2026-11-18',
   '/compare': '2026-11-19',
   '/compare/oliver-pos': '2026-11-20',
