@@ -2291,7 +2291,7 @@
       "payments": {
         "title": "银行卡支付如何运作？",
         "woocommerce": "WooCommerce POS 接受现金，也通过 WooPayments 或 Stripe 配合连接到平板的 Bluetooth 读卡器接受银行卡。使用 WooPayments 时，线下银行卡支付费率低于线上：美国线下为 2.70% + $0.10，线上为 2.90% + $0.30。读卡器每台活跃设备每月收费 $5.00 / £5.00。",
-        "wcpos": "WCPOS 2.0 有自己的结账流程：购物车旁的收款面板可接受现金、记录在单独的终端上收取的银行卡付款，并可将同一订单拆分为多笔付款。使用 Pro，你可以在收银台启用店铺的其他 WooCommerce 支付网关，并添加 Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal 和 Vipps MobilePay 的刷卡终端集成，可从扩展目录一键安装。WCPOS 目前还没有 iPhone 和 Android 上的 Tap to Pay，将在后续应用更新中提供。WCPOS 不支持 WooPayments 线下支付。"
+        "wcpos": "WCPOS 2.0 有自己的结账流程：购物车旁的收款面板可接受现金、记录在单独的终端上收取的银行卡付款，并可将同一订单拆分为多笔付款。使用 Pro，你可以在收银台启用店铺的其他 WooCommerce 支付网关，并添加 Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc 和 Windcave 的刷卡终端集成，以及通过二维码或推送通知收款的 Vipps MobilePay，均可从扩展目录一键安装。WCPOS 目前还没有 iPhone 和 Android 上的 Tap to Pay，将在后续应用更新中提供。WCPOS 不支持 WooPayments 线下支付。"
       },
       "pricing": {
         "title": "费用是多少？",
@@ -2440,7 +2440,7 @@
       "payments": {
         "title": "银行卡支付如何运作？",
         "square": "Square 的 POS 通过 Square 接受银行卡付款，包括 iPhone 和 Android 上的 Tap to Pay。在美国使用 Square Free 方案时，一笔线下银行卡付款（轻触、插卡或刷卡）的费用为 2.6% + 15¢。Square 表示，Square 应用的银行卡收款服务可在美国、加拿大、澳大利亚、日本、英国、爱尔兰共和国、法国和西班牙使用；该扩展要求 WooCommerce 的货币与 Square 账户的货币一致。",
-        "wcpos": "WCPOS 2.0 有自己的结账流程：购物车旁的收款面板可接受现金、记录在单独的终端上收取的银行卡付款，并可将同一订单拆分为多笔付款。使用 Pro，你可以在收银台启用店铺的其他 WooCommerce 支付网关，并添加 Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal 和 Vipps MobilePay 的刷卡终端集成，可从扩展目录一键安装。WCPOS 目前还没有 iPhone 和 Android 上的 Tap to Pay，将在后续应用更新中提供。",
+        "wcpos": "WCPOS 2.0 有自己的结账流程：购物车旁的收款面板可接受现金、记录在单独的终端上收取的银行卡付款，并可将同一订单拆分为多笔付款。使用 Pro，你可以在收银台启用店铺的其他 WooCommerce 支付网关，并添加 Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc 和 Windcave 的刷卡终端集成，以及通过二维码或推送通知收款的 Vipps MobilePay，均可从扩展目录一键安装。WCPOS 目前还没有 iPhone 和 Android 上的 Tap to Pay，将在后续应用更新中提供。",
         "both": "已经有 Square Terminal？WCPOS Pro 的 Square Terminal 网关直接从 WCPOS 收银台在该终端上收取 WooCommerce 订单款项，并将结果写回订单。如果你使用官方 Square for WooCommerce 插件，其环境和地点 ID 会预先填写。已登录 Square POS 或其他集成的 Terminal 必须先从那里退出登录。"
       },
       "pricing": {

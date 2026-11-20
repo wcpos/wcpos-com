@@ -2291,7 +2291,7 @@
       "payments": {
         "title": "カード決済はどのように機能しますか？",
         "woocommerce": "WooCommerceのPOSは現金のほか、タブレットに接続したBluetoothカードリーダーを使い、WooPaymentsまたはStripe経由でカードを受け付けます。WooPaymentsの対面カード決済手数料はオンラインより低く、米国では対面が2.70% + $0.10、オンラインが2.90% + $0.30です。カードリーダーの費用は稼働中のリーダー1台につき月額$5.00 / £5.00です。",
-        "wcpos": "WCPOS 2.0には独自のチェックアウトがあります。カートの横の支払いパネルで現金を受け付け、別の端末で受け付けたカード決済を記録でき、1件の注文を複数の支払いに分けられます。Proでは、店舗のその他のWooCommerce決済ゲートウェイをレジで有効にし、Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Vipps MobilePay向けのカード端末連携を追加できます。これらは拡張機能カタログからワンクリックでインストールできます。iPhoneとAndroidでのTap to PayはWCPOSにはまだありません。今後のアプリのアップデートで追加されます。WCPOSはWooPaymentsの対面決済をサポートしません。"
+        "wcpos": "WCPOS 2.0には独自のチェックアウトがあります。カートの横の支払いパネルで現金を受け付け、別の端末で受け付けたカード決済を記録でき、1件の注文を複数の支払いに分けられます。Proでは、店舗のその他のWooCommerce決済ゲートウェイをレジで有効にし、Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcave向けのカード端末連携に加え、QRコードまたはプッシュ通知のVipps MobilePayを追加できます。これらは拡張機能カタログからワンクリックでインストールできます。iPhoneとAndroidでのTap to PayはWCPOSにはまだありません。今後のアプリのアップデートで追加されます。WCPOSはWooPaymentsの対面決済をサポートしません。"
       },
       "pricing": {
         "title": "料金はいくらですか？",
@@ -2440,7 +2440,7 @@
       "payments": {
         "title": "カード決済はどのように機能しますか？",
         "square": "SquareのPOSは、iPhoneとAndroidでのTap to Payを含め、Square経由でカード決済を受け付けます。米国のSquare Freeプランでは、対面でのカード決済（タッチ、差し込み、スワイプ）の手数料は2.6% + 15¢です。Squareによると、Squareアプリでのカード決済受付は米国、カナダ、オーストラリア、日本、英国、アイルランド共和国、フランス、スペインで利用できます。また、拡張機能を利用するにはWooCommerceの通貨をSquareアカウントの通貨と一致させる必要があります。",
-        "wcpos": "WCPOS 2.0には独自のチェックアウトがあります。カートの横の支払いパネルで現金を受け付け、別の端末で受け付けたカード決済を記録でき、1件の注文を複数の支払いに分けられます。Proでは、店舗のその他のWooCommerce決済ゲートウェイをレジで有効にし、Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Vipps MobilePay向けのカード端末連携を追加できます。これらは拡張機能カタログからワンクリックでインストールできます。iPhoneとAndroidでのTap to PayはWCPOSにはまだありません。今後のアプリのアップデートで追加されます。",
+        "wcpos": "WCPOS 2.0には独自のチェックアウトがあります。カートの横の支払いパネルで現金を受け付け、別の端末で受け付けたカード決済を記録でき、1件の注文を複数の支払いに分けられます。Proでは、店舗のその他のWooCommerce決済ゲートウェイをレジで有効にし、Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcave向けのカード端末連携に加え、QRコードまたはプッシュ通知のVipps MobilePayを追加できます。これらは拡張機能カタログからワンクリックでインストールできます。iPhoneとAndroidでのTap to PayはWCPOSにはまだありません。今後のアプリのアップデートで追加されます。",
         "both": "すでにSquare Terminalをお持ちですか？WCPOS ProのSquare TerminalゲートウェイはWCPOSのレジから直接、その端末でWooCommerce注文の決済を受け付け、結果を注文に書き戻します。公式のSquare for WooCommerceプラグインを利用している場合、その環境と拠点IDがあらかじめ入力されます。Square POSまたは別の連携にサインインしているTerminalは、先にそこからサインアウトする必要があります。"
       },
       "pricing": {
