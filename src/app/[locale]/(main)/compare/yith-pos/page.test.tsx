@@ -156,4 +156,13 @@ describe('YithComparePage', () => {
     expect(answer.compareDocumentPosition(disclosure) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
     expect(disclosure.compareDocumentPosition(glance) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
   })
+
+  it('opens the short answer with the hub verdict, before the WCPOS paragraph', async () => {
+    render(await YithComparePage({ params }))
+    const answer = screen.getByRole('heading', { name: 'yith.shortAnswer.title' })
+    const paragraphs = answer.closest('section')!.querySelectorAll('p')
+    expect(paragraphs[0]).toHaveTextContent('hub.yithCard.description')
+    expect(paragraphs[1]).toHaveTextContent(/short answer for WCPOS/)
+    expect(answer.compareDocumentPosition(paragraphs[0]) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+  })
 })
