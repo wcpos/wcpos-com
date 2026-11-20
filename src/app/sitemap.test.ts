@@ -130,13 +130,15 @@ describe('sitemap', () => {
       ['https://wcpos.com/changelog', '2026-09-30T08:00:00Z'],
       ['https://wcpos.com/fr/changelog', '2026-09-30T08:00:00Z'],
       ['https://wcpos.com/downloads', '2026-09-30T08:00:00Z'],
-      ['https://wcpos.com/compare', '2026-11-18'],
-      ['https://wcpos.com/compare/oliver-pos', '2026-11-19'],
-      ['https://wcpos.com/de/compare/foosales', '2026-11-19'],
+      ['https://wcpos.com/compare', '2026-11-19'],
+      ['https://wcpos.com/compare/oliver-pos', '2026-11-20'],
+      ['https://wcpos.com/de/compare/foosales', '2026-11-20'],
       ['https://wcpos.com', '2026-11-19'],
-      ['https://wcpos.com/de/support', '2026-11-19'],
+      ['https://wcpos.com/de/support', '2026-11-20'],
       ['https://wcpos.com/pro', '2026-11-19'],
       ['https://wcpos.com/extensions', '2026-11-18'],
+      ['https://wcpos.com/about-us', '2026-11-19'],
+      ['https://wcpos.com/compare/square', '2026-11-20'],
     ]) {
       expect(entries.find((entry) => entry.url === url)?.lastModified).toBe(date)
     }
