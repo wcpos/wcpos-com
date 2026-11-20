@@ -325,9 +325,6 @@ export default async function DownloadsPage({
               <h3 className="text-xl font-semibold tracking-tight">
                 {pageT('steps.pro.title')}
               </h3>
-              <p className="mt-1 text-muted-foreground">
-                {pageT('steps.pro.body')}
-              </p>
               <Card className="mt-4 p-5">
                 <p className="font-medium">{pageT('steps.pro.cardTitle')}</p>
                 <p className="mt-1 text-sm text-muted-foreground">
