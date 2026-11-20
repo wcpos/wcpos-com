@@ -2368,7 +2368,7 @@
     "square": {
       "metadata": {
         "title": "WCPOS vs Square for WooCommerce（2026）",
-        "description": "Square for WooCommerceが適している場合と、WCPOSが適している場合：販売の記録先、同期、拠点、手数料。WCPOSの開発者による比較です。"
+        "description": "Square for WooCommerceは商品と在庫を同期しますが、SquareのPOSの注文は同期しません。WCPOSの販売はすべてWooCommerceの注文です。WCPOS開発者による比較。"
       },
       "hero": {
         "title": "WCPOS vs Square for WooCommerce",

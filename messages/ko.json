@@ -2368,7 +2368,7 @@
     "square": {
       "metadata": {
         "title": "WCPOS vs Square for WooCommerce (2026)",
-        "description": "Square for WooCommerce가 더 나은 선택인 경우와 WCPOS가 더 나은 경우: 판매 기록 위치, 동기화, 위치, 수수료. WCPOS 제작자가 비교했습니다."
+        "description": "Square for WooCommerce는 상품·재고를 동기화하나 Square POS 주문은 아닙니다. WCPOS 판매는 모두 WooCommerce 주문. WCPOS 제작자 비교."
       },
       "hero": {
         "title": "WCPOS vs Square for WooCommerce",
