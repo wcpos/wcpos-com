@@ -361,12 +361,12 @@
   },
   "roadmap": {
     "meta": {
-      "title": "Roadmap",
-      "description": "See what we are building next for WCPOS — upcoming features, milestones, and release progress."
+      "title": "WooCommerce POS Roadmap: What's Next",
+      "description": "What's coming next for WCPOS, the free point of sale plugin for WooCommerce: work in progress and planned, straight from GitHub."
     },
     "page": {
-      "eyebrow": "Roadmap",
-      "title": "The release train",
+      "eyebrow": "The release train",
+      "title": "WooCommerce POS Roadmap",
       "description": "Every stop on the way to a faster, offline-proof WCPOS — pulled straight from our GitHub, newest work first.",
       "changelogLink": "See released versions in the changelog"
     },

@@ -361,12 +361,12 @@
   },
   "roadmap": {
     "meta": {
-      "title": "Feuille de route",
-      "description": "Découvrez ce que nous construisons ensuite pour WCPOS — fonctionnalités à venir, jalons et progression des versions."
+      "title": "Point de vente WooCommerce : feuille de route",
+      "description": "Ce qui arrive pour WCPOS, le plugin de point de vente gratuit pour WooCommerce : travaux en cours et prévus, directement depuis GitHub."
     },
     "page": {
-      "eyebrow": "Feuille de route",
-      "title": "Le train des versions",
+      "eyebrow": "Le train des versions",
+      "title": "Feuille de route du point de vente WooCommerce",
       "description": "Chaque étape vers un WCPOS plus rapide et prêt pour le hors ligne — directement depuis notre GitHub, les travaux les plus récents en premier.",
       "changelogLink": "Voir les versions publiées dans le journal des modifications"
     },
