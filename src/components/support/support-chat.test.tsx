@@ -407,6 +407,21 @@ describe('SupportChat', () => {
     expect(screen.queryByRole('status')).not.toBeInTheDocument()
   })
 
+  it('renders the security check under the form, above the example chips and poweredBy line', () => {
+    const { container } = renderWithIntl(<SupportChat />)
+    const wrapper = screen.getByTestId('support-turnstile')
+    const form = container.querySelector('form')!
+    const firstChip = screen.getByRole('button', { name: messages.support.chat.examples.e1 })
+    const poweredBy = screen.getByText(messages.support.chat.poweredBy)
+    const follows = (a: Node, b: Node) =>
+      Boolean(a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING)
+
+    expect(wrapper).toContainElement(screen.getByTestId('turnstile'))
+    expect(follows(form, wrapper)).toBe(true)
+    expect(follows(wrapper, firstChip)).toBe(true)
+    expect(follows(wrapper, poweredBy)).toBe(true)
+  })
+
   it('keeps every locale interactive-challenge hint to one short line', () => {
     for (const locale of locales) {
       const interactive: string = readFormMessages(locale).interactive
