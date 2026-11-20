@@ -277,6 +277,13 @@ export function SupportChat() {
         </p>
       )}
 
+      <div
+        data-testid="support-turnstile"
+        className={turnstile.interacting ? 'mt-3 flex justify-center' : undefined}
+      >
+        {turnstile.widget}
+      </div>
+
       {error && (
         <p className="mt-2 text-sm text-destructive">
           {error}{' '}
@@ -316,8 +323,6 @@ export function SupportChat() {
       <p className="mt-4 text-center text-xs text-muted-foreground">
         {t('poweredBy')}
       </p>
-
-      {turnstile.widget}
     </div>
   )
 }
