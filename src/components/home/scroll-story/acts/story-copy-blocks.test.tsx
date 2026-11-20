@@ -27,7 +27,7 @@ describe('CopyAct1', () => {
   it.each([
     { name: 'onLight', ui: <CopyAct1 tone="onLight" /> },
     { name: 'default', ui: <CopyAct1 /> },
-  ])('stacks the CTAs at one width on phone and balances the heading with $name tone', ({ ui }) => {
+  ])('stacks the CTAs at one width on phone and balances the heading from sm up with $name tone', ({ ui }) => {
     render(
       <NextIntlClientProvider locale="en" messages={messages}>
         {ui}
@@ -43,7 +43,9 @@ describe('CopyAct1', () => {
     expect(demo.parentElement).toBe(download.parentElement)
     expect(demo.parentElement).toHaveClass('flex-col', 'sm:flex-row')
     expect(demo.parentElement).not.toHaveClass('flex-wrap')
-    expect(screen.getByRole('heading', { level: 1 })).toHaveClass('text-balance')
+    const heading = screen.getByRole('heading', { level: 1 })
+    expect(heading).toHaveClass('sm:text-balance')
+    expect(heading).not.toHaveClass('text-balance')
   })
 })
 
