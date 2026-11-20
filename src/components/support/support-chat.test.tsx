@@ -48,6 +48,11 @@ vi.mock('@/lib/support/turnstile-keys', () => ({
 
 vi.mock('@/lib/analytics/client-events', () => ({ trackClientEvent }))
 
+// SupportPageContent reads ?ref= to show the order-support heading.
+vi.mock('next/navigation', () => ({
+  useSearchParams: () => new URLSearchParams('ref=WCPOS-1234'),
+}))
+
 vi.mock('@marsidev/react-turnstile', () => ({
   Turnstile: ({
     onSuccess,
@@ -82,7 +87,7 @@ vi.mock('@marsidev/react-turnstile', () => ({
   },
 }))
 
-import { SupportChat } from './support-chat'
+import { SupportChat, SupportPageContent } from './support-chat'
 
 const SESSION_ID = '5f1e2d3c-4b5a-4968-8776-655443322110'
 const ANSWER_ID = '0b9c2f4e-3d1a-4c5b-9e8f-7a6b5c4d3e2f'
@@ -465,5 +470,23 @@ describe('SupportChat', () => {
       expect(screen.getByText(/Bot check failed/)).toBeInTheDocument()
     )
     expect(resetTurnstile).toHaveBeenCalled()
+  })
+})
+
+describe('support headings', () => {
+  const expectHeroScale = (heading: HTMLElement) => {
+    expect(heading).toHaveClass('text-4xl', 'md:text-5xl', 'tracking-tight', 'text-balance')
+    expect(heading).not.toHaveClass('text-3xl')
+  }
+
+  it('puts the chat hero h1 on the hero type scale with a text-lg subtitle', () => {
+    renderWithIntl(<SupportChat />)
+    expectHeroScale(screen.getByRole('heading', { level: 1, name: messages.support.chat.hero.title }))
+    expect(screen.getByText(messages.support.chat.hero.subtitle)).toHaveClass('text-lg')
+  })
+
+  it('puts the order-support h1 on the hero type scale', () => {
+    renderWithIntl(<SupportPageContent />)
+    expectHeroScale(screen.getByRole('heading', { level: 1, name: messages.support.order.title }))
   })
 })
