@@ -1,5 +1,5 @@
 import { afterEach, describe, it, expect, vi } from 'vitest'
-import { fireEvent, render, screen } from '@testing-library/react'
+import { act, fireEvent, render, screen } from '@testing-library/react'
 import React from 'react'
 import { NextIntlClientProvider } from 'next-intl'
 import messages from '../../../messages/en.json'
@@ -44,12 +44,71 @@ describe('DiscordWidget', () => {
     ).toBe(false)
   })
 
-  it('keeps the skeleton over the iframe until the embed loads', () => {
-    render(widgetWithMessages())
-    expect(screen.getByTestId('discord-widget-skeleton')).toBeInTheDocument()
+  describe('skeleton', () => {
+    const READY = { widgetbot: true, id: 'default', event: 'ready' }
 
-    fireEvent.load(screen.getByTitle('Discord chat'))
+    afterEach(() => vi.useRealTimers())
 
-    expect(screen.queryByTestId('discord-widget-skeleton')).not.toBeInTheDocument()
+    function renderWidget() {
+      vi.useFakeTimers()
+      render(widgetWithMessages())
+      return screen.getByTitle('Discord chat') as HTMLIFrameElement
+    }
+
+    function postFrom(iframe: HTMLIFrameElement, data: unknown, origin = 'https://emerald.widgetbot.io') {
+      act(() => {
+        window.dispatchEvent(
+          new MessageEvent('message', { origin, source: iframe.contentWindow, data })
+        )
+      })
+    }
+
+    function advance(ms: number) {
+      act(() => {
+        vi.advanceTimersByTime(ms)
+      })
+    }
+
+    const skeleton = () => screen.queryByTestId('discord-widget-skeleton')
+
+    it('stays until the ready message plus the paint grace', () => {
+      const iframe = renderWidget()
+      expect(iframe.contentWindow).not.toBeNull()
+
+      postFrom(iframe, JSON.stringify(READY))
+      advance(599)
+      expect(skeleton()).toBeInTheDocument()
+      advance(1)
+      expect(skeleton()).not.toBeInTheDocument()
+    })
+
+    it('does not go on load alone until the fallback', () => {
+      const iframe = renderWidget()
+
+      act(() => {
+        fireEvent.load(iframe)
+      })
+      advance(5999)
+      expect(skeleton()).toBeInTheDocument()
+      advance(1)
+      expect(skeleton()).not.toBeInTheDocument()
+    })
+
+    it('ignores a wrong origin or a non-ready event', () => {
+      const iframe = renderWidget()
+
+      postFrom(iframe, JSON.stringify(READY), 'https://evil.example')
+      postFrom(iframe, JSON.stringify({ ...READY, event: 'signOut' }))
+      advance(1000)
+      expect(skeleton()).toBeInTheDocument()
+    })
+
+    it('accepts the ready message as a plain object', () => {
+      const iframe = renderWidget()
+
+      postFrom(iframe, READY)
+      advance(600)
+      expect(skeleton()).not.toBeInTheDocument()
+    })
   })
 })

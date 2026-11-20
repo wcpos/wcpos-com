@@ -35,6 +35,8 @@ const KEYS = {
     m.support.meta.description as unknown,
   'compare.hub.metadata.description': (m: Messages) =>
     m.compare.hub.metadata.description as unknown,
+  'extensions.metadata.description': (m: Messages) =>
+    m.extensions.metadata.description as unknown,
 } as const
 
 const CASES = LOCALES.flatMap(({ locale, messages, limit }) =>
@@ -78,6 +80,13 @@ describe('home and /downloads meta descriptions', () => {
       expect(description).toContain('Square')
       expect(description).toContain('FooSales')
       expect(description).toContain('Oliver POS')
+    }
+  )
+
+  it.each(LOCALES)(
+    '$locale extensions description names WCPOS Pro',
+    ({ messages }) => {
+      expect(messages.extensions.metadata.description).toContain('WCPOS Pro')
     }
   )
 
@@ -156,10 +165,7 @@ describe('home and /downloads meta descriptions', () => {
     }
   )
 
-  it.each([
-    'home.meta.description',
-    'downloads.meta.description',
-  ] as const)('en %s says beta', (key) => {
+  it.each(['downloads.meta.description'] as const)('en %s says beta', (key) => {
     const description = KEYS[key](en) as string
     expect(description).toContain('beta')
   })
@@ -168,4 +174,19 @@ describe('home and /downloads meta descriptions', () => {
     expect(es.home.meta.description).toContain('código abierto')
     expect(it_.home.meta.description).toContain('open source')
   })
+
+  it('en home.meta.description scopes offline to cash sales', () => {
+    expect(en.home.meta.description).toBe(
+      'Free, open-source WooCommerce POS for your tablet, phone or computer. Cash sales work offline; split payments and register open/close are free in 2.0.'
+    )
+  })
+
+  it.each(LOCALES)(
+    '$locale home.meta.description names 2.0 and no beta',
+    ({ messages }) => {
+      const description = messages.home.meta.description
+      expect(description).toContain('2.0')
+      expect(description).not.toMatch(/\b(beta|bèta|bêta)\b|ベータ|베타/i)
+    }
+  )
 })

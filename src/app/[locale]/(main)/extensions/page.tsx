@@ -69,7 +69,8 @@ export default async function ExtensionsPage({
         }}
       />
 
-      <Section tone="default" spacing="none" className="pt-10 pb-6 sm:py-20 md:py-24 lg:py-28">
+      {/* Bottom padding is smaller than top: the list section's own top padding follows. */}
+      <Section tone="default" spacing="none" className="pt-10 pb-6 sm:pt-20 sm:pb-12 md:pt-24 md:pb-12 lg:pt-28 lg:pb-14">
         <SectionHeading
           as="h1"
           size="hero"
@@ -87,7 +88,7 @@ export default async function ExtensionsPage({
         </p>
       </Section>
 
-      <Section tone="muted" spacing="default">
+      <Section tone="muted" spacing="default" className="md:pt-16">
         {EXTENSION_GROUPS.map(({ key, categories }, groupIndex) => {
           const inGroup = EXTENSIONS.filter((e) =>
             categories.some((c) => c === e.category),

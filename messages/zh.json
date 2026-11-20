@@ -55,7 +55,7 @@
     "title": "WCPOS",
     "subtitle": "面向 WooCommerce 的快速销售点系统",
     "meta": {
-      "description": "面向 WooCommerce 的免费开源销售点系统。离线销售、拆分付款、开台和关台，在 2.0 中免费。提供网页和桌面应用；iOS 和 Android 应用为 Beta 版。"
+      "description": "面向 WooCommerce 的免费开源销售点系统，适用于平板、手机或电脑。现金销售可离线进行；拆分付款、开台和关台在 2.0 中免费。"
     },
     "problem": {
       "title": "同时经营 WooCommerce 商店和实体店，不应该意味着双倍工作",
@@ -270,11 +270,11 @@
           "text": "免费开台和关台、拆分付款，并查看今日销售。"
         },
         "h": "你的 WooCommerce 商店，就在柜台上。",
-        "b": "WCPOS 将平板变成你的收银机——同一个商品目录、同样的库存、同样的价格，即使离线也能使用。",
+        "b": "WCPOS 将你的平板、手机或电脑变成收银机——同一个商品目录、同样的库存、同样的价格，即使离线也能使用。",
         "c1": "试用在线演示",
         "c2": "免费下载",
         "badges": {
-          "b1": "5,000+ 活跃商店",
+          "b1": "5,000+ 活跃安装",
           "b2": "免费且开源",
           "b3": "始于 2014 年"
         }
@@ -361,12 +361,12 @@
   },
   "roadmap": {
     "meta": {
-      "title": "路线图",
-      "description": "查看我们接下来为 WCPOS 构建的内容，包括即将推出的功能、里程碑和发布进度。"
+      "title": "WooCommerce 销售点系统路线图：接下来的计划",
+      "description": "WCPOS 是面向 WooCommerce 的免费销售点插件。这里展示其接下来的计划：进行中和已计划的工作，直接来自 GitHub。"
     },
     "page": {
-      "eyebrow": "路线图",
-      "title": "发布列车",
+      "eyebrow": "发布列车",
+      "title": "WooCommerce 销售点系统路线图",
       "description": "通往更快速、更可靠离线能力的 WCPOS 的每一站——直接来自我们的 GitHub，最新工作排在最前。",
       "changelogLink": "在更新日志中查看已发布的版本"
     },
@@ -398,12 +398,12 @@
   },
   "changelog": {
     "meta": {
-      "title": "更新日志",
-      "description": "WCPOS 插件最新已发布版本的发布说明，来自 GitHub。"
+      "title": "WooCommerce 销售点系统更新日志与发布说明",
+      "description": "WCPOS 是面向 WooCommerce 的免费销售点插件。这里是其最新已发布版本的发布说明，直接来自 GitHub。"
     },
     "page": {
-      "title": "更新日志",
-      "description": "WCPOS 插件最新已发布的版本及其来自 GitHub 的发布说明。"
+      "title": "WooCommerce 销售点系统更新日志",
+      "description": "免费 WooCommerce 销售点系统插件 WCPOS 最新已发布的版本及其来自 GitHub 的发布说明。"
     }
   },
   "pro": {
@@ -417,7 +417,7 @@
     },
     "schema": {
       "name": "WCPOS Pro",
-      "description": "适用于 WooCommerce 的高级销售点插件。增加支付终端集成、库存和价格编辑、订单和客户管理、完整报告、自定义支付网关以及优先支持。",
+      "description": "WCPOS Pro 为 WooCommerce 增加更多收银台与多店铺、终端支付、顾客显示屏、库存和价格编辑、订单和客户管理、完整报告、自定义支付网关以及优先支持。",
       "offers": {
         "yearly": "年度许可证",
         "lifetime": "终身许可证"
@@ -425,7 +425,6 @@
     },
     "features": {
       "title": "Pro 包含哪些功能？",
-      "subtitle": "涵盖免费版的全部功能，另外提供从收银台管理整个商店所需的工具——以及在你需要帮助时的优先支持。",
       "stores": {
         "title": "更多收银台与多店铺",
         "description": "在免费收银台之外添加更多收银台，并运营多家店铺，每家店铺都有各自的地址、税率、小票模板、定价和授权用户。"
@@ -457,7 +456,7 @@
       },
       "gateways": {
         "title": "自定义支付网关",
-        "description": "使用任何兼容 WooCommerce 的支付网关收款，不限于内置选项。"
+        "description": "在收银台启用店铺的其他 WooCommerce 支付网关，不限于内置选项。"
       }
     },
     "buyBox": {
@@ -485,7 +484,7 @@
       "demoLink": "在在线演示中体验 Pro",
       "demoSuffix": "（登录 demo / demo）",
       "payments": "银行卡、PayPal 或 Bitcoin",
-      "proof": "5,000+ 活跃商店",
+      "proof": "WordPress.org 上 5,000+ 活跃安装",
       "unavailableTitle": "价格信息暂时不可用",
       "unavailableDescription": "价格信息当前不可用。请稍后再试。"
     },
@@ -1707,7 +1706,6 @@
         },
         "pro": {
           "title": "想要更多功能？升级 Pro",
-          "body": "一个授权插件，在同一基础上添加更多收银台与多店铺、终端付款、退款和库存控制。",
           "cardTitle": "解锁更多收银台",
           "cardBody": "更多收银台与多店铺、终端付款、退款、库存和定价、订单管理、完整报表以及优先 Discord 支持。",
           "plansCta": "查看 Pro 套餐",
@@ -1737,7 +1735,7 @@
   "extensions": {
     "metadata": {
       "title": "WooCommerce 销售点系统扩展与支付终端",
-      "description": "WooCommerce 销售点系统 WCPOS 的扩展：Stripe、Square、SumUp、PayPal、Mollie 和 Windcave 支付终端，以及 WPML、Polylang 和 ATUM。"
+      "description": "WooCommerce 销售点系统扩展：WCPOS Pro 的 Stripe、Square、SumUp、PayPal、Mollie、Windcave 等支付终端，WPML、Polylang、ATUM。"
     },
     "hero": {
       "title": "WooCommerce 销售点系统扩展",
@@ -1757,7 +1755,7 @@
   },
   "about": {
     "meta": {
-      "title": "关于",
+      "title": "关于：始于 2014 年的独立 WooCommerce 销售点",
       "description": "WCPOS 背后的故事——一个独立的销售点系统，由前店主打造，并由店主们而不是投资者资助。"
     },
     "hero": {
@@ -1940,37 +1938,37 @@
       },
       "oliverCard": {
         "title": "WCPOS vs Oliver POS",
-        "description": "WordPress 原生对决云端 SaaS：数据所有权、免费版的真实限制、一次性买断与订阅制的差别，以及 Oliver 真正更胜一筹的地方。",
+        "description": "Oliver 将你的商店同步到它的云端，免费套餐上限为 20 个商品；WCPOS 在你的 WordPress 站点内部运行、不设上限，Pro 版为一次性付款。",
         "cta": "阅读对比"
       },
       "woocommerceCard": {
         "title": "WCPOS vs WooCommerce 官方 POS",
-        "description": "免费且内置于 WooCommerce 移动应用，对比跨平台、离线优先的收银系统：设备、国家、支付、价格，以及 WooCommerce POS 真正更胜一筹的地方。",
+        "description": "WooCommerce 官方 POS 在其移动应用内免费，专为 10 个国家的平板设计，没有离线模式；WCPOS 可在浏览器、桌面和移动应用中运行，现金销售可离线进行。",
         "cta": "阅读对比"
       },
       "squareCard": {
         "title": "WCPOS vs Square for WooCommerce",
-        "description": "Square 的 POS 加同步扩展，对比构建在 WooCommerce 上的收银台：线下销售记录在哪里、同步、地点、离线支付、刷卡费率，以及 Square 真正更胜一筹的地方。",
+        "description": "在 Square 的 POS 中创建的订单不会同步到 WooCommerce，库存变化在计划检查时到达（默认每小时一次）；WCPOS 的每笔销售都是 WooCommerce 订单。",
         "cta": "阅读对比"
       },
       "jovvieCard": {
         "title": "WCPOS vs Jovvie",
-        "description": "两款 WooCommerce POS 插件对比：一次性付款与按月付费且每笔交易收取手续费的方案、应用、银行卡支付、评分，以及 Jovvie 真正更胜一筹的方面。",
+        "description": "Jovvie 在月付方案之外还对每笔交易收取平台费；WCPOS 不收取交易手续费，Pro 版为一次性付款。",
         "cta": "阅读对比"
       },
       "viteposCard": {
         "title": "WCPOS vs Vitepos",
-        "description": "两款提供免费版的 WooCommerce POS 插件对比：价格、离线订单、餐厅模式、应用、刷卡终端，以及 Vitepos 真正更胜一筹的方面。",
+        "description": "两者都有免费版；Vitepos 提供杂货店与餐厅模式，WCPOS 提供 Windows、macOS 和 Linux 桌面应用以及 iOS 和 Android 应用（测试版）。",
         "cta": "阅读对比"
       },
       "yithCard": {
         "title": "WCPOS vs YITH Point of Sale",
-        "description": "WCPOS 与 YITH 的 WooCommerce 销售点插件：许可证、刷卡终端、应用、离线使用、商店与收银台，以及 YITH Point of Sale 做得好的方面。",
+        "description": "YITH Point of Sale 以年度许可证销售，各商店库存独立，但没有离线模式，也无法连接刷卡终端；WCPOS 免费，Pro 版以一次性付款提供刷卡终端集成。",
         "cta": "阅读对比"
       },
       "foosalesCard": {
         "title": "WCPOS vs FooSales",
-        "description": "一次性付费的 Pro 许可证与按店铺收取的年度订阅对比：价格、停止付费后的情况、Tap to Pay、离线订单、应用，以及 FooSales 真正更胜一筹的方面。",
+        "description": "FooSales 按店铺收取年度订阅，取消后将无法访问其 POS；WCPOS 免费，Pro 版一次性付款，一年后仍可继续使用。",
         "cta": "阅读对比"
       },
       "moreSoon": "更多对比即将上线。"
@@ -2155,7 +2153,7 @@
         },
         "hobbyShops": {
           "claim": "最适合业余小店",
-          "response": "据 WordPress.org 统计，有 5,000+ 家活跃商店在运行 WCPOS——是 Oliver 活跃安装量的六倍多——自 2014 年以来下载量超过 400,000 次。"
+          "response": "据 WordPress.org 统计，WCPOS 有 5,000+ 活跃安装——是 Oliver 的六倍多——自 2014 年以来下载量超过 400,000 次。"
         },
         "singleDev": {
           "claim": "单人开发项目；维护者有空才更新",
@@ -2247,7 +2245,7 @@
           },
           "cardPayments": {
             "label": "银行卡支付",
-            "wcpos": "Pro 版终端集成：Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcave；通过二维码或推送通知收款的 Vipps MobilePay",
+            "wcpos": "免费：现金销售，以及在你自己的独立支付终端上收取的卡款，均记录在订单上。Pro 版终端集成：Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcave；通过二维码或推送通知收款的 Vipps MobilePay",
             "woocommerce": "WooPayments 或 Stripe，配合 Bluetooth 读卡器"
           },
           "gateways": {
@@ -2285,7 +2283,7 @@
       "payments": {
         "title": "银行卡支付如何运作？",
         "woocommerce": "WooCommerce POS 接受现金，也通过 WooPayments 或 Stripe 配合连接到平板的 Bluetooth 读卡器接受银行卡。使用 WooPayments 时，线下银行卡支付费率低于线上：美国线下为 2.70% + $0.10，线上为 2.90% + $0.30。读卡器每台活跃设备每月收费 $5.00 / £5.00。",
-        "wcpos": "WCPOS 2.0 有自己的结账流程：购物车旁的收款面板可接受现金、记录在单独的终端上收取的银行卡付款，并可将同一订单拆分为多笔付款。使用 Pro，你可以在收银台启用店铺的其他 WooCommerce 支付网关，并添加 Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal 和 Vipps MobilePay 的刷卡终端集成，可从扩展目录一键安装。WCPOS 目前还没有 iPhone 和 Android 上的 Tap to Pay，将在后续应用更新中提供。WCPOS 不支持 WooPayments 线下支付。"
+        "wcpos": "WCPOS 2.0 有自己的结账流程：购物车旁的收款面板可接受现金、记录在单独的终端上收取的银行卡付款，并可将同一订单拆分为多笔付款。使用 Pro，你可以在收银台启用店铺的其他 WooCommerce 支付网关，并添加 Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc 和 Windcave 的刷卡终端集成，以及通过二维码或推送通知收款的 Vipps MobilePay，均可从扩展目录一键安装。WCPOS 目前还没有 iPhone 和 Android 上的 Tap to Pay，将在后续应用更新中提供。WCPOS 不支持 WooPayments 线下支付。"
       },
       "pricing": {
         "title": "费用是多少？",
@@ -2361,7 +2359,7 @@
     "square": {
       "metadata": {
         "title": "WCPOS vs Square for WooCommerce（2026）",
-        "description": "何时 Square for WooCommerce 是更好的选择，何时 WCPOS 更好：销售记录在哪里、同步、地点和费用。由 WCPOS 开发者比较。"
+        "description": "Square for WooCommerce 同步商品和库存，但不同步 Square POS 中的订单。WCPOS 的每笔销售都是 WooCommerce 订单。由 WCPOS 开发者比较。"
       },
       "hero": {
         "title": "WCPOS vs Square for WooCommerce",
@@ -2377,6 +2375,7 @@
         "caption": "Square 相关事实于 2026-10-06 在 squareup.com 和 WooCommerce 的 Square for WooCommerce 扩展文档中核实，并于 2026-11-18 再次核实；WCPOS 相关事实来自 wcpos.com 和 docs.wcpos.com。",
         "colWcpos": "WCPOS",
         "colSquare": "Square POS + Square for WooCommerce",
+        "colSquareShort": "Square",
         "rows": {
           "orders": {
             "label": "线下销售",
@@ -2405,7 +2404,7 @@
           },
           "cardPayments": {
             "label": "银行卡支付",
-            "wcpos": "Pro 版终端集成：Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcave；通过二维码或推送通知收款的 Vipps MobilePay",
+            "wcpos": "免费：现金销售，以及在你自己的独立支付终端上收取的卡款，均记录在订单上。Pro 版终端集成：Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcave；通过二维码或推送通知收款的 Vipps MobilePay",
             "square": "Square 支付，包括 iPhone 和 Android 上的 Tap to Pay"
           },
           "fees": {
@@ -2433,7 +2432,7 @@
       "payments": {
         "title": "银行卡支付如何运作？",
         "square": "Square 的 POS 通过 Square 接受银行卡付款，包括 iPhone 和 Android 上的 Tap to Pay。在美国使用 Square Free 方案时，一笔线下银行卡付款（轻触、插卡或刷卡）的费用为 2.6% + 15¢。Square 表示，Square 应用的银行卡收款服务可在美国、加拿大、澳大利亚、日本、英国、爱尔兰共和国、法国和西班牙使用；该扩展要求 WooCommerce 的货币与 Square 账户的货币一致。",
-        "wcpos": "WCPOS 2.0 有自己的结账流程：购物车旁的收款面板可接受现金、记录在单独的终端上收取的银行卡付款，并可将同一订单拆分为多笔付款。使用 Pro，你可以在收银台启用店铺的其他 WooCommerce 支付网关，并添加 Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal 和 Vipps MobilePay 的刷卡终端集成，可从扩展目录一键安装。WCPOS 目前还没有 iPhone 和 Android 上的 Tap to Pay，将在后续应用更新中提供。",
+        "wcpos": "WCPOS 2.0 有自己的结账流程：购物车旁的收款面板可接受现金、记录在单独的终端上收取的银行卡付款，并可将同一订单拆分为多笔付款。使用 Pro，你可以在收银台启用店铺的其他 WooCommerce 支付网关，并添加 Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc 和 Windcave 的刷卡终端集成，以及通过二维码或推送通知收款的 Vipps MobilePay，均可从扩展目录一键安装。WCPOS 目前还没有 iPhone 和 Android 上的 Tap to Pay，将在后续应用更新中提供。",
         "both": "已经有 Square Terminal？WCPOS Pro 的 Square Terminal 网关直接从 WCPOS 收银台在该终端上收取 WooCommerce 订单款项，并将结果写回订单。如果你使用官方 Square for WooCommerce 插件，其环境和地点 ID 会预先填写。已登录 Square POS 或其他集成的 Terminal 必须先从那里退出登录。"
       },
       "pricing": {
@@ -2461,7 +2460,7 @@
         "intro": "诚实的对比要兼顾双方的优点：",
         "free": "Square 的 POS 有免费方案 Square Free（每个地点 $0/month）。WCPOS Pro 至少需要 $129。",
         "tapToPay": "iPhone 和 Android 上的 Tap to Pay：顾客可将银行卡贴近你的手机。WCPOS 目前还没有 Tap to Pay，将在后续应用更新中提供。",
-        "offline": "离线刷卡支付：Square 的 POS 在没有互联网时仍可接受银行卡付款，前提是你在 72 小时内重新连接并上传付款；过期、被拒绝或发生争议的付款由你负责。WCPOS 在离线时仍可继续现金销售，但连接的读卡器需要网络连接。",
+        "offline": "离线刷卡支付：Square 的 POS 在没有互联网时仍可接受银行卡付款，前提是你在 72 小时内重新连接并上传付款；过期、被拒绝或发生争议的付款由你负责。WCPOS 在离线时仍可继续现金销售，并记录在你自己的独立支付终端上收取的卡款；连接的读卡器和在线网关需要网络连接。",
         "hardware": "Square 自有硬件：Square Register 内置 Square Point of Sale，因此收银机和软件来自同一家公司。WCPOS 不销售硬件；它可在你已有的电脑、平板电脑和手机上运行。",
         "outro": "如果你在一个地点使用 iOS 或 Android 设备或 Square Register 进行线下销售，通过 Square 收款，且不需要将线下销售记录为 WooCommerce 订单，那么 Square 的 POS 加上该扩展可能就足够了。"
       },
@@ -2560,7 +2559,7 @@
           },
           "cardPayments": {
             "label": "银行卡支付",
-            "wcpos": "Pro 版终端集成：Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcave；通过二维码或推送通知收款的 Vipps MobilePay",
+            "wcpos": "免费：现金销售，以及在你自己的独立支付终端上收取的卡款，均记录在订单上。Pro 版终端集成：Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcave；通过二维码或推送通知收款的 Vipps MobilePay",
             "jovvie": "Stripe Terminal（BizSwoop 是 Stripe Terminal 的合作伙伴），支持 Stripe M2 等读卡器"
           },
           "apps": {
@@ -2668,7 +2667,7 @@
           },
           "cardPayments": {
             "label": "银行卡支付",
-            "wcpos": "Pro 版终端集成：Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcave；通过二维码或推送通知收款的 Vipps MobilePay",
+            "wcpos": "免费：现金销售，以及在你自己的独立支付终端上收取的卡款，均记录在订单上。Pro 版终端集成：Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcave；通过二维码或推送通知收款的 Vipps MobilePay",
             "vitepos": "通过 Stripe Terminal 和 Wallee 接受终端付款"
           },
           "apps": {
@@ -2722,7 +2721,7 @@
         "title": "Vitepos 真正更胜一筹的方面",
         "intro": "诚实的对比要兼顾双方的优点：",
         "restaurant": "餐厅模式——Vitepos 提供带有服务员面板、厨房面板和餐桌管理功能的杂货店与餐厅模式；WCPOS 没有餐厅模式。",
-        "offline": "离线订单——Vitepos 表示它能在没有网络连接时继续处理订单，并在恢复连接后同步。WCPOS 在离线时仍可继续现金销售，但连接的读卡器和在线网关需要网络连接。",
+        "offline": "离线订单——Vitepos 表示它能在没有网络连接时继续处理订单，并在恢复连接后同步。WCPOS 在离线时仍可继续现金销售，并记录在你自己的独立支付终端上收取的卡款；连接的读卡器和在线网关需要网络连接。",
         "kiosk": "自助终端——Vitepos 将 Kiosk App 作为附加组件出售；WCPOS 没有自助终端模式。",
         "price": "标价更低——Vitepos Pro 单站点年度方案的起价为 $79，WCPOS Pro 为 $129。",
         "rating": "WordPress.org 评分更高——54 条评价给出 4.7 星，而 WCPOS 为 3.7 星。",
@@ -2815,7 +2814,7 @@
           },
           "cardPayments": {
             "label": "银行卡支付",
-            "wcpos": "Pro 版终端集成：Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcave；通过二维码或推送通知收款的 Vipps MobilePay",
+            "wcpos": "免费：现金销售，以及在你自己的独立支付终端上收取的卡款，均记录在订单上。Pro 版终端集成：Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcave；通过二维码或推送通知收款的 Vipps MobilePay",
             "yith": "无法连接刷卡终端；付款需手动处理，提供 Cash 和 Chip and Pin 付款方式"
           },
           "apps": {
@@ -2960,7 +2959,7 @@
           },
           "cardPayments": {
             "label": "银行卡支付",
-            "wcpos": "Pro 版终端集成：Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcave；通过二维码或推送通知收款的 Vipps MobilePay",
+            "wcpos": "免费：现金销售，以及在你自己的独立支付终端上收取的卡款，均记录在订单上。Pro 版终端集成：Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcave；通过二维码或推送通知收款的 Vipps MobilePay",
             "foosales": "Plus 方案：Square Terminal、Square Readers（平板应用）和 Stripe Terminal 读卡器"
           },
           "tapToPay": {
@@ -3009,7 +3008,7 @@
         "title": "FooSales 真正更胜一筹的方面",
         "intro": "诚实的对比应当双向成立：",
         "tapToPay": "iPhone 和 Android 上的 Tap to Pay——使用 FooSales Plus 时，顾客可通过 Stripe 或 Square 将卡靠近你的手机。WCPOS 目前还没有 Tap to Pay，将在后续应用更新中提供。",
-        "offline": "离线订单——FooSales 表示其应用在没有网络连接时仍会记录新订单、取消的订单和退款，并在恢复连接后同步到 WooCommerce。WCPOS 在离线时仍可继续现金销售，但连接的读卡器和在线网关需要网络连接。",
+        "offline": "离线订单——FooSales 表示其应用在没有网络连接时仍会记录新订单、取消的订单和退款，并在恢复连接后同步到 WooCommerce。WCPOS 在离线时仍可继续现金销售，并记录在你自己的独立支付终端上收取的卡款；连接的读卡器和在线网关需要网络连接。",
         "outro": "如果你需要在手机上使用 Tap to Pay 或离线订单模式，而且按店铺收取的年度订阅适合你，FooSales 可能是更好的选择。"
       },
       "choose": {

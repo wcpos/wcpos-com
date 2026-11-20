@@ -154,7 +154,6 @@ export default async function ProPage({
         <div className="mx-auto grid max-w-5xl grid-cols-1 items-start gap-10 lg:grid-cols-[1.5fr_1fr]">
           <ProFeatureList
             heading={t('features.title')}
-            subtitle={t('features.subtitle')}
             features={features}
           />
           <div

@@ -53,3 +53,24 @@ describe('compare glance terminal cells', () => {
     }
   }
 })
+
+const PROSE: { key: string; value: (m: Messages) => string }[] = (
+  ['square', 'woocommerce'] as const
+).map((page) => ({
+  key: `compare.${page}.payments.wcpos`,
+  value: (m: Messages) => m.compare[page].payments.wcpos,
+}))
+
+describe('compare payments prose', () => {
+  for (const { locale, messages, vipps } of LOCALES) {
+    for (const prose of PROSE) {
+      it(`${locale} ${prose.key} names the same terminals as the glance cell`, () => {
+        const value = prose.value(messages)
+        for (const terminal of ['Mercado Pago', 'PayArc', 'Windcave']) {
+          expect(value).toContain(terminal)
+        }
+        expect(value).toContain(vipps)
+      })
+    }
+  }
+})

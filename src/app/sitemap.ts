@@ -38,7 +38,7 @@ const PLUGIN_REPO = 'woocommerce-pos'
 
 /**
  * Dates are each route's last content change, read from the git history of its
- * page, components and messages (checked 2026-11-19). Bump a route's date when
+ * page, components and messages (checked 2026-11-20). Bump a route's date when
  * its content changes. Legal pages take theirs from @/lib/legal-dates;
  * /changelog and /downloads use the newest published plugin release.
  * /roadmap carries no lastmod because it is built live from wcpos/roadmap
@@ -46,18 +46,18 @@ const PLUGIN_REPO = 'woocommerce-pos'
  */
 const CONTENT_UPDATED_AT: Partial<Record<MarketingPath, string>> = {
   '/': '2026-11-19',
-  '/pro': '2026-11-19',
+  '/pro': '2026-11-20',
   '/extensions': '2026-11-18',
-  '/compare': '2026-11-18',
-  '/compare/oliver-pos': '2026-11-19',
-  '/compare/woocommerce-pos': '2026-11-19',
-  '/compare/square': '2026-11-19',
-  '/compare/jovvie': '2026-11-19',
-  '/compare/vitepos': '2026-11-19',
-  '/compare/yith-pos': '2026-11-19',
-  '/compare/foosales': '2026-11-19',
-  '/about-us': '2026-10-06',
-  '/support': '2026-11-19',
+  '/compare': '2026-11-19',
+  '/compare/oliver-pos': '2026-11-20',
+  '/compare/woocommerce-pos': '2026-11-20',
+  '/compare/square': '2026-11-20',
+  '/compare/jovvie': '2026-11-20',
+  '/compare/vitepos': '2026-11-20',
+  '/compare/yith-pos': '2026-11-20',
+  '/compare/foosales': '2026-11-20',
+  '/about-us': '2026-11-19',
+  '/support': '2026-11-20',
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {

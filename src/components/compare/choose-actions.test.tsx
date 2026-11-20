@@ -37,6 +37,20 @@ describe('CompareChooseActions', () => {
     const download = screen.getByRole('link', { name: 'Download Free' })
     expect(download.getAttribute('href')).toMatch(/\/downloads$/)
   })
+
+  it('lets the buttons wrap side by side so they stay inside the card', () => {
+    render(
+      <NextIntlClientProvider locale="en" messages={messages}>
+        <CompareChooseActions />
+      </NextIntlClientProvider>
+    )
+
+    const demo = screen.getByRole('link', { name: 'Try Live Demo' })
+    const download = screen.getByRole('link', { name: 'Download Free' })
+    const row = demo.parentElement
+    expect(download.parentElement).toBe(row)
+    expect(row).toHaveClass('sm:flex-row', 'sm:flex-wrap')
+  })
 })
 
 const COMPARE_DIR = resolve(process.cwd(), 'src/app/[locale]/(main)/compare')

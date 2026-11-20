@@ -55,7 +55,7 @@
     "title": "WCPOS",
     "subtitle": "Een snel kassasysteem voor WooCommerce",
     "meta": {
-      "description": "Gratis, open-source WooCommerce-kassa. Verkoop offline, splits betalingen, open en sluit de kassa, gratis in 2.0. Web- en desktopapps; iOS en Android in bèta."
+      "description": "Gratis, open-source WooCommerce-kassa voor tablet, telefoon of computer. Contant verkopen ook offline; betalingen splitsen, kassa openen/sluiten gratis in 2.0."
     },
     "problem": {
       "title": "Een WooCommerce-winkel en een fysieke winkel beheren zou geen dubbel werk moeten betekenen",
@@ -270,11 +270,11 @@
           "text": "Open en sluit je kassa, splits betalingen en bekijk de verkopen van vandaag — gratis."
         },
         "h": "Je WooCommerce-winkel, aan de toonbank.",
-        "b": "WCPOS verandert de tablet in je kassa — dezelfde catalogus, dezelfde voorraad, dezelfde prijzen, zelfs offline.",
+        "b": "WCPOS verandert je tablet, telefoon of computer in een kassa — dezelfde catalogus, dezelfde voorraad, dezelfde prijzen, zelfs offline.",
         "c1": "Live demo proberen",
         "c2": "Gratis downloaden",
         "badges": {
-          "b1": "5.000+ actieve winkels",
+          "b1": "5.000+ actieve installaties",
           "b2": "Gratis en open source",
           "b3": "Sinds 2014"
         }
@@ -361,12 +361,12 @@
   },
   "roadmap": {
     "meta": {
-      "title": "Routekaart",
-      "description": "Bekijk waar we nu aan werken voor WCPOS — aankomende functies, mijlpalen en voortgang van releases."
+      "title": "Kassasysteem voor WooCommerce: roadmap",
+      "description": "Wat er hierna komt voor WCPOS, de gratis kassaplugin voor WooCommerce: werk in uitvoering en gepland werk, rechtstreeks van GitHub."
     },
     "page": {
-      "eyebrow": "Routekaart",
-      "title": "De releasetrein",
+      "eyebrow": "De releasetrein",
+      "title": "Roadmap van het kassasysteem voor WooCommerce",
       "description": "Elke halte op weg naar een sneller, offline-bestendig WCPOS — rechtstreeks uit onze GitHub gehaald, nieuwste werk eerst.",
       "changelogLink": "Bekijk gepubliceerde versies in het wijzigingslogboek"
     },
@@ -398,17 +398,17 @@
   },
   "changelog": {
     "meta": {
-      "title": "Wijzigingslogboek",
-      "description": "Release-opmerkingen voor de nieuwste gepubliceerde versies van de WCPOS-plugin, afkomstig van GitHub."
+      "title": "Kassasysteem voor WooCommerce: wijzigingslogboek",
+      "description": "Release-opmerkingen voor de nieuwste gepubliceerde versies van WCPOS, de gratis kassaplugin voor WooCommerce, rechtstreeks van GitHub."
     },
     "page": {
-      "title": "Wijzigingslogboek",
-      "description": "De nieuwste gepubliceerde versies van de WCPOS-plugin, met hun release-opmerkingen van GitHub."
+      "title": "Wijzigingslogboek van het kassasysteem voor WooCommerce",
+      "description": "De nieuwste gepubliceerde versies van WCPOS, het gratis kassasysteem voor WooCommerce, met hun release-opmerkingen van GitHub."
     }
   },
   "pro": {
     "metadata": {
-      "title": "Pro-functies & prijzen – Kassa voor WooCommerce",
+      "title": "Pro-functies & prijs – Kassasysteem voor WooCommerce",
       "description": "WCPOS Pro voor WooCommerce: meer kassa's en meerdere winkels, terminalbetalingen, voorraad- en prijsbewerking, order- en klantbeheer en volledige rapporten."
     },
     "hero": {
@@ -417,7 +417,7 @@
     },
     "schema": {
       "name": "WCPOS Pro",
-      "description": "Premium point-of-sale-plugin voor WooCommerce. Voegt betaalterminalintegratie, voorraad- en prijsbewerking, order- en klantbeheer, volledige rapporten, aangepaste betaalgateways en prioriteitssupport toe.",
+      "description": "WCPOS Pro voor WooCommerce voegt meer kassa's en meerdere winkels, terminalbetalingen, een klantendisplay, voorraad- en prijsbewerking, order- en klantbeheer, volledige rapporten, aangepaste betaalgateways en prioriteitssupport toe.",
       "offers": {
         "yearly": "Jaarlicentie",
         "lifetime": "Levenslange licentie"
@@ -425,7 +425,6 @@
     },
     "features": {
       "title": "Wat zit er in Pro?",
-      "subtitle": "Alles uit Free, plus de tools om je hele winkel vanaf de kassa te runnen — en priority support wanneer je hulp nodig hebt.",
       "stores": {
         "title": "Meer kassa's en meerdere winkels",
         "description": "Voeg naast de gratis kassa meer kassa's toe en beheer meerdere winkels, elk met een eigen adres, eigen btw-tarieven, een eigen bonsjabloon, eigen prijzen en eigen geautoriseerde gebruikers."
@@ -457,7 +456,7 @@
       },
       "gateways": {
         "title": "Aangepaste betaalgateways",
-        "description": "Ontvang betalingen via elke WooCommerce-compatibele gateway, niet alleen de ingebouwde opties."
+        "description": "Schakel de andere WooCommerce-betaalgateways van je winkel in aan de kassa, niet alleen de ingebouwde opties."
       }
     },
     "buyBox": {
@@ -485,7 +484,7 @@
       "demoLink": "Bekijk Pro in de live demo",
       "demoSuffix": " — inloggen met demo / demo",
       "payments": "Kaart, PayPal of Bitcoin",
-      "proof": "5.000+ actieve winkels",
+      "proof": "5.000+ actieve installaties op WordPress.org",
       "unavailableTitle": "Prijzen tijdelijk niet beschikbaar",
       "unavailableDescription": "Prijsinformatie is momenteel niet beschikbaar. Probeer het later opnieuw."
     },
@@ -497,11 +496,11 @@
       },
       "yearlyVsLifetime": {
         "question": "Wat is het verschil tussen Jaarlijks en Levenslang?",
-        "answer": "De Jaarlijkse licentie is een eenmalige betaling met updates en priority support gedurende één jaar. Deze wordt niet automatisch verlengd. De Levenslange licentie is een eenmalige betaling met updates voor altijd."
+        "answer": "De Jaarlijkse licentie is een eenmalige betaling met updates en prioriteitssupport gedurende één jaar. Deze wordt niet automatisch verlengd. De Levenslange licentie is een eenmalige betaling met updates voor altijd."
       },
       "expiry": {
         "question": "Wat gebeurt er als mijn licentie verloopt?",
-        "answer": "Er gaat niets uit. De Pro-versie die je hebt blijft werken — je kassa, je gegevens, elke functie. Wat stopt zijn nieuwe updates en priority support, totdat je zelf kiest te verlengen. Dat is bewust: verlengingen moeten worden verdiend met updates die hun geld waard zijn, en het betekent dat je kassa nooit op afstand uitgezet kan worden."
+        "answer": "Er gaat niets uit. De Pro-versie die je hebt blijft werken — je kassa, je gegevens, elke functie. Wat stopt zijn nieuwe updates en prioriteitssupport, totdat je zelf kiest te verlengen. Dat is bewust: verlengingen moeten worden verdiend met updates die hun geld waard zijn, en het betekent dat je kassa nooit op afstand uitgezet kan worden."
       },
       "siteLimits": {
         "question": "Op hoeveel sites kan ik mijn licentie gebruiken?",
@@ -1707,7 +1706,6 @@
         },
         "pro": {
           "title": "Meer nodig? Kies Pro",
-          "body": "Een gelicentieerde plugin die meer kassa's en meerdere winkels, terminalbetalingen, terugbetalingen en voorraadbeheer toevoegt op dezelfde basis.",
           "cardTitle": "Ontgrendel meer kassa's",
           "cardBody": "Meer kassa's en meerdere winkels, terminalbetalingen, terugbetalingen, voorraad en prijzen, orderbeheer, volledige rapporten en prioritaire Discord-support.",
           "plansCta": "Bekijk Pro-abonnementen",
@@ -1737,7 +1735,7 @@
   "extensions": {
     "metadata": {
       "title": "WooCommerce POS: extensies & betaalterminals",
-      "description": "Extensies voor WCPOS, het WooCommerce-kassasysteem: betaalterminals van Stripe, Square, SumUp, PayPal, Mollie en Windcave, plus WPML, Polylang en ATUM."
+      "description": "WooCommerce-kassasysteem-extensies: betaalterminals met WCPOS Pro van Stripe, Square, SumUp, PayPal, Mollie, Windcave en meer, plus WPML, Polylang en ATUM."
     },
     "hero": {
       "title": "Extensies voor WooCommerce POS",
@@ -1757,7 +1755,7 @@
   },
   "about": {
     "meta": {
-      "title": "Over ons",
+      "title": "Over ons: onafhankelijk WooCommerce-kassasysteem sinds 2014",
       "description": "Het verhaal achter WCPOS — een onafhankelijk kassasysteem gebouwd door een voormalige winkelier en gefinancierd door winkeliers, niet door investeerders."
     },
     "hero": {
@@ -1940,37 +1938,37 @@
       },
       "oliverCard": {
         "title": "WCPOS vs Oliver POS",
-        "description": "WordPress-native tegenover cloud-SaaS: eigendom van je data, echte limieten van gratis abonnementen, eenmalige prijzen tegenover abonnementen, en waar Oliver echt beter is.",
+        "description": "Oliver synchroniseert je winkel met zijn cloud, en het gratis abonnement stopt bij 20 producten; WCPOS draait binnen je WordPress-site zonder limieten, en Pro is een eenmalige betaling.",
         "cta": "Lees de vergelijking"
       },
       "woocommerceCard": {
         "title": "WCPOS vs de officiële POS van WooCommerce",
-        "description": "Gratis en ingebouwd in de mobiele WooCommerce-app tegenover platformonafhankelijk en offline-first: apparaten, landen, betalingen, prijzen en waar de POS van WooCommerce echt beter is.",
+        "description": "De POS van WooCommerce is gratis in de mobiele app, ontworpen voor tablets in tien landen, zonder offline modus; WCPOS werkt in elke browser en als desktop-, iOS- en Android-app, en contant verkopen werkt ook offline.",
         "cta": "Lees de vergelijking"
       },
       "squareCard": {
         "title": "WCPOS vs Square for WooCommerce",
-        "description": "De POS van Square met een synchronisatie-extensie tegenover een kassa gebouwd op WooCommerce: waar fysieke verkopen worden vastgelegd, synchronisatie, locaties, offline betalingen, kaartkosten en waar Square echt beter is.",
+        "description": "Bestellingen in de POS van Square worden niet met WooCommerce gesynchroniseerd, voorraadwijzigingen komen bij de volgende geplande controle binnen (standaard elk uur); elke WCPOS-verkoop is een WooCommerce-bestelling.",
         "cta": "Lees de vergelijking"
       },
       "jovvieCard": {
         "title": "WCPOS vs Jovvie",
-        "description": "Twee WooCommerce-POS-plugins: een eenmalige betaling tegenover maandabonnementen met kosten per transactie, apps, kaartbetalingen, beoordelingen en waar Jovvie echt beter is.",
+        "description": "Jovvie rekent boven op zijn maandabonnementen platformkosten per transactie; WCPOS rekent geen transactiekosten, en Pro is een eenmalige betaling.",
         "cta": "Lees de vergelijking"
       },
       "viteposCard": {
         "title": "WCPOS vs Vitepos",
-        "description": "Twee WooCommerce-POS-plugins met gratis versies: prijzen, offline bestellingen, restaurantmodi, apps, betaalterminals en waar Vitepos echt beter is.",
+        "description": "Beide hebben een gratis versie; Vitepos voegt modi voor supermarkten en restaurants toe, WCPOS desktopapps voor Windows, macOS en Linux en apps voor iOS en Android (bèta).",
         "cta": "Lees de vergelijking"
       },
       "yithCard": {
         "title": "WCPOS vs YITH Point of Sale",
-        "description": "WCPOS en de kassa-plugin van YITH voor WooCommerce: licenties, betaalterminals, apps, offline gebruik, winkels en kassa’s, en wat YITH Point of Sale goed doet.",
+        "description": "YITH Point of Sale is een jaarlicentie met afzonderlijke voorraden per winkel, maar zonder offlinemodus en zonder betaalterminals; WCPOS is gratis, en Pro voegt betaalterminals toe voor een eenmalige betaling.",
         "cta": "Lees de vergelijking"
       },
       "foosalesCard": {
         "title": "WCPOS vs FooSales",
-        "description": "Een eenmalig betaalde Pro-licentie of een jaarabonnement per winkel: prijzen, wat er gebeurt als je stopt met betalen, Tap to Pay, offline bestellingen, apps en waar FooSales echt beter is.",
+        "description": "FooSales is een jaarabonnement per winkel, en bij opzegging vervalt de toegang tot de FooSales-POS; WCPOS is gratis, en Pro blijft na een eenmalige betaling ook na dat jaar werken.",
         "cta": "Lees de vergelijking"
       },
       "moreSoon": "Er komen meer vergelijkingen aan."
@@ -2155,7 +2153,7 @@
         },
         "hobbyShops": {
           "claim": "Het meest geschikt voor hobbywinkels",
-          "response": "Volgens WordPress.org draaien 5,000+ actieve winkels op WCPOS — ruim zes keer het aantal actieve installaties van Oliver — met meer dan 400,000 downloads sinds 2014."
+          "response": "WCPOS heeft 5,000+ actieve installaties op WordPress.org — ruim zes keer zoveel als Oliver — met meer dan 400,000 downloads sinds 2014."
         },
         "singleDev": {
           "claim": "Project van één ontwikkelaar; updates wanneer de beheerder tijd heeft",
@@ -2247,7 +2245,7 @@
           },
           "cardPayments": {
             "label": "Kaartbetalingen",
-            "wcpos": "Pro-terminalintegraties: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc, Windcave; Vipps MobilePay via QR-code of push",
+            "wcpos": "Gratis: contante verkopen en kaartverkopen via je eigen losse betaalterminal, geregistreerd bij de bestelling. Pro-terminalintegraties: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc, Windcave; Vipps MobilePay via QR-code of push",
             "woocommerce": "WooPayments of Stripe, met een Bluetooth-kaartlezer"
           },
           "gateways": {
@@ -2285,7 +2283,7 @@
       "payments": {
         "title": "Hoe werken kaartbetalingen?",
         "woocommerce": "De POS van WooCommerce accepteert contant geld en kaarten via WooPayments of Stripe met een Bluetooth-kaartlezer die met de tablet is verbonden. Met WooPayments kosten kaartbetalingen ter plaatse minder dan online: in de Verenigde Staten 2.70% + $0.10 tegenover 2.90% + $0.30 online. Een kaartlezer kost $5.00 / £5.00 per actieve lezer per maand.",
-        "wcpos": "WCPOS 2.0 heeft een eigen checkout: een betaalpaneel naast de winkelwagen accepteert contant geld, registreert kaartbetalingen die via een aparte terminal zijn verwerkt en kan één bestelling over meerdere betalingen verdelen. Met Pro kun je de andere WooCommerce-betaalgateways van je winkel aan de kassa inschakelen en integraties met pinterminals toevoegen voor Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal en Vipps MobilePay, met één klik te installeren vanuit de extensiecatalogus. Tap to Pay op iPhone en Android zit nog niet in WCPOS; het volgt in een app-update. WCPOS ondersteunt geen WooPayments-betalingen ter plaatse."
+        "wcpos": "WCPOS 2.0 heeft een eigen checkout: een betaalpaneel naast de winkelwagen accepteert contant geld, registreert kaartbetalingen die via een aparte terminal zijn verwerkt en kan één bestelling over meerdere betalingen verdelen. Met Pro kun je de andere WooCommerce-betaalgateways van je winkel aan de kassa inschakelen en integraties met pinterminals toevoegen voor Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc en Windcave, evenals Vipps MobilePay via QR-code of push, alle met één klik te installeren vanuit de extensiecatalogus. Tap to Pay op iPhone en Android zit nog niet in WCPOS; het volgt in een app-update. WCPOS ondersteunt geen WooPayments-betalingen ter plaatse."
       },
       "pricing": {
         "title": "Wat kost het?",
@@ -2361,7 +2359,7 @@
     "square": {
       "metadata": {
         "title": "WCPOS vs Square for WooCommerce (2026)",
-        "description": "Wanneer Square for WooCommerce de betere keuze is en wanneer WCPOS: waar verkopen worden vastgelegd, locaties en kosten. Vergeleken door de maker van WCPOS."
+        "description": "Square for WooCommerce synchroniseert producten en voorraad, geen Square-POS-bestellingen. WCPOS-verkopen zijn WooCommerce-bestellingen. Door de WCPOS-maker."
       },
       "hero": {
         "title": "WCPOS vs Square for WooCommerce",
@@ -2377,6 +2375,7 @@
         "caption": "Feiten over Square op 2026-10-06 gecontroleerd en op 2026-11-18 opnieuw gecontroleerd op squareup.com en in de WooCommerce-documentatie voor de extensie Square for WooCommerce; WCPOS-feiten van wcpos.com en docs.wcpos.com.",
         "colWcpos": "WCPOS",
         "colSquare": "Square POS + Square for WooCommerce",
+        "colSquareShort": "Square",
         "rows": {
           "orders": {
             "label": "Fysieke verkopen",
@@ -2405,7 +2404,7 @@
           },
           "cardPayments": {
             "label": "Kaartbetalingen",
-            "wcpos": "Pro-terminalintegraties: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc, Windcave; Vipps MobilePay via QR-code of push",
+            "wcpos": "Gratis: contante verkopen en kaartverkopen via je eigen losse betaalterminal, geregistreerd bij de bestelling. Pro-terminalintegraties: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc, Windcave; Vipps MobilePay via QR-code of push",
             "square": "Square-betalingen, waaronder Tap to Pay op iPhone en Android"
           },
           "fees": {
@@ -2433,7 +2432,7 @@
       "payments": {
         "title": "Hoe werken kaartbetalingen?",
         "square": "De POS van Square accepteert kaarten via Square, waaronder Tap to Pay op iPhone en Android. In de Verenigde Staten kost een fysieke kaartbetaling (contactloos, insteken of doorhalen) met het Square Free-abonnement 2.6% + 15¢. Volgens Square is het accepteren van kaartbetalingen met de Square-app beschikbaar in de Verenigde Staten, Canada, Australië, Japan, het Verenigd Koninkrijk, de Republiek Ierland, Frankrijk en Spanje; de extensie vereist dat je WooCommerce-valuta overeenkomt met die van je Square-account.",
-        "wcpos": "WCPOS 2.0 heeft een eigen checkout: een betaalpaneel naast de winkelwagen accepteert contant geld, registreert kaartbetalingen die via een aparte terminal zijn verwerkt en kan één bestelling over meerdere betalingen verdelen. Met Pro kun je de andere WooCommerce-betaalgateways van je winkel aan de kassa inschakelen en integraties met pinterminals toevoegen voor Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal en Vipps MobilePay, met één klik te installeren vanuit de extensiecatalogus. Tap to Pay op iPhone en Android zit nog niet in WCPOS; het volgt in een app-update.",
+        "wcpos": "WCPOS 2.0 heeft een eigen checkout: een betaalpaneel naast de winkelwagen accepteert contant geld, registreert kaartbetalingen die via een aparte terminal zijn verwerkt en kan één bestelling over meerdere betalingen verdelen. Met Pro kun je de andere WooCommerce-betaalgateways van je winkel aan de kassa inschakelen en integraties met pinterminals toevoegen voor Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc en Windcave, evenals Vipps MobilePay via QR-code of push, alle met één klik te installeren vanuit de extensiecatalogus. Tap to Pay op iPhone en Android zit nog niet in WCPOS; het volgt in een app-update.",
         "both": "Heb je al een Square Terminal? De Square Terminal-gateway van WCPOS Pro ontvangt daarop betalingen voor WooCommerce-bestellingen rechtstreeks vanaf de WCPOS-kassa en schrijft het resultaat terug naar de bestelling. Als je de officiële Square for WooCommerce-plugin gebruikt, worden de omgeving en locatie-ID daarvan vooraf ingevuld. Een Terminal die is aangemeld bij Square POS of een andere integratie moet zich daar eerst afmelden."
       },
       "pricing": {
@@ -2461,7 +2460,7 @@
         "intro": "Een eerlijke vergelijking bekijkt beide kanten:",
         "free": "De POS van Square heeft een gratis abonnement, Square Free ($0/month per locatie). WCPOS Pro kost $129 of meer.",
         "tapToPay": "Tap to Pay op iPhone en Android: een klant kan zijn kaart tegen je telefoon houden. WCPOS heeft nog geen Tap to Pay; het volgt in een app-update.",
-        "offline": "Offline kaartbetalingen: de POS van Square blijft kaarten accepteren zonder internet, zolang je binnen 72 uur opnieuw verbinding maakt en de betalingen uploadt. Je bent verantwoordelijk voor betalingen die verlopen, worden geweigerd of betwist. WCPOS blijft offline contante verkopen afhandelen, maar aangesloten kaartlezers hebben een verbinding nodig.",
+        "offline": "Offline kaartbetalingen: de POS van Square blijft kaarten accepteren zonder internet, zolang je binnen 72 uur opnieuw verbinding maakt en de betalingen uploadt. Je bent verantwoordelijk voor betalingen die verlopen, worden geweigerd of betwist. WCPOS blijft offline contante verkopen afhandelen en registreert kaartverkopen via je eigen losse betaalterminal; aangesloten kaartlezers en online gateways hebben een verbinding nodig.",
         "hardware": "Eigen hardware van Square: Square Register heeft Square Point of Sale ingebouwd, zodat de kassa en de software van hetzelfde bedrijf komen. WCPOS verkoopt geen hardware; het werkt op de computers, tablets en telefoons die je al hebt.",
         "outro": "Als je fysiek verkoopt via iOS- of Android-apparaten of Square Register op één locatie, betalingen via Square aanneemt en niet nodig hebt dat je fysieke verkopen WooCommerce-bestellingen worden, kan de POS van Square met de extensie voldoende zijn."
       },
@@ -2560,7 +2559,7 @@
           },
           "cardPayments": {
             "label": "Kaartbetalingen",
-            "wcpos": "Pro-terminalintegraties: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc, Windcave; Vipps MobilePay via QR-code of push",
+            "wcpos": "Gratis: contante verkopen en kaartverkopen via je eigen losse betaalterminal, geregistreerd bij de bestelling. Pro-terminalintegraties: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc, Windcave; Vipps MobilePay via QR-code of push",
             "jovvie": "Stripe Terminal (BizSwoop is partner van Stripe Terminal), met lezers zoals de Stripe M2"
           },
           "apps": {
@@ -2668,7 +2667,7 @@
           },
           "cardPayments": {
             "label": "Kaartbetalingen",
-            "wcpos": "Pro-terminalintegraties: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc, Windcave; Vipps MobilePay via QR-code of push",
+            "wcpos": "Gratis: contante verkopen en kaartverkopen via je eigen losse betaalterminal, geregistreerd bij de bestelling. Pro-terminalintegraties: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc, Windcave; Vipps MobilePay via QR-code of push",
             "vitepos": "Terminalbetalingen via Stripe Terminal en Wallee"
           },
           "apps": {
@@ -2722,7 +2721,7 @@
         "title": "Waar Vitepos echt beter is",
         "intro": "Een eerlijke vergelijking bekijkt beide kanten:",
         "restaurant": "Restaurantmodi — Vitepos heeft modi voor supermarkten en restaurants, met een bedieningspaneel, een keukenpaneel en tafelbeheer; WCPOS heeft geen restaurantmodus.",
-        "offline": "Offline bestellingen — Vitepos zegt bestellingen zonder internetverbinding te blijven verwerken en ze te synchroniseren zodra de verbinding terugkeert. WCPOS blijft offline contante verkopen afhandelen, maar aangesloten kaartlezers en online gateways hebben een verbinding nodig.",
+        "offline": "Offline bestellingen — Vitepos zegt bestellingen zonder internetverbinding te blijven verwerken en ze te synchroniseren zodra de verbinding terugkeert. WCPOS blijft offline contante verkopen afhandelen en registreert kaartverkopen via je eigen losse betaalterminal; aangesloten kaartlezers en online gateways hebben een verbinding nodig.",
         "kiosk": "Zelfbedieningskiosk — Vitepos verkoopt een Kiosk App als add-on; WCPOS heeft geen kioskmodus.",
         "price": "Een lagere catalogusprijs — Vitepos Pro begint bij $79 voor een jaarabonnement voor één site, tegenover $129 voor WCPOS Pro.",
         "rating": "Een hogere beoordeling op WordPress.org — 4.7 sterren uit 54 beoordelingen, tegenover 3.7 voor WCPOS.",
@@ -2815,7 +2814,7 @@
           },
           "cardPayments": {
             "label": "Kaartbetalingen",
-            "wcpos": "Pro-terminalintegraties: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc, Windcave; Vipps MobilePay via QR-code of push",
+            "wcpos": "Gratis: contante verkopen en kaartverkopen via je eigen losse betaalterminal, geregistreerd bij de bestelling. Pro-terminalintegraties: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc, Windcave; Vipps MobilePay via QR-code of push",
             "yith": "Geen verbinding met een betaalterminal; betalingen worden handmatig verwerkt, met de betaalmethoden Cash en Chip and Pin"
           },
           "apps": {
@@ -2960,7 +2959,7 @@
           },
           "cardPayments": {
             "label": "Kaartbetalingen",
-            "wcpos": "Pro-terminalintegraties: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc, Windcave; Vipps MobilePay via QR-code of push",
+            "wcpos": "Gratis: contante verkopen en kaartverkopen via je eigen losse betaalterminal, geregistreerd bij de bestelling. Pro-terminalintegraties: Stripe Terminal, SumUp, PayPal Reader (Zettle), Square Terminal, Mollie Terminal, Mercado Pago, PayArc, Windcave; Vipps MobilePay via QR-code of push",
             "foosales": "Plus-abonnement: Square Terminal, Square Readers (tabletapps) en Stripe Terminal-lezers"
           },
           "tapToPay": {
@@ -3009,7 +3008,7 @@
         "title": "Waar FooSales echt beter is",
         "intro": "Een eerlijke vergelijking snijdt aan twee kanten:",
         "tapToPay": "Tap to Pay op iPhone en Android — met FooSales Plus kan een klant zijn kaart via Stripe of Square tegen je telefoon houden. WCPOS heeft nog geen Tap to Pay; het volgt in een app-update.",
-        "offline": "Offline bestellingen — FooSales zegt dat zijn apps zonder internetverbinding nieuwe bestellingen, annuleringen en terugbetalingen blijven registreren en die met WooCommerce synchroniseren zodra de verbinding terugkeert. WCPOS blijft offline contante verkopen afhandelen, maar aangesloten kaartlezers en online gateways hebben een verbinding nodig.",
+        "offline": "Offline bestellingen — FooSales zegt dat zijn apps zonder internetverbinding nieuwe bestellingen, annuleringen en terugbetalingen blijven registreren en die met WooCommerce synchroniseren zodra de verbinding terugkeert. WCPOS blijft offline contante verkopen afhandelen en registreert kaartverkopen via je eigen losse betaalterminal; aangesloten kaartlezers en online gateways hebben een verbinding nodig.",
         "outro": "Als je Tap to Pay op een telefoon of een modus voor offline bestellingen wilt en een jaarabonnement per winkel bij je past, is FooSales misschien de betere keuze."
       },
       "choose": {

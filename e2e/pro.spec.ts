@@ -31,7 +31,7 @@ test.describe('Pro Page', () => {
 
   test('displays FAQ section', async ({ page }) => {
     await expect(
-      page.getByRole('heading', { name: 'Frequently Asked Questions' })
+      page.getByRole('heading', { name: 'Frequently asked questions' })
     ).toBeVisible()
   })
 

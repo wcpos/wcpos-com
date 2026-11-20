@@ -77,3 +77,35 @@ describe('Home page SoftwareApplication JSON-LD', () => {
     expect(app.description).toBe('Translated homepage metadata description')
   })
 })
+
+describe('Home page WebSite JSON-LD', () => {
+  async function websiteNodes(locale: string) {
+    const { container } = render(
+      await Home({ params: Promise.resolve({ locale }) }),
+    )
+
+    return Array.from(
+      container.querySelectorAll('script[type="application/ld+json"]'),
+    )
+      .map((script) => JSON.parse(script.textContent ?? '{}'))
+      .filter((data) => data['@type'] === 'WebSite')
+  }
+
+  it('names the site at the domain root in English', async () => {
+    const sites = await websiteNodes('en')
+
+    expect(sites).toHaveLength(1)
+    expect(sites[0].name).toBe('WCPOS')
+    expect(sites[0].url).toBe('https://wcpos.com/')
+    expect(sites[0].inLanguage).toBe('en')
+    expect(sites[0]).not.toHaveProperty('alternateName')
+  })
+
+  it('keeps the root url and states the locale in German', async () => {
+    const sites = await websiteNodes('de')
+
+    expect(sites).toHaveLength(1)
+    expect(sites[0].inLanguage).toBe('de')
+    expect(sites[0].url).toBe('https://wcpos.com/')
+  })
+})

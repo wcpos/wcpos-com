@@ -164,7 +164,8 @@ export default async function ViteposComparePage({
       {/* Answer-first block: the passage AI engines lift for the head query */}
       <Section tone="default" spacing="none" className={COMPARE_SHORT_ANSWER_SECTION_CLASS} containerClassName="max-w-3xl">
         <SectionHeading align="left" title={t('vitepos.shortAnswer.title')} />
-        <p className="mt-4 font-medium">{t('vitepos.shortAnswer.wcpos')}</p>
+        <p className="mt-4 text-lg font-semibold text-foreground">{t('hub.viteposCard.description')}</p>
+        <p className="mt-4">{t('vitepos.shortAnswer.wcpos')}</p>
         <p className="mt-3 text-muted-foreground">
           {t('vitepos.shortAnswer.vitepos')}
         </p>

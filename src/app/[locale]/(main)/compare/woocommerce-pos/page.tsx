@@ -171,7 +171,8 @@ export default async function WoocommerceComparePage({
       {/* Answer-first block: the passage AI engines lift for the head query */}
       <Section tone="default" spacing="none" className={COMPARE_SHORT_ANSWER_SECTION_CLASS} containerClassName="max-w-3xl">
         <SectionHeading align="left" title={t('woocommerce.shortAnswer.title')} />
-        <p className="mt-4 font-medium">{t('woocommerce.shortAnswer.wcpos')}</p>
+        <p className="mt-4 text-lg font-semibold text-foreground">{t('hub.woocommerceCard.description')}</p>
+        <p className="mt-4">{t('woocommerce.shortAnswer.wcpos')}</p>
         <p className="mt-3 text-muted-foreground">
           {t('woocommerce.shortAnswer.woocommerce')}
         </p>

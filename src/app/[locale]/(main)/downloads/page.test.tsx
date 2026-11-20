@@ -171,6 +171,18 @@ describe('DownloadsPage', () => {
     expect(container.querySelector('[lang="fr"]')).toBeNull()
   })
 
+  it('goes from the Pro step heading straight to the card', async () => {
+    const { default: DownloadsPage } = await import(
+      '@/app/[locale]/(main)/downloads/page'
+    )
+
+    render(await DownloadsPage({ params: Promise.resolve({ locale: 'en' }) }))
+
+    expect(screen.getByRole('heading', { name: 'Want more? Go Pro' })).toBeInTheDocument()
+    expect(screen.getByText('Unlock more registers')).toBeInTheDocument()
+    expect(screen.queryByText(/on the same foundation/)).not.toBeInTheDocument()
+  })
+
   it('links macOS 12 users to the 1.11.12 desktop build', async () => {
     const { default: DownloadsPage } = await import(
       '@/app/[locale]/(main)/downloads/page'
@@ -207,6 +219,50 @@ describe('DownloadsPage', () => {
     expect(
       setup.compareDocumentPosition(demo) & Node.DOCUMENT_POSITION_FOLLOWING,
     ).toBeTruthy()
+  })
+
+  it('stacks step 2 device links on phone with separators only from sm up', async () => {
+    const { default: DownloadsPage } = await import(
+      '@/app/[locale]/(main)/downloads/page'
+    )
+
+    render(await DownloadsPage({ params: Promise.resolve({ locale: 'en' }) }))
+
+    const step = screen
+      .getByRole('heading', { level: 3, name: 'Pick your device' })
+      .closest('li')!
+    const desktopNames = [
+      'macOS (Apple Silicon)',
+      'macOS (Intel)',
+      'Windows',
+      'Linux',
+    ]
+    const desktopRow = within(step)
+      .getByRole('link', { name: desktopNames[0] })
+      .closest('span')!.parentElement!
+    const webRow = within(step).getByRole('link', {
+      name: 'Open the live demo',
+    }).parentElement!
+
+    for (const row of [desktopRow, webRow]) {
+      expect(row).toHaveClass('flex-col', 'sm:flex-row', 'sm:flex-wrap')
+      expect(row).not.toHaveClass('flex-wrap')
+    }
+    expect(
+      within(desktopRow).getAllByRole('link').map((link) => link.textContent),
+    ).toEqual(desktopNames)
+    expect(
+      within(webRow).getAllByRole('link').map((link) => link.textContent),
+    ).toEqual(['Set up on your store', 'Open the live demo'])
+
+    const separators = Array.from(step.querySelectorAll('span')).filter(
+      (span) => span.textContent === '·',
+    )
+    expect(separators).toHaveLength(desktopNames.length) // three desktop + one web
+    for (const separator of separators) {
+      expect(separator).toHaveClass('hidden', 'sm:inline')
+      expect(separator).toHaveAttribute('aria-hidden', 'true')
+    }
   })
 
   it('emits SoftwareApplication JSON-LD with a /downloads downloadUrl', async () => {
@@ -293,24 +349,11 @@ describe('DownloadsPage', () => {
   })
 
   it('names more registers and stores in the Pro step in every locale', () => {
-    // steps.pro.body at round-22 base 62ac921; guards against an untranslated locale.
-    const OLD_PRO_BODY: Record<string, string> = {
-      en: 'A licensed plugin that adds terminal payments, refunds and stock control on the same foundation.',
-      de: 'Ein lizenziertes Plugin, das auf derselben Grundlage Terminalzahlungen, Erstattungen und Bestandskontrolle ergänzt.',
-      es: 'Un plugin con licencia que añade pagos con terminal, reembolsos y control de stock sobre la misma base.',
-      fr: 'Un plugin sous licence qui ajoute les paiements par terminal, les remboursements et le contrôle du stock sur la même base.',
-      it: 'Un plugin con licenza che aggiunge pagamenti con terminale, rimborsi e controllo dello stock sulla stessa base.',
-      ja: '同じ土台に端末決済、返金、在庫管理を追加するライセンス付きプラグインです。',
-      ko: '터미널 결제, 환불, 재고 관리를 같은 기반 위에 추가하는 라이선스 플러그인입니다.',
-      nl: 'Een gelicentieerde plugin die terminalbetalingen, terugbetalingen en voorraadbeheer toevoegt op dezelfde basis.',
-      pt: 'Um plugin licenciado que adiciona pagamentos em terminal, reembolsos e controlo de stock sobre a mesma base.',
-      zh: '一个授权插件，在同一基础上添加终端付款、退款和库存控制。',
-    }
+    const locales = ['en', 'de', 'es', 'fr', 'it', 'ja', 'ko', 'nl', 'pt', 'zh']
     const readLocale = (locale: string) =>
       JSON.parse(readFileSync(join(process.cwd(), 'messages', `${locale}.json`), 'utf8'))
     const en = readLocale('en')
     const enProCardBody = readMessage(en, 'downloads.page.steps.pro', 'cardBody')
-    expect(readMessage(en, 'downloads.page.steps.pro', 'body')).toContain('registers')
     expect(enProCardBody).toContain('registers')
     const enProCardTitle = readMessage(en, 'downloads.page.steps.pro', 'cardTitle')
     expect(enProCardTitle).toContain('more registers')
@@ -318,16 +361,15 @@ describe('DownloadsPage', () => {
     for (const key of [
       'hero.tagline',
       'howItFits.title',
-      'page.steps.pro.body',
       'page.steps.pro.cardTitle',
       'page.steps.pro.cardBody',
     ]) {
       expect(readMessage(en, 'downloads', key), `en ${key}`).not.toMatch(/\btill\b/i)
     }
-    for (const locale of Object.keys(OLD_PRO_BODY)) {
+    for (const locale of locales) {
       const messages = readLocale(locale)
-      const body = readMessage(messages, 'downloads.page.steps.pro', 'body')
-      expect(body, `${locale} body`).not.toBe(OLD_PRO_BODY[locale])
+      expect(readMessage(messages, 'downloads.page.steps.pro', 'body'), `${locale} body`)
+        .toBeUndefined()
       if (locale !== 'en') {
         expect(readMessage(messages, 'downloads.page.steps.pro', 'cardBody'), `${locale} cardBody`)
           .not.toBe(enProCardBody)

@@ -55,7 +55,7 @@
     "title": "WCPOS",
     "subtitle": "WooCommerce向けの高速POS",
     "meta": {
-      "description": "WooCommerce向けの無料オープンソースPOS。オフライン販売、分割払い、レジの開始と締めが2.0で無料。ウェブ、デスクトップ向けアプリ。iOS、Android向けアプリはBeta版。"
+      "description": "タブレット、スマートフォン、パソコンで使えるWooCommerce向けの無料オープンソースPOS。現金販売はオフラインでも可能。分割払い、レジの開始と締めが2.0で無料。"
     },
     "problem": {
       "title": "WooCommerceストアと実店舗の運営が二重作業になるべきではありません",
@@ -270,11 +270,11 @@
           "text": "レジの開始と締め、分割払い、本日の売上確認が無料で使えます。"
         },
         "h": "WooCommerceストアを店頭レジに。",
-        "b": "WCPOSはタブレットをレジに変えます。同じカタログ、同じ在庫、同じ価格を、オフラインでも利用できます。",
+        "b": "WCPOSはタブレット、スマートフォン、パソコンをレジに変えます。同じカタログ、同じ在庫、同じ価格を、オフラインでも利用できます。",
         "c1": "ライブデモを試す",
         "c2": "無料でダウンロード",
         "badges": {
-          "b1": "5,000以上の有効店舗",
+          "b1": "5,000以上のアクティブインストール",
           "b2": "無料・オープンソース",
           "b3": "2014年から開発"
         }
@@ -361,12 +361,12 @@
   },
   "roadmap": {
     "meta": {
-      "title": "ロードマップ",
-      "description": "WCPOSで次に開発している機能、今後の予定、マイルストーン、リリースの進捗をご覧ください。"
+      "title": "WooCommerce用POSのロードマップ：今後の予定",
+      "description": "WooCommerce向けの無料POSプラグイン、WCPOSの今後の予定です。進行中の作業と計画中の作業をGitHubから直接お届けします。"
     },
     "page": {
-      "eyebrow": "ロードマップ",
-      "title": "リリースの流れ",
+      "eyebrow": "リリースの流れ",
+      "title": "WooCommerce用POSのロードマップ",
       "description": "より高速でオフラインにも強いWCPOSへ向かう各ステップを、新しい作業から順にGitHubから直接表示します。",
       "changelogLink": "変更履歴で公開済みのバージョンを見る"
     },
@@ -398,12 +398,12 @@
   },
   "changelog": {
     "meta": {
-      "title": "変更履歴",
-      "description": "GitHubから取得したWCPOSプラグインの最新の公開済みバージョンのリリースノート。"
+      "title": "WooCommerce用POSの変更履歴とリリースノート",
+      "description": "WooCommerce向けの無料POSプラグイン、WCPOSの最新の公開済みバージョンのリリースノートをGitHubから直接お届けします。"
     },
     "page": {
-      "title": "変更履歴",
-      "description": "WCPOSプラグインの最新の公開済みリリースと、GitHubから取得したリリースノート。"
+      "title": "WooCommerce用POSの変更履歴",
+      "description": "無料のWooCommerce用POSプラグイン、WCPOSの最新の公開済みリリースと、GitHubから取得したリリースノート。"
     }
   },
   "pro": {
@@ -417,7 +417,7 @@
     },
     "schema": {
       "name": "WCPOS Pro",
-      "description": "WooCommerce向けのプレミアムPOSプラグイン。決済端末連携、在庫と価格の編集、注文と顧客の管理、詳細レポート、カスタム決済ゲートウェイ、優先サポートを追加します。",
+      "description": "WCPOS Proを導入すると、WooCommerceでレジの追加と複数店舗、端末決済、顧客向けディスプレイ、在庫と価格の編集、注文と顧客の管理、詳細レポート、カスタム決済ゲートウェイ、優先サポートを利用できます。",
       "offers": {
         "yearly": "年間ライセンス",
         "lifetime": "永久ライセンス"
@@ -425,7 +425,6 @@
     },
     "features": {
       "title": "Proに含まれるもの",
-      "subtitle": "無料版のすべての機能に加え、レジからお店全体を運営できるツールと、困ったときの優先サポートが付いています。",
       "stores": {
         "title": "レジの追加と複数店舗",
         "description": "無料のレジに加えてレジを追加し、複数の店舗を運営できます。店舗ごとに住所、税率、レシートテンプレート、価格設定、権限ユーザーを設定できます。"
@@ -457,7 +456,7 @@
       },
       "gateways": {
         "title": "カスタム決済ゲートウェイ",
-        "description": "組み込みのオプションだけでなく、WooCommerce対応の任意のゲートウェイで支払いを受け付けられます。"
+        "description": "組み込みのオプションだけでなく、店舗のその他のWooCommerce決済ゲートウェイをレジで有効にできます。"
       }
     },
     "buyBox": {
@@ -485,7 +484,7 @@
       "demoLink": "ライブデモでProを確認",
       "demoSuffix": "（ログイン demo / demo）",
       "payments": "カード、PayPal、Bitcoin",
-      "proof": "5,000以上のアクティブストア",
+      "proof": "WordPress.orgで5,000以上のアクティブインストール",
       "unavailableTitle": "価格情報を一時的に取得できません",
       "unavailableDescription": "現在、価格情報を取得できません。しばらくしてからもう一度お試しください。"
     },
@@ -1707,7 +1706,6 @@
         },
         "pro": {
           "title": "さらに必要ですか？Proへ",
-          "body": "同じ土台にレジの追加と複数店舗、端末決済、返金、在庫管理を加えるライセンス付きプラグインです。",
           "cardTitle": "レジを追加で解放",
           "cardBody": "レジの追加と複数店舗、端末決済、返金、在庫と価格、注文管理、詳細レポート、優先Discordサポート。",
           "plansCta": "Proプランを見る",
@@ -1737,7 +1735,7 @@
   "extensions": {
     "metadata": {
       "title": "WooCommerce用POSの拡張機能と決済端末",
-      "description": "WooCommerce用POS「WCPOS」の拡張機能：Stripe、Square、SumUp、PayPal、Mollie、Windcaveの決済端末に加え、WPML、Polylang、ATUM。"
+      "description": "WooCommerce用POS拡張機能：WCPOS Pro対応のStripe、Square、SumUp、PayPal、Mollie、Windcave等の決済端末とWPML、Polylang、ATUM。"
     },
     "hero": {
       "title": "WooCommerce用POSの拡張機能",
@@ -1757,7 +1755,7 @@
   },
   "about": {
     "meta": {
-      "title": "概要",
+      "title": "概要：2014年から開発の独立系WooCommerce POS",
       "description": "WCPOSの背景 — 元店主が作り、投資家ではなく店主たちによって支えられている独立系POSの物語。"
     },
     "hero": {
@@ -1940,37 +1938,37 @@
       },
       "oliverCard": {
         "title": "WCPOS vs Oliver POS",
-        "description": "WordPressネイティブかクラウドSaaSか：データの所有権、無料プランの実際の制限、買い切り価格とサブスクリプションの違い、そしてOliverが本当に優れている点。",
+        "description": "Oliverはストアをクラウドに同期し、無料プランは商品20点まで。WCPOSはWordPressサイトの内部で上限なく動作し、Proは買い切りです。",
         "cta": "比較を読む"
       },
       "woocommerceCard": {
         "title": "WCPOS vs WooCommerce公式POS",
-        "description": "WooCommerceのモバイルアプリに組み込まれた無料のPOSと、複数のプラットフォームに対応したオフラインファーストのPOS。デバイス、国、決済、価格、そしてWooCommerceのPOSが本当に優れている点を比較します。",
+        "description": "WooCommerce公式POSはモバイルアプリ内で無料、10か国のタブレット向けでオフラインモードなし。WCPOSはブラウザ、デスクトップ、モバイルアプリで動作し、現金販売はオフラインでも可能です。",
         "cta": "比較を読む"
       },
       "squareCard": {
         "title": "WCPOS vs Square for WooCommerce",
-        "description": "SquareのPOSと同期用拡張機能を、WooCommerceに直接組み込まれたレジと比較します。対面販売の記録先、同期、拠点、オフライン決済、カード手数料、Squareが本当に優れている点を取り上げます。",
+        "description": "SquareのPOSの注文はWooCommerceに同期されず、在庫変更は予定された確認時（既定は1時間ごと）に反映。WCPOSではすべての販売がWooCommerceの注文になります。",
         "cta": "比較を読む"
       },
       "jovvieCard": {
         "title": "WCPOS vs Jovvie",
-        "description": "WooCommerce向けPOSプラグイン2つを比較：買い切りと取引ごとの手数料がかかる月額プラン、アプリ、カード決済、評価、Jovvieが実際に優れている点。",
+        "description": "Jovvieは月額プランに加え、取引ごとにプラットフォーム手数料を請求します。WCPOSは取引手数料を請求せず、Proは買い切りです。",
         "cta": "比較を読む"
       },
       "viteposCard": {
         "title": "WCPOS vs Vitepos",
-        "description": "無料版があるWooCommerce向けPOSプラグイン2つを比較：料金、オフライン注文、レストランモード、アプリ、カード端末、Viteposが実際に優れている点。",
+        "description": "どちらも無料版あり。Viteposは食料品店・レストランモード、WCPOSはWindows、macOS、Linux向けデスクトップアプリとiOS、Android向けアプリ（ベータ版）を備えます。",
         "cta": "比較を読む"
       },
       "yithCard": {
         "title": "WCPOS vs YITH Point of Sale",
-        "description": "WCPOSとYITHのWooCommerce向けPOSプラグイン：ライセンス、カード端末、アプリ、オフライン利用、店舗とレジ、YITH Point of Saleの優れた点。",
+        "description": "YITH Point of Saleは年間ライセンスで店舗ごとに在庫を分けられますが、オフラインモードはなく、カード端末にも接続できません。WCPOSは無料で、Proは買い切りでカード端末連携を追加します。",
         "cta": "比較を読む"
       },
       "foosalesCard": {
         "title": "WCPOS vs FooSales",
-        "description": "買い切りのProライセンスと店舗ごとの年間サブスクリプションを比較：料金、支払いをやめた場合、Tap to Pay、オフライン注文、アプリ、FooSalesが実際に優れている点。",
+        "description": "FooSalesは店舗ごとの年間サブスクリプションで、解約するとPOSへのアクセスが終了します。WCPOSは無料で、Proは買い切りのため1年後も動作し続けます。",
         "cta": "比較を読む"
       },
       "moreSoon": "さらに多くの比較を準備中です。"
@@ -2155,7 +2153,7 @@
         },
         "hobbyShops": {
           "claim": "趣味レベルの店舗向け",
-          "response": "WordPress.orgによれば、WCPOSは5,000+のアクティブな店舗で稼働しています。これはOliverのアクティブインストール数の6倍以上で、2014年以降のダウンロード数は400,000を超えています。"
+          "response": "WCPOSはWordPress.orgで5,000+のアクティブインストールがあり、Oliverの6倍以上です。2014年以降のダウンロード数は400,000を超えています。"
         },
         "singleDev": {
           "claim": "個人開発プロジェクト。更新はメンテナーの時間次第",
@@ -2247,7 +2245,7 @@
           },
           "cardPayments": {
             "label": "カード決済",
-            "wcpos": "Proの端末連携：Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcave；QRコードまたはプッシュ通知のVipps MobilePay",
+            "wcpos": "無料：現金販売と、お手持ちの単体型決済端末で受け付けたカード払いを注文に記録します。Proの端末連携：Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcave；QRコードまたはプッシュ通知のVipps MobilePay",
             "woocommerce": "WooPaymentsまたはStripe、Bluetoothカードリーダーを使用"
           },
           "gateways": {
@@ -2285,7 +2283,7 @@
       "payments": {
         "title": "カード決済はどのように機能しますか？",
         "woocommerce": "WooCommerceのPOSは現金のほか、タブレットに接続したBluetoothカードリーダーを使い、WooPaymentsまたはStripe経由でカードを受け付けます。WooPaymentsの対面カード決済手数料はオンラインより低く、米国では対面が2.70% + $0.10、オンラインが2.90% + $0.30です。カードリーダーの費用は稼働中のリーダー1台につき月額$5.00 / £5.00です。",
-        "wcpos": "WCPOS 2.0には独自のチェックアウトがあります。カートの横の支払いパネルで現金を受け付け、別の端末で受け付けたカード決済を記録でき、1件の注文を複数の支払いに分けられます。Proでは、店舗のその他のWooCommerce決済ゲートウェイをレジで有効にし、Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Vipps MobilePay向けのカード端末連携を追加できます。これらは拡張機能カタログからワンクリックでインストールできます。iPhoneとAndroidでのTap to PayはWCPOSにはまだありません。今後のアプリのアップデートで追加されます。WCPOSはWooPaymentsの対面決済をサポートしません。"
+        "wcpos": "WCPOS 2.0には独自のチェックアウトがあります。カートの横の支払いパネルで現金を受け付け、別の端末で受け付けたカード決済を記録でき、1件の注文を複数の支払いに分けられます。Proでは、店舗のその他のWooCommerce決済ゲートウェイをレジで有効にし、Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcave向けのカード端末連携に加え、QRコードまたはプッシュ通知のVipps MobilePayを追加できます。これらは拡張機能カタログからワンクリックでインストールできます。iPhoneとAndroidでのTap to PayはWCPOSにはまだありません。今後のアプリのアップデートで追加されます。WCPOSはWooPaymentsの対面決済をサポートしません。"
       },
       "pricing": {
         "title": "料金はいくらですか？",
@@ -2361,7 +2359,7 @@
     "square": {
       "metadata": {
         "title": "WCPOS vs Square for WooCommerce（2026）",
-        "description": "Square for WooCommerceが適している場合と、WCPOSが適している場合：販売の記録先、同期、拠点、手数料。WCPOSの開発者による比較です。"
+        "description": "Square for WooCommerceは商品と在庫を同期しますが、SquareのPOSの注文は同期しません。WCPOSの販売はすべてWooCommerceの注文です。WCPOS開発者による比較。"
       },
       "hero": {
         "title": "WCPOS vs Square for WooCommerce",
@@ -2377,6 +2375,7 @@
         "caption": "Squareに関する事実は2026-10-06にsquareup.comおよびSquare for WooCommerce拡張機能に関するWooCommerceのドキュメントで確認し、2026-11-18に再確認。WCPOSに関する事実はwcpos.comとdocs.wcpos.comに基づきます。",
         "colWcpos": "WCPOS",
         "colSquare": "Square POS + Square for WooCommerce",
+        "colSquareShort": "Square",
         "rows": {
           "orders": {
             "label": "対面販売",
@@ -2405,7 +2404,7 @@
           },
           "cardPayments": {
             "label": "カード決済",
-            "wcpos": "Proの端末連携：Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcave；QRコードまたはプッシュ通知のVipps MobilePay",
+            "wcpos": "無料：現金販売と、お手持ちの単体型決済端末で受け付けたカード払いを注文に記録します。Proの端末連携：Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcave；QRコードまたはプッシュ通知のVipps MobilePay",
             "square": "iPhoneとAndroidでのTap to Payを含むSquare決済"
           },
           "fees": {
@@ -2433,7 +2432,7 @@
       "payments": {
         "title": "カード決済はどのように機能しますか？",
         "square": "SquareのPOSは、iPhoneとAndroidでのTap to Payを含め、Square経由でカード決済を受け付けます。米国のSquare Freeプランでは、対面でのカード決済（タッチ、差し込み、スワイプ）の手数料は2.6% + 15¢です。Squareによると、Squareアプリでのカード決済受付は米国、カナダ、オーストラリア、日本、英国、アイルランド共和国、フランス、スペインで利用できます。また、拡張機能を利用するにはWooCommerceの通貨をSquareアカウントの通貨と一致させる必要があります。",
-        "wcpos": "WCPOS 2.0には独自のチェックアウトがあります。カートの横の支払いパネルで現金を受け付け、別の端末で受け付けたカード決済を記録でき、1件の注文を複数の支払いに分けられます。Proでは、店舗のその他のWooCommerce決済ゲートウェイをレジで有効にし、Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Vipps MobilePay向けのカード端末連携を追加できます。これらは拡張機能カタログからワンクリックでインストールできます。iPhoneとAndroidでのTap to PayはWCPOSにはまだありません。今後のアプリのアップデートで追加されます。",
+        "wcpos": "WCPOS 2.0には独自のチェックアウトがあります。カートの横の支払いパネルで現金を受け付け、別の端末で受け付けたカード決済を記録でき、1件の注文を複数の支払いに分けられます。Proでは、店舗のその他のWooCommerce決済ゲートウェイをレジで有効にし、Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcave向けのカード端末連携に加え、QRコードまたはプッシュ通知のVipps MobilePayを追加できます。これらは拡張機能カタログからワンクリックでインストールできます。iPhoneとAndroidでのTap to PayはWCPOSにはまだありません。今後のアプリのアップデートで追加されます。",
         "both": "すでにSquare Terminalをお持ちですか？WCPOS ProのSquare TerminalゲートウェイはWCPOSのレジから直接、その端末でWooCommerce注文の決済を受け付け、結果を注文に書き戻します。公式のSquare for WooCommerceプラグインを利用している場合、その環境と拠点IDがあらかじめ入力されます。Square POSまたは別の連携にサインインしているTerminalは、先にそこからサインアウトする必要があります。"
       },
       "pricing": {
@@ -2461,7 +2460,7 @@
         "intro": "正直な比較では両方の長所を示します：",
         "free": "SquareのPOSには無料プランSquare Free（拠点ごとに$0/month）があります。WCPOS Proは$129以上です。",
         "tapToPay": "iPhoneとAndroidでのTap to Pay：顧客はカードをお使いのスマートフォンにかざして支払えます。WCPOSにはまだTap to Payがありません。今後のアプリのアップデートで追加されます。",
-        "offline": "オフラインでのカード決済：SquareのPOSはインターネットがなくてもカード決済を受け付け続けます。ただし72時間以内に再接続して決済をアップロードする必要があり、期限切れ、拒否、または異議申し立てのあった決済は利用者の責任です。WCPOSはオフラインでも現金販売を続けられますが、接続型のカードリーダーには接続が必要です。",
+        "offline": "オフラインでのカード決済：SquareのPOSはインターネットがなくてもカード決済を受け付け続けます。ただし72時間以内に再接続して決済をアップロードする必要があり、期限切れ、拒否、または異議申し立てのあった決済は利用者の責任です。WCPOSはオフラインでも現金販売を続けられ、お手持ちの単体型決済端末で受け付けたカード払いも記録します。接続型のカードリーダーとオンラインゲートウェイには接続が必要です。",
         "hardware": "Square独自のハードウェア：Square RegisterにはSquare Point of Saleが内蔵されているため、レジとそのソフトウェアは同じ会社が提供しています。WCPOSはハードウェアを販売しておらず、すでにお持ちのコンピューター、タブレット、スマートフォンで動作します。",
         "outro": "iOSまたはAndroidデバイス、もしくはSquare Registerを使い、一つの拠点で対面販売し、Square経由で決済を受け付け、対面販売をWooCommerceの注文として記録する必要がない場合は、SquareのPOSと拡張機能だけで十分かもしれません。"
       },
@@ -2560,7 +2559,7 @@
           },
           "cardPayments": {
             "label": "カード決済",
-            "wcpos": "Proの端末連携：Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcave；QRコードまたはプッシュ通知のVipps MobilePay",
+            "wcpos": "無料：現金販売と、お手持ちの単体型決済端末で受け付けたカード払いを注文に記録します。Proの端末連携：Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcave；QRコードまたはプッシュ通知のVipps MobilePay",
             "jovvie": "Stripe Terminal（BizSwoopはStripe Terminalのパートナー）。Stripe M2などのリーダーに対応"
           },
           "apps": {
@@ -2668,7 +2667,7 @@
           },
           "cardPayments": {
             "label": "カード決済",
-            "wcpos": "Proの端末連携：Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcave；QRコードまたはプッシュ通知のVipps MobilePay",
+            "wcpos": "無料：現金販売と、お手持ちの単体型決済端末で受け付けたカード払いを注文に記録します。Proの端末連携：Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcave；QRコードまたはプッシュ通知のVipps MobilePay",
             "vitepos": "Stripe TerminalとWalleeによる端末決済"
           },
           "apps": {
@@ -2722,7 +2721,7 @@
         "title": "Viteposが実際に優れている点",
         "intro": "正直な比較では両方の長所を示します：",
         "restaurant": "レストランモード — Viteposには、ウェイター用パネル、キッチン用パネル、テーブル管理を備えた食料品店・レストランモードがあります。WCPOSにはレストランモードがありません。",
-        "offline": "オフライン注文 — Viteposは、インターネット接続がなくても注文の処理を続け、接続が戻ると同期すると説明しています。WCPOSはオフラインでも現金販売を続けられますが、接続型のカードリーダーとオンラインゲートウェイには接続が必要です。",
+        "offline": "オフライン注文 — Viteposは、インターネット接続がなくても注文の処理を続け、接続が戻ると同期すると説明しています。WCPOSはオフラインでも現金販売を続けられ、お手持ちの単体型決済端末で受け付けたカード払いも記録します。接続型のカードリーダーとオンラインゲートウェイには接続が必要です。",
         "kiosk": "セルフサービス用キオスク — ViteposはKiosk Appをアドオンとして販売しています。WCPOSにはキオスクモードがありません。",
         "price": "定価が低い — Vitepos Proの1サイト向け年間プランは$79からで、WCPOS Proは$129です。",
         "rating": "WordPress.orgでの評価が高い — 54件のレビューで4.7つ星、WCPOSは3.7つ星です。",
@@ -2815,7 +2814,7 @@
           },
           "cardPayments": {
             "label": "カード決済",
-            "wcpos": "Proの端末連携：Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcave；QRコードまたはプッシュ通知のVipps MobilePay",
+            "wcpos": "無料：現金販売と、お手持ちの単体型決済端末で受け付けたカード払いを注文に記録します。Proの端末連携：Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcave；QRコードまたはプッシュ通知のVipps MobilePay",
             "yith": "カード端末への接続なし。支払いは手動で処理し、CashとChip and Pinの支払い方法を利用"
           },
           "apps": {
@@ -2960,7 +2959,7 @@
           },
           "cardPayments": {
             "label": "カード決済",
-            "wcpos": "Proの端末連携：Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcave；QRコードまたはプッシュ通知のVipps MobilePay",
+            "wcpos": "無料：現金販売と、お手持ちの単体型決済端末で受け付けたカード払いを注文に記録します。Proの端末連携：Stripe Terminal、SumUp、PayPal Reader (Zettle)、Square Terminal、Mollie Terminal、Mercado Pago、PayArc、Windcave；QRコードまたはプッシュ通知のVipps MobilePay",
             "foosales": "Plusプラン：Square Terminal、Square Readers（タブレットアプリ）、Stripe Terminalのリーダー"
           },
           "tapToPay": {
@@ -3009,7 +3008,7 @@
         "title": "FooSalesが実際に優れている点",
         "intro": "誠実な比較は双方向であるべきです。",
         "tapToPay": "iPhoneとAndroidでのTap to Pay — FooSales Plusでは、StripeまたはSquareを通じて、お客様がカードをスマートフォンにかざせます。WCPOSにはまだTap to Payがありません。今後のアプリのアップデートで追加されます。",
-        "offline": "オフライン注文 — FooSalesは、インターネット接続がなくてもアプリが新規注文、キャンセル、返金を記録し続け、接続が戻るとWooCommerceに同期すると説明しています。WCPOSはオフラインでも現金販売を続けられますが、接続型のカードリーダーとオンラインゲートウェイには接続が必要です。",
+        "offline": "オフライン注文 — FooSalesは、インターネット接続がなくてもアプリが新規注文、キャンセル、返金を記録し続け、接続が戻るとWooCommerceに同期すると説明しています。WCPOSはオフラインでも現金販売を続けられ、お手持ちの単体型決済端末で受け付けたカード払いも記録します。接続型のカードリーダーとオンラインゲートウェイには接続が必要です。",
         "outro": "スマートフォンでのTap to Payやオフライン注文モードが必要で、店舗ごとの年間サブスクリプションが合っているなら、FooSalesのほうが適しているかもしれません。"
       },
       "choose": {
