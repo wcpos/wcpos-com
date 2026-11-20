@@ -177,7 +177,8 @@ export default async function FoosalesComparePage({
       {/* Answer-first block: the passage AI engines lift for the head query */}
       <Section tone="default" spacing="none" className={COMPARE_SHORT_ANSWER_SECTION_CLASS} containerClassName="max-w-3xl">
         <SectionHeading align="left" title={t('foosales.shortAnswer.title')} />
-        <p className="mt-4 font-medium">{t('foosales.shortAnswer.wcpos')}</p>
+        <p className="mt-4 text-lg font-semibold text-foreground">{t('hub.foosalesCard.description')}</p>
+        <p className="mt-4">{t('foosales.shortAnswer.wcpos')}</p>
         <p className="mt-3 text-muted-foreground">
           {t('foosales.shortAnswer.foosales')}
         </p>

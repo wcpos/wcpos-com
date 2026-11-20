@@ -193,7 +193,8 @@ export default async function SquareComparePage({
       {/* Answer-first block: the passage AI engines lift for the head query */}
       <Section tone="default" spacing="none" className={COMPARE_SHORT_ANSWER_SECTION_CLASS} containerClassName="max-w-3xl">
         <SectionHeading align="left" title={t('square.shortAnswer.title')} />
-        <p className="mt-4 font-medium">{t('square.shortAnswer.wcpos')}</p>
+        <p className="mt-4 text-lg font-semibold text-foreground">{t('hub.squareCard.description')}</p>
+        <p className="mt-4">{t('square.shortAnswer.wcpos')}</p>
         <p className="mt-3 text-muted-foreground">
           {t('square.shortAnswer.square')}
         </p>

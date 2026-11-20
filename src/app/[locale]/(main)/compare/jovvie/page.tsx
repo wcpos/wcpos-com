@@ -148,7 +148,8 @@ export default async function JovvieComparePage({
       {/* Answer-first block: the passage AI engines lift for the head query */}
       <Section tone="default" spacing="none" className={COMPARE_SHORT_ANSWER_SECTION_CLASS} containerClassName="max-w-3xl">
         <SectionHeading align="left" title={t('jovvie.shortAnswer.title')} />
-        <p className="mt-4 font-medium">{t('jovvie.shortAnswer.wcpos')}</p>
+        <p className="mt-4 text-lg font-semibold text-foreground">{t('hub.jovvieCard.description')}</p>
+        <p className="mt-4">{t('jovvie.shortAnswer.wcpos')}</p>
         <p className="mt-3 text-muted-foreground">
           {t('jovvie.shortAnswer.jovvie')}
         </p>

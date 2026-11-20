@@ -225,4 +225,13 @@ describe('SquareComparePage', () => {
       }
     }
   })
+
+  it('opens the short answer with the hub verdict, before the WCPOS paragraph', async () => {
+    render(await SquareComparePage({ params }))
+    const answer = screen.getByRole('heading', { name: 'square.shortAnswer.title' })
+    const paragraphs = answer.closest('section')!.querySelectorAll('p')
+    expect(paragraphs[0]).toHaveTextContent('hub.squareCard.description')
+    expect(paragraphs[1]).toHaveTextContent(/short answer for WCPOS/)
+    expect(answer.compareDocumentPosition(paragraphs[0]) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+  })
 })
