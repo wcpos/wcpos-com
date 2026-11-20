@@ -398,12 +398,12 @@
   },
   "changelog": {
     "meta": {
-      "title": "Wijzigingslogboek",
-      "description": "Release-opmerkingen voor de nieuwste gepubliceerde versies van de WCPOS-plugin, afkomstig van GitHub."
+      "title": "Kassasysteem voor WooCommerce: wijzigingslogboek",
+      "description": "Release-opmerkingen voor de nieuwste gepubliceerde versies van WCPOS, de gratis kassaplugin voor WooCommerce, rechtstreeks van GitHub."
     },
     "page": {
-      "title": "Wijzigingslogboek",
-      "description": "De nieuwste gepubliceerde versies van de WCPOS-plugin, met hun release-opmerkingen van GitHub."
+      "title": "Wijzigingslogboek van het kassasysteem voor WooCommerce",
+      "description": "De nieuwste gepubliceerde versies van WCPOS, het gratis kassasysteem voor WooCommerce, met hun release-opmerkingen van GitHub."
     }
   },
   "pro": {

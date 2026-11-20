@@ -398,12 +398,12 @@
   },
   "changelog": {
     "meta": {
-      "title": "Änderungsprotokoll",
-      "description": "Versionshinweise zu den neuesten veröffentlichten Versionen des WCPOS-Plugins von GitHub."
+      "title": "WooCommerce-Kassensystem: Änderungsprotokoll",
+      "description": "Versionshinweise zu den neuesten veröffentlichten Versionen von WCPOS, dem kostenlosen Kassen-Plugin für WooCommerce, direkt von GitHub."
     },
     "page": {
-      "title": "Änderungsprotokoll",
-      "description": "Die neuesten veröffentlichten Versionen des WCPOS-Plugins mit ihren Versionshinweisen von GitHub."
+      "title": "Änderungsprotokoll des WooCommerce-Kassensystems",
+      "description": "Die neuesten veröffentlichten Versionen von WCPOS, dem kostenlosen WooCommerce-Kassensystem, mit ihren Versionshinweisen von GitHub."
     }
   },
   "pro": {

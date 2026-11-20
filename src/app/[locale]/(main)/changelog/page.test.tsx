@@ -1,3 +1,5 @@
+import { readFileSync } from 'node:fs'
+import { join } from 'node:path'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { render, screen, within } from '@testing-library/react'
 import enMessages from '../../../../../messages/en.json'
@@ -70,7 +72,7 @@ describe('ChangelogPage', () => {
     )
 
     expect(getReleases).toHaveBeenCalledWith('woocommerce-pos')
-    expect(screen.getByRole('heading', { level: 1, name: 'Changelog' }))
+    expect(screen.getByRole('heading', { level: 1, name: 'WooCommerce POS Changelog' }))
       .toBeInTheDocument()
     expect(screen.getByText(enMessages.changelog.page.description))
       .toBeInTheDocument()
@@ -131,7 +133,7 @@ describe('ChangelogPage', () => {
       await ChangelogPage({ params: Promise.resolve({ locale: 'en' }) }),
     )
 
-    expect(screen.getByRole('heading', { level: 1, name: 'Changelog' }))
+    expect(screen.getByRole('heading', { level: 1, name: 'WooCommerce POS Changelog' }))
       .toBeInTheDocument()
     expect(container.querySelectorAll('summary')).toHaveLength(0)
   })
@@ -143,4 +145,45 @@ describe('ChangelogPage', () => {
 
     expect(metadata.title).toBe(enMessages.changelog.meta.title)
   })
+
+  it('names the product in the en metadata title and description', async () => {
+    const metadata = await generateMetadata({
+      params: Promise.resolve({ locale: 'en' }),
+    })
+
+    expect(metadata.title).toBe('WooCommerce POS Changelog & Release Notes')
+    expect(metadata.description).toBe(
+      'Release notes for the latest published versions of WCPOS, the free point of sale plugin for WooCommerce, straight from GitHub.',
+    )
+  })
+})
+
+// Old meta.title values: each locale must have replaced its bare "Changelog" title.
+const CHANGELOG_META = [
+  { locale: 'en', titleMax: 62, descriptionMax: 155, oldTitle: 'Changelog' },
+  { locale: 'de', titleMax: 62, descriptionMax: 160, oldTitle: 'Änderungsprotokoll' },
+  { locale: 'nl', titleMax: 62, descriptionMax: 160, oldTitle: 'Wijzigingslogboek' },
+  { locale: 'fr', titleMax: 62, descriptionMax: 160, oldTitle: 'Journal des modifications' },
+  { locale: 'es', titleMax: 62, descriptionMax: 160, oldTitle: 'Registro de cambios' },
+  { locale: 'it', titleMax: 62, descriptionMax: 160, oldTitle: 'Registro delle modifiche' },
+  { locale: 'pt', titleMax: 62, descriptionMax: 160, oldTitle: 'Registo de alterações' },
+  { locale: 'ja', titleMax: 32, descriptionMax: 100, oldTitle: '変更履歴' },
+  { locale: 'ko', titleMax: 32, descriptionMax: 100, oldTitle: '변경 기록' },
+  { locale: 'zh', titleMax: 32, descriptionMax: 100, oldTitle: '更新日志' },
+] as const
+
+describe('changelog.meta in every locale', () => {
+  it.each(CHANGELOG_META)(
+    '$locale title and description fit and replace the old title',
+    ({ locale, titleMax, descriptionMax, oldTitle }) => {
+      const { title, description } = (
+        JSON.parse(readFileSync(join(process.cwd(), 'messages', `${locale}.json`), 'utf8')) as {
+          changelog: { meta: { title: string; description: string } }
+        }
+      ).changelog.meta
+      expect([...title].length).toBeLessThanOrEqual(titleMax)
+      expect([...description].length).toBeLessThanOrEqual(descriptionMax)
+      expect(title).not.toBe(oldTitle)
+    },
+  )
 })

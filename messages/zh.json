@@ -398,12 +398,12 @@
   },
   "changelog": {
     "meta": {
-      "title": "更新日志",
-      "description": "WCPOS 插件最新已发布版本的发布说明，来自 GitHub。"
+      "title": "WooCommerce 销售点系统更新日志与发布说明",
+      "description": "WCPOS 是面向 WooCommerce 的免费销售点插件。这里是其最新已发布版本的发布说明，直接来自 GitHub。"
     },
     "page": {
-      "title": "更新日志",
-      "description": "WCPOS 插件最新已发布的版本及其来自 GitHub 的发布说明。"
+      "title": "WooCommerce 销售点系统更新日志",
+      "description": "免费 WooCommerce 销售点系统插件 WCPOS 最新已发布的版本及其来自 GitHub 的发布说明。"
     }
   },
   "pro": {

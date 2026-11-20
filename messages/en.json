@@ -398,12 +398,12 @@
   },
   "changelog": {
     "meta": {
-      "title": "Changelog",
-      "description": "Release notes for the latest published versions of the WCPOS plugin, from GitHub."
+      "title": "WooCommerce POS Changelog & Release Notes",
+      "description": "Release notes for the latest published versions of WCPOS, the free point of sale plugin for WooCommerce, straight from GitHub."
     },
     "page": {
-      "title": "Changelog",
-      "description": "The latest published releases of the WCPOS plugin, with their release notes from GitHub."
+      "title": "WooCommerce POS Changelog",
+      "description": "The latest published releases of WCPOS, the free WooCommerce POS plugin, with their release notes from GitHub."
     }
   },
   "pro": {

@@ -398,12 +398,12 @@
   },
   "changelog": {
     "meta": {
-      "title": "Registo de alterações",
-      "description": "Notas de lançamento das versões mais recentes publicadas do plugin WCPOS, provenientes do GitHub."
+      "title": "Ponto de venda para WooCommerce: registo de alterações",
+      "description": "Notas de lançamento das versões mais recentes publicadas do WCPOS, o plugin de ponto de venda gratuito para WooCommerce, diretamente do GitHub."
     },
     "page": {
-      "title": "Registo de alterações",
-      "description": "As versões mais recentes publicadas do plugin WCPOS, com as respetivas notas de lançamento do GitHub."
+      "title": "Registo de alterações do ponto de venda para WooCommerce",
+      "description": "As versões mais recentes publicadas do WCPOS, o plugin gratuito de ponto de venda para WooCommerce, com as respetivas notas de lançamento do GitHub."
     }
   },
   "pro": {
