@@ -1,0 +1,110 @@
+WCPOS
+Downloads
+Pro
+Documentation
+Support
+Roadmap
+Sign In
+Compare WooCommerce POS systems
+
+Sourced, dated comparisons with Square, FooSales, Oliver POS and other WooCommerce POS options, written by the maker of WCPOS.
+
+WCPOS vs Square for WooCommerce
+
+Sales made in Square's POS don't become WooCommerce orders, and their stock changes sync on a schedule (hourly by default); every WCPOS sale is a WooCommerce order.
+
+Read the comparison
+WCPOS vs FooSales
+
+FooSales is a yearly subscription per store, and cancelling ends access to its POS; WCPOS is free, and Pro's one-time payment keeps working after the year ends.
+
+Read the comparison
+WCPOS vs Oliver POS
+
+Oliver syncs your store to its cloud, and its free plan caps out at 20 products; WCPOS runs inside your WordPress site with no caps, and Pro is a one-time payment.
+
+Read the comparison
+WCPOS vs WooCommerce's official POS
+
+WooCommerce's own POS is free inside its mobile app, built for tablets in ten countries, with no offline mode; WCPOS runs in any browser and as desktop and mobile apps, and keeps taking cash sales offline.
+
+Read the comparison
+WCPOS vs Jovvie
+
+Jovvie charges a platform fee on each sale on top of its monthly plans; WCPOS charges no transaction fees, and Pro is a one-time payment.
+
+Read the comparison
+WCPOS vs Vitepos
+
+Both have a free version; Vitepos adds restaurant and grocery modes, and WCPOS adds desktop apps for Windows, macOS and Linux and iOS and Android apps (beta).
+
+Read the comparison
+WCPOS vs YITH Point of Sale
+
+YITH Point of Sale is a yearly licence with separate stock per store, but no offline mode and no card terminals; WCPOS is free, and Pro adds card terminals for a one-time payment.
+
+Read the comparison
+
+More comparisons are on the way.
+
+Who runs this comparison
+
+This page is published by WCPOS, the makers of WooCommerce POS. We obviously have a horse in this race — so every number is sourced and dated, we link to competitors' own pricing pages, and we tell you plainly when a competitor is the better choice. Check everything.
+
+How these comparisons work
+
+Facts come from vendors' own pricing pages and WordPress.org, fetched on a stated date and re-verified quarterly. Where WCPOS loses a category — kiosk mode, vendor hardware, app-store polish — the page says so. Spot an error? Email support@wcpos.com and we will correct it and log the change.
+
+Ready to sell in-store with WooCommerce?
+
+Try the live demo or download the free plugin to get started.
+
+Try Live Demo
+Download Free
+PRODUCT
+Downloads
+WCPOS Pro
+Compare
+Roadmap
+Changelog
+Live Demo↗
+Extensions
+COMMUNITY
+Discord↗
+GitHub↗
+WordPress.org↗
+SUPPORT
+Documentation
+Support
+Status↗
+WordPress Forum↗
+COMPANY
+About
+Privacy
+Terms
+Refunds
+DOWNLOAD
+WordPress Plugin↗
+WCPOS for macOS↗
+WCPOS for Windows↗
+WCPOS for Linux↗
+WCPOS for iOS & iPad↗
+WCPOS for Android↗
+
+© 2026 WCPOS
+
+English
+Français
+Deutsch
+Español
+日本語
+中文
+Português
+Italiano
+Nederlands
+한국어
+
+We use an anonymous analytics cookie to understand how the site is used. No ads, no third-party tracking. Privacy policy
+
+Decline
+Accept
