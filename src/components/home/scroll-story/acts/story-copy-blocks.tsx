@@ -96,7 +96,7 @@ export function CopyAct1({
       </Kicker>
       <Heading
         className={cn(
-          'mb-4 text-balance text-4xl font-bold leading-[1.05] tracking-tight md:text-5xl',
+          'mb-4 sm:text-balance text-4xl font-bold leading-[1.05] tracking-tight md:text-5xl',
           tone === 'onLight' ? cn('text-[#3b2a17]', letterpress) : t.heading
         )}
       >
