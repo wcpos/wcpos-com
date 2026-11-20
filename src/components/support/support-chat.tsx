@@ -175,8 +175,8 @@ export function SupportChat() {
     <div className="mx-auto w-full max-w-2xl">
       {!started && (
         <div className="text-center">
-          <h1 className="mb-2 text-3xl font-bold text-foreground md:text-4xl">{t('hero.title')}</h1>
-          <p className="mb-6 text-base text-muted-foreground">
+          <h1 className="mb-2 text-balance text-4xl font-bold leading-tight tracking-tight text-foreground md:text-5xl">{t('hero.title')}</h1>
+          <p className="mb-6 text-lg text-muted-foreground">
             {t('hero.subtitle')}
           </p>
         </div>
@@ -347,7 +347,7 @@ export function SupportPageContent() {
     <>
       <Section spacing="compact">
         <div className="mx-auto max-w-2xl text-center">
-          <h1 className="mb-3 text-3xl font-bold text-foreground md:text-4xl">
+          <h1 className="mb-3 text-balance text-4xl font-bold leading-tight tracking-tight text-foreground md:text-5xl">
             {t('title')}
           </h1>
           <p className="text-base text-muted-foreground">
