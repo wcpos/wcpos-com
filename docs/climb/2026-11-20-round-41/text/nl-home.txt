@@ -1,0 +1,280 @@
+WCPOS
+Downloaden
+Pro
+Documentatie
+Ondersteuning
+Routekaart
+Aanmelden
+POS — Amerikaanse winkel
+R1
+Producten zoeken
+Op voorraad ✕
+Uitgelicht
+In de aanbieding
+Categorie
+Draagtas
+US$ 29
+Varianten
+Kaars
+US$ 24
+Mok
+US$ 18
+Zeepblok
+US$ 9
+Varianten
+Notitieboek
+US$ 14
+Theedoek
+US$ 16
+Belasting gebaseerd op: winkelbasisadres
+Toont 16 van 18
+Klant:
+Gast ✕
+Kaars
+US$ 24
+2× Mok
+US$ 36
+Zeepblok
+US$ 9
+Subtotaal
+US$ 69,00
+US$ 69 afrekenen
+POS — Amerikaanse winkel
+R2
+Producten zoeken
+Op voorraad ✕
+Uitgelicht
+In de aanbieding
+Categorie
+Draagtas
+US$ 29
+Varianten
+Kaars
+US$ 24
+Mok
+US$ 18
+Zeepblok
+US$ 9
+Varianten
+Notitieboek
+US$ 14
+Theedoek
+US$ 16
+Belasting gebaseerd op: winkelbasisadres
+Toont 16 van 18
+Klant:
+Gast ✕
+Kaars
+US$ 24
+2× Mok
+US$ 36
+Zeepblok
+US$ 9
+Subtotaal
+US$ 69,00
+US$ 69 afrekenen
+POS
+Producten zoeken
+Op voorraad ✕
+Uitgelicht
+Draagtas
+US$ 29
+Kaars
+US$ 24
+Mok
+US$ 18
+Zeepblok
+US$ 9
+US$ 69 afrekenen
+Producten
+3
+Winkelwagen
+US$ 69,00
+TIK OM TE BETALEN
+1.204 producten ● gesynchroniseerd
+bestellingen → Woo ●
+werkt offline ●
+
+Nieuw in 2.0 · Open en sluit je kassa, splits betalingen en bekijk de verkopen van vandaag — gratis.
+
+KASSASYSTEEM VOOR WOOCOMMERCE
+
+Je WooCommerce-winkel, aan de toonbank.
+
+WCPOS verandert je tablet, telefoon of computer in een kassa — dezelfde catalogus, dezelfde voorraad, dezelfde prijzen, zelfs offline.
+
+Live demo proberen
+Gratis downloaden
+5.000+ actieve installaties
+Gratis en open source
+Sinds 2014
+
+ELK SCHERM DAT JE HEBT
+
+Eén kassasysteem. Web, desktop, iOS en Android.
+
+Gebruik de kassa op de tablet aan de toonbank, de telefoon op de winkelvloer of de laptop in het kantoor — dezelfde winkel, dezelfde gegevens.
+
+Web
+Windows
+macOS
+iOS Bèta
+Android Bèta
+
+GEBRUIK JE EIGEN HARDWARE
+
+Werkt met de apparatuur die je al hebt.
+
+Bonprinters en barcodescanners: sluit aan wat al op je toonbank staat. Accepteer kaarten via je eigen betaalterminal en WCPOS registreert ze; Pro koppelt Stripe Terminal, SumUp en meer.
+
+JOUW WINKEL, JOUW GEGEVENS
+
+Gesynchroniseerd met WooCommerce. Van jou, ook offline.
+
+Elke verkoop komt in je WooCommerce-winkel terecht — jij bezit de gegevens, zonder tussenpersoon. Internet valt weg? Blijf verkopen; WCPOS synchroniseert zodra je weer online bent.
+
+SCROLL ↓
+Wat winkeliers zeggen
+Winkel
+“Ik heb veel onderzoek gedaan naar een POS voor mijn bestaande WC-site en zag deze bijna over het hoofd omdat hij gratis was. Maar ik ben blij dat ik hem geprobeerd heb. Hij doet alles wat je wilt zonder abonnementen of een percentage van je omzet te vragen.”
+— nckllnpssy, review op wordpress.org
+Marktverkoper
+“Ik ben keramiste in Annecy en verkoop via mijn WooCommerce-winkel en op markten. Ik gebruik WCPOS al meer dan een jaar en heb een paar maanden geleden de Lifetime Pro-licentie gekocht — de moeite waard, vind ik. Paul reageert op Discord, zelfs in het weekend.”
+— adeline, review op wordpress.org (vertaald uit het Frans)
+Desktop en offline
+“Geweldige POS voor je WooCommerce-winkel; er is een desktopversie, waardoor hij beter is voor plaatsen met zwakke internetverbinding. Ik denk dat er nog meer mooie functies aankomen.”
+— rodriguekgl, review op wordpress.org
+Gebouwd voor de eisen van fysieke retail
+Snel producten zoeken
+
+Vind producten direct met zoeken, filters en bladeren door categorieën. Ondersteuning voor barcodescanners.
+
+Soepele checkout-flow
+
+Voeg artikelen toe, pas kortingen toe, accepteer contant geld of kaartbetalingen via je eigen betaalterminal en splits een betaling. Pro koppelt kaartlezers zoals Stripe Terminal en SumUp.
+
+KlantprofielenPro
+
+Voeg klantgegevens direct in het kassasysteem toe en bewerk ze. Herken vaste klanten en bied betere service.
+
+Bestelgeschiedenis en beheerPro
+
+Bekijk eerdere bestellingen, verwerk retouren en controleer de bestelstatus zonder naar WP Admin te schakelen.
+
+Voorraad en prijzen direct aanpassenPro
+
+Corrigeer een verkeerde prijs terwijl je een klant helpt. Pas voorraad aan zonder het kassasysteem te verlaten.
+
+Rapporten over dagen, kassa's en winkelsPro
+
+Bekijk de verkopen voor eerdere dagen en datumbereiken, voor elke kassa en elke winkel.
+
+Begin gratis. Upgrade wanneer je meer nodig hebt.
+Gratis
+
+Voor altijd gratis. Eén kassa, geen transactiekosten, geen limieten op producten of bestellingen.
+
+WooCommerce-synchronisatie
+Productzoekfunctie en raster
+Contant of pin via je eigen betaalterminal
+Offline modus
+Bonnen printen
+Meerdere valuta
+Onbeperkte producten
+Kassa openen en sluiten
+Gesplitste betalingen
+Verkooprapport van vandaag
+Pro
+
+$ 129/jaar of $ 399 levenslang (USD). Geen kosten per kassa.
+
+Alles in Gratis, plus:
+
+Meer kassa's en meerdere winkels
+Integratie met betaalterminals
+Voorraad en prijzen bewerken in het kassasysteem
+Bestelgeschiedenis en beheer
+Klantbeheer
+Rapporten over dagen, kassa's en winkels
+Aangepaste betaalgateways
+Prioriteitssupport
+Bekijk alle prijzen en functies
+
+Overweeg je Square of FooSales? Bekijk hoe WCPOS zich verhoudt
+
+5.000+
+
+Actieve installaties
+
+2014
+
+In ontwikkeling sinds
+
+GPL-licentie
+— WCPOS op GitHub
+
+25+
+
+Ondersteunde talen
+
+“Duidelijk, functioneel en eenvoudig te gebruiken. 10/10.”
+— Ward, review op wordpress.org
+
+Lees ons verhaal →
+
+Klaar om in de winkel te verkopen met WooCommerce?
+
+Probeer de live demo of download de gratis plugin om te beginnen.
+
+Live demo proberen
+Gratis downloaden
+
+Vergelijk WooCommerce POS-systemen
+
+PRODUCTEN
+Downloaden
+WCPOS Pro
+Vergelijken
+Routekaart
+Wijzigingslogboek
+Live demo↗
+Extensies
+GEMEENSCHAP
+Discord↗
+GitHub↗
+WordPress.org↗
+ONDERSTEUNING
+Documentatie
+Ondersteuning
+Status↗
+WordPress-forum↗
+BEDRIJF
+Over ons
+Privacybeleid
+Voorwaarden
+Terugbetalingen
+DOWNLOADEN
+WordPress-plug-in↗
+WCPOS voor macOS↗
+WCPOS voor Windows↗
+WCPOS voor Linux↗
+WCPOS voor iOS & iPad↗
+WCPOS voor Android↗
+
+© 2026 WCPOS
+
+English
+Français
+Deutsch
+Español
+日本語
+中文
+Português
+Italiano
+Nederlands
+한국어
+
+We gebruiken een anonieme analysecookie om te begrijpen hoe de site wordt gebruikt. Geen advertenties, geen tracking door derden. Privacybeleid
+
+Weigeren
+Accepteren
