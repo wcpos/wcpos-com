@@ -204,7 +204,7 @@
           "f3": "Dinheiro ou cartão no seu terminal",
           "f4": "Modo offline",
           "f5": "Impressão de recibos",
-          "f6": "Multimoeda",
+          "f6": "Editor e galeria de modelos de recibo",
           "f7": "Produtos ilimitados",
           "f8": "Abertura e fecho de caixa",
           "f9": "Pagamentos divididos",
@@ -222,7 +222,10 @@
           "p4": "Gestão de clientes",
           "p5": "Relatórios de vários dias, caixas e lojas",
           "p6": "Gateways de pagamento personalizados",
-          "p7": "Suporte prioritário"
+          "p7": "Suporte prioritário",
+          "p9": "Reembolsos totais ou parciais",
+          "p10": "Gestão de cupões",
+          "p11": "Ecrã virado para o cliente"
         }
       },
       "cta": "Ver preços e funcionalidades completos",
@@ -449,6 +452,10 @@
       "customers": {
         "title": "Gestão de Clientes",
         "description": "Adicione e edite os detalhes dos clientes no ponto de venda, mantidos sincronizados com o WooCommerce."
+      },
+      "coupons": {
+        "title": "Gestão de Cupões",
+        "description": "Pesquise, crie e edite cupões na caixa, e crie um a partir do carrinho."
       },
       "reports": {
         "title": "Relatórios de Vários Dias, Caixas e Lojas",

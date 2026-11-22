@@ -204,7 +204,7 @@
           "f3": "Cash or card on your own terminal",
           "f4": "Offline mode",
           "f5": "Receipt printing",
-          "f6": "Multi-currency",
+          "f6": "Receipt template editor & gallery",
           "f7": "Unlimited products",
           "f8": "Open & close the register",
           "f9": "Split payments",
@@ -222,7 +222,10 @@
           "p4": "Customer management",
           "p5": "Reports across days, registers & stores",
           "p6": "Custom payment gateways",
-          "p7": "Priority support"
+          "p7": "Priority support",
+          "p9": "Refunds, full or partial",
+          "p10": "Coupon management",
+          "p11": "Customer-facing display"
         }
       },
       "cta": "See Full Pricing & Features",
@@ -449,6 +452,10 @@
       "customers": {
         "title": "Customer management",
         "description": "Add and edit customer details at the point of sale, kept in sync with WooCommerce."
+      },
+      "coupons": {
+        "title": "Coupon management",
+        "description": "Look up, create and edit coupons at the register, and create one from the cart."
       },
       "reports": {
         "title": "Reports across days, registers & stores",

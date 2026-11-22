@@ -72,6 +72,12 @@ describe('free plugin copy', () => {
     expect(keys.indexOf('display')).toBe(keys.indexOf('terminal') + 1)
   })
 
+  it('lists the coupon management card right after the customers card', () => {
+    const keys = PRO_FEATURE_KEYS.map(({ key }) => key) as string[]
+    expect(keys).toContain('coupons')
+    expect(keys.indexOf('coupons')).toBe(keys.indexOf('customers') + 1)
+  })
+
   it.each(locales)('%s display card reuses the /compare display label', (locale) => {
     const { display } = messages[locale].pro.features
     expect(display.title).toBe(messages[locale].compare.oliver.glance.rows.display.label)

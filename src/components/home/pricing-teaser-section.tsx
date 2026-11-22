@@ -30,9 +30,12 @@ const freeFeatures = [
 const proFeatures = [
   'p8',
   'p1',
+  'p11',
   'p2',
   'p3',
+  'p9',
   'p4',
+  'p10',
   'p5',
   'p6',
   'p7',

@@ -6,6 +6,7 @@ import {
   PencilRuler,
   Plug,
   Store,
+  TicketPercent,
   Users,
   type LucideIcon,
 } from 'lucide-react'
@@ -27,6 +28,7 @@ export const PRO_FEATURE_KEYS = [
   { key: 'stockPrice', Icon: PencilRuler },
   { key: 'orders', Icon: ClipboardList },
   { key: 'customers', Icon: Users },
+  { key: 'coupons', Icon: TicketPercent },
   { key: 'reports', Icon: BarChart3 },
   { key: 'gateways', Icon: Plug },
 ] as const
