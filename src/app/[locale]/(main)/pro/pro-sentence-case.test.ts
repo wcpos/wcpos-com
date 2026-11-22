@@ -26,6 +26,7 @@ describe('/pro headings in sentence case (en)', () => {
       stockPrice: 'Stock & price editing',
       orders: 'Order management',
       customers: 'Customer management',
+      coupons: 'Coupon management',
       reports: 'Reports across days, registers & stores',
       gateways: 'Custom payment gateways',
     })
