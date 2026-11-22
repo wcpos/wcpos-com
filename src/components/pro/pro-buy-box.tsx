@@ -1,7 +1,6 @@
 'use client'
 
 import { useRef, useState, type ReactNode } from 'react'
-import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { TrackedLocaleLink } from '@/components/analytics/tracked-locale-link'
@@ -108,7 +107,6 @@ export function ProBuyBox({
               <span className="min-w-[8rem] flex-1 sm:min-w-0">
                 <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
                   <span className="font-semibold">{option.title}</span>
-                  {option.badgeLabel && <Badge>{option.badgeLabel}</Badge>}
                 </span>
                 <span className="block text-sm text-muted-foreground">
                   {option.subtitle}
