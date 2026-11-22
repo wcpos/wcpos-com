@@ -1707,6 +1707,7 @@
           "title": "더 많은 기능이 필요하신가요? Pro로 업그레이드하세요",
           "cardTitle": "추가 계산대 잠금 해제",
           "cardBody": "추가 계산대 및 다중 매장, 터미널 결제, 환불, 재고 및 가격 관리, 주문 관리, 전체 보고서, 우선 Discord 지원.",
+          "requirements": "WordPress 5.8+ · WooCommerce 9.0+ · PHP 7.4+",
           "plansCta": "Pro 요금제 보기",
           "signInCta": "로그인하여 다운로드"
         }

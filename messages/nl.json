@@ -1707,6 +1707,7 @@
           "title": "Meer nodig? Kies Pro",
           "cardTitle": "Ontgrendel meer kassa's",
           "cardBody": "Meer kassa's en meerdere winkels, terminalbetalingen, terugbetalingen, voorraad en prijzen, orderbeheer, volledige rapporten en prioritaire Discord-support.",
+          "requirements": "WordPress 5.8+ · WooCommerce 9.0+ · PHP 7.4+",
           "plansCta": "Bekijk Pro-abonnementen",
           "signInCta": "Log in om te downloaden"
         }

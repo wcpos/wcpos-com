@@ -1707,6 +1707,7 @@
           "title": "¿Quieres más? Pásate a Pro",
           "cardTitle": "Desbloquea más cajas",
           "cardBody": "Más cajas y varias tiendas, pagos con terminal, reembolsos, stock y precios, gestión de pedidos, informes completos y soporte prioritario en Discord.",
+          "requirements": "WordPress 5.8+ · WooCommerce 9.0+ · PHP 7.4+",
           "plansCta": "Ver planes Pro",
           "signInCta": "Inicia sesión para descargar"
         }

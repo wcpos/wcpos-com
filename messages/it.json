@@ -1707,6 +1707,7 @@
           "title": "Vuoi di più? Passa a Pro",
           "cardTitle": "Sblocca più casse",
           "cardBody": "Più casse e più negozi, pagamenti con terminale, rimborsi, stock e prezzi, gestione ordini, report completi e supporto Discord prioritario.",
+          "requirements": "WordPress 5.8+ · WooCommerce 9.0+ · PHP 7.4+",
           "plansCta": "Vedi i piani Pro",
           "signInCta": "Accedi per scaricare"
         }

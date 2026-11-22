@@ -1707,6 +1707,7 @@
           "title": "想要更多功能？升级 Pro",
           "cardTitle": "解锁更多收银台",
           "cardBody": "更多收银台与多店铺、终端付款、退款、库存和定价、订单管理、完整报表以及优先 Discord 支持。",
+          "requirements": "WordPress 5.8+ · WooCommerce 9.0+ · PHP 7.4+",
           "plansCta": "查看 Pro 套餐",
           "signInCta": "登录以下载"
         }
