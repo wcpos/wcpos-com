@@ -55,13 +55,11 @@ describe('buildProBuyBoxOptions', () => {
     expect(options[0]).toMatchObject({
       title: 'buyBox.yearly.title',
       subtitle: 'buyBox.yearly.subtitle',
-      badgeLabel: 'buyBox.yearly.badgeLabel',
       priceText: '$129',
       currencyCode: 'USD',
       priceSuffix: 'buyBox.yearly.priceSuffix',
       ctaNote: 'buyBox.yearly.ctaNote',
     })
-    expect(options[1].badgeLabel).toBeNull()
     expect(options[1].priceText).toBe('$399')
   })
 

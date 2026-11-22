@@ -15,7 +15,6 @@ export interface ProBuyBoxOption {
   planId: PlanId
   title: string
   subtitle: string
-  badgeLabel: string | null
   priceText: string
   /** ISO currency code (e.g. USD) shown beside the price so "$" is unambiguous. */
   currencyCode: string
@@ -62,8 +61,6 @@ export function buildProBuyBoxOptions(
     planId: offer.planId,
     title: t(`buyBox.${offer.planId}.title`),
     subtitle: t(`buyBox.${offer.planId}.subtitle`),
-    badgeLabel:
-      offer.planId === 'yearly' ? t('buyBox.yearly.badgeLabel') : null,
     // Narrow symbol ("$") + the ISO code the buy box appends reads "$129 USD" in every locale; default display would double it ("US$ 129 USD").
     priceText: offer.price.compactNarrow,
     currencyCode: offer.price.currencyCode.toUpperCase(),

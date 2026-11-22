@@ -468,7 +468,6 @@
       "yearly": {
         "title": "연간",
         "subtitle": "1년간 업데이트 및 지원",
-        "badgeLabel": "가장 인기",
         "priceSuffix": "/년",
         "ctaNote": "일회성 결제 — 자동 갱신이 없고, 기간이 끝나도 Pro는 계속 작동합니다."
       },

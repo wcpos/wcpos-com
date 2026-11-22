@@ -468,7 +468,6 @@
       "yearly": {
         "title": "Annuel",
         "subtitle": "Mises à jour et support pendant 1 an",
-        "badgeLabel": "Le plus populaire",
         "priceSuffix": "/an",
         "ctaNote": "Paiement unique — jamais de renouvellement automatique, et Pro continue de fonctionner ensuite."
       },

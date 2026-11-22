@@ -468,7 +468,6 @@
       "yearly": {
         "title": "年付",
         "subtitle": "1年更新和支持",
-        "badgeLabel": "最受欢迎",
         "priceSuffix": "/年",
         "ctaNote": "一次性付款——绝不自动续费，到期后 Pro 依然继续运行。"
       },
