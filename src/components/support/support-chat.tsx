@@ -175,7 +175,7 @@ export function SupportChat() {
     <div className="mx-auto w-full max-w-2xl">
       {!started && (
         <div className="text-center">
-          <h1 className="mb-2 text-balance text-4xl font-bold leading-tight tracking-tight text-foreground md:text-5xl">{t('hero.title')}</h1>
+          <h1 className="mb-2 text-balance text-4xl max-[375px]:text-3xl font-bold leading-tight tracking-tight text-foreground md:text-5xl">{t('hero.title')}</h1>
           <p className="mb-6 text-lg text-muted-foreground">
             {t('hero.subtitle')}
           </p>
