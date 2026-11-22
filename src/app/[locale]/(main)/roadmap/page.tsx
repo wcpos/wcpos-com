@@ -9,6 +9,7 @@ import {
   BoardLinkChip,
 } from '@/components/roadmap/roadmap-timeline'
 import { ROADMAP_DEV_FIXTURE } from '@/components/roadmap/dev-fixture'
+import { dropPastDueDates } from '@/components/roadmap/past-due'
 import { Eyebrow } from '@/components/ui/eyebrow'
 import { Skeleton } from '@/components/ui/skeleton'
 import type { RoadmapData } from '@/types/roadmap'
@@ -38,6 +39,13 @@ async function getCachedRoadmapData(): Promise<RoadmapData> {
   cacheLife('roadmap')
   cacheTag('roadmap')
   return fetchRoadmapData()
+}
+
+// Today's UTC date, cached on the roadmap cache life so it is never older than that life's two-hour expiry, kept out of the tag-cached fetch.
+async function getRoadmapToday(): Promise<string> {
+  'use cache'
+  cacheLife('roadmap')
+  return new Date().toISOString().slice(0, 10)
 }
 
 function TimelineSkeleton() {
@@ -119,6 +127,8 @@ async function RoadmapTimelineLoader() {
     )
     data = ROADMAP_DEV_FIXTURE
   }
+
+  data = dropPastDueDates(data, await getRoadmapToday())
 
   return <RoadmapTimeline data={data} />
 }
