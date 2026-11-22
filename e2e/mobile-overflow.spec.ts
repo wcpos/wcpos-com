@@ -7,7 +7,7 @@ import { test, expect } from '@playwright/test'
  */
 const VIEWPORT_WIDTH = 375
 const LOCALES = ['en', 'de', 'es', 'fr', 'it', 'ja', 'ko', 'nl', 'pt', 'zh']
-const PAGES = ['/', '/pro', '/refunds', '/roadmap', '/support']
+const PAGES = ['/', '/downloads', '/pro', '/refunds', '/roadmap', '/support']
 
 function localePath(locale: string, path: string) {
   if (locale === 'en') return path
