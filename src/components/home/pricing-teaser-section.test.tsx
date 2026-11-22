@@ -186,6 +186,27 @@ describe('PricingTeaserSection', () => {
     expect(within(freeList).queryByText('Basic checkout')).not.toBeInTheDocument()
   })
 
+  it('lists the receipt template editor instead of multi-currency in Free', async () => {
+    renderWithIntl(await PricingTeaserSection())
+
+    const freeColumn = screen.getByRole('heading', { name: 'Free' }).parentElement!
+    const freeList = within(freeColumn).getByRole('list')
+    expect(
+      within(freeList).getByText('Receipt template editor & gallery')
+    ).toBeInTheDocument()
+    expect(within(freeList).queryByText('Multi-currency')).not.toBeInTheDocument()
+  })
+
+  it('lists refunds, coupons and the customer-facing display in Pro', async () => {
+    renderWithIntl(await PricingTeaserSection())
+
+    const proColumn = screen.getByRole('heading', { name: 'Pro' }).parentElement!
+    const proList = within(proColumn).getByRole('list')
+    expect(within(proList).getByText('Refunds, full or partial')).toBeInTheDocument()
+    expect(within(proList).getByText('Coupon management')).toBeInTheDocument()
+    expect(within(proList).getByText('Customer-facing display')).toBeInTheDocument()
+  })
+
   it('leads the Pro list with more registers and multiple stores', async () => {
     renderWithIntl(await PricingTeaserSection())
 

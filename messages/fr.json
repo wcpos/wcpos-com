@@ -204,7 +204,7 @@
           "f3": "Espèces ou carte sur votre terminal",
           "f4": "Mode hors ligne",
           "f5": "Impression de reçus",
-          "f6": "Multi-devise",
+          "f6": "Éditeur et galerie de modèles de reçu",
           "f7": "Produits illimités",
           "f8": "Ouverture et clôture de caisse",
           "f9": "Paiements fractionnés",
@@ -222,7 +222,10 @@
           "p4": "Gestion des clients",
           "p5": "Rapports sur plusieurs jours, caisses et boutiques",
           "p6": "Passerelles de paiement personnalisées",
-          "p7": "Assistance prioritaire"
+          "p7": "Assistance prioritaire",
+          "p9": "Remboursements totaux ou partiels",
+          "p10": "Gestion des codes promo",
+          "p11": "Écran côté client"
         }
       },
       "cta": "Voir tous les tarifs et fonctionnalités",
@@ -449,6 +452,10 @@
       "customers": {
         "title": "Gestion des clients",
         "description": "Ajoutez et modifiez les coordonnées des clients au point de vente, synchronisées avec WooCommerce."
+      },
+      "coupons": {
+        "title": "Gestion des codes promo",
+        "description": "Recherchez, créez et modifiez des codes promo à la caisse, et créez-en un depuis le panier."
       },
       "reports": {
         "title": "Rapports sur plusieurs jours, caisses et boutiques",

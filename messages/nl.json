@@ -204,7 +204,7 @@
           "f3": "Contant of pin via je eigen betaalterminal",
           "f4": "Offline modus",
           "f5": "Bonnen printen",
-          "f6": "Meerdere valuta",
+          "f6": "Editor en galerij voor bonsjablonen",
           "f7": "Onbeperkte producten",
           "f8": "Kassa openen en sluiten",
           "f9": "Gesplitste betalingen",
@@ -222,7 +222,10 @@
           "p4": "Klantbeheer",
           "p5": "Rapporten over dagen, kassa's en winkels",
           "p6": "Aangepaste betaalgateways",
-          "p7": "Prioriteitssupport"
+          "p7": "Prioriteitssupport",
+          "p9": "Volledige of gedeeltelijke terugbetalingen",
+          "p10": "Kortingsbonbeheer",
+          "p11": "Klantendisplay"
         }
       },
       "cta": "Bekijk alle prijzen en functies",
@@ -449,6 +452,10 @@
       "customers": {
         "title": "Klantbeheer",
         "description": "Voeg klantgegevens toe en bewerk ze op de kassa, gesynchroniseerd met WooCommerce."
+      },
+      "coupons": {
+        "title": "Kortingsbonbeheer",
+        "description": "Zoek, maak en bewerk kortingsbonnen aan de kassa, en maak er een aan vanuit de winkelwagen."
       },
       "reports": {
         "title": "Rapporten over dagen, kassa's en winkels",
